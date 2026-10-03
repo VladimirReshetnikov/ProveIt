@@ -1,0 +1,1230 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{xcolor}
+\usepackage{enumitem,needspace}
+\usepackage{xurl}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\definecolor{ink}{HTML}{18364B}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+  pdftitle={An Entire Borel Transform at a Natural Boundary},
+  pdfauthor={Research prepared with ChatGPT for Vladimir Reshetnikov},
+  pdfsubject={Sharp logarithmic Gevrey asymptotics for a dilation-normalized q-Fabius law}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Entire Borel transform at a natural boundary}
+\fancyhead[R]{\small $q$-Fabius analysis}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.25em}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Borel}{\mathcal B}
+\newcommand{\Lap}{\mathcal L}
+\newcommand{\coef}[1]{\left[#1\right]}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\sourcepath}[1]{{\small\path{#1}}}
+\newcommand{\pin}{781594d886f8dc56069221e2b56bd1e94d9c6e5f}
+
+\begin{document}
+% ed. (2026-09-30): no page anchors on the title page, which is numbered 1 like the first arabic page (removes a duplicate-destination warning of the delivered source).
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{10mm}
+{\color{ink}\small\scshape ProveIt research program\par}
+\vspace{13mm}
+{\color{ink}\Huge\bfseries An Entire Borel Transform\par at a Natural Boundary\par}
+\vspace{8mm}
+{\Large Sharp logarithmic Gevrey asymptotics\par for a dilation-normalized $q$-Fabius law\par}
+\vspace{14mm}
+{\large Research article prepared for Vladimir Reshetnikov\par}
+\vspace{2mm}
+{Developed with ChatGPT\par September 30, 2026\par}
+\vspace{13mm}
+\begin{abstract}
+A natural boundary can survive the passage from a divergent asymptotic series to an entire Borel transform. We establish this phenomenon explicitly for the centered geometric-uniform law underlying the $q$-Fabius family. In the logarithmic dilation variable $t=-\log q$, we study
+\[
+ F_z(t)=\log\E\exp\!\left(zt\sum_{j\ge0}\e^{-jt}U_j\right),
+ \qquad U_j\sim\mathrm{Unif}[-\tfrac12,\tfrac12],
+\]
+for fixed real $z\ne0$. Its odd asymptotic coefficients admit a complete leading equivalent with a Lambert--$W$ saddle and a Gaussian prefactor. In particular their factorial-normalized size is precisely logarithmic: the refined type is $1/(2\pi)$. The series is divergent and Gevrey one of zero exponential type, but belongs to no smaller Gevrey class.
+
+Its Borel minor is entire. We give a convergent iterated-cosine representation, prove an exact positive-ray Laplace reconstruction, and determine the full leading double-exponential asymptotic on the imaginary Borel axis. Nevertheless the original function has no meromorphic continuation through any point of an imaginary interval containing the origin. Consequently the entire Borel minor satisfies no uniform exponential bound in any open angular sector about the positive ray. A companion frozen-amplitude theorem gives the complete meromorphic Borel pole set, residues, and exact factorial type before the amplitude is scaled by $t$.
+
+The proofs are self-contained after standard Bernoulli and hyperbolic-function identities. Exact rational checks and high-precision experiments accompany them. The results address a specified endpoint growth-and-summation question, not the separate minimal-moment-denominator conjecture. No Lean certification or independently established worldwide priority is asserted.
+\end{abstract}
+\vfill
+{\small\textbf{Keywords.} Fabius function; geometric uniform law; Borel transform; natural boundary; logarithmic Gevrey growth; Lambert $W$; divergent series.\par}
+\end{titlepage}
+% ed. (2026-09-30): page anchors back on after the title page.
+\hypersetup{pageanchor=true}
+
+\pagenumbering{roman}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+\pagenumbering{arabic}
+
+\section{The question and the results}
+\label{sec:intro}
+
+\subsection{Why an entire Borel transform need not settle summation}
+The relation between a function and its asymptotic series has three distinct parts: the growth of the formal coefficients, analytic continuation of their Borel transform, and growth of that transform along the paths used for Laplace integration. Convergence of the Borel transform addresses only the first step. Even continuation to an entire function does not supply the angular exponential bounds needed for sectorial Borel--Laplace summation.
+
+This article exhibits all three distinctions inside an explicit family already central to the geometric-uniform branch of ProveIt. The repository identifies the normalized law
+\begin{equation}
+ Y_q=(1-q)\sum_{j\ge0}q^jV_j,
+ \qquad V_j\sim\mathrm{Unif}[0,1],\quad 0<q<1,
+ \label{eq:Y}
+\end{equation}
+and its measure, moment, and cumulant descriptions \cite{repo}. Throughout, the variables $V_j$ are independent; consequently the centered digits $U_j$ are independent as well. The half-base case belongs to Fabius--Rvachev theory; classical background is given by Arias de Reyna \cite{arias}. We use the centered variables $U_j=V_j-1/2$ and the logarithmic dilation coordinate $t=-\log q$.
+
+An earlier companion manuscript proves a unit-circle obstruction for the full normalized transform and asks for sharper information about the growth and summation of its boundary expansions \cite[\S\S7,11.2]{boundary}. We answer a precise version of that question: the transform argument is scaled so that the individual digit amplitudes are exactly $zt\e^{-jt}$. This choice has a natural Riemann-sum interpretation and makes the coefficient cancellation structure accessible. The distinction from keeping the original transform argument fixed is explicit throughout.
+% ed. (2026-09-30): where the companion is filed, and repository neighbours the article does not cite
+\begin{ednote}
+The companion manuscript \cite{boundary} is filed in the repository beside
+this package, as
+\path{../Unit_Circle_Barrier_q_Fabius_Transform/q_fabius_boundary.tex};
+its Section~11.2 now carries a note pointing here. Part~IX of the geometric
+$q$-Fabius volume \path{../geometric_q_fabius_frontiers/}, which this
+article did not read (it saw only the README of the package absorbed as
+Part~XI), leaves open whether the constants of its full radial expansion
+at roots of unity obey a Gevrey bound (its
+\texttt{p9:status:inverse-analytic}). The endpoint theorems here bear on
+that question but concern a different function and normalization, and do
+not answer it. The conclusion of Theorem~\ref{thm:nosector}, an entire
+Borel transform summable along the positive ray but exponentially bounded
+in no open sector because of a natural boundary on the imaginary axis, is
+the phenomenon that two transseries articles of the repository prove for
+unrelated functions, the reversions of exponential-feedback series:
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Quadratic_Exponential_Feedback/}
+and
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Survive_Nonlinear_Feedback/}.
+No theorem is shared.
+\end{ednote}
+
+\subsection{The endpoint theorem in brief}
+Fix $z\in\R\setminus\{0\}$ and put
+\begin{equation}
+ Z_t=t\sum_{j\ge0}\e^{-jt}U_j,\qquad
+ F_z(t)=\log\E\e^{zZ_t}\quad(t>0).
+ \label{eq:mainF}
+\end{equation}
+The logarithm is real for real $t>0$. A convergent cumulant series below supplies its complex continuation in a right half-disk. As $t\downarrow0$ it has a Poincar\'e expansion
+\begin{equation}
+ F_z(t)\sim\sum_{j\ge1}b_j(z)t^j.
+ \label{eq:formalF}
+\end{equation}
+Our central coefficient conclusion is
+\begin{equation}
+ \lim_{\substack{j\to\infty\\j\text{ odd}}}
+ \log j\left(\frac{|b_j(z)|}{j!}\right)^{1/j}
+ =\frac1{2\pi}.
+ \label{eq:introtype}
+\end{equation}
+Theorem~\ref{thm:coeffasym} gives a stronger equivalent including the Gaussian prefactor and the exact Lambert--$W$ saddle. The even coefficients have only exponential growth.
+
+For the Borel convention used here, the minor is
+\begin{equation}
+ \widehat F_z(s)=\sum_{j\ge1}\frac{b_j(z)}{(j-1)!}s^{j-1}.
+ \label{eq:introborel}
+\end{equation}
+It is entire and has an exact positive-ray reconstruction for $0<t<2\pi/|z|$:
+\begin{equation}
+ F_z(t)=\int_0^\infty\e^{-s/t}\widehat F_z(s)\dd s.
+ \label{eq:introlap}
+\end{equation}
+There is no factor $1/t$ in this convention. The imaginary-axis growth is considerably faster than exponential. With
+\begin{equation}
+ M_y=\frac{|z|}{2e}\exp\!\left(\frac{y}{2\pi}\right),
+ \label{eq:introM}
+\end{equation}
+we prove
+\begin{equation}
+ \widehat F_z(\ii y)\sim
+ -\frac{\sqrt{\pi M_y}}{2\pi^2}\e^{2M_y}
+ \qquad(y\to+\infty).
+ \label{eq:introimag}
+\end{equation}
+This is a complex asymptotic equivalent: the ratio to the negative real expression tends to one.
+
+Despite \eqref{eq:introborel}, $F_z$ has no meromorphic continuation through any point of
+\begin{equation}
+ \{\ii\tau:\ |z\tau|<2\pi\}.
+ \label{eq:barrierinterval}
+\end{equation}
+The obstruction occurs at the origin as well, although $F_z(t)\to0$ along the positive real axis and has an asymptotic expansion of every finite order there. It follows that no open angular Borel sector containing the positive ray admits a uniform exponential bound for $\widehat F_z$. Exact ray summation and open-sector summability are different properties in this example.
+
+\subsection{What is inherited, and what is proved here}
+The Bernoulli expansion of the logarithm of a hyperbolic sine, Euler's even-zeta evaluation, and the partial fractions of $\coth$ are standard \cite{dlmf}. Borel--Laplace analysis of $q$-products is also established: Garoufalidis--Zagier develop root-of-unity asymptotics of $q$-Pochhammer expressions \cite{gz}, and Garoufalidis--Kashaev give explicit meromorphic Borel data and Stokes formulas for the quantum dilogarithm \cite{gk}. We do not claim those methods as new. Sauzin's treatment provides the general summability background \cite{sauzin}.
+
+The specific results developed here are the exact endpoint coefficient equivalent, its refined logarithmic type, the explicit entire endpoint Borel minor and its double-exponential equivalent, and their coexistence with the boundary obstruction. The frozen-amplitude calculation is a fully proved specialization of the standard Borel approach to this infinite uniform-digit family. It also explains what changes under the scaling $w=zt$.
+
+The source comparison is limited to the selected repository interfaces, the companion manuscript, and the cited primary literature. It is not an exhaustive priority review of the repository's full research corpus or of the literature. The new proofs are conventional mathematical proofs; the accompanying code checks only finite identities and numerical examples.
+
+\section{The two normalizations and the cumulant kernel}
+\label{sec:kernel}
+
+\subsection{Centered and dilation-normalized laws}
+For real $t>0$, the series in \eqref{eq:mainF} converges absolutely, since
+\[
+ |Z_t|\le\frac{t}{2(1-\e^{-t})}.
+\]
+Thus its moment generating function exists for every real or complex transform argument. If
+\begin{equation}
+ A(q,v)=\E\e^{vY_q},
+\end{equation}
+then
+\begin{align}
+ Z_t&=\frac{t}{1-\e^{-t}}\left(Y_{\e^{-t}}-\frac12\right),\label{eq:lawconversion}\\
+ F_z(t)&=\log A\!\left(\e^{-t},\frac{zt}{1-\e^{-t}}\right)
+       -\frac{zt}{2(1-\e^{-t})}.
+ \label{eq:transformconversion}
+\end{align}
+Near $t=0$, the factor $t/(1-\e^{-t})$ is analytic with value one. Nevertheless a parameter-dependent change in the transform argument can affect large-order coefficient asymptotics. Equation~\eqref{eq:transformconversion} is a normalization identity, not a claim that every sharp estimate below transfers unchanged to $A(\e^{-t},z)$ with $z$ fixed.
+
+We shall also hold the individual digit amplitude fixed. Define
+\begin{equation}
+ H(w)=\frac{\sinh(w/2)}{w/2},\quad H(0)=1,\qquad
+ g(w)=\log H(w),\quad g(0)=0.
+ \label{eq:H}
+\end{equation}
+The zeros of $H$ are $2\pi\ii k$, $k\in\mathbb Z\setminus\{0\}$. Therefore the normalized logarithm $g$ is holomorphic on $|w|<2\pi$.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}lY@{}}
+\toprule
+Object & Parameter held fixed or scaled\\
+\midrule
+$A(q,v)$ & Repository normalization; digit amplitude $(1-q)v$.\\
+$K(t,w)$ & Centered logarithm; digit amplitude $w$ held fixed.\\
+$F_z(t)=K(t,zt)$ & Dilation normalization; $z$ fixed and amplitude $zt$.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Bernoulli and zeta coefficients}
+Use Bernoulli numbers defined by $u/(\e^u-1)=\sum_{n\ge0}B_nu^n/n!$, with $B_1=-1/2$. For $m\ge1$, set
+\begin{equation}
+ c_{2m}=\frac{B_{2m}}{2m(2m)!}
+ =(-1)^{m+1}\frac{\zeta(2m)}{m(2\pi)^{2m}}.
+ \label{eq:c}
+\end{equation}
+The second equality is Euler's evaluation \cite[\S25.6]{dlmf}. We will repeatedly use
+\begin{equation}
+ |c_{2m}|\le\frac{\zeta(2)}{m(2\pi)^{2m}},\qquad
+ 0<\zeta(2m)-1\le3\cdot4^{-m}.
+ \label{eq:zetabounds}
+\end{equation}
+For the latter inequality, bound the sum over integers at least two by its first term plus the integral from two to infinity.
+
+\begin{lemma}[The elementary logarithm]
+On $|w|<2\pi$,
+\begin{equation}
+ g(w)=\sum_{m\ge1}c_{2m}w^{2m}.
+ \label{eq:g}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The classical product \cite[\S4.36]{dlmf} gives
+\[
+ H(w)=\prod_{\ell\ge1}\left(1+\frac{w^2}{4\pi^2\ell^2}\right).
+\]
+Expand each logarithm for $|w|<2\pi$ and sum absolutely. This gives the coefficient
+\[(-1)^{m+1}\frac{\zeta(2m)}{m(2\pi)^{2m}}\]
+of $w^{2m}$, as required. This argument also fixes the branch: the logarithm is zero at $w=0$.
+\end{proof}
+
+\Needspace{12\baselineskip}
+\begin{proposition}[The centered geometric cumulant]
+\label{prop:K}
+For $\Re t>0$ and $|w|<2\pi$, the function
+\begin{equation}
+ K(t,w)=\sum_{j\ge0}g(w\e^{-jt})
+       =\sum_{m\ge1}\frac{c_{2m}w^{2m}}{1-\e^{-2mt}}
+ \label{eq:K}
+\end{equation}
+is jointly holomorphic. For real $t>0$ and $|zt|<2\pi$,
+\begin{equation}
+ F_z(t)=K(t,zt).
+ \label{eq:Fseries}
+\end{equation}
+The right-hand side defines a holomorphic continuation to
+\begin{equation}
+ \Omega_z=\{t\in\C:\ \Re t>0,\ |zt|<2\pi\}.
+ \label{eq:Omega}
+\end{equation}
+\end{proposition}
+\begin{proof}
+On a compact subset of the stated domain, $\Re t\ge\delta>0$ and $|w|\le r<2\pi$. The first series has a geometrically bounded tail because $g(u)=O(u^2)$ near zero. The double series obtained from \eqref{eq:g} is absolutely convergent; for the second expression its absolute value is bounded by
+\[
+ \sum_{m\ge1}\frac{|c_{2m}|r^{2m}}{1-\e^{-2m\delta}}<\infty.
+\]
+These estimates justify the interchange and joint holomorphy. Independence gives $H$ as the transform of a single centered uniform digit. Products of the transforms of finite prefixes converge to the transform of the absolutely bounded random series. Taking the normalized logarithm gives \eqref{eq:Fseries}; for real arguments it agrees with the ordinary real logarithm.
+\end{proof}
+
+\subsection{A useful partial-fraction identity}
+The identity
+\begin{equation}
+ \frac1{1-\e^{-2mt}}
+ =\frac1{2mt}+\frac12+
+   \sum_{k\ge1}\frac{mt}{\pi^2k^2+m^2t^2}
+ \label{eq:coth}
+\end{equation}
+holds when $mt\notin\pi\ii\mathbb Z$ and $t\ne0$. It follows from
+$1/(1-\e^{-2u})=(1+\coth u)/2$ and the standard partial fractions of $\coth$ \cite[\S4.36]{dlmf}. This identity will provide an exact Laplace reconstruction, not merely a formal expansion.
+
+\section{All coefficients, with a cancellation-free odd part}
+\label{sec:coeff}
+
+The local Laurent series
+\begin{equation}
+ \frac1{1-\e^{-u}}=\frac1u+\frac12+
+       \sum_{r\ge1}\frac{B_{2r}}{(2r)!}u^{2r-1}
+ \label{eq:BernLaurent}
+\end{equation}
+will be used coefficientwise. There is no common nonzero disk in $t$ on which this expansion converges simultaneously for every $u=2mt$. That absence is exactly why a formal coefficient calculation is not a convergence proof for $F_z$.
+
+\begin{proposition}[Existence and exact coefficients]
+\label{prop:coeff}
+The function $F_z$ has the expansion \eqref{eq:formalF} to every finite order as real $t\downarrow0$. For $n\ge1$,
+\begin{equation}
+ b_{2n}(z)=\frac12c_{2n}z^{2n}
+ =(-1)^{n+1}\frac{\zeta(2n)}{2n}
+                 \left(\frac{z}{2\pi}\right)^{2n}.
+ \label{eq:even}
+\end{equation}
+For the odd coefficients, let $a=|z|/2$ and define
+\begin{align}
+ S_n(z)&=\pi^{-2n}\sum_{m=1}^{n-1}
+  \zeta(2m)\zeta(2n-2m)a^{2m}m^{2n-2m-2},\label{eq:S}\\
+ E_n(z)&=\pi^{-2n}\frac{\zeta(2n)a^{2n}}{2n^2}.
+ \label{eq:E}
+\end{align}
+The empty sum is $S_1=0$. Then
+\begin{equation}
+ b_{2n-1}(z)=(-1)^n\bigl(S_n(z)-E_n(z)\bigr).
+ \label{eq:odd}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The term $c_{2m}z^{2m}t^{2m}$ in \eqref{eq:Fseries}, multiplied by \eqref{eq:BernLaurent} with $u=2mt$, contributes a lowest degree $2m-1$, a degree $2m$, and the odd degrees $2m+2r-1$. Thus the sole contribution to the even degree $2n$ is the constant $1/2$ term, giving \eqref{eq:even}. At degree $2n-1$ the contribution is
+\begin{equation}
+ \frac{c_{2n}z^{2n}}{2n}
+ +\sum_{m=1}^{n-1}c_{2m}z^{2m}
+   \frac{B_{2n-2m}}{(2n-2m)!}(2m)^{2n-2m-1}.
+ \label{eq:oddBern}
+\end{equation}
+The first term has sign $(-1)^{n+1}$ and magnitude $E_n$. In every summand of the second term, the two Bernoulli signs multiply to $(-1)^n$. Substituting Euler's formula and collecting the powers of two and $\pi$ yields exactly $S_n$. This is why the large odd-coefficient sum has no internal cancellation for real $z$.
+
+To justify an actual finite-order asymptotic expansion, fix a desired order $J$ and retain finitely many $m$. Each retained term is analytic at $t=0$ after multiplication by $t^{2m}$. For the remaining tail use, for real $x>0$,
+\[
+ \frac1{1-\e^{-x}}\le1+\frac1x.
+\]
+For $0<t\le t_0$ with $|z|t_0<2\pi$, the tail starting at $m=M$ is therefore
+\[
+ O\!\left(\sum_{m\ge M}\frac{(|z|t/(2\pi))^{2m}}m
+                         \left(1+\frac1{2mt}\right)\right)
+ =O(t^{2M-1}).
+\]
+Choose $M$ so that $2M-1\ge J+1$, and Taylor-expand the retained finite sum through degree $J$. This proves the asserted Poincar\'e expansion without interchanging a nonuniform infinite Laurent expansion.
+\end{proof}
+
+The first terms, useful for fixing all normalizations, are
+\begin{align}
+ F_z(t)\sim{}&\frac{z^2}{48}t+\frac{z^2}{48}t^2
+ +\left(\frac{z^2}{144}-\frac{z^4}{11520}\right)t^3
+ -\frac{z^4}{5760}t^4 \notag\\
+ &+\frac{z^2(z^4-126z^2-504)}{1088640}t^5
+ +\frac{z^6}{362880}t^6+\cdots.
+ \label{eq:first}
+\end{align}
+In particular, the leading term is $z^2t/48$, not $z^2t/24$. It is half the limiting leading variance, as required for a centered cumulant generating function.
+
+\begin{remark}[Finite cancellations are not excluded]
+Formula~\eqref{eq:odd} does not say that every odd coefficient is nonzero at every nonzero real $z$. For example, $b_3(z)=0$ at $z^2=80$. The eventual nonvanishing and sign are consequences of the large-order theorem below. No conclusion about the separate rational-moment denominator problem follows from these endpoint coefficients.
+\end{remark}
+
+\section{A discrete saddle with a Lambert--\texorpdfstring{$W$}{W} location}
+\label{sec:saddle}
+
+The coefficient sum has a large moving maximizer, but it occupies a vanishing fraction of the summation range. A discrete, rather than purely integral, saddle argument is needed to retain the prefactor.
+
+\begin{lemma}[Logarithmic saddle]
+\label{lem:saddle}
+Fix $a>0$. For $N\to\infty$, let
+\begin{equation}
+ w=W(eN/a),\qquad x_* = N/w,
+ \label{eq:saddlex}
+\end{equation}
+where $W$ is the positive real solution of $We^W=eN/a$. Then
+\begin{equation}
+ \sum_{m=1}^{N}a^{2m}m^{2N-2m}
+ \sim\sqrt{\frac{\pi N}{w(w+1)}}
+       \left(\frac Nw\right)^{2N}
+       \exp\!\left(-2N+\frac{2N}{w}\right).
+ \label{eq:saddlelemma}
+\end{equation}
+The same equivalent holds if each summand is multiplied by
+$\zeta(2m)\zeta(2N+2-2m)$.
+\end{lemma}
+\begin{proof}
+Extend the logarithm of the summand to positive real $x$:
+\begin{equation}
+ f_N(x)=2N\log x-2x\log(x/a).
+ \label{eq:fN}
+\end{equation}
+It is strictly concave, with
+\begin{align*}
+ f_N'(x)&=2N/x-2\log(x/a)-2,\\
+ f_N''(x)&=-2N/x^2-2/x.
+\end{align*}
+The unique critical point satisfies $N/x=1+\log(x/a)$. Writing $w=N/x$ gives $we^w=eN/a$, proving \eqref{eq:saddlex}. At the critical point,
+\begin{align}
+ f_N(x_*)&=2N\log(N/w)-2N+2N/w,\label{eq:fstar}\\
+ -f_N''(x_*)&=\frac{2w(w+1)}{N},\qquad
+ \sigma_N^2=\frac{N}{2w(w+1)}.
+ \label{eq:sigma}
+\end{align}
+Since $w+\log w=\log(eN/a)$, we have $w\sim\log N$.
+Consequently $x_*\sim N/\log N$ and $\sigma_N\to\infty$. The lattice spacing is negligible on the Gaussian scale.
+
+Consider the central window $|x-x_*|\le\sigma_N N^{1/12}$. Throughout it, $x/x_*\to1$. Since
+\[
+ f_N'''(x)=4N/x^3+2/x^2,
+\]
+Taylor's theorem gives, uniformly in this window,
+\begin{equation}
+ f_N(x)=f_N(x_*)-\frac{(x-x_*)^2}{2\sigma_N^2}+O(N^{-1/4}).
+ \label{eq:centralTaylor}
+\end{equation}
+Indeed the cubic error is
+$O((w^3/N^2)\sigma_N^3N^{1/4})=O(N^{-1/4})$.
+The corresponding lattice Gaussian sum is a Riemann sum, because $\sigma_N\to\infty$; its truncation at $N^{1/12}$ standard deviations loses a vanishing fraction. Thus the central contribution is
+\begin{equation}
+ (1+o(1))\e^{f_N(x_*)}\sqrt{2\pi}\,\sigma_N.
+ \label{eq:centralsum}
+\end{equation}
+
+For completeness, the remainder of the finite sum is negligible on that scale. On $[x_*/2,2x_*]$, the quantity $-f_N''(x)$ is bounded below by a positive constant times $w^2/N$. Concavity therefore gives a quadratic loss from the maximum. Outside the central window but inside this interval, the loss is at least a positive constant times $N^{1/6}$. There are at most $N$ summands. At the two endpoints $x_*/2$ and $2x_*$ the loss is at least a positive constant times $N$. The function is increasing before $x_*$ and decreasing after it, so the remaining outer summands have the same exponential loss. These bounds are negligible relative to \eqref{eq:centralsum}.
+
+The zeta multiplier is bounded between one and $\zeta(2)^2$ everywhere. In the central window both $m$ and $N+1-m$ tend to infinity, so it tends uniformly to one by \eqref{eq:zetabounds}. The tail estimates still apply, and the equivalent is unchanged. Combining \eqref{eq:fstar}--\eqref{eq:centralsum} proves the lemma.
+\end{proof}
+
+\begin{remark}[Dependence on the transform argument]
+The same proof is uniform for $a$ in any fixed compact subinterval of $(0,\infty)$. It is not uniform as $a\to0$ with $N$. In the endpoint application $z$ is fixed and nonzero, so no such double limit is assumed.
+\end{remark}
+
+\section{The sharp coefficient equivalent and exact refined type}
+\label{sec:sharp}
+
+\Needspace{13\baselineskip}
+\begin{theorem}[Complete leading odd-coefficient asymptotic]
+\label{thm:coeffasym}
+Fix $z\in\R\setminus\{0\}$. For $n\ge2$ put
+\begin{equation}
+ N=n-1,\qquad w_n=W\!\left(\frac{2e(n-1)}{|z|}\right),
+ \label{eq:wn}
+\end{equation}
+and define
+\begin{equation}
+ L_n(z)=\pi^{-2n}\sqrt{\frac{\pi N}{w_n(w_n+1)}}
+ \left(\frac{N}{w_n}\right)^{2N}
+ \exp\!\left(-2N+\frac{2N}{w_n}\right).
+ \label{eq:Ln}
+\end{equation}
+Then
+\begin{equation}
+ b_{2n-1}(z)=(-1)^nL_n(z)(1+o(1)).
+ \label{eq:oddasym}
+\end{equation}
+In particular, the odd coefficients are eventually nonzero with sign $(-1)^n$.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:S}, set $N=n-1$ and $a=|z|/2$. The power of $m$ becomes $2N-2m$, so Lemma~\ref{lem:saddle} gives $S_n\sim L_n$. On the other hand,
+\[
+ \log E_n=O(n),\qquad
+ \log L_n=2N\log N-2N\log\log N+O(N).
+\]
+Hence $E_n/L_n\to0$. Formula~\eqref{eq:odd} now proves the result.
+\end{proof}
+
+\begin{definition}[Gevrey class and exponential type]
+A formal series $\sum a_jt^j$ is Gevrey of order $s\ge0$ when
+$|a_j|\le CA^j(j!)^s$ for some $C,A>0$. It is Gevrey one of zero exponential type when for every $A>0$ there exists $C_A$ with
+$|a_j|\le C_AA^jj!$ for all $j$.
+\end{definition}
+
+\begin{corollary}[Sharp logarithmic refinement]
+\label{cor:type}
+For each fixed nonzero real $z$, the odd coefficients satisfy
+\begin{align}
+ \log|b_j(z)|={}&j\log j-j\log\log j
+             -j\bigl(1+\log(2\pi)\bigr)+o(j),
+ \qquad j\to\infty\text{ odd},\label{eq:logasym}\\
+ \lim_{\substack{j\to\infty\\j\text{ odd}}}
+  \log j\left(\frac{|b_j(z)|}{j!}\right)^{1/j}
+  & =\frac1{2\pi}.
+ \label{eq:refinedtype}
+\end{align}
+Along the even subsequence the last expression tends to zero. The limsup over all positive integers is therefore $1/(2\pi)$.
+\end{corollary}
+\begin{proof}
+For $j=2n-1=2N+1$, Theorem~\ref{thm:coeffasym} and $w_n\sim\log N$ give
+\[
+ \frac1j\log|b_j|
+ =\log N-\log w_n-1-\log\pi+o(1)
+ =\log j-\log\log j-1-\log(2\pi)+o(1).
+\]
+This proves \eqref{eq:logasym}. Stirling's formula gives
+$\log(j!)/j=\log j-1+o(1)$; subtracting proves \eqref{eq:refinedtype}. The even assertion follows directly from \eqref{eq:even} and Stirling's formula.
+\end{proof}
+
+\begin{corollary}[Divergence, zero type, and absence of smaller Gevrey order]
+\label{cor:gevrey}
+The series \eqref{eq:formalF} has radius of convergence zero. It is Gevrey one of zero exponential type. It is not Gevrey of any order $s<1$ with $s\ge0$. Its Borel minor \eqref{eq:introborel} is entire.
+\end{corollary}
+\begin{proof}
+Along odd indices, \eqref{eq:logasym} gives $|b_j|^{1/j}\to\infty$, proving the first assertion. Equation~\eqref{eq:refinedtype}, together with the even formula, gives
+\[
+ \left(\frac{|b_j|}{j!}\right)^{1/j}\longrightarrow0.
+\]
+This is exactly the zero-type bound after enlarging a constant to cover finitely many indices. If $s<1$, then along odd $j$
+\[
+ \frac1j\log\frac{|b_j|}{(j!)^s}
+ =(1-s)\log j-\log\log j+O(1)\longrightarrow\infty.
+\]
+No exponential majorant exists. Replacing $j!$ by $(j-1)!$ changes a $j$th root by a factor tending to one, so the Borel minor has infinite radius.
+\end{proof}
+
+\begin{remark}[What the leading constant does and does not say]
+The refined type $1/(2\pi)$ does not depend on $z\ne0$. The full equivalent \eqref{eq:Ln} does depend on $z$ through the saddle $W(2e(n-1)/|z|)$. Removing that dependence too early loses subexponential information large enough to matter in accurate numerical evaluation and in optimal-truncation questions.
+\end{remark}
+
+\section{The frozen-amplitude Borel plane}
+\label{sec:frozen}
+
+\subsection{Borel convention and the regular remainder}
+For a series with zero constant coefficient we use
+\begin{equation}
+ \Borel\!\left(\sum_{j\ge1}a_jt^j\right)(s)
+ =\sum_{j\ge1}\frac{a_j}{(j-1)!}s^{j-1}.
+ \label{eq:Bconvention}
+\end{equation}
+The identity $\int_0^\infty\e^{-s/t}s^{j-1}\dd s=(j-1)!t^j$ fixes its Laplace inverse. Laurent terms and constants must be removed before applying this convention.
+
+Let $w\in\R$, $0<|w|<2\pi$, and set
+\begin{align}
+ C(w)&=\sum_{m\ge1}\frac{c_{2m}w^{2m}}{2m},\label{eq:C}\\
+ R_w(t)&=K(t,w)-\frac{C(w)}t-\frac{g(w)}2.
+ \label{eq:Rfrozen}
+\end{align}
+The integral of the logarithm gives the equivalent dilogarithmic expression
+\begin{equation}
+ C(w)=-\frac12\sum_{\ell\ge1}
+       \Li_2\!\left(-\frac{w^2}{4\pi^2\ell^2}\right).
+ \label{eq:Cdilog}
+\end{equation}
+Every series here converges absolutely. Formally, \eqref{eq:BernLaurent} gives
+\begin{equation}
+ R_w(t)\sim\sum_{r\ge1}\beta_{2r-1}(w)t^{2r-1},\qquad
+ \beta_{2r-1}(w)=\frac{B_{2r}}{(2r)!}
+       \sum_{m\ge1}c_{2m}w^{2m}(2m)^{2r-1}.
+ \label{eq:beta}
+\end{equation}
+The exact Laplace theorem below also proves this Poincar\'e expansion.
+
+\subsection{Complete pole set and residues}
+\begin{theorem}[Frozen-amplitude meromorphic Borel minor]
+\label{thm:frozen}
+Put $u_\ell=w^2/(4\pi^2\ell^2)$. The Borel minor of the series in \eqref{eq:beta} is the meromorphic function
+\begin{equation}
+ \widehat R_w(s)=\frac1{2\pi^2}\sum_{k,\ell\ge1}\frac1{k^2}
+ \left\{
+ \frac{u_\ell\e^{\ii s/(\pi k)}}{1+u_\ell\e^{\ii s/(\pi k)}}
+ +\frac{u_\ell\e^{-\ii s/(\pi k)}}{1+u_\ell\e^{-\ii s/(\pi k)}}
+ \right\}.
+ \label{eq:frozenB}
+\end{equation}
+Its poles are exactly
+\begin{equation}
+ s=\pi^2k(2r+1)\ \pm\ 2\pi\ii k\log\frac{2\pi\ell}{|w|},
+ \qquad k,\ell\ge1,\quad r\in\mathbb Z.
+ \label{eq:poles}
+\end{equation}
+This set is locally finite. Every pole is simple, including points with several representations. At an upper-half-plane pole $p$ the residue is
+\begin{equation}
+ \Res_{s=p}\widehat R_w(s)=\frac{\ii}{2\pi}
+       \sum_{(k,\ell,r)\,\text{representing }p}\frac1k.
+ \label{eq:resupper}
+\end{equation}
+At a lower-half-plane pole the corresponding sign is negative. In particular no pole cancellation occurs.
+\end{theorem}
+\begin{proof}
+Insert Euler's formula for $B_{2r}/(2r)!$ into \eqref{eq:beta} and take its Borel minor. Summing the resulting cosine series gives, initially near $s=0$,
+\begin{equation}
+ \widehat R_w(s)=\frac1{\pi^2}\sum_{m,k\ge1}
+       \frac{m c_{2m}w^{2m}}{k^2}
+       \cos\frac{ms}{\pi k}.
+ \label{eq:cosfrozen}
+\end{equation}
+This calculation can also be checked termwise: the coefficient of $s^{2r-2}$ on the right is
+\[
+ \frac{(-1)^{r-1}\zeta(2r)}{\pi^{2r}(2r-2)!}
+ \sum_{m\ge1}c_{2m}w^{2m}m^{2r-1},
+\]
+which is $\beta_{2r-1}/(2r-2)!$.
+
+Since $mc_{2m}w^{2m}=(-1)^{m+1}\zeta(2m)(w/(2\pi))^{2m}$, expand $\zeta(2m)$ as a sum over $\ell$. The two exponential halves of the cosine sum geometrically in $m$. Absolute convergence holds when
+\[
+ |\Im s|<2\pi\log\frac{2\pi}{|w|},
+\]
+and yields \eqref{eq:frozenB} there.
+
+Each denominator in \eqref{eq:frozenB} has simple zeros, giving \eqref{eq:poles}. For $|s|\le R$, the absolute real part of a pole is at least $\pi^2 k$, so only finitely many $k$ can occur. Its imaginary part then bounds $\ell$, and the real part bounds $r$. Thus the candidate pole set is locally finite.
+
+The double sum converges normally away from these points. Indeed, for large $\ell$, uniformly in $k$ and $|s|\le R$, we have $u_\ell\e^{R/\pi}\le1/2$, so the fractions are bounded by a constant times $u_\ell$. For the remaining finitely many $\ell$, all sufficiently large $k$ have denominators bounded away from zero, with the same type of bound. The summable majorant is a constant times $k^{-2}\ell^{-2}$; only finitely many summands remain to be treated separately.
+
+At an upper pole the vanishing denominator is $1+u_\ell\e^{-\ii s/(\pi k)}$. Its numerator equals $-1$ there and its denominator derivative equals $\ii/(\pi k)$. Including the factor $1/(2\pi^2k^2)$ gives residue $\ii/(2\pi k)$. At lower poles it is $-\ii/(2\pi k)$. All coincident residues in a given half-plane have the same imaginary sign. Their finite sum is nonzero, proving both completeness of the divisor and simplicity after collisions.
+\end{proof}
+
+\begin{corollary}[Exact frozen factorial type]
+\label{cor:frozentype}
+Let
+\begin{equation}
+ a_w=2\pi\log\frac{2\pi}{|w|},\qquad
+ \mathcal R(w)=\sqrt{\pi^4+a_w^2}.
+ \label{eq:radius}
+\end{equation}
+The Taylor series of $\widehat R_w$ at zero has radius exactly $\mathcal R(w)$, and
+\begin{equation}
+ \limsup_{r\to\infty}
+ \left|\frac{\beta_{2r-1}(w)}{(2r-2)!}\right|^{1/(2r-2)}
+ =\mathcal R(w)^{-1}.
+ \label{eq:frozentype}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The four nearest poles are $\pm\pi^2\pm\ii a_w$, from $k=\ell=1$. Every other candidate has at least as large a coordinate magnitude and at least one strictly larger. The poles are genuine by Theorem~\ref{thm:frozen}. Cauchy--Hadamard gives the result. The limsup, rather than a termwise equivalent, is appropriate because the four nearest singularities can produce oscillation in the coefficients.
+\end{proof}
+
+\subsection{Exact ray reconstruction and a local Stokes formula}
+\begin{theorem}[Frozen positive-ray Laplace identity]
+\label{thm:frozenlap}
+For $w\in\R$, $0<|w|<2\pi$, and every $\Re t>0$,
+\begin{equation}
+ K(t,w)=\frac{C(w)}t+\frac{g(w)}2+
+       \int_0^\infty\e^{-s/t}\widehat R_w(s)\dd s.
+ \label{eq:frozenlap}
+\end{equation}
+The integral is absolutely convergent. In particular \eqref{eq:beta} is an asymptotic expansion along the positive $t$-axis.
+\end{theorem}
+\begin{proof}
+On the positive $s$-axis the cosine representation \eqref{eq:cosfrozen} is absolutely and uniformly bounded, because
+\[
+ \sum_{m,k\ge1}\frac{m|c_{2m}|\,|w|^{2m}}{k^2}<\infty.
+\]
+For $\Re t>0$, also $\Re(1/t)>0$, so Fubini is applicable and
+\[
+ \int_0^\infty\e^{-s/t}\cos\frac{ms}{\pi k}\dd s
+ =\frac{t}{1+(mt/(\pi k))^2}.
+\]
+The resulting sum is
+$\sum_m c_{2m}w^{2m}\sum_k mt/(\pi^2k^2+m^2t^2)$.
+Identity~\eqref{eq:coth} proves \eqref{eq:frozenlap}. To recover the finite-order asymptotic expansion, Taylor-expand the Borel minor on a small interval at zero and bound the tail of the Laplace integral by an exponentially small term. Integrating each Taylor monomial gives precisely the factorial normalization in \eqref{eq:beta}.
+\end{proof}
+
+The pole directions in \eqref{eq:poles} approach the positive real direction: take $k=\ell=1$ and $r\to+\infty$. Thus there is no pole-free open angular Borel sector about that ray, despite the exact ray integral. This fact must not be obscured by the nonzero-width horizontal strip of analyticity around the real axis.
+
+For two finite contour deformations whose difference is a positively oriented closed contour enclosing only finitely many poles, the residue theorem gives the local jump
+\begin{equation}
+ 2\pi\ii\sum_p\e^{-p/t}\Res_{s=p}\widehat R_w(s).
+ \label{eq:localStokes}
+\end{equation}
+The orientation convention determines the sign. We do not assert convergence of an unrestricted infinite Stokes sum; that requires a separate choice of contours and summability estimates.
+
+\section{An explicit entire endpoint Borel minor}
+\label{sec:endpointborel}
+
+\subsection{Repeated integration, rather than a formal substitution in the Borel plane}
+Define, for $r\ge1$ and entire $f$,
+\begin{equation}
+ I^rf(s)=\frac1{(r-1)!}\int_0^s(s-u)^{r-1}f(u)\dd u.
+ \label{eq:I}
+\end{equation}
+The integral is along a straight segment; analyticity makes it path-independent in the usual iterated-primitive sense. With our Borel convention,
+\begin{equation}
+ \Borel(t^rf)=I^r\Borel(f)
+ \label{eq:Bmult}
+\end{equation}
+for formal series $f$ of zero constant coefficient. This elementary identity follows by integrating each monomial $r$ times. One cannot instead put $w=zs$ in the frozen Borel formula: scaling the original amplitude by $t$ acts by repeated integration in the Borel plane.
+
+Write the endpoint decomposition
+\begin{equation}
+ F_z(t)=P_z(t)+Q_z(t)+R_z(t),\qquad
+ P_z(t)=\frac{C(zt)}t,\quad Q_z(t)=\frac{g(zt)}2,
+ \label{eq:enddecomp}
+\end{equation}
+where $R_z(t)=R_{zt}(t)$ where that notation is defined. The functions $P_z,Q_z$ have convergent power series near zero. Their Borel minors are entire and given by
+\begin{align}
+ \widehat P_z(s)&=\sum_{m\ge1}\frac{c_{2m}z^{2m}}{2m}
+                    \frac{s^{2m-2}}{(2m-2)!},\label{eq:Pminor}\\
+ \widehat Q_z(s)&=\frac12\sum_{m\ge1}c_{2m}z^{2m}
+                    \frac{s^{2m-1}}{(2m-1)!}.
+ \label{eq:Qminor}
+\end{align}
+
+\begin{theorem}[Entire convolution representation]
+\label{thm:entire}
+For fixed real $z$, the endpoint Borel minor is
+\begin{equation}
+ \widehat F_z=\widehat P_z+\widehat Q_z+\widehat R_z,
+ \label{eq:entiredecomp}
+\end{equation}
+where
+\begin{equation}
+ \widehat R_z(s)=\frac1{\pi^2}\sum_{m,k\ge1}
+ \frac{m c_{2m}z^{2m}}{k^2}
+ I^{2m}\!\left[\cos\left(\frac{m\,\cdot}{\pi k}\right)\right](s).
+ \label{eq:convolution}
+\end{equation}
+The double series converges normally on every compact subset of $\C$.
+\end{theorem}
+\begin{proof}
+The coefficientwise identity follows from \eqref{eq:cosfrozen} and \eqref{eq:Bmult}; at a fixed degree only finitely many $m$ contribute. To establish the entire analytic identity, put $\alpha=|z|/(2\pi)$. On a straight segment from zero to $s$,
+\begin{equation}
+ \left|I^{2m}\!\left[\cos\left(\frac{m\,\cdot}{\pi k}\right)\right](s)\right|
+ \le\frac{|s|^{2m}}{(2m)!}
+             \exp\!\left(\frac{m|\Im s|}{\pi k}\right).
+ \label{eq:Ibound}
+\end{equation}
+Using \eqref{eq:c}, the absolute sum in \eqref{eq:convolution} is at most
+\begin{equation}
+ \frac{\zeta(2)^2}{\pi^2}
+ \left\{\cosh\!\left(\alpha|s|\e^{|\Im s|/(2\pi)}\right)-1\right\}.
+ \label{eq:globalBbound}
+\end{equation}
+This is locally bounded and comes from a normally convergent majorant. The two series \eqref{eq:Pminor}--\eqref{eq:Qminor} are entire by their factorial denominators. Their Taylor coefficients are those of the formal endpoint series, so the sum is exactly its Borel minor.
+\end{proof}
+
+For later sign calculations, the same correction can be written
+\begin{align}
+ \widehat R_z(s)=-\frac1{\pi^2}\sum_{m,k\ge1}
+  \frac{\zeta(2m)}{k^2}\left(\frac{kz}{2m}\right)^{2m}
+  \left\{\cos\frac{ms}{\pi k}
+       -\sum_{j=0}^{m-1}\frac{(-1)^j(ms/(\pi k))^{2j}}{(2j)!}\right\}.
+ \label{eq:cosremainder}
+\end{align}
+Indeed, for $\omega\ne0$,
+\begin{equation}
+ I^{2m}[\cos(\omega\,\cdot)](s)
+ =(-1)^m\omega^{-2m}
+       \left\{\cos(\omega s)-\sum_{j=0}^{m-1}
+                 \frac{(-1)^j(\omega s)^{2j}}{(2j)!}\right\}.
+ \label{eq:Icos}
+\end{equation}
+Both sides have the same $2m$th derivative and zero initial derivatives through order $2m-1$. In \eqref{eq:cosremainder} the expression in braces must remain intact. Splitting it into separate cosine and polynomial double sums destroys convergence in $k$.
+
+\subsection{Exponential growth on one ray and exact recovery}
+\begin{theorem}[Endpoint positive-ray Laplace identity]
+\label{thm:endpointlap}
+For $z\in\R\setminus\{0\}$ put $\alpha=|z|/(2\pi)$. There is a constant $C_z$ such that
+\begin{equation}
+ |\widehat F_z(s)|\le C_z\e^{\alpha s}\qquad(s\ge0).
+ \label{eq:raybound}
+\end{equation}
+For every real $0<t<1/\alpha$,
+\begin{equation}
+ F_z(t)=\int_0^\infty\e^{-s/t}\widehat F_z(s)\dd s,
+ \label{eq:endpointlap}
+\end{equation}
+and the integral is absolutely convergent.
+\end{theorem}
+\begin{proof}
+For real nonnegative $s$, \eqref{eq:Ibound} has no exponential factor. Therefore
+\[
+ |\widehat R_z(s)|\le\frac{\zeta(2)^2}{\pi^2}
+                         (\cosh(\alpha s)-1).
+\]
+The remaining two parts satisfy
+\begin{align*}
+ |\widehat P_z(s)|&\le\frac{\zeta(2)\alpha^2}{2}\cosh(\alpha s),\\
+ |\widehat Q_z(s)|&\le\frac{\zeta(2)\alpha}{2}\sinh(\alpha s).
+\end{align*}
+Their sum proves \eqref{eq:raybound}.
+
+Repeated integration and Fubini give
+\begin{equation}
+ \int_0^\infty\e^{-s/t}I^{2m}[\cos(\omega\,\cdot)](s)\dd s
+ =\frac{t^{2m+1}}{1+\omega^2t^2}.
+ \label{eq:ILap}
+\end{equation}
+For example, interchange the $s$ and $u$ integrations in \eqref{eq:I}; the inner gamma integral contributes $t^{2m}$. The absolute bounds above justify termwise integration of all $m,k$ terms when $\alpha t<1$. The correction integral becomes
+\[
+ \sum_{m\ge1}c_{2m}z^{2m}t^{2m}
+       \sum_{k\ge1}\frac{mt}{\pi^2k^2+m^2t^2}.
+\]
+The integrals of \eqref{eq:Pminor} and \eqref{eq:Qminor} give $C(zt)/t$ and $g(zt)/2$. Now \eqref{eq:coth} reconstructs \eqref{eq:Fseries} exactly.
+\end{proof}
+
+\begin{remark}[A strip is not an angular sector]
+The bound \eqref{eq:globalBbound} implies an exponential bound in $|s|$ on every fixed horizontal strip $|\Im s|\le h$, with a rate depending on $h$. It does not imply an exponential bound on $|\arg s|<\varepsilon$: there $|\Im s|$ can grow linearly with $|s|$. The distinction is central to the obstruction proved in Section~\ref{sec:sector}.
+\end{remark}
+
+\section{Double-exponential growth: a second discrete saddle}
+\label{sec:imaginary}
+
+\subsection{A positive representation on the imaginary axis}
+Substitute $s=\ii y$, $y>0$, in \eqref{eq:cosremainder}. Every expression in braces becomes a positive tail of $\cosh$. Expanding that tail and summing over $k$ gives
+\begin{equation}
+ -\widehat R_z(\ii y)=\frac1{\pi^2}\sum_{m\ge1}\zeta(2m)
+       \left(\frac{a}{m}\right)^{2m}
+       \sum_{N\ge m}\zeta\bigl(2(N+1-m)\bigr)
+              \frac{x_m^{2N}}{(2N)!},
+ \label{eq:positiveB}
+\end{equation}
+where $a=|z|/2$ and $x_m=my/\pi$. All terms are nonnegative, so Tonelli's theorem justifies the rearrangement. Entire convergence from Theorem~\ref{thm:entire} shows the resulting sum is finite at every fixed $y$.
+
+\begin{lemma}[Uniform replacement of the weighted tail]
+\label{lem:poisson}
+Let $x=my/\pi$ with $m\ge1$. As $y\to\infty$,
+\begin{equation}
+ \sum_{N\ge m}\zeta\bigl(2(N+1-m)\bigr)\frac{x^{2N}}{(2N)!}
+ =\frac12\e^x\bigl(1+O(\e^{-cy})\bigr)
+ \label{eq:weightedtail}
+\end{equation}
+for some $c>0$, uniformly in $m$.
+\end{lemma}
+\begin{proof}
+Take $y\ge8\pi$, so $x\ge8m$. For a Poisson random variable $P$ of mean $x$, exponential Markov with parameter $\log2$ gives
+\begin{equation}
+ \Pr(P\le x/2)\le\exp\!\left(-\frac{1-\log2}{2}x\right).
+ \label{eq:poissonbound}
+\end{equation}
+Equivalently, this bounds the corresponding partial sum of $\e^x$; no limiting probability argument is involved.
+
+The missing terms of $\cosh x$ with $N<m$ are included among the terms with $2N<x/2$, so their sum is $O(\e^x\e^{-c_0x})$. For the excess zeta factor, split at $N=x/4$. Below that point the same Poisson bound applies, and the zeta factor is at most $\zeta(2)$. Above it,
+\[
+ N+1-m\ge x/8,
+\]
+so \eqref{eq:zetabounds} gives an exponentially small difference from one. Thus the weighted tail is $\cosh x+O(\e^x\e^{-c_1x})$. Since $x\ge y/\pi$, and $\cosh x=(\e^x/2)(1+\e^{-2x})$, the estimate is uniform in $m$ and proves \eqref{eq:weightedtail}.
+\end{proof}
+
+\subsection{The exponential saddle sum}
+\begin{lemma}[Second saddle]
+\label{lem:Vsaddle}
+For $b\to+\infty$ and $M=b/e$,
+\begin{equation}
+ V(b):=\sum_{m\ge1}(b/m)^{2m}
+ \sim\sqrt{\pi M}\,\e^{2M}.
+ \label{eq:V}
+\end{equation}
+Also $\sum_{m\ge1}\zeta(2m)(b/m)^{2m}\sim V(b)$.
+\end{lemma}
+\begin{proof}
+Let $f(x)=2x\log(b/x)$. Its unique maximum is at $x=M$, where
+\[
+ f(M)=2M,\quad f''(M)=-2/M,\quad f'''(x)=2/x^2.
+\]
+The Gaussian width is $\sqrt{M/2}$ and tends to infinity. The Taylor and lattice argument of Lemma~\ref{lem:saddle}, using a window of $M^{1/12}$ Gaussian standard deviations, gives the central equivalent $\sqrt{\pi M}\e^{2M}$.
+
+Here the right tail is infinite, so one additional estimate is needed. On $x\ge2M$, the derivative satisfies $f'(x)\le-2\log2$. Consecutive terms in that tail are bounded by a fixed geometric ratio, starting with a term exponentially smaller than $\e^{2M}$. The left tail has at most $M/2$ terms and is also exponentially smaller. On $[M/2,2M]$, concavity gives the same Gaussian-tail bounds as before. This proves \eqref{eq:V}.
+
+Finally, \eqref{eq:zetabounds} gives
+\[
+ 0\le\sum_{m\ge1}(\zeta(2m)-1)(b/m)^{2m}\le3V(b/2).
+\]
+The first part of the lemma shows $V(b/2)/V(b)\to0$, proving the zeta-weighted version.
+\end{proof}
+
+\begin{theorem}[Full imaginary-axis equivalent]
+\label{thm:imaginary}
+For fixed $z\in\R\setminus\{0\}$ and $M_y$ from \eqref{eq:introM},
+\begin{equation}
+ \widehat F_z(\ii y)\sim
+ -\frac{\sqrt{\pi M_y}}{2\pi^2}\e^{2M_y}
+ \qquad(y\to+\infty).
+ \label{eq:imagfull}
+\end{equation}
+Consequently,
+\begin{equation}
+ \lim_{y\to\infty}\e^{-y/(2\pi)}\log|\widehat F_z(\ii y)|
+ =\frac{|z|}{e}.
+ \label{eq:imagtype}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Insert Lemma~\ref{lem:poisson} into the positive sum \eqref{eq:positiveB}. Its uniform relative error remains a relative error after summation. Thus, with
+\[
+ b=a\e^{y/(2\pi)},\qquad M_y=b/e,
+\]
+we obtain
+\[
+ -\widehat R_z(\ii y)
+ =\frac{1+o(1)}{2\pi^2}\sum_{m\ge1}\zeta(2m)(b/m)^{2m}
+ \sim\frac{\sqrt{\pi M_y}}{2\pi^2}\e^{2M_y}.
+\]
+The remaining parts $\widehat P_z(\ii y)$ and $\widehat Q_z(\ii y)$ are bounded in magnitude by constants times $\e^{\alpha y}$, where $\alpha=|z|/(2\pi)$. They are negligible compared with $\e^{2M_y}$. This proves the complex equivalent \eqref{eq:imagfull}. Taking logarithms, the prefactor contributes $O(\log M_y)=O(y)$, while $2M_y=(|z|/e)\e^{y/(2\pi)}$. Division by $\e^{y/(2\pi)}$ gives \eqref{eq:imagtype}.
+\end{proof}
+
+\begin{corollary}[Exact iterated growth rate]
+\label{cor:maxgrowth}
+Let $\mathcal M_z(r)=\max_{|s|=r}|\widehat F_z(s)|$. Then
+\begin{equation}
+ \lim_{r\to\infty}\frac{\log\log\mathcal M_z(r)}r=\frac1{2\pi}.
+ \label{eq:entiregrowth}
+\end{equation}
+In particular $\widehat F_z$ is an entire function of infinite ordinary order.
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:imaginary} gives the lower bound by taking $s=\ii r$. The global estimate \eqref{eq:globalBbound}, together with the exponential bounds for $\widehat P_z,\widehat Q_z$, gives
+\[
+ \log\mathcal M_z(r)\le O(1)+\alpha r\e^{r/(2\pi)}
+\]
+for large $r$. Take another logarithm and divide by $r$ to get the matching upper limit. The ordinary entire-function order uses $\log r$ rather than $r$ in the denominator, and is therefore infinite.
+\end{proof}
+
+\section{A natural boundary in the original dilation variable}
+\label{sec:boundary}
+
+An entire Borel transform removes finite Borel singularities. It does not remove the dense singular behavior of $F_z$ on the boundary of $\Omega_z$.
+
+\begin{theorem}[Nonzero rational-boundary cusp]
+\label{thm:cusp}
+Fix real $z\ne0$. Let $\tau=2\pi p/d\ne0$, where $p\in\mathbb Z$, $d\ge1$, and $p,d$ are relatively prime, and suppose $|z\tau|<2\pi$. Put
+\begin{equation}
+ h=d/\gcd(d,2).
+ \label{eq:h}
+\end{equation}
+Then, as real $\varepsilon\downarrow0$,
+\begin{align}
+ \varepsilon F_z(\varepsilon+\ii\tau)&\longrightarrow D_\tau(z),\label{eq:radiallimit}\\
+ D_\tau(z)&=\sum_{r\ge1}\frac{c_{2hr}(\ii z\tau)^{2hr}}{2hr}
+ =-\sum_{r\ge1}\frac{\zeta(2hr)}{2h^2r^2}
+                   \left(\frac{z\tau}{2\pi}\right)^{2hr}<0.
+ \label{eq:D}
+\end{align}
+\end{theorem}
+\begin{proof}
+The denominator in the $m$th term of \eqref{eq:Fseries} resonates precisely when $\e^{-2m\ii\tau}=1$. The order of $\e^{-2\ii\tau}=\e^{-4\pi\ii p/d}$ is $h$, so this happens exactly when $h\mid m$. For a fixed $m$,
+\[
+ \frac{\varepsilon}{1-\e^{-2m(\varepsilon+\ii\tau)}}
+ \longrightarrow
+ \begin{cases}1/(2m),&h\mid m,\\0,&h\nmid m.\end{cases}
+\]
+To pass the limit through the infinite sum, use
+\[
+ \left|\frac{\varepsilon}{1-\e^{-2m(\varepsilon+\ii\tau)}}\right|
+ \le\frac{\varepsilon}{1-\e^{-2m\varepsilon}}
+ \le\varepsilon+\frac1{2m}.
+\]
+For all small $\varepsilon$, $|z(\varepsilon+\ii\tau)|$ lies in a fixed closed disk of radius less than $2\pi$. Bound \eqref{eq:zetabounds} now supplies a summable majorant. Dominated convergence proves the first expression for $D_\tau$.
+
+For real $z\tau\ne0$, multiplication of $c_{2m}$ by $\ii^{2m}$ changes every term to a negative real number. The second expression follows from \eqref{eq:c}; it converges absolutely and is strictly negative. Thus the radial leading coefficient cannot cancel.
+\end{proof}
+
+\begin{theorem}[Meromorphic natural-boundary interval]
+\label{thm:natural}
+The function $F_z$ on $\Omega_z$ has no meromorphic continuation through any point of the open interval \eqref{eq:barrierinterval}.
+\end{theorem}
+\begin{proof}
+Suppose a meromorphic extension existed in a disk crossing that interval. After shrinking the disk, its intersection with $\Omega_z$ is nonempty and the two functions agree there. The nonzero rational multiples $\tau$ of $2\pi$ are dense on the imaginary interval. At each such point lying in the disk, Theorem~\ref{thm:cusp} shows that the function is unbounded as it is approached horizontally from the right. The meromorphic extension must therefore have a pole at that point. This would give a dense set of poles inside its domain, contrary to local finiteness of the poles of a meromorphic function. The same argument applies to a disk centered at zero, even though the radial limit at zero itself is finite.
+\end{proof}
+
+\begin{remark}[A radial pole law is not an isolated pole]
+Equation~\eqref{eq:radiallimit} is a one-sided asymptotic law with a nonzero coefficient. It does not assert that $\ii\tau$ is an isolated meromorphic pole of $F_z$. Theorem~\ref{thm:natural} rules out the meromorphic neighborhood that such terminology would require. Calling these points ``simple poles'' of $F_z$ would be incorrect; they are boundary points with radial pole-like divergence.
+\end{remark}
+
+\section{Exact ray summation without angular exponential summability}
+\label{sec:sector}
+
+The positive-ray identity in Theorem~\ref{thm:endpointlap} is a genuine summation formula. The failure below concerns a stronger, explicitly stated property, so it does not depend on differing conventions for the word ``summable.''
+
+\begin{definition}[Open-sector exponential Borel bound]
+An entire Borel minor has an open-sector exponential bound about the positive direction if there exist $\eta,A,C,R>0$ such that
+\begin{equation}
+ |\widehat f(s)|\le C\e^{A|s|}
+ \quad\text{for }|s|\ge R,\quad |\arg s|<\eta.
+ \label{eq:sectorbound}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Failure of every positive-direction angular bound]
+\label{thm:nosector}
+For every fixed real $z\ne0$, the entire minor $\widehat F_z$ has no bound of the form \eqref{eq:sectorbound}.
+\end{theorem}
+\begin{proof}
+Assume such a bound exists and replace $\eta$ by a smaller number less than $\pi/4$. The bound extends to bounded $s$ after changing $C$, since the minor is entire. For $|\theta|<\eta$, consider the rotated Laplace integral
+\begin{equation}
+ G_\theta(t)=\int_0^{\e^{\ii\theta}\infty}
+                     \e^{-s/t}\widehat F_z(s)\dd s.
+ \label{eq:rotLap}
+\end{equation}
+It converges whenever $\Re(\e^{\ii\theta}/t)>A$. On overlaps where both ray integrals have uniform exponential decay, Cauchy's theorem applied to a large truncated wedge identifies them: the large circular arc tends to zero, and there are no singularities inside. Thus the ray integrals glue to a holomorphic function for sufficiently small $t$ in any closed subsector of
+\[
+ |\arg t|<\frac\pi2+\eta.
+\]
+This is the elementary Borel--Laplace sector construction; its general framework is discussed in \cite{sauzin}.
+
+On the positive real $t$-axis the resulting function equals $F_z$ by Theorem~\ref{thm:endpointlap}. By the identity theorem it agrees on the overlap with $\Omega_z$. Choose $0<\theta<\eta$. Then $\Re(\e^{\ii\theta}/(\ii\tau))=\sin\theta/\tau>A$ for all sufficiently small positive $\tau$. The integral $G_\theta$ is therefore holomorphic in a neighborhood of such an imaginary point. Taking a small nonzero rational multiple of $2\pi$ gives an analytic continuation prohibited by Theorem~\ref{thm:natural}. This contradiction proves the assertion.
+\end{proof}
+
+This example has an entire Borel minor with an exact Laplace integral on the positive ray, but no uniform exponential bound on any open angular sector containing that ray. The obstruction has moved from finite Borel singularities to growth at Borel infinity. The explicit double-exponential law on the imaginary axis quantifies one part of that growth; the natural-boundary argument proves the stronger statement that arbitrarily narrow positive-direction angular sectors also fail the exponential-bound condition.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}YY@{}}
+\toprule
+Feature & Frozen amplitude $K(t,w)$ & Endpoint amplitude $F_z(t)=K(t,zt)$\\
+\midrule
+Formal coefficient scale & Nonzero factorial type, determined by \eqref{eq:radius}. & Factorial divided by logarithmic powers; zero ordinary factorial type.\\
+Borel continuation & Meromorphic; explicit simple poles. & Entire; no finite singularities.\\
+Positive ray & Exact absolutely convergent Laplace formula. & Exact Laplace formula for $0<t<2\pi/|z|$.\\
+Open angular sector about that ray & Obstructed by poles with arguments tending to zero. & Obstructed by growth, despite entire continuation.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Computational checks and reproducibility}
+\label{sec:checks}
+
+\subsection{Exact identities and independent numerical routes}
+The supplied script \texttt{verify\_results.py} uses two independent exact coefficient constructions. The first starts with the elementary power series of $H(w)$, computes its formal logarithm by a rational recurrence, and inverts $(1-\e^{-u})/u$ by another rational recurrence. The second uses the Bernoulli formula \eqref{eq:oddBern}. It verifies equality as polynomials in $z$ through degree $60$ in $t$: there are $60$ polynomial identities and $495$ nonzero monomial coefficients in this comparison.
+
+A further $90$ numerical checks compare the zeta expression \eqref{eq:odd} with exact rational specializations at $z=1,2,3$ and odd degrees through $59$. At $75$ decimal digits the maximum scaled discrepancy in the recorded run was below $1.7\cdot10^{-75}$. Six independent numerical quadratures check \eqref{eq:ILap} for $m=1,2,3$, $k=1,2$, and $t=1/5$.
+
+For the imaginary Borel values, the script evaluates the positive representation \eqref{eq:positiveB}, retaining each hyperbolic-cosine tail as one expression. It compares two outer cutoffs and, at $y=20,25,30$, also compares against the entire Borel power series with $600$ odd and even terms. These are independent arrangements of the same derived coefficients, not formal proof certificates or interval enclosures. The stored receipt specifies their errors and truncations.
+
+\subsection{The Lambert--\texorpdfstring{$W$}{W} prefactor in practice}
+For $z=1$, the following ratios compare the exact finite sum for $b_{2n-1}$ with the leading equivalent $L_n$ from Theorem~\ref{thm:coeffasym}.
+\begin{center}
+\begin{tabular}{@{}rr@{}}
+\toprule
+$n$ & $(-1)^n b_{2n-1}(1)/L_n(1)$\\
+\midrule
+10 & 1.01872719973339\\
+25 & 1.00050884373904\\
+50 & 1.00021958354435\\
+100 & 1.00013171190660\\
+250 & 1.00006293406923\\
+500 & 1.00003487735006\\
+1000 & 1.00001896656635\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite examples support the prefactor, not just a logarithmic growth law. The theorem, however, rests on the discrete-saddle proof, not on extrapolation from this table.
+
+\subsection{The double-exponential Borel equivalent}
+Let $T_y=-\sqrt{\pi M_y}\e^{2M_y}/(2\pi^2)$, the negative real equivalent in Theorem~\ref{thm:imaginary}. For $z=1$:
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$y$ & $\Re(\widehat F_1(\ii y)/T_y)$ & $|\Im(\widehat F_1(\ii y)/T_y)|$
+& $\e^{-y/(2\pi)}\log|\widehat F_1(\ii y)|$\\
+\midrule
+20 & 1.008002831456 & $5.4510\cdot10^{-4}$ & 0.299172983098\\
+25 & 0.997864959185 & $1.3010\cdot10^{-8}$ & 0.344130984814\\
+30 & 0.999033094576 & $6.3606\cdot10^{-19}$ & 0.360531852654\\
+35 & 0.999566429845 & $7.4820\cdot10^{-42}$ & 0.366081511225\\
+40 & 0.999804900552 & $9.1714\cdot10^{-93}$ & 0.367752410215\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last column tends to $1/e=0.367879441171\ldots$. Its convergence is slower than that of the full equivalent because the logarithm still includes the prefactor. The table is generated with positive real sums for the dominant part, avoiding the severe cancellation that would occur in a naive oscillatory evaluation.
+
+The receipt also records horizontal radial tests of Theorem~\ref{thm:cusp} at $\tau=\pi,2\pi/3,\pi/2$ and $\varepsilon=10^{-2},10^{-3},10^{-4}$. Only absolute errors are used there, since the high-order resonant coefficients can be very small.
+
+\subsection{What the tests certify}
+The exact rational comparisons establish only the stated finite identities. High precision is not the same as a rigorous enclosure, and increasing a cutoff is not a universal tail proof. The asymptotic equivalents, all-degree Gevrey conclusions, full pole set, natural boundary, and failure of angular exponential bounds are justified by the arguments in Sections~\ref{sec:kernel}--\ref{sec:sector}. No Lean or Rocq compiler was run for this article.
+
+\section{Further research questions}
+\label{sec:questions}
+
+The present results leave several concrete extensions. The questions distinguish a missing proof in this article from a claim that no proof exists anywhere in the literature.
+
+\begin{question}[Fixed argument in the original normalization]
+Determine a full coefficient equivalent for
+\[
+ \log A(\e^{-t},z)-z/2
+\]
+with the original transform argument $z$ fixed. Equation~\eqref{eq:transformconversion} suggests comparing it with $F_z$ by analytic amplitude substitution, but lower bounds and leading prefactors require a cancellation analysis. Does the same refined type $1/(2\pi)$ persist for every nonzero real $z$, and what replaces the Lambert--$W$ prefactor?
+\end{question}
+
+\begin{question}[Complex transform arguments]
+Classify the coefficient asymptotics and Borel growth for $z\in\C\setminus\{0\}$. The cancellation-free sum \eqref{eq:S} and negative cusp coefficient \eqref{eq:D} use real $z$. For complex $z$, competing saddles and phase cancellations may change the sharp equivalents. An extension should identify exceptional arguments rather than appeal to a generic noncancellation assumption.
+\end{question}
+
+\begin{question}[Optimal truncation and the actual remainder]
+Find a uniform sharp bound, and ideally a leading equivalent, for the remainder after truncation near the least odd term. A formal continuous optimization of \eqref{eq:Ln} suggests the scale
+\[
+ \exp\!\left[-\frac{2\pi}{t}\log\frac{2\pi}{|z|t}\right].
+\]
+This is a proposed scale, not a proved remainder theorem. The exact Laplace representation offers a route to separating an actual error estimate from a statement about the sizes of individual formal terms.
+\end{question}
+
+\begin{question}[Acceleration and growth at infinity]
+Construct a summation procedure adapted to the entire minor's double-exponential growth. Which accelerated transform permits useful angular continuation, and how does its singularity structure encode the dense imaginary boundary of $F_z$? Any such procedure should recover the established positive-ray integral and state its uniqueness class explicitly.
+\end{question}
+
+\begin{question}[Uniformity in rational boundary order]
+Obtain estimates in Theorem~\ref{thm:cusp} that remain informative when the denominator $d$ of $\tau/(2\pi)$ grows as $\varepsilon\downarrow0$. The first resonant coefficient may then be extremely small. This joint limit is not covered by dominated convergence for a fixed rational point.
+\end{question}
+
+\begin{question}[Global frozen-amplitude Stokes sums]
+Specify contours and prove convergence of the infinite residue sums suggested by \eqref{eq:localStokes}. Pole directions accumulate at the positive ray while their locations go to infinity. A global formula must account for both effects; the finite contour identity alone does not do so.
+\end{question}
+
+\begin{question}[Other digit kernels]
+Replace the uniform digit by a centered bounded law with a logarithm of its transform having a controlled zero set. Identify hypotheses that force a logarithmic Gevrey scale after the amplitude substitution $w=zt$. In particular, determine which parts of the constants and saddle equations depend only on the nearest transform zeros and which depend on the full coefficient arithmetic.
+\end{question}
+
+\begin{question}[Minimal rational moment denominators]
+The companion manuscript's conjecture remains separate: for its rational Taylor coefficients $a_n(q)$, is the reduced monic denominator always
+\[
+ \prod_{d=2}^{n}\Phi_d(q)^{\lfloor n/\lcm(2,d)\rfloor}?
+\]
+The present endpoint coefficients are not those rational functions and do not establish the residual cyclotomic nonvanishing needed for this conjecture. An eventual sign law for $b_{2n-1}(z)$ must not be substituted for that missing argument.
+\end{question}
+
+\begin{question}[Formal and numerically certified versions]
+Formalize the exact coefficient identity first, then the positivity lemma for rational-boundary cusps. Separately, develop interval-certified evaluation of the positive Borel sum and an explicit error-controlled ray integral. The discrete-saddle equivalents and sector-gluing argument are larger formalization targets, with different analytic prerequisites.
+\end{question}
+
+\section{Conclusion}
+The dilation-normalized geometric-uniform law provides a concrete setting in which a sharp formal growth classification, entire Borel continuation, and a natural boundary can all be proved simultaneously. The coefficient saddle occurs at $m\asymp n/\log n$ and yields a Lambert--$W$ equivalent with its Gaussian prefactor. The imaginary Borel saddle instead occurs at $m\asymp\exp(y/(2\pi))$ and yields a double-exponential equivalent. These two moving scales explain why factorial normalization makes the Borel minor entire without making it exponentially bounded in angular neighborhoods.
+
+The result is not an obstruction to every useful summation method: the positive-ray Laplace formula is exact. It is an obstruction to inferring sectorial summability from entire Borel continuation alone. The distinction is established inside the same explicit $q$-Fabius-related family, with all constants, branch choices, and normalization changes stated.
+
+\appendix
+\Needspace{9\baselineskip}
+\section{Repository audit and proof status}
+\label{app:audit}
+The inspection pin is
+\begin{center}\small\texttt{\pin}.\end{center}
+The current source file read at that pin was
+\begin{quote}
+\sourcepath{Analysis/FabiusFunction/Lean/FabiusFunction/GeometricUniformDictionary.lean}.
+\end{quote}
+Its blob identifier was \texttt{0cd2da0560566005b456aa1968ebe232936805dd}. It states the normalized geometric law, its convolution self-similarity, and the measure/characteristic/moment/cumulant dictionary. The mathematical dependence of this article is only on that normalization; Proposition~\ref{prop:K} independently proves the product and cumulant identities needed here.
+
+The comparison also used the $22$-page companion manuscript \texttt{q\_fabius\_boundary.pdf}, specifically its normalization, endpoint finite-order expansion, and further questions. That manuscript was retrieved from the user's research Library, not assumed to be present at the current repository pin. Its Section~11.2 asks about optimal coefficient growth and summation, while Section~11.1 poses the distinct denominator conjecture.
+
+The README for the earlier \emph{Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic $q$-Gevrey Regularity at the Fabius--Rvachev Frontier} was also inspected. It identifies that report as Part~XI of a consolidated volume \cite{edgeworth}. The full consolidated volume was not obtained through the source interface and is not represented as having been exhaustively audited. In particular, a missing theorem in the interface is not evidence of historical novelty.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.38\textwidth}Y@{}}
+\toprule
+Claim group & Status in this package\\
+\midrule
+Bernoulli, zeta, and $\coth$ identities & Established background, cited and specialized.\\
+All-degree coefficient formulas & Conventional proof; independent exact checks through degree $60$.\\
+Lambert--$W$ and Borel equivalents & Conventional discrete-saddle proofs; numerical examples included.\\
+Meromorphic frozen Borel divisor & Conventional normal-convergence and residue proof.\\
+Endpoint natural boundary and angular obstruction & Conventional dominated-convergence, density, and contour arguments.\\
+Lean/Rocq certification & Not claimed; no compiler run.\\
+Worldwide publication priority & Not independently established.\\
+Minimal moment denominator conjecture & Not resolved here.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Package contents and rebuilding}
+The source \texttt{q\_fabius\_borel.tex} is self-contained: the bibliography and numerical tables are embedded, and no external figures or font files are required. The archive also contains its compiled PDF, the verification script, a JSON receipt, a text transcript, a claim ledger, a source note, and a README.
+
+Compile with a standard TeX Live installation containing the packages in the preamble:
+\begin{quote}\small\ttfamily
+pdflatex -interaction=nonstopmode -halt-on-error q\_fabius\_borel.tex\par
+pdflatex -interaction=nonstopmode -halt-on-error q\_fabius\_borel.tex
+\end{quote}
+Run the finite checks with
+\begin{quote}\small\ttfamily
+python verify\_results.py
+\end{quote}
+The numerical dependencies are \texttt{mpmath} and \texttt{sympy}; the exact recurrences otherwise use Python's standard \texttt{Fraction} arithmetic. The recorded run used $75$ decimal digits. The receipt records the actual Python and package versions. No network access is required for the checks once the dependencies are installed.
+
+\begin{thebibliography}{9}
+\bibitem{repo}
+Vladimir Reshetnikov,
+\emph{ProveIt: geometric-uniform dictionary},
+\sourcepath{Analysis/FabiusFunction/Lean/FabiusFunction/GeometricUniformDictionary.lean},
+inspected at commit \texttt{\pin}, September 30, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/781594d886f8dc56069221e2b56bd1e94d9c6e5f/Analysis/FabiusFunction/Lean/FabiusFunction/GeometricUniformDictionary.lean}.
+
+\bibitem{boundary}
+ProveIt companion research manuscript,
+\emph{The Unit-Circle Barrier for the $q$-Fabius Transform: Natural boundaries, cyclotomic moment poles, and exterior meromorphic divisors},
+prepared for Vladimir Reshetnikov, September 30, 2026, 22 pp.
+Research Library file \texttt{q\_fabius\_boundary.pdf}; especially Sections 7, 8, and 11.
+
+\bibitem{arias}
+Juan Arias de Reyna,
+\emph{An infinitely differentiable function with compact support: Definition and properties},
+English translation of the 1982 article, 2017.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{dlmf}
+NIST, \emph{Digital Library of Mathematical Functions},
+Sections 4.36 (hyperbolic products and partial fractions), 24.2 (Bernoulli numbers), and 25.6 (integer zeta values), accessed September 30, 2026.
+\url{https://dlmf.nist.gov/4.36};
+\url{https://dlmf.nist.gov/24.2};
+\url{https://dlmf.nist.gov/25.6}.
+
+\bibitem{gz}
+Stavros Garoufalidis and Don Zagier,
+\emph{Asymptotics of Nahm sums at roots of unity},
+Ramanujan Journal \textbf{55} (2021), 219--238.
+\url{https://arxiv.org/abs/1812.07690}.
+
+\bibitem{gk}
+Stavros Garoufalidis and Rinat Kashaev,
+\emph{Resurgence of Faddeev's quantum dilogarithm},
+arXiv:2008.12465, version 2, 2020.
+\url{https://arxiv.org/abs/2008.12465}.
+
+\bibitem{sauzin}
+David Sauzin,
+\emph{Introduction to 1-summability and resurgence},
+arXiv:1405.0356, 2014.
+\url{https://arxiv.org/abs/1405.0356}.
+
+\bibitem{edgeworth}
+ProveIt research materials,
+\emph{Continuous-Parameter Edgeworth Theory, Large Deviations, and Quadratic $q$-Gevrey Regularity at the Fabius--Rvachev Frontier},
+original report dated August 30, 2026; absorbed into Part XI of
+\texttt{geometric\_q\_fabius\_frontiers.tex}.
+Preserved verification-package README inspected September 30, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/geometric_q_fabius_frontiers}.
+\end{thebibliography}
+\end{document}

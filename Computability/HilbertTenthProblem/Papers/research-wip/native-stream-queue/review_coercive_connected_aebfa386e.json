@@ -1,0 +1,128 @@
+{
+  "archives": [
+    {
+      "members": {
+        "Coercive_Green_Diophantine/README.md": "7dfc1478b9bdf78d46c2b2b763acdb90c4c4c420ecce1b571e290385ccdc562b",
+        "Coercive_Green_Diophantine/SOURCE_AUDIT.md": "679c001fe6905fa536696956693e59f364ab328147be73ced1ab3b8a6f3dee2a",
+        "Coercive_Green_Diophantine/article.pdf": "0f2f540cc8f753d30a64d8cac07fb79c6a8410bc2cebf324f8c6ec72c7c5250e",
+        "Coercive_Green_Diophantine/article.tex": "650c0676443ae54e8193640b1918c77a3ba33bdef1a44aa97fa0df87d951301a",
+        "Coercive_Green_Diophantine/code/green_machine.py": "af92eec80675dfa170169b8ca9b713c60aaf2b9f23c4e9888f2f1005244428ad",
+        "Coercive_Green_Diophantine/code/verify.py": "997cf213b4898e3f0d8d3e35b53743c52961f9cecff7bc4ab5c084b4f7a119af",
+        "Coercive_Green_Diophantine/examples/countdown.json": "bc58ed2201d3afd063391f91ec18e139d8a981e2e99fb6c9e4b80ac91bad40cf",
+        "Coercive_Green_Diophantine/examples/modular_false_positive.json": "f31b05a6ff40764f4a78dd90154ba5e5e347f2488ae7f3103fdc8cf0837b35e5",
+        "Coercive_Green_Diophantine/validation/results.json": "b8c2dc02914e11cded8220f9fb51ead94fdb15bcfa7b54ba97d626b93cb09ed5",
+        "Coercive_Green_Diophantine/validation/test_output.txt": "b8c2dc02914e11cded8220f9fb51ead94fdb15bcfa7b54ba97d626b93cb09ed5"
+      },
+      "name": "Coercive_Green_Diophantine",
+      "sha256": "8e2830036ad0a465f729d4729835b350ea288f758fd8bac8a3ac179ebe368d7a"
+    },
+    {
+      "members": {
+        "well_conditioned_diophantine/README.md": "707d5d10bf6b9c4343097b2bc0fa7287115daa487099d0a942824d4928fec5e9",
+        "well_conditioned_diophantine/SHA256SUMS": "dfb903b3d4f6ff5c283719175aecf850f8713c245932487572b2bc2f9232f8bb",
+        "well_conditioned_diophantine/article.pdf": "23d3a25765839ac03bf4d821c108ed86ddc10fccbbac4a71cf4f7e76aee73de8",
+        "well_conditioned_diophantine/article.tex": "fb50479ffea02eff6cf675945e82b1eb33d8131b10e0cf3d102fd18e6aa13e40",
+        "well_conditioned_diophantine/build.sh": "8d29dd6caf384505fac88a166b660b6cb632cdc9d575c0f16ad96933a32dc217",
+        "well_conditioned_diophantine/examples/countdown_T3_polynomial.json": "46c0a14e756e313a1d51feba63f0f1f48da79a254e956aa168fd820392cdcc38",
+        "well_conditioned_diophantine/examples/countdown_T3_witness.json": "4d5810d6edff440b03739eebba64da06b77ef7a3368138bfa76409ad573e57e7",
+        "well_conditioned_diophantine/examples/localization_bounds.json": "b0572c86af6a8059f55d89cd3aae40402b5fc2cae4753d3acae8b684ff921b6a",
+        "well_conditioned_diophantine/sources.md": "6f6d651ae28fb448612b6f5397edd3805db59119b769bc00b4ee471eb6c8e8c4",
+        "well_conditioned_diophantine/src/substrate.py": "3dd949eae682c7b57d2c3ee9f8e86dad5d40c156a33d6010568868bc1b9173e4",
+        "well_conditioned_diophantine/verification.json": "575e04f378436f6bbd7821c174014158332b94cf83dfe6dff58d900c25b66958",
+        "well_conditioned_diophantine/verify.py": "ad08c9c72920fd15422007f89757c62d7561e6d16367afe348aec9ff629cdf96"
+      },
+      "name": "Well_Conditioned_Diophantine_Computation",
+      "sha256": "9cd194e2d3b1cd7814ad465c1c4abae8966b6c7bb0b5a13d1955d17aba159258"
+    }
+  ],
+  "coercive": {
+    "author": {
+      "byte_identical_exports": [
+        "examples/countdown.json",
+        "examples/modular_false_positive.json"
+      ],
+      "checks": 110522,
+      "commands": [
+        [
+          "code/verify.py"
+        ],
+        [
+          "code/green_machine.py",
+          "--export-example",
+          "examples"
+        ]
+      ],
+      "normalized_fields": [
+        "python"
+      ]
+    },
+    "independent": {
+      "counts": {
+        "coordinate_mutations": 288,
+        "exact_exterior_leakage": 12,
+        "history_labels": 720,
+        "independent_linear_solves": 36,
+        "rational_enclosures": 144
+      }
+    }
+  },
+  "connected": {
+    "author": {
+      "byte_identical_exports": [
+        "examples/countdown_T3_polynomial.json",
+        "examples/countdown_T3_witness.json",
+        "examples/localization_bounds.json"
+      ],
+      "checks": 38524,
+      "commands": [
+        [
+          "verify.py"
+        ]
+      ],
+      "normalized_fields": []
+    },
+    "independent": {
+      "counts": {
+        "connected_vertices": 1400,
+        "full_dipole_certificates": 16,
+        "localization_lengths": 700,
+        "node_codes": 350,
+        "signed_full_polynomials": 128
+      }
+    },
+    "original_defects": {
+      "inexact_prime_alias_accepted": true,
+      "wrong_input_energy_after_export_mutation": 0,
+      "wrong_input_energy_before": 9409
+    },
+    "repair_checks": {
+      "counts": {
+        "constructor_snapshots": 1,
+        "rejected_calls": 70
+      },
+      "original_defect_replay": {
+        "inexact_prime_alias_accepted": false,
+        "wrong_input_energy_after_export_mutation": 9409,
+        "wrong_input_energy_before": 9409
+      }
+    },
+    "repaired_author": {
+      "byte_identical_exports": [
+        "examples/countdown_T3_polynomial.json",
+        "examples/countdown_T3_witness.json",
+        "examples/localization_bounds.json"
+      ],
+      "checks": 38524,
+      "commands": [
+        [
+          "verify.py"
+        ]
+      ],
+      "normalized_fields": []
+    }
+  },
+  "patch_sha256": "cdd6307d5659ae0c72e7715b72e22e8692b07362d0a0f008f89a9ac85372f2a9",
+  "patched_source_sha256": "7aec66923ff0137a57743842544909290b067bfb2bdd999541b40c6425d0d338",
+  "scope": "Full two articles and all substantive modules read; finite original/independent tests, explicit API repairs; no fixed-arity ordinary universal polynomial or new87 operation bound.",
+  "status": "PASS_COERCIVE_CONNECTED_REVIEW"
+}

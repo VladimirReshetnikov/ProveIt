@@ -1,0 +1,29 @@
+--- a/code/clock_certificates.py
++++ b/code/clock_certificates.py
+@@ -102,6 +102,17 @@
+     accepting: frozenset[int]
+ 
+     def __post_init__(self) -> None:
++        # Snapshot accepted iterable inputs before retaining a compiled machine.
++        rules = tuple(self.rules)
++        initial = tuple(self.initial)
++        accepting = tuple(self.accepting)
++        if any(type(rule) is not Rule for rule in rules):
++            raise TypeError("Rules must be validated Rule objects")
++        object.__setattr__(self, "rules", rules)
++        object.__setattr__(self, "initial", initial)
++        object.__setattr__(self, "accepting", frozenset(accepting))
++        if any(type(x) is not int or x < 0 for x in accepting):
++            raise ValueError("Accepting states must be natural numbers")
+         if len(self.initial) != 3 or any(type(x) is not int or x < 0 for x in self.initial):
+             raise ValueError("Initial configuration must be three natural numbers")
+         if any(type(x) is not int or x < 0 for x in self.accepting):
+@@ -132,7 +143,7 @@
+ def encode_stack(bits: Sequence[int]) -> int:
+     x = 1
+     for bit in bits:
+-        if bit not in (0, 1): raise ValueError("Nonbinary stack entry")
++        if type(bit) is not int or bit not in (0, 1): raise ValueError("Nonbinary stack entry")
+         x = 2*x + bit
+     return x-1
+ 

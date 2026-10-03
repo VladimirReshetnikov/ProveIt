@@ -1,0 +1,183 @@
+{
+  "schema": "integrated-amplitude-mathematical-review-v1",
+  "review_date_utc": "2026-10-02",
+  "status": "pass",
+  "review_type": "mathematical_review_with_exact_checks_not_formal_verification",
+  "title": "Limiting amplitudes for corner polyhedra and Schnyder labelings",
+  "source_files": [
+    {
+      "path": "addendum.tex",
+      "sha256": "33219bb0fbff40ceeb70b6a34f666ef20cff17e265665a5babbd3af8fc819523",
+      "bytes": 42319
+    },
+    {
+      "path": "foundation/article.tex",
+      "sha256": "849e515056a5b296221d6fe1a0ca09c1a7fd78a19d776256ee25143070128bb2",
+      "bytes": 46395
+    }
+  ],
+  "additional_TeX_mathematical_includes": [],
+  "external_bibliography_files": [],
+  "embedded_bibliographies": true,
+  "mathematical_report": {
+    "path": "audit/integrated-mathematical-review.md",
+    "sha256": "2e5666b62c548dcd594dc9d0e24b7f6d7cff7858ec4e99ddd8ed05bfebc3efa8",
+    "bytes": 7472
+  },
+  "delivery_pdf_identification_only": {
+    "path": "addendum.pdf",
+    "sha256": "75bbc3e72d3ca20efdec4d4402dbd16d896f79488eb6ddcc3ad3bcaf02618c66",
+    "bytes": 366774
+  },
+  "pdf_visual_review_in_scope": false,
+  "foundation": {
+    "manifest": {
+      "path": "foundation/SHA256SUMS",
+      "sha256": "879b76a6d90c45afcfe3ef2ee6378e039acdeccae72d27daebe6ebc148531ea2",
+      "bytes": 2732
+    },
+    "original_mathematical_receipt": {
+      "path": "foundation/audit/mathematical-verification.json",
+      "sha256": "e3bed437d75cc7bb0814cdc32bb7b1d436b01465483aea6bed20dd807265d8ce",
+      "bytes": 4584
+    },
+    "files_verified_including_manifest": 30,
+    "integrity_status": "PASS",
+    "modified_by_review": false
+  },
+  "reproducibility_run": {
+    "entrypoint": "scripts/run_all.py",
+    "exit_code": 0,
+    "status": "PASS",
+    "supporting_script_files": [
+      {
+        "path": "scripts/run_all.py",
+        "sha256": "bc8cde927627601fd3c1a787740923370917993b42d5b9c9b70b0c2eeab55a5e",
+        "bytes": 2013
+      },
+      {
+        "path": "scripts/verify_addendum.py",
+        "sha256": "f7ec35c3cb04a896d892f70b6f1af1ed341e7962ff75eed5d9a252923066cca6",
+        "bytes": 3424
+      },
+      {
+        "path": "scripts/verify_foundation.py",
+        "sha256": "516e8ff2fdbe6519adb08508095b484dd74050b434c87f6900574221c20db188",
+        "bytes": 1807
+      },
+      {
+        "path": "foundation/scripts/enumerate_schnyder.py",
+        "sha256": "ba50d100f3c6c0752efd78284d30431ce06019418cffad73063a17fadca164c7",
+        "bytes": 1338
+      },
+      {
+        "path": "foundation/scripts/independent_corner_checks.py",
+        "sha256": "803362afe8289d9615c785149b10ebca467bce94bdb60eb00023088ae11d5de4",
+        "bytes": 2749
+      },
+      {
+        "path": "foundation/scripts/independent_schnyder_checks.py",
+        "sha256": "8c8ef7a4d61f1f8014869a7906d32bc32c0570f79a873e37de18f162bf0a2a7d",
+        "bytes": 2223
+      },
+      {
+        "path": "foundation/scripts/run_all.py",
+        "sha256": "acaea7c60ca1b7426c4d7156f3ae4e385e8e20f6a78253519551a1a9bab3bd33",
+        "bytes": 1339
+      },
+      {
+        "path": "foundation/scripts/verify_symbols.py",
+        "sha256": "5463c75c3f2a6866975ee8a801e32986f73ec91b347abab6dd8b7af721b9df4b",
+        "bytes": 4522
+      }
+    ],
+    "build_scripts": [
+      {
+        "path": "build.sh",
+        "sha256": "b405cfff5847d6d77af4cca5484ac6c38af036abdc151cd4e352d0628c5fbeed",
+        "bytes": 1164
+      },
+      {
+        "path": "foundation/build.sh",
+        "sha256": "d887d8a7ec4c52780d3b37aec072748ae0a264f64d290802142682334cb878b5",
+        "bytes": 1160
+      }
+    ],
+    "recorded_json_outputs": [
+      {
+        "path": "results/addendum-symbolic-checks.json",
+        "sha256": "7b30df3ef8dd42a6de13259ad9b02d7d4be43c1468d92215c98a7cf221c8d5df",
+        "bytes": 909
+      },
+      {
+        "path": "results/foundation-integrity.json",
+        "sha256": "c2caf49c5bdd3a5b98c5f64225743f771e456fe3686c8bca129ac41dccd0a04b",
+        "bytes": 5260
+      },
+      {
+        "path": "results/verification-summary.json",
+        "sha256": "8b322c2dcd99fbee93f45cc46d0d14a8bfc727e3f04cabe9924ed79c35bf974b",
+        "bytes": 679
+      }
+    ],
+    "checks": [
+      {
+        "script": "scripts/verify_foundation.py",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "script": "scripts/verify_addendum.py",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "script": "foundation/scripts/run_all.py",
+        "execution": "isolated temporary copy",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "check": "Foundation exact result byte comparison",
+        "files": 4,
+        "status": "PASS"
+      }
+    ],
+    "python": "3.12.14",
+    "sympy": "1.14.0",
+    "foundation_replay": "isolated temporary copy; four substantive JSON outputs matched byte-for-byte"
+  },
+  "mathematical_checks": {
+    "exact_counting_normalizations_and_indexing": "pass",
+    "outer_inner_domain_shifts_and_cycle_whitening": "pass",
+    "fixed_strip_harmonic_expectation": "pass",
+    "valid_cycle_harmonic_survival_and_endpoint_sandwich": "pass",
+    "unconditional_exact_time_transfer": "pass",
+    "distinct_initial_and_terminal_parities": "pass",
+    "uniform_Hunt_killed_local_limit": "pass",
+    "fixed_thirds_measure_gluing": "pass",
+    "Brownian_generator_harmonic_density_and_lattice_constants": "pass",
+    "discrete_harmonic_pullback_and_counted_time_harmonicity": "pass",
+    "P_geometric_endpoint_sum": "pass",
+    "S_and_rigid_amplitude_multipliers": "pass",
+    "signed_convolution_domination": "pass",
+    "Lambert_large_branch_and_shrinking_threshold_bracket": "pass"
+  },
+  "accepted_conclusions": [
+    "Full positive-amplitude equivalents for A377922 and A377920, as in Conjecture 25",
+    "Full equivalent for A377921 with amplitude (16/19)^3 times the A377920 amplitude",
+    "Positive harmonic and heat-kernel amplitude expressions and equivalent universal Brownian prefactors",
+    "Lambert-W inverse centering and a vanishing-width two-ceiling first-threshold bracket"
+  ],
+  "unresolved_substantive_gaps_identified": [],
+  "not_established": [
+    "Numerical counting amplitudes",
+    "Quantitative convergence rates",
+    "Higher coefficient correction terms",
+    "An unconditional exact rounding formula",
+    "Machine formal verification",
+    "External journal peer review",
+    "Publication priority"
+  ],
+  "validity_condition": "Applies to the exact hashed mathematical sources and supporting materials. Mathematical edits require revalidation."
+}

@@ -59,7 +59,8 @@ def main():
     p.add_argument('--order',type=int,default=3)
     args=p.parse_args()
     result=derive(args.order)
-    Path(__file__).with_name('amplitudes.json').write_text(json.dumps(result,indent=2)+'\n')
+    # ed. (2026-09-29): newline='\n' so that a rerun on Windows writes LF, like the filed file.
+    Path(__file__).with_name('amplitudes.json').write_text(json.dumps(result,indent=2)+'\n',newline='\n')
     print(json.dumps(result,indent=2))
 
 

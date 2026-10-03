@@ -1,0 +1,13 @@
+PYTHON ?= python3
+LATEX ?= pdflatex
+
+.PHONY: all check pdf clean
+all: check pdf
+check:
+	$(PYTHON) code/run_checks.py
+pdf:
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(LATEX) -interaction=nonstopmode -halt-on-error article.tex
+clean:
+	rm -f article.aux article.log article.out article.toc

@@ -1,0 +1,233 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Strict Conditioning Order for Fabius Observation Masks},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}
+\newcommand{\TV}{\operatorname{TV}}\newcommand{\ind}{\mathbf1}\newcommand{\dd}{\,\mathrm d}
+\title{Strict Conditioning Order for Fabius Observation Masks}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For a product of uniform coordinates conditioned below a threshold, compared with a common exponential tilt of the original product, observing a larger cap gives strictly greater total variation than observing a smaller cap. Arbitrary common observations and countably many summable coordinates are permitted. The only equality cases for one cap exchange are equal caps, or a zero tilt with vacuous conditioning. The proof makes the earlier rectangle comparison strict at a normalized conditional likelihood. It yields strict late-hidden versus early-hidden overlap order for every geometric ratio $0<q<1$ and every nontrivial finite Fabius mask. No arithmetic divisibility condition is required, and no common kernel for all reweightings is asserted.
+\end{abstract}
+
+\section{Statement and equality cases}
+Under $P_0$, let $(X_i)_{i\in I}$ be independent uniforms on $[0,a_i]$, with positive caps and $A=\sum_i a_i<\infty$. The index set is finite or countable and contains at least two coordinates. Set $S=\sum_iX_i$. For $\beta\in\R$ and a threshold with $p_\tau=P_0(S\le\tau)>0$, define
+\begin{equation}\label{eq:model}
+ \frac{\dd Q_\beta}{\dd P_0}
+ =\frac{e^{-\beta S}}{\E_{P_0}e^{-\beta S}},
+ \qquad P_\tau=P_0(\,\cdot\mid S\le\tau).
+\end{equation}
+The reference coordinates have densities
+\[
+ q_{\beta,a}(x)=\frac{e^{-\beta x}}{Z_\beta(a)}\ind_{(0,a)}(x),
+ \qquad Z_\beta(a)=\int_0^a e^{-\beta x}\dd x.
+\]
+For a mask $E$, write $V_E=(X_i)_{i\in E}$ and
+\[
+ \mathcal T(E)=\TV((P_\tau)_E,(Q_\beta)_E),
+ \qquad \mathcal O(E)=1-\mathcal T(E).
+\]
+
+\begin{theorem}[Strict one-coordinate comparison]\label{thm:exchange}
+Let $X,Y$ be distinct coordinates with caps $a\ge b>0$, and let $C$ be any common observation mask disjoint from them, including an empty or countably infinite mask. Then
+\begin{equation}\label{eq:strict}
+ \mathcal T(C\cup\{X\})\ge\mathcal T(C\cup\{Y\}).
+\end{equation}
+Equality holds if and only if $a=b$, or $\beta=0$ and $p_\tau=1$. Otherwise the inequality is strict.
+\end{theorem}
+
+When $a=b$, coordinate exchangeability gives equality. When $\beta=0$ and $p_\tau=1$, both full laws equal $P_0$. The work is to exclude every other equality case. The preceding nonstrict report \cite{Nonstrict} proves a stronger convex-order and binary Blackwell comparison for each fixed bounded log-concave total weight. We recall its elementary rectangle mechanism and analyze equality. Strictness here concerns total variation, not every convex divergence generator.
+
+\section{A strict normalized rectangle inequality}
+Fix $a>b>0$ and $L=a+b$. For $g\in L^1([0,L])$ that is nonpositive, then nonnegative on one interval, then nonpositive, put
+\[
+ G(x)=\int_0^xg(s)\dd s,
+ \qquad J(h)=\int_0^{L-h}[G(x+h)-G(x)]_+\dd x.
+\]
+The rectangle lemma states $J(b)\ge J(a)$. Its proof is short: the strict superlevel set of $G$ has the form $[0,p]\cup[q,r]$, up to endpoints, allowing empty components. A positive indicator increment across a shift $h$ has length
+\begin{equation}\label{eq:phi}
+ \phi_h(U,V)=\max(0,\min(h,U,V,U+V-h)),
+ \quad U=q-p,\quad V=r-q.
+\end{equation}
+Here $U,V\ge0$ and $U+V\le L$. Direct comparison gives $\phi_b\ge\phi_a$. Layer cake and Tonelli give
+\begin{equation}\label{eq:layer}
+ J(b)-J(a)=\int_\R[\phi_b(U(t),V(t))-\phi_a(U(t),V(t))]\dd t\ge0.
+\end{equation}
+The representation remains valid at plateau levels: plateaus belong to the complement, and only a plateau between the superlevel components belongs to the middle gap.
+
+\begin{lemma}[Strictness at mean one]\label{lem:strict}
+Let $X,Y$ have the common-tilt densities above. Let $h:[0,L]\to[0,\infty)$ be bounded and log-concave, nonconstant almost everywhere, and satisfy $\E h(X+Y)=1$. With
+\[
+ H_X(x)=\E h(x+Y),\qquad H_Y(y)=\E h(X+y),
+\]
+one has
+\begin{equation}\label{eq:stoploss}
+ \E[H_X(X)-1]_+>\E[H_Y(Y)-1]_+.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $g(s)=e^{-\beta s}(h(s)-1)$. The mean assumption gives
+\begin{equation}\label{eq:zero}
+ \int_0^a\int_0^b g(x+y)\dd y\dd x=0.
+\end{equation}
+Both signs occur on positive-measure sets, since the pair-sum density is positive throughout $(0,L)$. Concavity of $\log h$ rules out a nontrivial $h=1$ plateau together with a value $h>1$: the ordered secant slopes would contradict concavity. Thus $\{h>1\}=(\alpha,\gamma)$ up to endpoints, with $g>0$ there and $g<0$ almost everywhere outside. Consequently $G$ is strictly decreasing, strictly increasing, and strictly decreasing on its three pieces; the first or last piece may be empty.
+
+For an active level $t\in(G(\alpha),G(\gamma))$, let $q(t)\in(\alpha,\gamma)$ be the unique increasing crossing. Define $p(t)$ and $r(t)$ from the superlevel representation above, taking $p=0$ when the initial component is absent and $r=L$ when the later component reaches the endpoint. Then $U=q-p$ and $V=r-q$ are continuous, respectively strictly increasing and strictly decreasing, and positive. At the lower active endpoint $U\to0$; at the upper endpoint $V\to0$.
+
+For positive $U,V$ with $U+V\le L$, direct inspection of \eqref{eq:phi} gives
+\begin{equation}\label{eq:strictlevel}
+ \phi_b>\phi_a
+ \quad\Longleftrightarrow\quad
+ U<a,\ V<a,\ b<U+V<L.
+\end{equation}
+Suppose $J(b)=J(a)$. Continuity and \eqref{eq:layer} exclude \eqref{eq:strictlevel} at every active level. In the open quadrant the equality set consists of two separated parts,
+\[
+ \mathcal S=\{U+V\le b\},\qquad
+ \mathcal W=\{U\ge a\}\cup\{V\ge a\}\cup\{U+V=L\}.
+\]
+They are separated because $a>b$. The connected level path must lie wholly in one part.
+
+If it lies in $\mathcal S$, both layer contributions vanish, so $J(b)=0$. Every $b$-window increment of $G$ is nonpositive. Its integral is zero by \eqref{eq:zero}; continuity forces
+\[
+ G(x+b)=G(x)\qquad(0\le x\le a).
+\]
+For each $x\in(0,a-b)$ this gives three equal values at $x,x+b,x+2b$. Three distinct occurrences of a level must lie one in each strictly monotone piece. Two choices of $x$ therefore make the first values strictly decrease while the values translated by $b$ strictly increase, a contradiction.
+
+If the path lies in $\mathcal W$, the endpoint limits $U\to0$ and $V\to0$ imply $\alpha\le b$ and $\gamma\ge a$. For any increasing crossing $q\in(b,a)$, one has $U\le q<a$ and $V\le L-q<a$. Membership in $\mathcal W$ forces $U+V=L$, hence $p=0,r=L$. Therefore $G(q)\ge G(0)$ and $G(q)\le G(L)$. Taking endpoint limits gives
+\[
+ G(b)\ge G(0),\qquad G(a)\le G(L),\qquad G(a)>G(b).
+\]
+The monotone pieces now show $\max_{[0,b]}G=G(b)$ and $\min_{[a,L]}G=G(a)$. Every $a$-window increment is at least $G(a)-G(b)>0$, contradicting \eqref{eq:zero} again.
+
+Thus $J(b)>J(a)$. Finally, positive homogeneity gives the exact normalization
+\begin{equation}\label{eq:normalization}
+ \E[H_X(X)-1]_+
+ =\frac{J(b)}{Z_\beta(a)Z_\beta(b)},\qquad
+ \E[H_Y(Y)-1]_+
+ =\frac{J(a)}{Z_\beta(a)Z_\beta(b)}.
+\end{equation}
+This proves \eqref{eq:stoploss}.
+\end{proof}
+
+The log-concavity condition cannot be replaced merely by a one-positive-interval sign pattern. For $a=3,b=2$, take $g=-1$ on $(0,1)$, $g=0$ on $(1,4)$, and $g=1$ on $(4,5)$. Then the rectangle integral is zero but $J(2)=J(3)=1/2$. The long zero plateau is exactly what the normalized log-concave profile excludes.
+
+\section{The hidden-sum profile cannot be constant}
+The inheritance of CDF log-concavity from a log-concave density is classical; see \cite{Bagnoli,Prekopa}. We record the strict finite-endpoint form with a direct proof.
+
+\begin{lemma}[Strict CDF log-concavity]\label{lem:cdf}
+Let $f$ be a log-concave density supported on $[\ell,u]$, positive in its interior, with $\ell$ finite. Its CDF $F$ is strictly log-concave on $(\ell,u)$.
+\end{lemma}
+\begin{proof}
+For $\ell<t_1<t_2<u$ and $v\ge0$, concavity of $\log f$ gives
+\[
+ \frac{f(t_1-v)}{f(t_1)}\le\frac{f(t_2-v)}{f(t_2)},
+\]
+where $f$ is zero off its support. The inequality is strict for $t_1-\ell<v<t_2-\ell$, where only the second numerator is positive. Integration gives
+\[
+ \frac{F(t_1)}{f(t_1)}<\frac{F(t_2)}{f(t_2)}.
+\]
+Log-concave densities are continuous in the support interior. Hence $(\log F)'=f/F$ is strictly decreasing, proving the claim.
+\end{proof}
+
+Every nonempty finite or countable uniform sum on positive summable caps has such a density. Finite convolution preserves log-concavity. For infinitely many summands, fix two of them; their sum has a continuous compactly supported density. Convolving it with finite remaining partial sums and passing to the almost sure limit gives pointwise convergence of densities by uniform continuity. The limiting density stays log-concave. Its support is the full interval $[0,A_R]$, so it is positive in the interior. A single uniform is handled directly.
+
+To prove Theorem~\ref{thm:exchange}, write $c=\sum_{i\in C}X_i$ and let $R$ be the remaining hidden sum under $P_0$. Put
+\[
+ M=\E_{Q_\beta}e^{\beta S}\ind_{\{S\le\tau\}}>0.
+\]
+On the relevant nonnegative range, the effective pair likelihood profile is
+\begin{equation}\label{eq:profile}
+ h_c(s)=K_R e^{\beta(c+s)}F_R(\tau-c-s),
+ \qquad K_R=\frac1{M\E_{P_0}e^{-\beta R}}>0.
+\end{equation}
+This follows by canceling the hidden-coordinate tilt. It also holds for countably many hidden coordinates, since their total is bounded. If $R$ is empty, use $F_R(t)=\ind_{\{t\ge0\}}$. The profile is bounded and log-concave.
+
+Outside the globally trivial case, $h_c$ cannot equal one on a nonempty interval. If $\beta\ne0$, its logarithm is strictly concave where $0<F_R<1$, while the region $F_R=1$ gives a nonconstant exponential and the region $F_R=0$ gives zero. Empty $R$ has the same exponential-or-zero description. If $\beta=0$, the only positive constant portions have value $1/p_\tau>1$, by Lemma~\ref{lem:cdf} and \eqref{eq:profile}.
+
+\section{Common observations and strict mask order}
+The conditional mean
+\[
+ m(c)=\E_{Q_\beta,\,X,Y}h_c(X+Y)
+\]
+is the likelihood of the common observation alone. It is continuous in $c$, since the remaining sum includes two continuous pair coordinates, and its common-reference expectation is one. If $C$ is nonempty, its sum law has full support $[0,A_C]$. Either $m$ is identically one, or it takes values on both sides of one and has an interior point $c_0$ with $m(c_0)=1$. Choose any interior point in the first case. If $C$ is empty, use $c_0=0$.
+
+At this point, $h_{c_0}$ is a nonconstant log-concave mean-one profile: the constant possibility would be precisely an $h=1$ interval, excluded above. Lemma~\ref{lem:strict} gives a positive conditional stop-loss gap at $c_0$. That gap is continuous in $c$. For nonempty $R$, its CDF is continuous and dominated convergence applies to \eqref{eq:profile}. For empty $R$, the only discontinuity is a moving cutoff; $X+Y$ has no atoms, so dominated convergence gives $L^1$ continuity. Conditional expectation contracts $L^1$, and the positive-part functional is $1$-Lipschitz.
+
+A neighborhood of $c_0$ therefore has a positive gap and positive common-reference probability. An empty common mask is already an atom at $c_0$. Every other conditional gap is nonnegative by the rectangle lemma, applied to $e^{-\beta s}(h_c(s)-1)$; no conditional mean normalization is needed for that nonstrict step. Integrating against the common reference law proves strict total variation in \eqref{eq:strict}. Together with the two equality cases noted earlier, this completes Theorem~\ref{thm:exchange}.
+
+\begin{corollary}[Finite-mask equality criterion]\label{cor:masks}
+Let finite masks $E,L$ have equal cardinality and admit a bijection from target indices to source indices with source cap at least target cap. Any common mask outside $E\cup L$ may be added to both. In the nontrivial case $(\beta,p_\tau)\ne(0,1)$, total variation is equal if and only if the two cap multisets coincide. Equivalently, under the matching assumption, equality holds if and only if $\sum_{i\in E}a_i=\sum_{j\in L}a_j$.
+\end{corollary}
+\begin{proof}
+An admissible matching can fix all common indices: if a common target $j$ is matched from $i\ne j$ and $j$ is itself used for target $k$, replace these assignments by $j\mapsto j$ and $i\mapsto k$, preserving cap inequalities. The remaining source and target indices are disjoint and can be exchanged one at a time, retaining all other observations as common. Equal total cap makes every matched inequality an equality, so exchangeability gives equality. Otherwise at least one exchange has unequal caps and is strict by Theorem~\ref{thm:exchange}; all others are nonstrict.
+\end{proof}
+
+For the exact source convention, take
+\[
+ S_q=\sum_{j\ge1}q^jU_j,\quad t_n=\rho q^{-(n+1)},\quad T_n=t_nS_q,
+ \quad \mu_n=\E_{Q_n}T_n,
+\]
+where $U_j$ are independent $\operatorname{Unif}[0,1]$ variables, $\dd Q_n/\dd P_0=e^{-T_n}/\E e^{-T_n}$, and $P_n=P_0(\,\cdot\mid T_n\le\mu_n)$. The scaled caps are $a_j=\rho q^{j-n-1}$ and the tilt is one. The source's two observed masks are
+\[
+ B^{\rm late}_{n,m}=\{1,\ldots,n-m\},\qquad
+ B^{\rm early}_{n,m}=\{m+1,\ldots,n\}.
+\]
+The names refer to the \emph{hidden} bulk blocks: the late-hidden mask observes the larger caps. Both ordinarily hide the infinite boundary tail.
+
+\begin{corollary}[Strict Fabius overlap order]\label{cor:fabius}
+For every $0<q<1$, $\rho>0$, $n\ge2$, and $1\le m<n$,
+\begin{equation}
+ \operatorname{Overlap}^{\rm late}_{n,m}
+ <\operatorname{Overlap}^{\rm early}_{n,m}.
+\end{equation}
+The strict inequality remains valid after adding any common observation mask outside the two masks, including a countable one.
+\end{corollary}
+\begin{proof}
+Match source index $r$ to target $m+r$. Every source cap exceeds its target by the factor $q^{-m}>1$. Apply Corollary~\ref{cor:masks}; overlap is one minus total variation.
+\end{proof}
+% ed. (2026-10-01): the corollary subsumes an earlier one of the series and the eventual comparison of batch 71
+\begin{ednote}
+Corollary~\ref{cor:fabius} contains Corollary~4.1 of
+\path{../Exact_Fabius_Mask_Order/} (strict for $q=1/M$, $1\le\rho<M$ and
+$n\ge3$), proved there by digit forcing, and it makes the comparison of
+\path{../Second_Order_Critical_Complements_Fabius_Conditioning/} (its
+Corollary~3.3: the same model, masks and superscripts, strict for all
+sufficiently large $n$ when $m/\log n\to c\in(0,\infty)$) hold at every
+$n\ge2$ and $1\le m<n$; the limit of the normalized difference proved there is
+not affected. For $\delta n\le m\le(1-\delta)n$ the difference is quantified
+by Corollary~5.2 of \path{../Proportional_Fabius_Mask_Edgeworth/}:
+$\operatorname{Overlap}^{\rm early}_{n,m}-\operatorname{Overlap}^{\rm
+late}_{n,m}=\varphi(c)c\,\mathcal D(q,\rho)/m+O(n^{-3/2})$, with $\varphi$ the
+standard normal density and $c=c(m/n)$, $\mathcal D(q,\rho)>0$ explicit there.
+\end{ednote}
+
+\section{Scope and verification}
+The theorem concerns a fixed lower-threshold conditioning compared with a fixed common tilt. It does not assert a single Markov kernel valid for all total-sum weights. The arithmetic obstructions to that stronger universal comparison remain separate. Arbitrary added noise and arbitrary log-concave weights are not covered by the strict application theorem; the normalized pair lemma has its own explicit hypotheses.
+
+The package includes exact rational checks of the levelwise strictness criterion, the generic zero-gap counterexample, and a normalized affine-profile family with gap $|\kappa|(a-b)/8$. These are regression checks; the proof handles all parameters, infinite sums, and common observations. Classical log-concavity results are credited above. The note makes no worldwide priority claim and is neither formally verified nor externally refereed. It strengthens the finite-parameter nonstrict comparison in \cite{Nonstrict}, without changing that companion's scope or the source's asymptotic cap-profile questions \cite{Repository}.
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the seventh of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The preceding report \cite{Nonstrict}, source
+\texttt{exact\_fixed\_conditioning\_order.tex}, is filed as
+\path{../Exact_Fixed_Conditioning_Order/}, and \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}.
+\end{ednote}
+
+\begin{thebibliography}{9}\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{Nonstrict} \emph{Exact Conditioning Order for Fabius Observation Masks}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{exact\_fixed\_conditioning\_order.tex}.
+\bibitem{Bagnoli} M. Bagnoli and T. Bergstrom, \emph{Log-concave probability and its applications}, Economic Theory \textbf{26} (2005), 445--469. \href{https://doi.org/10.1007/s00199-004-0514-4}{doi:10.1007/s00199-004-0514-4}.
+\bibitem{Prekopa} A. Pr\'ekopa, \emph{On logarithmic concave measures and functions}, Acta Scientiarum Mathematicarum (Szeged) \textbf{34} (1973), 335--343. \url{https://acta.bibl.u-szeged.hu/14411/1/math_034_335-343.pdf}.
+\bibitem{Repository} V. Reshetnikov, ProveIt, \emph{Critical Complements in Fabius Conditioning}, source at commit \texttt{7421a4ca60fd}, inspected 1 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7421a4ca60fdf125411edf412f825aac54278b37/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Sharp_Information_Loss/article.tex}{Pinned source on GitHub}. Full identifiers appear in the package.
+\end{thebibliography}
+\end{document}

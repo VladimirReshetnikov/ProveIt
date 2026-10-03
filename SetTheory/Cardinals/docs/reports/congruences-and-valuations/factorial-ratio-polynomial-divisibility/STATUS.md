@@ -66,3 +66,19 @@ Its final length is 20 pages. The archive contains the exact source, the atlas
 input required to compile it, all certificate data, a separate checker, and
 regression tests. No background task, remote computation, or unavailable
 service is needed to reproduce the checks.
+
+## Dated note (October 1, 2026, batch 74)
+
+This note is appended; the text above is unchanged and describes Part I.
+The sentence above that leaves the "gamma-interpolated values" of these OEIS
+entries unsettled is now stale for A347854-A347858: Part II of `article.tex`
+(batch-74 manuscript 01, placed in commit `b669cff87`) proves that their
+values are positive integers and that their ordinary generating functions
+are algebraic over Q(x). The supercongruences in these entries remain
+unclaimed, as do minimal algebraic equations. Part II also proves the
+divisor 6(6n+1)(12n-1) of A295432, and re-proves Part I's A295431 results
+(the four multipliers, division by 12n-1 and both families) with larger
+constants and without optimality; Part I remains the primary proof of
+those. Part II is unrefereed and not formalized. The "20 pages" stated
+above is the length of Part I's delivered PDF; the report's PDF now has
+49 pages.

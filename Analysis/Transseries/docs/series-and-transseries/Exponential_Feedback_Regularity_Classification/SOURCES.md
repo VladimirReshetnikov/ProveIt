@@ -7,8 +7,13 @@ Access/research date: 29 September 2026.
 Repository: https://github.com/VladimirReshetnikov/ProveIt
 Pinned snapshot: 04e06e032dff1966513bfba316966d52db3646b4
 
-Relevant path:
+Relevant path (current location; editorial amendment of 2026-09-29):
+Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/
+
+At the pinned snapshot the same directory was
 Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/
+(that path no longer exists; the transseries material moved to
+Analysis/Transseries/, see docs/incoming/README.md, batch 45).
 
 The consolidated README documents the formal/analytic distinction, transseries
 calculus, composition and reversion, analytic asymptotics, certificates, and the

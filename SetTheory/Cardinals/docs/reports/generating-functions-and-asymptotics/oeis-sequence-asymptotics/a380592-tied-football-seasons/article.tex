@@ -1,0 +1,1082 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Asymptotic enumeration of tied football seasons},pdfsubject={A380592 leading term and fixed-order asymptotic expansion}}
+\setcounter{tocdepth}{1}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parindent}{1.2em}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\1}{\mathbf 1}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\title{Asymptotic enumeration of tied football seasons}
+\author{}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\vspace{-1.5em}
+\begin{abstract}
+For a double round-robin league with labeled teams, distinguished matches,
+and the usual $3/1/0$ scoring rule, let $a(n)$ count seasons in which every
+team has the same score. We prove a leading equivalent for OEIS A380592,
+including its nonconstant three-residue theta factor. The proof uses
+mean-matching exponential tilts and a sharp global Fourier localization:
+a negative quartic gives an exact local Gaussian majorant, and a separate
+outlier argument controls its complement. The limiting common score is a
+discrete Gaussian whose center differs from its mean. We then verify the
+hypotheses of Isaev's complex cumulant theorem to obtain an expansion to
+every fixed inverse-power order, give a finite exact coefficient algorithm,
+compute the first correction, and formulate residue-aware inverse
+threshold bounds. The supplied replay checks the finite algebra; the
+analytic estimates and their scope are proved in the text.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Model and main results}\label{tfs:sec:model}
+There are $n$ labeled teams. Every unordered pair plays two distinguished
+matches. A match between $i$ and $j$ has score outcomes $(3,0)$, $(1,1)$,
+and $(0,3)$. Put $M=n(n-1)$, the number of matches. Then
+\begin{equation}\label{tfs:eq:exact}
+a(n)=\sum_{k=2(n-1)}^{3(n-1)}
+ [x_1^k\cdots x_n^k]\prod_{i<j}(x_i^3+x_ix_j+x_j^3)^2.
+\end{equation}
+The endpoints follow by summing all scores: each match contributes either
+$2$ or $3$. This counts neither unlabeled leagues nor score tables alone.
+If outcomes are independent and uniform and $X_i$ denotes team $i$'s score,
+then $a(n)=3^M\Prob(X_1=\cdots=X_n)$.
+
+The exact enumeration paper of Jehn, Habermann and Lavrov
+\cite{football} studies this model and gives values through $n=8$.
+The values in OEIS A380592 \cite{oeis} are
+\[
+1,\ 3,\ 27,\ 1083,\ 296081,\ 696779523,\
+16503494334993,\ 3439079361325736243.
+\]
+Define the positive, real, $1$-periodic function
+\begin{align}
+\Theta(c)&=\sum_{j\in\Z}e^{-4\pi^2j^2/9}e^{2\pi\ii jc},\label{tfs:eq:theta}\\
+&=\frac{3}{2\sqrt\pi}\sum_{k\in\Z}e^{-9(k-c)^2/4},\label{tfs:eq:poisson}
+\end{align}
+where the second equality is Poisson summation. Write
+\begin{equation}\label{tfs:eq:carrier}
+\mu_n=\frac{8(n-1)}3,\qquad c_n=\mu_n-\frac{13}{84},\qquad
+B_n=3^M n^{-1/2}\left(\frac9{56\pi n}\right)^{(n-1)/2}
+ e^{-9829/65856}.
+\end{equation}
+
+\begin{theorem}[Leading equivalent]\label{tfs:thm:leading}
+As $n\to\infty$,
+\begin{equation}\label{tfs:eq:main}
+a(n)\sim B_n\Theta(c_n).
+\end{equation}
+Equivalently, retaining the exact transverse covariance,
+\begin{equation}\label{tfs:eq:exactcarrier}
+a(n)\sim 3^M(n-1)^{-1/2}
+ \left(\frac9{2\pi(28n-2)}\right)^{(n-1)/2}
+ e^{-12181/65856}\Theta(c_n).
+\end{equation}
+\end{theorem}
+Because $c_{n+3}-c_n=8$, the multiplier depends only on $n\bmod 3$.
+It cannot be replaced by $1$ in an asymptotic equivalent.
+
+\begin{theorem}[Every fixed order]\label{tfs:thm:allorders}
+For every fixed integer $R\geq0$, there are explicitly computable
+$1$-periodic functions $H_0,\ldots,H_R$ such that
+\begin{equation}\label{tfs:eq:allorders}
+a(n)=B_n\left(\sum_{j=0}^R\frac{H_j(c_n)}{n^j}
+                   +O_R(n^{-R-1})\right),\qquad H_0=\Theta.
+\end{equation}
+Each $H_j$ is a finite rational linear combination of derivatives of
+$\Theta$. In particular, set
+\begin{equation}\label{tfs:eq:Q}
+Q(\delta)=\frac{22180735}{45177216}
+ +\frac{98841}{153664}\delta-\frac{5283}{3136}\delta^2
+ -\frac98\delta^3.
+\end{equation}
+For $r\in\{0,1,2\}$ and any $n\equiv r\pmod3$, define
+\begin{equation}\label{tfs:eq:Rr}
+R_r=\frac{\displaystyle\sum_{k\in\Z}e^{-9(k-c_n)^2/4}Q(k-\mu_n)}
+           {\displaystyle\sum_{k\in\Z}e^{-9(k-c_n)^2/4}}.
+\end{equation}
+Then
+\begin{equation}\label{tfs:eq:first}
+a(n)=B_n\Theta(c_n)\left(1+\frac{R_{n\bmod3}}n+O(n^{-2})\right).
+\end{equation}
+\end{theorem}
+The defining sums are exact. The following rounded decimals are numerical
+diagnostics, not interval-certified enclosures.
+\begin{center}
+\begin{tabular}{@{}ccrr@{}}
+\toprule
+$n\bmod3$ & $c_n\pmod1$ & $\Theta(c_n)$ & $R_{n\bmod3}$\\
+\midrule
+$0$ & $5/28$ & $1.01079874779311$ & $0.04288551652736$\\
+$1$ & $-13/84$ & $1.01402025457159$ & $0.19984197501234$\\
+$2$ & $43/84$ & $0.97518099763530$ & $0.04601392878474$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Sections~\ref{tfs:sec:tilt}--\ref{tfs:sec:summation} give an elementary proof of
+Theorem~\ref{tfs:thm:leading}. Sections~\ref{tfs:sec:allorders}--\ref{tfs:sec:first}
+prove Theorem~\ref{tfs:thm:allorders}, invoking a stated complex-cumulant theorem
+with verified hypotheses. Section~\ref{tfs:sec:inverse} treats inversion.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~67 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{tied-\allowbreak football-\allowbreak report.zip} (wrapper directory
+\texttt{tied-\allowbreak football-\allowbreak release/}, main file
+\texttt{report/\allowbreak tied-\allowbreak football-\allowbreak asymptotics.tex},
+now \texttt{article.tex}) in commit \texttt{096ee7b87}, and placed in
+commit \texttt{d0e6008d9} in the research-report collection, among the
+OEIS-sequence asymptotics reports. The manuscript names no ProveIt commit
+and describes no search of the repository, so it has no pin; its author
+line is empty. The bounded search of Section~\ref{tfs:sec:prior} is the
+manuscript's own literature search; the intake's untruncated search of the
+repository (the research-report collection, the transseries volumes and
+\texttt{Oeis/}) found no other treatment of A380592 or of tied seasons.
+The nearest batch-77 neighbour, the collection report
+\texttt{a000571-\allowbreak tournament-\allowbreak score-\allowbreak sequences}
+(batch-77 manuscript~68), counts score sequences of tournaments from their
+exact generating function; it is a different model and does not use the
+tilted Fourier localization of this report, and neither report uses the
+other. Nothing in this report is formalized in Lean
+or Rocq, and placement in the collection confers no formal status on any
+statement here. The writing step prefixed every label with \texttt{tfs:},
+labelled Section~\ref{tfs:sec:model}, added these \textsf{[write]} notes
+and two references \cite{tfs-tai,tfs-cti}, and set the bibliography
+ragged-right; no statement, proof or number of the manuscript was altered.
+
+\emph{Notation.} Each symbol is printed as delivered; several letters carry
+two meanings in different sections:
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.15\linewidth}p{0.79\linewidth}@{}}
+\toprule
+symbol & meanings (and what each is \emph{not})\\
+\midrule
+$Q$, $Q_0$ & the first-correction polynomial $Q(\delta)$ of \eqref{tfs:eq:Q}; $Q_0$ is a small closed interval of tilt parameters $q$ about $1/3$ (Section~\ref{tfs:sec:localize}), not a value of $Q$.\\
+$R$, $R_r$ & a truncation order in Theorem~\ref{tfs:thm:allorders} and Section~\ref{tfs:sec:inverse}; $R_r$ ($r=n\bmod3$) is the first-correction constant of \eqref{tfs:eq:Rr}.\\
+$B_n$, $B$, $b_3$, $B_4$ & the carrier $B_n$ of \eqref{tfs:eq:carrier}; the bad-coordinate set $B$ of Section~\ref{tfs:sec:localize}; $b_3,B_4$ cubic and quartic coefficients in Section~\ref{tfs:sec:first}.\\
+$b$, $d$, $e_r$ & in Section~\ref{tfs:sec:inverse}, $b=\log3$, $d$ and $e_r$ of \eqref{tfs:eq:de}. Elsewhere $d=(x-y)/2$ (Section~\ref{tfs:sec:localize}), $d(u)$ the torus distance, $d_3$ a cubic coefficient, and $D(q\Vert1/3)$ the Bernoulli relative entropy; $D$ is also a Taylor degree in Section~\ref{tfs:sec:allorders}.\\
+$c$, $c_n$ & $c_n=\mu_n-13/84$ is the Gaussian centre of the common score; $c=na$ is the scaled common Fourier variable in Section~\ref{tfs:sec:local}; $c,c',c''$ are also positive constants. The centre $c_n$ is not the conditional mean (Proposition~\ref{tfs:prop:conditional}).\\
+$K$, $K_0$ & $K_0=e^{-7865/32928}$ is the local correction \eqref{tfs:eq:K}; $K=\log n$ is the Gaussian truncation level in Section~\ref{tfs:sec:allorders}; $k$ is the common score.\\
+$\Theta$, $\Theta_r$, $\theta$ & the theta factor \eqref{tfs:eq:theta} and its residue values $\Theta_r=\Theta(c_n)$; $\theta\in[-\pi,\pi]^n$ is the Fourier variable.\\
+$\rho_n$, $\lambda_n$, $\alpha$, $\beta$ & the covariance eigenvalues \eqref{tfs:eq:eigen} and $\alpha(q)=2v(q)$, $\beta(q)=q(1-q)$; $v(q)$ differs from the covariance entry $v$ of \eqref{tfs:eq:coventries}, as $u$ there differs from the one-match variable $U$.\\
+$M$, $M_j$ & $M=n(n-1)$ is the number of matches; $M_j=\E f_D^j$ are moments in \eqref{tfs:eq:cumrec}.\\
+$L$, $L_r$ & $L=\log y$ is the inverse target in Section~\ref{tfs:sec:inverse}; $L_r$ are the degree-$r$ logarithmic polynomials of Sections~\ref{tfs:sec:allorders}--\ref{tfs:sec:first}.\\
+$H_j$, $H_3$ & the periodic coefficient functions of Theorem~\ref{tfs:thm:allorders}; $H_3(z)=z^3-3z$ is a Hermite polynomial.\\
+$x$, $h$ & $x=k-c_n$ in Section~\ref{tfs:sec:allorders}; $x=\sqrt{L/b}$ and $h$ in Section~\ref{tfs:sec:inverse}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{Mean matching and covariance}\label{tfs:sec:tilt}
+Tilt a single match by $e^{t\cdot\text{total score}}$. Its normalizer and
+draw probability are
+\[
+A(t)=\frac{2e^{3t}+e^{2t}}3,\qquad q=q(t)=\frac1{1+2e^t}.
+\]
+The decisive outcomes have probability $(1-q)/2$ each. Under this law,
+denoted $\Prob_q$, each team has mean
+$\mu(q)=(n-1)(3-q)$. For an interior target integer $k$, set
+$q=3-k/(n-1)$; its tilted mean is exactly $k$. The change of measure is
+\begin{equation}\label{tfs:eq:tilt}
+\Prob(X=k\1)=e^{M\log A(t)-nkt}\Prob_q(X=k\1).
+\end{equation}
+Here the unadorned $\Prob$ always means the original uniform law $q=1/3$.
+
+Put
+\[
+v(q)=\frac{9-8q-q^2}{4},\qquad \beta(q)=q(1-q),\qquad
+\alpha(q)=2v(q).
+\]
+The covariance matrix has the form
+\begin{equation}\label{tfs:eq:sigma}
+\Sigma_{n,q}=\lambda_n(q)I+
+                 \frac{\rho_n(q)-\lambda_n(q)}n\1\1^T,
+\end{equation}
+where its transverse and common eigenvalues are
+\begin{equation}\label{tfs:eq:eigen}
+\lambda_n(q)=n\alpha(q)-\beta(q),\qquad
+\rho_n(q)=(n-1)\beta(q).
+\end{equation}
+Thus the normalized Gaussian integral is
+\begin{equation}\label{tfs:eq:J}
+J_n(q)=(2\pi)^{-n/2}\lambda_n(q)^{-(n-1)/2}\rho_n(q)^{-1/2}.
+\end{equation}
+At $q_0=1/3$,
+\begin{equation}\label{tfs:eq:baseeig}
+\lambda_n=\frac{28n-2}{9},\qquad \rho_n=\frac{2(n-1)}9,
+\qquad \alpha=\frac{28}9,\qquad\beta=\frac29.
+\end{equation}
+Both eigenvalues have order $n$. Using the full score vector at a fixed
+common score therefore avoids a singular covariance.
+
+\section{Sharp global localization}\label{tfs:sec:localize}
+Let $Q_0$ be a sufficiently small fixed closed interval about $1/3$.
+All constants in this section are uniform for $q\in Q_0$. Denote by
+$\chi_{n,q}(\theta)$ the characteristic function of the centered total
+score vector. At a mean-matching integer score, Fourier inversion gives
+\[
+\Prob_q(X=k\1)=(2\pi)^{-n}\int_{[-\pi,\pi]^n}\chi_{n,q}(\theta)\,d\theta.
+\]
+
+\begin{lemma}[Relative localization]\label{tfs:lem:localize}
+There is $c>0$ such that
+\begin{equation}\label{tfs:eq:integralbound}
+(2\pi)^{-n}\int_{[-\pi,\pi]^n}|\chi_{n,q}(\theta)|\,d\theta
+       \leq (1+O(e^{-cn}))J_n(q).
+\end{equation}
+For every fixed $A>0$, the part of this integral outside
+$\max_i|\theta_i|\leq n^{-1/2}\log n$ is $o(n^{-A})J_n(q)$.
+\end{lemma}
+
+\subsection{Coercivity on the torus}
+The one-match kernel is
+\[
+\phi_q(x,y)=\frac{1-q}{2}e^{3\ii x}+q e^{\ii(x+y)}
+                              +\frac{1-q}{2}e^{3\ii y}.
+\]
+Let $d(u)=\min_{m\in\Z}|u-2\pi m|$. The three probabilities are bounded
+below on $Q_0$. Expanding the squared modulus and using
+$1-\cos u\geq c\,d(u)^2$ gives
+\begin{equation}\label{tfs:eq:edgecoercive}
+|\phi_q(x,y)|^2\leq
+\exp\{-c[d(3x-3y)^2+d(2x-y)^2+d(x-2y)^2]\}.
+\end{equation}
+For distinct $i,j,k$, the identity
+\[
+\theta_j=(2\theta_i-\theta_j)+(2\theta_j-\theta_k)
+                       -(2\theta_i-\theta_k)\pmod{2\pi}
+\]
+and the squared triangle inequality imply, after summation over ordered
+triples,
+\[
+\sum_{i\ne j}d(2\theta_i-\theta_j)^2
+             \geq\frac{n-1}{9}\sum_jd(\theta_j)^2.
+\]
+Indeed each of the three edge terms is counted $n-2$ times, and each
+left-side coordinate is counted $(n-1)(n-2)$ times before cancellation.
+Since the double-match modulus is $\prod_{i<j}|\phi_q(\theta_i,\theta_j)|^2$,
+\begin{equation}\label{tfs:eq:coercive}
+|\chi_{n,q}(\theta)|\leq e^{-cn\sum_i\theta_i^2}
+                 \quad(\theta\in[-\pi,\pi]^n,\ n\geq3).
+\end{equation}
+In particular the origin is the only modulus-one saddle. This coarse
+bound alone would lose a factor exponential in $n$ relative to $J_n$;
+the next two steps are essential.
+
+\subsection{A negative quartic and an exact Gaussian majorant}
+Set $s=(x+y)/2$ and $d=(x-y)/2$. The centered one-match phase is $sU+dV$,
+where $(U,V)$ takes the values $(q,3),(q,-3),(q-1,0)$ with probabilities
+$(1-q)/2,(1-q)/2,q$. Its fourth cumulant is
+\begin{align}\label{tfs:eq:quartic}
+\kappa_4(sU+dV)={}&q(1-q)(1-6q+6q^2)s^4\notag\\
+ &+54q(1-q)(2q-1)s^2d^2+81(1-q)(3q-2)d^4.
+\end{align}
+At $q=1/3$ this equals $-2s^4/27-4s^2d^2-54d^4$.
+All three coefficients stay strictly negative on a sufficiently small
+$Q_0$. Uniform analyticity near the origin and evenness under
+$(s,d)\mapsto(-s,-d)$ give
+\[
+\log|\phi_q|=-\frac{\kappa_2}{2}+\frac{\kappa_4}{24}
+                       +O((s^2+d^2)^3).
+\]
+Choose a fixed $\eta>0$ so that the negative quartic dominates the remainder
+when $|x|,|y|\leq\eta$. Multiplying over all matches yields the sharp bound
+\begin{equation}\label{tfs:eq:sharp}
+|\chi_{n,q}(\theta)|\leq
+     e^{-\theta^T\Sigma_{n,q}\theta/2}\qquad
+                          (\max_i|\theta_i|\leq\eta).
+\end{equation}
+Its normalized integral is at most $J_n(q)$, with no dimension-dependent
+loss.
+
+\subsection{Outliers outside the fixed box}
+Fix $\varepsilon\in(0,1/4)$. If at least $\varepsilon n$ coordinates have
+$|\theta_i|>\eta/10$, \eqref{tfs:eq:coercive} gives $e^{-cn^2}$ for the
+integrand. Its full contribution is negligible compared with
+$J_n(q)=\exp\{-\tfrac n2\log n+O(n)\}$.
+
+Otherwise at least $(1-\varepsilon)n$ coordinates are tiny, meaning
+$|\theta_i|\leq\eta/10$. Let $B=\{i:|\theta_i|>\eta\}$, with
+$m=|B|\geq1$, and $K=B^c$, with $k=n-m\geq(1-\varepsilon)n$.
+For a bad coordinate $x$ and a tiny coordinate $y$,
+\[
+d(x-2y)\geq d(x)-2|y|\geq\frac45|x|.
+\]
+Their distinct edges give a factor $e^{-cn\sum_{i\in B}\theta_i^2}$.
+Retain every $K$--$K$ edge and apply \eqref{tfs:eq:sharp} to the complete
+$k$-team system; bound every remaining factor by $1$. For a fixed set $B$,
+the unnormalized integral is consequently at most
+\begin{equation}\label{tfs:eq:outlier}
+I_k(q)\left[C n^{-1/2}e^{-c'n\eta^2}\right]^m,
+\qquad I_k(q)=(2\pi)^kJ_k(q).
+\end{equation}
+This estimate is valid on the region with enough tiny coordinates; after
+the pointwise estimate that restriction can be removed for integration.
+There is no extra sum over choices of tiny coordinates.
+
+For completeness, \eqref{tfs:eq:eigen} gives the uniform comparison
+\[
+I_k(q)\asymp [2\pi/\alpha(q)]^{k/2}k^{-k/2}
+\]
+for all large $k$ and all $q\in Q_0$.
+The residual factors are a bounded multiple of
+$(1-\beta/(\alpha k))^{-(k-1)/2}\sqrt{k/(k-1)}$.
+It follows that
+\[
+\frac{I_k(q)n^{-m/2}}{I_n(q)}
+ \leq C D^m(n/k)^{k/2}\leq C(De^{1/2})^m.
+\]
+Summing \eqref{tfs:eq:outlier} over all bad sets gives a relative bound
+\[
+C\sum_{m\geq1}\binom nm D_1^m e^{-c'nm}=O(e^{-c''n}).
+\]
+This proves exponentially small relative mass outside the fixed box.
+
+\subsection{Shrinking to the Gaussian scale}
+In the fixed box use \eqref{tfs:eq:sharp}. Every coordinate of
+$N(0,\Sigma_{n,q}^{-1})$ has variance $O(1/n)$. A union bound gives
+\[
+\Prob\{\max_i|\theta_i|>n^{-1/2}\log n\}
+                    \leq 2n e^{-c\log^2 n}=o(n^{-A})
+\]
+for every fixed $A$. Together with the outlier bound this proves
+Lemma~\ref{tfs:lem:localize}.
+
+\section{The local integral and the score shift}\label{tfs:sec:local}
+We first work at $q=1/3$. Under the Gaussian measure associated with
+$J_n$, decompose $\theta_i=y_i+a$, where $\sum_i y_i=0$. The vector $y$
+and scalar $a$ are independent, and may be represented as
+\[
+y_i=\frac{Z_i-\overline Z}{\sqrt{\lambda_n}},\qquad
+ a=\frac{W}{\sqrt{n\rho_n}},\qquad c=na,
+\]
+with independent standard normals $Z_1,\ldots,Z_n,W$. Put
+$Y_j=\sum_i y_i^j$. The cubic part of the double-match logarithm is exactly
+\begin{equation}\label{tfs:eq:cubic}
+-\ii\left[\frac{20n+1}{81}Y_3+
+           \frac{13n+1}{27}aY_2-\frac{n(n-1)}{81}a^3\right].
+\end{equation}
+The quartic part at $a=0$ is
+\begin{equation}\label{tfs:eq:quartagg}
+-\frac{98n-1}{324}Y_4-\frac{89}{108}Y_2^2.
+\end{equation}
+The quartic terms involving $a$ tend to zero in probability.
+On the shrinking box, the sum of degree at least five is
+$O(n^2(n^{-1/2}\log n)^5)=o(1)$.
+
+The law of large numbers and central limit theorem give jointly
+\begin{align}\label{tfs:eq:limits}
+Y_2&\longrightarrow\frac1\alpha,&
+ nY_4&\longrightarrow\frac3{\alpha^2},&
+ nY_3&\ \Rightarrow\ N(0,6/\alpha^3),&
+ c&\ \Rightarrow\ N(0,1/\beta).
+\end{align}
+The last variable is independent of the others. To verify the cubic limit,
+write $H_3(z)=z^3-3z$ and use
+\[
+\sum_i(Z_i-\overline Z)^3
+ =\sum_iH_3(Z_i)-3\overline Z\left(\sum_iZ_i^2-n\right)
+                                      +2n\overline Z^3.
+\]
+After division by $\sqrt n$, the last two terms vanish in probability,
+whereas $\Var(H_3(Z))=6$.
+
+The quartic exponent converges to $-561/3136$. The transverse cubic has
+limiting variance $25/2058$, and the common cubic converges to
+$-\ii(13/84)c$. Their Gaussian expectations therefore give the correction
+\begin{equation}\label{tfs:eq:K}
+K_0=\exp\left(-\frac{561}{3136}-\frac{25}{4116}
+                              -\frac{169}{3136}\right)
+    =e^{-7865/32928}.
+\end{equation}
+Passing to expectations is justified rather than formal: by
+\eqref{tfs:eq:sharp}, the complete correction relative to the Gaussian density
+has modulus at most $1$ in the fixed box; its shrinking-box complement
+has superpolynomially small Gaussian measure. Bounded convergence in
+distribution applies to the displayed limiting correction.
+The same reasoning holds for every sequence $q\to1/3$.
+
+Now set $\delta=k-\mu_n$. For bounded $\delta$,
+\[
+q=\frac13-\frac{\delta}{n-1},\qquad
+ t=\frac92\frac{\delta}{n-1}+O(n^{-2}),
+\]
+and Taylor expansion gives
+\begin{align}
+M\log A(t)-nkt&=-\frac94\delta^2+o(1),\label{tfs:eq:rateleading}\\
+\frac{J_n(q)}{J_n(1/3)}&=\exp\left(-\frac{39}{56}\delta+o(1)\right).
+                                                       \label{tfs:eq:detleading}
+\end{align}
+For the determinant, note
+$\lambda'_n(1/3)=-(13n+1)/3$. Its $n-1$ transverse factors produce the
+finite linear term; the common eigenvalue changes only by relative
+$O(1/n)$. Combining \eqref{tfs:eq:K}--\eqref{tfs:eq:detleading} and completing the
+square proves
+\begin{equation}\label{tfs:eq:fixedscore}
+\Prob(X=k\1)=(1+o(1))J_n(1/3)e^{-12181/65856}
+                e^{-9(\delta+13/84)^2/4}.
+\end{equation}
+The error is uniform for bounded $\delta$: otherwise a violating sequence
+has a convergent subsequence of $\delta$ and the preceding sequential
+argument gives a contradiction.
+
+\section{Dominated summation and the conditional common score}\label{tfs:sec:summation}
+Pointwise fixed-score equivalents cannot be summed without a uniform
+tail estimate. If $|\delta|\leq\varepsilon_0 n$, with $\varepsilon_0$
+sufficiently small, the exact mean-matching tilt lies in $Q_0$.
+Lemma~\ref{tfs:lem:localize} implies $\Prob_q(X=k\1)\leq C J_n(q)$.
+The exact rate and determinant satisfy
+\[
+M\log A(t)-nkt\leq-c\delta^2,\qquad
+\frac{J_n(q)}{J_n(1/3)}\leq C e^{C|\delta|}.
+\]
+For the first bound, $(\log A)''=q(1-q)$ is bounded above and below on
+the tilt interval; the second follows from the explicit eigenvalues.
+Thus
+\begin{equation}\label{tfs:eq:majorant}
+\frac{\Prob(X=k\1)}{J_n(1/3)}\leq
+                         C e^{-c\delta^2+C|\delta|}.
+\end{equation}
+If $|\delta|>\varepsilon_0 n$, the tied event forces the total score
+$nk$ to differ from its mean by at least $\varepsilon_0 n^2$.
+The number of draws is $\mathrm{Binomial}(M,1/3)$ and the total score is
+$3M$ minus this number. A binomial Chernoff bound makes the sum of these
+terms at most $O(n)e^{-cn^2}=o(J_n(1/3))$.
+
+Dominated summation on each residue subsequence now gives
+\begin{equation}\label{tfs:eq:sumresult}
+\Prob(\text{all tied})\sim J_n(1/3)e^{-12181/65856}
+                              \sum_{k\in\Z}e^{-9(k-c_n)^2/4}.
+\end{equation}
+The natural endpoint scores are in the negligible tail, so replacing the
+finite score range by $\Z$ loses no mass at this scale. Equations
+\eqref{tfs:eq:poisson}, \eqref{tfs:eq:baseeig}, and \eqref{tfs:eq:sumresult} give
+\eqref{tfs:eq:exactcarrier}. Finally,
+\[
+\left(\frac{28n-2}{28n}\right)^{-(n-1)/2}\longrightarrow e^{1/28},
+\qquad \sqrt{\frac n{n-1}}\longrightarrow1,
+\]
+and $1/28-12181/65856=-9829/65856$, proving
+Theorem~\ref{tfs:thm:leading}.
+
+\begin{proposition}[Conditional score law]\label{tfs:prop:conditional}
+On each residue subsequence, after an integer translation, the common
+score conditioned on all teams being tied converges to the discrete
+Gaussian with weights proportional to $e^{-9(k-c_n)^2/4}$. Every fixed
+moment converges as well. In particular,
+\begin{align}\label{tfs:eq:condmean}
+\E[k\mid\text{all tied}]-\mu_n
+ &=-\frac{13}{84}+\frac29\frac{\Theta'(c_n)}{\Theta(c_n)}+o(1),\\
+\Var(k\mid\text{all tied})
+ &=\frac29+\frac4{81}(\log\Theta)''(c_n)+o(1).\label{tfs:eq:condvar}
+\end{align}
+\end{proposition}
+\begin{proof}
+The same majorant \eqref{tfs:eq:majorant} permits multiplication by every
+fixed power of $|\delta|$. If $Z(c)=\sum_k e^{-9(k-c)^2/4}$, differentiation
+gives $\E(k-c)=\tfrac29(\log Z)'$ and
+$\Var(k)=\tfrac29+\tfrac4{81}(\log Z)''$. Use
+$Z(c)=2\sqrt\pi\Theta(c)/3$.
+\end{proof}
+The parameter $c_n$ is a Gaussian center, generally not the actual
+conditional mean. The shift $-13/84$ comes from the mixed common--transverse
+cubic; omitting it changes the leading theta multiplier. On the tied event,
+the number of draws is exactly $n[3(n-1)-k]$ and hence is a multiple of $n$.
+
+\section{Expansion to every fixed order}\label{tfs:sec:allorders}
+We now establish a uniform local expansion for $q\in Q_0$, then perform
+the tilted score sum. The external input is Isaev's complex cumulant
+theorem \cite[Theorem 1.2]{isaev}. We state the form used here to make the
+hypothesis verification explicit.
+
+\subsection{The complex cumulant input}
+Let $Z_1,\ldots,Z_n$ be independent on a product domain $\Omega$ and let
+$f:\Omega\to\mathbb C$ be bounded. For coordinate replacement
+$z\triangleright_W y$, define
+\[
+\overline\Delta_V(f)=\sup_{y\in\Omega}
+ \left|\E\sum_{W\subseteq V}(-1)^{|W|}f(Z\triangleright_Wy)\right|,
+\qquad S_k(f)=\max_j\sum_{\substack{|V|=k\\j\in V}}
+                                            \overline\Delta_V(f).
+\]
+For a fixed integer $m\geq1$, suppose $0\leq\gamma\leq1/100$ and
+\begin{equation}\label{tfs:eq:isaevhyp}
+\sum_{k=t}^n e^{3\gamma k/2}2^t\binom{k-1}{t-1}S_k(f)\leq\gamma
+                  \qquad(1\leq t\leq m).
+\end{equation}
+Then
+\begin{equation}\label{tfs:eq:isaevconcl}
+\E e^{f(Z)}=(1+\zeta)^n
+       \exp\left(\sum_{j=1}^m\frac{\kappa_j(f(Z))}{j!}\right),
+\qquad |\zeta|\leq e^{(100\gamma)^{m+1}}-1.
+\end{equation}
+For $2\leq j\leq m$ the theorem also gives
+\[
+|\kappa_j(f(Z))|\leq\frac{n(j-1)!(80\gamma)^j}{50j}.
+\]
+These are algebraic complex cumulants without conjugation.
+Bounding each $\overline\Delta_V$ by its supremum mixed difference is
+sufficient for \eqref{tfs:eq:isaevhyp}.
+
+\subsection{Symmetric whitening and independent truncation}
+The symmetric inverse square root of \eqref{tfs:eq:sigma} is
+\begin{equation}\label{tfs:eq:T}
+T=\lambda^{-1/2}I+
+           \frac{\rho^{-1/2}-\lambda^{-1/2}}n\1\1^T,
+\qquad\theta=TZ,
+\end{equation}
+with independent standard normals $Z_i$. Diagonal entries of $T$ are
+$O(n^{-1/2})$, off-diagonal entries are $O(n^{-3/2})$, and
+\begin{equation}\label{tfs:eq:rows}
+\max_i\sum_j|T_{ij}|+\max_j\sum_i|T_{ij}|\leq Cn^{-1/2}
+\end{equation}
+uniformly in $q$. This spreads the common fluctuation among the $n$
+independent variables; it does not introduce a single coordinate with
+order-one influence in the cubic exponent.
+
+Take $K=\log n$ and condition each $Z_i$ on $|Z_i|\leq K$. Independence is
+preserved. The omitted probability is smaller than every inverse power
+of $n$, and \eqref{tfs:eq:rows} puts the image of the product cube inside
+$\max_i|\theta_i|\leq CK/\sqrt n<\eta$. Conversely, removing from the
+fixed $\theta$-box the part outside this image costs at most the omitted
+Gaussian probability, by \eqref{tfs:eq:sharp}. The normalization introduced
+by conditioning also differs from $1$ by a superpolynomially small amount.
+
+Let $L_r(\theta)$ be the degree-$r$ term in the logarithm of the centered
+characteristic function, with the quadratic removed, and put
+\[
+f_D(Z)=\sum_{r=3}^D L_r(TZ).
+\]
+Each $L_r$ is a sum over edges of bounded-coefficient homogeneous
+bivariate polynomials. On the product cube its Taylor error is
+\begin{equation}\label{tfs:eq:taylorerror}
+O_D\bigl(n^2(K/\sqrt n)^{D+1}\bigr)
+                 =O_D(n^{(3-D)/2}K^{D+1}).
+\end{equation}
+The exact correction has modulus at most $1$, and the truncated correction
+has modulus at most the exponential of this error. Hence replacement of
+the exponent changes the normalized integral by the same order.
+
+\subsection{Mixed derivative bounds}
+For $1\leq k\leq r$ and a fixed index $j_1$, the chain rule gives
+\begin{align}\label{tfs:eq:derivative}
+&\sum_{j_2,\ldots,j_k}\sup_{|Z_i|\leq K}
+ |\partial_{j_1}\cdots\partial_{j_k}L_r(TZ)|\notag\\
+&\quad\leq C_r(K/\sqrt n)^{r-k}
+ \left[\sum_{uv\text{ edge}}(|T_{u,j_1}|+|T_{v,j_1}|)\right]
+ \left[\max_{uv\text{ edge}}\sum_j(|T_{u,j}|+|T_{v,j}|)\right]^{k-1}
+ \notag\\
+&\quad\leq C_r n^{1-r/2}K^{r-k}.
+\end{align}
+The first bracket is $(n-1)$ times a column absolute sum, hence
+$O(\sqrt n)$; the second is $O(n^{-1/2})$. Including repeated indices
+only enlarges the bound, so it controls the subset sums required above.
+A $k$-fold mixed difference on the cube is bounded by $(2K)^k$ times its
+mixed derivative. Consequently
+\begin{equation}\label{tfs:eq:Sk}
+S_k(f_D)\leq C_D n^{-1/2}K^D\quad(1\leq k\leq D),\qquad
+S_k(f_D)=0\quad(k>D).
+\end{equation}
+For fixed $D,m$, choose
+$\gamma=C_{D,m}n^{-1/2}K^D$ with a sufficiently large constant. There
+are only finitely many nonzero terms in \eqref{tfs:eq:isaevhyp}; it holds for
+all large $n$, as does $\gamma\leq1/100$. The relative error in
+\eqref{tfs:eq:isaevconcl} is therefore
+\begin{equation}\label{tfs:eq:cumulanttail}
+O_{D,m}(n\gamma^{m+1})=
+                O_{D,m}(n^{(1-m)/2}K^{D(m+1)}).
+\end{equation}
+Choosing fixed $D,m$ sufficiently large gives any requested inverse-power
+precision. In particular, this resums the order-one cubic fluctuation;
+no finite Taylor expansion of its exponential is being presumed valid.
+
+Truncated-normal cumulants can be replaced by full-normal cumulants with
+superpolynomial error. Every fixed moment of $f_D$ is a fixed-degree
+Gaussian polynomial with coefficients growing at most polynomially in
+$n$. Cauchy--Schwarz and Gaussian polynomial moment bounds make its tail
+contribution at most $n^C e^{-c\log^2 n}$. Cumulants are finite polynomial
+combinations of moments. Thus, to any prescribed inverse-power precision,
+the local correction equals
+\begin{equation}\label{tfs:eq:localexpansion}
+\exp\left(\sum_{j=1}^m\frac{\kappa_j(f_D(Z))}{j!}\right)
+                    (1+\text{controlled error}),
+\end{equation}
+where now $Z$ is an unconditioned standard Gaussian vector. The leading
+limit is positive uniformly on a sufficiently small $Q_0$, so the
+additive Taylor and localization errors can also be expressed relatively.
+
+\subsection{Exact finite coefficients and integer powers}
+For clarity use $u,v$ for the two covariance entries:
+\begin{equation}\label{tfs:eq:coventries}
+u=\lambda^{-1},\qquad
+v=\frac{\rho^{-1}-\lambda^{-1}}n,\qquad
+\E\theta_i\theta_j=u\,\1_{i=j}+v.
+\end{equation}
+They are rational functions of $n,q$. For fixed degree, every moment
+of products of the $L_r$ is rational in $n,q$ by Wick's formula: grouping
+vertex identifications by a finite set partition yields a falling
+factorial $(n)_\ell$ times a finite Gaussian pairing sum.
+Here is a completely explicit rule. Let $P_r=\sum_i\theta_i^r$, $P_0=n$.
+For a product $P_{r_1}\cdots P_{r_t}$, sum over all set partitions
+$\pi$ of $\{1,\ldots,t\}$. Put $d_B=\sum_{j\in B}r_j$ for each block
+$B$, $d=\sum_B d_B$, and $h=\sum_B h_B$. If $d$ is odd the moment is zero.
+If $d$ is even the contribution of $\pi$ is
+\begin{equation}\label{tfs:eq:wick}
+(n)_{|\pi|}
+\sum_{0\leq h_B\leq\lfloor d_B/2\rfloor}
+\left[\prod_{B\in\pi}\binom{d_B}{2h_B}(2h_B-1)!!\right]
+(d-2h-1)!!\,u^h v^{d/2-h}.
+\end{equation}
+Here $(-1)!!=1$. To prove the rule, for distinct block indices represent
+$\theta_B=\sqrt u\,Z_B+\sqrt v\,W$ and expand, using Gaussian even moments.
+On $Q_0$, $v>0$; the resulting polynomial identity is algebraic regardless
+of this representation. Factors $P_0$ can simply be taken out as powers
+of $n$. Every symmetric bivariate edge polynomial is a finite combination
+of the $P_r$, since
+\[
+\sum_{i\ne j}\theta_i^a\theta_j^b=P_aP_b-P_{a+b}.
+\]
+
+If $M_j=\E f_D^j$, with $M_0=1$, the ordinary cumulant recursion is
+\begin{equation}\label{tfs:eq:cumrec}
+\kappa_j=M_j-\sum_{i=1}^{j-1}\binom{j-1}{i-1}\kappa_i M_{j-i}.
+\end{equation}
+Equations \eqref{tfs:eq:wick}--\eqref{tfs:eq:cumrec} give a finite rational
+algorithm. The first cumulant is $O(1)$: odd-degree means vanish and
+even $r\geq4$ have mean $O(n^{2-r/2})$. Isaev's bound controls higher
+cumulants by $O(n^{1-j/2}\log^C n)$. Since they are rational functions
+with integer-power Laurent expansions at infinity, no positive powers
+can occur, and no constant term can occur for $j\geq3$.
+Thus the logarithm in \eqref{tfs:eq:localexpansion} has an ordinary $1/n$
+expansion with coefficients regular uniformly on $Q_0$.
+
+For a requested grade $J$, a finite procedure is:
+\begin{enumerate}
+\item Choose $D\geq2J+8$ and $m\geq2J+5$. Both
+\eqref{tfs:eq:taylorerror} and \eqref{tfs:eq:cumulanttail} are
+$o(n^{-J-1})$.
+\item Compute the one-match cumulants through degree $D$ from the
+three-point distribution, and sum the double-match logarithmic terms.
+\item Use \eqref{tfs:eq:wick} and \eqref{tfs:eq:cumrec} to form
+$\sum_{j\leq m}\kappa_j(f_D)/j!$ exactly.
+\item Expand this rational function through $n^{-J-1}$ and exponentiate
+as a finite formal series. Retaining grades through $J$ leaves
+$O_J(n^{-J-1})$.
+\end{enumerate}
+Increasing $D,m$ cannot change the resulting coefficients, by uniqueness
+of asymptotic power series for the same local integral.
+
+\subsection{From local series to theta derivatives}
+Substitute $q=1/3-\delta/(n-1)$ into the uniform expansion and multiply
+by the exact tilt factor and determinant. Each coefficient is a
+polynomial in $\delta$ times
+$e^{-9(\delta+13/84)^2/4}$. On $|\delta|\leq\log n$, Taylor remainders
+are bounded by $n^{-J-1}$ times a fixed polynomial in $|\delta|$ times
+$e^{-c\delta^2+C|\delta|}$. The sum of this bound is uniform; the part
+$|\delta|>\log n$ is superpolynomially negligible by
+\eqref{tfs:eq:majorant} and the large-deviation bound. This proves the
+remainder in \eqref{tfs:eq:allorders}.
+
+Finally put $x=k-c_n$, so $\delta=x-13/84$.
+Differentiating $Z(c)=\sum_k e^{-9(k-c)^2/4}$ expresses every Gaussian
+power sum as a rational linear combination of derivatives of $Z$:
+for example, $Z'=\tfrac92\sum_k(k-c)e^{-9(k-c)^2/4}$.
+Recursing through higher derivatives yields the claimed structure of
+$H_j$ in Theorem~\ref{tfs:thm:allorders}. On the three residue subsequences,
+these functions take constant values.
+
+\section{The first correction}\label{tfs:sec:first}
+The preceding argument proves existence and error control at every fixed
+order. We now give the finite algebra for its first nonconstant term.
+At $q=1/3$, the necessary logarithmic polynomials are
+\begin{align}
+L_3={}&\ii\left(\frac7{27}P_1P_2-\frac{20n+1}{81}P_3\right),\label{tfs:eq:L3}\\
+L_4={}&\frac{91}{81}P_1P_3-\frac{89}{108}P_2^2
+                        -\frac{98n-1}{324}P_4,\label{tfs:eq:L4}\\
+L_5={}&\ii\left(\frac{407}{972}P_1P_4-\frac{133}{486}P_2P_3
+                        -\frac{140n+1}{972}P_5\right),\label{tfs:eq:L5}\\
+L_6={}&\frac{7861}{14580}P_1P_5-\frac{8015}{5832}P_2P_4
+       +\frac{8077}{8748}P_3^2-\frac{7718n-7}{87480}P_6.\label{tfs:eq:L6}
+\end{align}
+Take $D=6,m=4$. The Taylor and cumulant-tail errors are
+$O(n^{-3/2}\log^C n)=o(1/n)$. Through grade $1/n$, the logarithmic
+correction consists of
+\begin{align}\label{tfs:eq:seven}
+&\E L_4+\tfrac12\E L_3^2+\E L_6+\E(L_3L_5)
+ +\tfrac12\Var(L_4)\notag\\
+&\hspace{35mm}+\tfrac12\kappa(L_3,L_3,L_4)
+                         +\tfrac1{24}\kappa_4(L_3).
+\end{align}
+All variances and cumulants here are algebraic, without complex
+conjugation.
+
+\subsection{Why the omitted mixtures are smaller}
+In every fixed Gaussian $L^p$ norm,
+\[
+L_3=O(1),\quad L_4-\E L_4=O(n^{-1/2}),\quad
+L_5=O(n^{-1}),\quad L_6-\E L_6=O(n^{-3/2}).
+\]
+These assertions follow by inserting $\theta_i=y_i+c/n$ into
+\eqref{tfs:eq:L3}--\eqref{tfs:eq:L6} and using Gaussian polynomial moment bounds.
+More specifically,
+\[
+\bigl(L_3,\ \sqrt n(L_4-\E L_4),\ nL_5\bigr)
+\]
+converges jointly, with all fixed moments, to a centered Gaussian vector.
+The first and third coordinates are linear combinations of the common
+normal $c$ and empirical Hermite sums of degrees $3$ and $5$; the second
+is a linear combination of Hermite sums of degrees $2$ and $4$.
+The even component is independent of the odd components in this
+Gaussian limit. Also $nL_6$ tends to a deterministic constant.
+
+Consequently the potentially order-$1/n$ mixtures
+$\kappa(L_3,L_3,L_4,L_4)$ and
+$\kappa(L_3,L_3,L_3,L_5)$ are actually $o(1/n)$: their scaled limits are
+fourth cumulants of a Gaussian vector. Parity kills the odd total-degree
+terms exactly. The displayed $L^p$ estimates control the other omissions;
+cumulants of order above four are covered by \eqref{tfs:eq:cumulanttail}.
+This establishes \eqref{tfs:eq:seven} without supposing $L_3=o(1)$.
+
+\subsection{Exact local coefficient}
+The finite Wick calculation gives the following constants and $1/n$
+coefficients. The entries are exact rational numbers.
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Quantity & Constant & Coefficient of $1/n$\\
+\midrule
+$\E L_4$ & $-561/3136$ & $159/5488$\\
+$\E L_6$ & $0$ & $-31763/175616$\\
+$\E L_3^2$ & $-3949/32928$ & $14407/115248$\\
+$\E(L_3L_5)$ & $0$ & $-26561/175616$\\
+$\Var(L_4)$ & $0$ & $343533/1229312$\\
+$\kappa(L_3,L_3,L_4)$ & $0$ & $492179/2151296$\\
+$\kappa_4(L_3)$ & $0$ & $4310925/15059072$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Thus
+\begin{equation}\label{tfs:eq:localfirst}
+\log(\text{local correction at }q=1/3)
+=-\frac{7865}{32928}+\frac{1147975}{45177216}\frac1n+O(n^{-2}).
+\end{equation}
+The initial calculation gives $o(1/n)$; the already proved all-order
+expansion upgrades this to $O(n^{-2})$. A second raw-moment aggregation
+through cumulant order six yields the same two coefficients and zero
+constant and $1/n$ terms for the fifth and sixth cumulants.
+A further Gaussian integration-by-parts computation uses the coordinate
+covariance directly and reproduces these first-correction moments and the
+vanishing coefficients of the two omitted fourth-cumulant mixtures.
+
+\subsection{Tilt and carrier contributions}
+For general $q$, put
+\[
+d_3=\frac{\beta(q)(q+13)}{12},\qquad
+b_3=\frac{\beta(q)(q+4)}2,
+\]
+and let $A_4,B_4,C_4$ be the three quartic coefficients in
+\eqref{tfs:eq:quartic}. The leading local logarithmic correction is
+\begin{align}\label{tfs:eq:Cq}
+C(q)&=\frac{3A_4+B_4+3C_4}{96\alpha(q)^2}
+       -\frac{3d_3^2}{\alpha(q)^3}
+       -\frac{b_3^2}{2\beta(q)\alpha(q)^2}\notag\\
+&=-\frac{q^4-28q^3-122q^2+1944q-2187}
+                    {12(q-1)(q+9)^3}.
+\end{align}
+In particular $C(1/3)=-7865/32928$ and $C'(1/3)=531/153664$.
+The dependence of the leading local correction on the tilt contributes
+$-(531/153664)\delta/n$.
+
+The exact tilt rate is $-n(n-1)D(q\Vert1/3)$, where $D$ is Bernoulli
+relative entropy. Its expansion and that of the determinant are
+\begin{align}
+-n(n-1)D(q\Vert1/3)
+ &=-\frac94\delta^2+\frac1n\left(-\frac94\delta^2-\frac98\delta^3\right)
+                         +O(n^{-2}\poly(\delta)),\label{tfs:eq:ratefirst}\\
+\log\frac{J_n(q)}{J_n(1/3)}
+ &=-\frac{39}{56}\delta+
+      \frac1n\left(\frac{507}{784}\delta+\frac{1773}{3136}\delta^2\right)
+                         +O(n^{-2}\poly(\delta)).\label{tfs:eq:detfirst}
+\end{align}
+Combining these with \eqref{tfs:eq:localfirst} gives, relative to the exact
+$J_n(1/3)$ shifted-Gaussian carrier, the first correction
+\[
+\frac{1147975}{45177216}
++\frac{98841}{153664}\delta-\frac{5283}{3136}\delta^2-\frac98\delta^3.
+\]
+The logarithm of the remaining covariance normalization factor is
+\[
+\log\left[\sqrt{\frac n{n-1}}
+             \left(1-\frac1{14n}\right)^{-(n-1)/2}\right]
+           =\frac1{28}+\frac{365}{784n}+O(n^{-2}).
+\]
+The constant $1/28$ is already included in $B_n$.
+Adding $365/784$ to the displayed polynomial's constant gives
+\eqref{tfs:eq:Q}. Dominated summation proves \eqref{tfs:eq:Rr}--\eqref{tfs:eq:first}.
+
+\section{Residue-aware asymptotic inversion}\label{tfs:sec:inverse}
+Let $b=\log3$ and set
+\begin{equation}\label{tfs:eq:de}
+d=-b+\tfrac12\log\frac9{56\pi},\qquad
+e_r=-\tfrac12\log\frac9{56\pi}-\frac{9829}{65856}+\log\Theta_r,
+\end{equation}
+where $\Theta_r=\Theta(c_n)$ for $n\equiv r\pmod3$.
+Taking logarithms of Theorem~\ref{tfs:thm:allorders},
+\begin{equation}\label{tfs:eq:logforward}
+\log a(n)=bn^2-\tfrac n2\log n+dn+e_r
+  +\sum_{j=1}^R\ell_{j,r}n^{-j}+O_R(n^{-R-1}),\qquad
+\ell_{1,r}=R_r.
+\end{equation}
+There is no standalone $\log n$ term: the two logarithms from
+$n^{-1/2}$ and $n^{-(n-1)/2}$ cancel it exactly.
+
+For a fixed $R$, define the explicit smooth function
+\begin{equation}\label{tfs:eq:F}
+F_{R,r}(t)=bt^2-\tfrac t2\log t+dt+e_r
+                         +\sum_{j=1}^R\ell_{j,r}t^{-j}.
+\end{equation}
+Its derivative is $2bt+O(\log t)>0$ for large $t$, so its large real inverse
+$\nu_{R,r}(L)$ exists uniquely. This differentiates the explicit
+approximant, not an unspecified asymptotic remainder.
+For example, put
+\[
+x=\sqrt{L/b},\qquad h=\frac{\log x}{4b}-\frac d{2b}.
+\]
+The first three terms of the smooth inverse are
+\begin{equation}\label{tfs:eq:inverse}
+\nu_{0,r}(L)=x+h+
+ \frac{-bh^2+\tfrac h2(\log x+1)-dh-e_r}{2bx}+o(x^{-1}).
+\end{equation}
+Successive substitution or Newton coefficient matching produces any
+fixed further grade in $x^{-1}$, with polynomial coefficients in
+$\log x$. The derivative bound for $F_{R,r}$ controls the remainder.
+
+\begin{proposition}[Integer threshold enclosure]\label{tfs:prop:inverse}
+For fixed $R$ and all sufficiently large $L$, let
+$\nu_r=\nu_{R,r}(L)$ and $\epsilon_r=C\nu_r^{-R-2}$, with $C$
+sufficiently large. Define
+\[
+N_r^- =r+3\ceil{\frac{\nu_r-\epsilon_r-r}{3}},\qquad
+N_r^+ =r+3\ceil{\frac{\nu_r+\epsilon_r-r}{3}}.
+\]
+If $N(L)=\min\{n\geq1:a(n)\geq e^L\}$, then
+\begin{equation}\label{tfs:eq:enclose}
+\min_{r=0,1,2}N_r^-\ \leq\ N(L)\ \leq\ \min_{r=0,1,2}N_r^+.
+\end{equation}
+If a truncated inverse series replaces $\nu_r$, its independently bounded
+absolute error must be added to $\epsilon_r$.
+\end{proposition}
+\begin{proof}
+By \eqref{tfs:eq:logforward}, the forward error near $\nu_r$ is
+$O(\nu_r^{-R-1})$. The derivative of \eqref{tfs:eq:F} is bounded below by a
+positive multiple of $\nu_r$ there. Hence values below
+$\nu_r-C\nu_r^{-R-2}$ cannot cross the threshold, and values above
+$\nu_r+C\nu_r^{-R-2}$ do cross it, with $C$ large enough.
+Taking the next integer in residue class $r$ proves the two bounds for
+that residue and then \eqref{tfs:eq:enclose}. Eventual strict monotonicity
+also follows directly from the integer forward formula: the successive
+main-term difference is $2bn+O(\log n)$, the residue constants are bounded,
+and the errors tend to zero. Finite initial exceptions do not affect
+large thresholds.
+\end{proof}
+The asymptotic $O$-constants and their onset are not numerically certified
+here. These are eventual theoretical enclosures, not ready-made finite
+input certificates. If a branch lies within its uncertainty of the
+residue lattice, no floor-free asymptotic formula resolves the rounding.
+
+\begin{writenote}[Added 2 October 2026, batch~77: relation to repository results]
+The inversion of this section falls under the general inversion apparatus
+of ProveIt's transseries volumes \cite{tfs-tai,tfs-cti}, and no novelty is
+claimed for the method. The dominant block here is quadratic, $bt^2$, so
+the Lambert
+cores (\texttt{p0:thm:lambert-core}, \texttt{p0:prop:factorial-core}) and
+the linear--logarithmic reversion \texttt{p0:thm:lambert-centered} of
+\cite{tfs-tai} do not apply: the seed is $x=\sqrt{L/b}$ and no Lambert
+function occurs. The phase $bt^2-\tfrac t2\log t+dt$ is an admissible core
+in the sense of \texttt{p0:def:core} of \cite{tfs-tai} (its slope tends to
+$+\infty$), and the successive substitution or Newton coefficient matching
+described after \eqref{tfs:eq:inverse} is the formal reversion about such a
+core, \texttt{p0:thm:core-reversion} of \cite{tfs-tai} (in \cite{tfs-cti},
+the scaled local reversion \texttt{t2:prop:scaled}, stated for an arbitrary
+core). The residue-aware enclosure of Proposition~\ref{tfs:prop:inverse}
+combines two general parts of \texttt{p0:thm:staircase}: part~(4), the
+residue-class formula $\min_\varrho\bigl(\varrho+m\lceil(\nu_\varrho-\varrho)/m\rceil\bigr)$
+(written there with modulus $r$ and residue $\rho$; here the modulus is
+$m=3$, the residue is called $r$, and $\rho_n$ is an eigenvalue), which is
+the shape of $N_r^{\pm}$ and \eqref{tfs:eq:enclose}; and the
+separation condition of part~(2), applied in each residue class with the
+width $\epsilon_r$, because $F_{R,r}$ is a smooth approximant and not an
+admissible interpolation of $a(n)$ on the class. The closing remark above
+is the failure mode of part~(2). The arithmetic of those two parts is
+formalized in Lean as \texttt{Fabius.staircase\_separation} and
+\texttt{Fabius.isLeast\_residue\_class} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+those statements concern arbitrary real numbers and monotone functions and
+give no formal status to anything in this section. Specific to this
+report are the forward expansion \eqref{tfs:eq:logforward}, with its three
+residue constants $e_r$ and $\ell_{1,r}=R_r$ and the exact cancellation of
+the standalone $\log n$ term, and the explicit terms of
+\eqref{tfs:eq:inverse}.
+\end{writenote}
+
+\section{Prior work and scope}\label{tfs:sec:prior}
+The football model and its exact finite enumeration belong to
+Jehn, Habermann and Lavrov \cite{football}; the present argument concerns
+its large-$n$ asymptotics. A bounded search of the exact sequence, title,
+and related football-score and dense-graph asymptotic literature,
+completed on 2 October 2026, located no football-specific asymptotic
+for this count. That negative search is not an exhaustive novelty
+certificate.
+
+Several substantial general precedents are relevant. Barvinok and
+Hartigan \cite{barvinok} give maximum-entropy Edgeworth estimates, with
+hypotheses that include local correction and global localization.
+Isaev and McKay \cite{martingale} treat complex perturbed Gaussian
+integrals. Isaev, McKay and Zhang \cite{eulerian} develop cumulant
+expansions for Eulerian orientations; their real-valued theorem cannot
+simply be applied to the present complex football exponent.
+Isaev's complex theorem \cite{isaev} is the explicit higher-order input
+used in Section~\ref{tfs:sec:allorders}. The graph-factor work of Isaev and
+McKay \cite{factors} provides a close methodological precedent for
+whitening and derivative estimates, but its Bernoulli edge model does
+not immediately give the three-outcome football count.
+
+Accordingly, no new general local-limit or cumulant theorem is claimed.
+The model-specific work consists of the sharp localization, the common
+score tilt and lattice summation, their constants and shift, the checked
+application of the complex theorem, and the resulting explicit first
+correction and inverse formulation.
+
+\section{Reproducibility and limits}\label{tfs:sec:replay}
+The accompanying source package contains this editable LaTeX report,
+the compiled PDF, portable Python scripts, frozen expected JSON results,
+and a SHA256 manifest. From the extracted package root, install the
+listed dependencies and run \texttt{python replay.py}. Generated outputs
+are written separately from the expected fixtures. The package-local
+\texttt{build-report.sh} rebuilds the PDF with a standard TeX installation.
+The README gives exact commands and a map of the files.
+
+The replay checks one-match cumulants, symmetric-polynomial identities,
+leading constants, exact counts through four teams, the finite Wick
+calculation for the first correction, an alternative raw-cumulant
+aggregation, a Gaussian integration-by-parts calculation, residue
+constants and conditional moments, and selected finite-$n$
+Gaussian-cumulant diagnostics.
+The known counts for five through eight teams are comparison data from
+\cite{football,oeis}, not recomputed exact enumerations in this replay.
+The generic every-fixed-order algorithm is specified mathematically in
+\eqref{tfs:eq:wick}--\eqref{tfs:eq:cumrec}; the supplied programs implement the
+coefficient checks stated above, rather than an optimized arbitrary-order
+symbolic engine.
+
+Finite algebraic checks do not replace the localization, error bounds,
+or convergence arguments. The proof establishes every fixed order, not
+convergence of the infinite asymptotic series or uniformity when the
+truncation order grows with $n$. Numerical theta and correction values
+are diagnostic decimals; no interval-certified constants, effective
+remainder constants, or certified finite-$n$ approximation thresholds
+are asserted. Small-$n$ comparisons are not evidence of an error bound.
+Only original report and verification material is packaged; cited papers
+remain available at their primary source links.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+The source package described above is not shipped as such. In the
+collection the nine programs, \texttt{replay.py} and
+\texttt{build-\allowbreak report.sh} are in \texttt{code/}, and the seven
+frozen fixtures \texttt{expected/\allowbreak<name>.json} and
+\texttt{requirements.txt} in \texttt{data/} (as
+\texttt{data/\allowbreak expected-\allowbreak<name>.json}), all
+byte-identical to the delivery; the compiled PDF and the SHA256 manifest
+\texttt{MANIFEST.sha256} (verified at intake and retired) are not shipped
+and survive in the archive. \texttt{replay.py} locates the checks under
+\texttt{code/} and the fixtures under \texttt{expected/} relative to its
+own directory, so in the collection layout it finds neither;
+\texttt{build-\allowbreak report.sh} compiles
+\texttt{report/\allowbreak tied-\allowbreak football-\allowbreak asymptotics.tex},
+which is shipped only as this \texttt{article.tex}. The individual check
+scripts write their default output beside the report unless directed
+elsewhere. The report's \texttt{README.md} gives a replay on a scratch
+copy, rebuilt in the delivered layout from the shipped files, that leaves
+them untouched.
+\end{writenote}
+
+\begingroup\raggedright
+\begin{thebibliography}{9}
+\bibitem{football}
+R. Jehn, K. Habermann, and M. Lavrov,
+\emph{Number of ways that a football league can complete with all teams
+having the same number of points}, arXiv:2503.14509v1 (2025).
+\url{https://arxiv.org/abs/2503.14509}.
+
+\bibitem{oeis}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+entry A380592. \url{https://oeis.org/A380592}.
+
+\bibitem{isaev}
+M. Isaev, \emph{A tail bound for cumulant series for complex functions of
+independent random variables}, arXiv:2508.16952v2 (2025), Theorem 1.2.
+\url{https://arxiv.org/abs/2508.16952v2}.
+
+\bibitem{barvinok}
+A. Barvinok and J. A. Hartigan, \emph{Maximum entropy Edgeworth estimates
+of the number of integer points in polytopes}, arXiv:0910.2497v2,
+Theorem 1. \url{https://arxiv.org/abs/0910.2497}.
+
+\bibitem{eulerian}
+M. Isaev, B. D. McKay, and R.-R. Zhang,
+\emph{Cumulant expansion for counting Eulerian orientations},
+Journal of Combinatorial Theory, Series B \textbf{172} (2025), 263--314.
+\url{https://arxiv.org/abs/2309.15473v2}.
+
+\bibitem{martingale}
+M. Isaev and B. D. McKay, \emph{Complex martingales and asymptotic enumeration},
+Random Structures \& Algorithms \textbf{52} (2018), 617--661.
+\url{https://arxiv.org/abs/1604.08305}.
+
+\bibitem{factors}
+M. Isaev and B. D. McKay,
+\emph{Asymptotic enumeration of graph factors by cumulant expansion},
+arXiv:2508.18731v1 (2025).
+\url{https://arxiv.org/abs/2508.18731}.
+
+\bibitem{tfs-tai} [write] ProveIt, \emph{Transseries and inversion}, the
+transseries-and-inversion volume (\texttt{p0:def:core},
+\texttt{p0:thm:core-reversion}, \texttt{p0:thm:staircase}; not
+applicable: \texttt{p0:thm:lambert-core}, \texttt{p0:prop:factorial-core},
+\texttt{p0:thm:lambert-centered}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+
+\bibitem{tfs-cti} [write] ProveIt, \emph{Combinatorial transseries
+inverses} (\texttt{t2:prop:scaled}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
+\end{thebibliography}
+\endgroup
+\end{document}

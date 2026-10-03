@@ -1,0 +1,127 @@
+{
+  "schema": "mathematical-verification-receipt-v1",
+  "reviewed_at_utc": "2026-10-02T01:53:09Z",
+  "status": "pass",
+  "review_type": "mathematical_review_with_exact_checks_not_formal_verification",
+  "title": "Polynomial exponents for corner polyhedra and Schnyder labelings",
+  "scope": "Integrated mathematical source, theorem hypotheses, proof integration, exact indexing and normalization, consequences, and stated limitations",
+  "source_files": [
+    {
+      "path": "article.tex",
+      "sha256": "849e515056a5b296221d6fe1a0ca09c1a7fd78a19d776256ee25143070128bb2",
+      "bytes": 46395
+    }
+  ],
+  "included_mathematical_source_files": [],
+  "external_bibliography_files": [],
+  "embedded_bibliography": true,
+  "delivery_pdf_identification_only": {
+    "path": "article.pdf",
+    "sha256": "9a95af196db80e86e1048497eef200888d89ee781362d0d5b60c6eeb731bb6da",
+    "bytes": 429147
+  },
+  "pdf_visual_review_in_scope": false,
+  "verification_report": {
+    "path": "audit/mathematical-verification.md",
+    "sha256": "76fc628f1fccb6437aa37ef2c477e675097ef1954d7fb48426035abe1c7bf2da",
+    "bytes": 6704
+  },
+  "reproducibility_run": {
+    "entrypoint": "scripts/run_all.py",
+    "exit_code": 0,
+    "status": "PASS",
+    "script_files": [
+      {
+        "path": "scripts/enumerate_schnyder.py",
+        "sha256": "ba50d100f3c6c0752efd78284d30431ce06019418cffad73063a17fadca164c7",
+        "bytes": 1338
+      },
+      {
+        "path": "scripts/independent_corner_checks.py",
+        "sha256": "803362afe8289d9615c785149b10ebca467bce94bdb60eb00023088ae11d5de4",
+        "bytes": 2749
+      },
+      {
+        "path": "scripts/independent_schnyder_checks.py",
+        "sha256": "8c8ef7a4d61f1f8014869a7906d32bc32c0570f79a873e37de18f162bf0a2a7d",
+        "bytes": 2223
+      },
+      {
+        "path": "scripts/run_all.py",
+        "sha256": "acaea7c60ca1b7426c4d7156f3ae4e385e8e20f6a78253519551a1a9bab3bd33",
+        "bytes": 1339
+      },
+      {
+        "path": "scripts/verify_symbols.py",
+        "sha256": "5463c75c3f2a6866975ee8a801e32986f73ec91b347abab6dd8b7af721b9df4b",
+        "bytes": 4522
+      }
+    ],
+    "recorded_json_outputs": [
+      {
+        "path": "results/independent-corner-checks.json",
+        "sha256": "573df3fb7475f0d4876f0a467fe3106f7b534f2f3a9df40ca03d3e1718bd5b82",
+        "bytes": 368
+      },
+      {
+        "path": "results/independent-schnyder-checks.json",
+        "sha256": "69d7de431d6333e9ad9136e0c24e9cfea0ea5b22a661d415b4a79730d01a8b2f",
+        "bytes": 413
+      },
+      {
+        "path": "results/schnyder-enumeration.json",
+        "sha256": "be6761cccf47ab305d415658eb5a3e4dde9506197cc9083b7d142d1050af32c9",
+        "bytes": 1418
+      },
+      {
+        "path": "results/symbolic-checks.json",
+        "sha256": "485f591db8254425369242e1961c9baf8578b87f0994349ef0f5e911505bfe8c",
+        "bytes": 6005
+      },
+      {
+        "path": "results/verification-summary.json",
+        "sha256": "845ef5c8a883e871f252216256e3fe9c38ac913aaff0cf97a8eafd224ed4cc14",
+        "bytes": 637
+      }
+    ],
+    "checks": [
+      {
+        "script": "scripts/verify_symbols.py",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "script": "scripts/independent_corner_checks.py",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "script": "scripts/independent_schnyder_checks.py",
+        "exit_code": 0,
+        "status": "PASS"
+      },
+      {
+        "script": "scripts/enumerate_schnyder.py",
+        "exit_code": 0,
+        "status": "PASS"
+      }
+    ],
+    "python": "3.12.14",
+    "sympy": "1.14.0"
+  },
+  "accepted_conclusions": [
+    "A377922 two-sided full-integer-time bound with rate 9/2 and exponent 1+pi/arccos(9/16)",
+    "A377920 two-sided full-integer-time bound with rate 16/3 and exponent 1+pi/arccos(22/27)",
+    "Non-D-finiteness of A377922, A377920, and A377921 ordinary generating functions",
+    "First-threshold inversion with O(1) error, without sequence monotonicity"
+  ],
+  "unresolved_mathematical_defects_identified": [],
+  "not_established": [
+    "Convergence to positive asymptotic amplitudes or the full equivalents in Conjecture 25",
+    "Amplitude values or higher correction terms",
+    "Coefficientwise Theta estimate for A377921",
+    "Exact threshold rounding rule or next additive constant",
+    "Machine formal verification, external journal peer review, or publication priority"
+  ],
+  "validity_condition": "Applies only to the exact hashed mathematical source. Any change to that source or its included mathematics requires revalidation."
+}

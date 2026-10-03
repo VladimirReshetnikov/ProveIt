@@ -95,6 +95,7 @@ def good_configuration_statistics(n: int, overrides: dict[int,int]) -> dict[str,
 
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
+    # Editorial amendment (ProveIt, 2026-09-29): all writers below emit LF line endings.
     parser.add_argument('--order',type=int,default=256)
     parser.add_argument('--check-order',type=int,default=18)
     parser.add_argument('--out',type=Path,default=Path(__file__).resolve().parents[1]/'data')
@@ -114,7 +115,7 @@ def main() -> None:
             checks.append({'model':name,'n':n,'passed':True})
         print(f'{name}: exact coefficients through {args.order}; checks passed',flush=True)
     with (args.out/'coefficients.csv').open('w',newline='') as f:
-        writer=csv.writer(f); writer.writerow(['n']+list(models))
+        writer=csv.writer(f,lineterminator='\n'); writer.writerow(['n']+list(models))
         for n in range(1,args.order+1):
             writer.writerow([n]+[str(Fraction(all_b[name][n],math.factorial(n))) for name in models])
     samples=sorted(set([n for n in [20,40,80,120,180,256,args.order] if n<=args.order]))
@@ -135,9 +136,9 @@ def main() -> None:
                             'predicted_giant_center':mp.nstr(n/(r+1),24),
                             'predicted_twos_mean':mp.nstr(r*r,24)})
             diagnostics.append(row)
-    (args.out/'diagnostics.json').write_text(json.dumps(diagnostics,indent=2)+'\n')
+    (args.out/'diagnostics.json').write_text(json.dumps(diagnostics,indent=2)+'\n',newline='\n')
     with (args.out/'asymptotic_ratios.csv').open('w',newline='') as f:
-        writer=csv.writer(f); writer.writerow(['n','model','r','exact_over_equivalent'])
+        writer=csv.writer(f,lineterminator='\n'); writer.writerow(['n','model','r','exact_over_equivalent'])
         for d in diagnostics:
             writer.writerow([d['n'],d['model'],d['r'],d['exact_over_equivalent']])
     ratios=[]
@@ -147,7 +148,7 @@ def main() -> None:
         ratios.append({'n':n,'lambda2_seven_over_base':mp.nstr(mp.mpf(all_b['lambda2_seven'][n])/base,24),
                        'lambda1_three_normalized':mp.nstr(mp.mpf(all_b['lambda1_three'][n])/base*mp.exp(-2*r*r),24),
                        'lambda1_zero_normalized':mp.nstr(mp.mpf(all_b['lambda1_zero'][n])/base*mp.exp(r*r),24)})
-    (args.out/'finite_perturbations.json').write_text(json.dumps(ratios,indent=2)+'\n')
+    (args.out/'finite_perturbations.json').write_text(json.dumps(ratios,indent=2)+'\n',newline='\n')
     report={'status':'all exact comparisons passed','order':args.order,
             'independent_exact_comparisons':len(checks),'checks':checks,
             'models':models,'arithmetic':'Python integers and fractions.Fraction',
@@ -157,7 +158,7 @@ def main() -> None:
             'limits':['Finite computations do not prove the asymptotic theorems.',
                       'No Lean proof has been executed.',
                       'No Borel-Laplace remainder claim is numerically certified.']}
-    (args.out/'verification.json').write_text(json.dumps(report,indent=2)+'\n')
+    (args.out/'verification.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ('checks','models')},indent=2))
 
 if __name__=='__main__':

@@ -210,9 +210,10 @@ def main():
     data={"status":"PASS","sympy_version":sp.__version__,"mpmath_version":mp.__version__,
           "exact":exact,"numerical":numerical,
           "disclaimer":"Floating-point checks are not interval certificates; proofs are in the article."}
-    (args.out/'verification.json').write_text(json.dumps(data,indent=2)+'\n')
+    # ed. (2026-09-29): LF line endings on every platform, like the filed files.
+    (args.out/'verification.json').write_text(json.dumps(data,indent=2)+'\n',newline='\n')
     lines=['VERIFICATION: PASS','',json.dumps(exact,indent=2),'',json.dumps(numerical,indent=2)]
-    (args.out/'verification.txt').write_text('\n'.join(lines)+'\n')
+    (args.out/'verification.txt').write_text('\n'.join(lines)+'\n',newline='\n')
     print('PASS: generic coefficients 1--4; exact substitution through order 9;')
     print('core coefficients through order 6; fold expansion; 100-digit numerical checks.')
     print('Results:',args.out.resolve())

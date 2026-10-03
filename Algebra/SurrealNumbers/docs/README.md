@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **63 research reports in five families**. Start with the
+This collection has **66 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -15,6 +15,72 @@ formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
 
 ## Newest reports
+
+Batch 80 (placed in `ccc046989`, written in `d51fafea8` and `0be9b9134`,
+with reciprocal notes in `a13efdd51`) adds one report,
+[surreal well-orders](foundations-and-computation/surreal-well-orders/),
+merged from four manuscripts written independently on one day; two pairs of
+the archives share a name, but none is an edition of another. It compares
+the well-orders of `No` lexicographically. For sets of surreals the order
+behaves as over every infinite linear alphabet, which is the theorem layer
+of the research-report collection's
+[lexicographic well-orderings of the reals](../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/lexicographic-well-orderings-of-reals/),
+printed as pointers with second routes, except at birthday cutoffs: the
+minimal slice of `No_{<κ}` has binary coding length `κ·κ` exactly at
+singular strong limits, which answers that report's question on other ground
+orders in part. Over GB without set choice, a class well-order of `No`
+exists exactly when global choice holds; all class well-orders are compared
+directly, with exact adjacency; set-like global well-orders carry a
+bounded-support core isomorphic to `No` that interpolates every uniformly
+set-indexed cut; and inaccessible and Kelley–Morse models separate the
+set-like from the unrestricted order. The core that the manuscripts prove up
+to four times is printed once, with the other proofs as routes or notes.
+Reciprocal notes went to the reals report,
+[the surreals as a real vector space](surreal/real-vector-space-structure/),
+[birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+and [foundations](foundations-and-computation/foundations/). The new report
+is not yet indexed in the formalization ledger; nothing in it is
+formalized, four inputs it uses are proved in Lean on the sign carrier, and
+its independent proof review is pending (the Hilbert's-tenth research tree
+reviewed the four delivered archives and the merged text, outside this
+collection's review record).
+
+Batch 73 (placed in `26abf259b`, written in `9265235fd`, with reciprocal
+notes in `5cbcc029f`) adds one report,
+[the surreals as a real vector space](surreal/real-vector-space-structure/),
+merged from three manuscripts written independently on one day in answer to
+one question: what is the natural basis of `No` over `ℝ`? The monomials
+`ω^γ` are its canonical Hahn basis and the basis of every layer of the
+associated graded algebra, but a Hamel basis only of the finite-support
+subspace; no set spans `No`, and in NBG with global choice a class Hamel
+basis exists but must contain a proper class of infinite-support vectors.
+The report also describes the canonical linear structure (support
+projections, strong linear maps and the strong real dual) and, in Part IV,
+the Euler quotient. The shared theorems are printed once, with the other
+manuscripts' proofs as second and third routes, and results that re-prove
+[three duals of Hahn vector spaces](surcomplex/three-duals-of-hahn-vector-spaces/)
+and [exponential automorphism rigidity](surreal/exponential-automorphism-rigidity/)
+are pointers. Reciprocal notes went to those two reports, to
+[omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/)
+and [omnific Diophantine geometry](surreal/omnific-diophantine-geometry/),
+and to the notation guide. The new report is not yet indexed in the
+formalization ledger; nothing in it is formalized, and its independent
+proof review is pending.
+
+Batches 58 and 59 (placed in `b30441a` and `f2cb203`, written in `4e12835`
+and `da05b41`) add one report,
+[polytopes at surreal scales](surreal/polytopes-at-surreal-scales/), merged
+from twelve manuscripts into ten Parts on finite polytopes over a set-sized
+real closed field `K ⊇ ℝ` inside `No`: lifting compression to at most
+`n−d−1` real layers with exact germ degrees, coordinate-truncation
+histories, affine residues and mixed-volume scales, real traces and lattice
+counts, extension complexity invisible to all-order jets, mixed-volume
+tomography and realization, exponential contact depth of moving vertices,
+omnific integer hulls with a rational-normal dichotomy, and set-sized
+presentations. Batch 59 also adds a reciprocal note to
+[omnific groups and lattices](surreal/omnific-groups-and-lattices/)
+(`526c255`). The new report is not yet indexed in the formalization ledger;
+nothing in it is formalized, and its independent proof review is pending.
 
 Batches 24–29 (placed in `be06fc8`, `cf350b1`, `f4c9504`, `a4dcb91`,
 `c6359e4` and `66d7e55`, each followed by its write commits) add nine reports
@@ -191,7 +257,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: twenty-three reports
+## Surreal numbers: twenty-five reports
 
 | Report | Question or main subject |
 |---|---|
@@ -208,6 +274,8 @@ not extend their earlier proof-review scope.
 | [Markov generators at every scale](surreal/markov-generators-at-every-scale/) | All-scale resolvent hierarchies of finite positive Hahn rate matrices and their converse realization; divisible value group, no path measures or infinite state spaces |
 | [Transcendence over bounded support](surreal/transcendence-over-bounded-support/) | `2^cf(G)` algebraically independent Hahn series over the fraction field of bounded-support series, and linear-disjointness descent; transcendence from the support, not the coefficients |
 | [Matrix scaling at surreal scales](surreal/matrix-scaling-at-surreal-scales/) | Fixed-margin diagonal scaling of positive Hahn matrices; the spanning-tree deletion gap is the exact gain; no Sinkhorn convergence claim |
+| [Polytopes at surreal scales](surreal/polytopes-at-surreal-scales/) | Finite polytopes over set-sized real closed `K ⊇ ℝ`: all-scale lifting compression to at most `n−d−1` real layers with exact germ degrees, coordinate-truncation histories, affine residues and mixed-volume scales, lattice counts with non-quasipolynomial Ehrhart functions, extension complexity invisible to all-order jets, mixed-volume tomography and realization (a Fano obstruction), exponential contact depth of moving vertices, omnific integer hulls with a rational-normal dichotomy, and set-sized presentations; twelve manuscripts; no Lean verification |
+| [The surreals as a real vector space](surreal/real-vector-space-structure/) | `No` over `ℝ`: the monomials as canonical Hahn basis and layer basis of `gr No ≅ ℝ[No]`, but a Hamel basis only of the finite-support subspace; no set spans `No`, and class Hamel bases (NBG with global choice) need a proper class of infinite-support vectors; window dimensions, strong linear maps and the strong real dual, the vanishing order-bounded dual, and the Euler quotient as a continuum-dimensional `ℝ(X)`-space; three manuscripts; no Lean verification |
 | [Vector and tensor fields](surreal/vector-and-tensor-fields/) | Layered tensor calculus with surreal coefficients in every dimension: Hahn-supported smooth fields, Taylor prolongation, Hodge and Stokes; 3D calculus and Minkowski fields as parts; not a physics claim |
 | [Euclidean three-space](surreal/euclidean-three-space/) | Coordinate and spherical geometry of `No³` with finite angles, and the rotation group `SO(3,No)` as a split extension with a perfect infinitesimal kernel; normal subgroups by valuation cuts and the universal set-sized quotient of `SO(3,No)`; Part V: compact groups over `No`, whose universal set-sized quotient exists exactly in the semisimple case |
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
@@ -328,7 +396,7 @@ soft-mode Schur defects, optimal identification of an infinitesimal holonomy,
 and Hahn deformations of gauge fields. It claims no departure from ordinary
 quantum theory and no measurable infinitesimal.
 
-## Foundations and computation: nine reports
+## Foundations and computation: ten reports
 
 | Report | Main subject |
 |---|---|
@@ -341,6 +409,7 @@ quantum theory and no measurable infinitesimal.
 | [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation |
 | [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Four manuscripts on the claimed exact support threshold for two transports, defect coefficients, and descent to the target model; proof review pending |
 | [Exponential relations over omnific integers](foundations-and-computation/exponential-relations-over-omnific-integers/) | Toric relations and a decidable additive language with algebraic exponential predicates; elementary cores and computability boundaries; proof review pending |
+| [Surreal well-orders](foundations-and-computation/surreal-well-orders/) | Lexicographic orders of the well-orders of `No`: set cutoffs with the singular `κ·κ` transition, set-length words, choiceless GB ⇔ global choice, direct comparison and adjacency of all class well-orders, a bounded-support core ≅ `No` interpolating set-indexed cuts, diagonal non-coding, inaccessible and KM models; four manuscripts; the set-sized layer re-proves the reals report; proof review pending |
 
 A mathematical closure theorem need not supply a uniform algorithm on the
 chosen names. In particular, numerical coefficient access does not supply a

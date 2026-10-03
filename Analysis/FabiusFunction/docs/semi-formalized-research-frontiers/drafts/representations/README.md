@@ -62,8 +62,8 @@ New standalone intake members:
   `incoming/` by `fef364bfd162f80919cd77b808530dd0734f1cb1`.
   All 24 non-ledger payloads were covered by its submitted ledger; six CSV
   hashes were refreshed after repository CRLF-to-LF normalization. The ledger
-  is now retired and recoverable from Git history. Its current 2,092-line,
-  89,360-byte source has SHA-256
+  is now retired and recoverable from Git history. Its 2026-09-04 2,092-line,
+  89,360-byte source had SHA-256
   `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`.
   Three serial halt-on-error passes from absent auxiliaries produced
   34 pages/1,152,987 bytes, 36 pages/1,171,153 bytes, and a final 36-page,
@@ -72,6 +72,17 @@ New standalone intake members:
   The final log, metadata, A4/rotation-zero, all-page render/text, and
   representative visual gates passed; all 27 font rows are embedded/subset,
   five are Libertinus, none is Type 3, and generated sidecars are absent.
+  On 2026-09-29 an editorial note under `conj:jet-small-ball` marked that
+  conjecture false for `q ≠ 1/e` (see the report README's erratum and
+  `Polynomial_Geometric_Small_Deviations_Fabius_Jets/`).  A second note of
+  the same day, after `conj:copula-endpoints`, points to
+  `Endpoint_Geometry_Common_Digit_Fabius_Laws/` for joint lower-tail rates
+  and threshold conditioning (the conjecture and exact-value conditioning
+  stay open).  A third note of the same day, after `conj:ray-decay`,
+  points to `Brownian_Matrix_Governing_Fabius_Smoothness/` for its leading
+  coefficient in a window sense (the pointwise form and the remainder stay
+  open); the source is now 2,151 lines/92,789 bytes and the rebuilt PDF
+  36 pages/1,297,530 bytes.
 
 - [`Jacobi_Digit_Fabius_Rvachev_Frontier_Report/`](Jacobi_Digit_Fabius_Rvachev_Frontier_Report/),
   the 32-page *Jacobi-Digit Deformations of the Fabius--Rvachev Law* bundle
@@ -118,7 +129,7 @@ of an existing draft; semantic consolidation is deferred to the post-
   still states both conjectures; no Lean statement.
 - [`Sharp_Conditioning_Laws_Fabius_Lacunary_Series/`](Sharp_Conditioning_Laws_Fabius_Lacunary_Series/),
   *Sharp Conditioning Laws for Fabius and Lacunary Random Series*
-  (23-page US Letter PDF, 1,655-line source, a NumPy/SciPy check and
+  (23-page US Letter PDF, 1,676-line source, a NumPy/SciPy check and
   Monte Carlo program), filed on 2026-09-28 by a quick archival intake from
   the repository-level `docs/incoming/` drop zone.  It describes the whole
   random-series configuration conditioned on a small sum `S ≤ x`, for every
@@ -130,11 +141,16 @@ of an existing draft; semantic consolidation is deferred to the post-
   phase-dependent boundary layer for geometric weights.  The finite-i.i.d.
   phenomenon is credited to Diaconis–Freedman.  It complements the scalar
   endpoint asymptotics of `docs/ASYMPTOTIC_COMPLETION_AUDIT.md` and the
-  rotating endpoint laws above.  Unreviewed; its numerics are not
+  rotating endpoint laws above.  Its Question 7 is answered in its
+  qualitative part by the extremes article below (an editorial note of
+  2026-09-30 says so).  Unreviewed; its numerics are not
   certificates; no Lean statement.
 - [`Sharp_Conditioning_Laws_Uniform_Random_Series/`](Sharp_Conditioning_Laws_Uniform_Random_Series/),
-  *Sharp Conditioning Laws for Uniform Random Series* (26-page A4 PDF,
-  1,782-line source, a SymPy/SciPy check and Monte Carlo program), filed on
+  *Sharp Conditioning Laws for Uniform Random Series* (27-page A4 PDF,
+  1,850-line source with an editorial note of 2026-09-30 at `q:critical`
+  naming the two critical-complements articles below and notes of
+  2026-10-01 at `q:rates` and `q:edgeworth` naming the proportional-mask
+  note below, a SymPy/SciPy check and Monte Carlo program), filed on
   2026-09-29 by a quick archival intake from the repository-level
   `docs/incoming/` drop zone.  It proves the variance-fraction threshold of
   the lacunary article above for **every** positive summable weight
@@ -145,8 +161,244 @@ of an existing draft; semantic consolidation is deferred to the post-
   law, a Brownian bridge with independent exponential slack, and an exact
   lazy rejection sampler.  It was written before the lacunary article was
   filed and does not cite it; the two are to be compared, and possibly
-  merged, after review.  Unreviewed; its numerics are not certificates; no
+  merged, after review.  For geometric weights and a hidden fraction in a
+  fixed compact subinterval of `(0, 1)`, its `q:edgeworth` is answered at
+  order `1/n`, and its `q:rates` for that fixed fraction only, by
+  `Proportional_Fabius_Mask_Edgeworth/` below.  Unreviewed; its numerics
+  are not certificates; no Lean statement.
+- [`Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/`](Poisson_Extremes_Gaussian_Bridges_Small_Sum_Conditioning/),
+  *Poisson Extremes and Gaussian Bridges under Small-Sum Conditioning*
+  (21-page A4 PDF, 1,593-line source, a SymPy/SciPy diagnostic program),
+  filed on 2026-09-30 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  In the setting and
+  notation of the lacunary article above, it proves that the conditioned
+  extremes form a marked Poisson process jointly independent of the
+  Brownian bridge and the exponential slack, for every uniformly
+  lacunary weight sequence (the qualitative part of that article's
+  Question 7; rates stay open), and for weights `j^{−p}` an
+  incomplete-gamma law for the maximum with all fixed-order
+  inverse-logarithmic corrections, located on the index scale
+  `N/(log N)^{1/p}`.  It credits the polynomial variance clocks to the
+  uniform-series article above.  Unreviewed; its numerics are not
+  certificates; no Lean statement.
+- [`Critical_Complements_Fabius_Conditioning/`](Critical_Complements_Fabius_Conditioning/),
+  *Critical Complements in Fabius Conditioning* (26-page A4 PDF,
+  1,759-line source, a SymPy/SciPy exact-and-diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone and amended editorially the same day and on
+  2026-10-01 (its README lists the amendments).  In the setting of the uniform-series
+  article above, for geometric weights (the Fabius law at `q = 1/2`) and a
+  fixed number `r` of unobserved early coordinates, it replaces the
+  Gaussian profile by an explicit boundary kernel: the overlap
+  `1 − TV` equals `(Λ_n + r log Λ_n + log K − log r! + 1 + o(1))/√(2πn)`,
+  with an all-orders inverse-logarithmic expansion; every fixed positive
+  Rényi order has an explicit entropy constant, order zero tends to
+  `log 2`, and a universal normal-tail profile connects them on the scale
+  `α√n`; for `r = 0` the flat Fabius endpoint appears in the residual
+  (logarithm `∼ −√(log(1/q) log n)`).  It answers the bounded-complement
+  part of that article's `q:critical`.  For a growing number
+  `r = o(n)` of hidden early coordinates (the range of its question; for
+  `r` proportional to `n` the total variation is now known to order
+  `1/n`, by `Proportional_Fabius_Mask_Edgeworth/` below) only the
+  logarithmic slice `r ≍ log n` is treated,
+  for the overlap and not the information (in the second bullet below);
+  the rest stays open (growing boundary-adjacent complements are treated
+  in the bullet below).  Unreviewed; its numerics are not certificates; no Lean
+  statement.
+- [`Critical_Complements_Sharp_Information_Loss/`](Critical_Complements_Sharp_Information_Loss/),
+  *Critical Complements in Fabius Conditioning: Sharp information loss,
+  geometric phase constants, and a logarithmic crossover* (26-page A4
+  PDF, 1,756-line source, a NumPy/SciPy diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone and amended editorially the same day and on
+  2026-10-01 (its README lists the amendments); an independently written second answer to
+  the uniform-series article's `q:critical`, under the same title as the
+  bullet above.  It observes a prefix and hides the last `m` bulk
+  coordinates with the tail: for fixed `m` the overlap is
+  `(½ log(2πn) + 1 + K_m + o(1))/√(2πn)` with an explicit phase constant
+  and an exact compact boundary correction, and relative entropy is
+  known to order `1/n`; for every `m = o(n)` a Lambert-W formula gives
+  the leading overlap, which changes regime at `m ≍ log n`, and relative
+  entropy is `½ log(n/m) − ½ + o(1)`.  With only the tail hidden it
+  agrees with the article above; for other complements the two treat
+  different coordinates and complement each other.  Its question on
+  second-order crossover terms is answered in the bullet below, and its
+  question on arbitrary observation masks in part by the eight notes from
+  `Exact_Fabius_Mask_Order/` on (a note of 2026-10-01 says which part).  Unreviewed; its
+  numerics are not certificates; no Lean statement.
+- [`Second_Order_Critical_Complements_Fabius_Conditioning/`](Second_Order_Critical_Complements_Fabius_Conditioning/),
+  *Second Order Critical Complements in Fabius Conditioning* (10-page A4
+  PDF, 754-line source, an mpmath diagnostic program), filed on
+  2026-09-30 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone and amended editorially on 2026-10-01 (its
+  `README.txt` lists the amendments).  It continues the two bullets above in
+  the window where the number `m` of hidden bulk coordinates is
+  comparable with `log n`, for both of their masks (the last `m` hidden,
+  as in the second bullet, and the first `m` hidden, as in the first
+  bullet's fixed-`r` setting).  It expands the overlap through the
+  constant term, where the geometric phase reappears, and the next
+  `1/m` term, uniformly in that window, with the `log log n` and
+  rounding corrections made explicit; and it proves that hiding the
+  earliest coordinates leaves eventually more overlap than hiding the
+  latest (in fact at every finite `n ≥ 2`, by
+  `Strict_Fabius_Conditioning_Order/` below, as a note of 2026-10-01
+  records).  This answers the second article's question on second-order
+  crossover terms and the logarithmic slice of the first article's
+  growing-complement question; thinner and thicker complements stay
+  open.  Unreviewed; its numerics are not certificates; no Lean
+  statement.
+- [`Exact_Fabius_Mask_Order/`](Exact_Fabius_Mask_Order/), *Exact
+  Observation Order for Fabius Conditioning* (8-page A4 PDF, 335-line
+  source, exact rational checkers), filed on 2026-10-01 by a quick
+  archival intake from the repository-level `docs/incoming/` drop zone and
+  amended editorially the same day (its `README.txt` lists the
+  amendments), the first of eight notes of one series (this and the seven
+  bullets below, in the order written; each of the eight now carries a
+  series map, and every amendment of the eight is listed in its README).  When observed caps divide later ones,
+  taking residues turns an earlier observation mask into a later one
+  under every reweighting of the total at once; so for `q = 1/M` the two
+  masks of the bullets above are ordered at every finite `n` (for every
+  `q`, and strictly, by the sixth and seventh bullets below).
+  Unreviewed; no Lean statement.
+- [`Universal_Garbling_Classification/`](Universal_Garbling_Classification/),
+  *Universal Garblings of Tilted Uniform Observations* (6-page A4 PDF,
+  237-line source, an exact checker), filed and amended the same
+  day: the converse
+  for one coordinate — one kernel works for all reweightings exactly for
+  equal tilts and an integer cap ratio, and then it is the residue map;
+  its convolution criterion is the one-coordinate case of the next
+  bullet's.  Unreviewed; no Lean statement.
+- [`Universal_Fabius_Mask_Criterion/`](Universal_Fabius_Mask_Criterion/),
+  *Universal Comparison of Fabius Observation Masks* (8-page A4 PDF,
+  352-line source, an exact checker), filed and amended the same
+  day: universal mask
+  order is convolution divisibility of the observed sums; prefix counts
+  for `q = 1/M`; a coefficient test for commensurate caps.  Its
+  arithmetic shares the matching method and the base-six obstruction of
+  `../spectra-and-arithmetic/Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`,
+  which it does not cite (editorial notes on both sides now record it);
+  its coefficient test is a special case of the next bullet's theorem, and
+  its prefix-count theorem of the one after.  Unreviewed; no Lean
+  statement.
+- [`Uniform_Smoothing_Mask_Stabilization/`](Uniform_Smoothing_Mask_Stabilization/),
+  *Uniform Smoothing and Commensurate Observation Masks* (7-page A4 PDF,
+  294-line source, an exact certificate checker), filed and amended
+  the same day:
+  unequal numbers of commensurate observations, eventual positivity
+  under uniform smoothing (Pólya), and exactly nine extra observations
+  for the obstruction of the bullet above.  Unreviewed; no Lean
+  statement.
+- [`Arithmetic_Geometric_Mask_Order/`](Arithmetic_Geometric_Mask_Order/),
+  *Arithmetic Classification of Geometric Observation Masks* (5-page A4
+  PDF, 209-line source, an exact checker), filed and amended the same day:
+  the
+  universal mask order for every ratio `q` (inclusion only, unless a
+  power of `1/q` is an integer).  For ratios with no rational power this
+  follows from batch 69's
+  `../spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/`,
+  which it does not cite (editorial notes on both sides now record it).
+  Unreviewed; no Lean statement.
+- [`Exact_Fixed_Conditioning_Order/`](Exact_Fixed_Conditioning_Order/),
+  *Exact Conditioning Order for Fabius Observation Masks* (6-page A4 PDF,
+  261-line source, an exact checker and NumPy probes), filed and
+  amended the same day: for one fixed log-concave weight, larger observed caps carry more
+  information (convex order), so the two masks of the bullets above are
+  ordered at every finite `n` for every `q`.  Unreviewed; no Lean
+  statement.
+- [`Strict_Fabius_Conditioning_Order/`](Strict_Fabius_Conditioning_Order/),
+  *Strict Conditioning Order for Fabius Observation Masks* (6-page A4
+  PDF, 233-line source, an exact checker), filed and amended the same day:
+  the same
+  order is strict for total variation, for every `q` and `n ≥ 2`; so the
+  comparison of the second-order article above holds at every finite
+  `n`, not only eventually (that article and
+  `Critical_Complements_Fabius_Conditioning/` now carry notes saying so);
+  it contains the strict corollary of the first bullet.  Unreviewed; no
   Lean statement.
+- [`Proportional_Fabius_Mask_Edgeworth/`](Proportional_Fabius_Mask_Edgeworth/),
+  *A Uniform Second-Order Profile for Proportional Fabius Masks* (8-page
+  A4 PDF, 341-line source, SymPy and NumPy/SciPy checks), filed and amended
+  the same day: for masks hiding a fixed fraction of the bulk, the total
+  variation through order `1/n`, uniformly in the mask; this answers the
+  uniform-series article's Edgeworth question in that regime (its
+  `q:rates` only for a fixed fraction) and quantifies the order of the
+  two masks.  Unreviewed; its numerics are
+  not certificates; no Lean statement.
+- [`Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/`](Elliptic_Equilibrium_Hyperbolic_Fekete_Designs/),
+  *Elliptic Equilibrium and Boundary-Corrected Transseries for Hyperbolic
+  Fekete Designs* (26-page A4 PDF, 1,840-line source, a SymPy/mpmath/SciPy
+  check program), filed on 2026-09-29 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  It answers the
+  equilibrium part of `question:design-limit` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  the volume-maximizing hyperbolic node designs on `[0, L]` have an
+  explicit limiting density, an elliptic deformation of the arcsine law,
+  whose constant `−log tanh` potential is a ratio of complete elliptic
+  integrals (the classical elliptic capacity, credited as such).  For
+  finite designs it proves energy bounds, a bounded total deviation from
+  equal spacing, a boundary correction uniform in the dimension, and a
+  sharp determinant transition `exp(−4e^{−2s})` at
+  `h = ½ log n + s`.  It also factors the report's equally spaced volume
+  exactly into bulk, MacMahon and tail products, the algebraic part of
+  `question:q-barnes`.  The endpoint spacings and the joint
+  `d → ∞`, `h ↓ 0` asymptotic stay open.  Its "transseries" are
+  convergent elliptic and modular expansions.  Unreviewed; its numerics
+  are not certificates; no Lean statement.
+- [`Polynomial_Geometric_Small_Deviations_Fabius_Jets/`](Polynomial_Geometric_Small_Deviations_Fabius_Jets/),
+  *Polynomial–Geometric Small Deviations: A Corrected Fabius-Jet
+  Conjecture* (25-page A4 PDF, 1,168-line source, an mpmath/SciPy/SymPy
+  check program), filed on 2026-09-29 by a quick archival intake from the
+  repository-level `docs/incoming/` drop zone and amended editorially the
+  same day (its README lists the amendments).  It shows that the jet
+  small-ball conjecture `conj:jet-small-ball` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/)
+  is false whenever `q ≠ 1/e`: the logarithm of the small-ball
+  probability of `Σ_{n≥1} n^m q^n U_n` contains a term
+  `((m+1)² log λ/λ) log log(1/x)`, `λ = −log q`, which the conjectured
+  shape omits.  It replaces the conjecture by an all-order expansion in
+  an exact Lambert coordinate, with periodic coefficients whose leading
+  one is independent of `m` and has an explicit Gamma–zeta Fourier
+  series, and adds a comparison law for perturbed weights and an
+  inverse-quantile theorem.  For the Fabius law itself (`m = 0`,
+  `q = 1/2`) the expansion is the one already machine-checked in
+  `Analysis/FabiusFunction/Lean` (the corrected Lambert-phase and
+  explicit "Wikipedia" forms of the small-argument asymptotic), which the
+  article does not cite (an editorial note of 2026-09-29 now names them).  Unreviewed; its numerics are not certificates;
+  no Lean statement for the general case.
+- [`Endpoint_Geometry_Common_Digit_Fabius_Laws/`](Endpoint_Geometry_Common_Digit_Fabius_Laws/),
+  *The Endpoint Geometry of Common-Digit Fabius Laws* (22-page A4 PDF,
+  1,695-line source, a standard-library exact check program), filed on
+  2026-09-29 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It takes up the endpoint-dependence
+  direction of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  the probability that several common-digit laws `X_{q_i}` are all small
+  is governed by an upper envelope of lines, with an explicit three-term
+  expansion `−I t² − T t log t + A t`, a universal copula exponent
+  `2√A/(√A+√B)` on the diagonal, and Gaussian and extreme-tail limits
+  that do not commute although the correlation is constant.  It does not
+  claim the zonoid report's `conj:copula-endpoints`.  Its one-parameter
+  case agrees with the corrected jet small-ball form and, for the Fabius
+  law, with the machine-checked small-argument expansion in
+  `Analysis/FabiusFunction/Lean`, which it does not cite.  Unreviewed;
+  its asymptotic tables are not certificates; no Lean statement.
+- [`Brownian_Matrix_Governing_Fabius_Smoothness/`](Brownian_Matrix_Governing_Fabius_Smoothness/),
+  *The Brownian Matrix Governing Fabius Smoothness* (22-page A4 PDF,
+  1,534-line source, an exact-plus-mpmath check program), filed on
+  2026-09-29 by a quick archival intake from the repository-level
+  `docs/incoming/` drop zone.  It takes up the sharp Fourier-decay
+  conjecture `conj:ray-decay` of
+  [`common_digit_fabius_zonoids_frontier_report/`](common_digit_fabius_zonoids_frontier_report/):
+  for distinct moduli every mixed derivative of the joint density obeys
+  `log ‖∂^α f‖_p = ½ αᵀMα + O(|α|+1)` with the Brownian covariance
+  matrix `M_ij = min(λ_i, λ_j)`, the leading ray coefficient of the
+  conjecture holds in a window and relative-measure sense, and at
+  opposite parameters `(r, −r)` the leading cost doubles.  Its envelope
+  area is the one that governs the joint small deviations of the
+  endpoint article above.  The finer periodic remainder is not claimed.
+  Unreviewed; its numerics are diagnostics; no Lean statement.
 
 - [`fabius_iterates_nowhere_analytic/`](fabius_iterates_nowhere_analytic/),
   *Nowhere Analyticity of Every Positive Compositional Iterate of the Fabius

@@ -1,0 +1,730 @@
+{
+  "all_input_outer": {
+    "arbitrary_input_positive_outer_constructions": 168,
+    "exact_actual_source_outer_identities": 168,
+    "largest_checked_width": 768,
+    "sample_parameters": [
+      {
+        "cell_bits": 4,
+        "odd_part": 1,
+        "residue": 3,
+        "step": 3,
+        "two_part": 32,
+        "width": 32,
+        "x": 1
+      },
+      {
+        "cell_bits": 5,
+        "odd_part": 5,
+        "residue": 15,
+        "step": 3,
+        "two_part": 8,
+        "width": 40,
+        "x": 1
+      },
+      {
+        "cell_bits": 6,
+        "odd_part": 3,
+        "residue": 3,
+        "step": 3,
+        "two_part": 16,
+        "width": 48,
+        "x": 1
+      },
+      {
+        "cell_bits": 7,
+        "odd_part": 7,
+        "residue": 7,
+        "step": 3,
+        "two_part": 8,
+        "width": 56,
+        "x": 1
+      },
+      {
+        "cell_bits": 8,
+        "odd_part": 1,
+        "residue": 3,
+        "step": 3,
+        "two_part": 64,
+        "width": 64,
+        "x": 1
+      }
+    ],
+    "scope": "Exact outer registers and congruences materialized. Full positive Pell extensions are parametric.",
+    "transport": "X=2^R, zplus=1+C*(X-2^residue)/(q-1)>1; numerator divisibility checked modulo q-1.",
+    "varied_compiler_admissible_masks": true
+  },
+  "complete_small_kernel": {
+    "R": 3,
+    "X": 8,
+    "Y": 1,
+    "a": 9,
+    "all_new_supplied_coordinates_positive": true,
+    "all_retained_kernel_equations": true,
+    "auxiliary_bit_lengths": {
+      "f": 12914,
+      "i": 12900,
+      "j": 25828,
+      "o": 12923,
+      "y": 25837
+    },
+    "auxiliary_index": 2898,
+    "c": 483,
+    "eta": 415,
+    "first_index_gap": 2,
+    "gamma": 24,
+    "h": 8,
+    "k": 68,
+    "q": 1,
+    "restored_zeta": -347,
+    "scope": "Full modified kernel prototype; outside the external q>=16 hypotheses.",
+    "tau": 577,
+    "tau_gap": 33
+  },
+  "established_universal_bounds_unchanged": {
+    "comparison": 75,
+    "polynomial": 88
+  },
+  "exact_projection": "Every positive ordinary input for every fixed compiled constant tuple.",
+  "first_norm": {
+    "forward_map": "first_index_gap=k-2*tau_gap=2*psi_P(n-1)",
+    "positive_forward_coordinate_cases": 416
+  },
+  "input_reextension": {
+    "exact_positive_input_extension_cases": 60,
+    "scope": "Main and input components at a common base; full outer compiler tuples remain parametric."
+  },
+  "limit": "This exact one-addition rewrite is rejected; no impossibility of other 87-operation formulas is asserted. The complete enormous witness tuples are given by formulas, not numerically materialized.",
+  "source": {
+    "additions_subtractions": 40,
+    "certificate_operations": 86,
+    "comparisons": [
+      [
+        "eight_units",
+        1
+      ]
+    ],
+    "coordinate_map": "zeta_old=2*tau_gap+first_index_gap-eta",
+    "evidence": {
+      "nonpositive_restored_zeta": 87,
+      "positive_supplied": 384,
+      "signed_supplied": 128
+    },
+    "multiplications": 47,
+    "operations": 87,
+    "polynomial_schedule": [
+      [
+        "tau_square",
+        "*",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "twice_tau_gap",
+        "+",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "R10b",
+        "+",
+        "twice_tau_gap",
+        "first_index_gap"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "first_cross",
+        "*",
+        "first_root_base",
+        "first_index_gap"
+      ],
+      [
+        "norm_first",
+        "-",
+        "tau_square",
+        "first_cross"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "R10a"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "wn2"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "zplus",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "strong_difference",
+        "-",
+        "ic22",
+        "R16"
+      ],
+      [
+        "norm_strong",
+        "+",
+        "strong_difference",
+        1
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "R10a"
+      ],
+      [
+        "linear_difference",
+        "-",
+        "aux_u_rhs",
+        "jc"
+      ],
+      [
+        "norm_linear",
+        "+",
+        "linear_difference",
+        "index_difference"
+      ],
+      [
+        "eight_units",
+        "*",
+        "seven_units",
+        "norm_linear"
+      ],
+      [
+        "polynomial",
+        "-",
+        "eight_units",
+        1
+      ]
+    ],
+    "positive_supplied_coordinates": 19,
+    "status": "Rejected: an explicit positive extension accepts every ordinary input.",
+    "unconditional_parent_coordinate_identities": 512
+  },
+  "status": "PASS_ALL_INPUT_UPPER_RATIO_OBSTRUCTION",
+  "theorem_domain": {
+    "full_strong_auxiliary_extension": "Parametric proof; towers not materialized in these fixtures.",
+    "main_fixtures": [
+      {
+        "R": 51,
+        "all_main_equations": true,
+        "all_new_main_coordinates_positive": true,
+        "bit_lengths": {
+          "c": 3201,
+          "eta": 3201,
+          "first_index_gap": 1850,
+          "k": 1927,
+          "tau_gap": 1926
+        },
+        "popcount_R": 4,
+        "q": 16,
+        "required_population": 14,
+        "restored_zeta_negative": true
+      },
+      {
+        "R": 99,
+        "all_main_equations": true,
+        "all_new_main_coordinates_positive": true,
+        "bit_lengths": {
+          "c": 11271,
+          "eta": 11271,
+          "first_index_gap": 6290,
+          "k": 6421,
+          "tau_gap": 6420
+        },
+        "popcount_R": 4,
+        "q": 32,
+        "required_population": 17,
+        "restored_zeta_negative": true
+      },
+      {
+        "R": 195,
+        "all_main_equations": true,
+        "all_new_main_coordinates_positive": true,
+        "bit_lengths": {
+          "c": 41517,
+          "eta": 41517,
+          "first_index_gap": 22370,
+          "k": 22603,
+          "tau_gap": 22602
+        },
+        "popcount_R": 4,
+        "q": 64,
+        "required_population": 20,
+        "restored_zeta_negative": true
+      },
+      {
+        "R": 387,
+        "all_main_equations": true,
+        "all_new_main_coordinates_positive": true,
+        "bit_lengths": {
+          "c": 157875,
+          "eta": 157875,
+          "first_index_gap": 82754,
+          "k": 83185,
+          "tau_gap": 83184
+        },
+        "popcount_R": 4,
+        "q": 128,
+        "required_population": 23,
+        "restored_zeta_negative": true
+      },
+      {
+        "R": 771,
+        "all_main_equations": true,
+        "all_new_main_coordinates_positive": true,
+        "bit_lengths": {
+          "c": 612921,
+          "eta": 612921,
+          "first_index_gap": 315266,
+          "k": 316087,
+          "tau_gap": 316086
+        },
+        "popcount_R": 4,
+        "q": 256,
+        "required_population": 26,
+        "restored_zeta_negative": true
+      }
+    ],
+    "scope": "Valid external q/R scale hypotheses; not complete outer compiler/input tuples."
+  }
+}

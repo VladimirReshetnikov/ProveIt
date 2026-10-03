@@ -66,8 +66,8 @@ lists the formalization targets.
 ## Integer pressure of generalized Thue–Morse products (arrival, 2026-09-28)
 
 [`Thue_Morse_Integer_Pressure/`](Thue_Morse_Integer_Pressure/) holds
-*Integer Pressure and a Missing Taylor Coefficient* (24-page A4 PDF,
-1,604-line source, two exact-arithmetic verifiers), filed on 2026-09-28 by a
+*Integer Pressure and a Missing Taylor Coefficient* (25-page A4 PDF,
+1,646-line source, two exact-arithmetic verifiers), filed on 2026-09-28 by a
 quick archival intake.  For the phase-shifted Riesz weight `cos²π(x−c)`
 under the doubling map it claims that every positive-integer pressure
 `p_m(c)` is real-analytic in `c` (a simple Perron eigenvalue of an explicit
@@ -77,12 +77,15 @@ a strict local maximum of the sixth-moment rate.  At `c = 1/2` these are the
 Mauduit–Montgomery–Rivat moments of the Thue–Morse generating product that
 `Thue_Morse_Frontier_Deductions/` treats (fourth moment as a Stern energy),
 and the `L^q` pressure of the sine cocycle in
-`../rvachev_up_fourier_decay/`.  Unreviewed; no Lean statement.
+`../rvachev_up_fourier_decay/`.  Its question "The first coefficient after
+the cancellation" is answered by the thirteen arrivals of 2026-10-01 below
+(a dated editorial note at the question says so).  Unreviewed; no Lean
+statement.
 
 ## Fractional pressure at the atomic phase (arrival, 2026-09-29)
 
 [`Thue_Morse_Fractional_Pressure/`](Thue_Morse_Fractional_Pressure/) holds
-*Fractional Cusps at the Atomic Phase* (18-page A4 PDF, 1,295-line source, a
+*Fractional Cusps at the Atomic Phase* (18-page A4 PDF, 1,323-line source, a
 SymPy/mpmath identity check with floating-point collocation diagnostics),
 filed on 2026-09-29 by a quick archival intake.  It takes up the
 noninteger question left open by the integer pressure article above: for
@@ -92,13 +95,14 @@ it is exactly `C^{⌈2q⌉−1}` there and no smoother, while at integer `q` the
 cusp cancels the Taylor coefficient that the integer article found missing.
 The argument works in every integer base through a periodized-sinc
 eigenfunction and a sharp Hölder-space relaxation estimate.  Nonzero phases
-and `q ≤ 1/2` are not settled.  Unreviewed; its numerics are diagnostics,
+and `q ≤ 1/2` are not settled (for `q < 1/2` at the atomic phase, see the
+critical and subcritical articles below).  Unreviewed; its numerics are diagnostics,
 not certificates; no Lean statement.
 
 ## Critical and subcritical pressure (arrival, 2026-09-29)
 
 [`Thue_Morse_Critical_Pressure/`](Thue_Morse_Critical_Pressure/) holds
-*Critical Cusps in Digital-Product Pressure* (22-page A4 PDF, 1,632-line
+*Critical Cusps in Digital-Product Pressure* (23-page A4 PDF, 1,691-line
 source, a mixed high-precision/collocation diagnostic program), filed on
 2026-09-29 by a quick archival intake.  It takes up the critical and
 subcritical questions left open by the fractional pressure article above.
@@ -107,9 +111,124 @@ central eigenvalues of the atomic transfer operator collide in a size-two
 Jordan block, and the pressure has a square-root cusp
 `√(2(b−1) log b)·√|c|` in every base `b`; a detuned crossover joins it to
 the supercritical cusp; and for `1/4 < q < 1/2` the pressure has an
-explicit linear cusp `(b−1)π s tan(πs/2)|c|` (`s = 2q`).  `q ≤ 1/4` and
+explicit linear cusp `(b−1)π s tan(πs/2)|c|` (`s = 2q`).  `q ≤ 1/4` is
+taken up at the atomic phase by `Thue_Morse_Subcritical_Pressure/` below;
 nonzero phases are not settled.  Unreviewed; its numerics are
 diagnostics, not certificates; no Lean statement.
+
+## Subcritical pressure at the atomic phase (arrival, 2026-09-29)
+
+[`Thue_Morse_Subcritical_Pressure/`](Thue_Morse_Subcritical_Pressure/) holds
+*Localized Spectral Response and the Full Subcritical Pressure Law*
+(20-page A4 PDF, 1,491-line source, an mpmath/NumPy/SciPy diagnostic
+program), filed on 2026-09-29 by a quick archival intake.  It takes up the
+subcritical interval left open by the critical pressure article above:
+for every `0 < s < 1` (every `0 < q < 1/2` in the binary convention
+`q = s/2`) the pressure has the linear cusp
+`(b−1)π s tan(πs/2)|c|` at the atomic phase, with remainder
+`O(|c|^{1+s−α})` for every `0 < α < s`; when the mask zeros move
+independently the cusp is the polyhedral `π s tan(πs/2)‖ε‖₁`.  The key is
+an `O(|c|)` bound for the perturbation paired with the atomic left
+eigenfunctional.  Nonzero phases and uniformity at `s → 0, 1` are not
+settled.  Unreviewed; its numerics are diagnostics, not certificates; no
+Lean statement.
+
+## Critical corrections and equilibrium selection (arrival, 2026-09-29)
+
+[`Thue_Morse_Critical_Pressure_Corrections/`](Thue_Morse_Critical_Pressure_Corrections/)
+holds *Beyond the Square-Root Cusp* (21-page A4 PDF, 1,512-line source,
+an mpmath/NumPy/SciPy diagnostic program), filed on 2026-09-29 by a quick
+archival intake.  It takes up two questions of the critical pressure
+article above.  At the critical exponent the pressure is
+`κ_b√|c| − (b−1)|c| log(1/|c|) + [b log b + (b−1)(γ−1)]|c| + O(|c|^{3/2−η})`,
+so both a logarithmic and a linear term follow the square root; the
+equilibrium measures at small nonzero phases converge weakly to
+`½δ_0 + ½·Lebesgue`, and along the detuned window `s = 1 + u√|c|` to an
+explicit mixture.  The left boundary layer, a sharp next term and
+unbounded detuning are not settled.  Unreviewed; its numerics are
+diagnostics, not certificates; no Lean statement.
+
+## Periodic anchors and mixed moments (arrival, 2026-09-30)
+
+[`Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/`](Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/)
+holds *Periodic Anchors and Exact Mixed-Moment Phase Diagrams* (21-page
+A4 PDF, 1,484-line source, an exact-arithmetic and diagnostic check
+program), filed on 2026-09-30 by a quick archival intake.  It multiplies
+several phase-shifted digital masks before taking a moment: when the
+phases fill complete periodic orbits of `x ↦ bx` with a common exponent
+per orbit, the pressure is exactly
+`−D log b + max{P_b(v), max_i(Q_i(v) + a_i log b)}` with every
+equilibrium measure classified, giving explicit mixed-moment exponents
+and phase diagrams for a squared shifted background, residue-class
+amplitudes without a background (exactly `3N−2, 4N−2, 4N+4` for the orbit
+`{1/7, 2/7, 4/7}`), explicit polyhedral pressure realizations and an
+expanding-map extension.  With one anchor at `0` it reproduces the
+atomic values of the pressure articles above; phase regularity is not
+treated.  Unreviewed; its numerics are diagnostics, not certificates; no
+Lean statement.
+
+## Taylor-coefficient signs of integer pressure (thirteen arrivals, 2026-10-01)
+
+Thirteen packages filed on 2026-10-01 by a quick archival intake continue
+[`Thue_Morse_Integer_Pressure/`](Thue_Morse_Integer_Pressure/) at the
+atomic phase: they study the signs of the even phase Taylor coefficients
+of the integer pressure `p_m` beyond the missing coefficient at degree
+`2m`.  In logical order (each cites the earlier ones it uses):
+
+- [`…_First_Positive/`](Thue_Morse_Integer_Pressure_First_Positive/):
+  the coefficient at degree `2m+2` is positive for every `m ≥ 2` (the
+  positivity half of that article's question "The first coefficient
+  after the cancellation"), with a finite Bernoulli formula;
+- [`…_Higher_Positive/`](Thue_Morse_Integer_Pressure_Higher_Positive/):
+  degree `2m+4` for every `m`, and `2m+2r` when `m ≥ 3r`;
+- [`…_Positive_Triangle/`](Thue_Morse_Integer_Pressure_Positive_Triangle/):
+  every degree strictly between `2m` and `4m`, with the eigenfunction
+  responses;
+- [`…_Feedback_Boundary/`](Thue_Morse_Integer_Pressure_Feedback_Boundary/):
+  degree `4m`, where eigenvalue feedback enters;
+- [`…_Beyond_Boundary/`](Thue_Morse_Integer_Pressure_Beyond_Boundary/)
+  and [`…_Linear_Region/`](Thue_Morse_Integer_Pressure_Linear_Region/):
+  fixed offsets and a region of linear width above `4m`;
+- [`…_Full_Range/`](Thue_Morse_Integer_Pressure_Full_Range/): every
+  degree strictly between `2m` and `6m`, for every `m ≥ 2`, sharp at
+  `m = 2`;
+- [`…_Sign_Changes/`](Thue_Morse_Integer_Pressure_Sign_Changes/) and
+  [`…_Sign_Densities/`](Thue_Morse_Integer_Pressure_Sign_Densities/):
+  infinitely many coefficients of each sign, at the full exponential
+  scale, with positive lower densities;
+- [`…_Negative_Bound/`](Thue_Morse_Integer_Pressure_Negative_Bound/),
+  [`…_First_Negative/`](Thue_Morse_Integer_Pressure_First_Negative/)
+  and [`…_Cluster_Asymptotics/`](Thue_Morse_Integer_Pressure_Cluster_Asymptotics/):
+  the first negative degree `N_m` satisfies `N_m/m → γ ≈ 6.663`, with a
+  `log log m` correction, and each canonical feedback cluster has a
+  rooted-tree leading asymptotic;
+- [`…_First_Negative_Data/`](Thue_Morse_Integer_Pressure_First_Negative_Data/):
+  certified `N_m` for `2 ≤ m ≤ 128`.
+
+The packages share their notation and several programs and data files;
+the copies they bundled of each other's manuscripts, of two source
+archives and of `Thue_Morse_Integer_Pressure/article.tex` were not filed.
+A nine-page predecessor of the full-range package (*… for Large Integer
+Orders*, `m ≥ 4096`) and a duplicate archive were not filed.  The
+feedback-boundary and full-range packages name trace and interval
+archives that were not delivered; the dataset's intervals re-certify the
+full range's finite part (positive throughout `(2m, 6m)` for
+`2 ≤ m ≤ 128`, checked on filing).  Both sets can be regenerated from the
+filed producers and match their recorded hashes byte for byte (tested on
+filing for seven orders each; see each README's section "Reconstructing
+the trace archives" or "Reconstructing the interval archives").
+The editorial pass of 2026-10-01 gave every package a dated series map
+naming these directories and the filed
+directory of every source it cites, and notes saying which package
+subsumes which (the triangle contains the first two packages; the full
+range contains the pressure statements of the boundary, offset and linear
+packages; the first-negative asymptotic implies the `liminf` bound; the
+densities imply the infinite sign changes) and which later package answers
+each question left open; every checker that rewrote a record now writes to
+`rerun/` (see each README, "Editorial amendments").  Consolidating the
+thirteen into one companion volume remains a follow-up.  Unreviewed; no
+Lean statement of these results (crosswalk notes in the first-positive and
+cluster packages name neighbouring declarations).
 
 Parts I and II carry extensive inline Lean crosswalks, and Part III cites the prefix and approximation modules by declaration name. As of 2026-08-28,
 `ThueMorseComplexProductBridge.lean` supplies the finite-product core in total

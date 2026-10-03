@@ -2,7 +2,8 @@
 
 ## Exact Moment Fibres and Logarithmic Instability Near the Fabius–Rvachev Law
 
-This package contains a self-contained 20-page research article, its LaTeX
+This package contains a self-contained 21-page research article (20 pages
+before the editorial notes of 2026-09-29), its LaTeX
 source, exact-arithmetic verification code, and the output of a completed run.
 It was prepared in response to a request to develop a research extension of
 Vladimir Reshetnikov's ProveIt repository.
@@ -88,3 +89,82 @@ support containment, not exact support endpoints ±1; the separate analytic
 moment-fibre theorem preserves those exact endpoints. No estimator achieving
 the lower rate is claimed. The article is unrefereed and no Lean formalization
 is supplied.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+In the editorial pass after batch 54 of the repository-level `docs/incoming/`
+drop zone (see `docs/incoming/README.md`), a later package of this tree was
+found to take up one of its research questions. The article gains reciprocal notes; its
+mathematical text is unchanged.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style.
+- `article.tex`: after the research question "Gaussian components and
+  square-summable spectra", a note records that
+  `../Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/` (filed
+  2026-09-29, unreviewed) answers it for the Gaussian-variance functional,
+  in a model with a known smooth compactly supported background: exact
+  minimax risk `V/2` without a tail restriction, and uniform consistency on
+  a compact class exactly when its squared-scale tails vanish uniformly.
+  Quantitative stability of the scales themselves is not treated there. The
+  note is marked `% ed.`.
+- `article.pdf`: rebuilt with `sh build.sh` (three pdflatex passes) (MiKTeX pdfTeX): 21 pages (20 before; the note adds one), 505,903
+  bytes; no error, undefined reference, rerun request, duplicate
+  destination or overfull box; no Type 3 font.
+  `data/pdf_review.txt` is the delivered record of the 20-page build.
+
+In the editorial pass after batch 57, a later package of this tree was found
+to answer four more of its research questions at the dyadic reference.
+
+- `article.tex`: four further notes, each marked `% ed.`, citing
+  `../Anchored_Dyadic_Recovery_Uniform_Spectrum/` (filed 2026-09-29,
+  unreviewed). After "Pointwise recovery of the exact dyadic spectrum": the
+  anchored modulus on `K` (and on `A_L`, `L > 1`), in total variation or
+  Kolmogorov distance, has the exact scale `exp[-Theta(sqrt(log(1/eps)))]`,
+  so no Hoelder exponent, yet it is eventually below the pairwise lower
+  bound `(eq:modulus-lower)`; its leading constant is bracketed only. After
+  "Geometrically separated classes": separation `a_(j+1) <= q a_j` with any
+  fixed `q in (1/2, 1)` does not restore a power law at the dyadic
+  reference; the pairwise modulus and `q = 1/2` remain open. (The boundary
+  case `q = 1/2` was answered later at the dyadic reference, with a
+  `Theta(sqrt(epsilon))` modulus; see the editorial amendments of 2026-09-30
+  below.) After "Fixed
+  leading factors versus the complete sequence": every fixed prefix is
+  locally Lipschitz-stable at the dyadic reference on `A_L`, `L >= 1`, with
+  `log C_(L,r) <= (log 2) r^2 + O_L(r+1)`; the optimal growth in `r` is open.
+  After "Matching statistical upper bounds": only an anchored testing
+  version (`exp[Theta(log^2(1/delta))]` samples, confidence sets contracting
+  at the dyadic spectrum); a global estimator with a proved risk bound
+  remains open. The mathematical text is unchanged.
+- `article.pdf`: rebuilt again with `sh build.sh` (MiKTeX 26.2 pdfTeX 1.40.29): 21 pages,
+  509,992 bytes; no error, undefined reference, rerun request,
+  duplicate destination or overfull box; no Type 3 font; the pages carrying
+  the notes were rendered and inspected.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batches 69 and 70 of the repository-level
+`docs/incoming/` drop zone (see `docs/incoming/README.md`); the change to the
+source is marked `% ed. (2026-09-30)`. The mathematical text is unchanged.
+
+- `article.tex`: a second unnumbered environment `ednotelater` ("Editorial
+  note (ProveIt, 2026-09-30)") is defined after `ednote`. Under "Geometrically
+  separated classes", after the 2026-09-29 note (which still says that the
+  boundary case `q = 1/2` remains open), a note records that
+  `../Lacunarity_Boundary_Geometric_Uniform_Spectra/` (filed 2026-09-30,
+  batch 68, unreviewed) answers that case at the dyadic reference: on
+  `{a in K : a_(j+1) <= a_j/2 for all j}` the anchored modulus at the dyadic
+  spectrum is `Theta(sqrt(epsilon))`, a power law, in total variation and in
+  Kolmogorov distance, from the fourth-moment certificate
+  `sup_j |a_j - 2^(-j)|^2 <= (75/4)(19/675 - E X_a^4)` and explicit
+  deleted-factor witnesses, so the stretched-exponential scale for
+  `q in (1/2, 1)` does not persist at the boundary. The pairwise modulus on
+  separated classes remains open. That package's own editorial note already
+  pointed here.
+- `article.pdf`: rebuilt with three `pdflatex` passes, as `build.sh` runs
+  them (MiKTeX 26.2, pdfTeX 1.40.29): 21 pages, 512,683 bytes; no error,
+  undefined reference, rerun request, duplicate destination or overfull box
+  (the two underfull boxes of the previous build remain); no Type 3 font;
+  the page carrying the note was rendered and inspected.
+- `README.md`: the parenthesis after the 2026-09-29 bullet on
+  "Geometrically separated classes", and this section.

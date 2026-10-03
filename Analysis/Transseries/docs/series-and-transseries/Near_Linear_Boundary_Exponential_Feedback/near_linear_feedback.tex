@@ -43,6 +43,9 @@
 and a cascade of Borel-growth resonances}
 \author{Research study prepared for Vladimir Reshetnikov's ProveIt program}
 \date{29 September 2026}
+% ed. (2026-09-29): editorial-note environment for ProveIt cross-references;
+% it uses no counter, so no author numbering changes.
+\newenvironment{ednote}{\par\smallskip\begin{quote}\small\raggedright\textbf{Editorial note (ProveIt, 2026-09-29).}\ }{\end{quote}\smallskip}
 \begin{document}
 \maketitle
 \thispagestyle{empty}
@@ -1364,6 +1367,24 @@ cancellation on other rays. Compare any resulting Laplace sums with the
 left-sector analytic fixed points constructed in the repository feedback
 article. Neither an entire Borel transform nor coefficient Gevrey bounds
 alone proves that the two analytic constructions coincide.
+% ed. (2026-09-29): partly answered by the later negative-ray and sectorial-summability packages (unit amplitudes).
+\begin{ednote}
+Partly answered, for unit amplitudes, by two packages filed later in
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/}. The
+near-linear class has $A=\limsup\lambda_j/(j\log j)^2=0$, so
+\nolinkurl{Negative_Ray_Summation_Exponential_Feedback/}
+(its Theorems~\texttt{thm:threshold} and \texttt{thm:borel}) gives fine (fixed-width
+half-strip) Borel--Laplace summability of $\Uhat$ and of its inverse in
+direction $\pi$, an entire inverse Borel transform with exponential growth
+on a tube around the negative ray, and sums that satisfy the literal kernel
+near the negative axis. Since $jL(j)=O((j\log(j+1))^{1+1/k})$ for every
+$k>1$,
+\nolinkurl{Sharp_Negative_Direction_Summability_Exponential_Feedback/}
+(its Theorems~\texttt{thm:headline} and \texttt{thm:ksum}) gives $k$-summability in direction
+$\pi$ for every $k>1$, with sum the canonical left-sectorial solution.
+Neither package treats the growth of $\Bcal_\sigma$ in sectors for general
+$\sigma$ or amplitudes $c_j\ne1$, and neither cites this question.
+\end{ednote}
 
 \subsection{Compatible acceleration and optimal truncation}
 Use the scale $\nu_1$ to construct an acceleration, if possible, which
@@ -1373,6 +1394,17 @@ threshold in Proposition~\ref{prop:damping} is only a necessary guide.
 For a specified sectorial realization, also establish uniform remainder
 bounds and an actual optimal-truncation theorem. Coefficient-root growth
 alone does not certify errors of truncated analytic solutions.
+% ed. (2026-09-29): uniform remainder part answered for unit amplitudes by the sectorial-summability package.
+\begin{ednote}
+The uniform-remainder part is answered for unit amplitudes by
+\nolinkurl{Sharp_Negative_Direction_Summability_Exponential_Feedback/}
+(its Theorem~\texttt{thm:headline}): the canonical left-sectorial solution has
+strong Gevrey-$s$ remainder bounds on every proper left sector for every
+$s>0$, because $jL(j)=O((j\log(j+1))^{s+1})$. Its optimized truncation
+errors (Theorem~\texttt{thm:logheadline}) assume power growth $j^p$ with $p>1$ and
+do not cover this class. The acceleration and an actual optimal-truncation
+theorem remain open.
+\end{ednote}
 
 \subsection{Inversion and parameter limits beyond fixed resonances}
 Determine the exact root-growth scale of the compositional inverse of
@@ -1382,6 +1414,36 @@ Theorem~\ref{thm:resonance-layer} to an increasing resonance index $m$,
 or to the transition $\gamma\uparrow1$ at a rate depending on $t$.
 That limit requires uniform control of a growing number of reversion
 terms and should connect to the genuinely superlinear regime.
+% ed. (2026-09-29): cross-link to the weighted-type package's zero-loss theorem (not an answer).
+% ed. (2026-09-29, batch 52): last clause "so the question stays open" replaced by a pointer to the next note.
+\begin{ednote}
+\nolinkurl{Sharp_Weighted_Type_Formal_Reversion/} proves a
+kernel-independent zero-loss theorem (its Theorem~\texttt{thm:zeroloss}): for
+log-convex weights with $M_n^{1/n}\to\infty$ reversion preserves the
+weighted type. It would settle the root scale of the inverse here if the
+weight $e^{nb_n}$ were shown to be eventually log-convex; neither package
+proves this. See the next note.
+\end{ednote}
+% ed. (2026-09-29, batch 52): the limsup root scale of the inverse follows from a later package (editorial deduction, re-derived on filing)
+\begin{ednote}
+Log-convexity is not needed. The later package
+\nolinkurl{Exact_Weighted_Type_Beyond_Log_Convexity/} (batch~52; not
+independently reviewed) shows that reversion preserves the type for every
+weight that is subexponentially equivalent to a supermultiplicative weight
+with roots tending to infinity (its Theorem~\texttt{thm:classificationintro}),
+and that a nonunit linear coefficient $c_1$ divides the inverse type by
+$|c_1|$ (its Corollary~\texttt{cor:scalarscaling}). By
+Lemma~\ref{lem:b}, $b$ is eventually nondecreasing with $b\to\infty$ and
+$b=o(\log x)$; so, after arbitrary positive values are given to $b_m$ at the
+finitely many small $m$ where it is undefined, $V_n=\exp(n\max_{m\le n+1}b_m)$
+has nondecreasing roots, is supermultiplicative with $V_n^{1/n}\to\infty$, and
+eventually $\log\bigl(V_n/\ee^{(n+1)b_{n+1}}\bigr)=-b_{n+1}=o(n)$. The weight
+$\ee^{mb_m}$ is therefore admissible, $\Uhat$ has type $c_1$ for it by
+Theorem~\ref{thm:main}, and the inverse coefficients $q_n$ satisfy
+$\limsup_n|q_n|^{1/n}\ee^{-b_n}=1$. Whether $|q_n|^{1/n}\ee^{-b_n}$
+converges remains open. This deduction is editorial; it is not stated in
+either article.
+\end{ednote}
 
 \subsection{Formal proofs and certified asymptotic computation}
 A practical Lean sequence starts with the finite coefficient formula,
@@ -1428,7 +1490,9 @@ research tasks rather than consequences asserted without proof.
 \label{app:sources}
 
 \subsection{Pinned repository source}
-The initial survey used the repository root tree
+% ed. (2026-09-29): "repository root tree" corrected to "repository commit";
+% the identifier below names a commit, not a tree object.
+The initial survey used the repository commit
 \begin{center}\small\ttfamily
  a795fcffa4b3ece22761d81fbed3c43be8b81795.
 \end{center}
@@ -1449,6 +1513,13 @@ Its blob hash is
 \begin{center}\small\ttfamily
  c6a83d71973a12fe7ed970d2abc56e2b49e6808f.
 \end{center}
+% ed. (2026-09-29): records the correction of the identifier type.
+\begin{ednote}
+The delivered text called the first identifier above a ``repository root
+tree''. It is a commit (the batch-45 catalogue commit; see
+\nolinkurl{docs/incoming/README.md}), and the wording was corrected. The
+``transseries project tree'' identifier is indeed a tree.
+\end{ednote}
 The contiguous source range 1400--1605 contains the further-research
 section, including the near-linear, amplitude, and summation questions.
 The source range 350--530 contains the positive coefficient formula,

@@ -37,6 +37,10 @@
 \newtheorem{question}[theorem]{Question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
 \newcommand{\C}{\mathbb C}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Z}{\mathbb Z}
@@ -1385,6 +1389,38 @@ eigenvalues remain isolated, and how do unmatched endpoint jets interact
 with the noncompact part? The exact boundary intertwining relation provides
 a starting point, but the analytic determinant cannot simply be transferred.
 \end{question}
+% ed. (2026-09-29): the Sobolev part is answered by a later package.
+\begin{ednote}
+The later repository article
+\path{rvachev_up_fourier_decay/Sobolev_Spectral_Disks_Rvachev_Thue_Morse/}
+(filed 2026-09-29, unreviewed) answers the Sobolev part. On the periodic
+spaces $H^{s,\beta}$ (Sobolev spaces with a logarithmic weight) the
+spectrum of $\Lop_2$ is the closed disk of radius
+$2^{-s}\sqrt{1+\sqrt{17}}/4$, all of it essential spectrum, together with
+$1/2$ and $-1/4$; the value $1/2$ lies outside the disk exactly for
+$s>s_0=\tfrac12\log_2\frac{1+\sqrt{17}}4\approx0.1785$, and $-1/4$ exactly
+for $s>s_0+1$. In particular $-1/4$ is not an isolated eigenvalue on $L^2$
+or $H^1$. On the interval spaces $H^r(0,1)$, $r$ a nonnegative integer, the
+same description holds with $s=r$; unmatched endpoint jets add no nonzero
+spectrum. H\"older, $C^r$ and weighted endpoint spaces are not treated
+there.
+\end{ednote}
+% ed. (2026-09-30): the integer C^r part is answered by a later package (batch 70).
+\begin{ednotelater}
+The integer $C^r$ part is answered by the later repository article
+\path{rvachev_up_fourier_decay/Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/}
+(filed 2026-09-30, batch~70 of the repository's \path{docs/incoming/};
+unreviewed). On $C^r$ of the circle and on $C^r([0,1])$, for every integer
+$r\ge0$, the Fredholm essential spectrum of $\Lop_2$ is the closed disk of
+radius $2^{-r-1}$, every point of the open disk being an eigenvalue of
+infinite multiplicity, and the spectrum is that disk together with $1/2$
+and $-1/4$. The value $1/2$ is isolated (and simple) exactly when $r\ge1$,
+and $-1/4$ is isolated (semisimple, of multiplicity two) exactly when
+$r\ge2$; on $C^0$ the value $1/2$ lies on the boundary of the essential
+disk. Unmatched endpoint jets add no spectrum for this mask, and the
+essential disk is proved for every smooth dyadic Markov weight. Noninteger H\"older
+and weighted endpoint spaces remain open.
+\end{ednotelater}
 
 \begin{question}[Even-power matrix structure]
 For the integer matrices $B_m$, classify realness, simplicity, interlacing,
@@ -1440,6 +1476,21 @@ $g\mapsto\sum_{k\ne0}\alpha(|k|)\widehat g(k)$ extends continuously,
 and identify any useful distributional, refinement, or arithmetic
 interpretation of this functional.
 \end{question}
+% ed. (2026-09-29): answered on the Sobolev scale by an earlier and a later
+% package of the repository.
+\begin{ednote}
+On the Sobolev scale this question is answered in the repository. The
+sequence $\alpha$ is $\alpha(k)=B_k(-2)$, the Stern polynomials evaluated
+at $-2$, and the functional extends continuously to the Sobolev space $H^s$
+of the circle exactly for $s>s_0+1$, with $s_0$ as in the note after
+``Spectra at finite smoothness''; both facts are in Part~I of
+\path{thue-morse/Thue_Morse_Frontier_Deductions/} (filed 2026-09-05, before
+this article, which does not cite it). The later article
+\path{rvachev_up_fourier_decay/Sobolev_Spectral_Disks_Rvachev_Thue_Morse/} adds the
+logarithmic endpoint: on $H^{s_0+1,\beta}$ the functional is continuous
+exactly when $\beta>1/2$. Other regularity classes and further arithmetic
+interpretations are not treated.
+\end{ednote}
 
 \begin{question}[Verified constants and complete repository integration]
 Produce Lean or Rocq proof objects for the finite certificate and the

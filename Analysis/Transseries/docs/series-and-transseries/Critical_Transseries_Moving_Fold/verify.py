@@ -178,8 +178,11 @@ def numerical_checks(quick: bool) -> dict[str,Any]:
             'qualification':'Floating-point diagnostics; not interval certificates.'}
 
 
-def write_tables(data: dict[str,Any]) -> None:
-    out=ROOT/'data'; out.mkdir(exist_ok=True)
+def write_tables(data: dict[str,Any], out: Path) -> None:
+    # ProveIt edit (2026-09-29): output directory is a parameter (quick runs
+    # no longer overwrite the article's recorded tables), and files are
+    # written with LF line endings on every platform.
+    out.mkdir(parents=True, exist_ok=True)
     def upper_scientific(value: str) -> str:
         x = Decimal(value)
         quantum = Decimal(1).scaleb(x.adjusted() - 3)
@@ -187,22 +190,25 @@ def write_tables(data: dict[str,Any]) -> None:
     p=[]
     for row in data['numerical']['profile_tests']:
         p.append(f"{row['s']} & {row['q']} & \\num{{{float(row['absolute_error']):.3e}}} & \\num{{{upper_scientific(row['proved_bound'])}}}" + " " + chr(92)*2)
-    (out/'profile_table.tex').write_text('\n'.join(p)+'\n')
+    (out/'profile_table.tex').write_text('\n'.join(p)+'\n',encoding='utf-8',newline='\n')
     p=[]
     for row in data['numerical']['crossover_tests']:
         p.append(f"{row['tau']} & {row['n']} & {float(row['ratio']):.9f} & {float(row['limit']):.9f} & \\num{{{float(row['corrected_error']):.2e}}}" + " " + chr(92)*2)
-    (out/'crossover_table.tex').write_text('\n'.join(p)+'\n')
+    (out/'crossover_table.tex').write_text('\n'.join(p)+'\n',encoding='utf-8',newline='\n')
 
 
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--quick',action='store_true',help='omit the n=400 diagnostics')
+    parser.add_argument('--quick',action='store_true',help='omit the n=400 diagnostics (writes into data/quick/)')
     args=parser.parse_args()
     data={'exact':exact_checks(),'numerical':numerical_checks(args.quick),
           'versions':{'sympy':sp.__version__,'mpmath':mp.__version__}}
-    out=ROOT/'data'; out.mkdir(exist_ok=True)
-    (out/'verification.json').write_text(json.dumps(data,indent=2)+'\n')
-    write_tables(data)
+    # ProveIt edit (2026-09-29): a --quick run writes into data/quick/, so it
+    # cannot replace the full-run tables that article.tex inputs.
+    out=ROOT/'data'/'quick' if args.quick else ROOT/'data'
+    out.mkdir(parents=True,exist_ok=True)
+    (out/'verification.json').write_text(json.dumps(data,indent=2)+'\n',encoding='utf-8',newline='\n')
+    write_tables(data,out)
     print(json.dumps(data,indent=2))
 
 if __name__=='__main__':

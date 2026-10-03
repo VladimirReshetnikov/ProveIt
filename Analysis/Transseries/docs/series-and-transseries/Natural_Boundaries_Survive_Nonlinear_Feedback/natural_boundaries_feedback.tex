@@ -1,0 +1,1421 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,unicode]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Natural Boundaries Survive Nonlinear Feedback},pdfauthor={Research article prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Partial theta level sets, transseries, fine versus angular Borel summation}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Natural boundaries and nonlinear feedback}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\setlist{leftmargin=1.8em,itemsep=4pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{definition}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
+\newcommand{\C}{\mathbb C}\newcommand{\R}{\mathbb R}\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}
+\newcommand{\Uhat}{\widehat U}\newcommand{\Qhat}{\widehat Q}
+\newcommand{\Rea}{\operatorname{Re}}\newcommand{\Ima}{\operatorname{Im}}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\e}{\mathrm e}
+\newcommand{\B}{\mathcal B_0}\newcommand{\Hh}{\mathcal H}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\norm}[1]{\lVert #1\rVert}
+\newcommand{\co}[2]{[#1^{#2}]}
+\newcommand{\inv}{\langle-1\rangle}
+\begin{document}
+% ed. (2026-09-29): no page anchors on the title page, which the titlepage environment numbers 1 like the following page (removes a duplicate-destination warning).
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering\vspace*{10mm}
+{\small\scshape Research in transseries and analytic continuation\par}
+\vspace{9mm}
+{\LARGE\bfseries Natural Boundaries Survive\par Nonlinear Feedback\par}
+\vspace{7mm}
+{\Large Moving-parameter partial theta series,\par sharp half-plane realization,\par and the failure of angular Borel summation\par}
+\vspace{11mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{3mm}29 September 2026
+\vspace{10mm}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+For an integer $d\ge2$, consider the formally well-defined equation
+\[
+ \Uhat_d(q)=\sum_{j\ge1}q^j\exp\!\bigl(j^d\Uhat_d(q)\bigr)
+\]
+and its compositional inverse $\Qhat_d$. We prove that the canonical actual
+inverse $Q_d$, holomorphic in a sufficiently small left half-disc and smooth
+up to its diameter, has that entire imaginary diameter as a natural boundary.
+The obstruction survives analytic changes of the moving parameter, analytic
+changes of the level set, and finite modifications of the feedback kernel.
+The main tool is an explicit large-order theorem: periodic geometric moments
+retain factorial growth after substitution along an arbitrary holomorphic
+curve. A mean-square argument treats tied nearest poles without assuming a
+unique dominant singularity.
+
+% ed. (2026-09-29): at d = 2 this answer duplicates an earlier-filed package; see the editorial notes in Section 1.1 and after Theorem thm:quadratic-main.
+For $d=2$, this resolves the angular-continuation question left open in the
+repository's negative-ray summation article: both inverse and forward formal
+series are finely Borel summable on the negative ray, but neither is
+Borel summable in any open angular neighborhood of that direction. In
+particular, an entire Borel transform does not supply an angular summation
+sector. We also give convergent exponential blocks, uniform closed-half-disc
+remainders for every $d\ge2$, an explicit optimized error scale, finite
+verification programs, and further research questions.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Proof status.} The new assertions are accompanied by conventional
+mathematical proofs. They have not been checked in Lean or independently peer
+reviewed. The contribution is a model-specific natural-boundary and
+non-summability theorem, not a claimed solution of a named longstanding
+conjecture. The literature and repository comparison is targeted; global
+priority is not asserted.
+\end{minipage}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\setcounter{tocdepth}{2}\tableofcontents\clearpage
+
+\section{The question resolved and the contribution boundary}
+\label{sec:context}
+\subsection{The precise repository problem}
+The ProveIt transseries documents distinguish formal coefficient calculations,
+actual analytic realizations, remainder estimates, and summability. Those
+levels must not be conflated. In the feedback family
+\begin{equation}
+ \Uhat(q)=\sum_{j\ge1}q^j\e^{\lambda_j\Uhat(q)},\qquad \lambda_j\ge0,
+ \label{eq:general-feedback}
+\end{equation}
+several recent repository articles establish regularity classifications and
+negative-direction realizations \cite{repo-reg,repo-sector,repo-fine}.
+The most direct predecessor, \emph{Negative-Ray Summation of Countable
+Exponential-Feedback Transseries}, proves fine negative-ray summability at the
+threshold $\lambda_j=O((j\log(j+1))^2)$. It explicitly does not claim angular
+summability or a maximal continuation domain \cite{repo-fine}.
+
+This paper addresses the missing angular question for the quadratic model
+$\lambda_j=j^2$, and proves a natural-boundary theorem for the larger family
+$\lambda_j=j^d$, $d\in\N$, $d\ge2$. The answer in the quadratic case is
+\emph{negative}: fine summation cannot be enlarged to an open angular interval
+containing the negative direction. The reason is a natural boundary of the
+actual inverse, not failure of the Borel germ to continue to finite points.
+% ed. (2026-09-29): the d = 2 answer is not new to the repository.
+\begin{ednote}
+For $d=2$ this question had already been answered negatively, independently,
+by an earlier-filed package that this article could not see \cite{ed:nbq}; see
+the editorial note after Theorem~\ref{thm:quadratic-main}. The cases
+$d\ge3$ are new to the repository.
+\end{ednote}
+
+The source snapshot used for the final comparison is
+\begin{center}\small\texttt{ebd8344bca77d8352cd745b7df374618a290a029}.\end{center}
+The principal files are under
+\path{Analysis/Transseries/docs/series-and-transseries/}.
+The source inventory and exact blob identifiers are recorded in the package's
+provenance file. No repository files were changed. The canonical large volume
+was not audited line by line, and no assertion about the entire repository's
+formal proof status is needed here.
+
+\subsection{Main statements}
+Write
+\begin{equation}
+ \Theta_d(q,u)=\sum_{j\ge1}q^j\e^{j^d u},\qquad
+ H_r^- =\{u:|u|<r,\ \Rea u<0\}.
+ \label{eq:theta}
+\end{equation}
+For $|q|<1$, the series and all its mixed derivatives extend continuously to
+$\Rea u=0$. The defining identity for the actual inverse is
+\begin{equation}
+ \Theta_d(Q_d(u),u)=u,\qquad Q_d(u)=u+O(u^2).
+ \label{eq:inverse}
+\end{equation}
+
+\begin{theorem}[Natural boundary of the inverse and forward realization]
+\label{thm:main}
+For each integer $d\ge2$, there is $r>0$ such that:
+\begin{enumerate}[label=(\roman*)]
+\item Equation \eqref{eq:inverse} has a unique small solution $Q_d$ on
+$H_r^-$. It is holomorphic there and $C^\infty$ up to the imaginary diameter,
+including the origin.
+\item No point of $\{it:|t|<r\}$ admits a holomorphic continuation of $Q_d$
+through the diameter. Thus this whole boundary arc is a natural boundary.
+\item After reducing $r$, $Q_d$ is one-to-one, and its inverse $U_d$ is
+holomorphic on $\Omega_d=Q_d(H_r^-)$. The smooth arc
+$\Gamma_d(t)=Q_d(it)$ is a natural boundary of $U_d$.
+\item Uniformly as real $t\to0$,
+\begin{equation}
+ \Gamma_d(t)=it+2t^2-i\bigl(\tfrac92-2^d\bigr)t^3+O(t^4).
+ \label{eq:boundary-shape-main}
+\end{equation}
+Neither canonical realization can be continued to a sector about the negative
+axis with opening strictly greater than $\pi$.
+\end{enumerate}
+\end{theorem}
+The phrase ``natural boundary'' here refers to the displayed boundary arc.
+It is not a claim that the circular edge $|u|=r$ is singular or that the small
+half-disc is a globally maximal domain.
+
+\begin{theorem}[Fine but not angular in the quadratic case]
+\label{thm:quadratic-main}
+For $d=2$, the formal series $\Qhat_2$ and $\Uhat_2$ have entire integrated
+Borel transforms and are finely Borel summable along the negative ray. Their
+sums are $Q_2$ and $U_2$ near that ray. Neither formal series is $1$-summable in
+an open angular interval containing direction $\pi$.
+
+The same fine-versus-angular conclusion holds when finitely many of the
+nonnegative slopes $j^2$ in \eqref{eq:general-feedback} are changed to other
+finite nonnegative values.
+\end{theorem}
+Precise summability conventions are given in Section~\ref{sec:summability}.
+Fine summability means a fixed-width Borel tube; angular summability means a
+Borel sector with locally uniform exponential bounds. These are different
+requirements.
+
+% ed. (2026-09-29): the case d = 2 duplicates an earlier-filed package (batch 49), not visible from this article's snapshot.
+\begin{ednote}
+The case $d=2$ of Theorems~\ref{thm:main} and~\ref{thm:quadratic-main} was
+proved independently in
+\path{Natural_Boundaries_Quadratic_Exponential_Feedback/} \cite{ed:nbq} (its
+Theorem~\texttt{thm:main}), filed earlier and not visible from this
+article's snapshot, with the explicit radius $1/32$, the bound
+$|Q'-1|<1/3$ and the further conclusion that the image arc is nowhere
+real-analytic. Its Theorem~\texttt{thm:rigidity} is the case $d=2$ of
+Theorem~\ref{thm:moving}, and its Theorem~\texttt{thm:rational-main} extends
+the $d=2$ conclusions to rational amplitude series. The exact coefficients
+at $d=2$ agree with that package's recorded ones (through degree 16). The cases $d\ge3$ answer
+that package's question ``Higher-degree and nonpolynomial slopes'' for
+integer $d$; noninteger powers remain open.
+\end{ednote}
+
+\subsection{What is new, inherited, and deliberately not claimed}
+The principal new mechanism is the moving-curve moment theorem in
+Section~\ref{sec:moving}. A fixed-parameter lacunary-series theorem alone does
+not settle \eqref{eq:inverse}: its parameter $q$ changes with $u$, so one must
+exclude cancellation by that motion. The resulting natural boundary and
+angular obstruction are the proposed research contribution.
+% ed. (2026-09-29): at d = 2 the moving-curve theorem and the obstruction are also in an earlier-filed package.
+\begin{ednote}
+At $d=2$ the moving-curve theorem, the natural boundary and the angular
+obstruction are also in \cite{ed:nbq} (see the editorial note after
+Theorem~\ref{thm:quadratic-main}); they are new to the repository for
+$d\ge3$.
+\end{ednote}
+
+The coefficient/Gevrey classification and the positive fine-summability
+result are earlier repository results. Sections~\ref{sec:blocks}--\ref{sec:summability}
+recover the quadratic positive result in a specialized form to make the
+contrast transparent. General Laplace summation and its nonlinear closure are
+classical \cite{sokal,sauzin}. Partial-theta boundary asymptotics, rational
+boundary points, and discrete Fourier transforms also have a substantial
+literature \cite{hlss,folsom}. The new argument here concerns a geometric
+parameter constrained by a nonlinear level-set equation, not a new discovery
+of theta-series boundary phenomena.
+
+We do not infer failure of resurgence merely from a natural boundary of the
+summed function. Nor do we identify a Stokes constant from an upper remainder
+bound. For $d>2$, the natural-boundary assertion is about the canonical
+literal realization; no unsupported identification with every possible
+higher-order summation procedure is made.
+
+\section{Formal series and actual half-plane solutions}
+\label{sec:realization}
+\subsection{Formal existence is not analytic existence}
+Let $\C[[q]]$ have its coefficientwise, or $q$-adic, topology. If $V,W$ have
+zero constant term and agree modulo $q^n$, then
+\[
+ \sum_{j\ge1}q^j\e^{j^dV}
+ \equiv\sum_{j\ge1}q^j\e^{j^dW}\pmod{q^{n+1}}.
+\]
+Each coefficient uses only finitely many $j$. Iteration beginning with zero
+therefore yields a unique formal solution $\Uhat_d=q+O(q^2)$.
+It has a unique compositional inverse $\Qhat_d=u+O(u^2)$, and substitution
+in the formal identity gives
+\[
+ \sum_{j\ge1}\Qhat_d(u)^j\e^{j^d u}=u.
+\]
+No analytic implicit-function theorem at $(q,u)=(0,0)$ is being applied: the
+kernel need not be holomorphic on a full product neighborhood of that point.
+This distinction also matters when applying general Gevrey implicit-function
+theorems such as \cite{nikolaev}.
+
+Direct coefficient comparison gives
+\begin{align}
+ \Uhat_d(q)&=q+2q^2+\bigl(2^d+\tfrac72\bigr)q^3+O(q^4),\label{eq:first-U}\\
+ \Qhat_d(u)&=u-2u^2+\bigl(\tfrac92-2^d\bigr)u^3+O(u^4).
+ \label{eq:first-Q}
+\end{align}
+For $d=2$ the next coefficients are
+\begin{align}
+ \Uhat_2(q)&=q+2q^2+\tfrac{15}{2}q^3+\tfrac{107}{3}q^4
+                 +\tfrac{1555}{8}q^5+O(q^6),\label{eq:quadratic-U}\\
+ \Qhat_2(u)&=u-2u^2+\tfrac12u^3-\tfrac23u^4
+                 -\tfrac{29}{8}u^5+O(u^6).
+ \label{eq:quadratic-Q}
+\end{align}
+These finite identities are checked independently in the accompanying program.
+
+\subsection{A uniform small root, including boundary values}
+\begin{lemma}[Smooth half-plane implicit root]
+\label{lem:root}
+Let $f$ be holomorphic near zero, with $f(0)=0$. For every fixed $d\ge2$,
+a sufficiently small closed left half-disc admits a unique small root
+$q=Q_f(u)$ of
+\begin{equation}
+ \Theta_d(q,u)=f(u).
+ \label{eq:forced}
+\end{equation}
+It is holomorphic in the open half-disc, $C^\infty$ up to its diameter, and
+$Q_f(u)=f(u)+O(|u f(u)|+|f(u)|^2)$. The root vanishes exactly where $f$ does.
+For $f(u)=u$, its boundary Taylor coefficients are those of $\Qhat_d$.
+\end{lemma}
+\begin{proof}
+Separate the first term and use the fixed point
+\[
+ q=T_u(q):=\e^{-u}\left(f(u)-\sum_{j\ge2}q^j\e^{j^d u}\right).
+\]
+On $|q|\le R=1/8$, $\Rea u\le0$, the tail and its $q$-derivative are bounded by
+\[
+ \frac{R^2}{1-R},\qquad \frac1{(1-R)^2}-1.
+\]
+Choose $|u|\le1/16$ and then shrink the radius so that $|f(u)|\le R/4$.
+The displayed bounds show that $T_u$ maps the closed $R$-disc strictly into
+itself and has Lipschitz constant less than $1/2$. Uniform iteration gives the
+root and holomorphic dependence for $\Rea u<0$. Comparison with $T_u(0)$
+gives $|Q_f(u)|\le2\e^{|u|}|f(u)|$; reinsertion gives the stated expansion.
+
+For each fixed pair of derivative orders, the mixed derivatives of the kernel
+on a smaller $q$-disc are dominated by a convergent series of the form
+$C\sum_{j\ge1}j^M R_1^j$, $R_1<1$. Thus every mixed derivative is continuous
+up to $\Rea u=0$. The denominator $1-\partial_qT_u$ stays bounded away from
+zero. Repeated implicit differentiation therefore extends all derivatives of
+the root continuously to the diameter. This also proves the stated
+$C^\infty$ regularity without assuming holomorphy across the diameter.
+
+Since $\Theta_d(0,u)=0$, uniqueness implies the assertion about zeros.
+Differentiation at zero, or finite Taylor comparison, identifies each finite
+jet with the unique formal solution of the inverse equation.
+\end{proof}
+The $C^\infty$ conclusion does not assert convergence of the infinite Taylor
+series. Smoothness at a boundary and holomorphic continuation through that
+boundary are very different properties.
+
+\section{Periodic moments and their pole geometry}
+\label{sec:moments}
+\subsection{A finite Fourier transform produces all relevant poles}
+Let $(c_j)$ be a nonzero complex sequence of period $b$. Write
+\begin{equation}
+ \gamma_\ell=\frac1b\sum_{s=0}^{b-1}c_s\e^{-2\pi i\ell s/b},
+ \qquad c_j=\sum_{\ell=0}^{b-1}\gamma_\ell\e^{2\pi i\ell j/b}.
+ \label{eq:DFT}
+\end{equation}
+For $0<|q_0|<1$, define the geometric moments
+\begin{equation}
+ M_m=\sum_{j\ge1}c_jq_0^j j^m\qquad(m\ge0).
+ \label{eq:moments}
+\end{equation}
+Choose one value of $\log q_0$; changing it only relabels the following poles.
+
+\begin{lemma}[Moment singularities]
+\label{lem:poles}
+The exponential generating function of \eqref{eq:moments} is meromorphic:
+\begin{equation}
+ \mathcal M(z)=\sum_{m\ge0}\frac{M_m}{m!}z^m
+ =\sum_{\ell=0}^{b-1}\gamma_\ell
+  \frac{q_0\e^{z+2\pi i\ell/b}}{1-q_0\e^{z+2\pi i\ell/b}}.
+ \label{eq:moment-function}
+\end{equation}
+Its nonremovable poles are precisely
+\begin{equation}
+ \mathcal A=\{-\log q_0-2\pi i\ell/b+2\pi i k:
+              \gamma_\ell\ne0,\ k\in\Z\}.
+ \label{eq:poles}
+\end{equation}
+At $a\in\mathcal A$, the principal part is $\gamma_a/(a-z)$, where
+$\gamma_a$ is the corresponding Fourier coefficient. Let
+\[
+ \rho=\min_{a\in\mathcal A}|a|,\qquad
+ J=\{a\in\mathcal A:|a|=\rho\}.
+\]
+Then $J$ has one or two elements. For some $R>\rho$,
+\begin{equation}
+ M_m=m!\sum_{a\in J}\frac{\gamma_a}{a^{m+1}}+O(m!R^{-m}).
+ \label{eq:moment-asymp}
+\end{equation}
+In particular $|M_m|\le K m!\rho^{-m}$ for all $m$, with a fixed $K$.
+\end{lemma}
+\begin{proof}
+For $z$ close to zero, absolute convergence permits summation of each
+geometric series after \eqref{eq:DFT}; this gives
+\eqref{eq:moment-function}. Distinct nonzero Fourier modes have disjoint pole
+progressions, so their poles cannot cancel. All poles have real part
+$\alpha=\log(1/|q_0|)>0$. Minimizing their modulus therefore minimizes the
+absolute value of their imaginary part; at most one point of each sign can
+attain that minimum. Moreover a nearest pole has imaginary part of modulus at
+most $\pi$, because each individual progression has step $2\pi i$.
+
+Remove the principal parts of the poles in $J$ and choose $R$ strictly between
+$\rho$ and the next pole modulus. Cauchy's coefficient estimate on a circle of
+radius $R$ gives \eqref{eq:moment-asymp}, with an arbitrarily slight reduction
+of $R$ if needed. The final uniform bound follows, including finitely many
+initial indices by enlarging $K$.
+\end{proof}
+
+\subsection{Why rational boundary points are enough}
+At a rational imaginary point
+\begin{equation}
+ u_0=2\pi i a/b,\qquad a\in\Z,\quad b\in\N_{>0},
+ \label{eq:rational-point}
+\end{equation}
+the sequence $c_j=\e^{j^d u_0}$ is periodic in $j$ and never zero. Indeed,
+$(j+b)^d-j^d$ is divisible by $b$. No estimate for a Gauss sum is required
+for the existence of a pole: a nonzero periodic sequence has at least one
+nonzero Fourier coefficient.
+
+For the quadratic case with $b$ odd and $\gcd(a,b)=1$, one additionally has
+\begin{equation}
+ |\gamma_\ell|=b^{-1/2}\qquad(0\le\ell<b).
+ \label{eq:gauss}
+\end{equation}
+To check this, square the modulus of the unnormalized Fourier sum, put
+$s=t+h$, and sum first over $t$. The inner sum is zero unless
+$2ah=0\pmod b$, which forces $h=0$. Its remaining value is $b$.
+Thus all $b$ pole progressions occur in this case. We use this identity only
+for explicit diagnostics, not to bypass possible vanishing Fourier modes in
+the general theorem.
+
+\section{The moving-curve large-order theorem}
+\label{sec:moving}
+The central problem is whether an analytic choice of $q$ depending on $u$
+can cancel all the boundary singularities. The next result rules this out.
+It is a statement about prescribed holomorphic curves, not an unproved
+asymptotic formula for the derivatives of the implicit solution itself.
+
+Let $h$ be holomorphic near zero with $h(0)=0$, and let $h_1=h'(0)$. Consider
+\begin{equation}
+ F(v)=\sum_{j\ge1}c_jq_0^j\exp\!\bigl(j^d v+jh(v)\bigr),
+ \qquad \Rea v\le0,
+ \label{eq:moving-function}
+\end{equation}
+for sufficiently small $v$. This is the substitution
+$q(v)=q_0\e^{h(v)}$. All derivatives extend continuously to zero from the
+left half-plane. Write $f_n=F^{(n)}(0)/n!$ for these boundary coefficients.
+
+\begin{theorem}[Persistence of the nearest-pole contribution]
+\label{thm:moving}
+With the notation of Lemma~\ref{lem:poles}, for $d=2$,
+\begin{equation}
+ f_n=\frac{(2n)!}{n!}\left(
+       \sum_{a\in J}\frac{\gamma_a\e^{a h_1/2}}{a^{2n+1}}
+       +o(\rho^{-2n})\right).
+ \label{eq:moving-quadratic}
+\end{equation}
+For each integer $d\ge3$,
+\begin{equation}
+ f_n=\frac{(dn)!}{n!}\left(
+       \sum_{a\in J}\frac{\gamma_a}{a^{dn+1}}
+       +o(\rho^{-dn})\right).
+ \label{eq:moving-higher}
+\end{equation}
+Thus a holomorphic motion changes the leading quadratic amplitude by a
+nonzero factor. For $d\ge3$, it does not even change the leading amplitude.
+\end{theorem}
+
+\subsection{An exact coefficient identity}
+Expand only a fixed derivative order. Absolute convergence of each moment
+justifies the finite coefficient calculation
+\begin{equation}
+ f_n=\sum_{m=0}^{n}\sum_{k=0}^{m}
+ \frac{[v^m]h(v)^k}{k!(n-m)!}\,M_{d(n-m)+k}.
+ \label{eq:exact-moving}
+\end{equation}
+For $k=0$, only $m=0$ contributes. The term $(m,k)=(0,0)$ is $M_{dn}/n!$.
+The identity does not assert convergence of a Taylor expansion of $F$.
+
+Choose $H,R_h>0$ such that $|[v^\ell]h(v)|\le H R_h^{-\ell}$ for all
+$\ell\ge1$. Then for $m\ge k\ge1$,
+\begin{equation}
+ |[v^m]h(v)^k|
+ \le H^kR_h^{-m}\binom{m-1}{k-1}.
+ \label{eq:h-bound}
+\end{equation}
+This follows by comparing $h$ with $H(v/R_h)/(1-v/R_h)$ coefficientwise in
+absolute value.
+
+\subsection{The factorial estimate that controls all indices}
+For integers $0\le s\le N$,
+\begin{equation}
+ \frac{N!}{(N-s)!}\ge(N/\e)^s.
+ \label{eq:falling}
+\end{equation}
+The geometric mean of the largest $s$ integers among $1,\dots,N$ is at least
+the geometric mean of all $N$, and $N!\ge(N/\e)^N$.
+Consequently
+\begin{equation}
+ \frac{n!}{(n-m)!}\frac{(dn-dm+k)!}{(dn)!}
+ \le n^m\left(\frac{\e}{dn}\right)^{dm-k}.
+ \label{eq:factorial-ratio}
+\end{equation}
+This bound is valid even when $m$ is close to $n$. An estimate proved only
+for fixed $m$ would not justify the theorem.
+
+Normalize the absolute value of a summand in \eqref{eq:exact-moving} by
+\[
+ L_n=\frac{(dn)!}{n!}\rho^{-dn}.
+\]
+Using \eqref{eq:h-bound}, \eqref{eq:factorial-ratio}, and the uniform moment
+bound, and putting $m=k+r$, gives a bound of the form
+\begin{equation}
+ K\frac{X_n^k}{k!}\binom{k+r-1}{r}Y_n^r,
+ \quad X_n=C_1n^{-(d-2)},\quad Y_n=C_2n^{-(d-1)}.
+ \label{eq:global-bound}
+\end{equation}
+Here $C_1,C_2$ are fixed positive constants. For example one may take
+$C_2=(\e\rho/d)^d/R_h$ and $C_1=C_2Hd/(\e\rho)$.
+For $Y_n<1$,
+\begin{equation}
+ \sum_{k\ge1}\sum_{r\ge0}
+ \frac{X_n^k}{k!}\binom{k+r-1}{r}Y_n^r
+ =\exp\!\left(\frac{X_n}{1-Y_n}\right)-1.
+ \label{eq:double-majorant}
+\end{equation}
+All extensions of finite sums to infinite sums here are made only for
+nonnegative upper bounds.
+
+\subsection{Completion of the asymptotic proof}
+\begin{proof}[Proof of Theorem~\ref{thm:moving}]
+When $d\ge3$, $X_n\to0$ and $Y_n\to0$. Equations
+\eqref{eq:global-bound}--\eqref{eq:double-majorant} show that every term other
+than $(0,0)$ contributes $o(L_n)$ in total. Apply
+\eqref{eq:moment-asymp} to $M_{dn}/n!$ to obtain
+\eqref{eq:moving-higher}.
+
+For $d=2$, $X_n$ is constant and $Y_n=O(n^{-1})$. The part with $r\ge1$ is
+bounded, after normalization, by
+\[
+ K\left\{\exp\!\left(\frac{X_n}{1-Y_n}\right)-\exp(X_n)\right\}
+ =O(n^{-1}).
+\]
+It remains to evaluate the diagonal $m=k$, on which
+$[v^k]h(v)^k=h_1^k$. A principal part $\gamma_a/(a-z)$ contributes
+\[
+ \frac{(2n)!}{n!}\frac{\gamma_a}{a^{2n+1}}
+ \sum_{k=0}^n\frac{(a h_1)^k}{k!}
+     \frac{n!}{(n-k)!}\frac{(2n-k)!}{(2n)!}.
+\]
+For each fixed $k$, the product of factorial ratios tends to $2^{-k}$.
+The global bound supplies a summable majorant of the form $C^k/k!$.
+Dominated convergence therefore makes the sum tend to $\e^{a h_1/2}$.
+
+For the analytic remainder in \eqref{eq:moment-asymp}, each fixed diagonal
+index gives $o(L_n)$, because $R>\rho$. The same summable majorant permits
+dominated convergence over the diagonal. The off-diagonal part was already
+$O(L_n/n)$. Summing over the finite set $J$ proves
+\eqref{eq:moving-quadratic}.
+\end{proof}
+
+\begin{remark}[Scope of the amplitude formula]
+The factor $\e^{a h_1/2}$ is nonzero regardless of the complex value of $h_1$.
+This does not mean that two nearest-pole contributions can never cancel at an
+individual order. The next section proves that they cannot cancel at every
+large order. Higher Taylor coefficients of the prescribed curve enter lower
+orders of the large-order expansion; no formula for them is needed here.
+\end{remark}
+
+\section{Tied poles and the local nonextension theorem}
+\label{sec:obstruction}
+\begin{lemma}[A finite oscillatory sum cannot disappear]
+\label{lem:cesaro}
+If $z_1,\dots,z_s$ are distinct complex numbers of modulus one and not all
+$A_j$ vanish, then
+\begin{equation}
+ \lim_{N\to\infty}\frac1N\sum_{n=1}^N
+ \left|\sum_{j=1}^s A_jz_j^n\right|^2
+ =\sum_{j=1}^s|A_j|^2>0.
+ \label{eq:mean-square}
+\end{equation}
+In particular the inner sum has modulus bounded below by a positive constant
+along an infinite subsequence.
+\end{lemma}
+\begin{proof}
+Expand the square. Every off-diagonal average is a finite geometric average
+with ratio $z_j\overline{z_k}\ne1$, so tends to zero. The diagonal terms are
+constant. The subsequence assertion follows immediately.
+\end{proof}
+
+\begin{proposition}[No analytic cancellation along a moving curve]
+\label{prop:no-cancellation}
+The function \eqref{eq:moving-function} has no holomorphic continuation
+through $v=0$ in either of the following cases:
+\begin{enumerate}[label=(\roman*)]
+\item $d=2$ and $0<|q_0|<1$;
+\item $d\ge3$ and $0<|q_0|<\e^{-d}$.
+\end{enumerate}
+The same conclusion holds after adding any function holomorphic near zero.
+\end{proposition}
+\begin{proof}
+The set $J$ has at most two elements. For $d=2$, distinct $a_1,a_2\in J$
+cannot satisfy $a_1^2=a_2^2$, because that would give $a_1=-a_2$, whereas
+both have the same positive real part. For $d\ge3$, the assumed bound gives
+$\Rea a>d$. Every nearest pole has $|\Ima a|\le\pi$, so
+$|\arg a|<\pi/d$. Two distinct nearest poles therefore have distinct $d$th
+powers: their argument difference is strictly between $-2\pi/d$ and $2\pi/d$.
+
+In Theorem~\ref{thm:moving}, divide the expression in parentheses by
+$\rho^{-dn}$. Its principal part is a finite sum
+\[
+ \sum_{a\in J} A_a z_a^n,\qquad z_a=(\rho/a)^d,
+\]
+where $A_a=\gamma_a\e^{a h_1/2}/a$ for $d=2$ and
+$A_a=\gamma_a/a$ for $d\ge3$. Every $A_a$ is nonzero and the $z_a$ are
+distinct. Lemma~\ref{lem:cesaro} and the $o(1)$ error imply, for infinitely
+many $n$,
+\begin{equation}
+ |f_n|\ge c\frac{(dn)!}{n!\rho^{dn}}
+ \label{eq:subsequence-growth}
+\end{equation}
+with a fixed $c>0$. Stirling's formula shows that the $n$th root of the
+right-hand side is asymptotic, up to the factor $c^{1/n}$, to
+\[
+ d^d\e^{1-d}\rho^{-d}n^{d-1},
+\]
+which diverges. A holomorphic germ has geometrically bounded Taylor
+coefficients. Its Taylor coefficients would have to equal the boundary
+coefficients $f_n$, a contradiction. Addition of a holomorphic function
+changes the coefficients by at most a geometric sequence and cannot remove
+\eqref{eq:subsequence-growth}.
+\end{proof}
+
+\begin{corollary}[Rational-point obstruction for partial theta level sets]
+\label{cor:rational}
+Let $u_0=2\pi i a/b$, and let $q(u)$ be holomorphic near $u_0$, with
+$q(u_0)\ne0$. Assume $|q(u_0)|<1$ for $d=2$, or $|q(u_0)|<\e^{-d}$ for
+$d\ge3$. Then the left-hand function
+\[
+ u\longmapsto\Theta_d(q(u),u)
+\]
+cannot extend holomorphically through $u_0$.
+\end{corollary}
+\begin{proof}
+Put $v=u-u_0$, $q_0=q(u_0)$, and choose the local logarithm
+$h(v)=\log(q(u_0+v)/q_0)$. The periodic coefficients are
+$c_j=\e^{j^d u_0}$. Apply Proposition~\ref{prop:no-cancellation}.
+\end{proof}
+The small bound $\e^{-d}$ in the higher-degree case is a convenient sufficient
+condition that avoids resonances between nearest-pole $d$th powers. It is not
+claimed to be an optimal bound. No such extra smallness is needed for $d=2$.
+
+\section{Natural boundaries of nonlinear implicit solutions}
+\label{sec:natural}
+\begin{theorem}[Analytic level sets inherit a natural boundary]
+\label{thm:forcing}
+Let $f$ be holomorphic near zero with $f(0)=0$ and $f\not\equiv0$. For each
+integer $d\ge2$, the small solution $Q_f$ of \eqref{eq:forced} has an entire
+imaginary diameter as a natural boundary, after the radius is made
+sufficiently small.
+\end{theorem}
+\begin{proof}
+Use Lemma~\ref{lem:root}, shrinking the radius so that $|Q_f|<1$ for $d=2$
+and $|Q_f|<\e^{-d}$ for $d\ge3$. At every rational imaginary boundary point
+$u_0$ for which $f(u_0)\ne0$, the root $Q_f(u_0)$ is nonzero.
+If $Q_f$ extended holomorphically through this point, Corollary~\ref{cor:rational}
+would say that $\Theta_d(Q_f(u),u)$ cannot do so. But that function equals
+the holomorphic function $f(u)$ on the left. This is a contradiction.
+
+The exceptional zeros of $f$ are isolated. Rational imaginary points not among
+those zeros are dense in the diameter. If continuation existed through any
+point of the diameter, its open neighborhood would contain one of these
+already forbidden rational points. Restricting the same continuation to a
+smaller neighborhood of that rational point gives the final contradiction.
+\end{proof}
+This proves Theorem~\ref{thm:main}(i)--(ii). In particular, the boundary is not
+merely a sequence of inaccessible rational points: density and openness of
+holomorphic continuation give nonextension at every point of the arc.
+
+\subsection{Finite-core robustness and periodic amplitudes}
+\begin{theorem}[Robustness under analytic finite-core changes]
+\label{thm:robust}
+Let $(b_j)$ be a nonzero periodic sequence, $J_0\ge1$, and suppose
+\begin{equation}
+ K(q,u)=A(q,u)+\sum_{j\ge J_0}b_jq^j\e^{j^d u},
+ \label{eq:robust-kernel}
+\end{equation}
+where $A$ is holomorphic near $(0,0)$, $K(0,u)=0$, and
+$\partial_qK(0,0)\ne0$. If $f$ is as in Theorem~\ref{thm:forcing}, the small
+solution of $K(q,u)=f(u)$ is holomorphic in a left half-disc, smooth to its
+diameter, and has that diameter as a natural boundary.
+\end{theorem}
+\begin{proof}
+The uniform geometric derivative bounds used in Lemma~\ref{lem:root} still
+hold, with a constant accounting for $\max|b_j|$ and the analytic term. The
+nonzero linear derivative supplies the small implicit root, either by a
+normalized contraction or by its usual uniform proof.
+
+At a rational imaginary point, the product
+$b_j\e^{j^d u_0}$ is a nonzero periodic sequence. Were the root analytic
+there, the omitted finitely many terms and the composition $A(q(u),u)$ would
+be holomorphic. Adding back those finitely many terms would contradict
+Proposition~\ref{prop:no-cancellation}. The same density argument completes
+the proof.
+\end{proof}
+
+\begin{corollary}[Changing finitely many slopes does not remove the boundary]
+\label{cor:finite-slopes}
+If the slopes in \eqref{eq:general-feedback} equal $j^d$ for all sufficiently
+large $j$, and all the remaining slopes are finite, the canonical small inverse
+has the same natural-boundary conclusion. Nonnegativity is not needed for this
+boundary assertion, although it is convenient for the summability statements.
+\end{corollary}
+\begin{proof}
+The difference between the altered kernel and $\Theta_d$ is a finite sum of
+entire functions of $(q,u)$. The altered kernel still has linear
+$q$-derivative equal to one at $(0,0)$.
+Apply Theorem~\ref{thm:robust}.
+\end{proof}
+
+\section{The forward boundary and its geometry}
+\label{sec:geometry}
+\begin{proof}[Proof of Theorem~\ref{thm:main}(iii)--(iv)]
+The derivative $Q_d'(u)$ extends continuously to zero and equals one there.
+On a sufficiently small closed half-disc, $|Q_d'-1|\le1/2$. For two points
+$u,v$ in that convex set, integration along their segment gives
+\[
+ |Q_d(v)-Q_d(u)-(v-u)|\le\tfrac12|v-u|.
+\]
+Thus $Q_d$ is injective, with a continuous inverse on its image, and is
+biholomorphic in the interior. The arc $\Gamma_d(t)=Q_d(it)$ has nonzero
+velocity $iQ_d'(it)$.
+
+Suppose $U_d=Q_d^{-1}$ extended holomorphically through
+$q_0=\Gamma_d(t_0)$. Its interior derivative tends to $1/Q_d'(it_0)\ne0$,
+so the extension has nonzero derivative at $q_0$. The holomorphic inverse
+function theorem would extend $Q_d$ through $it_0$, contradicting
+Theorem~\ref{thm:forcing}. Hence the whole arc is a natural boundary for the
+forward realization.
+
+The finite Taylor expansion \eqref{eq:first-Q} is valid along the diameter
+by the proved smoothness. Substitution $u=it$ gives
+\eqref{eq:boundary-shape-main}. For $d=2$,
+\begin{equation}
+ \Gamma_2(t)=it+2t^2-\tfrac{i}{2}t^3-\tfrac23t^4
+                     -\tfrac{29i}{8}t^5+O(t^6).
+ \label{eq:boundary-five}
+\end{equation}
+The inverse's singular diameter approaches directions $\pm\pi/2$ exactly;
+the forward singular arc approaches them with a positive real displacement
+$2t^2+O(t^4)$. Every sector about the negative axis of opening greater than
+$\pi$ contains sufficiently small nonzero points of these boundary arcs.
+An extension to such a sector would contradict their nonextension.
+\end{proof}
+
+\begin{remark}[A geometric rather than algebraic obstruction]
+All finite-order formal inversions remain valid. The obstruction appears
+when infinitely many exponential feedback terms are realized analytically.
+A smooth boundary graph may therefore be visible to arbitrarily long finite
+jets while remaining impossible to cross holomorphically.
+\end{remark}
+
+\section{Convergent exponential blocks and uniform remainders}
+\label{sec:blocks}
+Natural boundaries do not prevent accurate evaluation on the permitted side.
+We give a constructive realization which also connects the theorem back to
+transseries. Set $P_d(u)=\e^uQ_d(u)$. Then
+\begin{equation}
+ P_d=u-\sum_{j\ge2}P_d^j\e^{(j^d-j)u}.
+ \label{eq:P}
+\end{equation}
+Introduce a temporary variable $t$ in place of the first $u$ on the right.
+The solution has a block expansion
+\begin{equation}
+ P_d(u)=\sum_{k\ge1}u^k H_{d,k}(u),
+ \qquad H_{d,k}(u)=\sum_\beta h_{d,k,\beta}\e^{\beta u},
+ \label{eq:blocks}
+\end{equation}
+where each inner sum is finite and each coefficient is an integer.
+
+\begin{proposition}[Tree support and a convergent block certificate]
+\label{prop:blocks}
+Let
+\begin{equation}
+ C(t)=\frac{1+t-\sqrt{1-6t+t^2}}4=\sum_{k\ge1}c_kt^k,
+ \qquad \rho_* =3-2\sqrt2.
+ \label{eq:schroeder}
+\end{equation}
+Then
+\begin{equation}
+ 0\le\beta\le k^d-k,
+ \qquad \sum_\beta|h_{d,k,\beta}|\le c_k\le\rho_*^{-k}.
+ \label{eq:block-bounds}
+\end{equation}
+The block expansion converges normally on every closed left half-disc
+$|u|\le r_0<\rho_*$. Its tail after $k=K$ has modulus at most
+\begin{equation}
+ \frac{(|u|/\rho_*)^{K+1}}{1-|u|/\rho_*}.
+ \label{eq:block-tail}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Expand \eqref{eq:P} recursively as plane rooted trees whose internal vertices
+have arity $j\ge2$. A tree with $k$ leaves contributes a sign, and the
+frequency is the sum of $j^d-j$ over internal vertices. If their arities are
+$j_v$, then $\sum_v(j_v-1)=k-1$. The polynomial
+$(s+1)^d-(s+1)$ has nonnegative coefficients and vanishes at $s=0$;
+its value at a sum of nonnegative arguments is at least the sum of its values.
+Hence
+\[
+ \sum_v(j_v^d-j_v)\le k^d-k.
+\]
+All frequencies are nonnegative. Forgetting signs counts these trees by
+$C=t+C^2/(1-C)$, which yields \eqref{eq:schroeder}. Since its coefficients
+are nonnegative and $C(\rho_*)<1$, one has $c_k\le\rho_*^{-k}$.
+
+For $\Rea u\le0$, each exponential has modulus at most one. The geometric
+majorant proves normal convergence and \eqref{eq:block-tail}. The summed
+series satisfies $|P_d(u)|\le C(|u|)<1$. The tree majorant also bounds
+all the substitutions in \eqref{eq:P} by $\sum_{j\ge2}C(|u|)^j<\infty$.
+Absolute convergence therefore verifies the identity throughout the stated
+half-disc. The resulting $Q_d=\e^{-u}P_d$ equals the small branch near zero
+and provides its holomorphic continuation to that half-disc. In particular
+$|Q_d|\le\e^{\rho_*}C(\rho_*)<1$, so the original kernel remains
+absolutely convergent there as well.
+\end{proof}
+
+\begin{proposition}[All-orders boundary-uniform remainder]
+\label{prop:remainder}
+Write the formal Taylor series of $P_d$ as $\sum_{n\ge1}a_{d,n}u^n$.
+For $\Rea u\le0$, $r=|u|\le r_0<\rho_*$, and $N\ge2$,
+\begin{equation}
+ \left|P_d(u)-\sum_{n<N}a_{d,n}u^n\right|
+ \le r^N M_{d,N}(r_0),
+ \label{eq:remainder-bound}
+\end{equation}
+where
+\begin{equation}
+ M_{d,N}(r_0)=\frac{\rho_*^{-N}}{1-r_0/\rho_*}
+ +\sum_{k=1}^{N-1}c_k\frac{(k^d-k)^{N-k}}{(N-k)!}.
+ \label{eq:majorant}
+\end{equation}
+For the approximation to $Q_d$ obtained by multiplying the truncated
+polynomial by $\e^{-u}$, multiply this bound by $\e^r$.
+\end{proposition}
+\begin{proof}
+For $\Rea z\le0$, the integral Taylor remainder gives
+\[
+ \left|\e^z-\sum_{m<L}\frac{z^m}{m!}\right|\le\frac{|z|^L}{L!}.
+\]
+In block $k<N$, take $L=N-k$ and use \eqref{eq:block-bounds}. Blocks $k\ge N$
+are bounded without expansion. These two sums give \eqref{eq:majorant}.
+At any fixed Taylor degree only finitely many blocks contribute, so the
+truncated coefficients are exactly $a_{d,n}$.
+\end{proof}
+For $d=2$ this is the predecessor's quadratic certificate \cite{repo-fine},
+now recovered from the tree formulation. Its validity on the imaginary
+boundary is essential; estimates only on proper left sectors would not give
+the same critical-direction conclusion.
+
+\section{An explicit optimized scale for every integer degree}
+\label{sec:optimal}
+\begin{theorem}[Sharp growth of the positive remainder majorant]
+\label{thm:majorant}
+For fixed $d\ge2$ and $r_0<\rho_*$,
+\begin{align}
+ \log M_{d,N}(r_0)
+ ={}&(d-1)N\log N-dN\log\log N\\
+ &+\left[d\log\frac{d}{d-1}-(d-1)\right]N+o(N).
+ \label{eq:majorant-asymp}
+\end{align}
+In particular, for every $H>0$ there is $C_H$ such that
+\begin{equation}
+ M_{d,N}(r_0)\le C_H H^N(N!)^{d-1}\qquad(N\ge2).
+ \label{eq:zero-type}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For $2\le k<N$, let $T_{N,k}=c_k(k^d-k)^{N-k}/(N-k)!$.
+The logarithm of a sum of at most $N$ positive terms differs from its maximum
+by at most $\log N$. Put $t=k/N$. The bounds $1\le c_k\le\rho_*^{-k}$,
+$k^d-k\le k^d$, and Stirling's formula, with error uniform in $N-k\ge1$,
+give
+\[
+ \frac1N\log T_{N,k}
+ \le(1-t)\{(d-1)\log N+d\log t-\log(1-t)+1\}
+       +t\log(\rho_*^{-1})+O(\log N/N).
+\]
+Set $a=t\log N$. After subtracting
+$(d-1)\log N-d\log\log N$, the right-hand side becomes
+\[
+ d\log a+1-(d-1)a+R_d(t)+O(\log N/N),
+\]
+where
+\[
+ R_d(t)=-dt\log t-(1-t)\log(1-t)-t+t\log(\rho_*^{-1}).
+\]
+The function $R_d$ is bounded and tends to zero as $t\downarrow0$.
+Since $d\log a+1-(d-1)a$ tends to minus infinity at both endpoints of
+$(0,\infty)$, maximizing indices must have $a$ in a fixed compact subinterval.
+There $t\to0$ uniformly. The limiting maximum is attained at
+$a=d/(d-1)$ and equals
+$d\log(d/(d-1))-(d-1)$.
+
+For a matching lower bound, take
+$k=\lfloor dN/((d-1)\log N)\rfloor$ and use $c_k\ge1$.
+Replacing $k^d-k$ by $k^d$ changes the logarithm by
+$(N-k)\log(1-k^{1-d})=o(N)$, including $d=2$.
+The same calculation attains the limiting maximum. The geometric term in
+\eqref{eq:majorant} has logarithm $O(N)$ and is smaller. This proves
+\eqref{eq:majorant-asymp}. Subtracting
+$(d-1)\log(N!)$ gives $-dN\log\log N+O(N)$, which implies
+\eqref{eq:zero-type}.
+\end{proof}
+
+\begin{corollary}[Certified optimized truncation]
+\label{cor:optimal}
+Set $s=d-1$, $L=\log(1/r)$, and
+\begin{equation}
+ N_d(r)=\left\lfloor d^{-d/s}r^{-1/s}L^{d/s}\right\rfloor.
+ \label{eq:optimal-index}
+\end{equation}
+For every $\varepsilon>0$, all sufficiently small $r>0$, and uniformly on
+$|u|=r$, $\Rea u\le0$,
+\begin{equation}
+ \left|Q_d(u)-\e^{-u}\sum_{n<N_d(r)}a_{d,n}u^n\right|
+ \le\exp\!\left[-\left(s d^{-d/s}-\varepsilon\right)
+                     r^{-1/s}L^{d/s}\right].
+ \label{eq:optimized}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Insert \eqref{eq:optimal-index} in \eqref{eq:majorant-asymp}. One has
+\[
+ \log N=\frac{L+d\log L-d\log d}{s}+o(1),\qquad
+ \log\log N=\log L-\log s+o(1).
+\]
+It follows that $\log(r^N M_{d,N})=-sN(1+o(1))$.
+The factor $\e^r$ in Proposition~\ref{prop:remainder} is negligible at this
+scale. The arbitrary $\varepsilon$ absorbs the remaining lower-order terms.
+\end{proof}
+The constant is $1/4$ for $d=2$ and $2/(3\sqrt3)$ for $d=3$.
+It is a sharp constant for the leading optimization of this positive
+majorant. A matching lower bound for the \emph{actual signed truncation error}
+is not proved. In the transseries coordinate $u=-\e^{-X}$,
+\eqref{eq:optimized} is a bound on the scale
+\[
+ \exp\!\left[-\left((d-1)d^{-d/(d-1)}-o(1)\right)
+       \e^{X/(d-1)}X^{d/(d-1)}\right].
+\]
+This upper bound alone does not establish a nonzero additional transseries
+sector on that scale.
+
+\section{Fine summability and the angular obstruction}
+\label{sec:summability}
+\subsection{Conventions and the classical implication used}
+For $\widehat f(z)=\sum_{n\ge0}f_nz^n$, use the integrated Borel transform
+\begin{equation}
+ \B\widehat f(\zeta)=\sum_{n\ge0}\frac{f_n}{n!}\zeta^n.
+ \label{eq:Borel}
+\end{equation}
+A series is \emph{finely summable in direction $\pi$} if this germ continues
+to a tube of some fixed width about $(-\infty,0]$, with a bound
+$C\e^{H|\zeta|}$ there. The sum on $z=-r$ is
+\begin{equation}
+ \mathcal S_\pi\widehat f(-r)=\frac1r\int_0^\infty
+          \e^{-s/r}\B\widehat f(-s)\dd s.
+ \label{eq:sum}
+\end{equation}
+This is the fine convention of Sauzin's Sections 7 and 9, reflected to the
+negative ray \cite{sauzin}. By \emph{angular $1$-summability near $\pi$} we
+mean continuation to an open Borel sector containing that direction, with
+exponential bounds uniform on each smaller angular sector. Contour rotation
+then supplies a sum in a physical sector of opening greater than $\pi$.
+
+The Nevanlinna--Sokal theorem says that holomorphy on a tangent disc
+$\Rea(-1/z)>R^{-1}$, together with uniform remainders bounded by
+$CA^NN!|z|^N$, reconstructs the function by fine Borel summation
+\cite{sokal}. We use this classical theorem, not a replacement theorem.
+
+\subsection{Recovery of the positive quadratic result}
+For $d=2$, \eqref{eq:zero-type} and Proposition~\ref{prop:remainder} imply
+uniform Gevrey--1 remainders for $P_2$ on a closed left half-disc. Every
+sufficiently small tangent disc lies there. Nevanlinna--Sokal therefore
+identifies $P_2$ as its fine sum. Multiplication by $\e^{-u}$ preserves that
+class and identifies $Q_2$ as the fine sum of $\Qhat_2$.
+Taking a boundary coefficient limit in the all-orders estimate shows that
+its coefficients satisfy $|[u^n]P_2|\le C_HH^nn!$ for every $H>0$.
+Hence $\B\widehat P_2$ is entire. The same holds after multiplication by
+$\e^{-u}$.
+
+For completeness, the nonlinear closure needed to pass to $U_2$ can be
+seen by conjugating a tangent-to-identity series at zero to one at infinity.
+If $f(z)=z+c+\varphi(z)$, $\varphi=O(z^{-1})$, has a fine-summable Borel
+minor $\phi$, first remove the constant translation. The inverse correction
+has the formal representation
+\begin{equation}
+ \chi=\sum_{k\ge1}\frac{(-1)^k}{k!}
+                   \partial_z^{k-1}(\varphi^k),\qquad
+ \mathscr B\chi(\xi)=-\sum_{k\ge1}\frac{\xi^{k-1}}{k!}\phi^{*k}(\xi).
+ \label{eq:inverse-minor}
+\end{equation}
+If $|\phi(\xi)|\le M\e^{c_0|\xi|}$ on a convex tube, convolution along a
+straight simplex gives
+\[
+ |\phi^{*k}(\xi)|\le M^k\e^{c_0|\xi|}
+                      \frac{|\xi|^{k-1}}{(k-1)!}.
+\]
+Thus \eqref{eq:inverse-minor} converges normally and is bounded by
+$M\exp((c_0+2\sqrt M)|\xi|)$. Termwise Laplace integration and the
+convergent analytic Lagrange formula at sufficiently large $\Rea z$
+identify its sum as the actual inverse. Translations, reciprocals with
+nonzero constant term, and multiplication or division by $z$ preserve the
+fine class, after narrowing the tube for differentiation. Conjugation by
+$z\mapsto-1/z$ therefore proves the claim for $U_2$. These are the
+half-strip operations also used in the predecessor \cite{repo-fine}; the
+angular version is classical \cite{sauzin}.
+
+If the input minors are entire, the same estimates on each fixed compact
+disc, with constants depending on that disc, prove that the transformed
+minors are entire. Consequently $\B\Uhat_2$ is entire as well. These local
+compact-disc bounds make no assertion about exponential growth on an
+unbounded angular sector.
+
+\subsection{The negative answer to angular summability}
+\begin{proof}[Proof of Theorem~\ref{thm:quadratic-main} for the exact quadratic model]
+The preceding subsection supplies fine summability, entire Borel transforms,
+and identification of the actual sums. Suppose $\Qhat_2$ were angularly
+$1$-summable near $\pi$. Its angular sum agrees with its fine sum along the
+negative ray, because both use the same continued Borel germ in
+\eqref{eq:sum}. Contour rotation makes the angular sum holomorphic in a
+sector about the negative axis of opening greater than $\pi$. The identity
+theorem identifies it with $Q_2$ on their left-hand overlap. It would thus
+continue $Q_2$ through small points of its imaginary natural boundary,
+contradicting Theorem~\ref{thm:main}.
+
+If $\Uhat_2$ were angularly summable, the classical closure of angularly
+summable tangent-to-identity series under inversion would make $\Qhat_2$
+angularly summable, which has just been excluded. Alternatively, its fine
+sum is already $U_2$, and the same sector argument meets the natural boundary
+$\Gamma_2$ directly.
+\end{proof}
+
+\begin{corollary}[Entire Borel transforms with no angular exponential bound]
+\label{cor:Borel-growth}
+For either $B=\B\Qhat_2$ or $B=\B\Uhat_2$, for every $\varepsilon>0$ and
+every $C,H>0$, there are arbitrarily large $\zeta$ with
+$|\arg\zeta-\pi|<\varepsilon$ (using the argument centered at $\pi$) such that
+\[
+ |B(\zeta)|>C\e^{H|\zeta|}.
+\]
+Thus the obstruction is growth at Borel infinity, not a finite singularity
+of these entire Borel transforms.
+\end{corollary}
+\begin{proof}
+A uniform exponential bound on such a sector, together with entireness,
+would give angular summability. If the bound held beyond some radius, boundedness on the remaining compact
+disc would give a global bound after increasing $C$. That too would give
+angular summability. Thus violations occur at arbitrarily large points.
+\end{proof}
+The conclusion does not classify growth on each individual nonreal ray.
+Failure of a sector-wide bound is stronger than a failure at one fixed
+finite point, but weaker than a pointwise growth law on every ray.
+
+\subsection{Completion for finitely modified quadratic slopes}
+Normalize the small inverse by $P=\e^{\lambda_1u}Q$. Its tree frequency at an
+internal vertex of arity $j$ is $\lambda_j-j\lambda_1$.
+For slopes equal to $j^2$ eventually, there is a constant $C$ such that a
+$k$-leaf tree has frequency $\beta$ satisfying
+\[
+ -Ck\le\beta\le Ck^2.
+\]
+Indeed $\sum(j-1)=k-1$, the number of internal vertices is at most $k-1$,
+and only finitely many arities differ from the quadratic rule.
+On $|u|\le r_0$, $\Rea u\le0$, negative frequencies cost at most
+$\e^{Ckr_0}$. This merely changes the geometric tree-count constant.
+The proof of Proposition~\ref{prop:remainder} now uses $(Ck^2)^{N-k}$ and
+an adjusted geometric constant. The saddle estimate still gives
+\[
+ \log M_N=N\log N-2N\log\log N+O(N),
+\]
+so the remainders are Gevrey--1 of zero type. The same summation and inverse
+arguments apply. Corollary~\ref{cor:finite-slopes} supplies the natural
+boundary, hence excludes angular summability. This proves the remaining
+assertion of Theorem~\ref{thm:quadratic-main}.
+
+\section{Further extensions and sharp limitations}
+\label{sec:extensions}
+\subsection{Affine-quadratic exponents}
+The natural-boundary mechanism also treats
+\[
+ \lambda_j=A j^2+Bj+C,\qquad A>0,
+\]
+with real $B,C$, near the origin. Set $w=Au$ and $z=q\e^{Bu}$.
+Then
+\[
+ \sum_{j\ge1}q^j\e^{\lambda_j u}
+ =\e^{Cu}\Theta_2(z,w).
+\]
+The level equation becomes
+$\Theta_2(z,w)=(w/A)\e^{-Cw/A}$, an analytic nonzero forcing to which
+Theorem~\ref{thm:forcing} applies. Multiplication of the moving root by a
+nonvanishing holomorphic factor and the positive linear change of $u$ cannot
+remove the boundary. Finite perturbations are again permitted.
+
+\subsection{The essential small-parameter hypothesis}
+The local theorem assumes $q_0\ne0$. At $q_0=0$ the entire kernel vanishes,
+and the holomorphic curve $q\equiv0$ is an obvious exception. The natural
+boundary proof does not overlook it: it proves nonextension on a dense set
+of nonzero-root points and then uses openness of continuation to reach the
+isolated zero points, including the origin.
+
+For $d\ge3$, the smallness hypothesis separates the $d$th powers of nearest
+poles. Without it, cancellation of a leading nearest-pole pair is a real
+possibility in the asymptotic formula. One must then inspect further orders
+or further poles. The present theorem does not silently assume that such a
+pair cannot occur.
+
+\subsection{No contradiction with local resurgence of other theta expansions}
+The partial-theta literature studies several different expansions, including
+ones at rational boundary points with periodic amplitudes, and their Borel
+singularities \cite{hlss}. Our coefficient asymptotics concern a geometric
+weight $q_0^j$ and a holomorphically moving $q$, and the nonlinear conclusion
+concerns the inverse near the vanishing level. Neither the expansion point
+nor the summation problem may be exchanged without proof.
+
+In particular, an entire Borel transform is endlessly continuable in the
+finite plane in the simplest sense, while still failing the growth
+requirements for angular Laplace summation. The word ``resurgent'' alone
+therefore does not answer the angular question settled here.
+
+\section{Verification, reproducibility, and proof audit}
+\label{sec:verification}
+\subsection{Exact finite checks}
+The supplied \path{code/verify.py} uses rational arithmetic for three
+independent constructions: the original feedback recurrence, formal
+compositional inversion, and the exponential-block tree recurrence.
+At the recorded default order $24$, for $d=2,3,4$, it performed
+\textbf{324 exact comparisons}. Both inverse compositions, the inverse
+kernel identity, the displayed low coefficients, block support, block mass,
+and block-to-Taylor conversion passed.
+
+The block calculations use blocks through degree $10$. The ordinary formal
+series calculations use degree $24$. These are deliberately separate
+checks, not a single recurrence compared with itself.
+The CSV files retain exact rational coefficients. None of these finite
+checks proves a natural boundary or an infinite-order asymptotic theorem.
+
+\subsection{High-precision diagnostics}
+The optional diagnostic section ran at $110$ decimal digits with mpmath.
+It checked the moving-curve asymptotics at ten $(d,n)$ pairs, four rational
+boundary roots, $352$ quadratic Fourier magnitudes, and a tied-pole
+mean-square example. These are floating-point diagnostics, not interval
+certificates.
+
+For $q(v)=q_0\exp(3v/7+v^2/9)$ with constant periodic coefficient $c_j=1$,
+the ratio of the exact finite coefficient formula to its predicted leading
+term was as follows. The quadratic case uses $q_0=1/5$; the cubic case uses
+$q_0=1/30$.
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$n$ & $d=2$ ratio & $d=3$ ratio\\
+\midrule
+8  & 1.003554662 & 1.075228530\\
+16 & 1.001774139 & 1.035862320\\
+32 & 1.000884142 & 1.017556494\\
+64 & 1.000441140 & 1.008690883\\
+80 & 1.000352752 & 1.006939094\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values are consistent with the limits; the proof of the limits is
+Section~\ref{sec:moving}, not this table.
+
+At $u=2\pi i/b$, the boundary equation is finite and rational in $q$:
+\begin{equation}
+ \Theta_2(q,2\pi i/b)
+ =\frac{\sum_{j=1}^{b}\e^{2\pi i j^2/b}q^j}{1-q^b}.
+ \label{eq:boundary-rational}
+\end{equation}
+Solving it for the small root gives the following diagnostic for the
+quadratic displacement in \eqref{eq:boundary-five}:
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+$b$ & $t=2\pi/b$ & $\Rea Q_2(it)/t^2$\\
+\midrule
+127  & 0.04947390006 & 1.998438396\\
+257  & 0.02444819186 & 1.999605886\\
+509  & 0.01234417546 & 1.999898701\\
+1021 & 0.00615395231 & 1.999974770\\
+\bottomrule
+\end{tabular}
+\end{center}
+The maximum high-precision residual was below $1.4\cdot10^{-114}$.
+This is a residual in the stated floating-point computation, not a certified
+error bound of that magnitude for every printed digit.
+
+\subsection{The proof's load-bearing points}
+The natural-boundary theorem rests on four analytic facts proved above:
+the pole expansion of the moment generating function; a global factorial
+majorant valid even near the end of the coefficient sum; a noncancellation
+argument when two nearest poles tie; and a contradiction obtained only
+\emph{after assuming} that the implicit root is holomorphic across a point.
+A fixed-parameter gap theorem, numerical derivative growth, or a plot of
+boundary values would not replace any of these steps.
+
+The positive quadratic summation result additionally uses the classical
+Nevanlinna--Sokal theorem and the standard convolution/Lagrange inverse
+mechanism. The new natural-boundary proof itself does not depend on a
+summability theorem, the accuracy of the numerical tables, or an unverified
+claim about the larger transseries field.
+
+\subsection{Suggested formalization layers}
+A realistic formalization would separate finite Fourier inversion and finite
+coefficient identities from complex analytic estimates. First formalize
+\eqref{eq:exact-moving}, \eqref{eq:factorial-ratio}, and
+\eqref{eq:double-majorant}. Next package the Cauchy principal-part estimate
+and dominated-convergence argument. Only then assemble the periodic boundary
+obstruction and its implicit-function corollary. The summability corollary is
+a later, independent interface. No Lean source is included or represented as
+checked in this package.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+The following problems are not used as premises in the proofs.
+
+\subsection{Boundary jets of the actual implicit solution}
+\begin{question}
+At a fixed nonzero rational imaginary point $u_0$, determine the precise
+large-order asymptotics of the actual boundary derivatives
+$Q_d^{(n)}(u_0)/n!$, including constants and cancellations.
+\end{question}
+The moving-curve theorem assumes a holomorphic curve and proves that such a
+curve cannot be the implicit root. It does not give the root's own
+large-order law. A nonlinear asymptotic inversion of the periodic moment
+system is the next step. Establishing exact boundary Gevrey order would
+quantify how far the $C^\infty$ boundary is from analyticity.
+
+\subsection{The angular growth of the entire Borel transform}
+\begin{question}
+For $B=\B\Qhat_2$ or $\B\Uhat_2$, determine the growth as
+$|\zeta|\to\infty$ on rays adjacent to the negative axis, and identify the
+largest curvilinear regions carrying exponential bounds.
+\end{question}
+Corollary~\ref{cor:Borel-growth} rules out every fixed angular neighborhood,
+but leaves room for widening tubes and parabolic regions. An explicit
+transition law could explain how fine summation approaches its angular
+failure and improve numerical contour choices.
+% ed. (2026-09-29): a partial answer in an earlier-filed package (batch 49).
+\begin{ednote}
+For $B=\B\Qhat_2$ the maximum modulus on circles is known:
+\path{Signed_Quadratic_Feedback_Inversion/} \cite{ed:sqi},
+Theorem~\texttt{thm:borel}, gives $\max_{|\zeta|=R}|B(\zeta)|\sim-B(R)$, with
+an explicit equivalent, which bounds the growth on every ray. The growth on
+individual rays adjacent to the negative axis is not determined there.
+\end{ednote}
+
+\subsection{Higher-degree pole collisions}
+\begin{question}
+Remove the convenient bound $|q_0|<\e^{-d}$ from
+Proposition~\ref{prop:no-cancellation} for $d\ge3$, or classify the exceptional
+curves on which leading $d$th-power pole collisions cancel.
+\end{question}
+The exact obstruction is equality of nearest-pole $d$th powers, not a
+failure of the coefficient identity. Subleading terms and additional pole
+circles should be analyzed before asserting a general nonextension theorem
+for the whole $q$-disc.
+
+\subsection{General polynomial and nonpolynomial slopes}
+\begin{question}
+Extend the natural-boundary theorem from $j^d$ and affine quadratics to
+arbitrary positive-leading-coefficient integer polynomials, and then to
+nonintegral powers or asymptotically polynomial slopes.
+\end{question}
+For integer polynomials, rational boundary phases remain periodic, but the
+lower polynomial terms alter the moment asymptotics. For noninteger powers,
+periodicity is lost; a different replacement for the finite Fourier pole
+spectrum is needed. Merely knowing coefficient Gevrey growth does not settle
+analytic continuation.
+
+\subsection{Actual optimal errors rather than positive majorants}
+\begin{question}
+Does the signed error for optimally truncated $Q_d$ attain the scale and
+constant in \eqref{eq:optimized} along some nonexceptional ray? If not, what
+is its true leading scale?
+\end{question}
+A positive tree majorant discards cancellations. Matching lower bounds
+would require a direct analysis of the signed blocks, not another
+optimization of the same upper estimate.
+% ed. (2026-09-29): the least formal term at d = 2 is determined by a package filed beside this one (batch 50).
+\begin{ednote}
+For $d=2$ the least formal term of $\Qhat_2$ on the positive axis is
+determined by \path{Signed_Condensation_Sharp_Quadratic_Reversion/}
+\cite{ed:scs}, Theorem~\texttt{thm:least}: at $a=1$ it is
+$\exp(-(1/4+o(1))\log^2(1/t)/t)$, with the constant $1/4$ of
+\eqref{eq:optimized} at $d=2$. That is a statement about formal terms; it
+gives no lower bound for the analytic truncation error, so the question
+stays open.
+\end{ednote}
+
+\subsection{Global boundary geometry and inverse branches}
+\begin{question}
+Continue the canonical root along the left half-plane as far as possible.
+Locate any interior critical points or poles and determine the global image
+of the imaginary boundary under $Q_d$.
+\end{question}
+The current theorem is local near zero. A global branch may encounter
+critical points before the geometric-series condition $|Q_d|<1$ fails.
+The local natural boundary is proved; its global continuation and topology
+are separate questions.
+
+\subsection{Summation procedures for higher-degree feedback}
+\begin{question}
+For $d\ge3$, identify a summation procedure that reconstructs the canonical
+literal branch from its Gevrey--$(d-1)$, logarithmically improved series,
+without assuming an angular continuation which the branch cannot have.
+\end{question}
+The closed-half-disc remainder and convergent block expansion already give
+an evaluation procedure. A generalized fine summation or acceleration
+theorem would provide a transform-side characterization. It must distinguish
+an arbitrary function with the same formal expansion from the branch
+selected by the literal infinite feedback equation.
+
+\subsection{Effective boundary certificates}
+\begin{question}
+Turn the moment and mean-square proof into a finite, certified procedure
+that rules out a proposed analytic continuation radius or derivative bound.
+\end{question}
+At rational boundary points the pole set is explicit. Quantitative errors
+in Theorem~\ref{thm:moving}, together with an effective lower bound for a
+short mean-square average, would convert the qualitative contradiction into
+machine-checkable analytic certificates.
+
+\section{Conclusion}
+The infinite feedback equation supplies a concrete separation between formal
+inversion, smooth boundary realization, fine Borel reconstruction, and
+angular analytic continuation. In the quadratic model, fine reconstruction
+works and the Borel transforms are entire, yet every angular enlargement of
+the negative summation direction fails. The obstruction survives finite-core
+changes and analytic forcing because a moving holomorphic parameter cannot
+remove the factorial moment contribution of the periodic boundary spectrum.
+
+The same proof gives natural boundaries for all integer-power feedback
+kernels $j^d$, while the tree expansion gives usable, uniform remainder
+bounds on the permitted side. The result is therefore not simply an
+obstruction: it identifies both what continuation cannot do and what
+certified asymptotic evaluation can still accomplish.
+
+\appendix
+\section{Reproduction commands and package contents}
+The article source is standalone and uses an embedded bibliography. From the
+package directory, run
+\begin{verbatim}
+sh build.sh
+python code/verify.py --order 24 --exact-only
+python -m pip install -r requirements.txt
+python code/verify.py --order 24
+\end{verbatim}
+The first verification command needs only the Python standard library. The
+second full run additionally uses mpmath. Running the program replaces its
+own data files; an exact-only run marks diagnostics as not run rather than
+pretending they passed. No program accesses the network or changes the
+upstream repository.
+
+The package includes source and PDF, the verification program, exact
+coefficient and block files, numerical diagnostic tables, a recorded run,
+source-provenance notes, and a proof-status audit. PDF compilation and
+rendering checks are recorded separately from mathematical verification.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, repository and transseries documentation.
+Snapshot \texttt{ebd8344bca77d8352cd745b7df374618a290a029},
+accessed 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repo-reg}
+ProveIt research document, \emph{A sharp regularity classification for
+countable exponential-feedback transseries}, 2026.
+Repository directory
+\path{Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/}.
+Related background; the fine-summation predecessor supplies the comparison
+used in this article.
+
+\bibitem{repo-sector}
+ProveIt research document, \emph{Sharp negative-direction summability for
+countable exponential feedback: A coefficient-to-remainder principle,
+optimal logarithmic scales, and sectorial inversion}, 29 September 2026.
+Repository directory
+\path{Analysis/Transseries/docs/series-and-transseries/Sharp_Negative_Direction_Summability_Exponential_Feedback/}.
+Source blob \texttt{f82840478f1e9034b3de05f7c8d0ca5a612274b4}.
+
+\bibitem{repo-fine}
+ProveIt research document, \emph{Negative-Ray Summation of Countable
+Exponential-Feedback Transseries: A sharp slope threshold, an inverse Bessel
+representation, and logarithmic-Gevrey error certificates},
+29 September 2026. Repository directory
+\path{Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/}.
+Source blob \texttt{eafc690678f7ca2cd75a8310f1a0889b19c7cdb5}.
+
+% ed. (2026-09-29): bibliography entries for the editorial notes (packages filed beside this one).
+\bibitem{ed:nbq}
+\emph{Natural Boundaries of Quadratic Exponential Feedback}, ProveIt research
+package filed in batch 49 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Natural_Boundaries_Quadratic_Exponential_Feedback/}.
+Editorial addition.
+
+\bibitem{ed:sqi}
+\emph{Signed Quadratic-Feedback Inversion}, ProveIt research package filed in
+batch 49 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Quadratic_Feedback_Inversion/}.
+Editorial addition.
+
+\bibitem{ed:scs}
+\emph{Signed Condensation in Quadratic-Feedback Transseries}, ProveIt research
+package filed in batch 50 (2026-09-29),
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Condensation_Sharp_Quadratic_Reversion/}.
+Editorial addition.
+
+\bibitem{sokal}
+A. D. Sokal, An improvement of Watson's theorem on Borel summability,
+\emph{Journal of Mathematical Physics} \textbf{21} (1980), 261--263.
+\href{https://doi.org/10.1063/1.524408}{doi:10.1063/1.524408}.
+
+\bibitem{sauzin}
+D. Sauzin, \emph{Introduction to 1-summability and resurgence},
+arXiv:1405.0356, 2014. In particular Sections 7, 9, 13, and 17.
+\url{https://arxiv.org/abs/1405.0356}.
+
+\bibitem{hlss}
+L. Han, Y. Li, D. Sauzin, and S. Sun,
+\emph{Resurgence and Partial Theta Series},
+arXiv:2112.15223, version 3, 7 July 2022.
+\url{https://arxiv.org/abs/2112.15223}.
+
+\bibitem{folsom}
+A. Folsom, Asymptotic expansions, partial theta functions, and radial limit
+differences of mock modular and modular forms,
+\emph{International Journal of Number Theory} (2020).
+\href{https://doi.org/10.1142/S1793042120400126}{doi:10.1142/S1793042120400126}.
+
+\bibitem{nikolaev}
+N. Nikolaev, Gevrey asymptotic implicit function theorem,
+\emph{L'Enseignement Math\'ematique} \textbf{70} (2024), 251--282.
+\href{https://doi.org/10.4171/LEM/1061}{doi:10.4171/LEM/1061}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,432 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Rooted Tree Asymptotics for Canonical Thue Morse Pressure Clusters},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\ev}{\operatorname{ev}}\newcommand{\GG}{\mathcal G}
+\title{Rooted Tree Asymptotics for\\Canonical Thue--Morse Pressure Clusters}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For each fixed canonical Schur cluster of integer Thue--Morse pressure, we identify its leading coefficient asymptotic on a compact range of proportional Taylor degrees. The multiplier is the classical rooted-tree constant $(-1)^{k-1}2k^{k-1}/k!$ times $(\log_2(2m))^{k-1}$. Formal Lagrange inversion supplies the finite cluster polynomial; dyadic depth moments, a uniform Green estimate, conditional concentration, and parity extraction justify its transfer to the actual coefficients. A new weighted Green bound enlarges the certified disk to $|a|\le1/2$. The cluster index is fixed, and the allowed saddle lies strictly inside that disk. This is a theorem about an individual canonical component, not a resummation or a sign theorem for the full pressure at later degrees.
+\end{abstract}
+\paragraph{Status.} This is unrefereed ordinary mathematics, not a Lean formalization. Lambert-$W$, rooted-tree coefficients and Lagrange inversion are classical. The result here establishes their controlled occurrence in the specified pressure-component asymptotic; no broad priority claim is made.
+
+\section{Canonical components and the theorem}
+Put $d=2m$ for integers $m\ge2$. In the normalization of the preceding report~\cite{First},
+\[
+ P_m(t)=p_m(t/\pi)=d\log\cos t+\log\lambda(\tan t),
+\]
+where $\lambda(0)=1$ is the simple eigenvalue branch of
+\[
+ (V_af)(x)=\sum_{2y=x\pmod1}(\cos\pi y+a\sin\pi y)^d f(y).
+\]
+Let $h_0$ be the fixed function of $V_0$ with $h_0(0)=1$, let $\ev f=f(1/2)$, and set $Qf=f-f(0)h_0$. On the subspace vanishing at zero, define
+\begin{gather*}
+ \mathcal B_a=QV_aQ,\qquad q_a=QV_ah_0,\\
+ H_0(a)=F(a)=\ev h_0+\ev(I-\mathcal B_a)^{-1}q_a,\qquad
+ H_j(a)=\ev(I-\mathcal B_a)^{-(j+1)}q_a\quad(j\ge1).
+\end{gather*}
+Write $f_F=h_0+(I-\mathcal B_a)^{-1}q_a$ for the frozen normalized response. Dependence on $d$ in $H_j$ and $C_k$ is suppressed. The atomic constant belongs to $H_0$ only. Thus $H_1=G$ and $H_2=H$ in the preceding notation. All $H_j$ are even, and $H_j(0)=0$ for $j\ge1$.
+
+Introduce an independent formal variable $z$ and solve
+\begin{equation}\label{eq:implicit}
+ \delta=zU(\delta,a),\qquad
+ U(u,a)=H_0(a)+\sum_{j\ge1}(-u)^jH_j(a).
+\end{equation}
+The canonical logarithmic clusters $C_k(a)$ are defined by
+\[
+ \log(1+\delta(z,a))=\sum_{k\ge1}z^kC_k(a).
+\]
+Substituting $z=a^d$ and $a=\tan t$ recovers the pressure germ after adding $d\log\cos t$. This is a formal Taylor identity: only finitely many clusters can contribute to a fixed degree. Keeping $z$ independent fixes the meaning of one component when higher components are also present.
+
+Define the positive model and its saddle mean by
+\[
+ c=2/\pi,\quad b_j=\tan(\pi/2^{j+1}),\quad
+ B(a)=\prod_{j\ge1}(1+ab_j),\quad L(a)=cB(a),
+\]
+\[
+ \GG(t)=\tan t\,L(\tan t),\qquad
+ \mu(t)=\frac{t\GG'(t)}{\GG(t)},\qquad
+ R=1/2,\qquad \sigma_R=\mu(\arctan R).
+\]
+The positive coefficient law makes $\mu$ strictly increasing from one to infinity. Numerically $\sigma_R\approx1.9596324587$; its exact definition specifies the theorem's range.
+
+\begin{theorem}\label{thm:main}
+Fix an integer $k\ge2$ and a compact interval $I\subset(k,k\sigma_R)$. Uniformly over even integers $N$ with $N/d\in I$, as even $d\to\infty$,
+\begin{align}\label{eq:main}
+ [t^N]\tan^{kd}t\,C_k(\tan t)
+ =\left\{\frac{(-1)^{k-1}2k^{k-1}}{k!}(\log_2d)^{k-1}
+ +O_{k,I}((\log d)^{k-2})\right\}[t^N]\GG(t)^{kd}.
+\end{align}
+For $k=1$ and $I\subset(1,\sigma_R)$, the multiplier is $2+O_I(e^{-c_Id})$ for some $c_I>0$.
+\end{theorem}
+Each fixed canonical contribution therefore has eventual sign $(-1)^{k-1}$ on its stated compact range. The result does not extend to either endpoint or to $k$ growing with $d$. At $N=kd$, for example, the raw selector count is zero and the logarithmic multiplier is absent.
+% ed. (2026-10-01): the case k = 2 contains a proposition of the preceding package
+\begin{ednote}
+For $k=2$, $C_2=-K_2$ with $K_2=FG+F^2/2$ of \path{../Thue_Morse_Integer_Pressure_First_Negative/} (\cite{First}),
+so Theorem~\ref{thm:main} contains its Proposition~3.1 and extends the window of that
+proposition from $(2,2\mu(\arctan(2/5)))$ to $(2,2\sigma_R)$. The first-negative theorem of
+that package is neither restated nor re-proved here.
+\end{ednote}
+
+\section{Exact Lagrange algebra}
+Formal Lagrange inversion applied to $\log(1+\delta)$ gives
+\begin{equation}\label{eq:Lagrange}
+ C_k(a)=\frac1k[u^{k-1}]\frac{U(u,a)^k}{1+u}.
+\end{equation}
+With $V(u)=\sum_{j\ge0}H_j(a)u^j$, this is equivalently
+\begin{equation}\label{eq:signpoly}
+ C_k(a)=\frac{(-1)^{k-1}}k
+        \sum_{s=0}^{k-1}[u^s]V(u)^k.
+\end{equation}
+Indeed the term of degree $s$ from $U^k$ has sign $(-1)^s$, and the term of degree $k-1-s$ from $(1+u)^{-1}$ has sign $(-1)^{k-1-s}$. Thus every monomial in the abstract variables $H_j$ has the same overall sign. It has exactly $k$ factors and total depth weight $\sum j\le k-1$. Eventual coefficient signs require the analytic estimates below, since the functions $H_j$ themselves can have signed coefficients.
+
+The first instances are
+\[
+ C_1=F,\qquad C_2=-FG-F^2/2,
+\]
+\[
+ C_3=FG^2+F^2H_2+F^2G+F^3/3.
+\]
+For $\ell=\log_2d$, replacing $H_j$ formally by $X\ell^j/j!$ gives at the highest depth weight
+\begin{equation}\label{eq:tree}
+ \frac{(-1)^{k-1}}kX^k[u^{k-1}]e^{k\ell u}
+ =\frac{(-1)^{k-1}k^{k-1}}{k!}\ell^{k-1}X^k.
+\end{equation}
+The next sections justify this finite replacement in the required coefficient convolutions. The factor two in Theorem~\ref{thm:main} comes from the two pure parity branches, rather than from~\eqref{eq:tree}.
+
+\section{General depth moments and low Taylor coefficients}
+The low-degree orbit identities and dyadic tangent majorization are inherited from~\cite{First} and its unchanged analytic prerequisites. We explain the extension to every fixed resolvent order.
+
+Let $M_{d,q}=[a^q]B(a)^d$. Below raw degree $d$, a monomial whose deepest occupied dyadic index is $L$ has weight
+\begin{equation}\label{eq:mark}
+ \binom{L+j-1}{j}
+\end{equation}
+in $H_j$, for $j\ge1$. In fact $(I-\mathcal B)^{-(j+1)}q$ weights resolvent depth $\ell$ by $\binom{\ell+j}{j}$, and a monomial first enters at $L=\ell+1$. For $H_0$ the weight is one, with its separate atomic constant.
+
+For each fixed $j$ there is a constant $A_j$ such that
+\begin{equation}\label{eq:globaljet}
+ |[a^q]H_j|\le A_j(\log_2d+1)^j c^dM_{d,q},
+ \qquad 0\le q\le d-2.
+\end{equation}
+For $j\ge1$ the zero coefficient is handled directly. To verify the general marking bound, use
+\[
+ \binom{L+j-1}{j}
+ =\sum_{J=0}^{L-1}\binom{J+j-1}{j-1}.
+\]
+For the normalized positive odd-$n$ orbit, the established degree-$q$ marked tail is at most
+\[
+ M_{d,q}\min(1,\pi d^2 2^{-J})
+ \quad\text{when }J\ge\lceil\log_2n\rceil.
+\]
+Splitting at $\max(\lceil\log_2n\rceil,\lceil\log_2(\pi d^2)\rceil)$ bounds~\eqref{eq:mark} by
+$O_j((\log_2n+\log_2d+1)^j)M_{d,q}$. The orbit weight is $2c^dn^{q-d}$, and
+$\sum_{n\ge1\text{ odd}}n^{-2}(\log n)^j<\infty$. This proves~\eqref{eq:globaljet} and the required absolute interchanges.
+
+For the sharper typical coefficient, use the weighted selector interpretation of $M_{d,q}$. Choose $a>0$ so that
+\[
+ \sum_j\frac{ab_j}{1+ab_j}=q/d,
+\]
+and condition $d$ independent copies of each Bernoulli selector on total count $q$. The preceding report proves
+\[
+ \mathbb P(L>J\mid q)\le\min(1,Cd2^{-J}),\qquad
+ \mathbb P(L\le J\mid q)\le Ce^{-cd2^{-J}},
+\]
+uniformly when $q/d$ ranges in a compact subset of $(0,\infty)$. These bounds give uniformly bounded moments of every fixed order of $L-\log_2d$. Consequently
+\[
+ \mathbb E\binom{L+j-1}{j}
+ =\frac{(\log_2d)^j}{j!}+O_j((\log d)^{j-1}).
+\]
+For even $q$ with $q/d$ in a compact subset of $(0,1)$, the remote odd branches are exponentially small because their factors are $n^{q-d}$ with $n\ge3$. Thus, uniformly there,
+\begin{align}
+ [a^q]H_j&=2c^dM_{d,q}
+   \left\{\frac{(\log_2d)^j}{j!}+O_j((\log d)^{j-1})\right\}
+   &&(j\ge1),\label{eq:typical}\\
+ [a^q]H_0&=2c^dM_{d,q}(1+O(e^{-cd})).\notag
+\end{align}
+Odd coefficients vanish. The constants depend on the fixed resolvent order and the compact coefficient range.
+
+\section{A larger disk for the weighted Green inverse}
+This section supplies the new radius $R=1/2$. The earlier radius-$2/5$ report and its certificates remain unchanged. Put
+\[
+ h(x)=\prod_{j\ge1}\bigl(\cos(\pi x/2^j)+R\sin(\pi x/2^j)\bigr),
+ \qquad \ell(x)=\log h(x),\qquad t(x)=\operatorname{dist}(x,\mathbb Z).
+\]
+Here $h(1/2)=L(R)$. On periodic $C^1$ functions $f$ vanishing at zero define
+\[
+ N_0(f)=\sup_{x\notin\mathbb Z}\frac{|f(x)|}{t(x)h(t(x))^d},\qquad
+ N_1(f)=\sup_x\frac{|f'(x)|}{h(t(x))^d},\qquad
+ \|f\|_d=N_0(f)+\frac{(19/20)^d}{d}N_1(f).
+\]
+For each fixed $d$ this is equivalent to the $C^1$ norm on that subspace. We use the atomic bounds $\|h_0\|_\infty\le1$ and $\|h_0'\|_\infty\le\pi d$ from~\cite{First}.
+
+\begin{proposition}\label{prop:green}
+For even $d\ge256$ and $|a|\le1/2$,
+\[
+ \|\mathcal B_a\|_d<4/5,\qquad
+ \|(I-\mathcal B_a)^{-1}\|_d\le5.
+\]
+The fixed Schur jets are analytic on a neighborhood of this closed disk and satisfy
+\begin{equation}\label{eq:disk}
+ |H_0(a)|\le81dL(R)^d,\qquad
+ |H_j(a)|\le80\,5^j dL(R)^d\quad(j\ge1).
+\end{equation}
+\end{proposition}
+
+\paragraph{Scalar facts.}
+Log-concavity follows directly from
+\[
+ \ell''(x)=-\pi^2(1+R^2)\sum_{j\ge1}
+ \frac{4^{-j}}{(\cos(\pi x/2^j)+R\sin(\pi x/2^j))^2}<0.
+\]
+The exact scalar checker supplied with this report proves
+\begin{gather*}
+ 1<h(1/2)<7/5,\qquad h(3/8)<7/5,\qquad \ell'(1/4)>0,\\
+ 0<\ell'(3/8)<6/25,\qquad \ell'(1/2)>-1/5.
+\end{gather*}
+The tangent at $3/8$ gives
+$h\le(7/5)e^{3/100}<140/97<3/2$ on $[0,1/2]$; endpoint log-concavity gives $h\ge1$. Thus on this interval
+\begin{equation}\label{eq:scalarh}
+ 1\le h\le3/2,\qquad -1/5<\ell'\le\pi/2,
+ \qquad h\text{ increases on }[0,1/4].
+\end{equation}
+Set, for $0\le x\le1/2$,
+\[
+ c_x=\cos(\pi x/2),\quad s_x=\sin(\pi x/2),\quad y=(1-x)/2,
+\]
+\[
+ p(x)=\frac{c_x-Rs_x}{c_x+Rs_x},\qquad
+ b_-(x)=\frac{(s_x+Rc_x)h(y)}{h(x)},\qquad
+ b_+(x)=\frac{|s_x-Rc_x|h(y)}{h(x)}.
+\]
+Eight exact endpoint tests prove that $b_-$ is increasing: on
+$[u,v]=[i/16,(i+1)/16]$, $0\le i\le7$, its logarithmic derivative is at least
+\[
+ \frac\pi2\frac{c_v-Rs_v}{s_v+Rc_v}
+ -\frac12\ell'((1-v)/2)-\ell'(u)>0.
+\]
+All terms have the required monotonicity by log-concavity and the elementary trigonometric derivative. Since $b_-(1/2)=1$, we obtain $b_-\le1$. Further exact tests give
+\[
+ b_-(2/5)<97/100,\qquad p(2/5)<47/100,\qquad RL(R)<7/10.
+\]
+The function $p$ decreases. On the two sides of its zero, the logarithmic derivative of $b_+$ is respectively at most $-\pi+3/10$ and at least $3\pi/4$. Hence $b_+$ decreases to zero and then increases; its endpoint values are $RL(R)$ and $1/3$. In particular $b_+<7/10$.
+
+These are exact one-dimensional certificates. Twenty factors are enclosed using rational Taylor intervals. The omitted product lies between $1$ and
+$(1-R\pi x/2^{20})^{-1}$, and its logarithmic derivative lies between $0$ and $R\pi/2^{20}$. All omitted angles are below $R/2$, which ensures the stated lower signs. No spatial or complex-phase sampling is used.
+
+\paragraph{Two branches with a common complex phase.}
+For nonnegative $A,B$, the expression
+$A|c_x+as_x|^d+B|s_x-ac_x|^d$ is maximal on $|a|\le R$ at $a=R$ or $a=-R$. On the boundary circle it is a convex function of $\cos(\arg a)$, since $d/2\ge1$; for fixed $\Re a$, both squared moduli increase with $|\Im a|$ up to the boundary. The identity
+$h(x)=(c_x+Rs_x)h(x/2)$ and $b_-\le1$ therefore imply, for either inverse branch $y$,
+\begin{equation}\label{eq:branch}
+ \frac{|W_a(y)|h(t(y))}{h(t(x))}\le1,
+ \qquad W_a(y)=\cos\pi y+a\sin\pi y.
+\end{equation}
+The sum of the $d$th powers of these two normalized bases is at most
+$1+(97/100)^d$. At $a=R$ use $1+b_+^d$; at $a=-R$ use $p^d+b_-^d$, split at $x=2/5$. Reflection covers the full circle. For $f(0)=0$,
+\[
+ \mathcal B_af=V_af-a^df(1/2)h_0.
+\]
+
+\paragraph{The two norm rows.}
+Away from the integer, $x\ge1/20$, the unprojected $N_0$ coefficients at the two real phases are
+\[
+ \frac12+\frac{1-x}{2x}b_+(x)^d,
+ \qquad \frac{p(x)^d}{2}+\frac{1-x}{2x}b_-(x)^d.
+\]
+Projection adds at most $(RL(R))^d/(2x)$. The resulting bounds are
+\[
+ \begin{cases}
+ 1/2+(19/2)(97/100)^d+10(7/10)^d,&1/20\le x\le2/5,\\
+ 3/4+(47/100)^d/2+2(7/10)^d,&2/5\le x\le1/2.
+ \end{cases}
+\]
+
+Near zero, write $g_a(x)=W_a((1+x)/2)^df((1+x)/2)$. Its projected part is
+$g_a(x)-g_a(0)+a^df(1/2)(1-h_0(x))$.
+For $0\le x\le1/20$, $|W_a((1+x)/2)|<3/5$ and its $x$ derivative is at most $3\pi/4$. Using $h\le3/2$ gives
+\[
+ \frac{|g_a(x)-g_a(0)|}{x}
+ \le2d(9/10)^dN_0(f)+\tfrac12(9/10)^dN_1(f).
+\]
+The $h_0$ term adds at most $2d(7/10)^dN_0(f)$, and the principal branch contributes at most $N_0(f)/2$. Consequently
+\begin{align*}
+ N_0(\mathcal B_af)&\le\alpha_dN_0(f)+\varepsilon_dN_1(f),\\
+ \alpha_d&=3/4+(4d+13)(9/10)^d+(19/2)(97/100)^d,\qquad
+ \varepsilon_d=\tfrac12(9/10)^d.
+\end{align*}
+For derivatives on $f$,~\eqref{eq:branch} gives
+$\beta_dN_1(f)$ with $\beta_d=1/2+(97/100)^d/2$.
+For derivatives on a weight,
+$|W|^{d-1}h(t(y))^d/h(t(x))^d\le3/2$;
+the two branches contribute less than $4dN_0(f)$, and projection adds less than $2dN_0(f)$. Thus
+\[
+ N_1(\mathcal B_af)\le6dN_0(f)+\beta_dN_1(f).
+\]
+The operator norm is bounded by the larger of
+\[
+ \alpha_d+6(19/20)^d,\qquad
+ \beta_d+\tfrac d2(18/19)^d.
+\]
+The checker proves both are below $4/5$ at $d=256$, and proves their decrease thereafter by the exact ratios
+$(9/10)(4d+17)/(4d+13)<1$ and $(18/19)(d+1)/d<1$.
+This proves the Green bound on periodic $C^1$, and hence on its invariant finite Fourier restriction. Polynomial dependence on $a$ and strict uniform contraction also give analyticity in a neighborhood of the closed disk.
+
+\paragraph{A direct source estimate.}
+With $\rho_0=h_0(1/2)$,
+\[
+ q_a=V_ah_0-(1+a^d\rho_0)h_0,\qquad q_a(0)=0.
+\]
+From~\eqref{eq:branch} and $h\ge1$,
+$|W|^d/h(t(x))^d\le1$ and $|W|^{d-1}/h(t(x))^d\le1$.
+The derivative of $V_ah_0$, after division by $h(t(x))^d$, is at most $(5\pi/2)d<8d$; the projected term adds at most $2\pi d<8d$. Thus $N_1(q_a)\le16d$.
+For $t(x)\le1/4$, integrate from the nearest integer using the monotonicity of $h$ to get $N_0(q_a)\le16d$. For $t(x)\ge1/4$, the direct normalized amplitude is at most four, so $N_0(q_a)\le16$. Therefore $\|q_a\|_d\le32d$.
+Evaluation costs $L(R)^d/2$; applying the inverse $j+1$ times proves~\eqref{eq:disk}, including $H_0$ with its separate atomic constant.
+
+\section{High degrees and the model convolution}
+We now use only the polynomial-in-$d$ disk bounds~\eqref{eq:disk}.
+
+Truncate each $H_j$ below raw degree $d$. Cauchy's estimate bounds its high tail on $|a|\le a_0<R$ by
+\[
+ O_j(d)L(R)^d\frac{(a_0/R)^d}{1-a_0/R}.
+\]
+Its low part is bounded by $O_j((\log d+1)^j)L(a_0)^d$, by~\eqref{eq:globaljet}. The relative high-tail factor is
+\[
+ \tau(a_0)=\frac{a_0L(R)}{RL(a_0)}<1,
+\]
+because $\nu(a)=aL'(a)/L(a)<a\sum_jb_j<2a\le1$, so $a/L(a)$ increases on $(0,R]$. Here $\sum_jb_j<2$ follows by the chord bound $\tan x\le4x/\pi$ on $[0,\pi/4]$, with strict inequality for the tail terms.
+
+For $\sigma=N/d\in I$, the $k$th model saddle solves $\mu(t)=\sigma/k$. Thus $a_0=\tan t$ stays in a compact subinterval of $(0,R)$. Expand the finitely many products in~\eqref{eq:signpoly} into low and high parts. Each term with at least one high part is bounded by
+\[
+ \operatorname{poly}_k(d)\tau(a_0)^d L(a_0)^{kd}.
+\]
+After tangent composition and Cauchy's estimate at $t$, this is exponentially smaller than $[t^N]\GG(t)^{kd}$, whose uniform local-limit lower bound costs only $d^{-1/2}$. This justifies raw-degree truncation for the full stated slope window.
+
+In a product of $k$ low factors, mark its $k$ raw selector counts in
+\[
+ c^{kd}\tan^{kd}t\prod_{i=1}^k B(u_i\tan t)^d.
+\]
+Each count has mean $d\nu(a_0)$ at the positive saddle, where
+$\nu(a_0)=a_0B'(a_0)/B(a_0)$ ranges in a compact subset of $(0,1)$. Conditional on total degree $N$, the chance that any count leaves a fixed interior interval is exponentially small. Marking $u_i=e^\theta$ gives a Chernoff bound; division by the local-limit coefficient introduces only $O(\sqrt d)$. There are finitely many groups because $k$ is fixed.
+
+Apply~\eqref{eq:typical} on the typical set and~\eqref{eq:globaljet} on its complement. A product of total depth weight $s$ contributes $\ell^s$ times its factorial constants. The top weight $k-1$ gives~\eqref{eq:tree}; all lower weights and moment errors are $O(\ell^{k-2})$ times the positive model coefficient. Restoring the full nearest factors introduces only the same atypical raw-count tails.
+
+It remains to extract parity. Put
+$F_{\rm near}(a)=c^d(B(a)^d+B(-a)^d)$. Then
+\[
+ \tan^{kd}t\,F_{\rm near}(\tan t)^k
+ =\{\GG(t)^d+\GG(-t)^d\}^k.
+\]
+For even $d,N$, the two pure terms give exactly $2[t^N]\GG(t)^{kd}$. Every mixed term has a uniform strict modulus gap on the saddle circle: equality for $\GG(z)$ requires $z/t=1$, while equality for $\GG(-z)$ requires $z/t=-1$, since consecutive coefficients are positive. Cauchy's estimate and the local-limit lower bound suppress all mixed terms exponentially. This proves Theorem~\ref{thm:main}, including the exponentially small error when $k=1$.
+
+\section{Classical constants and the scope of the result}
+The first six signed constants, after the parity factor, are
+\[
+ 2,\quad-2,\quad3,\quad-16/3,\quad125/12,\quad-108/5.
+\]
+Each multiplies $(\log_2d)^{k-1}[t^N]\GG(t)^{kd}$.
+The standard-library exact checker verifies~\eqref{eq:Lagrange}--\eqref{eq:tree} for $1\le k\le12$, including the quadratic and cubic normalization. These are finite algebraic regressions; the general proof is the argument above.
+
+The coefficients $(-1)^{k-1}k^{k-1}/k!$ are classical Taylor coefficients of the principal Lambert function at zero:
+\[
+ W(z)=\sum_{k\ge1}\frac{(-k)^{k-1}}{k!}z^k.
+\]
+Their rooted labeled tree interpretation and relation to Lagrange inversion are discussed, for example, by Corless et al.~\cite{Lambert}, pp.~330--331. Formally, the highest-depth replacement $U(u)\sim F_{\rm near}e^{-u\ell}$ turns~\eqref{eq:implicit} into
+\[
+ \delta=zF_{\rm near}e^{-\ell\delta},\qquad
+ \delta=\frac1\ell W(\ell zF_{\rm near}).
+\]
+The theorem justifies the finite coefficient replacement for each fixed canonical cluster. It does not assert a uniform Lambert-$W$ approximation to the entire eigenvalue, summation over growing $k$, or alternating signs of the full pressure.
+
+More generally the coefficient argument applies at any certified radius with polynomial fixed-jet bounds and $\nu(R)<1$. The disk restriction is substantive. A later model saddle can lie beyond $|a|=1/2$, and earlier canonical components can contain additional corrections at the same total degree. Studying later full-pressure sign transitions therefore requires further analytic estimates. Neither the present theorem nor the classical rooted-tree constants remove that obstacle.
+% ed. (2026-10-01): Lean counterparts in the repository, not cited by the article
+\begin{ednote}
+Lean counterparts in the repository, not cited here: \eqref{eq:Lagrange} is an instance of the
+Lagrange--B\"urmann formula $n[z^n]H(g)=[w^{n-1}]H'(w)\varphi(w)^n$ for $g=z\varphi(g)$, which
+is formalized over any commutative $\mathbb Q$-algebra as
+\path{Fabius.Lagrange.coeff_subst_derivative} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/LagrangeInversion.lean}; take
+$H(w)=\log(1+w)$ and $\varphi=U(\cdot,a)$ over power series in $a$, where
+$\varphi(0)=H_0(a)$ is a unit because its constant term $H_0(0)=h_0(1/2)$ is positive. That instantiation is not formalized.
+The principal Lambert branch enters the development through the real Cayley tree function
+\path{Fabius.cayleyTree} ($=-W_0(-w)$, in \path{CayleyTreeFunction.lean} in the same
+directory); the Taylor coefficients $(-k)^{k-1}/k!$ of $W$ are not formalized. No statement of
+this article is formalized.
+\end{ednote}
+
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the twelfth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{First} is \path{../Thue_Morse_Integer_Pressure_First_Negative/}; the copies bundled under \path{inputs/}
+(its PDF, its source and its source archive) were not filed. The repository manuscript enters
+through that package.
+\end{ednote}
+
+\appendix
+\section{The exact branch limit of this envelope}
+The half-radius norm theorem is explicit; a related structural criterion identifies the limit of its individual branch envelope. It does not identify a spectral singularity or the largest possible analytic Green disk.
+
+For $r>0$, set $\alpha=\arctan r$, $\gamma_j=\pi/2^j$ and
+\[
+ h_r(x)=\prod_{j\ge1}(\cos(\gamma_jx)+r\sin(\gamma_jx)),\qquad
+ \ell_r=\log h_r,\qquad b_r(x)=\frac{h_r(1-x)}{h_r(x)}.
+\]
+Every factor is positive for $0\le x\le1$. The ratio $b_r$ on $[0,1/2]$ equals the secondary branch ratio $b_-$ used above.
+
+\begin{proposition}\label{prop:envelope}
+The following conditions are equivalent: $b_r(x)\le1$ on $[0,1/2]$; $b_r$ is nondecreasing there; and $\ell_r'(1/2)\le0$. They hold precisely for $0<r\le r_{\rm crit}$, where $r_{\rm crit}$ is the unique solution of $\ell_r'(1/2)=0$ in $(0,1)$. Exact rational evaluation gives
+\[
+ 0.573537286334<r_{\rm crit}<0.573537286335.
+\]
+\end{proposition}
+\begin{proof}
+Set $u=1-2x$. Tangent addition gives
+\[
+ \ell_r'(x)+\ell_r'(1-x)
+ =\sum_j2\gamma_j\tan(\alpha-\gamma_j/2)K(\gamma_j,u),
+\]
+\[
+ K(\gamma,u)=\left[1-
+ \left(\frac{\sin(\gamma u/2)}{\cos(\alpha-\gamma/2)}\right)^2\right]^{-1}.
+\]
+The denominator is positive: with $A=\alpha-\gamma/2$ and $v=\gamma u/2$,
+$\cos^2A-\sin^2v=\cos(A+v)\cos(A-v)>0$, since both angles lie strictly between $-\pi/2$ and $\pi/2$.
+
+For $u>0$, $K(\gamma,u)$ increases strictly with $\gamma$. The logarithmic derivative of its inner sine ratio is
+\[
+ \tfrac12\{u\cot(\gamma u/2)-\tan(\alpha-\gamma/2)\}>0.
+\]
+Indeed $v\cot v$ decreases on $(0,\pi/4]$, so
+$u\cot(\gamma u/2)\ge\cot(\gamma/2)>\tan(\alpha-\gamma/2)$.
+For $u=0$, $K=1$.
+
+If $\ell_r'(1/2)\le0$, then $\alpha<\pi/4$. Put $\gamma_0=2\alpha$.
+Terms with $\gamma_j>\gamma_0$ have negative tangent coefficient and a larger $K$; those with $\gamma_j<\gamma_0$ have positive coefficient and a smaller $K$. Comparing each with $K(\gamma_0,u)$ yields
+\[
+ \ell_r'(x)+\ell_r'(1-x)
+ \le2K(\gamma_0,u)\ell_r'(1/2)\le0.
+\]
+All sums converge absolutely: their terms are $O(\gamma_j)$ and $K$ is bounded for fixed $r,u$. Thus $(\log b_r)'\ge0$. Since $b_r(1/2)=1$, this proves the first two conditions. Conversely, $b_r(x)\le b_r(1/2)=1$ forces a nonnegative left derivative at $1/2$; that derivative has sign $-2\ell_r'(1/2)$. If $\ell_r'(1/2)>0$, the ratio exceeds one immediately to the left.
+
+Finally,
+\[
+ \frac{\partial}{\partial r}\ell_r'(1/2)
+ =\sum_j\frac{\gamma_j}
+ {(\cos(\gamma_j/2)+r\sin(\gamma_j/2))^2}>0.
+\]
+The series is continuous in $0\le r\le1$. At $r=0$ the endpoint value is $-2$, by the sine product; at $r=1$ the first summand of $\ell_r'$ is zero and all later ones are positive. This proves existence and uniqueness. The supplied checker encloses the endpoint series at the two stated rational radii with opposite strict signs, using 64 factors and the same positive tail enclosure as above.
+\end{proof}
+
+\begin{thebibliography}{9}
+\bibitem{First} \emph{First Negative Degrees in Integer Thue--Morse Pressure}, research report prepared for V.~Reshetnikov with OpenAI, 1 October 2026. Unchanged PDF, TeX and reproducible source archive included. It contains the normalized Schur model, depth estimates, Green theorem, and conditional-concentration arguments used here, together with the pinned repository source and earlier prerequisites.
+\bibitem{Lambert} R.~M.~Corless, G.~H.~Gonnet, D.~E.~G.~Hare, D.~J.~Jeffrey and D.~E.~Knuth, \emph{On the Lambert $W$ function}, Advances in Computational Mathematics \textbf{5} (1996), 329--359. Author-hosted version:\newline
+\url{https://www.uwo.ca/apmaths/faculty/jeffrey/pdfs/W-adv-cm.pdf}
+\end{thebibliography}
+\end{document}

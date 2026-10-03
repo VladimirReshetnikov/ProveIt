@@ -22,6 +22,11 @@ current open-status certification, or source-to-render parity claim is made.
 The pinned README is used for the research program and formalization boundary,
 not as proof of the new mathematical theorems.
 
+(Editorial note, ProveIt, 2026-09-29: those are pre-split paths of the pinned
+commit. At the current repository state the two READMEs are
+`Analysis/Transseries/docs/series-and-transseries/README.md` and
+`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md`.)
+
 ## Earlier user research source actually read
 
 `uniform_q_multinomial_transseries.tex`, saved version dated 29 September 2026,
@@ -37,6 +42,16 @@ not as proof of the new mathematical theorems.
 This is a preceding unrefereed research draft, not asserted to be an established
 published theorem or a file verified to be in the present repository snapshot.
 The exact positive remainder and conditioning are rederived in the new article.
+
+(Editorial note, ProveIt, 2026-09-29: that draft is now filed at
+`Analysis/Transseries/docs/series-and-transseries/Uniform_q_Multinomial_Certified_Inversion/uniform_q_multinomial_transseries.tex`
+(batch 45 of `docs/incoming/README.md`). As delivered it had 1,521 lines and
+the labels `eq:Rexact`, `eq:Rzero`, `eq:discrete-remainder` and
+`thm:resonance` named above. The two drafts checked at scope level below
+correspond, by name and subject, to the filed packages
+`../Uniform_Resurgent_Crossover_Gaussian_Binomials/` and
+`../Support_Controlled_Reversion_One_Exponential/`; the saved copies were not
+compared with the filed files.)
 
 The saved drafts `reversion_and_one_exponential.tex` and
 `ProveIt_Uniform_Resurgent_Crossover.tex` were checked at scope/abstract level

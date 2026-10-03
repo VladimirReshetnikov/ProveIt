@@ -175,6 +175,32 @@ else in the region `D >= 1`, `M >= D`. Status by stratum:
    "wobbles" — e.g. `k=2, D=5` — never pass through zero but break
    alternation); all-terms-one-sign pairings.
 
+   *Note (30 September 2026).* This item records the July 2026 state; it
+   is no longer the open core on paper. The research-report collection's
+   [`power-tower-derivative-term-counts`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-derivative-term-counts/README.md)
+   classifies the zeros at `D = 3` and `D = 4` for every `k` (its batch-42
+   addition: only the forced holes vanish), so the open region begins at
+   `D = 5`, and its batch-70 addition gives a second proof of `D = 3` (the
+   only zeros of `gamma(k,3,M)` are `M = k+13` with `k` odd) by a harmonic
+   sign law and positivity propagation in `k`. None of it is formalized;
+   see the correction under "Lean formalization".
+
+   *Note (1 October 2026, batch 72A).* Two further steps, neither
+   formalized. The same report's batch-72A addition classifies `D = 5` and
+   `D = 6` (only the forced holes vanish there too), so the open region is
+   now `D >= 7`. And the sibling report
+   [`power-tower-exponent-supports`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/power-tower-exponent-supports/README.md)
+   proves `a(N) ~ N^2/2` (its Corollary 13.1), ineffectively and without
+   classifying individual zeros, so the leading constant of the conjecture
+   is settled while the conjecture itself stays open. The coefficients at
+   unbounded `D` are studied in
+   [`a290268-unbounded-deficits`](../../SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a290268-unbounded-deficits/README.md).
+
+   *Note (1 October 2026, batch 73).* The same report's batch-73 addition
+   (`13ef7d939`) classifies `D = 7`, twice by independent certificates, and
+   `D = 8` (its Theorems 3.99 and 3.100): only the forced holes vanish, so
+   the open region is now `D >= 9`. Not formalized.
+
 **Literature status** (searched July 2026): the conjecture is open; no
 published attack on A290268/A293239/A281434 exists. The closest proven result
 is Štampach (J. Approx. Theory 262 (2021), arXiv:2011.13808): sign-alternation

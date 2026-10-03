@@ -109,7 +109,8 @@ def main() -> None:
               'D2 check=',row['second_scaled_residual'],
               'vs',row['D2_predicted'], flush=True)
     with args.output.open('w', newline='') as out:
-        writer=csv.DictWriter(out,fieldnames=list(rows[0]))
+        # ed. (2026-09-29): LF line endings on every platform, like the filed file.
+        writer=csv.DictWriter(out,fieldnames=list(rows[0]),lineterminator='\n')
         writer.writeheader(); writer.writerows(rows)
     print(f'Wrote {args.output}; elapsed {time.monotonic()-start:.1f}s', flush=True)
 

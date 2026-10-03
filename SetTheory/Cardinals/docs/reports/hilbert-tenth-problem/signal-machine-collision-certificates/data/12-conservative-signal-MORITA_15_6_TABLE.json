@@ -1,0 +1,715 @@
+{
+  "schema": "morita-15-6-table-v1",
+  "source": {
+    "title": "Reversible computing and cellular automata",
+    "author": "Kenichi Morita",
+    "year": 2008,
+    "url": "https://hiroshima.repo.nii.ac.jp/record/2008964/files/TCS_395_101.pdf",
+    "pdf_sha256": "b29b066db12aa72b67f6dcf23b59efa1facf4482d398a84dc2f734317c7f0355",
+    "table": "Table 5",
+    "printed_page": 24,
+    "pdf_page_one_based": 24,
+    "visual_verification": "Source pages 19, 23, 24, 25 were visually inspected during preparation; source images are not bundled",
+    "definition": "Definition 3.2, printed page 19",
+    "input_convention": "Definition 3.3 and Example 3.3, printed page 23; Figure 28 and surrounding discussion, pages 24-25"
+  },
+  "states": [
+    "q0",
+    "q1",
+    "q2",
+    "q3",
+    "q4",
+    "q5",
+    "q6",
+    "q7",
+    "q8",
+    "q9",
+    "q10",
+    "q11",
+    "q12",
+    "q13",
+    "q14"
+  ],
+  "symbols": [
+    "b",
+    "Y",
+    "N",
+    "*",
+    "$",
+    "1"
+  ],
+  "blank": "b",
+  "initial_state": "q0",
+  "move_semantics": {
+    "-1": "write then move one cell left",
+    "1": "write then move one cell right"
+  },
+  "transitions": [
+    {
+      "state": "q0",
+      "read": "b",
+      "write": "$",
+      "move": -1,
+      "next_state": "q2"
+    },
+    {
+      "state": "q0",
+      "read": "Y",
+      "write": "$",
+      "move": -1,
+      "next_state": "q1"
+    },
+    {
+      "state": "q0",
+      "read": "N",
+      "write": "b",
+      "move": -1,
+      "next_state": "q11"
+    },
+    {
+      "state": "q1",
+      "read": "Y",
+      "write": "Y",
+      "move": -1,
+      "next_state": "q1"
+    },
+    {
+      "state": "q1",
+      "read": "N",
+      "write": "N",
+      "move": -1,
+      "next_state": "q1"
+    },
+    {
+      "state": "q1",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q0"
+    },
+    {
+      "state": "q1",
+      "read": "$",
+      "write": "b",
+      "move": -1,
+      "next_state": "q1"
+    },
+    {
+      "state": "q2",
+      "read": "b",
+      "write": "*",
+      "move": -1,
+      "next_state": "q3"
+    },
+    {
+      "state": "q2",
+      "read": "Y",
+      "write": "Y",
+      "move": -1,
+      "next_state": "q2"
+    },
+    {
+      "state": "q2",
+      "read": "N",
+      "write": "N",
+      "move": -1,
+      "next_state": "q2"
+    },
+    {
+      "state": "q2",
+      "read": "*",
+      "write": "*",
+      "move": -1,
+      "next_state": "q2"
+    },
+    {
+      "state": "q3",
+      "read": "b",
+      "write": "b",
+      "move": 1,
+      "next_state": "q10"
+    },
+    {
+      "state": "q3",
+      "read": "Y",
+      "write": "1",
+      "move": 1,
+      "next_state": "q4"
+    },
+    {
+      "state": "q3",
+      "read": "N",
+      "write": "b",
+      "move": 1,
+      "next_state": "q5"
+    },
+    {
+      "state": "q3",
+      "read": "*",
+      "write": "b",
+      "move": 1,
+      "next_state": "q8"
+    },
+    {
+      "state": "q4",
+      "read": "b",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q6"
+    },
+    {
+      "state": "q4",
+      "read": "Y",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q4"
+    },
+    {
+      "state": "q4",
+      "read": "N",
+      "write": "N",
+      "move": 1,
+      "next_state": "q4"
+    },
+    {
+      "state": "q4",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q4"
+    },
+    {
+      "state": "q4",
+      "read": "$",
+      "write": "$",
+      "move": 1,
+      "next_state": "q4"
+    },
+    {
+      "state": "q5",
+      "read": "b",
+      "write": "N",
+      "move": 1,
+      "next_state": "q6"
+    },
+    {
+      "state": "q5",
+      "read": "Y",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q5"
+    },
+    {
+      "state": "q5",
+      "read": "N",
+      "write": "N",
+      "move": 1,
+      "next_state": "q5"
+    },
+    {
+      "state": "q5",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q5"
+    },
+    {
+      "state": "q5",
+      "read": "$",
+      "write": "$",
+      "move": 1,
+      "next_state": "q5"
+    },
+    {
+      "state": "q6",
+      "read": "b",
+      "write": "b",
+      "move": -1,
+      "next_state": "q7"
+    },
+    {
+      "state": "q7",
+      "read": "b",
+      "write": "N",
+      "move": -1,
+      "next_state": "q3"
+    },
+    {
+      "state": "q7",
+      "read": "Y",
+      "write": "Y",
+      "move": -1,
+      "next_state": "q7"
+    },
+    {
+      "state": "q7",
+      "read": "N",
+      "write": "N",
+      "move": -1,
+      "next_state": "q7"
+    },
+    {
+      "state": "q7",
+      "read": "*",
+      "write": "*",
+      "move": -1,
+      "next_state": "q7"
+    },
+    {
+      "state": "q7",
+      "read": "$",
+      "write": "$",
+      "move": -1,
+      "next_state": "q7"
+    },
+    {
+      "state": "q7",
+      "read": "1",
+      "write": "Y",
+      "move": -1,
+      "next_state": "q3"
+    },
+    {
+      "state": "q8",
+      "read": "Y",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q8"
+    },
+    {
+      "state": "q8",
+      "read": "N",
+      "write": "N",
+      "move": 1,
+      "next_state": "q8"
+    },
+    {
+      "state": "q8",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q8"
+    },
+    {
+      "state": "q8",
+      "read": "$",
+      "write": "$",
+      "move": 1,
+      "next_state": "q9"
+    },
+    {
+      "state": "q9",
+      "read": "Y",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q9"
+    },
+    {
+      "state": "q9",
+      "read": "N",
+      "write": "N",
+      "move": 1,
+      "next_state": "q9"
+    },
+    {
+      "state": "q9",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q9"
+    },
+    {
+      "state": "q9",
+      "read": "$",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q0"
+    },
+    {
+      "state": "q10",
+      "read": "Y",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q10"
+    },
+    {
+      "state": "q10",
+      "read": "N",
+      "write": "N",
+      "move": 1,
+      "next_state": "q10"
+    },
+    {
+      "state": "q10",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q10"
+    },
+    {
+      "state": "q10",
+      "read": "$",
+      "write": "$",
+      "move": -1,
+      "next_state": "q3"
+    },
+    {
+      "state": "q11",
+      "read": "b",
+      "write": "*",
+      "move": -1,
+      "next_state": "q12"
+    },
+    {
+      "state": "q11",
+      "read": "Y",
+      "write": "Y",
+      "move": -1,
+      "next_state": "q11"
+    },
+    {
+      "state": "q11",
+      "read": "N",
+      "write": "N",
+      "move": -1,
+      "next_state": "q11"
+    },
+    {
+      "state": "q11",
+      "read": "*",
+      "write": "*",
+      "move": -1,
+      "next_state": "q11"
+    },
+    {
+      "state": "q11",
+      "read": "$",
+      "write": "$",
+      "move": -1,
+      "next_state": "q11"
+    },
+    {
+      "state": "q12",
+      "read": "b",
+      "write": "b",
+      "move": 1,
+      "next_state": "q14"
+    },
+    {
+      "state": "q12",
+      "read": "Y",
+      "write": "Y",
+      "move": -1,
+      "next_state": "q12"
+    },
+    {
+      "state": "q12",
+      "read": "N",
+      "write": "N",
+      "move": -1,
+      "next_state": "q12"
+    },
+    {
+      "state": "q12",
+      "read": "*",
+      "write": "b",
+      "move": 1,
+      "next_state": "q13"
+    },
+    {
+      "state": "q13",
+      "read": "b",
+      "write": "N",
+      "move": 1,
+      "next_state": "q0"
+    },
+    {
+      "state": "q13",
+      "read": "Y",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q13"
+    },
+    {
+      "state": "q13",
+      "read": "N",
+      "write": "N",
+      "move": 1,
+      "next_state": "q13"
+    },
+    {
+      "state": "q13",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q13"
+    },
+    {
+      "state": "q13",
+      "read": "$",
+      "write": "$",
+      "move": 1,
+      "next_state": "q13"
+    },
+    {
+      "state": "q14",
+      "read": "Y",
+      "write": "Y",
+      "move": 1,
+      "next_state": "q14"
+    },
+    {
+      "state": "q14",
+      "read": "N",
+      "write": "N",
+      "move": 1,
+      "next_state": "q14"
+    },
+    {
+      "state": "q14",
+      "read": "*",
+      "write": "*",
+      "move": 1,
+      "next_state": "q14"
+    },
+    {
+      "state": "q14",
+      "read": "$",
+      "write": "$",
+      "move": -1,
+      "next_state": "q12"
+    }
+  ],
+  "undefined_cells": [
+    {
+      "state": "q0",
+      "read": "*",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q0",
+      "read": "$",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q0",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q1",
+      "read": "b",
+      "kind": "halt"
+    },
+    {
+      "state": "q1",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q2",
+      "read": "$",
+      "kind": "null"
+    },
+    {
+      "state": "q2",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q3",
+      "read": "$",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q3",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q4",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q5",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q6",
+      "read": "Y",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q6",
+      "read": "N",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q6",
+      "read": "*",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q6",
+      "read": "$",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q6",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q8",
+      "read": "b",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q8",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q9",
+      "read": "b",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q9",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q10",
+      "read": "b",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q10",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q11",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q12",
+      "read": "$",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q12",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q13",
+      "read": "1",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q14",
+      "read": "b",
+      "kind": "unspecified"
+    },
+    {
+      "state": "q14",
+      "read": "1",
+      "kind": "unspecified"
+    }
+  ],
+  "transition_count": 62,
+  "input_encoding": {
+    "productions": "[None, p1, ..., p[k-1]], where None is halt and each pi is a finite Y/N word",
+    "rules": "concatenate reverse(p[k-1])+* through reverse(p1)+*, followed by * for halt; for k=1 this is just *",
+    "phase_marker": "replace the (phase+1)-th delimiter * from the right by b",
+    "tape": "rules+$+word; b everywhere outside this finite block; input word may be empty",
+    "initial_head": "first cell of word, immediately to the right of $",
+    "initial_state": "q0",
+    "halt": "undefined pair (q1,b), representing phase-0 Y halting; q1 alone is not a terminal state",
+    "null": "undefined pair (q2,$), representing empty CTAG string; q2 alone is not a terminal state",
+    "scope": "Morita Definition 3.3 halting CTAG variant, with distinguished halt at phase 0"
+  },
+  "audit": {
+    "deterministic": true,
+    "reversible": true,
+    "unique_read_pair_count": 62,
+    "unique_incoming_write_per_target": true,
+    "fixed_incoming_move_per_target": true,
+    "explicit_terminal_cells": 2,
+    "unlabeled_empty_cells": 26,
+    "incoming_directions": {
+      "q0": 1,
+      "q1": -1,
+      "q2": -1,
+      "q3": -1,
+      "q4": 1,
+      "q5": 1,
+      "q6": 1,
+      "q7": -1,
+      "q8": 1,
+      "q9": 1,
+      "q10": 1,
+      "q11": -1,
+      "q12": -1,
+      "q13": 1,
+      "q14": 1
+    },
+    "example_final_time": 184,
+    "example_inverse_replay_verified_steps": 184,
+    "figure_28_checkpoints": [
+      {
+        "time": 0,
+        "state": "q0",
+        "head": 9,
+        "window_origin": -1,
+        "window": "bNYY*NY*b$NYYbbbbbbb",
+        "matches_visual_figure": true
+      },
+      {
+        "time": 6,
+        "state": "q13",
+        "head": 9,
+        "window_origin": -1,
+        "window": "bNYY*NYb*$bYYbbbbbbb",
+        "matches_visual_figure": true
+      },
+      {
+        "time": 59,
+        "state": "q9",
+        "head": 10,
+        "window_origin": -1,
+        "window": "bNYYbNY**$N$YYNbbbb",
+        "matches_visual_figure": true
+      },
+      {
+        "time": 178,
+        "state": "q9",
+        "head": 11,
+        "window_origin": -1,
+        "window": "bNYY*NY*b$NY$YNYYNb",
+        "matches_visual_figure": true
+      },
+      {
+        "time": 184,
+        "state": "q1",
+        "head": 7,
+        "window_origin": -1,
+        "window": "bNYY*NY*bbNYY$NYYNb",
+        "matches_visual_figure": true
+      }
+    ],
+    "bounded_differential_test": {
+      "cases": 2430,
+      "macro_checks": 7687,
+      "microsteps": 169019,
+      "terminal_cases": 2390,
+      "bounded_nonterminal_cases": 40
+    },
+    "source_typo": "Page 24 last paragraph reverses the letters of p1 relative to Example 3.3 and Figure 28. Example 3.3 p1=YN and Figure 28 initial tape NYY*NY*b$NYY agree with all 184 table-driven steps. The paragraph instead prints p1=NY and NYY*YN**. Use the general reversal convention and the figure, not those inconsistent example letters."
+  }
+}

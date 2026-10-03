@@ -1,0 +1,84 @@
+{
+  "status": "PASS_FOUR_ROW_AND_BINARY_LOCAL_WINDOW_OBSTRUCTION",
+  "proof": "four_row_local_window_obstruction.md",
+  "simulator": "four_row_queue_block_simulator.md",
+  "ternary": {
+    "arithmetic_component": "native_four_row_fifo66.md",
+    "rejecting_coded_inputs": 32,
+    "accepting_same_geometry_traces": 1088,
+    "linear_windows": 28112,
+    "cyclic_windows": 28608,
+    "simultaneous_boundary_pairs": 32,
+    "exact_support_size_per_changed_cell": 4,
+    "examples": [
+      {
+        "window_width": 1,
+        "editable_data_cells": 3,
+        "physical_width": 48,
+        "duration": 150,
+        "accepting_comparison_traces": 3,
+        "exact_positive_component_extension": true
+      },
+      {
+        "window_width": 4,
+        "editable_data_cells": 9,
+        "physical_width": 96,
+        "duration": 294,
+        "accepting_comparison_traces": 9,
+        "exact_positive_component_extension": true
+      },
+      {
+        "window_width": 32,
+        "editable_data_cells": 65,
+        "physical_width": 544,
+        "duration": 1638,
+        "accepting_comparison_traces": 65,
+        "exact_positive_component_extension": true
+      }
+    ]
+  },
+  "binary": {
+    "arithmetic_component": "native_binary_three_row_fifo58.md",
+    "rejecting_coded_inputs": 32,
+    "accepting_same_geometry_traces": 1088,
+    "linear_windows": 18640,
+    "cyclic_windows": 19136,
+    "simultaneous_boundary_pairs": 32,
+    "exact_support_size_per_changed_cell": 3,
+    "examples": [
+      {
+        "window_width": 1,
+        "editable_data_cells": 3,
+        "physical_width": 48,
+        "duration": 102,
+        "accepting_comparison_traces": 3,
+        "exact_positive_component_extension": true
+      },
+      {
+        "window_width": 4,
+        "editable_data_cells": 9,
+        "physical_width": 96,
+        "duration": 198,
+        "accepting_comparison_traces": 9,
+        "exact_positive_component_extension": true
+      },
+      {
+        "window_width": 32,
+        "editable_data_cells": 65,
+        "physical_width": 544,
+        "duration": 1094,
+        "accepting_comparison_traces": 65,
+        "exact_positive_component_extension": true
+      }
+    ]
+  },
+  "separate_nonlocal_parity_guard": {
+    "operations": 2,
+    "additions": 2,
+    "new_positive_witnesses": 1,
+    "equation": "F1=v+v+1",
+    "scope": "Separates this particular ternary parity fixture only"
+  },
+  "scope": "Row-only bounded windows, even position-dependent and with the same q,W. Does not cover auxiliary state tracks, global matrix products, nonlocal constraints or dependence on the varying input parameter.",
+  "established_complete_bound": 75
+}

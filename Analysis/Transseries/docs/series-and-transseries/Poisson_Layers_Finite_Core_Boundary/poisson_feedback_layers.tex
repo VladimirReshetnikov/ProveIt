@@ -39,6 +39,9 @@
 \newcommand{\core}{\Phi_M}
 \newcommand{\coeff}[2]{[#1^{#2}]}
 \hypersetup{pdftitle={Poisson Layers at the Finite-Core Boundary of Exponential-Feedback Transseries},pdfauthor={Research draft prepared with ChatGPT for Vladimir Reshetnikov},pdfsubject={Uniform marked coefficient asymptotics, critical windows, finite-core repair, and joint Gaussian-Poisson limits}}
+% ed. (2026-09-29): editorial-note environment for ProveIt cross-references;
+% it uses no counter, so no author numbering changes.
+\newenvironment{ednote}{\par\smallskip\begin{quote}\small\raggedright\textbf{Editorial note (ProveIt, 2026-09-29).}\ }{\end{quote}\smallskip}
 \begin{document}
 \begin{center}
 {\LARGE\bfseries\color{ink} Poisson Layers at the Finite-Core Boundary\par of Exponential-Feedback Transseries\par}
@@ -84,6 +87,24 @@ finite-core method from the new uniform saddle perturbation. Exact
 coefficient identities, numerical diagnostics, and further research
 questions complete the article.
 \end{abstract}
+% ed. (2026-09-29): scope of "at the Finite-Core Boundary" and the verified relation to the finite-core package.
+\begin{ednote}
+Scope: at the boundary itself, $p=1+1/M$, the missing factor diverges
+(Theorem~\ref{thm:boundary}), so the finite-core ratio tends to zero there,
+as \nolinkurl{Finite_Core_Universality_Exponential_Feedback/} states (its
+Theorem~\texttt{thm:cutoff}). The finite Poisson limit of
+Theorem~\ref{thm:window} occurs only in a moving window slightly
+\emph{above} the boundary, outside that package's fixed-parameter theorem;
+it interpolates between its limits $0$ and $1$ and does not contradict it.
+This article sharpens that package: $\log\nu_{n,M}$ in
+\eqref{eq:nu-log} equals, term by term, its one-occurrence scale
+(its equation \texttt{eq:cutoff-scale}), whose lower bound is the first-order term
+of $\ee^{\nu}$ here. The total-variation Poisson law at diverging
+intensity, left open here (Section~\ref{sec:future}), is proved for
+$\lambda_j=j^2$ ($M=1$, $p=2$, $a=1$) by
+\nolinkurl{Microscopic_Condensation_Exponential_Feedback/}; both packages
+are in \nolinkurl{Analysis/Transseries/docs/series-and-transseries/}.
+\end{ednote}
 \noindent\textbf{Status and scope.}
 This is an AI-assisted research draft with conventional mathematical proofs,
 not a Lean-verified development. The results are proposed additions to the
@@ -967,6 +988,12 @@ theorem, or relative complex-marker control on fixed discs. The Gaussian
 limit and the fixed-count relative estimates do not by themselves imply
 any of those stronger statements.
 \end{remark}
+% ed. (2026-09-29): cross-reference: the TV statement is proved for lambda_j = j^2 elsewhere.
+\begin{ednote}
+For $M=1$, $p=2$, $a=1$ the total-variation statement is proved in the
+microscopic-condensation package; see the editorial note in
+Section~\ref{sec:future}.
+\end{ednote}
 
 \begin{theorem}[Poisson-rate large deviations]
 \label{thm:ldp}
@@ -1196,6 +1223,17 @@ $\Pois(\nu)$ when $\nu\to\infty$. A promising approach is to extract the
 marker coefficient within the two-saddle calculation, controlling the
 conditioning correction $\nu^2/n$ directly. This would be stronger than
 merely invoking the Gaussian weak limit.
+% ed. (2026-09-29): answered for M = 1, p = 2, a = 1 by the microscopic-condensation package.
+\begin{ednote}
+Answered for $M=1$, $p=2$, $a=1$, that is $\lambda_j=j^2$ with any
+nonnegative first slope, by the independent package
+\nolinkurl{Microscopic_Condensation_Exponential_Feedback/} (its
+Theorem~\texttt{thm:probability} and Corollary~\texttt{cor:local}): the number of twos,
+whose intensity $r_n^2=\nu_{n,1}$ diverges, is close in total variation
+to $\Pois(r_n^2)$ jointly with, and asymptotically independently of, a
+discrete Gaussian largest action, with a two-dimensional local limit.
+Other $(M,p,a)$ remain open.
+\end{ednote}
 
 \subsection{The next omitted layer and interaction corrections}
 Our compact margin makes $n\tau^{M+1}$ and $\mu^2/n$ vanish. At the next
@@ -1231,6 +1269,14 @@ Poisson-type exponent can be trusted. Our transfer estimates cannot simply
 be applied with absolute values: doing so may swamp the proposed inverse
 coefficient. An analytic-core regrouping of the inverse Lagrange formula is
 still a focused and worthwhile next problem.
+% ed. (2026-09-29): the conjecture is claimed proved by two batch-49 packages (unreviewed).
+\begin{ednote}
+Two later packages claim independent proofs of this conjecture, neither
+yet reviewed: \nolinkurl{Quadratic_Exponential_Feedback_After_Reversion/}
+and \nolinkurl{Signed_Quadratic_Feedback_Inversion/} (Theorem~\texttt{thm:main} in
+each). The first identifies its relative error with this article's layer
+intensity divided by $r_n$.
+\end{ednote}
 
 \subsection{Quantified error bounds and certified coefficient budgets}
 Replace the compact-uniform $o(1)$ terms by explicit bounds with numerical

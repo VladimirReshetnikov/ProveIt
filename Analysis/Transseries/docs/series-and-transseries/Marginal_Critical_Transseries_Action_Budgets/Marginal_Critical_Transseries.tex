@@ -27,6 +27,9 @@
 \newtheorem{example}[theorem]{Example}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
 \DeclareMathOperator{\Li}{Li}
 \DeclareMathOperator{\Var}{Var}
 \newcommand{\N}{\mathbb N}
@@ -82,6 +85,13 @@ contribution is the combined explicit marginal theory, particularly the
 prefix-independent cutoff correction and its connection to a finite error
 certificate. Global publication priority has not been established. No new Lean
 formalization or independently reviewed proof is claimed.
+% ed. (2026-09-29): scope note on the title word "Certified", recorded on filing (batch 48).
+\begin{ednote}
+``Certified'' in the title refers to the proved inequality of
+Theorem~\ref{thm:finite-certificate}. The recorded numerical evaluations use
+no directed rounding and are not interval or proof-assistant certificates;
+Section~\ref{sec:questions}, Question~7, keeps such an implementation open.
+\end{ednote}
 
 \clearpage
 {\small\setlength{\parskip}{0pt}\tableofcontents}
@@ -112,6 +122,25 @@ below are affirmative, explicit, negative, and affirmative, respectively.
 These are scoped research questions motivated by the inspected corpus, not
 claims to have settled a named longstanding conjecture in general transseries
 theory.
+% ed. (2026-09-29): an independent second treatment of the same endpoint was filed beside this package (batch 48).
+\begin{ednote}
+The logarithmic-endpoint package \cite{ed:lce}, filed beside this one,
+treats the same endpoint and model and was written independently of this
+article, also from a library copy of \cite{prior-stable}, whose Question~4
+both answer at $\alpha=2$. Its core coincides with this article's: the same
+Lambert-$W_{-1}$ core (this article's $(w,t,2r)$, $b$ and $A$ are its
+$(v,T,\eta)$, $h$ and $c$), the same chart coefficients and inverse
+diagnostics, the same fold functions, and the same critical cutoff
+correction, which it states with the weaker error
+$O(\log\ell_n/\ell_n^{3/2})$. The constants $\kappa_1,\kappa_2$ of
+Corollary~\ref{cor:critical-coeff} are its $g_1,g_2$ rewritten from its
+normalization $\ell_n=\log b_n+h$ to $H_n=\log B_n$. It is one theorem with
+two independent proofs. The explicit contraction radii, the three-generator
+logarithmic grid, the two-term minimal budget and the finite retention
+inequality are only here; the Poisson process of large actions, the
+log-weighted tails, the finite-fold local limit and an exponentiation
+criterion are only there.
+\end{ednote}
 
 \subsection{The main distinction: fluctuations versus the largest action}
 For the model introduced in Section~\ref{sec:model}, put
@@ -1539,6 +1568,21 @@ gamma factor and the quadratic analytic term. Determine how the stable
 cutoff density crosses over to \(e^{-1/(2\ell^2)}\), and whether the
 prefix-independent first correction has a uniform interpolating form.
 Separate limits in \(\alpha\) and \(n\) do not answer this question.
+% ed. (2026-09-29): answered by two later sibling packages (batch 49); recorded on filing.
+\begin{ednote}
+Answered, pending review, by two later packages of this series written
+independently of each other, both from a library copy of this article. The
+stable--Gaussian package \cite{ed:sge} targets this question in exactly this
+window, from both sides, and gives a joint inverse chart about a
+desingularized core, a two-term uniform inverse, the coefficient law with its
+first correction, the cutoff law
+\(\exp(-\ell^{-\alpha}/\alpha)\) that crosses over to \(e^{-1/(2\ell^2)}\), and
+a uniform prefix-independent first correction, which at \(\alpha=2\) is
+\eqref{eq:critical-cutoff}. The confluent package \cite{ed:cct} allows
+\(2-\alpha_n\to0\) at any rate and of either sign, with one convergent chart
+in three variables and a leading-order coefficient and cutoff law. Where
+both apply they agree term by term.
+\end{ednote}
 
 \paragraph{2. Slowly varying perturbations of the marginal tail.}
 Replace the exact tail by \(a_j\sim a j^{-3}L(j)\), with a specified slowly
@@ -1548,6 +1592,13 @@ Find conditions under which their ratio diverges, remains bounded, or has
 an explicit logarithmic law. Identify classes of \(L\) that preserve a
 finite convergent generating grid, and classes that require genuinely new
 inverse notation or de Bruijn conjugates.
+% ed. (2026-09-29): partial progress in the sibling package filed beside this one (batch 48).
+\begin{ednote}
+Partial progress: the logarithmic-endpoint package \cite{ed:lce} treats
+\(L(j)=(\log j)^r\), \(r\ge-1\), at leading order (its
+\texttt{thm:weightedchart}, \texttt{thm:weightedbudget}). General slowly
+varying \(L\) remain open.
+\end{ednote}
 
 \paragraph{3. Higher cutoff corrections and the return of prefix data.}
 Compute the full expansion in \(H^{-1/2}\) and \(\log H/H\), with a
@@ -1670,6 +1721,32 @@ prepared for Vladimir Reshetnikov, 29 September 2026. Inspected in the user's
 file library under the filename \texttt{article(20260929-193550).tex}.
 Used only for scope and overlap comparison; no public publication or
 independent verification is asserted.
+% ed. (2026-09-29): editorial note on the filed location of the companion draft.
+Editorial note (ProveIt, 2026-09-29): the draft is now filed as
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/article.tex}
+(batch~47). This article answers the fixed-endpoint part of its Section~11,
+Question~4, without citing it by number.
+
+% ed. (2026-09-29): the three entries below are editorial additions for the editorial notes.
+\bibitem{ed:lce}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{The Logarithmic Critical Endpoint: Convergent Lambert Charts,
+All-Order Sector Laws, and Sharp Action-Cutoff Corrections}, research
+package filed in batch~48 in the group of \cite{repo-index}:
+\path{Logarithmic_Critical_Endpoint_Lambert_Charts/article.tex}.
+
+\bibitem{ed:cct}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Confluent Critical Transseries Across the Exponent-Two Boundary},
+research package filed in batch~49 in the group of \cite{repo-index}:
+\path{Confluent_Critical_Transseries_Exponent_Two_Boundary/Confluent_Critical_Transseries.tex}.
+
+\bibitem{ed:sge}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Through the Stable--Gaussian Endpoint: Uniform Critical Transseries,
+Prefix-Independent Cutoff Corrections, and Conditional Extremes}, research
+package filed in batch~49 in the group of \cite{repo-index}:
+\path{Stable_Gaussian_Endpoint_Uniform_Critical_Transseries/article.tex}.
 
 \bibitem{janson}
 Svante Janson, Simply generated trees, conditioned Galton--Watson trees,

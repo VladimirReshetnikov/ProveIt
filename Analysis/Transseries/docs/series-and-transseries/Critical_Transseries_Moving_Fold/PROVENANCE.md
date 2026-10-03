@@ -12,6 +12,12 @@ Directly inspected pinned sources:
 1. `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/README.md`
 2. `Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCoreCatalan.lean`
 
+Editorial note (ProveIt, 2026-09-29): both paths are as they were at the
+pinned commit. Since the repository split the first file is at
+`Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md`;
+the second is unchanged at its path. The predecessor below is now filed as
+`Analysis/Transseries/docs/series-and-transseries/Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex`.
+
 The first records statement-level formalization distinctions. The second
 provides the finite Catalan/quadratic coefficient core and explicitly identifies
 statements it does not formalize. We have not run the repository's Lean build.

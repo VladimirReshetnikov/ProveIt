@@ -1,0 +1,1593 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=25mm,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{fancyhdr,xurl}
+\usepackage[hidelinks,breaklinks]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Poisson Extremes and Gaussian Bridges under Small-Sum Conditioning},
+ pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},
+ pdfsubject={Polynomial and lacunary uniform series; extremal localization; logarithmic expansions}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Poisson extremes and Gaussian bridges}
+\fancyhead[R]{\small ProveIt research extension}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{1}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\Exp}{\operatorname{Exp}}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Poi}{\operatorname{PPP}}
+\newcommand{\Ga}{\Gamma}
+\newcommand{\ph}{\varphi}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\rise}[2]{(#1)_{#2}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\commit}{\texttt{a4268e78ebd0f6bf71ba609c07f4b3415748f532}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{7mm}
+{\large\sffamily PROVEIT RESEARCH EXTENSION\par}
+\vspace{13mm}
+{\Huge\bfseries Poisson Extremes and\par Gaussian Bridges under\par Small-Sum Conditioning\par}
+\vspace{8mm}
+{\Large Localization, incomplete-gamma laws, and\par all-order logarithmic corrections\par}
+\vspace{9mm}
+{\normalsize Prepared for Vladimir Reshetnikov\par
+30 September 2026\par}
+\vspace{10mm}
+\begin{abstract}
+For a positive summable weight sequence, let $S=\sum_j w_jU_j$, with
+independent uniform $U_j$ on $[0,1]$, and condition on $S\le x$ as
+$x\downarrow0$. We investigate the locations and heights of the largest
+summands, jointly with the fluctuation process of the whole configuration.
+For $w_j=j^{-p}$, $p>1$, write $N=t^{1/p}$ for the effective dimension at the
+mean-matching exponential tilt $t$, put $\beta=1/p$, and define
+$b+\beta\log b=\log N$. We prove, uniformly for bounded $z$,
+\[
+ \log\Pp\!\left(\max_j tj^{-p}U_j\le b+z\mid S\le x\right)
+ =-N\Gamma(1-\beta,b+z)+O_p(N^{-1/2}).
+\]
+Consequently every fixed-order logarithmic correction is explicit. The
+extremal point process, with locations divided by $N/b^\beta$, tends to a
+Poisson process of intensity $\ind_{[0,1]}(u)\,du\,e^{-z}dz$. It is jointly
+independent in the limit of the variance-clock Brownian bridge and the
+exponential distance from the conditioning boundary.
+
+For every uniformly lacunary weight sequence, we also prove the full
+marked Poisson limit and its joint independence from the bridge and the
+boundary distance. This settles the qualitative point-process and
+independence portions of Question~7 in the repository's lacunary-conditioning
+report; that question's quantitative-rate requirement remains open.
+The polynomial extreme-location scale and the all-order maximum law are
+additional extensions. Proofs, reproducible symbolic checks, and numerical
+Fourier-inversion diagnostics are supplied. No Lean certification,
+external refereeing, or exhaustive worldwide priority determination is claimed.
+\end{abstract}
+\vfill
+\noindent\small
+\textbf{Inspected repository snapshot.}\quad\commit.\\
+\textbf{Research status.}\quad Complete manuscript proofs of the displayed
+results; candidate contributions relative to the inspected sources.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Research target and the main results}
+\label{sec:intro}
+
+\subsection{What the repository already establishes}
+The Fabius--Rvachev part of \repo\ develops the probability distribution
+associated with $\sum_{j\ge1}2^{-j}U_j$. This probabilistic interpretation
+is classical; it appears, with the corresponding shift of normalization,
+in Arias de Reyna's Theorem~3 \cite{arias}. Our polynomially weighted
+series is a related model, not another normalization of the Fabius function.
+
+Two inspected repository manuscripts are particularly relevant. The
+lacunary report \cite{repolac} studies full-configuration approximations,
+variance-fraction effects, a Brownian bridge, an exponential boundary
+slack, and a Gumbel maximum. Its Question~7 asks for the entire extremal
+point process and for joint independence from the bridge, with explicit
+rates. The report expressly does not claim that independence. A second
+manuscript \cite{repounif} already gives a general variance-fraction
+conditioning theory for arbitrary positive summable uniform weights,
+including polynomial variance clocks. Thus extending that variance
+criterion to $j^{-p}$ is \emph{not} a new result of the present article.
+
+The contributions developed here concern a more refined question:
+\emph{where do the extremes occur, how accurately can their distribution
+be calculated, and are they independent of the macroscopic bridge?}
+Theorem~\ref{thm:lacunary} answers the qualitative parts of the repository's
+Question~7 throughout its uniformly lacunary class.
+Theorems~\ref{thm:gamma} and \ref{thm:jointpoly} supply the distinct
+polynomial-weight theory, including a quantitative maximum law strong
+enough to imply every fixed-order inverse-logarithmic correction.
+
+Exponential tilting and increasing-block conditional approximation are
+classical, not originality claims: see Diaconis--Freedman
+\cite{df} and Dembo--Zeitouni \cite{dz}. Poisson limits for independent
+rare events and Gaussian bridge conditioning are likewise standard
+mechanisms. We give their needed arguments explicitly. The proposed
+addition is the theorem package for the specified infinite, increasingly
+tilted arrays, the exact incomplete-gamma reduction, and the joint limits.
+The literature review was targeted, rather than exhaustive. None of these
+statements is identified here with the resolution of a named published
+conjecture outside the repository.
+
+\subsection{Notation and the conditioning convention}
+All uniforms are independent under the original probability measure $P$.
+For a positive summable sequence $(w_j)$, put
+\begin{equation}
+ S=\sum_{j\ge1}w_jU_j,\qquad
+ L(t)=\E_Pe^{-tS},\qquad
+ \frac{dQ_t}{dP}=\frac{e^{-tS}}{L(t)}. \label{eq:tilt}
+\end{equation}
+Choose $t>0$ so that $x=\E_{Q_t}S$, and write
+\begin{equation}
+ a_j=tw_j,\quad Y_j=a_jU_j,\quad T=\sum_jY_j,\quad
+ \mu=\E_{Q_t}T=tx,\quad V=\Var_{Q_t}T,\quad
+ P_x=P(\,\cdot\mid S\le x). \label{eq:notation}
+\end{equation}
+The nonnegative slack under $P_x$ is
+$H=\mu-T=t(x-S)$. All conditioning in the main results is on the
+positive-probability inequality $S\le x$, not on a null event $S=x$.
+The parameter $t$ tends to infinity as $x$ tends to zero.
+
+Let $m_j=\E_{Q_t}Y_j$ and $v_j=\Var_{Q_t}Y_j$. Define the exact variance
+clock and its polygonal process by
+\begin{equation}
+ r_0=0,\qquad r_k=V^{-1}\sum_{j\le k}v_j,\qquad
+ \mathcal B_t(r_k)=V^{-1/2}\sum_{j\le k}(Y_j-m_j). \label{eq:clock}
+\end{equation}
+Linearly interpolate between consecutive $r_k$, and set
+$\mathcal B_t(1)=(T-\mu)/\sqrt V$. This gives a continuous function on
+$[0,1]$: both $\sum Y_j$ and $\sum m_j$ are finite. A standard Brownian
+bridge is denoted $B^\circ$; its covariance is
+$\min(r,s)-rs$. The standard normal density is $\ph$.
+
+Point processes below are random locally finite counting measures on
+$[0,\infty)\times\R$, with the vague topology. A Poisson point process
+with intensity $\ind_{[0,1]}(u)\,du\,e^{-z}dz$ is denoted $\Xi$.
+It has finitely many points above any fixed height and arbitrarily many
+points towards height $-\infty$. Its boundary lines at $u=0,1$ have zero
+intensity. Weak convergence of processes refers to the uniform topology
+on $C([0,1])$; convergence of the triples uses the product topology.
+
+\subsection{Polynomial weights: quantitative extremes}
+For the rest of this subsection take $w_j=j^{-p}$, where $p>1$ is fixed,
+and define
+\begin{equation}
+ \beta=\frac1p,\qquad N=t^\beta,\qquad
+ b+\beta\log b=\log N,\qquad M=Nb^{-\beta}=e^b.
+ \label{eq:scales}
+\end{equation}
+For $N>1$ the equation for $b$ has a unique positive solution. Neither
+$N$ nor $M$ needs to be an integer. Also
+\begin{equation}
+ b=\log N-\beta\log\log N+o(1),\qquad
+ M\sim\frac{N}{(\log N)^\beta}. \label{eq:basy}
+\end{equation}
+We use the upper incomplete gamma function
+$\Gamma(s,y)=\int_y^\infty e^{-v}v^{s-1}\,dv$.
+
+\begin{theorem}[Incomplete-gamma maximum law]
+\label{thm:gamma}
+For every fixed $p>1$ and $Z<\infty$, as $N\to\infty$,
+\begin{equation}
+ \sup_{|z|\le Z}\left|
+ \log P_x\!\left(\max_{j\ge1}Y_j\le b+z\right)
+       +N\Gamma(1-\beta,b+z)\right|=O_{p,Z}(N^{-1/2}).
+ \label{eq:gamma-main}
+\end{equation}
+More precisely, the proof gives an error
+$O_{p,Z}(N^{-1/2}+b^2/N+e^{-b})$; the last two terms are
+$o(N^{-1/2})$. For every fixed integer $K\ge0$,
+\begin{align}
+ \log P_x\!\left(\max_jY_j\le b+z\right)
+ &=-e^{-z}\sum_{r=0}^K
+   \frac{(-1)^r\rise{\beta}{r}}{b^r}
+        \sum_{k=0}^r\frac{z^k}{k!}
+   +O_{p,Z,K}(b^{-K-1}+N^{-1/2}), \label{eq:allorder}
+\end{align}
+uniformly for $|z|\le Z$, where $\rise\beta0=1$ and
+$\rise\beta r=\beta(\beta+1)\cdots(\beta+r-1)$.
+\end{theorem}
+In particular, the first three terms in the brackets are
+\begin{equation}
+ 1-\frac{\beta(z+1)}b
+ +\frac{\beta(\beta+1)(z^2/2+z+1)}{b^2}.
+ \label{eq:twocorrections}
+\end{equation}
+The logarithmic expansion is asymptotic order by order. It is not
+claimed to converge, to have a uniform remainder for growing $K$, or to
+remain valid when $z$ is unbounded. The theorem implies the Gumbel law
+$P_x(\max_jY_j-b\le z)\to\exp(-e^{-z})$.
+
+\begin{theorem}[Locations, bridge, and slack for polynomial weights]
+\label{thm:jointpoly}
+Let
+\begin{equation}
+ \Xi_t=\sum_{j\ge1}\delta_{(j/M,\,Y_j-b)}.
+ \label{eq:polypp}
+\end{equation}
+Under $P_x$,
+\begin{equation}
+  (\mathcal B_t,\Xi_t,H)
+       \ \Rightarrow\ (B^\circ,\Xi,E),\qquad E\sim\Exp(1),
+ \label{eq:joint-main}
+\end{equation}
+and the three limiting objects are mutually independent.
+If $J_t$ is the almost surely unique index attaining $\max_jY_j$, then
+\begin{equation}
+ \left(\frac{J_t}{M},\max_jY_j-b\right)
+ \Rightarrow (U,G), \label{eq:argmax}
+\end{equation}
+where $U$ is uniform on $[0,1]$, $P(G\le z)=e^{-e^{-z}}$, and $U,G$
+are independent. This pair is also independent of the limiting bridge
+and slack.
+\end{theorem}
+The localization is genuinely submacroscopic: $M/N\to0$, whereas
+$J_t/M$ has a nondegenerate limit. A variance clock alone does not reveal
+this scale. The upper caps $a_j=(N/j)^p$ force it.
+
+\subsection{Lacunary weights: the repository's qualitative question}
+Suppose instead that
+\begin{equation}
+ w_j>0,\qquad w_{j+1}\le q w_j\quad(j\ge1),\qquad 0<q<1,
+ \qquad n=\#\{j:tw_j\ge1\}. \label{eq:lacunarity}
+\end{equation}
+Set $\Xi_t^{\rm lac}=\sum_j\delta_{(j/n,Y_j-\log n)}$.
+
+\begin{theorem}[Marked extremes for every uniformly lacunary sequence]
+\label{thm:lacunary}
+Under \eqref{eq:lacunarity}, as $x\downarrow0$,
+\begin{equation}
+ (\mathcal B_t,\Xi_t^{\rm lac},H)
+       \Rightarrow(B^\circ,\Xi,E)
+ \label{eq:lacjoint}
+\end{equation}
+under $P_x$, with the same intensity and mutual independence as in
+Theorem~\ref{thm:jointpoly}. In particular the limiting location of the
+maximum, on the scale $n$, is uniform and independent of its Gumbel
+height, the bridge, and the exponential slack.
+\end{theorem}
+This includes $w_j=2^{-j}$ and arbitrary supergeometric gaps compatible
+with \eqref{eq:lacunarity}. It proves the full point-process convergence
+and joint independence asked for in Question~7 of \cite{repolac}.
+No quantitative rate in a metric on the joint path--point-process space
+is supplied; that portion of the question remains a research problem.
+
+\section{Exponential tilting and the effective dimension}
+\label{sec:tilt}
+
+\subsection{Existence, independence, and exact densities}
+The sum $S$ lies in $[0,\sum w_j]$. Every sufficiently small $x>0$ has
+$P(S\le x)>0$: first make the deterministic tail less than $x/2$, and
+then restrict finitely many uniforms so their weighted sum is below
+$x/2$. Differentiation under the bounded integral gives
+\[
+ -\frac{d}{dt}\log L(t)=\E_{Q_t}S,\qquad
+ \frac{d}{dt}\E_{Q_t}S=-\Var_{Q_t}S<0.
+\]
+The tilted mean is continuous, starts at $\frac12\sum w_j$, and tends
+to zero. The last assertion follows by dominated convergence for each
+coordinate and the deterministic summable tail bound. Hence the
+mean-matching $t$ exists and is unique for
+$0<x<\frac12\sum w_j$.
+
+Finite-dimensional factorization and dominated convergence show that
+under $Q_t$ the $Y_j$ are independent and have densities
+\begin{equation}
+ p_a(y)=\frac{e^{-y}}{1-e^{-a}}\ind_{(0,a)}(y),\qquad a=a_j.
+ \label{eq:pa}
+\end{equation}
+Integration or differentiation of the normalizing factor gives
+\begin{equation}
+ m(a)=1-\frac{a}{e^a-1},\qquad
+ v(a)=1-\frac{a^2e^a}{(e^a-1)^2},\qquad
+ v(a)=m(a)-a m'(a). \label{eq:mv}
+\end{equation}
+In particular $0<v(a)\le1$. Near zero,
+\[
+ m(a)=a/2-a^2/12+O(a^4),\qquad v(a)=a^2/12+O(a^4),
+\]
+and as $a\to\infty$ the laws in \eqref{eq:pa} tend to $\Exp(1)$.
+
+\begin{lemma}[Uniform moments]
+\label{lem:moments}
+For every integer $r\ge2$ there are positive constants depending only
+on $r$ such that, for $Y\sim p_a$ and $X=Y-m(a)$,
+\begin{equation}
+ c\min(a^2,1)\le v(a)\le C\min(a^2,1),\quad
+ \E|X|^r\le C_r\min(a^r,1),\quad
+ \E X^4\le C v(a)^2. \label{eq:moments}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $a\le1$, $|X|\le a$, and $v(a)/a^2$ extends continuously to
+$1/12$ at zero and stays positive. For $a\ge1$, the density is bounded
+above by $(1-e^{-1})^{-1}e^{-y}$, while $m(a)\le1$, giving all uniform
+centered moment bounds. The variance has a positive minimum on
+$[1,\infty)$, since it is continuous, positive, and tends to one.
+Combining these facts proves the final bound as well.
+\end{proof}
+
+\subsection{Polynomial constants and the physical endpoint}
+\begin{proposition}[The polynomial variance clock]
+\label{prop:constants}
+For $a_j=(N/j)^p$, $p>1$, define
+\begin{align}
+ A_p&=\int_0^\infty m(u^{-p})\,du,&
+ B_p&=\int_0^\infty v(u^{-p})\,du, \label{eq:AB}\\
+ C_p&=\int_0^\infty\log\frac{u^{-p}}{1-e^{-u^{-p}}}\,du.
+ \label{eq:C}
+\end{align}
+These are finite and positive, and
+\begin{gather}
+ \mu\sim A_pN,\qquad V\sim B_pN,\qquad -\log L(t)\sim C_pN,
+ \label{eq:dimension}\\
+ A_p=\beta C_p,\qquad B_p=(1-\beta)A_p,\qquad
+ C_p=-\Gamma(1-\beta)\zeta(1-\beta). \label{eq:constants}
+\end{gather}
+For every $r\ge2$, $\sum_j\E_{Q_t}|Y_j-m_j|^r=O_{p,r}(N)$.
+The index clock converges to
+\begin{equation}
+ F_p(u)=\frac1{B_p}\int_0^u v(s^{-p})\,ds,\quad
+ r_{\lfloor Nu\rfloor}\to F_p(u),\qquad 0\le u<\infty.
+ \label{eq:indexclock}
+\end{equation}
+Moreover
+\begin{equation}
+ x\sim A_p t^{\beta-1},\quad
+ t\sim(A_p/x)^{1/(1-\beta)},\quad
+ N\sim(A_p/x)^{1/(p-1)}. \label{eq:xscale}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Riemann sums apply after separately controlling $j<\delta N$ and
+$j>RN$. For $m$ and $v$, the small-index summands are at most one; the
+large-index tails are bounded respectively by constants times
+$(N/j)^p$ and $(N/j)^{2p}$. For the logarithmic integrand the behavior
+at $u=0$ is $-p\log u+o(1)$ and at infinity it is
+$u^{-p}/2+O(u^{-2p})$. The endpoint contributions are integrable and
+uniformly negligible as $\delta\downarrow0$ and $R\uparrow\infty$.
+This proves the three asymptotics and the clock limit. Lemma~\ref{lem:moments}
+proves the moment sum by the same head--tail split.
+
+Put $g(a)=\log[a/(1-e^{-a})]$. Then $g'(a)=m(a)/a$.
+The substitution $a=u^{-p}$ and integration by parts give
+\[
+ C_p=\beta\int_0^\infty g(a)a^{-\beta-1}\,da
+     =\int_0^\infty m(a)a^{-\beta-1}\,da=A_p/\beta.
+\]
+All boundary terms vanish: $g(a)=O(a)$ at zero and $g(a)=O(\log a)$
+at infinity. Similarly, using \eqref{eq:mv},
+\[
+ B_p=\beta\int_0^\infty[m(a)-am'(a)]a^{-\beta-1}\,da
+     =(1-\beta)A_p.
+\]
+For completeness, the regularized Euler integral for $0<s<1$ is
+\begin{equation}
+ \Gamma(s)\zeta(s)=\int_0^\infty
+ \left(\frac1{e^a-1}-\frac1a\right)a^{s-1}\,da.
+ \label{eq:zeta-reg}
+\end{equation}
+It follows from the usual Euler integral for $s>1$ by splitting at one,
+subtracting $1/a$ on $(0,1)$, and analytically continuing the explicit
+term $1/(s-1)$; on $0<s<1$ that term equals the integral of $-1/a$
+over $(1,\infty)$. The subtracted integral is absolutely convergent.
+Taking $s=1-\beta$ and using
+$m(a)=-a[(e^a-1)^{-1}-a^{-1}]$ proves the last identity in
+\eqref{eq:constants}. Standard gamma and zeta integral conventions are
+as in \cite{dlmf}. Finally $x=\mu/t$ proves \eqref{eq:xscale}.
+\end{proof}
+For $p=2$ the constants are
+\[
+ C_2=2.588410972826785\ldots,\quad
+ A_2=1.294205486413393\ldots,\quad
+ B_2=0.647102743206696\ldots.
+\]
+These scalar facts are background for the new extremal results, not a
+claim to supersede the polynomial variance analysis in \cite{repounif}.
+% ed. (2026-09-30): letter dictionary with the uniform-series article, which uses other names for the same constants
+\begin{ednote}
+In \cite{repounif} (Proposition~\texttt{prop:polynomial} and the remark
+after it) the same two constants carry other letters: its
+$M_p=\int_0^\infty\mu(u^{-p})\,du$ is $A_p$ here and its
+$C_p=\int_0^\infty v(u^{-p})\,du$ is $B_p$ here, and its identity
+$C_p=(1-1/p)M_p$ is $B_p=(1-\beta)A_p$ in \eqref{eq:constants}; its
+variance fraction $\alpha_p(b)$ is the index clock $F_p(b)$ of
+\eqref{eq:indexclock}. The constant $C_p$ of \eqref{eq:C} is a third
+constant, with no counterpart there. Other letters also differ: the mean
+function $m(a)$ here is $\mu(a)$ there and the total mean $\mu$ here is
+$m(t)$ there; the normalizer $D$ here is $J(t)$ there, whose $D_t$ is the
+slack $H$ here.
+\end{ednote}
+
+\subsection{The lacunary dimension}
+\begin{proposition}
+\label{prop:lacdimension}
+Under \eqref{eq:lacunarity}, $n\to\infty$ and
+\begin{equation}
+ \mu=n+O_q(1),\qquad V=n+O_q(1),\qquad
+ \sum_j\E|Y_j-m_j|^r=O_{q,r}(n),\quad r\ge2.
+ \label{eq:lacdimension}
+\end{equation}
+Uniformly in $k\ge0$,
+\begin{equation}
+ \sum_{j\le k}v_j=\min(k,n)+O_q(1).
+ \label{eq:lacclock}
+\end{equation}
+\end{proposition}
+\begin{proof}
+For $j\le n$, $a_j\ge q^{-(n-j)}$. For $k\ge1$,
+$a_{n+k}<q^{k-1}$. The deficits $1-m(a)$ and $1-v(a)$ on the active
+part are summable along the first bound, because they decay exponentially
+as $a\to\infty$; they can also be bounded uniformly for $a\ge1$.
+The tails $m(a)=O(a)$ and $v(a)=O(a^2)$ are summable along the second
+bound. The same argument and Lemma~\ref{lem:moments} give the moment
+estimate and the uniform clock assertion. Every fixed coordinate
+becomes active as $t\to\infty$, proving $n\to\infty$.
+\end{proof}
+
+\section{A quantitative local limit theorem and conditioning identities}
+\label{sec:local}
+
+We give the analytic estimates used below instead of relying on an
+unproved transfer of an independent maximum law through a rare event.
+Write $R=N$ in the polynomial case and $R=n$ in the lacunary case.
+Constants may depend on the fixed parameter $p$ or $q$.
+
+\begin{lemma}[A smoothing block]
+\label{lem:smoothing}
+For either array, every coordinate set $I$ with
+$V_I:=\sum_{j\in I}v_j\ge\eps R$ contains at least $c_\eps R$
+coordinates whose caps are at least $a_\eps>0$. The same assertion
+holds, uniformly in $y\ge2$, for the polynomial array with caps
+$c_j=\min(a_j,y)$ and with its own variances.
+\end{lemma}
+\begin{proof}
+In the polynomial case the first $\delta N$ coordinates contribute
+at most $\delta N+1$ variance. The part beyond $AN$ contributes at
+most $C_pNA^{1-2p}$, by Lemma~\ref{lem:moments}; here $A$ is a
+fixed large constant. Choose $\delta$
+small and $A$ large so their combined contribution is less than
+$\eps N/2$. At least $\eps N/2$ variance remains in
+$[\delta N,AN]$, so at least $\eps N/2$ coordinates remain there,
+since each variance is at most one. Their original caps are at least
+$A^{-p}$. Capping at $y\ge2$ preserves a positive lower bound on
+those caps and cannot increase the two discarded variance bounds.
+
+In the lacunary case the entire inactive tail has $O_q(1)$ variance.
+Thus $I$ contains at least $\eps n/2$ active coordinates for large $n$,
+and all their caps are at least one.
+\end{proof}
+
+\begin{lemma}[Uniform density local limit theorem]
+\label{lem:llt}
+Let $I$ be any coordinate set with $V_I\ge\eps R$. The sum
+$T_I=\sum_{j\in I}Y_j$ has a continuous density $f_I$, and
+\begin{equation}
+ \sup_{z\in\R}
+ \left|\sqrt{V_I}\,f_I(\mu_I+\sqrt{V_I}z)-\ph(z)\right|
+ \le C_\eps R^{-1/2},\qquad \mu_I=\E T_I.
+ \label{eq:llt}
+\end{equation}
+This is also uniform for the polynomial capped arrays of
+Lemma~\ref{lem:smoothing}. In particular
+$\sup f_I\le C_\eps R^{-1/2}$.
+\end{lemma}
+\begin{proof}
+For a centered variable with density \eqref{eq:pa}, write $\chi_a(s)$
+for its characteristic function. Apart from its unit-modulus centering
+factor, it is
+\begin{equation}
+ \frac{1-e^{-(1-is)a}}{(1-e^{-a})(1-is)}. \label{eq:cf}
+\end{equation}
+Uniformly for $a\ge a_0>0$, this has modulus at most $C_{a_0}/|s|$
+for $|s|\ge1$. On any compact frequency interval
+$\eta\le|s|\le A$ it has modulus at most some $\rho<1$,
+uniformly for $a\ge a_0$. To see strict uniformity, adjoin $a=\infty$:
+the expression converges there to $(1-is)^{-1}$, while at every finite
+positive $a$ a variable with a positive interval density has
+characteristic-function modulus strictly below one away from zero.
+Compactness then applies.
+
+The moment bounds also imply, uniformly for sufficiently small $|s|$,
+\begin{equation}
+ \log\chi_a(s)=-\tfrac12v(a)s^2+
+ O\!\left(\min(a^3,1)|s|^3\right). \label{eq:cumulant}
+\end{equation}
+For $a\le1$ this follows by Taylor expansion of a bounded centered
+variable, whose variance is comparable to $a^2$; for $a\ge1$ the
+uniform exponential moment bound supplies the same expansion on a
+fixed neighborhood of zero. The logarithm is taken on its continuous
+branch equal to zero at $s=0$.
+
+Let $\Psi_I(u)$ be the characteristic function of
+$(T_I-\mu_I)/\sqrt{V_I}$. The sum of the error coefficients in
+\eqref{eq:cumulant} is $O(R)$, and $V_I\asymp_\eps R$.
+For $|u|\le R^{1/12}$,
+\[
+ \Psi_I(u)=e^{-u^2/2}
+ \left[1+O_\eps(R^{-1/2}|u|^3)
+                e^{O_\eps(R^{-1/2}|u|^3)}\right].
+\]
+Its integrated difference from $e^{-u^2/2}$ on that interval is
+$O_\eps(R^{-1/2})$. Between $R^{1/12}$ and
+$\eta\sqrt{V_I}$, the small-frequency modulus bound from
+\eqref{eq:cumulant}, with $\eta$ chosen sufficiently small, gives
+$|\Psi_I(u)|\le e^{-c_\eps u^2}$. Between
+$\eta\sqrt{V_I}$ and $A\sqrt{V_I}$ the smoothing block gives
+$|\Psi_I(u)|\le\rho^{c_\eps R}$. Above $A\sqrt{V_I}$ it gives
+\[
+ |\Psi_I(u)|\le
+ \left(\frac{C\sqrt{V_I}}{|u|}\right)^{c_\eps R}.
+\]
+Choose $A>2C$. Integrating these three bounds, and the analogous
+Gaussian tails, contributes an exponentially small quantity.
+Thus $\int_\R|\Psi_I(u)-e^{-u^2/2}|du=O_\eps(R^{-1/2})$.
+
+For large $R$ the smoothing block has more than two coordinates, so
+its characteristic function is integrable. The remaining independent
+coordinates have characteristic-function modulus at most one. The
+same argument therefore applies to infinite $I$, by convergence of the
+sums and dominated Fourier inversion. The inversion inequality now
+proves \eqref{eq:llt} and the density bound.
+\end{proof}
+
+\subsection{The exact likelihood and the slack}
+Let $f$ be the tilted density of $T$, and define
+\begin{equation}
+ D=\E_{Q_t}\big[e^{T-\mu}\ind_{T\le\mu}\big]
+   =\int_0^\infty e^{-h}f(\mu-h)\,dh.
+ \label{eq:D}
+\end{equation}
+Changing measure in \eqref{eq:tilt} gives the exact identities
+\begin{equation}
+ \frac{dP_x}{dQ_t}=D^{-1}e^{T-\mu}\ind_{T\le\mu},
+ \qquad P(S\le x)=L(t)e^\mu D. \label{eq:likelihood}
+\end{equation}
+It is important that this full-product likelihood is not close to one.
+Approximation of selected marginals requires integrating out the
+complement.
+
+\begin{proposition}[Normalization and boundary slack]
+\label{prop:slack}
+In either array,
+\begin{equation}
+ D=(2\pi V)^{-1/2}\big(1+O(R^{-1/2})\big). \label{eq:saddle}
+\end{equation}
+Under $P_x$, $H$ tends in total variation to $\Exp(1)$, and
+$\E_{P_x}H^r\to r!$ for every fixed nonnegative integer $r$.
+In the polynomial case,
+\begin{equation}
+ -\log P(S\le x)\sim (1-\beta)C_pN. \label{eq:smallball}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Apply Lemma~\ref{lem:llt} to $T$ in \eqref{eq:D}. After multiplying
+by $\sqrt V$, the integral of the error is $O(R^{-1/2})$ and
+\[
+ \int_0^\infty e^{-h}\ph(h/\sqrt V)\,dh
+ =(2\pi)^{-1/2}\big(1+O(V^{-1})\big).
+\]
+This proves \eqref{eq:saddle}. The density of $H$ is exactly
+$e^{-h}f(\mu-h)/D$, $h\ge0$. It tends pointwise to $e^{-h}$ and
+is bounded by $Ce^{-h}$, by the density bound in
+Lemma~\ref{lem:llt}. Dominated convergence proves both total variation
+and the moments. Finally use \eqref{eq:likelihood},
+Proposition~\ref{prop:constants}, and $\log D=O(\log N)$.
+\end{proof}
+
+For $I\subseteq\N$ put $Z_I=T_I-\mu_I$ and $J=I^c$. When
+$V_J\ge\eps R$, the joint law of $((Y_j)_{j\in I},H)$ has density
+relative to $Q_t^I\otimes dh$ equal to
+\begin{equation}
+ R_I(\mathbf y,h)=
+ e^{-h}\frac{f_J(\mu_J-Z_I(\mathbf y)-h)}D\ind_{h\ge0}.
+ \label{eq:jointlikelihood}
+\end{equation}
+This follows by disintegration of the independent sums; it applies to
+infinite coordinate sets because their nonnegative sums are measurable
+limits. In particular $R_I(\mathbf y,h)\le C_\eps e^{-h}$.
+
+\begin{corollary}[Negligible blocks with independent slack]
+\label{cor:smallblock}
+If $V_I=o(R)$, then
+\begin{equation}
+ \TV\!\left(\Law_{P_x}((Y_j)_{j\in I},H),
+             Q_t^I\otimes\Exp(1)\right)\longrightarrow0.
+ \label{eq:smallblock}
+\end{equation}
+More generally, if $V_{I^c}\ge\eps R$, the marginal likelihood of
+$P_x^I$ with respect to $Q_t^I$ is bounded by $C_\eps$.
+\end{corollary}
+\begin{proof}
+The general bound follows by integrating
+\eqref{eq:jointlikelihood} in $h$. In the negligible-block case,
+$Z_I/\sqrt R\to0$ in $Q_t$-probability by Chebyshev's inequality,
+and $V_{I^c}/V\to1$. Lemma~\ref{lem:llt} and
+\eqref{eq:saddle} show that the ratio in
+\eqref{eq:jointlikelihood} tends to one in probability for each fixed
+$h$. Its uniform bound, followed by integration against $e^{-h}dh$,
+gives convergence in $L^1(Q_t^I\otimes\Exp(1))$. Half this $L^1$
+distance is total variation.
+\end{proof}
+This special case of the general variance principle is reproduced for
+the proofs below; the broader principle is already in \cite{repounif}.
+
+\section{The incomplete-gamma law for the maximum}
+\label{sec:maximum}
+
+The proof separates an exact independent-array calculation from a
+quantitative conditioning estimate. Merely knowing that an extreme
+prefix has negligible variance would give an $o(1)$ error, insufficient
+for every logarithmic correction.
+
+\subsection{An exact intensity integral}
+For $y>0$, the tilted exceedance probability at coordinate $j$ is
+\begin{equation}
+ p_j(y)=\frac{e^{-y}-e^{-a_j}}{1-e^{-a_j}}\ind_{a_j>y}.
+ \label{eq:exceedance}
+\end{equation}
+Only finitely many coordinates can exceed $y$. Put
+$q_j(y)=(e^{-y}-e^{-a_j})_+$ and
+$\Lambda_N(y)=\sum_jp_j(y)$.
+
+\begin{lemma}[Integral and lattice errors]
+\label{lem:gammaint}
+For $a_j=(N/j)^p$,
+\begin{equation}
+ \int_0^\infty\big(e^{-y}-e^{-(N/s)^p}\big)_+\,ds
+       =N\Gamma(1-\beta,y). \label{eq:gammaint}
+\end{equation}
+Furthermore
+\begin{equation}
+ \left|\sum_{j\ge1}q_j(y)-N\Gamma(1-\beta,y)\right|
+       \le e^{-y}. \label{eq:lattice}
+\end{equation}
+Uniformly for $y=b+z$, $|z|\le Z$,
+\begin{equation}
+ \log Q_t(\max_jY_j\le y)
+       =-N\Gamma(1-\beta,y)+O_Z(e^{-b}).
+ \label{eq:tiltedmax}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The integrand in \eqref{eq:gammaint} is supported on
+$0<s<Ny^{-\beta}$. The substitution $a=(N/s)^p$ gives
+\[
+ Ny^{-\beta}e^{-y}
+ -\beta N\int_y^\infty e^{-a}a^{-\beta-1}\,da.
+\]
+An integration by parts identifies this with
+$N\int_y^\infty e^{-a}a^{-\beta}\,da$. As a function of $s$, the
+original integrand is nonincreasing, takes limiting value $e^{-y}$
+at zero, and vanishes eventually. The elementary integral comparison
+for a nonincreasing nonnegative function therefore gives
+\eqref{eq:lattice}.
+
+For contributing coordinates $a_j>y$,
+\[
+ 0\le p_j(y)-q_j(y)
+ \le\frac{e^{-y}}{1-e^{-y}}q_j(y).
+\]
+When $y=b+z$ with $z$ bounded, \eqref{eq:gammaint} and
+$Ne^{-b}b^{-\beta}=1$ give
+$\sum q_j=O_Z(1)$, and hence
+$\Lambda_N(y)=N\Gamma(1-\beta,y)+O_Z(e^{-b})$.
+Also $\max_jp_j(y)\le e^{-y}/(1-e^{-y})=O_Z(e^{-b})$.
+The independent-product formula and
+$|\log(1-u)+u|\le u^2/[2(1-u)]$ show that
+\[
+ \log Q_t(\max_jY_j\le y)
+ =-\Lambda_N(y)+O\!\left(\sum_jp_j(y)^2\right).
+\]
+The last sum is at most $\max_jp_j\cdot\Lambda_N=O_Z(e^{-b})$.
+\end{proof}
+
+\subsection{Removing the small-sum constraint at logarithmic accuracy}
+Let $Q_t^{[y]}=Q_t(\,\cdot\mid\max_jY_j\le y)$. This is an
+independent product with caps $c_j=\min(a_j,y)$, since the event
+restricts each of only finitely many coordinates separately. Denote
+its total mean, variance, and density by $\mu_y,V_y,f_y$. Define
+\begin{equation}
+ D_y=\int_0^\infty e^{-h}f_y(\mu-h)\,dh. \label{eq:Dy}
+\end{equation}
+Notice the \emph{original} mean $\mu$ in this definition. Then
+\begin{equation}
+ P_x(\max_jY_j\le y)
+    =Q_t(\max_jY_j\le y)\frac{D_y}{D}. \label{eq:capidentity}
+\end{equation}
+
+\begin{lemma}[Capping perturbs the normalization negligibly]
+\label{lem:capping}
+Uniformly for $y=b+z$, $|z|\le Z$,
+\begin{equation}
+ \delta_y:=\mu-\mu_y=O_Z(y),\qquad
+ |V-V_y|=O_Z(y^2), \label{eq:capmoments}
+\end{equation}
+and
+\begin{equation}
+ \frac{D_y}{D}=1+O_{p,Z}(N^{-1/2}+y^2/N). \label{eq:capratio}
+\end{equation}
+\end{lemma}
+\begin{proof}
+There are $K_y=\lfloor Ny^{-\beta}\rfloor$ possibly changed
+coordinates. For $a>y\ge2$,
+\[
+ 0\le m(a)-m(y)
+ =\frac{y}{e^y-1}-\frac{a}{e^a-1}\le Cye^{-y},
+ \qquad |v(a)-v(y)|\le Cy^2e^{-y}.
+\]
+For the variance bound use \eqref{eq:mv} and the bound
+$a^2e^{-a}\le y^2e^{-y}$ for $a\ge y\ge2$, adjusting the absolute
+constant for the denominators. Since $K_ye^{-y}=O_Z(1)$,
+\eqref{eq:capmoments} follows. Thus $V_y\sim B_pN$.
+
+Lemma~\ref{lem:llt}, uniformly for the capped array, yields
+\[
+ D_y=\frac1{\sqrt{2\pi V_y}}
+ \int_0^\infty e^{-h}
+       \exp\!\left(-\frac{(\delta_y-h)^2}{2V_y}\right)dh
+       +O_{p,Z}(N^{-1}).
+\]
+The integral is $1+O((\delta_y^2+1)/V_y)$, using
+$0\le1-e^{-u}\le u$. Compare with
+\eqref{eq:saddle} and use \eqref{eq:capmoments} to obtain
+\eqref{eq:capratio}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:gamma}]
+Equations \eqref{eq:capidentity}, \eqref{eq:tiltedmax}, and
+\eqref{eq:capratio} give
+\[
+ \log P_x(\max_jY_j\le b+z)
+ =-N\Gamma(1-\beta,b+z)
+   +O_{p,Z}(e^{-b}+N^{-1/2}+b^2/N).
+\]
+Because $e^{-b}=b^\beta/N$ and $b\sim\log N$, this proves
+\eqref{eq:gamma-main}.
+
+The expansion has a particularly simple direct proof. Write
+$a=b+z+s$ in the gamma integral and use the defining equation for $b$:
+\begin{equation}
+ N\Gamma(1-\beta,b+z)
+ =e^{-z}\int_0^\infty e^{-s}
+       \left(1+\frac{z+s}{b}\right)^{-\beta}ds.
+ \label{eq:gamma-shift}
+\end{equation}
+Taylor's theorem, for fixed $K$ and bounded $z$, gives an integrated
+remainder $O_{\beta,Z,K}(b^{-K-1})$. To check uniformity even for
+negative $z$, take $b>2Z$: the Taylor segment stays at least $1/2$
+away from the singularity at $-1$, and the remainder is bounded by
+$C b^{-K-1}(|z|+s)^{K+1}$, integrable against $e^{-s}$.
+The coefficient of $b^{-r}$ is
+\[
+ \frac{(-1)^r\rise\beta r}{r!}
+   \int_0^\infty e^{-s}(z+s)^r ds
+ =(-1)^r\rise\beta r\sum_{k=0}^r\frac{z^k}{k!}.
+\]
+This proves \eqref{eq:allorder}, without an interchange of an infinite
+asymptotic series and an integral.
+\end{proof}
+
+\begin{remark}[What the error does and does not mean]
+The $O(N^{-1/2})$ bound is deliberately conservative. It is adequate
+for every fixed inverse-logarithmic order because
+$N^{-1/2}=o(b^{-K})$ for every fixed $K$. It is not a claim of a
+sharp conditioning correction at the polynomial scale $1/N$.
+At moderate $N$ the conditioning error can exceed several logarithmic
+terms; the numerical results in Section~\ref{sec:numerics} illustrate
+this explicitly.
+\end{remark}
+
+\section{Poisson localization for polynomial weights}
+\label{sec:poisson}
+
+\begin{proposition}[The tilted marked process]
+\label{prop:polypp}
+Under $Q_t$, the process $\Xi_t$ in \eqref{eq:polypp} converges to
+$\Xi$. The same convergence holds under $P_x$, jointly with an
+independent $\Exp(1)$ slack.
+\end{proposition}
+\begin{proof}
+Let $g$ be a nonnegative continuous compactly supported function on
+$[0,\infty)\times\R$, with height support in $[L_0,L_1]$. Independence
+gives
+\[
+ \E_{Q_t}e^{-\langle g,\Xi_t\rangle}
+   =\prod_j(1-q_{j,t}),\qquad
+ q_{j,t}=\E_{Q_t}\big[1-e^{-g(j/M,Y_j-b)}\big].
+\]
+Only finitely many $q_{j,t}$ are nonzero. On their height support,
+$Y_j=b+z$ and $a_j=b(j/M)^{-p}$. Since $e^{-b}=1/M$,
+\begin{align}
+ \sum_jq_{j,t}
+  =\frac1M\sum_j\int_{L_0}^{L_1}
+ &(1-e^{-g(j/M,z)})e^{-z}\nonumber\\[-2mm]
+ &\times\frac{\ind_{b+z<b(j/M)^{-p}}}
+               {1-e^{-b(j/M)^{-p}}}\,dz.
+ \label{eq:pp-riemann}
+\end{align}
+Where the indicator is nonzero, the denominator tends to one
+uniformly. For $u<1$ the indicator tends to one; for $u>1$ it tends
+to zero. Split the location integral into the two regions away from
+$u=1$ and a strip of width $2\delta$ around one. Ordinary Riemann
+sums give convergence on the first two regions, and a uniform bounded
+integrand controls the strip by $C\delta$. Thus
+\[
+ \sum_jq_{j,t}\longrightarrow
+ \int_0^1\int_\R(1-e^{-g(u,z)})e^{-z}\,dz\,du.
+\]
+Also $\max_jq_{j,t}=O_g(M^{-1})$, so
+$\sum_jq_{j,t}^2\to0$. Taking logarithms proves convergence of
+Laplace functionals to that of $\Xi$. The same bounds on compact
+sets give local tightness, hence point-process convergence.
+
+For the conditioned assertion, let $I_t=\{1,\ldots,\lceil2M\rceil\}$.
+Its tilted variance is at most $2M+1=o(N)$. For each fixed lower
+height $L_0$, every coordinate outside $I_t$ has cap at most
+$b/2^p<b+L_0$ for sufficiently large $N$. Therefore every point of
+$\Xi_t$ above height $L_0$ is determined by $I_t$. Apply
+Corollary~\ref{cor:smallblock} and then the tilted convergence to
+obtain the joint Poisson and independent-slack limit. Exhausting the
+height axis by compact intervals completes the argument.
+\end{proof}
+
+\begin{corollary}[All fixed upper order statistics]
+\label{cor:orderstats}
+Order the contributions as $Y_{(1)}>Y_{(2)}>\cdots$, with indices
+$J_{(1)},J_{(2)},\ldots$. For each fixed $r$,
+\begin{equation}
+ \big((J_{(k)}/M,Y_{(k)}-b)\big)_{k=1}^r
+ \Rightarrow \big((U_k,-\log A_k)\big)_{k=1}^r,
+ \label{eq:orderstats}
+\end{equation}
+where $A_k=E_1+\cdots+E_k$, the $E_i$ are independent $\Exp(1)$,
+and the $U_k$ are independent uniforms on $[0,1]$, independent of all
+$E_i$. In particular
+\begin{equation}
+ P_x(Y_{(r)}-b\le z)\longrightarrow
+ e^{-e^{-z}}\sum_{k=0}^{r-1}\frac{e^{-kz}}{k!}.
+ \label{eq:rth}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The intensity is a product of unit Lebesgue measure on $[0,1]$ and
+$e^{-z}dz$. Under the substitution $v=e^{-z}$, the height intensity
+becomes Lebesgue measure on $(0,\infty)$, whose successive Poisson
+arrival times are $A_k$. Attaching independent uniform marks gives
+the displayed limiting process and hence the limiting order statistics.
+
+To justify passage from vague convergence to top points, there is no
+escape in location above any fixed height: all such points lie in
+$[0,2]$ for large $N$. Theorem~\ref{thm:gamma} gives tightness of the
+highest height. The number above a low level $L_0$ tends to a Poisson
+variable with mean $e^{-L_0}$, which exceeds $r$ with probability tending
+to one as $L_0\to-\infty$. On a compact rectangle containing the top
+$r$ points, the limiting process almost surely has no height ties or
+boundary points, so ordering is continuous. The formula
+\eqref{eq:rth} is the probability of at most $r-1$ points above $z$.
+\end{proof}
+
+\begin{corollary}[No single summand carries the conditioned mass]
+\label{cor:nocondensation}
+For polynomial weights,
+\begin{equation}
+ \frac{S}{x}\longrightarrow1,
+ \qquad
+ \frac{A_pN}{b}\frac{\max_j j^{-p}U_j}{S}\longrightarrow1
+ \quad\text{in }P_x\text{-probability}.
+ \label{eq:nocondensation}
+\end{equation}
+In particular the largest mass fraction tends to zero.
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prop:slack}, $T=\mu-H=\mu+O_{P_x}(1)$,
+while $\mu\sim A_pN$. Theorem~\ref{thm:gamma} gives
+$\max_jY_j=b+O_{P_x}(1)$. Divide these identities, using $b\to\infty$.
+\end{proof}
+The extremes are concentrated in a vanishing fraction of the relevant
+indices, yet each contributes only order $\log N/N$ of the total mass.
+This distinction between location concentration and mass concentration
+is useful when interpreting the conditioned configurations.
+
+\section{The Gaussian bridge and joint independence}
+\label{sec:bridge}
+
+\subsection{A variance-clock invariance principle}
+\begin{lemma}[Tilted motion and conditioned bridge]
+\label{lem:bridge}
+In both the polynomial and uniformly lacunary cases,
+\begin{equation}
+ \mathcal B_t\Rightarrow B\quad\text{under }Q_t,
+ \qquad
+ (\mathcal B_t,H)\Rightarrow(B^\circ,E)
+       \quad\text{under }P_x, \label{eq:bridges}
+\end{equation}
+where $B$ is standard Brownian motion and $B^\circ,E$ are independent.
+\end{lemma}
+\begin{proof}
+Write $X_j=Y_j-m_j$. Since $\max_jv_j\le1$ and $V\asymp R$,
+the largest clock interval is $O(R^{-1})$. Lemma~\ref{lem:moments}
+gives
+\[
+ V^{-2}\sum_j\E X_j^4
+ \le C V^{-2}\sum_jv_j^2\le C/V\longrightarrow0.
+\]
+Taylor expansion of characteristic functions therefore proves the
+Gaussian finite-dimensional limits for disjoint partial-sum increments.
+Their limiting covariance in the exact clock is $\min(r,s)$.
+Interpolation at any fixed time changes the covariance by at most the
+largest clock interval and changes a random variable by $o_P(1)$.
+
+For tightness, an increment between times $s<r$ is
+$V^{-1/2}\sum_jc_jX_j$, with $0\le c_j\le1$ and
+$\sum_jc_jv_j=V(r-s)$. Independence and the fourth-moment bound give
+\begin{align*}
+ \E_{Q_t}|\mathcal B_t(r)-\mathcal B_t(s)|^4
+ &\le C V^{-2}\left(\sum_jc_j^2v_j\right)^2\\
+ &\le C(r-s)^2.
+\end{align*}
+This holds also for countably many summands by moment convergence.
+The fourth-moment tightness criterion on continuous paths follows,
+for example, by Markov's inequality on dyadic increments followed by
+the usual summable modulus-of-continuity bound. It proves the first
+convergence in \eqref{eq:bridges}.
+
+Fix $0<r_1<\cdots<r_d=c<1$, and take the observed prefix $I$ ending
+at the last clock knot before $c$. The clock mesh is negligible and
+$V_{I^c}/V\to1-c$. Include $Z_I/\sqrt V$ as the last coordinate in
+the observed Gaussian vector. Lemma~\ref{lem:llt},
+\eqref{eq:jointlikelihood}, and \eqref{eq:saddle} show that, for
+bounded $h$, the joint likelihood is asymptotic to
+\begin{equation}
+ e^{-h}g_c(Z_I/\sqrt V),\qquad
+ g_c(z)=\frac1{\sqrt{1-c}}
+          \exp\!\left(-\frac{z^2}{2(1-c)}\right).
+ \label{eq:gaussianweight}
+\end{equation}
+The approximation is uniform in $Z_I/\sqrt V$. The uniform bound
+$C_c e^{-h}$ permits integration over all $h\ge0$.
+Weighting the Brownian finite-dimensional law by $g_c(B(c))$ gives
+the Brownian bridge law up to $c$: indeed $g_c$ is the ratio of the
+normal density for completing $B(c)$ to zero in variance $1-c$ to
+the unit-variance density at zero. Direct Gaussian conditioning gives
+covariance $\min(r,s)-rs$. The independent factor $e^{-h}$ proves
+finite-dimensional independence of the slack.
+
+For conditioned tightness on $[0,1-\eps]$, use the bounded prefix
+likelihood in Corollary~\ref{cor:smallblock} and the tilted tightness.
+To control the terminal interval, take the tail after the last knot
+before $1-\eps$, with $0<\eps<1/2$. Its variance is at most
+$\eps V+1$ and its complement has a fixed positive fraction of $V$.
+Its marginal likelihood is therefore bounded by a constant independent
+of $\eps$. Kolmogorov's maximal inequality for reversed tail sums,
+first for finite tails and then by passage to the convergent series,
+gives
+\begin{equation}
+ \limsup_{t\to\infty}P_x\left(
+ \sup_{r\in[1-\eps,1]}
+ |\mathcal B_t(r)-\mathcal B_t(1)|>\eta\right)
+ \le C\eps/\eta^2. \label{eq:terminaltight}
+\end{equation}
+One may replace reverse sums by a terminal sum minus forward partial
+sums to obtain the same bound. Interpolation cannot enlarge the
+maximum of the absolute endpoint values. Finally
+$\mathcal B_t(1)=-H/\sqrt V\to0$ in probability. Letting
+$\eps\downarrow0$ proves tightness at the endpoint. The slack is
+tight by Proposition~\ref{prop:slack}. The finite-dimensional limits
+identify the joint limit uniquely.
+\end{proof}
+
+\subsection{Why rare points are independent of Gaussian fluctuations}
+The following factorization makes the required independence explicit.
+Neither vanishing pairwise correlations nor separate marginal limits
+would suffice.
+
+\begin{lemma}[Rare-mark factorization]
+\label{lem:factorization}
+Consider either tilted array and a marked process centered at $c_t$,
+where $c_t=b$ for polynomial weights and $c_t=\log n$ for lacunary
+weights. Suppose its compactly supported nonnegative test function
+$g$ satisfies
+\[
+ q_j=\E[1-e^{-g(\text{location}_j,Y_j-c_t)}],\qquad
+ \sum_jq_j=O_g(1).
+\]
+For any bounded deterministic coefficients $\theta_j$,
+\begin{align}
+ &\E\left[\exp\!\left(i\sum_j\theta_jX_j/\sqrt V\right)
+                  e^{-\langle g,\Xi_t\rangle}\right]
+ \nonumber\\
+ &\hspace{8mm}{}-
+ \E\exp\!\left(i\sum_j\theta_jX_j/\sqrt V\right)
+       \E e^{-\langle g,\Xi_t\rangle}\longrightarrow0.
+ \label{eq:factorization}
+\end{align}
+The assertion also holds with the marks restricted to any deterministic
+coordinate subset.
+\end{lemma}
+\begin{proof}
+Write $\phi_j=\E e^{i\theta_jX_j/\sqrt V}$. The $j$th factor in
+the first expectation is
+\[
+ \phi_j-q_j-e_j,\qquad
+ |e_j|\le\frac{C}{\sqrt V}
+     \E\big[|X_j|(1-e^{-g(\text{location}_j,Y_j-c_t)})\big].
+\]
+On the height support of $g$, $Y_j=c_t+O_g(1)$ and $0\le m_j\le1$,
+so $\sum_j|e_j|=O_g((c_t+1)/\sqrt V)=o(1)$.
+Also $|\phi_j-1|\le C v_j/V\le C/V$, by centering and
+$|e^{iu}-1-iu|\le u^2/2$. Replacing the $j$th factor by
+$\phi_j(1-q_j)$ has total error at most
+\[
+ \sum_j|e_j|+\sum_jq_j|\phi_j-1|=o(1).
+\]
+The telescoping product inequality is applicable since every exact
+expectation factor, as well as $\phi_j(1-q_j)$, has modulus at most
+one. Independence factors the resulting product into the two
+expectations in \eqref{eq:factorization}. Finite products suffice for
+the marks; convergence of the centered sums handles an infinite
+Gaussian functional.
+\end{proof}
+Taking $\theta_j$ to be the finite linear combination of partial-sum
+indicators corresponding to any chosen clock times proves joint
+independence of the tilted Brownian limit and the limiting marked
+Poisson process, whenever the latter has been established. Marginal
+tightness then gives joint tightness. The argument survives restriction
+of the marks to a prefix, which is crucial for conditioning.
+
+\subsection{Proof of the polynomial joint theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:jointpoly}]
+Fix a compact height window for the marks and clock times
+$0<r_1<\cdots<r_d<1$. All marks in that window belong to the first
+$\lceil2M\rceil$ coordinates for large $N$. The variance of that
+prefix is $o(V)$, so it lies before any fixed positive clock time.
+Choose $c\in(r_d,1)$ and observe the entire coordinate prefix up to
+clock $c$, including its centered total $Z_I/\sqrt V$.
+
+Under $Q_t$, Proposition~\ref{prop:polypp}, Lemma~\ref{lem:bridge},
+and Lemma~\ref{lem:factorization} give the joint limit of the observed
+Gaussian vector and the marks as independent Brownian motion and
+$\Xi$. Apply the exact conditional likelihood
+\eqref{eq:jointlikelihood}. As in \eqref{eq:gaussianweight}, its
+limit is $e^{-h}g_c(B(c))$. This weight depends on the Gaussian
+component alone and on the separate slack variable, not on $\Xi$.
+It therefore changes Brownian motion into a Brownian bridge while
+leaving the Poisson process independent and unchanged, and produces
+an independent $\Exp(1)$ slack.
+
+This proves all finite-dimensional path, compactly supported mark,
+and slack limits jointly. Lemma~\ref{lem:bridge},
+Proposition~\ref{prop:polypp}, and Proposition~\ref{prop:slack}
+give tightness of the three marginals, hence of their product.
+The resulting joint weak limit is exactly \eqref{eq:joint-main}.
+The top-point continuity argument in Corollary~\ref{cor:orderstats}
+proves \eqref{eq:argmax} and its stated independence properties.
+\end{proof}
+
+\section{Completion of the qualitative lacunary point-process question}
+\label{sec:lacunary}
+
+For lacunary weights the extreme locations are spread over a positive
+fraction of the variance clock, unlike the polynomial case. The
+negligible-prefix argument alone would therefore not prove the
+independence theorem. Rare-mark factorization replaces it.
+
+\begin{proposition}[Lacunary marks under the tilted product]
+\label{prop:lacpp}
+Under \eqref{eq:lacunarity},
+\begin{equation}
+ (\mathcal B_t,\Xi_t^{\rm lac})\Rightarrow(B,\Xi)
+ \quad\text{under }Q_t, \label{eq:tiltedlacjoint}
+\end{equation}
+with independence. The same assertion holds when marks are restricted
+to $j\le\lfloor cn\rfloor$, with limiting intensity restricted to
+$0\le u\le c$, for fixed $0<c<1$.
+\end{proposition}
+\begin{proof}
+Fix a height window $[L_0,L_1]$. For $j\le(1-\eps)n$,
+$a_j\ge q^{-\eps n+O(1)}$, so its cap exceeds $\log n+L_1$
+and its normalization $1-e^{-a_j}$ tends uniformly to one.
+With location $u=j/n$ and height $Y_j-\log n=z$, the intensity
+calculation on this prefix is therefore the Riemann sum
+\[
+ \frac1n\sum_{j\le(1-\eps)n}
+    \int(1-e^{-g(j/n,z)})e^{-z}\,dz.
+\]
+Its limit is the required intensity integral over $[0,1-\eps]$.
+For the remaining active indices, the probability of a contribution
+in this height window is at most
+\[
+ \frac{e^{-L_0}}{n(1-e^{-\log n-L_0})}.
+\]
+Their combined contribution is at most $C_g\eps+O_g(n^{-1})$.
+Inactive coordinates have cap below one and cannot contribute for
+large $n$. Let $\eps\downarrow0$. The sum of the probabilities
+has the Poisson intensity limit and their maximum is $O_g(n^{-1})$,
+so the independent-product Laplace argument proves
+$\Xi_t^{\rm lac}\Rightarrow\Xi$. Restricting to $j\le cn$ proves
+the restricted statement.
+
+Proposition~\ref{prop:lacdimension} identifies the index and variance
+clocks up to $O_q(n^{-1})$. Lemma~\ref{lem:bridge} and
+Lemma~\ref{lem:factorization}, now with $c_t=\log n$ and
+$V\sim n$, prove independent Brownian and Poisson limits. The
+moment bounds and the local count bounds give joint tightness.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:lacunary}]
+First retain only marks with $j\le cn$, where $1/2<c<1$ is fixed.
+For finitely many clock times strictly below $c$, observe the whole
+prefix $I=\{1,\ldots,\lfloor cn\rfloor\}$. By
+\eqref{eq:lacclock}, its variance fraction tends to $c$.
+The tilted joint law of its Gaussian vector, its total, and its marks
+is described by Proposition~\ref{prop:lacpp}. Applying
+\eqref{eq:jointlikelihood} and Lemma~\ref{lem:llt} yields the
+limiting weight $e^{-h}g_c(B(c))$. Thus the marks on $[0,c]$ remain
+Poisson and independent, the Gaussian component becomes a bridge,
+and the slack becomes independent exponential.
+
+It remains to remove the restriction on the marks, not to assume it
+harmless. Put $J=\{j>\lfloor cn\rfloor\}$. Its complement has at
+least a fixed positive fraction of the total variance, uniformly for
+$c\ge1/2$, so its $P_x$ marginal likelihood is bounded by a constant
+independent of $c$. Formula \eqref{eq:exceedance} and the fact that
+only the active indices contribute show, for each fixed $L_0$,
+\begin{align}
+ \limsup_{t\to\infty}P_x\big(
+  \exists j>cn:\ Y_j-\log n>L_0\big)
+ &\le C_q(1-c)e^{-L_0}. \label{eq:removeend}
+\end{align}
+Indeed the corresponding tilted union bound has at most
+$(1-c)n+1$ terms, each bounded by
+$e^{-L_0}/[n(1-e^{-\log n-L_0})]$; all inactive terms vanish.
+The limiting Poisson process has the analogous vanishing probability
+for a point in $(c,1]\times(L_0,\infty)$.
+
+For any fixed finite set of path times below one, choose $c$ larger
+than all of them, use the truncated joint result, and then let
+$c\uparrow1$ in \eqref{eq:removeend}. This gives the full joint
+finite-dimensional and compact-mark limits. The path and slack
+components are tight by Lemma~\ref{lem:bridge}; the truncated-process
+approximation and \eqref{eq:removeend} give tightness for the marks.
+Consequently the triple converges to the mutually independent triple
+in \eqref{eq:lacjoint}.
+
+For completeness, the highest mark cannot escape to arbitrarily large
+height under $P_x$. Divide the active indices into two half-blocks.
+Each has a uniformly bounded marginal likelihood because its
+complement has asymptotic variance fraction $1/2$. Under $Q_t$, the
+expected number above $\log n+L$ is at most $C e^{-L}$, so the same
+upper bound, with another constant, holds under $P_x$. All marks above
+a fixed height have locations at most one. At low heights the limiting
+Poisson count grows without bound. The continuity argument for the top
+points therefore applies just as in Corollary~\ref{cor:orderstats},
+giving the uniform location and independent Gumbel height.
+\end{proof}
+
+\subsection{What changes between the two weight regimes}
+There is one universal limiting intensity but two different spatial
+normalizations. In the lacunary case an interior active coordinate has
+a cap much larger than $\log n$, and essentially all $n$ active
+coordinates compete for the maximum. In the polynomial case the cap
+at $j=Nu$ is $u^{-p}$, a quantity of order one. To compete at height
+$b\sim\log N$, an index must satisfy
+$j\lesssim N b^{-1/p}$. This moving cap boundary is why a naive
+centering by $\log N$ fails and why the location scale is $M$, not $N$.
+
+The common bridge arises from the global mass constraint. The Poisson
+points survive independently because finitely many extreme contributions
+are only logarithmic in size, negligible on the square-root variance
+scale. Lemma~\ref{lem:factorization} turns that statement into a joint
+characteristic-function calculation rather than an independence heuristic.
+
+\section{Reproducible symbolic and numerical diagnostics}
+\label{sec:numerics}
+
+The archive contains \texttt{code/verify.py}, the generated table
+\texttt{data/maximum\_table.csv}, and a machine-readable execution record
+\texttt{data/verification.json}. The program performs six exact symbolic
+checks: the identity $v=m-am'$ and the five coefficient identities in
+\eqref{eq:allorder} for orders zero through four. All six passed in the
+delivered run. It then evaluates the independent maximum distribution
+exactly as a finite mathematical product, and evaluates the conditional
+normalizers by numerical Fourier inversion with an analytically
+represented infinite tail.
+
+All decimal evaluations are floating-point diagnostics, not interval
+certificates and not a substitute for the proofs. In particular, agreement
+under changes of numerical settings does not establish a bound on all
+rounding, truncation, or quadrature errors.
+
+\subsection{The exact formulas evaluated}
+For $y>0$, let $K_y=\lfloor Ny^{-\beta}\rfloor$. The independent
+maximum formula is
+\begin{equation}
+ \log Q_t(\max_jY_j\le y)
+ =K_y\log(1-e^{-y})
+   -\sum_{j=1}^{K_y}\log(1-e^{-(N/j)^p}).
+ \label{eq:numericalQ}
+\end{equation}
+An equality case $a_j=y$ contributes zero and causes no ambiguity.
+No infinite truncation is needed in this formula.
+
+If $\Phi_T(s)=\E_{Q_t}e^{is(T-\mu)}$, Fourier inversion and
+\eqref{eq:D} give
+\begin{equation}
+ D=\frac1\pi\int_0^\infty
+           \Re\frac{\Phi_T(s)}{1-is}\,ds. \label{eq:fourierD}
+\end{equation}
+The analogous $D_y$ formula uses the capped law but remains centered
+at the original $\mu$. Its characteristic function is the centered
+capped characteristic function multiplied by $e^{-is\delta_y}$.
+The density smoothness established in Lemma~\ref{lem:llt} justifies
+the inversion and the exponentially integrable slack kernel.
+
+The code evaluates the first $J=\lceil4N\rceil$ coordinates directly.
+For the rest, it uses the convergent expansion
+\begin{equation}
+ \ell(a):=\log\frac{1-e^{-a}}a
+ =-\frac a2+\sum_{\substack{r\ge2\\r\ \mathrm{even}}}
+       c_ra^r,\qquad c_r=\frac{B_r}{r\,r!},\quad |a|<2\pi.
+ \label{eq:bernoullitail}
+\end{equation}
+Here $B_r$ are the Bernoulli numbers. The centered characteristic
+logarithm for a tail coordinate is
+\[
+ \sum_{\substack{r\ge2\\r\ \mathrm{even}}}
+ c_ra^r\big((1-is)^r-1+irs\big).
+\]
+Summation over $j>J$ uses the exact Hurwitz-zeta identity
+\begin{equation}
+ \sum_{j>J}a_j^r=N^{pr}\zeta(pr,J+1). \label{eq:zetatail}
+\end{equation}
+The linear term cancels on centering; the tail mean and variance are
+calculated from the same expansion. The delivered run retains the even
+terms through order $16$ and integrates in the scaled variable
+$u=s\sqrt V$ up to $u=30$. It does not represent discarded coordinates
+by zero, which would introduce an uncontrolled shift on the small-sum
+scale.
+
+\subsection{Results and finite-size effects}
+Table~\ref{tab:central} reports $p=2$, $z=0$. The conditional column
+uses \eqref{eq:capidentity} and \eqref{eq:fourierD}; the independent
+column uses \eqref{eq:numericalQ}. The incomplete-gamma column is
+$\exp[-N\Gamma(1/2,b)]$. Their common limiting Gumbel value is
+$e^{-1}=0.3678794412\ldots$.
+
+\begin{table}[htbp]
+\centering
+\caption{Central maximum probabilities for polynomial weights $j^{-2}$.}
+\label{tab:central}
+\begin{tabular}{rrrrr}
+\toprule
+$N$ & $b$ & Conditional $P_x$ & Tilted $Q_t$ & Gamma approximation\\
+\midrule
+32   & 2.928492 & 0.450850950 & 0.415315863 & 0.414779547\\
+128  & 4.141501 & 0.413874108 & 0.403560486 & 0.403369337\\
+512  & 5.395538 & 0.399337502 & 0.396342140 & 0.396309268\\
+2048 & 6.675404 & 0.392427364 & 0.391548647 & 0.391540557\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The full CSV additionally contains $z=-1,1$ at all four dimensions,
+for twelve parameter triples. At $N=2048$ and $z=-1$, for example,
+the conditional probability is approximately $0.060955084$, the
+independent probability $0.064524504$, and the gamma approximation
+$0.064728174$. The conditioning-to-tilt ratio is about $0.944681$.
+Thus the table does not conceal a sizable lower-tail finite-size effect
+behind the limiting theorem. The constants implicit in uniform bounds
+may depend on the chosen bounded $z$-window.
+
+An independent stability rerun at $p=2,N=128,z=0$ changed $J$ from
+$4N$ to $6N$, the tail order from $16$ to $20$, and the scaled
+integration cutoff from $30$ to $36$. The absolute change in the
+conditional CDF was $5.0\times10^{-16}$ in the delivered environment.
+The mean and variance changed by approximately
+$2.8\times10^{-14}$ and $1.4\times10^{-14}$, respectively.
+An independent high-precision integral evaluation of $A_2$ agreed
+with the gamma--zeta expression to about $2.6\times10^{-25}$.
+These are observations about numerical stability, not rigorous error
+bars on Table~\ref{tab:central}.
+
+The executed environment was Python~3.13.5, NumPy~2.3.5,
+SciPy~1.17.0, SymPy~1.14.0, and mpmath~1.3.0. The script records the
+principal versions in its JSON output. Reproduction does not require
+GitHub access or downloading the repository.
+
+\clearpage
+\section{Proof status, formalization, and limitations}
+\label{sec:status}
+
+\subsection{A precise status ledger}
+\begin{longtable}{>{\raggedright\arraybackslash}p{.34\linewidth}
+                  >{\raggedright\arraybackslash}p{.59\linewidth}}
+\toprule
+Component & Status and scope\\
+\midrule
+\endhead
+Uniform-series tilting and Gibbs conditioning & Classical framework;
+needed density and likelihood calculations rederived here.
+The general variance-fraction principle is already in \cite{repounif}.\\[4pt]
+Polynomial saddle constants and variance clock & Established background
+for the extension, proved here for self-containment; not advertised as
+new relative to the repository.\\[4pt]
+Incomplete-gamma conditional maximum law & Proved in
+Theorem~\ref{thm:gamma}; quantitative error for fixed $p>1$ and bounded
+centered height.\\[4pt]
+Every fixed-order logarithmic correction & Proved with explicit
+coefficient polynomials and a remainder in \eqref{eq:allorder}; no
+growing-order uniformity claimed.\\[4pt]
+Polynomial marked extremes and localization & Proved in
+Theorem~\ref{thm:jointpoly}; spatial scale $N/b^{1/p}$ and all fixed
+upper order statistics.\\[4pt]
+Joint independence of bridge, points, and slack & Proved for polynomial
+and uniformly lacunary weights, with the displayed process topologies.\\[4pt]
+Lacunary Question~7 & Its qualitative point-process and independence
+parts are answered. Its explicit joint-rate request is not answered.\\[4pt]
+Numerical work & Six symbolic identities passed; twelve floating-point
+CDF diagnostics and a stability rerun were executed. No interval or
+formal analytic certification of the decimal outputs.\\[4pt]
+Lean/Rocq verification & Not performed; no compiled formal theorem or
+repository build is claimed or included.\\[4pt]
+Global originality and peer review & Not established. Candidate
+contributions are identified relative to the inspected sources, not
+certified as historical firsts.\\
+\bottomrule
+\end{longtable}
+
+\subsection{A realistic formalization path}
+The most economical first target is the maximum theorem rather than
+the complete point-process topology. The finite-product identity
+\eqref{eq:numericalQ}, the integral comparison
+\eqref{eq:lattice}, and the exact gamma integral
+\eqref{eq:gammaint} form a small, independently useful layer. These
+statements involve finite sums, a monotone real integral, and a
+single change of variables; they do not depend on the unformalized
+conditioning manuscripts.
+
+The next layer should formalize the tilted truncated-exponential mean
+and variance, the product-capping identity \eqref{eq:capidentity},
+and a reusable density local limit theorem with explicit hypotheses.
+The proof boundary must state whether Fourier inversion, the normal
+characteristic function, and the moment tightness criterion are imported
+library theorems or independently proved. Merely defining an abstract
+density that is assumed to obey \eqref{eq:llt} would make the final
+maximum theorem conditional on that assumption.
+
+The bridge and Poisson layer then requires probability kernels on a
+countable product, the likelihood disintegration
+\eqref{eq:jointlikelihood}, weak convergence of continuous paths,
+and Laplace-functional convergence for counting measures. The rare-mark
+factorization lemma is a useful finite-product starting point because
+its core estimate is a direct telescoping inequality. Numerical output
+should remain outside the trusted proof boundary unless a certified
+checker is supplied for the precise numerical assertion.
+
+\subsection{Limits of the statements}
+The constants in the polynomial estimates are not asserted uniform as
+$p\downarrow1$ or $p\to\infty$. The weights are exactly $j^{-p}$
+for the gamma expansion; a slowly varying multiplier can alter its
+correction terms. The joint process convergence is qualitative, even
+though the scalar maximum law is quantitative. The point-process
+assertions use vague topology, not total variation between a discrete
+location lattice and a continuously located Poisson process; the latter
+comparison would be singular without coarsening or randomizing locations.
+
+The proofs address the inequality $S\le x$. A regular conditional law
+on $S=x$, a thin shell, or several simultaneous constraints requires
+its own likelihood and normalization. No such extension is silently
+included. Finally, the manuscript has not been externally refereed;
+the distinction between a complete argument written here and an
+independently checked theorem remains important.
+
+\section{Further research questions}
+\label{sec:questions}
+
+\paragraph{1. Quantitative joint convergence.}
+Complete the remaining rate component of the lacunary report's
+Question~7. Specify a metric combining path approximation with
+coarsened or bounded-Lipschitz point-process observables, and derive
+an explicit bound for joint independence. Exact total variation of
+continuous locations versus the deterministic index lattice is not an
+appropriate target. The rare-mark factorization proof already exposes
+an $O(\log R/\sqrt R)$ cross-term before conditioning; controlling the
+complement likelihood and the final clock segment is the next obstacle.
+
+\paragraph{2. The first genuine conditioning correction.}
+Replace the conservative $O(N^{-1/2})$ error in
+Theorem~\ref{thm:gamma} by an Edgeworth calculation for $D_y/D$,
+uniformly on a bounded height window. The exact quantities
+$\delta_y=\mu-\mu_y$ and $V-V_y$ identify the terms that must enter.
+Can one prove an explicit leading correction at order
+$(\log N)^2/N$, with a smaller controlled remainder? This is separate
+from the inverse-logarithmic series already proved.
+
+\paragraph{3. Regularly varying weights.}
+For decreasing $w_j=j^{-p}\ell(j)$ with slowly varying $\ell$, seek
+a marked-extreme theorem in terms of the counting function
+$\nu_t(y)=\#\{j:tw_j>y\}$. The natural first centering equation is
+$e^{-b_t}\nu_t(b_t)\approx1$. Determine the second-order regular
+variation assumptions that recover explicit corrections and distinguish
+them from the special exact gamma structure of pure powers.
+
+\paragraph{4. Transition between polynomial and lacunary geometry.}
+Study arrays in which the decay exponent or local log-slope changes
+with $t$. The limits $p\to\infty$ and $N\to\infty$ need not commute.
+Find a uniform description interpolating between localization in
+$o(N)$ indices and competition across a positive fraction of all
+active coordinates. The endpoint $p\downarrow1$ has its own
+summability and scale issues and should be analyzed separately.
+
+\paragraph{5. Nonuniform microscopic laws.}
+Replace the uniforms by variables with density asymptotic to
+$c u^{\kappa-1}$ at zero. Their strongly tilted coordinates should be
+compared with gamma, rather than exponential, variables. Determine
+which regularity at zero and which global upper-tail assumptions
+suffice for joint Poisson--bridge independence. Even the logarithmic
+centering must account simultaneously for the gamma tail and the
+moving cap boundary; it should not be copied from \eqref{eq:scales}.
+
+\paragraph{6. Thin shells and multiple constraints.}
+For $x-h_t\le S\le x$, determine how the limit depends on $th_t$,
+including a precise version of conditioning at $S=x$. With several
+weighted-sum constraints, formulate nondegeneracy hypotheses under
+which the Gaussian limit is projected off a finite-dimensional
+constraint space. Identify when the extremes remain independent and
+when a constraint directly detects their locations.
+
+\paragraph{7. Random weights and geometric phase.}
+Establish quenched and annealed counterparts under random lacunarity
+or random regular variation. For geometric weights, combine the
+marked extremes with the phase-dependent microscopic boundary law
+already in \cite{repolac,repounif}. Joint phase mixing must be proved
+at the level of distributions; averaging a parameter inside a density
+is not generally the same as averaging the density itself.
+
+\paragraph{8. Certified analytic computation.}
+Turn \eqref{eq:fourierD}--\eqref{eq:zetatail} into an interval-certified
+algorithm with explicit Fourier-tail and Bernoulli-tail bounds,
+then determine bit complexity for a requested absolute or relative
+CDF error. The current numerical stability checks do not provide
+that certificate. A formal finite-product and gamma-integral layer
+would be a natural first contribution back to the repository.
+
+\section{Conclusion}
+The rare-event constraint has two mathematically distinct effects.
+It produces a Brownian bridge from collective square-root fluctuations
+and an exponential boundary slack, but it leaves logarithmic extremes
+asymptotically Poisson and independent of those objects. The locations
+of those extremes retain detailed information about the weight decay.
+They fill the active index range for uniformly lacunary weights and
+localize on $N/(\log N)^{1/p}$ indices for polynomial weights.
+
+For pure polynomial weights, the entire fixed-order logarithmic
+maximum expansion is encoded by a single upper incomplete gamma
+integral. The key quantitative step is not the gamma asymptotics by
+itself, but the estimate showing that reimposing the small-sum
+constraint changes the logarithmic maximum probability by only
+$O(N^{-1/2})$ on bounded centered windows. The lacunary joint theorem
+answers a specifically identified qualitative research question in
+the inspected repository; the polynomial gamma law and localization
+provide a separate, more quantitative extension.
+
+\appendix
+\section{Reproduction and source provenance}
+\label{app:reproduce}
+The archive is self-contained for TeX compilation. It contains the
+source \texttt{article.tex}, its compiled PDF, a \texttt{Makefile},
+\texttt{README.md}, \texttt{CLAIM\_STATUS.md}, the verification script,
+a requirements file, and generated numerical data. A standard TeX Live
+installation with the AMS packages, \texttt{newtx}, \texttt{microtype},
+and \texttt{xurl} is sufficient. Run from the archive directory:
+\begin{verbatim}
+make pdf
+python -m pip install -r requirements.txt
+python code/verify.py
+\end{verbatim}
+The optional \texttt{--quick} flag omits $N=2048$ and the stability
+rerun. The full run regenerates the JSON and CSV data. It does not
+fetch external mathematical sources and does not modify the repository.
+
+The repository comparison was made at \commit. The two pinned
+manuscripts and the newer manuscript's claim-status file were
+inspected; their earlier snapshot identifiers are provenance inside
+those manuscripts, not the snapshot used here. Narrow repository
+searches were used to locate related work. This is not an assertion
+that every file in the repository has been read or that all possible
+overlap has been excluded. The external comparison used the primary
+publisher records for \cite{df,dz}, Arias de Reyna's paper, and the
+NIST special-function reference. The maximum, point-process, and
+joint-independence proofs above are supplied explicitly rather than
+inferred from those bibliographic records.
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{arias}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}.
+English translation of the original article in
+Revista de la Real Academia de Ciencias Exactas, F\'isicas y Naturales
+\textbf{76} (1982), 21--38.
+\href{https://arxiv.org/abs/1702.05442}{arXiv:1702.05442} (2017).
+Theorem~3 gives the uniform random-series interpretation.
+
+\bibitem{df}
+P.~Diaconis and D.~A.~Freedman,
+\emph{Conditional limit theorems for exponential families and finite
+versions of de Finetti's theorem}.
+Journal of Theoretical Probability \textbf{1} (1988), 381--410.
+\href{https://doi.org/10.1007/BF01048727}{doi:10.1007/BF01048727}.
+
+\bibitem{dz}
+A.~Dembo and O.~Zeitouni,
+\emph{Refinements of the Gibbs conditioning principle}.
+Probability Theory and Related Fields \textbf{104} (1996), 1--14.
+\href{https://doi.org/10.1007/BF01303799}{doi:10.1007/BF01303799}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+Chapter~8, \emph{Incomplete Gamma and Related Functions}, and
+Chapter~25, \emph{Zeta and Related Functions}.
+\href{https://dlmf.nist.gov/8}{Chapter 8};
+\href{https://dlmf.nist.gov/25.5}{Section 25.5, integral representations}.
+Consulted 30 September 2026. The specific gamma expansion used in this
+article is rederived in \eqref{eq:gamma-shift}.
+
+\bibitem{repolac}
+\repo\ research corpus,
+\emph{Sharp Conditioning Laws for Fabius and Lacunary Random Series:
+A global simplex approximation, exact total-variation thresholds,
+and phase-dependent boundary layers}.
+Research manuscript prepared for V.~Reshetnikov, 28 September 2026.
+Inspected at commit \commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a4268e78ebd0f6bf71ba609c07f4b3415748f532/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Sharp_Conditioning_Laws_Fabius_Lacunary_Series/article.tex}{Pinned manuscript source}.
+Question~7 is the qualitative point-process and independence target.
+
+\bibitem{repounif}
+\repo\ research corpus,
+\emph{Sharp Conditioning Laws for Uniform Random Series:
+Variance thresholds, boundary phases, Brownian bridges, and rare-event
+sampling}.
+Research manuscript prepared for V.~Reshetnikov, 28 September 2026.
+Inspected at commit \commit.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a4268e78ebd0f6bf71ba609c07f4b3415748f532/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Sharp_Conditioning_Laws_Uniform_Random_Series/article.tex}{Pinned manuscript source};
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a4268e78ebd0f6bf71ba609c07f4b3415748f532/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Sharp_Conditioning_Laws_Uniform_Random_Series/CLAIM_STATUS.md}{pinned claim-status ledger}.
+The general variance criterion and polynomial clocks are existing
+repository results, not new claims of this article.
+\end{thebibliography}
+\end{document}

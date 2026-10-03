@@ -1,0 +1,87 @@
+ENCLOSURE METHOD AND OUTWARD ROUNDING
+
+1. Response recurrence
+
+Let d=2m, and let A be the atomic Fourier matrix
+ A_kr=2^(1-d) binom(d,m+2k-r), 1-m<=k,r<=m-1.
+Its columns sum to one and its spectrum is 1,1/2,...,2^(-(d-2)).
+Let h0 be its normalized eigenvector at 1 and Qv=v-(sum v)h0.
+The projected inverse is T=(I-A)^(-1)Q.
+
+After a row-polynomial gauge and b=ia, the perturbed matrix is
+ diag_k((1-b)^(m+k)(1+b)^(m-k)) A.
+Its coefficient matrices are diag_k(K_j(k))A, where
+ (j+1)K_(j+1)(k)=-2kK_j(k)-(d-j+1)K_(j-1)(k).
+The bound |K_j(k)|<=binom(d,j) supplies the input error majorant.
+
+The producer uses exact integer Eulerian transforms to evaluate T and checks their inverse and eigenvalue identities at every m. Its scale is
+ S=2^p ((2m-1)!)^5,
+where p is the recorded precision parameter. Thus p is an auxiliary grid parameter, not the total number of arithmetic bits.
+
+Each stored integer vector u_n approximates S times the true normalized response vector. The error is measured in the full Fourier l1 norm, represented on nonnegative Fourier indices by weights 1,2,...,2. The scalar eigenvalue and product errors are propagated by outward integer bounds. The base proof and explicit recurrences appear in the included prior report. That induction is valid at every finite order. The present calculation retains orders 0,...,8m-2.
+
+2. Independent residual proof
+
+The second program reconstructs the full Fourier eigensystem and weighted inverse norms. It reads the stored vectors but recomputes all scalar/vector error radii.
+
+For a stored normalized vector u and approximate scaled source fhat, it forms the exact projected defect
+ Delta=(I-A)u-Q fhat.
+Since T(I-A)u=u on the normalized subspace,
+ S h-u=T[(f_true-fhat)-Delta].
+Consequently the fresh radius is
+ ceil(alpha*(incoming_source_error+||Delta||_1)).
+This does not use the producer's asserted radius or its spectral solution.
+
+3. Full cubic logarithm below degree 8m
+
+Write lambda(a)=1+delta(a), with delta beginning in degree 2m. For every degree below 8m,
+ log lambda=delta-delta^2/2+delta^3/3.
+The fourth term cannot contribute in the computed range.
+
+Let v_j±e_j be integer centers/radii for S[a^(2j)]delta. Put
+ s_j=sum_k v_k v_(j-k),
+ r_j=sum_k(|v_k|e_(j-k)+|v_(j-k)|e_k+e_k e_(j-k)),
+ t_j=sum_k s_k v_(j-k),
+ q_j=sum_k(|s_k|e_(j-k)+|v_(j-k)|r_k+r_k e_(j-k)).
+Then the ordinary coefficient of log lambda is enclosed, over denominator 6S^3, by the center/radius
+ C_j=6S^2v_j-3S s_j+2t_j,
+ E_j=6S^2e_j+3S r_j+2q_j.
+
+The independent program instead multiplies lower/upper endpoints directly, taking the minimum and maximum of all four products at every interval multiplication.
+
+The pressure identity is
+ P_m(t)=2m log cos(t)+log lambda(tan t).
+All coefficients of tan(t)^(2j) are nonnegative, so tangent composition preserves the directed interval bounds. The producer uses the second-derivative recurrence for tangent powers. The independent program obtains tangent derivatives from tan'=1+tan^2 and uses ordinary product-rule derivative jets.
+
+With T_kj=(2k)![t^(2k)]tan(t)^(2j), the pressure center/radius over denominator 6S^3(2k)! is
+ -12mS^3 T_(k-1,1)+sum_j C_j T_kj,
+ sum_j E_j T_kj.
+The T_(k-1,1) cosine expression is used only for k>=m>=2.
+
+4. First-negative acceptance
+
+A positive coefficient requires a strictly positive lower numerator.
+A negative coefficient requires a strictly negative upper numerator.
+An interval containing zero is inconclusive.
+
+A first-negative degree is accepted only if both methods certify the same negative endpoint and every earlier even post-cancellation coefficient is certified strictly positive. Inconclusive coefficients strictly after that endpoint do not invalidate the first-negative result; they are preserved and reported separately.
+
+The initial precision-parameter 256 runs at m=64 and m=128 were inconclusive near the desired endpoint. Higher-precision runs succeeded. Both unsuccessful runs and their hashes are preserved in the provenance records.
+
+5. Exact compact rounding
+
+For each coefficient the delivered interval encloses the hull of the production and independent rational intervals. The binary scale is selected using integer bit lengths, followed by exact checks of
+ 2^q <= |numerator|/denominator < 2^(q+1).
+No floating-point logarithm is used.
+
+The lower endpoint is rounded downward by exact integer floor division, and the upper endpoint upward by exact integer ceiling division. If needed, the common binary exponent is increased to keep each mantissa below 2^96 in absolute value.
+
+For each original method, the constructor checks exactly
+ delivered_lower <= original_lower,
+ original_upper <= delivered_upper.
+It then rechecks every required positive-prefix sign and negative endpoint. All rounding checks are recorded in compact/manifest.json.
+
+6. Finite versus asymptotic conclusions
+
+The arithmetic proves the finite first-negative values in the dataset. It neither supplies an effective cutoff for the separate eventual 6.6m theorem nor proves any limiting slope. Formula exceptions are computed from the accepted manifest rather than inferred from progress snapshots.
+

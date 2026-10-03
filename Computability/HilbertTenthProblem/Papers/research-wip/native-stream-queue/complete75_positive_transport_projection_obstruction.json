@@ -1,0 +1,1640 @@
+{
+  "status": "PASS_POSITIVE_C_PROJECTION_ALL_INPUT_OBSTRUCTION",
+  "source": {
+    "certificate_operations": 86,
+    "polynomial_operations": 87,
+    "multiplications": 47,
+    "additions_subtractions": 40,
+    "positive_witnesses": 19,
+    "comparisons": [
+      [
+        "eight_units",
+        1
+      ]
+    ],
+    "polynomial_schedule": [
+      [
+        "tau_square",
+        "*",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "twice_tau_gap",
+        "+",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "first_signed_gap",
+        "-",
+        "twice_tau_gap",
+        "R10b"
+      ],
+      [
+        "first_cross",
+        "*",
+        "first_root_base",
+        "first_signed_gap"
+      ],
+      [
+        "norm_first",
+        "+",
+        "tau_square",
+        "first_cross"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "W",
+        "-",
+        "Cpositive",
+        "Z"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "R10a"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "C_after_alpha",
+        "+",
+        "Cpositive",
+        "scaled_t"
+      ],
+      [
+        "q_minus_FZ",
+        "+",
+        "C_after_alpha",
+        "alpha"
+      ],
+      [
+        "q_minus_F",
+        "+",
+        "q_minus_FZ",
+        "Z"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "wn2"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "Cpositive"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "zplus",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "strong_difference",
+        "-",
+        "ic22",
+        "R16"
+      ],
+      [
+        "norm_strong",
+        "+",
+        "strong_difference",
+        1
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "R10a"
+      ],
+      [
+        "linear_difference",
+        "-",
+        "aux_u_rhs",
+        "jc"
+      ],
+      [
+        "norm_linear",
+        "+",
+        "linear_difference",
+        "index_difference"
+      ],
+      [
+        "eight_units",
+        "*",
+        "seven_units",
+        "norm_linear"
+      ],
+      [
+        "polynomial",
+        "-",
+        "eight_units",
+        1
+      ]
+    ],
+    "source_identities": 512,
+    "nonpositive_restored_F": 104,
+    "coordinate_map": "F_old=q-Cpositive-Z-alpha-2*d*x"
+  },
+  "period_scales": [
+    [
+      4,
+      24,
+      3,
+      8
+    ],
+    [
+      5,
+      120,
+      15,
+      8
+    ],
+    [
+      6,
+      120,
+      15,
+      8
+    ],
+    [
+      7,
+      840,
+      105,
+      8
+    ],
+    [
+      8,
+      840,
+      105,
+      8
+    ],
+    [
+      9,
+      2520,
+      315,
+      8
+    ],
+    [
+      10,
+      2520,
+      315,
+      8
+    ],
+    [
+      11,
+      27720,
+      3465,
+      8
+    ],
+    [
+      12,
+      27720,
+      3465,
+      8
+    ],
+    [
+      13,
+      360360,
+      45045,
+      8
+    ],
+    [
+      14,
+      360360,
+      45045,
+      8
+    ],
+    [
+      15,
+      360360,
+      45045,
+      8
+    ],
+    [
+      16,
+      720720,
+      45045,
+      16
+    ],
+    [
+      17,
+      12252240,
+      765765,
+      16
+    ],
+    [
+      18,
+      12252240,
+      765765,
+      16
+    ],
+    [
+      19,
+      232792560,
+      14549535,
+      16
+    ],
+    [
+      20,
+      232792560,
+      14549535,
+      16
+    ],
+    [
+      21,
+      232792560,
+      14549535,
+      16
+    ],
+    [
+      22,
+      232792560,
+      14549535,
+      16
+    ],
+    [
+      23,
+      5354228880,
+      334639305,
+      16
+    ],
+    [
+      24,
+      5354228880,
+      334639305,
+      16
+    ],
+    [
+      25,
+      26771144400,
+      1673196525,
+      16
+    ],
+    [
+      26,
+      26771144400,
+      1673196525,
+      16
+    ],
+    [
+      27,
+      80313433200,
+      5019589575,
+      16
+    ],
+    [
+      28,
+      80313433200,
+      5019589575,
+      16
+    ],
+    [
+      29,
+      2329089562800,
+      145568097675,
+      16
+    ],
+    [
+      30,
+      2329089562800,
+      145568097675,
+      16
+    ],
+    [
+      31,
+      72201776446800,
+      4512611027925,
+      16
+    ],
+    [
+      32,
+      144403552893600,
+      4512611027925,
+      32
+    ],
+    [
+      33,
+      144403552893600,
+      4512611027925,
+      32
+    ],
+    [
+      34,
+      144403552893600,
+      4512611027925,
+      32
+    ],
+    [
+      35,
+      144403552893600,
+      4512611027925,
+      32
+    ],
+    [
+      36,
+      144403552893600,
+      4512611027925,
+      32
+    ],
+    [
+      37,
+      5342931457063200,
+      166966608033225,
+      32
+    ],
+    [
+      38,
+      5342931457063200,
+      166966608033225,
+      32
+    ],
+    [
+      39,
+      5342931457063200,
+      166966608033225,
+      32
+    ],
+    [
+      40,
+      5342931457063200,
+      166966608033225,
+      32
+    ],
+    [
+      41,
+      219060189739591200,
+      6845630929362225,
+      32
+    ],
+    [
+      42,
+      219060189739591200,
+      6845630929362225,
+      32
+    ],
+    [
+      43,
+      9419588158802421600,
+      294362129962575675,
+      32
+    ],
+    [
+      44,
+      9419588158802421600,
+      294362129962575675,
+      32
+    ],
+    [
+      45,
+      9419588158802421600,
+      294362129962575675,
+      32
+    ],
+    [
+      46,
+      9419588158802421600,
+      294362129962575675,
+      32
+    ],
+    [
+      47,
+      442720643463713815200,
+      13835020108241056725,
+      32
+    ],
+    [
+      48,
+      442720643463713815200,
+      13835020108241056725,
+      32
+    ],
+    [
+      49,
+      3099044504245996706400,
+      96845140757687397075,
+      32
+    ],
+    [
+      50,
+      3099044504245996706400,
+      96845140757687397075,
+      32
+    ],
+    [
+      51,
+      3099044504245996706400,
+      96845140757687397075,
+      32
+    ],
+    [
+      52,
+      3099044504245996706400,
+      96845140757687397075,
+      32
+    ],
+    [
+      53,
+      164249358725037825439200,
+      5132792460157432044975,
+      32
+    ],
+    [
+      54,
+      164249358725037825439200,
+      5132792460157432044975,
+      32
+    ],
+    [
+      55,
+      164249358725037825439200,
+      5132792460157432044975,
+      32
+    ],
+    [
+      56,
+      164249358725037825439200,
+      5132792460157432044975,
+      32
+    ],
+    [
+      57,
+      164249358725037825439200,
+      5132792460157432044975,
+      32
+    ],
+    [
+      58,
+      164249358725037825439200,
+      5132792460157432044975,
+      32
+    ],
+    [
+      59,
+      9690712164777231700912800,
+      302834755149288490653525,
+      32
+    ],
+    [
+      60,
+      9690712164777231700912800,
+      302834755149288490653525,
+      32
+    ],
+    [
+      61,
+      591133442051411133755680800,
+      18472920064106597929865025,
+      32
+    ],
+    [
+      62,
+      591133442051411133755680800,
+      18472920064106597929865025,
+      32
+    ],
+    [
+      63,
+      591133442051411133755680800,
+      18472920064106597929865025,
+      32
+    ],
+    [
+      64,
+      1182266884102822267511361600,
+      18472920064106597929865025,
+      64
+    ],
+    [
+      65,
+      1182266884102822267511361600,
+      18472920064106597929865025,
+      64
+    ],
+    [
+      66,
+      1182266884102822267511361600,
+      18472920064106597929865025,
+      64
+    ],
+    [
+      67,
+      79211881234889091923261227200,
+      1237685644295142061300956675,
+      64
+    ],
+    [
+      68,
+      79211881234889091923261227200,
+      1237685644295142061300956675,
+      64
+    ],
+    [
+      69,
+      79211881234889091923261227200,
+      1237685644295142061300956675,
+      64
+    ],
+    [
+      70,
+      79211881234889091923261227200,
+      1237685644295142061300956675,
+      64
+    ],
+    [
+      71,
+      5624043567677125526551547131200,
+      87875680744955086352367923925,
+      64
+    ],
+    [
+      72,
+      5624043567677125526551547131200,
+      87875680744955086352367923925,
+      64
+    ],
+    [
+      73,
+      410555180440430163438262940577600,
+      6414924694381721303722858446525,
+      64
+    ],
+    [
+      74,
+      410555180440430163438262940577600,
+      6414924694381721303722858446525,
+      64
+    ],
+    [
+      75,
+      410555180440430163438262940577600,
+      6414924694381721303722858446525,
+      64
+    ],
+    [
+      76,
+      410555180440430163438262940577600,
+      6414924694381721303722858446525,
+      64
+    ],
+    [
+      77,
+      410555180440430163438262940577600,
+      6414924694381721303722858446525,
+      64
+    ],
+    [
+      78,
+      410555180440430163438262940577600,
+      6414924694381721303722858446525,
+      64
+    ],
+    [
+      79,
+      32433859254793982911622772305630400,
+      506779050856155982994105817275475,
+      64
+    ],
+    [
+      80,
+      32433859254793982911622772305630400,
+      506779050856155982994105817275475,
+      64
+    ],
+    [
+      81,
+      97301577764381948734868316916891200,
+      1520337152568467948982317451826425,
+      64
+    ],
+    [
+      82,
+      97301577764381948734868316916891200,
+      1520337152568467948982317451826425,
+      64
+    ],
+    [
+      83,
+      8076030954443701744994070304101969600,
+      126187983663182839765532348501593275,
+      64
+    ],
+    [
+      84,
+      8076030954443701744994070304101969600,
+      126187983663182839765532348501593275,
+      64
+    ],
+    [
+      85,
+      8076030954443701744994070304101969600,
+      126187983663182839765532348501593275,
+      64
+    ],
+    [
+      86,
+      8076030954443701744994070304101969600,
+      126187983663182839765532348501593275,
+      64
+    ],
+    [
+      87,
+      8076030954443701744994070304101969600,
+      126187983663182839765532348501593275,
+      64
+    ],
+    [
+      88,
+      8076030954443701744994070304101969600,
+      126187983663182839765532348501593275,
+      64
+    ],
+    [
+      89,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ],
+    [
+      90,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ],
+    [
+      91,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ],
+    [
+      92,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ],
+    [
+      93,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ],
+    [
+      94,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ],
+    [
+      95,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ],
+    [
+      96,
+      718766754945489455304472257065075294400,
+      11230730546023272739132379016641801475,
+      64
+    ]
+  ],
+  "outer_fixtures": [
+    {
+      "x": 1,
+      "d": 4,
+      "MC": 14,
+      "MF": 4,
+      "t": 24,
+      "e": 3,
+      "R_bits": 198,
+      "R_population": 145,
+      "required_population": 74,
+      "alpha_bits": 126,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 4,
+      "MC": 14,
+      "MF": 4,
+      "t": 24,
+      "e": 3,
+      "R_bits": 197,
+      "R_population": 145,
+      "required_population": 74,
+      "alpha_bits": 125,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 4,
+      "MC": 14,
+      "MF": 4,
+      "t": 24,
+      "e": 3,
+      "R_bits": 197,
+      "R_population": 145,
+      "required_population": 74,
+      "alpha_bits": 125,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 4,
+      "MC": 10,
+      "MF": 12,
+      "t": 24,
+      "e": 3,
+      "R_bits": 227,
+      "R_population": 145,
+      "required_population": 74,
+      "alpha_bits": 155,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 4,
+      "MC": 10,
+      "MF": 12,
+      "t": 24,
+      "e": 3,
+      "R_bits": 227,
+      "R_population": 145,
+      "required_population": 74,
+      "alpha_bits": 155,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 4,
+      "MC": 10,
+      "MF": 12,
+      "t": 24,
+      "e": 3,
+      "R_bits": 227,
+      "R_population": 145,
+      "required_population": 74,
+      "alpha_bits": 155,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 5,
+      "MC": 30,
+      "MF": 4,
+      "t": 120,
+      "e": 15,
+      "R_bits": 1082,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 722,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 5,
+      "MC": 30,
+      "MF": 4,
+      "t": 120,
+      "e": 15,
+      "R_bits": 1082,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 722,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 5,
+      "MC": 30,
+      "MF": 4,
+      "t": 120,
+      "e": 15,
+      "R_bits": 1082,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 722,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 5,
+      "MC": 26,
+      "MF": 12,
+      "t": 120,
+      "e": 15,
+      "R_bits": 970,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 610,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 5,
+      "MC": 26,
+      "MF": 12,
+      "t": 120,
+      "e": 15,
+      "R_bits": 971,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 611,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 5,
+      "MC": 26,
+      "MF": 12,
+      "t": 120,
+      "e": 15,
+      "R_bits": 971,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 611,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 6,
+      "MC": 62,
+      "MF": 4,
+      "t": 120,
+      "e": 15,
+      "R_bits": 1082,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 722,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 6,
+      "MC": 62,
+      "MF": 4,
+      "t": 120,
+      "e": 15,
+      "R_bits": 1082,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 722,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 6,
+      "MC": 62,
+      "MF": 4,
+      "t": 120,
+      "e": 15,
+      "R_bits": 1082,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 722,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 6,
+      "MC": 58,
+      "MF": 12,
+      "t": 120,
+      "e": 35,
+      "R_bits": 1089,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 729,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 6,
+      "MC": 58,
+      "MF": 12,
+      "t": 120,
+      "e": 35,
+      "R_bits": 1089,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 729,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 6,
+      "MC": 58,
+      "MF": 12,
+      "t": 120,
+      "e": 35,
+      "R_bits": 1089,
+      "R_population": 721,
+      "required_population": 362,
+      "alpha_bits": 729,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 7,
+      "MC": 126,
+      "MF": 4,
+      "t": 840,
+      "e": 315,
+      "R_bits": 6731,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 4211,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 7,
+      "MC": 126,
+      "MF": 4,
+      "t": 840,
+      "e": 315,
+      "R_bits": 6731,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 4211,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 7,
+      "MC": 126,
+      "MF": 4,
+      "t": 840,
+      "e": 315,
+      "R_bits": 6731,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 4211,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 7,
+      "MC": 122,
+      "MF": 12,
+      "t": 840,
+      "e": 315,
+      "R_bits": 7568,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 5048,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 7,
+      "MC": 122,
+      "MF": 12,
+      "t": 840,
+      "e": 315,
+      "R_bits": 7568,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 5048,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 7,
+      "MC": 122,
+      "MF": 12,
+      "t": 840,
+      "e": 315,
+      "R_bits": 7568,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 5048,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 8,
+      "MC": 254,
+      "MF": 4,
+      "t": 840,
+      "e": 315,
+      "R_bits": 6731,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 4211,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 8,
+      "MC": 254,
+      "MF": 4,
+      "t": 840,
+      "e": 315,
+      "R_bits": 6731,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 4211,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 8,
+      "MC": 254,
+      "MF": 4,
+      "t": 840,
+      "e": 315,
+      "R_bits": 6731,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 4211,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 1,
+      "d": 8,
+      "MC": 250,
+      "MF": 12,
+      "t": 840,
+      "e": 315,
+      "R_bits": 7567,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 5047,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 2,
+      "d": 8,
+      "MC": 250,
+      "MF": 12,
+      "t": 840,
+      "e": 315,
+      "R_bits": 7567,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 5047,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    },
+    {
+      "x": 5,
+      "d": 8,
+      "MC": 250,
+      "MF": 12,
+      "t": 840,
+      "e": 315,
+      "R_bits": 7567,
+      "R_population": 5041,
+      "required_population": 2522,
+      "alpha_bits": 5047,
+      "F_negative": true,
+      "outer_congruences": true,
+      "full_Pell_tower_materialized": false
+    }
+  ],
+  "fresh_half_binomial_cases": [
+    {
+      "R": 7,
+      "main_bits": 169,
+      "both_ratios": true,
+      "valuation": 1
+    },
+    {
+      "R": 11,
+      "main_bits": 661,
+      "both_ratios": true,
+      "valuation": 1
+    },
+    {
+      "R": 15,
+      "main_bits": 1681,
+      "both_ratios": true,
+      "valuation": 2
+    },
+    {
+      "R": 19,
+      "main_bits": 3421,
+      "both_ratios": true,
+      "valuation": 1
+    },
+    {
+      "R": 23,
+      "main_bits": 6073,
+      "both_ratios": true,
+      "valuation": 2
+    },
+    {
+      "R": 27,
+      "main_bits": 9829,
+      "both_ratios": true,
+      "valuation": 2
+    },
+    {
+      "R": 31,
+      "main_bits": 14881,
+      "both_ratios": true,
+      "valuation": 3
+    },
+    {
+      "R": 35,
+      "main_bits": 21421,
+      "both_ratios": true,
+      "valuation": 1
+    }
+  ],
+  "positive_input_splits": 72,
+  "canonical_auxiliary_cases": [
+    {
+      "A": 3,
+      "R": 3,
+      "m": 210,
+      "root_bits": 1072
+    },
+    {
+      "A": 4,
+      "R": 3,
+      "m": 378,
+      "root_bits": 2255
+    },
+    {
+      "A": 5,
+      "R": 3,
+      "m": 594,
+      "root_bits": 3934
+    },
+    {
+      "A": 6,
+      "R": 3,
+      "m": 858,
+      "root_bits": 6140
+    },
+    {
+      "A": 2,
+      "R": 7,
+      "m": 40754,
+      "root_bits": 464593
+    }
+  ],
+  "scope": "Exact87 rewrite rejected by full parametric positive all-input theorem; finite masks are not claimed to encode histories.",
+  "compiler_scope": "Every actual fixed complete75 compiler; its constants remain fixed independently of x."
+}

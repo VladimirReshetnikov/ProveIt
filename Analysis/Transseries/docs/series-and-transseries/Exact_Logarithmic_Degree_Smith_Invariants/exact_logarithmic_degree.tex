@@ -1,0 +1,1282 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact logarithmic degree in Hahn transseries}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it does not shift any numbering.
+\theoremstyle{definition}
+\newtheorem*{ednoteinner}{Editorial note (ProveIt, 2026-09-29)}
+\newenvironment{ednote}{\begin{ednoteinner}\sloppy\Urlmuskip=0mu plus 1mu\relax}{\end{ednoteinner}}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Hh}{\mathcal H}
+\newcommand{\Bb}{\mathcal B}
+\newcommand{\Ll}{\mathcal L}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Id}{\operatorname{id}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dx}{d_x}
+\newcommand{\dl}{d_L}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\coef}[2]{[#1]#2}
+\newcommand{\Mat}{\operatorname{Mat}}
+\newcommand{\Tmat}{\mathsf M}
+\newcommand{\snap}{76b8ea50cc67f2255c11b27e0edc9ed0fca3b5cd}
+\hypersetup{pdftitle={The Exact Logarithmic Degree of Hahn-Transseries Solutions},pdfauthor={Research manuscript prepared for Vladimir Reshetnikov},pdfsubject={Finite jets, Smith invariants, and cancellation-sensitive resonance},pdfkeywords={Hahn series, transseries, differential equations, Smith form, logarithmic degree, resonance}}
+\title{\textbf{The Exact Logarithmic Degree\\of Hahn-Transseries Solutions}\\[0.65em]
+\large Finite jets, Smith invariants, and\\cancellation-sensitive resonance}
+\author{Research manuscript prepared for Vladimir Reshetnikov}
+\date{29 September 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+A finite-residue reduction in the ProveIt repository decides whether an outer-small perturbation of an Euler differential equation can be solved at its original logarithmic depth. It also bounds the degree in one additional logarithm, but explicitly leaves the exact minimum degree and cancellation-sensitive resonance classification as further questions. We give a complete degree filtration for that operator class.
+
+The reduction is lifted from a constant matrix to a formal matrix series $M(z)$, where $z$ acts as differentiation in the added logarithm. Its Smith exponents $\nu_i$ satisfy $\sum\nu_i=r$ and $0\le\nu_i\le s$, with $r$ the sum of real-root multiplicities and $s$ the number of distinct real indicial roots. They determine every homogeneous degree subspace and the exact minimum degree for each forcing. Only the jet through $z^{s-1}$ is needed for classification. Every coefficient of this jet has an explicit finite perturbation-word cutoff. Finite block Toeplitz matrices provide rank tests and dual certificates of impossibility.
+
+For a residue-weighted scalar subclass, the entire matrix series is exactly a pencil $zD+N$. We realize every rational strictly upper triangular matrix as its normalized nilpotent residue, and consequently realize every partition of the differential order as a logarithmic-degree profile using finite rational coefficient data. A fourth-order family has the same resonance graph on two parameter values but different minimum degrees. It also reverses the prediction suggested by the nilpotency of the original fixed-depth matrix. All results are proved conventionally; an accompanying exact-arithmetic suite supplies reproducible finite checks.
+\end{abstract}
+\vfill
+\noindent\fbox{\begin{minipage}{0.94\linewidth}\small
+\textbf{Scope and status.} Theorems concern a specified real Hahn field of finite logarithmic depth, outer-small linear Euler perturbations, and solutions polynomial in one added logarithm. They do not assert analytic summability, a general transseries solvability theorem, or a new Lean formalization. Smith reduction and Toeplitz/Jordan-chain methods are classical. The proposed research contribution is their support-controlled realization here, the exact degree and jet bounds, and the explicit scalar realization and cancellation results. Global publication priority has not been established.
+\end{minipage}}
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\vspace{1em}
+\section*{Reading guide}
+The main classification is Theorem~\ref{thm:smith-degree}; the finite certificate algorithm is Theorem~\ref{thm:toeplitz}. The exact scalar pencil is Theorem~\ref{thm:pencil}, and the universal scalar realization is Theorem~\ref{thm:realization}. Section~\ref{sec:diamond} gives a fully explicit fourth-order example.
+
+The proof route is deliberately separated into three parts: the Hahn support and residue construction; the finite formal matrix-series reduction; and finite-dimensional algebra. None of the first two parts is justified by numerical sampling. The verification suite checks finite algebraic consequences and examples, not arbitrary infinite supports.
+\clearpage
+
+\section{The research question and the result}
+\label{sec:intro}
+
+\subsection{The specific question in the repository}
+The ProveIt article \emph{Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn Transseries} studies operators
+\begin{equation}
+ \Ll=P(E)+\sum_{j=0}^{\deg P}a_jE^j,
+ \qquad E=x\frac{d}{dx},\qquad \dx(a_j)\le-\eps<0,
+ \label{eq:class-intro}
+\end{equation}
+where $\dx$ is the greatest outer exponent of $x$ in a Hahn series. It constructs a finite matrix that decides solvability without adding a logarithmic level. It also proves that one additional logarithm is enough, with particular-solution degree at most the number of distinct real roots of $P$ \cite{repo-residue}.
+
+Its first further-research question asks for the \emph{exact minimum positive degree}, rather than just the degree-zero test and a universal bound. More precisely, it asks for finite residue data recovering the whole degree filtration and for a certificate excluding degree one less than the minimum. Its second question asks for a cancellation-sensitive treatment of resonance paths. Both are stated in the predecessor's section entitled ``Further research questions and concrete next targets'' \cite{repo-residue}.
+
+This manuscript answers the first question throughout the class \eqref{eq:class-intro}, in the algebraic sense made precise below. It gives a terminating exact algorithm when the required coefficient operations are effectively supplied. It also answers a substantial finite rational scalar instance of the second question: the cancellation data reduce exactly to a weighted nilpotent matrix, and every such upper triangular rational matrix can occur. In particular, the answer is not obtained by taking the longest unweighted path in a resonance graph.
+% ed. (2026-09-29): a neighbouring package filed after this article's snapshot, not cited.
+\begin{ednote}
+The Hahn--Fuchsian package (\path{Hahn_Fuchsian_Resonance_Analytic_Normalization/} \cite{ed:hfr}), filed after the inspected snapshot, answers the homogeneous half of the first question at depth $0$ for first-order real-spectrum systems: solutions of degree at most $d$ in $\log x$ form a space of dimension $\dim\ker B^{d+1}$ for one nilpotent matrix $B=N+\sum_\rho R_\rho$ (its \texttt{thm:logs}), with entries polynomial in finitely many input coefficients (its \texttt{thm:ancestry}). The present article treats scalar operators at depth $n\ge1$, with forcing; for the pencil subclass \eqref{eq:pencil-h} has the same form. The two results do not overlap in hypotheses.
+\end{ednote}
+
+\subsection{A preview of the classification}
+Fix $n\ge1$ and write
+\[
+ \ell_0=x,\quad \ell_1=L=\log x,\quad\ldots,\quad
+ \ell_n=\log_n x,\quad T=\ell_{n+1}.
+\]
+Our base field is the real Hahn field $\Hh_n$ in the first $n+1$ symbols, ordered lexicographically by their exponent vectors. The added symbol $T$ satisfies
+\[
+ ET=\sigma,\qquad \sigma=(L\ell_2\cdots\ell_n)^{-1}.
+\]
+We classify solutions in $\Hh_n[T]$, not arbitrary functions of $T$.
+
+Let $\lambda_1<\cdots<\lambda_s$ be the distinct real roots of $P$, of multiplicities $m_1,\ldots,m_s$, and put $r=\sum m_i$. An explicitly constructed matrix series
+\[
+ M(z)\in\Mat_r(\R[[z]])
+\]
+has Smith exponents $\nu_1\le\cdots\le\nu_r$. We prove
+\begin{equation}
+ \sum_{i=1}^r\nu_i=r,\qquad 0\le\nu_i\le s.
+ \label{eq:indices-preview}
+\end{equation}
+If $\mathscr S_d$ is the real vector space of homogeneous solutions of degree at most $d$ in $T$, then
+\begin{equation}
+ \dim_\R\mathscr S_d=\sum_{i=1}^r\min(d+1,\nu_i).
+ \label{eq:hom-preview}
+\end{equation}
+For each forcing $f\in\Hh_n$, finite residue data produce a vector $\beta(f)\in\R^r$ in Smith coordinates. The exact minimum nonnegative degree of a particular solution is
+\begin{equation}
+ d_{\min}(f)=\max\bigl(\{0\}\cup
+ \{\nu_i:\beta_i(f)\ne0\}\bigr).
+ \label{eq:min-preview}
+\end{equation}
+The coordinate vector is not canonical, but the minimum and the multiset of indices are canonical.
+
+There is no need to compute an infinite Smith transformation to use these conclusions. The coefficients $M_0,\ldots,M_{s-1}$ determine every index and every minimum degree. A finite linear-algebra certificate either constructs bounded-degree resonance coordinates or rules them out. Construction at the final possible degree $s$ may additionally use $M_s$.
+
+\subsection{What is inherited, classical, and proved here}
+The repository's fixed-depth residue splitting is our immediate starting point. We restate and prove the needed splitting in Sections~\ref{sec:hahn}--\ref{sec:split}, so that the new argument does not depend on an unexamined informal assertion. The existing Lean block-antiderivative API concerns polynomial differential blocks; the repository documentation explicitly distinguishes it from a complete concrete Hahn realization \cite{repo-docs,repo-block}. This manuscript does not change that verification status.
+% ed. (2026-09-29): the restated results are identified by the predecessor's labels.
+\begin{ednote}
+Lemmas~\ref{lem:primitive}, \ref{lem:moments} and \ref{lem:functional}, Proposition~\ref{prop:split}, \eqref{eq:old-reduction} and \eqref{eq:M0-finite} restate the predecessor's \texttt{thm:residue}, \texttt{thm:moments}, \texttt{lem:functional}, \texttt{thm:euler-split}, \texttt{thm:fredholm} and \texttt{thm:cutoff} \cite{repo-residue}. The identity $\Res\circ\delta=0$ of Lemma~\ref{lem:primitive} is also the lower-block form of the canonical volume's \texttt{plt:thm:ext-tower-strict} (\path{Transseries_And_Inversion/transseries_and_inversion.tex}).
+\end{ednote}
+
+Strong derivations and integration on generalized series fields are established subjects; see Kuhlmann and Matusinski \cite{km}. Generalized-series operator methods also have a substantial theory, including van der Hoeven's work \cite{vdh}. Smith normal form is a standard algebraic tool \cite{stanley}. The relation between operator-series diagonalization, Toeplitz matrices, and Jordan chains is likewise not new: Stiefenhofer explicitly develops that relationship for formal and analytic operator families \cite{stiefenhofer}.
+
+The contribution proposed here is more specific. We construct the derivative-parameter matrix for the Hahn problem, prove its nondegenerate first-order crossing at every indicial root, and obtain exact finite jet and perturbation-word bounds. We then extract the degree filtration and give exact scalar realizations with rational coefficients, including cancellations invisible to the original residue matrix's nilpotency. The algebraic tools are acknowledged rather than relabeled as new discoveries. The literature comparison identifies pertinent precedents; it is not an exhaustive priority search.
+
+\subsection{Snapshot and mathematical boundaries}
+The inspected repository snapshot is
+\begin{center}\small\texttt{\snap}.\end{center}
+The principal predecessor is at
+\begin{quote}\small
+\path{Analysis/Transseries/docs/series-and-transseries/}\allowbreak
+\path{Residue_Obstructions_Logarithmic_Depth_Promotion/residue_fredholm.tex}.
+\end{quote}
+Its source blob is \texttt{72b51729e1aa48fdf9814e00673251a88e84044b}. The investigation was targeted at the relevant transseries documents and their stated questions, not every mathematical claim in the repository. No repository files were changed.
+
+Three restrictions are essential. First, $n\ge1$: the base field already contains $L=\log x$, so polynomial Jordan chains in $L$ are present before $T$ is adjoined. Second, the coefficients lower the \emph{outer} $x$ exponent by a common positive amount; a coefficient such as $1/L$ alone does not satisfy this hypothesis. Third, formal support control is not an estimate for an actual real or complex function. No analytic evaluation or summability conclusion is inferred from the formal theorems.
+
+\section{Hahn fields, strong operators, and residues}
+\label{sec:hahn}
+
+\subsection{The ambient field and its blocks}
+For $n\ge1$, define
+\begin{equation}
+ \Hh_n=\left\{\sum_{a\in S}c_a\ell^a:
+ c_a\in\R,\ S\subset\R^{n+1}\text{ is reverse well-ordered}\right\},
+ \quad \ell^a=\prod_{j=0}^{n}\ell_j^{a_j}.
+ \label{eq:hahn}
+\end{equation}
+Exponent vectors are ordered lexicographically, with the exponent of $x$ most significant. Reverse well-ordered means that every nonempty subset has a greatest element. This is the descending-monomial convention; reversing the order gives the usual ascending valuation convention for a Hahn field.
+
+A family is \emph{summable} if the union of its supports is reverse well-ordered and each monomial occurs in only finitely many members. Its sum is coefficientwise. An operator is \emph{strong} if it preserves summable families and commutes with their sums. The standard Hahn support lemma ensures multiplication: fixed coefficients have only finitely many decompositions from two fixed well-based supports, and finite sums of such supports remain well-based. We use this classical support calculus, and provide additional bounds whenever an infinite operator sum occurs.
+
+Every series has a unique outer decomposition
+\begin{equation}
+ f=\sum_\alpha x^\alpha f_\alpha,
+ \qquad f_\alpha\in\Bb_n
+ :=\R((L^\R\ell_2^\R\cdots\ell_n^\R)).
+ \label{eq:outer}
+\end{equation}
+The nonzero outer exponents form a reverse well-ordered set, as does the support in each fibre. Conversely these two properties imply reverse well-ordering in the full lexicographic order: choose the greatest first coordinate, then the greatest element in that fibre.
+
+Write $\dx(f)=\max\{\alpha:f_\alpha\ne0\}$ and $\dx(0)=-\infty$. For a lower block $b\in\Bb_n$, let $\dl(b)$ be its greatest exponent of $L$, with the same convention at zero. Neither is an analytic growth estimate.
+
+\subsection{The derivative and one-step integration}
+The strong derivative is defined on monomials by the ordinary rules for iterated logarithms. In particular,
+\[
+ E(x^\alpha b)=x^\alpha(\alpha+\delta)b,
+ \qquad \delta=\frac{d}{dL},\qquad
+ \delta\ell_j=(L\ell_2\cdots\ell_{j-1})^{-1}\quad(j\ge2).
+\]
+It is well-defined and strong because a monomial derivative is a sum of a fixed finite number of exponent shifts. The lower derivative satisfies
+\begin{equation}
+ \dl(\delta b)\le\dl(b)-1.
+ \label{eq:lowerdrop}
+\end{equation}
+For $n=1$, a block is simply a Hahn series in $L$.
+
+Set
+\begin{equation}
+ \sigma=(L\ell_2\cdots\ell_n)^{-1},\qquad
+ \Res b=\coef{\sigma}{b},\qquad
+ \kappa b=\coef{1}{b}.
+ \label{eq:residue}
+\end{equation}
+The residue is a \emph{coefficient functional}; it is not a contour integral.
+
+\begin{lemma}[Normalized lower integration]
+\label{lem:primitive}
+There is a strong linear map $I:\Bb_n\to\Bb_n$ such that
+\begin{equation}
+ \delta I=\Id-\sigma\Res,\qquad
+ I\delta=\Id-\kappa,\qquad \kappa I=0.
+ \label{eq:primitive}
+\end{equation}
+Moreover $\ker\delta=\R$, $\Res(\delta b)=0$, and
+\begin{equation}
+ \Res((\delta a)b)=-\Res(a\delta b).
+ \label{eq:ibp}
+\end{equation}
+If $\dl(b)\le-2$, then $\dl(Ib)\le-1$.
+\end{lemma}
+\begin{proof}
+For one variable, integrate $L^\gamma$ as $L^{\gamma+1}/(\gamma+1)$ when $\gamma\ne-1$, and send $L^{-1}$ to zero. The stated identities follow directly, including the absence of a constant in the image.
+
+For the induction step, expand $b=\sum_\gamma L^\gamma b_\gamma$ in the lower-logarithm field. Let $\partial$ be differentiation with respect to $\ell_2$. On that lower field, $\partial$ lowers the exponent of $\ell_2$ by at least one. For $\gamma\ne-1$, define
+\[
+ I(L^\gamma b_\gamma)
+ =L^{\gamma+1}(\gamma+1+\partial)^{-1}b_\gamma,
+ \qquad
+ (c+\partial)^{-1}=\sum_{q\ge0}(-1)^q c^{-q-1}\partial^q.
+\]
+The operator series is strong: its $q$th term lowers the leading lower-variable exponent by at least $q$, so only finitely many terms can contribute to a prescribed exponent. At $\gamma=-1$, use the normalized primitive from one lower logarithmic depth. Its one omitted monomial becomes exactly $\sigma$. These constructions establish $\delta I=\Id-\sigma\Res$ and $\kappa I=0$.
+
+For completeness, the same block decomposition proves that the derivative has only constants in its kernel. At a nonzero $L$ exponent, the factor $\gamma+\partial$ is invertible. At exponent zero, the assertion descends to the lower derivative. The base case is immediate. Directly in the monomial derivative formula, a potential contribution to the exponent of $\sigma$ has zero multiplier at the relevant differentiated variable. Thus $\Res\delta=0$. Alternatively this follows at each step of the integration recursion. It follows that $\delta(I\delta b-b)=0$, and normalization gives $I\delta b=b-\kappa b$.
+
+Applying $\Res\delta=0$ to $ab$ proves \eqref{eq:ibp}. All shifts, block operations, and geometric inverses used above preserve summable families, proving strongness. When $\dl(b)\le-2$, only nonresonant outer blocks occur in this lower integration, and increasing their exponent by one gives the last bound.
+\end{proof}
+
+\begin{lemma}[Higher derivative moments]
+\label{lem:moments}
+For every integer $m\ge1$,
+\begin{align}
+ \ker\delta^m&=\R[L]_{<m},\label{eq:kernel-m}\\
+ f\in\im\delta^m
+ &\Longleftrightarrow
+ \Res(L^j f)=0\quad(0\le j<m).
+ \label{eq:moments}
+\end{align}
+If the moments vanish, $I^mf$ is one solution of $\delta^m u=f$.
+\end{lemma}
+\begin{proof}
+Repeated integration by parts proves necessity in \eqref{eq:moments}, because $\delta^m L^j=0$ for $j<m$. Suppose all the moments vanish. Then $\delta If=f$, and for $j\ge0$,
+\[
+ 0=\Res\delta(L^{j+1}If)
+ =(j+1)\Res(L^j If)+\Res(L^{j+1}f).
+\]
+Thus $If$ has its first $m-1$ moments zero. Induction now proves $\delta^m I^mf=f$. To identify the kernel, if $\delta^m u=0$, then $\delta^{m-1}u$ is constant. Subtract its elementary polynomial primitive of degree $m-1$ and induct. The converse is immediate.
+\end{proof}
+
+\begin{lemma}[Lower functional calculus]
+\label{lem:functional}
+If $Q\in\R[t]$ satisfies $Q(0)\ne0$, then $Q(\delta)$ is a strong automorphism of $\Bb_n$. Its inverse is the formal Taylor series of $1/Q(t)$ evaluated at $\delta$. It does not increase $\dl$.
+\end{lemma}
+\begin{proof}
+Every positive power of $\delta$ lowers the exponent of $L$ by at least that power. The Taylor series is therefore strongly summable by \eqref{eq:lowerdrop}. The ordinary coefficient identities for the product $Q(t)/Q(t)=1$ may be evaluated termwise, proving both inverse identities. The support bound is immediate.
+\end{proof}
+
+\section{The fixed-depth splitting and its finite defect}
+\label{sec:split}
+Let $P\in\R[t]$ be nonzero. Throughout the main argument assume it has $s\ge1$ distinct real roots $\lambda_1<\cdots<\lambda_s$, with multiplicities $m_\lambda$, and set
+\[
+ r=\sum_\lambda m_\lambda,\qquad
+ P(\lambda+t)=t^{m_\lambda}Q_\lambda(t),\quad Q_\lambda(0)\ne0.
+\]
+Nonreal roots do not contribute oscillatory monomials to our real Hahn field. The case of no real roots is treated separately below.
+
+Let $V=\R^r$, indexed by $(\lambda,k)$ with $0\le k<m_\lambda$. Define
+\begin{align}
+ Ke_{\lambda,k}&=x^\lambda L^k,
+ & (\Lambda f)_{\lambda,k}
+ &=\coef{x^\lambda L^k\ell_2^0\cdots\ell_n^0}{f},\label{eq:KLambda}\\
+ (\Pi f)_{\lambda,j}&=\Res(L^j f_\lambda),
+ &Je_{\lambda,j}&=x^\lambda L^{-j}\sigma.
+ \label{eq:PiJ}
+\end{align}
+Thus $\Lambda K=\Pi J=\Id_V$. The maps $K$ and $J$ represent different spaces: homogeneous data and residue obstructions, respectively.
+
+\begin{proposition}[Normalized splitting]
+\label{prop:split}
+For $P_0=P(E)$, there is a unique strong block-preserving map $G:\Hh_n\to\Hh_n$ with
+\begin{align}
+ P_0G&=\Id-J\Pi,&GP_0&=\Id-K\Lambda,\label{eq:splitting}\\
+ \Lambda G&=0,&GJ&=0.
+ \label{eq:normalization}
+\end{align}
+In particular $\ker P_0=KV$ and $\im P_0=\ker\Pi$.
+\end{proposition}
+\begin{proof}
+On the outer block $x^\alpha\Bb_n$, $P_0$ acts as $P(\alpha+\delta)$. If $P(\alpha)\ne0$, Lemma~\ref{lem:functional} gives its strong inverse. At a root $\lambda$, it is $\delta^{m_\lambda}Q_\lambda(\delta)$. The second factor is invertible and commutes with $\delta$. Hence the image is precisely the moment-zero space from Lemma~\ref{lem:moments}, and the kernel is $\R[L]_{<m_\lambda}$.
+
+For arbitrary $f$, first replace it by $f-J\Pi f$. Solve the resulting moment-zero equation blockwise, using the inverse above or $Q_\lambda(\delta)^{-1}I^{m_\lambda}$ at a root. Subtract the kernel component $K\Lambda u$ to normalize. This defines $G$. The construction is strong by the preceding lemmas and has only finitely many exceptional outer blocks. It never changes an outer exponent.
+
+The first identity in \eqref{eq:splitting} follows from the construction. Applying normalized uniqueness to $P_0f$ gives the second. Applying the construction to $Jv$ gives zero, and uniqueness follows because the difference of two normalized solutions lies in $KV$ and has zero $\Lambda$ coordinate.
+\end{proof}
+
+Put
+\begin{equation}
+ R=\sum_{j=0}^{\deg P}a_jE^j,
+ \qquad a_j=0\text{ or }\dx(a_j)\le-\eps,
+ \qquad\Ll=P_0+R.
+ \label{eq:operator}
+\end{equation}
+Coefficients are on the left; $E^j$ acts on the argument to its right, not on $a_j$. The hypothesis permits a small perturbation of the leading differential coefficient.
+
+Since $G$ and $E$ preserve outer blocks,
+\begin{equation}
+ \dx(GRf)\le\dx(f)-\eps.
+ \label{eq:GRdrop}
+\end{equation}
+Consequently
+\begin{equation}
+ U_0=(\Id+GR)^{-1}=\sum_{q\ge0}(-GR)^q
+ \label{eq:U0}
+\end{equation}
+is a well-defined strong two-sided inverse. Indeed, for an input of outer maximum $A$, only finitely many terms can contribute at a specified outer exponent, because the $q$th maximum is at most $A-q\eps$. The same estimate is uniform on a summable family. This proves the support assertions and the geometric identities without an analytic norm.
+
+Define the fixed-depth matrix and forcing vector
+\begin{equation}
+ M_0=\Pi R U_0K,
+ \qquad b_f=\Pi f-\Pi R U_0Gf.
+ \label{eq:old-data}
+\end{equation}
+The predecessor's reduction is
+\begin{equation}
+ \Ll u=f\text{ in }\Hh_n
+ \quad\Longleftrightarrow\quad
+ M_0c=b_f,
+ \qquad u=U_0(Kc+Gf),\quad c=\Lambda u.
+ \label{eq:old-reduction}
+\end{equation}
+One proves it by applying $G$ and $\Pi$. Conversely a reconstructed residual $h$ satisfies $Gh=\Pi h=0$, hence $h=P_0Gh+J\Pi h=0$.
+
+Set
+\begin{equation}
+ \Delta=\lambda_s-\lambda_1,\quad
+ Q=\left\lfloor\frac{\Delta}{\eps}\right\rfloor,
+ \quad Q_f=\max\left(0,\left\lfloor\frac{\dx(f)-\lambda_1}{\eps}\right\rfloor\right)
+ \label{eq:cutoffs}
+\end{equation}
+for $f\ne0$; take $Q_f=0$ for $f=0$. A matrix word with $q$ factors of $R$ drops the outer exponent by at least $q\eps$. Therefore
+\begin{equation}
+ M_0=\sum_{q=1}^{Q}(-1)^{q-1}\Pi R(GR)^{q-1}K,
+ \label{eq:M0-finite}
+\end{equation}
+and the correction in $b_f$ terminates after $Q_f$ factors. This is finiteness in perturbation depth, not an assertion that arbitrary Hahn coefficient data are computable.
+
+The old matrix tests only degree zero. Its rank gives $\dim\ker\Ll=r-\rank M_0$ within $\Hh_n$, but its nilpotency does not in general determine the missing logarithmic degrees. Section~\ref{sec:diamond} gives an explicit counterexample to that tempting shortcut.
+
+\section{Lifting the residue matrix to a derivative parameter}
+\label{sec:lift}
+
+\subsection{The central parameter and its interpretation}
+Adjoin the formal logarithm $T=\ell_{n+1}$ with $ET=\sigma$. On $\Hh_n[T]$, distinguish the coefficientwise Euler operator from differentiation in $T$. If $\partial=\partial_T$, the full Euler operator is
+\begin{equation}
+ E_{\mathrm{full}}=E+\sigma\partial.
+ \label{eq:Efull}
+\end{equation}
+The operator $\partial$ commutes with all coefficientwise maps used here. The coefficientwise $E$ does \emph{not} commute with multiplication by $\sigma$.
+
+Introduce a central formal variable $z$ and define
+\begin{align}
+ \Ll(z)&=P(E+\sigma z)+\sum_j a_j(E+\sigma z)^j,\label{eq:Lz}\\
+ A(z)&=\Ll(z)-P_0.
+ \label{eq:Az}
+\end{align}
+All powers in these formulas are compositions of operators in their written order. In particular, replacing them by a commutative binomial formula would be wrong. The parameter $z$ is a bookkeeping device for $\partial_T$; it is not a Hahn monomial in $x$.
+
+We have $A(0)=R$. Split $A(z)$ into an outer-preserving part
+\[
+ Z(z)=P(E+\sigma z)-P(E),\qquad Z(0)=0,
+\]
+and an outer-lowering part $R(z)=\sum a_j(E+\sigma z)^j$. Every occurrence of $Z$ contributes at least one power of $z$, while every occurrence of $R(z)$ lowers the outer exponent by at least $\eps$.
+
+\begin{lemma}[Formal operator inverse]
+\label{lem:Uz}
+The formal series of strong operators
+\begin{equation}
+ U(z)=(\Id+GA(z))^{-1}
+ \label{eq:Uz}
+\end{equation}
+exists and is two-sided. It satisfies $U(0)=U_0$ and $\Lambda U(z)=\Lambda$. Equivalently it is the coefficientwise well-defined word sum
+\begin{equation}
+ U(z)=\sum_{q\ge0}(-GA(z))^q.
+ \label{eq:Uwords}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Factor $\Id+GA(z)$ as
+\[
+ (\Id+GR)\bigl(\Id+U_0G(A(z)-R)\bigr).
+\]
+The first factor has the strong inverse \eqref{eq:U0}; the second has a formal $z$-adic inverse because its correction has zero constant coefficient. This proves existence, strongness of each coefficient, and both inverse identities.
+
+For the word interpretation, fix a $z$ degree $k$ and an outer output threshold. A contributing word contains at most $k$ outer-preserving letters $Z$, and only finitely many outer-lowering letters before it falls below that threshold. Each fixed word is a composition of strong operators. The resulting family is summable coefficientwise; the same support estimate applies uniformly to a summable input family. Finite geometric identities now give \eqref{eq:Uwords}. Finally $\Lambda G=0$ implies $\Lambda(\Id+GA)=\Lambda$, and multiplication by $U$ gives $\Lambda U=\Lambda$.
+\end{proof}
+
+Define
+\begin{equation}
+ M(z)=\Pi A(z)U(z)K,
+ \qquad B(z)=\Pi-\Pi A(z)U(z)G.
+ \label{eq:MBz}
+\end{equation}
+The matrix $M(z)$ has real formal-series entries, although its construction uses infinite-dimensional Hahn operators. Its constant term is the old matrix $M_0$. Also $B(0)f=b_f$ and $B(z)J=\Id_V$.
+
+\subsection{Exact reduction on logarithmic polynomials}
+A formal series of coefficientwise linear maps $F(z)=\sum F_kz^k$ acts on a polynomial in $T$ by
+\[
+ F(\partial)=\sum_{k\ge0}F_k\partial^k.
+\]
+Only finitely many summands act nontrivially on each polynomial. Evaluation is compatible with sums, products, and formal inverses whenever those inverses have invertible constant coefficient. It never increases the polynomial degree.
+
+\begin{theorem}[Derivative-parameter residue reduction]
+\label{thm:reduction}
+For $f\in\Hh_n$, all solutions of $\Ll u=f$ in $\Hh_n[T]$ correspond bijectively to solutions $c(T)\in V[T]$ of
+\begin{equation}
+ M(\partial)c=b_f.
+ \label{eq:reduced-ODE}
+\end{equation}
+The correspondence is
+\begin{equation}
+ u=U(\partial)(Kc+Gf),\qquad c=\Lambda u.
+ \label{eq:lifted-reconstruction}
+\end{equation}
+For every $d\ge0$, it restricts to a bijection between solutions of degree at most $d$ on both sides. For homogeneous nonzero solutions, $\deg_Tu=\deg_Tc$.
+\end{theorem}
+\begin{proof}
+The full operator on logarithmic polynomials is $\Ll(\partial)=P_0+A(\partial)$ by \eqref{eq:Efull}. Apply $G$ to its equation, using \eqref{eq:splitting}:
+\[
+ (\Id+GA(\partial))u=K\Lambda u+Gf.
+\]
+This yields \eqref{eq:lifted-reconstruction}. Applying $\Pi$ to the original equation and substituting the reconstruction gives
+\[
+ M(\partial)c=B(\partial)f.
+\]
+Because $f$ is independent of $T$, the right side is $B(0)f=b_f$.
+
+Conversely suppose \eqref{eq:reduced-ODE} holds and define $u$ by \eqref{eq:lifted-reconstruction}. Lemma~\ref{lem:Uz} gives $\Lambda u=c$. The residual $h=\Ll(\partial)u-f$ has $Gh=0$ by the reconstruction identity and $\Pi h=0$ by the reduced equation. Hence $h=P_0Gh+J\Pi h=0$.
+
+All operators evaluated at $\partial$ are degree-nonincreasing. Since $Gf$ has degree zero, a coordinate solution of degree at most $d\ge0$ gives a Hahn solution with that bound. The reverse bound follows by projection with $\Lambda$. If $f=0$ and $c\ne0$, the two inequalities give equality of degrees.
+\end{proof}
+
+\begin{remark}[Polynomial forcing]
+The same proof works for $f\in\Hh_n[T]$, with right side $B(\partial)f$. The convenient constant-vector classification below is stated for $T$-independent forcing. In particular, its degree bound $s$ is not asserted unchanged for a forcing of arbitrarily high degree in $T$.
+\end{remark}
+
+\subsection{The exact word cutoff for each matrix coefficient}
+\begin{theorem}[Finite perturbation-word jets]
+\label{thm:wordcutoff}
+For $k\ge0$, the coefficient $M_k=\coef{z^k}{M(z)}$ is
+\begin{equation}
+ M_k=\sum_{q=1}^{Q+k}(-1)^{q-1}
+ \Pi\coef{z^k}{\bigl(A(z)(GA(z))^{q-1}\bigr)}K.
+ \label{eq:jet-word}
+\end{equation}
+An empty sum is zero. If $f\in\Hh_n$ is fixed, the coefficient of $z^k$ in the correction $\Pi A(z)U(z)Gf$ has the analogous cutoff $Q_f+k$.
+\end{theorem}
+\begin{proof}
+Expand every letter $A$ as $Z+R(z)$. A word containing $u$ outer-lowering letters drops a source root $\lambda$ by at least $u\eps$. Projection onto a target root is impossible when $u>Q$. A word contributing to $z^k$ contains at most $k$ outer-preserving letters, because every such letter is divisible by $z$. Hence its total number of letters is at most $Q+k$. All discarded words vanish after the stated projection, not merely asymptotically. The same argument starts from outer maximum $\dx(f)$ for the forcing correction and gives $Q_f+k$.
+\end{proof}
+
+The cutoff is additive in the outer support budget and the derivative-parameter degree. This is the point at which an infinite formal operator reduction yields finite mathematical data. The entries may still require exact operations on infinite lower-logarithm blocks; Section~\ref{sec:algorithm} separates that issue from finite-dimensional linear algebra.
+
+\section{Nondegenerate root crossings and the inverse pole bound}
+\label{sec:crossing}
+The matrix series is not arbitrary. Its behavior at each real root is the essential reason the logarithmic classification terminates.
+
+Order $V$ by increasing roots, keeping the $m_\lambda$ coordinates at one root together. Since $Z(z)$ preserves each outer block and $R(z)$ strictly lowers its exponent, $M(z)$ is upper block triangular: its $(\mu,\lambda)$ block vanishes when $\mu>\lambda$. The word ``upper'' refers to this increasing-root convention.
+
+\subsection{The residue crossing calculation}
+On $\Bb_n$, let multiplication by $\sigma$ be denoted by the same symbol. Define
+\begin{equation}
+ H_m=\sum_{a+b=m-1}\delta^a\sigma\delta^b.
+ \label{eq:Hm}
+\end{equation}
+This is the coefficient of $z$ in $(\delta+\sigma z)^m$; the order of the factors is important.
+
+\begin{lemma}[Antidiagonal residue identity]
+\label{lem:crossing}
+For $0\le j,k<m$,
+\begin{equation}
+ \Res(L^jH_mL^k)=
+ \begin{cases}
+ (-1)^j j!k!,&j+k=m-1,\\
+ 0,&j+k\ne m-1.
+ \end{cases}
+ \label{eq:antidiagonal}
+\end{equation}
+Consequently the matrix $C_m$ with these entries is invertible and
+\begin{equation}
+ \det C_m=\prod_{k=0}^{m-1}(k!)^2.
+ \label{eq:Cm-det}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a term indexed by $a+b=m-1$, integrate the $a$ derivatives onto $L^j$:
+\[
+ \Res\bigl(L^j\delta^a(\sigma\delta^bL^k)\bigr)
+ =(-1)^a(j)_a(k)_b\Res\bigl(L^{j-a+k-b}\sigma\bigr),
+\]
+where $(j)_a=j(j-1)\cdots(j-a+1)$ and is zero when $a>j$. The residue on the right vanishes unless $j+k=m-1$. In that case the simultaneous conditions $a\le j$, $b\le k$, and $a+b=j+k$ force $a=j$, $b=k$. This gives \eqref{eq:antidiagonal}. The sign of reversal of $m$ coordinates is $(-1)^{m(m-1)/2}$, which cancels the product of the signs $(-1)^j$ on the antidiagonal. Formula~\eqref{eq:Cm-det} follows.
+\end{proof}
+
+\begin{theorem}[Simple crossing of every root block]
+\label{thm:crossing}
+At a real root $\lambda$ of multiplicity $m$, the diagonal block of $M$ is
+\begin{equation}
+ M_{\lambda\lambda}(z)=zC_\lambda+O(z^2),
+ \qquad
+ C_\lambda=C_m\,[Q_\lambda(\delta)]_{\R[L]_{<m}}.
+ \label{eq:C-lambda}
+\end{equation}
+In particular
+\begin{equation}
+ \det C_\lambda=Q_\lambda(0)^m
+ \prod_{k=0}^{m-1}(k!)^2\ne0.
+ \label{eq:C-lambda-det}
+\end{equation}
+For a simple root, $C_\lambda=P'(\lambda)$.
+\end{theorem}
+\begin{proof}
+A word contributing to the same source and target root cannot contain $R(z)$, because no subsequent factor can raise the outer exponent. Thus the diagonal block is computed from $Z(z)$ alone. It has no constant term, and the coefficient of $z$ comes only from the single-letter word $\Pi Z(z)K$; words with two or more $Z$ letters have degree at least two.
+
+On this root block,
+\[
+ P(\lambda+\delta+\sigma z)
+ =(\delta+\sigma z)^m Q_\lambda(\delta+\sigma z).
+\]
+The coefficient of $z$ is $H_mQ_\lambda(\delta)$ plus a term of the form $\delta^m W$. All moment functionals $\Res(L^j\,\cdot\,)$ for $j<m$ annihilate the latter term by Lemma~\ref{lem:moments}. The remaining moment matrix is exactly \eqref{eq:C-lambda}. On polynomials of degree below $m$, the matrix of $Q_\lambda(\delta)$ is triangular with diagonal $Q_\lambda(0)$. Lemma~\ref{lem:crossing} gives the determinant formula. If $m=1$, $Q_\lambda(0)=P'(\lambda)$.
+\end{proof}
+
+\subsection{Determinant and inverse}
+\begin{corollary}[Total vanishing order and pole bound]
+\label{cor:pole}
+The matrix $M(z)$ is invertible over $\R((z))$, and
+\begin{equation}
+ \ord_z\det M=r,
+ \qquad
+ M(z)^{-1}\in z^{-s}\Mat_r(\R[[z]]).
+ \label{eq:pole-bound}
+\end{equation}
+\end{corollary}
+\begin{proof}
+Its determinant is the product of its diagonal-block determinants. Each has vanishing order $m_\lambda$, by Theorem~\ref{thm:crossing}, so the total is $r$.
+
+Write $M=D+N$, where $D$ is block diagonal and $N$ strictly upper block triangular. Each diagonal block of $D^{-1}$ has at most a simple pole at zero. Then
+\[
+ M^{-1}=\sum_{q=0}^{s-1}(-D^{-1}N)^qD^{-1}.
+\]
+The sum is finite by strict block triangularity. A term with $q$ off-diagonal transfers contains $q+1$ diagonal inverses, so has pole order at most $q+1\le s$. This proves \eqref{eq:pole-bound}.
+\end{proof}
+
+The important distinction is that a root of multiplicity $m$ contributes $m$ coordinates but only a \emph{simple} matrix crossing in the added-logarithm parameter. The polynomial chains $1,L,\ldots,L^{m-1}$ already belong to the base field. Distinct root levels can be linked by outer-lowering coefficients; repeated roots do not introduce extra levels into that descending chain.
+
+\section{Smith indices and the complete degree filtration}
+\label{sec:smith}
+
+\subsection{Formal diagonalization over a discrete valuation ring}
+We use only an elementary finite-dimensional form of Smith reduction. Because $\R[[z]]$ is a discrete valuation ring, there are invertible matrix series $S(z),V(z)$ such that
+\begin{equation}
+ S(z)M(z)V(z)=\diag(z^{\nu_1},\ldots,z^{\nu_r}),
+ \quad 0\le\nu_1\le\cdots\le\nu_r.
+ \label{eq:smith}
+\end{equation}
+Units have been absorbed in $S$ or $V$.
+
+Here is a direct existence argument. Select a nonzero entry of least $z$ valuation and move it to the upper-left corner. Divide by its unit part, leaving a power $z^\nu$. Every other entry is divisible by this power. Elementary row and column operations clear its row and column without leaving the formal power-series ring. Iterate on the remaining submatrix. The minimum valuation cannot decrease, so the resulting powers can be taken in the displayed order. All operations have invertible constant determinant. Uniqueness of the exponents also follows from the valuations of determinantal ideals; below it follows directly from the intrinsic degree filtration.
+
+The pole bound and determinant formula imply
+\begin{equation}
+ \sum_i\nu_i=r,\qquad \nu_r\le s.
+ \label{eq:smith-bounds}
+\end{equation}
+Indeed, taking determinants in \eqref{eq:smith} gives the sum. Since multiplication on either side by a formal unit cannot change whether $z^sM^{-1}$ has formal-series entries, \eqref{eq:pole-bound} gives the upper bound for each exponent.
+
+\begin{definition}
+The positive integers among $\nu_1,\ldots,\nu_r$ are the \emph{logarithmic indices} of $\Ll$ in this finite-depth setting. The zero entries are retained when a full $r$-tuple is useful. This terminology is local to the present classification.
+\end{definition}
+
+\subsection{The exact minimum for a forcing}
+Set
+\begin{equation}
+ \beta(f)=S(0)b_f.
+ \label{eq:beta}
+\end{equation}
+Different Smith transformations may give different coordinate vectors, but the tests below are invariant.
+
+\begin{theorem}[Exact logarithmic-degree classification]
+\label{thm:smith-degree}
+Let $\Ll$ satisfy \eqref{eq:operator} with $n\ge1$ and $s\ge1$. Then:
+
+\smallskip
+\noindent\textup{(a)} Every $f\in\Hh_n$ has a solution in $\Hh_n[T]$. Its minimum degree, interpreted as a minimum over nonnegative degree bounds, is
+\begin{equation}
+ d_{\min}(f)=\max\bigl(\{0\}\cup\{\nu_i:\beta_i(f)\ne0\}\bigr).
+ \label{eq:dmin}
+\end{equation}
+In particular $d_{\min}(0)=0$ by this convention, and $d_{\min}(f)\le s$.
+
+\smallskip
+\noindent\textup{(b)} If $h_d$ denotes the real dimension of the homogeneous solution space in $\Hh_n[T]_{\le d}$, then
+\begin{equation}
+ h_d=\sum_i\min(d+1,\nu_i),\qquad d\ge0.
+ \label{eq:hd}
+\end{equation}
+The full polynomial homogeneous space has dimension $r$. Its greatest occurring degree is $\nu_r-1\le s-1$.
+
+\smallskip
+\noindent\textup{(c)} The largest possible value of $d_{\min}(f)$ as $f$ ranges over $\Hh_n$ is exactly $\nu_r$. The indices and the degree tests are independent of the chosen compatible normalized splitting and Smith coordinates.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:reduction}, it suffices to solve $M(\partial)c=b_f$. Put
+\[
+ c=V(\partial)d.
+\]
+Applying $S(\partial)$ reduces the equation to
+\begin{equation}
+ \partial^{\nu_i}d_i=\beta_i(f),\qquad 1\le i\le r.
+ \label{eq:diagonal-equations}
+\end{equation}
+A formal matrix unit evaluated at $\partial$ is an automorphism of polynomial vectors. It preserves the degree of a nonzero vector: the highest coefficient is multiplied by its invertible constant matrix. Thus this change of coordinates does not alter any bounded-degree test.
+
+When $\nu_i=0$, the unique solution of the $i$th equation is the constant $d_i=\beta_i$. When $\nu_i>0$, all its polynomial solutions are
+\begin{equation}
+ d_i(T)=\beta_i\frac{T^{\nu_i}}{\nu_i!}+p_i(T),
+ \qquad \deg p_i<\nu_i.
+ \label{eq:diagonal-solutions}
+\end{equation}
+No lower-degree polynomial can remove a nonzero coefficient at degree $\nu_i$. This proves \eqref{eq:dmin}. The homogeneous equation contributes exactly $\min(d+1,\nu_i)$ dimensions at degree bound $d$, proving \eqref{eq:hd}. Summing the indices and using \eqref{eq:smith-bounds} gives the total dimension and upper bounds. Since $r>0$, at least one index is positive.
+
+To prove sharpness for some forcing, note that $b_{Jv}=v$ by $GJ=0$ and $\Pi J=\Id$. Thus $b_f$, and hence $S(0)b_f$, ranges over all of $V$. Choose a nonzero component at an index $\nu_r$. This gives minimum degree exactly $\nu_r$.
+
+Finally, $h_d$ is the dimension of an intrinsically defined solution subspace. Its successive differences recover the number of indices above every threshold, as detailed in Section~\ref{sec:algorithm}. The multiset of positive indices, with the required number of zeros, is therefore independent of the splitting. Minimum degrees are intrinsic by definition, so their coordinate tests are independent as well.
+\end{proof}
+
+\begin{corollary}[The old residue test as the first layer]
+\label{cor:old-layer}
+The number of positive logarithmic indices is
+\[
+ h_0=r-\rank M_0.
+\]
+The forcing $f$ has degree-zero minimum exactly when $b_f\in\im M_0$.
+\end{corollary}
+\begin{proof}
+Reducing \eqref{eq:smith} modulo $z$ identifies the nonzero diagonal entries with the indices equal to zero. The second assertion is either the degree-zero case of Theorem~\ref{thm:reduction} or \eqref{eq:old-reduction}.
+\end{proof}
+
+Thus the old fixed-depth problem sees how many logarithmic chains there are, but not their lengths. Two operators can have the same fixed-depth kernel dimension and different higher-degree filtrations.
+
+\subsection{An intrinsic nilpotent interpretation}
+Let
+\[
+ \mathscr S=\{u\in\Hh_n[T]:\Ll u=0\}.
+\]
+The coefficientwise operator $\partial_T$ commutes with $\Ll$, and so acts on $\mathscr S$. The preceding theorem makes $\mathscr S$ finite-dimensional, of dimension $r$, and $\partial_T$ nilpotent there. The positive logarithmic indices are exactly its Jordan block sizes. Indeed, in the diagonal coordinates, the homogeneous solutions are polynomials of degree below $\nu_i$, and differentiation has a single Jordan chain of length $\nu_i$ on each such summand. Every intertwining map in the reduction commutes with $\partial_T$.
+
+This gives a coordinate-free interpretation of the filtration:
+\begin{equation}
+ \mathscr S_d=\ker(\partial_T^{d+1}|_{\mathscr S}).
+ \label{eq:nilpotent-intrinsic}
+\end{equation}
+The scalar pencil of Section~\ref{sec:pencil} makes this abstract nilpotent transport explicit as a rational matrix.
+
+\subsection{No real roots, and the depth-zero boundary}
+If $P$ has no real roots, every outer block of $P(E)$ is invertible by Lemma~\ref{lem:functional}. Its inverse $G$ is strong and block-preserving. Then $(\Id+GR)^{-1}G$ solves every forcing already in $\Hh_n$, with zero kernel. No finite residue matrix or new logarithm is needed.
+
+The restriction $n\ge1$ must not be silently removed. At depth zero, $L$ is absent from the base field and a repeated root can itself require powers of the first added logarithm: for example $(E-\lambda)^m u=0$ has solutions $x^\lambda(\log x)^k$, $0\le k<m$. This does not contradict the distinct-root bound proved here, because that bound counts powers of $T=\log_{n+1}x$ after $L$ and its polynomial chains are already present.
+
+\section{Finite jets and exact obstruction certificates}
+\label{sec:algorithm}
+
+\subsection{The block Toeplitz matrix}
+Write $M(z)=\sum_{k\ge0}M_kz^k$. For a degree bound $d\ge0$, expand the coordinate polynomial in divided powers:
+\begin{equation}
+ c(T)=\sum_{j=0}^{d}c_j\frac{T^j}{j!},\qquad c_j\in V.
+ \label{eq:divided}
+\end{equation}
+Differentiation shifts these coefficients without factorial multipliers. Define the $r(d+1)$-square matrix
+\begin{equation}
+ \Tmat_d=
+ \begin{pmatrix}
+ M_0&M_1&M_2&\cdots&M_d\\
+ 0&M_0&M_1&\cdots&M_{d-1}\\
+ 0&0&M_0&\cdots&M_{d-2}\\
+ \vdots&\vdots&\vdots&\ddots&\vdots\\
+ 0&0&0&\cdots&M_0
+ \end{pmatrix},
+ \qquad
+ \mathbf b_d=\begin{pmatrix}b_f\\0\\\vdots\\0\end{pmatrix}.
+ \label{eq:toeplitz}
+\end{equation}
+Here block $(i,j)$, indexed from zero, is $M_{j-i}$ for $j\ge i$ and zero otherwise.
+
+\begin{theorem}[Finite classification and certificates]
+\label{thm:toeplitz}
+For each $d\ge0$,
+\begin{align}
+ d_{\min}(f)\le d
+ &\Longleftrightarrow
+ \rank\Tmat_d=\rank[\Tmat_d\mid\mathbf b_d],\label{eq:ranktest}\\
+ h_d&=r(d+1)-\rank\Tmat_d.
+ \label{eq:rankh}
+\end{align}
+If the rank test fails, there is an exact finite vector $w$ satisfying
+\begin{equation}
+ w^{\mathsf T}\Tmat_d=0,
+ \qquad w^{\mathsf T}\mathbf b_d\ne0,
+ \label{eq:dual-certificate}
+\end{equation}
+which certifies impossibility at that degree.
+
+The jet $M_0,\ldots,M_{s-1}$ determines all logarithmic indices and $d_{\min}(f)$ for every fixed forcing once $b_f$ is known. Its largest required perturbation-word depth is $Q+s-1$. The forcing vector has word depth at most $Q_f$. To construct coordinates at degree $s$, one may additionally require $M_s$, whose word depth is at most $Q+s$.
+\end{theorem}
+\begin{proof}
+The coefficient of $T^i/i!$ in $M(\partial)c$ is $\sum_{j=i}^{d}M_{j-i}c_j$. Thus the reduced equation is exactly $\Tmat_d(c_0,\ldots,c_d)^{\mathsf T}=\mathbf b_d$. Theorem~\ref{thm:reduction} transfers this equivalence, with its degree bound, to the Hahn equation. Rank--nullity gives \eqref{eq:rankh}. A failed solvability test means that $\mathbf b_d$ is outside the column space. A linear functional annihilating that space but not that vector exists by finite-dimensional linear algebra, giving \eqref{eq:dual-certificate}.
+
+Set $h_{-1}=0$. By \eqref{eq:hd},
+\begin{equation}
+ h_d-h_{d-1}=\#\{i:\nu_i\ge d+1\}.
+ \label{eq:index-differences}
+\end{equation}
+Since all indices are at most $s$, the values $h_0,\ldots,h_{s-1}$ recover the entire multiset. There are $r-h_0$ zero indices. For $1\le k<s$, the number of indices equal to $k$ is
+\begin{equation}
+ 2h_{k-1}-h_{k-2}-h_k,
+ \label{eq:multiplicity}
+\end{equation}
+and the number equal to $s$ is $h_{s-1}-h_{s-2}$. These formulas also cover $s=1$ using $h_{-1}=0$.
+
+For a forcing, test degrees $0,1,\ldots,s-1$. If one succeeds, the first success is the minimum. If all fail, Theorem~\ref{thm:smith-degree} guarantees degree $s$, so the minimum is $s$ without computing $M_s$. The word budgets follow from Theorem~\ref{thm:wordcutoff}. Actual reconstruction of a degree-$s$ coordinate polynomial uses the matrix $\Tmat_s$, which explains the additional coefficient for that task.
+\end{proof}
+
+\subsection{A proof-producing procedure}
+The following procedure avoids a full formal Smith reduction.
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+\item Compute the indicial roots, multiplicities, normalized splitting, outer budget $Q$, and $b_f$. Use exact data or explicitly specified exact oracles.
+\item Compute $M_k$ by \eqref{eq:jet-word} for $0\le k<s$. Form the nested Toeplitz matrices and compute their ranks and nullspaces.
+\item Recover the indices by \eqref{eq:index-differences}. Test the forcing by \eqref{eq:ranktest}, recording a left-nullspace certificate for each rejected degree.
+\item At the first successful degree solve the finite linear system and lift by \eqref{eq:lifted-reconstruction}. If only degree $s$ is possible, compute $M_s$ first.
+\end{enumerate}
+The classification matrices have size at most $rs$; final-degree reconstruction may use size $r(s+1)$. This is a dimension bound, not a complete bit-complexity bound. Root isolation, arithmetic in the coefficient field, and lower-block extraction can dominate the cost.
+
+Once coordinates are chosen, the lift is usually an infinite Hahn series. A finite outer truncation is nevertheless exact coefficientwise. For a fixed coefficient of $z^k$ in $U(z)$ and an input with outer maximum $A$, a word with more than $k+\lfloor(A-C)/\eps\rfloor$ letters cannot contribute at an outer exponent at least $C$. When this expression is negative the corresponding contributions are absent. This is the same two-budget argument as Theorem~\ref{thm:wordcutoff}, now used for reconstruction rather than residue projection.
+
+\subsection{Mathematical finiteness versus effective input}
+An arbitrary Hahn series is not automatically a computable object. Even if a matrix formula uses finitely many operator compositions, its entries may call for coefficient extraction from noncomputable data. The general theorem is therefore an exact finite-dimensional characterization, with an effective algorithm \emph{relative to} the stated coefficient operations.
+
+There is no such hidden infinite-data issue in the rational scalar realization of Section~\ref{sec:realization} with residue forcing. Its relevant matrix is obtained from finitely many rational polynomial evaluations. Gaussian elimination then returns rational solutions or rational dual certificates. One can decide minimum degree in that subclass without evaluating any infinite Hahn tail.
+
+For more general finite Laurent-log inputs, the finite word bound remains useful, but a complete implementation still needs a proved coefficient-extraction procedure for the intervening block inverses. We do not identify the existence of a finite matrix with an unconditional algorithm for every formal coefficient grammar.
+
+\subsection{What the finite jet records}
+The old matrix $M_0$ counts chains at their bottom layer. The successive coefficients $M_1,M_2,\ldots$ record how differentiating in the new logarithm couples these residues to the lower-block inverse. A word with no outer drop can still contribute to these higher coefficients, but it spends positive $z$ degree. That is why finite jets remain possible even though infinitely many such derivative corrections occur in the full series.
+
+The Smith exponents may be read as chain lengths, the Toeplitz nullities as cumulative chain dimensions, and the dual vectors as forcing-specific obstructions. These are three descriptions of the same finite data, not three independent solvability assumptions.
+
+\section{An exact pencil for residue-weighted scalar operators}
+\label{sec:pencil}
+The general reduction requires a matrix series. A useful subclass collapses to a matrix pencil with no higher coefficients at all.
+
+Assume now that all real roots $\lambda_1<\cdots<\lambda_r$ of $P$ are simple; additional nonreal roots are allowed. Let $\mathcal D\subset(0,\infty)$ be finite and choose real polynomials $q_\eta$ of degree at most $\deg P$. Consider
+\begin{equation}
+ \Ll=P(E)+\sigma\sum_{\eta\in\mathcal D}x^{-\eta}q_\eta(E).
+ \label{eq:residue-class}
+\end{equation}
+This is an instance of \eqref{eq:operator}, with $\eps=\min\mathcal D$ when the perturbation is nonzero. For a zero perturbation any positive $\eps$ may be used.
+
+Define
+\begin{equation}
+ D_P=\diag(P'(\lambda_1),\ldots,P'(\lambda_r))
+ \label{eq:DP}
+\end{equation}
+and the strictly upper triangular matrix $N$ by
+\begin{equation}
+ N_{ij}=
+ \begin{cases}
+ q_{\lambda_j-\lambda_i}(\lambda_j),
+ &i<j\text{ and }\lambda_j-\lambda_i\in\mathcal D,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \label{eq:Nentries}
+\end{equation}
+Only in this simple-root section are the moment and kernel coordinates single coordinates at each root.
+
+\begin{theorem}[Exact scalar pencil]
+\label{thm:pencil}
+For \eqref{eq:residue-class}, the full effective matrix is
+\begin{equation}
+ M(z)=zD_P+N.
+ \label{eq:exact-pencil}
+\end{equation}
+There are no hidden higher powers of $z$ in this identity. Consequently, with
+\begin{equation}
+ B=D_P^{-1}N,\qquad d=D_P^{-1}b_f,
+ \label{eq:Bnormalize}
+\end{equation}
+the exact reduced equation is
+\begin{equation}
+ c'(T)+Bc(T)=d.
+ \label{eq:nilpotent-ODE}
+\end{equation}
+\end{theorem}
+\begin{proof}
+We use the leading exponent of $L$ to isolate every possible residue contribution. Let $\mathcal W$ be the subspace of Hahn series whose every nonzero outer block has $L$ exponent at most $-1$.
+
+The operator $E+\sigma z$ preserves this bound coefficientwise in $z$. Every coefficient of $Z(z)=P(E+\sigma z)-P(E)$ contains at least one occurrence of multiplication by $\sigma$, possibly with coefficient derivatives. It therefore maps $\mathcal W$ into blocks with $L$ exponent at most $-2$. The same is true of the perturbation, because of its left factor $\sigma$. Thus
+\begin{equation}
+ A(z)\mathcal W\subseteq\{f:\dl(f_\alpha)\le-2
+ \text{ for every }\alpha\}[[z]].
+ \label{eq:W-A}
+\end{equation}
+At a nonroot, the block inverse $G$ does not increase $L$ exponent. At a simple root, its construction is normalized $Q_\lambda(\delta)^{-1}I$, and Lemmas~\ref{lem:primitive} and \ref{lem:functional} show that an input with $L$ exponent at most $-2$ is sent to one with exponent at most $-1$. Hence $GA(z)$ preserves $\mathcal W[[z]]$.
+
+Now apply $A(z)$ to one kernel monomial $x^{\lambda_j}$. At each outer block its terms of $L$ exponent $-1$ are scalar multiples of $\sigma$; every other term has exponent at most $-2$. This follows directly by expanding the operator compositions: an additional occurrence of $\sigma$ or a derivative of $\sigma$ lowers the exponent again. At a resonant target, the pure $\sigma$ term is annihilated by $GJ=0$. At a nonresonant target, $G$ preserves its negative exponent. Therefore
+\[
+ GA(z)K\in\mathcal W[[z]].
+\]
+This argument uses the \emph{pure residue monomial} at exponent $-1$. It does not assume that $G$ sends every arbitrary exponent-$-1$ block into $\mathcal W$, which would be false at deeper logarithmic levels.
+
+The word expansion of $U$ now gives $U(z)K-K\in\mathcal W[[z]]$. By \eqref{eq:W-A},
+\[
+ \Pi A(z)(U(z)K-K)=0,
+\]
+because the simple-root residue reads exponent $-1$ in $L$. Thus $M(z)=\Pi A(z)K$ exactly.
+
+In this last expression, the outer-preserving term contributes $P'(\lambda_j)\sigma z$ at its root; all remaining terms have smaller $L$ exponent and zero residue. The perturbation contributes $\sigma x^{\lambda_j-\eta}q_\eta(\lambda_j)$ at $z$ degree zero. Positive $z$ degrees in it have at least two factors lowering the $L$ exponent. Projection therefore gives exactly \eqref{eq:Nentries} and \eqref{eq:exact-pencil}. Multiplication by $D_P^{-1}$ proves \eqref{eq:nilpotent-ODE}.
+\end{proof}
+
+\subsection{Jordan blocks and minimum degree without Smith reduction}
+The matrix $B$ is strictly upper triangular, so $B^r=0$. For any initial coordinate vector $c_0$, the exact polynomial solution of \eqref{eq:nilpotent-ODE} is
+\begin{equation}
+ c(T)=e^{-BT}c_0+
+ \sum_{j=0}^{r-1}(-1)^j B^jd\frac{T^{j+1}}{(j+1)!}.
+ \label{eq:pencil-solution}
+\end{equation}
+The exponential is a finite polynomial because $B$ is nilpotent. Direct differentiation verifies the equation and the initial value.
+
+\begin{corollary}[Nilpotent profile and forcing test]
+\label{cor:pencil-profile}
+The positive logarithmic indices of \eqref{eq:residue-class} are the Jordan block sizes of $B$. In particular,
+\begin{equation}
+ h_p=\dim\ker B^{p+1},
+ \label{eq:pencil-h}
+\end{equation}
+and the minimum degree for a forcing is
+\begin{equation}
+ d_{\min}(f)=
+ \min\{p\in\{0,\ldots,r\}:B^pd\in\im B^{p+1}\}.
+ \label{eq:pencil-min}
+\end{equation}
+The largest possible minimum degree is the nilpotency index of $B$, with value one when $B=0$ on a nonzero space.
+\end{corollary}
+\begin{proof}
+For a homogeneous solution, $c(T)=e^{-BT}c_0$ has degree at most $p$ precisely when $B^{p+1}c_0=0$. This proves \eqref{eq:pencil-h}, and comparison with \eqref{eq:hd} identifies the indices with Jordan block sizes.
+
+For a particular solution, $c_1=d-Bc_0$ and the divided-power coefficients thereafter satisfy $c_{k+1}=-Bc_k$. Thus the degree is at most $p$ exactly when
+\[
+ B^p(d-Bc_0)=0.
+\]
+An appropriate $c_0$ exists if and only if \eqref{eq:pencil-min} holds. Nilpotency ensures that the set tested is nonempty. The final claim follows either by choosing a forcing at the top of a longest Jordan chain or by Theorem~\ref{thm:smith-degree}.
+\end{proof}
+
+The same conclusion can be read directly from the Smith form of $zI+B$: a nilpotent Jordan block of size $q$ contributes $q-1$ unit invariant factors and one factor $z^q$. The elementary homogeneous-solution argument above also fixes the degree interpretation without invoking a separate pencil theorem.
+
+\section{Every nilpotent profile has a rational scalar realization}
+\label{sec:realization}
+The preceding pencil is not confined to a few special patterns. It realizes arbitrary strictly upper triangular rational matrices by scalar differential operators with finite rational data.
+
+Use root indices $0,\ldots,r-1$ in this section. Put
+\begin{equation}
+ P(t)=\prod_{j=0}^{r-1}(t-j),\qquad
+ D_i=P'(i)=(-1)^{r-1-i}i!(r-1-i)!.
+ \label{eq:integer-indicial}
+\end{equation}
+Let the Lagrange cardinal polynomials be
+\begin{equation}
+ \mathcal L_j(t)=\frac{P(t)}{(t-j)P'(j)},
+ \qquad \mathcal L_j(k)=\begin{cases}1,&k=j,\\0,&k\ne j.
+ \end{cases}
+ \label{eq:lagrange}
+\end{equation}
+These are polynomials, notwithstanding the displayed quotient.
+
+\begin{theorem}[Universal rational scalar realization]
+\label{thm:realization}
+Let $B\in\Mat_r(\Q)$ be strictly upper triangular. Define, for $1\le\eta<r$,
+\begin{equation}
+ q_\eta(t)=\sum_{j=\eta}^{r-1}
+ D_{j-\eta}B_{j-\eta,j}\,\mathcal L_j(t),
+ \label{eq:q-realize}
+\end{equation}
+and set
+\begin{equation}
+ \Ll_B=P(E)+\sigma\sum_{\eta=1}^{r-1}x^{-\eta}q_\eta(E).
+ \label{eq:L-realize}
+\end{equation}
+Then $\Ll_B$ is a scalar differential operator of order $r$ with finite rational Laurent-logarithmic coefficient data. Its exact effective pencil is
+\begin{equation}
+ M(z)=D_P(zI+B),\qquad D_P=\diag(D_0,\ldots,D_{r-1}).
+ \label{eq:realized-pencil}
+\end{equation}
+Every partition of $r$ is therefore realized as the multiset of positive logarithmic indices of such an operator.
+
+Moreover, for a prescribed $d\in\Q^r$, the forcing
+\begin{equation}
+ f_d=\sigma\sum_{i=0}^{r-1}D_i d_i x^i
+ \label{eq:realized-forcing}
+\end{equation}
+has reduced right side exactly $d$ in \eqref{eq:nilpotent-ODE}. Minimum degree and rational obstruction certificates are computable using only finite rational linear algebra.
+\end{theorem}
+\begin{proof}
+Each $q_\eta$ has degree at most $r-1$. The perturbation in \eqref{eq:L-realize} therefore does not change the order or leading coefficient of $P(E)$, and every nonzero coefficient lowers the outer exponent by at least one. All coefficients are finite rational combinations of the indicated monomials.
+
+For $j\ge\eta$, Lagrange interpolation gives
+\[
+ q_\eta(j)=D_{j-\eta}B_{j-\eta,j};
+\]
+for $j<\eta$, the value is zero. Theorem~\ref{thm:pencil} now yields $N_{ij}=D_iB_{ij}$, proving \eqref{eq:realized-pencil}.
+
+Given any partition $r=q_1+\cdots+q_b$, choose $B$ to be the block diagonal sum of the usual nilpotent Jordan blocks of those sizes, with their superdiagonal entries equal to one. This is a rational strictly upper triangular matrix. Corollary~\ref{cor:pencil-profile} gives exactly that partition of positive indices. There are also $r-b$ zero Smith exponents in the full $r$-tuple.
+
+Finally, \eqref{eq:realized-forcing} is $JD_Pd$ in the splitting notation. Since $GJ=0$, equation~\eqref{eq:old-data} gives $b_{f_d}=D_Pd$. Thus the normalized reduced right side is precisely $d$, with no unknown tail correction. Formula~\eqref{eq:pencil-min}, or the Toeplitz test, uses only rational matrices and terminates.
+\end{proof}
+
+% ed. (2026-09-29): the predecessor's sharp family is a special case; checked on filing (batch 50).
+\begin{ednote}
+The Jordan-shift family of the predecessor (its \texttt{thm:sharp-matrix}, $P_s(E)+x^{-1}\sigma$) \cite{repo-residue} is the case $q_1\equiv1$ of Theorem~\ref{thm:pencil}: $D_P^{-1}N$ is a single Jordan block, the Smith exponents are $(0,\ldots,0,s)$, and \eqref{eq:pencil-solution} reproduces its coefficients $c_k$ and $C_s$ exactly (checked for $s\le6$). This is the complete sequence $0,1,\ldots,s$ that the predecessor's first question asked of its sharp family.
+\end{ednote}
+
+\subsection{What the realization does and does not say}
+The theorem proves an exact range statement about degree profiles, not only the existence of one sharp family. Every partition occurs already with integer indicial roots, an outer drop lattice contained in the integers, and coefficient blocks proportional to $\sigma$.
+
+It does not assert that arbitrary formal matrix series can be realized by this subclass; they cannot all be, because its matrix is a pencil. It also does not imply that every partition is possible for a prescribed pattern of repeated indicial multiplicities. The range theorem deliberately chooses $r$ distinct simple roots, so that $s=r$ and no additional multiplicity constraints intervene.
+
+For a partition with largest part $q$, the maximum homogeneous logarithmic degree is $q-1$, and the maximum forcing minimum is $q$. These maxima concern the added logarithm $T$, not the degree in $L$ already present in the base field. The differential order, the number of old-depth homogeneous solutions, and the longest new-logarithm chain are thus separate invariants.
+
+\section{A fourth-order cancellation that defeats two shortcuts}
+\label{sec:diamond}
+This example is fully rational and uses just $n=1$, so $\sigma=1/L$ and $T=\log L$. Let
+\begin{equation}
+ B_a=
+ \begin{pmatrix}
+ 0&1&1&0\\
+ 0&0&0&1\\
+ 0&0&0&a\\
+ 0&0&0&0
+ \end{pmatrix},
+ \qquad
+ D_P=\diag(-6,2,-2,6).
+ \label{eq:diamond-B}
+\end{equation}
+The nonzero entries describe two possible length-two transfers from root $3$ to root $0$, through roots $1$ and $2$. Their total normalized weight is $1+a$.
+
+Take
+\begin{align}
+ P(t)&=t(t-1)(t-2)(t-3),\label{eq:diamond-P}\\
+ q_1(t)&=-\frac{t(t-2)}3\bigl((a+9)t-a-27\bigr),\label{eq:diamond-q1}\\
+ q_2(t)&=\frac{t(t-1)}3(10t-29),\label{eq:diamond-q2}\\
+ \Ll_a&=P(E)+\frac1L\bigl(x^{-1}q_1(E)+x^{-2}q_2(E)\bigr).
+ \label{eq:diamond-L}
+\end{align}
+The interpolation formula of Theorem~\ref{thm:realization} gives these polynomials, with $q_3=0$. Their degree is three, so \eqref{eq:diamond-L} is a fourth-order scalar differential operator. It has $\eps=1$, $s=r=4$, and $Q=3$.
+
+\subsection{The exact degree transition}
+Let $e_i$ denote the coordinate vector at root $i$. Direct multiplication gives
+\begin{equation}
+ B_a^2=(1+a)e_0e_3^{\mathsf T},\qquad B_a^3=0,
+ \qquad\rank B_a=2.
+ \label{eq:diamond-powers}
+\end{equation}
+For $a\ne-1$, the positive logarithmic indices are $(3,1)$. At $a=-1$, they are $(2,2)$. The full Smith exponent tuples, in increasing order, are respectively $(0,0,1,3)$ and $(0,0,2,2)$.
+
+Consider the forcing
+\begin{equation}
+ \Ll_a u=\frac{6x^3}{L}.
+ \label{eq:diamond-forcing}
+\end{equation}
+It corresponds exactly to $d=e_3$. A coordinate solution with $c(0)=0$ is
+\begin{equation}
+ c(T)=T e_3-\frac{T^2}{2}(e_1+a e_2)
+       +\frac{(1+a)T^3}{6}e_0.
+ \label{eq:diamond-c}
+\end{equation}
+Differentiation verifies $c'+B_ac=e_3$ identically.
+
+For $a\ne-1$, a degree-two coordinate solution would require $B_a^2e_3\in\im B_a^3=0$, which fails. Thus degree three is necessary. At $a=-1$, degree two suffices, while degree one would require $B_{-1}e_3\in\im B_{-1}^2=0$, which again fails. Therefore
+\begin{equation}
+ d_{\min}\left(\frac{6x^3}{L}\right)=
+ \begin{cases}3,&a\ne-1,\\2,&a=-1.
+ \end{cases}
+ \label{eq:diamond-min}
+\end{equation}
+The Hahn solution is obtained from \eqref{eq:lifted-reconstruction}. It generally includes lower-logarithm and smaller-outer-block corrections; simply writing $\sum x^ic_i(T)$ is not claimed to solve the original differential equation exactly. The projection and lift preserve the degree bound, so the necessity statement applies to \emph{every} solution in $\Hh_1[T]$, not merely to the displayed coordinate ansatz.
+
+\subsection{Same graph, different degree filtration}
+The cases $a=1$ and $a=-1$ have the same nonzero entry pattern. Both have two distinct length-two paths from root $3$ to root $0$. They also have the same rank and the same fixed-depth homogeneous dimension. Nevertheless their degree profiles differ:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Invariant & $a=1$ & $a=-1$\\
+\midrule
+Positive logarithmic indices & $(3,1)$ & $(2,2)$\\
+$h_0$ & $2$ & $2$\\
+$h_1$ & $3$ & $4$\\
+$h_2$ & $4$ & $4$\\
+Largest homogeneous $T$ degree & $2$ & $1$\\
+Minimum degree for $6x^3/L$ & $3$ & $2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+An unweighted graph can detect possible transfers, but not cancellation of their coefficients. The relevant path sum here is $1+a$, not the existence of the two paths.
+
+\subsection{The old matrix's nilpotency can give the opposite answer}
+The fixed-depth matrix is $M_0=N=D_PB_a$. Its square is
+\begin{equation}
+ N^2=12(a-1)e_0e_3^{\mathsf T},\qquad N^3=0.
+ \label{eq:old-wrong-square}
+\end{equation}
+At $a=1$, $N$ has nilpotency index two, while the actual maximum forcing degree is three. At $a=-1$, $N$ has nilpotency index three, while the actual maximum forcing degree is two.
+
+The discrepancy is not a paradox. The equation is $D_Pc'+Nc=b_f$, so the transport matrix is $D_P^{-1}N$, not $N$. The derivative coefficient supplies essential weights at each resonant root. In the general case, those weights and their higher corrections are encoded by $M(z)$ and its Smith indices. This example proves that neither the old matrix's nilpotency nor its unweighted graph can replace the lifted classification.
+
+\subsection{Explicit finite obstruction certificates}
+For the pencil, the coefficient recurrence gives a particularly short certificate. At $a=1$, assume a degree-two solution for $d=e_3$. Its coefficients satisfy
+\[
+ c_1=e_3-B_1c_0,\quad c_2=-B_1c_1,
+ \quad 0=-B_1c_2.
+\]
+Hence $0=B_1^2e_3-B_1^3c_0=2e_0$, a contradiction. At $a=-1$, a degree-one solution would similarly imply
+\[
+ 0=B_{-1}e_3-B_{-1}^2c_0=e_1-e_2,
+\]
+again impossible.
+
+The verification files also contain literal rational left-nullvectors for the corresponding Toeplitz systems, in the format \eqref{eq:dual-certificate}. These can be checked by two exact matrix multiplications, independently of how the nullvectors were found.
+
+\section{Parameter dependence and cancellation strata}
+\label{sec:parameters}
+The example's exceptional value is algebraic. More generally, finite jets make the degree problem accessible to exact parameter algebra.
+
+\begin{proposition}[Determinantal degree strata]
+\label{prop:strata}
+Fix $P$, its distinct real root levels and multiplicities, the normalized splitting, and a common outer-drop bound $\eps$. Suppose finitely many real parameters $\theta$ enter the perturbing coefficients and forcing polynomially through fixed Hahn series. Then each required jet entry $M_k(\theta)$ and each entry of $b_f(\theta)$ is polynomial in $\theta$. For each $d\le s-1$, the conditions specifying $h_d$ are determinantal rank conditions. The condition $d_{\min}(f)\le d$ is a constructible rank-equality condition.
+\end{proposition}
+\begin{proof}
+The word formula \eqref{eq:jet-word} is finite, and its coefficientwise maps $G,K,\Pi$ do not depend on the parameters. Each word is polynomial in the parameter-dependent coefficients. For the forcing, use the greatest outer exponent among the finitely many fixed input series as a uniform bound; the resulting uniform word cutoff also makes $b_f$ polynomial. Thus the Toeplitz and augmented matrices have polynomial entries.
+
+A rank bound is expressed by vanishing minors, and rank equality by combining such vanishings with nonvanishing of a suitable minor. Equations~\eqref{eq:ranktest}--\eqref{eq:rankh} now give the asserted descriptions.
+\end{proof}
+
+For a real parameter approaching an exceptional value, the matrix rank can drop and the homogeneous dimension $h_d$ can increase. It is therefore upper semicontinuous in the usual rank sense. On a nonempty Zariski-open subset of the ambient real parameter space, all the finitely many relevant ranks, and hence the degree profile, are constant. Here ``generic'' means this explicitly defined algebraic condition, not a probabilistic claim about arbitrary Hahn coefficients.
+
+There is no corresponding blanket assertion that the minimum degree for every parameter-dependent forcing is semicontinuous in one direction. Solvability uses an augmented matrix as well as the operator matrix, and the forcing may itself specialize. The safe general statement is constructibility. In the fourth-order family with its fixed forcing, the direct calculation gives the more precise transition \eqref{eq:diamond-min}.
+
+Root collisions are deliberately excluded from Proposition~\ref{prop:strata}. When roots vary and merge, the splitting and the coordinate dimension at a level must be reorganized; denominators such as $P'(\lambda)$ in the simple-root pencil are not uniform through that process. That is a separate confluence problem, not resolved by taking a formal limit in the present coordinates.
+
+\section{Verification, proof boundaries, and a formalization route}
+\label{sec:verification}
+
+\subsection{What was checked computationally}
+Two independent exact-arithmetic programs accompany the manuscript. Their outputs are included, so that the reported checks refer to actual completed runs.
+
+The principal program, \path{verification/verify.py}, reports \textbf{1,383 passing exact assertions}. Its arithmetic is integral or rational, using SymPy; it contains no floating-point validation. The tests include:
+\begin{center}\small
+\begin{tabular}{p{0.68\linewidth}r}
+\toprule
+Test group & Cases or assertions\\
+\midrule
+Antidiagonal residue entries for $m=1,\ldots,8$ & $204$\\
+Residue and multiple-root crossing determinants & $16$\\
+Random rational strictly upper triangular pencils & $30$ cases\\
+General polynomial matrix-series representatives & $12$ cases\\
+All partitions of orders $1,\ldots,7$, with scalar realizations & $44$ cases\\
+Fourth-order parameter specializations and dual certificates & $5$ cases\\
+\bottomrule
+\end{tabular}
+\end{center}
+The case counts in the table are not meant to sum to the assertion total: each case contains several exact checks. The JSON output itemizes all assertion categories, coefficient interpolation tests, ranks, and profiles. Randomized data use the fixed seed $20260929$.
+
+The second program, \path{verification/operator_check.py}, works before the effective matrix reduction. It represents finite Laurent blocks by exact sparse rational coefficients and applies the noncommuting operator $E+z/L$, the scalar polynomials, and the normalized inverse $G$. For both $a=1$ and $a=-1$, it checks the projected words through jet degree three and word length six, the entire $Q+k$ budget at that jet order. It reports \textbf{192 passing exact column checks}.
+
+This second calculation retains outer exponents $0,1,2,3$ and lower-logarithm exponents down to $-10$. Outer exponents below zero cannot return to a resonant root. The lower cutoff is a guard: after the first normalized word, the invariant negative-$L$ subspace used in Theorem~\ref{thm:pencil} prevents discarded lower terms from returning to the residue layer. The code therefore checks the finite projected-word calculation rather than pretending to instantiate an unrestricted Hahn field.
+
+\subsection{What the checks do not establish}
+The general support statements, strongness of infinite operator sums, existence of the full matrix series for arbitrary Hahn input, and universal theorems are established by the written proofs. Finite regression tests do not prove those facts. The computations test signs, factorials, normalizations, coefficient ordering, concrete realizations, and the correspondence between finite matrix tests.
+
+No new theorem in this package has been checked by Lean or another proof assistant. No numerical or interval certificate for real-variable solutions is supplied, because the paper makes no analytic realization claim. The explicit scalar differential operator is real-analytic away from its coefficient singularities, but connecting its actual solutions to the full formal expansion requires additional work not furnished by the formal construction alone.
+
+The matrix-series results do not classify arbitrary solutions in the whole larger Hahn field $\Hh_{n+1}$, which allows nonpolynomial dependence on $T$. The theorem's domain is explicitly $\Hh_n[T]$. It constructs a full $r$-dimensional polynomial homogeneous space for the represented real indicial modes, but does not insert oscillatory solutions associated with nonreal roots.
+% ed. (2026-09-29): the preceding paragraph understates the domain.
+\begin{ednote}
+By the predecessor's \texttt{thm:promotion} \cite{repo-residue}, every homogeneous solution in $\Hh_{n+1}$ already lies in $\Hh_n[T]$; hence for $T$-independent forcing every solution in $\Hh_{n+1}$ lies in $\Hh_n[T]$, and Theorem~\ref{thm:smith-degree} classifies all solutions in $\Hh_{n+1}$.
+\end{ednote}
+
+\subsection{Proof dependencies and independent review priorities}
+The infinite-dimensional part has two separate contraction mechanisms. Lower differentiation decreases an $L$ exponent by one, justifying the functional calculus inside blocks. The perturbation decreases an $x$ exponent by $\eps$, justifying outer reconstruction and projected finite cutoffs. The derivative parameter is formal and supplies a third, discrete bookkeeping degree, not an analytic smallness assumption.
+
+The most useful points for independent review are the construction of normalized $G$, the word-summability argument for $U(z)$, the antidiagonal crossing determinant, and the invariant-subspace proof that the scalar series is exactly a pencil. Once these are established, the Smith and Toeplitz classifications are finite algebra. The determinant order and inverse pole bound also provide independent structural checks: any proposed example in the stated class must satisfy $\sum\nu_i=r$ and $\max\nu_i\le s$.
+
+\subsection{A staged Lean development}
+The repository already separates formal polynomial block calculations from the missing concrete Hahn ambient \cite{repo-docs,repo-block}. A useful extension would respect that separation rather than declare the present theorem formalized by analogy.
+
+\paragraph{Finite-dimensional core.}
+First formalize the action of a matrix power series on divided-power polynomial vectors. Prove its block Toeplitz representation, rank solvability criterion, degree preservation under formal units, and the diagonal equation $\partial^\nu d=\beta$. These are independent of transseries.
+
+\paragraph{Abstract finite-defect lifting.}
+Next formalize Theorem~\ref{thm:reduction} from abstract maps satisfying \eqref{eq:splitting}--\eqref{eq:normalization}, plus an explicitly supplied two-sided formal inverse. This isolates the algebraic elimination from Hahn support theory.
+
+\paragraph{Concrete support and residue instance.}
+Construct the lexicographic real exponent group and its Hahn field, strong derivative, normalized integration, and moment splitting. Prove the two support-decrease lemmas and instantiate the formal inverse. This is where the main analytic-looking notation must be given an actual formal algebraic meaning.
+
+\paragraph{The crossing and finite jets.}
+The moment identity \eqref{eq:antidiagonal} is a compact formalization target, closely related to the existing polynomial block API. Combine it with the root factorization to obtain the block crossing and the finite jet bound. A proof of Smith reduction over a discrete valuation ring can be reused, or the degree filtration may first be developed through the explicit Toeplitz systems.
+
+\paragraph{Executable rational realization.}
+The finite rational scalar construction and fourth-order example are suitable end-to-end tests. Rational interpolation, matrix powers, and dual nullvectors can be checked exactly. Such a development would certify the actual degree statements, rather than merely reproduce a numerical table.
+
+\section{Further research questions and concrete next targets}
+\label{sec:future}
+The exact degree question at fixed outer-small linear data is answered above. The following questions concern genuinely different extensions or effectiveness boundaries; they are not presented as an established catalog of open problems in the literature.
+% ed. (2026-09-29): correspondence with the predecessor's questions.
+\begin{ednote}
+The questions ``Perturbations that are small only in logarithms'', ``Confluence under indicial-root collisions'', ``Optimal coefficient grammars and bit complexity'', ``Matrix systems and nonreal modes'', ``Nonlinear finite obstructions'' and ``Analytic realization and sectorial information'' below are the predecessor's questions ``Perturbations small only in logarithms'', ``Parameter-dependent root collisions'', ``Effective coefficient representations'', ``Matrix systems and nonreal indicial roots'', ``Nonlinear equations and an effective obstruction variety'' and ``Analytic realization beyond the displayed block'' \cite{repo-residue}. The matrix-systems question is partly answered at depth $0$, for first-order real-spectrum systems, by the Hahn--Fuchsian package \cite{ed:hfr}.
+\end{ednote}
+
+\subsection{Perturbations that are small only in logarithms}
+The outer-drop hypothesis excludes a perturbation such as $L^{-1}E^j$. It can remain at one root level indefinitely, so the proof that a resonance path visits at most $s$ root levels no longer applies. Can one construct a multilevel residue-series reduction that contracts first in $L$, then in deeper logarithms, and identify exactly when its effective matrix has finite pole order? A first target is a one-root operator with coefficients in a finite Laurent series in $L^{-1}$, including examples whose homogeneous solutions require new powers or exponentials rather than only a polynomial in $T$.
+
+% ed. (2026-09-29): records the later package (batch 53) that answers this question in part.
+\begin{ednote}
+Answered in part by the later package \cite{ed:tri}: for triangular systems, and for scalar operators that factor into first-order factors over the field, with no smallness hypothesis, every solution in the finite logarithmic tower is polynomial in the added logarithm, of degree bounded by the number of split factors on a coupling path, and the Smith exponents of a residue series with determinant \(z^r\) classify the degrees. A first-order factor either is a logarithmic derivative in the field or has no homogeneous solution at any finite depth; for \(Ey=L^{-\alpha}y\), \(\alpha>0\), the latter happens exactly when \(0<\alpha<1\). In particular, at first order the first target above has no exotic case: a coefficient \(x^{-1}(\lambda+\sum_{k\ge1}c_kL^{-k})\) is always a logarithmic derivative, with integrating factor \(x^{\lambda}L^{c_1}\exp(\cdot)\) in the field, the exponent being a small series. One-root operators of higher order that do not factor over the field, and cyclic couplings, remain open.
+\end{ednote}
+
+\subsection{Confluence under indicial-root collisions}
+The exact pencil uses factors $P'(\lambda)^{-1}$, while the repeated-root theory has a nonsingular matrix crossing in a larger block. Construct coordinates that interpolate between these descriptions as two roots merge. The concrete test case $P_\tau(t)=t(t-\tau)$ with residue-weighted perturbations should clarify whether a uniformly bounded change of basis exists or whether a rescaling in $\tau$ is essential. Fixed-parameter solvability and a parameter-uniform normal form are different targets.
+
+\subsection{Optimal coefficient grammars and bit complexity}
+The general word cutoff becomes a terminating algorithm only after exact coefficient extraction is provided. Find a practical class of lower-logarithm series closed under the normalized block inverse and the coefficient queries used by $M_k$. For finite Laurent-log input, a useful result would give a precise dependency cone showing which coefficients of each intermediate primitive can influence a requested residue. The next step is a bit-complexity analysis in differential order, root gaps, exponent denominators, coefficient height, and the number of reachable outer drops.
+
+\subsection{Earlier stopping and forcing-adapted jets}
+The uniform classification jet ends at $s-1$, but many examples need less. The basic early stopping rule $h_d=r$ already follows from the proved classification: all chains have then been exhausted. Can sparse root-transfer data and structured elimination certify a smaller workload before forming the full Toeplitz matrix at that stopping order? Similarly, a particular forcing may excite only a small part of the logarithmic-index filtration. A forcing-adapted algorithm should construct the minimal certificate using a Krylov-type subspace rather than the entire resonance matrix.
+
+\subsection{Restrictions from prescribed root multiplicities}
+Every partition is realizable when one is free to choose $r$ distinct simple roots. For a fixed multiplicity list $(m_1,\ldots,m_s)$, the block crossing and strict root filtration impose additional constraints. Classify all possible Smith-index partitions for that fixed list, and determine which are attained by scalar coefficients with finite rational support. This asks for a range theorem finer than the universal simple-root realization, not a repetition of it.
+
+\subsection{Matrix systems and nonreal modes}
+A matrix-valued indicial polynomial may have internal Jordan structure not represented by scalar multiplicity alone. Determine the appropriate residue pairing and test whether its root crossing remains first order and nondegenerate. Separately, including nonreal indicial roots requires oscillatory factors such as $x^{i\beta}$, which do not fit an ordered real-growth interpretation without care. One possible first model fixes a finite set of imaginary exponents and treats their coefficients algebraically rather than imposing an artificial magnitude order on oscillation.
+
+% ed. (2026-09-29): records the later package (batch 53) that answers this question in part.
+\begin{ednote}
+For triangular first-order systems at every depth \(n\ge0\), including complex coefficients with real exponents, the same package \cite{ed:tri} identifies the invariant as the Smith exponents of its residue series \(M(z)\), whose diagonal is exactly \(z\) and whose determinant is \(z^r\). Nontriangular systems and oscillatory monomials \(x^{i\beta}\) are not treated there; it shows only that \(D-i/x\) has no nonzero homogeneous solution in the real-exponent field or its finite logarithmic tower.
+\end{ednote}
+
+\subsection{Nonlinear finite obstructions}
+For an equation $P(E)u+Ru+F(u)=f$, a support-small nonlinear term may be eliminated on the complement of the resonant coordinates. Can the resulting finite nonlinear map be expanded in the derivative parameter with a useful finite jet bound? Its branches may have different minimum logarithmic degrees, and linear Smith exponents need not suffice. A concrete test problem is a quadratic nonlinearity with a strictly positive outer drop, near a forcing for which the linear Toeplitz obstruction has codimension one.
+
+\subsection{Analytic realization and sectorial information}
+For finite analytic coefficient data, construct actual solutions whose asymptotic expansions match the formal lifts, with uniform bounds for truncation in both $x^{-1}$ and lower logarithms. Determine whether the intrinsic nilpotent action in \eqref{eq:nilpotent-intrinsic} is reflected by a sectorial connection or logarithmic continuation invariant. Such a result must be proved with analytic estimates; it cannot be inferred merely because a formal matrix pencil resembles a regular-singular residue.
+
+\subsection{Canonical models and proof-assistant certificates}
+The logarithmic indices are intrinsic, but the series $M(z)$ depends on normalized choices. Construct an explicit equivalence between matrices obtained from two finite-defect splittings, with control of the finite jets. A formally checked transformation law could make obstruction certificates portable between implementations. The first practical milestone is the finite-dimensional core and the scalar realization, followed by a genuine Hahn instance of the abstract lifting theorem.
+
+\section{Conclusion}
+A fixed-depth residue matrix is only the first layer of the logarithmic-degree problem. Lifting it to a derivative-parameter matrix series retains precisely the extra information needed for higher degrees. Nondegenerate root crossings force total determinant order $r$ and inverse pole order at most $s$, so a bounded jet suffices. Smith indices give the complete homogeneous filtration, while finite Toeplitz systems give forcing-specific minimum degrees and certificates of impossibility.
+
+For residue-weighted scalar operators, the effective series is exactly a pencil. Its derivative-normalized nilpotent matrix, rather than the unweighted resonance graph or the old matrix's nilpotency, determines chain lengths. Every partition of the differential order occurs in a finite rational scalar realization. The fourth-order cancellation family demonstrates why the extra information matters even when the original degree-zero data are unchanged.
+
+These results provide a concrete answer to the predecessor's exact-degree question within its stated outer-small linear class. The remaining tasks concern new coefficient regimes, root confluence, effective representation, nonlinear equations, analytic realization, and formal verification, rather than an unresolved gap in the finite polynomial-logarithm classification proved here.
+
+\appendix
+\section{A compact certificate format}
+\label{app:certificate}
+A bounded-degree claim can be stored with the following finite data: the exact coefficient field; $r$ and the requested degree $d$; matrices $M_0,\ldots,M_d$; the vector $b_f$; and either a coordinate vector $\mathbf c$ or a dual vector $w$.
+
+For a positive certificate, check
+\[
+ \Tmat_d\mathbf c=\mathbf b_d.
+\]
+The accompanying support theorem and reconstruction formula then supply a formal Hahn solution of that degree. For a negative certificate, check
+\[
+ w^{\mathsf T}\Tmat_d=0,\qquad
+ w^{\mathsf T}\mathbf b_d\ne0.
+\]
+No Smith transformation is needed to verify either certificate. To certify \emph{minimality}, combine a positive certificate at $d$ with a negative one at $d-1$. When $d=s$, a negative certificate at $s-1$ and the universal existence theorem suffice to classify the minimum, although an explicit coordinate polynomial additionally requires a positive certificate or the final jet.
+
+The matrix entries themselves require provenance. In the universal scalar realization, one verifies the finitely many interpolation identities and the hypotheses of Theorem~\ref{thm:pencil}. For a general operator, one verifies the finite word formulas and the relevant coefficient extractions. A bare matrix certificate does not, on its own, prove that a supplied matrix came from the claimed differential operator.
+
+\section{Dependency and scope table}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.33\linewidth}>{\raggedright\arraybackslash}p{0.28\linewidth}}
+\toprule
+Result & Main inputs & Boundary\\
+\midrule
+\endhead
+Normalized splitting & Hahn support calculus, lower integration, moment identities & Formal field, not function germs\\
+Derivative-parameter reduction & Splitting identities, strong outer inverse, $z$-adic algebra & Polynomial action in $T$\\
+Finite jet-word formula & Common outer drop and positive $z$ degree for preserving letters & Finite factor depth, not automatic computability\\
+Root crossing & Integration by parts and polynomial root factorization & Base depth $n\ge1$\\
+Exact degree filtration & Crossing, Smith reduction, degree-preserving formal units & $T$-independent forcing\\
+Finite certificates & Divided powers and finite-dimensional linear algebra & Requires exact matrix provenance\\
+Exact scalar pencil & Simple real roots, common residue factor $\sigma$, negative-$L$ invariant subspace & Not every outer-small operator is a pencil\\
+Universal realization & Rational interpolation and nilpotent Jordan blocks & Distinct integer real roots chosen freely\\
+Computational checks & Exact rational finite calculations & Not Lean or arbitrary-support verification\\
+\bottomrule
+\end{longtable}
+
+\section{Reproduction and source notes}
+The archive contains the standalone source \path{exact_logarithmic_degree.tex}, its compiled PDF, \path{build.sh}, the verification programs and recorded JSON results, and notes on proof scope and repository provenance. No network access or repository checkout is needed to rebuild the document after the stated software dependencies are installed.
+
+For verification, run
+\begin{verbatim}
+python verification/verify.py
+python verification/operator_check.py
+\end{verbatim}
+The recorded run used Python 3.13.5 and SymPy 1.14.0. The first script's full environment is written to its JSON result. The second uses exact Python fractions together with SymPy polynomial arithmetic.
+
+For the document, run
+\begin{verbatim}
+sh build.sh
+\end{verbatim}
+The source includes its bibliography and requires only the standard packages listed in its preamble. The build script uses three pdfLaTeX passes and stops on an error. Neither the scripts nor the manuscript attempt to modify the ProveIt repository.
+
+Repository references below are pinned to the inspected commit. The predecessor's own provenance names an earlier snapshot; that earlier snapshot is not substituted for the one used in this investigation. The external sources provide background and attribution for the established algebraic and generalized-series methods; the proofs of the specific statements in this manuscript are supplied in the text.
+
+\begin{thebibliography}{9}
+\small\raggedright
+\bibitem{repo-residue}
+ProveIt research document, \emph{Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn Transseries}, prepared for Vladimir Reshetnikov, 29 September 2026. Inspected at commit \texttt{\snap}, source blob \texttt{72b51729e1aa48fdf9814e00673251a88e84044b}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/76b8ea50cc67f2255c11b27e0edc9ed0fca3b5cd/Analysis/Transseries/docs/series-and-transseries/Residue_Obstructions_Logarithmic_Depth_Promotion/residue_fredholm.tex}.
+Especially the fixed-depth reduction, promotion theorem, and further-research questions on exact degree and cancellation.
+
+\bibitem{repo-docs}
+Vladimir Reshetnikov, maintainer, \emph{ProveIt: Series and transseries documentation}, same inspected commit and date.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/76b8ea50cc67f2255c11b27e0edc9ed0fca3b5cd/Analysis/Transseries/docs/series-and-transseries/README.md}.
+The documented Lean crosswalk is scoped; it does not claim formal verification of the present results.
+
+\bibitem{repo-block}
+Vladimir Reshetnikov, maintainer, \emph{ProveIt: TransseriesBlockAntiderivative.lean}, same commit. Block source identified by blob \texttt{1a4b5e335b5429a267bcfa4c0c9b35aadf9be527}; its polynomial scope is described in the inspected documentation and predecessor.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/76b8ea50cc67f2255c11b27e0edc9ed0fca3b5cd/Analysis/Transseries/Lean/Transseries/TransseriesBlockAntiderivative.lean}.
+
+\bibitem{km}
+Salma Kuhlmann and Micka\"el Matusinski,
+\emph{Hardy type derivations on generalised series fields},
+Journal of Algebra \textbf{351} (2012), 185--203.
+\href{https://doi.org/10.1016/j.jalgebra.2011.11.024}{doi:10.1016/j.jalgebra.2011.11.024}.
+Preprint: \href{https://arxiv.org/abs/0903.2197}{arXiv:0903.2197}.
+Cited for the established theory of strong generalized-series derivations and integration, not for the specific finite matrices proved here.
+
+\bibitem{vdh}
+Joris van der Hoeven,
+\emph{Operators on generalized power series},
+Illinois Journal of Mathematics \textbf{45} (2001), 1161--1190.
+\href{https://doi.org/10.1215/ijm/1258138061}{doi:10.1215/ijm/1258138061}.
+Background reference identified in the inspected predecessor; no unproved result from this paper is needed beyond the standard support calculus stated here.
+
+\bibitem{stanley}
+Richard P. Stanley, \emph{Smith Normal Form in Combinatorics}, 2016, revised 2 April 2016.
+\href{https://arxiv.org/abs/1602.00166}{arXiv:1602.00166}.
+A survey of established Smith-form algebra and its interpretations. The elementary discrete-valuation-ring reduction needed here is included in Section~\ref{sec:smith}.
+
+\bibitem{stiefenhofer}
+Matthias Stiefenhofer, \emph{Formal and Analytic Diagonalization of Operator functions}, 2023.
+\href{https://arxiv.org/abs/2305.14228}{arXiv:2305.14228}.
+The paper explicitly relates operator Toeplitz matrices, Jordan-chain stabilization, finite inverse pole order, and Smith form. Cited to distinguish those established methods from their specific support-controlled application in this manuscript.
+% ed. (2026-09-29): bibliography entry for the editorial notes.
+\bibitem{ed:hfr}
+\emph{Finite Resonance Certificates and Sharp Analytic Normalization for Hahn--Fuchsian Systems}, ProveIt research package filed in batch 48 (after the inspected snapshot), directory \path{Hahn_Fuchsian_Resonance_Analytic_Normalization/} beside the predecessor \cite{repo-residue}. Editorial addition.
+% ed. (2026-09-29): bibliography entry for the batch-53 editorial notes.
+\bibitem{ed:tri}
+\emph{Triangular Hahn Differential Systems Without Smallness: Rank-one descent, exact logarithmic degree, and finite residue certificates}, ProveIt research package filed in batch 53 (after the inspected snapshot), directory \path{Triangular_Hahn_Differential_Systems_Without_Smallness/} beside this package; source \path{triangular_hahn_systems.tex}. Editorial addition.
+\end{thebibliography}
+\end{document}

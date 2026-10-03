@@ -1,0 +1,1105 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,array,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Fixed forbidden distances in involutions}\fancyhead[R]{\small Research report}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\hypersetup{pdftitle={Fixed Forbidden Distances in Involutions},pdfsubject={Uniform expansions, two Gaussian sectors and the adjacent-transposition law (OEIS A239144, A170941, A217876)}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\Prb}{\mathbb P}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
+\newcommand{\eps}{\varepsilon}\newcommand{\Pois}{\operatorname{Poisson}}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\N}{\mathbb N}
+% [write, batch 77] macros used by the merged material of source 26
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\Tadj}{T^{\mathrm{adj}}}
+\newenvironment{mergenote}{\par\smallskip\begingroup\small\noindent\textbf{[Added 2 October 2026, batch 77.]}\ }{\endgroup\par\smallskip}
+\title{Fixed Forbidden Distances in Involutions\\\large Uniform expansions, two Gaussian sectors,\\and the adjacent-transposition law}
+\author{Research article and reproducibility companion (source 19)\\
+research note on OEIS A170941 and A217876 (source 26)\\[2pt]
+\small merged research report, OEIS A239144, A170941, A217876}
+\date{October 2, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The fixed columns of OEIS A239144 count involutions whose transpositions have distance greater than a fixed integer $r$. We give a self-contained adaptation of classical matching-polynomial and Gaussian-duality methods that produces their asymptotic expansions to every prescribed finite order. The underlying theorem is uniform over all forbidden graphs of fixed bounded degree, with coefficients evaluated at the graph's actual normalized matching-root moments. It supplies a complex probability-generating-function expansion and exponentially weighted signed-probability error bounds. For avoidance counts, two explicitly cutoff-defined positive Gaussian sectors have separately controlled expansions, with relative weights $e^{\sqrt n}$ and $e^{-\sqrt n}$. A connected-cluster argument proves exact eventual affine dependence of each fixed-distance local statistic, turning the general moving-statistic expansion into constant-coefficient column expansions. We derive first corrections and distinguish smooth, log-linear, and integer-threshold inverses. The exact Gaussian identity, root-moment technique, and high-order structural-correction methodology are established prior work; the present scope is an explicit involution-family refinement, without a worldwide-priority claim.
+
+\emph{Merged material (source 26, Section~\ref{fdi:sec:adjacent}).} For forbidden distance one, let $X_n$ count the adjacent transpositions in a uniformly chosen involution of $[n]$ (OEIS A217876; its zero column is A170941). Its probability generating function has an expansion to every fixed order in $n^{-1/2}$, uniformly on each compact subset of the complex plane, with rational polynomial coefficients obtained from Gaussian moments and a Touchard transform; Cauchy estimates give a remainder of the same order in every fixed exponentially weighted $\ell^1$ norm of the probability sequence. The source computes the resulting total-variation corrections, the avoidance count, an all-finite-orders Lambert--$W$/Newton inverse with precise integer and log-linear conventions, and an exact Gaussian--Chebyshev decomposition that isolates a parity-alternating sector of relative size $e^{-2\sqrt n}$, with a separate Poincar\'e expansion for each exact sector. These are the case $G=P_n$ of the general theorems, re-proved there by a different route and refined. The avoidance enumeration goes back to Haslinger and Stadler; Ganjtabesh and Steyaert (2011) give exact inclusion--exclusion and the zero-count limit $A_{n,1}/I_n\to e^{-1}$; Li's 2026 preprint explicitly proves the full Poisson law; the first absolute correction $31/24$ was recorded by Kot\v{e}\v{s}ovec in OEIS in 2014. Source 26 develops refinements and error bounds, without claiming exhaustive historical priority or optimal truncation.
+\end{abstract}
+
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+
+\section*{Provenance, notation and status of this report}
+\addcontentsline{toc}{section}{Provenance, notation and status of this report}\label{fdi:sec:provenance}
+\begin{mergenote}
+This report was built in the write phase of batch~77 of ProveIt's incoming-reports intake (cluster P4) from \textbf{two manuscripts}, both delivered in the arrival commit \texttt{096ee7b87} and placed by commit \texttt{d0e6008d9}. Numbers are the batch-77 manuscript numbers.
+\begin{center}\small
+\begin{tabular}{@{}l>{\raggedright\arraybackslash}p{5.6cm}>{\raggedright\arraybackslash}p{1.7cm}>{\raggedright\arraybackslash}p{6.4cm}@{}}
+\toprule
+No.&archive (main file)&pin&printed here as\\
+\midrule
+19&\texttt{fixed-forbidden-\allowbreak distance-\allowbreak involutions.zip} (\texttt{article.tex}, 13-page PDF)&none named&the base: Sections 1--8, unchanged in substance\\
+26&\texttt{involution-\allowbreak refinements-\allowbreak attribution-\allowbreak revision.zip} (\texttt{report.tex}, 15-page PDF)&none named&Section~\ref{fdi:sec:adjacent} and Appendix~\ref{fdi:adj:app:coefficients}; its credits in Section~\ref{fdi:sec:history}\\
+27&\texttt{involution-\allowbreak refinements-\allowbreak reproducibility.zip} (\texttt{report.tex}, 15-page PDF)&none named&not printed: superseded by 26\\
+\bottomrule
+\end{tabular}
+\end{center}
+Neither manuscript names a ProveIt commit or continues a repository path; both are dated 2 October 2026 and name neither an author nor a tool (author lines as above). Manuscript~27 is the earlier edition of 26: 26's revision record (\texttt{data/26-adjacent-revision-integrity.json}) holds the SHA-256 of 27's \texttt{report.tex}, and the two differ only in attribution (26 adds Ganjtabesh--Steyaert 2011 for the zero-count limit); nothing of 27 is shipped.
+
+\emph{Why one report, and where the merge chose.} Source~26 proves, for the path $P_n$ (forbidden distance $r=1$), the theorems that source~19 proves for every forbidden graph of bounded degree, with the same coefficients $31/24,-55/48,1717/1920$. Source~19 is the base, being the more general. Every result, proof, example, remark, limitation and question of source~26 that is not literally a special case of a statement of source~19 with the same proof is printed in Section~\ref{fdi:sec:adjacent}: the full law of $X_n$ with the polynomials $Q_j(\ell)$, the total-variation corollary, the exact moments and triangle formula, a second proof of the law (by growing-moment summation rather than matching roots), the absolute and logarithmic avoidance coefficients, a second exact sector decomposition (Chebyshev, with a sharper residual) and the sector ratio, the log-linear inverse with its explicit chord term, the source's checks, table and questions, and its coefficients through order eight. Source~26's smooth root, Newton algorithm and two-ceiling enclosure coincide with source~19's at $r=1$ (same statements, same proofs) and are printed once, in Section~\ref{fdi:sec:inverse}. The historical credits of both sources are stated once, in Section~\ref{fdi:sec:history}.
+
+\emph{Status.} AI-assisted (presumed: the deliveries name no author or tool), unrefereed, and not formalized in any proof assistant. Placement in ProveIt gives it no formal status. Source~19's \texttt{19-distance-review.md} reviews source~19's article source (by its delivered hash), not this merged text.
+
+\emph{Notation.} Source~19's notation is used throughout. The merged material of source~26 reuses several of its letters with other meanings; the convention below fixes them. Symbols renamed from source~26 are marked $\ast$.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{2.6cm}>{\raggedright\arraybackslash}p{5.6cm}>{\raggedright\arraybackslash}p{6.0cm}@{}}
+\toprule
+symbol here&meaning&do not read as\\
+\midrule
+$\eps=n^{-1/2}$&both sources ($t$ in source 26$^\ast$)&---\\
+$T(n,r)$&the A239144 triangle, $T(n,r)=A_{n,r}$&$\Tadj(n,\ell)$\\
+$\Tadj(n,\ell)^\ast$&the A217876 triangle, $I_n\Prb(X_n=\ell)$ (source 26's $T(n,\ell)$)&$T(n,r)$; here $\Tadj(n,0)=A_{n,1}=a_n$\\
+$P_h(w;a)$&source 19's universal polynomials, after extracting $e^{a_1(G)w}$, $a_1(P_n)=1-1/n$&$P_j(w)$\\
+$P_j(w)$, $Q_j(\ell)$&source 26's constant-coefficient polynomials at $r=1$, after extracting $e^{w}$ (as in \eqref{fdi:eq:fixedpgf})&$P_j(w;a(P_n))$, which moves with $n$\\
+$K_G^\sigma$, $C_G$, $L_n^\sigma$&source 19's exterior sectors (cutoff $B$), central term, scale $\propto e^{-1/4-a_1}$&the Chebyshev sectors\\
+$\mathcal K_n^{\sigma\ast}$, $\tau_n^{\sigma\ast}$, $\Xi_n^\ast$, $\mathcal L_n^\sigma$&source 26's Chebyshev sectors $K_n^\sigma$, tails $T_n^\sigma$, residual $R_n$; scale $\propto e^{-5/4}$&$K_{P_n}^\sigma=\mathcal K_n^\sigma-\tau_n^\sigma$; $L^\sigma_n=e^{1/n}\mathcal L^\sigma_n$ at $r=1$\\
+$D_h(a)$; $A_r=D_r(0)$&sector polynomials; unrestricted-involution coefficients (both sources)&$\widehat D_{m,\sigma}^\ast$, source 26's $D_{r,\sigma}$, equal to $d_m$\\
+$d_m$, $\beta_j$&source 26's absolute and logarithmic avoidance coefficients&$\beta_j(S)$ of Theorem~\ref{fdi:thm:affine}; but $\beta_j=\gamma_{1,j}$\\
+$\kappa_j^\ast=P_j(-1)$&source 26's $r_j$&the distance $r$\\
+$m$, $i$&summation or iteration indices of source 26$^\ast$ (there $r$)&the distance $r$, which is $1$ in Section~\ref{fdi:sec:adjacent}\\
+$\mathcal U_n^\ast$&Chebyshev polynomial of the second kind (source 26's $U_n$)&$U\sim N(1/2,1/2)$, which both sources use\\
+$\mathcal H^\ast,\mathcal F^\ast,\mathcal F_J^\ast,\mathcal F_\sigma^\ast$&source 26's series $H,F,F_J,F_\sigma$&$H_r(w;a)$, $F_{G,w}(y)$ of source 19\\
+$h_n^\ast$, $g_\sigma^\ast$, $y_{n,\sigma}^\ast$&source 26's $\phi_n$, $a_\sigma$, $r_{n,\sigma}$&the density $\phi$, the statistics $a_j$, the distance $r$\\
+$\widehat p_{h,\sigma}^\ast,\widehat b_{m,\sigma}^\ast$&source 26's sector generators $p_{h,\sigma},b_{r,\sigma}$&$p_h(u;a)$, $b_h(u;a)$; at $r=1$ they differ by the moving $a_j$\\
+$R$&radius of the compact $w$-set (source 26's $B$$^\ast$)&the root bound $B$ of \eqref{fdi:eq:B}\\
+$\mathcal D_J^\ast$; $c_J,c_J',\Omega_J$, $\vartheta_k,k_0,\ell_0$&source 26's $D_J(\ell,t)$; local constants $B_J,D_J,M_J$, $\rho_k,K,L$$^\ast$&$D_h$; $B$, $M_k$, roots $\rho_i$, sectors $K$, $L$\\
+$L_{1,J}$, $x_{1,J}$, $\widetilde x_{1,J}$, $\mathcal A_1$, $N_1$&source 26's $L_J$, $x_J$, $\widetilde x_J$, $\mathcal A$, $N$ (identical objects)&---\\
+\bottomrule
+\end{tabular}
+\end{center}
+Typography: source~26's probability symbol is printed $\Prb$, its Gaussian density $\varphi$ is printed $\phi$, and its $\operatorname{Pois}$ is printed $\Pois$; ``Kotesovec'' in source~19 is printed Kot\v{e}\v{s}ovec. No other symbol was renamed, and no statement, proof or number of either source was changed. All labels carry the prefix \texttt{fdi:} (source~19's material and the notes added here) or \texttt{fdi:adj:} (source~26's material).
+\end{mergenote}
+
+\section{The fixed distance problem and its precedents}
+An involution on $[n]=\{1,\ldots,n\}$ consists of fixed points and disjoint transpositions. Write $I_n$ for the number of all involutions, with $I_0=I_1=1$ and
+\begin{equation}\label{fdi:eq:Irec}
+ I_n=I_{n-1}+(n-1)I_{n-2}.
+\end{equation}
+For a fixed nonnegative integer $r$, let $A_{n,r}$ count those involutions for which every transposition $(i,j)$ satisfies $|i-j|>r$. Thus
+\[
+ A_{n,r}=T(n,r)\quad\hbox{in OEIS A239144},\qquad
+ A_{n,0}=I_n,\quad A_{n,1}=\mathrm{A170941}(n).
+\]
+This is the existing Arndt--Heinz counting family recorded in 2014, not a newly defined sequence \cite{oeis239144}. The statements below take $n\to\infty$ with $r$ fixed. They make no assertion about the triangular diagonal or an increasing $r=r(n)$.
+
+The first practical consequence of the analysis is
+\begin{equation}\label{fdi:eq:main-column}
+ \frac{A_{n,r}}{I_n}=e^{-r}\left[1+\frac r{\sqrt n}-\frac r{2n}
+ -\frac{r(8r^2-12r+3)}{24n^{3/2}}+O_r(n^{-2})\right].
+\end{equation}
+Every higher coefficient is effectively computable. For a fixed finite set $S$ of forbidden positive distances, rather than all distances $1,\ldots,r$, the same all-orders conclusion holds, with different computable constants.
+
+\subsection{Historical boundary}\label{fdi:sec:history}
+The machinery used here has a substantial history. Heilmann and Lieb established the real-rootedness and root bounds for matching polynomials \cite{heilmannlieb}. Godsil developed matching duality and the connection between matching roots and walks in rooted path trees \cite{godsilduality,godsilwalks}. Lass's exposition explicitly attributes the shifted Gaussian duality to Godsil's 1981 Theorem 2.4 and states it in a form whose evaluation at $1$ is exactly the all-matchings complement identity used here \cite{lass}. The shift by $1$ is therefore already classical.
+
+Godsil and McKay use bounded matching roots, walk power sums, and saddle integration to obtain structural asymptotic corrections \cite{godsil-mckay}. Especially close prior work is McLeod's 2007 thesis, Chapter 4, and its 2010 journal continuation \cite{mcleodthesis,mcleod}. The thesis's Theorem 4.17 gives explicit corrections through $n^{-5}$ and an $O(k^6/n^6)$ remainder in the exponent for perfect matchings in the complement of a $k$-regular graph on $2n$ vertices, with $k=O(n^{1-\delta})$. Theorem 4.18 expresses structural terms through short subgraphs. These are substantial high-order local-statistic results, not merely leading equivalents. The corresponding theorem pages were checked in the primary thesis PDF. The final journal text has not been compared word for word with that precursor.
+
+For adjacent avoidance, Ganjtabesh and Steyaert already give the selected-pair counting formula and prove $A_{n,1}/I_n\to e^{-1}$ \cite{ganjtabesh}. Kot\v{e}\v{s}ovec's 2014 contribution to A170941 records the first absolute correction $31/(24\sqrt n)$ \cite{oeis170941}. Li's 2026 manuscript proves convergence of the full adjacent-transposition count to $\Pois(1)$ \cite{li}. Neither the leading $1/e$ nor the first adjacent correction is asserted as new here.
+
+\begin{mergenote}
+\emph{Credits of source 26, stated once for the whole report.} The inspected 1997 author preprint of Haslinger and Stadler, Section 3.1, printed pages 16--17, gives the avoidance recurrence and growth discussion; the related paper appeared in 1999 \cite{hs1997,hs1999}. In the present indexing the recurrence is \eqref{fdi:adj:eq:avoidrec}. Ganjtabesh and Steyaert's 2011 paper \cite[Section 5]{ganjtabesh} already gives the selected-pair counting numerator in equation (17), avoidance inclusion--exclusion in equation (18), and the zero-count limit in Theorem 3 and equation (25), printed pp.~409--412. OEIS credits V\'aclav Kot\v{e}\v{s}ovec on 10 September 2014 with the absolute first correction $31/(24\sqrt n)$ \cite{oeis170941}. Li's manuscript dated 29 August 2026 explicitly proves the full $\Pois(1)$ law using factorial moments \cite[theorem labelled \texttt{thm:poisson}]{li}; the zero-count limit has the earlier 2011 source. The lingering conjectural wording on the OEIS pages is not evidence that either leading limit remains open. Source 26's targeted inspection did not locate the uniform all-orders probability theorem or the exact separate-sector refinement for the adjacent case; this is a statement about inspected sources, not a worldwide novelty certificate. In particular, the final typeset 1999 paper was not verified to be textually identical to the recovered author preprint, and the related R\'egnier and Nebel references were not exhaustively inspected (\texttt{data/26-adjacent-sources.json} records the URLs and the hashes of the inspected bytes, without redistributing third-party texts). Both sources credit Ganjtabesh--Steyaert for the zero-count limit and Li for the full Poisson law; this credit chain is the one of source 26's attribution revision (see \hyperref[fdi:sec:provenance]{the provenance section}). The finite Gaussian identity $I_m=\E(1+Z)^m$ of Lemma~\ref{fdi:lem:marking} is classical; it is also stated in the repository's \emph{Combinatorial Transseries Inverses} volume, chapter \texttt{ct:ch:involutions}, equations \texttt{t2:eq:involution-enumeration} and \texttt{t2:eq:involution-A} \cite{cti}, and no novelty is claimed for it here.
+\end{mergenote}
+
+The useful scope of this article is the combined uniform, arbitrary-finite-order unrestricted-involution result: arbitrary bounded-degree forbidden graphs with moving local statistics, complex PGFs, weighted signed-law errors, and separately controlled unequal Gaussian sectors; together with fixed-distance stabilization and carefully specified inverses. A bounded inspection of the sources just named did not locate that combined theorem. This is a statement of inspected scope, not proof of global novelty. In particular, related perfect-matching Poisson limits \cite{deng}, finite-order partial-matching estimates \cite{greenhill}, and root-moment algorithms \cite{wanless} are important precedents. No claim is made that this article invents the integral representation, root-moment method, or high-order structural-correction approach.
+
+\section{Exact identities and finite local statistics}\label{fdi:sec:exact}
+Let $G$ be a simple graph on $n\ge1$ vertices and let $\Delta(G)\le\Delta$, where $\Delta$ is fixed independently of $n$. The edges of $G$ are forbidden transpositions. Let $M_k=M_k(G)$ be the number of $k$-edge matchings, with $M_0=1$, and define
+\[
+ \mu_G(y)=\sum_k(-1)^k M_k y^{n-2k},\qquad
+ F_{G,w}(y)=\sum_k M_k w^k y^{n-2k}.
+\]
+Let $X=X_G$ count edges of $G$ occurring as transpositions in a uniformly chosen involution. The avoidance count is $A_G=I_n\Prb(X=0)$.
+
+\begin{lemma}[Marking and Gaussian duality]\label{fdi:lem:marking}
+For every complex $w$,
+\begin{equation}\label{fdi:eq:marking}
+ I_n\E(1+w)^X=\sum_k M_k w^k I_{n-2k}
+ =\E F_{G,w}(1+Z),\qquad Z\sim N(0,1).
+\end{equation}
+In particular $A_G=\E\mu_G(1+Z)$.
+\end{lemma}
+\begin{proof}
+Expand $(1+w)^X$ by selecting a subset of occurring forbidden edges. A selected $k$-matching has $I_{n-2k}$ completions. Summing over the $M_k$ selected matchings proves the first equality. The finite identity $I_m=\E(1+Z)^m$ follows from Gaussian moments or the exponential generating function $\exp(t+t^2/2)$. This proves the second equality without an infinite-series interchange. The avoidance identity is the specialization $w=-1$ of the classical matching duality discussed above.
+\end{proof}
+
+Write the $n$ roots of $\mu_G$, with multiplicity, as $\rho_1,\ldots,\rho_n$. The Heilmann--Lieb bound allows the conservative common choice
+\begin{equation}\label{fdi:eq:B}
+ B=2\sqrt{\max(\Delta-1,1)},\qquad |\rho_i|\le B.
+\end{equation}
+The convention covers degrees $0$ and $1$ as well as the usual degree-at-least-two case. Define
+\begin{equation}\label{fdi:eq:aj}
+ a_j(G)=\frac1{2jn}\sum_{i=1}^n\rho_i^{2j},\qquad
+ 0\le a_j(G)\le\frac{B^{2j}}{2j}\quad(j\ge1).
+\end{equation}
+If $\nu$ is the maximum matching size, parity and real-rootedness give
+\begin{equation}\label{fdi:eq:paired}
+ \mu_G(y)=y^{n-2\nu}\prod_{i=1}^{\nu}(y^2-\eta_i^2),\qquad
+ F_{G,w}(y)=y^{n-2\nu}\prod_{i=1}^{\nu}(y^2+w\eta_i^2),
+\end{equation}
+where the positive roots $\eta_i$ are listed with multiplicity. Consequently
+\begin{align}
+ \log\mu_G(y)&=n\log y-n\sum_{j\ge1}a_j(G)y^{-2j}\quad(y>B),\label{fdi:eq:logroot}\\
+ [z^j]\log\!\left(\sum_k M_kz^k\right)&=(-1)^{j+1}n a_j(G).\label{fdi:eq:logmatching}
+\end{align}
+The second formula is a formal identity and computes the $a_j$ by rational arithmetic without numerical roots. If $m=|E(G)|$ and $W=\sum_v\binom{d(v)}2$, then
+\begin{equation}\label{fdi:eq:a12}
+ a_1=\frac mn,\qquad a_2=\frac{m/2+W}{n}.
+\end{equation}
+Indeed $M_2=\binom m2-W$, so $n a_2=m^2/2-M_2$.
+
+Godsil's root-moment interpretation identifies $\sum_i\rho_i^{2j}$ with the sum over roots $v$ of length-$2j$ returning walks in the rooted path tree of $G$ at $v$ \cite{godsilwalks}. Its vertices are simple paths starting at $v$, with adjacency by one-step extension or deletion. A returning walk of length $2j$ reaches depth at most $j$, so its contribution depends only on the radius-$j$ neighborhood of $v$. These are path-tree walks, not arbitrary closed walks in $G$. This explains the finite-local-statistic nature of \eqref{fdi:eq:aj}.
+
+\begin{lemma}[Global factorial moment domination]\label{fdi:lem:factorial}
+For every integer $k\ge0$,
+\begin{equation}\label{fdi:eq:factorial}
+ \E(X)_k=k!M_k\frac{I_{n-2k}}{I_n}\le(\Delta/2)^k,
+\end{equation}
+where the left side is zero when $2k>n$. Thus
+$|\E(1+w)^X|\le\exp(\Delta|w|/2)$ for every $w\in\C$.
+\end{lemma}
+\begin{proof}
+At the $i$th stage of an ordered matching-edge selection, at most $\Delta(n-2i)/2$ edges remain. Hence
+$k!M_k\le\prod_{i=0}^{k-1}\Delta(n-2i)/2$.
+The sequence $I_N$ is nondecreasing, and \eqref{fdi:eq:Irec} gives
+$I_N\ge N I_{N-2}$ for $N\ge2$.
+Iterating cancels the factors $n-2i$. The $k=0$ case is $1$, including $\Delta=0$. Expanding the finite binomial-moment sum and taking absolute values proves the last assertion.
+\end{proof}
+This bound is valid over the whole possible moment range. The main proof below uses direct analytic estimates; it does not infer a uniform infinite-tail estimate from fixed-$k$ asymptotics.
+
+\section{The uniform expansion and its coefficient generator}\label{fdi:sec:uniform}
+Put $\eps=n^{-1/2}$. In this section the numbers $a_j$ always mean the actual statistics $a_j(G)$ at the current $n$.
+
+\begin{theorem}[Uniform complex PGF expansion]\label{fdi:thm:pgf}
+There are universal rational polynomials
+$P_h(w;a_1,\ldots,a_{\lfloor h/2\rfloor+1})$, with $P_0=1$ and degree at most $h$ in $w$, such that, for each fixed integer $J\ge0$ and real $R\ge0$,
+\begin{equation}\label{fdi:eq:pgf}
+ \E(1+w)^X=e^{a_1w}\left\{\sum_{h=0}^J P_h(w;a(G))\eps^h
+ +O_{\Delta,J,R}(\eps^{J+1})\right\}
+\end{equation}
+uniformly over all $G$ on $n$ vertices of maximum degree at most $\Delta$, and all $|w|\le R$. No convergence or expansion of $a_j(G)$ is assumed.
+\end{theorem}
+The first coefficients are
+\begin{align}
+ P_1&=-a_1w,\notag\\
+ P_2&=\tfrac32a_1w+(\tfrac32a_1^2-a_2)w^2,\label{fdi:eq:P123}\\
+ P_3&=-\tfrac{11}{8}a_1w+(2a_2-4a_1^2)w^2
+ +(a_1a_2-\tfrac76a_1^3)w^3.\notag
+\end{align}
+
+\begin{corollary}[Exponentially weighted signed errors]\label{fdi:cor:weighted}
+Let
+\[
+ q_{n,J}(\ell)=[z^\ell]\left[e^{a_1(z-1)}
+ \sum_{h=0}^J P_h(z-1;a(G))\eps^h\right].
+\]
+For every fixed $q\ge0$,
+\begin{equation}\label{fdi:eq:weighted}
+ \sum_{\ell\ge0}q^\ell\big|\Prb(X=\ell)-q_{n,J}(\ell)\big|
+ =O_{\Delta,J,q}(\eps^{J+1}).
+\end{equation}
+At $q=0$, use $0^0=1$.
+\end{corollary}
+\begin{proof}
+Choose a fixed $S>q$. On $|z|=S$, the PGF theorem with $w=z-1$ bounds the analytic remainder by $C\eps^{J+1}$. Cauchy's estimate bounds its $\ell$th coefficient by $C\eps^{J+1}S^{-\ell}$. The geometric sum is finite, giving \eqref{fdi:eq:weighted}.
+\end{proof}
+The $q_{n,J}(\ell)$ may be negative. This is a signed asymptotic approximation, not a claim that truncation defines a probability law. For $J=0$ it gives a uniform $O_\Delta(n^{-1/2})$ approximation to $\Pois(a_1(G))$ in total variation. If $a_1(G_n)\to\lambda$, this implies a Poisson limit. If those parameters oscillate, \eqref{fdi:eq:pgf} remains valid but there need not be a single limiting law or constant-coefficient expansion. Nor does \eqref{fdi:eq:weighted} assert a smooth all-orders expansion of total-variation distance through parameter values at which the relevant absolute values change branches, including integer Poisson means.
+
+\begin{mergenote}
+For the path ($r=1$) the limiting Poisson mean is the integer $1$, precisely a case this caveat excludes from the general statement. Source 26 nevertheless proves an all-orders expansion of $\TV(\mathcal L(X_n),\Pois(1))$ (Corollary~\ref{fdi:adj:cor:tv}), by a separate sign analysis of the constant-coefficient approximation: the deviation at $\ell=1$ has $Q_1(1)=Q_2(1)=0$ and $Q_3(1)=2/3>0$. The two statements are consistent: the caveat concerns the general theorem, and the corollary settles one such case by an additional argument.
+\end{mergenote}
+
+\subsection{Two explicitly defined exterior sectors}
+Let $\phi(x)=(2\pi)^{-1/2}e^{-x^2/2}$ and use the fixed bound $B$ from \eqref{fdi:eq:B}. Define
+\begin{align}
+ K_G^\sigma&=\int_B^\infty\mu_G(y)\phi(y-\sigma)\dd y
+ \quad(\sigma\in\{+1,-1\}),\label{fdi:eq:K}\\
+ C_G&=\int_{-B}^B\mu_G(y)\phi(y-1)\dd y.\notag
+\end{align}
+Both $K_G^\sigma$ are nonnegative. Reflection and parity give the exact identity
+\begin{equation}\label{fdi:eq:split}
+ A_G=K_G^+ +(-1)^nK_G^-+C_G,\qquad |C_G|\le B^n.
+\end{equation}
+The bound follows from \eqref{fdi:eq:paired}: on $[-B,B]$, each paired factor has magnitude at most $B^2$ and each zero-root factor at most $B$.
+
+\begin{theorem}[Separate all-orders sector estimates]\label{fdi:thm:sectors}
+There are universal rational polynomials $D_h(a_1,\ldots,a_{\lfloor h/2\rfloor+1})$, with $D_0=1$, such that for each fixed $J\ge0$,
+\begin{equation}\label{fdi:eq:sectors}
+ K_G^\sigma=L_n^\sigma
+ \left\{\sum_{h=0}^J\sigma^hD_h(a(G))\eps^h
+ +O_{\Delta,J}(\eps^{J+1})\right\},
+\end{equation}
+uniformly over the graph family and both signs, where
+\begin{equation}\label{fdi:eq:L}
+ L_n^\sigma=\frac1{\sqrt2}\left(\frac ne\right)^{n/2}
+ \exp\left(\sigma\sqrt n-\frac14-a_1\right).
+\end{equation}
+The central term in \eqref{fdi:eq:split} is smaller than either sector scale by every fixed inverse power of $n$.
+\end{theorem}
+In particular,
+\begin{align}
+ D_1&=\tfrac7{24}+a_1,\notag\\
+ D_2&=-\tfrac{119}{1152}-\tfrac{29}{24}a_1+\tfrac32a_1^2-a_2,\label{fdi:eq:D123}\\
+ D_3&=-\tfrac{7933}{414720}+\tfrac{961}{1152}a_1
+ -\tfrac{57}{16}a_1^2+\tfrac76a_1^3+\tfrac{41}{24}a_2-a_1a_2.\notag
+\end{align}
+The negative sector has its own relative remainder, even though it is smaller than the positive one by $e^{-2\sqrt n}$. The error from truncating the positive-sector series at a fixed algebraic order is much larger than the negative sector. Thus two-sector resolution refers to separate controlled integrals, not to numerical recovery of the smaller term from a single finitely truncated total asymptotic series.
+
+\begin{remark}[The cutoff is a convention]
+Changing $B$ to another fixed common root bound changes the exact sectors by at most $O(C^n)$ for a fixed $C$. It does not change their algebraic asymptotic coefficients. We do not assert that the exact sector decomposition is canonically unique under arbitrary cutoff choices.
+\end{remark}
+
+\begin{mergenote}
+\emph{Two special cases elsewhere.} (i) For the empty graph ($r=0$, $\mu_G(y)=y^n$, all $a_j=0$), splitting at $0$ instead of at $B$ gives the two positive involution blocks $A_\sigma$ of the repository's \emph{Combinatorial Transseries Inverses} volume (\texttt{t2:eq:involution-A}), whose all-order expansion \texttt{t1:thm:ivforward} has the coefficients $D_h(0)=A_h$ and the factor $\sigma^h$ of \eqref{fdi:eq:sectors} \cite{cti}; the two cutoffs change the exact sectors by $O(C^n)$ only, as the remark above says. (ii) For the path ($r=1$, $B=2$), source 26 uses a different exact decomposition, through Chebyshev polynomials and the substitution $y=\lambda+\lambda^{-1}$; its sectors are $\mathcal K_n^\sigma=K_{P_n}^\sigma+\tau_n^\sigma$, with the same algebraic coefficients and a sharper, polynomial, central bound (Theorem~\ref{fdi:adj:thm:sectors}).
+\end{mergenote}
+
+\subsection{An all-orders rational algorithm}
+Let $U\sim N(1/2,1/2)$. For $h\ge1$, set
+\begin{equation}\label{fdi:eq:ph}
+ p_h(u;a)=\frac{(-1)^{h+1}u^{h+2}}{h+2}
+ -\sum_{j=1}^{\lfloor(h+2)/2\rfloor}
+ a_j(-1)^{h-2j+2}\binom{h+1}{h-2j+2}u^{h-2j+2}.
+\end{equation}
+Define polynomial sequences by
+\begin{equation}\label{fdi:eq:brec}
+ b_0=1,\qquad b_r=\frac1r\sum_{h=1}^r h p_h b_{r-h},
+ \qquad D_r(a)=\E b_r(U;a).
+\end{equation}
+All expectations are exact rational operations. The moments are generated by
+\[
+ \mu_0=1,\quad\mu_1=\tfrac12,\qquad
+ \mu_k=\tfrac12\mu_{k-1}+\tfrac{k-1}{2}\mu_{k-2}.
+\]
+For PGF coefficients put $A_r=D_r(0,\ldots,0)$ and
+\[
+ H_r(w;a)=D_r(-a_1w,a_2w^2,-a_3w^3,\ldots).
+\]
+Then formal division gives
+\begin{equation}\label{fdi:eq:Prec}
+ P_0=1,\qquad P_r=H_r-\sum_{k=1}^r A_kP_{r-k}.
+\end{equation}
+Equations \eqref{fdi:eq:ph}--\eqref{fdi:eq:Prec} specify any prescribed finite order. They do not assert convergence of the infinite asymptotic series.
+
+\section{Uniform remainder proof}
+We prove the sector theorem first and then the complex PGF theorem. Constants may depend on the displayed fixed parameters, but never on the particular graph or its local statistics.
+
+\subsection{Local expansion at the positive saddle}
+For $y>B$, put $y=\sqrt n+u$ and use \eqref{fdi:eq:logroot}. Apart from the normalizing constant in \eqref{fdi:eq:L}, the integrand is the Gaussian $e^{-(u-\sigma/2)^2}$ times the exponential of
+\begin{equation}\label{fdi:eq:exponent}
+ \sum_{h\ge1}\frac{(-1)^{h+1}u^{h+2}}{h+2}\eps^h
+ -\sum_{j\ge1}a_j\eps^{2j-2}(1+\eps u)^{-2j}+a_1.
+\end{equation}
+The remaining factor $\sqrt\pi/\sqrt{2\pi}=1/\sqrt2$ gives exactly \eqref{fdi:eq:L}. On the window $|u|\le n^{1/12}$, one has $|\eps u|\le n^{-5/12}$ and the nonconstant exponent is $O_\Delta(\eps(1+|u|^3))=o(1)$.
+
+For completeness, the following elementary estimate makes the uniformity explicit.
+\begin{lemma}[Gaussian window expansion]\label{fdi:lem:window}
+For each fixed $J$, on $|u|\le n^{1/12}$ the exponential of \eqref{fdi:eq:exponent} equals
+\[
+ \sum_{h=0}^J b_h(u;a)\eps^h+\mathcal R_{n,J}(u;a),
+ \qquad
+ |\mathcal R_{n,J}(u;a)|\le C_{\Delta,J}\eps^{J+1}(1+|u|^N),
+\]
+for some fixed integer $N=N(J)$ and all sufficiently large $n$ uniformly in $G$. The same assertion holds when $a_j$ is replaced by $(-1)^ja_jw^j$, uniformly for $|w|\le R$, with constants also depending on $R$.
+\end{lemma}
+\begin{proof}
+In the logarithmic series retain powers through $\eps^J$; Taylor's remainder for $\log(1+\eps u)$, after division by $\eps^2$, is bounded by $C_J\eps^{J+1}|u|^{J+3}$ when $|\eps u|\le1/2$. In the root sum it suffices to retain $j\le\lfloor(J+2)/2\rfloor$. Indeed \eqref{fdi:eq:aj} and $1+\eps u\ge1/2$ bound the omitted $j$ terms by a geometric series starting at order at least $\eps^{J+1}$. Expanding each retained $(1+\eps u)^{-2j}$ gives a remainder bounded by $C_{\Delta,J}\eps^{J+1}(1+|u|^{J+1})$. This proves a polynomial-envelope remainder for the exponent, whose coefficients through order $J$ are exactly \eqref{fdi:eq:ph}.
+
+Both the exact nonconstant exponent and its retained polynomial are uniformly $o(1)$ on this window. Taylor's formula for their exponentials therefore has a bounded exponential factor. Truncating the exponential of the retained polynomial by total $\eps$ degree gives \eqref{fdi:eq:brec}. Terms of higher degree and the exponential Taylor remainder are bounded by $C\eps^{J+1}(1+|u|^N)$ for a fixed $N$, by finite multiplication and the estimate $O(\eps(1+|u|^3))$. The bounds for complex $w$ follow by replacing the geometric-series ratio by a constant multiple depending on $R$.
+\end{proof}
+Multiplying the remainder by $e^{-(u-\sigma/2)^2}$ and integrating gives $O(\eps^{J+1})$, since every polynomial is integrable against that Gaussian. Extending the coefficient integrals from the local window to the whole real line costs a superalgebraically small amount. For $\sigma=+1$ this produces $D_h$. Each monomial in $p_h$ has the parity of $h$ in $u$, so $b_h(-u)=(-1)^hb_h(u)$. Reflection of $N(-1/2,1/2)$ into $N(1/2,1/2)$ gives $\sigma^hD_h$ for both signs.
+
+\subsection{Tails of the exterior integrals}
+For $y>B$, $0\le\mu_G(y)\le y^n$. The exponent
+\[
+ f_\sigma(y)=n\log y-(y-\sigma)^2/2
+\]
+has $f_\sigma''(y)=-n/y^2-1\le-1$ and maximizer $\sqrt n+O(1)$. On $y\ge\sqrt n/2$, strong concavity shows that removing $|y-\sqrt n|\le n^{1/12}$ costs $O(\exp(-c n^{1/6}))$ relative to the saddle scale, uniformly for either sign. On $B\le y\le\sqrt n/2$, the crude bound $y^n\le(\sqrt n/2)^n$ and interval length $O(\sqrt n)$ give a relative bound of the form
+\[
+ O_\Delta\!\left(n^{1/2}(e/4)^{n/2}e^{O(\sqrt n)}\right),
+\]
+which is exponentially small. Finally $B^n/L_n^\sigma$ has logarithm $-(n/2)\log n+O_\Delta(n)$, proving the central-error assertion. This completes Theorem \ref{fdi:thm:sectors}.
+
+\subsection{Uniform complex marking}
+For real $y$ and $|w|\le R$, \eqref{fdi:eq:paired} gives
+\begin{equation}\label{fdi:eq:complexbound}
+ |F_{G,w}(y)|\le(y^2+RB^2)^{n/2}.
+\end{equation}
+On $|y|\le\sqrt n/2$ the integral is exponentially negligible relative to the positive saddle by the same $e/4$ comparison. On $|y|\ge\sqrt n/2$, the right side of \eqref{fdi:eq:complexbound} is at most
+$|y|^n\exp(2RB^2)$, so the previous Gaussian tail estimates apply. In the two local windows, $|w|\eta_i^2/y^2<1$ uniformly for large $n$, making the logarithmic expansion legitimate. The replacement is precisely
+\[
+ a_j\longmapsto(-1)^ja_jw^j,
+\]
+and the positive leading factor becomes $e^{a_1w}$. Lemma \ref{fdi:lem:window} proves the uniform local expansion. The negative window is smaller than the positive scale by $e^{-2\sqrt n}$ times a uniformly bounded factor and hence is beyond every fixed algebraic order.
+
+The corresponding unrestricted involution expansion is obtained by setting all $a_j=0$. Its leading positive factor is nonzero and its series begins at $1$. Dividing the marked expansion by it proves \eqref{fdi:eq:pgf}, with \eqref{fdi:eq:Prec}. The $w$ degree bound follows because, after extracting $e^{a_1w}$, an $a_1w$ term first occurs at order $\eps$, and a term $a_jw^j$ for $j\ge2$ first occurs at order $\eps^{2j-2}$, whose exponent is at least $j$. Products and division by a scalar series preserve the degree bound. This proves Theorem \ref{fdi:thm:pgf}.
+
+\section{Fixed distance stabilization and A239144}
+Let $S$ be a fixed nonempty finite set of positive integers and $r=\max S$. Define $G_n(S)$ on $[n]$ by $\{i,j\}\in E$ if $|i-j|\in S$. Its maximum degree is at most $2|S|$.
+
+\begin{theorem}[Exact eventual affine statistics]\label{fdi:thm:affine}
+For each fixed $j\ge1$ there are effectively computable rational numbers $\alpha_j(S),\beta_j(S)$ such that
+\begin{equation}\label{fdi:eq:affine}
+ a_j(G_n(S))=\alpha_j(S)+\frac{\beta_j(S)}n
+ \qquad(n>jr).
+\end{equation}
+Consequently every prescribed finite-order PGF or avoidance expansion for this family has constant coefficients after extracting its fixed leading exponential.
+\end{theorem}
+\begin{proof}
+Introduce one variable $x_e$ for each edge and the multivariate matching polynomial
+\[
+ Z_G(x)=\sum_{M\text{ matching}}\prod_{e\in M}x_e.
+\]
+Its constant term is $1$, so $\log Z_G$ is a formal power series. The coefficient of a monomial $\prod_ex_e^{m_e}$ depends only on the incompatibility graph of its support $H=\{e:m_e>0\}$, namely the induced line graph on those edges: set every other variable to zero. If this incompatibility graph is disconnected, its matching polynomial factors over its components and its logarithm is a sum. A monomial involving multiple components therefore has zero coefficient.
+
+Only supports connected in the line graph contribute to total degree $j$. Such a support has at most $j$ edges, each of length at most $r$. Its largest and smallest vertices differ by at most $jr$: a connected chain of support edges joins them, and the sum of its edge lengths is at most $jr$. Translate its smallest vertex to zero. There are only finitely many resulting patterns $P$, including positive edge multiplicities totaling $j$. Let $\ell(P)$ be the span and $c(P)$ its rational logarithmic coefficient. When $n>jr$, the pattern occurs in exactly $n-\ell(P)$ translates. Therefore
+\begin{equation}\label{fdi:eq:clusters}
+ [z^j]\log\!\left(\sum_k M_k(G_n(S))z^k\right)
+ =\sum_P c(P)(n-\ell(P))=u_jn+v_j.
+\end{equation}
+Setting every $x_e=z$ proves the first equality; \eqref{fdi:eq:logmatching} proves \eqref{fdi:eq:affine}. The finite pattern sum is an algorithm. Alternatively, after the theorem has justified affine dependence, two consecutive exact evaluations at $n>jr$ recover $u_j,v_j$; a third is a useful implementation check. Substituting \eqref{fdi:eq:affine} with $1/n=\eps^2$ into the universal generator proves the constant-coefficient conclusion.
+\end{proof}
+For $S=\varnothing$ the graph is empty and the assertion is immediate. The proof is structural; observing empirical linearity at a few values would not be a substitute.
+
+\subsection{First path power corrections}\label{fdi:sec:pathpower}
+For $S=\{1,\ldots,r\}$, write $G_n=P_n^r$. For sufficiently large $n$,
+\[
+ m=rn-\frac{r(r+1)}2,\qquad
+ \frac Wn=r(2r-1)+O_r(n^{-1}),
+\]
+so
+\[
+ a_1=r-\frac{r(r+1)}{2n},\qquad
+ a_2=2r^2-\frac r2+O_r(n^{-1}).
+\]
+Insert these in \eqref{fdi:eq:P123} at $w=-1$, including the factor $e^{-a_1}$, to obtain \eqref{fdi:eq:main-column}. The $n^{-3/2}$ coefficients inside the square brackets are
+\[
+ r=1:\ \frac1{24},\qquad r=2:\ -\frac{11}{12},\qquad
+ r=3:\ -\frac{39}{8}.
+\]
+For the full marked distribution, the first two constant-parameter corrections are
+\begin{equation}\label{fdi:eq:fixedpgf}
+ \E(1+w)^X=e^{rw}\left[1-rw\eps+
+ \left\{\frac{r(2-r)}2w-\frac{r(r-1)}2w^2\right\}\eps^2
+ +O_{r,R}(\eps^3)\right]
+\end{equation}
+uniformly for $|w|\le R$.
+
+Taking formal logarithms of the positive sector (the other terms being superalgebraically smaller), define
+\begin{align}
+ L_{r,J}(x)&=\frac x2(\log x-1)+\sqrt x-\frac{\log2}2-\frac14-r
+ +\sum_{j=1}^J\gamma_{r,j}x^{-j/2},\label{fdi:eq:logL}\\
+ \log A_{n,r}&=L_{r,J}(n)+O_{r,J}(n^{-(J+1)/2}).\label{fdi:eq:logA}
+\end{align}
+The first coefficients are
+\begin{equation}\label{fdi:eq:gammas}
+ \gamma_{r,1}=r+\frac7{24},\qquad
+ \gamma_{r,2}=-\frac{r(r+1)}2-\frac7{48},\qquad
+ \gamma_{r,3}=r^2-\frac r8+\frac{37}{1920}.
+\end{equation}
+For $r=1$ these are $31/24,-55/48,1717/1920$. In particular the first absolute correction agrees with the previously recorded Kot\v{e}\v{s}ovec coefficient. For $r=0$ they recover the unrestricted-involution coefficients. The companion scripts give exact coefficients through order six for $r=0,1,2,3$; the recurrence, rather than a table truncated at six, is the all-orders specification.
+
+\begin{mergenote}
+At $r=1$ source 26 computes the same objects independently: its logarithmic coefficients are $\beta_j=\gamma_{1,j}$ (it adds $\beta_4=-75/128$, and $\beta_5,\ldots,\beta_8$ in Appendix~\ref{fdi:adj:app:coefficients}), its constant $c_A=-\tfrac{\log 2}2-\tfrac54$ is the constant term of $L_{1,J}$, and its polynomials $P_1(w)=-w$, $P_2(w)=w/2$ are \eqref{fdi:eq:fixedpgf} at $r=1$. For $r=0$ the values $\gamma_{0,1},\gamma_{0,2},\gamma_{0,3}=7/24,-7/48,37/1920$ are source 26's $\lambda_1,\lambda_2,\lambda_3$ (Lemma~\ref{fdi:adj:lem:scalar}).
+\end{mergenote}
+
+\section{Three inverse conventions}\label{fdi:sec:inverse}
+An integer sequence has no unique smooth inverse. We keep three conventions separate and restrict all claims here to fixed $r$. The moving-statistic theorem for arbitrary graph sequences by itself does not imply any comparable inverse theorem.
+
+\subsection{The smooth asymptotic root}
+Fix $r,J$. Since
+\[
+ L_{r,J}'(x)=\tfrac12\log x+O_r(x^{-1/2})>0
+\]
+for all sufficiently large $x$, the equation $L_{r,J}(x)=\log y$ has a unique sufficiently large root, denoted $x_{r,J}(y)$. It is an asymptotic convention, not an asserted exact analytic continuation of $A_{n,r}$. From \eqref{fdi:eq:logA} and the mean-value theorem,
+\begin{equation}\label{fdi:eq:nodeinv}
+ x_{r,J}(A_{n,r})=n+O_{r,J}\!\left(\frac{n^{-(J+1)/2}}{\log n}\right).
+\end{equation}
+
+There is a finite explicit algorithm reaching this precision. Put $b=\log y$, use the positive real branch of Lambert $W$, and set
+\begin{equation}\label{fdi:eq:newton}
+ x_0=\frac{2b}{W(2b/e)},\qquad
+ x_{k+1}=x_k-\frac{L_{r,J}(x_k)-b}{L_{r,J}'(x_k)}.
+\end{equation}
+The seed solves $x(\log x-1)/2=b$ exactly, while
+$x_{r,J}(y)-x_0=O_r(\sqrt{x_0}/\log x_0)$.
+On that neighborhood $L'=\Theta(\log x_0)$ and $L''=O(1/x_0)$. If $e_k=x_k-x_{r,J}(y)$, Taylor's theorem gives
+\[
+ e_{k+1}=O_{r,J}\!\left(\frac{e_k^2}{x_0\log x_0}\right),\qquad
+ e_k=O_{r,J,k}\!\left(
+ \frac{x_0^{1-2^{k-1}}}{(\log x_0)^{2^{k+1}-1}}\right).
+\]
+For a fixed desired order, $k=\lceil\log_2(J+3)\rceil$ updates therefore give error
+$o(x_0^{-(J+1)/2}/\log x_0)$, smaller than the intrinsic asymptotic-log error. The number of updates need not grow with $y$.
+
+\subsection{The integer threshold}
+Define
+\[
+ N_r(y)=\min\{n\ge0:A_{n,r}\ge y\}.
+\]
+Adjoining a fixed terminal label embeds the objects on $[n-1]$ into those on $[n]$. For $n\ge r+2$, the transposition $(1,n)$ with every other vertex fixed is an additional allowed object, so the sequence is strictly increasing from that point.
+
+\begin{proposition}[Two ceiling enclosure]\label{fdi:prop:ceil}
+For fixed $r,J$ there are constants $C_{r,J},y_{r,J}>0$ such that, for $y\ge y_{r,J}$, if $x=x_{r,J}(y)$ and
+$\delta=C_{r,J}x^{-(J+1)/2}/\log x$, then
+\begin{equation}\label{fdi:eq:ceil}
+ \lceil x-\delta\rceil\le N_r(y)\le\lceil x+\delta\rceil.
+\end{equation}
+A finite Newton approximation from \eqref{fdi:eq:newton} can replace $x$ after enlarging the constant.
+\end{proposition}
+\begin{proof}
+Write $\alpha=(J+1)/2$ and bound the error in \eqref{fdi:eq:logA} by $B_0m^{-\alpha}$. In a fixed neighborhood of $x$, take $L'\ge(\log x)/4$ and $m^{-\alpha}\le2^\alpha x^{-\alpha}$. Choose $C>4\cdot2^\alpha B_0$. At
+$m_- =\lceil x-\delta\rceil-1<x-\delta$ and
+$m_+=\lceil x+\delta\rceil\ge x+\delta$,
+the mean-value theorem implies
+$\log A_{m_-,r}<\log y<\log A_{m_+,r}$ for sufficiently large $y$. Eventual strict monotonicity gives \eqref{fdi:eq:ceil}.
+\end{proof}
+The constants are asserted to exist; they are not supplied as certified numerical bounds at explicit finite inputs. There is no unconditional single-ceiling formula, because $y$ may be arbitrarily close to an exact sequence value.
+
+\subsection{The exact log linear convention}
+For $x=m+\theta$ in the eventually increasing range, $0\le\theta\le1$, define
+\begin{align*}
+ \log\mathcal A_r(m+\theta)&=(1-\theta)\log A_{m,r}
+                  +\theta\log A_{m+1,r},\\
+ \widetilde L_{r,J}(m+\theta)&=(1-\theta)L_{r,J}(m)
+                  +\theta L_{r,J}(m+1).
+\end{align*}
+This specifies an actual interpolation convention for the original sequence. If the consecutive values $L_{r,J}(m),L_{r,J}(m+1)$ bracket $\log y$, its approximate chord inverse is
+\begin{equation}\label{fdi:eq:chordinv}
+ \widetilde x_{r,J}(y)=m+
+ \frac{\log y-L_{r,J}(m)}{L_{r,J}(m+1)-L_{r,J}(m)}.
+\end{equation}
+Endpoint errors in \eqref{fdi:eq:logA} extend uniformly by convex interpolation; both interpolants have slopes $\Theta(\log x)$. It follows, including across a knot by their local lower slope bound, that
+\begin{equation}\label{fdi:eq:actualchordinv}
+ \mathcal A_r^{-1}(y)=\widetilde x_{r,J}(y)
+ +O_{r,J}\!\left(\frac{\widetilde x_{r,J}(y)^{-(J+1)/2}}
+ {\log\widetilde x_{r,J}(y)}\right).
+\end{equation}
+The interpolation defect of the smooth $L$ is $O(\sup|L''|)=O(1/x)$. Thus the smooth and chord roots generally differ by $O(1/(x\log x))$. One cannot silently identify these two inverses at arbitrary order; the chord construction is required for the exact log-linear convention.
+
+\begin{mergenote}
+\emph{Relation to the repository's inversion theorems; no novelty is claimed for the smooth inverse.} (i) The seed of \eqref{fdi:eq:newton} solves $\tfrac x2(\log x-1)=b$; in the variable $V=\log x-1$ this is $V+\log V=\log(2b/e)$, an instance of the Lambert core, Theorem \texttt{p0:thm:lambert-core} of \emph{Transseries and Inversion} \cite{tai} (both of its coefficients equal to $1$, branch $W_0$). For $r=0$ the all-orders inverse of the dominant involution block, including the unbounded first correction of order $\sqrt{x_0}/\log x_0$ seen above, is Theorem \texttt{t1:thm:ivinverse} of \emph{Combinatorial Transseries Inverses} \cite{cti}; for $r\ge1$ only the constant term $-r$ and the coefficients $\gamma_{r,j}$ of $L_{r,J}$ change. The reversion machinery around a Lambert core is Theorem \texttt{p0:thm:lambert-centered} of \cite{tai} (for gamma-quotient phases, \texttt{t2:thm:balanced-inverse} of \cite{cti}); the finite Newton iteration above is a different, equally finite, way to reach a prescribed order. (ii) The log-linear interpolant $\mathcal A_r$ is an admissible interpolation in the sense of \cite{tai}, so part (1) of Theorem \texttt{p0:thm:staircase} gives exactly $N_r(y)=\lceil\mathcal A_r^{-1}(y)\rceil$; combined with \eqref{fdi:eq:actualchordinv} this yields a two-ceiling enclosure around the chord root $\widetilde x_{r,J}(y)$, and part (2), the separation condition, is the reason no unconditional single-ceiling formula is available. Specific to this family are only the eventual monotonicity from $n\ge r+2$, the stabilized coefficients $\gamma_{r,j}$ feeding $L_{r,J}$, and the enclosures as stated. At $r=1$ source 26 states the smooth root, the Newton algorithm and the two-ceiling enclosure in the same form (Section~\ref{fdi:adj:sec:inverse}).
+\end{mergenote}
+
+\section{Reproducible checks and limitations}\label{fdi:sec:checks}
+The companion archive contains the article source, a build script, a portable mathematical replay, exact coefficient generation, independent symbolic and finite-graph tests, and reference outputs. It contains no third-party full papers. Bibliographic links identify the sources without redistributing them.
+
+\begin{mergenote}
+In this report source 19's scripts are shipped as \texttt{code/19-distance-*} and its six reference outputs as \texttt{data/19-distance-expected-*.json}; its delivered PDF and its checksum manifest \texttt{MANIFEST.json} are not shipped. Source 26's checks are described in Section~\ref{fdi:adj:sec:repro}. The README of this report gives rerun instructions for the shipped names; both suites were replayed on copies at intake with every check passing.
+\end{mergenote}
+
+The producer calculation uses the recurrence \eqref{fdi:eq:brec}, Gaussian moment recursion, and a finite-frontier matching counter. The independent calculation instead expands the exponent directly, forms a product of truncated exponential series, uses a closed Gaussian moment formula, and divides by a finite geometric inverse. All universal sector and PGF coefficients through order six agree symbolically. A vertex-subset recurrence independently checks 120 path-power matching-count cases, including direct complement counts, for $0\le n\le14$. Exact factorial-moment inequalities and \eqref{fdi:eq:a12} pass for 1,199 graphs: all simple graphs with $1\le n\le5$, plus 100 seeded random graphs of orders $6$ through $10$.
+
+Fixed-range tests verify 100 exact local-statistic values across $r=1,\ldots,5$, $j=1,\ldots,4$, starting immediately above $n=jr$. The separate inverse tests use the exact affine statistics, compute logarithmic coefficients through order six for $r=0,1,2,3$, and check smooth roots at sequence nodes and chord roots at fractional indices. Numerical sector tests for disjoint triangles check both signs at $n=60,150,300,600$.
+
+The following values illustrate the order-six avoidance approximation. Here $E_6$ is exact $A_{n,r}/I_n$ minus the truncation of \eqref{fdi:eq:pgf} through $h=6$ with the actual graph statistics. Displayed decimals are rounded; the archive preserves higher-precision data.
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$r$&$n$&$A_{n,r}/I_n$&$n^{7/2}E_6$\\
+\midrule
+1&100&0.402851003599&$-1.83708$\\
+1&500&0.383965373246&$-1.92108$\\
+2&100&0.160924606641&$-3.38493$\\
+2&500&0.147158392484&$-3.24595$\\
+3&100&0.0637215724335&$1.11376$\\
+3&500&0.0562953604037&$2.07702$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These checks corroborate the derivation; they are not proofs of uniform asymptotic remainders or effective error constants. The mathematical proof is analytic and finite-order. It does not certify a convergent expansion, growing-degree uniformity, or numerical threshold enclosures at an explicit starting value. The independent review is human-readable mathematical review supported by exact computation, not formal proof-assistant verification.
+
+\section{Questions opened by the refinement}\label{fdi:sec:questions}
+Several next questions are substantive while remaining distinct from the established results.
+\begin{enumerate}
+\item \textbf{Growing forbidden degree.} What explicit relation between $\Delta(n)$, the requested order, and $n$ preserves a useful complex-PGF expansion? The geometric root-tail control and the local exponential estimates expose where fixed-degree constants enter. McLeod's wider degree range in the regular perfect-matching model is a relevant benchmark, not an automatic extension.
+\item \textbf{Effective error constants.} Can the Gaussian-window and tail estimates be optimized into explicit constants and a computable validity threshold, sufficient to certify particular integer inversions?
+\item \textbf{Efficient fixed-distance coefficients.} How can connected-support enumeration, transfer matrices, or path-tree recursions compute $\alpha_j(S),\beta_j(S)$ efficiently for large order or nonconsecutive distance sets? The proof gives an effective finite procedure but no optimal complexity bound.
+\item \textbf{Several overlapping forbidden classes.} Can the same root-based analytic control give multivariate all-orders weighted laws for overlapping edge classes? Existing joint perfect-matching Poisson results provide a natural comparison, but the single-variable matching-root factorization used here does not immediately settle that problem.
+\item \textbf{Exponentially improved approximation.} What controlled truncation or resummation recovers the smaller sector from the total count at a precision beyond every fixed algebraic order? The exact two-integral definition alone does not answer that numerical question.
+\end{enumerate}
+Before making a publication-level novelty claim, a direct comparison with the final McLeod journal version and the full Wanless paper remains appropriate. The article's mathematical statements and its usefulness as a reproducible refinement do not depend on a claim of priority.
+
+\begin{mergenote}
+Source 26's six questions for the adjacent case are printed in Section~\ref{fdi:adj:sec:questions}. Its effective-constants question is question~2 above specialized to $r=1$; its small-sector question is question~5 with an added large-order question for $d_j$; its joint-law question is a different refinement from question~4. Its question on other sparse forbidden graphs is largely answered by this report's Theorems~\ref{fdi:thm:pgf}, \ref{fdi:thm:sectors} and~\ref{fdi:thm:affine} and is re-scoped there.
+\end{mergenote}
+
+\section{Adjacent transpositions (\texorpdfstring{$r=1$}{r = 1}): the full law of A217876}\label{fdi:sec:adjacent}
+
+\begin{mergenote}
+\emph{Merge note.} This section prints source 26, \emph{All order asymptotics for adjacent transpositions in involutions} (a research note on OEIS A170941 and A217876). Its Theorem~\ref{fdi:adj:thm:main}, the avoidance expansions of Section~\ref{fdi:adj:sec:avoid} and its sector expansion~\eqref{fdi:adj:eq:separate} are the case $G=P_n$ (forbidden distance $1$, so $\Delta=2$ and $B=2$) of Theorems~\ref{fdi:thm:pgf} and~\ref{fdi:thm:sectors} and Corollary~\ref{fdi:cor:weighted}, rewritten with constant coefficients by Theorem~\ref{fdi:thm:affine}; the coefficients agree (Section~\ref{fdi:sec:pathpower}). Printed here are what source 26 says beyond those theorems: the adjacent-transposition law with the polynomials $Q_j(\ell)$, the total-variation corollary, the exact moments and triangle, a second proof of the law (Sections~\ref{fdi:adj:sec:scalar}--\ref{fdi:adj:sec:summation}, by growing-moment summation instead of matching roots), the exact Chebyshev sectors with their residual bound and sector ratio, the log-linear inverse, the source's checks and questions, and its coefficients through order eight (Appendix~\ref{fdi:adj:app:coefficients}). Its smooth root, Newton algorithm and two-ceiling enclosure are Section~\ref{fdi:sec:inverse} at $r=1$ and are given by pointer in Section~\ref{fdi:adj:sec:inverse}. Notation follows the table of the provenance section; in this section $r=1$ throughout, and the letters renamed from source 26 are listed there.
+\end{mergenote}
+
+\subsection{The model and the scope of the result}
+An involution consists of fixed points and disjoint transpositions. Equivalently, it is a matching on the complete graph on $[n]=\{1,\ldots,n\}$, with unmatched vertices interpreted as fixed points. With $I_n$ as in \eqref{fdi:eq:Irec} (OEIS A000085 \cite{oeis85}), for a uniformly chosen involution define
+\[
+ X_n=\#\{i\in\{1,\ldots,n-1\}:(i,i+1)\text{ is a transposition}\},
+\]
+so $X_n=X_{P_n}$ in the notation of Section~\ref{fdi:sec:exact}. Write $p_n(\ell)=\Prb(X_n=\ell)$ and $\mathcal G_n(z)=\E z^{X_n}$. Then
+\[
+ \Tadj(n,\ell)=I_np_n(\ell)\quad\text{is OEIS A217876 \cite{oeis217876}},\qquad
+ a_n=\Tadj(n,0)=A_{n,1}\quad\text{is OEIS A170941}.
+\]
+Thus $a_n$ also counts matchings in the complement of the path $P_n$. For example, $a_3=2$: the identity and the transposition $(1,3)$ are allowed. The first values are $1,1,1,2,5,13,37,112,363$. In the indexing used here, the avoidance recurrence of Haslinger and Stadler (Section~\ref{fdi:sec:history}) is
+\begin{equation}\label{fdi:adj:eq:avoidrec}
+ a_n=a_{n-1}+(n-1)a_{n-2}-a_{n-3}+a_{n-4}\quad(n\ge4),
+ \qquad (a_0,a_1,a_2,a_3)=(1,1,1,2).
+\end{equation}
+
+This is a regular combinatorial model with a direct finite-size question: how accurately does a Poisson law describe the number of forbidden path edges? The matching interpretation makes exact sampling and recurrence checks straightforward. The historical RNA interpretation concerns an idealized contact-diagram count with nearest-neighbor contacts excluded. Crossing arcs are allowed in this model. It is not, by itself, a model of chemical base compatibility, energy, or the usual noncrossing secondary-structure ensemble.
+
+\emph{Conventions.} Throughout, asymptotics are for integers $n\to\infty$ unless a real argument is explicitly introduced. Put $\eps=n^{-1/2}$ and $w=z-1$. A fixed-order expansion means: for each fixed truncation order there is a remainder bound, with constants allowed to depend on that order and on the explicitly fixed compact set or weight. It does not assert convergence of the infinite formal series, nor uniformity when the order grows with $n$.
+
+\subsection{The full probability law}
+\begin{theorem}[Uniform generating function and weighted law]\label{fdi:adj:thm:main}
+There are effectively computable rational polynomials $P_j(w)$, with
+\[
+ P_0=1,\qquad P_j(0)=0\ (j\ge1),\qquad \deg P_j\le j,
+\]
+such that, for every fixed integer $J\ge0$ and every fixed $R<\infty$,
+\begin{equation}\label{fdi:adj:eq:pgf}
+ \mathcal G_n(1+w)=e^w\sum_{j=0}^J P_j(w)\eps^j+O_{J,R}(\eps^{J+1}),
+ \qquad |w|\le R.
+\end{equation}
+Let
+\begin{equation}\label{fdi:adj:eq:Qdef}
+ Q_j(\ell)=\ell!\,[z^\ell]\,e^zP_j(z-1),\qquad \ell\ge0.
+\end{equation}
+Each $Q_j$ is a rational polynomial in $\ell$ of degree at most $j$. For every fixed $q\ge0$,
+\begin{equation}\label{fdi:adj:eq:weighted}
+ \sum_{\ell\ge0}q^\ell\left|p_n(\ell)
+ -\frac{e^{-1}}{\ell!}\sum_{j=0}^J Q_j(\ell)\eps^j\right|
+ =O_{J,q}(\eps^{J+1}).
+\end{equation}
+For $q=0$, the sum means just its $\ell=0$ term.
+\end{theorem}
+The first generating-function polynomials are
+\begin{align*}
+ P_1(w)&=-w,& P_2(w)&=\frac w2,\\
+ P_3(w)&=\frac{w^3}{3}-\frac{3w}{8},&
+ P_4(w)&=-\frac{w^4}{12}-\frac{w^3}{2}+\frac w8,\\
+ P_5(w)&=-\frac{w^5}{20}+\frac{w^4}{6}+\frac{9w^3}{8}+\frac{w}{128}.
+\end{align*}
+Correspondingly,
+\begin{align*}
+ Q_0(\ell)&=1,& Q_1(\ell)&=1-\ell,& Q_2(\ell)&=\frac{\ell-1}{2},\\
+ Q_3(\ell)&=\frac{\ell^3}{3}-2\ell^2+\frac{55\ell}{24}+\frac1{24}.
+\end{align*}
+For $J\ge1$, the truncated Poisson-polynomial approximation is a signed measure, not necessarily a nonnegative probability law at all $\ell$. It has total mass one. The norm statement remains valid on the entire nonnegative integer axis, including beyond the exact support $\ell\le\floor{n/2}$.
+
+\begin{mergenote}
+\emph{First proof.} Theorem~\ref{fdi:adj:thm:main} is Theorem~\ref{fdi:thm:pgf} and Corollary~\ref{fdi:cor:weighted} for $G=P_n$, after Theorem~\ref{fdi:thm:affine} ($a_1=1-1/n$, $a_2=3/2+O(n^{-1})$ and so on) has been substituted and the factor $e^{a_1w}=e^{w}e^{-w\eps^2}$ re-expanded; this is how \eqref{fdi:eq:fixedpgf} arises. Hence $P_j(w)$ here is \emph{not} $P_j(w;a(P_n))$ of Theorem~\ref{fdi:thm:pgf}: for instance $P_2(w;a(P_n))=\tfrac32a_1w+(\tfrac32a_1^2-a_2)w^2\to\tfrac32w$, while $P_2(w)=w/2$. Source 26's own proof, by a different route, occupies Sections~\ref{fdi:adj:sec:scalar}--\ref{fdi:adj:sec:summation}.
+\end{mergenote}
+
+\begin{corollary}[Avoidance and total variation]\label{fdi:adj:cor:tv}
+For each fixed $J$,
+\begin{align}
+ \frac{a_n}{I_n}&=e^{-1}\sum_{j=0}^J P_j(-1)\eps^j+O_J(\eps^{J+1}),\label{fdi:adj:eq:avoidratio}\\
+ \TV(\mathcal L(X_n),\Pois(1))
+ &=e^{-1}\sum_{j=1}^J V_j\eps^j+O_J(\eps^{J+1}),\label{fdi:adj:eq:tv}\\
+ V_j&=2P_j(-1)+P_j'(-1).\nonumber
+\end{align}
+In particular,
+\begin{align*}
+ \frac{a_n}{I_n}
+ &=e^{-1}\left(1+\eps-\frac{\eps^2}{2}+\frac{\eps^3}{24}
+       +\frac{7\eps^4}{24}-\frac{1759\eps^5}{1920}+O(\eps^6)\right),\\
+ \TV(\mathcal L(X_n),\Pois(1))
+ &=e^{-1}\left(\eps-\frac{\eps^2}{2}+\frac{17\eps^3}{24}
+       -\frac{11\eps^4}{24}+\frac{1217\eps^5}{1920}+O(\eps^6)\right).
+\end{align*}
+Here total variation is one half of the $\ell^1$ distance between the probability masses.
+\end{corollary}
+The avoidance ratio agrees with \eqref{fdi:eq:main-column} at $r=1$ ($1+\eps-\eps^2/2+\eps^3/24$).
+
+\subsection{Exact moments and their global bound}
+A set of $k$ specified adjacent transpositions must be a $k$-matching in $P_n$. The number of such sets is $\binom{n-k}{k}$: if the left endpoints are $i_1<\cdots<i_k$ with $i_{s+1}\ge i_s+2$, map them to the ordinary $k$-subset $\{i_s-(s-1)\}_{s=1}^k$ of $[n-k]$. The remaining labels carry any involution. Thus the exact binomial moments are
+\begin{equation}\label{fdi:adj:eq:moments}
+ m_{n,k}:=\E\binom{X_n}{k}
+   =\binom{n-k}{k}\frac{I_{n-2k}}{I_n},\qquad
+ \mathcal G_n(1+w)=\sum_{k\ge0}m_{n,k}w^k,
+\end{equation}
+where $m_{n,k}=0$ if $2k>n$. This is \eqref{fdi:eq:marking} with $M_k(P_n)=\binom{n-k}k$. The unnormalized selected-pair count already appears in Ganjtabesh and Steyaert's equation (17), with its avoidance inclusion--exclusion specialization in equation (18) \cite{ganjtabesh}. Here it is explicitly interpreted as a binomial moment; Li uses the factorial-moment mechanism for the full Poisson law.
+
+The recurrence for $I_n$ supplies a useful bound valid for every $k$, not only fixed $k$:
+\begin{equation}\label{fdi:adj:eq:domination}
+ 0\le m_{n,k}\le\frac1{k!}.
+\end{equation}
+This is Lemma~\ref{fdi:lem:factorial} with $\Delta=2$. Source 26 proves it directly:
+\[
+ I_n\ge\prod_{s=0}^{k-1}(n-1-2s)I_{n-2k},\qquad
+ k!\binom{n-k}{k}=\prod_{s=0}^{k-1}(n-k-s),
+\]
+and $n-k-s\le n-1-2s$ for $0\le s\le k-1$. For $k=0$ the products are empty. This factorial domination controls the exact tail of the PGF uniformly in $n$.
+
+Coefficient extraction in \eqref{fdi:adj:eq:moments} also gives a finite exact formula for the whole triangle:
+\begin{equation}\label{fdi:adj:eq:triangle}
+ \Tadj(n,\ell)=\sum_{k=\ell}^{\floor{n/2}}
+ (-1)^{k-\ell}\binom{k}{\ell}\binom{n-k}{k}I_{n-2k}.
+\end{equation}
+It is useful for exact checks but can involve severe cancellation in floating-point arithmetic.
+
+\subsection{Second proof, step one: a scalar expansion from a Gaussian integral}\label{fdi:adj:sec:scalar}
+Source 26 gives the remainder proof explicitly so that the later uniformity argument rests on more than formal coefficient manipulation. The exponential generating function of involutions is $\exp(z+z^2/2)$. Comparing it with the moment generating function of $1+Z$, where $Z$ is standard normal, yields
+\begin{equation}\label{fdi:adj:eq:gaussian}
+ I_n=\frac1{\sqrt{2\pi}}\int_{\mathbb R}y^n e^{-(y-1)^2/2}\,dy.
+\end{equation}
+Let $\mathcal J_n^+$ be the integral over $y>0$, including the normalization, and $\mathcal J_n^-$ the absolute reflected integral over $y<0$. Then $I_n=\mathcal J_n^++(-1)^n\mathcal J_n^-$. The negative reflected integrand is $e^{-2y}$ times the positive integrand. (These are the blocks $A_\sigma(n)$ of \cite[\texttt{t2:eq:involution-A}]{cti}.)
+
+The positive log-integrand
+\[
+ h_n(y)=n\log y-\frac{(y-1)^2}{2}
+\]
+has its unique maximum at $y_*=(1+\sqrt{1+4n})/2$, with $h_n''(y)\le-1$. On a fixed interval about $y_*$ the second derivative is also bounded below by a negative constant, so the total positive integral is bounded below by a constant times $e^{h_n(y_*)}$. Strong concavity bounds its portion with $y\le\sqrt n/2$ by $O(e^{-cn})$ of the total. Splitting the negative integral at that point gives
+\begin{equation}\label{fdi:adj:eq:negative-negligible}
+ \frac{\mathcal J_n^-}{\mathcal J_n^+}\le e^{-\sqrt n}+O(e^{-cn}).
+\end{equation}
+Parity therefore has no effect on any fixed algebraic order.
+
+Set $y=\sqrt n+u$. The exponent becomes
+\[
+ \frac n2(\log n-1)+\sqrt n-\frac12-u^2+u+\mathcal F(\eps,u),
+ \qquad
+ \mathcal F(\eps,u)=\sum_{h\ge1}\frac{(-1)^{h+3}}{h+2}u^{h+2}\eps^h.
+\]
+The series here is used locally, with its removable analytic interpretation at $\eps=0$. Let $U$ have density $\pi^{-1/2}e^{-(u-1/2)^2}$, that is, mean $1/2$ and variance $1/2$ (the $U$ of \eqref{fdi:eq:brec}), and define
+\begin{equation}\label{fdi:adj:eq:Aj}
+ A_j=\E\bigl([\eps^j]e^{\mathcal F(\eps,U)}\bigr),\qquad
+ \lambda_j=[\eps^j]\log\left(\sum_{m\ge0}A_m\eps^m\right).
+\end{equation}
+Each coefficient is a finite polynomial Gaussian expectation. It does not require convergence of the infinite asymptotic series. ($A_j=D_j(0,\ldots,0)$, as in Section~\ref{fdi:sec:uniform}.)
+
+\begin{lemma}[Scalar remainder]\label{fdi:adj:lem:scalar}
+For every fixed $J\ge0$,
+\begin{align}
+ I_n&=\frac{e^{\frac n2(\log n-1)+\sqrt n-1/4}}{\sqrt2}
+       \left(\sum_{j=0}^J A_j\eps^j+O_J(\eps^{J+1})\right),\label{fdi:adj:eq:scalar}\\
+ \log I_n&=\frac n2(\log n-1)+\sqrt n-\frac{\log2}{2}-\frac14
+       +\sum_{j=1}^J\lambda_j\eps^j+O_J(\eps^{J+1}).\label{fdi:adj:eq:scalarlog}
+\end{align}
+The first logarithmic coefficients are
+$\lambda_1=7/24$, $\lambda_2=-7/48$, $\lambda_3=37/1920$, and $\lambda_4=5/128$.
+\end{lemma}
+\begin{proof}
+Restrict first to $|u|\le\eps^{-1/6}=n^{1/12}$. For $0\le s\le\eps$ one has $|su|\le\eps^{5/6}$, and for each fixed $m\ge1$,
+\[
+ |\mathcal F(s,u)|\le C s|u|^3,\qquad
+ |\partial_s^m\mathcal F(s,u)|\le C_m|u|^{m+2}.
+\]
+Consequently $e^{\mathcal F(s,u)}$ stays bounded and its $m$th derivative is bounded by $C_m(1+|u|)^{3m}$. Taylor's theorem bounds the remainder after degree $J$ by
+\[
+ C_J\eps^{J+1}(1+|u|)^{3(J+1)}.
+\]
+Multiplication by $e^{-u^2+u}$ gives an integrable majorant independent of $n$. Strong concavity about $y_*=\sqrt n+1/2+O(\eps)$ makes the discarded positive-integral tail $O(e^{-cn^{1/6}})$ relative to the main normalization. Extending each polynomial--Gaussian integral to $\mathbb R$ has the same negligible effect. Completing the square supplies $e^{-1/4}/\sqrt2$, and \eqref{fdi:adj:eq:negative-negligible} absorbs the negative part. This proves \eqref{fdi:adj:eq:scalar}; its leading coefficient is one, so taking logarithms proves \eqref{fdi:adj:eq:scalarlog}.
+
+Rationality follows from the Gaussian moment recursion
+\[
+ \mu_0=1,\quad\mu_1=\frac12,\quad
+ \mu_m=\frac{\mu_{m-1}}2+\frac{m-1}{2}\mu_{m-2}.
+\]
+\end{proof}
+Lemma~\ref{fdi:adj:lem:scalar} is the case $r=0$ of \eqref{fdi:eq:logA} ($\lambda_j=\gamma_{0,j}$) and, for the exact blocks, the case $\sigma=+1$ of \cite[\texttt{t1:thm:ivforward}]{cti}.
+
+\subsection{Second proof, step two: the growing moment estimate}\label{fdi:adj:sec:uniform}
+The scalar remainder can be transferred to a range of $k$ growing with $n$. Define the formal series
+\begin{align}
+ \mathcal H(k,\eps)={}&-\sum_{m\ge1}\frac{\eps^{2m}}m\sum_{i=0}^{k-1}(k+i)^m\nonumber\\
+ &+\frac{(1-2k\eps^2)\log(1-2k\eps^2)+2k\eps^2}{2\eps^2}
+   +\frac{\sqrt{1-2k\eps^2}-1}{\eps}\label{fdi:adj:eq:H}\\
+ &+\sum_{h\ge1}\lambda_h\eps^h\left((1-2k\eps^2)^{-h/2}-1\right),\nonumber
+\end{align}
+where the apparent singularities at $\eps=0$ are removable, and set
+\begin{equation}\label{fdi:adj:eq:C}
+ C_j(k)=[\eps^j]e^{\mathcal H(k,\eps)}.
+\end{equation}
+The coefficient of $\eps^j$ in $\mathcal H$ is a polynomial in $k$ of degree at most $j$. For the four types of terms, respectively, the degrees at orders $2m$, $2m$, $2h-1$, and $\ell+2h$ are at most $m+1$, $m+1$, $h$, and $h$. Exponentiation preserves the degree bound. In particular
+\[
+ C_0=1,\quad C_1=-k,\quad C_2=\frac k2,\quad
+ C_3=\frac{k^3}{3}-k^2+\frac{7k}{24}.
+\]
+
+\begin{lemma}[Factorially summable uniform error]\label{fdi:adj:lem:uniform}
+For each fixed $J\ge0$ there are constants $c_J,N_J$ such that, whenever $n\ge N_J$ and $k\ge0$ is an integer satisfying $(1+k)/\sqrt n\le1/8$,
+\begin{equation}\label{fdi:adj:eq:momenterror}
+ \left|m_{n,k}-\frac1{k!}\sum_{j=0}^JC_j(k)\eps^j\right|
+ \le\frac{c_J}{k!}(1+k)^{J+1}\eps^{J+1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In \eqref{fdi:adj:eq:H}, retain only $\lambda_h$ with $h\le J$ and replace the first formal series by its exact analytic form
+$\sum_{i=0}^{k-1}\log(1-(k+i)\eps^2)$. Call the resulting germ $\mathcal F_J(k,\eps)$. Direct subtraction of \eqref{fdi:adj:eq:scalarlog} at $n-2k$ and $n$ gives
+\[
+ \log(k!m_{n,k})=\mathcal F_J(k,\eps)+E_{n,k},\qquad |E_{n,k}|\le c'_J\eps^{J+1}.
+\]
+The scalar errors can be subtracted separately because $n-2k\ge n/2$ in this range. No derivative of an unknown remainder is used. The $-k\log n$ term from the scalar difference cancels $k\log n$ from the binomial coefficient.
+
+For $\vartheta_k=1/(4(1+k))$, all logarithms and powers in $\mathcal F_J$ are analytic on $|\eps|\le\vartheta_k$, on branches agreeing with their value at zero. On this disk $|2k\eps^2|\le1/32$. Elementary power-series bounds give, uniformly in $k$,
+\[
+ |\mathcal F_J(k,\eps)|\le \Omega_J:=\frac12+\frac5{31}
+ +\sum_{h=1}^J|\lambda_h|4^{-h}
+          \left(\left(\frac{32}{31}\right)^{h/2}+1\right).
+\]
+For example the bounds on the first three terms are $3/31$, $2/31$, and $1/2$. Cauchy's estimate and a geometric tail therefore give, for $|\eps|\le\vartheta_k/2$,
+\[
+ \left|e^{\mathcal F_J(k,\eps)}-\sum_{j=0}^JC_j(k)\eps^j\right|
+ \le2e^{\Omega_J}\bigl(4(1+k)|\eps|\bigr)^{J+1}.
+\]
+Terms involving $\lambda_h$ first appear at degree $h+2$, so the displayed coefficients do not depend on the truncation choice. Multiplying by $e^{E_{n,k}}$ adds at most $e^{\Omega_J+1}c'_J\eps^{J+1}$ once $n$ is sufficiently large. Divide by $k!$ and absorb constants.
+\end{proof}
+
+\subsection{Second proof, step three: summation and probability coefficients}\label{fdi:adj:sec:summation}
+\begin{proof}[Second proof of Theorem~\ref{fdi:adj:thm:main} (source 26)]
+Fix $J,R$ and take
+\[
+ k_0=\ceil{(J+2)\log n/\log\log n}.
+\]
+The growing-moment lemma applies for $k\le k_0$ once $n$ is large. Summing its error on $|w|\le R$ gives at most
+\[
+ c_J\eps^{J+1}\sum_{k\ge0}\frac{(1+k)^{J+1}R^k}{k!}
+ =O_{J,R}(\eps^{J+1}).
+\]
+The exact tail is bounded by \eqref{fdi:adj:eq:domination}. The coefficient-approximation tail has only an additional fixed polynomial factor in $k$. Stirling's bound gives, for each fixed $d$,
+\[
+ \sum_{k>k_0}\frac{(1+k)^dR^k}{k!}=n^{-(J+2)+o(1)}=o(\eps^{J+1}).
+\]
+Thus the sum can be extended to all $k$. If $\mathcal T_m$ denotes the Touchard polynomial determined by
+$\sum_{k\ge0}k^mw^k/k!=e^w\mathcal T_m(w)$, define
+\begin{equation}\label{fdi:adj:eq:touchard}
+ P_j(w)=e^{-w}\sum_{k\ge0}C_j(k)\frac{w^k}{k!}.
+\end{equation}
+This is a polynomial of degree at most $j$. Since $\mathcal H(0,\eps)=0$, it has $P_j(0)=0$ for $j\ge1$. This proves \eqref{fdi:adj:eq:pgf}.
+
+For the weighted assertion choose a circle $|z|=R'$ with $R'>\max(q,1)$. The PGF error is bounded there by $M_{J,R'}\eps^{J+1}$, so its $\ell$th coefficient has modulus at most $M_{J,R'}\eps^{J+1}R'^{-\ell}$. Summing with weight $q^\ell$ gives the factor $(1-q/R')^{-1}$. Finally,
+\begin{equation}\label{fdi:adj:eq:charlier}
+ Q_j(\ell)=\sum_{h=0}^j[w^h]P_j(w)
+ \sum_{b=0}^h\binom hb(-1)^{h-b}(\ell)_b,
+\end{equation}
+where $(\ell)_b$ is the falling factorial. This proves its polynomial degree bound and the coefficient formula.
+\end{proof}
+
+The $J=0$ case recovers Poisson convergence with an $O(n^{-1/2})$ total-variation error, but the limit itself is prior work. Higher orders refine every fixed exponential moment and every polynomially weighted probability sum. The constants are for fixed weights; a weight $q=q_n\to\infty$ is outside the theorem.
+
+\subsubsection*{Why the total variation has its own expansion}
+\begin{proof}[Proof of Corollary~\ref{fdi:adj:cor:tv}]
+The avoidance formula is \eqref{fdi:adj:eq:pgf} at $w=-1$. For total variation, first fix $J\ge3$ and put
+\[
+ \mathcal D_J(\ell,\eps)=\frac{e^{-1}}{\ell!}\sum_{j=1}^JQ_j(\ell)\eps^j.
+\]
+The weighted theorem with $q=1$ changes the half-$\ell^1$ norm by $O_J(\eps^{J+1})$. At $\ell=0$ the leading term of $\mathcal D_J$ is positive and of order $\eps$. At $\ell=1$, $Q_1(1)=Q_2(1)=0$ and $Q_3(1)=2/3>0$. For $\ell\ge2$ the leading term is $-(\ell-1)\eps$ times $e^{-1}/\ell!$.
+
+Take $\ell_0=\floor{(J+2)\log(1/\eps)/\log\log(1/\eps)}$. For $2\le\ell\le \ell_0$,
+\[
+ \frac{\left|\sum_{j=2}^J\eps^jQ_j(\ell)\right|}{(\ell-1)\eps}
+ \le C_J\sum_{j=2}^J[\eps(1+\ell_0)]^{j-1}=o(1).
+\]
+The signs of this finite approximation are therefore positive at $0,1$ and negative on $2,\ldots,\ell_0$. Its tail beyond $\ell_0$ is bounded by
+$C_J\eps\sum_{\ell>\ell_0}(1+\ell)^J/\ell!=o(\eps^{J+1})$. Each correction has mass zero. The half-$\ell^1$ norm is consequently, to the stated error, the sum of the deviations at $0$ and $1$. These two coefficients are $e^{-1}P_j(-1)$ and $e^{-1}(P_j(-1)+P_j'(-1))$. This gives \eqref{fdi:adj:eq:tv}; lower orders follow by truncating the result for $J=3$.
+\end{proof}
+This proof needs no assertion about the exact deviation signs at every $\ell$. Such an assertion would be stronger than the result established here.
+
+\subsection{Avoidance counts and their logarithms}\label{fdi:adj:sec:avoid}
+Let $\kappa_j=P_j(-1)$ and define, coefficientwise,
+\[
+ d_j=\sum_{h=0}^jA_h\kappa_{j-h},\qquad
+ \beta_j=[\eps^j]\log\left(\sum_{h\ge0}d_h\eps^h\right).
+\]
+Then for every fixed $J$,
+\begin{align}
+ a_n&=\frac1{\sqrt2}\left(\frac ne\right)^{n/2}e^{\sqrt n-5/4}
+ \left(\sum_{j=0}^Jd_jn^{-j/2}+O_J(n^{-(J+1)/2})\right),\label{fdi:adj:eq:absolute}\\
+ \log a_n&=L_{1,J}(n)+O_J(n^{-(J+1)/2}),\label{fdi:adj:eq:logavoid}\\
+ L_{1,J}(x)&=\frac x2(\log x-1)+\sqrt x+c_A
+             +\sum_{j=1}^J\beta_jx^{-j/2},\qquad
+ c_A=-\frac{\log2}{2}-\frac54.\label{fdi:adj:eq:LJ}
+\end{align}
+The first absolute and logarithmic coefficients are
+\begin{align*}
+ (d_0,d_1,d_2,d_3,d_4)
+ &=\left(1,\frac{31}{24},-\frac{359}{1152},-\frac{93973}{414720},
+               \frac{15358133}{39813120}\right),\\
+ (\beta_1,\beta_2,\beta_3,\beta_4)
+ &=\left(\frac{31}{24},-\frac{55}{48},\frac{1717}{1920},-\frac{75}{128}\right).
+\end{align*}
+The $d_1$ term agrees with Kot\v{e}\v{s}ovec's existing OEIS formula. The derivation also supplies each fixed subsequent order with a remainder; the coefficient table and executable extraction are included for use without manual algebra. Equations \eqref{fdi:adj:eq:logavoid}--\eqref{fdi:adj:eq:LJ} are \eqref{fdi:eq:logL}--\eqref{fdi:eq:logA} at $r=1$, with $\beta_j=\gamma_{1,j}$.
+
+\subsection{An exact decomposition into two Gaussian sectors}\label{fdi:adj:sec:sectors}
+The algebraic expansion suppresses a parity effect exponentially small relative to the leading scale. An exact integral decomposition identifies it without assigning unjustified precision to a finite algebraic truncation.
+
+Let $\mathcal U_n$ be the Chebyshev polynomial of the second kind. Its finite polynomial identity gives
+\[
+ \mathcal U_n(y/2)=\sum_{k=0}^{\floor{n/2}}(-1)^k\binom{n-k}{k}y^{n-2k},
+\]
+that is, $\mathcal U_n(y/2)=\mu_{P_n}(y)$. Combining this with \eqref{fdi:adj:eq:triangle} at $\ell=0$ and the Gaussian moment identity yields exactly
+\begin{equation}\label{fdi:adj:eq:chebint}
+ a_n=\int_{\mathbb R}\mathcal U_n(y/2)\phi(y-1)\,dy,
+\end{equation}
+the case $G=P_n$ of Lemma~\ref{fdi:lem:marking}. For $\sigma\in\{+1,-1\}$ define the positive integrals $\mathcal K_n^\sigma,\tau_n^\sigma$ and the central term $C_n^{\rm cen}$ by
+\begin{align*}
+ \mathcal K_n^\sigma&=\int_1^\infty\lambda^n
+       \phi(\lambda+\lambda^{-1}-\sigma)\,d\lambda,\\
+ \tau_n^\sigma&=\int_1^\infty\lambda^{-n-2}
+       \phi(\lambda+\lambda^{-1}-\sigma)\,d\lambda,\\
+ C_n^{\rm cen}&=\int_{-2}^2\mathcal U_n(y/2)\phi(y-1)\,dy.
+\end{align*}
+(Thus $C_n^{\rm cen}=C_{P_n}$ and $K_{P_n}^\sigma=\mathcal K_n^\sigma-\tau_n^\sigma$ in the notation of \eqref{fdi:eq:K}.)
+\begin{theorem}[Exact sectors and separate expansions]\label{fdi:adj:thm:sectors}
+For every integer $n\ge0$,
+\begin{align}
+ a_n&=\mathcal K_n^++(-1)^n\mathcal K_n^-+\Xi_n,\label{fdi:adj:eq:exactsectors}\\
+ \Xi_n&=C_n^{\rm cen}-\tau_n^+-(-1)^n\tau_n^-,\qquad
+ |\Xi_n|\le n+1+\frac{2}{\sqrt{2\pi}(n+1)}.\label{fdi:adj:eq:Rbound}
+\end{align}
+Put
+\[
+ \mathcal L_n^\sigma=\frac1{\sqrt2}\left(\frac ne\right)^{n/2}
+                 e^{\sigma\sqrt n-5/4}\quad(n\ge1).
+\]
+For each fixed $M\ge0$ and each sign,
+\begin{equation}\label{fdi:adj:eq:separate}
+ \mathcal K_n^\sigma=\mathcal L_n^\sigma
+ \left(\sum_{m=0}^M\sigma^md_mn^{-m/2}
+          +O_M(n^{-(M+1)/2})\right),
+\end{equation}
+where $d_m$ is exactly the coefficient in \eqref{fdi:adj:eq:absolute}. In particular,
+\begin{equation}\label{fdi:adj:eq:isolated}
+ (-1)^n(a_n-\mathcal K_n^+)=\mathcal L_n^-
+ \left(\sum_{m=0}^M(-1)^md_mn^{-m/2}
+          +O_M(n^{-(M+1)/2})\right).
+\end{equation}
+The constants can be chosen simultaneously for the two signs.
+\end{theorem}
+\begin{proof}[Exact decomposition]
+For $\lambda>1$ use $y=\lambda+\lambda^{-1}$ and
+\[
+ \mathcal U_n(y/2)=\frac{\lambda^{n+1}-\lambda^{-n-1}}{\lambda-\lambda^{-1}},
+ \qquad dy=(\lambda-\lambda^{-1})\frac{d\lambda}{\lambda}.
+\]
+Their product is $(\lambda^n-\lambda^{-n-2})\,d\lambda$. Reflection on the negative exterior uses $\mathcal U_n(-y/2)=(-1)^n\mathcal U_n(y/2)$. Splitting \eqref{fdi:adj:eq:chebint} into the two exteriors and the central interval gives \eqref{fdi:adj:eq:exactsectors}. On $[-1,1]$, $|\mathcal U_n|\le n+1$, so $|C_n^{\rm cen}|\le n+1$. Each $\tau_n^\sigma$ is at most $(\sqrt{2\pi}(n+1))^{-1}$, proving \eqref{fdi:adj:eq:Rbound}.
+\end{proof}
+The central bound $n+1$ is sharper, for the path, than the bound $B^n=2^n$ of \eqref{fdi:eq:split}; both are smaller than either sector scale by every inverse power of $n$.
+
+\subsubsection*{Coefficient generator and remainder proof}
+The exact identity
+\[
+ -\frac{(\lambda+\lambda^{-1}-\sigma)^2}{2}
+ =-\frac{(\lambda-\sigma)^2}{2}-1+\frac{\sigma}{\lambda}
+                                          -\frac1{2\lambda^2}
+\]
+shows how to expand each sector. With $\lambda=\sqrt n+u$, its normalized local integral is a Gaussian of mean $\sigma/2$ and variance $1/2$, multiplied by $e^{\mathcal F_\sigma(\eps,u)}$, where
+\begin{equation}\label{fdi:adj:eq:Fsector}
+ \mathcal F_\sigma(\eps,u)=\frac{\log(1+\eps u)-\eps u+(\eps u)^2/2}{\eps^2}
+       +\frac{\sigma \eps}{1+\eps u}-\frac{\eps^2}{2(1+\eps u)^2}.
+\end{equation}
+Define the coefficient polynomials
+\begin{align*}
+ \widehat p_{1,\sigma}(u)&=u^3/3+\sigma,\\
+ \widehat p_{h,\sigma}(u)&=(-1)^{h+1}
+ \left(\frac{u^{h+2}}{h+2}+\sigma u^{h-1}+\frac{h-1}{2}u^{h-2}\right)
+ \quad(h\ge2),\\
+ \widehat b_{0,\sigma}(u)&=1,\qquad
+ \widehat b_{m,\sigma}(u)=\frac1m\sum_{h=1}^mh\,\widehat p_{h,\sigma}(u)\widehat b_{m-h,\sigma}(u).
+\end{align*}
+For $V_\sigma\sim N(\sigma/2,1/2)$ the sector coefficients are
+$\widehat D_{m,\sigma}=\E \widehat b_{m,\sigma}(V_\sigma)$. The symmetry
+$\widehat p_{h,-}(-u)=(-1)^h\widehat p_{h,+}(u)$ implies $\widehat D_{m,-}=(-1)^m\widehat D_{m,+}$.
+
+On $|u|\le\eps^{-1/6}$, all denominators in \eqref{fdi:adj:eq:Fsector} stay away from zero throughout the Taylor segment $0\le s\le\eps$. Its fixed derivatives have polynomial bounds in $u$, and
+$|\mathcal F_\sigma(s,u)|\le C\eps(1+|u|^3)=O(\eps^{1/2})$. Taylor's theorem gives an error at most $C_M\eps^{M+1}(1+|u|^{N_M})$, for some fixed $N_M$. Integration against the shifted Gaussian proves the local remainder.
+
+For the tails set
+\[
+ f_{n,\sigma}(\lambda)=n\log\lambda-\frac{(\lambda-\sigma)^2}{2},
+ \qquad g_\sigma(\lambda)=e^{-1+\sigma/\lambda-1/(2\lambda^2)}.
+\]
+On $\lambda\ge1$, $e^{-5/2}\le g_\sigma(\lambda)\le1$. The maximum of $f_{n,\sigma}$ is at
+$y_{n,\sigma}=(\sigma+\sqrt{1+4n})/2=\sqrt n+\sigma/2+O(\eps)$, and $f_{n,\sigma}''\le-1$. Its maximum value is
+$\frac n2(\log n-1)+\sigma\sqrt n-1/4+O(\eps)$.
+The omitted tails therefore contribute at most
+$\mathcal L_n^\sigma O(e^{-cn^{1/6}})$. This establishes \eqref{fdi:adj:eq:separate} with $\widehat D_{m,+}$ in place of $d_m$.
+
+The negative sector and the polynomially bounded residual are smaller than the positive scale by every inverse power. Uniqueness of finite-order Poincar\'e coefficients in \eqref{fdi:adj:eq:absolute} and \eqref{fdi:adj:eq:exactsectors} gives $\widehat D_{m,+}=d_m$ at every order. Finally, $\Xi_n/\mathcal L_n^-$ is also smaller than every inverse power, which proves \eqref{fdi:adj:eq:isolated}.
+
+\begin{mergenote}
+Theorem~\ref{fdi:thm:sectors} at $G=P_n$ gives the same expansion for the sectors $K^\sigma_{P_n}=\mathcal K_n^\sigma-\tau_n^\sigma$ with the scale $L_n^\sigma=e^{1/n}\mathcal L_n^\sigma$ and the moving statistics $a_j(P_n)$; re-expanding $e^{1/n}$ and the affine $a_j$ (Theorem~\ref{fdi:thm:affine}) turns $D_h(a(P_n))$ into $d_h$ (for instance $D_1=7/24+a_1\to31/24=d_1$). Source 26's generator $\widehat p_{h,\sigma}$ already has these constants built in, which is why it differs from \eqref{fdi:eq:ph}.
+\end{mergenote}
+
+\subsubsection*{The meaning of the exponentially small term}
+The ratio of exact sectors satisfies
+\[
+ \frac{\mathcal K_n^-}{\mathcal K_n^+}=e^{-2\sqrt n}(1+O(n^{-1/2})).
+\]
+More concretely, with the exact positive-sector integral in the denominator,
+\[
+ \frac{a_n-\mathcal K_n^+}{\mathcal K_n^+}=(-1)^n e^{-2\sqrt n}
+ \left(1-\frac{31}{12\sqrt n}+O(n^{-1})\right).
+\]
+Thus $\mathcal K_n^+$ lies below $a_n$ for all sufficiently large even $n$, and above it for all sufficiently large odd $n$.
+The small-sector statement \eqref{fdi:adj:eq:isolated} subtracts the \emph{exact} $\mathcal K_n^+$. For a fixed $M$-term approximation to that integral, the available error bound is
+$O(\mathcal L_n^+n^{-(M+1)/2})$, whose scale is much larger than $\mathcal L_n^-$. Thus a finite dominant-sector truncation does not numerically or analytically resolve the smaller term.
+
+Equivalently, one may write a joint formula with two independent errors:
+\begin{align*}
+ a_n={}&\mathcal L_n^+\left(\sum_{m=0}^Md_m\eps^m+E_{n,M}^+\right)\\
+ &+(-1)^n\mathcal L_n^-\left(\sum_{m=0}^N(-1)^md_m\eps^m+E_{n,N}^-\right)+\Xi_n,\\
+ |E_{n,M}^+|&\le C_M\eps^{M+1},\qquad |E_{n,N}^-|\le C_N\eps^{N+1}.
+\end{align*}
+This is an exact two-sector decomposition with separate Poincar\'e expansions. The word ``transseries'' may describe its formal two-scale structure, but no optimal-truncation, Borel-summability, resurgence, or Stokes-constant theorem is established here.
+
+\subsection{Inversion with three distinct conventions}\label{fdi:adj:sec:inverse}
+The count grows superexponentially. Its inverse must distinguish a smooth asymptotic root, an integer threshold, and the inverse of an actual log-linear interpolation.
+
+\emph{Smooth roots, the finite Newton algorithm and the integer threshold.} With $L_{1,J}$ from \eqref{fdi:adj:eq:LJ}, source 26 states and proves, in the same form, Section~\ref{fdi:sec:inverse} at $r=1$: the unique large root $x_{1,J}(y)$ of $L_{1,J}(x)=\log y$ with $x_{1,J}(a_n)=n+O_J(n^{-(J+1)/2}/\log n)$ \eqref{fdi:eq:nodeinv}; the Lambert-$W$ seed and Newton iteration \eqref{fdi:eq:newton} with the error bound of Section~\ref{fdi:sec:inverse}, stated for every fixed iteration count $i\ge0$ (the initial error has precisely the stated order at $i=0$; the first update is much smaller than the initial neighborhood, so all iterates remain in the range where the bounds apply), and
+\begin{equation}\label{fdi:adj:eq:steps}
+ i=\ceil{\log_2(J+3)}
+\end{equation}
+updates; and, for $N_1(y)=\min\{n\ge0:a_n\ge y\}$, strict increase of $a_n$ for $n\ge3$ and the two-ceiling enclosure of Proposition~\ref{fdi:prop:ceil} at $r=1$, with the finite Newton iterate allowed in place of $x$. The ceiling cannot in general be discarded, even though $\delta\to0$: a threshold may be arbitrarily close to one of the sequence values. The proof supplies existence of the constants; the package does not claim a ready-to-use numerical certification of $C_J$ and $y_J$. The relation of these statements to the repository's inversion theorems is the note at the end of Section~\ref{fdi:sec:inverse}.
+
+\emph{The actual log-linear interpolant.} Define $\mathcal A_1(x)$ for $x\ge3$ by
+\[
+ \log\mathcal A_1(m+\theta)=(1-\theta)\log a_m+\theta\log a_{m+1},
+ \quad m\in\mathbb Z,\quad0\le\theta\le1.
+\]
+Its inverse is an unambiguous continuous index convention. To approximate it at arbitrarily high order, interpolate the asymptotic logarithm at the same nodes:
+\[
+ \widetilde L_{1,J}(m+\theta)=(1-\theta)L_{1,J}(m)+\theta L_{1,J}(m+1).
+\]
+Let $\widetilde x_{1,J}(y)$ be the large root of $\widetilde L_{1,J}(x)=\log y$. On the interval whose endpoint values bracket $b=\log y$, it is explicitly
+\begin{equation}\label{fdi:adj:eq:chordinverse}
+ \widetilde x_{1,J}(y)=m+\frac{b-L_{1,J}(m)}{L_{1,J}(m+1)-L_{1,J}(m)}.
+\end{equation}
+\begin{proposition}[Log-linear convention]\label{fdi:adj:prop:loglinear}
+For fixed $J$, writing $x=\widetilde x_{1,J}(y)$,
+\[
+ \mathcal A_1^{-1}(y)=\widetilde x_{1,J}(y)
+       +O_J\left(\frac{x^{-(J+1)/2}}{\log x}\right).
+\]
+In contrast, the difference between the smooth and piecewise-linear roots is generally only bounded by $O(1/(x\log x))$, independently of the truncation order.
+\end{proposition}
+\begin{proof}
+The nodal error \eqref{fdi:adj:eq:logavoid} interpolates linearly to a uniform $O_J(x^{-(J+1)/2})$ error on each unit interval. The slopes of $\widetilde L_{1,J}$ are $\Theta(\log x)$, so inversion gives the first assertion. Linear interpolation of a twice differentiable function differs from that function by $O(\sup|L_{1,J}''|)=O(1/x)$ on a unit interval. Its inverse discrepancy is therefore $O(1/(x\log x))$.
+
+More precisely, for $x=m+\theta$, Taylor's theorem gives
+\[
+ \widetilde L_{1,J}(x)-L_{1,J}(x)
+  =\frac{\theta(1-\theta)}{4x}+O_J(x^{-3/2}).
+\]
+Away from the endpoints this leading chord term is nonzero; it cannot be ignored in an arbitrary-order continuous inverse claim.
+\end{proof}
+Proposition~\ref{fdi:adj:prop:loglinear} is \eqref{fdi:eq:actualchordinv} at $r=1$, with the explicit leading chord term added. Finding the correct interval for \eqref{fdi:adj:eq:chordinverse} requires only checking nearby integer endpoint values of $L_{1,J}$, starting from the smooth Newton approximation. This involves evaluations of the explicit truncation, not a conjectural interpolation of $a_n$.
+
+\subsection{Computation and reproducibility of source 26}\label{fdi:adj:sec:repro}
+The accompanying ZIP contained the editable \LaTeX\ source and PDF, four mathematical Python scripts and a comparison helper, exact rational coefficient data, numerical check outputs, a coefficient supplement, source provenance, content hashes, and a replay script. It contains no downloaded third-party papers or Li manuscript source.
+
+\begin{mergenote}
+In this report the scripts are \texttt{code/26-adjacent-scripts-*.py}, the replay and build scripts \texttt{code/26-adjacent-replay.sh} and \texttt{code/26-adjacent-build.sh}, the data \texttt{data/26-adjacent-*}, the supplements \texttt{26-adjacent-supplements-*.md}; the delivered source \texttt{report.tex} is printed as this section, and the delivered PDF and the checksum list \texttt{SHA256SUMS} (which the delivered \texttt{replay.sh} verifies first) are not shipped.
+\end{mergenote}
+
+The extraction script uses exact rational arithmetic. If $q_h(u)=(-1)^{h+3}u^{h+2}/(h+2)$ and
+$e^{\sum_{h\ge1}q_h \eps^h}=\sum_{m\ge0}f_m(u)\eps^m$, then
+\[
+ f_0=1,\qquad f_m=\frac1m\sum_{h=1}^mhq_hf_{m-h}.
+\]
+Gaussian expectation gives $A_m$. Formal logarithm, the explicit series $\mathcal H$, and a Touchard transform give all the other coefficient families. A second generator uses the exact sector integral and agrees through the checked orders; the proof establishes equality at all finite orders.
+
+The supplied checks cover:
+\begin{itemize}
+ \item exact triangle rows $n=0,\ldots,8$ and the avoidance recurrence;
+ \item avoidance-ratio residuals through $n=20000$;
+ \item total-variation and finite-Newton residuals at $n=100,1000,5000,20000$;
+ \item independent sector coefficients through order $10$;
+ \item the exact sector identity at $n=0,1,2,3,4,8,15,20$, and separate normalized sector residuals at $n=100,400,1600$.
+\end{itemize}
+These are reproducibility checks, not replacements for the analytic proofs. The total-variation numerical routine truncates the moment series at $K\le90$; its $\ell^1$ tail is bounded by $\sum_{k>K}2^k/k!$, and the omitted Poisson mass must also be included when interpreting precision. At $K=90$ the bound is tiny, but the displayed decimal strings are not claimed as fully certified interval enclosures.
+
+\begin{center}
+\begin{tabular}{rccc}
+\toprule
+$n$ & $\eps^{-3}(e\TV-\eps+\eps^2/2)$ & inverse $J=3$ scaled error & inverse $J=7$ scaled error\\
+\midrule
+100 & 0.6686654 & -1.1769375 & 8.5338127 \\
+1000 & 0.6944681 & -1.1799798 & 9.1775393 \\
+5000 & 0.7019778 & -1.1765105 & 9.4307369 \\
+20000 & 0.7051241 & -1.1744492 & 9.5334214 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The last two columns report $(x_i-n)n^{(J+1)/2}\log n$ at $y=a_n$, using the iteration count \eqref{fdi:adj:eq:steps}. Their limits are $2\beta_4=-75/64$ and $2\beta_8=19733/2048$, respectively. The first column tends to $17/24$. No monotonic approach is required by the error theorems. (The table is \texttt{data/26-adjacent-numerical-table.tex}.)
+
+\subsection{Further research questions of source 26}\label{fdi:adj:sec:questions}
+The following are directions suggested by the proofs, not results proved in source 26.
+\begin{enumerate}
+ \item \textbf{Effective constants.} Can one obtain modest explicit values for the uniform PGF, weighted-law, and inverse-enclosure constants, so that a requested finite $n$ tolerance is numerically certified?
+ \item \textbf{Growing parameters.} How far may the complex PGF argument, the exponential weight, or the deviation index grow with $n$ while retaining a useful uniform expansion? The present fixed-compact theorem does not answer a moderate- or large-deviation question.
+ \item \textbf{Other sparse forbidden graphs.} Replace the path by a bounded-degree graph on the labels. Its matching counts replace $\binom{n-k}{k}$. Which graph families admit polynomial coefficient structures and weighted Poisson refinements with comparably simple errors?
+
+ \begin{mergenote}
+ \emph{Re-scoped.} Source 19 answers the weighted-Poisson part for \emph{every} family of bounded maximum degree: Theorem~\ref{fdi:thm:pgf} and Corollary~\ref{fdi:cor:weighted} give the complex-PGF expansion and the weighted signed-law error to every fixed order, with universal rational polynomial coefficients in the graph's actual root moments $a_j(G)$, and Theorem~\ref{fdi:thm:sectors} the two sectors; Theorem~\ref{fdi:thm:affine} gives constant coefficients for every fixed finite forbidden-distance set. What remains open is which other families have convergent or eventually affine statistics $a_j(G_n)$ (so that the coefficients become constant), and the efficiency questions of Section~\ref{fdi:sec:questions}.
+ \end{mergenote}
+ \item \textbf{Small-sector resolution.} What is the large-order growth of $d_j$, and can optimal truncation of the positive sector reach the $e^{-2\sqrt n}$ scale? A proof would require tools beyond the separate fixed-order Laplace estimates used here.
+ \item \textbf{Joint laws.} Can the adjacent-transposition count be refined jointly with the total number of transpositions, fixed points, or crossings, and what covariance corrections survive in natural scalings?
+ \item \textbf{Historically complete comparison.} A broader inspection of the computational-biology and involution asymptotics literature may locate overlapping refinements. Establishing priority is a separate bibliographic task.
+\end{enumerate}
+These questions preserve the useful elementary core: exact matching enumeration, Gaussian asymptotics, and a remainder that survives summation over the whole distribution.
+
+\appendix
+\section{Selected coefficients of the adjacent case through order eight}\label{fdi:adj:app:coefficients}
+This appendix is source 26's. Set $\kappa_j=P_j(-1)$. The exact rational tables below use the normalizations in \eqref{fdi:adj:eq:avoidratio}, \eqref{fdi:adj:eq:tv}, and \eqref{fdi:adj:eq:logavoid}. The complete $C_j$ and $P_j$ are in the coefficient supplement \texttt{26-adjacent-supplements-coefficients.md} and the JSON data.
+\begin{center}\renewcommand{\arraystretch}{1.45}
+\begin{tabular}{rccc}
+\toprule
+$j$ & $\kappa_j$ & $V_j$ & $\beta_j$\\
+\midrule
+0 & $1$ & $0$ & $0$\\
+1 & $1$ & $1$ & $31/24$\\
+2 & $-1/2$ & $-1/2$ & $-55/48$\\
+3 & $1/24$ & $17/24$ & $1717/1920$\\
+4 & $7/24$ & $-11/24$ & $-75/128$\\
+5 & $-1759/1920$ & $1217/1920$ & $-26879/107520$\\
+6 & $1487/1440$ & $-233/1440$ & $899/720$\\
+7 & $-482159/322560$ & $-93119/322560$ & $-6385907/2064384$\\
+8 & $8591/10080$ & $11551/5040$ & $19733/4096$\\
+\bottomrule
+\end{tabular}\end{center}
+All displayed decimals in the computational outputs derive from exact fractions or high-precision quadrature. The analytic results concern exact quantities.
+
+\begin{thebibliography}{99}\raggedright
+\bibitem{oeis239144} OEIS Foundation, \emph{A239144}, involutions whose transposition distances exceed a prescribed bound; entry credited to J. Arndt and A. Heinz (2014). \url{https://oeis.org/A239144}.
+\bibitem{oeis170941} OEIS Foundation, \emph{A170941}, involutions without adjacent transpositions; includes V. Kot\v{e}\v{s}ovec's 2014 asymptotic correction. \url{https://oeis.org/A170941}. [Source 26: inspected 2 October 2026; in particular, the formula attributed to V. Kot\v{e}\v{s}ovec, 10 September 2014.]
+\bibitem{oeis217876} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A217876, \url{https://oeis.org/A217876}, inspected 2 October 2026 (source 26).
+\bibitem{oeis85} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, A000085, \url{https://oeis.org/A000085}. Classical involution enumeration and asymptotic references (source 26).
+\bibitem{hs1997} P. F. Stadler and C. Haslinger, \emph{RNA Structures with Pseudo-Knots}, author preprint 97-03-030 (1997), Section 3.1, printed pp. 16--17. Author archive: \url{https://www.tbi.univie.ac.at/newpapers/97wplist.html}; linked source: \url{https://www.tbi.univie.ac.at/newpapers/Abstracts/97-03-030.ps.gz} (source 26).
+\bibitem{hs1999} C. Haslinger and P. F. Stadler, \emph{RNA structures with pseudo-knots: graph-theoretical, combinatorial, and statistical properties}, Bulletin of Mathematical Biology \textbf{61} (1999), 437--467. \url{https://doi.org/10.1006/bulm.1998.0085} (source 26).
+\bibitem{heilmannlieb} O. J. Heilmann and E. H. Lieb, Theory of monomer-dimer systems, \emph{Commun. Math. Phys.} \textbf{25} (1972), 190--232. \url{https://doi.org/10.1007/BF01877590}.
+\bibitem{godsilduality} C. D. Godsil, Hermite polynomials and a duality relation for matchings polynomials, \emph{Combinatorica} \textbf{1} (1981), 257--262. \url{https://doi.org/10.1007/BF02579331}.
+\bibitem{godsilwalks} C. D. Godsil, Matchings and walks in graphs, \emph{J. Graph Theory} \textbf{5} (1981), 285--297. \url{https://doi.org/10.1002/jgt.3190050310}.
+\bibitem{lass} B. Lass, Matching polynomials and duality, \emph{Combinatorica} \textbf{24} (2004), 427--440. Inspected author manuscript, especially introductory attribution on p. 3 and duality in \S3, p. 8. \url{https://math.univ-lyon1.fr/homes-www/lass/articles/pub4godsil.pdf}.
+\bibitem{godsil-mckay} C. D. Godsil and B. D. McKay, Asymptotic enumeration of Latin rectangles, \emph{J. Combin. Theory Ser. B} \textbf{48} (1990), 19--44. \url{https://users.cecs.anu.edu.au/~bdm/papers/LatinRectangles.pdf}.
+\bibitem{mcleodthesis} J. C. McLeod, \emph{Methods in Asymptotic Combinatorics}, PhD thesis, Australian National University, February 2007. Chapter 4, especially Theorems 4.17--4.18, printed pp. 80--81. \url{https://hdl.handle.net/1885/150677}.
+\bibitem{mcleod} J. C. McLeod, Asymptotic enumeration of $k$-edge-colored $k$-regular graphs, \emph{SIAM J. Discrete Math.} \textbf{23}(4) (2010), 2178--2197. \url{https://doi.org/10.1137/080725556}. The primary thesis precursor was inspected; the final article was not compared word for word.
+\bibitem{ganjtabesh} M. Ganjtabesh and J.-M. Steyaert, Enumerating RNA structures, including pseudoknots of any topology, \emph{MATCH Commun. Math. Comput. Chem.} \textbf{66} (2011), 399--414. Equation (17) and Theorem 3 (source 19); Section 5, equations (17)--(18), Theorem 3, and equation (25) (source 26). \url{https://match.pmf.kg.ac.rs/electronic_versions/Match66/n1/match66n1_399-414.pdf}.
+\bibitem{li} A. C. Li, \emph{Ballot-Admissible Fibonacci Ribbon Tableaux: Complete Enumeration for Arbitrary Alphabet Size and Fixed-Rank Asymptotics}, 2026 manuscript; stable-involution Poisson theorem in the inspected repository source. \url{https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7368879}; source repository \url{https://github.com/crabsatellite/fibonacci-ribbon-ballot-enumeration}. Titles vary between the listing and manuscript. [Source 26 cites it as \emph{Exact Enumeration and Fixed-Rank Asymptotics of Ballot-Admissible Fibonacci Ribbon Tableaux}, manuscript dated 29 August 2026, stable-involution section, theorem labelled \texttt{thm:poisson} and equation labelled \texttt{eq:factorial-moments}; the inspected source file and its SHA-256 are identified in \texttt{data/26-adjacent-sources.json}.]
+\bibitem{deng} B. Deng, Deranged perfect matchings on complete graph and balanced complete $r$-partite graph, 2025 preprint, especially Theorem 3.1 and \S5. \url{https://arxiv.org/abs/2505.13799}.
+\bibitem{greenhill} C. Greenhill and B. D. McKay, Counting loopy graphs with given degrees, \emph{Linear Algebra Appl.} \textbf{436} (2012), 901--926. \url{https://arxiv.org/abs/1103.0080}.
+\bibitem{wanless} I. M. Wanless, Counting matchings and tree-like walks in regular graphs, \emph{Combin. Probab. Comput.} \textbf{19} (2010), 463--480. \url{https://doi.org/10.1017/S0963548309990678}. Bibliographic/abstract scope checked; full-paper comparison remains open.
+\bibitem{tai} [Added in the write phase.] \emph{Transseries and Inversion}, ProveIt research volume, \texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-and-transseries/\allowbreak Transseries\_And\_Inversion/\allowbreak transseries\_and\_inversion.tex}: Theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:lambert-centered}, \texttt{p0:thm:staircase} and Definition \texttt{p0:def:three-inverses}.
+\bibitem{cti} [Added in the write phase.] \emph{Combinatorial Transseries Inverses}, ProveIt research volume, \texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-and-transseries/\allowbreak Combinatorial\_Transseries\_Inverses/\allowbreak Combinatorial\_Transseries\_Inverses.tex}: chapter \texttt{ct:ch:involutions} (equations \texttt{t2:eq:involution-enumeration}, \texttt{t2:eq:involution-A}; Theorems \texttt{t1:thm:ivforward}, \texttt{t1:thm:ivinverse}) and Theorem \texttt{t2:thm:balanced-inverse}.
+\end{thebibliography}
+\end{document}

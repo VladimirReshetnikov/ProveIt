@@ -1,0 +1,99 @@
+{
+  "status": "PASS_WIDTH_DELETED_POST_KERNEL_CLASSIFICATION",
+  "scan": [
+    {
+      "t": 1,
+      "positive_field_tuples": 15,
+      "even_valuation_admitted": 3,
+      "positive_input_width_tuples": 0,
+      "strata": {}
+    },
+    {
+      "t": 2,
+      "positive_field_tuples": 10626,
+      "even_valuation_admitted": 41,
+      "positive_input_width_tuples": 6,
+      "strata": {
+        "long1": 2,
+        "long2": 1,
+        "long3": 1,
+        "short": 2
+      }
+    },
+    {
+      "t": 3,
+      "positive_field_tuples": 1426425,
+      "even_valuation_admitted": 596,
+      "positive_input_width_tuples": 135,
+      "strata": {
+        "long1": 22,
+        "long2": 8,
+        "long3": 8,
+        "short": 97
+      }
+    }
+  ],
+  "examples": [
+    {
+      "q": 9,
+      "W": 9,
+      "x": 3,
+      "fields": [
+        2,
+        5,
+        4,
+        13
+      ],
+      "expected": "long1",
+      "r": 9848,
+      "A": -1,
+      "D": 9,
+      "alpha": 1,
+      "L": 1
+    },
+    {
+      "q": 9,
+      "W": 1,
+      "x": 1,
+      "fields": [
+        5,
+        4,
+        1,
+        14
+      ],
+      "expected": "long3",
+      "r": 10328,
+      "A": 1,
+      "D": 7,
+      "alpha": 1,
+      "L": 9
+    },
+    {
+      "q": 27,
+      "W": 3,
+      "x": 1,
+      "fields": [
+        14,
+        13,
+        22,
+        13
+      ],
+      "expected": "short",
+      "r": 272282,
+      "A": 1,
+      "D": 9,
+      "alpha": 17,
+      "L": 9
+    }
+  ],
+  "negative_append_family": {
+    "checked_t": [
+      2,
+      12
+    ],
+    "formula": "q=3^t,W=9,x=2q/3-3,F=(H+1-q/3,H+1,H,q+H)",
+    "scope": "Parametrically proved full weakened-source family using the positive Pell converse"
+  },
+  "scope": "Exact four digit strata, sign classification and positive Pell extension; no universality or decidability theorem claimed",
+  "established_complete_universal_bound": 76
+}

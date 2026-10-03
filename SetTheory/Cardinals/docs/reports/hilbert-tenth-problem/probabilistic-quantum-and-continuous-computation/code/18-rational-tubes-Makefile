@@ -1,0 +1,16 @@
+.PHONY: all check pdf clean
+
+all: check pdf
+
+check:
+	python code/run_checks.py
+	python code/constant_example.py
+	python code/verify_json.py results/*_certificate.json
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	rm -f article.aux article.log article.out article.toc

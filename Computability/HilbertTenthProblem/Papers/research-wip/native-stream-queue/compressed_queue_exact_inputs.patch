@@ -1,0 +1,62 @@
+--- a/code/queue_certificates.py
++++ b/code/queue_certificates.py
+@@ -18,10 +18,20 @@
+     source: int = 0
+     target: int = 0
+ 
++    def __post_init__(self) -> None:
++        if type(self.read) is not str or type(self.write) is not str:
++            raise TypeError("action words must be exact strings")
++        if type(self.source) is not int or type(self.target) is not int:
++            raise TypeError("control states must be exact integers")
++
+ 
+ @dataclass(frozen=True)
+ class Leaf:
+     action: Action
++
++    def __post_init__(self) -> None:
++        if type(self.action) is not Action:
++            raise TypeError("a leaf requires an Action")
+ 
+ 
+ @dataclass(frozen=True)
+@@ -29,12 +39,18 @@
+     left: int
+     right: int
+ 
++    def __post_init__(self) -> None:
++        if any(type(x) is not int or x < 0 for x in (self.left, self.right)):
++            raise ValueError("grammar indices must be exact natural integers")
++
+ 
+ Node = Leaf | Concat
+ 
+ 
+ def encode(word: str, alphabet: str = "01") -> tuple[int, int]:
+     """Return (B**length, most-significant-first radix value), digits 1..s."""
++    if type(word) is not str or type(alphabet) is not str:
++        raise TypeError("words and alphabets must be exact strings")
+     if not alphabet or len(set(alphabet)) != len(alphabet):
+         raise ValueError("alphabet must be nonempty and have distinct characters")
+     digits = {a: i + 1 for i, a in enumerate(alphabet)}
+@@ -123,7 +139,18 @@
+ class Poly:
+     """Sparse integer polynomial. A monomial is a sorted tuple of indices."""
+     def __init__(self, terms: dict[tuple[int, ...], int] | None = None):
+-        self.terms = {m: c for m, c in (terms or {}).items() if c}
++        if terms is None:
++            terms = {}
++        if type(terms) is not dict:
++            raise TypeError("polynomial terms must be a dictionary")
++        for monomial, coefficient in terms.items():
++            if type(coefficient) is not int:
++                raise TypeError("polynomial coefficients must be exact integers")
++            if (type(monomial) is not tuple
++                    or any(type(i) is not int or i < 0 for i in monomial)
++                    or tuple(sorted(monomial)) != monomial):
++                raise ValueError("monomials must be sorted tuples of natural indices")
++        self.terms = {m: c for m, c in terms.items() if c}
+ 
+     @staticmethod
+     def coerce(value: Poly | int) -> Poly:

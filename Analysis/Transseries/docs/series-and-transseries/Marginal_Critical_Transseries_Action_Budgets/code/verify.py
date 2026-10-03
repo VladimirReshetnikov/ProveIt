@@ -267,7 +267,8 @@ def main() -> None:
     DATA.mkdir(exist_ok=True)
     out = run(args.quick)
     name = "verification_quick.json" if args.quick else "verification.json"
-    (DATA/name).write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8")
+    # ProveIt edit (2026-09-29): LF line endings on every platform.
+    (DATA/name).write_text(json.dumps(out,indent=2)+"\n",encoding="utf-8",newline="\n")
     print(json.dumps({"status":out["status"],"exact_checks":out["exact_checks"],
                       "output":str(DATA/name)},indent=2))
 

@@ -1,0 +1,528 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{enumitem}
+\hypersetup{pdftitle={Full support signed permutations and their asymptotic coefficients},pdfsubject={OEIS A260952 and uniform signed permutation asymptotics},pdfauthor={}}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\fall}[2]{(#1)_{#2}}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Stir}[2]{\genfrac\{\}{0pt}{}{#1}{#2}}
+\newcommand{\N}{\mathbb N}
+\DeclareMathOperator{\negnum}{neg}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\title{Full support signed permutations\\and their asymptotic coefficients}
+\author{}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove the explicit large-order conjecture recorded in OEIS A260952 and derive every fixed correction order. The coefficients belong to the factorial asymptotics of full-support elements of Weyl groups of types $B$ and $D$. An exact positive Stirling transform identifies the dominant scale $\log 3$ and gives a proof with controlled remainders. For the original signed-permutation model, two exact endpoint sums admit separate expansions uniformly near the zero-sign-weight boundary. They yield an all-order sparse-sign crossover and a Poisson law conditioned to be positive. Growth-index inverses are provided with an explicit rounding qualification. The underlying generating functions, connected-permutation asymptotics, and general Stirling-transform machinery are prior work; the contribution is the specialized conjecture resolution, its refinements, and the uniform crossover.
+\end{abstract}
+
+\section{The conjecture and the normalization}\label{fss:sec:conjecture}
+Let
+\begin{equation}\label{fss:eq:defs}
+ g(x)=\sum_{n\ge0}n!x^n,\qquad C(x)=1-\frac1{g(x)}=\sum_{n\ge1}c_nx^n,
+ \qquad B_n(q)=[x^n]\frac{g(qx)}{g(x)}.
+\end{equation}
+These are formal power series. The integers $c_n$ count indecomposable permutations and form OEIS \href{https://oeis.org/A003319}{A003319}. Put $b_n=B_n(2)$, which is \href{https://oeis.org/A109253}{A109253}, the number of elements of the Weyl group $B_n$ whose support contains every standard simple reflection. For type $D$, the corresponding sequence \href{https://oeis.org/A112225}{A112225}, denoted by $d_n$, satisfies the classical identity
+\begin{equation}\label{fss:eq:D}
+ d_n=\frac{b_n-3c_n}{2},\qquad n\ge2.
+\end{equation}
+Bergeron, Hohlweg, and Zabrocki~\cite{BHZ} give the generating functions and their combinatorial interpretation. Martin and Kearney~\cite{MK} give integral representations.
+
+For fixed $q>1$, define $p_0(q)=1$ and the asymptotic coefficients $p_m(q)$ by
+\begin{equation}\label{fss:eq:pdef}
+ \frac{B_n(q)}{q^n n!}\sim\sum_{m\ge0}\frac{p_m(q)}{n^m}.
+\end{equation}
+The sequence $a_m=\href{https://oeis.org/A260952}{\mathrm{A260952}}(m)$ uses powers of $1/(2n)$ instead. Consequently
+\begin{equation}\label{fss:eq:scaling}
+ a_m=2^m p_m(2).
+\end{equation}
+Kot\v e\v sovec's 2015 conjecture, as stated in the OEIS entry, is
+\begin{equation}\label{fss:eq:conj}
+ a_m\sim-\frac{2^{m+1}m!}{9(\log3)^{m+1}}.
+\end{equation}
+The factor $2^m$ in~\eqref{fss:eq:scaling} must be retained when comparing the two normalizations.
+
+\begin{theorem}\label{fss:thm:main}
+The conjecture~\eqref{fss:eq:conj} holds. More precisely, with $\tau=\log3$ and $\fall mr=m(m-1)\cdots(m-r+1)$,
+\begin{align}\label{fss:eq:main}
+ a_m={}&-\frac{2^{m+1}m!}{9\tau^{m+1}}
+ \left\{1-\frac{2\tau}{m}-\frac{9\tau^2}{4\fall m2}
+ -\frac{27\tau^3}{2\fall m3}-\frac{1755\tau^4}{16\fall m4}
+ +O(m^{-5})\right\}.
+\end{align}
+Every fixed subsequent order is computable by a finite formula with the corresponding next-order remainder. Moreover, $a_m<0$ for every $m\ge1$.
+\end{theorem}
+The next two coefficients in this falling-factorial form are
+\[
+ -\frac{9099\tau^5}{8\fall m5},\qquad
+ -\frac{907821\tau^6}{64\fall m6}.
+\]
+They are obtained symbolically, rather than fitted to numerical data. The expansion is not asserted to converge.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~02 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{Coxeter\_\allowbreak Full\_\allowbreak Support\_\allowbreak Asymptotics.zip} (wrapper directory
+\texttt{Coxeter\_\allowbreak Full\_\allowbreak Support/}, main file
+\texttt{Coxeter\_\allowbreak Full\_\allowbreak Support\_\allowbreak Asymptotics.tex}, now \texttt{article.tex})
+in commit \texttt{096ee7b87}, and placed in commit \texttt{d0e6008d9} in
+the research-report collection, among the OEIS-sequence asymptotics
+reports. The manuscript names no ProveIt commit and describes no search of
+the repository, so it has no pin; its author line is empty. The bounded
+source search of Section~\ref{fss:sec:repro} is the manuscript's own
+literature search; the intake's untruncated search of the repository (the
+research-report collection, the transseries volumes and \texttt{Oeis/})
+found no other treatment of A260952, A109253 or A112225, or of full-support
+elements of Coxeter groups. Nothing in this report is formalized in Lean or
+Rocq, and placement in the collection confers no formal status on any
+statement here. The writing step prefixed every label with \texttt{fss:},
+added section labels and these \textsf{[write]} notes, and three
+references \cite{fss-pdc,fss-tai,fss-cti}, and set the bibliography
+ragged-right; no statement, proof or number of
+the manuscript was altered. The type-$B$/$D$ models, generating functions
+and connectivity characterization remain credited to \cite{BHZ}, and the
+shifted-Stirling and compound-Poisson method to \cite{MK}, exactly as
+delivered.
+
+\emph{A neighbouring report.} The same batch delivered (as manuscript~17)
+an all-orders study of the distinct parabolic double cosets of the
+symmetric group (OEIS A260700), now the collection report
+\texttt{a260700-\allowbreak parabolic-\allowbreak double-\allowbreak cosets}
+\cite{fss-pdc}, which proves Browning's higher-order conjecture. Both
+reports count objects defined by the standard parabolic subgroups of a
+Coxeter group --- here the elements of the Weyl groups $B_n$ and $D_n$
+lying in no proper standard parabolic subgroup, there the distinct double
+cosets $W_IwW_J$ in type $A$ --- and both reach a factorial scale through
+a Stirling transform and invert it with a Lambert $W$ seed. Their theorems,
+generating functions and scales differ ($\tau=\log3$ and
+$m!/(\log3)^{m+1}$ here; $\rho=\log2$ and $n!\rho^{-2n}$ there), and neither
+report uses the other.
+
+\emph{Notation.} Each symbol is printed as delivered. The following letters
+carry two meanings here, or a different meaning in \cite{fss-pdc}.
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.14\linewidth}p{0.80\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$B_n$, $B_n(q)$ & the Weyl group of type $B$, and the sign-weighted full-support count \eqref{fss:eq:defs}, $b_n=B_n(2)$. Not the correction polynomials $B_m(r)$ of \cite{fss-pdc}.\\
+$p_m(q)$, $a_m$ & $p_m(q)$ are \emph{asymptotic coefficients} \eqref{fss:eq:pdef}, $a_m=2^mp_m(2)$ is A260952 \eqref{fss:eq:scaling}; $a=(1+q)/q$ in Section~\ref{fss:sec:late}. In \cite{fss-pdc}, $p_n$ counts double cosets.\\
+$c_n$ & indecomposable permutations (A003319); not the constant $c$ of Browning's conjecture in \cite{fss-pdc}.\\
+$\tau$ & $\tau=\log3$ in Theorem~\ref{fss:thm:main}; $\tau=\log(1+q)$ in Section~\ref{fss:sec:late} and in $\tau(v)=\log(1+q/v)$; the same at $q=2$.\\
+$D$ & type $D$ with $d_n$ (A112225); $D(n)=c_n/n!$ \eqref{fss:eq:Dseries} and its formal version $D(x)$; $D_0=\log(\alpha n_0)$ in Section~\ref{fss:sec:inverse}.\\
+$L$, $H$, $\mathcal H$ & the endpoint sums $L_n(q)$, $H_n(q)$ and their generators $L(q,x)$, $H(q,x)$; $\mathcal H(t)$ is the binary entropy.\\
+$K$, $K_n$ & the carrier constant $K$ of \eqref{fss:eq:carrier}; $K_n$ the number of negative signs (a random variable). Neither is the $K$ of \cite{fss-pdc}.\\
+$A_1$, $A_2$, $A_0$ & pole coefficients in Section~\ref{fss:sec:late}; $A_0=\tfrac12\log(2\pi n_0)+\log K$ in Section~\ref{fss:sec:inverse}.\\
+$u$, $u_j$; $v$, $v_j$ & $u$ is the negative-sign weight and $u_j$ the relative corrections of \eqref{fss:eq:carrier}; $v$ is a marking variable in the proof of Theorem~\ref{fss:thm:late} and $v_j$ the inverse coefficients of \eqref{fss:eq:invformal}.\\
+$w$, $W$ & a signed permutation; $w=(e^t-1)/q$ in the proof of Theorem~\ref{fss:thm:late}; $W$ is the positive Lambert function.\\
+$\ell$, $x$ & $\ell$ indexes $\gamma_\ell$ and is $\log y$ in Section~\ref{fss:sec:inverse}; $x$ is the generating-function variable and a formal proxy for $1/n$.\\
+$\kappa(q)$, $\lambda$ & the limiting fraction in the proof of Theorem~\ref{fss:thm:late}; $\lambda$ is the sparse-sign parameter (not the $\lambda$ of \cite{fss-cti}'s unbalanced core).\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{A natural weight for negative signs}\label{fss:sec:weight}
+For a signed permutation $w$, let $\negnum(w)$ count its negative entries and define
+\[
+ Z_n(u)=\sum_{\substack{w\in B_n\\w\text{ has full support}}}u^{\negnum(w)}.
+\]
+The usual sign-weighted extension of the classical generating function is
+\begin{equation}\label{fss:eq:weighted}
+ Z_n(u)=B_n(1+u),\qquad n\ge1.
+\end{equation}
+Thus the parameter has a direct combinatorial meaning.
+
+Here is an elementary verification. Decompose the underlying unsigned permutation into its indecomposable blocks. The signed permutation has full support precisely when its final unsigned block contains a negative entry. Indeed, a missing simple reflection corresponds to a proper unsigned block cut with every signed entry to its right positive; the sign-change reflection is missing when every entry is positive. This is also a direct consequence of the connectivity characterization in~\cite[Proposition 23]{BHZ}.
+
+If the final unsigned block has size $k$, there are $(n-k)!c_k$ underlying permutations. Writing $q=1+u$, their allowed sign weight is $q^{n-k}(q^k-1)$. Therefore
+\begin{align}\label{fss:eq:positive}
+ B_n(q)&=\sum_{k=1}^n(n-k)!c_kq^{n-k}(q^k-1)\\
+ &=q^nn!-\sum_{k=1}^nc_kq^{n-k}(n-k)! .\label{fss:eq:exact}
+\end{align}
+In the second line we used $\sum_{k=1}^nc_k(n-k)!=n!$. In particular,
+\begin{equation}\label{fss:eq:zero}
+ B_n(1)=0\quad(n\ge1),
+\end{equation}
+and $Z_n(u)$ has nonnegative integer coefficients.
+
+\section{The factorial expansion for connected permutations}\label{fss:sec:factorial}
+Define the formal coefficients
+\begin{equation}\label{fss:eq:beta}
+ \sum_{j\ge0}\beta_jx^j=\frac1{g(x)^2}=(1-C(x))^2.
+\end{equation}
+The first values are $1,-2,-1,-4,-19,-110,-745$.
+
+\begin{lemma}\label{fss:lem:factorial}
+For each fixed integer $R\ge0$,
+\begin{equation}\label{fss:eq:factorial}
+ \frac{c_n}{n!}=\sum_{j=0}^R\frac{\beta_j}{\fall nj}+O_R(n^{-R-1}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The exact recurrence
+\[
+ c_n=n!-\sum_{k=1}^{n-1}c_k(n-k)!
+\]
+first gives $0<c_n\le n!$ and $c_n/n!=1+O(n^{-1})$. Split its convolution into the two ends and the middle. For fixed $R$,
+\begin{equation}\label{fss:eq:recipbin}
+ \sum_{k=R+1}^{n-R-1}\binom nk^{-1}=O_R(n^{-R-1}).
+\end{equation}
+For example, up to a sufficiently small fixed fraction of $n$, consecutive reciprocal-binomial terms decrease geometrically; in the central interval they are exponentially small. Since $c_k\le k!$, this controls the middle part of the convolution.
+
+An induction on $R$, using the already obtained lower-order expansions at the opposite endpoint, now determines the factorial-shift coefficients:
+\[
+ \beta_0=1,\qquad
+ \beta_r=-c_r-\sum_{j=1}^rj!\beta_{r-j}\quad(r\ge1).
+\]
+Their generating function is $(1-C)/g=1/g^2$, giving~\eqref{fss:eq:beta} and the stated remainder.
+\end{proof}
+This factorial-composition phenomenon is classical; see Comtet~\cite{Comtet} and Martin--Kearney~\cite{MK}. The proof is included to make the error control self-contained. In ordinary inverse powers it gives
+\begin{equation}\label{fss:eq:Dseries}
+ D(n):=\frac{c_n}{n!}\sim1-\frac2n-\frac1{n^2}-\frac5{n^3}
+ -\frac{32}{n^4}-\frac{253}{n^5}-\cdots.
+\end{equation}
+
+\section{Two exact endpoints and their uniform expansions}\label{fss:sec:endpoints}
+Set $h=\lfloor n/2\rfloor$ and define the finite sums
+\begin{equation}\label{fss:eq:endpoints}
+ \begin{aligned}
+ L_n(q)&=1-\sum_{k=1}^h\frac{c_k}{q^k\fall nk},\\
+ H_n(q)&=\sum_{j=0}^{n-h-1}\frac{q^j j!D(n-j)}{\fall nj}.
+ \end{aligned}
+\end{equation}
+Equation~\eqref{fss:eq:exact} becomes the exact identity
+\begin{equation}\label{fss:eq:twosectors}
+ \frac{B_n(q)}{q^n n!}=L_n(q)-q^{-n}H_n(q).
+\end{equation}
+
+\begin{theorem}\label{fss:thm:endpoint}
+For every fixed $R$, each of $L_n(q)$ and $H_n(q)$ has an expansion through $n^{-R}$ with error $O(n^{-R-1})$, uniformly on compact subsets of
+\[
+ \frac14<|q|<4.
+\]
+Every fixed derivative in $q$ has the corresponding uniform expansion. In particular the result holds on $[1,Q]$ for each fixed $Q<4$.
+\end{theorem}
+\begin{proof}
+The tail estimates reduce to sums of $Q^j/\binom nj$ for $j\le n/2$ and $Q<4$. Up to $\delta n$, choose $\delta>0$ so that the consecutive ratio is at most $1/2$. Beyond this point, write the exponential rate as
+\[
+ t\log Q-\mathcal H(t),\qquad
+ \mathcal H(t)=-t\log t-(1-t)\log(1-t).
+\]
+It is a convex function of $t$. At a sufficiently small $\delta$ and at $1/2$ its values are negative, since $\frac12\log Q-\log2<0$. The intervening tail is exponentially small. Removing the first $R+1$ terms consequently leaves $O_R(n^{-R-1})$. For $L_n$ use $Q=\max|q|^{-1}<4$; for $H_n$ use $Q=\max|q|<4$. Fixed derivatives introduce only fixed powers of the summation index and do not affect these conclusions. Finally apply Lemma~\ref{fss:lem:factorial} in the finitely many surviving terms of $H_n$.
+\end{proof}
+With $x$ a formal proxy for $1/n$, define
+\begin{align}
+ D(x)&=\sum_{j\ge0}\frac{\beta_jx^j}{\prod_{r=0}^{j-1}(1-rx)},\label{fss:eq:Dformal}\\
+ L(q,x)&=1-\sum_{k\ge1}\frac{c_kq^{-k}x^k}{\prod_{r=0}^{k-1}(1-rx)},\label{fss:eq:Lformal}\\
+ H(q,x)&=\sum_{j\ge0}\frac{q^j j!x^j}{\prod_{r=0}^{j-1}(1-rx)}
+ D\!\left(\frac{x}{1-jx}\right).\label{fss:eq:Hformal}
+\end{align}
+Each fixed coefficient involves only finitely many terms, so these are effective all-order generators. Their first coefficients are
+\begin{align}
+ L(q,x)={}&1-\frac{x}{q}-\frac{x^2}{q^2}
+ -\frac{q+3}{q^3}x^3-\frac{q^2+9q+13}{q^4}x^4+\cdots,\label{fss:eq:Lcoeff}\\
+ H(q,x)={}&1+(q-2)x+(2q^2-2q-1)x^2\notag\\
+ &+(6q^3-2q^2-3q-5)x^3\notag\\
+ &+(24q^4+6q^3-12q^2-9q-32)x^4+\cdots.\label{fss:eq:Hcoeff}
+\end{align}
+
+For an arbitrary fixed $q>1$, including $q\ge4$, the single main expansion~\eqref{fss:eq:pdef} remains valid. Indeed the omitted original terms with $k>n/2$ in~\eqref{fss:eq:exact}, normalized by $q^nn!$, total at most $nq^{-n/2}$. The first half is controlled by reciprocal-binomial tails. This observation does \emph{not} extend the separate secondary-endpoint bounds to $q\ge4$.
+
+At $q=1$, equations~\eqref{fss:eq:zero} and~\eqref{fss:eq:twosectors} imply $L_n(1)=H_n(1)$ exactly, hence $L(1,x)=H(1,x)$ as formal series. This cancellation is essential in the sparse-sign regime.
+
+\paragraph{Exponential-scale qualification.}
+The exact finite sums in~\eqref{fss:eq:endpoints} define the two pieces in~\eqref{fss:eq:twosectors}. Replacing $L_n$ by any fixed algebraic truncation leaves a polynomially small error, which is larger than $q^{-n}$. Thus the formula is not a claim that a fixed truncation of the main series alone resolves an exponentially small remainder. No optimal-truncation or complete infinite-transseries assertion is made.
+
+\section{The late coefficients as a positive Stirling transform}\label{fss:sec:stirling}
+Using Stirling numbers of the second kind,
+\[
+ \frac1{\fall nk}=\sum_{m\ge k}\Stir{m-1}{k-1}n^{-m}.
+\]
+It follows from~\eqref{fss:eq:Lformal} that
+\begin{equation}\label{fss:eq:stirling}
+ p_m(q)=-\sum_{k=1}^m c_kq^{-k}\Stir{m-1}{k-1},\qquad m\ge1.
+\end{equation}
+This also defines the rational-function extension of $p_m$ to every $q\ne0$. It is this extension that is used below for $0<q\le1$; the original one-sector count asymptotic~\eqref{fss:eq:pdef} is asserted only for $q>1$. Since every summand in~\eqref{fss:eq:stirling} is nonnegative and at least one is positive, $p_m(q)<0$ for $q>0$.
+
+If $C_e(z)=\sum_{k\ge1}c_kz^k/k!$, the exact shifted Borel transform in its disk of convergence is
+\begin{equation}\label{fss:eq:borel}
+ \sum_{m\ge1}\frac{p_m(q)t^{m-1}}{(m-1)!}
+ =-\frac1q C_e'\!\left(\frac{e^t-1}{q}\right).
+\end{equation}
+The general shifted-Stirling and compound-Poisson construction is explicitly developed in~\cite{MK}; it is prior methodology.
+
+\section{Every fixed late coefficient order}\label{fss:sec:late}
+For $q>0$, put
+\[
+ \tau=\log(1+q),\quad a=\frac{1+q}{q},\quad
+ A_2=-\frac{q}{(1+q)^2},\quad A_1=\frac{q+2}{(q+1)^2}.
+\]
+For $\ell\ge0$, define
+\begin{equation}\label{fss:eq:gamma}
+ \gamma_\ell(q)=[\delta^\ell]\left\{-\frac1q
+ \sum_{j=2}^{\ell+2}\frac{(-1)^{j-1}\beta_j}{(j-2)!}
+ \left[a(1-e^{-\delta})\right]^{j-2}\right\}.
+\end{equation}
+
+\begin{theorem}\label{fss:thm:late}
+For every fixed $J\ge0$, as $m\to\infty$,
+\begin{align}\label{fss:eq:latethm}
+ p_m(q)={}& A_2m!\tau^{-m-1}+A_1(m-1)!\tau^{-m}\notag\\
+ &+\sum_{\ell=0}^J\gamma_\ell(q)(-1)^{\ell+1}\ell!
+ (m-\ell-2)!\tau^{\ell+1-m}\notag\\
+ &+O\!\left((m-J-3)!\tau^{J+2-m}\right).
+\end{align}
+The remainder is uniform for $q$ in any fixed compact subinterval of $(0,\infty)$.
+\end{theorem}
+\begin{proof}
+We give a finite positive-transform proof, avoiding any assumption about analytic continuation of the full function $C_e$.
+
+First substitute the factorial-shift expansion of Lemma~\ref{fss:lem:factorial} into~\eqref{fss:eq:stirling}. For any selected $M$, the error is bounded by a constant times $k!k^{-M}$. Consider the positive comparison weights
+\[
+ k!q^{-k}\Stir{m-1}{k-1}.
+\]
+When additionally marked by $v^k$, their exponential generating function is
+\begin{equation}\label{fss:eq:marked}
+ \sum_{m\ge1}\frac{t^{m-1}}{(m-1)!}
+ \sum_{k=1}^mk!(v/q)^k\Stir{m-1}{k-1}
+ =\frac{v/q}{\bigl(1-(v/q)(e^t-1)\bigr)^2}.
+\end{equation}
+For positive $v$ its nearest singularity is the double pole
+\[
+ \tau(v)=\log(1+q/v);
+\]
+all other poles are $\tau(v)+2\pi i r$, $r\in\mathbb Z\setminus\{0\}$. Residue extraction is uniform for $v$ near $1$ and $q$ in a compact positive interval. Consequently the exponential scale is $\tau(v)^{-m}$. The usual exponential-moment bounds imply that $k$ lies in $[\eta m,(1-\eta)m]$ apart from an exponentially small fraction of the total weight, for some $\eta>0$. Its limiting fraction is
+\[
+ \kappa(q)=\frac{q}{(q+1)\log(1+q)}\in(0,1).
+\]
+For clarity, the lower-tail bound uses $v<1$ and the upper-tail bound uses $v>1$; choosing the thresholds strictly below and above $\kappa(q)$ makes their exponential rates negative. Compactness gives a uniform choice. It follows that the transformed factorial-approximation error is $O(m^{-M})$ relative to the comparison sum. The finitely many small-$k$ terms are negligible on the factorial scale.
+
+Next evaluate each factorial-shift model exactly. For $j=0$ and $j=1$, the model generating functions are $(1-w)^{-2}$ and $(1-w)^{-1}$. For $j\ge2$,
+\begin{equation}\label{fss:eq:model}
+ \sum_{k\ge j}\frac{(k-j)!}{(k-1)!}w^{k-1}
+ =\frac{(-1)^{j-1}}{(j-2)!}(1-w)^{j-2}\log(1-w)+P_j(w),
+\end{equation}
+where $P_j$ is a polynomial. This identity follows by repeated integration, starting with $-\log(1-w)$ at $j=2$.
+
+Substitute $w=(e^t-1)/q$ and $\delta=\tau-t$. Then
+\[
+ 1-w=a(1-e^{-\delta}),\qquad
+ \log(1-w)=\log\delta+\text{a function analytic at }\delta=0.
+\]
+The double and simple pole coefficients are $A_2,A_1$, and the logarithmic coefficients are exactly~\eqref{fss:eq:gamma}. These finite model generating functions are explicit rational and logarithmic functions of $e^t$, whose nearest singularity is $t=\tau$. Coefficient transfer is applied only to these explicit functions. The analytic polynomial pieces become entire exponential polynomials and are negligible on the factorial scale.
+
+Finally, for $m-1>\ell$,
+\begin{equation}\label{fss:eq:logtransfer}
+ (m-1)![t^{m-1}](\tau-t)^\ell\log(\tau-t)
+ =(-1)^{\ell+1}\ell!(m-\ell-2)!\tau^{\ell+1-m}.
+\end{equation}
+The first omitted logarithmic term has the size of the remainder in~\eqref{fss:eq:latethm}. Taking $M\ge J+4$ in the positive-transform estimate makes its error no larger. This proves the theorem.
+\end{proof}
+
+The first explicit relative corrections are
+\begin{align}\label{fss:eq:generallate}
+ \frac{p_m(q)}{A_2m!\tau^{-m-1}}={}&1-\frac{(q+2)\tau}{qm}
+ -\frac{(q+1)^2\tau^2}{q^2\fall m2}
+ -\frac{4(q+1)^3\tau^3}{q^3\fall m3}\notag\\
+ &-\frac{(q+1)^3(23q+19)\tau^4}{q^4\fall m4}
+ +O_q(m^{-5}).
+\end{align}
+Putting $q=2$ and multiplying by $2^m$ proves Theorem~\ref{fss:thm:main}, including its normalization.
+
+\section{Sparse signs and a conditional Poisson law}\label{fss:sec:sparse}
+Fix $\lambda>0$ and give each negative sign weight $u=\lambda/n$. Write $x=1/n$ formally.
+
+\begin{theorem}\label{fss:thm:sparse}
+For every fixed $R$, locally uniformly for complex $\lambda$,
+\begin{equation}\label{fss:eq:sparse}
+ \frac{B_n(1+\lambda/n)}{n!}
+ =\sum_{r=0}^R\frac{F_r(\lambda)}{n^r}+O_R(n^{-R-1}),
+\end{equation}
+where the all-order coefficient generator is
+\begin{align}\label{fss:eq:Fgen}
+ \sum_{r\ge0}F_r(\lambda)x^r
+ ={}&e^\lambda\exp\!\left(\sum_{s\ge2}
+ \frac{(-1)^{s+1}\lambda^s}{s}x^{s-1}\right)
+ L(1+\lambda x,x)\notag\\
+ &-H(1+\lambda x,x).
+\end{align}
+On a compact disk containing zero, the remainder in~\eqref{fss:eq:sparse} is in fact $O_R(|\lambda|n^{-R-1})$.
+\end{theorem}
+\begin{proof}
+Apply the two separate endpoint expansions in Theorem~\ref{fss:thm:endpoint} in a fixed complex neighborhood of $q=1$, and expand $n\log(1+\lambda/n)$. This proves~\eqref{fss:eq:sparse} and~\eqref{fss:eq:Fgen}, uniformly on compact complex sets. Every $F_r(0)$ is zero because $L(1,x)=H(1,x)$. The holomorphic remainder also vanishes at zero. Cauchy bounds on a slightly larger compact disk therefore improve its bound to $O_R(|\lambda|n^{-R-1})$.
+\end{proof}
+The first coefficients are
+\begin{align}
+ F_0(\lambda)&=e^\lambda-1,\label{fss:eq:F0}\\
+ F_1(\lambda)&=-\left(1+\frac{\lambda^2}{2}\right)e^\lambda+1,\label{fss:eq:F1}\\
+ F_2(\lambda)&=e^\lambda\left(\frac{\lambda^4}{8}+\frac{\lambda^3}{3}
+ +\frac{\lambda^2}{2}+\lambda-1\right)-\lambda+1.\label{fss:eq:F2}
+\end{align}
+After division by $e^\lambda-1$, the improved remainder gives a relative $O_R(n^{-R-1})$ bound uniformly for $0<\lambda\le\Lambda$.
+
+Under the probability on full-support signed permutations proportional to $(\lambda/n)^{\negnum(w)}$, let $K_n$ count negative signs. Its probability generating function is
+\begin{equation}\label{fss:eq:pgf}
+ \mathbb E[z^{K_n}]=\frac{B_n(1+\lambda z/n)}{B_n(1+\lambda/n)}
+ \longrightarrow\frac{e^{\lambda z}-1}{e^\lambda-1}.
+\end{equation}
+Thus $K_n$ converges in distribution to a Poisson random variable of mean $\lambda$ conditioned to be positive. In particular,
+\[
+ \mathbb E[K_n]\longrightarrow\frac{\lambda e^\lambda}{e^\lambda-1}.
+\]
+Dividing the two series from Theorem~\ref{fss:thm:sparse} gives every fixed correction order in~\eqref{fss:eq:pgf}, locally uniformly in $z$.
+
+There is also an exact one-negative-sign check:
+\begin{equation}\label{fss:eq:oneminus}
+ B_n'(1)=c_{n+1}.
+\end{equation}
+Indeed the identity $x^2g'(x)+(x-1)g(x)=-1$ implies
+\[
+ \frac{xg'(x)}{g(x)}=\frac{C(x)}x-1.
+\]
+The first one-negative counts are $1,3,13,71,461$. Accordingly the derivatives $F_r'(0)$ reproduce the expansion of $c_{n+1}/(nn!)$.
+
+\section{Growth index inversion}\label{fss:sec:inverse}
+The expansions above give three classes of positive sequences of the form
+\begin{equation}\label{fss:eq:carrier}
+ X_n=K\alpha^n\Gamma(n+1)
+ \left(1+\sum_{j=1}^R\frac{u_j}{n^j}+O(n^{-R-1})\right).
+\end{equation}
+The parameters are as follows:
+\begin{itemize}
+\item For $|a_n|$, $\alpha=2/\log3$ and $K=2/(9\log3)$, with $u_j$ generated by~\eqref{fss:eq:main}.
+\item For $B_n(q)$ at fixed $q>1$, $\alpha=q$, $K=1$, and $u_j=p_j(q)$. For type $D$, $\alpha=2$, $K=1/2$, and the same algebraic coefficients $p_j(2)$ apply, with the exact correction~\eqref{fss:eq:D} on the smaller factorial scale.
+\item For $B_n(1+\lambda/n)$ at fixed $\lambda>0$, $\alpha=1$, $K=e^\lambda-1$, and $u_j=F_j(\lambda)/(e^\lambda-1)$.
+\end{itemize}
+The sequences are eventually increasing, since their consecutive ratios are asymptotic to $\alpha(n+1)$.
+
+For $\ell=\log y$, let $W$ be the positive Lambert function and put
+\begin{equation}\label{fss:eq:inversebase}
+ n_0=\frac{\ell}{W(\alpha\ell/e)},\qquad
+ D_0=\log(\alpha n_0),\qquad
+ A_0=\frac12\log(2\pi n_0)+\log K.
+\end{equation}
+The first two inverse correction steps are
+\begin{align}\label{fss:eq:inverse}
+ \nu(\ell)={}&n_0-\frac{A_0}{D_0}
+ -\frac{A_0^2/(2D_0^2)-A_0/(2D_0)+v_1}{n_0D_0}
+ +O\!\left(\frac{(\log n_0)^2}{n_0^2}\right),\\[-2pt]
+ &\hspace{38mm}v_1=\frac1{12}+u_1.\notag
+\end{align}
+This follows by two Taylor--Newton steps applied to the logarithm of~\eqref{fss:eq:carrier}. Every subsequent fixed order is obtained by formal Newton iteration on
+\begin{equation}\label{fss:eq:invformal}
+ \ell=x\bigl(\log(\alpha x)-1\bigr)
+ +\frac12\log(2\pi x)+\log K+\sum_{j\ge1}v_jx^{-j},
+\end{equation}
+where $v_j$ combines the Stirling log-Gamma coefficients with
+$\log(1+\sum_{j\ge1}u_jx^{-j})$.
+
+\paragraph{Integer thresholds.}
+If a sufficiently deep smooth truncation defines the real solution $\nu_R$ with logarithmic error $O(n^{-R-1})$, the true threshold
+\[
+ N(y)=\min\{n\ge n_*:X_n\ge y\}
+\]
+obeys the enclosure
+\begin{equation}\label{fss:eq:ceil}
+ N(y)=\left\lceil\nu_R(\log y)
+ +O\!\left(\frac{\nu_R^{-R-1}}{\log\nu_R}\right)\right\rceil.
+\end{equation}
+Here $n_*$ lies in the eventually increasing range. This notation describes a rounding ambiguity of the stated width. It does not assert an exact ceiling decision when $y$ is too close to a sequence value, nor assume a canonical analytic interpolation of the discrete sequence.
+
+\begin{writenote}[Added 2 October 2026, batch~77: an instance of repository results]
+The inversion of this section is an instance of the factorial-core
+inversion of ProveIt's transseries volumes \cite{fss-tai,fss-cti}, and no
+novelty is claimed for the method. The phase of \eqref{fss:eq:carrier} is
+$x(\log x+\log\alpha-1)+O(\log x)$, so the seed \eqref{fss:eq:inversebase}
+is the exact solution of $X(\kappa\log X+d)=L$ with $\kappa=1$,
+$d=\log\alpha-1$ and $L=\ell$ in \texttt{p0:prop:factorial-core} of
+\cite{fss-tai}: there $v=W_0\bigl((L/\kappa)e^{d/\kappa}\bigr)=W(\alpha\ell/e)$
+and $X=e^{v-d/\kappa}=(e/\alpha)e^v=\ell/v=n_0$, and the core slope
+$\kappa\log X+d+\kappa=\log(\alpha n_0)$ is the $D_0$ above. It is equally
+the unbalanced core \texttt{t2:eq:unbalanced-core} of \cite{fss-cti}
+($\kappa=1$, $\lambda=\log\alpha-1$, with $L=\log y$ in place of
+$\log(y/C)$). In the variable $s=\log X+d$ that equation reads
+$s+\log s=\log\ell+d$, which is \texttt{p0:thm:lambert-core} with
+$a=b=1$; since $b>0$ its branch rule selects $W_0$, the positive branch
+used here. The corrections \eqref{fss:eq:inverse} and the formal Newton
+iteration on \eqref{fss:eq:invformal} are the reversion about an
+admissible core, \texttt{p0:thm:core-reversion} of \cite{fss-tai} (in
+\cite{fss-cti}, the scaled local reversion \texttt{t2:prop:scaled}); the
+linear--logarithmic specialization \texttt{p0:thm:lambert-centered} and the
+balanced inverse \texttt{t2:thm:balanced-inverse} do not apply directly,
+because the phase is $x\log x$ rather than $ax+b\log x$. The enclosure
+\eqref{fss:eq:ceil} is the separation condition, part~(2) of
+\texttt{p0:thm:staircase}: the threshold is determined when the two
+ceilings at the ends of the stated width agree, and not otherwise. Part~(1)
+of that theorem (exact rounding) needs an admissible interpolation of the
+sequence itself, which the smooth truncation $\nu_R$ is not; that is the
+qualification stated above. The generic staircase arithmetic is formalized
+in Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+those statements concern an arbitrary monotone function and give no formal
+status to anything in this section. Specific to this report are the three
+carriers of \eqref{fss:eq:carrier} with their coefficients $u_j$, which
+come from Theorem~\ref{fss:thm:main}, from \eqref{fss:eq:pdef} with
+\eqref{fss:eq:stirling}, and from Theorem~\ref{fss:thm:sparse}.
+\end{writenote}
+
+\section{Reproducibility and attribution}\label{fss:sec:repro}
+The accompanying offline Python scripts use exact integer recurrences and symbolic series. The verification includes the first displayed OEIS terms, weighted signed-permutation enumeration through $n=6$, and large-order, endpoint, and sparse-sign numerical checks through $600$. The coefficient generator produces five sparse-sign correction orders and six displayed late factorial-basis corrections. The numerical tests are consistency checks; the proofs and uniform remainders are given above.
+
+The following boundaries are important. The $B/D$ models and generating functions are established in~\cite{BHZ}; their leading factorial asymptotics and several corrections are already recorded in~\cite{OEISB,OEISD}. The connected-permutation expansion is classical, and~\cite{MK} contains the general shifted-Stirling/compound-Poisson construction and the relevant integral representations. These are credited foundations. The specific late-growth statement in~\cite{OEISLate}, its explicit all-fixed-order refinement, and the signed-weight crossover are the targets proved here. A bounded source search found no prior statement of this full specialized package; exhaustive historical priority is not asserted.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+In the collection the two scripts and the delivered \texttt{build.sh} and
+\texttt{replay.sh} are in \texttt{code/}, and the three recorded outputs and
+\texttt{requirements.txt} in \texttt{data/}, all byte-identical to the
+delivery; the delivered PDF and the checksum ledger \texttt{SHA256SUMS}
+(verified at intake and retired) are not shipped and survive in the
+archive. \texttt{replay.sh} changes to its own directory and then calls
+\texttt{code/derive.py}, so in the collection layout (where it lives in
+\texttt{code/}) it does not find the scripts; \texttt{verify.py} writes
+\texttt{verification.json} into the \texttt{data/} directory next to its
+own parent, that is, over the shipped file; \texttt{build.sh} compiles the
+delivered file name \texttt{Coxeter\_\allowbreak Full\_\allowbreak Support\_\allowbreak Asymptotics.tex},
+which is shipped only as this \texttt{article.tex}. The report's
+\texttt{README.md} gives a rerun on a scratch copy that leaves the shipped
+files untouched.
+\end{writenote}
+
+\begingroup\raggedright
+\begin{thebibliography}{9}
+\bibitem{BHZ} N. Bergeron, C. Hohlweg, and M. Zabrocki, \emph{Posets related to the connectivity set of Coxeter groups}, J. Algebra \textbf{303} (2006), 831--846. \href{https://arxiv.org/abs/math/0509271v3}{arXiv:math/0509271v3}. In particular Propositions 23--26.
+\bibitem{MK} R. J. Martin and M. J. Kearney, \emph{Integral representation of certain combinatorial recurrences}, Combinatorica \textbf{35} (2015), 309--315. \href{https://doi.org/10.1007/s00493-014-3183-3}{doi:10.1007/s00493-014-3183-3}. The author manuscript gives the compound-Poisson construction and the type $B/D$ integral representations.
+\bibitem{Comtet} L. Comtet, \emph{Sur les coefficients de l'inverse de la s\'erie formelle $\sum n!t^n$}, C. R. Acad. Sci. Paris A \textbf{275} (1972), 569--572. Classical background; Lemma~\ref{fss:lem:factorial} is proved independently here.
+\bibitem{OEISLate} V. Kot\v e\v sovec, \href{https://oeis.org/A260952}{OEIS A260952}, submitted 5 August 2015. The large-order conjecture and its $1/(2n)$ normalization. Accessed 2 October 2026.
+\bibitem{OEISB} M. Zabrocki and contributors, \href{https://oeis.org/A109253}{OEIS A109253}. Type $B$ full-support counts and the posted asymptotic coefficients. Accessed 2 October 2026.
+\bibitem{OEISD} M. Zabrocki and contributors, \href{https://oeis.org/A112225}{OEIS A112225}. Type $D$ full-support counts, with offset $2$. Accessed 2 October 2026.
+\bibitem{fss-pdc} [write] ProveIt research-report collection, the A260700
+report \emph{All fixed order asymptotics for distinct parabolic double
+cosets} (batch~77, manuscript~17),
+\nolinkurl{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a260700-parabolic-double-cosets}.
+\bibitem{fss-tai} [write] ProveIt, \emph{Transseries and inversion}, the
+transseries-and-inversion volume (\texttt{p0:thm:lambert-core},
+\texttt{p0:prop:factorial-core}, \texttt{p0:thm:lambert-centered},
+\texttt{p0:thm:core-reversion}, \texttt{p0:thm:staircase}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+\bibitem{fss-cti} [write] ProveIt, \emph{Combinatorial transseries
+inverses} (\texttt{t2:eq:unbalanced-core}, \texttt{t2:prop:scaled},
+\texttt{t2:thm:balanced-inverse}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
+\end{thebibliography}
+\endgroup
+\end{document}

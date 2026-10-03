@@ -1,0 +1,428 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={The First Positive Coefficient in Integer Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{question}{Question}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\Z}{\mathbb Z}\newcommand{\T}{\mathbb T}\newcommand{\E}{\mathcal E}
+\newcommand{\Lop}{\mathcal L}\newcommand{\ii}{\mathrm i}
+\title{The First Positive Coefficient in Integer Thue Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For the doubling map and the potential $\log\cos^2\!\pi(x-c)$, the integer-order pressure has a missing Taylor coefficient at degree $2m$. We prove that the next coefficient, at degree $2m+2$, is strictly positive for every integer $m\ge2$. This answers a specific open question in the repository's integer-pressure report. A finite Bernoulli eigenbasis formula proves that the quadratic response of the normalized Perron eigenfunction is positive at every noninteger point. An independent absolutely convergent inverse-branch formula gives an explicit positive lower bound and a large-order expansion with an exponentially smaller error. Exact rational checks accompany the proofs.
+\end{abstract}
+
+\section{The question and the result}
+Let $T(x)=2x\pmod1$ on $\T=\mathbb R/\Z$, and set
+\[
+ g_c(x)=\cos^2\!\pi(x-c),\qquad p_m(c)=P(m\log g_c),\qquad m\in\mathbb N.
+\]
+We use natural logarithms and the transfer operator defined by a sum, not an average:
+\begin{equation}\label{eq:L}
+ (\Lop_{m,c}f)(x)=\sum_{Ty=x}g_c(y)^m f(y).
+\end{equation}
+Thus $p_m(c)=\log\rho_m(c)$ near $c=0$, where $\rho_m$ is the simple dominant eigenvalue of the finite Fourier model described below. Equivalently, if $\mathcal D_N$ is the family of dyadic intervals of length $2^{-N}$, then
+\[
+ p_m(c)=\lim_{N\to\infty}\frac1N\log\sum_{I\in\mathcal D_N}
+ \sup_{x\in I}\prod_{j=0}^{N-1}g_c(T^jx)^m.
+\]
+The finite model and the identity with pressure are developed in the repository report \cite{integer}; a local derivation of the inputs needed here is included in Section~\ref{sec:local}.
+
+Write
+\begin{equation}\label{eq:R}
+ R_m=\sum_{w\in\Z+1/2}(\pi w)^{-2m}
+     =\frac{2(2^{2m}-1)\zeta(2m)}{\pi^{2m}},\qquad
+ C_m=[t^{2m+2}]\,p_m(t/\pi).
+\end{equation}
+The source proves $[t^{2m}]p_m(t/\pi)=0$ and asks whether $C_m>0$ for every $m\ge2$, with exact checks only through $m=6$. That question remains present in the version inspected for this note, identified precisely in Section~\ref{sec:status}.
+
+For each half-integer $w$, define
+\begin{equation}\label{eq:ST}
+ S(w)=\sum_{j\ge1}\tan\frac{\pi w}{2^j},\qquad
+ U(w)=\sum_{j\ge1}\tan^2\frac{\pi w}{2^j}.
+\end{equation}
+There are no poles, and both series converge absolutely.
+
+\begin{theorem}\label{thm:main}
+For every integer $m\ge2$, the series
+\begin{equation}\label{eq:B}
+ B_m=\sum_{w\in\Z+1/2}(\pi w)^{-2m}
+       \bigl(2m^2S(w)^2-mU(w)\bigr)
+\end{equation}
+converges absolutely, and
+\begin{equation}\label{eq:C}
+ C_m=B_m+\frac{2m}{3}R_m-\frac{m}{m+1}R_{m+1}>0.
+\end{equation}
+In fact,
+\begin{equation}\label{eq:lower}
+ B_m>\frac{2m}{\pi^{2m}}
+ \left(4^m(2m-1)-16\left(\frac23\right)^{2m-4}\right)>0.
+\end{equation}
+\end{theorem}
+The negative lower even coefficients, the missing coefficient, and the new result together give the local sign pattern
+\begin{equation}\label{eq:signpattern}
+ p_m(t/\pi)=-2m\sum_{k=1}^{m-1}
+ \frac{(2^{2k}-1)\zeta(2k)}{k\pi^{2k}}t^{2k}
+ +C_mt^{2m+2}+O_m(t^{2m+4}),\qquad C_m>0.
+\end{equation}
+The sign statement is uniform over all integer orders, although the local analytic remainder here is for each fixed $m$.
+% ed. (2026-10-01): later packages of the series contain the theorem
+\begin{ednote}
+In the notation of the later packages of this series, $C_m=E_{m,1}$ and
+$B_m=H_{m,1}=[a^2]h_a(1/2)$, by \eqref{eq:pointwise} and \eqref{eq:Bfinite}, since
+$F_{2j}(1/2)=R_{m-j}$. Theorem~\ref{thm:main} and the positivity of $B_m$ are the case $r=1$
+of Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/} ($H_{m,r}>0$ and $E_{m,r}>0$ for
+$1\le r<m$), proved there by a coefficientwise comparison of dyadic tangent products, and
+$C_m>0$ is also the case $r=1$ of Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/} ($E_{m,r}>0$
+for $1\le r<2m$). The finite Bernoulli formula, the positivity of $[a^2]h_a(x)$ at every
+noninteger $x$ (Theorem~\ref{thm:finitebasis}), the lower bound \eqref{eq:lower} and
+Corollary~\ref{cor:large} are proved only here.
+\end{ednote}
+
+\section{Local transfer data and the feedback identity}\label{sec:local}
+The space
+\[
+ \E_m=\operatorname{span}_{\mathbb C}\{e^{2\pi\ii r x}:1-m\le r\le m-1\}
+\]
+is invariant under \eqref{eq:L}, because its matrix, indexed by $k,r\in\{1-m,\ldots,m-1\}$, has entries
+\begin{equation}\label{eq:matrix}
+ A_m(c)_{k,r}=2\,4^{-m}\binom{2m}{m+2k-r}
+                   e^{-2\pi\ii(2k-r)c}.
+\end{equation}
+A binomial coefficient outside its range is zero.
+
+For completeness, the entire atomic spectrum can be seen directly. For $0\le j\le2m-2$, put
+\[
+ \phi_j(x)=\frac{\sin^{2m}(\pi x)}{\pi^{2m}}
+       \sum_{k\in\Z}(x+k)^{j-2m},
+\]
+with removable values at integers. The identity
+\[
+ \sum_{k\in\Z}(x+k)^{-p}
+ =\frac{(-1)^{p-2}}{(p-1)!}
+   \left(\frac{d}{dx}\right)^{p-2}\!\bigl(\pi^2\csc^2\pi x\bigr),
+ \qquad p\ge2,
+\]
+shows that $\phi_j\in\E_m$: after multiplication by $\sin^{2m}\pi x$, it is a trigonometric polynomial of degree at most $m-1$. Its Taylor expansion at zero starts with $x^j$, so the $2m-1$ functions are independent. Splitting the periodization into even and odd integers gives
+\[
+ \Lop_{m,0}\phi_j=2^{-j}\phi_j.
+\]
+Consequently the eigenvalue $1$ is simple and strictly dominant. Its eigenfunction $\phi_0$ is strictly positive on the circle and satisfies $\phi_0(0)=1$. Analytic perturbation gives a real-analytic positive eigenfunction $h_{m,c}$ near zero, normalized by $h_{m,c}(0)=1$, and a simple dominant eigenvalue $\rho_m(c)$.
+
+These data also identify the local pressure. Positivity and comparison with $h_{m,c}$ give $\Lop_{m,c}^N1\asymp_m\rho_m(c)^N$ uniformly in $x$. If $F_N(x)=\prod_{j<N}g_c(T^jx)^m$, its trigonometric degree is at most $m(2^N-1)$. The $L^1$ Bernstein inequality and the variation bound on each dyadic interval give
+\[
+ 2^N\!\int_0^1 F_N\le\sum_{I\in\mathcal D_N}\sup_I F_N
+ \le(1+2\pi m)2^N\!\int_0^1 F_N.
+\]
+Since $2^N\int F_N=\int\Lop_{m,c}^N1$, taking logarithmic growth rates yields $p_m(c)=\log\rho_m(c)$. This is the local part of the more extensive finite-model result in \cite{integer}.
+
+Set $t=\pi c$, $a=\tan t$, and normalize the transfer operator by its fixed-point weight:
+\begin{equation}\label{eq:V}
+ (V_af)(x)=\sum_{Ty=x}\bigl(\cos\pi y+a\sin\pi y\bigr)^{2m}f(y)
+       =\frac{\Lop_{m,c}f(x)}{\cos^{2m}t}.
+\end{equation}
+Let $\lambda(a)$ and $h_a$ be its analytic eigenvalue and eigenfunction, with $h_a(0)=1$. The two preimages of zero give the exact identity
+\begin{equation}\label{eq:feedback}
+ \lambda(a)=1+a^{2m}h_a(1/2).
+\end{equation}
+Reflection implies $h_{-a}(1/2)=h_a(1/2)$. Thus
+\[
+ h_a(1/2)=R_m+B_ma^2+O_m(a^4),
+\]
+where we will establish the series \eqref{eq:B}. As $a=t+O(t^3)$, the quadratic coefficient is unchanged when expressed in $t$. Now
+\[
+ p_m(t/\pi)=2m\log\cos t+\log\lambda(\tan t).
+\]
+The cosine product gives
+\[
+ \log\cos t=-\sum_{k\ge1}
+ \frac{(2^{2k}-1)\zeta(2k)}{k\pi^{2k}}t^{2k}.
+\]
+Together with $\tan^{2m}t=t^{2m}(1+\frac{2m}{3}t^2+O(t^4))$, this proves \eqref{eq:C} as an identity. The square term in the logarithm starts at degree $4m>2m+2$ for $m\ge2$. The coefficient at degree $2m$ cancels against $R_m$, proving the asserted missing term as well.
+
+\section{A finite Bernoulli formula and pointwise positivity}\label{sec:finitebasis}
+The sign also admits a finite proof that strengthens the result to the whole quadratic eigenfunction response. Define
+\[
+ H_p(x)=\sum_{n\in\Z}(\pi(x+n))^{-p}\quad(p\ge2),\qquad
+ H_1(x)=\cot\pi x,\qquad c_j=\frac{2\zeta(2j)}{\pi^{2j}},
+\]
+and use the atomic eigenbasis
+\[
+ F_r(x)=\sin^{2m}(\pi x)H_{2m-r}(x),\qquad0\le r\le2m-2.
+\]
+Thus $F_r=\pi^r\phi_r$, $\Lop_{m,0}F_r=\lambda_rF_r$ with $\lambda_r=2^{-r}$, and $F_r$ starts with $(\pi x)^r$ at zero. In particular, normalization at zero fixes the coefficient of $F_0$.
+
+\newpage
+\begin{theorem}\label{thm:finitebasis}
+Put
+\[
+ f(\lambda,\mu)=\frac{4-\lambda(3-\mu)}{2(1-\lambda)(1-\mu)}.
+\]
+For $1\le j\le m-1$, define the positive rational number
+\begin{align}
+ b_{m,j}={}&4m^2\sum_{k=1}^j c_kc_{j+1-k}
+ f\bigl(4^{-j},2^{-(2k-1)}\bigr)\notag\\
+ &-\mathbf1_{\{j\le m-2\}}\,2m(2j+1)c_{j+1}
+ f\bigl(4^{-j},2^{-(2j+1)}\bigr).\label{eq:bfinite}
+\end{align}
+Then
+\begin{equation}\label{eq:pointwise}
+ [a^2]h_a(x)=\sum_{j=1}^{m-1}b_{m,j}F_{2j}(x)>0
+ \qquad(x\notin\Z),
+\end{equation}
+while this coefficient is zero at integers. In particular,
+\begin{equation}\label{eq:Bfinite}
+ B_m=\sum_{j=1}^{m-1}b_{m,j}R_{m-j}.
+\end{equation}
+Every term is explicit and rational, since the $c_j$ are rational Bernoulli values. More precisely,
+\begin{equation}\label{eq:blower}
+ b_{m,j}\ge2m f\bigl(4^{-j},2^{-(2j+1)}\bigr)
+ \bigl(2m(2j+3)-(2j+1)\bigr)c_{j+1}>0.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The cotangent product identity is
+\begin{equation}\label{eq:cotproduct}
+ H_1H_p=H_{p+1}-\sum_{k=1}^{\lfloor(p-1)/2\rfloor}c_kH_{p+1-2k},
+ \qquad p\ge2.
+\end{equation}
+To verify it, use $\cot z=z^{-1}-\sum_{k\ge1}c_kz^{2k-1}$ in the local coordinate $z=\pi x$. All principal parts cancel. When $p$ is even, the possible simple pole cancels between the regular constant $c_{p/2}$ of $H_p$ and the corresponding term of cotangent; when $p$ is odd no simple pole occurs. The difference of the two sides is entire and one-periodic, and tends to zero at both imaginary ends of a fundamental strip, since each $H_p$, $p\ge2$, is a derivative of $\csc^2$. Liouville's theorem proves \eqref{eq:cotproduct}.
+
+Let $A=\pi^{-1}d/dx$ in the $F$ basis. Differentiation and \eqref{eq:cotproduct} give
+\begin{equation}\label{eq:derivativebasis}
+ AF_r=rF_{r-1}-2m\sum_{k=1}^{\lfloor(2m-r-1)/2\rfloor}
+                         c_kF_{r+2k-1}.
+\end{equation}
+The first summand is absent at $r=0$. Thus $A_{s,r}=r$ if $s=r-1$, and $A_{s,r}=-2mc_k$ if $s=r+2k-1$; all other entries vanish.
+
+For translation $\mathcal T_uf(x)=f(x+u)$ and $L=\operatorname{diag}(\lambda_r)$, the normalized operator satisfies
+\[
+ V_a=(1+a^2)^m\mathcal T_{-2\arctan(a)/\pi}
+                    L\mathcal T_{\arctan(a)/\pi}.
+\]
+Consequently $V_a=L+aV_1+a^2V_2+O(a^3)$, where
+\[
+ V_1=LA-2AL,\qquad
+ V_2=\tfrac12(LA^2-4ALA+4A^2L)+mL.
+\]
+Expand $h_a=e_0+ah_1+a^2h_2+O(a^3)$ in the $F$ basis. Normalization makes $(h_1)_0=(h_2)_0=0$, and \eqref{eq:feedback} shows that the eigenvalue has no linear or quadratic term for $m\ge2$. Solving the first two equations gives
+\[
+ (h_1)_s=A_{s,0}\frac{\lambda_s-2}{1-\lambda_s},\qquad
+ (h_2)_r=\sum_{s\ge1}A_{r,s}A_{s,0}f(\lambda_r,\lambda_s)
+ \quad(r\ge1).
+\]
+For the second identity, the coefficient before division by $1-\lambda_r$ is
+\[
+ \frac{(\lambda_r-2\lambda_s)(\lambda_s-2)}{1-\lambda_s}
+       +\frac{\lambda_r}{2}-2\lambda_s+2
+ =\frac{4-\lambda_r(3-\lambda_s)}{2(1-\lambda_s)}.
+\]
+Only odd $s$ contribute, and only even $r$ remain. At $r=2j$, the upward entries in \eqref{eq:derivativebasis} yield the sum in \eqref{eq:bfinite}. The sole possible downward entry has $s=2j+1$, yielding its negative term. That entry is absent when $j=m-1$.
+
+For $0<\lambda,\mu<1$, we have $f>0$ and
+\[
+ \partial_\mu f(\lambda,\mu)
+   =\frac{2-\lambda}{(1-\lambda)(1-\mu)^2}>0.
+\]
+All positive terms in \eqref{eq:bfinite} have a larger second argument than $2^{-(2j+1)}$. Euler's cotangent convolution,
+\begin{equation}\label{eq:convolution}
+ \sum_{k=1}^j c_kc_{j+1-k}=(2j+3)c_{j+1},
+\end{equation}
+is obtained by comparing the coefficient of $z^{2j}$ in $(\cot z)'=-1-\cot^2z$. Monotonicity and \eqref{eq:convolution} prove \eqref{eq:blower}; if the negative term is absent, subtracting it only weakens the bound. Finally, each $F_{2j}(x)$ is positive away from integers, because $H_{2m-2j}$ is a sum of positive even powers. This proves \eqref{eq:pointwise}, and evaluation at $1/2$ gives \eqref{eq:Bfinite}.
+\end{proof}
+The pointwise conclusion concerns the quadratic Taylor coefficient. A linear phase response can be present at a general $x$, so it does not assert a local phase minimum everywhere. Formula~\eqref{eq:Bfinite}, together with \eqref{eq:C}, is a finite Bernoulli expression for the requested coefficient. The orbit representation below supplies a complementary geometric proof, the explicit bound \eqref{eq:lower}, and the large-order asymptotic.
+
+\section{The inverse branch formula}
+\begin{lemma}\label{lem:orbit}
+The quadratic coefficient $[a^2]h_a(1/2)$ is the absolutely convergent series \eqref{eq:B}.
+\end{lemma}
+\begin{proof}
+Put $F_N(a,x)=V_a^N1(x)$. Evaluation at zero gives
+\[
+ F_{N+1}(a,0)=F_N(a,0)+a^{2m}F_N(a,1/2),
+\]
+so $F_N(a,0)=1+O(a^{2m})$ for every finite $N$. Therefore
+\begin{equation}\label{eq:ratiojet}
+ [a^2]F_N(a,1/2)=[a^2]\frac{F_N(a,1/2)}{F_N(a,0)},\qquad m\ge2.
+\end{equation}
+The ratio on the right converges to $h_a(1/2)$ uniformly on a sufficiently small complex disk around zero. Indeed, analytic spectral projection separates $\lambda(a)$ from all remaining eigenvalues by a uniform modulus ratio less than one. The leading projection of $1$ is nonzero at $a=0$, as $F_N(0,0)=1$, and remains nonzero after shrinking the disk. A separating-contour bound makes the spectral remainder exponentially smaller than $\lambda(a)^N$, uniformly on that disk. Thus the denominator is nonzero for all sufficiently large $N$, and Cauchy's coefficient formula yields
+\begin{equation}\label{eq:limitjet}
+ [a^2]h_a(1/2)=\lim_{N\to\infty}[a^2]F_N(a,1/2).
+\end{equation}
+
+Use centered inverse branches
+\[
+ W_N=\{w\in\Z+\tfrac12:-2^{N-1}<w<2^{N-1}\}.
+\]
+Changing the conventional branch representative by a multiple of $2^N$ preserves every tangent and every even cosine power. The unperturbed product telescopes to
+\[
+ \prod_{j=1}^N\cos^{2m}\frac{\pi w}{2^j}
+   =\left(2^N\sin\frac{\pi w}{2^N}\right)^{-2m},\qquad w\in W_N,
+\]
+because $\sin\pi w=\pm1$. Write $S_N,U_N$ for the sums in \eqref{eq:ST} truncated at $j=N$. The quadratic coefficient of the relative product
+$\prod_{j=1}^N(1+a\tan(\pi w/2^j))^{2m}$ is exactly
+$2m^2S_N(w)^2-mU_N(w)$. Hence
+\begin{equation}\label{eq:finite}
+ [a^2]F_N(a,1/2)=\sum_{w\in W_N}
+ \left(2^N\sin\frac{\pi w}{2^N}\right)^{-2m}
+ \bigl(2m^2S_N(w)^2-mU_N(w)\bigr).
+\end{equation}
+
+We record uniform bounds to justify the limit, including $m=2$. By symmetry assume $w\ge1/2$, and put $J=\lceil\log_2(2w)\rceil$, so $2w\le2^J<4w$. Since $w$ is a half-integer, its scaled distance from any tangent pole is at least $2^{-(j+1)}$. Thus
+\[
+ \left|\tan\frac{\pi w}{2^j}\right|
+ \le\cot\frac{\pi}{2^{j+1}}<\frac{2^{j+1}}\pi.
+\]
+For $j\ge J+1$, the argument lies in $[0,\pi/4]$, and convexity gives the sharper bound $|\tan(\pi w/2^j)|\le4w/2^j$. Summing the two ranges proves
+\begin{align}
+ \sum_{j\ge1}\left|\tan\frac{\pi w}{2^j}\right|
+ &<\frac4\pi2^J+\frac{4w}{2^J}
+ \le\left(\frac{16}\pi+4\right)w<10w,\label{eq:Sbound}\\
+ U(w)&<\frac{16}{3\pi^2}4^J+\frac{16w^2}{3\cdot4^J}
+ \le\left(\frac{256}{3\pi^2}+\frac{16}3\right)w^2<16w^2.
+ \label{eq:Ubound}
+\end{align}
+In the second line we used $4/3\le16w^2/3$ and $\pi^2>8$.
+
+For $w\in W_N$, the chord bound for sine gives
+\[
+ \left|2^N\sin\frac{\pi w}{2^N}\right|^{-2m}
+ \le(2|w|)^{-2m}.
+\]
+Consequently the absolute summand in \eqref{eq:finite} is bounded by a constant depending on $m$ times $|w|^{2-2m}$. This is summable on the half-integer lattice for every $m\ge2$. Each fixed summand has the limit claimed in \eqref{eq:B}. Dominated convergence, followed by \eqref{eq:limitjet}, proves the lemma.
+\end{proof}
+
+\section{Two branches force positivity}
+For $w=1/2$, all tangent terms are positive and the first equals one. Therefore
+\[
+ S(1/2)^2\ge U(1/2)\ge1.
+\]
+The two branches $w=\pm1/2$ contribute at least
+$2(2/\pi)^{2m}m(2m-1)$ to \eqref{eq:B}. For all other branches we discard the nonnegative square term and use \eqref{eq:Ubound}, obtaining
+\[
+ B_m\ge\frac{2m}{\pi^{2m}}\left(
+ 4^m(2m-1)-16\sum_{k\ge1}(k+\tfrac12)^{-(2m-2)}\right).
+\]
+Strict convexity of $x^{-2}$ gives the midpoint estimate
+\[
+ \sum_{k\ge1}(k+\tfrac12)^{-2}<\int_1^\infty x^{-2}\,dx=1.
+\]
+Since $k+1/2\ge3/2$,
+\[
+ \sum_{k\ge1}(k+\tfrac12)^{-(2m-2)}
+ <\left(\frac23\right)^{2m-4}.
+\]
+This proves \eqref{eq:lower}; its bracket is positive at $m=2$ and increases thereafter.
+
+Finally, \eqref{eq:R} implies $R_{m+1}\le(4/\pi^2)R_m$, so
+\[
+ \frac{2m}{3}R_m-\frac{m}{m+1}R_{m+1}
+ \ge mR_m\left(\frac23-\frac4{(m+1)\pi^2}\right)>0.
+\]
+Combining this with $B_m>0$ proves Theorem~\ref{thm:main}.
+
+\section{Large orders and exact evaluation}
+Set
+\[
+ S_0=S(1/2),\qquad U_0=U(1/2).
+\]
+\begin{corollary}\label{cor:large}
+As $m\to\infty$ through integers,
+\begin{align}
+ C_m={}&\left(\frac2\pi\right)^{2m}
+ \left(4m^2S_0^2+m\left(\frac43-2U_0\right)
+                   -\frac{8m}{(m+1)\pi^2}\right)\notag\\
+ &\hspace{8mm}+O\left(m^2\left(\frac{2}{3\pi}\right)^{2m}\right).
+ \label{eq:largem}
+\end{align}
+In particular, $C_m\sim4S_0^2m^2(2/\pi)^{2m}$.
+\end{corollary}
+\begin{proof}
+The $\pm1/2$ terms give the displayed main expression exactly. From \eqref{eq:Sbound}--\eqref{eq:Ubound}, the remaining part of $B_m$ has absolute value at most
+\[
+ 2m(200m+16)\pi^{-2m}\left(\frac23\right)^{2m-4}
+ =O\left(m^2\left(\frac{2}{3\pi}\right)^{2m}\right).
+\]
+The same midpoint estimate bounds the tails of $R_m$ and $R_{m+1}$ by smaller quantities of this order. All constants in this argument can be chosen independent of $m\ge2$.
+\end{proof}
+
+The coefficients are rational and can be computed without truncating the orbit sum. In \eqref{eq:matrix}, let $A=A_m(0)$, $j=2k-r$, and introduce the real rational matrices
+\[
+ D_{k,r}=-2jA_{k,r},\qquad E_{k,r}=(m-2j^2)A_{k,r}.
+\]
+The normalized matrix of $V_a$ is $A+\ii aD+a^2E+O(a^3)$. Solve
+\begin{align*}
+ (I-A)v_0&=0,&\mathbf1^Tv_0&=1,\\
+ (I-A)u_1&=Dv_0,&\mathbf1^Tu_1&=0,\\
+ (I-A)v_2&=Ev_0-Du_1,&\mathbf1^Tv_2&=0.
+\end{align*}
+These systems have unique solutions because the eigenvalue $1$ is simple and its left eigenvector is evaluation at zero, namely $\mathbf1^T$. With $\ell_r=(-1)^r$, we have $B_m=\ell^Tv_2$. Equation~\eqref{eq:C} then yields $C_m$ exactly.
+
+\begin{center}
+\begin{tabular}{rll}\toprule
+$m$&$B_m$&$C_m$\\\midrule
+2&$8$&$376/45$\\
+3&$155/21$&$213/28$\\
+4&$1105984/205065$&$16978624/3075975$\\
+5&$808150982/234389295$&$9058569913/2578282245$\\
+6&$30435818208256/15028650946575$&$57427231423264/27910351757925$\\\bottomrule
+\end{tabular}
+\end{center}
+The independent checkers verify these systems through $m=10$, compare them with the finite Bernoulli formula and its coefficientwise positive bounds, and exactly match the three coefficients printed in \cite{integer}. A separate high-precision comparison checks finite inverse-tree identities against rational matrix powers. These are regression checks; the all-order proof is the analytic argument above.
+
+\section{Source status and further questions}\label{sec:status}
+The specific target is the question entitled ``The first coefficient after the cancellation'' in \cite{integer}. We inspected repository commit
+\nolinkurl{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, with source blob
+\nolinkurl{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.
+The source already establishes integer phase analyticity, the atomic spectrum, the missing coefficient, and the low-order calculations. Those results are credited here. The new results relative to that source are the all-$m$ positive sign, the finite Bernoulli formula and pointwise response positivity, the inverse-branch representation, the quantitative bound, and the large-order expansion.
+
+The primary literature comparison is Gohlke--Kesseb\"ohmer--Schindler \cite[Theorem 2.7 and following discussion]{gks}, which proves phase analyticity at order two and discusses general positive-order regularity. The arXiv record checked for this note lists version 1, submitted 26 September 2025. A targeted literature search did not locate the coefficient theorem proved here; this is not an exhaustive priority claim. The arguments have been checked by direct derivation and independent exact computations. They are not externally refereed or formally verified.
+
+\begin{question}
+Can the reduced denominators of $C_m$ be characterized uniformly from \eqref{eq:bfinite}--\eqref{eq:Bfinite}? The finite formula gives candidate factors from Bernoulli denominators and $1-2^{-r}$, but cancellations still need to be understood.
+\end{question}
+\begin{question}
+What is the sign pattern of subsequent coefficients $[t^{2m+2r}]p_m(t/\pi)$ for $r\ge2$? Higher inverse-branch derivatives introduce products of tangent sums, and the domination used here requires additional analysis at the smallest moment orders.
+\end{question}
+% ed. (2026-10-01): the second question is answered by later packages of the series
+\begin{ednote}
+The second question is answered by later packages of this series:
+$[t^{2m+2r}]p_m(t/\pi)>0$ for every $m\ge2$ and $1\le r<2m$, that is, at every even degree
+strictly between $2m$ and $6m$ (\path{../Thue_Morse_Integer_Pressure_Full_Range/}), and this range is sharp, since
+$[t^{12}]p_2(t/\pi)=-35360872/93555$. Beyond $6m$ both signs occur infinitely often, with
+positive lower densities (\path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}). The
+first negative degree $N_m$ above $2m$ satisfies $N_m\ge6m$ and $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$ (\path{../Thue_Morse_Integer_Pressure_First_Negative/}), and it is certified for $2\le m\le128$ in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}.
+The first and third questions are not treated in the series.
+\end{ednote}
+\begin{question}
+Can the local expansion be made uniform in a joint limit $m\to\infty$, $t\to0$? Formula~\eqref{eq:largem} concerns the coefficient sequence; it does not provide a uniform radius or remainder for the pressure itself.
+\end{question}
+
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the first of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{integer} is \path{../Thue_Morse_Integer_Pressure/}; the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical. A note of 2026-10-01 at its question
+``The first coefficient after the cancellation'' now records the answer given here and its
+extensions. No Lean declaration of the repository concerns $p_m$ or its Taylor coefficients;
+the Bernoulli evaluation of $\zeta(2j)$ that makes the $c_j$ and $R_m$ rational is
+\path{Fabius.evenZeta_eq_bernoulli} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/EvenZetaValues.lean}, for the series
+\path{Fabius.evenZeta} of \path{EvenZetaSeries.lean} in the same directory.
+\end{ednote}
+\begin{thebibliography}{9}\small
+\bibitem{integer} \emph{Integer Pressure and a Missing Taylor Coefficient: Analytic phase dependence and the sixth-moment optimum for generalized Thue--Morse products}. ProveIt research manuscript, 28 September 2026, current version inspected 1 October 2026.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}
+\bibitem{gks} P. Gohlke, M. Kesseb\"ohmer, and T. I. Schindler, \emph{Generalized Thue--Morse measures: spectral and fractal analysis}, arXiv:2509.22109v1, 2025.\newline
+\url{https://arxiv.org/html/2509.22109v1}
+\end{thebibliography}
+\end{document}

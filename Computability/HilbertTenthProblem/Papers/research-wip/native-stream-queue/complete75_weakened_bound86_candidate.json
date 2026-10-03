@@ -1,0 +1,1207 @@
+{
+  "status": "PASS_SCOPED_WEAKENED_BOUND86_CANDIDATE_AUDIT",
+  "source": {
+    "certificate": {
+      "operations": 85,
+      "multiplications": 48,
+      "additions_subtractions": 37,
+      "equations": 1,
+      "witnesses": 19
+    },
+    "polynomial": {
+      "operations": 86,
+      "multiplications": 48,
+      "additions_subtractions": 38,
+      "degree": 203,
+      "witnesses": 19
+    },
+    "status": "REFUTED_CANDIDATE_ACTUAL_COMPILER_ALL_INPUT_COLLAPSE",
+    "removed_register": "q_minus_FZ",
+    "changed_registers": [
+      "C_after_alpha",
+      "gap_product",
+      "gap"
+    ],
+    "unchanged_literal_gates": 82,
+    "retained_positive_witnesses": [
+      "Jrep",
+      "F",
+      "alpha",
+      "zplus",
+      "f",
+      "h",
+      "i",
+      "j",
+      "o",
+      "s",
+      "w",
+      "tau_gap",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ],
+    "comparisons": [
+      [
+        "eight_units",
+        1
+      ]
+    ],
+    "polynomial_schedule": [
+      [
+        "tau_square",
+        "*",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "twice_tau_gap",
+        "+",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "first_signed_gap",
+        "-",
+        "twice_tau_gap",
+        "R10b"
+      ],
+      [
+        "first_cross",
+        "*",
+        "first_root_base",
+        "first_signed_gap"
+      ],
+      [
+        "norm_first",
+        "+",
+        "tau_square",
+        "first_cross"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_F",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "strong_difference",
+        "*",
+        "A",
+        "ic22"
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "strong_difference"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "R10a"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "q",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "-",
+        "gap_product",
+        "Z"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "wn2"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "zplus",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "L16",
+        "strong_difference"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "R10a"
+      ],
+      [
+        "linear_difference",
+        "-",
+        "aux_u_rhs",
+        "jc"
+      ],
+      [
+        "norm_linear",
+        "+",
+        "linear_difference",
+        "index_difference"
+      ],
+      [
+        "eight_units",
+        "*",
+        "seven_units",
+        "norm_linear"
+      ],
+      [
+        "polynomial",
+        "-",
+        "eight_units",
+        1
+      ]
+    ],
+    "exact_complete_signed_substitution_cases": 512,
+    "signed_cases": 128,
+    "positive_forward_inclusion_cases": 384,
+    "positive_inverse_domain_cases": 279,
+    "nonpositive_old_alpha_cases": 105,
+    "parent_substitution": "alpha_old=alpha_candidate-Z",
+    "positive_forward_map": "alpha_candidate=alpha_old+Z",
+    "proved_inverse_domain": "alpha_candidate>Z"
+  },
+  "degree": {
+    "exact_degree": 203,
+    "fixtures": [
+      {
+        "B": 16,
+        "cell_bits": 4,
+        "degree": 203,
+        "leading_coefficient": "2930472207286052367570267529605418254301224128325762928614969075563141649620767729796052418560000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      },
+      {
+        "B": 64,
+        "cell_bits": 6,
+        "degree": 203,
+        "leading_coefficient": "11459507003063027981493349405935646233120317623715983159497017986263670817426421996395983951184217864020517630524448733757629273534288566454543493297615123518349281754216795418966480086649999991939696993452100340025572290014692143085504747329394487694557668224101962445970884655312349912938907318971864385057093186217836544"
+      },
+      {
+        "B": 256,
+        "cell_bits": 8,
+        "degree": 203,
+        "leading_coefficient": "1004611073484049858770464607041148052317176205445806834324280216326315288174690285281001957912783245337353178323542610573766926567169618296838558339225593737913099900394876916188225241178210362905886327171514102885691453050620396042263655113526724380589996113920000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+      }
+    ],
+    "highest_form": "parent87 highest form after alpha_old=alpha_candidate-Z",
+    "C_top": "(B-1)*Jrep-F-alpha-2*cell_bits*x"
+  },
+  "outer_obstruction": {
+    "fixed": {
+      "B": 16,
+      "J": 1,
+      "x": 1,
+      "F": 1,
+      "alpha": 3,
+      "w": 11,
+      "zplus": 12038,
+      "DC": 3,
+      "DR": 5,
+      "MC": 10,
+      "MF": 12,
+      "cell_bits": 4,
+      "inner_bits": 3
+    },
+    "family": "Z=265+4j, j>=0; R=-5933-1020j",
+    "cases": [
+      {
+        "Z": 265,
+        "C": 4,
+        "X": 45056,
+        "R": -5933,
+        "old_alpha": -262,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 269,
+        "C": 4,
+        "X": 45056,
+        "R": -6953,
+        "old_alpha": -266,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 273,
+        "C": 4,
+        "X": 45056,
+        "R": -7973,
+        "old_alpha": -270,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 277,
+        "C": 4,
+        "X": 45056,
+        "R": -8993,
+        "old_alpha": -274,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 281,
+        "C": 4,
+        "X": 45056,
+        "R": -10013,
+        "old_alpha": -278,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 285,
+        "C": 4,
+        "X": 45056,
+        "R": -11033,
+        "old_alpha": -282,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 289,
+        "C": 4,
+        "X": 45056,
+        "R": -12053,
+        "old_alpha": -286,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 293,
+        "C": 4,
+        "X": 45056,
+        "R": -13073,
+        "old_alpha": -290,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 297,
+        "C": 4,
+        "X": 45056,
+        "R": -14093,
+        "old_alpha": -294,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 301,
+        "C": 4,
+        "X": 45056,
+        "R": -15113,
+        "old_alpha": -298,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 305,
+        "C": 4,
+        "X": 45056,
+        "R": -16133,
+        "old_alpha": -302,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 309,
+        "C": 4,
+        "X": 45056,
+        "R": -17153,
+        "old_alpha": -306,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 313,
+        "C": 4,
+        "X": 45056,
+        "R": -18173,
+        "old_alpha": -310,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 317,
+        "C": 4,
+        "X": 45056,
+        "R": -19193,
+        "old_alpha": -314,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 321,
+        "C": 4,
+        "X": 45056,
+        "R": -20213,
+        "old_alpha": -318,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 325,
+        "C": 4,
+        "X": 45056,
+        "R": -21233,
+        "old_alpha": -322,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 329,
+        "C": 4,
+        "X": 45056,
+        "R": -22253,
+        "old_alpha": -326,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 333,
+        "C": 4,
+        "X": 45056,
+        "R": -23273,
+        "old_alpha": -330,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 337,
+        "C": 4,
+        "X": 45056,
+        "R": -24293,
+        "old_alpha": -334,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 341,
+        "C": 4,
+        "X": 45056,
+        "R": -25313,
+        "old_alpha": -338,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 345,
+        "C": 4,
+        "X": 45056,
+        "R": -26333,
+        "old_alpha": -342,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 349,
+        "C": 4,
+        "X": 45056,
+        "R": -27353,
+        "old_alpha": -346,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 353,
+        "C": 4,
+        "X": 45056,
+        "R": -28373,
+        "old_alpha": -350,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 357,
+        "C": 4,
+        "X": 45056,
+        "R": -29393,
+        "old_alpha": -354,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 361,
+        "C": 4,
+        "X": 45056,
+        "R": -30413,
+        "old_alpha": -358,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 365,
+        "C": 4,
+        "X": 45056,
+        "R": -31433,
+        "old_alpha": -362,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 369,
+        "C": 4,
+        "X": 45056,
+        "R": -32453,
+        "old_alpha": -366,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 373,
+        "C": 4,
+        "X": 45056,
+        "R": -33473,
+        "old_alpha": -370,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 377,
+        "C": 4,
+        "X": 45056,
+        "R": -34493,
+        "old_alpha": -374,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 381,
+        "C": 4,
+        "X": 45056,
+        "R": -35513,
+        "old_alpha": -378,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 385,
+        "C": 4,
+        "X": 45056,
+        "R": -36533,
+        "old_alpha": -382,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 389,
+        "C": 4,
+        "X": 45056,
+        "R": -37553,
+        "old_alpha": -386,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 393,
+        "C": 4,
+        "X": 45056,
+        "R": -38573,
+        "old_alpha": -390,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 397,
+        "C": 4,
+        "X": 45056,
+        "R": -39593,
+        "old_alpha": -394,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 401,
+        "C": 4,
+        "X": 45056,
+        "R": -40613,
+        "old_alpha": -398,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 405,
+        "C": 4,
+        "X": 45056,
+        "R": -41633,
+        "old_alpha": -402,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 409,
+        "C": 4,
+        "X": 45056,
+        "R": -42653,
+        "old_alpha": -406,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 413,
+        "C": 4,
+        "X": 45056,
+        "R": -43673,
+        "old_alpha": -410,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 417,
+        "C": 4,
+        "X": 45056,
+        "R": -44693,
+        "old_alpha": -414,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 421,
+        "C": 4,
+        "X": 45056,
+        "R": -45713,
+        "old_alpha": -418,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 425,
+        "C": 4,
+        "X": 45056,
+        "R": -46733,
+        "old_alpha": -422,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 429,
+        "C": 4,
+        "X": 45056,
+        "R": -47753,
+        "old_alpha": -426,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 433,
+        "C": 4,
+        "X": 45056,
+        "R": -48773,
+        "old_alpha": -430,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 437,
+        "C": 4,
+        "X": 45056,
+        "R": -49793,
+        "old_alpha": -434,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 441,
+        "C": 4,
+        "X": 45056,
+        "R": -50813,
+        "old_alpha": -438,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 445,
+        "C": 4,
+        "X": 45056,
+        "R": -51833,
+        "old_alpha": -442,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 449,
+        "C": 4,
+        "X": 45056,
+        "R": -52853,
+        "old_alpha": -446,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 453,
+        "C": 4,
+        "X": 45056,
+        "R": -53873,
+        "old_alpha": -450,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 457,
+        "C": 4,
+        "X": 45056,
+        "R": -54893,
+        "old_alpha": -454,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 461,
+        "C": 4,
+        "X": 45056,
+        "R": -55913,
+        "old_alpha": -458,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 465,
+        "C": 4,
+        "X": 45056,
+        "R": -56933,
+        "old_alpha": -462,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 469,
+        "C": 4,
+        "X": 45056,
+        "R": -57953,
+        "old_alpha": -466,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 473,
+        "C": 4,
+        "X": 45056,
+        "R": -58973,
+        "old_alpha": -470,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 477,
+        "C": 4,
+        "X": 45056,
+        "R": -59993,
+        "old_alpha": -474,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 481,
+        "C": 4,
+        "X": 45056,
+        "R": -61013,
+        "old_alpha": -478,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 485,
+        "C": 4,
+        "X": 45056,
+        "R": -62033,
+        "old_alpha": -482,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 489,
+        "C": 4,
+        "X": 45056,
+        "R": -63053,
+        "old_alpha": -486,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 493,
+        "C": 4,
+        "X": 45056,
+        "R": -64073,
+        "old_alpha": -490,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 497,
+        "C": 4,
+        "X": 45056,
+        "R": -65093,
+        "old_alpha": -494,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 501,
+        "C": 4,
+        "X": 45056,
+        "R": -66113,
+        "old_alpha": -498,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 505,
+        "C": 4,
+        "X": 45056,
+        "R": -67133,
+        "old_alpha": -502,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 509,
+        "C": 4,
+        "X": 45056,
+        "R": -68153,
+        "old_alpha": -506,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 513,
+        "C": 4,
+        "X": 45056,
+        "R": -69173,
+        "old_alpha": -510,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      },
+      {
+        "Z": 517,
+        "C": 4,
+        "X": 45056,
+        "R": -70193,
+        "old_alpha": -514,
+        "transport_unit": 1,
+        "complete_polynomial_zero": false
+      }
+    ],
+    "scope": "Only the positive outer transport/width bootstrap is refuted. The other native units are not asserted; none of these fixtures is a full candidate zero. Scalar mask congruences/population hold, without claiming DC/DR are an instantiated universal program."
+  },
+  "conclusion": "Universal completeness is inherited from87, but this candidate is unsound: the separate all-input-collapse theorem makes every actual modified compiler accept every positive input. A rejecting compiler gives false membership at x1. This audit retains the original source/degree/substitution claims; the sound75/87 bounds are unchanged.",
+  "refutation_references": [
+    "complete75_weakened86_all_input_collapse.md",
+    "complete75_weakened86_rejecting_compiler.md"
+  ]
+}

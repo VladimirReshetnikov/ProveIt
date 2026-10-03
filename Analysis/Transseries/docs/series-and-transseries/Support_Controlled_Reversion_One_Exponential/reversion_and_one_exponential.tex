@@ -30,6 +30,9 @@
 \newtheorem{question}[theorem]{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it
+% leaves every numbered statement of the delivered article unchanged.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\Z}{\mathbb Z}
@@ -92,7 +95,12 @@ The canonical ProveIt source is
 \emph{Transseries: the polynomial--logarithmic calculus, series reversal at
 infinity, and the inversion of rapidly growing functions}, in the
 \texttt{Transseries\_And\_Inversion} package under the Fabius research
-frontiers \cite{ProveIt,ProveItReadme}. Its extension chapter asks for a
+% ed. (2026-09-29): footnote giving the package's current location; the
+% pre-split path read by the article no longer exists.
+frontiers \cite{ProveIt,ProveItReadme}.\footnote{Editorial note (ProveIt,
+2026-09-29): the package has since moved to
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/};
+the bibliography entries give the current addresses.} Its extension chapter asks for a
 Lagrange--B\"urmann formula at dense exponents, a bound on Puiseux denominators
 in Newton iteration, and a one-exponential enlargement with workable
 composition and reversion. We use the source's stable labels, rather than
@@ -410,6 +418,28 @@ two-sided inversion. Formula \eqref{eq:blockLB} follows from
 \eqref{eq:blockD}, with $\beta=\lambda-r+1$.
 \end{proof}
 
+% ed. (2026-09-29): cross-reference to later independent proofs of the same
+% Lagrange sum (merge unit "reversion" of the series README).
+\begin{ednote}\label{ed:lb-other-proofs}
+The same positive-integer Lagrange sum has two further proofs in the
+repository. The later package
+\path{Analysis/Transseries/docs/series-and-transseries/Reversion_Beyond_Archimedean_Valuations/}
+(\texttt{article.tex}, Theorem \texttt{thm:reversion}, equation
+\texttt{eq:LB}, and Corollary \texttt{cor:EulerLB}) proves it over an
+arbitrary ordered exponent group with a fixed derivative shift $h$ and an
+additive character $\chi$, $\chi(h)=1$; at $\Gamma\subseteq\R$, $h=1$,
+$\chi=\id$ its sum and its Euler form agree term by term with
+\eqref{eq:LB} and \eqref{eq:blockLB} (its $B$ and $C$ are the $A$ and $B$
+here). The surcomplex analysis volume
+(\path{Algebra/SurrealNumbers/docs/surcomplex/analysis/article.tex},
+Lemma \texttt{e:lem-reversion}, equation \texttt{e:eq-reversion}) proves
+the same sum for Hahn sections over a non-Archimedean exponent group,
+without logarithmic blocks, by the same auxiliary-parameter specialization.
+The non-Archimedean article cites this article only for its research
+questions, not for this theorem; the surcomplex volume does not cite it;
+this article cites neither.
+\end{ednote}
+
 \begin{corollary}[A support certificate]\label{cor:monoid}
 Let $S=\supp(A)+1\subseteq(0,\infty)$ and $M=M(S)$. Then
 \begin{equation}\label{eq:Bsupp}
@@ -530,6 +560,28 @@ others have strictly higher valuation. Writing $p_k=e_k+1$ gives
 $p_{k+1}\ge2p_k+\delta$ and $p_0=\delta$, proving the second bound.
 An exact iterate remains exact; otherwise these bounds tend to infinity.
 \end{proof}
+
+% ed. (2026-09-29): cross-reference to the depth form of this rate in the
+% later non-Archimedean package, which does not cite this theorem.
+\begin{ednote}\label{ed:newton-depth}
+The later package
+\path{Analysis/Transseries/docs/series-and-transseries/Reversion_Beyond_Archimedean_Valuations/}
+proves the same Newton recursion in support-word depth
+(\texttt{article.tex}, Theorem \texttt{thm:implicit}, equation
+\texttt{eq:newtondepth}): one step sends a normalized error in the
+ideal $I_r$ of series supported on sums of support words of length at
+least $r$ into $I_{2r+1}$, so
+the $n$th normalized error lies in $I_{r_n}$, $r_n=2^{n+1}-1$. For
+$\Gamma\subseteq\R$ and $h=1$, a word of length at least $r$ has sum at
+least $r\delta$, so its bound gives $v(H_n-H_*)\ge(2^{n+1}-1)\delta-1$,
+the second inequality of \eqref{eq:newtonrate}; the step $r\mapsto2r+1$ is
+$e\mapsto2e+\alpha+2$ in units of $\delta=\alpha+1$. The rate is therefore
+the one proved here, now valid without cofinality of the multiples of
+$\delta$. What that package adds is that the depth $2^{n+1}-1$ is attained,
+by $u+z/(1+u)=0$ (Theorem \texttt{thm:sharp}), and an exact criterion for
+valuation convergence (Theorem \texttt{thm:valuationcriterion}). It
+calls its rate ``sharper'' without citing \eqref{eq:newtonrate}.
+\end{ednote}
 
 \begin{corollary}[The Puiseux denominator question]\label{cor:puiseux}
 For $s\in\N_{>0}$ and $A\in\R[L][[t^{1/s}]]$, every Newton iterate and
@@ -1402,6 +1454,20 @@ but dependent actions identify different formal multi-indices. Determine
 support and noncancellation hypotheses that make the resulting coefficient
 formula representation-independent.
 \end{question}
+% ed. (2026-09-29): records the later package that answers an analytic
+% subclass of this question.
+\begin{ednote}\label{ed:several-actions}
+The later package
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Transseries_Moving_Fold/}
+(\textit{Critical Transseries at a Moving Fold}, \texttt{article.tex},
+Theorems \texttt{thm:actions} and \texttt{thm:grid}) answers this question
+for an analytic subclass: analytic folds driven by finitely many
+exponential actions, with equal actions combined, have an absolutely
+convergent resonance-aware transseries representation whose support has an
+explicit finite positive generating set. By its own statement it does not
+answer the unrestricted formal or resurgent versions, which remain open
+here.
+\end{ednote}
 
 \begin{question}[Analytic subclasses stable under exact-core inversion]
 Give coefficient-growth and analytic continuation assumptions on a subclass
@@ -1434,6 +1500,43 @@ existence from failures of sequential convergence in a chosen topology.
 \end{question}
 The current article deliberately restricts to $\Gamma\subseteq\R$;
 no non-Archimedean extension is implicit in its proofs.
+% ed. (2026-09-29): records the later package that answers this question in
+% the fixed-shift power--logarithmic setting, and the related repository
+% results it does not cite.
+\begin{ednote}\label{ed:beyond-archimedean}
+The later package
+\path{Analysis/Transseries/docs/series-and-transseries/Reversion_Beyond_Archimedean_Valuations/}
+(\textit{Reversion Beyond Archimedean Valuations}) answers this question
+for Hahn power--logarithmic series over an arbitrary ordered exponent group
+whose derivative is given by a fixed positive shift $h$ and an additive
+character $\chi$ with $\chi(h)=1$. The real-valued length bound is replaced
+by the maximum length of a positive support word, which is finite without
+an Archimedean hypothesis (\texttt{article.tex}, Lemma
+\texttt{lem:words}). Inverses then exist and are unique, the ordinary
+positive-integer Lagrange sum remains valid, and Picard and Newton
+iterations converge strongly in the Hahn sense (Theorems
+\texttt{thm:implicit} and \texttt{thm:reversion}). Valuation convergence
+holds uniformly over the class exactly when the multiples of the least
+support exponent are cofinal (Theorem \texttt{thm:valuationcriterion});
+a rank-two example (equation \texttt{eq:ranktwov}) is an exact inverse
+whose Newton iterates are not even valuation-Cauchy. In that class the
+failures are therefore failures of valuation convergence, not of
+existence. Derivations with monomial-dependent shifts, such as those of
+full logarithmic--exponential transseries fields, are not covered, nor is
+analytic realization. Related repository material that neither article
+cites: Remark \texttt{plt:rmk:ext-archimedean} of the canonical volume
+(\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex})
+shows the lexicographic $\Z^2$ phenomenon; Lemma \texttt{e:lem-reversion}
+of the surcomplex analysis volume
+(\path{Algebra/SurrealNumbers/docs/surcomplex/analysis/article.tex})
+proves Hahn reversion with the same Lagrange sum over a non-Archimedean
+exponent group, without logarithmic blocks; and the all-word finiteness
+lemma is checked in Lean as
+\path{Surreal.HahnSeries.finite_words_of_sum_eq}
+(\path{Algebra/SurrealNumbers/Surreal/HahnSeries/Neumann.lean}) and
+\path{Surreal.HahnSeries.finite_wordsWithSum}
+(\path{Algebra/SurrealNumbers/Surreal/HahnSeries/NeumannWords.lean}).
+\end{ednote}
 
 \begin{question}[Exact boundaries for several primitive sectors]
 If $E_+=\sum_{j=1}^{d}q^j f_j$, determine the smallest possible power
@@ -1463,6 +1566,25 @@ $w=-1$, with both error bounds and the actual nearby branch points located?
 The rational pole hierarchy is exact, but its formal leading-pole sum is not
 yet a uniform two-variable approximation to the complete inverse.
 \end{question}
+% ed. (2026-09-29): records the later package that answers this question in
+% the independent-parameter chart, and the case it leaves open.
+\begin{ednote}\label{ed:critical-transition}
+The later package
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Transseries_Moving_Fold/}
+(\textit{Critical Transseries at a Moving Fold}) answers this question for
+$\delta+\log(1+\delta/w)+wze^{-\delta}=0$ with $z$ an independent small
+parameter. With $s=w+1$ it constructs an exact holomorphic two-sheet atlas
+for $|s|\le10^{-2}$, $|z/s^2|<3/4$ (\texttt{article.tex}, Theorem
+\texttt{thm:atlas}); the branch point moves, with critical value
+$z_c(s)=s^2/2+s^3/3+5s^4/8+\cdots$; the polynomial profiles have a
+geometric error bound valid at the branch point itself (Theorem
+\texttt{thm:profiles}); and the normalized sectors satisfy
+$a_n(\tau/n)/a_n(0)\to e^{-2\tau/3}$ with an explicit first correction
+(Theorems \texttt{thm:large-n} and \texttt{thm:crossover}). It states
+explicitly that the fixed-coupling specialization $z=e^{-w}/w$ of the
+mixed example, which tends to $-e$ as $w\to-1$, is not analysed at the
+core critical point; that global continuation is its own further question.
+\end{ednote}
 
 \begin{question}[Proof-producing support and precision inference]
 Can a symbolic engine infer the support monoid, admissible exponent lattice,
@@ -1471,6 +1593,19 @@ independently checked certificates? A useful first target is a Lean-checked
 implementation of the fixed-Puiseux and finitely generated action cases,
 with explicit rejection of nonsummable unnormalized substitutions.
 \end{question}
+% ed. (2026-09-29): records the later package that answers the algebraic
+% part of this question.
+\begin{ednote}\label{ed:certificates}
+The algebraic part of this question is answered by the later package
+\path{Analysis/Transseries/docs/series-and-transseries/Reversion_Beyond_Archimedean_Valuations/}:
+every finite set of requested coefficients factors through a minimal
+finite-rank quotient algebra retaining those coefficient maps
+(\texttt{article.tex}, Theorem \texttt{thm:minquotient}), with a finite
+residual certificate (Corollary \texttt{cor:residual}) and, for finite
+supports, a rational separating weight (Theorem \texttt{thm:separator}).
+No symbolic engine and no Lean-checked implementation exist; that part
+remains open.
+\end{ednote}
 
 \section{Conclusion}
 The dense-exponent reversion problem does not require replacing the
@@ -1508,7 +1643,12 @@ Vladimir Reshetnikov, ProveIt repository,
 \emph{Transseries: the polynomial--logarithmic calculus, series reversal at
 infinity, and the inversion of rapidly growing functions}.
 Canonical source, targeted inspection on 29 September 2026:
-\url{https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+% ed. (2026-09-29): the pre-split address read by the article
+% (Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/...)
+% no longer exists; replaced by the current path of the same file.
+\url{https://raw.githubusercontent.com/VladimirReshetnikov/ProveIt/main/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(current address; the article read it at its former path under
+\texttt{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/}).
 The stable labels cited in the text identify the relevant statements;
 no current-source/current-PDF parity is assumed.
 
@@ -1516,7 +1656,9 @@ no current-source/current-PDF parity is assumed.
 ProveIt, \emph{Transseries\_And\_Inversion package README}.
 Repository status and statement-level formalization inventory, inspected
 29 September 2026.
-\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/README.md}.
+% ed. (2026-09-29): pre-split address replaced by the current path of the same file.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}
+(current address).
 
 \bibitem{vdH}
 Joris van der Hoeven, \emph{Transseries and Real Differential Algebra}.

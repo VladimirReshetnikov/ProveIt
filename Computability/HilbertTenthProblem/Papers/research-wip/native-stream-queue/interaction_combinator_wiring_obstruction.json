@@ -1,0 +1,403 @@
+{
+  "status": "PASS_INTERACTION_COMBINATOR_WIRING_OBSTRUCTION",
+  "source_file_sha256": "5c4881f28ae3286097c9629751856118d06365300de77d40eaecd087d6d8b0bc",
+  "primary_source": {
+    "author": "Yves Lafont",
+    "title": "Interaction Combinators",
+    "journal": "Information and Computation 137 (1997), 69-101",
+    "author_primary_url": "https://www.i2m.univ-amu.fr/perso/yves.lafont/pub/combinators.ps",
+    "inspected_pdf_url": "https://chorasimilarity.wordpress.com/wp-content/uploads/2024/01/ic-lafont-1.pdf",
+    "inspected_pdf_sha256": "b717eeb9d4fe7ddb7be5f4905ead82770dc8624b1d58be759dbd308acd7142ec",
+    "inspected_author_postscript_sha256": "ffdc57506bcbd1d75c3bcd0d7d044bdefd196fd1e56103406a137e20d6d59fa9",
+    "port_and_cyclic_wire_definition": "journal page 71, section 1.1",
+    "six_rule_table": "journal page 81, Figure 2",
+    "delta_port_convention_and_universality": "journal page 82, section 2.1 and Theorem 1"
+  },
+  "port_encoding": "port (cell c, label p) is the natural integer 3*c+p; p=0 is principal",
+  "simulated_rule": "delta-delta; auxiliary 1 joins 1 and auxiliary 2 joins 2",
+  "domain": "closed port-linear finite delta-only nets, with nonnegative cyclic-wire count",
+  "witness_pair": {
+    "inputs": {
+      "A": {
+        "cells": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "wires": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            2,
+            9
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            5,
+            6
+          ],
+          [
+            8,
+            11
+          ]
+        ],
+        "loops": 0
+      },
+      "B": {
+        "cells": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "wires": [
+          [
+            0,
+            3
+          ],
+          [
+            1,
+            7
+          ],
+          [
+            2,
+            9
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            5,
+            8
+          ],
+          [
+            6,
+            11
+          ]
+        ],
+        "loops": 0
+      }
+    },
+    "common_summary": {
+      "cells": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "agent_counts_gamma_delta_epsilon": [
+        0,
+        4,
+        0
+      ],
+      "underlying_cell_edges": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "port_type_edge_counts_00_01_02_11_12_22": [
+        1,
+        0,
+        2,
+        2,
+        0,
+        1
+      ],
+      "initial_active_pairs": [
+        [
+          0,
+          1
+        ]
+      ],
+      "free_ports": 0,
+      "cyclic_wires": 0
+    },
+    "traces": {
+      "A": [
+        {
+          "net": {
+            "cells": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "wires": [
+              [
+                0,
+                3
+              ],
+              [
+                1,
+                7
+              ],
+              [
+                2,
+                9
+              ],
+              [
+                4,
+                10
+              ],
+              [
+                5,
+                6
+              ],
+              [
+                8,
+                11
+              ]
+            ],
+            "loops": 0
+          },
+          "chosen_pair": [
+            0,
+            1
+          ]
+        },
+        {
+          "net": {
+            "cells": [
+              2,
+              3
+            ],
+            "wires": [
+              [
+                6,
+                9
+              ],
+              [
+                7,
+                10
+              ],
+              [
+                8,
+                11
+              ]
+            ],
+            "loops": 0
+          },
+          "chosen_pair": [
+            2,
+            3
+          ]
+        },
+        {
+          "net": {
+            "cells": [],
+            "wires": [],
+            "loops": 2
+          },
+          "chosen_pair": null
+        }
+      ],
+      "B": [
+        {
+          "net": {
+            "cells": [
+              0,
+              1,
+              2,
+              3
+            ],
+            "wires": [
+              [
+                0,
+                3
+              ],
+              [
+                1,
+                7
+              ],
+              [
+                2,
+                9
+              ],
+              [
+                4,
+                10
+              ],
+              [
+                5,
+                8
+              ],
+              [
+                6,
+                11
+              ]
+            ],
+            "loops": 0
+          },
+          "chosen_pair": [
+            0,
+            1
+          ]
+        },
+        {
+          "net": {
+            "cells": [
+              2,
+              3
+            ],
+            "wires": [
+              [
+                6,
+                11
+              ],
+              [
+                7,
+                10
+              ],
+              [
+                8,
+                9
+              ]
+            ],
+            "loops": 0
+          },
+          "chosen_pair": null
+        }
+      ]
+    },
+    "A_reaches_exact_two_loop_target": true,
+    "B_reaches_any_agent_free_net": false,
+    "both_inputs_normalize": true
+  },
+  "exhaustive_search": {
+    "all_closed_four_delta_matchings": 10395,
+    "initial_enabled_pair_checks": 5670,
+    "all_schedules_same_normal_form_checked": 10395,
+    "simple_K4_matchings": 1296,
+    "K4_port_histogram_classes": 15,
+    "ambiguous_K4_histograms": [
+      {
+        "port_type_counts": [
+          1,
+          0,
+          2,
+          1,
+          2,
+          0
+        ],
+        "normal_form_cell_loop_counts": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      {
+        "port_type_counts": [
+          1,
+          0,
+          2,
+          2,
+          0,
+          1
+        ],
+        "normal_form_cell_loop_counts": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      {
+        "port_type_counts": [
+          1,
+          2,
+          0,
+          0,
+          2,
+          1
+        ],
+        "normal_form_cell_loop_counts": [
+          [
+            0,
+            1
+          ],
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      },
+      {
+        "port_type_counts": [
+          1,
+          2,
+          0,
+          1,
+          0,
+          2
+        ],
+        "normal_form_cell_loop_counts": [
+          [
+            0,
+            2
+          ],
+          [
+            2,
+            0
+          ]
+        ]
+      }
+    ],
+    "all_records_sha256": "70335894403b22618e1404978504a1d161e9d53dc4e9e9e2fcd24e11d8574daf",
+    "K4_records_sha256": "4768734e117b084160cc054612d0f680758939238d4dda0320a752df9c42438f"
+  },
+  "guards": {
+    "rejected_malformed_calls": 102,
+    "preexisting_and_created_cycles_preserved": true,
+    "agent_free_cyclic_wires_retained": true
+  },
+  "limitation": "Only the displayed summary abstraction is refuted. No obstruction to topology-aware Diophantine representations, no operation bound, and no ordinary-input universal loader is claimed."
+}

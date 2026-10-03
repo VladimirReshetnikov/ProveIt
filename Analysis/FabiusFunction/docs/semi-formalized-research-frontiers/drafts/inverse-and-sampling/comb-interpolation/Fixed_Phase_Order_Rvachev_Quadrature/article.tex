@@ -1,0 +1,1550 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Sharp Fixed-Phase Order of Rvachev Quadrature},
+ pdfauthor={Research manuscript prepared with ChatGPT},
+ pdfsubject={Dyadic maximality, effective refinement thresholds, and defect geometry}]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\numberwithin{equation}{section}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sharp fixed-phase order of Rvachev quadrature}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathbb R/\mathbb Z}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\vTwo}{\nu_2}
+\newcommand{\Poly}{\mathcal P}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\oddSum}{\sum_{\substack{n\ge1\\n\text{ odd}}}}
+
+\begin{document}
+% ed. (2026-09-29): no page anchor on the title page (it duplicated page.1).
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\vspace*{10mm}
+{\small\scshape Analysis / Fabius function / Rvachev up-function\par}
+\vspace{14mm}
+{\LARGE\bfseries Sharp Fixed-Phase Order\par}
+\vspace{3mm}
+{\LARGE\bfseries of Rvachev Quadrature\par}
+\vspace{9mm}
+{\large Dyadic maximality, effective refinement thresholds,\par}
+\vspace{2mm}
+{\large and quantitative defect geometry\par}
+\vspace{12mm}
+{Research manuscript prepared with ChatGPT\par}
+{29 September 2026\par}
+\vspace{12mm}
+\begin{minipage}{0.93\textwidth}
+\begin{abstract}
+A recent ProveIt manuscript classifies the phases at which the Rvachev
+lattice rule gains one polynomial degree, but leaves open whether a selected
+phase can gain a second degree. We settle this maximality question at every
+dyadic mesh. If $M=2^d$, the largest degree attainable at any fixed phase is
+exactly $d+1$. The two phases attaining it both fail at degree $d+2$, with an
+explicit signed leading term and a relative error smaller than $1/4$.
+
+For $M=2^{r-1}m$, with $m$ odd, we derive an exact next-defect formula and a
+computable sufficient condition for the same maximality conclusion. It
+holds eventually for every fixed $m$. More explicitly, if
+$J=\max\{2,1+\lceil\log_2m\rceil\}$, it holds for every
+$r\ge2J(m+1)+4$. Thus any exception at a fixed odd part lies in an explicitly
+bounded finite set of refinement levels. A refined expansion separates the
+$2^{-r}$ and $3^{-r}$ corrections and explains their parity dependence.
+
+A three-factor Fourier estimate also shows that the first defect has
+exactly two nondegenerate stationary points, and gives a quantitative
+stability theorem for its zeros under $C^1$ perturbations. The results
+transfer to moment-deconvolved polynomial synthesis and to refined phase
+averages. The article supplies complete analytic proofs, independent exact
+and numerical checks, and a proposed formalization and research program.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.93\textwidth}
+\small
+\textbf{Status.} These are conventional mathematical proofs, not new
+Lean-verified theorems. The general all-integer-mesh maximality question is
+not claimed solved. Novelty is assessed relative to the inspected repository
+sources and primary references, not certified against the entire literature.
+This is an unrefereed research manuscript.
+\end{minipage}
+\end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
+\begingroup
+\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The research question and the contribution}
+\label{sec:intro}
+
+\subsection{From phase completeness to fixed-phase maximality}
+
+Let $u$ be the normalized Rvachev up-function: a nonnegative even
+$C^\infty$ function supported on $[-1,1]$, with integral one. Its Fourier
+transform, with the convention fixed below, is
+\begin{equation}\label{eq:H}
+ H(t)=\widehat u(t)=\prod_{j=0}^{\infty}
+ \sinc\!\left(\frac{\pi t}{2^j}\right),
+ \qquad \sinc z=\begin{cases}\sin z/z,&z\ne0,\\1,&z=0.\end{cases}
+\end{equation}
+For $M>0$ and a phase $\theta\in\T$, define
+\begin{equation}\label{eq:rule}
+ Q_{M,\theta}(P)=\frac1M\sum_{k\in\Z}
+ P\!\left(\frac{k+\theta}{M}\right)
+ u\!\left(\frac{k+\theta}{M}\right),
+ \qquad I(P)=\int_\R P(x)u(x)\dd x.
+\end{equation}
+The actual spacing is $1/M$. The sum is finite. Write $\Poly_s$ for the
+polynomials of degree at most $s$, including zero.
+
+For integer $M$, put $d=\vTwo(M)$, the exponent of two dividing $M$.
+The repository's module \code{RvachevSuperconvergentSynthesis.lean}
+establishes exactness on $\Poly_d$ at every phase, and sufficient special
+phases for exactness on $\Poly_{d+1}$ \cite{repo-lean}. The subsequent
+manuscript \emph{Complete Superconvergence Phases and Optimal Phase Filters
+for Rvachev Quadrature}, dated 28 September 2026, proves that these are all
+such phases \cite{repo-phase}. Specifically, with $r=d+1$,
+\begin{equation}\label{eq:Z}
+ Z_r=\begin{cases}
+ \{0,\tfrac12\}\pmod1,&r\text{ odd},\\[2pt]
+ \{\tfrac14,\tfrac34\}\pmod1,&r\text{ even}.
+ \end{cases}
+\end{equation}
+The same manuscript explicitly leaves the next-degree failure problem
+unresolved. Its results about optimal \emph{uniformly translated} phase
+filters do not answer that different question.
+
+% ed. (2026-09-29): relation to the question answered; uncited repository results.
+\begin{ednote}
+This article answers Question~1 (``Fixed-phase maximality beyond the first
+extra degree'') of \cite{repo-phase} for every dyadic mesh and, from the
+explicit level of \cref{thm:elementary} on, for every odd part; the finitely
+many lower levels of each non-dyadic mesh remain open. An editorial note at
+that question records this. The completeness of the phase set \eqref{eq:Z}
+at the first failing level is also Theorem \texttt{thm:phase-zero-set} of
+the canonical synthesis
+\path{inverse-and-sampling/comb-interpolation/comb_interpolation_synthesis/},
+and the phase-uniform sharpness of exactness through degree $\vTwo(M)$ is
+machine-checked as
+\path{Fabius.exists_shift_tsum_shifted_monomial_ne_integral_nat_real}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/CompositeMeshSharpness.lean});
+neither is cited in this article. The fixed-phase results of this article
+have no Lean statement.
+\end{ednote}
+
+We ask whether, at a selected phase, the degree-$r+1$ monomial still has a
+nonzero error. An affirmative answer at a mesh $M$ completes its fixed-phase
+classification: all phases outside $Z_r$ have exact degree $r-1$, and the
+two phases in $Z_r$ have exact degree $r$.
+
+\subsection{Main conclusions}
+
+The central result is \cref{thm:dyadic}: for every $d\ge0$, the optimal
+fixed-phase degree at $M=2^d$ is exactly $d+1$. Its proof is quantitative,
+with a uniform relative margin; it is not an extrapolation from small
+meshes. The analytic mechanism is the explicit separation of the next
+Fourier defect into odd frequencies and a refined-mesh defect.
+
+For a general odd part $m$, \cref{thm:criterion} gives an explicit sufficient
+inequality, \cref{thm:eventual} gives a cutoff in terms of two computable
+Fourier constants, and \cref{thm:elementary} gives the fully elementary bound
+\begin{equation}\label{eq:elementary-intro}
+ r\ge2\max\{2,1+\lceil\log_2m\rceil\}(m+1)+4.
+\end{equation}
+No unproved nonvanishing assumption occurs in that result. The constants
+are conservative, but the conclusion reduces each fixed-odd-part problem
+to finitely many levels, with an $O(m\log(m+1))$ explicit cutoff.
+
+Two related conclusions are proved along the way. A strengthened
+odd-multiplier estimate gives the complete stationary-point geometry of
+the first defect and robust zero localization. The next-defect identity
+gives a two-exponential asymptotic expansion, with an entire even-frequency
+contribution disappearing at one of the two parities.
+
+\subsection{Scope, provenance, and limits}
+
+The repository snapshot inspected for the relevant source files was
+\begin{center}\small
+\texttt{23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae}.
+\end{center}
+The pre-existing phase-completeness theorem, its two-factor estimate, the
+uniform filter classification, and classical dyadic evaluations are credited
+rather than presented as new. Primary descriptions of $u$ and its arithmetic
+are due to Arias de Reyna \cite{arias1982,arias2017}. This article re-proves
+the few foundational facts needed to keep the new argument self-contained.
+
+We have not audited the whole repository or independently certified the
+entire literature. In particular, the term ``maximality'' here concerns the
+fixed-node, fixed-weight family \eqref{eq:rule}; it is not a statement about
+all Gaussian quadrature rules or arbitrary weights. We do not resolve every
+mesh $2^{r-1}m$ at the finitely many levels below our sufficient thresholds.
+The later research program states this remaining gap explicitly.
+
+\section{Fourier normalization and the first nonzero defect}
+\label{sec:fourier}
+
+\subsection{Construction and zero multiplicities}
+
+Take independent variables $V_j$, each uniform on $[-1,1]$, and let
+\[
+ Y=\sum_{j=1}^{\infty}2^{-j}V_j.
+\]
+The sum is absolutely convergent and belongs to $[-1,1]$. Its characteristic
+function in the convention
+\[
+ \widehat f(t)=\int_\R f(x)e^{-2\pi\ii tx}\dd x
+\]
+is \eqref{eq:H}. The product converges locally uniformly on $\C$, since
+its tail factors differ from one by $O(4^{-j})$ on compact sets. It is an
+entire function.
+
+For every fixed $N$, bounding the first $N$ factors by reciprocal absolute
+arguments and the remaining real factors by one gives
+$H(t)=O_N(|t|^{-N})$. Fourier inversion therefore gives a smooth density
+$u$ of $Y$. It is compactly supported, even, nonnegative, and normalized.
+Consequently $H$ and all its real derivatives are Schwartz functions. This
+also justifies the classical normalization used in \cite{arias1982}.
+
+\begin{lemma}[Real zeros]\label[lemma]{lem:zeros}
+The real zeros of $H$ are exactly $\Z\setminus\{0\}$. Their orders are
+\begin{equation}\label{eq:order}
+ \ord_NH=\vTwo(|N|)+1\qquad(N\in\Z\setminus\{0\}).
+\end{equation}
+In particular $H(m/2)\ne0$ for odd $m$.
+\end{lemma}
+\begin{proof}
+At a nonzero integer $N$ of valuation $d$, precisely the factors with
+$j=0,\ldots,d$ vanish, each to first order. All the remaining factors are
+nonzero. Their tail product is nonzero because the sum of the absolute
+deviations from one converges. If $t$ is not a nonzero integer, no factor
+vanishes, and the same tail argument excludes an additional product zero.
+\end{proof}
+
+\subsection{Poisson summation in physical coordinates}
+
+Set
+\begin{equation}\label{eq:defect}
+ E_{s,M}(\theta)=Q_{M,\theta}(x^s)-I(x^s).
+\end{equation}
+The periodization of the Schwartz function $x^su(x)$ gives
+\begin{equation}\label{eq:poisson}
+ E_{s,M}(\theta)=\left(\frac{\ii}{2\pi}\right)^s
+ \sum_{n\in\Z\setminus\{0\}}H^{(s)}(Mn)e^{2\pi\ii n\theta}.
+\end{equation}
+For completeness, the $n$th Fourier coefficient of
+$M^{-1}\sum_k f((k+\theta)/M)$ is $\widehat f(Mn)$, by the substitution
+$x=(k+\theta)/M$. Differentiation under the integral gives
+$\widehat{x^su}(t)=(\ii/(2\pi))^sH^{(s)}(t)$. Removing the constant
+coefficient proves \eqref{eq:poisson}. All phase derivatives of the series
+converge absolutely and uniformly.
+
+From now on write
+\begin{equation}\label{eq:mesh}
+ M=2^{r-1}m,\qquad r\ge1,\qquad m\ge1\text{ odd}.
+\end{equation}
+By \cref{lem:zeros}, $E_{s,M}\equiv0$ for $s<r$. Thus only the degree-$r$
+and degree-$(r+1)$ defects are needed for a sharp classification.
+
+\subsection{Normalized coefficients}
+
+Define the nonzero real number and real coefficients
+\begin{equation}\label{eq:ab}
+ A_m=H(m/2),\qquad
+ a_{m,n}=\frac{H(mn/2)}{A_m},\qquad
+ b_{m,n}=\frac{m}{2}\frac{H'(mn/2)}{A_m}
+ \quad(n\ge1\text{ odd}),
+\end{equation}
+so $a_{m,1}=1$. We often omit the subscript $m$ inside proofs. Put
+\begin{equation}\label{eq:beta}
+ \beta_m=-b_{m,1}=-\frac m2\frac{H'(m/2)}{H(m/2)},
+ \qquad \tau_s(\theta)=\cos(2\pi\theta+s\pi/2).
+\end{equation}
+The letter $\mathcal F$ below denotes a normalized defect, not the Fabius
+function:
+\begin{equation}\label{eq:F}
+ \mathcal F_{s,m}(\theta)=
+ \oddSum \frac{a_{m,n}}{n^s}\tau_s(n\theta),\qquad s\ge1.
+\end{equation}
+Its actual coefficients are rapidly decreasing for fixed $m$, so the
+series is smooth.
+
+\begin{proposition}[First defect; established phase framework]
+\label[proposition]{prop:first}
+For the mesh \eqref{eq:mesh},
+\begin{equation}\label{eq:first}
+ E_{r,M}(\theta)=
+ -\frac{2r!A_m}{(2\pi M)^r}\mathcal F_{r,m}(\theta).
+\end{equation}
+\end{proposition}
+\begin{proof}
+At $N=Mn$ with $n$ odd, split the product after its first $r$ factors.
+Exactly these factors vanish, and their first-order product is
+$-(z-N)^r/N^r$: among their integer arguments $N/2^j$, exactly the last
+is odd. Hence
+\[
+ H^{(r)}(Mn)=-\frac{r!}{(Mn)^r}H(mn/2).
+\]
+For even $n$, the derivative vanishes. Pair positive and negative odd
+frequencies in \eqref{eq:poisson}, using
+$H^{(r)}(-t)=(-1)^rH^{(r)}(t)$, to obtain \eqref{eq:first}.
+\end{proof}
+
+\section{A strengthened multiplier estimate and defect geometry}
+\label{sec:geometry}
+
+Write
+\begin{equation}\label{eq:S}
+ S_s=\sum_{\substack{n\ge3\\n\text{ odd}}}n^{-s}
+ =(1-2^{-s})\zeta(s)-1\qquad(s>1).
+\end{equation}
+The following elementary bound will be useful:
+\begin{equation}\label{eq:Sbound}
+ S_s\le3^{-s}+\frac12\int_3^\infty x^{-s}\dd x
+ =3^{-s}\left(1+\frac{3}{2(s-1)}\right).
+\end{equation}
+Indeed, for every odd $n\ge5$, the integral over $[n-2,n]$ is at least
+$2n^{-s}$.
+
+\begin{lemma}[Two-factor and three-factor domination]\label[lemma]{lem:multiplier}
+For positive odd $m,n$,
+\begin{equation}\label{eq:multiplier}
+ |a_{m,n}|\le\min\left\{\frac1{n^2},
+ \frac{1+\sqrt2}{n^3}\right\}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For integer $n\ge1$ and real $x$, $|\sin(nx)|\le n|\sin x|$.
+One proof expands $\sin(nx)/\sin x$ as a sum of $n$ complex numbers
+of modulus one when the denominator is nonzero, and then uses continuity.
+Thus every individual sinc-factor ratio in $H(mn/2)/H(m/2)$ has
+absolute value at most one.
+
+For $j=0$, the arguments are odd multiples of $\pi/2$, so the sine
+magnitudes are both one and the ratio is exactly $1/n$. For $j=1$,
+the sine magnitudes at odd multiples of $\pi/4$ are both $1/\sqrt2$,
+so that ratio is also $1/n$. This proves the first bound, the estimate
+used in the earlier phase-completeness proof \cite{repo-phase}.
+
+At $j=2$, the sine magnitudes at odd multiples of $\pi/8$ belong to
+$\{\sin(\pi/8),\sin(3\pi/8)\}$. Their ratio is at most
+$\sin(3\pi/8)/\sin(\pi/8)=1+\sqrt2$. That factor contributes at
+most $(1+\sqrt2)/n$, and all later ratios are at most one. Passing from
+finite products to their nonzero limits proves the second bound.
+\end{proof}
+
+\begin{theorem}[Two zeros and exactly two stationary points]
+\label{thm:shape}
+Put $c_r=S_{r+1}$ and $\eta_r=(1+\sqrt2)S_{r+1}$. Then, for every odd
+$m$ and $r\ge1$,
+\begin{align}
+ |\mathcal F_{r,m}(\theta)-\tau_r(\theta)|
+ &\le c_r|\tau_r(\theta)|,\label{eq:C0}\\
+ |\mathcal F'_{r,m}(\theta)-\tau'_r(\theta)|
+ &\le\eta_r|\tau'_r(\theta)|.\label{eq:C1}
+\end{align}
+Here $c_r\le\pi^2/8-1<1/4$ and $\eta_r<1$. The zeros of
+$\mathcal F_{r,m}$ are exactly $Z_r$ and are simple. Its stationary
+points are exactly the zeros of $\tau'_r$, and are nondegenerate. It
+has the same sign and the same monotonicity intervals as $\tau_r$.
+\end{theorem}
+\begin{proof}
+For odd $n$, the integer multiple inequality, applied to either sine or
+cosine according to the parity of $r$, gives
+\[
+ |\tau_r(n\theta)|\le n|\tau_r(\theta)|.
+\]
+Combining this with the first bound in \eqref{eq:multiplier} proves
+\eqref{eq:C0}. This is the known phase-completeness argument, reproduced
+here to establish the exact baseline.
+
+Differentiation contributes a factor $n$, and the same trigonometric
+inequality applied to the differentiated harmonic gives
+\[
+ \abs{\frac{\dd}{\dd\theta}\tau_r(n\theta)}
+ \le n^2|\tau'_r(\theta)|.
+\]
+The three-factor bound therefore proves \eqref{eq:C1}. Since
+$S_{r+1}\le S_2=\pi^2/8-1<1/4$ and $1+\sqrt2<5/2$, one even has
+$\eta_r<5/8<1$; its numerical upper value is about $0.5642$.
+
+The first inequality identifies the zero set and sign; the second
+identifies the stationary set and sign of the derivative. At a zero of
+$\tau_r$, its derivative is nonzero, so \eqref{eq:C1} gives simplicity.
+At a stationary point $\theta_0$, divide \eqref{eq:C1} by
+$|\theta-\theta_0|$ and take the limit. The resulting bound
+\[
+ |\mathcal F''_{r,m}(\theta_0)-\tau''_r(\theta_0)|
+ \le\eta_r|\tau''_r(\theta_0)|
+\]
+shows that the second derivative is nonzero there.
+\end{proof}
+
+\begin{corollary}[Baseline exactness classification]\label[corollary]{cor:phases}
+At the mesh \eqref{eq:mesh}, the rule is exact on $\Poly_r$ if and only
+if $\theta\in Z_r$. At every other phase its exact degree is $r-1$.
+\end{corollary}
+\begin{proof}
+All lower monomial defects vanish. The remaining degree-$r$ defect is a
+nonzero scalar times \eqref{eq:F}, and \cref{thm:shape} locates its zeros.
+\end{proof}
+
+\subsection{Quantitative stability under perturbation}
+
+The relative derivative estimate excludes an instability that a uniform
+function bound alone would miss: a very small, highly oscillatory
+perturbation can introduce many zeros unless its derivative is also
+controlled.
+
+\begin{theorem}[Stable two-zero structure]\label{thm:stability}
+Fix $0<\varepsilon<1/4$, and let $g$ be a real $C^1$ function on $\T$.
+Suppose
+\begin{align}
+ \norm{g}_\infty&<(1-c_r)\sin(2\pi\varepsilon),\label{eq:stab0}\\
+ \norm{g'}_\infty&<2\pi(1-\eta_r)\cos(2\pi\varepsilon).
+ \label{eq:stab1}
+\end{align}
+Then $\mathcal F_{r,m}+g$ has exactly two zeros. Each lies in the
+$\varepsilon$-neighborhood of a different point $z\in Z_r$, and its
+circular distance from that point is at most
+\begin{equation}\label{eq:displacement}
+ \frac{\norm{g}_\infty}
+ {2\pi(1-\eta_r)\cos(2\pi\varepsilon)}.
+\end{equation}
+Both zeros are simple.
+\end{theorem}
+\begin{proof}
+Outside the two neighborhoods, $|\tau_r|\ge\sin(2\pi\varepsilon)$.
+Equation~\eqref{eq:C0} and \eqref{eq:stab0} exclude a zero there. At the
+two endpoints of each neighborhood, the unperturbed function has opposite
+signs, and those signs survive the perturbation. Hence a zero exists in
+each neighborhood.
+
+Inside such a neighborhood, $|\tau'_r|\ge2\pi\cos(2\pi\varepsilon)$,
+with constant sign. Equations~\eqref{eq:C1} and \eqref{eq:stab1} imply
+that the perturbed derivative is nonzero with that sign throughout. This
+gives uniqueness and simplicity. Apply the mean value theorem to the
+unperturbed function between $z$ and its perturbed zero to obtain
+\eqref{eq:displacement}.
+\end{proof}
+
+\section{An exact formula for the next defect}
+\label{sec:next}
+
+Set $p=r+1$. The first defect sees only odd frequencies; the next defect
+sees odd frequencies and frequencies of valuation one. Treating these two
+sets separately is the main structural step.
+
+\begin{lemma}[The next Taylor coefficient at an odd alias]
+\label[lemma]{lem:next-derivative}
+If $N=Mn$ and $n$ is odd, then
+\begin{equation}\label{eq:next-derivative}
+ H^{(r+1)}(N)=\frac{(r+1)!}{N^r}
+ \left(\frac rN H(mn/2)-2^{-r}H'(mn/2)\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $z=N+w$. For each $j<r$,
+\[
+ \sinc\!\left(\frac{\pi(N+w)}{2^j}\right)
+ =(-1)^{N/2^j}\frac wN
+ \left(1-\frac wN+O(w^2)\right).
+\]
+The sine numerator has no quadratic term in $w$; the displayed linear
+correction comes from the reciprocal denominator. Multiplying the first
+$r$ factors, whose signs have product $-1$, gives
+\[
+ -\frac{w^r}{N^r}\left(1-\frac{rw}{N}+O(w^2)\right).
+\]
+The remaining product is
+$H(z/2^r)=H(mn/2)+2^{-r}wH'(mn/2)+O(w^2)$.
+Taking the coefficient of $w^{r+1}$ and multiplying by $(r+1)!$ proves
+the formula. All expansions are justified by analyticity near $N$.
+\end{proof}
+
+\begin{theorem}[Odd aliases plus a refined first defect]
+\label{thm:next-formula}
+Define the signed, nonzero normalization
+\begin{equation}\label{eq:K}
+ K_{r,m}=\frac{2(r+1)!A_m}{(2\pi M)^{r+1}}.
+\end{equation}
+For every $\theta\in\T$,
+\begin{equation}\label{eq:next-formula}
+ \boxed{\displaystyle
+ \frac{E_{r+1,M}(\theta)}{K_{r,m}}
+ =\oddSum\left(\frac{r a_{m,n}}{n^{r+1}}
+              -\frac{b_{m,n}}{n^r}\right)\tau_{r+1}(n\theta)
+ -2^{-(r+1)}\mathcal F_{r+1,m}(2\theta).}
+\end{equation}
+The first term of the odd sum is
+$(r+\beta_m)\tau_{r+1}(\theta)$.
+\end{theorem}
+\begin{proof}
+Pairing the positive and negative odd frequencies in
+\eqref{eq:poisson}, and using \cref{lem:next-derivative}, gives
+\[
+ \frac{2(r+1)!A_m}{(2\pi M)^{r+1}}
+ \oddSum\left(\frac{r a_{m,n}}{n^{r+1}}
+              -\frac{b_{m,n}}{n^r}\right)\tau_{r+1}(n\theta),
+\]
+because $M2^{-r}=m/2$. The entire even-frequency part is exactly
+$E_{r+1,2M}(2\theta)$, by replacing $n$ with $2n$ in the Fourier
+series. The mesh $2M=2^rm$ has first threshold $r+1$, so
+\cref{prop:first} expresses that even part as
+$-2^{-(r+1)}K_{r,m}\mathcal F_{r+1,m}(2\theta)$.
+Finally $a_{m,1}=1$ and $b_{m,1}=-\beta_m$.
+\end{proof}
+
+\begin{corollary}[Parity cancellation of the even component]
+\label[corollary]{cor:even-cancel}
+At a selected phase $\theta\in Z_r$, the even component in
+\eqref{eq:next-formula} vanishes identically when $r$ is even. When $r$
+is odd, $2\theta$ is an integer and
+\begin{equation}\label{eq:even-size}
+ |\mathcal F_{r+1,m}(2\theta)|\le1+S_{r+3}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+If $r$ is even, $\theta\in\{1/4,3/4\}$ and $r+1$ is odd. Every
+harmonic of $\mathcal F_{r+1,m}$ is a sine, hence vanishes at
+$2\theta\in\{1/2,3/2\}$. For odd $r$, use $2\theta\in\Z$ and
+$|a_{m,n}|\le n^{-2}$ in the series.
+\end{proof}
+
+\section{Derivative domination with explicit constants}
+\label{sec:derivative}
+
+The next defect involves derivatives of $H$ at all odd half-integer
+multiples, not only its values. Define
+\begin{equation}\label{eq:T}
+ P(t)=\sinc(\pi t)\sinc(\pi t/2),\qquad
+ T(t)=\prod_{j=2}^{\infty}\sinc(\pi t/2^j),\qquad H=PT.
+\end{equation}
+The tail $T$ is the Fourier transform of a probability supported on
+$[-1/4,1/4]$, so
+\begin{equation}\label{eq:Tprime}
+ |T'(t)|\le\frac\pi2\quad(t\in\R).
+\end{equation}
+Indeed, its random-variable representation is the part of $Y$ left after
+removing its first two summands, and differentiation contributes at most
+$2\pi$ times its support radius.
+
+\begin{lemma}[Uniform derivative envelope along odd multiples]
+\label[lemma]{lem:b-bound}
+For a positive odd $m$, let
+\begin{equation}\label{eq:D}
+ D_m=\frac{m\pi}{4}\left(1+\frac1{|T(m/2)|}\right)+\frac23.
+\end{equation}
+This is finite, and for every odd $n\ge3$,
+\begin{equation}\label{eq:b-bound}
+ |b_{m,n}|\le\frac{D_m}{n^2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $t_0=m/2$. All the factors at $t_0$ are nonzero. The two exact
+factor ratios from \cref{lem:multiplier} give
+$|P(nt_0)|=|P(t_0)|/n^2$. The same factorwise inequality gives
+$|T(nt_0)|\le|T(t_0)|$.
+
+At an odd half-integer,
+\[
+ \frac{P'(mn/2)}{P(mn/2)}
+ =\frac\pi2\cot\!\left(\frac{\pi mn}{4}\right)-\frac4{mn}.
+\]
+The missing first cotangent is zero. The displayed cotangent has magnitude
+one, hence the whole expression has magnitude at most
+$\pi/2+4/(mn)$. Differentiating $H=PT$ and applying
+\eqref{eq:Tprime} yields
+\[
+ \frac{|H'(mn/2)|}{|A_m|}
+ \le\frac1{n^2}\left(\frac\pi2+\frac4{mn}
+                         +\frac\pi{2|T(m/2)|}\right).
+\]
+Multiply by $m/2$ and use $2/n\le2/3$.
+\end{proof}
+
+\begin{lemma}[The dyadic constants have absolute bounds]
+\label[lemma]{lem:dyadic-constants}
+For $m=1$,
+\begin{equation}\label{eq:dyadic-constants}
+ A_1>0,\qquad \beta_1>1,\qquad D_1<\frac52.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Every factor of $H(1/2)$ is positive. Each sinc factor is strictly
+decreasing as a function of its positive argument in $(0,\pi/2]$.
+The $j=0$ logarithmic derivative at $t=1/2$ is $-2$ and the remaining
+logarithmic derivatives are negative. Therefore
+$\beta_1=-\tfrac12H'(1/2)/H(1/2)>1$.
+
+For the tail, $\sinc x\ge1-x^2/6$ for real $x$, and its arguments here
+are positive and at most $\pi/8$. The elementary product inequality
+$1-\prod_j(1-v_j)\le\sum_jv_j$ for $0\le v_j\le1$ gives
+\[
+ T(1/2)\ge1-\sum_{j=2}^{\infty}
+ \frac{\pi^2}{24\,4^j}=1-\frac{\pi^2}{288}>\frac{24}{25}.
+\]
+For the final inequality, $\pi<22/7$ is more than sufficient. Hence
+\[
+ D_1<\frac{11}{14}\left(1+\frac{25}{24}\right)+\frac23
+ =\frac{763}{336}<\frac52.
+\]
+\end{proof}
+
+\begin{remark}[The odd part cannot be discarded]
+The value $\beta_m$ need not be positive. Numerically,
+$\beta_9\approx-10.8871$ and $\beta_{17}\approx-40.7636$.
+Thus the leading coefficient $r+\beta_m$ can be small near particular
+levels. The proof for $m=1$ must not be applied to all $m$ by silently
+assuming $\beta_m>1$. The general criterion below uses its actual sign
+and magnitude.
+\end{remark}
+
+\section{Sharp fixed-phase order at every dyadic mesh}
+\label{sec:dyadic}
+
+The following general error envelope is the bridge from Fourier analysis
+to a nonvanishing theorem. Define
+\begin{equation}\label{eq:R}
+ R_{r,m}=rS_{r+3}+D_mS_{r+2}
+ +\mathbf1_{\{r\text{ odd}\}}\,2^{-(r+1)}(1+S_{r+3}).
+\end{equation}
+The indicator retains the exact cancellation of the even-frequency part.
+
+\begin{theorem}[A quantitative maximality criterion]
+\label{thm:criterion}
+For every $\theta\in Z_r$,
+\begin{equation}\label{eq:remainder}
+ \abs{\frac{E_{r+1,M}(\theta)}{K_{r,m}}
+ -(r+\beta_m)\tau_{r+1}(\theta)}\le R_{r,m}.
+\end{equation}
+Consequently, if
+\begin{equation}\label{eq:criterion}
+ |r+\beta_m|>R_{r,m},
+\end{equation}
+then the exact degree of $Q_{M,\theta}$ is $r$ at each $\theta\in Z_r$
+and $r-1$ at every other phase. In particular, its maximum over all phases
+is $r$. At a selected phase,
+\begin{align}
+ |K_{r,m}|(|r+\beta_m|-R_{r,m})
+ &\le |E_{r+1,M}(\theta)|\nonumber\\
+ &\le |K_{r,m}|(|r+\beta_m|+R_{r,m}),\label{eq:two-sided}
+\end{align}
+and its sign is that of
+$K_{r,m}(r+\beta_m)\tau_{r+1}(\theta)$.
+\end{theorem}
+\begin{proof}
+At a selected phase, $|\tau_{r+1}(\theta)|=1$. Remove the $n=1$ term
+from the odd sum in \cref{thm:next-formula}. Its remaining magnitude is
+at most
+\[
+ \sum_{\substack{n\ge3\\n\text{ odd}}}
+ \left(\frac{r}{n^{r+3}}+\frac{D_m}{n^{r+2}}\right)
+ =rS_{r+3}+D_mS_{r+2},
+\]
+by \cref{lem:multiplier,lem:b-bound}. Add the even-component bound from
+\cref{cor:even-cancel} to obtain \eqref{eq:remainder}. Under
+\eqref{eq:criterion}, the leading term cannot be canceled. The two-sided
+bound and sign follow, and \cref{cor:phases} completes the degree
+classification.
+\end{proof}
+
+\begin{theorem}[Complete dyadic fixed-phase maximality]
+\label{thm:dyadic}
+For every $d\ge0$, put $M=2^d$ and $r=d+1$. Then
+\begin{equation}\label{eq:degree-classification}
+ \deg_{\rm exact}Q_{2^d,\theta}=
+ \begin{cases}
+ d+1,&\theta\in Z_{d+1},\\
+ d,&\theta\notin Z_{d+1}.
+ \end{cases}
+\end{equation}
+Here ``exact degree'' means the largest $s$ such that the rule is exact on
+all of $\Poly_s$. More quantitatively, at either selected phase,
+\begin{equation}\label{eq:quarter-margin}
+ \abs{\frac{E_{r+1,2^{r-1}}(\theta)}
+ {K_{r,1}(r+\beta_1)\tau_{r+1}(\theta)}-1}
+ <\frac14.
+\end{equation}
+In particular, both selected phases fail at the very next degree.
+\end{theorem}
+\begin{proof}
+By \cref{lem:dyadic-constants}, $r+\beta_1>r+1$ and $D_1<5/2$.
+We may ignore the parity indicator for an upper bound. Therefore
+\[
+ \frac{R_{r,1}}{r+\beta_1}
+ <\frac{rS_{r+3}+(5/2)S_{r+2}
+              +2^{-(r+1)}(1+S_{r+3})}{r+1}.
+\]
+All terms are uniformly controlled by the first refinement level.
+For $r\ge1$,
+\[
+ \frac{rS_{r+3}}{r+1}\le\frac12S_4,
+ \qquad \frac{S_{r+2}}{r+1}\le\frac12S_3,
+ \qquad \frac{2^{-(r+1)}(1+S_{r+3})}{r+1}
+ \le\frac18(1+S_4).
+\]
+For the first inequality, use
+$S_{r+3}\le3^{-(r-1)}S_4$ and
+$r/(r+1)\le3^{r-1}/2$; the latter follows at $r=1$ by equality and
+for $r\ge2$ from $r/(r+1)<1\le3^{r-1}/2$.
+The other inequalities follow directly by monotonicity.
+
+Equation~\eqref{eq:Sbound} gives
+$S_3\le7/108$ and $S_4\le1/54$. Consequently
+\begin{equation}\label{eq:rational-margin}
+ \frac{R_{r,1}}{r+\beta_1}
+ <\frac12S_4+\frac54S_3+\frac18(1+S_4)
+ \le\frac{47}{216}<\frac14.
+\end{equation}
+Apply \cref{thm:criterion}; division by the signed leading term gives
+\eqref{eq:quarter-margin}. The error cannot be zero, so the selected
+phases have exact degree $r$. All other phases were already classified.
+\end{proof}
+
+\subsection{Why the result is stronger than phase completeness}
+
+Knowing that the degree-$r$ error has exactly two zeros does not exclude
+one of those zeros from also annihilating the degree-$(r+1)$ error.
+The new ingredient is \eqref{eq:quarter-margin}: it separates the next
+error from zero at \emph{both} selected phases, uniformly over all $d$.
+The proof uses more than symmetry. Symmetry supplies selected zeros, but
+only the derivative envelope and the refined-mesh decomposition control
+the next error there.
+
+\subsection{Signs and the two selected phases}
+
+Since $A_1>0$ and $r+\beta_1>0$, the sign of the next dyadic defect is
+precisely $\tau_{r+1}(\theta)$. At the pair of selected phases these
+signs are opposite. Their magnitudes need not be equal when $r$ is odd:
+the even-frequency component is then identical at the two phases and
+shifts both errors by the same amount. When $r$ is even the errors are
+exact negatives, because the even component vanishes and all remaining
+frequencies are odd.
+
+For example, the rule at $M=1$, $\theta=0$ has only the central nonzero
+sample and gives $Q(x^2)=0$, whereas $I(x^2)=1/9$. At $\theta=1/2$,
+the two samples at $\pm1/2$ give $Q(x^2)=1/4$, and the error is $5/36$.
+This simple asymmetric pair is the first instance of the parity mechanism,
+not an exceptional normalization artifact.
+
+\section{Every fixed odd part has an effective finite frontier}
+\label{sec:eventual}
+
+\subsection{A cutoff from computable Fourier constants}
+
+\begin{theorem}[Eventual maximality at every fixed odd part]
+\label{thm:eventual}
+For positive odd $m$, define the integer
+\begin{equation}\label{eq:cutoff}
+ r_*(m)=\max\left\{2,\ \left\lceil2|\beta_m|+2\right\rceil,
+ \ 2+\left\lceil\log_3(1+D_m)\right\rceil\right\}.
+\end{equation}
+For every integer $r\ge r_*(m)$, the mesh $M=2^{r-1}m$ has exact
+fixed-phase degree $r$ on $Z_r$ and $r-1$ off $Z_r$. In particular, any
+failure of this classification for a fixed odd $m$ occurs at one of the
+finitely many levels $1\le r<r_*(m)$.
+\end{theorem}
+\begin{proof}
+For $s\ge3$, \eqref{eq:Sbound} gives $S_s\le2\cdot3^{-s}$.
+Moreover, $S_{r+3}<1$, so
+\begin{equation}\label{eq:Rcrude}
+ R_{r,m}\le\frac{2r}{3^{r+3}}+
+                \frac{2D_m}{3^{r+2}}+2^{-r}.
+\end{equation}
+Under \eqref{eq:cutoff}, $D_m<3^{r-2}$,
+$r+\beta_m\ge r-|\beta_m|\ge r/2+1$, and $r\ge2$.
+The first term in \eqref{eq:Rcrude} is at most $4/243$, since
+$r/3^r$ decreases for integer $r\ge2$. The second is less than $2/81$
+and the third at most $1/4$. Their sum is less than one, while the
+leading coefficient is greater than one. Hence \eqref{eq:criterion}
+holds, and \cref{thm:criterion} applies.
+\end{proof}
+
+The cutoff is intentionally sufficient, not optimal. It can be much larger
+than the first level at which \eqref{eq:criterion} succeeds. A failed
+sufficient test is not evidence that the underlying error is zero.
+
+\subsection{A fully elementary cutoff, without special-function constants}
+
+To remove even the need to evaluate $\beta_m$ and $D_m$, we bound them
+using dyadic separation from the sine zeros.
+
+\begin{lemma}[Elementary bounds on the odd-part constants]
+\label[lemma]{lem:elementary}
+For odd $m\ge1$ let
+\begin{equation}\label{eq:J}
+ J=\max\{2,1+\lceil\log_2m\rceil\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:elementary-constants}
+ |\beta_m|<J(m+1)+1,\qquad
+ D_m<m+(2m)^{J-1}+1\le(2m)^J.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Set $t=m/2$ and $c_j=\pi/2^j$. Since $2^J\ge2m$ and $\pi<4$,
+$|c_Jt|<1$. At an odd half-integer the angle
+$c_jt=\pi m/2^{j+1}$ has distance at least $\pi/2^{j+1}$ from the
+nearest integer multiple of $\pi$. Since $|\cot x|\le1/\delta$
+when that distance is $\delta\in(0,\pi/2]$,
+\[
+ |c_j\cot(c_jt)|\le2,\qquad
+ |c_j\cot(c_jt)-1/t|\le2+2/m.
+\]
+Thus the first $J$ contributions to
+$|tH'(t)/H(t)|$ total at most $J(m+1)$.
+
+For $|x|\le1$, the bounds
+$|\sin x|\ge5|x|/6$ and
+$|x\cos x-\sin x|\le|x|^3/3$ give
+\begin{equation}\label{eq:cot-tail}
+ |x\cot x-1|\le\frac25x^2.
+\end{equation}
+The numerator bound follows by integrating $-x\sin x$ from zero.
+Consequently the logarithmic-derivative tail contributes at most
+\[
+ \frac25t^2\sum_{j=J}^{\infty}c_j^2
+ =\frac{8\pi^2t^2}{15}\,4^{-J}
+ =\frac{2\pi^2m^2}{15}\,4^{-J}
+ <\frac8{15}<1.
+\]
+This proves the bound for $|\beta_m|$.
+
+For the bound on $D_m$, every factor of $T(t)$ with $2\le j<J$ has
+magnitude at least $2/(\pi m)>1/(2m)$. Indeed, its sine numerator has
+magnitude at least $\sin(\pi/2^{j+1})\ge2^{-j}$, whereas its argument
+has magnitude $\pi m/2^{j+1}$. For $j\ge J$ all factors are positive.
+The same product estimate used in \cref{lem:dyadic-constants} gives
+\[
+ \prod_{j=J}^{\infty}\sinc(c_jt)
+ \ge1-\frac{2\pi^2t^2}{9}\,4^{-J}
+ =1-\frac{\pi^2m^2}{18}\,4^{-J}>\frac79.
+\]
+It follows that
+\[
+ |T(m/2)|>\frac79(2m)^{-(J-2)}.
+\]
+Using $\pi/4<1$, $9/7<2$, and $2/3<1$ in \eqref{eq:D} gives
+\[
+ D_m<m\bigl(1+2(2m)^{J-2}\bigr)+1
+ =m+(2m)^{J-1}+1.
+\]
+The last expression is at most $(2m)^J$: since $J\ge2$,
+$(2m)^{J-1}(2m-1)\ge2m(2m-1)\ge m+1$ for $m\ge1$.
+\end{proof}
+
+\begin{theorem}[Explicit finite-level reduction]
+\label{thm:elementary}
+For every odd $m\ge1$, with $J$ as in \eqref{eq:J}, all refinement levels
+\begin{equation}\label{eq:elementary-cutoff}
+ r\ge 2J(m+1)+4
+\end{equation}
+have the sharp fixed-phase classification of \cref{thm:criterion}.
+Equivalently, at fixed odd part $m$, it suffices to settle the finitely many
+levels
+\begin{equation}\label{eq:finite-levels}
+ 1\le r\le 2J(m+1)+3
+\end{equation}
+to complete the all-level classification for that odd part.
+\end{theorem}
+\begin{proof}
+The $\beta_m$ bound in \cref{lem:elementary} makes
+$2|\beta_m|+2<2J(m+1)+4$. Also
+\[
+ 1+D_m<1+(2m)^J\le2(2m)^J\le2\cdot3^{Jm}<3^{Jm+1},
+\]
+where $2m\le3^m$ for integers $m\ge1$. Thus
+$2+\lceil\log_3(1+D_m)\rceil\le Jm+3$, which is smaller than the
+right side of \eqref{eq:elementary-cutoff}. The cutoff in
+\cref{thm:eventual} is therefore satisfied.
+\end{proof}
+
+This reduction is finite for each prescribed $m$, not uniformly finite
+over all odd integers. The possible number of unresolved levels still
+grows with $m$. In particular, \cref{thm:elementary} is not a proof that
+there are only finitely many exceptional integer meshes altogether.
+
+\subsection{Effective evaluation and rigorous numerical certificates}
+
+The constants in \eqref{eq:cutoff} are computable with certified errors.
+For $t>0$, choose $J$ so that $\pi t2^{-J}\le1$. The product tail has
+\begin{equation}\label{eq:product-tail}
+ 0\le1-\prod_{j=J}^{\infty}\sinc(\pi t/2^j)
+ \le\frac{2\pi^2t^2}{9}\,4^{-J}.
+\end{equation}
+The logarithmic-derivative tail obeys, by \eqref{eq:cot-tail},
+\begin{equation}\label{eq:log-tail}
+ \abs{\sum_{j=J}^{\infty}
+ \left(\frac\pi{2^j}\cot\!\left(\frac{\pi t}{2^j}\right)-\frac1t\right)}
+ \le\frac{8\pi^2t}{15}\,4^{-J}.
+\end{equation}
+At an odd half-integer, the finite initial product is nonzero. These tail
+bounds therefore provide a positive lower bound on its absolute value
+once the cutoff is sufficiently large. Interval bounds on the finite
+sines, cosines, and $\pi$ then enclose $\beta_m$ and $D_m$.
+
+There is no algorithmic need to decide whether a transcendental expression
+is an integer before choosing a cutoff: rational upper enclosures
+$B>|\beta_m|$ and $D>D_m$ give a conservative integer cutoff by rounding
+up. The completely elementary cutoff is available without these
+computations. The supplied numerical implementation illustrates the
+sharper constants, but does not implement directed-rounding intervals;
+its output is explicitly labeled diagnostic.
+
+\section{The two-exponential structure of the next error}
+\label{sec:asymptotic}
+
+The exact formula contains more information than eventual nonvanishing.
+It distinguishes the first even alias from the first nontrivial odd
+alias, and shows why their relative importance depends on parity.
+
+For $s>1$ write
+\[
+ U_s=\sum_{\substack{n\ge5\\n\text{ odd}}}n^{-s}.
+\]
+As in \eqref{eq:Sbound},
+\begin{equation}\label{eq:Ubound}
+ U_s\le5^{-s}\left(1+\frac5{2(s-1)}\right).
+\end{equation}
+
+\begin{theorem}[Explicit three-term expansion at the selected phases]
+\label{thm:expansion}
+For $\theta\in Z_r$ and fixed odd $m$,
+\begin{align}
+ \frac{E_{r+1,M}(\theta)}{K_{r,m}}
+ ={}&(r+\beta_m)\tau_{r+1}(\theta)
+       -2^{-(r+1)}\tau_{r+1}(2\theta)\nonumber\\
+ &+3^{-r}\left(\frac r3a_{m,3}-b_{m,3}\right)
+              \tau_{r+1}(3\theta)+\mathcal R_{r,m}(\theta),
+ \label{eq:expansion}
+\end{align}
+where
+\begin{equation}\label{eq:expansion-remainder}
+ |\mathcal R_{r,m}(\theta)|
+ \le rU_{r+3}+D_mU_{r+2}
+ +\mathbf1_{\{r\text{ odd}\}}2^{-(r+1)}S_{r+3}.
+\end{equation}
+Thus, as $r\to\infty$ with $m$ fixed, the remainder is
+$O_m(r5^{-r}+6^{-r})$, uniformly over the two selected phases.
+When $r$ is even, every even-alias term, including its remainder, is
+exactly zero.
+\end{theorem}
+\begin{proof}
+In the odd part of \eqref{eq:next-formula}, retain $n=1$ and $n=3$.
+Their contributions are exactly the first and third terms of
+\eqref{eq:expansion}. The remaining odd terms are bounded by
+$rU_{r+3}+D_mU_{r+2}$. In the refined term retain only its $n=1$
+harmonic. Its remaining terms have magnitude at most
+$2^{-(r+1)}S_{r+3}$, unless $r$ is even, when all its harmonics vanish
+by \cref{cor:even-cancel}. Finally use \eqref{eq:Ubound} and
+\eqref{eq:Sbound}.
+\end{proof}
+
+\begin{corollary}[Signed leading asymptotic]\label[corollary]{cor:leading}
+For fixed odd $m$, uniformly over $\theta\in Z_r$,
+\begin{equation}\label{eq:leading}
+ E_{r+1,2^{r-1}m}(\theta)
+ =K_{r,m}(r+\beta_m)\tau_{r+1}(\theta)
+ \left(1+O_m\!\left(3^{-r}+\frac{2^{-r}}r\right)\right).
+\end{equation}
+On the even-$r$ subsequence the term $2^{-r}/r$ may be omitted.
+\end{corollary}
+\begin{proof}
+For fixed $m$, $r+\beta_m\sim r$. Divide the error estimate in
+\cref{thm:criterion} by $|r+\beta_m|$, and use
+\eqref{eq:Sbound}. The even-$r$ improvement follows from the exact
+cancellation.
+\end{proof}
+
+The two small parameters are not interchangeable. For odd $r$, the
+$2^{-r}$ term occurs before the $r3^{-r}$ odd correction. For even $r$,
+the whole $2^{-r}$ family disappears. This is a simple instance of an
+exponential asymptotic scale selected by arithmetic parity, directly
+relevant to the repository's broader interest in transseries. No divergent
+series, summability prescription, or beyond-all-orders assertion is needed
+here: the finite truncation has an explicit remainder bound.
+
+\subsection{Exact sum and difference of the two errors}
+
+Let $\theta_0$ and $\theta_0+1/2$ be the selected phases. Every odd
+harmonic changes sign under this shift, whereas the refined component is
+unchanged. Hence the identity
+\begin{equation}\label{eq:pair-sum}
+ E_{r+1,M}(\theta_0)+E_{r+1,M}(\theta_0+1/2)
+ =2E_{r+1,2M}(2\theta_0)
+\end{equation}
+is exact. Their difference isolates twice the odd part of
+\eqref{eq:next-formula}. In particular, if $r$ is even their sum is zero.
+If $r$ is odd, the sum has the sign and size of a first defect on the
+refined mesh. This supplies a direct check on both the factor $2^{-(r+1)}$
+and its minus sign in the main formula.
+
+\section{Polynomial synthesis and refined phase filters}
+\label{sec:synthesis}
+
+\subsection{Moment deconvolution preserves the sharp degree}
+
+Define the polynomial averaging operator
+\begin{equation}\label{eq:B}
+ (\mathcal BP)(t)=\int_\R P(t-x)u(x)\dd x.
+\end{equation}
+In the monomial basis it is triangular with diagonal one, so it has an
+inverse $\mathcal D$ on the polynomial algebra. Both operators preserve
+degree and leading coefficient. The polynomials $A_n=\mathcal D(t^n)$
+are monic and have the formal generating identity
+\[
+ \sum_{n\ge0}A_n(t)\frac{z^n}{n!}
+ =\frac{e^{tz}}{\int_\R e^{zx}u(x)\dd x}.
+\]
+Evenness of $u$ identifies its moment-generating function at $z$ and
+$-z$. Only a formal power series, or a neighborhood of zero, is intended;
+the reciprocal denominator is not asserted to be entire.
+
+The phased synthesis operator is
+\begin{equation}\label{eq:synthesis}
+ (\mathcal S_{M,\theta}P)(t)
+ =\frac1M\sum_{k\in\Z}
+ (\mathcal DP)\!\left(t-\frac{k+\theta}{M}\right)
+ u\!\left(\frac{k+\theta}{M}\right).
+\end{equation}
+This is the deconvolution framework already present in the repository
+\cite{repo-lean,repo-phase}.
+
+\begin{theorem}[Sharp synthesis order and its leading failure]
+\label{thm:synthesis}
+The identity $\mathcal S_{M,\theta}P=P$ for every $P\in\Poly_s$ is
+equivalent to exactness of $Q_{M,\theta}$ on $\Poly_s$.
+If the quadrature is exact through degree $r$ and $p=r+1$, then
+\begin{equation}\label{eq:synthesis-error}
+ (\mathcal S_{M,\theta}t^p)(t)-t^p=(-1)^pE_{p,M}(\theta),
+\end{equation}
+independently of $t$. More generally the error for a degree-at-most-$p$
+polynomial is its leading degree-$p$ coefficient times the right side.
+Consequently all the sharp-order conclusions of
+\cref{thm:dyadic,thm:eventual,thm:elementary} apply to phased synthesis.
+\end{theorem}
+\begin{proof}
+Quadrature exactness applies to the polynomial
+$x\mapsto(\mathcal DP)(t-x)$, whose integral is
+$(\mathcal B\mathcal DP)(t)=P(t)$. This proves one direction. Conversely,
+as $P$ ranges over $\Poly_s$, the polynomials
+$x\mapsto(\mathcal DP)(-x)$ range over all of $\Poly_s$, since
+$\mathcal D$ and reflection are invertible. Evaluating synthesis at $t=0$
+therefore implies quadrature exactness.
+
+For $P=t^p$, the polynomial $A_p(t-x)$ has leading coefficient $(-1)^p$
+as a polynomial in $x$. Every lower-degree quadrature defect vanishes,
+so only this coefficient multiplies $E_{p,M}$. The general statement
+follows by linearity and preservation of leading coefficients.
+\end{proof}
+
+\subsection{Consequences for phase averages}
+
+For any integer $L\ge1$ and offset $\alpha$,
+\begin{equation}\label{eq:refinement}
+ \frac1L\sum_{j=0}^{L-1}Q_{M,\theta+\alpha+j/L}(P)
+ =Q_{LM,L(\theta+\alpha)}(P).
+\end{equation}
+This is simply the bijection $(k,j)\mapsto Lk+j$ between the lattice
+indices, and holds beyond polynomials whenever the sums exist. The earlier
+phase-filter manuscript identifies such uniform refinements as the sharp
+minimum-size filters for uniform translated exactness \cite{repo-phase}.
+
+\begin{corollary}[Fixed-phase order of a dyadic refinement]
+\label[corollary]{cor:refinement}
+If $LM=2^d$, the phase average in \eqref{eq:refinement} has exact degree
+$d+1$ precisely at the translating phases satisfying
+\[
+ L(\theta+\alpha)\in Z_{d+1}\pmod1.
+\]
+It has exact degree $d$ at every other translating phase. There are exactly
+$2L$ maximizing phases modulo one, and no translating phase gives degree
+$d+2$. If $LM=2^{r-1}m$ instead, the same conclusion with $d=r-1$
+holds whenever \eqref{eq:criterion} or either sufficient cutoff applies.
+\end{corollary}
+\begin{proof}
+Apply the exact refinement identity and the corresponding sharp-order
+theorem. Multiplication by $L$ on $\T$ has exactly $L$ preimages of each
+of the two selected phases.
+\end{proof}
+
+This corollary adds a fixed-phase ceiling to an existing uniform-filter
+classification. It neither changes that classification nor asserts
+optimality among arbitrary unequal-weight filters at a single phase.
+
+\section{Independent exact and numerical verification}
+\label{sec:verification}
+
+The package includes a standalone Python program,
+\path{reproducibility/verify.py}. It imports no repository code. Its exact
+component uses \code{fractions.Fraction}; its numerical component uses
+\code{mpmath} with 60 decimal digits. The two kinds of evidence are recorded
+separately and are not conflated with the proofs above.
+
+\subsection{Exact dyadic evaluator and moment computation}
+
+For the bounded Fabius function $F$ on $[0,1]$, the normalization is
+$u(x)=F(1-|x|)$ for $|x|\le1$. The classical dyadic recurrences from
+\cite{arias2017}, also used by the earlier repository manuscript, give an
+exact evaluator. Put
+\begin{equation}\label{eq:dn}
+ d_n=n!2^{n(n-1)/2}F(2^{-n}),\qquad d_0=1.
+\end{equation}
+Then
+\begin{equation}\label{eq:drec}
+ (n+1)(2^n-1)d_n=\sum_{k=0}^{n-1}\binom{n+1}{k}d_k\qquad(n\ge1).
+\end{equation}
+For a dyadic $x\in(0,1)$, select $n$ so that
+$2^{-n}\le x<2^{1-n}$ and put $y=x-2^{-n}$. The identity
+\begin{equation}\label{eq:Frec}
+ F(x)=-F(y)+\sum_{k=0}^{n}
+ \frac{2^{k(k+1)/2}}{k!}F(2^{k-n})y^k
+\end{equation}
+removes the leading nonzero binary digit. Values at powers of two are
+computed directly from \eqref{eq:dn}, preventing a circular recursive
+call. The endpoint values are $F(0)=0$ and $F(1)=1$.
+
+Moments are computed independently from the distributional identity
+$Y\overset d=(V+Y')/2$, with $V$ uniform on $[-1,1]$ and independent
+of a copy $Y'$. With $\mu_n=I(x^n)$, odd moments vanish and
+\begin{equation}\label{eq:moments}
+ (2^n-1)\mu_n=
+ \sum_{\substack{0\le k<n\\k\text{ even}}}
+ \binom nk\frac{\mu_k}{n-k+1}
+ \qquad(n>0\text{ even}),\qquad\mu_0=1.
+\end{equation}
+This follows by expanding $(V+Y')^n$ and isolating the last term.
+The evaluator and moment recurrence therefore approach the quadrature
+identity from different finite computations.
+
+\begin{table}[htbp]
+\centering
+\caption{Exact next-degree failures at both maximizing phases. The general
+theorem, not these finitely many rows, proves all-level maximality.}
+\label{tab:exact}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+$M$ & $r$ & Selected phases & First next defect & Second next defect\\
+\midrule
+$1$ & $1$ & $0,\ 1/2$ & $-1/9$ & $5/36$\\
+$2$ & $2$ & $1/4,\ 3/4$ & $17/1536$ & $-17/1536$\\
+$4$ & $3$ & $0,\ 1/2$ & $97/345600$ & $-799/2764800$\\
+$8$ & $4$ & $1/4,\ 3/4$ & $-9919/4529848320$ & $9919/4529848320$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The exact run performs 978 assertions. These include 257 reflection checks
+for $F$; lower-degree exactness and first-threshold phase classification on
+a 16-point phase grid at each mesh $1,2,4,8,16,32,64$; next-degree
+nonvanishing at both selected phases; the four comparison values in
+\cref{tab:exact}; and 126 exact lattice-refinement identities. Every
+assertion passed. The complete rational outputs, including the larger
+fractions through $M=64$, are in \path{validation/exact_results.json}.
+
+These exact computations verify finite examples, not infinite-dimensional
+analytic statements. In particular, testing a finite phase grid does not
+prove that other phases are absent; \cref{thm:shape} supplies that proof.
+
+\subsection{Product and derivative diagnostics}
+
+The numerical program computes $H$ and $H'$ from 112 product factors and
+the corresponding logarithmic-derivative sum. For small arguments it uses
+Taylor expansions to avoid subtracting nearly equal numbers. It tests both
+bounds in \eqref{eq:multiplier} and the derivative bound
+\eqref{eq:b-bound} for
+\[
+ m\in\{1,3,5,7,9,11,13,15,17,31\},\qquad
+ n\in\{3,5,\ldots,63\}.
+\]
+These give 930 checks. Two additional checks verify the numerical values
+of the inequalities for $\beta_1$ and $D_1$.
+
+For each of the fourteen selected-phase cases through $M=64$, the program
+compares the exact rational next defect with \eqref{eq:next-formula},
+truncated at odd index 201, and also checks the relative $1/4$ bound.
+That gives another 28 checks, for 960 numerical assertions in total.
+All passed. The largest discrepancy in the \emph{normalized} next-defect
+formula was approximately $2.7651\cdot10^{-15}$, and the largest observed
+relative deviation from its leading term was approximately $0.132868$.
+The latter occurs at the smallest mesh in the test.
+
+These values describe this particular numerical run. They are not
+rigorous decimal enclosures. The checks compare series discrepancies to
+an analytic tail envelope, but the arithmetic itself does not use directed
+rounding. The proofs of the envelope and of the $1/4$ margin are separate.
+The detailed output is in \path{validation/numerical_results.json}.
+
+\begin{table}[htbp]
+\centering
+\caption{Odd-part constants and conservative cutoffs. Decimal constants and
+the $r_*$ column are numerical diagnostics; the last column follows from the
+proved elementary formula. For $m=1$, the sharper dyadic theorem already
+covers every $r\ge1$.}
+\label{tab:constants}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$m$ & $\beta_m$ (approx.) & $D_m$ (approx.) & $r_*(m)$ (approx.)
+ & $2J(m+1)+4$\\
+\midrule
+1 & 1.283712 & 2.264960 & 5 & 12\\
+3 & 5.025370 & 6.270594 & 13 & 28\\
+5 & 0.338832 & 14.993681 & 5 & 52\\
+7 & 16.076234 & 67.714799 & 35 & 68\\
+9 & $-10.887077$ & 148.173749 & 24 & 104\\
+13 & 0.522487 & 389.713427 & 8 & 144\\
+17 & $-40.763598$ & 7839.404861 & 84 & 220\\
+31 & 121.429034 & 1302794.266702 & 245 & 388\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The sufficient inequality itself often succeeds much earlier than either
+cutoff. In the numerical run, it succeeded at every tested level
+$r=1,\ldots,20$ for $m=1,3,5,7,9,11$. For $m=13,15,17$ it succeeded
+at $r=3,\ldots,20$, and for $m=31$ at $r=7,\ldots,20$. These are
+observations about a sufficient test, not certified complete
+classifications of those odd parts. The elementary all-large-level theorem
+requires no reliance on this table.
+
+\subsection{Reproduction and validation boundaries}
+
+The exact checks need only Python's standard library. Run
+\begin{quote}\small\ttfamily
+python reproducibility/verify.py --exact-only
+\end{quote}
+The numerical checks additionally need \code{mpmath}:
+\begin{quote}\small\ttfamily
+python reproducibility/verify.py --numeric-only
+\end{quote}
+Running without either switch performs both sets. The script raises an
+exception at a failed assertion; it does not silently accept failed tests.
+The JSON files preserve exact rational strings separately from rounded
+floating-point displays.
+
+No Lean build was performed. No numerical claim here is described as a
+formal theorem merely because a Python assertion passed. Conversely, the
+analytic theorems do not assume a successful test run: their proofs are
+contained in the preceding sections.
+
+\section{Formalization plan and a proof-dependency boundary}
+\label{sec:formalization}
+
+\subsection{What can be reused}
+
+The inspected repository already has the Poisson-defect framework and
+sufficient parity-phase exactness \cite{repo-defect,repo-lean}. Relevant declarations include
+\begin{quote}\small\ttfamily
+summable\_fourier\_monomialRvachevSchwartz\par\medskip
+tsum\_shifted\_monomial\_sub\_integral\par\medskip
+tsum\_shifted\_monomial\_sub\_integral\_odd\par\medskip
+tsum\_shifted\_polynomial\_eq\_integral\_superconvergent.
+\end{quote}
+These names are dependency candidates, not claims that the new results
+already exist in Lean. The polynomial synthesis layer can reuse the
+existing deconvolution framework. The classical analytic normalization and
+zero-order facts should be matched carefully before any new theorem is
+stated; shifting the Fourier product's starting index changes the support
+and every mesh factor.
+
+\subsection{A staged formal development}
+
+A useful first target is \cref{thm:dyadic}, without first formalizing the
+more general odd-part cutoff. The minimal new chain is: obtain the local
+Taylor coefficient at a zero; split the next defect into odd and even
+frequencies; prove the derivative envelope with $m=1$; establish the
+rational bounds $\beta_1>1$ and $D_1<5/2$; and combine the summable tails
+with \eqref{eq:rational-margin}.
+
+The proof does not need a full zeta-function library. The bounds
+$S_3\le7/108$ and $S_4\le1/54$, together with the monotonic comparison
+used in the proof, suffice for dyadic nonvanishing. Similarly,
+$\eta_r<5/8$ suffices for the stationary-point theorem; the decimal
+constant is not needed.
+
+A second stage can generalize the derivative envelope and prove
+\cref{thm:criterion}. A third stage can add the integer-valued elementary
+cutoff. In that final stage it may be cleaner to define $J$ as the least
+integer at least two satisfying $2^J\ge2m$, rather than introduce real
+logarithms and ceilings. This is equivalent to \eqref{eq:J}, but exposes
+exactly the inequality used by the proof.
+
+The asymptotic expansion should come only after the exact formula and
+finite tail inequalities. Its useful formal core is not a notation for
+big-$O$, but the explicit bound \eqref{eq:expansion-remainder}. Finally,
+the $C^1$ perturbation theorem can be proved separately as a general result
+about a harmonic plus a controlled perturbation.
+
+\subsection{Suggested endpoint statements}
+
+For dyadic meshes, the natural endpoint is the pair of statements
+\[
+ \forall\theta\in Z_{d+1},\quad E_{d+2,2^d}(\theta)\ne0,
+\]
+and
+\[
+ \forall\theta\in\T,\quad
+ \bigl[Q_{2^d,\theta}\text{ exact on }\Poly_{d+1}\bigr]
+ \Longleftrightarrow\theta\in Z_{d+1}.
+\]
+The first is the new maximality content; the second is the already known
+phase-completeness boundary. Their combination yields
+\eqref{eq:degree-classification}. Working on the circle, or explicitly
+reducing a real phase modulo one, is essential.
+
+For the general theorem, a formal statement should retain $m>0$, oddness,
+$r\ge1$, and the decomposition $M=2^{r-1}m$. The sign of $A_m$ and
+$\beta_m$ must not be discarded. Using an absolute normalization for the
+next error would require an extra sign factor and makes the exact identity
+less transparent; \eqref{eq:K} deliberately keeps the signed normalization.
+
+\section{Further research questions and topics}
+\label{sec:research}
+
+The results give several concrete directions with explicit success
+criteria. The following questions are proposed, not solved by the present
+manuscript.
+
+\subsection{Complete the all-integer-mesh maximality classification}
+
+Does $E_{r+1,2^{r-1}m}(\theta)$ ever vanish at a phase $\theta\in Z_r$
+for any positive odd $m$ and any $r\ge1$? The dyadic case is now excluded,
+and \cref{thm:elementary} excludes all sufficiently large levels for each
+fixed odd part. What remains is not a single finite computation, because
+$m$ is unbounded. A complete theorem would require arithmetic information
+that is uniform in the odd part, or an exact counterexample.
+
+A practical first milestone is an interval-certified classification for
+all odd $m\le B$, checking only the finitely many levels from
+\eqref{eq:finite-levels}. This would turn the new theorem into a rigorous
+finite-frontier search rather than an arbitrary grid experiment.
+
+\subsection{Control near-resonance of the leading coefficient}
+
+The obstruction to a one-line extension of the dyadic proof is the
+possible smallness of $r+\beta_m$. Determine quantitative lower bounds on
+its distance from zero, or classify its near-integer values. The exact
+identity suggests that near-resonance may force the $n=3$ harmonic or the
+even refined term to become decisive. A proof that these terms cannot
+simultaneously cancel would go beyond first-harmonic domination.
+
+\subsection{Replace the conservative derivative envelope}
+
+The term $1/|T(m/2)|$ in $D_m$ can be very large. It results from bounding
+$|T'(mn/2)|$ by a global support estimate, which ignores the strong
+arithmetic relation between $mn/2$ and $m/2$. A relative derivative
+inequality along odd multiples could substantially improve the cutoff.
+The target is an estimate for $b_{m,n}$ that retains cancellation in the
+logarithmic derivative rather than separately bounding $P'T$ and $PT'$.
+
+\subsection{Find the optimal dyadic relative margin}
+
+The constant $1/4$ in \eqref{eq:quarter-margin} is convenient, not sharp.
+The exact check at $M=1$, $\theta=0$ gives a relative deviation around
+$0.132868$, while the proved upper bound is $47/216\approx0.217593$.
+Is the supremum over all dyadic levels and both selected phases attained
+at that smallest mesh? Proving such a statement would require a sharper
+comparison between consecutive levels, not merely separate tail bounds.
+
+\subsection{Higher derivatives and the geometry of later defects}
+
+The three-factor estimate controls one phase derivative. Additional fixed
+factors give further powers of odd-multiplier decay, but their residue
+constants grow. Determine which higher derivative orders admit a uniform
+harmonic-domination theorem independent of $m$ and $r$. Separately,
+classify the zero sets and stationary points of the next and later
+monomial defects. Their even aliases create a geometry absent from the
+first defect.
+
+\subsection{All-order alias expansions with effective remainders}
+
+Retaining any finite set of odd frequencies in \eqref{eq:next-formula}
+gives additional exponential scales. For higher monomial degrees, several
+valuation layers survive. Derive a systematic expansion indexed jointly
+by frequency and its two-adic valuation, with explicit coefficients from
+local Taylor jets of $H$ and uniform truncation bounds. The present
+$2^{-r}$/$3^{-r}$ split is the first nontrivial case of that program.
+
+\subsection{Generalized geometric convolution kernels}
+
+Replace the dyadic uniform series by other geometrically weighted
+convolutions. Which arithmetic properties of their Fourier zeros permit
+complete phase classification and fixed-phase ceilings? Integer bases
+larger than two have more residue classes and more candidate phases.
+One should distinguish what follows from zero multiplicities alone from
+what needs special sine-ratio estimates like \eqref{eq:multiplier}.
+
+\subsection{Certified filters robust to phase and weight errors}
+
+The perturbation theorem controls the normalized first defect when a
+concrete implementation can bound its $C^1$ perturbation. Develop explicit
+bounds translating errors in sampled values, phase locations, and filter
+weights into those norms. Combining such bounds with the next-degree
+nonvanishing margin would provide a certified region in which both the
+number of superconvergent phases and the fixed-phase ceiling survive.
+This is a stronger numerical-design question than merely observing stable
+plots.
+
+\section{Conclusion}
+
+The repository's first-superconvergence phase classification leaves a
+logically separate question: whether a special phase might also cancel
+the next monomial error. The exact odd/even decomposition answers that
+question at every dyadic mesh, with a uniform relative nonvanishing
+margin. The same mechanism produces effective eventual maximality for
+every fixed odd part, including a completely elementary finite-level
+reduction.
+
+The proof also explains the geometry and scale separation of the errors.
+A third sinc factor controls the derivative of the normalized first
+defect, while the next defect divides into a same-mesh odd series and a
+refined first defect. These two observations supply a foundation for
+further exact classification, certified computation, and formalization,
+without treating numerical checks as proofs or silently extending a
+dyadic statement to all integer meshes.
+
+\appendix
+\section{A compact dependency and novelty ledger}
+\label{app:ledger}
+
+\begin{longtable}{@{}p{0.30\textwidth}p{0.63\textwidth}@{}}
+\toprule
+Result or ingredient & Status and role\\
+\midrule
+\endhead
+Fourier product and zero multiplicities & Classical kernel structure;
+\cref{sec:fourier} fixes normalization and supplies a direct proof of the
+part used here.\\[5pt]
+Two-factor multiplier bound and first-phase completeness & Present in
+\cite{repo-phase}; re-established as the baseline, not claimed new.\\[5pt]
+Three-factor multiplier bound and complete stationary-point geometry &
+Developed here in \cref{lem:multiplier,thm:shape}; gives a relative $C^1$
+control, rather than only the first zero set.\\[5pt]
+Exact next-defect decomposition & Developed in
+\cref{thm:next-formula}; keeps the derivative term and the entire
+refined even-frequency component.\\[5pt]
+Sharp dyadic fixed-phase degree & Main completion in
+\cref{thm:dyadic}; covers every level, both selected phases, and gives a
+uniform signed relative margin.\\[5pt]
+General odd-part maximality & Sufficient criterion and eventual theorem in
+\cref{thm:criterion,thm:eventual}; not an unconditional all-level theorem
+for every odd $m$.\\[5pt]
+Elementary finite-level reduction & \Cref{thm:elementary} gives the explicit
+$O(m\log(m+1))$ cutoff without evaluating a special-function constant.\\[5pt]
+Parity-dependent exponential expansion & \Cref{thm:expansion} gives exact
+retained terms and a finite-error inequality.\\[5pt]
+Synthesis and uniform-grid refinement & Existing frameworks;
+\cref{thm:synthesis,cor:refinement} transfer the new sharp ceilings.\\[5pt]
+Formal verification & No new Lean theorem or Lean build is claimed.
+The proof boundary and staged plan are given in \cref{sec:formalization}.\\
+\bottomrule
+\end{longtable}
+
+\section{Normalization and edge-case checklist}
+
+The first Fourier factor is $\sinc(\pi t)$, not
+$\sinc(\pi t/2)$. The support is $[-1,1]$, the integral is one, and
+$u(0)=1$. The latter follows by convolving the first uniform summand,
+whose density equals one on $[-1/2,1/2]$, with the remaining law supported
+on that interval. It is also part of the classical normalization.
+
+The case $M=1$ is included: $r=1$ and the base exact degree is zero.
+The phase circle identifies $0$ with $1$; no theorem excludes integer
+translates of a selected representative. The odd part is positive; negative
+frequencies are handled by evenness of $H$, not by treating $m$ as signed.
+The factor $A_m$ is nonzero but may be negative. Every next-error formula
+retains its sign. The integer cutoff uses $r=d+1$, so a cutoff on $r$
+becomes a cutoff one smaller on $d$.
+
+Finally, exactness through degree $s$ is a simultaneous statement about
+all polynomials of degree at most $s$. A single higher monomial can
+sometimes be integrated accidentally even when lower ones fail. Such an
+isolated equality does not increase the exact degree used in this article.
+
+\begin{thebibliography}{9}
+
+\bibitem{arias1982}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}, English translation (2017) of
+\emph{Definici\'on y estudio de una funci\'on indefinidamente diferenciable
+de soporte compacto}, Rev.~Real Acad.~Ciencias \textbf{76} (1982), 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{arias2017}
+J.~Arias de Reyna,
+\emph{Arithmetic of the Fabius function}, arXiv:1702.06487, version 3 (2017).
+\url{https://arxiv.org/abs/1702.06487}.
+
+\bibitem{repo-phase}
+ProveIt repository,
+\emph{Complete Superconvergence Phases and Optimal Phase Filters for
+Rvachev Quadrature}, research manuscript, 28 September 2026.
+Inspected at commit
+\texttt{23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae}; source:
+\begin{small}
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/comb-interpolation/Optimal_Phase_Filters/article.tex}.
+\end{small}
+The introduction and research discussion distinguish first-phase
+completeness from the unresolved fixed-phase next-degree maximality
+question. This reference is an unrefereed repository manuscript.
+
+\bibitem{repo-lean}
+ProveIt repository,
+\code{RvachevSuperconvergentSynthesis.lean}, inspected at the same commit.
+\begin{small}
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae/Analysis/FabiusFunction/Lean/FabiusFunction/RvachevSuperconvergentSynthesis.lean}.
+\end{small}
+
+\bibitem{repo-defect}
+ProveIt repository,
+\code{CombDefectSeries.lean}, dependency named by the inspected
+superconvergence module and the phase-filter manuscript.
+\begin{small}
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/23dd71d2d3d5e85d2b97a8cc45f55e735d69a4ae/Analysis/FabiusFunction/Lean/FabiusFunction/CombDefectSeries.lean}.
+\end{small}
+
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,878 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\hypersetup{pdftitle={Unitary divisor sum colored partitions and their asymptotics},pdfauthor={},pdfsubject={A301981 and A301982; corrected equivalents, exact saddles, and an RH criterion}}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\Res}{Res}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Gla}{\mathcal G}
+\newcommand{\ch}{\chi}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\numberwithin{equation}{section}
+\title{Unitary divisor sum colored partitions\\and their asymptotics}
+\author{Research article and reproducibility companion}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The products defining OEIS A301981 and A301982 have color multiplicities equal to the sum of the unitary divisors. Their recorded pure stretched-exponential equivalents are false: neither coefficient-to-model ratio is eventually bounded above and below by positive constants. A least-height-zero argument supplies the necessary noncancellation, and an Abelian implication transfers coefficient assumptions to Mellin holomorphy. For each sequence separately, a logarithmic error of order $O_\eps(n^{1/4+\eps})$ for every $\eps>0$ is equivalent to the Riemann hypothesis. Unconditionally the error is $o(n^{1/3})$ and cannot be $O(n^{1/4-\eps})$ for any $0<\eps<1/4$. We give a corrected multiplicative equivalent that evaluates the exact product at the explicit point $(2A/n)^{1/3}$, an all-fixed-order expansion using the exact saddle and cumulants, and shrinking inverse-threshold brackets. An off-center Hermite version gives the same fixed-order and inverse accuracy at an explicit evaluation point, without an inner saddle solve. The arguments apply established Mellin and saddle methods to these two specific products. They neither prove nor disprove the Riemann hypothesis, and they require no simplicity of zeta zeros or infinite zero-residue expansion.
+\end{abstract}
+\tableofcontents
+
+\section{The two products and the conclusions}\label{udp:sec:results}
+A positive divisor $d$ of $m$ is unitary if $\gcd(d,m/d)=1$. Write
+\begin{equation}\label{udp:eq:weight}
+ b_m=\sigma^*(m)=\sum_{d\mid m,\,\gcd(d,m/d)=1}d
+ =\prod_{p^a\parallel m}(1+p^a),\qquad b_1=1.
+\end{equation}
+There are $b_m$ colors available for a part of numerical size $m$. The two generating functions are
+\begin{align}
+ F_-(z)&=\prod_{m\ge1}(1-z^m)^{-b_m}=\sum_{n\ge0}a_n^-z^n,
+ &&\text{A301981},\label{udp:eq:minus}\\
+ F_+(z)&=\prod_{m\ge1}(1+z^m)^{b_m}=\sum_{n\ge0}a_n^+z^n,
+ &&\text{A301982}.\label{udp:eq:plus}
+\end{align}
+The minus product allows repeated parts of each color. In the plus product, each individual color may be used at most once; different colors of the same numerical size may occur together. All coefficients are positive, and $a_0^\pm=1$.
+
+For either sign set $f_\pm(t)=\log F_\pm(e^{-t})$ for real $t>0$, and put
+\begin{equation}\label{udp:eq:constants}
+ A_-=\frac{\pi^2}{6},\qquad A_+=\frac{\pi^2}{8},\qquad
+ c_\pm=3(A_\pm/4)^{1/3},\qquad t_0^\pm(n)=(2A_\pm/n)^{1/3}.
+\end{equation}
+Unless signs matter, $a_n,f,A,c,t_0$ refer to one fixed choice. The conjectures in Kot\v{e}\v{s}ovec's 2018 OEIS entries, as inspected on 2 October 2026, assert $a_n^\pm\sim m_n^\pm$, where
+\begin{align}
+ m_n^+&=\frac{\exp(c_+n^{2/3})}{2^{4/3}\sqrt3\,\pi^{1/6}n^{2/3}},\label{udp:eq:modelplus}\\
+ m_n^-&=\frac{\Gla^6\exp(c_-n^{2/3}-1/2)}{2\cdot3^{5/6}\pi^{1/3}n^{5/6}},\label{udp:eq:modelminus}
+\end{align}
+and $\Gla$ is the Glaisher--Kinkelin constant \cite{oeisminus,oeisplus}. Define
+\begin{align}
+ B_+&=-\tfrac12\log2,&d_+&=0,\nonumber\\
+ B_-&=6\log\Gla-\tfrac12-\tfrac12\log(2\pi),&d_-&=\tfrac12,\label{udp:eq:B}\\
+ R_\pm(t)&=f_\pm(t)-A_\pm t^{-2}-d_\pm\log t-B_\pm.\label{udp:eq:R}
+\end{align}
+These are exact definitions of $R_\pm$, not bounded-error assertions.
+
+\begin{theorem}[Summary of the asymptotic conclusions]\label{udp:thm:summary}
+For each sequence separately the following statements hold.
+\begin{enumerate}[label=(\roman*)]
+\item The conjecture $a_n^\pm\sim m_n^\pm$ is false. More strongly, no constants $0<C_1<C_2<\infty$ bound $a_n^\pm/m_n^\pm$ between $C_1$ and $C_2$ for every sufficiently large $n$.
+\item Unconditionally,
+\[
+ \log a_n^\pm=c_\pm n^{2/3}+o(n^{1/3}),
+\]
+whereas, for every $0<\eps<1/4$, the error is not $O(n^{1/4-\eps})$.
+\item The Riemann hypothesis is equivalent to
+\[
+ \text{for every }\eps>0,\qquad
+ \log a_n^\pm=c_\pm n^{2/3}+O_\eps(n^{1/4+\eps})
+ \quad(n\to\infty).
+\]
+The constants in the $O_\eps$ notation may depend on the sign and on $\eps$.
+\item There is an unconditional corrected equivalent at an explicit point:
+\begin{equation}\label{udp:eq:fixedequiv}
+ a_n^\pm\sim\frac{(t_0^\pm)^2}{\sqrt{12\pi A_\pm}}
+ \exp\bigl(f_\pm(t_0^\pm)+nt_0^\pm\bigr)
+ =m_n^\pm\exp\bigl(R_\pm(t_0^\pm)\bigr).
+\end{equation}
+\end{enumerate}
+\end{theorem}
+The equality between the two right-hand expressions in \eqref{udp:eq:fixedequiv} is exact. The equivalence has relative error $o(1)$, without a rate stated here. Its product value retains the arithmetic fluctuations. A more precise all-fixed-order expansion at the \emph{exact} saddle, and its inverse consequences, appear in Sections~\ref{udp:sec:saddle} and \ref{udp:sec:inverse}. Section~\ref{udp:sec:offcenter} also gives all fixed orders at the explicit point, retaining the exact mean mismatch and all odd correction grades.
+
+\subsection{Prior work and the scope of the contribution}\label{udp:sec:prior}
+The Dirichlet series of $\sigma^*$ is classical; T\'oth records it unnumbered in Section 4.9, printed page 28 \cite{toth}. His equation (50), on page 29, is an alternating series and is not the identity used below. Arithmetic partition products, nonreal zeta-zero corrections, saddle expansions and Mellin-based RH characterizations have substantial prior history.
+
+Bodini, Duchon, Jacquot and Mutafchiev studied the totient-weight product $\prod(1-q^m)^{-\varphi(m)}$, whose Mellin kernel has denominator $\zeta(s)$ \cite{bodini}. Bureaux and Enriquez proved a zeta-zero-dependent equivalent and an RH equivalence for lattice convex chains, with main scale $n^{2/3}$ and logarithmic error exponent $1/6+\eps$ \cite{bureaux}. Their Section 3.2 is a direct antecedent for the Mellin-holomorphy converse used here; Section 4.1 explains why false pure equivalents can look convincing over very long numerical ranges. Their Section 4.2 also corrects a prefactor in the earlier totient treatment. We do not import an unchecked zero-residue sum or constants from that treatment.
+
+Dong, Robles, Zaharescu and Zeindler study squarefree-part partitions with Dirichlet series $\zeta(s)/\zeta(2s)$ \cite{dong}. Their Theorem 1.11 relates logarithmic coefficient errors to zero locations; Lemma 6.8 and Section 6.6 distinguish retaining the exact saddle from absorbing zero effects into an explicit logarithmic error. General arbitrary-order infinite-product expansions are developed by Bridges, Brindle, Bringmann and Franke \cite{bridges}; the reality-of-poles hypotheses (P1)--(P2) in their published theorem cannot simply be applied after discarding the nonreal poles present here. Ahmadi, G\'omez-A\'iza and Ward treat both signs and higher-order real poles \cite{ahmadi}; Berndt, Robles, Zaharescu and Zeindler treat divisor-weight multiplicities \cite{berndt}. Basak, Robles and Zaharescu give further denominator-zero formulas for M\"obius-convolution products \cite{basak}.
+
+The contribution here is the sequence-specific correction of \eqref{udp:eq:modelplus}--\eqref{udp:eq:modelminus}, with cancellation addressed, the precise $1/4+\eps$ RH criterion, and the accompanying exact-saddle and inverse formulas. A targeted literature search did not find an earlier treatment of these exact products and conclusions. That is a limited search observation, not an exhaustive priority claim or a claim of a new general Mellin/RH method.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~70 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{unitary-\allowbreak partition-\allowbreak report.zip} in commit
+\texttt{096ee7b87} (main file \texttt{unitary-\allowbreak partitions.tex}, now
+\texttt{article.tex}) and placed in commit \texttt{d0e6008d9} in the
+research-report collection, among the OEIS-sequence asymptotics reports.
+The manuscript names no ProveIt commit and continues no repository path, so it
+has no pin; its author line (above) names neither an author nor a tool.
+Nothing in this report is formalized in Lean or Rocq, and placement in the
+collection confers no formal status on any statement here. The writing step
+prefixed every label with \texttt{udp:}, restored the diacritic in
+``Kot\v{e}\v{s}ovec'' (printed ``Kotesovec'' in the delivery), and added
+these \textsf{[write]} notes and one reference \cite{udp-tai}; no statement,
+proof or number of the manuscript was altered.
+
+\emph{Claims about OEIS text.} Theorem~\ref{udp:thm:refutation} and
+Theorem~\ref{udp:thm:summary}(i) are this manuscript's theorems about the
+conjectured equivalents printed in the OEIS entries A301981 and A301982, as
+the manuscript inspected them on 2 October 2026. They refute no statement of
+ProveIt: at intake an untruncated search of the research-report collection,
+the transseries volumes, \texttt{Oeis/} and \texttt{docs/reports/} found no
+file naming either sequence or stating either formula, so nothing was
+retracted. The delivery does not say that a correction was submitted to the
+OEIS, and nothing here implies one. The refutation is analytic (the
+least-height noncancellation of Lemma~\ref{udp:lem:pole}); as
+Section~\ref{udp:sec:computation} says, finite numerical agreement or
+disagreement with $m_n^\pm$ could not decide it.
+
+\emph{The RH criterion is an equivalence.} Theorem~\ref{udp:thm:RH} (and
+Theorem~\ref{udp:thm:summary}(iii)) states that RH holds if and only if the
+logarithmic error is $O_\eps(n^{1/4+\eps})$ for every $\eps>0$; it neither
+proves nor disproves RH. RH is assumed only in Lemma~\ref{udp:lem:RHreciprocal}
+and in the direction ``RH $\Rightarrow$ bound'' of Theorem~\ref{udp:thm:RH}.
+Every other result of the report, including the refutation, the obstruction
+of Theorem~\ref{udp:thm:obstruction}, the explicit-point equivalent and all
+expansions and inverse brackets, is unconditional.
+
+\emph{Neighbouring reports.} The collection's other partition-product
+reports, \texttt{a033552-\allowbreak catalan-\allowbreak partitions},
+\texttt{a022629-\allowbreak distinct-\allowbreak partition-\allowbreak norms},
+\texttt{a097356-\allowbreak sqrt-\allowbreak restricted-\allowbreak partitions}
+and \texttt{a238016-\allowbreak restricted-\allowbreak partitions-\allowbreak cubic-\allowbreak boundary},
+and the batch-77 reports
+\texttt{a174065-\allowbreak radix-\allowbreak layer-\allowbreak partitions}
+(where a pure OEIS equivalent likewise omits an oscillating factor, there a
+log-periodic one from Mellin poles on a vertical line) and
+\texttt{a372395-\allowbreak acyclic-\allowbreak orientation-\allowbreak partitions},
+treat other products. None of them treats unitary-divisor weights, a
+zeta-zero denominator or an RH criterion, and no result is shared.
+
+\emph{Notation.} Several letters carry more than one meaning in the
+manuscript. Each is printed as delivered; the table fixes the meanings, with
+the tempting false readings. No symbol was renamed.
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.15\linewidth}p{0.79\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$c$, $c_\pm$, $c_*$ & $c_\pm=3(A_\pm/4)^{1/3}$, the growth constant of \eqref{udp:eq:constants}; $c_*>2$ is a contour abscissa (Section~\ref{udp:sec:mellin}); $c_1,\dots,c_4$ are positive constants in the angular estimates. None of them is another.\\
+$C_j(t)$ & the cumulant correction terms \eqref{udp:eq:Cj}, functions of $t$. Not the constants $0<C_1<C_2$ of Theorem~\ref{udp:thm:summary}(i), the $C_r$ of \eqref{udp:eq:complexderivative}, or the $C_M$, $\widehat C_M$ of the error and bracket bounds.\\
+$A$, $A_\pm$ & $A_-=\pi^2/6$, $A_+=\pi^2/8$; in Lemmas~\ref{udp:lem:abelian} and \ref{udp:lem:abelianerror} $A>0$ is arbitrary (applied with $A=A_\pm$).\\
+$K$, $K_r(s)$ & $K>0$ is the amplitude in Lemma~\ref{udp:lem:abelian}; $K_r$ the Mellin kernels \eqref{udp:eq:Kr}; $K=2M+2$ in the proofs of Theorems~\ref{udp:thm:saddle} and \ref{udp:thm:offcenter}; $K>4\pi$ in the proof of Lemma~\ref{udp:lem:angular}.\\
+$\Gla$, $G_M$ & the Glaisher--Kinkelin constant; the exact-saddle model \eqref{udp:eq:GM}. Unrelated (the manuscript says so).\\
+$\eps$, $\epsilon_M$, $\varepsilon$ & $\eps$ an arbitrarily small exponent; $\epsilon_M(y)$ the bracket half-width of Theorem~\ref{udp:thm:inverse}; $\varepsilon=\pm1$ the sign in \eqref{udp:eq:polyrec}, where $\varepsilon=1$ is the \emph{minus} product. It is not the subscript sign $\pm$.\\
+$\delta$ & the mean mismatch $\delta(x)$ of \eqref{udp:eq:delta} (Section~\ref{udp:sec:offcenter}); the error exponent in Lemma~\ref{udp:lem:abelianerror}; the strip width in Lemma~\ref{udp:lem:RHreciprocal}.\\
+$H$, $H_d$ & a holomorphic function in \eqref{udp:eq:merom}; the probabilists' Hermite polynomials (Section~\ref{udp:sec:offcenter}).\\
+$E$, $E_1$, $E_r$ & the auxiliary exponential $E(u)$ in the proof of Theorem~\ref{udp:thm:saddle}; the boundary errors $E_1$, $E_r=\kappa_r-A(r+1)!t^{-r-2}$.\\
+$R_\pm$, $\mathcal R$ & $R_\pm(t)$ is the exact remainder \eqref{udp:eq:R}, which is \emph{not} bounded (that is the content of Theorem~\ref{udp:thm:refutation}); $\mathcal R$ a Taylor remainder; $R_*,r_*$ disc radii.\\
+$m_n^\pm$, $m_r$ & the refuted OEIS models \eqref{udp:eq:modelplus}--\eqref{udp:eq:modelminus}; $m_r$ multiplicities in \eqref{udp:eq:Cj}, \eqref{udp:eq:Qj}.\\
+$d_\pm$, $d_r$, $D$ & $d_\pm$ the logarithmic coefficient in \eqref{udp:eq:B}; $d_r$ the tail constants in \eqref{udp:eq:tailbound}; $D(s)$ the Dirichlet series \eqref{udp:eq:D} and $D=\sum rm_r$ a degree.\\
+$\sigma$, $\sigma^*$ & $\sigma(m)$ the ordinary divisor sum in \eqref{udp:eq:b-bounds}, $\sigma^*(m)=b_m$ the unitary one; $\sigma\in(3/4,1)$ a contour abscissa in the proof of Theorem~\ref{udp:thm:RH}.\\
+$t_x$, $t_n$, $t_0$ & $t_x$ the exact saddle \eqref{udp:eq:saddle}, $t_n$ its value at $x=n$; $t_0=t_0(n)=(2A/n)^{1/3}$ the explicit point. $t_0$ is \emph{not} $t_x$ at $x=0$.\\
+$N(y)$, $N$ & the integer threshold of Theorem~\ref{udp:thm:inverse}; $N=\lfloor1/t\rfloor$ in the proof of Lemma~\ref{udp:lem:angular}.\\
+$L$, $L_M$ & the product cutoff length (Section~\ref{udp:sec:computation}); the explicit-point model \eqref{udp:eq:LM}.\\
+$P_r$, $P_M$ & the cumulant polynomials \eqref{udp:eq:polyrec}; a polynomial bound in \eqref{udp:eq:Eremainder}.\\
+$a_n$, $a_w$, $b_m$ & $a_n=a_n^\pm$ the coefficients; $a_w(t)$ standardized cumulants in the proof of Theorem~\ref{udp:thm:saddle}; $b_m=\sigma^*(m)$ the colour count. The interval ends $a<2A<b$ in the proof of Lemma~\ref{udp:lem:abelianerror} are neither.\\
+$\phi_t$, $\phi$ & the characteristic function \eqref{udp:eq:char}; $\phi(v)=cv^{2/3}-v$ in the proof of Lemma~\ref{udp:lem:abelian}; $\varphi$ Euler's totient (Section~\ref{udp:sec:prior}).\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{Arithmetic and Mellin preliminaries}\label{udp:sec:mellin}
+\subsection{Convergence and elementary estimates}
+The elementary bounds
+\begin{equation}\label{udp:eq:b-bounds}
+ m\le b_m\le\sigma(m),\qquad
+ \sum_{m\le X}b_m\le\sum_{d\le X}d\lfloor X/d\rfloor\le X^2
+ \quad(X\ge1)
+\end{equation}
+will be useful throughout. They prove absolute convergence of the logarithmic product series for $\Rea t>0$, locally uniformly, and hence analyticity there. For every fixed nonnegative integer $r$, partial summation gives
+\begin{equation}\label{udp:eq:expbound}
+ \sum_{m\ge1}b_m m^r e^{-mu}=O_r(u^{-r-2})\quad(u>0).
+\end{equation}
+For $u\ge1$ the exponential decay can be absorbed into the same bound. The logarithmic expansions are
+\begin{align*}
+ f_-(t)&=\sum_{m,\ell\ge1}\frac{b_m}{\ell}e^{-m\ell t},&
+ f_+(t)&=\sum_{m,\ell\ge1}\frac{(-1)^{\ell+1}b_m}{\ell}e^{-m\ell t}.
+\end{align*}
+In particular $f_+(t)=f_-(t)-f_-(2t)$. After $r$ derivatives, \eqref{udp:eq:expbound} leaves the convergent sum $\sum_{\ell\ge1}\ell^{-3}$. Thus for every fixed $r\ge0$,
+\begin{equation}\label{udp:eq:complexderivative}
+ |f^{(r)}(w)|\le C_r t^{-r-2}\qquad
+ (0<t\le1,\ \Rea w\ge t/2).
+\end{equation}
+No sign condition on higher cumulants is needed for this estimate.
+
+\subsection{The arithmetic Dirichlet series and the kernels}
+For $\Rea s>2$, the prime-power Euler factor is
+\[
+ 1+\sum_{a\ge1}(1+p^a)p^{-as}
+ =\frac{1-p^{1-2s}}{(1-p^{-s})(1-p^{1-s})}.
+\]
+Consequently the classical identity \cite[Section 4.9, p.~28]{toth} is
+\begin{equation}\label{udp:eq:D}
+ D(s)=\sum_{m\ge1}\frac{b_m}{m^s}
+ =\frac{\zeta(s)\zeta(s-1)}{\zeta(2s-1)}.
+\end{equation}
+Let $\ch_-(s)=1$ and $\ch_+(s)=1-2^{-s}$. Absolute convergence permits termwise Mellin integration and gives
+\begin{equation}\label{udp:eq:M}
+ M_\pm(s):=\int_0^\infty f_\pm(t)t^{s-1}\dd t
+ =\Gamma(s)\ch_\pm(s)
+ \frac{\zeta(s+1)\zeta(s)\zeta(s-1)}{\zeta(2s-1)}
+ \quad(\Rea s>2).
+\end{equation}
+Mellin inversion on any line $\Rea s=c_*>2$ follows either from the standard inverse formula for $e^{-t}$ and absolute summation, or directly from the absolutely convergent kernels. To avoid confusion, $c_*$ here is a contour location, whereas $c$ in \eqref{udp:eq:constants} is the coefficient growth constant.
+
+Define the exact cumulants, including $r=0$, by
+\begin{equation}\label{udp:eq:kappa}
+ \kappa_r(t)=(-1)^r f^{(r)}(t),\qquad V(t)=\kappa_2(t).
+\end{equation}
+Differentiation of Mellin inversion gives the useful kernels
+\begin{align}
+ K_r(s)&=\Gamma(s+r)\ch(s)
+ \frac{\zeta(s+1)\zeta(s)\zeta(s-1)}{\zeta(2s-1)},\label{udp:eq:Kr}\\
+ \kappa_r(t)&=\frac1{2\pi i}\int_{c_*-i\infty}^{c_*+i\infty}
+ K_r(s)t^{-s-r}\dd s.\label{udp:eq:invM}
+\end{align}
+The pole at $s=2$ has residue $A(r+1)!$. At $s=1$ the two zeta poles cancel:
+\begin{equation}\label{udp:eq:cancel1}
+ \frac{\zeta(s)}{\zeta(2s-1)}\longrightarrow2,
+ \qquad K_r(1)=-r!\ch(1)\zeta(2).
+\end{equation}
+
+For orientation, the principal residue at zero produces the constants in \eqref{udp:eq:B}. Indeed,
+\[
+ D(0)=-\tfrac12,\qquad
+ D'(0)=-\tfrac12\log(2\pi)-6\zeta'(-1),\qquad
+ \zeta'(-1)=\tfrac1{12}-\log\Gla.
+\]
+The $s^{-1}$ coefficient in $\Gamma(s)\zeta(s+1)$ vanishes. Thus the double pole of $M_-$ contributes $\tfrac12\log t+B_-$, and subtraction at $2t$ contributes $B_+$ for the plus case. These are only principal residue terms. Nonreal poles obstruct a bounded remainder, as we now prove.
+
+\section{Noncancellation and the false pure equivalents}\label{udp:sec:refutation}
+We use the classical facts that nontrivial zeta zeros exist, are isolated, have $0<\Rea\rho<1$, have nonzero imaginary part, and are symmetric about the critical line and the real axis \cite{dlmf}. No numerical zero location is needed.
+
+\begin{lemma}[A surviving denominator pole]\label{udp:lem:pole}
+Both kernels $M_+$ and $M_-$ have a genuine pole at some $s_0$ with $3/4\le\Rea s_0<1$ and $\Ima s_0>0$.
+\end{lemma}
+\begin{proof}
+Choose a nontrivial zero $\rho=\beta+i\gamma$ of least positive imaginary part, reflecting in the critical line if necessary so that $\beta\ge1/2$. Such a least positive height exists by isolation, compactness of bounded-height portions of the critical strip, and absence of real nontrivial zeros. Set $s_0=(1+\rho)/2$. The denominator in \eqref{udp:eq:M} vanishes at $s_0$ to the multiplicity of $\rho$.
+
+Every numerator factor is analytic and nonzero at this point. The gamma function has no zeros and no pole there. The argument $s_0+1$ has real part greater than one. The factor $\zeta(s_0)$ cannot vanish, because its positive imaginary part is $\gamma/2$, below the least positive zero height. The number $s_0-1$ has real part strictly between $-1/2$ and $0$ and nonzero imaginary part, so is neither a trivial nor a nontrivial zero. Finally $|2^{-s_0}|<1$. The pole therefore survives with the full multiplicity of $\rho$.
+\end{proof}
+
+\begin{lemma}[Abelian equivalent]\label{udp:lem:abelian}
+Let $A,K>0$, $p\in\R$ and $c=3(A/4)^{1/3}$. As $t\downarrow0$,
+\begin{equation}\label{udp:eq:abelian}
+ \sum_{n\ge1}K n^{-p}e^{cn^{2/3}-tn}
+ \sim K\sqrt{12\pi A}\,(2A)^{-p}t^{3p-2}e^{A/t^2}.
+\end{equation}
+An eventual relative $o(1)$ perturbation of the summands' coefficients preserves the equivalent.
+\end{lemma}
+\begin{proof}
+Write $v=t^3n$ and $\phi(v)=cv^{2/3}-v$. Its unique maximum is at $v_0=2A$, where $\phi(v_0)=A$ and $\phi''(v_0)=-1/(3v_0)$. With $v=v_0+tu$ the exponent is $A/t^2-u^2/(6v_0)+O(t|u|^3)$ on bounded $u$ intervals. The mesh in $u$ is $t^2$, so the Gaussian Riemann sum yields
+\[
+ Kt^{3p-2}v_0^{-p}e^{A/t^2}
+ \int_{\R}e^{-u^2/(6v_0)}\dd u,
+\]
+which is \eqref{udp:eq:abelian}. A fixed neighborhood of $v_0$ supplies Gaussian domination; outside it $\phi$ loses a fixed amount. Near $v=0$, where $v^{-p}$ may be singular, first remove finitely many $n$, then bound the remaining polynomial factors by powers of $t^{-1}$ and $n$. At infinity, the negative linear term in $\phi$ controls every such factor. These ranges are exponentially smaller than the saddle contribution. This also proves the required Riemann-sum tail estimates.
+
+For a relative coefficient perturbation, choose a large fixed index beyond which it lies between $1-\eta$ and $1+\eta$. Positivity sandwiches the tail sums; the finite prefix is negligible. Let $\eta\downarrow0$.
+\end{proof}
+
+\begin{theorem}[Refutation of the recorded equivalents]\label{udp:thm:refutation}
+Neither $a_n^+\sim m_n^+$ nor $a_n^-\sim m_n^-$ holds. For either sign, the ratio cannot eventually remain in a compact subinterval of $(0,\infty)$.
+\end{theorem}
+\begin{proof}
+Applying Lemma~\ref{udp:lem:abelian} to the constants in \eqref{udp:eq:modelplus}--\eqref{udp:eq:modelminus} shows that a proposed coefficient equivalent would imply
+\[
+ f_\pm(t)=A_\pm t^{-2}+d_\pm\log t+B_\pm+o(1).
+\]
+Specifically the Abelian prefactor is $2^{-1/2}$ for the plus case and $\Gla^6e^{-1/2}/\sqrt{2\pi}$ for the minus case. Eventual bounds $C_1\le a_n^\pm/m_n^\pm\le C_2$ likewise imply the same formula with $O(1)$ instead of $o(1)$, by positivity; finite initial terms are negligible.
+
+If $R_\pm$ in \eqref{udp:eq:R} were bounded near zero, split its Mellin integral at one. The tail $\int_1^\infty f(t)t^{s-1}\dd t$ is entire, since $f$ decays exponentially. Uniform integrability on compact subsets gives a holomorphic function $H$ on $\Rea s>0$ such that
+\begin{equation}\label{udp:eq:merom}
+ M(s)=\frac{A}{s-2}-\frac d{s^2}+\frac B{s}+H(s).
+\end{equation}
+This agrees with \eqref{udp:eq:M} on $\Rea s>2$ and hence by uniqueness of meromorphic continuation wherever both sides are defined. It forbids any nonreal pole in $\Rea s>0$, contradicting Lemma~\ref{udp:lem:pole}.
+\end{proof}
+\begin{remark}
+The theorem does not determine which one-sided divergence occurs. In particular, it does not assert both $\liminf a_n/m_n=0$ and $\limsup a_n/m_n=\infty$. No two-sided oscillation theorem is being used.
+\end{remark}
+
+\section{Unconditional contour estimates}\label{udp:sec:unconditional}
+An exact shift to the line $\Rea s=1$ sharpens what a shift merely to $\Rea s>1$ supplies.
+
+\begin{lemma}[Derivative estimates on the boundary line]\label{udp:lem:boundary}
+For each fixed integer $r\ge0$, unconditionally,
+\begin{equation}\label{udp:eq:boundary}
+ \kappa_r(t)=A(r+1)!t^{-r-2}+o(t^{-r-1})
+ \qquad(t\downarrow0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We need a reciprocal-zeta estimate uniform on a closed strip. Trudgian's unconditional bound \cite{trudgian} states
+\begin{equation}\label{udp:eq:trudgian}
+ \left|\frac1{\zeta(\sigma+iT)}\right|
+ \le6.9\times10^6\log T\qquad
+ (T\ge45,\ \sigma\ge1-(8\log T)^{-1}).
+\end{equation}
+It covers $\sigma\ge1$ in particular. Conjugation handles negative heights. At bounded heights on a fixed closed strip, the classical zero-free line and continuity give boundedness, interpreting $1/\zeta$ at its analytic zero at one. Any uniform polynomial bound on this half-plane would suffice for the proof.
+
+On $1\le\Rea s\le c_*$, the denominator argument $2s-1$ has real part at least one. There are no denominator-zero poles. The point $s=1$ is removable by \eqref{udp:eq:cancel1}, and the only pole crossed in \eqref{udp:eq:invM} is at $s=2$. Standard polynomial vertical bounds for the other zeta factors, together with \eqref{udp:eq:trudgian} and Stirling's exponential factor $e^{-\pi|\Ima s|/2}$, make the horizontal sides of the contour vanish. The shifted kernel is absolutely integrable, including at zero height because the cancellation at one was treated as a quotient. Thus
+\begin{equation}\label{udp:eq:RL}
+ \kappa_r(t)-A(r+1)!t^{-r-2}
+ =\frac{t^{-r-1}}{2\pi}
+ \int_{\R}K_r(1+iu)e^{iu\log(1/t)}\dd u.
+\end{equation}
+Here $K_r(1+iu)\in L^1(\R)$. Apply the Riemann--Lebesgue lemma separately for each fixed $r$ to obtain \eqref{udp:eq:boundary}. No contour below one or sum over zeros has been used.
+\end{proof}
+
+\section{The exact saddle and all fixed orders}\label{udp:sec:saddle}
+For each $x>0$, define $t_x$ by the exact equation
+\begin{equation}\label{udp:eq:saddle}
+ \kappa_1(t_x)=x.
+\end{equation}
+To see existence and uniqueness, use independent geometric random variables for each color in the minus case, with parameter $e^{-mt}$ and weight $m$. In the plus case use independent Bernoulli variables with success probability $e^{-mt}/(1+e^{-mt})$ and weight $m$. The resulting nonnegative integer random variable $S_t$ has finite expectation and variance; finiteness follows from \eqref{udp:eq:b-bounds}. Its expectation is $\kappa_1(t)$ and its variance is $V(t)>0$. Hence $\kappa_1'(t)=-V(t)<0$. Its limits are infinity and zero at the two endpoints, by Lemma~\ref{udp:lem:boundary} and the product. In particular,
+\begin{equation}\label{udp:eq:scales}
+ t_x\sim(2A/x)^{1/3},\qquad
+ V(t)\sim6At^{-4},\qquad
+ \frac{\dd t_x}{\dd x}=-\frac1{V(t_x)}.
+\end{equation}
+The centered characteristic function is
+\begin{equation}\label{udp:eq:char}
+ \phi_t(\theta)=\exp\bigl(f(t-i\theta)-f(t)-i\kappa_1(t)\theta\bigr).
+\end{equation}
+At $t=t_n$, Fourier inversion gives
+\begin{equation}\label{udp:eq:fourier}
+ a_n=\frac{e^{f(t_n)+nt_n}}{2\pi}
+ \int_{-\pi}^{\pi}\phi_{t_n}(\theta)\dd\theta.
+\end{equation}
+
+\subsection{A uniform angular estimate}
+\begin{lemma}\label{udp:lem:angular}
+For small $t>0$, uniformly in $|\theta|\le\pi$,
+\begin{equation}\label{udp:eq:angular}
+ |\phi_t(\theta)|\le
+ \exp\{-c_1\min(t^{-4}\theta^2,t^{-2})\}
+\end{equation}
+with a positive constant $c_1$ depending only on the sign.
+\end{lemma}
+\begin{proof}
+Let $N=\lfloor1/t\rfloor$ and keep only factors with $N\le m\le2N$. There $q=e^{-mt}$ stays in a fixed compact subset of $(0,1)$. A Bernoulli factor has squared modulus
+\[
+ \left|\frac{1+qe^{im\theta}}{1+q}\right|^2
+ =1-\frac{4q}{(1+q)^2}\sin^2(m\theta/2),
+\]
+and a geometric factor has squared modulus
+\[
+ \left|\frac{1-q}{1-qe^{im\theta}}\right|^2
+ =\left(1+\frac{4q}{(1-q)^2}\sin^2(m\theta/2)\right)^{-1}.
+\]
+The corresponding logarithms are at most $-c_2\sin^2(m\theta/2)$ uniformly. Raising them to $b_m\ge m$ proves
+\[
+ \log|\phi_t(\theta)|\le-c_3\sum_{m=N}^{2N}m\sin^2(m\theta/2).
+\]
+For $|\theta|\le1/N$, the sine arguments have modulus at most one, so this sum is at least a constant times $N^4\theta^2$. For $1/N\le|\theta|\le K/N$, divide the sum by $N^2$ and write $u=N|\theta|$. The Riemann sums converge uniformly for $u\in[1,K]$ to
+\[
+ \int_1^2 v\sin^2(vu/2)\dd v.
+\]
+This continuous function is strictly positive on that compact interval: zero would require a sine to vanish on a full interval. The sum is therefore at least a positive constant times $N^2$.
+
+Finally take $K>4\pi$ and $K/N\le|\theta|\le\pi$. The geometric-sum estimate gives
+\[
+ \left|\sum_{m=N}^{2N}e^{im\theta}\right|
+ \le\frac1{|\sin(\theta/2)|}\le\frac\pi{|\theta|}\le\frac{\pi N}K.
+\]
+Thus $\sum_{m=N}^{2N}\sin^2(m\theta/2)\ge N/4$ for sufficiently large $N$. Multiplying by $m\ge N$ finishes the last range. Since $N\asymp1/t$, all three estimates combine into \eqref{udp:eq:angular}.
+\end{proof}
+
+\subsection{Finite cumulant polynomials}
+Set $C_0(t)=1$. For $j\ge1$, define
+\begin{equation}\label{udp:eq:Cj}
+ C_j(t)=\sum_{\substack{m_3,\ldots,m_{2j+2}\ge0\\
+                   \sum_{r=3}^{2j+2}(r-2)m_r=2j}}
+ (-1)^{D/2}(D-1)!!
+ \prod_{r=3}^{2j+2}\frac1{m_r!}
+ \left(\frac{\kappa_r(t)}{r!V(t)^{r/2}}\right)^{m_r},
+ \qquad D=\sum_{r=3}^{2j+2}r m_r.
+\end{equation}
+The constraint makes $D$ even. The sum is finite, and \eqref{udp:eq:complexderivative} and \eqref{udp:eq:scales} imply $C_j(t)=O_j(t^{2j})$. The first two are
+\begin{align}
+ C_1&=\frac{\kappa_4}{8V^2}-\frac{5\kappa_3^2}{24V^3},\label{udp:eq:C1}\\
+ C_2&=-\frac{\kappa_6}{48V^3}+\frac{7\kappa_3\kappa_5}{48V^4}
+ +\frac{35\kappa_4^2}{384V^4}
+ -\frac{35\kappa_3^2\kappa_4}{64V^5}
+ +\frac{385\kappa_3^4}{1152V^6}.\label{udp:eq:C2}
+\end{align}
+All cumulants in these formulas are exact product derivatives.
+
+\begin{theorem}[All-fixed-order exact-saddle expansion]\label{udp:thm:saddle}
+For every fixed integer $M\ge0$ and either sign,
+\begin{equation}\label{udp:eq:allsaddle}
+ a_n=\frac{\exp(f(t_n)+nt_n)}{\sqrt{2\pi V(t_n)}}
+ \left\{\sum_{j=0}^M C_j(t_n)+O_M(t_n^{2M+2})\right\}.
+\end{equation}
+The expansion is valid with $n\to\infty$ after $M$ is fixed; uniformity as $M\to\infty$ is not asserted.
+\end{theorem}
+\begin{proof}
+Put $K=2M+2$, $z=\theta\sqrt V$, and choose a fixed $0<\eta<1$. We first work on $|z|\le t^{-\eta}$. Taylor expansion of $f(t-i\theta)$ through degree $K+1$, using \eqref{udp:eq:complexderivative}, gives
+\begin{equation}\label{udp:eq:localexp}
+ \log\phi_t(z/\sqrt V)
+ =-z^2/2+\sum_{w=1}^{K-1}t^wa_w(t)(iz)^{w+2}+\mathcal R,
+ \qquad |\mathcal R|\le C_Mt^K|z|^{K+2},
+\end{equation}
+where
+\[
+ a_w(t)=\frac{\kappa_{w+2}(t)}{(w+2)!V(t)^{(w+2)/2}t^w}
+\]
+are uniformly bounded for the finitely many indices involved. The remainder follows because $V\asymp t^{-4}$, so the $(K+2)$nd derivative term is $O(t^{-K-4}\theta^{K+2})=O(t^K|z|^{K+2})$.
+
+For a precise expansion by weighted degree, introduce a real auxiliary variable $u$ and the finite exponential
+\[
+ E(u)=\exp\left\{\sum_{w=1}^{K-1}u^wa_w(t)(iz)^{w+2}\right\}.
+\]
+For $0\le u\le t$ and $|z|\le t^{-\eta}$ the exponent has modulus at most
+\[
+ C_Mz^2\sum_{w=1}^{K-1}(t|z|)^w=o(1)z^2.
+\]
+Every derivative in $u$ of fixed order is a polynomial in derivatives of that exponent times $E(u)$. Because each exponent derivative is a finite sum of nonnegative powers of $u$ times polynomials in $z$, it is bounded by a fixed polynomial in $|z|$ for $0\le u\le t\le1$. For small enough $t$, Taylor's integral remainder for $E$ through degree $K-1$, evaluated at $u=t$, is therefore bounded by
+\begin{equation}\label{udp:eq:Eremainder}
+ C_Mt^KP_M(|z|)e^{z^2/8}
+\end{equation}
+for a fixed polynomial $P_M$. Also $|\mathcal R|\le C_Mz^2(t|z|)^K=o(1)z^2$, and $|e^{\mathcal R}-1|\le|\mathcal R|e^{|\mathcal R|}$. Incorporating this factor in \eqref{udp:eq:Eremainder} replaces $e^{z^2/8}$ by at most $e^{z^2/4}$ and possibly enlarges the polynomial. Multiplication by $e^{-z^2/2}$ is integrable uniformly. Hence the integrated remainder on the local interval is $O_M(t^K)$.
+
+The coefficients of $u^k$ in $E$ are exactly the terms with $\sum(r-2)m_r=k$. Since $r$ and $r-2$ have the same parity, odd $k$ gives an odd imaginary polynomial in real $z$. It integrates to zero on the symmetric interval. Extending each retained polynomial integral to all of $\R$ adds an exponentially small Gaussian tail. The even moments
+\[
+ \frac1{\sqrt{2\pi}}\int_\R z^De^{-z^2/2}\dd z=(D-1)!!
+\]
+then produce precisely \eqref{udp:eq:Cj}, including its factor $i^D=(-1)^{D/2}$.
+
+It remains to justify discarding the other Fourier angles. By \eqref{udp:eq:angular} and $V\asymp t^{-4}$, throughout $|z|>t^{-\eta}$ the characteristic function is at most $\exp(-c_4t^{-2\eta})$ in modulus. The entire $z$ interval has length $O(t^{-2})$, so its integral is smaller than any fixed power of $t$. Substituting the local integral into \eqref{udp:eq:fourier} proves \eqref{udp:eq:allsaddle}.
+\end{proof}
+
+\section{An equivalent at the explicit leading saddle}\label{udp:sec:fixed}
+\begin{theorem}\label{udp:thm:fixed}
+For $t_0=(2A/n)^{1/3}$,
+\[
+ t_n-t_0=o(t_0^2),\qquad
+ a_n\sim\frac{t_0^2}{\sqrt{12\pi A}}\exp(f(t_0)+nt_0).
+\]
+Consequently \eqref{udp:eq:fixedequiv} holds and $\log a_n=cn^{2/3}+o(n^{1/3})$ unconditionally.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{udp:lem:boundary},
+\[
+ \kappa_1(t)=2At^{-3}+E_1(t),\qquad E_1(t)=o(t^{-2}).
+\]
+Since $\kappa_1(t_n)=n=2At_0^{-3}$ and $t_n\sim t_0$, the mean value theorem gives
+\[
+ 6A\xi^{-4}|t_n-t_0|=|E_1(t_n)|=o(t_n^{-2})
+\]
+for some $\xi$ between $t_n$ and $t_0$. Therefore $t_n-t_0=o(t_0^2)$.
+
+Let $\Phi_n(t)=f(t)+nt$. The exact saddle is stationary: $\Phi_n'(t_n)=0$. Its second derivative is $V(t)>0$. Uniformly between $t_n$ and $t_0$, $V(t)=O(t_0^{-4})$, so Taylor's theorem gives
+\[
+ 0\le\Phi_n(t_0)-\Phi_n(t_n)
+ \le\tfrac12\sup_{u\text{ between }t_n,t_0}V(u)\,(t_n-t_0)^2=o(1).
+\]
+Also $V(t_n)\sim6At_0^{-4}$. The $M=0$ case of Theorem~\ref{udp:thm:saddle} now proves the equivalent. Replacing the two large exponent terms separately would not justify this step; stationarity of their sum is essential.
+
+Finally $At_0^{-2}+nt_0=cn^{2/3}$. The $r=0$ case of \eqref{udp:eq:boundary} implies $f(t_0)=At_0^{-2}+o(t_0^{-1})$, and the logarithm of the prefactor is $O(\log n)$. This yields the logarithmic refinement. Substituting the definitions \eqref{udp:eq:B}--\eqref{udp:eq:R} into the displayed equivalent verifies its exact algebraic reformulation in \eqref{udp:eq:fixedequiv}.
+\end{proof}
+\begin{remark}
+The Riemann--Lebesgue step gives no stated rate of convergence. Thus this theorem has only a relative $o(1)$ remainder. It does not replace the quantified higher-order and inverse results that use $t_n$. The correction $R(t_0)$ is computable by a convergent positive-real product; it is not defined by a zero-residue series.
+\end{remark}
+
+\section{The logarithmic obstruction and the RH equivalence}\label{udp:sec:RH}
+\begin{lemma}[Abelian transfer of logarithmic errors]\label{udp:lem:abelianerror}
+Let positive coefficients satisfy
+\[
+ \log a_n=cn^{2/3}+O(n^\delta),\qquad 0<\delta<2/3,
+ \quad c=3(A/4)^{1/3}.
+\]
+Then
+\begin{equation}\label{udp:eq:logabel}
+ \log\sum_{n\ge0}a_ne^{-tn}=At^{-2}+O(t^{-3\delta}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Fix $0<a<2A<b$ such that outside $a\le v\le b$ the function $cv^{2/3}-v$ is at most $A-\eta_0$ for some $\eta_0>0$. On $at^{-3}\le n\le bt^{-3}$ the perturbation in the logarithm is $O(t^{-3\delta})$. The unperturbed sum on this interval is $\exp(At^{-2}+O(\log(1/t)))$ by the same Gaussian localization as Lemma~\ref{udp:lem:abelian}; this supplies both lower and upper bounds on its logarithm.
+
+Outside this interval, the lower-order term $Cn^\delta$ cannot undo the fixed saddle loss as $t\downarrow0$. More explicitly, on the low range it is at most $Ca^\delta t^{-3\delta}=o(t^{-2})$, and on the high range $n^\delta=o(n^{2/3})$ uniformly once $n\ge bt^{-3}$. Increase $b$ if necessary so the negative $-tn$ term controls that tail and its sum. The intervening compact $v$ ranges retain a fixed loss. Polynomial counting factors contribute $O(\log(1/t))$, absorbed by $t^{-3\delta}$ because $\delta>0$. Finite initial coefficients are negligible. Combining the bounds proves \eqref{udp:eq:logabel}.
+\end{proof}
+
+\begin{theorem}[Unconditional lower obstruction]\label{udp:thm:obstruction}
+For either sign and every $0<\eps<1/4$,
+\[
+ \log a_n^\pm-c_\pm n^{2/3}\ne O(n^{1/4-\eps}).
+\]
+\end{theorem}
+\begin{proof}
+If this bound held, Lemma~\ref{udp:lem:abelianerror} with $\delta=1/4-\eps$ would give $f(t)-At^{-2}=O(t^{-3/4+3\eps})$. Splitting the Mellin integral at one then makes $M(s)-A/(s-2)$ holomorphic on $\Rea s>3/4-3\eps$. This contradicts the pole of Lemma~\ref{udp:lem:pole}, whose real part is at least $3/4$.
+\end{proof}
+
+\subsection{A conditional reciprocal zeta bound}
+We provide the conditional growth estimate used in the contour argument rather than presupposing a sharp RH bound.
+\begin{lemma}\label{udp:lem:RHreciprocal}
+Assume RH. For each $0<\delta<1/2$, the reciprocal $1/\zeta(w)$ has at most polynomial vertical growth on each fixed closed vertical strip with $\Rea w\ge1/2+\delta$, interpreting its value at $w=1$ by continuation.
+\end{lemma}
+\begin{proof}
+For large $|T|$, center a disc at $w_c=2+iT$, with radii
+\[
+ R_*=3/2-\delta/2,\qquad r_*=3/2-\delta.
+\]
+Under RH the outer disc has no zero, since its real parts exceed $1/2+\delta/2$; it also has no pole at these heights. Choose an analytic logarithm of $\zeta$ on the disc, agreeing at the center with the bounded Euler-product logarithm. The elementary continuation formula
+\[
+ \zeta(w)=\frac{w}{w-1}-w\int_1^\infty\{u\}u^{-w-1}\dd u
+ \qquad(\Rea w>0)
+\]
+shows $|\zeta(w)|=O_\delta(1+|T|)$ uniformly on the outer disc. Therefore $\Rea\log\zeta(w)\le C_\delta\log(2+|T|)$ there. Borel--Carath\'eodory bounds the modulus of this analytic logarithm throughout the inner disc by $O_\delta(\log(2+|T|))$. At its leftmost point $1/2+\delta+iT$, exponentiation gives
+\[
+ |1/\zeta(1/2+\delta+iT)|\le(2+|T|)^{C'_{\delta}}.
+\]
+The same inner disc covers all real parts between this value and $2$ at height $T$. For real parts at least two the Euler product supplies a uniform bound. At bounded heights use compactness and zero-freeness, treating the reciprocal's zero at one analytically. No global branch of $\log\zeta$ through its pole is required.
+\end{proof}
+
+\begin{theorem}[A sequence-specific RH criterion]\label{udp:thm:RH}
+For either choice of sign, considered separately, RH holds if and only if
+\begin{equation}\label{udp:eq:RHcriterion}
+ \forall\eps>0,\qquad
+ \log a_n^\pm=c_\pm n^{2/3}+O_\eps(n^{1/4+\eps}).
+\end{equation}
+\end{theorem}
+\begin{proof}
+First assume \eqref{udp:eq:RHcriterion}. Take arbitrarily small positive $\eps$ with $1/4+\eps<2/3$. Lemma~\ref{udp:lem:abelianerror} and the Mellin splitting argument continue $M(s)-A/(s-2)$ holomorphically to $\Rea s>3/4+3\eps$. These continuations agree on their overlaps, giving holomorphy throughout $\Rea s>3/4$.
+
+Suppose RH fails. By symmetry there is a zero with real part greater than $1/2$ and positive imaginary part. Choose such a zero $\rho$ at the least positive height among this subset. At $s_0=(1+\rho)/2$, we have $\Rea s_0>3/4$. As in Lemma~\ref{udp:lem:pole}, every numerator factor except possibly $\zeta(s_0)$ is nonzero. If $\zeta(s_0)=0$, it is itself an RH-violating zero at half the selected height, a contradiction. Thus $M$ has a genuine pole strictly right of $3/4$, contradicting holomorphy. This proves RH, using symmetry. The argument deliberately does not claim that every denominator zero is uncancelled.
+
+Conversely assume RH and fix $3/4<\sigma<1$. Lemma~\ref{udp:lem:RHreciprocal}, with $\delta=2\sigma-3/2$, supplies polynomial growth for $1/\zeta(2s-1)$ on the relevant closed contour strip. Stirling decay and polynomial bounds for the other zeta factors justify shifting \eqref{udp:eq:invM} to $\Rea s=\sigma$, including vanishing horizontal segments and differentiation to every fixed order. The point one is removable and the only pole crossed is at two. Hence
+\begin{equation}\label{udp:eq:RHderivatives}
+ \kappa_r(t)=A(r+1)!t^{-r-2}+O_{\sigma,r}(t^{-r-\sigma}).
+\end{equation}
+The saddle equation gives
+\[
+ t_n=t_0\{1+O(t_0^{2-\sigma})\}.
+\]
+The function $nt+At^{-2}$ is stationary at $t_0$. Its change from $t_0$ to $t_n$ is $O(t_0^{2-2\sigma})$, while the remainder in $f(t_n)$ is $O(t_0^{-\sigma})$. The $M=0$ formula of Theorem~\ref{udp:thm:saddle} contributes only $O(\log n)$ from its prefactor and $O(t_n^2)$ from its relative error. Therefore
+\[
+ \log a_n=cn^{2/3}+O_\sigma(n^{\sigma/3}).
+\]
+Given any $\eps>0$, choose $\sigma\in(3/4,1)$ with $\sigma/3<1/4+\eps$. This proves \eqref{udp:eq:RHcriterion}.
+\end{proof}
+Theorem~\ref{udp:thm:RH} is an equivalence to RH, not a resolution of it. Neither direction assumes simple zeros, a numerical zero certification, or absolute convergence of a zero-residue sum. Together with Theorems~\ref{udp:thm:refutation}, \ref{udp:thm:fixed} and \ref{udp:thm:obstruction}, it proves Theorem~\ref{udp:thm:summary}.
+
+\section{Model inverses and integer thresholds}\label{udp:sec:inverse}
+Define $S_M(t)=\sum_{j=0}^M C_j(t)$, which is positive for sufficiently small $t$ because $S_M(t)=1+O(t^2)$. For large real $x$ put
+\begin{equation}\label{udp:eq:GM}
+ G_M(x)=f(t_x)+xt_x-\tfrac12\log(2\pi V(t_x))+\log S_M(t_x).
+\end{equation}
+The notation $G_M$ is unrelated to the Glaisher constant $\Gla$.
+
+\begin{lemma}\label{udp:lem:GMderivative}
+For fixed $M$,
+\begin{equation}\label{udp:eq:GMprime}
+ G_M'(x)=t_x-\frac{\kappa_3(t_x)}{2V(t_x)^2}+O_M(t_x^5)
+ =t_x+O_M(t_x^3)>0
+\end{equation}
+for large $x$. For $M=0$ the first equality has no $O(t_x^5)$ term.
+\end{lemma}
+\begin{proof}
+The exact identities $\kappa_r'=-\kappa_{r+1}$ and $V'=-\kappa_3$ show that differentiation of a standardized cumulant costs at most one power of $t$. Termwise differentiation in the finite sum \eqref{udp:eq:Cj} gives $C_j'(t)=O(t^{2j-1})$. Thus $S_M'(t)/S_M(t)=O_M(t)$, absent for $M=0$.
+
+When differentiating $f(t_x)+xt_x$, the terms involving $t_x'$ cancel by the saddle equation and the result is $t_x$. Using $t_x'=-1/V$ for the other terms gives exactly
+\[
+ G_M'(x)=t_x-\frac{\kappa_3}{2V^2}-\frac{S_M'}{VS_M}.
+\]
+The stated bounds follow from $V\asymp t^{-4}$ and $\kappa_3=O(t^{-5})$.
+\end{proof}
+
+\begin{theorem}[Eventual increase and inverse localization]\label{udp:thm:inverse}
+For each sign the sequence $a_n$ is eventually strictly increasing. For sufficiently large $y$, define the integer threshold
+\[
+ N(y)=\min\{n\ge0:a_n\ge y\}.
+\]
+For fixed $M\ge0$, there is a unique sufficiently large solution $x_M(y)$ of
+\begin{equation}\label{udp:eq:inverse}
+ G_M(x_M(y))=\log y.
+\end{equation}
+There are constants $C_M>0$ and $Y_M$ such that for $y\ge Y_M$, on writing
+\[
+ \epsilon_M(y)=C_Mt_{x_M(y)}^{2M+1}
+ =O\bigl(x_M(y)^{-(2M+1)/3}\bigr),
+\]
+one has
+\begin{equation}\label{udp:eq:bracket}
+ \left\lceil x_M(y)-\epsilon_M(y)\right\rceil
+ \le N(y)\le
+ \left\lceil x_M(y)+\epsilon_M(y)\right\rceil.
+\end{equation}
+In particular $N(y)\sim(\log y/c)^{3/2}$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{udp:thm:saddle} gives, for integer $n\to\infty$,
+\begin{equation}\label{udp:eq:logGM}
+ \log a_n-G_M(n)=O_M(t_n^{2M+2}).
+\end{equation}
+At $M=0$, subtract the formulas at $n+1$ and $n$. By Lemma~\ref{udp:lem:GMderivative} and $t_x'=-1/V=O(t_x^4)$,
+\[
+ G_0(n+1)-G_0(n)=t_n+O(t_n^3),
+\]
+whereas the difference of the two error terms is $O(t_n^2)$. Consequently
+\[
+ \log a_{n+1}-\log a_n=t_n+O(t_n^2)>0
+\]
+for large $n$. This establishes eventual increase without assuming it in advance.
+
+Lemma~\ref{udp:lem:GMderivative} shows $G_M$ is eventually strictly increasing, and its main term is $cx^{2/3}$, so it tends to infinity. Thus \eqref{udp:eq:inverse} has a unique solution in that tail for large $y$. In any bounded neighborhood of $x=x_M(y)$, the quantities $t_u$ are uniformly comparable to $t_x$, and $G_M'(u)\sim t_x$.
+
+Let $e=C_Mt_x^{2M+1}$ with $C_M$ larger than a suitable multiple of the uniform constant in \eqref{udp:eq:logGM}. The mean value theorem then shows that an integer at or above $x+e$ within distance one has $\log a_n>\log y$, while an integer below $x-e$ within distance one has $\log a_n<\log y$. The strict inequalities follow by increasing $C_M$ once; they also cover exact integer coincidence of a bracket endpoint. Choose the upper integer $\lceil x+e\rceil$ and the lower excluded integer $\lceil x-e\rceil-1$. Eventual monotonicity extends the conclusions through the entire increasing tail. For large $y$, the finite exceptional prefix has all its coefficients below $y$. This proves the global threshold bracket \eqref{udp:eq:bracket}.
+
+Finally \eqref{udp:eq:logGM} and the leading logarithmic equivalent imply $G_M(x)\sim cx^{2/3}$; inversion gives the stated leading scale.
+\end{proof}
+\begin{remark}[What the rounding statement does and does not say]
+The constants $C_M,Y_M$ are existence constants here, not numerically certified global cutoffs. The bracket shrinks, and its two ceilings agree except near integers. It is not an unconditional exact-ceiling identity $N(y)=\lceil x_M(y)\rceil$. Numerical solutions of \eqref{udp:eq:inverse} test the model inverse; by themselves they do not certify the asymptotic remainder constant or its range of validity.
+\end{remark}
+
+\begin{writenote}[Added 2 October 2026, batch~77: relation to the repository's inversion apparatus]
+The inverse of this section is taken of the exact-saddle model $G_M$, which
+keeps the arithmetic fluctuations of $f$; it is not a linear--logarithmic
+phase, so the Lambert-core theorems \texttt{p0:thm:lambert-core} and
+\texttt{p0:thm:lambert-centered} of ProveIt's transseries volume
+\cite{udp-tai} do not apply to it as stated. They apply to the refuted pure
+models: with $X=x^{2/3}$, $\log m_x^\pm=c_\pm X+b_\pm\log X+\mathrm{const}$
+with $b_+=-1$, $b_-=-5/4$, which is \texttt{p0:thm:lambert-core} with
+$a=c_\pm$, $b=b_\pm$ and the branch $W_{-1}$. That inverse cannot locate
+$N(y)$ to within a bounded distance: the slope of $\log m_x$ tends to zero,
+while by Theorem~\ref{udp:thm:refutation} the logarithmic error does not.
+What is an instance of repository results is the integer step: the width
+$\epsilon_M$ (local error divided by a slope comparable to $t_x$) is the
+residual-to-root conversion \texttt{p0:thm:backward-error}, and the bracket
+\eqref{udp:eq:bracket}, with the remark that its ceilings agree except near
+integers, is \texttt{p0:thm:staircase}, parts~(1)--(2), with
+$x_\ast=x_M(y)$ and $\eta=\epsilon_M(y)$; the manuscript proves it directly
+from the mean value theorem and eventual monotonicity, without an
+interpolation. The same holds for Theorem~\ref{udp:thm:offinverse} with
+$L_M$ and $\widehat x_M$. No novelty is claimed for that step; what is
+specific to these sequences is the model $G_M$ (or $L_M$) and its error
+$O_M(t^{2M+2})$.
+\end{writenote}
+
+\section{All fixed orders without an inner saddle solve}\label{udp:sec:offcenter}
+The explicit point $t_0$ can also support a quantified expansion if its mean mismatch is retained. This gives an alternative to solving \eqref{udp:eq:saddle}; it is not a constant-coefficient expansion in powers of $n^{-1/3}$.
+For real $x>0$, set
+\begin{equation}\label{udp:eq:delta}
+ t=t_0(x)=(2A/x)^{1/3},\qquad
+ \delta(x)=\frac{x-\kappa_1(t)}{\sqrt{V(t)}},\qquad
+ \lambda_r(t)=\frac{\kappa_r(t)}{V(t)^{r/2}}\quad(r\ge3).
+\end{equation}
+Lemma~\ref{udp:lem:boundary} gives $\delta(x)=o(1)$ unconditionally, while $\lambda_r(t)=O(t^{r-2})$. In particular $|\delta(x)|\le1$ eventually.
+
+Let $H_d$ denote the probabilists' Hermite polynomial,
+\[
+ H_d(v)=(-1)^d e^{v^2/2}\frac{\dd^d}{\dd v^d}e^{-v^2/2},
+ \qquad H_0=1,\ H_1=v,\ H_{d+1}=vH_d-dH_{d-1}.
+\]
+Set $Q_0=1$ and, for $j\ge1$, define the finite correction grade
+\begin{equation}\label{udp:eq:Qj}
+ Q_j(t,\delta)=
+ \sum_{\substack{m_3,\ldots,m_{j+2}\ge0\\\sum_{r=3}^{j+2}(r-2)m_r=j}}
+ H_D(\delta)\prod_{r=3}^{j+2}\frac1{m_r!}
+ \left(\frac{\lambda_r(t)}{r!}\right)^{m_r},
+ \qquad D=\sum_{r=3}^{j+2}rm_r.
+\end{equation}
+Uniformly for $|\delta|\le1$, $Q_j=O_j(t^j)$. The first four grades, with every Hermite argument equal to $\delta$, are
+\begin{align}
+ Q_1&=\lambda_3H_3/6,\nonumber\\
+ Q_2&=\lambda_4H_4/24+\lambda_3^2H_6/72,\nonumber\\
+ Q_3&=\lambda_5H_5/120+\lambda_3\lambda_4H_7/144+\lambda_3^3H_9/1296,\label{udp:eq:Qexamples}\\
+ Q_4&=\lambda_6H_6/720+
+       (\lambda_3\lambda_5/720+\lambda_4^2/1152)H_8\nonumber\\
+ &\hspace{1cm}+\lambda_3^2\lambda_4H_{10}/1728
+       +\lambda_3^4H_{12}/31104.\nonumber
+\end{align}
+At zero mismatch, $Q_{2j}(t,0)=C_j(t)$ and the odd grades vanish. At $t_0$ the mismatch is generally nonzero, and odd grades must be retained: for example $Q_1=o(t)$ need not be $O(t^2)$.
+
+\begin{theorem}[Explicit-point expansion]\label{udp:thm:offcenter}
+For fixed $M\ge0$ put
+\[
+ U_M(t,\delta)=\sum_{j=0}^{2M+1}Q_j(t,\delta).
+\]
+For either sequence, with $t=t_0(n)$ and $\delta=\delta(n)$,
+\begin{equation}\label{udp:eq:offcenter}
+ a_n=\frac{e^{f(t)+nt-\delta^2/2}}{\sqrt{2\pi V(t)}}
+ \left\{U_M(t,\delta)+O_M(t^{2M+2})\right\}.
+\end{equation}
+More generally the formula holds uniformly for small positive $t$ and integer $n$ with $|n-\kappa_1(t)|\le\sqrt{V(t)}$, using the corresponding mismatch. The sum $U_M=1+O_M(t)$ is eventually positive.
+\end{theorem}
+\begin{proof}
+At a general $t$, Fourier inversion differs from \eqref{udp:eq:fourier} by the factor $e^{-i(n-\kappa_1(t))\theta}$. With $z=\theta\sqrt V$, this is $e^{-i\delta z}$, of modulus one. The uniform derivative and angular bounds from Section~\ref{udp:sec:saddle} are therefore unchanged.
+
+Put $K=2M+2$. Use exactly the auxiliary-variable Taylor expansion in the proof of Theorem~\ref{udp:thm:saddle}, retaining every weighted degree through $K-1$. Its remainder is bounded, after multiplication by the Gaussian, by
+\[
+ C_Mt^KP_M(|z|)e^{-z^2/4}.
+\]
+The extra factor has modulus one, so this integrated absolute error remains $O_M(t^K)$ uniformly in real $\delta$. The tails and extension to the real line remain exponentially small. Unlike at the centered saddle, odd terms no longer integrate to zero. Instead the Gaussian Fourier identity is
+\begin{equation}\label{udp:eq:hermitefourier}
+ \frac1{\sqrt{2\pi}}\int_\R
+ e^{-z^2/2-i\delta z}(iz)^D\dd z
+ =H_D(\delta)e^{-\delta^2/2}.
+\end{equation}
+Indeed multiplication by $(iz)^D$ corresponds to $(-\dd/\dd\delta)^D$; the sign from the Gaussian derivative cancels this sign. Thus there is no additional $(-1)^D$ in \eqref{udp:eq:Qj}. Integrating each retained monomial gives $Q_j$. Dividing the absolute scaled-integral remainder by $e^{-\delta^2/2}\ge e^{-1/2}$ preserves its order on $|\delta|\le1$, proving \eqref{udp:eq:offcenter}. The fact that $\delta(n)=o(1)$ verifies this condition for the explicit point. No rate for that convergence is needed.
+\end{proof}
+
+\subsection{The explicit-point model inverse}
+For large real $x$, with $t=t_0(x)$, define
+\begin{equation}\label{udp:eq:LM}
+ L_M(x)=f(t)+xt-\tfrac12\log(2\pi V(t))
+       -\tfrac12\delta(x)^2+\log U_M(t,\delta(x)).
+\end{equation}
+It involves an explicit evaluation point and convergent cumulant sums, without an inner saddle equation.
+
+\begin{theorem}\label{udp:thm:offinverse}
+For each fixed $M$, $L_M'(x)=t_0(x)+o(t_0(x)^2)>0$ eventually. For sufficiently large $y$ let $\widehat x_M(y)$ be the unique large solution of $L_M(x)=\log y$. There are positive constants $\widehat C_M,\widehat Y_M$ such that, for $y\ge\widehat Y_M$,
+\begin{equation}\label{udp:eq:offbracket}
+ \left\lceil\widehat x_M(y)-\widehat C_Mt_0(\widehat x_M(y))^{2M+1}\right\rceil
+ \le N(y)\le
+ \left\lceil\widehat x_M(y)+\widehat C_Mt_0(\widehat x_M(y))^{2M+1}\right\rceil.
+\end{equation}
+This has the same inverse-location scale as \eqref{udp:eq:bracket} and the same qualification about rounding near integers.
+\end{theorem}
+\begin{proof}
+Write $E_r(t)=\kappa_r(t)-A(r+1)!t^{-r-2}$, so $E_r=o(t^{-r-1})$ for each fixed $r$. We do not differentiate a bare little-$o$ estimate. Instead let $W(t)=2At^{-3}-\kappa_1(t)$ and use exact identities:
+\[
+ W'(t)=V(t)-6At^{-4}=E_2(t),\qquad V'=-\kappa_3.
+\]
+Consequently
+\begin{equation}\label{udp:eq:deltaprime}
+ \frac{\dd\delta}{\dd t}=\frac{E_2(t)}{\sqrt V}
+          +\frac{\delta\kappa_3}{2V}=o(t^{-1}),\qquad
+ t_0'(x)=-\frac{t_0^4}{6A},\qquad \delta'(x)=o(t_0^3).
+\end{equation}
+Similarly exact differentiation gives
+\[
+ \frac{\dd\lambda_r}{\dd t}
+ =-\kappa_{r+1}V^{-r/2}
+ +\frac r2\kappa_r\kappa_3V^{-r/2-1}=O_r(t^{r-3}).
+\]
+Thus $\partial_tQ_j=O_j(t^{j-1})$ and $\partial_\delta Q_j=O_j(t^j)$ for bounded mismatch. Along $x$, each derivative is $O_j(t_0^{j+3})$, and $\dd\log U_M/\dd x=O_M(t_0^4)$. Direct differentiation of \eqref{udp:eq:LM} now yields
+\begin{align*}
+ L_M'(x)&=t_0+(x-\kappa_1(t_0))t_0'
+       +\frac{\kappa_3(t_0)}{2V(t_0)}t_0'
+       -\delta\delta'+\frac{\dd}{\dd x}\log U_M\\
+ &=t_0+o(t_0^2)+O(t_0^3)+o(t_0^3)+O_M(t_0^4).
+\end{align*}
+Here the second term uses $(x-\kappa_1)t_0'=\delta\sqrt V\,O(t_0^4)=o(t_0^2)$. This proves the derivative assertion. The leading term of $L_M(x)$ is $cx^{2/3}$, so the model increases to infinity and has the stated eventual inverse.
+
+Theorem~\ref{udp:thm:offcenter} gives $\log a_n-L_M(n)=O_M(t_0(n)^{2M+2})$. Dividing the local error by a derivative comparable to $t_0$ gives width $O(t_0^{2M+1})$. Eventual coefficient increase is already established in Theorem~\ref{udp:thm:inverse}. Apply precisely its local comparison to the two integers immediately outside this real interval, and use monotonicity for more distant integers and a sufficiently large $y$ for the finite prefix. This proves \eqref{udp:eq:offbracket}, including the endpoint convention.
+\end{proof}
+Arithmetic fluctuations remain in $f$, the exact cumulants and $\delta$. Deleting the odd grades on the sole ground that $\delta\to0$ would generally invalidate the asserted remainder.
+
+\section{Computation and reproducibility}\label{udp:sec:computation}
+The companion archive contains original executable checks and recorded data, the article source, a PDF rebuild script, pinned dependency information and checksum manifests. It does not contain full third-party papers or private working reports. The calculations are ancillary checks; the arguments above are analytical proofs.
+
+\subsection{Exact coefficient recurrence and independent expansion}
+Let
+\[
+ h_k^-=\sum_{m\mid k}m b_m,\qquad
+ h_k^+=\sum_{m\mid k}m b_m(-1)^{k/m+1}.
+\]
+Logarithmic differentiation of the products yields the exact recurrence
+\begin{equation}\label{udp:eq:recurrence}
+ a_0^\pm=1,\qquad
+ n a_n^\pm=\sum_{k=1}^n h_k^\pm a_{n-k}^\pm.
+\end{equation}
+Only factors with $m\le n$ contribute to a coefficient of degree $n$. Thus a product truncated at length $L\ge n$ gives that coefficient exactly, not approximately. The code checks divisibility by $n$ at every step. A separate method multiplies the finite binomial factors: $\binom{b_m}{j}$ for the plus case and $\binom{b_m+j-1}{j}$ for the minus case. It also independently computes unitary divisor sums by trial division. The displayed OEIS prefixes contain 36 terms for A301981 and 37 for A301982, including $a_0$, and match these independent expansions.
+
+\subsection{Cumulants and finite product tails}
+To evaluate exact-product formulas numerically, a finite positive-real product is used with a rigorous deterministic tail bound. For $r\ge0$, the absolute differentiated logarithmic-series tail beyond $L$ is bounded by
+\begin{equation}\label{udp:eq:tailraw}
+ \sum_{m>L}b_m m^r\sum_{\ell\ge1}\ell^{r-1}e^{-m\ell t}.
+\end{equation}
+For $r=0$, use $\ell^{-1}\le1$. For $r\ge1$, the elementary inequality
+\[
+ \sum_{\ell\ge1}\ell^{r-1}q^\ell
+ \le (r-1)!\,\frac{q}{(1-q)^r}\qquad(0<q<1)
+\]
+follows from $\ell^{r-1}\le(r-1)!\binom{\ell+r-2}{r-1}$ (with the evident $r=1$ case). Since $b_m\le m^2$, one convenient common bound, for $r\ge0$, is
+\begin{equation}\label{udp:eq:tailbound}
+ T_{r,L}(t)\le
+ \frac{d_r}{(1-e^{-(L+1)t})^{\max(1,r)}}
+ \sum_{m>L}m^{r+2}e^{-mt},\quad
+ d_0=1,\quad d_r=(r-1)!\ (r\ge1).
+\end{equation}
+The remaining sum can be evaluated by the finite polynomial recursion for geometric power sums or bounded by an incomplete gamma integral once $L$ exceeds the function's turning point. These bounds cover both signs; signs in the plus logarithmic series are discarded only for bounding the tail.
+
+Cumulant evaluation itself uses a rational polynomial recursion. Let $q=e^{-mt}$, and write $\varepsilon=1$ for the minus product and $\varepsilon=-1$ for the plus product. Starting with $P_1(q)=q$, set
+\begin{equation}\label{udp:eq:polyrec}
+ P_{r+1}(q)=q(1-\varepsilon q)P_r'(q)+r\varepsilon qP_r(q).
+\end{equation}
+Then the $r$th cumulant contribution of size $m$ is $b_m m^r P_r(q)/(1-\varepsilon q)^r$ for $r\ge1$. This supplies exact symbolic polynomials followed by floating-point evaluation, without finite-differencing the product.
+
+\subsection{Interpretation of the numerical checks}
+The replay compares exact coefficients with the $M=0,1,2$ saddle formulas, the explicit-$t_0$ equivalent and numerical model inverses. Separate off-center checks compute all Hermite grades, compare independent binomial products and integer recurrences through degree 500, and verify the Gaussian Fourier signs directly. They also test that deleting odd grades damages the claimed accuracy. Repeating at higher precision and larger product cutoffs tests stability; deterministic bounds such as \eqref{udp:eq:tailbound} bound discarded infinite tails. These are distinct from interval certification of floating-point arithmetic. Unless explicitly marked as an exact integer assertion, recorded numerical checks are diagnostics, not certified enclosures.
+
+For illustration, at $n=1000$ for A301982 the relative error $a_n/\widehat a_n-1$ is approximately $-2.05977\times10^{-3}$ at $M=0$, $-2.99391\times10^{-6}$ at $M=1$ and $-7.89389\times10^{-9}$ at $M=2$. These values are consistent with the proved $t_n^2,t_n^4,t_n^6$ orders. The products and coefficients are computed independently of fitting any asymptotic parameters. Finite numerical agreement with the old models cannot establish a pure equivalent and cannot decide RH. No numerical zero search is needed in the replay or in the proof.
+
+The archive's README gives exact commands. Invoke shell scripts with \texttt{bash}, so a clean extraction need not preserve executable mode bits. A supplied safe Python extraction utility rejects absolute paths, parent traversal, duplicate names and symlinks before writing a new destination. Checksums pin the supplied sources and data, and a clean replay recomputes the diagnostics and rebuilds the PDF. TeX engine versions can change PDF bytes, so rebuild verification also checks mathematical text and a successful warning-free typeset result rather than presuming cross-engine binary identity.
+
+\begin{writenote}[Added 2 October 2026, batch~77: the shipped files]
+In ProveIt the ``companion archive'' is this report's directory, with a
+different layout: the programs are in \texttt{code/} (with the delivered
+\texttt{reproduce.sh} and \texttt{build.sh}), the recorded data, the
+requirements pin and the four delivered receipts in \texttt{data/} (the
+receipts as \texttt{data/receipts-*}). The two checksum manifests the text
+mentions (\texttt{MANIFEST.sha256}, \texttt{SOURCE-MANIFEST.sha256}) and the
+delivered PDF are not shipped; they were verified at intake and survive in
+the archive of commit \texttt{096ee7b87}. ``The archive's README'' is the
+delivery README, which the report README replaces; the report README gives
+rerun commands that work with the shipped names. At intake (2 October 2026)
+the replay was run on a copy: twelve recomputed JSON files equalled the
+recorded ones; \texttt{inverse\_diagnostics.json} and
+\texttt{offcenter\_inverse\_diagnostics.json} were not regenerated (each run
+exceeded the intake's three-minute limit), and the PDF rebuild was not run.
+\end{writenote}
+
+\section{Further questions and precise limits}\label{udp:sec:questions}
+Several extensions would require additional work beyond the results proved here.
+\begin{enumerate}
+\item Quantify the Fourier decay in \eqref{udp:eq:RL} to give a useful explicit rate in the fixed-$t_0$ equivalent, or analyze Newton-corrected explicit evaluation points. The present proof only supplies $o(1)$ relative error there.
+\item Make the remainder constants and starting ranges in Theorem~\ref{udp:thm:saddle} effective enough to certify integer thresholds for prescribed large $y$. The current inverse theorem gives asymptotic existence of shrinking brackets.
+\item Determine one-sided or two-sided oscillation properties of $\log a_n-cn^{2/3}$ and $a_n/m_n$. The non-$O$ and noncompactness conclusions here do not settle the stronger alternatives.
+\item Investigate carefully formulated contour-based zero corrections with multiplicities and cancellation handled. An explicit full zero-residue transseries would require separate convergence and remainder arguments and is not supplied here.
+\item Compare other arithmetic color weights with denominator zeros and possible numerator cancellation, keeping exact-family claims separate from the already established general methods.
+\end{enumerate}
+The results are compatible with every currently undecided aspect of RH. They correct two particular multiplicative conjectures while preserving the valid leading logarithmic scale and replacing the missing arithmetic information by exact product or saddle data.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+As of this write no report of the collection and no transseries volume of
+ProveIt answers any of these questions; in particular the repository
+supplies no zero-residue transseries for these products (item~4).
+\end{writenote}
+
+\begin{thebibliography}{99}\small\raggedright
+\bibitem{oeisminus} The OEIS Foundation Inc., \emph{A301981, Euler transform of A034448}, entry by V. Kot\v{e}\v{s}ovec, 30 March 2018, inspected 2 October 2026. \url{https://oeis.org/A301981}.
+\bibitem{oeisplus} The OEIS Foundation Inc., \emph{OEIS entry A301982}, entry by V. Kot\v{e}\v{s}ovec, 30 March 2018, inspected 2 October 2026. \url{https://oeis.org/A301982}.
+\bibitem{weightoeis} The OEIS Foundation Inc., \emph{A034448, sum of unitary divisors}. \url{https://oeis.org/A034448}.
+\bibitem{toth} L. T\'oth, Alternating sums concerning multiplicative arithmetic functions, \emph{Journal of Integer Sequences} \textbf{20} (2017), Article 17.2.1. Ordinary Dirichlet series: Section 4.9, p.~28, unnumbered. \url{https://cs.uwaterloo.ca/journals/JIS/VOL20/Toth/toth25.pdf}.
+\bibitem{bureaux} J. Bureaux and N. Enriquez, On the number of lattice convex chains, \emph{Discrete Analysis} 2016:19, 15 pp. \url{https://doi.org/10.19086/da.1013}; \url{https://arxiv.org/abs/1603.09587}.
+\bibitem{bodini} O. Bodini, P. Duchon, A. Jacquot and L. Mutafchiev, Asymptotic analysis and random sampling of digitally convex polyominoes, in \emph{Discrete Geometry for Computer Imagery}, LNCS 7749, Springer, 2013, pp.~95--106. Extended preprint: \url{https://arxiv.org/abs/1306.2108}. See also the correction in \cite[Section 4.2]{bureaux}.
+\bibitem{dong} A. Dong, N. Robles, A. Zaharescu and D. Zeindler, \emph{Exponential sums twisted by general arithmetic functions}, arXiv:2412.20101 (2024), version 1. \url{https://arxiv.org/abs/2412.20101}.
+\bibitem{bridges} W. Bridges, B. Brindle, K. Bringmann and J. Franke, Asymptotic expansions for partitions generated by infinite products, \emph{Mathematische Annalen} \textbf{390} (2024), 2593--2632. \url{https://doi.org/10.1007/s00208-024-02807-x}.
+\bibitem{ahmadi} L. Ahmadi, R. G\'omez-A\'iza and M. D. Ward, A unified treatment of families of partition functions, \emph{La Matematica} \textbf{3} (2024), 1257--1296. \url{https://doi.org/10.1007/s44007-024-00134-w}.
+\bibitem{berndt} B. C. Berndt, N. Robles, A. Zaharescu and D. Zeindler, Partitions with multiplicities associated with divisor functions, \emph{Journal of Mathematical Analysis and Applications} \textbf{533}(1) (2024), Article 127987. \url{https://doi.org/10.1016/j.jmaa.2023.127987}.
+\bibitem{basak} D. Basak, N. Robles and A. Zaharescu, Exponential sums over M\"obius convolutions with applications to partitions, \emph{Canadian Journal of Mathematics}. \url{https://doi.org/10.4153/S0008414X24000701}; preprint \url{https://arxiv.org/abs/2312.17435}.
+\bibitem{trudgian} T. S. Trudgian, Explicit bounds on the logarithmic derivative and the reciprocal of the Riemann zeta-function, \emph{Functiones et Approximatio Commentarii Mathematici} \textbf{52}(2) (2015), 253--261. \url{https://doi.org/10.7169/facm/2015.52.2.5}. Exact bound and range also recorded at \url{https://researchportalplus.anu.edu.au/en/publications/explicit-bounds-on-the-logarithmic-derivative-and-the-reciprocal-/}.
+\bibitem{dlmf} NIST Digital Library of Mathematical Functions, Section 25.10, \emph{Zeros of the Riemann zeta function}. \url{https://dlmf.nist.gov/25.10}.
+\bibitem{udp-tai} [write] ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion}, \texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-and-transseries/\allowbreak Transseries\_And\_Inversion/\allowbreak transseries\_and\_inversion.tex}; Theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:lambert-centered}, \texttt{p0:thm:backward-error}, \texttt{p0:thm:staircase}.
+\end{thebibliography}
+\end{document}

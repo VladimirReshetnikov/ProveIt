@@ -1,0 +1,237 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Universal Garblings of Tilted Uniform Observations},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\title{Universal Garblings of Tilted Uniform Observations}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+One observation of an independent tilted uniform coordinate can simulate another under every reweighting of their total sum precisely when their exponential tilts agree and the source cap is a positive integer multiple of the target cap. The only such Markov kernel is the deterministic residue map, up to reference-null sets. The classification remains valid after adding arbitrary independent real noise, without any moment assumption, and it is enough to require one kernel to work under every lower-threshold conditioning. The proof uses a single complex transform zero. We also give a self-contained convolution characterization for arbitrary compactly supported coordinate laws. These statements provide a sharp converse to the modulo comparison for individual Fabius-series observations.
+\end{abstract}
+
+\section{Statement of the classification}
+For $c>0$ and $\gamma\in\R$, write
+\begin{equation}\label{eq:density}
+ q_{\gamma,c}(x)=\frac{e^{-\gamma x}}{Z_\gamma(c)}\ind_{(0,c)}(x),
+ \qquad Z_\gamma(c)=\int_0^c e^{-\gamma u}\dd u.
+\end{equation}
+Thus $q_{0,c}$ is the uniform density. Let $X,Y,Z$ be independent, with $X$ having density $q_{\alpha,a}$, $Y$ having density $q_{\beta,b}$, and $Z$ an arbitrary real-valued random variable. Set
+\[
+ S=X+Y+Z,
+ \qquad \frac{\dd P_w}{\dd Q}=\frac{w(S)}{\E_Qw(S)},
+\]
+where $Q$ is the reference law and $w:\R\to[0,\infty]$ is Borel with $0<\E_Qw(S)<\infty$. Neither a support bound nor a moment condition is imposed on $Z$.
+
+A Borel Markov kernel $K$ from $[0,a]$ to $[0,b]$ is \emph{universal} if
+\begin{equation}\label{eq:universal}
+ \Law_{P_w}(X)K=\Law_{P_w}(Y)
+ \quad\text{for every admissible }w.
+\end{equation}
+The same kernel must work for all weights. It observes $X$ alone, and is not permitted to observe $S$ or $Z$. In Blackwell's terminology, the experiment indexed by $w$ and observing $X$ dominates the experiment observing $Y$ \cite{Blackwell}.
+
+\begin{theorem}[Exact classification]\label{thm:main}
+For $a,b>0$ and $\alpha,\beta\in\R$, the following are equivalent.
+\begin{enumerate}
+ \item A universal kernel exists.
+ \item One kernel satisfies \eqref{eq:universal} for all bounded admissible weights.
+ \item One kernel maps $\Law(X\mid S\le t)$ to $\Law(Y\mid S\le t)$ for every $t\in\R$ with $Q(S\le t)>0$.
+ \item $\alpha=\beta$ and $a/b\in\N$, where $\N=\{1,2,\ldots\}$.
+\end{enumerate}
+In condition 3 it is enough to use rational $t$. Whenever these conditions hold, every universal kernel agrees $Q_X$-almost everywhere with
+\begin{equation}\label{eq:modulo}
+ K(x,\dd y)=\delta_{x\bmod b}(\dd y).
+\end{equation}
+Values at the finitely many cell boundaries can be assigned arbitrarily. A single $Q_X$-null set suffices for equality of the probability kernels, and that set is null under every reweighted source marginal.
+\end{theorem}
+
+The theorem is a statement about a whole experiment. It does not exclude a kernel for one fixed weight, a restricted weight family, or an individual pair of hypotheses when the cap ratio is nonintegral.
+
+\section{Thresholds and removal of independent noise}
+Write $Kf(x)=\int f(y)K(x,\dd y)$ for bounded complex Borel $f$. The following reductions also apply when $X$ and $Y$ have arbitrary compactly supported real laws.
+
+\begin{lemma}[Thresholds determine all weights]\label{lem:thresholds}
+For any real $S$ on the reference probability space, condition 3 of Theorem~\ref{thm:main} is equivalent to the universal property.
+\end{lemma}
+\begin{proof}
+Multiply the conditional identity at $t$ by $Q(S\le t)$. At a zero-probability threshold both sides vanish anyway, so
+\begin{equation}\label{eq:cdf}
+ \E[\ind_{\{S\le t\}}Kf(X)]
+ =\E[\ind_{\{S\le t\}}f(Y)]\qquad(t\in\R).
+\end{equation}
+The finite complex measure
+\[
+ \eta_f(B)=\E\bigl[\ind_{\{S\in B\}}(Kf(X)-f(Y))\bigr]
+\]
+therefore vanishes on all lower half-lines. These determine finite measures, so $\eta_f=0$. Rational thresholds suffice by continuity from above. Integration gives the identity for every bounded Borel weight. For an unbounded admissible $w$, replace it by $w\wedge n$ and use dominated convergence, since $|Kf(X)-f(Y)|\le2\|f\|_\infty$ and $\E w(S)<\infty$. Dividing by $\E w(S)$ proves universality. Conversely, lower half-line indicators are admissible whenever their expectations are positive. The reference case $w=1$ is included; it also follows directly by letting $t\to\infty$ in \eqref{eq:cdf}.
+\end{proof}
+
+\begin{lemma}[Noise cancellation and entire identity]\label{lem:noise}
+Let $X,Y$ be independent compactly supported real random variables and let $Z$ be arbitrary independent real noise. If $K$ is universal for $S=X+Y+Z$, then, for every bounded complex Borel $f$,
+\begin{equation}\label{eq:transform}
+ F_Y(z)A_f(z)=F_X(z)B_f(z)\qquad(z\in\C),
+\end{equation}
+where
+\[
+ F_X(z)=\E e^{zX},\quad F_Y(z)=\E e^{zY},\quad
+ A_f(z)=\E[e^{zX}Kf(X)],\quad B_f(z)=\E[e^{zY}f(Y)].
+\]
+The kernel is then universal for the noiseless total $X+Y$ as well.
+\end{lemma}
+\begin{proof}
+Lemma~\ref{lem:thresholds}, or universality for indicator weights, gives
+\[
+ 0=\E\bigl[e^{\ii tS}(Kf(X)-f(Y))\bigr]
+   =\phi_Z(t)H_f(\ii t),\qquad t\in\R,
+\]
+where $\phi_Z(t)=\E e^{\ii tZ}$ and
+\[
+ H_f(z)=\E\bigl[e^{z(X+Y)}(Kf(X)-f(Y))\bigr].
+\]
+The function $H_f$ is entire because $X+Y$ is bounded. Continuity and $\phi_Z(0)=1$ imply that $\phi_Z$ is nonzero on a real neighborhood of zero. Hence $H_f$ vanishes on an imaginary interval, and the identity theorem makes it identically zero. Independence of $X$ and $Y$ gives \eqref{eq:transform}. Fourier uniqueness applied to the finite measure
+\[
+ B\longmapsto\E\bigl[\ind_{\{X+Y\in B\}}(Kf(X)-f(Y))\bigr]
+\]
+gives the noiseless assertion. Only the real characteristic function of $Z$ was used; no complex exponential moment of $Z$ is needed.
+\end{proof}
+
+\section{A transform zero and the unique residue kernel}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The equivalence of conditions 1--3 follows from Lemma~\ref{lem:thresholds}. For necessity in condition 4, the entire transform of \eqref{eq:density} is
+\begin{equation}\label{eq:exptransform}
+ F_{\gamma,c}(z)=
+ \frac{e^{(z-\gamma)c}-1}{(z-\gamma)Z_\gamma(c)},
+\end{equation}
+with its removable value $c/Z_\gamma(c)$ at $z=\gamma$. Its zeros are exactly
+\[
+ z=\gamma+\frac{2\pi\ii k}{c},\qquad k\in\mathbb Z\setminus\{0\}.
+\]
+Set $z_0=\beta+2\pi\ii/b$, so $F_Y(z_0)=0$, and use the bounded complex test $f(y)=e^{-z_0y}$. Then $B_f(z_0)=1$. Equation~\eqref{eq:transform} forces $F_X(z_0)=0$, whence
+\begin{equation}\label{eq:necessary}
+ e^{(\beta-\alpha)a+2\pi\ii a/b}=1.
+\end{equation}
+Taking absolute values yields $\alpha=\beta$. The remaining phase gives $a/b\in\mathbb Z$, and positivity of the caps makes this a positive integer. This also rules out $a<b$.
+
+For sufficiency, suppose $\alpha=\beta=\gamma$ and $a=Mb$ for $M\in\N$. Write $X=bJ+R$, with $J=\lfloor X/b\rfloor$ and $R=X\bmod b$. Off null endpoints,
+\[
+ Q(J=j,R\in\dd r)=\frac{e^{-\gamma bj}e^{-\gamma r}}{Z_\gamma(Mb)}\dd r,
+ \qquad 0\le j<M,\quad 0<r<b.
+\]
+Thus $J$ and $R$ are independent, $R$ has the law of $Y$, and
+\[
+ Q(J=j)=\frac{e^{-\gamma bj}}{\sum_{k=0}^{M-1}e^{-\gamma bk}}.
+\]
+The exchange
+\begin{equation}\label{eq:swap}
+ (bJ+R,Y,Z)\longmapsto(bJ+Y,R,Z)
+\end{equation}
+preserves $Q$ and the total $S$. Consequently it preserves every $P_w$, and the target coordinate after exchange is $R=X\bmod b$. This proves \eqref{eq:modulo}. The exponential integer/fractional decomposition is classical \cite{Steutel}; its bounded form here follows directly from the displayed density factorization.
+
+For uniqueness let $K_1,K_2$ be universal. Subtract their versions of \eqref{eq:transform}. Since $F_Y(0)=1$, we obtain
+\[
+ \E\bigl[e^{zX}(K_1f(X)-K_2f(X))\bigr]=0
+\]
+near zero and hence everywhere by analyticity. Fourier uniqueness makes the finite measure $(K_1f-K_2f)Q_X$ zero. Thus $K_1f=K_2f$ almost surely. Apply this to the countable determining family $f_r(y)=\ind_{\{y\le r\}}$, $r\in\mathbb Q$, and remove the union of the resulting null sets. Outside that one null set, the probability kernels agree on every Borel set. The source density is strictly positive on $(0,a)$, so these reference-null sets are precisely the Lebesgue-null sets there. Finally $P_w\ll Q$ implies absolute continuity of each reweighted source marginal with respect to $Q_X$.
+\end{proof}
+
+\section{The underlying convolution characterization}
+The next proposition explains the mechanism beyond tilted uniforms. It concerns probability convolution factors, not infinite divisibility.
+
+\begin{proposition}[Compact coordinate laws]\label{prop:convolution}
+Let $X,Y$ be independent compactly supported real random variables, and let $Z$ be arbitrary independent real noise. There is one Markov kernel from $X$ to $Y$ that works for all admissible weights of $X+Y+Z$ if and only if
+\begin{equation}\label{eq:convolution}
+ \Law(X)=\Law(Y)*\nu
+\end{equation}
+for a probability measure $\nu$. When it exists, the kernel is unique $Q_X$-almost surely. It is the conditional law of the $Y$-distributed summand given the sum in an independent realization of \eqref{eq:convolution}.
+\end{proposition}
+\begin{proof}
+Suppose a universal kernel exists. Enlarge the space by sampling $V$ conditionally on $X$ from $K(X,\dd v)$. Since the weight $w=1$ is allowed, $V$ has the law of $Y$. Put $D=X-V$; this variable is bounded. For sufficiently small real $t$, equation~\eqref{eq:transform} says
+\[
+ \E[e^{\ii tX}f(V)]
+ =\frac{F_X(\ii t)}{F_Y(\ii t)}\E[e^{\ii tY}f(Y)].
+\]
+For any bounded Borel $g$, substitute $f(y)=e^{-\ii ty}g(y)$ to obtain
+\[
+ \E[e^{\ii tD}g(V)]
+ =\frac{F_X(\ii t)}{F_Y(\ii t)}\E g(V).
+\]
+Taking $g=1$ identifies the quotient as $\E e^{\ii tD}$. The entire function
+\[
+ z\longmapsto\E[e^{zD}g(V)]-\E[e^{zD}]\E g(V)
+\]
+vanishes on an imaginary interval and hence everywhere. For $g$ an indicator, Fourier uniqueness now proves independence of $D$ and $V$. Since $X=V+D$ and $V\stackrel{d}=Y$, this proves \eqref{eq:convolution}.
+
+Conversely take independent $V,D$ with laws $\Law(Y),\nu$, put $X'=V+D$, and let $Y'$ be an independent copy of $V$, also independent of $Z$. Define $K$ as a regular conditional law of $V$ given $X'$. Because $Y',Z$ are independent of $(V,D)$, conditioning on them does not change that auxiliary conditional law. Therefore
+\begin{align*}
+ \E[w(X'+Y'+Z)Kf(X')]
+ &=\E[w(X'+Y'+Z)f(V)]\\
+ &=\E[w(X'+Y'+Z)f(Y')].
+\end{align*}
+The second equality swaps the independent identical variables $V,Y'$ while preserving $V+D+Y'+Z$. This is the universal property. Regular conditional laws exist on real Borel spaces. The uniqueness proof from Theorem~\ref{thm:main} uses only compactness and applies unchanged.
+\end{proof}
+
+The factor $\nu$ is unique as well: its transform near zero is $F_X/F_Y$, and in the necessity construction it is compactly supported. For the tilted uniform classification it is the discrete law on $\{0,b,\ldots,(M-1)b\}$ with weights proportional to $e^{-\beta bj}$. The summand $V$ is then determined by $X$ modulo $b$.
+% ed. (2026-10-01): the proposition is a special case of the next note's mask criterion (same series)
+\begin{ednote}
+Proposition~\ref{prop:convolution} is the case of two one-coordinate masks of
+Theorem~1.1 of the next note of the series,
+\path{../Universal_Fabius_Mask_Criterion/}, which proves the same criterion,
+by the same transform argument, for arbitrary finite or countable masks of
+bounded independent coordinates, overlapping or of different sizes;
+Lemmas~\ref{lem:thresholds} and~\ref{lem:noise} reappear there in
+Sections~1.1 and~1.2. Read as one series, that theorem is the primary
+statement and this proposition a special case. Corollary~\ref{cor:fabius} is
+extended from single observations to masks by Theorem~2.1 of that note
+($q=1/M$, prefix counts) and by Theorem~2.1 of
+\path{../Arithmetic_Geometric_Mask_Order/} (every $q$).
+\end{ednote}
+
+\section{Consequences for Fabius observations and scope}
+Consider a finite or countably infinite independent family of common-tilt coordinates with positive caps $(a_i)$ satisfying $\sum_i a_i<\infty$. The sum of all coordinates other than two fixed coordinates is a bounded independent $Z$.
+
+\begin{corollary}[Classification for individual observations]\label{cor:fabius}
+For distinct indices $i,j$, a single kernel from observation $X_i$ to observation $X_j$ works under every total-sum reweighting, or equivalently every positive-probability lower-threshold conditioning, if and only if $a_i/a_j\in\N$. It is uniquely the residue map modulo $a_j$, almost everywhere.
+
+For geometric caps $a_i=cq^i$, $0<q<1$, and $i<j$, the criterion is
+\[
+ q^{-(j-i)}\in\N.
+\]
+In particular, adjacent-coordinate domination holds precisely when $q=1/M$ for an integer $M\ge2$.
+\end{corollary}
+
+A non-reciprocal-integer ratio may still allow selected distances: $q=1/\sqrt2$ permits every even distance. Universal equivalence in both directions requires equal caps and equal tilts. The sufficiency theorem for ordered masks in \cite{Modulo} remains applicable whenever its componentwise divisibility condition holds. The present converse concerns individual observations; it does not classify a kernel allowed to combine several observed coordinates. Failure of universal garbling also does not imply that a particular divergence inequality, one threshold comparison, or a prescribed two-hypothesis comparison must fail.
+
+\paragraph{Source and attribution.}
+The relevant ProveIt source is the arbitrary-observation-mask question in \cite{Repository}. The earlier companion \cite{Modulo} established the residue-swap sufficiency. The present note supplies the exact converse, kernel uniqueness, and the noise and threshold reductions. Blackwell comparison, exponential digit independence, and comparisons of weighted experiments have established prior literature \cite{Blackwell,Steutel,Bayarri}. Convolution criteria for comparison of translation experiments are classical; Torgersen \cite{Torgersen} explicitly traces antecedents to Boll and Strassen. Proposition~\ref{prop:convolution} is proved here for the stated compact sum-reweighted experiments; no general priority claim is made. The arguments are ordinary mathematical proofs, not formalized proofs or externally refereed results.
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the second of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The earlier companion \cite{Modulo}, source
+\texttt{exact\_fabius\_mask\_order.tex}, is filed as
+\path{../Exact_Fabius_Mask_Order/}; the sufficiency proof in Section~3
+reproduces its residue swap (its Lemma~2.1). The source \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}.
+\end{ednote}
+
+\begin{thebibliography}{9}\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{Blackwell} D. Blackwell, \emph{Equivalent comparisons of experiments}, Annals of Mathematical Statistics \textbf{24} (1953), 265--272. \href{https://doi.org/10.1214/aoms/1177729032}{doi:10.1214/aoms/1177729032}.
+\bibitem{Steutel} F. W. Steutel and J. G. F. Thiemann, \emph{On the independence of integer and fractional parts}, Statistica Neerlandica \textbf{43} (1989), 53--59. \href{https://doi.org/10.1111/j.1467-9574.1989.tb01246.x}{doi:10.1111/j.1467-9574.1989.tb01246.x}. Accessible 1987 report: \url{https://pure.tue.nl/ws/files/1660926/338442.pdf}.
+\bibitem{Bayarri} M. J. Bayarri and M. H. DeGroot, \emph{Comparison of experiments with weighted distributions}, in Y. Dodge (ed.), Statistical Data Analysis and Inference, North-Holland, 1989, 185--197. \href{https://doi.org/10.1016/B978-0-444-88029-1.50022-8}{doi:10.1016/B978-0-444-88029-1.50022-8}.
+\bibitem{Torgersen} E. N. Torgersen, \emph{Comparison of translation experiments}, Annals of Mathematical Statistics \textbf{43} (1972), 1383--1399. \href{https://doi.org/10.1214/aoms/1177692372}{doi:10.1214/aoms/1177692372}.
+\bibitem{Modulo} \emph{Exact Observation Order for Fabius Conditioning}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source file \texttt{exact\_fabius\_mask\_order.tex}.
+\bibitem{Repository} V. Reshetnikov, ProveIt, \emph{Critical Complements in Fabius Conditioning}, source at commit \texttt{7421a4ca60fd}, accessed 1 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7421a4ca60fdf125411edf412f825aac54278b37/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Sharp_Information_Loss/article.tex}{Pinned source on GitHub}. Full source identifiers are recorded in the accompanying package.
+\end{thebibliography}
+\end{document}

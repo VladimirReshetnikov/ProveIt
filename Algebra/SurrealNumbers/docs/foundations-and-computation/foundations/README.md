@@ -277,6 +277,16 @@ result as a check of the pinned revision.
   topology does so (`opa:tc:cor:fieldcollapse`). An unnumbered "Related (batch
   32)" note after `found:ex:boundedrankone` records this, citing that report by
   title and path; the page count (95) and all label numbers are unchanged.
+- [surreal-well-orders](../surreal-well-orders/) (batch 80) uses only the
+  set-valued recursions of `found:prop:recursion`: each of its four sources
+  says so (its Subsections 5.3, 5.4.4, 5.5.3, 5.6.2), none invokes ETR, and
+  class-valued stages are left to its open questions. It also cites this
+  report for the size discipline, properness and bounded birthdays
+  (`found:prop:proper`), small-cut filling (`found:sub:cutdata`) and the
+  unrestricted-cut obstruction (`found:prop:allcuts`). An unnumbered "Related
+  (batch 80)" note after the localization paragraph following
+  `found:prop:recursion` records this; the page count (95) and all label
+  numbers are unchanged.
 
 ---
 

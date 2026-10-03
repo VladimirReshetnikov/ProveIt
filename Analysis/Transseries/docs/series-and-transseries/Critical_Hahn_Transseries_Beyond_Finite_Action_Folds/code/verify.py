@@ -154,7 +154,8 @@ def truncated_density(alpha: float, L: float, x: float, nodes: int = 800) -> flo
 
 def write_csv(name, rows):
     with (OUT/name).open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(rows[0]));writer.writeheader();writer.writerows(rows)
+        # ProveIt edit (2026-09-29): LF line endings (the csv default is CRLF).
+        writer=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n');writer.writeheader();writer.writerows(rows)
 
 def run(max_n: int):
     OUT.mkdir(exist_ok=True)
@@ -235,13 +236,14 @@ def run(max_n: int):
         'max_profile_quadrature_difference':max(p['quadrature_difference'] for p in profiles),
         'arithmetic':'Fraction exact tests; 75-digit constants; numpy.longdouble recurrence; double quadrature',
         'not_interval_certified':True}
-    (OUT/'verification.json').write_text(json.dumps(report,indent=2)+'\n')
+    # ProveIt edit (2026-09-29): LF line endings on every platform.
+    (OUT/'verification.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8',newline='\n')
     # Compact generated LaTeX tables.
     def tex_table(filename, spec, header, values):
         text='\\begin{tabular}{'+spec+'}\n\\toprule\n'+header+' \\\\\n\\midrule\n'
         text+='\n'.join(' & '.join(v)+' \\\\' for v in values)
         text+='\n\\bottomrule\n\\end{tabular}\n'
-        (OUT/filename).write_text(text)
+        (OUT/filename).write_text(text,encoding='utf-8',newline='\n')
     tex_table('critical_table.tex','rrrr',r'$n$ & $b_n p_n$ & relative error & corrected value',
               [[str(r['n']),f"{r['normalized_coefficient']:.9f}",f"{r['relative_error']:.3e}",f"{r['second_order_approximation']:.9f}"] for r in rows])
     tex_table('cutoff_table.tex','rrr',r'$L$ & $\mathcal R_{3/2}(L)$ & '+f'$n={max(ns)}$ ratio',

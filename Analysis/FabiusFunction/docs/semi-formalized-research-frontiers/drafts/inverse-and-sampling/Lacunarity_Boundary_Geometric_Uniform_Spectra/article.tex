@@ -1,0 +1,1557 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem,xurl,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={The Lacunarity Boundary: Two-Moment Rigidity and Sharp Recovery of Geometric Uniform Spectra},pdfauthor={Research manuscript prepared with ChatGPT},pdfsubject={Critical dyadic recovery, moment rigidity, sharp Holder stability, and testing complexity}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The lacunarity boundary}
+\fancyhead[R]{\small Rigidity, recovery, and testing}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\setlist[enumerate]{itemsep=4pt,topsep=4pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\Law}{Law}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\sinc}{sinc}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\C}{\mathcal C}
+\newcommand{\K}{\mathcal K}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\dK}{d_{\mathrm K}}
+\newcommand{\repoSHA}{f4457a1d19701d32e8f324240c497653d235b53e}
+\newcommand{\blobSHA}{50cc46f4084386b48378cbc9c1d942c66ce64741}
+
+\title{\textbf{The Lacunarity Boundary}\\[7pt]
+\Large Two-Moment Rigidity and Sharp Recovery\\of Geometric Uniform Spectra\\[9pt]
+\large Resolving the critical dyadic separation question,\\with sharp prefix conditioning and quartic testing complexity}
+\author{Research manuscript prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical research with conventional proofs}
+\date{30 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $X_a=\sum_{j\ge1}a_jU_j$, where the $U_j$ are independent uniforms
+on $[-1,1]$. We resolve the exact separation-boundary question posed in the
+ProveIt article \emph{Anchored Recovery of the Dyadic Uniform Spectrum}:
+under $a_{j+1}\le a_j/2$ and $\sum a_j^2=1/3$, the full coefficient
+sequence is recoverable from its law with the sharp exponent $1/2$.
+In fact, the fourth moment alone gives the global certificate
+\[
+ \sup_j|a_j-2^{-j}|^2
+ \le \frac{75}{4}\left(\frac{19}{675}-\E X_a^4\right).
+\]
+The expression in parentheses is nonnegative and vanishes only at the exact
+dyadic spectrum. Thus two moments identify an infinite spectrum inside this
+one-sided constraint class. A deleted-factor construction proves matching
+square-root lower bounds in total variation and Kolmogorov distance, even
+inside the predecessor's precise infinitely smooth class. Fixed-prefix local
+Lipschitz constants grow as $\Theta(2^r)$, and testing the reference against
+spectral distance at least $\delta$ requires and suffices to use
+$\Theta(\delta^{-4})$ observations. The statistical lower bound uses a
+boundary-sensitive Hellinger estimate, not a product-total-variation shortcut.
+We also prove exact support rigidity, extend the method to every geometric
+reference and to nongeometric relative-ratio cones, and separate these results
+from the still-open pairwise and small-slack problems.
+\end{abstract}
+
+\noindent\textbf{Status and scope.} The new statements are proved in this
+manuscript, but have not been checked in Lean or independently peer reviewed.
+The claim of novelty is a proposed repository-relative research contribution,
+not an exhaustive literature-priority determination. The basic summation-by-parts,
+convolution, and concentration tools are classical.
+
+\clearpage
+\begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
+\clearpage
+
+\section{The repository question and the main conclusions}
+\label{sec:introduction}
+
+\subsection{Why the exact boundary is a different inverse problem}
+
+The ProveIt Fabius-function collection contains the research article
+\emph{Anchored Recovery of the Dyadic Uniform Spectrum} \cite{anchored}.
+Its third further-research question asks what happens under the exact inequality
+$a_{j+1}\le a_j/2$, with variance fixed at $1/9$. That article constructs
+very small law perturbations when any fixed slack above $1/2$ is available,
+but explicitly leaves the boundary case unresolved. Its construction preserves
+many power sums by compensating changes of neighboring scales; the exact
+one-sided constraint obstructs those changes.
+
+The present answer is positive and considerably more explicit than a qualitative
+inverse-continuity statement. At the boundary, the fourth moment is an exposing
+functional for the reference spectrum: its deficit controls every squared
+coefficient. This reduces an infinite-dimensional anchored inverse problem to
+one scalar measurement. It does \emph{not} say that two moments determine all
+spectra, or that two freely varying spectra admit the same inverse estimate.
+The reference is the unique moment extremizer inside the specified cone.
+
+For comparison, the predecessor proves the anchored scale
+$\exp[-\Theta(\sqrt{\log(1/\eps)})]$ on its smooth classes with every fixed
+ratio bound $\rho>1/2$ \cite{anchored}. Our critical-boundary proofs do not
+import that unformalized quantitative result. The comparison with it is an
+attributed repository result; the positive and sharp boundary theorems below
+are established independently.
+
+\subsection{The dyadic statement}
+
+Throughout, $U_1,U_2,\ldots$ are independent random variables uniform on
+$[-1,1]$. Put
+\begin{equation}
+ a_j^0=2^{-j},\qquad X_0=\sum_{j\ge1}2^{-j}U_j,
+ \qquad \mu_0=\Law(X_0).
+\end{equation}
+The density of $\mu_0$ is the centered Rvachev up-function, here normalized
+on $[-1,1]$. This probability interpretation and the compactly supported smooth
+function are established background \cite{arias}; we derive the moment and
+norm formulas needed below directly.
+
+\begin{definition}[Critical dyadic class]
+\label{def:critical}
+Let
+\begin{equation}
+ \C_* =\left\{a=(a_j)_{j\ge1}:a_j\ge0,\quad
+ a_{j+1}\le\tfrac12a_j,\quad \sum_{j\ge1}a_j^2=\tfrac13\right\}.
+ \label{eq:critical-class}
+\end{equation}
+For $a\in\C_*$ write $X_a=\sum a_jU_j$, $\mu_a=\Law(X_a)$,
+$m_k(a)=\E X_a^k$, and
+\[
+ d_\infty(a,b)=\sup_j|a_j-b_j|,\qquad
+ d_r(a,b)=\max_{1\le j\le r}|a_j-b_j|.
+\]
+Finite sequences are padded by zeros. All such random series converge
+absolutely because $a_j\le a_1 2^{1-j}$.
+\end{definition}
+
+Our total variation convention is
+$\TV(\mu,\nu)=\sup_B|\mu(B)-\nu(B)|$, one-half the $L^1$ distance for
+densities. Kolmogorov distance is
+$\dK(\mu,\nu)=\sup_x|F_\mu(x)-F_\nu(x)|$.
+In particular $\dK\le\TV$.
+
+\begin{theorem}[Critical dyadic recovery]
+\label{thm:dyadic-intro}
+Every $a\in\C_*$ is supported probabilistically in $[-1,1]$, has
+$m_2(a)=1/9$, and satisfies
+\begin{align}
+ e_4(a)&:=\frac{19}{675}-m_4(a)\ge0, \label{eq:e4-dyadic}\\
+ d_\infty(a,a^0)^2&\le\frac{75}{4}e_4(a), \label{eq:dyadic-moment-main}\\
+ d_r(a,a^0)&\le\frac{75}{4}2^r e_4(a)\qquad(r\ge1).
+ \label{eq:dyadic-prefix-main}
+\end{align}
+Equality $e_4(a)=0$ holds if and only if $a=a^0$. Consequently,
+\begin{align}
+ d_\infty(a,a^0)&\le\sqrt{\tfrac{75}{4}\TV(\mu_a,\mu_0)},
+ \label{eq:dyadic-TV-main}\\
+ d_\infty(a,a^0)&\le\sqrt{\tfrac{75}{2}\dK(\mu_a,\mu_0)}.
+ \label{eq:dyadic-K-main}
+\end{align}
+The exponent $1/2$ is optimal for both distances, even after imposing the
+exact smooth-class conditions in \cref{def:smooth}.
+\end{theorem}
+
+The two distinct scales in \eqref{eq:dyadic-moment-main} and
+\eqref{eq:dyadic-prefix-main} are important. An error concentrated at a
+coefficient of size $h$ changes its square by order $h^2$, so a global loss
+naturally has a square root. A fixed coefficient is bounded away from zero,
+so dividing a squared-coefficient error by that coefficient gives a Lipschitz
+bound. We prove that its dependence on the prefix length is also sharp.
+
+\begin{theorem}[Statistical and conditioning consequences]
+\label{thm:stat-intro}
+At the dyadic reference, the local Lipschitz constant for the first $r$
+coefficients is $\Theta(2^r)$ in either law distance. Testing
+$a=a^0$ against $a\in\C_*$ with $d_\infty(a,a^0)\ge\delta$, with both
+error probabilities at most $1/4$, has sample complexity
+$\Theta(\delta^{-4})$. Both lower bounds remain valid in the exact smooth
+subclass. An honest moment-based confidence set over $\C_*$ contracts at
+$a^0$ with radius $O(N^{-1/4})$, and its fixed-prefix radius is
+$O(2^rN^{-1/2})$.
+\end{theorem}
+
+These are anchored testing and confidence statements. In particular, no
+claim is made about a globally optimal estimator between arbitrary spectra.
+At a single known point the constant estimator has zero loss, so a bare
+``pointwise minimax rate'' would not express the content of the testing theorem.
+
+\subsection{Established background and the proposed contribution}
+
+Billey and Swanson study generalized uniform sums and their unique
+sequence-space parametrization, including a topology allowing Gaussian
+components \cite{billey}. Their qualitative identifiability is not a new
+claim here. Arias de Reyna develops the smooth compactly supported dyadic
+function and its probability and derivative representations \cite{arias}.
+Hoeffding's bounded-variable inequality supplies a standard concentration
+input \cite{hoeffding}; a short proof of the version used here is included.
+
+The proposed contribution is the quantitative rigidity at the exact
+one-sided ratio boundary, together with smooth sharpness witnesses, sharp
+prefix conditioning, Hellinger-controlled testing complexity, and the
+relative-ratio extension. The algebraic core is elementary enough to isolate
+for formalization. Elementary tools do not make the inverse conclusion
+automatic: the square-slack bound, preservation of the predecessor's
+infinitely many smoothness inequalities, and the fourth-order Hellinger
+estimate each address a separate obstruction.
+
+\section{A geometric majorization identity}
+\label{sec:majorization}
+
+Fix $0<\rho<1$, write $q=\rho^2$, and fix $S>0$. Define
+\begin{equation}
+ \C_{\rho,S}=\left\{a_j\ge0:a_{j+1}\le\rho a_j,
+                     \ \sum a_j^2=S\right\},
+ \qquad
+ g_j=\sqrt{S(1-q)}\,\rho^{j-1}.
+ \label{eq:general-class}
+\end{equation}
+Thus $g$ is the geometric reference with exactly the same ratio as the
+constraint. When $\rho>1/2$, this reference is \emph{not} the dyadic reference;
+our general theorem therefore does not conflict with the predecessor's
+instability at the dyadic anchor under a looser ratio bound.
+
+Set
+\begin{equation}
+ p_j=\frac{a_j^2}{S},\quad b_j=(1-q)q^{j-1},\quad
+ c_q=\frac{1-q}{1+q},\quad
+ \Delta=\sum_jp_j^2-c_q,
+ \quad d=p_1-(1-q).
+ \label{eq:normalized}
+\end{equation}
+Both $p$ and $b$ are probability sequences and $p_{j+1}\le qp_j$.
+
+\begin{lemma}[Majorization with an exact remainder]
+\label{lem:energy}
+For every probability sequence $p$ satisfying $p_{j+1}\le qp_j$, put
+$D_k=\sum_{j\le k}(p_j-b_j)$. Then $D_k\ge0$ and
+\begin{equation}
+ \boxed{\quad
+ \sum_jp_j^2-c_q
+ =\sum_j(p_j-b_j)^2
+   +2(1-q)^2\sum_{k\ge1}q^{k-1}D_k.\quad}
+ \label{eq:energy}
+\end{equation}
+In particular $\sum p_j^2\ge c_q$, with equality only for $p=b$.
+\end{lemma}
+\begin{proof}
+Iterating the ratio inequality gives $p_{j+k}\le q^kp_j$. Summing over
+$j\ge1$ yields $\sum_{j>k}p_j\le q^k$. Therefore
+\[
+ D_k=q^k-\sum_{j>k}p_j\ge0.
+\]
+Since $\sum b_j^2=c_q$, expanding the square gives
+\[
+ \sum p_j^2-c_q=\sum(p_j-b_j)^2+2\sum b_j(p_j-b_j).
+\]
+Finite summation by parts, followed by a limit, transforms the last sum into
+$\sum_{k\ge1}(b_k-b_{k+1})D_k$. The boundary term is
+$b_ND_N\to0$, because $D_N$ is bounded and $b_N\to0$.
+All series converge absolutely; in particular $0\le D_k\le1$ and the weights
+are geometric. Finally $b_k-b_{k+1}=(1-q)^2q^{k-1}$, proving the identity.
+If its left side vanishes, the squared-error term is zero coordinatewise.
+\end{proof}
+
+The next refinement is stronger than discarding the nonnegative remainder in
+\eqref{eq:energy}. A direct $\ell^2$ estimate followed by taking square roots
+would lose an unnecessary additional square root. We instead first control
+the head excess and then all envelope slacks.
+
+\begin{lemma}[Sharp head-excess inequality]
+\label{lem:head}
+With the notation \eqref{eq:normalized}, $0\le d\le q$ and
+\begin{equation}
+ \Delta\ge 2c_qd+\frac{2}{1+q}d^2
+          =\frac{2}{1+q}d(1-q+d).
+ \label{eq:head-quadratic}
+\end{equation}
+This bound is sharp for every $d\in[0,q]$. Consequently
+\begin{equation}
+ d\le\mathcal D_q(\Delta):=
+ \frac{\sqrt{(1-q)^2+2(1+q)\Delta}-(1-q)}{2}
+ \le\frac{\Delta}{2c_q}.
+ \label{eq:head-inverse}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The bound $p_1\ge1-q$ follows either from $D_1\ge0$ or from
+$1\le p_1/(1-q)$. The remaining mass is $1-p_1$. Apply
+\cref{lem:energy} to the tail normalized by this mass to obtain
+\[
+ \sum_{j\ge2}p_j^2\ge c_q(1-p_1)^2.
+\]
+When the mass is zero the same inequality is immediate. Substitution of
+$p_1=1-q+d$ and expansion gives \eqref{eq:head-quadratic}.
+Equality is attained by the sequence
+\[
+ p_1=1-q+d,\qquad
+ p_j=(q-d)(1-q)q^{j-2}\quad(j\ge2).
+\]
+Its first ratio satisfies $p_2\le qp_1$ precisely because $p_1\ge1-q$;
+the later ratios equal $q$. Solving the quadratic proves the first bound in
+\eqref{eq:head-inverse}, and dropping its positive quadratic term proves
+the second.
+\end{proof}
+
+\begin{lemma}[Every squared coefficient is controlled by the head]
+\label{lem:slack}
+For $a\in\C_{\rho,S}$,
+\begin{equation}
+ |a_j^2-g_j^2|\le Sd\qquad(j\ge1).
+ \label{eq:square-slack}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Define the nonnegative envelope slack
+$R_j=Sp_1q^{j-1}-a_j^2$. The ratio constraint implies
+$R_{j+1}\ge qR_j$, and summation gives
+\[
+ \sum_jR_j=\frac{Sp_1}{1-q}-S=\frac{Sd}{1-q}.
+\]
+On the other hand, $\sum_{k\ge0}R_{j+k}\ge R_j/(1-q)$, so
+$0\le R_j\le Sd$. Since
+\[
+ a_j^2-g_j^2=Sdq^{j-1}-R_j,
+\]
+both terms on the right lie in $[0,Sd]$. Their difference has absolute value
+at most $Sd$.
+\end{proof}
+
+\section{Moment certificates, support rigidity, and global recovery}
+\label{sec:recovery}
+
+\subsection{Moments of a uniform sum}
+
+\begin{lemma}
+\label{lem:moments}
+For $a\in\C_{\rho,S}$, put $T=\sum a_j^4$. Then
+\begin{equation}
+ m_2(a)=\frac S3,\qquad
+ m_4(a)=\frac{S^2}{3}-\frac{2T}{15}.
+ \label{eq:moments}
+\end{equation}
+For the geometric reference $T(g)=S^2c_q$, and hence
+\begin{equation}
+ e_4(a):=m_4(g)-m_4(a)=\frac{2S^2}{15}\Delta\ge0.
+ \label{eq:moment-deficit}
+\end{equation}
+\end{lemma}
+\begin{proof}
+For a centered uniform $U$, $\E U^2=1/3$ and $\E U^4=1/5$.
+Independence and symmetry give, for a finite sum,
+\[
+ \E X^4=\frac15\sum a_j^4+\frac23\sum_{i<j}a_i^2a_j^2
+        =\frac13\Bigl(\sum a_j^2\Bigr)^2-\frac2{15}\sum a_j^4.
+\]
+The infinite series is bounded by $\sum a_j\le\sqrt S/(1-\rho)$,
+so dominated convergence passes these formulas to the limit.
+The geometric series for $T(g)$ and \cref{lem:energy} finish the proof.
+\end{proof}
+
+\begin{theorem}[Quantitative geometric rigidity]
+\label{thm:geometric-rigidity}
+For every $a\in\C_{\rho,S}$,
+\begin{align}
+ d_\infty(a,g)^2
+ &\le S\mathcal D_q(\Delta)
+ \le\frac{S}{2c_q}\Delta
+ =\frac{15}{4c_qS}e_4(a), \label{eq:general-rigidity}\\
+ |a_j-g_j|
+ &\le\frac{S\mathcal D_q(\Delta)}{g_j}
+ \le\frac{15}{4c_qSg_j}e_4(a). \label{eq:general-prefix}
+\end{align}
+The intersection of $\C_{\rho,S}$ with the fourth-moment fibre
+$m_4(a)=m_4(g)$ is the singleton $\{g\}$.
+\end{theorem}
+\begin{proof}
+For nonnegative $x,y$, $(\sqrt x-\sqrt y)^2\le|x-y|$.
+Apply this to \eqref{eq:square-slack} and use \cref{lem:head}.
+For the coordinate estimate, use
+$|a_j-g_j|=|a_j^2-g_j^2|/(a_j+g_j)\le Sd/g_j$.
+If $e_4=0$, \cref{lem:energy} forces $p=b$; nonnegativity then gives $a=g$.
+The converse follows by substitution.
+\end{proof}
+
+Equivalently, the geometric reference uniquely maximizes kurtosis within the
+fixed-variance cone, because
+\[
+ \frac{m_4(a)}{m_2(a)^2}=3-\frac65\frac{\sum a_j^4}{S^2}.
+\]
+This is a constrained extremal statement, not a generic finite-moment
+identifiability assertion.
+
+\begin{proposition}[The same exponent for summable coefficient losses]
+\label{prop:l1}
+Write $p_1=1-q+d$. Then
+\begin{equation}
+ \norm{a-g}_1\le
+ \frac{2}{1-\rho}
+ \left(\frac{p_1}{1-q}\right)^{1/4}\sqrt{Sd}.
+ \label{eq:l1}
+\end{equation}
+Consequently every $\ell^p$ coefficient loss, $1\le p\le\infty$, is
+$O_{\rho,S}(\sqrt{e_4(a)})$.
+\end{proposition}
+\begin{proof}
+Put $A=\sqrt{S(1-q)}$, $B=\sqrt{Sp_1}$, and $Z=Sd$.
+The case $Z=0$ follows from rigidity. Otherwise, both the envelope and
+\eqref{eq:square-slack} give
+\[
+ |a_j-g_j|\le\min\{B\rho^{j-1},\ Z/(A\rho^{j-1})\}.
+\]
+Split the geometric sequence at $\rho^{j-1}\approx t$, where
+$t=\sqrt{Z/(AB)}$. If $t<1$, the sum on either side of this crossing is
+at most $\sqrt{ZB/A}/(1-\rho)$: on the head use the increasing reciprocal
+geometric bound, and on the tail the decreasing direct bound. If $t\ge1$,
+the direct bound alone is at most the same quantity. This proves
+\eqref{eq:l1}. Since $p_1\le1$, \cref{lem:head} makes its constant uniform.
+Finally $\norm{x}_p\le\norm{x}_1^{1/p}\norm{x}_\infty^{1-1/p}$.
+\end{proof}
+
+\subsection{An exact support endpoint cannot also move}
+
+\begin{theorem}[Support extremality and rigidity]
+\label{thm:support}
+For $a\in\C_{\rho,S}$,
+\begin{equation}
+ \sum_ja_j\le B_{\rho,S}:=
+ \sqrt{\frac{S(1+\rho)}{1-\rho}},
+ \label{eq:support-bound}
+\end{equation}
+with equality if and only if $a=g$. The support of $\mu_a$ is exactly
+$[-\sum a_j,\sum a_j]$.
+\end{theorem}
+\begin{proof}
+Set $L=\sum a_j>0$. Apply \cref{lem:energy} to $a_j/L$ with ratio
+parameter $\rho$, rather than to $a_j^2/S$ with parameter $q$.
+It yields
+$S/L^2\ge(1-\rho)/(1+\rho)$, with equality exactly for a geometric
+sequence of ratio $\rho$. The fixed squared sum then determines its scale.
+
+The support containment is immediate from $|U_j|\le1$. Each finite uniform
+sum has its entire Minkowski-sum interval as support. Zero belongs to the
+support of any tail: choose a sufficiently long finite part near zero and
+bound the remaining deterministic tail length. Thus every point strictly
+between $-L$ and $L$ is in the support of the full sum, by using a sufficiently
+long head whose support contains that point. Closure includes the endpoints.
+\end{proof}
+
+At the dyadic boundary this says $\sum a_j\le1$. Therefore the simultaneous
+requirements $a_{j+1}\le a_j/2$, $\sum a_j^2=1/3$, and $\sum a_j=1$
+leave \emph{no nontrivial perturbations at all}. This resolves the
+exact-support issue at the critical boundary only. It does not resolve the
+predecessor's exact-support construction problem when slack $\rho>1/2$
+is allowed.
+
+\subsection{From moment error to law error}
+
+If two probability measures are supported in $[-B,B]$, then
+\begin{equation}
+ |m_4(\mu)-m_4(\nu)|\le B^4\TV(\mu,\nu),\qquad
+ |m_4(\mu)-m_4(\nu)|\le2B^4\dK(\mu,\nu).
+ \label{eq:moment-metrics}
+\end{equation}
+For the first inequality, $x^4/B^4$ lies in $[0,1]$ and the layer-cake
+representation bounds its expectation difference by total variation. For the
+second, Stieltjes integration by parts gives
+$-\int_{-B}^B4x^3(F_\mu-F_\nu)\dd x$; the boundary terms vanish when one
+first integrates on a slightly larger common interval. The integral of
+$4|x|^3$ is $2B^4$.
+
+For $q=1/4$, $S=1/3$, we have $c_q=3/5$, $B_{\rho,S}=1$, and
+\begin{equation}
+ m_4(a^0)=\frac1{27}-\frac2{225}=\frac{19}{675}.
+\end{equation}
+% ed. (2026-09-30): Lean counterpart of the reference fourth moment, not cited by the article
+\begin{ednote}
+The law of $X_{a^0}=\sum_{j\ge1}2^{-j}U_j$ is Rvachev's $\mathrm{up}$ law,
+and its fourth moment $19/675$ is machine-checked as
+\path{Fabius.upMoment_four}, derived from the rational moment value
+\path{Fabius.moment_two}, both in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/OrthogonalPolynomialJacobi.lean}.
+No result of this article is formalized.
+\end{ednote}
+Substituting in \cref{thm:geometric-rigidity} and
+\eqref{eq:moment-metrics} proves all upper estimates in
+\cref{thm:dyadic-intro}.
+
+For $\rho<1/2$ the dyadic reference is not in $\C_{\rho,1/3}$.
+There is in fact a positive separation, not just a failure of membership:
+\begin{equation}
+ \TV(\mu_a,\mu_0)\ge\eta_\rho,
+ \qquad \dK(\mu_a,\mu_0)\ge\tfrac12\eta_\rho,
+ \quad
+ \eta_\rho=\frac2{135}\left(\frac{1-\rho^2}{1+\rho^2}-\frac35\right)>0.
+ \label{eq:subcritical-separation}
+\end{equation}
+Indeed the fourth-power minimum is larger than the dyadic minimum by the
+quantity displayed, and all supports still lie in $[-1,1]$.
+
+\subsection{When the variance is measured rather than fixed}
+
+Suppose $a_{j+1}\le\rho a_j$, but $S=\sum a_j^2$ is not prescribed.
+For exact moment measurements with $m_2>0$,
+\begin{equation}
+ S=3m_2,\qquad T=\frac{15}{2}(3m_2^2-m_4),\qquad
+ \Delta=\frac{T}{S^2}-c_q.
+ \label{eq:observable-normalization}
+\end{equation}
+Let $g(S_0)$ be a fixed geometric reference. The triangle inequality and
+\cref{thm:geometric-rigidity} give the finite certificate
+\begin{equation}
+ d_\infty(a,g(S_0))\le
+ \sqrt{S\mathcal D_q(\Delta)}
+ +\sqrt{1-q}\,|\sqrt S-\sqrt{S_0}|.
+ \label{eq:unknown-variance}
+\end{equation}
+Under a common support bound, law convergence to $\mu_{g(S_0)}$ controls
+both moments. Near $S_0>0$, the rational expression in
+\eqref{eq:observable-normalization} is locally Lipschitz, so
+$|S-S_0|=O(D)$ and $0\le\Delta=O(D)$ for $D=\TV$ or $\dK$.
+Equation \eqref{eq:unknown-variance} therefore retains the exponent $1/2$.
+With noisy moments, one must propagate measurement intervals; a negative
+plug-in value of $\Delta$ is not itself a valid certificate.
+
+\section{Smooth sharpness witnesses inside the original class}
+\label{sec:witnesses}
+
+\subsection{Exact derivative norms for separated supports}
+
+\begin{lemma}[Separated-uniform derivative norms]
+\label{lem:derivative-norms}
+Let all $a_j$ be positive, $\sum a_j<\infty$, and assume
+$a_j\ge\sum_{k>j}a_k$ for every $j$. Then $X_a$ has a density
+$f_a\in C_c^\infty(\R)$ and
+\begin{equation}
+ \norm{f_a^{(r)}}_\infty
+ =\frac{1}{2^{r+1}\prod_{j=1}^{r+1}a_j}
+ \qquad(r=0,1,2,\ldots).
+ \label{eq:derivative-norms}
+\end{equation}
+The hypothesis holds whenever $a_{j+1}\le a_j/2$.
+\end{lemma}
+\begin{proof}
+The characteristic function is $\prod_j\sinc(a_jt)$, with
+$\sinc u=\sin(u)/u$. Each fixed positive factor contributes a bound
+$\min(1,1/(a_j|t|))$. Using arbitrarily many factors gives arbitrarily
+fast polynomial decay, so Fourier inversion gives a $C^\infty$ density.
+Its support is compact by absolute summability.
+
+The derivative of the uniform density on $[-a,a]$, in the sense of
+distributions, is $(\delta_{-a}-\delta_a)/(2a)$. Differentiating each of
+the first $r$ factors once expresses $f_a^{(r)}$ as a signed sum of translates
+of the remaining tail density, with coefficient magnitude
+$1/\prod_{j\le r}(2a_j)$. These translates have disjoint support interiors.
+Indeed, if two sign patterns first differ at index $i$, their centers differ
+by at least
+\[
+ 2\left(a_i-\sum_{i<k\le r}a_k\right)
+ \ge2\sum_{k>r}a_k,
+\]
+which is the diameter of a tail support. Their boundaries cause no additional
+values because all tail densities are smooth and vanish at their support
+endpoints.
+
+The density of the tail starting at $r+1$ has supremum exactly
+$1/(2a_{r+1})$. Its first uniform factor gives this upper bound, and at zero
+it attains the bound because the rest of the tail is supported in
+$[-a_{r+1},a_{r+1}]$. Taking the supremum of the disjoint translates proves
+\eqref{eq:derivative-norms}. Finally
+$\sum_{k>j}a_k\le a_j\sum_{k\ge1}2^{-k}=a_j$ under the ratio bound.
+\end{proof}
+
+For the dyadic reference this gives
+\begin{equation}
+ \norm{f_0^{(r)}}_\infty=2^{r(r+1)/2}.
+ \label{eq:reference-norm}
+\end{equation}
+This special-case identity is also recorded in the repository's formal
+crosswalk \cite{anchored}. We have supplied an independent proof of the
+more general separated-support formula rather than assuming that crosswalk
+as a formal verification of this manuscript.
+
+\begin{definition}[The predecessor's smooth class at the boundary]
+\label{def:smooth}
+Let $\K$ consist of decreasing nonnegative spectra with
+$\sum a_j\le3$, variance $1/9$, and a density $f_a\in C_c^\infty(\R)$
+satisfying
+\begin{equation}
+ \norm{f_a^{(r)}}_\infty
+ \le 2^{r+1}\norm{f_0^{(r)}}_\infty\qquad(r\ge0).
+ \label{eq:smooth-class}
+\end{equation}
+This is the class used in the predecessor \cite{anchored}. Define
+$\K_{1/2}=\K\cap\C_*$. The new notation extends its ratio-restricted
+classes to the previously unresolved endpoint.
+\end{definition}
+
+\subsection{Delete one factor and restore the variance}
+
+For $n\ge3$, put
+\begin{equation}
+ h_n=2^{-n},\qquad c_n=(1-3h_n^2)^{-1/2},\qquad
+ a_j^{(n)}=
+ \begin{cases}
+ c_n2^{-j},&j<n,\\
+ c_n2^{-(j+1)},&j\ge n.
+ \end{cases}
+ \label{eq:deleted-witness}
+\end{equation}
+This is the spectrum obtained by deleting the $n$th dyadic uniform factor,
+reindexing, and rescaling all remaining factors to restore the variance.
+Unlike a truncation, it keeps infinitely many positive factors and therefore
+keeps a smooth density.
+
+\begin{proposition}[Exact properties of the deleted-factor family]
+\label{prop:deleted}
+For every $n\ge3$, $a^{(n)}\in\K_{1/2}$. Writing $h=h_n$ and $c=c_n$,
+\begin{align}
+ \sum_j a_j^{(n)}&=c(1-h)\le1, \label{eq:witness-support}\\
+ d_\infty(a^{(n)},a^0)
+ &=\max\{(c-1)/2,\ h(1-c/2)\}\ge h/3, \label{eq:witness-gap}\\
+ e_4(a^{(n)})
+ &=\frac4{75}\frac{h^2(1-4h^2)}{(1-3h^2)^2}, \label{eq:witness-moment}\\
+ \TV(\mu_{a^{(n)}},\mu_0)&\le4h^2. \label{eq:witness-tv}
+\end{align}
+In particular $d_\infty(a^{(n)},a^0)/h\to1/2$ and
+$e_4(a^{(n)})/h^2\to4/75$.
+\end{proposition}
+\begin{proof}
+All ratios are $1/2$ except at $n-1$, where the ratio is $1/4$.
+The squared sum is $c^2(1/3-h^2)=1/3$. The support estimate follows from
+$(1-h)^2\le1-3h^2$, valid for $h\le1/2$.
+
+Before index $n$, the largest coefficient change is $(c-1)/2$.
+From index $n$ onward, it is $h(1-c/2)$. Since $n\ge3$ gives
+$c\le4/3$, this proves \eqref{eq:witness-gap}. The fourth-power sum is
+$c^4(1/15-h^4)$, and direct subtraction yields
+\[
+ \sum_j(a_j^{(n)})^4-\frac1{15}
+ =\frac25\frac{h^2(1-4h^2)}{(1-3h^2)^2}.
+\]
+Equation \eqref{eq:moments} proves \eqref{eq:witness-moment}.
+
+For every derivative order $r$, the ratio of the first $r+1$ coefficient
+products to the corresponding dyadic product is
+$c^{r+1}2^{-\max(0,r-n+2)}$. By \cref{lem:derivative-norms},
+\begin{equation}
+ \frac{\norm{f_{a^{(n)}}^{(r)}}_\infty}{\norm{f_0^{(r)}}_\infty}
+ =c^{-(r+1)}2^{\max(0,r-n+2)}\le2^{r+1}.
+ \label{eq:witness-derivatives}
+\end{equation}
+This checks all the infinitely many inequalities in \eqref{eq:smooth-class},
+not merely a finite set of derivative orders.
+
+For the total variation estimate, let $v_n$ be the density of the dyadic
+sum with the $n$th factor deleted. The original density is
+$f_0=v_n*u_h$, where $u_h$ is the uniform density on $[-h,h]$.
+The first two dyadic factors are still present. Distributional differentiation
+of those factors, followed by convolution, gives
+\begin{equation}
+ \norm{v_n'}_1\le2,\qquad \norm{v_n''}_1\le8.
+ \label{eq:common-derivatives}
+\end{equation}
+The centered Taylor remainder gives
+\[
+ \norm{v_n*u_h-v_n}_1\le\frac{h^2}{6}\norm{v_n''}_1,
+ \qquad \TV(v_n*u_h,v_n)\le\frac23h^2.
+\]
+For the dilation operator $D_cv(x)=c^{-1}v(x/c)$, differentiating with
+respect to $t=\log c$ and changing variables yields
+\[
+ \norm{D_cv-v}_1\le|\log c|\norm{v+xv'}_1.
+\]
+Since $v_n$ is supported in $[-1,1]$, \eqref{eq:common-derivatives} gives
+$\norm{v_n+xv_n'}_1\le3$. Thus the additional total variation from
+rescaling is at most $3\log c/2$. Finally
+\[
+ \frac23h^2+\frac32\log c
+ \le h^2\left(\frac23+\frac{9}{4(1-3h^2)}\right)<4h^2
+ \qquad(h\le1/8),
+\]
+using $-\log(1-x)\le x/(1-x)$. This proves \eqref{eq:witness-tv}.
+The two limits follow from the explicit formulas.
+\end{proof}
+
+\begin{definition}[Anchored modulus]
+For a class $\mathcal A$ containing $a^0$ and a law distance $D$, define
+\begin{equation}
+ \omega_{\mathcal A,D}(\eps)=
+ \sup\{d_\infty(a,a^0):a\in\mathcal A,
+                           \ D(\mu_a,\mu_0)\le\eps\}.
+ \label{eq:modulus}
+\end{equation}
+\end{definition}
+
+\begin{theorem}[Sharp boundary modulus in the exact smooth class]
+\label{thm:sharp-modulus}
+For $\mathcal A=\C_*$ or $\mathcal A=\K_{1/2}$, and all sufficiently
+small $\eps>0$,
+\begin{align}
+ \frac1{12}\sqrt\eps
+ &\le\omega_{\mathcal A,\TV}(\eps)
+ \le\sqrt{\frac{75}{4}}\sqrt\eps, \label{eq:sharp-TV}\\
+ \frac1{12}\sqrt\eps
+ &\le\omega_{\mathcal A,\dK}(\eps)
+ \le\sqrt{\frac{75}{2}}\sqrt\eps. \label{eq:sharp-K}
+\end{align}
+No exponent strictly greater than $1/2$ is valid in either class. The same
+sharp exponent holds for every $\ell^p$ coefficient loss, $1\le p\le\infty$.
+\end{theorem}
+\begin{proof}
+The upper estimates were proved in \cref{sec:recovery}. For the lower bound,
+choose the smallest $n\ge3$ with $4h_n^2\le\eps$. For sufficiently small
+$\eps$, minimality gives $16h_n^2>\eps$, hence $h_n>\sqrt\eps/4$.
+By \cref{prop:deleted}, the law distance is at most $\eps$ and the spectral
+gap is greater than $\sqrt\eps/12$. Kolmogorov distance is no larger than
+total variation, so the same witnesses work there. The $\ell^p$ upper
+bounds follow from \cref{prop:l1} and \eqref{eq:moment-metrics}; their lower
+bounds follow from $\norm{a-a^0}_p\ge d_\infty(a,a^0)$.
+\end{proof}
+
+The constants in \eqref{eq:sharp-TV}--\eqref{eq:sharp-K} are not asserted
+to be optimal. Sharpness here means the exact exponent and a matching rate
+for every sufficiently small error level, not merely along a subsequence.
+
+\section{A Hellinger estimate that sees the support boundary}
+\label{sec:hellinger}
+
+The total variation bound $O(h^2)$ alone gives only an $\Omega(h^{-2})$
+testing lower bound by the elementary product-TV inequality. To obtain the
+correct $h^{-4}$ scale, we need squared Hellinger distance of order $h^4$.
+Because the laws have compact supports, a careless division by a density
+outside its support would be invalid. The following lemmas explicitly handle
+that boundary.
+
+We use the convention
+\begin{equation}
+ H^2(f,g)=\int_\R(\sqrt f-\sqrt g)^2\dd x.
+ \label{eq:hellinger-definition}
+\end{equation}
+Then $0\le H^2\le2$ and $\TV(f,g)\le H(f,g)$. Squared Hellinger distance
+is jointly convex under common mixtures: Cauchy--Schwarz gives
+\[
+ \sqrt{\Bigl(\int f_z\dd\nu(z)\Bigr)
+             \Bigl(\int g_z\dd\nu(z)\Bigr)}
+ \ge\int\sqrt{f_zg_z}\dd\nu(z).
+\]
+Integration proves the claim, and convolution contraction is its special case
+for common mixtures of translations.
+
+\begin{lemma}[Centered smoothing costs fourth order in squared Hellinger]
+\label{lem:hellinger-smoothing}
+Let $v$ be the density of a sum of $m\ge5$ independent uniforms with fixed
+positive half-lengths. There exist $C,h_0>0$ such that, for every centered
+random variable $Z_h$ supported in $[-h,h]$, with $0<h<h_0$,
+\begin{equation}
+ H^2(v,v*\Law(Z_h))\le Ch^4.
+ \label{eq:hellinger-smoothing}
+\end{equation}
+The constant is independent of the distribution of $Z_h$.
+\end{lemma}
+\begin{proof}
+Write $B$ for the sum of the half-lengths, and $v_h=v*\Law(Z_h)$.
+The convolution density $v$ is a $C^{m-2}$ piecewise polynomial, positive
+on $(-B,B)$. For sufficiently small $s>0$ it has the exact endpoint form
+\begin{equation}
+ v(-B+s)=v(B-s)=C_0s^{m-1},
+ \qquad
+ C_0=\frac{1}{(m-1)!\prod_{i=1}^m(2\alpha_i)},
+ \label{eq:spline-endpoint}
+\end{equation}
+where $\alpha_i$ are the half-lengths. This follows by convolving constant
+densities on $[0,2\alpha_i]$: before reaching the smallest upper endpoint,
+the convolution is the elementary simplex-volume polynomial.
+
+On the interior $I_h=[-B+2h,B-2h]$, Taylor's theorem and $\E Z_h=0$ give
+\begin{equation}
+ |v_h(x)-v(x)|\le\frac{h^2}{2}
+               \sup_{|u-x|\le h}|v''(u)|.
+ \label{eq:smoothing-taylor}
+\end{equation}
+Also $(\sqrt{v_h}-\sqrt v)^2\le(v_h-v)^2/v$ there.
+If $s$ is the distance to a nearby endpoint and $s\ge2h$, the endpoint
+formula gives
+\[
+ \frac{\sup_{|u-x|\le h}|v''(u)|^2}{v(x)}
+ \le C_1s^{m-5}.
+\]
+This is uniformly integrable because $m\ge5$. On a fixed central compact
+interval, positivity of $v$ and boundedness of $v''$ give the same uniform
+integral bound. Thus the Hellinger integral over $I_h$ is at most $C_2h^4$.
+
+Outside $I_h$, both densities can be nonzero only within distance $3h$
+of the old endpoints when their defining convolution arguments are considered.
+Equation \eqref{eq:spline-endpoint} bounds the total mass of either density
+in these boundary and exterior strips by $C_3h^m$. Since
+$(\sqrt{v_h}-\sqrt v)^2\le v_h+v$, their contribution is
+$O(h^m)=O(h^4)$. This also covers the part where $v=0$ and $v_h$ need
+not vanish. Combining the two regions proves the result.
+\end{proof}
+
+\begin{lemma}[Uniform Hellinger control of small dilations]
+\label{lem:hellinger-dilation}
+For the density $v$ in \cref{lem:hellinger-smoothing} and fixed $R<\infty$,
+there is $A_R<\infty$ such that every probability measure $\nu$ supported
+in $[-R,R]$ and every $c>0$ satisfy
+\begin{equation}
+ H(D_c(v*\nu),v*\nu)\le A_R|\log c|.
+ \label{eq:hellinger-dilation}
+\end{equation}
+\end{lemma}
+\begin{proof}
+First fix a translate $z\in[-R,R]$, and put $c=e^t$.
+After translation by $-z$, comparison of $D_c(v(\cdot-z))$ with
+$v(\cdot-z)$ becomes comparison of $v$ with the density of
+$e^tY+(e^t-1)z$, where $Y$ has density $v$. Its square root is
+\[
+ s_t(x)=e^{-t/2}\sqrt{v(e^{-t}(x+z)-z)}.
+\]
+Differentiation and the substitution $u=e^{-t}(x+z)-z$ give
+\begin{equation}
+ \norm{\partial_ts_t}_2
+ =\frac12\left(\int_{-B}^B
+       \frac{(v(u)+(u+z)v'(u))^2}{v(u)}\dd u\right)^{1/2}.
+ \label{eq:dilation-score}
+\end{equation}
+The integral is finite uniformly in $|z|\le R$: near an endpoint the
+potentially singular term $v'(u)^2/v(u)$ is $O(s^{m-3})$, and on central
+compact intervals $v$ is bounded below. There are no distributional boundary
+terms for the square root. Indeed \eqref{eq:spline-endpoint} shows that
+$\sqrt v$, extended by zero, lies in $H^1(\R)$ and vanishes at the endpoints.
+The displayed differentiation is justified first for smooth compactly supported
+approximations to $\sqrt v$ and then in $L^2$, using convergence of the
+function and its derivative; the supports are uniformly bounded.
+
+The right side of \eqref{eq:dilation-score} is independent of $t$ and
+bounded by some $A_R$. The fundamental theorem of calculus in $L^2$
+therefore gives $\norm{s_t-s_0}_2\le A_R|t|$.
+Finally mix over the same $z\sim\nu$ and use joint convexity of $H^2$.
+\end{proof}
+
+\begin{theorem}[Hellinger order of the deleted-factor witnesses]
+\label{thm:witness-hellinger}
+There are constants $0<c_H\le C_H<\infty$ such that, for every $n\ge6$,
+\begin{equation}
+ c_Hh_n^4\le H^2(\mu_{a^{(n)}},\mu_0)\le C_Hh_n^4.
+ \label{eq:witness-hellinger}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $v$ be the density of the first five dyadic uniforms. The density $v_n$
+of the sum with the $n$th factor deleted has the form $v*\nu_n$, with
+$\nu_n$ supported in a fixed bounded interval. By convolution contraction
+and \cref{lem:hellinger-smoothing},
+\[
+ H(v_n,v_n*u_{h_n})\le H(v,v*u_{h_n})\le C h_n^2.
+\]
+By \cref{lem:hellinger-dilation},
+$H(D_{c_n}v_n,v_n)\le A\log c_n=O(h_n^2)$.
+Since $v_n*u_{h_n}=f_0$, the triangle inequality proves the upper bound
+for all sufficiently large $n$. Increasing the constant covers the finitely
+many remaining indices $n\ge6$.
+
+For the lower bound, \eqref{eq:moment-metrics} and $\TV\le H$ imply
+$H^2\ge e_4(a^{(n)})^2$. Formula \eqref{eq:witness-moment} has a positive
+ratio to $h_n^2$ tending to $4/75$, so it is bounded below by a positive
+constant times $h_n^2$ on all $n\ge6$. Squaring finishes the proof.
+\end{proof}
+
+The proof only needs five unchanged positive uniform factors, centered small
+noise, and a bounded remaining support. This is why it also extends to
+nongeometric spectra in \cref{sec:profiles}. It does not require positivity
+of a compactly supported density on the entire real line, finite chi-square
+distance across unequal supports, or an unproved pointwise likelihood expansion.
+
+\section{Quartic sample complexity and honest confidence sets}
+\label{sec:statistics}
+
+\subsection{A self-contained concentration input}
+
+For independent $Z_i\in[0,1]$ with common mean $m$, the standard Hoeffding
+bound \cite{hoeffding} is
+\begin{equation}
+ \PP\{\overline Z_N-m\ge t\}\le e^{-2Nt^2},\qquad
+ \PP\{m-\overline Z_N\ge t\}\le e^{-2Nt^2}.
+ \label{eq:hoeffding}
+\end{equation}
+For completeness, if
+$\psi(\lambda)=\log\E e^{\lambda(Z-\E Z)}$, then $\psi(0)=\psi'(0)=0$
+and $\psi''(\lambda)$ is a variance under an exponentially tilted law on
+$[0,1]$. That variance is at most $1/4$, because
+$\Var Z\le\E(Z-1/2)^2\le1/4$. Hence
+$\psi(\lambda)\le\lambda^2/8$. Independence, Markov's inequality,
+and optimization at $\lambda=4t$ prove the first bound for the average;
+apply it to $1-Z_i$ for the second. This is a proof of the standard input,
+not a new concentration inequality.
+
+\subsection{The testing theorem}
+
+For $\mathcal A=\C_*$ or $\K_{1/2}$, let $N_{\mathcal A}(\delta)$ be the
+smallest positive integer $N$ admitting a possibly randomized test $\psi$
+with
+\begin{equation}
+ \E_{\mu_0^{\otimes N}}\psi\le\tfrac14,
+ \qquad
+ \sup_{\substack{a\in\mathcal A\\d_\infty(a,a^0)\ge\delta}}
+ \E_{\mu_a^{\otimes N}}(1-\psi)\le\tfrac14.
+ \label{eq:testing-definition}
+\end{equation}
+
+\begin{theorem}[Sharp quartic testing complexity]
+\label{thm:testing}
+For either class, $N_{\mathcal A}(\delta)=\Theta(\delta^{-4})$ as
+$\delta\downarrow0$. A concrete upper bound is
+\begin{equation}
+ N_{\mathcal A}(\delta)\le
+ \left\lceil\frac{5625\log4}{8\delta^4}\right\rceil.
+ \label{eq:sample-upper}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Given observations $X_1,\ldots,X_N$, set
+$\overline Z_N=N^{-1}\sum_{i=1}^NX_i^4$ and reject the null if
+\begin{equation}
+ \frac{19}{675}-\overline Z_N>\frac{2\delta^2}{75}.
+ \label{eq:fourth-test}
+\end{equation}
+Every $X_i$ lies in $[-1,1]$, so $Z_i=X_i^4\in[0,1]$.
+Under the null, \eqref{eq:hoeffding} bounds rejection probability by
+$\exp(-8N\delta^4/5625)$. Any alternative in
+\eqref{eq:testing-definition} has $e_4(a)\ge4\delta^2/75$ by
+\eqref{eq:dyadic-moment-main}. Acceptance then requires an upward empirical
+moment error at least $2\delta^2/75$, with the same probability bound.
+This proves \eqref{eq:sample-upper}.
+
+For the lower bound, choose $n$ so that $3\delta\le h_n<6\delta$;
+for small $\delta$ we have $n\ge6$. By \cref{prop:deleted}, this is an
+alternative in $\K_{1/2}$ at spectral distance at least $\delta$.
+For any probability laws $P,Q$, multiplicativity of Hellinger affinity gives
+\begin{equation}
+ H^2(P^{\otimes N},Q^{\otimes N})
+ =2\left[1-\left(1-\tfrac12H^2(P,Q)\right)^N\right]
+ \le NH^2(P,Q).
+ \label{eq:product-hellinger}
+\end{equation}
+Combining \cref{thm:witness-hellinger}, \eqref{eq:product-hellinger}, and
+$\TV\le H$ yields
+\[
+ \TV(\mu_{a^{(n)}}^{\otimes N},\mu_0^{\otimes N})
+ \le\sqrt{NC_Hh_n^4}\le\sqrt{NC_H6^4\delta^4}.
+\]
+For $N\le(16C_H6^4)^{-1}\delta^{-4}$ this is at most $1/4$.
+The two errors of any test at these two laws sum to at least one minus
+this total variation, hence at least $3/4$. They cannot both be at most
+$1/4$. This proves the lower order for $\K_{1/2}$ and therefore for
+$\C_*$ as well.
+\end{proof}
+
+The constant in the lower bound is not numerically optimized. Its finiteness
+is established analytically by the explicit spline endpoint and dilation-score
+integrals. No numerical Hellinger integration is being used as a proof.
+
+\subsection{Confidence sets and an observable radius}
+
+For $0<\alpha<1$, set
+\begin{equation}
+ t_N=\sqrt{\frac{\log(2/\alpha)}{2N}},\qquad
+ \mathcal F_N=\{a\in\C_*:|m_4(a)-\overline Z_N|\le t_N\}.
+ \label{eq:confidence}
+\end{equation}
+By the two tails of \eqref{eq:hoeffding},
+$\PP_a\{a\in\mathcal F_N\}\ge1-\alpha$ uniformly over $\C_*$.
+At the reference, on an event of probability at least $1-\alpha$, every
+candidate in $\mathcal F_N$ satisfies $e_4(a)\le2t_N$. Hence
+\begin{align}
+ \sup_{a\in\mathcal F_N}d_\infty(a,a^0)
+ &\le\sqrt{\frac{75}{2}t_N}, \label{eq:confidence-global}\\
+ \sup_{a\in\mathcal F_N}d_r(a,a^0)
+ &\le\frac{75}{2}2^r t_N. \label{eq:confidence-prefix}
+\end{align}
+On that event $a^0\in\mathcal F_N$, so no convention about the supremum
+of an empty confidence set is needed. This establishes honest coverage and
+reference-point contraction, not a finite representation of the entire
+infinite-dimensional set. The scalar radius and test themselves are directly
+computable from a fourth-moment average.
+
+\section{Sharp local conditioning of a growing prefix}
+\label{sec:prefix}
+
+For $D=\TV$ or $\dK$ and $\mathcal A=\C_*$ or $\K_{1/2}$, define
+\begin{equation}
+ \Lambda_r^D(\mathcal A)=\lim_{\eps\downarrow0}
+ \sup_{\substack{a\in\mathcal A\\0<D(\mu_a,\mu_0)\le\eps}}
+ \frac{d_r(a,a^0)}{D(\mu_a,\mu_0)}.
+ \label{eq:prefix-constant}
+\end{equation}
+The limit exists as a decreasing limit of suprema, allowing infinity in
+principle. The earlier upper bounds make it finite here.
+
+\begin{theorem}[The prefix constant grows exactly geometrically]
+\label{thm:prefix}
+For every $r\ge6$ and either class,
+\begin{align}
+ \frac{2^r}{30}&\le\Lambda_r^{\TV}(\mathcal A)
+                       \le\frac{75}{4}2^r, \label{eq:prefix-TV}\\
+ \frac{2^r}{30}&\le\Lambda_r^{\dK}(\mathcal A)
+                       \le\frac{75}{2}2^r. \label{eq:prefix-K}
+\end{align}
+\end{theorem}
+\begin{proof}
+The upper estimates follow directly from \eqref{eq:dyadic-prefix-main}
+and \eqref{eq:moment-metrics}. For the lower estimates set $n=r$, $h=2^{-n}$,
+and, for $1/2\le\theta<1$, put
+\begin{equation}
+ \lambda=1-\theta^2,\qquad c=(1-4\lambda h^2)^{-1/2},\qquad
+ a_j(\theta)=
+ \begin{cases}
+ c2^{-j},&j<n,\\
+ c\theta2^{-j},&j\ge n.
+ \end{cases}
+ \label{eq:tail-deformation}
+\end{equation}
+The dyadic tail starting at $n$ has squared coefficient sum $4h^2/3$.
+Thus the chosen $c$ restores squared sum $1/3$. The only altered ratio is
+at $n-1$, where it is $\theta/2\le1/2$.
+For every derivative order $k$, \cref{lem:derivative-norms} gives the norm
+ratio
+\[
+ c^{-(k+1)}\theta^{-\max(0,k-n+2)}\le2^{k+1}.
+\]
+Together with \cref{thm:support}, this proves $a(\theta)\in\K_{1/2}$.
+
+At coordinate $n$, $c\theta<1$, and
+\begin{equation}
+ 1-c\theta
+ =\frac{\lambda(1-4h^2)}{(1-4\lambda h^2)(1+c\theta)}
+ \ge\frac{1-\theta}{3}.
+ \label{eq:theta-gap}
+\end{equation}
+Here the denominator is at most $2$, $\lambda\ge1-\theta$, and
+$h\le1/8$. Consequently $d_n(a(\theta),a^0)\ge(1-\theta)h/3$.
+
+We next show
+\begin{equation}
+ \TV(\mu_{a(\theta)},\mu_0)\le10(1-\theta)h^2.
+ \label{eq:theta-TV}
+\end{equation}
+Let $w$ be the density of the head before $n$, and let $T$ be the independent
+dyadic random tail starting at $n$. Then $\E T=0$ and
+$\E T^2=4h^2/9$. For $s\in[\theta,1]$, differentiating
+$\E w(x-sT)$ and subtracting $\E[T w'(x)]=0$ yields
+\[
+ \norm{\tfrac{\mathrm d}{\mathrm ds}\E w(\cdot-sT)}_1
+ \le s\E T^2\norm{w''}_1.
+\]
+Integration gives an $L^1$ difference at most
+$\lambda\E T^2\norm{w''}_1/2$. Since the head contains the first five
+factors, $\norm{w''}_1\le8$. The resulting TV bound is
+$8\lambda h^2/9$. The law before rescaling retains a first uniform factor
+of half-length $1/2$, has derivative $L^1$ norm at most $2$, and is supported
+in $[-1,1]$. Its rescaling costs TV at most
+\[
+ \frac32\log c\le\frac{3\lambda h^2}{1-4\lambda h^2}
+ \le4\lambda h^2.
+\]
+The total is at most $5\lambda h^2\le10(1-\theta)h^2$, proving
+\eqref{eq:theta-TV}.
+
+For $\theta<1$ the spectrum is not geometric, so moment rigidity ensures
+that both law distances are positive. As $\theta\uparrow1$, they tend to
+zero by \eqref{eq:theta-TV}. Dividing \eqref{eq:theta-gap} times $h$ by
+\eqref{eq:theta-TV} gives a limiting ratio at least $1/(30h)=2^r/30$.
+The same lower bound applies to $\dK\le\TV$. Since these witnesses are
+in $\K_{1/2}$, it applies to both classes.
+\end{proof}
+
+This conditioning law is substantially more favorable than the
+$\exp(O(r^2))$ upper constants in the predecessor's prefix theorem with an
+unrestricted infinite tail \cite{anchored}. It is a comparison between
+\emph{different constraint classes}, not a correction to that theorem.
+The exact critical constraint supplies a new order structure that the larger
+class does not possess.
+
+\section{Nongeometric reference spectra and relative-ratio cones}
+\label{sec:profiles}
+
+The geometric zero lattice is not needed for the rigidity argument. The
+appropriate general structure is monotonicity of the coefficient ratio to a
+fixed reference, which translates into a monotone likelihood ratio between
+two probability sequences.
+
+Let $b=(b_j)_{j\ge1}$ be positive with
+\begin{equation}
+ \sum_jb_j^2=S>0,\qquad
+ 0<r_-\le\frac{b_{j+1}}{b_j}\le r_+<1.
+ \label{eq:profile-ratios}
+\end{equation}
+Define the relative-ratio cone
+\begin{equation}
+ \C_b=\left\{a_j\ge0:\sum_ja_j^2=S,\quad
+       \frac{a_{j+1}}{b_{j+1}}\le\frac{a_j}{b_j}\quad(j\ge1)\right\}.
+ \label{eq:profile-class}
+\end{equation}
+In particular $a_{j+1}\le r_+a_j$, so there is a common support bound
+$\sum a_j\le\sqrt S/(1-r_+)$. Write
+\[
+ w_j=b_j^2/S,\quad p_j=a_j^2/S,\quad
+ \Delta_b=\sum_jp_j^2-\sum_jw_j^2.
+\]
+
+\begin{theorem}[Relative-ratio moment rigidity]
+\label{thm:profile-rigidity}
+For every $a\in\C_b$,
+\begin{equation}
+ \Delta_b\ge0,\qquad
+ d_\infty(a,b)^2
+ \le\frac{S\Delta_b}{2w_1(w_1-w_2)}
+ =\frac{15\,[m_4(b)-m_4(a)]}{4S w_1(w_1-w_2)}.
+ \label{eq:profile-bound}
+\end{equation}
+Equality of the second and fourth moments with those of $b$ forces $a=b$.
+For this upper conclusion, the lower ratio bound $r_->0$ is unnecessary;
+it suffices that the positive reference has $w_1>w_2$, is decreasing, and
+is summable, with a common support bound for the metric consequence.
+\end{theorem}
+\begin{proof}
+The sequence $p_j/w_j=(a_j/b_j)^2$ is nonincreasing, with $w$-weighted
+average one. Its weighted average on any leading block is at least its
+weighted average on the complementary tail, and therefore is at least one.
+Thus $D_k=\sum_{j\le k}(p_j-w_j)\ge0$. Summation by parts, exactly as
+in \cref{lem:energy}, gives
+\begin{equation}
+ \Delta_b=\sum_j(p_j-w_j)^2
+         +2\sum_{k\ge1}(w_k-w_{k+1})D_k.
+ \label{eq:profile-energy}
+\end{equation}
+The terms are nonnegative and the sums converge. Set $d=p_1-w_1=D_1$.
+Then $\Delta_b\ge2(w_1-w_2)d$.
+
+Since $p_j/w_j\le p_1/w_1=1+d/w_1$, the sum of the positive differences
+$p_j-w_j$ is at most $d/w_1$. Its value equals the absolute sum of the
+negative differences because both sequences have total mass one. Hence
+$|p_j-w_j|\le d/w_1$ at every coordinate. Taking square roots as in
+\cref{thm:geometric-rigidity} proves the first bound in
+\eqref{eq:profile-bound}. The moment formula \eqref{eq:moments} proves
+the second. If the moment deficit is zero, the first term of
+\eqref{eq:profile-energy} vanishes and $p=w$, hence $a=b$.
+\end{proof}
+
+\begin{theorem}[Sharp recovery and testing for a fixed ratio profile]
+\label{thm:profile-sharp}
+Under \eqref{eq:profile-ratios}, the modulus anchored at $b$ over $\C_b$
+is $\Theta(\sqrt\eps)$ for either TV or Kolmogorov distance. Testing
+$b$ against alternatives $a\in\C_b$ with $d_\infty(a,b)\ge\delta$ has
+sample complexity $\Theta(\delta^{-4})$ at fixed errors $1/4$.
+The lower witnesses have infinitely many positive coefficients and compactly
+supported $C^\infty$ densities.
+\end{theorem}
+\begin{proof}
+The upper modulus follows from \cref{thm:profile-rigidity} and
+\eqref{eq:moment-metrics} with the common support bound just stated.
+For lower witnesses, fix $\theta=1/2$, and let
+\begin{equation}
+ \tau_n=\sum_{j\ge n}b_j^2,\qquad
+ c_n=\left(1-(1-\theta^2)\tau_n/S\right)^{-1/2},\qquad
+ a_j^{[n]}=
+ \begin{cases}c_nb_j,&j<n,\\c_n\theta b_j,&j\ge n.\end{cases}
+ \label{eq:profile-witness}
+\end{equation}
+These spectra belong to $\C_b$, and
+\[
+ b_n^2\le\tau_n\le\frac{b_n^2}{1-r_+^2},\qquad
+ c_n-1=O_b(b_n^2),\qquad
+ d_\infty(a^{[n]},b)\ge b_n/4
+\]
+for all sufficiently large $n$. The last inequality follows at coordinate
+$n$ from $c_n\theta\to1/2$.
+
+Use the first five reference uniforms as the fixed convolution density $v$
+in \cref{lem:hellinger-smoothing}. The remaining head before $n$ supplies
+a common convolution factor. The centered tail starting at $n$ is supported
+in an interval of radius at most $b_n/(1-r_+)$, and its contracted version
+has the same type of bound. Comparing each with the unchanged head by
+\cref{lem:hellinger-smoothing} and then using the triangle inequality gives
+Hellinger distance $O_b(b_n^2)$ between the unscaled laws. Rescaling adds
+$O_b(\log c_n)=O_b(b_n^2)$ by \cref{lem:hellinger-dilation}, whose residual
+support bound is uniform. Therefore
+\begin{equation}
+ H^2(\mu_{a^{[n]}},\mu_b)=O_b(b_n^4),\qquad
+ \TV(\mu_{a^{[n]}},\mu_b)=O_b(b_n^2).
+ \label{eq:profile-H}
+\end{equation}
+Positivity of every coefficient gives smoothness by the Fourier-decay
+argument in \cref{lem:derivative-norms}; separated translates are not needed
+for this part.
+
+The lower ratio bound $b_{n+1}\ge r_-b_n$ lets us choose $b_n$ within a
+fixed multiplicative factor of any sufficiently small target scale. Thus
+\eqref{eq:profile-H} and the spectral gap imply a lower modulus of order
+$\sqrt\eps$ for every sufficiently small $\eps$, not just selected errors.
+For testing, the fourth-moment deficit in \eqref{eq:profile-bound} is at
+least a fixed multiple of $\delta^2$, so the bounded-variable argument in
+\cref{thm:testing} gives an $O_b(\delta^{-4})$ upper bound. Choose $n$
+with $4\delta\le b_n<4\delta/r_-$. Equations
+\eqref{eq:profile-H} and \eqref{eq:product-hellinger} give the matching
+lower bound just as before.
+\end{proof}
+
+Every geometric reference in \eqref{eq:general-class} satisfies
+\eqref{eq:profile-ratios} with $r_-=r_+=\rho$, and its relative-ratio
+cone is exactly $\C_{\rho,S}$. Thus the sharp exponent and quartic testing
+law hold for every geometric reference, not only the dyadic one. For those
+geometric references, \cref{prop:l1} supplies the matching upper bounds for
+all $\ell^p$ losses; the same witnesses supply the lower bounds.
+
+Without a positive lower ratio bound, \cref{thm:profile-rigidity} still gives
+its upper estimate, and \eqref{eq:profile-H} still obstructs every better
+H\"older exponent along a sequence. What may fail is interpolation between
+widely separated scales. No all-error matching modulus is claimed for that
+more general case.
+
+\section{What has been resolved, and what has not}
+\label{sec:scope}
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}
+>{\raggedright\arraybackslash}p{0.66\textwidth}@{}}
+\toprule
+Question or regime & Conclusion and precise scope\\
+\midrule
+Exact dyadic ratio $1/2$ & Sharp square-root anchored modulus, including the
+predecessor's exact smooth class; \cref{thm:sharp-modulus}.\\[5pt]
+Fixed variance and two moments & The dyadic and geometric moment fibres at
+the reference are singletons inside their critical cones;
+\cref{thm:geometric-rigidity}.\\[5pt]
+Exact maximal support & With the critical ratio and fixed variance, fixing
+the reference support endpoint forces the reference itself;
+\cref{thm:support}.\\[5pt]
+Leading $r$ coefficients & Local conditioning is $\Theta(2^r)$ in the
+critical dyadic cone, not uniformly over unrestricted tails;
+\cref{thm:prefix}.\\[5pt]
+Statistical complexity & Anchored testing is $\Theta(\delta^{-4})$; honest
+reference contraction is $O(N^{-1/4})$;
+\cref{thm:testing}.\\[5pt]
+Looser dyadic ratio bound & The predecessor's fixed-slack stretched-exponential
+result is cited, not reproved or newly formalized here.\\[5pt]
+Arbitrary two-point inverse & Not settled. The moment extremizer is a fixed
+anchor; the proofs do not compare two free spectra.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The apparent abrupt transition at $1/2$ has a precise cause. At the exact
+boundary, normalized squared coefficients are forced to majorize the
+reference sequence. Their fourth-power deficit cannot be canceled. With
+slack, that one-sided relation to the dyadic reference disappears, permitting
+the moment-matching perturbations investigated by the predecessor. This
+explanation is supported by \eqref{eq:energy}, rather than by numerical
+conditioning experiments.
+
+The results are not claimed as a resolution of a famous general inverse
+problem. They resolve a specific, explicitly stated research frontier in the
+repository and give additional quantitative consequences with complete proofs.
+Their relevance is the contrast between severe infinite-dimensional
+instability and a two-moment certificate under an exact structural constraint.
+
+\section{Verification, provenance, and formalization route}
+\label{sec:audit}
+
+\subsection{Exact computations and their limits}
+
+The accompanying standard-library Python program \path{code/verify.py}
+uses exact rational arithmetic for finite regression tests and 65-digit
+\texttt{Decimal} arithmetic only for illustrative radical evaluations.
+The recorded run used Python 3.13.5, deterministic seed 20260930, and passed
+\textbf{29,776 exact assertions}. The detailed counts are in
+\path{results/verification.json}. They include the infinite-tail energy
+identity evaluated symbolically for finite padded sequences, the sharp head
+inequality, squared-coefficient bounds, exact fourth-moment formulas,
+derivative-class inequalities for tested orders, tail-deformation estimates,
+and nongeometric finite-profile identities.
+
+These are finite regression checks. In particular, checking derivative orders
+$0\le r\le100$ is \emph{not} evidence for all orders by itself; the universal
+proof is \eqref{eq:witness-derivatives}. The Hellinger lemmas and infinite
+limiting assertions are proved in the text, not certified by numerical tests.
+The program performs no empirical integration of TV or Hellinger distance.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$n$ & Spectral gap & Fourth-moment deficit & TV upper bound $4h_n^2$\\
+\midrule
+3 & $6.0981560\cdot10^{-2}$ & $8.5998388\cdot10^{-4}$ & $6.2500000\cdot10^{-2}$\\
+4 & $3.1065269\cdot10^{-2}$ & $2.0997047\cdot10^{-4}$ & $1.5625000\cdot10^{-2}$\\
+6 & $7.8096374\cdot10^{-3}$ & $1.3027193\cdot10^{-5}$ & $9.7656250\cdot10^{-4}$\\
+8 & $1.9530803\cdot10^{-3}$ & $8.1382692\cdot10^{-7}$ & $6.1035156\cdot10^{-5}$\\
+12 & $1.2207030\cdot10^{-4}$ & $3.1789148\cdot10^{-9}$ & $2.3841858\cdot10^{-7}$\\
+\bottomrule
+\end{tabular}
+\caption{Rounded evaluations of \cref{prop:deleted}. The last column is a
+proved upper bound, not the actual TV distance. Decimal rounding is not
+outward-directed interval certification.}
+\label{tab:witnesses}
+\end{table}
+
+Run \texttt{python code/verify.py} from the package root, or by absolute
+path from any directory. By default the outputs go to \path{results-rerun/},
+so the recorded results are preserved. The option
+\texttt{-{}-output-dir PATH} selects another destination. The TeX source
+contains its tables directly and does not require Python or network access
+to compile. Run \texttt{latexmk -pdf article.tex}, or run
+\texttt{pdflatex article.tex} repeatedly until cross-references stabilize.
+No shell escape is required.
+
+\subsection{Pinned repository source and question mapping}
+
+The source inspection used the repository snapshot
+\begin{quote}\small\ttfamily\raggedright\repoSHA\end{quote}
+and the article at
+\begin{quote}\small\ttfamily\raggedright
+Analysis/FabiusFunction/docs/\allowbreak
+semi-formalized-research-frontiers/\allowbreak
+drafts/inverse-and-sampling/\allowbreak
+Anchored\_Dyadic\_Recovery\_Uniform\_Spectrum/\allowbreak article.tex.
+\end{quote}
+Its content blob was
+\begin{quote}\small\ttfamily\raggedright\blobSHA.\end{quote}
+The opening definitions, the smooth-class and derivative sections, the
+statistical section, and the further-research questions were read through
+the GitHub connector. The exact target is the question titled
+\emph{The sharp separation boundary $\rho=1/2$}, third in the final question
+list. The immediately following exact-support question is addressed here
+only at the critical boundary. The earlier article's general identifiability,
+Fourier zero-count arguments, and numerical bounds are not assumptions in
+our new critical-boundary proofs.
+% ed. (2026-09-30): reciprocal note, and related repository results the article does not cite
+\begin{ednote}
+The question answered here,
+in \path{../Anchored_Dyadic_Recovery_Uniform_Spectrum/}, now carries a
+note pointing to this package. At the dyadic reference this also settles
+the boundary case $q=1/2$ that the editorial note to ``Geometrically
+separated classes'' in \path{../Recovering_Uniform_Factors_Fabius_Rvachev/}
+leaves open. In the same group,
+\path{../Sharp_Stability_Strata_Fabius_Rvachev_Deconvolution/} proves, for
+a finite list of uniform factors, that the optimal anchored exponent is
+$1/2$ whenever the reference has a repeated positive scale or a zero slot
+(its \texttt{thm:anchored}); the $\Theta(\sqrt\eps)$ modulus of
+\cref{thm:sharp-modulus} is an infinite-spectrum counterpart at the dyadic
+reference, proved independently.
+\end{ednote}
+
+The source's editorial crosswalk reports the formal derivative-norm theorem
+\path{Fabius.isGreatest_abs_iteratedDeriv_rvachevUp} in
+\path{GlobalBounds.lean} and the variance theorem
+\path{Fabius.integral_sq_mul_rvachev_eq_one_ninth} in
+\path{DyadicSpecializations.lean}, under
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/}.
+These names are recorded as repository provenance. No Lean build was run for
+this article, and no claim is made that the newly stated stability,
+Hellinger, or statistical theorems are already formalized.
+
+The literature check was targeted: Arias de Reyna for the compact-support
+uniform-sum function, Billey--Swanson for generalized uniform-sum
+identifiability, Hoeffding for concentration, and repository search for
+related inverse and lacunarity reports. This is not an exhaustive novelty
+audit. No repository files were modified.
+
+\subsection{Claim-level dependency audit}
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}
+>{\raggedright\arraybackslash}p{0.62\textwidth}@{}}
+\toprule
+Conclusion & Mathematical dependencies\\
+\midrule
+Two-moment certificate & Tail domination, summation by parts, the sharp
+head inequality, envelope slacks, and the elementary fourth-moment formula.\\[4pt]
+Exact support rigidity & The same majorization inequality applied to
+normalized coefficients rather than their squares.\\[4pt]
+Smooth lower witnesses & Exact variance rescaling, separated translates of
+uniform derivatives, and an $L^1$ centered Taylor remainder.\\[4pt]
+Fourth-order Hellinger & Fixed finite uniform convolution, endpoint simplex
+polynomials, separate boundary integration, and a square-root dilation score.\\[4pt]
+Sharp testing order & Fourth-moment exposure, bounded-variable concentration,
+the explicit witnesses, and product Hellinger affinity.\\[4pt]
+Sharp prefix constants & Global coordinate certificate and a continuous
+variance-preserving contraction of an entire tail.\\[4pt]
+Nongeometric extension & Monotone relative ratios, a general weighted
+summation-by-parts identity, and the same smoothing mechanism.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A practical formalization route begins with finite partial-sum identities and
+nonnegative geometric tails. One can then formalize the probability-sequence
+energy identity, the quadratic head estimate, and the envelope-slack argument
+without any Fabius-specific analysis. The fourth-moment identity is a separate
+finite-independence lemma followed by dominated convergence. These modules
+already give the main upper certificate and rigidity theorem.
+
+The analytic lower-bound modules should remain separate: convolution
+smoothness; exact derivative norms from disjoint support interiors; $L^1$
+smoothing and dilation; then the endpoint-sensitive Hellinger lemmas.
+The latter require an explicit zero-extension and Sobolev differentiation
+interface, rather than a blanket differentiability assertion for likelihood
+ratios. Finally, the testing theorem is assembled from deterministic moment
+exposure and product-measure inequalities. This is a dependency plan, not a
+claim about the availability of every needed theorem in a current mathlib API.
+
+\section{Further research questions}
+\label{sec:further}
+
+\begin{question}[Optimal constants and possible log-periodic structure]
+Do the limits $\omega_{\C_*,D}(\eps)/\sqrt\eps$ exist for $D=\TV$ and
+$\dK$? The present constants are deliberately nonoptimal. The deleted-factor
+scales are geometric, while continuous tail contractions provide an extra
+parameter. Determine whether optimal combinations eliminate log-periodic
+oscillation, and whether the explicit moment constant $75/4$ in the certificate
+can itself be improved. Sharpness of the exponent does not answer either
+constant question.
+\end{question}
+
+\begin{question}[A joint small-slack crossover]
+Let the allowed dyadic ratio be $1/2+\eta$ with $\eta\downarrow0$ as the
+law error $\eps\downarrow0$. Determine the two-parameter inverse modulus.
+The critical square-root theorem and the predecessor's fixed-positive-slack
+stretched-exponential theorem concern different orders of limits. A
+quantitative measure of the negative parts of the cumulative discrepancies
+in \eqref{eq:energy} may interpolate between the regimes.
+\end{question}
+
+\begin{question}[Pairwise recovery within the critical cone]
+What is the optimal modulus between two freely varying spectra in $\C_*$
+near $a^0$? The fourth moment exposes the reference, but its deficits for two
+unknown spectra can be nearly equal. The anchored certificate therefore does
+not automatically give a pairwise inverse theorem. One should distinguish
+an estimator's uniform risk on a neighborhood from confidence-set contraction
+at its extremal point.
+\end{question}
+
+\begin{question}[Ratio profiles without uniform scale spacing]
+Classify all-error inverse moduli for relative-ratio cones when
+$b_{j+1}/b_j\to0$ or $b_{j+1}/b_j\to1$. The algebraic upper certificate
+survives far beyond \eqref{eq:profile-ratios}, but its rate need not be
+attained at every error level by the sparse tail scales. A profile-dependent
+modulus may retain more information than a single H\"older exponent.
+\end{question}
+
+\begin{question}[Exact support and variance with supercritical slack]
+At the exact boundary the maximal-support fibre is a singleton. With a fixed
+ratio allowance $\rho>1/2$, can the predecessor's very small law perturbations
+be made to preserve both variance and the exact support endpoint? The present
+rigidity theorem identifies why the critical version is impossible, but does
+not settle the construction under slack.
+\end{question}
+
+\begin{question}[Other factor laws and Gaussian nuisance components]
+For which centered base laws does a fourth-cumulant extremizer produce the
+same square-root inverse law? The sign and nonvanishing of the fourth cumulant
+matter for moment exposure. An additional unknown Gaussian variance changes
+the second-moment normalization while leaving the fourth cumulant unchanged;
+separate identifiability and stability statements are needed rather than an
+unqualified transfer of the present theorem.
+\end{question}
+
+\begin{question}[Sharper statistical constants and robust measurements]
+Determine local testing constants through the leading square-root-density
+perturbation, and compare the fourth-moment test with a likelihood-based test.
+Extend the confidence certificate to validated moment intervals, bounded
+measurement error, or controlled contamination. Such extensions must keep
+track of the exact structural constraint; an unverified ratio assumption is
+not supplied by a good empirical fit to four moments.
+\end{question}
+
+\begin{question}[A formalized moment-exposure library]
+Formalize the weighted identity \eqref{eq:profile-energy} and its quantitative
+consequences as a reusable library for monotone relative-ratio cones.
+A useful milestone is a kernel-checked proof of the dyadic constant in
+\eqref{eq:dyadic-moment-main}, followed by the support singleton theorem.
+The Hellinger boundary module is a separate, more analytic milestone.
+\end{question}
+
+\section{Conclusion}
+
+The exact dyadic separation boundary is not another instance of the
+fixed-slack instability. It has a rigid moment geometry. A fourth-moment
+deficit controls the squared error of every coefficient, producing a sharp
+square-root inverse law for the entire infinite spectrum and a sharp
+geometric conditioning law for finite prefixes. Smooth deleted-factor
+witnesses show that these estimates cannot be improved in exponent, even
+under the predecessor's explicit derivative bounds. A separate Hellinger
+argument yields the matching quartic testing complexity.
+
+The essential mechanism is not peculiar to a dyadic Fourier zero lattice.
+It is the one-sided majorization induced by relative-ratio constraints,
+which also gives rigidity and sharp rates around nongeometric references.
+The unresolved questions now lie in optimal constants, two-point rather
+than anchored recovery, and the interaction of small structural slack with
+small observational error.
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{anchored}
+ProveIt research collection,
+\emph{Anchored Recovery of the Dyadic Uniform Spectrum: A sharp
+stretched-exponential modulus, lacunary counterexamples to H\"older stability,
+and Lipschitz recovery of every fixed prefix},
+research manuscript prepared for Vladimir Reshetnikov, 29 September 2026.
+Inspected at commit \texttt{\repoSHA}; exact path and blob in
+\cref{sec:audit}. Repository research article, not a refereed publication.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/f4457a1d19701d32e8f324240c497653d235b53e/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Anchored_Dyadic_Recovery_Uniform_Spectrum/article.tex}.
+
+\bibitem{arias}
+J.~Arias de Reyna,
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}, arXiv:1702.05442, 2017.
+English translation of \emph{Definici\'on y estudio de una funci\'on
+indefinidamente diferenciable de soporte compacto},
+Rev. Real Acad. Ciencias Madrid \textbf{76} (1982), 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{billey}
+S.~C.~Billey and J.~P.~Swanson,
+\emph{The metric space of limit laws for $q$-hook formulas},
+2022. DOI: \href{https://doi.org/10.5070/C62257868}{10.5070/C62257868}.
+Author manuscript arXiv:2010.12701, version 2 (2023).
+\url{https://arxiv.org/abs/2010.12701}.
+
+\bibitem{hoeffding}
+W.~Hoeffding,
+\emph{Probability inequalities for sums of bounded random variables},
+Journal of the American Statistical Association \textbf{58} (301)
+(1963), 13--30.
+DOI: \href{https://doi.org/10.1080/01621459.1963.10500830}
+{10.1080/01621459.1963.10500830}.
+
+\end{thebibliography}
+\end{document}

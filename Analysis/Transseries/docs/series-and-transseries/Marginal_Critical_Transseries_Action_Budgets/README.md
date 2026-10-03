@@ -30,7 +30,8 @@ of proof dependencies and formalization boundaries.
 ## Files
 
 - `Marginal_Critical_Transseries.tex`: standalone editable LaTeX, including references.
-- `Marginal_Critical_Transseries.pdf`: compiled 25-page A4 article.
+- `Marginal_Critical_Transseries.pdf`: compiled 26-page A4 article (25 pages
+  as delivered; rebuilt on filing, see the amendments below).
 - `code/verify.py`: main exact checks and numerical diagnostics.
 - `code/supplementary.py`: general-window and finite-fold checks.
 - `data/verification.json`: successful full main run.
@@ -41,7 +42,10 @@ of proof dependencies and formalization boundaries.
 - `notes/BUILD_REPORT.json`: build, layout, and verification summary.
 - `build.sh`: three-pass LaTeX build.
 - `requirements.txt`: numerical dependency versions used.
-- `SHA256SUMS.txt`: checksums for the distributable files.
+
+The delivered checksum ledger `SHA256SUMS.txt` was verified in full on
+filing (batch 48) and not kept; the delivered archive remains in the
+repository history (see `docs/incoming/README.md`, batch 48 row).
 
 ## Build
 
@@ -58,7 +62,12 @@ python code/verify.py
 python code/supplementary.py
 ```
 
-A shorter numerical run is available as `python code/verify.py --quick`.
+A shorter numerical run is available as `python code/verify.py --quick`;
+it writes `data/verification_quick.json` and leaves `data/verification.json`
+alone. The full run and `code/supplementary.py` rewrite their JSON files in
+place (a rerun on a copy on Windows, 2026-09-29, reproduced all three JSON
+files byte for byte). The article's tables are typed into the source and are
+not rewritten; `build.sh` overwrites the PDF.
 The recorded environment used Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0.
 The main run uses 50 decimal working digits; the supplementary run uses 40.
 
@@ -90,3 +99,39 @@ checks do not prove infinite-support or uniform asymptotic assertions.
 The repository was inspected at the scope described in the article; its full
 canonical transseries volume and incoming archives were not exhaustively
 audited. No repository files or branches were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+These changes were made on filing, after the batch-48 delivery. Every change
+to the article text is marked in `Marginal_Critical_Transseries.tex` by a
+comment beginning `% ed. (2026-09-29)`; visible additions are headed
+"Editorial note (ProveIt, 2026-09-29)" or, in the bibliography, "[Editorial
+addition, ProveIt, 2026-09-29.]".
+
+- `Marginal_Critical_Transseries.tex`:
+  - an unnumbered `ednote` environment for editorial notes (no numbering
+    changes);
+  - a scope note after the research-status paragraph: "Certified" in the
+    title means the proved inequality of Theorem `thm:finite-certificate`;
+    the recorded evaluations use no directed rounding and are not interval
+    or proof-assistant certificates;
+  - an editorial note in Section 1.1: the logarithmic-endpoint package filed
+    beside this one proves the same endpoint core independently (notation
+    dictionary; `kappa_1`, `kappa_2` are its `g_1`, `g_2` in another
+    logarithmic normalization; the results unique to each);
+  - editorial notes at research Question 1 (answered, pending review, by the
+    batch-49 stable–Gaussian package in exactly its window and by the
+    confluent package at any rate at leading order; they agree term by term)
+    and Question 2 (partial progress: log-weighted tails at leading order in
+    the logarithmic-endpoint package);
+  - the filed location of the companion draft (the critical Hahn package,
+    whose Question 4 this article answers at `alpha = 2` without citing it by
+    number), and three editorial bibliography entries (`ed:lce`, `ed:cct`,
+    `ed:sge`).
+- `Marginal_Critical_Transseries.pdf`: rebuilt from the amended source
+  (26 pages; the delivered PDF had 25). `notes/BUILD_REPORT.json` still
+  describes the delivered build.
+- `code/verify.py`, `code/supplementary.py`: JSON outputs are written with LF
+  line endings (`write_text` emitted CRLF on Windows).
+- `README.md`: the retired checksum ledger is no longer listed; rerun
+  behaviour documented; page count updated; this section.

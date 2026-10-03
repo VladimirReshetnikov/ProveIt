@@ -47,6 +47,10 @@
 \newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (no counter is shifted).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a second unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\TT}{\mathbb T}
 \newcommand{\RR}{\mathbb R}
 \newcommand{\CC}{\mathbb C}
@@ -71,6 +75,8 @@
 \newcommand{\eul}[2]{\left\langle\!\begin{matrix}#1\\#2\end{matrix}\!\right\rangle}
 
 \begin{document}
+% ed. (2026-09-30): no page anchors on the title page, which is numbered 1 like the following page (removes a duplicate-destination warning of the delivered source).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \setlength{\parindent}{0pt}
 \thispagestyle{empty}
@@ -118,6 +124,8 @@ Lean-verified theorems. Prior moment-matrix methods are explicitly credited.
 {\small\color{muted} Repository snapshot: \nolinkurl{37e61c1fdec28c6e7ab7ff445043993077b42cbd}.\\
 Package: editable source, compiled PDF, two exact-arithmetic checkers, and their receipts.}
 \end{titlepage}
+% ed. (2026-09-30): page anchors back on after the title page.
+\hypersetup{pageanchor=true}
 \tableofcontents
 \newpage
 
@@ -1390,6 +1398,29 @@ Differentiating \cref{eq:feedback} two additional times reduces the
 problem to the second phase derivative of $h_{m,c}(1/2)$ at zero.
 The completely explicit base spectrum might permit a finite resolvent
 sum with a useful sign structure.
+% ed. (2026-10-01): this question is answered by later packages (batch 72)
+\begin{ednotelater}
+The positivity question is answered, and the executed checks are overtaken, by thirteen later
+packages filed beside this article on 2026-10-01 (batch~72 of the repository's
+\path{docs/incoming/}; unreviewed). \path{../Thue_Morse_Integer_Pressure_First_Positive/}
+proves $[t^{2m+2}]p_m(t/\pi)>0$ for every integer $m\ge2$ along the route suggested here: the
+quadratic coefficient in $a=\tan\pi c$ of the normalized eigenfunction at $1/2$ is a finite sum
+over the atomic eigenbasis with positive rational coefficients built from Bernoulli numbers,
+and
+\[
+ [t^{2m+2}]p_m(t/\pi)=\sum_{j=1}^{m-1}b_{m,j}R_{m-j}+\frac{2m}{3}R_m-\frac{m}{m+1}R_{m+1},
+\]
+with $R_m$ as in \cref{thm:main-jet} and explicit positive rationals $b_{m,j}$. That is a
+closed form in this finite sense; no elementary closed form is given, and the reduced
+denominators are left open there. Moreover every even coefficient strictly between degrees
+$2m$ and $6m$ is positive for every $m\ge2$
+(\path{../Thue_Morse_Integer_Pressure_Full_Range/}), and degree $6m$ cannot be included in
+general: $[t^{12}]p_2(t/\pi)=-35360872/93555$. The first negative degree $N_m$ above $2m$
+satisfies $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$
+(\path{../Thue_Morse_Integer_Pressure_First_Negative/}), and it is certified for
+$2\le m\le128$ in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}. The other
+packages of the series are listed in the README of \path{../}.
+\end{ednotelater}
 
 \subsection{Optimal phases for higher moments}
 \begin{question}
@@ -1445,6 +1476,17 @@ of size $r$, the counting argument becomes $br-s\leq r$. Its possible
 small invariant sets should determine exceptional parameter loci.
 This suggests a classification theorem organized by finite backward
 orbits of the zero set.
+% ed. (2026-09-30): a later package bears on this question
+\begin{ednote}
+\path{../Periodic_Anchors_Exact_Mixed_Moment_Phase_Diagrams/} (batch~68 of
+the repository's \path{docs/incoming/}) computes exactly the pressure of
+products of shifted digital masks whose phases fill complete periodic
+orbits of $x\mapsto bx\bmod1$, with a common exponent on each orbit,
+together with every equilibrium measure and the resulting mixed-moment
+exponents, in every base. Such a product has several zeros, all mapped by $x\mapsto bx$ onto the selected orbits, and its pressure is a maximum of explicit orbit branches; no finite Perron model or spectral simplicity is proved. It bears on this question but does not
+answer it: the phases are fixed, a single mask whose phase has period at
+least two is not covered, and no regularity in the phase is proved.
+\end{ednote}
 
 \subsection{Phase sequences and matrix products}
 \begin{question}

@@ -88,3 +88,46 @@ The computations are not directed interval arithmetic or a substitute for the
 asymptotic proofs. Independent mathematical review remains appropriate.
 
 No files or branches in the ProveIt repository were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+The package was filed in batch 48 (see `docs/incoming/README.md`). The
+following changes were made after filing; everything else is as delivered.
+
+- `article.tex`: an unnumbered "Editorial note (ProveIt, 2026-09-29)"
+  environment was added to the preamble. An editorial note after the abstract
+  records that "We resolve that question" is stale in the repository: the
+  finite-core package (`Finite_Core_Universality_Exponential_Feedback/`, filed
+  in batch 47, before this package and not cited by it) proves the same
+  coefficient theorem for eventually exact `j^2` as the `p = 2`, `a = 1` case
+  of its first-correction formula, with the same variance and least-term
+  index; the two are independent proofs of one theorem with agreeing
+  constants, and the note lists what is new here. It also records that this
+  article proves the total-variation Poisson law at diverging intensity that
+  the Poisson-layer package lists as open. Editorial notes after four
+  further-research questions name the later packages that answer them and how
+  far: the cloud hierarchy (partly, the finite-core and Poisson-layer
+  packages), compositional inverses (the weighted-type package for the type;
+  the two batch-49 quadratic-inverse packages, unreviewed, for the
+  coefficients), angular growth and negative-direction summation (fine sense:
+  the negative-ray package; angular sense, negatively: the natural-boundaries
+  package) and the actual sectorial remainder (the sectorial-summability
+  package; the comparison with the least term stays open). The tagged display
+  (Q) became an `equation*`, which removes a duplicate hyperref destination
+  (`equation.2.2`) without changing any label, tag or number. A bibliography
+  entry `ed:finitecore` cites the finite-core package. Every change is
+  marked in the source by a `% ed. (2026-09-29)` comment.
+- `article.pdf`: rebuilt from the amended source (24 pages; the delivered PDF
+  had 22).
+- `BUILD_REPORT.json`: the three SHA-256 digests (`article.tex`,
+  `article.pdf`, `code/verify.py`), the page count, the source line count, the
+  engine and the pass count were recomputed for the amended files, and a note
+  says so; the rendering statement describes the delivered build. Rebuilding
+  with `build.sh` overwrites `article.pdf` and makes the recorded PDF digest
+  stale again.
+- `code/verify.py`: the CSV and JSON writers emit LF line endings on every
+  platform. A rerun on a copy (`--order 256 --check-order 18`) reproduced
+  `data/coefficients.csv`, `data/asymptotic_ratios.csv`,
+  `data/diagnostics.json` and `data/finite_perturbations.json` byte for byte;
+  `data/verification.json` differed only in `elapsed_seconds`. The program
+  rewrites the recorded `data/` files in place; run it on a copy.

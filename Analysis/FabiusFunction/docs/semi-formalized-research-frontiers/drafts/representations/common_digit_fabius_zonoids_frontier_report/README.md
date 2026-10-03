@@ -29,14 +29,26 @@ absent from all prior literature.  Classical ingredients such as zonotope
 volume formulas, Schur/Littlewood identities, the hyperbolic-secant measure,
 and Meixner-Pollaczek orthogonality are cited in the report.
 
+**Erratum (2026-09-29).** The report's conjecture `conj:jet-small-ball`
+(subsection "Jet small balls and Lambert phases") is false as stated
+whenever `q ≠ 1/e`: the small-ball logarithm contains the unbounded term
+`((m+1)² log λ/λ) log log(1/x)`, `λ = −log q`, which its shape omits.
+For `m = 0`, `q = 1/2` this term is already part of the machine-checked
+Fabius small-argument expansion
+(`Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO`, whose main
+term `fabiusWikipediaElementaryMain` contains `(log log 2/log 2) log L`).
+An editorial note under the conjecture, marked `% ed.` in the source,
+records the correct form; the conjecture itself is kept unchanged and
+unrenumbered.  The general proof is the unreviewed draft
+`../Polynomial_Geometric_Small_Deviations_Fabius_Jets/` (filed
+2026-09-29).
+
 ## Archive contents
 
-- `common_digit_fabius_zonoids.tex` — complete 2,092-line, 89,360-byte
-  LaTeX source; SHA-256
-  `ad6d0bfa137efe0c79cf0ee599845b8708d82ef31f6fc2c3016e80ff14a7675e`.
-- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,171,153-byte
-  report; SHA-256
-  `4169b907f96b46cb75b1aab067e237a431798cfb612bbad11e2a74a38d494cd4`.
+- `common_digit_fabius_zonoids.tex` — complete 2,151-line, 92,789-byte
+  LaTeX source (2,092 lines before the editorial notes of 2026-09-29).
+- `common_digit_fabius_zonoids.pdf` — synchronized 36-page, 1,297,530-byte
+  report, rebuilt on 2026-09-29.
 - `code/experiments.py` — fully commented symbolic/numerical experiment script.
 - `generated/*.csv` — numerical and exact-symbolic verification tables.
 - `generated/legendre_coefficients.tex` — exact symbolic coefficient table.
@@ -75,6 +87,25 @@ status-table cell and the long repository URL. Title, author, subject, and
 keywords metadata are present. Representative title, body, table, figure, and
 final pages passed visual inspection; generated sidecars were removed.
 
+After the editorial note of 2026-09-29 under `conj:jet-small-ball`, the PDF
+was rebuilt by the same three-pass procedure with MiKTeX pdfTeX 1.40.29:
+36 pages, 1,295,227 bytes; the final log has no warning, error,
+unresolved reference, rerun request, or overfull box, and the page
+carrying the note was rendered and inspected.  After the second editorial
+note of 2026-09-29 (below `conj:copula-endpoints`; see Editorial
+amendments), the PDF was rebuilt again by the same procedure: 36 pages,
+1,296,128 bytes; no error, unresolved reference, rerun request, duplicate
+destination or overfull box, the same two underfull notices, no Type 3
+font; the page carrying the note was rendered and inspected.  After the
+third editorial note of 2026-09-29 (after `conj:ray-decay`; see Editorial
+amendments), the PDF was rebuilt again by the same procedure (MiKTeX pdfTeX
+1.40.29): 36 pages, 1,297,530 bytes; no error, unresolved reference, rerun
+request, duplicate destination or overfull box, the same two underfull
+notices, no Type 3 font; the page carrying the note was rendered and
+inspected.  The SHA-256 values that
+earlier versions of this README recorded described the 2026-09-04 build;
+the repository no longer keeps checksum receipts.
+
 ## Reproduce the experiments and figures
 
 The supplied data were generated with Python 3.13.5, NumPy 2.3.5,
@@ -106,3 +137,32 @@ a current validation dependency.
 
 The final PDF was rendered page-by-page at 170 dpi and visually checked for
 clipped text, overlap, missing figures, black boxes, and broken glyphs.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+- Under `conj:jet-small-ball`: the erratum note described in the Erratum
+  paragraph above (after batch 50 of `docs/incoming/`).
+- After the paragraph following `conj:copula-endpoints` (subsection
+  "Inverse-Fabius copula endpoint laws"), in the editorial pass after batch
+  54 of `docs/incoming/` (see `docs/incoming/README.md`): a note, marked
+  `% ed.`, records that joint lower-corner small-deviation rates of the
+  common-digit family, their first correction, the standardized copula
+  exponent and conditional extremes given threshold events such as
+  `{X_{1/2} <= x}` are proved in the unreviewed draft
+  `../Endpoint_Geometry_Common_Digit_Fabius_Laws/` (its `thm:sharp`,
+  `thm:copula`, `thm:diagonal` and `eq:conditional-threshold`), while
+  `conj:copula-endpoints` and conditioning on an exact value `X_{1/2} = x`
+  remain open.  The PDF was rebuilt as recorded under "Build the PDF".
+- After the paragraph following `conj:ray-decay` (subsection "Sharp
+  ray-wise decay of the joint sinc product"), in the editorial pass after
+  batch 56 of `docs/incoming/` (see `docs/incoming/README.md`): a note,
+  marked `% ed.`, records that for distinct parameters the leading
+  coefficient `-1/(2|log q_*|)` of the conjecture is proved in a window
+  sense (window supremum over `s` in `[R,2R]`, pointwise upper bound,
+  matching lower bound on any fixed proportion of each window) by Theorem
+  `thm:rays` of the unreviewed draft
+  `../Brownian_Matrix_Governing_Fabius_Smoothness/`, which also determines
+  every mixed `L^p` derivative norm of the joint density to quadratic order
+  through the matrix `min(lambda_i, lambda_j)`; the pointwise form away from
+  the zero hyperplanes and the periodic or quasiperiodic remainder remain
+  open.  The PDF was rebuilt as recorded under "Build the PDF".

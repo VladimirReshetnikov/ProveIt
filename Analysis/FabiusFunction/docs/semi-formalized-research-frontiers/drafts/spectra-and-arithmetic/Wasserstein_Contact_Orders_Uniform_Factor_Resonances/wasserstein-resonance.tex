@@ -1,0 +1,737 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage{amsmath,amssymb,amsthm,lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,microtype}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parskip}{3pt}\setlength{\parindent}{1.1em}
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}\newcommand{\E}{\mathbb E}
+\newcommand{\Un}{\mathcal U}\newcommand{\Law}{\mathcal L}
+\newcommand{\Pone}{\mathcal P_1(\R)}
+\newcommand{\sinc}{\operatorname{sinc}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Lip}{\operatorname{Lip}}
+\newcommand{\TV}{\operatorname{TV}}
+\hypersetup{pdftitle={Wasserstein Contact Orders at Uniform Factor Resonances},pdfauthor={Research note prepared with OpenAI for Vladimir Reshetnikov},pdfsubject={Sharp resonance exponents for prescribed uniform convolution factors}}
+\title{\bfseries Wasserstein Contact Orders\\at Uniform Factor Resonances}
+\author{Research note prepared with OpenAI\\for Vladimir Reshetnikov}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+Let $\mu_q$ be the law of a geometric series of independent centered uniforms of widths $1,q,q^2,\ldots$. For every fixed pair of integers $B\ge2$ and $j\ge1$, its Wasserstein distance to the class of laws having the two prescribed factors $\Un_{B^{-1}}$ and $\Un_{B^{-j}}$ has exact order $|q-B^{-1}|^j$ near the resonance $q=B^{-1}$. A bounded-source Fourier derivative estimate supplies the matching lower order. Finite signed prefix Taylor kernels, interpolation for positive tail primitives, and an order-$j$ positivity repair construct genuine probability remainders for the upper bound. We also retain the non-dyadic factor $\Un_{1/2}*\Un_{1/3}$: its distance has strictly positive one-sided linear equivalents with exact $L^1$ tangent-cone representations. A complete explicit quadratic construction and a worked cubic example illustrate the hierarchy. All parameters $B,j$ are fixed in the asymptotics; no uniform growing-depth estimate or normalized limiting coefficient at orders $j\ge2$ is asserted. The proofs are self-contained apart from elementary standard facts, and the finite checkers provide corroboration rather than formal verification.
+\end{abstract}
+
+\section{Prescribed factors and the main results}\label{sec:main}
+
+For $a>0$, let $\Un_a$ be the uniform probability law on $[-a/2,a/2]$; $a$ is its interval width. Let $Z_0,Z_1,\ldots$ be independent with law $\Un_1$, and define
+\[
+X_q=\sum_{k\ge0}q^kZ_k,\qquad\mu_q=\Law(X_q),\qquad0<q<1.
+\]
+The series converges absolutely for every outcome and $|X_q|\le R_q=1/[2(1-q)]$. Write $\Pone$ for probability laws with finite first absolute moment and use
+\[
+W_1(\mu,\eta)=\inf\E|X-Y|,
+\]
+where the infimum is over couplings. Set
+\begin{align*}
+\sigma_{\mathrm{nd}}&=\Un_{1/2}*\Un_{1/3},&
+\Delta_{\mathrm{nd}}(q)&=\inf_{\nu\in\Pone}W_1(\mu_q,\sigma_{\mathrm{nd}}*\nu),\\
+\sigma_2&=\Un_{1/2}*\Un_{1/4},&
+\Delta_2(q)&=\inf_{\nu\in\Pone}W_1(\mu_q,\sigma_2*\nu).
+\end{align*}
+We use $\delta=q-1/2$ and the Fourier convention
+\[
+\Phi_\mu(t)=\int e^{2\pi itx}\,d\mu(x),\qquad\sinc z=\frac{\sin z}{z},\quad\sinc0=1.
+\]
+Independence and bounded convergence give $\Phi_q(t)=\prod_{k\ge0}\sinc(\pi q^kt)$.
+
+The report \emph{Arithmetic Rigidity off Resonance} asks for the sharp order of $\Delta_{\mathrm{nd}}(q)$ near $1/2$ and whether adapting the remainder can cancel the leading perturbation \cite[question headed \emph{Sharp distance to a resonance}]{ProveIt}. The first theorem answers that question. The hierarchy below shows that two prescribed uniform factors can have every positive integer contact order as their separation exponent.
+
+\begin{theorem}[Positive one-sided linear coefficients]\label{thm:linear}
+Put
+\[
+P=\prod_{k\ge2}\sinc(6\pi2^{-k}),\qquad
+c_* =\frac{|P|}{6\pi(1+12\pi)}>0.
+\]
+For every $0<q<1$,
+\begin{equation}\label{eq:linear-bounds}
+\frac{|\Phi_q'(6)|}{2\pi(1+12\pi R_q)}
+\le\Delta_{\mathrm{nd}}(q)\le\frac{|q-1/2|}{4}.
+\end{equation}
+There exist constants $c_+,c_-$ with $c_*\le c_+,c_-\le1/4$ such that
+\[
+\Delta_{\mathrm{nd}}(1/2+t)=c_+t+o(t),\qquad
+\Delta_{\mathrm{nd}}(1/2-t)=c_-t+o(t)\qquad(t\downarrow0).
+\]
+Their exact tangent-cone representations are given in Section~\ref{sec:cone}. Neither their values nor their equality is asserted.
+\end{theorem}
+
+\begin{theorem}[Every fixed integer base and depth]\label{thm:hierarchy}
+For fixed integers $B\ge2$ and $j\ge1$, put
+\begin{gather*}
+\sigma_{B,j}=\Un_{B^{-1}}*\Un_{B^{-j}},\qquad
+\Delta_{B,j}(q)=\inf_{\nu\in\Pone}W_1(\mu_q,\sigma_{B,j}*\nu),\\
+P_B=\prod_{\ell\ge1}\sinc(\pi B^{-\ell}).
+\end{gather*}
+Then $P_B>0$ and
+\[
+\Delta_{B,j}(q)=\Theta_{B,j}(|q-B^{-1}|^j)\qquad(q\to B^{-1}).
+\]
+More precisely,
+\[
+\liminf_{q\to B^{-1},\ q\ne B^{-1}}
+\frac{\Delta_{B,j}(q)}{|q-B^{-1}|^j}
+\ge\frac{j!P_B}{2\pi\bigl(1+\pi B^{j+1}/(B-1)\bigr)}>0,
+\]
+and a finite upper constant exists on a fixed compact neighborhood of $B^{-1}$ in $(0,1)$. For $B=2$ one may use $[.49,.51]$, with constants depending on $j$. The result is two-sided through arbitrary real parameters. Neither the constants nor the neighborhood are required to be uniform as $B,j$ vary; existence of normalized one-sided limits for $j\ge2$ is not claimed.
+\end{theorem}
+
+Write $\sigma_j=\sigma_{2,j}$ and $\Delta_j=\Delta_{2,j}$ in the dyadic case. Thus the already defined $\sigma_2,\Delta_2$ agree with this notation. The case $j=1$ has two identical width-$1/2$ factors and is different from $\sigma_{\mathrm{nd}}$. The next result gives an explicit, although crude, upper constant at depth two.
+
+\begin{theorem}[Quadratic order for nested dyadic factors]\label{thm:quadratic}
+Put $P_3=\prod_{k\ge3}\sinc(4\pi2^{-k})>0$. Then
+\[
+\liminf_{q\to1/2,\ q\ne1/2}\frac{\Delta_2(q)}{(q-1/2)^2}
+\ge\frac{P_3}{\pi(1+8\pi)}>0,
+\]
+and, for $|q-1/2|\le1/100$,
+\[
+\Delta_2(q)\le6259(q-1/2)^2.
+\]
+Consequently $\Delta_2(q)=\Theta((q-1/2)^2)$ on both sides of the resonance. Existence of a second-order asymptotic coefficient is not claimed.
+\end{theorem}
+
+The dyadic limits allow arbitrary real parameters approaching $1/2$, including rational parameters. In particular, each fixed prescribed-factor class in the theorems has positive distance from $\mu_q$ in a sufficiently small deleted neighborhood of its resonance. The constant $6259$ is deliberately crude; it is not an estimate of an optimal second-order coefficient.
+
+The predecessor manuscript \emph{Arithmetic Convolution Factors of Fabius-Type Laws} already establishes the support-independent Fourier-value bound
+\[
+W_1(\mu,\rho*\nu)\ge
+\frac{\bigl(|\Phi_\mu(t)|-|\Phi_\rho(t)|\bigr)_+}{2\pi|t|}
+\quad(t\ne0)
+\]
+and asks for optimal approximate factorization \cite[Proposition \texttt{prop:wasserstein} and the corresponding research question]{Predecessor}. The present argument uses a bounded-source comparison of Fourier \emph{derivatives} and constructs positive remainders with matching contact orders. The ordinary Fourier-value obstruction, uniform subdivision identities, spline density formulas, and real-line transport identity are classical or already present in the cited sources; no global novelty claim is made.
+
+\section{A Fourier obstruction with only the source bounded}\label{sec:fourier}
+
+\begin{lemma}[Derivative control by transport]\label{lem:derivative}
+If $\mu$ is supported on $[-R,R]$ and $\eta\in\Pone$, then for every real $t$,
+\[
+|\Phi_\mu'(t)-\Phi_\eta'(t)|
+\le2\pi(1+2\pi|t|R)W_1(\mu,\eta).
+\]
+\end{lemma}
+\begin{proof}
+Finite first moments justify differentiation under the integral. For any coupling with $|X|\le R$,
+\begin{align*}
+Xe^{2\pi itX}-Ye^{2\pi itY}
+&=X(e^{2\pi itX}-e^{2\pi itY})+(X-Y)e^{2\pi itY},\\
+|Xe^{2\pi itX}-Ye^{2\pi itY}|
+&\le(1+2\pi|t|R)|X-Y|.
+\end{align*}
+Take expectations, multiply by $2\pi$, and infimize over couplings. Only the first coordinate is bounded; no second moment or bounded support for $\eta$ is required.
+\end{proof}
+
+The function $x\mapsto xe^{2\pi itx}$ is not globally Lipschitz. The proof uses the displayed asymmetric pairwise estimate rather than claiming a global Lipschitz constant. If a compactly supported factor $\sigma$ satisfies
+\[
+\Phi_\sigma(t_0)=\Phi_\sigma'(t_0)=0,
+\]
+then every $\sigma*\nu$, $\nu\in\Pone$, has derivative zero at $t_0$ by the product rule. Therefore
+\begin{equation}\label{eq:obstruction}
+\inf_{\nu\in\Pone}W_1(\mu,\sigma*\nu)
+\ge\frac{|\Phi_\mu'(t_0)|}{2\pi(1+2\pi|t_0|R)}.
+\end{equation}
+Restricting remainders to $\Pone$ loses no finite-cost candidate here: for bounded $S\sim\sigma$, finite first moment of $S+Z$ implies finite first moment of $Z$ by $|Z|\le|S+Z|+|S|$.
+
+\subsection{The linear defect at frequency six}
+Both factors of $\Phi_{\sigma_{\mathrm{nd}}}(t)=\sinc(\pi t/2)\sinc(\pi t/3)$ vanish at $t=6$. To compute the source derivative, separate the first uniform:
+\[
+\Phi_q(t)=\sinc(\pi t)H_q(t),
+\]
+where $H_q$ is the characteristic function of the bounded tail $\sum_{k\ge1}q^kZ_k$. The ordinary product rule, rather than differentiation of an infinite product, gives
+\begin{equation}\label{eq:linear-defect}
+\Phi_q'(6)=\frac16\sinc(6\pi q)P(q),\qquad
+P(q)=\prod_{k\ge2}\sinc(6\pi q^k).
+\end{equation}
+The bound $|1-\sinc x|\le x^2/6$ makes these tail products uniformly convergent on any small compact neighborhood of $1/2$: the supremum deviations are dominated by a summable geometric series. Thus $P(q)\to P$. At $q=1/2$, no factor vanishes; the $k=2$ factor is negative and every later factor is positive. Summable deviations from one imply $P\ne0$.
+
+The exact identity
+\[
+\sinc(6\pi q)=-\frac{\delta}{q}\sinc(6\pi\delta)
+\]
+shows that $\Phi_q'(6)/\delta\to-P/3$. Since $R_q\to1$, the obstruction yields
+\begin{equation}\label{eq:liminf-linear}
+\liminf_{q\to1/2,\ q\ne1/2}\frac{\Delta_{\mathrm{nd}}(q)}{|q-1/2|}\ge c_*.
+\end{equation}
+No derivative of the tail product with respect to $q$ is needed.
+
+\subsection{An adaptive remainder at cost one quarter}
+Let $D_3$ be uniform on $\{-1/3,0,1/3\}$ and independent of $Z^*\sim\Un_1$. The three intervals in this mixture partition $[-1/2,1/2]$, so $Z^*/3+D_3$ has law $\Un_1$. With all variables independent, set
+\[
+A_q=Z^*/3+qZ_1+D_3+\sum_{k\ge2}q^kZ_k,
+\quad
+B_q=Z^*/3+\tfrac12Z_1+D_3+\sum_{k\ge2}q^kZ_k.
+\]
+Then $\Law(A_q)=\mu_q$, while $\Law(B_q)=\sigma_{\mathrm{nd}}*\nu_q$ for the compactly supported remainder
+\[
+\nu_q=\Law\left(D_3+\sum_{k\ge2}q^kZ_k\right).
+\]
+The coupling cost is $\E|A_q-B_q|=|\delta|\E|Z_1|=|\delta|/4$, proving \eqref{eq:linear-bounds}. It also proves $\Delta_{\mathrm{nd}}(1/2)=0$. Adapting the entire remainder improves the source report's upper estimate $|q-1/2|/[2(1-q)]$, while \eqref{eq:liminf-linear} prevents cancellation of the linear order.
+
+\section{CDF differentiation and the one-sided coefficients}\label{sec:cone}
+
+Write $F_\eta(x)=\eta(( -\infty,x])$. The classical one-dimensional formula of Vallender \cite{Vallender} is
+\begin{equation}\label{eq:cdf}
+W_1(\mu,\eta)=\|F_\mu-F_\eta\|_{L^1(\R)}\qquad(\mu,\eta\in\Pone).
+\end{equation}
+For completeness, any coupling satisfies
+$|F_\mu(x)-F_\eta(x)|\le\E|\mathbf1_{X\le x}-\mathbf1_{Y\le x}|$.
+Integrate and use Tonelli to obtain the lower bound, since the integral of the indicator difference is $|X-Y|$. For the common-uniform quantile coupling, the two events are nested intervals in the same uniform coordinate; equality holds pointwise and then after integration. This proves \eqref{eq:cdf} without density assumptions.
+
+\begin{lemma}[A quadratic CDF Taylor remainder]\label{lem:taylor}
+Fix $q_0\in(0,1)$, set
+\[
+T_q=\sum_{k\ge1}q^kZ_k,\qquad
+V_{q_0}=\sum_{k\ge1}kq_0^{k-1}Z_k,\qquad
+v_{q_0}(x)=-\E[V_{q_0}\mathbf1_{(-1/2,1/2)}(x-T_{q_0})].
+\]
+Then $v_{q_0}\in L^1(\R)$ and, locally in $q$,
+\[
+\|F_{\mu_q}-F_{\mu_{q_0}}-(q-q_0)v_{q_0}\|_1=O((q-q_0)^2).
+\]
+For $q,q_0\in[.49,.51]$, the constant may be taken to be $9$.
+\end{lemma}
+\begin{proof}
+Let $h$ be the CDF of $\Un_1$ and $g=\mathbf1_{(-1/2,1/2)}$. For every real displacement $a$,
+\[
+\|h(\cdot-a)-h+ag\|_1\le a^2.
+\]
+For $a>0$, write the remainder as $-\int_0^a[g(\cdot-u)-g]\,du$ and use $\|g(\cdot-u)-g\|_1=2\min(u,1)\le2u$. Reverse the integral for $a<0$. Although $h$ is not integrable, the displayed difference is.
+
+Choose a fixed $b<1$ bounding $q,q_0$ in a neighborhood and put
+\[
+M_1=\frac1{2(1-b)^2},\qquad M_2=\frac1{(1-b)^3}.
+\]
+Uniform convergence of the differentiated bounded random series gives, with $\delta=q-q_0$,
+\[
+|T_q-T_{q_0}|\le M_1|\delta|,
+\quad |T_q-T_{q_0}-\delta V_{q_0}|\le\tfrac12M_2\delta^2.
+\]
+Conditioning on the tail gives $F_{\mu_q}(x)=\E h(x-T_q)$. Apply the scalar translation estimate outcome by outcome and average. Replacing $a=T_q-T_{q_0}$ by $\delta V_{q_0}$ adds at most $M_2\delta^2/2$, since $\|g\|_1=1$. The total error is bounded by $(M_1^2+M_2/2)\delta^2$. Also $\|v_{q_0}\|_1\le\E|V_{q_0}|<\infty$. For $b=.51$,
+\[
+M_1^2+M_2/2=\frac1{4(.49)^4}+\frac1{2(.49)^3}<9.
+\]
+\end{proof}
+
+The independent leading uniform supplies the smoothing in this argument. Differentiability of the coupled random variable alone would not establish $L^1$ differentiability of its CDF.
+
+\begin{lemma}[Distance to a convex tangent cone]\label{lem:cone}
+Let $D$ be a convex subset of a real normed space, with $0\in D$, and let
+$K=\overline{\bigcup_{a\ge0}aD}$. For any $v$,
+\[
+\lim_{t\downarrow0}\frac{\dist(tv,D)}t=\dist(v,K).
+\]
+The same limit holds with $tv$ replaced by $tv+o(t)$.
+\end{lemma}
+\begin{proof}
+Rescaling gives $\dist(tv,D)/t=\dist(v,t^{-1}D)$. For $0<t<u$, convexity and $0\in D$ imply $u^{-1}D\subseteq t^{-1}D$. The distances decrease to the distance from the union, which equals distance from its closure. The union is a cone, because $ad+be=(a+b)[ad/(a+b)+be/(a+b)]$ and the bracket is a convex combination when $a+b>0$; the zero case is immediate. Finally distance to a nonempty set is one-Lipschitz. No nearest point or closedness of $D$ is required.
+\end{proof}
+
+Let $F_0=F_{\mu_{1/2}}$ and define the actual subset of $L^1(\R)$
+\[
+D_{\mathrm{nd}}=\{F_{\sigma_{\mathrm{nd}}*\nu}-F_0:\nu\in\Pone\},
+\qquad K_{\mathrm{nd}}=\overline{\bigcup_{a\ge0}aD_{\mathrm{nd}}}^{\,L^1}.
+\]
+The CDF formula makes every element integrable. Mixtures make $D_{\mathrm{nd}}$ convex, and the resonant factorization gives $0\in D_{\mathrm{nd}}$. Moreover
+\[
+\Delta_{\mathrm{nd}}(q)=\dist_{L^1}(F_{\mu_q}-F_0,D_{\mathrm{nd}}).
+\]
+Lemmas~\ref{lem:taylor} and \ref{lem:cone} yield the exact formulas
+\begin{equation}\label{eq:slopes}
+c_+=\dist_{L^1}(v_{1/2},K_{\mathrm{nd}}),\qquad
+c_-=\dist_{L^1}(-v_{1/2},K_{\mathrm{nd}}).
+\end{equation}
+The bounds in Theorem~\ref{thm:linear} and \eqref{eq:liminf-linear} pass to these limits and give $c_*\le c_\pm\le1/4$, completing its proof. The CDF's quadratic Taylor error does not imply a quadratic error for $\Delta_{\mathrm{nd}}$: no rate of convergence of the scaled feasible sets has been proved.
+
+\section{Every dyadic depth has its own contact order}\label{sec:hierarchy}
+
+We now prove Theorem~\ref{thm:hierarchy} in the dyadic case. Fix $j\ge1$ throughout and put
+\[
+P_{\mathrm{dy}}=\prod_{\ell\ge1}\sinc(\pi2^{-\ell}),\qquad
+\sigma_j=\Un_{1/2}*\Un_{2^{-j}},\qquad
+\Delta_j(q)=\inf_{\nu\in\Pone}W_1(\mu_q,\sigma_j*\nu).
+\]
+The product is positive: every factor is positive and the deviations from one are summable. Notice that $j=1$ prescribes two copies of $\Un_{1/2}$, whereas the factor in Theorem~\ref{thm:linear} is $\Un_{1/2}*\Un_{1/3}$.
+
+\subsection{The order of the Fourier defect}
+At $T=2^j$, the prescribed factor has a double zero. Separating the source's fixed first uniform and differentiating only the ordinary two-factor product gives
+\[
+\Phi_q'(T)=\frac1T\prod_{i=1}^j\sinc(\pi Tq^i)
+                    \prod_{i\ge j+1}\sinc(\pi Tq^i).
+\]
+The tail tends to $P_{\mathrm{dy}}$ by uniform convergence of the product near $1/2$. The first $j$ moving factors have simple parameter zeros, with derivatives
+\[
+\left.\frac{d}{dq}\sinc(\pi2^jq^i)\right|_{q=1/2}
+=(-1)^{2^{j-i}}2i.
+\]
+All signs are positive except the last. Their product is $-2^jj!$, and hence
+\begin{equation}\label{eq:depth-defect}
+\Phi_q'(2^j)=-j!P_{\mathrm{dy}}\delta^j+o(|\delta|^j).
+\end{equation}
+Lemma~\ref{lem:derivative} and $R_q\to1$ prove
+\begin{equation}\label{eq:depth-lower}
+\liminf_{q\to1/2,\ q\ne1/2}\frac{\Delta_j(q)}{|q-1/2|^j}
+\ge\frac{j!P_{\mathrm{dy}}}{2\pi(1+2^{j+1}\pi)}>0.
+\end{equation}
+The upper bound requires positive remainders approximating all variations below order $j$. A first-order energy estimate alone cannot supply this at arbitrary depth.
+
+\subsection{Interpolation for positive tail primitives}
+
+\begin{lemma}[Tail interpolation]\label{lem:tail-interpolation}
+Let $f\ge0$ be $M$-Lipschitz on $\R$, supported on $[-s,s]$, with $M>0$. Put $H_0(y)=f(y)$ and, for integers $r\ge1$ and $y\le s$,
+\[
+H_r(y)=\frac1{(r-1)!}\int_0^\infty t^{r-1}f(y+t)\,dt.
+\]
+For $0\le l<r$ there are finite constants $A_{r,l}$, depending only on the indices, such that
+\begin{equation}\label{eq:tail-interpolation}
+H_l(y)\le A_{r,l}M^{(r-l)/(r+1)}H_r(y)^{(l+1)/(r+1)}.
+\end{equation}
+One may take $A_{r,0}=((r+1)!)^{1/(r+1)}$ and, for $1\le l<r$,
+\[
+A_{r,l}=\frac{((r+1)!)^{1/(r+1)}}{l!}
+       +\frac1{(l+1)(l-1)!}+\frac{(r-1)!}{(l-1)!}.
+\]
+\end{lemma}
+\begin{proof}
+Write $a=f(y)$. Since $f(s)=0$, the lower cone $(a-Mt)_+$ fits before $s$. Integrating it yields
+\[
+H_r(y)\ge\frac{a^{r+1}}{(r+1)!M^r},
+\]
+which proves the case $l=0$. If $H_r=0$, positivity and continuity imply that every $H_l=0$. Otherwise set $h=(H_r/M)^{1/(r+1)}$. For $1\le l<r$, split the defining integral at $h$. The inequalities $f(y+t)\le a+Mt$ and $t^{l-1}\le h^{l-r}t^{r-1}$ on the respective regions give
+\[
+H_l\le\frac{ah^l}{l!}
+       +\frac{Mh^{l+1}}{(l+1)(l-1)!}
+       +\frac{(r-1)!}{(l-1)!}h^{l-r}H_r.
+\]
+Substitute the cone bound for $a$ and the chosen $h$. Every term has the powers in \eqref{eq:tail-interpolation}. The argument still applies if $h>s-y$, because $f$ is zero beyond the endpoint.
+\end{proof}
+
+For the application put $r=j-1$. If $1\le k\le r$ and $r-k\le l\le r$, the ratios
+\begin{equation}\label{eq:weighted-primitives}
+\frac{H_l^{j/k}}{H_r^{j/k-1}}
+\end{equation}
+are bounded wherever $H_r>0$, provided $M$ and $H_r$ are bounded. For $l<r$, the exponent of $H_r$ after interpolation is $(l-r+k)/k\ge0$; for $l=r$ the ratio is $H_r$. The endpoint range $l\ge r-k$ is therefore decisive. This is a proved statement for positive tail primitives, rather than an assumption about derivative ratios of arbitrary nonnegative smooth functions.
+
+\subsection{Finite signed kernels for the prefix variations}
+Assume $j\ge2$ and put $r=j-1$. Define the finite prefix
+\[
+K(\theta)=\Un_1*\Un_\theta*\Un_{\theta^2}*\cdots*\Un_{\theta^j}.
+\]
+We construct compactly supported finite signed measures $\kappa_0,\ldots,\kappa_r$ such that
+\begin{equation}\label{eq:kernel-identities}
+\sigma_j*\kappa_k=K^{(k)}(1/2),\qquad0\le k\le r,
+\end{equation}
+where derivatives may initially be read against smooth test functions. At order zero take the probability law
+\[
+\kappa_0=\Un_1*\Un_{2^{-2}}*\cdots*\Un_{2^{-(j-1)}}.
+\]
+The product after $\Un_1$ is empty for $j=2$, so $\kappa_0$ is a convolution of exactly $r$ uniforms.
+
+For $k\ge1$, the finite chain and Leibniz rules expand $K^{(k)}(1/2)$ into scalar multiples of
+\[
+\Un_1*\mathop{*}_{i=1}^j
+ \left.(\partial_a^{h_i}\Un_a)\right|_{a=2^{-i}},
+\qquad \sum_i h_i\le k.
+\]
+At most $k<j$ moving factors are differentiated. Choose an undifferentiated index $b$, for example the least one. Exact subdivision into equal intervals supplies finite digit probability laws $D$ and $E_b$ with
+\[
+\Un_1=\Un_{1/2}*D,\qquad
+\Un_{2^{-b}}=\Un_{2^{-j}}*E_b.
+\]
+Extract these two fixed prescribed factors. The remaining expression consists of $D,E_b$ and $r$ uniform or width-derivative factors, of total derivative order at most $k$. Summing these remainders with their scalar coefficients defines $\kappa_k$. This is a finite convolution construction; no Fourier division is used.
+
+\paragraph{Why the kernels are measures.}
+For $n$ centered uniforms of positive widths $a_1,\ldots,a_n$, their convolution density is the classical truncated-power expression \cite{BradleyGupta}
+\begin{equation}\label{eq:spline}
+B_a(x)=\frac1{(n-1)!\prod_i a_i}
+ \sum_{\varepsilon\in\{-1,1\}^n}\left(\prod_i\varepsilon_i\right)
+ \left(x+\tfrac12\sum_i\varepsilon_i a_i\right)_+^{n-1}.
+\end{equation}
+For $n=1$ the zeroth truncated power is a Heaviside function, with irrelevant endpoint convention. One can derive \eqref{eq:spline} by convolving the expressions
+$[H(x+a_i/2)-H(x-a_i/2)]/a_i$ and integrating truncated powers repeatedly.
+
+Differentiate \eqref{eq:spline} in the widths to total order $m\le n$. Each term is a smooth coefficient times a spatial derivative of order at most $m$ of a translated truncated power of degree $n-1$. Derivatives of order less than $n$ are locally integrable functions; order $n$ gives an atom. No derivative of an atom occurs. The entire expression has compact support in the original support interval, since outside that interval the family vanishes in a parameter neighborhood. It is therefore a finite signed measure. Applying this with $n=r$ and $m\le k\le r$, then convolving by the finite digit laws, proves the required measure property for every $\kappa_k$. Equation~\eqref{eq:kernel-identities} also gives mass zero for $k\ge1$, while $\kappa_0$ has mass one.
+
+\paragraph{Common support and endpoint form.}
+The prefix support radius at resonance is $1-2^{-(j+1)}$. Removing the two prescribed radii leaves
+\[
+L=\frac34-2^{-j},\qquad \supp\kappa_k\subseteq[-L,L]\quad(0\le k\le r).
+\]
+This holds term by term in the extraction construction. There are only finitely many digit locations and polynomial knots for fixed $j$. Consequently some $\varepsilon_j>0$ separates the right endpoint $L$ from every earlier knot of every kernel; take it also inside the last polynomial interval of $\kappa_0$.
+
+Near the right endpoint, a convolution of $r$ uniforms has density a positive multiple of $(L-x)_+^{r-1}/(r-1)!$. Up to $k$ width derivatives produce a linear combination of spatial derivatives of this expression of orders at most $k$. Digits alter coefficients or contribute only earlier support endpoints. Thus for every continuous tail density $f$ supported on $[-s,s]$, and for $L+s-\varepsilon_j<x<L+s$,
+\begin{equation}\label{eq:kernel-endpoints}
+(\kappa_k*f)(x)=\sum_{d=0}^k c_{k,d}H_{r-d}(x-L),\qquad
+(\kappa_0*f)(x)=c_0H_r(x-L),\quad c_0>0.
+\end{equation}
+The constants depend only on the fixed kernels; $c_0$ is the reciprocal product of the $r$ widths of $\kappa_0$. At $k=r$, endpoint atoms give the term $H_0=f$, never derivatives of $f$. All kernels are even, so reflected formulas hold at the left endpoint. This endpoint structure follows from the finite formula, not just from support containment.
+
+\subsection{Adaptive tails and weighted integrability}
+Work on $I=[49/100,51/100]$ and write $\alpha=49/100$. Define
+\[
+\tau_q=\Law\left(\sum_{i\ge j+1}q^iZ_i\right),\qquad
+s(q)=\frac{q^{j+1}}{2(1-q)},\qquad f_q=\frac{d\tau_q}{dx}.
+\]
+Then $\mu_q=K(q)*\tau_q$. Finite uniform convolutions followed by the remaining bounded tail show that $f_q$ is smooth, nonnegative and even, with support the full interval $[-s(q),s(q)]$. Full interval support follows by using a finite prefix with positive interior density and a remaining deterministic radius tending to zero. Differentiating distinct uniform factors into pairs of endpoint atoms gives the uniform bounds
+\begin{align}
+\|f_q\|_\infty&\le\alpha^{-(j+1)},&
+\Lip(f_q)&\le\alpha^{-(2j+3)},\label{eq:tail-bounds}\\
+\|f_q^{(d)}\|_1&\le 2^d\alpha^{-[d(j+1)+d(d-1)/2]},
+&&1\le d\le j.\notag
+\end{align}
+The remaining factors supply a probability density; additional undifferentiated uniforms give a smooth representative of any required finite order. Each differentiated width contributes $2/q^i$ to the total-variation bound. The Lipschitz bound uses the first two uniform factors as in \eqref{eq:f-bounds}.
+
+Put
+\[
+\rho_q=\kappa_0*f_q,\qquad w_{k,q}=\kappa_k*f_q,\qquad p_k=j/k\quad(1\le k\le r).
+\]
+We claim
+\begin{equation}\label{eq:weighted-integrals}
+M_k^*:=\sup_{q\in I}\int_{\rho_q>0}
+       \frac{|w_{k,q}|^{p_k}}{\rho_q^{p_k-1}}\,dx<\infty.
+\end{equation}
+Near each endpoint, use \eqref{eq:kernel-endpoints}, \eqref{eq:weighted-primitives}, and
+$|\sum_{i=1}^N a_i|^p\le N^{p-1}\sum_i|a_i|^p$ for $p\ge1$.
+The indices are precisely $l=r-d\ge r-k$, so the ratios are uniformly bounded. All Lipschitz constants, primitive bounds, and support lengths are uniform on $I$.
+
+For the rest of the support, $\rho_q(x)>0$ whenever $|x|<L+s(q)$: the density of $\kappa_0$ is positive in its support interior, and every open interval inside the tail support has positive mass. The map $(q,x)\mapsto\rho_q(x)$ is jointly continuous by the shared-coordinate tail coupling and dominated convergence applied to the fixed bounded piecewise-polynomial density of $\kappa_0$. In the one-uniform case its finitely many discontinuities are hit with probability zero because $\tau_q$ has a density. Hence $\rho_q$ has a positive minimum on the compact set
+\[
+\{(q,x):q\in I,\ |x|\le L+s(q)-\varepsilon_j/2\},
+\]
+after shrinking $\varepsilon_j$ if needed. Also
+$\|w_{k,q}\|_\infty\le\|\kappa_k\|_{\TV}\|f_q\|_\infty$ uniformly. These interior bounds and the separate endpoint estimates prove \eqref{eq:weighted-integrals}. Uniform positivity at moving support endpoints is neither true nor needed.
+
+\subsection{A signed approximation with an order j error}
+Define the mass-one signed density
+\begin{equation}\label{eq:depth-signed}
+\ell_q=\rho_q+\sum_{k=1}^r\frac{\delta^k}{k!}w_{k,q}.
+\end{equation}
+Hold the current $q$ and its density $f_q$ fixed, and Taylor expand
+$\theta\mapsto K(\theta)*f_q$ at $\theta=1/2$ through order $r=j-1$.
+To justify this in $L^1$, set $Y_\theta=\sum_{i=0}^j\theta^iZ_i$ on an independent product space. The density is $\E f_q(\cdot-Y_\theta)$. All derivatives of $Y_\theta$ through order $j$ are uniformly bounded on $I$. Repeated differentiation is a finite sum of translates of $f_q^{(d)}$, multiplied by products of those bounded derivatives. Bounds~\eqref{eq:tail-bounds} therefore bound the $j$th $L^1$ parameter derivative uniformly. Taylor's theorem and \eqref{eq:kernel-identities} give some finite $A_j$ such that
+\begin{equation}\label{eq:depth-taylor}
+\|\mathrm{density}(\mu_q)-\mathrm{density}(\sigma_j*(\ell_q\,dx))\|_1
+\le A_j|\delta|^j.
+\end{equation}
+Only the finite prefix is Taylor expanded. Keeping the adaptive tail fixed during this expansion omits no term, because the same current tail occurs on both sides.
+
+All signed terms have a uniform compact support bound and the difference has total mass zero. A signed measure $\zeta$ of mass zero supported in $[-R,R]$ satisfies
+$\|F_\zeta\|_1\le R\|\zeta\|_{\TV}$: its positive and negative parts have equal mass and transport distance at most $2R$. Thus \eqref{eq:depth-taylor} also bounds the cumulative $L^1$ error by a finite constant times $|\delta|^j$.
+
+\subsection{Repairing positivity at order j}
+Let $n_q=\int(\ell_q)_-$ and set $A_k=|\delta|^k|w_{k,q}|/k!$. On the negative region $\sum_{k=1}^r A_k>\rho_q$. Choose a largest term $A_k$. Then $A_k>\rho_q/r$ and $\sum_iA_i\le rA_k$, so
+\[
+(\ell_q)_-\le rA_k\le
+\frac{r^{p_k}A_k^{p_k}}{\rho_q^{p_k-1}}.
+\]
+All $w_{k,q}$ vanish outside the support of $\rho_q$, and $\rho_q$ is positive in its interior. Summing over possible largest indices and using $kp_k=j$ gives
+\begin{equation}\label{eq:depth-negative}
+n_q\le|\delta|^j\sum_{k=1}^r
+\frac{r^{p_k}}{(k!)^{p_k}}M_k^*=O_j(|\delta|^j).
+\end{equation}
+The exponents $p_k=j/k$ allow all subcritical variations to be repaired at the same target order. A single chi-square bound would not do this for every $k$.
+
+The normalized positive part
+\[
+\widehat\nu_q(dx)=\frac{(\ell_q(x))_+}{1+n_q}\,dx
+\]
+is a genuine compactly supported probability remainder. Its signed difference from $\ell_q\,dx$ has mass zero and total variation at most $2n_q$. Uniform support bounds give cumulative $L^1$ error $O_j(|\delta|^j)$, and convolution by $\sigma_j$ contracts that norm. Combining this with \eqref{eq:depth-taylor} and the classical CDF formula proves
+\[
+W_1(\mu_q,\sigma_j*\widehat\nu_q)\le C_j|\delta|^j
+\quad(q\in I)
+\]
+for a finite constant $C_j$. The Wasserstein expression has probability endpoints; signed intermediate terms are used only inside an $L^1$ triangle inequality.
+
+For $j=1$, write $\mu_q=\Un_1*\Un_q*\tau_q$, with tail starting at index two. The refinement $\Un_1=\Un_{1/2}*D$ gives the candidate remainder $D*\tau_q$. Its convolution with $\sigma_1$ is $\Un_1*\Un_{1/2}*\tau_q$, at coupling cost $|\delta|/4$. Together with \eqref{eq:depth-lower}, this proves the dyadic hierarchy for every fixed $j\ge1$.
+
+\section{Integer base resonances}\label{sec:integer-base}
+
+The same argument proves the full statement of Theorem~\ref{thm:hierarchy}. Fix integers $B\ge2$ and $j\ge1$, and set
+\[
+q_0=B^{-1},\quad \sigma_{B,j}=\Un_{B^{-1}}*\Un_{B^{-j}},\quad
+P_B=\prod_{\ell\ge1}\sinc(\pi B^{-\ell})>0.
+\]
+At $T=B^j$ the prescribed factor has a double zero. The derivative of the first source factor at the integer $T$ is $(-1)^T/T$, while
+\[
+\left.\frac{d}{dq}\sinc(\pi B^jq^i)\right|_{q=q_0}
+=(-1)^{B^{j-i}}Bi\qquad(1\le i\le j).
+\]
+The remaining product tends to $P_B$. With $\delta_B=q-q_0$, this yields
+\begin{equation}\label{eq:base-defect}
+\Phi_q'(B^j)=\epsilon_{B,j}j!P_B\delta_B^j+o(|\delta_B|^j),\qquad
+\epsilon_{B,j}=\begin{cases}-1,&B\text{ even},\\(-1)^{j+1},&B\text{ odd}.
+\end{cases}
+\end{equation}
+Since $R_{q_0}=B/[2(B-1)]$, Lemma~\ref{lem:derivative} proves the lower coefficient in Theorem~\ref{thm:hierarchy}.
+
+For completeness, all ingredients of the upper construction persist as follows. Choose a fixed compact interval $I_B=[\alpha_B,\beta_B]\subset(0,1)$ with $q_0$ in its interior; for example $I_B=[3/(4B),5/(4B)]$. For $j\ge2$, use the same finite prefix $K(\theta)$ and expand it at $q_0$ to order $r=j-1$. Every summand has an undifferentiated moving index $b$, and the exact integer refinements
+\[
+\Un_1=\Un_{B^{-1}}*D_B,\qquad
+\Un_{B^{-b}}=\Un_{B^{-j}}*E_{B,b}
+\]
+extract the two prescribed factors. The second subdivision has $B^{j-b}$ pieces. The base remainder is
+\[
+\kappa_0=\Un_1*\Un_{B^{-2}}*\cdots*\Un_{B^{-(j-1)}},
+\qquad L_B=\tfrac12\left(1+\sum_{i=2}^{j-1}B^{-i}\right).
+\]
+There are still $r$ uniforms and at most $r$ width derivatives after extraction. Formula~\eqref{eq:spline} proves that the kernels are finite signed measures supported in $[-L_B,L_B]$. Their finitely many knots leave a fixed positive endpoint gap, so their convolved endpoint expressions are exactly of the form \eqref{eq:kernel-endpoints}, with $r=j-1$ and constants depending on $B,j$.
+
+The tail starts at index $j+1$, has support radius $q^{j+1}/[2(1-q)]$, and satisfies \eqref{eq:tail-bounds} with $\alpha$ replaced by $\alpha_B$. The positive-tail lemma is independent of the base. It supplies the same weighted powers $p_k=j/k$; joint continuity and positivity on a compact interior supply finite weighted integrals. The prefix Taylor estimate and the positive-part repair \eqref{eq:depth-negative} therefore give
+\[
+\Delta_{B,j}(q)\le C_{B,j}|q-B^{-1}|^j\qquad(q\in I_B)
+\]
+for a finite $C_{B,j}$. When $j=1$, the direct refinement and shared-uniform coupling give $|q-B^{-1}|/4$ just as before. This completes the proof at every fixed integer base. No estimate is asserted uniformly in varying $B$ or $j$.
+
+\section{An explicit quadratic construction}\label{sec:quadratic-lower}
+
+The factor $\sigma_2$ has a double Fourier zero at $t=4$. Separating the source's first uniform as before gives
+\[
+\Phi_q'(4)=\tfrac14\sinc(4\pi q)\sinc(4\pi q^2)P_3(q),
+\qquad P_3(q)=\prod_{k\ge3}\sinc(4\pi q^k).
+\]
+Uniformly summable deviations from one imply $P_3(q)\to P_3>0$. The two moving factors satisfy
+\[
+\sinc(4\pi q)=2\delta+O(\delta^2),\qquad
+\sinc(4\pi q^2)=-4\delta+O(\delta^2).
+\]
+Thus $\Phi_q'(4)=-2P_3\delta^2+o(\delta^2)$. Applying \eqref{eq:obstruction} with $t_0=4$ and $R_q\to1$ proves the lower bound in Theorem~\ref{thm:quadratic}. A quadratic upper bound requires a new step: adjusting the remainder to cancel the first variation while preserving positivity.
+
+\subsection{An explicit signed first variation of the remainder}\label{sec:signed}
+
+For this section write $a=1/2$, $b=1/4$, and use the later tail
+\[
+T_q=\sum_{k\ge3}q^kZ_k,\qquad\tau_q=\Law(T_q),\qquad\tau_0=\tau_{1/2}.
+\]
+Then $\mu_q=\Un_1*\Un_q*\Un_{q^2}*\tau_q$, and at resonance
+\[
+\mu_{1/2}=\sigma_2*\nu_0,\qquad\nu_0=\Un_1*\tau_0.
+\]
+Let $D_2$ be uniform on $\{-1/4,1/4\}$ and $D_4$ uniform on $\{-3/8,-1/8,1/8,3/8\}$. Exact refinements of the uniform law give
+\[
+\Un_1=\Un_a*D_2=\Un_b*D_4.
+\]
+Against smooth compactly supported test functions, the derivative of a width-$a$ uniform is the finite signed measure
+\[
+\dot\Un_a=-\frac1a\Un_a+\frac{\delta_{-a/2}+\delta_{a/2}}{2a}.
+\]
+This follows by differentiating $a^{-1}\int_{-a/2}^{a/2}\varphi(x)\,dx$. Both moving widths $q$ and $q^2$ have derivative one at $1/2$. These identities suggest the signed remainder derivative
+\begin{equation}\label{eq:w-symbolic}
+w=D_2*\dot\Un_a*\tau_0+D_4*\dot\Un_b*\tau_0+\Un_1*\dot\tau_0.
+\end{equation}
+We next realize every term as an integrable signed density.
+
+\subsubsection{Tail regularity and a weighted density}
+The tail $T_{1/2}$ is supported on $[-1/8,1/8]$. Its first two summands have widths $1/8$ and $1/16$. Their trapezoidal convolution density, followed by convolution with the remaining probability law, gives a continuous density $f$ satisfying
+\begin{equation}\label{eq:f-bounds}
+0\le f\le8,\qquad\Lip(f)\le128,\qquad\supp f\subseteq[-1/8,1/8].
+\end{equation}
+Indeed convolution of uniform densities of widths $A,B$ has derivative equal almost everywhere to the difference of two translates of an interval indicator divided by $AB$. Its derivative bound is $1/(AB)=128$ here, and its density bound is $1/A=8$. Convolution with a probability measure preserves both bounds.
+
+The support of $\tau_0$ is the full interval: any open subinterval in its interior has positive probability by taking a sufficiently long finite uniform sum with positive interior density and a remaining deterministic support radius smaller than the chosen interval's margin. Therefore
+\[
+\rho(x)=\int_{x-1/2}^{x+1/2}f(y)\,dy
+\]
+is the density of $\nu_0$, is positive on $(-5/8,5/8)$, equals one on $[-3/8,3/8]$, and vanishes outside $[-5/8,5/8]$.
+
+Define $V=\sum_{k\ge3}k2^{-(k-1)}Z_k$. The series converges uniformly and $|V|\le1$. The signed measure $M(A)=\E[V\mathbf1_{T_{1/2}\in A}]$ has total variation dominated by $\tau_0$, so it has a density $m$ with $|m|\le f$ almost everywhere. Differentiation of bounded random series against a smooth test function gives
+\[
+\left.\frac{d}{dq}\E\varphi(T_q)\right|_{q=1/2}
+=\E[V\varphi'(T_{1/2})]=\int\varphi'(y)m(y)\,dy.
+\]
+Thus $\dot\tau_0=-\partial_xM$ as a distribution, and $\Un_1*\dot\tau_0$ is the ordinary signed density $m(x-1/2)-m(x+1/2)$.
+
+\subsubsection{The exact density and its deconvolution identity}
+Expanding the discrete convolutions in \eqref{eq:w-symbolic} yields
+\begin{align}\label{eq:w-density}
+w(x)={}&-6\rho(x)+f(x+1/2)+f(x+1/4)+2f(x)\notag\\
+&+f(x-1/4)+f(x-1/2)+m(x-1/2)-m(x+1/2).
+\end{align}
+It is integrable, supported on $[-5/8,5/8]$, and has total mass zero: the $f$ coefficients sum to six and the two $m$ translates cancel in mass. Differentiating the finite convolution decomposition of $\mu_q$ and using the exact refinements proves
+\[
+\dot\mu_{1/2}=\sigma_2*w
+\]
+as distributions, hence as finite signed measures. This calculation does not divide a Fourier transform at its zeros. If $v=v_{1/2}$ is the CDF derivative in Lemma~\ref{lem:taylor}, then
+\begin{equation}\label{eq:v-signed}
+v=F_{\sigma_2*w}\quad\text{almost everywhere}.
+\end{equation}
+Both sides have the same distributional derivative and vanish to the left of their compact supports, so their possible constant difference is zero. Cumulative functions of compactly supported signed measures of total mass zero are integrable.
+
+\subsection{Finite energy and positivity repair}\label{sec:repair}
+
+\begin{lemma}[Finite chi-square energy]\label{lem:energy}
+The signed density in \eqref{eq:w-density} satisfies
+\[
+K=\int_{\rho>0}\frac{w(x)^2}{\rho(x)}\,dx\le4735<5000.
+\]
+\end{lemma}
+\begin{proof}
+On $[-3/8,3/8]$, $\rho=1$ and the bounds $\rho\le1$, $f\le8$, $|m|\le8$ give $|w|\le6+6\cdot8+2\cdot8=70$. This region contributes at most $(3/4)70^2=3675$.
+
+On the right boundary $(3/8,5/8)$, put $y=x-1/2$. All shifted terms except those at $x-1/2$ vanish, so
+\[
+\rho(x)=G(y)=\int_y^{1/8}f(u)\,du,\qquad
+w(x)=-6\rho(x)+f(y)+m(y).
+\]
+The nonnegative, $128$-Lipschitz density has $f(1/8)=0$, whence
+\[
+G(y)\ge\int_0^{f(y)/128}(f(y)-128u)\,du=\frac{f(y)^2}{256}.
+\]
+The entire triangle fits before the endpoint because $f(y)\le128(1/8-y)$. The left boundary has the identical bound using its left-tail integral. Therefore, on either boundary,
+\[
+\frac{w^2}{\rho}\le72\rho+8\frac{f(y)^2}{G(y)}\le72\rho+2048.
+\]
+Their combined length is $1/2$ and $\rho\le1$, so they contribute at most $36+1024=1060$. Adding the central contribution gives $4735$. Endpoint values do not affect the integrals.
+\end{proof}
+
+For $\delta=q-1/2$, the signed density $\ell_\delta=\rho+\delta w$ has total mass one. Let $n_\delta=\int(\ell_\delta)_-$ be its negative mass. On its negative region, $|\delta w|>\rho$, giving
+\[
+(\ell_\delta)_-\le|\delta w|\le\delta^2\frac{w^2}{\rho},
+\qquad n_\delta\le K\delta^2.
+\]
+The vanishing of $\rho$ outside its support causes no problem because $w$ also vanishes there almost everywhere. Define the genuine compactly supported probability density
+\begin{equation}\label{eq:clipped}
+\widehat\nu_\delta(dx)=\frac{(\ell_\delta(x))_+}{1+n_\delta}\,dx.
+\end{equation}
+The signed difference $\zeta=\widehat\nu_\delta-\ell_\delta\,dx$ has zero mass, total variation at most $2n_\delta$, and support in an interval of diameter $5/4$. Its positive and negative parts have equal mass at most $n_\delta$, so the CDF formula, after normalization, implies
+\[
+\|F_\zeta\|_1\le\tfrac54n_\delta.
+\]
+Convolution by a probability contracts this signed cumulative norm: $F_{\sigma_2*\zeta}$ is the $\sigma_2$-average of translates of $F_\zeta$, and Tonelli and the triangle inequality apply.
+
+\begin{proof}[Completion of Theorem~\ref{thm:quadratic}]
+For $|\delta|\le1/100$, Lemma~\ref{lem:taylor}, the base factorization, and \eqref{eq:v-signed} give
+\[
+\|F_{\mu_q}-F_{\sigma_2*(\ell_\delta\,dx)}\|_1\le9\delta^2.
+\]
+The intermediate measure is signed, but this cumulative difference and the triangle inequality are valid. Its normalized positive correction in \eqref{eq:clipped} is a probability, and thus
+\begin{align*}
+W_1(\mu_q,\sigma_2*\widehat\nu_\delta)
+&\le9\delta^2+\tfrac54n_\delta\\
+&\le(9+\tfrac54K)\delta^2\le6259\delta^2.
+\end{align*}
+The lower bound was proved in Section~\ref{sec:quadratic-lower}. Both arguments apply to either sign of $\delta$, proving the asserted two-sided quadratic order.
+\end{proof}
+
+The mechanism is therefore more precise than merely finding a zero first-order Fourier test. The first variation actually deconvolves to a signed remainder of finite energy relative to a positive base density; positivity can be restored at quadratic cost. In particular $\Delta_2(q)=o(|q-1/2|)$, so both first-order directional distances to the corresponding feasible tangent cone vanish.
+
+\section{The cubic case as a worked higher order example}\label{sec:cubic}
+
+For $j=3$ the prescribed factor is $\sigma_3=\Un_{1/2}*\Un_{1/8}$. Equation~\eqref{eq:depth-defect} reads
+\[
+\Phi_q'(8)=-6P_{\mathrm{dy}}\delta^3+o(|\delta|^3),\qquad
+\liminf_{q\to1/2}\frac{\Delta_3(q)}{|\delta|^3}
+\ge\frac{3P_{\mathrm{dy}}}{\pi(1+16\pi)}.
+\]
+Here the base kernel is $\kappa_0=\Un_1*\Un_{1/4}$ and the adaptive tail begins at index four. Two signed variations suffice. To make the finite construction concrete, write
+$A=\Un_{1/2}$, $B_0=\Un_{1/4}$, $C=\Un_{1/8}$, $D_0=\Un_1$.
+Dots mean width derivatives at the displayed width. Let $D_2$ be uniform on $\{-1/4,1/4\}$, $D_8$ uniform on $\{(2h-7)/16:0\le h\le7\}$, and $E_2$ uniform on $\{-1/16,1/16\}$. Thus $D_0=A*D_2=C*D_8$ and $B_0=C*E_2$. One explicit choice of kernels is
+\begin{align*}
+\kappa_1={}&D_2*\dot A*B_0+D_0*\dot B_0+\tfrac34D_8*B_0*\dot C,\\
+\kappa_2={}&D_2*\ddot A*B_0+D_0*(\ddot B_0+2\dot B_0)
+ +D_8*B_0*(\tfrac9{16}\ddot C+3\dot C)\\
+&+2D_2*\dot A*\dot B_0+\tfrac32D_8*\dot B_0*\dot C
+ +\tfrac32D_2*E_2*\dot A*\dot C.
+\end{align*}
+The coefficients follow from $(q^2)'=1$, $(q^2)''=2$, $(q^3)'=3/4$, and $(q^3)''=3$ at $1/2$, plus the finite product rule. The general kernel proof makes these finite signed measures and verifies \eqref{eq:kernel-identities}.
+
+For the current tail density $f=f_q$, write $G=H_1$, $H=H_2$ and $L=5/8$. In the right endpoint interval $L+s(q)-1/32<x<L+s(q)$, with $y=x-L$, direct differentiation of the terminal two-uniform density gives
+\begin{align*}
+\rho_q(x)&=4H(y),\\
+w_{1,q}(x)&=-48H(y)+\tfrac{11}{2}G(y),\\
+w_{2,q}(x)&=672H(y)-122G(y)+\tfrac{121}{16}f(y).
+\end{align*}
+Indeed the terminal density for widths $u,v$ is $((u+v)/2-x)_+/(uv)$; after tail convolution it is $H(x-(u+v)/2)/(uv)$. Differentiate this expression in the widths and multiply by the extreme digit masses in the displayed kernels. Other knots and digit endpoints are at least $1/8$ inward, so they cannot enter the stated interval. The companion checker verifies these coefficients exactly.
+
+Tail interpolation controls the two different integrals
+\[
+\int\frac{|w_{1,q}|^3}{\rho_q^2},\qquad
+\int\frac{|w_{2,q}|^{3/2}}{\rho_q^{1/2}}
+\]
+uniformly, and positivity is repaired for
+$\ell_q=\rho_q+\delta w_{1,q}+\delta^2w_{2,q}/2$ at cubic cost. This illustrates why the all-depth proof requires a family of weighted powers rather than repeating the quadratic chi-square argument. It establishes the exact exponent three without evaluating an optimal coefficient or assuming a one-sided normalized limit.
+
+\section{Verification and what remains open}\label{sec:scope}
+
+The displayed products have approximate values
+\[
+P\approx-0.0462022991343,\qquad P_3\approx0.553771275889.
+\]
+Thus the proved lower asymptotic constants are approximately $6.33376\cdot10^{-5}$ in the linear case and $0.00674521$ in the quadratic case. These are evaluations of lower-bound formulas, not estimates of either optimal distance or an optimal coefficient.
+
+The accompanying checkers have the following finite scopes.
+\nopagebreak[4]
+\begin{itemize}
+\item \texttt{check\_linear.py}: 1,713 floating-point regression cases, consisting of 700 compact-source pairwise inequalities, 12 separated Fourier derivative ratios, and 1,001 comparisons of analytic lower and upper bounds.
+\item \texttt{check\_nested.py}: exact rational digit coefficients and arithmetic for $4735$, the Taylor constant $9$, and the final $6259$; also 12 floating-point quadratic-defect ratios.
+\item \texttt{check\_cubic.py}: exact rational endpoint coefficients, 16 finite Fourier checks of the two kernel identities, 196 scalar positivity-repair checks, and 12 cubic-defect ratios.
+\item \texttt{check\_hierarchy.py}: 8,780 exact finite extraction/support cases at depths $2$ through $8$, the exact leading scalar signs through depth $8$, 2,160 finite interpolation regressions using rational moments and floating-point bound comparisons, and 16 two-sided Fourier-defect regressions.
+\item \texttt{check\_integer\_base.py}: 72 high-precision Fourier coefficient and sign checks at bases $2$ through $7$ and depths $1$ through $6$, from both sides with displacement magnitude $10^{-25}$ and 100 decimal digits of working precision.
+\end{itemize}
+The first four programs use the Python standard library; the last uses \texttt{mpmath}. Truncation ranges are recorded in the scripts and receipts. None of these computations is an interval certificate for an infinite product. The checkers do not compute optimal distances, tangent-cone coefficients, weighted-integral suprema, or a general upper constant. They do not constitute Lean or other proof-assistant verification; the universal conclusions rest on the proofs above.
+
+The non-dyadic theorem resolves the inspected report's stated sharp-order question and gives separate one-sided asymptotic equivalents. The hierarchy establishes every fixed integer contact order at every fixed integer base. In particular, the quadratic and cubic examples are instances of a proved general construction, rather than evidence for an extrapolated pattern. These conclusions do not require the source manuscripts' broader arithmetic classification claims.
+
+Classical Fabius-type convolution background is described by Arias de Reyna \cite{Arias}; the real-line CDF formula is credited to Vallender \cite{Vallender}; finite uniform-sum density formulas are classical and treated by Bradley and Gupta \cite{BradleyGupta}. Related higher-order interpolation literature includes Ray and Schmidt-Hieber \cite{RaySchmidtHieber} and Ghisi and Gobbino \cite{GhisiGobbino}. No theorem from those interpolation papers is imported: Lemma~\ref{lem:tail-interpolation} proves the particular estimate needed for positive tail primitives. The precursor Fourier-value obstruction and approximation question are credited explicitly to \cite{Predecessor}. The source pins distinguish this continuation from the inspected manuscripts; no exhaustive worldwide priority determination has been made.
+
+Remaining questions include evaluating $c_+$ and $c_-$ and deciding whether they agree; finding optimal or quantitatively efficient remainders; proving or disproving existence of normalized one-sided limits for $\Delta_{B,j}$ at $j\ge2$; and obtaining useful uniform estimates in a regime where the depth or base varies. The theorem settles the exponent for each fixed $B,j$, not those coefficient and uniformity questions.
+
+\clearpage
+\begin{thebibliography}{9}\raggedright
+\bibitem{ProveIt}
+Vladimir Reshetnikov, ProveIt repository.
+\emph{Arithmetic Rigidity off Resonance: Exact convolution factors of geometric-uniform laws}, 30 September 2026.
+Pinned commit \nolinkurl{51c6943bf41817536b500fe6d94bb07965f45092}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/51c6943bf41817536b500fe6d94bb07965f45092/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/article.tex#L748-L751}{Pinned question on sharp distance to a resonance}.
+The earlier double-zero estimate and resonance comparison occur at source lines 480--501 and 538--571.
+Inspected 1 October 2026.
+
+\bibitem{Predecessor}
+Vladimir Reshetnikov, ProveIt repository.
+\emph{Arithmetic Convolution Factors of Fabius-Type Laws: Exact divisibility, fractal remainders, and classification barriers}, research manuscript dated 28 September 2026.
+Pinned commit \nolinkurl{d5e863bba6b40738af292b45005a0cf0495903e4}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/d5e863bba6b40738af292b45005a0cf0495903e4/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/spectra-and-arithmetic/Arithmetic_Convolution_Factors_Fabius_Type_Laws/article.tex#L588-L635}{Fourier-value Wasserstein obstruction, source lines 588--635}; the question headed \emph{Optimal approximate factorization} occurs at lines 1592--1605. Inspected 1 October 2026.
+
+\bibitem{Vallender}
+S. S. Vallender.
+Calculation of the Wasserstein distance between probability distributions on the line.
+\emph{Theory of Probability and Its Applications} \textbf{18}(4) (1974), 784--786.
+\href{https://doi.org/10.1137/1118101}{doi:10.1137/1118101}.
+
+\bibitem{Arias}
+Juan Arias de Reyna.
+An infinitely differentiable function with compact support: Definition and properties.
+\href{https://arxiv.org/abs/1702.05442}{arXiv:1702.05442} (2017), English translation of the 1982 paper in \emph{Revista de la Real Academia de Ciencias de Madrid} \textbf{76}, 21--38.
+\bibitem{BradleyGupta}
+David M. Bradley and Ramesh C. Gupta.
+On the distribution of the sum of $n$ non-identically distributed uniform random variables.
+\emph{Annals of the Institute of Statistical Mathematics} \textbf{54}(3) (2002), 689--700.
+\href{https://arxiv.org/abs/math/0411298}{Author preprint, arXiv:math/0411298}.
+\href{https://doi.org/10.1023/A:1022483715767}{doi:10.1023/A:1022483715767}.
+
+\bibitem{RaySchmidtHieber}
+Kolyan Ray and Johannes Schmidt-Hieber.
+A regularity class for the roots of nonnegative functions.
+\emph{Annali di Matematica Pura ed Applicata} \textbf{196} (2017), 2091--2103.
+\href{https://doi.org/10.1007/s10231-017-0655-2}{doi:10.1007/s10231-017-0655-2}.
+
+\bibitem{GhisiGobbino}
+Marina Ghisi and Massimo Gobbino.
+Higher order Glaeser inequalities and optimal regularity of roots of real functions.
+\emph{Annali della Scuola Normale Superiore di Pisa, Classe di Scienze} (5) \textbf{12} (2013), 1001--1021.
+\href{https://arxiv.org/abs/1107.2694}{Author preprint, arXiv:1107.2694}.
+\end{thebibliography}
+\end{document}

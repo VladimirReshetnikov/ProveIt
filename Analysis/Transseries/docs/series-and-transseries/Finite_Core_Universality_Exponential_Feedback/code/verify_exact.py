@@ -85,8 +85,9 @@ def main():
         for n in range(1,min(18,args.order)+1):
             assert Fraction(b[n],math.factorial(n)) == partition_coefficient(n,p)
             checks.append({'p':p,'n':n,'identity':'positive Lagrange formula','passed':True})
+        # ed. (2026-09-29): LF rows on every platform (csv defaults to CRLF)
         with (data/f'exact_p{p}.csv').open('w',newline='') as f:
-            w=csv.writer(f);w.writerow(['n','n_factorial_times_u_n','n_factorial_times_v_n'])
+            w=csv.writer(f,lineterminator='\n');w.writerow(['n','n_factorial_times_u_n','n_factorial_times_v_n'])
             for n in range(1,args.order+1): w.writerow([n,b[n],c[n]])
         for M in (1,2,3):
             N=min(16,args.order); one=one_tail_egf(N,p,1,M)
@@ -98,7 +99,8 @@ def main():
             'inverse_composition_checks':2*(args.order-1),'all_passed':True,
             'runtime_seconds':round(time.perf_counter()-start,3),'checks':checks,
             'scope':'Finite exact algebra only. No numerical experiment certifies an asymptotic theorem.'}
-    (data/'exact_verification.json').write_text(json.dumps(report,indent=2)+'\n')
+    # ed. (2026-09-29): newline='\n' keeps LF on Windows
+    (data/'exact_verification.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps({k:v for k,v in report.items() if k!='checks'},indent=2))
 
 if __name__=='__main__': main()

@@ -1,0 +1,16 @@
+.PHONY: all pdf check figures clean
+
+all: pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	python code/verify.py
+
+figures:
+	python code/figures.py
+
+clean:
+	latexmk -c article.tex
+	rm -rf code/__pycache__

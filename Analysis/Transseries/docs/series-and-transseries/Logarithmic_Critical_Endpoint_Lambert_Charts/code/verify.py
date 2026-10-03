@@ -176,9 +176,19 @@ def finite_folds()->list[dict]:
 
 def main()->None:
     parser=argparse.ArgumentParser(); parser.add_argument('--max-n',type=int,default=65536)
+    # ProveIt edit (2026-09-29): a run with a smaller --max-n writes into
+    # data/max-n-<N>/ instead of shortening the tables article.tex inputs;
+    # --output-dir overrides the destination.
+    parser.add_argument('--output-dir',type=Path,default=None,
+                        help='output directory (default: data/ for --max-n 65536, else data/max-n-<N>/)')
     args=parser.parse_args()
     if args.max_n<256:
         parser.error('--max-n must be at least 256')
+    global DATA
+    if args.output_dir is not None:
+        DATA=args.output_dir.resolve()
+    elif args.max_n!=65536:
+        DATA=ROOT/'data'/f'max-n-{args.max_n}'
     DATA.mkdir(parents=True,exist_ok=True)
     out={'environment':{'python':platform.python_version(),'numpy':np.__version__,
                         'sympy':sy.__version__,'mpmath':mp.__version__,'scipy':scipy.__version__,
@@ -224,12 +234,13 @@ def main()->None:
                                'first_order_density':float(1+gr/ell),
                                'cutoff_ratio':pm/p,'refined_cutoff':pred})
     out['status']='all exact checks and stated numerical consistency assertions passed'
-    (DATA/'verification.json').write_text(json.dumps(out,indent=2)+'\n')
+    # ProveIt edit (2026-09-29): LF line endings on every platform.
+    (DATA/'verification.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8',newline='\n')
     def table(name,headers,rows,fmt):
         lines=['\\begin{tabular}{'+fmt+'}','\\toprule',' & '.join(headers)+r' \\',r'\midrule']
         lines+=[' & '.join(row)+r' \\' for row in rows]
         lines += [r'\bottomrule',r'\end{tabular}']
-        (DATA/name).write_text('\n'.join(lines)+'\n')
+        (DATA/name).write_text('\n'.join(lines)+'\n',encoding='utf-8',newline='\n')
     table('coefficient_table.tex',[r'$n$',r'$\ell_n$',r'$b_n p_n/\phi(0)$',r'$1+g_1/\ell_n$',r'$1+g_1/\ell_n+g_2/\ell_n^2$'],
           [[str(r['n']),f"{r['ell']:.4f}",f"{r['normalized']:.8f}",f"{r['one_log_order']:.8f}",f"{r['two_log_orders']:.8f}"] for r in out['coefficients']],'rrrrr')
     table('cutoff_table.tex',[r'$n$',r'$M$',r'$s_n$',r'Actual ratio',r'Leading',r'Refined'],

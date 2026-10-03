@@ -46,6 +46,9 @@
 \large Sharp coefficients, Gaussian--Poisson limits,\\finite-perturbation universality, and refined Borel growth}
 \author{Research draft prepared for Vladimir Reshetnikov}
 \date{29 September 2026}
+% ed. (2026-09-29): editorial-note environment for ProveIt cross-references;
+% it uses no counter, so no author numbering changes.
+\newenvironment{ednote}{\par\smallskip\begin{quote}\small\raggedright\textbf{Editorial note (ProveIt, 2026-09-29).}\ }{\end{quote}\smallskip}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -75,6 +78,30 @@ asymptotic and Gevrey classification unchanged. All main results are proved
 here by positive Lagrange weights and two discrete saddle analyses. Exact
 finite computations accompany, but do not replace, the proofs.
 \end{abstract}
+% ed. (2026-09-29): the abstract's "We resolve that question" is stale at filing: the finite-core package resolved it first for pure power slopes.
+\begin{ednote}
+This article was written at a snapshot that did not yet contain the
+package \nolinkurl{Finite_Core_Universality_Exponential_Feedback/}~\cite{ed:finitecore} in
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/}, filed
+before it (batch 47), and it does not cite that package. For slopes that
+are eventually exactly $j^2$, \cref{thm:coefficient} is the $p=2$, $a=1$
+case of that package's first-correction formula (its
+Proposition~\texttt{prop:first-correction}, with $\lambda_1+w_2=b$), the variance
+$2n/(\log n)^2$ is its equation \texttt{eq:variance}, and the least-term index of
+\cref{thm:least} is its Corollary~\texttt{cor:least-term}; that package also
+proves a local Gaussian law and a central limit theorem for the largest
+action (its Theorem~\texttt{thm:clt}). The two are independent proofs of the same
+coefficient theorem, and their constants agree. New here are the $\alpha j$
+and $\eta j/\log j$ terms, the rate \eqref{eq:rate}, the joint
+total-variation Gaussian--Poisson law of the largest part and the number of
+twos, which answers that package's question on joint laws for the finite
+background cloud at $p=2$, $a=1$, the two-dimensional local limit, the
+Borel equivalent and the value of the least term. The total-variation
+Poisson law at diverging intensity is also what the later package
+\nolinkurl{Poisson_Layers_Finite_Core_Boundary/} lists as open; this
+article proves it for this class. Neither package has been independently
+reviewed.
+\end{ednote}
 \noindent\textbf{Scope and status.}
 This is a mathematical research draft, not a Lean verification or a claim of
 settling a named longstanding conjecture. It strengthens the specific
@@ -156,14 +183,16 @@ transseries \(\sum_nu_ne^{-nx}\). Well-based support and growth of its
 coefficients are different questions.
 
 The principal asymptotic hypothesis is
-\begin{equation}
+% ed. (2026-09-29): equation -> equation* for the \tag{Q} display, removing the
+% duplicate hyperref destination equation.2.2; label, tag and numbering unchanged.
+\begin{equation*}
  \boxed{\quad
  \lambda_j=j^2+\alpha j+\eta\frac{j}{\log j}
                   +o\!\left(\frac{j}{\log j}\right)
  \quad(j\longrightarrow\infty),\qquad \lambda_j\ge0.
  \quad}
  \tag{Q}\label{eq:Q}
-\end{equation}
+\end{equation*}
 The expression involving \(\log j\) is used only on a tail. The finitely many
 initial slopes, especially \(\lambda_1\), are arbitrary nonnegative numbers.
 Set
@@ -1392,6 +1421,21 @@ critical exponent the logarithmic factors still matter. Prove the
 appropriate multi-cloud limit theorem, including interactions and the
 correct shifted saddle. The present quadratic theorem proves one member
 of that hierarchy, not the hierarchy itself.
+% ed. (2026-09-29): partly answered by the finite-core and Poisson-layer packages.
+\begin{ednote}
+Partly answered for $\lambda_j=aj^p$ (after finitely many nonnegative
+changes) by two other packages of this series.
+\nolinkurl{Finite_Core_Universality_Exponential_Feedback/} proves that
+an analytic core of $M$ actions gives coefficients asymptotic to $u_n$
+exactly when $M(p-1)>1$ (its Theorem~\texttt{thm:cutoff}), so for $p>2$ a
+one-action core suffices, as the heuristic above predicts, with a
+multiplicative saddle equivalent (its Theorem~\texttt{thm:saddle}).
+\nolinkurl{Poisson_Layers_Finite_Core_Boundary/} proves Poisson and
+Gaussian laws for the number of occurrences of the first omitted action,
+jointly with the largest action, throughout $(M+1)(p-1)>1$ (its
+Theorems~\texttt{thm:probability} and \texttt{thm:joint}). The joint law of the whole cloud
+vector is not treated.
+\end{ednote}
 
 \subsection{Boundary perturbations without a smooth asymptotic tail}
 The scale \(j/\log j\) is now known to affect the constant in the
@@ -1411,6 +1455,20 @@ reversion weights after cancellation? Determine the first exponential and
 subexponential scales of the inverse coefficients, and identify when the
 first-slope factor remains visible. Positivity of \eqref{eq:partition}
 cannot simply be reused for a signed inversion formula.
+% ed. (2026-09-29): exact type answered by the weighted-type package; coefficient equivalent claimed by two batch-49 packages.
+\begin{ednote}
+The exact type is answered by
+\nolinkurl{Sharp_Weighted_Type_Formal_Reversion/}: reversion preserves the
+Gevrey type (its Theorem~\texttt{thm:inversefeedback}) and the refined inverse type
+is $4$ for $\lambda_j=j^2$ (its Corollary~\texttt{cor:quadratic}). A coefficient
+equivalent for $\lambda_j=aj^2$ is claimed, independently and not yet
+reviewed, by \nolinkurl{Quadratic_Exponential_Feedback_After_Reversion/}
+and \nolinkurl{Signed_Quadratic_Feedback_Inversion/} (Theorem~\texttt{thm:main} in
+each): $v_n\sim-S_n\exp(-(1+1/a)r_n)$ in the notation of the finite-core
+package; the first of them also treats slope tails $aj^2+dj+e$ and
+$\kappa j/\log j$ perturbations, and in both the first-slope factor
+enters through $\lambda_1+w_2$.
+\end{ednote}
 
 \subsection{Angular growth and negative-direction Borel summation}
 The positive-axis Borel equivalent is now explicit, but it gives no
@@ -1419,6 +1477,21 @@ sectorial growth, possible indicator transitions, and whether a suitable
 negative-direction Borel--Laplace sum agrees with the literal left-sector
 fixed point. The proof must establish the analytic identification as well
 as growth; an entire Borel transform alone settles neither.
+% ed. (2026-09-29): answered in the fine sense by the negative-ray package and negatively in the angular sense by the natural-boundaries package.
+\begin{ednote}
+Answered in two senses by later packages.
+\nolinkurl{Negative_Ray_Summation_Exponential_Feedback/} (its
+Theorem~\texttt{thm:threshold}) proves, for unit amplitudes and
+$\lambda_j=O((j\log j)^2)$, which contains \eqref{eq:Q}, fine
+(fixed-width half-strip) Borel--Laplace summability of $\U$ and of its
+inverse in direction $\pi$, with sums that satisfy the literal kernel near
+the negative axis.
+\nolinkurl{Natural_Boundaries_Quadratic_Exponential_Feedback/} proves that
+for $\lambda_j=j^2$ (its Theorem~\texttt{thm:main}), and for slopes that are
+eventually $j^2+\beta j+\gamma$ (its Theorem~\texttt{thm:rational-main}), no open
+arc of directions around $\pi$ gives angular $1$-summability, because the
+literal inverse has a natural boundary on the imaginary diameter.
+\end{ednote}
 
 \subsection{Acceleration adapted to the double-exponential growth}
 Construct and analyze an acceleration procedure adapted to
@@ -1436,6 +1509,18 @@ Taylor remainder at order near \(R(R+1)/t\) have that scale, a different
 scale, or additional oscillatory cancellation? Establish a uniform
 remainder theorem on proper sectors, and only then compare it with the
 least term. This is a sharper question than coefficient Gevrey membership.
+% ed. (2026-09-29): uniform remainder part answered by the sectorial-summability package; comparison with the least term open.
+\begin{ednote}
+The uniform remainder theorem is supplied by
+\nolinkurl{Sharp_Negative_Direction_Summability_Exponential_Feedback/}:
+strong Gevrey-$1$ remainders on every proper left sector (its
+Theorem~\texttt{thm:headline}) and an actual truncation error at most
+$C\exp[-c\log^2(1/|q|)/|q|]$ at an index of order $\log^2(1/|q|)/|q|$
+(its Corollary~\texttt{cor:actualerror}), with an unspecified constant $c$; the
+negative-ray package bounds the inverse on the same scale (its
+Theorem~\texttt{thm:optimal}, an upper bound). Whether the actual remainder has the
+scale of the least term remains open.
+\end{ednote}
 
 \subsection{Amplitudes, noninteger actions, and several feedback components}
 Replace the model by
@@ -1550,5 +1635,13 @@ David Sauzin.
 \emph{Introduction to 1-summability and resurgence}. 2014.
 \href{https://arxiv.org/abs/1405.0356}{arXiv:1405.0356}.
 
+% ed. (2026-09-29): bibliography entry added for the editorial note after the abstract.
+\bibitem{ed:finitecore}
+[Editorial addition, ProveIt, 2026-09-29.]
+\emph{Finite-Core Universality and Sharp Large Order for Countable
+Exponential-Feedback Transseries}. Research draft, 29 September 2026.
+Directory \path{Finite_Core_Universality_Exponential_Feedback/} of
+\path{Analysis/Transseries/docs/series-and-transseries/}; filed in batch 47,
+after the snapshot inspected by this article.
 \end{thebibliography}
 \end{document}

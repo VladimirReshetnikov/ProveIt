@@ -196,13 +196,13 @@ def make_tables(data: dict) -> None:
     for r in data['envelope_diagnostics']:
         lines.append(f"{r['n']:,} & {r['lower_log_per_n']:.6f} & {r['b_n']:.6f} & {r['upper_log_per_n']:.6f} & {r['lower_maximizer_scaled']:.6f}\\\\")
     lines.extend([r'\bottomrule',r'\end{tabular}'])
-    (out/'envelope_table.tex').write_text('\n'.join(lines)+'\n')
+    (out/'envelope_table.tex').write_text('\n'.join(lines)+'\n',newline='\n')  # LF everywhere (ProveIt, 2026-09-29)
     lines=[r'\begin{tabular}{rrrr}',r'\toprule',
            r'$\gamma$ & $\log t$ & normalizer ratio & limit $e^{1/m}$\\',r'\midrule']
     for r in data['resonance_diagnostics']:
         lines.append(f"${r['gamma']}$ & ${r['log_t']}$ & {float(r['normalizer_constant_ratio']):.10f} & {float(r['predicted_constant']):.10f}\\\\")
     lines.extend([r'\bottomrule',r'\end{tabular}'])
-    (out/'resonance_table.tex').write_text('\n'.join(lines)+'\n')
+    (out/'resonance_table.tex').write_text('\n'.join(lines)+'\n',newline='\n')  # LF everywhere (ProveIt, 2026-09-29)
 
 def main() -> None:
     parser=argparse.ArgumentParser(description=__doc__)
@@ -218,7 +218,7 @@ def main() -> None:
                          'Resonance diagnostics concern an implicit asymptotic normalizer, not a computed Borel sum.',
                          'The infinite asymptotic statements are proved in the manuscript, not by finite tests.']}
     (ROOT/'data').mkdir(exist_ok=True)
-    (ROOT/'data'/'verification.json').write_text(json.dumps(data,indent=2)+'\n')
+    (ROOT/'data'/'verification.json').write_text(json.dumps(data,indent=2)+'\n',newline='\n')  # LF everywhere (ProveIt, 2026-09-29)
     make_tables(data)
     print(json.dumps({'passed':data['exact_checks']['passed'],
                       'exact_assertions':data['exact_checks']['exact_assertions'],

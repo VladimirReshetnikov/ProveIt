@@ -1,8 +1,8 @@
 # A Reflexive Root-Polytope Model for Preorder h-Polynomials
 
-**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; and gamma-positivity for every finite preorder**
+**Simplicial-polytopal realization for all finite preorders; for height two, matching supports, nonreal-root families and crown obstructions; cactus rigidity for matching-support determinants; gamma-positivity for every finite preorder; ultra-log-concave support polynomials, palindromic cores and counting; stability of signed matching supports; the transversal matroid of a preorder; marked-tree stability for arbitrary apex neighbourhoods; two-flow bijections with full-coordinate sampling of demand vectors and preorder lattice points; rare stable markings on random trees, with sparse and critical transitions and annealed–quenched separation; and Hall bottlenecks: a weighted counterexample to normalization by the matching number, a rank-six phase diagram and exact counting parameterized by the matching number; and matching supports through rank three: normalization by the matching number at unit weights for `nu ≤ 3`, a bimatroid obstruction, and exact support kernels for graphs, relations and preorder gamma vectors; and leaf compression: normalization by the matching number for every positive weighting through matching number three; continued, from batch 72, in the separate report matching-rank-normalization, and from batch 73 in preorder-gamma-rank-ulc**
 
-This is a research report in four parts. Part I is the original report of
+This is a research report in thirteen parts. Part I is the original report of
 20 September 2026. Part II was added on 28 September 2026 in batch 39 of
 ProveIt's incoming-report intake, from a later manuscript that addresses the
 three questions Part I left open in its Section 10 ("What remains unresolved"):
@@ -16,6 +16,165 @@ manuscripts merged into one addition (batch-44 manuscripts 06, the base, and
 01), both prepared with ChatGPT for Vladimir Reshetnikov. Both prove
 Conjecture 5.2 (gamma-positivity) for every finite preorder, which answers
 Part II's Research question 1, "Extend the matching-support interpretation".
+Parts V–VII were added on 29 September 2026 in batch 55, from four
+manuscripts (sources 06–09 below; batch-55 manuscripts 01, 02, 04 and 05):
+**Part V** merges sources 06 (the base) and 07, two independent proofs that
+every bipartite demand-support enumerator and every `h_tau` is
+ultra-log-concave, with palindromic cores, probability, approximate counting
+and exact-counting hardness; **Part VI** merges source 08 (the base) with
+the stability sections of source 09: stability of the signed support
+polynomial is block-local, is classified for tree incidence–apex graphs (the
+ADE trees), books and multi-theta graphs, and is strictly stronger than
+real-rootedness; **Part VII** prints source 09's matroid sections: the
+transversal matroid of a preorder determines it up to isomorphism. Sources
+06, 07 and 09 credit ChatGPT on their title pages; source 08 calls itself
+"AI-assisted" and names no assistant. All four were prepared for Vladimir
+Reshetnikov. **Part VIII** was added on 30 September 2026 in batch 63, from
+one manuscript (source 10 below; batch-63 manuscript 03), prepared for
+Vladimir Reshetnikov with ChatGPT per its title page. It removes Part VI's
+terminal convention for one apex over a tree: stability of the incidence
+graph of a tree with one apex adjacent to an **arbitrary** set of tree
+vertices is classified — a corollary of Part VI's theorems, which the
+manuscript also proves directly — and it adds linear-time recognition,
+exact polynomial-time counting, optimization and repair of the stable apex
+neighbourhoods, a sharp diameter window, and a path-only real-rootedness
+theorem for their size-counting polynomial. **Part IX** was added on
+30 September 2026 in batch 64, from one manuscript (source 11 below;
+batch-64 manuscript 01), prepared for Vladimir Reshetnikov with ChatGPT
+per its title page. Two minimum-cost transportation problems with integer
+margins and one cycle-generic cost system share an optimal spanning tree,
+which gives explicit polynomial-time inverse bijections between the demand
+vectors of a bipartite graph with a prescribed support and the supplier
+sets matchable to it (the existence of such a correspondence is Oh's).
+Composed with the matroid basis walk, this samples **actual lattice points**
+of every finite preorder polytope, not only their supports, which answers
+Part V's "Sampling boundary" and the bijection part of Research questions 2
+and 20; its disjoint union is an elementary proof, without Ehrhart theory,
+of the support-counting identity of Parts II, IV and V. **Part X** was added
+on 30 September 2026 in batch 66, from one manuscript (source 12 below;
+batch-66 manuscript 06), prepared for Vladimir Reshetnikov with ChatGPT
+per its title page. It answers Part VIII's Research question 63 ("Random
+trees and asymptotic stable probabilities") for the uniform labelled
+(Cayley) tree with every vertex marked independently with probability `p`:
+from Part VIII's classification it derives exact counts by number of marks
+and hull size, a two-colour generating function and a Poisson identity
+with eight finite corrections; the stability probability is asymptotic to
+`(9/8)·sqrt(2π)·p^3·n^(5/2)·e^(−pn)` whenever `p·sqrt(n) → ∞`, an explicit
+entire function governs the window `p·sqrt(n) → λ`, and below it stability
+is asymptotically "at most two marks"; at fixed `p` the marks and hull
+size given stability are jointly Gaussian and the conditioned diameter is
+linear; and for **every** fixed tree the probability is determined by the
+diameter up to a polynomial factor, which separates the typical-tree rate
+`log(1−p)` from the averaged rate `−p`. **Part XI** was added on
+30 September 2026 in batch 68, from one manuscript (source 13 below;
+batch-68 manuscript 03), prepared for Vladimir Reshetnikov with ChatGPT
+per its title page. It answers Part V's Research question 37
+("Normalization by the matching number") **negatively in its weighted
+version**: with positive vertex weights on both shores,
+`binomial(nu(H), k)` cannot replace `binomial(min(m,n), k)`. A graph with
+30 vertices, 104 edges and matching number 8, with weight 500 on its eight
+core vertices and 1 on the others, has
+`7a_7^2 − 16a_6a_8 = 9·3025^2·w^14·(−w^2 + 480w + 2304) < 0` at `w = 500`,
+although Part V makes it ultra-log-concave of order 15. It adds a complete
+rank-six phase diagram for a symmetric Hall-bottleneck family, the endpoint
+threshold for every core size, a lower bound `(4/3)·nu(H) − 17/9 + o(1)`
+along even ranks for any normalization depending on the matching number
+alone, the first rank-normalized inequality for every positively weighted
+graph with a defect identity and its equality cases, and an exact counting
+algorithm in `2^(nu^2 + O(nu))·poly` time. The unit-weight and one-shore
+versions stay open [updated 1 October 2026, batch 72: both fail; see the
+paragraph on [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) below]. **Part XII** was added on 30 September 2026 in
+batch 70, from one manuscript (source 14 below; batch-70 manuscript 05),
+prepared for Vladimir Reshetnikov with ChatGPT per its title page. It
+answers the **unit-weight version of Research question 37
+affirmatively for matching number at most three**: for every bipartite
+graph `G` with `nu(G) ≤ 3`, whatever its shore sizes,
+`s_k(G) / binomial(nu(G), k)` is log-concave (Theorem 191.1), by a
+sum-of-squares identity in four neighbourhood populations and two Boolean
+core edges (Proposition 191.3); the same holds for a connected family
+`G_N` of matching number four with shores `3N + 2` (Theorem 196.1) and for
+disjoint unions of these graphs (Corollary 196.2). It proves the first
+rank-normalized inequality `g_1^2 ≥ (2d/(d−1))·g_2` for directed
+relations with nonnegative activities, with the unweighted equality cases
+(stars and triangles; Theorems 190.2–190.3); shows with the positive
+integer matrix `M_ij = 1 + ij + i^2j^2` (`9 × 9`, rank 3, minor counts
+1, 81, 1296, 7056) that normalization by actual linear rank fails for
+representable bimatroids (Theorem 192.1); counts and samples supports
+exactly by neighbourhood-type kernels in `2^(O(r^2))·poly` time for
+bipartite graphs and `2^(O(d^2))·poly` for directed relations
+(Theorems 193.1, 194.1); and transfers these to preorders: every finite
+preorder satisfies `gamma_1^2 ≥ (2d/(d−1))·gamma_2`, `d = deg Gamma_tau`
+(Corollary 197.2), and its gamma vector and lattice-point count are
+computable in `2^(O(d^2))·poly` time (Corollary 197.4). Unit weights from
+matching number four on, and weighted rank three, stay open [updated
+30 September 2026, batch 71: weighted rank three is settled by Part XIII]
+[updated 1 October 2026, batch 72: unit weights hold at matching numbers
+four and five and fail at 3450; see below].
+**Part XIII** was added on 30 September 2026 in batch 71, from one
+manuscript (source 15 below; batch-71 manuscript 02), whose title page
+reads "Research note prepared for Vladimir Reshetnikov with OpenAI". It
+answers Part XII's Research question 95 ("Weighted rank three")
+**affirmatively**: leaves with one common neighbour can be merged into one
+leaf carrying the sum of their activities without changing the weighted
+support polynomial (Lemma 206.1), so a bipartite graph with a minimum
+vertex cover that has exactly one vertex on one shore (a `1 + (r−1)`
+split) is `ULC_r`, `r = nu(G)`, for arbitrary positive activities on both
+shores (Theorem 206.2), and so is every positively weighted graph with
+`nu(G) ≤ 3` (Corollary 206.3; with nonnegative activities, of the order of
+the surviving degree). The least matching number of a weighted
+counterexample to Research question 37 is therefore 4, 5 or 6 (Part XI's
+Research question 86), and a counterexample, weighted or not, has every
+minimum cover meeting both shores in at least two vertices; at rank four
+only `2 + 2` covers remain (Part XII's Research question 93). This does
+not contradict Part XI: its counterexamples `H_{4,11}` and `H_{3,n}`
+(`n > 3`) have unique minimum covers split `4 + 4` and `3 + 3`
+(Section 204.4). It also gives an elementary proof that a graph covered by
+one vertex on one shore and two on the other has a real-rooted support
+polynomial for all positive activities (Theorem 207.1), a conclusion
+already available from Part VI.
+
+**Continued in [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) (batch 72).** On
+1 October 2026, 27 further manuscripts on the same question were placed as
+a separate report in `log-concavity-and-unimodality` rather than as
+Parts XIV ff. here; it cites Parts V, VI and XI–XIII of this report by
+their printed numbers and does not reprint them. It proves normalization
+by the matching number for arbitrary positive weights on both shores
+whenever a minimum cover meets one shore in at most two vertices, hence
+for `nu ≤ 5`, so that the least matching number of a weighted
+counterexample is **exactly six** (Research questions 86, 87 at ranks 4
+and 5, and 93); it answers Research questions 84 and 94 (**unit weights:
+false**, a connected graph with 6916 vertices and `nu = 3450`) and 85
+(**one-shore weights: false**, `nu = 50` with 125 vertices; for one common
+right-core activity on full Hall graphs the least failing matching number
+is exactly 38) negatively; it classifies the full Hall family (Research
+question 89), proves the second and last rank-six inequalities for every
+one-shore graph, and proves eventual normalization through `nu = 8` after
+scaling the right part of a minimum cover. Research question 88 is not
+answered there (only its one-shore analogue). Its archive 78 was a
+byte-identical repeat of the batch-71 manuscript printed here as
+Part XIII. This report's article gains dated pointers marked "Added
+1 October 2026, batch 72" (listed under the answers below).
+
+**Continued in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc) (batch 73).** On
+1 October 2026, eleven further manuscripts, delivered in eighteen archives,
+were placed as a separate report in `log-concavity-and-unimodality`; it
+cites this report's labels and does not reprint them. It answers
+Research question 96 (`mr:q:gamma`) through actual degree four with unit
+activities: every finite preorder whose gamma polynomial has degree at most
+four is ultra-log-concave of its actual degree (its Theorems 2.3 and 3.9,
+computer-assisted), so the degree-three target named after that question
+is proved. With independent tail and head activities it proves degree three
+(Theorem 9.3), and for directed relations at every actual degree it covers
+two-by-two role covers (real stability), physical vertex covers of size
+three, saturated bipartite physical graphs and universal-sink clouds over
+four-vertex cores (five-vertex cores at actual degrees five and four).
+Degree five with unit activities and degree four with independent
+activities stay open. Real-rootedness fails already in degree three: the
+least order of a preorder of gamma degree three with a nonreal gamma zero
+is 15 (its Theorem 2.9; the same graph is the minimum of
+`matching-rank-normalization`, Part V, Theorem 40.6). This report's article
+gains dated pointers marked "Added 1 October 2026, batch 73" (listed under
+the answers below).
 
 > **Priority.** Part II's headline counterexample to Conjecture 5.3 (real
 > roots) is **not new**. The first counterexample known to this report, the
@@ -28,13 +187,44 @@ Part II's Research question 1, "Extend the matching-support interpretation".
 > showed a relative date of about one month before 28 September 2026 and
 > marked the claim unverified).
 
+> **Priority (Part V).** The unweighted inequality of Part V's main theorem
+> is **not new**: it is Theorem A of F. Röhrle and M. Ulirsch, *Logarithmic
+> Concavity of Bimatroids*, Ann. Comb. 30 (2026), no. 2, 501–523 (online
+> 14 August 2025), doi:10.1007/s00026-025-00780-z, arXiv:2402.15317, applied
+> to the bimatroid of a relation (their Example 2.4), with the same
+> normalization `binomial(min(m,n), k)`; their Theorem E contains Part V's
+> intersection realization. Source 07 and source 09 credit this; source 06
+> does not cite Röhrle–Ulirsch, and Part V prints its statement with a merge
+> note. What is new in Part V is the composition with the published
+> support-counting bridge (hence every demand enumerator and every
+> preorder), the weighted two-shore form and the consequences. The mixing
+> and FPRAS machinery is Anari–Liu–Oveis Gharan–Vinzant's, the #P input
+> Colbourn–Provan–Vertigan's. Three batch-55 manuscripts (sources 06, 07,
+> 09) proved the transfer independently on the same day. The Röhrle–Ulirsch
+> record was checked in the write phase on 29 September 2026 against the
+> arXiv abstract page (v1 23 Feb 2024, v3 6 Aug 2025, "to appear in Annals
+> of Combinatorics") and the v3 HTML, which states Theorem A for regular
+> `k × k` minors with that normalization and Example 2.4 for relations; the
+> journal volume and pages are those recorded by source 07 and the batch-55
+> dossier (Crossref), not re-fetched.
+
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 6–18) and Appendices A–C (pp. 113–115) |
-| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 19–47) |
-| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 48–72) |
-| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 73–112) |
-| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 73–112) |
+| 01 (original) | Cardinals-collection report, 20 Sep 2026 (*A Reflexive Root-Polytope Model for Preorder h-Polynomials*) | (Cardinals-era delivery, not committed as an archive) | (none) | sorted in `f0f61b70d`, in ProveIt since `dc54c3cb3` | Part I: Sections 1–10 (pp. 14–26) and Appendices A–C (pp. 368–370) |
+| 02 | batch 39, manuscript 02 (*Height-Two Preorder Polynomials: Matching supports, nonreal-root families, and crown obstructions*, 28 Sep 2026, 26-page PDF as delivered) | `ProveIt_Height_Two_Preorder_Research.zip` (inner `Preorder_Matching_Research/`, main file `article.tex`) | no commit; blob `4c350f5652096b7db91d4a10075eb7905910f647` of Part I's `article.tex` | `e2b1f016a` (prefix `02-height-two-`) | Part II: Sections 11–25 (pp. 27–55) |
+| 03 | batch 42, manuscript 05 (*Cactus Rigidity for Matching-Support Determinants: Exact classification, a sharp approximation gap, and stability beyond vertex determinants*, 29 Sep 2026, 24-page US-Letter PDF as delivered) | `ProveIt_Cactus_Rigidity.zip` (inner `ProveIt_Cactus_Rigidity/`, main file `article.tex`) | commit `9754e83603e223811b7515eb892f22c847144593`; blob `8739a224fa8956adab5d8df9f2d5012a6a220959` of this report's `article.tex` | `3609d0473` (prefix `03-cactus-`) | Part III: Sections 26–45 (pp. 56–80) |
+| 04 | batch 44, manuscript 01 (*The Gamma-Vector of Every Finite Preorder: Disjoint matching supports, Boolean expansions, and sharp degree laws*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma.zip` (inner `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `077672c84f743ff5de82ce6becc3ad6b2ff8787a` (this report's `article.tex` there is blob `cd80088f04daeabdf6e320e08bdd1b61a5c9cf4c`, Parts I–III) | `203016015` (prefix `04-gamma-vector-`) | Part IV (merged with 05): Sections 46–65 (pp. 81–122) |
+| 05 (base of Part IV) | batch 44, manuscript 06 (*Gamma-Positivity for Every Finite Preorder: Disjoint transport supports, Boolean expansions, block formulas, and a transitivity criterion for palindromicity*, 29 Sep 2026, 22-page A4 PDF as delivered) | `ProveIt_Preorder_Gamma_Research.zip` (inner **also** `ProveIt_Preorder_Gamma/`, main file `article.tex`) | commit `9b24a3a8d545af9624f6ac455f5b548be62818b6` (blob `8739a224fa8956adab5d8df9f2d5012a6a220959`, Parts I–II only) | `203016015` (prefix `05-gamma-positivity-`) | Part IV (merged with 04): Sections 46–65 (pp. 81–122) |
+| 06 (base of Part V) | batch 55, manuscript 01 (*Beyond Real-Rootedness: Ultra-Log-Concavity and Approximate Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Lorentzian_Support.zip` (inner same, main file `article.tex`; arrival `08985ea78`, held from batch 54) | commit `e9a57d735db2177a8cca6aaecd95a3d53a0ba678` (this report's `article.tex` there is blob `d52a2633b58e74aa653e967eb56adc1aa41bc8ae`, Parts I–IV) | `26473dfa0` (prefix `06-lorentzian-support-`) | Part V (merged with 07): Sections 66–82 (pp. 123–172) |
+| 07 | batch 55, manuscript 02 (*Beyond Real Roots: Ultra-Log-Concavity, Palindromic Cores, and Efficient Counting for Preorder Support Polynomials*, 29 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Support_Polynomials_Research.zip` (inner `ProveIt_Support_Polynomials/`, main file `support_polynomials.tex`; arrival `23dd71d2d`) | commit `de2f8fa8c6f0107b1a0f1f77e2e25c343e562180` (article blob `d52a2633…` and README blob `846d9f19fadac9cd933b74370cdb8fafa2211c5d`, Parts I–IV) | `26473dfa0` (prefix `07-support-polynomials-`) | Part V (merged with 06): Sections 66–82 (pp. 123–172) |
+| 08 (base of Part VI) | batch 55, manuscript 04 (*An ADE Threshold for Matching-Support Stability: Tree incidence–apex graphs, sharp book transitions, and a classification of bipartite multi-theta graphs*, 29 Sep 2026, 25-page A4 PDF as delivered) | `ProveIt_ADE_Stability.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e35a4de734d5aa47aec5cdb917b82ed3e`; blob `846d9f19…` of this report's **`README.md`** (it read the summary, not the article) | `26473dfa0` (prefix `08-ade-stability-`) | Part VI (with 09's stability sections): Sections 83–99 (pp. 173–206) |
+| 09 | batch 55, manuscript 05 (*Preorders as Transversal Matroids: Reconstruction, Ultra-Log-Concavity, and Stability of Matching Supports*, 29 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matroid_Lifts.zip` (inner same, main file `article.tex`; arrival `2d4919838`) | commit `e1afd75e3…` (article blob `d52a2633…`, README blob `846d9f19…`, Parts I–IV) | `26473dfa0` (prefix `09-matroid-lifts-`) | Part VII: Sections 100–115 (pp. 207–223); stability sections in Part VI; coefficient sections credited in Part V |
+| 10 | batch 63, manuscript 03 (*Marked-Tree Stability: Complete Apex-Neighborhood Classification, Exact Enumeration, and Optimal Repair*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Marked_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `a4268e78e`) | commit `b57c0b5ff112e1a08af8add12b2d687b8ece91d0` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `62f1ad07c` (prefix `10-marked-trees-`) | Part VIII: Sections 116–131 (pp. 224–250) |
+| 11 | batch 64, manuscript 01 (*Two-Flow Bijections for Demand Polytopes: Full-coordinate sampling, exact certificates, restriction laws, and preorder applications*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Two_Flow_Lattice_Sampling.zip` (inner `Two_Flow_Lattice_Sampling/`, main file `article.tex`; arrival `7747fcfdd`) | commit `6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72` (this report's `article.tex` there is blob `920246d173bfbc708bcfdd6d67e0a6fc358cb3dc`, Parts I–VII) | `3025c15df` (prefix `11-two-flow-`) | Part IX: Sections 132–151 (pp. 251–277) |
+| 12 | batch 66, manuscript 06 (*Rare Stable Markings on Random Trees: Exact enumeration, sparse transitions, conditioned geometry, and annealed–quenched separation*, 30 Sep 2026, 23-page A4 PDF as delivered) | `ProveIt_Random_Tree_Stability.zip` (inner same, main file `article.tex`; arrival `9ad899cbe`) | commit `b8b0fa2184a044d46ce9ed0f25f88d7bb60fa042` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `4fee1cd07` (prefix `12-random-trees-`) | Part X: Sections 152–171 (pp. 277–302) |
+| 13 | batch 68, manuscript 03 (*Hall Bottlenecks and the Limits of Rank Normalization: Exact counterexamples, a complete rank-six phase diagram, and fixed-parameter counting of matching supports*, 30 Sep 2026, 21-page A4 PDF as delivered) | `ProveIt_Hall_Bottlenecks.zip` (inner same, main file `article.tex`; arrival `a866ff9a2`) | commit `0a543d5e435df885f78ca731d71856f3ee0ab2d4` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `29e52fcdf` (prefix `13-hall-bottlenecks-`) | Part XI: Sections 172–186 (pp. 303–328) |
+| 14 | batch 70, manuscript 05 (*Rank-Three Ultra-Log-Concavity and Exact Kernels for Matching Supports: Sharp first inequalities, a rank-sensitive sum-of-squares proof, a bimatroid obstruction, and preorder gamma applications*, 30 Sep 2026, 24-page A4 PDF as delivered) | `ProveIt_Matching_Rank_Research.zip` (inner same, main file `article.tex`; arrival `1b3960d8a`) | commit `ffddaa8b9c89e7bf027e1442cc6216bb010906d0` (this report's `article.tex` there is blob `ba1cc4a6c99abd5ff808aae97df75efe434833e9`, Parts I–IX) | `51c6943bf` (prefix `14-matching-rank-`) | Part XII: Sections 187–203 (pp. 329–357) |
+| 15 | batch 71, manuscript 02 (*Leaf Compression and Weighted Rank Three for Matching Support Polynomials*, 1 Oct 2026, 6-page A4 PDF as delivered) | `ProveIt_Weighted_Rank_Three_Leaf_Compression.zip` (inner same, main file `article.tex`; arrival `aee32ad45`) | **none** for this report: it inspected source 14's archive at `1b3960d8a`, source 13's archive at `a866ff9a2` and its placement `29e52fcdf`, and this report on `main` "inspected 1 October 2026" (no commit) | `427bca743` (prefix `15-leaf-compression-`) | Part XIII: Sections 204–209 (pp. 357–367) |
 
 Manuscript 02 names no ProveIt commit. It records the Git blob of the
 `article.tex` it consulted; that blob is Part I exactly as printed here
@@ -94,12 +284,293 @@ the merge had to choose. Manuscript 06's own numbering, used in its shipped
 notes, maps as follows: Theorem 2.2 → 48.2, Theorem 2.3 → 48.3, Lemma 3.1 →
 49.1, Lemma 4.1 → 50.1, Lemma 6.1 → 53.1.
 
+Batch 55's four manuscripts arrived in three commits: source 06 in
+`08985ea78` (it was held over from batch 54 to be merged with source 07),
+source 07 in `23dd71d2d`, sources 08 and 09 (with a manuscript for another
+report) in `2d4919838`. All were placed in `26473dfa0`. This report did not
+change from the earliest pin (`e9a57d735`) to the placement, so every
+statement of the four about "the repository" or "the report" concerns
+Parts I–IV exactly as printed; source 08 read only this README (blob
+`846d9f19`), the other three read the article (blob `d52a2633`). None saw
+another. The manuscripts, PDFs and delivery READMEs are not shipped; they
+survive in the arrival commits. Checksum lists verified at placement and
+retired: source 06 `SHA256SUMS.txt` 13/13, source 08 7/7, source 09 8/8;
+source 07 shipped none.
+
+- **Part V** merges 06 (base: held first, owner of prefix `06-`, and it
+  states the corollaries for this report's questions and has the larger
+  probabilistic and algorithmic layer) with 07 (palindromic cores, the
+  intersection realization, convex order and the equality classification,
+  exact-counting hardness, several examples, and the correct attribution).
+  A result proved in both is printed once with both sources named; the
+  genuinely different proofs are kept as marked second routes (07's import
+  of the bridge through Dai et al. and Davis–Kohl with subset inversion;
+  07's explicit factorial calculation of the Lorentzian criterion; 06's
+  logistic ODE proof of the binomial bound beside 07's convex-order proof;
+  07's Hessian variance bound; 07's explicit error allocation). Their
+  eighteen research questions become seven numbered ones, 37–43 (three
+  pairs merged), plus seven printed unnumbered next to the earlier question
+  they repeat, or with the Part V theorem that answers them (Section 80.1).
+  Section 66.4 lists where the merge had to choose.
+- **Part VI** is source 08 in its own order, with source 09's Sections
+  11–14.3 merged in: 09's bridge and induced-subgraph lemma after 08's
+  bridge (Section 85.2), 09's vertex-sum theorem **in place of** 08's
+  one-vertex gluing proposition (same formula and argument; 09's form covers
+  all simple graphs and adds block localization; Section 93), 09's stable
+  blocks and `K_{3,3} ∨ C_6` example as Section 94, and 09's Sturm chain and
+  Rayleigh certificate beside 08's `ϑ(3,3,3)` discriminant (Section 92).
+  08's nine questions and 09's two stability questions become Research
+  questions 44–53 (one pair merged). Section 83.4 lists the choices.
+- **Part VII** is source 09's Sections 1–2, 5–10, 14.4, 16–18, the first
+  paragraph of its conclusion and its Appendices A–B, in its order. Its
+  Sections 3–4 and the general part of 15 (ultra-log-concavity; binomial
+  convex domination) are the same theorems as Part V's and are credited
+  there, not reprinted (Section 100.4). Its Questions 5, 6, 8, 10 are
+  Research questions 54–57; 1–2 are in Part VI; 3, 4, 7, 9 are printed
+  unnumbered next to the earlier questions they repeat.
+
+Batch 63's manuscript 03 (source 10) arrived in `a4268e78e` and was placed in
+`62f1ad07c`, together with manuscripts for two other reports. Its pin
+`b57c0b5ff` records the blob `920246d1…` of this report's `article.tex`,
+which is Parts I–VII exactly as printed before Part VIII (last changed by
+`8c6517c0f`, unchanged at the pin and at the placement), so its "Part VI"
+and its line ranges refer to that text. Its manuscript, PDF and delivery
+README are not shipped; they survive in the arrival commit. Its
+`SHA256SUMS.txt` was verified (10/10) at placement and retired.
+
+- **Part VIII** is source 10 in its own order, behind a merge section
+  (Section 116). Source 10's Section k is Section k + 116 here (its
+  Appendices A–B are Sections 130–131), and statement and equation numbers
+  follow the section (Theorem 2.2 → 118.2); its Tables 1–2 and Figure 1
+  are Tables 14–15 and Figure 4, and its eight questions are Research questions
+  58–65. Its classification (Theorem 118.2) is printed with a **first proof
+  assembled for the merge** from Part VI's Theorems 89.1, 93.2 and 84.3(ii)
+  — source 10 itself calls the classification "a synthesis and extension of
+  specific existing results" (Section 130) — and with its own direct proof
+  as the second. Its four bridge lemmas, path-shortening lemma, resolvent
+  lemma and ADE proposition duplicate Part VI (Lemmas 85.1, 85.4–85.6,
+  89.2, 87.1, Proposition 85.2, Theorem 88.1): their statements and labels
+  are kept, their proofs are replaced by pointers; its coefficient count for
+  the `ϑ(3,3,3)` quartic is kept as a second route. Section 116.4 lists
+  every choice.
+
+Batch 64's manuscript 01 (source 11) arrived in `7747fcfdd` and was placed
+in `3025c15df`, together with manuscripts for four other reports and one
+Fabius-tree arrival. Its pin `6d04e1e38` records the same blob `920246d1…`
+of this report's `article.tex` as source 10's: Parts I–VII exactly as
+printed, before Part VIII was written, so its "Part V" and its line
+interval 9510–9555 (the "Sampling boundary" box) refer to that text; the
+box is unchanged and is now in Section 75. Its manuscript, PDF and
+delivery README are not shipped; they survive in the arrival commit. It
+shipped no checksum list.
+
+- **Part IX** is source 11 in its own order, behind a merge section
+  (Section 132). Source 11's Section k is Section k + 132 here (its
+  Appendices A–B are Sections 150–151), and statement and equation numbers
+  follow the section (Theorem 3.2 → 135.2); its two tables are Tables 17
+  (claim ledger) and 18 (verification), its figure is Figure 5, and its
+  eight questions are Research questions 66–73. Its first subsection, "A
+  precise gap in the repository", which cited the pinned blob's line
+  numbers, was rewritten as a pointer to Part V (Section 133.1). Its
+  preorder reduction (Proposition 146.1) is Part V's Lemma 71.1 and keeps
+  its statement and label with the proof replaced by a pointer; its lifted
+  matroid, conditioning minor, Hall lemma, basis walk and cloning keep
+  their short text with merge notes naming Part V's statements. Its
+  counting identity (Corollary 139.2) is kept as a **second route**: the
+  report's only proof of the support-counting identity of Parts II, IV and
+  V that uses no Ehrhart theory. Section 132.4 lists every choice.
+
+Batch 66's manuscript 06 (source 12) arrived in `9ad899cbe` and was placed
+in `4fee1cd07`, together with manuscripts for three other reports and one
+Fabius-tree arrival. Its pin `b8b0fa218` records the blob `ba1cc4a6…` of
+this report's `article.tex`: Parts I–IX exactly as printed (last changed
+by the Part IX write `8a8c07210`, unchanged at the pin and at the
+placement), so its "Part VIII", `mts:thm:main`, `mts:tab:ADE`,
+`mts:q:random` and its line ranges refer to that text. Its manuscript, PDF
+and delivery README are not shipped; they survive in the arrival commit.
+Its `SHA256SUMS.txt` was verified (19/19) at placement and retired.
+
+- **Part X** is source 12 in its own order, behind a merge section
+  (Section 152). Source 12's Section k is Section k + 152 here (its
+  Appendices A–B are Sections 170–171), and statement and equation numbers
+  follow the section (Theorem 8.1 → 160.1); its five tables are Tables
+  20–24 (Table 19 is the merge's notation table), and its ten questions,
+  unlabelled as delivered, are Research questions 74–83 with new labels.
+  Its model and imported classification (Section 154, Theorem 154.1)
+  restate Part VIII's definitions and Theorem 118.2 and are kept with
+  pointers, because Part X cites them throughout; its ADE table (Table 20)
+  is Part VIII's Table 14 in another layout with a new automorphism
+  column; its Lemma 165.1 sharpens the inspection behind Part VIII's
+  Theorem 123.3 and is kept as a second route. Its pin, blob and inspected
+  line ranges are kept in Section 153.1, with a merge note mapping the
+  ranges to Part VIII's sections. Section 152.4 lists every choice.
+
+Batch 68's manuscript 03 (source 13) arrived in `a866ff9a2` and was placed
+in `29e52fcdf`, together with manuscripts for two other reports and three
+Fabius-tree arrivals. Its pin `0a543d5e4` records the same blob
+`ba1cc4a6…` of this report's `article.tex` as source 12's: Parts I–IX
+exactly as printed, before Part X was written (unchanged from the pin to
+the placement), so its "Part V" and its inspected line ranges 8190–8335
+and 8400–8590 refer to that text; Section 186 maps the ranges to Part V's
+sections. Its manuscript, PDF and delivery README are not shipped; they
+survive in the arrival commit. It shipped no checksum list and no notes
+in Markdown.
+
+- **Part XI** is source 13 in its own order, behind a merge section
+  (Section 172). Source 13's Section k is Section k + 172 here (its
+  Appendices A–B are Sections 185–186), and statement and equation numbers
+  follow the section (Theorem 4.1 → 176.1); its two tables are Tables
+  26–27 (Table 25 is the merge's notation table), its figure is Figure 6,
+  and its nine questions, numbered 11.1–11.9 as delivered, are Research
+  questions 84–92. Its Section 2.1 re-derives Part V's Theorem 70.1 by Part
+  V's own argument (Proposition 69.1 and display 70.2); the display and the
+  conclusion keep their labels, and the derivation is replaced by a merge
+  note citing Part V (Section 174.1). Its homogenizing variable `s` is
+  printed `σ`, because `s` is also its core size. Its reference to this
+  report became references to Part V's statements. Section 172.4 lists
+  every choice.
+
+Batch 70's manuscript 05 (source 14) arrived in `1b3960d8a` and was placed
+in `51c6943bf`, together with manuscripts for three other collection
+reports, a new report and one Fabius-tree arrival. Its pin `ffddaa8b9`
+(itself the arrival commit of an unrelated batch-69 archive) records the
+same blob `ba1cc4a6…` of this report's `article.tex` as sources 12 and 13:
+Parts I–IX exactly as printed, before Parts X and XI were written, so its
+"Parts IV–V and IX" and its README's "Research question 37" refer to that
+text (the number is unchanged). It did not see Part XI, which answers the
+weighted version of the same question. Its manuscript, PDF and delivery
+README are not shipped; they survive in the arrival commit. Its
+`SHA256SUMS.txt` was verified (13/13) at placement and retired.
+
+- **Part XII** is source 14 in its own order, behind a merge section
+  (Section 187). Source 14's Section k is Section k + 187 here (its
+  Appendices A–B are Sections 202–203), and statement and equation numbers
+  follow the section (Theorem 4.1 → 191.1); it has no table or figure
+  environment (Table 28 is the merge's notation table), and its nine
+  questions, unlabelled as delivered, are Research questions 93–101 with
+  new labels. Its results that restate earlier ones — the degree lemma
+  (Part IV's Theorem 56.1, extended to every loopless relation), König's
+  matching–cover argument (Part XI's Lemma 180.1), overlap cancellation and
+  the gamma formula (Part IV's Corollary 51.2 and Theorem 48.2), the
+  bipartite equality case and rank ≤ 2 (Part XI's Corollaries 180.3–180.4),
+  and the bipartite kernel (the unit-weight case of Part XI's
+  Theorem 181.2) — keep their text and labels with merge notes, because
+  Part XII cites them and its routes differ or extend the statements. Its
+  self-citation became references to Parts II, IV, V and IX. `Q_tau` is
+  printed with the report's `𝒬_tau`, and its input length `L` (which is
+  also its left shore) is printed `ℓ`. Section 187.4 lists every choice.
+
+Batch 71's manuscript 02 (source 15) arrived in `aee32ad45` and was placed
+in `427bca743`, together with manuscripts for two other collection reports
+and one Fabius-tree arrival. It **names no ProveIt commit** for this
+report. Its bibliography records what it read: source 14's archive at
+that archive's arrival commit `1b3960d8a` ("The inspected `article.tex`
+has 76050 bytes" — the size of source 14's delivered manuscript, not of
+Part XII as printed), source 13's archive at `a866ff9a2` with its
+placement `29e52fcdf`, and this report on the branch `main` for Parts V
+and VI, by a link without a commit, "inspected 1 October 2026". It
+therefore calls source 14 "the incoming manuscript" and source 13 "the
+Hall-bottleneck report"; both are Parts of this report (XII and XI). Every
+claim it makes about them and about Parts V and VI is accurate at the
+placement commit. Its manuscript, PDF and delivery README are not shipped;
+they survive in the arrival commit. It shipped no checksum list.
+
+- **Part XIII** is source 15 in its own order, behind a merge section
+  (Section 204). Source 15's Section k is Section k + 204 here, and
+  statement and equation numbers follow the section (Lemma 2.1 → 206.1);
+  it has no table, figure or question environment (Table 29 is the merge's
+  notation table), and its open problems are recorded as dated notes on
+  Research questions 37, 84–87 and 93–95, not as new numbered questions.
+  Its Lemma 205.1 restates Part V's Theorem 70.1 and keeps its text and
+  label with a merge note. Its references to source 14 ("Rank"), source 13
+  ("Hall") and this report ("Root") became references to Parts XII, XI and
+  VI. Its leaf class `L` is printed `Λ`, the part `B` of its cover `C_Y`,
+  and its macro `\nuG` as `ν(G)`. Section 204.5 lists every choice.
+
+Section numbers of the sources that their shipped notes use:
+source 09's `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites its Sections 4
+(→ Part V, not reprinted: Corollary 67.2 and Proposition 71.5), 5 → 103,
+6 → 104, 7 → 105, 8 → 106, 9 → 107, 10 → 108, 11 → 85.2, 12 → 93 (its
+Lemma 12.1 → 93.1, Theorem 12.2 → 93.2, Corollary 12.3 → 93.3) and
+13 → 94. Source 08's Sections 1–10 are Sections 84–93 here, and its
+Sections 11–13 and Appendices A–B are Sections 95–99; statement numbers
+follow the section (Theorem 1.1 → 84.1, Theorem 7.2 → 90.2) except in
+Sections 85 and 93, where source 09's statements were inserted (source 08's
+Proposition 10.1, the gluing, is Theorem 93.2). Source 07's
+`PROOF_STATUS.md` uses no numbers. Source 11's `11-two-flow-PROOF_STATUS.md`
+uses the delivered numbering: Theorem 3.2 → 135.2, Lemmas 4.1–4.2 →
+136.1–136.2, Sections 5–7 → 137–139, Theorem 8.1 → 140.1, Corollaries
+8.2–8.3 → 140.2–140.3, Propositions 9.1–9.2 → 141.1–141.2, Theorem 10.1 →
+142.1, Propositions 12.1–12.2 → 144.1–144.2, Theorems 13.1–13.2 →
+145.1–145.2, Proposition 14.1 and Corollary 14.2 → 146.1–146.2,
+Proposition A.1 → 150.1. Source 12's `12-random-trees-PROOF_STATUS.md`
+uses no numbers (it names Part VIII's labels `mts:thm:main` and
+`mts:tab:ADE`, which are Theorem 118.2 and Table 14);
+`12-random-trees-SOURCE_AUDIT.md` gives line ranges of the pinned blob
+(mapped in Section 153.1). Source 13 shipped no notes; its records use no
+section numbers, and `data/13-hall-bottlenecks-provenance.json` gives the
+line ranges of the pinned blob (mapped in Section 186). Source 14's
+`14-matching-rank-PROOF_STATUS.md` and `14-matching-rank-SOURCES.md` use
+no section or theorem numbers and no line ranges; `SOURCES.md` names the
+pinned blob and "Research question 37". Source 15's
+`15-leaf-compression-PROOF_STATUS.md` uses the delivered numbers:
+Lemma 2.1 → 206.1, Theorem 2.2 → 206.2, Corollary 2.3 → 206.3,
+Theorem 3.1 → 207.1.
+
 **Status.** AI-assisted and unrefereed. Nothing here is formalized in Lean,
 Rocq or any other proof assistant, and no source claims otherwise. The
 programs check finite instances; they do not prove the all-`n`, all-`m`,
 all-`r` or all-graph statements. (Part IV: the programs check all labeled
 preorders through `n = 5`; the all-preorder theorem rests on the written
-proof and on two imported published root-polytope theorems.)
+proof and on two imported published root-polytope theorems. Parts V–VII:
+the four programs check finite families, listed under "Data conventions";
+the general theorems rest on the written proofs and on imported published
+theorems — the support-counting bridge, the Lorentzian theory of matroid
+bases, Röhrle–Ulirsch's Theorem A, the basis-walk mixing theorem, the
+#P-completeness of transversal-base counting, the Ingleton–Piff
+characterization of gammoids — which are cited, not reproved. Part VIII:
+source 10's program checks every marking of every tree with at most nine
+vertices; the general theorems rest on the written proofs, on Part VI's
+theorems and on standard stable-polynomial closure properties and Perron
+positivity. Part IX: source 11's program checks every bipartite graph with
+both shores of size at most three and every 4 × 3 graph, all 390 labeled
+preorders on at most four elements, 250 seeded random cases and two exact
+Markov chains; the general theorems rest on the written proofs, and the
+sampler theorem also on the imported Anari–Liu–Oveis Gharan–Vinzant mixing
+theorem. Part X: source 12's programs enumerate all 18,249 labelled trees
+with at most seven vertices and all 2,238,526 marked trees, compare 306
+high-precision values with exact histograms, check the Poisson identity
+exactly 170 times and the skeleton coefficients on all 435 unlabelled trees
+with 2–11 vertices; the general theorems rest on the written proofs and on
+Part VIII's classification, which is imported, and the finite checks test
+the ADE-admissible class, not polynomial stability. Part XI: source 13's
+verifier compares its cover-type count with an independent subset count on
+all 512 labeled 3-by-3 bipartite graphs at two weightings and on 200
+seeded rationally weighted graphs, checks 36 small Hall-family instances
+and the 30-vertex witness by three counts, and checks the rank-six
+identities, the four positivity certificates and the endpoint identity
+with SymPy; the general theorems rest on the written proofs, and the
+comparison with the smaller-shore baseline on Part V's Theorem 70.1 and
+Brändén–Huh's Lorentzian theorems. Part XII: source 14's verifier
+compares two support counts on all 4,096 labelled 3-by-4 bipartite graphs
+and the directed kernel with a reference count on all 4,096 loopless
+relations on four vertices, enumerates all 65,536 labelled 4-by-4 graphs
+(3,648 of rank three without isolated vertices) and the lattice points of
+the 355 preorders among those relations, checks 5,184 specializations of
+the rank-three formulas, the three rank-three identities and the
+rank-four family exactly, every minor of the `9 × 9` matrix and 400
+sampled supports; the general theorems rest on the written proofs, the
+cover-in-one-shore case on Röhrle–Ulirsch's Theorem A (Part V's
+Theorem 67.1), disjoint unions on Liggett's convolution theorem, and the
+preorder corollaries on the support-counting bridge of Parts II, IV, V
+and IX. Part XIII: source 15's verifier checks the compression identity
+on 600 random weighted graphs with a singleton-side cover (235 of matching
+number equal to the cover size, also checked for `ULC`), rank-normalized
+ULC on all 4,096 graphs on a fixed 4-by-3 bipartition with activities
+2, 3, 5, 7 and 11, 13, 17, and the cubic formula, the discriminant and
+interlacing inequalities and ULC on 500 random mixed-cover graphs, with
+integer activities; the general theorems rest on the written proofs and
+on Part V's Theorem 70.1 (the Lorentzian theory of Brändén–Huh).)
 
 ## Results
 
@@ -240,7 +711,400 @@ It proves:
    - the octopus formula of Athanasiadis–Xiao–Yan and Menon, recovered and
      credited (Section 55, 01).
 
-**What Parts II and III do to the open questions** (Sections 11.3 and 26.3;
+**Part V** (sources 06 and 07, merged) works with a finite bipartite graph
+`H = (X ⊔ Y, E)` and its demand vectors `c ∈ Z_{≥0}^Y` with
+`c(S) ≤ |N_H(S)|`, counted by support; by the counting bridge the support
+enumerator is `p_H`, which counts matchable support pairs. It proves:
+
+1. **Ultra-log-concavity** (Theorems 67.1 and 70.1, both sources; source
+   09 is a third proof): `a_k / binomial(min(m,n), k)` is log-concave with no
+   internal zeros, positive exactly for `0 ≤ k ≤ nu(H)`, also with positive
+   vertex weights on both shores (Theorem 67.3 states the order on the
+   nonisolated core). The unweighted inequality is **Röhrle–Ulirsch's
+   Theorem A** (see the priority box). Hence **every `h_tau` is
+   ultra-log-concave of order `n`** (Corollary 67.2), for every positive
+   integral dilation too (Corollary 71.3), and the **unimodality part of
+   Problem 5.3 of Dai et al. holds for every bipartite graph** (Corollary
+   70.2). The multivariate support polynomial is completely log-concave
+   (Theorem 69.3); integer capacities are covered (Corollary 70.5).
+2. **Height-two gamma vectors** (Corollary 71.6, 06): since
+   `Gamma_{P_H} = p_H`, every height-two `gamma_k / binomial(min(m,n), k)` is
+   log-concave.
+3. **Palindromic cores** (Theorem 67.4, Section 72, 07): `p_H` is
+   palindromic in its actual degree iff, after deleting isolated vertices,
+   the graph is balanced, has a perfect matching, and the matched relation is
+   a preorder; iff it is gamma-positive. Recognition takes a matching and a
+   transitive closure. The top coefficient factors as `|L|·|R| ≥
+   (a−r+1)(b−r+1)` (Proposition 72.1). This **answers Research question 23**
+   and extends Part IV's Corollary 53.2.
+4. **Intersection realization** (Proposition 73.1, 07): `p_H` is a
+   normalized mixed-volume polynomial (the realizable case of
+   Röhrle–Ulirsch's Theorem E).
+5. **Probability** (Section 74): conditional complete log-concavity
+   (Proposition 74.1, 06), a covariance-matrix bound `Cov(I) ⪯ diag(p) −
+   pp^T/m` (Theorem 74.3, 06), same-mean binomial **convex-order**
+   domination under every positive fugacity (Lemma 74.4, Theorem 74.5, 07;
+   06's Theorem 74.6 by a second route), and equality in the variance bound
+   **exactly for disjoint equal-strength stars** (Theorem 74.8, 07); for
+   preorders exactly for antichains (Corollary 74.9).
+6. **Approximate counting** (Section 75): an explicit matching oracle and
+   basis walk (Theorem 75.1, 07) give FPRASes for partition functions,
+   `|Q_tau ∩ Z^n|` (Theorem 75.2, both), a specified support fibre
+   (Corollary 75.3, 06) and **every single coefficient** `[t^k] h_tau` and
+   height-two `gamma_k` (Theorem 75.5, 06, by log-concave tilting).
+7. **Exact counting is hard** (Section 76, 07): `|D_H|` and `h_tau(1)` are
+   #P-complete under Turing reductions, already for posets of height two
+   (Theorems 76.2–76.3); as a merge consequence, so is a specified
+   `gamma_k` (Corollary 76.4).
+
+**Part VI** (source 08, with source 09's stability sections) studies real
+stability of Part III's signed support polynomial `Phi_G`. It proves:
+
+1. **ADE criterion** (Theorem 84.1, 08): for a tree `T`, the incidence–apex
+   graph `A(T)` has stable `Phi` iff `I − A_T/2 ⪰ 0` iff `rho(A_T) ≤ 2`,
+   i.e. for the finite and affine ADE trees (the list is classical,
+   Theorem 88.1), via the identity `F = det L + s·tr(adj(L) C_T)`
+   (Theorem 86.3) and explicit rational Rayleigh certificates
+   (Theorem 87.2); also after terminal subdivision (Theorem 89.1).
+2. **Books** (Theorems 84.2, 90.2, 08): `Phi_{B_m}` is stable iff `m ≤ 4`,
+   but `p_{B_m}` is real-rooted for every `m`; at `m = 5` the uniform basis
+   measure has a positively correlated pair (covariance 1/576). So
+   **stability of `Phi_G` is strictly stronger than real-rootedness of
+   `p_G`**, which Part III left open; `ϑ(3,3,5)` is a second witness
+   (equation 92.5). In Part II's labelling `B_m` is `Theta_m` plus one edge
+   and `p_{B_m} = p_{Theta_m} + u` (merge note, Section 90).
+3. **Multi-theta graphs** (Theorem 84.3, 08): all simple bipartite
+   multi-theta graphs are classified (all-even: stable; all-odd without a
+   direct edge: stable iff two paths; direct edge plus `m` odd paths: iff
+   `m ≤ 4`), with an expected-determinant proof for even paths
+   (Theorems 91.2, 91.4).
+4. **Block locality** (Lemma 93.1, Theorem 93.2, Corollary 93.3, 09; the
+   bipartite case also 08): `Phi` of a one-vertex sum is stable iff both
+   pieces are, so stability is decided on 2-connected blocks. **Every
+   `K_{l,r}` is a stable block** (Theorem 94.1, 09).
+5. **Infinitely many induced-minimal obstructions** (merge observation,
+   Section 92.6): every `ϑ(a,b,c)` with `a,b,c` odd ≥ 3 is unstable while
+   all its proper induced subgraphs are cacti, so there is no finite
+   obstruction set even for treewidth two and maximum degree three.
+
+**Part VII** (source 09) studies the transversal matroid `M_tau` on two
+copies `E^+ ⊔ E^-` of the ground set of a preorder (bases `I^+ ⊔ (E∖J)^-`
+for matchable `(I,J)`; the dual convention to Parts V–VI's `𝖬_H`). It
+proves:
+
+1. for a reflexive relation, transitivity iff the paired copies are clones
+   (Theorem 103.2; Part IV's Proposition 51.4 in matroid form);
+2. a symmetric presentation and the upset rank formula (Theorem 104.1);
+3. the clone classes are the doubled equivalence classes (Theorem 105.1),
+   **`M_tau` determines `tau` up to isomorphism** (Theorem 105.2), and
+   `|Aut M_tau| = |Aut(tau̅, m)| · Π_C (2 m_C)!` (Corollary 105.3);
+4. `M_tau^* = M_{tau^op}` and induced restrictions are minors
+   (Theorem 106.1);
+5. a multivariate orbit polynomial and a transport-weighted palindromic,
+   gamma-positive, ultra-log-concave `h_{tau,w}` (Theorems 107.1–107.2; the
+   unweighted orbit statement is Part IV's Theorem 52.1);
+6. every transversal matroid is an explicit minor of a height-two preorder
+   matroid, so these generate exactly the finite gammoids under minors
+   (Theorem 108.1, Corollary 108.2, with Ingleton–Piff's characterization).
+
+**Part VIII** (source 10) studies the incidence graph `A(T;S)` of a tree `T`
+with one apex adjacent exactly to a set `S` of tree vertices (a *marking*;
+Part VI's `A(T)` is `S = V(T)`). With `K` the smallest subtree containing
+`S` and `H(T,S)` the tree on `S` obtained by suppressing the unmarked
+degree-two vertices of `K`, it proves:
+
+1. **Classification** (Theorem 118.2): `Phi_{A(T;S)}` is real stable iff
+   `S` is empty, or every vertex of degree ≥ 3 in `K` is marked
+   (*branch-complete*) and `I − A_H/2 ⪰ 0`, i.e. `H(T,S)` is a finite or
+   affine ADE tree. This **follows from Part VI** (Theorems 89.1, 93.2 and
+   84.3(ii); first proof); source 10's direct proof is new: an unmarked hull
+   branch forces an induced odd multi-theta graph (Theorem 120.2); a real
+   symmetric matrix supported on `S` with connected-set energies
+   `1_W^T C 1_W = [W ∩ S ≠ ∅]` exists iff `S` is branch-complete, and is
+   then unique (Theorem 121.1, generalizing Proposition 86.2);
+   `F_{T,S} = det L + s·tr(adj(L) C)` holds on the host with unmarked
+   subdivisions and fringe (Theorem 121.3, generalizing Theorem 86.3); and
+   indefiniteness gives a rational negative Rayleigh certificate on the
+   host (Theorem 122.2, generalizing Theorem 87.2).
+2. **Recognition and geometry** (Section 123): stability is decided in
+   `O(n)` time (Theorem 123.1); a stable hull has at most four leaves
+   (Corollary 123.2); the largest stable marking `alpha_st(T)` satisfies
+   `diam(T) + 1 ≤ alpha_st(T) ≤ min(n, diam(T) + 3)`, all three offsets
+   attained (Theorem 123.3); stable markings are neither up- nor
+   down-closed, and all markings are stable iff `T` is a path
+   (Proposition 123.4).
+3. **Enumeration, optimization and repair** (Sections 124–125): an endpoint
+   formula for the multivariate enumerator of stable markings over hulls
+   with two, three and four leaves and six exceptional arm triples
+   (Theorem 124.1); all coefficients of the weighted size enumerator in
+   `O(n^5)` exact arithmetic operations (Theorem 124.2) and the exact
+   probability that an independent random marking is stable
+   (equation 124.7); a maximum-weight stable marking for arbitrary signed
+   rational scores in `O(n^5)` (Theorem 125.1) and minimum-cost apex-edge
+   repair (Corollary 125.2).
+4. **The size enumerator of stable markings** (Section 126): path and star
+   formulas (Proposition 126.1); `Z_T(t)` is real-rooted iff the
+   multivariate enumerator is stable iff `T` is a path (Theorem 126.3, by a
+   two-coefficient rigidity lemma, Lemma 126.2); for stars log-concavity
+   fails from `m = 4` and unimodality from `m = 6` (equations 126.5–126.7).
+
+**Part IX** (source 11) works with a bipartite graph `H = (X ⊔ Y, E)`, its
+demand set `𝒟_H = {c ∈ Z_{≥0}^Y : c(A) ≤ |N_H(A)| for all A ⊆ Y}` (Part V's)
+and the matchable support pairs `(I, J)` (Part V's `𝓜(H)`). With a dummy
+receiver `0` joined to every supplier and cycle-generic edge costs (for
+instance `2^i` on the `i`-th augmented edge), it proves:
+
+1. **Two-flow correspondence** (Theorem 135.2): for `r = |J| > 0`, the
+   minimum-cost flow with margins `m·1_{x∈I} + 1` on suppliers and `m` on
+   `{0} ∪ J` and the one with margins `r + 1` on suppliers,
+   `(r+1)c_0 + r` at the dummy and `(r+1)c_y − 1` at `y ∈ J` are unique,
+   integral and supported on **the same spanning tree**; the forward map
+   `c_y = 1 + #(unselected supplier leaves at y)` and the inverse map
+   `I = {suppliers of degree 2}` are inverse bijections between the supplier
+   sets matchable to `J` and the demand vectors with support `J`. Proofs use
+   Hall's theorem, finite forests and strict tree potentials only (Sections
+   136–139), so the **support-counting identity** (Corollary 139.2 = Part V's
+   Proposition 68.3, Part IV's Proposition 49.3, Part II's Lemma 14.1)
+   gets an elementary proof without Ehrhart theory — a second route, not a
+   new identity.
+2. **Core factorization and restriction laws** (Section 140): a flow of
+   total value `r(r+1)` on the selected suppliers fixes prices, after which
+   every other supplier independently attaches to its unique cheapest
+   reduced-cost receiver or the dummy (Theorem 140.1); deleting or adding
+   suppliers outside `I` changes the vector by one unit each, monotonically
+   and commutatively (Corollary 140.2), and receivers outside `J` do not
+   matter (Corollary 140.3).
+3. **Perturbations and certificates** (Sections 141–143): explicit open
+   ranges of margins and costs, dependence only on cycle-sign chambers,
+   gauge invariance (Propositions 141.1–141.2); polynomial bit complexity
+   and an `O(m+r)`-entry exact primal–dual certificate whose checker proves
+   unique optimality (Theorem 142.1); a worked certificate (Section 143).
+4. **Obstructions** (Section 144): no deterministic support-preserving
+   bijection is equivariant under all automorphisms (`K_{2,1}`,
+   Proposition 144.1); no bijection moves coordinates by a bounded amount
+   per basis exchange (`K_{m,1}`, Proposition 144.2).
+5. **Full-coordinate sampling** (Section 145): the bijection pushes the
+   weighted basis law of Part V's matroid `𝖬_H` to the support-weighted law
+   on `𝒟_H` and preserves total-variation distance **exactly**
+   (Theorem 145.1); with the imported basis-walk mixing theorem this is a
+   polynomial-time almost-uniform sampler of actual demand vectors
+   (Theorem 145.2), also conditioned on prescribed zero and nonzero
+   coordinates.
+6. **Preorders** (Section 146): `𝒟_{H_tau} = 𝒬_tau ∩ Z^V` (Proposition
+   146.1, Part V's Lemma 71.1), hence an almost-uniform sampler of the actual
+   lattice points of every finite preorder polytope (Corollary 146.2), and
+   of its integral dilations by cloning (pseudopolynomially).
+7. **Inverse prices** (Section 150): the inverse tree's receiver potentials
+   are the unique maximizer of an explicit concave function, at which
+   exactly the selected suppliers have two minimizing receivers
+   (Proposition 150.1).
+
+**Part X** (source 12) takes `T_n` uniform among the `n^(n−2)` labelled
+trees on `[n]`, marks every vertex independently with probability `p`
+(`q = 1 − p`, `r = p/q`), and calls a marking stable when Part VIII's
+Theorem 118.2 makes `F_{T,S}` real stable (imported, Theorem 154.1). `K_n`
+is the number of marks, `H_n` the number of hull vertices, `π_n(p)` the
+annealed and `π_p(T)` the quenched stability probability. It proves:
+
+1. **Skeleton series** (Section 155): with `c_k = a_k/k!` for the `a_k`
+   allowed labelled skeletons on `k` labels, `c_k = 9/8` for every
+   `k ≥ 10` (Proposition 155.1; the path, long-`D` and double-fork
+   families contribute `1/2`, `1/2`, `1/8`), with the finite prefix of
+   Table 21.
+2. **Exact counts** (Sections 156–157, 159): the number of stable pairs
+   with `k ≥ 2` marks and hull size `ℓ` is
+   `binom(n,k)·a_k·(n−k)_(ℓ−k)·binom(ℓ−2,k−2)·ℓ·n^(n−ℓ−1)`
+   (Theorem 156.2); the two-colour generating function (Theorem 157.1);
+   and an exact Poisson formula for `π_n(p)` with eight finite corrections
+   (Theorem 159.1).
+3. **Three regimes** (Sections 158, 160–162): `π_n(p) ~
+   (9/8)·sqrt(2π)·p^3·n^(5/2)·e^(−np)` along every sequence with
+   `p·sqrt(n) → ∞`, including fixed `p` and up to `p = 1`
+   (Theorem 160.1), and at fixed `p` even
+   `π_n(p) = (9/8)·p^3·B_n·e^(nq)·(1 + O(θ_p^n))` with `B_n = n!/n^(n−2)`
+   and some `θ_p < 1` (Proposition 160.2); `π_n(p) ~ q^n(1 + nr + binom(n,2)r^2)`
+   when `p·sqrt(n) → 0` (Theorem 161.1, Corollary 161.2);
+   `π_n(p)/(n q^n) → Ψ(λ)` for an explicit entire `Ψ` when
+   `p·sqrt(n) → λ` (Theorem 162.2), with a limiting law of the number of
+   marks and a chi mixture for `H_n/sqrt(n)` (Theorem 162.3); at fixed `k`
+   marks, chi hulls and Dirichlet subdivisions (Theorem 158.1,
+   Corollary 158.2).
+4. **Fixed `p`, given stability** (Sections 163–164): `(K_n − np^2,
+   H_n − np)/sqrt(n)` is asymptotically Gaussian with covariance
+   `[[2p^2q, pq], [pq, q]]`, with constant-order corrections to means,
+   variances and covariance (Theorem 163.2); the path, long-`D` and
+   double-fork skeleton families have limiting weights 4/9, 4/9, 1/9
+   (Corollary 163.3); `diam(T_n) = H_n + O_P(log n)`, so the diameter is
+   about `pn` (Theorem 164.3).
+5. **Every host** (Section 165): every stable marking lies within two
+   marks of a host path (Lemma 165.1), so
+   `q^(n−d−1) ≤ π_p(T) ≤ (n(n+1)/2)(1 + nr + binom(n,2)r^2)·q^(n−d−1)`
+   for a tree with diameter `d` (Theorem 165.2); for a uniform Cayley host
+   `(1/n)·log π_p(T_n) → log(1−p)` in probability while
+   `(1/n)·log E π_p(T_n) → −p` (Theorem 165.4), with a variational
+   explanation through the diameter large deviations (Lemma 165.3).
+6. **Universality** (Section 166): any skeleton class with eventually
+   constant coefficients `c` gives `c·sqrt(2π)·p^3·n^(5/2)·e^(−pn)` and
+   the same Gaussian covariance (Theorem 166.1); the geometric results
+   need the ADE path shape and do not transfer.
+
+**Part XI** (source 13) works with a bipartite graph `H = (X, Y; E)`,
+positive vertex weights `u`, `v` on both shores, `r = nu(H)` and the
+weighted support polynomial `p_H(t; u, v) = Σ a_k t^k` (Part V's
+`A_H(t; u, v)`: each matchable support pair once, not each matching);
+`ULC_D` means that `a_k / binomial(D, k)` is log-concave without internal
+zeros, with margins `Δ_k^(D) = k(D−k)a_k^2 − (k+1)(D−k+1)a_{k−1}a_{k+1}`.
+The Hall family `H_{s,n}` has outer blocks `L`, `R` of size `n` (weight 1),
+cores `A`, `B` of size `s` (activity `w`), and every edge except those of
+`L × R`. It proves:
+
+1. **Support criterion and coefficients** (Section 175): a pair of size
+   `k` choosing `i` vertices of `A` and `j` of `B` is matchable iff
+   `i + j ≥ k` (Lemma 175.2), which gives a closed formula for every
+   coefficient (Theorem 175.3).
+2. **The counterexample** (Theorem 176.1): `H_{4,11}` with `w = 500`
+   (30 vertices, 104 edges, `nu = 8`) has
+   `7a_7^2 − 16a_6a_8 = 9·3025^2·w^14·(−w^2 + 480w + 2304)`, which is
+   `9·3025^2·500^14·(−7696) < 0`, so it is not `ULC_8`, although it is
+   `ULC_15` by Part V; for this graph the last inequality first fails at
+   the integer activity 485. Hence a degree-15 Lorentzian specialization of a
+   transversal-matroid basis polynomial whose quotient by `σ^7` is not
+   Lorentzian (Corollary 176.2), and a nonreal zero and an open set of
+   failing weights (Corollary 176.3).
+3. **Rank six** (Section 177): for `H_{3,n}` the first four order-6
+   margins are positive for every `w > 0` (finite positive-coefficient
+   certificates, Section 185) and
+   `Δ_5^(6) = n^4 (n−1)^2 w^10 Q_n(w) / 48`, so `H_{3,n}` is `ULC_6` for
+   every `w` iff `n ≤ 32`, and for `n ≥ 33` exactly for `w ≤ w_c(n)`
+   (Theorem 177.1); `H_{3,33}` with `w = 26804` (72 vertices) fails;
+   `w_c(n)/n → 6 + 2·sqrt(11)`, and every unit-weight member is `ULC_6`
+   (Corollary 177.2).
+4. **The endpoint for every core size** (Theorem 178.2): the last margin
+   is `w^(4s−2)·(αw^2 + βw + γ)` with `β, γ > 0`; it fails for some `w` iff
+   `α < 0`: never for `s = 2`, and for `s ≥ 3` iff
+   `n ≥ n_min(s) = s + ⌊1/(T_s − 1)⌋`, `T_s = 2(s−1)/sqrt(s(2s−1))`
+   (Table 27 lists `s = 3..10`; `s = 4` gives the 30-vertex witness).
+5. **Limiting order** (Section 179): as `w → ∞` the coefficients tend to
+   those of `L_{s,n}(t) = t^s·Σ_j binomial(n,j)^2 t^j`; the least order
+   that works for every `L_{s,n}` is
+   `D_s = max(2s, ⌈(8s^2 − 11s + 4)/(3s − 2)⌉)` (Theorem 179.3: 7, 9, 12 at
+   ranks 6, 8, 10), so any order depending on the rank alone satisfies
+   `D(2s) ≥ D_s`, that is `D(r) ≥ (4/3)r − 17/9 + o(1)` along even ranks
+   (Corollary 179.4).
+6. **First inequality** (Section 180): for every positively weighted graph
+   with `r ≥ 2`,
+   `((r−1)/(2r))·a_1^2 − a_2 = (1/(2r))·Σ_{i<j}(W_i − W_j)^2 + K + B_4`
+   over the star classes of a minimum vertex cover (Theorem 180.2), so the
+   first `ULC_r` inequality always holds, with equality exactly for
+   disjoint unions of `r` stars with equal edge-weight sums
+   (Corollary 180.3); matching number at most two is always `ULC_r`
+   (Corollary 180.4).
+7. **Exact counting** (Section 181): a formula over neighbourhood types
+   relative to a minimum vertex cover (Theorem 181.2) computes every
+   coefficient for positive rational weights in
+   `O((N+M)r + Nr + r^3·B_{p,q})` arithmetic operations, hence in
+   `2^(r^2 + O(r))·poly(N + M)` (Theorem 181.3).
+
+**Part XII** (source 14) works with a bipartite graph `G = (L ⊔ R, E)`,
+its support numbers `s_k(G)` (pairs of `k`-sets, one on each shore, whose
+induced graph has a perfect matching; each support once) and
+`r = nu(G)`; "rank-ULC" means that the coefficients divided by
+`binomial(d, k)`, `d` the actual degree, are log-concave (Part XI's
+`ULC_d`). For a loopless directed relation `D`, `g_k(D)` counts ordered
+pairs of disjoint `k`-sets joined by a bijection along arcs and
+`Gamma_D = Σ g_k(D) t^k` has degree `d = nu(U(D))` (Lemma 189.1); for the
+off-diagonal relation of a preorder it is Part IV's `Gamma_tau`. It
+proves:
+
+1. **First inequality** (Theorem 190.2): `g_1^2 ≥ (2d/(d−1))·g_2` for
+   every directed relation with nonnegative tail and head activities, by
+   the Motzkin–Straus bound on the graph of disjoint arcs (Lemma 190.1,
+   with its compression proof); unweighted equality holds exactly when
+   every nontrivial component of `U(D)` is a star or a triangle with the
+   same number `q` of arcs, and then `Gamma_D = (1+qt)^d` (Theorem 190.3).
+   For bipartite graphs with positive weights this is Part XI's
+   inequality and equality case (Theorem 180.2, Corollary 180.3), reached
+   by another route.
+2. **Rank three** (Theorem 191.1): every bipartite graph with
+   `nu(G) ≤ 3` has `s_k / binomial(nu(G), k)` log-concave, whatever its
+   shore sizes. With a minimum cover `{a} ⊔ {b_1, b_2}` the coefficients
+   are `1 + (w+A+e)t + (wA+B+C)t^2 + wBt^3` in four populations
+   `x, y, z, w` and two core-edge indicators (Lemma 191.2), and
+   `s_2^2 − 3s_1s_3 = (Aw/2 − (B+C))^2 + (3/4)(A^2−4B)w^2 + 3(AC−eB)w`
+   with both last factors explicit sums of nonnegative terms
+   (Proposition 191.3); equality forces three equal stars
+   (Corollary 191.4). A cover inside one shore reduces to Part V's
+   Theorem 67.1 with `min(m,n) = 3`.
+3. **Bimatroid obstruction** (Theorem 192.1): `M_ij = 1 + ij + i^2j^2`
+   (`m × n`, `m, n ≥ 3`) has rank 3 and all minors of order ≤ 3 positive,
+   so its regular-minor counts `binomial(m,k)·binomial(n,k)`, `k ≤ 3`, are
+   rank-ULC iff `3(m−1)(n−1) ≥ 4(m−2)(n−2)`; for `9 × 9` the gap is
+   `1296^2 − 3·81·7056 = −34992`, and in the square family rank-ULC holds
+   exactly for `3 ≤ m = n ≤ 8` (Corollary 192.2). The nonzero pattern is
+   `K_{m,n}`, so this is not a counterexample for graphs.
+4. **Kernels** (Sections 193–194): over the types of the vertices outside
+   a vertex cover, a finite Boolean feasibility table and binomial
+   (directed: `binomial(N,p)·binomial(N−p,q)`) multiplicities count supports
+   exactly in `2^(O(r^2))·poly(ℓ)` (Theorem 193.1; the unit-weight case of
+   Part XI's Theorem 181.2) and directed disjoint supports in
+   `2^(O(d^2))·poly(ℓ)` from a greedy cover of size `≤ 2d`
+   (Theorem 194.1), with rational activities (Proposition 194.2) and an
+   exactly uniform support sampler.
+5. **Clone families** (Section 195): coefficients are polynomials of
+   degree `≤ k` in the type populations (Theorem 195.1), the rank is
+   constant once every population is at least the cover size
+   (Lemma 195.2), and rank-ULC of a one-parameter clone family is decidable
+   by exact arithmetic (Theorem 195.3).
+6. **Rank four and unions** (Section 196): the connected graph `G_N`
+   (four core vertices, all core edges, `N` vertices of each of six types)
+   has `nu = 4` and support polynomial
+   `1 + (8N+4)t + (23N^2+11N+1)t^2 + (28N^3+5N^2)t^3 + N^2(7N−1)^2 t^4/4`,
+   strictly rank-ULC for every `N ≥ 1` (Theorem 196.1); disjoint unions of
+   graphs of matching number at most three and graphs `G_N` are rank-ULC
+   by Liggett's convolution theorem (Corollary 196.2).
+7. **Preorders** (Section 197), through the support-counting bridge: every
+   finite preorder with `d = deg Gamma_tau ≥ 2` has
+   `gamma_1^2 ≥ (2d/(d−1))·gamma_2`, with equality exactly for stars and
+   triangles of the comparability graph with equal arc counts, so every
+   gamma polynomial of degree ≤ 2 is rank-ULC (Corollary 197.2); height-two
+   posets whose comparability graph has matching number at most three, or
+   is `G_N`, or a union of these, have rank-ULC gamma polynomials
+   (Corollary 197.3); and every `gamma_k`, every coefficient of `h_tau`
+   and `|𝒬_tau ∩ Z^n| = Σ gamma_k 2^(n−2k)` are computable in
+   `2^(O(d^2))·poly(ℓ)` (Corollary 197.4). Composed with Part IX's
+   bijection the sampler would give exactly uniform lattice points; that
+   composition is specified, not implemented.
+
+**Part XIII** (source 15) works with Part V's weighted support
+polynomial `p_G(t; u, v) = Σ a_k t^k` of a bipartite graph `G = (X, Y; E)`
+with positive vertex activities on both shores (each support pair once),
+`r = nu(G)`, and Part XI's `ULC_D`. It proves:
+
+1. **Leaf compression** (Lemma 206.1): right vertices whose neighbourhood
+   is exactly `{x_0}` can be replaced by one leaf of `x_0` whose activity
+   is the sum of theirs; the support polynomial is unchanged, because a
+   support contains at most one of them.
+2. **A singleton on one shore** (Theorem 206.2): if `G` has a minimum
+   vertex cover `{x_0} ⊔ C_Y` with `|C_Y| = r − 1` (or, after exchanging
+   shores, the mirror image, or a minimum cover inside one shore), then
+   `p_G` is `ULC_r` for arbitrary positive activities: compression leaves a
+   shore of exactly `r` vertices, and Part V's Theorem 70.1 (restated as
+   Lemma 205.1) applies.
+3. **Weighted rank three** (Corollary 206.3): by König's theorem every
+   graph with `r ≤ 3` has such a cover, so `a_1^2 ≥ 3a_2` and
+   `a_2^2 ≥ 3a_1a_3` at `r = 3` for all positive activities; with
+   nonnegative activities the order is the surviving degree. This contains
+   Part XII's Theorem 191.1 (unit weights; a second proof without the
+   sum-of-squares certificate) and Part XI's Corollary 180.4 (`r ≤ 2`).
+4. **Mixed rank-three covers are real-rooted** (Theorem 207.1): with a
+   cover `{x_0} ⊔ {y_1, y_2}` the support polynomial is
+   `(1 + hTt)(1 + Dt + Qt^2) + ht(C + Ft)`, `D^2 − 4Q ≥ 0`, and
+   `CFD − F^2 − QC^2 ≥ 0` by an explicit sum of squares, so all zeros are
+   real and negative. As source 15 says, this already follows from Part
+   VI's Theorem 94.1 and Corollaries 93.3 and 94.3 (the blocks are edges
+   and `K_{2,q}`); the proof is new.
+
+**What Parts II–XIII do to the open questions** (Sections 11.3 and 26.3;
 Part II's dated pointers are in the abstract, the scope box, Sections 8 and
 10 and Appendix C; Part III's in the title block, the abstract, the
 reading-route box, Section 19 and Research questions 3 and 4 of Section 24;
@@ -248,7 +1112,14 @@ Part IV's answers are in Section 46.3, and its dated pointers, marked
 "Added 29 September 2026, batch 44", in the title block, the abstract, the
 scope box, the reading-route box, Section 8.5, Section 10, Part II's status
 box, Section 11.3 and Research questions 1 and 2, and Part III's Section 26.3
-and Research question 18):
+and Research question 18; Parts V–VII's answers are in Sections 66.3, 83.3
+and 100.3, and their dated pointers, marked "Added 29 September 2026,
+batch 55", are in the title block, the abstract, the scope box, the
+reading-route box, Section 1, Part II's Research question 3, Part III's
+Corollary 37.4, the containment paragraph of Section 39 and Research
+questions 11 and 15, and Part IV's Corollary 50.3, Proposition
+51.4, Theorem 52.1, the remark after Corollary 53.2, Theorem 58.1 and
+Research questions 23, 24, 26, 28, 32 and 34):
 
 - Conjecture 5.3 (real roots) is **false** — first counterexample credited to
   Patel. Part I never asserted it, so nothing is retracted.
@@ -272,13 +1143,198 @@ and Research question 18):
   **answered** by Part III: exactly the cacti, and strictly stronger than
   stability. Research question 3 (which graph structures preserve
   real-rootedness) is **re-scoped, still open**: Part III's `K_{2,3}` tree
-  attachments are noncacti with real-rooted `p_G`.
+  attachments are noncacti with real-rooted `p_G`. [Updated 29 September
+  2026, batch 55: Part VI shows that vertex sums preserve and reflect
+  stability, and that edge subdivision can restore real-rootedness without
+  stability (`ϑ(3,3,3)` vs `ϑ(3,3,5)`); real-rootedness alone under vertex
+  sums is not treated.]
 - [Added 29 September 2026, batch 44.] Conjectures 5.3 and 5.1(d) are
   unchanged by Part IV: gamma-positivity does not imply real-rootedness, and
   Part IV constructs no flag polytope (Research question 22). Part IV proves
   Conjecture 5.1(a)–(b) (palindromicity, unimodality) again, by a route
   independent of Part I's unrefereed geometry. It refutes nothing in Parts
   I–III; nothing is retracted.
+- [Added 29 September 2026, batch 55.] Part V strengthens unimodality to
+  **ultra-log-concavity of every `h_tau`** and of every height-two gamma
+  vector; **Research question 23 is answered** (palindromic support
+  polynomials of all bipartite graphs); Research question 24 is answered in
+  height two only; Research question 26's unrestricted complexity and
+  Research question 32's "specified `gamma_k`" are answered (#P-hard already
+  in height two, with FPRASes); Research question 28 gains binomial
+  convex-order domination, not a limit law. Part VI proves that **stability
+  of `Phi_G` is strictly stronger than real-rootedness of `p_G`** (Part
+  III left this open), answers Part III's gluing target in Research
+  question 11, and classifies two treewidth-two families; Research question
+  11 stays open in general. Conjectures 5.3 and 5.1(d) are unchanged. Parts
+  V–VII refute nothing in Parts I–IV; nothing is retracted.
+- [Added 30 September 2026, batch 63.] Part VIII removes the "stated
+  terminal convention" of Part VI's criterion (Section 93.4, "What these
+  results do not imply") for one apex over a tree, and answers no numbered
+  research question: its Research questions 58–60 re-pose Part VI's 45, 47
+  and 48 with added detail, and 64–65 overlap 44, 52 and 53. Its answers
+  are in Section 116.3; its dated pointers, marked "Added 30 September 2026,
+  batch 63", are in the title block, the abstract, the scope box, the
+  reading-route box, after Theorem 84.1, in Sections 89.2 and 93.4, and
+  after Research questions 45, 47 and 48. Conjectures 5.3 and 5.1(d) are
+  unchanged; nothing is refuted or retracted.
+- [Added 30 September 2026, batch 64.] Part IX **answers Part V's
+  "Sampling boundary"** (Section 75.7) and "Precisely what is sampled for
+  a preorder" (Section 75.4): it samples actual demand vectors and preorder
+  lattice points almost uniformly. It **constructs the bijection** asked
+  for by Research questions 2 and 20 (and by the unnumbered source-06/07
+  paragraphs of Section 80.1), support-preserving and with an elementary,
+  Ehrhart-free proof; their compatibility clauses are answered only in
+  part (deletion outside the selected sets, support weights), full
+  equivariance is shown impossible, and the rest is Research question 71.
+  Source 09's "Direct lattice-point bijections" (Section 112.1) is answered
+  in its support-resolved part, not as a canonical or clone-compatible
+  bijection. Research questions 39 (binary capacities; label added) and 43
+  (formalization) stay open, extended by 68 and overlapped by 73.
+  Conjectures 5.3 and 5.1(d) are unchanged; nothing is refuted or
+  retracted. Its answers are in Section 132.3; its dated pointers, marked
+  "Added 30 September 2026, batch 64", are in the title block, the
+  abstract, the scope box, the reading-route box, after Part II's
+  Lemma 14.1 and Research question 2, after Part IV's Remark 49.4 and
+  Research question 20, in Part V's Sections 67.3 (claim table), 68.2,
+  75.4 and 75.7, after Research questions 39 and 43 and in Section 80.1,
+  and in Part VII's Sections 109 and 112.1.
+- [Added 30 September 2026, batch 66.] Part X **answers Part VIII's
+  Research question 63** ("Random trees and asymptotic stable
+  probabilities") for uniform labelled trees with independent marks of one
+  common probability `p`, in every regime of `p`; for its second half,
+  deterministic families of hosts, it gives the probability only within a
+  polynomial factor, from the diameter (Theorem 165.2), not an asymptotic
+  equivalent. Other random-tree laws, vertex-dependent markings and the
+  quenched prefactor are Research questions 79, 80 and 74. Research
+  question 81 re-poses Part VIII's 59 (several apices, itself Part VI's 47)
+  with a random-tree layer, and 83 overlaps 65 (formalization). Conjectures
+  5.3 and 5.1(d) are unchanged; nothing is refuted or retracted. Its
+  answers are in Section 152.3; its dated pointers, marked "Added
+  30 September 2026, batch 66", are in the title block, the abstract, the
+  scope box, the reading-route box and after Research question 63.
+- [Added 30 September 2026, batch 68.] Part XI **answers Part V's
+  Research question 37** ("Normalization by the matching number")
+  **negatively for positive weights on both shores** (Theorem 176.1; at
+  matching number six, Theorem 177.1). The unit-weight and one-shore
+  versions stay open (Research questions 84 and 85) [updated 30 September
+  2026, batch 70: the unit-weight version is settled for matching number
+  at most three by Part XII; see the next item], and no smallest
+  counterexample is determined: the least matching number of a weighted
+  counterexample is 3, 4, 5 or 6 (Research question 86) [updated
+  30 September 2026, batch 71: it is 4, 5 or 6, by Part XIII] [updated
+  1 October 2026, batch 72: it is exactly 6, and the unit-weight and
+  one-shore versions fail; see [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization)]. It answers
+  Research question 38 at the first index for the normalization by
+  `nu(H)` (Corollary 180.3); the merge adds that the first inequality is
+  then strict for every larger order, so equality at the first index of
+  Part V's inequality needs `min(m,n) = nu(H)`, and for preorders only the
+  antichain attains it (the first index of Part VII's restatement in
+  Section 112.1). Its exact algorithm (Theorem 181.3) adds one
+  parameterized class to Research questions 26, 32 and 40 — bounded
+  matching number, which through Part II's Theorem 13.2 also covers
+  `h_{P_G}` — not the widths they name. For preorders, Research question
+  37 is vacuous (`nu(H_tau) = n` by the diagonal), so Corollary 67.2 is
+  unaffected. Conjectures 5.3 and 5.1(d) are unchanged; nothing is refuted
+  or retracted. Its answers are in Section 172.3; its dated pointers,
+  marked "Added 30 September 2026, batch 68", are in the title block, the
+  abstract, the scope box, the reading-route box, after Research questions
+  26 and 32, after Theorem 69.3 (the homogenizing-degree caveat), in
+  Section 70.4 ("Why the order is the smaller active shore"), after
+  Research questions 37, 38 and 40 (which received the label
+  `hb:hq:algorithms`), and in Part VII's Section 112.1.
+- [Added 30 September 2026, batch 70.] Part XII **answers the
+  unit-weight version of Research question 37 affirmatively for matching
+  number at most three** (Theorem 191.1), and for the connected rank-four
+  family `G_N` and disjoint unions (Theorem 196.1, Corollary 196.2). It
+  answers Part XI's Research question 84 in part (a unit-weight
+  counterexample, if any, has matching number at least four); 84 is open
+  from rank four on (re-posed as Research questions 93 and 94), and 85
+  (one-shore weights) and 86 (weighted ranks 3–5, of which Research
+  question 95 is the rank-three case) are untouched [updated 30 September
+  2026, batch 71: Part XIII settles rank three for 85 and 86 and answers
+  95; see the next item] [updated 1 October 2026, batch 72: 84 and 94 are
+  answered negatively, 93 affirmatively, 85 negatively and 86 completely,
+  in [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization)]. It answers Research
+  question 24 at the first index for every finite preorder and entirely
+  in gamma degree at most two (Corollary 197.2), and improves the height-two
+  normalization of Corollary 71.6 from `min(m,n)` to `nu` for the classes
+  of Corollary 197.3; it adds one parameterized class for every preorder to
+  Research questions 26, 32 and 40 — the gamma degree
+  `nu(Comp(tau))` (Corollary 197.4) — not the widths they name. Its
+  first-inequality and kernel results overlap Part XI's (Theorems 180.2 and
+  181.2–181.3), which it did not see; merge notes say where. Conjectures
+  5.3 and 5.1(d) are unchanged; nothing is refuted or retracted. Its
+  answers are in Section 187.3; its dated pointers, marked "Added
+  30 September 2026, batch 70", are in the title block, the abstract, the
+  scope box, the reading-route box, after Research questions 24, 26 and 32,
+  after Corollary 71.6, after Research questions 37 and 40, after source
+  06's paragraph in Section 80.1, after source 09's in Section 112.1, in
+  Part XI's opening paragraph and Section 172.3, and after Research
+  questions 84, 85 and 86.
+- [Added 30 September 2026, batch 71.] Part XIII **answers Part XII's
+  Research question 95** ("Weighted rank three") **affirmatively**, for
+  positive and for nonnegative activities on both shores
+  (Corollary 206.3). It answers Part XI's Research question 86 in part
+  (the least matching number of a weighted counterexample is 4, 5 or 6;
+  at 4 and 5 every minimum cover of a counterexample meets both shores in
+  at least two vertices), answers Research question 85 (one-shore weights)
+  for `nu ≤ 3` and for minimum covers split `1 + (r−1)`, gives
+  Research question 87 the value `𝒟(3) = 3`, and reduces Research
+  questions 84, 93 and 94 (unit weights) at rank four to minimum covers
+  split `2 + 2`: of Part XII's 24 rank-four templates, the eight split
+  `1 + 3` need no certificate. For Research question 37 the weighted
+  version now holds for `nu(H) ≤ 3` and fails at 6 and 8. Part XIII is
+  **consistent with Part XI's counterexamples**: `H_{s,n}` with `n > s`
+  has the unique minimum cover `A ⊔ B`, split `s + s` (`4 + 4` for the
+  30-vertex witness, `3 + 3` for the rank-six family), outside its
+  hypothesis (Section 204.4). One sentence of Part XII's commentary after
+  Research question 95 ("Vertices with common neighborhoods cannot be
+  treated as a single weight …") is **corrected, not retracted**: true for
+  common neighbourhoods of two or more vertices, false for one (Lemma
+  206.1). Conjectures 5.3 and 5.1(d) are unchanged; nothing is refuted or
+  retracted. Its answers are in Section 204.3; its dated pointers, marked
+  "Added 30 September 2026, batch 71", are in the title block, the
+  abstract, the scope box, the reading-route box, after Research
+  question 37, in Part XI's opening paragraph and Section 172.3, after
+  Research questions 84–87, in Part XII's opening paragraph and
+  Section 187.3, after Research questions 93–95 (two at 95), after Part
+  XII's non-claim on nonuniform activities (Section 199.2) and in its
+  conclusion (Section 201); the Röhrle–Ulirsch bibliography entry gains a
+  sentence.
+- [Added 1 October 2026, batch 72.] The separate report
+  [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) (27 manuscripts) answers Research questions 84, 85 and 94
+  **negatively** (unit weights fail at `nu = 3450`; one-shore weights fail
+  at `nu = 50` and 38), answers 86 (the least weighted failure rank is
+  exactly 6) and 93 (rank four holds, unit and weighted), gives
+  `𝒟(4) = 4` and `𝒟(5) = 5` in 87, answers 89 in large part (full Hall
+  classification, asymmetric failures), bears on 90 (equality only for
+  balanced star forests under its cover hypothesis) and answers 101 in
+  part (rank-two exterior column blocks); it does not answer 88. For
+  Research question 37: the weighted version holds exactly through `nu = 5`,
+  and the unit-weight and one-shore versions fail. Nothing in this report
+  is refuted or retracted; its statements that these questions are open
+  became stale. The dated pointers, marked "Added 1 October 2026,
+  batch 72", are in the scope box,
+  Section 70.4, after Research question 37, in Part XI's opening paragraph,
+  after its delivered scope box, in Section 172.3, after Corollary 177.2,
+  after Research questions 84–90, 93, 94 and 101, and in Section 208; the
+  bibliography gains the entry `[MRN]`.
+- [Added 1 October 2026, batch 73.] The separate report
+  [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc) (eleven manuscripts) answers Research question 96
+  through gamma degree four with unit activities and through actual degree
+  three with independent tail and head activities, both computer-assisted;
+  degree five stays open. It bears on Research question 98 (its degree-four
+  proof uses 50 binomial-square identities with 15408 square orbits).
+  `matching-rank-normalization`, Part V, adds the 15-vertex minimum for a
+  nonreal zero at matching number three, which bears on Theorem 207.1.
+  Nothing in this report is refuted or retracted. The dated pointers,
+  marked "Added 1 October 2026, batch 73", are after source 06's and
+  source 09's "Gamma log-concavity beyond height two" paragraphs
+  (Sections 80.1 and 112.1), after Part XII's delivered scope box
+  (Section 187.1), in Section 187.3, after Corollary 197.3, after Research
+  questions 96 and 98, and after Theorem 207.1. They refer to the other
+  reports in prose, by report name and printed number; the bibliography
+  is unchanged.
 
 ## Not claimed
 
@@ -306,6 +1362,10 @@ From Part II (see also `02-height-two-STATUS.md`, `02-height-two-sources.md`):
   not sufficient.
 - No canonical bijection in the counting lemma (Lemma 14.1 equates
   cardinalities through two imported root-polytope theorems).
+  [Added 30 September 2026, batch 64: Part IX constructs an explicit,
+  support-preserving bijection — cost-dependent, hence not canonical
+  (Proposition 144.1) — and its disjoint union proves the lemma without the
+  two root-polytope inputs (Theorem 135.2, Corollary 139.2).]
 - Part II itself gave no characterization of graphs admitting a cactus-style
   matrix (Part III now does); no claim that every noncactus graph fails
   real-rootedness (Part III shows some do not); no limiting root measure for
@@ -334,7 +1394,10 @@ From Part III (see also `03-cactus-STATUS.md`, `03-cactus-SOURCES.md`):
   publisher abstract only) deserves further review.
 - No general characterization of real-stable or real-rooted matching-support
   polynomials (Research question 11), and no claim that the containment
-  "stable `Phi_G` ⇒ real-rooted `p_G`" is strict.
+  "stable `Phi_G` ⇒ real-rooted `p_G`" is strict. [Updated 29 September
+  2026, batch 55: strictness is proved in Part VI (books `B_m`, `m ≥ 5`;
+  `ϑ(3,3,5)`); a general characterization is still not claimed, but two
+  treewidth-two families are classified.]
 - No nonexistence theorem for larger determinantal pencils, auxiliary
   variables, sums of determinants or powers (Research question 15); only the
   vertex-indexed diagonal pencil is excluded.
@@ -362,15 +1425,22 @@ From Part IV (see also `05-gamma-positivity-PROOF_STATUS.md`,
 - **No bijections.** No canonical bijection between demand vectors and
   matchable support pairs is given. No natural Boolean action on the actual
   lattice points is given either: manuscript 01's toggles act on an
-  auxiliary support-pair model.
+  auxiliary support-pair model. [Added 30 September 2026, batch 64: Part
+  IX gives an explicit, support-preserving, non-canonical bijection
+  (Theorem 135.2); the Boolean action on actual lattice points is still
+  not given.]
 - **Open conjectures and other statistics.** No flag-polytopal realization
   (Conjecture 5.1(d)). No real-rootedness, and no log-concavity or
   unimodality of the gamma vector. No identification of `h_tau` with the
-  Ehrhart numerator of the original `Q_tau`.
+  Ehrhart numerator of the original `Q_tau`. [Updated 29 September 2026,
+  batch 55: Part IV's own scope. Part V proves ultra-log-concave height-two
+  gamma vectors and ultra-log-concave `h_tau` for every preorder; gamma
+  log-concavity beyond height two remains open.] [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five]
 - **Limits of the reflexive-relation criterion.** It is no classification
   for unbalanced bipartite graphs, for balanced graphs without a perfect
   matching, or for graphs whose maximum matching is smaller than a shore.
-  It is no real-rootedness criterion.
+  It is no real-rootedness criterion. [Added 29 September 2026, batch 55:
+  Part V classifies palindromicity for every bipartite graph.]
 - **Credited, not claimed.** Nothing new is claimed for:
   - the matching-support interpretation (Ohsugi–Tsuchiya, Davis–Kohl);
   - the hypertree volume count (Kálmán–Postnikov);
@@ -390,6 +1460,287 @@ From Part IV (see also `05-gamma-positivity-PROOF_STATUS.md`,
 - **Finite checks and formalization.** The finite checks do not prove the
   all-`n` statements. No Lean or Rocq formalization exists. Both
   manuscripts' formalization plans (Section 60) are unstarted.
+
+From Part V (see also `06-lorentzian-support-SOURCES.md`,
+`07-support-polynomials-PROOF_STATUS.md`, `07-support-polynomials-SOURCES.md`):
+
+- **Imported, not reproved:** the support-counting bridge (Ohsugi–Tsuchiya
+  and Oh for source 06; Dai et al. Theorem 1.2 and Davis–Kohl Theorem 3.10
+  for source 07), the Lorentzian theorems of Brändén–Huh, Röhrle–Ulirsch's
+  Theorems A and E, the Anari–Liu–Oveis Gharan–Vinzant mixing theorem, and
+  Colbourn–Provan–Vertigan's #P-completeness. The transversal-matroid model
+  is classical (Balas–Pulleyblank, as identified by Mori).
+- **No normalization by the matching number** `nu(H)` in place of the
+  smaller shore (Research question 37; a finite search found no
+  counterexample, which is evidence only). [Updated 30 September 2026,
+  batch 68: with positive weights on both shores the replacement is
+  **false** (Part XI, Theorem 176.1); the search concerned unit weights,
+  and the unit-weight and one-shore versions remain open (Research
+  questions 84 and 85).] [Updated 30 September 2026, batch 70: at unit
+  weights the replacement is **proved for `nu(H) ≤ 3`**, for the family
+  `G_N` and for disjoint unions (Part XII, Theorems 191.1, 196.1 and
+  Corollary 196.2); it remains open at unit weights from `nu(H) = 4` on,
+  with weights at `nu(H) = 3, 4, 5`, and with weights on one shore.]
+  [Updated 30 September 2026, batch 71: with positive weights on both
+  shores (hence also on one) the replacement is **proved for
+  `nu(H) ≤ 3`** and for every graph with a minimum cover split
+  `1 + (nu(H)−1)` (Part XIII, Corollary 206.3 and Theorem 206.2); it
+  remains open with weights at `nu(H) = 4, 5` and at unit weights from
+  `nu(H) = 4` on, in both cases only for graphs whose minimum covers all
+  meet both shores in at least two vertices.]
+  [Updated 1 October 2026, batch 72: with positive weights on both shores
+  the replacement is **proved for `nu(H) ≤ 5`** and for every graph with a
+  minimum cover meeting one shore in at most two vertices, so it holds
+  exactly through `nu(H) = 5`; at unit weights and with weights on one
+  shore it is **false** (graphs with `nu(H) = 3450` and `nu(H) = 50`); see
+  [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization).]
+- **No gamma log-concavity beyond height two** [Updated 30 September 2026,
+  batch 70: except at the first index, and hence in gamma degree at most
+  two, for every finite preorder (Part XII, Corollary 197.2)] [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five]; no real-rootedness
+  classification; the Lorentzian conclusions do not upgrade to real
+  stability (`Theta_3`); no flag realization; no limit theorem.
+- **No bijection and no lattice-point sampler.** The samplers return
+  supports or support pairs, not demand vectors or lattice points; no
+  demand/support bijection is constructed. [Added 30 September 2026, batch
+  64: this describes Part V. Part IX constructs the bijection
+  (Theorem 135.2) and an almost-uniform sampler of actual demand vectors and
+  preorder lattice points (Theorem 145.2, Corollary 146.2).]
+- **No production FPRAS.** The coefficient FPRAS is a proved reduction;
+  the shipped sampler is a reference implementation, and no exact
+  polynomial-time counter or binary-capacity algorithm is claimed.
+- **No worldwide priority** for the applications; the palindromicity
+  classification re-proves Part IV's balanced case.
+
+From Part VI (see also `08-ade-stability-SOURCE_AUDIT.md`):
+
+- The ADE list of trees with spectral radius at most two is classical; the
+  `ϑ(3,3,3)` obstruction is Part II's (priority Patel); even-cycle stability
+  and tree attachments are not new; `K_{2,3}` stability without a faithful
+  matrix is Part III's.
+- No classification of all stable bipartite graphs, of all fundamental
+  transversal matroids with the half-plane property, or of all real-rooted
+  diagonals; source 08's Research question on tree diagonals is open (for
+  this merge the diagonal was checked real-rooted for all 986 trees with
+  `2 ≤ r ≤ 12`, evidence only).
+- Weighted real-rootedness of the books with `m ≥ 5` is not claimed; the
+  negative Rayleigh certificate is not a nonreal-root weighted diagonal.
+- No flag-polytope consequence; no worldwide priority (the literature
+  search was focused and found no earlier statement of the tree criterion);
+  no formalization.
+
+From Part VII (see also `09-matroid-lifts-CLAIMS_AND_SOURCES.md`):
+
+- The gammoid characterization (Ingleton–Piff) and the extended-matroid
+  construction (Röhrle–Ulirsch) are classical; the clone/transitivity
+  criterion is Part IV's cancellation criterion in matroid form, and the
+  orbit formula is Part IV's Boolean orbits with multivariate weights.
+- Reconstruction is proved inside the image of `tau ↦ M_tau`; no intrinsic
+  recognition of that image among all matroids (Research question 54).
+- No lattice-point interpretation of the transport weights and no action
+  of the clone group on lattice points; no gamma log-concavity
+  [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five]; no
+  classification of stable 2-connected blocks (Part VI's question).
+- No Lean or Rocq verification; the staged formalization plan (Section 111)
+  is unstarted.
+
+From Part VIII (see also `10-marked-trees-SOURCE_AUDIT.md`):
+
+- The classification (Theorem 118.2) is **not a new discovery of ADE
+  stability**: it follows from Part VI's theorems, as source 10 says; its
+  comparison table's "continuation developed here" carries a merge note.
+  The ADE list, the half-plane-property framework, Brändén's Rayleigh
+  criterion and the `ϑ(3,3,3)` example (priority Patel) are credited; the
+  eight-vertex obstruction is not presented as a new small-matroid discovery
+  (Kummer–Sert classify the half-plane-property matroids on at most eight
+  elements).
+- No classification of all stable bipartite graphs, of several apices or of
+  hosts with cycles, and no answer to the individual support-diagonal
+  question (Research question 58, which contains Part VI's 45).
+- The finite enumeration (31,886 marked instances on 95 trees with
+  `n ≤ 9`) tests the implementation of the structural classification; it
+  is not an independent analytic stability test. Only the 133 small-order
+  determinant identities enumerate matching supports independently.
+- The `O(n^5)` bound is conservative and the code is a reference
+  prototype, not a large-instance solver; the linear-time recognition claim
+  concerns the structural decision, not the bit length of rationalized
+  eigenvectors. Markings related by a tree automorphism are counted
+  separately.
+- No worldwide priority (the review was focused; principal extensions and
+  transversal-matroid presentations deserve specialist comparison); no Lean
+  or Rocq verification.
+
+From Part IX (see also `11-two-flow-PROOF_STATUS.md`,
+`11-two-flow-SOURCE_AUDIT.md`):
+
+- **Prior, not claimed:** the existence of the demand/base correspondence
+  and its leaf-count description (Oh; used by Ohsugi–Tsuchiya), the
+  support-counting identity it implies (Corollary 139.2; Parts II, IV and
+  V), rapid mixing of the basis walk (Anari–Liu–Oveis Gharan–Vinzant, whose
+  Theorem 1.1 is imported), the preorder polytopes (Athanasiadis–Chapoton),
+  and Part V's matroid, conditioning, preorder-reduction and cloning
+  constructions. Loho–Smith's closely related lattice-point bijections were
+  not audited in full, so no first priority is claimed for the min-cost-flow
+  realization.
+- **Not canonical, not local.** The maps depend on the cost chamber; no
+  deterministic support-preserving bijection is equivariant under all
+  automorphisms (Proposition 144.1), and none moves coordinates by a
+  bounded amount per basis exchange (Proposition 144.2). Restriction
+  compatibility holds only for receivers outside the support and suppliers
+  outside the selected set; no arbitrary-minor compatibility is claimed.
+- **Sampling scope.** The sampler is almost-uniform (total variation `η`),
+  assumes ideal random bits, and covers support-product weights only: no
+  exact independent uniform sampler, no magnitude-dependent weights
+  (`Π q_y^{c_y}`), no polynomial-in-log-capacity sampler (dilations go
+  through cloning), no production large-graph sampler, and no
+  reimplementation of the matroid FPRAS. The reference sampler uses
+  Python's pseudorandom generator and integer activities only; a smaller
+  `steps` override voids the mixing guarantee. The rational-activity and
+  support-conditioned samplers are proved but not packaged.
+- **Checks and formalization.** The finite suites (4,785 bipartite graphs,
+  390 preorders, 250 random cases, two exact chains) test the
+  implementation; they are not proofs, and a certificate checker in Python
+  can itself contain a bug. No Lean or Rocq formalization; the plan of
+  Section 147.3 and Research question 73 are unstarted.
+
+From Part X (see also `12-random-trees-PROOF_STATUS.md`,
+`12-random-trees-SOURCE_AUDIT.md`):
+
+- **Imported, not reproved:** the stability classification (Part VIII's
+  Theorem 118.2, used as Theorem 154.1) and the ADE list (Table 14; Part
+  VI's Theorem 88.1). Every probability of Part X is a probability of
+  branch-complete ADE markings; read without the import, the counting
+  results are theorems about that combinatorial class. Classical, not
+  claimed: labelled-tree and rooted-forest counts, the matrix-tree
+  expansion, Prüfer codes, Lagrange inversion, Cauchy bounds, Stirling's
+  formula, Poisson central limits, Chernoff bounds, characteristic
+  functions, and the long-path diameter large-deviation calculation
+  (Lemma 165.3), which is included only as a check of the rate.
+- **Scope of the limits.** The Gaussian laws, family weights and
+  conditioned-diameter theorem need **fixed** `p` in `(0,1)`; no
+  triangular-array central limit theorem across the supercritical range is
+  claimed. The critical chi law concerns the **hull**, not the host
+  diameter. The quenched estimate is a **polynomial-factor** bound, not an
+  asymptotic equivalent or a relative-error scheme. The universality
+  theorem does not transfer the ADE-specific geometric conclusions. The
+  constant `9/8` and the rate `−p` belong to uniform labelled trees with
+  independent common-`p` marks; no other tree model or marking law is
+  treated (Research questions 79–80).
+- **Checks.** The finite checks (trees with at most seven vertices,
+  unlabelled trees with at most eleven, Poisson identities up to order 35,
+  ten symbolic derivatives) test enumeration, algebra and normalizations;
+  they prove neither the imported all-size classification nor any limit.
+  The numerical tables are exact-kernel evaluations, not Monte Carlo, and
+  assert no uniform finite-`n` error bound in `λ`.
+- **No Lean or Rocq verification, no independent refereeing, no
+  worldwide priority** (source 12's literature search was focused, and not
+  finding a prior publication of these formulas is not evidence of
+  priority).
+
+From Part XI (source 13 shipped no status notes; its title-page scope box,
+Section 182 and its delivery README state these):
+
+- **Scope of the counterexample.** It concerns positive weights on
+  **both** shores. The unit-weight and one-shore versions of Research
+  question 37 are not settled (Research questions 84–85) [updated
+  30 September 2026, batch 70: Part XII settles the unit-weight version
+  for matching number at most three]. The 30-vertex
+  example is not claimed to be smallest (500 is a convenient weight; the
+  last inequality of that graph first fails at the integer 485), and the least matching
+  number of a weighted counterexample is only known to lie in 3–6
+  (Research question 86) [updated 30 September 2026, batch 71: in 4–6,
+  by Part XIII] [updated 1 October 2026, batch 72: it is exactly 6, and
+  the unit-weight and one-shore versions fail, by [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization)]. No
+  published smaller-shore theorem is contradicted.
+- **Scope of the classifications.** The full phase diagram is for the
+  symmetric core-three family only, not for all graphs of matching number
+  six; for `s ≥ 4`, Theorem 178.2 and Table 27 classify the endpoint
+  only, not every margin; `D_s` is a lower bound for any rank-only order,
+  not a universal upper bound, and is not proved to work for the finite
+  activities of the Hall family; whether any finite rank-only order exists
+  is open (Research question 87).
+- **Imported, not reproved:** the smaller-shore inequality (Part V's
+  Theorem 70.1; Röhrle–Ulirsch's Theorem A) and Brändén–Huh's Lorentzian
+  theorems (used for the baseline and Corollary 176.2 only). Classical:
+  König's theorem (Lemma 180.1, with its standard proof), augmenting
+  paths, elementary symmetric functions. The counting program is a
+  reference implementation, deliberately explicit and prohibitive at
+  large matching number; `brute_force` is for small cross-checks only.
+- **Checks.** The exact computations test finite instances; no statement
+  about an infinite family rests on them alone, and they are not
+  proof-assistant certificates.
+- **No Lean or Rocq verification, no independent refereeing, no
+  worldwide priority** (source 13's source review was targeted to the
+  question; it does not claim to resolve a named conjecture or to refute
+  a published theorem).
+
+From Part XII (source 14's status box, Section 199.2 and its
+`14-matching-rank-PROOF_STATUS.md` and delivery README state these):
+
+- **Scope of the rank theorem.** Matching number at most three, the family
+  `G_N` and disjoint unions only; connected graphs of matching number four
+  or more are open (Research questions 93–94; the 24 shipped rank-four
+  templates are exact support formulas, **not** positivity certificates).
+  The rank-three theorem is not claimed for nonuniform activities
+  (Research question 95); only the first inequality is weighted [updated
+  30 September 2026, batch 71: Part XIII proves it for them]. No
+  equality classification beyond the first inequality and the mixed-cover
+  step.
+- **Preorders.** No general gamma log-concavity or rank-ULC (Research
+  question 96) [Updated 1 October 2026, batch 73: rank-ULC through actual degree four (unit activities) and three (independent tail and head activities) in [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc); open from degree five], no unimodality of all gamma vectors, real-rootedness or
+  flag realization. The preorder corollaries assume the support-counting
+  bridge, which source 14 imports (it reproves only the cancellation); the
+  full-coordinate lattice-point sampler is a specified composition with
+  Part IX's bijection, not implemented (Research question 99).
+- **The matrix example** is not a counterexample for bipartite graphs (its
+  pattern is `K_{m,n}`); it only rules out proofs through all
+  representable bimatroids.
+- **Algorithms.** The kernels are not claimed to be the first
+  parameterized algorithms for these counts, nor optimal (Research
+  question 97); the one-variable decision procedure is decidability, not a
+  polynomial-time solver; the weighted sampler and the sign procedure are
+  specified, not implemented. The shipped sampler uses Python's
+  pseudorandom generator; exactness refers to the law under uniform
+  random bits.
+- **Imported, not reproved:** Röhrle–Ulirsch's Theorem A (Part V's
+  Theorem 67.1) for a cover inside one shore, Liggett's convolution
+  theorem, the support-counting bridge and Part IX's bijection. Classical
+  and credited: Motzkin–Straus (with a proof), König's theorem (with a
+  proof), Cauchy–Binet, Vandermonde minors.
+- **No Lean or Rocq verification, no independent refereeing, no
+  worldwide priority** (source 14's source check was focused, "not an
+  exhaustive priority search").
+
+From Part XIII (source 15's status paragraph, Section 208, its
+`15-leaf-compression-PROOF_STATUS.md` and its delivery README state
+these):
+
+- **Scope.** Matching number at most three, and graphs with a minimum
+  cover split `1 + (r−1)` or inside one shore, only. Rank four with
+  `2 + 2` covers, the first weighted failure rank (4, 5 or 6), general
+  unit-weight and one-shore normalization from rank four on, and a
+  universal rank-only order stay open (Research questions 84–87, 93–94);
+  source 15: "General unit-weight and one-shore rank normalization in rank
+  four and higher remain unresolved here." [Updated 1 October 2026,
+  batch 72: rank four (with `2 + 2` covers) and rank five hold, the first
+  weighted failure rank is 6, unit-weight and one-shore normalization fail,
+  and `𝒟(4) = 4`, `𝒟(5) = 5`, by [`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization); a universal rank-only
+  order stays open.]
+- **Compression is for single neighbours only.** Vertices with a common
+  neighbourhood of two or more vertices cannot be merged (Section 208).
+- **Real-rootedness** (Theorem 207.1) is not claimed as a new structural
+  classification: it follows from Part VI's block results, which source 15
+  cites "only for the scope comparison, not used in the proofs".
+- **Imported, not reproved:** König's theorem; that matroid basis
+  polynomials are Lorentzian, that positive scaling and nonnegative linear
+  specialization preserve this, and that bivariate Lorentzian polynomials
+  of degree `D` are `ULC_D` (Brändén–Huh; Part V's Theorem 70.1,
+  re-derived in Lemma 205.1).
+- **Checks.** The finite checks are exact regression checks, "not the
+  proof of the universal claims".
+- **No Lean or Rocq verification, no independent refereeing, no global
+  priority**: novelty is claimed only relative to the drafts source 15
+  inspected, and global priority for the compression observation is not
+  claimed.
 
 ## Labels
 
@@ -424,6 +1775,143 @@ Part IV. Part IV begins at Section 46, after Part III and before
 Part I's appendices, whose letters and numbers are unchanged. Its research
 questions continue the report's numbering as 20–36. Its tables are Tables
 3–5; they follow Part III's two tables, and Part I's appendices have none.
+
+Parts V–VII added **340** labels. Part V has 157: 95 with `lor:`
+("Lorentzian", source 06 and the merge's own), 56 with `lor:sp:` ("support
+polynomials", source 07), and 6 `lor:hq:` labels added to Part IV's Research
+questions 23, 24, 26, 28, 32 and 34 so that Part V can cite them. Part VI has
+126: 100 with `ade:` (source 08 and the merge's own), 23 with `ade:mat:`
+(source 09's stability sections), and 3 `ade:hq:` labels added to Part II's
+Research question 3 and Part III's Research questions 11 and 15. Part VII has
+57 with `mat:` (source 09). The sources' own labels (bare) were renamed into
+these prefixes before anything cited them; labels of passages that are not
+reprinted (source 07's duplicated statements, source 09's coefficient
+sections) are not carried over, and references to them point to the
+printed statements. New total: **686**. No earlier label was renamed or
+removed, and the numbers of all 346 earlier labels are unchanged (compared
+in the `.aux` files of the committed and the new build). Their page numbers
+moved by three or four pages (the title block, abstract, scope box and
+contents grew); those in Part I's appendices moved by 104. Parts V–VII begin
+at Sections 66, 83 and 100, after Part IV and before Part I's appendices,
+whose letters and numbers are unchanged. Their research questions continue
+the numbering as 37–43 (Part V), 44–53 (Part VI) and 54–57 (Part VII). Their
+tables are Tables 6–12 (notation tables 6, 8 and 12).
+
+Part VIII added **95** labels, all with the prefix `mts:` ("marked-tree
+stability"): source 10's 76 labels, prefixed before anything cited them
+(three of them, `eq:C`, `eq:Q` and `thm:main`, equal bare Part I labels),
+none dropped; 15 new ones (Section 116, its four subsections and its
+notation table, the eight research questions, and `mts:app:certificate`); and 4
+`mts:hq:` labels added to Part VI's previously unlabelled Research questions
+45, 47, 48 and 52 so that Part VIII can cite them. New total: **781**. No
+earlier label was renamed or removed, and the numbers of all 686 earlier
+labels are unchanged (compared in the `.aux` files of the committed and the
+new build). Their page numbers moved by one or two pages (the title block,
+abstract, scope box, reading route and contents grew); those in Part I's
+appendices moved by 28. Part VIII begins at Section 116, after Part VII and
+before Part I's appendices, whose letters and numbers are unchanged. Its
+research questions are 58–65; its tables are Tables 13–15 (notation table
+13) and its figure is Figure 4.
+
+Part IX added **96** labels, all with the prefix `tf:` ("two-flow"): source
+11's 80 labels, prefixed before anything cited them (three of them,
+`thm:main`, `eq:B` and `sec:limits`, equal bare Part I labels), none
+dropped; 15 new ones (Section 132, its four subsections and its notation
+table, the rewritten Section 133.1, and the eight research questions); and
+`tf:hq:capacities` on Part V's previously unlabelled Research question 39,
+so that Part IX can cite it. New total: **877**. No earlier label was
+renamed or removed, and the numbers of all 781 earlier labels are
+unchanged (compared in the `.aux` files of the committed and the new
+build). Their page numbers moved by one or two pages (the title block,
+abstract, scope box, reading route and contents grew); those in Part I's
+appendices moved by 28. Part IX begins at Section 132, after Part VIII
+and before Part I's appendices, whose letters and numbers are unchanged.
+Its research questions are 66–73; its tables are Tables 16–18 (notation
+table 16) and its figure is Figure 5.
+
+Part X added **128** labels, all with the prefix `rts:` ("random-tree
+stability"): source 12's 111 labels, prefixed before anything cited them
+(one of them, `app:audit`, equals a bare Part I label), none dropped; and
+17 new ones (Section 152, its four subsections and its notation table, the
+subsection 153.1 that states the pin, and the ten research questions,
+which source 12 left unlabelled). No label was added to earlier Parts.
+New total: **1005** (occurrences of the pattern `\\label(\[[^]]*\])?\{`;
+one line carries two labels).
+No earlier label was renamed or removed, and the numbers of all 877
+earlier labels are unchanged (compared in the `.aux` files of the
+committed and the new build). Their page numbers moved by one page (the
+title block, abstract, scope box, reading route and contents grew); those
+in Part I's appendices moved by 27. Part X begins at Section 152, after
+Part IX and before Part I's appendices, whose letters and numbers are
+unchanged. Its research questions are 74–83; its tables are Tables 19–24
+(notation table 19); it has no figure.
+
+Part XI added **96** labels, all with the prefix `hb:` ("Hall
+bottlenecks"): source 13's 86 labels, prefixed before anything cited them
+(one of them, `eq:Q`, equals a bare Part I label), none dropped; 9 new
+ones (Section 172, its four subsections and its notation table, the
+subsections 173.1 and 174.1 that state the repository target and the
+baseline, and the conclusion, Section 184); and `hb:hq:algorithms` on
+Part V's previously unlabelled Research question 40, so that Part XI can
+cite it. New total: **1101** (occurrences of the pattern
+`\\label(\[[^]]*\])?\{`). No earlier label was renamed or removed, and
+the numbers of all 1005 earlier labels are unchanged (compared in the
+`.aux` files of the committed and the new build). Their page numbers moved
+by one to three pages (the title block, abstract, scope box, reading
+route, contents and Part V's dated pointers grew); those in Part I's
+appendices moved by 27 or 28. Part XI begins at Section 172, after Part X
+and before Part I's appendices, whose letters and numbers are unchanged.
+Its research questions are 84–92; its tables are Tables 25–27 (notation
+table 25) and its figure is Figure 6.
+
+Part XII added **89** labels, all with the prefix `mr:` ("matching
+rank"): source 14's 70 labels, prefixed before anything cited them (one of
+them, `eq:Q`, equals a bare Part I label), none dropped; and 19 new ones
+(Section 187, its four subsections and its notation table; the unlabelled
+corollary after Theorem 192.1; the nine research questions; the
+conclusion, Section 201; and the two former appendices, Sections 202–203).
+No label was added to earlier text. New total: **1190** (occurrences of
+the pattern `\\label(\[[^]]*\])?\{`). No earlier label was renamed or
+removed, and the numbers of all 1101 earlier labels are unchanged
+(compared in the `.aux` files of the committed and the new build). Their
+page numbers moved by one or two pages (the title block, abstract, scope
+box, reading route and contents grew; Part XI's dated pointers added a few
+lines); those in Part I's appendices moved by 29 or 30. Part XII begins at
+Section 187, after Part XI and before Part I's appendices, whose letters
+and numbers are unchanged. Its research questions are 93–101; its only
+table is Table 28 (notation); it has no figure.
+
+Part XIII added **23** labels, all with the prefix `lc:` ("leaf
+compression"): source 15's 10 labels, prefixed before anything cited them,
+none dropped; and 13 new ones (Section 204, its five subsections and its
+notation table; the five source sections 205–209; and its unlabelled
+remark, Remark 206.4). No label was added to earlier text. New total:
+**1213** (occurrences of the pattern `\\label(\[[^]]*\])?\{`). No earlier
+label was renamed or removed, and the numbers of all 1190 earlier labels
+are unchanged (compared in the `.aux` files of the committed and the new
+build). Their pages are unchanged except for seven labels (one in
+Part V, two in Part XI, four in Part XII), which moved by one page (the
+dated pointers added a few lines), and the six in Part I's appendices,
+which moved by 10 or 11. Part XIII begins at Section 204, after Part XII and before Part I's
+appendices, whose letters and numbers are unchanged. It adds no research
+question (the next number would be 102); its only table is Table 29
+(notation); it has no figure.
+
+The batch-72 reciprocal notes (1 October 2026) added **no** label (still
+1213 occurrences of the pattern) and renamed or removed none; the numbers
+of all labels are unchanged (compared in the `.aux` files of the committed
+and the new build). The pages of 474 labels are unchanged; the other 736
+moved by one to three pages, because dated notes were added from Part V's
+Section 70.4 on (after Research questions 37 and 84–90, 93, 94 and 101,
+and in Parts XI–XIII). The bibliography gains one entry, `MRN`.
+
+The batch-73 reciprocal notes (1 October 2026) added **no** label (still
+1213 occurrences of the pattern) and renamed or removed none; the numbers
+of all labels are unchanged (compared in the `.aux` files of the committed
+and the new build). The pages of 1138 labels are unchanged; the other 72
+moved by one or two pages, because the notes from Part XII's scope box on
+lengthen the article by a page; the notes in Parts V and VII move no
+label. The bibliography is unchanged.
 
 ## Notation
 
@@ -479,15 +1967,118 @@ Part IV's against all three. Watch in particular:
   there are a mixing variable and the support size (Part II's `S`). The
   letters `d`, `D`, `P`, `B_{s,r}`, `A_{s,r}` and `m_i` of the block
   formulas are not Part I's or Part II's symbols of the same letter.
+- **Parts V–VII (Tables 6, 8, 12).** Three renamings, no normalization
+  changed. The transversal matroid of a bipartite graph with private copies
+  of the left shore (sources 06, 07, 08) is printed `𝖬_H`/`𝖬_G` (sans
+  serif), because `M_G(u)` is Part II's matching polynomial; source 09's
+  matroid is printed `M_G`, `M_tau` as delivered and is the **dual**
+  (`M_G = 𝖬_G^*`; bases `I ⊔ (B∖J)` versus `(U∖I) ⊔ J`). Sources 06 and 07's
+  random support size `K` is printed `L`, as in Part IV's Theorem 58.1,
+  where `K` is the mixing variable (source 07's bit length becomes
+  `L_bit`). Source 08's thetas `Θ(a,b,c)` are printed `ϑ(a,b,c)`, extending
+  Part III's rule to any number of paths. Both sources' `Q_tau` is printed
+  `𝒬_tau`.
+- In Part V the letters `r` and `d` are **not** renamed and depend on the
+  source: in source 06's sections `r = min(m,n)` (isolated vertices kept);
+  in source 07's `r = nu(H)` and `d` is the smaller shore after deleting
+  isolated vertices; in Theorem 75.5 `d = nu(H)`. Source 06's `F_H` is
+  source 07's `D_H`.
+- Part VI's `L`, `B`, `T`, `C_T` are a pencil, an incidence matrix, a tree
+  and `I − A_T/2`, not Part V's support size or Parts I–III's symbols of
+  the same letters; `B_m` is a book.
+- **Part VIII (Table 13).** Two renamings, no normalization changed:
+  source 10's `G(T,S)` is printed `A(T;S)` (calligraphic; `A(T;V(T))` is
+  Part VI's `A(T)`), and its `Theta_3` is printed `ϑ(3,3,3)`. Source 10's
+  `n = |V(T)|` is Part VI's `r`. Its `K` is the **hull** of the marking, not
+  a matrix or `K_{l,r}`; its `H(T,S)` is the terminal skeleton, not the
+  half-plane `ℍ`; its `L` is the pencil in Sections 121–122 but a **leaf
+  set** in Sections 124–125; its `Z_T` counts **stable markings**, not the
+  supports `p_{A(T;S)}` of one marking; its `Q(R_1,R_2,R_3)` is not Part I's
+  `Q_tau`.
+- **Part IX (Table 16).** Four renamings, no normalization changed:
+  source 11's `𝓑_H(J)` and `𝓑_H` (matchable supplier sets and pairs) are
+  printed `𝓜_J(H)` and `𝓜(H)` — Part V's pair set — because Part V's `𝓑_H`
+  is the **basis polynomial**; its `𝓓_H`, `M_H` and `Q_tau` are printed with
+  Part V's `𝒟_H`, `𝖬_H` and the report's `𝒬_tau`. Its `Phi_w`, `Psi_w` are
+  maps, not Part VI's polynomial `Phi_G`; its `r = |J|` is the support
+  size, not Part V's `r = min(m,n)` or `nu(H)`; its `L = r + 1` is a margin
+  scale, not Part V's random support size; its `T` is a spanning tree; its
+  `q` counts augmented edges except in Section 146.1 (a dilation factor)
+  and in `Π q_y^{c_y}` (magnitude weights); its preorder graph `H_tau` has
+  Part V's orientation (`x` supplies `y` iff `x ≤_tau y`), which is Part I's
+  `G_tau` with the shores exchanged.
+- **Part X (Table 19).** No renaming and no normalization change (source
+  12's calligraphic `A(T;S)` is the report's `\calA`, the same symbol).
+  Its `K_n` and `H_n` are **numbers** (marks, hull vertices), not Part
+  VIII's hull `K` and skeleton `H(T,S)`; its `α_k` are chi constants, not
+  `alpha_st(T)`; its `C_{n,k,ℓ}` and `C(u,v)` are counts and an amplitude,
+  not `C_H`; its `A(y)` is the skeleton series, not the graph `A(T;S)`; its
+  `𝖤_n` (stability event) has the glyph of Part III's `𝖤`; its `s` is
+  `U(qt)` in the generating functions but the apex variable in
+  `F_{T,S}(x;y,s)`; its `τ(u,v)` is a moving pole, not a preorder; its `Φ`
+  is the normal distribution function and `Ψ` the crossover function, not
+  Part VI's `Phi_G` or Part IX's maps; `p`, `q = 1 − p`, `r = p/q` are not
+  Part VI's `p_G` and `r` or Part IX's `q` and `r`; `J(δ)` is a rate, not
+  `𝒥(τ)`.
+- **Part XI (Table 25).** One renaming, no normalization change: source
+  13's homogenizing variable `s` (display 174.4, Corollary 176.2) is
+  printed `σ`, because `s` is also its core size from Section 175 on (as
+  in the shipped programs and records); Part V's homogenizing variable `s`
+  in (69.7) and (70.2) is the same variable. Its `𝓜(H)` and `𝓑_H` are the
+  report's matchable pairs and Part V's basis polynomial, the same glyphs.
+  In Part XI `r = nu(H)` **always**, unlike Part V's `r = min(m,n)` in
+  source 06's sections and Theorem 70.1; its `n` is `|Y|` in Section 174
+  but the size of an outer block from Section 175 on (`|Y| = n + s`); its
+  `p_H(t;u,v)` is Part V's `A_H(t;u,v)`; `A`, `B` are core blocks in
+  Section 175 but `A`, `B`, `C` are binomial numbers in Sections 177–178,
+  and `C` is a minimum cover in Sections 180–181; `D` is an order, but
+  `D(j)` is a denominator in the proof of Theorem 179.3; `Q_n(w)` is not
+  Part I's `Q_tau` or equation (1.1); `K` (the weighted overlap) is not
+  Part IV's mixing variable; `p`, `q` are cover sizes, not Part IX's or
+  Part X's; `L_{s,n}` is the forced-core limit, not Part V's support size
+  `L`; `α, β, γ` are endpoint coefficients, not gamma coefficients.
+- **Part XII (Table 28).** Two renamings, no normalization change:
+  source 14's input length `L` in `poly(L)` is printed `ℓ`, because `L` is
+  also its left shore (the delivered abstract, reproduced in Section 187.1,
+  keeps `L`); its `Q_tau` is printed with the report's `𝒬_tau`. In Part XII
+  `r = nu(G)` **always** and `s = min(|L|, |R|)`, unlike Part V's
+  `r = min(m,n)` and homogenizing `s` and Part XI's core size `s`; `d` is
+  the degree of `Gamma_D`, not source 07's smaller shore; "rank-ULC" is
+  Part XI's `ULC_d` with `d` the actual degree, and `ULC(r)` is `ULC_r`;
+  `D` is a directed relation, not Part XI's order, and `𝒟_k(p; d)` is a
+  gap, not Part V's demand set `𝒟_H`; `U(D)` is an undirected graph, not
+  Part V's donor set; `H` is the arc-disjointness graph in Section 190 and
+  `I ∩ J` in Section 197; `A, B, C, e` are polynomials in Section 191, `A,
+  B` disjoint sets elsewhere and `C` a cover in Section 193; "one-shore
+  case" means a minimum cover inside one shore, **not** Part XI's
+  one-shore weights (Research question 85); `M` is the matrix of
+  Section 192 and the clone multiplier in Section 195; `F_T(X, Y)` is a
+  type's activity polynomial, not Part V's `F_H`.
+- **Part XIII (Table 29).** Three renamings, no normalization change:
+  source 15's class of leaves `L` is printed `Λ` (not Part XI's outer
+  block `L` or Part XII's left shore `L`), the part `B` of its minimum
+  cover on the shore `Y` is printed `C_Y` (Part XI's name for a cover
+  part; not Part XI's core block `B`), and its macro `\nuG` is printed
+  `ν(G)`. `p_G(t; u, v)` is Part V's `A_H(t; u, v)` (Part XII's `p_G` is
+  its unit-weight case); `r = nu(G)` is called "matching rank" (not
+  Part V's `r = min(m,n)`); `ULC_D` and its margin are Part XI's. In
+  Section 207, `a, b, c, d, h, y, z, T` are activity sums and
+  `A, B, q, D, Q, C, F` polynomials in them — not Part XI's cores `A, B`,
+  the ULC order `D` or the cover `C` — and `y, z` are activities, not
+  vertices. "`1 + (r−1)`", "`2 + 2`" are the sizes of a minimum cover's
+  intersections with the two shores, as in Part XII.
 
 ## Files
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 116 pages, A4 (title p. 1, scope box and contents pp. 2–5,
-                                             Part I pp. 6–18, Part II pp. 19–47, Part III pp. 48–72,
-                                             Part IV pp. 73–112, Part I's appendices pp. 113–115,
-                                             references pp. 115–116)
+article.pdf                                  the compiled report, 375 pages, A4 (title p. 1, scope box and contents pp. 2–13,
+                                             Part I pp. 14–26, Part II pp. 27–55, Part III pp. 56–80,
+                                             Part IV pp. 81–122, Part V pp. 123–173, Part VI pp. 174–207,
+                                             Part VII pp. 208–224, Part VIII pp. 225–251, Part IX pp. 252–278,
+                                             Part X pp. 278–303, Part XI pp. 304–329, Part XII pp. 330–360,
+                                             Part XIII pp. 360–371, Part I's appendices pp. 371–373,
+                                             references pp. 373–375)
 README.md                                    this guide
 STATUS.md                                    Part I: literature and claim status, 20 Sep 2026
 PROOF_AUDIT.md                               Part I: independent-review checklist
@@ -525,6 +2116,97 @@ code/05-gamma-positivity-build.py            Part IV (manuscript 06): the delive
 data/05-gamma-positivity-preorders.csv       Part IV (manuscript 06): all 7,332 labeled preorders through n = 5, h- and gamma-vectors (CRLF)
 data/05-gamma-positivity-verification.json   Part IV (manuscript 06): detailed results of the recorded run, with all 140 samples
 data/05-gamma-positivity-verification.log    Part IV (manuscript 06): console transcript of that run
+06-lorentzian-support-SOURCES.md             Part V (source 06): sources, theorem dependencies and limits (delivered SOURCES.md)
+code/06-lorentzian-support-verify.py         Part V (source 06): exact finite checks (standard library)
+code/06-lorentzian-support-support_sampler.py  Part V (source 06): reference basis-walk support sampler (imports verify)
+code/06-lorentzian-support-test_sampler.py   Part V (source 06): seven unit tests (imports support_sampler, verify)
+code/06-lorentzian-support-build.sh          Part V (source 06): the delivered build script (do not run here)
+data/06-lorentzian-support-verification.json Part V (source 06): recorded output of verify.py (Python 3.13.5)
+data/06-lorentzian-support-verification.log  Part V (source 06): console transcript of that run
+data/06-lorentzian-support-sampler_smoke.json  Part V (source 06): 100-sample seeded sampler run on Theta_3
+data/06-lorentzian-support-sampler_smoke.log Part V (source 06): console output of that run
+data/06-lorentzian-support-sampler_tests.log Part V (source 06): unit-test transcript (7 tests)
+07-support-polynomials-PROOF_STATUS.md       Part V (source 07): proof and novelty ledger (delivered PROOF_STATUS.md)
+07-support-polynomials-SOURCES.md            Part V (source 07): primary sources and inspected versions (delivered SOURCES.md)
+code/07-support-polynomials-support_tools.py Part V (source 07): graph, matroid-oracle and sampler library (standard library)
+code/07-support-polynomials-verify.py        Part V (source 07): exact finite checks (imports support_tools)
+code/07-support-polynomials-example_certificate.py  Part V (source 07): discriminant, Sturm and Theta_3 certificate (imports support_tools)
+code/07-support-polynomials-build.sh         Part V (source 07): the delivered build script (do not run here)
+data/07-support-polynomials-verification.json  Part V (source 07): recorded output of verify.py
+data/07-support-polynomials-verification.log Part V (source 07): console transcript of that run
+data/07-support-polynomials-example_certificate.json  Part V (source 07): recorded certificate
+data/07-support-polynomials-example_certificate.log   Part V (source 07): its console output (byte-identical to the JSON)
+data/07-support-polynomials-build_validation.json     Part V (source 07): record of the delivered 23-page PDF's build
+08-ade-stability-SOURCE_AUDIT.md             Part VI (source 08): source and claim audit (delivered SOURCE_AUDIT.md)
+code/08-ade-stability-verify.py              Part VI (source 08): exact checks (SymPy, NetworkX)
+data/08-ade-stability-verification_results.json  Part VI (source 08): recorded output (Python 3.13.5, SymPy 1.14.0, NetworkX 3.6.1)
+data/08-ade-stability-requirements.txt       Part VI (source 08): pinned versions (delivered requirements.txt)
+09-matroid-lifts-CLAIMS_AND_SOURCES.md       Parts VI–VII (source 09): claim and dependency ledger (delivered)
+code/09-matroid-lifts-verify.py              Parts VI–VII (source 09): exact finite checks (standard library)
+code/09-matroid-lifts-Makefile               Parts VI–VII (source 09): the delivered Makefile (do not run here; see below)
+data/09-matroid-lifts-verification_results.json  Parts VI–VII (source 09): recorded output of verify.py
+data/09-matroid-lifts-verification_run.txt   Parts VI–VII (source 09): the same record (byte-identical)
+10-marked-trees-SOURCE_AUDIT.md              Part VIII (source 10): pin, inspected line ranges, prior/new boundary (delivered SOURCE_AUDIT.md)
+code/10-marked-trees-marked_trees.py         Part VIII (source 10): recognition, enumeration, optimization and repair library (NetworkX)
+code/10-marked-trees-verify.py               Part VIII (source 10): exact finite checks (imports marked_trees; NetworkX, SymPy)
+code/10-marked-trees-build.sh                Part VIII (source 10): the delivered three-pass build script (do not run here)
+data/10-marked-trees-requirements.txt        Part VIII (source 10): pinned versions (networkx==3.6.1, sympy==1.14.0)
+data/10-marked-trees-run.log                 Part VIII (source 10): console output of the recorded run (n = 1..9)
+data/10-marked-trees-verification.json       Part VIII (source 10): recorded output (Python 3.13.5)
+11-two-flow-PROOF_STATUS.md                  Part IX (source 11): proof, implementation and non-claim ledger (delivered PROOF_STATUS.md)
+11-two-flow-SOURCE_AUDIT.md                  Part IX (source 11): pin, inspected passage, literature and priority audit (delivered SOURCE_AUDIT.md)
+code/11-two-flow-transport_bijection.py      Part IX (source 11): exact flows, full/core maps, inverse, certificate checkers, sampler (standard library)
+code/11-two-flow-verify.py                   Part IX (source 11): exhaustive and random finite checks (imports transport_bijection)
+code/11-two-flow-build.sh                    Part IX (source 11): the delivered three-pass build script (do not run here)
+data/11-two-flow-small.json                  Part IX (source 11): all 689 graphs with m, n ≤ 3 (5,880 support pairs)
+data/11-two-flow-four_by_three.json          Part IX (source 11): all 4,096 graphs with (m, n) = (4, 3) (68,832 support pairs)
+data/11-two-flow-preorders.json              Part IX (source 11): all 390 labeled preorders on ≤ 4 elements (12,709 lattice points)
+data/11-two-flow-random.json                 Part IX (source 11): 250 seeded random graphs and cost orders (seed 20260930)
+data/11-two-flow-chain.json                  Part IX (source 11): two exact 17-state Markov chains, exact TV after 8 steps
+data/11-two-flow-example.json                Part IX (source 11): the worked certificate of Section 143 (zero-based labels)
+data/11-two-flow-environment.json            Part IX (source 11): Python, platform and pdfTeX versions of the recorded run
+data/11-two-flow-verification_run.txt        Part IX (source 11): console output of the recorded run (one JSON line per suite)
+12-random-trees-PROOF_STATUS.md              Part X (source 12): imported theorem, proofs supplied, classical inputs, limits (delivered PROOF_STATUS.md)
+12-random-trees-SOURCE_AUDIT.md              Part X (source 12): pin, inspected line ranges, literature and priority audit (delivered SOURCE_AUDIT.md)
+code/12-random-trees-verify.py               Part X (source 12): exhaustive labelled-tree enumeration and high-precision tables (mpmath)
+code/12-random-trees-extra_checks.py         Part X (source 12): Poisson identities, unlabelled-tree spectral checks, cumulants (imports verify; NetworkX, SymPy)
+code/12-random-trees-build.sh                Part X (source 12): the delivered two-pass build script (do not run here)
+data/12-random-trees-requirements.txt        Part X (source 12): pinned versions (mpmath, networkx, sympy, numpy; delivered requirements.txt)
+data/12-random-trees-verification.json       Part X (source 12): recorded output of verify.py --max-n 7 --tables (n = 1..7)
+data/12-random-trees-numerical_console.json  Part X (source 12): the numerical tables printed by that run (fixed density, critical window)
+data/12-random-trees-full_run_console.txt    Part X (source 12): console of that run (the two JSON records above, concatenated)
+data/12-random-trees-verification_console.txt  Part X (source 12): console of a second run (= verification.json except "seconds")
+data/12-random-trees-fixed_density.csv       Part X (source 12): nine fixed-density kernel evaluations (CRLF)
+data/12-random-trees-critical_window.csv     Part X (source 12): twelve critical-window evaluations (CRLF)
+data/12-random-trees-extra_checks.json       Part X (source 12): recorded output of extra_checks.py
+data/12-random-trees-extra_checks_console.txt  Part X (source 12): its console output (byte-identical to the JSON)
+data/12-random-trees-environment.json        Part X (source 12): Python, platform, package and pdfTeX versions of the recorded run
+data/12-random-trees-pdf_validation.json     Part X (source 12): the manuscript's record of its own 23-page PDF build
+code/13-hall-bottlenecks-support_count.py    Part XI (source 13): exact cover-type support counting, subset brute force, Hall formula (standard library)
+code/13-hall-bottlenecks-verify.py           Part XI (source 13): exact and symbolic checks (imports support_count; SymPy)
+code/13-hall-bottlenecks-build.sh            Part XI (source 13): the delivered two-pass build script (do not run here)
+data/13-hall-bottlenecks-requirements.txt    Part XI (source 13): sympy==1.14.0 (delivered requirements.txt)
+data/13-hall-bottlenecks-provenance.json     Part XI (source 13): pin, blob, inspected line ranges, primary references
+data/13-hall-bottlenecks-rank8_witness.json  Part XI (source 13): the 30-vertex witness (graph, weights, coefficients, margins, matching, cover)
+data/13-hall-bottlenecks-rank6_positive_certificates.json  Part XI (source 13): coefficient lists of P_1, …, P_4 (Section 185)
+data/13-hall-bottlenecks-rank6_thresholds.json  Part XI (source 13): Table 26 (first failing integer activities, n = 33..100)
+data/13-hall-bottlenecks-general_endpoint_thresholds.json  Part XI (source 13): Table 27 (core sizes s = 3..10)
+data/13-hall-bottlenecks-positivity_tables.tex  Part XI (source 13): the generated tables of Section 185 (delivered tex/positivity_tables.tex)
+data/13-hall-bottlenecks-verification_results.txt  Part XI (source 13): transcript of the recorded run (Python 3.13.5, SymPy 1.14.0)
+14-matching-rank-PROOF_STATUS.md             Part XII (source 14): proved, imported, executed-vs-specified and unresolved ledger (delivered PROOF_STATUS.md)
+14-matching-rank-SOURCES.md                  Part XII (source 14): pin, blob and primary references (delivered SOURCES.md)
+code/14-matching-rank-support_kernels.py     Part XII (source 14): reference counters, bipartite and directed kernels, exact support sampler (standard library)
+code/14-matching-rank-certificates.py        Part XII (source 14): exact rational polynomial certificates (imports support_kernels)
+code/14-matching-rank-verify.py              Part XII (source 14): exhaustive and symbolic checks (imports support_kernels, certificates)
+code/14-matching-rank-export_rank4_templates.py  Part XII (source 14): writes the 24 rank-four templates (imports support_kernels)
+code/14-matching-rank-Makefile               Part XII (source 14): the delivered Makefile (do not run here; see below)
+data/14-matching-rank-verification.json      Part XII (source 14): recorded output of verify.py (Python 3.13.5)
+data/14-matching-rank-verification.log       Part XII (source 14): console of that run (byte-identical to the JSON)
+data/14-matching-rank-rank4_templates.json   Part XII (source 14): the 24 rank-four templates (exact support formulas, not positivity certificates)
+15-leaf-compression-PROOF_STATUS.md          Part XIII (source 15): established, imported and remaining items (delivered PROOF_STATUS.md)
+code/15-leaf-compression-verify.py           Part XIII (source 15): exact compression, ULC and mixed-cover checks (standard library)
+code/15-leaf-compression-build_local.sh      Part XIII (source 15): the delivered TeX Live build wrapper (do not run here; see below)
+data/15-leaf-compression-verification.json   Part XIII (source 15): recorded output of verify.py
 ```
 
 The ten `02-height-two-` files were staged in the placement commit
@@ -539,6 +2221,48 @@ is all-CRLF as delivered (7,333 lines) and has its own `-text` line in
 `SetTheory/Cardinals/.gitattributes`; `data/05-gamma-positivity-verification.log`
 was force-added past the root `*.log` ignore rule. The other Part IV files are
 LF text.
+The 30 files of Parts V–VII (ten `06-`, eleven `07-`, four `08-`, five
+`09-`) were staged in `26473dfa0`, byte-identical to their deliveries
+(source 06's `results/` and source 09's package-root outputs became
+`data/`, programs and build files `code/`); all are LF text, and the five
+`.log` files were force-added past the root `*.log` ignore rule. Two pairs
+are byte-identical by delivery: source 07's `example_certificate.json` and
+`.log`, and source 09's `verification_results.json` and
+`verification_run.txt`.
+The seven `10-marked-trees-` files of Part VIII were staged in `62f1ad07c`,
+byte-identical to their delivery (its `results/` directory and
+`requirements.txt` became `data/`, its programs and `build.sh` `code/`, its
+`SOURCE_AUDIT.md` the report root); all are LF text, and the `.log` file was
+force-added past the root `*.log` ignore rule.
+The thirteen `11-two-flow-` files of Part IX were staged in `3025c15df`,
+byte-identical to their delivery (its programs and `build.sh` became
+`code/`, its `data/` directory `data/`, its `PROOF_STATUS.md` and
+`SOURCE_AUDIT.md` the report root); all are LF text.
+The sixteen `12-random-trees-` files of Part X were staged in `4fee1cd07`,
+byte-identical to their delivery (its programs and `build.sh` became
+`code/`, its `data/` directory and `requirements.txt` `data/`, its
+`PROOF_STATUS.md` and `SOURCE_AUDIT.md` the report root). The two CSV
+files are all-CRLF as delivered (Python's `csv` writer; 10 and 13 lines)
+and each has its own `-text` line in `SetTheory/Cardinals/.gitattributes`;
+the other fourteen are LF text. Two files are byte-identical by delivery:
+`extra_checks.json` and `extra_checks_console.txt`.
+The eleven `13-hall-bottlenecks-` files of Part XI were staged in
+`29e52fcdf`, byte-identical to their delivery (its programs and
+`build.sh` became `code/`; its `data/` directory, its `requirements.txt`
+and its generated `tex/positivity_tables.tex` became `data/`); all are LF
+text. It shipped no notes in Markdown and no checksum list.
+The ten `14-matching-rank-` files of Part XII were staged in `51c6943bf`,
+byte-identical to their delivery (its programs and `Makefile` became
+`code/`, its `data/` directory `data/`, its `PROOF_STATUS.md` and
+`SOURCES.md` the report root); all are LF text, and the `.log` file was
+force-added past the root `*.log` ignore rule. Two files are
+byte-identical by delivery: `verification.json` and `verification.log`
+(the verifier prints the record it writes, and the log is that output).
+The four `15-leaf-compression-` files of Part XIII were staged in
+`427bca743`, byte-identical to their delivery (its `verify.py` and
+`build_local.sh` became `code/`, its `verification.json` `data/`, its
+`PROOF_STATUS.md` the report root); all are LF text. It shipped no
+checksum list.
 
 ## Data conventions
 
@@ -617,6 +2341,143 @@ What the records show:
 Both are exact integer checks with no floating-point step. They are finite:
 they do not prove the all-`n` theorems.
 
+**Part V.** Source 06's JSON (`"finite_checks_only": true`, seed 20260929)
+records all bipartite graphs with shores of size at most 3 (689) and all
+4,096 on shores (3,4), 75 seeded graphs on (4,4), (5,4), (4,5) with their
+adjacency rows, 14,021 nonempty conditioning events, 685 exact covariance
+checks (principal minors), all 7,332 labeled preorders through `n = 5` by
+direct ideal enumeration, and 64 integer-capacity examples; the sampler
+JSON records 100 seeded supports (masks over four receivers) on `Theta_3`
+with donor rows `14,3,5,9`. Source 07's JSON (`"status": "PASS"`, seed
+20260929) records all 65,536 labeled 4×4 and 4,096 3×4 graphs (2,165,695 and
+68,832 supports; 9,268 and 707 palindromic; the receiver-refined Hall
+identity is checked on the 3×4 family only), the 390 labeled preorders
+through `n = 4`, 300 weighted graphs at fugacities 1/3, 1, 7/2, 32 leaf-
+transform identities, 30 sampler runs, and the `Theta_3` data (`p`,
+`h`, 1,281 points) and the failed two-sided normalization. Graphs are
+bitmask neighbourhoods; coefficients are in increasing degree.
+
+**Part VI.** Source 08's JSON records, for each `r ≤ 9`, the unlabeled
+trees, the number that are PSD/ADE and their types, the determinant-identity
+evaluations, books `m = 0,…,8`, the even-theta expected-minor checks, the
+contraction/deletion comparisons and the subdivision identities
+(Table 11 of the article). It has no timing field; the version strings are
+the only varying fields.
+
+**Part VII.** Source 09's JSON (`"status": "PASS"`) records 4,690 bipartite
+graphs, 4,165 reflexive relations and 389 preorders on 1–4 elements, 92,804
+rank checks, 34 automorphism counts, 592 minor constructions, 16 vertex-sum
+identities, and the `Theta_3` certificate (Rayleigh value −9 at the
+recorded assignment; two real roots). Its `elapsed_seconds` varies.
+
+**Part VIII.** Source 10's JSON (`"status"`: "All listed exact finite
+checks passed; these are not formal proofs.", seed 20260930,
+`max_tree_size` 9) records, for each `n ≤ 9`, the unlabelled trees
+(NetworkX representatives), all their vertex subsets, the stable ones and
+their skeleton types (`A`, `D`, `E`, `affine`), and the two failure modes
+(`unmarked_branch`, `spectral_obstruction`) — Table 15 of the article,
+31,886 marked instances on 95 trees, automorphic markings counted
+separately; the check counts of Section 127 (21,237 PSD comparisons, 10,649
+branch witnesses, 526 connected-energy instances, 133 identities with
+24,534 minor coefficients, 190 enumerator, 285 optimization, 95 repair and
+95 diameter comparisons); the `ϑ(3,3,3)` coefficients and discriminant
+−5243; the two rational Rayleigh certificates (the fully marked `K_{1,5}`
+and a nine-vertex subdivided tree with fringe); the star size enumerators
+for `m = 3, 4, 6`; and 5 path and 11 star formula checks. All arithmetic is
+exact. Its `elapsed_seconds` varies.
+
+**Part IX.** Source 11's six suite records each carry `"suite"`,
+`"passed": true` and `elapsed_seconds` (varies). `small` and
+`four_by_three` count graphs and matchable support pairs by `(m, n)`
+(689 graphs and 5,880 pairs; 4,096 and 68,832); `preorders` counts
+labeled preorders and lattice points by `n` (1, 1, 4, 29, 355 preorders;
+1, 2, 20, 376, 12,310 points; 390 and 12,709 in all); `random` records
+seed 20260930, 250 graphs, 4,256 feasible-pair trials, 9,427
+restriction/deletion and 8,512 chamber/gauge checks; `chain` records the
+two 17-state chains (activities all one, and `(2,3,5)` on the receivers),
+partition functions 17 and 144, the exact distances after eight steps
+`15185263/1734623424` and `89267905200632003/10715864763905280000`, and
+three rejected corrupted certificates; `example` is the worked certificate
+of Section 143 in code labels: suppliers and receivers zero-based, the
+dummy `-1`, flows as `[supplier, receiver, value]`, costs as
+`[supplier, receiver, cost]`. `verification_run.txt` holds the same six
+records, one JSON line each, in suite order. `environment.json` records
+Python 3.13.5 on Linux and pdfTeX from TeX Live 2025/dev.
+
+**Part X.** Source 12's `verification.json` (`"status": "PASS"`) records
+18,249 labelled trees and 2,238,526 marked trees (`n = 1..7`), 70 exact
+joint bins and 306 high-precision checks, and for each `n` the stable pairs
+by number of marks `K = 0..n` (Table 22 of the article prints `n ≤ 5`;
+`n = 6` gives 1296, 7776, 19440, 21960, 15840, 6750, 1170). `fixed_density.csv`
+has columns `n, p, probability, asymptotic_ratio, mean_K,
+mean_K_prediction, mean_H, mean_H_prediction` for `n ∈ {100, 500, 2000}`
+and `p ∈ {0.2, 0.5, 0.8}` (the predictions are `np^2 + 3q` and
+`np + q/p`; Table 23 prints six rows); `critical_window.csv` has columns
+`n, lambda, scaled_probability, Psi, ratio, conditional_mean_K` for
+`n ∈ {100, 1000, 10000}` and `λ ∈ {0.5, 1, 2, 3}` (Table 24 prints the
+`n = 10000` rows); values are mpmath decimals. `numerical_console.json`
+holds the same two tables as JSON lists of strings.
+`extra_checks.json` (`"status": "PASS"`) records 170 Poisson identities,
+435 unlabelled trees and 10 symbolic cumulant checks, and for `n = 2..11`
+the number of stable unlabelled skeletons and `Σ 1/|Aut|` (Table 21; `9/8`
+at 10 and 11). The `seconds` fields vary (9.595 in `verification.json`,
+9.907 in `verification_console.txt`, 0.816 in `extra_checks.json`).
+`environment.json` records Python 3.13.5 on Linux, mpmath 1.3.0,
+NetworkX 3.6.1, SymPy 1.14.0, NumPy 2.3.5 and pdfTeX from TeX Live
+2025/dev; `pdf_validation.json` records the delivered PDF's 23 pages and
+its own visual review.
+
+**Part XI.** Source 13's records are exact integers. `rank8_witness.json`
+records `s = 4`, `n = 11`, activity 500, 30 vertices, 104 edges, rank 8;
+the weights of each shore (outer vertices first: indices 0–10 weight 1,
+11–14 weight 500); the adjacency lists (left index → right indices); the
+nine coefficients `a_0, …, a_8`; the seven order-8 and the fourteen
+order-15 margins (`k = 1, …`); a minimum cover (`minimum_cover_left`,
+`minimum_cover_right`, here the eight cores); the mates of a maximum
+matching; and the reduced quadratic's value −7696.
+`rank6_positive_certificates.json` gives, for `k = 1..4`, the positive
+factor (`9*w**2`, …) and the rows of `P_k(x, w)` (`x = n − 2`, ascending
+powers of `x` for each power of `w`), as printed in Section 185.
+`rank6_thresholds.json` is Table 26 (`n`, vertices, first failing integer,
+`Q_n` there); `general_endpoint_thresholds.json` is Table 27 (`s`, least
+`n`, vertices, first failing integer, the primitive `(α, β, γ)`).
+`verification_results.txt` is the console transcript (13 PASS lines,
+Python 3.13.5, SymPy 1.14.0, elapsed 2.937 s). `provenance.json` is
+written by hand, not by the verifier.
+
+**Part XII.** Source 14's records are exact integers.
+`verification.json` gives the Python version (3.13.5), the arithmetic
+("integer and Fraction; no floating-point assertions"), the pin, the
+numbers of graphs and relations checked (4,096 labelled 3-by-4 graphs;
+65,536 labelled 4-by-4 graphs with rank histogram 1, 104, 2,912, 24,696,
+37,823 for ranks 0–4 and 3,648 rank-three graphs without isolated
+vertices; 4,096 loopless relations on four vertices, 355 of which are
+preorders after adding loops), the direct preorder-polytope check (24,850
+candidate vectors, 12,310 lattice points), the 5,184 rank-three
+specializations, the support polynomials of `G_N` for
+`N = 1, 2, 3, 5, 10, 100, 10^6`, the symbolic certificate counts (3
+rank-three identities, 4 + 1 symbolic kernel cases, 3 gap identities and
+the shifted coefficients 747, 2094, 2045, 798, 98 of the last gap), the
+matrix counts (1, 81, 1296, 7056; gap −34992), 400 sampler checks, an
+informational elapsed time (2.557 s) and the status "All assertions
+passed." `verification.log` is the same text. `rank4_templates.json` has
+keys `format` ("binomial-product support kernel, version 1"), `note`
+(exact support formulas, "not positivity certificates") and `templates`:
+24 entries (8 with covers split 1 + 3, 16 split 2 + 2), each with
+`left_cover`, `right_cover`, `core_mask`, the quota vectors `left_quotas`
+and `right_quotas` (types in increasing order of their nonzero neighbour
+masks) and terms `[i, j, k, m]`, each contributing `m` times the product
+of binomials of populations and quotas `i`, `j` to the coefficient of
+`t^k` (the exporter's docstring).
+
+**Part XIII.** `data/15-leaf-compression-verification.json` (309 bytes)
+has the counts `leaf_compression_graphs` 600, `full_cover_rank_graphs`
+235, `exhaustive_4_by_3_graphs` 4096 and
+`weighted_mixed_cover_formula_cases` 500, `all_checks_passed: true`,
+`random_seed` 314159265 and a `meaning` string ("Exact regression
+evidence; the all-graph conclusions follow from the written proofs."). It
+records no Python version or timing. All arithmetic is integer.
+
 ## Build the article
 
 ```sh
@@ -629,14 +2490,29 @@ Build in a scratch copy of `article.tex` so that no auxiliary files land here
 newpxmath, tcolorbox, titlesec, fancyhdr, listings, hyperref, …) plus TikZ
 and needspace for Part II; Part III adds only macros; Part IV adds macros,
 an `example` environment and the TikZ library `arrows.meta` (for manuscript
-01's dependency graph, Section 60). No image or font files are needed. The
-shipped PDF (116 pages) was built on 29 September 2026 with MiKTeX (pdfTeX
-1.40.26) by `latexmk`: no errors, no undefined or multiply defined
-references or citations, no duplicate destinations, no overfull boxes and no
-other LaTeX warnings; one underfull box (badness 1817) in Part II's
-provenance-ledger table, which the committed builds before Parts III and IV
-and the delivered manuscript 02's own build also show. (The earlier build
-of 29 September 2026, before Part IV, had 74 pages.)
+01's dependency graph, Section 60); Parts V–VII add macros and the TikZ
+library `positioning` (for source 06's dependency diagram, Section 67);
+Part VIII adds only macros (`\Hull`, `\Leaf`, `\diam`, `\Stab`, `\Zpoly`,
+`\pathin`) and does not load `cleveref`; Part IX adds one macro (`\TV`) and
+likewise no `cleveref` or `float`; Part X adds only macros (`\Pois`, `\st`,
+`\fall`, `\dto`, `\pto`, `\cst`; its `\mathscr` comes from newpxmath);
+Part XI adds one macro (`\ULC`), and its figure uses the TikZ library
+`positioning`, already loaded; Part XII adds two macros (`\GammaD`,
+`\poly`); Part XIII adds none.
+No image or font files are needed.
+The shipped PDF (375 pages) was built on 1 October 2026, after the
+batch-73 reciprocal notes, with MiKTeX (pdfTeX 1.40.26) by `latexmk`: no errors, no undefined or multiply defined
+references or citations, no duplicate destinations, no overfull boxes and
+no other LaTeX warnings; five underfull boxes, the same five as the build of
+the committed text before the batch-73 notes, of the Parts I–XIII text before the batch-72 notes and of the Parts I–XII text (and of Parts I–XI, I–X, I–IX, I–VIII and I–VII before it): one (badness 1817) in Part II's
+provenance-ledger table, which the committed builds before Parts III–VII and
+the delivered manuscript 02's own build also show, and four (badness
+1024–6625) in paragraphs of Parts V and VI that set long shipped file names
+(Sections 78, 78.1 and 83.4). (The earlier builds of 29 September 2026 had
+74 pages before Part IV, 116 before Parts V–VII and 220 before Part VIII;
+the builds of 30 September 2026 before Part IX, before Part X, before
+Part XI, before Part XII and before Part XIII had 249, 277, 304, 332 and
+362, and the builds of Parts I–XIII before the batch-72 and batch-73 notes had 372 and 374.)
 
 ## Rerun the checks
 
@@ -755,6 +2631,281 @@ There were no mismatches. The write phase recomputed the article's numerical
 examples by brute force. None of these scratch checks is shipped
 (Section 59.3).
 
+**Parts V–VII: common hazards.** The four packages' programs are shipped
+under prefixed names but still use their delivered names and layouts. Run
+them only as below, from this directory in Git Bash or another POSIX shell,
+with `W` a scratch directory outside the repository. On Windows every
+program writes its JSON with CRLF line endings (Python's `write_text`
+without `newline=`), so compare with the shipped LF files after
+`tr -d '\r'`. Use `py` (or `uv run --no-project … python`); the delivered
+READMEs and articles say `python` or `python3`. The delivered build scripts
+and Makefile cannot build this article: `code/06-lorentzian-support-build.sh`
+changes to `code/` and runs `pdflatex` on a nonexistent `code/article.tex`;
+`code/07-support-polynomials-build.sh` creates `code/build/` and fails on
+the unshipped `support_polynomials.tex`; `make -f code/09-matroid-lifts-Makefile`
+run here would rebuild this article in place with `pdflatex` (target `pdf`,
+leaving auxiliary files here), look for a nonexistent `verify.py` (target
+`verify`), and delete `article.aux`, `.log`, `.out`, `.toc`, `.fls` and
+`.fdb_latexmk` here (target `clean`). Do not run them here.
+
+**Part V, source 06.** Standard library, Python 3.10 or later. The sampler
+and the tests import `verify` and `support_sampler` under their delivered
+names, so under the shipped names here `verify` would resolve to **Part I's**
+`code/verify.py` (an `ImportError`, or a wrong module); and `verify.py`
+without `--output` writes `results/verification.json` relative to the
+working directory (in the delivered layout, its own recorded output).
+Restore the delivered names in a copy:
+
+```sh
+W=/path/to/scratch
+mkdir -p "$W/06/code" "$W/06/results"
+for f in code/06-lorentzian-support-*.py; do cp "$f" "$W/06/code/${f#code/06-lorentzian-support-}"; done
+cd "$W/06"
+py code/verify.py --max-preorder 5 --output results/rerun.json     # ends with the JSON; compare with data/06-lorentzian-support-verification.json
+py code/test_sampler.py                                            # 7 tests
+py code/support_sampler.py --rows 14,3,5,9 --receivers 4 --samples 100 --epsilon 1/100 --seed 20260929 --output results/smoke.json
+```
+
+Run this way on 29 September 2026 (Python 3.14.4, Windows, on a shared
+and loaded machine: about 150 s for the verifier; the recorded run took
+11 s under Python 3.13.5), all three passed. After CR stripping,
+`rerun.json` and the console output equal
+`data/06-lorentzian-support-verification.json` and `.log` except `python`
+and `elapsed_seconds`; the seven tests pass (the transcript differs only in
+its time); `smoke.json` equals `data/06-lorentzian-support-sampler_smoke.json`
+except `elapsed_seconds` (the same 100 supports for the seed). The shorter
+check `--max-preorder 4 --skip-3x4` is the program's own option.
+
+**Part V, source 07.** Standard library. `verify.py` and
+`example_certificate.py` import `support_tools` under its delivered name, so
+under the shipped names they fail with `ModuleNotFoundError`; `verify.py`
+without `--output` writes `../data/verification.json` **relative to the
+working directory** (from this directory that is
+`enumerative-combinatorics/data/`, outside the report). Its checks are
+`assert` statements: do not use `python -O`.
+
+```sh
+W=/path/to/scratch
+mkdir -p "$W/07/code" "$W/07/rerun"
+for f in code/07-support-polynomials-*.py; do cp "$f" "$W/07/code/${f#code/07-support-polynomials-}"; done
+cd "$W/07"
+py code/verify.py --output rerun/verification.json                 # compare with data/07-support-polynomials-verification.json
+py code/example_certificate.py --output rerun/example_certificate.json
+py code/support_tools.py
+```
+
+Run this way on 29 September 2026 (Python 3.14.4 on the loaded machine: the
+verifier took 300 s; the recorded run took 22 s), all three passed. After CR
+stripping, `verification.json` and the verifier's console output equal
+`data/07-support-polynomials-verification.json` and `.log` except
+`elapsed_seconds`; the certificate JSON and its console output are
+byte-identical to the shipped `example_certificate.json` and `.log`;
+`support_tools.py` prints the `Theta_3` coefficients, "Palindromic: False"
+and one sampler step. Use `--quick` for the program's own 3×3 check.
+
+**Part VI, source 08.** Needs SymPy 1.14.0 and NetworkX 3.6.1
+(`data/08-ade-stability-requirements.txt`) and imports no sibling module.
+Without `--output` it writes `data/verification_results.json` under the
+parent of its own directory, which here is **Part I's recorded output**:
+always pass `--output`.
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/08"
+uv run --no-project --with sympy==1.14.0 --with networkx==3.6.1 python code/08-ade-stability-verify.py --output "$W/08/ade.json"
+tr -d '\r' < "$W/08/ade.json" | cmp - data/08-ade-stability-verification_results.json
+```
+
+Run this way on 29 September 2026 (uv with Python 3.13.5, SymPy 1.14.0,
+NetworkX 3.6.1; about 25 s): "All exact checks passed", and the output is
+byte-identical to the shipped JSON after CR stripping (it has no timing
+field).
+
+**Parts VI–VII, source 09.** Standard library; no sibling imports. Without
+`--output` it writes `verification_results.json` in the working directory.
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/09" && cp code/09-matroid-lifts-verify.py "$W/09/" && cd "$W/09"
+py 09-matroid-lifts-verify.py --output out.json > console.txt
+```
+
+Run this way on 29 September 2026 (Python 3.14.4, about 11 s on the loaded
+machine), it passed: after CR stripping, `out.json` and `console.txt` (the
+program prints the JSON it writes) equal
+`data/09-matroid-lifts-verification_results.json` and
+`-verification_run.txt` except `elapsed_seconds`.
+
+**Part VIII, source 10.** Needs NetworkX 3.6.1 (which requires Python ≥ 3.11)
+and SymPy 1.14.0 (`data/10-marked-trees-requirements.txt`).
+`10-marked-trees-verify.py` imports its library by the delivered name
+`marked_trees`, so under the shipped names it fails with
+`ModuleNotFoundError`; its default output `results/verification.json` is
+relative to the working directory. Restore the delivered layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/10/code" "$W/10/results"
+cp code/10-marked-trees-marked_trees.py "$W/10/code/marked_trees.py"
+cp code/10-marked-trees-verify.py "$W/10/code/verify.py"
+cd "$W/10"
+uv run --no-project --with networkx==3.6.1 --with sympy==1.14.0 python code/verify.py --max-n 9 --output results/verification.json > console.txt
+```
+
+Pass `--max-n 9` explicitly: the program's default is 8 (see below). Run
+this way on 30 September 2026 (uv with Python 3.13.5, on Windows, about
+25 s; the recorded run took 10 s), it passed: `results/verification.json`
+equals `data/10-marked-trees-verification.json` except `elapsed_seconds`,
+and `console.txt` equals `data/10-marked-trees-run.log` except the path
+separator in its last line ("Saved results\verification.json" on Windows).
+That run wrote LF line endings.
+
+**Part IX, source 11.** Standard library only (Python ≥ 3.10); use `py` or
+`python3`. `11-two-flow-verify.py` imports its library by the delivered
+name `transport_bijection`, so under the shipped names it fails with
+`ModuleNotFoundError`; and it writes `data/<suite>.json` next to its own
+`code/` directory, which in this report would add unprefixed files to
+`data/`. Restore the delivered layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/11/code" "$W/11/data"
+cp code/11-two-flow-transport_bijection.py "$W/11/code/transport_bijection.py"
+cp code/11-two-flow-verify.py "$W/11/code/verify.py"
+cd "$W/11"
+py code/transport_bijection.py            # the worked example and one sample
+py code/verify.py --suite all > console.txt
+```
+
+Run this way on 30 September 2026 (Python 3.14.4 on Windows, about 70 s;
+the recorded run took about 29 s), it passed: after CR stripping, each
+`data/<suite>.json` equals the shipped `data/11-two-flow-<suite>.json`
+except `elapsed_seconds`, and `console.txt` equals
+`data/11-two-flow-verification_run.txt` except `elapsed_seconds`. On
+Windows both are written with CRLF line endings. The programmatic example
+of the unshipped delivery README (sampling with `Random(20260930)`, a
+three-element chain via `preorder_graph`) needs `code/` on the module path,
+as in this copy.
+
+**Part X, source 12.** Needs mpmath 1.3.0; `extra_checks.py` also needs
+NetworkX 3.6.1 (Python ≥ 3.11) and SymPy 1.14.0
+(`data/12-random-trees-requirements.txt` also pins NumPy 2.3.5).
+`12-random-trees-extra_checks.py` imports the main verifier by the
+delivered name `verify`, so under the shipped names it fails with
+`ModuleNotFoundError`; and both programs write `verification.json`,
+`fixed_density.csv`, `critical_window.csv` and `extra_checks.json` into a
+`data/` directory next to their own `code/` directory, which in this
+report would add four unprefixed files to `data/`. The main verifier's
+`--max-n` default is 6; the recorded run used 7. Restore the delivered
+layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/12/code" "$W/12/data"
+cp code/12-random-trees-verify.py "$W/12/code/verify.py"
+cp code/12-random-trees-extra_checks.py "$W/12/code/extra_checks.py"
+cd "$W/12"
+P="uv run --no-project --with mpmath==1.3.0 --with networkx==3.6.1 --with sympy==1.14.0 --with numpy==2.3.5 python"
+$P code/verify.py --max-n 7 --tables > console.txt
+$P code/extra_checks.py > console_extra.txt
+```
+
+Run this way on 30 September 2026 (uv with Python 3.13.5 on Windows,
+about 115 s for both; the recorded `verify.py` run took 9.6 s, this one
+58 s), both exited 0 and printed `"status": "PASS"`: the two CSV files are
+byte-identical to the shipped ones (CRLF, as delivered); after CR
+stripping, `data/verification.json` and `data/extra_checks.json` equal
+the shipped records except `seconds`, `console.txt` equals
+`data/12-random-trees-full_run_console.txt` and `console_extra.txt`
+equals `data/12-random-trees-extra_checks_console.txt`, again except
+`seconds`. On Windows the two JSON files are written with CRLF line
+endings.
+
+**Part XI, source 13.** Needs SymPy 1.14.0
+(`data/13-hall-bottlenecks-requirements.txt`; the counting module itself
+uses only the standard library, Python ≥ 3.10). Under the shipped names
+`13-hall-bottlenecks-verify.py` fails with `ModuleNotFoundError`, because
+it imports `support_count` by its delivery name. It also reads
+`article.tex` from the parent of its own directory and compares the text
+between the lines `%% BEGIN GENERATED POSITIVITY TABLES` and
+`%% END GENERATED POSITIVITY TABLES` with the tables it regenerates (the
+delivered manuscript is not shipped; this report's `article.tex` carries
+the same block in Section 185), and it rewrites
+`data/{general_endpoint_thresholds,rank6_positive_certificates,rank6_thresholds,rank8_witness}.json`
+and `data/verification_results.txt` and creates `tex/positivity_tables.tex`
+next to its own directory, which in this report would add unprefixed files
+and a `tex/` directory. Restore the delivered layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/13/code"
+cp code/13-hall-bottlenecks-support_count.py "$W/13/code/support_count.py"
+cp code/13-hall-bottlenecks-verify.py "$W/13/code/verify.py"
+cp article.tex "$W/13/article.tex"     # supplies the table block it compares
+cd "$W/13"
+uv run --no-project --with sympy==1.14.0 python code/verify.py > console.txt
+```
+
+Run this way on 30 September 2026 (uv with Python 3.13.5 on Windows, about
+20 s; the program reported 14.7 s, the recorded run 2.9 s), it exited 0
+with 13 PASS lines and "All checks passed": after CR stripping, the four
+JSON files equal the shipped `data/13-hall-bottlenecks-<name>.json`,
+`tex/positivity_tables.tex` equals
+`data/13-hall-bottlenecks-positivity_tables.tex`, and
+`data/verification_results.txt` equals the shipped transcript except the
+"Elapsed seconds" line; `console.txt` equals that transcript. On Windows
+all six outputs are written with CRLF line endings. The code example of
+Section 181.3 needs `code/` on the module path, as in this copy.
+
+**Part XII, source 14.** Standard library only (the delivery README asks
+for Python ≥ 3.10). Under the shipped names
+`14-matching-rank-verify.py`, `-certificates.py` and
+`-export_rank4_templates.py` fail with `ModuleNotFoundError`, because
+they import `support_kernels` and `certificates` by their delivery
+names; the verifier and the exporter write `data/verification.json` and
+`data/rank4_templates.json` in the parent of their own directory, which
+here would add unprefixed files. The shipped `code/14-matching-rank-Makefile`
+runs `python3 code/verify.py`, which from this report's root is **Part I's**
+verifier: do not use it. Restore the delivered layout in a copy:
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/14/code" "$W/14/data"
+for f in support_kernels certificates verify export_rank4_templates; do
+  cp "code/14-matching-rank-$f.py" "$W/14/code/$f.py"
+done
+cd "$W/14"
+python code/verify.py > console.txt
+python code/export_rank4_templates.py
+```
+
+Run this way on 30 September 2026 (`py`, Python 3.14.4 on Windows; the
+program reported 8.5 s, the recorded run 2.6 s), both exited 0 and the
+verifier printed "All assertions passed.": after CR stripping,
+`data/rank4_templates.json` equals the shipped
+`data/14-matching-rank-rank4_templates.json`, and `data/verification.json`
+equals the shipped record except the `python` and
+`elapsed_seconds_informational_only` lines; `console.txt` equals the new
+`data/verification.json`, as the shipped `.log` equals the shipped JSON.
+On Windows all three outputs are written with CRLF line endings, and
+Python creates `code/__pycache__/` in the copy. The code example of
+Section 198.2 needs `code/` on the module path, as in this copy.
+
+**Part XIII, source 15.** Standard library only. The verifier writes
+`verification.json` beside itself (`Path(__file__).with_name(...)`), so
+run here it would add an unprefixed `code/verification.json`; the article
+and the delivery README say "Run `python3 verify.py`". Run it on a copy:
+
+```sh
+W=/path/to/scratch/15; mkdir -p "$W"
+cp code/15-leaf-compression-verify.py "$W/verify.py"
+cd "$W" && python verify.py > console.txt
+```
+
+Run this way on 30 September 2026 (`py`, Python 3.14.4 on Windows, under
+a second), it exited 0; after CR stripping, both the new
+`verification.json` and `console.txt` equal the shipped
+`data/15-leaf-compression-verification.json`. On Windows the JSON is
+written with CRLF line endings. The shipped
+`code/15-leaf-compression-build_local.sh` builds the unshipped manuscript
+(see below); do not use it.
+
+None of these runs changed a file of this report (checked with
+`git status` and by comparing a copy of `code/` and `data/`).
+
 ## Discrepancies and delivery names
 
 - **Delivery names.** Part II's programs, Makefile and status notes use the
@@ -854,6 +3005,339 @@ examples by brute force. None of these scratch checks is shipped
   Manuscript 05's equations, numbered (1)–(26) consecutively, are numbered by
   section here; its dependency ledger's second column is set ragged-right.
 
+- **Parts V–VII's delivery names** (all shipped files left
+  byte-identical):
+  - `06-lorentzian-support-SOURCES.md` speaks of "the article" and "this
+    package" (the delivered 23-page manuscript, printed in Part V), cites
+    its own "Lemma 2.1" (Lemma 68.1 here) and "Section 7" (Section 75), and
+    cites **Theorem 4.2** of Dai et al. for the augmented-root identity; the
+    inspected arXiv v2 has it as **Theorem 1.2** (Section 66.4 of the
+    article records the correction).
+  - `07-support-polynomials-PROOF_STATUS.md` and `-SOURCES.md` speak of
+    "the article", "this package" and "the predecessor" (Parts I–IV).
+    `data/07-support-polynomials-build_validation.json` describes the
+    delivered 23-page PDF's build (TeX Live 2025), not this article's.
+  - `08-ade-stability-SOURCE_AUDIT.md` names `data/verification_results.json`
+    (shipped as `data/08-ade-stability-verification_results.json`; the
+    unprefixed name here is Part I's file) and "this delivery".
+  - `09-matroid-lifts-CLAIMS_AND_SOURCES.md` cites the delivered section
+    numbers (mapped above) and "the article".
+  - The four programs' usage strings, console records and default paths use
+    the delivered layout (`results/`, `data/`, package root); the article
+    prints the delivered run commands, each followed by a merge note with
+    the shipped names (Sections 78, 78.1, 95, 110).
+  - The unshipped delivery READMEs list `SHA256SUMS.txt` (sources 06, 08,
+    09; verified and retired), the manuscripts and the PDFs.
+- **Parts V–VII's recorded outputs** were produced under Python 3.13.5
+  (sources 06–09; source 07's and 09's JSON do not record the version) and
+  contain an `elapsed_seconds` field (sources 06, 07, 09) that varies from
+  run to run; source 08's JSON has version strings only.
+- **Bylines.** Sources 06, 07 and 09 name ChatGPT on their title pages;
+  source 08 names no assistant ("mathematical development and exposition
+  with AI assistance"). The article's PDF metadata is unchanged.
+- **Part VIII's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/10-marked-trees-verify.py` says in its docstring "Run: python
+    code/verify.py --max-n 8 --output results/verification.json", and its
+    `--max-n` default is 8; the delivery README, the article's table and the
+    recorded run use `--max-n 9`.
+  - It imports `marked_trees` (shipped as
+    `code/10-marked-trees-marked_trees.py`), and `data/10-marked-trees-run.log`
+    ends "Saved results/verification.json" (shipped as
+    `data/10-marked-trees-verification.json`).
+  - `code/10-marked-trees-build.sh` changes to its own directory, creates
+    `code/build/` and runs `pdflatex` on a nonexistent `code/article.tex`,
+    which fails: do not run it.
+  - `10-marked-trees-SOURCE_AUDIT.md` gives line ranges of the pinned
+    `article.tex`; Part VIII's preamble, front-matter and pointer additions
+    moved Part VI's lines by 27 to 49 (Section 130 of the article maps the
+    ranges to Part VI's sections). It names
+    `code/08-ade-stability-verify.py` correctly and speaks of "the
+    delivered article" (Part VIII).
+  - The unshipped delivery README lists `article.pdf`, `article.tex`,
+    `results/` and `SHA256SUMS.txt` (verified and retired), calls the PDF
+    "the 24-page research article", and uses `python`; it notes that
+    NetworkX 3.6.1 excludes Python 3.14.1.
+  - The recorded run (Python 3.13.5) records `elapsed_seconds` 9.982.
+- **Bylines (Part VIII).** Source 10's title page reads "Research prepared
+  for Vladimir Reshetnikov / Mathematical development and exposition with
+  ChatGPT", and its PDF metadata name ChatGPT; the article records this in
+  Section 116.1 and does not reprint the byline.
+- **Part IX's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/11-two-flow-verify.py` imports `transport_bijection` (shipped as
+    `code/11-two-flow-transport_bijection.py`) and writes
+    `data/small.json`, `data/four_by_three.json`, `data/preorders.json`,
+    `data/random.json`, `data/chain.json`, `data/example.json` (shipped as
+    `data/11-two-flow-<suite>.json`); `data/11-two-flow-verification_run.txt`
+    itself names no paths.
+  - `code/11-two-flow-build.sh` changes to its own directory and runs
+    `pdflatex` three times on a nonexistent `code/article.tex`, which fails:
+    do not run it. Source 11's file table called it a two-pass build; it
+    runs three passes (a merge note in Section 151 records this).
+  - `11-two-flow-PROOF_STATUS.md` numbers statements as in the delivered
+    article (mapping above) and speaks of `data/`; `11-two-flow-SOURCE_AUDIT.md`
+    gives the line interval 9510–9555 of the pinned blob (now Section 75.7,
+    moved by the Part VIII and Part IX front-matter additions), speaks of
+    "the delivered article", and its "Chapoton–Athanasiadis" heading
+    reverses the author order of arXiv:2605.26916 (Athanasiadis–Chapoton,
+    as the article prints it).
+  - The unshipped delivery README lists `article.tex`, `article.pdf`,
+    `README.md` and `data/*.json`, calls the PDF a "23-page article", and
+    uses `python`.
+  - The recorded run (`data/11-two-flow-environment.json`: Python 3.13.5,
+    Linux) records `elapsed_seconds` per suite, which varies.
+- **Bylines (Part IX).** Source 11's title page reads "Prepared for
+  Vladimir Reshetnikov / Mathematical development and implementation:
+  ChatGPT"; its PDF metadata read "AI-assisted research manuscript prepared
+  for Vladimir Reshetnikov", and its delivery README "prepared for Vladimir
+  Reshetnikov with ChatGPT". The article records this in Section 132.1 and
+  does not reprint the byline.
+- **Part X's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/12-random-trees-extra_checks.py` imports `verify` (shipped as
+    `code/12-random-trees-verify.py`), and the two programs write
+    `data/verification.json`, `data/fixed_density.csv`,
+    `data/critical_window.csv` and `data/extra_checks.json` relative to
+    the parent of their own directory (shipped as
+    `data/12-random-trees-<name>`): run them only on a copy (above).
+  - `code/12-random-trees-verify.py` defaults to `--max-n 6`; the delivery
+    README, the article (Section 167) and the recorded run use
+    `--max-n 7`. Its docstring says Python ≥ 3.10, while
+    `data/12-random-trees-requirements.txt` says Python ≥ 3.11 for the
+    pinned versions (NetworkX 3.6.1).
+  - `code/12-random-trees-build.sh` changes to its own directory and runs
+    `pdflatex` twice on a nonexistent `code/article.tex`, which fails: do
+    not run it.
+  - The records come in pairs: `data/12-random-trees-extra_checks_console.txt`
+    is byte-identical to `-extra_checks.json`;
+    `data/12-random-trees-full_run_console.txt` is
+    `-verification.json` followed by `-numerical_console.json`, byte for
+    byte; `data/12-random-trees-verification_console.txt` is a second run,
+    equal to `-verification.json` except `seconds` (9.907 against 9.595).
+  - `12-random-trees-PROOF_STATUS.md` speaks of `data/verification.json`
+    and `data/extra_checks.json` (shipped with the prefix).
+    `12-random-trees-SOURCE_AUDIT.md` gives line ranges of the pinned blob,
+    which Part X's front-matter additions moved by 30 lines (42 after
+    Research question 63; Section 153.1 maps the ranges to Part VIII's
+    sections), and its range 15900–16200 runs past Part VIII into Part IX.
+    It lists McKee–Smyth, *J. Algebra* 317 (2007), with arXiv:0907.0371
+    as a "related primary abstract"; that arXiv record is a different
+    paper, the report's `McKeeSmythIMRN` (cited in Part VIII).
+  - `data/12-random-trees-pdf_validation.json` and the `pdf_engine` field
+    of `-environment.json` describe the delivered 23-page PDF, not this
+    report's PDF.
+  - The delivered PDF printed the command-line flags `--max-n` and
+    `--tables` with one dash glyph (a font ligature of the two hyphens);
+    Section 167 here breaks the ligature (`-{}-`) and prints two hyphens. No other wording of source 12 was changed except
+    where merge notes and the self-citation replacements of Section 152.4
+    say so.
+  - The unshipped delivery README lists `article.tex`, `article.pdf`,
+    `build.sh`, `requirements.txt` and `SHA256SUMS.txt` (verified, 19/19,
+    and retired) at the package root, calls the PDF "the 23-page compiled
+    article", and uses `python`.
+- **Part XI's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/13-hall-bottlenecks-verify.py` imports `support_count` (shipped
+    as `code/13-hall-bottlenecks-support_count.py`), reads the table block
+    of `../article.tex` (the unshipped manuscript), and writes
+    `data/*.json`, `data/verification_results.txt` and
+    `tex/positivity_tables.tex` relative to the parent of its own
+    directory (shipped as `data/13-hall-bottlenecks-<name>`): run it only
+    on a copy (above). Its docstring says "Run from any directory: python
+    code/verify.py".
+  - `code/13-hall-bottlenecks-build.sh` changes to its own directory and
+    runs `pdflatex` twice on a nonexistent `code/article.tex`, which
+    fails: do not run it. This report is built with `latexmk`.
+  - The article's Section 182 (as delivered) speaks of "the unequal
+    weights (2,3,5) and (7,11,13)"; they are the left and right weights of
+    one weighting, as the program and its transcript ("one positive
+    unequal weight vector") show. A merge note says so. The transcript's
+    line on the first-margin identity is printed after the seeded-graph
+    line, although the identity is checked inside the 3-by-3 loop.
+  - The artifact table of Section 186 (as delivered) lists `README.md` and
+    `article.pdf` (not shipped) and omits `data/provenance.json` and
+    `requirements.txt` (shipped); the printed table gives the shipped
+    names, with a merge note. Sections 181.3 and 182 keep the delivery
+    names `code/support_count.py`, `code/verify.py` and `data/…`, with
+    merge notes.
+  - `data/13-hall-bottlenecks-provenance.json` and the article's Section
+    186 give line ranges of the pinned blob, which the front-matter
+    sentences of Parts X and XI and Part XI's dated pointers moved by 67
+    to 75 lines (mapped in Section 186).
+  - The delivered PDF was built with newtx fonts and its own running
+    heads; Part XI is set in the report's fonts and layout. In its
+    Figure 1 (Figure 6 here) the label "No edges between L and R"
+    overlapped the two upper boxes; it is set above them here, and the
+    artifact table of Section 186 has ragged-right columns. No wording of
+    source 13 was changed except where merge notes, the rename of `s` to
+    `σ` and the replacement of the self-citation say so, and except that
+    "Appendix" became "Section" in cross-references.
+  - The unshipped delivery README lists `article.tex`, `article.pdf`,
+    `build.sh`, `requirements.txt`, `code/`, `data/` and `tex/` at the
+    package root and uses `python -m pip install -r requirements.txt`,
+    `python code/verify.py` and `sh build.sh`.
+- **Part XII's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/14-matching-rank-verify.py`, `-certificates.py` and
+    `-export_rank4_templates.py` import `support_kernels` and
+    `certificates` by their delivery names, and the verifier and the
+    exporter write `data/verification.json` and
+    `data/rank4_templates.json` relative to the parent of their own
+    directory: run them only on a copy (above). The verifier's docstring
+    says "Run from this directory: python verify.py"; the article and the
+    delivery README say to run `python code/verify.py` from the package
+    root; both work in the delivered layout.
+  - `code/14-matching-rank-Makefile` has targets `pdf` (`latexmk` on
+    `article.tex`), `verify` (`python3 code/verify.py`), `templates` and
+    `clean`, all relative to the package root; from this report's root
+    `verify` would run Part I's `code/verify.py`, and from `code/` nothing
+    resolves. Do not use it.
+  - `data/14-matching-rank-verification.log` is byte-identical to
+    `data/14-matching-rank-verification.json` (both 2,001 bytes): the
+    verifier prints the JSON it writes, and the log is that console
+    output. Both are shipped, as delivered.
+  - `14-matching-rank-PROOF_STATUS.md` and `-SOURCES.md` speak of "the
+    article", "this package" and "this manuscript"; the delivery README
+    (not shipped) lists `article.tex`, `article.pdf`, `SHA256SUMS.txt`
+    (verified 13/13 and retired) and the unprefixed paths, and uses
+    `python` and `make verify templates pdf`. Section 198.2 keeps the
+    delivery names, with a merge note.
+  - The delivered article's Section 1 and bibliography cite this report
+    as "repo" at the pin; Part XII replaces the citation by references to
+    Parts II, IV, V and IX and keeps the pin and blob (Sections 188 and
+    203). Its Section 1 says "Research question 37" from the pinned README;
+    the number is unchanged.
+  - The delivered PDF used its own running head ("Matching-rank support
+    enumeration") and 25 mm margins; Part XII is set in the report's
+    layout. No wording of source 14 was changed except where merge notes,
+    the renaming of `L` (input length) to `ℓ` and of `Q_tau` to `𝒬_tau`,
+    the removal of the self-citation and the merge note set ragged-right in
+    Section 198.2 say so, and except that "Appendix" headings became
+    sections.
+- **Part XIII's delivery names and discrepancies** (all shipped files left
+  byte-identical):
+  - `code/15-leaf-compression-verify.py` writes `verification.json` beside
+    itself; run it only on a copy (above). Source 15's Section 209 and its
+    delivery README say "Run `python3 verify.py`"; the article keeps this
+    with a merge note.
+  - `code/15-leaf-compression-build_local.sh` changes to its own
+    directory, sets `TEXMF` to `/usr/share/texlive/texmf-dist` and
+    `/usr/share/texmf`, builds a `pdflatex` format into `build/`, runs
+    `pdflatex` twice on `article.tex` (the delivered manuscript, **not
+    shipped**) and copies `build/article.pdf` to `article.pdf` beside
+    itself. It cannot be used here.
+  - `15-leaf-compression-PROOF_STATUS.md` cites the delivered numbers
+    (Lemma 2.1, Theorem 2.2, Corollary 2.3, Theorem 3.1 → 206.1, 206.2,
+    206.3, 207.1) and speaks of "this note" and "the inspected incoming
+    source" (source 14, now Part XII). The delivery README (not shipped)
+    lists `article.pdf` ("six-page research note"), `article.tex`,
+    `verify.py`, `verification.json`, `build_local.sh` and
+    `PROOF_STATUS.md` at the package root.
+  - The delivered article calls source 14 "the incoming ProveIt
+    manuscript" / "the incoming manuscript" and source 13 "the Hall-bottleneck
+    report"; both are Parts XII and XI of this report. Part XIII keeps the
+    wording with merge notes and replaces the citations "Rank", "Hall"
+    and "Root" by references to Parts XII, XI and VI (Section 204.5).
+    It has no pin for this report (source table above).
+  - The delivered article is dated 1 October 2026; it was placed on
+    30 September 2026 (Pacific time). It was set in its own 11-point A4
+    layout with 27 mm margins; Part XIII is set in the report's layout. No
+    wording of source 15 was changed except where merge notes, the renaming
+    of `L`, `B` and `\nuG`, and the replacement of its three
+    self-citations say so; its undefined `w_i` (Section 207) is explained
+    in a merge note.
+- **Bylines (Part XIII).** Source 15's title page and its PDF metadata
+  give the author as "Research note prepared for Vladimir Reshetnikov with
+  OpenAI"; its delivery README says "Research note dated 1 October 2026,
+  prepared for Vladimir Reshetnikov". The article records this in
+  Section 204.1 and does not reprint the byline.
+- **Bylines (Part XII).** Source 14's title page reads "Prepared for
+  Vladimir Reshetnikov with ChatGPT" under the kicker "Combinatorics /
+  Exact counting / Preorder polytopes"; its PDF metadata give the author as
+  "Research manuscript prepared with ChatGPT for Vladimir Reshetnikov", and
+  its delivery README says "Research manuscript prepared for Vladimir
+  Reshetnikov". The article records this in Section 187.1 and does not
+  reprint the byline.
+- **Bylines (Part XI).** Source 13's title page reads "Prepared for
+  Vladimir Reshetnikov / ChatGPT • 30 September 2026" under the kicker
+  "ProveIt Research Continuation"; its PDF metadata give the author as
+  "ChatGPT, prepared for Vladimir Reshetnikov", and its delivery README
+  says "Prepared for Vladimir Reshetnikov by ChatGPT". The article records
+  this in Section 172.1 and does not reprint the byline.
+- **Bylines (Part X).** Source 12's title page reads "Prepared for
+  Vladimir Reshetnikov / Mathematical development and computation:
+  ChatGPT" under the kicker "ProveIt research continuation"; its PDF
+  metadata give the author as "ChatGPT; prepared for Vladimir
+  Reshetnikov", and its delivery README repeats the title-page wording. The
+  article records this in Section 152.1 and does not reprint the byline.
+- **Merge observations not in any source** are marked as such in the
+  article: the #P-hardness of a specified height-two `gamma_k`
+  (Corollary 76.4), the infinitely many induced-minimal unstable graphs
+  (Section 92.6), `p_{B_m} = p_{Theta_m} + u` (Section 90), a finite search
+  on normalization by the matching number (Research question 37), the tree
+  diagonals for `r ≤ 12` (Section 96), and the comparison with the q-zeta
+  report's matroid (Section 106). Their finite checks were run by the
+  batch-55 dossier and write phase and are not shipped. Part VIII adds
+  one: the first proof of Theorem 118.2, assembled from Part VI's theorems
+  (Section 118). Its bibliography has a second McKee–Smyth entry: source 10
+  cites arXiv:0907.0371, a different paper from Part VI's arXiv:2002.06082.
+  Part X adds no new mathematics, only pointers: the merge notes after
+  Lemma 165.1 (its relation to Theorem 123.3) and after Research
+  question 80 (Part VIII's formula 124.7 already evaluates vertex-dependent
+  marking probabilities exactly on one host). Its bibliography has a third
+  McKee–Smyth entry, `McKeeSmythJA` (*J. Algebra* 317, 2007): source 12's
+  key was `McKeeSmyth`, which in this report is arXiv:2002.06082, so it was
+  renamed. The batch-66 placement dossier rechecked source 12 by brute
+  force from Part VIII's criterion (an exact PSD test of `2I − A`, not the
+  ADE list): every joint bin of Theorem 156.2 and Table 22 for `n ≤ 6`,
+  `c_k` through `k = 13` including the `9/8` tail (hence the constant
+  `(9/8)·sqrt(2π)`), the Poisson identity for `n ≤ 25`, and Table 23 and
+  `Ψ(1)`; that check is not shipped.
+  Part XI adds three merge observations, marked in Section 172.3 and in
+  the dated pointers: Research question 37 is vacuous for preorders
+  (`nu(H_tau) = n`); the first order-`D` inequality is strict for every
+  `D > nu(H)`, so equality at Part V's first index needs
+  `min(m,n) = nu(H)` and, for preorders, the antichain; and Theorem 181.3
+  with Part II's Theorem 13.2 computes `h_{P_G}` with the matching number
+  as parameter. Research question 37's finite search (above) concerned
+  unit weights and is consistent with Part XI: the core-three family is
+  `ULC_6` at unit weight. The batch-68 placement dossier rechecked source
+  13 independently (the coefficient formula against brute-force support
+  enumeration for six `(s, n)` at three weights, the witness identity and
+  the first integer 485 at which its last inequality fails, the first inequality on 239 random
+  weighted graphs, Tables 26–27 and `D_s = 7, 9, 12`); that check is not
+  shipped.
+  Part XII adds no new mathematics; its merge notes identify source 14's
+  first inequality and bipartite equality case with Part XI's
+  (Theorem 180.2, Corollary 180.3), its bipartite kernel with the
+  unit-weight case of Part XI's Theorem 181.2, its degree lemma,
+  cancellation and gamma formula with Part IV's (Theorem 56.1,
+  Corollary 51.2, Theorem 48.2), and its preorder corollaries' objects
+  (`Gamma_tau`, not `h_tau`) against Part XI's observation that Research
+  question 37 is vacuous for `h_tau`. The batch-70 placement dossier
+  rechecked source 14 independently (the mixed-cover coefficients against
+  brute-force support enumeration, 384 cases; the three identities exactly
+  on 5,488 integer points; 1,500 random graphs with a cover of size at
+  most three and all 24,696 labelled 4-by-4 graphs of rank three without
+  a rank-ULC violation; the weighted directed first inequality on 287
+  random relations; the matrix counts and the criterion for
+  `3 ≤ m = n ≤ 8`; `G_1` and `G_2` by brute force with their gaps); that
+  check is not shipped.
+  Part XIII adds merge observations, marked in Section 204.4 and in merge
+  notes: the vertex-cover argument that Part XI's graphs `H_{s,n}` with
+  `n > s` have the unique minimum cover `A ⊔ B` (so the rank-six family
+  fails only for `n ≥ 33`, where it is split `3 + 3`), the identification
+  of Section 207's cubic with Part XII's mixed-cover formula at unit
+  activities, and the `K_{2,2}` example of a size-two twin class. The
+  batch-71 placement dossier rechecked source 15 with an independent
+  enumerator (1,973 random graphs of matching number at most three with
+  activities from `1/500` to `10^4`, 0 failures of `ULC_nu`; 300
+  compression identities; 237 rank-four graphs with a `1 + 3` minimum
+  cover, 0 failures; the minimum covers of `H_{1,2}`, `H_{2,3}`, `H_{2,4}`,
+  `H_{3,4}`; `H_{4,11}` at `w = 500` is `ULC_15` but not `ULC_8`); that
+  check is not shipped.
+
 ## Relation to neighbouring reports and to the formal projects
 
 Three other preorder reports in `enumerative-combinatorics/` concern the same
@@ -876,6 +3360,50 @@ gamma-positivity describe their own proofs and stay accurate. The q-zeta
 report's `H_tau` is a different polynomial, and none of those reports
 states Conjecture 5.2 as open. So Part IV adds no reciprocal note there
 either; the catalogue step may mention Part IV in the collection's entries.
+Parts V–VII (batch 55) touch one neighbour: the q-zeta report's
+transversal matroid `M_B` (its "Tutte evaluation" proposition) agrees, for
+all 5,930 pairs `(tau, B)` with `n ≤ 4`, with the minor
+`(M_{tau^op}/B^-) ∖ (E∖B)^-` of Part VII's matroid (a finite check recorded
+in Section 106 of the article, not a theorem; no note was added to that
+report in this batch). Part VI continues Parts II–III's stability questions
+only; the other neighbours treat neither stability nor log-concavity.
+Part VIII (batch 63) continues Part VI only; it touches no neighbouring
+report, and no reciprocal note was written. Part IX (batch 64) continues
+Parts II, IV, V and VII; its dated pointers are inside this report. The
+neighbouring preorder reports sample no lattice points (their "samples"
+are random test relations), and their bijection questions concern other
+objects (the two binomial expansions of `preorder-polytope-reciprocity`,
+the sets `B_tau(T)` of `preorder-q-zeta-reciprocity`), so no reciprocal
+note was written. Part X (batch 66) continues Part VIII only; its one
+dated pointer outside Part X's own front-matter sentences is after
+Research question 63. No other report of the collection treats stable
+markings or random trees (a search of the repository's `.tex` files for
+random trees, Cayley trees, Galton–Watson trees and the continuum random
+tree finds only a bibliography entry of Janson's survey in
+`adjacency-bounded-132-avoiders` and uses of the tree function in the
+transseries volumes of `Analysis/Transseries`), so no reciprocal note was
+written. Part XI (batch 68) continues Part V and bears on Parts IV and
+VII; its dated pointers are inside this report (Parts IV, V and VII). No
+other report of the collection treats ultra-log-concavity of support
+polynomials or normalization by the matching number (a search of the
+collection's `.tex` files for both finds, outside this report, only
+unrelated uses of "matching number" in two automata reports and a notation
+remark in `simplex-faces-of-order-and-chain-polytopes`), so no reciprocal
+note was written. Part XII (batch 70) continues Parts IV, V, IX and XI;
+its dated pointers are inside this report (Parts IV, V, VII and XI). It
+treats the same objects as Part XI, so no other report gains a note.
+Part XIII (batch 71) continues Parts V, XI and XII and cites Part VI; its
+dated pointers are inside this report (Parts V, XI and XII). It treats the
+same objects, so no other report gains a note.
+Batch 72 continued Parts XI–XIII in the separate report
+[`matching-rank-normalization`](../../log-concavity-and-unimodality/matching-rank-normalization) (see the paragraph after Part XIII's
+summary above); this report received only dated pointers to it, and that
+report cites this one by printed theorem number. The search above for other
+treatments of normalization by the matching number is therefore out of
+date in one respect: that report now treats it. Batch 73 placed a further
+separate report, [`preorder-gamma-rank-ulc`](../../log-concavity-and-unimodality/preorder-gamma-rank-ulc), on Research question 96 (directed
+support polynomials and preorder gamma polynomials at the actual degree);
+this report received only dated pointers to it.
 
 The report sits in the research-report collection of the `SetTheory/Cardinals`
 Lean project. That placement confers no formal status: no Lean or Rocq
@@ -889,6 +3417,54 @@ propose; none of them has been started. The same holds for Part IV: a search
 of the tracked `.lean` and `.v` files for gamma-positivity, Athanasiadis,
 matchable, root-polytope, preorder-polytope and transport-pair terms finds
 nothing, and Part IV's two formalization plans (Section 60) are unstarted.
+The same holds for Parts V–VII: no declaration formalizes any of their
+statements (a search of the tracked `.lean` and `.v` files outside `lib/`
+for matroid, bimatroid, gammoid, Lorentzian, ultra-log-concave, Dynkin,
+real-stable, matchable, incidence–apex and multi-theta finds nothing), and
+their formalization plans (Sections 79.3 and 95.4, and Section 111) are
+unstarted. The same holds for Part VIII: a search of the tracked `.lean` and
+`.v` files for matching-support, incidence–apex, Dynkin and marked-tree
+terms finds nothing, and its formalization boundary (Section 127.3) and
+Research question 65 describe unstarted work. The same holds for Part IX:
+a search of the tracked `.lean` and `.v` files outside `lib/` for
+transportation-polytope, min-cost-flow, demand-vector, transversal-matroid
+and Hall-marriage terms finds nothing (the only "hall" hits are unrelated
+hypothesis names in `Algebra/PolynomialFormulas`), and its formalization
+plan (Section 147.3) and Research question 73 are unstarted. The same holds
+for Part X: a search of the tracked `.lean` and `.v` files for Prüfer,
+Galton–Watson, random-tree, labelled-tree, marked-tree and Cayley-tree
+terms finds only the Fabius project's real Cayley tree function
+(`FabiusFunction.CayleyTreeFunction`: `cayleyTree`, with
+`cayleyTree_eq_mul_exp` for `C = w·e^C`), which concerns the real
+function, not the coefficients `n^(n−1)/n!` of the rooted-tree series that
+Part X uses; nothing about tree enumeration, stable markings or their
+probabilities is formalized, and Research question 83 is unstarted work.
+The same holds for Part XI: a search of the tracked `.lean` and `.v`
+files outside `lib/` for ultra-log-concave, Lorentzian, matching-number,
+vertex-cover, König, Hall and support-polynomial terms finds only
+unrelated hits (Hall-subgroup lemmas such as `pHallE` and `card_Hall` and
+hypothesis names `hall` in `Algebra/PolynomialFormulas`, and Hahn-series
+supports in `Algebra/SurrealNumbers`); nothing about matching supports,
+their log-concavity or their counting is formalized, and Research
+question 92 describes unstarted work. The same holds for Part XII: a
+search of the tracked `.lean` and `.v` files outside `lib/` for
+Motzkin–Straus, ultra-log-concave, log-concave, matching-number,
+vertex-cover, König, perfectly-matchable and Cauchy–Binet terms finds
+only unrelated statements — Fourier–Motzkin elimination in
+`Algebra/SurrealNumbers`, a general Cauchy–Binet theorem
+(`det_mul_eq_sum_subsets` in
+`Algebra/SurrealNumbers/Surreal/Algebra/HankelHermite.lean`, not applied
+to Theorem 192.1's matrix) and log-concavity of real functions in
+`Analysis/FabiusFunction` — so nothing of Part XII is formalized, and the
+formalization sequence of Section 199.3 is unstarted. The same holds for
+Part XIII: a search of the tracked `.lean` and `.v` files outside `lib/`
+for vertex-cover, König, ultra-log-concave, Lorentzian, interlacing,
+matchable, leaf-compression and real-rooted terms finds only the
+real-rootedness of surreal polynomials in
+`Algebra/SurrealNumbers/Surreal/Algebra/HankelHermite.lean` and
+`PolynomialJensen.lean`, unrelated to matching supports; nothing of Part
+XIII is formalized (source 15 lists machine-checked formalization among
+its remaining questions; compare Research question 92).
 
 ## Sources and attribution
 
@@ -919,5 +3495,59 @@ nothing, and Part IV's two formalization plans (Section 60) are unstarted.
 - Part IV's inputs are the Kálmán–Postnikov, Ohsugi–Tsuchiya (arXiv:1810.12258v4,
   Propositions 3.3–3.4), Davis–Kohl (Theorem 3.10) and Dai et al.
   (Theorems 1.2–1.3, Problem 5.3) entries above, and Part II's counting lemma.
+
+- Parts V–VII: F. Röhrle and M. Ulirsch, Ann. Comb. 30 (2026) 501–523,
+  doi:10.1007/s00026-025-00780-z, arXiv:2402.15317 (Theorems A and E,
+  Proposition 2.2, Example 2.4); P. Brändén and J. Huh, *Lorentzian
+  polynomials*, Ann. Math. 192 (2020), arXiv:1902.03719v8; N. Anari, K. Liu,
+  S. Oveis Gharan and C. Vinzant, arXiv:1811.01816 (basis-walk mixing and
+  FPRAS); E. Balas and W. R. Pulleyblank, Networks 13 (1983), and K. Mori,
+  Graphs Combin. (2023) (the transversal-matroid model); S. Oh, Electron.
+  J. Combin. 20(3) (2013) P14; C. J. Colbourn, J. S. Provan and D. Vertigan,
+  Combinatorica 15 (1995) (#P-completeness); Y.-B. Choe, J. G. Oxley,
+  A. D. Sokal and D. G. Wagner, Adv. Appl. Math. 32 (2004) (half-plane
+  property); J. McKee and C. Smyth, arXiv:2002.06082 (ADE context);
+  A. W. Ingleton and M. J. Piff, J. Combin. Theory Ser. B 15 (1973)
+  (gammoids).
+- Part VIII: J. McKee and C. Smyth, *Integer symmetric matrices of small
+  spectral radius and small Mahler measure*, arXiv:0907.0371 (spectral
+  context); M. Kummer and B. Sert, *Matroids on eight elements with the
+  half-plane property and related concepts*, SIAM J. Discrete Math. 37
+  (2023) 2208–2227, arXiv:2111.09610; with Choe–Oxley–Sokal–Wagner and
+  Brändén above.
+- Part IX: S. Oh, Electron. J. Combin. 20(3) (2013) P14, doi:10.37236/2769
+  (source 11 inspected arXiv:1005.5586v3, Section 4, Remark 4.4 and
+  Proposition 4.5) — the demand/base correspondence; G. Loho and B. Smith,
+  *Matching fields and lattice points of simplices*, Adv. Math. 370 (2020)
+  107232, doi:10.1016/j.aim.2020.107232, arXiv:1804.01595v4 (new to this
+  report; related lattice-point bijections); N. Anari, K. Liu, S. Oveis
+  Gharan and C. Vinzant, Ann. of Math. 199 (2024) 259–299,
+  doi:10.4007/annals.2024.199.1.4 (Theorem 1.1 of arXiv:1811.01816v3,
+  imported); Ohsugi–Tsuchiya and Athanasiadis–Chapoton above.
+- Part X: J. McKee and C. Smyth, *Integer symmetric matrices having all
+  their eigenvalues in the interval [−2,2]*, J. Algebra 317 (2007) 260–290
+  (spectral context; a third McKee–Smyth paper, `McKeeSmythJA`);
+  P. Flajolet and R. Sedgewick, *Analytic Combinatorics*, Cambridge
+  University Press, 2009 (labelled constructions, Lagrange inversion,
+  meromorphic asymptotics); D. Aldous, *The continuum random tree III*,
+  Ann. Probab. 21 (1993) 248–289, doi:10.1214/aop/1176989404 (context for
+  quenched fluctuations, Research question 75); with Choe–Oxley–Sokal–Wagner above. The
+  imported classification is Part VIII's.
+- Part XI: F. Röhrle and M. Ulirsch (Theorem A, Example 2.4; source 13
+  inspected arXiv:2402.15317v3) and P. Brändén and J. Huh (source 13 adds
+  doi:10.4007/annals.2020.192.3.4), both above; the smaller-shore baseline
+  is Part V's.
+- Part XII: T. S. Motzkin and E. G. Straus, Canad. J. Math. 17 (1965)
+  533–540, doi:10.4153/CJM-1965-053-6 (the clique bound, with a proof);
+  T. M. Liggett, J. Combin. Theory Ser. A 79 (1997) 315–325, and
+  L. Gurvits, arXiv:0804.1181 (convolution of ultra-log-concave
+  sequences); H. Ohsugi and A. Tsuchiya, *PQ-type adjacency polytopes of
+  join graphs*, arXiv:2103.15045, doi:10.1007/s00454-022-00447-z
+  (terminology; new to this report); Röhrle–Ulirsch (Theorem A, Examples
+  2.3 and 2.4), Athanasiadis–Chapoton and Davis–Kohl above.
+- Part XIII: Brändén–Huh (Lorentzian polynomials) and Röhrle–Ulirsch
+  (Theorem A, Example 2.4 and the Lorentzian proof of Section 4; source 15
+  cites arXiv:2402.15317v3) above; König's theorem (classical). No
+  reference new to this report.
 
 No third-party papers or font files are included.

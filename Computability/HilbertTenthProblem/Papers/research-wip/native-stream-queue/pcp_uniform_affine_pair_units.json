@@ -1,0 +1,1401 @@
+{
+  "status": "PASS_PCP_UNIFORM_AFFINE_PAIR_UNITS",
+  "ledgers": [
+    {
+      "layout": "contiguous",
+      "tiles": 1,
+      "K": 8,
+      "scale_exponent": 7,
+      "operations": 118,
+      "multiplications": 59,
+      "additions_subtractions": 59,
+      "equations": 10,
+      "witnesses": 23,
+      "exact_degree": 434,
+      "alternative_SOS_degree": 604,
+      "polynomial": {
+        "operations": 147,
+        "multiplications": 69,
+        "additions_subtractions": 78
+      }
+    },
+    {
+      "layout": "interleaved",
+      "tiles": 1,
+      "K": 8,
+      "scale_exponent": 8,
+      "operations": 117,
+      "multiplications": 58,
+      "additions_subtractions": 59,
+      "equations": 10,
+      "witnesses": 23,
+      "exact_degree": 492,
+      "alternative_SOS_degree": 688,
+      "polynomial": {
+        "operations": 146,
+        "multiplications": 68,
+        "additions_subtractions": 78
+      }
+    },
+    {
+      "layout": "contiguous",
+      "tiles": 2,
+      "K": 8,
+      "scale_exponent": 10,
+      "operations": 146,
+      "multiplications": 73,
+      "additions_subtractions": 73,
+      "equations": 10,
+      "witnesses": 26,
+      "exact_degree": 608,
+      "alternative_SOS_degree": 856,
+      "polynomial": {
+        "operations": 175,
+        "multiplications": 83,
+        "additions_subtractions": 92
+      }
+    },
+    {
+      "layout": "interleaved",
+      "tiles": 2,
+      "K": 8,
+      "scale_exponent": 12,
+      "operations": 145,
+      "multiplications": 73,
+      "additions_subtractions": 72,
+      "equations": 10,
+      "witnesses": 26,
+      "exact_degree": 724,
+      "alternative_SOS_degree": 1024,
+      "polynomial": {
+        "operations": 174,
+        "multiplications": 83,
+        "additions_subtractions": 91
+      }
+    },
+    {
+      "layout": "contiguous",
+      "tiles": 3,
+      "K": 16,
+      "scale_exponent": 13,
+      "operations": 166,
+      "multiplications": 83,
+      "additions_subtractions": 83,
+      "equations": 10,
+      "witnesses": 29,
+      "exact_degree": 782,
+      "alternative_SOS_degree": 1108,
+      "polynomial": {
+        "operations": 195,
+        "multiplications": 93,
+        "additions_subtractions": 102
+      }
+    },
+    {
+      "layout": "interleaved",
+      "tiles": 3,
+      "K": 16,
+      "scale_exponent": 16,
+      "operations": 164,
+      "multiplications": 80,
+      "additions_subtractions": 84,
+      "equations": 10,
+      "witnesses": 29,
+      "exact_degree": 956,
+      "alternative_SOS_degree": 1360,
+      "polynomial": {
+        "operations": 193,
+        "multiplications": 90,
+        "additions_subtractions": 103
+      }
+    },
+    {
+      "layout": "contiguous",
+      "tiles": 5,
+      "K": 16,
+      "scale_exponent": 19,
+      "operations": 202,
+      "multiplications": 99,
+      "additions_subtractions": 103,
+      "equations": 10,
+      "witnesses": 35,
+      "exact_degree": 1130,
+      "alternative_SOS_degree": 1612,
+      "polynomial": {
+        "operations": 231,
+        "multiplications": 109,
+        "additions_subtractions": 122
+      }
+    },
+    {
+      "layout": "interleaved",
+      "tiles": 5,
+      "K": 16,
+      "scale_exponent": 24,
+      "operations": 200,
+      "multiplications": 96,
+      "additions_subtractions": 104,
+      "equations": 10,
+      "witnesses": 35,
+      "exact_degree": 1420,
+      "alternative_SOS_degree": 2032,
+      "polynomial": {
+        "operations": 229,
+        "multiplications": 106,
+        "additions_subtractions": 123
+      }
+    }
+  ],
+  "example": {
+    "ledger": {
+      "layout": "interleaved",
+      "tiles": 3,
+      "K": 16,
+      "scale_exponent": 16,
+      "operations": 164,
+      "multiplications": 80,
+      "additions_subtractions": 84,
+      "equations": 10,
+      "witnesses": 29,
+      "exact_degree": 956,
+      "alternative_SOS_degree": 1360,
+      "polynomial": {
+        "operations": 193,
+        "multiplications": 90,
+        "additions_subtractions": 103
+      }
+    },
+    "source": [
+      [
+        "height_sum__0",
+        "+",
+        "Ufinal",
+        "Vinitial"
+      ],
+      [
+        "height_sum__1",
+        "+",
+        "Vfinal",
+        "height_sum__0"
+      ],
+      [
+        "height_sum__2",
+        "+",
+        "height_slack",
+        "height_sum__1"
+      ],
+      [
+        "B__3",
+        "*",
+        "height_sum__2",
+        16
+      ],
+      [
+        "selector_sum__4",
+        "+",
+        "Shat0",
+        "Shat1"
+      ],
+      [
+        "selector_sum__5",
+        "+",
+        "Shat2",
+        "selector_sum__4"
+      ],
+      [
+        "J__6",
+        "-",
+        "selector_sum__5",
+        3
+      ],
+      [
+        "Bm1__7",
+        "-",
+        "B__3",
+        1
+      ],
+      [
+        "P_product__8",
+        "*",
+        "Bm1__7",
+        "J__6"
+      ],
+      [
+        "P__9",
+        "+",
+        "P_product__8",
+        1
+      ],
+      [
+        "history_sum__10",
+        "+",
+        "H_U",
+        "H_V"
+      ],
+      [
+        "selected_sum__11",
+        "+",
+        "ZUhat0",
+        "ZUhat1"
+      ],
+      [
+        "selected_sum__12",
+        "+",
+        "ZUhat2",
+        "selected_sum__11"
+      ],
+      [
+        "selected_sum__13",
+        "+",
+        "ZVhat0",
+        "selected_sum__12"
+      ],
+      [
+        "selected_sum__14",
+        "+",
+        "ZVhat1",
+        "selected_sum__13"
+      ],
+      [
+        "selected_sum__15",
+        "+",
+        "ZVhat2",
+        "selected_sum__14"
+      ],
+      [
+        "global_sum__16",
+        "+",
+        "history_sum__10",
+        "selected_sum__15"
+      ],
+      [
+        "global_lhs__17",
+        "+",
+        "global_bound",
+        "global_sum__16"
+      ],
+      [
+        "U_slope__18",
+        "*",
+        "ZUhat0",
+        4
+      ],
+      [
+        "U_slope__19",
+        "*",
+        "ZUhat1",
+        2
+      ],
+      [
+        "U_slope__20",
+        "*",
+        "ZUhat2",
+        8
+      ],
+      [
+        "U_offset__21",
+        "*",
+        "Shat2",
+        3
+      ],
+      [
+        "U_next_sum__22",
+        "+",
+        "Shat0",
+        "U_slope__18"
+      ],
+      [
+        "U_next_sum__23",
+        "+",
+        "U_next_sum__22",
+        "U_slope__19"
+      ],
+      [
+        "U_next_sum__24",
+        "+",
+        "U_next_sum__23",
+        "U_slope__20"
+      ],
+      [
+        "U_next_sum__25",
+        "+",
+        "U_next_sum__24",
+        "U_offset__21"
+      ],
+      [
+        "U_next__26",
+        "-",
+        "U_next_sum__25",
+        18
+      ],
+      [
+        "V_slope__27",
+        "*",
+        "ZVhat0",
+        2
+      ],
+      [
+        "V_slope__28",
+        "*",
+        "ZVhat1",
+        4
+      ],
+      [
+        "V_offset__29",
+        "*",
+        "Shat1",
+        2
+      ],
+      [
+        "V_slope__30",
+        "*",
+        "ZVhat2",
+        2
+      ],
+      [
+        "V_next_sum__31",
+        "+",
+        "Shat0",
+        "V_slope__27"
+      ],
+      [
+        "V_next_sum__32",
+        "+",
+        "V_next_sum__31",
+        "V_slope__28"
+      ],
+      [
+        "V_next_sum__33",
+        "+",
+        "V_next_sum__32",
+        "V_offset__29"
+      ],
+      [
+        "V_next_sum__34",
+        "+",
+        "V_next_sum__33",
+        "V_slope__30"
+      ],
+      [
+        "V_next__35",
+        "-",
+        "V_next_sum__34",
+        11
+      ],
+      [
+        "U_update__36",
+        "*",
+        "B__3",
+        "U_next__26"
+      ],
+      [
+        "U_lhs__37",
+        "+",
+        "U_update__36",
+        1
+      ],
+      [
+        "V_update__38",
+        "*",
+        "B__3",
+        "V_next__35"
+      ],
+      [
+        "V_lhs__39",
+        "+",
+        "V_update__38",
+        "Vinitial"
+      ],
+      [
+        "U_terminal__40",
+        "*",
+        "P__9",
+        "Ufinal"
+      ],
+      [
+        "U_rhs__41",
+        "+",
+        "H_U",
+        "U_terminal__40"
+      ],
+      [
+        "V_terminal__42",
+        "*",
+        "P__9",
+        "Vfinal"
+      ],
+      [
+        "V_rhs__43",
+        "+",
+        "H_V",
+        "V_terminal__42"
+      ],
+      [
+        "P2__44",
+        "*",
+        "P__9",
+        "P__9"
+      ],
+      [
+        "repunit_factor__45",
+        "+",
+        "P2__44",
+        1
+      ],
+      [
+        "P4__46",
+        "*",
+        "P2__44",
+        "P2__44"
+      ],
+      [
+        "repunit_tail__47",
+        "+",
+        "P4__46",
+        "repunit_factor__45"
+      ],
+      [
+        "pack_product__48",
+        "*",
+        "P2__44",
+        "Shat2"
+      ],
+      [
+        "pack_sum__49",
+        "+",
+        "Shat1",
+        "pack_product__48"
+      ],
+      [
+        "pack_product__50",
+        "*",
+        "P2__44",
+        "pack_sum__49"
+      ],
+      [
+        "pack_sum__51",
+        "+",
+        "Shat0",
+        "pack_product__50"
+      ],
+      [
+        "unhat_pack__52",
+        "-",
+        "pack_sum__51",
+        "repunit_tail__47"
+      ],
+      [
+        "controller_mask__53",
+        "*",
+        "J__6",
+        "repunit_tail__47"
+      ],
+      [
+        "range_second_history__54",
+        "*",
+        "H_V",
+        "P__9"
+      ],
+      [
+        "range_histories__55",
+        "+",
+        "H_U",
+        "range_second_history__54"
+      ],
+      [
+        "selector_duplicate__56",
+        "+",
+        "P__9",
+        1
+      ],
+      [
+        "history_batch__57",
+        "*",
+        "range_histories__55",
+        "repunit_tail__47"
+      ],
+      [
+        "cell_mask_duplicate__58",
+        "*",
+        "Bm1__7",
+        "selector_duplicate__56"
+      ],
+      [
+        "mask_batch__59",
+        "*",
+        "cell_mask_duplicate__58",
+        "unhat_pack__52"
+      ],
+      [
+        "pack_product__60",
+        "*",
+        "P__9",
+        "ZVhat2"
+      ],
+      [
+        "pack_sum__61",
+        "+",
+        "ZUhat2",
+        "pack_product__60"
+      ],
+      [
+        "pack_product__62",
+        "*",
+        "P__9",
+        "pack_sum__61"
+      ],
+      [
+        "pack_sum__63",
+        "+",
+        "ZVhat1",
+        "pack_product__62"
+      ],
+      [
+        "pack_product__64",
+        "*",
+        "P__9",
+        "pack_sum__63"
+      ],
+      [
+        "pack_sum__65",
+        "+",
+        "ZUhat1",
+        "pack_product__64"
+      ],
+      [
+        "pack_product__66",
+        "*",
+        "P__9",
+        "pack_sum__65"
+      ],
+      [
+        "pack_sum__67",
+        "+",
+        "ZVhat0",
+        "pack_product__66"
+      ],
+      [
+        "pack_product__68",
+        "*",
+        "P__9",
+        "pack_sum__67"
+      ],
+      [
+        "pack_sum__69",
+        "+",
+        "ZUhat0",
+        "pack_product__68"
+      ],
+      [
+        "repunit_tail__70",
+        "+",
+        "P2__44",
+        "selector_duplicate__56"
+      ],
+      [
+        "P3__71",
+        "*",
+        "P2__44",
+        "P__9"
+      ],
+      [
+        "repunit_factor__72",
+        "+",
+        "P3__71",
+        1
+      ],
+      [
+        "repunit_product__73",
+        "*",
+        "repunit_factor__72",
+        "repunit_tail__70"
+      ],
+      [
+        "unhat_pack__74",
+        "-",
+        "pack_sum__69",
+        "repunit_product__73"
+      ],
+      [
+        "range_cell__75",
+        "-",
+        "height_sum__2",
+        1
+      ],
+      [
+        "range_repunit__76",
+        "*",
+        "J__6",
+        "range_cell__75"
+      ],
+      [
+        "range_mask__77",
+        "*",
+        "range_repunit__76",
+        "selector_duplicate__56"
+      ],
+      [
+        "P6__78",
+        "*",
+        "P3__71",
+        "P3__71"
+      ],
+      [
+        "controller_region__79",
+        "*",
+        "P6__78",
+        "unhat_pack__52"
+      ],
+      [
+        "P12__80",
+        "*",
+        "P6__78",
+        "P6__78"
+      ],
+      [
+        "range_region__81",
+        "*",
+        "P12__80",
+        "range_histories__55"
+      ],
+      [
+        "common_joined__82",
+        "+",
+        "controller_region__79",
+        "range_region__81"
+      ],
+      [
+        "P7__83",
+        "*",
+        "P6__78",
+        "P__9"
+      ],
+      [
+        "P14__84",
+        "*",
+        "P7__83",
+        "P7__83"
+      ],
+      [
+        "top_history__85",
+        "*",
+        "B__3",
+        "P14__84"
+      ],
+      [
+        "joined_H__86",
+        "+",
+        "common_joined__82",
+        "history_batch__57"
+      ],
+      [
+        "joined_H__87",
+        "+",
+        "joined_H__86",
+        "top_history__85"
+      ],
+      [
+        "controller_mask_region__88",
+        "*",
+        "P6__78",
+        "controller_mask__53"
+      ],
+      [
+        "range_mask_region__89",
+        "*",
+        "P12__80",
+        "range_mask__77"
+      ],
+      [
+        "top_mask__90",
+        "*",
+        "Bm1__7",
+        "P14__84"
+      ],
+      [
+        "joined_M__91",
+        "+",
+        "controller_mask_region__88",
+        "mask_batch__59"
+      ],
+      [
+        "joined_M__92",
+        "+",
+        "joined_M__91",
+        "range_mask_region__89"
+      ],
+      [
+        "joined_M__93",
+        "+",
+        "joined_M__92",
+        "top_mask__90"
+      ],
+      [
+        "joined_Z__94",
+        "+",
+        "common_joined__82",
+        "unhat_pack__74"
+      ],
+      [
+        "P8__95",
+        "*",
+        "P4__46",
+        "P4__46"
+      ],
+      [
+        "P16__96",
+        "*",
+        "P8__95",
+        "P8__95"
+      ],
+      [
+        "and__q",
+        "*",
+        16,
+        "P16__96"
+      ],
+      [
+        "and__scaled_A",
+        "*",
+        16,
+        "joined_H__87"
+      ],
+      [
+        "and__padded_A",
+        "+",
+        "and__scaled_A",
+        12
+      ],
+      [
+        "and__scaled_B",
+        "*",
+        16,
+        "joined_M__93"
+      ],
+      [
+        "and__padded_B",
+        "+",
+        "and__scaled_B",
+        10
+      ],
+      [
+        "and__scaled_Z",
+        "*",
+        16,
+        "joined_Z__94"
+      ],
+      [
+        "and__F3",
+        "+",
+        "and__scaled_Z",
+        8
+      ],
+      [
+        "and__input_A",
+        "+",
+        "and__F1",
+        "and__F3"
+      ],
+      [
+        "and__shared_sum02",
+        "+",
+        "and__F0",
+        "and__F2"
+      ],
+      [
+        "and__bs_Q",
+        "+",
+        "and__shared_sum02",
+        "and__input_A"
+      ],
+      [
+        "and__bs_q",
+        "-",
+        "and__q",
+        "and__bs_Q"
+      ],
+      [
+        "and__bs_p0",
+        "*",
+        "and__q",
+        "and__F3"
+      ],
+      [
+        "and__bs_p1",
+        "+",
+        "and__F2",
+        "and__bs_p0"
+      ],
+      [
+        "and__bs_p2",
+        "*",
+        "and__q",
+        "and__bs_p1"
+      ],
+      [
+        "and__bs_p3",
+        "+",
+        "and__F1",
+        "and__bs_p2"
+      ],
+      [
+        "and__bs_p4",
+        "*",
+        "and__q",
+        "and__bs_p3"
+      ],
+      [
+        "and__bs_packed",
+        "+",
+        "and__F0",
+        "and__bs_p4"
+      ],
+      [
+        "and__bs_even",
+        "*",
+        2,
+        "and__odd_half"
+      ],
+      [
+        "and__bs_odd",
+        "+",
+        "and__bs_even",
+        1
+      ],
+      [
+        "and__wn2",
+        "*",
+        "and__w",
+        "and__q"
+      ],
+      [
+        "and__sn2",
+        "*",
+        "and__bs_odd",
+        "and__q"
+      ],
+      [
+        "and__UM",
+        "*",
+        "and__wn2",
+        "and__sn2"
+      ],
+      [
+        "and__R12",
+        "+",
+        "and__UM",
+        "and__sn2"
+      ],
+      [
+        "and__R10b",
+        "+",
+        "and__eta",
+        "and__zeta"
+      ],
+      [
+        "and__r1",
+        "+",
+        "and__bs_packed",
+        1
+      ],
+      [
+        "and__hpm1",
+        "*",
+        "and__h",
+        "and__UM"
+      ],
+      [
+        "and__R11",
+        "+",
+        "and__r1",
+        "and__hpm1"
+      ],
+      [
+        "and__tr1",
+        "+",
+        "and__r1",
+        "and__bs_packed"
+      ],
+      [
+        "and__a4",
+        "*",
+        4,
+        "and__R12"
+      ],
+      [
+        "and__a4m5",
+        "+",
+        "and__a4",
+        3
+      ],
+      [
+        "and__gam",
+        "*",
+        "and__ga",
+        "and__a4m5"
+      ],
+      [
+        "and__a_square",
+        "*",
+        "and__R12",
+        "and__R12"
+      ],
+      [
+        "and__A",
+        "+",
+        "and__a_square",
+        "and__a4m5"
+      ],
+      [
+        "and__L16",
+        "*",
+        "and__f",
+        "and__f"
+      ],
+      [
+        "and__f_square_minus_one",
+        "-",
+        "and__L16",
+        1
+      ],
+      [
+        "and__R16",
+        "*",
+        "and__A",
+        "and__f_square_minus_one"
+      ],
+      [
+        "and__of",
+        "*",
+        "and__o",
+        "and__f"
+      ],
+      [
+        "and__aux_y2",
+        "*",
+        "and__y_aux",
+        "and__y_aux"
+      ],
+      [
+        "and__bs_X_bound",
+        "+",
+        "and__bs_packed",
+        "and__bound_beta"
+      ],
+      [
+        "and__input_B",
+        "+",
+        "and__F2",
+        "and__F3"
+      ],
+      [
+        "and__gap_square",
+        "*",
+        "and__tau_gap",
+        "and__tau_gap"
+      ],
+      [
+        "and__signed_gap",
+        "-",
+        "and__tau_gap",
+        "and__R10b"
+      ],
+      [
+        "and__ksn2",
+        "*",
+        "and__R10b",
+        "and__sn2"
+      ],
+      [
+        "and__R10a",
+        "+",
+        "and__ksn2",
+        "and__eta"
+      ],
+      [
+        "and__cam2",
+        "*",
+        "and__R10a",
+        "and__R12"
+      ],
+      [
+        "and__D1",
+        "+",
+        "and__wn2",
+        "and__cam2"
+      ],
+      [
+        "and__R14",
+        "+",
+        "and__D1",
+        "and__gam"
+      ],
+      [
+        "and__c2",
+        "*",
+        "and__R10a",
+        "and__R10a"
+      ],
+      [
+        "and__Ac2",
+        "*",
+        "and__A",
+        "and__c2"
+      ],
+      [
+        "and__L15",
+        "*",
+        "and__R14",
+        "and__R14"
+      ],
+      [
+        "and__ic2",
+        "*",
+        "and__i",
+        "and__c2"
+      ],
+      [
+        "and__ic22",
+        "*",
+        "and__ic2",
+        "and__ic2"
+      ],
+      [
+        "and__aux_u_rhs",
+        "-",
+        "and__of",
+        "and__R10a"
+      ],
+      [
+        "and__jc",
+        "*",
+        "and__j",
+        "and__R10a"
+      ],
+      [
+        "and__H17",
+        "-",
+        "and__jc",
+        "and__tr1"
+      ],
+      [
+        "and__H2",
+        "*",
+        "and__H17",
+        "and__H17"
+      ],
+      [
+        "and__aux_square_gap",
+        "-",
+        "and__H2",
+        "and__aux_y2"
+      ],
+      [
+        "and__L17",
+        "*",
+        "and__R16",
+        "and__aux_square_gap"
+      ],
+      [
+        "and__P17",
+        "+",
+        "and__L17",
+        "and__aux_y2"
+      ],
+      [
+        "and__root_base",
+        "*",
+        "and__UM",
+        "and__ksn2"
+      ],
+      [
+        "and__gap_cross",
+        "*",
+        "and__root_base",
+        "and__signed_gap"
+      ],
+      [
+        "and__four_cross",
+        "*",
+        4,
+        "and__gap_cross"
+      ],
+      [
+        "and__first_unit",
+        "+",
+        "and__gap_square",
+        "and__four_cross"
+      ],
+      [
+        "and__R15",
+        "-",
+        "and__L15",
+        "and__Ac2"
+      ],
+      [
+        "and__history_unit_product0",
+        "*",
+        "and__R15",
+        "and__P17"
+      ],
+      [
+        "and__history_unit_product1",
+        "*",
+        "and__history_unit_product0",
+        "and__first_unit"
+      ],
+      [
+        "and__history_unit_product2",
+        "*",
+        "and__history_unit_product1",
+        "and__bs_q"
+      ]
+    ],
+    "comparisons": [
+      [
+        "global_lhs__17",
+        "P__9"
+      ],
+      [
+        "U_lhs__37",
+        "U_rhs__41"
+      ],
+      [
+        "V_lhs__39",
+        "V_rhs__43"
+      ],
+      [
+        "and__bs_X_bound",
+        "and__wn2"
+      ],
+      [
+        "and__R10b",
+        "and__R11"
+      ],
+      [
+        "and__ic22",
+        "and__R16"
+      ],
+      [
+        "and__H17",
+        "and__aux_u_rhs"
+      ],
+      [
+        "and__input_A",
+        "and__padded_A"
+      ],
+      [
+        "and__input_B",
+        "and__padded_B"
+      ],
+      [
+        "and__history_unit_product2",
+        1
+      ]
+    ],
+    "auxiliaries": [
+      "height_slack",
+      "H_U",
+      "H_V",
+      "global_bound",
+      "Shat0",
+      "Shat1",
+      "Shat2",
+      "ZUhat0",
+      "ZUhat1",
+      "ZUhat2",
+      "ZVhat0",
+      "ZVhat1",
+      "ZVhat2",
+      "and__F0",
+      "and__F1",
+      "and__F2",
+      "and__f",
+      "and__h",
+      "and__i",
+      "and__j",
+      "and__o",
+      "and__w",
+      "and__tau_gap",
+      "and__eta",
+      "and__zeta",
+      "and__ga",
+      "and__y_aux",
+      "and__odd_half",
+      "and__bound_beta"
+    ],
+    "projection_aliases": {
+      "and__k": "and__R10b",
+      "and__c": "and__R10a",
+      "and__a": "and__R12",
+      "and__d": "and__R14",
+      "and__s": "and__bs_odd",
+      "and__r": "and__bs_packed"
+    }
+  },
+  "checks": {
+    "positive_integer_restorations_off_norm_zeros": 384,
+    "signed_complete_factor_residual_product_identities": 128,
+    "modulo_four_cases": 8192,
+    "full_Pell_witnesses_materialized": false
+  },
+  "degree_audits": [
+    {
+      "layout": "contiguous",
+      "tiles": 1,
+      "scale_exponent": 7,
+      "unit_degrees": [
+        77,
+        164,
+        47,
+        14
+      ],
+      "outer_degrees": [
+        2,
+        3,
+        3,
+        51,
+        51,
+        66,
+        51,
+        11,
+        11
+      ],
+      "exact_degree": 434,
+      "SOS_degree": 604,
+      "nonzero_top_sign": -1,
+      "top_sha256": "9240e6812bae56b21fe5140538ebd96f355a4fd0296f35b30d532ad344f482b6"
+    },
+    {
+      "layout": "interleaved",
+      "tiles": 1,
+      "scale_exponent": 8,
+      "unit_degrees": [
+        87,
+        188,
+        53,
+        16
+      ],
+      "outer_degrees": [
+        2,
+        3,
+        3,
+        59,
+        59,
+        74,
+        59,
+        13,
+        13
+      ],
+      "exact_degree": 492,
+      "SOS_degree": 688,
+      "nonzero_top_sign": -1,
+      "top_sha256": "10280eb6750b370404323e67830c909761263488ac29f934e7e9001cb2b000da"
+    },
+    {
+      "layout": "contiguous",
+      "tiles": 2,
+      "scale_exponent": 10,
+      "unit_degrees": [
+        107,
+        236,
+        65,
+        20
+      ],
+      "outer_degrees": [
+        2,
+        3,
+        3,
+        75,
+        75,
+        90,
+        75,
+        17,
+        17
+      ],
+      "exact_degree": 608,
+      "SOS_degree": 856,
+      "nonzero_top_sign": -1,
+      "top_sha256": "ee691d3e8f92ff074cb1d579eca0a19ebfac437f727cda6449e09b3da3161b87"
+    },
+    {
+      "layout": "interleaved",
+      "tiles": 2,
+      "scale_exponent": 12,
+      "unit_degrees": [
+        127,
+        284,
+        77,
+        24
+      ],
+      "outer_degrees": [
+        2,
+        3,
+        3,
+        91,
+        91,
+        106,
+        91,
+        21,
+        21
+      ],
+      "exact_degree": 724,
+      "SOS_degree": 1024,
+      "nonzero_top_sign": -1,
+      "top_sha256": "bf4374fe9606be6a0a5254b92050aa5119da6a245a7ac00f160b03cf9fb7298d"
+    },
+    {
+      "layout": "contiguous",
+      "tiles": 3,
+      "scale_exponent": 13,
+      "unit_degrees": [
+        137,
+        308,
+        83,
+        26
+      ],
+      "outer_degrees": [
+        2,
+        3,
+        3,
+        99,
+        99,
+        114,
+        99,
+        23,
+        23
+      ],
+      "exact_degree": 782,
+      "SOS_degree": 1108,
+      "nonzero_top_sign": -1,
+      "top_sha256": "19be031f7e6c5ba964010f6e41df6234deabc2997ea63f4c7257a18776371498"
+    },
+    {
+      "layout": "interleaved",
+      "tiles": 3,
+      "scale_exponent": 16,
+      "unit_degrees": [
+        167,
+        380,
+        101,
+        32
+      ],
+      "outer_degrees": [
+        2,
+        3,
+        3,
+        123,
+        123,
+        138,
+        123,
+        29,
+        29
+      ],
+      "exact_degree": 956,
+      "SOS_degree": 1360,
+      "nonzero_top_sign": -1,
+      "top_sha256": "5e925fbc55f8335127960edf02142c7a17bb4aa1316968be8f37b5550f06f351"
+    }
+  ],
+  "scope": "Exact same positive nonempty affine-pair word relation as the complete parent, under the explicit positive-root and six-definition bijection."
+}

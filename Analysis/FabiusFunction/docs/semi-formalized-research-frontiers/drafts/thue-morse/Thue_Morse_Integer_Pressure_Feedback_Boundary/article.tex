@@ -1,0 +1,388 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Positivity at the First Feedback Boundary in Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}\newtheorem{corollary}[theorem]{Corollary}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\Z}{\mathbb Z}\newcommand{\ii}{\mathrm i}\newcommand{\ev}{\operatorname{ev}}
+\title{Positivity at the First Feedback Boundary in Thue Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We study the coefficient of degree $4m$ in integer Thue--Morse pressure, where nonlinear eigenvalue feedback first enters. An exact regularization separates the boundary eigenfunction response into a strictly positive finite resolvent and an absolutely convergent mixed inverse-orbit sum. A strict dyadic tangent comparison and a lattice local limit argument give a positive diagonal asymptotic. An explicit analytic estimate proves positivity for every $m\ge70$, and exact integer enclosure certificates cover $2\le m\le69$. Together they prove that the degree-$4m$ pressure coefficient is positive for every integer $m\ge2$. This continues the positive triangle strictly below degree $4m$ without changing the earlier reports.
+\end{abstract}
+\paragraph{Status.}
+This is unrefereed ordinary mathematics with exact arithmetic certificates, not a Lean formalization. No worldwide priority claim or general formula for the first later negative coefficient is made. The proofs distinguish the infinite-order estimates from their finite verification complement.
+
+\section{The boundary result}
+Use the doubling-map pressure $p_m(c)$ of $m\log\cos^2\!\pi(x-c)$ in the sum-over-preimages convention. Set $a=\tan t$ and
+\[
+ (V_af)(x)=\sum_{2y=x\bmod1}(\cos\pi y+a\sin\pi y)^{2m}f(y).
+\]
+Let $h_a(0)=1$ normalize its local analytic Perron eigenfunction. Write
+\[
+ R_m=\frac{2(2^{2m}-1)\zeta(2m)}{\pi^{2m}},\qquad
+ H_{m,r}=[a^{2r}]h_a(1/2),\qquad E_{m,r}=[t^{2m+2r}]p_m(t/\pi).
+\]
+The preceding companion proves $H_{m,r},E_{m,r}>0$ whenever $1\le r<m$ \cite{triangle}. Here the new response is $H_{m,m}$ and the new pressure coefficient is $E_{m,m}=[t^{4m}]p_m(t/\pi)$.
+
+\begin{theorem}\label{thm:main}
+For every integer $m\ge2$,
+\[
+ H_{m,m}>0,\qquad [t^{4m}]p_m(t/\pi)>0.
+\]
+Moreover, put $b_j=\tan(\pi/2^{j+1})$ and $B(a)=\prod_{j\ge1}(1+ab_j)$. There is a unique $a_*>0$ satisfying
+\[
+ \sum_{j\ge1}\frac{a_*b_j}{1+a_*b_j}=1.
+\]
+With
+\[
+ C=\frac{B(a_*)}{a_*},\qquad p_j=\frac{a_*b_j}{1+a_*b_j},\qquad
+ \sigma^2=\sum_{j\ge1}p_j(1-p_j),
+\]
+we have the asymptotic
+\begin{equation}\label{eq:asymptotic}
+ H_{m,m}\sim\frac{2(2C/\pi)^{2m}}{\sqrt{4\pi m\sigma^2}}
+ \qquad(m\to\infty).
+\end{equation}
+\end{theorem}
+The constants are defined by convergent products and sums; approximate values are $a_*\approx0.822918569054$, $C\approx4.046860022$, and $\sigma^2\approx0.7041449521$. These decimals are orientation only and are not used in the sign proof. The finite-complement certification is described in Section~\ref{sec:finite}. Combined with the earlier triangle, this proves $H_{m,r},E_{m,r}>0$ for every $1\le r\le m$. The response range is sharp as a universal statement: $H_{2,3}=-488/27<0$.
+% ed. (2026-10-01): the pressure statement is re-proved in the full range; the response statements stay here
+\begin{ednote}
+The pressure statement $E_{m,m}>0$ is re-proved, by a separate large-order bound and separate
+finite certificates, as the case $r=m$ of Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/}
+($E_{m,r}>0$ for every $m\ge2$ and $1\le r<2m$), so it does not depend on the trace archives
+discussed in the note in Section~\ref{sec:finite}. The response statement $H_{m,m}>0$ and the
+asymptotic \eqref{eq:asymptotic} are this note's own; \path{../Thue_Morse_Integer_Pressure_Higher_Positive/} had
+proved the case $m=2$ ($H_{2,2}=536/27$), and \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/} extends the
+asymptotic to every fixed offset $s$ (the case $s=0$ is \eqref{eq:asymptotic}).
+\end{ednote}
+
+\section{The exact boundary regularization}
+Put $d=2m$, $A=V_0$, and $h=F_{0,m}$. The atomic basis is
+\[
+ F_{j,m}(x)=\sin^{2m}(\pi x)\sum_{n\in\Z}(\pi(x+n))^{-(2m-j)},
+ \quad0\le j\le2m-2.
+\]
+It spans the invariant Fourier space with indices $1-m,\ldots,m-1$ and satisfies $AF_{j,m}=2^{-j}F_{j,m}$. In particular $h(0)=1$, $h(1/2)=R_m$, and the rank-one spectral projection is $Pf=f(0)h$. These facts follow by splitting the periodization into even and odd integers; the Fourier model and its local pressure interpretation are reviewed in \cite{integer,triangle}. Let $Q=I-P$ and let $\ev f=f(1/2)$.
+
+The eigenvalue and pressure satisfy
+\begin{equation}\label{eq:feedback}
+ \lambda_m(a)=1+a^dh_a(1/2),\qquad
+ p_m(t/\pi)=2m\log\cos t+\log\lambda_m(\tan t).
+\end{equation}
+At degree $d$, the raw inverse-orbit coefficient no longer has the absolute-convergence estimate used below the boundary. Its exact regularization is as follows.
+
+\begin{lemma}\label{lem:regularization}
+If $C_N=[a^d](V_a^Nh)(1/2)$, then
+\begin{equation}\label{eq:renormalized}
+ H_{m,m}=\lim_{N\to\infty}(C_N-NR_m^2).
+\end{equation}
+For every finite $N$,
+\begin{equation}\label{eq:finiteorbit}
+ (V_a^Nh)(1/2)=\sum_{w\in\Z+1/2}(\pi w)^{-d}
+       \prod_{j=1}^N\left(1+a\tan\frac{\pi w}{2^j}\right)^d.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Evaluation at zero gives $(V_af)(0)=f(0)+a^df(1/2)$. Since $A^Nh=h$,
+\[
+ (V_a^Nh)(0)=1+NR_ma^d+O(a^{d+1}).
+\]
+The normalized iterates converge locally uniformly analytically to $h_a$, by the simple dominant eigenvalue and finite-dimensional spectral projection. Dividing by the last display proves~\eqref{eq:renormalized} by Cauchy's coefficient formula.
+
+For~\eqref{eq:finiteorbit}, first use centered inverse representatives $|w|<2^{N-1}$. The cosine product contributes $(2^N\sin(\pi w/2^N))^{-d}$. Substituting the periodization defining $h(w/2^N)$ cancels its sine factor and unfolds the representatives into all half-integers. The finite tangent product is periodic in $w$ with period $2^N$ and has no pole there, so the resulting series is absolutely convergent.
+\end{proof}
+
+Let $t_j(w)=\tan(\pi w/2^j)$ and define
+\[
+ K_m(w)=[a^d]\prod_{j\ge1}(1+at_j(w))^d-\sum_{j\ge1}t_j(w)^d.
+\]
+The subtracted monomials choose all $d$ powers from just one tangent factor. Every remaining monomial uses at least two factors, with each selected exponent below $d$.
+
+\begin{proposition}\label{prop:mixed}
+The mixed orbit series is absolutely convergent, and
+\begin{equation}\label{eq:decomposition}
+ H_{m,m}=P_m+\sum_{w\in\Z+1/2}(\pi w)^{-d}K_m(w),
+\end{equation}
+where the finite resolvent is
+\[
+ P_m=\sum_{n\ge0}\bigl(\ev A^nV_dh-R_m^2\bigr)
+     =\ev(I-A)^{-1}QV_dh.
+\]
+Here $V_a=\sum_{k=0}^da^kV_k$, and the inverse is restricted to $Q$.
+\end{proposition}
+\begin{proof}
+Let $g(x)=\sin\pi x$ on $[0,1]$, extended periodically, and let $W_k$ replace each weight of $V_k$ by its absolute value. With $s=\sin(\pi x/2)$ and $c=\cos(\pi x/2)$,
+\[
+ Ag=sc(c^{d-1}+s^{d-1})\le\tfrac12g\qquad(d\ge4).
+\]
+For $1\le k<d$ and bounded $f$,
+\begin{equation}\label{eq:vanishing}
+ W_k|f|\le\tfrac12\binom dk\|f\|_\infty g.
+\end{equation}
+Indeed, after factoring $sc$ from $c^{d-k}s^k+s^{d-k}c^k$, the remaining sum is at most $c^{d-2}+s^{d-2}\le1$, by weighted AM--GM.
+
+Fix a composition $k_1+\cdots+k_s=d$ with $s\ge2$ and all $k_i\ge1$. Its absolute insertion words have the form
+\[
+ \ev A^{n_0}W_{k_1}A^{n_1}\cdots A^{n_{s-1}}W_{k_s}h.
+\]
+The final power of $A$ after the last insertion fixes $h$. Inequality~\eqref{eq:vanishing} and $Ag\le g/2$ bound each word by a constant times $2^{-\sum n_i}$. Summing all zero-degree gaps is finite, and there are only finitely many compositions of $d$. Tonelli's theorem therefore proves absolute convergence of the mixed orbit monomials, including convergence of their finite truncations.
+
+The pure terms in $C_N$ are exactly $\sum_{n=0}^{N-1}\ev A^nV_dh$. As $(V_dh)(0)=R_m$, their spectral projection is $R_mh$, giving the secular part $NR_m^2$. Subtraction in~\eqref{eq:renormalized} yields~\eqref{eq:decomposition}.
+\end{proof}
+
+\section{A strictly positive pure correction}
+\begin{proposition}\label{prop:pure}
+For every $m\ge2$,
+\begin{equation}\label{eq:purebound}
+ R_m(1-R_m)<P_m\le\frac43R_m(1-R_m).
+\end{equation}
+The upper equality holds only at $m=2$.
+\end{proposition}
+\begin{proof}
+Write $F_{0,m}(x+1/2)=q_m(u)$, where $u=\sin^2\pi x$. The polynomial $q_m$ has degree $m-1$ and all coefficients strictly positive. A direct induction proves this: $q_1=1$, and twice differentiating the periodized secant expression gives
+\begin{align}\label{eq:qrecurrence}
+ q_{m+1}(u)=\frac1{2m(2m+1)}\bigl[&4u(1-u)^2q_m''(u)\notag\\
+ &+2(1-u)(1+(4m-2)u)q_m'(u)
+ +2m(1+2mu)q_m(u)\bigr].
+\end{align}
+Applied to $u^k$, its numerator has coefficients
+\[
+ 2k(2k-1),\qquad 2m+2k(4m+1-4k),\qquad4(m-k)^2
+\]
+at $u^{k-1},u^k,u^{k+1}$. They are nonnegative for $0\le k\le m-1$ and propagate strict positivity. Formula~\eqref{eq:qrecurrence} follows from differentiating $(1-u)^{-m}q_m(u)$ and using $u'=2\sin z\cos z$, $u''=2(1-2u)$, with $z=\pi x$. Also $q_m(0)=R_m$ and $q_m(1)=1$, proving $R_m\le h\le1$.
+
+The monomials have positive atomic expansions
+\[
+ u^k=\sum_{j=k}^{m-1}\beta_{m-k,j-k}F_{2j,m}(x),\qquad
+ \beta_{p,\ell}=[z^{2\ell}](z/\sin z)^{2p}>0.
+\]
+This is the principal-part decomposition of $\csc^{2(m-k)}z$ after division by $\sin^{2m}z$. The remaining entire periodic difference vanishes at imaginary infinity. Positivity of $\beta_{p,\ell}$ follows from the Euler product for $z/\sin z$.
+Thus
+\[
+ F_{0,m}(x+1/2)=\sum_{j=0}^{m-1}d_{m,j}F_{2j,m}(x),
+ \qquad d_{m,j}>0,\quad d_{m,0}=R_m.
+\]
+The exact identity $V_d=AT_{1/2}$ now gives
+\[
+ P_m=\sum_{j=1}^{m-1}\frac{d_{m,j}R_{m-j}}{4^j-1}>0.
+\]
+At $x=1/2$ the sine and cosine weights agree, so $\ev V_dh=\ev Ah=R_m$. Consequently
+\[
+ \sum_{j=1}^{m-1}4^{-j}d_{m,j}R_{m-j}=R_m-R_m^2.
+\]
+Comparing termwise with $1<(1-4^{-j})^{-1}\le4/3$ proves~\eqref{eq:purebound} and its equality statement.
+\end{proof}
+
+\section{A strict tangent comparison and an exponential tail}
+For positive odd $n$, put $x_j(n)=|\tan(n\pi/2^{j+1})|/n$. The tangent theorem in \cite{triangle} proves that its decreasing rearrangement is weakly log-majorized by $(b_1,b_2,\ldots)$, where $b_1=1$. We need the following strict refinement.
+
+\begin{lemma}\label{lem:strict}
+For every odd $n\ge3$, $x(n)$ is weakly log-majorized by
+\[
+ (\theta,b_2,b_3,\ldots),\qquad\theta=\frac{1+\sqrt2}{3}<1.
+\]
+Hence, for every $a>0$,
+\begin{equation}\label{eq:strictproduct}
+ B_{x(n)}(a):=\prod_j(1+ax_j(n))
+ \le\frac{1+\theta a}{1+a}B(a).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We recall the finite structure of the earlier tangent proof. Set $L=\lfloor\log_2n\rfloor$ and $s_j=|\sin(n\pi/2^{j+1})|/(n\sin(\pi/2^{j+1}))$. The sorted ratios $x_j^\downarrow/b_j$ cross $1$ only once, from below to above. After that crossing, the largest $k$ terms are exactly the first $k$ original terms, with product ratio
+\[
+ s_k^2\prod_{j=2}^{k-1}s_j\quad(k\ge2).
+\]
+These statements follow from the initial cotangent bounds and the tail counting argument in \cite{triangle}; all $s_j$ lie in $(0,1]$.
+
+The largest normalized tangent is at most $\theta$. For $n=3$, its value is $\tan(3\pi/8)/3=\theta$. For $n\ge5$, write $q=2^{L+1}\ge8$. The original early terms are below $2/\pi$ and the late terms below $1/n$; the only remaining term obeys
+\[
+ x_{L+1}\le\frac{\cot(\pi/(2q))}{q-1}
+ <\frac{2q}{\pi(q-1)}\le\frac{16}{7\pi}<\theta.
+\]
+Also $s_2\le\theta$: it is equal to $\theta$ for $n=3$, and for $n\ge5$ it is below $1/(5\sin(\pi/8))<4/5<\theta$.
+
+Before the sorted crossing, the first ratio is at most $\theta$ and every later ratio is at most $1$. After the crossing, the original-prefix identity is at most $\theta$ because it contains $s_2$, with the case $k=2$ giving $s_2^2$. Every sorted prefix product is therefore at most $\theta$ times its $b$-prefix product. The comparison sequence is decreasing because $\theta>b_2$.
+
+Weak log-majorization implies all elementary-symmetric coefficient inequalities: apply the increasing symmetric convex function $z\mapsto\sum_{|I|=r}\exp(\sum_{i\in I}z_i)$ to the logarithms of finite prefixes. This elementary majorization step is proved in \cite{triangle}. Geometric tails justify the monotone limit to infinite products and give~\eqref{eq:strictproduct}.
+\end{proof}
+
+Define the mixed central coefficient
+\[
+ M_d(x)=[a^d]\prod_j(1+ax_j)^d-\sum_jx_j^d.
+\]
+For a nonnegative summable sequence $x$ and any $a>0$, marking two distinct factor indices gives
+\begin{equation}\label{eq:marked}
+ M_d(x)\le\frac{d^2}{d-1}a^{2-d}e_2(x)B_x(a)^d.
+\end{equation}
+Indeed, a mixed degree-$d$ monomial with exponents $k_j$ is marked $\sum_{i<j}k_ik_j\ge d-1$ times. The marked generating function is
+\[
+ d^2a^2 B_x(a)^d\sum_{i<j}\frac{x_ix_j}{(1+ax_i)(1+ax_j)}.
+\]
+Each canceled product has nonnegative coefficients, so evaluation at $a>0$ bounds its degree-$d$ coefficient and proves~\eqref{eq:marked}.
+
+The crucial summability constant is
+\begin{equation}\label{eq:T}
+ T:=\sum_{\substack{n\ge3\\n\text{ odd}}}e_2(x(n))
+ \le\frac{\pi^2(4+3\sqrt2)}8<11.
+\end{equation}
+To verify it, repeat the absolute mixed-word argument at $m=1,d=2$, where the atomic eigenfunction is $1$. Now $Ag\le g/\sqrt2$, $W_11=2g$, and $W_1g\le\sqrt2g$. Summing the two zero-degree gaps bounds the absolute mixed sum by $2\sqrt2/(1-1/\sqrt2)^2$. Its orbit expression is exactly $(32/\pi^2)\sum_{n\ge1,\ n\text{ odd}}e_2(x(n))$, including the nearest term. This proves~\eqref{eq:T}.
+
+At the saddle $a_*$, set $q=(1+\theta a_*)/(1+a_*)<1$. Equations~\eqref{eq:strictproduct}--\eqref{eq:T} show that the entire absolute remote mixed tail in the normalized tangent scale is at most
+\begin{equation}\label{eq:tail}
+ \frac{d^2}{d-1}a_*^2T C^dq^d=O(dC^dq^d).
+\end{equation}
+
+\section{The positive diagonal asymptotic}
+The function $aB'(a)/B(a)=\sum_jab_j/(1+ab_j)$ increases continuously from $0$ to infinity, so $a_*$ exists uniquely. Let $X$ be the countable sum of independent Bernoulli variables with success probabilities $p_j=a_*b_j/(1+a_*b_j)$. Its mean is $1$, variance is $\sigma^2\in(0,\infty)$, and probability generating function is $B(a_*z)/B(a_*)$. The sum is finite almost surely, and all exponential moments exist because $B$ is entire. If $S_d$ is a sum of $d$ independent copies, then
+\[
+ g_d:=[a^d]B(a)^d=C^d\Pr(S_d=d).
+\]
+The elementary lattice local limit argument gives
+\begin{equation}\label{eq:lclt}
+ \Pr(S_d=d)\sim\frac1{\sqrt{2\pi d\sigma^2}}.
+\end{equation}
+For completeness, $X$ assigns positive mass to both $0$ and $1$, so its characteristic function has modulus strictly below $1$ away from $2\pi\Z$. Near zero, the centered characteristic function is $1-\sigma^2u^2/2+O(u^3)$. In Fourier inversion split at a small fixed neighborhood of zero. Outside it the integral decays exponentially in $d$. Inside it, the substitution $u=v/\sqrt d$, a Gaussian majorant, and dominated convergence give~\eqref{eq:lclt}.
+
+The nearest mixed coefficient is $g_d-\sum_jb_j^d$, where $\sum_jb_j^d<2$ for $d\ge2$. Also $C>2$, using only the first two factors. The remote mixed contribution in~\eqref{eq:tail} is exponentially smaller than~\eqref{eq:lclt}, and $P_m=O((2/\pi)^d)$ by~\eqref{eq:purebound}. Substitution in~\eqref{eq:decomposition}, pairing positive and negative half-integers, gives~\eqref{eq:asymptotic}.
+
+\section{An effective analytic cutoff}
+The integer-mean mode theorem for countable Bernoulli sums states that the integer mean is a mode; see Gnedin's extension of Darroch's rule, Theorem~2 in \cite{gnedin}. It applies to $S_d$, whose mean is $d$ and variance is at most $d$. Chebyshev therefore gives
+\[
+ \Pr(S_d=d)\ge\frac{3/4}{4\sqrt d+1}\ge\frac1{8\sqrt d},
+ \qquad g_d\ge\frac{C^d}{8\sqrt d}.
+\]
+Here the interval $|S_d-d|<2\sqrt d$ contains at most $4\sqrt d+1$ integers and has probability at least $3/4$.
+
+The exact half-angle certificate in the package proves
+\[
+ \frac45<a_*<\frac56.
+\]
+It encloses the first twelve $b_j$ with rational bounds using $b_{j+1}=b_j/(1+\sqrt{1+b_j^2})$, and bounds the remaining mean tail geometrically. Specifically it proves the upper bound $981/1000$ for the mean at $a=4/5$ and the lower bound $1008/1000$ at $a=5/6$. Since $\theta<81/100$ and $q$ decreases with $a_*$,
+\[
+ q<\frac{206}{225}.
+\]
+The tail in~\eqref{eq:tail}, divided by $C^d$, is consequently below
+\[
+ \frac{275}{36}(d+2)\left(\frac{206}{225}\right)^d.
+\]
+For $d\ge140$ this is less than $1/(16\sqrt d)$. At $d=140$ the exact rational certificate checks
+\[
+ \left(\frac{275\cdot16}{36}\right)^2 142^2\cdot140
+ \left(\frac{206}{225}\right)^{280}<1.
+\]
+The expression $(d+2)\sqrt d(206/225)^d$ decreases thereafter: its consecutive ratio is at most $(143/142)(281/280)(206/225)<1$.
+
+Finally $\sum_jb_j^d<2<C^d/(16\sqrt d)$ for $d\ge140$, using $C>2$ and $2^d>32d$. The nearest mixed coefficient therefore strictly exceeds the absolute remote mixed tail. The positive $P_m$ proves $H_{m,m}>0$ for $m\ge70$.
+
+At degree $4m$, the feedback formula is exactly
+\begin{equation}\label{eq:pressure}
+ E_{m,m}=\sum_{j=0}^mH_{m,j}[t^{4m}]\tan^{2m+2j}t
+                  -\frac{R_m^2+R_{2m}}2.
+\end{equation}
+The preceding triangle supplies $H_{m,j}>0$ for $j<m$. The $j=0$ term is at least $R_m\binom{2m}{m}/3^m\ge2R_m/3$; the binomial ratio starts at $2/3$ for $m=2$ and its successive ratio is $(4m+2)/(3m+3)\ge1$. In contrast, $R_{2m}\le R_m^2$ and $R_m\le R_2=1/3$, so the two negative terms total at most $R_m/3$. Thus $H_{m,m}\ge0$ implies $E_{m,m}>0$, completing the analytic part of Theorem~\ref{thm:main} for $m\ge70$.
+
+\section{Exact certification of the finite complement}\label{sec:finite}
+The package uses a fixed-grid enclosure computation whose arithmetic consists solely of exact integers. It never decides a sign from an unbounded numerical approximation. Let $D=2^{2m-1}$, with Fourier indices $1-m,\ldots,m-1$. Define integer matrices
+\[
+ (B_j)_{k,\ell}=\binom{2m}{m+2k-\ell}
+ [z^j](1-z)^{m+2k-\ell}(1+z)^{m-2k+\ell}.
+\]
+An entry is defined as zero when $m+2k-\ell$ lies outside $[0,2m]$. Then $V_a=D^{-1}\sum_j\ii^jB_ja^j$. The atomic vector is the Eulerian row of order $2m-1$, divided by $(2m-1)!$. Its normalization and eigenvector equation are checked exactly.
+
+Write $h_a=\sum_n\ii^nv_na^n$. Below order $2m$, the eigenvalue has no nonconstant term, so
+\[
+ (DI-B_0)v_n=\sum_{j=1}^nB_jv_{n-j},\qquad\boldsymbol1^{\mathsf T}v_n=0.
+\]
+At $n=2m$, subtract $D(-1)^mR_mv_0$ from the right side. Reflection gives $(v_n)_{-k}=(-1)^n(v_n)_k$, permitting separate even and odd blocks. In the even block, the zero-index equation is replaced by normalization with row $(1,2,\ldots,2)$; in the odd block normalization is automatic.
+
+Both block inverses are computed fraction-free, with every division checked exact and the final integer identity $CN=qI$ verified. The grid denominator is $S=2^{256}f^2$, where $f$ is the reduced denominator of $v_0$. This makes both $v_0$ and the feedback forcing exact on the grid. Every later inverse product is rounded downward to the grid, with the rounding inequality checked by integers.
+
+Here is the rigorous error propagation. Use the full-vector $\ell^1$ norm on compressed coordinates: weight $1$ at index zero and weight $2$ at positive indices. Let $\alpha_n$ be the induced norm of the appropriate block inverse, excluding the normalization column in the even case. This is computed exactly from the integer inverse. Since
+\[
+ |B_j|\le\binom{2m}{j}B_0,\qquad
+ \|B_j\|_1\le D\binom{2m}{j},
+\]
+an integer bound $U_n\ge S\|v_n-\widetilde v_n/S\|_1$ is propagated by
+\[
+ U_n=\left\lceil\alpha_nD\sum_{j=1}^n\binom{2m}{j}U_{n-j}\right\rceil
+       +\begin{cases}2m-1,&n\text{ even},\\2m-2,&n\text{ odd},\end{cases}
+ \qquad U_0=0.
+\]
+The last term bounds the total weighted rounding error. The half-period evaluation has norm one, so its computed value plus or minus $U_{2m}/S$ rigorously encloses $H_{m,m}$. All intermediate vectors and error bounds are saved in compressed replay traces. Independent full rational calculations and full-vector enclosures check selected cases.
+
+All 68 moments $m=2,\ldots,69$ yield strictly positive rational lower endpoints. Their 4,828 response-order enclosures, baseline vectors, propagated errors, final intervals, and available full-rational comparisons were independently checked. This finite verification proves $H_{m,m}>0$ throughout the complement of the analytic range. Equation~\eqref{eq:pressure} then proves $E_{m,m}>0$, completing Theorem~\ref{thm:main}. The exact sources, every per-order vector, and the certificate checker are included; the finite computation is a distinct part of the proof.
+% ed. (2026-10-01): the trace archives were not delivered; what the filed files show
+\begin{ednote}
+As filed, the per-order traces are missing: this package is the source archive of a split
+delivery whose five trace archives (the 68 compressed files
+\path{data/certificates/parity_mNNN.json.trace.gz}; see \path{DELIVERY_README.txt}) were not
+delivered. The trace audit \path{code/check_trace_coverage.py} and the full replay
+\path{code/reproduce_all.py} therefore cannot run on the filed files, and the baseline vectors,
+the 4,828 propagated error bounds and the final vectors cannot be rechecked. What the filed
+files show (checked on filing): the 68 interval records
+\path{data/certificates/parity_mNNN.json} have strictly positive lower endpoints; exact
+rational values of $H_{m,m}$ filed with the package lie inside them for the 35 orders
+$2\le m\le35$ and $m=50$; for $m=68,69$ an independent full-vector enclosure overlaps them;
+for $36\le m\le49$ and $51\le m\le67$ the filed intervals are the only finite evidence for
+$H_{m,m}>0$. The pressure coefficient $E_{m,m}$ is proved again in \path{../Thue_Morse_Integer_Pressure_Full_Range/} (whose own finite intervals were not delivered either), and its positivity for
+$2\le m\le128$ is certified by the filed intervals of \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}.
+\end{ednote}
+% ed. (2026-10-01): the missing traces can be reconstructed from the filed producer
+\begin{ednote}
+The missing traces can be regenerated, byte for byte, with the filed producer
+\path{code/check_boundary_parity.cpp}: see the section ``Reconstructing the trace archives''
+of \path{README.md}. On filing, the traces for $m=2,3,10,20,35,50,69$ were regenerated on a
+copy: the interval records agree with the filed ones, the compressed traces reproduce the
+hashes recorded in \path{data/trace_checks.json}, and the trace audit passes on them. The full
+set (68 orders, about 45~MB compressed, a few minutes of computation) was not regenerated.
+\end{ednote}
+
+\section{Later negative coefficients and open directions}
+The response theorem cannot uniformly extend to $r=m+1$. For $m=2$, set $x=a^2$ and write $\Lambda(a)=\lambda_2(a)$. The pressure cubic in \cite{integer}, under $\rho=\Lambda/(1+a^2)^2$ and $\cos2t=(1-x)/(1+x)$, gives
+\[
+ 8\Lambda^3-2(7-x)(1+x)\Lambda^2
+ +(7-3x)(1+x)^3\Lambda-(1+x)^6=0.
+\]
+Its derivative in $\Lambda$ at $(\Lambda,x)=(1,0)$ is $3$, so its local branch is unique. Exact substitution and a separate Fourier recursion agree on
+\[
+ \Lambda=1+\frac{x^2}{3}+8x^3+\frac{536}{27}x^4
+             -\frac{488}{27}x^5-\frac{90472}{243}x^6+O(x^7).
+\]
+Since $\Lambda=1+a^4h_a(1/2)$, this proves $H_{2,3}=-488/27<0$. Pressure at the corresponding degree ten remains positive: $E_{2,3}=105448/2025$. Thus response and pressure sharpness are different questions.
+
+A separate direct rational phase-eigenvalue recursion locates the first negative pressure degree \emph{above} $2m$ for the following small moments:
+\[
+\begin{array}{c|rrrrrrrrrrrrr}
+ m&2&3&4&5&6&7&8&9&10&11&12&13&14\\\hline
+ \text{degree}&12&18&24&32&38&44&52&58&64&72&78&84&92
+\end{array}
+\]
+The lower even coefficients are already negative, so the qualification ``above $2m$'' matters. These are exact finite observations, not an all-order law. In particular, neither a limiting ratio nor a rounding formula for the first negative degree is asserted. Whether pressure alone stays positive throughout $1\le r<2m$ remains open here; the finite data are compatible with that extension. Positivity of each individual atomic-basis response coefficient throughout $r\le m$ is also a separate, unproved question.
+% ed. (2026-10-01): pressure positivity below 6m and the first negative degree are settled by later packages
+\begin{ednote}
+Pressure positivity throughout $1\le r<2m$ is proved for every $m\ge2$ in
+\path{../Thue_Morse_Integer_Pressure_Full_Range/}. The table above agrees with the certified first negative degrees
+of \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} ($2\le m\le128$) and \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}
+($2\le m\le20$), and \path{../Thue_Morse_Integer_Pressure_First_Negative/} proves $N_m/m\to\gamma\in(6.662966,6.662968)$,
+with a $\log\log m$ correction and a rounding rule valid away from the even lattice.
+\end{ednote}
+
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the fourth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{integer} is \path{../Thue_Morse_Integer_Pressure/} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical), and \cite{triangle} is
+\path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}.
+\end{ednote}
+\begin{thebibliography}{9}\small
+\bibitem{integer}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript, 28 September 2026. Inspected version: commit \nolinkurl{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, blob \nolinkurl{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/6a98f89bac85cc6b4ba5d5c3b63996037d9824e1/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.
+\bibitem{triangle}\emph{The Full Positive Triangle in Integer Thue Morse Pressure}. Separate research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. The tangent single-crossing theorem, full $r<m$ response and pressure positivity, and exact certificates.
+\bibitem{gnedin} A. Gnedin, \emph{Cross Modality of the Extended Binomial Sums}, 2024, Theorem 2 (integer-mean mode rule for finite and countable Bernoulli sums).\newline\url{https://arxiv.org/html/2408.06477v1}
+\end{thebibliography}
+\end{document}

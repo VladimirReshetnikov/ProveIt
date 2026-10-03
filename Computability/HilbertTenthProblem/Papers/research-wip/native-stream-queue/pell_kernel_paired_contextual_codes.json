@@ -1,0 +1,100 @@
+{
+  "status": "PASS_PAIRED_CONTEXTUAL_CODE_INTERFACES",
+  "codes": {
+    "domains": [
+      {
+        "block_length": 1,
+        "edge_codes": 3,
+        "physical_code_pairs": 9,
+        "allowed_overlap_pairs": 5,
+        "distinct_two_code_pairs": 6
+      },
+      {
+        "block_length": 2,
+        "edge_codes": 9,
+        "physical_code_pairs": 81,
+        "allowed_overlap_pairs": 25,
+        "distinct_two_code_pairs": 72
+      },
+      {
+        "block_length": 3,
+        "edge_codes": 27,
+        "physical_code_pairs": 729,
+        "allowed_overlap_pairs": 125,
+        "distinct_two_code_pairs": 702
+      },
+      {
+        "block_length": 4,
+        "edge_codes": 81,
+        "physical_code_pairs": 6561,
+        "allowed_overlap_pairs": 625,
+        "distinct_two_code_pairs": 6480
+      }
+    ],
+    "total_code_pairs": 7380,
+    "total_allowed": 780,
+    "two_phase_interface": {
+      "initial": [
+        "00",
+        "01"
+      ],
+      "temporary": [
+        "10",
+        "01"
+      ],
+      "all_four_computation_pairs_allowed": true,
+      "identity_return_pairs_allowed": true
+    }
+  },
+  "algebra": {
+    "macro_increment": "H*g1 + H*g2 - U*g2 - V*g1 - V*g2 + Vnext*g0 - Vnext*g1",
+    "scalar_projection": {
+      "T": "W*g2 + g1",
+      "F": "g0 - (W + 1)*(W*g2 + g1)",
+      "Z": "-N0*(W*g2 + g1) + N1*g2 + k",
+      "equation": "3*Z_next=Z+T+F*a0",
+      "centered": "V=2*Z-T; 3*V_next=V+2*F*a0"
+    },
+    "empty_endpoint_identity": "-A0*W**2*g2 - A0*W*g1 - A0*W*g2 + A0*g0 - A0*g1 - I0*W*g2 - I0*g1 + I1*g2 + W*g2*q/2 - W*g2/2 + cs + g1*q/2 - g1/2"
+  },
+  "cycles": {
+    "centered_weights": [
+      2,
+      3,
+      -3
+    ],
+    "initial_and_final_carry": 0,
+    "reachable_carries": [
+      -1,
+      0,
+      1
+    ],
+    "dead_carry": -1,
+    "tested_widths": 100,
+    "period_examples": [
+      {
+        "width": 1,
+        "exact_period": 3
+      },
+      {
+        "width": 2,
+        "exact_period": 5
+      },
+      {
+        "width": 5,
+        "exact_period": 11
+      },
+      {
+        "width": 20,
+        "exact_period": 41
+      },
+      {
+        "width": 100,
+        "exact_period": 201
+      }
+    ],
+    "scope": "Exact physical phase cycle from an empty queue; it is not an ordinary-positive-input accepted witness"
+  },
+  "scope": "Exact design interfaces only; selected block alphabet, loading, synchronization and universal acceptance remain unpaid",
+  "established_complete_universal_bound": 76
+}

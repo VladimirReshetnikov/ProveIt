@@ -4,6 +4,8 @@
 Exact coefficient and sign checks use rational arithmetic. Asymptotic diagnostics
 use mpmath; they are not interval certificates or proofs of universal assertions.
 Run from any directory. Outputs are written beside this script and in ../figures.
+(Editorial amendment, 2026-09-29: only the default 190-digit run writes there; any
+other --dps writes into verification/dps<N>/, and --outdir redirects every output.)
 """
 from __future__ import annotations
 from fractions import Fraction as Q
@@ -128,9 +130,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dps', type=int, default=190)
     parser.add_argument('--no-figure', action='store_true')
+    # ed. (2026-09-29): a run at any precision other than the recorded 190 digits
+    # writes into verification/dps<N>/ (figure included) instead of over the
+    # recorded baseline; --outdir overrides the destination.
+    parser.add_argument('--outdir', type=Path, default=None)
     args = parser.parse_args()
     if args.dps < 160:
         parser.error('Use at least 160 digits to resolve the smallest recorded differences.')
+    if args.outdir is not None:
+        vdir = fdir = args.outdir.resolve()
+    elif args.dps == 190:
+        vdir, fdir = ROOT/'verification', ROOT/'figures'
+    else:
+        vdir = fdir = ROOT/'verification'/f'dps{args.dps}'
+    vdir.mkdir(parents=True, exist_ok=True)
+    fdir.mkdir(parents=True, exist_ok=True)
     mp.mp.dps = args.dps
     cq = rational_c(200)
     hq = inverse_coefficients(cq[:21], Q(0), Q(1))
@@ -194,14 +208,15 @@ def main() -> None:
                           'limiting_profile':mp.nstr(1/(1+r*r),30)})
     certs=[sign_certificate(X,n,hq,cq) for X,n0 in [(2,6),(3,9),(4,12)]
            for n in [n0,n0+1]]
-    (ROOT/'verification'/'certificates.json').write_text(json.dumps(certs,indent=2)+'\n')
+    # ed. (2026-09-29): newline='\n' so that a rerun on Windows writes LF, like the filed files.
+    (vdir/'certificates.json').write_text(json.dumps(certs,indent=2)+'\n',newline='\n')
     results={'python':platform.python_version(),'mpmath':mp.__version__,
              'sympy':sp.__version__,'working_digits':args.dps,
              'exact_inverse_coefficients':[str(v) for v in hq[1:]],
              'formal_residual_zero_through':8,'exact_sign_certificates':len(certs),
              'direct':rows,'density':density,'macro_window':macro,'sqrt_window':windows,
              'scope':'Finite exact checks and floating-point diagnostics; not a formal proof.'}
-    (ROOT/'verification'/'results.json').write_text(json.dumps(results,indent=2)+'\n')
+    (vdir/'results.json').write_text(json.dumps(results,indent=2)+'\n',newline='\n')
     lines=['\\begin{tabular}{rrrrr}','\\toprule',
            '$X$ & $N$ & Normalized error & Through $B_2$ & Direct/forward ratio\\\\',
            '\\midrule']
@@ -209,8 +224,12 @@ def main() -> None:
         lines.append(f"{r['X']} & {r['N']} & {float(r['normalized_error']):.10f} & "
                      f"{float(r['through_B2']):.10f} & {float(r['comparison_ratio']):.8f}\\\\")
     lines += ['\\bottomrule','\\end{tabular}']
-    (ROOT/'verification'/'numeric_table.tex').write_text('\n'.join(lines)+'\n')
+    (vdir/'numeric_table.tex').write_text('\n'.join(lines)+'\n',newline='\n')
     if not args.no_figure:
+        import matplotlib
+        # ed. (2026-09-29): embed TrueType (Type 42) fonts instead of Type 3 in the PDF figure.
+        matplotlib.rcParams['pdf.fonttype'] = 42
+        matplotlib.rcParams['ps.fonttype'] = 42
         import matplotlib.pyplot as plt
         import numpy as np
         fig,ax=plt.subplots(figsize=(7.3,4.5))
@@ -225,8 +244,8 @@ def main() -> None:
         ax.set_xlabel(r'$\tau=(N+1-\pi X)/\sqrt{X}$')
         ax.set_ylabel(r'$(-1)^N(S_N-W)/(\sqrt{X}\,e^{-2\pi X})$')
         ax.legend();ax.grid(True,alpha=.25);fig.tight_layout()
-        fig.savefig(ROOT/'figures'/'truncation_window.pdf')
-        fig.savefig(ROOT/'figures'/'truncation_window.png',dpi=190)
+        fig.savefig(fdir/'truncation_window.pdf')
+        fig.savefig(fdir/'truncation_window.png',dpi=190)
         plt.close(fig)
     print(json.dumps({'exact_residual_through':8,'exact_sign_certificates':len(certs),
                       'numerical_cases':len(rows)+len(density)+len(macro)+len(windows),

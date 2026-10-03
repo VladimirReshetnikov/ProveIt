@@ -1,0 +1,45 @@
+PROPOSED OEIS COMMENTS -- NOT SUBMITTED
+Prepared 1 October 2026.  Attribution and publication details should be
+settled only after independent mathematical and literature review.
+
+GENERAL FIXED-MULTIPLICITY RESULT
+Let B(n,k) be the number of permutations of k*n labeled cards, with k cards
+in each of n ranks, such that adjacent cards have different ranks.  For every
+fixed integer k >= 2,
+
+  B(n,k)/(k*n)! = exp(-(k-1)) * (
+      1 - (k-1)^2/(2*k*n)
+      + (k-1)^2*(3*k^2-14*k+7)/(24*k^2*n^2)
+      - (k-1)^4*(k^2-10*k+17)/(48*k^3*n^3)
+      + O_k(n^-4)).
+
+More generally, the number X(n,k) of equal-rank adjacent pairs in a uniformly
+random shuffle converges in distribution to Poisson(k-1).  Its exact mean and
+variance are
+
+  E[X(n,k)] = k-1,
+  Var[X(n,k)] = (k-1) - (k-1)^2/(k*n-1).
+
+A330266
+The displayed integral is the k=4 case of
+
+  B(n,k) = Integral_0^infinity ((-1)^k*k!*LaguerreL[k,-1,t])^n*exp(-t) dt.
+
+In particular,
+
+  A330266(n)/(4*n)! = exp(-3) *
+    (1 - 9/(8*n) - 3/(128*n^2) + 189/(1024*n^3) + O(n^-4)).
+
+A007060
+
+  A007060(n)/(2*n)! = exp(-1) *
+    (1 - 1/(4*n) - 3/(32*n^2) - 1/(384*n^3) + O(n^-4)).
+
+A193624
+
+  A193624(n)/(3*n)! = exp(-2) *
+    (1 - 2/(3*n) - 4/(27*n^2) + 4/(81*n^3) + O(n^-4)).
+
+The multiset counterparts A114938, A193638, and A321633 have the same
+normalized probabilities after division by the total number
+(k*n)!/(k!)^n of balanced multiset words.

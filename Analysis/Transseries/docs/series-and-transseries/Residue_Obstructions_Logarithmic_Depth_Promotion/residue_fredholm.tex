@@ -46,6 +46,9 @@
 \newtheorem{remark}[remark]{Remark}
 \aliascntresetthe{remark}
 \crefname{remark}{remark}{remarks}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it
+% leaves every numbered statement of the delivered article unchanged.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
 \newcommand{\HH}{\mathcal H}
@@ -279,6 +282,12 @@ To compute the kernel of $D$, apply \eqref{eq:euler-block} to a putative constan
 
 The functional $\Res_n$ is onto because $\Res_n\rho_n=1$, proving exactness. Finally $D\ell_{n+1}=\rho_n$. The formula \eqref{eq:promoted-primitive} and the kernel calculation at depth $n+1$ prove the last assertions. Uniqueness of $I_n$ follows from its differential identity and zero-constant normalization.
 \end{proof}
+
+% ed. (2026-09-29): credits the canonical-volume theorem that this result
+% re-derives and strengthens; the article does not cite it.
+\begin{ednote}\label{ed:tower-strict}
+Part of \cref{thm:residue} is already Theorem \path{plt:thm:ext-tower-strict} of the canonical volume (\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}), which this article does not cite. That theorem works in $\mathcal H_r(\mathbb K,\Gamma)$ with $\mathbb Z\subseteq\Gamma\subseteq\R$ and the monomial $\mathfrak n_r=L_0L_1\cdots L_r$, $L_0=x$, $L_{j+1}=\log L_j$, so that $\mathfrak n_n^{-1}=\rho_n$. Its equation \path{plt:eq:ext-residue}, $[\mathfrak n_r^{-1}]\partial_rF=0$ for all $F\in\mathcal H_r$, is the identity $\Res_n\circ D=0$, and its consequence that $L_{r+1}\notin\mathcal H_r$ is the statement here that $\ell_{n+1}$ is a primitive of $\rho_n$ outside $\HH_n$. \Cref{thm:residue} re-derives both for real coefficients and strengthens them to the exactness of \eqref{eq:exact-residue}: every $f$ with $\Res_n(f)=0$ has a primitive in $\HH_n$, given by the explicit operator $I_n$; \cref{thm:moments} extends the criterion to $D^m$. Neither result bears on the canonical volume's open Remark \path{plt:rmk:ext-open-depth}, which concerns compositional inverses rather than differential operators.
+\end{ednote}
 
 \begin{corollary}[Residue integration by parts]
 \label{cor:ibp}
@@ -1032,15 +1041,33 @@ The finite matrix decides whether degree zero in $T$ is possible; the root-path 
 
 A concrete first target is the subclass with finitely many rational outer drops and finite Laurent-log coefficient blocks. One would seek an algorithm that outputs the smallest $d$ such that a forcing has a solution in $\HH_n[T]_{\le d}$, together with an obstruction certificate for degree $d-1$. The sharp family should yield the complete sequence $0,1,\ldots,s$.
 
+% ed. (2026-09-29): records the later package that answers the homogeneous
+% half of this question in a different (depth-0 systems) setting.
+\begin{ednote}\label{ed:filtration}
+The later package \path{Analysis/Transseries/docs/series-and-transseries/Hahn_Fuchsian_Resonance_Analytic_Normalization/} answers the homogeneous half of this question in a neighbouring setting, without citing it (it knew this article only through its README). For first-order systems $xY'=(A_0+A_+(x))Y$ over the log-free Hahn field with $L=\log x$ adjoined, with constant coefficient matrices, real spectrum and well-ordered positive exponents, the solutions of degree at most $d$ in $L$ form a space of dimension $\dim\ker B^{d+1}$ for one finite nilpotent matrix $B=N+\sum_\rho R_\rho$ (\texttt{hahn\_fuchsian.tex}, Theorem \texttt{thm:logs}), whose entries depend polynomially on finitely many input coefficients (Theorem \texttt{thm:ancestry}). That is depth $0$, where the outer-block construction of this article, which needs $n\ge1$, does not apply; particular solutions of forced equations are not treated there.
+% ed. (2026-09-29): on filing batch 50, "The question as posed, at depth n>=1 with the new logarithm T and with forcing, remains open." was replaced: a later package answers it.
+At depth $n\ge1$, with the new logarithm $T$ and with forcing, the question is answered for this article's whole class by the later package \path{Analysis/Transseries/docs/series-and-transseries/Exact_Logarithmic_Degree_Smith_Invariants/} (batch~50; not reviewed): the Smith exponents of a lifted residue series satisfy $\sum\nu_i=r$, $0\le\nu_i\le s$, give the whole filtration, and are decided by block Toeplitz ranks of a finite jet, with rational obstruction certificates; the Jordan-shift family of \cref{thm:sharp-matrix} is its single-block case.
+\end{ednote}
+
 \subsection{Cancellation-sensitive resonance graphs}
 The semigroup condition \eqref{eq:selection} detects impossible matrix entries but does not prove that a permitted path contributes nontrivially. Different derivative orders and intermediate blocks may cancel. Can a weighted directed graph of residue transfers characterize the leading nonvanishing path and sharpen both the cutoff and the logarithmic-degree bound?
 
 For monomial coefficients one can first classify which edge weights depend only on $P'(\lambda)$ and which require higher residue moments. A useful theorem would distinguish structural zeros from coefficient-dependent cancellation without expanding all lower logarithmic terms.
 
+% ed. (2026-09-29): added on filing batch 50; a partial answer for a scalar subclass.
+\begin{ednote}\label{ed:resonance-graph}
+For operators $P(E)+\sigma\sum_\eta x^{-\eta}q_\eta(E)$ with simple real roots, the later package \path{Analysis/Transseries/docs/series-and-transseries/Exact_Logarithmic_Degree_Smith_Invariants/} (batch~50; not reviewed) shows that the relevant weighted graph is the matrix $D_P^{-1}N$, $N_{ij}=q_{\lambda_j-\lambda_i}(\lambda_j)$, whose Jordan block sizes are the degrees; a fourth-order family has the same unweighted graph and different degrees. The general case and the sharpening of the cutoff remain open.
+\end{ednote}
+
 \subsection{Perturbations small only in logarithms}
 The hypothesis $\dprim(a_j)\le-\eps$ excludes coefficients such as $1/\log x$, whose outer exponent is zero. In that setting a perturbation can stay in one outer root block indefinitely. Can a multi-level version of the reduction, contracting successively in $x$, $\log x$, and deeper logarithms, still yield finite obstruction data?
 
 The present proof cannot simply replace ``outer-small'' by ``small'' in the full lexicographic order. Its finite cutoff and its rule that a root is visited at most once would no longer apply. A precise next step is a classification of single-root operators with coefficients supported in negative powers of $L$, separating those needing only $T$ from those requiring exponentials or further logarithmic depth.
+
+% ed. (2026-09-29): added on filing batch 53; the first-order case of this classification, and operators that factor.
+\begin{ednote}\label{ed:log-small}
+For first-order operators the classification asked for is given by the later package \path{Analysis/Transseries/docs/series-and-transseries/Triangular_Hahn_Differential_Systems_Without_Smallness/} (batch~53; not reviewed; \texttt{triangular\_hahn\_systems.tex}, Theorems \texttt{thm:rankone} and \texttt{thm:descent}). With $L=\log x$, a coefficient $x^{-1}\bigl(\lambda+\sum_{\beta>0}c_\beta L^{-\beta}\bigr)$ is a logarithmic derivative in $\HH_n$ exactly when no exponent $\beta$ with $c_\beta\ne0$ lies in $(0,1)$, so always for integer powers; then only $T$ is needed, with degree at most one. Otherwise, as for $x^{-1}L^{-\alpha}$ with $0<\alpha<1$, the operator is bijective on $\HH_n$ and has no nonzero homogeneous solution at any finite logarithmic depth; the actual solution $\exp(L^{1-\alpha}/(1-\alpha))$ is an exponential of a large series. Further logarithmic depth never creates a homogeneous solution. Higher-order single-root operators are covered by its triangular theorem (\texttt{thm:triangular}, \texttt{cor:gauge}) only when they factor into first-order operators over the field; the rest of the question remains open.
+\end{ednote}
 
 \subsection{Parameter-dependent root collisions}
 When two distinct real roots coalesce, $s$ decreases but a multiplicity increases. The degree theorem predicts less growth in the new logarithm, while the natural coefficient formulas may become singular in the root difference. Can one construct a parameter-uniform block basis and obstruction matrix that pass continuously, or in a controlled confluence sense, through such a collision?
@@ -1051,6 +1078,15 @@ A test case is $P_\tau(z)=z(z-\tau)$ with a monomial outer-small perturbation. T
 For a matrix polynomial $P(E)$, kernels at a root may contain Jordan chains before any perturbation. A matrix-valued residue complex should replace the scalar moments. Which invariant controls the new-logarithm degree: the number of distinct root levels, the lengths of internal Jordan chains, or a combination?
 
 Nonreal scalar roots raise a different issue. The present real monomial field deliberately omits $x^{i\beta}$ and oscillation. An extension with complex powers would need a careful support convention rather than an artificial total ordering of oscillatory functions. A first goal is an algebraic version for a fixed finite collection of imaginary exponents, without claiming an ordered Hardy-field interpretation.
+
+% ed. (2026-09-29): records the later package that answers the first
+% paragraph for real-spectrum first-order systems at depth 0.
+\begin{ednote}\label{ed:matrix-systems}
+% ed. (2026-09-29): "the previous note" became ambiguous once other notes were inserted between; the note is now named.
+For first-order systems at depth $0$ with real spectrum (the setting of the note after ``The exact minimal power of the promoted logarithm''), the later package \path{Analysis/Transseries/docs/series-and-transseries/Hahn_Fuchsian_Resonance_Analytic_Normalization/} identifies the invariant: the new-logarithm degree of a fundamental matrix is exactly $\nu(B)-1\le m-1$, where $\nu(B)$ is the nilpotency index of $B=N+\sum_\rho R_\rho$, which combines the internal Jordan chains (through $N$) with the passage between root levels (through the resonant blocks $R_\rho$) (\texttt{hahn\_fuchsian.tex}, Theorem \texttt{thm:logs}; the bound is attained in Example \texttt{ex:chain}, the analogue of the Jordan-shift family of \cref{thm:sharp-matrix}). When $N=0$, $B$ is strictly block-triangular over the $s$ distinct eigenvalue levels, so the degree is at most $s-1$, the homogeneous bound of \cref{thm:promotion}; that package does not state this consequence. Matrix polynomials $P(E)$ of higher order, depth $n\ge1$, and nonreal roots are not treated there.
+% ed. (2026-09-29): sentence added on filing batch 53.
+For triangular first-order systems at every depth, with arbitrary coefficients, the later package \path{Analysis/Transseries/docs/series-and-transseries/Triangular_Hahn_Differential_Systems_Without_Smallness/} (batch~53; not reviewed) bounds the new-logarithm degree by the number of split factors on a coupling path and classifies it by the Smith exponents of a residue series with determinant $z^r$; nontriangular systems and nonreal roots are not treated there either.
+\end{ednote}
 
 \subsection{Nonlinear equations and an effective obstruction variety}
 Consider $P(E)u+Ru+F(u)=f$, with a nonlinear term that is suitably small in a support filtration. Eliminating the infinite-dimensional complement may leave a finite nonlinear equation in the kernel coordinates. Can the linear matrix $M$ be replaced by a convergent formal obstruction map, with explicit support bounds for its Taylor coefficients?
@@ -1071,6 +1107,11 @@ For a broader class, impose analytic or Gevrey bounds on the coefficient blocks 
 Our outer exponents are real, and the uniform $\eps$ gives a simple Archimedean cutoff. A more general ordered group may have positive infinitesimals or no useful integer-valued depth bound. Which version of ``strict decrease'' guarantees summability of the geometric operator inverse and finiteness of its projection to the resonant part?
 
 One should separate two demands: existence of the full formal inverse and termination of the finite-dimensional obstruction calculation. They coincide under the present real uniform-drop hypothesis, but need not coincide in a non-Archimedean exponent group.
+
+% ed. (2026-09-29): cross-link to a related, not answering, later package.
+\begin{ednote}\label{ed:ordered-groups}
+The later package \path{Analysis/Transseries/docs/series-and-transseries/Reversion_Beyond_Archimedean_Valuations/} draws the analogous separation for compositional reversion over an arbitrary ordered exponent group: strong Hahn convergence always holds, uniform valuation convergence holds exactly when the multiples of the least support exponent are cofinal, and every finite coefficient request factors through a finite-rank quotient. It concerns reversion of near-identity maps, not the differential operators of this article, so this question remains open.
+\end{ednote}
 
 \subsection{A reusable proof-assistant library for finite defects}
 The identities $P_0G=\id-J\Pi$ and $GP_0=\id-K\Lambda$ package an infinite-dimensional problem into a finite kernel/cokernel interface. Can a library expose this interface independently of the Hahn implementation and reuse it for difference equations, summation, or sequence inversion?

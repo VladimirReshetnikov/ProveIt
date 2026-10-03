@@ -45,6 +45,9 @@
 \fancyhead[R]{\small Research report}
 \fancyfoot[C]{\thepage}
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page, which otherwise shares its page number with the
+% next page (pdfTeX "duplicate destination" warning); the same device the Stokes-transport package uses.
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{17mm}
 \noindent{\large\scshape Transseries / Resurgence / Certified Inversion}\par
@@ -86,11 +89,15 @@ independent research priority is not asserted.
 \noindent\small Source, PDF, verification programs, executed results, and build instructions
 are distributed together. No repository files were modified.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \tableofcontents
 \newpage
 
 \section{The question and the contribution}
 \label{sec:intro}
+
+% ed. (2026-09-29): scope note (title broader than the sine-product results); the abstract is unchanged.
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} Scope. The title is broader than the results. Every theorem below concerns the sine-product Borel kernels \eqref{eq:kernel}, with a fixed finite number $d$ of period lattices; the one statement beyond them, the bounded-cluster criterion of Proposition~\ref{prop:abstract}, holds only under its stated hypotheses. No general resonance-block theory for transseries is proved. The ``resonances'' here are near-coincident Borel poles, not the equal-action resonances of the Stokes-transport and moving-fold packages of this series.\end{quote}
 
 \subsection{A gap between formal support and analytic realization}
 A familiar transseries calculation assigns an exponentially small term to
@@ -145,6 +152,9 @@ A finite resonance block, unlike either of its constituent residues, has
 a controlled analytic norm. We prove the estimate that makes the
 repository's analytic inversion method applicable after this change of
 representation. The inverse coefficient formula itself remains classical.
+
+% ed. (2026-09-29): cross-reference note (the Stokes-transport article's open question, answered in part here).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} This report answers, without citing it, the forward half of the Stokes-transport article's research question ``Countably many resurgent input poles'' (\path{Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex} in \path{Analysis/Transseries/docs/series-and-transseries/}, the question following \texttt{cor:countable} in its list of research questions; this report inspected only lines 180--360 of that source). That question proposes normal convergence of the forward meromorphic Borel kernel as a starting hypothesis. For the kernels \eqref{eq:kernel}, Corollary~\ref{cor:counterexample} shows that normal convergence of the individual residues can fail at every positive argument, and Theorem~\ref{thm:block} restores it for resonance blocks with uniform constants. The resurgent half, an exact-core resurgent correction for the countable inverse, is not answered here (project~6 of Section~\ref{sec:questions}). Theorem~\ref{thm:inverse} is that article's \texttt{thm:transport} in core coordinates, as stated in Section~\ref{sec:inverse}.\end{quote}
 
 The series-and-transseries inventory also contains recent studies of
 finite-action folds, arithmetic action accumulation, and inverse harmonic
@@ -1529,6 +1539,8 @@ The polynomial factor $n^2$ matters on the boundary and is deliberately
 invisible to the exponent $\beta$. A useful result would distinguish the
 two separately indexed series from the increasing-action ordering and
 would include explicit examples at every attainable convergence type.
+% ed. (2026-09-29, batch 52): cross-reference note (this question is answered by a later package).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} Answered by the later package \path{Critical_Line_Continued_Fractions_Riesz_Summation/article.tex} in \path{Analysis/Transseries/docs/series-and-transseries/} (batch~52; not reviewed), for two lattices with numerator $t^D$, $D\ge2$, which contains the kernel \eqref{eq:kernel} with $d=D=2$. Let $p_k/q_k$ be the convergents of $\alpha$, $b=\beta(\alpha)\in(0,\infty)$ and $A_k=q_k^Dq_{k+1}\e^{-bq_k}$. On $\re z=b$ the increasing-action residue series converges exactly when $A_k\to0$ and absolutely exactly when $\sum_kA_k<\infty$, at every imaginary height; the two separately indexed series converge exactly when $\sum_k(-1)^{p_k+q_k+k}A_k\e^{-\ii q_k\im z}$ converges, and an increasing-action sum can converge while both separate sums diverge (its \texttt{thm:classification} and \texttt{ex:opposite}). A continued-fraction construction realizes absolute convergence, conditional convergence and failure of the term test at every prescribed positive abscissa (its \texttt{cor:types}); for $\beta(\alpha)=0$ the term test fails on the whole line $\re z=0$. For $d$ lattices, that package also recovers the block sum on all of $\re z>0$ by Riesz means of integer order $m\ge d-1$, with an exact finite derivative bias and no Diophantine condition (its \texttt{thm:riesz}); the order $d-1$ is minimal for bounds uniform in the periods (its \texttt{thm:sharp}).\end{quote}
 
 \subsection*{2. Sharp absolute bounds for blocks}
 The constants in \eqref{eq:constants} sacrifice sharpness for uniformity.

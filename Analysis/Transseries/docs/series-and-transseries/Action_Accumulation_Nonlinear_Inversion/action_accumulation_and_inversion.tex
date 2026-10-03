@@ -29,6 +29,9 @@
 \newtheorem{question}[theorem]{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; it
+% leaves every numbered statement of the delivered article unchanged.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\C}{\mathbb C}
 \newcommand{\N}{\mathbb N}
@@ -123,6 +126,15 @@ The group README and the canonical-volume README describe a consolidated polynom
 The inspected Lean module \code{TransseriesWellBased.lean} bridges Dickson and Neumann results to the repository's order convention \cite{repo-neumann}. In particular, its finite-factorization statements require partially well-ordered supports, with order-dual wrappers for the manuscript convention. Our action family $\{a+1/j\}$ does not satisfy that support condition. We do not weaken Neumann's theorem, contradict it, or pretend that its formal proof justifies an analytically summed family outside its hypotheses. Instead, we replace finite coefficient sums by absolutely convergent weighted-measure convolutions.
 
 The large canonical TeX source was identified but its complete contents were not retrievable through the available GitHub file interface. The comparison is consequently a targeted one based on the two READMEs and the named Lean module, not a line-by-line nonduplication audit. In particular, we make no claim that every theorem here is absent from every repository manuscript.
+
+% ed. (2026-09-29): current locations of the inspected sources, the
+% repository passages this article enters without citing them, and the
+% sibling package that supplies what it leaves out.
+\begin{ednote}\label{ed:repo-context}
+\emph{Current paths.} The documentation inspected above now lives under \path{Analysis/Transseries/docs/series-and-transseries/}, and the Lean module is \path{Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean} (namespace \texttt{Fabius} unchanged); the bibliography entries give both addresses.
+\emph{Uncited frontier.} The article enters, without citing them, three repository passages on actions that accumulate at a finite point: in the companion volume \path{Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}, the necklace actions accumulating at $\log q$ (equation \path{t2:eq:necklace-action-accumulation}, which the companion calls an obstruction to the locally finite finite-grid calculus only) and the third ``Further research direction'', an arithmetic transseries algebra for divisor sums that retains divisibility indicators; the problem ``Arithmetic action accumulation rather than a discrete Borel lattice'' of \path{Inverse_Harmonic_Stokes_Transport/inverse_harmonic_transseries.tex}; and the action-one accumulation of the canonical volume (Section \path{p3:sec:tail}, Remark \path{p3:rem:no-eta-cutoff}), a decreasing action family with no least element like $a+1/j$ here. The measure calculus of Sections~\ref{sec:measures}--\ref{sec:compact} is an analytic counterpart to these passages, not a resolution of them: it does not retain divisibility indicators, so it does not supply the arithmetic algebra the companion and the inverse-harmonic problem ask for.
+\emph{Sibling package.} That algebra is the subject of the later package \path{Analysis/Transseries/docs/series-and-transseries/Arithmetic_Transseries_Beyond_Accumulation_Cut/}, which keeps the indicators (an arithmetic Hahn ring with lcm convolution, a weighted Banach completion over analytic sheets, fixed-label inverses). It knew this article only through a one-line catalogue description and relies on none of its results; no theorem is shared (it is fixed-label and arithmetic, this article label-free and analytic). The two form one unit for the deferred merge into the companion's necklace chapter.
+\end{ednote}
 
 \subsection{Four different mathematical objects}
 It is helpful to separate four settings.
@@ -705,6 +717,11 @@ Neither $A$ nor $h$ changes sign; both are positive and completely monotone. The
 This does not refute a formal-transseries closure theorem. Nor does it refute the existence of analytic Hardy-field models of transseries \cite{hardy}. It shows that a realization map cannot be required, without further hypotheses, to preserve these prescribed analytic sums. The Poincar\'e expansion $A\sim x^{-1}$ by itself forgets precisely the obstruction.
 \end{remark}
 
+% ed. (2026-09-29): scope relative to an open remark of the canonical volume.
+\begin{ednote}\label{ed:realization}
+This obstruction bears on the canonical volume's open Remark \path{plt:rmk:ext-open-realization} (\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}), which asks which left-finite Hahn power--logarithmic series are asymptotic expansions of germs in a common Hardy field. It does not answer that remark: $A$ is an analytically summed family whose supports are not well based, not a left-finite Hahn element, and Theorem~\ref{thm:tameness} concerns prescribed analytic sums rather than formal series. The remark remains open.
+\end{ednote}
+
 \section{The nonlinear inverse of the accumulating example}\label{sec:modelinverse}
 
 Fix $a,\kappa>0$, and consider the actual analytic functions
@@ -1198,7 +1215,11 @@ The bibliographic search verified standard transseries background, the existing 
 V. Reshetnikov, \emph{ProveIt: Series and transseries}, group README,
 inspected at commit \code{ae28ea2db3c01a0b777cffa6295b8fe9c4628f27},
 29 September 2026. Repository path:
-\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/README.md}.
+% ed. (2026-09-29): current path first; the path read at the snapshot no
+% longer exists.
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}
+(current; at the inspected commit
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/README.md}).
 \url{https://github.com/VladimirReshetnikov/ProveIt}.
 
 \bibitem{repo-main}
@@ -1209,7 +1230,11 @@ The large canonical TeX file was identified but not fully retrieved; this refere
 \bibitem{repo-neumann}
 V. Reshetnikov, \emph{Well-based supports: Dickson's lemma and Neumann's lemma},
 \repo\ Lean source, same inspected commit and date.
-\path{Analysis/FabiusFunction/Lean/FabiusFunction/TransseriesWellBased.lean}.
+% ed. (2026-09-29): current path first; the path read at the snapshot no
+% longer exists.
+\path{Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}
+(current; at the inspected commit
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/TransseriesWellBased.lean}).
 The source explicitly describes itself as a bridge to Mathlib results with the required order conventions.
 
 \bibitem{edgar}

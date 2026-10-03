@@ -1,0 +1,1935 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{xcolor}
+\usepackage{xurl}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,
+urlcolor=blue!45!black,
+pdftitle={Finite Resonance Control of Nonlinear Hahn--Dulac Transseries},
+pdfauthor={Research article prepared for Vladimir Reshetnikov},
+pdfsubject={Exact logarithmic slopes, finite algebraic certificates, nonlinear differential equations, and accumulating exponents}}
+\urlstyle{same}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes; remarks share the theorem counter, so the notes must not be numbered.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\G}{\Gamma}
+\newcommand{\Reson}{\mathcal R}
+\newcommand{\Div}{\operatorname{Div}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\spec}{\operatorname{spec}}
+\newcommand{\dd}{\partial_L}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\snap}{\texttt{3d5973524506411392a911470b5ddc35521568ea}}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.8em}
+\linespread{1.025}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Nonlinear Hahn--Dulac transseries}
+\fancyhead[R]{\small Finite resonance control}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setcounter{tocdepth}{1}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{9mm}
+\noindent{\large\scshape Transseries research}\par
+\vspace{10mm}
+\noindent{\LARGE\bfseries Finite Resonance Control of\par}
+\vspace{3mm}
+\noindent{\LARGE\bfseries Nonlinear Hahn--Dulac Transseries\par}
+\vspace{7mm}
+\noindent{\large Exact logarithmic slopes, analytic realization,\par
+and accumulation thresholds}\par
+\vspace{10mm}
+\hrule
+\vspace{6mm}
+\noindent Research article prepared for Vladimir Reshetnikov\par
+\noindent 29 September 2026
+\vspace{8mm}
+\begin{abstract}
+We study the nonlinear regular-singular system
+\( (x\,d/dx-A)y=F(x,y) \), where \(A\) has real spectrum and the
+logarithm-free coefficients of \(F\) have support in a positive real
+Hahn semigroup. The support may have finite accumulation points.
+Every choice of the allowed resonant constants determines a unique formal
+solution \(y=\sum_{\gamma>0}x^\gamma P_\gamma(\log x)\).
+Although its logarithmic degrees can be unbounded, their maximal ratio
+to the exponent is determined by finitely many resonant polynomial
+blocks. The determining polynomial blocks depend polynomially on only finitely
+many input coordinates. The slope sublevel sets are algebraic, and the
+maximum is invariant under invertible
+logarithm-free local changes of the dependent variables.
+
+We also prove a universal analytic-realization criterion: every absolutely
+convergent input has a convergent normalized Hahn--Dulac solution precisely
+when the nonresonant semigroup exponents stay uniformly separated from the
+eigenvalues of \(A\). A weighted polynomial norm supplies explicit
+contraction and remainder certificates. Failure of the gap condition
+admits arbitrarily small, logarithm-free counterexamples.
+
+An explicit nonlinear Riccati family with actions \(2-1/n\) separates
+finite resonance control from convergence particularly sharply. Its
+logarithmic slope depends on the single polynomial \(b+ca^2\), whereas
+absolute convergence is equivalent to \(\sum n|t_n|<\infty\). Thus
+coefficients \(t_n=\varepsilon n^{-p}\) have the exact threshold \(p>2\),
+even in the presence of nonlinear feedback. Complete conventional proofs,
+finite symbolic verification, and twelve further research directions are
+provided. Classical Dulac majorants and the repository's linear
+resonance results are acknowledged; historical priority is not asserted.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Scope.} Positive real actions; one logarithm;
+first-order systems with no derivatives inside \(F\). These are human-readable
+proofs, not a Lean formalization or an independently peer-reviewed report.\par
+\vspace{2mm}
+\noindent\small\textbf{Inspected repository snapshot.}\quad\snap
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\tableofcontents
+\newpage
+
+\section{The problem, the contribution, and its boundaries}
+\label{sec:introduction}
+
+Two distinct kinds of finiteness occur in transseries calculations. A
+coefficient can have only finitely many algebraic ancestors even when
+infinitely many exponents lie below it. Conversely, finitely many
+resonances can generate infinitely many nonzero logarithmic powers once
+nonlinear multiplication is allowed. Confusing these two facts leads to
+an inappropriate choice of ambient space and, more seriously, to
+incorrect inferences about convergence.
+
+This article asks a concrete extension question:
+\begin{quote}
+For a nonlinear regular-singular system with well-ordered real actions,
+can all logarithmic growth be determined from finite resonance data,
+and when does the resulting formal solution define an actual convergent
+function?
+\end{quote}
+The answer has three parts. The correct global invariant is a
+\emph{degree-to-action slope}, not a finite bound on logarithmic degree.
+That slope is determined by a finite algebraic certificate. Convergence,
+however, can depend on infinitely many coefficients that do not occur in
+that certificate.
+
+\subsection{Relation to the inspected ProveIt materials}
+The repository's support module contains additive versions of Neumann's
+support and finite-decomposition lemmas, obtained through explicit
+Mathlib bridges \cite{repo-support}. The finite-divisor argument used
+below is a direct application of that established infrastructure.
+The residue-obstruction package treats finite obstructions and
+logarithmic-depth promotion for linear operators
+\cite{repo-residue}. The Hahn--Fuchsian package gives a finite resonance
+matrix for a linear system, a logarithmic-degree filtration, and a sharp
+universal convergence criterion for its normalized gauge
+\cite{repo-fuchsian}.
+
+We do not rebrand those linear results as nonlinear discoveries. Here
+there is generally no finite-dimensional vector space of solutions and
+no single nilpotent matrix whose nilpotency index bounds every
+logarithmic degree. Indeed, the scalar equation in
+Section~\ref{sec:examples} has coefficients of degree exactly \(n\) at
+action \(n\). The replacement proved here is an exact finite-resonance
+formula for the maximal slope, together with nonlinear algebraic
+cancellation loci and invariance under local coordinate changes.
+Our analytic gap measures distances to \emph{eigenvalues}, whereas the
+linear gauge-normalization problem naturally involves
+\emph{eigenvalue differences}. They are different operators.
+% ed. (2026-09-29): an independent second proof of thm:universal in a package of the same batch, and related later packages
+\begin{ednote}
+A package of the same batch, written independently,
+\path{Nonlinear_Hahn_Fuchsian_Algebraic_Convergence_Loci/}, proves the
+universal criterion of Theorem~\ref{thm:universal} (positivity of the
+distance from the positive exponents to the eigenvalues they do not equal)
+for logarithm-free positive solutions and arbitrary complex \(A\) (its
+\texttt{thm:gap}), with genuinely quadratic counterexamples: one criterion,
+two independent proofs, which agree where both apply. That package also
+shows that nonlinear products of separated forcing can create the small
+divisors (its \texttt{thm:hidden}, again with the threshold \(p>2\)); the
+example of Section~\ref{sec:accumulation} instead has accumulating forcing.
+For linear gauges with prescribed edge supports the universal quantifier
+over all of \(\G\) is refined path by path in
+\path{Path_Sensitive_Small_Divisors_Hahn_Fuchsian/}. The exact logarithmic
+degree of linear scalar equations is determined by Smith invariants in
+\path{Exact_Logarithmic_Degree_Smith_Invariants/}, which was filed after
+the snapshot this article read. Theorem~\ref{thm:strata} is a nonlinear
+counterpart of the Hahn--Fuchsian article's question ``Geometry of the
+logarithmic strata'' \cite{repo-fuchsian}, not an answer to it.
+\end{ednote}
+
+\subsection{Established ingredients and proposed additions}
+General fixed-point methods for generalized series are established;
+van der Hoeven proves an implicit-function theorem for Noetherian
+operators \cite{vdh}. Our elementary valuation construction is a
+special-purpose instance, not a new general implicit-function theorem.
+Gontsov and Goryuchkina prove a majorant convergence theorem for
+generalized power series \cite{gg-generalized}.
+
+In their Dulac-series paper, Goryuchkina and Gontsov already obtain a
+linear degree bound in the integer action and use coefficient norms,
+rescaling of the logarithmic variable, and bounds for polynomial Euler
+operators \cite[Lemmas 2--3]{gg-dulac}. Neither the existence of a linear
+degree bound nor that norm method is claimed as new here. We adapt those
+ingredients to finite resonances and possibly non-locally-finite Hahn
+supports.
+
+The proposed additions are the exact maximum formula of
+Theorem~\ref{thm:slope}, its finite algebraic certificate and
+coordinate-invariance refinements, the nonlinear formulation of the
+universal gap equivalence, and the input-specific nonlinear accumulation
+theorem of Section~\ref{sec:accumulation}. These statements are proved
+below. The literature and repository comparison was targeted, not
+exhaustive; independent assessment of historical novelty is still
+needed. In particular, the article does not claim to settle a named
+classical conjecture or all transseries differential equations.
+
+\subsection{A compact statement of the main results}
+Let \(\G\subset[0,\infty)\) be a nontrivial well-ordered additive
+submonoid, with \(\delta=\min\G_{>0}>0\), and let \(A\) be a constant
+complex matrix with real spectrum. Consider
+\begin{equation}\label{eq:model-intro}
+ (D-A)y=F(x,y),\qquad D=x\frac{d}{dx},\qquad
+ F(x,z)=\sum_{\alpha,k}f_{\alpha,k}x^\alpha z^k,
+\end{equation}
+where \(\alpha\in\G\), \(k\in\NN^m\), and
+\(f_{0,0}=f_{0,e_j}=0\). Set
+\(\Reson=\spec(A)\cap\G_{>0}\).
+For a polynomial vector \(P\), write \(\ell(P)=\max(0,\deg P)\),
+with \(\ell(0)=0\). The normalized formal solution satisfies
+\begin{equation}\label{eq:main-slope-intro}
+ \Theta(y):=\sup_{\gamma\in\G_{>0}}
+      \frac{\ell(P_\gamma)}{\gamma}
+ =\max\left(\{0\}\cup
+      \left\{\frac{\ell(P_\lambda)}{\lambda}:\lambda\in\Reson\right\}\right).
+\end{equation}
+Only actions in the finite set
+\begin{equation}\label{eq:certificate-intro}
+ \mathcal D=
+ \bigcup_{\lambda\in\Reson}
+ \{\alpha\in\G:\lambda-\alpha\in\G\}
+\end{equation}
+are needed to calculate the right-hand side. The exact slope is unchanged
+by any logarithm-free local transformation with invertible constant
+linear part.
+
+For convergence, the additional universal condition is
+\begin{equation}\label{eq:gap-intro}
+ g(\G,A):=
+ \inf_{\substack{\gamma\in\G_{>0},\ \lambda\in\spec(A)\\
+                  \gamma\ne\lambda}}
+ \abs{\gamma-\lambda}>0.
+\end{equation}
+When it holds, every absolutely convergent \(F\) has an absolutely
+convergent normalized solution for every allowed collection of resonant
+constants. When it fails, even logarithm-free linear forcing supplies
+arbitrarily small counterexamples. The quantifier ``every'' is essential:
+a particular nonlinear equation can have a convergent solution despite
+\(g(\G,A)=0\).
+
+\section{The Hahn--Dulac algebra and finite divisors}
+\label{sec:support}
+
+\subsection{Orientation, support, and polynomial blocks}
+The independent variable tends to zero, so smaller positive exponents
+are dominant. All well-orderings in this article use the usual order on
+\(\RR\). This is opposite to the descending-monomial convention commonly
+used at positive infinity.
+
+Fix the monoid \(\G\) from the introduction. We use formal sums
+\begin{equation}\label{eq:log-hahn}
+ \mathscr D_\G=
+ \left\{\sum_{\gamma\in\G}x^\gamma P_\gamma(L):
+                  P_\gamma\in\CC[L]\right\},
+ \qquad
+ \mathfrak m_\G=
+ \left\{y\in\mathscr D_\G:P_0=0\right\}.
+\end{equation}
+The coefficients at individual actions are finite polynomials, but their
+degrees need not have a common bound. Thus \(\mathscr D_\G\) is larger
+than the polynomial ring in \(L\) over an ordinary Hahn coefficient
+ring. In the monomial ordering which first compares \(x\)-actions and
+then logarithmic powers, its support remains well based: the first
+nonempty action has only finitely many logarithmic terms.
+
+Define a strong derivation by
+\begin{equation}\label{eq:derivation}
+ D(x^\gamma P(L))=x^\gamma\bigl(\gamma P(L)+P'(L)\bigr),
+ \qquad DL=1.
+\end{equation}
+In the analytic sections, \(L=\Log x\) on a specified logarithmic cover.
+The outer valuation \(\val(y)\) is the least action with nonzero
+polynomial coefficient, and \(\val(0)=+\infty\). For vectors, use the
+least action occurring in any component. This valuation ignores
+logarithmic degree.
+
+\begin{lemma}[Finite decompositions and substitution]\label{lem:finite}
+For each \(\beta\in\G\), the set
+\[
+ \{(\alpha_1,\ldots,\alpha_n)\in\G^n:
+               \alpha_1+\cdots+\alpha_n=\beta\}
+\]
+is finite for every fixed \(n\). If all entries are positive, then
+\(n\le\floor{\beta/\delta}\).
+Consequently, products in \(\mathscr D_\G\) and substitutions
+\(F(x,y)\) with \(y\in\mathfrak m_\G^m\) are coefficientwise well defined.
+\end{lemma}
+\begin{proof}
+For two summands this is Neumann's finite-decomposition lemma. An
+elementary real-order proof is also useful: infinitely many distinct
+pairs with fixed sum would have a subsequence whose first coordinates
+strictly increase, forcing the second coordinates to strictly decrease,
+contrary to well-ordering. Inducting on \(n\) gives the general case.
+If every summand is positive, their sum is at least \(n\delta\).
+
+At action \(\beta\), a monomial \(x^\alpha y^k\) can contribute only
+when \(|k|\le\floor{\beta/\delta}\). There are finitely many such
+multi-indices; for each, all action decompositions are finite. This also
+allows \(\alpha=0\). Each contribution is a finite product of
+polynomials in \(L\), so the resulting block is a polynomial.
+\end{proof}
+
+The same argument verifies the Leibniz rule for \(D\): every coefficient
+comparison involves a finite sum. No interchange of analytic limits is
+involved at this stage.
+
+\begin{definition}[Divisor set]\label{def:divisor}
+For \(\beta\in\G\), define
+\begin{equation}\label{eq:divisor}
+ \Div_\G(\beta)=\{\alpha\in\G:\beta-\alpha\in\G\}.
+\end{equation}
+An action \(\alpha\) in this set is called a divisor action of \(\beta\).
+This is additive divisibility, not divisibility of real numbers.
+\end{definition}
+
+\begin{lemma}[Finite ancestry]\label{lem:divisor}
+The set \(\Div_\G(\beta)\) is finite. If \(\alpha\) divides \(\beta\)
+and \(\eta\) divides \(\alpha\), then \(\eta\) divides \(\beta\).
+Every partial sum in a decomposition of \(\beta\) into monoid elements
+is a divisor action of \(\beta\).
+\end{lemma}
+\begin{proof}
+The map \(\alpha\mapsto(\alpha,\beta-\alpha)\) is a bijection to the
+finite two-factor antidiagonal from Lemma~\ref{lem:finite}. Transitivity
+follows from
+\(\beta-\eta=(\beta-\alpha)+(\alpha-\eta)\in\G\).
+The complementary partial sum proves the final assertion.
+\end{proof}
+
+\begin{remark}[Finite divisibility is not local finiteness]\label{rem:not-local}
+For \(E=\{2-1/n:n\ge1\}\), the generated monoid
+\(\G=\langle E\rangle\) is well ordered, although
+\(\G\cap[0,2]\) is infinite. To see the well-ordering, each fixed
+finite sumset of \(E\) is well ordered by Neumann's support lemma, and
+a bounded interval meets only finitely many possible word lengths,
+because \(\min E=1\). Nevertheless
+\(\Div_\G(2)=\{0,1,2\}\).
+This example is the main reason to formulate certificates with divisor
+sets rather than with all actions below a cutoff.
+\end{remark}
+
+\section{The normalized nonlinear formal solution}
+\label{sec:formal}
+
+\subsection{Equation and normalization data}
+Fix an integer \(m\ge1\), and write \(\NN=\{0,1,2,\ldots\}\).
+Write the generalized eigenspace decomposition as
+\[
+ \CC^m=\bigoplus_{\lambda\in\spec(A)}V_\lambda,
+ \qquad A|_{V_\lambda}=\lambda I+N_\lambda,
+ \qquad N_\lambda^{s_\lambda}=0,
+\]
+where \(s_\lambda\) is the largest Jordan block size for \(\lambda\).
+Let \(\Pi_\lambda\) denote the corresponding projection. The input is
+\begin{equation}\label{eq:model}
+ (D-A)y=F(x,y),\qquad
+ F(x,z)=\sum_{\alpha\in\G,\,k\in\NN^m}
+            f_{\alpha,k}x^\alpha z^k,
+ \qquad f_{0,0}=f_{0,e_j}=0.
+\end{equation}
+The notation \(z^k\) means \(z_1^{k_1}\cdots z_m^{k_m}\).
+Every \(f_{\alpha,k}\) is a vector in \(\CC^m\).
+No convergence hypothesis is imposed yet.
+
+The vanishing conditions have a precise role: constant forcing has
+positive action, and all linear terms of action zero have already been
+absorbed into \(A\). Pure nonlinear terms at action zero remain allowed.
+For each \(\lambda\in\Reson=\spec(A)\cap\G_{>0}\), choose
+\(c_\lambda\in V_\lambda\) and impose
+\begin{equation}\label{eq:normalization}
+ \Pi_\lambda P_\lambda(0)=c_\lambda.
+\end{equation}
+These are constants of the polynomial block at a resonant action; they
+are not values of the analytic solution at \(x=0\).
+
+\subsection{The polynomial Euler solver}
+\begin{lemma}[One generalized eigenspace]\label{lem:solver}
+Let \(N^s=0\), let \(Q\) be a polynomial vector, and consider
+\begin{equation}\label{eq:block}
+ (aI-N+\dd)P=Q.
+\end{equation}
+If \(a\ne0\), put \(B=(aI-N)^{-1}\). The unique polynomial solution is
+\begin{equation}\label{eq:nonres-solver}
+ P=\sum_{j=0}^{\deg Q}(-1)^j B^{j+1}\dd^jQ,
+\end{equation}
+with the zero solution when \(Q=0\). A nonzero \(Q\) and its solution
+have the same degree.
+
+If \(a=0\), the unique solution with \(P(0)=c\) is
+\begin{equation}\label{eq:res-solver}
+ P=e^{NL}c+\sum_{j=0}^{s-1}N^j I_L^{j+1}Q,
+ \qquad I_LQ(L)=\int_0^LQ(t)\,dt.
+\end{equation}
+In this case
+\(\ell(P)\le\max(s-1,\ell(Q)+s)\).
+\end{lemma}
+\begin{proof}
+When \(a\ne0\), the inverse of \(aI-N\) exists by nilpotence.
+The operators \(B\) and \(\dd\) commute, and differentiation is
+nilpotent on every bounded-degree polynomial space. Multiplying the
+finite geometric sum in \eqref{eq:nonres-solver} by
+\((aI-N)(I+B\dd)\) gives \(Q\). Its leading coefficient is the
+invertible image under \(B\) of the leading coefficient of \(Q\), so
+the degree is unchanged. A nonzero polynomial in the kernel would have
+a highest coefficient annihilated by \(aI-N\), which is impossible.
+
+At resonance, the homogeneous solution with constant term \(c\) is
+\(e^{NL}c\), a finite polynomial. Differentiating the sum in
+\eqref{eq:res-solver} and subtracting its product by \(N\) telescopes:
+all terms cancel except \(Q\), because \(N^s=0\). Every integral in
+that sum vanishes at zero. The difference of two normalized solutions
+solves \(P'=NP\) with zero constant term, and its successive
+coefficients are therefore zero. Integration raises degree by one and
+at most \(s\) integrations occur, proving the bound.
+\end{proof}
+
+Apply this lemma at action \(\gamma\) with \(a=\gamma-\lambda\) on
+each generalized eigenspace. Let \(S\) be the resulting right inverse
+of \(D-A\), with zero resonant constants. It does not introduce new
+actions. Define the homogeneous seed
+\begin{equation}\label{eq:seed}
+ H_c=\sum_{\lambda\in\Reson}x^\lambda e^{N_\lambda L}c_\lambda.
+\end{equation}
+The desired equation is equivalent to
+\begin{equation}\label{eq:fixedpoint}
+ y=H_c+S F(x,y).
+\end{equation}
+
+\begin{theorem}[Existence, uniqueness, and finite coefficient dependence]
+\label{thm:formal}
+For every input \eqref{eq:model} and every collection
+\((c_\lambda)_{\lambda\in\Reson}\), there is a unique solution
+\(y\in\mathfrak m_\G^m\) satisfying \eqref{eq:normalization}.
+Every individual block \(P_\gamma\) is obtained by a finite calculation
+from earlier blocks and finitely many input coefficients.
+No separation condition on the nonresonant divisors is required.
+\end{theorem}
+\begin{proof}
+At action \(\gamma\), every occurrence of an unknown block in
+\([x^\gamma]F(x,y)\) has action strictly below \(\gamma\).
+For a positive-action linear term this follows by subtracting that
+positive action. For a nonlinear term, at least one other factor has
+positive action. Constant forcing has no unknown block. Thus
+well-founded recursion on \(\G_{>0}\), using
+Lemma~\ref{lem:solver}, constructs a polynomial block at every action.
+Lemma~\ref{lem:finite} makes each step finite, and the prescribed
+resonant constants make every step unique.
+
+Equivalently, if \(u,v\) have positive action, expansion of a difference
+of products gives
+\begin{equation}\label{eq:valuation-gain}
+ \val\bigl(F(x,u)-F(x,v)\bigr)
+      \ge\val(u-v)+\delta.
+\end{equation}
+Each linear coefficient has positive action; each nonlinear difference
+has at least one additional positive-action factor. Since \(S\) does
+not lower actions, the iteration
+\(y^{(0)}=0\), \(y^{(n+1)}=H_c+SF(x,y^{(n)})\) has differences whose
+valuations tend to infinity. Hence each fixed coefficient stabilizes.
+The support is contained in the already well-ordered set \(\G\), so
+the stabilized coefficients define a valid formal sum. The same
+valuation gain proves uniqueness. Arbitrarily small nonzero numbers
+\(\gamma-\lambda\) cause no formal difficulty: each individual
+polynomial calculation divides by only finitely many fixed nonzero
+numbers.
+\end{proof}
+
+\begin{remark}[Which solutions are being classified]
+The theorem classifies positive-action solutions supported in the chosen
+\(\G\). A positive eigenvalue outside \(\G\) does not supply a free
+homogeneous action in this class. One may enlarge the monoid to include
+additional positive eigenvalues when appropriate. No assertion is made
+about solutions with action zero, negative actions, inverse logarithms,
+or other transseries scales.
+\end{remark}
+
+\section{A global degree budget and the exact resonance slope}
+\label{sec:slope}
+
+\subsection{A coarse budget that closes under nonlinear substitution}
+For \(\gamma\in\G_{>0}\), define
+\begin{equation}\label{eq:budget}
+ b(\gamma)=\sum_{\substack{\lambda\in\Reson\\\lambda\le\gamma}}
+                  s_\lambda,
+ \qquad h(\gamma)=\floor{\gamma/\delta}\,b(\gamma),
+ \qquad C=\frac{1}{\delta}\sum_{\lambda\in\Reson}s_\lambda.
+\end{equation}
+Set \(h(0)=0\). Empty sums are zero. These bounds depend only on the
+ambient monoid and the constant matrix, not on the coefficients or the
+chosen resonant constants.
+
+\begin{lemma}[Superadditivity and a resonance margin]\label{lem:budget}
+The function \(h\) is superadditive on \(\G\). If
+\(\alpha+\gamma_1+\cdots+\gamma_n=\lambda\in\Reson\), where all
+\(\gamma_i>0\), and the term is allowed by \eqref{eq:model}, then
+every \(\gamma_i<\lambda\) and
+\begin{equation}\label{eq:res-margin}
+ \sum_i h(\gamma_i)\le h(\lambda)-s_\lambda.
+\end{equation}
+For \(n=0\), the same degree margin holds for constant forcing.
+\end{lemma}
+\begin{proof}
+For positive \(u,v\), monotonicity of \(b\) and superadditivity of the
+floor give
+\[
+ h(u)+h(v)
+ \le\bigl(\floor{u/\delta}+\floor{v/\delta}\bigr)b(u+v)
+ \le h(u+v).
+\]
+The case involving zero is immediate. At a resonant output action
+\(\lambda\), the strict inequality \(\gamma_i<\lambda\) was proved
+in Theorem~\ref{thm:formal}. Consequently
+\(b(\gamma_i)\le b(\lambda)-s_\lambda\), and
+\[
+ \sum_i h(\gamma_i)
+ \le\floor{\lambda/\delta}\bigl(b(\lambda)-s_\lambda\bigr)
+ \le h(\lambda)-s_\lambda,
+\]
+because \(\floor{\lambda/\delta}\ge1\). Constant forcing has degree
+zero, while the last expression is nonnegative.
+\end{proof}
+
+\begin{proposition}[Uniform linear degree bound]\label{prop:coarse}
+The normalized solution satisfies
+\begin{equation}\label{eq:coarse}
+ \ell(P_\gamma)\le h(\gamma)\le C\gamma
+ \qquad(\gamma\in\G_{>0}).
+\end{equation}
+In particular, no resonant action implies a logarithm-free solution.
+\end{proposition}
+\begin{proof}
+Proceed by well-founded induction on the action. At a nonresonant
+action, the degrees of all products in the source are bounded by the
+sum of the input degree budgets, hence by \(h(\gamma)\); the
+polynomial solver does not increase degree. At action
+\(\lambda\in\Reson\), Lemma~\ref{lem:budget} bounds the source
+degree by \(h(\lambda)-s_\lambda\). The resonant solver increases it
+by at most \(s_\lambda\), and the homogeneous seed has degree at most
+\(s_\lambda-1\le h(\lambda)\). Other generalized eigenspaces at the
+same action use nonresonant solvers. This completes the induction.
+The inequality \(h(\gamma)\le C\gamma\) follows directly from
+\eqref{eq:budget}.
+\end{proof}
+
+The special resonance margin in \eqref{eq:res-margin} is important in
+the analytic proof. A resonant inverse does \emph{not} map every
+polynomial of degree at most \(h(\lambda)\) back into that same degree
+space. It maps the smaller, naturally occurring source space into it.
+
+\subsection{The exact finite-resonance maximum}
+\begin{definition}[Maximal logarithmic slope]\label{def:slope}
+For a positive-action vector series with finite block polynomials, put
+\begin{equation}\label{eq:slope-definition}
+ \Theta(y)=\sup_{\gamma\in\G_{>0}}
+                     \frac{\ell(P_\gamma)}{\gamma}\in[0,\infty].
+\end{equation}
+Zero blocks contribute zero. This is a maximum over all actions when
+it is attained; it is not a limit superior as the action tends to
+infinity.
+\end{definition}
+
+\begin{theorem}[Exact resonance control]\label{thm:slope}
+For the normalized solution of \eqref{eq:model},
+\begin{equation}\label{eq:exact-slope}
+ \boxed{\displaystyle
+ \Theta(y)=\max\left(\{0\}\cup
+  \left\{\frac{\ell(P_\lambda)}{\lambda}:\lambda\in\Reson\right\}\right).}
+\end{equation}
+Thus the optimal constant in
+\(\ell(P_\gamma)\le\theta\gamma\) is attained at a resonant action
+unless it is zero. The formula uses the actual resonant polynomials,
+including all cancellations.
+\end{theorem}
+\begin{proof}
+Let \(\theta\) denote the right-hand side, which is finite by
+Proposition~\ref{prop:coarse}. We prove
+\(\ell(P_\gamma)\le\theta\gamma\) by well-founded induction.
+At a resonant action this is true by the definition of \(\theta\).
+At a nonresonant action, each source product has degree at most
+\[
+ \sum_i\ell(P_{\gamma_i})
+ \le\theta\sum_i\gamma_i
+ \le\theta\gamma,
+\]
+since the coefficient action \(\alpha\) is nonnegative.
+Logarithm-free forcing has degree zero. Sums cannot increase the
+maximum degree, and the nonresonant solver preserves or lowers it.
+This proves the upper bound at every action. The reverse inequality
+follows by taking the supremum over the subset of resonant actions.
+\end{proof}
+
+\begin{corollary}[A finite test for logarithm-free solutions]
+\label{cor:logfree}
+The normalized solution is logarithm free if and only if
+\(P_\lambda\) is constant for every \(\lambda\in\Reson\).
+\end{corollary}
+\begin{proof}
+All degrees vanish if and only if \(\Theta(y)=0\), and
+Theorem~\ref{thm:slope} characterizes that condition.
+\end{proof}
+
+\begin{remark}[What the maximum does not measure]
+A finite solution \(y=xL\) has \(\Theta(y)=1\), even though it has no
+large-action tail. Hence \eqref{eq:exact-slope} does not claim that
+\(\deg P_\gamma/\gamma\) approaches the maximum infinitely often.
+Nor does \(\Theta\) determine a convergence radius or coefficient
+size. These distinctions are substantive, not just terminological.
+\end{remark}
+
+\section{Finite algebraic certificates and cancellation strata}
+\label{sec:certificate}
+
+Suppose \(\Reson\ne\varnothing\), let
+\(\Lambda=\max\Reson\), and define \(\mathcal D\) by
+\eqref{eq:certificate-intro}. When \(\Reson=\varnothing\), the slope
+is identically zero and the certificate may be taken empty.
+
+\begin{theorem}[Finite input certificate]\label{thm:certificate}
+Fix \(A\) and \(\G\). All resonant polynomials \(P_\lambda\), and
+therefore \(\Theta(y)\), depend only on the resonant constants and the
+finite collection of source coordinates
+\begin{equation}\label{eq:finite-input}
+ f_{\alpha,k},\qquad
+ \alpha\in\mathcal D,\quad |k|\le\floor{\Lambda/\delta}.
+\end{equation}
+Each coefficient of each \(P_\lambda\) is a polynomial in these
+coordinates and the coordinates of \(c_\lambda\), with constants
+depending on the fixed matrix and actions. The resonant polynomials can
+be computed by recursion over the finite set \(\mathcal D\setminus\{0\}\).
+\end{theorem}
+\begin{proof}
+The set \(\mathcal D\) is finite by Lemma~\ref{lem:divisor}. If a
+source monomial contributes at action \(\beta\in\mathcal D\), each
+of its input actions and its coefficient action divides \(\beta\).
+Transitivity of divisibility places all of them in \(\mathcal D\).
+Thus the coefficient recursion on \(\mathcal D\) never requires an
+unknown block outside \(\mathcal D\). The arity bound in
+Lemma~\ref{lem:finite} is at most \(\floor{\Lambda/\delta}\).
+
+The source calculation uses only additions and multiplications. The
+polynomial Euler solvers are linear in their source and normalization
+constant, and divide only by fixed nonzero numbers such as
+\(\gamma-\lambda\) and fixed positive integers. Induction over the
+finite ordered set \(\mathcal D\setminus\{0\}\) proves polynomial
+dependence. Including unused coordinates in \eqref{eq:finite-input}
+does not change the assertion.
+\end{proof}
+
+\begin{theorem}[Algebraic slope strata]\label{thm:strata}
+For fixed \(A\), \(\G\), and any real \(q\ge0\), the condition
+\(\Theta(y)\le q\) is equivalent to the finite set of polynomial
+equations
+\begin{equation}\label{eq:strata}
+ [L^d]P_\lambda=0
+ \quad\text{for every }\lambda\in\Reson
+ \text{ and integer }q\lambda<d\le h(\lambda).
+\end{equation}
+In particular, logarithm-free branches are characterized by finite
+polynomial equations in the source parameters and resonant constants.
+The possible slope values belong to the finite set
+\begin{equation}\label{eq:possible-slopes}
+ \{0\}\cup
+ \left\{\frac d\lambda:
+          \lambda\in\Reson,\ 1\le d\le h(\lambda),\ d\in\NN\right\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:slope}, the inequality is exactly
+\(\ell(P_\lambda)\le q\lambda\) at each resonance. The coarse
+budget cuts off every polynomial at \(h(\lambda)\), so this is the
+finite coefficient-vanishing condition \eqref{eq:strata}.
+Theorem~\ref{thm:certificate} makes every displayed condition
+polynomial in finite input coordinates. The exact maximum is either
+zero or the ratio of an integer degree to a resonant action, which
+gives \eqref{eq:possible-slopes}.
+\end{proof}
+
+The sublevel sets are algebraic in the finite parameter space. Exact
+slope strata are obtained by subtracting smaller sublevel sets; no
+claim that they are linear spaces is intended. An arbitrarily large
+or infinite modification of source coordinates outside
+\eqref{eq:finite-input} leaves the slope unchanged. Such a modification
+can still change convergence, as Section~\ref{sec:accumulation} proves.
+
+\subsection{A finite algorithm when divisor data are available}
+A practical implementation receives an exact description of \(A\),
+the resonances, and the finite divisor set \(\mathcal D\). Sort the
+positive elements of \(\mathcal D\), compute the allowed source
+coefficient at each action using already computed blocks, apply
+\eqref{eq:nonres-solver} or \eqref{eq:res-solver}, and retain the
+resonant blocks. Their coefficients give both the exact slope and the
+polynomial equations for each stratum. This recursion terminates
+because \(\mathcal D\) is finite, even if infinitely many ambient
+actions lie below \(\Lambda\).
+
+There is a necessary distinction between a \emph{finite mathematical
+certificate} and a \emph{uniform procedure for discovering it}. With
+arbitrary real exponents or an opaque infinite presentation of \(\G\),
+we have not supplied an algorithm deciding membership, equality, or
+additive divisibility. The finite routine is effective for exact
+presentations that provide these data, such as a supplied rational
+prefix known to be divisor closed. It must not silently replace that
+hypothesis by an arbitrary finite truncation.
+
+\section{Invariance under logarithm-free coordinate changes}
+\label{sec:invariance}
+
+Consider a transformation of dependent variables
+\begin{equation}\label{eq:coordinate}
+ y=H(x,z)=Bz+G(x,z),\qquad B\in\operatorname{GL}_m(\CC),
+\end{equation}
+where \(G\) has logarithm-free coefficients supported in \(\G\), and
+its constant and linear terms of action zero vanish. Positive-action
+translations and linear terms are allowed. No singular factor such as
+\(x^a\) is permitted in the constant linear part.
+
+\begin{lemma}[Formal inverse and slope monotonicity]\label{lem:coordinate}
+The transformation \eqref{eq:coordinate} has a formal inverse of the
+same type, with constant linear part \(B^{-1}\). For every
+positive-action series \(z\) of finite slope,
+\begin{equation}\label{eq:monotone-slope}
+ \Theta(H(x,z))\le\Theta(z).
+\end{equation}
+\end{lemma}
+\begin{proof}
+For the inverse, solve
+\(z=B^{-1}y-B^{-1}G(x,z)\) iteratively. Assign weight
+\(\alpha+\delta|k|\) to a monomial \(x^\alpha y^k\).
+Every term beyond the invertible constant linear part has positive
+additional weight in differences: a positive coefficient action or
+an additional dependent-variable factor contributes at least
+\(\delta\). The same coefficient-stabilization argument as in
+Theorem~\ref{thm:formal} therefore constructs the inverse. At a fixed
+coefficient \((\alpha,k)\), finite decompositions and the weight
+bound ensure that only finitely many terms occur. No logarithms are
+introduced.
+
+Let \(\theta=\Theta(z)\). A substituted product contributing at
+action \(\gamma=\alpha+\sum_i\gamma_i\) has logarithmic degree at
+most \(\theta\sum_i\gamma_i\le\theta\gamma\). The coefficient
+itself has no logarithms. Sums and the constant matrix \(B\) do not
+increase the bound, proving \eqref{eq:monotone-slope}.
+\end{proof}
+
+\begin{theorem}[Coordinate invariance of the exact slope]
+\label{thm:invariant}
+For every transformation \eqref{eq:coordinate} and every
+positive-action series \(z\) of finite slope,
+\begin{equation}\label{eq:invariance}
+ \boxed{\Theta(H(x,z))=\Theta(z).}
+\end{equation}
+In particular, the finite-resonance maximum is a genuine invariant of
+a normalized solution under this class of local coordinate changes.
+\end{theorem}
+\begin{proof}
+Apply Lemma~\ref{lem:coordinate} first to \(H\), and then to its
+logarithm-free inverse. The first application ensures the transformed
+series still has finite slope. The second reverses the inequality.
+\end{proof}
+
+For compatible analytic transformations, this is also an invariant of
+the convergent expansions of the transformed functions. Differentiating
+\eqref{eq:coordinate} shows that the transformed differential equation
+again has a logarithm-free nonlinear remainder and constant linear
+matrix \(B^{-1}AB\). The theorem itself, however, only needs the formal
+transformation and does not require convergence.
+
+The restrictions are essential. A singular shearing
+\(y=x^az\) shifts actions and can change every degree-to-action ratio.
+A change of the independent variable rescales actions. A coordinate
+change containing logarithms can insert them directly. None of those
+operations belongs to \eqref{eq:coordinate}.
+
+\section{A sharp universal criterion for analytic realization}
+\label{sec:analytic}
+
+\subsection{Absolute input convergence and the theorem}
+Choose a Jordan basis once and use the vector \(\ell^1\)-norm in that
+basis, with the induced matrix norm. Suppose that, for some \(R,S>0\),
+\begin{equation}\label{eq:input-norm}
+ \norm{F}_{R,S}:=
+ \sum_{\alpha\in\G,\,k\in\NN^m}
+       \norm{f_{\alpha,k}}R^\alpha S^{|k|}<\infty.
+\end{equation}
+This is an absolute coefficient condition, not merely a statement that
+some function has the indicated formal expansion. It gives normally
+convergent generalized powers in \(x\) and an analytic power series in
+\(z\) on smaller domains.
+
+For \(P(L)=\sum_dp_dL^d\), put
+\begin{equation}\label{eq:polynorm}
+ \norm{P}_T=\sum_d\norm{p_d}T^d,
+ \qquad
+ \norm{y}_{r,T}=\sum_{\gamma\in\G_{>0}}r^\gamma\norm{P_\gamma}_T,
+ \qquad r,T>0.
+\end{equation}
+For vector-valued series the second norm is the sum of the component
+norms. A solution is called \emph{coefficient-absolutely convergent}
+if \(\norm{y}_{r,T}<\infty\) for some \(r,T>0\). We will prove that
+this supplies actual convergent functions on sufficiently small
+logarithmic sectors.
+
+\begin{theorem}[Universal analytic realization]\label{thm:universal}
+For fixed \(\G\) and \(A\), the following are equivalent.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The nonresonant gap \(g(\G,A)\) in \eqref{eq:gap-intro} is positive.
+\item For every \(F\) satisfying \eqref{eq:model} and
+\eqref{eq:input-norm}, and every allowed collection of resonant
+constants, the normalized formal solution is coefficient-absolutely
+convergent.
+\end{enumerate}
+If the gap is positive, explicit sufficient norm inequalities for a
+convergent solution are given in \eqref{eq:contraction-conditions}.
+If it vanishes, counterexamples can be chosen with no dependence on
+\(y\), with all resonant constants zero, and with arbitrarily small
+input norm. Their formal solutions are logarithm free.
+\end{theorem}
+
+The universal quantifier is over all coefficient series supported in
+\(\G\), not just those supported in a selected proper generating set.
+The theorem concerns the specific normalized expansion; it does not
+say that a differential equation has no other analytic interpretation
+when that expansion diverges.
+
+\subsection{The degree-budget Banach space}
+For fixed \(r,T\), let \(\mathcal X_{r,T}\) be the space of series
+with positive actions, finite norm \eqref{eq:polynorm}, and
+\(\deg P_\gamma\le h(\gamma)\). Zero polynomials are always allowed.
+It is a Banach space: it is a closed coordinate subspace of the
+weighted \(\ell^1\)-space indexed by the pairs
+\((\gamma,d)\), \(0\le d\le h(\gamma)\).
+The scalar version is closed under multiplication, by
+superadditivity of \(h\), and
+\begin{equation}\label{eq:norm-product}
+ \norm{uv}_{r,T}\le\norm{u}_{r,T}\norm{v}_{r,T}.
+\end{equation}
+
+We need a slightly smaller source space at resonances. Let
+\(\mathcal Q_{r,T}\) consist of positive-action series \(Q\) with
+\[
+ \deg Q_\gamma\le h(\gamma)\quad(\gamma\notin\Reson),
+ \qquad
+ \deg Q_\lambda\le h(\lambda)-s_\lambda
+                    \quad(\lambda\in\Reson).
+\]
+These inequalities apply to the full vector polynomial. The source
+\(F(x,y)\) belongs to \(\mathcal Q_{r,T}\) whenever the substitution
+converges and \(y\in\mathcal X_{r,T}\), by the resonance margin in
+Lemma~\ref{lem:budget}. The same holds for a difference of two such
+sources. This domain restriction prevents an illicit use of a bounded
+resonant inverse on a degree space that it does not preserve.
+
+\subsection{An explicit uniform Euler-inverse bound}
+Define
+\begin{equation}\label{eq:analytic-constants}
+ \Lambda_0=\max_{\lambda\in\spec(A)}|\lambda|,
+ \quad M=\max_{\lambda\in\spec(A)}\norm{N_\lambda},
+ \quad B_0=4(\Lambda_0+M+1).
+\end{equation}
+Choose
+\begin{equation}\label{eq:T-choice}
+ T\ge\max(1,8C),\qquad D_0=\ceil{CB_0}.
+\end{equation}
+Assume \(g=g(\G,A)>0\), and set
+\begin{align}
+ M_0&=\max_{\lambda\in\spec(A)}
+      \sum_{j=0}^{s_\lambda-1}
+         \norm{N_\lambda}^{j}g^{-(j+1)},
+       \label{eq:Mzero}\\
+ K_{\mathrm{low}}&=
+      \sum_{j=0}^{D_0}M_0^{j+1}
+           \frac{D_0!}{(D_0-j)!\,T^j},
+       \label{eq:Klow}\\
+ K_{\mathrm{res}}&=
+      \max\left(\{0\}\cup
+      \left\{\sum_{j=0}^{s_\lambda-1}
+           \norm{N_\lambda}^{j}\frac{T^{j+1}}{(j+1)!}
+           :\lambda\in\Reson\right\}\right),
+       \label{eq:Kres}\\
+ K&=\max\{K_{\mathrm{low}},K_{\mathrm{res}},4/B_0\}.
+       \label{eq:K}
+\end{align}
+Powers of a matrix norm with exponent zero are interpreted as one,
+also when the matrix is zero. These are deliberately conservative
+constants; they are useful because all dependence is explicit.
+
+\begin{lemma}[Bounded right inverse]\label{lem:bounded}
+For every \(r>0\), the zero-normalized polynomial solver defines a
+bounded linear map
+\[
+ S:\mathcal Q_{r,T}\longrightarrow\mathcal X_{r,T},
+ \qquad \norm{SQ}_{r,T}\le K\norm{Q}_{r,T}.
+\]
+\end{lemma}
+\begin{proof}
+All estimates are coefficientwise in the action. On polynomials of
+degree at most \(d\),
+\begin{equation}\label{eq:derivative-norm}
+ \norm{\dd P}_T\le\frac dT\norm{P}_T,
+ \qquad
+ \norm{\dd^jP}_T\le
+     \frac{d!}{(d-j)!\,T^j}\norm{P}_T
+       \quad(0\le j\le d).
+\end{equation}
+The integrals with zero constant term satisfy
+\begin{equation}\label{eq:integral-norm}
+ \norm{I_L^kP}_T\le\frac{T^k}{k!}\norm{P}_T,
+\end{equation}
+since the coefficient multiplier is
+\(d!/(d+k)!\le1/k!\).
+
+For a nonresonant block with action \(\gamma<B_0\), the finite
+nilpotent inverse has norm
+\[
+ \norm{((\gamma-\lambda)I-N_\lambda)^{-1}}
+ \le\sum_{j=0}^{s_\lambda-1}
+        \norm{N_\lambda}^{j}|\gamma-\lambda|^{-(j+1)}
+ \le M_0.
+\]
+The degree is at most \(C\gamma\le D_0\). Inserting
+\eqref{eq:derivative-norm} into \eqref{eq:nonres-solver} gives
+\(K_{\mathrm{low}}\).
+
+For \(\gamma\ge B_0\), put \(a=\gamma-\lambda\). We have
+\(a\ge3\gamma/4\), \(\norm{N_\lambda}\le\gamma/4\), and
+\(\norm{\dd}\le h(\gamma)/T\le\gamma/8\). Thus, on the finite
+polynomial space,
+\[
+ \norm{(aI+\dd-N_\lambda)^{-1}}
+ \le\frac{1}{a-\norm{\dd-N_\lambda}}
+ \le\frac{8}{3\gamma}\le\frac4\gamma\le\frac4{B_0}.
+\]
+The displayed inverse follows from a norm-convergent Neumann series;
+it equals the polynomial inverse because that inverse is unique.
+No resonance occurs at these large actions, since all eigenvalues have
+absolute value at most \(\Lambda_0<B_0\).
+
+At a resonant block, \eqref{eq:res-solver} with zero constant and
+\eqref{eq:integral-norm} give \(K_{\mathrm{res}}\). The source
+margin makes its output degree at most \(h(\lambda)\).
+Other eigenspaces at that action are covered by the nonresonant
+estimate. In a direct-sum \(\ell^1\)-norm, the maximum of the block
+bounds bounds the full operator. Finally multiply by \(r^\gamma\)
+and sum over actions. Absolute summability justifies this last step.
+\end{proof}
+
+The large-action inverse compensates for the growth of polynomial
+degree; the finite-action gap controls possible small divisors. These
+are separate parts of the proof. The method is an adaptation of the
+classical polynomial-norm approach acknowledged in
+Section~\ref{sec:introduction}, rather than a claim that weighted
+Dulac majorants are themselves new.
+
+\subsection{Quantitative contraction and sufficiency}
+For \(0<r<R\) and \(0<\eta<S\), define
+\begin{align}
+ \Phi_0(r)&=\sum_{\alpha>0}\norm{f_{\alpha,0}}r^\alpha,
+                  \label{eq:forcing-majorant}\\
+ L_F(r,\eta)&=
+   \sum_{\substack{\alpha\in\G,\,k\in\NN^m\\|k|\ge1}}
+   |k|\norm{f_{\alpha,k}}r^\alpha\eta^{|k|-1}.
+                  \label{eq:lipschitz-majorant}
+\end{align}
+These quantities are finite on smaller radii. In the ball
+\(\norm{y}_{r,T},\norm{z}_{r,T}\le\eta\), the usual telescoping
+product identity and \eqref{eq:norm-product} imply
+\begin{equation}\label{eq:majorant-Lipschitz}
+ \norm{F(x,y)-F(x,z)}_{r,T}
+ \le L_F(r,\eta)\norm{y-z}_{r,T}.
+\end{equation}
+The finite homogeneous seed satisfies
+\begin{equation}\label{eq:seed-norm}
+ \norm{H_c}_{r,T}
+ \le\sum_{\lambda\in\Reson}
+        r^\lambda e^{\norm{N_\lambda}T}\norm{c_\lambda}.
+\end{equation}
+
+\begin{proposition}[A usable contraction certificate]
+\label{prop:contraction}
+Choose \(T,K\) as above. Suppose \(0<r<R\), \(0<\eta<S\), and
+\(0\le\kappa<1\) satisfy
+\begin{equation}\label{eq:contraction-conditions}
+ \boxed{\begin{aligned}
+ K L_F(r,\eta)&\le\kappa,\\
+ \norm{H_c}_{r,T}+K\Phi_0(r)&\le(1-\kappa)\eta.
+ \end{aligned}}
+\end{equation}
+Then the normalized solution belongs to \(\mathcal X_{r,T}\) and
+has norm at most \(\eta\). Such choices exist for every input
+\eqref{eq:input-norm} and every fixed collection \(c_\lambda\).
+\end{proposition}
+\begin{proof}
+On the closed radius-\(\eta\) ball in \(\mathcal X_{r,T}\), define
+\(\mathcal T(y)=H_c+SF(x,y)\). The source lies in
+\(\mathcal Q_{r,T}\), as proved above. Lemma~\ref{lem:bounded} and
+\eqref{eq:majorant-Lipschitz} show that \(\mathcal T\) has
+Lipschitz constant at most \(\kappa\). Moreover
+\[
+ \norm{\mathcal T(y)}_{r,T}
+ \le\norm{H_c}_{r,T}+K\Phi_0(r)
+              +K L_F(r,\eta)\eta\le\eta.
+\]
+The Banach contraction theorem gives a unique fixed point in this
+ball. Its coefficient identities and resonant constants are exactly
+those of Theorem~\ref{thm:formal}, so it is the normalized formal
+solution already constructed.
+
+To choose the radii, first make \(\eta>0\) small. The action-zero
+part of \(L_F(r,\eta)\) then tends to zero because it begins at
+nonlinear degree two. For this fixed \(\eta<S\), every
+positive-action part of \(L_F(r,\eta)\) tends to zero as
+\(r\downarrow0\), by dominated convergence using the absolute input
+norm. The same holds for \(\Phi_0(r)\) and the finite positive-action
+seed norm. Choose \(r\) small enough to satisfy both inequalities,
+for example with \(\kappa=1/2\). Derivative majorants converge at
+\(\eta<S\) because \(n(\eta/S)^{n-1}\) is bounded. This verifies
+all uses of dominated convergence and completes the existence proof.
+\end{proof}
+
+This proves the sufficient direction of
+Theorem~\ref{thm:universal}. Notice that the resonant constants need
+not be small: their positive actions make the seed small after the
+radius in \(x\) is reduced.
+
+\subsection{Necessity and the direction of accumulation}
+\begin{lemma}[Gap failure is left accumulation]\label{lem:gap-failure}
+The gap \(g(\G,A)\) is zero if and only if some positive eigenvalue
+\(\lambda\) is a left accumulation point of \(\G\).
+The eigenvalue itself need not belong to \(\G\).
+\end{lemma}
+\begin{proof}
+Left accumulation gives arbitrarily small nonzero distances and hence
+a zero gap. Conversely, a sequence of distances tending to zero has,
+after passage to a subsequence, one fixed eigenvalue because the
+spectrum is finite. Nonpositive eigenvalues cannot occur: positive
+actions are bounded below by \(\delta\). Infinitely many distinct
+actions approaching the eigenvalue from above would contain a
+strictly decreasing subsequence, impossible in a well-ordered set.
+The remaining subsequence approaches from below and may be chosen
+strictly increasing.
+\end{proof}
+
+\begin{proof}[Proof of necessity in Theorem~\ref{thm:universal}]
+Let \(\lambda>0\) be a left accumulation point as in the lemma.
+Choose distinct \(\gamma_n\uparrow\lambda\), with
+\(\varepsilon_n=\lambda-\gamma_n\le2^{-n}\), and an eigenvector
+\(v\ne0\) satisfying \(Av=\lambda v\). For any nonzero scalar
+\(\tau\), take the source
+\begin{equation}\label{eq:gap-counterexample}
+ F(x,z)=\tau\sum_{n\ge1}\frac{\varepsilon_n}{n}
+                       x^{\gamma_n}v.
+\end{equation}
+It is independent of \(z\) and has finite absolute input norm at
+every fixed \(R,S>0\): the actions stay in a bounded positive
+interval, while \(\sum\varepsilon_n/n\) converges. Its norm can be
+made arbitrarily small by reducing \(|\tau|\).
+
+With all resonant constants zero, the coefficient at each
+\(\gamma_n\) is the constant vector \(-\tau v/n\), since
+\[
+ (\gamma_n I-A)(-\tau v/n)
+       =\tau\varepsilon_n v/n.
+\]
+Thus \(\Theta(y)=0\), but for every \(r>0\),
+\[
+ \norm{y}_{r,T}
+ \ge |\tau|\norm v\sum_{n\ge1}\frac{r^{\gamma_n}}n=\infty,
+\]
+because \(r^{\gamma_n}\to r^\lambda>0\). The same subseries
+prevents pointwise absolute convergence at every positive \(x\).
+Therefore the universal property fails. This proves necessity and
+all the counterexample assertions.
+\end{proof}
+
+\begin{corollary}[Two independent obstructions]\label{cor:independent}
+Finite resonance data determines the exact logarithmic slope without
+any gap assumption. A zero logarithmic slope does not imply analytic
+realization. Conversely, a vanishing universal gap does not force
+every particular input to diverge.
+\end{corollary}
+\begin{proof}
+The first two assertions follow from Theorem~\ref{thm:slope} and
+\eqref{eq:gap-counterexample}. For the last assertion, the zero source
+with zero constants gives a convergent zero solution even when the
+gap vanishes. Section~\ref{sec:accumulation} gives a much less
+degenerate nonlinear family with an exact convergence criterion.
+\end{proof}
+
+\section{Actual functions and explicit remainder bounds}
+\label{sec:evaluation}
+
+Let \(y\) have finite coefficient norm \(\norm y_{r,T}=M_y\), and
+suppose its degree bound is \(\ell(P_\gamma)\le\theta\gamma\).
+For a normalized solution one may use the exact
+\(\theta=\Theta(y)\), although the coarse constant \(C\) is available
+without computing the certificate. On a chosen logarithmic cover put
+\begin{equation}\label{eq:q}
+ q_\theta(x)=\frac{|x|}{r}
+        \max\left(1,\frac{|\Log x|}{T}\right)^\theta.
+\end{equation}
+
+\begin{theorem}[Evaluation and action-tail certificate]
+\label{thm:remainder}
+On the domain \(q_\theta(x)<1\), the series
+\(\sum_\gamma x^\gamma P_\gamma(\Log x)\) converges absolutely and
+normally on compact subsets. For every \(B>0\),
+\begin{equation}\label{eq:tail}
+ \boxed{\displaystyle
+ \norm{\sum_{\gamma\ge B}x^\gamma P_\gamma(\Log x)}
+       \le M_y q_\theta(x)^B.}
+\end{equation}
+The series may be differentiated term by term with \(D=x\,d/dx\).
+When it comes from Proposition~\ref{prop:contraction}, it solves the
+actual analytic equation and one may replace \(M_y\) by \(\eta\).
+Every sector with bounded argument contains a sufficiently small
+punctured subsector on which these conclusions hold.
+\end{theorem}
+\begin{proof}
+For a monomial with \(d\le\theta\gamma\),
+\[
+ |x|^\gamma|\Log x|^d
+ \le r^\gamma T^d
+   \left(\frac{|x|}{r}
+       \max(1,|\Log x|/T)^\theta\right)^\gamma.
+\]
+Multiply by \(\norm{p_{\gamma,d}}\), sum over \(d\), and then sum
+over actions. Since \(q^\gamma\le1\), absolute convergence follows
+from the coefficient norm. Restricting to \(\gamma\ge B\) gives
+\(q^\gamma\le q^B\), which proves \eqref{eq:tail}.
+On a compact subset of \(q_\theta<1\), the maximum of \(q_\theta\)
+is some \(q_*<1\), so the same majorant proves normal convergence.
+
+For differentiation, the action part contributes a factor \(\gamma\).
+The logarithmic derivative contributes at most \(d/T\) to the same
+weighted monomial majorant, because
+\[
+ \frac{|\Log x|^{d-1}}{T^d}
+ \le\frac1T\max(1,|\Log x|/T)^d
+ \quad(d\ge1).
+\]
+Thus the differentiated coefficient is bounded by
+\(\gamma(1+\theta/T)q_*^\gamma\) times its coefficient-norm weight.
+The function \(\gamma q_*^\gamma\) is bounded on
+\([\delta,\infty)\), proving local normal convergence of the
+derivative. Analytic substitution in \(F\) is permitted by its
+absolute majorant and \(\norm{y(x)}\le M_y\le\eta<S\).
+Coefficient identities therefore become the analytic differential
+identity.
+
+Finally, on a bounded-argument sector,
+\(|x|\max(1,|\Log x|/T)^\theta\to0\) as \(x\to0\).
+This proves the sector assertion.
+\end{proof}
+
+\begin{corollary}[Finite asymptotic prefixes]\label{cor:prefix}
+For a convergent solution as above, any finite initial collection of
+nonzero action blocks is an asymptotic prefix of the actual function.
+More precisely, if the next action after that collection is \(\beta\),
+the remaining sum is
+\(O(|x|^\beta\max(1,|\Log x|)^ {\theta\beta})\)
+on a bounded-argument sector. It is therefore smaller than every
+nonzero logarithmic monomial in the last retained action block.
+\end{corollary}
+\begin{proof}
+Use \eqref{eq:tail} with \(B=\beta\). The next action is strictly
+larger than the last retained one, and a positive power of \(|x|\)
+dominates any fixed power of \(|\Log x|\) as \(x\to0\).
+\end{proof}
+
+\begin{remark}[A cutoff need not be a finite computation]
+The sum over \(\gamma<B\) may itself contain infinitely many blocks.
+Theorem~\ref{thm:remainder} is a bound on an entire action tail, not a
+promise that ordinary finite truncation has reached that tail. In the
+accumulating example, reaching action two requires either summing or
+bounding an infinite block of actions below two. This distinction must
+be retained in numerical implementations.
+\end{remark}
+
+\subsection{A posteriori certification inside the norm ball}
+The contraction also provides a residual certificate that is useful
+when coefficients are computed only approximately or whole action
+blocks are represented by separate analytic routines.
+
+\begin{proposition}[Fixed-point residual bound]\label{prop:residual}
+Under \eqref{eq:contraction-conditions}, let
+\(z\in\mathcal X_{r,T}\) have norm at most \(\eta\), and suppose
+\[
+ e\ge\norm{z-H_c-SF(x,z)}_{r,T}.
+\]
+Then
+\begin{equation}\label{eq:residual}
+ \norm{y-z}_{r,T}\le\frac{e}{1-\kappa}.
+\end{equation}
+For pointwise evaluation, the coarse degree bound gives
+\[
+ \norm{y(x)-z(x)}
+ \le q_C(x)^\delta\frac{e}{1-\kappa}
+ \qquad(q_C(x)<1).
+\]
+\end{proposition}
+\begin{proof}
+Write \(\mathcal T=H_c+SF\). Since \(y=\mathcal T(y)\),
+\[
+ \norm{y-z}\le\norm{\mathcal T(y)-\mathcal T(z)}
+                   +\norm{\mathcal T(z)-z}
+ \le\kappa\norm{y-z}+e.
+\]
+Rearranging proves \eqref{eq:residual}. The difference has positive
+actions and degree at most \(h(\gamma)\le C\gamma\). The evaluation
+estimate with its smallest possible action \(\delta\) proves the
+pointwise bound.
+\end{proof}
+
+The word ``certificate'' here means a theorem with explicitly stated
+inequalities. A numerical application must actually bound the source
+majorants and residual; unverified floating-point estimates are not
+a substitute for those hypotheses.
+
+\section{Explicit nonlinear examples}
+\label{sec:examples}
+
+\subsection{An unbounded logarithmic degree with an exact invariant cone}
+Consider the scalar equation
+\begin{equation}\label{eq:geometric-ode}
+ (D-1)y=y^2+x(1+2y+y^2),\qquad \G=\NN.
+\end{equation}
+The logarithm-free change \(z=y/(1+y)\) has an invertible constant
+linear part. Direct differentiation gives
+\[
+ Dz=\frac{Dy}{(1+y)^2}=z+x.
+\]
+Thus
+\begin{equation}\label{eq:geometric-solution}
+ z=x(L+c),\qquad
+ y=\frac{x(L+c)}{1-x(L+c)}
+   =\sum_{n\ge1}x^n(L+c)^n.
+\end{equation}
+The resonant action is one, its normalized constant is \(c\), and
+\(\deg P_n=n\) for every \(n\ge1\). Therefore
+\(\Theta(y)=1=\Theta(z)\). The geometric series converges exactly
+when \(|x(\Log x+c)|<1\).
+
+This example simultaneously proves three limitations of a naive
+extension of linear theory. Nonlinear solutions need not have a
+uniform bound on logarithmic degree. They need not belong to
+\(\CC((x^\G))[L]\), although they use only one logarithm. And a
+uniform finite degree bound is not preserved by invertible
+logarithm-free coordinate changes: \(z\) has degree one, while \(y\)
+has unbounded degrees. The slope, in contrast, is preserved.
+
+\subsection{An algebraic locus of logarithm-free branches}
+Consider
+\begin{equation}\label{eq:cancellation-example}
+ Du=u,\qquad (D-2)v=u^2+a x^2.
+\end{equation}
+The positive-action normalized solutions are
+\begin{equation}\label{eq:cancellation-solution}
+ u=cx,\qquad v=x^2\bigl(d+(c^2+a)L\bigr).
+\end{equation}
+Consequently
+\[
+ \Theta(u,v)=
+ \begin{cases}
+ 0,&c^2+a=0,\\
+ 1/2,&c^2+a\ne0.
+ \end{cases}
+\]
+The logarithm-free condition is a genuine nonlinear algebraic
+constraint on a homogeneous parameter, not a vector-space kernel.
+Over the reals, \(a>0\) admits no logarithm-free branch, \(a<0\)
+admits two values of \(c\), and \(a=0\) forces \(c=0\).
+The parameter \(d\) remains free. Over \(\CC\), the same polynomial
+equation describes the locus without an order restriction.
+
+\subsection{A resonant cascade}
+For \(r\ge1\), consider
+\begin{equation}\label{eq:cascade}
+ (D-1)y_1=x,\qquad
+ (D-j)y_j=y_1y_{j-1}\quad(2\le j\le r),
+\end{equation}
+with all resonant constants zero. Then
+\begin{equation}\label{eq:cascade-solution}
+ y_j=\frac{x^jL^{2j-1}}{(2j-1)!!}.
+\end{equation}
+For \(j=1\), this is \(y_1=xL\). If the formula holds for
+\(j-1\), the source at action \(j\) is
+\(L^{2j-2}/(2j-3)!!\); a single integration in \(L\) gives
+\eqref{eq:cascade-solution}. Hence
+\begin{equation}\label{eq:cascade-slope}
+ \Theta(y_1,\ldots,y_r)=\max_{1\le j\le r}\frac{2j-1}{j}
+                    =2-\frac1r.
+\end{equation}
+This is a finite cascade of nonlinear resonant integrations.
+The largest slope is detected at the final resonant action; the
+calculation does not require estimating an infinite tail.
+
+\subsection{A Jordan block feeding a nonlinear resonance}
+Let
+\begin{equation}\label{eq:jordan-example}
+ Du=u+v,\qquad Dv=v+x,\qquad Dw=2w+u^2,
+\end{equation}
+again with zero resonant constants. The solution is
+\begin{equation}\label{eq:jordan-solution}
+ v=xL,\qquad u=\frac{xL^2}{2},\qquad
+ w=\frac{x^2L^5}{20}.
+\end{equation}
+Indeed, the two-dimensional Jordan block integrates the forcing twice
+across its components, and the last equation integrates
+\(L^4/4\) at action two. The exact slope is \(5/2\).
+The example illustrates why the coarse budget must account for Jordan
+block sizes, even though the exact theorem only reads off the
+resulting resonant polynomial degrees.
+
+\section{An exact nonlinear accumulation threshold}
+\label{sec:accumulation}
+
+The universal theorem treats all sources on a fixed monoid. A sharper
+input-specific statement is possible when the accumulation lies below
+the first nonlinear interaction. It gives a direct nonlinear extension
+of the linear \(p>2\) phenomenon recorded in the repository's
+Hahn--Fuchsian article \cite{repo-fuchsian}.
+
+\subsection{The monoid and the equation}
+Let
+\begin{equation}\label{eq:accum-monoid}
+ E=\{2-1/n:n\ge1\},\qquad \G=\langle E\rangle,
+ \qquad \delta=1.
+\end{equation}
+Below action two, the only positive actions are those in \(E\).
+Every sum of two positive actions is at least two, and equality holds
+only for \(1+1\). Moreover
+\begin{equation}\label{eq:accum-divisors}
+ \Div_\G(2)=\{0,1,2\},\qquad
+ \min\bigl(\G\cap(2,\infty)\bigr)=\frac52.
+\end{equation}
+The final identity follows because the smallest positive generator
+after one is \(3/2\): a sum of two generators other than \(1+1\)
+is at least \(5/2\), and sums of three or more are at least three.
+
+Consider the scalar nonlinear equation
+\begin{equation}\label{eq:accum-ode}
+ (D-2)y=a x+b x^2+c y^2+
+          \sum_{n=2}^{\infty}t_n x^{2-1/n},
+ \qquad \sum_{n=2}^{\infty}|t_n|<\infty,
+\end{equation}
+with normalization \(P_2(0)=k\). All four constants
+\(a,b,c,k\) are arbitrary complex numbers. The input satisfies the
+absolute coefficient condition at every fixed finite \(x\)-radius
+and every finite \(y\)-radius, because it is quadratic in \(y\)
+and the actions of the tail stay in a bounded interval.
+
+\begin{theorem}[Finite slope and infinite summability are independent]
+\label{thm:sharp-family}
+The normalized formal solution of \eqref{eq:accum-ode} has
+\begin{align}
+ P_1&=-a,\label{eq:family-P1}\\
+ P_{2-1/n}&=-nt_n\qquad(n\ge2),\label{eq:family-Pn}\\
+ P_2&=k+(b+ca^2)L.\label{eq:family-P2}
+\end{align}
+Its exact slope is
+\begin{equation}\label{eq:family-slope}
+ \boxed{\displaystyle
+ \Theta(y)=
+ \begin{cases}
+ 0,&b+ca^2=0,\\
+ 1/2,&b+ca^2\ne0.
+ \end{cases}}
+\end{equation}
+Independently of these constants, the normalized solution is
+coefficient-absolutely convergent if and only if
+\begin{equation}\label{eq:family-threshold}
+ \boxed{\displaystyle \sum_{n=2}^{\infty}n|t_n|<\infty.}
+\end{equation}
+Thus the entire accumulation tail is invisible to the exact slope,
+but it decides convergence through a sharp weighted summability test.
+\end{theorem}
+
+\begin{proof}[Proof of the coefficient and slope assertions]
+There is no quadratic interaction at action below two. At action one,
+\((1-2)P_1=a\), giving \eqref{eq:family-P1}. At action \(2-1/n\),
+\((-1/n+\dd)P_{2-1/n}=t_n\), whose unique polynomial solution is
+\eqref{eq:family-Pn}. At action two, the only product contributing
+from \(y^2\) is \(P_1^2=a^2\); consequently
+\(\dd P_2=b+ca^2\). The normalization gives
+\eqref{eq:family-P2}. Since two is the only resonant action,
+Theorem~\ref{thm:slope} gives \eqref{eq:family-slope}.
+The divisor calculation \eqref{eq:accum-divisors} explains the finite
+certificate directly: none of the actions \(2-1/n\), \(n\ge2\),
+can be an ancestor of the action-two resonance.
+\end{proof}
+
+\begin{proof}[Proof of necessity of the summability condition]
+For every \(r>0\), the numbers \(r^{2-1/n}\) tend to \(r^2>0\).
+The constant coefficients in \eqref{eq:family-Pn} therefore have
+finite weighted norm only when \(\sum n|t_n|<\infty\).
+The same reasoning proves failure of pointwise absolute convergence
+at every positive \(x\) when this sum diverges. Adding a resonant
+homogeneous term cannot cancel these coefficients at distinct
+nonresonant actions.
+\end{proof}
+
+\begin{proof}[Proof of sufficiency, including nonlinear feedback]
+Assume \(\sum n|t_n|<\infty\), put \(q=b+ca^2\), and form the
+entire low-action block
+\begin{equation}\label{eq:low-core}
+ Y_0=-a x-\sum_{n=2}^{\infty}nt_nx^{2-1/n}
+                      +x^2(k+qL).
+\end{equation}
+This is an infinite, but coefficient-absolutely convergent, core.
+For any fixed \(T>0\), its norm tends to zero as \(r\downarrow0\).
+Its degree slope is \(\theta=0\) when \(q=0\), and \(\theta=1/2\)
+otherwise. Write \(y=Y_0+w\), where \(w\) has actions greater than
+two. Direct computation using \eqref{eq:low-core} reduces the equation
+to
+\begin{equation}\label{eq:tail-equation}
+ (D-2)w=c\bigl((Y_0+w)^2-a^2x^2\bigr).
+\end{equation}
+The right side has no actions at most two: the coefficient of
+\(Y_0^2\) at two is exactly \(a^2\), and every other product has
+action at least \(5/2\).
+
+Use the coefficient-norm space of series supported in
+\(\G\cap(2,\infty)\) with
+\(\deg P_\gamma\le\floor{\theta\gamma}\). It is complete, and the
+right side of \eqref{eq:tail-equation} respects this degree bound.
+On these actions, \(\gamma-2\ge1/2\). The nonresonant part of the
+proof of Lemma~\ref{lem:bounded}, with linear degree constant
+\(\theta\), therefore gives a bounded inverse \(S_{>}\) of
+\(D-2\) on this tail space. Let its norm bound be \(K_{>}\).
+For a ball \(\norm w\le\eta\), the map
+\[
+ \mathcal T_{>}(w)=c S_{>}
+                   \bigl((Y_0+w)^2-a^2x^2\bigr)
+\]
+has Lipschitz constant at most
+\(2|c|K_{>}(\norm{Y_0}+\eta)\), and its value at zero has norm at
+most
+\( |c|K_{>}(\norm{Y_0}^2+|a|^2r^2)\).
+First choose \(\eta>0\) small enough, and then \(r>0\) small enough,
+to make the Lipschitz constant less than \(1/2\) and the value at
+zero at most \(\eta/2\). When \(c=0\), simply take \(w=0\).
+The contraction theorem gives a convergent tail \(w\).
+
+The resulting \(Y_0+w\) has the prescribed resonant constant and
+satisfies the formal equation. By Theorem~\ref{thm:formal}, it is the
+normalized formal solution. This proves sufficiency without assuming
+a gap below action two; all small divisors there have been absorbed
+into the summable infinite core.
+\end{proof}
+
+\begin{corollary}[The exact power-law threshold]\label{cor:p-threshold}
+For \(t_n=\varepsilon n^{-p}\), with
+\(\varepsilon\ne0\) and real \(p>1\), the input of
+\eqref{eq:accum-ode} is coefficient-absolutely convergent and its
+normalized solution is coefficient-absolutely convergent exactly when
+\(p>2\). This threshold is independent of \(a,b,c,k\).
+\end{corollary}
+\begin{proof}
+The input requires \(\sum n^{-p}<\infty\). Theorem~\ref{thm:sharp-family}
+requires \(\sum n^{1-p}<\infty\) for the solution. These are the
+stated strict inequalities.
+\end{proof}
+
+\subsection{Consequences and limitations of the example}
+Fix \(a,b,c,k\), and compare the tails
+\(t_n=\varepsilon n^{-2}\) and \(t_n=\varepsilon n^{-3}\).
+They agree in every coordinate of the finite resonance certificate,
+because that certificate does not contain any \(t_n\).
+Their slopes are identical, yet the first normalized expansion
+diverges and the second converges. Both tails can be arbitrarily
+small in the input norm. Taking \(b=-ca^2\) makes both formal
+solutions logarithm free, so absence of logarithms does not weaken
+the distinction.
+
+The convergence assertion here is stronger than merely applying the
+universal theorem: the universal gap is zero for this monoid and
+matrix. The proof instead removes a summable infinite low-action
+block and uses the positive gap in the remaining tail. This is a
+precise instance of an infinite-core strategy, not a claim that every
+accumulating equation admits such a reduction.
+
+When the weighted sum diverges, the theorem excludes the stated
+coefficient expansion as an absolutely convergent representation. It
+does not exclude solutions defined by another normalization, a
+renormalized summation procedure, or direct integration away from
+zero. Establishing canonical replacements in nonlinear cases is a
+separate research problem.
+
+\section{Computation, reproducibility, and a formalization route}
+\label{sec:verification}
+
+\subsection{What the accompanying program actually checks}
+The package contains \texttt{verification/verify.py} and its recorded
+\texttt{results.json}. The program uses exact SymPy polynomial and
+rational arithmetic for the finite algebraic checks. Its scalar and
+Jordan solver uses descending component substitution, providing a
+second implementation of the operator identities in
+Lemma~\ref{lem:solver}. A finite action dictionary implements
+coefficient convolution and the normalized nonlinear recursion.
+
+The recorded run used Python 3.13.5, SymPy 1.14.0, mpmath 1.3.0, and
+random seed 20260929. All checks passed. The categories below are
+reported separately rather than added into a purported count of
+independent theorem verifications.
+
+\begin{center}
+\begin{tabular}{@{}p{0.72\linewidth}r@{}}
+\toprule
+Check category & Recorded count\\
+\midrule
+Exact scalar/Jordan block component identities & 200\\
+Exact nonlinear system coefficient-component identities & 393\\
+Random coupled systems, included in the preceding category & 16\\
+Random finite-prefix versus resonance slope comparisons & 16\\
+Geometric and cascade closed-form coefficient comparisons & 22\\
+Finite prefixes of the accumulating support & 4\\
+High-precision illustrations of the action-tail bound & 12\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The block identities cover Jordan sizes one through four, five
+nonresonant/resonant gaps (including negative and small rational
+gaps), and four polynomial degree ranges. Resonant constant terms
+are checked explicitly. The scalar geometric example is compared
+through action sixteen; the cascade is checked with six components.
+The algebraic cancellation example and the Jordan/nonlinear example
+are checked symbolically. Sixteen random coupled systems are computed
+through action eight. A forcing perturbation at action five leaves
+their earlier resonance certificates unchanged, as predicted.
+
+The accumulating example is checked on generator prefixes ending at
+\(n=3,6,12,24\), through action two, with symbolic
+\(a,b,c,k\). These are finite prefixes of finite-generator models;
+they are not a computational proof about the whole infinite monoid.
+The supplied recurrence is safe only on an action set that is a
+complete prefix for the finite input, or is divisor closed for the
+requested targets. Missing an ancestor action invalidates an
+arbitrary truncation. This precondition is documented in the code.
+
+\subsection{A numerical illustration with an exact analytic bound}
+For \eqref{eq:geometric-solution} with \(c=0\), take
+\(r=0.05\), \(T=8\). Its coefficient norm is exactly
+\[
+ M_y=\sum_{n\ge1}(rT)^n=\frac{2}{3}.
+\]
+After retaining actions through \(N\), the exact remainder is
+\(t^{N+1}/(1-t)\), where \(t=x\log x\). The theorem bounds its
+absolute value by \((2/3)q_1(x)^{N+1}\).
+A few recorded values are shown below; mantissas are rounded.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+\(x\) & \(N\) & Actual absolute remainder & Proved bound\\
+\midrule
+0.001 & 4 & \(1.56205\cdot10^{-11}\) & \(2.13333\cdot10^{-9}\)\\
+0.005 & 4 & \(1.27111\cdot10^{-8}\) & \(6.66667\cdot10^{-6}\)\\
+0.010 & 8 & \(8.90549\cdot10^{-13}\) & \(3.41333\cdot10^{-7}\)\\
+0.030 & 12 & \(1.74820\cdot10^{-13}\) & \(8.70713\cdot10^{-4}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The full JSON contains all twelve cases evaluated at 80-digit working
+precision. These floating-point comparisons illustrate the proved
+inequality; they are not interval-arithmetic certificates. The
+conservative coefficient-norm estimate is not advertised as an
+optimal pointwise bound.
+
+\subsection{What is, and is not, formalized}
+The inspected support module names the additive lemma
+\path{Fabius.neumann_finite_decompositions} and the corresponding
+support-preservation bridge \cite{repo-support}. These provide a
+natural Lean starting point for Lemma~\ref{lem:divisor}. No new Lean
+code is included in this package, and the general theorems have not
+been checked by a proof assistant.
+
+A feasible staged development would first formalize finite additive
+divisors and divisor-closed recursion. The polynomial solver can then
+be expressed using a nilpotent matrix, the polynomial derivative,
+and a zero-constant integration operator. The degree budget and exact
+slope theorem require only well-founded recursion, finite
+coefficient convolutions, and degree inequalities. Algebraic
+parameter dependence can be separated into a finite polynomial-map
+construction. Finally, the norm estimates and analytic evaluation
+can be layered on top of this algebraic core using a weighted
+\(\ell^1\) space and the contraction mapping theorem.
+
+The most important interface decision is to keep \emph{formal
+support summability}, \emph{coefficient absolute convergence}, and
+\emph{analytic evaluation} as different structures. The examples in
+this article show that identifying any two without hypotheses would
+lose precisely the distinction being studied.
+
+\section{Further research questions and concrete next targets}
+\label{sec:research}
+
+The following questions are proposed extensions, not claims that each
+is an established named open problem. Their value is that they have
+specific hypotheses, potential obstructions, and test cases.
+
+\subsection{Tail slope rather than maximal slope}
+Theorem~\ref{thm:slope} computes the supremum over all actions. Determine
+when the same value equals
+\(\limsup_{\gamma\to\infty}\ell(P_\gamma)/\gamma\), with an
+appropriate convention for finite support. The geometric example
+propagates its resonant slope forever, whereas \(y=xL\) does not.
+A useful first target is polynomial \(F\) on a finitely generated
+monoid: characterize persistent maximal-slope propagation through
+nonlinear dependency paths, including coefficient cancellations.
+A graph-only criterion will generally need extra noncancellation
+hypotheses.
+
+\subsection{The full action--degree region}
+The scalar \(\Theta\) forgets component information and most of the
+support geometry. Determine the smallest convex region containing
+all pairs \((\gamma,d)\) with nonzero coefficient, or a componentwise
+version that records which nonlinear couplings are possible.
+The degree-budget construction suggests a finite resonance-generated
+upper region, but equality requires more than an upper-envelope
+argument. A first task is to compare such regions in triangular
+systems, where leading logarithmic coefficients can be computed
+without solving all lower-degree coefficients.
+
+\subsection{Several accumulation points and weighted divisibility}
+Theorem~\ref{thm:sharp-family} works because all dangerous actions lie
+below the first nontrivial quadratic interaction. For several
+accumulation points, nonlinear sums may land near another resonance.
+Find input-specific necessary and sufficient weighted coefficient
+conditions that remain closed under convolution and the Euler
+inverse. The first genuinely new test case should include two
+accumulation sequences whose sums approach a third resonant action;
+otherwise independent scalar weighting may conceal the main issue.
+
+\subsection{Canonical summation when absolute realization fails}
+For divergent normalized expansions, construct a canonical
+renormalized solution class and determine its ambiguity. In the
+linear repository example an infinite low-action block can be
+renormalized; nonlinear feedback raises the question whether the
+renormalization is compatible with products and composition.
+A precise target is the family \eqref{eq:accum-ode} with
+\(1<p\le2\): specify a subtraction prescription, prove that it
+solves the original analytic equation, and identify the resulting
+additional asymptotic scales rather than calling an arbitrary
+regularization a Hahn sum.
+
+\subsection{Higher logarithmic depth}
+Replace logarithm-free coefficients by finite iterated-logarithmic
+blocks and ask for an analogue of the exact resonance certificate.
+The linear residue and logarithmic-depth infrastructure in ProveIt
+is relevant, but nonlinear multiplication can propagate degrees
+across more than one logarithmic level. The first target is a
+triangular system with coefficients polynomial in \(\log\log(1/x)\)
+and a positive outer-action gap. One must distinguish a new
+logarithmic \emph{depth} from unbounded polynomial \emph{degree} at
+an already present depth.
+
+\subsection{Nonreal spectrum and oscillatory monomials}
+The real-spectrum hypothesis lets actions and resonances live in
+one ordered real monoid. With eigenvalues \(a+ib\), homogeneous
+solutions introduce oscillatory factors \(e^{ib\Log x}\). Develop
+an ordered support space that separates real growth from imaginary
+frequency, and determine when finite divisors survive that
+projection. A finite frequency lattice is a natural first case;
+arbitrary accumulating frequencies may require a topology rather
+than only a Hahn order. The analytic gap must then be formulated in
+the complex spectral plane.
+
+\subsection{Derivative-dependent nonlinearities and higher order}
+Our source \(F(x,y)\) contains no derivatives of \(y\). For equations
+involving \(Dy,D^2y,\ldots\), differentiation contributes factors
+comparable to the action and may destroy the bounded nonlinear map
+used in the contraction. Extend the finite-resonance maximum to
+such differential polynomials, or construct a counterexample that
+shows the correct invariant is different. The established
+higher-order Dulac convergence theory provides a comparison point;
+the non-locally-finite support and exact finite certificate remain
+the specific targets here.
+
+\subsection{Non-Archimedean actions}
+In an ordered abelian group of higher rank, positive actions need
+not have a real lower bound that controls the length of a dependency
+path. The formal finite-antidiagonal lemma may survive while the
+bound \(|k|\le\gamma/\delta\) has no Archimedean meaning.
+Identify a positive grading into \(\RR\) that restores the proof,
+and describe what happens when no such grading is available.
+A lexicographic rank-two monoid should be the first test, with the
+formal recursion and the analytic norm questions treated separately.
+
+\subsection{Effective discovery of finite certificates}
+Given a computable description of a support, when can one compute
+\(\Div_\G(\lambda)\) and certify that it is complete? Theorem~\ref{thm:certificate}
+is not a decision procedure for arbitrary real supports. For
+restricted differential-algebraic inputs, compare the certificate
+with the zero-testing framework of Chen, Fang, and van der Hoeven
+\cite{chen-fang-vdh}, whose 2026 preprint concerns D-algebraic
+transseries. Arbitrary coefficient families in the present article
+need not be D-algebraic, so no automatic transfer of decidability is
+implied. Exact finite-generator and algebraic-action presentations
+are reasonable initial domains.
+
+\subsection{Uniformity as resonances move}
+Allow the eigenvalues and source parameters to vary. For fixed
+matrix data, the slope sublevels are algebraic; as an eigenvalue
+crosses a monoid action, the normalization changes and a logarithm
+can appear. Construct a uniform local chart across such a crossing,
+with explicit estimates that replace the blow-up of \(g^{-1}\).
+An accumulation point of actions meeting a moving eigenvalue is a
+more singular problem than one isolated crossing. The two should
+not be treated by the same finite-dimensional normal form without
+an additional argument.
+
+\subsection{Certified infinite-block computation}
+An action-tail estimate is useful computationally only after the
+retained lower-action block is represented with a certified error.
+Develop data structures for a finite divisor certificate together
+with summable infinite blocks, and propagate explicit \(\ell^1\)
+norm bounds through multiplication, integration, and nonlinear
+fixed points. The low-action core \eqref{eq:low-core} is a concrete
+benchmark. A successful implementation should report separately
+its finite algebraic certificate, its block approximation error,
+and its remaining action-tail bound.
+
+\subsection{Formal verification of the finite-control theorem}
+A focused Lean project could target the chain
+\(\text{finite divisors}\to\text{normalized block recursion}
+\to\text{exact slope}\to\text{algebraic strata}\)
+before tackling analysis. The finite recursion must be stated in a
+way that does not assume a locally finite action set. The
+accumulating monoid with \(\Div_\G(2)=\{0,1,2\}\) is a useful
+regression case. A later analytic layer should formalize the
+restricted source space at resonances; omitting that degree margin
+would make the claimed bounded right inverse false.
+
+\section{Conclusion}
+The nonlinear extension of finite logarithmic control is not a
+finite global degree bound. It is the exact maximal degree-to-action
+ratio, attained at a resonance and computed from finitely many
+divisor coordinates. This invariant survives logarithm-free local
+coordinate changes and yields algebraic loci of cancellations.
+The underlying nonlinear solution may nevertheless contain
+arbitrarily high logarithmic powers.
+
+Convergence answers a different question. A uniform gap to the
+spectrum is exactly what guarantees analytic realization for every
+absolutely convergent source on a fixed real Hahn monoid. When the
+gap fails, finite resonance data does not detect all analytic
+obstructions. The Riccati family proves that this separation
+persists under nonlinear feedback: the polynomial \(b+ca^2\)
+controls logarithms, while \(\sum n|t_n|\) controls convergence.
+These two certificates---one finite and algebraic, the other
+potentially infinite and analytic---should remain distinct in both
+symbolic implementations and future formalizations.
+
+\appendix
+\section{Hypothesis and dependency audit}
+\label{app:audit}
+
+The positive minimum \(\delta\) and real Archimedean action are used
+to bound nonlinear arity, obtain a uniform valuation gain, and turn
+a finite set of resonances into a linear degree budget. Well-ordering
+is used both for recursion and for finite additive divisors. Neither
+property may be replaced silently by local finiteness, and neither
+is merely a convergence assumption.
+
+The conditions \(f_{0,0}=f_{0,e_j}=0\) make the coefficient recurrence
+strictly triangular in action. A zero-action linear term must first
+be put in \(A\). A zero-action constant would leave the positive
+ideal and is outside the theorem. The absence of logarithms in the
+source coefficients is used in the exact slope proof: an explicit
+\(L\)-factor at a nonresonant forcing action could create a new
+maximal slope there, contradicting the stated formula.
+
+Real spectrum is used to formulate resonant homogeneous modes and
+small divisors in the same action order. Nilpotent Jordan parts are
+retained throughout; diagonalizability is not assumed. The global
+slope uses full vector degrees, so it is insensitive to a fixed
+invertible choice of basis.
+
+Formal existence and the finite certificate require no analytic
+input condition and no gap. The analytic theorem requires the
+absolute coefficient majorant \eqref{eq:input-norm}. The gap is
+necessary for the \emph{universal} assertion only, and the sharp
+family deliberately violates it while allowing many convergent
+inputs. A convergent coefficient norm, not just well-ordered support,
+is what permits all analytic sums and substitutions in the proof.
+
+The theorem on coordinate invariance is restricted to invertible
+constant linear parts and logarithm-free coefficients. It does not
+claim invariance under singular shears, changes of the independent
+variable, or transformations containing logarithms. The maximal
+slope is not a tail limit, a pole order, or an exact radius of
+analyticity.
+
+Finally, the verification program checks finite exact identities and
+illustrative numerical inequalities. It does not prove the infinite
+support, Banach-space, or analytic-evaluation theorems. Those rely on
+the conventional proofs in the article, and no proof-assistant
+validation or independent peer review is claimed.
+
+\Needspace{8\baselineskip}
+\section{Repository provenance and inspection scope}
+\label{app:provenance}
+
+The observed repository snapshot used for this article is
+\begin{center}\snap\end{center}
+The connected GitHub tools were used to inspect the
+transseries directory structure, the documentation index, the
+Hahn--Fuchsian and residue-obstruction package descriptions, a
+portion of the Hahn--Fuchsian source, and the complete support
+module named in the bibliography. The large documentation index
+and the Hahn--Fuchsian source exceeded the response display budget;
+no complete line-by-line audit of those large files, the canonical
+volume, or the whole repository is claimed. Newly delivered
+archives at the repository's intake were not exhaustively audited.
+
+The source-level support bridge was read at the pinned snapshot.
+The mathematical theorems in the present article are proved
+self-containedly rather than assumed from an unreviewed repository
+report. External literature was consulted through primary author,
+journal/preprint metadata, and paper text. The Dulac paper's PDF
+text was accessible, but the remote screenshot endpoint failed;
+no result here relies on an unseen figure or graphical measurement.
+The PDF of this article was separately rendered and visually checked
+in the local build workflow.
+
+No repository files were modified. A suitable proposed placement is
+\path{Analysis/Transseries/docs/series-and-transseries/Nonlinear_Hahn_Dulac/}.
+This is a packaging suggestion, not an upload that has been performed.
+The archive is standalone and does not load the repository's large
+canonical volume or notation files.
+
+\section{Reproduction instructions}
+\label{app:reproduce}
+
+The archive contains the editable \texttt{nonlinear\_hahn\_dulac.tex},
+the compiled PDF, \texttt{build.sh}, the verification program and
+recorded JSON, pinned verification requirements, and separate
+proof/provenance/build notes. The bibliography is embedded in the
+LaTeX source; no bibliography processor is needed.
+
+To rebuild the article with a standard TeX Live installation, run
+\begin{verbatim}
+sh build.sh
+\end{verbatim}
+To repeat the finite verification, run
+\begin{verbatim}
+python -m pip install -r verification/requirements.txt
+python verification/verify.py
+\end{verbatim}
+The verification program uses no network access after its dependencies
+are installed. Random tests use a fixed seed. A successful run writes
+\texttt{verification/results.json}. Exact algebraic assertions raise
+an exception on failure; the program must be run without Python's
+\texttt{-O} option, which would disable assertions.
+% ed. (2026-09-29): output location changed on filing
+\begin{ednote}
+As filed, the program writes \path{build/results.json} (relative to the
+package root) by default, so a rerun leaves the recorded
+\path{verification/results.json} unchanged; writing the recorded file
+requires \texttt{--overwrite-recorded}.
+\end{ednote}
+
+\clearpage
+\begin{thebibliography}{9}
+\raggedright
+
+\bibitem{repo-support}
+Vladimir Reshetnikov, \emph{ProveIt: well-based supports},
+\path{Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean},
+inspected at commit \snap, 29 September 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean}.
+
+\bibitem{repo-residue}
+\emph{Finite Residue Obstructions and Logarithmic-Depth Promotion in Hahn
+Transseries}, research package in Vladimir Reshetnikov's ProveIt
+repository, 29 September 2026; package README and editorial status notes.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/Residue_Obstructions_Logarithmic_Depth_Promotion}.
+
+\bibitem{repo-fuchsian}
+\emph{Finite Resonance Certificates and Sharp Analytic Normalization for
+Hahn--Fuchsian Systems}, research package in Vladimir Reshetnikov's
+ProveIt repository, 29 September 2026; package README and inspected
+source portion.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3d5973524506411392a911470b5ddc35521568ea/Analysis/Transseries/docs/series-and-transseries/Hahn_Fuchsian_Resonance_Analytic_Normalization}.
+
+\bibitem{vdh}
+Joris van der Hoeven, \emph{Operators on generalized power series},
+Illinois Journal of Mathematics \textbf{45}(4) (2001), 1161--1190.
+\url{https://doi.org/10.1215/ijm/1258138061}.
+Author's full-text version:
+\url{https://www.texmacs.org/joris/noeth/noeth.html}.
+
+\bibitem{gg-generalized}
+Renat Gontsov and Irina Goryuchkina,
+\emph{On the convergence of generalized power series satisfying an
+algebraic ODE}, Asymptotic Analysis \textbf{93}(4) (2015), 311--325.
+Preprint arXiv:1407.1330 (2014).
+\url{https://arxiv.org/abs/1407.1330}.
+
+\bibitem{gg-dulac}
+Irina Goryuchkina and Renat Gontsov,
+\emph{On the convergence of formal Dulac series satisfying an algebraic
+ODE}, Sbornik: Mathematics \textbf{210}(9) (2019), 1207--1221.
+Preprint arXiv:1712.08044 (2017), especially Lemmas 2--3.
+\url{https://arxiv.org/abs/1712.08044}.
+
+\bibitem{chen-fang-vdh}
+Shaoshi Chen, Hanqian Fang, and Joris van der Hoeven,
+\emph{A zero-test for D-algebraic transseries},
+arXiv:2602.01188, submitted 1 February 2026.
+\url{https://arxiv.org/abs/2602.01188}.
+
+\end{thebibliography}
+\end{document}

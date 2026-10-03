@@ -38,6 +38,10 @@ Directly inspected source: the singular q -> 1 chapter of
 `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex`
 and the group/package READMEs. The oversized canonical `transseries_and_inversion.tex` could not be read through the available endpoint; no exhaustive audit of that entire volume is claimed.
 
+(Editorial note, ProveIt, 2026-09-29: that is the pre-split path; the
+companion is now
+`Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex`.)
+
 The companion explicitly leaves uniform endpoint matching and finite-size-tail beyond-all-orders control outside its stated results. The paper gives precise versions of these advances. No repository files were changed.
 
 ## Rebuild the PDF
@@ -60,8 +64,48 @@ python -m pip install -r requirements.txt
 python verify.py
 ```
 
-`python verify.py --quick` omits the larger numerical cases. The JSON output is written beside the script by default; use `--help` for options.
+`python verify.py --quick` omits the larger numerical cases. The JSON output is written beside the script by default; use `--help` for options. (Amended by ProveIt, 2026-09-29: a `--quick` run now writes `verification_results_quick.json`, so it no longer overwrites the recorded full run in `verification_results.json`.)
 
 The script checks all six displayed endpoint coefficients, eight endpoint Borel coefficient identities, ten rational pole cancellations, four independent finite-product normalizations, three exact-remainder comparisons, four slope brackets, seven near-optimal remainder cases, eight boundary-layer cases, and one inverse displacement. The JSON includes actual computed values, not fabricated expected output.
 
 The positive-sum and modular-tail inequalities are proved in the article. Their implementation uses ordinary mpmath rounding, not outward-rounded intervals. The numerical run is supplementary evidence and is not a substitute for the mathematical proofs or an interval-certified computation.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+Changes made after filing (batch 45 of `docs/incoming/README.md`), file by
+file. Every change to the article source is marked with a
+`% ed. (2026-09-29)` comment; visible additions are labelled "Editorial
+note (ProveIt, 2026-09-29)" or "[Editorial addition, ProveIt, 2026-09-29.]".
+
+- `article.tex`:
+  - an editorial note at the end of Section 1 naming the four sibling
+    packages of the same `q → 1` merge unit
+    (`../Uniform_q_Multinomial_Certified_Inversion/`,
+    `../Certified_Inversion_q_to_1_Transition/`,
+    `../Gamma_Core_q_to_1_Crossover/`,
+    `../Theta_Resolved_Optimal_Truncation_q_Multinomial/`) with the checked
+    agreements of constants. It records that the certified-inversion
+    package re-derives Theorems 6.2 and 7.2 independently: the same
+    optimal remainder `e^{−2πx}/(π√x)`, with a first relative correction
+    added there, and the same boundary layer, whose window coordinate there
+    is `s + log π` in the notation of (52); its hypothesis (`hx` in a
+    compact subset of `(0, ∞)`) is narrower than `0 ≤ hx ≤ T` here. The
+    note also relates Theorem `q3:thm:double-scaling` of
+    `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/combinatorial-coefficient-calculus/Gaussian_Coefficient_Calculus/`
+    (same `τ ≥ τ₀` restriction; its central case, with its `τ` equal to
+    `2hx`), and names the canonical volume's `p0:thm:optimal-truncation`
+    and the Lean theorem `Fabius.exists_eq_in_residual_interval`; the
+    article cites none of them;
+  - the current paths in the bibliography entries `repo` and `reporeadme`
+    (the recorded URLs point at pre-split paths of the pinned commit);
+  - bibliography label width `{9}` → `{99}` and four editorial
+    bibliography entries (`ed:siblings`, `ed:gcc`, `ed:tai`, `ed:lean`).
+- `article.pdf`: rebuilt with three pdfLaTeX passes; 23 pages (22 as
+  delivered); no errors, undefined references or duplicate destinations.
+- `verify.py`: `--quick` writes `verification_results_quick.json` instead of
+  overwriting `verification_results.json`, and output is written with
+  `newline='\n'` (LF on Windows too). A full rerun on a copy (Python 3.13.5,
+  `mpmath==1.3.0`, `sympy==1.14.0`) reproduced `verification_results.json`
+  byte for byte.
+- `README.md`: the path note and the `--quick` note above, and this
+  section.

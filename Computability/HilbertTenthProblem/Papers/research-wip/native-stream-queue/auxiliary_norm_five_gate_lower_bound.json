@@ -1,0 +1,117 @@
+{
+  "affine_hyperplane_restrictions": [
+    {
+      "coefficient_ideal_basis": [
+        "1"
+      ],
+      "plane": "K=c",
+      "quadratic_coefficients": {
+        "(0, 2)": "1 - c",
+        "(2, 0)": "c"
+      },
+      "restriction": "V**2*c - c*y**2 + y**2"
+    },
+    {
+      "coefficient_ideal_basis": [
+        "1"
+      ],
+      "plane": "V=y+c",
+      "quadratic_coefficients": {
+        "(0, 2)": "1",
+        "(1, 1)": "2*c"
+      },
+      "restriction": "K*c**2 + 2*K*c*y + y**2"
+    },
+    {
+      "coefficient_ideal_basis": [
+        "1"
+      ],
+      "plane": "V=-y+c",
+      "quadratic_coefficients": {
+        "(0, 2)": "1",
+        "(1, 1)": "-2*c"
+      },
+      "restriction": "K*c**2 - 2*K*c*y + y**2"
+    }
+  ],
+  "attaining_ledger": {
+    "A": 2,
+    "M": 3,
+    "total": 5
+  },
+  "attaining_source": [
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "difference",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "weighted",
+      "*",
+      "K",
+      "difference"
+    ],
+    [
+      "output",
+      "+",
+      "weighted",
+      "y2"
+    ]
+  ],
+  "degree": 3,
+  "independent_ports": [
+    "K",
+    "V",
+    "y"
+  ],
+  "irreducible_over_Q": true,
+  "lower_bounds": {
+    "additions_subtractions": 2,
+    "multiplications": 3,
+    "total": 5
+  },
+  "polynomial_terms": [
+    {
+      "coefficient": 1,
+      "exponents": [
+        1,
+        2,
+        0
+      ]
+    },
+    {
+      "coefficient": -1,
+      "exponents": [
+        1,
+        0,
+        2
+      ]
+    },
+    {
+      "coefficient": 1,
+      "exponents": [
+        0,
+        0,
+        2
+      ]
+    }
+  ],
+  "primitive_linear_coefficient_gcd": "1",
+  "scope": "Straight-line exact polynomial computation over Q from independent K,V,y and fixed constants, with binary +,-,* and reuse. No divisions, tests, algebraic relations, other paid ports or coordinate changes. General normal-form/irreducibility arguments in the note establish the lower bounds; symbolic checks audit their identities. No lower bound on the complete universal circuit or supplied-square specializations.",
+  "source_sha256": "d3fb95e2574106b3fdc22c7397488b9b18c855d6c1d1ceab92ca57295cb4d120",
+  "status": "PASS_SHARP_ABSTRACT_COMPONENT_BOUND",
+  "two_multiplication_normal_form_checked": true
+}

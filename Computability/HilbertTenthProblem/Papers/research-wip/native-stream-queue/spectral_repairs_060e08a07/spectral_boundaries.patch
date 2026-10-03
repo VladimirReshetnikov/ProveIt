@@ -1,0 +1,95 @@
+--- a/code/quartic_compiler.py
++++ b/code/quartic_compiler.py
+@@ -69,7 +69,7 @@
+ 
+ class Emitter:
+     def __init__(self, bits: int | None):
+-        if bits is not None and bits < 1:
++        if bits is not None and (type(bits) is not int or bits < 1):
+             raise ValueError("bits must be at least 1")
+         self.bits = bits
+         self.names = []
+@@ -194,6 +194,8 @@
+     an invalid natural slack; valid-shaped false sign claims are emitted and
+     rejected by nonzero residuals. This is an exporter, not a Diophantine solver.
+     """
++    if type(require_nonnegative) is not bool:
++        raise TypeError("require_nonnegative must be an exact Boolean")
+     seq,T,charts=decode_certificate(certificate)
+     if T<0 or seq.dimension<1:
+         raise ValueError("Invalid domain")
+@@ -299,20 +301,58 @@
+ 
+ 
+ def verify_export(path: str | Path) -> bool:
+-    """Re-evaluate the serialized residuals; no use of the emitter's evaluator."""
+-    d=json.loads(Path(path).read_text())
+-    v=d["values"]
+-    if any(not isinstance(x,int) or x<0 for x in v):
++    """Check declared natural/integer syntax and every serialized equation.
++
++    This is not an authentication of the source compiler or a claim that
++    arbitrary serialized equations describe the advertised spectral chart.
++    """
++    try:
++        d = json.loads(Path(path).read_text())
++        if d.get("format") != "spectral-guards-residuals-v1":
++            return False
++        v, names, inputs = d["values"], d["names"], d["inputs"]
++        if type(v) is not list or any(type(x) is not int or x < 0 for x in v):
++            return False
++        if type(names) is not list or len(names) != len(v) or any(type(x) is not str for x in names) or len(set(names)) != len(names):
++            return False
++        def index(i):
++            return type(i) is int and 0 <= i < len(v)
++        if type(inputs) is not list or any(not index(i) for i in inputs) or len(set(inputs)) != len(inputs):
++            return False
++        bits = d["bits"]
++        if bits is not None and (type(bits) is not int or bits < 1):
++            return False
++        rows, atoms = d["residuals"], d["power_atoms"]
++        if type(rows) is not list or type(atoms) is not list or (bits is not None and atoms):
++            return False
++        expected = "sum of squares of listed residuals" if not atoms else "quasi-Diophantine: quadratic equations plus power atoms"
++        if d["polynomial"] != expected:
++            return False
++        for residual in rows:
++            if type(residual) is not list:
++                return False
++            total, seen = 0, set()
++            for term in residual:
++                if type(term) is not list or len(term) != 2:
++                    return False
++                coefficient, indices = term
++                if type(coefficient) is not int or coefficient == 0 or type(indices) is not list or len(indices) > 2:
++                    return False
++                if any(not index(i) for i in indices) or indices != sorted(indices) or tuple(indices) in seen:
++                    return False
++                seen.add(tuple(indices))
++                value = coefficient
++                for i in indices:
++                    value *= v[i]
++                total += value
++            if total:
++                return False
++        for atom in atoms:
++            if type(atom) is not list or len(atom) != 3 or any(not index(i) for i in atom):
++                return False
++            b, t, y = atom
++            if v[b] < 1 or pow(v[b], v[t]) != v[y]:
++                return False
++        return True
++    except (KeyError, TypeError, ValueError, IndexError):
+         return False
+-    for residual in d["residuals"]:
+-        total=0
+-        for coefficient,indices in residual:
+-            if len(indices)>2:
+-                return False
+-            term=coefficient
+-            for i in indices:
+-                term*=v[i]
+-            total+=term
+-        if total:
+-            return False
+-    return all(pow(v[b],v[t])==v[y] for b,t,y in d["power_atoms"])

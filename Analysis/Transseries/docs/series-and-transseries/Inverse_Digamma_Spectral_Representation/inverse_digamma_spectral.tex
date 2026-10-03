@@ -43,6 +43,9 @@
 \DeclareMathOperator{\Res}{Res}
 \hypersetup{pdftitle={A Spectral Representation for the Inverse Digamma Function},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Direct optimal truncation, eventual enveloping, and inverse Borel boundary singularities}}
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page, which otherwise shares its page number with the
+% next page (pdfTeX "duplicate destination" warning); the same device the Stokes-transport package uses.
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{9mm}
 \noindent{\large\scshape Transseries, asymptotic inversion, and resurgence}\par
@@ -73,6 +76,7 @@ $\rho(t)=-\Re W(\ii t)$ for sufficiently large $t$. Cauchy's formula represents 
 \noindent\small Inspected repository checkpoint:\par
 \noindent\small\texttt{5804c7aff9955e6cbc09be2a71a295a07b238bc9}.\par
 \end{titlepage}
+\hypersetup{pageanchor=true}
 \begingroup\small\setlength{\parskip}{0pt}\tableofcontents\endgroup
 \newpage
 
@@ -491,6 +495,9 @@ where the error is uniform for $\sigma$ in that interval. Each $B_j$ is a polyno
 \end{align}
 A finite moment algorithm computes every $B_j$.
 \end{theorem}
+
+% ed. (2026-09-29): cross-reference note (the same theorem proved independently in two sibling packages).
+\begin{quote}\small\textbf{Editorial note (ProveIt, 2026-09-29).} One theorem, three independent proofs. The same result was proved, without sight of this article, in two other packages of this series (directory \path{Analysis/Transseries/docs/series-and-transseries/}): \path{Direct_Optimal_Truncation_Inverse_Harmonic/direct_inverse_harmonic.tex}, \texttt{thm:sharp}, from an exterior dispersion representation with a positive tail density, with coefficients $B_j^-$ and $N$ in place of $M$; and \path{Optimal_Truncation_After_Nonlinear_Reversion/article.tex}, \texttt{thm:direct}, from a general cutoff-transfer theorem, with coefficients $D_j$. With the same $\sigma$, their $B_1^-,B_2^-$ and $D_1,D_2$ agree with \eqref{eq:B1} and \eqref{eq:B2} term by term (checked symbolically on filing), and both re-derive the separation of \cref{prop:comparison}. The density coefficients through the fourth agree with the first of them after the change of density normalization, and its \texttt{thm:enveloping} proves eventual enveloping of the same kind as \cref{thm:enveloping}; the cutoff-transfer article proves enveloping only on windows $|M-\pi X|\le K$ (\texttt{cor:enveloping}). The Borel results of \cref{sec:borel} appear in neither. All three answer \texttt{prob:direct} of \path{Inverse_Harmonic_Stokes_Transport/inverse_harmonic_transseries.tex}; \cref{thm:boundary} also answers the first part of that article's problem on local Borel singularities, at the nearest points $\pm2\pi\ii$.\end{quote}
 
 \subsection{Gamma moments with a bounded shift}
 Write $b=2\pi X$, $d=2\sigma$, and $s=2M+2=b+d$. Set

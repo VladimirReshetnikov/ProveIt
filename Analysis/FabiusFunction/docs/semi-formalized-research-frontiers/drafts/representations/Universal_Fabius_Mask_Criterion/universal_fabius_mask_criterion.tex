@@ -1,0 +1,352 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Universal Comparison of Fabius Observation Masks},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\E}{\mathbb E}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\title{Universal Comparison of Fabius Observation Masks}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For independent bounded coordinates with summable caps, the experiment obtained by observing any coordinate mask under all total-sum reweightings is equivalent to observing the sum of that mask. Universal comparison of two masks is therefore characterized by probability convolution divisibility of their sum laws. The criterion permits overlapping masks, different cardinalities, countably many observations, and arbitrary independent additive noise. For common-tilt uniforms with reciprocal-integer geometric caps, it gives a complete order: every initial segment must contain at least as many source observations as target observations. For finite equal-cardinality masks with commensurate caps, the criterion becomes nonnegativity of the coefficients of an explicit polynomial quotient. Classical Gaussian polynomials give comparisons that cannot be realized by pairing individually divisible caps.
+\end{abstract}
+
+\section{A convolution criterion for arbitrary masks}
+Let $I$ be a finite initial segment of $\N$ or all of $\N$. Under a reference law $Q$, the coordinates $X_i$ are independent and satisfy
+\[
+ 0\le X_i\le a_i,\qquad a_i>0,\qquad A=\sum_{i\in I}a_i<\infty.
+\]
+No density assumption is imposed in this section. Let $Z$ be an arbitrary independent real random variable, and put
+\[
+ S=\sum_{i\in I}X_i,\qquad T=S+Z.
+\]
+The noise may be omitted by taking $Z=0$. For Borel $w\ge0$ with $0<\E_Qw(T)<\infty$, define $P_w$ by $\dd P_w/\dd Q=w(T)/\E_Qw(T)$.
+
+For a mask $E\subseteq I$, define its vector, sum, and reference sum law by
+\[
+ V_E=(X_i)_{i\in E},\qquad U_E=\sum_{i\in E}X_i,
+ \qquad \mu_E=\Law_Q(U_E).
+\]
+Masks may be empty, finite, or countably infinite; the empty sum is zero and the empty vector has a one-point state space. Write $E^c=I\setminus E$.
+
+We say that $E$ \emph{universally dominates} $L$ if one Borel Markov kernel from $V_E$ to $V_L$ satisfies
+\begin{equation}\label{eq:dominance}
+ \Law_{P_w}(V_E)K=\Law_{P_w}(V_L)
+ \quad\text{for every admissible }w.
+\end{equation}
+The kernel sees the source observation alone; it cannot see the total or the hidden noise. This is the Blackwell order for the experiments indexed by the weights $w$ \cite{Blackwell}.
+
+\begin{theorem}[Arbitrary masks]\label{thm:general}
+For any masks $E,L$, including overlapping masks of different cardinalities, universal dominance $E\to L$ is equivalent to
+\begin{equation}\label{eq:conv}
+ \mu_E=\mu_L*\nu
+\end{equation}
+for a probability measure $\nu$. It is enough to require one kernel for all positive-probability events $T\le t$, even only for rational $t$.
+
+The factor $\nu$ is compactly supported and unique. Each vector experiment is equivalent to its sum experiment. The kernel between the sum experiments is unique $\mu_E$-almost everywhere.
+\end{theorem}
+
+The final uniqueness statement concerns scalar sums. A vector kernel need not be unique. For any vector kernel, the uniquely determined scalar kernel is obtained by first averaging its input against the reference conditional law of $V_E$ given $U_E$, then projecting its output to the target sum.
+
+\subsection{Reduction to the observed sum}
+The product spaces are compact metrizable, and $U_E$ is continuous because its defining sum converges uniformly. Let
+\[
+ R_E(u,\dd v)=Q(V_E\in\dd v\mid U_E=u)
+\]
+be a reference regular conditional probability. Unobserved coordinates and $Z$ are independent of $V_E$, so conditioning on them does not change this conditional law. For bounded Borel $f$,
+\begin{equation}\label{eq:sufficiency}
+ \E[w(T)f(V_E)]=\E[w(T)R_Ef(U_E)].
+\end{equation}
+The identity follows by conditional expectation for bounded weights and by truncation for every admissible weight. Hence the sum map and the reverse kernel $R_E$ realize experiment equivalence. One reference version suffices, since every reweighted sum marginal is absolutely continuous with respect to $\mu_E$.
+
+Composing these maps shows that \eqref{eq:dominance} holds exactly when a scalar kernel $K$ satisfies
+\begin{equation}\label{eq:scalar}
+ \E[w(T)Kf(U_E)]=\E[w(T)f(U_L)]
+\end{equation}
+for all bounded Borel $f$ and all weights. Thresholds suffice: multiplying each conditional identity by $Q(T\le t)$ says that the finite signed measure
+\[
+ B\longmapsto\E\bigl[\ind_{\{T\in B\}}(Kf(U_E)-f(U_L))\bigr]
+\]
+vanishes on every lower half-line. Rational thresholds determine all half-lines by continuity from above. Uniqueness of finite measures, followed by integration and truncation of $w$, gives \eqref{eq:scalar}. Thresholds of probability zero give the zero identity automatically.
+
+\subsection{Proof of the convolution criterion}
+For each mask write $F_E(z)=\E e^{zU_E}$, an entire function. For bounded complex $f$, put
+\[
+ A_f(z)=\E[e^{zU_E}Kf(U_E)],\qquad
+ B_f(z)=\E[e^{zU_L}f(U_L)].
+\]
+By independence of each mask and its own complement, \eqref{eq:scalar} gives
+\[
+ \phi_Z(t)F_{E^c}(\ii t)A_f(\ii t)
+ =\phi_Z(t)F_{L^c}(\ii t)B_f(\ii t),\qquad t\in\R,
+\]
+where $\phi_Z(t)=\E e^{\ii tZ}$. Since $\phi_Z(0)=1$, it is nonzero near zero. Cancel it there, and use analyticity of the remaining compact transforms to obtain
+\begin{equation}\label{eq:complement}
+ F_{E^c}(z)A_f(z)=F_{L^c}(z)B_f(z)\qquad(z\in\C).
+\end{equation}
+No exponential moment of $Z$ is required. Moreover,
+\begin{equation}\label{eq:total}
+ F_EF_{E^c}=F_I=F_LF_{L^c}.
+\end{equation}
+All transforms equal one at zero. Dividing \eqref{eq:complement} and \eqref{eq:total} near zero yields
+\begin{equation}\label{eq:ratio}
+ A_f(z)=\frac{F_E(z)}{F_L(z)}B_f(z).
+\end{equation}
+
+For necessity, take $X\sim\mu_E$ and sample $Y$ conditionally from $K(X,\dd y)$. The reference weight gives $Y\sim\mu_L$. Put $D=X-Y$, a bounded random variable. For bounded $g$, substitute $f(y)=e^{-\ii ty}g(y)$ in \eqref{eq:ratio}, for small real $t$:
+\[
+ \E[e^{\ii tD}g(Y)]
+ =\frac{F_E(\ii t)}{F_L(\ii t)}\E g(Y).
+\]
+Taking $g=1$ identifies the quotient as $\E e^{\ii tD}$. The entire function
+\[
+ z\longmapsto\E[e^{zD}g(Y)]-\E[e^{zD}]\E g(Y)
+\]
+therefore vanishes on an imaginary interval and hence everywhere. Taking $g$ to be indicators and using Fourier uniqueness proves independence of $D,Y$. This gives \eqref{eq:conv} with $\nu=\Law(D)$.
+
+Conversely, assume \eqref{eq:conv}. Choose independent $Y\sim\mu_L$ and $D\sim\nu$, and set $X=Y+D$. The compact laws of $X,Y$ force $D$ to be bounded. Let $K=\Law(Y\mid X)$. Equations~\eqref{eq:conv} and \eqref{eq:total}, with cancellation of $F_L$ near zero and analytic continuation, imply
+\begin{equation}\label{eq:complementconv}
+ \mu_{L^c}=\nu*\mu_{E^c}.
+\end{equation}
+Take $B\sim\mu_{E^c}$ independent of $(Y,D)$ and of the prescribed noise $Z$. Then
+\begin{equation}\label{eq:reverse}
+ \E[w(X+B+Z)Kf(X)]=\E[w(Y+D+B+Z)f(Y)].
+\end{equation}
+The left side is the source sum experiment, and \eqref{eq:complementconv} identifies the right side as the target sum experiment. Composing with the conditional vector kernels proves the asserted mask comparison.
+
+For scalar-kernel uniqueness, subtract \eqref{eq:complement} for two kernels. Since $F_{E^c}$ is nonzero near zero, the compact transform of $(K_1f-K_2f)\mu_E$ vanishes identically. Fourier uniqueness gives equality for each $f$ almost everywhere. A countable family of rational lower-half-line indicators supplies one common null set on which to discard exceptions. Factor uniqueness follows by cancelling $F_L$ near zero; every possible factor is compact as above. This completes the proof of Theorem~\ref{thm:general}.
+
+\begin{corollary}[Common observations cancel]\label{cor:common}
+Put $C=E\cap L$, $E_0=E\setminus C$, and $L_0=L\setminus C$. Universal $E\to L$ dominance is equivalent to universal $E_0\to L_0$ dominance. When it holds, there is a realizing kernel which retains $V_C$ exactly, including for countably infinite $C$.
+\end{corollary}
+\begin{proof}
+The identities $\mu_E=\mu_C*\mu_{E_0}$ and $\mu_L=\mu_C*\mu_{L_0}$ allow cancellation of $F_C$ near zero. Thus
+\[
+ \mu_E=\mu_L*\nu\quad\Longleftrightarrow\quad
+ \mu_{E_0}=\mu_{L_0}*\nu.
+\]
+Apply the preceding construction to $E_0,L_0$ in the coordinate family with $C$ removed. It gives equality jointly with that family's total. The vector $V_C$ is independent before reweighting; retain it and add its sum to the total. The joint identity, multiplied by $w(T)$, proves the claim.
+\end{proof}
+
+\section{The complete order for geometric caps}
+Assume now that the coordinate densities have a common real tilt:
+\begin{equation}\label{eq:tilts}
+ q_{\beta,a}(x)=\frac{e^{-\beta x}}{Z_\beta(a)}\ind_{(0,a)}(x),
+ \qquad Z_\beta(a)=\int_0^a e^{-\beta u}\dd u.
+\end{equation}
+The case $\beta=0$ is the uniform law. Suppose $a_i=cM^{-i}$, where $c>0$ and $M\ge2$ is an integer. For a mask define
+\[
+ N_E(j)=|E\cap\{1,\ldots,j\}|.
+\]
+
+\begin{theorem}[Prefix-count classification]\label{thm:geometric}
+For arbitrary finite or countable masks, universal dominance $E\to L$ holds if and only if
+\begin{equation}\label{eq:prefix}
+ N_E(j)\ge N_L(j)\quad\text{for every }j\in I.
+\end{equation}
+Equivalently, every target index $\ell_r$ in the increasing enumeration of $L$ has a source index $e_r$ in the increasing enumeration of $E$ with $e_r\le\ell_r$. Any additional source observations can be discarded. A realizing map is
+\begin{equation}\label{eq:residues}
+ (x_i)_{i\in E}\longmapsto
+ (x_{e_r}\bmod a_{\ell_r})_{r}.
+\end{equation}
+The necessity permits every randomized kernel that combines source coordinates; it is not restricted to maps acting separately on coordinates.
+\end{theorem}
+
+\begin{proof}
+The coordinate transform is
+\[
+ F_i(z)=\frac{e^{(z-\beta)a_i}-1}{(z-\beta)Z_\beta(a_i)},
+\]
+with its removable value at $z=\beta$. At
+\[
+ z_j=\beta+\frac{2\pi\ii}{a_j},
+\]
+it has a simple zero exactly when $i\le j$: the ratio $a_i/a_j=M^{j-i}$ is then an integer, whereas for $i>j$ it lies strictly between zero and one. Hence $F_E$ has zero multiplicity $N_E(j)$ at $z_j$.
+
+For an infinite mask the last assertion requires checking the tail product. Uniformly on any compact disk,
+\begin{equation}\label{eq:tailbound}
+ |F_i(z)-1|\le |z|a_i e^{|z|a_i}.
+\end{equation}
+The products converge locally uniformly because $\sum_i a_i<\infty$, and agree with the transforms of the uniformly convergent coordinate sums. On a neighborhood of a fixed $z_j$, all sufficiently late factors lie within distance $1/2$ of one. Their analytic logarithms converge uniformly by \eqref{eq:tailbound}, so the tail product is nonzero. Among the finitely many remaining factors, exactly the stated simple zeros contribute. Under dominance, $F_E=F_LF_\nu$ by Theorem~\ref{thm:general}. Zero multiplicities now force \eqref{eq:prefix}.
+
+For sufficiency, pair the increasing indices $e_r\le\ell_r$. The integer cap ratio allows the decomposition
+\[
+ X_{e_r}=a_{\ell_r}J_r+R_r,
+ \qquad R_r=X_{e_r}\bmod a_{\ell_r}.
+\]
+Factoring the density in \eqref{eq:tilts} shows that $J_r$ and $R_r$ are independent and $R_r\stackrel d=X_{\ell_r}$. Independence of source coordinates makes the entire residue vector $R$ independent of all the digits and all unused source coordinates. For countably many coordinates this follows on determining cylinder sets. Set
+\[
+ D=\sum_r a_{\ell_r}J_r+
+     \sum_{i\in E\setminus\{e_r:r\}}X_i.
+\]
+These nonnegative sums converge and are bounded by $\sum_{i\in E}a_i$. Thus
+\[
+ U_E=\sum_r R_r+D,
+ \qquad D\ \text{is independent of }R,
+ \qquad \Law(R)=\Law(V_L).
+\]
+This proves $\mu_E=\mu_L*\Law(D)$. It also verifies the deterministic map itself. By \eqref{eq:complementconv}, the independent variable $D+U_{E^c}$ has law $\mu_{L^c}$, so the joint laws of $(T,R)$ and $(T,V_L)$ coincide. Reweighting by $w(T)$ proves \eqref{eq:residues}, even with overlap or infinitely many outputs. No infinite sequence of descending swaps is needed.
+
+Finally, \eqref{eq:prefix} forces at least $r$ source indices by the $r$th target index. Conversely, each target index at most $j$ has a matched source index at most $j$. This proves the equivalence with the sorted-index condition, including empty masks.
+\end{proof}
+
+For the Fabius convention $a_i=t_nq^i$, $q=1/M$, the map in unit coordinates is $u_{e_r}\mapsto\{M^{\ell_r-e_r}u_{e_r}\}$. The earlier sufficient comparison \cite{Modulo} is therefore optimal for this full family of experiments, even when arbitrary randomized pooling of observations is allowed.
+% ed. (2026-10-01): the theorem is the case d = 1 of a later note's classification (same series)
+\begin{ednote}
+Theorem~\ref{thm:geometric} is the case $d=1$, $q=1/M$, of Theorem~2.1 of a
+later note of the series, \path{../Arithmetic_Geometric_Mask_Order/}, which
+classifies the universal order for every ratio $0<q<1$ (mask inclusion unless
+some power of $1/q$ is an integer, otherwise prefix counts in each residue
+class modulo the least such power $d$) with the same tail
+bound~\eqref{eq:tailbound}, zero-multiplicity argument and independent residue
+vector. Read as one series, that theorem is the primary statement of the
+order, and this one its reciprocal-integer case.
+\end{ednote}
+
+\section{An exact polynomial test for commensurate caps}
+The following different specialization gives comparisons beyond separately divisible coordinate pairs. It assumes finite masks of the same cardinality.
+
+Let source caps be $ha_1,\ldots,ha_k$ and target caps $hb_1,\ldots,hb_k$, with $h>0$, $k\ge1$, and all $a_i,b_i$ positive integers. Keep the common tilt $\beta\in\R$ from \eqref{eq:tilts}. Define
+\begin{equation}\label{eq:poly}
+ [n]_u=1+u+\cdots+u^{n-1},\qquad
+ P(u)=\frac{\prod_{i=1}^k[a_i]_u}{\prod_{i=1}^k[b_i]_u},
+ \qquad r=e^{-\beta h}.
+\end{equation}
+
+\begin{theorem}[Polynomial criterion]\label{thm:poly}
+Universal source-to-target dominance holds if and only if the rational function $P$ in \eqref{eq:poly} is a polynomial with nonnegative coefficients. When it is a polynomial its coefficients are integers and its constant coefficient is one. Writing $P(u)=\sum_jp_ju^j$, the unique convolution factor is
+\begin{equation}\label{eq:factor}
+ \nu_\beta=\frac1{P(r)}\sum_jp_jr^j\delta_{hj}.
+\end{equation}
+Thus the criterion does not depend on the common tilt. Masks may overlap.
+\end{theorem}
+
+\begin{proof}
+The block decomposition of an interval gives the transform identity
+\begin{equation}\label{eq:block}
+ F_{\beta,hn}(z)=F_{\beta,h}(z)
+ \frac{[n]_{e^{h(z-\beta)}}}{[n]_{e^{-\beta h}}}.
+\end{equation}
+Both masks have $k$ coordinates, so the factors $F_{\beta,h}(z)^k$ cancel. Near zero,
+\begin{equation}\label{eq:polyratio}
+ \frac{F_E(z)}{F_L(z)}
+ =\frac{P(e^{h(z-\beta)})}{P(r)}.
+\end{equation}
+Suppose dominance holds. Write $N(u)=\prod_i[a_i]_u$ and $D(u)=\prod_i[b_i]_u$. Every zero $\omega$ of $D$ is a root of unity different from one. Choose $z_0$ with $e^{h(z_0-\beta)}=\omega$. The factor $F_{\beta,h}(z_0)$ is nonzero, since its numerator is $\omega-1$ and $z_0-\beta\ne0$. The exponential map has nonzero derivative $h\omega$. Entire-transform divisibility $F_E=F_LF_\nu$ therefore forces $N$ to vanish at $\omega$ with at least the multiplicity of $D$. It follows that $D$ divides $N$ as polynomials. Monic integer polynomial division gives $P\in\mathbb Z[u]$, and $P(0)=1$.
+
+Equation~\eqref{eq:polyratio} now identifies the transform of $\nu$ with that of the finite signed measure in \eqref{eq:factor}. Its normalization is positive because $P(r)=N(r)/D(r)>0$. Fourier uniqueness identifies the measures themselves. The sites $hj$ are distinct, so positivity of $\nu$ forces $p_j\ge0$. Conversely, if all coefficients are nonnegative, \eqref{eq:factor} is a probability measure and \eqref{eq:polyratio} proves $\mu_E=\mu_L*\nu_\beta$. Apply Theorem~\ref{thm:general}.
+\end{proof}
+
+\paragraph{An explicit kernel independent of the tilt.}
+Let $g_L$ be the density of the sum of independent ordinary uniforms on the target caps. Given source sum $s$, choose $j$ with probabilities
+\begin{equation}\label{eq:posterior}
+ \Pr(j\mid s)=
+ \frac{p_jg_L(s-hj)}{\sum_vp_vg_L(s-hv)}.
+\end{equation}
+Set the target sum to $s-hj$, then draw the target vector from its ordinary-uniform conditional distribution given that sum. Set arbitrary values where the denominator vanishes; that set is source-null. To check the formula under tilt $\beta$, multiply the factor mass $p_je^{-\beta hj}/P(r)$ by the tilted target-sum density at $s-hj$. The common exponential factor is $e^{-\beta s}$, which cancels from the posterior. The target vector's conditional law given its sum is also unchanged by the common tilt. Thus this same kernel works for every real $\beta$ and every admissible total-sum weight.
+
+Equal cardinality matters in Theorem~\ref{thm:poly}: without it an additional power of the base-cap transform remains in \eqref{eq:polyratio}. The general convolution criterion still applies, but the stated coefficient test is not asserted for that wider situation.
+
+\section{Gaussian polynomials and a positivity obstruction}
+For integers $n\ge k\ge1$, take source caps
+\[
+ h(n-k+1),\ldots,hn
+\]
+and target caps $h,2h,\ldots,kh$. Then $P$ is the classical Gaussian polynomial
+\begin{equation}\label{eq:gaussian}
+ G_{n,k}(u)=\prod_{j=1}^k\frac{[n-k+j]_u}{[j]_u}.
+\end{equation}
+Its coefficients are nonnegative integers. For completeness this follows inductively from the elementary recurrence
+\[
+ G_{n,k}=G_{n-1,k}+u^{n-k}G_{n-1,k-1},
+ \qquad G_{n,0}=G_{n,n}=1.
+\]
+The product identity and the interpretation by partitions in a rectangle are classical \cite{DLMF,MPP}; no novelty is claimed for them. Theorem~\ref{thm:poly} converts their positivity into universal mask comparisons. At $\beta=0$, the factor law normalizes by $G_{n,k}(1)=\binom nk$.
+
+For example, source caps $(5,6,7)$ and target caps $(1,2,3)$ give
+\begin{align*}
+ G_{7,3}(u)={}&1+u+2u^2+3u^3+4u^4+4u^5+5u^6\\
+             &+4u^7+4u^8+3u^9+2u^{10}+u^{11}+u^{12}.
+\end{align*}
+The coefficients sum to $35$. Universal garbling exists, although there is no bijection pairing each target cap with an integer-divisible source cap: both $2$ and $3$ would need the source cap $6$. Formula~\eqref{eq:posterior} implements the comparison through the pooled source sum.
+
+In the opposite direction, source caps $(1,6)$ and target caps $(2,3)$ give
+\[
+ P(u)=\frac{[6]_u}{[2]_u[3]_u}=u^2-u+1.
+\]
+The denominator divides the numerator, so the zero-multiplicity obstruction disappears. The unique signed factor has a negative mass at $h$ in the scaled version, and no universal kernel exists for any real common tilt. Transform-zero inclusion is therefore weaker than probability convolution divisibility.
+% ed. (2026-10-01): the coefficient test is extended, and the obstruction cured, by the next note; the same quotient in two uncited repository articles
+\begin{ednote}
+Theorem~\ref{thm:poly} is the equal-cardinality case of Theorem~1.1 of the
+next note of the series, \path{../Uniform_Smoothing_Mask_Stabilization/},
+which allows unequal cardinalities. That note also shows that this obstruction
+disappears after smoothing: the source $(h,6h)$ together with nine further
+caps $h$ dominates the target $(2h,3h)$, and with eight it does not (its
+Theorem~5.1). The same signed quotient appears in two repository articles that
+this note does not cite: Theorem~\texttt{thm:base6} of
+\path{../../spectra-and-arithmetic/Simultaneous_Convolution_Divisors_Fabius_Type_Laws/}
+($\mathrm{Unif}_{1/2}*\mathrm{Unif}_{1/3}$ does not divide $\mu_6$, with
+$\mathrm{Unif}_a$ uniform on $[-a,a]$) and Proposition~\texttt{prop:base6} of
+\path{../../spectra-and-arithmetic/Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/},
+which reproduces it in another normalization. There the two largest source
+uniforms have lengths $6h$ and $h$ and the targets $3h$ and $2h$ ($h=1/3$,
+respectively $1/6$), the centred factor $\delta_{-h}-\delta_0+\delta_h$ is
+that of the quotient above up to translation, and the rest of the source is a
+geometric tail supported on an interval shorter than $h$, which leaves a
+negative mass at the centre.
+\end{ednote}
+
+\section{Scope and attribution}
+The relevant repository question concerns arbitrary observation masks in Fabius conditioning \cite{Repository}. Theorem~\ref{thm:general} supplies a convolution criterion for all masks in the stated independent bounded-coordinate model. Theorem~\ref{thm:geometric} completely resolves that universal order for reciprocal-integer geometric caps. Theorem~\ref{thm:poly} gives an exact finite algebraic criterion under its equal-cardinality and commensurability assumptions.
+
+These are comparisons for one kernel required to work under the entire weight or threshold family. They do not decide every prescribed two-hypothesis comparison or the sharp asymptotics of overlap for a particular conditioning rule. The earlier companions \cite{Modulo,Classification} treated the sufficient residue construction and the sharp individual-coordinate classification. The present proofs include the steps needed for overlapping and infinite masks.
+
+Blackwell comparison and convolution criteria have substantial antecedents \cite{Blackwell,Torgersen}; exponential digit independence is classical \cite{Steutel}, as are the Gaussian polynomial identities \cite{DLMF}. The note gives self-contained proofs in the stated sum-reweighted setting, with no general priority claim. These are ordinary mathematical proofs, not formalized or externally refereed results.
+% ed. (2026-10-01): the matching method is that of an uncited repository article
+\begin{ednote}
+The two halves of the proof of Theorem~\ref{thm:geometric}, zero
+multiplicities at the target's transform zeros for necessity and digit
+splitting of matched source coordinates for sufficiency, are those of the
+prime-adic Hall criterion, Theorem~\texttt{thm:hall} of
+\path{../../spectra-and-arithmetic/Simultaneous_Convolution_Divisors_Fabius_Type_Laws/},
+which this note does not cite. The statements differ: that theorem classifies
+arbitrary families of uniforms dividing the whole geometric law for a prime
+base, this one the sub-masks of one geometric family for every integer
+$M\ge2$. Composite $M$ causes no obstruction here because the targets are
+coordinates of the same family, whereas the base-six obstruction recalled in
+the note at the end of Section~4 concerns target widths outside the family.
+\end{ednote}
+% ed. (2026-10-01): series map: the notes of the series and the companions cited here
+\begin{ednote}
+This note is the third of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The earlier companions \cite{Modulo} and \cite{Classification}, sources
+\texttt{exact\_fabius\_mask\_order.tex} and
+\texttt{universal\_garbling\_classification.tex}, are filed as
+\path{../Exact_Fabius_Mask_Order/} and
+\path{../Universal_Garbling_Classification/}, and \cite{Repository} is
+\path{../Critical_Complements_Sharp_Information_Loss/}. Theorem~\ref{thm:general} contains Proposition~4.1 of
+the second note as its case of two one-coordinate masks, and Sections~1.1
+and~1.2 re-prove that note's Lemmas~2.1 and~2.2.
+\end{ednote}
+
+\begin{thebibliography}{9}\small\raggedright
+\setlength{\itemsep}{3pt}\setlength{\parskip}{0pt}
+\bibitem{Blackwell} D. Blackwell, \emph{Equivalent comparisons of experiments}, Annals of Mathematical Statistics \textbf{24} (1953), 265--272. \href{https://doi.org/10.1214/aoms/1177729032}{doi:10.1214/aoms/1177729032}.
+\bibitem{Torgersen} E. N. Torgersen, \emph{Comparison of translation experiments}, Annals of Mathematical Statistics \textbf{43} (1972), 1383--1399. \href{https://doi.org/10.1214/aoms/1177692372}{doi:10.1214/aoms/1177692372}.
+\bibitem{Steutel} F. W. Steutel and J. G. F. Thiemann, \emph{On the independence of integer and fractional parts}, Statistica Neerlandica \textbf{43} (1989), 53--59. \href{https://doi.org/10.1111/j.1467-9574.1989.tb01246.x}{doi:10.1111/j.1467-9574.1989.tb01246.x}.
+\bibitem{DLMF} NIST Digital Library of Mathematical Functions, Gaussian polynomials and restricted partitions, \href{https://dlmf.nist.gov/17.2#E27}{Equation 17.2.27}, \href{https://dlmf.nist.gov/26.9#E4}{Equation 26.9.4}, and \href{https://dlmf.nist.gov/26.9#E6}{Equation 26.9.6}, accessed 1 October 2026.
+\bibitem{MPP} S. Melczer, G. Panova, and R. Pemantle, \emph{Counting partitions inside a rectangle}, \href{https://arxiv.org/abs/1805.08375v3}{arXiv:1805.08375v3} (2019), introduction. The rectangle-partition interpretation recalled there is classical.
+\bibitem{Modulo} \emph{Exact Observation Order for Fabius Conditioning}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{exact\_fabius\_mask\_order.tex}.
+\bibitem{Classification} \emph{Universal Garblings of Tilted Uniform Observations}, research companion prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Source \texttt{universal\_garbling\_classification.tex}.
+\bibitem{Repository} V. Reshetnikov, ProveIt, \emph{Critical Complements in Fabius Conditioning}, source at commit \texttt{7421a4ca60fd}, checked 1 October 2026. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/7421a4ca60fdf125411edf412f825aac54278b37/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Sharp_Information_Loss/article.tex}{Pinned source on GitHub}. Full identifiers are recorded in the package.
+\end{thebibliography}
+\end{document}

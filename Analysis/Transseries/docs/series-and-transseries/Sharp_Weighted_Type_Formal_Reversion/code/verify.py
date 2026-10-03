@@ -176,11 +176,12 @@ def main() -> None:
     expected=compose(q,Hinv,K)
     assert invcomposed==expected
     checks['analytic_postcomposition_inverse_factorization_through']=K
+    # ed. (2026-09-29): LF rows on every platform (csv defaults to CRLF); LF text on Windows
     with (data/'quadratic_coefficients.csv').open('w',newline='') as f:
-        wr=csv.writer(f); wr.writerow(['n','U_n','Q_n'])
+        wr=csv.writer(f,lineterminator='\n'); wr.writerow(['n','U_n','Q_n'])
         wr.writerows((n,str(u[n]),str(q[n])) for n in range(1,N+1))
     with (data/'type_diagnostics.csv').open('w',newline='') as f:
-        wr=csv.writer(f); wr.writerow(['n','forward_refined_root','inverse_refined_root','Q_sign'])
+        wr=csv.writer(f,lineterminator='\n'); wr.writerow(['n','forward_refined_root','inverse_refined_root','Q_sign'])
         for n in range(3,N+1):
             # Weight (n!)/(log(n+e))^(2n); floating point diagnostics only.
             shift=-math.lgamma(n+1)/n+2*math.log(math.log(n+math.e))
@@ -190,10 +191,10 @@ def main() -> None:
     rows=[]
     for n in range(1,11):
         rows.append(f'{n} & ${u[n]}$ & ${q[n]}$ \\\\')
-    (data/'coefficient_table.tex').write_text('\n'.join(rows)+'\n')
+    (data/'coefficient_table.tex').write_text('\n'.join(rows)+'\n',newline='\n')
     checks['diagnostics']='ordinary floating point; not interval certificates'
     checks['all_checks_passed']=True
-    (data/'verification.json').write_text(json.dumps(checks,indent=2)+'\n')
+    (data/'verification.json').write_text(json.dumps(checks,indent=2)+'\n',newline='\n')
     print(json.dumps(checks,indent=2))
 
 if __name__=='__main__':

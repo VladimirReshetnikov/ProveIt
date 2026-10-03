@@ -10,7 +10,7 @@ The exact current live-TeX snapshots are:
 |---|---:|---:|---|
 | `Automatic_Scale_Factorizations_Rvachev_2026-08-30/automatic_scale_factorizations.tex` | 1,682 | 62,490 | `3e40fef5247ed3d7263ff885dc97159b456f26347614817fc18e087af647de90` |
 | `Digital_Spectral_Geometry_and_Log_Periodic_Saddles/Fabius_Rvachev_Frontier_Report.tex` | 1,940 | 61,049 | `92d98914722f98b37f84a19283536c8b3925584d0729920b6346a4f572c735b1` |
-| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 2,307 | 90,871 | `e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e` |
+| `Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors.tex` | 2,340 | 92,888 | checksum receipt retired (source amended editorially 2026-09-29 and 2026-09-30) |
 | `fabius_holonomic_frontiers_report/fabius_holonomic_frontiers.tex` | 2,251 | 85,256 | `75f2a36ee0ae4b68e17030536cd7aa2cd922fea8941ed023afb272fafd29b20f` |
 | `Fabius_Total_Positivity_Frontier_Report/Fabius_Total_Positivity_Frontier_Report.tex` | 1,060 | 58,362 | `e7f05ac66a92284e82886bfe8b3376715ca0f71493a217d5a1adab6c17171475` |
 | `Spectra_and_Arithmetic_Frontiers/Spectra_and_Arithmetic_Frontiers.tex` | 8,183 | 349,076 | `683a560044772216980b05c4dd26957c6bbfb6c34019cc8d4cae815d9cff8df1` |
@@ -193,9 +193,8 @@ notation-only TeX; no PDF was regenerated.
 New standalone intake member:
 [`Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/`](Fabius_Rvachev_Reciprocal_Integer_Convolution_Divisors/),
 *Reciprocal-Integer Convolution Divisors of the Rvachev Law* (retained
-35-A4-page PDF checkpoint; current live TeX: 2,307 lines, 90,871 bytes,
-SHA-256
-`e6e3d6df88efc3e50f7180b3853fdc6e4c9072f4e56192655bb76e195b282c4e`;
+35-A4-page PDF checkpoint; current live TeX: 2,340 lines, 92,888 bytes
+(amended editorially 2026-09-29 and 2026-09-30; checksum receipt retired);
 with a 352-line exact/numerical experiment),
 arrived from a rootless 14-file archive on 2026-08-30.  The package's
 characteristic quotients
@@ -235,8 +234,8 @@ Manuscript theorem labels do not imply Lean proof status.
 
 Archival arrival of 2026-09-28:
 [`Arithmetic_Convolution_Factors_Fabius_Type_Laws/`](Arithmetic_Convolution_Factors_Fabius_Type_Laws/),
-*Arithmetic Convolution Factors of Fabius-Type Laws* (25-page A4 PDF,
-1,723-line source, an exact standard-library regression program), filed by
+*Arithmetic Convolution Factors of Fabius-Type Laws* (27-page A4 PDF,
+1,853-line source, an exact standard-library regression program), filed by
 a quick archival intake from the repository-level `docs/incoming/` drop
 zone.  It classifies scaled convolution factorizations
 `μ_A = D_c μ_B * ν` of laws of `Σ_k U_k/A_k` along divisibility ladders:
@@ -248,6 +247,102 @@ article does not cite that report, so the overlap is recorded here for the
 deferred comparison.  Its new layers are the two-ladder criterion, the
 encoding of inclusion modulo finite sets with a no-Borel-invariant theorem,
 arithmetical-hierarchy completeness results, and Wasserstein bounds.
+Its self-spectrum theorem, stated for every real ratio, already proves
+item 1 of the reciprocal-integer report's `conj:general-base` for every
+integer base (that report now carries a note of 2026-09-30 saying so).
+Editorial notes of 2026-09-30 point its questions "Beyond divisibility
+ladders", "Two arbitrary geometric ratios" and "Optimal approximate
+factorization" to the off-resonance article below.  Notes of 2026-10-01
+record that the Wasserstein contact-order arrival below credits its
+Wasserstein proposition, sharpens its simple-zero case, and settles, for
+geometric targets, the rate that the 2026-09-30 note left open (its
+question on divisibility-ladder targets stays open).
+Unreviewed; no Lean statement.
+
+Archival arrival of 2026-09-29:
+[`Simultaneous_Convolution_Divisors_Fabius_Type_Laws/`](Simultaneous_Convolution_Divisors_Fabius_Type_Laws/),
+*Simultaneous Convolution Divisors of Fabius-Type Laws* (24-page A4 PDF,
+1,671-line source, an exact standard-library certificate program), filed
+by a quick archival intake from the repository-level `docs/incoming/`
+drop zone.  It decides which families of uniform laws can be removed
+*together* from the prime-base law `X_p = Σ p^{−k}U_k`: exactly the
+reciprocal-integer widths `1/n_j` with `#{j : v_p(n_j) ≤ K} ≤ K+1` for
+every `K`, a Hall matching condition equivalent to entire extensibility
+of the Fourier quotient.  It adds finite certificates for geometric
+streams, prime-power targets, coordinate rigidity in several dimensions,
+and a regularity classification of the residual; a base-six quotient
+shows that zero cancellation does not imply positivity for composite
+bases.  Its one-stream cases are theorems of the two reports above, and
+it recovers the reciprocal-integer report's single-copy theorem; it does
+not cite the arithmetic-factor report, whose question "Beyond
+divisibility ladders" it answers for prime-power geometric targets.  The
+finite part of its base-six quotient (caps `h`, `6h` over `2h`, `3h`,
+quotient `1 − u + u²`) reappears, uncited, in two observation-mask notes
+of `../representations/` (batch 72), which show that nine further
+uniforms of length `h` make it positive; an editorial note of 2026-10-01
+records this.  Unreviewed; no Lean statement.
+
+Archival arrival of 2026-09-30:
+[`Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/`](Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/),
+*Arithmetic Rigidity off Resonance* (26-page US Letter PDF, 1,020-line
+source, an exact standard-library certificate program), filed by a
+quick archival intake from the repository-level `docs/incoming/` drop
+zone and amended editorially the same day and on 2026-10-01 (its README
+lists the amendments).  It takes the convolution-factor problem of the two articles
+above off integer ratios: when the source widths are pairwise
+rationally incommensurable, a family of uniforms divides the law
+exactly when its Fourier quotient is entire, exactly when each uniform
+refines its own source coordinate by an integer.  So for every `q`
+with no rational positive power, `D_cμ_ρ` divides `μ_q` exactly when
+`c = q^a/n` and `ρ = q^m/d`, and several geometric factors divide
+together exactly when their source progressions are disjoint; at
+`q = p^{−e/h}` the problem splits into `h` prime-adic Hall problems,
+with a finite-orbit criterion for one geometric factor.  It answers the
+arithmetic-factor article's question "Two arbitrary geometric ratios"
+for all but countably many target ratios, credits the simultaneous
+article's prime-power Hall theorem and base-six example, and re-proves,
+uncited, the arithmetic-factor article's self-spectrum theorem and uses
+the mechanism of its Wasserstein bound (editorial notes now record both,
+with reciprocal notes in the arithmetic-factor, simultaneous and
+reciprocal-integer articles); it adds
+a Wasserstein separation bound and a family near `q = 1/2` on which
+exact factorability fails while the distance to it tends to zero.  For
+observation masks of one geometric family its separated-width theorem is
+re-proved, uncited, by
+`../representations/Arithmetic_Geometric_Mask_Order/` (mask inclusion
+when no power of `q` is rational), and two other notes of that series
+carry out the finite Laurent-polynomial step of its question "Composite
+reciprocal returns" for finite sources; editorial notes of 2026-10-01
+record both.  Its question "Sharp distance to a resonance" is answered
+by the arrival below (exact first order at `q = 1/2`, and at most
+`|q − 1/2|/4` for every `q`, below its bound `|q − 1/2|/(2(1 − q))`);
+three further notes of 2026-10-01 record this.  Unreviewed; no Lean
+statement.
+
+Archival arrival of 2026-10-01:
+[`Wasserstein_Contact_Orders_Uniform_Factor_Resonances/`](Wasserstein_Contact_Orders_Uniform_Factor_Resonances/),
+*Wasserstein Contact Orders at Uniform Factor Resonances* (17-page US
+Letter PDF, 737-line source, five finite checkers with receipts), filed
+by a quick archival intake from the repository-level `docs/incoming/`
+drop zone (its revision 2; the first edition was not filed).  It answers
+the question "Sharp distance to a resonance" of the article above: for
+the factor `U_{1/2}*U_{1/3}` the Wasserstein distance from `μ_q` to the
+laws with that factor is of exact first order at `q = 1/2`, with
+one-sided coefficients between `|P|/(6π(1+12π))` and `1/4` described
+by an `L^1` tangent cone, and at most `|q − 1/2|/4` everywhere, so the
+leading perturbation cannot be cancelled.  For the factor
+`U_{1/B}*U_{B^{−j}}` the distance has exact order `|q − 1/B|^j` from
+both sides, for every fixed integer base `B ≥ 2` and depth `j ≥ 1`:
+every positive integer contact order occurs.  The lower bounds compare
+Fourier derivatives at a double zero; the upper bounds construct
+genuine probability remainders.  It credits the arithmetic-factor
+article's `prop:wasserstein` and the article above.  An editorial pass
+the same day recorded in its README the unfiled first edition, an
+attribution note (the contact-order mechanism itself is in those two
+articles; the derivative comparison at the zero and the constructive
+upper bounds are new), and the Lean counterparts of its transform
+identity and first-coordinate split, placed reciprocal notes in both
+articles, and made its checkers also write their receipts to `rerun/`.
 Unreviewed; no Lean statement.
 
 [`Fabius_Total_Positivity_Frontier_Report/`](Fabius_Total_Positivity_Frontier_Report/),

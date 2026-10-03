@@ -1,0 +1,177 @@
+{
+  "archive_sha256": {
+    "Exact_Targets_Three_Mass_Units.zip": "d69d8df9ee3a2074bcff1ef400853724eafb679ada8b287ef397eb8891965dcc",
+    "Three_Mass_Reversible_Computation.zip": "fd86a8a6b71735ef08ebd7913498603213244484da8b23d81876b10c40ffd1de"
+  },
+  "author_replays": {
+    "clean": {
+      "commands": [
+        {
+          "command": "python test_clean_targets.py",
+          "returncode": 0
+        },
+        {
+          "command": "python -O test_clean_targets.py",
+          "returncode": 0
+        },
+        {
+          "command": "python test_affine_lift.py",
+          "returncode": 0
+        },
+        {
+          "command": "python -O test_affine_lift.py",
+          "returncode": 0
+        },
+        {
+          "command": "python audit/audit_actual_ca.py",
+          "returncode": 0
+        },
+        {
+          "command": "python audit/audit_certificates.py",
+          "returncode": 0
+        },
+        {
+          "command": "python audit/audit_witness_lift.py",
+          "returncode": 0
+        },
+        {
+          "command": "python audit/audit_lift_name_collisions.py",
+          "returncode": 0
+        },
+        {
+          "command": "python clean_targets.py export examples/chain_request.json cli-certificate.json --expanded",
+          "returncode": 0
+        },
+        {
+          "command": "python clean_targets.py witness cli-certificate.json cli-witness.json",
+          "returncode": 0
+        },
+        {
+          "command": "python check_clean_targets.py cli-certificate.json cli-witness.json",
+          "returncode": 0
+        }
+      ],
+      "literal_examples_byte_identical": true,
+      "normalized_receipts": {
+        "actual-ca-receipt.json": "6aacff769113ae67e5a51db0f9d61a102b1401ddd290db7c04bf01eab35be0b7",
+        "affine_lift.json": "2c76055390c1e4f49d8c0dc8fa15ea2f4e2b1792e8fae04bb22b2d1df55fdb6e",
+        "certificate-receipt.json": "863c1f89f34e15e1676cd6d7c21bfb7da62198361e4671838031977b6d7d1616",
+        "lift-name-collision-receipt.json": "2f9c6aa0c5adea874b20de1c327e749384440f7072843921a881f7189e7b4895",
+        "test_clean_targets.json": "c7006fba4c159b5757db8f2d3c2faa4308fba2895171e09075a67727e2a2f799",
+        "witness-lift-receipt.json": "c4a19984a34b3619038a71ed7094ba6c4474a524cc7649b6b073dc80a82d899c"
+      },
+      "published_members_unchanged": 38,
+      "status": "PASS"
+    },
+    "native": {
+      "literal_example_files": [
+        "chain_certificate.json",
+        "chain_check.json",
+        "chain_request.json",
+        "chain_witness.json",
+        "cycle_rule.json",
+        "merge_rule.json",
+        "mixed_certificate.json",
+        "mixed_check.json",
+        "mixed_radius_one_certificate.json",
+        "mixed_radius_one_check.json",
+        "mixed_radius_one_request.json",
+        "mixed_radius_one_witness.json",
+        "mixed_request.json",
+        "mixed_witness.json",
+        "rule_index.json",
+        "trap_rule.json"
+      ],
+      "normalized_receipts": {
+        "certificate-hardening.json": "7281a166c9e79339738b6119ff6d5454635abf557decf472ae238599320b36d6",
+        "certificate-tests.json": "26098081bc32c4382d35909a9486436c9125f19173e886adb9014edce51924c1",
+        "checker-mutations.json": "401b5a8df4d572abf3147162f80cd11fec4679c41f904d735384d32f2bdc2bba",
+        "clock-scale-optimized-tests.json": "97812984f2f8c620b00eedce31b8d64955bab8eeda4651c4003ceb5aef9726d8",
+        "clock-scale-tests.json": "a0f9c4fa17e5f889bd023250318be68d8c4638eb6b1a9dd2b5805766a10c8604",
+        "generator-tests.json": "da792578d34d0f6af777b528c0328ba2b07bd86be7696c6bbecbbbfba9be1c82",
+        "independent-ca-tests.json": "0d16a8eecabefac107be864c775ca8bf2af550654f3bfb2a5d3bc1aa30e12bda",
+        "independent-certificate-tests.json": "60520b1249d48a7e0c649bafd8fb7e6032b21d7a09695f8506357cf8ec528a2a",
+        "literal-export-check.json": "cda6fb26bf2fd4db9e8a11cfa5bf634e752059c527195502734ed6b7a9b723b9",
+        "literal-export.json": "38f34ef2a51496cd8d2192165f33182ee9f8c1fc87cf01de8077a1dc6e481df3",
+        "radius-one-tests.json": "6955e34af059eddf61d688876bac5da045522eb1c14c0465552bcdc920ba286c",
+        "replay-summary.json": "b2f9e88ab98c60894684cc60ab065f607dd45129b9f183a2fa19a7581e6ebecf",
+        "size-ledger-tests.json": "cbca917db2ec94f00bd4879e15d821143b8dfc348db337e7f231c9a831cbb9e3",
+        "spatial-radius-one-optimized-tests.json": "37e7356e5cbc95d57a39a25fc4b1f457100dd219db33556606b0b36a67c78a9c",
+        "spatial-radius-one-tests.json": "d304eea28521161a1cc94023705d2022bdd358eced531d2dfecf348e8d09f5ae",
+        "two-mass-arithmetic-tests.json": "dbd055253ae95255664cc6409f7d4bcba81d77874670616dbede1d897950e19f"
+      },
+      "published_members_unchanged": 66,
+      "status": "PASS"
+    },
+    "normalization": {
+      "all_other_values_exact": true,
+      "basename_metadata_fields": [
+        "generator_path",
+        "source_file"
+      ],
+      "ignored_metadata_fields": [
+        "elapsed_seconds",
+        "python"
+      ]
+    }
+  },
+  "examples": {
+    "actual_cleaned_fixture": {
+      "N0": 5,
+      "completed_pair_support": 346040,
+      "first_target_time": 7968,
+      "h": 2,
+      "prescribed_pairs": 174154,
+      "types": 7236
+    },
+    "nonfresh_counterexample": {
+      "forward_values": [
+        1,
+        1,
+        2,
+        2
+      ],
+      "premature_reverse_exit_N": 2,
+      "required_restored_N": 1
+    },
+    "offzero_lift": {
+      "allzero_bridge_minimum": -1,
+      "polynomial_separation": {
+        "compact_value": 3,
+        "e": 0,
+        "full_restored_value": 18,
+        "u": 0
+      }
+    },
+    "rational_false_zero": {
+      "N": 2,
+      "e": 1,
+      "operation": "zero2",
+      "polynomial": 0,
+      "u": "1/2"
+    }
+  },
+  "findings": [],
+  "independent_counts": {
+    "accepted_core_cases": 82,
+    "authenticated_members": 104,
+    "clean_source_tables": 5,
+    "complete_actual_cleanup_runs": 1,
+    "exhaustive_natural_assignments": 2400,
+    "false_horizon_or_guard_cases": 278,
+    "identical_vendor_sources": 5,
+    "independent_native_ticks": 7968,
+    "literal_compact_expansions": 45,
+    "literal_core_cases": 360,
+    "malformed_rejections": 689,
+    "mixed_wrapper_cases": 48,
+    "natural_zero_fiber_bijections": 45
+  },
+  "members": {
+    "Exact_Targets_Three_Mass_Units.zip": 38,
+    "Three_Mass_Reversible_Computation.zip": 66
+  },
+  "review_source_sha256": "dae73dad2e3f7cf6949d2f040990bc3139acd470d6f57b8d34296257f3b716f7",
+  "scope": "Mathematical/source review with finite independent checks; three typed mass units are not three scalar witnesses. Natural quadratic certificates retain an external source horizon. Exact-target lift is a zero-fiber bijection only. No numerical universal source, priority claim or fixed-arity arithmetic record.",
+  "status": "PASS_BATCH80_THREE_MASS"
+}

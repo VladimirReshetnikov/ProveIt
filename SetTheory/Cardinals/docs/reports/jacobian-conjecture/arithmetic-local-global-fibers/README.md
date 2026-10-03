@@ -1,59 +1,125 @@
 # Arithmetic Local–Global Dichotomies for ProveIt's Three-Variable Keller Map
 
-**Split integral Hasse failures, a dense parameter family, and exact p-adic fiber laws**
+**Split integral Hasse failures, a dense parameter family, and exact p-adic
+fiber laws** — with Part II, **Zariski-dense integral Hasse failures:
+complete split-fiber criteria and sharp target-height asymptotics**, and
+Part III, **Nonsplit fibers: a complete local certificate and a T log T
+law**
 
 This is a research report of ProveIt's research-report collection (category
 `jacobian-conjecture`). It continues the formal project
-`Algebra/JacobianConjecture`, whose map it studies. It is dated 24 September
-2026 and built from one manuscript. Author line: "Research draft prepared for
-Vladimir Reshetnikov"; the delivered PDF metadata names the author as
-"Research draft prepared with ChatGPT".
+`Algebra/JacobianConjecture`, whose map it studies. It is built from three
+manuscripts: Part I, dated 24 September 2026, author line "Research draft
+prepared for Vladimir Reshetnikov" (the delivered PDF metadata names the
+author as "Research draft prepared with ChatGPT"); Part II, dated
+29 September 2026 and added on 30 September 2026; and Part III, *Beyond
+Split Fibers: Exact Local Certificates and a T log T Law for Integral Hasse
+Failures*, dated and added on 30 September 2026. Parts II and III carry the
+author line and PDF metadata "AI-assisted research draft prepared for
+Vladimir Reshetnikov".
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| — (single source) | batch 36, manuscript 03 | `ProveIt_Arithmetic_Local_Global` (inner directory `proveit_arithmetic_fibers`, main file `arithmetic_fibers.tex`, 26-page PDF; delivered in `e13affd32`) | `e21766d04` | `1a1396d4d` | the whole of `article.tex`, apart from text marked `[write]` |
+| Part I | batch 36, manuscript 03 | `ProveIt_Arithmetic_Local_Global` (inner directory `proveit_arithmetic_fibers`, main file `arithmetic_fibers.tex`, 26-page PDF; delivered in `e13affd32`) | `e21766d04` | `1a1396d4d` (new report) | Sections 1–13 and Appendices A–C.3 of `article.tex`, apart from text marked `[write]` |
+| Part II | batch 58, manuscript 01 | `ProveIt_Dense_Integral_Hasse` (inner directory of the same name, main file `article.tex`, 20-page US-Letter PDF; delivered in `b2b626d85`) | `1085b506d` | `b30441a8c` (addition, prefix `02-dense-hasse-`) | Sections 15–27 of `article.tex`, apart from text marked `[write]`; Section 14 and Appendices C.4–C.5 are new |
+| Part III | batch 64, manuscript 02 | `ProveIt_Beyond_Split_Fibers` (inner directory `ProveIt_Nonsplit_Hasse`, main file `article.tex`, 24-page US-Letter PDF; delivered in `7747fcfdd`) | `6d04e1e38` | `3025c15df` (addition, prefix `03-nonsplit-hasse-`) | Sections 29–46 of `article.tex`, apart from text marked `[write]`; Section 28 and Appendices C.6–C.7 are new |
 
-Every result, proof, example, table, question and limitation of the
-manuscript is printed. **Status: AI-assisted and unrefereed. None of the
-report's own results is formalized in Lean or Rocq.** Placement beside the
-Lean/Rocq development of the Jacobian project confers no formal status on
-it (see "The formal project" below).
+Every host passage Part II cites (Sections 2, 4 and 12 and Research
+questions 12.2–12.4) is unchanged from its pin `1085b506d` to the placement
+commit; likewise Parts I and II are unchanged from Part III's pin
+`6d04e1e38` to its placement commit `3025c15df`. Every result, proof,
+example, table, question and limitation of all three manuscripts is
+printed; nothing was merged across the Parts. **Status: AI-assisted and
+unrefereed. None of the report's own results is formalized in Lean or
+Rocq.** Placement beside the Lean/Rocq development of the Jacobian project
+confers no formal status on it (see "The formal project" below).
 
 ```
-README.md                         this guide (replaces the delivered README)
-SOURCE_REVIEW.md                  the source's review of prior work and novelty boundaries, as delivered
-article.tex                       the report: the manuscript, labels prefixed, with [write] additions
-article.pdf                       the compiled report, 29 pages (unnumbered title page,
-                                  contents pages 1–2, text pages 3–28, references on page 28)
-code/rational_inverse.py          complete exact rational inverse of F (SymPy; prints JSON)
-code/verify_finite.py             finite local certificates (standard library only)
-code/verify_split_plane.py        split-plane gcd and parameter counts (standard library only)
-code/verify_symbolic.py           27 exact symbolic identities (SymPy)
-data/build_review.json            the source's build and review record for its 26-page PDF
-data/finite_checks.json           recorded output of verify_finite.py --output
-data/finite_checks.txt            recorded stdout of verify_finite.py
-data/inverse_example.json         recorded stdout of rational_inverse.py 0 -4 2
-data/split_plane_checks.json      recorded JSON written by verify_split_plane.py
-data/split_plane_checks.txt       recorded stdout of verify_split_plane.py
-data/symbolic_checks.json         recorded JSON written by verify_symbolic.py
-data/symbolic_checks.txt          recorded stdout of verify_symbolic.py
+README.md                                  this guide (replaces the three delivered READMEs)
+SOURCE_REVIEW.md                           Part I's review of prior work and novelty boundaries, as delivered
+02-dense-hasse-SOURCES.md                  Part II's source and attribution ledger, as delivered
+02-dense-hasse-STATUS.md                   Part II's proof, novelty and computation boundaries, as delivered
+03-nonsplit-hasse-SOURCES.md               Part III's source and attribution ledger, as delivered
+03-nonsplit-hasse-STATUS.md                Part III's proof, novelty and computation boundaries, as delivered
+article.tex                                the report: all three manuscripts, labels prefixed, with [write] additions
+article.pdf                                the compiled report, 88 pages (unnumbered title page,
+                                           contents pages 1–6, Part I pages 7–29, Part II pages 30–52,
+                                           Part III pages 53–78, appendices pages 79–86, references page 87)
+code/rational_inverse.py                   Part I: complete exact rational inverse of F (SymPy; prints JSON)
+code/verify_finite.py                      Part I: finite local certificates (standard library only)
+code/verify_split_plane.py                 Part I: split-plane gcd and parameter counts (standard library only)
+code/verify_symbolic.py                    Part I: 27 exact symbolic identities (SymPy)
+code/02-dense-hasse-Makefile               Part II's delivered Makefile (names delivered paths)
+code/02-dense-hasse-count_heights.py       Part II: exact height counts and constants (NumPy, mpmath)
+code/02-dense-hasse-split_fibres.py        Part II: exact split fibers, local tests, exceptions, witnesses (standard library)
+code/02-dense-hasse-verify_results.py      Part II: twelve groups of exact checks (SymPy, NumPy)
+code/03-nonsplit-hasse-Makefile            Part III's delivered Makefile (names delivered paths)
+code/03-nonsplit-hasse-arithmetic.py       Part III: map, residue tests, reconstruction, exact counts (standard library; imported by the others)
+code/03-nonsplit-hasse-classify.py         Part III: exact classifier of an integer target, JSON to stdout (SymPy)
+code/03-nonsplit-hasse-count.py            Part III: the counting table, T = 10^2 … 10^5 (standard library)
+code/03-nonsplit-hasse-symbolic.py         Part III: seven exact symbolic identities (SymPy)
+code/03-nonsplit-hasse-verify.py           Part III: dyadic certificate, odd-prime images, inverse and small-box checks (standard library)
+data/build_review.json                     Part I's build and review record for its 26-page PDF
+data/finite_checks.json                    recorded output of verify_finite.py --output
+data/finite_checks.txt                     recorded stdout of verify_finite.py
+data/inverse_example.json                  recorded stdout of rational_inverse.py 0 -4 2
+data/split_plane_checks.json               recorded JSON written by verify_split_plane.py
+data/split_plane_checks.txt                recorded stdout of verify_split_plane.py
+data/symbolic_checks.json                  recorded JSON written by verify_symbolic.py
+data/symbolic_checks.txt                   recorded stdout of verify_symbolic.py
+data/02-dense-hasse-build_review.json      Part II's build and review record for its 20-page PDF
+data/02-dense-hasse-example.json           recorded stdout of split_fibres.py 1 1 3 --modulus 18144000
+data/02-dense-hasse-height_counts.json     recorded output of count_heights.py (c = 1,2,3,4,8; T = 10^3,10^4,10^5)
+data/02-dense-hasse-height_counts.txt      the same table as text
+data/02-dense-hasse-requirements.txt       sympy==1.14.0, numpy==2.3.5, mpmath==1.3.0
+data/02-dense-hasse-verification.json      recorded output of verify_results.py (12 groups PASS)
+data/02-dense-hasse-verification.txt       a captured console log of verify_results.py (another run)
+data/03-nonsplit-hasse-build_review.json   Part III's build and review record for its 24-page PDF
+data/03-nonsplit-hasse-classification_example.json  recorded stdout of classify.py 0 4 2
+data/03-nonsplit-hasse-counts.json         recorded output of count.py (T = 10^2, 10^3, 10^4, 10^5)
+data/03-nonsplit-hasse-requirements.txt    sympy==1.14.0
+data/03-nonsplit-hasse-symbolic.json       recorded output of symbolic.py (PASS)
+data/03-nonsplit-hasse-verification.json   recorded output of verify.py (PASS)
 ```
 
-Delivered names: `arithmetic_fibers.tex` is shipped as the rewritten
-`article.tex`; the delivered `certificates/` directory is shipped as `data/`
-with unchanged file names; `code/` keeps its name. The delivered README and
-the PDF `arithmetic_fibers.pdf` are not shipped (`article.pdf` is a build of
-this text). No checksum manifest was delivered. Every file under `code/` and
-`data/` and `SOURCE_REVIEW.md` is byte-identical to the delivery.
+Delivered names, Part I: `arithmetic_fibers.tex` is shipped as the
+rewritten `article.tex`; the delivered `certificates/` directory is shipped
+as `data/` with unchanged file names; `code/` keeps its name. Part II: its
+`article.tex` is printed as Part II of `article.tex`; `SOURCES.md`,
+`STATUS.md`, `Makefile`, `requirements.txt`, `code/*.py` and `data/*` are
+shipped with the prefix `02-dense-hasse-` (the Makefile under `code/`, the
+requirements file under `data/`). Part III: its `article.tex` is printed as
+Part III of `article.tex`; `SOURCES.md`, `STATUS.md`, `Makefile`,
+`requirements.txt`, `code/*.py` and `data/*.json` are shipped with the
+prefix `03-nonsplit-hasse-` (the Makefile under `code/`, the requirements
+file under `data/`). No delivered README or delivered PDF
+(`arithmetic_fibers.pdf`, Part II's and Part III's `article.pdf`) is shipped;
+`article.pdf` is a build of this text. Only Part III delivered a checksum
+manifest (`SHA256SUMS`, not shipped); every shipped Part III file matches
+it. Every file under `code/` and `data/`, `SOURCE_REVIEW.md` and the four
+`02-dense-hasse-*.md` and `03-nonsplit-hasse-*.md` files are byte-identical
+to the deliveries.
 
 ## Labels
 
-Every label in `article.tex` carries the prefix `alg:`. The source's 77
-labels are kept, unchanged after the prefix; six were added at the write
+Every label in `article.tex` carries the prefix `alg:`. Part I's source had
+77 labels, kept unchanged after the prefix; six were added at its write
 (`alg:sub:attribution`, `alg:rem:collisionfiber`, `alg:app:report`,
-`alg:app:onesource`, `alg:app:pinned`, `alg:app:rerun`), 83 in all. The one
-new numbered item, Remark 9.2, is the last of its section, so no source
-number moved. No label has a Lean or Rocq mapping.
+`alg:app:onesource`, `alg:app:pinned`, `alg:app:rerun`). Part II's labels
+carry the sub-prefix `alg:dh:`: its 70 labels, unchanged after the prefix,
+and 20 added at its write (Section 14 and its subsections, the notation
+table, the seven research questions, the Conclusion and two appendix
+sections of Part II, and Appendices C.4–C.5). Five labels were added to
+existing subsections of Part I's Section 12 (`alg:sub:q-dyadic`,
+`alg:sub:q-split`, `alg:sub:q-height`, `alg:sub:q-density`,
+`alg:sub:q-library`). 178 in all after Part II (83 before it). Part III's
+labels carry the sub-prefix `alg:ns:`: its 78 labels, unchanged after the
+prefix, and 20 added at its write (Section 28 and its six subsections, the
+notation table, the nine research questions, its Conclusion, and
+Appendices C.6–C.7); one label, `alg:sub:q-extensions`, was added to Part I's
+existing subsection 12.5. 277 in all now; no label was renamed or removed,
+and no Part I or Part II number moved (compared with a build of the
+committed text). No label has a Lean or Rocq mapping.
 
 ## Setting and notation
 
@@ -71,14 +137,40 @@ rescaling). The inverse coordinate is `t = y + 1/x`, a root of the cubic
 - Its `p` is a prime and `q` a finite-field size, **not** the project's
   `p = xy²`, `q = x²yz` of the stable shear.
 - Density `27/(4π²)` counts **ordered root parameters** `(a, b)`, not
-  targets; Zariski density is in the **plane** `C = 2`, not in `A³`;
+  targets; Zariski density is in the **plane** `C = 2`, not in `A³`
+  (Part I; Part II extends it to every plane `C = c ≠ 0` and so to `A³`);
   `F_{2^m}` (finite fields) is not `Z/2^m`; rational preimages are not
   integral preimages; Python/SymPy checks are not kernel proofs (the
   source's own list of confusions, `SOURCE_REVIEW.md`).
+- **Part II keeps its manuscript's letters**, fixed against Part I in
+  Table 1 (Section 14.4). Above all: Part II's `c` is the **fixed third
+  target coordinate**, whereas Part I's `c` is the third integer root
+  (`a+b+c = 1`); Part II's `a, b, r` are **numerators** of the roots
+  (`a+b+r = 2`, roots `a/c, b/c, r/c`); its `Φ(c,s,t)` is three-parameter,
+  and `Φ(2,a,b)` is Part I's `Φ(a,b)`; its `ρ(c)` is a density of numerator
+  pairs, not Part I's image measure `ρ_p`; its `T` is both the height bound
+  and the indeterminate of `g`. The manuscript's sum `S` (of two roots or
+  half-numerators) is printed `Σ`, because `S` is the finite set of primes;
+  nothing else was renamed.
+- **Part III keeps its manuscript's letters too**, fixed against Parts I
+  and II in Table 3 (Section 28.4; the table counter also counts Part II's
+  uncaptioned ledger, so there is no printed Table 2). Above all: Part III's
+  `H(S) = S³ − 2S² + BCS − 2AC²` is the **monic inverse polynomial**, and
+  `H₂(T)`, `H₂^ns(T)` are **counts**, not Part I's heights; its
+  `G = gcd(3BC−4, 27AC²−4)` is an **integer**, not Part I's binary cubic
+  `G_{A,B,C}(T,S)`; the roots `a = Ct` of `H` are exactly **Part II's root
+  numerators**; on `C = 2`, `b = B/2`, the roots `r` of
+  `f(T) = H(2T)/8 = g(T)/2` are Part I's integer roots, and `d = f′(r)` is
+  Part I's `D_r`; its `Δ` is the discriminant of the **quadratic factor**,
+  not of the cubic. Two symbols were renamed: the split count `S(T)` is
+  printed `Σ(T)` (it equals Part II's `#H^sp_2(T)`), and the implied
+  constant `C` in the proof of Lemma 36.1 is printed `c₀`.
 
 ## What the report claims
 
 Theorem numbers are those of the built `article.pdf`.
+
+**Part I.**
 
 - **An explicit integral Hasse failure (Theorem 3.1).** For every `n ≥ 2`,
   `b_n = (0, −2n(n−1), 2)` has a preimage in `Z_p³` for every prime `p`, and
@@ -110,13 +202,112 @@ Theorem numbers are those of the built `article.pdf`.
 - **Proposed work.** A four-layer formalization plan (Section 11.3) and
   nine research questions (Section 12).
 
+**Part II** (Research question 12.4 answered; 12.3 and 12.2 in the
+completely split sector only; Section 14.2 states the scope. Added
+30 September 2026, batch 64: Part III answers 12.2 in the other sector and
+12.3 for square boxes in all sectors, where the split sector is not the
+dominant term; Part II's results stand.)
+
+- **Density in every nonzero slice (Theorem 15.2).** For every nonzero
+  integer `c`, the integral Hasse failures are Zariski dense in the plane
+  `C = c`, hence in `A³`. The plane `C = 0` has none:
+  `F(0, B, A−4B²) = (A, B, 0)`. The dense family can be chosen globally
+  insoluble over any prescribed `Z[S⁻¹]` (Theorem 19.3).
+- **An explicit family (Theorem 19.1).** For `c ≠ 0`, odd `n > 0` and
+  `k ≡ 2 (mod 4)`, `k ≥ 6`, the target `Φ(c, nk, n(k−1))` is an integral
+  Hasse failure with exactly three rational preimages, none with integral
+  first coordinate; its Jacobian in the parameters is nonzero, which gives
+  the density. Example 19.2: `Φ(1,1,3) = (−3,−5,1)`, fiber
+  `(−1/3,4,81)`, `(1/5,−2,−45)`, `(2/15,−19/2,−765/8)`.
+- **Complete local criterion for split fibers (Theorem 18.2).** For distinct
+  numerators with integral coefficients, local solubility everywhere means:
+  at odd primes, the coefficient integrality (Lemma 17.1: three residue
+  classes modulo `p^ν`) and one gcd condition, `gcd(a−b, 3a−2)` has no odd
+  prime factor outside `c` (Proposition 17.2); at 2, a condition depending on
+  `v₂(c)` (residues `{1,2,3}` mod 4 for odd `c`; exactly one odd
+  half-numerator for `v₂(c) = 1`; none for `v₂(c) ≥ 2`), with dyadic density
+  `σ(v₂(c))`.
+- **Finitely many integral split fibers per slice (Theorem 20.1)**, found by
+  a divisor enumeration over the divisors of `2|c|`; the printed table has
+  one each for `c = 1, 3, 4, 12` and none for `c = 2, 8, 16`.
+- **Sharp counting (Theorem 15.3).** In square boxes `|A|, |B| ≤ T`, the
+  completely split integral Hasse failures on `C = c` number
+  `#H^sp_c(T) ~ κ(c) T^{2/3}`, with `κ(c) = I (2c²)^{2/3} ρ(c)`,
+  `I = Γ(1/3)²/(2Γ(2/3))` and `ρ(c)` an explicit Euler product;
+  `κ(2) = 27Γ(1/3)²/(8π²Γ(2/3)) ≈ 1.81235`. The proof uses a lattice sieve
+  in bounded regions (Lemma 21.1) and a cusp bound (Lemma 22.1).
+- **Consistency with Part I** (checked at the write; Section 14.3):
+  `Φ(2,a,b)` is Part I's `Φ(a,b)`; `ρ(2) = 27/(16π²)` is a quarter of Part I's
+  `27/(4π²)` and the integer-root density `δ(2)` equals it; at `c = 2` the
+  two local criteria coincide; `176/512 = 11/32`; `C = 0` agrees with Part I's
+  boundary point; no integral split fiber on `C = 2`.
+- **Proposed work.** Seven research questions (Section 24; two of them
+  overlap Part I's 12.1 and 12.9 and say so) and a Lean/Rocq order
+  (Section 23.3).
+
+**Part III** (Research question 12.2 answered on every slice `C ≠ 0`;
+12.3 answered for square boxes in all sectors; Part II's 24.4, the
+coefficient-only certificate, answered; Part II's 24.1 answered in its
+classification half and, on `C = ±2`, its counting half; Section 28.2
+states the scope).
+
+- **Complete local certificate (Theorem 29.2).** With
+  `H(S) = S³ − 2S² + BCS − 2AC²`, `U = 3BC − 4`, `V = 27AC² − 4`,
+  `G = gcd(|U|, |V|)`: an integer target `(A, B, C)` lies in `F(Z_p³)` for
+  every prime `p` iff `H` has an integer root, `G` is a power of 2, and the
+  five-row table `E(A, B, C)` of congruences modulo 8 holds. The root gate
+  cannot be dropped. Ingredients: a monic inverse chart (Proposition 30.1),
+  the Chebotarev root gate (Lemma 30.3), one gcd at every odd prime
+  (Theorem 31.3), a Newton lifting lemma over any complete DVR of
+  characteristic 0 (Lemma 32.1), and the table `E` (Proposition 32.2:
+  176 of 512 classes, checked pointwise).
+- **Nonsplit Hasse test (Corollary 33.1)** on every slice `C ≠ 0`, and a
+  table of four targets on `C = 2` isolating the three tests.
+- **The slice `C = 2`.** Locally integral ⇔ `A = r³ − r² + rb`, `B = 2b`,
+  `gcd(3r − 1, 3b − 1) = 1` (Theorem 34.1); the nonsplit family
+  `(0, 2b, 2)`, `b ≥ 2`, with unique rational point
+  `(1/b, −b, 5b² − 2b³)` (Corollary 34.2); the only repeated-root case
+  `(0, 0, 2)` (Proposition 35.1); no integral point on a split fiber
+  (Lemma 35.2, which is Part I's Theorem 4.1 reproved); the integral image
+  is the two curves `(−2r³ + r² + εr, −6r² + 4r + 2ε)`, `ε = ±1`, with point
+  `(ε, r − ε, 5 − ε(3r + 2))` (Theorem 35.3), so `I₂(T) = 2^{5/3} T^{1/3} + O(1)`
+  (Corollary 35.4).
+- **The `T log T` law (Theorem 29.3).** In `|A|, |B| ≤ T` on `C = 2` (and
+  `C = −2`), the locally integral targets `L₂(T)`, all integral Hasse
+  failures `H₂(T)` and the nonsplit ones `H₂^ns(T)` each number
+  `(27/(2π²)) T log T + O(T)`, `27/(2π²) ≈ 1.3678`; the split ones are
+  `O(T)` (Lemma 37.1; Part II's `κ(2) T^{2/3}` is the exact order). Proof:
+  a marked-root count `P(T)` (Proposition 36.4) and exact multiplicity
+  identities (37.1)–(37.4). Almost every locally integral target on
+  `C = 2` is a nonsplit Hasse failure, yet such targets have density 0 in
+  the plane (Corollary 37.2).
+- **Number fields (Theorem 38.1).** Over `O_{K,S}`: a simple `K`-root of
+  `H`, `(U, V)` coprime at odd places outside `S`, and membership of the
+  residue in `F((R/8R)³)`.
+- **Recorded counts** (Section 39.3): `T = 10², …, 10⁵`, e.g. at `T = 10⁵`
+  `P = 1 575 664`, `Σ = 3 304`, `I₂ = 148`, `H₂^ns = 1 565 603`,
+  `H₂ = 1 568 907`; small boxes `T = 5, 10, 25, 50` checked by an
+  independent scan (Section 45).
+- **Consistency with Parts I and II** (checked at the write; Section 28.3):
+  Part II's numerators are the roots of `H`; at odd primes Part II's gcd
+  obstruction is `p | U, p | V`; on `C = 2` Theorem 34.1 reduces to Part I's
+  `gcd(a − b, 3a − 1) = 1` for split targets; the program of Section 46,
+  rerun, gives 176 classes equal to `E` and the histogram
+  `336, 112, 48, 16` = Part I's (9.5) at `m = 3`; `α = 27/(4π²)` is Part I's
+  density; the split column `Σ(T)` = Part II's recorded `c = 2` counts; and
+  Theorem 29.2 with Corollary 30.2, applied by an independent enumeration,
+  reproduces all fifteen counts of Part II's table (Section 22.5).
+- **Proposed work.** Nine research questions (Section 41; six of them carry
+  a `[write]` cross-reference to a question of Part I or II) and a
+  formalization plan (Section 40).
+
 ## What is prior work, and whose
 
-The delivered README said that "the map, its Jacobian determinant, its
-complex fiber stratification, and its finite-field histograms are prior
-results", which can be read as saying that ProveIt contains all four. It
-does not. Section 1.3 of the report (added at the write) states the
-attribution precisely:
+The delivered README of Part I said that "the map, its Jacobian
+determinant, its complex fiber stratification, and its finite-field
+histograms are prior results", which can be read as saying that ProveIt
+contains all four. It does not. Section 1.3 of the report (added at the
+write) states the attribution precisely:
 
 - **The map** is Alpöge's. ProveIt formalizes it, its determinant and its
   collisions (next section).
@@ -132,9 +323,31 @@ attribution precisely:
   `royvanrijn/jacobian-research` at `caf5685d`. They are **not** in ProveIt.
   At the write the pinned note was checked to state the same `t = y + 1/x`,
   the same cubic and the formulas (7.1)–(7.2). The report reproves them.
-- **Candidate new** (priority not established; the source's searches were
-  targeted, not a worldwide audit): the split family, the gcd criterion,
-  the density `27/(4π²)`, the S-integer persistence, and the dyadic law.
+- **Candidate new in Part I** (priority not established; the source's
+  searches were targeted, not a worldwide audit): the split family, the gcd
+  criterion, the density `27/(4π²)`, the S-integer persistence, and the
+  dyadic law.
+- **Part II** claims no priority for the map, the inverse cubic, or Part I's
+  `C = 2` family and its density; its candidate new contributions (relative
+  to the sources it inspected, `02-dense-hasse-SOURCES.md`; worldwide
+  priority not certified) are the all-slice density, the split-fiber local
+  criteria, the finiteness of integral split fibers, and the counting
+  theorem. Its restatements of Part I (map, chart, complete inverse,
+  determinant) are marked as such in Section 14.5.
+- **Part III** lists as prior or inherited the map, determinant and
+  collisions, the inverse cubic and missing cusp (Gao), the Chebotarev
+  rational-Hasse mechanism, modulus-8 sufficiency and the measure `11/32`
+  (Part I), and Part II's split `T^{2/3}` theorem, which it does not use.
+  Its candidate new contributions (relative to the sources it inspected,
+  `03-nonsplit-hasse-SOURCES.md`; a targeted search, worldwide priority not
+  established) are the coefficient certificate with the gcd `G` and the
+  table `E`, the nonsplit Hasse test, the primitive parametrization on
+  `C = 2`, the two integral curves, the `T log T` law and the number-field
+  certificate. One restatement was **not** attributed by the manuscript:
+  its Lemma 35.2 (no integral point on a split fiber of `C = 2`) is Part I's
+  Theorem 4.1 ("It has no integral point"), with the same proof; a
+  `[write]` note credits it. Its other restatements are listed in
+  Section 28.5.
 
 ## The formal project
 
@@ -168,10 +381,20 @@ stable representatives (degrees 5, 4, 3) have SymPy certificates only
 (`Algebra/JacobianConjecture/Research/README.md:97-178`); Proposition 5.3
 transports the report's obstruction to them with that status.
 
-**None of the report's theorems is formalized.** The project has nothing on
-fiber stratification, finite fields, p-adic or dyadic fibers or Hasse
-principles. The report uses the project's definition of `F` and restates
-its determinant and collision only as inherited inputs.
+**None of the report's theorems is formalized**, in any Part. The
+project has nothing on fiber stratification, finite fields, p-adic or dyadic
+fibers, Hasse principles or counting. The report uses the project's
+definition of `F` and restates its determinant and collision only as
+inherited inputs. Part II cites `Counterexample.lean` as a file only (its
+bibliography entry, pinned to `1085b506d`), names no declaration, and
+relies on none; it reproves the determinant (Proposition 16.2). Its
+Lean/Rocq route (Section 23.3) is a proposal. Part III cites the same file
+at its pin `6d04e1e38` (identical there, at `1085b506d` and at the
+placement commit), says that the determinant and collisions are formalized
+there (`jacobianDet_counterexample`, `collision`), checks the determinant
+symbolically, did not run the Lean build, and relies on no formal
+statement; its formalization plan (Section 40) is a proposal that keeps
+Chebotarev as an explicitly imported theorem.
 
 ## An intake observation: a third integral point over the project's collision value
 
@@ -208,8 +431,10 @@ project; nothing here formalizes it.
   rational Hasse failures and do not contradict the degree-five examples of
   `royvanrijn/jacobian-research` with no rational point (a different map,
   used only for comparison). No general Hasse theorem for polynomial maps.
-- The parameter density is not a density in target space (Remark 4.5);
-  Zariski density in all of `A³` is open (Research question 12.4).
+- The parameter density is not a density in target space (Remark 4.5).
+  Zariski density in all of `A³` was open at the pin (Research question
+  12.4); Part II proves it (every plane `C = c ≠ 0`), and shows that the
+  plane `C = 0` has no integral Hasse failure.
 - The rational Hasse theorem uses Chebotarev as an external theorem
   (Milne, Theorem 8.31); the quantitative sieve uses Bertrand; the
   explicit family uses neither. The thin-image bound is not advertised as
@@ -226,15 +451,60 @@ project; nothing here formalizes it.
   between); the attribution checks of Gao and the royvanrijn note were
   made from their arXiv and GitHub texts; Milne was not re-checked; the
   proofs were read at the write, which is not an independent review.
+- **Part II** does not count fibers with one rational point and an
+  irreducible quadratic pair; its asymptotic is for **square** boxes
+  `|A|, |B| ≤ T` only (Research question 12.3 asks for boxes
+  `|A| ≤ H_A`, `|B| ≤ H_B`; unequal sides remain open), for each fixed `c`,
+  with no uniformity in `c` and no power-saving error term. The
+  manuscript's own sentence "This settles the completely split sector of the
+  prior report's Research Question 12.3" omitted the square-box restriction;
+  the report prints it with the restriction, marked `[write]`. (Added
+  30 September 2026, batch 64: Part III counts the rational-plus-quadratic
+  fibers on `C = ±2` and shows that they, not the split ones, carry the
+  main term `(27/(2π²)) T log T` of the integral Hasse failures; Part II's
+  theorem is unaffected, but its split count is a lower-order part of the
+  answer to 12.3. Dated notes in Parts I and II say so.)
+- Part II's decimals (the `ρ(c)`, `κ(c)` table and the ratios in the count
+  table) are illustrative, not interval-certified. Convergence is visibly
+  slow: at `T = 10⁵` the normalized count for `c = 2` is 1.534 against
+  `κ(2) ≈ 1.812`, since the cusp cutoff `T^{1/2}` is only `T^{1/6}` below
+  `T^{2/3}`. The finite counts are not used to infer the asymptotic.
+- Part II claims nothing about the map, the inverse cubic or Part I's
+  `C = 2` density; it certifies no priority; it is not a Lean or Rocq
+  formalization, and its SymPy and NumPy checks are not kernel proofs; the
+  existing formal developments were not rebuilt for it. Its proofs were read
+  at the write, and its ten counts for `T = 10³, 10⁴` were reproduced by an
+  independent enumeration (Section 14.3); that is not an independent review.
+- **Part III** leaves open (its own list): a second-order `T` term or a
+  power-saving remainder; asymptotics on other fixed slices, uniformity in
+  `C`, and **unequal boxes** `H_A ≠ H_B` (so Research question 12.3 is
+  answered for square boxes only); height asymptotics over number fields
+  and the minimal dyadic modulus in ramified fields. The rational-root gate
+  cannot be dropped, and Theorem 29.2 is a finite coefficient certificate
+  *together with* a rational-root test, not a congruence characterization
+  of rational solubility; a classifier rejection need not name an
+  obstructing prime. The root gate uses qualitative Chebotarev (Milne); the
+  rest is elementary. Only the dyadic table is a complete finite
+  certificate; the other finite checks (odd primes `p ≤ 31`, `[−5, 5]³`,
+  small boxes, 100 family instances) are consistency tests. The count
+  ratios are floating-point illustrations, not evidence for the error term.
+  "Candidate new", worldwide priority not established; unrefereed; not a
+  Lean or Rocq formalization; no new disproof of the Jacobian conjecture
+  and no claim about the plane problem. Its proofs were read at the write,
+  and the checks of Section 28.3 were made independently; that is not an
+  independent review.
 
 ## Relation to the neighbouring reports
 
 - [weighted-keller-rigidity](../weighted-keller-rigidity/) (`wkr:`), batch
-  36 manuscript 01: the same map `F`, studied in coefficient space (an
-  all-degree classification of its weight-`(−1,1,2)` class and a
-  double-point coefficient scheme). No theorem is shared; the two were not
-  merged, and their notation clashes (`t`, `h`, `p`, `q`, `u`, `k`, `ρ`
-  mean different things).
+  36 manuscript 01 with a batch-44 Part II: the same map `F`, studied in
+  coefficient space (an all-degree classification of its weight-`(−1,1,2)`
+  class and a double-point coefficient scheme). No theorem is shared; the
+  two were not merged, and their notation clashes (`t`, `h`, `p`, `q`, `u`,
+  `k`, `ρ` mean different things). Part II of this report read its README
+  (`02-dense-hasse-SOURCES.md`) and shares no theorem with it either; Part
+  III does not cite it (`03-nonsplit-hasse-SOURCES.md` lists only the
+  Lean file, this report and its README, and the collection READMEs).
 - [gao-f6-fiber-geometry](../gao-f6-fiber-geometry/): the fiber geometry of
   Gao's five-dimensional six-sheeted map `F6`, a **different** map. It
   cites the same Gao paper; this report's Corollary 2.4 is Gao's result for
@@ -243,26 +513,32 @@ project; nothing here formalizes it.
 ## Build
 
 MiKTeX or TeX Live with newtx, microtype, booktabs, longtable, aliascnt,
-cleveref, enumitem, listings, fancyhdr, xurl and hyperref; no shell escape,
-figures or bibliography database.
+cleveref, enumitem, listings, fancyhdr, needspace, xurl and hyperref; no
+shell escape, figures or bibliography database.
 
 ```sh
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX, pdfTeX) has 29 pages, with no errors, warnings,
-undefined references or citations, multiply defined labels, duplicate
-destinations, or overfull or underfull boxes. The delivered text built to 26
-pages with one duplicate `page.1` destination (the title page), fixed at the
-write.
+The recorded build (MiKTeX, pdfTeX, US Letter) has 88 pages, with no errors,
+warnings, undefined references or citations, multiply defined labels,
+duplicate destinations, or overfull or underfull boxes. Every Part I and
+Part II label keeps its number (compared, at the Part III write, with a
+build of the committed text: all 178 earlier labels keep their numbers);
+Parts I and II moved two pages later because the contents grew from four
+pages to six, and the appendices now follow Part III. At the Part III write
+the title page's vertical spaces were reduced (0.3/0.35/0.4/0.45 in to
+0.1/0.25/0.3/0.3 in) so that the added dated note fits on it. The
+delivered Part I text built to 26 pages with one duplicate `page.1`
+destination (the title page), fixed at its write.
 
 ## Rerunning the checks
 
-Run on a copy with the **delivered** layout, never in the report:
-`code/verify_split_plane.py` and `code/verify_symbolic.py` always write
-`split_plane_checks.json` and `symbolic_checks.json` into `../certificates/`
-relative to their own directory, and fail with `FileNotFoundError` (after
-passing their checks) if it does not exist.
+**Part I.** Run on a copy with the **delivered** layout, never in the
+report: `code/verify_split_plane.py` and `code/verify_symbolic.py` always
+write `split_plane_checks.json` and `symbolic_checks.json` into
+`../certificates/` relative to their own directory, and fail with
+`FileNotFoundError` (after passing their checks) if it does not exist.
 
 ```sh
 mkdir <scratch>                      # outside the repository
@@ -279,18 +555,78 @@ python code/rational_inverse.py 4/27 4/3 1      # an empty geometric fiber
 
 `verify_finite.py` and `verify_split_plane.py` need only the standard
 library (Python 3.10 or later); `verify_symbolic.py` and
-`rational_inverse.py` need SymPy. No requirements file was delivered; the
-recorded runs used Python 3.13.5 and SymPy 1.14.0 (`data/build_review.json`).
-At the write these commands were run on such a copy with Python 3.13.5 and
-SymPy 1.14.0 (`uv run --no-project --with sympy==1.14.0 python`): all exit 0,
-and every regenerated file equals the shipped one apart from Windows line
-endings. `data/build_review.json` is a static record, not regenerated.
+`rational_inverse.py` need SymPy. No requirements file was delivered with
+Part I; the recorded runs used Python 3.13.5 and SymPy 1.14.0
+(`data/build_review.json`). At its write these commands were run on such a
+copy with Python 3.13.5 and SymPy 1.14.0
+(`uv run --no-project --with sympy==1.14.0 python`): all exit 0, and every
+regenerated file equals the shipped one apart from Windows line endings.
+`data/build_review.json` is a static record, not regenerated.
 `verify_finite.py` also exports `congruence_preimage(n, modulus)`, the CRT
 construction of Corollary 3.4 (trial-division factoring, for moderate moduli).
 
+**Part II.** Run on a copy with the **delivered** names, never in the
+report: `count_heights.py` does `from split_fibres import …`, which fails
+under the shipped prefixed name, and `verify_results.py` and
+`count_heights.py` write `verification.json`, `example.json` and
+`height_counts.{json,txt}` into `../data/` relative to their own directory
+(Appendix C.5 of the article).
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/code" "$W/data"     # outside the repository
+for f in count_heights split_fibres verify_results; do cp "code/02-dense-hasse-$f.py" "$W/code/$f.py"; done
+cd "$W"
+uv run --no-project --with sympy==1.14.0 --with numpy==2.3.5 --with mpmath==1.3.0 python code/verify_results.py
+uv run --no-project --with numpy==2.3.5 --with mpmath==1.3.0 python code/count_heights.py
+py code/split_fibres.py 1 1 3 --modulus 18144000
+```
+
+At the write (30 September 2026; Python 3.13.5 under `uv`, SymPy 1.14.0,
+NumPy 2.3.5, mpmath 1.3.0) all twelve groups passed (1.5 s); the
+regenerated `verification.json` and `height_counts.json` equal
+`data/02-dense-hasse-verification.json` and
+`data/02-dense-hasse-height_counts.json` apart from their `elapsed_seconds`
+fields and Windows line endings (`Path.write_text` writes CRLF on Windows;
+compare modulo CR), and `height_counts.txt` is identical apart from line
+endings. The regenerated `example.json` is `data/02-dense-hasse-example.json`
+without its `"modular_witness"` block; the third command prints exactly the
+shipped file. `count_heights.py --c … --heights …` overwrites the default
+`../data/height_counts.json`; pass `--output` to keep a table elsewhere.
+`split_fibres.py` needs only the standard library; its positional arguments
+are `c`, `a`, `b` (root numerators), not target coordinates.
+
+**Part III.** Run on a copy with the **delivered** names, never in the
+report: `classify.py`, `count.py`, `symbolic.py` and `verify.py` do
+`from arithmetic import …`, which fails under the shipped prefixed name,
+and `verify.py`, `symbolic.py` and `count.py` (without `--output`) write
+`verification.json`, `symbolic.json` and `counts.json` into `../data/`
+relative to their own directory (Appendix C.7 of the article).
+
+```sh
+W=/path/to/scratch; mkdir -p "$W/code" "$W/data"     # outside the repository
+for f in arithmetic classify count symbolic verify; do cp "code/03-nonsplit-hasse-$f.py" "$W/code/$f.py"; done
+cd "$W"
+py code/verify.py
+uv run --no-project --with sympy==1.14.0 python code/symbolic.py
+py code/count.py
+uv run --no-project --with sympy==1.14.0 python code/classify.py 0 4 2
+```
+
+At the write (30 September 2026; Python 3.14.4 for `verify.py` and
+`count.py`, Python 3.13.5 under `uv` with SymPy 1.14.0 for the other two)
+all four exit 0, `verify.py` and `symbolic.py` report `"status": "PASS"`
+(a few seconds in all), and the regenerated `verification.json`,
+`symbolic.json` and `counts.json` and the printed classification equal
+`data/03-nonsplit-hasse-verification.json`, `…-symbolic.json`,
+`…-counts.json` and `…-classification_example.json` apart from Windows line
+endings (CRLF; compare modulo CR). `arithmetic.py`, `verify.py` and
+`count.py` need only the standard library (Python 3.10 or later).
+`count.py --heights … --output FILE` writes elsewhere; its docstring's
+example path `data/counts_large.json` is relative to the delivered layout.
+
 ## Discrepancies and delivery names
 
-- `SOURCE_REVIEW.md` is the source's review, as delivered: it lists what was
+- `SOURCE_REVIEW.md` is Part I's review, as delivered: it lists what was
   read at the pin (the root README, the project README and
   `Algebra/JacobianConjecture/Research/README.md`), Gao, the two royvanrijn
   notes and Milne. Its statements are accurate at the pin and at the
@@ -301,15 +637,100 @@ construction of Corollary 3.4 (trial-division factoring, for moderate moduli).
 - Appendix A of `article.tex` and Section 11.1 still name
   `arithmetic_fibers.tex`, `arithmetic_fibers.pdf` and `certificates/`, as
   delivered; `[write]` notes there give the shipped names.
-- The article's replay commands use `python3`; on this Windows machine use
-  `py` or `uv run --no-project python`.
+- The articles' replay commands use `python3` (Part I) and `python`
+  (Part II); on this Windows machine use `py` or `uv run --no-project python`.
+- `02-dense-hasse-SOURCES.md` and `02-dense-hasse-STATUS.md` are as
+  delivered: they name `article.tex`, `code/verify_results.py`,
+  `code/count_heights.py` and `data/` by their delivery names (the article
+  they mean is Part II here). `02-dense-hasse-STATUS.md` says the counting
+  result "resolves the completely split sector of the target-height
+  question, for fixed `c`" without the square-box restriction (see above).
+  Both call this report's Part I "the prior repository arithmetic report"
+  and cite its Section 12.4 as open, which it was at their pin.
+- `code/02-dense-hasse-Makefile` names the delivered `article.tex`,
+  `code/verify_results.py` and `code/count_heights.py` and runs bare
+  `python`; do not run it in the report: its `verify` and `counts` targets
+  name unshipped paths, and its default target would rebuild `article.pdf`
+  (now the whole report) with bare `pdflatex`, leaving auxiliary files
+  beside it.
+- `data/02-dense-hasse-example.json` is not what `verify_results.py`
+  writes: it is the standard output of `split_fibres.py 1 1 3 --modulus
+  18144000` (identical at the write), with a `"modular_witness"` block that
+  `verify_results.py`'s `example.json` lacks.
+- `data/02-dense-hasse-verification.txt` is a captured console log
+  ("0.524 seconds") of a different run from the one that wrote
+  `data/02-dense-hasse-verification.json` (`"elapsed_seconds": 0.511`); no
+  program writes the `.txt` file.
+- `data/02-dense-hasse-build_review.json` describes the delivered 20-page
+  PDF (not shipped); it records `"formalization_status": "No new Lean or
+  Rocq formalization; original repository proofs not rebuilt"`.
+- `03-nonsplit-hasse-SOURCES.md` and `03-nonsplit-hasse-STATUS.md` are as
+  delivered. `SOURCES.md` says the repository was read "through the GitHub
+  connector" and cites this report's `article.tex` and README at the pin;
+  both describe Parts I and II as they were there (accurate: nothing
+  changed before placement). `STATUS.md`'s "The source report explicitly
+  leaves the rational-plus-quadratic local criterion and its counting
+  problem open" was true at the pin; Part III itself now answers it.
+- Part III's text (Sections 39.1, 43 and 46) and `code/03-nonsplit-hasse-Makefile`
+  name `code/classify.py`, `code/verify.py`, `README.md`, `STATUS.md`,
+  `SOURCES.md` and `SHA256SUMS` by their delivery names; `README.md`,
+  `article.pdf` and `SHA256SUMS` are not shipped. The Makefile runs bare
+  `python`; do not run it in the report: `make pdf` would rebuild
+  `article.pdf` (now the whole report) with auxiliary files beside it, its
+  `verify` and `count` targets name unshipped paths and would overwrite
+  recorded outputs, and `make clean` deletes `__pycache__` directories
+  under `code/`.
+- `data/03-nonsplit-hasse-classification_example.json` is the standard
+  output of `classify.py 0 4 2` (identical at the write apart from line
+  endings); no program writes the file.
+- `data/03-nonsplit-hasse-build_review.json` describes the delivered 24-page
+  PDF (not shipped) and PyMuPDF rendering; it records `"formalization": "No
+  Lean or Rocq build run; new results are not formalized."`.
+- The delivered README (not shipped) says a classifier rejection "need not
+  identify a specific obstructing prime when the rational-root gate
+  fails"; the report README keeps that caveat above.
+- Title-page wording: the manuscript's author line "AI-assisted research
+  draft prepared for Vladimir Reshetnikov" is recorded in Appendix C.6
+  only; the Part III heading is neutral.
 
 ## Provenance
 
-Appendix C of `article.tex` records the manuscript, the pin
-`e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9`, the arrival (`e13affd32`) and
-placement (`1a1396d4d`) commits, and every editorial change. At placement
-the manuscript was made a new report, not merged with manuscript 01
+Appendix C of `article.tex` records all three manuscripts. Part I (C.1–C.3): the
+pin `e21766d04c2b8a9b2cdba0cd43e563024b3bd1b9`, the arrival (`e13affd32`)
+and placement (`1a1396d4d`) commits, and every editorial change; at
+placement it was made a new report, not merged with manuscript 01
 (`weighted-keller-rigidity`): the two share the map but no theorem, and
-their notation clashes. No mathematical statement was changed and no symbol
-renamed.
+their notation clashes. Part II (C.4–C.5): the pin
+`1085b506d65e207a05b7e9c861bb1fe88432fe38`, the arrival (`b2b626d85`) and
+placement (`b30441a8c`) commits, the mapping of delivered to shipped files,
+every editorial change and the choices made: it became Part II of this
+report, not a new report, because it studies the same map through the same
+chart and cubic and extends Part I's `C = 2` family; its restatements of
+Part I are kept in place and marked; its sum `S` was renamed `Σ` rather than
+renaming the height `T`; and its counting claim is printed with the
+square-box restriction. Dated notes (30 September 2026, batch 58) were
+added after Part I's Research questions 12.2, 12.3 and 12.4, on the title
+page and in Appendices A and C.1.
+
+Part III (C.6–C.7): batch 64, manuscript 02, the archive
+`ProveIt_Beyond_Split_Fibers` (inner directory `ProveIt_Nonsplit_Hasse`),
+the pin `6d04e1e385f2fe7d1cfbdbd8fd8d4e45bd6b6c72`, the arrival
+(`7747fcfdd`) and placement (`3025c15df`) commits, the mapping of delivered
+to shipped files, every editorial change and the choices made: it became
+Part III of this report, not a new report, because it studies the same map
+through the same chart and cubic and answers questions of Parts I and II;
+its restatements of Parts I and II are kept in place and marked, and its
+unattributed reproof of Part I's Theorem 4.1 (no integral point on a split
+fiber of `C = 2`) is credited in a `[write]` note; its split count `S(T)`
+was renamed `Σ(T)` (not the indeterminate `S` or the set of places), and
+its implied constant `C` renamed `c₀`; its bibliography entry for this
+report became cross-references; and Part II's split-sector results are kept
+as proved, with the sentences restricting the answer to Research
+question 12.3 to the split sector re-scoped by dated notes, not edited.
+Dated notes (30 September 2026, batch 64) were added on the title page;
+after Part I's Research questions 12.1, 12.2, 12.3 and 12.5 (the label
+`alg:sub:q-extensions` was added to 12.5); in the opening paragraph of
+Part II, in Section 14.2, after Theorem 15.3, after Part II's Research
+questions 24.1, 24.4 and 24.5, and in its Conclusion (Section 25); in
+Appendices A and C.1; and in the bibliography entries for Gao, Milne and the
+Lean file. No mathematical statement of any manuscript was changed.

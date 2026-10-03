@@ -103,7 +103,7 @@ requirement to build Lean one module at a time.
   infinite ideal as kernel, the units are `±1`, every surreal has a unique
   omnific floor, integer polynomials have only their ordinary integer roots,
   and every nonzero finite quotient is `ℤ/nℤ`.  An audit checks that every
-  declaration uses only the standard axioms.  Beside it, 63 research reports
+  declaration uses only the standard axioms.  Beside it, 66 research reports
   on `No`, `No[i]` and `Oz` — among them proposed answers to published
   questions of Ehrlich–Kaplan and Kaplan–Krapp–Serra, and Diophantine
   geometry over `Oz` — with a ledger mapping their statements to Lean.
@@ -213,14 +213,15 @@ requirement to build Lean one module at a time.
   universal pair `(58, 4)`, prime-representing polynomials, and the Jones
   articles of 1974–1984 formalized statement by statement, next to corrected
   editions of the six articles with editorial notes on every discrepancy.
-- A [collection of 111 research reports](SetTheory/Cardinals/docs/reports/README.md)
+- A [collection of 180 research reports](SetTheory/Cardinals/docs/reports/README.md)
   without Lean counterparts, most of them attacking a specific conjecture from
   the literature or an OEIS entry: ordinals and well-quasi-orders, Hankel
   determinants, supercongruences, tetration and digit stabilization,
   log-concavity, graphs, automata and formal languages, enumerative
   combinatorics, generating-function asymptotics, quaternionic analysis, the
-  Jacobian conjecture, and radicals and Galois theory; about a quarter are
-  counterexamples rather than proofs.  New external reports reach it through
+  Jacobian conjecture, radicals and Galois theory, and Diophantine
+  representations of computation; about a quarter are counterexamples rather
+  than proofs.  New external reports reach it through
   [`docs/incoming`](docs/incoming/README.md).
 
 ## Lean workspace

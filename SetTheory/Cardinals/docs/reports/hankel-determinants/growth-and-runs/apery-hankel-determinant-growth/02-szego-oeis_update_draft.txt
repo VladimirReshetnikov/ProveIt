@@ -1,0 +1,40 @@
+DRAFT FOR EDITORIAL REVIEW — NOT SUBMITTED
+Target: OEIS A228143
+
+Notation: A_k denotes OEIS A005259. D_n=det(A_{i+j})_{0<=i,j<=n}
+denotes A228143, with D_{-1}=1. Put C=17+12*sqrt(2), Lambda=C/4.
+Let phi be the positive density on [0,C] representing the A_k moments,
+as established by G. A. Edgar (arXiv:2005.10733).
+
+Proposed additional formula:
+
+D_n/D_{n-1} ~ K*Lambda^(2*n), where
+K=(Pi*C/2)*exp((1/Pi)*integral_0^C log(phi(x))/sqrt(x*(C-x)) dx).
+Numerically K is approximately 0.633427435172.
+Consequently
+log(D_n)=n*(n+1)*log(Lambda)+(n+1)*log(K)+o(n).
+
+In the normalization of the ratio plot linked from this entry:
+D_{n+1}/((1+1/sqrt(2))^(8*n+4)*D_n) tends to Lambda*K,
+approximately 5.379471608281.
+
+Proof reference for editorial consideration:
+“Sharp Szegő asymptotics for Apéry Hankel determinants:
+Ratio limits, monotone Hankel envelopes, polynomial modifications,
+and inverse growth” (research report, 1 October 2026), included here.
+The argument verifies the Szegő logarithmic-integrability condition using
+Edgar's local density analysis, then applies a proved unit-circle minimum
+principle and exact norm identities.
+
+Editorial qualifications:
+- No public URL for the new report is asserted here; add one only after
+  publication and editorial review.
+- The older leading growth limit is already proved in the ProveIt report
+  dated 18 September 2026. The formula above is a sharper refinement.
+- These results do not address the other divisibility or arithmetic
+  conjectures in A228143.
+- The numerical decimals are not rigorously interval certified.
+- This does NOT assert D_n ~ K^(n+1)*Lambda^(n*(n+1)). Further subexponential
+  factors remain possible.
+- Bibliographic priority and the mathematical proof should receive
+  independent review before an OEIS submission.

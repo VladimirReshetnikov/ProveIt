@@ -5,7 +5,8 @@ Research article prepared for Vladimir Reshetnikov, September 28, 2026.
 
 ## Contents
 
-- `article.pdf`: the compiled 20-page article.
+- `article.pdf`: the compiled 21-page article (20 pages as delivered; the
+  editorial note of 2026-09-30 adds one).
 - `article.tex`: complete, self-contained LaTeX source, with its bibliography.
 - `verify.py`: exact rational checks and optional high-precision diagnostics.
 - `verification.json`: machine-readable results of the supplied default run.
@@ -91,3 +92,31 @@ levels can be considerably slower. No network connection is used by the script.
 VladimirReshetnikov/ProveIt, commit
 `37e61c1fdec28c6e7ab7ff445043993077b42cbd`.
 See `SOURCE_AUDIT.md` and the article bibliography for the inspected paths.
+
+## Editorial amendments (ProveIt, 2026-09-30)
+
+Made in the editorial pass after batch 64 of `docs/incoming/` (see
+`docs/incoming/README.md`); every change to the source is marked
+`% ed. (2026-09-30)`.
+
+- `article.tex`: an unnumbered environment "Editorial note (ProveIt,
+  2026-09-30)" is defined in the preamble. One note, after Research question
+  "Arithmetic behavior near rational scales" and its discussion, records that
+  for fixed `K` the question is answered by Theorem `thm:resonance` of the
+  later unreviewed draft `../Approximate_Phase_Rigidity/`, for the optimal
+  error itself: near a reduced rational `a/b` the least error over mass-one
+  filters with at most `K` atoms (positive, real signed or complex, nodes and
+  weights depending on `M`) has exact order
+  `|M-a/b|^max(0, v2(a)+1+floor(log2(K/b))-r)` for `K >= b` and stays
+  bounded away from zero for `K < b`, attained by a regular polygon; the
+  constants, their uniformity as `K` grows and the optimal leading constants
+  remain open there, and the under-budget infimum of the preceding question
+  at the rational mesh itself is not computed. The title page no longer sets
+  a PDF page anchor (it duplicated the destination `page.1`).
+- `article.pdf`: rebuilt from the amended source by the three passes above
+  (MiKTeX pdfTeX 1.40.29): 21 pages (20 as delivered), no error, undefined
+  reference, duplicate destination or overfull box, every font embedded and
+  none of Type 3; the three underfull boxes are the bibliography URL entry
+  noted above. The page carrying the note was rendered and inspected.
+  `verification.json` and `verification_output.txt` are unchanged.
+- `README.md`: the page count under "Contents", and this section.

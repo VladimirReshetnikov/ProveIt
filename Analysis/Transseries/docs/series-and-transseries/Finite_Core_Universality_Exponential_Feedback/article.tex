@@ -33,6 +33,8 @@
 \newtheorem{conjecture}[theorem]{Conjecture}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes, so that the article's own numbering is unchanged
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}
 \newcommand{\ee}{\mathrm e}\newcommand{\dd}{\mathrm d}
 \newcommand{\Prob}{\mathbb P}\newcommand{\E}{\mathbb E}
@@ -242,6 +244,20 @@ For the pure model the smallest sufficient integer is
 All parameters, including $M$, are fixed as $n\to\infty$.
 \end{theorem}
 
+% ed. (2026-09-29): editorial cross-reference to the later Poisson-layer package (batch 48), which sharpens the boundary case
+\begin{ednote}
+The boundary case $M(p-1)=1$ is sharpened, consistently with
+\eqref{eq:cutoff}, by the later package \cite{ed:plb}. At $p=1+1/M$ its
+Theorem~\texttt{thm:boundary} gives
+$u_n\sim w_{n,M}\exp(r_n^{M+1}/a^M)$, an explicit missing factor that
+makes the ratio tend to zero as stated here; for $M=1$, $p=2$ that factor
+is $\exp(r_n^2/a)$, a part of the factor in \eqref{eq:quadratic}. A finite
+limit $\ee^{-\lambda(\theta)}$ of the ratio, with a Poisson law for the
+first omitted actions, occurs there only in a window where the exponent
+$p=p_n$ approaches $1+1/M$ with $n$ (Theorem~\texttt{thm:window}), outside
+the fixed-parameter setting of this theorem.
+\end{ednote}
+
 \subsection{A computable multiplicative equivalent}
 
 In the next theorem let $G=G_M$, $R=R_M$ to simplify notation.
@@ -370,6 +386,19 @@ Moreover,
  \label{eq:ratio}
 \end{equation}
 \end{theorem}
+
+% ed. (2026-09-29): editorial cross-reference to the microscopic-condensation package (batch 48), an independent derivation of eq:quadratic at a=1
+\begin{ednote}
+For $a=1$ and slopes eventually equal to $j^2$, \eqref{eq:quadratic}
+(with Proposition~\ref{prop:first-correction} for finitely many changed
+slopes) is also the main coefficient theorem, Theorem~\texttt{thm:coefficient},
+of the package \cite{ed:mic}, derived independently and without citing this
+article: the same root $r_n(1+r_n)\ee^{2r_n}=n$, the same exponent and the
+same prefactor. That article adds slope tails $\alpha j+\eta j/\log j$,
+the rate $O((\log n)^2/\sqrt n)$, a total-variation Poisson law for the
+number of actions equal to two jointly with the largest action, and a
+positive-ray Borel equivalent.
+\end{ednote}
 
 \section{Exact formal identities and their probability model}
 \label{sec:formal}
@@ -1458,6 +1487,20 @@ The forward cutoff theorem remains valid there, but its positivity is
 lost on reversion. We do not extend \eqref{eq:inverse} into that range by
 analogy or by extrapolating numerical ratios.
 
+% ed. (2026-09-29): editorial cross-reference to the weighted-type package (batch 48) and to the two batch-49 claimed proofs
+\begin{ednote}
+The exponential ($n$th-root) scale of the inverse coefficients for
+$1<p\le2$ is settled in limsup form by the later package \cite{ed:swt},
+which takes two forward results of \cite{feedback} as inputs: for
+$\lambda_j=aj^p$ its Theorem~\texttt{thm:refinedfeedback} gives
+$\limsup_n\bigl(|v_n|\log(n+\ee)^{pn}/(n!)^{p-1}\bigr)^{1/n}
+=a(p/(p-1))^p$, the forward value. For $p>2$ this value already follows
+from \eqref{eq:inverse}. At $p=2$ the factors separating the conjectured
+inverse equivalent from $u_n$ are $\ee^{o(n)}$, so that result neither
+proves nor contradicts Conjecture~\ref{conj:quadratic-inverse}; for the
+claimed proofs of the conjecture see the note after it.
+\end{ednote}
+
 \section{Algorithms, exact checks, and numerical diagnostics}
 \label{sec:computations}
 
@@ -1678,6 +1721,34 @@ A useful attack would reorganize the signed Lagrange formula into an
 analytic core before bounding its remaining tail, rather than estimate
 individual inverse-composition powers absolutely as in the $p>2$ proof.
 
+% ed. (2026-09-29): editorial note recording the two independent claimed proofs of conj:quadratic-inverse (batch 49); the conjecture itself is unchanged
+\begin{ednote}
+Conjecture~\ref{conj:quadratic-inverse} remains stated here as this
+article's conjecture. Two later packages, filed in batch~49 (see
+\path{docs/incoming/README.md}), each claim a proof of it; neither proof
+has been independently reviewed, and neither package cites the other.
+They are \cite{ed:qef}, Theorem~\texttt{thm:main}, and \cite{ed:sqf},
+Theorem~\texttt{thm:main}. Both use $r_n$ and $S_n$ of
+\eqref{eq:bare-r} and \eqref{eq:bare-S} and follow the route suggested
+above, resumming an analytic inverse core before bounding the signed tail:
+the first merges multiple large actions in a positive majorant, the second
+uses an exact quadratic merger defect. Their exact inverse coefficients
+agree at every common degree (through $220$ for $a=1$ and $180$ for
+$a=2$). Neither hypothesis set contains the other. The first allows
+finitely many nonnegative changes of weights and slopes and eventual
+slopes $aj^2+dj+e$, with factor $\exp((d-\mu)r_n/a)$,
+$\mu=\lambda_1+w_2$; the second allows arbitrary real changes of finitely
+many weights and slopes but an exact tail $aj^2$, with factor
+$\exp(-(\lambda_1+w_2)r_n/a)$. In the pure model both factors reduce to
+$\exp(-(1+1/a)r_n)$, which is \eqref{eq:inverse-conjecture}.
+% ed. (2026-09-29): added on filing batch 50; a third independent claimed proof.
+A third, \path{Signed_Condensation_Sharp_Quadratic_Reversion/} (batch~50),
+claims it under the first package's hypotheses (its
+Theorem~\texttt{thm:main}) and adds the least formal inverse term; its
+exact coefficients agree with both (through degree $240$ for $a=1$ and
+$160$ for $a=2$). It has not been independently reviewed.
+\end{ednote}
+
 \subsection{Regularly varying feedback and critical logarithmic boundaries}
 
 Replace the pure tail by
@@ -1696,6 +1767,15 @@ boundary requires a sharper replacement for the power-tail transfer bound,
 and potentially a Poisson correction when the scale tends to a constant.
 The power-tail theorem does not automatically cover these alternatives.
 
+% ed. (2026-09-29): editorial cross-reference to the Poisson-layer package (batch 48), which answers part of this question
+\begin{ednote}
+The later package \cite{ed:plb} obtains such a Poisson correction at
+$M(p-1)=1$ by letting the exponent approach the boundary,
+$p_n=1+1/M+((M+1)\log\log n+\theta)/(M\log n)$
+(Theorem~\texttt{thm:window}); the $(\log j)^\gamma$ tails proposed here
+are not treated there and remain open.
+\end{ednote}
+
 \subsection{Joint laws for the finite background cloud}
 
 The present local theorem concerns the large action after conditioning on
@@ -1708,6 +1788,21 @@ would give Gaussian limits for diverging counts, Poisson limits for bounded
 counts, and a quantitative total-variation approximation where appropriate.
 It should explicitly distinguish this coefficient model from the fixed
 product-weight random-allocation models in \cite{jjs,janson}.
+
+% ed. (2026-09-29): editorial cross-reference to the two batch-48 packages that answer this question in special cases
+\begin{ednote}
+Two later packages answer this question in special cases. The package
+\cite{ed:plb} treats the single count $N_{M+1,n}$ of first omitted actions
+near the cutoff boundary: Poisson limits in total variation for bounded
+intensity, Gaussian limits for diverging intensity, and independence from
+the largest action (Theorems~\texttt{thm:probability} and
+\texttt{thm:joint}). The package \cite{ed:mic} treats $p=2$, $a=1$: the
+number of actions equal to two is close in total variation to a Poisson law
+of mean $r_n^2$, jointly with the largest action
+(Theorem~\texttt{thm:probability}), and with high probability every action
+other than the largest is one or two. For other $p$, and for $p=2$ with $a\ne1$, the joint
+law of the counts of actions $2,\ldots,M$ remains open.
+\end{ednote}
 
 \subsection{Uniformity as the growth exponent approaches one}
 
@@ -1914,7 +2009,8 @@ related condensation and rapid-series methods as prior work, while proposing
 the exact finite-core reduction and the associated model-specific
 asymptotics as the contribution to be independently reviewed.
 
-\begin{thebibliography}{9}
+% ed. (2026-09-29): widest label 9 -> 99, since the editorial entries bring the list to thirteen
+\begin{thebibliography}{99}
 \addcontentsline{toc}{section}{References}
 
 \bibitem{repo}
@@ -1969,6 +2065,40 @@ Some Formal Power Series}, Journal of the London Mathematical Society
 G. A. Edgar, \emph{Transseries for beginners}, Real Analysis Exchange
 \textbf{35} (2010), 253--310.
 \href{https://arxiv.org/abs/0801.4877}{arXiv:0801.4877}.
+
+% ed. (2026-09-29): editorial bibliography entries for the later sibling packages cited in the editorial notes
+\bibitem{ed:mic}
+[Editorial addition] \emph{Microscopic Condensation in Exponential-Feedback
+Transseries}, research article prepared for Vladimir Reshetnikov,
+ProveIt, filed in batch~48,
+\path{Analysis/Transseries/docs/series-and-transseries/Microscopic_Condensation_Exponential_Feedback/article.tex}.
+
+\bibitem{ed:plb}
+[Editorial addition] \emph{Poisson Layers at the Finite-Core Boundary of
+Exponential-Feedback Transseries},
+research article prepared for Vladimir Reshetnikov, ProveIt, filed in
+batch~48,
+\path{Analysis/Transseries/docs/series-and-transseries/Poisson_Layers_Finite_Core_Boundary/poisson_feedback_layers.tex}.
+
+\bibitem{ed:swt}
+[Editorial addition] \emph{Sharp Weighted Type Under Formal Reversion},
+research article prepared for Vladimir Reshetnikov, ProveIt, filed in
+batch~48,
+\path{Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/article.tex}.
+
+\bibitem{ed:qef}
+[Editorial addition] \emph{Quadratic Exponential Feedback after Reversion:
+Cancellation, Finite-Core Universality, and Sharp Borel Growth}, research
+article prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
+\path{Analysis/Transseries/docs/series-and-transseries/Quadratic_Exponential_Feedback_After_Reversion/article.tex}.
+Claimed proof, not independently reviewed.
+
+\bibitem{ed:sqf}
+[Editorial addition] \emph{Signed Quadratic-Feedback Inversion: A
+Finite-Core Resolution and Sharp Entire Borel Growth}, research draft
+prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
+\path{Analysis/Transseries/docs/series-and-transseries/Signed_Quadratic_Feedback_Inversion/article.tex}.
+Claimed proof, not independently reviewed.
 
 \end{thebibliography}
 \end{document}

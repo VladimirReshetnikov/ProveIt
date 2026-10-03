@@ -1,7 +1,9 @@
 # Rvachev up-function Fourier decay
 
 This group has one canonical synthesis, a separately supplied rewrite awaiting
-reconciliation, and one arrival addressing a gap the synthesis states. The canonical document is:
+reconciliation, and three arrivals: one addressing a gap the synthesis states,
+and two answering that arrival's finite-smoothness question (on Sobolev and on
+`C^r` spaces). The canonical document is:
 
 - [`Rvachev_Up_Fourier_Decay.tex`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.tex) — editable source;
 - [`Rvachev_Up_Fourier_Decay.pdf`](Rvachev_Up_Fourier_Decay/Rvachev_Up_Fourier_Decay.pdf) — retained rendered checkpoint.
@@ -29,12 +31,13 @@ restoration of the older donor with the same directory name at the
 pre-consolidation pin below. Manuscript proof labels do not establish Lean
 coverage.
 
-## Arrival on the spectral/RMS gap
+## Arrivals on the spectral/RMS gap
 
 [`Spectral_Collapse_Alternating_RMS/`](Spectral_Collapse_Alternating_RMS/)
 holds *Spectral Collapse and Alternating RMS Asymptotics for the Rvachev
-Up-Function* (23-page A4 PDF, 1,566-line source), filed on 2026-09-28 by a
-quick archival intake.  It addresses the gap the canonical synthesis states
+Up-Function* (23-page A4 PDF, 1,617-line source with editorial notes of
+2026-09-29 and 2026-09-30 under its finite-smoothness question), filed on
+2026-09-28 by a quick archival intake.  It addresses the gap the canonical synthesis states
 after its RMS transfer eigenfunctions: that `−1/4` has not been shown to be
 the second eigenvalue on a specified space, and that the alternating
 `(−1/2)^n` relative RMS rate is numerical evidence only.  On the Hardy disk
@@ -44,6 +47,43 @@ with `B` and `M` enclosed by an exact-rational interval certificate
 (`certify_integer.py`, standard library only) and an independent `mpmath.iv`
 cross-check.  The claims are unreviewed, the synthesis still states the gap,
 and no Lean statement exists.
+
+[`Sobolev_Spectral_Disks_Rvachev_Thue_Morse/`](Sobolev_Spectral_Disks_Rvachev_Thue_Morse/)
+holds *From Analytic Spectral Collapse to Sobolev Spectral Disks*
+(24-page A4 PDF, 1,795-line source, a standard-library exact check
+program), filed on 2026-09-29 by a quick archival intake.  It answers
+the Sobolev part of the arrival's question "Spectra at finite
+smoothness": on periodic Sobolev spaces `H^s` (with logarithmic
+refinements) the same operator has a whole disk of essential
+spectrum, of radius `2^{−s}√(1+√17)/4`, plus the eigenvalues `1/2` and
+`−1/4`, which are isolated only above `s_0 ≈ 0.1785` and `s_0 + 1`
+respectively; the same holds on interval spaces of integer order.  So
+`−1/4` is the second spectral value only on smooth enough spaces, not
+on `L²` or `H¹`.  At the critical order a logarithmic weight still
+gives a two-term moment law, although no operator-norm law of that
+order exists.  Its Thue–Morse/Stern cutoff identity and energy
+formulas are already in
+[`../thue-morse/Thue_Morse_Frontier_Deductions/`](../thue-morse/Thue_Morse_Frontier_Deductions/),
+Part I, which it does not cite.  Hölder spaces are not treated (an
+editorial note of 2026-09-30 points to the integer `C^r` answer below).
+Unreviewed; no Lean statement.
+
+[`Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/`](Sharp_Cr_Spectral_Disks_Rvachev_Thue_Morse/)
+holds *Sharp `C^r` Spectral Disks for the Rvachev–Thue–Morse Transfer
+Operator* (17-page A4 PDF, 1,362-line source, a standard-library exact
+check program), filed on 2026-09-30 by a quick archival intake and amended
+editorially the same day (its README lists the amendments).  It
+answers the integer `C^r` part of the same question: on `C^r` of the
+circle and of `[0,1]` the operator has a whole disk of essential
+spectrum of radius `2^{−r−1}`, every interior point an eigenvalue of
+infinite multiplicity, plus the eigenvalues `1/2` and `−1/4`, which are
+isolated exactly for `r ≥ 1` and `r ≥ 2`; for the sine mask the
+endpoint jets add nothing.  It proves the disk for every smooth dyadic
+Markov weight, and a Calkin lower bound shows the two-resonance
+expansion's rate cannot be improved by any compact correction.
+Noninteger Hölder spaces stay open.  Unreviewed; no Lean statement of
+its spectral results (its three-mode eigen-identities are the lemmas of
+`RMSTransferEigenfunctions.lean`, named in an editorial note).
 
 ## Canonical synthesis
 

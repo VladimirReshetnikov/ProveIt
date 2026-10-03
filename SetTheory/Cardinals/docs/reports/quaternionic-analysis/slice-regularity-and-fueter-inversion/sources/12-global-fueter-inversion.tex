@@ -1,0 +1,1771 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xcolor,fancyhdr,needspace}
+\usepackage{tocloft}
+\setlength{\cftbeforesecskip}{4pt}
+\usepackage{hyperref,bookmark}
+\definecolor{ink}{HTML}{183B50}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Global Fueter Inversion Beyond Finite Connectivity},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov},
+ pdfsubject={Real-axis gluing, arbitrary polynomial periods, and stable reconstruction}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Global Fueter inversion beyond finite connectivity}
+\fancyhead[R]{\small September 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{3em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\HH}{\mathbb H}
+\newcommand{\Cl}{\operatorname{Cl}}
+\newcommand{\Hol}{\mathcal O}
+\newcommand{\A}{\mathcal A_h}
+\newcommand{\Fu}{\mathcal F_h}
+\newcommand{\Pspace}{\mathscr P_h}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\calW}{\mathscr W}
+\newcommand{\Rop}{\mathsf R}
+\newcommand{\Sop}{\mathsf S}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\barz}{\overline z}
+\newcommand{\dbar}{\partial_{\bar z}}
+\newcommand{\wind}{\operatorname{wind}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\repoSHA}{cb1646dc442724f8e298cf259195b6c308367d80}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{10mm}
+\noindent{\large\color{ink} ANALYSIS / TOPOLOGY / RECONSTRUCTION}
+\vspace{15mm}
+\begin{flushleft}
+{\LARGE\bfseries\color{ink} Global Fueter Inversion\\[5pt]
+Beyond Finite Connectivity}\par
+\vspace{9mm}
+{\large Real-axis gluing, arbitrary polynomial periods,\\[3pt]
+and the finite--infinite splitting dichotomy}\par
+\vspace{13mm}
+Research article prepared for Vladimir Reshetnikov\\
+30 September 2026
+\end{flushleft}
+\vspace{7mm}
+\begin{abstract}
+The polynomial-current formulation of Fueter inversion turns local
+holomorphic primitives into a finite collection of closed one-forms. We
+extend that formulation to conjugation-symmetric planar domains meeting the
+real axis and to domains of arbitrary connectivity. Coalescence of the two
+Hermite interpolation nodes is resolved by a contour formula; on the real
+axis the interpolant becomes the Taylor polynomial of order $2h-1$. The
+resulting current gives a complete global inverse criterion in every even
+ambient dimension $2h+2\ge4$.
+
+Every admissible polynomial-valued homology character is realizable. On a
+symmetric domain, admissibility means invariance under the homology action of
+complex conjugation. Thus a conjugate pair of holes contributes $2h\dim_\R E$
+real obstruction coordinates, while a reflection-fixed hole contributes none.
+No finiteness or boundary-regularity hypothesis is needed for the general
+realization theorem.
+
+The infinite-dimensional problem has a sharp functional-analytic distinction.
+The normalized inverse on zero-period targets is continuous linear. By
+contrast, realization of arbitrary periods has a continuous linear, or even a
+continuous positively homogeneous, right inverse exactly when the admissible
+period rank is finite. At infinite rank there is nevertheless a continuous
+nonlinear right inverse, and there are continuous linear realization operators
+on every prescribed weighted bounded class of period sequences. Complete
+proofs, concrete examples, finite symbolic diagnostics, and a research agenda
+are provided.
+\end{abstract}
+\vfill
+\noindent\small\textbf{Status and scope.} An unrefereed research manuscript with
+written proofs, extending the inspected ProveIt report. Historical priority is
+not established, and no Lean or Rocq verification is claimed. Classical
+Fueter calculus, Cousin theory, and functional-analytic ingredients are
+identified separately from the extensions proved here.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+\setcounter{tocdepth}{2}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage\pagenumbering{arabic}
+
+\section{The problem, the repository gap, and the results}
+\label{sec:intro}
+
+The inverse Fueter problem asks when an axially monogenic function is the
+iterated Laplacian of a slice-regular function. Local solvability is not the
+same as global single-valued solvability. A local inverse can acquire a
+polynomial after continuation around a loop. One must therefore distinguish
+three operations: computing the obstruction of a target, constructing a target
+with prescribed obstruction, and inverting a target whose obstruction vanishes.
+They have different stability properties.
+
+The ProveIt report \emph{Slice regularity and the global inverse Fueter problem}
+contains a higher-dimensional construction in its source manuscript 11,
+\emph{Polynomial Periods and Sharp Residue Hierarchies for the Global Inverse
+Fueter Map} \cite{repo}. That construction applies to connected planar domains
+strictly above the real axis. It identifies a polynomial-valued current,
+proves its Hermite differential identity, constructs every inverse when its
+periods vanish, and realizes all finite collections of period polynomials.
+Its further-research questions 1, 4, and 5 ask respectively about crossing the
+real axis, stable inverse operators, and infinite connectivity with growth
+control. These are the specific starting points of this article.
+
+The inspected repository is pinned to commit
+\begin{center}\small\texttt{\repoSHA}.\end{center}
+The source report is not formally verified. The present article does not
+inherit formal status from unrelated developments in ProveIt. We reprove the
+current and its Hermite identity so that the extensions do not rely on an
+unexamined higher-dimensional normalization.
+
+\subsection{A summary of the extension}
+
+Fix $h\ge1$ and a nonzero finite-dimensional real orthogonal Clifford module
+$E$, of real dimension $d$. Write
+\[
+ \Pspace=\{M(t):\deg M<2h,\ M\text{ has coefficients in }E\},
+ \qquad \dim_\R\Pspace=2hd.
+\]
+The coefficient field here is real. The symbol $\ii$ in a holomorphic stem is
+central and is not a Clifford imaginary unit.
+
+We treat two domain types. A \emph{product domain} is represented by a
+connected open $D\subset\{\operatorname{Im}z>0\}$. A \emph{symmetric domain}
+is a connected open $D\subset\C$ with $c(D)=D$, where $c(z)=\barz$.
+In the latter case stems are intrinsic,
+$F(\barz)=\overline{F(z)}$, and the target has the corresponding even/odd
+parity. A connected symmetric open set necessarily meets the real axis.
+
+For product domains define
+\[
+ \calW(D)=\operatorname{Hom}_\R(H_1(D;\R),\Pspace).
+\]
+For symmetric domains define
+\begin{equation}\label{eq:intro-W}
+ \calW(D)=\{\rho\in\operatorname{Hom}_\R(H_1(D;\R),\Pspace):
+                    \rho\circ c_*=\rho\}.
+\end{equation}
+Both spaces carry the topology of pointwise convergence on homology classes.
+
+\begin{theorem}[Main conclusions, with notation detailed below]
+\label{thm:main}
+For either domain type, the following statements hold.
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=2em,itemsep=3pt]
+\item The polynomial current in \eqref{eq:current} extends without a pole
+through the real axis in the symmetric case. A target has a global Fueter
+inverse exactly when all its polynomial periods vanish. The inverse is
+obtained by integrating the current and evaluating at its moving complex node.
+\item There is an exact sequence of real vector spaces
+\begin{equation}\label{eq:intro-exact}
+ 0\longrightarrow\Pspace\longrightarrow\Hol_*(D;E_\C)
+ \xrightarrow{\Fu}\A(D;E)
+ \xrightarrow{\Per}\calW(D)\longrightarrow0.
+\end{equation}
+Every admissible character occurs, including unrestricted infinite period data.
+The last map is an open continuous map of Fr\'echet spaces.
+\item After a polynomial normalization, the inverse on $\ker\Per$ is
+continuous linear, with compact-set estimates valid across the real axis.
+\item Let $r$ be the real dimension of $H_1(D;\R)$ in the product case and
+of $H_1(D;\R)^+$ in the symmetric case. The period map admits a continuous
+linear right inverse if and only if $r<\infty$. The same criterion holds for
+a right inverse continuous at zero and positively homogeneous.
+\item At $r=\infty$, the period map has a continuous nonlinear right inverse,
+but no right inverse can have a continuous linear derivative at even one point.
+For each prescribed positive envelope $b=(b_j)$, it has a continuous linear
+right inverse on $\ell^\infty(b;\Pspace)$.
+\end{enumerate}
+\end{theorem}
+
+Here $H_1(D;\R)^+$ is the $+1$ eigenspace of $c_*$. Its dimension is at most
+countably infinite. If $r=\infty$, then $\calW(D)$ is a countable
+\emph{product} of copies of $\Pspace$, not their direct sum; it does not have
+countable algebraic dimension.
+
+The stable-splitting result concerns \emph{realization of arbitrary
+obstructions}, not inversion of a compatible target. Confusing those two maps
+would reverse the practical meaning of the theorem.
+
+\subsection{What is settled, and what remains outside the claim}
+
+The real-axis question is answered here under smooth axial parity hypotheses,
+for every $h$. Infinite connectivity is answered qualitatively without a
+boundary assumption, and quantitatively in compact-set Fr\'echet topology
+and on prescribed magnitude envelopes. These results do not characterize
+Hardy, Bergman, physical $L^p$, or boundary-H\"older period data. They also do
+not give sharp constants under degeneration of the domain. Those are genuine
+remaining analytic problems, not conclusions hidden in the word
+``continuous.''
+
+The forward Fueter theorem and local polynomial kernel are classical
+\cite{colombo2011,colombo2014}. The higher-dimensional polynomial current and
+its moving Hermite identity are inherited from the repository source and
+reproved. The extensions are the confluent real-axis formulation, the complete
+arbitrary-domain admissible cokernel, and the resulting realization and
+stability classification. The functional-analytic mechanism of nonsplitting
+belongs to classical Eidelheit theory \cite{vogt,debrouwere}; we give an
+elementary proof and apply it to this precisely identified analytic quotient.
+These distinctions matter more than attaching an unsupported priority label
+to the whole package.
+
+\section{Spaces, parity, and normalization}
+\label{sec:spaces}
+
+\subsection{Coefficients and axial functions}
+
+Put $m=2h+1$. The real Hilbert space $E$ has operators $J_1,\ldots,J_m$
+satisfying
+\begin{equation}\label{eq:clifford}
+ J_j^*=-J_j,\qquad J_jJ_k+J_kJ_j=-2\delta_{jk}\id.
+\end{equation}
+For $I\in S^{m-1}$ write $J_I=\sum I_jJ_j$ and abbreviate $J_Ia$ by $Ia$.
+Then $J_I^2=-\id$ and $J_I$ is an isometry. The complexification
+$E_\C=E\oplus\ii E$ is equipped with
+\[
+ \norm{a+\ii b}^2=\norm a^2+\norm b^2,
+ \qquad \overline{a+\ii b}=a-\ii b.
+\]
+A holomorphic stem $F=A+\ii B$ determines the slice function
+$f(x+yI)=A(x,y)+IB(x,y)$. Holomorphicity is
+\begin{equation}\label{eq:CR}
+ A_x=B_y,\qquad A_y=-B_x.
+\end{equation}
+In the symmetric case, intrinsic stems have $A(x,-y)=A(x,y)$ and
+$B(x,-y)=-B(x,y)$, so this lift is well defined and smooth at the axis.
+For $h=1$, $E=\HH$ with left multiplication by the three quaternionic units
+is an example. We do not identify the full algebra $\Cl_{0,3}$ with $\HH$.
+
+For a product domain let $\Hol_*(D;E_\C)=\Hol(D;E_\C)$. For a symmetric
+domain let
+\[
+ \Hol_*(D;E_\C)=\{F\in\Hol(D;E_\C):F(\barz)=\overline{F(z)}\}.
+\]
+These are real vector spaces, with the compact-open topology. Convergence of
+all holomorphic derivatives on compact sets follows from Cauchy's estimates.
+
+\subsection{Targets, including the axis}
+
+On a product domain, $\A(D;E)$ consists of smooth pairs $(P,Q)$ solving
+\begin{equation}\label{eq:vekua}
+ P_x-Q_y=\frac{2h}{y}Q,\qquad P_y+Q_x=0.
+\end{equation}
+We write $g=P+IQ$ for the physical function and $W=P+\ii Q$ for the pair.
+On a symmetric domain we require smooth $P,Q$ on all of $D$, the parity
+\begin{equation}\label{eq:parity}
+ P(x,-y)=P(x,y),\qquad Q(x,-y)=-Q(x,y),
+\end{equation}
+and the equations
+\begin{equation}\label{eq:smooth-vekua}
+ y(P_x-Q_y)=2hQ,\qquad P_y+Q_x=0
+\end{equation}
+on $D$. These are equations with smooth coefficients, including at $y=0$.
+They are equivalent to \eqref{eq:vekua} off the axis, together with smoothness
+and parity. The topology on $\A(D;E)$ is the induced $C^\infty$ topology.
+
+The Dirac operator applied away from the axis gives
+\[
+ \left(\partial_x+\sum_{j=1}^mJ_j\partial_{x_j}\right)(P+IQ)
+ =P_x-Q_y-\frac{2h}{y}Q+I(P_y+Q_x).
+\]
+Thus these are the axial monogenic equations. Our local inverse theorem will
+also show directly that every smooth pair admitted at the axis has a genuine
+smooth, real-analytic physical lift there. No arbitrary singular solution is
+being admitted by multiplying the equation by $y$.
+
+The map under study is the unnormalized differential Fueter map
+\begin{equation}\label{eq:Fu}
+ \Fu F=\Delta_{2h+2}^{\,h}\mathcal I(F).
+\end{equation}
+All coefficients and period normalizations below refer to this choice.
+Define
+\begin{equation}\label{eq:constants}
+ c_h=2^hh!,\qquad C_h=(-1)^hc_h^2,\qquad
+ \kappa_h=\frac{(-1)^{h+1}}{2^{2h-1}h!(h-1)!}.
+\end{equation}
+In particular $\kappa_hC_h=-2h$.
+
+\section{The inherited current and its differential identity}
+\label{sec:current}
+
+This section rederives the source report's algebraic foundation. It is included
+to make the later extension independent of an unverified citation to that
+report, not to count the same result as a new contribution.
+
+\subsection{Radial calculus}
+
+On either half-plane put
+\[
+ \Rop u=y^{-1}\partial_yu,
+ \qquad \Sop u=\partial_y(u/y).
+\]
+These operators apply componentwise.
+
+\begin{lemma}[Radial form and calibration]\label{lem:radial}
+For a holomorphic stem $F=A+\ii B$, off the real axis,
+\begin{equation}\label{eq:radial}
+ \Fu F=P+IQ,\qquad P=c_h\Rop^hA,\qquad Q=c_h\Sop^hB.
+\end{equation}
+This pair satisfies \eqref{eq:vekua}. For every $a\in E$,
+\begin{align}
+ \Fu(z^ka)&=0 &&(0\le k<2h),\label{eq:cal-low}\\
+ \Fu(z^{2h}a)&=C_ha,\label{eq:cal-even}\\
+ \Fu(z^{2h+1}a)&=C_h\bigl((2h+1)xa+Iya\bigr).\label{eq:cal-odd}
+\end{align}
+\end{lemma}
+\begin{proof}
+On the scalar axial part the Laplacian is
+$L_{2h}=\partial_x^2+\partial_y^2+(2h/y)\partial_y$; on $IB$ it is
+$I M_{2h}B$, where $M_s=L_s-s/y^2$. Direct differentiation gives
+\[
+ L_s\Rop=\Rop L_{s-2},\qquad M_s\Sop=\Sop M_{s-2}.
+\]
+The planar harmonicity of $A,B$ gives $L_sA=s\Rop A$ and
+$M_sB=s\Sop B$. Induction gives a factor
+$\prod_{j=0}^{h-1}(2h-2j)=c_h$ after $h$ Laplacians. The identities
+\[
+ \partial_y\Rop^h=\Sop^h\partial_y,
+ \qquad \Rop^h\partial_y=(\partial_y+2h/y)\Sop^h
+\]
+follow inductively from their definitions. Applying them to \eqref{eq:CR}
+proves the target equations.
+
+A slice lift of $z^ka$ is a physical polynomial of degree $k$, so the
+order-$2h$ differential operator kills it for $k<2h$. In the real part of
+$z^{2h}$ the only surviving highest radial term is $(-1)^hy^{2h}$, and
+$\Rop^hy^{2h}=c_h$. The imaginary part is killed. For $z^{2h+1}$ the
+surviving terms are $(-1)^h(2h+1)xy^{2h}$ and $(-1)^hy^{2h+1}$; the latter
+satisfies $\Sop^hy^{2h+1}=c_hy$. This proves the calibrations.
+\end{proof}
+
+\begin{remark}[The real coefficient restriction is essential]
+The constant stem $F=\ii a$ has
+\[
+ \Fu(\ii a)=(-1)^h(2h)!\,Ia/y^{2h},
+\]
+which is nonzero for $a\ne0$. Even a constant with a purely central-imaginary
+coefficient need not lie in the kernel on a product domain. The kernel is
+not the space of complex-coefficient polynomials of degree less than $2h$.
+\end{remark}
+
+\subsection{A polynomial-valued closed one-form}
+
+Let $t$ be a real formal variable, held fixed under differentiation in $x,y$,
+and put $R_t=(t-x)^2+y^2$. Define
+\begin{equation}\label{eq:current}
+\begin{split}
+ \Omega_h[g](t)=\kappa_h R_t^{h-1}\bigl[
+ &((x-t)P+yQ)\dd x\\
+ &+(yP-(x-t)Q)\dd y\bigr].
+\end{split}
+\end{equation}
+This is a one-form with values in $\Pspace$; it has degree at most $2h-1$ in
+$t$. The formula has no negative power of $y$.
+
+\begin{lemma}[Closedness, injectivity, and reflection]\label{lem:current}
+For every target in the spaces defined above, $\Omega_h[g]$ is smooth and
+closed coefficientwise. The assignment $g\mapsto\Omega_h[g]$ is injective.
+On a symmetric domain,
+\begin{equation}\label{eq:invariant-current}
+ c^*\Omega_h[g]=\Omega_h[g].
+\end{equation}
+\end{lemma}
+\begin{proof}
+Off the axis let $a=x-t$, $L=aP+yQ$, and $N=yP-aQ$. The target equations give
+\[
+ N_x-L_y=2(h-1)Q,\qquad aN-yL=-R_tQ.
+\]
+The derivative of $R_t^{h-1}$ cancels the first expression when computing
+$\partial_x(R_t^{h-1}N)-\partial_y(R_t^{h-1}L)$. For $h=1$ both terms
+are zero separately. Thus the current is closed. In the symmetric case its
+coefficients are smooth on $D$ by the displayed polynomial formula;
+closedness on the dense off-axis set implies closedness everywhere.
+
+At any point with $y\ne0$, evaluation at $t=x$ gives the coefficients
+$\kappa_hy^{2h-1}Q$ and $\kappa_hy^{2h-1}P$. Hence a zero current forces
+$P=Q=0$ off the axis, and continuity gives the same on the axis.
+Finally the $\dd x$ coefficient is even in $y$ and the $\dd y$ coefficient
+is odd. Pullback also changes the sign of $\dd y$, proving
+\eqref{eq:invariant-current}.
+\end{proof}
+
+In central complex notation the same formula is
+\begin{equation}\label{eq:complex-current}
+\begin{split}
+ \Omega_h[g](t)=-\frac{\kappa_h}{2}\bigl[
+ &(t-z)^{h-1}(t-\barz)^hW\dd z\\
+ &+(t-z)^h(t-\barz)^{h-1}\overline W\dd\barz\bigr].
+\end{split}
+\end{equation}
+Indeed $L-\ii N=(\barz-t)W$ and $L+\ii N=(z-t)\overline W$.
+For $h=1$ it is $\theta_g+t\omega_g$, with
+\[
+ \omega_g=\tfrac12(-P\dd x+Q\dd y),\qquad
+ \theta_g=\tfrac12\bigl((xP+yQ)\dd x+(yP-xQ)\dd y\bigr).
+\]
+Thus the higher-dimensional normalization matches the quaternionic one.
+
+\subsection{Moving Hermite interpolation}
+
+For $z\ne\barz$, let $H_F(z;t)\in\Pspace$ be the unique polynomial satisfying
+\begin{align}
+ \partial_t^jH_F(z;z)&=F^{(j)}(z),\label{eq:Hermite-jets}\\
+ \partial_t^jH_F(z;\barz)&=\overline{F^{(j)}(z)}
+                    &&(0\le j<h).\nonumber
+\end{align}
+This is ordinary two-node Hermite interpolation in each component. Its
+coefficients are real: conjugation of all coefficients and interchange of
+the two nodes preserves the data, and uniqueness applies.
+
+\begin{theorem}[Hermite differential identity]\label{thm:Hermite}
+Off the real axis, for every holomorphic stem,
+\begin{equation}\label{eq:Hermite-identity}
+ \mathrm d_{x,y}H_F(z;t)=\Omega_h[\Fu F](t).
+\end{equation}
+\end{theorem}
+\begin{proof}
+At a fixed $z_0\notin\R$, each side depends real-linearly on the holomorphic
+jet through order $h$. Every such jet is the jet of a real-coefficient
+polynomial of degree at most $2h+1$: interpolate it and its conjugate through
+order $h$ at $z_0,\bar z_0$. The resulting Hermite polynomial has real
+coefficients by conjugation and uniqueness. It therefore suffices, for this
+arbitrary $h$, to check real monomials of degrees $0,\ldots,2h+1$.
+
+For degrees below $2h$, $H_{z^k}(z;t)=t^k$ and both sides vanish. The remaining
+Hermite polynomials are the division remainders
+\begin{align}
+ H_{z^{2h}}(z;t)&=t^{2h}-R_t^h,\label{eq:rem-even}\\
+ H_{z^{2h+1}}(z;t)&=t^{2h+1}-(t+2hx)R_t^h.\label{eq:rem-odd}
+\end{align}
+They have degree below $2h$ and agree to order $h-1$ at both nodes.
+Differentiating the first gives
+\[
+ -2hR_t^{h-1}\bigl((x-t)\dd x+y\dd y\bigr),
+\]
+which is the current of \eqref{eq:cal-even} since $\kappa_hC_h=-2h$.
+Differentiating the second gives
+\[
+ -2hR_t^{h-1}\bigl[
+ ((2h+1)x(x-t)+y^2)\dd x+y(t+2hx)\dd y\bigr],
+\]
+which is the current of \eqref{eq:cal-odd}. This proves the identity for every
+jet at every point. The argument is an exact finite-dimensional reduction
+for arbitrary $h$, not an extrapolation from finitely many tested dimensions.
+\end{proof}
+
+\section{Confluence at the real axis and the global inverse}
+\label{sec:axis}
+
+The singularity of the usual two-node interpolation matrix at $y=0$ does not
+imply a singularity of the interpolant of an intrinsic holomorphic function.
+A contour formula makes the cancellation explicit.
+
+\subsection{The confluent interpolation formula}
+
+\begin{theorem}[Regular confluence]\label{thm:confluence}
+Let $F\in\Hol_*(D;E_\C)$ on a symmetric domain. The polynomial $H_F$ extends
+real-analytically across $D\cap\R$, and its coefficients are even in $y$.
+For a real point $x\in D$,
+\begin{equation}\label{eq:axis-Taylor}
+ H_F(x;t)=\sum_{j=0}^{2h-1}\frac{F^{(j)}(x)}{j!}(t-x)^j.
+\end{equation}
+The extended polynomial satisfies \eqref{eq:Hermite-identity} on all of $D$.
+\end{theorem}
+\begin{proof}
+Fix a real point $x_0\in D$ and a positively oriented circle $\Gamma$ centered
+at $x_0$ with its closed disk in $D$. Restrict $z$ to a smaller disk. Put
+\[
+ Q_z(\zeta)=((\zeta-z)(\zeta-\barz))^h.
+\]
+Define a polynomial in $t$ by
+\begin{equation}\label{eq:contour-H}
+ H(z;t)=\frac1{2\pi\ii}\int_\Gamma
+ F(\zeta)\,
+ \frac{Q_z(\zeta)-Q_z(t)}{(\zeta-t)Q_z(\zeta)}\dd\zeta.
+\end{equation}
+The numerator divided by $\zeta-t$ is polynomial in $t$ of degree $2h-1$.
+The other denominator has no zero on $\Gamma$. Therefore each coefficient
+of $H$ is real-analytic in $(x,y)$, including $y=0$, and is even in $y$.
+
+For $t$ inside $\Gamma$, Cauchy's formula rewrites this as
+\[
+ H(z;t)=F(t)-Q_z(t)\frac1{2\pi\ii}
+          \int_\Gamma\frac{F(\zeta)}{(\zeta-t)Q_z(\zeta)}\dd\zeta.
+\]
+At $y\ne0$ the last term vanishes to order $h$ at each node. Intrinsicness
+identifies the data at $\barz$ with the conjugate data at $z$, so uniqueness
+gives $H=H_F$. In particular its coefficients are in $E$, also at the axis
+by continuity.
+
+At $y=0$, $Q_x(t)=(t-x)^{2h}$, and the same expression shows that $H(x;t)$
+interpolates the jet of $F$ through order $2h-1$ at $x$. Its degree bound
+proves \eqref{eq:axis-Taylor}. The local extensions agree off the axis and
+hence on overlaps. Finally both sides of \eqref{eq:Hermite-identity} are
+smooth at the axis, and they agree on its complement, so they agree everywhere.
+\end{proof}
+
+\begin{remark}
+The current itself needed no new regularizing factor: it was already
+polynomial in $y$. What needed regularization was the representation of its
+primitive by a two-node interpolation matrix. Formula \eqref{eq:contour-H}
+resolves exactly that degeneration. It is a confluent Hermite formula, not
+a new claim about Cauchy integration.
+\end{remark}
+
+\subsection{Exactness, reconstruction, and every inverse}
+
+For a piecewise smooth closed curve $\gamma$ define
+\begin{equation}\label{eq:period}
+ \Per_g(\gamma;t)=\int_\gamma\Omega_h[g](t)\in\Pspace.
+\end{equation}
+Closedness makes this depend only on homology. We extend real-linearly to
+$H_1(D;\R)$. In the symmetric case \eqref{eq:invariant-current} implies
+$\Per_g\circ c_*=\Per_g$.
+
+\begin{theorem}[Complete inverse criterion on both domain types]
+\label{thm:inverse}
+A target $g\in\A(D;E)$ has a global inverse in $\Hol_*(D;E_\C)$ if and only
+if $\Per_g=0$. When this holds, choose a basepoint $z_0\in D$, real in the
+symmetric case, and any $H_0\in\Pspace$. Then
+\begin{equation}\label{eq:inverse-integral}
+ H(z;t)=H_0(t)+\int_{z_0}^{z}\Omega_h[g](t),
+ \qquad F(z)=H(z;z)
+\end{equation}
+is an inverse. The integral is path independent. Every inverse arises in this
+way, and any two inverses differ by a real polynomial in $\Pspace$.
+\end{theorem}
+\begin{proof}
+If $g=\Fu F$, the Hermite identity, including its confluent version, makes
+$\Omega_h[g]$ exact. Thus all periods vanish.
+
+Conversely zero periods imply coefficientwise path independence in
+\eqref{eq:inverse-integral}; connected open planar sets are path connected.
+The resulting smooth real-coefficient polynomial satisfies
+$\mathrm dH=\Omega_h[g]$. In the symmetric case, invariance of the current
+and a real basepoint imply $H(\barz;t)=H(z;t)$, coefficientwise: conjugate a
+path from $z_0$ to $z$ and use \eqref{eq:invariant-current}. It follows that
+$F(\barz)=\overline{F(z)}$.
+
+Formula \eqref{eq:complex-current} yields
+\begin{align}
+ \partial_zH(z;t)&=-\frac{\kappa_h}{2}
+             (t-z)^{h-1}(t-\barz)^hW,\label{eq:Hz}\\
+ \dbar H(z;t)&=-\frac{\kappa_h}{2}
+             (t-z)^h(t-\barz)^{h-1}\overline W.\label{eq:Hbarz}
+\end{align}
+In the derivative $\dbar H(z;z)$ the substituted variable $t=z$ contributes
+zero, and the right side of \eqref{eq:Hbarz} vanishes at $t=z$. Thus $F$ is
+holomorphic, including at the axis.
+
+Off the axis we claim
+$F^{(j)}(z)=\partial_t^jH(z;z)$ for $0\le j<h$. The case $j=0$ is the
+definition. If $j\le h-2$, differentiating in $z$ adds
+$\partial_z\partial_t^jH(z;t)|_{t=z}$, which is zero by the factor
+$(t-z)^{h-1}$ in \eqref{eq:Hz}. This proves the induction. Real coefficients
+supply the conjugate-node data. Hence $H=H_F$ off the axis by interpolation
+uniqueness. Consequently
+\[
+ \Omega_h[\Fu F]=\mathrm dH_F=\mathrm dH=\Omega_h[g].
+\]
+Injectivity of the current gives $\Fu F=g$, with equality on the axis by
+continuity. The holomorphic intrinsic stem provides its smooth physical
+lift there.
+
+For exhaustiveness, every inverse has a Hermite polynomial whose differential
+is the same current. Their coefficientwise difference is constant on connected
+$D$, so it belongs to $\Pspace$. Evaluation at $t=z$ gives precisely the
+stated polynomial ambiguity. Conversely the calibrations kill every such
+real polynomial.
+\end{proof}
+
+\begin{corollary}[Local solvability, kernel, and normalization]
+\label{cor:local}
+Every target has a local inverse, also near a real point. Its local
+coefficients $P,Q$ are real-analytic. On either connected domain type,
+\[
+ \ker\Fu=\Pspace.
+\]
+Taking $H_0=0$ in \eqref{eq:inverse-integral} fixes a unique global inverse
+whenever periods vanish. On a product domain this normalization is
+$F^{(j)}(z_0)=0$ for $0\le j<h$. On a symmetric domain it is
+$F^{(j)}(x_0)=0$ for $0\le j<2h$.
+\end{corollary}
+\begin{proof}
+Use a small off-axis disk, or a small symmetric disk centered at the real
+point. Every closed form is exact there; in the latter case use a real
+basepoint. The constructed inverse is holomorphic. Its radial image is
+real-analytic off the axis. At a real center its convergent intrinsic power
+series lifts to a convergent physical power series, whose iterated Laplacian
+is real-analytic. This proves the analytic assertion on all of $D$.
+
+The kernel follows from Theorem~\ref{thm:inverse} applied to zero. The
+normalizations are equivalent to $H_F(z_0;t)=0$ by the two-node jet conditions
+or the confluent Taylor formula, respectively.
+\end{proof}
+
+The change from $h$ complex jet conditions to $2h$ real jet conditions at a
+real basepoint preserves exactly $2hd$ real constraints. It is not a loss of
+half of the polynomial gauge.
+
+\section{Realizing every admissible period character}
+\label{sec:realization}
+
+Finite logarithmic sums are not enough to justify arbitrary infinite period
+assignments: an uncontrolled infinite sum can diverge on every compact set.
+We first prove unrestricted existence by a local-to-global argument, and only
+then address continuous choices and controlled sums.
+
+\subsection{The classical inputs}
+
+We use three standard facts in precise forms. First, de Rham's theorem in
+degree one identifies smooth closed real one-forms modulo exact forms on an
+open planar domain with $\operatorname{Hom}_\R(H_1(D;\R),\R)$, via integration.
+It applies componentwise to any finite-dimensional real coefficient space.
+Second, the additive Cousin problem is solvable on every open planar domain:
+a holomorphic additive one-cocycle is a difference of local holomorphic
+functions. Equivalently, every smooth equation $\dbar v=\beta$ with smooth
+coefficient $\beta$ is globally solvable there. These are ordinary open
+Riemann-surface results; no compact support or boundary regularity is imposed
+\cite{forster}. Third, the open mapping theorem applies to continuous linear
+surjections between Fr\'echet spaces. We will use that theorem only after
+proving surjectivity and identifying both topologies.
+
+For clarity, the Cousin step used below can be reduced explicitly to the
+stated $\bar\partial$ theorem. Suppose $c_{ij}$ is a holomorphic additive
+cocycle on a locally finite cover and $(\chi_k)$ is a subordinate smooth
+partition of unity. Put
+\begin{equation}\label{eq:Cousin-partition}
+ u_i=\sum_k\chi_k c_{ik}.
+\end{equation}
+Each term is extended by zero where necessary, using the support of $\chi_k$.
+The cocycle equation gives $u_i-u_j=c_{ij}$. Hence $\dbar u_i$ is a global
+smooth coefficient $\beta$. Choose $v$ with $\dbar v=\beta$ and set
+$F_i=u_i-v$. Then $F_i$ is holomorphic and $F_i-F_j=c_{ij}$.
+This is the only global holomorphic existence input in our period realization.
+
+\subsection{Unrestricted realization theorem}
+
+\begin{theorem}[Arbitrary admissible periods]\label{thm:surjectivity}
+For either domain type, every $\rho\in\calW(D)$ is $\Per_g$ for some
+$g\in\A(D;E)$. In particular, \eqref{eq:intro-exact} is exact without a
+connectivity bound or a boundary assumption.
+\end{theorem}
+\begin{proof}
+By de Rham's theorem choose a smooth closed $\Pspace$-valued one-form $\alpha$
+whose periods are $\rho$. In the symmetric case replace it by
+$(\alpha+c^*\alpha)/2$. Its periods remain $\rho$, since
+$\rho\circ c_*=\rho$, and now $c^*\alpha=\alpha$.
+
+Take a locally finite cover by sufficiently small open disks. In the symmetric
+case take a cover permuted by conjugation, using paired disks disjoint from the
+axis and fixed disks centered on the real axis. Such a cover and a subordinate
+partition of unity can be chosen equivariantly: first take a locally finite
+refinement of small disks and its reflection, then average the associated
+partition under the two-element group. Intersections of the chosen disks are
+convex whenever nonempty.
+
+On each disk $U_i$ choose a real-polynomial-valued primitive $H_i$ of
+$\alpha$. In the symmetric case index the conjugate disk by $ci$ and choose
+\begin{equation}\label{eq:primitive-reflection}
+ H_{ci}(\barz;t)=H_i(z;t).
+\end{equation}
+For a pair this is a definition of the second primitive. On a fixed disk it
+follows by choosing a real basepoint: the two sides have the same differential
+and the same value there.
+
+On an overlap, the difference
+\[
+ C_{ij}(t)=H_i(z;t)-H_j(z;t)
+\]
+is a locally constant element of $\Pspace$. Evaluation gives a holomorphic
+additive cocycle $c_{ij}(z)=C_{ij}(z)$. Solve the additive Cousin problem to
+obtain holomorphic $F_i$ with
+\begin{equation}\label{eq:cocycle-F}
+ F_i-F_j=C_{ij}(z).
+\end{equation}
+
+In the symmetric case the solution can be chosen equivariantly. Indeed choose
+the partition in \eqref{eq:Cousin-partition} so that
+$\chi_{ci}(\barz)=\chi_i(z)$. Real coefficients and
+\eqref{eq:primitive-reflection} then give
+$u_{ci}(\barz)=\overline{u_i(z)}$. For a smooth function let
+$v^\sharp(z)=\overline{v(\barz)}$. Direct differentiation shows
+\[
+ \dbar v^\sharp(z)=\overline{(\dbar v)(\barz)}.
+\]
+The global coefficient $\beta$ has this same symmetry. Therefore replacing
+any solution $v$ by $(v+v^\sharp)/2$ retains $\dbar v=\beta$ and gives
+$F_{ci}(\barz)=\overline{F_i(z)}$. In particular $F_i$ is intrinsic on every
+fixed disk.
+
+The local targets $\Fu F_i$ agree on overlaps by \eqref{eq:cocycle-F} and the
+real polynomial kernel. They define a smooth target $g$ on all of $D$; in
+the symmetric case it has the required parity and is smooth at every real
+point. On each disk its Hermite polynomial satisfies
+\[
+ \mathrm dH_{F_i}=\Omega_h[g].
+\]
+The difference $H_{F_i}-H_i$ is globally defined: on an overlap,
+\[
+ H_{F_i}-H_{F_j}=H_{C_{ij}(z)}=C_{ij}(t)=H_i-H_j.
+\]
+This identity holds also at the axis by confluence. Hence for a global smooth
+polynomial-valued function $B$,
+\[
+ \Omega_h[g]-\alpha=\mathrm dB.
+\]
+Their periods agree, so $\Per_g=\rho$. The equality also fixes the sign of
+the prescribed monodromy without a convention-dependent Cech calculation.
+The other exactness assertions were proved in Theorem~\ref{thm:inverse}.
+\end{proof}
+
+\begin{remark}[Why no additional real-axis obstruction appears]
+The reflection group is finite and the coefficient space is real of
+characteristic zero, so the averaging operations above are legitimate.
+Intrinsicness near a real point is secured on a fixed disk before applying
+the Fueter map. One is not gluing arbitrary off-axis stems across the axis
+and hoping that their values match. Invariance of the character is both
+necessary and sufficient.
+\end{remark}
+
+\subsection{The actual size of the obstruction space}
+
+Open planar domains have the homotopy type of countable CW complexes, so
+$H_1(D;\R)$ has a finite or countable algebraic basis; this is also a
+consequence of countable topology for open Riemann surfaces \cite{forster}.
+In the symmetric case $c_*^2=1$, and the operators
+\[
+ \pi_+=\tfrac12(1+c_*),\qquad \pi_-=\tfrac12(1-c_*)
+\]
+split the real homology into its two eigenspaces. An invariant character kills
+$\operatorname{im}\pi_-$ and is arbitrary on $\operatorname{im}\pi_+$.
+Thus, after choosing a basis of the relevant homology space,
+\begin{equation}\label{eq:W-product}
+ \calW(D)\cong
+ \begin{cases}
+  \Pspace^{\,r},&r<\infty,\\
+  \Pspace^{\N},&r=\infty.
+ \end{cases}
+\end{equation}
+The topology is the product topology: each homology vector is a finite linear
+combination of basis vectors, so pointwise evaluation and coordinatewise
+convergence give the same topology.
+
+In particular finite rank gives real cokernel dimension $2hdr$. At infinite
+rank, infinitely supported arbitrary coordinate sequences occur. There is no
+hidden summability condition in unrestricted smooth axial analysis. Growth
+conditions enter only after a stronger analytic space has been specified.
+
+\section{Reflection-fixed holes, conjugate pairs, and examples}
+\label{sec:holes}
+
+\subsection{Finite connectivity with a geometric basis}
+
+Assume here that $D$ is bounded, connected, symmetric, and its boundary is a
+finite union of disjoint $C^1$ Jordan curves. Suppose its bounded complementary
+components consist of $p$ conjugate pairs and $q$ reflection-fixed components.
+Thus the total number of holes is $b=2p+q$.
+
+\begin{theorem}[Which holes obstruct inversion]\label{thm:holes}
+Choose counterclockwise generators $\gamma_j^+,\gamma_j^-$ about the two
+members of each conjugate pair, and $\delta_k$ about each reflection-fixed
+hole. Then every smooth target satisfies
+\begin{equation}\label{eq:paired-periods}
+ \Per_g(\gamma_j^-)=-\Per_g(\gamma_j^+),
+ \qquad \Per_g(\delta_k)=0.
+\end{equation}
+The polynomials $\Per_g(\gamma_j^+)$ are otherwise arbitrary. Therefore
+\begin{equation}\label{eq:finite-dimension}
+ \dim_\R\operatorname{coker}\Fu=2hdp.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Conjugation reverses planar orientation, and consequently
+\[
+ c_*[\gamma_j^+]=-[\gamma_j^-],\qquad
+ c_*[\gamma_j^-]=-[\gamma_j^+],\qquad
+ c_*[\delta_k]=-[\delta_k].
+\]
+The invariance condition on the character proves \eqref{eq:paired-periods}.
+Each paired block contributes one $+1$ eigenvector; a fixed block contributes
+none. For example $([\gamma_j^+]-[\gamma_j^-])/2$ is a basis of the invariant
+part with character value $\Per_g(\gamma_j^+)$. Its dimension is $p$.
+Theorem~\ref{thm:surjectivity} gives arbitrary values on these vectors,
+proving the dimension formula.
+\end{proof}
+
+Notice that the character is \emph{invariant under the homology involution},
+while its values on the two \emph{counterclockwise} generators are opposite.
+These are the same condition, not a choice between two sign conventions.
+
+\subsection{An explicit paired logarithmic representative}
+
+For a point $a\notin D$, with $\bar a\notin D$, and $M\in\Pspace$, consider
+local branches of
+\begin{equation}\label{eq:paired-log}
+ F_{a,M}(z)=\frac{M(z)}{2\pi\ii}
+               \operatorname{Log}\frac{z-a}{z-\bar a}.
+\end{equation}
+Equivalently one may use the difference of two local logarithms. Different
+branches differ by an integer multiple of the real polynomial $M(z)$, so
+$G_{a,M}=\Fu F_{a,M}$ is single valued. Near a real point the ratio has modulus
+one; a local logarithm can be chosen purely imaginary on the real interval.
+Then $F_{a,M}$ is intrinsic there. More generally conjugation changes a
+branch to the conjugate intrinsic branch modulo an integer multiple of $M$.
+Thus the target is a smooth symmetric axial target everywhere on $D$.
+
+Analytic continuation and the Hermite identity give
+\begin{equation}\label{eq:paired-wind}
+ \Per_{G_{a,M}}(\gamma;t)=
+       \bigl(\wind(\gamma,a)-\wind(\gamma,\bar a)\bigr)M(t).
+\end{equation}
+For finitely many conjugate pairs, choose a point in one member of each pair
+and sum these targets. This is an explicit linear right inverse of the finite
+period map. For a product domain one instead uses
+$M(z)\operatorname{Log}(z-a)/(2\pi\ii)$, as in the source report.
+
+The targets need not be rational functions, nor need all logarithmic terms
+vanish from a radial expression. What vanishes is the Fueter image of the
+\emph{branch difference}. That is sufficient, and is the exact reason that
+the construction patches.
+
+\subsection{Examples distinguishing topology from admissible rank}
+
+\paragraph{A real annulus.}
+Let $D=\{r<|z|<R\}$ with $0<r<R$. Its first Betti number is one, but its
+single hole is reflection fixed. Hence every smooth intrinsic axial target
+has a global Fueter inverse, for every $h\ge1$. The same statement holds on
+$\C\setminus\{0\}$. The inverse may be singular at the omitted real point;
+surjectivity is not a removability theorem.
+
+\paragraph{A pair of punctures.}
+Let $D=\C\setminus\{\ii,-\ii\}$. The admissible period rank is one, so the
+real cokernel dimension is $2hd$. The target associated with
+\[
+ F(z)=\frac{M(z)}{2\pi\ii}\operatorname{Log}\frac{z-\ii}{z+\ii}
+\]
+has upper period $M$ and lower period $-M$. It has a global single-valued
+inverse precisely when $M=0$. For $h=1$, $E=\HH$, this is an
+$8$-dimensional real obstruction; for general $h$ the factor is $2hd$.
+
+\paragraph{Infinitely many real punctures.}
+Let $D=\C\setminus\Z$. Compact cycles meet only finitely many of the
+punctures in a bounded region, and the homology is generated by the small
+counterclockwise puncture loops. Conjugation acts as minus the identity on
+each generator. Thus $r=0$ although the first homology has countably infinite
+rank. Every target has a global normalized inverse, continuously and linearly.
+This example rules out a criterion stated merely as ``finitely many holes
+versus infinitely many holes.'' The correct invariant is admissible period
+rank.
+
+\paragraph{Infinitely many conjugate pairs.}
+Let
+\[
+ D=\C\setminus\{2^j+\ii,2^j-\ii:j\ge1\}.
+\]
+Now $r=\infty$. Any sequence $(M_j)\in\Pspace^\N$, however rapidly its
+coefficients grow, is realized by a smooth axial target. A naive series of
+the paired logarithmic targets need not converge. Sections~\ref{sec:nonsplit}
+and~\ref{sec:selection} show both why no universal continuous linear remedy
+exists on the product space and what positive replacements are possible.
+The product domain $\{\operatorname{Im}z>0\}\setminus\{2^j+\ii:j\ge1\}$
+has the corresponding unrestricted countable obstruction space without a
+reflection condition.
+
+\section{The topological exact sequence and a stable compatible inverse}
+\label{sec:topology}
+
+\subsection{Fr\'echet spaces and a continuous norm}
+
+\begin{lemma}[Topologies and unique continuation]\label{lem:Frechet}
+The spaces $\Hol_*(D;E_\C)$ and $\A(D;E)$ are real Fr\'echet spaces, and
+$\Fu$ is continuous linear. For any closed disk $K\Subset D\setminus\R$
+with nonempty interior, the function
+\begin{equation}\label{eq:continuous-norm}
+ q_K(g)=\sup_{z\in K}\norm{P(z)+\ii Q(z)}
+\end{equation}
+is a continuous norm on $\A(D;E)$. It is not asserted to generate the
+Fr\'echet topology.
+\end{lemma}
+\begin{proof}
+The holomorphic space with compact-open topology is Fr\'echet; its intrinsic
+part is closed under the continuous real involution $F\mapsto F^\sharp$.
+The target space is a closed subspace of $C^\infty(D;E^2)$: the differential
+equations have smooth coefficients in the product case, and
+\eqref{eq:smooth-vekua} and the parity equations are closed conditions in the
+symmetric case. Hence it is Fr\'echet.
+
+Continuity of $\Fu$ off the axis follows from the radial formula and Cauchy
+estimates. Near a real center $x_0$, expand an intrinsic stem as
+$F(z)=\sum_{n\ge0}a_n(z-x_0)^n$ with $a_n\in E$. On any smaller disk,
+Cauchy estimates bound its coefficients by a fixed geometric sequence times
+a supremum norm on a larger disk. Its physical lift is the corresponding
+convergent series of homogeneous slice polynomials. Any fixed finite number
+of derivatives multiplies the degree-$n$ estimates by at most a polynomial
+in $n$ and reduces the power of the radius by a fixed amount. The resulting
+geometrically convergent majorant bounds the iterated Laplacian and every
+fixed target derivative. A finite cover of a compact set proves continuity
+also across the axis.
+
+The expression $q_K$ is a continuous seminorm. If it is zero, both $P,Q$
+vanish on an open disk. By Corollary~\ref{cor:local} these coefficients are
+real-analytic throughout the connected set $D$. The identity theorem for
+real-analytic functions gives $P=Q=0$ on $D$. Thus $q_K$ is a norm.
+\end{proof}
+
+\begin{proposition}[The period space is the quotient topology]
+\label{prop:quotient}
+The period map is continuous and open onto $\calW(D)$. Its kernel is closed,
+and
+\begin{equation}\label{eq:quotient}
+ \A(D;E)/\operatorname{im}\Fu\ \cong\ \calW(D)
+\end{equation}
+is an isomorphism of topological real vector spaces. Also
+$\Hol_*(D;E_\C)/\Pspace\cong\ker\Per$ topologically.
+\end{proposition}
+\begin{proof}
+Each coordinate of a period character is a finite linear combination of
+integrals over fixed compact curves. The current has smooth polynomial
+coefficients, so this coordinate is continuous in the target topology.
+The product topology \eqref{eq:W-product} is exactly the topology determined
+by these coordinates. Theorem~\ref{thm:surjectivity} gives surjectivity, and
+the open mapping theorem for Fr\'echet spaces makes the map open. Its kernel
+is closed since the product target is Hausdorff. Theorem~\ref{thm:inverse}
+identifies it with $\operatorname{im}\Fu$, proving \eqref{eq:quotient}.
+The same open mapping argument applies to the induced continuous bijection
+from the Fr\'echet quotient $\Hol_*/\Pspace$ to the closed Fr\'echet subspace
+$\ker\Per$.
+\end{proof}
+
+This proposition prevents an artificial topology from creating the later
+nonsplitting phenomenon. The product topology is the natural quotient
+topology of the smooth target space itself.
+
+\subsection{A useful direct period estimate}
+
+For real $t$ and a parametrized curve with unit tangent $(u,v)$, the integrand
+inside the current is
+\[
+ P((x-t)u+yv)+Q(yu-(x-t)v).
+\]
+The two scalar coefficients have squared sum
+$((x-t)^2+y^2)(u^2+v^2)$. Cauchy--Schwarz therefore gives
+\begin{equation}\label{eq:period-bound}
+ \norm{\Per_g(\gamma;t)}
+ \le |\kappa_h|\int_\gamma
+       ((t-x)^2+y^2)^{h-1/2}\norm W\dd s.
+\end{equation}
+This supplies a direct continuity estimate and a finite-curve error estimate
+for each real evaluation of the polynomial. Values at $2h$ distinct real
+$t$ determine its coefficients by a fixed finite-dimensional interpolation
+map. Small numerical periods, however, do not certify exactly zero periods.
+
+\subsection{Compact-set estimates for the normalized inverse}
+
+\begin{theorem}[Stable inversion on compatible targets]\label{thm:stable-inverse}
+Fix the normalization of Corollary~\ref{cor:local}. The resulting map
+\[
+ \mathcal R:\ker\Per\longrightarrow\Hol_*(D;E_\C)
+\]
+is continuous linear and satisfies $\Fu\mathcal Rg=g$. More explicitly, for
+any compact $K\Subset D$ and integer $s\ge0$, there are a compact $L\Subset D$
+and $C>0$, depending on $K,s,D,h$ and the fixed basepoint, such that
+\begin{equation}\label{eq:inverse-compact-estimate}
+ \sup_{z\in K}\norm{(\mathcal Rg)^{(s)}(z)}
+       \le C\sup_{w\in L}\norm{W(w)}
+       \qquad(g\in\ker\Per).
+\end{equation}
+In a symmetric domain $K$ and the integration paths may cross the real axis;
+no factor $1/\min|\operatorname{Im}w|$ is needed.
+\end{theorem}
+\begin{proof}
+Linearity follows from the path integral with $H_0=0$. First consider a compact
+set $K'$ with a neighborhood in $D$. Cover it by finitely many small disks
+with compact closures in $D$ and join their centers to the basepoint by
+finitely many piecewise smooth paths. Any point of $K'$ can be reached by
+one of these paths followed by a straight segment. Thus all paths lie in a
+fixed compact $L$, and their lengths are bounded by a constant $\ell$.
+
+Choose $R\ge1$ bounding the moduli of all endpoints and all path points.
+In the integral formula for $F(z)$, evaluate the formal variable at the
+fixed endpoint $t=z$. At a path point $w=x+\ii y$,
+\[
+ |x-z|\le2R,\quad |y|\le R,\quad
+ |(z-x)^2+y^2|\le5R^2.
+\]
+The triangle inequality and Cauchy--Schwarz bound the bracket in
+\eqref{eq:current}, evaluated at $t=z$, by $6R\norm W\dd s$.
+Consequently
+\begin{equation}\label{eq:explicit-path-bound}
+ \sup_{z\in K'}\norm{F(z)}
+ \le 6|\kappa_h|R(5R^2)^{h-1}\ell\sup_{w\in L}\norm{W(w)}.
+\end{equation}
+This bound uses no division by a path's imaginary coordinate.
+
+For general $s$, take $K'$ large enough to contain closed disks of some common
+radius $\delta>0$ around every point of $K$, all inside $D$. The Cauchy
+estimate multiplies \eqref{eq:explicit-path-bound} by $s!\delta^{-s}$.
+This proves \eqref{eq:inverse-compact-estimate} and continuity in the
+compact-open holomorphic topology.
+\end{proof}
+
+The theorem supplies a local, axis-regular answer to the source report's
+stability question. It does not imply a bounded operator between any specified
+global Sobolev spaces: the compact $L$ and path geometry are allowed to depend
+on $K$. Nor does it provide a continuous linear way to remove arbitrary
+periods from an incompatible target. The latter operation is addressed next.
+
+\section{The finite--infinite obstruction to linear splitting}
+\label{sec:nonsplit}
+
+A right inverse of the period map is a choice of a target for each admissible
+period character. This is a different right inverse from the normalized
+Fueter inverse $\mathcal R$ of the previous section.
+
+\subsection{An elementary product-space obstruction}
+
+\begin{lemma}[Continuous norms exclude homogeneous sections]
+\label{lem:no-section}
+Let $V\ne0$ be a finite-dimensional real vector space, let $X$ be a real
+topological vector space with a continuous norm $q$, and let
+$T:X\to V^\N$ be linear. There is no map $S:V^\N\to X$ satisfying all three
+conditions
+\[
+ TS=\id,\qquad S(\lambda v)=\lambda S(v)\ (\lambda\ge0),
+ \qquad S\text{ is continuous at }0.
+\]
+In particular, no continuous linear right inverse exists. Every continuous
+linear map $L:V^\N\to X$ factors through finitely many coordinates.
+\end{lemma}
+\begin{proof}
+Homogeneity implies $S(0)=0$. Continuity at zero gives a basic product
+neighborhood $U$ such that $q(S(v))<1$ for $v\in U$. Some finite set of
+coordinates determines $U$; increasing its largest index if necessary, take
+that set inside $\{1,\ldots,N\}$. Choose a nonzero sequence $v$ vanishing in
+these coordinates. Then $\lambda v\in U$ for every $\lambda>0$, so
+\[
+ \lambda q(S(v))=q(S(\lambda v))<1\qquad(\lambda>0).
+\]
+Therefore $q(S(v))=0$, which means $S(v)=0$, since $q$ is a norm. This
+contradicts $TS(v)=v\ne0$.
+
+For a continuous linear $L$ the identical argument shows that it vanishes
+on every sequence whose first $N$ coordinates are zero. Thus it depends only
+on those coordinates, and has finite-dimensional range.
+\end{proof}
+
+The linear mechanism is classical in the theory of surjections onto the
+sequence space $\omega=\R^\N$; compare the continuous-norm obstruction in
+Vogt's Proposition 3.1 \cite{vogt} and the vector-valued Eidelheit setting
+\cite{debrouwere}. Its application here is not a claim to a new abstract
+nonsplitting theorem. The additional point is that the analytic period
+quotient has now been proved to be exactly such a product space, including
+its correct real-axis symmetry.
+
+\subsection{The sharp criterion for Fueter period realization}
+
+\begin{theorem}[Splitting dichotomy]\label{thm:split}
+Let $r$ be the admissible period rank in Theorem~\ref{thm:main}. The following
+are equivalent:
+\begin{enumerate}[label=\textup{(\alph*)},leftmargin=2em,itemsep=2pt]
+\item $r<\infty$.
+\item $\Per:\A(D;E)\to\calW(D)$ has a continuous linear right inverse.
+\item It has a positively homogeneous right inverse continuous at zero.
+\item $\ker\Per$ is a complemented closed subspace of $\A(D;E)$.
+\end{enumerate}
+If $r=\infty$, a section cannot have, at any point, a directional derivative
+in every direction which is a continuous linear operator. In particular it
+cannot be a $C^1$ section in the usual locally convex sense.
+\end{theorem}
+\begin{proof}
+If $r<\infty$, choose a basis of the finite-dimensional period space and a
+target realizing each basis vector, using Theorem~\ref{thm:surjectivity}.
+Linear extension gives a continuous section because its domain is finite
+dimensional. For regular finite-connectivity domains the paired logarithmic
+formula gives such a choice explicitly. This proves (a)$\Rightarrow$(b),
+and (b)$\Rightarrow$(c) is immediate.
+
+If $r=\infty$, identify $\calW(D)$ with $\Pspace^\N$ and apply
+Lemma~\ref{lem:no-section}, using the continuous norm from
+Lemma~\ref{lem:Frechet}. Hence (c)$\Rightarrow$(a).
+A continuous linear section $S$ gives the continuous projection
+$\id-S\Per$ onto $\ker\Per$. Conversely, if a continuous projection $P$
+onto that kernel exists, its complementary range $X_0=(\id-P)\A(D;E)$ is a
+closed Fr\'echet subspace. The restriction $\Per:X_0\to\calW(D)$ is a
+continuous linear bijection, and its inverse is continuous by the open
+mapping theorem. This proves equivalence with (d).
+
+Finally suppose a section has the stated derivative $L$ at $v_0$. For every
+direction $v$, apply the continuous linear map $\Per$ to the difference
+quotient:
+\[
+ \Per\!\left(\frac{S(v_0+\varepsilon v)-S(v_0)}{\varepsilon}\right)=v.
+\]
+Taking the limit yields $\Per L=\id$. This is a continuous linear right
+inverse, which is impossible at infinite rank.
+\end{proof}
+
+\begin{corollary}[No universal linear removal of infinitely many periods]
+\label{cor:no-removal}
+At infinite admissible period rank there is no continuous linear projection
+which replaces an arbitrary target by a zero-period target while fixing all
+zero-period targets. Nevertheless the normalized inverse of each zero-period
+target remains continuous linear.
+\end{corollary}
+\begin{proof}
+The hypothetical projection would complement $\ker\Per$, contradicting the
+previous theorem. The positive statement is Theorem~\ref{thm:stable-inverse}.
+\end{proof}
+
+The product topology controls any chosen finite collection of periods but
+places no bound on the remaining ones. The impossibility proof exploits
+exactly those uncontrolled amplitudes. It is not an argument based on a
+particular logarithmic series, on a poorly chosen basis, or on numerical
+ill-conditioning of a matrix.
+
+\section{Nonlinear and envelope-controlled sections}
+\label{sec:selection}
+
+Nonsplitting does not mean that continuous realization is impossible. The
+following constructive-in-form argument identifies a continuous nonlinear
+choice and linear choices on stronger input spaces. The existence of the
+local lifts used in the construction is supplied by the open mapping theorem;
+we do not claim an effective algorithm for finding those lifts on an arbitrary
+domain.
+
+\subsection{A small-coordinate lifting lemma}
+
+\begin{lemma}[Arbitrarily small lifts of sufficiently late coordinates]
+\label{lem:small-lifts}
+Let $T:X\to V^\N$ be a continuous linear surjection from a Fr\'echet space,
+where $V$ is finite dimensional. Choose increasing seminorms
+$q_1\le q_2\le\cdots$ defining the topology and put $q_0=0$. There are
+strictly increasing positive integers $m(n)\ge n$ such that, for every
+$j>m(n)$ and $\varepsilon>0$, there exists a linear map $A:V\to X$ with
+\begin{equation}\label{eq:small-lift}
+ TA(v)=e_jv,\qquad q_n(A(v))\le\varepsilon\norm v.
+\end{equation}
+Here $e_jv$ denotes the sequence supported at coordinate $j$ with value $v$.
+For $n=0$ one may take $m(0)=0$ and any exact linear coordinate lift.
+\end{lemma}
+\begin{proof}
+By openness, $T(\{x:q_n(x)<1\})$ contains a basic product neighborhood whose
+restricted coordinates are among the first $m(n)$. Enlarge these indices so
+that they are strictly increasing and $m(n)\ge n$. If $j>m(n)$, every scalar
+multiple $\lambda e_jv$ lies in that neighborhood. It therefore has a lift
+$x_\lambda$ with $q_n(x_\lambda)<1$. Dividing by $\lambda>0$ gives an exact
+lift of $e_jv$ with arbitrarily small $q_n$.
+
+Take a fixed orthonormal basis $v_1,\ldots,v_s$ of $V$ and lift each $e_jv_a$
+with $q_n$ at most $\varepsilon/\sqrt{s}$. Linear extension gives
+\[
+ q_n\!\left(\sum_a\lambda_a A(v_a)\right)
+ \le \frac{\varepsilon}{\sqrt{s}}\sum_a|\lambda_a|
+ \le\varepsilon\norm{\sum_a\lambda_av_a}.
+\]
+Each such linear map is continuous because its domain is finite dimensional.
+For $q_0=0$ only existence of the finitely many lifts is needed.
+\end{proof}
+
+Define
+\begin{equation}\label{eq:nj}
+ n(j)=\max\bigl(\{0\}\cup\{n\ge1:m(n)<j\}\bigr).
+\end{equation}
+This is finite for every $j$, and $n(j)\to\infty$. The finitely many early
+coordinates with $n(j)=0$ create no convergence problem.
+
+\subsection{A continuous nonlinear realization of all sequences}
+
+\begin{theorem}[Continuous nonlinear section]\label{thm:nonlinear}
+Every continuous linear surjection $T:X\to V^\N$ as above has a continuous
+right inverse $S$ with $S(0)=0$. It can be written as
+\begin{equation}\label{eq:nonlinear-series}
+ S((v_j))=\sum_{j=1}^\infty\Phi_j(v_j),
+\end{equation}
+where each $\Phi_j:V\to X$ is continuous, $T\Phi_j(v)=e_jv$, and for every
+$n$ and $N\ge m(n)$,
+\begin{equation}\label{eq:nonlinear-tail}
+ q_n\!\left(S((v_j))-\sum_{j=1}^N\Phi_j(v_j)\right)\le2^{-N}
+\end{equation}
+for all input sequences, without a bound on their amplitudes.
+\end{theorem}
+\begin{proof}
+For every $j\ge1$ and integer $k\ge0$, use
+Lemma~\ref{lem:small-lifts} to choose a linear coordinate lift $A_{j,k}:V\to X$
+satisfying
+\begin{equation}\label{eq:Ajk}
+ TA_{j,k}(v)=e_jv,
+ \qquad q_{n(j)}(A_{j,k}(v))\le\frac{2^{-j}}{k+1}\norm v.
+\end{equation}
+For a vector $v$, put $r=\norm v$, $k=\lfloor r\rfloor$, and
+$\theta=r-k\in[0,1)$. Define
+\begin{equation}\label{eq:Phi}
+ \Phi_j(v)=(1-\theta)A_{j,k}(v)+\theta A_{j,k+1}(v).
+\end{equation}
+At an integer radius the two adjacent definitions meet at the same value
+$A_{j,k}(v)$, so this map is continuous. It vanishes at zero and has exact
+coordinate image. Since $r\le k+1$ and $k+2\ge k+1$, the triangle inequality
+in \eqref{eq:Ajk} gives
+\begin{equation}\label{eq:uniform-small}
+ q_{n(j)}(\Phi_j(v))\le2^{-j}\qquad(v\in V).
+\end{equation}
+
+For a fixed seminorm $q_n$, all $j>m(n)$ satisfy $n(j)\ge n$. The tail of
+\eqref{eq:nonlinear-series} is therefore absolutely summable in $q_n$,
+uniformly over every input sequence. The finitely many earlier terms are
+well defined. Completeness of $X$ gives convergence in its Fr\'echet topology,
+and summing the geometric bound gives \eqref{eq:nonlinear-tail}.
+
+Each partial sum is continuous in the product topology because it depends
+on finitely many coordinates. Uniform convergence in each defining seminorm
+makes the limit continuous: to control a finite collection of seminorms,
+first choose a common tail cutoff, then use continuity of the finite partial
+sum. Applying the continuous $T$ to the limit gives each coordinate exactly,
+so $TS=\id$. Finally $S(0)=0$ term by term.
+\end{proof}
+
+For $T=\Per$, the theorem applies after
+Proposition~\ref{prop:quotient}. At infinite rank the amplitude-dependent
+choice of $A_{j,k}$ is indispensable: keeping a single lift per coordinate
+would give a linear section forbidden by Theorem~\ref{thm:split}.
+The uniform smallness of late coordinates is only a compact-seminorm
+statement; their realizations can become arbitrarily large elsewhere in the
+domain.
+
+\begin{corollary}[A nonlinear topological splitting]
+\label{cor:homeomorphism}
+The map
+\[
+ g\longmapsto\bigl(g-S(\Per_g),\Per_g\bigr)
+\]
+is a homeomorphism
+\begin{equation}\label{eq:homeomorphism}
+ \A(D;E)\ \cong\ \ker\Per\times\calW(D).
+\end{equation}
+Its inverse sends $(k,\rho)$ to $k+S(\rho)$. At infinite admissible rank this
+splitting cannot be linear or positively homogeneous with a continuous
+realization section.
+\end{corollary}
+\begin{proof}
+The first component has zero periods since $\Per S=\id$. The two displayed
+maps are continuous and mutually inverse. The impossibility statement is
+Theorem~\ref{thm:split}.
+\end{proof}
+
+Combining the homeomorphism with $\mathcal R$ gives a continuous nonlinear
+decomposition into a normalized stem and an obstruction representative. It
+is a topological splitting, not a Fr\'echet linear splitting in disguise.
+
+\subsection{Linear realization on every prescribed magnitude envelope}
+
+Fix any positive sequence $b=(b_j)_{j\ge1}$ and define the Banach space
+\begin{equation}\label{eq:weighted-space}
+ \ell^\infty(b;V)=
+ \left\{v=(v_j):\norm v_b:=\sup_j\frac{\norm{v_j}}{b_j}<\infty\right\}.
+\end{equation}
+No growth bound is imposed on the chosen envelope itself. It can increase or
+decrease arbitrarily rapidly.
+
+\begin{theorem}[Envelope-controlled linear sections]\label{thm:weighted}
+For every positive envelope $b$, a continuous linear surjection
+$T:X\to V^\N$ as above has a continuous linear right inverse
+\[
+ S_b:\ell^\infty(b;V)\longrightarrow X.
+\]
+It can be chosen as an exact-coordinate series
+$S_b(v)=\sum_{j\ge1}B_j(v_j)$ such that, for $N\ge m(n)$,
+\begin{equation}\label{eq:weighted-tail}
+ q_n\!\left(S_b(v)-\sum_{j=1}^N B_j(v_j)\right)
+       \le2^{-N}\norm v_b.
+\end{equation}
+On each bounded coefficient box $\{v:\norm v_b\le R\}$ the section is also
+continuous for the product topology, and its image is compact in $X$.
+\end{theorem}
+\begin{proof}
+Choose linear coordinate lifts $B_j$ with
+\[
+ TB_j(v)=e_jv,\qquad
+ q_{n(j)}(B_j(v))\le\frac{2^{-j}}{b_j}\norm v,
+\]
+using Lemma~\ref{lem:small-lifts}. For any fixed $n$, sufficiently late terms
+satisfy $q_n(B_j(v_j))\le2^{-j}\norm v_b$. Completeness gives convergence,
+linearity is preserved by the series, and geometric summation yields
+\eqref{eq:weighted-tail}. Each finite initial sum is bounded from
+$\ell^\infty(b;V)$ into each seminorm of $X$, since every $B_j$ is a
+finite-dimensional continuous map and each $b_j$ is finite. Adding the
+uniform tail bound proves continuity. Exactness holds coordinatewise under $T$.
+
+On a fixed bounded coefficient box the same tail bound is uniform over all
+inputs. Finite partial sums are product-continuous, so the limit is
+product-continuous on that box. The box is the product of finite-dimensional
+closed bounded balls and is compact. Its continuous image in $X$ is compact.
+\end{proof}
+
+Applied to Fueter periods, the theorem supplies a convergent linear splitting
+for any \emph{fixed} coefficient magnitude class, with seminorm tail estimates.
+Every individual sequence belongs to some such class, for example with
+$b_j=1+\norm{v_j}$. But there is no single continuous linear operator on the
+whole product which simultaneously implements these choices. The quantifier
+``for each envelope there exists a section'' cannot be interchanged with
+``there exists a section for all envelopes.''
+
+These are not sharp physical-growth estimates near an accumulating boundary.
+The integers $m(n)$ and the coordinate lifts are obtained existentially from
+openness. Effective bounds in terms of conformal geometry, and membership in
+specified global analytic norm spaces, remain separate questions.
+
+\section{Worked formulas, diagnostics, and reproducibility}
+\label{sec:verification}
+
+\subsection{A six-dimensional confluent example}
+
+Take $h=2$, so $c_2=8$, $C_2=64$, and $\kappa_2=-1/16$. For the intrinsic
+stem $F(z)=z^4a$, the target is the constant $64a$ and its Hermite polynomial is
+\begin{equation}\label{eq:example-H}
+ H_F(z;t)=\bigl[t^4-((t-x)^2+y^2)^2\bigr]a.
+\end{equation}
+At $y=0$ this is
+\[
+ \bigl[x^4+4x^3(t-x)+6x^2(t-x)^2+4x(t-x)^3\bigr]a,
+\]
+exactly the cubic Taylor polynomial of $z^4a$ at $x$. The nonzero target is
+encoded by the variation of that polynomial with its basepoint, not by a
+singularity of its coefficients at the axis.
+
+At the real basepoint $x_0=0$, $H_F(0;t)=0$, so $F(z)=z^4a$ is already the
+normalized inverse of $64a$. More generally the normalized inverse of a
+constant target $a$ on a domain containing a real basepoint $x_0$ is
+$(z-x_0)^{2h}a/C_h$.
+
+\subsection{A period check with three loops}
+
+For $h=1,2,3$, use the scalar coefficient direction of a fixed nonzero vector
+in $E$ and the local stem
+\begin{equation}\label{eq:numerical-stem}
+ F(z)=\frac{1+z}{2\pi\ii}
+             \bigl(\operatorname{Log}(z-\ii)
+                         -\operatorname{Log}(z+\ii)\bigr).
+\end{equation}
+The degree-one polynomial $1+t$ belongs to $\Pspace$ for every such $h$.
+The predicted period polynomials on counterclockwise circles about
+$\ii,-\ii,0$ of radii $1/5,1/5,1/4$, respectively, are
+\begin{equation}\label{eq:test-periods}
+ 1+t,\qquad -(1+t),\qquad 0.
+\end{equation}
+The third loop crosses the real axis. The first two test the orientation sign;
+the third tests cancellation in a region with no admissible hole.
+
+The code computes holomorphic jets of \eqref{eq:numerical-stem} explicitly,
+forms the radial derivatives, and integrates every coefficient of the target
+current by periodic trapezoidal quadrature. Differentiating a discontinuous
+numerically chosen logarithm branch is avoided: only analytic local jet
+formulas are used. Real-polynomial branch changes are annihilated by the
+forward map. The quadrature nodes are shifted away from the exact real-axis
+points when using the off-axis radial expression; the theorem itself has no
+such exclusion.
+
+\subsection{What the executed tests check}
+
+The supplied \texttt{code/verify.py} was executed using SymPy 1.14.0 and
+mpmath 1.3.0. The retained JSON and text log are in \texttt{data/}.
+The exact tests cover closedness and normalization for $1\le h\le8$,
+reflection invariance of both current coefficients, the two injectivity
+evaluations, and the nonzero Fueter image of the central-imaginary constant.
+They also verify the Hermite differential identity and real-axis confluence
+on real monomials for $1\le h\le5$ and degrees $0\le k\le2h+4$, including
+all calibration monomials through degree $2h+1$.
+
+The homology test checks the reflection matrix with paired negative-swap
+blocks and fixed negative-identity blocks for every $0\le p,q\le6$. Its
+$+1$ eigenspace has dimension $p$ in all 49 cases. A symbolic identity also
+checks the scalar coefficient norm used in \eqref{eq:period-bound}.
+
+The numerical part uses 60 decimal digits and 192 nodes for each of nine
+contour tests: three values of $h$ and the three loops just described.
+The largest observed absolute coefficient error over these nine tests was
+below $2.7\times10^{-49}$. The complete errors are in the log. These are
+finite-precision observations, not certified quadrature enclosures. The global topology,
+Cousin realization, infinite-rank impossibility, and infinite-series convergence
+are proved in the text, not tested by a finite computation.
+
+\subsection{Dependency and status audit}
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.29\textwidth}
+ >{\raggedright\arraybackslash}p{0.32\textwidth}
+ >{\raggedright\arraybackslash}p{0.27\textwidth}}
+\toprule
+Statement & Proof mechanism & Status in this article\\
+\midrule
+Radial Fueter formula and kernel & Radial commutators and calibration & Classical, reproved\\
+Polynomial current and Hermite identity & Target equations; universal jet reduction & Repository foundation, reproved\\
+Axis confluence and inverse & Contour Hermite formula; exact integration & Extension proved\\
+Arbitrary admissible cokernel & de Rham; additive Cousin; reflection averaging & Extension proved using stated classical inputs\\
+Compact inverse estimates & Bounded path networks; Cauchy estimates & Extension proved\\
+Finite--infinite splitting criterion & Continuous norm; product topology & Application of classical mechanism, proved\\
+Nonlinear and envelope sections & Small coordinate lifts; uniformly controlled series & Explicit abstract constructions, proved\\
+Boundary-norm classification & Not supplied by compact seminorm estimates & Remains open here\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No theorem in the article is marked as formally checked. A passed symbolic
+test is not a Lean proof, and an all-order proof is not validated merely by
+agreement in a finite set of dimensions. Conversely, the infinite statements
+do not rest on unperformed infinite computations: their proofs are the
+Cousin construction, the product-neighborhood argument, and the seminorm
+convergence estimates.
+
+\section{Relation to the literature and to the source questions}
+\label{sec:literature}
+
+The inverse Fueter literature contains explicit local and integral inverse
+constructions. Colombo, Sabadini, and Sommen develop an inverse mapping
+theorem \cite{colombo2011}; Colombo, Pe\~na Pe\~na, Sabadini, and Sommen give
+radial integral formulas \cite{colombo2014}. These supply the classical
+forward/inverse context. The present paper does not claim to discover local
+surjectivity or a polynomial kernel.
+
+For comparison with global quaternionic statements, Perotti's Theorem 2
+assumes that every connected component of the planar stem domain is simply
+connected \cite{perotti}. Our nontrivial-period examples do not contradict
+that result. We retain its domain hypothesis when making the comparison,
+rather than treating a broad introductory description of surjectivity as an
+unconditional theorem.
+
+There is also a substantial global slice-regular gluing context. Prezelj and
+Vlacci construct quaternionic Cartan coverings suited to symmetry and Cousin
+problems \cite{prezelj}. Our proof uses only additive, finite-dimensional
+coefficient cocycles and a real averaging argument; it does not solve a new
+noncommutative multiplicative Cousin problem. The smooth global
+$\bar\partial$ theorem and the degree-one de Rham correspondence are standard
+inputs from open Riemann-surface theory \cite{forster}.
+
+On the functional-analytic side, surjections onto countable sequence products
+are Eidelheit problems. Vogt explicitly uses the fact that a Fr\'echet space
+with a continuous norm cannot have a continuous linear section of a quotient
+onto $\omega$ \cite{vogt}. Debrouwere and Vindas study vector-valued Eidelheit
+sequences in a broader setting \cite{debrouwere}. The benefit here is to
+identify the \emph{correct Fueter period quotient} first, including symmetry
+and topology, and then separate exact inversion, linear realization, nonlinear
+realization, and weighted realization.
+
+A recent related preprint of De Martino and Pinton studies variations of
+inverse Fueter constructions and generalized polyanalytic
+Cauchy--Kovalevskaya extension \cite{demartino2026}. It is part of the active
+inverse-map context, not a premise of the proofs in this article. A focused
+inspection of these sources and the pinned repository does not establish
+historical priority for the theorem package presented here. The defensible
+claim is the collection of explicitly proved statements, not a declaration
+that no analogous statement could be found elsewhere.
+
+Relative to the source report's own research list, the outcome is precise.
+Question 1, real-axis crossing, is answered by
+Theorems~\ref{thm:confluence}, \ref{thm:inverse}, \ref{thm:surjectivity}, and
+\ref{thm:holes}. Question 4 receives compact-set inverse estimates and a
+sharp obstruction to universal linear period removal; boundary Sobolev and
+H\"older estimates remain open here. Question 5 receives unrestricted
+realization, continuous nonlinear realization, and linear realization on
+any chosen coefficient envelope; sharp analytic growth conditions near
+accumulating boundary components remain open here. No broader resolution is
+implied by these scoped answers.
+
+\section{Further research questions and topics}
+\label{sec:future}
+
+The following questions are not assumptions in any proof above. They separate
+several next steps that should not be conflated into a single request for
+``better estimates.''
+
+\subsection{Period images in fixed analytic norm spaces}
+
+Fix a multiply connected domain and a specified target norm, for example a
+weighted planar $L^2$ norm of $P+\ii Q$ compatible with physical volume.
+Characterize the image of its finite-norm monogenic subspace under $\Per$.
+For infinitely many holes, is that image describable by a capacity-weighted
+sequence space or a non-diagonal quadratic form? Which geometric separation
+conditions make a diagonal description equivalent to the true norm?
+
+The envelope theorem is not such a characterization: it constructs smooth
+representatives controlled on compact sets, not representatives with a
+prescribed global integrability bound. On punctured domains the source
+report's residue-energy obstruction already excludes many nonzero periods
+from finite-energy classes. Any proposed characterization must respect those
+local obstructions before making global summability claims.
+
+\subsection{Effective coordinate lifts and certified truncation}
+
+The proofs produce thresholds $m(n)$ and coordinate lifts with arbitrarily
+small specified seminorms, but do not compute them from the geometry of $D$.
+For domains with an effective exhaustion and computable boundary curves,
+construct a Runge--Cousin algorithm that outputs these lifts with certified
+bounds. Then \eqref{eq:weighted-tail} would become a numerical stopping
+criterion rather than an existential estimate.
+
+A useful first model is the punctured half-plane with punctures
+$2^j+\ii$. One can try to subtract finite holomorphic Taylor or Runge
+corrections from each logarithmic stem so that its Fueter image is small on
+successive compact sets. The correction degree must depend on the required
+amplitude bound; a fixed universal linear correction scheme on all product
+data is ruled out by Theorem~\ref{thm:split}.
+
+\subsection{Collapsing conjugate holes and real-axis limits}
+
+A conjugate pair contributes $2hd$ obstruction coordinates, while a
+reflection-fixed limiting hole contributes none. Analyze a family of domains
+in which a conjugate pair approaches the real axis and merges. What rate of
+blow-up is forced on targets whose nonzero upper period is kept fixed? Which
+rescalings of the period polynomial have nontrivial limits?
+
+The regularity of the current at $y=0$ on a fixed domain does not make such a
+domain-degeneration limit uniform. The geometry of the paths and the local
+singularities change simultaneously. Combining the present symmetry
+classification with the source report's residue filtration appears a natural
+way to formulate the correct transition problem.
+
+\subsection{Boundary estimates and optimal derivative gain}
+
+For finitely connected domains with controlled smooth boundaries, determine
+sharp estimates for the normalized inverse in specified Sobolev or H\"older
+scales. Identify the role of the polynomial normalization, boundary traces,
+and the distance between boundary components. Near the real axis one should
+use the confluent formula rather than accept artificial factors arising from
+an ill-conditioned two-node interpolation matrix.
+
+A proof should specify the exact domain and range norms and the derivative
+gain. The order of the ambient Laplacian alone does not automatically settle
+the appropriate gain on the constrained holomorphic/axial subspaces.
+
+\subsection{Least-energy period representatives}
+
+For a finite set of periods and a Hilbert norm on admissible targets, ask
+whether a unique norm-minimizing representative exists, modulo the relevant
+closed zero-period subspace. Determine its period matrix and geometric
+asymptotics. For infinitely many periods, identify when the resulting
+minimization problem remains well posed and what sequence space its data must
+belong to.
+
+This would give a canonical choice within a normed analytic class. It cannot
+produce a continuous linear representative for completely unrestricted
+product data at infinite admissible rank, because that would contradict the
+splitting theorem.
+
+\subsection{The best regularity of nonlinear sections}
+
+At infinite rank there are continuous sections but no section with a
+continuous linear derivative at any point. Determine whether natural sections
+can have useful quantitative moduli of continuity in explicit compatible
+metrics, or be locally Lipschitz on specified weighted subsets. How do those
+moduli depend on the exhaustion and on the magnitude envelope?
+
+The amplitude interpolation in \eqref{eq:Phi} is simple and guarantees
+continuity, but it does not optimize regularity or symmetry. A proposed
+improvement must not accidentally restore positive homogeneity on the whole
+product space, which is impossible.
+
+\subsection{Angular modes and nonaxial reconstruction}
+
+The article fixes the axial mode and a coefficient Clifford module. Extend
+the current-and-gluing method to higher spherical monogenic modes, with the
+correct radial normalization and angular multiplicities. Determine whether
+modewise admissible periods can be assembled into a single obstruction
+space for a convergent nonaxial expansion.
+
+Independent formal inverses in each angular mode are not sufficient: one
+needs convergence, compatibility at the axis, and a common analytic norm in
+which the reconstruction is defined. These issues are distinct from the
+coefficientwise Cousin argument used here.
+
+\subsection{A staged formalization and symbolic interface}
+
+A first formalization target is the universal finite-jet reduction proving
+Theorem~\ref{thm:Hermite}, followed by the confluent remainder formula and
+closedness of the current. These algebraic/differential components are much
+smaller than a complete open-Riemann-surface library. The next interface is
+exact coefficientwise integration versus vanishing periods; the final one is
+an abstract surjective Fr\'echet map into a countable product.
+
+For a symbolic or numerical implementation, record polynomial coefficient
+conventions, loop orientations, reflection relations, and the normalization
+of the Laplacian explicitly. Numerical estimates of small periods should be
+reported as intervals or error bounds, not silently replaced by exact zero.
+A useful verified output would be either an exact zero-period certificate or
+a certified obstruction, followed by an inverse only in the former case.
+
+\section{Conclusion}
+
+The real axis is not a singularity of the polynomial obstruction current.
+The apparent singularity lies in a nonconfluent interpolation representation,
+and the contour formula replaces it by a Taylor polynomial. This yields a
+complete global inverse criterion with the correct parity and a transparent
+reflection action on periods.
+
+The obstruction space is exactly the space of admissible polynomial homology
+characters, on arbitrary planar domains. In symmetric geometry a fixed hole
+contributes no obstruction and a conjugate pair contributes one polynomial.
+The resulting rank, rather than the raw number of holes, governs the
+functional-analytic behavior of period realization.
+
+Compatible inversion is continuously linear after a finite polynomial gauge
+choice. Realization of unrestricted periods is continuously linearly split
+only at finite admissible rank. At infinite rank, continuous nonlinear and
+fixed-envelope linear splittings still exist, with controlled seminorm tails.
+This is a genuine distinction between topology, existence, and stable choice,
+and it identifies which parts of the repository's proposed global extension
+can be completed without imposing additional boundary norms.
+
+\appendix
+\section{Proof audit: hypotheses that cannot be dropped silently}
+\label{app:audit}
+
+\paragraph{Connectedness.}
+A single disk norm detects the entire target only because the domain is
+connected and the coefficients satisfy unique continuation. On a disconnected
+domain the kernel, normalization, and product-space argument must be treated
+componentwise; a seminorm on one component is not a norm on all targets.
+
+\paragraph{Nonzero coefficient module.}
+The nonsplitting theorem assumes $E\ne0$, so the coordinate space $\Pspace$
+is nonzero. For the zero module every space is zero, and the infinite-rank
+obstruction statement would be vacuous rather than true as phrased.
+
+\paragraph{Smooth parity at the axis.}
+The symmetric target space imposes smoothness on all of $D$ and the specified
+even/odd parity. A pair solving the off-axis equations but blowing up as
+$y\to0$ is not a target in this theorem. An arbitrary holomorphic stem on the
+upper half-plane is not automatically intrinsic across the axis.
+
+\paragraph{Real rather than complex polynomial coefficients.}
+The current and its periods take values in $\Pspace$ over $\R$. This is needed
+for branch differences to lie in the kernel, for reflection averaging, and
+for the precise real dimension. The central-imaginary constant test in the
+code is a direct guard against the wrong coefficient field.
+
+\paragraph{Orientation.}
+The invariant-character condition is $\rho\circ c_*=\rho$. A
+counterclockwise loop reflects to a clockwise loop; hence upper and lower
+counterclockwise periods are negatives. The factor $1/2$ in a convenient
+invariant homology basis prevents a second, independent factor-of-two error.
+
+\paragraph{Ordinary, not compactly supported, cohomology.}
+The realization theorem concerns ordinary periods and unrestricted smooth
+targets. The de Rham and Cousin steps do not impose compact support or a
+boundary norm. Adding such a condition changes the problem and may change
+which characters are realizable.
+
+\paragraph{Product rather than direct-sum data.}
+Every unrestricted sequence is allowed. This is crucial both to arbitrary
+period realization and to the no-homogeneous-section proof. The latter uses
+arbitrarily large tails inside a basic product neighborhood, not a bounded
+set in a Banach sequence norm.
+
+\paragraph{What the positive tail estimates mean.}
+The indices $m(n)$ are chosen from openness, not supplied as explicit geometric
+constants. The formulas establish convergence and continuity, and they give
+an exact geometric tail bound once those choices are made. They do not by
+themselves constitute an effective numerical solver on a general domain.
+
+\paragraph{Which facts are imported.}
+The main global proof imports degree-one de Rham theory, global additive
+Cousin/$\bar\partial$ solvability on open planar domains, and the Fr\'echet
+open mapping theorem. No global inverse Fueter theorem is imported into the
+proof of our inverse criterion. No infinite-dimensional selection theorem is
+needed for the explicit section construction of Section~\ref{sec:selection}.
+
+\section{Reproducing the artifact}
+
+The package contains the present \texttt{article.tex} and \texttt{article.pdf},
+a shell build script, the exact/numerical diagnostic program, its recorded
+output, a concise proof-audit file, and source-provenance notes. The bibliography
+is internal to the TeX source. There are no external figures or font files.
+From the package directory run
+\begin{verbatim}
+python code/verify.py
+./build.sh
+\end{verbatim}
+The diagnostic program accepts \texttt{--skip-numerical} and
+\texttt{--max-h 1} through \texttt{--max-h 8}. Its default is the retained run:
+monomial tests through $h=5$ and current tests through $h=8$. The build script
+uses three pdfLaTeX passes to resolve cross-references and the contents.
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, research collection,
+\emph{Slice regularity and the global inverse Fueter problem}; in particular
+source 11, \emph{Polynomial Periods and Sharp Residue Hierarchies for the Global
+Inverse Fueter Map}, September 2026.
+Inspected at commit \texttt{cb1646dc442724f8e298cf259195b6c308367d80}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/cb1646dc442724f8e298cf259195b6c308367d80/SetTheory/Cardinals/docs/reports/quaternionic-analysis/slice-regularity-and-fueter-inversion/sources/11-polynomial-periods.tex}{Commit-pinned source manuscript}.
+Unrefereed repository research report.
+
+\bibitem{colombo2011}
+F. Colombo, I. Sabadini, and F. Sommen,
+\emph{The inverse Fueter mapping theorem},
+Communications on Pure and Applied Analysis \textbf{10} (2011), 1165--1181.
+\href{https://doi.org/10.3934/cpaa.2011.10.1165}{doi:10.3934/cpaa.2011.10.1165}.
+
+\bibitem{colombo2014}
+F. Colombo, D. Pe\~na Pe\~na, I. Sabadini, and F. Sommen,
+\emph{A new integral formula for the inverse Fueter mapping theorem},
+Journal of Mathematical Analysis and Applications \textbf{417} (2014), 112--122.
+\href{https://arxiv.org/abs/1302.0685}{arXiv:1302.0685}.
+
+\bibitem{perotti}
+A. Perotti, \emph{A local Cauchy integral formula for slice-regular functions},
+Computational Methods and Function Theory \textbf{24} (2024), 185--203.
+\href{https://doi.org/10.1007/s40315-023-00485-5}{doi:10.1007/s40315-023-00485-5}.
+In particular, Theorem 2 and its simply connected component hypothesis.
+
+\bibitem{forster}
+O. Forster, \emph{Lectures on Riemann Surfaces}, Graduate Texts in Mathematics,
+vol.~81, Springer, 1981; corrected printing 1999.
+\href{https://doi.org/10.1007/978-1-4612-5961-9}{doi:10.1007/978-1-4612-5961-9}.
+See the treatment of noncompact Riemann surfaces, countable topology,
+Mittag--Leffler theory, and prescribed summands of automorphy.
+
+\bibitem{prezelj}
+J. Prezelj and F. Vlacci, \emph{Quaternionic Cartan coverings and applications},
+The Journal of Geometric Analysis \textbf{35} (2025), article 80.
+\href{https://doi.org/10.1007/s12220-025-01900-0}{doi:10.1007/s12220-025-01900-0}.
+
+\bibitem{vogt}
+D. Vogt, \emph{On two problems of Mityagin},
+Mathematische Nachrichten \textbf{141} (1989), 13--25.
+\href{https://www2.math.uni-wuppertal.de/~vogt/preprints/Eigene/44.pdf}{Author-hosted article}.
+See especially Proposition 3.1.
+
+\bibitem{debrouwere}
+A. Debrouwere and J. Vindas,
+\emph{Vector-valued Eidelheit sequences and the non B-completeness of tensor
+products}, preprint, 2016.
+\href{https://arxiv.org/abs/1612.06560}{arXiv:1612.06560}.
+
+\bibitem{demartino2026}
+A. De Martino and S. Pinton,
+\emph{A variation of the inverse Fueter theorem and the generalized polyanalytic
+Cauchy--Kovalevskaya extension of order 2}, preprint, 7 August 2026.
+\href{https://arxiv.org/abs/2608.07711}{arXiv:2608.07711}.
+
+\end{thebibliography}
+\end{document}

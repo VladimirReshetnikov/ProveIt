@@ -16,6 +16,7 @@ from collections import defaultdict
 from decimal import Decimal, localcontext
 
 ROOT = Path(__file__).resolve().parents[1]
+# Editorial amendment (ProveIt, 2026-09-29): every writer below emits LF line endings.
 
 def mul(a: list[F], b: list[F], n: int) -> list[F]:
     c = [F(0)] * (n + 1)
@@ -166,12 +167,12 @@ def main():
         ql[d]=sum((F((-1)**(d-1),math.factorial(m)) for m in range(d)),F(0))
     assert compose(ul,ql,n)==identity
     certs=[certified_Q(F(1,d),polys,14) for d in (20,40,100)]
-    with (out/'coefficients.csv').open('w') as f:
+    with (out/'coefficients.csv').open('w',newline='\n') as f:  # LF everywhere (ProveIt, 2026-09-29)
         f.write('n,U_n,P_n,Q_n,C_n\n')
         for j in range(1,n+1): f.write(f'{j},{u[j]},{p[j]},{q[j]},{c[j]}\n')
     (out/'quadratic_blocks.json').write_text(json.dumps(
-        {str(k):{str(a):str(w) for a,w in polys[k].items()} for k in range(1,n+1)},indent=2))
-    (out/'rational_certificates.json').write_text(json.dumps(certs,indent=2))
+        {str(k):{str(a):str(w) for a,w in polys[k].items()} for k in range(1,n+1)},indent=2),newline='\n')
+    (out/'rational_certificates.json').write_text(json.dumps(certs,indent=2),newline='\n')
     # A certified forward inverse value, using Q' >= 619/900 on [-1/20,0].
     # The center is just a chosen rational approximation; its accuracy is not assumed.
     center = -F(2385490927750544, 10**17)
@@ -189,7 +190,7 @@ def main():
         "lower_decimal":decimal_string(ulo),"upper_decimal":decimal_string(uhi),
         "width_decimal":decimal_string(uhi-ulo),
         "certification":"exact rational residual transport plus proved derivative bound"}
-    (out/'inverse_certificate.json').write_text(json.dumps(inverse_cert,indent=2))
+    (out/'inverse_certificate.json').write_text(json.dumps(inverse_cert,indent=2),newline='\n')
     report={"python":platform.python_version(),"order":n,
             "exact_checks":{"quadratic_U_comp_Q":True,"quadratic_Q_comp_U":True,
                             "Schroeder_recurrence":True,"block_support_and_mass":True,
@@ -227,7 +228,7 @@ def main():
             "status":"floating-point diagnostics, not interval proofs"}
     except ImportError:
         report['numerical_checks']={"status":"not run: mpmath not installed"}
-    (out/'verification.json').write_text(json.dumps(report,indent=2))
+    (out/'verification.json').write_text(json.dumps(report,indent=2),newline='\n')
     print(json.dumps(report,indent=2))
 
 if __name__=='__main__':main()

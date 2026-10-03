@@ -16,7 +16,7 @@ previously tracked archives remain available in repository history.
 | Ordinary fields | `ℝ`, `ℂ` | These are the coefficient fields, with their ordinary analysis. |
 | Surreal and surcomplex classes | `No`, `SC = No[i]` | The analysis report writes `K = No[i]`. Most other reports reserve `K` for a **set-sized** field. |
 | Ordered exponent group | `Γ` | A set-sized ordered abelian group; divisibility, nontriviality, and an embedding in `No` must be stated where needed. |
-| Real Hahn workspace | `F_Γ = ℝ((t^Γ))` | Analytic geometry and contours also use `R_Γ`; surquaternions uses `K_Γ` for this **real** field. |
+| Real Hahn workspace | `F_Γ = ℝ((t^Γ))` | Analytic geometry and contours also use `R_Γ`; surquaternions uses `K_Γ` for this **real** field. The real-vector-space report keeps its source's `H_Γ`, because `F_{≤γ}` is its leading-exponent flag. |
 | Complex Hahn workspace | `K_Γ = ℂ((t^Γ)) = F_Γ[i]` | `K` or `𝕂` after the workspace is fixed. In the rank-one report, `K = ℂ((t^ℝ))`. |
 | Surquaternions | `SQ = ℍ_No` | The quaternion report uses `D_Γ = ℍ_{K_Γ}`, with its local real-field convention above. |
 
@@ -36,6 +36,11 @@ sizes have their stated set or finite size restrictions. The whole surreal
 class is not one such workspace. `∞` in a valuation is an added symbol with
 `v(0) = ∞`, not a surreal number. Natural numbers are ordinary finite integers;
 write `ℕ = {0,1,2,…}` and `n ≥ 1` where division by `n` is intended.
+
+The [real-vector-space report](surreal/real-vector-space-structure/article.tex)
+writes `𝔠 = 2^ℵ₀` for the continuum (macro `\cont`; its source 52 typed
+`\ct`). In that report, as throughout this guide, `ct` is the
+constant-coefficient functional `[ω^0]`, a linear map rather than a cardinal.
 
 ## Omnific integers and the constant coefficient
 
@@ -906,6 +911,27 @@ prescription `x^a ↦ ω^a` on **increasing** source supports. Its negative
 result is not a contradiction to `t^γ ↦ ω^(−γ)`. Keep the source variable
 `x` visible when quoting that obstruction.
 
+The [real-vector-space report](surreal/real-vector-space-structure/article.tex)
+(`rvs:w:subsec:notation`) uses the growth convention: reverse well-ordered
+supports, `lead x = max supp x = −v(x)` with leading coefficient `lc x`,
+coefficients `[ω^γ]x = c_γ(x)`, the monomial class `𝔐`, and the
+finite-support class `Fin = No_fin = span_ℝ 𝔐`. Its Part IV keeps source
+52's `t`-convention and writes `supp_t x = −supp x` there. `Hahn(A)` is the
+support window of the surreals supported in a reverse well-ordered set `A`,
+`Hahn(A)^fin` its finite-support part, and `P_A` the projection retaining
+exactly the exponents in `A`. `F_{<a} ⊆ F_{≤a}` is the leading-exponent
+flag, `S_b x = ω^b x` a monomial shift (linear, not a field automorphism),
+and `B_γ(0) = {v > γ}`, `U_γ = {lead < γ} = B_{−γ}(0)` the two sources'
+names for the same zero neighbourhoods. A **Hahn basis** gives unique admissible
+strong expansions; it is neither a weakened Hamel basis nor a Schauder
+basis. A **valuation basis** is a Hamel basis on which no finite
+combination suffers leading-value cancellation. A **summation-finite**
+class meets every reverse well-ordered set in a finite set. In its
+Vandermonde families the parameter `s` is a real number, not a monomial;
+the sources wrote `t`. `V_α = span_ℝ No_{<α}` are the staged spaces of its
+class-basis proofs, and `e_γ` or `T^a` the basis of the group algebra
+`ℝ[No]`.
+
 | Quantity | Meaning and guard |
 |---|---|
 | `v(z)` | Valuation of a scalar value; larger means smaller magnitude in the Archimedean comparison. |
@@ -1350,6 +1376,17 @@ and scalar-valued functionals take values in the scalar field; general operator
 outputs remain vectors. Allowing all positive surreal norm tolerances isolates
 those vectors without identifying them with surcomplex scalars.
 
+The [real-vector-space report](surreal/real-vector-space-structure/article.tex)
+writes `Fin_Γ` for the finite-support part of `H_Γ = ℝ((t^Γ))` and `Lf_Γ`
+for its valuation closure, the series with **left-finite** support (finitely
+many exponents at most each `γ`); its source 52 wrote `E_Γ` and `C_Γ`. They
+are not the three-duals `E_Γ(ℝ)` and `C_Γ(ℝ)`, which are all of `H_Γ`
+because `ℝ` is one-dimensional. The dictionary is the diagonal embedding
+`ι(Σ x_γ t^γ) = Σ t^γ x_γ e_γ` into `V((t^Γ))` with `V = ℝ^(Γ)`, under
+which `Fin_Γ = ι⁻¹E_Γ(V)` and `Lf_Γ = ι⁻¹C_Γ(V)` (`rvs:w:sec:completion`).
+Its monomial-invisible functionals are real-valued, unlike the three-duals
+`K`-valued `N_Γ(V)`.
+
 A **coefficientwise Hahn sum** in the
 [measure report](surreal/hahn-valued-measures-and-probability/article.tex)
 uses one common well-ordered support and ordinary absolutely convergent
@@ -1521,6 +1558,24 @@ In the `t = ω⁻¹` convention this becomes `∂_λ(t^γ) = −λ(γ)t^γ`.
 One fixed `λ` can kill nonconstant monomials; detecting a given nonconstant
 requires choosing a suitable functional. This construction does not specify
 a derivation of the full surreal field.
+
+The [real-vector-space report](surreal/real-vector-space-structure/article.tex)
+writes `𝔇` (macro `\EuD`; its source 52 wrote `D`) for the Euler operator
+`𝔇(t^γ) = γt^γ` on `H_Γ`, with `0 ≠ Γ ⊆ ℝ`. In growth exponents
+`𝔇ω^β = −βω^β`: it is that report's diagonal derivation `D_d`,
+`D_d(ω^γ) = d(γ)ω^γ` for additive `d : No → ℝ`, with `d = −id`; it is the
+differential-equations report's `∂_τ` on real exponents and the Diophantine
+report's `∂_λ` with `λ = −id`. Hence `D_ct = −𝔇` on a real-exponent
+workspace, where `D_ct` is the quotient report's `D_0` below, and `𝔇` is not
+the Berarducci–Mantova `∂`. Its `D_a` (source 53: `D_λ`) is a
+coefficientwise diagonal operator with an arbitrary multiplier
+`a : No → ℝ`; it is a derivation only for additive multipliers. The Euler
+quotient `Q_Γ = H_Γ/Fin_Γ` is an `ℝ(X)`-vector space with `X` acting by
+`𝔇`. For a nonzero `p ∈ ℝ[X]`, `G_p` is the nonresonant Green operator and
+`P_{Z_p}` the finite projection onto the resonant exponents
+`Z_p = {γ : p(γ) = 0}`. `M_a` is the coefficient multiplier with weights
+`a ∈ ℝ^Γ`, and `J_Γ` is the ideal of weights whose `t`-support is reverse
+well ordered, not the finitely supported weights.
 
 The quotient report's `D_η` instead uses the globally defined additive
 functional `ℓ_η(x) = [ω^η]x` on the surreal **exponent** x, setting
@@ -1777,6 +1832,15 @@ not by a set-indexed cofinal sequence in the full surreal topology.
 Generic exponential rigidity acts on the actual valuation image `w(Fˣ)`;
 surjectivity onto a larger written codomain must be stated separately.
 
+The [real-vector-space report](surreal/real-vector-space-structure/article.tex)
+writes `T_{χ,φ}(Σ r_γ ω^γ) = Σ r_γ χ(γ) ω^{φ(γ)}` for an ordered additive
+automorphism `φ` of `No` and a positive real character `χ`. In `t`-exponents
+this is the omnific-preserving report's monomial map `M_{χ′,φ}` with
+`χ′(γ) = χ(−γ)`; with `χ = 1` it is the automorphism-rigidity report's
+canonical lift. Its Theorem 18.1 (`rvs:thm:monomial-aut`) proves on all of
+`No` that these are exactly the strong ℝ-linear ordered-field
+automorphisms permuting the monomial lines `ℝω^γ`.
+
 ## Radii, modulus, and order-theoretic terminology
 
 An **ordinary radius** `R > 0` specifies a domain for complex coefficient
@@ -1851,3 +1915,24 @@ and quaternion algebra those order notions have their separately stated
 meanings. The [computer-algebra report](foundations-and-computation/computer-algebra/article.tex)
 (`cas:sec-objects`) treats these distinctions as representation requirements,
 not interchangeable spellings for software constructors.
+
+The [surreal well-orders report](foundations-and-computation/surreal-well-orders/article.tex)
+(`swo:sec:notation`) fixes one notation for its four sources. There `GB`
+includes no choice principle, as in `found:sub:gbconvention`; its sources 09
+and 12 prove the global-choice equivalence over GB **with** set choice, written
+`GB + AC` there. Birthday is `bd(x)` (its sources wrote `ℓ(x)` and `b(s)`; in
+its sources 08 and 09 the letter `b` is a baseline class bijection
+`Ord → No`). The birthday cutoff is `No_{<κ}`; its sources' `X_κ`, `X_θ` and
+`S_κ` are renamed, and source 12's `S_κ` is the reals report's `S_{<κ}`, not
+`S_{<κ⁺}`. `𝒲(X)` is the lexicographic order of all exhaustive well-order
+enumerations of a set `X`, and `𝒲_α(X)` those of length exactly `α`, as in the
+reals report; `ℓ₂(L)` is binary coding length (source 12's "binary coding
+rank"), not the von Neumann rank `rank(x)`. `𝔚_sl(No)` and `𝔚_all(No)` are
+the set-like and the arbitrary class well-orders of `No`: predicates on class
+variables, not classes. `𝔹_γ = (2^γ, <_lex)` is a binary cube, `𝔹_Ord` the
+order of class binary words on `Ord`, and `≃_e` equimorphism (embeddings both
+ways, not isomorphism). The class of bounded-support perturbations of a
+baseline enumeration has two codings with the same evaluations, `𝒫_bd(e₀)`
+(normalized permutations) and `𝒫_s(b)` (fixed-point-free support codes).
+`𝓘` is the class of injective set-length words with proper prefixes first
+(source 09 wrote `𝒯`), and `𝒯` the class of all set-length words.

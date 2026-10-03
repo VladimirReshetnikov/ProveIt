@@ -1694,6 +1694,23 @@ When ratios $\log q_i/\log q_j$ are rational, the $O(\log s)$ term should contai
 \end{conjecture}
 
 A proof should combine exponential-polynomial dominance with the one-parameter sine-product estimates already developed in the repository.
+% ed. (2026-09-29): the leading coefficient is proved in a window sense by a
+% later draft; the pointwise form and the remainder stay open.
+\begin{quote}\small\raggedright
+\textbf{Editorial note (ProveIt, 2026-09-29).}\
+For distinct parameters, the leading coefficient
+$-1/(2|\log q_*(\theta)|)$ of Conjecture~\ref{conj:ray-decay} is proved in
+a window sense: the supremum of $\log|\Phi_Q(s\theta)|$ over $s\in[R,2R]$
+has this leading term, the upper bound holds pointwise, and the matching
+lower bound holds on any fixed proportion of each window.  The proof is in
+the unreviewed draft
+\path{Brownian_Matrix_Governing_Fabius_Smoothness/} of this group
+(2026-09-29), Theorem \texttt{thm:rays}.  That draft also determines every
+mixed $L^p$ derivative norm of the joint density to quadratic order through
+the matrix $\min(\lambda_i,\lambda_j)$, $\lambda_j=-\log q_j$.  The
+pointwise form of \eqref{eq:ray-decay-conjecture} away from the zero
+hyperplanes and the periodic or quasiperiodic remainder remain open.
+\end{quote}
 
 \subsection{Jet small balls and Lambert phases}
 
@@ -1725,6 +1742,34 @@ As $x\downarrow0$,
 \end{equation}
 where $\mathcal P_{m,q}$ is bounded and $1$-periodic.  The coefficients and phase should be recoverable from a Lambert-$W_{-1}$ saddle and a Mellin analysis of the Laplace product.
 \end{conjecture}
+% ed. (2026-09-29): conj:jet-small-ball is false as stated for lambda != 1;
+% the conjecture is kept unchanged and unrenumbered, and this note corrects it.
+\begin{quote}\small\raggedright
+\textbf{Editorial note (ProveIt, 2026-09-29).}\ 
+As stated, Conjecture~\ref{conj:jet-small-ball} is false whenever
+$\lambda\ne1$, that is, whenever $q\ne\EulerE^{-1}$.  The expansion of
+$\log\Probability(S_{m,q}\le x)$ contains the unbounded term
+$\frac{(m+1)^2\log\lambda}{\lambda}\,\log L$, which no choice of
+$A_{m,q}$, $B_{m,q}$ and bounded periodic $\mathcal P_{m,q}$ can absorb.
+With $p=m+1$ the correct form is
+$-\frac{L^2}{2\lambda}-\frac p\lambda L\log L
++\bigl(\frac12+\frac{p(1+\log\lambda)}{\lambda}\bigr)L
+-\frac{p^2}{2\lambda}(\log L-\log\lambda)^2-\frac p2\log(2\pi)
+-\Psi_\lambda\bigl((L+p\log L-p\log\lambda)/\lambda\bigr)
++O\bigl((\log L)^2/L\bigr)$, with an explicit one-periodic $\Psi_\lambda$;
+for $\lambda=1$ the conjectured shape holds.  For the Fabius law
+($m=0$, $q=1/2$) the term $\frac{\log\log2}{\log2}\log L$ is already
+part of the machine-checked small-argument expansion
+\path{Fabius.log_fabius_sub_explicitCorrectedWikipediaMain_isBigO}
+(\path{Analysis/FabiusFunction/Lean/FabiusFunction/FabiusSharpAsymptotic.lean}),
+whose elementary main term is
+\path{fabiusWikipediaElementaryMain}.  The general correction, an
+all-order expansion in the exact coordinate $x=R^{p}\EulerE^{-\lambda R}$,
+and the case $\lambda=1$ are in the unreviewed draft
+\path{Polynomial_Geometric_Small_Deviations_Fabius_Jets/} of this
+group (2026-09-29), Corollaries \texttt{cor:logform} and
+\texttt{cor:refutation}.
+\end{quote}
 
 For $m=0$, this is compatible with the log-quadratic and periodic endpoint structure of Fabius-type laws.  The new problem is to track how polynomial jet weights deform every lower-order term.
 
@@ -1740,6 +1785,20 @@ This should produce explicit asymptotics for conditional extreme events such as
   \Probability(X_r\le y\mid X_{1/2}=x)
 \]
 in boundary layers where $x,y\downarrow0$ together.
+% ed. (2026-09-29): joint lower-tail rates and threshold conditioning are
+% proved in a later draft; the conjecture and exact-value conditioning stay open.
+\begin{quote}\small\raggedright
+\textbf{Editorial note (ProveIt, 2026-09-29).}\
+Joint lower-corner small-deviation rates of the common-digit family, their
+first correction, the standardized copula exponent, and conditional
+extremes given threshold events such as $\{X_{1/2}\le x\}$ are
+proved in the unreviewed draft
+\path{Endpoint_Geometry_Common_Digit_Fabius_Laws/} of this group
+(2026-09-29), Theorems \texttt{thm:sharp}, \texttt{thm:copula} and
+\texttt{thm:diagonal} and display \texttt{eq:conditional-threshold}.
+Conjecture~\ref{conj:copula-endpoints} and conditioning on an exact value
+$X_{1/2}=x$ remain open.
+\end{quote}
 
 \subsection{Hyperbolic Fekete limits}
 

@@ -1,0 +1,754 @@
+\documentclass[11pt,oneside]{article}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{libertinus-type1}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,mathrsfs}
+\usepackage{bm}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx,xcolor,enumitem,fancyhdr,titlesec,listings,xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{linkblue}{RGB}{25,75,135}
+\definecolor{shadegray}{RGB}{246,247,249}
+\definecolor{rulegray}{RGB}{195,201,208}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Second Order Critical Complements in Fabius Conditioning},
+ pdfauthor={Research note prepared with OpenAI for Vladimir Reshetnikov},
+ pdfsubject={Uniform overlap corrections and a strict comparison of observation masks}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Fabius critical complements}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\titleformat{\section}{\Large\bfseries}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{0.7em}{}
+\setlength{\emergencystretch}{2em}
+\setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.3em,itemsep=0.25em,topsep=0.4em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\bracket}[1]{\left[#1\right]_{y_-}^{y_+}}
+\numberwithin{equation}{section}
+\title{\bfseries Second Order Critical Complements\\in Fabius Conditioning\\[0.4em]
+\large Uniform overlap corrections and a strict comparison of two observation masks}
+\author{Research note prepared for Vladimir Reshetnikov\\\small Developed with OpenAI}
+\date{1 October 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Two recent ProveIt manuscripts study near-total observation of a geometrically
+weighted uniform series under a small-value constraint. They omit different
+bulk coordinates. We derive a uniform expansion of their overlap when the
+number of omitted bulk coordinates is comparable with the logarithm of the
+bulk size. The expansion includes the phase-dependent constant and the next
+inverse-complement coefficient, with a quantitative remainder. It answers the
+second-order crossover question in the prefix-observation manuscript and the
+logarithmic slice of the other manuscript's growing-complement question.
+The two masks have the same leading crossover but different next constants:
+hiding the earliest bulk coordinates gives strictly greater overlap than
+hiding the latest ones, eventually. An elementary signed Gamma convolution
+argument proves the statements without importing a uniform conditioning
+theorem. These are manuscript-level proofs, not a proof-assistant
+formalization or a certification of worldwide novelty.
+\end{abstract}
+
+\section{Scope and relation to the source questions}
+This note examines the repository snapshot
+\nolinkurl{63a7a325109ba611a1816b61dfd0eb072b896a7a}.
+The article in \emph{Critical Complements Sharp Information Loss}
+\cite{repo-late}, Section 10, asks for the complete next-order overlap
+expansion when $m\sim c\log n$, including the geometric phase and integer
+rounding. Its Theorem 2.2 already proves the leading equivalent for every
+$m=o(n)$. Here \cref{thm:main,cor:loglog} give a finer expansion in the
+critical window, including an additional $1/m$ coefficient.
+
+The article in \emph{Critical Complements Fabius Conditioning}
+\cite{repo-early}, Section 13, instead observes a block obtained by deleting
+the earliest $m$ bulk coordinates. It leaves growing $m$ open. The block
+is not the prefix in \cite{repo-late}. We prove the same expansion for
+this second mask, with a different analytic factor, and establish the
+strict comparison in \cref{cor:comparison}. We do not claim that the
+leading theorem for one mask previously solved the question for the other.
+
+The probability representation of the Fabius function is classical
+\cite{arias}. Exponential tilting, Gamma asymptotics, and precise-deviation
+methods are also established tools; compare \cite{fmnn,dlmf}.
+The proposed contribution here is the explicit clipped-density expansion
+and its application to these two specified masks. The literature check was
+targeted, not exhaustive. No famous conjecture, publication priority, or
+Lean verification is claimed.
+% ed. (2026-10-01): Lean counterpart of the Fabius identification, not cited by the note
+\begin{ednote}
+For $q=1/2$ the probability representation cited above is machine-checked
+in the repository:
+\path{Fabius.ProbabilityRepresentation.weightedSumCDF_eq_fabiusReal}
+states that the distribution function of $\sum_{j\ge1}2^{-j}U_j$ is the
+Fabius function on the whole real line, and
+\path{Fabius.ProbabilityRepresentation.geometricUniformDensity_one_half_eq_rvachevUp}
+gives its density as $2\,\mathrm{up}(2x-1)$; both are in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/ProbabilityRepresentation.lean}.
+No result of this note is formalized. The two source articles are filed
+beside this package as \path{../Critical_Complements_Sharp_Information_Loss/}
+(\cite{repo-late}, batch~68 of the repository's \path{docs/incoming/})
+and \path{../Critical_Complements_Fabius_Conditioning/}
+(\cite{repo-early}, batch~66); editorial notes of 2026-10-01 at the two
+questions answered here point back to this package.
+\end{ednote}
+
+\section{The geometric model and the two masks}
+Fix $q\in(0,1)$ and $\rho>0$. Let
+\begin{equation}
+ S_q=\sum_{j\ge1}q^jU_j,\qquad U_j\overset{\mathrm{iid}}\sim
+ \operatorname{Unif}[0,1],\qquad t_n=\rho q^{-(n+1)}.
+\end{equation}
+Write $P$ for the product law, $T_n=t_nS_q$, and define
+\begin{equation}
+ \frac{\dd Q_n}{\dd P}=\frac{e^{-T_n}}{\E_P e^{-T_n}},\qquad
+ \mu_n=\E_{Q_n}T_n,\qquad P_n=P(\,\cdot\mid T_n\le\mu_n).
+ \label{eq:model}
+\end{equation}
+The constraint is an inequality under the original law. Under $Q_n$,
+the scaled coordinates are independent with truncated exponential density
+\begin{equation}
+ p_a(x)=\frac{e^{-x}}{1-e^{-a}}\ind_{(0,a)}(x),\qquad
+ a=\rho q^{j-(n+1)}.
+\end{equation}
+The first $n$ coordinates form the bulk. The boundary tail starts at
+coordinate $n+1$, of cap $\rho$. Set
+\begin{equation}
+ a_r=\rho q^{-r}\quad(r\ge1),\qquad
+ R_0=\sum_{\ell\ge0}Y_\ell,\qquad Y_\ell\sim p_{\rho q^\ell}
+ \quad\hbox{independently}.
+ \label{eq:tail}
+\end{equation}
+Thus $0\le R_0\le\rho/(1-q)$. For $1\le m<n$, define two observed sets:
+\begin{align}
+ B^{\mathrm{late}}_{n,m}&=\{1,\ldots,n-m\},
+ &B^{\mathrm{early}}_{n,m}&=\{m+1,\ldots,n\}.
+ \label{eq:masks}
+\end{align}
+The superscript names the hidden bulk coordinates. Both masks hide the
+whole infinite boundary tail. If $P^j_{n,m},Q^j_{n,m}$ are the corresponding
+vector marginal laws, let
+\begin{equation}
+ \OO^j_{n,m}=1-\TV(P^j_{n,m},Q^j_{n,m}),\qquad
+ \eps_n=(2\pi n)^{-1/2},\qquad j\in\{\mathrm{early},\mathrm{late}\}.
+\end{equation}
+Total variation is $\sup_A|P(A)-Q(A)|$, so overlap is
+$\int\min(\dd P,\dd Q)$.
+
+The phase factors needed below are
+\begin{align}
+ H_0(s)&=\E e^{sR_0},\label{eq:H0}\\
+ \HH_{\mathrm{early}}(s)&=H_0(s),\label{eq:HE}\\
+ \HH_{\mathrm{late}}(s)&=H_0(s)
+ \prod_{r\ge1}\frac{1-e^{-(1-s)a_r}}{1-e^{-a_r}},\qquad s<1.
+ \label{eq:HL}
+\end{align}
+The product converges locally uniformly, with every derivative, in the
+complex half-plane $\Re s<1$. Both factors are strictly positive for
+real $s<1$ and equal one at zero. If desired, $H_0$ itself has the
+explicit product
+\begin{equation}
+ H_0(s)=\prod_{\ell\ge0}
+ \frac{1-e^{-(1-s)\rho q^\ell}}
+ {(1-s)(1-e^{-\rho q^\ell})},
+ \label{eq:H0product}
+\end{equation}
+with each removable value interpreted continuously.
+
+The first source \cite{repo-early} uses $t_n=\rho_{\rm first}q^{-n}$.
+The exact phase match to our convention is $\rho_{\rm first}=\rho/q$.
+No asymptotic reindexing is hidden in this comparison.
+% ed. (2026-10-01): dictionary of masks, phases and letters across the three articles
+\begin{ednote}
+The superscripts here name the hidden bulk coordinates, while both source
+articles name the observed block: $B^{\mathrm{early}}_{n,m}$ is the block
+$\{r+1,\ldots,n\}$ observed in \cite{repo-early} with $r=m$, and
+$B^{\mathrm{late}}_{n,m}$ is the prefix $B_{n,m}$ of \cite{repo-late}.
+The $\rho$ here is that of \cite{repo-late}, which states its theorems
+for $1\le\rho<q^{-1}$; any $\rho>0$ is allowed here. The constant
+$H_0(1)=\E e^{R_0}=\prod_{\ell\ge0}\rho q^\ell/(1-e^{-\rho q^\ell})$ is
+the product $K$ of \cite{repo-early} (at its phase $\rho/q$), and
+$\log H_0(1)$ is $K_{q,\rho,0}$ of \cite{repo-late}; at $q=1/2$,
+$\rho=1/2$ (the dyadic example $\rho_{\rm first}=1$ of \cite{repo-early})
+it is $0.486134172\ldots$, as printed there, reproduced on filing to
+30 digits. Since $s(Y_+(c))\to1$ and $s(Y_-(c))\to-\infty$ as
+$c\downarrow0$, $K_{\mathrm{early}}(c)\to\log H_0(1)+1$, the constant of
+both fixed-complement theorems when only the tail is hidden; and the
+limit in \eqref{eq:ordering} tends to $-\infty$, matching for fixed
+$m\ge1$ the divergent gap
+$m\log\Lambda_n-\log(m!)+K_{q,\rho,0}-K_{q,\rho,m}$,
+$\Lambda_n=\frac12\log(2\pi n)$, between those two theorems (both are
+consistency checks outside the range of \cref{thm:main}). At $q=1/2$,
+$\rho=1$ that limit is $-1.0279$ for $c=1$ and $-20.44$ for $c=0.002$.
+Of the letters $A,B,C,D,F,K_j,L,W$ here only $C(c)$ has the same
+meaning in \cite{repo-late} (as do $I$, $y_\pm$, $z$ and $\eps_n$); there $K_m=\log\E e^{R_m}$ and $D_{n,m}$ is a relative
+entropy, and in \cite{repo-early} $K$ is a product, $C=\rho q/(1-q)$ and
+$c_n=\eps_n$, whereas here $c_n=m/\log n$.
+\end{ednote}
+
+\section{The uniform expansion}
+Let
+\begin{equation}
+ I(y)=y-1-\log y,\quad s(y)=I'(y)=1-\frac1y,\quad
+ d=\frac12\log\frac nm,\quad z=\frac dm.
+ \label{eq:rootsdata}
+\end{equation}
+The two roots of $I(y)=z$ are denoted $y_-<1<y_+$.
+For a positive analytic factor $\HH$ from \eqref{eq:HE} or \eqref{eq:HL},
+define
+\begin{align}
+ L(y)&=\log\HH(s(y)),\label{eq:L}\\
+ A(y)&=-\frac1{12}-\frac{\HH''(s(y))}{2y^2\HH(s(y))},\label{eq:A}\\
+ F(y)&=\frac{L(y)+1}{s(y)},\label{eq:F}\\
+ B(y)&=\frac{A(y)}{s(y)}+
+       \frac{(L(y)+1)L'(y)}{s(y)^2}
+       -\frac{L(y)^2/2+L(y)+1}{y^2s(y)^3}.
+ \label{eq:B}
+\end{align}
+Here $\HH''$ is differentiated in $s$ and $L'$ in $y$;
+in particular $L'(y)=\HH'(s(y))/(y^2\HH(s(y)))$.
+We write $[G]_{y_-}^{y_+}=G(y_+)-G(y_-)$.
+
+\begin{theorem}[Critical crossover through the inverse-complement term]
+\label{thm:main}
+Fix $q,\rho$ and $0<c_0<c_1<\infty$. Uniformly over integers $m$ such that
+$c_0\log n\le m\le c_1\log n$, as $n\to\infty$, one has
+\begin{equation}
+ \frac{\OO^j_{n,m}}{\eps_n}
+ =m(y_+-y_-)+[F_j]_{y_-}^{y_+}
+       +\frac1m[B_j]_{y_-}^{y_+}
+       +O\!\left(\frac1{m^2}+\frac{m^3}{n}\right).
+ \label{eq:main}
+\end{equation}
+The factors in \eqref{eq:HE}--\eqref{eq:HL} determine $F_j,B_j$.
+All roots use the actual integer $m$ and $d=\frac12\log(n/m)$.
+Consequently the same formula with the $1/m$ term omitted has
+remainder $O(1/m)$.
+\end{theorem}
+
+The geometric phase first appears in the bounded correction $[F_j]$;
+the leading term forgets it. The two exterior tails of the clipped density
+each contribute a nonzero part of this correction. Keeping only the
+distance between likelihood crossings would omit $[1/s]_{y_-}^{y_+}$.
+
+\subsection{The logarithmic and rounding terms}
+For $c>0$, let $Y_\pm(c)$ solve $I(Y)=1/(2c)$ and set
+\begin{align}
+ W(c)&=Y_+(c)-Y_-(c),&
+ C(c)&=cW(c),\\
+ D(c)&=\frac1{s(Y_+(c))}-\frac1{s(Y_-(c))},&
+ K_j(c)&=[F_j]_{Y_-(c)}^{Y_+(c)}.
+\end{align}
+\begin{corollary}[Explicit logarithmic correction]
+\label[corollary]{cor:loglog}
+Put $\ell=\log n$ and $c_n=m/\ell$. Uniformly for $c_n\in[c_0,c_1]$,
+\begin{equation}
+ \frac{\OO^j_{n,m}}{\eps_n}
+ =\ell C(c_n)-\frac12D(c_n)\log\ell
+       +K_j(c_n)-\frac12D(c_n)\log c_n
+       +O\!\left(\frac{(\log\ell)^2}{\ell}
+                         +\frac{\ell^3}{n}\right).
+ \label{eq:loglog}
+\end{equation}
+If $m=c\ell+\beta_n$ for fixed $c>0$ and bounded $\beta_n$, then
+\begin{align}
+ \frac{\OO^j_{n,m}}{\eps_n}
+ ={}&\ell C(c)-\frac12D(c)\log\ell
+       +\beta_n\left(W(c)-\frac{D(c)}{2c}\right)\nonumber\\
+ &+K_j(c)-\frac12D(c)\log c+o(1).
+ \label{eq:rounding}
+\end{align}
+Thus rounding $m=\lfloor c\log n\rfloor$ generally produces an
+oscillating bounded correction. The assumption $m\sim c\log n$ alone
+does not permit replacing $c_n$ by $c$ in \eqref{eq:loglog} to constant
+accuracy.
+\end{corollary}
+\begin{proof}
+If $\Delta(z)=y_+(z)-y_-(z)$, implicit differentiation gives
+$\Delta'(z)=1/s(y_+)-1/s(y_-)$. Since
+$z=1/(2c_n)-\log(c_n\ell)/(2c_n\ell)$, Taylor's theorem applied
+on a compact positive interval gives
+\[
+ m\Delta(z)=\ell C(c_n)-\tfrac12D(c_n)\log(c_n\ell)
+                  +O((\log\ell)^2/\ell).
+\]
+Replacing the arguments of $F_j$ costs $O(\log\ell/\ell)$.
+This proves \eqref{eq:loglog}. Finally
+$C'(c)=W(c)-D(c)/(2c)$, which gives \eqref{eq:rounding}.
+\end{proof}
+
+\subsection{A strict distinction between the two masks}
+\begin{corollary}[Hiding earlier coordinates gives greater overlap]
+\label[corollary]{cor:comparison}
+Let $m/\log n\to c\in(0,\infty)$. Put
+\begin{equation}
+ \Psi(s)=\sum_{r\ge1}
+  \log\frac{1-e^{-(1-s)a_r}}{1-e^{-a_r}}.
+ \label{eq:Psi}
+\end{equation}
+Then, with $s_\pm=s(Y_\pm(c))$,
+\begin{equation}
+ \frac{\OO^{\mathrm{late}}_{n,m}-\OO^{\mathrm{early}}_{n,m}}{\eps_n}
+ \longrightarrow \frac{\Psi(s_+)}{s_+}-\frac{\Psi(s_-)}{s_-}<0.
+ \label{eq:ordering}
+\end{equation}
+In particular $\OO^{\mathrm{late}}_{n,m}<\OO^{\mathrm{early}}_{n,m}$
+for all sufficiently large $n$ along that sequence.
+\end{corollary}
+\begin{proof}
+The leading root term and the $1/s$ tail terms cancel in the difference.
+Since $\log\HH_{\mathrm{late}}-\log\HH_{\mathrm{early}}=\Psi$,
+\cref{thm:main} gives the stated limit. Termwise differentiation is valid,
+and
+\[
+ \Psi''(s)=-\sum_{r\ge1}
+ \frac{a_r^2e^{-(1-s)a_r}}{(1-e^{-(1-s)a_r})^2}<0,
+ \qquad \Psi(0)=0.
+\]
+Strict concavity implies that the secant slope on $[s_-,0]$ is strictly
+larger than that on $[0,s_+]$. These slopes are
+$\Psi(s_-)/s_-$ and $\Psi(s_+)/s_+$, respectively.
+\end{proof}
+% ed. (2026-10-01): the strict order holds at every finite parameter by a later note (batch 72)
+\begin{ednote}
+The strict inequality holds at every finite parameter, not only
+eventually. A later unreviewed note, \path{../Strict_Fabius_Conditioning_Order/}
+(batch~72 of the repository's \path{docs/incoming/}, 2026-10-01), proves
+$\OO^{\mathrm{late}}_{n,m}<\OO^{\mathrm{early}}_{n,m}$ for every $q\in(0,1)$,
+$\rho>0$, $n\ge2$ and $1\le m<n$ (its Corollary~4.2), in the model
+\eqref{eq:model} with the masks \eqref{eq:masks} and the same superscripts, by
+a strict rectangle inequality for total variation. The nonstrict order, for
+every $f$-divergence, is Corollary~4.1 of
+\path{../Exact_Fixed_Conditioning_Order/}, and for $q=1/M$
+\path{../Exact_Fabius_Mask_Order/} realizes it by one residue map valid for
+every reweighting of the total. The limit \eqref{eq:ordering} is not affected.
+For $\delta n\le m\le(1-\delta)n$, Corollary~5.2 of
+\path{../Proportional_Fabius_Mask_Edgeworth/} gives
+$\OO^{\mathrm{early}}_{n,m}-\OO^{\mathrm{late}}_{n,m}
+=\varphi(c)c\,\mathcal D(q,\rho)/m+O(n^{-3/2})$, with $\varphi$ the standard
+normal density, $c$ an explicit function of $m/n$, and
+$\mathcal D(q,\rho)=\sum_{r\ge1}a_r^2e^{a_r}/(e^{a_r}-1)^2$. These notes bear
+on the third question of Section~7 only in part: a cap-dominating injection
+between observed masks orders their overlaps at every $n$, but no
+classification by correction transforms is given there.
+\end{ednote}
+
+\section{A clipped signed Gamma transfer theorem}
+The following analytic statement isolates the calculation. It is deliberately
+stated with hypotheses that can be checked directly for both masks.
+Write
+\[
+ \gamma_k(x)=\frac{e^{-x}x^{k-1}}{\Gamma(k)}\ind_{(0,\infty)}(x),
+ \qquad \|\eta\|_\theta=\int_0^\infty e^{\theta u}|\eta|(\dd u).
+\]
+\begin{lemma}[Density and endpoint tail expansions]
+\label[lemma]{lem:saddle}
+Let $\eta_m$ be real finite signed measures supported in $[0,\infty)$,
+of mass one. Suppose, for every $\theta<1$,
+\[
+ \sup_m\|\eta_m\|_\theta<\infty,
+ \qquad \|\eta_m-\eta\|_\theta=O(m^{-2}),
+\]
+and put $\HH(s)=\int e^{su}\eta(\dd u)$. Suppose $\HH(s)>0$ for real
+$s<1$ and $g_m=\gamma_{m+1}*\eta_m$ is a nonnegative probability density.
+Uniformly for $y$ in compact subsets of $(0,\infty)$,
+\begin{equation}
+ g_m(my)=\frac{e^{-mI(y)}\HH(s(y))}{\sqrt{2\pi m}}
+        \left(1+\frac{A(y)}m+O(m^{-2})\right).
+ \label{eq:saddle}
+\end{equation}
+Here $A$ is \eqref{eq:A}. If the convergence of $\eta_m$ above is
+faster than every inverse power, the hypothesis is in particular satisfied.
+\end{lemma}
+\begin{proof}
+The exact Gamma ratio is
+\begin{equation}
+ \frac{\gamma_{m+1}(my-u)}{\gamma_{m+1}(my)}
+ =e^u\left(1-\frac{u}{my}\right)^m\ind_{\{u<my\}}.
+ \label{eq:gammaratio}
+\end{equation}
+For $y$ in a fixed compact interval and $0\le u\le my/2$, expanding
+$\log(1-u/(my))$ and then the exponential gives
+\begin{equation}
+ e^{s(y)u}\left(1-\frac{u^2}{2my^2}\right)
+ +O\!\left(\frac{(u^3+u^4)e^{s(y)u}}{m^2}\right).
+ \label{eq:ratioexp}
+\end{equation}
+For completeness, the extra negative exponent beyond its quadratic term is
+bounded by $Cu^3/m^2$ on this interval. The inequalities
+$|e^{-v}-1+v|\le v^2/2$ and $1-e^{-w}\le w$ for $v,w\ge0$
+prove \eqref{eq:ratioexp} with an absolute bound of the displayed form.
+On $u>my/2$, both the exact ratio and the approximating terms are
+exponentially negligible after integration: choose
+$\theta\in(\max_y s(y),1)$ and use the weighted variation bound.
+Thus integration against the signed measure gives
+\[
+ \int\frac{\gamma_{m+1}(my-u)}{\gamma_{m+1}(my)}\eta_m(\dd u)
+ =\HH(s(y))-\frac{\HH''(s(y))}{2my^2}+O(m^{-2}).
+\]
+The $O(m^{-2})$ convergence hypothesis permits replacement of all needed
+weighted moments by those of $\eta$; polynomial factors are absorbed using
+a slightly larger exponent $\theta<1$. Stirling's formula gives
+\[
+ \gamma_{m+1}(my)=\frac{e^{-mI(y)}}{\sqrt{2\pi m}}
+                       \left(1-\frac1{12m}+O(m^{-2})\right).
+\]
+Multiplication proves \eqref{eq:saddle}. Positivity of $\HH$ on compacts
+justifies the relative error and its logarithm.
+\end{proof}
+
+\begin{theorem}[Clipped profile expansion]
+\label{thm:transfer}
+In addition to \cref{lem:saddle}, suppose each $g_m$ is continuous and
+log-concave on $(0,\infty)$, tends to zero at both endpoints, and has
+positive interior values. For $z$ in a fixed compact subset of $(0,\infty)$,
+put
+\[
+ a=(2\pi m)^{-1/2}e^{-mz},\qquad
+ J_m(a)=\int_0^\infty\min\{1,g_m(u)/a\}\dd u.
+\]
+Then, uniformly in that set of $z$,
+\begin{equation}
+ J_m(a)=m(y_+-y_-)+[F]_{y_-}^{y_+}
+                     +\frac1m[B]_{y_-}^{y_+}+O(m^{-2}).
+ \label{eq:J}
+\end{equation}
+\end{theorem}
+\begin{proof}
+All roots remain in compact subsets of $(0,1)$ and $(1,\infty)$.
+Consequently $s(y_\pm)$ are uniformly separated from zero.
+Log-concavity makes the superlevel set $\{g_m\ge a\}$ an interval;
+\cref{lem:saddle} places its two endpoints near $my_\pm$. A nonconstant
+log-concave density cannot have a flat segment at a level below its maximum:
+a flat segment would be a set of maximizers. Thus its endpoints are the
+unique crossings, denoted $u_\pm$.
+
+Taking logarithms in \eqref{eq:saddle} gives
+\[
+ \log(g_m(my)/a)=m(z-I(y))+L(y)+A(y)/m+O(m^{-2}).
+\]
+First this implies $u_\pm=my_\pm+O(1)$. Successive Taylor expansion then
+gives
+\begin{align}
+ u_\pm&=my_\pm+b(y_\pm)+\frac{c(y_\pm)}m+O(m^{-2}),\label{eq:crossings}\\
+ b(y)&=\frac{L(y)}{s(y)},\qquad
+ c(y)=\frac{A(y)+L'(y)b(y)-b(y)^2/(2y^2)}{s(y)}.
+ \label{eq:bc}
+\end{align}
+These conclusions need no derivative estimate on the saddle remainder:
+the uniform $O(m^{-2})$ error and the nonzero slope bracket each crossing
+within $O(m^{-2})$ of its candidate position.
+
+We next retain both exterior tails. If $v$ stays in a compact subset of
+$(1,\infty)$, integration by parts in the saddle formula gives
+\begin{equation}
+ \frac{\int_{mv}^{\infty}g_m(u)\dd u}{g_m(mv)}
+ =\frac1{s(v)}+\frac1m
+   \left(\frac{L'(v)}{s(v)^2}-\frac1{v^2s(v)^3}\right)+O(m^{-2}).
+ \label{eq:righttail}
+\end{equation}
+On a compact subset of $(0,1)$ the corresponding lower-tail formula is
+the negative of the right-hand expression:
+\begin{equation}
+ \frac{\int_0^{mv}g_m(u)\dd u}{g_m(mv)}
+ =-\frac1{s(v)}-\frac1m
+   \left(\frac{L'(v)}{s(v)^2}-\frac1{v^2s(v)^3}\right)+O(m^{-2}).
+ \label{eq:lefttail}
+\end{equation}
+Here is a justification including the remote tails. The moment-generating
+function is $(1-s)^{-(m+1)}\int e^{su}\eta_m(\dd u)$ for real $s<1$.
+Markov's inequality, applied to the actual nonnegative law $g_m$, bounds
+the upper tail beyond $mM$ by $C_Me^{-mI(M)}$, and the lower tail below
+$m\delta$ by $C_\delta e^{-mI(\delta)}$.
+Choose $M$ large and $\delta$ small so that these exponents exceed the
+largest relevant endpoint exponent by a fixed positive amount. Both remote
+tails, divided by the endpoint density, are exponentially negligible.
+On the remaining compact intervals, \eqref{eq:saddle} has relative
+remainder $O(m^{-2})$, whose integral is $O(m^{-2})$ times the leading
+tail integral. For its smooth main part, integrate by parts twice using
+$I'=s$, $I''=1/y^2$. The endpoint terms are
+$1/s$ and $(L'/s^2-I''/s^3)/m$. A third integration, or an absolute bound
+on the remaining derivative integral, gives the uniform $O(m^{-2})$
+remainder. The amplitude $A/m$ cancels with its endpoint normalization
+to this order. This proves both tail formulas, with the lower endpoint
+orientation supplying the minus sign in \eqref{eq:lefttail}.
+
+At $v=u_\pm/m$, substitute \eqref{eq:crossings} and use
+$g_m(u_\pm)=a$. In a signed endpoint notation, the tail contribution is
+\[
+ \left[\frac1{s(y)}+\frac1m\left\{
+ \frac{L'(y)-b(y)/y^2}{s(y)^2}-\frac1{y^2s(y)^3}
+ \right\}\right]_{y_-}^{y_+}+O(m^{-2}).
+\]
+Adding the interval length $u_+-u_-$ gives \eqref{eq:J}, because
+$b+1/s=F$ and
+\[
+ c+\frac{L'-b/y^2}{s^2}-\frac1{y^2s^3}
+ =\frac A s+\frac{(L+1)L'}{s^2}
+                 -\frac{L^2/2+L+1}{y^2s^3}=B.
+\]
+\end{proof}
+
+\section{Verification for the geometric series}
+\subsection{Exact signed convolution and its bounds}
+For $a>0$ set
+\begin{equation}
+ \nu_a=\frac{\delta_0-e^{-a}\delta_a}{1-e^{-a}}.
+ \label{eq:nu}
+\end{equation}
+The identity $p_a=\gamma_1*\nu_a$ follows by direct substitution.
+The signed measure is an analytic device, never the law of a random
+coordinate. For any subset of indices and any fixed $\theta<1$,
+\begin{equation}
+ \left\|\mathop{*}_{r\in D}\nu_{a_r}\right\|_\theta
+ \le\prod_{r\ge1}\frac{1+e^{-(1-\theta)a_r}}{1-e^{-a_r}}<\infty.
+ \label{eq:weighted}
+\end{equation}
+The same bound holds for $\theta<0$, using support in $[0,\infty)$.
+Since $a_r$ grows geometrically, deleting the factors with $r>N$ changes
+the product by $O(\sum_{r>N}e^{-(1-\theta)a_r})$ in this norm.
+This error is smaller than every inverse power of $N$.
+
+Let $C^j_{n,m}$ be the sum of the hidden coordinates under $Q_n$ and
+let $E$ be an independent rate-one exponential. Its convolution density
+$g^j_{n,m}$, the density of $C^j_{n,m}+E$, satisfies
+\begin{align}
+ g^{\mathrm{late}}_{n,m}
+   &=\gamma_{m+1}*\eta_m^{\mathrm{late}},&
+ \eta_m^{\mathrm{late}}
+   &=\Law(R_0)*\mathop{*}_{r=1}^m\nu_{a_r},\label{eq:lateeta}\\
+ g^{\mathrm{early}}_{n,m}
+   &=\gamma_{m+1}*\eta_{n,m}^{\mathrm{early}},&
+ \eta_{n,m}^{\mathrm{early}}
+   &=\Law(R_0)*\mathop{*}_{r=n-m+1}^n\nu_{a_r}.
+ \label{eq:earlyeta}
+\end{align}
+For the late mask the limiting signed transform is \eqref{eq:HL}.
+For the early mask it is \eqref{eq:HE}; the convergence error is
+superexponentially small in $n-m$. Both satisfy the weighted hypotheses
+of \cref{lem:saddle}, uniformly in the critical window. The transfer
+theorem permits such a two-index family whenever its bounds are uniform.
+
+Each $p_a$ and the exponential density is log-concave. Finite convolution
+preserves log-concavity \cite{prekopa}. Infinite convolution here follows
+by weak limits; alternatively, convolve a finite partial sum with $E$,
+pass to the continuous limiting densities on compact positive intervals,
+and pass the defining log-concavity inequality to the limit.
+The resulting density is positive for $u>0$, vanishes as $u\downarrow0$
+and as $u\to\infty$, and is continuous. Positivity follows by making a
+finite set of positive-cap coordinates small and bounding the remaining
+deterministic tail; continuity follows by convolution with two bounded
+continuous convolution factors. At the left endpoint,
+$g(u)\le e^{-u}e^uP(C\le u)\to0$, since $C$ has no atom at zero.
+Thus all hypotheses of \cref{thm:transfer} hold.
+
+\subsection{The exact overlap identity}
+Let $W^j_{n,m}$ be the observed-coordinate sum, let $f^j_{n,m}$ be the
+density of $W^j_{n,m}-\E_{Q_n}W^j_{n,m}$, and let
+$r^j_{n,m}=\E_{Q_n}C^j_{n,m}$. Define the full normalizer
+\begin{equation}
+ a_n=\E_{Q_n}\!\left[e^{T_n-\mu_n}\ind_{\{T_n\le\mu_n\}}\right].
+\end{equation}
+Conditioning the full likelihood from \eqref{eq:model} on the observed
+vector gives its exact marginal likelihood
+\begin{equation}
+ \frac{g^j_{n,m}(r^j_{n,m}-v)}{a_n},
+ \qquad v=W^j_{n,m}-\E_{Q_n}W^j_{n,m}.
+\end{equation}
+Indeed $e^{-u}\E[e^{C}\ind_{\{C\le u\}}]$ is the density of $C+E$.
+It follows that
+\begin{equation}
+ \OO^j_{n,m}=\int_0^\infty f^j_{n,m}(r^j_{n,m}-u)
+           \min\{1,g^j_{n,m}(u)/a_n\}\dd u.
+ \label{eq:exactoverlap}
+\end{equation}
+This concerns the full vector marginal, not only an approximation of its sum.
+
+\begin{lemma}[Uniform flattening in the critical window]
+\label[lemma]{lem:flatten}
+For $c_0\log n\le m\le c_1\log n$ and either mask,
+\begin{equation}
+ \frac{\OO^j_{n,m}}{\eps_n}
+  =\int_0^\infty\min\{1,g^j_{n,m}(u)/\eps_n\}\dd u
+                         +O(m^3/n).
+ \label{eq:flatten}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The observed sum has the exact density $\gamma_{n-m}*\xi^j_{n,m}$,
+where $\xi^{\mathrm{late}}=\mathop{*}_{r=m+1}^n\nu_{a_r}$ and
+$\xi^{\mathrm{early}}=\mathop{*}_{r=1}^{n-m}\nu_{a_r}$.
+The weighted variations, all polynomial moments, and signed mean shifts
+are uniformly bounded by \eqref{eq:weighted}. Stirling's formula and
+Taylor expansion at the Gamma mean, integrated against these measures,
+therefore give, for every fixed $M$,
+\begin{equation}
+ \sup_{|v|\le Mm}\left|\frac{f^j_{n,m}(v)}{\eps_n}-1\right|
+       =O(m^2/n),\qquad \sup_v f^j_{n,m}(v)\le C\eps_n.
+ \label{eq:local}
+\end{equation}
+Here the integral can first be restricted to signed shifts
+$u\le M_1\log n$, with arbitrarily small inverse-polynomial error;
+on the remaining interval the elementary bound is
+$\sqrt{2\pi k}\gamma_k(k+w)=1+O((1+w^2)/k)$,
+where $k=n-m$ and $w=O(\log n)$. This proves the stated error for
+growing $m$, rather than invoking a fixed-$m$ expansion.
+
+The full normalizer is independent of the observation mask and satisfies
+\begin{equation}
+ a_n=\eps_n(1+O(n^{-1})).\label{eq:normalizer}
+\end{equation}
+To see this directly, use the same signed representation with all $n$
+bulk variables and the fixed boundary $R_0$. The centered total density,
+on $|v|\le M_1\log n$, has the local expansion
+$\eps_n[1+O((1+v^2)/n)+O((1+|v|^6)/n^2)]$ after integration of
+the bounded signed moments. Integrating this density at $v=-e$ against
+$e^{-e}\dd e$, $e\ge0$, proves \eqref{eq:normalizer}; its remote tail
+is controlled using the global density bound. Also $r^j_{n,m}=m+O(1)$.
+
+Choose constants $0<\delta<1<M$ so that $I(\delta)$ and $I(M)$ are
+larger than any prescribed constant. The Chernoff estimates from the
+proof of \cref{thm:transfer} imply
+\[
+ P(C^j_{n,m}+E\notin[\delta m,Mm])\le C e^{-Km}
+\]
+with $K$ arbitrarily large by this choice. Since $m\ge c_0\log n$,
+the contributions outside this window, divided by $\eps_n$, are smaller
+than $n^{-2}$ if $K$ is chosen sufficiently large. This uses the global
+bound in \eqref{eq:local} and $a_n\asymp\eps_n$.
+Inside the window, its length is $O(m)$ and \eqref{eq:local} gives a
+total scaled flattening error $O(m^3/n)$.
+
+Finally changing the clipping level from $a_n$ to $\eps_n$ costs
+$O(m/n)$. In fact for $|\tau|\le1/2$,
+\[
+ |\min(1,x/(1+\tau))-\min(1,x)|
+            \le2|\tau|\min(1,x),\qquad x\ge0,
+\]
+and the clipped integral is $O(m)$ by the same window and tail bounds.
+This proves \eqref{eq:flatten}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main}]
+Apply \cref{thm:transfer} to \eqref{eq:lateeta} or \eqref{eq:earlyeta}.
+Since $z=\log(n/m)/(2m)$ stays in a compact subset of $(0,\infty)$,
+its uniformity conditions hold. Moreover
+$(2\pi m)^{-1/2}e^{-mz}=\eps_n$ exactly.
+The weighted convergence errors are smaller than $m^{-2}$ uniformly,
+and \cref{lem:flatten} supplies the remaining $O(m^3/n)$ error.
+\end{proof}
+
+\section{Checks and limitations}
+Two exact structural checks help detect errors in the coefficients.
+For $\eta=\delta_b$, $b\ge0$, translation of the Gamma density leaves
+$J_m$ unchanged. Substitution of $\HH(s)=e^{bs}$ into the formulas makes
+the $b$ dependence cancel from both $[F]$ and $[B]$.
+For $\eta=\delta_0$, $\HH=1$ and
+\begin{equation}
+ F=1/s,\qquad B=-\frac1{12s}-\frac1{y^2s^3}.
+\end{equation}
+The profile is then exactly Gamma$(m+1,1)$, so crossings and tails can
+be evaluated independently with incomplete Gamma functions. The source
+archive includes a high-precision diagnostic for this case and the
+Gamma$(m+2,1)$ case $\HH(s)=(1-s)^{-1}$.
+These floating-point evaluations are checks of the formulas, not interval
+certificates or substitutes for the proof.
+
+The theorem fixes $q$ and $\rho$. It does not give a uniform result as
+$q\uparrow1$, as $c\downarrow0$, or as $c\uparrow\infty$. At the latter
+boundary the endpoint slopes approach zero and the present endpoint
+integration argument requires a different scaling. It does not solve
+the entire early-mask range $m=o(n)$, arbitrary masks, general weights,
+or the endpoint transseries for a fixed complement. It concerns overlap;
+no new entropy theorem is asserted.
+
+All new results here remain unformalized. No exact Lean declaration is
+claimed as a counterpart to \cref{thm:main,thm:transfer,cor:comparison}.
+The required formal obligations include measure-theoretic likelihood
+reduction, signed convolution estimates, uniform asymptotic remainders,
+and level-crossing analysis. The two source articles are manuscript
+sources, not externally refereed results. Their exact algebra has been
+rederived here in the scope needed for the new statements.
+
+\section{Concrete next questions}
+Three bounded extensions now look natural.
+First, identify how the correction matches the thin-complement endpoint
+when $m/\log n\to0$, where $y_-$ approaches zero and the signed moment
+bounds must be used on a growing range of tilt parameters.
+Second, obtain a transition theorem as $m/\log n\to\infty$ by replacing
+the separated-endpoint expansion with a uniform central saddle analysis.
+Third, classify arbitrary masks using their limiting correction transforms.
+The strict ordering proved above suggests studying whether a general
+ordering of the hidden-cap profiles induces an ordering of the normalized
+secant correction. Each extension requires new estimates; none is implicit
+in the present compact-critical theorem.
+
+\begin{thebibliography}{9}
+\bibitem{repo-late}
+ProveIt research manuscript collection, maintained by V.~Reshetnikov.
+\emph{Critical Complements in Fabius Conditioning: Sharp Information Loss,
+Geometric Phase Constants, and a Logarithmic Crossover}.
+Snapshot inspected 1 October 2026, commit
+\nolinkurl{63a7a325109ba611a1816b61dfd0eb072b896a7a}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Sharp_Information_Loss/article.tex}{Pinned manuscript source}.
+Source of the leading crossover and the explicitly open second-order question.
+
+\bibitem{repo-early}
+ProveIt research manuscript collection, maintained by V.~Reshetnikov.
+\emph{Critical Complements in Fabius Conditioning: Logarithmic Overlap,
+Finite-Memory Corrections, and the Order-Zero R\'enyi Crossover}.
+Same inspected snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Fabius_Conditioning/article.tex}{Pinned manuscript source}.
+Source of the distinct early-hidden mask and its growing-complement question.
+
+\bibitem{arias}
+J.~Arias de Reyna.
+\emph{An Infinitely Differentiable Function with Compact Support:
+Definition and Properties}.
+English translation of the 1982 paper, arXiv:1702.05442 (2017).
+\url{https://arxiv.org/abs/1702.05442}.
+Background for the probability interpretation of the Fabius--Rvachev function.
+
+\bibitem{fmnn}
+V.~F\'eray, P.-L.~M\'eliot and A.~Nikeghbali.
+\emph{Mod-$\phi$ Convergence I: Normality Zones and Precise Deviations}.
+arXiv:1304.2934v4 (2015).
+\url{https://arxiv.org/abs/1304.2934}.
+General precise-deviation context; no result from this source is used as an
+unverified uniform estimate in the proof.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions, Section 8.11(iii).
+\emph{Incomplete Gamma Functions: Large Parameter with Fixed Ratio}.
+\url{https://dlmf.nist.gov/8.11.iii}.
+Classical Gamma-tail asymptotic context.
+
+\bibitem{prekopa}
+A.~Pr\'ekopa.
+\emph{On Logarithmic Concave Measures and Functions}.
+Acta Scientiarum Mathematicarum (Szeged) \textbf{34} (1973), 335--343.
+\url{https://rutcor.rutgers.edu/~prekopa/SCIENT2.pdf}.
+Convolution preservation of log-concavity, Theorem 7.
+\end{thebibliography}
+\end{document}

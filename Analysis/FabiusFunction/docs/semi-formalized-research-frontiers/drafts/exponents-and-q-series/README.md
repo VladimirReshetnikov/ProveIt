@@ -1,6 +1,6 @@
 # Exponents and q-series
 
-There are two live document packages:
+There are two live document packages and two unmerged archival arrivals:
 
 - [`q_pochhammer_q_binomial_monograph/`](q_pochhammer_q_binomial_monograph/)
   is the single canonical synthesis of forward q-series and branch-aware
@@ -9,6 +9,30 @@ There are two live document packages:
   single consolidated frontier volume for the geometric q-deformation of the
   Fabius–Rvachev system: exponent sequences, sinc products, atomic splines,
   and parameter deformations.
+- [`Unit_Circle_Barrier_q_Fabius_Transform/`](Unit_Circle_Barrier_q_Fabius_Transform/)
+  — an archival arrival of 2026-09-30, filed whole and amended
+  editorially the same day (24-page A4 PDF, 1,033-line source, an exact
+  and high-precision check program): for every
+  fixed nonzero `z` the unit circle is a natural boundary of
+  `q ↦ A(q,z)`, which generalizes Part IX's natural-boundary theorem and
+  settles Part VII's generic natural-boundary conjecture (its divisor
+  corollary also proves Part VII's odd q-integer divisor conjecture; the
+  volume carries dated notes at both); exact leading
+  cyclotomic poles of the moment coefficients; and the exterior
+  transform's pole divisor with multiplicities. Unreviewed; no Lean
+  statement.
+- [`Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/`](Entire_Borel_Transform_Natural_Boundary_q_Fabius_Law/)
+  — an archival arrival of 2026-09-30, filed whole and amended
+  editorially the same day (23-page A4 PDF, 1,230-line source, an exact
+  and high-precision check program): at the
+  endpoint `q → 1`, with the transform argument scaled by `t = −log q`,
+  the centered q-Fabius cumulant series is Gevrey one with refined type
+  `1/(2π)`, its Borel minor is entire and sums it exactly on the positive
+  ray, yet a natural-boundary interval rules out every sectorial
+  exponential bound — the endpoint case of the unit-circle-barrier
+  article's summation question (Part IX of the volume, whose Gevrey
+  question at roots of unity stays open, carries a dated pointer to it).
+  Unreviewed; no Lean statement.
 
 ## The 2026-09-02 consolidation
 

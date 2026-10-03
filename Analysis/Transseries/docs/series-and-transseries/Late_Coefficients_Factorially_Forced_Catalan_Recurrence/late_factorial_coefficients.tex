@@ -1,0 +1,753 @@
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Late coefficients of the factorially forced Catalan recurrence},pdfsubject={Proof of the OEIS A260879 conjecture with finite corrections and inversions},pdfauthor={Research report}}
+\usepackage{enumitem}
+\setlist{nosep}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-10-02): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-02)}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\Ord}{\mathcal O}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\stir}[2]{\left\{\begin{smallmatrix}#1\\#2\end{smallmatrix}\right\}}
+\newcommand{\As}{\mathcal A}
+\newcommand{\dist}{\operatorname{dist}}
+\title{Late coefficients of the factorially forced Catalan recurrence}
+\author{Research report}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $a_0=1$ and $a_n=n!+\sum_{i=0}^{n-1}a_i a_{n-1-i}$. The inverse-power coefficients $c_k$ in the asymptotic expansion of $a_n/n!$ form OEIS A260879. We prove the conjectured equivalent $c_k\sim\Gamma(k)/(\log 2)^k$ and give an explicit expansion to every fixed algebraic order. An exact positive Stirling transform reduces the problem to inverse falling-factorial moments of the number of blocks in an ordered set partition. Uniform simple-pole estimates, exponential lower-tail bounds, and a beta-integral substitution supply all required remainder estimates. The first factorial-scale expansion is an application of established Bender--Borinsky theory; the ordinary and weighted Fubini pole mechanism is also prior work. We give finite correction algorithms, numerical checks, a selected Gamma-carrier inverse, and safe integer threshold enclosures. A separate positive decorated-tree argument proves a parity-dependent exponentially small remainder, with all fixed algebraic corrections, for factorial-basis half truncation. No optimal inverse-power truncation remainder, Borel continuation, or Stokes constant is asserted.
+\end{abstract}
+
+\section{The result and its scope}
+All logarithms are natural. Formal power series below need not converge. An asymptotic expansion is always a statement to each \emph{fixed} finite order; its error constant may depend on that order. Put
+\begin{equation}\label{eq:def}
+ F(z)=\sum_{n\ge0}n!z^n,\qquad A(z)=F(z)+zA(z)^2,
+ \qquad A(0)=1.
+\end{equation}
+The coefficient recurrence defines $A$ uniquely. Its coefficients $a_n=[z^n]A$ are OEIS A229741. The recurrence and its permutation-over-tree interpretation are already in Forcey, Lauve, and Sottile \cite{fls}. The corresponding inverse-power expansion and its first terms are recorded in OEIS, with attribution to V\'aclav Kot\v e\v sovec in 2015 \cite{oeis229,oeis260}.
+
+Define
+\begin{equation}\label{eq:DH}
+ D(z)=(1-4zF(z))^{-1/2}=\sum_{j\ge0}d_jz^j,
+ \qquad H(z)=2D(z)^3=\sum_{r\ge0}h_rz^r,
+ \qquad \rho=\log2.
+\end{equation}
+The falling factorial is $\fall{x}{r}=x(x-1)\cdots(x-r+1)$, with $\fall{x}{0}=1$. We write $\stir{n}{j}$ for Stirling numbers of the second kind, including $\stir00=1$ and zero for indices outside $0\le j\le n$.
+
+\begin{theorem}\label{thm:main}
+There is a unique real sequence $(c_k)_{k\ge0}$, with $c_0=1$, such that for every fixed integer $J\ge0$,
+\begin{equation}\label{eq:a-asym}
+ \frac{a_n}{n!}=\sum_{k=0}^{J}\frac{c_k}{n^k}
+                +\Ord_J(n^{-J-1}).
+\end{equation}
+It is determined exactly, for $k\ge1$, by
+\begin{equation}\label{eq:c-exact}
+ c_k=\sum_{\ell=0}^{k-1}d_{\ell+1}\stir{k-1}{\ell}.
+\end{equation}
+For every fixed integer $J\ge0$, as $k\to\infty$,
+\begin{equation}\label{eq:c-asym}
+ c_k=\frac{\Gamma(k)}{\rho^k}
+       \left(1+\sum_{j=1}^{J}\frac{q_j}{(k-1)^j}
+                        +\Ord_J(k^{-J-1})\right),
+\end{equation}
+where each correction is explicitly
+\begin{equation}\label{eq:q-generator}
+ q_j=\rho(j-1)!\sum_{r=1}^{j}\frac{h_r}{(r-1)!}
+       [y^{j-1}]\bigl(\exp(\rho\e^y)-2\bigr)^{r-1}.
+\end{equation}
+Equivalently, a formula involving only finite sums is
+\begin{equation}\label{eq:q-stirling}
+ q_j=\sum_{p=0}^{j-1}\rho^{p+1}\stir{j-1}{p}
+              \sum_{r=1}^{p+1}h_r2^{r-1}\stir{p}{r-1}.
+\end{equation}
+In particular, the leading equivalent conjectured in A260879 holds.
+\end{theorem}
+
+The first terms distinguish the three coefficient systems:
+\begin{align*}
+ (a_n)_{n\ge0}&=1,2,6,22,92,428,2208,12756,83848,\ldots,\\
+ (d_j)_{j\ge0}&=1,2,8,36,172,856,4408,23488,130264,\ldots,\\
+ (c_k)_{k\ge0}&=1,2,8,44,288,2148,17816,161852,1594280,\ldots.
+\end{align*}
+The $c_k$ are positive integers, whereas $q_j$ are positive polynomials in $\rho$ with integer coefficients. The all-order statement means that any requested finite number of corrections can be computed and accompanied by the indicated remainder. It does not say that the $j$-series converges, or that $J$ may increase with $k$ without further estimates.
+
+\subsection{What is established here}
+The specific contribution is the proof of the A260879 late-coefficient equivalent, together with its exact positive transfer and explicit higher corrections. Section~\ref{sec:half} separately proves a positive factorial-basis half-truncation remainder and its parity-dependent scalar expansion. The factorial-series composition theorem is existing machinery \cite{bender,borinsky}. Weighted Fubini generating functions and their pole lattice are classical; an explicitly relevant treatment is already present in the canonical \emph{Transseries and Inversion} volume in the ProveIt repository \cite{proveit}. We prove the uniform form needed here for completeness.
+
+A targeted source comparison at the pinned ProveIt revision and in the cited literature did not locate a previous proof of this particular A260879 expansion. That bounded negative finding is not a worldwide priority certificate. Section~\ref{sec:sources} specifies the search and version limitations. The proof below needs no analytic continuation of a Borel transform of $A$ or $D$.
+
+\section{The first factorial expansion}
+\label{sec:factorial}
+We first explain the precise application of established factorial-series asymptotic calculus. This is important because merely differentiating the formal equation does not by itself prove a coefficient remainder.
+
+For this application, let $\mathcal G$ denote the class of formal series $U(z)=\sum u_nz^n$ for which there are uniquely determined $u_j^*$ satisfying, for every fixed $R\ge0$,
+\begin{equation}\label{eq:class}
+ u_n=\sum_{j=0}^{R}u_j^*(n-j)!+\Ord_R((n-R-1)!).
+\end{equation}
+The formula concerns sufficiently large $n$, so all factorials are defined. The map $\As U=\sum_{j\ge0}u_j^*z^j$ is Borinsky's $\As_1^1$ on $\R[[z]]_1^1$. Polynomial changes in $U$ do not affect $\As U$. In particular,
+\begin{equation}\label{eq:baseA}
+ F\in\mathcal G,\qquad \As F=1,\qquad
+ z,F-1\in\mathcal G,\qquad \As z=0,\quad\As(F-1)=1.
+\end{equation}
+
+The analytic-composition theorem used is Borinsky's Theorem~32 \cite{borinsky}: for an analytic function $g$ of finitely many variables near the origin and inner series $U_i\in\mathcal G$ satisfying $U_i(0)=0$, the series $g(U_1,\ldots,U_m)$ belongs to $\mathcal G$, and
+\begin{equation}\label{eq:chain}
+ \As\bigl(g(U_1,\ldots,U_m)\bigr)
+ =\sum_{i=1}^{m}(\partial_i g)(U_1,\ldots,U_m)\As U_i.
+\end{equation}
+This is the analytic outer-function rule; no more general formal-composition rule is needed. The class definition carries the finite-order errors in \eqref{eq:class}.
+
+Let $C(w)=(1-\sqrt{1-4w})/(2w)$, with the removable value $C(0)=1$. The two-variable function
+\[
+ g(u,v)=(1+v)C(u(1+v))
+\]
+is analytic near $(0,0)$ and obeys $g=(1+v)+ug^2$. Its substitution at $(u,v)=(z,F-1)$ equals $A$, so membership $A\in\mathcal G$ is established \emph{before} applying $\As$. Both inner series have zero constant term, as the theorem requires. Differentiation in $v$ gives
+\[
+ \partial_vg(u,v)=(1-4u(1+v))^{-1/2}.
+\]
+Equations~\eqref{eq:baseA} and \eqref{eq:chain} now yield $\As A=D$. Thus, for every fixed $R\ge0$,
+\begin{equation}\label{eq:a-factorial}
+ a_n=\sum_{j=0}^{R}d_j(n-j)!+\Ord_R((n-R-1)!).
+\end{equation}
+
+Apply the same theorem to the analytic function $(1-4u(1+v))^{-1/2}$. It gives
+\begin{equation}\label{eq:AD}
+ D\in\mathcal G,\qquad \As D=2zD^3=zH.
+\end{equation}
+The zero constant coefficient of $zH$ is an indexing detail with consequences: taking enough terms in \eqref{eq:class} for $D$ and setting $n=\ell+1$ gives
+\begin{equation}\label{eq:d-asym}
+ \frac{d_{\ell+1}}{\ell!}
+ =\sum_{r=0}^{R}\frac{h_r}{\fall{\ell}{r}}
+                      +\Ord_R(\ell^{-R-1}).
+\end{equation}
+Here $h_0=2$. Hence the entire sequence $d_{\ell+1}/\ell!$ is bounded, after adjoining its finitely many initial entries. The binomial expansion of $D$ gives nonnegative coefficients, and in fact $d_j>0$ for all $j$. All uses of \eqref{eq:d-asym} below keep $R$ fixed.
+
+\section{An exact positive Stirling transform}
+\label{sec:stirling}
+For a fixed $j\ge1$, the familiar generating function for Stirling numbers yields
+\begin{equation}\label{eq:laurent}
+ \frac{(n-j)!}{n!}
+ =n^{-j}\prod_{i=0}^{j-1}(1-i/n)^{-1}
+ =\sum_{k\ge j}\stir{k-1}{j-1}n^{-k}.
+\end{equation}
+This Laurent series converges when $n>j-1$. To see the indices directly, use
+\[
+ \sum_{m\ge0}\stir{j+m-1}{j-1}x^m
+ =\prod_{i=1}^{j-1}(1-ix)^{-1}.
+\]
+Insert only finitely many terms of \eqref{eq:laurent} into \eqref{eq:a-factorial}. The resulting error, after division by $n!$, is $\Ord_J(n^{-J-1})$. This proves \eqref{eq:a-asym}, its coefficient formula \eqref{eq:c-exact}, and uniqueness by successive multiplication by powers of $n$. No infinite asymptotic expansion has been interchanged with a sum.
+
+For exact computation it is convenient that
+\begin{equation}\label{eq:d-rec}
+ D(z)=\frac1{1-2zA(z)},\qquad
+ d_0=1,\quad d_n=2\sum_{i=0}^{n-1}a_i d_{n-1-i}.
+\end{equation}
+Indeed $1-2zA(z)=\sqrt{1-4zF(z)}$ by the formal quadratic solution. Equations~\eqref{eq:def}, \eqref{eq:d-rec}, and \eqref{eq:c-exact} therefore generate every $c_k$ using integer arithmetic.
+
+Set $N=k-1$ and introduce the weighted ordered-Bell, or Fubini, polynomials
+\begin{equation}\label{eq:fubini}
+ M_N(v)=\sum_{\ell=0}^{N}\ell!\stir{N}{\ell}v^\ell,
+ \qquad M_N=M_N(1).
+\end{equation}
+Their coefficients count ordered partitions of an $N$-element set by the number of blocks. Define a random variable $L_N$ on $\{0,\ldots,N\}$ by
+\begin{equation}\label{eq:law}
+ \Prob(L_N=\ell)=\frac{\ell!\stir{N}{\ell}}{M_N}.
+\end{equation}
+Then the exact transform becomes
+\begin{equation}\label{eq:expect}
+ c_{N+1}=M_N\E\left[\frac{d_{L_N+1}}{L_N!}\right].
+\end{equation}
+Positivity will let us transfer the bounded remainders in \eqref{eq:d-asym}; a merely formal composition would not provide that justification.
+
+\section{Uniform pole estimates and tail control}
+\label{sec:poles}
+The exponential generating function is exactly
+\begin{equation}\label{eq:marked-egf}
+ \sum_{N\ge0}M_N(v)\frac{z^N}{N!}
+ =\sum_{\ell\ge0}\bigl(v(\e^z-1)\bigr)^\ell
+ =\frac1{1-v(\e^z-1)}.
+\end{equation}
+For $v>0$, write $\rho(v)=\log(1+1/v)$, so $\rho(1)=\rho$.
+
+\begin{lemma}\label{lem:uniform}
+Fix $\eta\in(0,1)$. There is a constant $\theta_\eta\in(0,1)$ such that, uniformly for real $v\in[\eta,1]$,
+\begin{equation}\label{eq:uniform}
+ M_N(v)=\frac{N!}{(1+v)\rho(v)^{N+1}}
+                      \left(1+\Ord_\eta(\theta_\eta^N)\right).
+\end{equation}
+In particular,
+\begin{equation}\label{eq:M-main}
+ M_N=\frac{N!}{2\rho^{N+1}}\left(1+\Ord(\theta^N)\right)
+\end{equation}
+for some $\theta\in(0,1)$.
+\end{lemma}
+\begin{proof}
+The poles in \eqref{eq:marked-egf} are $\rho(v)+2\pi\ii m$, $m\in\mathbb Z$. The principal part at the positive real pole is
+\[
+ \frac1{(1+v)(\rho(v)-z)}.
+\]
+Choose
+\[
+ 1<\lambda<\min_{v\in[\eta,1]}
+          \frac{|\rho(v)+2\pi\ii|}{\rho(v)}.
+\]
+The minimum exceeds one by continuity and compactness. Subtract the displayed principal part. The difference is analytic in each disk $|z|\le\lambda\rho(v)$; the removed pole is interpreted by its removable value. On the circles $z=\lambda\rho(v)\e^{\ii t}$ the remainder is jointly continuous in $(v,t)$ and therefore uniformly bounded. Cauchy's estimate gives an error $\Ord((\lambda\rho(v))^{-N})$ in its $z^N$ coefficient. Dividing by the principal coefficient $1/((1+v)\rho(v)^{N+1})$ leaves $\Ord_\eta(\lambda^{-N})$, proving the assertion after multiplication by $N!$.
+\end{proof}
+
+% ed. (2026-10-02): gives the printed numbers of the volume results that Section 1.1 and Section 11 credit by label, and the exact form of the lemma (batch-77 placement dossier).
+\begin{ednote}
+The chapter credited in Section~\ref{sec:sources}, ``The Fubini numbers: an exact pole lattice'' of the canonical volume \cite{proveit} (Appendix~V, \path{q2:sec:fubini}), proves the exact form of this lemma. Its Theorem~V.6 (\path{q2:thm:weighted}) gives, for every $v>0$ and $N\ge1$,
+\[
+ M_N(v)=\frac{N!}{1+v}\sum_{m\in\mathbb Z}\bigl(\rho(v)+2\pi\ii m\bigr)^{-N-1},
+\]
+an absolutely convergent identity, and at $v=1$ it is Theorem~V.1 (\path{q2:thm:fubini}). The term $m=0$ is the main term of \eqref{eq:uniform}, and the other terms are smaller by the factors $\bigl(\rho(v)/|\rho(v)+2\pi\ii m|\bigr)^{N+1}$; on $[\eta,1]$ these are largest at $v=\eta$, where $\rho(v)$ is largest, so the volume's pole-tail bounds (Theorem~V.4, \path{q2:thm:pole-tail}) with $\rho$ replaced by $\rho(\eta)$ give the uniform remainder, with $\theta_\eta=\rho(\eta)/|\rho(\eta)+2\pi\ii|$. The volume's Remark~V.7 (\path{q2:rem:weighted}) says the opposite: that the leading-pole approximation degrades as the weight tends to infinity and that a compact weight interval needs the bound with the minimum of $\rho$. Since $\rho(v)/|\rho(v)+2\pi\ii m|$ tends to $0$ as $v\to\infty$ and to $1$ as $v\to0$, it is the maximum, and the restriction $v\ge\eta$ made here is the one that is needed. The lemma's contour proof is independent of the volume; only its uniformity statement, and the lower tail bound of Lemma~\ref{lem:tail} built on it, go beyond what the volume states.
+\end{ednote}
+
+\begin{lemma}\label{lem:tail}
+There are fixed constants $\epsilon,c,C>0$ such that
+\begin{equation}\label{eq:tail}
+ \Prob(L_N\le\epsilon N)\le C\e^{-cN}.
+\end{equation}
+Consequently, for every fixed $R\ge0$,
+\begin{equation}\label{eq:inverse-bound}
+ \E(1+L_N)^{-R}=\Ord_R(N^{-R}).
+\end{equation}
+Changing finitely many entries of any bounded sequence inside its expectation at $L_N$ changes the expectation by an exponentially small amount.
+\end{lemma}
+\begin{proof}
+For any fixed $\eta\in(0,1)$, Markov's inequality and \eqref{eq:uniform} give
+\[
+ \Prob(L_N\le\epsilon N)
+ \le\eta^{-\epsilon N}\E\eta^{L_N}
+ =\eta^{-\epsilon N}\frac{M_N(\eta)}{M_N}
+ \le C_\eta\left(\eta^{-\epsilon}\frac{\rho}{\rho(\eta)}\right)^N.
+\]
+Since $\rho(\eta)>\rho$, choose $\epsilon>0$ sufficiently small to make the base less than one. Split the expectation in \eqref{eq:inverse-bound} at $\epsilon N$; its lower part is bounded by \eqref{eq:tail}, and its upper part by $(1+\epsilon N)^{-R}$. A fixed finite set of indices lies in the lower tail for large $N$, which proves the last assertion.
+\end{proof}
+
+Already these two lemmas prove the leading conjecture. The bounded sequence $d_{\ell+1}/\ell!$ tends to $2$ by \eqref{eq:d-asym}; Lemma~\ref{lem:tail} implies that its expectation tends to $2$. Equations~\eqref{eq:expect} and \eqref{eq:M-main} give $c_{N+1}\sim N!/\rho^{N+1}$. The remaining argument quantifies this transfer to every fixed order.
+
+\section{Inverse moments with controlled remainders}
+\label{sec:moments}
+For a fixed integer $r\ge1$, define
+\begin{equation}\label{eq:beta-def}
+ \beta_r(N)=\E\left[\frac1{\fall{L_N}{r}};\ L_N\ge r\right].
+\end{equation}
+The restriction avoids the zero falling factorial at small indices. For $\ell\ge r$, the beta integral gives exactly
+\begin{equation}\label{eq:beta-integral}
+ \frac1{\fall{\ell}{r}}
+ =\frac1{(r-1)!}\int_0^1t^{\ell-r}(1-t)^{r-1}\,dt.
+\end{equation}
+Fix $t_0\in(0,1)$. The part of this integral on $[0,t_0]$ contributes $\Ord_r(\e^{-c_rN})$ after expectation. Here is an explicit bound for the apparent singularity at zero. The terms $r\le\ell<2r$ have exponentially small probabilities by Lemma~\ref{lem:tail}, and their integrals are bounded constants. For $\ell\ge2r$ and $0\le t\le t_0$,
+\[
+ t^{\ell-r}\le t_0^{\ell/2}.
+\]
+Their total contribution is at most a constant times
+$\E(\sqrt{t_0})^{L_N}=M_N(\sqrt{t_0})/M_N$, exponentially small by Lemma~\ref{lem:uniform}. On $[t_0,1]$ the factor $t^{-r}$ is bounded, so restoring the excluded terms $\ell<r$ also costs only an exponentially small error. Thus
+\begin{equation}\label{eq:beta-compact}
+ \beta_r(N)=\frac1{(r-1)!}\int_{t_0}^{1}
+ t^{-r}(1-t)^{r-1}\frac{M_N(t)}{M_N}\,dt
+                  +\Ord_r(\e^{-c_rN}).
+\end{equation}
+
+Insert the uniform pole estimate. Now make the monotone substitution
+\begin{equation}\label{eq:substitution}
+ y=\log\frac{\rho(t)}\rho,\qquad
+ t=\frac1{\exp(\rho\e^y)-1},\qquad
+ -\frac{dt}{dy}=\rho\e^y t(1+t).
+\end{equation}
+It takes $t=1$ to $y=0$ and $t=t_0$ to a fixed $y_0>0$. The main term of the ratio in \eqref{eq:beta-compact} is
+\[
+ \frac2{1+t}\left(\frac\rho{\rho(t)}\right)^{N+1}
+ =\frac{2\e^{-y}}{1+t}\e^{-Ny}.
+\]
+The amplitudes cancel exactly with the Jacobian in \eqref{eq:substitution}. Since $(1-t)/t=\exp(\rho\e^y)-2$, we obtain
+\begin{equation}\label{eq:beta-laplace}
+ \beta_r(N)=\frac{2\rho}{(r-1)!}\int_0^{y_0}\e^{-Ny}
+       \bigl(\exp(\rho\e^y)-2\bigr)^{r-1}\,dy
+                    +\Ord_r(\e^{-c'_rN}).
+\end{equation}
+The uniform relative error in the pole estimate integrates to an exponentially small absolute error; the remaining amplitude is bounded on the fixed integration interval.
+
+\begin{proposition}\label{prop:moment}
+For fixed integers $r\ge1$ and $T\ge r-1$,
+\begin{align}\label{eq:beta-expansion}
+ \beta_r(N)
+ &=\frac{2\rho}{(r-1)!}\sum_{s=r-1}^{T}s!
+       [y^s]\bigl(\exp(\rho\e^y)-2\bigr)^{r-1}N^{-s-1}
+       +\Ord_{r,T}(N^{-T-2}).
+\end{align}
+For $r=1$, more precisely, $\beta_1(N)=2\rho/N+\Ord(\e^{-cN})$ for some $c>0$.
+\end{proposition}
+\begin{proof}
+The analytic amplitude in \eqref{eq:beta-laplace} vanishes to order $r-1$ at zero, because $\exp(\rho)=2$. On a small fixed interval $[0,\delta]$, its Taylor polynomial through degree $T$ has remainder bounded by $C_{r,T}y^{T+1}$. Integrating the remainder against $\e^{-Ny}$ gives at most $C_{r,T}(T+1)!N^{-T-2}$. Extend the polynomial integrals to infinity, using $\int_0^\infty\e^{-Ny}y^s\,dy=s!N^{-s-1}$; the added tails are exponentially small. The part from $\delta$ to $y_0$ is likewise exponentially small. When $r=1$, the amplitude is exactly one and its integral is $(1-\e^{-Ny_0})/N$.
+\end{proof}
+This is a finite Watson expansion with an explicit remainder argument. It does not involve integrating an infinite, potentially divergent asymptotic series.
+
+\section{All finite corrections}
+\label{sec:corrections}
+Fix $J\ge1$. Extend $1/\fall{\ell}{r}$ by zero for $\ell<r$. After changing finitely many small-$\ell$ values, the error in \eqref{eq:d-asym} with $R=J$ is bounded in absolute value by $C_J(1+\ell)^{-J-1}$ for all $\ell\ge0$. Lemma~\ref{lem:tail} handles both the finite changes and this remainder. Therefore
+\begin{equation}\label{eq:combine}
+ \E\left[\frac{d_{L_N+1}}{L_N!}\right]
+ =2+\sum_{r=1}^{J}h_r\beta_r(N)+\Ord_J(N^{-J-1}).
+\end{equation}
+Use Proposition~\ref{prop:moment} with $T=J-1$. Multiply \eqref{eq:combine} by \eqref{eq:M-main} and divide its bracket by two. Since $N=k-1$, this gives \eqref{eq:c-asym} and \eqref{eq:q-generator}. For $J=0$, either the leading proof above with \eqref{eq:d-asym} at order zero or the same expectation bound gives the required relative $\Ord(k^{-1})$ error. This completes the analytic proof of Theorem~\ref{thm:main}.
+
+For the entirely finite generator \eqref{eq:q-stirling}, write
+\begin{align*}
+ \bigl(\exp(\rho\e^y)-2\bigr)^{r-1}
+ &=2^{r-1}\bigl(\exp(\rho(\e^y-1))-1\bigr)^{r-1}\\
+ &=2^{r-1}(r-1)!\sum_{p\ge r-1}
+           \stir{p}{r-1}\frac{\rho^p(\e^y-1)^p}{p!}.
+\end{align*}
+Extracting $[y^{j-1}]$ uses
+$[y^{j-1}](\e^y-1)^p=p!\stir{j-1}{p}/(j-1)!$. Only $p\le j-1$ contributes, proving \eqref{eq:q-stirling} without any limiting interchange. In particular $q_j\in\mathbb Z_{\ge0}[\rho]$ and $q_j>0$.
+
+The values needed for the first six corrections are
+\[
+ h_0,\ldots,h_6=2,12,72,424,2472,14352,83344.
+\]
+The resulting polynomials are
+\begin{align}\label{eq:q-first}
+ q_1&=12\rho,\nonumber\\
+ q_2&=144\rho^2,\nonumber\\
+ q_3&=144\rho^2+1840\rho^3,\nonumber\\
+ q_4&=144\rho^2+5520\rho^3+25008\rho^4,\nonumber\\
+ q_5&=144\rho^2+12880\rho^3+150048\rho^4+360304\rho^5,\nonumber\\
+ q_6&=144\rho^2+27600\rho^3+625200\rho^4
+                    +3603040\rho^5+5483312\rho^6.
+\end{align}
+Each requires only $d_0,\ldots,d_j$, the finite convolution defining $h_j$, and a finite Stirling triangle. These formulas specify every further fixed correction, rather than only a fitted list of low-order constants.
+
+\subsection{An independent exact check of the generators}
+The package calculates $D$ in two different ways. Besides \eqref{eq:d-rec}, the binomial theorem gives
+\begin{equation}\label{eq:binomial-D}
+ D(z)=\sum_{m\ge0}\binom{2m}{m}z^mF(z)^m.
+\end{equation}
+For each prescribed degree, this is a finite sum of polynomial products. The recurrence and \eqref{eq:binomial-D} agree coefficient by coefficient in the supplied test range. The package also computes \eqref{eq:q-generator} by truncated rational-polynomial arithmetic and compares it with \eqref{eq:q-stirling}. Numerical agreement is supplementary evidence; the finite coefficient-extraction argument above is the proof.
+
+\section{Smooth inverse and discrete thresholds}
+\label{sec:inverse}
+An integer sequence has no canonically prescribed smooth interpolation. We consequently define the precise model being inverted. For a fixed $J\ge0$, put
+\begin{equation}\label{eq:model}
+ Q_J(t)=1+\sum_{j=1}^{J}q_jt^j,\qquad
+ G_J(x)=\Gamma(x)\rho^{-x}Q_J\left(\frac1{x-1}\right),\qquad
+ g_J(x)=\log G_J(x).
+\end{equation}
+These definitions are used on a sufficiently large real ray. Here $Q_J$ is positive, and with $\psi=\Gamma'/\Gamma$,
+\begin{equation}\label{eq:model-derivative}
+ g_J'(x)=\psi(x)-\log\rho
+ -\frac{Q_J'(1/(x-1))}{(x-1)^2Q_J(1/(x-1))}
+ =\log x-\log\rho+\Ord_J(x^{-1}).
+\end{equation}
+Thus $G_J$ is eventually positive and strictly increasing. Let $x_J(y)$ be its unique large solution of $G_J(x)=y$. Taking logarithms of \eqref{eq:c-asym} gives
+\begin{equation}\label{eq:log-error}
+ \log c_k-g_J(k)=\Ord_J(k^{-J-1}).
+\end{equation}
+
+\begin{theorem}\label{thm:inverse}
+Fix $J\ge0$. For $y\to\infty$, write
+\begin{equation}\label{eq:seed}
+ Y=\log y,\qquad w=W_0\left(\frac{Y}{\e\rho}\right),
+ \qquad x_*=\frac{Y}{w},
+\end{equation}
+where $W_0$ is the positive real branch of Lambert's function. Then
+\begin{equation}\label{eq:first-inverse}
+ x_J(y)=x_*+\frac{\log x_*-\log(2\pi)}{2(1+w)}
+                         +\Ord_J(x_*^{-1}).
+\end{equation}
+Starting at $x^{(0)}=x_*$, Newton's iteration
+\begin{equation}\label{eq:newton}
+ x^{(s+1)}=x^{(s)}-
+     \frac{g_J(x^{(s)})-Y}{g_J'(x^{(s)})}
+\end{equation}
+converges for all sufficiently large $y$, and for every fixed $s\ge0$,
+\begin{equation}\label{eq:newton-error}
+ |x^{(s)}-x_J(y)|
+   =\Ord_{J,s}\bigl((x_*\log x_*)^{-(2^s-1)}\bigr).
+\end{equation}
+In particular, choosing $2^s-1\ge J+2$ makes the iteration error smaller than the forward-model inverse scale $x_*^{-J-1}/\log x_*$.
+\end{theorem}
+\begin{proof}
+The seed satisfies $x_*\log(x_*/(\e\rho))=Y$ and $\log(x_*/\rho)=1+w$. Stirling's expansion gives
+\[
+ g_J(x_*)-Y=-\frac12\log x_*+\frac12\log(2\pi)
+                                      +\Ord_J(x_*^{-1}).
+\]
+Since $g_J'(x)\sim\log x$ near $x_*$, the root lies a bounded distance from $x_*$. A Taylor expansion and \eqref{eq:model-derivative} give \eqref{eq:first-inverse}. The $q_1$ term, when $J\ge1$, first enters at order $1/(x_*\log x_*)$, below the displayed bounded shift.
+
+On a fixed sufficiently large bounded neighborhood of the root,
+$g_J''(x)=\Ord_J(x_*^{-1})$ and $g_J'(x)$ is comparable to $\log x_*$. Taylor's theorem for Newton's method therefore yields
+\[
+ |x^{(s+1)}-x_J|
+ \le\frac{C_J}{x_*\log x_*}|x^{(s)}-x_J|^2.
+\]
+The initial error is bounded, and the shrinking factor keeps subsequent iterates in this neighborhood for sufficiently large $y$. Induction gives exponents $0,1,3,7,\ldots,2^s-1$, proving the claims.
+\end{proof}
+
+This supplies an algorithm to every fixed inverse precision. A symbolic expansion may replace $\log\Gamma$ and $\psi$ by sufficiently many terms of their differentiable Stirling expansions. Their standard finite-order remainders on the positive real axis preserve the target precision. For numerical work the package uses the Gamma model directly, without claiming interval certification for floating-point values.
+
+\begin{corollary}\label{cor:threshold}
+The sequence $c_k$ is strictly increasing for $k\ge1$. Define
+\[
+ K(y)=\min\{k\ge1:c_k\ge y\}.
+\]
+For each fixed $J\ge0$ there is a constant $C_J>0$ such that, for all sufficiently large $y$,
+\begin{equation}\label{eq:bracket}
+ \left\lceil x_J(y)-\varepsilon_J(y)\right\rceil
+ \le K(y)\le
+ \left\lceil x_J(y)+\varepsilon_J(y)\right\rceil,
+ \qquad
+ \varepsilon_J(y)=\frac{C_Jx_J(y)^{-J-1}}{\log x_J(y)}.
+\end{equation}
+If $\dist(x_J(y),\mathbb Z)>\varepsilon_J(y)$, both endpoints agree and $K(y)=\lceil x_J(y)\rceil$.
+\end{corollary}
+\begin{proof}
+Use $\stir{N+1}{\ell}=\ell\stir{N}{\ell}+\stir{N}{\ell-1}$ in \eqref{eq:c-exact}. For $N\ge1$, the first part dominates $c_{N+1}$ because $\stir N0=0$ and $\ell\ge1$ on its support. The second part is positive. The remaining pair is $c_1=2<c_2=8$.
+
+For the lower bound in \eqref{eq:bracket}, consider the largest integer $k<x_J-\varepsilon_J$. It lies within $1+\varepsilon_J$ of $x_J$, so \eqref{eq:log-error} applies with an error at most a constant times $x_J^{-J-1}$. The mean-value theorem changes $g_J$ by at least a constant times $\varepsilon_J\log x_J$ between $k$ and $x_J$. A sufficiently large $C_J$ therefore gives $c_k<y$. Strict increase handles every smaller integer. Applying the same comparison to $k=\lceil x_J+\varepsilon_J\rceil$ gives $c_k\ge y$, proving the upper bound. The final statement follows from the ceiling function.
+\end{proof}
+
+The constants and lower validity thresholds in \eqref{eq:bracket} are existence constants from fixed-order asymptotics. They are \emph{not} numerically certified interval bounds. Near an integer the two-ceiling enclosure deliberately retains two possible adjacent answers. Replacing it unconditionally by one rounded smooth approximation would lose precisely the threshold cases that rounding makes sensitive.
+
+\subsection{The corresponding inverse for the original sequence}
+For completeness, the established expansion \eqref{eq:a-asym} also gives an inverse for $a_n$ itself. This uses a different carrier and a different index convention. For fixed $J\ge0$, set
+\begin{equation}\label{eq:original-model}
+ P_J(t)=\sum_{j=0}^{J}c_jt^j,\qquad
+ B_J(x)=\Gamma(x+1)P_J(1/x),\qquad b_J(x)=\log B_J(x).
+\end{equation}
+On a sufficiently large real ray, $P_J(1/x)>0$ and
+\[
+ b_J'(x)=\psi(x+1)-\frac{P_J'(1/x)}{x^2P_J(1/x)}\sim\log x.
+\]
+Let $u_J(y)$ be the unique large solution of $B_J(u)=y$. The forward logarithmic error is $\log a_n-b_J(n)=\Ord_J(n^{-J-1})$.
+
+With $Y=\log y$, $v=W_0(Y/\e)$, and $u_*=Y/v$ denoting the Lambert \emph{seed}, the same Taylor argument, now using $\log\Gamma(x+1)$, gives
+\begin{equation}\label{eq:original-inverse}
+ u_J(y)=u_*-\frac{\log u_*+\log(2\pi)}{2(1+v)}
+                          +\Ord_J(u_*^{-1}).
+\end{equation}
+Newton iteration with $b_J$ in place of $g_J$ has error
+$\Ord_{J,s}((u_*\log u_*)^{-(2^s-1)})$ after $s$ steps, by exactly the derivative bounds used in Theorem~\ref{thm:inverse}.
+
+The sequence $a_n$ is strictly increasing: $a_1=2>a_0=1$, and for $n\ge2$ the two endpoint summands in the recurrence already give $a_n\ge n!+2a_{n-1}$. Define
+\[
+ N_a(y)=\min\{n\ge0:a_n\ge y\}.
+\]
+The mean-value proof of Corollary~\ref{cor:threshold} therefore gives constants $C'_J>0$ such that eventually
+\begin{equation}\label{eq:original-bracket}
+ \left\lceil u_J(y)-\delta_J(y)\right\rceil
+ \le N_a(y)\le
+ \left\lceil u_J(y)+\delta_J(y)\right\rceil,
+ \qquad
+ \delta_J(y)=\frac{C'_J u_J(y)^{-J-1}}{\log u_J(y)}.
+\end{equation}
+As before, the constants are existential; the common rounded answer is justified when the model inverse is farther than $\delta_J$ from every integer. This corollary uses only the proven fixed-order expansion and does not choose a canonical interpolation of $a_n$.
+
+% ed. (2026-10-02): names the repository apparatus that this section re-derives without citing it (batch-77 placement dossier).
+\begin{ednote}
+Both inverses of this section are cases of the inversion apparatus of the canonical transseries volume \cite{ed:tai}, which the article cites only for its Fubini chapter; the method is the volume's, and only the A260879 and A229741 data are new to the repository.
+The seeds solve the volume's factorial core, Proposition~J.27 (\path{p0:prop:factorial-core}): $x_*\log(x_*/(\e\rho))=Y$ with $\kappa=1$, $d=-1-\log\rho$, and $u_*(\log u_*-1)=Y$ with $\kappa=1$, $d=-1$.
+In the displacement $x=x_*(1+E)$, Stirling's series turns $g_J(x)=Y$ into $(1+w)E+[(1+E)\log(1+E)-E]+f(t,E)=0$ with $t=1/x_*$ and $f=-\frac t2\bigl(\log x_*+\log(1+E)-\log(2\pi)\bigr)+\Ord(t^2)$, which is the volume's reversion about an arbitrary core, Theorem~J.33 (\path{p0:thm:core-reversion}), with $\Lambda=1+w$; its first coefficient is the shift of \eqref{eq:first-inverse}, and the same computation with $\Lambda=1+v$ and $f=\frac t2\bigl(\log u_*+\log(1+E)+\log(2\pi)\bigr)+\Ord(t^2)$ gives that of \eqref{eq:original-inverse}. The editors recomputed both shifts.
+For $J=0$ the carrier of \eqref{eq:original-model} is $\Gamma(x+1)$ and $u_0(y)=\Gamma_+^{-1}(y)-1$ is the volume's gamma inverse, Theorem~Q.25 (\path{p6:thm:gamma}): with $R=\log y-\frac12\log(2\pi)$ and $T(\log T-1)=R$ it gives $u_0=T-\frac12+\Ord(T^{-1})$, and $T=u_*-\log(2\pi)/(2\log u_*)+\Ord(u_*^{-1})$ makes this \eqref{eq:original-inverse}. The same dictionary, for the other factorially forced quadratic recurrence (A006014), is in the editorial note of the sibling package \path{Factorial_Transseries_OEIS_A006014} beside this one.
+The residual-to-root steps are the volume's Theorem~J.47 (\path{p0:thm:backward-error}). The final sentence of Corollary~\ref{cor:threshold}, and its analogue for $N_a$, is the separation condition of the volume's staircase theorem, Theorem~J.43(2) (\path{p0:thm:staircase}), read with the smooth model in place of an admissible interpolation (Definition~J.41, \path{p0:def:three-inverses}); as there, it can fail for arbitrarily small $\varepsilon_J$, which is why the enclosures keep two ceilings.
+\end{ednote}
+
+\section{A positive exponential remainder in the factorial basis}
+\label{sec:half}
+There is also a genuine exponentially small remainder theorem for a specified truncation rule. It concerns the factorial basis $d_j(n-j)!$, with cutoff $j<n/2$. This is distinct from truncating the inverse-power expansion at its least term $k\approx\rho n$.
+
+For $n\ge2$, put $B=\lfloor n/2\rfloor$ and define
+\begin{equation}\label{eq:R-def}
+ \mathcal R_n=a_n-\sum_{0\le j<n/2}d_j(n-j)!.
+\end{equation}
+We use $\mathcal R_n$ to distinguish this exact remainder from the normalized late coefficient $R_k$ in the numerical section. Let $\mathrm{Cat}_s=\binom{2s}{s}/(s+1)$ and
+\[
+ F_B(z)=\sum_{k=0}^{B}k!z^k,\qquad
+ A_B(z)=\sum_{s\ge0}\mathrm{Cat}_s z^sF_B(z)^{s+1}.
+\]
+
+\begin{theorem}\label{thm:half}
+For every integer $n\ge2$, the exact identity and positive bound
+\begin{equation}\label{eq:positive-identity}
+ \mathcal R_n=[z^n]A_B(z)\ge E_n>0,
+ \qquad
+ E_{2B}=2B!(B-1)!,\quad E_{2B+1}=(B!)^2
+\end{equation}
+hold. As $B\to\infty$,
+\begin{equation}\label{eq:half-leading}
+ \mathcal R_{2B}=2B!(B-1)!\bigl(1+\Ord(B^{-1})\bigr),\qquad
+ \mathcal R_{2B+1}=(B!)^2\bigl(1+\Ord(B^{-1})\bigr).
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:half-normal}
+ \frac{\mathcal R_n}{n!}
+ =\begin{cases}
+  2\sqrt{2\pi/n}\,2^{-n}\bigl(1+\Ord(n^{-1})\bigr),&n\text{ even},\\
+  \sqrt{2\pi/n}\,2^{-n}\bigl(1+\Ord(n^{-1})\bigr),&n\text{ odd}.
+ \end{cases}
+\end{equation}
+For every fixed integer $J\ge0$, define
+\begin{equation}\label{eq:sector}
+ T_{n,J}=\sum_{s=1}^{J+1}\mathrm{Cat}_s
+     \sum_{\substack{k_1+\cdots+k_{s+1}=n-s\\0\le k_i\le B}}
+                       \prod_{i=1}^{s+1}k_i!.
+\end{equation}
+Then $0\le\mathcal R_n-T_{n,J}=\Ord_J(E_nB^{-J-1})$.
+\end{theorem}
+\begin{proof}
+The formal Catalan solution is
+\[
+ A(z)=\sum_{s\ge0}\mathrm{Cat}_s z^sF(z)^{s+1}.
+\]
+A term counts a plane full binary tree with $s$ internal nodes of size one and $s+1$ ordered leaves. A leaf of size $k\ge0$ carries one of $k!$ permutation decorations. Total size is $s$ plus the sum of the leaf sizes. This is the established decorated-tree construction associated with the recurrence \cite{fls}.
+
+Regard $F$ temporarily as an independent variable. Differentiating with respect to it gives $\partial A/\partial F=D$. Consequently $d_j(n-j)!$ counts objects of total size $n$ with a distinguished leaf of size $n-j$. If $j<n/2$, this leaf is larger than $n/2$ and is unique. The sum in \eqref{eq:R-def} therefore counts precisely all objects with such a leaf, without overcounting. The complement has every leaf size at most $B$, proving the coefficient identity in \eqref{eq:positive-identity}.
+
+The $s=0$ sector vanishes at degree $n>B$. In the $s=1$ sector the two leaf sizes sum to $n-1$ and are each at most $B$. For $n=2B$ the possibilities are $(B,B-1)$ and $(B-1,B)$; for $n=2B+1$ only $(B,B)$ is possible. This gives exactly $E_n$ and proves positivity.
+
+Choose the positive radius $r=r_B=(B!)^{-1/B}$. Then $B!r^B=1$, $Br\le\e$, and $Br\to\e$. We claim $F_B(r)=\Ord(1)$ uniformly in $B$. For $1\le k\le B/2$, a Stirling upper bound gives
+\[
+ k!r^k\le C\sqrt{k}(kr/\e)^k
+       \le C\sqrt{k}(k/B)^k\le C\sqrt{k}\,2^{-k}.
+\]
+This part is summable uniformly. In the upper half of the range, successive terms read backward have ratio
+\[
+ \frac{(k-1)!r^{k-1}}{k!r^k}=\frac1{kr}\le\frac2{Br}.
+\]
+For large $B$ this is bounded by a fixed number less than one. Starting from $B!r^B=1$ and summing backward geometrically proves the claim.
+
+Since $r=\Ord(B^{-1})$, eventually $4rF_B(r)<1$. Using $\mathrm{Cat}_s\le4^s$, for every fixed $M\ge1$,
+\begin{equation}\label{eq:radial-tail}
+ \sum_{s\ge M}\mathrm{Cat}_s r^sF_B(r)^{s+1}
+       =\Ord_M(r^M).
+\end{equation}
+Nonnegative coefficients now give
+\[
+ [z^n]\sum_{s\ge M}\mathrm{Cat}_s z^sF_B(z)^{s+1}
+     \le r^{-n}\sum_{s\ge M}\mathrm{Cat}_s r^sF_B(r)^{s+1}
+     =\Ord_M(r^{M-n}).
+\]
+For even $n=2B$, $r^{-n}=(B!)^2$ and $E_n=2(B!)^2/B$. The normalized tail is thus $\Ord_M(Br^M)$. For odd $n=2B+1$, the normalized tail is $\Ord_M(r^{M-1})$. Taking $M=2$ proves \eqref{eq:half-leading}, and taking $M=J+2$ proves the fixed-sector bound. Stirling's formula gives \eqref{eq:half-normal}.
+\end{proof}
+
+\subsection{Scalar corrections to every fixed order}
+The finite sectors can be reduced to rational functions of $B$ with a rigorous remainder. Define, for $t\ge1$ and $q\ge0$,
+\begin{equation}\label{eq:scalar-def}
+ b_t=[z^t]z(1-4zF(z))^{-3/2}=\frac{h_{t-1}}2,
+ \qquad
+ V_q(B)=\sum_{a=0}^{q}\frac1{\fall B a\fall B{q-a}}.
+\end{equation}
+These $b_t$ are unrelated to the logarithmic carrier $b_J(x)$ in \eqref{eq:original-model}; their index and argument make the distinction explicit. In particular $b_1,b_2,b_3,b_4=1,6,36,212$.
+
+\begin{theorem}\label{thm:scalar}
+For every fixed integer $J\ge0$,
+\begin{align}
+ \frac{\mathcal R_{2B}}{2B!(B-1)!}
+ &=\frac B2\sum_{t=1}^{J+1}b_tV_t(B)
+                                  +\Ord_J(B^{-J-1}),\label{eq:scalar-even}\\
+ \frac{\mathcal R_{2B+1}}{(B!)^2}
+ &=\sum_{t=1}^{J+1}b_tV_{t-1}(B)
+                                  +\Ord_J(B^{-J-1}).\label{eq:scalar-odd}
+\end{align}
+Expanding the finitely many reciprocal falling factorials gives all scalar inverse-power corrections. The first terms are
+\begin{align}
+ \frac{\mathcal R_{2B}}{2B!(B-1)!}
+ &=1+\frac9B+\frac{78}{B^2}+\frac{680}{B^3}+\Ord(B^{-4}),\label{eq:scalar-first-even}\\
+ \frac{\mathcal R_{2B+1}}{(B!)^2}
+ &=1+\frac{12}B+\frac{108}{B^2}+\frac{920}{B^3}+\Ord(B^{-4}).\label{eq:scalar-first-odd}
+\end{align}
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:half}, to relative order $B^{-J-1}$ it suffices to retain the finitely many shapes $1\le s\le J+1$. Fix one such $s$. Its $s+1$ leaf sizes satisfy $0\le k_i\le B$ and $\sum k_i=n-s=2B+\Ord_s(1)$.
+
+We first isolate the two large leaves. Put $x_i=k_i/B$ and interpret $0\log0=0$. Uniform Stirling estimates, including zero leaf sizes, give
+\begin{equation}\label{eq:entropy}
+ \log\frac{\prod_i k_i!}{(B!)^2}
+       =B\sum_i x_i\log x_i+\Ord_s(\log(B+1)).
+\end{equation}
+Every subsequential limit belongs to the compact polytope
+$0\le x_i\le1$, $\sum x_i=2$. On it $\sum x_i\log x_i\le0$, with equality only at permutations of $(1,1,0,\ldots,0)$. Any closed subset disjoint from these finitely many vertices has a strictly negative maximum. The number of compositions is polynomial in $B$ because $s$ is fixed. It follows that configurations outside any fixed neighborhood of these vertices have total weight at most $(B!)^2\e^{-c_sB}$ after decreasing $c_s>0$ if needed.
+
+In particular, we may restrict to configurations with exactly two leaves greater than $B/2$. Write $\ell$ for the total size of the remaining $s-1$ leaves. Configurations with $\ell\ge B/3$ are also separated from the maximizing vertices and exponentially suppressed. For large $B$, discarding $\ell>B/2-s$ is therefore harmless at every algebraic order. Empty configuration sets contribute zero.
+
+For a fixed integer $p\ge1$, the coefficients $f_{p,\ell}=[z^\ell]F(z)^p$ satisfy
+\begin{equation}\label{eq:small-leaves}
+ 0\le f_{p,\ell}\le C_p\ell!.
+\end{equation}
+Indeed $\sum_{i=0}^{\ell}i!(\ell-i)!\le3\ell!$, and induction on $p$ proves the bound. For $p=0$, use $f_{0,0}=1$ and $f_{0,\ell}=0$ when $\ell>0$.
+
+Choose the two large leaf positions in $\binom{s+1}{2}$ ways and write their sizes as $B-a,B-b$. Their deficits sum to
+\[
+ a+b=\delta=\begin{cases}s+\ell,&n=2B,\\s-1+\ell,&n=2B+1.\end{cases}
+\]
+The contribution at fixed $s,\ell$ is
+\begin{equation}\label{eq:two-leaf}
+ \mathrm{Cat}_s\binom{s+1}{2}(B!)^2 f_{s-1,\ell}
+       \sum_{\substack{a+b=\delta\\\text{large leaves admissible}}}
+           \frac1{\fall B a\fall B b}.
+\end{equation}
+For fixed $\delta$ and large $B$ all $a=0,\ldots,\delta$ are admissible. When $\delta\le B/2$, factorial log-convexity gives
+\[
+ \sum_{a+b=\delta}\frac1{\fall B a\fall B b}
+ \le\frac{\delta+1}{\fall B\delta}.
+\]
+Together with \eqref{eq:small-leaves} and $\ell\le\delta$, this bounds \eqref{eq:two-leaf} by a constant depending on $s$ times
+$(B!)^2(\delta+1)/\binom B\delta$.
+
+For each fixed $L\ge0$,
+\begin{equation}\label{eq:binomial-tail}
+ \sum_{\delta=L}^{\lfloor B/2\rfloor}
+        \frac{\delta+1}{\binom B\delta}=\Ord_L(B^{-L}).
+\end{equation}
+To verify this, the successive ratio for
+$u_\delta=(\delta+1)/\binom B\delta$ is
+$u_{\delta+1}/u_\delta=(\delta+2)/(B-\delta)$. Up to $B/4$ this is at most $1/2$ for all sufficiently large $B$, so the sum starting at fixed $L$ is at most $2u_L$. Between $B/4$ and $B/2$, the binomial coefficients are exponentially large and there are only polynomially many weighted terms.
+
+For even $n$, discard $\delta\ge J+2$ using \eqref{eq:binomial-tail}; its absolute cost is $\Ord_J((B!)^2B^{-J-2})$. For odd $n$, discard $\delta\ge J+1$ at cost $\Ord_J((B!)^2B^{-J-1})$. Normalization by the respective $E_n$ gives $\Ord_J(B^{-J-1})$ in both cases. The earlier exponential tails fit within these errors.
+
+Set $t=s+\ell$. In either parity the retained range is $t\le J+1$. The context coefficients collapse by formal differentiation of the Catalan solution:
+\begin{align*}
+ \sum_{s=1}^{t}\mathrm{Cat}_s\binom{s+1}{2}
+                     [z^{t-s}]F(z)^{s-1}
+ &= [z^t]\frac12\frac{\partial^2 A}{\partial F^2}\\
+ &= [z^t]z(1-4zF(z))^{-3/2}=b_t.
+\end{align*}
+Substituting into \eqref{eq:two-leaf} proves \eqref{eq:scalar-even} and \eqref{eq:scalar-odd}. Each fixed reciprocal falling factorial has the convergent Laurent expansion
+\[
+ \frac1{\fall B a}=B^{-a}\prod_{i=0}^{a-1}(1-i/B)^{-1}
+\]
+for $B>a-1$. Finite expansion therefore gives all stated scalar corrections with the same fixed-order error.
+\end{proof}
+
+\begin{corollary}\label{cor:lower}
+For fixed $J\ge0$ and integer $B>2(J+1)$, the finite rational expression on the right of \eqref{eq:scalar-even}, with its error term omitted, is a lower bound for $\mathcal R_{2B}/E_{2B}$. The analogous expression in \eqref{eq:scalar-odd} is a lower bound for $\mathcal R_{2B+1}/E_{2B+1}$. Their scalar inverse-power polynomials truncated through degree $J$ are also lower bounds.
+\end{corollary}
+\begin{proof}
+For each retained $t=s+\ell\le J+1$, all deficits in the rational sum are at most $J+1$. Thus $B-a,B-b>B/2$, whereas every other leaf has size at most $\ell\le J<B/2$. These two large leaves are uniquely determined. The finite rational sum consequently counts an exact subset of the admissible decorated trees, with no overcounting. Omitted trees have nonnegative weights. Every reciprocal falling factorial has a convergent Laurent expansion with nonnegative coefficients when $B>a-1$, so truncating the resulting finite rational sum again discards only nonnegative terms.
+\end{proof}
+
+The half-truncation theorem proves an actual positive exponentially small remainder and all its fixed algebraic corrections. Its cutoff is an essential part of the theorem. Neither it nor the scalar reduction equates this remainder with that of the inverse-power series truncated near $\rho n$. No assertion about moving correction order, a Stokes constant, or Borel summability follows automatically.
+
+\section{Computation and reproducibility}
+\label{sec:computations}
+The supplied scripts use exact integers for the defining recurrences and the Stirling transform, and exact rational-polynomial arithmetic for the correction identities. Decimal evaluation of $\rho$ then gives the normalized quantity
+\[
+ R_k=\frac{c_k\rho^k}{(k-1)!},\qquad
+ R_k^{(J)}=1+\sum_{j=1}^{J}\frac{q_j}{(k-1)^j}.
+\]
+The separate standard-library remainder checks verify the exact complement and finite-shape identities for $2\le n\le64$, and compute the scalar correction polynomials through order nine. At $n=1000$ and $1001$, the ninth-order normalized residuals are approximately $9.17\cdot10^{-18}$ and $9.02\cdot10^{-18}$. These are illustrative values, not certified asymptotic error constants.
+
+The optional high-precision inverse script evaluates $x_J(c_k)-k$ using exact integer $c_k$ and a finite Gamma model. For fixed $J$ these errors tend to zero, but they are not zero: the finite model is not the exact sequence.
+
+\InputIfFileExists{results/numerical_tables.tex}{}{
+\begin{center}\emph{Run the supplied scripts to generate numerical tables.}\end{center}}
+
+The exact initial data are compared with the displayed OEIS terms available from the official public sequence exports: 24 terms of A229741 and 21 terms of A260879. Full b-file agreement is not claimed; the initial direct b-file fetches were unavailable. No network access is needed for the replay, and no third-party full paper is redistributed.
+
+The archive includes the article source and PDF, portable calculation scripts, recorded outputs, source provenance, build instructions, and a SHA-256 manifest. The replay checks the manifest before recomputing exact and numerical results and rebuilding the PDF. A standard-library-only path checks the exact algebra; the inverse calculation additionally uses the pinned \texttt{mpmath} dependency. The manuscript's analytic proof is indispensable: finite checks cannot certify a limit or the uniform remainder estimates in Sections~\ref{sec:poles}--\ref{sec:moments}.
+
+% ed. (2026-10-02): the SHA-256 manifest was not kept on filing, so the delivered replay stops at its first step.
+\begin{ednote}
+In ProveIt the manifest \texttt{SHA256SUMS} is not shipped: it was verified in full on filing and retired, as the repository does for every checksum ledger. The delivered \texttt{replay.sh} calls \texttt{scripts/verify\_manifest.py} first, so it stops there; the package README says how to run the scripts and compare their outputs without it. Since 2026-10-02 the scripts write their JSON and \TeX{} outputs with LF line endings on every platform; as delivered they used the platform's, so on Windows the byte comparison of the replay failed for those files.
+\end{ednote}
+
+\section{Further questions and limits}
+\label{sec:questions}
+\subsection{The least formal term is not a remainder theorem}
+The leading law suggests a least term of $\sum c_k n^{-k}$ at $k\approx\rho n$. Indeed the factorial carrier $\Gamma(k)/(\rho n)^k$ has logarithmic derivative $\psi(k)-\log(\rho n)$, so its continuous minimum is near $\rho n$. Stirling's formula makes the carrier there of order
+\begin{equation}\label{eq:heuristic}
+ n^{-1/2}\e^{-\rho n}=n^{-1/2}2^{-n}.
+\end{equation}
+Independently, for an index $i$ within bounded distance of $(n-1)/2$, a central factorial contribution in the original recurrence is
+\[
+ \frac{i!(n-1-i)!}{n!}
+ =\frac1{n\binom{n-1}{i}}
+ =\Theta(n^{-1/2}2^{-n}).
+\]
+This agreement is a structural clue. It is not a proof that truncation at $k\approx\rho n$ leaves an error of size \eqref{eq:heuristic}. Theorem~\ref{thm:main} fixes the truncation order before taking the limit. A least-term remainder theorem would require bounds uniform in an order proportional to $n$ and a separate treatment of the central convolution region. No Stokes multiplier or Borel singularity classification is inferred from this comparison.
+
+\subsection{Concrete extensions worth pursuing}
+An effective version of \eqref{eq:bracket} would determine explicit numerical error constants and validity thresholds, enabling certified threshold computation close to an integer. Such a result would strengthen, rather than merely evaluate, the present existence bounds.
+
+Another direction is an exponentially improved analysis of \eqref{eq:a-asym}, with a proof connecting the central convolution and the optimally truncated endpoint expansion. This is the natural place to investigate whether the suggestive scale \eqref{eq:heuristic} actually controls the remainder.
+
+The proved factorial-basis half-truncation remainder in Section~\ref{sec:half} resolves one exponential-scale question. Relating that precise remainder to the optimally truncated inverse-power series remains separate.
+
+The positive transfer itself can be tested for related algebraic transforms of factorial series. To turn that observation into a general theorem one must state growth, positivity or absolute-domination assumptions and establish uniform analogues of the inverse-moment estimates. The current report proves only the explicitly specified recurrence and transform.
+
+Finally, the weighted pole lattice supplies exponentially small corrections in $N$ to $M_N$. Determining how they interact with the large-order structure of $d_{\ell+1}/\ell!$ is a separate problem; the present fixed-order analysis deliberately absorbs them into errors smaller than every power of $N^{-1}$.
+
+\section{Sources and the novelty boundary}
+\label{sec:sources}
+The accessible OEIS A260879 entry, inspected on 2 October 2026, still labels the leading late-coefficient equivalent as a conjecture \cite{oeis260}. Search services may return indexed snapshots, so this is a statement about the inspected entry rather than a guarantee against every unindexed edit. The official sequence exports inspected carry revision metadata dated 2 August 2015 for A260879 and 30 May 2026 for A229741.
+
+Forcey--Lauve--Sottile supply the coalgebra construction and exact recurrence \cite{fls}. The relevant result is Theorem~2.6 in arXiv version~1, but Theorem~2.7 in the later author-hosted PDF. The version must be stated when a theorem number is cited. Neither the recurrence nor its interpretation is new here.
+
+Bender's 1975 paper is foundational for coefficient asymptotics of analytic functions of rapidly growing series \cite{bender}; the source comparison used its publisher abstract and Borinsky's discussion rather than asserting a fresh inspection of the full paywalled paper. The direct technical reference used in Section~\ref{sec:factorial} is Borinsky's Definition~1, Example~13, Proposition~22, and Theorem~32 \cite{borinsky}. The finite-order factorial framework and analytic-composition rule are credited accordingly.
+
+The targeted ProveIt comparison was pinned to revision
+\begin{center}\small\texttt{4b874cea0012c51a6841ad9c58f6e20fa57c71da}.
+\end{center}
+It retrieved 185 selected text files, including the generating-functions-and-asymptotics reports and near-topic factorial, Catalan, Borel, Fubini, and inverse-asymptotic sources. The canonical \emph{Transseries and Inversion} source has a chapter entitled ``The Fubini numbers: an exact pole lattice'', identified by the label \texttt{q2:sec:fubini}, with ordinary and weighted pole formulas and exponential pole-tail bounds \cite{proveit}. This is substantive prior overlap. We use that background rather than claiming a novel Fubini pole theorem. The distinction is the A260879-specific transform \eqref{eq:expect}, the controlled transfer of \eqref{eq:d-asym}, and the resulting explicit $q_j$ and inverse statements.
+
+No matching proof of this specific expansion was found in those retrieved sources or the bounded public searches. Unpublished work, inaccessible or unindexed texts, differently phrased equivalents, historical branches, binary-only files, and unsearched repository areas were not exhaustively excluded. The reproducibility package preserves independently written source metadata and links, not third-party full texts. No external sequence entry, paper, or repository was edited as part of this work.
+
+\begin{thebibliography}{9}
+\small
+\bibitem{oeis229}
+The OEIS Foundation Inc., \emph{A229741}, recurrence and factorial asymptotic coefficients.\newline
+\url{https://oeis.org/A229741}. Inspected 2 October 2026.
+
+\bibitem{oeis260}
+V. Kot\v e\v sovec, \emph{A260879}, coefficients in the asymptotic expansion of A229741, 2 August 2015. The OEIS Foundation Inc.\newline
+\url{https://oeis.org/A260879}. Inspected 2 October 2026.
+
+\bibitem{fls}
+S. Forcey, A. Lauve, and F. Sottile, \emph{Cofree compositions of coalgebras}, Annals of Combinatorics \textbf{17} (2013), 105--130.\newline
+\url{https://doi.org/10.1007/s00026-012-0170-5}.\newline
+\url{https://arxiv.org/html/1012.3483v1}, Theorem 2.6.\newline
+Later author PDF: \url{https://webpages.math.luc.edu/~lauve/papers/CCC.pdf}, Theorem 2.7.
+
+\bibitem{bender}
+E. A. Bender, \emph{An asymptotic expansion for the coefficients of some formal power series}, Journal of the London Mathematical Society (2) \textbf{9} (1975), 451--458.\newline
+\url{https://doi.org/10.1112/jlms/s2-9.3.451}.
+
+\bibitem{borinsky}
+M. Borinsky, \emph{Generating asymptotics for factorially divergent sequences}, Electronic Journal of Combinatorics \textbf{25}(4) (2018), P4.1.\newline
+\url{https://doi.org/10.37236/5999}; \url{https://arxiv.org/html/1603.01236v4}.
+
+\bibitem{proveit}
+ProveIt repository, \emph{Transseries and Inversion}, canonical source, chapter ``The Fubini numbers: an exact pole lattice'', labels \texttt{q2:sec:fubini}, \texttt{q2:thm:fubini}, and \texttt{q2:thm:weighted}. Revision pinned in Section~\ref{sec:sources}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4b874cea0012c51a6841ad9c58f6e20fa57c71da/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}{Canonical source at the inspected revision}.
+
+% ed. (2026-10-02): entry for the editorial note in the section on smooth inverses (key prefixed ed:).
+\bibitem{ed:tai}
+[Editorial addition, ProveIt, 2026-10-02.] ProveIt, \emph{Transseries: the
+polynomial-logarithmic calculus, series reversal at infinity, and
+inversion} (canonical volume, the source of \cite{proveit}),
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+Part~X (chapter \path{p0:sec:top}) and Section~Q.5 (\path{p6:sec:gamma}).
+\end{thebibliography}
+\end{document}

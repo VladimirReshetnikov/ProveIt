@@ -1,0 +1,486 @@
+{
+  "status": "PASS_WEAK42_POWER_GEOMETRY_COUNTEREXAMPLE",
+  "source": {
+    "operations": 42,
+    "multiplications": 24,
+    "additions_subtractions": 18,
+    "equations": 11,
+    "positive_parameters": [
+      "q"
+    ],
+    "positive_auxiliaries": [
+      "a",
+      "c",
+      "d",
+      "f",
+      "h",
+      "i",
+      "j",
+      "k",
+      "o",
+      "r",
+      "s",
+      "w",
+      "tau",
+      "eta",
+      "zeta",
+      "ga",
+      "y_aux"
+    ],
+    "instructions": [
+      [
+        "wn2",
+        "*",
+        "w",
+        "q"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "q"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "ksn2",
+        "*",
+        "k",
+        "sn2"
+      ],
+      [
+        "UM2",
+        "*",
+        "UM",
+        "UM"
+      ],
+      [
+        "scaled_norm_coefficient",
+        "+",
+        "UM2",
+        "wn2"
+      ],
+      [
+        "ratio_product2",
+        "*",
+        "ksn2",
+        "ksn2"
+      ],
+      [
+        "L9",
+        "*",
+        "scaled_norm_coefficient",
+        "ratio_product2"
+      ],
+      [
+        "tauplus1",
+        "+",
+        "tau",
+        1
+      ],
+      [
+        "R9",
+        "*",
+        "tau",
+        "tauplus1"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "r1",
+        "+",
+        "r",
+        1
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "R11",
+        "+",
+        "r1",
+        "hpm1"
+      ],
+      [
+        "tr1",
+        "+",
+        "r1",
+        "r"
+      ],
+      [
+        "cam2",
+        "*",
+        "c",
+        "a"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "a"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "ga",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "a_square",
+        "*",
+        "a",
+        "a"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "c",
+        "c"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "R15",
+        "+",
+        "Ac2",
+        1
+      ],
+      [
+        "L15",
+        "*",
+        "d",
+        "d"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "c"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "c"
+      ],
+      [
+        "H17",
+        "-",
+        "jc",
+        "tr1"
+      ],
+      [
+        "H2",
+        "*",
+        "H17",
+        "H17"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "ic2",
+        "aux_square_gap"
+      ],
+      [
+        "P17",
+        "-",
+        1,
+        "aux_y2"
+      ]
+    ],
+    "sources": [
+      {
+        "equality": [
+          "r1",
+          "q"
+        ],
+        "source": "-q + r + 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "source": "k**2*q**6*s**4*w**2 + k**2*q**3*s**2*w - tau**2 - tau",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "source": "c - eta - k*q*s",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "source": "-eta + k - zeta",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "source": "-h*q**2*s*w + k - r - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "source": "a - q**2*s*w - q*s",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "source": "-a*c - 4*a*ga + d - 3*ga - q*w",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "source": "-a**2*c**2 - 4*a*c**2 - 3*c**2 + d**2 - 1",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "ic2",
+          "R16"
+        ],
+        "source": "-a**2*f**2 + a**2 - 4*a*f**2 + 4*a + c**2*i - 3*f**2 + 3",
+        "correction": "0"
+      },
+      {
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 4*a*c**2*f**2*j**2 - 4*a*c**2*j**2 - 16*a*c*f**2*j*r - 8*a*c*f**2*j + 16*a*c*j*r + 8*a*c*j + 16*a*f**2*r**2 + 16*a*f**2*r - 4*a*f**2*y_aux**2 + 4*a*f**2 - 16*a*r**2 - 16*a*r + 4*a*y_aux**2 - 4*a + 3*c**2*f**2*j**2 - 3*c**2*j**2 - 12*c*f**2*j*r - 6*c*f**2*j + 12*c*j*r + 6*c*j + 12*f**2*r**2 + 12*f**2*r - 3*f**2*y_aux**2 + 3*f**2 - 12*r**2 - 12*r + 4*y_aux**2 - 4",
+        "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 4*a*c**2*f**2*j**2 + 4*a*c**2*j**2 + 16*a*c*f**2*j*r + 8*a*c*f**2*j - 16*a*c*j*r - 8*a*c*j - 16*a*f**2*r**2 - 16*a*f**2*r + 4*a*f**2*y_aux**2 - 4*a*f**2 + 16*a*r**2 + 16*a*r - 4*a*y_aux**2 + 4*a + c**4*i*j**2 - 4*c**3*i*j*r - 2*c**3*i*j - 3*c**2*f**2*j**2 + 4*c**2*i*r**2 + 4*c**2*i*r - c**2*i*y_aux**2 + c**2*i + 3*c**2*j**2 + 12*c*f**2*j*r + 6*c*f**2*j - 12*c*j*r - 6*c*j - 12*f**2*r**2 - 12*f**2*r + 3*f**2*y_aux**2 - 3*f**2 + 12*r**2 + 12*r - 3*y_aux**2 + 3"
+      },
+      {
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "source": "c*j + c - f*o - 2*r - 1",
+        "correction": "0"
+      }
+    ],
+    "change": "Replace (i*c^2)^2 by i*c^2; retain the free r1=q comparison"
+  },
+  "counterexample": {
+    "parameters": {
+      "q": 5,
+      "r": 4,
+      "J": 9,
+      "X": 5,
+      "Y": 5,
+      "a": 30,
+      "A": 32,
+      "first_parameter": 251,
+      "main_index": 14587,
+      "first_index": 9755,
+      "discriminant": 1023,
+      "exponent_modulus": 123
+    },
+    "exact_main_equalities": 8,
+    "ratio_interval": [
+      55828,
+      55829,
+      10000
+    ],
+    "gcd_main_index_c": 1,
+    "main_coordinates": {
+      "q": {
+        "bits": 3,
+        "unsigned_big_endian_sha256": "e77b9a9ae9e30b0dbdb6f510a264ef9de781501d7b6b92ae89eb059c5ab743db"
+      },
+      "r": {
+        "bits": 3,
+        "unsigned_big_endian_sha256": "e52d9c508c502347344d8c07ad91cbd6068afc75ff6292f062a09ca381c89e71"
+      },
+      "w": {
+        "bits": 1,
+        "unsigned_big_endian_sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+      },
+      "s": {
+        "bits": 1,
+        "unsigned_big_endian_sha256": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a"
+      },
+      "a": {
+        "bits": 5,
+        "unsigned_big_endian_sha256": "9652595f37edd08c51dfa26567e6cd76e6fa2709c3e578478ca398d316837a7a"
+      },
+      "c": {
+        "bits": 87511,
+        "unsigned_big_endian_sha256": "8c020963fd5d763d0076945f3d8ffc292ec21164cdd05ca4604d10f37b2f06d7"
+      },
+      "d": {
+        "bits": 87516,
+        "unsigned_big_endian_sha256": "aba7128c98d818bf29cb65846cdd4146e3b8e9c47befdc8f42558dd6e7e323c6"
+      },
+      "k": {
+        "bits": 87509,
+        "unsigned_big_endian_sha256": "b56e15d4615dc8f0f8ba699bcdcb41d62af21eb270fe1fdeba3518630f94939c"
+      },
+      "tau": {
+        "bits": 87516,
+        "unsigned_big_endian_sha256": "b20772660954a0ea212db27ca3a78bb1f937d41ddf9d31922d20ffb278846d79"
+      },
+      "eta": {
+        "bits": 87508,
+        "unsigned_big_endian_sha256": "0737ef85e528a135c4f5993d6620446764966895d9c11c66f82e2598f0490b36"
+      },
+      "zeta": {
+        "bits": 87508,
+        "unsigned_big_endian_sha256": "a80830a3a2c985cfaed9fd86093fea501ce98e4e499cf9f3067f095418102b64"
+      },
+      "h": {
+        "bits": 87504,
+        "unsigned_big_endian_sha256": "0691f101306e4d633e7f2da91c4d13f22975b687d8490668cd13ec6700e25d6e"
+      },
+      "ga": {
+        "bits": 87505,
+        "unsigned_big_endian_sha256": "a558fcf39e13c2f7ce3d21ad81426ac2d9bdd5dfe7bd16c147455a46daf9a587"
+      }
+    },
+    "weak_auxiliary": {
+      "f": {
+        "bits": 175033,
+        "unsigned_big_endian_sha256": "98b102f546907ad334a1c0b7ba64b354168c9496740e9b1c130e1a289709f525"
+      },
+      "R": {
+        "bits": 175038,
+        "unsigned_big_endian_sha256": "3f1c0e273aa4aabcb143453cc8dcf2f46bf60709571bdda4bf59fa1897667ac1"
+      },
+      "i": {
+        "bits": 175054,
+        "unsigned_big_endian_sha256": "799e101af29d7799265405c0a1c7348eff01778eedef290fdc205c5e0c558c01"
+      },
+      "crt_t": {
+        "bits": 87511,
+        "unsigned_big_endian_sha256": "a3b69771f1c2e4ecd69809722d6de03d54710b9e31152261df4d061ba243289b"
+      },
+      "auxiliary_index": {
+        "bits": 87526,
+        "unsigned_big_endian_sha256": "a972784eca62d3002be0a20d5fa79198bceb295dbf3708359be2be017d591701"
+      }
+    },
+    "crt": {
+      "sigma": -1,
+      "t_parity": 0,
+      "normalized_u_mod_c": "-J",
+      "normalized_u_mod_f": "-c"
+    },
+    "final_coordinates": "y_aux=psi_R(auxiliary_index); U=chi_R(auxiliary_index)/R; j=(U+J)/c; o=(U+c)/f",
+    "final_coordinate_materialization": false,
+    "conclusion": "All eleven weakened equations have positive witnesses at q=5, which is not a power of two"
+  },
+  "scope": "Refutes only the single-product weakening of binary power geometry; complete43 remains valid and the older complete75 candidate remains open",
+  "established_complete_universal_bound": 76
+}

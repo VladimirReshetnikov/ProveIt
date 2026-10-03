@@ -1,0 +1,33 @@
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/README.md
+@@ -63,12 +63,13 @@
+ observation (batch 80).** Both work in Part IV's weighted model (finite
+ alphabet and radius, positive integer weights, a unique zero-weight vacuum).
+ Part V (sources 14 and 15): when many symbols have weight one (a power-set
+-alphabet of Boolean channels, weight = cardinality), a fixed globally
+-reversible, mass-conserving cellular automaton of forward and inverse radius
+-at most four (radius one by four-site blocking at the same clock, or by
+-four-phase dilation at four times the time) simulates every separated
+-reversible two-counter machine at total mass exactly three, with gap
+-`12·2^a·3^b` and a clean halt symbol, so three is the least mass with
++alphabet of Boolean channels, weight = cardinality), every finite separated
++reversible two-counter machine M compiles to a globally reversible,
++mass-conserving cellular automaton F_M of forward and inverse radius at most
++four (radius one by four-site blocking at the same clock, or by four-phase
++dilation at four times the time). Its canonical simulation has total mass
++exactly three, gap `12·2^a·3^b` and a clean halt symbol. Fixing a universal
++source machine gives one fixed rule, so three is the least mass with
+ fixed-rule undecidable pattern occurrence there (Theorems 49.1–49.2, with
+ Part IV's Theorem 44.1 as the lower half); exact type and row counts, exact
+ microtimes and a degree-two natural certificate with a unique witness at each
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/article.tex
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/article.tex
+@@ -425,7 +425,7 @@
+ Model & Mass at most 2 & Mass 3 & Mass 4 & Mass 5\\
+ \midrule
+ Weighted alphabet, several weight-one symbols & decidable (Part~IV, Theorem~\ref{smc:sl:thm:two}) & undecidable pattern occurrence and exact-pair reachability, fixed reversible rule (Part~V) & not treated & not treated\\
+-At most one weight-one symbol (includes integer-state NCCA) & decidable (Part~IV) & decidable, timed relation Presburger (Part~VI, source~16) & decidable, timed relation not Presburger (Part~VI, source~17) & universal at large radius by the Alhazov--Imai abstract~\cite{alhazovimai}; not reversible, full paper not checked\\
++At most one weight-one symbol (includes integer-state NCCA) & decidable (Part~IV) & decidable, timed relation Presburger (Part~VI, source~16) & decidable, timed relation not Presburger (Part~VI, source~17) & universal at large radius by the Alhazov--Imai abstract~\cite{alhazovimai}; reversibility not asserted, full paper not checked\\
+ \bottomrule
+ \end{tabular}
+ \end{center}

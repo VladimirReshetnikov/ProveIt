@@ -163,8 +163,10 @@ def forward_identity_checks():
     return results
 
 def write_csv(name, rows):
+    # ed. (ProveIt, 2026-09-29): lineterminator='\n' (csv defaults to CRLF) and
+    # newline='\n' on the text writers below keep reruns LF on every platform.
     with (ROOT/'data'/name).open('w',newline='') as f:
-        writer=csv.DictWriter(f,fieldnames=list(rows[0]))
+        writer=csv.DictWriter(f,fieldnames=list(rows[0]),lineterminator='\n')
         writer.writeheader(); writer.writerows(rows)
 
 def main():
@@ -222,7 +224,7 @@ def main():
     write_csv('pole_resolution.csv',peel)
     report['resolved_pole_cases']=len(peel)
     report['all_assertions_passed']=True
-    (ROOT/'data'/'verification_results.json').write_text(json.dumps(report,indent=2)+'\n')
+    (ROOT/'data'/'verification_results.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     # Small tables are generated directly from the actual computations.
     chosen=[r for r in rows if r['lam'] in ['4.0','6.0'] and r['theta']=='0.25']
     lines=[r'\begin{tabular}{rrrrrr}',r'\toprule',
@@ -231,12 +233,12 @@ def main():
         lines.append(f"{r['lam']} & {r['n']} & {r['K_unshifted']} & {r['K_opt']} & "
                      f"{float(r['relative_leading_error']):.3g} & {float(r['gain_over_unshifted']):.5f} \\\\")
     lines.extend([r'\bottomrule',r'\end{tabular}'])
-    (ROOT/'data'/'theta_table.tex').write_text('\n'.join(lines)+'\n')
+    (ROOT/'data'/'theta_table.tex').write_text('\n'.join(lines)+'\n',newline='\n')
     lines=[r'\begin{tabular}{rrrrr}',r'\toprule',r'$h$ & $z$ & $I_h$ & $K_{\min}$ & two-atom rel. error\\',r'\midrule']
     for r in fixed:
         lines.append(f"{float(r['h']):.5f} & {r['z']} & {float(r['action']):.7f} & {r['K_opt']} & {float(r['relative_error']):.3g} \\\\")
     lines.extend([r'\bottomrule',r'\end{tabular}'])
-    (ROOT/'data'/'fixed_table.tex').write_text('\n'.join(lines)+'\n')
+    (ROOT/'data'/'fixed_table.tex').write_text('\n'.join(lines)+'\n',newline='\n')
     print(json.dumps({'all_assertions_passed':True,'theta_cases':len(rows),
                       'fixed_mesh_cases':len(fixed),'resolved_pole_cases':len(peel)},indent=2))
 

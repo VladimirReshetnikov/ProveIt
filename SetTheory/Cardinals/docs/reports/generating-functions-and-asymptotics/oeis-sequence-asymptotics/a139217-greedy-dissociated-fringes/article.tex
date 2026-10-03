@@ -1,0 +1,2429 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm]{geometry}
+\usepackage{lmodern,microtype}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+
+\hypersetup{
+  pdftitle={Finite-Fringe Rigidity in Congruence-Restricted Greedy Dissociated Sequences},
+  pdfauthor={ProveIt research report (AI-assisted), merged from two manuscripts prepared for Vladimir Reshetnikov with OpenAI}
+}
+
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\LTcapwidth}{\textwidth}
+\numberwithin{equation}{section}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{plain}
+\newtheorem{question}{Question}
+
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\cD}{\mathcal D}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\cS}{\mathcal S}
+\newcommand{\cF}{\mathcal F}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{OEIS #1}}
+\newcommand{\mergenote}[1]{\par\smallskip\noindent\textbf{[Merge note, batch 73O1.]}\ #1\par\smallskip}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\src}[1]{\textup{(source #1)}}
+
+\title{Finite-Fringe Rigidity in Congruence-Restricted\\
+Greedy Dissociated Sequences\\[6pt]
+\large Proofs, exact formulas, and inverse transseries for OEIS A139217 and A139218\\[4pt]
+\normalsize Merged from two independent manuscripts (batch 73O1, sources 50 and 43)}
+\author{ProveIt research report (AI-assisted)\\
+prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A finite set of positive integers is \emph{dissociated} when all of its subset
+sums are distinct.  OEIS A139217 and A139218 are obtained by a greedy rule:
+at each step choose the least admissible positive integer congruent to $1$ or
+$2$ modulo $3$, respectively.  Both entries conjecture an eventual period-three
+law for $a(n+1)-2a(n)$ and the same order-three linear recurrence.
+
+We prove substantially stronger statements.  After three terms, the signed
+subset-sum difference set is a complete interval with a fixed finite fringe of
+holes.  For A139217 the only positive fringe hole is $S_n-3$; for A139218 the
+positive fringe holes are $S_n-h$ with $h\in\{1,3,6,11\}$, where
+$S_n=\sum_{j\le n}a(j)$.  A general finite-fringe propagation theorem shows
+that these descriptions persist forever.  The greedy choice then becomes a
+finite residue calculation, giving exact period-three corrections, rational
+generating functions, closed forms, asymptotics, logarithmic transseries, and
+residue-branch inverse transseries.
+
+In particular, for A139217,
+\[
+ a(n)=\frac34\,2^n+
+ \begin{cases}1,&n\equiv0,1\pmod3,\\-2,&n\equiv2\pmod3,
+ \end{cases}
+ \qquad(n\ge3),
+\]
+and for A139218,
+\[
+ a(n)=\frac{39}{56}\,2^n+
+ \begin{cases}-25/7,&n\equiv0\pmod3,\\20/7,&n\equiv1\pmod3,\\5/7,&n\equiv2\pmod3,
+ \end{cases}
+ \qquad(n\ge4).
+\]
+Both satisfy $a(n)=a(n-1)+a(n-2)+2a(n-3)$ on their correct eventual ranges.
+For A139217 that range is $n\ge6$; the current OEIS statement ``$n>4$'' is
+false at $n=5$.  Self-contained exact verifiers are supplied.  The proofs are
+conventional mathematics, not a formal Lean development, and independent
+review is recommended before OEIS submission.
+
+This report merges two manuscripts that proved these theorems independently
+on the same day: source 50 (the base text, with the general finite-fringe
+propagation theorem) and source 43 (boundary-defect coordinates).  Each shared
+theorem is printed once and credited to both sources; source 43's different
+proofs are kept as marked second routes, and its additional results are
+printed in full: exact cross-identities between the two sequences, the sizes
+of the signed difference sets, an explicit remainder bound and explicit
+coefficients for the inverse series, counting asymptotics, and tables of
+terms and defects for $n\le14$.
+\end{abstract}
+
+\clearpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{Introduction}\label{gdf:sec:intro}
+
+\subsection{The two OEIS problems}
+
+Let $A_n=\{a(1),\dots,a(n)\}$.  The defining condition in the two entries is
+that every two subsets of $A_n$ have different sums.  In modern additive
+terminology, $A_n$ is a \emph{dissociated set}.  The greedy rule is constrained
+to one arithmetic progression:
+\begin{align*}
+\text{A139217:}&\quad a(n+1)\text{ is the least positive }b\equiv1\pmod3
+\text{ for which }A_n\cup\{b\}\text{ is dissociated},\\
+\text{A139218:}&\quad a(n+1)\text{ is the least positive }b\equiv2\pmod3
+\text{ for which }A_n\cup\{b\}\text{ is dissociated}.
+\end{align*}
+The entries currently list
+\begin{align*}
+\text{A139217: }&1,4,7,13,22,49,97,190,385,769,1534,3073,6145,12286,\dots,\\
+\text{A139218: }&2,5,8,14,23,41,92,179,353,716,1427,2849,5708,11411,\dots.
+\end{align*}
+Both entries conjecture that the deviations $a(n+1)-2a(n)$ are eventually
+periodic and that
+\begin{equation}\label{gdf:eq:common-recurrence}
+ a(n)=a(n-1)+a(n-2)+2a(n-3)
+\end{equation}
+eventually.  See \oeis{A139217} and \oeis{A139218}
+\cite{OEIS217,OEIS218}, accessed 1 October 2026.
+The entries were contributed by John W. Layman in April 2008.  Both also
+mention the analogous odd-integer construction, which produces a shifted
+Jacobsthal sequence.  As of the access date the order-three formulas are
+labelled ``It appears'', with stated ranges $n>4$ and $n>6$ respectively
+\src{43}.
+
+The aim of this report is not merely to verify more terms.  We identify a
+stable structural invariant of the complete signed difference set.  Once that
+invariant is found, the conjectured recurrences become short consequences of
+a finite residue table.
+
+\subsection{Main results}
+
+Write
+\[
+ S_n:=\sum_{j=1}^n a(j),\qquad
+ \cD_n:=\left\{\sum_{j=1}^n\varepsilon_j a(j):
+          \varepsilon_j\in\{-1,0,1\}\right\}.
+\]
+The strongest concrete conclusions are as follows.  Both theorems were proved
+independently by sources 50 and 43 (source 43's Theorems~4.1 and~5.1).
+
+\begin{theorem}[A139217, full signed support; sources 50 and 43]\label{gdf:thm:intro-217}
+For every $n\ge3$,
+\[
+ \cD_n=[-S_n,S_n]\cap\Z\setminus\{-(S_n-3),S_n-3\}.
+\]
+Consequently,
+\[
+ a(n+1)-2a(n)=
+ \begin{cases}
+ -1,&n\equiv0\pmod3,\\
+ -4,&n\equiv1\pmod3,\\
+  5,&n\equiv2\pmod3,
+ \end{cases}
+ \qquad(n\ge3),
+\]
+and the recurrence \eqref{gdf:eq:common-recurrence} holds exactly for $n\ge6$.
+\end{theorem}
+
+\begin{theorem}[A139218, full signed support; sources 50 and 43]\label{gdf:thm:intro-218}
+For every $n\ge3$,
+\[
+ \cD_n=[-S_n,S_n]\cap\Z\setminus
+ \bigl\{\pm(S_n-h):h\in\{1,3,6,11\}\bigr\}.
+\]
+Consequently,
+\[
+ a(n+1)-2a(n)=
+ \begin{cases}
+ 10,&n\equiv0\pmod3,\\
+ -5,&n\equiv1\pmod3,\\
+ -5,&n\equiv2\pmod3,
+ \end{cases}
+ \qquad(n\ge4),
+\]
+and the recurrence \eqref{gdf:eq:common-recurrence} holds exactly for $n\ge7$.
+\end{theorem}
+
+The full interval-minus-fringe formulas are stronger than the OEIS
+conjectures: they determine every signed relation target, not only the next
+greedy term.
+
+Source 43 records the resolved OEIS statements as follows.
+\begin{enumerate}[label=(\arabic*)]
+\item For A139217, \eqref{gdf:eq:common-recurrence} holds for every $n\ge6$.
+      The OEIS range $n>4$ must be corrected: at $n=5$,
+      $22\ne13+7+2\cdot4=28$.
+\item For A139218, \eqref{gdf:eq:common-recurrence} holds for every $n\ge7$,
+      exactly matching the conjectured range $n>6$.
+\item Both sequences have exact dyadic-plus-periodic closed forms, rational
+      ordinary generating functions, and exact logarithmic staircase inverses.
+\item The recurrence is a corollary of a stronger signed-difference-set
+      classification with finitely many persistent boundary defects.
+\end{enumerate}
+The main proofs are elementary once the correct invariant is found.  The
+nontrivial step is not solving a recurrence guessed from data, but proving that
+the greedy construction continues to choose exactly the terms predicted by
+that recurrence.  The signed difference set provides the missing certificate
+\src{43}.
+
+\subsection{Relation to recent work}\label{gdf:sec:recent}
+
+Dissociated sets have a long history in distinct-subset-sum problems; useful
+classical references include Cantor--Mills~\cite{CantorMills1966} and
+Lunnon~\cite{Lunnon1988}, while modern additive terminology is discussed by
+Candela--Helfgott~\cite{CandelaHelfgott2015} and Tao--Vu~\cite{TaoVu2006}.
+The general distinct-subset-sums problem is a classical topic in additive
+combinatorics; see, for example, Bohman's construction~\cite{Bohman1998}, the
+lower-bound work of Dubroff--Fox--Xu~\cite{DubroffFoxXu2021}, and
+Steinerberger's analytic reformulation~\cite{Steinerberger2023} \src{43}.
+A recent paper of
+Dutta~\cite{Dutta2026} studies the unrestricted greedy algorithm and proves
+that, from any two fixed initial terms, the unrestricted greedy sequence
+eventually doubles exactly.
+
+The arithmetic-progression restriction changes the phenomenon.  Exact
+doubling usually leaves the permitted residue class: if $a(n)\equiv1\pmod3$,
+then $2a(n)\equiv2\pmod3$, and conversely.  The correct replacement is
+\emph{doubling plus a bounded periodic correction}.  The finite-fringe theorem
+below explains why; its threshold form (Corollary~\ref{gdf:cor:threshold})
+is the explicit constrained analogue of Dutta's doubling \src{43}.
+
+A targeted search on 1 October 2026 found the conjectures in the OEIS entries
+and the general recent paper~\cite{Dutta2026}, but did not locate a published
+proof of these two exact progression-restricted formulas.  This is a research
+report, not a claim of priority after an exhaustive literature review.
+Source 43's independent search used the exact OEIS identifiers, initial terms
+and recurrence and likewise found no published proof; because such a search
+can miss offline, unpublished or poorly indexed sources, its priority
+statement is deliberately modest too.
+
+\subsection{Status and reproducibility}\label{gdf:sec:status}
+
+All arguments are written as ordinary proofs.  The accompanying
+verifier \file{code/50-finite-fringe-verify.py} performs exact integer
+checks of the greedy construction,
+the fringe identities through 22 terms, the published prefixes, the closed
+forms, the recurrences, and the rational generating functions.  The second
+verifier \file{code/43-boundary-verify.py} (source 43) works with the signed
+difference sets directly and also checks the counting functions, the
+cross-identities and the failure at $n=5$
+(Section~\ref{gdf:sec:audit}).  Computation is
+used as an audit, not as a substitute for induction.  No theorem in this
+report has been formalized in Lean at the time of writing.
+
+Source 43 states its status as follows.  It is an unrefereed research draft.
+The proofs are written to be independently checkable and are accompanied by
+exact verification code, but they have not been formalized in Lean or
+independently peer reviewed.  The literature and priority search was targeted
+rather than exhaustive; no claim of global priority is made beyond the precise
+statements and sources recorded here.  In particular source 43 does
+\emph{not} claim:
+\begin{itemize}
+\item that no equivalent proof exists elsewhere;
+\item that the general congruence-restricted greedy problem has been classified;
+\item that the results have passed peer review or formal verification;
+\item that exact computations alone establish the infinite claims.
+\end{itemize}
+The accompanying programs check finite prefixes and algebraic identities,
+while the inductions in this report prove the statements for all indices.
+
+The ProveIt repository was inspected at commit
+\texttt{c79d64038558}~\cite{ProveIt} \src{50}.  The present topic is
+separate from its existing A290268 development, but the report follows the
+same useful pattern: an exact support model, a structural theorem, executable
+checks, and an explicit formalization roadmap.
+\mergenote{The A290268 development meant here is the collection report
+\texttt{a290268-unbounded-deficits} of batch 72A; there is no mathematical
+link between it and this report.}
+The ProveIt repository combines formal mathematics, executable certificates,
+and reproducible research artifacts, with a clear separation between
+exploratory computation and trusted proof boundaries; the human-readable proof
+is primary, and the verifiers are reproducibility aids \src{43}.  The inverse
+expansions also fit the repository's broader series-and-transseries
+programme~\cite{ProveItTransseries}, although the expansions obtained here are
+unusually simple: on each residue branch they are convergent Taylor series in
+$1/x$ \src{43}.
+
+\subsection{The two sources and this merge}\label{gdf:sec:merge}
+
+This report is built from two manuscripts of batch 73O1 of ProveIt's
+incoming-reports intake, written independently on 1 October 2026.
+\begin{itemize}
+\item \textbf{Source 50} (the base text), \emph{Finite-Fringe Rigidity in
+  Congruence-Restricted Greedy Dissociated Sequences}: the ternary support
+  $\cE(A)$, the general finite-fringe propagation theorem with its collision
+  condition, the residue rule for an arbitrary modulus, the periodic
+  correction principle, logarithmic and ratio transseries, ternary seed
+  certificates and ten research questions.  Its section order is kept.
+\item \textbf{Source 43}, \emph{Boundary-Defect Rigidity in
+  Congruence-Restricted Greedy Dissociated Sets}: the same fringe theorems,
+  closed forms, recurrence ranges, generating functions, inverse branches and
+  counting functions, proved in signed (boundary-defect) coordinates.
+\end{itemize}
+Every result, proof, example, remark, question and non-claim of both
+manuscripts is printed.  A theorem proved by both is printed once, in source
+50's wording, and credited ``sources 50 and 43''.  Where source 43's proof is
+genuinely different, it follows as a ``Second proof (source 43)''.  Source
+43's propagation theorem is a corollary of source 50's
+(Corollary~\ref{gdf:cor:threshold}); its periodic forcing principle is
+source 50's periodic correction principle restated for partial sums
+(Proposition~\ref{gdf:prop:forcing}).  Material only source 43 has is marked
+\src{43}: Section~\ref{gdf:sec:cross}, the forward asymptotics and spectral
+form in Section~\ref{gdf:sec:unified}, the remainder bound and explicit
+coefficients in Section~\ref{gdf:sec:inverse}, the counting asymptotics, the
+second verifier, its proposed OEIS wording, its roadmap, its research
+questions, and Appendix~\ref{gdf:app:tables}.  Text added in the merge is
+marked \textbf{[Merge note, batch 73O1.]}.  Appendix~\ref{gdf:app:prov}
+records the provenance and every choice the merge made.
+
+\subsection{Notation across the two sources}\label{gdf:sec:notation}
+
+The two manuscripts use different letters for the same notions, and two
+letters with different meanings.  This report uses source 50's notation
+throughout; source 43's material is translated as in the table.
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{3.5cm}>{\raggedright\arraybackslash}p{2.1cm}>{\raggedright\arraybackslash}p{4.6cm}}
+\toprule
+Notion & This report & Source 50 & Source 43\\
+\midrule
+terms & $a(n)$; $u_n$, $v_n$ & $a(n)$ & $u_n$ (A139217), $v_n$ (A139218), $a_n$\\
+partial sums & $S_n$; $U_n$, $V_n$ & $S_n$ & $U_n$, $V_n$, $S_n$\\
+signed difference set & $\cD(A)$, $\cD_n$ & $\cD$ & $\Delta(A)$, $\Delta_n^{(u)}$, $\Delta_n^{(v)}$\\
+ternary support & $\cE(A)$ & $\cE$ & ---\\
+fringe offsets, $\max$ & $H$, $M=\max H$ & $H$, $M$ & $C$, $M$ \textbf{(renamed)}\\
+interval with fringe & $\cF_H(S)$ & \eqref{gdf:eq:D-fringe-form} & $\mathcal F_C(S)$\\
+greedy correction & $c_n=a(n+1)-S_n$ & $c_n$ & $-d_n$ (A139217), $-e_n$ (A139218) \textbf{(renamed, sign)}\\
+doubling deviation & $d_n=a(n+1)-2a(n)$ & $d_n$ & no symbol\\
+leading constant & $C$ & $C$ & $\alpha$ \textbf{(renamed)}\\
+periodic part of $a(n)$ & $p_n$, $p_j$; $r_n$ for $v_n$ & $p_n$, $p_j$ & $p_n$ ($u$), $r_n$ ($v$), $p$\\
+periodic part of $S_n$ & $q_n$ ($U$), $s_n$ ($V$) & --- & $q_n$, $s_n$\\
+floor-log count & $\Lambda$ & $\Lambda$ & $\Phi$ \textbf{(renamed)}\\
+inverse truncation order & $K$ & --- & $M$ \textbf{(renamed)}\\
+forward shift operator & $\tau$ & --- & $E$ \textbf{(renamed)}\\
+generating-function variable & $x$ & $x$ & $z$ \textbf{(renamed)}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Readings to avoid.}
+\begin{itemize}
+\item Source 43's $d_n$ is the \emph{offset} $S_n-a(n+1)$ of the greedy term
+      below the partial sum, so $d_n^{(43)}=-c_n$.  It is \emph{not} source
+      50's deviation $d_n=a(n+1)-2a(n)$.  For A139217, source 43's
+      $d_n=(-1,3,-2)$ is $-c_n$ with $c_n=(1,-3,2)$, while the deviation is
+      $d_n=(-1,-4,5)$.
+\item Source 43's $C$ is a finite \emph{set} of offsets (this report's
+      $H$); source 50's $C$, used here, is the leading \emph{constant} of
+      $a(n)=C2^n+p_n$.
+\item Source 43's $M$ is used both for $\max C$ and for a truncation order;
+      here $M=\max H$ only, and the truncation order is $K$.
+\item $\cE(A)$ is the ternary support; source 43's shift operator $E$ is
+      written $\tau$.
+\item The letter $p$ is source 50's period $p=m/\gcd(m,r)$
+      (Section~\ref{gdf:sec:periodic}), while $p_n$ and $p_j$ denote periodic
+      parts; a subscript always distinguishes them.
+\item The word ``transseries'' in source 50's title and Section~\ref{gdf:sec:asymptotics}
+      is used loosely: every expansion in this report is a convergent series
+      in $2^{-n}$ or $1/x$, with no exponentially small sectors or
+      trans-monomials.
+\end{itemize}
+
+\section{Dissociation, signed differences, and ternary supports}\label{gdf:sec:dissociation}
+
+\subsection{Equivalent forms of dissociation}
+
+For a finite set $A\subset\N$, define its ordinary subset-sum set and its
+signed difference set by
+\begin{align}
+ \Sigma(A)&:=\left\{\sum_{a\in B}a:B\subseteq A\right\},\label{gdf:eq:sigma}\\
+ \cD(A)&:=\left\{\sum_{a\in A}\varepsilon_a a:
+                    \varepsilon_a\in\{-1,0,1\}\right\}.
+ \label{gdf:eq:D-def}
+\end{align}
+Also write $S(A)=\sum_{a\in A}a$.
+
+\begin{lemma}[standard equivalences]\label{gdf:lem:diss-equivalence}
+For a finite set $A$ of positive integers, the following are equivalent.
+\begin{enumerate}[label=(\roman*)]
+\item All subset sums of $A$ are distinct.
+\item The only relation $\sum_{a\in A}\varepsilon_a a=0$ with
+      $\varepsilon_a\in\{-1,0,1\}$ is the trivial relation.
+\item If $b>0$, then $A\cup\{b\}$ is dissociated exactly when
+      $b\notin\cD(A)$, provided $A$ is dissociated.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+An equality between two subset sums becomes a signed relation after canceling
+the common elements, and every signed relation can be separated into its
+positive and negative supports.  This proves (i)$\Leftrightarrow$(ii).
+For (iii), a relation involving the new element has coefficient $+1$ or $-1$
+on $b$, hence is equivalent to $b\in\cD(A)$.  A relation with coefficient zero
+on $b$ would already contradict dissociation of $A$.
+\end{proof}
+
+Statement (iii) is source 43's \emph{append criterion} (its Lemma~2.2), which
+it calls decisive for the greedy algorithm.
+
+\begin{proof}[Second proof of (iii) \src{43}]
+The subset sums of $A\cup\{b\}$ split into two copies, $\Sigma(A)$ and
+$b+\Sigma(A)$.  Each copy has no internal collision because $A$ is
+dissociated.  A collision between the copies is an equality $b+s=t$ with
+$s,t\in\Sigma(A)$, equivalently $b=t-s\in\Sigma(A)-\Sigma(A)=\cD(A)$.
+Conversely, every representation $b=t-s$ creates that collision.
+\end{proof}
+
+The equality
+\[
+ \cD(A)=\Sigma(A)-\Sigma(A)
+\]
+is immediate.  In particular, $\cD(A)$ is symmetric and lies in
+$[-S(A),S(A)]$.  Thus the greedy rule is not mysterious: at stage $n$, all
+positive elements of $\cD(A_n)$ are forbidden, and the next term is the least
+admissible integer outside that set \src{43}.
+
+\begin{remark}[source 43]\label{gdf:rem:dutta-criterion}
+Dutta uses the same signed-difference-set criterion in the unrestricted
+greedy setting~\cite{Dutta2026}.  The new ingredient here is an exact
+description of the whole support of $\cD(A_n)$ for the two
+congruence-restricted OEIS sequences.
+\end{remark}
+
+\subsection{The shifted ternary support}
+
+The central device is the support obtained by allowing digits $0,1,2$:
+\begin{equation}\label{gdf:eq:E-def}
+ \cE(A):=\left\{\sum_{a\in A}\delta_a a:
+                \delta_a\in\{0,1,2\}\right\}.
+\end{equation}
+
+\begin{lemma}[translation identity]\label{gdf:lem:E-translation}
+For every finite $A\subset\N$,
+\[
+ \cE(A)=S(A)+\cD(A).
+\]
+Consequently, $\cE(A)\subseteq[0,2S(A)]$, and $x\in\cE(A)$ if and only if
+$2S(A)-x\in\cE(A)$.
+\end{lemma}
+
+\begin{proof}
+Set $\delta_a=1+\varepsilon_a$.  Then
+$\sum\delta_a a=S(A)+\sum\varepsilon_a a$.  Replacing every digit
+$\delta_a$ by $2-\delta_a$ gives the reflection symmetry.
+\end{proof}
+
+Equivalently, $\cE(A)$ is the exponent support of
+\begin{equation}\label{gdf:eq:support-polynomial}
+ P_A(x):=\prod_{a\in A}(1+x^a+x^{2a}).
+\end{equation}
+Only the support matters here; coefficients may exceed one.
+
+If $b$ is appended, the support has the exact three-copy recursion
+\begin{equation}\label{gdf:eq:three-copy}
+ \cE(A\cup\{b\})=\cE(A)\cup\bigl(b+\cE(A)\bigr)
+                    \cup\bigl(2b+\cE(A)\bigr).
+\end{equation}
+This elementary identity drives the entire proof.  In signed coordinates it
+reads $\cD(A\cup\{b\})=\cD(A)+\{-b,0,b\}$, the form source 43 uses.
+
+\section{The finite-fringe propagation mechanism}\label{gdf:sec:propagation}
+
+\subsection{Fringe-complete supports}
+
+For a finite set $H\subset\N$ and an integer $T$, write
+$T-H:=\{T-h:h\in H\}$ and $H+H:=\{h+h':h,h'\in H\}$.
+
+\begin{definition}[finite-fringe completeness]\label{gdf:def:fringe}
+Let $A$ have total $S$.  We say that $\cE(A)$ has fixed fringe $H$ if
+\begin{equation}\label{gdf:eq:fringe-form}
+ \cE(A)=([0,2S]\cap\Z)\setminus\bigl(H\cup(2S-H)\bigr).
+\end{equation}
+We always assume $H\subseteq\{1,\dots,S-1\}$.
+\end{definition}
+
+By Lemma~\ref{gdf:lem:E-translation}, \eqref{gdf:eq:fringe-form} is equivalent to
+\begin{equation}\label{gdf:eq:D-fringe-form}
+ \cD(A)=([-S,S]\cap\Z)\setminus
+ \bigl\{\pm(S-h):h\in H\bigr\}.
+\end{equation}
+Thus the only positive admissible integers at most $S$ are the fringe gaps
+$S-h$.  Source 43 names the right side of \eqref{gdf:eq:D-fringe-form} a
+\emph{boundary-defect interval}: for $H$ finite and nonempty, $M=\max H$ and
+$S>M$,
+\begin{equation}\label{gdf:eq:FH}
+ \cF_H(S):=([-S,S]\cap\Z)\setminus\{\pm(S-h):h\in H\},
+\end{equation}
+a complete symmetric integer interval with finitely many holes at fixed
+distances $H$ from its two endpoints.
+
+\subsection{The propagation theorem}
+
+\begin{theorem}[finite-fringe propagation]\label{gdf:thm:fringe-propagation}
+Let $A\subset\N$ have total $S$, and suppose \eqref{gdf:eq:fringe-form} holds for a
+nonempty finite set $H$.  Put $M=\max H$.  Let $b$ be a positive integer such
+that
+\begin{equation}\label{gdf:eq:prop-conditions}
+ M<b\le2S-M,
+ \qquad
+ 2S-b\notin H+H.
+\end{equation}
+Then
+\begin{equation}\label{gdf:eq:prop-conclusion}
+ \cE(A\cup\{b\})=
+ [0,2(S+b)]\cap\Z\setminus
+ \bigl(H\cup(2(S+b)-H)\bigr).
+\end{equation}
+In words, appending $b$ preserves the same finite fringe.
+\end{theorem}
+
+\begin{proof}
+Put $E=\cE(A)$ and consider the three translates in
+\eqref{gdf:eq:three-copy}.  Their ambient intervals are
+\[
+ I_0=[0,2S],\qquad I_1=[b,b+2S],\qquad
+ I_2=[2b,2b+2S].
+\]
+Because $b\le2S-M<2S$, these intervals cover the whole interval
+$[0,2S+2b]$.
+
+First consider a point covered only by $I_0$.  It is smaller than $b$.
+The reflected holes $2S-H$ are at least $2S-M\ge b$, so the only holes that
+can occur there are the desired left fringe $H$.  By reflection, a point
+covered only by $I_2$ is missing exactly when it lies in the desired right
+fringe $2(S+b)-H$.
+
+A point covered only by $I_1$ can occur only when $b>S$.  Writing the point as
+$b+y$, exclusivity gives
+\[
+ 2S-b<y<b.
+\]
+The lower holes satisfy $h\le M\le2S-b$, while the upper holes satisfy
+$2S-h\ge2S-M\ge b$.  Hence $y$ is not a hole of $E$, so every point in the
+middle-only region is covered.
+
+It remains to rule out an uncovered point in an overlap.  In an overlap of
+two consecutive translates, such a point would require two holes of $E$ whose
+difference is $b$.  Since $b>M$, two lower holes cannot differ by $b$, and two
+upper holes cannot differ by $b$.  The only possible alignment is
+\[
+ 2S-h=b+h'
+ \quad(h,h'\in H),
+\]
+which is equivalent to $2S-b=h+h'\in H+H$.  This is excluded by
+\eqref{gdf:eq:prop-conditions}.  Any overlap of $I_0$ and $I_2$ is automatically a
+triple overlap, so a consecutive pair is available there as well.
+
+Finally, $h\in H$ lies below $b$ and hence cannot be filled by a shifted copy;
+similarly $2(S+b)-h$ lies beyond the end of $I_1$ and can only come from the
+missing reflected point in $I_2$.  Therefore the endpoint holes remain, and
+all other points are present.
+\end{proof}
+
+The collision condition has a transparent meaning: a high hole in one copy
+must not land on a low hole in the next copy.
+
+\begin{corollary}[automatic persistence beyond a threshold]
+\label{gdf:cor:automatic-persistence}
+Fix a modulus $m$ and a fringe $H$ with $M=\max H$.  Suppose a candidate has
+the form $b=S+c$ with $-M\le c\le m$.  If
+\[
+ S>2M+m,
+\]
+then all conditions of Theorem~\ref{gdf:thm:fringe-propagation} hold.
+\end{corollary}
+
+\begin{proof}
+We have $b\ge S-M>M$, and $b\le S+m<2S-M$.  Also
+$2S-b=S-c\ge S-m>2M$, whereas $H+H\subseteq[2,2M]$.
+\end{proof}
+
+Thus a fixed fringe, once reached beyond a finite threshold, is rigid.  No
+asymptotic estimate is needed.
+
+Source 43 proves the threshold form of this persistence directly, in signed
+coordinates and for an arbitrary correction.  It is the case of
+Theorem~\ref{gdf:thm:fringe-propagation} recorded next (source 43's
+Theorem~3.2, ``boundary-defect propagation'').
+
+\begin{corollary}[threshold form; sources 50 and 43]\label{gdf:cor:threshold}
+Let $H\subset\N$ be finite and nonempty, $M=\max H$, and let $c\in\Z$.
+Suppose
+\begin{equation}\label{gdf:eq:threshold}
+ S>2M+|c|.
+\end{equation}
+Set
+\[
+ b=S+c,\qquad S'=S+b=2S+c.
+\]
+Then
+\begin{equation}\label{gdf:eq:propagation-signed}
+ \cF_H(S)+\{-b,0,b\}=\cF_H(S').
+\end{equation}
+Here $X+Y=\{x+y:x\in X,\ y\in Y\}$.  Consequently, if a dissociated prefix
+$A_n$ with total $S_n$ satisfies $\cD(A_n)=\cF_H(S_n)$, the next chosen term is
+$a(n+1)=S_n+c_n$, and $S_n>2M+|c_n|$, then
+\begin{equation}\label{gdf:eq:inductive-certificate}
+ \cD(A_{n+1})=\cF_H(S_{n+1}),
+ \qquad S_{n+1}=2S_n+c_n
+\end{equation}
+(source 43's Corollary~3.3, ``inductive signed-difference certificate'').
+\end{corollary}
+
+\begin{proof}
+By Lemma~\ref{gdf:lem:E-translation}, \eqref{gdf:eq:propagation-signed} is
+\eqref{gdf:eq:prop-conclusion} shifted by $-(S+b)$, so it suffices to check
+\eqref{gdf:eq:prop-conditions}.  We have $b\ge S-|c|>2M>M$ and
+$b\le S+|c|<2S-2M\le 2S-M$.  Also $2S-b=S-c\ge S-|c|>2M\ge\max(H+H)$.  The
+consequence follows because appending $a(n+1)$ changes the signed difference
+set by $\cD(A_{n+1})=\cD(A_n)+\{-a(n+1),0,a(n+1)\}$.
+\end{proof}
+
+\begin{proof}[Second proof of \eqref{gdf:eq:propagation-signed} \src{43}]
+First ignore the deleted points.  The three translated intervals are
+\begin{align*}
+[-S,S]-b&=[-S',-c],\\
+[-S,S]&=[-S,S],\\
+[-S,S]+b&=[c,S'].
+\end{align*}
+Because $S>|c|$, their union is all of $[-S',S']\cap\Z$.
+
+We now track the holes.  Consider the right boundary point $S'-h$ with
+$h\in H$.  It is larger than $S$ because $S+c-h>0$ follows from
+\eqref{gdf:eq:threshold}.  Hence only the right translate can reach it.  Its
+preimage there is $S-h$, which is deleted from $\cF_H(S)$.  Therefore $S'-h$
+is absent.  By symmetry, $-S'+h$ is absent as well.
+
+It remains to show that no other point is lost.  If $x\in[-S,S]$ is not a
+central hole, the untranslated copy contains it.  If $x=S-h$ is a central
+hole, then in the right translate it has preimage
+\[
+ x-b=(S-h)-(S+c)=-c-h.
+\]
+Now
+\[
+ |c+h|\le |c|+M<S-M.
+\]
+Every deleted point of $\cF_H(S)$ has absolute value at least $S-M$, so
+$-c-h$ is present; hence $x$ is restored by the right translate.  The
+negative central holes are restored symmetrically by the left translate.
+
+Finally suppose $S<x\le S'$.  Only the right translate can reach $x$, and its
+preimage $y=x-b$ lies in $(-c,S]$.  A negative hole has the form $-S+h$ and
+satisfies
+\[
+ -S+h\le -S+M<-|c|\le -c,
+\]
+so a missing preimage in $(-c,S]$ can only be a positive hole $S-h$.  This
+gives exactly $x=S'-h$, already listed.  The region $[-S',-S)$ is symmetric.
+Therefore the only missing points are the prescribed boundary defects.
+\end{proof}
+
+\mergenote{Source 43 writes the new term as $a=S-d$ with hypothesis
+$S>2M+|d|$; with $c=-d$ this is \eqref{gdf:eq:threshold}.  Its hypothesis
+implies source 50's conditions \eqref{gdf:eq:prop-conditions}, but not
+conversely: source 50's theorem also covers terms $b$ outside the window
+$|b-S|<S-2M$.  The intake tested source 50's theorem in 11{,}984 random
+fringe configurations and source 43's in 9{,}700, with no failure; source
+43's hypothesis implied source 50's in every case.  In all 1{,}794 tested
+cases with $M<b\le2S-M$ but $2S-b\in H+H$ the fringe broke, so the collision
+condition cannot be dropped.}
+
+\subsubsection*{Why this lemma is reusable \src{43}}
+
+The theorem isolates a finite-state mechanism.  Once a greedy difference set
+becomes a full interval with a fixed collection of boundary defects, the next
+admissible term often has the form $S_n+c_n$, where $c_n$ depends only on a
+residue state.  If $c_n$ is periodic, then $S_{n+1}=2S_n+c_n$ is exactly
+solvable and the generated sequence is dyadic with a periodic correction.
+Sections~\ref{gdf:sec:A139217} and~\ref{gdf:sec:A139218} are two concrete
+realizations.
+
+\subsection{Greedy choice from a fixed fringe}
+
+Fix integers $m\ge2$ and $r\in\{0,1,\dots,m-1\}$.  Suppose every selected term
+is congruent to $r$ modulo $m$.
+
+\begin{proposition}[finite residue rule]\label{gdf:prop:residue-rule}
+Assume \eqref{gdf:eq:fringe-form} with total $S>M$.  For each $h\in H$, the number
+$S-h$ is admissible, and every other positive integer at most $S$ is
+forbidden.  Therefore the next greedy term congruent to $r$ modulo $m$ is
+\begin{equation}\label{gdf:eq:greedy-from-fringe}
+ b=\min\left(
+   \{S-h:h\in H,\ S-h\equiv r\pmod m\}
+   \cup\{S+q\}\right),
+\end{equation}
+where $q\in\{1,\dots,m\}$ is the least positive integer satisfying
+$S+q\equiv r\pmod m$.
+\end{proposition}
+
+\begin{proof}
+Equation \eqref{gdf:eq:D-fringe-form} lists all admissible positive integers in
+$[1,S]$.  Every integer above $S$ is outside $\cD(A)$ and hence admissible by
+Lemma~\ref{gdf:lem:diss-equivalence}; $S+q$ is the first such integer in the
+required residue class.
+\end{proof}
+
+If several $h$ have the required residue, the largest $h$ wins because it
+gives the smallest $S-h$.  The correction
+\begin{equation}\label{gdf:eq:c-def}
+ c(S):=b-S
+\end{equation}
+is therefore selected from the finite set
+$\{-h:h\in H\}\cup\{1,\dots,m\}$ and depends only on $S\bmod m$.
+
+\subsection{Why a periodic correction gives a linear recurrence}\label{gdf:sec:periodic}
+
+Let $S_n=\sum_{j\le n}a(j)$.  Since every term is $r$ modulo $m$,
+\begin{equation}\label{gdf:eq:S-residue}
+ S_n\equiv nr\pmod m.
+\end{equation}
+The residue cycle has period
+\begin{equation}\label{gdf:eq:p-period}
+ p=\frac{m}{\gcd(m,r)}.
+\end{equation}
+Under a permanent fixed fringe, Proposition~\ref{gdf:prop:residue-rule} therefore
+gives a $p$-periodic sequence $c_n$ such that
+\begin{equation}\label{gdf:eq:a-S-c}
+ a(n+1)=S_n+c_n.
+\end{equation}
+
+\begin{theorem}[periodic correction principle]\label{gdf:thm:periodic-principle}
+Suppose \eqref{gdf:eq:a-S-c} holds and $c_n$ is periodic with period $p$ from some
+point onward.  Then
+\begin{equation}\label{gdf:eq:d-c-difference}
+ d_n:=a(n+1)-2a(n)=c_n-c_{n-1}
+\end{equation}
+is periodic with period $p$ and has zero sum over each period.  Consequently,
+\begin{equation}\label{gdf:eq:p-recurrence}
+ a(n+p)=a(n+p-1)+a(n+p-2)+\cdots+a(n+1)+2a(n)
+\end{equation}
+from the corresponding eventual range onward.  Its characteristic polynomial
+is
+\begin{equation}\label{gdf:eq:charpoly}
+ (x-2)(1+x+\cdots+x^{p-1})
+ =x^p-x^{p-1}-\cdots-x-2.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Using $S_n=S_{n-1}+a(n)$ and
+$a(n)=S_{n-1}+c_{n-1}$ gives
+\[
+ a(n+1)-2a(n)=S_n+c_n-2a(n)=c_n-c_{n-1}.
+\]
+The sum of $p$ consecutive first differences of the periodic sequence $c_n$
+is zero.  Hence
+\[
+ 0=\sum_{j=0}^{p-1}\bigl(a(n+j+1)-2a(n+j)\bigr),
+\]
+which simplifies to \eqref{gdf:eq:p-recurrence}.  Expanding the product gives
+\eqref{gdf:eq:charpoly}.
+\end{proof}
+
+A further useful consequence is an exact exponential-plus-periodic form.
+Since the roots other than $2$ in \eqref{gdf:eq:charpoly} are nontrivial
+$p$th roots of unity, every solution is
+\begin{equation}\label{gdf:eq:exp-periodic-general}
+ a(n)=C2^n+p_n,
+\end{equation}
+where $p_n$ is $p$-periodic.  In the two OEIS cases $p=3$.
+
+Source 43 proves the same principle in partial-sum coordinates, where the
+greedy step \eqref{gdf:eq:a-S-c} reads $S_{n+1}=2S_n+c_n$.  Its statement
+adds the uniqueness of the periodic part and the denominator of the
+generating function.
+
+\begin{proposition}[periodic forcing principle; sources 43 and 50]\label{gdf:prop:forcing}
+Suppose that, from some index onward,
+\begin{equation}\label{gdf:eq:periodic-forcing}
+ S_{n+1}=2S_n+c_n,
+ \qquad c_{n+p}=c_n
+\end{equation}
+for a fixed period $p$.  Then there is a unique $p$-periodic sequence $q_n$
+satisfying
+\[
+ q_{n+1}=2q_n+c_n,
+\]
+and a constant $\kappa$ such that
+\begin{equation}\label{gdf:eq:S-general-solution}
+ S_n=\kappa 2^n+q_n.
+\end{equation}
+Consequently, $a(n)=S_n-S_{n-1}$ is a dyadic exponential plus a period-$p$
+sequence of mean zero, in agreement with \eqref{gdf:eq:exp-periodic-general}
+(with $C=\kappa/2$).  Its ordinary generating function is rational, with
+denominator dividing
+\begin{equation}\label{gdf:eq:general-denominator}
+ (1-2x)(1+x+\cdots+x^{p-1}).
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Proof \src{43}]
+Iterating the affine recurrence for $q$ over one period sends $q_n$ to
+$2^pq_n+B_n$, where $B_n$ is determined by the $p$ forcing values.  A periodic
+solution must satisfy $(1-2^p)q_n=B_n$, so it exists and is unique.
+Subtracting this periodic solution from \eqref{gdf:eq:periodic-forcing} leaves
+$S_{n+1}-q_{n+1}=2(S_n-q_n)$, proving \eqref{gdf:eq:S-general-solution}.
+
+Now $a(n)=\kappa2^{n-1}+q_n-q_{n-1}$.  The periodic difference has mean zero
+over one period, so its generating-function denominator divides
+$(1-x^p)/(1-x)=1+x+\cdots+x^{p-1}$.  The dyadic part contributes $1-2x$.
+\end{proof}
+
+For $p=3$ the denominator is $(1-2x)(1+x+x^2)=1-x-x^2-2x^3$; equivalently the
+characteristic polynomial is $(x-2)(x^2+x+1)=x^3-x^2-x-2$, which is exactly
+the recurrence polynomial appearing in both OEIS entries.
+
+\section{OEIS A139217: the residue-one case modulo 3}\label{gdf:sec:A139217}
+
+\subsection{The seed fringe}
+
+The first three greedy terms are $1,4,7$.  Indeed, after $1$ the values
+$1$ and $-1$ are forbidden, so the next positive integer congruent to $1$
+modulo $3$ is $4$; after $\{1,4\}$ the positive signed differences are
+$1,3,4,5$, so the next permitted value is $7$.
+
+Set $A_3=\{1,4,7\}$ and $S_3=12$.  From
+\[
+ (1+x+x^2)(1+x^4+x^8)(1+x^7+x^{14})
+\]
+one finds
+\begin{equation}\label{gdf:eq:217-seed-E}
+ \cE(A_3)=([0,24]\cap\Z)\setminus\{3,21\}.
+\end{equation}
+For completeness, the attainable values in $[0,12]$ are
+\[
+ 0,1,2,4,5,6,7,8,9,10,11,12;
+\]
+reflection about $12$ supplies the upper half.  Thus the fringe is
+\begin{equation}\label{gdf:eq:H217}
+ H_{217}=\{3\}.
+\end{equation}
+
+\subsubsection*{Signed certificate \src{43}}
+
+In signed coordinates \eqref{gdf:eq:217-seed-E} reads
+\begin{equation}\label{gdf:eq:u-base}
+ \cD(1,4,7)=[-12,12]\cap\Z\setminus\{\pm9\}=\cF_{\{3\}}(12).
+\end{equation}
+The positive integers $1,\dots,12$ other than $9$ have the signed
+representations
+\[
+\begin{aligned}
+ 1&=1,        &2&=7-4-1, &3&=4-1,\\
+ 4&=4,        &5&=4+1,   &6&=7-1,\\
+ 7&=7,        &8&=7+1,   &10&=7+4-1,\\
+ 11&=7+4,     &12&=7+4+1.&&
+\end{aligned}
+\]
+The value $9$ is impossible: with coefficient $0$ on $7$ the absolute value is
+at most $5$; with coefficient $1$ on $7$, one would need a signed combination
+of $1$ and $4$ equal to $2$, which does not occur; coefficient $-1$ cannot
+produce a positive value as large as $9$.
+
+\subsection{The residue table}
+
+Every term is $1$ modulo $3$, so $S_n\equiv n\pmod3$.  The only positive gap
+at most $S_n$ is $S_n-3$, which has the same residue as $S_n$.  Proposition
+\ref{gdf:prop:residue-rule} gives the following exact table.
+
+\begin{center}
+{\small
+\begin{tabular}{ccccc}
+\toprule
+$n\bmod3$ & $S_n\bmod3$ & next admissible $a(n+1)$ & $c_n=a(n+1)-S_n$ &
+$d_n=a(n+1)-2a(n)$\\
+\midrule
+$0$ & $0$ & $S_n+1$ & $1$ & $-1$\\
+$1$ & $1$ & $S_n-3$ & $-3$ & $-4$\\
+$2$ & $2$ & $S_n+2$ & $2$ & $5$\\
+\bottomrule
+\end{tabular}
+}
+\end{center}
+
+The $d_n$ column is $c_n-c_{n-1}$, with residues read cyclically.  Source 43
+derives the same table: when $n\equiv1\pmod3$ the unique positive hole
+$S_n-3$ is itself congruent to $1$ and is selected; in the other two cases the
+hole has the wrong residue, every admissible positive integer at most $S_n$ is
+represented, and the least admissible integer above $S_n$ is $S_n+1$ or
+$S_n+2$.
+
+\subsection{Persistence of the fringe}
+
+Here $M=3$, $m=3$, and $S_3=12>2M+m=9$.  Every candidate in the table has
+correction $c\in[-3,3]$.  Corollary~\ref{gdf:cor:automatic-persistence} applies
+immediately.  Therefore the fringe \eqref{gdf:eq:H217} persists for every
+$n\ge3$.  (In source 43's form: $12>2\cdot3+3$, so
+Corollary~\ref{gdf:cor:threshold} applies from the base case onward for all
+$c_n\in\{1,-3,2\}$.)
+
+\begin{theorem}[complete solution of A139217; sources 50 and 43]\label{gdf:thm:A139217}
+Let $a(n)$ be OEIS A139217 and $S_n=\sum_{j\le n}a(j)$.  Then:
+\begin{enumerate}[label=(\alph*)]
+\item For every $n\ge3$,
+\[
+ \cE(A_n)=[0,2S_n]\cap\Z\setminus\{3,2S_n-3\},
+\]
+and
+\[
+ \cD_n=[-S_n,S_n]\cap\Z\setminus\{\pm(S_n-3)\}.
+\]
+\item For every $n\ge3$,
+\begin{equation}\label{gdf:eq:217-first-order}
+ a(n+1)=2a(n)+
+ \begin{cases}
+ -1,&n\equiv0\pmod3,\\
+ -4,&n\equiv1\pmod3,\\
+ 5,&n\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+\item For every $n\ge6$,
+\begin{equation}\label{gdf:eq:217-recurrence}
+ a(n)=a(n-1)+a(n-2)+2a(n-3).
+\end{equation}
+\item For every $n\ge3$,
+\begin{equation}\label{gdf:eq:217-closed}
+ a(n)=3\cdot2^{n-2}+
+ \begin{cases}
+ 1,&n\equiv0,1\pmod3,\\
+ -2,&n\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+Equivalently,
+\begin{equation}\label{gdf:eq:217-cosine}
+ a(n)=\frac34\,2^n-2\cos\left(\frac{2\pi(n+1)}3\right).
+\end{equation}
+\item The ordinary generating function $A_{217}(x)=\sum_{n\ge1}a(n)x^n$ is
+\begin{equation}\label{gdf:eq:217-ogf}
+ A_{217}(x)=
+ \frac{x+3x^2+2x^3-6x^5}{1-x-x^2-2x^3}.
+\end{equation}
+\item For $n\ge3$,
+\begin{equation}\label{gdf:eq:217-S}
+ S_n=3\cdot2^{n-1}+
+ \begin{cases}
+ 0,&n\equiv0\pmod3,\\
+ 1,&n\equiv1\pmod3,\\
+ -1,&n\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Part (a) follows by induction from \eqref{gdf:eq:217-seed-E} and
+Theorem~\ref{gdf:thm:fringe-propagation}, as justified above.  The residue table
+then gives the three-periodic corrections $c_n=(1,-3,2)$ indexed by
+$n\equiv(0,1,2)$.  Equation \eqref{gdf:eq:d-c-difference} gives (b).
+
+The values $d_n$ in (b) sum to zero over a period.  Summing three consecutive
+relations $a(k+1)-2a(k)=d_k$ gives (c), beginning with $n=6$ because the
+periodic law already holds for $d_3,d_4,d_5$.
+
+For (d), the claimed right side agrees with $a(3)=7$, and its periodic
+correction $p_n\in\{1,1,-2\}$ satisfies
+$p_{n+1}-2p_n=(-1,-4,5)$ in the corresponding residue classes.  Induction
+using (b) proves the formula.  The cosine identity is the elementary
+period-three interpolation of $(1,1,-2)$.
+
+Multiplying $\sum_{n\ge1}a(n)x^n$ by
+$1-x-x^2-2x^3$ and using (c) leaves only the coefficients through degree five,
+which are $1,3,2,0,-6$; this gives (e).  Finally, summing (d), or checking the
+three residue classes in $S_n=S_{n-1}+a(n)$, proves (f).
+\end{proof}
+
+In source 43's notation, part (a) with the greedy step reads: for every
+$n\ge3$, $u_{n+1}=U_n+c_n$ with $c_n=(1,-3,2)$, hence
+\begin{equation}\label{gdf:eq:U-first-order}
+ U_{n+1}=2U_n+c_n,
+\end{equation}
+and part (f) is its Theorem~4.2, $U_n=3\cdot2^{n-1}+q_n$ with
+$q_n=(0,1,-1)$ for $n\equiv(0,1,2)\pmod3$.
+
+\begin{proof}[Second proof of (a), (d), (f) and (c) \src{43}]
+Equation \eqref{gdf:eq:u-base} is the base case.  Assuming (a) at stage $n$,
+the residue analysis proves that the greedy algorithm selects
+$u_{n+1}=U_n+c_n$; the threshold condition holds, so
+Corollary~\ref{gdf:cor:threshold} propagates the same defect set to stage
+$n+1$.  This simultaneously proves the greedy choice and the invariant by
+induction.
+
+The periodic forcing in \eqref{gdf:eq:U-first-order} can be solved without
+guessing.  A direct check of the three residue classes shows
+$q_{n+1}=2q_n+c_n$.  Since $U_3=12=3\cdot2^2+q_3$, induction gives (f).
+Taking $u_n=U_n-U_{n-1}$ gives the piecewise formula (d), including $n=3$ by
+direct substitution; the trigonometric form is the real Fourier
+representation of the period-three correction.
+
+For (c), let $\tau$ be the forward shift.  The correction term $p_n$ is
+annihilated by $\tau^2+\tau+1$, while $2^n$ is annihilated by $\tau-2$, so
+$u_n$ is annihilated by $(\tau-2)(\tau^2+\tau+1)=\tau^3-\tau^2-\tau-2$.  The
+closed form is valid from $n=3$, so applying its order-three annihilator
+requires $n-3\ge3$, namely $n\ge6$.  At $n=5$ the two sides of
+\eqref{gdf:eq:217-recurrence} are $22$ and $28$.
+\end{proof}
+
+Source 43 states (c) as its Corollary~4.3 and adds: ``This range is sharp for
+the displayed initial sequence: the identity fails at $n=5$.''
+\mergenote{The recurrence also holds at $n=4$ ($13=7+4+2\cdot1$), fails at
+$n=5$, and holds for every $n\ge6$; $6$ is the first index from which it
+holds permanently.  ``Sharp'' is true in that sense only.}
+
+\subsection{Correction to the current OEIS range}
+
+As of 1 October 2026, A139217 states that the recurrence holds for $n>4$.
+At $n=5$ the proposed identity would read
+\[
+ 22\stackrel{?}{=}13+7+2\cdot4=28,
+\]
+so that range is false.  Theorem~\ref{gdf:thm:A139217} shows that the correct
+range is $n\ge6$.  The conjectured recurrence itself is correct after that
+single indexing correction.  The eventual doubling correction recorded in the
+OEIS entry is now exact: it is \eqref{gdf:eq:217-first-order}
+(sources 50 and 43).
+
+\section{OEIS A139218: the residue-two case modulo 3}\label{gdf:sec:A139218}
+
+\subsection{The seed fringe}
+
+The first three terms are $2,5,8$.  For $A_3=\{2,5,8\}$, $S_3=15$, and
+\begin{equation}\label{gdf:eq:218-seed-E}
+ \cE(A_3)=([0,30]\cap\Z)\setminus
+ \{1,3,6,11,19,24,27,29\}.
+\end{equation}
+Indeed, the represented values in $[0,15]$ are
+\[
+ 0,2,4,5,7,8,9,10,12,13,14,15,
+\]
+and reflection about $15$ gives the upper half.  Hence
+\begin{equation}\label{gdf:eq:H218}
+ H_{218}=\{1,3,6,11\}.
+\end{equation}
+
+\subsubsection*{Signed certificate \src{43}}
+
+The positive represented signed values for $\{2,5,8\}$ are
+\[
+\begin{aligned}
+ 1&=8-5-2, &2&=2,       &3&=5-2,\\
+ 5&=5,     &6&=8-2,     &7&=5+2,\\
+ 8&=8,     &10&=8+2,    &11&=8+5-2,\\
+ 13&=8+5,  &15&=8+5+2.&&
+\end{aligned}
+\]
+The four remaining positive integers are impossible.  Indeed,
+$\cD(2,5)=\{0,\pm2,\pm3,\pm5,\pm7\}$; after fixing the coefficient of $8$ to
+be $0$, $1$, or $-1$, none of $4,9,12,14$ can be completed by an element of
+this set.  Hence
+\begin{equation}\label{gdf:eq:v-base3}
+ \cD(2,5,8)=[-15,15]\cap\Z\setminus
+ \{\pm4,\pm9,\pm12,\pm14\},
+\end{equation}
+and $\{4,9,12,14\}=\{15-h:h\in H_{218}\}$.
+
+\subsection{The residue table}
+
+Now every term is $2$ modulo $3$, so
+$S_n\equiv2n\pmod3$.  A gap $S_n-h$ is congruent to $2$ when
+\[
+ h\equiv S_n-2\equiv2(n-1)\pmod3.
+\]
+If several fringe elements match, the largest one yields the smallest greedy
+candidate.  This gives:
+
+\begin{center}
+\begin{tabular}{cccccc}
+\toprule
+$n\bmod3$ & $S_n\bmod3$ & matching $h$ & chosen $h$ & $c_n$ & $d_n$\\
+\midrule
+$0$ & $0$ & $1$ & $1$ & $-1$ & $10$\\
+$1$ & $2$ & $3,6$ & $6$ & $-6$ & $-5$\\
+$2$ & $1$ & $11$ & $11$ & $-11$ & $-5$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the next term is always a fringe gap; no above-$S_n$ fallback is needed.
+Source 43's table (``least admissible hole'' $v_{n+1}=V_n-1$, $V_n-6$,
+$V_n-11$) is the same.
+
+\subsection{Persistence of the fringe}
+
+Here $M=11$.  At the initial stage $S_3=15$ and the table gives $b=14$.
+The conditions of Theorem~\ref{gdf:thm:fringe-propagation} hold directly:
+\[
+ 11<14\le19,
+ \qquad
+ 2S_3-b=16\notin H_{218}+H_{218},
+\]
+where
+\begin{equation}\label{gdf:eq:H218sum}
+ H_{218}+H_{218}=\{2,4,6,7,9,12,14,17,22\}.
+\end{equation}
+After adjoining $14$, the new total is $S_4=29>2M+3=25$.
+Corollary~\ref{gdf:cor:automatic-persistence} then applies forever.
+
+\subsubsection*{The step $n=3\to4$ by hand \src{43}}
+
+Source 43's threshold form does not cover the first step ($S_3=15<2\cdot11+1$),
+so it computes $\cD(2,5,8,14)$ directly.  Appending $14$ replaces the signed
+set by $\cD_3+\{-14,0,14\}$.  On the positive side, the translate by $14$
+restores the four central holes because their preimages are
+$-10,-5,-2,0\in\cD_3$.  Every integer from $16$ through $29$ has only the
+preimage $x-14\in[2,15]$; it is missing precisely when that preimage is one of
+$4,9,12,14$.  Symmetry now gives
+\begin{equation}\label{gdf:eq:v-base4}
+ \cD(2,5,8,14)
+ =[-29,29]\cap\Z\setminus
+ \{\pm18,\pm23,\pm26,\pm28\}
+ =\cF_{H_{218}}(29).
+\end{equation}
+Thus both finite base identities have explicit hand-checkable certificates;
+the accompanying program \file{code/43-boundary-verify.py} independently
+verifies them by exact set equality.  For the induction step from $n=4$, the
+threshold \eqref{gdf:eq:threshold} holds: $M=11$, $S_4=29$, and for the first
+step $|c_4|=6$, so $29>22+6$; thereafter the partial sums increase, and the
+largest possible $|c_n|$ is $11$.
+
+\begin{theorem}[complete solution of A139218; sources 50 and 43]\label{gdf:thm:A139218}
+Let $a(n)$ be OEIS A139218 and $S_n=\sum_{j\le n}a(j)$.  Then:
+\begin{enumerate}[label=(\alph*)]
+\item For every $n\ge3$,
+\[
+ \cE(A_n)=[0,2S_n]\cap\Z\setminus
+ \bigl(H_{218}\cup(2S_n-H_{218})\bigr),
+\]
+where $H_{218}=\{1,3,6,11\}$.  Equivalently,
+\[
+ \cD_n=[-S_n,S_n]\cap\Z\setminus
+ \bigl\{\pm(S_n-h):h\in H_{218}\bigr\}.
+\]
+\item For every $n\ge4$,
+\begin{equation}\label{gdf:eq:218-first-order}
+ a(n+1)=2a(n)+
+ \begin{cases}
+ 10,&n\equiv0\pmod3,\\
+ -5,&n\equiv1\pmod3,\\
+ -5,&n\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+\item For every $n\ge7$,
+\begin{equation}\label{gdf:eq:218-recurrence}
+ a(n)=a(n-1)+a(n-2)+2a(n-3).
+\end{equation}
+\item For every $n\ge4$,
+\begin{equation}\label{gdf:eq:218-closed}
+ a(n)=\frac{39}{56}\,2^n+
+ \begin{cases}
+ -25/7,&n\equiv0\pmod3,\\
+ 20/7,&n\equiv1\pmod3,\\
+ 5/7,&n\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+Equivalently, in an explicitly integral piecewise form,
+\begin{equation}\label{gdf:eq:218-closed-integral}
+ a(n)=
+ \begin{cases}
+ (39\cdot2^n-200)/56,&n\equiv0\pmod3,\\
+ (39\cdot2^n+160)/56,&n\equiv1\pmod3,\\
+ (39\cdot2^n+40)/56,&n\equiv2\pmod3,
+ \end{cases}
+\end{equation}
+that is, $a(n)=(39\cdot2^{n-3}-25)/7$, $(39\cdot2^{n-3}+20)/7$,
+$(39\cdot2^{n-3}+5)/7$ respectively (source 43's form).
+\item The ordinary generating function $A_{218}(x)=\sum_{n\ge1}a(n)x^n$ is
+\begin{equation}\label{gdf:eq:218-ogf}
+ A_{218}(x)=
+ \frac{2x+3x^2+x^3-3x^4-9x^5-12x^6}
+      {1-x-x^2-2x^3}.
+\end{equation}
+\item For every $n\ge3$,
+\begin{equation}\label{gdf:eq:218-S}
+ S_n=\frac{39}{28}\,2^n+
+ \begin{cases}
+ 27/7,&n\equiv0\pmod3,\\
+ 47/7,&n\equiv1\pmod3,\\
+ 52/7,&n\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The direct base check and the propagation argument prove (a).  The residue
+table gives $c_n=(-1,-6,-11)$ for $n\equiv(0,1,2)$, respectively.  Hence
+$d_n=c_n-c_{n-1}=(10,-5,-5)$ once both adjacent corrections are in the stable
+regime, namely for $n\ge4$.  This proves (b).
+
+The three values of $d_n$ sum to zero, so Theorem~\ref{gdf:thm:periodic-principle}
+gives (c), starting at $n=7$.  For (d), the periodic correction
+$(-25/7,20/7,5/7)$ has successive doubled differences $(10,-5,-5)$, and the
+formula agrees with $a(4)=14$; induction using (b) completes the proof.
+
+Multiplication by $1-x-x^2-2x^3$ leaves the six initial residual coefficients
+$2,3,1,-3,-9,-12$, giving (e).  Summation of (d), or induction in the three
+residue classes, gives (f).
+\end{proof}
+
+In source 43's notation, part (a) with the greedy step reads: for every
+$n\ge3$, $v_{n+1}=V_n+c_n$ with $c_n=(-1,-6,-11)$, hence
+\begin{equation}\label{gdf:eq:V-first-order}
+ V_{n+1}=2V_n+c_n,
+\end{equation}
+and part (f) is its Theorem~5.2, $V_n=\frac{39}{28}2^n+s_n$, with the
+period-three sequence
+\begin{equation}\label{gdf:eq:s-def}
+ s_n=\begin{cases}
+ 27/7,&n\equiv0\pmod3,\\
+ 47/7,&n\equiv1\pmod3,\\
+ 52/7,&n\equiv2\pmod3,
+ \end{cases}
+\end{equation}
+and $v_n=\frac{39}{56}2^n+r_n$, $r_n=(-25/7,20/7,5/7)$.
+
+\begin{proof}[Second proof of (a), (d), (f) and (c) \src{43}]
+The cases $n=3$ and $n=4$ are the direct computations
+\eqref{gdf:eq:v-base3} and \eqref{gdf:eq:v-base4}; the transition $n=3$ to
+$n=4$ also agrees with the greedy step.  For $n\ge4$, the residue table
+identifies the greedy term, and Corollary~\ref{gdf:cor:threshold} propagates
+the fixed defect set.  Induction completes the proof of (a).
+
+One checks in the three residue classes that $s_{n+1}=2s_n+c_n$.  Since
+$V_4=29=\frac{39}{28}2^4+\frac{47}7$, the first-order recurrence
+\eqref{gdf:eq:V-first-order} gives (f) by induction.  Taking the difference
+$V_n-V_{n-1}$ and simplifying gives (d); integrality also follows
+automatically because the closed form equals the integer sequence generated
+by the greedy construction.  For (c), the dyadic term and the period-three
+correction are annihilated by $(\tau-2)(\tau^2+\tau+1)$; the closed form
+begins at $n=4$, so the recurrence begins at $n=7$.
+\end{proof}
+
+\mergenote{Source 43 states (f) for $n\ge4$ only, starting the induction at
+$V_4=29$.  The formula also holds at $n=3$: $\frac{39}{28}\cdot8+\frac{27}7=15=V_3$
+(source 50 states $n\ge3$).  Source 43's delivered OEIS draft
+(\file{43-boundary-OEIS_update_draft.txt}, shipped unchanged) keeps
+``For $n>=4$''.}
+
+The current OEIS range $n>6$ for \eqref{gdf:eq:218-recurrence} is therefore
+correct.  The exact doubling correction \eqref{gdf:eq:218-first-order} proves
+the eventual periodicity observed in the OEIS entry.
+
+\section{Relations between the two sequences \src{43}}\label{gdf:sec:cross}
+
+\subsection{Cross-sequence identities}
+
+The dominant constants satisfy
+\[
+ \frac{39/56}{3/4}=\frac{13}{14}.
+\]
+Subtracting the two closed forms \eqref{gdf:eq:217-closed} and
+\eqref{gdf:eq:218-closed} gives a stronger exact statement.
+
+\begin{corollary}[cross-sequence identity]\label{gdf:cor:cross-relation}
+For every $n\ge4$,
+\begin{equation}\label{gdf:eq:cross-relation}
+ 14v_n-13u_n=
+ \begin{cases}
+ -63,&n\equiv0\pmod3,\\
+ 27,&n\equiv1\pmod3,\\
+ 36,&n\equiv2\pmod3.
+ \end{cases}
+\end{equation}
+In particular,
+\[
+ \frac{v_n}{u_n}=\frac{13}{14}+O(2^{-n}).
+\]
+\end{corollary}
+
+\begin{proof}
+For $n\ge4$ both closed forms hold, and $14\cdot\frac{39}{56}=13\cdot\frac34$,
+so the dyadic terms cancel.  The periodic remainders are
+$14\cdot(-\frac{25}7)-13\cdot1=-63$,
+$14\cdot\frac{20}7-13\cdot1=27$ and $14\cdot\frac57-13\cdot(-2)=36$.
+\end{proof}
+
+The range is sharp: at $n=3$, $14\cdot8-13\cdot7=21\ne-63$.  A corresponding
+identity for partial sums is
+\begin{equation}\label{gdf:eq:cross-sums}
+14V_n-13U_n=
+\begin{cases}
+54,&n\equiv0\pmod3,\\
+81,&n\equiv1\pmod3,\\
+117,&n\equiv2\pmod3,
+\end{cases}
+\qquad(n\ge4),
+\end{equation}
+by the same subtraction applied to \eqref{gdf:eq:217-S} and
+\eqref{gdf:eq:218-S}.
+\mergenote{Since both partial-sum formulas hold from $n=3$,
+\eqref{gdf:eq:cross-sums} also holds at $n=3$: $14\cdot15-13\cdot12=54$.}
+
+\subsection{Near-saturation of the signed-difference interval}
+
+The structural theorems immediately give the cardinalities
+\begin{align}
+ |\cD_n|&=2U_n-1\quad\text{(A139217)},\label{gdf:eq:u-delta-size}\\
+ |\cD_n|&=2V_n-7\quad\text{(A139218)},\label{gdf:eq:v-delta-size}
+\end{align}
+for every $n\ge3$.  The ambient intervals have $2U_n+1$ and $2V_n+1$ points,
+respectively.  Hence the support of the signed differences misses only $2$
+points in the first sequence and $8$ in the second, independently of $n$.
+This fixed-defect saturation is much stronger information than the term
+recurrence.
+
+\section{Exact asymptotics and transseries}\label{gdf:sec:asymptotics}
+
+\subsection{Unified exponential-plus-periodic form}\label{gdf:sec:unified}
+
+Both solutions have the exact form
+\begin{equation}\label{gdf:eq:unified-form}
+ a(n)=C2^n+p_j,\qquad j\equiv n\pmod3,
+\end{equation}
+with the following constants.
+
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Sequence & valid range & $C$ & $(p_0,p_1,p_2)$ & leading asymptotic\\
+\midrule
+A139217 & $n\ge3$ & $3/4$ & $(1,1,-2)$ & $a(n)\sim(3/4)2^n$\\
+A139218 & $n\ge4$ & $39/56$ & $(-25/7,20/7,5/7)$ & $a(n)\sim(39/56)2^n$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The periodic term is bounded, so there are no algebraic corrections in
+$1/n$.  The complete correction scale is exponentially small relative to the
+main term.
+
+\begin{corollary}[forward asymptotics; source 43]\label{gdf:cor:forward-asymptotics}
+As $n\to\infty$,
+\begin{align*}
+ u_n&=\frac34\,2^n+O(1),
+ &U_n&=\frac32\,2^n+O(1),\\
+ v_n&=\frac{39}{56}\,2^n+O(1),
+ &V_n&=\frac{39}{28}\,2^n+O(1).
+\end{align*}
+The errors are exactly periodic of period $3$.  Moreover,
+$u_{n+1}/u_n=2+O(2^{-n})$ and $v_{n+1}/v_n=2+O(2^{-n})$.
+\end{corollary}
+
+The closed forms are already complete asymptotic expansions: there are no
+uncomputed algebraic or logarithmic correction terms.  They can also be viewed
+as exact exponential polynomials \src{43}.  With $\omega=e^{2\pi i/3}$,
+\[
+ u_n=\frac34\,2^n-\omega^{n+1}-\omega^{-(n+1)},
+\]
+and the period-three term of $v_n$ is
+\[
+ r_n=-\frac{25}{7}\cos\frac{2\pi n}{3}
+ +\frac{5\sqrt3}{7}\sin\frac{2\pi n}{3}.
+\]
+Thus the complete spectral support consists of the three characteristic roots
+$2,\omega,\overline\omega$.
+
+\subsection{Logarithmic transseries}
+
+For a fixed residue branch $j$ and all sufficiently large $n\equiv j\pmod3$,
+\begin{align}
+ \log a(n)
+ &=n\log2+\log C+
+   \log\left(1+\frac{p_j}{C2^n}\right)\notag\\
+ &=n\log2+\log C+
+   \sum_{k\ge1}\frac{(-1)^{k+1}}{k}
+   \left(\frac{p_j}{C}\right)^k2^{-kn}.
+ \label{gdf:eq:log-transseries}
+\end{align}
+This is not merely asymptotic: it is a convergent expansion once
+$|p_j|<C2^n$, which already holds throughout the closed-form ranges above.
+
+Similarly, if $d_j$ is the period-three value of $a(n+1)-2a(n)$ on the branch
+$n\equiv j$, then
+\begin{align}
+ \frac{a(n+1)}{a(n)}
+ &=2+\frac{d_j}{C2^n+p_j}\notag\\
+ &=2+\frac{d_j}{C}2^{-n}
+   \sum_{k\ge0}\left(-\frac{p_j}{C}\right)^k2^{-kn}.
+ \label{gdf:eq:ratio-transseries}
+\end{align}
+Thus convergence to the growth ratio $2$ has an explicit oscillatory
+period-three expansion to all orders in $2^{-n}$.
+
+\subsection{Inverse transseries on residue branches}\label{gdf:sec:inverse}
+
+Because of the periodic correction, the inverse is naturally three-branched.
+For a fixed residue $j$, solve $x=C2^n+p_j$ continuously for $n$:
+\begin{equation}\label{gdf:eq:inverse-exact}
+ \nu_j(x):=\log_2\left(\frac{x-p_j}{C}\right).
+\end{equation}
+Whenever $n$ lies in the closed-form range and $n\equiv j\pmod3$,
+\begin{equation}\label{gdf:eq:inverse-exact-value}
+ \nu_j(a(n))=n
+\end{equation}
+exactly.  Expanding at infinity gives the logarithmic inverse transseries
+\begin{equation}\label{gdf:eq:inverse-transseries}
+ \nu_j(x)=\log_2\left(\frac{x}{C}\right)
+ -\frac1{\log2}\sum_{k\ge1}\frac{p_j^k}{k x^k}.
+\end{equation}
+For A139217 the leading inverse is $\log_2(4x/3)$; for A139218 it is
+$\log_2(56x/39)$.  Formula \eqref{gdf:eq:inverse-transseries} supplies every
+inverse-power correction and keeps the residue dependence explicit.  It was
+obtained independently by both sources; for $|x|>|p_j|$ it is not merely a
+formal Poincar\'e expansion but the convergent Taylor series of
+$\log(1-p_j/x)$ \src{43}.
+
+\begin{proposition}[truncation remainder; source 43]\label{gdf:prop:inverse-remainder}
+Let $R_K(x)$ be the remainder after the first $K$ terms of the sum in
+\eqref{gdf:eq:inverse-transseries}.  For $|x|>|p_j|$,
+\begin{equation}\label{gdf:eq:inverse-remainder}
+ \left|R_K(x)\right|
+ \le
+ \frac{|p_j|^{K+1}}{(K+1)\log2\,|x|^{K+1}}
+ \frac{1}{1-|p_j/x|}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+$|R_K(x)|\le\frac1{\log2}\sum_{k\ge K+1}\frac{|p_j/x|^k}{k}
+\le\frac{1}{(K+1)\log2}\sum_{k\ge K+1}|p_j/x|^k$, a geometric series.
+\end{proof}
+
+\subsubsection*{Explicit branches \src{43}}
+
+For A139217, $C=3/4$ and the periodic shifts are $p_j=1,1,-2$ for index
+residues $j=0,1,2$.  Therefore
+\begin{align}
+ \nu_{0}(x)=\nu_{1}(x)
+ &=\log_2\frac{4x}{3}
+ -\frac1{\log2}\left(
+ \frac1x+\frac1{2x^2}+\frac1{3x^3}+\frac1{4x^4}+\cdots\right),\label{gdf:eq:u-inverse-01}\\
+ \nu_{2}(x)
+ &=\log_2\frac{4x}{3}
+ +\frac1{\log2}\left(
+ \frac2x-\frac2{x^2}+\frac{8}{3x^3}-\frac4{x^4}+\cdots\right).
+ \label{gdf:eq:u-inverse-2}
+\end{align}
+When $x=u_n$ and the appropriate branch is chosen, $\nu_j(x)=n$ exactly.
+
+For A139218, $C=39/56$, with shifts $p_0=-\frac{25}{7}$, $p_1=\frac{20}{7}$,
+$p_2=\frac{5}{7}$.  The first two corrections are
+\begin{center}
+\begin{tabular}{c c}
+\toprule
+$j$ & $\nu_j(x)-\log_2(56x/39)$\\
+\midrule
+$0$ & $\displaystyle \frac1{\log2}\left(\frac{25}{7x}-\frac{625}{98x^2}+O(x^{-3})\right)$\\[0.8em]
+$1$ & $\displaystyle -\frac1{\log2}\left(\frac{20}{7x}+\frac{200}{49x^2}+O(x^{-3})\right)$\\[0.8em]
+$2$ & $\displaystyle -\frac1{\log2}\left(\frac{5}{7x}+\frac{25}{98x^2}+O(x^{-3})\right)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Again, these are convergent for $|x|>|p_j|$.
+
+\subsection{Exact counting functions}\label{gdf:sec:counting}
+
+The closed forms also invert discretely.  Let
+\[
+ N_A(x):=\#\{n\ge1:a(n)\le x\}.
+\]
+Define, for real $y$,
+\begin{equation}\label{gdf:eq:Lambda-def}
+ \Lambda(y):=
+ \begin{cases}
+ \max\{0,\lfloor\log_8 y\rfloor\},&y>0,\\
+ 0,&y\le0.
+ \end{cases}
+\end{equation}
+This counts positive integers $m$ for which $8^m\le y$.  (Source 43 calls this
+function $\Phi$.)
+
+For A139217, the three branches $n=3m,3m+1,3m+2$ give respectively
+\[
+ \frac{4(a(n)-1)}3=8^m,\qquad
+ \frac{2(a(n)-1)}3=8^m,\qquad
+ \frac{a(n)+2}3=8^m.
+\]
+Therefore, for every real $x$ (sources 50 and 43),
+\begin{equation}\label{gdf:eq:count-217}
+ \boxed{
+ N_{217}(x)=\ind_{x\ge1}+\ind_{x\ge4}
+ +\Lambda\!\left(\frac{4(x-1)}3\right)
+ +\Lambda\!\left(\frac{2(x-1)}3\right)
+ +\Lambda\!\left(\frac{x+2}3\right).}
+\end{equation}
+
+For A139218, the residue-zero branch begins with $n=6$ (that is, $m=2$),
+while the other two closed-form branches begin with $m=1$.  Hence, for every
+real $x$,
+\begin{align}
+ N_{218}(x)={}&\ind_{x\ge2}+\ind_{x\ge5}+\ind_{x\ge8}
+ +\Lambda\!\left(\frac{7x+25}{39}\right)\notag\\
+ &+\Lambda\!\left(\frac{28x-80}{39}\right)
+ +\Lambda\!\left(\frac{14x-10}{39}\right).
+ \label{gdf:eq:count-218}
+\end{align}
+Equations \eqref{gdf:eq:count-217}--\eqref{gdf:eq:count-218} are exact, not merely
+asymptotic inversion formulas.
+
+\mergenote{Source 50 printed the residue-zero term of
+\eqref{gdf:eq:count-218} as
+$\max\bigl\{0,\lfloor\log_8\bigl(\frac{56x+200}{39}\bigr)\rfloor-1\bigr\}$.
+That expression equals $\Lambda\bigl(\frac{7x+25}{39}\bigr)$ for
+$x>-25/7$, because $\frac{56x+200}{39}=8\cdot\frac{7x+25}{39}$, but it is
+undefined for $x\le-25/7$, where the count is $0$.  The term printed here is
+source 43's, which is defined for every real $x$.}
+
+\begin{proof}[Proof \src{43}]
+Besides the exceptional terms $u_1=1$ and $u_2=4$, \eqref{gdf:eq:217-closed}
+gives, for $k\ge1$,
+\[
+ u_{3k}=\tfrac34\,8^k+1,\qquad
+ u_{3k+1}=\tfrac32\,8^k+1,\qquad
+ u_{3k+2}=3\,8^k-2.
+\]
+For a branch $A8^k+B$ with $k\ge1$, the number of terms not exceeding $x$ is
+$\Lambda((x-B)/A)$.  Summing the three branches and the two exceptions gives
+\eqref{gdf:eq:count-217}.  Besides $v_1=2,v_2=5,v_3=8$, the three branches of
+A139218 may be written, for $k\ge1$, as
+\[
+ v_{3k+3}=\tfrac{39}{7}8^k-\tfrac{25}{7},\qquad
+ v_{3k+1}=\tfrac{39}{28}8^k+\tfrac{20}{7},\qquad
+ v_{3k+2}=\tfrac{39}{14}8^k+\tfrac{5}{7}.
+\]
+Applying the same branch count proves \eqref{gdf:eq:count-218}.
+\end{proof}
+
+\begin{corollary}[counting asymptotics; source 43]\label{gdf:cor:counting-asymptotics}
+\[
+ N_{217}(x)=\log_2 x+O(1),
+ \qquad
+ N_{218}(x)=\log_2 x+O(1)
+ \qquad(x\to\infty).
+\]
+The $O(1)$ term cannot be replaced by a convergent constant: it contains
+bounded logarithmically periodic staircase oscillations produced by the three
+floor functions.
+\end{corollary}
+
+\subsection{Two notions of inversion \src{43}}
+
+There are two complementary notions of inversion:
+\begin{itemize}
+\item the exact discrete counting functions \eqref{gdf:eq:count-217} and
+      \eqref{gdf:eq:count-218}, which retain floors and bounded log-periodic
+      oscillation;
+\item the smooth residue-resolved inverses \eqref{gdf:eq:inverse-transseries},
+      which admit all-orders convergent expansions.
+\end{itemize}
+Discarding the residue branch before inversion loses an $O(1)$ amount of
+information, while discarding the periodic additive term within a fixed branch
+loses only an explicitly expandable $O(x^{-1})$ correction to the index.
+
+\section{Generating functions and recurrence diagnostics}\label{gdf:sec:gf}
+
+The generating functions \eqref{gdf:eq:217-ogf} and \eqref{gdf:eq:218-ogf}
+were found by both sources (source 43's Theorem~6.2, with variable $z$).
+The common denominator factors as
+\begin{equation}\label{gdf:eq:den-factor}
+ 1-x-x^2-2x^3=(1-2x)(1+x+x^2).
+\end{equation}
+The pole at $x=1/2$ produces the exponential term $C2^n$.  The roots of
+$1+x+x^2$ are the nontrivial cube roots of unity and produce the bounded
+period-three correction.  This analytic factorization exactly mirrors the
+finite-fringe residue mechanism; the common denominator is not a numerical
+coincidence (Proposition~\ref{gdf:prop:forcing}).
+
+For A139217, the failure of the recurrence at $n=5$ is recorded by the term
+$-6x^5$ in the numerator.  Beginning at degree six, multiplication by the
+denominator gives zero.  For A139218, the transient lasts through degree six,
+and the recurrence starts at degree seven.
+
+The first-order deviations make the onset especially transparent:
+\begin{center}
+\begin{tabular}{ccl}
+\toprule
+Sequence & initial deviations $a(n+1)-2a(n)$ & periodic tail\\
+\midrule
+A139217 & $2,-1$ & $-1,-4,5,-1,-4,5,\dots$ from $n=3$\\
+A139218 & $1,-2,-2$ & $-5,-5,10,-5,-5,10,\dots$ from $n=4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+This reproduces and proves the patterns recorded as conjectural comments in
+the OEIS entries.
+
+\section{Exact computational audit}\label{gdf:sec:audit}
+
+\subsection{Bitset model (source 50's verifier)}
+
+The program \file{code/50-finite-fringe-verify.py} represents the support
+of $P_A(x)$ in
+\eqref{gdf:eq:support-polynomial} by one nonnegative Python integer.  Bit $j$ is
+one exactly when $j\in\cE(A)$.  Appending $b$ is the exact operation
+\begin{equation}\label{gdf:eq:bitset-update}
+ B\longmapsto B\mathbin{\mathrm{OR}}(B\ll b)
+                  \mathbin{\mathrm{OR}}(B\ll2b).
+\end{equation}
+No floating-point computation or probabilistic test is involved.
+
+Given $B$ and $S$, positive admissible values $x\le S$ correspond exactly to
+missing bits at positions $S+x$.  The program enumerates those missing bits,
+filters by the desired congruence, and compares them with the first permitted
+integer above $S$.  Thus it reconstructs the greedy sequence independently of
+the closed forms.
+
+\subsection{Checks performed by source 50's verifier}
+
+Running
+\begin{verbatim}
+python code/50-finite-fringe-verify.py
+\end{verbatim}
+performs the following exact checks.
+\begin{enumerate}[label=(\roman*)]
+\item It generates 22 terms of each sequence directly from the greedy rule.
+\item It matches the 14 terms currently printed by the OEIS.
+\item From $n=3$ onward it verifies every missing exponent in
+      $[0,2S_n]$, not merely a sample, against the claimed fixed fringe.
+\item It checks the closed forms and recurrence on their stated ranges.
+\item It expands both rational generating functions through degree 30 and
+      checks every coefficient against the closed form.
+\end{enumerate}
+A representative run ends with
+\begin{verbatim}
+A139217: verified 22 greedy terms ... exact fringe [3].
+A139218: verified 22 greedy terms ... exact fringe [1, 3, 6, 11].
+A139217: rational generating function checked through x^30.
+A139218: rational generating function checked through x^30.
+All exact checks passed.
+\end{verbatim}
+It does not check the counting functions, the cross-identities or the failure
+at $n=5$; source 43's verifier does.
+
+\subsection{Source 43's verifier}
+
+The program \file{code/43-boundary-verify.py} is a standard-library Python
+program, intentionally independent of symbolic algebra systems.  All principal
+checks use exact integers and rational numbers.  It performs the following
+tasks.
+\begin{enumerate}[label=(\arabic*)]
+\item It generates the two sequences directly from the greedy definition,
+      maintaining the exact signed difference set.
+\item It verifies the published OEIS prefixes and extends each sequence to
+      seventeen terms.
+\item For every checked prefix, it proves by finite set equality that the
+      signed difference set has exactly the boundary-defect form of
+      Theorems~\ref{gdf:thm:A139217}(a) and~\ref{gdf:thm:A139218}(a).
+\item It checks the closed forms and the correct recurrence ranges.
+\item It explicitly confirms the failure of the A139217 recurrence at $n=5$.
+\item It tests the boundary-propagation identity for all forcing values used
+      in the proofs and several partial sums.
+\item It checks the exact counting functions on every integer from $0$
+      through the largest generated term.
+\end{enumerate}
+The core update is only
+\begin{verbatim}
+def signed_difference_set(values):
+    out = {0}
+    for value in values:
+        out = {x + eps * value
+               for x in out for eps in (-1, 0, 1)}
+    return out
+\end{verbatim}
+The recorded output \file{data/43-boundary-verification_output.txt} begins:
+\begin{verbatim}
+All exact checks passed.
+A139217 prefix: [1, 4, 7, 13, 22, 49, 97, 190, ...]
+A139218 prefix: [2, 5, 8, 14, 23, 41, 92, 179, ...]
+A139217 boundary offsets: {3}
+A139218 boundary offsets: {1, 3, 6, 11}
+\end{verbatim}
+
+\subsection{Role and limits of computation}
+
+The finite checks are useful for detecting transcription and indexing errors.
+The proof of all $n$, however, is Theorem~\ref{gdf:thm:fringe-propagation} plus the
+base fringes \eqref{gdf:eq:217-seed-E} and \eqref{gdf:eq:218-seed-E}.
+Source 43 puts it the same way: the computation is useful for detecting the
+invariant and guarding against transcription errors, but a finite calculation
+cannot prove eventual behaviour.  The infinite argument consists of three
+exact ingredients: a finite base difference-set identity; the greedy selection
+forced by residues and boundary holes; and the propagation theorem.  Once
+these are proved, no extrapolation from data remains.
+
+\section{Proposed OEIS updates}\label{gdf:sec:oeis}
+
+Both packages contain a plain-text draft suitable for adaptation after
+independent review: \file{50-finite-fringe-oeis_update_draft.txt} and
+\file{43-boundary-OEIS_update_draft.txt}.  Neither has been submitted.
+They agree on every formula and range.  The mathematical content can be
+summarized as follows.
+
+\subsection{A139217}
+
+\begin{itemize}
+\item Replace the conjectural period statement by the proved identity
+\[
+ a(n+1)-2a(n)=(-1,-4,5)\quad\text{periodically for }n\ge3,
+\]
+with the values ordered by $n\equiv0,1,2\pmod3$.
+\item Correct the recurrence range from ``$n>4$'' to ``$n\ge6$''.
+\item Add the closed form \eqref{gdf:eq:217-closed}, generating function
+\eqref{gdf:eq:217-ogf}, and exact signed-support statement from
+Theorem~\ref{gdf:thm:A139217}.
+\end{itemize}
+
+\subsection{A139218}
+
+\begin{itemize}
+\item Replace the conjectural period statement by the proved identity
+\[
+ a(n+1)-2a(n)=(10,-5,-5)\quad\text{periodically for }n\ge4,
+\]
+with the values ordered by $n\equiv0,1,2\pmod3$.
+\item Confirm the recurrence for $n\ge7$.
+\item Add the closed form \eqref{gdf:eq:218-closed-integral}, generating function
+\eqref{gdf:eq:218-ogf}, and exact signed-support statement from
+Theorem~\ref{gdf:thm:A139218}.
+\end{itemize}
+
+The support theorems are compact enough for an OEIS comment but stronger than
+what is needed to verify the numerical formula.  A stable public manuscript
+link and checked attribution should be supplied before submission.
+
+\subsection{Source 43's proposed wording}
+
+Source 43 offers the following text as a starting point for an OEIS
+submission, subject to independent review and attribution decisions.
+
+\emph{A139217.} \textbf{Formula.} For $n\ge3$,
+$a(n)=3\cdot2^{n-2}+1$ if $n\equiv0,1\pmod3$ and $a(n)=3\cdot2^{n-2}-2$ if
+$n\equiv2\pmod3$.  Hence $a(n)=a(n-1)+a(n-2)+2a(n-3)$ for $n\ge6$.  The
+previously displayed range $n>4$ is false at $n=5$.
+\textbf{Comment.} If $S_n=\sum_{k=1}^n a(k)$, then for every $n\ge3$ the set
+of signed sums
+$\{\sum_{k=1}^n\varepsilon_k a(k):\varepsilon_k\in\{-1,0,1\}\}$ is
+$[-S_n,S_n]\cap\Z$ with only $\pm(S_n-3)$ removed.  This invariant proves the
+greedy formula.
+\textbf{Generating function.} \eqref{gdf:eq:217-ogf}.
+
+\emph{A139218.} \textbf{Formula.} For $n\ge4$, \eqref{gdf:eq:218-closed}.
+Hence $a(n)=a(n-1)+a(n-2)+2a(n-3)$ for $n\ge7$.
+\textbf{Comment.} If $S_n=\sum_{k=1}^n a(k)$, then for every $n\ge3$ the
+signed-sum set is $[-S_n,S_n]\cap\Z$ with precisely
+$\pm(S_n-1)$, $\pm(S_n-3)$, $\pm(S_n-6)$, $\pm(S_n-11)$ removed.
+\textbf{Generating function.} \eqref{gdf:eq:218-ogf}.
+
+Source 43's delivered draft file also gives the partial sums
+\eqref{gdf:eq:217-S} and $S_n=\frac{39}{28}2^n+s_n$ (stated there for
+$n\ge4$; true from $n=3$), source 43's integral form of
+\eqref{gdf:eq:218-closed}, and a status and attribution note.  Source 50's
+draft adds the cosine form \eqref{gdf:eq:217-cosine}, the periodic deviations,
+the leading asymptotics and a proof idea.
+
+\section{Formalization roadmap for ProveIt}\label{gdf:sec:roadmap}
+
+The proof is well suited to Lean because its only infinite step is an
+induction over finite integer intervals and finite set translations.
+
+\subsection{Suggested definitions}
+
+A direct formalization can use finite sets rather than polynomials:
+\begin{align*}
+ \texttt{signedSums}(A)&:=
+ \left\{\sum_i\varepsilon_i a_i:\varepsilon_i\in\{-1,0,1\}\right\},\\
+ \texttt{ternarySums}(A)&:=
+ \left\{\sum_i\delta_i a_i:\delta_i\in\{0,1,2\}\right\}.
+\end{align*}
+For a list or finset of naturals, the second set can be defined recursively by
+\[
+ E([])=\{0\},\qquad E(a::L)=E(L)\cup(a+E(L))\cup(2a+E(L)).
+\]
+This recursion avoids coefficient reasoning entirely.
+
+\subsection{Core lemmas}
+
+A compact development would prove, in order:
+\begin{enumerate}[label=(\arabic*)]
+\item distinct subset sums $\Leftrightarrow$ no nontrivial signed zero
+relation;
+\item admissibility of a new term $b\Leftrightarrow b\notin\cD(A)$;
+\item $\cE(A)=S(A)+\cD(A)$ and reflection symmetry;
+\item the three-copy recursion \eqref{gdf:eq:three-copy};
+\item Theorem~\ref{gdf:thm:fringe-propagation} as a lemma about three translated
+integer intervals with finite deleted fringes;
+\item the finite residue rule and periodic correction principle;
+\item decidable base computations for $\{1,4,7\}$ and $\{2,5,8\}$;
+\item the two inductions, closed forms, and recurrence identities.
+\end{enumerate}
+
+The only delicate part is organizing the interval-overlap proof so that
+arithmetic automation sees the cases.  One practical approach is to state a
+separate coverage lemma for $I_0,I_1,I_2$ and then discharge the possible
+hole alignments with finite-set membership in $H+H$.  For the concrete
+fringes, all remaining arithmetic should be handled by
+\texttt{omega}, \texttt{norm\_num}, and finite \texttt{decide} checks.
+
+\subsection{Proof-certificate boundary}
+
+The executable verifier is intentionally not presented as a formal proof.
+A Lean development should import neither the generated terms nor a large
+bitset certificate as an axiom.  The finite seed supports may be proved by
+normalization or reflected interval membership, while the universal step must
+be the abstract fringe theorem.  This keeps the trusted kernel small and the
+mathematics reusable for other OEIS sequences.
+
+\subsection{Source 43's roadmap}
+
+Source 43 proposes a compact Lean development with the following layers.
+
+\emph{Core definitions.} Represent a finite prefix as a list or finset of
+integers and define $\operatorname{delta}(A)=\{\sum_{a\in A}\varepsilon_a
+a:\varepsilon_a\in\{-1,0,1\}\}$.  For formal efficiency, one can instead
+define $\Sigma(A)$ first and set $\cD(A)=\Sigma(A)-\Sigma(A)$; the latter
+makes the append criterion a direct statement about two translated finsets.
+Suggested declarations include
+\begin{verbatim}
+subsetSums : List Int -> Finset Int
+signedDiffs : List Int -> Finset Int
+dissociated : List Int -> Prop
+boundaryModel : Finset Nat -> Int -> Finset Int
+\end{verbatim}
+
+\emph{General theorem layer.} \nolinkurl{dissociated_cons_iff_not_mem_signedDiffs},
+formalizing Lemma~\ref{gdf:lem:diss-equivalence}(iii); a translate identity
+for signed differences after appending one term;
+\texttt{boundaryModel\_propagate}, formalizing
+Corollary~\ref{gdf:cor:threshold}; and interval-membership lemmas that
+separate the central and two outer regions.  The propagation proof uses only
+linear integer arithmetic, finite-set extensionality, and elementary
+inequalities, so most local obligations should be amenable to
+\texttt{omega}, \texttt{linarith}, and simplification.
+
+\emph{Sequence-specific layer.} For A139217, certify the base equality for
+$(1,4,7)$ and then prove the three residue cases.  For A139218, certify the
+two finite bases $(2,5,8)$ and $(2,5,8,14)$.  These bases are small enough for
+a transparent theorem-by-theorem proof; a checked decision procedure may also
+be used if the repository's trust policy permits it.  After the structural
+induction, the formulas are routine recurrences over residue classes.  The
+final recurrence follows from either direct substitution in the piecewise
+closed forms or an abstract lemma for dyadic-plus-periodic sequences.
+
+\emph{Recommended theorem boundary.} A strong formalization should make the
+main public theorems state the greedy semantics, not only the numerical
+recurrence.  Proving that a recurrence-generated list matches the first
+several terms is insufficient; the key statement is that every next term is
+the least admissible integer in the required congruence class.  The
+signed-difference invariant provides exactly that bridge.
+
+\mergenote{None of these declarations exists in ProveIt.  The names above are
+the sources' proposals; nothing in this report is formalized.}
+
+\section{Further research questions}\label{gdf:sec:questions}
+
+The fixed-fringe mechanism suggests a broader program rather than two isolated
+identities.  Questions~\ref{gdf:q:classification}--\ref{gdf:q:oeis} are source
+50's; Section~\ref{gdf:sec:questions43} lists source 43's, with the overlaps
+marked.
+
+\begin{question}[classification by modulus and residue]\label{gdf:q:classification}
+For which pairs $(m,r)$ does the progression-restricted greedy dissociated
+sequence eventually acquire a fixed fringe?  Can the fringe and the onset
+index be computed from $(m,r)$ alone?
+\end{question}
+
+The cases $r=0$ reduce after scaling by $m$ to an unrestricted problem, while
+nonzero residues can forbid exact doubling.  The first unexplored step is a
+systematic census for $m=4,5,6$ with proof-oriented support data.
+
+\begin{question}[a finite fringe automaton]\label{gdf:q:automaton}
+Can one define a finite-state transition system whose states are normalized
+hole sets near $0$ and $2S$, and prove that every progression-restricted
+greedy orbit eventually enters a cycle?
+\end{question}
+
+A naive state space is infinite because a hole can drift into the bulk.  The
+central issue is to prove a uniform bound on relevant fringe width, or to find
+a counterexample with a growing fringe.  The three-copy recursion gives a
+natural transfer operator on hole patterns.
+
+\begin{question}[necessary and sufficient propagation conditions]\label{gdf:q:conditions}
+Theorem~\ref{gdf:thm:fringe-propagation} gives simple sufficient conditions.
+Can one classify exactly the values of $b$ for which a given fringe $H$ is
+preserved?  What new fringe is produced when the collision
+$2S-b\in H+H$ occurs?
+\end{question}
+
+The collision equation suggests a controlled ``fringe surgery'' calculus:
+aligned high and low holes can either persist, be filled by the third copy, or
+create a new finite cluster.  An exact transition theorem could make the
+automaton question tractable.
+
+\begin{question}[eventual exponential-plus-periodic laws]\label{gdf:q:laws}
+Is every fixed-fringe progression sequence eventually of the form
+$C2^n+p_n$ with periodic $p_n$?  More generally, if the normalized fringe is
+periodic rather than fixed, does one still obtain a rational generating
+function?
+\end{question}
+
+For a genuinely periodic family of fringes, the correction $c_n$ would remain
+periodic after augmenting the state by the fringe phase.  This strongly
+suggests rationality, but the onset and state bound need proof.
+
+\begin{question}[higher representation multiplicity]\label{gdf:q:multiplicity}
+Replace dissociation by the condition that every subset sum has at most $g$
+representations, or replace digits $\{-1,0,1\}$ by
+$\{-q,\dots,q\}$.  Is there an analogue of finite-fringe propagation with
+$2q+1$ translated copies?
+\end{question}
+
+The geometric part of the proof generalizes immediately to multiple copies,
+but overlap multiplicities and admissibility are subtler.  This direction
+connects directly with the generalized dissociation questions considered in
+\cite{Dutta2026}.
+
+\begin{question}[unions of residue classes]\label{gdf:q:unions}
+What happens when candidates are allowed in a union $R\subset\Z/m\Z$ rather
+than one residue class?  Can the greedy choice be described by a finite
+minimum over fringe gaps, and when does exact doubling reappear?
+\end{question}
+
+This interpolates between the present constrained sequences and Dutta's
+unrestricted greedy algorithm.  It may reveal a sharp threshold between
+exact eventual doubling and periodic near-doubling.
+
+\begin{question}[robustness under seeds]\label{gdf:q:seeds}
+Fix $(m,r)$ but begin with an arbitrary finite dissociated seed in the residue
+class.  Which seeds converge to the same fringe cycle, and which produce
+different asymptotic constants $C$?
+\end{question}
+
+The constant $C$ is determined by the transient together with the periodic
+correction.  Basin-of-attraction questions may be finite-state once a fringe
+bound is available.
+
+\begin{question}[effective inverse theory]\label{gdf:q:inverse}
+For eventual laws $a(n)=C2^n+p_n$, can one give uniform exact formulas for the
+counting function, nearest-index map, and error bounds when only a recurrence
+or fringe automaton is known?
+\end{question}
+
+The formulas in Section~\ref{gdf:sec:asymptotics} show that the inverse problem
+naturally decomposes
+by residue branch.  For longer periods, roots-of-unity filters and floor-log
+expressions should give a systematic answer.
+
+\begin{question}[formal library theorem]\label{gdf:q:formal}
+Can Theorem~\ref{gdf:thm:fringe-propagation} be formalized once as a reusable
+ProveIt lemma and applied automatically to a certificate consisting only of a
+seed fringe and a finite residue table?
+\end{question}
+
+Such a theorem would turn many OEIS conjectures into small, auditable proof
+certificates rather than sequence-specific formal developments.
+
+\begin{question}[OEIS exploration]\label{gdf:q:oeis}
+Which existing OEIS entries record unexplained eventual recurrences arising
+from greedy distinct-subset-sum constructions?  Can their recurrences be
+reverse-engineered into finite fringe sets?
+\end{question}
+
+A useful search strategy is to inspect entries with comments of the form
+``$a(n+1)-2a(n)$ appears periodic,'' compute exact ternary-support holes, and
+test whether the holes stabilize after translation by the total sum.
+
+\subsection{Source 43's questions}\label{gdf:sec:questions43}
+
+Source 43 numbers its questions consecutively; its numbers are kept.  For a
+modulus $m\ge2$ and residue $r$, the greedy dissociated sequence chooses the
+least positive integer congruent to $r$ modulo $m$ that preserves distinct
+subset sums.
+
+\emph{Classification by modulus and residue} (overlaps
+Question~\ref{gdf:q:classification}).
+\begin{enumerate}[label=43.\arabic*]
+\item For which pairs $(m,r)$ does the signed difference set eventually become
+      a full interval with a fixed finite boundary-defect set?
+\item When this happens, can the defect set be computed from a finite seed by
+      a terminating algorithm with proof certificates?
+\item Is eventual boundary-defect stabilization guaranteed whenever
+      $\gcd(m,r)=1$, or are there primitive counterexamples?
+\end{enumerate}
+Preliminary exact experiments indicate that fixed defect sets occur for
+several further small pairs, but a systematic theorem requires more than
+numerical evidence.
+
+\emph{A finite-state classification theorem} (overlaps
+Questions~\ref{gdf:q:automaton}--\ref{gdf:q:laws}).  The present examples
+have a particularly rigid form: $\cD_n=\cF_H(S_n)$ and
+$S_{n+1}=2S_n+c(S_n\bmod m)$.
+\begin{enumerate}[label=43.\arabic*,resume]
+\item Classify all finite sets $H$ and residue-choice functions $c$ for which
+      the propagation equation \eqref{gdf:eq:propagation-signed} is
+      compatible with a greedy rule.
+\item Develop a finite automaton whose states encode the boundary defects and
+      whose accepted cycles certify eventual recurrences.
+\item Determine whether every ultimately periodic defect automaton yields a
+      rational generating function, and characterize its minimal denominator.
+\end{enumerate}
+
+\emph{Beyond a single residue class} (overlaps
+Question~\ref{gdf:q:unions}).
+\begin{enumerate}[label=43.\arabic*,resume]
+\item Replace one residue class by a union of classes, or by an arbitrary
+      periodic admissibility set.  Does the next-step forcing become
+      automatic, morphic, or eventually periodic?
+\item Study admissible sets defined by valuations, digital constraints, or
+      Beatty sequences.  Which constraints preserve finite-state boundary
+      dynamics?
+\item Allow a weighted greedy objective, such as the least admissible term
+      under a cost function rather than the usual order.
+\end{enumerate}
+
+\emph{Robustness and seed dependence} (overlaps
+Question~\ref{gdf:q:seeds}).
+\begin{enumerate}[label=43.\arabic*,resume]
+\item If finitely many initial terms are changed while preserving dissociation
+      and congruence, does the process converge to the same defect cycle, a
+      translated cycle, or one of finitely many attractors?
+\item Quantify a basin of attraction for each stable defect set.
+\item Determine the earliest stabilization index and sharp versions of the
+      sufficient threshold $S>2M+|c|$ of Corollary~\ref{gdf:cor:threshold}.
+\end{enumerate}
+\mergenote{Item 43.12 is partly answered by source 50: its
+Theorem~\ref{gdf:thm:fringe-propagation} replaces the threshold by the
+conditions $M<b\le2S-M$, $2S-b\notin H+H$, whose collision condition is
+sharp in the intake's random tests (see the note after
+Corollary~\ref{gdf:cor:threshold}).  The
+earliest stabilization index for general $(m,r)$ remains open.}
+
+\emph{Connections to broader dissociated-set theory} (item 43.14 overlaps
+Question~\ref{gdf:q:multiplicity}).
+\begin{enumerate}[label=43.\arabic*,resume]
+\item Dutta proved eventual exact doubling for the unrestricted greedy
+      algorithm~\cite{Dutta2026}.  Find a common theorem that treats
+      unrestricted doubling and congruence-restricted periodic corrections as
+      two instances of one dynamical principle.
+\item Extend the constrained greedy analysis to $D[g]$ sets, where each subset
+      sum may have at most $g$ representations, and to $D_k$ sets with
+      coefficients in $\{-k,\ldots,k\}$.
+\item Compare the asymptotic constants produced by residue restrictions with
+      extremal constructions in the Erd\H{o}s distinct-subset-sums
+      problem~\cite{Bohman1998,DubroffFoxXu2021,Steinerberger2023}.
+\item Determine exact representation multiplicities inside the nearly
+      saturated difference intervals.  The support is simple, but the number
+      of signed representations of each interior point may contain additional
+      structure.
+\end{enumerate}
+
+\emph{Asymptotic inversion and transseries} (overlaps
+Question~\ref{gdf:q:inverse}).
+\begin{enumerate}[label=43.\arabic*,resume]
+\item Develop a general inversion calculus for sequences of the form
+      $\alpha\lambda^n+p(n)$ with periodic or automatic $p(n)$, retaining both
+      exact staircase effects and smooth branch expansions.
+\item For more complicated defect automata, identify when inverse expansions
+      involve several exponential scales, logarithms, or genuine transseries
+      rather than convergent $1/x$ series.
+\item Formalize a theorem that transports error bounds from a forward
+      exponential-polynomial approximation to residue-resolved inverse
+      branches.
+\end{enumerate}
+
+\emph{Formal verification and OEIS infrastructure} (overlaps
+Questions~\ref{gdf:q:formal} and~\ref{gdf:q:oeis}).
+\begin{enumerate}[label=43.\arabic*,resume]
+\item Formalize the propagation theorem once in Lean and expose it as a
+      reusable API for future OEIS certificates.
+\item Build a checker that accepts a proposed defect set, base prefix, and
+      periodic forcing table, and returns a machine-checkable recurrence
+      certificate.
+\item Search OEIS systematically for greedy subset-sum sequences whose
+      conjectural recurrences can be resolved by this certificate pattern.
+\end{enumerate}
+
+\section{Conclusion}\label{gdf:sec:conclusion}
+
+The two conjectured OEIS recurrences are manifestations of a stronger and
+simpler invariant.  In shifted signed-sum coordinates, the reachable set is a
+complete interval except for a finite reflected fringe.  Adding the next
+greedy term creates three translated copies.  Once the copies overlap without
+a high-hole/low-hole collision, the same fringe reproduces itself.  The
+arithmetic progression then reads that fringe through a finite residue table,
+forcing a periodic correction to doubling and hence a rational recurrence.
+
+For A139217 the invariant has one fringe element, $H=\{3\}$; for A139218 it
+has four, $H=\{1,3,6,11\}$.  This proves the complete signed supports, the
+periodic deviations, the recurrences, closed forms, generating functions,
+asymptotics, and inverses.  It also identifies and repairs the current
+A139217 recurrence range; for A139218 it proves the conjecture exactly as
+recorded.  The same invariant yields exact counting functions,
+cross-sequence identities, and convergent inverse expansions \src{43}.  The
+broader finite-fringe method is likely to be more valuable than either
+isolated formula, because it reduces an infinite greedy problem to one exact
+seed computation and one finite collision check.  More broadly, the results
+suggest that congruence-restricted greedy dissociated sets may often be
+governed by finite boundary automata; establishing that classification would
+convert a wide class of experimentally observed OEIS recurrences into
+certifiable theorems \src{43}.
+
+\appendix
+
+\section{Seed support certificates}\label{gdf:app:seeds}
+
+\subsection{A139217}
+
+For $A=\{1,4,7\}$, every integer in $[0,12]$ except $3$ has a ternary-digit
+representation:
+\begin{center}
+\begin{tabular}{c|l@{\qquad}c|l}
+\toprule
+$x$ & representation & $x$ & representation\\
+\midrule
+0 & $0$ & 1 & $1$\\
+2 & $2\cdot1$ & 4 & $4$\\
+5 & $4+1$ & 6 & $4+2\cdot1$\\
+7 & $7$ & 8 & $7+1$\\
+9 & $7+2\cdot1$ & 10 & $2\cdot4+2\cdot1$\\
+11 & $7+4$ & 12 & $7+4+1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The value $3$ is impossible because the contributions from $1$ total at most
+$2$, while the next available summand is $4$.  Reflection $x\mapsto24-x$
+then proves \eqref{gdf:eq:217-seed-E}.  The signed form
+\eqref{gdf:eq:u-base} was proved explicitly in Section~\ref{gdf:sec:A139217}
+\src{43}.
+
+\subsection{A139218}
+
+For $A=\{2,5,8\}$, the represented values in $[0,15]$ are certified by
+\begin{center}
+\begin{tabular}{c|l@{\qquad}c|l}
+\toprule
+$x$ & representation & $x$ & representation\\
+\midrule
+0 & $0$ & 2 & $2$\\
+4 & $2\cdot2$ & 5 & $5$\\
+7 & $5+2$ & 8 & $8$\\
+9 & $5+2\cdot2$ & 10 & $2\cdot5$\\
+12 & $8+2\cdot2$ & 13 & $8+5$\\
+14 & $2\cdot5+2\cdot2$ & 15 & $8+5+2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+A direct check of the four remaining values gives the lower fringe
+$\{1,3,6,11\}$; reflection $x\mapsto30-x$ gives the four upper holes.
+This proves \eqref{gdf:eq:218-seed-E}.
+
+\subsection{Successive support addition \src{43}}
+
+Source 43 summarizes its hand certificate for A139218 by successive support
+addition.  Starting from
+\[
+ D_0=\{0\},\qquad
+ D_{k}=D_{k-1}+\{-a_k,0,a_k\},
+\]
+with $(a_1,a_2,a_3,a_4)=(2,5,8,14)$, one obtains
+\begin{align*}
+ D_3&=[-15,15]\setminus\{\pm4,\pm9,\pm12,\pm14\},\\
+ D_4&=[-29,29]\setminus\{\pm18,\pm23,\pm26,\pm28\}.
+\end{align*}
+The verification script \file{code/43-boundary-verify.py} evaluates the
+same equalities directly.  No unproved numerical assumption enters the
+induction.
+
+\section{Derivation of the rational generating functions}\label{gdf:app:gf}
+
+Suppose $a(n)=a(n-1)+a(n-2)+2a(n-3)$ for $n\ge N$.  With
+$A(x)=\sum_{n\ge1}a(n)x^n$,
+\[
+ (1-x-x^2-2x^3)A(x)
+\]
+automatically has degree at most $N-1$.
+
+For A139217, using $a(1),\dots,a(5)=1,4,7,13,22$ gives residuals
+\[
+ 1,\ 3,\ 2,\ 0,\ -6,
+\]
+which yields \eqref{gdf:eq:217-ogf}.  For A139218, using
+$a(1),\dots,a(6)=2,5,8,14,23,41$ gives residuals
+\[
+ 2,\ 3,\ 1,\ -3,\ -9,\ -12,
+\]
+which yields \eqref{gdf:eq:218-ogf}.
+
+Conversely, coefficient extraction from either rational function gives the
+listed initial values and the common recurrence after the numerator degree.
+Thus the generating functions are equivalent to the recurrence plus its
+transient data.  (Source 43 argues the same way: multiply each power series
+by $1-x-x^2-2x^3$; all coefficients vanish once the recurrence range begins,
+and expanding the two rational functions reproduces the OEIS prefixes.)
+
+\section{Audit checklist}\label{gdf:app:checklist}
+
+The logical dependencies of the report are intentionally short.
+\begin{enumerate}[label=(\arabic*)]
+\item Lemma~\ref{gdf:lem:diss-equivalence} turns greedy admissibility into
+      nonmembership in a signed difference set.
+\item Lemma~\ref{gdf:lem:E-translation} shifts the signed set to a nonnegative
+      ternary support.
+\item The exact seed computations identify $H_{217}$ and $H_{218}$.
+\item Theorem~\ref{gdf:thm:fringe-propagation} preserves each fringe.
+\item Proposition~\ref{gdf:prop:residue-rule} converts the fringe into a finite
+      residue table.
+\item Theorem~\ref{gdf:thm:periodic-principle} converts periodic corrections into
+      the recurrence.
+\item Elementary induction gives the closed forms, generating functions, and
+      inverse formulas.
+\end{enumerate}
+No asymptotic assumption enters the proof of either OEIS result.
+
+\section{Tables of terms, partial sums, and defects \src{43}}\label{gdf:app:tables}
+
+\begin{longtable}{r r r r}
+\caption{Initial data for A139217.  From $n=3$ onward, the last column is the complete list of positive boundary defects.}\label{gdf:tab:data-u}\\
+\toprule
+$n$&$u_n$&$U_n$&positive missing value\\
+\midrule
+\endfirsthead
+\toprule
+$n$&$u_n$&$U_n$&positive missing value\\
+\midrule
+\endhead
+1&1&1&--\\
+2&4&5&--\\
+3&7&12&9\\
+4&13&25&22\\
+5&22&47&44\\
+6&49&96&93\\
+7&97&193&190\\
+8&190&383&380\\
+9&385&768&765\\
+10&769&1537&1534\\
+11&1534&3071&3068\\
+12&3073&6144&6141\\
+13&6145&12289&12286\\
+14&12286&24575&24572\\
+\bottomrule
+\end{longtable}
+
+\begin{longtable}{r r r l}
+\caption{Initial data for A139218.  From $n=3$ onward, the last column is the complete list of positive boundary defects, in increasing order.}\label{gdf:tab:data-v}\\
+\toprule
+$n$&$v_n$&$V_n$&positive missing values\\
+\midrule
+\endfirsthead
+\toprule
+$n$&$v_n$&$V_n$&positive missing values\\
+\midrule
+\endhead
+1&2&2&--\\
+2&5&7&--\\
+3&8&15&4, 9, 12, 14\\
+4&14&29&18, 23, 26, 28\\
+5&23&52&41, 46, 49, 51\\
+6&41&93&82, 87, 90, 92\\
+7&92&185&174, 179, 182, 184\\
+8&179&364&353, 358, 361, 363\\
+9&353&717&706, 711, 714, 716\\
+10&716&1433&1422, 1427, 1430, 1432\\
+11&1427&2860&2849, 2854, 2857, 2859\\
+12&2849&5709&5698, 5703, 5706, 5708\\
+13&5708&11417&11406, 11411, 11414, 11416\\
+14&11411&22828&22817, 22822, 22825, 22827\\
+\bottomrule
+\end{longtable}
+
+Thus the $u$ sequence has the single positive defect $U_n-3$, whereas the $v$
+sequence has the four positive defects $V_n-11,V_n-6,V_n-3,V_n-1$.
+\mergenote{The intake recomputed both tables from the greedy definition
+(brute-force signed difference sets); every entry agrees.}
+
+\section{Provenance and merge record}\label{gdf:app:prov}
+
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{1.2cm}>{\raggedright\arraybackslash}p{4.0cm}>{\raggedright\arraybackslash}p{3.3cm}>{\raggedright\arraybackslash}p{1.8cm}>{\raggedright\arraybackslash}p{3.3cm}}
+\toprule
+Source & Archive (arrival commit) & Main file, PDF & Pin & Author line\\
+\midrule
+50 (base) & \file{finite_fringe_oeis_A139217_A139218.zip} (\texttt{3a9518c52}) &
+  \file{finite_fringe_dissociated_sequences.tex}, 20 pp. &
+  \texttt{c79d64038} & ProveIt research report (AI-assisted), prepared for
+  Vladimir Reshetnikov with OpenAI\\
+43 & \file{ProveIt_OEIS_A139217_A139218.zip} (\texttt{bdf1a1a73}) &
+  \file{article.tex}, 24 pp. & none & Research draft prepared for Vladimir
+  Reshetnikov and the ProveIt project; computational assistant: OpenAI
+  GPT-5.6 Sol Pro\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Both are manuscripts of batch 73 (cluster O1) of ProveIt's incoming-reports
+intake, numbered 50 and 43 there; the placement commit \texttt{9df4ba51a}
+staged their files and deleted the archives, which survive in their arrival
+commits.  Source 43 was written first (its archive members are timed 17:23 to
+17:30 UTC on 1 October 2026; source 50's 18:33 to 18:39).  Source 50's pin
+\texttt{c79d64038} already contains source 43's archive, but source 50 never
+cites it, and the longest passage the two texts share is 17 words of
+\verb|cases| boilerplate or bibliography: they are independent.
+
+\emph{What each contributed.}  Source 50: the base text, in its order, and
+everything in it.  Source 43: the second proofs, the threshold form, the
+signed certificates, the partial-sum forcing principle, the cross-identities,
+the defect counts, the forward and spectral forms, the remainder bound and
+explicit inverse coefficients, the counting proofs and asymptotics, the
+second verifier, its OEIS wording, roadmap and questions, and the tables.
+
+\emph{Where the merge chose.}
+\begin{itemize}
+\item Base: source 50, the more general manuscript; its propagation theorem
+      contains source 43's.
+\item Notation: source 50's throughout; source 43's symbols renamed as in
+      Section~\ref{gdf:sec:notation}, including the sign change $d_n\mapsto
+      -c_n$, $e_n\mapsto-c_n$.
+\item The A139218 counting function uses source 43's residue-zero term, which
+      is defined for every real $x$ (merge note in
+      Section~\ref{gdf:sec:counting}).
+\item Source 43's ``sharp'' wording for the A139217 recurrence range and its
+      $n\ge4$ ranges for $V_n$ and $14V_n-13U_n$ are kept with merge notes
+      giving the exact ranges.
+\item Source 50's sentence on the A290268 report is kept with a merge note.
+      Its hard-coded ``Section~6'' became a cross-reference.  Its uncited
+      bibliography items (the two OEIS entries and the repository) are now
+      cited.
+\item Source 43's title page, abstract, executive-summary box, package
+      manifest and \verb|listings| styling are not reproduced; their content
+      is in Sections~\ref{gdf:sec:intro} and~\ref{gdf:sec:audit} and in the
+      README.  Its verbatim code excerpt is printed with \verb|verbatim|.
+\item The two bibliographies are merged.
+\end{itemize}
+
+\begin{thebibliography}{99}
+
+\bibitem{Bohman1998}
+T. Bohman,
+\emph{A construction for sets of integers with distinct subset sums},
+Electron. J. Combin. \textbf{5} (1998), Research Paper 3.
+\url{https://doi.org/10.37236/1341}
+
+\bibitem{CandelaHelfgott2015}
+P. Candela and H. A. Helfgott,
+\emph{On the dimension of additive sets},
+Acta Arith. \textbf{167} (2015), no.~1, 91--100.
+\url{https://doi.org/10.4064/aa167-1-5}
+
+\bibitem{CantorMills1966}
+D. G. Cantor and W. H. Mills,
+\emph{Determination of a subset from certain combinatorial properties},
+Canad. J. Math. \textbf{18} (1966), 42--48.
+\url{https://doi.org/10.4153/CJM-1966-007-2}
+
+\bibitem{DubroffFoxXu2021}
+Q. Dubroff, J. Fox, and M. W. Xu,
+\emph{A note on the Erd\H{o}s distinct subset sums problem},
+SIAM J. Discrete Math. \textbf{35} (2021), 322--324.
+\url{https://doi.org/10.1137/20M1385883}
+
+\bibitem{Dutta2026}
+S. Dutta,
+\emph{The Greedy Algorithm for Dissociated Sets},
+arXiv:2601.07068v4 [math.CO], 5 February 2026.
+\url{https://arxiv.org/abs/2601.07068}
+
+\bibitem{Lunnon1988}
+W. F. Lunnon,
+\emph{Integer sets with distinct subset-sums},
+Math. Comp. \textbf{50} (1988), no.~181, 297--320.
+
+\bibitem{OEIS217}
+J. W. Layman and The OEIS Foundation,
+\emph{A139217: Smallest positive integer of the form $3k+1$ such that all
+subsets have different sums}, accessed 1 October 2026.
+\url{https://oeis.org/A139217}
+
+\bibitem{OEIS218}
+J. W. Layman and The OEIS Foundation,
+\emph{A139218: Smallest positive integer of the form $3k+2$ such that all
+subsets have different sums}, accessed 1 October 2026.
+\url{https://oeis.org/A139218}
+
+\bibitem{ProveIt}
+V. Reshetnikov,
+\emph{ProveIt}, GitHub repository, inspected at commit
+\nolinkurl{c79d640385588fda4b9fdb0cab9fce44790fd100}, 1 October 2026
+(source 50; source 43 cites the repository without a commit).
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+
+\bibitem{ProveItTransseries}
+V. Reshetnikov and contributors,
+\emph{Transseries: the polynomial-logarithmic calculus and its inversions},
+ProveIt repository, canonical consolidated volume, 2026,
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion}.
+
+\bibitem{Steinerberger2023}
+S. Steinerberger,
+\emph{Some remarks on the Erd\H{o}s distinct subset sums problem},
+Int. J. Number Theory \textbf{19} (2023), 1783--1800.
+\url{https://doi.org/10.1142/S1793042123500860}
+
+\bibitem{TaoVu2006}
+T. Tao and V. H. Vu,
+\emph{Additive Combinatorics},
+Cambridge Studies in Advanced Mathematics 105,
+Cambridge University Press, 2006.
+
+\end{thebibliography}
+
+\end{document}

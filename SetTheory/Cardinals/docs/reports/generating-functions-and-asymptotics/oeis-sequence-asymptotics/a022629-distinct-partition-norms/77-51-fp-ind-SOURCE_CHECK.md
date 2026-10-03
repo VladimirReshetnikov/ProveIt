@@ -1,0 +1,10 @@
+# Supplementary source checks
+
+Checked 1 October 2026 after the mathematical family approval. This supplement updates the publication-source reservations in FAMILY_AUDIT.md without altering its frozen proof review.
+
+- https://oeis.org/A022629 directly identifies the product with alpha=1,beta=0 and the logarithmic conjecture credited to Vaclav Kotesovec on May 8, 2018.
+- https://oeis.org/A092484 directly identifies the product with alpha=2,beta=0 and its December 27, 2020 logarithmic conjecture. The leading term of the approved family theorem agrees exactly.
+- The independent screening worker directly retrieved the primary https://oeis.org/A266891 entry at17:03:44 UTC: product (1+k*x^k)^k, initial terms 1,1,4,13,29,81,188,456,1030,2405, and the May 8, 2018 logarithmic conjecture. My finite-product calculation independently reproduces that prefix. Substituting alpha=1,d=2 in the approved theorem gives precisely its leading expression n^(2/3)(2 log(3n)-3)/(4*3^(1/3)). This reviewer's later page fetch cache-missed; the primary retrieval evidence is recorded in /workspace/shared/oeis-asymptotic-screening-20261001/screening.md, Section5.
+- Dennis Kinoti Gikunda, The Distribution of the Product of Parts in Integer Partitions, doctoral thesis, Stellenbosch University, March2026. The author-uploaded full text was independently inspected at https://www.researchgate.net/publication/402798310_The_Distribution_of_the_Product_of_Parts_in_Integer_Partitions . Chapter4 defines product (1+u^(log k)z^k)^(b_k). Section4.2 uses u=exp(a) and explicitly restricts |a|<=r^delta on printed page73. Proposition4.2.5, printed page77, likewise assumes a=O(r^delta). A fixed positive alpha in the reviewed family is outside this stated shrinking-tilt hypothesis. This establishes that particular scope distinction; it is not a literature-wide absence or priority claim, and the thesis proof itself was not audited.
+
+No external source was changed or contacted. All source claims are kept separate from the ordinary proof approvals.

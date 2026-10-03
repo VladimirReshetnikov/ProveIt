@@ -1,0 +1,252 @@
+{
+  "attaining_ledger": {
+    "A": 2,
+    "M": 3,
+    "all_gates_live": true,
+    "total": 5
+  },
+  "attaining_source": [
+    [
+      "V2",
+      "*",
+      "V",
+      "V"
+    ],
+    [
+      "y2",
+      "*",
+      "y",
+      "y"
+    ],
+    [
+      "difference",
+      "-",
+      "V2",
+      "y2"
+    ],
+    [
+      "weighted",
+      "*",
+      "K",
+      "difference"
+    ],
+    [
+      "output",
+      "+",
+      "weighted",
+      "y2"
+    ]
+  ],
+  "cubic_part": [
+    {
+      "coefficient": 1,
+      "monomial": [
+        "K",
+        "V",
+        "V"
+      ]
+    },
+    {
+      "coefficient": -1,
+      "monomial": [
+        "K",
+        "y",
+        "y"
+      ]
+    }
+  ],
+  "normal_form_denominator_cleared": true,
+  "one_addition_normal_form": "constant*monomial*(monomial1 +/- monomial2)^e, e>=0; irreducibility forces unit monomial and e=1, contradicting three terms",
+  "pins": {
+    "auxiliary_norm_five_gate_lower_bound.json": "e6506cc99e4797e0d4fc906a8f79bcc0988c2ea49fb451a796c1be1e8364697a",
+    "auxiliary_norm_five_gate_lower_bound.md": "e2d587ed384b77703fff8be6a7eaa0d619ee11d9c922749c8a2024ae45934910",
+    "auxiliary_norm_five_gate_lower_bound.py": "d3fb95e2574106b3fdc22c7397488b9b18c855d6c1d1ceab92ca57295cb4d120"
+  },
+  "planes": [
+    {
+      "all_offsets_obstruction": "coefficient(V\u00b2)+coefficient(y\u00b2)=1 for every c",
+      "plane": "K=c",
+      "quadratic_part": [
+        {
+          "coefficient": 1,
+          "monomial": [
+            "V",
+            "V",
+            "c"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "monomial": [
+            "c",
+            "y",
+            "y"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "monomial": [
+            "y",
+            "y"
+          ]
+        }
+      ],
+      "restriction": [
+        {
+          "coefficient": 1,
+          "monomial": [
+            "V",
+            "V",
+            "c"
+          ]
+        },
+        {
+          "coefficient": -1,
+          "monomial": [
+            "c",
+            "y",
+            "y"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "monomial": [
+            "y",
+            "y"
+          ]
+        }
+      ]
+    },
+    {
+      "all_offsets_obstruction": "coefficient(y\u00b2)=1 for every c",
+      "plane": "V=y+c",
+      "quadratic_part": [
+        {
+          "coefficient": 2,
+          "monomial": [
+            "K",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "monomial": [
+            "y",
+            "y"
+          ]
+        }
+      ],
+      "restriction": [
+        {
+          "coefficient": 1,
+          "monomial": [
+            "K",
+            "c",
+            "c"
+          ]
+        },
+        {
+          "coefficient": 2,
+          "monomial": [
+            "K",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "monomial": [
+            "y",
+            "y"
+          ]
+        }
+      ]
+    },
+    {
+      "all_offsets_obstruction": "coefficient(y\u00b2)=1 for every c",
+      "plane": "V=-y+c",
+      "quadratic_part": [
+        {
+          "coefficient": -2,
+          "monomial": [
+            "K",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "monomial": [
+            "y",
+            "y"
+          ]
+        }
+      ],
+      "restriction": [
+        {
+          "coefficient": 1,
+          "monomial": [
+            "K",
+            "c",
+            "c"
+          ]
+        },
+        {
+          "coefficient": -2,
+          "monomial": [
+            "K",
+            "c",
+            "y"
+          ]
+        },
+        {
+          "coefficient": 1,
+          "monomial": [
+            "y",
+            "y"
+          ]
+        }
+      ]
+    }
+  ],
+  "primitive_gcd_argument": "Any common irreducible factor divides y\u00b2, hence equals y up to a unit; V\u00b2\u2212y\u00b2 is not divisible by y. Gauss lemma applies over Q[V,y].",
+  "proof_review": "Read the entire author proof and source. General two-multiplication and one-addition normal forms independently checked mathematically; identities verified here without SymPy or subject imports.",
+  "review_source_sha256": "8d62cb2dfe02752223224a1d3dfd0a11696d4ccb0469e4cdfd40720762dc2d50",
+  "scope": "Exact division-free polynomial SLP over Q with independent K,V,y, fixed constants and binary +,-,*. No lower bound for computed-port specializations, other shared registers, coordinate changes, or zero-set-equivalent polynomials. No finite circuit enumeration is claimed.",
+  "status": "PASS_INDEPENDENT_ISOLATED_FIVE_GATE_PROOF",
+  "target": [
+    {
+      "coefficient": 1,
+      "monomial": [
+        "K",
+        "V",
+        "V"
+      ]
+    },
+    {
+      "coefficient": -1,
+      "monomial": [
+        "K",
+        "y",
+        "y"
+      ]
+    },
+    {
+      "coefficient": 1,
+      "monomial": [
+        "y",
+        "y"
+      ]
+    }
+  ],
+  "uncancellable_quartic_coefficient": [
+    {
+      "coefficient": 1,
+      "monomial": [
+        "a",
+        "b"
+      ]
+    }
+  ]
+}

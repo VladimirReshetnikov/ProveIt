@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "proof_audit_hashes": 20,
+  "exact_aggregate_identities": 12,
+  "core_patterns": 4,
+  "type_multisets_per_pattern": 4845,
+  "weighted_monomer_identities_per_pattern": 14535,
+  "weighted_monomer_identities_total": 58140,
+  "elapsed_seconds": 7.796,
+  "checks": [
+    {
+      "check": "check_rayleigh_aggregate.py",
+      "exit_code": 0,
+      "stdout": "PASS exact formal-moment identity same_distinguished\nPASS exact formal-moment identity same_ordinary\nPASS exact formal-moment identity cross_distinguished\nPASS exact formal-moment identity cross_one_distinguished\nPASS exact formal-moment identity cross_ordinary\nPASS all five identities for arbitrary class counts, via e2=(sum^2-sum_squares)/2\n"
+    },
+    {
+      "check": "check_disjoint_rayleigh_aggregate.py",
+      "exit_code": 0,
+      "stdout": "PASS exact formal-moment identity same_both_distinguished\nPASS exact formal-moment identity same_one_distinguished\nPASS exact formal-moment identity same_ordinary\nPASS exact formal-moment identity cross_partnered\nPASS exact formal-moment identity cross_unpartnered\nPASS exact formal-moment identity cross_one_distinguished\nPASS exact formal-moment identity cross_ordinary\nPASS all seven arbitrary-class identities\n"
+    },
+    {
+      "check": "check_full_monomer.cpp",
+      "exit_code": 0,
+      "stdout": "PASS all type multisets through four physical exterior vertices, including isolates\ncases=4845 weighted_multivariate_identities=14535 feasible_supports_checked=269050\n"
+    },
+    {
+      "check": "check_star_monomer.cpp",
+      "exit_code": 0,
+      "stdout": "PASS all type multisets through four physical exterior vertices, including isolates\ncases=4845 weighted_multivariate_identities=14535 feasible_supports_checked=222025\n"
+    },
+    {
+      "check": "check_missing_edge_monomer.cpp",
+      "exit_code": 0,
+      "stdout": "PASS all type multisets through four physical exterior vertices, including isolates\ncases=4845 weighted_multivariate_identities=14535 feasible_supports_checked=251855\n"
+    },
+    {
+      "check": "check_disjoint_monomer.cpp",
+      "exit_code": 0,
+      "stdout": "PASS all type multisets through four physical exterior vertices, including isolates\ncases=4845 weighted_multivariate_identities=14535 feasible_supports_checked=234660\n"
+    }
+  ],
+  "scope": "Supplementary exact identities and finite support checks; ordinary proof remains the theorem dependency"
+}

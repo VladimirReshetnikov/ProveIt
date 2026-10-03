@@ -1,0 +1,1426 @@
+{
+  "status": "PASS_FULL_INTERLEAVE74_AND75_REFUTATION",
+  "split_source": {
+    "operations": 74,
+    "multiplications": 41,
+    "additions_subtractions": 33,
+    "positive_coordinates": 33,
+    "equations": 21,
+    "ledger": {
+      "mask_module": 51,
+      "transport_bound_stride": 9,
+      "input_bridge": 14
+    },
+    "schedule": [
+      [
+        "q",
+        "*",
+        "n",
+        "n"
+      ],
+      [
+        "qm1",
+        "-",
+        "q",
+        1
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "n2",
+        "*",
+        "q",
+        "n"
+      ],
+      [
+        "mask",
+        "*",
+        "m",
+        "Jrep"
+      ],
+      [
+        "gap",
+        "-",
+        "q",
+        "V"
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "qm1"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "ksn2",
+        "*",
+        "k",
+        "sn2"
+      ],
+      [
+        "UM2",
+        "*",
+        "UM",
+        "UM"
+      ],
+      [
+        "scaled_norm_coefficient",
+        "+",
+        "UM2",
+        "wn2"
+      ],
+      [
+        "ratio_product2",
+        "*",
+        "ksn2",
+        "ksn2"
+      ],
+      [
+        "L9",
+        "*",
+        "scaled_norm_coefficient",
+        "ratio_product2"
+      ],
+      [
+        "tauplus1",
+        "+",
+        "tau",
+        1
+      ],
+      [
+        "R9",
+        "*",
+        "tau",
+        "tauplus1"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "r1",
+        "+",
+        "r",
+        1
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "R11",
+        "+",
+        "r1",
+        "hpm1"
+      ],
+      [
+        "tr1",
+        "+",
+        "r1",
+        "r"
+      ],
+      [
+        "cam2",
+        "*",
+        "c",
+        "a"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "a"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "ga",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "a_square",
+        "*",
+        "a",
+        "a"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "c",
+        "c"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "R15",
+        "+",
+        "Ac2",
+        1
+      ],
+      [
+        "L15",
+        "*",
+        "d",
+        "d"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "c"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "c"
+      ],
+      [
+        "H17",
+        "-",
+        "jc",
+        "tr1"
+      ],
+      [
+        "H2",
+        "*",
+        "H17",
+        "H17"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "ic22",
+        "aux_square_gap"
+      ],
+      [
+        "P17",
+        "-",
+        1,
+        "aux_y2"
+      ],
+      [
+        "bounded",
+        "+",
+        "C",
+        "alpha"
+      ],
+      [
+        "Pv",
+        "*",
+        "P",
+        "v"
+      ],
+      [
+        "marked_rhs",
+        "+",
+        "Z",
+        "W"
+      ],
+      [
+        "BF",
+        "*",
+        "B",
+        "F"
+      ],
+      [
+        "V_rhs",
+        "+",
+        "Z",
+        "BF"
+      ],
+      [
+        "K",
+        "+",
+        "Kconstant",
+        "P"
+      ],
+      [
+        "KC",
+        "*",
+        "K",
+        "C"
+      ],
+      [
+        "zqm1",
+        "*",
+        "zquot",
+        "qm1"
+      ],
+      [
+        "transport_rhs",
+        "+",
+        "F",
+        "zqm1"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "raw_bound",
+        "+",
+        "bounded",
+        "scaled_t"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "pell_gap",
+        "+",
+        "kappa",
+        "phi"
+      ],
+      [
+        "kappa2",
+        "*",
+        "kappa",
+        "kappa"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_rhs",
+        "+",
+        "scaled_kappa2",
+        1
+      ],
+      [
+        "mu2",
+        "*",
+        "mu",
+        "mu"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "kappa",
+        "a"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ]
+    ],
+    "source_checks": [
+      {
+        "index": 0,
+        "equality": [
+          "repunit",
+          "qm1"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 1,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 2,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 3,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 4,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 5,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 6,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 7,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 8,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 9,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 10,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 11,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 12,
+        "equality": [
+          "Pv",
+          "q"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 13,
+        "equality": [
+          "C",
+          "marked_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 14,
+        "equality": [
+          "V",
+          "V_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 15,
+        "equality": [
+          "KC",
+          "transport_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 16,
+        "equality": [
+          "raw_bound",
+          "q"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 17,
+        "equality": [
+          "kappa",
+          "index_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 18,
+        "equality": [
+          "c",
+          "pell_gap"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 19,
+        "equality": [
+          "mu2",
+          "norm_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 20,
+        "equality": [
+          "mu",
+          "exponent_rhs"
+        ],
+        "sign": 1
+      }
+    ],
+    "scope": "Exact full source of a newly refuted interleaving candidate."
+  },
+  "collapsed_source": {
+    "operations": 75,
+    "multiplications": 42,
+    "additions_subtractions": 33,
+    "positive_coordinates": 31,
+    "equations": 19,
+    "ledger": {
+      "mask_module": 51,
+      "transport_bound_stride": 10,
+      "input_bridge": 14
+    },
+    "schedule": [
+      [
+        "q",
+        "*",
+        "n",
+        "n"
+      ],
+      [
+        "qm1",
+        "-",
+        "q",
+        1
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "n2",
+        "*",
+        "q",
+        "n"
+      ],
+      [
+        "mask",
+        "*",
+        "m",
+        "Jrep"
+      ],
+      [
+        "gap",
+        "-",
+        "q",
+        "V"
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "qm1"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "ksn2",
+        "*",
+        "k",
+        "sn2"
+      ],
+      [
+        "UM2",
+        "*",
+        "UM",
+        "UM"
+      ],
+      [
+        "scaled_norm_coefficient",
+        "+",
+        "UM2",
+        "wn2"
+      ],
+      [
+        "ratio_product2",
+        "*",
+        "ksn2",
+        "ksn2"
+      ],
+      [
+        "L9",
+        "*",
+        "scaled_norm_coefficient",
+        "ratio_product2"
+      ],
+      [
+        "tauplus1",
+        "+",
+        "tau",
+        1
+      ],
+      [
+        "R9",
+        "*",
+        "tau",
+        "tauplus1"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "r1",
+        "+",
+        "r",
+        1
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "R11",
+        "+",
+        "r1",
+        "hpm1"
+      ],
+      [
+        "tr1",
+        "+",
+        "r1",
+        "r"
+      ],
+      [
+        "cam2",
+        "*",
+        "c",
+        "a"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "a"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "ga",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "a_square",
+        "*",
+        "a",
+        "a"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "c",
+        "c"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "R15",
+        "+",
+        "Ac2",
+        1
+      ],
+      [
+        "L15",
+        "*",
+        "d",
+        "d"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "c"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "c"
+      ],
+      [
+        "H17",
+        "-",
+        "jc",
+        "tr1"
+      ],
+      [
+        "H2",
+        "*",
+        "H17",
+        "H17"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "ic22",
+        "aux_square_gap"
+      ],
+      [
+        "P17",
+        "-",
+        1,
+        "aux_y2"
+      ],
+      [
+        "bounded",
+        "+",
+        "C",
+        "alpha"
+      ],
+      [
+        "Pv",
+        "*",
+        "P",
+        "v"
+      ],
+      [
+        "K",
+        "+",
+        "Kconstant",
+        "P"
+      ],
+      [
+        "BK",
+        "*",
+        "B",
+        "K"
+      ],
+      [
+        "L",
+        "+",
+        "BK",
+        1
+      ],
+      [
+        "LC",
+        "*",
+        "L",
+        "C"
+      ],
+      [
+        "markedV",
+        "+",
+        "V",
+        "W"
+      ],
+      [
+        "Bz",
+        "*",
+        "B",
+        "zquot"
+      ],
+      [
+        "Bzqm1",
+        "*",
+        "Bz",
+        "qm1"
+      ],
+      [
+        "transport_rhs",
+        "+",
+        "markedV",
+        "Bzqm1"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "raw_bound",
+        "+",
+        "bounded",
+        "scaled_t"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "pell_gap",
+        "+",
+        "kappa",
+        "phi"
+      ],
+      [
+        "kappa2",
+        "*",
+        "kappa",
+        "kappa"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_rhs",
+        "+",
+        "scaled_kappa2",
+        1
+      ],
+      [
+        "mu2",
+        "*",
+        "mu",
+        "mu"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "kappa",
+        "a"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ]
+    ],
+    "source_checks": [
+      {
+        "index": 0,
+        "equality": [
+          "repunit",
+          "qm1"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 1,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 2,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 3,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 4,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 5,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 6,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 7,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 8,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 9,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 10,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 11,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 12,
+        "equality": [
+          "Pv",
+          "q"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 13,
+        "equality": [
+          "LC",
+          "transport_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 14,
+        "equality": [
+          "raw_bound",
+          "q"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 15,
+        "equality": [
+          "kappa",
+          "index_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 16,
+        "equality": [
+          "c",
+          "pell_gap"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 17,
+        "equality": [
+          "mu2",
+          "norm_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 18,
+        "equality": [
+          "mu",
+          "exponent_rhs"
+        ],
+        "sign": 1
+      }
+    ],
+    "scope": "Exact full source of a newly refuted interleaving candidate."
+  },
+  "residue_lemma": {
+    "targets": 3069,
+    "odd_moduli": 31,
+    "largest_modulus": 63,
+    "maximum_steps": 32
+  },
+  "outer": {
+    "examples": [
+      {
+        "B": 8,
+        "MC": 2,
+        "MF": 6,
+        "N": 348,
+        "x": 1,
+        "L": 1033,
+        "q_bits": 2089,
+        "subset_steps": 13,
+        "V_bits": 2083,
+        "C_bits": 2081,
+        "packed_index_bits": 4176,
+        "packed_population": 3132,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 8,
+        "MC": 2,
+        "MF": 6,
+        "N": 348,
+        "x": 2,
+        "L": 1033,
+        "q_bits": 2089,
+        "subset_steps": 13,
+        "V_bits": 2083,
+        "C_bits": 2081,
+        "packed_index_bits": 4176,
+        "packed_population": 3132,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 8,
+        "MC": 2,
+        "MF": 6,
+        "N": 348,
+        "x": 3,
+        "L": 1033,
+        "q_bits": 2089,
+        "subset_steps": 13,
+        "V_bits": 2083,
+        "C_bits": 2081,
+        "packed_index_bits": 4176,
+        "packed_population": 3132,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 16,
+        "MC": 12,
+        "MF": 6,
+        "N": 2056,
+        "x": 1,
+        "L": 8209,
+        "q_bits": 16449,
+        "subset_steps": 18,
+        "V_bits": 16441,
+        "C_bits": 16439,
+        "packed_index_bits": 32896,
+        "packed_population": 24672,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 16,
+        "MC": 12,
+        "MF": 6,
+        "N": 2056,
+        "x": 2,
+        "L": 8209,
+        "q_bits": 16449,
+        "subset_steps": 18,
+        "V_bits": 16441,
+        "C_bits": 16439,
+        "packed_index_bits": 32896,
+        "packed_population": 24672,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 16,
+        "MC": 12,
+        "MF": 6,
+        "N": 2056,
+        "x": 3,
+        "L": 8209,
+        "q_bits": 16449,
+        "subset_steps": 18,
+        "V_bits": 16441,
+        "C_bits": 16439,
+        "packed_index_bits": 32896,
+        "packed_population": 24672,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 16,
+        "MC": 10,
+        "MF": 10,
+        "N": 2056,
+        "x": 1,
+        "L": 8209,
+        "q_bits": 16449,
+        "subset_steps": 15,
+        "V_bits": 16441,
+        "C_bits": 16439,
+        "packed_index_bits": 32896,
+        "packed_population": 24672,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 16,
+        "MC": 10,
+        "MF": 10,
+        "N": 2056,
+        "x": 2,
+        "L": 8209,
+        "q_bits": 16449,
+        "subset_steps": 15,
+        "V_bits": 16441,
+        "C_bits": 16439,
+        "packed_index_bits": 32896,
+        "packed_population": 24672,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      },
+      {
+        "B": 16,
+        "MC": 10,
+        "MF": 10,
+        "N": 2056,
+        "x": 3,
+        "L": 8209,
+        "q_bits": 16449,
+        "subset_steps": 15,
+        "V_bits": 16441,
+        "C_bits": 16439,
+        "packed_index_bits": 32896,
+        "packed_population": 24672,
+        "positive_outer_source": true,
+        "positive_separate_Z_F": true,
+        "data_typing_false": true,
+        "whole_kernel_materialized": false
+      }
+    ],
+    "scope": "Exact outer witnesses and all positive-converse hypotheses; final Pell/input coordinates are supplied parametrically."
+  },
+  "established_complete_bound": 76,
+  "scope": "These newly proposed full74 and full75 sources admit every positive input for every fixed admissible compiler; neither earlier open75 is refuted."
+}

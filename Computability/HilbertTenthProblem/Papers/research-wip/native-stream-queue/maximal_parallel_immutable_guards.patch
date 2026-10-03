@@ -1,0 +1,41 @@
+--- a/code/parallel_certificates.py
++++ b/code/parallel_certificates.py
+@@ -14,7 +14,7 @@
+ 
+ 
+ def natural(n: int) -> bool:
+-    return isinstance(n, int) and not isinstance(n, bool) and n >= 0
++    return type(n) is int and n >= 0
+ 
+ 
+ @dataclass(frozen=True)
+@@ -95,6 +95,14 @@
+     threshold: int
+     present: bool = True
+ 
++    def __post_init__(self) -> None:
++        if not natural(self.species):
++            raise ValueError('Guard species must be a nonnegative integer.')
++        if not natural(self.threshold) or self.threshold == 0:
++            raise ValueError('Guard threshold must be a positive integer.')
++        if type(self.present) is not bool:
++            raise TypeError('Guard present flag must be Boolean.')
++
+     def holds(self, x: Sequence[int]) -> bool:
+         return (x[self.species] >= self.threshold) == self.present
+ 
+@@ -107,6 +115,14 @@
+     guards: tuple[tuple[Atom, ...], ...] = ()
+ 
+     def __post_init__(self) -> None:
++        # Own every accepted container before validating it.  A frozen dataclass
++        # alone does not stop its caller from mutating a nested list later.
++        object.__setattr__(self, 'consume', tuple(tuple(col) for col in self.consume))
++        object.__setattr__(self, 'produce', tuple(tuple(col) for col in self.produce))
++        guards = tuple(tuple(conjunction) for conjunction in self.guards)
++        if any(type(atom) is not Atom for conjunction in guards for atom in conjunction):
++            raise TypeError('Guard conjunctions must contain Atom values.')
++        object.__setattr__(self, 'guards', guards)
+         if not self.consume or not self.consume[0]:
+             raise ValueError('At least one species and one rule are required.')
+         d, m = len(self.consume[0]), len(self.consume)

@@ -1,0 +1,1290 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,booktabs,microtype,array}
+\usepackage{xcolor,float}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue,
+pdftitle={Permutations avoiding the vincular pattern 12-34 (OEIS A113226)},
+pdfsubject={Exact enumeration, complete asymptotics, refined enumeration and local large deviations}}
+\makeatletter\g@addto@macro{\UrlBreaks}{\do\-\do\_}\makeatother
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% Part I macros (source 04)
+\newcommand{\E}{\mathbb E}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\ind}[1]{\mathbf1_{\{#1\}}}
+% Part II macros (source 05); its \dd (without the thin space) is Part I's \dd here
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\newcommand{\Pois}{\operatorname{Poisson}}
+\newcommand{\TV}{\operatorname{TV}}
+\DeclareMathOperator{\Set}{SET}
+% write-phase macros
+\newcommand{\stirling}[2]{\genfrac\{\}{0pt}{}{#1}{#2}}
+\newenvironment{writenote}{\begin{quote}\small\raggedright\textbf{[Write note, 2~October 2026, batch 77P5.]}\ }{\end{quote}}
+\renewcommand{\labelitemi}{$\bullet$}
+\title{Permutations avoiding the vincular pattern $12$--$34$\\[4pt]
+\large Part I: exact enumeration and complete asymptotics\\
+Part II: a record and cycle bijection, uniform asymptotics,\\ and local large deviations\\[4pt]
+\normalsize (OEIS A113226)}
+\author{AI-assisted research manuscripts 04 and 05 of batch 77,\\
+merged for the ProveIt research-report collection}
+\date{Sources dated 1 October 2026; merged 2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For OEIS A113226, the permutations avoiding the vincular pattern
+$12$--$34$, equivalently the $\{3,2+2\}$-free naturally labelled posets of
+Bevan, Cheon and Kitaev, Part~I derives a closed exponential generating
+function, proves the stretched-exponential form conjectured by those
+authors with exact constants and power $-5/6$, gives every algebraic
+correction in powers of $n^{-1/3}$ by a finite Gaussian algorithm, an
+exact quadratic-arithmetic recurrence and controlled Lambert-$W$ inverse
+expansions. Part~II marks the number of distinct nonempty strict downsets
+and of isolated elements: it explains the exponential transform behind
+A113226 by a record-to-cycle bijection, proves a complex-uniform
+all-orders saddle expansion of the marked generating function, precise
+all-orders local large deviations for interior densities, Gaussian and
+local limit laws, and a conditional Poisson law of isolated elements with
+an explicit correction and a total-variation error of order $n^{-2/3}$.
+All expansions are Poincar\'e expansions to each fixed order.
+The report is AI-assisted and unrefereed; no statement of it is
+formalized.
+\end{abstract}
+
+\tableofcontents
+
+\section*{About this report}
+\addcontentsline{toc}{section}{About this report}
+
+\subsection*{Sources and provenance}
+This report is built from \textbf{two} manuscripts of batch~77 (cluster
+P5), delivered in the arrival commit \texttt{096ee7b87} and placed in
+\texttt{4f11bc9c0}. Both are dated 1~October 2026 and both record the
+same ProveIt pin, \texttt{63b9d6840} (their repository searches ran
+against that commit).
+\begin{itemize}
+\item \textbf{Source 04} (batch-77 manuscript 04, archive
+\texttt{a113226-asymptotics.zip}; \emph{Exact enumeration and complete
+asymptotics for permutations avoiding 12 34}, 11-page PDF) is
+\textbf{Part~I}: Sections~\ref{vav:sec:intro}--\ref{vav:sec:prior} and
+Appendix~\ref{vav:app:coeff}. It contributes the closed EGF, the ODE and
+cumulant recurrences, the identification with A136127, the singular and
+saddle analysis, the all-orders generator with $a_1,\ldots,a_4$, the
+controlled inverse and the integer-threshold envelope.
+\item \textbf{Source 05} (batch-77 manuscript 05, archive
+\texttt{a113226-refined-addendum.zip}; \emph{Refined enumeration of
+A113226: A record and cycle bijection, uniform asymptotics, and local
+large deviations}, 9-page PDF) is \textbf{Part~II}:
+Sections~\ref{vav:rf:sec:marking}--\ref{vav:rf:sec:checks}. It is an
+addendum to source 04, written against the same pin; its delivery README
+says that the original A113226 report is unchanged. It contributes the
+downset/isolate marking, the record-to-cycle bijection, the complex-uniform
+first saddle, the marking phase gap, the local large deviations, and the
+Gaussian, local and Poisson laws.
+\end{itemize}
+The two sources form a version pair, not a supersession: Part~II
+answers two of Part~I's further questions (see the write note after
+Part~I's list of questions in Section~\ref{vav:sec:prior}) and re-states
+Part~I's analysis at a general marking parameter $u$, which reduces to
+Part~I at $u=1$. Both are printed in full; no result, proof, remark,
+question or limitation of either source is omitted.
+
+\textbf{Where the merge had to choose.}
+(i) The Parts are printed one after the other, not interleaved, because
+Part~II's derivations are the $u$-dependent versions of Part~I's and are
+easiest to check against them side by side; the $u=1$ specializations
+are the ones Part~II itself states. (ii) Part~I keeps its delivered
+numbering exactly: Sections 1--9, equations (1)--(36), Theorem~1.1 and
+Appendix~A. Part~II's Section~$n$ is Section~$n+9$ here and its equation
+$(k)$ is equation $(k+36)$; its Theorem~1, Lemma~1 and Theorem~2 are
+Theorem~\ref{vav:rf:thm:first}, Lemma~\ref{vav:rf:lem:gap} and
+Theorem~\ref{vav:rf:thm:local} (theorems and lemmas share Part~I's
+section-based counter). (iii) The two bibliographies are merged; Part~II's
+citations of Bevan--Cheon--Kitaev, OEIS A113226 and A136127, Elizalde and
+Testart point to Part~I's entries for the same works, and its ProveIt
+entry is added as \cite{proveit}. (iv) Three symbols of Part~II are renamed
+because the source uses the same letter twice (Table~\ref{vav:tab:notation}).
+(v) Where Part~II says ``the original report'' (four places) it now says
+``Part~I'' with a cross-reference. (vi) Write notes, set off and dated,
+record the relation to the sibling report, the repository context, the
+shipped file names and the status of Part~I's questions; no statement of
+either source was changed. (vii) The two large exact tables of the
+delivery are not shipped; the report README explains how to regenerate
+them or retrieve the delivered copies.
+
+\subsection*{Notation across the two Parts}
+Each Part keeps its own letters. Part~II's quantities depend on a marking
+parameter $u>0$ (and $s$); at $u=s=1$ they are Part~I's. Several letters
+nevertheless change meaning between the Parts, or within Part~II;
+Table~\ref{vav:tab:notation} lists them with the tempting false reading.
+\begin{table}[H]
+\centering\small
+\caption{Symbols whose meaning changes between or within the Parts.}
+\label{vav:tab:notation}
+\begin{tabular}{@{}>{\raggedright}p{0.13\linewidth}>{\raggedright}p{0.36\linewidth}>{\raggedright\arraybackslash}p{0.43\linewidth}@{}}
+\toprule
+Symbol & Part I (Sections 1--9, App.~A) & Part II (Sections 10--16)\\\midrule
+$\rho,c,D,K$ & constants: $\rho=\log4$, $c$, $D$ of \eqref{vav:eq:constants}, $K=\rho/2-3$ & functions $\rho(u),c(u),D(u),K(u)$ of \eqref{vav:rf:eq:parameters}; their values at $u=1$ are Part~I's constants (Section~\ref{vav:rf:sec:laws} writes $\rho_0=\log4$, $c_0=c(1)$)\\
+$a$ & $a_j$: coefficients in \eqref{vav:eq:main}; bare $a=-C/\ell$ in \eqref{vav:eq:inverseab} & bare $a=u^{-1/2}$ (so $a=1$ at $u=1$), \emph{not} a coefficient; $a(x)$ is the product function of Section~\ref{vav:rf:sec:marking}; $a_j(u)$ are the first-saddle coefficients, $a_j(1)$ = Part~I's $a_j$\\
+$b$ & $b(x)=z(e^z-e^{zx})$; a decay constant $b$ in Section~\ref{vav:sec:saddle}; $b$ in \eqref{vav:eq:inverseab} & $b(x)$ as in Part~I; $b_j(u)$ are the second-saddle coefficients of Theorem~\ref{vav:rf:thm:local}\\
+$L,\ell$ & $L=\log H$; $\ell_n=L^{(n)}(0)$; $L_Y=\log Y$ and $\ell=\log(N/\rho)$ in Section~\ref{vav:sec:inverse} & $L_n(u)=n![z^n]\log H(z,u)$, so $L_n(1)=\ell_n$ (not $L$); $\ell=\log(1+a)$ in \eqref{vav:rf:eq:V}\\
+$S,s$ & $s_m=[w^m]\sqrt{w/(e^w-1)}$ & $S(w,u)$ is the analytic factor of \eqref{vav:rf:eq:sing} and $s_m$ its coefficients ($s_m$ at $u=1$ = Part~I's $s_m$); $s$ marks isolated elements. The delivered Stirling numbers $S(n,m)$ are printed $\stirling{n}{m}$ (renamed)\\
+$T$ & $T(x,y)$, the bivariate EGF of Section~\ref{vav:sec:cumulants}; $T_j(n)$, scaled residuals in Section~\ref{vav:sec:checks} & $T(x,y,u)$, with $T(x,y,1)$ = Part~I's $T$; $T_0$ in \eqref{vav:rf:eq:a1}. The delivered $T=\coth((\rho-w)/4)$ of \eqref{vav:rf:eq:SR} is printed $\mathcal T$ (renamed)\\
+$U,X$ & $U$: Gaussian variable of variance $2/(3c)$; $X$: an approximation of $F^{-1}(Y)$ in \eqref{vav:eq:ceiling} & $X$: the Gaussian variable (variance $2/(3c)$ in Section~\ref{vav:rf:sec:first}, $1/V$ in Section~\ref{vav:rf:sec:ldp}); the delivered compact parameter interval $U$ is printed $\mathcal U$ (renamed)\\
+$q,h,N$ & $q=e^{z/2}/2$; $h=D_zf$, and $h=\sqrt\delta$ in Section~\ref{vav:sec:generator}; $N=L_Y/W(L_Y/(e\rho))$ & $q=\cosh(z/2)-1/(2ue^{z/2})$, which is $\cosh(w/2)-a\sinh(w/2)$ at $z=\rho-w$ and Part~I's $q$ at $u=1$; $h=(1-ua)f$ in Section~\ref{vav:rf:sec:marking} but $h=a\cosh(w/2)-\sinh(w/2)$ in \eqref{vav:rf:eq:SR}; $N=1-u+ue^z$\\
+$\alpha,d,f$ & $\alpha=-1/3$ and $d=\log(D\sqrt{2\pi})$ in \eqref{vav:eq:logasym}; $f$: transfer function & $\alpha(u)$: the downset density; $d(v)=\log D(e^v)$, so $d(0)=\log D$, \emph{not} Part~I's $d$; $f$: transfer function in Section~\ref{vav:rf:sec:marking}, but $f(v)=-\log\rho(e^v)$ in Sections~\ref{vav:rf:sec:ldp}--\ref{vav:rf:sec:laws}\\
+$C,P,R,M$ & $C=3c$; $P_3,P_4$ in Appendix~\ref{vav:app:coeff}; $R(w)$, $R_n$; blocks $M_i$ & $C$: a generic constant; $P$: the exponent \eqref{vav:rf:eq:P}, and $P\sim\Pois(\rho_0)$ in \eqref{vav:rf:eq:joint}; $R(w,u)$, and $R>1$ a radius in Section~\ref{vav:rf:sec:laws}; blocks $M_i$, and a large constant $M$ in the proof of Theorem~\ref{vav:rf:thm:first}\\
+$J,K_n,k$ & $J$: a fixed order; $k$: number of block pairs in \eqref{vav:eq:blocks} & $J$: a fixed order, but $J_n$: the number of isolated elements; $K_n$: the downset count (not the constant $K$); $k$: the number of block pairs, which is the number of distinct nonempty strict downsets\\
+\bottomrule
+\end{tabular}
+\end{table}
+The identities claimed in this table at $u=1$ (for $\rho,c,D,K$, $s_1$,
+$s_2$, $r_1$, $q$, $a_1$, $a_2$, $\alpha(1)=1/(2\rho_0)$ and $V(1)$) were
+checked at the write, exactly or to 40 digits. Part~II's \verb|\,\dd x| is
+printed with Part~I's macro, which includes the thin space; this is
+typographic only.
+
+\subsection*{Relation to neighbouring work and status}
+{\raggedright\textbf{Sibling report.} The powered Catalan numbers, OEIS A113227, count
+the permutations avoiding the sibling vincular pattern $1$--$23$--$4$.
+They are the subject of the sibling report
+\path{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a113227-powered-catalan/},
+built from two other batch-77 manuscripts (cluster P2, manuscripts 57 and
+56). Elizalde's 2006 paper \cite{elizalde} bounded the growth of
+avoiders of both patterns without a precise equivalent; the two reports
+supply the precise asymptotics for the two patterns, by unrelated methods
+(here an EGF and a stretched-exponential saddle; there a positive Bessel
+spectral representation). Neither pair of manuscripts cites the other
+(they are contemporaneous); Part~I does cite Callan's paper on the
+$1$--$23$--$4$ pattern \cite[Section 9]{callan}, for the fast recurrence
+of Section~\ref{vav:sec:cumulants}.\par}
+
+\textbf{Transseries volume.} The Lambert-$W$ inversion and the integer
+threshold envelope of Section~\ref{vav:sec:inverse} are instances of the
+inversion apparatus of the canonical transseries volume; see the write
+note at the end of that section. No novelty is claimed there.
+
+\textbf{Status.} The report is AI-assisted and unrefereed. Its delivered
+review records (shipped beside this article; see the README) describe
+separate proof reviews and independent coefficient audits, and say
+themselves that they are not formal verification or conventional peer
+review. \textbf{No statement of this report is formalized}; its place in
+the research-report collection confers no formal status.
+
+\part{Exact enumeration and complete asymptotics (source 04)}
+\label{vav:part:one}
+\begin{quote}\small
+\textbf{Abstract of source 04.}
+We derive a closed exponential generating function for OEIS A113226,
+the number of permutations avoiding the vincular pattern $12$--$34$.
+The derivation uses the labelled binary-word model of Bevan, Cheon and
+Kitaev. The logarithm of the generating function satisfies a first-order
+linear differential equation and has an inverse-square-root singularity
+at $\rho=\log4$. A saddle-point analysis proves their conjectured
+stretched-exponential form, with exact constants and power $-5/6$,
+and gives every algebraic correction in powers of $n^{-1/3}$.
+We provide an executable finite-order coefficient generator, the first
+four corrections, an exact quadratic-arithmetic enumeration recurrence,
+checks through $n=1000$, and controlled Lambert-$W$ inverse expansions.
+The known sequence A136127 is the logarithmic derivative's coefficient
+sequence. The expansion is in the Poincar\'e sense; exponentially
+improved sectors remain a separate question.
+\end{quote}
+
+\section{The result and its context}\label{vav:sec:intro}
+
+Let $A_n$ count permutations of $[n]$ avoiding the vincular pattern
+$12$--$34$, with $A_0=1$, and put
+\[
+ H(z)=\sum_{n\ge0}A_n\frac{z^n}{n!},\qquad L(z)=\log H(z),\quad L(0)=0.
+\]
+An occurrence requires positions $i,i+1,j,j+1$ with $i+1<j$ and
+$\pi_i<\pi_{i+1}<\pi_j<\pi_{j+1}$. This adjacency convention matters.
+The sequence is OEIS A113226 \cite{oeis}.
+
+Bevan--Cheon--Kitaev \cite{bck} identify these objects with
+$\{3,2+2\}$-free naturally labelled posets, give a labelled binary-word
+model and an insertion recurrence, and conjecture the asymptotic form
+\[
+ A_n\sim D\,n!\,\rho^{-n}\mu^{n^{1/3}}n^\beta,
+ \qquad \rho=\log4.
+\]
+Their Conjectures 13 and 14 specify the exponential rate and the
+stretched-exponential form, with fitted estimates for $D,\mu,\beta$.
+Elizalde \cite{elizalde} obtained earlier bounds. The exact expression
+below resolves both conjectural forms and identifies their constants.
+\begin{writenote}
+Elizalde's paper also bounds the avoiders of the sibling pattern
+$1$--$23$--$4$ (the powered Catalan numbers, OEIS A113227) and leaves their
+precise asymptotics open. That question is answered, by a different method,
+in the sibling report
+\path{oeis-sequence-asymptotics/a113227-powered-catalan/} of this
+collection (batch 77, manuscripts 57 and 56); see ``About this report''.
+\end{writenote}
+
+Define
+\begin{equation}\label{vav:eq:constants}
+ c=\left(\frac{\pi^2}{4\rho}\right)^{1/3},\qquad
+ D=2e^{-3}\sqrt{\frac{c}{3\pi}},\qquad C=3c,\qquad \mu=e^C.
+\end{equation}
+\begin{theorem}\label{vav:thm:main}
+The exponential generating function is
+\begin{equation}\label{vav:eq:egf}
+ H(z)=\exp\left\{\frac z2+
+ \frac{q(3\arcsin q-\pi/2)}{\sqrt{1-q^2}}\right\},
+ \qquad q=\frac{e^{z/2}}2,
+\end{equation}
+with branches analytic at $z=0$. Its logarithm is equivalently the unique
+analytic solution of
+\begin{equation}\label{vav:eq:ode}
+ (4-e^z)L'(z)-2L(z)=2+e^z-z,\qquad L(0)=0.
+\end{equation}
+For every fixed integer $J\ge0$,
+\begin{equation}\label{vav:eq:main}
+ A_n=D\,n!\,\rho^{-n}e^{3cn^{1/3}}n^{-5/6}
+ \left(\sum_{j=0}^{J}a_jn^{-j/3}
+       +O_J(n^{-(J+1)/3})\right),
+\end{equation}
+where $a_0=1$ and all $a_j$ are given by the finite Gaussian coefficient
+formula in Section~\ref{vav:sec:generator}. In particular,
+\begin{align}
+ a_1&=\frac{c^2(1-\rho)}2-\frac5{36c},\label{vav:eq:a1}\\
+ a_2&=\frac{324c^6(\rho-1)^2+c^3(1908\rho-612)-35}{2592c^2}.
+ \label{vav:eq:a2}
+\end{align}
+\end{theorem}
+
+The constants are
+\begin{align*}
+ c&=1.21188506246461864249\ldots,&
+ D&=0.03570604125804483339\ldots,\\
+ C&=3.63565518739385592747\ldots,&
+ \mu&=37.92669385021515730\ldots.
+\end{align*}
+Thus $\beta=-5/6$. The paper's decimal estimates are finite-range fits;
+they are not exact conjectured values. In particular, the amplitude
+$D$ differs visibly from their estimate near $0.032$.
+
+The theorem is an all-orders Poincar\'e expansion. It neither asserts
+convergence of the coefficient series nor identifies all exponentially
+small contributions. Its combinatorial foundation belongs to
+\cite{bck}; the known sequence A136127 and its leading asymptotic are
+also prior work \cite{oeis136,aval,testart}. Our contribution is scoped
+to the exact A113226 transform, its complete coefficient asymptotics,
+and the resulting inverse.
+\begin{writenote}
+Part~II extends Theorem~\ref{vav:thm:main} to the generating function
+marked by the number $k$ of block pairs in \eqref{vav:eq:blocks} (the
+number of distinct nonempty strict downsets) and by the isolated elements,
+uniformly for the marking parameter in complex neighbourhoods of compact
+positive intervals (Theorem~\ref{vav:rf:thm:first}); at $u=1$ it is the
+expansion \eqref{vav:eq:main}.
+\end{writenote}
+
+\section{From labelled words to an integral equation}\label{vav:sec:transfer}
+
+Proposition 7 of \cite{bck} gives a bijection with labelled binary words
+beginning in zero, whose labels decrease within a zero run, increase
+within a one run, and satisfy the condition that every one label exceeds
+all earlier zero labels. Equivalently, an object has the block form
+\begin{equation}\label{vav:eq:blocks}
+ E_1,M_1,E_2,M_2,\ldots,E_k,M_k,E_{k+1},
+\end{equation}
+where $E_i,M_i$ for $i\le k$ are nonempty sets, $E_{k+1}$ is an
+arbitrary set, and every label in $M_i$ exceeds all labels in
+$E_1\cup\cdots\cup E_i$. Each block has its unique prescribed order.
+The case $k=0$ includes the empty object and a single decreasing zero run.
+
+Replace the integer labels by distinct coordinates in $[0,1]$ and
+integrate over them. For fixed block cardinalities totaling $n$, divide
+by the factorial of every block size. Each ordering chamber has volume
+$1/n!$; the unordered coordinates inside each block supply exactly its
+block factorial. The coefficient is therefore the number of valid
+labelled objects divided by $n!$. There is no extra multinomial factor.
+Coincident coordinates have measure zero.
+
+Let $x$ be the largest coordinate among preceding zero blocks, initially
+$x=0$. A new nonempty zero block has maximum at most $x$, with weight
+$e^{zx}-1$, or creates a new maximum $t>x$, with density
+$ze^{zt}\dd t$. Indeed, the maximum of $m$ coordinates has volume
+density $mt^{m-1}$, and summing $z^mmt^{m-1}/m!$ gives $ze^{zt}$.
+A following nonempty one block then has weight $e^{z(1-t)}-1$.
+The final arbitrary zero block has weight $e^z$, independent of the
+state. Its labels have no restriction relative to earlier one labels.
+
+If $f(x)$ counts any number of additional zero/one pairs, then
+\begin{align}
+ f(x)={}&1+(e^{zx}-1)(e^{z(1-x)}-1)f(x)\notag\\
+ &+\int_x^1 z(e^z-e^{zt})f(t)\dd t.\label{vav:eq:transfer}
+\end{align}
+This holds as a formal series, and analytically for small $|z|$.
+Each application of the operator increases size by at least two, so the
+formal solution is unique. Put
+\[
+ D_z(x)=e^{zx}+e^{z(1-x)}-e^z,\quad
+ h(x)=D_z(x)f(x),\quad b(x)=z(e^z-e^{zx}).
+\]
+Then
+\[
+ h(x)=1+\int_x^1\frac{b(t)h(t)}{D_z(t)}\dd t,
+ \qquad h'(x)=-\frac{b(x)}{D_z(x)}h(x),\qquad h(1)=1.
+\]
+Since $D_z(0)=1$ and $H(z)=e^zf(0)$, this yields
+\begin{align}
+ L(z)&=z+\int_0^1\frac{z(e^z-e^{zx})}{D_z(x)}\dd x\label{vav:eq:integral1}\\
+ &=\frac z2+\frac{ze^z}{2}\int_0^1\frac{\dd x}{D_z(x)}.
+ \label{vav:eq:integral2}
+\end{align}
+For the second equality average $x$ and $1-x$ and use
+$e^{zx}+e^{z(1-x)}=D_z(x)+e^z$.
+
+Set $v=z(x-1/2)$ and $q=e^{z/2}/2$. The substitution
+$u=\tanh(v/2)$ in \eqref{vav:eq:integral2} gives
+\begin{equation}\label{vav:eq:atan}
+ L(z)=\frac z2+\frac{2q}{\sqrt{1-q^2}}
+ \arctan\left(\frac{2q-1}{2q+1}\sqrt{\frac{1+q}{1-q}}\right).
+\end{equation}
+The arctangent vanishes at $q=1/2$ and its derivative is
+$3/(2\sqrt{1-q^2})$. It therefore equals
+$(3/2)\arcsin q-\pi/4$ near $q=1/2$.
+This proves \eqref{vav:eq:egf}. Differentiation proves \eqref{vav:eq:ode}.
+
+\section{Exact recurrences and the known cumulants}\label{vav:sec:cumulants}
+
+Let $\ell_n=L^{(n)}(0)$, with $\ell_0=0$. Coefficient extraction from
+\eqref{vav:eq:ode} gives
+\begin{equation}\label{vav:eq:cumulant}
+ 3\ell_{n+1}=\sum_{k=0}^{n-1}\binom nk\ell_{k+1}
+       +2\ell_n+1+2\ind{n=0}-\ind{n=1}\qquad(n\ge0).
+\end{equation}
+The empty sum is zero. Since $H'=L'H$,
+\begin{equation}\label{vav:eq:exact}
+ A_0=1,\qquad
+ A_{n+1}=\sum_{k=0}^n\binom nk\ell_{k+1}A_{n-k}.
+\end{equation}
+These recurrences use $O(N^2)$ integer arithmetic operations for all
+terms through $N$. This statement counts arithmetic operations, not
+bit operations. It gives a fast recurrence of the kind asked for by
+Callan \cite[Section 9]{callan}.
+
+The cumulants begin
+\[
+ (\ell_n)_{n\ge1}=1,1,2,5,16,63,294,1585,9692,66275,\ldots.
+\]
+They are the known sequence A136127 shifted by one:
+\begin{equation}\label{vav:eq:known}
+ \ell_n=\mathrm{A136127}(n-1)\qquad(n\ge1).
+\end{equation}
+Here is an exact verification that also explains the nonbinomial
+antidiagonal sum. The known poly-Bernoulli-relative array $T_{a,b}$ has
+bivariate exponential generating function
+\[
+ T(x,y)=\log\frac1{e^x+e^y-e^{x+y}}
+       =\sum_{a,b\ge1}T_{a,b}\frac{x^ay^b}{a!b!}.
+\]
+The antidiagonal identity recorded in \cite[Section 6]{testart} is
+\[
+ \mathrm{A136127}(n)=\sum_{k=0}^{n-1}T_{k+1,n-k}\quad(n\ge1),
+ \qquad \mathrm{A136127}(0)=1.
+\]
+Equation \eqref{vav:eq:integral1} is exactly
+\begin{equation}\label{vav:eq:transform}
+ L(z)=z+\int_0^z T_x(t,z-t)\dd t.
+\end{equation}
+Since
+\[
+ \int_0^z\frac{t^{a-1}(z-t)^b}{(a-1)!b!}\dd t
+     =\frac{z^{a+b}}{(a+b)!},
+\]
+\eqref{vav:eq:known} follows, including $n=1$ separately. Thus $H'/H$ is
+the EGF of A136127. The existing objects, array and asymptotic for that
+sequence are not new claims of this report. A direct labelled bijection
+explaining the exponential transform remains an interesting question.
+\begin{writenote}
+Part~II, Section~\ref{vav:rf:sec:bijection}, gives such an explanation: a
+record-to-cycle bijection whose components are ``separated cycles'', with
+the component counts \eqref{vav:rf:eq:cumulants}. It explicitly does not
+claim a direct bijection to a previously named excedance-permutation or
+tree model of A136127, so that narrower question stays open (see the note
+after the questions in Section~\ref{vav:sec:prior}).
+\end{writenote}
+
+\section{Analytic continuation and the singular expansion}\label{vav:sec:continuation}
+
+For $|z|<\rho$, the elementary estimate
+\begin{align*}
+ |(e^{zx}-1)(e^{z(1-x)}-1)|
+ &\le(e^{|z|x}-1)(e^{|z|(1-x)}-1)\\
+ &\le(e^{|z|/2}-1)^2<1
+\end{align*}
+shows that \eqref{vav:eq:integral1} is analytic. The second inequality
+follows by minimizing $e^{rx}+e^{r(1-x)}$ at $x=1/2$.
+On $|z|=\rho$, equality can occur only at $z=\rho,x=1/2$.
+More strongly, the linear ODE continues $L$ along every path avoiding
+\[
+ \rho+2\pi\ii k,\qquad k\in\mathbb Z.
+\]
+In a disk of radius $R$ with $\rho<R<|\rho+2\pi\ii|$, cut along
+$[\rho,R)$, this continuation is single-valued and has no other
+singularities. This follows from analytic ODE existence and uniqueness
+on a simply connected domain.
+
+Write $w=\rho-z$, with the square root positive for real $w>0$.
+Equation \eqref{vav:eq:egf} gives a convergent local decomposition
+\begin{equation}\label{vav:eq:local}
+ L(z)=\frac\pi{\sqrt{e^w-1}}+R(w),
+\end{equation}
+where
+\[
+ R(w)=\frac{\rho-w}{2}
+       -\frac{3\arccos(e^{-w/2})}{\sqrt{e^w-1}}
+\]
+is analytic at zero: the square roots in the quotient cancel.
+Its Taylor expansion starts
+\begin{equation}\label{vav:eq:Rexp}
+ R(w)=\frac\rho2-3+\frac w2-\frac{w^2}{10}
+                  -\frac{w^3}{210}+O(w^4).
+\end{equation}
+All coefficients can be generated without repeated differentiation of
+inverse trigonometric functions. If $R(w)=\sum_{m\ge0}r_mw^m$, then
+$r_0=\rho/2-3$ and
+\begin{equation}\label{vav:eq:rrec}
+ r_m=\frac{
+ -\ind{m=1}-4(-1)^m/m!
+ -4\displaystyle\sum_{k=1}^{m-1}
+       \frac{(-1)^{m-k}kr_k}{(m-k+1)!}}
+ {4m+2}\qquad(m\ge1).
+\end{equation}
+Indeed substitution in \eqref{vav:eq:ode} gives
+\[
+ 4(1-e^{-w})R'(w)+2R(w)=\rho-w-2-4e^{-w}.
+\]
+Also define
+\[
+ s_m=[w^m]\sqrt{\frac w{e^w-1}},\qquad
+ s_0=1,\quad s_1=-\frac14,\quad s_2=\frac1{96},\quad s_3=\frac1{384}.
+\]
+Put $t=1-z/\rho$, $K=\rho/2-3$ and $A=\pi/\sqrt\rho=2c^{3/2}$.
+Then, convergently near $\sqrt t=0$,
+\begin{equation}\label{vav:eq:puiseux}
+ L(\rho(1-t))=K+A t^{-1/2}+\sum_{j\ge1}g_jt^{j/2},
+\end{equation}
+where
+\begin{equation}\label{vav:eq:gj}
+ g_{2m-1}=\pi s_m\rho^{m-1/2},\qquad
+ g_{2m}=r_m\rho^m\quad(m\ge1).
+\end{equation}
+In particular $g_1=-\pi\sqrt\rho/4$ and $g_2=\rho/2$.
+There is no logarithmic term. This fact determines the power
+$n^{-5/6}$ in the main result.
+
+\section{Contour estimates and a complete saddle expansion}\label{vav:sec:saddle}
+
+Set $\delta=n^{-1/3}$, $t_0=c\delta^2$, and take the Cauchy circle
+$z=\rho(1-t_0)e^{\ii\theta}$. For fixed sufficiently small $\theta_0$,
+\eqref{vav:eq:puiseux} gives uniformly for $|\theta|\le\theta_0$
+\begin{equation}\label{vav:eq:modlocal}
+ \log|H(z)|=K+A\Re(t^{-1/2})+O(|t|^{1/2}),\qquad
+ t=1-(1-t_0)e^{\ii\theta}.
+\end{equation}
+For $|\theta|\le\varepsilon t_0$, with $\varepsilon$ small and fixed,
+the Taylor expansion of $(1+v)^{-1/2}$ yields
+\begin{equation}\label{vav:eq:quaddecay}
+ \Re(t^{-1/2})\le t_0^{-1/2}-b\theta^2t_0^{-5/2}
+\end{equation}
+for a constant $b>0$. Here $\Re t\ge t_0$ and $\Im t$ is comparable
+to $-\theta$. For the complementary range
+$\varepsilon t_0\le|\theta|\le\theta_0$, use
+\[
+ |t|^2=t_0^2+2(1-t_0)(1-\cos\theta)
+\]
+to obtain a fixed fractional loss
+\begin{equation}\label{vav:eq:fracdecay}
+ \Re(t^{-1/2})\le |t|^{-1/2}
+       \le t_0^{-1/2}(1+b'\varepsilon^2)^{-1/4}.
+\end{equation}
+On the rest of the circle, $L$ is uniformly bounded as $n$ grows,
+by analytic continuation across the compact arc of $|z|=\rho$
+that excludes $\rho$.
+
+Consequently every arc outside
+\begin{equation}\label{vav:eq:window}
+ |\theta|\le\delta^{5/2}\log(1/\delta)
+\end{equation}
+is smaller than the main coefficient scale by every negative power
+of $n$. Estimate \eqref{vav:eq:quaddecay} treats the intermediate range;
+\eqref{vav:eq:fracdecay} treats the remaining local arc. The bounded error
+in \eqref{vav:eq:modlocal} cannot offset either loss. The modulus of the
+Cauchy coefficient kernel is constant on this circle.
+
+For a simple coefficient formula, deform the central arc to the vertical
+segment
+\begin{equation}\label{vav:eq:vertical}
+ t=c\delta^2(1+\ii\sqrt\delta\,u).
+\end{equation}
+One can choose endpoints with $|\Im t|=\varepsilon t_0$.
+They differ from the circular arc by $O(t_0^2)$ in real part. The
+connecting segments stay in $\Re t\ge t_0$, with $|\Im t|$ comparable
+to $\varepsilon t_0$, so the same fixed fractional loss applies.
+Their change in $-n\log|1-t|$ is $O(nt_0^2)=O(\delta)$.
+They are exponentially negligible, and no singularity is crossed.
+Reversing orientation gives a positive Gaussian integral.
+
+The leading phase on \eqref{vav:eq:vertical} is
+\begin{equation}\label{vav:eq:phase}
+ A t^{-1/2}+nt=\frac{3c}\delta-\frac{3c}{4}u^2
+                        +O(\sqrt\delta\,|u|^3).
+\end{equation}
+The Cauchy Jacobian is $c\delta^{5/2}/(2\pi)$; the remaining
+$(1-t)^{-1}$ will be included explicitly below. Therefore the leading
+factor, apart from $n!\rho^{-n}e^{3c/\delta}$, is
+\begin{equation}\label{vav:eq:prefactor}
+ \frac{e^Kc\delta^{5/2}}{2\pi}\sqrt{\frac{4\pi}{3c}}
+     =2e^{-3}\sqrt{\frac c{3\pi}}\,n^{-5/6}.
+\end{equation}
+In particular $nt^2/2=O(\delta)$ affects the first correction, not
+this constant.
+
+\section{A finite generator for every correction}\label{vav:sec:generator}
+
+Let $U$ be a centered Gaussian variable of variance $2/(3c)$.
+Define the following formal series in $\sqrt\delta$:
+\begin{align}
+ Q(\delta,U)={}&2c\sum_{k\ge3}\binom{-1/2}{k}
+                      (\ii U)^k\delta^{k/2-1}\notag\\
+ &+\sum_{m\ge2}\frac{c^m}{m}\delta^{2m-3}
+                      (1+\ii\sqrt\delta U)^m\notag\\
+ &+\sum_{m\ge1}\frac{c^m}{m}\delta^{2m}
+                      (1+\ii\sqrt\delta U)^m\notag\\
+ &+\sum_{j\ge1}g_jc^{j/2}\delta^j
+                      (1+\ii\sqrt\delta U)^{j/2}.
+ \label{vav:eq:Q}
+\end{align}
+The four lines are, respectively, the principal phase after removing
+its constant, linear and quadratic terms;
+$n[-\log(1-t)-t]$; the extra $-\log(1-t)$; and the Puiseux perturbation.
+The coefficients in Theorem~\ref{vav:thm:main} are
+\begin{equation}\label{vav:eq:gaussian}
+ a_j=[\delta^j]\E e^{Q(\delta,U)}.
+\end{equation}
+Every requested coefficient involves finitely many terms. Odd powers
+of $\sqrt\delta$ are odd in $U$ and integrate to zero. The Gaussian
+moments then imply $a_j\in\mathbb Q[c,c^{-1},\rho]$.
+
+We spell out why the formal calculation supplies the asserted error
+bound. Restrict \eqref{vav:eq:vertical} to $|u|\le\log(1/\delta)$.
+Its complement is superpolynomially small by the quadratic estimate.
+On this window the principal phase remainder is
+$O(\sqrt\delta(1+|u|^3))$. Every other summand and every fixed finite
+Taylor remainder are bounded by a power of $\delta$ times a polynomial
+in $u$, uniformly on the window. This follows from the convergent
+local expansion \eqref{vav:eq:puiseux} and the analytic binomial and
+logarithm series. The exact integrand after its leading normalization
+is bounded by $C_0e^{-b_0u^2}$, since
+$\sqrt\delta|u|^3=o(1+u^2)$ there. Expanding to two extra half-orders,
+and bounding the exponential Taylor remainder by an integrable
+polynomial times $e^{-b_0u^2}$, gives a remainder
+$O_J(\delta^{J+1})$. The next odd half-order vanishes on the symmetric
+window and on its Gaussian extension. No residual logarithmic loss
+is hidden in the remainder. This completes the proof of
+\eqref{vav:eq:main} and \eqref{vav:eq:gaussian}.
+
+For example the coefficient of $\delta$ is
+\[
+ \frac{c^2(1-\rho)}2+\frac{35c}{64}\E U^4
+                    -\frac{25c^2}{128}\E U^6
+ =\frac{c^2(1-\rho)}2-\frac5{36c}.
+\]
+The first four values are
+\begin{center}
+\begin{tabular}{cr}
+\toprule
+$j$ & $a_j$\\\midrule
+1 & $-0.39827424329477706556\ldots$\\
+2 & $\phantom{-}0.98158861254222799575\ldots$\\
+3 & $-0.53022033843535145958\ldots$\\
+4 & $-0.66858737252587671304\ldots$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Exact expressions for $a_3,a_4$ are given in Appendix~\ref{vav:app:coeff}.
+
+The accompanying \texttt{asymptotic\_coefficients.py} implements the
+finite algorithm for arbitrary requested fixed order $J$.
+It generates $s_m$ and \eqref{vav:eq:rrec}, constructs \eqref{vav:eq:Q} to
+order $h^{2J}$ with $h=\sqrt\delta$, and computes
+\begin{equation}\label{vav:eq:exprec}
+ E_0=1,\qquad E_k=\frac1k\sum_{j=1}^k jQ_jE_{k-j},
+ \qquad Q=\sum Q_jh^j,\quad e^Q=\sum E_kh^k.
+\end{equation}
+It replaces $U^{2m}$ by $(2m-1)!![2/(3c)]^m$ and odd powers by zero.
+Default execution computes $J=4$. Larger orders may incur significant
+symbolic time and memory cost. The stored decimal constants are
+high-precision evaluations, not certified interval enclosures.
+
+\section{A controlled inverse and integer thresholds}\label{vav:sec:inverse}
+
+There exists a smooth increasing realization $F(x)$ for all sufficiently
+large $x$ with $F(n)=A_n$, whose logarithm has a differentiable all-orders
+expansion. Here is a construction, to avoid assuming a canonical
+analytic interpolation. Realize the formal logarithmic expansion by
+a locally finite sum with successively later smooth cutoffs. Choose
+the cutoffs so its tail and each fixed derivative satisfy the desired
+bounds. If $G$ is the resulting smooth logarithm, the discrepancies
+$\log A_n-G(n)$ are smaller than every negative power of $n$.
+Multiply each discrepancy by a fixed smooth bump centered at $n$,
+with value one there and support of radius less than $1/3$.
+The bumps have disjoint supports; their sum and each fixed derivative
+are flat to all algebraic orders. Exponentiating the corrected $G$
+gives $F$. Its logarithmic derivative is asymptotic to
+$\log(x/\rho)>0$, proving eventual monotonicity.
+
+Write
+\begin{equation}\label{vav:eq:logasym}
+ \log F(x)=x\log\frac{x}{e\rho}+Cx^{1/3}
+    +\alpha\log x+d+\sum_{j\ge1}\beta_jx^{-j/3},
+\end{equation}
+where
+\begin{align*}
+ C&=3c,&\alpha&=-\frac13,&d&=\log(D\sqrt{2\pi}),\\
+ \beta_1&=a_1,&\beta_2&=a_2-\frac{a_1^2}{2},&
+ \beta_3&=a_3-a_1a_2+\frac{a_1^3}{3}+\frac1{12}.
+\end{align*}
+The $1/12$ comes from Stirling's expansion for $\log\Gamma(x+1)$;
+later Stirling terms are included at their respective orders.
+
+For $Y\to\infty$ define
+\begin{equation}\label{vav:eq:N}
+ L_Y=\log Y,\qquad N=\frac{L_Y}{W(L_Y/(e\rho))},\qquad
+ \ell=\log(N/\rho)=W(L_Y/(e\rho))+1.
+\end{equation}
+Thus $N\log(N/(e\rho))=L_Y$. Put
+\begin{align}
+ a&=-\frac C\ell,&
+ b&=\frac13+\frac{\log\rho/3-d}{\ell},\label{vav:eq:inverseab}\\
+ d_1&=-\frac{a^2/2+Ca/3+\beta_1}{\ell},&
+ e_1&=-\frac{(a+C/3)b+\alpha a+\beta_2}{\ell}.
+ \label{vav:eq:inversede}
+\end{align}
+Then
+\begin{equation}\label{vav:eq:inverse}
+ F^{-1}(Y)=N+N^{1/3}a+b+N^{-1/3}d_1+N^{-2/3}e_1
+                           +O\left(\frac1{N\ell}\right).
+\end{equation}
+Omitting the two decaying corrections leaves an error
+$O(N^{-1/3}/\ell)$, already $o(1)$.
+
+To prove \eqref{vav:eq:inverse}, substitute its displayed approximation
+in \eqref{vav:eq:logasym}. The terms of orders
+$N^{1/3}$, $1$, $N^{-1/3}$ and $N^{-2/3}$ vanish successively by
+\eqref{vav:eq:inverseab}--\eqref{vav:eq:inversede}. The remaining logarithmic
+residual is $O(N^{-1})$. Its derivative is asymptotic to $\ell$, so
+the mean value theorem divides that residual by a quantity comparable
+to $\ell$. All four coefficient functions remain bounded as
+$\ell\to\infty$.
+
+Successive cancellation gives a complete inverse expansion in powers
+of $N^{-1/3}$, beginning with $N^{1/3}$, with coefficients rational
+in $\ell$. There is no separate growing logarithm in these coefficients,
+since $\log N=\ell+\log\rho$. Every logarithmic residual is converted
+to an inverse error by the same derivative bound. Changing the smooth
+realization by a flat function leaves every algebraic order unchanged.
+
+For the eventual integer threshold
+$\tau(Y)=\min\{n:A_n\ge Y\}$, the monotone realization gives
+$\tau(Y)=\lceil F^{-1}(Y)\rceil$ for sufficiently large $Y$.
+If an approximation $X$ has an established bound
+$|F^{-1}(Y)-X(Y)|\le E(Y)$, then
+\begin{equation}\label{vav:eq:ceiling}
+ \lceil X-E\rceil\le\tau(Y)\le\lceil X+E\rceil.
+\end{equation}
+An $o(1)$ approximation alone does not justify unconditional rounding
+when $X$ approaches an integer. The numerical checks below are not
+certificates of explicit constants in the asymptotic remainder.
+\begin{writenote}
+This section re-derives, for A113226, the inversion apparatus of the
+canonical transseries volume
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}:
+the exact Lambert-$W$ solution of the dominant block
+(\texttt{p0:thm:lambert-core}) behind \eqref{vav:eq:N}, the perturbed
+inversion (\texttt{p0:thm:perturbed-inversion}) behind
+\eqref{vav:eq:inverse}, and the staircase theorem
+(\texttt{p0:thm:staircase}), whose exact-rounding identity is
+$\tau(Y)=\lceil F^{-1}(Y)\rceil$ and whose separation clause is the
+use of the envelope \eqref{vav:eq:ceiling}. No novelty is claimed
+for that apparatus. The separation clause, and its failure for arbitrarily
+small error, are formalized in Lean as \texttt{Fabius.staircase\_separation}
+and \texttt{Fabius.staircase\_separation\_fails} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+these are generic real-number statements, and nothing specific to
+A113226 is formalized.
+\end{writenote}
+
+\section{Exact checks and reproducibility}\label{vav:sec:checks}
+
+The file \texttt{exact\_recurrence.py} computes \eqref{vav:eq:cumulant}
+and \eqref{vav:eq:exact} using integer arithmetic. The released data
+contain all terms through $n=1000$. All 21 displayed OEIS values agree.
+Two independent combinatorial checks are included:
+\begin{itemize}
+\item The five insertion rules in Proposition 11 of \cite{bck} agree
+through $n=65$. This implementation does not use the EGF or cumulants.
+\item Exhaustive permutation enumeration with the literal vincular
+pattern predicate agrees through $n=8$.
+\end{itemize}
+These checks supplement the combinatorial proof; they do not replace it.
+
+Let $R_n$ be the ratio of $A_n$ to the leading term in
+\eqref{vav:eq:main}, and let
+\[
+ T_j(n)=n^{(j+1)/3}\left(R_n-\sum_{k=0}^ja_kn^{-k/3}\right).
+\]
+The theorem predicts $T_j(n)\to a_{j+1}$. Some exact-data comparisons
+are shown below. The convergence is slow, consistent with the
+$n^{-1/3}$ correction scale.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $R_n$ & $T_0(n)$ & $T_1(n)$ & $T_3(n)$\\\midrule
+100 & 0.9535673415 & $-0.2155213093$ & 0.8482639777 & $-0.4113273816$\\
+200 & 0.9575584055 & $-0.2481999506$ & 0.8776397878 & $-0.4542524517$\\
+400 & 0.9625345125 & $-0.2760480719$ & 0.9005701306 & $-0.4916630397$\\
+557 & 0.9650312573 & $-0.2877167077$ & 0.9096480952 & $-0.5076047828$\\
+1000 & 0.9694049550 & $-0.3059504504$ & 0.9232379289 & $-0.5328649788$\\\midrule
+Limit & 1 & $a_1=-0.3982742433$ & $a_2=0.9815886125$ & $a_4=-0.6685873725$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $n=1000$, the scaled remainder $T_4(n)$ is about $1.3572$.
+The data are consistent with the next algebraic correction, but this
+comparison does not certify a uniform remainder bound.
+
+At $Y=A_{1000}$ the inverse approximation errors after the constant
+term $b$, after adding $N^{-1/3}d_1$, and after adding
+$N^{-2/3}e_1$ are respectively
+\[
+ -0.0115393\ldots,\qquad +0.00233040\ldots,\qquad
+ -0.0000291627\ldots.
+\]
+All sampled ratios and inverse errors are stored in
+\texttt{validation.json}.
+
+The reproducibility archive contains the report source, exact data,
+Python programs, pinned dependencies, a build script, a replay
+script, and review/validation records. A separate proof review and
+independent hand-expanded Gaussian checks of $a_1,a_2$ found no
+unresolved defect. These checks are not formal verification or
+conventional peer review. A short replay regenerates the
+asymptotic coefficients and numerical comparison file, while checking
+a smaller exact prefix against the supplied $n=1000$ data. Full exact
+regeneration is separately available. No network access is needed for
+the mathematics once the standard dependencies are installed.
+\begin{writenote}
+In this collection the programs and records of this section are shipped
+under prefixed names: \path{code/04-asymptotics-exact_recurrence.py},
+\path{code/04-asymptotics-asymptotic_coefficients.py},
+\path{code/04-asymptotics-validate_asymptotics.py},
+\path{code/04-asymptotics-replay.sh},
+\path{data/04-asymptotics-validation.json} and so on, with the proof
+revision and the reviews at the report root
+(\path{04-asymptotics-proof.md},
+\path{04-asymptotics-root-mathematical-review.md},
+\path{04-asymptotics-root-prior-art-check.md}). The exact data through
+$n=1000$ (\path{exact_values.json}, 2{,}236{,}789 bytes) are
+\emph{not} shipped: they are regenerated byte-identically by the exact
+recurrence program, and the delivered copy survives in the arrival
+commit; the report README gives the commands. The delivered PDF, manifest
+and build output are not shipped either; this article replaces the
+delivered source.
+\end{writenote}
+
+\section{Prior work and further questions}\label{vav:sec:prior}
+
+The focused screening inspected the current OEIS entry, the
+Bevan--Cheon--Kitaev preprint and journal record, Elizalde's primary
+paper, A136127 and its listed literature, and Testart's 2026 paper.
+The exact A113226 EGF and logarithmic-derivative relation were not
+found in those sources. This is a scoped priority check, not an
+exhaustive claim about all literature. The underlying binary-word
+model, its bijections, the cumulant sequence and standard saddle
+methods are explicitly credited.
+
+A contemporaneous default-branch search of the public ProveIt
+repository for A113226, \texttt{12-34}, and the author names returned
+no matches. The checked head was
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/63b9d68407f21832316eb296fd0885e40e033c90}{\texttt{63b9d68407f2}} (full hash in the source-check record).
+The original source model and conjectures remain independently
+verifiable through the references below.
+\begin{writenote}
+The search above ran against the pin \texttt{63b9d6840}, which is kept
+here as provenance. The repository now contains this report (placed in
+\texttt{4f11bc9c0}) and the sibling report on A113227,
+\path{oeis-sequence-asymptotics/a113227-powered-catalan/}; no other report
+of the repository treats A113226, A136127 or the BCK model. The
+``source-check record'' is shipped as
+\path{data/04-asymptotics-repository-check.json}.
+\end{writenote}
+
+Several extensions are meaningful but are not needed for the theorem:
+\begin{enumerate}
+\item Find a direct labelled bijection explaining why A136127 is the
+logarithmic derivative's coefficient sequence.
+\item Refine the transfer equation by statistics such as the number
+of zero/one blocks or natural poset parameters, and determine their
+limiting laws.
+\item Establish certified numerical constants in finite-$n$ error
+bounds and threshold envelopes.
+\item Develop exponentially improved expansions accounting for
+continuation near the other singularities $\rho+2\pi\ii k$.
+\end{enumerate}
+The last question is distinct from the complete algebraic expansion
+proved here.
+\begin{writenote}
+Status of these questions in this report. \emph{Question~1} is answered by
+Part~II, Section~\ref{vav:rf:sec:bijection}: separated cycles and a
+record-to-cycle bijection explain the exponential transform; a direct map
+to a particular previously named A136127 model (excedance permutations,
+non-ambiguous trees) is not claimed and remains open. \emph{Question~2} is
+answered by Part~II for the number of block pairs (distinct nonempty strict
+downsets) and the number of isolated elements: exact bivariate marking
+\eqref{vav:rf:eq:iso}--\eqref{vav:rf:eq:exact}, local large deviations
+(Theorem~\ref{vav:rf:thm:local}) for densities in compact subsets of
+$(0,1/2)$, Gaussian and local limit laws, and Poisson laws of isolated
+elements. Endpoint densities ($k=o(n)$ or $n/2-k=o(n)$) and other natural
+poset parameters remain open. \emph{Questions~3 and~4} remain open; Part~II
+does not address certified constants, and it also excludes the other
+complex singularity sectors.
+\end{writenote}
+
+
+\part{Refined enumeration (source 05)}
+\label{vav:part:two}
+\begin{writenote}
+This Part prints source 05, an addendum to source 04 written against the
+same repository pin. Its Section~$n$ is Section~$n+9$ here and its
+equation $(k)$ is equation $(k+36)$. ``The original report'' of the source
+is Part~I. Its expanded companion proof is shipped as
+\path{05-refined-refined-proof.md}; its reviews and literature screen as
+\path{05-refined-mathematical-review.md},
+\path{05-refined-root-refinement-review.md},
+\path{05-refined-reproduction-review.md},
+\path{05-refined-typesetting-review.md} and
+\path{05-refined-literature-screen.md}. These delivered records cite the
+delivered nine-page PDF's equation numbers, which are the numbers above
+minus~36.
+\end{writenote}
+\begin{quote}\small
+\textbf{Abstract of source 05.}
+We refine the enumeration of $\{3,2+2\}$-free naturally labelled posets by their number of distinct nonempty strict downsets and their isolated elements. A record-to-cycle bijection directly explains the exponential transform behind A113226. Its marked generating function admits a complex-uniform, all-orders saddle expansion. A second saddle gives precise local large deviations throughout the interior density range, including the correction caused by the stretched exponential. Gaussian and local limit laws follow, and isolated elements are asymptotically Poisson even conditionally on an atypical downset density, with an explicit correction and a total-variation error of order $n^{-2/3}$. All expansions are Poincar\'e expansions to each fixed order; exponentially complete transseries are not claimed.
+\end{quote}
+
+\section{Exact marking and a direct bijection}\label{vav:rf:sec:marking}
+Let $A_{n,k,j}$ count $\{3,2+2\}$-free naturally labelled posets on $[n]$ having $k$ distinct nonempty strict downsets and $j$ isolated elements. The total is A113226$(n)$ through the bijection of Bevan--Cheon--Kitaev (BCK) with $12$--$34$-avoiding permutations~\cite{bck}. The statistics here are defined on the poset side; an identification with a usual permutation statistic is not asserted.
+
+BCK Proposition~7 writes a poset as
+\[
+ E_1,M_1,\ldots,E_k,M_k,E_{k+1}.
+\]
+The first $2k$ blocks are nonempty; the last is arbitrary and consists precisely of the isolated elements. The $M_i$ group maxima with equal nonempty downsets, and the $E_i$ are successive differences of these nested downsets. Each label of $M_i$ exceeds every label of $E_1\cup\cdots\cup E_i$. Zero blocks are written in decreasing order and one blocks in increasing order.
+
+Put
+\[
+ A_n(u,s)=\sum_{k,j}A_{n,k,j}u^ks^j,\qquad
+ H(z,u,s)=\sum_{n\ge0}A_n(u,s)\frac{z^n}{n!},\qquad H(z,u)=H(z,u,1).
+\]
+The marked transfer identity is
+\begin{align}
+ H(z,u,s)&=e^{(s-1)z}H(z,u),\label{vav:rf:eq:iso}\\
+ \log H(z,u)&=z+\int_0^1
+ \frac{uz(e^z-e^{zx})}{1-u(e^{zx}-1)(e^{z(1-x)}-1)}\dd x.\label{vav:rf:eq:exact}
+\end{align}
+To obtain it, apply the maximum-coordinate transfer of Part~I (Section~\ref{vav:sec:transfer}), putting weight $u$ on every added block pair. With
+\[
+ a(x)=(e^{zx}-1)(e^{z(1-x)}-1),\qquad b(x)=z(e^z-e^{zx}),
+\]
+the continuation function satisfies
+\[
+ f(x)=1+u a(x)f(x)+u\int_x^1 b(t)f(t)\dd t.
+\]
+For $h=(1-ua)f$, differentiation gives $h'=-ub h/(1-ua)$ and $h(1)=1$. The final block supplies $e^{sz}$. Integration over label-order chambers gives the coefficient normalization $1/n!$.
+
+\subsection{The record and cycle construction}\label{vav:rf:sec:bijection}
+A \emph{separated cycle} is a cyclic list of pairs $(E_i,M_i)$ of nonempty disjoint label sets such that every $E$ label is smaller than every $M$ label. Cycles are identified under rotation, never reflection. Each has a unique representative beginning with the $E$ block containing its largest $E$ label.
+
+Given a BCK word, remove its final isolated block. Set $e_i=\max E_i$ and cut immediately before every strict left-to-right record of $e_1,\ldots,e_k$. In a segment beginning at $r$, the first maximum $e_r$ exceeds all later $E$-block maxima in that segment. Every $M$ label in the segment exceeds $e_r$ by the original word condition. The segment therefore represents a separated cycle in its unique maximum-$E$-first rotation. Retain the cycles as an unordered set, and the isolated labels as singleton components.
+
+Conversely, rotate each separated cycle to that representative, sort the cycles by increasing largest $E$ label, and concatenate them. Every $M$ label exceeds all $E$ labels in its own cycle. Its cycle maximum exceeds every $E$ label of all earlier cycles, so the cross-cycle inequalities hold as well. Append the singleton labels as the final decreasing zero block. Each cycle start is an $E$-maximum record, and no later pair within that cycle is a record. The cuts recover exactly the original cycles. These operations are inverse, including empty objects, and preserve both statistics.
+
+Let $\stirling{n}{m}$ denote a Stirling number of the second kind and let
+$L_n(u)=n![z^n]\log H(z,u)$. We have $L_1=1$ and, for $n\ge2$,
+\begin{equation}\label{vav:rf:eq:cumulants}
+ L_n(u)=\sum_{m=1}^{\lfloor n/2\rfloor}m!(m-1)!u^m
+       \sum_{a=m}^{n-m}\stirling{a}{m}\stirling{n-a}{m}.
+\end{equation}
+Indeed the $a$ labels assigned to the $E$ blocks of one component must be its $a$ smallest labels. Partition its two label sets into $m$ blocks, match the blocks in $m!$ ways, and cyclically order the pairs in $(m-1)!$ ways. The labelled set construction then gives
+\begin{equation}\label{vav:rf:eq:bell}
+ A_0(u,1)=1,\qquad
+ A_{n+1}(u,1)=\sum_{r=0}^n\binom nr L_{r+1}(u)A_{n-r}(u,1).
+\end{equation}
+Thus the first polynomials are
+$1,1,1+u,1+5u,1+17u+5u^2$.
+At $u=1$ the component counts, including the singleton, are the shifted A136127 sequence identified in Part~I, \eqref{vav:eq:known}. This provides explicit cycle objects for the exponential transform; a direct bijection to a particular previously named excedance-permutation or tree model is not claimed.
+
+For an analytic check of~\eqref{vav:rf:eq:cumulants}, set
+\[
+ T(x,y,u)=-\log(1-u(e^x-1)(e^y-1)).
+\]
+Then~\eqref{vav:rf:eq:exact} is $z+\int_0^zT_x(t,z-t,u)\dd t$. Expansion of $T$ and a beta integral give the same formula.
+
+\section{A convergent local singular expansion}\label{vav:rf:sec:singular}
+For $u>0$, define
+\begin{equation}\label{vav:rf:eq:parameters}
+ a=u^{-1/2},\quad \rho=2\log(1+a),\quad
+ c=\left(\frac{\pi^2a}{4\rho}\right)^{1/3},\quad
+ K=\frac\rho2-2-a,\quad D=e^K\sqrt{\frac{c}{3\pi}}.
+\end{equation}
+These functions extend holomorphically to a sufficiently small complex neighborhood of each compact positive $u$-interval, using the positive real branches.
+With $w=\rho-z$,
+\begin{equation}\label{vav:rf:eq:sing}
+ \log H(\rho-w,u)=\pi\sqrt a\,w^{-1/2}S(w,u)+R(w,u),
+\end{equation}
+where $S,R$ are jointly analytic near $w=0$, $S(0,u)=1$, and $R(0,u)=K$.
+The following formulas determine every coefficient:
+\begin{align}
+ q&=\cosh(w/2)-a\sinh(w/2),& h&=a\cosh(w/2)-\sinh(w/2),\notag\\
+ \mathcal T&=\coth((\rho-w)/4),& S&=\frac ha\sqrt{\frac{aw}{1-q^2}},\label{vav:rf:eq:SR}\\
+ R&=\frac{\rho-w}{2}-\frac{2h}{1+q}
+ \sum_{m\ge0}\frac{(-1)^m\mathcal T^{2m+1}}{2m+1}
+                 \left(\frac{1-q}{1+q}\right)^m.\notag
+\end{align}
+The quotient in $S$ is analytic and equals one at the origin; the series for $R$ converges normally in a common sufficiently small neighborhood.
+
+For derivation, symmetrize~\eqref{vav:rf:eq:exact}. With
+$q=\cosh(z/2)-1/(2u e^{z/2})$ and $N=1-u+u e^z$, the elementary integral is
+\[
+ \log H=\frac z2+\frac{N}{u e^{z/2}\sqrt{1-q^2}}
+ \arctan\left(\tanh(z/4)\sqrt{\frac{1+q}{1-q}}\right).
+\]
+Near the positive singularity use $\arctan X=\pi/2-\arctan(1/X)$ and $N/(u e^{z/2})=2h$. This yields~\eqref{vav:rf:eq:sing}--\eqref{vav:rf:eq:SR}. Apparent $q=-1$ points elsewhere are not presumed singular; some are removable.
+
+Writing $t=1-z/\rho$, we obtain the convergent expansion
+\begin{equation}\label{vav:rf:eq:puiseux}
+ \log H(\rho(1-t),u)=K+2c^{3/2}t^{-1/2}+\sum_{j\ge1}g_jt^{j/2}.
+\end{equation}
+If $S=\sum s_mw^m$ and $R=\sum r_mw^m$, then
+\begin{align}
+ g_{2m-1}&=\pi\sqrt a\,s_m\rho^{m-1/2},&g_{2m}&=r_m\rho^m,\notag\\
+ s_1&=\frac{a^2-3}{8a},&s_2&=\frac{9a^4+10a^2-15}{384a^2},&r_1&=\frac{4-a^3}{6a}.\label{vav:rf:eq:g}
+\end{align}
+These specialize at $u=1$ to Part~I's expansion \eqref{vav:eq:puiseux}--\eqref{vav:eq:gj}.
+
+\section{Complex uniformity of the first saddle}\label{vav:rf:sec:first}
+\begin{theorem}\label{vav:rf:thm:first}
+For each compact interval $\mathcal U\subset(0,\infty)$ there is a complex neighborhood $\Omega$ of $\mathcal U$ and holomorphic coefficients $a_j(u)$, $a_0=1$, such that for every fixed $J\ge0$,
+\begin{equation}\label{vav:rf:eq:first}
+ \frac{A_n(u,1)}{n!}
+ =D\rho^{-n}n^{-5/6}e^{3cn^{1/3}}
+ \left(\sum_{j=0}^J a_j(u)n^{-j/3}+O_{\mathcal U,J}(n^{-(J+1)/3})\right),
+\end{equation}
+uniformly on a fixed closed neighborhood of $\mathcal U$ contained in $\Omega$.
+The normalized remainder is holomorphic and has the same fixed-derivative bounds on a smaller neighborhood. Uniformly for $s$ in any fixed compact subset of $\mathbb C$, the analogous result has leading amplitude $D e^{(s-1)\rho}$ and computable coefficients $a_j(u,s)$.
+\end{theorem}
+\begin{proof}
+We supply the complex-parameter details because real pointwise asymptotics would be insufficient for the later limit and local laws. For real $u\in \mathcal U$, $r=\rho(u)$ and $|z|\le r$,
+\begin{equation}\label{vav:rf:eq:denom}
+ |u(e^{zx}-1)(e^{z(1-x)}-1)|
+ \le u(e^{|z|x}-1)(e^{|z|(1-x)}-1)\le1.
+\end{equation}
+On $|z|=r$, equality is possible only at $x=1/2,z=r$. For $0<x<1$, equality in the exponential power-series triangle inequality forces $z$ positive real; the endpoints $x=0,1$ give zero. Thus the denominator in~\eqref{vav:rf:eq:exact} is nonzero on the compact normalized set $z=\rho(u)\zeta$, $|\zeta|\le1$, $|\zeta-1|\ge\epsilon$. It remains nonzero in an open neighborhood of this set for $u$ in a small complex neighborhood of $\mathcal U$. Near $\zeta=1$, the jointly analytic local representation~\eqref{vav:rf:eq:sing} supplies continuation in a common slit neighborhood. The two representations agree on their initial intersection. This constructs the needed common dented domain, without classifying every apparent singularity of the elementary expression.
+
+Set $\delta=n^{-1/3}$ and use the circle
+\begin{equation}\label{vav:rf:eq:circle}
+ z=\rho(u)(1-c(u)\delta^2)e^{\ii\theta},\qquad -\pi\le\theta\le\pi.
+\end{equation}
+Shrink $\Omega$ so that $\Re c>c_*>0$, $\Re(1/c)>b_*>0$, and all the continuation and local expansion bounds hold uniformly. Near $\theta=0$, $\Re(1-(1-c\delta^2)e^{\ii\theta})>0$ for large $n$, so the circle lies in the common domain. On its fixed outer arc $\log H$ is bounded, whereas the main exponential modulus is $e^{3\Re(c)/\delta}$ and the radial Cauchy factor is $e^{\Re(c)/\delta+O(\delta)}$.
+
+On the local arc put $\theta=\delta^2y$. Up to $O(\delta)$ for bounded $y$, the nonconstant leading phase, after removing the radial factor, is $\delta^{-1}\Phi_c(y)$, where
+\[
+ \Phi_c(y)=2c^{3/2}(c-\ii y)^{-1/2}-\ii y,\quad
+ \Phi_c(0)=2c,\quad \Phi_c'(0)=0,\quad \Phi_c''(0)=-\frac{3}{2c}.
+\]
+For small $|y|$ the real-part loss is at least $b y^2/\delta$, up to a harmless small shift. More precisely the exact circle leaves an uncancelled linear term $O(\delta^{-1}\theta)=O(\delta |y|)$. On the Gaussian scale $y=\sqrt\delta X$ it is $O(\delta^{3/2}|X|)$; completing the square gives a negligible shift. Outside a growing Gaussian cutoff it is absorbed by the quadratic loss.
+
+For $\epsilon\le |y|\le M$, there is a uniform fixed loss at real $u$, since
+$\Re(c-\ii y)^{-1/2}<c^{-1/2}$, and it persists under small complex perturbations by compactness. If $|\theta|\ge M\delta^2$ within the local arc, then $|t|\ge b|\theta|$ and
+\[
+ |2c^{3/2}t^{-1/2}|\le C\delta^{-1}/\sqrt M.
+\]
+Choose $M$ large. This gives a fixed fractional loss from the main exponent. Hence every arc outside
+$|\theta|\le\delta^{5/2}\log(1/\delta)$ is smaller than the main scale by every power of $n$, uniformly in $u$. Bounded $O(t^{1/2})$ perturbations do not change the conclusion.
+
+Deform the central integral to
+\begin{equation}\label{vav:rf:eq:vertical}
+ t=c\delta^2(1+\ii\sqrt\delta X),\qquad X\in\mathbb R.
+\end{equation}
+For real $u$, take short connecting curves at fixed scaled endpoints $|X|=\epsilon/\sqrt\delta$, inside open neighborhoods with a fixed leading-phase loss. Continue this choice of curves continuously as $u$ leaves the real interval, using a finite cover of $\mathcal U$. Their compact images remain in the loss region after shrinking the common neighborhood. No connector crosses $t=0$ or the cut. This specifies a uniform valid deformation for complex $u$.
+
+\begin{samepage}
+On $|X|\le\log(1/\delta)$ the phase is $3c/\delta-3cX^2/4+Q$, with
+\begin{align}\label{vav:rf:eq:Q}
+ Q={}&2c\sum_{m\ge3}\binom{-1/2}{m}(\ii X)^m\delta^{m/2-1}\notag\\
+ &+\sum_{m\ge2}\frac{c^m}{m}\delta^{2m-3}(1+\ii\sqrt\delta X)^m
+  +\sum_{m\ge1}\frac{c^m}{m}\delta^{2m}(1+\ii\sqrt\delta X)^m\notag\\
+ &+\sum_{j\ge1}g_jc^{j/2}\delta^j(1+\ii\sqrt\delta X)^{j/2}.
+\end{align}
+\end{samepage}
+Thus $a_j=[\delta^j]\E e^Q$, where the formal Gaussian moments are
+\[
+ \E X^{2m}=(2m-1)!!\left(\frac{2}{3c}\right)^m,\qquad \E X^{2m+1}=0.
+\]
+For complex $c$ these mean analytic Gaussian integration; $\Re c>0$ ensures convergence. The leading Jacobian and Gaussian integral give $e^K\sqrt{c/(3\pi)}\delta^{5/2}$.
+
+The convergent local series and the logarithmic/binomial expansions give uniform Taylor remainders of any requested power of $\delta$ times a polynomial in $X$. After multiplication by the Gaussian they are dominated by $C e^{-bX^2}$ times a polynomial. Expand two extra half-orders and use parity; the resulting remainder is $O(\delta^{J+1})$, without a logarithmic loss. Holomorphy and Cauchy estimates give parameter derivatives. Finally $e^{(s-1)z}$ changes $K$ to $K+(s-1)\rho$ and $g_2$ to $g_2-(s-1)\rho$, with all estimates uniform for bounded $s$.
+\end{proof}
+
+Put $T_0=c^2/2+g_1\sqrt c$. The first two coefficients are
+\begin{align}
+ a_1&=T_0-\frac5{36c}
+ =c^2\left(\frac12+\frac{\rho(a^2-3)}{4a}\right)-\frac5{36c},\label{vav:rf:eq:a1}\\
+ a_2&=\frac{T_0^2}{2}+cg_2-\frac{17g_1}{36\sqrt c}
+                   -\frac{17c}{72}-\frac{35}{2592c^2}.\label{vav:rf:eq:a2}
+\end{align}
+Formula~\eqref{vav:rf:eq:Q} is a finite algorithm at every fixed order; the supplied program also evaluates the third order.
+
+\section{The marking phase gap}\label{vav:rf:sec:gap}
+\begin{lemma}\label{vav:rf:lem:gap}
+For any compact positive interval $\mathcal U$ and $\epsilon>0$, there are $\eta>0$ and $C<\infty$ such that, uniformly for $u\in \mathcal U$ and $\epsilon\le|\theta|\le\pi$,
+\begin{equation}\label{vav:rf:eq:gap}
+ |[z^n]H(z,u e^{\ii\theta},s)|\le C(\rho(u)+\eta)^{-n},
+\end{equation}
+with $s$ in any prescribed compact set.
+\end{lemma}
+\begin{proof}
+For $|z|\le\rho(u)$, inequality~\eqref{vav:rf:eq:denom} is strict except at $x=1/2,z=\rho(u)$. At that exceptional point multiplication by $e^{\ii\theta}$ gives $e^{\ii\theta}\ne1$. The denominator is therefore nonzero on the entire compact parameter set, and remains nonzero for $|z|\le\rho(u)+\eta$ with uniform $\eta>0$. The integral and exponential are uniformly bounded there. Cauchy's estimate proves the result.
+\end{proof}
+This excludes other periodic saddles in the marking variable. It is a separate ingredient beyond a positive-real asymptotic formula.
+
+\section{Precise local large deviations}\label{vav:rf:sec:ldp}
+Use $v=\log u$ and put
+\[
+ f(v)=-\log\rho(e^v),\qquad d(v)=\log D(e^v),\qquad
+ \alpha(u)=\frac{1}{(1+\sqrt u)\rho(u)},\qquad V(u)=f''(v).
+\]
+In this and the next section, primes on $c$ or $\rho$ mean derivatives of $c(e^v)$ or $\rho(e^v)$ with respect to $v$, evaluated at $v=\log u$. Then $f'=\alpha$. With $a=u^{-1/2}$ and $\ell=\log(1+a)$,
+\begin{equation}\label{vav:rf:eq:V}
+ V(u)=\frac{a(a-\ell)}{4(1+a)^2\ell^2}>0.
+\end{equation}
+The map $\alpha:(0,\infty)\to(0,1/2)$ is increasing and onto.
+
+\begin{theorem}\label{vav:rf:thm:local}
+Suppose $k/n$ lies in a fixed compact subinterval of $(0,1/2)$, and choose the unique $u>0$ with $\alpha(u)=k/n$. For each fixed $J\ge0$,
+\begin{align}\label{vav:rf:eq:local}
+ A_{n,k}:=\sum_jA_{n,k,j}
+ ={}&\frac{n!D(u)\rho(u)^{-n}u^{-k}e^{3c(u)n^{1/3}}}
+             {\sqrt{2\pi V(u)}\,n^{4/3}}\notag\\
+ &\qquad\times\left(\sum_{j=0}^J b_j(u)n^{-j/3}
+                      +O(n^{-(J+1)/3})\right),
+\end{align}
+uniformly in these integer pairs. The coefficients are analytic and explicitly computable. In particular
+\begin{align}
+ b_0={}&1,\qquad b_1=a_1-\frac{9(c')^2}{2V},\label{vav:rf:eq:b1}\\
+ b_2={}&a_2-\frac{9a_1(c')^2}{2V}+\frac{81(c')^4}{8V^2}
+       -\frac{3c''}{2V}-\frac{3c'd'}{V}+\frac{3c'f'''}{2V^2}.\label{vav:rf:eq:b2}
+\end{align}
+\end{theorem}
+\begin{proof}
+Fourier inversion on the $u$-circle integrates $A_n(u e^{\ii\theta},1)u^{-k}e^{-\ii k\theta}$. For small $\theta$ apply Theorem~\ref{vav:rf:thm:first}. Positivity of $V$ gives
+\[
+ \Re\big(f(v+\ii\theta)-f(v)-\ii\alpha\theta\big)\le-b\theta^2.
+\]
+Since $c,d$ and their derivatives are real on the real axis, their real-part increments are $O(\theta^2)$. The normalized integrand is bounded by $C e^{-bn\theta^2}$, with a reduced $b>0$ if necessary. Outside a fixed neighborhood, Lemma~\ref{vav:rf:lem:gap} supplies an exponential-in-$n$ gain that beats every stretched factor. Only $|\theta|\le n^{-1/2}\log n$ contributes to algebraic orders.
+
+Set $\delta=n^{-1/3}$ and $\theta=\delta^{3/2}X$. After removal of $e^{-VX^2/2}$ the formal exponent is
+\begin{align}\label{vav:rf:eq:P}
+ P={}&\sum_{m\ge3}\frac{f^{(m)}(v)}{m!}(\ii X)^m\delta^{3m/2-3}\notag\\
+ &+3\sum_{m\ge1}\frac{c^{(m)}(v)}{m!}(\ii X)^m\delta^{3m/2-1}
+ +\sum_{m\ge1}\frac{d^{(m)}(v)}{m!}(\ii X)^m\delta^{3m/2}.
+\end{align}
+Therefore
+\begin{equation}\label{vav:rf:eq:bgen}
+ b_j=[\delta^j]\E\left[e^P
+        \sum_{r\ge0}a_r(v+\ii\delta^{3/2}X)\delta^r\right],
+ \qquad X\sim N(0,1/V),
+\end{equation}
+where $a_r(v+\ii\theta)$ means $a_r(e^{v+\ii\theta})$ and $a_0=1$.
+Only finitely many terms are needed at each order. Odd half-powers have odd $X$ parity and integrate to zero. Uniform analytic Taylor bounds and a Gaussian majorant prove the remainder as in Theorem~\ref{vav:rf:thm:first}. The new Gaussian factor is $n^{-1/2}/\sqrt{2\pi V}$, giving~\eqref{vav:rf:eq:local}; expansion gives~\eqref{vav:rf:eq:b1}--\eqref{vav:rf:eq:b2}.
+\end{proof}
+The stretched exponential shifts the full marking saddle by
+$-3c'/(Vn^{2/3})+O(n^{-1})$ in $v$. Its first logarithmic correction is consequently $-9(c')^2n^{-1/3}/(2V)$, agreeing with~\eqref{vav:rf:eq:b1}. Keeping the first-saddle coefficients unchanged would miss this term.
+
+For a uniform object, write $K_n$ for its downset count. Dividing by~\eqref{vav:rf:eq:first} at $u=1$ gives
+\begin{align}\label{vav:rf:eq:ldp}
+ \Prob(K_n=k)&\sim\frac{D(u)}{D(1)\sqrt{2\pi nV(u)}}
+  \exp\left(-nI(\alpha)+3[c(u)-c(1)]n^{1/3}\right),\\
+ I(\alpha)&=\alpha\log u+\log\rho(u)-\log\rho(1),\qquad \alpha=k/n.\notag
+\end{align}
+The rate is nonnegative, vanishes only at $\alpha(1)$, and has
+$I'=\log u$, $I''=1/V(u)>0$. All relative corrections follow by series division.
+
+\section{Gaussian and isolated element laws}\label{vav:rf:sec:laws}
+Put $\rho_0=\log4$ and $c_0=c(1)$. Uniform analyticity gives
+\begin{align}
+ \E K_n={}&\frac{n}{2\rho_0}
+ +\frac{c_0(1-\rho_0)}{2\rho_0}n^{1/3}
+ +\frac16+\frac{1}{12\rho_0}+O(n^{-1/3}),\label{vav:rf:eq:mean}\\
+ \Var K_n={}&V(1)n+3c''\big|_{u=1}n^{1/3}+d''(0)+O(n^{-1/3}),\notag\\
+ V(1)={}&\frac{1}{4\rho_0^2}-\frac{1}{8\rho_0}>0.\notag
+\end{align}
+Useful derivative identities are
+$3c'=c(\alpha-1/2)$ and $3c''=c[V+(\alpha-1/2)^2/3]$.
+The central and lattice local limits are
+\begin{align}
+ \frac{K_n-n/(2\rho_0)}{\sqrt{nV(1)}}&\ \Longrightarrow\ N(0,1),\label{vav:rf:eq:clt}\\
+ \sup_{k\in\mathbb Z}\left|\sqrt{nV(1)}\Prob(K_n=k)
+ -\phi\left(\frac{k-n/(2\rho_0)}{\sqrt{nV(1)}}\right)\right|&\longrightarrow0.\label{vav:rf:eq:llt}
+\end{align}
+Here $\phi(x)=e^{-x^2/2}/\sqrt{2\pi}$. For~\eqref{vav:rf:eq:llt}, the rescaled characteristic functions converge on each compact interval. Their tails vanish in $L^1$ by the Gaussian bound from Theorem~\ref{vav:rf:thm:local} and Lemma~\ref{vav:rf:lem:gap}. Fourier inversion bounds the uniform local error by this $L^1$ error. Centering by the true mean gives the same statements.
+
+Let $J_n$ count isolated elements. Equation~\eqref{vav:rf:eq:iso} and the complex-uniform theorem imply
+\begin{equation}\label{vav:rf:eq:joint}
+ \left(\frac{K_n-n/(2\rho_0)}{\sqrt{nV(1)}},J_n\right)
+ \Longrightarrow (Z,P),\qquad
+ Z\sim N(0,1),\quad P\sim\Pois(\rho_0),\quad Z\perp P.
+\end{equation}
+The joint transform factors in the limit into $e^{-t^2/2}e^{(s-1)\rho_0}$. Taking real $t$ and $s$ on the unit circle proves the assertion by the characteristic-function criterion.
+
+There is also a uniform conditional law at atypical density. With $u$ determined by $k/n=\alpha(u)$,
+\begin{equation}\label{vav:rf:eq:conditional}
+ \mathcal L(J_n\mid K_n=k)=\Pois(\rho(u))+O_{\TV}(n^{-2/3}).
+\end{equation}
+Indeed the analytic multiplier changes the first-saddle data to
+\[
+ a_1(u,s)=a_1(u),\quad a_2(u,s)=a_2(u)-(s-1)\rho c,
+ \quad d_s=d+(s-1)\rho.
+\]
+Applying the second saddle and dividing gives, uniformly for bounded $s$,
+\begin{equation}\label{vav:rf:eq:conditionalcorrection}
+ \E[s^{J_n}\mid K_n=k]=e^{(s-1)\rho}
+ \left\{1-(s-1)\left(\rho c+\frac{3c'\rho'}{V}\right)n^{-2/3}
+                  +O(n^{-1})\right\}.
+\end{equation}
+For each fixed $R>1$ this error is holomorphic and uniform on $|s|\le R$; Cauchy coefficient bounds and summation of $R^{-j}$ prove~\eqref{vav:rf:eq:conditional}. Unconditionally,
+\begin{equation}\label{vav:rf:eq:unconditional}
+ \E[s^{J_n}]=e^{(s-1)\rho_0}
+ \{1-(s-1)\rho_0c_0n^{-2/3}+O(n^{-1})\},
+\end{equation}
+so the same total-variation rate applies. Finite covariance is not zero despite the limiting independence: differentiating the tilted version gives
+\[
+ \Cov(K_n,J_n)=-\frac12+O(n^{-2/3}).
+\]
+
+\section{Checks, attribution, and scope}\label{vav:rf:sec:checks}
+The reproducibility package contains exact refined rows through $n=400$, obtained from~\eqref{vav:rf:eq:cumulants}--\eqref{vav:rf:eq:bell}. Independent exhaustive generation of the literal labelled binary words agrees jointly in $(k,j)$ through $n=8$. A separate implementation of the record-to-cycle map checks every round trip through $n=8$, including deliberately rotated and reordered cycle inputs. One-cycle counts agree with~\eqref{vav:rf:eq:cumulants}.
+
+The symbolic first-saddle coefficients specialize at $u=1$ to those of Part~I (Theorem~\ref{vav:thm:main} and Appendix~\ref{vav:app:coeff}). Both saddle generators are finite-order algorithms, with third-order output supplied. A separate hand-expanded Gaussian audit checks $b_1,b_2$ without using the generator. Numerical tests cover complex $u$, conditional isolated means, and densities $0.2,0.3,0.4$. For example, at $n=400,k=160$, the ratio to the leading factor in~\eqref{vav:rf:eq:local} is approximately $0.8868044222$; the absolute error in that normalized ratio after three corrections is $0.0003942506$. At density $0.2$, convergence is much slower and the normalized third-order error at $n=400$ is approximately $-0.378$. These calculations check the formulas; they do not certify asymptotic error constants or replace the proofs.
+\begin{writenote}
+The exact refined rows ($A_{n,k}$ for $n\le400$, \path{exact_rows.json},
+18{,}071{,}638 bytes) are \emph{not} shipped: they are regenerated by
+\path{code/05-refined-validate_refinement.py}, and at the write the
+regenerated rows for $n\le120$ (and at intake for $n\le200$) were equal to
+the delivered ones; the delivered copy survives in the arrival commit, and
+the report README gives the commands. The other programs and records named
+in this section are shipped as \path{code/05-refined-*.py} and
+\path{data/05-refined-*.json}; the coefficient program of the third
+order is \path{code/05-refined-refined_coefficients.py}.
+\end{writenote}
+
+The model and its statistics are BCK's. General Gaussian and Poisson consequences are standard once the marked coefficient theorem is available. The substantive extension consists of the direct record/cycle explanation of the transform, complex-uniform coefficient analysis, global marking phase gap, and the all-orders two-stage local-count theorem with its stretched correction. The conditional correction supplies additional structural information.
+
+The results hold on compact positive $u$-intervals, equivalently compact interior block densities. They do not cover $k=o(n)$ or $n/2-k=o(n)$, endpoint transitions, or the other complex $z$-singularity sectors. No convergence of the correction series or exponentially complete expansion is asserted. The original release remains separate and unchanged.
+\begin{writenote}
+In this report the original release is Part~I, printed with the
+editorial changes listed in ``About this report'' and no change to any
+statement.
+\end{writenote}
+
+\paragraph{Source and overlap screen.}
+BCK's Proposition~11 marks different catalytic permutation statistics, not the statistic used here. Its earlier bivariate formulas concern the broader class of $3$-free naturally labelled posets. OEIS A113226 and the earlier Elizalde bounds were rechecked~\cite{oeis,elizalde}. The known cumulant identification is recorded through A136127 and the poly-Bernoulli-relative antidiagonals~\cite{oeis136,testart}.
+
+Focused public searches found no matching refined local-count theorem. ProveIt's default-branch code searches for A113226, 12-34, and the BCK author names returned no hits on 1 October 2026; a naturally-labelled-poset search returned unrelated material. The connector reported head \texttt{63b9d68407f2}~\cite{proveit}. This is a keyword/index screen, not an exhaustive novelty claim or an audit of every archive attachment. Independent mathematical checks in the package are not a substitute for conventional peer review.
+\begin{writenote}
+As for Part~I, the search ran against the pin \texttt{63b9d6840}, kept
+here as provenance; the repository now contains this report and the
+sibling report \path{oeis-sequence-asymptotics/a113227-powered-catalan/}.
+\end{writenote}
+
+
+\appendix
+\section{Third and fourth correction coefficients}\label{vav:app:coeff}
+
+For convenient exact reproduction, define
+\begin{align*}
+ P_3={}&5832c^9(\rho-1)^3
+       +c^6(98172\rho^2-173016\rho+28188)\\
+      &+c^3(134190\rho+1890)+665.
+\end{align*}
+Then
+\begin{equation}
+ a_3=-\frac{P_3}{279936c^3}.
+\end{equation}
+Similarly let
+\begin{align*}
+ P_4={}&524880c^{12}(\rho-1)^4\\
+ &+c^9(17379360\rho^3-56337120\rho^2
+                         +43740000\rho-4782240)\\
+ &+c^6(84480408\rho^2-181744560\rho-3139560)\\
+ &+c^3(15661800\rho-693000)+48125.
+\end{align*}
+Then
+\begin{equation}
+ a_4=\frac{P_4}{201553920c^4}.
+\end{equation}
+These expressions are the symbolic output of
+\eqref{vav:eq:Q}--\eqref{vav:eq:exprec}, rather than fitted constants.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+The OEIS Foundation, \href{https://oeis.org/A113226}{A113226},
+number of permutations avoiding $12$--$34$, inspected 1 October 2026.
+\bibitem{bck}
+D. Bevan, G.-S. Cheon and S. Kitaev,
+\emph{On naturally labelled posets and permutations avoiding $12$--$34$},
+European Journal of Combinatorics \textbf{126} (2025), 104117.
+\href{https://doi.org/10.1016/j.ejc.2024.104117}{doi:10.1016/j.ejc.2024.104117}.
+See also \href{https://arxiv.org/abs/2311.08023v2}{arXiv:2311.08023v2},
+Propositions 7 and 11 and Conjectures 13 and 14.
+\bibitem{elizalde}
+S. Elizalde, \emph{Asymptotic enumeration of permutations avoiding
+generalized patterns}, Advances in Applied Mathematics \textbf{36}
+(2006), 138--155.
+\href{https://math.dartmouth.edu/~sergi/papers/pp05_aam_elizalde.pdf}{Author's full text}.
+\bibitem{oeis136}
+The OEIS Foundation, \href{https://oeis.org/A136127}{A136127},
+permutations with an initial-interval excedance set, inspected
+1 October 2026.
+\bibitem{aval}
+J.-C. Aval, A. Boussicault, M. Bouvel and M. Silimbani,
+\emph{Combinatorics of non-ambiguous trees}.
+\href{https://arxiv.org/abs/1305.3716}{arXiv:1305.3716}.
+\bibitem{testart}
+B. Testart, \emph{On minimal pattern-containing inversion sequences},
+\href{https://arxiv.org/abs/2602.12130v1}{arXiv:2602.12130v1} (2026),
+Section 6.
+\bibitem{callan}
+D. Callan, \emph{A bijection to count $(1$--$23$--$4)$-avoiding
+permutations}, Section 9.
+\href{https://pages.stat.wisc.edu/~callan/papers/1_23_4_avoid/1_23_4_avoid.pdf}{Author's full text}.
+\bibitem{proveit} V. Reshetnikov. \emph{ProveIt},
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/63b9d68407f21832316eb296fd0885e40e033c90}{checked default-branch commit}, 1 October 2026.
+\end{thebibliography}
+\end{document}

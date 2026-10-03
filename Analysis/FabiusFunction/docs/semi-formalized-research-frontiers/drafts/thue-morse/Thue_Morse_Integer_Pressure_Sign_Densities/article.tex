@@ -1,0 +1,218 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Quantitative Taylor Sign Densities in Integer Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\C}{\mathbb C}\newcommand{\Z}{\mathbb Z}
+\newcommand{\ldens}{\underline{\operatorname{dens}}}
+\title{Quantitative Taylor Sign Densities\\in Integer Thue--Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For each integer $m\ge2$, both signs among the even Taylor coefficients of integer Thue--Morse pressure have lower natural density at least $1/[16m(m-1)^2]$. The same bound holds separately within each of the degree classes $0$ and $2$ modulo $4$. The proof starts from the preceding infinite-sign theorem, identifies the local finite ramification of the pressure eigenvalue, and uses finite Puiseux subtraction followed by Darboux's method. The resulting leading coefficient term is a finite real trigonometric sum. Its first two Ces\`aro moments force positive lower densities, and a Laurent-discriminant degree bound makes the result explicit without locating any singularity. No limiting sign density or large-order first-negative law is asserted.
+\end{abstract}
+\paragraph{Status.} This is unrefereed ordinary mathematics, not a Lean formalization. The complex-analytic mechanisms are classical. No priority claim for those mechanisms is made.
+
+\section{Statement and analytic inputs}
+Use the cosine-phase normalization of the repository manuscript~\cite{Repo}, and write
+\[
+ P_m(t)=p_m(t/\pi)=\sum_{k\ge1}c_{m,k}t^{2k},\qquad m\ge2.
+\]
+For a subset $S$ of the positive integers, put
+\[
+ \ldens S=\liminf_{N\to\infty}\frac{\#(S\cap\{1,\ldots,N\})}{N}.
+\]
+\begin{theorem}\label{thm:main}
+Fix an integer $m\ge2$ and set $\delta_m=1/[16m(m-1)^2]$.
+For each $\varepsilon\in\{-1,1\}$,
+\begin{align*}
+ \ldens\{k:\varepsilon c_{m,k}>0\}&\ge\delta_m,\\
+ \ldens\{j:\varepsilon c_{m,2j}>0\}&\ge\delta_m,\\
+ \ldens\{j:\varepsilon c_{m,2j+1}>0\}&\ge\delta_m.
+\end{align*}
+\end{theorem}
+The last two densities are relative to their own coefficient indices: they concern pressure degrees $4j$ and $4j+2$. Omitting finitely many initial terms has no effect. The bound tends to zero with $m$; no positive constant independent of $m$ is claimed.
+% ed. (2026-10-01): the theorem contains the infinite-sign statements of the preceding package
+\begin{ednote}
+Since a set of positive lower density is infinite, Theorem~\ref{thm:main} contains the
+statements of \path{../Thue_Morse_Integer_Pressure_Sign_Changes/} that both signs occur infinitely often, among all
+even coefficients and in each degree class modulo~4. It does not contain that package's radius
+bound (its $R_m$ is the Taylor radius), its equal exponential scales, or its first-negative
+corollary and table, and it uses that package's finite radii and analytic continuation as
+inputs.
+\end{ednote}
+
+The preceding sign-law theorem~\cite{Signs} proves that the three real-coefficient germs
+\begin{equation}\label{eq:three}
+ F_m(x)=\sum_{k\ge1}c_{m,k}x^k,\quad
+ E_m(w)=\sum_{j\ge1}c_{m,2j}w^j,\quad
+ O_m(w)=\sum_{j\ge0}c_{m,2j+1}w^j
+\end{equation}
+have finite positive radii of convergence and extend analytically along the positive real axis. Their radii need not be equal. That proof is included unchanged with the present sources.
+
+We recall why these inputs account for the zero of the phase weight. The transfer weight is $\cos^{2m}\pi(x-c)$, with exactly one zero. At a non-atomic real phase, a finite nonempty zero set of a cone Perron eigenfunction would satisfy $T^{-1}Z\setminus\{s\}\subseteq Z$ for doubling. Counting forces $Z=\{0\}$ and $s=1/2$, which is precisely the excluded atomic phase. The strictly positive Perron function, a maximum-modulus equality, and a bounded normalized-power norm give algebraic simplicity. At the atomic phase the spectrum is exactly $1,2^{-1},\ldots,2^{-(2m-2)}$, all simple. On the imaginary axis the Fourier matrix is nonnegative with positive diagonal and bidirectional adjacent-index edges, hence primitive. These arguments give analytic Perron logarithms on both axes.
+
+The finite-radius proof uses the matrix growth estimate below and $[t^2]P_m=-m$. An entire pressure would have real part of at most linear growth, forcing it to be affine and then constant. The same argument applies to the sums and differences $P_m(t)\pm P_m(it)$ using tensor-product matrices and the constant nonzero determinant. Their nonconstancy is explicit: the difference starts $-2mt^2$; the sum has coefficient $-m/3$ at $t^4$ for $m\ge3$, and coefficient $2\cdot6836/189$ at $t^8$ for $m=2$. These facts prove the finite-radius inputs for both filters without a numerical search.
+
+\section{The entire characteristic equation and local ramification}
+For $I_m=\{1-m,\ldots,m-1\}$, define the entire matrix
+\begin{equation}\label{eq:matrix}
+ A_m(t)_{k,r}=2^{1-2m}\binom{2m}{m+2k-r}e^{-2i(2k-r)t},
+ \qquad k,r\in I_m,
+\end{equation}
+where a binomial coefficient outside its ordinary range is zero.
+The columns of $A_m(0)$ sum to one, and each nonzero entry has $|2k-r|\le m$. Hence
+$\|A_m(t)\|_1\le e^{2m|\operatorname{Im}t|}$.
+Writing $\mathcal D(t)=\operatorname{diag}_{k\in I_m}(e^{2ikt})$ gives
+\[
+ A_m(t)=\mathcal D(-2t)A_m(0)\mathcal D(t),\qquad
+ \det A_m(t)=\det A_m(0)\ne0.
+\]
+The determinant is constant because the centered indices sum to zero.
+
+Reflection conjugates $A_m(t)$ to $A_m(-t)$. Therefore every coefficient of its characteristic polynomial is even and entire in $t$, and thus entire in $x=t^2$. There is a monic polynomial
+\[
+ C_m(x,u)=u^n+a_1(x)u^{n-1}+\cdots+a_n(x),\qquad n=2m-1,
+\]
+with entire coefficients, such that $C_m(t^2,u)=\det(uI-A_m(t))$.
+Its constant coefficient $a_n=(-1)^n\det A_m(0)$ is nonzero and constant.
+The discriminant $\Delta_m(x)$ is entire and nonzero at zero, by the distinct atomic eigenvalues. Its zero set is discrete.
+
+The selected eigenvalue $\lambda_m(x)=e^{F_m(x)}$ satisfies
+$C_m(x,\lambda_m(x))=0$. At a point which is not a discriminant zero, the selected root and a local logarithm extend analytically. Thus all actual boundary singularities of $F_m$ lie among finitely many discriminant zeros.
+
+\begin{lemma}\label{lem:puiseux}
+At every actual boundary singularity $\zeta$ of any of the three germs in~\eqref{eq:three}, that germ has a convergent Puiseux expansion with nonnegative powers and at least one nonzero noninteger power. It has no logarithmic terms.
+\end{lemma}
+\begin{proof}
+First consider $F_m$ at a discriminant zero $\zeta$. Choose a small disk containing no other zero. On the punctured disk the roots form a finite unbranched covering: continuation around a loop permutes finitely many roots. Some finite number $q$ of turns returns the chosen root to its starting value. With $x=\zeta+s^q$, the root is a single-valued holomorphic function on a punctured $s$-disk.
+
+Monicity and bounded coefficients bound all roots uniformly. The root therefore extends across $s=0$ by the removable-singularity theorem. Its limiting value solves $C_m(\zeta,u)=0$ and is nonzero, because $a_n\ne0$. On a smaller disk it has an analytic logarithm. Choose the additive constant to match the original pressure on the inner sector. This gives a convergent expansion
+\[
+ F_m(x)=\sum_{\ell\ge0}b_\ell(1-x/\zeta)^{\ell/q}.
+\]
+The fractional powers use the branch analytic in the open convergence disk and positive on the inward radial segment $x=(1-\epsilon)\zeta$. If all noninteger coefficients vanished, the germ would extend holomorphically at $\zeta$. An actual singularity therefore has a first noninteger exponent, which is a positive rational number.
+
+For the filters use
+\begin{equation}\label{eq:filters}
+ E_m(w)=\frac{F_m(\sqrt w)+F_m(-\sqrt w)}2,\qquad
+ O_m(w)=\frac{F_m(\sqrt w)-F_m(-\sqrt w)}{2\sqrt w}.
+\end{equation}
+At a nonzero boundary point choose a local analytic square root. The possible exceptional points are zeros of
+$J_m(w)=\Delta_m(\sqrt w)\Delta_m(-\sqrt w)$, which is entire and nonzero at zero. Continue the constituent branches along a path avoiding this discrete set; the result agrees with the analytic filtered germ by uniqueness, even if some earlier constituent singularities canceled. Near the chosen boundary point the constituents have the finite ramification just proved. Their sums, differences and division by the nonvanishing square root preserve convergent nonnegative Puiseux expansions. Cancellations may remove terms, but at an actual filtered singularity some noninteger term remains.
+\end{proof}
+This argument does not identify every discriminant zero as a pressure singularity. Only actual singularities of the chosen germs are used.
+
+\section{Finite subtraction and Darboux's method}
+\begin{lemma}\label{lem:darboux}
+Let $f(z)=\sum_{n\ge0}a_nz^n$ have real coefficients and finite positive radius $\rho$. Suppose that it extends through $z=\rho$, has only finitely many actual singularities on $|z|=\rho$, and at each has a convergent nonnegative Puiseux expansion with a nonzero noninteger term. Then
+\begin{equation}\label{eq:asymptotic}
+ a_n=\rho^{-n}n^{-\beta-1}\bigl(T(n)+o(1)\bigr),\qquad
+ T(n)=\sum_{j=1}^p\gamma_j e^{-in\theta_j},
+\end{equation}
+where $\beta>0$ is rational and noninteger, the frequencies $\theta_j$ are distinct and nonzero modulo $2\pi$, all $\gamma_j\ne0$, and $T(n)$ is real and not identically zero.
+\end{lemma}
+\begin{proof}
+Let $\beta$ be the smallest noninteger exponent with nonzero coefficient among the actual boundary singularities. Choose an integer $K>\beta+1$. At every such point $\zeta$, subtract every local noninteger term
+$b_{\zeta,\gamma}(1-z/\zeta)^\gamma$ with $\gamma\le K$. This is a finite subtraction, and each chosen branch is analytic in $|z|<\rho$ and at every other point of the circle.
+
+At $\zeta$, the remaining integer-power part is analytic. All remaining fractional exponents exceed $K$. Their first $K$ angular derivatives tend continuously to zero from both sides: a derivative of order $j\le K$ is $O(|\theta-\theta_0|^{\gamma-j})$. Convergence of the Puiseux expansion gives the same bound for its differentiated tail after finite truncation. Terms subtracted at the other boundary points are analytic near $\zeta$. At all other points the original function extends holomorphically. Thus the full remainder has a $C^K$ periodic boundary trace.
+
+Continuity up to the circle permits the boundary Cauchy coefficient integral. Integrating by parts $K$ times and applying the Riemann--Lebesgue lemma to its continuous $K$th derivative gives remainder coefficients
+$o(\rho^{-n}n^{-K})$. This is the elementary Darboux argument~\cite[Theorem VI.11]{FS}; no common global indented continuation domain is needed.
+
+For a subtracted noninteger power, the exact binomial identity and gamma-ratio asymptotic give
+\[
+ [z^n](1-z/\zeta)^\gamma
+ =\zeta^{-n}\frac{\Gamma(n-\gamma)}{\Gamma(-\gamma)\Gamma(n+1)}
+ =\frac{\zeta^{-n}n^{-\gamma-1}}{\Gamma(-\gamma)}\bigl(1+O(n^{-1})\bigr).
+\]
+Only the terms of exponent $\beta$ survive at the largest polynomial scale. Write their distinct locations as $\zeta_j=\rho e^{i\theta_j}$ and set $\gamma_j=b_{\zeta_j,\beta}/\Gamma(-\beta)$. The other powers and the remainder are an additive $o(1)$ after normalization, since $K>\beta+1$. No location equals $\rho$, by the assumed regularity there. Real coefficients pair conjugate locations and amplitudes, so $T(n)$ is real.
+
+Finally distinct frequencies give
+\[
+ \frac1N\sum_{n=1}^N|T(n)|^2\longrightarrow
+ S:=\sum_{j=1}^p|\gamma_j|^2>0.
+\]
+Thus the leading sum cannot vanish identically. It may vanish at some individual indices, which is why~\eqref{eq:asymptotic} is additive rather than a pointwise relative asymptotic.
+\end{proof}
+
+\section{From two Ces\`aro moments to densities}
+\begin{lemma}\label{lem:density}
+Under the conclusion of Lemma~\ref{lem:darboux}, both strict coefficient signs have lower density at least
+\[
+ \frac{S}{4M^2}\ge\frac1{4p},\qquad
+ S=\sum_j|\gamma_j|^2,\quad M=\sum_j|\gamma_j|.
+\]
+\end{lemma}
+\begin{proof}
+Finite geometric sums and the absence of a zero frequency give
+\[
+ \frac1N\sum_{n=1}^NT(n)\longrightarrow0,\qquad
+ \frac1N\sum_{n=1}^NT(n)^2\longrightarrow S.
+\]
+Since $|T(n)|\le M$, we have $|T(n)|\ge T(n)^2/M$. Therefore the averages of both $T_+=(|T|+T)/2$ and $T_-=(|T|-T)/2$ have lower limit at least $S/(2M)$.
+Set $\delta=S/(4M)$. The pointwise bounds
+\[
+ T_+(n)\le\delta+M\mathbf1_{\{T(n)>\delta\}},\qquad
+ T_-(n)\le\delta+M\mathbf1_{\{T(n)<-\delta\}}
+\]
+show that both indicated sets have lower density at least $S/(4M^2)$. The additive error in~\eqref{eq:asymptotic} is eventually below $\delta/2$, so these sets force the corresponding strict signs of $a_n$. Cauchy--Schwarz gives $M^2\le pS$.
+\end{proof}
+No rational independence or equidistribution theorem is needed. Nor does the argument require the existence of a limiting sign density.
+
+\section{A Laurent-discriminant bound for the frequency count}
+Put $n=2m-1$ and $H=m(m-1)/2$. The matrix $A_m(t)$ is similar to $\mathcal D(-t)A_m(0)$. With $z=e^{2it}$, the principal-minor formula expresses each characteristic coefficient as a Laurent polynomial whose exponents have the form $-\sum_{k\in S}k$ for a subset of $I_m$. Each such sum lies between $-H$ and $H$.
+
+The discriminant has total degree at most $2n-2$ in the nonleading characteristic coefficients. To see the bound directly, form the Sylvester determinant of the monic characteristic polynomial and its derivative. Its size is $2n-1$ and its first column contains only the leading constants $1$ and $n$; each determinant term therefore contains at most $2n-2$ nonconstant coefficient factors. Consequently the discriminant, as a Laurent polynomial in $z$, has support in $[-D,D]$, where
+\[
+ D=(2n-2)H=2m(m-1)^2.
+\]
+It is not identically zero because the atomic spectrum is simple. Multiplication by $z^D$ gives a nonzero ordinary polynomial of degree at most $2D$, hence at most $2D$ distinct nonzero roots.
+
+For any fixed root $z_0\ne0$, the equation $e^{2it}=z_0$ fixes $\operatorname{Im}t$, with real parts differing by $\pi$. All its preimages lie on one horizontal line, which meets a fixed circle $|t|=r$ in at most two points. Thus any positive-radius $t$-circle contains at most $4D$ discriminant points. Reflection pairs $t$ with $-t$, two distinct points on such a circle. Passing to $x=t^2$ leaves at most $2D$ points.
+
+For $F_m$, its boundary singularities are among these $x$-points. For either filter, a possible singular point $w$ is a $t^4$ image of an original discriminant point on $|t|=|w|^{1/4}$, by~\eqref{eq:filters}. Every nonempty image fiber contains at least $t$ and $-t$. Hence there are again at most $2D$ possible boundary points, separately at each filter's own radius. This does not assume the two filter radii coincide.
+
+For each of the three series, the number $p$ of leading frequencies is therefore at most $2D$. Lemma~\ref{lem:density} gives
+\[
+ \ldens\{n:a_n>0\},\ \ldens\{n:a_n<0\}
+ \ \ge\frac1{4p}\ge\frac1{8D}
+ =\frac1{16m(m-1)^2}.
+\]
+Lemmas~\ref{lem:puiseux} and~\ref{lem:darboux} apply to all three germs, since each has finite positive radius and is regular at its positive radius point. This proves Theorem~\ref{thm:main}.
+
+\section{Consequences and limits}
+The proof strengthens infinite sign changes to a quantitative recurrence of each strict sign. It also gives, for each fixed order and each of the three series, an oscillatory coefficient expansion of the form~\eqref{eq:asymptotic}. The unknown singular amplitudes may improve the lower-density constant, but the displayed bound does not require locating any singularity or computing an amplitude.
+
+The argument does not prove that a sign density exists. It does not control the spacing of individual sign changes or the first negative degree as $m$ varies. The earlier positive range $2m<N<6m$ and its exact finite certificates remain separate, unchanged results. There is no numerical sign sampling in the present density proof.
+% ed. (2026-10-01): the uncited positive range and the first negative degree
+\begin{ednote}
+The earlier positive range is Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, not cited here:
+every even coefficient strictly between degrees $2m$ and $6m$ is positive. The first negative
+degree as $m$ varies is treated in \path{../Thue_Morse_Integer_Pressure_First_Negative/}: $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$.
+\end{ednote}
+
+The source bundle includes this manuscript, the preceding sign-law note containing the analytic inputs, the pinned repository normalization source, and a reproducible build helper. The proof uses ordinary complex analysis and finite-dimensional spectral theory; it is not externally refereed or formally verified.
+
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the ninth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{Repo} is \path{../Thue_Morse_Integer_Pressure/} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical), and \cite{Signs} is
+\path{../Thue_Morse_Integer_Pressure_Sign_Changes/} (main source \path{infinite_pressure_sign_changes.tex}); the copies
+bundled under \path{inputs/} were not filed.
+\end{ednote}
+\begin{thebibliography}{9}\small
+\bibitem{Repo}\emph{Integer Pressure and a Missing Taylor Coefficient}. ProveIt research manuscript. Inspected commit \nolinkurl{63a7a325109ba611a1816b61dfd0eb072b896a7a}, blob \nolinkurl{1444c01b4b30020f727172f0ee0060cab644f444}.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}{Versioned repository source}.
+\bibitem{Signs}\emph{Infinite Taylor Sign Changes in Integer Thue--Morse Pressure}. Research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. Included unchanged as an explicit input.
+\bibitem{FS}P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics---Complex Asymptotic Methods}, 18 March 2004. Chapter VI, the binomial scale and Theorem VI.11 (Darboux's method), printed page 158.\newline
+\url{https://algo.inria.fr/flajolet/Teach/fascII.pdf}.
+\end{thebibliography}
+\end{document}

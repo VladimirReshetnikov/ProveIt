@@ -35,6 +35,12 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
+% ed. (2026-10-01): a third unnumbered environment for the notes of 2026-10-01.
+\newtheorem*{ednotethird}{Editorial note (ProveIt, 2026-10-01)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\N}{\mathbb N}
 \newcommand{\Z}{\mathbb Z}
@@ -55,6 +61,8 @@
 \newcommand{\sourcecommit}{\texttt{fbba58593dc0622aa914972896150d4848f935b5}}
 
 \begin{document}
+% ed. (2026-09-29): no page anchor on the title page (it duplicated page.1).
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{12mm}
 \begin{center}
@@ -104,6 +112,8 @@ inputs and identified repository overlaps are distinguished from the
 extensions developed here. Priority of the latter has not been established
 by an exhaustive literature or repository audit.
 \end{titlepage}
+% ed. (2026-09-29): page anchors resume after the title page.
+\hypersetup{pageanchor=true}
 
 \begingroup
 \small
@@ -638,6 +648,31 @@ arithmetic failure yields not only an exact nonexistence witness but a
 strict lower bound against \emph{every} independent probability remainder.
 The bound may be very small for a high-index obstruction; no uniform
 separation over all failed instances is implied.
+% ed. (2026-10-01): a later draft credits this proposition and sharpens its simple-zero case (batch 73)
+\begin{ednotethird}
+The later unreviewed draft
+\path{../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/}
+of this group (batch~73 of the repository's \path{docs/incoming/},
+2026-10-01) credits \eqref{eq:fourier-wasserstein} and the question
+``Optimal approximate factorization''. Its Lemma~2.1 compares Fourier
+derivatives instead of values: if $\mu$ is supported in $[-R,R]$ and
+$\eta$ has finite first moment, then
+$|\widehat\mu{}'(t)-\widehat\eta{}'(t)|\le2\pi(1+2\pi|t|R)\,W_1(\mu,\eta)$
+for every real $t$. When the target zero is simple, $r=1$ (that is,
+$A_1\nmid t_0$), the factor's zero has order at least two, so the
+transform of $\D_{1/m}\mu_B*\nu$ has derivative zero at $t_0$ for every
+$\nu$ with finite first moment, and the lemma gives, for every
+probability $\nu$,
+\[
+ W_1(\mu_A,\D_{1/m}\mu_B*\nu)\ \ge\ \frac{a_1}{2\pi(1+2\pi t_0R_A)},
+\]
+linear in $a_1$, whereas \eqref{eq:quantitative-obstruction} at the
+largest admissible $h=a_1/(2D_1)$ is $a_1^2/(8\pi D_1(t_0+h))$. Only the
+target needs bounded support; the draft has no analogue for $r\ge2$. For
+geometric targets and factors of two uniforms it also proves matching
+upper bounds (see the note after the question ``Optimal approximate
+factorization''); for divisibility-ladder targets it gives none.
+\end{ednotethird}
 
 \section{Geometric laws and cross-base rigidity}
 \label{sec:geometric}
@@ -1522,6 +1557,40 @@ matching several source factors to one target block, or a genuinely new
 positive-factor criterion. A useful first target is a finite union of
 integer divisibility chains with specified interlacing.
 
+% ed. (2026-09-29): answered for prime-power geometric targets by a later draft.
+\begin{ednote}
+For a geometric target $\Mu{p^h}$ with $p$ prime and an arbitrary summable
+family of uniform sources, the later unreviewed draft
+\nolinkurl{Simultaneous_Convolution_Divisors_Fabius_Type_Laws/} of this
+group (2026-09-29) proves that zero-divisor domination is sufficient: it is
+equivalent to a nested matching of source factors to target scales and to
+factorization by a probability measure. Its base-six theorem gives the
+requested counterexample: in the notation of this article,
+$\prod_{k\ge0}\sinc(t/6^k)\big/\bigl(\sinc(t/2)\sinc(t/3)\bigr)$ extends to
+an entire function that is not the Fourier transform of a positive
+measure, so $\Unif_{1/2}*\Unif_{1/3}$ does not divide $\Mu{6}$ although
+all zeros cancel. That draft writes $X_p=\sum_k p^{-k}U_k$ with $U_k$
+uniform on $[-1,1]$, so its $X_p$ is twice a variable with law $\Mu{p}$
+here; it does not cite this article, whose one-ladder theorems are single
+streams of its results. Targets that are not prime powers remain open.
+\end{ednote}
+% ed. (2026-09-30): a second sufficient hypothesis from a later draft (batch 69)
+\begin{ednotelater}
+The later unreviewed draft
+\nolinkurl{Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/} of
+this group (batch~69 of the repository's \nolinkurl{docs/incoming/},
+2026-09-30), written in the normalization of this article, gives a second
+hypothesis under which zero-divisor domination is sufficient. If the target
+lengths $\ell_k$ are pairwise rationally incommensurable, a finite or
+countable summable family of uniforms divides the law of
+$\sum_k\ell_kU_k$ exactly when the Fourier quotient is entire, and exactly
+when the uniforms have lengths $\ell_{\kappa(j)}/n_j$ for an injective
+assignment $\kappa$ and integers $n_j\ge1$ (its \texttt{thm:separated}).
+Its \texttt{thm:channels} gives the same conclusion for the geometric
+targets $\mu_p$ with $p=r^{-e/h}$, $r$ prime, through $h$ independent
+prime-adic Hall conditions.
+\end{ednotelater}
+
 \begin{question}[Two arbitrary geometric ratios]
 Determine all triples $(p,q,c)$ with $0<p,q<1$, $c>0$, for which
 $\mu_p=\D_c\mu_q*\nu$ has a probability solution.
@@ -1532,6 +1601,26 @@ For general $p$, the target zeros are no longer confined to integers.
 The necessary inclusion of multiplicative zero sets suggests a role for
 relations between powers of $p$ and $q$, but zero inclusion alone has not
 been proved sufficient in that setting.
+% ed. (2026-09-30): answered for all but countably many target ratios by a later draft (batch 69)
+\begin{ednotelater}
+The later unreviewed draft
+\nolinkurl{Arithmetic_Rigidity_off_Resonance_Geometric_Uniform_Laws/} of
+this group (batch~69, 2026-09-30; same normalization) answers this
+question for every target ratio $p$ no positive power of which is
+rational, a co-countable set: $\mu_p=\D_c\mu_q*\nu$ has a probability
+solution exactly when $c=p^a/n$ and $q=p^m/d$ with integers $a\ge0$ and
+$m,n,d\ge1$ (its \texttt{thm:geometric}). For $p=r^{-e/h}$ with $r$ prime
+and $\gcd(e,h)=1$, its \texttt{thm:orbit} gives a finite criterion: the
+least $\ell\ge1$ with $q^\ell$ rational exists and divides $h$, the widths
+$cq^j$, $0\le j<\ell$, lie in distinct rationality classes
+$p^{s}\mathbb Q$, $0\le s<h$, and $q^\ell=1/D$ for an integer $D$ divisible by
+$r^e$. In both cases zero inclusion is sufficient. Together with
+Theorem~\ref{thm:crossbase}, the question remains open only for targets
+whose least rational power $p^h$ is $A/B$ in lowest terms with $A>1$, or
+$1/B$ with $h\ge2$ and $B$ not a prime power. That draft re-proves
+Theorem~\ref{thm:self-spectrum} as its \texttt{prop:same}, without citing
+this article.
+\end{ednotelater}
 
 \begin{question}[Regularity of cross-base digit remainders]
 When $a\mid b$ and $b>a$, classify the absolute continuity, exact smoothness,
@@ -1579,6 +1668,32 @@ Proposition~\ref{prop:continuous} shows how small changes in high prime
 positions can be in every fixed derivative norm. A uniform separation over
 all nonfactorable pairs is therefore not a plausible substitute for a
 scale-sensitive analysis.
+% ed. (2026-09-30): related quantitative results in a later draft (batch 69)
+\begin{ednotelater}
+For geometric targets off resonance, the batch-69 draft named in the
+notes after ``Beyond divisibility ladders'' and ``Two arbitrary geometric
+ratios'' bounds $\inf_\nu W_1(\mu_q,\Unif_{1/N}*\Unif_{1/M}*\nu)$ from
+below by the mechanism of Proposition~\ref{prop:wasserstein} (its
+\texttt{thm:metric}, which does not cite this article). For
+$\Unif_{1/2}*\Unif_{1/3}$ it shows that the infimum is $0$ at $q=1/2$,
+positive at every $q$ no positive power of which is rational, and at most
+$|q-1/2|/(2(1-q))$ (its \texttt{thm:perturbation}), so exact factorability
+is lost under arbitrarily small changes of $q$ while the distance tends to
+zero. The sharp rate is open there too.
+\end{ednotelater}
+% ed. (2026-10-01): the rate left open in the preceding note, from a later draft (batch 73)
+\begin{ednotethird}
+That rate is now known. By
+\path{../Wasserstein_Contact_Orders_Uniform_Factor_Resonances/}
+(batch~73, unreviewed), $\inf_\nu W_1(\mu_q,\Unif_{1/2}*\Unif_{1/3}*\nu)$
+is of exact first order at $q=1/2$: its one-sided coefficients lie
+between $|P|/(6\pi(1+12\pi))\approx6.33\cdot10^{-5}$, where
+$P=\prod_{k\ge2}\sinc(6\cdot2^{-k})\approx-0.0462$ in this article's
+normalized $\sinc$, and $1/4$, and it is at most $|q-1/2|/4$ for every
+$q$. For $\Unif_{1/B}*\Unif_{B^{-j}}$, with fixed integers $B\ge2$ and
+$j\ge1$, it is of exact order $|q-1/B|^j$ on both sides of $1/B$. The
+question above, for divisibility-ladder targets $\mu_A$, remains open.
+\end{ednotethird}
 
 \begin{question}[Decidable presentations beyond eventual periodicity]
 Extend Proposition~\ref{prop:periodic} to ratio sequences given by finite
@@ -1611,6 +1726,21 @@ coordinatewise when the dilation is diagonal. Non-diagonal integer maps
 introduce genuine lattice geometry. Smith normal forms may describe finite
 uniform tilings, but the Fourier zero sets are hyperplanes rather than
 isolated points, and multiplicity bookkeeping must be redesigned.
+
+% ed. (2026-09-29): product-target case treated by a later draft.
+\begin{ednote}
+For the independent product of prime-base geometric targets
+${\Mu{p}}^{\otimes d}$, the later unreviewed draft
+\nolinkurl{Simultaneous_Convolution_Divisors_Fabius_Type_Laws/} of this
+group (2026-09-29) proves that a sum of uniform laws along arbitrary
+vectors in $\R^d$ is a convolution factor exactly when every generator is
+coordinate-aligned with a signed reciprocal-integer length and each
+coordinate satisfies the one-dimensional matching criterion, and that the
+real matrices $C$ for which $C_*{\Mu{p}}^{\otimes d}$ is a convolution factor
+of ${\Mu{p}}^{\otimes d}$ are exactly the partial monomial matrices with
+nonzero entries $\pm1/n$. Nested boxes, parallelotopes and lattice
+fundamental domains in general remain open.
+\end{ednote}
 
 \begin{question}[Certified probability-factor software]
 Implement an exact factorization engine that takes a certified ladder

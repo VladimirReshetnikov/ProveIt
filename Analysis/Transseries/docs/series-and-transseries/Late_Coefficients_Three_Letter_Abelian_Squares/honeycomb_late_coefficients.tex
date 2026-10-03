@@ -1,0 +1,938 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs,longtable,array}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue!45!black,pdftitle={Late coefficients of three letter abelian squares},pdfauthor={dot},pdfsubject={A274600 proof, Stokes jump, and inverse sectors}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\allowdisplaybreaks[2]
+% ed. (2026-10-02): unnumbered environment for ProveIt editorial notes (no counter is used; upright body).
+\theoremstyle{remark}
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-02)}
+\title{\textbf{Late coefficients of three letter\\abelian squares}\\[0.5em]\large All fixed late orders and exact inverse Stokes sectors}
+\author{A274600 research note}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The coefficients in the inverse-power expansion of the three-letter abelian-square counts grow factorially. This note proves the explicitly labeled OEIS A274600 asymptotic conjecture and gives an effective expansion to every fixed late order. The proof uses the classical three-step random-walk density to identify the exact Borel transform, proves its required complex continuation, and extracts the logarithmic singularity by a keyhole contour. It also establishes the exact physical median and Stokes jump, Lambert-function index inversions, and a convergent generator of all fixed inverse exponential sectors. Exact-arithmetic replay and numerical checks accompany the proof. Novelty is stated only within the bounds of the documented source search.
+\end{abstract}
+\section{Target, notation, and principal
+result}\label{target-notation-and-principal-result}
+
+Write
+
+\[
+M_N=\sum_{a+b+c=N}\binom{N}{a,b,c}^{\!2}
+    =\sum_{k=0}^N\binom Nk^2\binom{2k}k\qquad(\text{A002893}).
+\]
+
+Let \(a_n\) be the uniquely determined Poincaré coefficients in
+
+\[
+M_N\sim \frac{C_0 9^N}{N}\sum_{n\ge0}\frac{a_n}{(4N)^n},
+\qquad C_0=\frac{3\sqrt3}{4\pi}.
+\tag{1}
+\]
+
+These are A274600: \(1,-1,1,2,7,59,616,6992,\ldots\). The currently
+inspected OEIS entry, authored by Václav Kotešovec on 10 November 2016,
+explicitly conjectures
+
+\[
+a_n\sim\frac1{\pi\sqrt3}\left(\frac2{\log3}\right)^n(n-1)!.
+\tag{2}
+\]
+
+This concerns the late coefficients of (1), not the leading asymptotic
+of \(M_N\).
+
+Put \(L=\log9\), \(\kappa=4/L=2/\log3\), \(C=1/(\pi\sqrt3)\), and define
+
+\[
+\begin{gathered}
+F(z)={}_2F_1\left(\frac12,\frac12;1;z\right),\qquad
+w(\delta)=\frac{(e^{\delta/2}-1)^3(e^{\delta/2}+3)}{16e^{\delta/2}},\\
+G(\delta)=e^{3\delta/4}F(w(\delta))=\sum_{j\ge0}d_j\delta^j.
+\end{gathered}
+\tag{3}
+\]
+
+\textbf{Theorem 1 (all fixed late orders).} For each fixed positive
+integer \(r\),
+
+\[
+\boxed{\displaystyle
+ a_n=C\kappa^n\Gamma(n)
+ \left\{\sum_{j=0}^{r-1}
+ \frac{(-1)^j j!d_jL^j}{(n-1)_{\underline j}}+O_r(n^{-r})\right\}.}
+\tag{4}
+\]
+
+Here \((n-1)_{\underline j}=(n-1)(n-2)\cdots(n-j)\), with the empty
+product equal to one. In particular, (2) is true. The first terms are
+
+\[
+\begin{aligned}
+\frac{a_n}{C\kappa^n\Gamma(n)}={}&1-\frac{3L}{4(n-1)}
++\frac{9L^2}{16(n-1)(n-2)}-\frac{15L^3}{32(n-1)(n-2)(n-3)}\\
+&+\frac{135L^4}{256(n-1)\cdots(n-4)}
+-\frac{903L^5}{1024(n-1)\cdots(n-5)}\\
+&+\frac{63L^6}{32(n-1)\cdots(n-6)}+O(n^{-7}).
+\end{aligned}
+\tag{5}
+\]
+
+The proof below also establishes the exact Borel transform, an exact
+median-Laplace representation, and a nonzero Stokes jump with action
+\(L/4=\log3/2\) in the variable \(1/(4N)\). Thus the exponentially small
+statement is not inferred merely from the divergent formal series.
+
+\section{The moment integral and the exact local Borel
+transform}\label{the-moment-integral-and-the-exact-local-borel-transform}
+
+For independent uniform \(\theta,\phi\) on \([0,2\pi]\), put
+
+\[
+T=|1+e^{i\theta}+e^{i\phi}|^2\in[0,9].
+\]
+
+Expanding the powers and integrating the Fourier monomials gives
+\(M_N=\mathbb E[T^N]\). Multiplying the three unit vectors by a common
+independent phase does not change their resultant length. Consequently,
+if \(p_3(x)\) is the radial density of the three-step planar uniform
+random walk,
+
+\[
+M_N=\int_0^3x^{2N}p_3(x)\,dx,
+\qquad \rho(t)=\frac{p_3(\sqrt t)}{2\sqrt t}
+\tag{6}
+\]
+
+is the density of \(T\).
+
+The classical elliptic formula, in the modulus convention
+\(K(k)=\int_0^{\pi/2}(1-k^2\sin^2\theta)^{-1/2}\,d\theta\), is
+
+\[
+p_3(x)=\frac{\sqrt x}{\pi^2}\operatorname{Re}K\!\left(\sqrt{m(x)}\right),
+\quad m(x)=\frac{(x+1)^3(3-x)}{16x}.
+\tag{7}
+\]
+
+For \(1<x<3\), \(m(x)\in(0,1)\), so no real-part operation is needed. A
+primary reference is Borwein--Straub--Wan--Zudilin, \emph{Densities of
+Short Uniform Random Walks}, Canadian Journal of Mathematics 64 (2012),
+961--990, equation (1.2). Its section 3, equation (3.1), explicitly
+records the logarithmic singularity at \(x=1\).
+
+For completeness, the part of (7) needed for the dominant endpoint can
+be obtained directly. The two-step resultant has density
+\(2/(\pi\sqrt{4-r^2})\). Conditional on length \(r\), adding a uniform
+unit vector makes its squared resultant arcsine-distributed on
+\([(r-1)^2,(r+1)^2]\). For \(1<x<3\), substitution \(s=r^2\) therefore
+gives
+
+\[
+\rho(x^2)=\frac1{\pi^2}\int_{(x-1)^2}^{4}
+\frac{ds}{\sqrt{s(4-s)((x+1)^2-s)(s-(x-1)^2)}}
+=\frac{K(\sqrt{m(x)})}{2\pi^2\sqrt x},
+\]
+
+where the last equality is the standard four-real-root substitution for
+the complete elliptic integral. Multiplication by \(2x\) gives (7) on
+that interval.
+
+Set \(t=9e^{-u}\), \(x=3e^{-u/2}\). On \(0\le u<L\), the normalized
+density becomes
+
+\[
+f(u)=\frac{t\rho(t)}{C_0}
+=e^{-3u/4}F\!\left(m(3e^{-u/2})\right),\qquad f(0)=1.
+\tag{8}
+\]
+
+For the real density on all \(u\ge0\), use
+\(f_{\rm phys}(u)=t\rho(t)/C_0\). Then
+
+\[
+Q(N):=\frac{NM_N}{C_0 9^N}
+=N\int_0^\infty e^{-Nu}f_{\rm phys}(u)\,du.
+\tag{9}
+\]
+
+The part away from \(u=0\) is exponentially small for any fixed positive
+cutoff. Watson's lemma applied to the analytic germ (8) yields
+
+\[
+\boxed{a_n=4^n n![u^n]f(u).}
+\tag{10}
+\]
+
+Thus the order-one Borel transform of \(\sum a_n z^n\), under the
+convention \(\mathcal B\sum a_nz^n=\sum a_n\zeta^n/n!\), is exactly
+\(f(4\zeta)\). Its nearest positive singularity will be \(\zeta=L/4\).
+
+\section{Global continuation sufficient for coefficient
+transfer}\label{global-continuation-sufficient-for-coefficient-transfer}
+
+This step is essential: a real endpoint expansion by itself does not
+prove (2).
+
+The hypergeometric equation has possible singular values
+\(m=0,1,\infty\). Its chosen solution \(F(m)\) is regular at \(m=0\).
+The algebraic identities
+
+\[
+m(x)=\frac{-x^3+6x+8+3/x}{16},
+\qquad 1-m(x)=\frac{(x-1)^3(x+3)}{16x}
+\tag{11}
+\]
+
+give the following finite preimages under \(x=3e^{-u/2}\):
+
+\begin{itemize}
+\tightlist
+\item
+  \(m=1\): \(u=L+4\pi ik\), or \(u=(4k+2)\pi i\), \(k\in\mathbb Z\)
+\item
+  \(m=0\): \(u=4\pi ik\), or \(u=L+(4k+2)\pi i\)
+\item
+  \(m=\infty\): no finite \(u\), because the exponential never vanishes
+\end{itemize}
+
+Fix any \(R\) with \(L<R<2\pi\). In \(|u|<R\), the only singular-value
+preimages are \(u=0\), where the initial branch is analytic, and
+\(u=L\). Hypergeometric analytic continuation and the monodromy theorem
+therefore continue (8) as a single-valued holomorphic function on
+
+\[
+\{u:|u|<R\}\setminus[L,R).
+\tag{12}
+\]
+
+To be precise about the removable initial point: the germ at zero is
+given by a convergent power series in \(m(u)\); any sufficiently small
+loop around zero acts trivially on this germ. Continuation along paths
+avoiding zero and \(L\), followed by the monodromy theorem in the slit
+disk, is therefore compatible with its original holomorphic extension
+through zero. Critical points of \(m(u)\) that do not map to a singular
+value are merely pullback critical points, not singularities of the
+composite function.
+
+In particular \(u=L\) is the unique singularity on the circle of
+convergence and the function is analytic in a standard dented disk (a
+\(\Delta\)-domain) around it. No assumption of Borel continuation beyond
+its justified domain has been made.
+
+\section{The logarithmic multiplier and coefficient
+transfer}\label{the-logarithmic-multiplier-and-coefficient-transfer}
+
+The convergent zero-balanced hypergeometric expansion is
+
+\[
+F(1-w)=\frac1\pi\sum_{k\ge0}h_kw^k
+\left\{2\psi(k+1)-2\psi(k+\tfrac12)-\log w\right\},
+\qquad h_k=\frac{(1/2)_k^2}{(k!)^2}.
+\tag{13}
+\]
+
+This is the \(a=b=1/2,m=0\) case of DLMF 15.8.10. Put \(\delta=L-u\).
+Since \(x=e^{\delta/2}\), (11) yields
+
+\[
+1-m=w(\delta)=\frac{\delta^3}{32}(1+O(\delta)).
+\tag{14}
+\]
+
+The factor \(w(\delta)/\delta^3\) is analytic and nonzero near zero.
+With the branch continued from \(\delta>0\),
+
+\[
+\log w(\delta)=3\log\delta+\log\!\left(w(\delta)/\delta^3\right).
+\]
+
+Combining (8), (13), and \(e^{-3L/4}=1/(3\sqrt3)\), we obtain the exact
+local form
+
+\[
+f(u)=-C G(L-u)\log(1-u/L)+H(u),
+\tag{15}
+\]
+
+where \(H\) is holomorphic in a full neighborhood of \(L\). The
+\(\log L\) term has been absorbed in \(H\). Equivalently, the analytic
+logarithmic multiplier is
+
+\[
+g(u)=\frac3\pi e^{-3u/4}F(1-m(3e^{-u/2}))=C G(L-u),\quad g(L)=C.
+\tag{16}
+\]
+
+For fixed integer \(j\ge0\) and \(n>j\), exact coefficient extraction
+gives
+
+\[
+[u^n]\{(1-u/L)^j\log(1-u/L)\}
+=\frac{(-1)^{j+1}j!L^{-n}}{n(n-1)\cdots(n-j)}.
+\tag{17}
+\]
+
+Expand \(G(L-u)=\sum d_jL^j(1-u/L)^j\) and use (17). For a fully
+explicit remainder proof, choose \(R_0\) with \(L<R_0<R\) sufficiently
+close to \(L\) that the convergent local form (15) applies along the cut
+from \(L\) to \(R_0\). A keyhole deformation of Cauchy's coefficient
+contour, using the jump \(f_+-f_-=2\pi i C G(L-u)\), gives
+
+\[
+[u^n]f(u)=C\int_0^{R_0-L}G(-v)(L+v)^{-n-1}\,dv+O(R_0^{-n}).
+\tag{17a}
+\]
+
+The small circle around \(L\) vanishes because the singularity is
+logarithmic. On the outer contour the two boundary branches are bounded;
+their contributions are \(O(R_0^{-n})\). Taylor's theorem gives
+\(G(-v)=\sum_{j<r}(-1)^jd_jv^j+O_r(v^r)\). The remainder integral is
+bounded by the full beta integral, and for \(n>j\),
+
+\[
+\int_0^\infty v^j(L+v)^{-n-1}\,dv
+=L^{j-n}\frac{j!\,\Gamma(n-j)}{\Gamma(n+1)}.
+\tag{17b}
+\]
+
+Extending each of the finitely many monomial integrals from
+\([0,R_0-L]\) to \([0,\infty)\) changes it by an exponentially small
+quantity \(O_j(R_0^{-n})\). Equations (17a)--(17b) prove
+
+\[
+[u^n]f(u)=\frac{CL^{-n}}n
+\left\{\sum_{j<r}\frac{(-1)^jj!d_jL^j}{(n-1)_{\underline j}}+O_r(n^{-r})\right\}.
+\]
+
+There is no hidden logarithmic loss in this bound. Multiplication by
+\(4^nn!\) proves Theorem 1.
+
+Expanding (3) gives
+
+\[
+(d_0,\ldots,d_8)=\left(1,\frac34,\frac9{32},\frac5{64},\frac{45}{2048},
+\frac{301}{40960},\frac7{2560},\frac{181}{172032},\frac{24251}{58720256}\right).
+\tag{18}
+\]
+
+These numbers are exact rationals. Equation (3) is an all-order,
+finite-at-each-order algorithm for all late correction coefficients.
+
+\section{An exact Stokes sector and exact median
+summation}\label{an-exact-stokes-sector-and-exact-median-summation}
+
+Let \(f_+(u)\) and \(f_-(u)\), for real \(u>L\), denote analytic
+continuation of the germ (8) past \(L\) in the upper and lower half
+\(u\)-planes, respectively, with a small semicircle and then
+continuation along the positive real axis. They are conjugates.
+
+On the upper lip, \(\arg\delta=-\pi\). The analytic continuation of
+\(\log w\) therefore has imaginary part \(-3\pi\), not \(-\pi\).
+Equation (13) gives locally
+
+\[
+f_+(u)-f_-(u)=6i e^{-3u/4}F(1-m(3e^{-u/2}))=2\pi i g(u).
+\tag{19}
+\]
+
+The right side continues without singularity along real \(u>L\), since
+\(m>1\) and \(1-m<0\). Both sides solve the same pulled-back
+second-order differential equation, so the local identity continues
+along the entire interval. More concretely, if \(F(m+i0)\) denotes the
+principal hypergeometric upper boundary value, then near \(L\), and
+hence on the entire interval by continuation,
+
+\[
+f_+(u)=e^{-3u/4}\{F(m+i0)+2iF(1-m)\},
+\quad f_-(u)=\overline{f_+(u)}.
+\tag{20}
+\]
+
+Equivalently, standard hypergeometric continuation gives the especially
+transparent formulas
+
+\[
+f_\pm(u)=e^{-3u/4}\{m^{-1/2}F(1/m)\ \pm\ 3iF(1-m)\},\qquad u>L.
+\tag{20a}
+\]
+
+One way to verify the imaginary term is Pfaff's transformation
+\(F(1-m)=m^{-1/2}F(1-1/m)\). The extra \(2iF(1-m)\) in (20) is purely
+imaginary there. Equation (7) now proves the exact physical-median
+identity
+
+\[
+f_{\rm phys}(u)=\frac{f_+(u)+f_-(u)}2\qquad(u>L).
+\tag{21}
+\]
+
+It already holds trivially before \(L\), where both continuations equal
+\(f\).
+
+As \(u\to+\infty\), \(x=3e^{-u/2}\to0\) and \(m\asymp e^{u/2}\). The
+standard coincident-exponent hypergeometric estimate gives
+\(F(m\pm i0),F(1-m)=O(m^{-1/2}\log m)\). Thus
+
+\[
+f_\pm(u),\ g(u)=O((1+u)e^{-u}).
+\tag{22}
+\]
+
+At \(u=L\), the singularity is logarithmic and integrable. The lateral
+integrals
+
+\[
+Q_\pm(N)=N\int_0^\infty e^{-Nu}f_\pm(u)\,du
+\tag{23}
+\]
+
+are therefore absolutely convergent for real \(N>0\), with the obvious
+definition of \(f_\pm\) before \(L\). Equations (9) and (21) give
+
+\[
+\boxed{Q(N)=\frac{Q_+(N)+Q_-(N)}2.}
+\tag{24}
+\]
+
+These are actual lateral lip (equivalently, indented-contour)
+Borel--Laplace sums of (1), not only formal symbols: the Borel transform
+is (10), continuation on the lateral ray is established by (20), and
+growth is controlled by (22).
+
+From (19), writing \(u=L+v\),
+
+\[
+\boxed{\displaystyle
+Q_+(N)-Q_-(N)=\frac{2i}{\sqrt3}\,9^{-N}
+N\int_0^\infty e^{-Nv}G(-v)\,dv.}
+\tag{25}
+\]
+
+Consequently, for every fixed integer \(r\ge1\), Watson's lemma gives
+the rigorous exponentially small expansion
+
+\[
+Q_+(N)-Q_-(N)=\frac{2i}{\sqrt3}\,9^{-N}
+\left\{\sum_{j=0}^{r-1}\frac{(-1)^jj!d_j}{N^j}+O_r(N^{-r})\right\}.
+\tag{26}
+\]
+
+In particular,
+
+\[
+Q_+-Q_-\sim\frac{2i}{\sqrt3}9^{-N}
+\left(1-\frac3{4N}+\frac9{16N^2}-\frac{15}{32N^3}
++\frac{135}{256N^4}-\frac{903}{1024N^5}+\cdots\right).
+\tag{27}
+\]
+
+This proves an exact nonzero Stokes sector with multiplier
+\(2i/\sqrt3\). In the small parameter \(z=1/(4N)\), the exponential is
+\(e^{-A/z}\) with \(A=L/4=\log3/2\). The same \(d_j\) control the late
+terms in (4) and the Stokes-sector fluctuations in (26), an explicit,
+rigorously derived resurgence relation.
+
+\textbf{Scope boundary.} Equations (25)--(27) concern the difference of
+lateral sums and their exact physical median. They do not assert that
+the real moment function contains an independently adjustable real
+\(9^{-N}\) term. Nor do they claim a complete global transseries,
+numerical Stokes constants at the farther complex singularities
+\(u=\pm2\pi i\), or uniform validity when the number of retained terms
+grows with \(N\). Those questions require additional analysis.
+
+\section{Inverting the late-coefficient
+growth}\label{inverting-the-late-coefficient-growth}
+
+Equation (4) implies \(a_n>0\) and \(a_{n+1}/a_n\sim\kappa n\); the
+sequence is therefore strictly increasing eventually. The inverse
+statement here is first stated on exact values \(y=a_n\), avoiding an
+unjustified choice of continuous interpolation.
+
+Rewrite (4) as
+
+\[
+a_n=C\kappa^n\Gamma(n)S(n),\qquad
+S(n)\sim1+\frac{s_1}{n}+\frac{s_2}{n^2}+\cdots,
+\]
+
+where, for example,
+
+\[
+s_1=-\frac{3L}{4},\qquad
+s_2=-\frac{3L}{4}+\frac{9L^2}{16}.
+\tag{28}
+\]
+
+Stirling's expansion yields
+
+\[
+Y:=\log\frac{y}{C\sqrt{2\pi}}
+=n\log\frac{\kappa n}{e}-\frac12\log n
++\sum_{j=1}^{K}\frac{c_j}{n^j}+O_K(n^{-K-1}),
+\tag{29}
+\]
+
+with \(c_j\) computed by adding the formal logarithm of \(S\) to
+Stirling's logarithmic correction series. In particular,
+
+\[
+c_1=\frac1{12}-\frac{3L}{4},\qquad
+c_2=-\frac{3L}{4}+\frac{9L^2}{32}.
+\tag{30}
+\]
+
+Let \(W=W_0\) be the positive real Lambert function and define
+
+\[
+t_0=\frac{Y}{W(\kappa Y/e)},\qquad h=\log(\kappa t_0),\qquad b=\frac{\log t_0}{2h}.
+\tag{31}
+\]
+
+Then, as \(y=a_n\to\infty\),
+
+\[
+\boxed{\displaystyle n=t_0+b+
+\frac{b/2-b^2/2-c_1}{t_0h}
++O\!\left(\frac1{t_0^2h}\right).}
+\tag{32}
+\]
+
+Indeed, \(t_0\log(\kappa t_0/e)=Y\). Substitute \(t=t_0+b+\varepsilon\)
+in (29): the leading residual is \((b^2/2-b/2+c_1)/t_0\), and the
+derivative is \(h+O(t_0^{-1})\). The displayed \(\varepsilon\) cancels
+that residual; the remaining residual is \(O(t_0^{-2})\), proving (32)
+by the mean-value theorem. The derivative comparison uses an explicit
+smooth asymptotic model, not an assumed interpolation of \(a_n\).
+
+\textbf{All fixed inverse orders.} For arbitrary fixed \(K\), let
+\(t_K\) be the unique sufficiently large solution of
+
+\[
+t\log(\kappa t/e)-\tfrac12\log t+\sum_{j=1}^{K}c_jt^{-j}=Y.
+\tag{33}
+\]
+
+Its derivative is asymptotic to \(\log t\), so the same mean-value
+argument gives
+
+\[
+n=t_K+O_K\!\left(\frac{n^{-K-1}}{\log n}\right)\quad(y=a_n).
+\tag{34}
+\]
+
+The coefficients are effectively generated by (3), falling-factorial
+expansion, logarithm, and Stirling's series. Newton iteration starting
+at (31) produces the corresponding explicit nested-Lambert expansion to
+any fixed order. For sufficiently large exact input \(a_n\), rounding
+(32), or a sufficiently accurate \(t_K\), recovers \(n\).
+
+\section{Inverting the original moment
+sequence}\label{inverting-the-original-moment-sequence}
+
+There is a natural continuous interpolation here:
+\(M(s)=\mathbb E[T^s]\), real \(s>0\). It is eventually strictly
+increasing, since the positive contribution from any interval
+\(T\ge1+\varepsilon\) grows exponentially and dominates the bounded
+negative contribution to \(M'(s)\) from \(0<T<1\). Differentiated Watson
+estimates also show that the logarithmic derivative tends to \(L\).
+
+For large \(y\), define
+
+\[
+n_0=-\frac1L W_{-1}\!\left(-\frac{C_0L}{y}\right),
+\tag{35}
+\]
+
+so that \(C_0e^{Ln_0}/n_0=y\). Since
+
+\[
+\log\frac{NM_N}{C_0 9^N}=-\frac1{4N}+\frac1{32N^2}+O(N^{-3}),
+\]
+
+the actual inverse satisfies
+
+\[
+\boxed{\displaystyle M^{-1}(y)=n_0+\frac1{4Ln_0}
++\left(\frac1{4L^2}-\frac1{32L}\right)\frac1{n_0^2}
++O(n_0^{-3}).}
+\tag{36}
+\]
+
+All fixed inverse orders follow by the same implicit-series/Newton
+procedure from (1), with error divided by a derivative asymptotic to
+\(L\). This is an inversion of the actual positive moment function.
+Equations (35)--(36) do not by themselves claim a complete exponentially
+improved inverse transseries.
+
+\subsection{Exact inversion of the lateral sector
+family}\label{exact-inversion-of-the-lateral-sector-family}
+
+The exponentially small structure can also be inverted, rather than only
+inverting its Poincaré part. Define
+
+\[
+J(s)=s\int_0^\infty e^{-sv}G(-v)\,dv,
+\qquad D(s)=\frac{3}{4\pi}\int_0^\infty e^{-sv}G(-v)\,dv=\frac{3J(s)}{4\pi s},
+\qquad \mathcal M_t(s)=M(s)+tD(s).
+\tag{36a}
+\]
+
+The integral defines a holomorphic function for
+\(\operatorname{Re}s>-1\), as does the moment integral \(M\). Equations
+(24)--(25) imply exactly
+
+\[
+\mathcal M_i(s)=\frac{C_09^s}{s}Q_+(s),\qquad
+\mathcal M_{-i}(s)=\frac{C_09^s}{s}Q_-(s).
+\tag{36b}
+\]
+
+Let \(\phi=M^{-1}\), let \(s=\phi(y)\) for sufficiently large positive
+\(y\), and choose the inverse branch \(n(t;y)\) of \(\mathcal M_t\) that
+satisfies \(n(0;y)=s\). This branch exists and is analytic in \(t\) on a
+disk of radius at least \(csy\), where \(c>0\) is independent of large
+\(s\). Indeed, fix \(0<r<2\pi/L\). Uniform endpoint Laplace estimates
+give
+
+\[
+\frac{M(s+w)}{M(s)}\longrightarrow e^{Lw}
+\quad\text{uniformly for }|w|\le r,
+\qquad D(s+w)=O(1/s).
+\]
+
+On \(|w|=r\), \(e^{Lw}-1\) has positive minimum modulus, and inside the
+circle it has exactly one zero, counted with multiplicity. Rouché's
+theorem first shows the same for \(M(s+w)-y\), and then, for
+sufficiently small fixed \(c\), for \(M(s+w)+tD(s+w)-y\) uniformly on
+\(|t|<csy\). The unique zero is simple, so the analytic implicit
+function theorem gives the claimed analytic branch, with the uniform
+bound \(|n(t;y)-s|<r\). This also proves the bounds needed for the
+Cauchy remainder estimate below.
+
+Lagrange--Bürmann inversion gives the exact convergent sector generator
+
+\[
+\boxed{\displaystyle
+n(t;y)=\phi(y)+\sum_{k=1}^\infty\frac{(-t)^k}{k!}
+\left(\frac d{dy}\right)^{k-1}
+\left[\phi'(y)D(\phi(y))^k\right].}
+\tag{36c}
+\]
+
+For example, apply ordinary reversion to \(z+tD(\phi(z))=y\), then the
+generalized Lagrange formula to \(\phi(z)\). Its germ at \(t=0\) is
+(36c), and analytic continuation on the established disk proves equality
+throughout the disk of convergence. For each fixed \(K\), truncation at
+\(k=K\), evaluated at either \(t=i\) or \(t=-i\), has rigorous error
+
+\[
+O_K((sy)^{-K-1}).
+\tag{36d}
+\]
+
+This follows directly from Cauchy's estimate on a fixed fraction of the
+disk \(|t|<csy\); no growing-order asymptotic assertion is being used.
+
+Each fixed \(k\)-sector has an all-fixed-order expansion in \(s^{-1}\),
+effectively obtained from
+
+\[
+\phi'(y)=\frac1{M'(s)},\qquad \frac d{dy}=\frac1{M'(s)}\frac d{ds},
+\qquad J(s)\sim\sum_{j\ge0}(-1)^jj!d_js^{-j}
+\]
+
+and (1). The required differentiated remainder estimates follow by
+differentiating the absolutely convergent Laplace integrals, or by
+Cauchy estimates uniform on fixed disks centered at large positive
+\(s\), retaining sufficiently many terms before taking a fixed number of
+derivatives. Its leading term is
+
+\[
+\frac{(-t)^k}{k!}\partial_y^{k-1}[\phi'(y)D(\phi(y))^k]
+=-\frac{t^k}{kL}\left(\frac{3}{4\pi sy}\right)^k(1+O_k(s^{-1})).
+\tag{36e}
+\]
+
+Since \(sy=C_09^sQ(s)\), these are genuine \(9^{-ks}\) sectors. Thus
+(36c)--(36e), together with the all-order fluctuation algorithm,
+constitute a rigorous inversion of the exact lateral transseries family.
+
+Writing \(n_\pm(y)=n(\pm i;y)\), the first terms are
+
+\[
+n_\pm(y)=s\mp i\frac{D(s)}{M'(s)}+O((sy)^{-2}),
+\qquad n_+(y)-n_-(y)=-2i\frac{D(s)}{M'(s)}+O((sy)^{-3}).
+\tag{36f}
+\]
+
+Odd/even cancellation in the second statement is justified by the
+convergent analytic \(t\)-series, not merely by informal conjugation.
+The first inverse Stokes sector therefore has the all-fixed-order
+expansion beginning
+
+\[
+\boxed{\displaystyle
+n_+(y)-n_-(y)= -\frac{3i}{2\pi Lsy}
+\left[1+\frac{L^{-1}-3/4}{s}
++\frac{L^{-2}-L^{-1}+9/16}{s^2}+O(s^{-3})\right]
++O((sy)^{-3}).}
+\tag{36g}
+\]
+
+The physical inverse is \(s=\phi(y)\). Inversion does not commute with
+taking the median: from the even terms of (36c),
+
+\[
+\frac{n_+(y)+n_-(y)}2
+=s-\frac12\frac d{dy}\left[\phi'(y)D(\phi(y))^2\right]+O((sy)^{-4}),
+\tag{36h}
+\]
+
+whose leading correction is \(9/(32\pi^2L s^2y^2)\). This explicitly
+distinguishes the physical inverse from the mean of the two lateral
+inverses. The exact sector generator concerns this specified lateral
+family; it does not assert that all possible distant-sheet sectors of
+the original Borel transform have been classified.
+
+% ed. (2026-10-02): names the repository apparatus that the three inversions re-derive without citing it (batch-77 placement dossier).
+\begin{ednote}
+The three inversions (31)--(34), (35)--(36) and (36c) are cases of the
+inversion apparatus of ProveIt's canonical transseries volume,
+\emph{Transseries: the polynomial-logarithmic calculus, series reversal
+at infinity, and inversion} (Part~X, chapter \path{p0:sec:top}), which
+the article does not cite (its repository searches in
+Section~\ref{provenance-and-scope-of-the-novelty-check} looked for the
+sequence numbers and ``honeycomb''); the method is the volume's, and only
+the coefficients are new to the repository. The volume's source is
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+
+\emph{Late coefficients.} The seed (31) solves the volume's factorial core,
+Proposition~J.27 (\path{p0:prop:factorial-core}), with \(\kappa=1\),
+\(d=\log\kappa-1\). In the displacement \(n=t_0(1+E)\), (33) becomes
+\(hE+[(1+E)\log(1+E)-E]+f(t,E)=0\) with \(t=1/t_0\) and
+\(f=-\tfrac12t\bigl(\log t_0+\log(1+E)\bigr)+\sum_{j\ge1}c_jt^{j+1}(1+E)^{-j}\),
+which is its reversion about an arbitrary core, Theorem~J.33
+(\path{p0:thm:core-reversion}), with \(\Lambda=h\); its first two
+coefficients are \(b\) and \((b/2-b^2/2-c_1)/h\), the terms of (32), which
+the editors recomputed symbolically. Recovering \(n\) by rounding when
+\(y=a_n\) is part~(3) of the volume's staircase theorem, Theorem~J.43
+(\path{p0:thm:staircase}): an approximation within \(\eta<\tfrac12\) of the
+interpolated inverse at \(y=A_n\) rounds to \(n\).
+
+\emph{Original moments.} Since \(\log M(s)=\log C_0+Ls-\log s+Q(1/s)\)
+with \(Q(t)=-t/4+t^2/32+O(t^3)\), (35) is the volume's exact solution of
+the dominant block, Theorem~J.23 (\path{p0:thm:lambert-core}), with
+\(a=L\), \(b=-1\), the large root lying on the branch \(W_{-1}\) by its
+branch rule (Corollary~J.25, \path{p0:cor:branch-rule}); and (36) is its
+all-orders reversion around the Lambert core, Theorem~J.29
+(\path{p0:thm:lambert-centered}), whose Bell recurrence gives
+\(c_1=-q_1/a=1/(4L)\) and \(c_2=-(bc_1+q_2)/a=1/(4L^2)-1/(32L)\), the
+coefficients of (36).
+
+\emph{Sectors.} (36c) is the volume's perturbed inversion, Theorem~J.21
+(\path{p0:thm:perturbed-inversion}), with \(F=M\), \(E=D\),
+\(\varepsilon=t\) and \(\mu_0=\phi(y)\): its derivation
+\(\mathcal D=F'(\mu)^{-1}\,d/d\mu\) is \(d/dy\), so its term of order
+\(k\) (index \(M\) there),
+\(\frac{(-t)^k}{k!}\mathcal D^{k-1}\bigl(D(\mu_0)^k/M'(\mu_0)\bigr)\), is
+the \(k\)th term of (36c). The theorem is local; the radius \(csy\) of the
+\(t\)-disk, and with it the remainder (36d), is the article's own Rouché
+estimate.
+\end{ednote}
+
+\section{Exact replay and independent finite
+checks}\label{exact-replay-and-independent-finite-checks}
+
+The known recurrence for \(M_N\) is
+
+\[
+(N+1)^2M_{N+1}-(10N^2+10N+3)M_N+9N^2M_{N-1}=0.
+\tag{37}
+\]
+
+Substitute the formal series (1), put \(B(z)=\sum_{n\ge0}a_nz^n/4^n\),
+and compare coefficients in
+
+\[
+9(1+z)B\left(\frac z{1+z}\right)-(10+10z+3z^2)B(z)
++\frac1{1-z}B\left(\frac z{1-z}\right)=0.
+\tag{38}
+\]
+
+This gives the exact triangular recurrence
+
+\[
+8na_n=\sum_{k=0}^{n-1}4^{n-k}
+\left\{9\binom{1-k}{n+1-k}+\binom{n+1}{k}\right\}a_k-12a_{n-1},
+\quad n\ge1,\quad a_0=1.
+\tag{39}
+\]
+
+The binomial coefficient with negative top is the ordinary generalized
+integer binomial. Uniqueness of the asymptotic coefficients and
+recurrence matching justify (39). This is not used as a substitute for
+the analytic proof of late growth.
+
+\texttt{verify.py} uses Python integer/fraction arithmetic to:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  match all 22 displayed source terms exactly
+\item
+  compute the germ (8) independently of (39), matching 31 coefficients
+  exactly
+\item
+  generate \(a_n\) through \(n=500\), checking integrality at every
+  recurrence step
+\item
+  compute \(d_0,\ldots,d_{15}\) exactly
+\item
+  compare the late approximations against exact \(a_n\) at
+  \(n=20,40,80,160,320,500\)
+\end{enumerate}
+
+The replay output is \texttt{verification.json}; the generated integers
+are \texttt{coefficients\_0\_500.txt}. For example the exact-to-leading
+ratio at \(n=500\) is approximately
+\(0.996708446210591670313689669302\); retaining eight falling-factorial
+terms leaves normalized error approximately \(2.45029\times10^{-18}\).
+These finite numerical checks support implementation correctness; the
+asymptotic theorems follow from sections 2--5.
+
+\begin{center}
+\begin{tabular}{rrrr}
+\toprule
+$n$ & $a_n/(C\kappa^n\Gamma(n))$ & Error after 4 terms & Error after 8 terms\\
+\midrule
+20 & 0.920460390900 & $1.08\cdot10^{-4}$ & $1.79\cdot10^{-6}$\\
+40 & 0.959493066036 & $5.65\cdot10^{-6}$ & $2.92\cdot10^{-9}$\\
+80 & 0.979570825175 & $3.25\cdot10^{-7}$ & $7.75\cdot10^{-12}$\\
+160 & 0.989742589835 & $1.95\cdot10^{-8}$ & $2.52\cdot10^{-14}$\\
+320 & 0.994860728387 & $1.20\cdot10^{-9}$ & $8.99\cdot10^{-17}$\\
+500 & 0.996708446211 & $1.99\cdot10^{-10}$ & $2.45\cdot10^{-18}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The errors in this table are differences of normalized quantities, not relative errors of the original moments. Each column keeps a fixed number of terms.
+
+The second replay, \texttt{verify\_analytic.py}, evaluates the density integral using a complementary-AGM form that preserves the cubic zero at $x=1$. At 70-digit working precision its relative errors against the exact moments at $N=1,2,5,10,20$ are below $10^{-50}$. These are floating-point consistency checks, not interval-certified error bounds. Formula (32) estimates the late index $n=500$ as $500.0000002664748\ldots$; formula (36) estimates the original moment index $N=30$ as $30.0000005839233\ldots$. Full numerical values are in \texttt{analytic\_verification.json}.
+
+\section{Provenance and scope of the novelty
+check}\label{provenance-and-scope-of-the-novelty-check}
+
+Primary sources used:
+
+\begin{itemize}
+\tightlist
+\item
+  \href{https://oeis.org/A274600}{OEIS A274600}: target sequence,
+  scaling, displayed terms, and explicit conjecture
+\item
+  \href{https://oeis.org/A002893}{OEIS A002893}: moment/count identity,
+  honeycomb-return interpretation, recurrence, and older leading
+  asymptotic
+\item
+  \href{https://people.mpim-bonn.mpg.de/zagier/files/doi/10.4153/CJM-2011-079-2/borweinJ0395.pdf}{Borwein--Straub--Wan--Zudilin
+  (2012)}: equations (1.2), (3.1), and (3.2); elliptic density, its
+  logarithmic singularity, and its relation to the same moments
+\item
+  \href{https://dlmf.nist.gov/15.8.E10}{NIST DLMF 15.8.10}: convergent
+  zero-balanced hypergeometric logarithmic expansion
+\item
+  \href{https://dlmf.nist.gov/15.12}{NIST DLMF 15.12}: hypergeometric
+  large-variable behavior
+\item
+  \href{https://cs.uwaterloo.ca/~shallit/Papers/cas.pdf}{Richmond--Shallit,
+  Counting Abelian Squares}: the original abelian-square leading
+  asymptotic is established background
+\item
+  \href{https://arxiv.org/abs/1609.05580}{Burnette--Wong, Abelian
+  Squares and Their Progenies (2016)}: broader existing asymptotic
+  context
+\item
+  \href{https://dirros.openscience.si/Dokument.php?id=41518&lang=eng}{Bašić--Fowler--Pickup--Potočnik
+  (2026), Random walks and the electronic structure of graphene}:
+  checked as a recent A002893 reference; its inverse-bandgap expansion
+  uses the original moments, not the late coefficients in A274600
+\item
+  \href{https://math.stackexchange.com/questions/2006632/sum-involving-the-product-of-binomial-coefficients}{The
+  Stack Exchange discussion linked by A274600}: 2016 discussion of the
+  leading sum asymptotic; not a located proof of the late-coefficient
+  assertion
+\end{itemize}
+
+Exact-ID searches for A274600 with proof, asymptotic, factorial,
+ProveIt, and OEIS Open did not locate a proof. Searches for A002893 and
+honeycomb/three-step late asymptotic coefficients did locate the
+classical density literature and general resurgence literature, but no
+source proving this exact late coefficient formula. The evidence
+supports ``a proof of the explicitly labeled OEIS conjecture, with an
+all-fixed-order and exact Stokes-jump strengthening''; it does not
+establish that the mathematical mechanism was previously unknown or rule
+out unpublished or differently indexed results. The elliptic density,
+its van Hove logarithm, and Watson/singularity-transfer methods are
+classical.
+
+The source b-file was linked by the entry but inaccessible through the
+checked HTTP/web paths; the finite source agreement is therefore
+explicitly limited to the 22 displayed terms, not all 81 b-file entries.
+The ProveIt default-branch code searches for A274600, A002893,
+and honeycomb each returned zero results. The inspected complete
+Analysis, Combinatorics, and Oeis subtree listings (5,850, 462, and 9
+entries respectively; each marked untruncated) contain no exact
+target-ID path. Their parent root tree was
+4b874cea0012c51a6841ad9c58f6e20fa57c71da. This is a bounded duplicate
+check, not a full-text search of every file at every historical
+revision; details are in SOURCES.md. No external submission or
+repository change has been made.
+
+\section{Further questions}\label{further-questions}
+
+The argument settles the labeled leading conjecture and gives all fixed
+late orders, the exact positive-axis Stokes sector, and its
+inverse-sector family. Several extensions remain outside its scope.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Continue the selected Borel branch to the next singularities at
+  \(u=\pm2\pi i\), determine their sheet-dependent connection constants,
+  and isolate their effects on late coefficients after treating the
+  dominant cut
+\item
+  Establish optimal truncation, quantitative exponentially improved
+  remainder estimates, and uniform Stokes smoothing when the truncation
+  order grows with the large parameter
+\item
+  Investigate all-index arithmetic properties of the normalized
+  coefficients; the present replay checks integrality through index 500
+  but does not supply a general integrality proof
+\item
+  Compare the same density-to-late-coefficient mechanism for larger
+  alphabets, where different critical values and singularity types may
+  govern the factorial scales
+\end{enumerate}
+
+These are research directions, not assertions that the corresponding
+questions are new or unresolved in all existing literature.
+
+\end{document}

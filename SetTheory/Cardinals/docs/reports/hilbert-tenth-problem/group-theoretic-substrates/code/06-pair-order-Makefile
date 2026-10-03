@@ -1,0 +1,11 @@
+.PHONY: all pdf check export clean
+all: pdf check
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+check:
+	python3 code/verify.py
+export:
+	python3 code/pair_geometry.py export data/canonical_c2_quartic.json
+clean:
+	latexmk -c article.tex
+	rm -rf code/__pycache__

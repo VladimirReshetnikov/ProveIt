@@ -35,6 +35,8 @@
 \newtheorem{problem}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
 \newcommand{\R}{\mathbb R}
 \newcommand{\E}{\mathbb E}
 \newcommand{\Pp}{\mathbb P}
@@ -1199,6 +1201,19 @@ result proved here. It agrees with the fully vanishing and regular cases
 proved above, but mixed clusters require a separate local argument and
 matching likelihood constructions.
 \end{problem}
+% ed. (2026-09-29): the conjectured denominator is proved, for sampling rates,
+% by a later package of the repository.
+\begin{ednote}
+The later repository article \path{inverse-and-sampling/Local_Minimax_Geometry_Uniform_Factors/} (filed 2026-09-29, unreviewed)
+proves the candidate denominator \eqref{eq:localconjecture} at the level of
+minimax sampling rates, $n^{-1/(2M)}$, for Gaussian variance unknown in a
+compact interval bounded away from zero (its Corollary \texttt{cor:joint};
+its $r$ is $m_0$ here); it does not cite this problem. The pairwise
+Hellinger-modulus form is not stated there. The same article constructs one
+grid moment estimator attaining the local rates on every fixed stratum
+without being told the stratum, which bears on the next problem; that
+estimator is not efficient, and honest adaptive confidence sets remain open.
+\end{ednote}
 
 \begin{problem}[Adapt to collision and vanishing patterns]
 Construct a single practical estimator attaining the regular $n^{-1/2}$ rate
@@ -1226,6 +1241,17 @@ rates proved here cease to be informative and connect that regime to the
 repository's infinite-factor instability questions. The fixed-$m$ theorem
 cannot simply be read with a growing $m$ substituted into its exponent.
 \end{problem}
+% ed. (2026-09-29): a later package treats the infinite-factor regime for the
+% Gaussian variance only.
+\begin{ednote}
+For the Gaussian variance alone, the later repository article \path{inverse-and-sampling/Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/}
+(filed 2026-09-29, unreviewed) treats square-summable infinite half-length
+spectra: with total latent variance at most $V$, the exact minimax risk for
+the variance is $V/2$ in absolute error at every sample size, and uniform
+consistency holds exactly on classes whose squared-scale tails vanish
+uniformly. Growing capacity $m=m_n$ and the recovery of the half-lengths
+are not treated there.
+\end{ednote}
 
 \begin{problem}[Learn the background from calibration samples]
 Suppose the background law is not known exactly but a second independent

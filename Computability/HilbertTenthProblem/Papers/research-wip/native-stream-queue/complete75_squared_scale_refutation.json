@@ -1,0 +1,774 @@
+{
+  "status": "PASS_CURRENT75_SQUARED_SCALE_ALL_INPUT_REFUTATION",
+  "source": {
+    "operations": 75,
+    "multiplications": 40,
+    "additions_subtractions": 35,
+    "equations": 19,
+    "positive_witnesses": 30,
+    "schedule": [
+      [
+        "qm1",
+        "-",
+        "q",
+        1
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "bounded",
+        "+",
+        "C",
+        "alpha"
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "marked_rhs",
+        "+",
+        "Z",
+        "W"
+      ],
+      [
+        "qF",
+        "*",
+        "q",
+        "F"
+      ],
+      [
+        "packed",
+        "+",
+        "Z",
+        "qF"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "gap",
+        "-",
+        "Lbig",
+        "packed"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "Lbig"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "wn2"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "C"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "zquot",
+        "qm1"
+      ],
+      [
+        "local_rhs_sum",
+        "+",
+        "F",
+        "local_rhs"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "Lbig"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "ksn2",
+        "*",
+        "k",
+        "sn2"
+      ],
+      [
+        "UM2",
+        "*",
+        "UM",
+        "UM"
+      ],
+      [
+        "scaled_norm_coefficient",
+        "+",
+        "UM2",
+        "wn2"
+      ],
+      [
+        "ratio_product2",
+        "*",
+        "ksn2",
+        "ksn2"
+      ],
+      [
+        "L9",
+        "*",
+        "scaled_norm_coefficient",
+        "ratio_product2"
+      ],
+      [
+        "tauplus1",
+        "+",
+        "tau",
+        1
+      ],
+      [
+        "R9",
+        "*",
+        "tau",
+        "tauplus1"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "r1",
+        "+",
+        "r",
+        1
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "R11",
+        "+",
+        "r1",
+        "hpm1"
+      ],
+      [
+        "tr1",
+        "+",
+        "r1",
+        "r"
+      ],
+      [
+        "cam2",
+        "*",
+        "c",
+        "a"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "a"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "ga",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "a_square",
+        "*",
+        "a",
+        "a"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "c",
+        "c"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "R15",
+        "+",
+        "Ac2",
+        1
+      ],
+      [
+        "L15",
+        "*",
+        "d",
+        "d"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "f_square_minus_one",
+        "-",
+        "L16",
+        1
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "f_square_minus_one"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "c"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "c"
+      ],
+      [
+        "H17",
+        "-",
+        "jc",
+        "tr1"
+      ],
+      [
+        "H2",
+        "*",
+        "H17",
+        "H17"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "ic22",
+        "aux_square_gap"
+      ],
+      [
+        "P17",
+        "-",
+        1,
+        "aux_y2"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "raw_bound",
+        "+",
+        "bounded",
+        "scaled_t"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "pell_gap",
+        "+",
+        "kappa",
+        "phi"
+      ],
+      [
+        "kappa2",
+        "*",
+        "kappa",
+        "kappa"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_rhs",
+        "+",
+        "scaled_kappa2",
+        1
+      ],
+      [
+        "mu2",
+        "*",
+        "mu",
+        "mu"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "kappa",
+        "a"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ]
+    ],
+    "sources": [
+      {
+        "index": 0,
+        "equality": [
+          "repunit",
+          "qm1"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 1,
+        "equality": [
+          "raw_bound",
+          "q"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 2,
+        "equality": [
+          "innerC",
+          "local_rhs_sum"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 3,
+        "equality": [
+          "r",
+          "r_lhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 4,
+        "equality": [
+          "C",
+          "marked_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 5,
+        "equality": [
+          "L9",
+          "R9"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 6,
+        "equality": [
+          "c",
+          "R10a"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 7,
+        "equality": [
+          "k",
+          "R10b"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 8,
+        "equality": [
+          "k",
+          "R11"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 9,
+        "equality": [
+          "a",
+          "R12"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 10,
+        "equality": [
+          "d",
+          "R14"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 11,
+        "equality": [
+          "L15",
+          "R15"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 12,
+        "equality": [
+          "ic22",
+          "R16"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 13,
+        "equality": [
+          "L17",
+          "P17"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 14,
+        "equality": [
+          "H17",
+          "aux_u_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 15,
+        "equality": [
+          "kappa",
+          "index_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 16,
+        "equality": [
+          "c",
+          "pell_gap"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 17,
+        "equality": [
+          "mu2",
+          "norm_rhs"
+        ],
+        "sign": 1
+      },
+      {
+        "index": 18,
+        "equality": [
+          "mu",
+          "exponent_rhs"
+        ],
+        "sign": 1
+      }
+    ],
+    "strong_auxiliary_norm_retained": true
+  },
+  "compilers": [
+    {
+      "alphabet": 2,
+      "windows": 2,
+      "native_positions": 73,
+      "inner_bits": 125,
+      "cell_length": 78125,
+      "cell_bits": 9765625,
+      "verification_mask_population": 72,
+      "DC_population": 104,
+      "population_margin": 9765341,
+      "correction": 0,
+      "full_compiler_q_materialized": false
+    },
+    {
+      "alphabet": 3,
+      "windows": 3,
+      "native_positions": 105,
+      "inner_bits": 125,
+      "cell_length": 78125,
+      "cell_bits": 9765625,
+      "verification_mask_population": 104,
+      "DC_population": 150,
+      "population_margin": 9765217,
+      "correction": 0,
+      "full_compiler_q_materialized": false
+    },
+    {
+      "alphabet": 2,
+      "windows": 3,
+      "native_positions": 75,
+      "inner_bits": 125,
+      "cell_length": 78125,
+      "cell_bits": 9765625,
+      "verification_mask_population": 74,
+      "DC_population": 133,
+      "population_margin": 9765281,
+      "correction": 1,
+      "full_compiler_q_materialized": false
+    },
+    {
+      "alphabet": 2,
+      "windows": 100,
+      "native_positions": 123,
+      "inner_bits": 625,
+      "cell_length": 78125,
+      "cell_bits": 48828125,
+      "verification_mask_population": 122,
+      "DC_population": 2848,
+      "population_margin": 48822303,
+      "correction": 0,
+      "full_compiler_q_materialized": false
+    }
+  ],
+  "packing": {
+    "population_identity_cases": 319,
+    "exact_dummy_change": "-D*G*q**3*slot + D*G*q*slot - G*q**2*slot + G*slot"
+  },
+  "illustrative_outer": {
+    "parameters": {
+      "B": 32,
+      "d": 5,
+      "b": 1,
+      "N": 625,
+      "MC": 26,
+      "MF": 10,
+      "DC": 1,
+      "DR": 1
+    },
+    "examples": [
+      {
+        "x": 1,
+        "selected_dummy_bits": 19,
+        "q_bits": 3126,
+        "packed_r_bits": 12500,
+        "packed_population": 9354,
+        "weakened_threshold": 6250,
+        "original_threshold": 9375,
+        "F_population": 42,
+        "forbidden_F_bits": 21,
+        "actual_main_exponent_residue": 5,
+        "modulus": 3125,
+        "intended_exponent": 5,
+        "all_outer_bounds": true,
+        "full_Pell_coordinates_materialized": false
+      },
+      {
+        "x": 3,
+        "selected_dummy_bits": 19,
+        "q_bits": 3126,
+        "packed_r_bits": 12500,
+        "packed_population": 9354,
+        "weakened_threshold": 6250,
+        "original_threshold": 9375,
+        "F_population": 42,
+        "forbidden_F_bits": 21,
+        "actual_main_exponent_residue": 5,
+        "modulus": 3125,
+        "intended_exponent": 5,
+        "all_outer_bounds": true,
+        "full_Pell_coordinates_materialized": false
+      },
+      {
+        "x": 7,
+        "selected_dummy_bits": 19,
+        "q_bits": 3126,
+        "packed_r_bits": 12500,
+        "packed_population": 9354,
+        "weakened_threshold": 6250,
+        "original_threshold": 9375,
+        "F_population": 42,
+        "forbidden_F_bits": 21,
+        "actual_main_exponent_residue": 5,
+        "modulus": 3125,
+        "intended_exponent": 5,
+        "all_outer_bounds": true,
+        "full_Pell_coordinates_materialized": false
+      },
+      {
+        "x": 20,
+        "selected_dummy_bits": 14,
+        "q_bits": 3126,
+        "packed_r_bits": 12500,
+        "packed_population": 9359,
+        "weakened_threshold": 6250,
+        "original_threshold": 9375,
+        "F_population": 32,
+        "forbidden_F_bits": 16,
+        "actual_main_exponent_residue": 5,
+        "modulus": 3125,
+        "intended_exponent": 5,
+        "all_outer_bounds": true,
+        "full_Pell_coordinates_materialized": false
+      },
+      {
+        "x": 100,
+        "selected_dummy_bits": 14,
+        "q_bits": 3126,
+        "packed_r_bits": 12500,
+        "packed_population": 9359,
+        "weakened_threshold": 6250,
+        "original_threshold": 9375,
+        "F_population": 32,
+        "forbidden_F_bits": 16,
+        "actual_main_exponent_residue": 5,
+        "modulus": 3125,
+        "intended_exponent": 5,
+        "all_outer_bounds": true,
+        "full_Pell_coordinates_materialized": false
+      }
+    ],
+    "scope": "Illustrative fixed masks; the all-compiler extension is proved separately"
+  },
+  "theorem": "Every fixed complete76 compiler and every positive ordinary input have full positive witnesses after the literal q-cubed scale deletion",
+  "evidence": "Symbolic source, sparse compiler bounds, exact illustrative outer tuples, and a parametric full positive proof",
+  "scope": "Distinct75 source; older auxiliary-scale and input-gap candidates remain open",
+  "established_complete_universal_bound": 76
+}

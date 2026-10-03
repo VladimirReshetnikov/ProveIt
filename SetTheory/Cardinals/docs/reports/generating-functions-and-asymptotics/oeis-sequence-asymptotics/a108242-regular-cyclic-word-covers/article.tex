@@ -1,0 +1,836 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,array,longtable}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\hypersetup{pdftitle={Regular cyclic word covers},pdfsubject={Full asymptotic expansions and critical degree crossover},pdfauthor={Research article},pdfkeywords={cyclic words, regular covers, asymptotic expansion, necklaces, OEIS}}
+\usepackage{enumitem}
+\setlist{nosep,topsep=4pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\fall}[2]{(#1)_{\underline{#2}}}
+\newcommand{\A}{A^s_{n;r,\ell}}
+\newcommand{\B}{B_{n;r,\ell}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ind}{\mathbf 1}
+\DeclareMathOperator{\Po}{Po}
+\DeclareMathOperator{\Var}{Var}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\numberwithin{equation}{section}
+\title{Regular cyclic word covers\\[4pt]\large Full asymptotic expansions and critical degree crossover}
+\author{Research article and reproducibility companion}
+\date{2 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We count sets and multisets of rotation classes of words of fixed length $\ell\ge3$ on a labeled alphabet, with every letter occurring exactly $r$ times. Letters may repeat within a word. An exact slot-partition identity gives full fixed-degree expansions with absolute remainder control and finite rational coefficient algorithms. For cubic words we identify the OEIS sequences A108242, A110105 and their degree-two neighbors, and distinguish three commonly used leading carriers. At the critical scale $r=\lambda n^{(\ell-2)/2}$ we prove a uniform expansion to every fixed order on compact positive $\lambda$ intervals, with multiplier
+\[
+ \exp\!\left(\frac{s\lambda^2}{2\ell}
+                 +\ind_{2\mid\ell}\frac{\lambda}{\ell}\right),
+ \qquad s\in\{+1,-1\}.
+\]
+The extra even-length term comes from half-turn symmetry; for even $\ell$ all odd half-power coefficients vanish. We give the first three cubic corrections, a quartic specialization, and Lambert $W$ approximations with a rigorous lattice enclosure for fixed-degree thresholds. Exact finite-object and symbolic tests accompany the proofs. The leading equivalents of the four named OEIS sequences were already posted; no priority claim is based on those constants, and the literature comparison is a bounded applicability screen.
+\end{abstract}
+\tableofcontents
+
+\section{Scope and main conclusions}\label{rcw:sec:scope}
+A word is identified with its cyclic rotations, but not with its reversal. Thus $abc$ and $acb$ represent distinct words when $a,b,c$ are distinct. A cover is an unordered collection of these words on the alphabet $[n]=\{1,\ldots,n\}$, with each letter appearing exactly $r$ times overall. The sign $s=+1$ allows repeated whole words, while $s=-1$ forbids repeated whole words. Both models allow repeated letters inside a word. This distinction is essential: these objects are not ordinary simple uniform hypergraphs.
+
+Put $N=rn$ and assume $\ell\mid N$. The exact configuration carrier is
+\begin{equation}\label{rcw:eq:B}
+ \B=\frac{(rn)!}{\ell^{rn/\ell}(rn/\ell)!(r!)^n}.
+\end{equation}
+It need not be an integer. The results below establish:
+\begin{enumerate}
+\item For each fixed $r,\ell$ and each fixed $K$, a rational expansion
+$\A/\B=\sum_{k=0}^K c_k n^{-k}+O(n^{-K-1})$, with $c_0=1$ and a finite algorithm for every coefficient.
+\item Uniformly for cubic words and $1\le r\le C\sqrt n$, a bridge formula
+$A^s_{n;r,3}/B_{n;r,3}=\exp(\tau+s\mu)(1+O_C(n^{-1}))$, with explicit $\tau,\mu$.
+\item At $r=\lambda n^{(\ell-2)/2}$, uniform expansions to every fixed order in $n^{-1/2}$, and only integer powers of $1/n$ when $\ell$ is even.
+\item For each fixed-degree sequence, a smooth asymptotic inverse and a shrinking two-sided enclosure for its actual threshold on the admissible lattice.
+\end{enumerate}
+All infinite expansions in this article are Poincar\'e expansions: each finite truncation has the stated remainder. Convergence of the infinite series is not asserted.
+
+The named cubic sequences were introduced by Mishna; her original 2005 preprint contains the relevant cyclic-cover discussion \cite{mishna}. Kotesovec's exact leading equivalents appear in the OEIS records \cite{oeis108242,oeis110105,oeis110104,oeis110106}. The technical content here is the explicit remainder argument, finite higher-order mechanism, critical-degree theorem and parity effect. Section~\ref{rcw:sec:literature} explains why nearby published theorems do not directly count this exact model, without asserting exhaustive novelty.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~61 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{regular-\allowbreak cyclic-\allowbreak word-\allowbreak covers-\allowbreak reproducibility.zip}
+(wrapper directory \texttt{regular-\allowbreak cyclic-\allowbreak word-\allowbreak covers/})
+in commit \texttt{096ee7b87}, main file
+\texttt{article/\allowbreak regular-\allowbreak cyclic-\allowbreak word-\allowbreak covers.tex},
+now \texttt{article.tex}, and placed in commit \texttt{d0e6008d9} among the
+OEIS-sequence asymptotics reports of the research-report collection. The
+manuscript names no ProveIt commit and continues no repository path, so it
+has no pin; its author line (``Research article and reproducibility
+companion'') names neither an author nor a tool. Nothing here is formalized
+in Lean or Rocq, and placement in the collection confers no formal status on
+any statement. The writing step prefixed every label with \texttt{rcw:},
+added section labels and these \textsf{[write]} notes and two references
+\cite{rcw-tai,rcw-cti}; no statement, proof, number or table of the
+manuscript was changed.
+
+\emph{Not the cyclic words of a neighbouring report.} The collection report
+\texttt{a330266-\allowbreak balanced-\allowbreak smirnov-\allowbreak poisson}
+lists among its further questions ``Cyclic words and Hamiltonian cycles'':
+Smirnov words in which, in addition, the last letter may not equal the
+first. That question is \emph{not} answered here. Its objects are single
+words with no two cyclically adjacent equal letters; the objects here are
+sets or multisets of rotation classes of words, letters may repeat inside a
+word, and only the total multiplicity $r$ of each letter is prescribed.
+
+\emph{Notation.} Several letters carry two or more section-local meanings.
+Each symbol is printed as delivered; the table fixes its meaning by section
+and names the tempting false reading.
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.14\linewidth}p{0.80\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$n$, $m$ & $n$ is the alphabet size throughout. For the degree-two entries the OEIS index is $m$ with $n=3m$ (Section~\ref{rcw:sec:oeis}); in the inverse section an alphabet-size threshold must be divided by three to give the OEIS index.\\
+$B_{n;r,\ell}$, $B_n$, $D_m$, $B_h$ & $B_{n;r,\ell}$ is the exact carrier \eqref{rcw:eq:B}; $B_n=B_{n;3,3}$ and $D_m=B_{3m;2,3}$ are its cubic cases; $B_h=\lceil\log(1/h)\rceil$ is a cutoff in Lemma~\ref{rcw:lem:weighted}. None is a Bernoulli number, which is written $\mathsf B_{2j}$.\\
+$F_n$, $H_n$, $H^{(2)}_m$ & the leading equivalents posted in the OEIS (Section~\ref{rcw:sec:oeis}); asymptotic to the carriers but with different corrections. Not $H=(\ell-1)J-v$ (Section~\ref{rcw:sec:fixed}), nor $F$, $\mathcal F_{q,\pi}$, $F_s(e)$ (Sections~\ref{rcw:sec:bridge}, \ref{rcw:sec:critical}, \ref{rcw:sec:checks}).\\
+$\mu$, $\tau$ & the defect intensities \eqref{rcw:eq:mutau} of the cubic bridge; $\mu$ is not a growth rate.\\
+$b$, $c$, $d$ & multiplicities of modes in \eqref{rcw:eq:triplesum} and of the zero-grade modes in Section~\ref{rcw:sec:critical}; $d$ is also the divisor in $(j,d)$ and $d_*$ the least divisor $>2$. Not $b_0$, nor the logarithmic coefficients $d_k$ of \eqref{rcw:eq:logA}.\\
+$a$ & $a=n-2b-3c-d$ in \eqref{rcw:eq:triplesum}; a block size in Section~\ref{rcw:sec:critical}; $a=r(1-1/\ell)$, the coefficient of $n\log n$, in Section~\ref{rcw:sec:inverse}.\\
+$D$ & a deficit level in Lemma~\ref{rcw:lem:forest} and \eqref{rcw:eq:collisiontail}; $D=a(1+w)$, the model slope, in Section~\ref{rcw:sec:inverse}.\\
+$E_k$, $E_3$ & $E_k=E^s_{\ell,k}$ are the unaveraged coefficient polynomials, cubic case in \eqref{rcw:eq:cubicE}; in Section~\ref{rcw:sec:checks} $E_3$ is redefined as the numerical remainder $Q-(1+P_1^sh+P_2^sh^2+P_3^sh^3)$. The two $E_3$ are different.\\
+$Q$ & the majorant $Q(z)$ of Lemma~\ref{rcw:lem:weighted}; the normalized ratio $Q=(A^s/B)e^{-s\lambda^2/6}$ of Section~\ref{rcw:sec:checks}; $\Q$ is the rationals.\\
+$W$, $W_0$ & $W$ is a total critical grade (Section~\ref{rcw:sec:critical}); $W_0$ is the principal Lambert branch (Section~\ref{rcw:sec:inverse}).\\
+$w$, $v$, $u$ & $w$ is a necklace monomial, $w_C$ a block weight, and $w=W_0(\cdot)$ in \eqref{rcw:eq:lambert}; $v=|\pi|$ and $v(w)$ a letter-count vector; $u_j$ are activities and $u$ a positive-mode vector.\\
+$C$ & a block $C\in\pi$; the constant in $r\le C\sqrt n$ (Theorem~\ref{rcw:thm:bridge}); $C_K$, $C_{K,\ell}$ are constants.\\
+$N$, $N_s(y)$ & $N=rn$ is the total number of letter occurrences; $N_s(y)$ is the lattice threshold of Theorem~\ref{rcw:thm:inverse}.\\
+$\rho$, $\Lambda$, $g$ & $\rho=2b+3c+d$ in \eqref{rcw:eq:triplesum} and $\rho_{b,c}$ a disk radius (Lemma~\ref{rcw:lem:taylor}); $\Lambda=\lambda_1$ in Lemma~\ref{rcw:lem:weighted}; $g_\nu$ is a mode grade and $g$ the first surviving grade in Corollary~\ref{rcw:cor:firstlength}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{An exact coefficient model}\label{rcw:sec:model}
+\subsection{Cycle index and products}
+Write $p_t=\sum_{i=1}^n x_i^t$ and let $\varphi$ be Euler's totient. Burnside's lemma gives the necklace inventory
+\begin{equation}\label{rcw:eq:inventory}
+ Z_{C_\ell}(p_1,p_2,\ldots)
+ =\frac1\ell\sum_{d\mid\ell}\varphi(d)p_d^{\ell/d}.
+\end{equation}
+Indeed a rotation of order $d$ has $\ell/d$ position-orbits, each of size $d$, and there are $\varphi(d)$ such rotations. If $w$ denotes the monomial of a necklace, the exact multiset and set products are respectively $\prod_w(1-w)^{-1}$ and $\prod_w(1+w)$. Taking logarithms yields
+\begin{equation}\label{rcw:eq:G}
+ G_s=\exp\!\left(\sum_{j\ge1}\frac{s^{j-1}}j
+ Z_{C_\ell}(p_j,p_{2j},\ldots)\right),\qquad
+ \A=[x_1^r\cdots x_n^r]G_s.
+\end{equation}
+This is a formal coefficient identity: at any bounded target multidegree, only finitely many terms can contribute. In particular modes with $jd>r$ may be discarded exactly.
+
+The identity mode $(j,d)=(1,1)$ is $\exp(p_1^\ell/\ell)$. Its target coefficient is \eqref{rcw:eq:B}, by expanding the exponential and then the multinomial. Every remaining mode $\nu=(j,d)$ has
+\begin{equation}\label{rcw:eq:modes}
+ \alpha_\nu=\frac{s^{j-1}\varphi(d)}{\ell j},\qquad
+ t_\nu=jd,\qquad m_\nu=\ell/d.
+\end{equation}
+A copy of this mode contributes $m_\nu$ distinguishable slots of weight $t_\nu$.
+
+\subsection{Slot partitions}
+Let $q=(q_\nu)$ be a finite mode-multiplicity vector and set
+\[
+ J=\sum_\nu j q_\nu,\qquad M=\sum_\nu m_\nu q_\nu.
+\]
+There are $M$ slots with total weight $\ell J$. A partition $\pi$ of the slots records which slots are assigned to the same alphabet letter. Write $v=|\pi|$ and $w_C$ for the total weight in a block $C$. Throughout, $\fall{x}{k}=x(x-1)\cdots(x-k+1)$ and $\fall{x}{0}=1$.
+
+\begin{proposition}[Exact normalized contribution]\label{rcw:prop:exact}
+The normalized contribution of $q$ is
+\begin{equation}\label{rcw:eq:slot}
+ \left(\prod_\nu\frac{\alpha_\nu^{q_\nu}}{q_\nu!}\right)
+ \frac{\ell^J\fall{N/\ell}{J}}{\fall N{\ell J}}
+ \sum_{\pi}\fall nv\prod_{C\in\pi}\fall r{w_C},
+\end{equation}
+where the sum is over partitions with $w_C\le r$. Terms with $\ell J>N$ or $v>n$ are zero. Summing \eqref{rcw:eq:slot} over all $q$ gives $\A/\B$.
+\end{proposition}
+\begin{proof}
+Expansion of the nonidentity exponential gives $\prod\alpha_\nu^{q_\nu}/q_\nu!$. Expanding the powers $p_t$ assigns letters to distinguishable slots. For a fixed partition $\pi$, the blocks receive distinct letters in $\fall nv$ ways. The baseline fills each remaining letter capacity; dividing its coefficient by \eqref{rcw:eq:B} gives the global factor in \eqref{rcw:eq:slot} times $\prod_C r!/(r-w_C)!$. No additional block factorial occurs because the slots were distinguishable before grouping by their actual assigned labels.
+\end{proof}
+This identity retains coincident slots and rotationally symmetric necklaces. A calculation that keeps only distinct-slot assignments is an approximation and needs a separate error bound.
+
+\section{Every fixed order at fixed degree}\label{rcw:sec:fixed}
+\begin{theorem}[Fixed-degree expansion]\label{rcw:thm:fixed}
+Fix integers $r\ge1$, $\ell\ge3$ and $s\in\{+1,-1\}$. For every fixed $K\ge0$, as $n\to\infty$ through $\ell\mid rn$,
+\begin{equation}\label{rcw:eq:fixed}
+ \frac{\A}{\B}=\sum_{k=0}^K c_k(s,r,\ell)n^{-k}
+       +O_{K,r,\ell}(n^{-K-1}),\qquad c_0=1.
+\end{equation}
+All $c_k$ are rational and are computable by the finite procedure below. The discarded terms have an absolute majorant, also for $s=-1$.
+\end{theorem}
+For each nonidentity mode define its fixed-degree weight
+\[
+ \gamma_\nu=(\ell-1)j-\ell/d.
+\]
+This is a positive integer. For $d=1$ one has $j\ge2$ and $\gamma\ge\ell-2$; for $d\ge2$, $j\ge1$ gives $\gamma\ge\ell/2-1>0$. A partition term in \eqref{rcw:eq:slot} begins at order
+\[
+ n^{-H},\qquad H=(\ell-1)J-v\ge\sum_\nu\gamma_\nu q_\nu,
+\]
+because $v\le M$.
+
+\begin{lemma}[Factorial lower bound]\label{rcw:lem:fall}
+For integers $0\le L\le N$, $\fall NL\ge(N/e)^L$.
+\end{lemma}
+\begin{proof}
+The geometric mean of the largest $L$ members of $\{1,\ldots,N\}$ is at least the geometric mean of all $N$. Integration of $\log x$ gives $N!\ge(N/e)^N$. Combining these two statements proves the claim, including the empty product case.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{rcw:thm:fixed}]
+There are at most $n^M$ slot assignments, each with occupancy factor at most $r^{\ell J}$. Also $\ell^J\fall{N/\ell}{J}\le N^J$. Lemma~\ref{rcw:lem:fall} therefore bounds the absolute contribution of a specified $q$ by
+\begin{equation}\label{rcw:eq:fixedmajorant}
+ \prod_\nu\frac{\bigl(|\alpha_\nu|e^{\ell j}r^j
+                         n^{-\gamma_\nu}\bigr)^{q_\nu}}{q_\nu!}.
+\end{equation}
+If $\ell J>N$, the exact contribution is zero and the same bound remains valid. With $r,\ell$ fixed there are finitely many modes $jd\le r$, all of positive integer weight. Hence the exponential generating majorant obtained by summing \eqref{rcw:eq:fixedmajorant} is analytic in $z=1/n$ at zero, with nonnegative coefficients. Its weighted tail of degree at least $K+1$ is $O(n^{-K-1})$. This includes mode vectors of size proportional to $n$.
+
+Only finitely many $q$ satisfy $\sum\gamma_\nu q_\nu\le K$. Each has finitely many slot partitions, and each retained contribution is a rational function of $n$. Taylor expansion at infinity gives rational coefficients and an $O(n^{-K-1})$ remainder after a fixed truncation. Adding these finite remainders to the absolute tail proves \eqref{rcw:eq:fixed}.
+\end{proof}
+
+\paragraph{Finite coefficient procedure.}
+To compute through order $K$, enumerate $q$ with $\sum\gamma_\nu q_\nu\le K$, enumerate their partitions with $w_C\le r$, evaluate \eqref{rcw:eq:slot}, and expand at $n=\infty$ through $n^{-K}$. This is an exact finite algorithm, without differential-equation guessing or numerical fitting. The proof does not imply that the algorithm is fast at large $K$.
+
+\section{Cubic sequences and their carriers}\label{rcw:sec:oeis}
+\subsection{Identifications and wording}
+With the sequence index written as $m$ when it differs from alphabet size,
+\begin{align*}
+ \mathrm{A108242}(n)&=A^+_{n;3,3}, &
+ \mathrm{A110105}(n)&=A^-_{n;3,3},\\
+ \mathrm{A110106}(m)&=A^+_{3m;2,3}, &
+ \mathrm{A110104}(m)&=A^-_{3m;2,3}.
+\end{align*}
+The empty object gives value $1$ at index zero. The title wording of A110105 and of the degree-two entries is inconsistent with these intended parameters. The examples, generating equations and Mishna's original source identify words of length three; for degree two the alphabet has $3m$ letters. For example at $m=1$ the multiset model has six covers and the set model four, the two extra covers being $\{123,123\}$ and $\{132,132\}$. The theorem uses the explicit model just defined rather than the inconsistent titles \cite{oeis110105,oeis110104,oeis110106,mishna}.
+
+\subsection{An exact triple sum}
+When $r=\ell=3$, truncation modulo $x_i^4$ gives
+\[
+ G_s=\exp\left(\frac{p_1^3}3+\frac{s p_2^3}6
+                     +\frac{p_3^3}9+\frac{2p_3}3\right).
+\]
+Take $b,c,d\ge0$, and set $k=3b+3c+d\le n$ and $a=n-2b-3c-d$. All weight-two and weight-three slots must occupy distinct letters, by capacity three. Thus
+\begin{equation}\label{rcw:eq:triplesum}
+ A^s_{n;3,3}=\sum_{\substack{b,c,d\ge0\\3b+3c+d\le n}}
+ \frac{s^b\fall nk(3a)!2^d}
+ {6^{n-k}3^{a+d}a!\,6^b b!\,9^c c!\,d!}.
+\end{equation}
+Here $a\ge0$ automatically under the indicated condition. Put $\rho=2b+3c+d$ and $B_n=(3n)!/(18^n n!)$. The normalized summand is
+\begin{equation}\label{rcw:eq:normalizedtriple}
+ \frac{s^b6^k3^\rho2^d}{6^b b!\,9^c c!\,3^d d!}
+ \frac{\fall nk\fall n\rho}{\fall{3n}{3\rho}},
+\end{equation}
+which has order $n^{-(b+3c+d)}$. This gives an especially simple rational implementation of Theorem~\ref{rcw:thm:fixed}.
+
+The first terms are
+\begin{align}
+ \frac{A^+_{n;3,3}}{B_n}
+ &=1+\frac8{9n}+\frac{104}{81n^2}+\frac{3784}{2187n^3}
+    +\frac{43208}{19683n^4}+\frac{1126216}{885735n^5}
+    +O(n^{-6}),\label{rcw:eq:fixedplus}\\
+ \frac{A^-_{n;3,3}}{B_n}
+ &=1-\frac{16}{243n^3}-\frac{16}{27n^4}
+       -\frac{2224}{729n^5}+O(n^{-6}).\label{rcw:eq:fixedminus}
+\end{align}
+The cancellations at orders $n^{-1}$ and $n^{-2}$ in the set model are exact. Eighth-order lists are included in the reproducibility data.
+
+\subsection{Three distinct normalizations}
+The factorial-square carrier posted for A108242 is
+\[
+ F_n=\frac{\sqrt3}{2\pi}\left(\frac32\right)^n\frac{(n!)^2}{n}.
+\]
+The equivalent posted for A110105 is
+\[
+ H_n=\sqrt3\exp\bigl(2n\log n+(\log(3/2)-2)n\bigr).
+\]
+Both are asymptotic to $B_n$, but their corrections differ. With $\mathsf B_{2j}$ denoting Bernoulli numbers, Stirling's formula gives, at every fixed truncation,
+\begin{equation}\label{rcw:eq:carrier}
+ \log\frac{B_n}{F_n}\sim
+ \sum_{j\ge1}\frac{\mathsf B_{2j}}{2j(2j-1)}
+          \bigl(3^{1-2j}-3\bigr)n^{1-2j}.
+\end{equation}
+Thus $B_n/F_n=1-2/(9n)+O(n^{-2})$, and
+\[
+ \frac{A^+_{n;3,3}}{F_n}=1+\frac{2}{3n}+O(n^{-2}),\qquad
+ \frac{A^-_{n;3,3}}{F_n}=1-\frac{2}{9n}+O(n^{-2}).
+\]
+On the logarithmic scale, $\log(B_n/H_n)=-1/(18n)+O(n^{-3})$, so the first logarithmic coefficients relative to $H_n$ are $5/6$ and $-1/18$. Interchanging these carriers without their Stirling corrections changes the coefficients. The leading equivalents themselves are already recorded in the OEIS \cite{oeis108242,oeis110105}.
+
+\subsection{Degree two}
+For $n=3m,r=2,\ell=3$, only the mode $s p_2^3/6$ remains. Put $a=2m-2b$. Then
+\begin{equation}\label{rcw:eq:degree2}
+ A^s_{3m;2,3}=\sum_{b=0}^m
+  \frac{s^b\fall{3m}{3b}(3a)!}
+       {2^{3m-3b}3^a a!\,6^b b!}.
+\end{equation}
+Its baseline is $D_m=(6m)!/[3^{2m}(2m)!2^{3m}]$, and its normalized summand is
+\[
+ \frac{s^b12^b}{b!}
+ \frac{\fall{3m}{3b}\fall{2m}{2b}}{\fall{6m}{6b}}.
+\]
+Consequently
+\[
+ \frac{A^s_{3m;2,3}}{D_m}=1+\frac{s}{36m}+O(m^{-2}).
+\]
+Writing $H^{(2)}_m=\sqrt3\,2^m3^{4m}m^{4m}e^{-4m}$, Stirling gives $D_m/H^{(2)}_m=1-1/(36m)+O(m^{-2})$. Hence the $1/m$ correction relative to the posted leading equivalent vanishes for A110106 and is $-1/(18m)$ for A110104. The shared leading equivalent was posted by Kotesovec in 2023 \cite{oeis110106,oeis110104}. All fixed higher orders follow from \eqref{rcw:eq:degree2} or Theorem~\ref{rcw:thm:fixed}.
+
+\section{A cubic bridge to the critical scale}\label{rcw:sec:bridge}
+For $3\mid rn$ define
+\begin{equation}\label{rcw:eq:mutau}
+ \mu=\frac{(r-1)^3}{6rn},\qquad
+ \tau=\frac{2(r-1)(r-2)}{3rn}.
+\end{equation}
+The first fixed-degree correction is
+\begin{equation}\label{rcw:eq:firstgeneral}
+ \frac{A^s_{n;r,3}}{B_{n;r,3}}=1+\tau+s\mu+O_r(n^{-2}).
+\end{equation}
+Only the modes $U_2=s p_2^3/6$ and $V_1=2p_3/3$ have fixed-degree weight one. The $\tau$ contribution reflects the rotational stabilizer of $aaa$; the $\mu$ contribution reflects repeated whole words with three distinct letters. The word $aab$ has trivial rotational stabilizer and is already correctly counted by the carrier.
+
+\begin{theorem}[Uniform cubic bridge]\label{rcw:thm:bridge}
+For every fixed $C>0$, uniformly in integers $1\le r\le C\sqrt n$ with $3\mid rn$,
+\begin{equation}\label{rcw:eq:bridge}
+ \frac{A^s_{n;r,3}}{B_{n;r,3}}
+ =\exp(\tau+s\mu)\bigl(1+O_C(n^{-1})\bigr).
+\end{equation}
+In particular, if $r/\sqrt n\to\lambda\ge0$, then the ratio tends to $\exp(s\lambda^2/6)$.
+\end{theorem}
+\begin{proof}
+The nonidentity modes in \eqref{rcw:eq:G} are
+\[
+ U_j:\ \frac{s^{j-1}p_j^3}{3j}\quad(j\ge2),\qquad
+ V_j:\ \frac{2s^{j-1}p_{3j}}{3j}\quad(j\ge1).
+\]
+The absolute bound \eqref{rcw:eq:fixedmajorant}, valid also when $r$ grows, gives activities
+\[
+ u_j=\frac{e^{3j}r^j n^{3-2j}}{3j},\qquad
+ v_j=\frac{2e^{3j}r^j n^{1-2j}}{3j}.
+\]
+For $r\le C\sqrt n$, $u_2=O_C(1)$, $v_1=O_C(n^{-1/2})$, and
+$\sum_{j\ge3}u_j+\sum_{j\ge2}v_j=O_C(n^{-3/2})$; the successive $j$-ratios are bounded by a constant times $r/n^2$. Summing the exponential majorant shows that every configuration using another mode contributes absolutely $O_C(n^{-3/2})$.
+
+Retain $b$ copies of $U_2$ and $d$ of $V_1$, and put $M=3b+d$, $J=2b+d$, $N=rn$. Assign the $M$ slots independent uniform labels. Whenever the denominator is nonzero, set
+\[
+ R=\frac{\prod_{\text{labels }i}\fall r{\text{weight at }i}}
+          {\fall r2^{\,3b}\fall r3^{\,d}}.
+\]
+The inequality $\fall r{u+v}\le\fall ru\fall rv$ gives $0\le R\le1$; on no label collision $R=1$. Thus
+\[
+ 0\le1-\mathbb E R\le\Pr(\text{a collision})\le\binom M2/n.
+\]
+The full retained contribution divided by $(s\mu)^b\tau^d/(b!d!)$ equals $F\mathbb E R$, where
+\[
+ F=\frac{\fall{N/3}{J}/(N/3)^J}{\fall N{3J}/N^{3J}}
+   =\prod_{\substack{0\le k<3J\\3\nmid k}}(1-k/N)^{-1}.
+\]
+For $3J\le N/2$, since the surviving indices sum to $3J^2$,
+\[
+ 1\le F\le e^{6J^2/N},\qquad
+ |F\mathbb E R-1|\le e^{6J^2/N}-1+\binom M2/n.
+\]
+On $b+d\le n^{1/8}$ this is a polynomial in $b+d$ times $O(1/n)$, with a uniformly bounded exponential factor. Summation against $|\mu|^b\tau^d/(b!d!)$ is $O_C(1/n)$. The complementary tail is smaller than every fixed power of $n^{-1}$ by the factorial majorant. For $r=2$, all $d>0$ terms vanish; for $r=1$ there are no defects at all. This avoids division by a zero occupancy factor. We obtain $\exp(\tau+s\mu)+O_C(n^{-1})$. Since $\exp(\tau+s\mu)$ is bounded below by a positive $C$-dependent constant, the error is relative as asserted.
+\end{proof}
+This proof supplies the tail control that convergence of a collision count in distribution alone would not provide for the positive multiset exponential.
+
+\section{Every fixed order at critical degree}\label{rcw:sec:critical}
+\begin{theorem}[Critical expansion for every fixed length]\label{rcw:thm:critical}
+Fix $\ell\ge3$, $s\in\{+1,-1\}$, and $0<\lambda_0<\lambda_1<\infty$. On integer pairs $(n,r)$ with $\ell\mid rn$, put
+\begin{equation}\label{rcw:eq:criticalvars}
+ h=n^{-1/2},\qquad \lambda=r n^{-(\ell-2)/2},\qquad
+ \theta=\frac{s\lambda^2}{2\ell},\qquad
+ \eta=\ind_{2\mid\ell}\frac{\lambda}{\ell}.
+\end{equation}
+There are rational Laurent polynomials $P^s_{\ell,k}(\lambda)$, $P^s_{\ell,0}=1$, such that for every fixed $K\ge0$, uniformly for $\lambda\in[\lambda_0,\lambda_1]$,
+\begin{equation}\label{rcw:eq:critical}
+ \frac{\A}{\B}=e^{\theta+\eta}
+   \left(\sum_{k=0}^K P^s_{\ell,k}(\lambda)h^k
+                      +O_{K,\ell,\lambda_0,\lambda_1}(h^{K+1})\right).
+\end{equation}
+The actual ratio $r n^{-(\ell-2)/2}$ is used at each integer pair. No rounding convention is implicit. The exact factorial carrier \eqref{rcw:eq:B} is retained: if it is replaced by a growing-degree Stirling expansion, the term $n\log(r!)$ must be expanded to matching accuracy; the fixed-degree expansion in Section~\ref{rcw:sec:inverse} cannot be reused unchanged.
+\end{theorem}
+We give the remainder proof explicitly. Its three ingredients are an absolute weighted-mode tail, a collision-forest bound and a uniform analytic Taylor estimate.
+
+\subsection{Exact rescaling and zero-grade modes}
+For a partition term in \eqref{rcw:eq:slot}, let $\delta=M-v$ and define the critical mode grade
+\[
+ g_\nu=\ell j-2\ell/d,\qquad W=\sum_\nu g_\nu q_\nu.
+\]
+Since $r=\lambda h^{-(\ell-2)}$ and $N=\lambda h^{-\ell}$, the exact term becomes
+\begin{equation}\label{rcw:eq:rescaled}
+ \left(\prod_\nu\frac{\alpha_\nu^{q_\nu}}{q_\nu!}\right)
+       \lambda^J h^{W+2\delta}\,\mathcal F_{q,\pi}(h,\lambda),
+\end{equation}
+where
+\begin{equation}\label{rcw:eq:F}
+ \mathcal F_{q,\pi}=
+ \frac{\displaystyle
+  \prod_{i=0}^{v-1}(1-i h^2)
+  \prod_{C\in\pi}\prod_{i=0}^{w_C-1}(1-i h^{\ell-2}/\lambda)
+  \prod_{i=0}^{J-1}(1-\ell i h^\ell/\lambda)}
+ {\displaystyle\prod_{i=0}^{\ell J-1}(1-i h^\ell/\lambda)}.
+\end{equation}
+The power identity is
+$n^v r^{\ell J}N^{-(\ell-1)J}=\lambda^J h^{\ell J-2v}$, and $\ell J-2v=W+2\delta$.
+
+All nonbaseline grades are nonnegative integers. A zero grade requires $j=2/d$, so the only possibilities are
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Mode & Condition & Slots & Slot weight & Leading activity\\
+\midrule
+$(2,1)$ & all $\ell$ & $\ell$ & $2$ & $\theta$\\
+$(1,2)$ & even $\ell$ & $\ell/2$ & $2$ & $\eta$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Write $b,c$ for their multiplicities, omitting $c$ when $\ell$ is odd. All other modes have positive grade and their count vector is denoted $u$. The leading zero-mode factor is $\theta^b\eta^c/(b!c!)$. The even-length extra exponential in \eqref{rcw:eq:critical} is therefore a half-turn symmetry effect, not a repeated-word sign effect.
+
+\subsection{Weighted-mode tails}
+\begin{lemma}[Absolute weighted tail]\label{rcw:lem:weighted}
+The total absolute contribution of all terms with positive-mode grade $W\ge K+1$ is $O(h^{K+1})$, uniformly on the stated compact $\lambda$ interval. Moreover, for $B_h=\lceil\log(1/h)\rceil$, the absolute zero-mode tail $b+c>B_h$ is $O(h^L)$ for every fixed $L$.
+\end{lemma}
+\begin{proof}
+Using Lemma~\ref{rcw:lem:fall}, $n^M$ slot assignments and the occupancy bound $r^{\ell J}$ gives, for each specified $q$, the absolute bound
+\begin{equation}\label{rcw:eq:criticalmajorant}
+ \prod_\nu\frac{\left(|\alpha_\nu|e^{\ell j}
+                          \lambda^j h^{g_\nu}\right)^{q_\nu}}{q_\nu!}.
+\end{equation}
+Impossible assignments only reduce the sum. Let $\Lambda=\lambda_1$ and form
+\[
+ Q(z)=\sum_{\nu:\,g_\nu>0}|\alpha_\nu|e^{\ell j}\Lambda^j z^{g_\nu}.
+\]
+There are finitely many divisors $d$; for each one the $j$-tail is bounded by a geometric series with ratio $e^\ell\Lambda z^\ell$. Thus $Q$ and $\exp Q$ are analytic near zero with nonnegative coefficients. The tail of $\exp Q$ beyond degree $K$ is $O(h^{K+1})$. The zero modes add a fixed factor $e^{A+B}$ for suitable constants $A,B$ independent of $h$.
+
+Their tail is bounded by a constant times
+\[
+ \sum_{m>B_h}\frac{(A+B)^m}{m!},\qquad
+ \sum_{b+c=m}\frac{A^bB^c}{b!c!}=\frac{(A+B)^m}{m!}.
+\]
+From $m!\ge(m/e)^m$, its logarithm is at most $-B_h\log B_h+O(B_h)$, smaller than $L\log h$ for every fixed $L$ once $h$ is sufficiently small. The same statement holds after multiplication by any fixed polynomial in $b+c$.
+\end{proof}
+The proof bounds all growing mode cutoffs $jd\le r$ by a single convergent majorant. It does not assume that only finitely many modes exist when $r$ grows.
+
+\subsection{Collision forests}
+\begin{lemma}[Collision-forest inequality]\label{rcw:lem:forest}
+Let $M$ distinguishable slots choose labels independently and uniformly in $[n]$, and let $\delta$ be $M$ minus the number of distinct labels. For every integer $D\ge0$,
+\begin{equation}\label{rcw:eq:forest}
+ \Pr(\delta\ge D)\le
+   \binom{\binom M2}{D}n^{-D}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $D=0$ this is one. If $\delta\ge D$, choose a spanning tree in each nonempty equal-label class and retain any $D$ edges from their union. This is a $D$-edge forest whose endpoints have equal labels. A fixed forest imposes exactly $D$ independent equalities: its $M-D$ components can choose labels freely, giving probability $n^{-D}$. There are at most $\binom{\binom M2}{D}$ possible forests. A union bound proves \eqref{rcw:eq:forest}. Nonforests enter only as an upper bound on the number of choices; no probability $n^{-D}$ is assigned to a cyclic equality graph.
+\end{proof}
+
+Fix a positive-mode vector $u$ with grade $W\le K$, and set
+\[
+ D=\left\lfloor\frac{K-W}{2}\right\rfloor+1.
+\]
+The total occupancy weight on assignments with deficit at least $D$ is at most
+$r^{\ell J}n^M\binom{\binom M2}{D}n^{-D}$. Combining with \eqref{rcw:eq:criticalmajorant}, and noting that $M$ is affine in $b,c$, gives
+\begin{equation}\label{rcw:eq:collisiontail}
+ O\!\left(h^{W+2D}
+   \sum_{b,c\ge0}\frac{A^bB^c}{b!c!}(b+c+1)^{2D}\right)
+ =O(h^{K+1}).
+\end{equation}
+All factorial moments are finite. There are only finitely many $u$ with $W\le K$, so only deficits $\delta\le\lfloor(K-W)/2\rfloor$ need be retained. This estimate applies to the actual weighted occupancy terms, not merely to an unweighted collision distribution.
+
+\subsection{Bounded patterns and polynomial coefficients}
+For a retained deficit $\delta$, at most $2\delta$ slots lie in nonsingleton blocks: a block of size $a\ge2$ contributes $a-1$ to the deficit and $a\le2(a-1)$. For fixed $K,\ell$ the positive-mode slots form a bounded finite set. The remaining slots all have weight two and number $\ell b+(\ell/2)c$.
+
+A block pattern specifies its bounded nonsingleton blocks and which exceptional slots participate. Its placements among the zero-mode slots are falling-factorial polynomials in $b,c$ of total degree at most $2\delta$, with fixed rational symmetry factors. For small nonnegative $b,c$, an infeasible placement has polynomial value zero. All block consumptions are bounded in terms of $K,\ell$, so eventually fit $r$ uniformly. If $b+c\le B_h$, also $J=O_{K,\ell}(\log(1/h))\ll N$ and $v\ll n$; the other exact feasibility cutoffs disappear in the retained range.
+
+The coefficient of $h^k$ after summing retained patterns and removing $\theta^b\eta^c/(b!c!)$ is a polynomial
+\begin{equation}\label{rcw:eq:Ek}
+ E^s_{\ell,k}(b,c,\lambda)\in\Q[\lambda,\lambda^{-1}][b,c],
+ \qquad \deg_{b,c}E^s_{\ell,k}\le k.
+\end{equation}
+Here and below the $c$ variable is omitted for odd $\ell$. To justify polynomiality and the degree bound, the elementary symmetric coefficient of order $a$ in $0,\ldots,v-1$ has degree at most $2a$ in $v$: use the recurrence $e_a(v+1)=e_a(v)+v e_{a-1}(v)$ and induction. The corresponding grade is $2a$. The singleton vertex factors have degree in $b,c$ at most their grade divided by $\ell-2$. Fixed nonsingleton factors are finite Laurent polynomials in $\lambda$. The global numerator and denominator in \eqref{rcw:eq:F}, expanded by logarithms and fixed-power sums, have coefficient degree at most $2a$ at grade $\ell a$. Finally pattern placement costs degree at most $2\delta$ and grade $2\delta$. The residual available grade is $k-W-2\delta$, so the total degree is at most $k$. These statements hold at every nonnegative $b,c$ by the zero-placement convention.
+
+\subsection{Uniform Taylor control}
+\begin{lemma}[Taylor remainder on a count-dependent disk]\label{rcw:lem:taylor}
+For each retained pattern there are positive constants $a_{K,\ell},C_{K,\ell}$, uniform in $\lambda\in[\lambda_0,\lambda_1]$, such that \eqref{rcw:eq:F} is analytic and bounded in modulus by $C_{K,\ell}$ on
+\[
+ |z|\le\rho_{b,c}=\frac{a_{K,\ell}}{b+c+1}.
+\]
+For $h\le\rho_{b,c}/2$, its Taylor remainder after degree $m$ is at most
+\begin{equation}\label{rcw:eq:taylor}
+ C'_{K,\ell}(b+c+1)^{m+1}h^{m+1}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+In \eqref{rcw:eq:F}, the logarithmic upper bounds for the three factor types are respectively
+\[
+ O((b+c+1)^2|z|^2),\quad
+ O((b+c+1)|z|^{\ell-2}),\quad
+ O((b+c+1)^2|z|^\ell).
+\]
+The middle bound uses bounded block consumptions; the last applies to the global numerator and reciprocal denominator. Choose $a_{K,\ell}$ small enough that every denominator factor has its perturbation from one bounded by $1/2$, using $\lambda\ge\lambda_0$. The inequalities $|1+w|\le e^{|w|}$ and $|1-w|^{-1}\le e^{2|w|}$ for $|w|\le1/2$ bound the product on the disk. All three displays are bounded there because $\ell\ge3$. Cauchy's coefficient estimate and a geometric tail then give a bound $2C_{K,\ell}(h/\rho_{b,c})^{m+1}$, proving \eqref{rcw:eq:taylor}.
+\end{proof}
+For $b+c\le B_h$, one eventually has $h\le\rho_{b,c}/2$. Apply Lemma~\ref{rcw:lem:taylor} to each retained term, truncating its analytic factor at $m=K-W-2\delta$. Multiplication by the initial grade and the placement polynomial gives an error bounded by $h^{K+1}$ times a fixed polynomial in $b+c$, times $A^bB^c/(b!c!)$. The joint factorial sum is finite, uniformly in $\lambda$. Extending coefficient sums from $b+c\le B_h$ to all $b,c$ costs less than every fixed power of $h$ by Lemma~\ref{rcw:lem:weighted}.
+
+Together with the weighted and collision tails this proves
+\begin{equation}\label{rcw:eq:sumEk}
+ \frac{\A}{\B}
+ =\sum_{k=0}^K h^k
+  \sum_{b,c\ge0}\frac{\theta^b\eta^c}{b!c!}
+       E^s_{\ell,k}(b,c,\lambda)+O(h^{K+1}).
+\end{equation}
+All error estimates were absolute before signed cancellation. Since $e^{\theta+\eta}$ is bounded above and below on the compact interval, factoring it out preserves the remainder order. The finite moment identity in the next section completes Theorem~\ref{rcw:thm:critical}.
+
+\section{Coefficients and parity}\label{rcw:sec:coefficients}
+\subsection{A finite Newton-difference algorithm}
+For any polynomial $E(b,c)$ of total degree at most $k$, Newton interpolation gives
+\[
+ E(b,c)=\sum_{i+j\le k}(\Delta_b^i\Delta_c^jE)(0,0)
+                         \binom bi\binom cj.
+\]
+Absolute convergence of the exponential series yields, for either sign of $\theta$,
+\[
+ \sum_{b\ge0}\binom bi\frac{\theta^b}{b!}
+       =e^\theta\frac{\theta^i}{i!}.
+\]
+Thus the coefficient in \eqref{rcw:eq:critical} is exactly
+\begin{equation}\label{rcw:eq:algorithm}
+ P^s_{\ell,k}(\lambda)=
+ \sum_{i+j\le k}(\Delta_b^i\Delta_c^jE^s_{\ell,k})(0,0,\lambda)
+                    \frac{\theta^i\eta^j}{i!j!}.
+\end{equation}
+For odd $\ell$, omit $c,j,\eta$ and use the one-variable formula. To evaluate \eqref{rcw:eq:algorithm}:
+\begin{enumerate}
+\item Enumerate positive-mode vectors with $W\le k$.
+\item For each $0\le b,c\le k$ (or $0\le b\le k$ in the odd case), enumerate partitions with $\delta\le\lfloor(k-W)/2\rfloor$ and extract $h^k$ from \eqref{rcw:eq:rescaled}--\eqref{rcw:eq:F} after removing the zero-mode factorial factor.
+\item Compute the finite forward differences in \eqref{rcw:eq:algorithm}.
+\end{enumerate}
+The degree bound \eqref{rcw:eq:Ek} proves that this finite evaluation grid suffices; the calculation is exact in rational Laurent polynomials. No limiting Poisson assertion is needed: the terminology of Poisson moments is only a convenient description of an absolutely convergent algebraic identity.
+
+\subsection{Explicit cubic corrections}
+For $\ell=3$, write $P_k^s=P^s_{3,k}$ and $\theta=s\lambda^2/6$. Through order three the unaveraged polynomials are
+\begin{align}
+ E_0={}&1,\nonumber\\
+ E_1={}&\frac{2\lambda}3-\frac{3b}{\lambda},\nonumber\\
+ E_2={}&\frac{9b^2-3b}{2\lambda^2}-2(b+1)+\frac{2\lambda^2}9,\label{rcw:eq:cubicE}\\
+ E_3={}&-\frac{27b^3-27b^2+6b}{6\lambda^3}
+       +\frac{-3b^2+11b+4/3}{\lambda}
+       -\frac{(2b+4)\lambda}3+\frac{13\lambda^3}{81}.\nonumber
+\end{align}
+Only the modes $U_2,V_1,U_3$ can occur through this grade. Applying \eqref{rcw:eq:algorithm} gives
+\begin{align}
+ P_1^+&=\lambda/6,&
+ P_2^+&=\lambda^2/72-3/2,&
+ P_3^+&=\frac7{6\lambda}-\frac\lambda4-\frac{71\lambda^3}{1296},\label{rcw:eq:cubicplus}\\
+ P_1^-&=7\lambda/6,&
+ P_2^-&=49\lambda^2/72-5/2,&
+ P_3^-&=\frac3{2\lambda}-\frac{35\lambda}{12}+\frac{271\lambda^3}{1296}.\label{rcw:eq:cubicminus}
+\end{align}
+For a transparent derivation of the interaction term, the singleton vertex factors sum to
+\[
+ \exp\left(\theta(1-h/\lambda)^3
+       +\frac{2\lambda h}3(1-h/\lambda)(1-2h/\lambda)\right)
+ =\exp(s\mu+\tau).
+\]
+The order-$h^2$ loss from $\fall nM/n^M$ is canceled by the leading one-pair-merger contributions. For $b$ special modes the first global-factor correction is $12b^2h^3/\lambda$. A pair of weight-two slots has merged-to-unmerged ratio
+\[
+ \frac{\fall r4}{\fall r2^2}=1-\frac4r+O(r^{-2}).
+\]
+Summing over $\binom{3b}{2}$ pairs leaves the interaction
+$-6b(b-1)h^3/\lambda$ after adding the global correction. Averaging gives $-\lambda^3h^3/6$, while the $U_3$ mode adds $\lambda^3h^3/9$. Their sum is $-\lambda^3h^3/18$, independent of $s$. Hence
+\begin{align}\label{rcw:eq:criticallog}
+ \log\frac{A^s_{n;r,3}}{B_{n;r,3}}
+ ={}&\frac{s\lambda^2}6
+ +\lambda\left(\frac23-\frac s2\right)h
+ +\left(\frac s2-2\right)h^2\nonumber\\
+ &+\left(\frac{4/3-s/6}{\lambda}-\frac{\lambda^3}{18}\right)h^3
+ +O(h^4).
+\end{align}
+The stated uniform remainder follows from Theorem~\ref{rcw:thm:critical}, rather than from the formal calculation alone.
+
+\subsection{Even lengths and the quartic example}
+\begin{corollary}[Integer powers for even length]\label{rcw:cor:parity}
+If $\ell$ is even, then $P^s_{\ell,2j+1}=0$ for every $j\ge0$. In particular, for every fixed $L$,
+\[
+ \frac{\A}{\B}=e^{s\lambda^2/(2\ell)+\lambda/\ell}
+  \left(\sum_{j=0}^L P^s_{\ell,2j}(\lambda)n^{-j}
+                      +O(n^{-L-1})\right).
+\]
+\end{corollary}
+\begin{proof}
+Every grade in the exact expression is even: $\ell j-2\ell/d$, $\ell-2$, $\ell$, and the collision grade two. Therefore no odd power can occur. Apply Theorem~\ref{rcw:thm:critical} at order $2L+1$ to obtain the displayed remainder.
+\end{proof}
+For every $\ell\ge4$ all positive-mode grades and the vertex grade $\ell-2$ are at least two. Hence $P^s_{\ell,1}=0$ and the leading multiplier has relative error $O(1/n)$, even when $\ell$ is odd. For $\ell=3$ the leading relative error is generally $O(n^{-1/2})$.
+
+For $\ell=4$, the zero modes have $M=4b+2c$ weight-two slots. At grade two their singleton vertex correction is $-M/\lambda$; the label-collision loss and one-merger gain cancel. The sole positive mode $(j,d)=(1,4)$ adds $\lambda/2$. Averaging $b,c$ at $\theta=s\lambda^2/8$, $\eta=\lambda/4$ yields
+\[
+ P^s_{4,2}(\lambda)=\frac{(1-s)\lambda}{2}-\frac12.
+\]
+Therefore
+\begin{align*}
+ \frac{A^+_{n;r,4}}{B_{n;r,4}}
+ &=e^{\lambda^2/8+\lambda/4}
+       \left(1-\frac1{2n}+O(n^{-2})\right),\\
+ \frac{A^-_{n;r,4}}{B_{n;r,4}}
+ &=e^{-\lambda^2/8+\lambda/4}
+       \left(1+\frac{\lambda-1/2}{n}+O(n^{-2})\right),
+ \qquad \lambda=r/n.
+\end{align*}
+The stronger $O(n^{-2})$ remainder uses parity, not only the vanishing of $P_1$.
+
+\subsection{The first correction for every length}
+The first surviving coefficient can be made explicit without running the full algorithm.
+\begin{corollary}[First critical correction]\label{rcw:cor:firstlength}
+If $\ell\ge3$ is an odd prime, put $g=\ell-2$. Then
+\[
+ P^s_{\ell,k}=0\quad(1\le k<g),\qquad
+ P^s_{\ell,g}(\lambda)
+   =\lambda\left(\frac{\ell-1}{\ell}-\frac s2\right).
+\]
+If $\ell\ge6$ is composite, let $d_*$ be its least divisor greater than two and put $g=\ell-2\ell/d_*$. Then
+\[
+ P^s_{\ell,k}=0\quad(1\le k<g),\qquad
+ P^s_{\ell,g}(\lambda)=\frac{\varphi(d_*)}{\ell}\lambda.
+\]
+The length-four case is the separate formula above. In the two cases stated here,
+\[
+ \frac{\A}{\B}=e^{\theta+\eta}
+    \bigl(1+P^s_{\ell,g}(\lambda)h^g+O(h^{g+1})\bigr),
+\]
+uniformly on the compact positive intervals of Theorem~\ref{rcw:thm:critical}; for even $\ell$ the remainder improves to $O(h^{g+2})$ by parity.
+\end{corollary}
+\begin{proof}
+Temporarily replace each occupancy factor by $r^{w_C}$. Summing the label assignments over all partitions then gives exactly $n^M$, so all pure label-collision corrections cancel. The first capacity correction has grade $\ell-2$, while the global factorial correction starts at grade $\ell$.
+
+For composite $\ell\ge6$, the unique least positive mode is $(j,d)=(1,d_*)$, of grade $g<\ell-2$ and activity $\varphi(d_*)\lambda/\ell$. No capacity or global correction can contribute by that grade. This proves the vanishing below $g$ and its stated coefficient.
+
+For odd prime $\ell$, the unique least positive mode is $(1,\ell)$, of grade $\ell-2$ and activity $(\ell-1)\lambda/\ell$. At the same grade the $\ell b$ singleton weight-two slots of the zero mode contribute $-\ell b/\lambda$. Its factorial average is $-\ell\theta/\lambda=-s\lambda/2$. A capacity correction on a merged block carries at least two additional grades, and the global correction occurs later. Adding the two surviving contributions proves the prime formula. These coefficient cancellations are within the finite expansion already justified by Theorem~\ref{rcw:thm:critical}, so its uniform remainder applies.
+\end{proof}
+
+\section{Fixed-degree inverses and lattice thresholds}\label{rcw:sec:inverse}
+Here $r,\ell$ are fixed. There is no canonical scalar inverse of the critical two-parameter family until a path $r=r(n)$ is specified. Put
+\begin{equation}\label{rcw:eq:ab}
+ a=r(1-1/\ell),\qquad
+ b_0=a(\log r-1)-\log(r!),\qquad
+ q_0=\frac\ell{\gcd(r,\ell)}.
+\end{equation}
+The admissible alphabet sizes are multiples of $q_0$. Stirling with remainder gives
+\begin{align}\label{rcw:eq:logB}
+ \log\B={}&a n\log n+b_0n+\tfrac12\log\ell\nonumber\\
+ &+\sum_{j=1}^L\frac{\mathsf B_{2j}}{2j(2j-1)}
+       r^{1-2j}(1-\ell^{2j-1})n^{1-2j}
+       +O(n^{-2L-1}).
+\end{align}
+Combining with Theorem~\ref{rcw:thm:fixed} and logarithmic composition gives unique rational $d_k=d_k(s,r,\ell)$ such that, for every fixed $K$,
+\begin{equation}\label{rcw:eq:logA}
+ \log\A=a n\log n+b_0n+\tfrac12\log\ell
+       +\sum_{k=1}^K d_kn^{-k}+O(n^{-K-1}).
+\end{equation}
+The coefficients $a,b_0$ need not be rational; the inverse-power coefficients $d_k$ are rational.
+
+For a target $y\to\infty$, let $Y=\log y-\tfrac12\log\ell$ and
+\begin{equation}\label{rcw:eq:lambert}
+ w=W_0\!\left(\frac Ya e^{b_0/a}\right),\qquad
+ x_0=\frac{Y}{a w},\qquad D=a(1+w).
+\end{equation}
+Here $W_0$ is the positive real principal Lambert branch. One checks that
+$a x_0\log x_0+b_0x_0=Y$ and that its derivative there is $D>0$.
+
+\begin{theorem}[Smooth model and lattice enclosure]\label{rcw:thm:inverse}
+Let $x_K(y)$ be the unique sufficiently large real solution of
+\begin{equation}\label{rcw:eq:inversemodel}
+ a x\log x+b_0x+\sum_{k=1}^K d_kx^{-k}=Y.
+\end{equation}
+This model is eventually increasing and can be solved by Newton iteration from $x_0$, or expanded to any fixed order by Taylor reversion. Its root uncertainty relative to \eqref{rcw:eq:logA} is $O(x_0^{-K-1}/\log x_0)$. Define the actual threshold
+\[
+ N_s(y)=\min\{n\in q_0\mathbb Z_{\ge0}:A^s_{n;r,\ell}\ge y\}.
+\]
+For a sufficiently large fixed constant $C_K$, put
+$\eps_K=C_Kx_K^{-K-1}/\log x_K$. Then, for all sufficiently large $y$,
+\begin{equation}\label{rcw:eq:lattice}
+ q_0\left\lceil\frac{x_K-\eps_K}{q_0}\right\rceil
+ \le N_s(y)\le
+ q_0\left\lceil\frac{x_K+\eps_K}{q_0}\right\rceil.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The derivative of the left side of \eqref{rcw:eq:inversemodel} is $a\log x+a+b_0+O(x^{-2})$, positive and comparable to $\log x$ for large $x$. Its range then covers all sufficiently large $Y$, giving uniqueness. A logarithmic residual $O(x^{-K-1})$ in \eqref{rcw:eq:logA} shifts a root by at most a constant times $x^{-K-1}/\log x$, by the mean-value theorem. This proves the root uncertainty and the sign comparisons at $x_K\pm\eps_K$ for sufficiently large $C_K$.
+
+The leading equivalent in Theorem~\ref{rcw:thm:fixed} implies
+$A^s_{n+q_0;r,\ell}/A^s_{n;r,\ell}\to\infty$. Thus the sequence is eventually positive, increasing along its lattice, and unbounded. Put $m_\pm=q_0\lceil(x_K\pm\eps_K)/q_0\rceil$. The two lattice points $m_- -q_0$ and $m_+$ are within $q_0+\eps_K$ of $x_K$. Throughout this fixed-width neighborhood the model derivative is comparable to $\log x_K$ and the sequence remainder is $O(x_K^{-K-1})$. The mean-value comparison therefore gives $A^s_{m_- -q_0;r,\ell}<y$ and $A^s_{m_+;r,\ell}\ge y$ once $C_K$ is sufficiently large. Eventual lattice monotonicity extends these comparisons to more distant indices. Earlier finitely many values cannot affect the threshold as $y\to\infty$, proving \eqref{rcw:eq:lattice}.
+\end{proof}
+Away from shrinking neighborhoods of lattice points, the two bounds in \eqref{rcw:eq:lattice} coincide. Uniform rounding ambiguity is unavoidable for arbitrary targets. The theorem does not identify an exact continuous interpolation of the discrete sequence, and the unspecified asymptotic constant $C_K$ is not a certified finite-input error bound.
+
+For $K\ge1$, the first reverted correction is
+\[
+ x_K=x_0-\frac{d_1}{D x_0}+O(x_0^{-2}/\log x_0).
+\]
+When coefficients through $d_3$ are retained, expansion through $x_0^{-3}$ gives
+\begin{equation}\label{rcw:eq:inverse3}
+ x=x_0-\frac{d_1}{D x_0}-\frac{d_2}{D x_0^2}
+ -\frac{d_3/D+d_1^2/D^2+a d_1^2/(2D^3)}{x_0^3}
+ +O(x_0^{-4}/\log x_0).
+\end{equation}
+For the cubic degree-three pair, $a=2$, $b_0=\log(3/2)-2$, and
+\begin{center}
+\begin{tabular}{c rr}
+\toprule
+ & multiset & set\\
+\midrule
+$d_1$ & $5/6$ & $-1/18$\\
+$d_2$ & $8/9$ & $0$\\
+$d_3$ & $4013/4860$ & $-307/4860$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are logarithmic coefficients relative to $H_n$, not coefficients relative to $F_n$. For the degree-two entries, apply the theorem at alphabet size $n=3m$ and divide the alphabet-size threshold by three to recover the OEIS index.
+
+\begin{writenote}[Added 2 October 2026, batch~77: an instance of repository results]
+The smooth inverse of this section is an instance of the inversion apparatus
+of ProveIt's transseries volumes, and no novelty is claimed for it. Here the
+phase is factorial ($a\,x\log x+b_0x$), not linear--logarithmic, so the
+relevant core is not \texttt{p0:thm:lambert-core} but its factorial
+companion \texttt{p0:prop:factorial-core} of the transseries-and-inversion
+volume \cite{rcw-tai}, with $\kappa=a=r(1-1/\ell)$, $d=b_0$ and right-hand
+side $Y$: its solution $\exp(v-b_0/a)$, $v=W_0((Y/a)e^{b_0/a})$, is the
+$x_0=Y/(aw)$ of \eqref{rcw:eq:lambert} (since $we^w=(Y/a)e^{b_0/a}$), and
+its slope $\kappa(v+1)$ is the $D$ above. The same core is
+\texttt{t2:eq:unbalanced-core} of the combinatorial-transseries volume
+\cite{rcw-cti}. The corrections \eqref{rcw:eq:inverse3} are the reversion
+about that core, \texttt{p0:thm:core-reversion} (equivalently the scaled
+reversion \texttt{t2:prop:scaled}); as there, they are not constants but
+rational in $D$, of order $1/\log x_0$, which is why the remainders carry
+the factor $1/\log x_0$. The write step rechecked \eqref{rcw:eq:inverse3}
+by direct expansion through $x_0^{-3}$. The enclosure \eqref{rcw:eq:lattice}
+is the two-ceiling form of the separation condition, part~(2) of
+\texttt{p0:thm:staircase}, applied to the rescaled lattice index $n/q_0$;
+part~(1) (exact rounding) is not invoked and does not apply, because
+\eqref{rcw:eq:inversemodel} is a model with residual $O(x^{-K-1})$, not an
+interpolation of the sequence. The generic staircase arithmetic is
+formalized in Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+those statements concern an arbitrary monotone function and give no formal
+status to Theorem~\ref{rcw:thm:inverse}. What is specific to this report is
+the forward expansion \eqref{rcw:eq:logA}, the lattice $q_0\mathbb Z$, the
+coefficient table above, and the enclosure itself.
+\end{writenote}
+
+\section{Relation to primary literature}\label{rcw:sec:literature}
+\paragraph{Existing sequence information.}
+Mishna's symmetric-function framework derives differential equations for regular-object generating functions \cite{mishna}. The version matters: the original arXiv version 1 contains the cyclic-cover section 2.6.1 and Table 5, whereas later versions do not contain the same discussion. The named OEIS entries already record exact leading equivalents, due to Kotesovec in 2016 for the degree-three pair and 2023 for the degree-two pair \cite{oeis108242,oeis110105,oeis110104,oeis110106}. The present article does not treat their leading constants as missing or new.
+
+\paragraph{Full expansions for ordinary graphs.}
+de Panafieu's Theorems 8 and 14 concern fixed-degree simple unoriented graphs and connected graphs \cite{depanafieu}. They provide an important full-expansion precedent. A cyclic word with repeated letters is outside that model, so the theorems are not direct specializations of the present count. A recurrence by itself also does not replace the absolute remainder analysis above.
+
+\paragraph{Uniform hypergraph enumeration.}
+Blinovsky and Greenhill count simple uniform hypergraphs, with distinct edges and no repeated vertex within an edge \cite{blinovsky}. In the regular cubic specialization, their sparse condition becomes $r^2=o(n)$ and their error has order $r^2/n$; it does not resolve this critical window or this cyclic model. Kam\v{c}ev, Liebenau and Wormald cover ordinary simple uniform hypergraphs across a much broader range, including regular cubic degree of order $\sqrt n$ \cite{kamcev}. Therefore the degree range itself is not a novelty claim. The issue here is the combination of cyclic decoration, repeated letters and unweighted sets or multisets of necklaces. On an all-distinct triple there are two orientations, but on types $aab$ and $aaa$ the orbit structures differ; a constant decoration factor cannot convert the simple-hypergraph count into this one.
+
+\paragraph{Incidence matrices and regular structures.}
+Greenhill and McKay's sparse nonnegative integer matrix theorem allows specified row and column margins and includes a range relevant to margins $(r,3)$ at $r\asymp\sqrt n$ \cite{greenhillmckay}. Its labeled columns, entry constraints and weights do not directly impose cyclic decoration and the quotient by repeated unlabelled columns required here. Kuperberg, Lovett and Peled give a broad regular-structure existence and counting framework \cite{klp}; their sample-size condition involving the sixth power of the balance-space dimension is not met by the cubic critical sample size of order $n^{3/2}$ with order $n$ constraints. The whole necklace population also has multiple label-permutation orbits.
+
+\paragraph{How far the comparison goes.}
+The checked primary theorems do not directly state the arbitrary-fixed-order result for this exact unweighted cyclic set/multiset model. That is an applicability conclusion, not a proof of priority. The comparison was targeted chiefly at cyclic triples, and priority for the general-length theorem has not been exhaustively researched. A broader decorated-configuration or species theorem may subsume parts of this argument. No external submission, publication or OEIS edit is implied by this article.
+
+\section{Computational checks and reproducibility}\label{rcw:sec:checks}
+The companion archive includes the editable \LaTeX{} source, this PDF, portable Python/C++ sources, numerical OEIS term excerpts with source links, exact integer outputs, symbolic outputs, a checksum manifest and a replay command. It excludes full third-party papers and does not rely on a research-workspace absolute path.
+
+\subsection{Exact finite objects}
+The fixed-degree code evaluates \eqref{rcw:eq:triplesum} and \eqref{rcw:eq:degree2} with rational arithmetic. It checks all 54 saved OEIS terms: 18 each for A108242 and A110105, and nine each for A110104 and A110106. It also computes the degree-three correction lists through order eight. A separate literal-necklace test generates words modulo rotation and multiplies the actual finite set/multiset products. Against a separately expanded logarithmic model, it verifies 30 signed cases with $1\le n,r\le4$, $\ell\in\{3,4,5\}$ and $\ell\mid nr$.
+
+For larger cubic examples a different exact recurrence starts with the actual product. If $F_s(e)$ is the coefficient at residual-degree vector $e$, and $v(w)$ is a necklace's letter-count vector, logarithmic differentiation gives
+\begin{equation}\label{rcw:eq:exactrec}
+ e_iF_s(e)=\sum_w v_i(w)\sum_{j\ge1}s^{j-1}F_s(e-jv(w)),
+ \qquad F_s(0)=1.
+\end{equation}
+Negative residual degrees contribute zero. The C++ implementation compresses residual vectors to histograms and uses arbitrary-precision integers. For a selected label $i$, its four cases are $iii$, $iik$, $ikk$, and the two orientations of $ikl$. The derivative weights are respectively $3,2,1,2$. Every division is checked for integrality. A separate Python vector recurrence and literal-product multiplication agree with it in 24 signed small cases. The recurrence is exact and uses no asymptotic coefficient as input.
+
+\subsection{Symbolic coefficients and numerical diagnostics}
+An independent symbolic computation retains singleton configurations, every single pair merger and the $U_3$ contribution through $h^3$. It computes the fixed-$b$ coefficients and exact Touchard moments before comparing with \eqref{rcw:eq:cubicplus}--\eqref{rcw:eq:cubicminus}. All six nonconstant coefficients match exactly. A pure-Python implementation of the finite general-length algorithm independently reproduces the cubic, quartic and first general-length targets using exact rational Laurent arithmetic. Further tests cover lengths five, six, eight and nine, and verify the partition enumerator against 34 Stirling-number counts. A separate rational check confirms the degree-two carrier correction and the formal inverse reversion through the displayed order. A quartic diagnostic verifies $P^+_{4,2}=-1/2$ and $P^-_{4,2}=\lambda-1/2$, and computes literal finite necklace-product counts.
+
+For cubic integer counts define
+\[
+ Q=(A^s/B)e^{-s\lambda^2/6},\qquad
+ E_3=Q-(1+P_1^sh+P_2^sh^2+P_3^sh^3).
+\]
+The following are high-precision floating evaluations of exact counts. They are \emph{not interval-certified error bounds}.
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $r$ & $\lambda=r/\sqrt n$ & $n^2E_3$ multiset & $n^2E_3$ set\\
+\midrule
+9 & 3 & 1.000000 & 1.897937548 & 3.161293867\\
+15 & 4 & 1.032796 & 2.417955541 & 3.546794717\\
+24 & 5 & 1.020621 & 2.741446445 & 3.811352437\\
+36 & 6 & 1.000000 & 2.961951176 & 4.005731550\\
+48 & 7 & 1.010363 & 3.127790791 & 4.110871820\\
+\bottomrule
+\end{tabular}
+\end{center}
+This finite sample is consistent with an $h^4$ remainder. It cannot prove boundedness or estimate a uniform remainder constant. Additional fixed-$r$ rows in the data approach $\lambda=0$ and are not tests of uniformity on a compact positive interval. The analytic proof of Theorem~\ref{rcw:thm:critical} is logically separate from these tests.
+
+\subsection{Replay modes}
+The ordinary replay rebuilds the C++ counter and recomputes the small exact checks, symbolic checks and 17 numerical cases. It transparently reuses the stored exact count for $(n,r)=(48,7)$, marking that fact in the output. The extended replay recomputes that case as well; the recorded run visited 6,727,282 memoized states and required several GB of memory. Timing is machine-dependent. Python 3, SymPy, mpmath, a C++17 compiler and GMP are required for the complete replay; the fixed-degree rational checker uses only the Python standard library. The README gives both commands and the PDF build procedure.
+
+Checksums establish file integrity, and fresh extraction checks establish portability of the tested replay. Neither substitutes for a proof of the asymptotic remainder. The package distinguishes exact arithmetic, symbolic identities and non-interval numerical diagnostics throughout.
+
+\begin{writenote}[Added 2 October 2026, batch~77: the files in the collection]
+In the collection the Python and C++ sources keep their delivered
+subdirectories under \texttt{code/} (\texttt{code/critical/},
+\texttt{code/fixed/}, \texttt{code/general/}, \texttt{code/models/}), and
+\texttt{reproduce.sh}, \texttt{build\_pdf.sh} and
+\texttt{verify\_manifest.py} moved there from the package root. The release
+outputs of \texttt{results/} are in \texttt{data/} under their own names; the
+four OEIS excerpts are \texttt{data/fixed-A108242.seq} etc.\ and the saved
+$(48,7)$ count is \texttt{data/critical-extended-exact-count.json}. Five
+byte-identical copies of release outputs that the archive also kept beside
+the scripts, and the checksum manifest (verified, 38 of 38 files, at intake)
+are not shipped, and neither is the delivered PDF. The scripts read and write
+beside themselves and in \texttt{results/}, so they do not run in place;
+the report's \texttt{README.md} explains how to rerun them on a copy with
+the delivered layout. At intake the seven Python checks of the ordinary
+replay passed on a copy, with outputs equal to the release outputs up to line
+endings and one recorded file hash that depends on them;
+\texttt{check\_exact.py} could not run there, because it compiles
+\texttt{exact\_counts.cpp} against GMP, which that machine lacks. The exact
+counts were therefore not recomputed at intake.
+\end{writenote}
+
+\section{Further questions}\label{rcw:sec:further}
+\begin{enumerate}
+\item \textbf{Matching the degree regimes.} The bridge theorem reaches $\lambda=0$ at leading precision for cubic words; the every-fixed-order theorem is uniform only for positive compact $\lambda$ intervals. A uniform expansion with a controlled transition to fixed $r$ would require reorganizing the Laurent coefficients.
+\item \textbf{Beyond the critical scale.} When the zero-grade activities grow with $n$, the factorial tails and count-dependent analytic disks must be rebalanced. Larger-degree windows may require resumming further interactions.
+\item \textbf{Other word symmetries.} Dihedral words, primitive necklaces or a general finite permutation group have different cycle-index modes. Their zero-grade structure should predict which stabilizer effects survive, but each proposed model requires its own exact identity and remainder checks.
+\item \textbf{Efficient coefficient computation.} The finite partition algorithm proves computability but is not optimized. Enumerating bounded collision types rather than full slot partitions could make higher-order general-length coefficients practical.
+\item \textbf{Late terms and effective constants.} This article proves every fixed order, not the growth of $P_{\ell,k}$ or $c_k$ as $k\to\infty$. Explicit computable remainder constants, optimal truncation and beyond-all-orders information remain separate problems.
+\item \textbf{Growing-degree threshold inverses.} An inverse can be studied after a specific admissible path $r(n)$ is fixed. The path's rounding and divisibility effects must enter the expansion rather than be absorbed into an unspecified $\lambda$.
+\item \textbf{Broader applicability comparison.} A systematic search for decorated configuration and species enumeration results would help determine whether the general-length statement is best viewed as a specialization, a new proof or a new theorem.
+\end{enumerate}
+
+\begin{thebibliography}{20}
+\small\raggedright
+\setlength{\itemsep}{3pt}
+\bibitem{mishna} M. Mishna, \emph{Automatic enumeration of regular objects}, original preprint version 1 (2005), section 2.6.1 and Table 5. \href{https://arxiv.org/abs/math/0507249v1}{arXiv:math/0507249v1}. Later version: \emph{Journal of Integer Sequences} 10 (2007), Article 07.5.5. The cyclic-cover material cited here is version-specific.
+\bibitem{oeis108242} OEIS Foundation Inc., \href{https://oeis.org/A108242}{A108242}. Sequence by M. Mishna; leading equivalent attributed to V. Kotesovec, 28 February 2016. Accessed 2 October 2026.
+\bibitem{oeis110105} OEIS Foundation Inc., \href{https://oeis.org/A110105}{A110105}. Sequence by M. Mishna; leading equivalent attributed to V. Kotesovec, 28 February 2016. Accessed 2 October 2026.
+\bibitem{oeis110104} OEIS Foundation Inc., \href{https://oeis.org/A110104}{A110104}. Sequence by M. Mishna; leading equivalent attributed to V. Kotesovec, 24 October 2023. Accessed 2 October 2026.
+\bibitem{oeis110106} OEIS Foundation Inc., \href{https://oeis.org/A110106}{A110106}. Sequence by M. Mishna; leading equivalent attributed to V. Kotesovec, 24 October 2023. Accessed 2 October 2026.
+\bibitem{depanafieu} \'E. de Panafieu, \emph{Asymptotic expansion of regular and connected regular graphs}, 2024, Theorems 8 and 14. \href{https://arxiv.org/abs/2408.12459v2}{arXiv:2408.12459v2}.
+\bibitem{blinovsky} V. Blinovsky and C. Greenhill, \emph{Asymptotic enumeration of sparse uniform hypergraphs with given degrees}, European Journal of Combinatorics 51 (2016), 287--296, Theorem 1.1 and Corollary 1.2. \href{https://arxiv.org/abs/1306.2012v3}{arXiv:1306.2012v3}.
+\bibitem{kamcev} N. Kam\v{c}ev, A. Liebenau and N. Wormald, \emph{Asymptotic enumeration of hypergraphs by degree sequence}, Advances in Combinatorics 2022:1, 36 pp., Theorem 1.2 and formula (1.1). \href{https://doi.org/10.19086/aic.32357}{doi:10.19086/aic.32357}; \href{https://arxiv.org/abs/2008.07757v2}{arXiv:2008.07757v2}.
+\bibitem{greenhillmckay} C. Greenhill and B. D. McKay, \emph{Asymptotic enumeration of sparse nonnegative integer matrices with specified row and column sums}, Advances in Applied Mathematics 41 (2008), 459--481; corrected preprint version 3 (2012), Theorem 1.3. \href{https://arxiv.org/abs/0707.0340v3}{arXiv:0707.0340v3}.
+\bibitem{klp} G. Kuperberg, S. Lovett and R. Peled, \emph{Probabilistic existence of regular combinatorial structures}, Geometric and Functional Analysis 27 (2017), 919--972, Theorems 2.4--2.5 and condition (12). \href{https://arxiv.org/abs/1302.4295}{arXiv:1302.4295}.
+\bibitem{rcw-tai} [write] ProveIt, \emph{Transseries and inversion}, the
+transseries-and-inversion volume (\texttt{p0:prop:factorial-core},
+\texttt{p0:thm:core-reversion}, \texttt{p0:thm:staircase}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+\bibitem{rcw-cti} [write] ProveIt, \emph{Combinatorial transseries
+inverses} (\texttt{t2:eq:unbalanced-core}, \texttt{t2:prop:scaled}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
+\end{thebibliography}
+\end{document}

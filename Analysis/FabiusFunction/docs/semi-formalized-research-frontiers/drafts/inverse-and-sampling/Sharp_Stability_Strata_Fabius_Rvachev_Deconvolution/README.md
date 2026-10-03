@@ -79,3 +79,34 @@ The exact computations check finite algebraic examples; they do not replace the
 all-orders proofs. The numerical measurements are characteristic-function
 values at one frequency, NOT computed total variation distances. The sampling
 result is an upper bound, not a statistical minimax theorem.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+In the editorial pass after batch 54 of the repository-level `docs/incoming/`
+drop zone (see `docs/incoming/README.md`), a later package of this tree was
+found to take up two of its research questions. The article gains reciprocal notes; its
+mathematical text is unchanged.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style.
+- `article.tex`: after the research question "The optimal statistical
+  experiment near collisions", a note records that
+  `../Local_Minimax_Geometry_Uniform_Factors/` (filed 2026-09-29,
+  unreviewed) proves, with a known positive Gaussian component added to a
+  known bounded background, that the local minimax sampling rate at each
+  collision pattern is `N^(-1/(2M))` with this article's `M` (there the
+  known-variance denominator `max{Q, 2r}`), with matching likelihood lower
+  bounds. For this article's compactly supported smooth background the
+  question remains open.
+- `article.tex`: after the research question "Unbounded capacity and
+  tail-controlled infinite products", a note records that
+  `../Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/` (filed
+  2026-09-29, unreviewed) treats infinite square-summable scale sequences
+  for the Gaussian variance only (exact minimax risk `V/2` without tail
+  control, uniform consistency exactly under uniformly vanishing
+  squared-scale tails, Christoffel bias bounds exact for geometric
+  spectra); the sharp modulus of recovery of the scale multiset is not
+  determined there. Both notes are marked `% ed.`.
+- `article.pdf`: rebuilt with three `pdflatex -interaction=nonstopmode -halt-on-error article.tex` passes (MiKTeX pdfTeX): 22 pages, as before, 677,500
+  bytes; no error, undefined reference, rerun request, duplicate
+  destination or overfull box; no Type 3 font.

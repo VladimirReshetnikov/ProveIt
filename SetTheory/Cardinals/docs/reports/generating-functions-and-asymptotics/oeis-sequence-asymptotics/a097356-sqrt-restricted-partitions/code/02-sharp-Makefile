@@ -1,0 +1,17 @@
+PYTHON ?= python3
+
+.PHONY: all pdf verify clean
+all: pdf verify
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	$(PYTHON) verification/certify.py > data/certified_signs.txt
+	$(PYTHON) verification/symbolic_checks.py > data/symbolic_checks.txt
+	$(PYTHON) verification/verify.py --max-n 20000 > data/verification_log.txt
+
+clean:
+	rm -f article.aux article.log article.out article.toc article.fdb_latexmk article.fls

@@ -1,0 +1,342 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Positivity Beyond the First Thue Morse Feedback Boundary},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}\newcommand{\ev}{\operatorname{ev}}\newcommand{\Z}{\mathbb Z}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\title{Positivity Beyond the First Thue Morse Feedback Boundary}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+We extend the positive diagonal asymptotic for integer Thue--Morse pressure responses to every fixed offset beyond the first nonlinear feedback boundary. A capped inverse-orbit expansion and a marked-pair estimate separate the positive nearest orbits from an exponentially smaller remote tail. The restored full-degree insertion and eigenvalue feedback have only polynomial size at a fixed offset. Quantitative bounds also give an explicit growing region: both the response and pressure coefficients at offset $s$ beyond the boundary are positive under either $m\ge800(s+1)^2$ or the stronger large-$m$ condition $m\ge2048$ and $200(s+1)\log(2m)\le m$. The proposed full pressure range strictly below degree $6m$ remains open.
+\end{abstract}
+\paragraph{Status.} This is unrefereed ordinary mathematics with exact arithmetic checks, not a Lean formalization. The earlier positivity-triangle and boundary reports remain separate. No priority claim or formula for the first later negative pressure coefficient is made.
+
+\section{Results and normalization}
+Set $d=2m$, $m\ge2$, and use the sum-over-preimages operator
+\[
+(V_af)(x)=\sum_{2y=x\bmod1}(\cos\pi y+a\sin\pi y)^d f(y).
+\]
+Its local analytic eigenfunction is normalized by $h_a(0)=1$. Put
+\[
+R_m=\sum_{w\in\Z+1/2}(\pi w)^{-2m},\quad
+H_{m,r}=[a^{2r}]h_a(1/2),\quad E_{m,r}=[t^{2m+2r}]p_m(t/\pi).
+\]
+The pressure and eigenvalue obey
+\begin{equation}\label{eq:feedback}
+\lambda_m(a)=1+a^d h_a(1/2),\qquad
+p_m(t/\pi)=d\log\cos t+\log\lambda_m(\tan t).
+\end{equation}
+Previous reports prove $H_{m,r},E_{m,r}>0$ for $1\le r\le m$ \cite{triangle,boundary}. Define
+\[
+b_j=\tan\frac{\pi}{2^{j+1}},\quad B(a)=\prod_{j\ge1}(1+ab_j),\quad
+\frac{a_*B'(a_*)}{B(a_*)}=1,
+\]
+\[
+C=\frac{B(a_*)}{a_*},\qquad p_j=\frac{a_*b_j}{1+a_*b_j},\qquad
+\sigma^2=\sum_{j\ge1}p_j(1-p_j).
+\]
+The product converges locally uniformly, and its mean function increases strictly from zero to infinity. The constants are approximately $a_*=0.8229185691$, $C=4.046860022$, and $\sigma^2=0.7041449521$; these decimals are not used in the proof.
+\begin{theorem}\label{thm:main}
+For every fixed integer $s\ge0$,
+\begin{equation}\label{eq:asymptotic}
+H_{m,m+s}\sim\frac{2(2C/\pi)^{2m}a_*^{-2s}}{\sqrt{4\pi m\sigma^2}}
+\qquad(m\to\infty).
+\end{equation}
+Consequently $H_{m,m+s}$ and $E_{m,m+s}$ are positive for all sufficiently large $m$. Explicitly, for all integers $s\ge0$,
+\begin{equation}\label{eq:strip}
+m\ge800(s+1)^2\quad\Longrightarrow\quad H_{m,m+s}>0,\quad E_{m,m+s}>0.
+\end{equation}
+The same conclusion holds under the alternative condition
+\begin{equation}\label{eq:logstrip}
+m\ge2048,\qquad 200(s+1)\log(2m)\le m.
+\end{equation}
+\end{theorem}
+Thus the pressure range extends beyond degree $4m$ by an unbounded number of even degrees. The logarithmic condition allows offsets of order $m/\log m$. Both cutoffs are deliberately loose. The statement does not prove positivity throughout $2m<\deg<6m$. The eventual scope for responses is necessary: $H_{2,3}=-488/27$, whereas its degree-$10$ pressure counterpart is positive \cite{boundary}.
+% ed. (2026-10-01): the pressure half of the theorem is contained in the full range
+\begin{ednote}
+Both conditions \eqref{eq:strip} and \eqref{eq:logstrip} imply $s<m$, so the pressure half of
+Theorem~\ref{thm:main}, $E_{m,m+s}>0$, is contained in Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Full_Range/}
+($E_{m,r}>0$ for every $m\ge2$ and $1\le r<2m$). The response positivity $H_{m,m+s}>0$ and the
+fixed-offset asymptotic \eqref{eq:asymptotic} are this note's own; for $s=0$ the asymptotic is
+that of \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}.
+\end{ednote}
+
+\section{An exact two-cluster expansion}
+Work in the invariant Fourier space with indices $1-m,\ldots,m-1$. Let $A=V_0$, $h_0=h_{a=0}$, $Pf=f(0)h_0$, $Q=I-P$, and $\ev f=f(1/2)$. The atomic basis
+\[
+F_{j,m}(x)=\sin^{2m}(\pi x)\sum_{n\in\Z}(\pi(x+n))^{-(2m-j)},\quad0\le j\le2m-2,
+\]
+satisfies $AF_{j,m}=2^{-j}F_{j,m}$ and $h_0=F_{0,m}$. Separating even and odd terms in the periodization proves these identities and the simple-eigenvalue setup \cite{integer,triangle}.
+
+On $Q$ set
+\[
+B_a=QV_aQ,\qquad q_a=QV_ah_0.
+\]
+\[
+\mathcal F(a)=R_m+\ev(I-B_a)^{-1}q_a,\qquad
+\mathcal G(a)=\ev(I-B_a)^{-2}q_a.
+\]
+Both scalar series are even, $\mathcal F(0)=R_m$, and $\mathcal G(0)=0$. They describe the response with eigenvalue fixed at one and its extra resolvent response.
+\begin{lemma}\label{lem:schur}
+As analytic germs,
+\begin{equation}\label{eq:schur}
+\log\lambda_m(a)=a^d\mathcal F(a)
+-a^{2d}\left(\mathcal F(a)\mathcal G(a)+\frac{\mathcal F(a)^2}{2}\right)+O(a^{3d}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Write $h_a=h_0+u_a$, $u_a\in Q$, and $\delta=\lambda_m(a)-1$. Applying $Q$ gives $(I-B_a+\delta)u_a=q_a$. Thus
+\[
+\delta=a^d\{R_m+\ev(I-B_a+\delta)^{-1}q_a\}
+=a^d(\mathcal F-\delta\mathcal G+O(\delta^2)).
+\]
+Substitute once and expand $\log(1+\delta)$.
+\end{proof}
+Substitution $a=\tan t$ preserves the remainder order, so only two feedback clusters matter below degree $6m$. Raw frozen positivity is false:
+\[
+\mathcal F_2(a)=\frac13+8a^2+\frac{536}{27}a^4-\frac{296}{27}a^6+O(a^8).
+\]
+Its tangent composition nevertheless gives positive pressure coefficients of degrees $6,8,10$, respectively:
+\[
+376/45,\qquad6836/189,\qquad105448/2025.
+\]
+
+\section{Capped orbits and marked pairs}
+Write $V_a=\sum_{j=0}^d a^jV_j$ and remove the full-degree insertion:
+\[
+V_{<}(a)=\sum_{j=0}^{d-1}a^jV_j.
+\]
+Since $(V_jf)(0)=0$ for $1\le j<d$, it has a local analytic fixed vector $f_{<}(a)$ with $f_{<}(a)(0)=1$. Put $Z(a)=\ev f_{<}(a)$. Let $g(x)=\sin\pi x$ on $[0,1]$, extended periodically and nonnegative. The elementary branch estimates are
+\begin{equation}\label{eq:contractions}
+Ag\le\tfrac12g,\qquad
+|V_jf|\le\tfrac12\binom dj\|f\|_\infty g\ (1\le j<d),\qquad \|h_0\|_\infty\le1.
+\end{equation}
+For the middle bound, set $c=\cos(\pi x/2)$ and $u=\sin(\pi x/2)$, factor $cu$ from $c^{d-j}u^j+u^{d-j}c^j$, and use weighted AM--GM to bound the remaining sum by $c^{d-2}+u^{d-2}\le1$. The first bound is similar. The last follows from the positive polynomial expansion of $h_0(x+1/2)$ in $\sin^2\pi x$ \cite{boundary}.
+
+For a summable nonnegative sequence $x$ define
+\[
+\mathcal C_{d,q}(x)=[z^q]\prod_i\bigl((1+zx_i)^d-(zx_i)^d\bigr).
+\]
+Finite-iterate periodization and coefficientwise convergence give
+\begin{equation}\label{eq:cappedorbit}
+[a^q]Z(a)=\sum_{w\in\Z+1/2}(\pi w)^{-d}
+[a^q]\prod_{j\ge1}\bigl((1+a t_j(w))^d-(a t_j(w))^d\bigr),
+\end{equation}
+where $t_j(w)=\tan(\pi w/2^j)$. For each fixed $d,q$ this series is absolutely convergent. Expanding into finitely many compositions of $q$, every insertion degree is below $d$, and the zero-degree gaps form geometric sums by~\eqref{eq:contractions}. The bounded initial vector $h_0$ enters the $g$-norm space at its first positive-degree insertion; it is never treated as a vector vanishing at zero.
+
+\begin{lemma}\label{lem:marking}
+Let $q=d+2s$, $k=2s+1$, and $d\ge2s+2$. For every $a>0$,
+\begin{equation}\label{eq:marking}
+\mathcal C_{d,q}(x)\le\frac{d^{2k}}{k!}a^{2k-q}e_2(x)^k B_x(a)^d,
+\qquad B_x(a)=\prod_i(1+ax_i).
+\end{equation}
+\end{lemma}
+\begin{proof}
+First use finitely many coordinates. A retained monomial has $q$ labeled units with color multiplicities $\alpha_i\le d-1$. Its maximum number of disjoint pairs with distinct colors is
+\[
+\min\bigl(\lfloor q/2\rfloor,\ q-\max_i\alpha_i\bigr)\ge2s+1=k.
+\]
+This formula follows by pairing between the two largest remaining classes; if one class exceeds half the units, pair every unit outside it with a unit inside it.
+
+Introduce independent variables $y_i$ and
+\[
+\mathcal D_x=\sum_{i<j}x_ix_j\frac{\partial^2}{\partial y_i\partial y_j}.
+\]
+In the nonnegative polynomial
+\[
+\frac{z^{2k}}{k!}\left.\mathcal D_x^k\prod_i(1+y_i)^d\right|_{y_i=zx_i},
+\]
+a monomial's coefficient is its original coefficient multiplied by the number of unordered matchings of $k$ cross-color pairs among its labeled units. The derivatives choose distinct units; the $k!$ orders of the pairs cancel the denominator. This integer multiplier is at least one for every retained monomial.
+
+At $z=a$, each derivative costs at most $d x_i/(1+ax_i)$, with repeated falling factorials bounded by powers of $d$. Summing the pairs and dropping denominators bounds the value by $d^{2k}a^{2k}e_2(x)^kB_x(a)^d/k!$. Divide by $a^q$ to bound its degree-$q$ coefficient. Monotone convergence extends the result to summable sequences.
+\end{proof}
+
+For positive odd $n$ set $x_j(n)=|\tan(n\pi/2^{j+1})|/n$ and
+\[
+S_s=\sum_{\substack{n\ge3\\n\text{ odd}}}n^{2s}e_2(x(n))^{2s+1}.
+\]
+\begin{lemma}\label{lem:moment}
+For every $s\ge0$, writing $z=s+1$, we have
+\begin{equation}\label{eq:momentbound}
+S_s<\infty,\qquad S_s\le2^{22z}z^{8z}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $e=2s+2=2z$, $k=e-1$. Algebraically,
+\[
+n^{2s}e_2(x(n))^k=n^{-e}e_2\bigl(|\tan(n\pi/2^{j+1})|:j\ge1\bigr)^k.
+\]
+The numerator has degree $2k$, with each exponent at most $k=e-1$. Its comparison with the capped product of exponent $e$ costs at most $(2k)!$, which bounds the pair arrangements of the $2k$ units. Thus the auxiliary absolute insertion argument proves convergence.
+
+For $s\ge1$, sum all zero-degree gaps using~\eqref{eq:contractions}. The resulting bound is
+\[
+[u^{2k}]\frac1{1-\sum_{j=1}^{e-1}\binom ej u^j}
+\le\tfrac32(4e)^{2k},
+\]
+since at $u=1/(4e)$ the inner sum is at most $\sum_{j\ge1}4^{-j}=1/3$. Changing from half-integers to positive odd integers gives
+\[
+S_s\le\tfrac34(\pi/2)^e(2k)!(4e)^{2k}\le2^{22z}z^{8z},
+\]
+using $(2k)!\le(4z)^{4z}$ and $(4e)^{2k}\le(8z)^{4z}$. For $s=0$, use $A_1g\le g/\sqrt2$; the direct two-insertion estimate gives $S_0<11$ \cite{boundary}, sufficient for~\eqref{eq:momentbound}.
+\end{proof}
+
+\section{The fixed-offset asymptotic}
+The strict tangent theorem in \cite{boundary} says that $x(n)$ is weakly log-majorized by $(\theta,b_2,b_3,\ldots)$ for odd $n\ge3$, where $\theta=(1+\sqrt2)/3$. Hence
+\begin{equation}\label{eq:strict}
+B_{x(n)}(a)\le\eta(a)B(a),\qquad \eta(a)=\frac{1+\theta a}{1+a}<1.
+\end{equation}
+The quantitative reason is that the sorted normalized tangent ratios cross one only once. Before the crossing their first ratio is at most $\theta$ and the rest are at most one. After it, the first $r$ sorted terms are the original prefix, with product ratio $s_r^2\prod_{j=2}^{r-1}s_j$, where $s_j=|\sin(n\pi/2^{j+1})|/(n\sin(\pi/2^{j+1}))\le1$ and $s_2\le\theta$. Convex symmetric exponential sums applied to logarithms give~\eqref{eq:strict}; geometric tails justify the infinite limit.
+
+Fix $s$, with $q=d+2s$ and $k=2s+1$. The entire remote contribution in~\eqref{eq:cappedorbit} is, by~\eqref{eq:marking}--\eqref{eq:strict}, bounded by
+\begin{equation}\label{eq:remote}
+2(2/\pi)^d\frac{d^{2k}}{k!}a_*^{2k-2s}C^d\eta(a_*)^dS_s.
+\end{equation}
+The factor $n^{2s}$ is precisely $n^q n^{-d}$ after rescaling the tangents. For fixed $s$, the remote sum is therefore exponentially smaller than the nearest scale, up to a polynomial in $d$.
+
+The nearest pair contributes $2(2/\pi)^d\mathcal C_{d,q}(b)$. Because $q<2d$, the full-degree monomials removed from $[u^{d+2s}]B(u)^d$ are exactly
+\[
+\sum_jb_j^d[u^{2s}]\prod_{i\ne j}(1+ub_i)^d=O_s(d^{2s}).
+\]
+Indeed, $\sum b_j^d<2$, $\sum b_j\le2$, and $[u^{2s}]B(u)^d\le(2d)^{2s}/(2s)!$.
+
+Let $X$ have probability generating function $B(a_*u)/B(a_*)$, mean one, and variance $\sigma^2$. It is a countable Bernoulli sum with all exponential moments and lattice span one. Fourier inversion gives
+\[
+\mathbb P(X_1+\cdots+X_d=d+2s)\sim(2\pi d\sigma^2)^{-1/2}.
+\]
+The centered characteristic function is $1-\sigma^2v^2/2+O(v^3)$ near zero, with a Gaussian modulus bound there and modulus strictly below one on the compact complement. Rescaling by $\sqrt d$ proves the estimate; the fixed shift contributes a factor tending to one. Thus
+\begin{equation}\label{eq:nearest}
+[u^{d+2s}]B(u)^d\sim C^da_*^{-2s}/\sqrt{2\pi d\sigma^2}.
+\end{equation}
+This establishes the asymptotic for $[a^{d+2s}]Z$.
+
+To restore the full insertion, put $T_{<}=(I-QV_{<}Q)^{-1}$ on $Q$. The frozen vector satisfies $f_{\mathcal F}=f_{<}+a^dT_{<}QV_df_{\mathcal F}$. For $2s<d$, the Schur expansion yields the exact identity
+\begin{equation}\label{eq:restoration}
+H_{m,m+s}=[a^{d+2s}]Z+[a^{2s}]\bigl(\ev T_{<}QV_df_{<}-\mathcal F\mathcal G\bigr).
+\end{equation}
+Use $\|f\|_g=\sup|f|/g$ for vectors vanishing at zero. The resolvent $(I-A)^{-1}$ has $g$-norm at most two. Recursion gives order-$j$ response and resolvent jets of size $O_j(d^j)$, for fixed $j<d$. The initial $h_0$ is handled in sup norm, not $g$-norm.
+
+Also $\|QV_df\|_\infty\le2\|f\|_\infty$. For a trigonometric polynomial of degree at most $m-1$, elementary Fourier coefficient bounds give $\|u'\|_\infty\le2\pi m(m-1)\|u\|_\infty$. Since $QV_df$ vanishes at zero and $g(x)\ge2\operatorname{dist}(x,\Z)$,
+\[
+\|QV_df\|_g<2d^2\|f\|_\infty.
+\]
+The restoration error in~\eqref{eq:restoration} is therefore $O_s(d^{2s+2})$ and the feedback error $O_s(d^{2s})$. They are negligible compared with $(2C/\pi)^d/\sqrt d$, proving~\eqref{eq:asymptotic}.
+
+\section{An explicit growing strip}
+Assume $d\ge1600z^2$, $z=s+1$, and $q=d+2s$. Choose $a$ so that $aB'(a)/B(a)=q/d$. The earlier rational half-angle certificate gives $a>4/5$ \cite{boundary}. Moreover $q/d<33/32$ and
+\[
+B'(1)/B(1)>\tfrac12+\tfrac3{11}+\tfrac3{19}+\tfrac3{35}+\tfrac3{67}>33/32,
+\]
+so $a<1$. Thus $\eta(a)<206/225$, since $\theta<81/100$. Retaining $b_1=1$, $b_2>2/5$, and $b_3>1/6$ gives
+\[
+\frac{B(a)}{a^{q/d}}\ge\frac{B(a)}a>
+\frac1a+\frac{47}{30}+\frac{19a}{30}+\frac{a^2}{15}>3.
+\]
+
+The $a$-tilted sum of $d$ countable Bernoulli sums has integer mean $q$ and variance at most $q$. The mean is a mode by the countable Darroch theorem \cite[Theorem 2]{gnedin}. Chebyshev puts at least $3/4$ of its mass in an interval with at most $4\sqrt q+1$ integers. Therefore, with $G=[u^q]B(u)^d$,
+\[
+G\ge\frac{B(a)^da^{-q}}{8\sqrt q},\qquad
+E_0:=2(2/\pi)^dG>\frac{(21/11)^d}{4\sqrt q}.
+\]
+Here $E_0$ is the unmodified nearest-orbit contribution, not a pressure coefficient; the last inequality uses $\pi<22/7$.
+
+Each of the following errors is less than $E_0/8$.
+\begin{enumerate}
+\item The remote relative error is bounded by
+\[
+12\sqrt d\,d^{4z}2^{22z}z^{8z}(206/225)^d.
+\]
+Its logarithm divided by $d$ is at most
+\[
+\frac{\log12+\tfrac12\log d}{d}+
+\frac{8\log d+22}{40\sqrt d}-\frac{19}{225}
+\le\frac{93}{1600}-\frac{19}{225}<-\frac1{40}.
+\]
+Use $z\le\sqrt d/40$, $\log2<1$, $\log1600<8$, and $\log12<3$. The positive functions are decreasing for $d\ge1600$.
+\item Deleting the nearest full-degree monomials has relative cost at most
+\[
+24\sqrt d\,(2d)^{2z}3^{-d}.
+\]
+Its logarithm divided by $d$ is at most $26/1600-1<-1/2$, using $\log24<4$ and $\log3>1$.
+\item An explicit low-order version of the norm recursion gives
+\[
+\|f_n\|_g\le(2d)^n\ (n\ge1),\quad
+\|(T_{<})_n\|_g\le2(2d)^n,\quad
+\|\mathcal G_n^{\rm vector}\|_g\le2n(2d)^n.
+\]
+This follows by $\binom dj\le d^j$ and summing compositions; $f_0=h_0$ has sup norm at most one. The restoration and feedback error is at most $5d^2(2s+1)(2d)^{2s}$. Relative to $E_0$ it is at most
+\[
+\tfrac32d^3(2d)^{2z}(11/21)^d.
+\]
+Its logarithm divided by $d$ is at most $43/1600-10/21<-1/4$, using $\log(21/11)>10/21$.
+\end{enumerate}
+Thus
+\begin{equation}\label{eq:explicitlower}
+H_{m,m+s}>E_0/2>(21/11)^d/(8\sqrt q)>0.
+\end{equation}
+The elementary monotonicity formulas and rational side inequalities are recorded in the verifier.
+
+\subsection{A wider logarithmic strip}
+The same proof works when $d\ge4096$ and $400z\log d\le d$. The saddle bounds remain valid since $q/d\le1+2/(400\log d)<33/32$. Now use $\log z\le\log d$ in the remote error. Its logarithm divided by $d$ is at most
+\[
+\frac{\log12+\tfrac12\log d}{d}+\frac{12z\log d}{d}+\frac{22z}{d}-\frac{19}{225}
+\le\frac7{4096}+\frac{12}{400}+\frac{22}{3200}-\frac{19}{225}<-\frac1{40}.
+\]
+Here $8<\log4096<9$ and $\log12<5/2$. The nearest-deletion bound gives instead $17/8192+1/200+1/1600-1<-1/2$. For restoration retain the original relative bound and use
+\[
+20d^2(2s+1)\sqrt q\,(2d)^{2s}(11/21)^d
+\le60d^{7/2}(2d)^{2z}(11/21)^d.
+\]
+Its logarithm divided by $d$ is at most $73/8192+1/200+1/1600-10/21<-1/4$. Thus~\eqref{eq:explicitlower} also holds under~\eqref{eq:logstrip}. The fixed-$a_*$ asymptotic~\eqref{eq:asymptotic} remains a fixed-$s$ assertion; no uniform extension of that particular formula is implied.
+
+
+\section{Pressure transfer and verification}
+Below degree $3d$, the true response gives
+\begin{align}\label{eq:pressure}
+E_{m,m+s}={}&\sum_{j=0}^{m+s}H_{m,j}
+[t^{2(m+s-j)}](\tan t/t)^{d+2j}\notag\\
+&-\tfrac12[t^{2s}](\tan t/t)^{2d}h_{\tan t}(1/2)^2
+-\frac{m}{2m+s}R_{2m+s}.
+\end{align}
+For fixed $s$, all responses in the first line are eventually positive: use the earlier triangle for $j<m$ and~\eqref{eq:asymptotic} for the finitely many offsets $j=m,\ldots,m+s$. The subtractions involve fixed-order jets and are polynomially bounded, while $H_{m,m+s}$ grows exponentially.
+
+Under the explicit condition $d\ge1600(s+1)^2$, every smaller offset obeys the same condition. Put $\rho=1/(8d)$. The absolute low-order response series at $a=\tan\rho$ is bounded by $\sum_{n\ge0}(2d\tan\rho)^n<2$. Also $(\tan\rho/\rho)^{2d}<2$, since $\tan\rho/\rho\le(1-\rho^2)^{-1}$ and $(1-\rho^2)^{2d}\ge1-2d\rho^2>1/2$. The quadratic subtraction is at most $4(8d)^{2s}$ and the cosine subtraction at most one. The positive term~\eqref{eq:explicitlower} exceeds their sum because
+\[
+40\sqrt q\,(8d)^{2s}(11/21)^d
+\le60\sqrt d\,(8d)^{2z}(11/21)^d<1.
+\]
+Its logarithm divided by $d$ is at most $31/1600-10/21<0$, using $\log60<5$ and $\log8<3$. Under the logarithmic condition, the same pressure bound has normalized logarithm at most $19/8192+1/200+3/1600-10/21<0$. This proves Theorem~\ref{thm:main}.
+
+The bundle contains exact Fourier recursions checking all $195$ pressure coefficients in $2m<\deg<6m$ for $m=2,\ldots,14$, and $35$ independent checks of~\eqref{eq:restoration} for all $s<m$, $m=2,\ldots,8$. It includes a finite-coordinate matching check, the rational strip verifier, and the earlier half-angle certificate locating the saddle. These calculations check identities and constants; the universal results follow from the analytic inequalities.
+
+The full conjecture $E_{m,r}>0$ for every $1\le r<2m$ remains open. Finite first-negative-degree data and the heuristic rate near $6.662966658$ do not enter the proof. Uniform sharp cutoffs or a formula for those first negative degrees require further control of the feedback clusters.
+% ed. (2026-10-01): the conjecture and the rate of this paragraph are settled by later packages
+\begin{ednote}
+The conjecture of the preceding paragraph, also called open in the abstract, is proved for
+every $m\ge2$ in \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and it is sharp:
+$E_{2,4}=[t^{12}]p_2(t/\pi)=-35360872/93555<0$. The rate near $6.662966658$ is now a theorem:
+the first negative degree satisfies $N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$ with $\gamma\in(6.662966,6.662968)$ (\path{../Thue_Morse_Integer_Pressure_First_Negative/}), and $N_m$
+is certified for $2\le m\le128$ in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}.
+\end{ednote}
+
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the fifth of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{integer}, cited as \emph{Integer Thue--Morse Pressure}, is \path{../Thue_Morse_Integer_Pressure/}, whose title
+is \emph{Integer Pressure and a Missing Taylor Coefficient} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical); \cite{triangle},
+cited under the title \emph{The Full Pre Feedback Positivity Triangle for Thue Morse Pressure},
+is \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, titled \emph{The Full Positive Triangle in Integer Thue Morse
+Pressure}; and \cite{boundary} is \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}. The copies of these three
+sources that the package bundled under \path{background/} were not filed.
+\end{ednote}
+\begin{thebibliography}{9}\small\raggedright
+\bibitem{integer} V. Reshetnikov, \emph{Integer Thue--Morse Pressure}, ProveIt incoming research source, revision \texttt{6a98f89bac85cc6b4ba5d5c3b63996037d9824e1}, source blob \texttt{1973fd17245864bb8a83e1b1d90416ac032ba7c1}.
+\bibitem{triangle} \emph{The Full Pre Feedback Positivity Triangle for Thue Morse Pressure}, companion research report prepared for V. Reshetnikov with OpenAI, 1 October 2026.
+\bibitem{boundary} \emph{Positivity at the First Feedback Boundary in Thue Morse Pressure}, companion research report prepared for V. Reshetnikov with OpenAI, 1 October 2026.
+\bibitem{gnedin} A. Gnedin, \emph{Cross Modality of the Extended Binomial Sums}, arXiv:2408.06477v1 (2024), Theorem 2. \url{https://arxiv.org/html/2408.06477v1}.
+\end{thebibliography}
+\end{document}

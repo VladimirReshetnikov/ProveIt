@@ -1949,6 +1949,12 @@ Appendix A.3 records these.
   (`odg:eq:profinite`; the paragraph after `osq:thm:completions`), formalized in
   `Surreal/Foundations/OmnificCongruenceTopology.lean` and
   `OmnificSeparationTopology.lean`, are instances of Theorem 39.4 (Remark 39.6).
+- [`real-vector-space-structure`](../real-vector-space-structure/) (`rvs:`;
+  batch 73). Its Theorem 18.1 (`rvs:thm:monomial-aut`) is the class-level
+  converse for the monomial maps (5.1) with `k = R`: every strong R-linear
+  ordered-field automorphism of `No` permuting the monomial lines is some
+  `M_{χ,τ}`, the case of Theorem 5.1 in which `u` is the identity. A dated note
+  after Theorem 5.1 records this; no result here uses it.
 
 ## What was run
 
@@ -1997,7 +2003,8 @@ overfull or underfull boxes, or undefined references. Build in a scratch
 directory; the auxiliary files are not kept here. The batch-35 note after
 Remark 23.3 took the build from 220 to 221 pages and changed no number (all
 729 labels and 27 citation numbers compared in the `.aux` files against a
-build of the committed text).
+build of the committed text). The batch-73 note after Theorem 5.1 leaves 221
+pages and changes no number (same comparison).
 
 Fourteen of the shipped scripts can write files (thirteen check scripts and 16's build
 script; 19's `build.sh` creates two empty directories before failing, and 17's and 20's

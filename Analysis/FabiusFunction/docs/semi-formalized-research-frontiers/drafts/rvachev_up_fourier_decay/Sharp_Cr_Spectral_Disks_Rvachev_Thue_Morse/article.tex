@@ -1,0 +1,1362 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[a4paper,margin=25mm,headheight=15pt,footskip=28pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor,fancyhdr}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\usepackage{multicol}
+
+\definecolor{ink}{HTML}{17212B}
+\definecolor{deepblue}{HTML}{214E78}
+\definecolor{deepgreen}{HTML}{3D6B47}
+\definecolor{deepred}{HTML}{8D3A3A}
+\definecolor{softblue}{HTML}{EDF4F8}
+\definecolor{softgray}{HTML}{F4F6F7}
+\definecolor{rulegray}{HTML}{C7CED4}
+
+\hypersetup{
+ colorlinks=true,
+ linkcolor=deepblue,
+ citecolor=deepgreen,
+ urlcolor=deepblue,
+ pdftitle={Sharp C-r Spectral Disks for the Rvachev--Thue--Morse Transfer Operator},
+ pdfauthor={OpenAI; research manuscript prepared for Vladimir Reshetnikov},
+ pdfsubject={Exact essential spectra, endpoint-jet ladders, finite resonances, and optimal operator asymptotics},
+ pdfkeywords={Rvachev up-function, Fabius function, transfer operator, essential spectrum, C-r regularity, Fredholm theory, Thue--Morse}
+}
+\urlstyle{tt}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Sharp $C^r$ spectral disks}
+\fancyhead[R]{\small ProveIt research extension}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\setlength{\parindent}{1.1em}
+\setlength{\parskip}{0.28em}
+\setlength{\emergencystretch}{2.5em}
+\allowdisplaybreaks
+\setlist[itemize]{itemsep=0.25em,topsep=0.35em,leftmargin=1.5em}
+\setlist[enumerate]{itemsep=0.25em,topsep=0.35em,leftmargin=1.7em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem*{status}{Claim boundary}
+% ed. (2026-09-30): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-30)}
+
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\T}{\mathbb T}
+\newcommand{\Dbar}[1]{\overline{D}(0,#1)}
+\newcommand{\ess}{\mathrm{ess}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\codim}{\operatorname{codim}}
+\newcommand{\spec}{\sigma}
+\newcommand{\spece}{\sigma_{\mathrm{ess}}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\e}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\Lop}{\mathcal L}
+\newcommand{\Pop}{\mathcal P}
+\newcommand{\Uop}{\mathcal U}
+\newcommand{\Jop}{\mathcal J}
+\newcommand{\Kop}{\mathcal K}
+\newcommand{\id}{\mathrm I}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Fourier}[1]{\widehat{#1}}
+\newcommand{\repo}{\textsc{ProveIt}}
+\newcommand{\CrT}{C^r(\T)}
+\newcommand{\CrI}{C^r([0,1])}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\lstset{
+ basicstyle=\ttfamily\small,
+ keywordstyle=\bfseries\color{deepblue},
+ commentstyle=\itshape\color{deepgreen},
+ frame=single,
+ rulecolor=\color{rulegray},
+ backgroundcolor=\color{softgray},
+ breaklines=true,
+ keepspaces=true,
+ showstringspaces=false,
+ columns=fullflexible,
+ xleftmargin=0.5em,xrightmargin=0.5em,
+ aboveskip=6pt,belowskip=6pt
+}
+
+\title{\textbf{Sharp $C^r$ Spectral Disks for the\\Rvachev--Thue--Morse Transfer Operator}\\[0.55em]
+\large Universal dyadic Markov disks, endpoint-jet ladders,\\
+finite resonances, and optimal operator asymptotics}
+\author{Research manuscript prepared for Vladimir Reshetnikov\\
+\small OpenAI}
+\date{30 September 2026 (Pacific time)}
+
+\begin{document}
+\color{ink}
+\maketitle
+
+\begin{abstract}
+The Fourier-decay branch of the \repo{} repository asks for the spectrum of
+its Rvachev--Thue--Morse transfer operator on finite-smoothness spaces.  The
+analytic Hardy-space spectrum had collapsed to three points, and a later
+Sobolev manuscript found a regularity-dependent essential disk, but the
+periodic H\"older and $C^r$ cases were left open.  This article resolves the
+integer $C^r$ problem exactly, both on the circle and on the interval, and
+proves a more general structural theorem for smooth dyadic Markov transfer
+operators.
+
+For a smooth weight $0\leq\omega\leq1$ satisfying
+$\omega(x+1)=1-\omega(x)$, define
+\[
+ (\Pop_\omega f)(x)=\omega(x)f(x/2)
+ +(1-\omega(x))f((x+1)/2).
+\]
+On $C^r(\T)$, with $r\in\N\cup\{0\}$, its Fredholm essential spectrum is
+\emph{always} the exact disk $\Dbar{2^{-r}}$.  Every point of the open disk
+is an eigenvalue of infinite geometric multiplicity.  The proof is
+constructive: the doubling composition operator is a right inverse, an
+explicit infinite-dimensional branch-cancellation space supplies defect
+vectors, and differentiation identifies the Calkin image at order $r$ with
+$2^{-r}$ times the continuous-space image.  Exterior generalized
+eigenvectors automatically bootstrap to $C^\infty$.
+
+On $C^r([0,1])$, unmatched endpoint jets contribute the explicit finite
+ladder $\{\omega(0)2^{-j}:0\leq j\leq r\}$ and no other spectral values.
+For the Rvachev sine mask $\omega(x)=\sin^2(\pi x/2)$ this ladder collapses
+to zero.  Writing $\Lop=\Pop_\omega/2$, we obtain the complete formula
+\[
+ \spece(\Lop;C^r)=\Dbar{2^{-r-1}},\qquad
+ \spec(\Lop;C^r)=\Dbar{2^{-r-1}}\cup\{1/2,-1/4\}
+\]
+on both the circle and the interval.  The leading resonance is simple; once
+$r\ge2$, the resonance $-1/4$ is isolated, semisimple, and two-dimensional.
+For $r\ge2$ this gives a sharp two-resonance operator expansion, while a
+Calkin-algebra lower bound proves that no compact correction can improve the
+residual exponential rate $2^{-r-1}$.  The results are conventional
+mathematical proofs in an unrefereed manuscript; no new Lean declaration or
+claim of global publication priority is made.
+\end{abstract}
+
+\noindent\textbf{Keywords.}
+Rvachev up-function; Fabius function; transfer operator; essential spectrum;
+Fredholm theory; $C^r$ regularity; endpoint jets; Thue--Morse; spectral
+resonance.
+
+\begin{center}
+\fcolorbox{deepblue}{softblue}{%
+\begin{minipage}{0.91\textwidth}
+\begin{status}
+The paper proves exact theorems relative to the operator and function spaces
+stated here.  It resolves the integer $C^r$ portion of a question explicitly
+left open in the inspected \repo{} branch.  It does not claim that every
+specialization is globally new, does not settle noninteger H\"older spaces,
+and does not constitute a machine-checked formalization.  The repository pin,
+source blobs, external analytic inputs, and finite verification scope are
+recorded in \cref{app:provenance,app:verification}.
+\end{status}
+\end{minipage}}
+\end{center}
+
+\clearpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\clearpage
+
+\section{The repository question and the result}
+\label{sec:introduction}
+
+\subsection{A delimited open target}
+The \repo{} Fabius-function research branch studies the centered Rvachev
+up-function, its infinite sinc product, Thue--Morse identities, exact moments,
+and several transfer operators.  The manuscript
+\emph{Spectral Collapse and Alternating RMS Asymptotics for the Rvachev
+Up-Function} proves a finite analytic spectrum and then asks for the complete
+spectrum or essential spectral radius on $C^r$, H\"older, Sobolev, and
+endpoint-weighted spaces.  Its warning is mathematically important: an
+analytic Fredholm determinant cannot simply be transferred to a weaker norm.
+A subsequent manuscript answers the periodic Sobolev part and the
+integer-order interval Sobolev part, but explicitly leaves H\"older and
+$C^r$ spaces untreated \cite{repo-spectral,repo-sobolev}.
+
+This article answers the integer $C^r$ problem.  The answer is not the
+analytic three-point set.  At every finite differentiability order there is a
+full essential disk.  Its radius is particularly simple in the supremum-jet
+geometry of $C^r$: one factor $1/2$ comes from the repository normalization,
+and one factor $2^{-r}$ comes from the contraction of the highest derivative.
+The two algebraic resonances survive outside that disk exactly when their
+moduli exceed this threshold.
+
+The proof also isolates a general mechanism.  It applies to every smooth
+nonnegative dyadic partition of unity, not only to the sine mask.  The
+essential disk comes from three pieces that fit exactly:
+\begin{enumerate}
+\item a right inverse generated by the doubling map;
+\item an infinite-dimensional branch-cancellation kernel;
+\item a derivative quotient that conjugates the Calkin image at order $r$
+      to $2^{-r}$ times the continuous-space image.
+\end{enumerate}
+The sine mask is then special only in the finite resonance calculation and in
+its vanishing endpoint value, which kills the interval jet ladder.
+
+\subsection{Repository normalization}
+The operator appearing in the Rvachev RMS analysis is
+\begin{equation}
+ (\Lop f)(x)=\frac12\left[
+ \sin^2\!\left(\frac{\pi x}{2}\right)f(x/2)
+ +\cos^2\!\left(\frac{\pi x}{2}\right)f((x+1)/2)
+ \right].
+ \label{eq:L-definition}
+\end{equation}
+It is convenient to remove the outer factor and write
+\begin{equation}
+ \Pop=2\Lop.
+ \label{eq:P=2L}
+\end{equation}
+Thus $\Pop\one=\one$ and $\Pop$ is a positive Markov operator in the
+supremum norm.  All structural proofs are first given for $\Pop$ and then
+scaled back to $\Lop$.
+
+We regard $C^r(\T)$ as a complex Banach space with norm
+\begin{equation}
+ \norm f_{C^r}=\sum_{j=0}^{r}\norm{f^{(j)}}_\infty,
+ \qquad r\in\N\cup\{0\}.
+ \label{eq:Cr-norm}
+\end{equation}
+Equivalent standard $C^r$ norms give the same spectrum.  On the interval we
+use the analogous norm on $C^r([0,1])$.  Essential spectrum always means the
+Fredholm essential spectrum,
+\begin{equation}
+ \spece(T)=\{\lambda\in\C:T-\lambda\id\text{ is not Fredholm}\}.
+ \label{eq:fredholm-essential}
+\end{equation}
+
+\subsection{Main theorem in the Rvachev case}
+\begin{theorem}[Complete $C^r$ spectrum of the Rvachev operator]
+\label{thm:main-rvachev}
+Let $r\in\N\cup\{0\}$ and let $\Lop$ be \eqref{eq:L-definition}.
+On both $C^r(\T)$ and $C^r([0,1])$,
+\begin{align}
+ \spece(\Lop)&=\Dbar{2^{-r-1}},
+ \label{eq:main-essential}\\
+ \spec(\Lop)&=\Dbar{2^{-r-1}}\cup\{1/2,-1/4\}.
+ \label{eq:main-spectrum}
+\end{align}
+Every $\lambda$ with $|\lambda|<2^{-r-1}$ is an eigenvalue of infinite
+geometric multiplicity.
+
+The following exterior multiplicity statements hold.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item If $r\ge1$, then $1/2$ is isolated and simple, with eigenspace
+      $\Span\{\one\}$.
+\item If $r\ge2$, then $-1/4$ is isolated and semisimple with algebraic and
+      geometric multiplicity two.  Its eigenspace is
+      \begin{equation}
+       \Span\left\{\sin(2\pi x),\ \cos(2\pi x)+\frac13\right\}.
+       \label{eq:minus-quarter-space}
+      \end{equation}
+\end{enumerate}
+At $r=1$, the value $-1/4$ lies on the essential boundary; at $r=0$ it lies
+strictly inside the essential disk.  The displayed smooth eigenfunctions
+remain valid there, but no finite isolated multiplicity is asserted.
+\end{theorem}
+
+The threshold picture is therefore exact.
+\begin{center}
+\small
+\begin{tabularx}{0.92\textwidth}{@{}cL{0.18\textwidth}YY@{}}
+\toprule
+$r$ & Essential radius & Status of $1/2$ & Status of $-1/4$\\
+\midrule
+$0$ & $1/2$ & essential boundary & interior of essential disk\\
+$1$ & $1/4$ & isolated, simple & essential boundary\\
+$r\ge2$ & $2^{-r-1}$ & isolated, simple & isolated, semisimple, rank $2$\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The finite analytic spectrum from the predecessor is not contradicted.  It
+lives on a much smaller function space.  The present disk quantifies exactly
+what finite smoothness restores.
+
+\subsection{Sharp operator asymptotics}
+The spectral set immediately gives an operator-level consequence that is
+stronger than a mere upper bound.
+
+\begin{corollary}[Two-resonance expansion and optimal residual rate]
+\label{cor:asymptotic}
+On $C^r(\T)$ or $C^r([0,1])$ with $r\ge2$, let $\Pi_+$ and $\Pi_-$ be the
+Riesz projections of $\Lop$ at $1/2$ and $-1/4$.  Then
+\begin{equation}
+ \Lop^n=2^{-n}\Pi_+ +(-1/4)^n\Pi_-+R_n,
+ \label{eq:two-resonance-expansion}
+\end{equation}
+where $\operatorname{rank}\Pi_+=1$, $\operatorname{rank}\Pi_-=2$, and for
+every $\varepsilon>0$ there is $C_{r,\varepsilon}$ such that
+\begin{equation}
+ \norm{R_n}_{C^r\to C^r}
+ \le C_{r,\varepsilon}(2^{-r-1}+\varepsilon)^n.
+ \label{eq:upper-residual}
+\end{equation}
+The exponential threshold cannot be improved by any compact correction:
+for every compact $K:C^r\to C^r$ and every $n\ge1$,
+\begin{equation}
+ \norm{\Lop^n-K}_{C^r\to C^r}\ge 2^{-(r+1)n}.
+ \label{eq:compact-lower-bound-L}
+\end{equation}
+In particular, \eqref{eq:compact-lower-bound-L} applies to the finite-rank
+resonance sum in \eqref{eq:two-resonance-expansion}.
+\end{corollary}
+
+For $r=1$ there is still a leading rank-one decomposition, but the alternating
+value $-1/4$ belongs to the essential boundary.  Thus the scalar alternating
+RMS law in the repository and the operator-norm geometry genuinely separate
+at the critical differentiability order.
+
+\section{A universal dyadic Markov family}
+\label{sec:general-family}
+
+\subsection{Weights and circle compatibility}
+Let $\omega\in C^\infty(\R)$ satisfy
+\begin{equation}
+ 0\le\omega(x)\le1,
+ \qquad
+ \omega(x+1)=1-\omega(x).
+ \label{eq:weight-hypotheses}
+\end{equation}
+Define, initially for a $1$-periodic function $f$,
+\begin{equation}
+ (\Pop_\omega f)(x)=\omega(x)f(x/2)
+ +(1-\omega(x))f((x+1)/2).
+ \label{eq:general-P}
+\end{equation}
+Although the two summands are not separately periodic, their sum is:
+using \eqref{eq:weight-hypotheses} and periodicity of $f$ gives
+$\Pop_\omega f(x+1)=\Pop_\omega f(x)$.  Thus \eqref{eq:general-P} defines a
+bounded operator on every $C^r(\T)$.
+
+The Rvachev mask is
+\begin{equation}
+ \omega_\mathrm{R}(x)=\sin^2(\pi x/2),
+ \qquad 1-\omega_\mathrm{R}(x)=\cos^2(\pi x/2).
+ \label{eq:rvachev-weight}
+\end{equation}
+It satisfies $\omega_\mathrm{R}(0)=0$, a fact that will eliminate the
+interval endpoint ladder.
+
+\subsection{The universal theorem}
+\begin{theorem}[Universal $C^r$ essential disk]
+\label{thm:universal-disk}
+Assume \eqref{eq:weight-hypotheses}.  For every integer $r\ge0$,
+\begin{equation}
+ \spece(\Pop_\omega;C^r(\T))=\Dbar{2^{-r}}.
+ \label{eq:universal-essential}
+\end{equation}
+Every $\lambda$ with $|\lambda|<2^{-r}$ is an eigenvalue of
+$\Pop_\omega$ on $C^r(\T)$ with infinite geometric multiplicity.
+Furthermore:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item the powers of $\Pop_\omega$ are uniformly bounded on each $C^m(\T)$;
+\item every spectral value with $|\lambda|>2^{-r}$ is an isolated eigenvalue
+      of finite algebraic multiplicity;
+\item every generalized eigenvector belonging to such a value lies in
+      $C^\infty(\T)$.
+\end{enumerate}
+\end{theorem}
+
+The exact disk, rather than merely its radius, is the key point.  The proof is
+split into four transparent steps: a right inverse, an explicit defect space,
+a continuous-space disk, and an exact Calkin conjugacy under differentiation.
+
+\section{Right inverse, defect vectors, and the continuous disk}
+\label{sec:right-inverse}
+
+\subsection{The doubling right inverse}
+Let $T_2x=2x\pmod1$ and define
+\begin{equation}
+ (\Uop f)(x)=f(T_2x).
+ \label{eq:U-definition}
+\end{equation}
+Then the partition-of-unity identity in \eqref{eq:general-P} gives an exact
+one-sided inverse.
+
+\begin{lemma}[Right inverse]
+\label{lem:right-inverse}
+On every periodic function space on which the formulas make sense,
+\begin{equation}
+ \Pop_\omega\Uop=\id.
+ \label{eq:PU=I}
+\end{equation}
+Moreover, for $0\le j\le r$ and $n\ge0$,
+\begin{equation}
+ (\Uop^n f)^{(j)}(x)=2^{nj}f^{(j)}(T_2^n x).
+ \label{eq:U-derivatives}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Both inverse branches are mapped by $T_2$ back to $x$ modulo one.  Hence
+\[
+ (\Pop_\omega\Uop f)(x)
+ =\omega(x)f(x)+(1-\omega(x))f(x)=f(x).
+\]
+The derivative identity follows by repeated application of the chain rule.
+\end{proof}
+
+\subsection{An explicit infinite-dimensional kernel}
+Continuity and \eqref{eq:weight-hypotheses} imply that $\omega$ takes a value
+strictly between zero and one.  Choose a nonempty open interval
+$I\Subset(0,1)$ on which both branch weights are positive.  For
+$g\in C_c^\infty(I)$, define $E_g\in C^\infty(\T)$ by
+\begin{equation}
+ E_g(y)=
+ \begin{cases}
+ (1-\omega(2y))g(2y),&y\in I/2,\\
+ -\omega(2y-1)g(2y-1),&y\in (I+1)/2,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+ \label{eq:defect-vector}
+\end{equation}
+The two support intervals are disjoint and compactly contained in the two
+half-circles, so the extension by zero is smooth.
+
+\begin{lemma}[Branch-cancellation defect]
+\label{lem:defect}
+For every $g\in C_c^\infty(I)$,
+\begin{equation}
+ \Pop_\omega E_g=0.
+ \label{eq:defect-kernel}
+\end{equation}
+The map $g\mapsto E_g$ is injective.  Consequently
+$\ker\Pop_\omega\cap C^\infty(\T)$ is infinite-dimensional.
+\end{lemma}
+\begin{proof}
+For $x\in I$, the two branch values are
+\[
+ E_g(x/2)=(1-\omega(x))g(x),\qquad
+ E_g((x+1)/2)=-\omega(x)g(x),
+\]
+so their weighted sum vanishes.  Outside $I$, both values vanish.  Positivity
+of $1-\omega$ on $I$ makes the first branch recover $g$, proving injectivity.
+\end{proof}
+
+\subsection{A disk of infinite-multiplicity eigenvalues}
+For $e\in\ker\Pop_\omega\cap C^\infty(\T)$ and a complex number satisfying
+$|\lambda|2^r<1$, consider
+\begin{equation}
+ F_{\lambda,e}=\sum_{n=0}^\infty \lambda^n\Uop^n e.
+ \label{eq:eigenseries}
+\end{equation}
+By \eqref{eq:U-derivatives}, the series converges absolutely in $C^r$.
+
+\begin{proposition}[Defect eigenseries]
+\label{prop:defect-eigenseries}
+If $|\lambda|<2^{-r}$, then
+\begin{equation}
+ \Pop_\omega F_{\lambda,e}=\lambda F_{\lambda,e}.
+ \label{eq:eigenseries-equation}
+\end{equation}
+For fixed $\lambda$, the map $e\mapsto F_{\lambda,e}$ is injective.
+Therefore every point of $D(0,2^{-r})$ is an eigenvalue of infinite geometric
+multiplicity on $C^r(\T)$.
+\end{proposition}
+\begin{proof}
+Using $\Pop_\omega e=0$ and \eqref{eq:PU=I},
+\[
+ \Pop_\omega F_{\lambda,e}
+ =\sum_{n=1}^\infty\lambda^n\Uop^{n-1}e
+ =\lambda F_{\lambda,e}.
+\]
+Also $(\id-\lambda\Uop)F_{\lambda,e}=e$, so the map is injective.
+\end{proof}
+
+At $r=0$, positivity and the partition of unity give
+\begin{equation}
+ \norm{\Pop_\omega f}_\infty\le\norm f_\infty.
+ \label{eq:C0-contraction}
+\end{equation}
+The preceding eigenseries now determines the entire continuous-space
+spectrum and essential spectrum.
+
+\begin{corollary}[Exact continuous-space disk]
+\label{cor:C0-disk}
+On $C(\T)$,
+\begin{equation}
+ \spec(\Pop_\omega)=\spece(\Pop_\omega)=\Dbar1.
+ \label{eq:C0-disk}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The norm bound puts the spectrum in $\Dbar1$.  Every point of the open unit
+disk has infinite-dimensional kernel for $\Pop_\omega-\lambda\id$, so it
+belongs to the Fredholm essential spectrum.  The non-Fredholm set is closed,
+therefore it contains the closed disk.
+\end{proof}
+
+\section{Differentiation and the exact Calkin image}
+\label{sec:calkin}
+
+\subsection{The leading derivative identity}
+For $m\ge1$, Leibniz' rule gives
+\begin{equation}
+ D^m\Pop_\omega f=2^{-m}\Pop_\omega(D^m f)+\mathcal R_m f,
+ \label{eq:derivative-identity}
+\end{equation}
+where
+\begin{equation}
+ \mathcal R_m f=
+ \sum_{k=1}^{m}\binom{m}{k}2^{-(m-k)}\omega^{(k)}(x)
+ \left[f^{(m-k)}(x/2)-f^{(m-k)}((x+1)/2)\right].
+ \label{eq:Remainder-m}
+\end{equation}
+The displayed expression is periodic, even though its individual branch
+terms need not be.
+
+\begin{lemma}[Compact lower-jet remainder]
+\label{lem:compact-remainder}
+For $m\ge1$, $\mathcal R_m:C^m(\T)\to C(\T)$ is compact and annihilates
+constants.
+\end{lemma}
+\begin{proof}
+Every term in \eqref{eq:Remainder-m} uses derivatives of order at most
+$m-1$.  Thus $\mathcal R_m$ factors through the compact embedding
+$C^m(\T)\hookrightarrow C^{m-1}(\T)$, followed by a bounded branch operator.
+It annihilates constants because the two branch values then agree.
+\end{proof}
+
+\subsection{Removing constants}
+Let
+\begin{equation}
+ Y=\left\{g\in C(\T):\int_0^1g(x)\dd x=0\right\},
+ \qquad
+ (\Jop g)(x)=g(x)-\int_0^1g(t)\dd t.
+ \label{eq:Y-J}
+\end{equation}
+The map $D^r$ induces a Banach-space isomorphism
+\begin{equation}
+ \dot D^r:C^r(\T)/\Span\{\one\}\longrightarrow Y.
+ \label{eq:derivative-isomorphism}
+\end{equation}
+Indeed, a continuous zero-mean function can be integrated periodically $r$
+times, with integration constants chosen at each stage, and the periodic
+Poincare inequality gives boundedness of the inverse.
+
+Define the compressed continuous operator
+\begin{equation}
+ Q=\Jop\Pop_\omega|_Y:Y\to Y.
+ \label{eq:Q-definition}
+\end{equation}
+With respect to $C(\T)=\Span\{\one\}\oplus Y$, the continuous operator has
+an upper triangular block form
+\begin{equation}
+ \Pop_\omega=
+ \begin{pmatrix}
+ 1&\varphi\\
+ 0&Q
+ \end{pmatrix}
+ \label{eq:block-C0}
+\end{equation}
+for a bounded functional $\varphi$.  Finite-dimensional extensions do not
+change Fredholm essential spectrum, so \cref{cor:C0-disk} implies
+\begin{equation}
+ \spece(Q)=\Dbar1.
+ \label{eq:Q-essential}
+\end{equation}
+
+\begin{proposition}[Exact Calkin conjugacy]
+\label{prop:calkin-conjugacy}
+Let $\dot\Pop_{\omega,r}$ be the operator induced by $\Pop_\omega$ on
+$C^r(\T)/\Span\{\one\}$.  Under the isomorphism \eqref{eq:derivative-isomorphism},
+\begin{equation}
+ \dot D^r\dot\Pop_{\omega,r}(\dot D^r)^{-1}
+ =2^{-r}Q+K_r,
+ \qquad K_r\text{ compact on }Y.
+ \label{eq:calkin-conjugacy}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The left-hand side applied to the class of $f$ is represented by
+$D^r\Pop_\omega f$.  Apply $\Jop$ to
+\eqref{eq:derivative-identity}; this does not change the left side because a
+periodic derivative has zero mean.  The leading term becomes
+$2^{-r}\Jop\Pop_\omega D^rf=2^{-r}Q(D^rf)$, while
+$\Jop\mathcal R_rf$ is compact by \cref{lem:compact-remainder}.  It
+descends to the quotient because $\mathcal R_r$ annihilates constants.
+\end{proof}
+
+\begin{proof}[Proof of the exact disk in \cref{thm:universal-disk}]
+The one-dimensional invariant constant space does not change the Fredholm
+essential spectrum.  Compact perturbations and similarity preserve it.
+Therefore \eqref{eq:calkin-conjugacy} and \eqref{eq:Q-essential} give
+\[
+ \spece(\Pop_\omega;C^r(\T))
+ =2^{-r}\spece(Q)=\Dbar{2^{-r}}.
+\]
+The infinite-multiplicity point spectrum in the open disk was proved in
+\cref{prop:defect-eigenseries}.
+\end{proof}
+
+This argument also yields the sharp compact-approximation obstruction.
+
+\begin{corollary}[Calkin lower bound]
+\label{cor:Calkin-lower}
+For every $r,n\ge0$ with $n\ge1$ and every compact
+$K:C^r(\T)\to C^r(\T)$,
+\begin{equation}
+ \norm{\Pop_\omega^n-K}_{C^r\to C^r}\ge 2^{-rn}.
+ \label{eq:P-compact-lower}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The Calkin image of $\Pop_\omega$ has spectrum $\Dbar{2^{-r}}$.
+By spectral mapping, the spectrum of its $n$th power is
+$\Dbar{2^{-rn}}$.  The quotient norm dominates spectral radius, and the
+quotient norm of $\Pop_\omega^n$ is the infimum of
+$\norm{\Pop_\omega^n-K}$ over compact $K$.
+\end{proof}
+
+\section{Exterior eigenvectors are automatically smooth}
+\label{sec:bootstrap}
+
+The Calkin theorem determines all non-Fredholm spectral values.  To classify
+the remaining spectrum for a particular mask, one needs to know that exterior
+eigenvectors cannot hide at finite regularity.  This follows from a simple
+bootstrap once power boundedness is established.
+
+\subsection{Uniform power bounds}
+\begin{lemma}[Power boundedness on every integer $C^m$]
+\label{lem:power-bounded}
+For each integer $m\ge0$ there is a constant $B_m$ such that
+\begin{equation}
+ \norm{\Pop_\omega^n f}_{C^m}\le B_m\norm f_{C^m}
+ \qquad(n\ge0).
+ \label{eq:power-bounded}
+\end{equation}
+Consequently the spectral radius of $\Pop_\omega$ on $C^m(\T)$ is one.
+\end{lemma}
+\begin{proof}
+The case $m=0$ is \eqref{eq:C0-contraction}.  Suppose the assertion is known
+through order $m-1$.  Applying \eqref{eq:derivative-identity} to
+$\Pop_\omega^{n-1}f$ gives
+\[
+ \norm{D^m\Pop_\omega^n f}_\infty
+ \le2^{-m}\norm{D^m\Pop_\omega^{n-1}f}_\infty
+ +C_m\norm{\Pop_\omega^{n-1}f}_{C^{m-1}}.
+\]
+The induction hypothesis bounds the second term uniformly.  Summing the
+geometric recurrence bounds the highest derivative; lower derivatives are
+already controlled.  The eigenvalue one, carried by constants, shows that
+the spectral radius is exactly one.
+\end{proof}
+
+\subsection{Resolvent bootstrap}
+\begin{proposition}[Smoothness of exterior generalized eigenspaces]
+\label{prop:smooth-bootstrap}
+Fix $r\ge1$ and $\lambda\in\C$ with $|\lambda|>2^{-r}$.  If
+\begin{equation}
+ (\Pop_\omega-\lambda\id)^qf=0
+ \label{eq:generalized-equation}
+\end{equation}
+for some $q\ge1$ and $f\in C^r(\T)$, then $f\in C^\infty(\T)$.
+\end{proposition}
+\begin{proof}
+First take $q=1$.  Put $u=D^rf$.  From
+\eqref{eq:derivative-identity},
+\begin{equation}
+ (\lambda\id-2^{-r}\Pop_\omega)u=\mathcal R_rf.
+ \label{eq:bootstrap-equation}
+\end{equation}
+The right side lies in $C^1$, because it only involves derivatives of $f$ of
+order at most $r-1$.  By \cref{lem:power-bounded}, the spectrum of
+$\Pop_\omega$ on both $C$ and $C^1$ lies in the closed unit disk.  Since
+$|\lambda|>2^{-r}$, the operator on the left of
+\eqref{eq:bootstrap-equation} is invertible on both spaces.  Its $C^1$
+solution and its $C$ solution agree by uniqueness, so $u\in C^1$ and
+$f\in C^{r+1}$.
+
+Repeat at orders $r+1,r+2,\ldots$.  The strict inequality persists because
+$2^{-m}\le2^{-r}$ for $m\ge r$.
+
+For a generalized eigenvector, induct on $q$.  Set
+$g=(\Pop_\omega-\lambda\id)f$.  By induction, $g$ is smooth.  The same
+argument applied to the inhomogeneous equation
+$\Pop_\omega f-\lambda f=g$ has the additional smooth term $D^mg$ on the
+right and again raises regularity one derivative at a time.
+\end{proof}
+
+\subsection{Why exterior spectral values are eigenvalues}
+The complement of the disk \eqref{eq:universal-essential} is connected and
+contains infinity.  On that component, the Fredholm index of
+$\Pop_\omega-\lambda\id$ is zero.  Hence every spectral point outside the
+disk is an isolated eigenvalue of finite algebraic multiplicity.  Together
+with \cref{prop:smooth-bootstrap}, this completes the general assertions of
+\cref{thm:universal-disk}.
+
+\section{Fourier collapse for the sine mask}
+\label{sec:fourier-collapse}
+
+We now specialize to \eqref{eq:rvachev-weight}.  The finite Fourier support
+of the mask forces every exterior generalized eigenvector into a
+three-dimensional band.
+
+\subsection{Exact Fourier rule}
+Write $e_k(x)=\e^{2\pi\ii kx}$.  Since
+\begin{equation}
+ \sin^2(\pi x)=\frac12-\frac14e_1(x)-\frac14e_{-1}(x),
+ \label{eq:sine-fourier}
+\end{equation}
+the standard roots-of-unity filter gives
+\begin{equation}
+ \Fourier{\Pop f}(k)
+ =\Fourier f(2k)-\frac12\Fourier f(2k-1)
+ -\frac12\Fourier f(2k+1).
+ \label{eq:P-fourier-rule}
+\end{equation}
+The absolute sum of the three coefficients is two.
+
+After $n$ iterations, every input frequency contributing to output frequency
+$k$ has the form
+\begin{equation}
+ q=2^nk+\delta,
+ \qquad |\delta|\le2^n-1,
+ \label{eq:descendant-frequency}
+\end{equation}
+and the total absolute coefficient sum is at most $2^n$.  Therefore, if
+$|k|\ge2$, then every descendant satisfies
+\begin{equation}
+ |q|\ge2^n+1.
+ \label{eq:descendant-lower}
+\end{equation}
+
+\begin{proposition}[Finite Fourier band for exterior chains]
+\label{prop:finite-band}
+Let $r\ge1$, $|\lambda|>2^{-r}$, and
+$(\Pop-\lambda\id)^qf=0$ with $f\in C^r(\T)$.  Then
+\begin{equation}
+ f\in F_1:=\Span\{e_{-1},e_0,e_1\}.
+ \label{eq:F1}
+\end{equation}
+\end{proposition}
+\begin{proof}
+By \cref{prop:smooth-bootstrap}, $f$ is smooth.  First suppose $q=1$ and
+write $a_k=\Fourier f(k)$.  From $\Pop^nf=\lambda^nf$,
+\eqref{eq:descendant-lower}, and rapid Fourier decay, for every $N$ and
+$|k|\ge2$,
+\[
+ |\lambda|^n|a_k|
+ \le 2^n\sup_{|q|\ge2^n+1}|a_q|
+ \le C_N2^{-n(N-1)}.
+\]
+Choose $N$ with $2^{1-N}<|\lambda|$ and let $n\to\infty$; then $a_k=0$.
+
+For a generalized chain, let
+$g=(\Pop-\lambda\id)f$.  By induction on the chain length, $g\in F_1$.
+The band $F_1$ is invariant.  Therefore the high-frequency coefficients of
+$\Pop^nf$ still equal $\lambda^na_k$ plus terms obtained from iterates of
+$g$, all of which vanish at $|k|\ge2$.  The same estimate gives $a_k=0$.
+\end{proof}
+
+\subsection{The exact three-mode matrix}
+Using \eqref{eq:P-fourier-rule},
+\begin{align}
+ \Pop e_{-1}&=-\frac12e_{-1}-\frac12e_0,\\
+ \Pop e_0&=e_0,\\
+ \Pop e_1&=-\frac12e_0-\frac12e_1.
+ \label{eq:mode-actions}
+\end{align}
+Thus, in the ordered basis $(e_{-1},e_0,e_1)$,
+\begin{equation}
+ A=
+ \begin{pmatrix}
+ -1/2&0&0\\
+ -1/2&1&-1/2\\
+ 0&0&-1/2
+ \end{pmatrix},
+ \qquad
+ \det(z\id-A)=(z-1)(z+1/2)^2.
+ \label{eq:finite-matrix}
+\end{equation}
+The matrix is diagonalizable.  Its $1$-eigenspace is generated by $e_0$,
+and its $-1/2$ eigenspace is
+\begin{equation}
+ \left\{ae_{-1}+\frac{a+c}{3}e_0+ce_1:a,c\in\C\right\}.
+ \label{eq:minus-half-complex}
+\end{equation}
+Taking real and imaginary combinations gives the basis in
+\eqref{eq:minus-quarter-space} after scaling from $\Pop$ to $\Lop$.
+% ed. (2026-09-30): Lean counterparts of the three-mode eigen-identities, which the article mentions without naming them
+\begin{ednote}
+The eigen-identities of this block are machine-checked pointwise for $\Lop$
+in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/RMSTransferEigenfunctions.lean}:
+$\Lop\one=\tfrac12\one$ is \path{Fabius.rms_transfer_const_eigen},
+$\Lop\sin(2\pi\,\cdot)=-\tfrac14\sin(2\pi\,\cdot)$ is
+\path{Fabius.rms_transfer_sin_eigen}, and
+$\Lop\bigl(1+3\cos(2\pi\,\cdot)\bigr)=-\tfrac14\bigl(1+3\cos(2\pi\,\cdot)\bigr)$,
+three times the second vector of \eqref{eq:minus-quarter-space}, is
+\path{Fabius.rms_transfer_one_add_cos_eigen}. The same file proves the
+even-frequency case of \eqref{eq:P-fourier-rule},
+$\Lop\cos(4\pi m\,\cdot)=\tfrac12\cos(2\pi m\,\cdot)$ and its sine analogue
+(\path{Fabius.rms_transfer_cos_even_mode},
+\path{Fabius.rms_transfer_sin_even_mode}). These are the identities to
+which Layer~1 of the Lean plan in \cref{sec:verification-overview} and
+the provenance table in \cref{app:provenance} allude; no spectral statement of this article is
+formalized.
+\end{ednote}
+
+\begin{proof}[Proof of \cref{thm:main-rvachev} on the circle]
+The essential spectrum is \cref{thm:universal-disk}, scaled by one half.
+Outside that disk, every spectral value is an eigenvalue and every generalized
+eigenvector lies in $F_1$ by \cref{prop:finite-band}.  The finite matrix
+\eqref{eq:finite-matrix} therefore supplies all exterior values and their
+Jordan structure.  The values $1$ and $-1/2$ of $\Pop$ become $1/2$ and
+$-1/4$ for $\Lop$.  The interior infinite-multiplicity statement scales in
+the same way.
+\end{proof}
+
+\section{Endpoint jets and interval spaces}
+\label{sec:endpoint-jets}
+
+The interval problem contains finite-dimensional information absent on the
+circle: endpoint derivatives need not match.  For the whole Markov family,
+that information is exactly computable.
+
+\subsection{The endpoint quotient}
+For $f\in C^r([0,1])$, define the mismatch functionals
+\begin{equation}
+ \Delta_j(f)=f^{(j)}(1)-f^{(j)}(0),
+ \qquad 0\le j\le r.
+ \label{eq:jet-mismatch}
+\end{equation}
+Their common kernel is the closed periodic-jet subspace
+\begin{equation}
+ X_r^{\mathrm{per}}=
+ \{f\in C^r([0,1]):\Delta_j(f)=0\text{ for }0\le j\le r\},
+ \label{eq:periodic-subspace}
+\end{equation}
+which is naturally isomorphic to $C^r(\T)$ and has codimension $r+1$.
+It is invariant under $\Pop_\omega$.
+
+The quotient action follows from Leibniz' rule and the compatibility
+$\omega^{(k)}(1)=-\omega^{(k)}(0)$ for $k\ge1$.
+
+\begin{lemma}[Exact endpoint-jet recursion]
+\label{lem:jet-recursion}
+For $0\le j\le r$,
+\begin{equation}
+ \Delta_j(\Pop_\omega f)
+ =2^{-j}\omega(0)\Delta_j(f)
+ +\sum_{k=1}^{j}\binom{j}{k}2^{-(j-k)}
+   \omega^{(k)}(0)\Delta_{j-k}(f).
+ \label{eq:jet-recursion}
+\end{equation}
+Consequently the induced $(r+1)$-dimensional quotient matrix is triangular
+with diagonal
+\begin{equation}
+ \omega(0),\ \frac{\omega(0)}2,\ \ldots,\ \frac{\omega(0)}{2^r}.
+ \label{eq:jet-diagonal}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiate \eqref{eq:general-P} $j$ times.  At derivative order $k=0$,
+the midpoint terms agree at $x=0$ and $x=1$, while the endpoint terms leave
+$2^{-j}\omega(0)\Delta_j(f)$.  For $k\ge1$, the first-branch derivative at
+$x=1$ is the negative of that at $x=0$, and the derivative of the second
+weight has the opposite sign.  The two midpoint contributions cancel,
+leaving exactly the $k$th summand in \eqref{eq:jet-recursion}.
+\end{proof}
+
+\begin{theorem}[Endpoint-jet ladder]
+\label{thm:endpoint-ladder}
+On $C^r([0,1])$,
+\begin{align}
+ \spece(\Pop_\omega)&=\Dbar{2^{-r}},
+ \label{eq:interval-essential}\\
+ \spec(\Pop_\omega;C^r([0,1]))
+ &=\spec(\Pop_\omega;C^r(\T))
+   \cup\{\omega(0)2^{-j}:0\le j\le r\}.
+ \label{eq:interval-spectrum-general}
+\end{align}
+Within the finite quotient, the endpoint values carry the algebraic
+multiplicities and internal collisions determined by the triangular jet
+matrix \eqref{eq:jet-recursion}.  A collision with a periodic resonance may
+also create a cross-block Jordan chain; the theorem asserts the complete
+spectral set, not a universal formula for that coupled Jordan structure.
+\end{theorem}
+\begin{proof}
+Relative to a bounded complement of the invariant finite-codimensional
+subspace $X_r^{\mathrm{per}}$, the interval operator is block upper
+triangular.  Its restriction $A$ is the circle operator, and its quotient
+$C$ is the finite matrix of \cref{lem:jet-recursion}.  If both
+$A-\lambda\id$ and $C-\lambda\id$ are invertible, the usual triangular
+inverse formula shows that the full operator is invertible.  This proves the
+inclusion of the interval spectrum in the displayed union.
+
+For the reverse inclusion, first let $\lambda\in\spec(A)$.  If
+$|\lambda|\le2^{-r}$, then $\lambda$ belongs to the interval essential
+spectrum because a finite-dimensional extension does not change that set.
+If $|\lambda|>2^{-r}$, then $A-\lambda\id$ is Fredholm of index zero; when it
+is noninvertible it has a nonzero kernel.  The same vector, embedded in the
+periodic subspace, lies in the kernel of the full operator.  Next let
+$\lambda\in\spec(C)$.  If $A-\lambda\id$ is already noninvertible, the
+preceding argument applies.  If it is invertible, choose
+$0\ne y\in\ker(C-\lambda\id)$ and solve
+$(A-\lambda\id)x=-By$ for the off-diagonal block $B$; then $(x,y)$ is a
+nonzero kernel vector of the full block operator.  Hence every value in both
+diagonal spectra survives.  Essential spectrum is unchanged by the finite
+quotient, proving \eqref{eq:interval-essential} as well.
+\end{proof}
+
+\begin{corollary}[Endpoint collapse for the sine mask]
+\label{cor:sine-interval}
+For \eqref{eq:rvachev-weight}, $\omega_\mathrm{R}(0)=0$, so the quotient jet
+matrix is strictly triangular and nilpotent.  Hence the interval and circle
+spectra of $\Pop$ coincide.  After division by two, this completes
+\cref{thm:main-rvachev} on $C^r([0,1])$.
+\end{corollary}
+
+The formula \eqref{eq:interval-spectrum-general} gives a precise answer to
+the repository's question about unmatched endpoint jets: they create a
+geometric ladder, and in the Rvachev case the endpoint zero collapses the
+entire ladder to the already present spectral value zero.
+
+\section{Optimal resonance expansions}
+\label{sec:resonance-expansions}
+
+\subsection{Isolation thresholds}
+For $\Pop$, the essential radius on $C^r$ is $2^{-r}$.  Thus the eigenvalue
+$1$ is exterior exactly for $r\ge1$, and $-1/2$ is exterior exactly for
+$r\ge2$.  Scaling by one half gives the thresholds in
+\cref{thm:main-rvachev}.  Since the exterior generalized eigenspaces lie in
+$F_1$ and the matrix \eqref{eq:finite-matrix} is semisimple, the Riesz
+projection ranks are one and two.
+
+\subsection{Proof of the sharp expansion}
+\begin{proof}[Proof of \cref{cor:asymptotic}]
+For $r\ge2$, isolate the two exterior spectral points by disjoint small
+contours.  The corresponding Riesz projections commute with $\Lop$ and have
+the ranks read from \eqref{eq:finite-matrix}.  On the complementary invariant
+subspace, the spectrum is exactly $\Dbar{2^{-r-1}}$.  The spectral radius
+formula gives \eqref{eq:upper-residual} for every $\varepsilon>0$.
+The lower bound is \cref{cor:Calkin-lower}, scaled by $2^{-n}$; subtracting
+the finite-rank resonance terms is a compact correction.
+\end{proof}
+
+\begin{remark}[No operator-norm superconvergence]
+The repository obtains scalar asymptotic refinements from special observables
+whose Fourier support or dual distribution has extra cancellation.  The lower
+bound \eqref{eq:compact-lower-bound-L} shows that such improvement cannot hold
+uniformly over the full $C^r$ unit ball after any finite-rank correction.  A
+scalar observable may annihilate difficult directions; an operator norm
+cannot.
+\end{remark}
+
+\section{Comparison with analytic and Sobolev regimes}
+\label{sec:comparison}
+
+The same algebraic resonances appear in three distinct regularity geometries,
+but the noncompact component changes dramatically.
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.24\textwidth}L{0.25\textwidth}YY@{}}
+\toprule
+Space & Essential spectral set for $\Lop$ & Complete spectral set & Mechanism\\
+\midrule
+Analytic Hardy disk spaces & none away from $0$; compact/trace-class regime
+& $\{0,1/2,-1/4\}$
+& analytic compactness and finite Fourier determinant\\
+Periodic $H^{s,\beta}$ &
+$\Dbar{2^{-s}\sqrt{1+\sqrt{17}}/4}$
+& that disk $\cup\{1/2,-1/4\}$
+& square-mask coisometry and weighted Fourier geometry\\
+Periodic or interval $C^r$ & $\Dbar{2^{-r-1}}$
+& that disk $\cup\{1/2,-1/4\}$
+& branch defect, derivative quotient, finite Fourier collapse\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The Sobolev radius contains the factor
+$\sqrt{1+\sqrt{17}}/4$, which comes from the positive eigenfunction of a
+squared-mask transfer operator.  The $C^r$ radius does not.  In a supremum-jet
+norm, the leading noncompact action is simply the highest derivative composed
+with inverse branches, producing $2^{-r}$ before the repository's outer
+factor $1/2$.  The two formulas therefore encode different norm geometries,
+not conflicting calculations.
+
+At the integer thresholds the contrast is concrete.  In the Sobolev scale,
+the leading and subleading isolation thresholds are approximately
+$0.1785$ and $1.1785$.  In the $C^r$ scale they occur at the exact integers
+$r=1$ and $r=2$.  In particular, $-1/4$ is on the essential boundary of
+$C^1$, while it is strictly isolated on $C^2$.
+
+\section{Verification, reproducibility, and formalization route}
+\label{sec:verification-overview}
+
+\subsection{Exact finite checks}
+The accompanying standard-library Python program checks the algebraic parts
+of the argument without floating-point eigensolvers:
+\begin{itemize}
+\item the rational three-mode matrix, its characteristic polynomial, and the
+      displayed eigenvectors;
+\item the descendant-frequency bound \eqref{eq:descendant-lower} over a
+      finite stress range;
+\item the triangular endpoint-jet matrices through order twelve, including
+      their exact diagonal ladders and sine-mask nilpotence;
+\item the scaling of the spectral thresholds and compact lower bounds listed
+      in the summary table.
+\end{itemize}
+These checks are supplementary.  No finite computation proves the
+infinite-dimensional Calkin theorem, the smoothness bootstrap, or the
+Fredholm alternative.
+
+\subsection{A staged Lean plan}
+A practical formalization can be divided into layers.
+
+\paragraph{Layer 1: branch algebra.}
+Define $\Pop_\omega$, the doubling operator $\Uop$, and prove
+$\Pop_\omega\Uop=\id$.  Formalize the explicit defect vector with compactly
+supported smooth input, or first prove the construction for a fixed smooth
+bump.  The existing Fabius/Rvachev files already contain related transfer
+eigen-identities.
+
+\paragraph{Layer 2: finite Fourier algebra.}
+Formalize \eqref{eq:P-fourier-rule}, invariance of $F_1$, the exact matrix
+\eqref{eq:finite-matrix}, and its eigenspaces.  This layer is elementary and
+can be completed without a general spectral library.
+
+\paragraph{Layer 3: endpoint jets.}
+Define $\Delta_j$ and prove \eqref{eq:jet-recursion} by induction on the
+Leibniz formula.  Finite-dimensional triangular-spectrum consequences then
+give the endpoint ladder.
+
+\paragraph{Layer 4: Banach and Fredholm infrastructure.}
+Formalize the periodic derivative quotient, compactness of
+$C^r\hookrightarrow C^{r-1}$, invariance of the Fredholm essential spectrum
+under compact perturbations, and the Calkin spectral mapping theorem.  This
+is the largest reusable investment.  Once available, the universal disk
+statement becomes short.
+
+\paragraph{Layer 5: exterior regularity and Fourier collapse.}
+Formalize power boundedness, the resolvent bootstrap, rapid Fourier decay of
+smooth periodic functions, and the descendant-frequency estimate.  This
+connects the general essential theorem to the complete special spectrum.
+
+No Lean source is included in the present package, and no repository build
+was run.  The plan distinguishes elementary algebraic targets from the
+substantial functional-analytic library work.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+
+\begin{question}[Noninteger H\"older and Zygmund scales]
+Determine the complete spectrum on $C^{r,\alpha}(\T)$ for
+$0<\alpha<1$, on little-H\"older spaces, and at the Zygmund endpoints.  The
+defect eigenseries predicts an essential radius at least
+$2^{-(r+\alpha+1)}$ for $\Lop$, and standard Lasota--Yorke estimates suggest
+the matching upper radius.  The difficult part is a complete exclusion or
+classification of finite-regularity eigenfunctions in the annulus between
+successive integer thresholds.
+\end{question}
+
+\begin{question}[Boundary point spectrum at $C^1$]
+Classify the eigenspace and approximate eigenspaces of $-1/4$ on $C^1$.
+The value is simultaneously a smooth eigenvalue and a point of the essential
+boundary.  Is its geometric multiplicity finite or infinite?  What is the
+local resolvent growth, and which defect vectors generate boundary
+approximate eigenfunctions?
+\end{question}
+
+\begin{question}[General trigonometric Markov masks]
+For smooth trigonometric $\omega$ satisfying
+$\omega(x+1)=1-\omega(x)$, classify all spectral values outside
+$\Dbar{2^{-r}}$ by a finite Fourier matrix.  Determine a sharp band size in
+terms of the degree and dilation, and characterize masks for which all
+exterior eigenvalues are semisimple.
+\end{question}
+
+\begin{question}[Endpoint-ladder collisions]
+In \eqref{eq:interval-spectrum-general}, analyze what happens when an endpoint
+value $\omega(0)2^{-j}$ collides with a periodic resonance.  Give necessary
+and sufficient conditions for a Jordan chain crossing the periodic and jet
+blocks, and derive perturbation expansions through such a collision.
+\end{question}
+
+\begin{question}[Weighted endpoint spaces]
+Replace the ordinary $C^r$ norm by weights that penalize or permit specified
+endpoint singularities.  Which portions of the jet ladder become essential,
+and when does the finite quotient turn into an infinite boundary spectrum?
+A satisfactory theorem should include power and logarithmic weights.
+\end{question}
+
+\begin{question}[Exact Riesz projectors]
+Compute the leading and alternating Riesz projectors of the Rvachev operator
+as explicit functionals on $C^r$, rather than contour integrals.  The ranges
+are known from \eqref{eq:minus-quarter-space}; the open problem is an exact,
+well-conditioned description of the dual coefficient functionals and their
+relation to the Thue--Morse and Stern distributions in the repository.
+\end{question}
+
+\begin{question}[Sharp resolvent and pseudospectral bounds]
+Determine the asymptotic size of
+$\norm{(\lambda\id-\Lop)^{-1}}$ as $\lambda$ approaches the essential circle,
+especially near $-1/4$ in $C^1$.  The explicit right inverse and defect
+series may permit two-sided bounds and reveal whether the pseudospectrum is
+approximately circular or strongly distorted by the finite resonances.
+\end{question}
+
+\begin{question}[Nonlinear expanding maps]
+Replace doubling by a smooth nonlinear expanding degree-two map.  The highest
+derivative then carries a variable factor $|T'|^{-r}$.  Find hypotheses under
+which the full Fredholm essential spectrum, not merely its radius, is an
+explicit annulus or disk determined by a weighted composition cocycle.
+\end{question}
+
+\begin{question}[Higher-dimensional toral maps]
+For an expanding integer matrix on a torus, construct the analogue of the
+branch-cancellation defect and determine the $C^r$ essential spectral body.
+On a cube, endpoint jets should be replaced by a hierarchy of face, edge, and
+corner jets.  Identify the resulting finite spectral ladders and their
+collision rules.
+\end{question}
+
+\begin{question}[Optimal scalar asymptotics at the operator boundary]
+The repository's Rvachev moments exhibit a scalar alternating correction even
+when the corresponding eigenvalue lies on an essential boundary.  Classify
+the continuous linear functionals on $C^1$ that annihilate enough defect
+directions to admit an $o(4^{-n})$ remainder.  Determine whether the known
+Fourier cutoff is necessary or merely one sufficient mechanism.
+\end{question}
+
+\begin{question}[Proof-producing spectral certificates]
+Build a verified interface that accepts a rational trigonometric Markov mask,
+constructs its finite Fourier block and endpoint-jet matrix, and returns a
+certificate for all exterior resonances once the universal Fredholm theorem
+has been formalized.  The output should distinguish isolated eigenvalues,
+boundary eigenvalues, and collisions with the endpoint ladder.
+\end{question}
+
+\section{Conclusion}
+The finite-smoothness question in the Rvachev spectral branch has an exact
+integer-order answer.  On $C^r$, analytic spectral collapse is replaced by a
+closed disk of radius $2^{-r-1}$, together with the same two algebraic
+resonances $1/2$ and $-1/4$.  The disk is not an artifact of an estimate: its
+interior consists of infinite-multiplicity eigenvalues, its boundary is forced
+by closedness of the Fredholm essential spectrum, and its radius gives a
+sharp lower bound against every compact approximation.
+
+The proof reveals a reusable structure.  A dyadic Markov partition gives a
+right inverse; two inverse branches give an infinite defect space; and the
+highest derivative conjugates the Calkin image by the exact scale $2^{-r}$.
+For interval spaces, every unmatched endpoint jet is visible in an explicit
+triangular quotient, producing a geometric ladder.  The Rvachev sine mask
+vanishes at the endpoint, so that ladder collapses and the circle and interval
+spectra agree.
+
+This synthesis links four levels of information that had previously appeared
+separately in the repository: branch identities, finite Fourier algebra,
+finite-smoothness Fredholm geometry, and resonance asymptotics.  It also
+isolates the next genuinely difficult frontier: noninteger H\"older and
+endpoint-weighted spaces, where the essential radius is plausible but the
+complete exterior and boundary spectral structure is not yet settled here.
+
+\appendix
+\section{Fredholm facts used in the proof}
+\label{app:fredholm}
+For completeness, the functional-analytic inputs are listed precisely.
+
+\begin{enumerate}
+\item The set of Fredholm operators between Banach spaces is open, and the
+      Fredholm index is locally constant.
+\item Compact perturbations preserve Fredholmness and index; equivalently,
+      the Fredholm essential spectrum is the spectrum of the Calkin image.
+\item Similar operators have the same spectrum and essential spectrum.
+\item A finite-dimensional invariant extension does not alter Fredholm
+      essential spectrum.  A block triangular operator is invertible whenever
+      both diagonal blocks are invertible.  Equality with the union of the
+      diagonal spectra requires an additional argument; the finite-quotient
+      and index-zero conditions needed here are supplied in the proof of
+      \cref{thm:endpoint-ladder}.
+\item The spectrum of an element in a unital Banach algebra obeys spectral
+      mapping, and its norm dominates its spectral radius.
+\item Outside the Fredholm essential spectrum, on a connected component
+      containing infinity, a noninvertible operator of index zero has a
+      nonzero finite-dimensional kernel.  Isolated spectral values have
+      finite-rank Riesz projections.
+\item The embedding $C^m(\T)\hookrightarrow C^{m-1}(\T)$ is compact for
+      $m\ge1$ by Arzela--Ascoli.
+\end{enumerate}
+All operator-specific identities needed to invoke these facts are proved in
+the body of the article.  Standard references include Kato
+\cite{kato}, Nussbaum \cite{nussbaum}, and Hennion \cite{hennion}.
+
+\section{Verification program and recorded scope}
+\label{app:verification}
+The file \texttt{verify.py} uses only the Python standard library.  Its
+recorded run writes \texttt{verification.json}.  The default finite ranges
+are deliberately modest and exact.  The program checks:
+\begin{center}
+\small
+\begin{tabular}{lr}
+\toprule
+Check family & Recorded count or range\\
+\midrule
+Three-mode matrix identities & all $9$ entries\\
+Characteristic polynomial coefficients & all coefficients\\
+Displayed eigenvectors & $3$ exact vectors\\
+Frequency descendants & levels $0$ through $12$\\
+Jet matrices & orders $0$ through $12$\\
+Nilpotence for the sine endpoint & orders $0$ through $12$\\
+Threshold table & orders $0$ through $12$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite program does not sample the infinite-dimensional spectrum.  Its
+role is to catch transcription, sign, indexing, and scaling errors in the
+parts of the proof that reduce to exact finite algebra.
+
+\section{Repository provenance and claim boundaries}
+\label{app:provenance}
+The comparison target is the public repository
+\begin{center}
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+\end{center}
+at inspected main-branch commit
+\begin{center}
+\texttt{ffddaa8b9c89e7bf027e1442cc6216bb010906d0}.
+\end{center}
+The relevant current paths and source identities were:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.42\textwidth}Y@{}}
+\toprule
+Repository item & Role in this article\\
+\midrule
+\texttt{.../rvachev\_up\_fourier\_decay/}\newline
+\texttt{README.md}\newline
+{\scriptsize\texttt{6f31c8b9c60d8a2fc10e}\newline
+\texttt{b8fb55e8a752672efe42}}
+& Group-level status, analytic and Sobolev arrivals, and explicit note that
+H\"older spaces remain untreated.\\
+\texttt{.../Spectral\_Collapse\_}\newline
+\texttt{Alternating\_RMS/article.tex}\newline
+{\scriptsize\texttt{cad8f114f2298bd46907c}\newline
+\texttt{451f84ace56f93fa784}}
+& Source of the question ``Spectra at finite smoothness'' and the analytic
+three-point spectrum.\\
+\texttt{.../Sobolev\_Spectral\_Disks\_}\newline
+\texttt{Rvachev\_Thue\_Morse/article.tex}\newline
+{\scriptsize\texttt{ff81881e993a5400489715}\newline
+\texttt{8c8e6a11da5ebc1b69}}
+& Exact Sobolev disk and explicit statement that H\"older/$C^r$ remains open.\\
+\texttt{Analysis/FabiusFunction/Lean/}\newline
+\texttt{FabiusFunction/}
+& Existing machine-checked transfer eigen-identities and related Fabius
+infrastructure; no new build or theorem is claimed here.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The ellipses abbreviate the common path
+\begin{center}\small
+\path{Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/}.
+\end{center}
+The repository was changing rapidly on 30 September 2026.  The immutable
+commit and blob identifiers prevent later editorial movement from being
+mistaken for the exact comparison corpus.
+
+The literature check located directly relevant work on transfer operators on
+the circle with trigonometric sine and cosine weights \cite{chen-volkmer},
+general weighted-isometry disk phenomena \cite{bardadyn-kwasniewski}, and the
+classical smooth/H\"older transfer-operator framework
+\cite{ruelle,hennion}.  This is not an exhaustive worldwide priority search.
+Accordingly, the manuscript claims a rigorous resolution of the stated
+repository gap and a self-contained structural theorem, not certified global
+first publication.
+
+\begingroup
+\scriptsize
+\raggedright
+\raggedcolumns
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{1.25em}
+\begin{multicols}{2}
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0pt}
+
+\bibitem{repo-spectral}
+Vladimir Reshetnikov,
+\emph{Spectral Collapse and Alternating RMS Asymptotics for the Rvachev
+Up-Function}, in the \repo{} repository, research manuscript dated
+28 September 2026 and editorially updated 29 September 2026.
+Inspected at commit
+\texttt{ffddaa8b9c89e7bf027e1442cc6216bb010906d0}.
+
+\bibitem{repo-sobolev}
+OpenAI ChatGPT,
+\emph{From Analytic Spectral Collapse to Sobolev Spectral Disks: Exact
+regularity thresholds and sharp endpoint laws for Rvachev--Thue--Morse
+transfer operators}, research manuscript prepared for Vladimir Reshetnikov,
+29 September 2026, in the \repo{} repository.
+
+\bibitem{chen-volkmer}
+Xianghong Chen and Hans Volkmer,
+\emph{On transfer operators on the circle with trigonometric weights},
+2016, arXiv:1610.07658.
+
+\bibitem{bardadyn-kwasniewski}
+Krzysztof Bardadyn and Bartosz Kwa\'sniewski,
+\emph{Spectrum of weighted isometries: $C^*$-algebras, transfer operators
+and topological pressure}, 2019, revised 2020, arXiv:1911.04811.
+
+\bibitem{ruelle}
+David Ruelle,
+\emph{The thermodynamic formalism for expanding maps},
+Communications in Mathematical Physics \textbf{125} (1989), 239--262.
+DOI: 10.1007/BF01217908.
+
+\bibitem{hennion}
+Hubert Hennion,
+\emph{Sur un th\'eor\`eme spectral et son application aux noyaux
+lipchitziens},
+Proceedings of the American Mathematical Society \textbf{118} (1993),
+627--634.
+
+\bibitem{nussbaum}
+Roger D. Nussbaum,
+\emph{The radius of the essential spectrum},
+Duke Mathematical Journal \textbf{37} (1970), 473--478.
+
+\bibitem{kato}
+Tosio Kato,
+\emph{Perturbation Theory for Linear Operators},
+Springer, corrected printing of the second edition, 1980.
+
+\end{thebibliography}
+\end{multicols}
+\endgroup
+
+\end{document}

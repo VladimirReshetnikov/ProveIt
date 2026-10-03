@@ -1,0 +1,115 @@
+{
+  "status": "PASS_HIDDEN_BOOLEAN_CARRY_CONTEXTUAL_CODES",
+  "codes": {
+    "domains": [
+      {
+        "concatenated_bits": 1,
+        "physical_cells": 3,
+        "symbols": 2,
+        "microscopic_paths_tested": 16,
+        "computation_paths": 4,
+        "identity_return_paths": 2
+      },
+      {
+        "concatenated_bits": 2,
+        "physical_cells": 6,
+        "symbols": 4,
+        "microscopic_paths_tested": 64,
+        "computation_paths": 16,
+        "identity_return_paths": 4
+      },
+      {
+        "concatenated_bits": 3,
+        "physical_cells": 9,
+        "symbols": 8,
+        "microscopic_paths_tested": 256,
+        "computation_paths": 64,
+        "identity_return_paths": 8
+      },
+      {
+        "concatenated_bits": 4,
+        "physical_cells": 12,
+        "symbols": 16,
+        "microscopic_paths_tested": 1024,
+        "computation_paths": 256,
+        "identity_return_paths": 16
+      },
+      {
+        "concatenated_bits": 5,
+        "physical_cells": 15,
+        "symbols": 32,
+        "microscopic_paths_tested": 4096,
+        "computation_paths": 1024,
+        "identity_return_paths": 32
+      }
+    ],
+    "paths_tested": 5456,
+    "smallest_codes": [
+      {
+        "logical_bit": 0,
+        "ordinary": [
+          1,
+          13
+        ],
+        "temporary": [
+          1,
+          10
+        ]
+      },
+      {
+        "logical_bit": 1,
+        "ordinary": [
+          4,
+          10
+        ],
+        "temporary": [
+          4,
+          4
+        ]
+      }
+    ]
+  },
+  "finite_minimality": {
+    "domains": [
+      {
+        "physical_cells": 1,
+        "ordinary_rail_pairs": 4,
+        "families_with_two_or_more_symbols": 0
+      },
+      {
+        "physical_cells": 2,
+        "ordinary_rail_pairs": 16,
+        "families_with_two_or_more_symbols": 0
+      },
+      {
+        "physical_cells": 3,
+        "ordinary_rail_pairs": 64,
+        "families_with_two_or_more_symbols": 1
+      }
+    ],
+    "scope": "Only the full computation plus identity-return template with hidden boundary0"
+  },
+  "external": {
+    "computation_increment": "13*h + p*u0 - p*u1 + r*v0 - 2*r*v1 + 14*u1 + 12*v1",
+    "identity_return_increment": "13*h + p*u0 - 2*p*u1 + p*v0 - p*v1 + 12*u1 + 14*v1",
+    "necessary_return_coefficient": "u0 - 2*u1 + v0 - v1",
+    "additional_identity_computation_coefficient": "u0 - u1 + v0 - 2*v1",
+    "joint_specialization": {
+      "u1": "v1",
+      "v0": "3*v1-u0",
+      "common_increment": "13*h + 26*v1"
+    },
+    "scope": "Necessary conditions only when the specified recoder handles every finite binary word under a uniform carry bound"
+  },
+  "contraction": {
+    "fixed_increment_initial_states": 20451,
+    "integral_paths": 7,
+    "increment_range": [
+      -100,
+      100
+    ],
+    "macro_base": 27
+  },
+  "scope": "Exact physical code and scoped recoder conditions; code typing, ordinary input, phases and halting remain unpaid",
+  "established_complete_universal_bound": 76
+}

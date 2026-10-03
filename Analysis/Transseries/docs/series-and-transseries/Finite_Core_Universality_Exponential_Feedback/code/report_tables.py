@@ -12,8 +12,9 @@ from diagnostics import bare_saddle, finite_core_saddle
 ROOT = Path(__file__).resolve().parents[1]
 
 def write_csv(path: Path, rows: list[dict]) -> None:
+    # ed. (2026-09-29): LF rows on every platform (csv defaults to CRLF)
     with path.open('w', newline='') as stream:
-        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]), lineterminator='\n')
         writer.writeheader(); writer.writerows(rows)
 
 def main() -> None:
@@ -48,12 +49,13 @@ def main() -> None:
         agreements.append({'p':p,'max_absolute_log_discrepancy':max_error})
     write_csv(data/'core_cutoff_table.csv', cutoff_rows)
     write_csv(data/'inverse_diagnostics.csv', inverse_rows)
-    (data/'cross_checks.json').write_text(json.dumps(agreements,indent=2)+'\n')
-    with (data/'table_cutoff.tex').open('w') as stream:
+    # ed. (2026-09-29): newline='\n' keeps the JSON and both tables LF on Windows
+    (data/'cross_checks.json').write_text(json.dumps(agreements,indent=2)+'\n',newline='\n')
+    with (data/'table_cutoff.tex').open('w', newline='\n') as stream:
         for row in cutoff_rows:
             stream.write(f"{row['p']} & {row['M']} & {row['ratio']:.9f} & "
                          f"{row['saddle_action']:.5f} \\\\\n")
-    with (data/'table_inverse.tex').open('w') as stream:
+    with (data/'table_inverse.tex').open('w', newline='\n') as stream:
         for row in inverse_rows:
             if row['n'] in (50,100,200,300):
                 stream.write(f"{row['p']} & {row['n']} & {row['minus_v_over_u']:.9f} & "

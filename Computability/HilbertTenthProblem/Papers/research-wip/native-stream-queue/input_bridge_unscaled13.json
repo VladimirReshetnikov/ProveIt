@@ -1,0 +1,253 @@
+{
+  "status": "PASS_CONDITIONAL_UNSCALED13_BRIDGE_BOUNDARY",
+  "source": {
+    "operations": 13,
+    "multiplications": 6,
+    "additions": 7,
+    "equations": 5,
+    "schedule": [
+      [
+        "modulus",
+        "+",
+        "a",
+        1
+      ],
+      [
+        "raw_bound",
+        "+",
+        "bounded",
+        "x"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "modulus"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "x",
+        "index_product"
+      ],
+      [
+        "gap",
+        "+",
+        "kappa",
+        "phi"
+      ],
+      [
+        "kappa2",
+        "*",
+        "kappa",
+        "kappa"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "Delta",
+        "kappa2"
+      ],
+      [
+        "norm_rhs",
+        "+",
+        "scaled_kappa2",
+        1
+      ],
+      [
+        "mu2",
+        "*",
+        "mu",
+        "mu"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "H"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "a",
+        "kappa"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ]
+    ],
+    "comparisons": [
+      [
+        "raw_bound",
+        "q"
+      ],
+      [
+        "kappa",
+        "index_rhs"
+      ],
+      [
+        "c",
+        "gap"
+      ],
+      [
+        "mu2",
+        "norm_rhs"
+      ],
+      [
+        "mu",
+        "exponent_rhs"
+      ]
+    ],
+    "borrowed_paid_registers": [
+      "Delta=(a+2)^2-1",
+      "H=4a+3",
+      "bounded=C+alpha"
+    ],
+    "x1_index_residual": "-a*delta - delta",
+    "complete_universal_source": false
+  },
+  "pell": {
+    "examples": [
+      {
+        "q": 16,
+        "x": 1,
+        "W": 2,
+        "positive_gap": true,
+        "delta_positive": false,
+        "rho_positive": false,
+        "all_five_equations": true,
+        "permitted_positive_bridge": false
+      },
+      {
+        "q": 16,
+        "x": 2,
+        "W": 4,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 16,
+        "x": 3,
+        "W": 8,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 32,
+        "x": 1,
+        "W": 2,
+        "positive_gap": true,
+        "delta_positive": false,
+        "rho_positive": false,
+        "all_five_equations": true,
+        "permitted_positive_bridge": false
+      },
+      {
+        "q": 32,
+        "x": 2,
+        "W": 4,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 32,
+        "x": 3,
+        "W": 8,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 32,
+        "x": 4,
+        "W": 16,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 64,
+        "x": 1,
+        "W": 2,
+        "positive_gap": true,
+        "delta_positive": false,
+        "rho_positive": false,
+        "all_five_equations": true,
+        "permitted_positive_bridge": false
+      },
+      {
+        "q": 64,
+        "x": 2,
+        "W": 4,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 64,
+        "x": 3,
+        "W": 8,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 64,
+        "x": 4,
+        "W": 16,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      },
+      {
+        "q": 64,
+        "x": 5,
+        "W": 32,
+        "positive_gap": true,
+        "delta_positive": true,
+        "rho_positive": true,
+        "all_five_equations": true,
+        "permitted_positive_bridge": true
+      }
+    ],
+    "bounded_index_congruences": 300,
+    "fixture_parameters": "a=2^(q+1), J0=q+3; hence 2^q<a but 2^J0=4a>a.",
+    "scope": "Tuples for the weaker conditional bridge interface only; not actual main-kernel or complete compiler witnesses."
+  },
+  "phases": {
+    "full_phase_sets": 8,
+    "partial_sets_with_missing_input_phase": 502,
+    "full_mask_zero_remainder_checks": 24,
+    "scope": "Only periodic disjoint single-bit End insertion; no general compiler lower bound."
+  },
+  "established_complete_bound": 76,
+  "scope": "Exact conditional bridge for x>=2; literal x=1 impossible; all-phase fixed disjoint End variants exhaust the data field."
+}

@@ -1,0 +1,11 @@
+--- a/code/tree_kernel.py
++++ b/code/tree_kernel.py
+@@ -65,6 +65,8 @@
+         self.active = set()
+ 
+     def app(self, x, y):
++        if any(type(v) is not int or v < 0 for v in (x, y)):
++            raise ValueError("application codes must be exact natural integers")
+         key = (x, y)
+         if key in self.records:
+             return self.records[key]['z']

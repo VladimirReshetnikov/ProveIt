@@ -1,0 +1,15 @@
+.PHONY: pdf check examples clean
+PYTHON ?= python3
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+check:
+	$(PYTHON) code/verify.py
+
+examples:
+	$(PYTHON) code/crossover_masks.py examples/two_markers.json
+	$(PYTHON) code/crossover_masks.py examples/endpoint_cycle5.json
+
+clean:
+	latexmk -c article.tex

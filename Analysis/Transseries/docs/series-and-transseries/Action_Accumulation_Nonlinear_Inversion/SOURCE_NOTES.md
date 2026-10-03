@@ -12,6 +12,12 @@ The live GitHub connector was used to retrieve the following sources:
 2. `Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/series-and-transseries/Transseries_And_Inversion/README.md`.
 3. `Analysis/FabiusFunction/Lean/FabiusFunction/TransseriesWellBased.lean`.
 
+*Editorial note (ProveIt, 2026-09-29):* these are the paths at the
+inspected snapshot; none of them exists now. The same files are
+1. `Analysis/Transseries/docs/series-and-transseries/README.md`,
+2. `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md`,
+3. `Analysis/Transseries/Lean/Transseries/TransseriesWellBased.lean` (namespace `Fabius` unchanged).
+
 The READMEs describe the consolidated calculus and its combinatorial companion, finite multiexponential inversions, and carefully scoped Lean coverage. The Lean source explicitly bridges Dickson and Neumann results to Mathlib and records order-dual conventions.
 
 The canonical `transseries_and_inversion.tex` was identified but its complete content could not be retrieved through the available GitHub file interface because the file was too large/unsupported. Its returned blob SHA was `90b05af3237dde486c52db0c8ec8a874b09c494f`. No exhaustive reading or nonduplication audit of that volume is claimed. The inspected snapshot is stated as provenance, not as a guarantee that the repository has not subsequently changed.

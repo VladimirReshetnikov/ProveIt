@@ -9,18 +9,21 @@
 \usepackage[most]{tcolorbox}
 \usepackage{enumitem,fancyhdr,lastpage}
 \usepackage{listings}
+% [Added 30 September 2026, batch 67] Part II needs longtable (its source
+% audit) and xurl (its bibliography URLs).
+\usepackage{longtable,xurl}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=TealBlue]{hyperref}
 \definecolor{ink}{HTML}{19344B}
 \definecolor{accent}{HTML}{137C83}
 \definecolor{pale}{HTML}{EFF6F7}
 \hypersetup{pdftitle={A bicyclic 30-vertex graph with domination root -4},
  pdfauthor={Research note prepared with ChatGPT},
- pdfsubject={Exact counterexample to 33-vertex minimality; reproducible certificates}}
+ pdfsubject={Exact counterexample to 33-vertex minimality; reproducible certificates. Part II (batch 67): cycle budgets for integer domination roots}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\sffamily\color{ink}A 30-vertex domination-root certificate}
 \fancyhead[R]{\small\sffamily Research note}
-\fancyfoot[L]{\small\sffamily 18 September 2026}
+\fancyfoot[L]{\small\sffamily 18 September 2026; Part II 30 September 2026}
 \fancyfoot[R]{\small\sffamily\thepage\ / \pageref*{LastPage}}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parindent}{0pt}
@@ -34,6 +37,18 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
+% [Added 30 September 2026, batch 67] Part II: its questions and macros.
+% The manuscript's \N (blackboard N) is dropped: Part I's \N is kept and
+% neither part uses it.  Its \pin (the pinned commit) is spelled out in the
+% provenance text; its unused \abs, \dd, \sgn are not defined.
+\newtheorem{question}[theorem]{Question}
+\newcommand{\calS}{\mathcal S}
+\newcommand{\calP}{\mathcal P}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\tr}{\operatorname{tr}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\sloppy
+ \noindent\textbf{[Added 30 September 2026, batch~67]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \newcommand{\D}{D}
 \newcommand{\N}{N}
 \newcommand{\Q}{\mathbb{Q}}
@@ -59,6 +74,9 @@ with domination root \(\boldsymbol{-4}\)\par}
 
 \vspace{2mm}
 {\small Research note prepared with ChatGPT\hfill 18 September 2026}
+
+{\small Part~II, \emph{Cycle budgets for integer domination roots},
+added in batch~67\hfill 30 September 2026}
 \vspace{4mm}
 
 \begin{abstract}
@@ -78,6 +96,18 @@ We prove the reduction, give the complete edge list and polynomial, and
  \(-4\). The accompanying dependency-free Python programs reproduce the
  discovery and verify the certificates. No claim is made that 30 is the
  true minimum order.
+
+\emph{[Added 30 September 2026, batch~67.]} Part~II, from a second
+ manuscript, studies the alternating evaluation \(\D(G,-1)\). With
+ \(\beta(G)\) the cycle rank it proves the sharp bound
+ \(1\le|\D(G,-1)|\le3^{\beta(G)}\), a simultaneous divisibility budget for
+ integer roots and their multiplicities, and the exact sets of values of
+ \(|\D(G,-1)|\): \(\{1,3,7,9\}\) for \(\beta\le2\), with a conventional
+ proof, and a ten-element set for \(\beta\le3\), computer-assisted. So no
+ graph of cycle rank at most two has the root \(-6\). It also shows that
+ the zero-\(C\) four-cycle search of Part~I forces \(|\D(G,-1)|=3\), so that
+ search can produce no integer root below \(-2\) other than a simple
+ \(-4\). Part~II constructs no root \(-6\) or \(-8\).
 \end{abstract}
 
 \begin{resultbox}
@@ -90,6 +120,15 @@ There is a connected planar graph \(\Gthirty\) with
 where \(Q_{19}\in\Z[x]\) and \(Q_{19}(-4)=-38\,318\,272\ne0\).
 The graph, not merely an abstract existence argument, is specified below.
 \end{resultbox}
+
+% [Added 30 September 2026, batch 67] Contents and part headings.  The
+% \part* headings are unnumbered and do not reset the section counter, so
+% no number of Part I changes.
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+
+\phantomsection
+\part*{Part I.\texorpdfstring{\quad}{} A bicyclic 30-vertex graph with domination root \texorpdfstring{\(-4\)}{-4}}
+\addcontentsline{toc}{part}{Part I.\texorpdfstring{\quad}{} A bicyclic 30-vertex graph with domination root \texorpdfstring{\(-4\)}{-4}}
 
 \section{The question selected and the scope of the answer}
 
@@ -118,6 +157,16 @@ Literature searches through the date of this note did not locate the
 same improvement, but cannot establish publication priority. Independent
 human review remains appropriate before making a novelty claim in a
 submission.
+
+\begin{writenote}[Part~II and the root \(-6\)]
+Whether \(-6\) occurs is still open, but Part~II narrows it.
+Corollary~\ref{cb:cor:no6} shows that no graph of cycle rank at most two
+has the root \(-6\), and Corollary~\ref{cb:cor:triroots} that a root
+\(-6\) of multiplicity at least two needs cycle rank at least four. The
+eight-vertex graph \(X_5\) of Section~\ref{cb:sec:sharp3} shows that the
+divisibility obstruction alone cannot exclude \(-6\) at cycle rank three.
+Neither part constructs a graph with root \(-6\) or \(-8\).
+\end{writenote}
 
 \section{The graph and its elementary invariants}\label{sec:graph}
 
@@ -240,6 +289,17 @@ construction below gives
 The upper bound in \eqref{eq:mincycle} is proved here; its lower bound
 uses the cited theorem. This is an exact minimum of \emph{cycle rank},
 not an assertion that 30 is a minimum of \emph{order}.
+
+\begin{writenote}[Cycle rank in Part~II]
+Part~II writes \(\beta(G)=|E(G)|-|V(G)|+c(G)\), with \(c(G)\) the number of
+components; for connected graphs it is the cyclomatic number used here.
+Part~II does not re-prove the lower bound in \eqref{eq:mincycle}: its
+obstruction at \(-1\) does not exclude a root \(-4\) at cycle rank one
+(\(3\in\mathcal A_1\) in Theorem~\ref{cb:thm:bicyclic}), so that bound
+still rests on Oboudi's theorem. Part~II's
+Theorem~\ref{cb:thm:roots} adds that a root \(-4\) of multiplicity \(r\)
+needs cycle rank at least \(r\).
+\end{writenote}
 
 \section{Rooted-tree states: the local calculation}\label{sec:states}
 
@@ -490,6 +550,14 @@ No irreducibility assertion is needed. Substitution yields
 \end{equation}
 This proves that \(-4\) is a simple root.
 
+\begin{writenote}[A second route to simplicity]
+Part~II computes \(\D(\Gthirty,-1)=-3\) by its feedback-edge algorithm
+(Section~\ref{cb:sec:g30}). A double root \(-4\) would make \(3^2\) divide
+\(\D(\Gthirty,-1)\) (Lemma~\ref{cb:lem:divisibility}), so the root is
+simple without the derivative in \eqref{eq:simple}. The root itself still
+rests on the certificates of this section.
+\end{writenote}
+
 \subsection{Certificate A: expansion of the four-cycle identity}
 
 Proposition~\ref{prop:cycle} has the denominator-free form
@@ -684,6 +752,16 @@ These results strengthen the bare infinite-family question in
 immediately from disjoint union, whereas the constructions here remain
 connected and structurally sparse.
 
+\begin{writenote}[Cycle cost of multiplicity]
+The graph \(H_k\) of Theorem~\ref{thm:mult} has cycle rank \(2k\) (each
+copy of \(\Gthirty\) brings two independent cycles and the connecting
+edges are bridges). Part~II's Theorem~\ref{cb:thm:roots} shows that
+multiplicity \(k\) at \(-4\) needs cycle rank at least \(k\), and its
+Question~\ref{cb:q:mult} asks for the true minimum; multiplicity two at
+cycle rank two would need \(|\D(G,-1)|=9\). Part~I's \(H_k\) is unrelated
+to Part~II's eight-vertex graph \(X_5\).
+\end{writenote}
+
 \section{How the search was made finite and reproducible}\label{sec:search}
 
 The successful search was not a uniform enumeration of 30-vertex
@@ -771,6 +849,18 @@ allowing a decorated fourth corner, or allowing larger individual
 forests can escape the tested class. The abstract minimum remains open
 in this note.
 
+\begin{writenote}[What escapes the tested class]
+For the \emph{order} of a root \(-4\) the last sentence stands. For any
+\emph{other} integer root it does not: by Part~II's
+Theorem~\ref{cb:thm:searchobstruction}, every graph built on this core
+from rooted trees with \(C=0\) at the target, with any number of trees
+of any size at each site, a hub carrying at least one pendant leaf, and
+a decorated fourth corner allowed, has \(|\D(G,-1)|=3\). Such a graph has
+no integer root below \(-2\) except a simple \(-4\). A search for another
+root has to leave this architecture altogether, for example by changing
+the core or by admitting trees with \(C\ne0\) at the target.
+\end{writenote}
+
 \subsection{Verification and computational trust}
 
 The complete coefficient list was recomputed by all three routes in
@@ -820,6 +910,1229 @@ or \(-8\). Nor does it make a claim that all negative even integers
 occur. The value of the present result is the fully specified,
 independently checked counterexample and its complete elementary proof.
 
+\begin{writenote}[The search equation for other targets is answered negatively]
+Part~II settles what this search equation can give. Take an integer
+\(z=-k\) with \(k\ge3\), site trees with \(C(z)=0\) (any number at every
+corner, the fourth corner included) and a star hub with at least one
+leaf, as in \eqref{eq:hubratio}. Theorem~\ref{cb:thm:searchobstruction}
+shows that every such graph has \(|\D(G,-1)|=3\). Since \(k-1\) must
+divide \(\D(G,-1)\) at a root \(-k\) (Lemma~\ref{cb:lem:divisibility}),
+the equation has a solution only at \(z=-4\), and then the root is
+simple. The argument that the proof applies to the site trees applies
+equally to a hub tree with \(C(z)=0\), as Proposition~\ref{prop:cycle}
+allows: such a hub, too, is never selected and is already dominated at
+\(x=-1\), so it can be deleted. (This extension is the present write's;
+the manuscript states only the star hub.) So the search equation yields no
+root \(-6\) or \(-8\). Whether such roots exist is a different question,
+and it stays open. Part~II excludes \(-6\) for every graph of cycle rank
+at most two (Corollary~\ref{cb:cor:no6}) and lists, in
+Section~\ref{cb:sec:questions}, the cases at which a search can still
+aim.
+\end{writenote}
+
+% =====================================================================
+% [Added 30 September 2026, batch 67] Part II: batch-67 manuscript 04,
+% "Cycle Budgets for Integer Domination Roots".  Its Section n is Section
+% n+8 here; its Appendices A and B are Appendices B and C.  Every label
+% carries the prefix cb:.
+% =====================================================================
+\clearpage
+\phantomsection
+\part*{Part II.\texorpdfstring{\quad}{} Cycle budgets for integer domination roots}
+\addcontentsline{toc}{part}{Part II.\texorpdfstring{\quad}{} Cycle budgets for integer domination roots}
+
+\section{Research context, contribution, and status}\label{cb:sec:context}
+
+\subsection{Provenance of Part II}\label{cb:sec:provenance}
+Part~II prints batch-67 manuscript~04 of ProveIt's incoming reports,
+\emph{Cycle Budgets for Integer Domination Roots: A sharp alternating-sum
+bound, exact low-cycle spectra, and a structural obstruction to a
+repository search method}, dated 30 September 2026. Its title page reads
+``Prepared with ChatGPT for Vladimir Reshetnikov''. It arrived as
+\texttt{ProveIt\_Domination\_Cycle\_Obstructions.zip} in commit
+\texttt{ffddaa8b9} and was placed in \texttt{d281a285a}. It was written
+against ProveIt commit
+\nolinkurl{0744012ba29db0e345c44be953c6de3e000439e6}. It read Part~I's
+\texttt{README.md}, \texttt{domination\_root\_30.tex} and
+\texttt{code/search.py}. No commit changed this report between that pin and
+the placement, so everything the manuscript says about ``the repository
+report'' refers to Part~I as printed here. Part~II is a single manuscript;
+nothing was merged from elsewhere.
+
+Every result, proof, example, remark, question and limitation of the
+manuscript is printed. The changes are these. Its citations of the
+repository report are now references to Part~I. Its labels carry the
+prefix \texttt{cb:}. Three symbols are renamed (Section~\ref{cb:sec:conventions}).
+Its multiplicities \(m_j\) in the abstract are written \(r_j\), as in its
+own theorems. Its bibliography is merged with Part~I's. Its delivered
+programs and data are shipped unchanged under the prefix
+\texttt{02-cycle-budgets-} (the report's README lists them and explains
+how to rerun them). Text added in this write is marked
+``[Added 30 September 2026, batch~67]''.
+
+The manuscript's own summary follows. With \(\beta(G)=|E(G)|-|V(G)|+c(G)\)
+the cycle rank, it proves the sharp bound \(1\le|D(G,-1)|\le3^{\beta(G)}\),
+with equality at the upper end for connected planar subcubic graphs of every
+positive cycle rank, using a finite signed-state lemma for partially
+constrained forests and a three-way partition for every feedback edge.
+Consequently integer domination roots satisfy the simultaneous multiplicity
+budget \(\prod_j(k_j-1)^{r_j}\mid D(G,-1)\) and
+\(\prod_j(k_j-1)^{r_j}\le3^{\beta(G)}\) whenever the distinct roots \(-k_j\),
+\(k_j\ge2\), have multiplicities \(r_j\). The possible absolute evaluations
+for cycle rank at most two and three are exactly \(\{1,3,7,9\}\) and
+\(\{1,3,5,7,9,11,15,17,21,27\}\). The two-cycle classification has an
+explicit matrix proof. The three-cycle classification reduces to fifteen
+multigraph kernels and 26,688 exact residue assignments, verified by a
+dependency-free program. Thus a root \(-6\) requires at least three
+independent cycles, and a root \(-14\) at least four. A separate theorem
+shows that the zero-\(C\) four-cycle search architecture of Part~I cannot
+produce any integer root below \(-2\) other than \(-4\), irrespective of
+branch sizes. These are structural restrictions, not constructions of roots
+\(-6\) or \(-8\). No global classification of integer domination roots or
+publication-priority claim is made.
+
+\begin{resultbox}
+\textbf{Principal resolved question (Part~II).} How much cycle complexity
+is required by integer roots and their multiplicities? Every such graph
+obeys
+\[
+ \boxed{\quad \sum_jr_j\log_3(k_j-1)\le\beta(G).\quad}
+\]
+The exact low-cycle spectra strengthen this numerical bound: in particular,
+$D(G,-6)\ne0$ whenever $\beta(G)\le2$.
+\end{resultbox}
+
+\subsection{Conventions: symbols shared with Part~I}\label{cb:sec:conventions}
+Part~II keeps the manuscript's notation, with three renamings. Inside
+Part~II the letters in the left column of the table below have the
+Part~II meaning; the right column gives the Part~I meaning that a reader
+might wrongly carry over.
+
+{\small\renewcommand{\theHtable}{cb.conventions}%
+\begin{longtable}{>{\raggedright\arraybackslash}p{.2\linewidth}>{\raggedright\arraybackslash}p{.37\linewidth}>{\raggedright\arraybackslash}p{.35\linewidth}}
+\toprule
+Symbol & In Part~II & In Part~I (do not confuse)\\\midrule
+\endhead
+\(M_1,\ldots,M_4\), \(M_\ell\) & \(3\times3\) path transfer matrices,
+\eqref{cb:eq:matrixbase}--\eqref{cb:eq:fourmatrices}; the manuscript
+writes \(F_\ell\) & \(F_1,F_2,F_3\): the rooted gadgets at the corners
+\(1,2,3\) in Proposition~\ref{prop:cycle}\\
+\(X_5\) & the eight-vertex tricyclic graph with \(D(X_5,-1)=5\),
+\eqref{cb:eq:h5}; the manuscript writes \(H_5\) & \(H_5\): five copies of
+\(\Gthirty\) in Theorem~\ref{thm:mult}, a 150-vertex graph\\
+\(G^{\mathrm{ch}}_b\) & the subcubic chain of \(b\) four-cycles
+(sharpness in Theorem~\ref{cb:thm:budget}); the manuscript writes
+\(G_b\) & \(G_t\): the family of Theorem~\ref{thm:family}\\
+\(W\) & the matrix \(\diag(1,-1,-1)\) & the rooted tree
+\(\Rtree(E,E,E,S_3)\)\\
+\(T\) & a forest, or a rooted tree in the architecture of
+Section~\ref{cb:sec:obstruction} & the 13-vertex gadget \(\Rtree(L,W)\)\\
+\(E\), \(E(G)\) & an edge set & the gadget \(\Rtree(L)\)\\
+\(H\), \(K\), \(J(G,H)\) & a graph; a kernel multigraph; the
+leaf-buffered join of Lemma~\ref{cb:lem:join} & the hub gadget \(H\); the
+gadget \(K=\Rtree(L,J)\); the gadget \(J=\Rtree(E)\)\\
+\(c(G)\); \(c\) & number of components; a theta-path length & the
+corner ratio \(c=B_3/P_3\)\\
+\(r\), \(r_j\); \(r\) & a root multiplicity; a vector in the proof of
+Theorem~\ref{cb:thm:bicyclic} & the hub ratio \(r=B_H/P_H\), and
+\(r_m\) in \eqref{eq:hubratio}\\
+\(s,t\) & vectors in the proof of Theorem~\ref{cb:thm:bicyclic}; \(t\)
+also the leaf of Lemma~\ref{cb:lem:join} & \(s\): a gadget polynomial in
+\eqref{eq:gadgetpolys}; \(t=1+x\) in Proposition~\ref{prop:cycle}\\
+\(\calP\) & the seven-element set of binary vectors in the proof of
+Theorem~\ref{cb:thm:forest} & \(\mathcal P=P_1P_2P_3P_H\)\\
+\(\beta(G)\) & \(|E|-|V|+c(G)\) & the cyclomatic number \(|E|-|V|+1\);
+equal for connected graphs\\
+\((A,B,C)\) & the rooted states of Lemma~\ref{lem:recurrence} at
+\(x=-1\), with forced and waived conditions added & the same states as
+polynomials in \(x\)\\
+\(\mathcal A_b\) & cumulative absolute spectrum of \(|D(G,-1)|\) & not
+used\\
+\bottomrule
+\end{longtable}}
+% longtable steps the table counter even without a caption; undo it so
+% the manuscript's two numbered tables follow Part I's directly.
+\addtocounter{table}{-1}
+
+\(D(G,x)\) is the domination polynomial \eqref{eq:def} in both parts
+(Part~I writes it with the macro \(\D\), the same letter).
+
+\subsection{The question from Part~I}
+The starting point is Part~I of this report, which the manuscript read at
+the commit named in Section~\ref{cb:sec:provenance}. Part~I specifies a
+connected planar graph $G_{30}$ with 30 vertices, 31 edges, and a simple
+domination root $-4$. It improves the order of a 33-vertex construction in
+Alikhani and Griswold \cite{AG}; it explicitly leaves the existence of
+roots $-6$ and $-8$ and the true minimum order for a root $-4$ unsettled.
+
+Our first direction was to extend Part~I's exact rooted-tree search
+from $-4$ to $-6$. Increasing a catalogue did not produce an example. Rather
+than treat that failure as evidence of nonexistence, we identified an
+invariant that explains it: the search architecture has a built-in
+arithmetic obstruction. Part~II develops that observation into
+a general theory of cycle budgets, then determines exactly the invariant's
+possible values through cycle rank three.
+
+Part~I already records that cycle rank two is the minimum possible
+for a graph with root $-4$, using its construction and Oboudi's
+exclusion for trees and unicyclic graphs (equation~\eqref{eq:mincycle},
+\cite{Oboudi}). That exact
+minimum is \emph{not} claimed again as a new result here.
+
+\subsection{What is proved, and what is not}
+The main conventional proofs are the constrained-forest lemma, the sharp
+$3^\beta$ bound, the root-multiplicity budget, the tree-decoration reduction,
+the period-four transfer identity, the complete two-cycle spectrum, and
+the obstruction to Part~I's search architecture. The three-cycle
+spectrum is a computer-assisted theorem with a fully specified finite
+reduction and a short, reproducible exact certificate. Its scope does not
+come from checking graphs up to a bounded order: it comes from the reduction
+of \emph{all} subdivisions and tree decorations to finitely many cases.
+
+No theorem in this delivery is Lean-formalized. The Python checks are not
+proof-assistant verification, and the manuscript has not been peer reviewed.
+The statements are developed independently here and are not present in
+Part~I. A targeted literature check does not establish
+publication priority; in particular, the broader literature on evaluations
+at $-1$ and graph-polynomial splitting formulas must be considered before
+any submission \cite{AlikhaniMinusOne,Kotek}.
+
+The existence of a graph with root $-6$ or $-8$ remains a separate question.
+The results below narrow the search and rule out entire structural classes;
+they do not substitute a congruence condition for a root construction.
+
+\section{Definitions and the elementary arithmetic obstruction}\label{cb:sec:definitions}
+
+All graphs in the conclusions are finite, undirected, and simple. The
+multigraphs used later are only compressed descriptions of simple graphs.
+For a graph $G=(V,E)$, write $n=|V|$, $m=|E|$, and $c(G)$ for the number of
+connected components. The empty graph has $c(G)=0$. Define
+\[
+ \beta(G)=m-n+c(G).
+\]
+Equivalently, $\beta(G)$ is the number of edges outside any spanning forest.
+It is additive over components and unchanged by attaching a tree at one
+vertex or by subdividing an edge.
+
+A set $S\subseteq V$ is dominating if every vertex is in $S$ or has a
+neighbor in $S$. With $N[S]$ denoting its closed neighborhood, the domination
+polynomial is
+\begin{equation}\label{cb:eq:domdef}
+ D(G,x)=\sum_{S\subseteq V:\,N[S]=V}x^{|S|}.
+\end{equation}
+We put $D(\varnothing,x)=1$. Domination polynomials multiply over connected
+components. For a nonempty graph the polynomial is monic, has integer
+coefficients, has no positive real root, and has zero as a root. These
+standard facts also follow immediately from the definition \cite{Intro}.
+
+\begin{lemma}[Oddness]\label{cb:lem:odd}
+For every finite simple graph, $D(G,-1)$ is an odd, nonzero integer.
+\end{lemma}
+\begin{proof}
+Consider the ordered pairs $(A,B)$ of vertex sets such that
+$B\cap N[A]=\varnothing$. For fixed $A$ the number of choices for $B$ is
+$2^{n-|N[A]|}$. Modulo two, therefore, the number of pairs equals the
+number of dominating sets.
+
+Because adjacency is symmetric, interchanging $A$ and $B$ is an involution
+on these pairs. A fixed point has $A=B$ and $A\cap N[A]=\varnothing$;
+since $A\subseteq N[A]$, this forces $A=B=\varnothing$. There is exactly
+one fixed point, so the number of dominating sets is odd. Finally,
+$D(G,-1)\equiv D(G,1)\pmod2$.
+\end{proof}
+
+The oddness statement is classical; it is attributed to Brouwer in the
+literature on $D(G,-1)$ \cite{AlikhaniMinusOne}. The proof above is included
+to keep the later deductions independent of an external parity theorem.
+
+\begin{lemma}[Evaluation divisibility]\label{cb:lem:divisibility}
+Let $k\ge2$ be an integer. If $(x+k)^r$ divides $D(G,x)$, then
+\[
+ (k-1)^r\mid D(G,-1).
+\]
+More generally, for distinct integers $k_1,\ldots,k_s\ge2$, with corresponding
+root multiplicities $r_1,\ldots,r_s$, the product
+$\prod_j(k_j-1)^{r_j}$ divides $D(G,-1)$.
+\end{lemma}
+\begin{proof}
+Division by a monic linear polynomial with integer root preserves integral
+coefficients. Consequently
+$D(G,x)=\prod_j(x+k_j)^{r_j}Q(x)$ for $Q\in\Z[x]$. Evaluate at $x=-1$.
+\end{proof}
+
+In particular a nonzero rational domination root must be a negative even
+integer: the rational-root theorem gives integrality, positivity is
+impossible, $-1$ is excluded by Lemma~\ref{cb:lem:odd}, and an odd $k\ge3$
+would make the even integer $k-1$ divide the odd integer $D(G,-1)$.
+The factors corresponding to roots $0$ and $-2$ are invisible in absolute
+value at $x=-1$; this is an essential limitation of the method.
+
+\section{A finite signed-state lemma for constrained forests}\label{cb:sec:forest}
+
+\subsection{The constrained counting problem}
+Let $T$ be a forest. At each vertex impose any combination of the following
+conditions: the vertex is forced selected, forced absent, or unrestricted;
+and its domination requirement is either retained or waived. A waived
+requirement models domination already supplied from outside the forest.
+The alternating count is
+\begin{equation}\label{cb:eq:constrained}
+ Z(T)=\sum_{S\text{ satisfying all conditions}}(-1)^{|S|}.
+\end{equation}
+Conflicting selection constraints give $Z(T)=0$.
+
+Root each tree component. For a rooted subtree, use three states $(A,B,C)$.
+State $A$ counts configurations with the root selected. State $B$ counts
+configurations with the root absent and its requirement satisfied. State
+$C$ counts configurations with the root absent and its requirement not yet
+satisfied, with satisfaction still possible from the parent. All other
+requirements in the subtree must already be satisfied. The weights are
+$(-1)^{|S|}$. A waived root requirement is always satisfied, so its $C$ state
+is zero.
+
+Before imposing the root's own constraints, child states $(A_i,B_i,C_i)$
+give
+\begin{equation}\label{cb:eq:forestrec}
+ A=-\prod_i(A_i+B_i+C_i),\qquad
+ B=\prod_i(A_i+B_i)-\prod_iB_i,\qquad
+ C=\prod_iB_i.
+\end{equation}
+For a selected root, each child may be in any state. For an absent root,
+every child must have its requirement satisfied internally, and at least
+one child must be selected to satisfy an ordinary root requirement. This
+explains the subtraction in $B$.
+
+Waiving the root requirement replaces $(A,B,C)$ by $(A,B+C,0)$.
+Forcing selection replaces it by $(A,0,0)$; forcing absence replaces it by
+$(0,B,C)$. A complete component contributes $A+B$ at its root.
+
+\begin{theorem}[Constrained-forest cancellation]\label{cb:thm:forest}
+For every finite forest and every set of conditions just described,
+\[
+ Z(T)\in\{-1,0,1\}.
+\]
+More precisely, every rooted signature lies in the following thirteen-element
+set:
+\begin{equation}\label{cb:eq:states}
+ \calS=\{0\}\ \cup\ \{\pm e_1,\pm e_2,\pm e_3\}
+ \ \cup\ \{\pm(e_1-e_2),\pm(e_1-e_3),\pm(e_2-e_3)\}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+For a signature $(a,b,c)$ introduce transformed coordinates
+\[
+ \Phi(a,b,c)=(a+b+c,a+b,b).
+\]
+The image of $\calS$ is $\calP\cup(-\calP)$, where
+\[
+ \calP=\{000,001,010,011,100,110,111\}.
+\]
+Here a three-digit string denotes a vector. Notice that $101$ is the only
+binary vector omitted. The set $\calP$ is closed under coordinatewise
+multiplication: if a product has first and third coordinates one, each
+factor has first and third coordinates one; each such factor must be $111$,
+so the product cannot be $101$. The signed set is therefore closed under
+arbitrary coordinatewise products, including the empty product $111$.
+
+Let $(p,q,r)=\prod_i\Phi(A_i,B_i,C_i)$. The recurrence produces
+$(-p,q-r,r)$. For the seven unsigned possibilities, these are respectively
+\[
+\begin{array}{c|rrrrrrr}
+(p,q,r)&000&001&010&011&100&110&111\\\hline
+(-p,q-r,r)&0&(0,-1,1)&e_2&e_3&-e_1&-e_1+e_2&-e_1+e_3.
+\end{array}
+\]
+They all lie in $\calS$, and the same is true after a global sign change.
+The three root-constraint operations also preserve $\calS$, as follows
+directly from the displayed list. This proves the signature assertion by
+induction, without any restriction on the number of children.
+
+For each signature in $\calS$, $A+B\in\{-1,0,1\}$. Multiplication over
+the forest's components proves the result, including the empty forest.
+\end{proof}
+
+The waived-requirement and pinning clauses are important. A bound proved
+only for ordinary trees would not justify the feedback-edge argument below:
+removing an edge changes both the allowed selections and which vertices
+are already dominated.
+
+\section{A sharp cycle-rank bound}
+
+\begin{theorem}[Sharp alternating-sum budget]\label{cb:thm:budget}
+Every finite simple graph satisfies
+\begin{equation}\label{cb:eq:mainbound}
+ 1\le |D(G,-1)|\le3^{\beta(G)}.
+\end{equation}
+For every $b\ge1$ equality at the upper end is attained by a connected planar
+graph of maximum degree at most three with cycle rank $b$.
+\end{theorem}
+\begin{proof}[Proof of the bound]
+Choose a spanning forest $T$ and orient each of the $b=\beta(G)$ remaining
+edges arbitrarily, solely to name its endpoints $u,v$. Partition the
+possible selections at this edge into three disjoint cases:
+\begin{equation}\label{cb:eq:edgecases}
+\begin{array}{c|l|l}
+\text{case}&\text{selection constraints}&\text{requirement waived after removing }uv\\\hline
+0&u\text{ selected},\ v\text{ unrestricted}&v\\
+1&u\text{ absent},\ v\text{ selected}&u\\
+2&u,v\text{ both absent}&\text{none}.
+\end{array}
+\end{equation}
+In case 0 the selected vertex $u$ already dominates itself and supplies
+external domination to $v$; thus it is unnecessary to split further
+according to whether $v$ is selected. The other two cases are equally direct.
+
+A choice of cases for all feedback edges yields a constrained-forest
+problem on $T$. Contradictory pins contribute zero. Otherwise the forest
+requirements, with the stated waivers, are exactly equivalent to domination
+in the original graph for that case. Every dominating set belongs to one
+and only one case vector. Therefore
+\[
+ D(G,-1)=\sum_{\eta\in\{0,1,2\}^{b}}Z_\eta(T).
+\]
+Every summand belongs to $\{-1,0,1\}$ by Theorem~\ref{cb:thm:forest}, proving
+the upper bound. Lemma~\ref{cb:lem:odd} proves the lower bound.
+\end{proof}
+
+\begin{lemma}[A product-preserving connection]\label{cb:lem:join}
+Let $G,H$ be disjoint nonempty graphs with distinguished vertices $u,v$.
+Add new vertices $z,t$ and edges $uz,zv,zt$. For the resulting connected
+join, denoted $J(G,H)$, one has
+\begin{equation}\label{cb:eq:join}
+ D(J(G,H),-1)=-D(G,-1)D(H,-1),\qquad
+ \beta(J(G,H))=\beta(G)+\beta(H)
+\end{equation}
+when $G,H$ are connected.
+\end{lemma}
+\begin{proof}
+If $z$ is selected, the leaf $t$ may be selected or absent. Its two weights
+sum to zero, and its choice affects no other vertex; all such configurations
+cancel. If $z$ is absent, $t$ must be selected and contributes $-1$.
+Vertex $z$ is then already dominated, while it provides no domination to
+$u$ or $v$. The remaining choices are independent dominating sets of
+$G$ and $H$. The cycle-rank identity follows by counting the two added
+vertices and three added edges.
+\end{proof}
+
+\begin{proof}[Proof of sharpness in Theorem~\ref{cb:thm:budget}]
+A four-cycle has $D(C_4,x)=x^4+4x^3+6x^2$ and $D(C_4,-1)=3$.
+Take $b$ disjoint four-cycles and join consecutive cycles by the operation
+of Lemma~\ref{cb:lem:join}. On an internal four-cycle use distinct vertices
+for its left and right connections. The result is a planar chain of
+cycles with bridges and pendant leaves; all degrees are at most three.
+It has $6b-2$ vertices and $7b-3$ edges, hence cycle rank $b$, and
+\[
+ D(G^{\mathrm{ch}}_b,-1)=(-1)^{b-1}3^b.
+\]
+For $b=0$, a single vertex supplies the bound $|D(-1)|=1$.
+\end{proof}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,v/.style={circle,draw=ink,fill=white,inner sep=1.8pt},every path/.style={draw=ink,line width=.7pt}]
+\foreach \a/\x/\y in {a/0/0,b/0/1.4,c/1.4/1.4,d/1.4/0,e/4.6/0,f/4.6/1.4,g/6/1.4,h/6/0,z/3/.7,t/3/-1}{\node[v] (\a) at (\x,\y) {};}
+\foreach \a/\b in {a/b,b/c,c/d,d/a,e/f,f/g,g/h,h/e,d/z,z/e,z/t}{\draw (\a)--(\b);}
+\node[above] at (3,.8) {$z$};\node[below] at (3,-1.05) {$t$};
+\node[below] at (.7,-.2) {$C_4$};\node[below] at (5.3,-.2) {$C_4$};
+\end{tikzpicture}
+\caption{A connected graph with cycle rank two and $D(-1)=-9$. The selected
+leaf cancels all contributions with $z$ selected; after cancellation the
+two four-cycles contribute independently. This also explains why retaining
+only a connected bare core would miss the value nine.}
+\end{figure}
+
+\subsection{An exact parameterized algorithm}
+The proof computes $D(G,-1)$ using at most $3^\beta$ constrained-forest
+passes. Each pass has linear many local state operations, with states in a
+fixed thirteen-element set. Thus the algorithm uses
+$O(3^\beta(n+m))$ state operations and integer accumulations, and linear
+working memory apart from the counters. The output and counters require
+$O(\beta+1)$ bits. This is an arithmetic-operation bound, not a claim that
+arbitrarily large integers have unit bit cost.
+
+The delivered implementation records how many case vectors contribute
+$-1,0,1$. These three counts certify the resulting evaluation once the
+forest recursion and the partition have been checked. The algorithm's
+interest here is not a claim of the first fixed-parameter graph-polynomial
+algorithm, but the particularly strong cancellation at $-1$ and its
+arithmetic consequences.
+
+\section{Integer-root and multiplicity budgets}
+
+\begin{theorem}[Simultaneous integer-root budget]\label{cb:thm:roots}
+Suppose the distinct integer roots $-k_1,\ldots,-k_s$, with $k_j\ge2$,
+have multiplicities $r_j$. Then
+\begin{equation}\label{cb:eq:rootbudget}
+ \prod_{j=1}^s(k_j-1)^{r_j}\ \mid\ D(G,-1),\qquad
+ \prod_{j=1}^s(k_j-1)^{r_j}\le3^{\beta(G)}.
+\end{equation}
+In particular,
+\begin{equation}\label{cb:eq:rootcor}
+ k\le3^{\beta(G)}+1,
+ \qquad r\log_3(k-1)\le\beta(G)
+\end{equation}
+for every root $-k$ of multiplicity $r$ with $k\ge2$.
+\end{theorem}
+\begin{proof}
+Combine Lemma~\ref{cb:lem:divisibility} with Theorem~\ref{cb:thm:budget} and use
+$D(G,-1)\ne0$. Taking logarithms gives the second formulation.
+\end{proof}
+
+For example, a root $-4$ of multiplicity $r$ requires $\beta\ge r$.
+A graph having both roots $-4$ and $-8$ requires
+$3\cdot7\le3^\beta$, hence at least three independent cycles.
+A root $-6$ of multiplicity two requires $25\le3^\beta$, so the universal
+bound gives $\beta\ge3$; the exact spectrum below improves this to
+$\beta\ge4$ because no permitted three-cycle value is divisible by $25$.
+
+\begin{remark}[What is sharp]
+The $3^\beta$ evaluation bound is sharp. This does \emph{not} imply that
+$-(3^\beta+1)$ is a domination root of an extremal graph. Nor does it imply
+that the cycle lower bound for every prescribed root multiplicity is
+attained. Divisibility of an evaluation is necessary, never sufficient.
+\end{remark}
+
+The case $k=2$ has $\log_3(k-1)=0$, so there is no restriction on the
+multiplicity of $-2$ from this invariant. This agrees with ordinary
+forests: the disjoint union of $r$ edges has domination polynomial
+$x^r(x+2)^r$ and cycle rank zero.
+
+\section{Pruning tree decorations without changing the invariant}\label{cb:sec:pruning}
+
+The constrained-forest theorem has a much stronger specialization when
+there are no constraints.
+
+\begin{lemma}[Ordinary tree signatures]\label{cb:lem:ordinary}
+For a rooted tree at $x=-1$ its three-state signature is exactly one of
+\begin{equation}\label{cb:eq:ordinary}
+ \pm(-1,0,1),\qquad \pm(0,1,0).
+\end{equation}
+In particular, $D(T,-1)=\pm1$ for every tree.
+\end{lemma}
+\begin{proof}
+A leaf has signature $(-1,0,1)$. Up to a global sign, the transformed
+coordinates of the two displayed types are $(0,-1,0)$ and $(1,1,1)$.
+If at least one child is of the first type, the product coordinates have
+first and third entries zero and second entry $\pm1$, producing
+$(0,\pm1,0)$. Otherwise they equal $\pm(1,1,1)$, producing
+$\pm(-1,0,1)$. Induction proves the claim.
+\end{proof}
+
+\begin{theorem}[Tree-decoration deletion]\label{cb:thm:pruning}
+Let $H$ be a graph and attach a rooted tree $T_v$ at each $v\in V(H)$ by
+identifying its root with $v$, with the trees otherwise disjoint.
+Let the resulting graph be $G$. Write the signature of $T_v$ as either
+$\epsilon_v(-1,0,1)$ or $\epsilon_v(0,1,0)$, where $\epsilon_v\in\{-1,1\}$,
+and let $U$ be the vertices of the first type. Then
+\begin{equation}\label{cb:eq:prune}
+ D(G,-1)=\left(\prod_{v\in V(H)}\epsilon_v\right)D(H[U],-1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+An ordinary vertex of $H$, before interacting with its neighbors in $H$,
+has signature $(-1,0,1)$. The first type is exactly this signature times
+$\epsilon_v$. The second type has root absent, already dominated, and
+never selected. It therefore neither needs domination from nor supplies
+domination to its neighbors; it can be deleted, leaving the multiplicative
+factor $\epsilon_v$. Applying this observation at every vertex proves the
+identity.
+\end{proof}
+
+For a graph with nonempty 2-core, all vertices outside that core form
+rooted tree decorations of its vertices, together with separate tree
+components. Apply Theorem~\ref{cb:thm:pruning}, and then repeat if vertex
+deletions create new tree decorations. The process terminates, and proves
+that $|D(G,-1)|$ equals the absolute evaluation of a graph whose nonempty
+components have minimum degree at least two; separate forest components
+only supply signs. At every step cycle rank does not increase. Indeed,
+the cycle space of a subgraph embeds in that of the original graph.
+
+The reduced graph need not stay connected, even when $G$ is connected.
+This is why products of cycle values enter the exact spectra. The example
+in the preceding figure reduces to two disjoint four-cycles.
+
+\begin{writenote}[Relation to Part~I's Certificate~B]
+Part~I's Certificate~B (Section~\ref{sec:polynomial}, equation
+\eqref{eq:coreDP}) also strips pendant trees down to the 2-core, but it
+works for every \(x\): each stripped tree is absorbed into its core vertex
+through the three products \(T_v,U_v,V_v\), and the core is then
+enumerated. Theorem~\ref{cb:thm:pruning} is the specialization to
+\(x=-1\). There the absorbed data take only the four values
+\eqref{cb:eq:ordinary}, so a vertex of the second type can be deleted
+outright and the evaluation reduces to a smaller graph. At \(x=-1\) the
+two compute the same value by different routes; the deletion is what
+Part~II adds. Neither source states this comparison; it is the present
+write's.
+\end{writenote}
+
+\begin{corollary}[Sign reversal without adding a cycle]\label{cb:cor:sign}
+Attaching a pendant path with two new vertices at any existing vertex
+multiplies $D(G,-1)$ by $-1$ and leaves cycle rank unchanged.
+\end{corollary}
+\begin{proof}
+The rooted three-vertex path, rooted at an end, has signature
+$(1,0,-1)=-(-1,0,1)$; apply Theorem~\ref{cb:thm:pruning}.
+\end{proof}
+
+\section{A period-four transfer identity for all subdivisions}
+
+\subsection{A three-state expansion}
+Use states $0,1,2$ at each graph vertex: respectively an unselected
+unmarked vertex, a selected vertex, and an unselected vertex marked by
+inclusion--exclusion. Put
+\begin{equation}\label{cb:eq:matrixbase}
+ w=(1,-1,-1),\quad W=\diag(1,-1,-1),\quad
+ M_1=\begin{pmatrix}1&1&1\\1&1&0\\1&0&1\end{pmatrix}.
+\end{equation}
+Then
+\begin{equation}\label{cb:eq:spin}
+ D(G,-1)=\sum_{\sigma:V\to\{0,1,2\}}
+ \prod_{v\in V}w_{\sigma(v)}
+ \prod_{uv\in E}(M_1)_{\sigma(u),\sigma(v)}.
+\end{equation}
+To verify this identity, first fix the selected set $S$. A state-2 mark is
+allowed exactly at an unselected vertex with no selected neighbor.
+Summing over the possible marks multiplies $(-1)^{|S|}$ by $(1-1)^h$,
+where $h$ is the number of undominated vertices. The contribution is
+therefore $(-1)^{|S|}$ for a dominating set and zero otherwise.
+
+For a path of $\ell$ edges, sum the internal states but do not include the
+endpoint weights. The resulting matrix is
+\begin{equation}\label{cb:eq:transfer}
+ M_\ell=M_1(WM_1)^{\ell-1},\qquad \ell\ge1.
+\end{equation}
+Direct multiplication gives
+\begin{equation}\label{cb:eq:fourmatrices}
+\begin{split}
+ M_2&=\begin{pmatrix}-1&0&0\\0&0&1\\0&1&0\end{pmatrix},\qquad
+ M_3=\begin{pmatrix}-1&-1&-1\\-1&0&-1\\-1&-1&0\end{pmatrix},\\
+ M_4&=\begin{pmatrix}1&0&0\\0&-1&0\\0&0&-1\end{pmatrix}=W,
+ \qquad (WM_1)^4=I.
+\end{split}
+\end{equation}
+
+\begin{theorem}[Four-subdivision invariance]\label{cb:thm:period}
+Replacing any edge of a simple graph by a path with five edges leaves
+$D(G,-1)$ unchanged. More generally, the contribution of an internally
+disjoint path depends on its length only modulo four.
+\end{theorem}
+\begin{proof}
+Equations~\eqref{cb:eq:transfer}--\eqref{cb:eq:fourmatrices} give
+$M_{\ell+4}=M_\ell$. Replace the corresponding factor in the three-state
+expansion; all endpoint interactions with the rest of the graph are retained.
+\end{proof}
+
+\subsection{Compressed kernels}
+A connected graph of minimum degree at least two is either a cycle or,
+after suppressing its degree-two vertices, a connected multigraph $K$
+of minimum degree at least three. Multiple edges and loops are allowed
+in $K$. A loop represents a cycle returning to its branch vertex; in the
+simple expansion it must have length at least three. Each kernel edge
+$e=uv$ is assigned a path length $\ell_e$.
+
+If $b=\beta(K)\ge2$, the kernel has
+\begin{equation}\label{cb:eq:kernelsize}
+ |V(K)|\le2b-2,\qquad |E(K)|=|V(K)|+b-1\le3b-3.
+\end{equation}
+Indeed, the degree sum is at least three times the vertex count, whereas
+$2|E|=2|V|+2b-2$.
+
+The exact evaluation of an expansion is
+\begin{equation}\label{cb:eq:kernel}
+ \mathcal Z_K(\boldsymbol\ell)=
+ \sum_{\sigma:V(K)\to\{0,1,2\}}
+ (-1)^{|\{v:\sigma(v)\ne0\}|}
+ \prod_{e=uv\in E(K)}(M_{\ell_e})_{\sigma(u),\sigma(v)}.
+\end{equation}
+For a loop use the corresponding diagonal matrix entry. Equation~\eqref{cb:eq:kernel}
+is valid because each branch-vertex weight is counted once and internal
+path vertices are disjoint.
+
+Every assignment of residues in $\{1,2,3,4\}$ is realizable by a simple
+expansion. Replace a loop of length one or two by length five or six.
+For parallel edges with residue one, keep at most one direct edge and
+use length five for the others. Distinct paths receive disjoint internal
+vertices. These changes preserve all residues and the exact evaluation.
+Thus a residue enumeration gives the exact image, not merely an upper bound
+containing unrealizable cases.
+
+Cycles themselves satisfy
+\begin{equation}\label{cb:eq:cyclevalue}
+ D(C_q,-1)=\tr((WM_1)^q)=
+ \begin{cases}3,&q\equiv0\pmod4,\\-1,&q\not\equiv0\pmod4,\end{cases}
+ \qquad q\ge3.
+\end{equation}
+
+\section{The exact two-cycle spectrum: a conventional proof}\label{cb:sec:bicyclic}
+
+Define the cumulative absolute spectrum
+\[
+ \mathcal A_b=\{|D(G,-1)|:\ G\text{ finite simple},\ \beta(G)\le b\}.
+\]
+
+\begin{theorem}[Bicyclic spectrum]\label{cb:thm:bicyclic}
+One has
+\begin{equation}\label{cb:eq:bicyclic}
+ \mathcal A_0=\{1\},\qquad \mathcal A_1=\{1,3\},\qquad
+ \mathcal A_2=\{1,3,7,9\}.
+\end{equation}
+Every value in these sets is realized by a connected graph within the
+stated cycle budget, and either sign can be realized.
+\end{theorem}
+\begin{proof}
+Forests contribute absolute value one. By pruning, a graph with cycle rank
+at most one reduces to cycles and forests, with at most one cycle. This
+gives the first two assertions by \eqref{cb:eq:cyclevalue}.
+
+For a connected minimum-degree-two component of cycle rank two, the
+kernel bound gives at most two branch vertices. The possible kernels are
+exactly a figure-eight, a dumbbell, and a theta graph: respectively two
+loops at one vertex; one loop at each endpoint of a connecting edge; and
+three parallel edges. We compute their exact ranges next.
+
+For a figure-eight of cycle lengths $a,b$, write $d_a=\diag(M_a)$ as a
+column vector. Then its evaluation is $d_a^TWd_b$. The distinct possible
+vectors $d_a$ are
+\[
+ t=(1,1,1)^T,\qquad s=(-1,0,0)^T,\qquad r=(1,-1,-1)^T.
+\]
+Their pairings give only $-1,1,3$.
+
+For a dumbbell with cycle lengths $a,b$ and connecting-path length $\ell$,
+its evaluation is $(Wd_a)^TM_\ell(Wd_b)$. The possible vectors $Wd_a$
+are $r,s,t$. In this order, the complete pairing matrices for
+$\ell\equiv1,2,3,0\pmod4$ are
+\begin{equation}\label{cb:eq:dumbbelltable}
+\begin{gathered}
+ \begin{pmatrix}-1&1&-1\\1&1&-3\\-1&-3&7\end{pmatrix},\quad
+ \begin{pmatrix}1&1&-3\\1&-1&1\\-3&1&1\end{pmatrix},\\[2mm]
+ \begin{pmatrix}1&-1&1\\-1&-1&3\\1&3&-7\end{pmatrix},\quad
+ \begin{pmatrix}-1&-1&3\\-1&1&-1\\3&-1&-1\end{pmatrix}.
+\end{gathered}
+\end{equation}
+Their entries have absolute values $1,3,7$.
+
+For a theta graph with path lengths $a,b,c$, write
+\[
+ M_j=\begin{pmatrix}p_j&q_j&q_j\\q_j&r_j&s_j\\q_j&s_j&r_j\end{pmatrix}.
+\]
+Its evaluation is
+\begin{equation}\label{cb:eq:theta}
+ p_ap_bp_c-4q_aq_bq_c+2r_ar_br_c+2s_as_bs_c.
+\end{equation}
+The quadruples $(p_j,q_j,r_j,s_j)$ for residues $j=1,2,3,4$ are
+\[
+ (1,1,1,0),\quad(-1,0,0,1),\quad(-1,-1,0,-1),\quad(1,0,-1,0).
+\]
+The $q$ product is nonzero only when all residues lie in $\{1,3\}$;
+the $r$ product only for $\{1,4\}$; and the $s$ product only for
+$\{2,3\}$. Two products can be nonzero together only when all residues
+are one or all are three. In these two cases the values are $-1$ and $1$.
+If only the $q$ product is nonzero, the value is $\pm3$; if only the $r$
+or $s$ product is nonzero, the value is in $\{-3,-1,1,3\}$; and if none
+is nonzero, the value is $\pm1$. Thus theta graphs add no other absolute
+value.
+
+Finally, a disconnected reduced graph of total cycle rank two may have
+two cycle components, adding the product $3\cdot3=9$ and no other value.
+Tree pruning proves that this exhausts arbitrary graphs, not just bare
+cores. Values $1$ and $3$ are supplied by a vertex and $C_4$. Two copies
+of $C_4$ joined by a direct edge have value $7$, by the first matrix in
+\eqref{cb:eq:dumbbelltable}; their leaf-buffered join has value $-9$.
+Corollary~\ref{cb:cor:sign} supplies the opposite signs without adding cycles.
+\end{proof}
+
+\begin{corollary}[A two-cycle root exclusion]\label{cb:cor:no6}
+If $\beta(G)\le2$, every nonzero rational domination root lies in
+\[
+ \{-2,-4,-8,-10\}.
+\]
+In particular $D(G,-6)\ne0$ for every such graph.
+\end{corollary}
+\begin{proof}
+A root $-k$ requires $k-1$ to divide one of $1,3,7,9$. Their positive
+divisors are exactly $1,3,7,9$.
+\end{proof}
+
+The candidate set is not an attainment statement: this proof does not
+construct a root $-8$ or $-10$. It does show that searching for a root
+$-6$ within any family of cycle rank two is futile, even with arbitrary
+numbers of leaves, arbitrary tree shapes, and arbitrarily long subdivisions.
+The obstruction does not depend on the special zero-$C$ condition discussed
+later.
+
+\section{The exact three-cycle spectrum and its finite certificate}\label{cb:sec:tricyclic}
+
+\begin{theorem}[Tricyclic spectrum; exact finite certificate]\label{cb:thm:tricyclic}
+For graphs of cycle rank at most three,
+\begin{equation}\label{cb:eq:tricyclic}
+ \mathcal A_3=\{1,3,5,7,9,11,15,17,21,27\}.
+\end{equation}
+Each value occurs in a connected graph, and either sign occurs without
+increasing its cycle rank.
+\end{theorem}
+
+\subsection{Exhaustion of kernels}
+A minimum-degree-three connected multigraph with cycle rank three has
+$1\le v\le4$ vertices and $e=v+2$ edges. The following finite enumeration
+is exhaustive. For each $v$, list multisets of $e$ unordered endpoint
+pairs from $\{0,\ldots,v-1\}$, allowing repeated pairs and loops. Keep
+exactly the connected ones in which every degree, with loops counted twice,
+is at least three. Identify two multisets only if a vertex permutation
+maps one to the other. This yields respectively $1,4,5,5$ kernels on
+$1,2,3,4$ vertices, hence fifteen in total.
+
+For each kernel evaluate \eqref{cb:eq:kernel} for every residue assignment.
+The number of evaluations is
+\[
+ 1\cdot4^3+4\cdot4^4+5\cdot4^5+5\cdot4^6=26\,688.
+\]
+No hypothesis about bounded graph order is involved: a path may be
+arbitrarily long and still has one of the four transfer matrices.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{crll}
+\toprule
+ID & $v$ & Edge multiset & Absolute image of $\mathcal Z_K$\\
+\midrule
+0 & 1 & $00,00,00$ & $\{1,3\}$\\
+1 & 2 & $00,00,01,11$ & $\{1,3,7\}$\\
+2 & 2 & $00,01,01,01$ & $\{1,3\}$\\
+3 & 2 & $00,01,01,11$ & $\{1,3,5,7\}$\\
+4 & 2 & $01,01,01,01$ & $\{1,3\}$\\
+5 & 3 & $00,01,01,12,22$ & $\{1,3,5,7\}$\\
+6 & 3 & $00,01,02,11,22$ & $\{1,3,7,9,17\}$\\
+7 & 3 & $00,01,02,12,12$ & $\{1,3,5,7\}$\\
+8 & 3 & $00,01,12,12,12$ & $\{1,3,7\}$\\
+9 & 3 & $01,01,02,02,12$ & $\{1,3\}$\\
+10 & 4 & $00,01,12,12,23,33$ & $\{1,3,5,7,9,15,17\}$\\
+11 & 4 & $00,01,12,13,22,33$ & $\{1,3,7,9,11,17\}$\\
+12 & 4 & $00,01,12,13,23,23$ & $\{1,3,5,7\}$\\
+13 & 4 & $01,01,02,13,23,23$ & $\{1,3,5,7\}$\\
+14 & 4 & $01,02,03,12,13,23$ & $\{1,3,5\}$\\
+\bottomrule
+\end{tabular}
+\caption{The complete three-cycle kernel certificate. Vertices are numbered
+from zero; $ij$ is an unordered edge, repetitions are parallel edges, and
+$ii$ is a loop. Every length-residue assignment is realized by a simple
+subdivision. IDs agree with the JSON certificate and verification program.}
+\label{cb:tab:kernels}
+\end{table}
+
+
+\subsection{Proof from the certificate}
+\begin{proof}[Proof of Theorem~\ref{cb:thm:tricyclic}]
+Apply tree pruning. A remaining component is a cycle, a two-cycle kernel
+expansion, or a three-cycle kernel expansion. Table~\ref{cb:tab:kernels}
+gives the exact absolute image of the last type by the enumeration above
+and formula~\eqref{cb:eq:kernel}. The union of its rows is
+\[
+ \{1,3,5,7,9,11,15,17\}.
+\]
+Components of cycle ranks two and one may contribute a product. The
+only additional value is $7\cdot3=21$; three cycle components additionally
+supply $3^3=27$. The value $9$ was already present. These are all partitions
+of a total cycle budget at most three, so no other absolute evaluation is
+possible.
+
+Every residue assignment in the table is realizable by a simple expansion,
+as proved after \eqref{cb:eq:kernel}. Explicit witnesses for every value are
+listed in Table~\ref{cb:tab:witnesses} and the accompanying JSON data. Products
+are made connected by Lemma~\ref{cb:lem:join}, which preserves the additive
+cycle budget. Sign reversal follows from Corollary~\ref{cb:cor:sign}.
+\end{proof}
+
+The finite part of this proof is the exact arithmetic table, not a
+statistical inference. The program independently regenerates the kernels
+rather than reading an asserted catalogue. It tests every vertex permutation
+on at most four vertices, so no graph-isomorphism package is trusted.
+The proof still has the usual limitations of a computer-assisted argument:
+its conventional reductions and executable certificate require review, and
+no proof assistant has checked their correspondence.
+
+\begin{corollary}[Three-cycle rational-root restrictions]\label{cb:cor:triroots}
+If $\beta(G)\le3$, every nonzero rational domination root is among
+\[
+ -2,-4,-6,-8,-10,-12,-16,-18,-22,-28.
+\]
+Thus roots $-14,-20,-24,-26$ each require at least four independent cycles.
+A root $-6$ of multiplicity at least two also requires at least four.
+\end{corollary}
+\begin{proof}
+List the positive divisors of the integers in \eqref{cb:eq:tricyclic}, then
+add one and negate. None of those integers is divisible by $25$, which
+proves the multiplicity assertion.
+\end{proof}
+
+\subsection{The congruence barrier is already sharp at three cycles}\label{cb:sec:sharp3}
+Let $X_5$ have vertex set $\{0,\ldots,7\}$ and edge set
+\begin{equation}\label{cb:eq:h5}
+ \{03,05,01,02,12,16,27,34,45,67\},
+\end{equation}
+where $ij$ denotes the unordered pair $\{i,j\}$. It has eight vertices,
+ten edges, cycle rank three, and $D(X_5,-1)=5$. In Table~\ref{cb:tab:kernels}
+it is kernel 7 with lengths $(4,1,1,1,3)$. Substitution in
+\eqref{cb:eq:kernel} proves the evaluation, and direct enumeration of its
+256 vertex subsets independently confirms it.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.3cm,y=1.0cm,v/.style={circle,draw=ink,fill=white,minimum size=5.5mm,inner sep=0pt,font=\small},every path/.style={draw=ink,line width=.7pt}]
+\foreach \a/\x/\y in {0/0/1,3/-1/2,4/0/3,5/1/2,1/-1/0,2/1/0,6/-1/-1,7/1/-1}{\node[v] (\a) at (\x,\y) {\a};}
+\foreach \a/\b in {0/3,0/5,0/1,0/2,1/2,1/6,2/7,3/4,4/5,6/7}{\draw (\a)--(\b);}
+\end{tikzpicture}
+\caption{An eight-vertex tricyclic graph with $D(X_5,-1)=5$.
+The congruence required by a prospective root $-6$ is therefore compatible
+with cycle rank three. This graph is not asserted to have that root.}
+\end{figure}
+
+The independently enumerated polynomial is
+\[
+ D(X_5,x)=x^3(11+46x+51x^2+28x^3+8x^4+x^5),
+\]
+so $D(X_5,-6)=407\,160\ne0$.
+Consequently the lower bound of three cycles for a root $-6$ is optimal
+\emph{for the obstruction using divisibility of $D(-1)$ alone}; it is not
+yet an existence result at that cycle rank.
+
+\section{Exact cycle complexity of small alternating evaluations}
+
+The same classification resolves a different extremal question outright.
+For a positive odd integer $a$, define
+\[
+ \mu(a)=\min\{\beta(G):G\text{ connected and }|D(G,-1)|=a\}.
+\]
+Existence of connected realizations for every odd evaluation was established
+by Alikhani \cite{AlikhaniMinusOne}; here only the explicit witnesses below
+are needed. Theorem~\ref{cb:thm:budget} gives
+$\mu(a)\ge\lceil\log_3 a\rceil$.
+
+\begin{corollary}[Exact minima through cycle budget three]\label{cb:cor:mu}
+The positive odd integers with $\mu(a)\le3$ are exactly those in
+\eqref{cb:eq:tricyclic}, and their minima are those in
+Table~\ref{cb:tab:witnesses}. In particular,
+\[
+ \mu(5)=3,\qquad \mu(7)=\mu(9)=2,\qquad
+ \mu(3^b)=b\quad(b\ge0).
+\]
+For $a=13,19,23,25$, one has $\mu(a)\ge4$.
+\end{corollary}
+\begin{proof}
+Compare the cumulative spectra $\mathcal A_0,\ldots,\mathcal A_3$ and use
+the connected witnesses. For powers of three, the universal lower bound
+and the sharpness construction match for every $b$.
+\end{proof}
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrl}
+\toprule
+$a$ & $\mu(a)$ & Witness order & Signed value & Construction\\\midrule
+1 & 0 & 1 & -1 & A single vertex\\
+3 & 1 & 4 & 3 & $C_4$\\
+5 & 3 & 8 & 5 & Kernel 7, lengths $(4,1,1,1,3)$\\
+7 & 2 & 8 & 7 & Two $C_4$ cycles joined by an edge\\
+9 & 2 & 10 & -9 & Leaf-buffered product connection\\
+11 & 3 & 13 & 11 & Kernel 11, lengths $(4,1,1,1,4,4)$\\
+15 & 3 & 12 & 15 & Kernel 10, lengths $(4,1,1,3,1,4)$\\
+17 & 3 & 12 & 17 & Kernel 6, lengths $(4,1,1,4,4)$\\
+21 & 3 & 14 & -21 & Leaf-buffered product connection\\
+27 & 3 & 16 & 27 & Leaf-buffered product connection\\
+\bottomrule
+\end{tabular}
+\caption{Exact minimum cycle ranks and explicit connected witnesses.
+The stated orders are not asserted to be minimum orders. Full edge lists
+are supplied in \nolinkurl{data/02-cycle-budgets-spectrum_witnesses.json}
+(the manuscript's \texttt{data/spectrum\_witnesses.json}).}
+\label{cb:tab:witnesses}
+\end{table}
+
+
+For example, the logarithmic bound alone would allow $\mu(5)=2$, but
+Theorem~\ref{cb:thm:bicyclic} rules it out. This illustrates why the exact
+spectrum is substantially stronger than an absolute-value bound.
+The vertex counts in the table are explicit witness sizes, not claims of
+minimum order among graphs realizing the same evaluation.
+
+\section{Why Part~I's four-cycle search cannot find another root}\label{cb:sec:obstruction}
+
+\subsection{The architecture and its zero-\texorpdfstring{$C$}{C} condition}
+Part~I's successful search (Section~\ref{sec:search}) starts with a four-cycle. It adds a
+vertex $h$ adjacent to two consecutive cycle vertices and gives $h$ at
+least one pendant leaf. It then attaches rooted trees by a single edge
+from their roots to specified cycle vertices. At the proposed root
+$x=-k$, the admitted trees satisfy
+\begin{equation}\label{cb:eq:zeroC}
+ C_T(-k)=0,
+\end{equation}
+where $C_T(x)$ is the generating polynomial for selections that dominate
+all vertices of $T$ except its root, which is absent and undominated.
+The search may combine several such trees into forests at each site.
+Its original four-cycle has one undecorated corner, but the theorem below
+does not require that restriction.
+
+\begin{theorem}[Zero-$C$ four-cycle obstruction]\label{cb:thm:searchobstruction}
+Let $k\ge3$ be an integer and construct $G$ by the architecture just
+described, with any finite number of attached rooted trees satisfying
+\eqref{cb:eq:zeroC}. Then
+\[
+ |D(G,-1)|=3.
+\]
+If $D(G,-k)=0$, necessarily $k=4$, and that root is simple.
+\end{theorem}
+\begin{proof}
+The polynomial $C_T$ has integer coefficients, so
+\[
+ C_T(-1)\equiv C_T(-k)=0\pmod{k-1}.
+\]
+By Lemma~\ref{cb:lem:ordinary}, $C_T(-1)\in\{-1,0,1\}$. Since $k-1\ge2$,
+we must have $C_T(-1)=0$, so the signature of $T$ is
+$\epsilon(0,1,0)$. Such an attached tree has root absent and already
+dominated; it contributes only its sign, and neither requires nor supplies
+domination across the attachment edge. Removing all these trees thus
+changes $D(-1)$ by a sign only.
+
+At the hub $h$, the presence of one or more leaves gives rooted-star
+signature $(0,(-1)^q,0)$, where $q\ge1$ is the number of leaves. Therefore
+$h$ is absent and already dominated after cancellation; delete it, again
+retaining only a sign. What remains is precisely $C_4$, with evaluation
+three. Thus $|D(G,-1)|=3$.
+
+A root $-k$ now requires $k-1\mid3$. Because $k\ge3$, the only possibility
+is $k=4$. A multiple root $-4$ would require $9\mid D(G,-1)$, which is
+impossible. Hence the root is simple.
+\end{proof}
+
+The zero-$C$ qualification is part of the theorem. It is not legitimate
+to conclude that every graph obtained by arbitrary decorations of the
+same core has $|D(-1)|=3$. Without that qualification the broader
+bicyclic theorem still excludes $-6$, but it allows the necessary
+congruences for $-8$ and $-10$.
+
+\subsection{The 30-vertex example revisited}\label{cb:sec:g30}
+For the exact edge list \eqref{eq:edges} of Part~I, the feedback-edge algorithm gives
+\[
+ D(G_{30},-1)=-3.
+\]
+Its nine case vectors contribute three copies of $-1$ and six zeros.
+Consequently the already established root $-4$ is automatically simple:
+there is no need to recompute the derivative or its large residual factor
+for this particular conclusion. The existence of the root itself remains
+Part~I's polynomial certificate (Section~\ref{sec:polynomial}), not a
+consequence of the value $-3$.
+
+A prospective search for $-6$ must therefore leave cycle rank two altogether.
+A search for $-8$ can in principle retain two cycles, but it must escape
+the zero-$C$ four-cycle architecture or otherwise change the invariant
+from absolute value three to seven. This is a precise distinction between
+an obstruction to a \emph{graph class} and an obstruction to a
+\emph{parameterized search design}.
+
+\section{Verification package, reproducibility, and limitations}\label{cb:sec:verification}
+
+\subsection{What the executable certificate checks}
+The file \texttt{code/verify.py} (shipped here as
+\texttt{code/02-cycle-budgets-verify.py}; see the note in
+Section~\ref{cb:sec:reproduction}) uses Python's standard library and exact
+integers. It regenerates the kernel catalogue, transfer checks, witness
+graphs, and output tables without any downloaded data. The recorded run
+has the following scope.
+
+\begin{center}
+\begin{tabular}{p{.66\linewidth}r}
+\toprule
+Check & Cases\\\midrule
+All labeled simple graphs on zero through five vertices & 1,100\\
+Additional constrained forests, fixed random seed & 300\\
+Additional graphs, fixed random seed & 120\\
+Direct selected-bit checks of path matrices & lengths 1--12\\
+Bicyclic kernels and residue assignments & 3 / 144\\
+Tricyclic kernels and residue assignments & 15 / 26,688\\
+Independent small expanded-kernel brute-force checks & 78\\
+Sharpness construction evaluations & cycle ranks 1--6\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For every small graph, direct vertex-subset enumeration of the full
+polynomial is compared with the feedback-edge algorithm at $-1$.
+The tests also verify oddness, the $3^\beta$ bound, the low-cycle spectra
+where applicable, and the divisibility implication for tested integer
+roots. The program checks arbitrary-arity signature closure by verifying
+closure of the transformed state set under coordinatewise multiplication;
+it does not infer that closure from a bound on tree size.
+
+The transfer matrices are independently checked by enumerating selected
+internal vertices of short paths, rather than by using the same matrix
+multiplication twice. Small kernel expansions are also evaluated directly
+as simple graphs. The exact witness data give edges, cycle ranks, signs,
+and subdivision lengths. Seeded tests are supplementary implementation
+checks, not the proof of a universal assertion.
+
+\subsection{Reproduction}\label{cb:sec:reproduction}
+From the extracted directory run
+\begin{lstlisting}
+python3 code/verify.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The verification script writes \texttt{results/verification.json},
+\texttt{data/kernel\_certificate.json}, and
+\texttt{data/spectrum\_witnesses.json}. The compact tables are embedded in the self-contained TeX source, so the
+PDF can be rebuilt without rerunning the computation.
+The supplementary \texttt{code/check\_repo\_example.py} checks
+Part~I's exact 30-vertex edge list at $-1$ and records the nine
+feedback-edge contributions.
+
+\begin{writenote}[Shipped names; do not run these commands here]
+The commands and paths above are the manuscript's, for its delivered
+directory. In this report they mean something else: \texttt{code/verify.py}
+is Part~I's verifier, and \texttt{article.tex} does not exist. Part~II's
+files are shipped with the prefix \nolinkurl{02-cycle-budgets-}: the verifier
+is \nolinkurl{code/02-cycle-budgets-verify.py}, the example check is
+\nolinkurl{code/02-cycle-budgets-check_repo_example.py}, the recorded runs
+are \nolinkurl{data/02-cycle-budgets-verification.json} and
+\nolinkurl{data/02-cycle-budgets-example_checks.json}, and the two
+certificates are \nolinkurl{data/02-cycle-budgets-kernel_certificate.json} and
+\nolinkurl{data/02-cycle-budgets-spectrum_witnesses.json}. Both programs
+write into the directory above their own. Run in place, the verifier would
+overwrite Part~I's \texttt{results/verification.json} and add unprefixed
+files to \texttt{data/}. The example check would add
+\texttt{results/example\_checks.json}; it also imports the verifier as the
+module \texttt{verify}, which the prefixed file name cannot provide. Run them only on a copy under their delivered
+names, as the report's README describes. The PDF of this report is built
+from \texttt{domination\_root\_30.tex}.
+\end{writenote}
+
+\subsection{Trust boundaries}
+The sharp bound, arithmetic deductions, and two-cycle classification have
+full proofs in Part~II. The three-cycle theorem additionally depends
+on the finite table. The bundled computation is exact and reproducible,
+but has not been translated into a proof assistant. No unrefereed theorem
+elsewhere in ProveIt is needed for these new structural proofs. Part~I's
+root-$-4$ construction is used only as a motivation and an
+application to a specific known example.
+
+The literature review confirms the relevant problem statements and standard
+background, but is not exhaustive. Some publisher material is accessible
+only as an abstract. We therefore make no claim that every lemma or the
+$3^\beta$ inequality is absent from all prior literature. The primary
+research contribution presented for review is the complete proof package,
+the exact low-cycle classification, the simultaneous root-budget
+consequences, and their application to the pinned search architecture.
+
+\section{Further research questions and concrete next steps}\label{cb:sec:questions}
+
+\subsection{The first admissible cycle rank for a root \texorpdfstring{$-6$}{minus six}}
+\begin{question}\label{cb:q:minus6}
+Does there exist a connected graph $G$ with $\beta(G)=3$ and $D(G,-6)=0$?
+\end{question}
+The obstruction at $-1$ allows this: kernel 7 already has a simple
+expansion with evaluation five. A focused search should begin with the
+kernel rows admitting values divisible by five, namely rows 3, 5, 7,
+10, 12, 13, and 14 of Table~\ref{cb:tab:kernels}. Values $\pm5$ and $\pm15$
+are the only three-cycle evaluations compatible with the root. This
+restriction is necessary for the reduced graph after pruning, not a
+license to drop arbitrary decorations from an evaluation at $-6$.
+
+A useful approach is to work with exact rooted signatures at $-6$ while
+simultaneously maintaining their four-state signatures at $-1$. The latter
+provide a cheap rejection certificate; the former retain the root equation.
+The eight-vertex $X_5$ is a starting core, not a solution.
+
+\subsection{The remaining bicyclic root candidates}
+\begin{question}\label{cb:q:bicyclic}
+Can $-8$ or $-10$ be a domination root of a graph with cycle rank two?
+\end{question}
+Such a graph must have $D(-1)=\pm7$ or $\pm9$, respectively. For $-8$,
+the nontrivial reduced component must come from the dumbbell range. For
+$-10$, the terminal reduction must supply two factors of absolute value
+three, hence two cycle components; no connected bare bicyclic core has
+absolute value nine. This specifies the type of cancellation that a
+successful tree decoration must preserve.
+
+\subsection{Multiplicity as an independent structural problem}
+\begin{question}\label{cb:q:mult}
+What is the minimum cycle rank for a root $-4$ of multiplicity $r$?
+In particular, can multiplicity two occur at cycle rank two?
+\end{question}
+The bound is at least $r$, and the case $r=1$ has minimum two by
+Part~I's example and the published unicyclic exclusion
+(equation~\eqref{eq:mincycle}). For $r=2$ and
+cycle rank two, the evaluation must be $\pm9$; for $r=3$ and cycle rank
+three it must be $\pm27$. These necessary conditions rule out the
+zero-$C$ architecture completely, since it forces simplicity. Part~I's
+arbitrary-multiplicity constructions (Theorem~\ref{thm:mult}) can be compared with
+these lower bounds rather than being mistaken for optimal cycle budgets.
+
+\subsection{Higher spectra and an extremal evaluation function}
+\begin{question}\label{cb:q:spectra}
+Determine $\mathcal A_4$, and characterize the function $\mu(a)$ for odd
+positive integers $a$.
+\end{question}
+The same method is finite for each fixed budget: kernels have at most
+$2b-2$ vertices and $3b-3$ edges, and every edge has four residue states.
+Kernel automorphisms and repeated transfer tensors can reduce enumeration.
+A certified calculation for $b=4$ would settle whether the next missing
+odd values $13,19,23,25$ have cycle complexity four and would sharpen
+root exclusions beyond $-14$.
+
+The identity $\mu(3^b)=b$ gives one exact infinite subsequence. The value
+$\mu(5)=3>\lceil\log_3 5\rceil$ shows that the logarithmic lower bound
+is not always tight. Is the excess over that bound uniformly bounded,
+or can arithmetic gaps force arbitrarily large excess?
+
+\subsection{Equality and stability in the cycle budget}
+\begin{question}\label{cb:q:equality}
+Which connected graphs attain $|D(G,-1)|=3^{\beta(G)}$? What structural
+restrictions follow from being close to this maximum?
+\end{question}
+For a chosen spanning forest, equality means that all $3^\beta$ case
+vectors are nonzero and have the same sign. This is an exact certificate
+criterion, but not yet an intrinsic graph classification. A more useful
+answer would characterize the reduced cores and permitted decorations.
+The subcubic chain construction supplies extremizers at every budget;
+it need not exhaust them.
+
+\subsection{A practical formalization route}
+A Lean development can separate three layers. First formalize dominating
+sets, the three-way feedback-edge partition, and the thirteen-state
+forest invariant. Second formalize the small integer matrices and the
+period-four identity, so that path suppression has a precise semantic
+lemma. Third reflect the bounded kernel enumeration and its integer sums
+into certified finite computations. This would turn the finite table into
+a kernel-checked theorem instead of merely porting the Python code.
+
+The first target should be the universal budget and the purely mathematical
+bicyclic exclusion; neither needs a large computed certificate. The exact
+tricyclic table is a natural subsequent reflection exercise. This is a
+proposed development plan, not a statement that any such formalization
+has already been executed.
+
+\begin{writenote}[Formal status in ProveIt]
+No Lean or Rocq development in ProveIt defines dominating sets or the
+domination polynomial, so neither part of this report has a formal
+counterpart. Placement of this report in the repository confers no formal
+status on any of its statements.
+\end{writenote}
+
+\section{Conclusion of Part~II}
+An unsuccessful numerical search became informative only after identifying
+what its cancellations preserve. At $x=-1$, arbitrary constrained forests
+collapse to a thirteen-element signed state set. Every feedback edge then
+costs at most a factor of three, yielding a sharp cycle budget and a
+simultaneous restriction on integer roots and their multiplicities.
+
+Tree pruning and a period-four transfer identity make the invariant fully
+classifiable at low cycle rank. They exclude $-6$ from all graphs with at
+most two independent cycles, exclude $-14$ from all graphs with at most
+three, and determine several exact minima for alternating evaluations.
+They also explain why Part~I's zero-$C$ four-cycle architecture
+is intrinsically a simple-root-$-4$ mechanism, not a general route to new
+integer roots. These conclusions leave well-defined construction problems
+at the first cycle ranks where the obstruction permits them.
+
+
 \appendix
 \section{Reproducing the artifact}
 
@@ -855,6 +2168,66 @@ were developed in the session with ChatGPT. The note is not peer
 reviewed and has not been formally verified in Lean. The exact finite
 certificate is intended to make external checking straightforward.
 
+\begin{writenote}[Part~II]
+This appendix describes Part~I's files. Part~II's programs and records
+carry the prefix \texttt{02-cycle-budgets-}; Section~\ref{cb:sec:verification}
+describes them and the report's README gives commands that run them on a
+copy. Part~II, too, was prepared with ChatGPT; it is not peer reviewed and
+not formally verified, and its three-cycle classification is
+computer-assisted (Section~\ref{cb:sec:tricyclic}).
+\end{writenote}
+
+% [Added 30 September 2026, batch 67] Part II's appendices (the
+% manuscript's Appendices A and B).
+\section{Compact independent formula for the kernel table}\label{cb:app:kernel}
+
+The following pseudocode is sufficient to reproduce every row once the
+kernel's endpoint list is given. It uses only the four matrices printed
+in \eqref{cb:eq:matrixbase} and \eqref{cb:eq:fourmatrices}.
+\begin{lstlisting}[language=Python]
+def kernel_value(vertices, edges, lengths):
+    answer = 0
+    for state in product(range(3), repeat=vertices):
+        term = (-1) ** sum(s != 0 for s in state)
+        for (u, v), length in zip(edges, lengths):
+            term *= M[1 + (length - 1) % 4][state[u]][state[v]]
+        answer += term
+    return answer
+
+values = {
+    abs(kernel_value(vertices, edges, lengths))
+    for lengths in product(range(1, 5), repeat=len(edges))
+}
+\end{lstlisting}
+A loop $u=v$ requires no exceptional code. The interpretation of the
+compressed kernel is a subdivision with a genuine simple cycle, not a
+looped graph's domination polynomial.
+
+\section{Source and novelty audit}\label{cb:app:audit}
+
+\begin{longtable}{p{.28\linewidth}p{.65\linewidth}}
+\toprule
+Source or component & Role and status\\\midrule
+\endhead
+Part~I, read at the commit of Section~\ref{cb:sec:provenance} & Motivation; exact 30-vertex example;
+zero-$C$ search architecture. The root construction and its prior minimum
+cycle rank are credited, not claimed as new.\\
+Alikhani--Griswold \cite{AG} & Primary statement of the root-$-4$
+counterexample and follow-up questions. Part~II does not claim their
+counterexample as its own.\\
+Alikhani \cite{AlikhaniMinusOne} & Prior work on evaluations at $-1$,
+including connected realizability of every odd value and the attribution
+of oddness to Brouwer.\\
+Kotek et al.\ \cite{Kotek} & Prior general recurrence and splitting theory.
+The local recurrences here are reproved; graph-polynomial dynamic
+programming itself is not claimed as new.\\
+Sections~\ref{cb:sec:forest}--\ref{cb:sec:bicyclic} and~\ref{cb:sec:obstruction} & New derivations relative to Part~I,
+with conventional proofs; broader publication priority unverified.\\
+Section~\ref{cb:sec:tricyclic} and dependent corollaries & Exact finite computer-assisted classification;
+all-graph reduction proved in text, certificate executed, not Lean-checked.\\
+\bottomrule
+\end{longtable}
+
 \begin{thebibliography}{9}
 \bibitem{AG}
 S. Alikhani and M. Griswold,
@@ -863,6 +2236,9 @@ arXiv:2608.00109v1, 2026.
 \href{https://arxiv.org/abs/2608.00109v1}{arxiv.org/abs/2608.00109v1}.
 The selected minimality question is Section~4, question~2;
 the infinite-family question is question~3. Accessed 18 September 2026.
+[Added 30 September 2026, batch~67:] Part~II inspected the HTML version,
+\url{https://arxiv.org/html/2608.00109v1}; Section~4 lists the
+further-root and minimum-order questions.
 
 \bibitem{Oboudi}
 M. R. Oboudi,
@@ -872,5 +2248,33 @@ Discrete Applied Mathematics \textbf{205} (2016), 126--131.
 Theorem~7 supplies the trees/unicyclic exclusion used in
 \eqref{eq:mincycle}; Lemma~1 is the general domination
 inclusion--exclusion identity.
+[Added 30 September 2026, batch~67:] In Part~II the trees/unicyclic
+exclusion is used only as credited context for the previously known
+minimum cycle rank of a root $-4$; none of the new obstruction proofs
+depends on it.
+
+% [Added 30 September 2026, batch 67] Part II's further references.  Its
+% entry for the repository report (key Repo) became references to Part I;
+% its entries AG and Oboudi are merged into Part I's above.
+\bibitem{Intro}
+S. Alikhani and Y.-H. Peng,
+\emph{Introduction to Domination Polynomial of a Graph},
+Ars Combinatoria \textbf{114} (2014), 257--266;
+arXiv:0905.2251.
+\url{https://arxiv.org/abs/0905.2251}.
+
+\bibitem{AlikhaniMinusOne}
+S. Alikhani,
+\emph{The Domination Polynomial of a Graph at $-1$},
+Graphs and Combinatorics \textbf{29} (2013), 1175--1181.
+\url{https://doi.org/10.1007/s00373-012-1211-x}.
+The publisher abstract and bibliography were inspected; the proofs of
+Part~II do not assume unseen results from the full article.
+
+\bibitem{Kotek}
+T. Kotek, J. Preen, F. Simon, P. Tittmann, and M. Trinks,
+\emph{Recurrence Relations and Splitting Formulas for the Domination Polynomial},
+Electronic Journal of Combinatorics \textbf{19}(3) (2012), P47.
+\url{https://www.combinatorics.org/ojs/index.php/eljc/article/view/v19i3p47}.
 \end{thebibliography}
 \end{document}

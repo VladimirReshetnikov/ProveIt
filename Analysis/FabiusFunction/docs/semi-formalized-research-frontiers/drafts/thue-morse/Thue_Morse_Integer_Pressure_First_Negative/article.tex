@@ -1,0 +1,535 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,lmodern,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={First Negative Degrees in Integer Thue Morse Pressure},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{2pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (no counter changes).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\ev}{\operatorname{ev}}\newcommand{\Z}{\mathbb Z}
+\newcommand{\HH}{\mathcal H}\newcommand{\GG}{\mathcal G}
+\title{First Negative Degrees in\\Integer Thue--Morse Pressure}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+Let $N_m$ be the first even degree strictly above $2m$ at which the phase Taylor coefficient of integer Thue--Morse pressure is negative. We prove
+$N_m=\gamma m-\Lambda^{-1}\log\log(2m)+O(1)$, where a positive-series saddle equation defines $\gamma\in(6.662966,6.662968)$ and $\Lambda>0$. In particular $N_m/m$ converges to a value strictly below $20/3$. The key comparison is between a positive first model and an actual quadratic Schur term with multiplier $2\log_2(2m)+O(1)$. A principal inverse-branch identity bounds the frozen correction at the second-model scale. Exact rational compact-domain certificates join the local saddle arcs to the rest of the coefficient contour. The result is asymptotic; it does not supply an unconditional floor rule or an effective onset threshold.
+\end{abstract}
+\paragraph{Status.} This is unrefereed ordinary mathematics with exact rational interval certificates, not a Lean formalization. Earlier analytic prerequisites are included unchanged with the sources. No exhaustive priority claim is made.
+
+\section{Statement and the two positive models}
+Use the cosine-phase normalization of the repository manuscript~\cite{Repo}, and put
+\[
+ P_m(t)=p_m(t/\pi),\qquad d=2m,\qquad
+ N_m=\min\{N>d:N\text{ even},\ [t^N]P_m(t)<0\}.
+\]
+The infinite-sign theorem~\cite{Signs} ensures that $N_m$ exists for every integer $m\ge2$. The lower negative coefficients and the cancellation at degree $2m$ are excluded from this minimum.
+
+Define
+\[
+ c=2/\pi,\quad b_j=\tan(\pi/2^{j+1}),\quad
+ B(a)=\prod_{j\ge1}(1+ab_j),\quad L(a)=cB(a),\quad
+ \GG(t)=\tan t\,L(\tan t).
+\]
+The product $B$ is entire. The series $\GG$ has strictly positive coefficients at every degree at least one and is analytic on $|t|<\pi/2$. Put
+\[
+ \mu(t)=\frac{t\GG'(t)}{\GG(t)}.
+\]
+For $\sigma>k$, let $t_k(\sigma)\in(0,\pi/2)$ solve $\mu(t_k)=\sigma/k$, and set
+\begin{equation}\label{eq:rates}
+ \Phi_k(\sigma)=k\log\GG(t_k)-\sigma\log t_k.
+\end{equation}
+The logarithmic derivative is the mean of a positive coefficient law; its derivative in $\log t$ is its strictly positive variance. Moreover $\mu$ increases from one to infinity, so each saddle exists and is unique.
+
+There is a unique crossing $\sigma_*>2$ of $\Phi_1$ and $\Phi_2$. Indeed
+\begin{equation}\label{eq:delta}
+ \Delta(\sigma):=\Phi_2(\sigma)-\Phi_1(\sigma),\qquad
+ \Delta'(\sigma)=\log(t_1(\sigma)/t_2(\sigma))>0,
+\end{equation}
+and the rational certificate gives opposite signs at $3.331483$ and $3.331484$. Write
+\[
+ \gamma=2\sigma_*,\qquad
+ \Lambda=\log\frac{t_1(\sigma_*)}{t_2(\sigma_*)}.
+\]
+Numerical orientation gives $\gamma\approx6.6629666581$ and $\Lambda\approx0.8062663610$; the rigorous slope interval used here is the one above.
+\begin{theorem}\label{thm:main}
+As the integer $m$ tends to infinity,
+\begin{equation}\label{eq:main}
+ N_m=\gamma m-\frac{\log\log(2m)}{\Lambda}+O(1).
+\end{equation}
+In particular $N_m/m\to\gamma\in(6.662966,6.662968)$.
+\end{theorem}
+All unqualified logarithms are natural. The bounded term includes the even-degree lattice. No unconditional rounding formula is asserted.
+% ed. (2026-10-01): the theorem implies the liminf bound of the preceding package; consistency with the dataset
+\begin{ednote}
+Theorem~\ref{thm:main} implies the bound $\liminf N_m/m\ge33/5$ of \cite{Bound66}, filed as
+\path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, whose theorem, cubic envelope and Schur expansion are inputs
+here; its strict positivity statement is not implied. For $2\le m\le128$ the values of $N_m$
+certified in \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} satisfy
+$-1.75<N_m-(\gamma m-\Lambda^{-1}\log\log(2m))<0.36$ (checked on filing, with $\gamma$ and
+$\Lambda$ evaluated numerically from their definitions), consistent with the bounded error
+term.
+\end{ednote}
+
+\paragraph{Related context.}
+Fan, Schmeling and Shen~\cite{FSS} study the same phase-dependent cosine-product family through ergodic optimization and multifractal analysis. Baake, Gohlke, Kesseb\"ohmer and Schindler~\cite{BGKS} study pressure and scaling for the classical Thue--Morse measure. The variable and asymptotic regime here concern high-order phase Taylor signs as the integer moment order grows. These references provide context, rather than an exhaustive novelty determination.
+
+\section{Schur terms and the analytic prerequisites}
+The normalized transfer operator is
+\[
+ (V_af)(x)=\sum_{2y=x\pmod1}(\cos\pi y+a\sin\pi y)^d f(y).
+\]
+Let $\lambda(a)$ be the eigenvalue branch of $V_a$ with $\lambda(0)=1$. The pressure germ is exactly
+\[P_m(t)=d\log\cos t+\log\lambda(\tan t),\]
+with the logarithm zero at the origin. Let $h_0$ be the fixed function of $V_0$, normalized by $h_0(0)=1$, let $\ev f=f(1/2)$, and put $Qf=f-f(0)h_0$. On functions vanishing at zero set
+\begin{gather*}
+ \mathcal B_a=QV_aQ,\qquad q_a=QV_ah_0,\qquad
+ F=\ev h_0+\ev(I-\mathcal B_a)^{-1}q_a,\\
+ G=\ev(I-\mathcal B_a)^{-2}q_a,\qquad
+ H=\ev(I-\mathcal B_a)^{-3}q_a.
+\end{gather*}
+The functions are even analytic germs, with $G(0)=H(0)=0$. If $\delta=\lambda-1$ for the normalized simple eigenvalue, then
+\[
+ \delta=a^d\{F-\delta G+\delta^2H+O(\delta^3)\}.
+\]
+Consequently, below degree $4d$,
+\begin{align}
+ P_m(t)&=d\log\cos t+\tan^dt\,F(\tan t)
+       -\tan^{2d}t\,K_2(\tan t)+\tan^{3d}t\,K_3(\tan t),\label{eq:schur}\\
+ K_2&=FG+F^2/2,\qquad
+ K_3=FG^2+F^2H+F^2G+F^3/3.\notag
+\end{align}
+This is an exact identity of Taylor coefficients.
+
+We use the preceding all-order and eventual-$6.6m$ reports~\cite{AllOrders,Bound66}. They are bundled unchanged, with their reproducible sources. The needed facts are stated explicitly here.
+
+First, $[t^N]P_m>0$ for every $m\ge2$ and even $d<N<3d$; moreover, for all sufficiently large $m$, this holds throughout $d<N\le3.3d$. Second, for even $3d\le N\le3.5d$,
+\begin{equation}\label{eq:cubic}
+ |[t^N]\tan^{3d}t\,K_3(\tan t)|
+ <220(\log_2d+4)^2 2^d.
+\end{equation}
+The latter follows from the orbit marking $\binom{L+1}{2}$ for $H$, where $L$ is the deepest occupied dyadic factor. The complete proof is Lemma~2.1 of~\cite{Bound66}.
+
+For the operator estimates, set
+\begin{gather*}
+ R=2/5,\quad w=49/100,\qquad
+ \HH_a(x)=\prod_{j\ge1}\left(\cos\frac{\pi x}{2^j}+a\sin\frac{\pi x}{2^j}\right),\\
+ h=\HH_R,\qquad L_R=h(1/2)=L(R).
+\end{gather*}
+On $X=\{f\in C^1(\mathbb R/\Z):f(0)=0\}$ use
+\begin{gather*}
+ N_0(f)=\sup_{x\notin\Z}\frac{|f(x)|}{t(x)h(t(x))^d},\qquad
+ N_1(f)=\sup_x\frac{|f'(x)|}{h(t(x))^d},\\
+ \|f\|_d=N_0(f)+\frac{(9/10)^d}{d}N_1(f),\qquad
+ t(x)=\operatorname{dist}(x,\Z).
+\end{gather*}
+For even $d\ge128$ and $|a|\le R$, the inverse of $I-QV_a|_X$ has norm at most five. Evaluation at $1/2$ costs $L_R^d/2$. Also $1\le h\le7/5$ on $[0,1/2]$, $h$ increases on $[0,1/4]$, and each individual inverse-branch ratio satisfies
+\begin{equation}\label{eq:branch}
+ |W_a(y)|h(t(y))/h(t(x))\le1,
+ \qquad W_a(y)=\cos\pi y+a\sin\pi y.
+\end{equation}
+The normalized frozen function $f=h_0+(I-QV_a)^{-1}q_a$ has the approximation
+\begin{equation}\label{eq:repair}
+ \begin{aligned}
+ f&=\phi-C+e,\qquad \phi(x)=\HH_a(x)^d+\HH_a(x-1)^d,\\
+ \|C\|_\infty,\|C'\|_\infty&\le610d(RL_R)^d,\qquad
+ \|e\|_d\le60000d^2w^d.
+ \end{aligned}
+\end{equation}
+Here $C$ is the cubic Hermite correction of the excess endpoint values and derivatives. Its scalar consequence is
+\begin{equation}\label{eq:scalarerror}
+ |F(a)-L(a)^d-L(-a)^d|\le31000d^2(wL_R)^d,
+ \qquad wL_R<\beta:=11907/20000.
+\end{equation}
+The same estimates give the full-disk bounds
+\begin{equation}\label{eq:fullFG}
+ |F(a)|\le3L_R^d,\qquad |G(a)|\le4275dL_R^d.
+\end{equation}
+The proof of the $G$ bound uses $\|f-h_0\|_d\le1710d$ and the unchanged Green inverse; it does not extend an unregularized orbit sum beyond its convergence range.
+
+Finally, writing $M_{d,q}=[a^q]B(a)^d$, the dyadic tangent comparison and low-degree orbit formula give
+\begin{equation}\label{eq:lowbounds}
+ |F_q|\le\tfrac52c^dM_{d,q},\qquad
+ |G_q|\le(5\log_2d+18)c^dM_{d,q}\quad(0\le q\le d-2).
+\end{equation}
+A monomial carries weight one for $F$ and its deepest occupied index for $G$. Odd coefficients vanish. The tangent comparison and orbit identities are included in the preceding source archive.
+
+\section{The actual quadratic asymptotic}
+Write
+\[
+ A_k(d,N)=[t^N]\GG(t)^{kd}.
+\]
+\begin{proposition}\label{prop:quadratic}
+Uniformly for even integers $N$ with $N/d$ in any compact subinterval of
+$(2,2\mu(\arctan R))$,
+\begin{equation}\label{eq:K2asymp}
+ [t^N]\tan^{2d}t\,K_2(\tan t)
+ =(2\log_2d+O(1))A_2(d,N).
+\end{equation}
+\end{proposition}
+\begin{proof}
+We first quantify the deepest occupied index. For $q/d$ in a compact subinterval of $(0,\infty)$, choose $a>0$ so that
+\[
+ \nu(a):=\sum_j\frac{ab_j}{1+ab_j}=q/d.
+\]
+Take $d$ independent labeled copies of each Bernoulli selector with probability $ab_j/(1+ab_j)$. Conditioning their total count on $q$ gives precisely the coefficient measure of $M_{d,q}$. Let $L$ be the largest selected index. Uniformly in this parameter range,
+\begin{equation}\label{eq:depth}
+ \mathbb E L=\log_2d+O(1).
+\end{equation}
+Here is a direct uniform justification. The total count has mass at its integer mean at least $c_0/\sqrt d$, by the lattice local limit theorem. All parameters remain in a compact positive interval; there are common exponential moments and a uniform span-one gap. The maximum mass after removing one selector, or after retaining only indices up to $J\ge1$, is at most $C_0/\sqrt d$: an independent binomial summand from the $j=1$ selectors supplies this bound, and convolution cannot increase it. The selector tail is comparable to $2^{-J}$. Marking one tail selector and, in the other direction, requiring all tail selectors to vanish, give
+\[
+ \mathbb P(L>J\mid q)\le\min(1,Cd2^{-J}),\qquad
+ \mathbb P(L\le J\mid q)\le C e^{-cd2^{-J}}.
+\]
+Summation above and below $\lfloor\log_2d\rfloor$ proves~\eqref{eq:depth}, uniformly.
+
+For even integers $q$ with $q/d$ in a compact subinterval of $(0,1)$, the two nearest half-integer orbits consequently give
+\begin{equation}\label{eq:lowasymp}
+ F_q=2c^dM_{d,q}(1+O(e^{-c_1d})),\qquad
+ G_q=2c^dM_{d,q}(\log_2d+O(1)).
+\end{equation}
+Indeed the remote odd branches have an extra factor $n^{q-d}$, with at most logarithmic depth factors; their sums for $n\ge3$ are exponentially small uniformly when $q\le(1-\epsilon)d$.
+
+Let $F_<,G_<$ retain raw degrees below $d$. From~\eqref{eq:fullFG}, their high tails on $|a|\le a_0<R$ are bounded by
+\[
+ |F-F_<|\le\frac{3L_R^d(a_0/R)^d}{1-a_0/R},\qquad
+ |G-G_<|\le\frac{4275dL_R^d(a_0/R)^d}{1-a_0/R}.
+\]
+The low parts are bounded by a logarithmic factor times $L(a_0)^d$, using~\eqref{eq:lowbounds}. Their relative tail factor is
+\[
+ \tau(a_0)=\frac{a_0L_R}{RL(a_0)}<1.
+\]
+This follows because $a/L(a)$ increases on $(0,R]$:
+$\nu(a)<a\sum b_j<2a\le4/5$. At the second saddle, $a_0=\tan t_2$ stays in a compact subinterval of $(0,R)$. Cauchy's estimate and the local-limit lower bound for $A_2$ therefore make every product containing a high tail exponentially negligible.
+
+In the remaining low convolution, mark the two raw selector counts by $u,v$ in
+\[
+ c^{2d}\tan^{2d}t\,B(u\tan t)^d B(v\tan t)^d.
+\]
+At the positive saddle each count has mean $d\nu(a_0)$, lying in a compact subinterval of $(0,1)$. Conditional on total $t$-degree $N$, either count outside a fixed smaller interior interval has exponentially small probability. This follows by marking with $e^{\theta}$ and a Chernoff bound at the same saddle; division by the local-limit coefficient costs only $O(\sqrt d)$. The absolute bounds~\eqref{eq:lowbounds} control these atypical terms. Thus~\eqref{eq:lowasymp} applies on the whole convolution up to an $O(A_2)$ error.
+
+Set $F_{\rm near}(a)=c^d(B(a)^d+B(-a)^d)$. Restoring its full nearest product instead of its truncation adds only the same atypical raw-degree tail. We obtain
+\[
+ [t^N]\tan^{2d}t\,F_<G_<
+ =\log_2d\,[t^N]\tan^{2d}t\,F_{\rm near}(\tan t)^2+O(A_2).
+\]
+For even $d,N$, the last coefficient equals
+\[
+ 2A_2(d,N)+2[t^N]\{\GG(t)\GG(-t)\}^d.
+\]
+The mixed term is exponentially negligible. On $|z|=t_2$ its product modulus is strictly below $\GG(t_2)^2$, uniformly on the compact saddle interval. Equality for the first factor would require $z/t_2=1$, while equality for the second would require $z/t_2=-1$, since consecutive coefficients are positive. Finally $F_<^2/2$ contributes only $O(A_2)$. This proves~\eqref{eq:K2asymp}.
+\end{proof}
+% ed. (2026-10-01): a later package contains this proposition on a larger window
+\begin{ednote}
+Theorem~1.1 of \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/} contains Proposition~\ref{prop:quadratic}
+as its case $k=2$ (there $C_2=-K_2$) and extends its window from $(2,2\mu(\arctan R))$,
+$R=2/5$, to $(2,2\mu(\arctan(1/2)))$.
+\end{ednote}
+
+\section{A bounded local frozen correction}
+The first-model saddle lies outside the Green disk. We do not approximate the actual frozen function there. Instead, subtract its explicit nearest model and estimate the remainder on the smaller second-saddle contour.
+
+Let
+\[
+ I=[3.3,3.332],\quad
+ t_-=.3413848,\quad t_+=.3484140,\quad
+ \theta_0=153\pi/1000.
+\]
+The rational saddle certificate gives $t_2(\sigma)\in[t_-,t_+]$ for $\sigma\in I$. On the compact local arcs
+\begin{equation}\label{eq:localset}
+ a=\tan(te^{i\theta}),\qquad t_-\le t\le t_+,\quad |\theta|\le\theta_0,
+\end{equation}
+the exact local certificate proves, with strict slack,
+\begin{equation}\label{eq:localconditions}
+ \Re a>.303,\qquad .348<|a|<.38,\qquad
+ |Q_a(2^{-j})|<1\quad(1\le j\le5),
+ \quad Q_a(x)=\frac{\HH_a(1+x)}{\HH_a(1)\HH_a(x)}.
+\end{equation}
+A common strict upper bound below one is supplied for the five ratios. The certificate and its interval construction are described in Section~\ref{sec:certificate}.
+
+Put $L_a=\HH_a(1/2)=L(a)$ and $g_a=aL_a$. The following lemma is the local analytic ingredient.
+\begin{lemma}\label{lem:localfrozen}
+Uniformly on the arcs~\eqref{eq:localset},
+\begin{equation}\label{eq:localfrozen}
+ F(a)=L(a)^d+L(-a)^d
+       -a^dL(a)^{2d}\{\Psi_d(a)+O(d^{-1})\},
+\end{equation}
+where $\Psi_d$ is analytic on a common neighborhood and uniformly bounded there. In particular,
+\[
+ |F(a)-L(a)^d-L(-a)^d|\le C|aL(a)^2|^d.
+\]
+\end{lemma}
+\begin{proof}
+We give the principal-branch identity and all error estimates. The atomic function has the periodization
+\[
+ h_0(x)=\sum_{k\in\Z}\left(\frac{\sin\pi(x+k)}{\pi(x+k)}\right)^d.
+\]
+To distinguish its nonperiodic summand, write $s(x)=\sin(\pi x)/(\pi x)$. The frozen equation is
+$f=V_af-a^dFh_0$. Divide by $\HH_a(x)^d$ and use
+$\HH_a(x)=W_a(x/2)\HH_a(x/2)$. If $x_n=2^{-n-1}$, telescoping toward zero gives the exact, convergent identity
+\begin{equation}\label{eq:principal}
+ \frac{F}{L_a^d}=1+\sum_{n\ge0}
+ \frac{W_a((1+x_n)/2)^d f((1+x_n)/2)-a^dFh_0(x_n)}{\HH_a(x_n)^d}.
+\end{equation}
+Each numerator vanishes at zero before it is summed.
+
+The weighted error $f-\phi$ and its derivative are bounded by
+$\operatorname{poly}(d)w^d h(t(x))^d$. For the derivative this needs a small refinement of~\eqref{eq:repair}, rather than division by its exponentially small norm weight. The two-row Green estimate gives
+\[
+ N_1(e)\le5dN_0(e)+\beta_dN_1(e)+N_1(\text{source}),
+ \qquad \beta_d<3/5,
+\]
+with $N_0(e)=O(d^2w^d)$ and $N_1(\text{source})=O(d^2w^d)$. Hence $N_1(e)=O(d^3w^d)$, and the Hermite correction has the same exponential base.
+
+For $0\le x\le1/2$, factorwise absolute values give
+$|\HH_a(x)|\ge\HH_{\Re a}(x)\ge1$. The last inequality follows from real logarithmic concavity, the value one at zero, and the certified $L(.303)>1.05$. Thus $|g_a|>.348\cdot1.05=.3654$. The squared secondary weight
+$|a\cos(\pi x/2)-\sin(\pi x/2)|^2$ has its maximum at an endpoint; its derivative changes sign only from negative to positive. By~\eqref{eq:localconditions}, its endpoint bounds, multiplied by $h\le7/5$, are below $.73$. Substituting $\phi$ for $f$ in the secondary branch of~\eqref{eq:principal}, and $F_{\rm near}=L(a)^d+L(-a)^d$ for $F$, therefore has normalized error
+\[
+ O(\operatorname{poly}(d)(.73w)^d),\qquad .73w=.3577<|g_a|.
+\]
+The rank-one error has smaller base $|a|\beta$. These error numerators still vanish at zero. Their normalized derivatives obey the same bound up to a polynomial factor, so summing the geometric sequence $x_n$ is legitimate.
+
+The substituted secondary product is exactly
+\[
+ W_a((1+x)/2)^d\phi((1+x)/2)
+ =\HH_a(1+x)^d+\HH_a(x-1)^d.
+\]
+Replacing $h_0(x)$ by $s(x)^d$ has exponentially smaller cost: the remaining periodization sum is $O((2/\pi)^d)$, with derivative $O(d(2/\pi)^d)$. Their vanishing at zero again controls the dyadic sum.
+
+The negative-branch term at $n=0$ equals $L(-a)^d/L(a)^d$, recovering the second term of $F_{\rm near}$. Its counterterm is retained in the exponentially small remainder. For $n\ge1$, $0\le x_n\le1/4$ and
+$|\HH_a(x_n-1)|\le|a|$: the first factor satisfies this because
+$\tan(\pi/8)<2\Re a/(1-|a|^2)$, and every later factor has modulus at most one. Also $|L(-a)|<1$. The difference at zero vanishes, and its derivative has base $|a|^d$, exponentially smaller than $|g_a|^d$. The removed counterterm has the still smaller relative base $c|L(-a)|/|L(a)|^2<1$.
+
+It remains to analyze the positive branch. Put
+\[
+ v_a(x)=\frac{s(x)}{\HH_a(x)},\qquad
+ J(a)=\pi a-\frac{\HH_a'(1)}{\HH_a(1)}.
+\]
+The preceding estimates reduce~\eqref{eq:principal} to
+\begin{equation}\label{eq:dyadicreduction}
+ \frac{F_{\rm near}-F}{a^dL(a)^{2d}}
+ =\sum_{n\ge0}\{v_a(x_n)^d-Q_a(x_n)^d\}+O(e^{-c_1d}).
+\end{equation}
+All constants are uniform on a neighborhood of the compact arcs, by the strict certificate margins.
+
+We have $\Re J(a)>\pi\Re a>.9$. Indeed, for real $u\ge0$,
+\[
+ \Re\frac{a-u}{1+au}\le\Re a,
+\]
+because $\Re((1+a^2)/(1+au))>0$ when $\Re a>0$ and $|a|<1$. Summing after the first spatial factor gives
+$\Re(\HH_a'(1)/\HH_a(1))\le\pi(\Re a-\Re(1/a))/2<0$.
+For $0\le x\le1/64$, the real part of the first factor of $\HH_a(1+x)$ exceeds $.27$; the other real parts exceed $2/3$. All factor real parts of $\HH_a(x)$ exceed $.99$. Therefore
+\[
+ |(\log Q_a)''(x)|
+ \le\pi^2(1+.38^2)
+ \left\{\frac1{4(.27)^2}+\frac3{16}+\frac1{3(.99)^2}\right\}<46.
+\]
+Since $(\log Q_a)'(0)=-J(a)$, this proves $|Q_a(x)|\le e^{-x/2}$ on that interval. The five larger dyadic arguments are covered by~\eqref{eq:localconditions}. Also
+\[
+ v_a(x)=\prod_{j\ge1}(1+a\tan(\pi x/2^j))^{-1}
+\]
+has a uniform bound $|v_a(x)|\le e^{-c_2x}$ on $[0,1/2]$.
+
+Uniform Taylor expansion now gives
+\[
+ \log v_a(x)=-\pi ax+O(x^2),\qquad
+ \log Q_a(x)=-J(a)x+O(x^2).
+\]
+Replacing the powers in~\eqref{eq:dyadicreduction} by these exponentials costs $O(1/d)$: each error is at most $Cd x_n^2e^{-c_3dx_n}$, and the sum of $(dx_n)^2e^{-c_3dx_n}$ is uniformly bounded. The finitely many larger arguments cost exponentially little. Extending the resulting sum to all integer indices also costs exponentially little. Thus~\eqref{eq:localfrozen} holds with
+\begin{equation}\label{eq:Psi}
+ \Psi_d(a)=\sum_{n\in\Z}
+ \left\{e^{-\pi ad2^{-n-1}}-e^{-J(a)d2^{-n-1}}\right\}.
+\end{equation}
+The positive real parts of $\pi a$ and $J(a)$ make this series uniformly convergent and bounded, with any fixed number of derivatives, on a common neighborhood. This completes the proof.
+\end{proof}
+For real $a$ in the corresponding interval, $J(a)>\pi a$ and $\Psi_d(a)>0$. Moreover $\Psi_{2d}(a)=\Psi_d(a)$, and its mean over one period in $\log_2d$ is $\log_2(J(a)/(\pi a))$, by Frullani's integral. Only its uniform boundedness is needed for the first-negative law.
+
+\section{The outer contour and its exact certificate}\label{sec:certificate}
+For $0<|a|\le R$, define
+\[
+ \omega(a)=\sup_{1\le X\le2}
+ \frac{\max(|\HH_a(X)|,|\HH_{-a}(X)|)}{h(\operatorname{dist}(X,\Z))}.
+\]
+\begin{lemma}\label{lem:omega}
+On any compact subset of $0<|a|\le R$,
+\begin{equation}\label{eq:omega}
+ |F(a)-L(a)^d-L(-a)^d|\le C d^2\{L_R\omega(a)\}^d.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The continuous function $\omega$ has a positive lower bound on the compact set: its endpoint includes $|aL(a)|$, and $L(a)=cB(a)$ has no zero for $|a|<1$. The nearest-pair excess endpoint values are bounded by $\omega^d$, and its excess endpoint derivatives by $120d\omega^{d-1}$. Thus the fixed Hermite basis gives
+$\|C\|_\infty+\|C'\|_\infty\le C_1d\omega^d$.
+
+For $e=f-(\phi-C)$ the periodic vanishing source is
+\[
+ s=\HH_a(x-2)^d+\HH_a(x+1)^d-(V_aC-C)-a^d(\phi-C)(1/2)h_0,
+ \qquad s(0)=0.
+\]
+The outer derivative satisfies
+\[
+ \frac{|(\HH_a(X)^d)'|}{h(\operatorname{dist}(X,\Z))^d}
+ \le120d\omega^{d-1}\le C_2d\omega^d.
+\]
+For the transfer of $C$,~\eqref{eq:branch} and $h\ge1$ imply both
+$|W_a(y)|^d/h(t(x))^d\le1$ and
+$|W_a(y)|^{d-1}/h(t(x))^d\le1$.
+Differentiation therefore gives $N_1(V_aC)\le C_3d^2\omega^d$.
+For the rank-one term, $|a|^d|\HH_a(\pm1/2)|^d\le\omega^d$ by the endpoint identity; the correction involving $C$ is no larger. Since $\|h_0'\|\le\pi d$, its derivative has the same bound. Hence $N_1(s)\le C_4d^2\omega^d$.
+
+For $t(x)\le1/4$, integrate from the nearest integer using $s(0)=0$ and increasing $h$. For $t(x)\ge1/4$, bound the weighted amplitudes directly and divide by $t(x)$. This yields $\|s\|_d\le C_5d^2\omega^d$. Apply the norm-five Green inverse, evaluate at $1/2$, and add the Hermite value correction. This proves~\eqref{eq:omega} with its exact exponential base.
+\end{proof}
+
+The outer certificate proves, with $\eta=1999/2000$, that
+\begin{equation}\label{eq:outer}
+ |a|L_R\frac{\max(|\HH_a(X)|,|\HH_{-a}(X)|)}{h(\operatorname{dist}(X,\Z))}
+ <\eta\,g(a_0)^2,
+\end{equation}
+for
+\[
+ t_-\le t\le t_+,\quad \theta_0\le\theta\le\pi/2,\quad
+ 1\le X\le2,\qquad a=\tan(te^{i\theta}),\quad a_0=\tan t.
+\]
+Conjugation and evenness cover the rest of the circle.
+
+For completeness, the certificate is a finite rational inequality proof, not a floating-point search. The complex tangent is enclosed by
+\[
+ \tan(u+iv)=\frac{\sin(2u)+i\sinh(2v)}{\cos(2u)+\cosh(2v)},
+ \quad u=t\cos\theta,\ v=t\sin\theta.
+\]
+Machin's formula and Taylor remainder bounds provide outward integer intervals for all trigonometric and hyperbolic functions. Twenty spatial factors retain the same complex interval $a$. For $c_j=\cos(\pi X/2^j)$ and $s_j=\sin(\pi X/2^j)$, the exact squared factor is
+\[
+ |c_j\pm as_j|^2=c_j^2\pm2\Re(a)c_js_j+|a|^2s_j^2.
+\]
+Its logarithmic derivative is
+\[
+ 2\frac{\pi}{2^j}
+ \frac{\pm\Re(a)(c_j^2-s_j^2)+(|a|^2-1)c_js_j}{|c_j\pm as_j|^2}.
+\]
+For the omitted product, set $E=R\pi X_{\max}2^{-20}+(\pi X_{\max})^2/(6\cdot4^{20})$. The sum of the omitted factor deviations is at most $E<1$, so its modulus is at most $(1-E)^{-1}$. The omitted squared logarithmic derivative is bounded by
+\[
+ \frac{2\pi}{2^{20}}\frac{R+\tau}{1-R\tau-\tau^2/2},
+ \qquad \tau=\frac{\pi X_{\max}}{2^{21}}.
+\]
+Spatial cells are split at $X=3/2$. For the real denominator, positivity and logarithmic concavity make its minimum on a distance cell occur at an endpoint. A midpoint value and an interval bound for the logarithmic derivative control a spatial box by $e^v\le1/(1-v)$ when $0\le v<1$. A direct squared-factor bound is used whenever that sharpening is unavailable.
+
+The compact outer partition has 2812 boxes. Every squared ratio is below $999/1000<(1999/2000)^2$; its largest certified upper bound is approximately $.9989983569$. The local partition has 127 boxes and largest certified shallow $Q$ squared upper bound
+\[
+ \frac{99983441723839698176893318289531}{10^{32}}<1.
+\]
+The box partitions, exact rational endpoints, interval programs, and independent replay checks are included. The algorithm starts from the whole domain and bisects a box into two children; replay reconstructs the partition and checks every leaf. All new scalar constants, saddle coverage, and the fact that both model exponential bases exceed three on $I$ are also checked exactly. Strict margins give the compact-neighborhood slack used in Lemma~\ref{lem:localfrozen}.
+
+\section{The coefficient comparison and the first negative degree}
+\begin{proposition}\label{prop:comparison}
+Uniformly for even $N$ with $N/d\in I$,
+\begin{equation}\label{eq:comparison}
+ [t^N]P_m(t)=2A_1(d,N)-(2\log_2d+O(1))A_2(d,N).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $t=t_2(N/d)$. On the positive local arc, Lemma~\ref{lem:localfrozen} bounds the composed frozen remainder by $C|\GG(z)|^{2d}$. For the normalized positive coefficient law at radius $t$, with probabilities $p_j$, one has
+\[
+ \left|\sum_jp_je^{ij\theta}\right|^2
+ \le1-2p_1p_2(1-\cos\theta).
+\]
+The two probabilities are uniformly positive, so this gives a uniform Gaussian modulus bound. Integration over the arc retains the factor $d^{-1/2}$. The negative local arc has the same bound by evenness. On the outer arcs, Lemma~\ref{lem:omega} and~\eqref{eq:outer} give an exponentially smaller term, even after division by the second-model local-limit coefficient. Thus
+\[
+ [t^N]\tan^dt\,F(\tan t)=2A_1(d,N)+O(A_2(d,N)).
+\]
+The exact factor two comes from the equal even coefficients of $\GG(t)^d$ and $\GG(-t)^d$.
+
+Proposition~\ref{prop:quadratic} handles the quadratic term. By~\eqref{eq:cubic}, the cubic contribution is polynomial in $\log d$ times $2^d$. Both model exponential bases exceed three uniformly on $I$, as certified, so this is exponentially negligible relative to $A_2$. The cosine term is $O(d)$ by Cauchy's estimate on $|t|=1$. The exact expansion~\eqref{eq:schur}, valid since $N<4d$, proves~\eqref{eq:comparison}.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Uniform positive-series saddle asymptotics give
+\begin{equation}\label{eq:ratio}
+ \frac{A_2(d,N)}{A_1(d,N)}
+ =C(\sigma)e^{d\Delta(\sigma)}(1+o(1)),\qquad
+ C(\sigma)=\sqrt{\frac{v_1(\sigma)}{2v_2(\sigma)}},
+ \quad v_k=t_k\mu'(t_k),\quad \sigma=N/d.
+\end{equation}
+The errors are uniform on $I$. The local-limit proof uses a common analytic neighborhood, positive variance bounds, and the uniform span-one gap from consecutive positive coefficients. In particular $C$ is bounded above and below by positive constants.
+
+Since $\Delta$ increases and vanishes at $\sigma_*$,~\eqref{eq:comparison} is positive uniformly below $\sigma_*-\epsilon$ and negative at $\sigma_*+\epsilon$, for each sufficiently small fixed $\epsilon>0$ and all large $d$. The preceding eventual-$6.6m$ theorem covers every earlier degree to the left of $I$. Therefore $N_m/d\to\sigma_*$.
+
+For the sharper location, put
+\[
+ M_d=d\sigma_*-\frac{\log\log d}{\Lambda}.
+\]
+Uniformly when $N-M_d$ is bounded,
+\[
+ d\Delta(N/d)=-\log\log d+\Lambda(N-M_d)+o(1).
+\]
+Choose constants $0<C_{\min}\le C(\sigma)\le C_{\max}$ on $I$. Since $\Delta$ increases, every degree below $M_d-K$ has
+\[
+ \log_2d\,\frac{A_2}{A_1}
+ \le\frac{C_{\max}}{\log2}e^{-\Lambda K+o(1)}.
+\]
+A sufficiently large fixed $K$ makes this less than $1/2$, proving positivity at all such degrees within $I$. The earlier theorem covers the rest. At an even degree in $[M_d+K,M_d+K+2]$, the corresponding lower bound using $C_{\min}$ exceeds two, giving a negative coefficient. No monotonicity of the full coefficient ratio is assumed. We conclude $N_m=M_d+O(1)$, which is~\eqref{eq:main}.
+\end{proof}
+
+\section{A refined lattice window}
+Let $v_k=t_k\mu'(t_k)$ at the crossing, and put
+\[
+ C_*=\sqrt{v_1/(2v_2)},\qquad
+ u_d=d\sigma_*-\frac{\log\log d}{\Lambda}
+                +\frac{\log((\log2)/C_*)}{\Lambda}.
+\]
+\begin{proposition}\label{prop:rounding}
+There are constants $C,B,d_0$ such that, for even $d\ge d_0$, every even post-cancellation degree $N<u_d-C/\log d$ has positive pressure coefficient, while every even degree with
+\[
+ u_d+C/\log d<N\le u_d+B
+\]
+has negative coefficient. In particular, whenever
+$\operatorname{dist}(u_d,2\Z)>C/\log d$,
+\[
+ N_m=2\left\lceil\frac{u_d}{2}\right\rceil.
+\]
+\end{proposition}
+\begin{proof}
+The compact family of positive saddle laws gives the quantitative version of~\eqref{eq:ratio}, with relative error $O(d^{-1/2})$. Indeed, on a fixed sufficiently small central arc, the third-order characteristic expansion bounds the integral error by
+\[
+ O\left(d\int |\theta|^3e^{-cd\theta^2}\,d\theta\right)=O(d^{-1}),
+\]
+against a main integral of order $d^{-1/2}$. The complement has a uniform exponential gap. This makes the error uniform in the compact slope interval.
+
+For fixed $B$ and $|N-u_d|\le B$, Taylor expansion at $\sigma_*$ and~\eqref{eq:comparison} therefore give
+\[
+ \frac{[t^N]P_m(t)}{2A_1(d,N)}
+ =1-e^{\Lambda(N-u_d)}+O_B(1/\log d).
+\]
+The all-earlier-sign argument already gives positivity below $u_d-B_0$ for some fixed $B_0$. Choose $B>\max(B_0,3)$. On $[-B,B]$, the derivative of $e^{\Lambda x}$ is bounded below by a positive constant. A sufficiently large fixed $C$ gives the two stated sign bounds. If the center is farther than $C/\log d$ from every even integer, the next even integer is negative and every earlier post-cancellation degree is positive, proving the last assertion.
+\end{proof}
+The constants are existential. No claim is made about how often $u_d$ approaches the even lattice, so this is not an unconditional exact floor rule.
+
+\section{Scope and reproducibility}
+The first-negative asymptotic is proved by the analytic comparison and exact compact-domain certificates. It is not inferred from a finite fit. Its slope is strictly below $20/3$, so a floor rule with that limiting slope cannot hold eventually. No unconditional rounding formula or effective onset threshold is supplied.
+
+The real frozen correction contains a bounded oscillation in $\log_2d$. Its contribution is smaller than the quadratic logarithmic multiplier, which is why it does not alter the leading slope or logarithmic correction. Proposition~\ref{prop:rounding} isolates an $O(1/\log d)$ ambiguity window around the even lattice; it does not determine how often that window is encountered.
+
+The source archive contains the compact local and outer partitions, portable exact checkers, model-crossing certificate, source hashes, and unchanged analytic prerequisites. The supplied first-negative finite data, when distributed as a companion, are supplementary and are not a premise of the theorem.
+
+% ed. (2026-10-01): series map: the thirteen packages of the series and the sources cited here
+\begin{ednote}
+This note is the eleventh of thirteen packages written in one series and filed together on 2026-10-01 beside the repository manuscript \path{../Thue_Morse_Integer_Pressure/} in the Fabius drafts tree (batch~72 of the repository's \path{docs/incoming/}; unreviewed). In logical order they are the positivity series \path{../Thue_Morse_Integer_Pressure_First_Positive/}, \path{../Thue_Morse_Integer_Pressure_Higher_Positive/}, \path{../Thue_Morse_Integer_Pressure_Positive_Triangle/}, \path{../Thue_Morse_Integer_Pressure_Feedback_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Beyond_Boundary/}, \path{../Thue_Morse_Integer_Pressure_Linear_Region/} and \path{../Thue_Morse_Integer_Pressure_Full_Range/}, and the sign series, which imports the full-range theorem: \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}, \path{../Thue_Morse_Integer_Pressure_Sign_Densities/}, \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}, \path{../Thue_Morse_Integer_Pressure_First_Negative/} and \path{../Thue_Morse_Integer_Pressure_Cluster_Asymptotics/}, with the dataset \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/} (no article). An earlier version of \path{../Thue_Morse_Integer_Pressure_Full_Range/}, \emph{The Full Pressure Positivity Range for Large Integer Orders} (orders $m\ge4096$), delivered in the same batch, is superseded by it and was not filed.
+Here \cite{Repo}, cited as \emph{Thue--Morse Integer Pressure}, is \path{../Thue_Morse_Integer_Pressure/}, whose title
+is \emph{Integer Pressure and a Missing Taylor Coefficient} (the version cited differs from the filed manuscript only by dated editorial changes, none of them mathematical); \cite{AllOrders}
+is \path{../Thue_Morse_Integer_Pressure_Full_Range/}; \cite{Bound66} is \path{../Thue_Morse_Integer_Pressure_Negative_Bound/}; and
+\cite{Signs} is \path{../Thue_Morse_Integer_Pressure_Sign_Changes/}. The first-negative finite data of the last
+section are \path{../Thue_Morse_Integer_Pressure_First_Negative_Data/}. Of the copies bundled under \path{inputs/},
+only the independent outer-contour replay \path{inputs/independent_outer_certificate.zip} is
+filed.
+\end{ednote}
+\begin{thebibliography}{9}
+\bibitem{Repo} V.~Reshetnikov, \emph{Thue--Morse Integer Pressure}, repository research manuscript, pinned at commit \texttt{63a7a325109ba611a1816b61dfd0eb072b896a7a}. Source included.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/63a7a325109ba611a1816b61dfd0eb072b896a7a/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/thue-morse/Thue_Morse_Integer_Pressure/article.tex}
+\bibitem{AllOrders} \emph{The Full Pressure Positivity Range at Every Integer Order}, research report prepared for V.~Reshetnikov with OpenAI, 1 October 2026. Unchanged PDF and reproducible sources included.
+\bibitem{Bound66} \emph{An Asymptotic Lower Bound for the First Negative Thue--Morse Pressure Degree}, research report prepared for V.~Reshetnikov with OpenAI, 1 October 2026. Unchanged PDF and TeX included; supplies the earlier-degree window and cubic envelope.
+\bibitem{Signs} \emph{Infinite Taylor Sign Changes in Integer Thue--Morse Pressure}, research report prepared for V.~Reshetnikov with OpenAI, 1 October 2026. Unchanged PDF included.
+\bibitem{FSS} A.~Fan, J.~Schmeling and W.~Shen, \emph{Multifractal analysis of generalized Thue--Morse trigonometric polynomials}, arXiv:2212.13234v1 (2022). \url{https://arxiv.org/html/2212.13234v1}
+\bibitem{BGKS} M.~Baake, P.~Gohlke, M.~Kesseb\"ohmer and T.~Schindler, \emph{Scaling properties of the Thue--Morse measure}, arXiv:1810.06949v2 (2019). \url{https://arxiv.org/html/1810.06949v2}
+\end{thebibliography}
+\end{document}

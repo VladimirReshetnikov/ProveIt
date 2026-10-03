@@ -1,0 +1,1322 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem,xcolor}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\definecolor{ink}{RGB}{28,49,72}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,pdftitle={Two Fourier Peaks and a Moving Lattice Maximum},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Two Fourier peaks and a lattice maximum}\fancyhead[R]{\small OEIS A039831}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}\newcommand{\PP}{\mathbb P}
+\newcommand{\Z}{\mathbb Z}\newcommand{\R}{\mathbb R}
+\newcommand{\He}{\operatorname{He}}
+\newcommand{\dist}{\operatorname{dist}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\calE}{\mathcal E}
+\newcommand{\A}{\mathcal A}
+\newcommand{\B}{\mathcal B}
+\newcommand{\HH}[2]{H_{#1}^{(#2)}}
+\title{\textbf{Two Fourier Peaks and a Moving Lattice Maximum}\\[5pt]
+\large A proof of the OEIS A039831 asymptotic conjecture,\\
+four correction orders, a smoothing hierarchy, and inverse growth}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{October 1, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $M_n$ be the largest coefficient of
+$P_n(q)=\prod_{j=1}^n(1+q+q^3+\cdots+q^{2j-1})$.
+The OEIS entry A039831 records V\'aclav Kote\v{s}ovec's 2023 conjecture
+$M_n\sim3(n/\ee)^n$. We prove this statement and obtain explicit corrections
+through relative order $n^{-4}$, together with an algorithmic expansion to
+arbitrary algebraic order. Two features distinguish the answer from a routine
+Gaussian estimate. Integer rounding produces a nonconstant log-periodic term
+at order $n^{-3}$. A second Fourier neighborhood, at $q=-1$, produces a
+parity term at order $n^{-4}$, despite the exact equality of the total even-
+and odd-degree coefficient masses. This smaller contribution changes the
+maximizing exponent infinitely often; the number of failures of a
+single-neighborhood rounding rule up to $N$ has order $\log N$.
+We prove a zero-multiplicity law for suppression of the second neighborhood
+under fixed Bernoulli smoothing, and derive Lambert-$W$ inverse-growth
+formulas with the integer-threshold qualification made explicit.
+Exact coefficient computations through $n=400$ and symbolic coefficient
+checks accompany the article. The arguments are self-contained mathematical
+proofs, not Lean-checked declarations. The source audit establishes the
+conjecture's current OEIS wording, not an exhaustive claim of publication
+priority.
+\end{abstract}
+
+\paragraph{Editorial note (October 1, 2026, batch 73O2).}
+This report is manuscript~62 of batch~73 of ProveIt's incoming-reports
+intake, placed in the research-report collection in commit
+\texttt{6e193dd4f}. It is AI-assisted, unrefereed and not formalized. The
+text is the delivered manuscript; the write added the label prefix
+\texttt{tfp:}, notes marked ``[Added October 1, 2026, batch 73O2]'', one
+bibliography entry, and Appendix~\ref{tfp:app:provenance}. The distinct-coefficient
+conjecture of A039824 is \emph{not} resolved here.
+\newpage
+\tableofcontents
+\newpage
+
+\section{Scope, provenance, and the main result}
+\subsection{The problem and why the higher orders matter}
+Write
+\begin{equation}\label{tfp:eq:P}
+ P_n(q)=\prod_{j=1}^n\left(1+\sum_{a=1}^j q^{2a-1}\right)
+       =\sum_{k=0}^{n^2}c_{n,k}q^k,
+ \qquad M_n=\max_{k\in\Z}c_{n,k},
+\end{equation}
+with coefficients outside $[0,n^2]$ taken to be zero. This is the definition
+of OEIS A039831. Its record, inspected on October 1, 2026, still labels
+$M_n\sim3n^n/\ee^n$ a conjecture and attributes it to V\'aclav Kote\v{s}ovec,
+January 5, 2023 \cite{oeis831}. The related entry A039824 concerns the
+\emph{number of distinct coefficient values}, a different question; its
+conjectured eventual formula $n^2-3$ is not proved here \cite{oeis824}.
+
+The product in \eqref{tfp:eq:P} is a simple, nonnegative, growing-support
+convolution model. Its total mass is factorial, its width is of order
+$n^{3/2}$, and its center has a harmonic correction. It is useful as an
+explicit test case for a general issue: a coefficient maximum is sensitive
+both to the integer lattice and to small Fourier contributions that a
+central limit theorem does not resolve. The leading conjecture alone is an
+application of local-limit methods. The substantive refinements below are
+the explicit lattice-resolved expansion, its mode transitions, and the
+suppression law under smoothing.
+
+\subsection{Relationship to ProveIt and limits of the novelty claim}
+The inspected ProveIt materials distinguish research arguments, executable
+checks, and the formal trusted theorem boundary \cite{proveit}. This report
+follows that distinction. It connects to the repository's transseries and
+inversion program, particularly its separation of a logarithmic core,
+remainder transport, and staircase inversion \cite{transseries}. A targeted
+repository search for A039831 returned no match. This is not a claim that
+every file in the repository was examined.
+
+The Fourier method itself is classical. Modern work of Dolgopyat and
+Hafouta explicitly treats trigonometric corrections and the instability of
+modular uniformity after deletion of finitely many summands
+\cite{dolgopyat}. Their stated setting uses uniformly bounded summands;
+our summands have growing support. We do not invoke their theorem outside
+its hypotheses. Instead we prove the required bounds directly and use
+that work to situate the mechanism. Targeted A-number searches did not
+identify an earlier proof of the particular conjecture or the refinements
+proved here. These searches are not a comprehensive literature review,
+and no global priority or ``major breakthrough'' claim is required for
+the mathematical statements.
+
+\subsection{Notation and a first theorem}
+Let
+\begin{equation}\label{tfp:eq:notation}
+ h_n=H_{n+1}=\sum_{j=1}^{n+1}\frac1j,
+ \quad h_{2,n}=\HH{n+1}{2}=\sum_{j=1}^{n+1}\frac1{j^2},
+ \quad \mu_n=\frac{n(n-1)}2+h_n-1,
+ \quad \calE_n=3(n/\ee)^n.
+\end{equation}
+The symbols $O(\cdot)$ below refer to $n\to\infty$; constants can depend
+on a fixed expansion order or a fixed bounded range of $k-\mu_n$.
+Define
+\begin{align}
+ a_1&=-\frac{431}{300}, &
+ a_2&=\frac{23085971}{1764000},\label{tfp:eq:a12}\\
+ C_3(d;h,h_2)&=-\frac92d^2-\frac{27}2h+\frac92h_2
+                  -\frac{107751433393}{1587600000},\label{tfp:eq:C3}\\
+ C_4(d;h,h_2)&=\frac{1263}{40}d^2-\frac{81}2d
+       +\frac{3789}{40}h-\frac{1263}{40}h_2
+       +\frac{155775441709528423}{322727328000000}.
+       \label{tfp:eq:C4}
+\end{align}
+
+\begin{theorem}[Four correction orders and the conjecture]\label{tfp:thm:main}
+For every fixed $D>0$, uniformly for integers $k$ satisfying
+$|d|=|k-\mu_n|\le D$,
+\begin{equation}\label{tfp:eq:fourorders}
+\begin{split}
+ \frac{c_{n,k}}{\calE_n}
+  ={}&1+\frac{a_1}{n}+\frac{a_2}{n^2}
+     +\frac{C_3(d;h_n,h_{2,n})}{n^3}\\
+    &+\frac{C_4(d;h_n,h_{2,n})-18(-1)^{n+k}}{n^4}
+     +O_D\!\left(\frac{1+\log^2 n}{n^5}\right).
+\end{split}
+\end{equation}
+For all sufficiently large $n$, every maximizing exponent belongs to
+$\{\lfloor\mu_n\rfloor,\lceil\mu_n\rceil\}$. Consequently
+\begin{equation}\label{tfp:eq:leading}
+ M_n=3(n/\ee)^n\left(1-\frac{431}{300n}
+            +\frac{23085971}{1764000n^2}
+            +O\!\left(\frac{\log n}{n^3}\right)\right).
+\end{equation}
+In particular, Kote\v{s}ovec's stated asymptotic conjecture is true.
+The maximum of the two expressions in \eqref{tfp:eq:fourorders}, evaluated at
+the indicated candidate exponents, approximates $M_n/\calE_n$ with the
+same stated error, including at a mode transition.
+\end{theorem}
+
+The proof occupies Sections \ref{tfp:sec:prob}--\ref{tfp:sec:modes}. Exact harmonic
+numbers in \eqref{tfp:eq:fourorders} are intentional: replacing them by their
+limits without expanding their tails changes later coefficients. The
+remainder is an asymptotic bound, not a numerical interval certificate
+with an explicit threshold.
+
+\section{Independent summands and exact cumulants}\label{tfp:sec:prob}
+\subsection{Probability normalization}
+Let $X_j$ be independent, each uniform on the $j+1$ integers
+\begin{equation}
+ \{0,1,3,\ldots,2j-1\},\qquad S_n=\sum_{j=1}^nX_j.
+\end{equation}
+Evaluation of \eqref{tfp:eq:P} at $q=1$ gives
+\begin{equation}\label{tfp:eq:normalization}
+ P_n(1)=(n+1)!,\qquad
+ c_{n,k}=(n+1)!\PP(S_n=k).
+\end{equation}
+The moment generating function of a single summand can be written
+\begin{equation}\label{tfp:eq:Fj}
+ F_j(t)=1+\sum_{a=1}^j e^{(2a-1)t}
+       =1+e^{jt}\frac{\sinh(jt)}{\sinh t},
+ \qquad \E e^{tX_j}=\frac{F_j(t)}{j+1},
+\end{equation}
+where the quotient is interpreted by continuity at zero.
+
+Let $\kappa_{r,n}$ denote the $r$th cumulant of $S_n$, and put
+$V_n=\kappa_{2,n}$. Direct summation yields
+\begin{align}
+ \kappa_{1,n}&=\mu_n,\label{tfp:eq:mean}\\
+ V_n&=\frac{n^3}{9}+\frac{n^2}{2}-\frac{29n}{18}
+       +3h_n-h_{2,n}-2,\label{tfp:eq:variance}\\
+ \kappa_{3,n}&=n^2-6n+14h_n-9h_{2,n}
+          +2\HH{n+1}{3}-7.\label{tfp:eq:kappa3}
+\end{align}
+In particular $V_n\sim n^3/9$. This, together with factorial total mass,
+already explains the proposed factor $3$.
+
+\subsection{An exact cumulant algorithm}
+For $r\ge1$, set
+\begin{equation}\label{tfp:eq:moment}
+ m_r(j)=\frac1{j+1}\sum_{a=1}^j(2a-1)^r,
+ \qquad m_0(j)=1.
+\end{equation}
+The single-summand cumulants are generated by
+\begin{equation}\label{tfp:eq:cumrec}
+ b_r(j)=m_r(j)-\sum_{\ell=1}^{r-1}
+       \binom{r-1}{\ell-1}b_\ell(j)m_{r-\ell}(j),
+ \qquad \kappa_{r,n}=\sum_{j=1}^n b_r(j).
+\end{equation}
+This follows by differentiating $M'(t)=K'(t)M(t)$ for $M=e^K$ at zero.
+For example,
+\begin{align}
+ b_2(j)&=\frac{j^2}{3}+\frac{2j}{3}-2
+                  +\frac3{j+1}-\frac1{(j+1)^2},\\
+ b_3(j)&=2j-7+\frac{14}{j+1}
+                  -\frac9{(j+1)^2}+\frac2{(j+1)^3},\\
+ b_4(j)&=-\frac{2j^4}{15}-\frac{8j^3}{15}-\frac{4j^2}{5}
+       +\frac{172j}{15}-40+\frac{93}{j+1}
+       -\frac{83}{(j+1)^2}+\frac{36}{(j+1)^3}
+       -\frac6{(j+1)^4}.
+\end{align}
+Thus all fixed-order cumulants are explicitly expressible using
+polynomials in $n$ and generalized harmonic numbers.
+
+\begin{lemma}[Cumulant size and odd-order cancellation]\label{tfp:lem:cumulants}
+For each fixed $r\ge2$, $\kappa_{r,n}=O_r(n^{r+1})$.
+For odd $r\ge3$, the stronger estimate
+$\kappa_{r,n}=O_r(n^{r-1})$ holds. The analogous estimates hold for the
+second-neighborhood cumulants defined in Section \ref{tfp:sec:second}.
+\end{lemma}
+\begin{proof}
+The first estimate follows either from \eqref{tfp:eq:cumrec} and
+$|X_j|\le2j$, or by applying Cauchy estimates to the logarithm of
+\eqref{tfp:eq:Fj} on a disk of radius a sufficiently small constant divided
+by $j$.
+For the cancellation, set $t=z/j$ and
+$E(z)=z\coth z$, an even analytic function. Uniformly for small $z$,
+\begin{equation}
+ \frac{F_j(z/j)}{j+1}
+ =\frac{e^z\sinh z/z}{1+1/j}
+  \left(1+\frac{E(z)-z}{j}-\frac{z^2}{6j^2}
+                +O(j^{-4})\right).
+\end{equation}
+The zeroth-order logarithm has only the linear odd term $z$.
+The $j^{-1}$ logarithmic term has only the linear odd term $-z/j$.
+All odd Taylor coefficients of degree at least three therefore first
+occur at order $j^{-2}$. Taking $r$ derivatives with respect to $t$
+shows $b_r(j)=O_r(j^{r-2})$, and summation gives the assertion.
+For the signed factors used below, replace $E(z)-z$ by its negative and
+$1+1/j$ by $1-1/j$; the same cancellation applies. The extra fixed
+factor $(e^t-1)/t$ has bounded cumulants and causes no difficulty.
+\end{proof}
+
+\section{Why two Fourier neighborhoods are necessary}\label{tfp:sec:second}
+\subsection{The neighborhood of \texorpdfstring{$q=-1$}{q = -1}}
+Define an analytic function with value one at the origin by
+\begin{equation}\label{tfp:eq:Bdef}
+ B_n(t)=\frac{e^t-1}{t}
+       \prod_{j=2}^n\frac{\sum_{a=1}^j e^{(2a-1)t}-1}{j-1}.
+\end{equation}
+For $n\ge2$, an exact factorization is
+\begin{equation}\label{tfp:eq:minusfactor}
+ \frac{P_n(-e^t)}{(n+1)!}
+       =\frac{(-1)^n t}{n(n+1)}B_n(t).
+\end{equation}
+The factor $t$ comes from $1+q$. It is essential, not an error term.
+Write
+\begin{equation}\label{tfp:eq:lambda}
+ \log B_n(t)=\nu_n t+\frac{U_nt^2}{2}
+                  +\sum_{r\ge3}\lambda_{r,n}\frac{t^r}{r!}.
+\end{equation}
+The function $B_n$ is an analytic normalization, not a probability moment
+generating function. In particular some individual signed variances are
+negative. Nevertheless its aggregate quadratic coefficient is positive
+for all sufficiently large $n$, and direct calculation gives
+\begin{align}
+ \nu_n&=\frac{n(n+3)}2-\frac32+H_{n-1},\label{tfp:eq:nu}\\
+ U_n&=\frac{n^3}{9}-\frac{n^2}{6}-\frac{41n}{18}
+               +\frac{29}{12}-3H_{n-1}-\HH{n-1}{2},\label{tfp:eq:U}\\
+ \Delta_n:=\nu_n-\mu_n
+       &=2n-\frac12-\frac1n-\frac1{n+1}.\label{tfp:eq:delta}
+\end{align}
+The large displacement $\Delta_n\sim2n$, though small relative to
+$\sqrt{V_n}$, converts the odd Fourier factor into a nonzero local
+contribution near the maximum.
+
+For reproducibility, the signed moments for $j\ge2$ are
+$\widetilde m_0(j)=1$ and
+$\widetilde m_r(j)=\sum_{a=1}^j(2a-1)^r/(j-1)$ for $r\ge1$.
+Use \eqref{tfp:eq:cumrec}, then add the cumulants of
+$(e^t-1)/t$, the moment generating function of the continuous uniform
+law on $[0,1]$. This generates all the $\lambda_{r,n}$.
+
+\subsection{Fourier bounds with no hidden aperiodicity hypothesis}
+Put $\Phi_n(\theta)=P_n(e^{\ii\theta})/(n+1)!$.
+Fourier inversion gives
+\begin{equation}\label{tfp:eq:fourier}
+ \PP(S_n=k)=\frac1{2\pi}\int_{-\pi}^{\pi}
+                    \Phi_n(\theta)e^{-\ii k\theta}\,\dd\theta.
+\end{equation}
+The two ends near $\pm\pi$ are one neighborhood on the circle.
+
+\begin{lemma}[Two-neighborhood localization]\label{tfp:lem:arcs}
+There are constants $a,c,C>0$ such that, for all large $n$,
+\begin{align}
+ |\Phi_n(\theta)|&\le e^{-cn^3\theta^2}
+                      &&(|\theta|\le a/n),\label{tfp:eq:plusbound}\\
+ |B_n(\ii\theta)|&\le C e^{-cn^3\theta^2}
+                      &&(|\theta|\le a/n),\label{tfp:eq:minusbound}\\
+ |\Phi_n(\theta)|&\le C e^{-cn}
+                      &&(\dist(\theta,\pi\Z)\ge a/n).
+                      \label{tfp:eq:minor}
+\end{align}
+The same bounds, with different constants, permit any fixed number of
+Taylor or Fourier-differentiation operations used below.
+\end{lemma}
+\begin{proof}
+A single characteristic factor satisfies
+\begin{equation}\label{tfp:eq:factortrig}
+ \frac{F_j(\ii\theta)}{j+1}
+ =\frac{1+e^{\ii j\theta}\sin(j\theta)/\sin\theta}{j+1}.
+\end{equation}
+For $|\theta|\le a/n$, the identity
+$|\E e^{\ii\theta X_j}|^2=\E\cos(\theta(X_j-X_j'))$, with $X_j'$ an
+independent copy, and the inequality $1-\cos u\ge c_0u^2$ for small $u$
+show that the product is at most
+$\exp(-c_1\theta^2\sum_{j\ge j_0}j^2)$. This proves
+\eqref{tfp:eq:plusbound}.
+
+For the second neighborhood, the signed single-factor variance is
+\begin{equation}
+ \widetilde b_2(j)=\frac{j^2}{3}-\frac{2j}{3}-2
+                     -\frac3{j-1}-\frac1{(j-1)^2}.
+\end{equation}
+It is at least a positive constant times $j^2$ for all sufficiently large
+$j$. Uniform analyticity on $|t|\le a/j$ gives
+\[
+ \Re\log\!\left(
+ \frac{\sum_{a=1}^j e^{(2a-1)\ii\theta}-1}{j-1}\right)
+   =-\frac12\widetilde b_2(j)\theta^2+O(j^4\theta^4).
+\]
+Choose $a$ sufficiently small. The error is then absorbed into the
+negative quadratic term. Finitely many small factors and
+$(e^{\ii\theta}-1)/(\ii\theta)$ contribute only bounded factors,
+proving \eqref{tfp:eq:minusbound}.
+
+For completeness, set $\rho=\dist(\theta,\pi\Z)$. If
+$\rho\ge K/n$ for a sufficiently large fixed $K$, then, for $j\ge n/2$,
+\[
+ \left|\frac{F_j(\ii\theta)}{j+1}\right|
+ \le \frac{1+1/|\sin\theta|}{j+1}
+ \le \frac2n+\frac{\pi}{K}<q<1.
+\]
+If instead $a/n\le\rho\le K/n$, put $u=n\rho$ and $v=j/n$.
+On the compact rectangle $u\in[a,K]$, $v\in[1/2,1]$,
+$|\sin(uv)/(uv)|$ has supremum strictly less than one. Formula
+\eqref{tfp:eq:factortrig}, with its $O(1/j)$ extra term, gives the same
+strict bound for all sufficiently large $n$. At least a positive
+proportion of the factors thus have modulus at most $q<1$. The remaining
+factors are characteristic functions and have modulus at most one.
+This proves \eqref{tfp:eq:minor}. Fixed derivatives merely add polynomial
+factors, which the exponential bounds absorb away from the centers;
+inside the centers they are handled by the displayed analytic estimates.
+\end{proof}
+
+\begin{remark}[Exact parity balance does not remove the second peak]
+Since $P_n(-1)=0$, the sums of the even- and odd-degree coefficients
+are exactly equal. But \eqref{tfp:eq:minusfactor} has a simple zero, not an
+identically vanishing neighborhood. A local coefficient expansion sees
+its derivatives. Removing the first Bernoulli factor destroys the exact
+parity balance and leaves a Fourier value of magnitude $2/[n(n+1)]$.
+This is a concrete instance of the stability issue discussed in
+\cite{dolgopyat}.
+\end{remark}
+
+\section{An arbitrary-order two-neighborhood expansion}\label{tfp:sec:allorders}
+\subsection{Finite coefficient operators}
+Let
+\begin{equation}
+ G_V(x)=\frac1{\sqrt{2\pi V}}e^{-x^2/(2V)},
+ \qquad
+ \He_r(x)=(-1)^r e^{x^2/2}\frac{\dd^r}{\dd x^r}e^{-x^2/2}.
+\end{equation}
+For a nonnegative integer $R$, use multi-indices
+$\mathbf m=(m_3,\ldots,m_{R+2})$ with
+\begin{equation}
+ w(\mathbf m)=\sum_{r=3}^{R+2}(r-2)m_r\le R,
+ \qquad D(\mathbf m)=\sum_{r=3}^{R+2}r m_r.
+\end{equation}
+An empty index set when $R=0$ means the single zero multi-index.
+For a cumulant list $\boldsymbol\eta$, define
+\begin{align}
+ T_R(x;\boldsymbol\eta,V)
+ &=\sum_{w(\mathbf m)\le R}
+   \left[\prod_{r=3}^{R+2}
+       \frac{\eta_r^{m_r}}{m_r!(r!)^{m_r}}\right]
+       \frac{\He_{D(\mathbf m)}(x/\sqrt V)}{V^{D(\mathbf m)/2}},
+       \label{tfp:eq:TR}\\
+ S_R(x;\boldsymbol\eta,V)
+ &=\sum_{w(\mathbf m)\le R}
+   \left[\prod_{r=3}^{R+2}
+       \frac{\eta_r^{m_r}}{m_r!(r!)^{m_r}}\right]
+       \frac{\He_{D(\mathbf m)+1}(x/\sqrt V)}{V^{(D(\mathbf m)+1)/2}}.
+       \label{tfp:eq:SR}
+\end{align}
+These are finite, directly computable expressions.
+
+\begin{theorem}[All algebraic orders]\label{tfp:thm:allorders}
+For every fixed nonnegative integer $R$, uniformly for all integer $k$,
+\begin{equation}\label{tfp:eq:allorders}
+\begin{split}
+ \PP(S_n=k)={}&G_{V_n}(k-\mu_n)
+          T_R(k-\mu_n;\boldsymbol\kappa_n,V_n)\\
+ &+\frac{(-1)^{n+k}}{n(n+1)}G_{U_n}(k-\nu_n)
+          S_R(k-\nu_n;\boldsymbol\lambda_n,U_n)\\
+ &+O_R\!\left(V_n^{-1/2}n^{-(R+1)/2}\right).
+\end{split}
+\end{equation}
+The assertion is an absolute-error estimate, not a relative estimate
+at arbitrary tail indices. Once the two-candidate mode localization is
+established, it gives the maximum to arbitrary relative algebraic order
+by increasing $R$ and taking the maximum of the two candidate values.
+\end{theorem}
+\begin{proof}
+Split \eqref{tfp:eq:fourier} into the neighborhoods from
+Lemma \ref{tfp:lem:arcs}. The complement is exponentially small. At zero,
+center the characteristic function and put $u=\theta\sqrt{V_n}$.
+Its logarithm is
+\begin{equation}\label{tfp:eq:localexp}
+ -\frac{u^2}{2}
+       +\sum_{r=3}^{R+2}\frac{\kappa_{r,n}}{r!V_n^{r/2}}(\ii u)^r
+       +\text{remainder}.
+\end{equation}
+The coefficient for index $r$ is $O_r(n^{-(r-2)/2})$. Expanding the
+exponential by this weight gives exactly the multi-indices in
+\eqref{tfp:eq:TR}.
+
+Here are the remainder details. Fix $R$, and first restrict
+$|u|\le\sqrt{K\log n}$, where $K$ is a sufficiently large fixed number.
+Uniform analytic cumulant bounds on $|t|\le a/n$ bound the logarithmic
+Taylor remainder by
+$C_R n^{-(R+1)/2}(1+|u|^{R+3})$ on that interval for all large $n$.
+The omitted terms of the weighted exponential expansion have the same
+order times a fixed polynomial in $|u|$, after multiplication by
+$e^{-c u^2}$. Integration removes that polynomial without introducing
+a power of $\log n$. Outside the cutoff, the Gaussian bounds make the
+integral smaller than the required power by taking $K$ larger. This
+proves an integrated error $O_R(n^{-(R+1)/2})$, before the Jacobian
+$V_n^{-1/2}$.
+
+Each retained integral is evaluated using
+\begin{equation}\label{tfp:eq:hermiteintegral}
+ \frac1{2\pi}\int_{\R}(\ii\theta)^r
+       e^{-V\theta^2/2-\ii x\theta}\,\dd\theta
+       =G_V(x)\frac{\He_r(x/\sqrt V)}{V^{r/2}}.
+\end{equation}
+Extending the integrals to the real line changes them only by the
+already controlled Gaussian tails. All error estimates are uniform in
+$x$ because $|e^{-\ii x\theta}|=1$.
+
+At the other neighborhood, use \eqref{tfp:eq:minusfactor}. Fourier inversion
+contributes $(-1)^k$, and the exact factor supplies $(-1)^n/[n(n+1)]$
+and one additional $\ii\theta$. The same argument with $U_n$ and
+$\lambda_{r,n}$ therefore gives \eqref{tfp:eq:SR}. Its own remainder is
+$O_R(n^{-2}U_n^{-1}n^{-(R+1)/2})$, smaller than the displayed total
+remainder. This proves \eqref{tfp:eq:allorders}.
+\end{proof}
+
+\subsection{What ``all orders'' means here}
+The theorem is not a claim of convergence of an infinite asymptotic
+series. For every desired algebraic error, it supplies a finite formula
+and a proved remainder. Using \eqref{tfp:eq:cumrec}, polynomial division,
+Faulhaber's formulas, and Euler--Maclaurin expansion of harmonic numbers
+turns the finite formula into powers of $n^{-1}$ with logarithmic
+coefficients and bounded lattice variables. Constants can involve
+$\gamma$ and values $\zeta(r)$.
+
+For bounded $k-\mu_n$, half-integer powers in the standardized Hermite
+notation combine into integer powers: odd Hermite polynomials supply
+an additional odd factor of their small argument. The second
+neighborhood has the same property, with $k-\nu_n=-2n+O(1)$.
+Taking a maximum preserves an error bound but need not preserve a
+single smooth coefficient function across a mode transition.
+We establish neither exponentially improved sectors nor Borel
+summability. Those stronger meanings of ``full transseries'' are left
+open.
+
+\section{Derivation of the explicit coefficients}\label{tfp:sec:coeff}
+\subsection{The contribution from zero}
+Use Lemma \ref{tfp:lem:cumulants} in \eqref{tfp:eq:allorders}. Up to relative
+order $n^{-4}$ at bounded $d=k-\mu_n$, the only odd-cumulant term needed
+is $-\kappa_{3,n}d/(2V_n^2)$. Even terms are generated by the partitions
+of weights at most four using $\kappa_4,\kappa_6,\kappa_8,\kappa_{10}$,
+where $\kappa_{2r}$ has weight $r-1$. As examples, the central factors
+through weight three are
+\begin{equation}\label{tfp:eq:centralfactors}
+\begin{split}
+ 1+\frac{\kappa_4}{8V^2}
+ -\frac{\kappa_6}{48V^3}
+ +\frac{35\kappa_4^2}{384V^4}
+ +\frac{\kappa_8}{384V^4}
+ -\frac{7\kappa_4\kappa_6}{128V^5}
+ +\frac{385\kappa_4^3}{3072V^6}.
+\end{split}
+\end{equation}
+Here and in the following calculation the subscript $n$ is suppressed.
+For nonzero $d$, use the full Hermite polynomial, not merely its
+constant term.
+
+The relevant polynomial portions of the cumulants begin as follows:
+\begin{align}
+ \kappa_4={}&-\frac{2n^5}{75}-\frac{n^4}{5}
+        -\frac{26n^3}{45}+\frac{26n^2}{5}+O(n),\label{tfp:eq:k4poly}\\
+ \kappa_6={}&\frac{16n^7}{441}+\frac{8n^6}{21}
+        +\frac{104n^5}{63}+O(n^4),\label{tfp:eq:k6poly}\\
+ \kappa_8={}&-\frac{16n^9}{135}-\frac{8n^8}{5}+O(n^7),\\
+ \kappa_{10}={}&\frac{256n^{11}}{363}+O(n^{10}).
+\end{align}
+These formulas follow from \eqref{tfp:eq:cumrec}; the accompanying symbolic
+script performs the exact rational operations.
+
+The factorial and variance factors are
+\begin{align}
+ \frac{(n+1)!}{\sqrt{2\pi}\,n^{n+3/2}e^{-n}}
+  &=(1+n^{-1})\exp\!\left(\frac1{12n}-\frac1{360n^3}
+                           +O(n^{-5})\right),\label{tfp:eq:stirling}\\
+ \frac{n^{3/2}}{3\sqrt V}
+  &=\left(1+\frac9{2n}-\frac{29}{2n^2}
+                +\frac{27h_n-9h_{2,n}-18}{n^3}\right)^{-1/2}.
+                \label{tfp:eq:varfactor}
+\end{align}
+Multiplying the Hermite contributions, $e^{-d^2/(2V)}$, and these two
+factors gives $1+a_1/n+a_2/n^2+C_3/n^3+C_4/n^4$.
+For a quick check on the first coefficient,
+\begin{equation}
+ a_1=\underbrace{\frac{13}{12}}_{\text{factorial}}
+          -\underbrace{\frac94}_{\text{variance}}
+          -\underbrace{\frac{27}{100}}_{\text{fourth cumulant}}
+        =-\frac{431}{300}.
+\end{equation}
+The first lattice loss is $-d^2/(2V)\sim-9d^2/(2n^3)$,
+and the first skew displacement term is
+$-\kappa_3d/(2V^2)\sim-81d/(2n^4)$. These are useful independent checks
+on \eqref{tfp:eq:C3} and \eqref{tfp:eq:C4}.
+
+\subsection{The contribution from \texorpdfstring{$\pi$}{pi}}
+For bounded $d$ and $x=k-\nu_n=d-\Delta_n$, the leading term from the
+second neighborhood is
+\begin{equation}\label{tfp:eq:piapprox}
+ \frac{(-1)^{n+k}}{n(n+1)}G_{U_n}(x)\frac{x}{U_n}.
+\end{equation}
+Now $x=-2n+O(1)$, $U_n\sim n^3/9$, and
+$G_{U_n}(x)/G_{V_n}(0)=1+O(n^{-1})$. Therefore
+\begin{equation}\label{tfp:eq:pileading}
+ \frac{\text{second-neighborhood contribution}}{G_{V_n}(0)}
+   =-\frac{18(-1)^{n+k}}{n^4}+O(n^{-5}).
+\end{equation}
+The quartic correction changes this only at the next order, and the
+odd-cumulant bounds in Lemma \ref{tfp:lem:cumulants} control the remaining
+terms. The normalization from \eqref{tfp:eq:stirling} and
+\eqref{tfp:eq:varfactor} is $1+O(n^{-1})$, so the same coefficient $-18$
+appears in \eqref{tfp:eq:fourorders}. Taylor expansion of the remaining
+explicit factors, keeping $h_n$ and $h_{2,n}$ exact, gives a uniform
+remainder $O_D((1+\log^2 n)n^{-5})$. This proves the local expansion
+part of Theorem \ref{tfp:thm:main}.
+
+\section{The maximizing exponent and infinitely many rounding failures}
+\label{tfp:sec:modes}
+\subsection{Global localization of the mode}
+A local expansion at a proposed maximum does not by itself prove that
+this is the global maximum. We supply that step separately.
+
+\begin{lemma}[Principal smooth peak and secondary bound]\label{tfp:lem:smooth}
+Let $A_n(d)$ be the real-valued contribution of $|\theta|\le a/n$ to
+\eqref{tfp:eq:fourier}, centered so that $d=k-\mu_n$. It is defined for real
+$d$. For a sufficiently small fixed $\varepsilon>0$, it has a unique
+critical point $d_n^*$ in $|d|\le\varepsilon\sqrt{V_n}$, and
+\begin{equation}\label{tfp:eq:smoothmode}
+ d_n^*=-\frac{\kappa_{3,n}}{2V_n}+O(n^{-2})
+       =-\frac9{2n}+O(n^{-2}).
+\end{equation}
+On that interval $A_n$ is strictly concave, with curvature comparable
+to $-G_{V_n}(0)/V_n$. If $B_n^{\rm arc}(d)$ denotes the other
+neighborhood's contribution, including its parity factor at integer
+indices, then
+\begin{equation}\label{tfp:eq:secondarybound}
+ |B_n^{\rm arc}(d)|\le
+ C G_{V_n}(0)\frac{|d|+n}{n^5}
+ \qquad (|d|\le\varepsilon\sqrt{V_n}).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Differentiate the principal Fourier integral. The proof of
+Theorem \ref{tfp:thm:allorders} applies with additional powers of
+$\theta$. Uniformly on the stated interval, its second derivative is
+\[
+ A_n''(d)=-\frac{G_{V_n}(0)}{V_n}
+               (1+O(\varepsilon^2+n^{-1})).
+\]
+At zero, even cumulants contribute nothing to the first derivative.
+The cubic term and Lemma \ref{tfp:lem:cumulants} give
+\[
+ A_n'(0)=G_{V_n}(0)
+       \left(-\frac{\kappa_{3,n}}{2V_n^2}+O(n^{-5})\right).
+\]
+Strict concavity and the intermediate value theorem produce the unique
+critical point and \eqref{tfp:eq:smoothmode}.
+
+For the other arc, the extra $\ii\theta$ differentiates its smooth
+Gaussian profile. Its even-cumulant terms are odd in $x=d-\Delta_n$
+and bounded, on a fixed standardized interval, by
+$C G_{V_n}(0)|x|/U_n$. The odd-cumulant terms contribute at most
+$C G_{V_n}(0)n^{-4}$ by Lemma \ref{tfp:lem:cumulants}. Multiplication by
+$1/[n(n+1)]$, use of $|x|\le|d|+Cn$, and sufficiently many terms of
+\eqref{tfp:eq:allorders} give \eqref{tfp:eq:secondarybound}.
+\end{proof}
+
+\begin{proposition}[Two integer candidates]\label{tfp:prop:twocandidates}
+For all sufficiently large $n$, every global maximizing exponent lies
+in $\{\lfloor\mu_n\rfloor,\lceil\mu_n\rceil\}$.
+\end{proposition}
+\begin{proof}
+The uniform absolute-error expansion in Theorem \ref{tfp:thm:allorders}
+first implies a uniform local central limit estimate with error
+$o(G_{V_n}(0))$. Comparing with an integer at distance at most $1/2$
+from $\mu_n$ confines every maximizer to
+$|d|\le\varepsilon\sqrt{V_n}$, for any fixed small $\varepsilon$ and
+all large $n$.
+
+Within this interval, compare to the integer nearest $\mu_n$.
+Any integer outside the two stated candidates has $|d|\ge1$, while
+the comparison integer has distance at most $1/2$. Lemma
+\ref{tfp:lem:smooth}, with $\varepsilon$ chosen small enough that the
+upper and lower curvature bounds have ratio arbitrarily close to one,
+shows a principal-arc loss at least
+\[
+ cG_{V_n}(0)\frac{1+d^2}{n^3}
+ \quad\text{for such a noncandidate.}
+\]
+The displacement $d_n^*=O(n^{-1})$ does not alter this fixed quadratic
+gap. The total secondary-arc advantage is at most
+$CG_{V_n}(0)(|d|+n)n^{-5}$, which is uniformly smaller. The minor-arc
+error is exponentially small. Thus a noncandidate cannot maximize.
+\end{proof}
+
+Proposition \ref{tfp:prop:twocandidates} completes the proof of
+Theorem \ref{tfp:thm:main}: both candidate offsets are bounded, and taking
+a maximum is Lipschitz in the sup norm of the two errors.
+
+\subsection{The parity-dependent transition}
+Put
+\begin{equation}
+ m=\lfloor\mu_n\rfloor,\qquad
+ r_n=\mu_n-m-\frac12,\qquad s_n=(-1)^{n+m}.
+\end{equation}
+Subtract \eqref{tfp:eq:fourorders} at $m$ and $m+1$. The harmonic and
+constant terms cancel. Since $2(m-\mu_n)+1=-2r_n$,
+\begin{equation}\label{tfp:eq:diffexact}
+ \frac{c_{n,m+1}-c_{n,m}}{\calE_n}
+  =\frac{9r_n}{n^3}
+   +\frac{-\frac{1263}{20}r_n-\frac{81}{2}+36s_n}{n^4}
+   +O\!\left(\frac{1+\log^2 n}{n^5}\right).
+\end{equation}
+In the transition window $r_n=O(n^{-1})$, this becomes
+\begin{equation}\label{tfp:eq:threshold}
+ \frac{c_{n,m+1}-c_{n,m}}{\calE_n}
+ =\frac9{n^3}\left(r_n-\frac{\frac92-4s_n}{n}
+                +O\!\left(\frac{1+\log^2n}{n^2}\right)\right).
+\end{equation}
+Thus the transition is at $r_n\approx1/(2n)$ when $s_n=1$, but at
+$r_n\approx17/(2n)$ when $s_n=-1$. Rounding the principal smooth mode
+alone would instead put it at $9/(2n)$ for both parities. Formula
+\eqref{tfp:eq:threshold} decides the sign whenever the separation from
+the proposed boundary dominates its displayed error. It is not an
+exact finite-$n$ rounding rule inside the unresolved boundary layer.
+
+\begin{theorem}[The smaller Fourier contribution changes the mode
+infinitely often]\label{tfp:thm:failures}
+Let $\widehat k_n$ be a nearest integer to
+$\mu_n-9/(2n)$, with any fixed tie convention. Then $\widehat k_n$ fails
+to maximize $c_{n,k}$ for infinitely many $n$. The same assertion holds
+for rounding the exact principal smooth peak
+$\mu_n+d_n^*$.
+If $E(N)$ counts failures of the explicit rule $\widehat k_n$ up to $N$,
+then, for all sufficiently large $N$,
+\begin{equation}\label{tfp:eq:failurecount}
+ \log N-O(1)\le E(N)\le12\log N+O(1).
+\end{equation}
+In particular the failures have order $\log N$ and natural density zero.
+\end{theorem}
+\begin{proof}
+Let $b_n=H_{n+1}-1$ and, for each sufficiently large integer $j$, let
+$n_j$ be the first index with $b_{n_j}>j+1/2$.
+The overshoot is between zero and $1/(n_j+1)$ because
+$b_n-b_{n-1}=1/(n+1)$. For $n=n_j+\ell$, $\ell=1,2,3$, therefore
+\begin{equation}\label{tfp:eq:overshoot}
+ \frac{1-o(1)}n\le r_n\le\frac{4+o(1)}n,
+ \qquad \lfloor b_n\rfloor=j.
+\end{equation}
+Also
+\[
+ s_n=(-1)^{n+\lfloor\mu_n\rfloor}
+     =(-1)^{n(n+1)/2+j}.
+\]
+The parity of $n(n+1)/2$ has period four, with two occurrences of each
+parity in each period. In any three consecutive indices there is an
+$s_n=1$. At such an index in \eqref{tfp:eq:overshoot}, the true transition
+boundary $1/(2n)$ lies below $r_n$ by a fixed multiple of $1/n$,
+whereas the principal boundary $9/(2n)$ lies above it by a fixed
+multiple of $1/n$. The true maximizing index is $m+1$ and the
+principal rounding rule chooses $m$. All margins exceed the error in
+\eqref{tfp:eq:threshold}; the $O(n^{-2})$ correction in
+\eqref{tfp:eq:smoothmode} also cannot change this conclusion.
+
+There are $\log N+O(1)$ crossings up to $N$, since
+$b_N=\log N+\gamma-1+o(1)$, and the three-index windows are eventually
+disjoint. This proves the lower bound, allowing an $O(1)$ loss for
+the last window.
+
+For the upper bound, \eqref{tfp:eq:diffexact} and
+\eqref{tfp:eq:threshold} imply that a failure is possible only when
+$0<r_n<10/n$, for all sufficiently large $n$; outside this interval
+both rules choose the same candidate. Such an index lies just after a
+half-integer crossing. If it is $n=n_j+\ell$, then
+$r_n\ge\ell/(n+1)$, so $r_n<10/n$ permits at most twelve indices per
+crossing. Finitely many earlier indices are absorbed into $O(1)$.
+\end{proof}
+
+\begin{remark}
+Rounding the mean itself also fails infinitely often. In the first
+three indices at or immediately after a half-integer crossing, select
+$s_n=-1$. The overshoot is at most $(3+o(1))/n$, below the true
+$17/(2n)$ boundary, even though the nearest integer to the mean is
+already the upper one. No equidistribution assumption about harmonic
+numbers or exponential fractional parts is used in either argument.
+\end{remark}
+
+\section{The log-periodic term and a limitation of power--log expansions}
+\label{tfp:sec:logperiodic}
+Set $\delta(x)=\dist(x,\Z)$ and
+\begin{equation}
+ K_0=-\frac{27}{2}\gamma+\frac92\zeta(2)
+             -\frac{107751433393}{1587600000}.
+\end{equation}
+The nearest-integer loss at third order is independent of which of
+two almost tied candidates eventually wins. Indeed, a departure from
+the nearest-mean candidate occurs only within $O(1/n)$ of a tie and
+changes the squared distance by $O(1/n)$.
+Using $h_n=\log n+\gamma+O(1/n)$ and
+$h_{2,n}=\zeta(2)+O(1/n)$ in Theorem \ref{tfp:thm:main} gives
+\begin{corollary}[Explicit log-periodic correction]\label{tfp:cor:periodic}
+\begin{equation}\label{tfp:eq:periodic}
+\begin{split}
+ \frac{M_n}{\calE_n}
+ =1+\frac{a_1}{n}+\frac{a_2}{n^2}
+ +\frac{-\frac{27}{2}\log n+K_0
+          -\frac92\delta(\log n+\gamma-1)^2}{n^3}
+ +O\!\left(\frac{\log n}{n^4}\right).
+\end{split}
+\end{equation}
+There is no polynomial $Q$ for which the same expression can be
+replaced by
+$1+a_1/n+a_2/n^2+Q(\log n)/n^3+o(n^{-3})$.
+\end{corollary}
+\begin{proof}
+The distance-to-integers function, and its square on the bounded range
+$[0,1/2]$, are Lipschitz. Replacing the exact harmonic argument by
+$\log n+\gamma-1$ therefore changes the third-order term by $O(n^{-4})$.
+This proves \eqref{tfp:eq:periodic}.
+
+For the second assertion, a possible polynomial would have to equal
+$-(27/2)x$ plus a constant and an $o(1)$ error after the bounded
+remainder is isolated. But for $a=0$ and $a=1/2$, integers $n_j$ nearest
+$\exp(j+1-\gamma+a)$ satisfy
+$\log n_j+\gamma-1-j\to a$. The squared distance has the two distinct
+limits $0$ and $1/4$. A single constant cannot absorb both.
+\end{proof}
+
+The periodic term has the absolutely convergent Fourier representation
+\begin{equation}\label{tfp:eq:periodicfourier}
+ \delta(x)^2=\frac1{12}
+       +\frac1{\pi^2}\sum_{\ell=1}^{\infty}
+                  \frac{(-1)^\ell}{\ell^2}\cos(2\pi\ell x).
+\end{equation}
+It follows by integrating twice to compute the Fourier coefficients of
+$x^2$ on $[-1/2,1/2]$. Thus the third-order correction can alternatively
+be represented using complex powers $n^{2\pi\ii\ell}$. It is periodic
+in $\log n$ with period one, or multiplicatively periodic at leading
+order under $n\mapsto\ee n$. This oscillation is generated by taking a
+lattice maximum, not by a singularity of the original probability
+model. The additional parity term at fourth order has a different
+origin, namely the second Fourier neighborhood.
+
+\section{A fixed-smoothing hierarchy}\label{tfp:sec:smoothing}
+The role of the simple zero at $-1$ can be varied without changing the
+growing part of the model. For a fixed integer $r\ge0$, define
+\begin{equation}\label{tfp:eq:Pr}
+ P_{n,r}(q)=(1+q)^r\prod_{j=2}^n
+              \left(1+\sum_{a=1}^j q^{2a-1}\right).
+\end{equation}
+Its total mass is $2^{r-1}(n+1)!$. Let $\mu_{n,r}$ and $V_{n,r}$ be the
+mean and variance after normalization. Then
+\begin{equation}
+ \mu_{n,r}=\mu_n+\frac{r-1}{2},\qquad
+ V_{n,r}=V_n+\frac{r-1}{4}.
+\end{equation}
+The original sequence is $r=1$.
+
+\begin{theorem}[Zero multiplicity and the second-neighborhood order]
+\label{tfp:thm:smoothing}
+For fixed $r\ge0$ and bounded $k-\mu_{n,r}$, the contribution of the
+$\pi$ neighborhood to the normalized coefficient probability, divided
+by $G_{V_{n,r}}(0)$, is
+\begin{equation}\label{tfp:eq:smoothinglaw}
+ (-1)^{n-1+r+k}
+ \begin{cases}
+  \displaystyle 2^{1-r}3^r(-1)^{r/2}(r-1)!!\,
+                  n^{-2-3r/2}(1+O(n^{-1})),&r\text{ even},\\[5pt]
+  \displaystyle 2^{2-r}3^{r+1}(-1)^{(r+1)/2}r!!\,
+                  n^{-(3r+5)/2}(1+O(n^{-1})),&r\text{ odd}.
+ \end{cases}
+\end{equation}
+The convention is $(-1)!!=1$. In particular the first orders are
+$n^{-2}$ for $r=0$, $n^{-4}$ for $r=1$, and $n^{-5}$ for $r=2$.
+\end{theorem}
+\begin{proof}
+The exact analogue of \eqref{tfp:eq:minusfactor} is
+\begin{equation}
+ \frac{P_{n,r}(-e^t)}{2^{r-1}(n+1)!}
+ =\frac{(-1)^{n-1+r}2^{1-r}t^r}{n(n+1)}B_{n,r}(t),
+\end{equation}
+where
+\[
+ B_{n,r}(t)=\left(\frac{e^t-1}{t}\right)^r
+          \prod_{j=2}^n\frac{\sum_{a=1}^j e^{(2a-1)t}-1}{j-1}.
+\]
+Its center is $\nu_n+(r-1)/2$, its quadratic coefficient is
+$U_n+(r-1)/12$, and the displacement from the principal center is still
+$\Delta_n$. The $t^r$ factor gives the $r$th Hermite derivative of the
+Gaussian. At $x=-2n+O(1)$ the standardized argument tends to zero at
+rate $n^{-1/2}$.
+
+For even $r$, use
+$\He_r(0)=(-1)^{r/2}(r-1)!!$ and
+$U^{-r/2}\sim3^rn^{-3r/2}$. For odd $r$, use
+$\He_r(z)=(-1)^{(r-1)/2}r!!\,z+O(z^3)$, with
+$z=x/\sqrt U\sim-6n^{-1/2}$. Combine with
+$2^{1-r}/[n(n+1)]$. The Gaussian ratio is $1+O(n^{-1})$.
+Even-cumulant corrections have relative order $n^{-1}$ or smaller;
+the odd-cumulant cancellation from Lemma \ref{tfp:lem:cumulants} makes
+those corrections smaller still. This proves \eqref{tfp:eq:smoothinglaw}.
+\end{proof}
+
+For $r=0$ the secondary contribution is larger than the ordinary
+$n^{-3}$ rounding loss. Accordingly the two-candidate mode theorem for
+$r=1$ must not be transferred to $r=0$ without a new argument. For
+$r\ge2$ the parity effect occurs later. The theorem isolates a general
+principle: a finite smoothing factor can move a Fourier contribution
+across several orders, and odd zero multiplicity has an additional
+cancellation near the moving center.
+
+\section{Inverse growth and the integer threshold}\label{tfp:sec:inverse}
+\subsection{A logarithmic core}
+From \eqref{tfp:eq:leading}, taking logarithms gives
+\begin{equation}\label{tfp:eq:logM}
+ \log(M_n/3)
+ =n(\log n-1)+\frac{A}{n}+\frac{B}{n^2}
+                    +O\!\left(\frac{\log n}{n^3}\right),
+ \quad A=-\frac{431}{300},\quad B=\frac{5907087}{490000}.
+\end{equation}
+The second constant is $B=a_2-a_1^2/2$; confusing a multiplicative
+coefficient with a logarithmic coefficient would give the wrong inverse.
+
+For large $y$, let
+\begin{equation}\label{tfp:eq:lambert}
+ L=\log(y/3),\qquad x=\frac{L}{W_0(L/\ee)}.
+\end{equation}
+The principal real Lambert function is characterized by
+$W_0(z)e^{W_0(z)}=z$. It follows directly that
+$x(\log x-1)=L$. This is the same core-and-correction organization used
+in the repository's inversion materials \cite{transseries}.
+[Added October 1, 2026, batch 73O2: in the canonical volume
+\emph{Transseries and Inversion}~\cite{tai} the exact solution of this core
+is its theorem ``Exact solution of the dominant block''
+(\texttt{p0:thm:lambert-core}), and the two corrections of
+Theorem~\ref{tfp:thm:inverse} are an instance of its theorem ``Perturbed
+inversion'' (\texttt{p0:thm:perturbed-inversion}). The manuscript re-derives
+them for its own forward map, which is a pure power carrier $(n/\ee)^n$
+rather than a gamma function. No novelty is claimed for the inversion
+method; what is specific to this report is the forward input $A$, $B$ and the
+lattice-dependent third coefficient \eqref{tfp:eq:logthird}.]
+
+\begin{theorem}[Inverse expansion on the sequence values]\label{tfp:thm:inverse}
+When $y=M_n$ and $x$ is given by \eqref{tfp:eq:lambert},
+\begin{equation}\label{tfp:eq:inverse}
+ n=x+\frac{431}{300x\log x}
+       -\frac{5907087}{490000x^2\log x}+O(x^{-3}).
+\end{equation}
+The error concerns the recovered real index at the exact sequence
+values. It is not an $o(1)$ approximation to a staircase at arbitrary
+arguments without rounding.
+\end{theorem}
+\begin{proof}
+Let $F(t)=t(\log t-1)$, so $F'(t)=\log t$. Equation \eqref{tfp:eq:logM}
+first gives $n-x=O(1/(x\log x))$ by the mean value theorem.
+Write $n=x+\varepsilon$ and expand:
+\[
+ 0=(\log x)\varepsilon+\frac A x+\frac B{x^2}
+        +O\!\left(\frac{\log x}{x^3}\right).
+\]
+Here the quadratic Taylor term and the changes in $A/n$ and $B/n^2$
+are smaller than the stated remainder. Division by $\log x$ gives
+\eqref{tfp:eq:inverse}.
+\end{proof}
+
+The next logarithmic coefficient, retaining a chosen candidate offset
+$d$ and exact harmonic quantities, is
+\begin{equation}\label{tfp:eq:logthird}
+ -\frac92d^2-\frac{27}2h_n+\frac92h_{2,n}
+                        -\frac{197099473}{3937500}.
+\end{equation}
+Thus further inversion is possible, but the lattice dependence must be
+retained or treated by candidate envelopes. It cannot be replaced by
+an invented smooth third coefficient.
+
+\subsection{Thresholds and a rigorous rounding qualification}
+The coefficients are nonnegative, and the next factor has constant
+coefficient one, so $M_{n+1}\ge M_n$. Formula \eqref{tfp:eq:leading} also
+gives $M_{n+1}/M_n\sim n$, hence strict increase eventually. Define
+\begin{equation}
+ N(y)=\min\{n\ge1:M_n\ge y\}.
+\end{equation}
+Let $t(y)$ be the large real solution of
+\begin{equation}\label{tfp:eq:smoothinverse}
+ F(t)+A/t+B/t^2=\log(y/3).
+\end{equation}
+The left side is strictly increasing for large $t$.
+There is a constant $C>0$ such that, for all sufficiently large $y$,
+\begin{equation}\label{tfp:eq:thresholdbracket}
+ \left\lceil t(y)-Ct(y)^{-3}\right\rceil
+       \le N(y)\le
+ \left\lceil t(y)+Ct(y)^{-3}\right\rceil.
+\end{equation}
+To prove this, transport the $O(\log n/n^3)$ error in \eqref{tfp:eq:logM}
+through a derivative bounded below by a positive multiple of $\log n$.
+An index smaller than $t-Ct^{-3}$ cannot reach $y$, while an integer
+at least $t+Ct^{-3}$ must reach it. Consequently $N(y)=\lceil t(y)\rceil$
+away from the indicated small neighborhoods of integers. No exact
+ceiling rule is asserted in the boundary layer.
+[Added October 1, 2026, batch 73O2: this bracket is an instance of the
+volume's staircase theorem (\texttt{p0:thm:staircase}~\cite{tai}), whose
+part~(1) gives $N(y)=\lceil\nu(y)\rceil$ for every admissible increasing
+interpolation $\nu$ and whose part~(2), the separation condition, decides the
+ceiling from an approximation $x$ with $|x-\nu(y)|\le\eta$ exactly when
+$\lceil x-\eta\rceil=\lceil x+\eta\rceil$. The separation step and its
+failure for arbitrarily small $\eta$ are formalized in Lean as
+\texttt{Fabius.staircase\_separation} and
+\texttt{Fabius.staircase\_separation\_fails} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean}.
+Those declarations are general; they do not verify any statement of this
+report.]
+
+For a smooth approximation $\widetilde M_J(t)$ with relative error
+$O(t^{-J})$, the same argument gives an index error
+$O(t^{-J}/\log t)$ on matched values, provided its logarithmic derivative
+is comparable to $\log t$. For the all-order result here, this principle
+is applied to the two lattice-resolved candidate expressions rather
+than to a nonexistent globally smooth power--log series for the maximum.
+
+\section{Exact computation and reproducibility}\label{tfp:sec:computation}
+\subsection{A quadratic-work convolution step}
+Let $a_k=c_{n-1,k}$, extended by zero. Multiplication by the $n$th factor
+requires
+\begin{equation}
+ c_{n,k}=a_k+s_k,\qquad
+ s_k=\sum_{j=1}^n a_{k-(2j-1)}.
+\end{equation}
+The sliding recurrence
+\begin{equation}\label{tfp:eq:sliding}
+ s_k=s_{k-2}+a_{k-1}-a_{k-2n-1}
+\end{equation}
+uses separate running sums for the two parities. It computes a whole
+row in $O(n^2)$ integer additions and subtractions, hence rows through
+$N$ in $O(N^3)$ such operations, with $O(N^2)$ live integer entries.
+This is an arithmetic-operation count, not a bit-complexity bound:
+the integers grow with $N$.
+
+The supplied program computes every row through $n=400$ using arbitrary-
+precision integers, checks total mass against the exact integer
+$(n+1)!$, and matches the first twenty maximum values printed in
+A039831 \cite{oeis831}. The record's b-file was not needed for these
+calculations. An independent naive convolution on small rows and exact
+moment identities are included as unit tests. Symbolic checks derive
+the four coefficients independently from the cumulant recurrence and
+Hermite integration. These finite checks support implementation
+correctness; they do not replace the analytic proofs.
+
+\subsection{Accuracy of the expansion}
+The table reports $(\text{approximation}-M_n)/M_n$. ``Order $j$'' means
+\eqref{tfp:eq:fourorders} through $n^{-j}$ at the exactly computed maximizing
+exponent, including the second neighborhood for order four.
+\begin{center}
+\small
+\begin{tabular}{r r r r r}
+\toprule
+$n$ & Leading only & Order two & Order three & Order four\\
+\midrule
+50  & $2.497\!\times10^{-2}$ & $8.835\!\times10^{-4}$ & $-1.218\!\times10^{-4}$ & $2.010\!\times10^{-5}$\\
+100 & $1.336\!\times10^{-2}$ & $1.240\!\times10^{-4}$ & $-8.562\!\times10^{-6}$ & $7.063\!\times10^{-7}$\\
+200 & $6.921\!\times10^{-3}$ & $1.701\!\times10^{-5}$ & $-6.047\!\times10^{-7}$ & $2.581\!\times10^{-8}$\\
+400 & $3.525\!\times10^{-3}$ & $2.313\!\times10^{-6}$ & $-3.933\!\times10^{-8}$ & $8.016\!\times10^{-10}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The computations use high-precision floating point only after exact
+integer coefficients have been obtained. The displayed errors are
+numerical measurements, not outward-rounded interval bounds.
+
+The separate program \texttt{all\_orders.py} evaluates the finite
+formula of Theorem \ref{tfp:thm:allorders} directly, with exact rational
+cumulants before numerical Gaussian--Hermite evaluation. At $n=100$,
+$k=4954$, and weight budget $R=8$, its relative error is about
+$1.146\times10^{-10}$. Retaining exact cumulants and variance in this
+finite expression automatically retains some higher-order terms that
+are absent from the four-power truncation. Increasing the order at a
+fixed $n$ is not guaranteed to improve an asymptotic approximation.
+
+Examples in the exact calculation where rounding
+$\mu_n-9/(2n)$ chooses the wrong maximizing exponent include
+$n=139,140,141,142$ and $n=373,374,379,380$. At $n=139$,
+$\mu_n\approx9595.522425$: principal rounding selects $9595$, but the
+actual unique maximizing exponent is $9596$.
+The first-order parity threshold itself is asymptotic: for instance its
+unqualified prediction at $n=56$ is wrong. This does not contradict
+\eqref{tfp:eq:threshold}, which retains a boundary-layer error and asserts
+no universal small-$n$ rule.
+
+\subsection{Inverse-index errors}
+At the exact input $y=M_n$, the errors in the Lambert core and in
+\eqref{tfp:eq:inverse} are:
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+$n$ & $x-n$ & Two-correction inverse minus $n$\\
+\midrule
+50  & $-6.3043\times10^{-3}$ & $-1.9121\times10^{-4}$\\
+100 & $-2.8811\times10^{-3}$ & $-2.3115\times10^{-5}$\\
+200 & $-1.3017\times10^{-3}$ & $-2.7890\times10^{-6}$\\
+400 & $-5.8723\times10^{-4}$ & $-3.3910\times10^{-7}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The complete integer maxima, modes, means, relative errors, and inverse
+checks are supplied in CSV files. Reproduction requires no network
+access once the package's Python dependencies are installed.
+
+\section{Further research questions and topics}\label{tfp:sec:questions}
+The following problems are not claimed solved by this article.
+
+\paragraph{1. Effective thresholds and interval certificates.}
+Make the constants in the two-neighborhood bounds explicit, prove a
+numerical threshold for Proposition \ref{tfp:prop:twocandidates}, and join
+it to exhaustive exact verification below that threshold. This would
+turn an eventual theorem into a fully certified mode algorithm for all
+$n$. The main difficulty is obtaining useful, not merely enormous,
+constants in the analytic remainder.
+
+\paragraph{2. Exact mode-transition counting.}
+Theorem \ref{tfp:thm:failures} proves only upper and lower logarithmic
+bounds. Is there a constant $c$ with $E(N)\sim c\log N$? The leading
+four-periodic picture suggests four failures near a generic
+half-integer harmonic crossing, but near-boundary overshoots require
+control before this can be a theorem. Determining whether those
+exceptional overshoots affect the leading counting constant is a
+natural quantitative problem.
+
+\paragraph{3. The distinct-coefficient conjecture A039824.}
+Resolve the conjectured formula $n^2-3$ for all $n>6$
+\cite{oeis824}. The present central analysis can constrain nearby equal
+coefficients but does not rule out distant coincidences across the
+whole row. A proof would need additional exact algebra or a global
+coefficient-ordering argument. This problem must not be conflated with
+asymptotic knowledge of the largest coefficient.
+
+\paragraph{4. General fixed smoothing polynomials.}
+Replace $(1+q)^r$ in \eqref{tfp:eq:Pr} by a fixed polynomial $Q(q)$ with
+nonnegative coefficients. Determine a complete expansion in terms of
+the order of vanishing and the initial Taylor coefficients of $Q$ at
+roots of unity. Theorem \ref{tfp:thm:smoothing} gives the simplest
+one-root instance, including its odd-multiplicity cancellation.
+
+\paragraph{5. Growing smoothing.}
+Let $r=r(n)$ grow. Determine the regimes in which suppression of the
+secondary neighborhood competes with the change in the principal
+variance and with the lattice spacing. The proof for fixed $r$ is not
+uniform in $r$ and cannot be reused without new estimates.
+
+\paragraph{6. More residue classes and several resonant neighborhoods.}
+For products supported on zero plus a growing arithmetic progression,
+classify which roots of unity contribute at algebraic orders. Develop
+a mode-selection rule that compares several residue classes rather
+than only two parities. A useful objective is a finite-state
+lattice-envelope calculus for asymptotic maxima.
+
+\paragraph{7. Exponentially improved expansions.}
+After the two algebraic neighborhoods have been expanded to high order,
+identify the next exponential scales, optimal truncation indices, and
+possible Stokes effects under complex deformation. The exponentially
+small minor-arc bound in this article is not an identification of those
+scales and is not a resurgent description.
+
+\paragraph{8. Formal verification of the analytic-to-discrete bridge.}
+Formalize the product normalization, cumulant recurrence, Fourier
+integral, and two-neighborhood estimates, then verify the coefficient
+arithmetic and mode comparison. The most reusable component would be
+a theorem transporting uniform local expansions into a finite
+candidate set for a discrete maximum. Such a theorem would apply
+beyond this particular OEIS entry.
+
+\paragraph{9. Certified inverse thresholds with lattice data.}
+Build an inverse algorithm that uses the Lambert core to find a small
+candidate set of indices and evaluates rigorously bounded two-sector
+formulas there. Prove exact decisions except in explicitly marked
+intervals, falling back to exact coefficient computation when needed.
+This would implement the distinction between a real inverse
+approximation and an integer staircase in Section \ref{tfp:sec:inverse}.
+[Added October 1, 2026, batch 73O2: the candidate-set step is the volume's
+proposition ``Certified discrete inversion''
+(\texttt{p0:prop:certified-rounding}~\cite{tai}); what remains open is the
+rigorous two-sector bound that feeds it.]
+
+\section{Proof status and suggested integration into ProveIt}
+\subsection{What has been established}
+The paper proves the conjectured leading asymptotic for A039831, the
+uniform four-order local expansion, an arbitrary-order coefficient
+operator with a remainder, eventual two-candidate localization,
+parity-dependent transitions, infinitely many failures of principal
+rounding with logarithmic counting bounds, the nonexistence of a pure
+power--log third-order coefficient for the maximum, the fixed-smoothing
+law, and the displayed inverse-growth and threshold statements.
+
+These are ordinary mathematical proofs in the article. They have not
+been checked by Lean, Rocq, or an independent human referee in this
+work. The exact computations and symbolic assertions are executable
+checks of finite claims, not a formalization of the asymptotic theorems.
+The phrases ``proved here'' and ``current OEIS conjecture'' have these
+separate meanings throughout.
+
+\subsection{A reusable formalization order}
+A suitable first layer would define the finite coefficient product and
+prove the sliding recurrence, total mass, and probability
+normalization. A second layer would formalize the raw-moment/cumulant
+recurrence and the exact formulas for $\mu_n,V_n,\kappa_{3,n}$.
+The symbolic identities in the supplied script are natural candidates
+for exact rational reflection certificates.
+
+The analytic layer would prove the two-neighborhood localization and
+Hermite integral identity, followed by a fixed-order expansion theorem.
+The mode-localization argument should be a separate theorem with
+explicit hypotheses: uniform central-limit localization, a concave
+principal profile, and a secondary-profile bound. Finally the
+repository's logarithmic-core and remainder-transport organization can
+be used for inversion, with its staircase caveat preserved
+\cite{transseries}.
+[Added October 1, 2026, batch 73O2: that is, the volume's
+\texttt{p0:thm:lambert-core}, \texttt{p0:thm:perturbed-inversion} and
+\texttt{p0:thm:staircase}~\cite{tai}; see the notes in
+Section~\ref{tfp:sec:inverse}.] Existing repository module descriptions are a
+roadmap, not evidence that these new hypotheses have already been
+formalized.
+
+\appendix
+\section{A compact coefficient-generation specification}
+The symbolic derivation in the package follows this finite recipe.
+Generate $b_r(j)$ by \eqref{tfp:eq:cumrec} for $r\le10$ and sum their
+polynomial parts. For even cumulants use nonnegative exponents
+$(e_4,e_6,e_8,e_{10})$ satisfying
+\begin{equation}
+ e_4+2e_6+3e_8+4e_{10}\le4.
+\end{equation}
+Put $D=4e_4+6e_6+8e_8+10e_{10}$ and add
+\begin{equation}
+ \prod_{r\in\{4,6,8,10\}}
+        \frac{\kappa_r^{e_r}}{e_r!(r!)^{e_r}}
+   \frac{\He_D(d/\sqrt V)}{V^{D/2}}.
+\end{equation}
+For this precision, retaining the constant and quadratic terms of
+each even Hermite polynomial suffices. Add the single odd term
+$-\kappa_3d/(2V^2)$. Multiply by $e^{-d^2/(2V)}$, the variance factor
+\eqref{tfp:eq:varfactor}, and the factorial factor \eqref{tfp:eq:stirling}.
+Expand through $n^{-4}$, leaving $h_n,h_{2,n}$ as exact symbols.
+Finally add $-18(-1)^{n+k}/n^4$.
+
+The omitted odd terms begin at relative order $n^{-5}$:
+$\kappa_5d/V^3=O(n^{-5})$ and
+$\kappa_3^2/V^3=O(n^{-5})$ are the first examples.
+The proper rational parts of $b_4(j)$ sum to $O(\log n)$ and first
+affect this calculation at $O(\log n/n^6)$.
+These order checks explain why polynomial cumulant parts suffice for
+the four coefficients, although not for arbitrary order.
+
+\section{Source audit and package contents}
+The source check was performed on October 1, 2026. The live A039831
+internal record displayed revision \#9, January 5, 2023, with the
+conjecture still present. A039824 displayed its separate conjectures.
+The ProveIt recursive-tree response inspected at the beginning of the
+work identified commit
+\texttt{a5ad4ac2e2d4e642a6c015836a70492d40fcbc71}.
+Relevant repository reads were the root README and the consolidated
+transseries/inversion README; targeted searches included the A039831
+identifier and asymptotic inversion. Search indices and a live branch
+need not share a commit, so the mathematical proofs above do not depend
+on an unverified assertion about repository-wide coverage.
+
+The accompanying archive contains the editable \LaTeX{} source, compiled
+PDF, an exact coefficient and numerical verification program, a symbolic
+coefficient derivation, an arbitrary-order finite-formula evaluator,
+finite unit tests, numerical and inverse CSV
+outputs, a source manifest, and build instructions. No external paper
+or font file is redistributed. The bibliography supplies the primary
+sources used for context and provenance.
+[Added October 1, 2026, batch 73O2: in the shipped report the scripts are in
+\texttt{code/}, their recorded outputs and the requirements file in
+\texttt{data/}, the compiled PDF is a new build of this text, and the
+delivered README is replaced by the report README;
+Appendix~\ref{tfp:app:provenance} lists what is shipped.]
+
+\section{Provenance and editorial notes}\label{tfp:app:provenance}
+[Added October 1, 2026, batch 73O2.]
+
+\paragraph{Source.}
+The report was built from one manuscript, manuscript~62 of batch~73 of
+ProveIt's incoming-reports intake: the archive
+\texttt{A039831\_Two\_Fourier\_Peaks.zip} (main file \texttt{article.tex},
+an 18-page PDF). It arrived in commit \texttt{aa43cc555} and was placed in
+commit \texttt{6e193dd4f}, which deleted the archive from
+\texttt{docs/incoming}; it survives in \texttt{aa43cc555}. Its pin is
+commit \texttt{a5ad4ac2e} (the full hash is printed in the previous
+section), an ancestor of the placement commit; the two repository files the
+manuscript read, the root README and the transseries volume's README, are
+unchanged between the pin and the placement.
+
+\paragraph{What the write changed.}
+\begin{itemize}
+\item Every label gained the prefix \texttt{tfp:}; none was otherwise
+ renamed or removed. The manuscript had 74 labels.
+\item Added: the editorial note after the abstract; bracketed notes in
+ Section~\ref{tfp:sec:inverse}, research question~9, Section~12 and
+ Appendix~B; one bibliography entry~\cite{tai}; and this section.
+\item Nothing was removed. Every non-claim of the manuscript is kept:
+ A039824 is not proved; the remainders are asymptotic, not interval
+ certificates; the numerical errors are measurements; the first-order mode
+ prediction fails at $n=56$; the Dolgopyat--Hafouta theorem is not invoked;
+ no global priority, referee review or formal verification is claimed.
+\end{itemize}
+
+\paragraph{A039824 is not resolved.}
+The report proves Kote\v{s}ovec's conjecture on the \emph{largest}
+coefficient (A039831). The \emph{number of distinct coefficient values}
+(A039824), conjectured to be $n^2-3$ for $n>6$, is a different question, and
+nothing here settles it.
+
+\paragraph{Checks by the intake.}
+The intake recomputed the rows exactly through $n=200$ ($M_1,\ldots,M_5=1,2,4,13,57$,
+row masses $(n+1)!$) and found the relative error of the two-correction
+formula \eqref{tfp:eq:leading} to be about $8.8\times10^{-4}$,
+$1.24\times10^{-4}$ and $1.70\times10^{-5}$ at $n=50,100,200$, a ratio of
+about $7.3$ per doubling, consistent with $O(\log n/n^3)$. It reran the three
+programs on a copy; their outputs equal the shipped ones apart from line
+endings and the elapsed-time line. These checks do not replace an
+independent review of the proofs.
+
+\begin{thebibliography}{9}
+\bibitem{oeis831}
+The OEIS Foundation, \emph{A039831: Largest coefficient in expansion of
+$\prod_{i=1}^n(1+q+q^3+\cdots+q^{2i-1})$}.
+Entry by Olivier G\'erard; asymptotic conjecture by V\'aclav Kote\v{s}ovec,
+January 5, 2023. Inspected October 1, 2026.
+\url{https://oeis.org/A039831}; internal record:
+\url{https://oeis.org/A039831/internal}.
+
+\bibitem{oeis824}
+The OEIS Foundation, \emph{A039824: Number of different coefficient
+values in the same product}. Conjectured eventual formula by Ralf
+Stephan, March 7, 2004; related generating-function and recurrence
+conjectures by Colin Barker, May 2, 2017. Inspected October 1, 2026.
+\url{https://oeis.org/A039824}.
+
+\bibitem{dolgopyat}
+D. Dolgopyat and Y. Hafouta,
+\emph{Edgeworth expansions for independent bounded integer valued
+random variables}, Stochastic Processes and their Applications
+\textbf{152} (2022), 486--532.
+\url{https://arxiv.org/abs/2011.14852}.
+The abstract and publication metadata were consulted for context;
+the theorem is not invoked for our growing-support summands.
+
+\bibitem{proveit}
+V. Reshetnikov, \emph{ProveIt}, root README and repository tree,
+inspected October 1, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{transseries}
+V. Reshetnikov, ProveIt research corpus,
+\emph{Transseries: the polynomial--logarithmic calculus and its
+inversions}, consolidated volume README, inspected October 1, 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/README.md}.
+
+\bibitem{tai}\begingroup\raggedright
+[Added in the batch-73O2 write.] V.~Reshetnikov and contributors,
+\emph{Transseries and Inversion}, the volume whose README is~\cite{transseries}:
+its source \path{transseries_and_inversion.tex} lies beside that README. Cited here: Part ``Inversion: the apparatus for a rapidly growing function''
+(state of commit \texttt{6e193dd4f}).\par\endgroup
+\end{thebibliography}
+\end{document}

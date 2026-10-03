@@ -1,0 +1,57 @@
+{
+  "machine": {
+    "states": [
+      "q0",
+      "q1",
+      "q2",
+      "q3",
+      "q4",
+      "halt"
+    ],
+    "halt": "halt",
+    "instructions": [
+      {
+        "source": "q0",
+        "target": "q1",
+        "operation": "inc",
+        "counter": 0
+      },
+      {
+        "source": "q1",
+        "target": "q2",
+        "operation": "inc",
+        "counter": 1
+      },
+      {
+        "source": "q2",
+        "target": "q3",
+        "operation": "dec",
+        "counter": 0
+      },
+      {
+        "source": "q3",
+        "target": "q4",
+        "operation": "dec",
+        "counter": 1
+      },
+      {
+        "source": "q4",
+        "target": "halt",
+        "operation": "nop",
+        "counter": 0
+      }
+    ]
+  },
+  "initial_state": "q0",
+  "horizon": 5,
+  "input_spec": {
+    "mode": "fixed_raw",
+    "N": 5
+  },
+  "output_spec": {
+    "mode": "free"
+  },
+  "time_spec": {
+    "mode": "free"
+  }
+}

@@ -1,0 +1,47 @@
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/README.md
+@@ -41,9 +41,12 @@
+ and gives tables of notions and letters.
+ 
+ The batch-79 sources extend the same spine. Source 16's outcome polynomials
+-and source 17's certificates have the form `Σ A² + Σ B·C` and prove more:
+-their products are strong selector gates, so for natural parameters every
+-zero over the real nonnegative orthant is natural. Source 15's certificate is
++and source 17's minimum-duration and trace certificates have the form
++`Σ A² + Σ B·C` and prove more: their products are strong selector gates, so
++for natural parameters every zero over the real nonnegative orthant is
++natural. Source 17's all-duration padding variant is exact only with natural
++witnesses; over the nonnegative reals it also admits half-integral padding.
++Source 15's certificate is
+ the deliberate exception: the sum of squares of quadratic residual
+ equations, of degree four, one polynomial per finite schema. Sources 15 and
+ 16 are complementary (source 16 discharges the universal-frontend
+@@ -52,7 +55,7 @@
+ **Source 17
+ re-derives source 16's program layer without citing it**: the 528-row
+ program files are byte-identical, its source compiler is source 16's up to
+-one docstring word, its two proof notes are excerpts of source 16's (91 % and
++one word in the emitted scope metadata, its two proof notes are excerpts of source 16's (91 % and
+ 98 % of their word 8-grams), and its Proposition 69.1 is source 16's
+ Theorem 60.1 for that program. That layer is printed once, in Part V. Four
+ duplicated passages of source 17 are replaced by marked pointers (the
+@@ -134,7 +137,7 @@
+ code/17-reset-net-shared-checks-audit_prime_macros.py  checks the 328 prime-macro summaries for a=64
+ code/17-reset-net-shared-checks-audit_shared.py      transition-by-transition checks of both shared-arc nets (over 3 minutes)
+ code/17-reset-net-shared-reset-arcs-build_shared.py  builds the shared-reset-arc nets (writes four excluded files)
+-code/17-reset-net-source_quadratic.py                source affine-branch compiler (source 16's quadratic_core.py up to one docstring word)
++code/17-reset-net-source_quadratic.py                source affine-branch compiler (source 16's quadratic_core.py up to one word in the emitted scope metadata)
+ code/17-reset-net-two-counter-build_variant.py       builds the two-counter companion net (writes three excluded files)
+ code/17-reset-net-two-counter-verify_source.py       checks the 8,408-row prime-coded source
+ code/17-reset-net-two-reset-audit-audit_two_reset.py  separately generated two-counter net (writes one excluded file)
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/article.tex
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/article.tex
+@@ -4877,7 +4877,7 @@
+ \begin{writenote}
+ Part~\ref{qoc:rn:part} prints source~17 (batch-79 manuscript~18, archive \path{Reset_Petri_Net_Certificates.zip}). Its Section~$n$ is Section~$n+62$ here (Sections~\ref{qoc:rn:sec:contracts}--\ref{qoc:rn:sec:scope}), its Theorem~$n.m$ is Theorem~$(n+62).m$, and its appendices A--B are Appendices~\ref{qoc:rn:app:source}--\ref{qoc:rn:app:compiler}. Source~17 pins the repository at commit \texttt{44983ed7e}, an ancestor of this write at which this report already had Parts~I--III; it cites the README of \emph{Canonical Diophantine certificates} and the Lean files \path{MRDP.lean} and \path{DiophantineTrace.lean}, not this report.
+ 
+-\textbf{What is printed once.} Source~17's source layer --- the Neary--Woods table, the 528-row three-counter program and its macro lemma, the branch-gate polynomial for that program, and the prime-coded two-counter companion --- is the program layer of Part~\ref{qoc:um:part} (source~16), re-derived without citing it. The program files are byte-identical; source~17's compiler \path{source_quadratic.py} is source~16's \path{direct/quadratic_core.py} except for one word of a docstring; its two proof notes are excerpts of source~16's (91\,\% and 98\,\% of their word 8-grams occur there). That layer is printed once, in Part~\ref{qoc:um:part}. Here four duplicated passages are replaced by marked pointers: the transition table (Section~\ref{qoc:rn:sec:source}), the proof of the counter-macro lemma, the proof of Proposition~\ref{qoc:rn:prop:sourcefiber}, and the macro descriptions of the two-counter companion (Section~\ref{qoc:rn:sec:two}). Everything else is printed as delivered.
++\textbf{What is printed once.} Source~17's source layer --- the Neary--Woods table, the 528-row three-counter program and its macro lemma, the branch-gate polynomial for that program, and the prime-coded two-counter companion --- is the program layer of Part~\ref{qoc:um:part} (source~16), re-derived without citing it. The program files are byte-identical; source~17's compiler \path{source_quadratic.py} is source~16's \path{direct/quadratic_core.py} except for one word in the emitted scope metadata; its two proof notes are excerpts of source~16's (91\,\% and 98\,\% of their word 8-grams occur there). That layer is printed once, in Part~\ref{qoc:um:part}. Here four duplicated passages are replaced by marked pointers: the transition table (Section~\ref{qoc:rn:sec:source}), the proof of the counter-macro lemma, the proof of Proposition~\ref{qoc:rn:prop:sourcefiber}, and the macro descriptions of the two-counter companion (Section~\ref{qoc:rn:sec:two}). Everything else is printed as delivered.
+ 
+ \textbf{What is new.} Relative to this report, everything specific to reset nets: the net and its ledger, the debt identity, the exact fuel threshold, the word and length normal form, the peak recurrence, the real-parity obstruction, the generic reset-trace bijection, the one-place boundary, the physical-peak theorem and the shared reset arcs. Two of these re-prove, in another substrate, results of \emph{Canonical Diophantine certificates} (notes at Lemma~\ref{qoc:rn:lem:fuel} and Theorem~\ref{qoc:rn:thm:trace}; Section~\ref{qoc:sec:reproofs}). The research programme reviewed source~17 after placement (\path{review_reset_petri_net_aebfa386e.md}, commit \texttt{9df1f72ca}): the mathematics on the valid natural domain and all fourteen author commands pass; two malformed-input defects of the programs (non-Boolean option flags in \path{peak_quadratic.py}, unchecked markings in \path{build_net.py}) are repaired by its patch \path{reset_net_exact_domains.patch}, which the shipped programs do not include; and a natural-only simplification of the gates is a dated note after Proposition~\ref{qoc:rn:prop:sourcefiber}.
+ \end{writenote}

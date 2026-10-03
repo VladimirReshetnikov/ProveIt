@@ -1,0 +1,335 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}\usepackage{lmodern}
+\usepackage[margin=26mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,microtype}
+\usepackage[hidelinks]{hyperref}\usepackage{xurl}
+\hypersetup{pdftitle={Exact Observation Order for Fabius Conditioning},pdfauthor={Research note prepared for Vladimir Reshetnikov with OpenAI}}
+\setlength{\parskip}{3pt}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{question}{Question}
+% ed. (2026-10-01): unnumbered environment for ProveIt editorial notes (the theorem counter is unchanged).
+\theoremstyle{remark}\newtheorem*{ednote}{Editorial note (ProveIt, 2026-10-01)}
+\newcommand{\E}{\mathbb E}\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\newcommand{\TV}{\operatorname{TV}}\newcommand{\KL}{\operatorname{KL}}
+\newcommand{\Law}{\operatorname{Law}}\newcommand{\ind}{\mathbf1}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\ii}{\mathrm i}
+\title{Exact Observation Order for Fabius Conditioning}
+\author{Research note prepared for Vladimir Reshetnikov with OpenAI}
+\date{1 October 2026}
+\begin{document}\maketitle
+\begin{abstract}
+For independent uniform coordinates with geometrically decreasing weights whose ratio is a reciprocal integer, earlier observations are more informative than later observations in an exact Blackwell sense. The comparison holds under a common exponential tilt and simultaneously under every integrable reweighting that depends only on the total sum. Its deterministic realization takes residues modulo the later caps. We prove the result for overlapping finite masks, countably infinite masks, and arbitrary common observations. We also construct canonical exact-sum conditional laws and establish the comparison at every interior conditioning value. Divergence inequalities, equality criteria, and a finite strict-overlap consequence for the Fabius model follow. The mechanism is a sum-preserving swap of identical residues; the exponential integer/fractional decomposition and general data-processing principles are classical.
+\end{abstract}
+
+\section{Model and exact comparison}
+Let $a_i>0$ be a finite or countable sequence with
+\[
+ A=\sum_i a_i<\infty,\qquad
+ \Omega=\prod_i[0,a_i],\qquad S=\sum_iX_i.
+\]
+For a common parameter $\beta\in\R$, let $Q_\beta$ be the product measure with coordinate densities
+\begin{equation}\label{eq:reference}
+ q_{\beta,a}(x)=\frac{e^{-\beta x}}{Z_\beta(a)}\ind_{(0,a)}(x),
+ \qquad Z_\beta(a)=\int_0^a e^{-\beta u}\dd u.
+\end{equation}
+The case $\beta=0$ is the uniform product law. Write $Q=Q_\beta$. For any measurable $w\ge0$ with $0<\E_Qw(S)<\infty$, define
+\begin{equation}\label{eq:reweight}
+ \frac{\dd P_w}{\dd Q}=\frac{w(S)}{\E_Qw(S)}.
+\end{equation}
+An observation mask is an increasing list of coordinate indices. All modulo maps below are understood off null endpoints; arbitrary Borel values may be assigned at those endpoints.
+
+\begin{theorem}[Simultaneous deterministic comparison]\label{thm:masks}
+Let $E=(e_1<e_2<\cdots)$ and $L=(l_1<l_2<\cdots)$ have the same finite or countably infinite cardinality. Suppose
+\[
+ e_r\le l_r,\qquad a_{e_r}/a_{l_r}\in\N
+ \quad\text{for every }r.
+\]
+Let $C$ be any coordinate set disjoint from $E\cup L$. The deterministic map
+\begin{equation}\label{eq:map}
+ \mathcal T_{E,L}\bigl(x_C,(x_{e_r})_r\bigr)
+       =\bigl(x_C,(x_{e_r}\bmod a_{l_r})_r\bigr)
+\end{equation}
+pushes the law of $(X_C,X_E)$ to the law of $(X_C,X_L)$ under $Q$ and under every $P_w$ in \eqref{eq:reweight}, simultaneously. The masks $E,L$ may overlap, and $C$ may be infinite.
+\end{theorem}
+The assertion is equality of distributions. It does not say that $X_{l_r}=X_{e_r}\bmod a_{l_r}$ on the original sample. One map works for an arbitrary family of weights $w_\theta$, so the earlier-mask experiment Blackwell-dominates the later-mask experiment: every decision based on the latter can be implemented from the former by first applying \eqref{eq:map}.
+
+If all successive cap ratios are positive integers, the initial prefix is most informative among masks of the same finite cardinality. In a finite population the terminal suffix is least informative. These statements concern the specified family of total-sum reweightings, rather than every possible distribution on the product space.
+
+\section{A residue swap that preserves the total}
+\begin{lemma}\label{lem:swap}
+Suppose $a_i=Mb$, $a_j=b$, where $i\ne j$ and $M\ge1$ is an integer. There is a measurable involution preserving $Q$ and $S$ which exchanges $X_j$ with the residue of $X_i$ modulo $b$, while fixing every other coordinate.
+\end{lemma}
+\begin{proof}
+Write $X_i=bK+R$, with $K=\lfloor X_i/b\rfloor$ and $0<R<b$. The density factors as
+\[
+ Q(K=k,R\in\dd r)=\frac{e^{-\beta bk}e^{-\beta r}}{Z_\beta(Mb)}\dd r,
+ \qquad0\le k<M.
+\]
+Since
+\[
+ Z_\beta(Mb)=Z_\beta(b)\sum_{k=0}^{M-1}e^{-\beta bk},
+\]
+$K$ and $R$ are independent, $R$ has the same law as $X_j$, and
+\begin{equation}\label{eq:digit}
+ Q(K=k)=\frac{e^{-\beta bk}}{\sum_{v=0}^{M-1}e^{-\beta bv}}.
+\end{equation}
+Thus, in the coordinates $(K,R,X_j)$, define
+\[
+ \tau_{i,j}(K,R,X_j)=(K,X_j,R).
+\]
+In the original coordinates this is
+\begin{equation}\label{eq:swap}
+ (X_i,X_j)=(bK+R,X_j)\longmapsto(bK+X_j,R).
+\end{equation}
+It swaps independent identically distributed residues and leaves $K$ unchanged, so it preserves $Q$. It preserves $X_i+X_j$ and fixes all other coordinates, hence preserves $S$. It consequently preserves $P_w$ for every weight in \eqref{eq:reweight}. The map is an involution away from the null cell boundaries, with absolute Jacobian one on each cell.
+\end{proof}
+The independence used here is the bounded form of the classical independence of the integer and fractional parts of an exponential variable; see Steutel--Thiemann \cite[Lemma 1]{st}. It also follows directly at $\beta=0$ from uniform measure on equal cells.
+
+For every common coordinate set $C$ disjoint from $\{i,j\}$, invariance under \eqref{eq:swap} gives
+\begin{equation}\label{eq:oneswap}
+ \Law_{P_w}(X_C,X_j)=\Law_{P_w}(X_C,X_i\bmod b),
+\end{equation}
+and the same equality under $Q$. This proves the one-exchange comparison even with infinitely many common observations.
+
+\begin{proof}[Proof of Theorem~\ref{thm:masks}]
+For finite masks, process the pairs in descending order $r=k,k-1,\ldots,1$. If $e_r=l_r$, do nothing. Otherwise $l_r$ is unoccupied: the unmoved indices are at most $e_r<l_r$, and the already filled targets $l_s$, $s>r$, exceed $l_r$. Apply \eqref{eq:oneswap}, retaining every other current observation. This argument permits overlap between the original masks. Each original input coordinate is used only once, so the composed map is precisely \eqref{eq:map}.
+
+For countably infinite masks, every finite output prefix has the required law by the finite result, jointly with any finite set of common coordinates. Cylinder sets determine probability laws on countable products. The componentwise map therefore has the asserted pushforward law. No infinite composition of swaps is needed.
+\end{proof}
+
+\section{Divergences and equality}
+Fix $P=P_w$ and let $Y=(X_C,X_E)$ under $Q$. Set $Z=\mathcal T_{E,L}(Y)$ and let
+\[
+ \ell(Y)=\frac{\dd P_Y}{\dd Q_Y}(Y)
+ =\E_Q\left[\frac{w(S)}{\E_Qw(S)}\,\middle|\,Y\right].
+\]
+The target likelihood is exactly
+\begin{equation}\label{eq:likelihood}
+ \ell_L(Z)=\E_Q[\ell(Y)\mid Z].
+\end{equation}
+For convex $f$ on $[0,\infty)$ with $f(1)=0$, conditional Jensen gives
+\begin{equation}\label{eq:fdiv}
+ D_f(P_{C,L}\Vert Q_{C,L})\le D_f(P_{C,E}\Vert Q_{C,E}),
+ \qquad D_f(P\Vert Q)=\int f\!\left(\frac{\dd P}{\dd Q}\right)\dd Q.
+\end{equation}
+The inequality is valid in the extended sense. The usual data-processing inequality also applies with the hypotheses interchanged, using the standard definition with a singular part if necessary. These are applications of classical comparison and information theory \cite{blackwell}, with the deterministic map here supplied explicitly.
+
+In particular, total variation and relative entropy decrease. With
+$\TV(P,Q)=\sup_B|P(B)-Q(B)|$, overlap satisfies
+\begin{equation}\label{eq:overlap}
+ 1-\TV(P_{C,E},Q_{C,E})\le1-\TV(P_{C,L},Q_{C,L}).
+\end{equation}
+For strictly convex $f$, provided the divergence on the right of \eqref{eq:fdiv} is finite, equality holds exactly when $\ell(Y)$ is measurable with respect to $Z$, up to $Q$-null sets.
+
+For total variation there is a different exact criterion. Put
+\[
+ A(Z)=\E_Q[(\ell-1)_+\mid Z],\qquad
+ B(Z)=\E_Q[(1-\ell)_+\mid Z].
+\]
+Then
+\begin{equation}\label{eq:TVgap}
+ \TV(P_Y,Q_Y)-\TV(P_Z,Q_Z)=\E_Q\min\{A(Z),B(Z)\}.
+\end{equation}
+Indeed, $\E[|\ell-1|\mid Z]=A+B$, while
+$|\E[\ell-1\mid Z]|=|A-B|$. Thus equality holds precisely when the conditional likelihood does not take values on both sides of one on the same fiber, almost surely.
+
+Universal strictness is false. Besides $w\equiv1$, a nonconstant $b$-periodic weight gives equality in every finite convex divergence for a single exchange: the marginal likelihood is $b$-periodic in the larger observed coordinate, so it is already a function of its residue and the common observations. This can be nontrivial. In the two-coordinate model with $\beta>0$, choose
+\[
+ w(s)=1+\varepsilon\cos(2\pi s/b),\qquad0<\varepsilon<1.
+\]
+Its marginal likelihood is nonconstant, because
+$\E_Qe^{2\pi\ii X_j/b}=\beta/(\beta-2\pi\ii/b)\ne0$, yet residue observation loses no likelihood information.
+
+\begin{proposition}[A sufficient condition for strict overlap]\label{prop:strict}
+For one exchange with caps $a=Mb>b$, suppose
+\[
+ w(s)=v(s)\ind_{\{s\le s_0\}},\qquad v\ge0,\qquad
+ 0<\E_Qw(S)<\infty,\qquad a-b\ge s_0>0.
+\]
+Then total variation strictly decreases under the residue map, and overlap strictly increases, even with arbitrary common observations. A strictly convex divergence also strictly decreases whenever its initial value is finite.
+\end{proposition}
+\begin{proof}
+The top digit $K=M-1$ has strictly positive conditional probability \eqref{eq:digit}, independent of the residue and the common observations. It forces $X_i=a-b+R>s_0$ almost surely, so $\ell=0$ on that digit in every fiber. Since $\E_Q\ell=1$, the likelihood exceeds one on a set of positive probability. On the corresponding fibers, both $A$ and $B$ in \eqref{eq:TVgap} are positive. This proves strictness for total variation. The likelihood is also nonconstant on those fibers, proving the strictly convex case by strict conditional Jensen.
+\end{proof}
+This condition is sufficient, not necessary. One strict step in a sorted-mask chain makes the overall comparison strict.
+
+\section{The finite Fabius consequence}
+Use the source convention
+\[
+ S_q=\sum_{j\ge1}q^jU_j,\quad U_j\sim\operatorname{Unif}[0,1],\quad
+ t_n=\rho q^{-(n+1)},\quad T_n=t_nS_q,
+\]
+with original product law $P_0$, tilted law and conditioned law
+\[
+ \frac{\dd Q_n}{\dd P_0}=\frac{e^{-T_n}}{\E_{P_0}e^{-T_n}},\qquad
+ \mu_n=\E_{Q_n}T_n,\qquad P_n=P_0(\,\cdot\mid T_n\le\mu_n).
+\]
+Under $Q_n$, the variables $X_j=t_nq^jU_j$ have \eqref{eq:reference} with $\beta=1$ and caps $a_j=\rho q^{j-n-1}$. Also
+\[
+ \frac{\dd P_n}{\dd Q_n}
+ =\frac{e^{T_n}\ind_{\{T_n\le\mu_n\}}}
+        {\E_{Q_n}[e^{T_n}\ind_{\{T_n\le\mu_n\}}]}.
+\]
+Thus this is exactly \eqref{eq:reweight}, not an approximation.
+
+When $q=1/M$ for an integer $M\ge2$, the observation map in the original unit coordinates is
+\begin{equation}\label{eq:unitmap}
+ (U_{e_r})_r\longmapsto
+ \bigl(\{M^{l_r-e_r}U_{e_r}\}\bigr)_r,
+\end{equation}
+where braces denote fractional part. The map is independent of $n$ and $\rho$.
+
+The two masks compared in the critical-complement work \cite{critical,second} are
+\[
+ E=\{1,\ldots,n-m\},\qquad L=\{m+1,\ldots,n\}.
+\]
+The first hides late bulk coordinates; the second hides early bulk coordinates. Both hide the boundary tail. Writing $\mathcal O^{\rm late}$ and $\mathcal O^{\rm early}$ for their overlaps, Theorem~\ref{thm:masks} proves
+\begin{equation}\label{eq:finiteorder}
+ \mathcal O^{\rm late}_{n,m}\le\mathcal O^{\rm early}_{n,m}
+ \qquad(0\le m<n)
+\end{equation}
+for every finite $n$ and $\rho>0$. The earlier expansion proves strict ordering eventually in a logarithmic crossover window, for any fixed geometric ratio. Equation~\eqref{eq:finiteorder} instead applies at every finite parameter for reciprocal-integer ratios, and gives all convex-divergence comparisons at once.
+
+\begin{corollary}\label{cor:finite-strict}
+In the phase cell $1\le\rho<M$, inequality \eqref{eq:finiteorder} is strict for every $n\ge3$ and $1\le m<n$.
+\end{corollary}
+\begin{proof}
+Every truncated exponential of rate one has mean less than one and less than half its cap. Hence
+\[
+ \mu_n<n+\frac{\rho M}{2(M-1)}.
+\]
+The final exchange of the descending mask construction moves index $1$ to $m+1$. Its cap difference satisfies
+\[
+ a_1-a_{m+1}\ge\rho M^{n-1}(M-1)
+                    \ge n+\frac{\rho M}{2(M-1)}.
+\]
+For the last inequality, use $\rho\ge1$, $M\ge2$, and
+$M^{n-1}(M-1)-M/(2(M-1))\ge2^{n-1}-1\ge n$ for $n\ge3$.
+Proposition~\ref{prop:strict} applies with $s_0=\mu_n$.
+\end{proof}
+
+The strict corollary makes no assertion at $n=2$, where the non-strict comparison still holds; at $n=1$ there is no nontrivial pair of these masks.
+% ed. (2026-10-01): both Fabius statements of this section were extended to every ratio by later notes of the series
+\begin{ednote}
+Both statements of this section were extended to every geometric ratio by
+later notes of the series (listed in the note at the end of this article).
+For the binary pair $(P_n,Q_n)$, inequality~\eqref{eq:finiteorder} holds for
+every $q\in(0,1)$, $\rho>0$, $n\ge2$ and $1\le m<n$, for all $f$-divergences,
+by Corollary~4.1 of \path{../Exact_Fixed_Conditioning_Order/}. Its kernel may
+depend on the conditioning, whereas the residue map here works for every
+total-sum reweighting at once; for other ratios such a common kernel exists
+only under the arithmetic conditions of Theorem~2.1 of
+\path{../Arithmetic_Geometric_Mask_Order/}. Corollary~\ref{cor:finite-strict}
+is contained in Corollary~4.2 of \path{../Strict_Fabius_Conditioning_Order/}:
+$\mathcal O^{\rm late}_{n,m}<\mathcal O^{\rm early}_{n,m}$ for every $0<q<1$,
+$\rho>0$, $n\ge2$ and $1\le m<n$, also with common observations, in the same
+convention (the superscripts name the hidden blocks). That covers $n=2$ and
+the phases outside $[1,M)$, and it makes the strict ordering of the earlier
+expansion \cite{second}, called eventual above, hold at every finite $n$. That
+corollary concerns total variation only; Proposition~\ref{prop:strict},
+through which Corollary~\ref{cor:finite-strict} is proved, also gives a strict
+decrease of every strictly convex divergence of finite value in its phase
+cell.
+\end{ednote}
+
+\section{Exact conditioning at every interior sum}\label{sec:exact}
+A regular conditional law can be altered at a null conditioning value. We therefore specify the canonical version before asserting an all-value result.
+
+\begin{theorem}\label{thm:exact}
+There is a unique weakly continuous version $Q_s$ of $Q(\,\cdot\mid S=s)$ on $0<s<A$. It is independent of the common tilt parameter $\beta$. Under this version, the mask map \eqref{eq:map} has the same pushforward property for every $s\in(0,A)$, including infinite masks and common observations.
+\end{theorem}
+\begin{proof}
+If there is only one coordinate, take $Q_s=\delta_s$; there are no nontrivial exchanges. Assume at least two coordinates. The product space $\Omega$ is compact metrizable, and $S$ is continuous because the sum converges uniformly. Fix any two coordinates with caps $a,b$, and write $Z$ for the sum of the rest. For $u\in\R$, put
+\[
+ I(u)=[\max(0,u-b),\min(a,u)]
+\]
+when its lower endpoint is smaller than its upper endpoint, and interpret the integral below as zero otherwise. For continuous $f$ on $\Omega$, define
+\begin{equation}\label{eq:slice}
+ N_f(s)=\frac{1}{Z_\beta(a)Z_\beta(b)}
+ \E_{Q_{\rm rest}}\!\left[
+ e^{-\beta(s-Z)}\int_{I(s-Z)}
+ f(x,s-Z-x,X_{\rm rest})\dd x\right].
+\end{equation}
+For every fixed rest configuration this expression is continuous in $s$, including where the interval shrinks to zero. Compactness and bounded total cap supply a uniform integrable bound. Thus $N_f$ is continuous.
+
+The function $g(s)=N_1(s)$ is the density of $S$, and $g(s)>0$ for $0<s<A$. Indeed, the rest sum has full support on $[0,A-a-b]$: the product measure has full support, and its continuous sum map has that interval as its image. This support intersects $(s-a-b,s)$, where the pair's slice has positive length. When no coordinates remain, positivity is just that of the two-coordinate convolution on $(0,a+b)$.
+
+The identity
+\[
+ \int f\dd Q_s=N_f(s)/g(s)
+\]
+defines a weakly continuous probability kernel on $(0,A)$. Fubini and the change of variables $(X_i,X_j)\mapsto(S,X_i)$ verify disintegration. The result is independent of the chosen pair: two weakly continuous versions agree $g(s)\dd s$-almost everywhere and hence everywhere, because $g$ is positive at each interior point. A countable determining family of continuous functions on compact $\Omega$ gives simultaneous equality of the probability measures.
+
+Now choose the pair to be a divisible-cap exchange, with caps $a=Mb,b$. On a line $X_i+X_j=u$, partition by $k=\lfloor X_i/b\rfloor$. In each cell, the residue swap is the reflection
+\[
+ X_i\longmapsto u+bk-X_i.
+\]
+It maps the clipped interval of possible $X_i$ values exactly onto itself and preserves its one-dimensional Lebesgue measure. The product density is constant on that line. Cell boundaries are slice-null, and zero-length slices have zero weight in \eqref{eq:slice}. Therefore $Q_s$ is invariant under this swap for every interior $s$. Pair-independence gives the same invariance under every divisible-cap swap for the same canonical kernel. Descending exchanges and cylinder laws now prove the finite and countable mask statements.
+
+Finally, for two common tilt parameters,
+\[
+ \frac{\dd Q_{\beta'}}{\dd Q_\beta}
+ =\frac{e^{-(\beta'-\beta)S}}
+        {\E_{Q_\beta}e^{-(\beta'-\beta)S}}.
+\]
+This bounded positive likelihood is valid also for countably many coordinates: the finite product tilts converge uniformly because $S$ is bounded and the cap sum is finite. Thus the conditional versions coincide almost everywhere; weak continuity upgrades equality to every interior $s$.
+\end{proof}
+The theorem does not prescribe versions at $s=0,A$. It also does not assert that every exact-conditioned marginal is dominated by its reference marginal: observation of the entire configuration is singular under exact conditioning. The deterministic comparison remains valid. The likelihood-based equality criteria in Section 3 concern the dominated reweightings \eqref{eq:reweight}.
+
+\section{Sources and remaining questions}
+The source's ``Arbitrary observation masks'' question \cite{critical} asks for a much broader sharp crossover classification. This note supplies an exact ordering for comparable divisible-cap masks; it does not answer all of that question. We inspected source commit
+\nolinkurl{7421a4ca60fdf125411edf412f825aac54278b37}, with article blob
+\nolinkurl{c00d3632ce7b34ec95e2f9bb0b9f9dadb5fe11eb}.
+
+The independence lemma and general Blackwell/data-processing principles are classical \cite{st,blackwell}. The contribution relative to the inspected repository is their explicit sum-preserving realization for observation masks, including finite Fabius comparisons and the canonical exact-conditioning extension. A targeted source and literature search does not establish exhaustive priority. The proofs are ordinary mathematics, not externally refereed or formally verified.
+
+An exact finite-grid checker accompanies the note. It verifies 6,144 involution identities, 205 mask pushforward and divergence comparisons, 41 nonconstant periodic-equality cases, 1,107 exact-total mask identities, and 30 common-observation checks. These rational checks test the map bookkeeping; they are not substitutes for the continuous proofs.
+
+\begin{question}
+Which cap pairs without integer divisibility admit a stochastic comparison valid simultaneously for all total-sum weights? The explicit residue construction does not apply to arbitrary ratios.
+\end{question}
+\begin{question}
+For small-sum conditioning, when is total-variation contraction strict outside Proposition~\ref{prop:strict}? The exact fiber criterion is available, but a full classification in geometric mask coordinates remains to be obtained.
+\end{question}
+\begin{question}
+Can the deterministic ordering be combined with complement cumulant asymptotics to obtain quantitative differences for noncomparable masks? Exact comparison and sharp rate classification are distinct tasks.
+\end{question}
+% ed. (2026-10-01): series map: the later notes of the series and the companions cited here
+\begin{ednote}
+This note is the first of eight notes written in one series and filed together on 2026-10-01 in the repository's Fabius drafts tree (batch~72 of its \path{docs/incoming/}; unreviewed). In the order written they are \path{../Exact_Fabius_Mask_Order/}, \path{../Universal_Garbling_Classification/}, \path{../Universal_Fabius_Mask_Criterion/}, \path{../Uniform_Smoothing_Mask_Stabilization/}, \path{../Arithmetic_Geometric_Mask_Order/}, \path{../Exact_Fixed_Conditioning_Order/}, \path{../Strict_Fabius_Conditioning_Order/} and \path{../Proportional_Fabius_Mask_Edgeworth/}. 
+The later notes cite this one by its source file
+\texttt{exact\_fabius\_mask\_order.tex}. The ``separate companion research
+note'' \cite{second}, source \texttt{Second\_Order\_Fabius\_Crossover.tex},
+is filed as \path{../Second_Order_Critical_Complements_Fabius_Conditioning/} (batch~71, filed 2026-09-30, before the
+commit inspected here), and \cite{critical} is \path{../Critical_Complements_Sharp_Information_Loss/}.
+Later notes re-prove the sufficiency of Theorem~\ref{thm:masks} in other
+forms: Section~3 of the second reproduces Lemma~\ref{lem:swap} for one
+coordinate, and for geometric caps the residue maps follow from the
+independent residue vectors in the proofs of Theorem~2.1 of the third
+($q=1/M$) and Theorem~2.1 of the fifth (every $q$ with an integer power of
+$1/q$), which also prove that no kernel valid for all weights exists outside
+their prefix-count conditions. Theorem~\ref{thm:masks} for divisible caps that
+are not geometric, and Theorem~\ref{thm:exact}, are not re-proved there. The
+three questions above are answered in part. For one observed coordinate, no
+cap pair without integer divisibility admits a comparison valid for all
+total-sum weights (Theorem~1.1 of the second note), while for masks Gaussian
+polynomials give such comparisons, for example caps $(5,6,7)$ over $(1,2,3)$
+(Section~4 of the third). For threshold conditioning of the uniform product,
+the contraction under one cap exchange $a>b$ is strict in total variation
+unless $\beta=0$ and the conditioning is vacuous (Theorem~1.1 of the
+seventh). For hidden bulk fractions $\eta$ in a fixed compact subinterval of
+$(0,1)$, two hidden masks $H_1,H_2$ of equal size differ in overlap by
+$\varphi(c)c\{\operatorname{Var}S_{H_1}-\operatorname{Var}S_{H_2}\}/(\eta n)
++O(n^{-3/2})$, with $\varphi$ the standard normal density and $c=c(\eta)$
+explicit (Corollary~5.1 of the eighth).
+\end{ednote}
+
+\begin{thebibliography}{9}\small
+\bibitem{st} F. W. Steutel and J. G. F. Thiemann, \emph{On the independence of integer and fractional parts}, Memorandum COSOR 87-29, Eindhoven University of Technology, 1987.\newline\url{https://pure.tue.nl/ws/files/1660926/338442.pdf}
+\bibitem{blackwell} D. Blackwell, \emph{Equivalent Comparisons of Experiments}, Annals of Mathematical Statistics 24 (1953), 265--272.\newline\url{https://doi.org/10.1214/aoms/1177729032}
+\bibitem{critical} \emph{Critical Complements in Fabius Conditioning: Sharp information loss, geometric phase constants, and a logarithmic crossover}. ProveIt research manuscript, version inspected 1 October 2026.\newline
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/7421a4ca60fdf125411edf412f825aac54278b37/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/representations/Critical_Complements_Sharp_Information_Loss/article.tex}{Versioned repository source}.
+\bibitem{second} \emph{Second Order Critical Complements in Fabius Conditioning: Uniform overlap corrections and a strict comparison of two observation masks}. Separate companion research note prepared for Vladimir Reshetnikov with OpenAI, 1 October 2026. The two-mask logarithmic-window expansion and eventual strict overlap comparison.
+\end{thebibliography}
+\end{document}

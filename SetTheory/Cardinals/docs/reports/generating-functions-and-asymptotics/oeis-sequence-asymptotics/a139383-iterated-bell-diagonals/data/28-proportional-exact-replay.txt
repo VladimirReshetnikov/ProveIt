@@ -1,0 +1,61 @@
+{
+  "order": 3,
+  "variable": "y = Psi(u) - log(n)/3; replace Psi by Psi+k for depth n+k",
+  "abel_coefficients": [
+    "1/18",
+    "-1/135",
+    "-1/972"
+  ],
+  "explicit_remainder_bounds": [
+    {
+      "J": 1,
+      "defect_constant": "79/5",
+      "fatou_remainder_constant": "553/44"
+    },
+    {
+      "J": 2,
+      "defect_constant": "17881/375",
+      "fatou_remainder_constant": "160929/5500"
+    },
+    {
+      "J": 3,
+      "defect_constant": "966001/6750",
+      "fatou_remainder_constant": "22218023/297000"
+    }
+  ],
+  "remainder_meaning": "For Re(w)>=4, defect <= C_J |w|^(-J-2), and |Phi(w)-V_J(w)| <= B_J Re(w)^(-J-1).",
+  "reciprocal_iterate": [
+    "-y/3 - 1/18",
+    "y**2/6 + y/6 + 7/270",
+    "-y**3/9 - 2*y**2/9 - 29*y/270 - 13/1215"
+  ],
+  "forward_integrand": [
+    "1",
+    "-y**2/2 - y/3 + 1/36",
+    "y**4/8 + y**3/2 + 13*y**2/24 + 23*y/108 + 341/12960",
+    "-y**6/48 - 5*y**5/24 - 61*y**4/96 - 571*y**3/648 - 14821*y**2/25920 - 1201*y/7776 - 20011/1399680"
+  ],
+  "forward_in_L_and_b": [
+    "1",
+    "-L**2/18 + L*b/3 + L/9 - b**2/2 - b/3 + 1/36",
+    "L**4/648 - L**3*b/54 - L**3/54 + L**2*b**2/12 + L**2*b/6 + 13*L**2/216 - L*b**3/6 - L*b**2/2 - 13*L*b/36 - 23*L/324 + b**4/8 + b**3/2 + 13*b**2/24 + 23*b/108 + 341/12960",
+    "-L**6/34992 + L**5*b/1944 + 5*L**5/5832 - 5*L**4*b**2/1296 - 25*L**4*b/1944 - 61*L**4/7776 + 5*L**3*b**3/324 + 25*L**3*b**2/324 + 61*L**3*b/648 + 571*L**3/17496 - 5*L**2*b**4/144 - 25*L**2*b**3/108 - 61*L**2*b**2/144 - 571*L**2*b/1944 - 14821*L**2/233280 + L*b**5/24 + 25*L*b**4/72 + 61*L*b**3/72 + 571*L*b**2/648 + 14821*L*b/38880 + 1201*L/23328 - b**6/48 - 5*b**5/24 - 61*b**4/96 - 571*b**3/648 - 14821*b**2/25920 - 1201*b/7776 - 20011/1399680"
+  ],
+  "assertions": "recurrence cancellation, polynomial degree, and first coefficient all passed"
+}
+{
+  "order": 3,
+  "forward_integrand_general_beta": [
+    "1",
+    "-beta**2*y**2/2 - beta**2*y/3 - beta**2/18 + 1/12",
+    "beta**4*y**4/8 + beta**4*y**3/6 + beta**4*y**2/12 + beta**4*y/54 + beta**4/648 + beta**3*y**3/3 + beta**3*y**2/2 + 2*beta**3*y/9 + 7*beta**3/270 - beta**2*y**2/24 - beta**2*y/36 - beta**2/216 + 1/288",
+    "-beta**6*y**6/48 - beta**6*y**5/24 - 5*beta**6*y**4/144 - 5*beta**6*y**3/324 - 5*beta**6*y**2/1296 - beta**6*y/1944 - beta**6/34992 - beta**5*y**5/6 - 13*beta**5*y**4/36 - 8*beta**5*y**3/27 - 31*beta**5*y**2/270 - 17*beta**5*y/810 - 7*beta**5/4860 - 23*beta**4*y**4/96 - 43*beta**4*y**3/72 - 71*beta**4*y**2/144 - 487*beta**4*y/3240 - 157*beta**4/12960 + beta**3*y**3/36 + beta**3*y**2/24 + beta**3*y/54 + 7*beta**3/3240 - beta**2*y**2/576 - beta**2*y/864 - beta**2/5184 - 139/51840"
+  ],
+  "checks": "degree bounds, explicit first correction, and beta=1 agreement all passed"
+}
+{
+  "R1": "-(18*beta**2*y**2 + 12*beta**2*y + 2*beta**2 - 3)/36",
+  "R2": "beta**4*y**4/8 + beta**4*y**3/6 + beta**4*y**2/12 + beta**4*y/54 + beta**4/648 + beta**3*y**3/3 + beta**3*y**2/2 + 2*beta**3*y/9 + 7*beta**3/270 - beta**2*y**2/24 - beta**2*y/36 - beta**2/216 + 1/288",
+  "checks": "First correction, degrees through order 2, beta=1 agreement through order 2, Abel bounded-shift translation through order 2 all passed."
+}
+PASS: exact orbit JSON, general-beta JSON, and independent coefficient checks agree.

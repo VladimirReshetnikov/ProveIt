@@ -1,0 +1,1855 @@
+# Rank Ultra-Log-Concavity of Preorder Gamma and Directed Support Polynomials at the Actual Degree
+
+**Degree four, independent role activities, small covers and universal-sink clouds**
+
+This is a research report dated 1 October 2026, built from eleven
+manuscripts and a supplement (source 23; twelve sources), delivered with two
+superseded versions in eighteen archives of ProveIt's batch 73 (arrival
+commit `f8c3a392a`, placement commit `8f5c53106`), and from one manuscript
+of batch 77, source 35 (arrival commit `096ee7b87`, placement commit
+`089d2b825`): thirteen sources in all. It answers Research
+question 96 (`mr:q:gamma`) of
+[`preorder-root-polytopes`](../../enumerative-combinatorics/preorder-root-polytopes):
+is the gamma polynomial of every finite preorder ultra-log-concave after
+normalization by its *actual* degree?
+
+| Source | Archive(s) (batch 73 unless said) | Archive name(s) | Manuscript (pages as delivered) | Pin | Placed | Printed as |
+|---|---|---|---|---|---|---|
+| 25 | 25 | `preorder-gamma-degree-three-package` | *Rank ultra log concavity for preorder gamma polynomials of degree at most three* (14) | `d5e863bba` | `8f5c53106` | Part I, Section 2 |
+| 16 (base) | 16, 17, 18, 19 | `preorder-degree-four-part-4-of-4` … `part-1-of-4` | *Degree four preorder support polynomials* (17) | `d5e863bba` | `8f5c53106` | Part I, Section 3 (its Section 3 and Appendix A are source 20, printed in Part II) |
+| 23 | 23 | `template26-structural-supplement` | *A smaller proof of the last Newton gap for template 26* (6) | none | `8f5c53106` | Part I, Section 4 (second route) |
+| 20 | 20 | `role-cover-package` | *Real stable monomers under a two by two role cover* (9) | none | `8f5c53106` | Part II, Section 5 |
+| 12 | 12 (handed over by cluster C1) | `three-core-rayleigh-result` | *Coefficientwise Rayleigh inequalities for a three vertex shore* (6) | none | `8f5c53106` | Part II, Section 6 |
+| 11 | 11 (handed over by cluster C1) | `physical-cover-three-result` | *Rank ultra log concavity under a three vertex physical cover* (5) | none | `8f5c53106` | Part II, Section 7 |
+| 15 | 15 (handed over by cluster C1) | `bipartite-and-pendant-support-result` | *Lorentzian and real stable directed support polynomials* (6) | none | `8f5c53106` | Part II, Section 8 |
+| 22 | 22 | `independent-role-degree-three-package` | *Independently weighted preorder support polynomials of actual degree at most three* (21) | none | `8f5c53106` | Part II, Section 9 |
+| 14 | 14 | `universal-sink-last-gap-package` | *Sharp final coefficient bounds for directed cores with universal sinks* (4) | none | `8f5c53106` | Part III, Section 10 |
+| 10 | 10 | `universal-sink-all-degrees-package` | *Rank ultra log concavity for four vertex cores with universal sinks* (5) | none | `8f5c53106` | Part III, Section 11 |
+| 34 | 34 | `universal-sink-five-core-package` | *Rank five ultra log concavity for five vertex cores with universal sinks* (6) | none | `8f5c53106` | Part III, Section 12 |
+| 06 | 07 (part 1, carries the manuscript), 06 (part 2) | `universal-sink-five-core-boundary-package-part-1`, `-part-2` | *The rank four boundary for five vertex cores with universal sinks* (7) | none | `8f5c53106` | Part III, Section 13 |
+| 35 | batch 77, archive 71 (six ZIP parts in one archive) | `universal-sink-five-core-cubic-package` | *The cubic boundary for five-vertex cores with universal sinks* (5) | none | `089d2b825` | Part III, Section 14 |
+| — | 31 | `weighted-degree-three-package` | *Vertex-weighted preorder support polynomials of actual degree at most three* (17) | none | not staged | superseded by 22; its theorem is Corollary 9.14 (the case `u = v`) |
+| — | 13 | `universal-sink-degree-four-package` | *Weighted degree four rank ultra log concavity for universal sink extensions* (5) | none | not staged | superseded by 10; one remark in Part III |
+
+Sources are numbered by their batch-73 manuscript numbers; a package
+delivered in several archives takes its lowest number. Source 35 is
+batch-77 manuscript 71 (arrival commit `096ee7b87`, 2 October 2026); as an
+addition it takes the next number after the report's highest, 34, and its
+files the prefix `35-five-core-cubic-`. "Pin" is the ProveIt
+commit a manuscript cites (`d5e863bba`, "Write batch 70 (4/5)", for
+`preorder-root-polytopes`); the other manuscripts cite no ProveIt commit,
+and every other 40-digit hexadecimal string in the packages is a SHA-256
+of a package file.
+
+**Status.** AI-assisted, unrefereed, not formalized. The title pages of
+sources 11, 12, 15, 16, 20, 22 and 25 read "Research manuscript prepared for
+Vladimir Reshetnikov" and their PDF metadata "Research manuscript prepared
+with OpenAI" (the visible title pages do not mention OpenAI); sources 06,
+10, 14, 34 and 35 read "Research note"; source 23 has no author line. The
+degree-three and degree-four theorems of Part I, source 22's main theorem,
+source 12's boundary theorem (and through it source 11's theorem), and the
+first interior inequalities of sources 10, 34 and 06, and source 35's
+two-sink lemma (hence its cubic boundary) are **computer-assisted**: their
+proofs include exact finite certificate computations, shipped here except
+source 16's files larger than 2 MB, source 06's bounded-sink certificates
+and source 35's certificate shards, which stay in the arrival commits (see "Reconstructing what is not
+shipped"). The other theorems have ordinary proofs. No
+statement is formalized in Lean or Rocq, and no source claims
+literature-wide priority.
+
+The report has three Parts: **Part I**, unit activities on finite preorders
+through actual degree four (sources 25, 16, 23); **Part II**, independent
+role activities and small covers (sources 20, 12, 11, 15, 22); **Part III**,
+universal-sink clouds over an arbitrary directed core (sources 14, 10, 34,
+06, 35). Every result, proof, example, remark, limitation and research question
+of every source is printed. A result proved by several sources is printed
+once, with the other proofs kept as marked second routes or, where the
+proof is the same, replaced by a pointer (Appendix A.3 of the article lists
+every such choice). Results that `preorder-root-polytopes` or
+`matching-rank-normalization` already prove are cited by label.
+
+## Files
+
+The listing matches the directory. Every file except `article.tex`,
+`article.pdf`, `README.md` and the two derived containers
+`data/34-five-core-certificate-data.tar.xz` and
+`data/35-five-core-cubic-inputs-structural-9608.json.xz` is a delivered
+file, byte for byte, renamed to `NN-slug-` followed by its delivered path with `/`
+replaced by `-` and long directory names abbreviated (for example
+`independent-audit/` → `ia-`, `four-attachment/` → `a4-`; source 16's
+`reproducibility/sources/preorder-gamma-degree4/` is dropped). Code is in
+`code/`, recorded outputs, certificates and receipts in `data/`, audit and
+proof-note Markdown at the top. The second column gives each file's
+delivered path inside its package (for source 16 inside the assembled
+four-part package, for source 06 inside the assembled two-part package, for source 35
+inside its merged six-part package, whose parts all have the top-level
+directory `universal-sink-five-core-cubic-result/`).
+
+```
+article.tex        the report (pdfLaTeX), standalone, internal bibliography
+article.pdf        the compiled report, 113 pages (title page and contents, then the three Parts and Appendix A)
+README.md          this guide
+```
+
+```
+06-five-core-boundary-FIVE_TAILS_FINITE_SINKS.md                                       source 06 (archive 07), Part III: `FIVE_TAILS_FINITE_SINKS.md`
+06-five-core-boundary-FOUR_ACTIVE_TAILS.md                                             source 06 (archive 07), Part III: `FOUR_ACTIVE_TAILS.md`
+06-five-core-boundary-audits-INDEPENDENT_CERTIFICATE_AUDIT.md                          source 06 (archive 07), Part III: `audits/INDEPENDENT_CERTIFICATE_AUDIT.md`
+10-sink-all-degrees-audit-mathematical-and-exact-audit.md                              source 10, Part III: `audit/mathematical-and-exact-audit.md`
+10-sink-all-degrees-proof-notes-ACTUAL_DEGREE_CLOSURE.md                               source 10, Part III: `proof-notes/ACTUAL_DEGREE_CLOSURE.md`
+11-physical-cover-audits-assembly-audit.md                                             source 11, Part II: `audits/assembly-audit.md`
+11-physical-cover-audits-integrated-paper-audit.md                                     source 11, Part II: `audits/integrated-paper-audit.md`
+11-physical-cover-proof-notes-PHYSICAL_COVER_THREE_ULC.md                              source 11, Part II: `proof-notes/PHYSICAL_COVER_THREE_ULC.md`
+11-physical-cover-proof-notes-STRICTNESS_COROLLARIES.md                                source 11, Part II: `proof-notes/STRICTNESS_COROLLARIES.md`
+12-three-core-rayleigh-audits-boundary-audit.md                                        source 12, Part II: `audits/boundary-audit.md`
+12-three-core-rayleigh-audits-core-rayleigh-audit.md                                   source 12, Part II: `audits/core-rayleigh-audit.md`
+12-three-core-rayleigh-audits-four-core-audit.md                                       source 12, Part II: `audits/four-core-audit.md`
+12-three-core-rayleigh-audits-integrated-paper-audit.md                                source 12, Part II: `audits/integrated-paper-audit.md`
+12-three-core-rayleigh-proof-notes-COEFFICIENTWISE_BOUNDARY_LEMMA.md                   source 12, Part II: `proof-notes/COEFFICIENTWISE_BOUNDARY_LEMMA.md`
+12-three-core-rayleigh-proof-notes-CORE_RAYLEIGH_COROLLARY.md                          source 12, Part II: `proof-notes/CORE_RAYLEIGH_COROLLARY.md`
+12-three-core-rayleigh-proof-notes-FOUR_CORE_COEFFICIENT_OBSTRUCTION.md                source 12, Part II: `proof-notes/FOUR_CORE_COEFFICIENT_OBSTRUCTION.md`
+14-sink-last-gap-audit-mathematical-audit.md                                           source 14, Part III: `audit/mathematical-audit.md`
+14-sink-last-gap-proof-notes-UNIVERSAL_SINK_LAST_GAP.md                                source 14, Part III: `proof-notes/UNIVERSAL_SINK_LAST_GAP.md`
+15-pendant-support-audits-bipartition-audit.md                                         source 15, Part II: `audits/bipartition-audit.md`
+15-pendant-support-audits-integrated-paper-audit.md                                    source 15, Part II: `audits/integrated-paper-audit.md`
+15-pendant-support-audits-pendant-audit.md                                             source 15, Part II: `audits/pendant-audit.md`
+15-pendant-support-proof-notes-BIPARTITE_ORIENTATION_LEMMA.md                          source 15, Part II: `proof-notes/BIPARTITE_ORIENTATION_LEMMA.md`
+15-pendant-support-proof-notes-PENDANT_HEAD_HPP_CRITERION.md                           source 15, Part II: `proof-notes/PENDANT_HEAD_HPP_CRITERION.md`
+16-degree-four-EXTERIOR_LORENTZIAN_INDEPENDENT_AUDIT.md                                source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/EXTERIOR_LORENTZIAN_INDEPENDENT_AUDIT.md`
+16-degree-four-EXTERIOR_LORENTZIAN_LEMMA.md                                            source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/EXTERIOR_LORENTZIAN_LEMMA.md`
+16-degree-four-README.md                                                               source 16 (archive 19), Part I: `reproducibility/README.md`
+16-degree-four-RESULT.md                                                               source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/RESULT.md`
+16-degree-four-a2-README.md                                                            source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/README.md`
+16-degree-four-a3-README.md                                                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/three-attachment/README.md`
+16-degree-four-a4-INTEGER_CERTIFICATE_METHOD.md                                        source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/INTEGER_CERTIFICATE_METHOD.md`
+16-degree-four-api-AUDIT.md                                                            source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/audit-positivity-independent/AUDIT.md`
+16-degree-four-bc-BALANCED_LAST_GAP_PROOF.md                                           source 16 (archive 19), Part I: `reproducibility/sources/balanced-core-gamma-research/BALANCED_LAST_GAP_PROOF.md`
+16-degree-four-bc-ia-BALANCED_INDEPENDENT_AUDIT.md                                     source 16, Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/BALANCED_INDEPENDENT_AUDIT.md`
+16-degree-four-bc-ic-ELEMENTARY_STABILITY_OPERATORS.md                                 source 16, Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/ELEMENTARY_STABILITY_OPERATORS.md`
+16-degree-four-bc-ic-MERGE_BY_DIFFERENTIATION.md                                       source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/MERGE_BY_DIFFERENTIATION.md`
+16-degree-four-bc-ic-ia-ELEMENTARY_STABILITY_OPERATORS_INDEPENDENT_AUDIT.md            source 16 (archive 19), Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/ELEMENTARY_STABILITY_OPERATORS_INDEPENDENT_AUDIT.md`
+16-degree-four-bc-uc-DELETION_AVERAGE_LEMMA.md                                         source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/unbalanced-core/DELETION_AVERAGE_LEMMA.md`
+16-degree-four-bc-uc-UNBALANCED_LAST_GAP_PROOF.md                                      source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/unbalanced-core/UNBALANCED_LAST_GAP_PROOF.md`
+16-degree-four-bc-uc-ia-OUTWARD_STAR_INDEPENDENT_AUDIT.md                              source 16 (archive 17), Part I: `reproducibility/sources/balanced-core-gamma-research/unbalanced-core/independent-audit/OUTWARD_STAR_INDEPENDENT_AUDIT.md`
+16-degree-four-ia-INDEPENDENT_AUDIT.md                                                 source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/INDEPENDENT_AUDIT.md`
+16-degree-four-ia-a2-KERNEL_COVERAGE_AUDIT.md                                          source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/KERNEL_COVERAGE_AUDIT.md`
+16-degree-four-ia-a3-AUDIT.md                                                          source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/AUDIT.md`
+16-degree-four-ia-a3-KERNEL_COVERAGE_AUDIT.md                                          source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/KERNEL_COVERAGE_AUDIT.md`
+16-degree-four-ia-a3-POSITIVITY_AUDIT.md                                               source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/POSITIVITY_AUDIT.md`
+16-degree-four-ia-a4-FACE_ORBIT_AUDIT.md                                               source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/FACE_ORBIT_AUDIT.md`
+16-degree-four-ia-a4-GLOBAL_BINOMIAL_SQUARE_AUDIT.md                                   source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/GLOBAL_BINOMIAL_SQUARE_AUDIT.md`
+16-degree-four-ia-a4-KERNEL_COVERAGE_AUDIT.md                                          source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/KERNEL_COVERAGE_AUDIT.md`
+16-degree-four-ia-a4-MEDIUM_CHECKPOINT1_AUDIT.md                                       source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/MEDIUM_CHECKPOINT1_AUDIT.md`
+16-degree-four-ia-a4-REPRODUCE_A4.md                                                   source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/REPRODUCE_A4.md`
+16-degree-four-ia-a4-SMALL_TEMPLATE_POSITIVITY_AUDIT.md                                source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/SMALL_TEMPLATE_POSITIVITY_AUDIT.md`
+20-role-cover-final-audit-INDEPENDENT_REVIEW.md                                        source 20, Part II: `final-audit/INDEPENDENT_REVIEW.md`
+20-role-cover-proofs-BALANCED_REAL_ROOTEDNESS_PROOF.md                                 source 20, Part II: `proofs/BALANCED_REAL_ROOTEDNESS_PROOF.md`
+20-role-cover-proofs-ia-BALANCED_REAL_ROOTEDNESS_INDEPENDENT_AUDIT.md                  source 20, Part II: `proofs/independent-audit/BALANCED_REAL_ROOTEDNESS_INDEPENDENT_AUDIT.md`
+20-role-cover-proofs-ia-FREE_PRODUCT_COROLLARY_AUDIT.md                                source 20, Part II: `proofs/independent-audit/FREE_PRODUCT_COROLLARY_AUDIT.md`
+20-role-cover-proofs-ic-DISJOINT_CORE_EDGES_REAL_ROOTEDNESS.md                         source 20, Part II: `proofs/incomplete-core/DISJOINT_CORE_EDGES_REAL_ROOTEDNESS.md`
+20-role-cover-proofs-ic-ONE_MISSING_EDGE_REAL_ROOTEDNESS.md                            source 20, Part II: `proofs/incomplete-core/ONE_MISSING_EDGE_REAL_ROOTEDNESS.md`
+20-role-cover-proofs-ic-STAR_CORE_REAL_ROOTEDNESS.md                                   source 20, Part II: `proofs/incomplete-core/STAR_CORE_REAL_ROOTEDNESS.md`
+20-role-cover-proofs-ic-TWO_BY_TWO_ROLE_COVER_THEOREM.md                               source 20, Part II: `proofs/incomplete-core/TWO_BY_TWO_ROLE_COVER_THEOREM.md`
+20-role-cover-proofs-ic-ia-DISJOINT_CORE_EDGES_INDEPENDENT_AUDIT.md                    source 20, Part II: `proofs/incomplete-core/independent-audit/DISJOINT_CORE_EDGES_INDEPENDENT_AUDIT.md`
+20-role-cover-proofs-ic-ia-ONE_MISSING_EDGE_INDEPENDENT_AUDIT.md                       source 20, Part II: `proofs/incomplete-core/independent-audit/ONE_MISSING_EDGE_INDEPENDENT_AUDIT.md`
+20-role-cover-proofs-ic-ia-STAR_CORE_INDEPENDENT_AUDIT.md                              source 20, Part II: `proofs/incomplete-core/independent-audit/STAR_CORE_INDEPENDENT_AUDIT.md`
+20-role-cover-proofs-ic-ia-TWO_BY_TWO_ROLE_COVER_INDEPENDENT_AUDIT.md                  source 20, Part II: `proofs/incomplete-core/independent-audit/TWO_BY_TWO_ROLE_COVER_INDEPENDENT_AUDIT.md`
+22-independent-role-proofs-A2_ALL_ROLE_ULC.md                                          source 22, Part II: `proofs/A2_ALL_ROLE_ULC.md`
+22-independent-role-proofs-A2_MIXED_ROLE_ULC.md                                        source 22, Part II: `proofs/A2_MIXED_ROLE_ULC.md`
+22-independent-role-proofs-A2_SAME_SIGN_MOMENT_CONE.md                                 source 22, Part II: `proofs/A2_SAME_SIGN_MOMENT_CONE.md`
+22-independent-role-proofs-ARTICULATION_RANK_ONE_RR.md                                 source 22, Part II: `proofs/ARTICULATION_RANK_ONE_RR.md`
+22-independent-role-proofs-BOUNDARY_REDUCTIONS.md                                      source 22, Part II: `proofs/BOUNDARY_REDUCTIONS.md`
+22-independent-role-proofs-FIVE_VERTEX_DELETION_AND_GLUING.md                          source 22, Part II: `proofs/FIVE_VERTEX_DELETION_AND_GLUING.md`
+22-independent-role-proofs-GENERAL_EXTREMAL_BLOCK_REDUCTION.md                         source 22, Part II: `proofs/GENERAL_EXTREMAL_BLOCK_REDUCTION.md`
+22-independent-role-proofs-INDEPENDENT_ROLE_WEIGHTED_DEGREE3_THEOREM.md                source 22, Part II: `proofs/INDEPENDENT_ROLE_WEIGHTED_DEGREE3_THEOREM.md`
+22-independent-role-proofs-MIXED_THREE_CORE_RR.md                                      source 22, Part II: `proofs/MIXED_THREE_CORE_RR.md`
+22-independent-role-proofs-ONE_TAIL_HPP_ROLE_COVER.md                                  source 22, Part II: `proofs/ONE_TAIL_HPP_ROLE_COVER.md`
+22-independent-role-proofs-ROLE_MATCHING_RANK_THREE_COROLLARY.md                       source 22, Part II: `proofs/ROLE_MATCHING_RANK_THREE_COROLLARY.md`
+22-independent-role-proofs-ROLE_TOTAL_PREORDER_DEGREE3.md                              source 22, Part II: `proofs/ROLE_TOTAL_PREORDER_DEGREE3.md`
+22-independent-role-proofs-SAME_ORIENTATION_THREE_CORE_RAYLEIGH.md                     source 22, Part II: `proofs/SAME_ORIENTATION_THREE_CORE_RAYLEIGH.md`
+22-independent-role-proofs-SIDE1565_HPP_FINAL_CASE.md                                  source 22, Part II: `proofs/SIDE1565_HPP_FINAL_CASE.md`
+22-independent-role-proofs-SIX_VERTEX_ROLE_ULC.md                                      source 22, Part II: `proofs/SIX_VERTEX_ROLE_ULC.md`
+22-independent-role-proofs-ZERO_ROLE_ACTIVITY_FILTERING.md                             source 22, Part II: `proofs/ZERO_ROLE_ACTIVITY_FILTERING.md`
+22-independent-role-proofs-gallai-edmonds-GALLAI_EDMONDS_REDUCTION.md                  source 22, Part II: `proofs/gallai-edmonds/GALLAI_EDMONDS_REDUCTION.md`
+22-independent-role-proofs-gallai-edmonds-STRUCTURAL_AUDIT.md                          source 22, Part II: `proofs/gallai-edmonds/STRUCTURAL_AUDIT.md`
+23-template26-sources-ia-st26-DELETION_MIXTURE_INDEPENDENT_AUDIT.md                    source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/DELETION_MIXTURE_INDEPENDENT_AUDIT.md`
+23-template26-sources-ia-st26-TEMPLATE26_ASSEMBLY_INDEPENDENT_AUDIT.md                 source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/TEMPLATE26_ASSEMBLY_INDEPENDENT_AUDIT.md`
+23-template26-sources-st26-TEMPLATE26_LAST_GAP_PROOF.md                                source 23, Part I: `sources/preorder-gamma-degree4/structural-template26/TEMPLATE26_LAST_GAP_PROOF.md`
+23-template26-sources-st26-pc-DELETION_MIXTURE_LEMMA.md                                source 23, Part I: `sources/preorder-gamma-degree4/structural-template26/pair-compatibility/DELETION_MIXTURE_LEMMA.md`
+23-template26-sources-wpg-VERTEX_WEIGHTED_DEGREE3_THEOREM.md                           source 23, Part I: `sources/weighted-preorder-gamma/VERTEX_WEIGHTED_DEGREE3_THEOREM.md`
+34-five-core-ORDINARY_PROOFS.md                                                        source 34, Part III: `ORDINARY_PROOFS.md`
+34-five-core-audits-CERTIFICATE_AUDIT.md                                               source 34, Part III: `audits/CERTIFICATE_AUDIT.md`
+35-five-core-cubic-DEPENDENCIES.md                                                     source 35 (batch 77), Part III: `DEPENDENCIES.md`
+35-five-core-cubic-audits-FINAL_AUDIT.md                                               source 35 (batch 77), Part III: `audits/FINAL_AUDIT.md`
+35-five-core-cubic-audits-ONE_TAIL_HPP_SCOPE.md                                        source 35 (batch 77), Part III: `audits/ONE_TAIL_HPP_SCOPE.md`
+code/06-five-core-boundary-discovery-bounded_moment_cubic.py                           source 06 (archive 07), Part III: `discovery/bounded_moment_cubic.py`
+code/06-five-core-boundary-discovery-certify_four_active.py                            source 06 (archive 07), Part III: `discovery/certify_four_active.py`
+code/06-five-core-boundary-discovery-explicit_last.py                                  source 06 (archive 07), Part III: `discovery/explicit_last.py`
+code/06-five-core-boundary-discovery-orbits_four_active.cpp                            source 06 (archive 07), Part III: `discovery/orbits_four_active.cpp`
+code/06-five-core-boundary-discovery-pack_certificates.py                              source 06 (archive 07), Part III: `discovery/pack_certificates.py`
+code/06-five-core-boundary-discovery-packed_cubic.py                                   source 06 (archive 07), Part III: `discovery/packed_cubic.py`
+code/06-five-core-boundary-discovery-parallel_precise_bounded.py                       source 06 (archive 07), Part III: `discovery/parallel_precise_bounded.py`
+code/06-five-core-boundary-proof-check-check.py                                        source 06 (archive 07), Part III: `proof-check/check.py`
+code/06-five-core-boundary-proof-check-check_ordinary_lemmas.py                        source 06 (archive 07), Part III: `proof-check/check_ordinary_lemmas.py`
+code/06-five-core-boundary-verify.py                                                   source 06 (archive 07), Part III: `verify.py`
+code/10-sink-all-degrees-checker-check.py                                              source 10, Part III: `checker/check.py`
+code/10-sink-all-degrees-discovery-core_kernel.py                                      source 10, Part III: `discovery/core_kernel.py`
+code/10-sink-all-degrees-discovery-precise_sos.py                                      source 10, Part III: `discovery/precise_sos.py`
+code/10-sink-all-degrees-discovery-run_cloud_cubic.py                                  source 10, Part III: `discovery/run_cloud_cubic.py`
+code/10-sink-all-degrees-verify.py                                                     source 10, Part III: `verify.py`
+code/11-physical-cover-independent-check_assembly.py                                   source 11, Part II: `reproducibility/independent/check_assembly.py`
+code/11-physical-cover-producer-check_internal_assembly.py                             source 11, Part II: `reproducibility/producer/check_internal_assembly.py`
+code/11-physical-cover-verify.py                                                       source 11, Part II: `verify.py`
+code/12-three-core-rayleigh-independent-boundary-independent_boundary_check.py         source 12, Part II: `reproducibility/independent-boundary/independent_boundary_check.py`
+code/12-three-core-rayleigh-independent-four-core-independent_check.py                 source 12, Part II: `reproducibility/independent-four-core/independent_check.py`
+code/12-three-core-rayleigh-producer-boundary-universal_boundary_check.py              source 12, Part II: `reproducibility/producer-boundary/universal_boundary_check.py`
+code/12-three-core-rayleigh-producer-four-core-check_four_core_obstruction.py          source 12, Part II: `reproducibility/producer-four-core/check_four_core_obstruction.py`
+code/12-three-core-rayleigh-verify.py                                                  source 12, Part II: `verify.py`
+code/14-sink-last-gap-checker-independent-audit.py                                     source 14, Part III: `checker/independent/audit.py`
+code/14-sink-last-gap-checker-producer-verify_universal_sink.py                        source 14, Part III: `checker/producer/verify_universal_sink.py`
+code/14-sink-last-gap-verify.py                                                        source 14, Part III: `verify.py`
+code/15-pendant-support-independent-bipartite-audit_bipartition.py                     source 15, Part II: `reproducibility/independent-bipartite/audit_bipartition.py`
+code/15-pendant-support-independent-pendant-check_pendant_seed.py                      source 15, Part II: `reproducibility/independent-pendant/check_pendant_seed.py`
+code/15-pendant-support-producer-check_bipartite_orientation.py                        source 15, Part II: `reproducibility/producer/check_bipartite_orientation.py`
+code/15-pendant-support-producer-check_pendant_head_examples.py                        source 15, Part II: `reproducibility/producer/check_pendant_head_examples.py`
+code/15-pendant-support-verify.py                                                      source 15, Part II: `verify.py`
+code/16-degree-four-a2-enumerate.cpp                                                   source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/enumerate.cpp`
+code/16-degree-four-a2-verify_quartic_certificates.py                                  source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/verify_quartic_certificates.py`
+code/16-degree-four-a3-canonical.inc                                                   source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/three-attachment/canonical.inc`
+code/16-degree-four-a3-enumerate.cpp                                                   source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/three-attachment/enumerate.cpp`
+code/16-degree-four-a3-verify_certificates.py                                          source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/three-attachment/verify_certificates.py`
+code/16-degree-four-a4-coreE_pruned.py                                                 source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_coreE_pruned.py`
+code/16-degree-four-a4-coreE_screen.py                                                 source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_coreE_screen.py`
+code/16-degree-four-a4-coreE_shifted_gmp.py                                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_coreE_shifted_gmp.py`
+code/16-degree-four-a4-core_corrections.cpp                                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/core_corrections.cpp`
+code/16-degree-four-a4-enumerate_gap3_weighted_zeros.py                                source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/enumerate_gap3_weighted_zeros.py`
+code/16-degree-four-a4-exact_bareiss_remaining.cpp                                     source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/exact_bareiss_remaining.cpp`
+code/16-degree-four-a4-generate_templates.py                                           source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/generate_templates.py`
+code/16-degree-four-a4-global_integer_sextic_shifted_gmp.py                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp.py`
+code/16-degree-four-a4-integer_sos_common.py                                           source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/integer_sos_common.py`
+code/16-degree-four-a4-polynomials.cpp                                                 source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/polynomials.cpp`
+code/16-degree-four-a4-verify_global_integer_sextic_lifted.py                          source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/verify_global_integer_sextic_lifted.py`
+code/16-degree-four-a4-warm_integer_master.py                                          source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/warm_integer_master.py`
+code/16-degree-four-api-audit.py                                                       source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/audit-positivity-independent/audit.py`
+code/16-degree-four-bc-ia-check_balanced.cpp                                           source 16 (archive 17), Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_balanced.cpp`
+code/16-degree-four-bc-ia-producer_verify_bounds.py                                    source 16 (archive 17), Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/producer_verify_bounds.py`
+code/16-degree-four-bc-ia-producer_verify_decomposition.py                             source 16, Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/producer_verify_decomposition.py`
+code/16-degree-four-bc-ic-verify_incomplete_kernels.py                                 source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/verify_incomplete_kernels.py`
+code/16-degree-four-bc-ic-verify_matching_squares.py                                   source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/verify_matching_squares.py`
+code/16-degree-four-bc-ic-verify_rayleigh_squares.py                                   source 16 (archive 19), Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/verify_rayleigh_squares.py`
+code/16-degree-four-exhaust10_canonical.cpp                                            source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/exhaust10_canonical.cpp`
+code/16-degree-four-ia-a2-prepare_representatives.py                                   source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/prepare_representatives.py`
+code/16-degree-four-ia-a2-recount_a2.cpp                                               source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/recount_a2.cpp`
+code/16-degree-four-ia-a3-audit_positivity.py                                          source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/audit_positivity.py`
+code/16-degree-four-ia-a3-prepare.py                                                   source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/prepare.py`
+code/16-degree-four-ia-a3-recount.cpp                                                  source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/recount.cpp`
+code/16-degree-four-ia-a4-audit_core_correction.py                                     source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/audit_core_correction.py`
+code/16-degree-four-ia-a4-audit_face_orbits.py                                         source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/audit_face_orbits.py`
+code/16-degree-four-ia-a4-audit_global_binomial_squares.py                             source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/audit_global_binomial_squares.py`
+code/16-degree-four-ia-a4-audit_global_core_correction.py                              source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/audit_global_core_correction.py`
+code/16-degree-four-ia-a4-audit_population_batch.py                                    source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/audit_population_batch.py`
+code/16-degree-four-ia-a4-audit_small_faces.py                                         source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/audit_small_faces.py`
+code/16-degree-four-ia-a4-prepare.py                                                   source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/prepare.py`
+code/16-degree-four-ia-a4-recount.cpp                                                  source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/recount.cpp`
+code/16-degree-four-ia-a4-refresh_progress.py                                          source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/refresh_progress.py`
+code/16-degree-four-ia-a4-refresh_replay_inputs.py                                     source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/refresh_replay_inputs.py`
+code/16-degree-four-ia-audit_certificate.py                                            source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/audit_certificate.py`
+code/16-degree-four-ia-recount_hall.cpp                                                source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/recount_hall.cpp`
+code/16-degree-four-pendant10_canonical.cpp                                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/pendant10_canonical.cpp`
+code/16-degree-four-verify.py                                                          source 16 (archive 18), Part I: `reproducibility/verify.py`
+code/16-degree-four-verify_pendant_certificate.py                                      source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/verify_pendant_certificate.py`
+code/20-role-cover-proofs-ia-check_disjoint_monomer.cpp                                source 20, Part II: `proofs/independent-audit/check_disjoint_monomer.cpp`
+code/20-role-cover-proofs-ia-check_full_monomer.cpp                                    source 20, Part II: `proofs/independent-audit/check_full_monomer.cpp`
+code/20-role-cover-proofs-ia-check_missing_edge_monomer.cpp                            source 20, Part II: `proofs/independent-audit/check_missing_edge_monomer.cpp`
+code/20-role-cover-proofs-ia-check_star_monomer.cpp                                    source 20, Part II: `proofs/independent-audit/check_star_monomer.cpp`
+code/20-role-cover-proofs-ic-ia-check_disjoint_rayleigh_aggregate.py                   source 20, Part II: `proofs/incomplete-core/independent-audit/check_disjoint_rayleigh_aggregate.py`
+code/20-role-cover-proofs-ic-ia-check_rayleigh_aggregate.py                            source 20, Part II: `proofs/incomplete-core/independent-audit/check_rayleigh_aggregate.py`
+code/20-role-cover-verify.py                                                           source 20, Part II: `verify.py`
+code/22-independent-role-proofs-final-rayleigh-verify_side1565_rayleigh.py             source 22, Part II: `proofs/final-rayleigh/verify_side1565_rayleigh.py`
+code/22-independent-role-verify.py                                                     source 22, Part II: `verify.py`
+code/23-template26-sources-ia-st26-audit_deletion_mixture.py                           source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/audit_deletion_mixture.py`
+code/23-template26-sources-ia-st26-audit_template26_assembly.py                        source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/audit_template26_assembly.py`
+code/23-template26-verify.py                                                           source 23, Part I: `verify.py`
+code/25-degree-three-code-a1-audit_independent.cpp                                     source 25, Part I: `code/one-attachment/audit_independent.cpp`
+code/25-degree-three-code-a1-certify.cpp                                               source 25, Part I: `code/one-attachment/certify.cpp`
+code/25-degree-three-code-a1-verify.py                                                 source 25, Part I: `code/one-attachment/verify.py`
+code/25-degree-three-code-a2-generate.py                                               source 25, Part I: `code/two-attachment/generate.py`
+code/25-degree-three-code-a2-independent_audit.py                                      source 25, Part I: `code/two-attachment/independent_audit.py`
+code/25-degree-three-code-a2-verify_gap2_certificates.py                               source 25, Part I: `code/two-attachment/verify_gap2_certificates.py`
+code/25-degree-three-code-a2-verify_hall.cpp                                           source 25, Part I: `code/two-attachment/verify_hall.cpp`
+code/25-degree-three-code-a2-verify_independent.py                                     source 25, Part I: `code/two-attachment/verify_independent.py`
+code/25-degree-three-code-audit_cover3.py                                              source 25, Part I: `code/audit_cover3.py`
+code/25-degree-three-code-core_templates.py                                            source 25, Part I: `code/core_templates.py`
+code/25-degree-three-code-cover3.py                                                    source 25, Part I: `code/cover3.py`
+code/25-degree-three-code-export_cover3.py                                             source 25, Part I: `code/export_cover3.py`
+code/25-degree-three-code-layered.py                                                   source 25, Part I: `code/layered.py`
+code/25-degree-three-code-minimum-certify_min_size.cpp                                 source 25, Part I: `code/minimum/certify_min_size.cpp`
+code/25-degree-three-code-minimum-ia-audit.py                                          source 25, Part I: `code/minimum/independent-audit/audit.py`
+code/25-degree-three-code-minimum-scan_a2.py                                           source 25, Part I: `code/minimum/scan_a2.py`
+code/25-degree-three-code-minimum-scan_minimum.py                                      source 25, Part I: `code/minimum/scan_minimum.py`
+code/25-degree-three-code-minimum-verify_15_supports.py                                source 25, Part I: `code/minimum/verify_15_supports.py`
+code/25-degree-three-code-small-check-exhaust.cpp                                      source 25, Part I: `code/small-check/exhaust.cpp`
+code/25-degree-three-code-small-check-exhaust7.cpp                                     source 25, Part I: `code/small-check/exhaust7.cpp`
+code/25-degree-three-code-small-check-independent_verify.py                            source 25, Part I: `code/small-check/independent_verify.py`
+code/25-degree-three-code-verify_cover3_compact.py                                     source 25, Part I: `code/verify_cover3_compact.py`
+code/25-degree-three-code-verify_cover3_sdp_complete.py                                source 25, Part I: `code/verify_cover3_sdp_complete.py`
+code/25-degree-three-code-verify_cover3_sos.py                                         source 25, Part I: `code/verify_cover3_sos.py`
+code/25-degree-three-code-verify_layered.py                                            source 25, Part I: `code/verify_layered.py`
+code/25-degree-three-verify_all.py                                                     source 25, Part I: `verify_all.py`
+code/34-five-core-discovery-discover.py                                                source 34, Part III: `discovery/discover.py`
+code/34-five-core-discovery-kernel.py                                                  source 34, Part III: `discovery/kernel.py`
+code/34-five-core-discovery-orbits.cpp                                                 source 34, Part III: `discovery/orbits.cpp`
+code/34-five-core-discovery-pair_tools.py                                              source 34, Part III: `discovery/pair_tools.py`
+code/34-five-core-discovery-poly.py                                                    source 34, Part III: `discovery/poly.py`
+code/34-five-core-proof-check-check.py                                                 source 34, Part III: `proof-check/check.py`
+code/34-five-core-proof-check-check_strengthening_counterexample.py                    source 34, Part III: `proof-check/check_strengthening_counterexample.py`
+code/34-five-core-verify.py                                                            source 34, Part III: `verify.py`
+code/35-five-core-cubic-replay-check.py                                                source 35 (batch 77), Part III: `replay/check.py`
+code/35-five-core-cubic-replay-check_extended.py                                       source 35 (batch 77), Part III: `replay/check_extended.py`
+code/35-five-core-cubic-replay-check_fast.py                                           source 35 (batch 77), Part III: `replay/check_fast.py`
+code/35-five-core-cubic-replay-check_sharpness_portable.py                             source 35 (batch 77), Part III: `replay/check_sharpness_portable.py`
+code/35-five-core-cubic-replay-hybrid_extended.py                                      source 35 (batch 77), Part III: `replay/hybrid_extended.py`
+code/35-five-core-cubic-replay-selftest_extended_portable.py                           source 35 (batch 77), Part III: `replay/selftest_extended_portable.py`
+code/35-five-core-cubic-replay-selftest_multiplier_portable.py                         source 35 (batch 77), Part III: `replay/selftest_multiplier_portable.py`
+code/35-five-core-cubic-replay-structural.py                                           source 35 (batch 77), Part III: `replay/structural.py`
+code/35-five-core-cubic-verify.py                                                      source 35 (batch 77), Part III: `verify.py`
+data/06-five-core-boundary-audits-article-certificate-approval.json                    source 06 (archive 07), Part III: `audits/article-certificate-approval.json`
+data/06-five-core-boundary-audits-article-ordinary-scope-approval.json                 source 06 (archive 07), Part III: `audits/article-ordinary-scope-approval.json`
+data/06-five-core-boundary-audits-compressed-certificate-parts.json                    source 06 (archive 07), Part III: `audits/compressed-certificate-parts.json`
+data/06-five-core-boundary-audits-four-active-certificate-manifest.json                source 06 (archive 07), Part III: `audits/four-active-certificate-manifest.json`
+data/06-five-core-boundary-audits-four-active-compression.json                         source 06 (archive 07), Part III: `audits/four-active-compression.json`
+data/06-five-core-boundary-audits-four-active-receipt.json                             source 06 (archive 07), Part III: `audits/four-active-receipt.json`
+data/06-five-core-boundary-audits-four-sink-receipt.json                               source 06 (archive 07), Part III: `audits/four-sink-receipt.json`
+data/06-five-core-boundary-audits-ordinary-scope-approval.json                         source 06 (archive 07), Part III: `audits/ordinary-scope-approval.json`
+data/06-five-core-boundary-audits-verification-receipt.json                            source 06 (archive 07), Part III: `audits/verification-receipt.json`
+data/06-five-core-boundary-catalogs-four_active_cores.txt                              source 06 (archive 07), Part III: `catalogs/four_active_cores.txt`
+data/06-five-core-boundary-four-active-certificates.tar.xz                             source 06 (archive 07), Part III: `four-active-certificates.tar.xz`
+data/06-five-core-boundary-qa-visual-review.json                                       source 06 (archive 07), Part III: `qa/visual-review.json`
+data/10-sink-all-degrees-audit-article-approval.json                                   source 10, Part III: `audit/article-approval.json`
+data/10-sink-all-degrees-audit-independent-original-receipt.json                       source 10, Part III: `audit/independent-original-receipt.json`
+data/10-sink-all-degrees-audit-producer-fresh-replay.json                              source 10, Part III: `audit/producer-fresh-replay.json`
+data/10-sink-all-degrees-certificate-data-catalog.json                                 source 10, Part III: `certificate-data/catalog.json`
+data/10-sink-all-degrees-certificate-data-certificate_0.json                           source 10, Part III: `certificate-data/certificate_0.json`
+data/10-sink-all-degrees-certificate-data-certificate_1.json                           source 10, Part III: `certificate-data/certificate_1.json`
+data/10-sink-all-degrees-certificate-data-certificate_10.json                          source 10, Part III: `certificate-data/certificate_10.json`
+data/10-sink-all-degrees-certificate-data-certificate_100.json                         source 10, Part III: `certificate-data/certificate_100.json`
+data/10-sink-all-degrees-certificate-data-certificate_101.json                         source 10, Part III: `certificate-data/certificate_101.json`
+data/10-sink-all-degrees-certificate-data-certificate_102.json                         source 10, Part III: `certificate-data/certificate_102.json`
+data/10-sink-all-degrees-certificate-data-certificate_103.json                         source 10, Part III: `certificate-data/certificate_103.json`
+data/10-sink-all-degrees-certificate-data-certificate_104.json                         source 10, Part III: `certificate-data/certificate_104.json`
+data/10-sink-all-degrees-certificate-data-certificate_105.json                         source 10, Part III: `certificate-data/certificate_105.json`
+data/10-sink-all-degrees-certificate-data-certificate_106.json                         source 10, Part III: `certificate-data/certificate_106.json`
+data/10-sink-all-degrees-certificate-data-certificate_107.json                         source 10, Part III: `certificate-data/certificate_107.json`
+data/10-sink-all-degrees-certificate-data-certificate_108.json                         source 10, Part III: `certificate-data/certificate_108.json`
+data/10-sink-all-degrees-certificate-data-certificate_109.json                         source 10, Part III: `certificate-data/certificate_109.json`
+data/10-sink-all-degrees-certificate-data-certificate_11.json                          source 10, Part III: `certificate-data/certificate_11.json`
+data/10-sink-all-degrees-certificate-data-certificate_110.json                         source 10, Part III: `certificate-data/certificate_110.json`
+data/10-sink-all-degrees-certificate-data-certificate_111.json                         source 10, Part III: `certificate-data/certificate_111.json`
+data/10-sink-all-degrees-certificate-data-certificate_112.json                         source 10, Part III: `certificate-data/certificate_112.json`
+data/10-sink-all-degrees-certificate-data-certificate_113.json                         source 10, Part III: `certificate-data/certificate_113.json`
+data/10-sink-all-degrees-certificate-data-certificate_114.json                         source 10, Part III: `certificate-data/certificate_114.json`
+data/10-sink-all-degrees-certificate-data-certificate_115.json                         source 10, Part III: `certificate-data/certificate_115.json`
+data/10-sink-all-degrees-certificate-data-certificate_116.json                         source 10, Part III: `certificate-data/certificate_116.json`
+data/10-sink-all-degrees-certificate-data-certificate_117.json                         source 10, Part III: `certificate-data/certificate_117.json`
+data/10-sink-all-degrees-certificate-data-certificate_118.json                         source 10, Part III: `certificate-data/certificate_118.json`
+data/10-sink-all-degrees-certificate-data-certificate_119.json                         source 10, Part III: `certificate-data/certificate_119.json`
+data/10-sink-all-degrees-certificate-data-certificate_12.json                          source 10, Part III: `certificate-data/certificate_12.json`
+data/10-sink-all-degrees-certificate-data-certificate_120.json                         source 10, Part III: `certificate-data/certificate_120.json`
+data/10-sink-all-degrees-certificate-data-certificate_121.json                         source 10, Part III: `certificate-data/certificate_121.json`
+data/10-sink-all-degrees-certificate-data-certificate_122.json                         source 10, Part III: `certificate-data/certificate_122.json`
+data/10-sink-all-degrees-certificate-data-certificate_123.json                         source 10, Part III: `certificate-data/certificate_123.json`
+data/10-sink-all-degrees-certificate-data-certificate_124.json                         source 10, Part III: `certificate-data/certificate_124.json`
+data/10-sink-all-degrees-certificate-data-certificate_125.json                         source 10, Part III: `certificate-data/certificate_125.json`
+data/10-sink-all-degrees-certificate-data-certificate_126.json                         source 10, Part III: `certificate-data/certificate_126.json`
+data/10-sink-all-degrees-certificate-data-certificate_127.json                         source 10, Part III: `certificate-data/certificate_127.json`
+data/10-sink-all-degrees-certificate-data-certificate_128.json                         source 10, Part III: `certificate-data/certificate_128.json`
+data/10-sink-all-degrees-certificate-data-certificate_129.json                         source 10, Part III: `certificate-data/certificate_129.json`
+data/10-sink-all-degrees-certificate-data-certificate_13.json                          source 10, Part III: `certificate-data/certificate_13.json`
+data/10-sink-all-degrees-certificate-data-certificate_130.json                         source 10, Part III: `certificate-data/certificate_130.json`
+data/10-sink-all-degrees-certificate-data-certificate_131.json                         source 10, Part III: `certificate-data/certificate_131.json`
+data/10-sink-all-degrees-certificate-data-certificate_132.json                         source 10, Part III: `certificate-data/certificate_132.json`
+data/10-sink-all-degrees-certificate-data-certificate_133.json                         source 10, Part III: `certificate-data/certificate_133.json`
+data/10-sink-all-degrees-certificate-data-certificate_134.json                         source 10, Part III: `certificate-data/certificate_134.json`
+data/10-sink-all-degrees-certificate-data-certificate_135.json                         source 10, Part III: `certificate-data/certificate_135.json`
+data/10-sink-all-degrees-certificate-data-certificate_136.json                         source 10, Part III: `certificate-data/certificate_136.json`
+data/10-sink-all-degrees-certificate-data-certificate_137.json                         source 10, Part III: `certificate-data/certificate_137.json`
+data/10-sink-all-degrees-certificate-data-certificate_138.json                         source 10, Part III: `certificate-data/certificate_138.json`
+data/10-sink-all-degrees-certificate-data-certificate_139.json                         source 10, Part III: `certificate-data/certificate_139.json`
+data/10-sink-all-degrees-certificate-data-certificate_14.json                          source 10, Part III: `certificate-data/certificate_14.json`
+data/10-sink-all-degrees-certificate-data-certificate_140.json                         source 10, Part III: `certificate-data/certificate_140.json`
+data/10-sink-all-degrees-certificate-data-certificate_141.json                         source 10, Part III: `certificate-data/certificate_141.json`
+data/10-sink-all-degrees-certificate-data-certificate_142.json                         source 10, Part III: `certificate-data/certificate_142.json`
+data/10-sink-all-degrees-certificate-data-certificate_143.json                         source 10, Part III: `certificate-data/certificate_143.json`
+data/10-sink-all-degrees-certificate-data-certificate_144.json                         source 10, Part III: `certificate-data/certificate_144.json`
+data/10-sink-all-degrees-certificate-data-certificate_145.json                         source 10, Part III: `certificate-data/certificate_145.json`
+data/10-sink-all-degrees-certificate-data-certificate_146.json                         source 10, Part III: `certificate-data/certificate_146.json`
+data/10-sink-all-degrees-certificate-data-certificate_147.json                         source 10, Part III: `certificate-data/certificate_147.json`
+data/10-sink-all-degrees-certificate-data-certificate_148.json                         source 10, Part III: `certificate-data/certificate_148.json`
+data/10-sink-all-degrees-certificate-data-certificate_149.json                         source 10, Part III: `certificate-data/certificate_149.json`
+data/10-sink-all-degrees-certificate-data-certificate_15.json                          source 10, Part III: `certificate-data/certificate_15.json`
+data/10-sink-all-degrees-certificate-data-certificate_150.json                         source 10, Part III: `certificate-data/certificate_150.json`
+data/10-sink-all-degrees-certificate-data-certificate_151.json                         source 10, Part III: `certificate-data/certificate_151.json`
+data/10-sink-all-degrees-certificate-data-certificate_152.json                         source 10, Part III: `certificate-data/certificate_152.json`
+data/10-sink-all-degrees-certificate-data-certificate_153.json                         source 10, Part III: `certificate-data/certificate_153.json`
+data/10-sink-all-degrees-certificate-data-certificate_154.json                         source 10, Part III: `certificate-data/certificate_154.json`
+data/10-sink-all-degrees-certificate-data-certificate_155.json                         source 10, Part III: `certificate-data/certificate_155.json`
+data/10-sink-all-degrees-certificate-data-certificate_156.json                         source 10, Part III: `certificate-data/certificate_156.json`
+data/10-sink-all-degrees-certificate-data-certificate_157.json                         source 10, Part III: `certificate-data/certificate_157.json`
+data/10-sink-all-degrees-certificate-data-certificate_158.json                         source 10, Part III: `certificate-data/certificate_158.json`
+data/10-sink-all-degrees-certificate-data-certificate_159.json                         source 10, Part III: `certificate-data/certificate_159.json`
+data/10-sink-all-degrees-certificate-data-certificate_16.json                          source 10, Part III: `certificate-data/certificate_16.json`
+data/10-sink-all-degrees-certificate-data-certificate_160.json                         source 10, Part III: `certificate-data/certificate_160.json`
+data/10-sink-all-degrees-certificate-data-certificate_161.json                         source 10, Part III: `certificate-data/certificate_161.json`
+data/10-sink-all-degrees-certificate-data-certificate_162.json                         source 10, Part III: `certificate-data/certificate_162.json`
+data/10-sink-all-degrees-certificate-data-certificate_163.json                         source 10, Part III: `certificate-data/certificate_163.json`
+data/10-sink-all-degrees-certificate-data-certificate_164.json                         source 10, Part III: `certificate-data/certificate_164.json`
+data/10-sink-all-degrees-certificate-data-certificate_165.json                         source 10, Part III: `certificate-data/certificate_165.json`
+data/10-sink-all-degrees-certificate-data-certificate_166.json                         source 10, Part III: `certificate-data/certificate_166.json`
+data/10-sink-all-degrees-certificate-data-certificate_167.json                         source 10, Part III: `certificate-data/certificate_167.json`
+data/10-sink-all-degrees-certificate-data-certificate_168.json                         source 10, Part III: `certificate-data/certificate_168.json`
+data/10-sink-all-degrees-certificate-data-certificate_169.json                         source 10, Part III: `certificate-data/certificate_169.json`
+data/10-sink-all-degrees-certificate-data-certificate_17.json                          source 10, Part III: `certificate-data/certificate_17.json`
+data/10-sink-all-degrees-certificate-data-certificate_170.json                         source 10, Part III: `certificate-data/certificate_170.json`
+data/10-sink-all-degrees-certificate-data-certificate_171.json                         source 10, Part III: `certificate-data/certificate_171.json`
+data/10-sink-all-degrees-certificate-data-certificate_172.json                         source 10, Part III: `certificate-data/certificate_172.json`
+data/10-sink-all-degrees-certificate-data-certificate_173.json                         source 10, Part III: `certificate-data/certificate_173.json`
+data/10-sink-all-degrees-certificate-data-certificate_174.json                         source 10, Part III: `certificate-data/certificate_174.json`
+data/10-sink-all-degrees-certificate-data-certificate_175.json                         source 10, Part III: `certificate-data/certificate_175.json`
+data/10-sink-all-degrees-certificate-data-certificate_176.json                         source 10, Part III: `certificate-data/certificate_176.json`
+data/10-sink-all-degrees-certificate-data-certificate_177.json                         source 10, Part III: `certificate-data/certificate_177.json`
+data/10-sink-all-degrees-certificate-data-certificate_178.json                         source 10, Part III: `certificate-data/certificate_178.json`
+data/10-sink-all-degrees-certificate-data-certificate_179.json                         source 10, Part III: `certificate-data/certificate_179.json`
+data/10-sink-all-degrees-certificate-data-certificate_18.json                          source 10, Part III: `certificate-data/certificate_18.json`
+data/10-sink-all-degrees-certificate-data-certificate_180.json                         source 10, Part III: `certificate-data/certificate_180.json`
+data/10-sink-all-degrees-certificate-data-certificate_181.json                         source 10, Part III: `certificate-data/certificate_181.json`
+data/10-sink-all-degrees-certificate-data-certificate_182.json                         source 10, Part III: `certificate-data/certificate_182.json`
+data/10-sink-all-degrees-certificate-data-certificate_183.json                         source 10, Part III: `certificate-data/certificate_183.json`
+data/10-sink-all-degrees-certificate-data-certificate_184.json                         source 10, Part III: `certificate-data/certificate_184.json`
+data/10-sink-all-degrees-certificate-data-certificate_185.json                         source 10, Part III: `certificate-data/certificate_185.json`
+data/10-sink-all-degrees-certificate-data-certificate_186.json                         source 10, Part III: `certificate-data/certificate_186.json`
+data/10-sink-all-degrees-certificate-data-certificate_187.json                         source 10, Part III: `certificate-data/certificate_187.json`
+data/10-sink-all-degrees-certificate-data-certificate_188.json                         source 10, Part III: `certificate-data/certificate_188.json`
+data/10-sink-all-degrees-certificate-data-certificate_189.json                         source 10, Part III: `certificate-data/certificate_189.json`
+data/10-sink-all-degrees-certificate-data-certificate_19.json                          source 10, Part III: `certificate-data/certificate_19.json`
+data/10-sink-all-degrees-certificate-data-certificate_190.json                         source 10, Part III: `certificate-data/certificate_190.json`
+data/10-sink-all-degrees-certificate-data-certificate_191.json                         source 10, Part III: `certificate-data/certificate_191.json`
+data/10-sink-all-degrees-certificate-data-certificate_192.json                         source 10, Part III: `certificate-data/certificate_192.json`
+data/10-sink-all-degrees-certificate-data-certificate_193.json                         source 10, Part III: `certificate-data/certificate_193.json`
+data/10-sink-all-degrees-certificate-data-certificate_194.json                         source 10, Part III: `certificate-data/certificate_194.json`
+data/10-sink-all-degrees-certificate-data-certificate_195.json                         source 10, Part III: `certificate-data/certificate_195.json`
+data/10-sink-all-degrees-certificate-data-certificate_196.json                         source 10, Part III: `certificate-data/certificate_196.json`
+data/10-sink-all-degrees-certificate-data-certificate_197.json                         source 10, Part III: `certificate-data/certificate_197.json`
+data/10-sink-all-degrees-certificate-data-certificate_198.json                         source 10, Part III: `certificate-data/certificate_198.json`
+data/10-sink-all-degrees-certificate-data-certificate_199.json                         source 10, Part III: `certificate-data/certificate_199.json`
+data/10-sink-all-degrees-certificate-data-certificate_2.json                           source 10, Part III: `certificate-data/certificate_2.json`
+data/10-sink-all-degrees-certificate-data-certificate_20.json                          source 10, Part III: `certificate-data/certificate_20.json`
+data/10-sink-all-degrees-certificate-data-certificate_200.json                         source 10, Part III: `certificate-data/certificate_200.json`
+data/10-sink-all-degrees-certificate-data-certificate_201.json                         source 10, Part III: `certificate-data/certificate_201.json`
+data/10-sink-all-degrees-certificate-data-certificate_202.json                         source 10, Part III: `certificate-data/certificate_202.json`
+data/10-sink-all-degrees-certificate-data-certificate_203.json                         source 10, Part III: `certificate-data/certificate_203.json`
+data/10-sink-all-degrees-certificate-data-certificate_204.json                         source 10, Part III: `certificate-data/certificate_204.json`
+data/10-sink-all-degrees-certificate-data-certificate_205.json                         source 10, Part III: `certificate-data/certificate_205.json`
+data/10-sink-all-degrees-certificate-data-certificate_206.json                         source 10, Part III: `certificate-data/certificate_206.json`
+data/10-sink-all-degrees-certificate-data-certificate_207.json                         source 10, Part III: `certificate-data/certificate_207.json`
+data/10-sink-all-degrees-certificate-data-certificate_208.json                         source 10, Part III: `certificate-data/certificate_208.json`
+data/10-sink-all-degrees-certificate-data-certificate_209.json                         source 10, Part III: `certificate-data/certificate_209.json`
+data/10-sink-all-degrees-certificate-data-certificate_21.json                          source 10, Part III: `certificate-data/certificate_21.json`
+data/10-sink-all-degrees-certificate-data-certificate_210.json                         source 10, Part III: `certificate-data/certificate_210.json`
+data/10-sink-all-degrees-certificate-data-certificate_211.json                         source 10, Part III: `certificate-data/certificate_211.json`
+data/10-sink-all-degrees-certificate-data-certificate_212.json                         source 10, Part III: `certificate-data/certificate_212.json`
+data/10-sink-all-degrees-certificate-data-certificate_213.json                         source 10, Part III: `certificate-data/certificate_213.json`
+data/10-sink-all-degrees-certificate-data-certificate_214.json                         source 10, Part III: `certificate-data/certificate_214.json`
+data/10-sink-all-degrees-certificate-data-certificate_215.json                         source 10, Part III: `certificate-data/certificate_215.json`
+data/10-sink-all-degrees-certificate-data-certificate_216.json                         source 10, Part III: `certificate-data/certificate_216.json`
+data/10-sink-all-degrees-certificate-data-certificate_217.json                         source 10, Part III: `certificate-data/certificate_217.json`
+data/10-sink-all-degrees-certificate-data-certificate_22.json                          source 10, Part III: `certificate-data/certificate_22.json`
+data/10-sink-all-degrees-certificate-data-certificate_23.json                          source 10, Part III: `certificate-data/certificate_23.json`
+data/10-sink-all-degrees-certificate-data-certificate_24.json                          source 10, Part III: `certificate-data/certificate_24.json`
+data/10-sink-all-degrees-certificate-data-certificate_25.json                          source 10, Part III: `certificate-data/certificate_25.json`
+data/10-sink-all-degrees-certificate-data-certificate_26.json                          source 10, Part III: `certificate-data/certificate_26.json`
+data/10-sink-all-degrees-certificate-data-certificate_27.json                          source 10, Part III: `certificate-data/certificate_27.json`
+data/10-sink-all-degrees-certificate-data-certificate_28.json                          source 10, Part III: `certificate-data/certificate_28.json`
+data/10-sink-all-degrees-certificate-data-certificate_29.json                          source 10, Part III: `certificate-data/certificate_29.json`
+data/10-sink-all-degrees-certificate-data-certificate_3.json                           source 10, Part III: `certificate-data/certificate_3.json`
+data/10-sink-all-degrees-certificate-data-certificate_30.json                          source 10, Part III: `certificate-data/certificate_30.json`
+data/10-sink-all-degrees-certificate-data-certificate_31.json                          source 10, Part III: `certificate-data/certificate_31.json`
+data/10-sink-all-degrees-certificate-data-certificate_32.json                          source 10, Part III: `certificate-data/certificate_32.json`
+data/10-sink-all-degrees-certificate-data-certificate_33.json                          source 10, Part III: `certificate-data/certificate_33.json`
+data/10-sink-all-degrees-certificate-data-certificate_34.json                          source 10, Part III: `certificate-data/certificate_34.json`
+data/10-sink-all-degrees-certificate-data-certificate_35.json                          source 10, Part III: `certificate-data/certificate_35.json`
+data/10-sink-all-degrees-certificate-data-certificate_36.json                          source 10, Part III: `certificate-data/certificate_36.json`
+data/10-sink-all-degrees-certificate-data-certificate_37.json                          source 10, Part III: `certificate-data/certificate_37.json`
+data/10-sink-all-degrees-certificate-data-certificate_38.json                          source 10, Part III: `certificate-data/certificate_38.json`
+data/10-sink-all-degrees-certificate-data-certificate_39.json                          source 10, Part III: `certificate-data/certificate_39.json`
+data/10-sink-all-degrees-certificate-data-certificate_4.json                           source 10, Part III: `certificate-data/certificate_4.json`
+data/10-sink-all-degrees-certificate-data-certificate_40.json                          source 10, Part III: `certificate-data/certificate_40.json`
+data/10-sink-all-degrees-certificate-data-certificate_41.json                          source 10, Part III: `certificate-data/certificate_41.json`
+data/10-sink-all-degrees-certificate-data-certificate_42.json                          source 10, Part III: `certificate-data/certificate_42.json`
+data/10-sink-all-degrees-certificate-data-certificate_43.json                          source 10, Part III: `certificate-data/certificate_43.json`
+data/10-sink-all-degrees-certificate-data-certificate_44.json                          source 10, Part III: `certificate-data/certificate_44.json`
+data/10-sink-all-degrees-certificate-data-certificate_45.json                          source 10, Part III: `certificate-data/certificate_45.json`
+data/10-sink-all-degrees-certificate-data-certificate_46.json                          source 10, Part III: `certificate-data/certificate_46.json`
+data/10-sink-all-degrees-certificate-data-certificate_47.json                          source 10, Part III: `certificate-data/certificate_47.json`
+data/10-sink-all-degrees-certificate-data-certificate_48.json                          source 10, Part III: `certificate-data/certificate_48.json`
+data/10-sink-all-degrees-certificate-data-certificate_49.json                          source 10, Part III: `certificate-data/certificate_49.json`
+data/10-sink-all-degrees-certificate-data-certificate_5.json                           source 10, Part III: `certificate-data/certificate_5.json`
+data/10-sink-all-degrees-certificate-data-certificate_50.json                          source 10, Part III: `certificate-data/certificate_50.json`
+data/10-sink-all-degrees-certificate-data-certificate_51.json                          source 10, Part III: `certificate-data/certificate_51.json`
+data/10-sink-all-degrees-certificate-data-certificate_52.json                          source 10, Part III: `certificate-data/certificate_52.json`
+data/10-sink-all-degrees-certificate-data-certificate_53.json                          source 10, Part III: `certificate-data/certificate_53.json`
+data/10-sink-all-degrees-certificate-data-certificate_54.json                          source 10, Part III: `certificate-data/certificate_54.json`
+data/10-sink-all-degrees-certificate-data-certificate_55.json                          source 10, Part III: `certificate-data/certificate_55.json`
+data/10-sink-all-degrees-certificate-data-certificate_56.json                          source 10, Part III: `certificate-data/certificate_56.json`
+data/10-sink-all-degrees-certificate-data-certificate_57.json                          source 10, Part III: `certificate-data/certificate_57.json`
+data/10-sink-all-degrees-certificate-data-certificate_58.json                          source 10, Part III: `certificate-data/certificate_58.json`
+data/10-sink-all-degrees-certificate-data-certificate_59.json                          source 10, Part III: `certificate-data/certificate_59.json`
+data/10-sink-all-degrees-certificate-data-certificate_6.json                           source 10, Part III: `certificate-data/certificate_6.json`
+data/10-sink-all-degrees-certificate-data-certificate_60.json                          source 10, Part III: `certificate-data/certificate_60.json`
+data/10-sink-all-degrees-certificate-data-certificate_61.json                          source 10, Part III: `certificate-data/certificate_61.json`
+data/10-sink-all-degrees-certificate-data-certificate_62.json                          source 10, Part III: `certificate-data/certificate_62.json`
+data/10-sink-all-degrees-certificate-data-certificate_63.json                          source 10, Part III: `certificate-data/certificate_63.json`
+data/10-sink-all-degrees-certificate-data-certificate_64.json                          source 10, Part III: `certificate-data/certificate_64.json`
+data/10-sink-all-degrees-certificate-data-certificate_65.json                          source 10, Part III: `certificate-data/certificate_65.json`
+data/10-sink-all-degrees-certificate-data-certificate_66.json                          source 10, Part III: `certificate-data/certificate_66.json`
+data/10-sink-all-degrees-certificate-data-certificate_67.json                          source 10, Part III: `certificate-data/certificate_67.json`
+data/10-sink-all-degrees-certificate-data-certificate_68.json                          source 10, Part III: `certificate-data/certificate_68.json`
+data/10-sink-all-degrees-certificate-data-certificate_69.json                          source 10, Part III: `certificate-data/certificate_69.json`
+data/10-sink-all-degrees-certificate-data-certificate_7.json                           source 10, Part III: `certificate-data/certificate_7.json`
+data/10-sink-all-degrees-certificate-data-certificate_70.json                          source 10, Part III: `certificate-data/certificate_70.json`
+data/10-sink-all-degrees-certificate-data-certificate_71.json                          source 10, Part III: `certificate-data/certificate_71.json`
+data/10-sink-all-degrees-certificate-data-certificate_72.json                          source 10, Part III: `certificate-data/certificate_72.json`
+data/10-sink-all-degrees-certificate-data-certificate_73.json                          source 10, Part III: `certificate-data/certificate_73.json`
+data/10-sink-all-degrees-certificate-data-certificate_74.json                          source 10, Part III: `certificate-data/certificate_74.json`
+data/10-sink-all-degrees-certificate-data-certificate_75.json                          source 10, Part III: `certificate-data/certificate_75.json`
+data/10-sink-all-degrees-certificate-data-certificate_76.json                          source 10, Part III: `certificate-data/certificate_76.json`
+data/10-sink-all-degrees-certificate-data-certificate_77.json                          source 10, Part III: `certificate-data/certificate_77.json`
+data/10-sink-all-degrees-certificate-data-certificate_78.json                          source 10, Part III: `certificate-data/certificate_78.json`
+data/10-sink-all-degrees-certificate-data-certificate_79.json                          source 10, Part III: `certificate-data/certificate_79.json`
+data/10-sink-all-degrees-certificate-data-certificate_8.json                           source 10, Part III: `certificate-data/certificate_8.json`
+data/10-sink-all-degrees-certificate-data-certificate_80.json                          source 10, Part III: `certificate-data/certificate_80.json`
+data/10-sink-all-degrees-certificate-data-certificate_81.json                          source 10, Part III: `certificate-data/certificate_81.json`
+data/10-sink-all-degrees-certificate-data-certificate_82.json                          source 10, Part III: `certificate-data/certificate_82.json`
+data/10-sink-all-degrees-certificate-data-certificate_83.json                          source 10, Part III: `certificate-data/certificate_83.json`
+data/10-sink-all-degrees-certificate-data-certificate_84.json                          source 10, Part III: `certificate-data/certificate_84.json`
+data/10-sink-all-degrees-certificate-data-certificate_85.json                          source 10, Part III: `certificate-data/certificate_85.json`
+data/10-sink-all-degrees-certificate-data-certificate_86.json                          source 10, Part III: `certificate-data/certificate_86.json`
+data/10-sink-all-degrees-certificate-data-certificate_87.json                          source 10, Part III: `certificate-data/certificate_87.json`
+data/10-sink-all-degrees-certificate-data-certificate_88.json                          source 10, Part III: `certificate-data/certificate_88.json`
+data/10-sink-all-degrees-certificate-data-certificate_89.json                          source 10, Part III: `certificate-data/certificate_89.json`
+data/10-sink-all-degrees-certificate-data-certificate_9.json                           source 10, Part III: `certificate-data/certificate_9.json`
+data/10-sink-all-degrees-certificate-data-certificate_90.json                          source 10, Part III: `certificate-data/certificate_90.json`
+data/10-sink-all-degrees-certificate-data-certificate_91.json                          source 10, Part III: `certificate-data/certificate_91.json`
+data/10-sink-all-degrees-certificate-data-certificate_92.json                          source 10, Part III: `certificate-data/certificate_92.json`
+data/10-sink-all-degrees-certificate-data-certificate_93.json                          source 10, Part III: `certificate-data/certificate_93.json`
+data/10-sink-all-degrees-certificate-data-certificate_94.json                          source 10, Part III: `certificate-data/certificate_94.json`
+data/10-sink-all-degrees-certificate-data-certificate_95.json                          source 10, Part III: `certificate-data/certificate_95.json`
+data/10-sink-all-degrees-certificate-data-certificate_96.json                          source 10, Part III: `certificate-data/certificate_96.json`
+data/10-sink-all-degrees-certificate-data-certificate_97.json                          source 10, Part III: `certificate-data/certificate_97.json`
+data/10-sink-all-degrees-certificate-data-certificate_98.json                          source 10, Part III: `certificate-data/certificate_98.json`
+data/10-sink-all-degrees-certificate-data-certificate_99.json                          source 10, Part III: `certificate-data/certificate_99.json`
+data/10-sink-all-degrees-qa-visual-review.json                                         source 10, Part III: `qa/visual-review.json`
+data/11-physical-cover-audits-assembly-approval.json                                   source 11, Part II: `audits/assembly-approval.json`
+data/11-physical-cover-audits-integrated-paper-approval.json                           source 11, Part II: `audits/integrated-paper-approval.json`
+data/11-physical-cover-dependency-release-replay-approval.json                         source 11, Part II: `dependency/release-replay-approval.json`
+data/11-physical-cover-independent-independent_receipt.json                            source 11, Part II: `reproducibility/independent/independent_receipt.json`
+data/11-physical-cover-producer-assembly_verification.json                             source 11, Part II: `reproducibility/producer/assembly_verification.json`
+data/11-physical-cover-qa-visual-qa.json                                               source 11, Part II: `qa/visual-qa.json`
+data/12-three-core-rayleigh-audits-boundary-approval.json                              source 12, Part II: `audits/boundary-approval.json`
+data/12-three-core-rayleigh-audits-core-rayleigh-approval.json                         source 12, Part II: `audits/core-rayleigh-approval.json`
+data/12-three-core-rayleigh-audits-four-core-approval.json                             source 12, Part II: `audits/four-core-approval.json`
+data/12-three-core-rayleigh-audits-integrated-paper-approval.json                      source 12, Part II: `audits/integrated-paper-approval.json`
+data/12-three-core-rayleigh-independent-boundary-independent_receipt.json              source 12, Part II: `reproducibility/independent-boundary/independent_receipt.json`
+data/12-three-core-rayleigh-independent-four-core-independent_receipt.json             source 12, Part II: `reproducibility/independent-four-core/independent_receipt.json`
+data/12-three-core-rayleigh-producer-boundary-universal_boundary_receipt.json          source 12, Part II: `reproducibility/producer-boundary/universal_boundary_receipt.json`
+data/12-three-core-rayleigh-producer-four-core-four_core_obstruction_receipt.json      source 12, Part II: `reproducibility/producer-four-core/four_core_obstruction_receipt.json`
+data/12-three-core-rayleigh-qa-visual-qa.json                                          source 12, Part II: `qa/visual-qa.json`
+data/14-sink-last-gap-audit-article-approval.json                                      source 14, Part III: `audit/article-approval.json`
+data/14-sink-last-gap-audit-independent-original-receipt.json                          source 14, Part III: `audit/independent-original-receipt.json`
+data/14-sink-last-gap-audit-producer-fresh-replay.json                                 source 14, Part III: `audit/producer-fresh-replay.json`
+data/14-sink-last-gap-audit-producer-original-receipt.json                             source 14, Part III: `audit/producer-original-receipt.json`
+data/14-sink-last-gap-qa-visual-review.json                                            source 14, Part III: `qa/visual-review.json`
+data/15-pendant-support-audits-bipartition-approval.json                               source 15, Part II: `audits/bipartition-approval.json`
+data/15-pendant-support-audits-integrated-paper-approval.json                          source 15, Part II: `audits/integrated-paper-approval.json`
+data/15-pendant-support-audits-pendant-approval.json                                   source 15, Part II: `audits/pendant-approval.json`
+data/15-pendant-support-independent-bipartite-verification.json                        source 15, Part II: `reproducibility/independent-bipartite/verification.json`
+data/15-pendant-support-independent-pendant-verification.json                          source 15, Part II: `reproducibility/independent-pendant/verification.json`
+data/15-pendant-support-producer-pendant_verification.json                             source 15, Part II: `reproducibility/producer/pendant_verification.json`
+data/15-pendant-support-producer-verification.json                                     source 15, Part II: `reproducibility/producer/verification.json`
+data/15-pendant-support-qa-visual-qa.json                                              source 15, Part II: `qa/visual-qa.json`
+data/15-pendant-support-requirements.txt                                               source 15, Part II: `requirements.txt`
+data/16-degree-four-a2-coefficient_certificates.json                                   source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/coefficient_certificates.json`
+data/16-degree-four-a2-gap3_unresolved_faces.jsonl                                     source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/gap3_unresolved_faces.jsonl`
+data/16-degree-four-a2-quartic_classification.json                                     source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_classification.json`
+data/16-degree-four-a2-quartic_general_sos.jsonl                                       source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_general_sos.jsonl`
+data/16-degree-four-a2-quartic_general_sos_result.json                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_general_sos_result.json`
+data/16-degree-four-a2-quartic_sos_basis.json                                          source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_sos_basis.json`
+data/16-degree-four-a2-quartic_sos_result.json                                         source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_sos_result.json`
+data/16-degree-four-a2-quartic_verification.json                                       source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_verification.json`
+data/16-degree-four-a3-a3_gamma_aliases.json                                           source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/three-attachment/a3_gamma_aliases.json`
+data/16-degree-four-a3-coefficient_certificates.json                                   source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/three-attachment/coefficient_certificates.json`
+data/16-degree-four-a3-verification.json                                               source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/three-attachment/verification.json`
+data/16-degree-four-a4-a4_polynomials.jsonl                                            source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/a4_polynomials.jsonl`
+data/16-degree-four-a4-approved_progress.json                                          source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/approved_progress.json`
+data/16-degree-four-a4-coreE_screen_36.json                                            source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_coreE_screen_36.json`
+data/16-degree-four-a4-coreE_screen_37.json                                            source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_coreE_screen_37.json`
+data/16-degree-four-a4-coreE_shifted_gmp_50.json                                       source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_coreE_shifted_gmp_50.json`
+data/16-degree-four-a4-core_corrections.jsonl                                          source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/core_corrections.jsonl`
+data/16-degree-four-a4-face_orbit_summary.json                                         source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/face_orbit_summary.json`
+data/16-degree-four-a4-face_tasks.tsv                                                  source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/face_tasks.tsv`
+data/16-degree-four-a4-gap3_weighted_leading_zeros_26.json                             source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/gap3_weighted_leading_zeros_26.json`
+data/16-degree-four-a4-global_integer_sextic_lifted_verification.json                  source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_lifted_verification.json`
+data/16-degree-four-a4-gram_za_0.json                                                  source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_0.json`
+data/16-degree-four-a4-gram_za_1.json                                                  source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_1.json`
+data/16-degree-four-a4-gram_za_10.json                                                 source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_10.json`
+data/16-degree-four-a4-gram_za_11.json                                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_11.json`
+data/16-degree-four-a4-gram_za_13.json                                                 source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_13.json`
+data/16-degree-four-a4-gram_za_14.json                                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_14.json`
+data/16-degree-four-a4-gram_za_16.json                                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_16.json`
+data/16-degree-four-a4-gram_za_19.json                                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_19.json`
+data/16-degree-four-a4-gram_za_2.json                                                  source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_2.json`
+data/16-degree-four-a4-gram_za_21.json                                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_21.json`
+data/16-degree-four-a4-gram_za_23.json                                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_23.json`
+data/16-degree-four-a4-gram_za_26.json                                                 source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_26.json`
+data/16-degree-four-a4-gram_za_28.json                                                 source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_28.json`
+data/16-degree-four-a4-gram_za_3.json                                                  source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_3.json`
+data/16-degree-four-a4-gram_za_33.json                                                 source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_33.json`
+data/16-degree-four-a4-gram_za_34.json                                                 source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_34.json`
+data/16-degree-four-a4-gram_za_36.json                                                 source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_36.json`
+data/16-degree-four-a4-gram_za_37.json                                                 source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_37.json`
+data/16-degree-four-a4-gram_za_4.json                                                  source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_4.json`
+data/16-degree-four-a4-gram_za_50.json                                                 source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_50.json`
+data/16-degree-four-a4-gram_za_54.json                                                 source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_54.json`
+data/16-degree-four-a4-gram_za_6.json                                                  source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_6.json`
+data/16-degree-four-a4-gram_za_8.json                                                  source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_8.json`
+data/16-degree-four-a4-gram_za_9.json                                                  source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_gram_zeroaware_9.json`
+data/16-degree-four-a4-mf-face_aliases.json                                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/face_aliases.json`
+data/16-degree-four-a4-mf-selection.json                                               source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/selection.json`
+data/16-degree-four-a4-sextic_gmp_11.json                                              source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_11.json`
+data/16-degree-four-a4-sextic_gmp_12.json                                              source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_12.json`
+data/16-degree-four-a4-sextic_gmp_13.json                                              source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_13.json`
+data/16-degree-four-a4-sextic_gmp_14.json                                              source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_14.json`
+data/16-degree-four-a4-sextic_gmp_15.json                                              source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_15.json`
+data/16-degree-four-a4-sextic_gmp_16.json                                              source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_16.json`
+data/16-degree-four-a4-sextic_gmp_2.json                                               source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_2.json`
+data/16-degree-four-a4-sextic_gmp_23.json                                              source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_23.json`
+data/16-degree-four-a4-sextic_gmp_24.json                                              source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_24.json`
+data/16-degree-four-a4-sextic_gmp_28.json                                              source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_28.json`
+data/16-degree-four-a4-sextic_gmp_3.json                                               source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_3.json`
+data/16-degree-four-a4-sextic_gmp_30.json                                              source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_30.json`
+data/16-degree-four-a4-sextic_gmp_33.json                                              source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_33.json`
+data/16-degree-four-a4-sextic_gmp_40.json                                              source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_40.json`
+data/16-degree-four-a4-sextic_gmp_46.json                                              source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_46.json`
+data/16-degree-four-a4-sextic_gmp_5.json                                               source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_5.json`
+data/16-degree-four-a4-sextic_gmp_54.json                                              source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_54.json`
+data/16-degree-four-a4-sextic_gmp_60.json                                              source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_60.json`
+data/16-degree-four-a4-sextic_gmp_7.json                                               source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_7.json`
+data/16-degree-four-a4-sextic_gmp_8.json                                               source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_8.json`
+data/16-degree-four-a4-sf-certificates.jsonl                                           source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/small-faces/certificates.jsonl`
+data/16-degree-four-a4-sf-face_aliases.json                                            source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/small-faces/face_aliases.json`
+data/16-degree-four-a4-sf-normalized_faces.jsonl                                       source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/small-faces/normalized_faces.jsonl`
+data/16-degree-four-a4-sf-selection.json                                               source 16, Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/small-faces/selection.json`
+data/16-degree-four-a4-sf-source_faces.jsonl                                           source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/small-faces/source_faces.jsonl`
+data/16-degree-four-a4-templates.json                                                  source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/templates.json`
+data/16-degree-four-a4-templates.tsv                                                   source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/four-attachment/templates.tsv`
+data/16-degree-four-api-receipt.json                                                   source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/audit-positivity-independent/receipt.json`
+data/16-degree-four-audits-article_final_mathematical_audit.json                       source 16, Part I: `audits/article_final_mathematical_audit.json`
+data/16-degree-four-bc-ia-F_polynomials.txt                                            source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/F_polynomials.txt`
+data/16-degree-four-bc-ia-balanced_last_gap_audit_receipt.json                         source 16 (archive 17), Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/balanced_last_gap_audit_receipt.json`
+data/16-degree-four-bc-ia-bound_verification.json                                      source 16 (archive 19), Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/bound_verification.json`
+data/16-degree-four-bc-ia-decomposition_verification.json                              source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/decomposition_verification.json`
+data/16-degree-four-bc-ia-independent_verification.json                                source 16 (archive 19), Part I: `reproducibility/sources/balanced-core-gamma-research/independent-audit/independent_verification.json`
+data/16-degree-four-bc-ic-ia-elementary_stability_operators_audit_receipt.json         source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/elementary_stability_operators_audit_receipt.json`
+data/16-degree-four-bc-ic-verify_matching_squares.json                                 source 16, Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/verify_matching_squares.json`
+data/16-degree-four-bc-ic-verify_rayleigh_squares.json                                 source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/incomplete-core/verify_rayleigh_squares.json`
+data/16-degree-four-bc-uc-applicable_star_templates.json                               source 16 (archive 17), Part I: `reproducibility/sources/balanced-core-gamma-research/unbalanced-core/applicable_star_templates.json`
+data/16-degree-four-bc-uc-ia-last_gap_audit_receipt.json                               source 16 (archive 18), Part I: `reproducibility/sources/balanced-core-gamma-research/unbalanced-core/independent-audit/last_gap_audit_receipt.json`
+data/16-degree-four-examples-failed_coreE_integer_witnesses.json                       source 16 (archive 18), Part I: `reproducibility/examples/failed_coreE_integer_witnesses.json`
+data/16-degree-four-examples-fulltype_nonreal_witness.json                             source 16, Part I: `reproducibility/examples/fulltype_nonreal_witness.json`
+data/16-degree-four-exterior_lorentzian_audit_receipt.json                             source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4/exterior_lorentzian_audit_receipt.json`
+data/16-degree-four-ia-a2-kernel_audit.json                                            source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/kernel_audit.json`
+data/16-degree-four-ia-a3-kernel_audit.json                                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/kernel_audit.json`
+data/16-degree-four-ia-a3-positivity_audit.json                                        source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/positivity_audit.json`
+data/16-degree-four-ia-a3-preparation.json                                             source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/preparation.json`
+data/16-degree-four-ia-a4-approved_replay_inputs.json                                  source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/approved_replay_inputs.json`
+data/16-degree-four-ia-a4-article_elementary_operator_transcription_audit.json         source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/article_elementary_operator_transcription_audit.json`
+data/16-degree-four-ia-a4-article_scope_audit_provisional.json                         source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/article_scope_audit_provisional.json`
+data/16-degree-four-ia-a4-complete_a4_audit_receipt.json                               source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/complete_a4_audit_receipt.json`
+data/16-degree-four-ia-a4-face_orbit_audit.json                                        source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/face_orbit_audit.json`
+data/16-degree-four-ia-a4-global_binomial_square_audit.json                            source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_binomial_square_audit.json`
+data/16-degree-four-ia-a4-global_gap2_all_large_receipt.json                           source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap2_all_large_receipt.json`
+data/16-degree-four-ia-a4-global_gap2_templates10_34_receipt.json                      source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap2_templates10_34_receipt.json`
+data/16-degree-four-ia-a4-global_gap2_templates2_10_34_receipt.json                    source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap2_templates2_10_34_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch10_receipt.json                             source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch10_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch1_receipt.json                              source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch1_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch2_receipt.json                              source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch2_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch3_receipt.json                              source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch3_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch4_receipt.json                              source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch4_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch5_receipt.json                              source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch5_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch6_receipt.json                              source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch6_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch7_receipt.json                              source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch7_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch8_receipt.json                              source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch8_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_batch9_receipt.json                              source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_batch9_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_coreE_batch1_receipt.json                        source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_coreE_batch1_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_coreE_batch2_receipt.json                        source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_coreE_batch2_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_coreE_batch3_receipt.json                        source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_coreE_batch3_receipt.json`
+data/16-degree-four-ia-a4-global_gap3_templates5_12_receipt.json                       source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_templates5_12_receipt.json`
+data/16-degree-four-ia-a4-incremental_progress.json                                    source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/incremental_progress.json`
+data/16-degree-four-ia-a4-kernel_audit.json                                            source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/kernel_audit.json`
+data/16-degree-four-ia-a4-medium_checkpoint1_batch_audit.json                          source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/medium_checkpoint1_batch_audit.json`
+data/16-degree-four-ia-a4-medium_checkpoint2_batch_audit.json                          source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/medium_checkpoint2_batch_audit.json`
+data/16-degree-four-ia-a4-ordinary_global_gap_approvals.json                           source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/ordinary_global_gap_approvals.json`
+data/16-degree-four-ia-a4-package_fast_replay_71_coverage.json                         source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/package_fast_replay_71_coverage.json`
+data/16-degree-four-ia-a4-package_fast_replay_71_verification.json                     source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/package_fast_replay_71_verification.json`
+data/16-degree-four-ia-a4-package_review_snapshot_path.txt                             source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/package_review_snapshot_path.txt`
+data/16-degree-four-ia-a4-package_wrapper_audit_71.json                                source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/package_wrapper_audit_71.json`
+data/16-degree-four-ia-a4-package_wrapper_hardening_audit.json                         source 16, Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/package_wrapper_hardening_audit.json`
+data/16-degree-four-ia-a4-preparation.json                                             source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/preparation.json`
+data/16-degree-four-ia-a4-small_faces_incremental_audit.json                           source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/small_faces_incremental_audit.json`
+data/16-degree-four-ia-a4-small_faces_mapping_audit.json                               source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/small_faces_mapping_audit.json`
+data/16-degree-four-ia-a4-small_generic_regression_batch_audit.json                    source 16 (archive 18), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/small_generic_regression_batch_audit.json`
+data/16-degree-four-ia-a4-template9_core_correction_audit.json                         source 16 (archive 19), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/template9_core_correction_audit.json`
+data/16-degree-four-ia-certificate_audit.json                                          source 16 (archive 17), Part I: `reproducibility/sources/preorder-gamma-degree4-independent-audit/certificate_audit.json`
+data/16-degree-four-provenance-sextic_gmp_26_weighted.log                              source 16, Part I: `reproducibility/provenance/global_integer_sextic_shifted_gmp_26_weighted.log`
+data/16-degree-four-provenance-template26_certificate.json                             source 16 (archive 18), Part I: `reproducibility/provenance/template26_certificate.json`
+data/20-role-cover-PACKAGE_VALIDATION.json                                             source 20, Part II: `PACKAGE_VALIDATION.json`
+data/20-role-cover-final-audit-independent_verification.json                           source 20, Part II: `final-audit/independent_verification.json`
+data/20-role-cover-final-audit-review_receipt.json                                     source 20, Part II: `final-audit/review_receipt.json`
+data/20-role-cover-proofs-ia-balanced_real_rootedness_audit_receipt.json               source 20, Part II: `proofs/independent-audit/balanced_real_rootedness_audit_receipt.json`
+data/20-role-cover-proofs-ia-check_disjoint_monomer.log                                source 20, Part II: `proofs/independent-audit/check_disjoint_monomer.log`
+data/20-role-cover-proofs-ia-check_full_monomer.log                                    source 20, Part II: `proofs/independent-audit/check_full_monomer.log`
+data/20-role-cover-proofs-ia-check_missing_edge_monomer.log                            source 20, Part II: `proofs/independent-audit/check_missing_edge_monomer.log`
+data/20-role-cover-proofs-ia-check_star_monomer.log                                    source 20, Part II: `proofs/independent-audit/check_star_monomer.log`
+data/20-role-cover-proofs-ic-ia-check_disjoint_rayleigh_aggregate.log                  source 20, Part II: `proofs/incomplete-core/independent-audit/check_disjoint_rayleigh_aggregate.log`
+data/20-role-cover-proofs-ic-ia-check_rayleigh_aggregate.log                           source 20, Part II: `proofs/incomplete-core/independent-audit/check_rayleigh_aggregate.log`
+data/20-role-cover-proofs-ic-ia-disjoint_core_edges_audit_receipt.json                 source 20, Part II: `proofs/incomplete-core/independent-audit/disjoint_core_edges_audit_receipt.json`
+data/20-role-cover-proofs-ic-ia-one_missing_edge_audit_receipt.json                    source 20, Part II: `proofs/incomplete-core/independent-audit/one_missing_edge_audit_receipt.json`
+data/20-role-cover-proofs-ic-ia-star_core_audit_receipt.json                           source 20, Part II: `proofs/incomplete-core/independent-audit/star_core_audit_receipt.json`
+data/20-role-cover-proofs-ic-ia-two_by_two_role_cover_audit_receipt.json               source 20, Part II: `proofs/incomplete-core/independent-audit/two_by_two_role_cover_audit_receipt.json`
+data/20-role-cover-verification-receipt.json                                           source 20, Part II: `verification-receipt.json`
+data/22-independent-role-audit-approved-pure-role-replay.json                          source 22, Part II: `audit/approved-pure-role-replay.json`
+data/22-independent-role-audit-global-mathematical-approval.json                       source 22, Part II: `audit/global-mathematical-approval.json`
+data/22-independent-role-audit-math-approval.json                                      source 22, Part II: `audit/math-approval.json`
+data/22-independent-role-audit-packager-initial-replay.json                            source 22, Part II: `audit/packager-initial-replay.json`
+data/22-independent-role-audit-release-status-text-delta.json                          source 22, Part II: `audit/release-status-text-delta.json`
+data/22-independent-role-checker-role-degree-three-audit-package.zip                   source 22, Part II: `checker/role-degree-three-audit-package.zip`
+data/22-independent-role-dependency-pins.json                                          source 22, Part II: `dependency-pins.json`
+data/22-independent-role-proofs-complete-role-ledger.json                              source 22, Part II: `proofs/complete-role-ledger.json`
+data/22-independent-role-proofs-final-rayleigh-README.txt                              source 22, Part II: `proofs/final-rayleigh/README.txt`
+data/22-independent-role-proofs-final-rayleigh-explicit-rational-squares.txt           source 22, Part II: `proofs/final-rayleigh/explicit-rational-squares.txt`
+data/22-independent-role-proofs-final-rayleigh-side1565_rayleigh_0_9_certificate.json  source 22, Part II: `proofs/final-rayleigh/side1565_rayleigh_0_9_certificate.json`
+data/22-independent-role-qa-visual-qa.json                                             source 22, Part II: `qa/visual-qa.json`
+data/23-template26-article-visual-qa.json                                              source 23, Part I: `article/visual-qa.json`
+data/23-template26-audits-integration_approval.json                                    source 23, Part I: `audits/integration_approval.json`
+data/23-template26-sources-ia-st26-deletion_mixture_algebra_receipt.json               source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/deletion_mixture_algebra_receipt.json`
+data/23-template26-sources-ia-st26-deletion_mixture_approval_receipt.json              source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/deletion_mixture_approval_receipt.json`
+data/23-template26-sources-ia-st26-template26_assembly_algebra_receipt.json            source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/template26_assembly_algebra_receipt.json`
+data/23-template26-sources-ia-st26-template26_smaller_proof_approval_receipt.json      source 23, Part I: `sources/preorder-gamma-degree4-independent-audit/structural-template26/template26_smaller_proof_approval_receipt.json`
+data/23-template26-sources-st26-pc-distinct_deletion_cross_certificates.json           source 23, Part I: `sources/preorder-gamma-degree4/structural-template26/pair-compatibility/distinct_deletion_cross_certificates.json`
+data/23-template26-sources-weighted-vertex-seven-ia-approval_receipt.json              source 23, Part I: `sources/weighted-vertex-seven-independent-audit/approval_receipt.json`
+data/25-degree-three-code-a1-audit_pairs.csv                                           source 25, Part I: `code/one-attachment/audit_pairs.csv`
+data/25-degree-three-code-a1-quadratic_certificates.csv                                source 25, Part I: `code/one-attachment/quadratic_certificates.csv`
+data/25-degree-three-code-a1-verification.json                                         source 25, Part I: `code/one-attachment/verification.json`
+data/25-degree-three-code-a2-classification.json                                       source 25, Part I: `code/two-attachment/classification.json`
+data/25-degree-three-code-a2-gap2_certificates.json                                    source 25, Part I: `code/two-attachment/gap2_certificates.json`
+data/25-degree-three-code-a2-independent_audit.json                                    source 25, Part I: `code/two-attachment/independent_audit.json`
+data/25-degree-three-code-a2-independent_verification.json                             source 25, Part I: `code/two-attachment/independent_verification.json`
+data/25-degree-three-code-a2-templates.json                                            source 25, Part I: `code/two-attachment/templates.json`
+data/25-degree-three-code-core_certificates.json                                       source 25, Part I: `code/core_certificates.json`
+data/25-degree-three-code-cover3_sdp_4.json                                            source 25, Part I: `code/cover3_sdp_4.json`
+data/25-degree-three-code-cover3_sdp_7_complete.json                                   source 25, Part I: `code/cover3_sdp_7_complete.json`
+data/25-degree-three-code-cover3_seventeen_templates.json                              source 25, Part I: `code/cover3_seventeen_templates.json`
+data/25-degree-three-code-cover3_sos_12.json                                           source 25, Part I: `code/cover3_sos_12.json`
+data/25-degree-three-code-cover3_sos_14.json                                           source 25, Part I: `code/cover3_sos_14.json`
+data/25-degree-three-code-cover3_sos_2.json                                            source 25, Part I: `code/cover3_sos_2.json`
+data/25-degree-three-code-cover3_sos_4.json                                            source 25, Part I: `code/cover3_sos_4.json`
+data/25-degree-three-code-cover3_sos_5.json                                            source 25, Part I: `code/cover3_sos_5.json`
+data/25-degree-three-code-cover3_sos_6.json                                            source 25, Part I: `code/cover3_sos_6.json`
+data/25-degree-three-code-cover3_sos_7.json                                            source 25, Part I: `code/cover3_sos_7.json`
+data/25-degree-three-code-cover3_sos_8.json                                            source 25, Part I: `code/cover3_sos_8.json`
+data/25-degree-three-code-layered_certificates.json                                    source 25, Part I: `code/layered_certificates.json`
+data/25-degree-three-code-minimum-a1_min_size_pairs.csv                                source 25, Part I: `code/minimum/a1_min_size_pairs.csv`
+data/25-degree-three-code-minimum-a2_minimum_scan.json                                 source 25, Part I: `code/minimum/a2_minimum_scan.json`
+data/25-degree-three-code-minimum-direct_support_verification.json                     source 25, Part I: `code/minimum/direct_support_verification.json`
+data/25-degree-three-code-minimum-ia-receipt.json                                      source 25, Part I: `code/minimum/independent-audit/receipt.json`
+data/25-degree-three-code-minimum-minimum_scan.json                                    source 25, Part I: `code/minimum/minimum_scan.json`
+data/25-degree-three-code-small-check-gamma_histogram.csv                              source 25, Part I: `code/small-check/gamma_histogram.csv`
+data/25-degree-three-code-small-check-gamma_representatives.csv                        source 25, Part I: `code/small-check/gamma_representatives.csv`
+data/25-degree-three-code-small-check-independent_verification.json                    source 25, Part I: `code/small-check/independent_verification.json`
+data/25-degree-three-code-small-check-results.txt                                      source 25, Part I: `code/small-check/results.txt`
+data/25-degree-three-code-small-check-results8.txt                                     source 25, Part I: `code/small-check/results8.txt`
+data/25-degree-three-receipts-a3_audit_existing_verifiers.log                          source 25, Part I: `receipts/a3_audit_existing_verifiers.log`
+data/25-degree-three-receipts-a3_audit_independent.log                                 source 25, Part I: `receipts/a3_audit_independent.log`
+data/25-degree-three-receipts-audit-cover-three.log                                    source 25, Part I: `receipts/audit-cover-three.log`
+data/25-degree-three-receipts-audit-minimum-independent.log                            source 25, Part I: `receipts/audit-minimum-independent.log`
+data/25-degree-three-receipts-audit-one.log                                            source 25, Part I: `receipts/audit-one.log`
+data/25-degree-three-receipts-audit-two.log                                            source 25, Part I: `receipts/audit-two.log`
+data/25-degree-three-receipts-compile-minimum-core.log                                 source 25, Part I: `receipts/compile-minimum-core.log`
+data/25-degree-three-receipts-compile-one-independent.log                              source 25, Part I: `receipts/compile-one-independent.log`
+data/25-degree-three-receipts-compile-one.log                                          source 25, Part I: `receipts/compile-one.log`
+data/25-degree-three-receipts-compile-small.log                                        source 25, Part I: `receipts/compile-small.log`
+data/25-degree-three-receipts-deliverable_validation.json                              source 25, Part I: `receipts/deliverable_validation.json`
+data/25-degree-three-receipts-enumerate-minimum-core.log                               source 25, Part I: `receipts/enumerate-minimum-core.log`
+data/25-degree-three-receipts-enumerate-one.log                                        source 25, Part I: `receipts/enumerate-one.log`
+data/25-degree-three-receipts-enumerate-small.log                                      source 25, Part I: `receipts/enumerate-small.log`
+data/25-degree-three-receipts-one-attachment-audit_counts.log                          source 25, Part I: `receipts/one-attachment-audit_counts.log`
+data/25-degree-three-receipts-scan-minimum-one-three.log                               source 25, Part I: `receipts/scan-minimum-one-three.log`
+data/25-degree-three-receipts-scan-minimum-two.log                                     source 25, Part I: `receipts/scan-minimum-two.log`
+data/25-degree-three-receipts-two-attachment-gap2_verification.log                     source 25, Part I: `receipts/two-attachment-gap2_verification.log`
+data/25-degree-three-receipts-two-attachment-independent_audit.log                     source 25, Part I: `receipts/two-attachment-independent_audit.log`
+data/25-degree-three-receipts-verification_summary.json                                source 25, Part I: `receipts/verification_summary.json`
+data/25-degree-three-receipts-verify-cover-compact.log                                 source 25, Part I: `receipts/verify-cover-compact.log`
+data/25-degree-three-receipts-verify-cover-general-squares.log                         source 25, Part I: `receipts/verify-cover-general-squares.log`
+data/25-degree-three-receipts-verify-cover-squares.log                                 source 25, Part I: `receipts/verify-cover-squares.log`
+data/25-degree-three-receipts-verify-fifteen-supports.log                              source 25, Part I: `receipts/verify-fifteen-supports.log`
+data/25-degree-three-receipts-verify-one.log                                           source 25, Part I: `receipts/verify-one.log`
+data/25-degree-three-receipts-verify-ordinal-core.log                                  source 25, Part I: `receipts/verify-ordinal-core.log`
+data/25-degree-three-receipts-verify-ordinal-layers.log                                source 25, Part I: `receipts/verify-ordinal-layers.log`
+data/25-degree-three-receipts-verify-small.log                                         source 25, Part I: `receipts/verify-small.log`
+data/25-degree-three-receipts-verify-two-hall.log                                      source 25, Part I: `receipts/verify-two-hall.log`
+data/25-degree-three-receipts-verify-two.log                                           source 25, Part I: `receipts/verify-two.log`
+data/34-five-core-audits-article-certificate-approval.json                             source 34, Part III: `audits/article-certificate-approval.json`
+data/34-five-core-audits-independent-certificate-receipt.json                          source 34, Part III: `audits/independent-certificate-receipt.json`
+data/34-five-core-audits-independent-counterexample-review.json                        source 34, Part III: `audits/independent-counterexample-review.json`
+data/34-five-core-audits-ordinary-and-scope-approval.json                              source 34, Part III: `audits/ordinary-and-scope-approval.json`
+data/34-five-core-audits-primary-literature-check.json                                 source 34, Part III: `audits/primary-literature-check.json`
+data/34-five-core-audits-strengthening-counterexample-receipt.json                     source 34, Part III: `audits/strengthening-counterexample-receipt.json`
+data/34-five-core-certificate-data.tar.xz                                              source 34, Part III: derived container of delivered `certificate-data/` (9,610 files, byte-identical members; see below)
+data/34-five-core-discovery-cores.txt                                                  source 34, Part III: `discovery/cores.txt`
+data/34-five-core-qa-visual-review.json                                                source 34, Part III: `qa/visual-review.json`
+data/35-five-core-cubic-audits-article-approval.json                                   source 35 (batch 77), Part III: `audits/article-approval.json`
+data/35-five-core-cubic-audits-extended-selftest-receipt.json                          source 35 (batch 77), Part III: `audits/extended-selftest-receipt.json`
+data/35-five-core-cubic-audits-full-approval.json                                      source 35 (batch 77), Part III: `audits/full-approval.json`
+data/35-five-core-cubic-audits-full-hybrid-20261001T164052Z-receipt.json               source 35 (batch 77), Part III: `audits/full-hybrid-20261001T164052Z-receipt.json`
+data/35-five-core-cubic-audits-missing-shard-control.json                              source 35 (batch 77), Part III: `audits/missing-shard-control.json`
+data/35-five-core-cubic-audits-multiplier-762-receipt.json                             source 35 (batch 77), Part III: `audits/multiplier-762-receipt.json`
+data/35-five-core-cubic-audits-multiplier-schema-selftest-receipt.json                 source 35 (batch 77), Part III: `audits/multiplier-schema-selftest-receipt.json`
+data/35-five-core-cubic-audits-optimized-comparison-20261001T134314Z-receipt.json      source 35 (batch 77), Part III: `audits/optimized-comparison-20261001T134314Z-receipt.json`
+data/35-five-core-cubic-audits-portable-extended-selftest-receipt.json                 source 35 (batch 77), Part III: `audits/portable-extended-selftest-receipt.json`
+data/35-five-core-cubic-audits-portable-multiplier-selftest-receipt.json               source 35 (batch 77), Part III: `audits/portable-multiplier-selftest-receipt.json`
+data/35-five-core-cubic-audits-portable-sharpness-receipt.json                         source 35 (batch 77), Part III: `audits/portable-sharpness-receipt.json`
+data/35-five-core-cubic-audits-sharpness-receipt.json                                  source 35 (batch 77), Part III: `audits/sharpness-receipt.json`
+data/35-five-core-cubic-audits-visual-qa.json                                          source 35 (batch 77), Part III: `audits/visual-qa.json`
+data/35-five-core-cubic-inputs-preorder-coverage.json                                  source 35 (batch 77), Part III: `inputs/preorder-coverage.json`
+data/35-five-core-cubic-inputs-structural-9608.json.xz                                 source 35 (batch 77), Part III: derived container of delivered `inputs/structural-9608.json` (4,004,583 bytes; `xz -dc` restores it byte for byte; see below)
+data/35-five-core-cubic-replay-dependencies-preorder-degree-three-release-approval.json source 35 (batch 77), Part III: `replay/dependencies/preorder-degree-three-release-approval.json`
+```
+
+## Labels
+
+Every label carries the prefix `pgr:`: `pgr:sec:…`, `pgr:def:…`,
+`pgr:lem:…`, `pgr:thm:…`, `pgr:eq:…` for the common material of Section 1
+and Appendix A, and per Part `pgr:u:` (I), `pgr:r:` (II), `pgr:s:` (III)
+followed by a source infix and the source's own label: `d3` (25), `d4`
+(16), `t26` (23), `rc` (20), `tc` (12), `pc` (11), `ps` (15), `ir` (22),
+`lg` (14), `ad` (10), `fc` (34), `fb` (06), `fq` (35, "five-core
+cubic"). For example source 22's `thm:main` is `pgr:r:ir:thm:main`. The
+base article (source 16) had 26 labels as staged; the report had 254
+labels after batch 73 and has 261 since batch 77 (source 35 added seven:
+`pgr:s:fq:sec`, `:thm:main`, `:eq:cubic`, `:eq:target`, `:lem:finite`,
+`:eq:certificate`, `:cor:all`; no existing label was renamed or
+removed). Labels of source passages
+that are printed once elsewhere or replaced by pointers (the degree lemma
+and the first inequality of several sources, source 16's Section 3 and
+Appendix A, the duplicated three-squares identity and moment envelope, the
+last-gap proofs of sources 10 and 34, source 34's appendix, the proof of
+source 22's one-tail criterion, and source 35's coefficient display, first
+comparison and one-tail argument) are not defined; references to them point
+to the printed copy.
+
+## What the report claims
+
+### Part I — unit activities on finite preorders through actual degree four
+
+Claimed (labels in parentheses):
+
+- **Degree at most three** (source 25, `pgr:u:d3:thm:main`; computer-assisted):
+  every finite preorder whose gamma polynomial has actual degree at most
+  three is rank-ULC: `γ1² ≥ 3γ2` and `γ2² ≥ 3γ1γ3` in degree three,
+  `γ1² ≥ 4γ2` in degree two. Proof: Gallai–Edmonds reduction to four
+  attachment branches; a finite real-rootedness lemma through seven
+  vertices (`pgr:u:d3:lem:small`, reproducing a published computation);
+  2,050 one-attachment quadratic certificates; 1,084 two-attachment
+  templates (448 families, 994 face certificates); seventeen
+  three-attachment templates, class 0 by the Röhrle–Ulirsch theorem.
+- **Bounded-core normal form at every degree** (`pgr:u:d3:thm:normalform`,
+  ordinary): `|K| ≤ 3r − 2a`, `ν(G[K∖A]) = r − a`, at most `2^a − 1`
+  exterior types with one orientation per attachment, and the finite
+  binomial kernel expansion.
+- **Minimum order of a nonreal cubic** (`pgr:u:d3:thm:minimum`,
+  computer-assisted bounded scan): every preorder of actual degree three on
+  at most fourteen vertices has a real-rooted gamma polynomial; at fifteen
+  vertices exactly two isomorphism classes fail (the height-two poset with
+  `Γ = 1 + 24z + 162z² + 208z³`, discriminant −2592, and its dual).
+- **Ordinal sums** (`pgr:u:d3:thm:ordinal`): `P ⊕ A_m ⊕ Q` with
+  `|P| + |Q| = 3`, `m ≥ 3`, and every ordinal sum of antichains of actual
+  degree three, have three distinct negative roots (two specializations are
+  in the literature, credited there).
+- **Degree four** (source 16, `pgr:u:d4:thm:middle`; computer-assisted):
+  every finite preorder whose *unweighted* support polynomial has actual
+  degree four satisfies `3γ1² ≥ 8γ2`, `4γ2² ≥ 9γ1γ3`, `3γ3² ≥ 8γ2γ4`.
+  Proof: the normal form at `r = 4`, finite branches `a = 0..3` by exact
+  certificates, and 76 canonical four-attachment templates covered by 50
+  global binomial-square identities (15,408 square orbits) and ordinary
+  theorems; 39,367 face tasks discharged.
+- Ordinary tools of source 16: the **exterior-only Lorentzian
+  construction** (`pgr:u:d4:thm:exterior`, normalized by the cover order
+  `r`, not the actual degree) and the **outward-star last gap**
+  (`pgr:u:d4:thm:star`, unit activities).
+- **Template 26, second route** (source 23, `pgr:u:t26:thm:main`;
+  certificate-assisted): `3γ3² ≥ 8γ2γ4` for every integer population of
+  template 26, by `Γ = Q⁺ + tR`, a deletion-mixture lemma with ten exact
+  quartic identities (196 squares, 846 remainder terms), the vertex-weighted
+  degree-three theorem (Part II, `pgr:r:ir:cor:vertex`) and Wagner's
+  rank-three Rayleigh theorem.
+
+Not claimed (Part I): any weighted (non-unit) statement in degree four;
+real-rootedness (it fails in degree three, and source 16 exhibits a 29-vertex
+nonreal quartic `1 + 40t + 510t² + 2380t³ + 2704t⁴`); degree five or more;
+that the first inequality or the degree-two case is new (they are
+`preorder-root-polytopes`' `mr:thm:first` and `mr:cor:preorderfirst`); that
+the exterior theorem gives actual-degree normalization below full cover
+rank; a certificate-free proof of template 26; a minimal-size statement
+beyond degree three; a Lean formalization or a global priority claim.
+Source 25's finite lemma through seven vertices reproduces a published
+computation and is not claimed as a new size range.
+
+### Part II — independent role activities and small covers
+
+Claimed (arbitrary loopless directed relations unless a preorder is said;
+independent nonnegative tail and head activities throughout):
+
+- **Two by two role cover** (source 20, `pgr:r:rc:thm:rolecover`;
+  ordinary): if `|P|, |Q| ≤ 2` and every arc has its tail in `P` or its
+  head in `Q` (`P`, `Q` may overlap), the signed physical monomer
+  polynomial is real stable; `Γ_D` has only negative real roots and is
+  rank-ULC at its actual degree. Also: the complete balanced core, the
+  two-edge core, the core with one missing edge and the disjoint pair
+  (seven all-real Rayleigh identities); the free product of two loopless
+  rank-two matroids has a real-stable basis polynomial
+  (`pgr:r:rc:cor:freeproduct`); the gamma transfer (`pgr:r:rc:cor:transfer`).
+  It generalizes `matching-rank-normalization`'s `mrn:w:sb:thm:main`
+  (bipartite, disjoint cover sides) by a different proof.
+- **Coefficientwise three-core Rayleigh** (source 12): the boundary
+  inequality `b_ij b_ik − a_i c ⪰ 0` coefficientwise for a bipartite
+  physical graph with a three-vertex shore, both orientations
+  (`pgr:r:tc:thm:boundary`; computer-assisted: 48 role types, 17,376
+  graphs, two independent checkers); coefficientwise nonnegativity of all
+  core Rayleigh differences (`pgr:r:tc:thm:full`); negative correlation
+  of core use (`pgr:r:tc:cor:covariance`); a four-core example where the
+  coefficientwise statement fails though a two-square formula is positive.
+- **Physical cover of size three** (source 11, `pgr:r:pc:thm:main`;
+  ordinary given source 12): if the underlying graph has a vertex cover of
+  at most three vertices, `Γ_D` is rank-ULC at its actual degree, internal
+  core arcs allowed, no transitivity. Corollary: role covers with
+  `|P| ≤ 2`, `|Q| ≤ 3`, `P ⊆ Q`. Bipartite-only strictness of negative
+  correlation and the equality case of the upper cubic inequality.
+- **Bipartite physical graphs and pendant heads** (source 15; ordinary):
+  for a bipartite physical graph, a multiaffine Lorentzian polynomial of
+  degree `|C|` (`pgr:r:ps:thm:bipartite`), hence order-`|C|` ULC and
+  rank-ULC under saturation; overlapping role covers with an independent
+  core (`pgr:r:ps:cor:overlap`); real stability when the uncovered heads
+  have in-degree at most one over a real-stable transversal seed
+  (`pgr:r:ps:thm:pendant`), with an explicit stable seed for
+  singleton-or-universal neighbourhoods (`pgr:r:ps:cor:elementary`).
+- **Independent roles through actual degree three** (source 22,
+  `pgr:r:ir:thm:main`; computer-assisted): every finite preorder with
+  independent role activities whose support polynomial has actual degree at
+  most three is rank-ULC. Ingredients: the zero-activity role filter
+  (`pgr:r:ir:lem:degree`), the articulation theorem (real-rootedness in
+  every degree, `pgr:r:ir:thm:articulation`), an ordinary three-core proof
+  through Wagner's theorem (`pgr:r:ir:thm:three`, a special case of
+  source 11 kept as a second route), the finite theorem through seven
+  vertices with a complete ledger of 1,686 targets
+  (`pgr:r:ir:thm:finite`), the half-plane-property side-matroid criterion
+  (`pgr:r:ir:thm:oneside`, the one-hub case of source 15's theorem), a
+  rank-32 exact Gram certificate for the last ten-element side matroid
+  (`pgr:r:ir:lem:lastgram`), and the two-attachment theorem
+  (`pgr:r:ir:thm:a2`). Its case `u = v` is the theorem of archive 31
+  (`pgr:r:ir:cor:vertex`); its case `u = v = 1` is source 25's theorem.
+
+Not claimed (Part II): real-rootedness of all preorder support polynomials
+(the fifteen-vertex cubic is not real-rooted); rank-ULC for general
+two-tail/three-head role covers (open: sources 11, 12 and 15); internal core
+arcs in sources 12 and 15; full stability in source 12 (its Rayleigh
+statement is for nonnegative monomer arguments, not an all-real criterion);
+weighted degree four; that an arbitrary transversal matroid is stable;
+membership checks beyond the published Kummer–Sert list (source 22 applies
+the list, it does not rerun its Gram certificates); a minimal-size claim in
+source 22 (source 25 makes it); formalization or priority.
+
+### Part III — universal-sink clouds over an arbitrary directed core
+
+Setting: a core of `r` vertices with an arbitrary loopless directed relation
+(transitive or not), a finite independent set of universal sinks receiving
+every arc from the core, independent nonnegative activities. With a
+preorder core the whole relation is a preorder.
+
+Claimed:
+
+- **Sharp last gap for every core size** (source 14, `pgr:s:lg:thm:sharp`;
+  ordinary): if `r ≥ 4`, `γ_r > 0` and `m` sinks have positive activity,
+  then `γ_{r−1}² ≥ K(r,m) γ_{r−2} γ_r` with
+  `K(r,m) = 2r²(m−r+2)/((r−1)²(m−r+1))`, sharp for each `m`, with equality
+  characterized; the optimal uniform constant is `2r²/(r−1)²`. For `r = 4`
+  this gives `3γ3² ≥ 8γ2γ4` with slack (`pgr:s:lg:cor:four`).
+- **Four-vertex cores at every actual degree** (source 10,
+  `pgr:s:ad:thm:main`): `γ2² ≥ 3γ1γ3` for all activities
+  (computer-assisted: 218 directed core classes covering all 4,096 labeled
+  cores; 3,532 weighted squares, 64,298 positive remainder monomials), and
+  hence rank-ULC at every actual degree `ρ = 0, …, 4`; the moment envelope
+  `E1 = A+B`, `E2 = AB + B²/2`, `E3 ≤ AB²/2 + B³/6` (`pgr:s:ad:lem:moments`,
+  sharp after closure).
+- **Five-vertex cores at actual degree five** (source 34,
+  `pgr:s:fc:thm:main`): `γ2² ≥ 2γ1γ3` (computer-assisted: 9,608 classes
+  covering all 2²⁰ labeled cores, 57,089 binomial squares) and
+  `γ3² ≥ 2γ2γ4` (ordinary) for all activities; rank-ULC at actual degree
+  five; `γ4² ≥ (25/8)γ3γ5`. The constant three of source 10 fails for
+  five-vertex preorder cores (an exact example with
+  `γ2² − 3γ1γ3 = −1,484,405,775`).
+- **The degree-four boundary of five-vertex cores** (source 06,
+  `pgr:s:fb:thm:main`): on the face `γ5 = 0`, `γ2² ≥ (9/4)γ1γ3`
+  (computer-assisted on two finite domains: 3,044 zero-tail classes with
+  212,319 binomial squares, and 9,608 bounded-sink classes with 1,755,474
+  squares) and `γ3² ≥ (8/3)γ2γ4` (ordinary, in both branches), hence
+  rank-ULC at actual degree four; ordinary coefficientwise core comparisons
+  (the appendix, printed once in source 06's form, which strengthens
+  source 34's).
+- **Five-vertex cores at actual degree at most three** (source 35, batch
+  77, `pgr:s:fq:thm:main`): `γ2² ≥ 3γ1γ3` on the whole face `γ4 = 0`, by
+  an ordinary degree-drop reduction to a two-sink lemma
+  (`pgr:s:fq:lem:finite`) that is computer-assisted: 9,608 classes covering
+  all 2²⁰ labeled cores, settled by 43 role covers, 21 physical covers of
+  size three, 1,743 one-tail/HPP sides, 49 further classes by source 22's
+  preorder theorem, 7,658 direct and 94 tail-sum-multiplied rational square
+  certificates (1,368,926 squares and 11,514,499 positive remainder terms
+  over all 7,901 certificate files). The constant 3 is sharp, even for
+  preorder cores. Hence, with sources 06 and 34, every five-vertex core is
+  rank-ULC at every actual degree 0–5 (`pgr:s:fq:cor:all`). For preorder
+  cores the theorem is a special case of source 22's `pgr:r:ir:thm:main`;
+  the new content is the non-transitive core. Source 34's counterexample
+  to the constant 3 has `γ4 > 0` and does not contradict it.
+
+Not claimed (Part III): sharpness of the cubic constants 3, 2 and 9/4;
+any conclusion at actual degree three for five-vertex cores (source 06
+refuses to infer it from a padded quartic normalization) or at degrees
+below five from source 34's constants; the face `γ_r = 0` in source 14;
+non-universal exterior neighbourhoods or larger cores; real-rootedness or
+stability; that the first comparison is new (it is
+`preorder-root-polytopes`' `mr:thm:first`); novelty or priority. The
+bounded-sink certificates of source 06 are not shipped (they are in the
+arrival commit). (2 October 2026, batch 77: source 35 proves the constant
+3 on `γ4 = 0`, sharp there, and actual degree three for five-vertex cores;
+the sentence above stays true of sources 06 and 34. The constants 2 and
+9/4, and source 10's 3 for four-vertex cores, still carry no sharpness
+claim. Source 35 claims no real-rootedness, no nonuniversal
+neighbourhoods, no general directed physical-degree-three
+classification, no formal verification and no priority; its certificate
+shards are not shipped either.)
+
+## Research questions of `preorder-root-polytopes`
+
+| Question | Where | Answered by | How |
+|---|---|---|---|
+| Research question 96, `mr:q:gamma` | Part XII | sources 25, 16 (unit activities), 22 (independent activities); 11, 15, 20 and Part III in families (since batch 77, source 35: five-vertex cores with universal sinks at every actual degree) | yes for unit activities through actual degree four and for independent role activities through degree three; open from degree five (unit) and degree four (weighted) in general; "a first unproved target is degree three" is proved |
+| "Gamma log-concavity beyond height two" (the paragraphs of its sources 06 and 09, sections `lor:sec:oldquestions` and `mat:sec:oldquestions`) | — | same | answered for unit activities through actual degree four: no counterexample of degree at most four exists, so a minimal counterexample, if any, has degree at least five; real-rootedness does fail, and source 25 determines its least order in degree three (fifteen vertices) |
+| `mr:q:certificates` | Part XII | sources 16, 23 | bears on it: binomial-square certificates at scale (source 16), a smaller route for the largest one (source 23) |
+| `mrn:w:sb:thm:main` of `matching-rank-normalization` | its Part I | source 20 | generalized to directed relations with overlapping role covers |
+| source 15's open question (two tail and three head roles) | Part II | — | stays open; the case of at most two head roles is source 20's theorem, and the case where the tail set lies inside the head set is source 11's corollary |
+
+The reciprocal notes in `preorder-root-polytopes` and
+`matching-rank-normalization` are written in separate commits.
+
+## Relation to neighbouring reports and formal projects
+
+- [`preorder-root-polytopes`](../../enumerative-combinatorics/preorder-root-polytopes)
+  defines the preorder gamma polynomial (`gam:thm:main`), proves the first
+  inequality for directed relations (`mr:thm:first`), the degree-two case
+  (`mr:cor:preorderfirst`) and bipartite rank three (`mr:thm:rankthree`,
+  `lc:cor:rankthree`), and asks the question answered here. Its theorems are
+  cited by label; sources 16 and 25 cite it at `d5e863bba`.
+- [`matching-rank-normalization`](../matching-rank-normalization) treats the
+  bipartite matching-support polynomial normalized by the matching number.
+  Its rank-five corollary (`mrn:w:rf:cor:rankfive`) covers the bipartite
+  components of source 16's reduction (source 16 cites a rank-four package,
+  batch-73 manuscript 26, which this intake prints there as source 77,
+  `mrn:v:rf4:thm:main`); its two by two stability theorem
+  (`mrn:w:sb:thm:main`, with the real-rootedness route
+  `mrn:v:rf4:thm:mixed`) is the bipartite, disjoint-cover case of source
+  20's theorem.
+- No formal project is continued. The collection lives under
+  `SetTheory/Cardinals/` beside Lean developments, but placement there
+  confers no formal status: no statement of this report is formalized in
+  Lean or Rocq, and no Lean declaration corresponds to any of its results.
+  This holds for source 35 as well.
+
+## Build
+
+```
+cd <scratch copy of this directory>
+latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+```
+
+pdfLaTeX with the standard `amsmath`, `amssymb`, `amsthm`, `mathtools`,
+`lmodern`, `microtype`, `geometry`, `booktabs`, `longtable`, `array`,
+`enumitem`, `fancyhdr`, `xurl` and `hyperref` packages; three passes. The
+committed PDF was built this way with MiKTeX: 113 pages, no errors, no
+undefined references or citations, no multiply defined labels, no duplicate
+destinations, no overfull boxes. Build in a scratch copy; do not commit the
+auxiliary files.
+
+## Rerun the checks
+
+The shipped files are renamed and flattened, and every delivered driver
+(`verify.py`, `verify_all.py`) first checks the full package against its
+checksum ledger, which is not shipped. **Rerun every package from its
+reconstructed delivered layout, never inside this directory** (see the next
+section): the drivers write receipts into the package (`receipts/` of source
+25, `verification-receipt.json` of source 20, `local-replay.json` of sources
+22 and 23), and source 34's `proof-check/check.py` writes `receipt.json`
+beside itself unless an output path is given. Times are those measured at
+intake on a shared Windows laptop (5–18 times slower than the producers'
+recorded times).
+
+| Source | Command (in the reconstructed package) | Notes from intake |
+|---|---|---|
+| 25 | `python3 verify_all.py` | needs Python 3, SymPy, `g++` (C++17); with GCC 16 add `-include cassert` (or a `CPATH` shim), since `certify.cpp`, `certify_min_size.cpp` and `exhaust*.cpp` call `assert` without `<cassert>`; `small-check/exhaust` built with `-O3` crashed after finishing its order-8 census (`exhaust7` at `-O0` reproduced every count through seven), so that census was not rerun; every other step passed when run singly, outputs equal modulo CRLF and `seconds` fields |
+| 16 | `cd reproducibility && python verify.py --mode fast` (`--mode full` adds the bounded-core enumerations; `--mode hashes` checks integrity only) | about an hour here (3.5 min recorded); on Windows the wrapper's `text.replace('/workspace/shared', str(W))` writes backslashes into Python source and fails — run on Linux/WSL or replace `str(W)` by `W.as_posix()` in a copy. At intake the template-26 identity (36 s), the one-attachment algebra, the four-attachment face coverage, the template-9 correction and the representatives were replayed and equal the delivered outputs (modulo CRLF); the two-attachment positivity audit did not finish in the time allowed |
+| 23 | `python verify.py` (`--verify-dependency` also replays archive 31) | same Windows path bug in `stage`; with it fixed in memory: pass, 5.6 s, counts equal the receipts. Needs the embedded `dependencies/weighted-degree-three-package.zip` (archive 31), present in the reconstructed package |
+| 20 | `python3 verify.py` | Python ≥ 3.9, SymPy, GCC (C++17) with `-include cassert` on GCC 16 (`CXX` wrapper); pass, 73 s |
+| 12 | `PYTHONDONTWRITEBYTECODE=1 python3 verify.py` | standard library; receipts reproduced exactly |
+| 11 | `PYTHONDONTWRITEBYTECODE=1 python3 verify.py` | standard library; replays its embedded copy of source 12; receipts reproduced exactly |
+| 15 | `PYTHONDONTWRITEBYTECODE=1 python3 verify.py` | SymPy 1.14.0 for one checker; receipts reproduced exactly |
+| 22 | `python verify.py` | Python 3 and a C++17 compiler; more than three minutes, not run whole at intake; its sub-checkers were (final Rayleigh certificate 0.8 s; complete-hybrid coverage, certificates and aggregate; side-1565 package; two-attachment and marked-five modules) — counts equal the ledger |
+| 14 | `python verify.py --output <out.json>` | standard library; the producer passed alone (104 s), the independent checker did not finish in the time allowed; `--mode hashes` passes |
+| 10 | `python verify.py --output <out.json>` | standard library; pass, 46 s, receipt equal modulo time fields |
+| 34 | `python verify.py --workers 4 --output <out.json>` | standard library; all 9,608 certificates passed (run in two halves), aggregate equal to the delivered manifest; counterexample checker reproduced |
+| 06 | `python verify.py --workers 4 --output <out.json>` | needs about 2 GB of temporary disk; not run whole at intake: all 12,652 certificate members were authenticated against the audit manifests and 40 certificates replayed; `check_ordinary_lemmas.py` reproduced its receipt |
+| 35 | `python -B verify.py --workers 4 --output <out.json>` in the merged six-part package (`--integrity-only` checks integrity only and is not a proof replay) | standard library, Python ≥ 3.10; needs the six certificate shards, which are not shipped (next section), and about 6 GB of temporary disk under `--temp-dir` (default: the current directory). Not run whole at intake: about 1.5 h with four workers here under load (measured 3.8 s of one core per MB of certificate JSON), less on an idle machine (next section); the delivered receipt records 279 s. Integrity PASS (74 files, six shards); 15 certificates checked by `replay/check_extended.py --partial`: PARTIAL_PASS, records equal to the delivered manifest; `replay/structural.py`, both portable self-tests and the sharpness checker PASS |
+
+Two checks run from shipped files, on scratch copies:
+
+```
+# source 22's final all-real Rayleigh certificate: the checker reads the certificate beside itself
+mkdir -p /tmp/s1565
+cp code/22-independent-role-proofs-final-rayleigh-verify_side1565_rayleigh.py /tmp/s1565/verify_side1565_rayleigh.py
+cp data/22-independent-role-proofs-final-rayleigh-side1565_rayleigh_0_9_certificate.json /tmp/s1565/side1565_rayleigh_0_9_certificate.json
+python /tmp/s1565/verify_side1565_rayleigh.py
+# source 34's 9,608 certificates from the derived container (always pass the output path)
+mkdir -p /tmp/c34 && tar -xJf data/34-five-core-certificate-data.tar.xz -C /tmp/c34
+python code/34-five-core-proof-check-check.py /tmp/c34/certificate-data /tmp/c34/receipt.json 4
+# source 35's symbolic sharpness check: its checkers import siblings by their delivered names
+mkdir -p /tmp/s35
+cp code/35-five-core-cubic-replay-check.py /tmp/s35/check.py
+cp code/35-five-core-cubic-replay-check_sharpness_portable.py /tmp/s35/check_sharpness_portable.py
+python -B /tmp/s35/check_sharpness_portable.py --output /tmp/s35/sharp.json
+```
+
+The sharpness output equals `data/35-five-core-cubic-audits-portable-sharpness-receipt.json`
+as JSON (checked at the write). Every other source-35 checker needs the
+delivered `replay/dependencies/`, `inputs/` and certificate directories,
+so it runs only in the reconstructed package. Source 35's programs write
+with Python's `write_text`, which produces CRLF line endings on Windows;
+their default output paths are inside the package (`replay/receipt.json`,
+`replay/structural-receipt.json`, `replay/hybrid-receipt.json`) or the
+current directory (`verify.py`). Always pass `--output`.
+
+Regenerated text outputs on Windows differ from the delivered ones by CRLF
+line endings only; compare modulo line endings. Do not use `python -O`:
+several drivers rely on assertions and refuse to run without them.
+
+## Reconstructing what is not shipped
+
+Everything that is not shipped is in the arrival commit `f8c3a392a` (for
+source 35, batch 77: `096ee7b87`, last subsection), byte for byte, and can
+be retrieved exactly (`git` in a clone of ProveIt):
+
+```
+mkdir pgr-arrival && cd pgr-arrival
+for k in 1 2 3 4; do git show f8c3a392a:docs/incoming/preorder-degree-four-part-$k-of-4.zip > pd4-$k.zip; done
+mkdir pd4 && for k in 1 2 3 4; do unzip -o -q pd4-$k.zip -d pd4; done                 # source 16: 268 files, both manifests verify
+for k in 1 2; do git show f8c3a392a:docs/incoming/universal-sink-five-core-boundary-package-part-$k.zip > b-$k.zip; done
+mkdir boundary && for k in 1 2; do unzip -o -q b-$k.zip -d boundary; done             # source 06: 52 files
+for z in preorder-gamma-degree-three-package template26-structural-supplement role-cover-package \
+         three-core-rayleigh-result physical-cover-three-result bipartite-and-pendant-support-result \
+         independent-role-degree-three-package universal-sink-last-gap-package universal-sink-all-degrees-package \
+         universal-sink-five-core-package weighted-degree-three-package universal-sink-degree-four-package; do
+  git show f8c3a392a:docs/incoming/$z.zip > $z.zip && mkdir $z && unzip -q $z.zip -d $z
+done
+```
+
+The last two archives are the superseded versions 31 and 13. Each
+extracted package carries its own README, checksum ledger and PDF. The
+reconstructed packages are the delivered layouts in which the commands of
+the previous section run.
+
+**Not regenerable, kept only in the arrival commit.** Source 16's files
+larger than 2 MB, notably `reproducibility/sources/preorder-gamma-degree4/three-attachment/certificates.jsonl`
+(93.7 MB, LP-found certificates of the three-attachment branch, needed for
+degree four), `four-attachment/global_integer_sextic_shifted_gmp_26.json`
+(29.4 MB; template 26, last gap; replaced in the report by source 23's
+route, replayed exactly at intake in 36 s), `gmp_19` (8.5 MB) and `gmp_0`
+(5.0 MB), the two-attachment `quartic_sos_certificates.jsonl` (8.1 MB), the
+medium-face certificates, sources and normalized faces, and the face and
+alias tables listed below; the kernel data `two-attachment/a2_polynomials.jsonl`
+(20.7 MB) and `pendant10_coefficients.csv` (10.1 MB), regenerable only by
+the full-mode enumerations; and source 06's bounded-sink certificates
+`four-sink-certificates-a.tar.xz` (13.0 MB, archive 07) and
+`four-sink-certificates-b.tar.xz` (15.6 MB, archive 06) with their 3.5 MB
+manifest `audits/four-sink-certificate-manifest.json` — these carry the
+bounded-four-sink branch of source 06's first inequality (9,608 classes,
+1,755,474 squares).
+
+**Regenerable outputs, not shipped** (they are also in the arrival commit):
+
+- source 16, `three-attachment/normalized_faces.jsonl` (69.7 MB): for each
+  line `c` of `three-attachment/certificates.jsonl`, expand the polynomial
+  `Σ w · x^m · root²` over `c.terms.squares` — for `c.kind == "binomial"` a
+  square spec `[m, a, b, u, v]` has `root = u·x^a − v·x^b`, otherwise
+  `[m, pairs]` has `root = Σ c_e x^e` — plus the monomials
+  `c.terms.monomials`, with exact rationals; drop zero coefficients, sort
+  the terms by exponent vector, and write
+  `{"id": …, "variables": n, "polynomial": [[e, coefficient], …]}` as
+  compact JSON (`separators=(',', ':')`) with a final newline. At intake
+  this regenerated the whole file byte for byte (SHA-256
+  `e144e79b4cb66aeecb52816f5f6ef544f356998a39844bb3de4ba4cb1bac5840`,
+  the value pinned in its positivity audit);
+- source 16, the coverage ledgers written by the audits of fast mode:
+  `audit-positivity-independent/coverage_ledger.jsonl` (26.1 MB, two
+  attachments; not regenerated at intake: the audit did not finish in the
+  time allowed), `independent-audit/three-attachment/positivity_coverage.jsonl`
+  (9.2 MB; not run at intake) and
+  `independent-audit/four-attachment/face_orbit_coverage.jsonl` (2.3 MB;
+  regenerated, equal modulo CRLF); their SHA-256 values are recorded in the
+  shipped receipts;
+- source 16, the full-mode representatives
+  `independent-audit/two-attachment/representatives.tsv` (12.6 MB) and
+  `independent-audit/{three,four}-attachment/representatives.txt`
+  (3.9 MB, 4.4 MB): `prepare_representatives.py` and `prepare.py` of the
+  corresponding audits; regenerated at intake, equal modulo CRLF;
+- source 34, `audits/certificate-manifest.json` (2.75 MB): the output of
+  `proof-check/check.py`; regenerated at intake, equal as JSON.
+
+**The derived container** `data/34-five-core-certificate-data.tar.xz`
+(187,056 bytes) holds source 34's 9,610 files `certificate-data/catalog.json`,
+`certificate-data/cores.txt` and `certificate-data/cubic-two/certificate_0.json`
+… `certificate_9607.json` (45.9 MB unpacked), byte-identical to the
+delivered members. It was made at placement from the delivered zip, not by
+the producer: members sorted by name, USTAR format, mtime 0, uid and gid 0,
+empty user and group names, mode 0644, xz preset 9 extreme with CRC64,
+built twice to identical bytes and checked member by member against the
+zip (the helper script is not shipped). `tar -xJf` restores
+`certificate-data/` exactly as delivered; the commands above run source
+34's checker on it.
+
+Every delivered file that is not shipped, by archive (source 34's 9,610
+certificate files are in the container; the 245 files of archive 13 and the
+28 of archive 31 are the superseded versions, retrievable whole):
+
+| Archive | Delivered path | Why not shipped |
+|---|---|---|
+| 06 | `README.md` | delivery README; provenance goes into the report README |
+| 06 | `four-sink-certificates-b.tar.xz` | proof-carrying bounded-sink certificates (15571880 bytes, already xz-solid), > 10 MB; FLAG; retrieve from f8c3a392a universal-sink-five-core-boundary-package-part-2.zip (§9 R1) |
+| 07 | `README.md` | delivery README; provenance goes into the report README |
+| 07 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 07 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 07 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 07 | `article/core-appendix.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 07 | `article/universal-sink-five-core-boundary.pdf` | PDF; survives in f8c3a392a |
+| 07 | `article/universal-sink-five-core-boundary.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 07 | `audits/four-sink-certificate-manifest.json` | per-certificate hash/stat manifest of the unstaged four-sink tars (3.5 MB); travels with them (§9 R1) |
+| 07 | `audits/primary-literature-check.json` | byte-identical to data/34-five-core-audits-primary-literature-check.json, staged once |
+| 07 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 07 | `catalogs/cores.txt` | byte-identical to data/34-five-core-discovery-cores.txt, staged once |
+| 07 | `discovery/cores.txt` | byte-identical to data/34-five-core-discovery-cores.txt, staged once |
+| 07 | `discovery/four_active_cores.txt` | byte-identical to data/06-five-core-boundary-catalogs-four_active_cores.txt, staged once |
+| 07 | `discovery/kernel.py` | byte-identical to code/34-five-core-discovery-kernel.py, staged once |
+| 07 | `discovery/orbits_five.cpp` | byte-identical to code/34-five-core-discovery-orbits.cpp, staged once |
+| 07 | `discovery/pair_tools.py` | byte-identical to code/34-five-core-discovery-pair_tools.py, staged once |
+| 07 | `discovery/poly.py` | byte-identical to code/34-five-core-discovery-poly.py, staged once |
+| 07 | `discovery/precise_sos.py` | byte-identical to code/10-sink-all-degrees-discovery-precise_sos.py, staged once |
+| 07 | `four-sink-certificates-a.tar.xz` | proof-carrying bounded-sink certificates (13041816 bytes, already xz-solid), > 10 MB; FLAG; retrieve from f8c3a392a universal-sink-five-core-boundary-package-part-1.zip (§9 R1) |
+| 07 | `qa/page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-5.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-6.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 07 | `qa/page-7.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `README.txt` | delivery README; provenance goes into the report README |
+| 10 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 10 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 10 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 10 | `article/universal-sink-all-degrees.pdf` | PDF; survives in f8c3a392a |
+| 10 | `article/universal-sink-all-degrees.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 10 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 10 | `qa/checked-page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/checked-page-5.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 10 | `qa/render-checked.log` | empty file |
+| 11 | `README.md` | delivery README; provenance goes into the report README |
+| 11 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 11 | `article/physical-cover-three.pdf` | PDF; survives in f8c3a392a |
+| 11 | `article/physical-cover-three.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 11 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 11 | `dependency/README.md` | delivery note on the embedded copy of archive 12 (not staged) |
+| 11 | `dependency/three-core-rayleigh-result.zip` | embedded exact copy of archive 12 (handed over by C1; staged as files from 12) |
+| 11 | `dependency/three-core-rayleigh.pdf` | embedded exact copy of archive 12's PDF |
+| 12 | `README.md` | delivery README; provenance goes into the report README |
+| 12 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 12 | `article/three-core-rayleigh.pdf` | PDF; survives in f8c3a392a |
+| 12 | `article/three-core-rayleigh.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 12 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 14 | `README.txt` | delivery README; provenance goes into the report README |
+| 14 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 14 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 14 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 14 | `article/universal-sink-last-gap.pdf` | PDF; survives in f8c3a392a |
+| 14 | `article/universal-sink-last-gap.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 14 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 14 | `qa/page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 14 | `qa/render.log` | empty file |
+| 15 | `README.md` | delivery README; provenance goes into the report README |
+| 15 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 15 | `article/support-polynomials.pdf` | PDF; survives in f8c3a392a |
+| 15 | `article/support-polynomials.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 15 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 16 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 16 | `README.md` | delivery README; provenance goes into the report README |
+| 16 | `reproducibility/dependencies/degree-three.zip` | embedded exact copy of archive 25 (blob already in f8c3a392a) |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/BALANCED_REAL_ROOTEDNESS_PROOF.md` | byte-identical to 20-role-cover-proofs-BALANCED_REAL_ROOTEDNESS_PROOF.md, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/disjoint_core_edges_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-disjoint_core_edges_audit_receipt.json, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/role_cover_standalone_integration_audit.json` | byte-identical to data/20-role-cover-final-audit-review_receipt.json, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/role_cover_standalone_verification.json` | byte-identical to data/20-role-cover-final-audit-independent_verification.json, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/FREE_PRODUCT_COROLLARY_AUDIT.md` | byte-identical to 20-role-cover-proofs-ia-FREE_PRODUCT_COROLLARY_AUDIT.md, staged once |
+| 16 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_disjoint_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_disjoint_monomer.cpp, staged once |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/face_orbit_coverage.jsonl` | regenerable checker output (a4 face audit; equal mod CRLF at intake; §9 R2) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_core_correction_audit.json` | byte-identical to data/16-degree-four-ia-a4-global_gap3_coreE_batch3_receipt.json, staged once |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/global_gap3_template26_receipt.json` | byte-identical to data/16-degree-four-ia-a4-global_binomial_square_audit.json, staged once |
+| 16 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/representatives.tsv` | regenerable full-mode input (prepare_representatives.py; equal mod CRLF at intake; §9 R2) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_0.json` | proof data > 2 MB (4975110 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_19.json` | proof data > 2 MB (8522028 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/certificates_checkpoint2.jsonl` | proof data > 2 MB (6396304 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/normalized_faces.jsonl` | proof data > 2 MB (4929616 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/pendant10_coefficients.csv` | kernel data, 10.1 MB, byte-regenerated by recount_hall.cpp in full mode (not rerun); retrieve from f8c3a392a part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/face_aliases.json` | proof data > 2 MB (5294853 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 16 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/gap2_unresolved_faces.jsonl` | proof data > 2 MB (4574929 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-4-of-4.zip (§9 R1) |
+| 17 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 17 | `MANIFEST.json` | checksum ledger (sha256 of every file), verified at intake (266/266, 260/260), retired |
+| 17 | `README.md` | delivery README; provenance goes into the report README |
+| 17 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 17 | `reproducibility/dependencies/bipartite-rank-four.zip` | embedded exact copy of C1 archive 26 matching-rank-four-package.zip (blob a664be1fc); staged by C1 |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/TWO_BY_TWO_ROLE_COVER_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-TWO_BY_TWO_ROLE_COVER_INDEPENDENT_AUDIT.md, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/check_disjoint_rayleigh_aggregate.py` | byte-identical to code/20-role-cover-proofs-ic-ia-check_disjoint_rayleigh_aggregate.py, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/star_core_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-star_core_audit_receipt.json, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/BALANCED_REAL_ROOTEDNESS_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ia-BALANCED_REAL_ROOTEDNESS_INDEPENDENT_AUDIT.md, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/balanced_real_rootedness_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ia-balanced_real_rootedness_audit_receipt.json, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_missing_edge_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_missing_edge_monomer.cpp, staged once |
+| 17 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_star_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_star_monomer.cpp, staged once |
+| 17 | `reproducibility/sources/preorder-gamma-degree3/GALLAI_EDMONDS_REDUCTION.md` | byte-identical to 22-independent-role-proofs-gallai-edmonds-GALLAI_EDMONDS_REDUCTION.md, staged once |
+| 17 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/positivity_coverage.jsonl` | regenerable checker output (a3 positivity audit; §9 R2) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/a4_gaps.jsonl` | proof data > 2 MB (3909211 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/face_orbits.json` | proof data > 2 MB (2671015 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/medium-faces/source_faces.jsonl` | proof data > 2 MB (5043294 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/a3_unique_gamma.jsonl` | proof data > 2 MB (3694204 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/normalized_faces.jsonl` | regenerable: byte-identical expansion of a3 certificates.jsonl (reproduced whole, §9 R2) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/a2_polynomials.jsonl` | kernel data from shipped enumerate.cpp, 20.7 MB (byte regeneration not verified); retrieve from f8c3a392a part-3-of-4.zip (§9 R1) |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/canonical.inc` | byte-identical to code/16-degree-four-a3-canonical.inc, staged once |
+| 17 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_sos_certificates.jsonl` | proof data > 2 MB (8113421 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-3-of-4.zip (§9 R1) |
+| 18 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 18 | `README.md` | delivery README; provenance goes into the report README |
+| 18 | `article/preorder-degree-four.pdf` | PDF; survives in f8c3a392a |
+| 18 | `reproducibility/MANIFEST.json` | checksum ledger (sha256 of every file), verified at intake (266/266, 260/260), retired |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/ONE_MISSING_EDGE_REAL_ROOTEDNESS.md` | byte-identical to 20-role-cover-proofs-ic-ONE_MISSING_EDGE_REAL_ROOTEDNESS.md, staged once |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/TWO_BY_TWO_ROLE_COVER_THEOREM.md` | byte-identical to 20-role-cover-proofs-ic-TWO_BY_TWO_ROLE_COVER_THEOREM.md, staged once |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/DISJOINT_CORE_EDGES_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-DISJOINT_CORE_EDGES_INDEPENDENT_AUDIT.md, staged once |
+| 18 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/STAR_CORE_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-STAR_CORE_INDEPENDENT_AUDIT.md, staged once |
+| 18 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/four-attachment/representatives.txt` | regenerable full-mode input (prepare.py; equal mod CRLF at intake; §9 R2) |
+| 18 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/two-attachment/audited_canonical.inc` | byte-identical to code/16-degree-four-a3-canonical.inc, staged once |
+| 18 | `reproducibility/sources/preorder-gamma-degree4/audit-positivity-independent/coverage_ledger.jsonl` | regenerable checker output (a2 positivity audit, verify.py fast mode; §9 R2) |
+| 18 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/certificates.jsonl` | proof-carrying a=3 SOS certificates, 93.7 MB, LP-found, not regenerable; FLAG: too large to stage; retrieve from f8c3a392a part-2-of-4.zip (§9 R1) |
+| 19 | `ASSEMBLY.txt` | four-part assembly note of the delivery |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/DISJOINT_CORE_EDGES_REAL_ROOTEDNESS.md` | byte-identical to 20-role-cover-proofs-ic-DISJOINT_CORE_EDGES_REAL_ROOTEDNESS.md, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/STAR_CORE_REAL_ROOTEDNESS.md` | byte-identical to 20-role-cover-proofs-ic-STAR_CORE_REAL_ROOTEDNESS.md, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/ONE_MISSING_EDGE_INDEPENDENT_AUDIT.md` | byte-identical to 20-role-cover-proofs-ic-ia-ONE_MISSING_EDGE_INDEPENDENT_AUDIT.md, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/check_rayleigh_aggregate.py` | byte-identical to code/20-role-cover-proofs-ic-ia-check_rayleigh_aggregate.py, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/one_missing_edge_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-one_missing_edge_audit_receipt.json, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/incomplete-core/independent-audit/two_by_two_role_cover_audit_receipt.json` | byte-identical to data/20-role-cover-proofs-ic-ia-two_by_two_role_cover_audit_receipt.json, staged once |
+| 19 | `reproducibility/sources/balanced-core-gamma-research/independent-audit/check_full_monomer.cpp` | byte-identical to code/20-role-cover-proofs-ia-check_full_monomer.cpp, staged once |
+| 19 | `reproducibility/sources/preorder-gamma-degree4-independent-audit/three-attachment/representatives.txt` | regenerable full-mode input (prepare.py; equal mod CRLF at intake; §9 R2) |
+| 19 | `reproducibility/sources/preorder-gamma-degree4/four-attachment/global_integer_sextic_shifted_gmp_26.json` | template-26 last-gap certificate, 29.4 MB; replaced in the report by archive 23's smaller route; original retrievable from f8c3a392a part-1-of-4.zip (§9 R1) |
+| 19 | `reproducibility/sources/preorder-gamma-degree4/three-attachment/a3_polynomials.jsonl` | proof data > 2 MB (4717383 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-1-of-4.zip (§9 R1) |
+| 19 | `reproducibility/sources/preorder-gamma-degree4/two-attachment/quartic_sos_aliases.json` | proof data > 2 MB (2970747 bytes), not staged under the 2 MB cut; retrieve from f8c3a392a preorder-degree-four-part-1-of-4.zip (§9 R1) |
+| 20 | `README.md` | delivery README; provenance goes into the report README |
+| 20 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 20 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 20 | `proofs/independent-audit/check_full_monomer_sanitized.log` | byte-identical to data/20-role-cover-proofs-ia-check_full_monomer.log, staged once |
+| 20 | `proofs/independent-audit/check_full_monomer_sanitized.stderr` | empty file |
+| 20 | `role-cover.pdf` | PDF; survives in f8c3a392a |
+| 20 | `role-cover.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 22 | `README.txt` | delivery README; provenance goes into the report README |
+| 22 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 22 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 22 | `checker/role-cover-package.zip` | embedded exact copy of archive 20 (staged as files from 20) |
+| 22 | `independent-role-degree-three.pdf` | PDF; survives in f8c3a392a |
+| 22 | `independent-role-degree-three.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 22 | `proofs/role-cover.pdf` | embedded exact copy of archive 20's PDF |
+| 22 | `proofs/role-cover.tex` | embedded exact copy of archive 20's manuscript |
+| 22 | `qa/build-output.txt` | LaTeX build log of the unshipped delivered PDF |
+| 23 | `README.md` | delivery README; provenance goes into the report README |
+| 23 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 23 | `article/template26-last-gap.pdf` | PDF; survives in f8c3a392a |
+| 23 | `article/template26-last-gap.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 23 | `dependencies/weighted-degree-three-package.zip` | embedded exact copy of archive 31 (superseded by 22; §D D5) |
+| 23 | `sources/preorder-gamma-degree4/four-attachment/a4_polynomials.jsonl` | byte-identical to data/16-degree-four-a4-a4_polynomials.jsonl, staged once |
+| 25 | `README.md` | delivery README; provenance goes into the report README |
+| 25 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 25 | `article/preorder-gamma-degree-three.pdf` | PDF; survives in f8c3a392a |
+| 25 | `article/preorder-gamma-degree-three.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 25 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 25 | `code/minimum/independent-audit/a1_pairs.csv` | byte-identical to data/25-degree-three-code-minimum-a1_min_size_pairs.csv, staged once |
+| 25 | `code/one-attachment/pairs.csv` | byte-identical to data/25-degree-three-code-minimum-a1_min_size_pairs.csv, staged once |
+| 25 | `requirements.txt` | byte-identical to data/15-pendant-support-requirements.txt, staged once |
+| 34 | `README.md` | delivery README; provenance goes into the report README |
+| 34 | `SHA256SUMS` | checksum ledger, verified at intake, retired |
+| 34 | `article/build-pass1.log` | LaTeX build log of the unshipped delivered PDF |
+| 34 | `article/build-pass2.log` | LaTeX build log of the unshipped delivered PDF |
+| 34 | `article/universal-sink-five-core.pdf` | PDF; survives in f8c3a392a |
+| 34 | `article/universal-sink-five-core.tex` | member manuscript; printed at the write; survives in f8c3a392a |
+| 34 | `audits/certificate-manifest.json` | regenerable output of proof-check/check.py (JSON-equal at intake; §9 R2) |
+| 34 | `build.sh` | PDF build helper for the unshipped delivered PDF |
+| 34 | `qa/page-1.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-2.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-3.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-4.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-5.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+| 34 | `qa/page-6.png` | rendered page image of the unshipped delivered PDF (visual QA) |
+
+### Source 35 (batch 77): the excluded data
+
+Source 35 arrived later, in commit `096ee7b87` (2 October 2026), as the
+single archive `universal-sink-five-core-cubic-package.zip` (96,776,115
+bytes). It holds six top-level directories
+`universal-sink-five-core-cubic-package-part-1/` … `-part-6/`, each with
+the same inner directory `universal-sink-five-core-cubic-result/`; the
+delivery README says to extract all six parts into one folder. The
+following reassembles the package exactly (about 6 s here; the zip, its
+extraction and the merged copy take about 320 MB):
+
+```
+mkdir u35 && cd u35
+git show 096ee7b87:docs/incoming/universal-sink-five-core-cubic-package.zip > u35.zip   # 96,776,115 bytes
+unzip -q u35.zip
+mkdir pkg && for k in 1 2 3 4 5 6; do
+  cp -r universal-sink-five-core-cubic-package-part-$k/universal-sink-five-core-cubic-result/. pkg/
+done
+cd pkg && python -B verify.py --integrity-only --output integrity.json   # PASS: 74 files, six shards
+```
+
+The six parts carry the same `README.md`, so the copies overwrite each
+other harmlessly. All commands below run inside `pkg`.
+
+**Not regenerable, kept only in the arrival commit: the six certificate
+shards.** `data/certificates-01.tar.xz` … `-06.tar.xz` (95,052,048 bytes
+in all; 15,524,052, 17,021,744, 17,018,000, 17,020,204, 17,012,048 and
+11,456,000 bytes) hold the 7,901 rational square certificate files of
+the two-sink lemma (5,037,863,250 bytes of JSON when decoded): 1,009,
+1,491, 1,198, 1,384, 1,848 and 971 files for the class ids 0–1813,
+1814–3910, 3911–5275, 5276–6726, 6727–8636 and 8637–9607. The 94
+tail-sum certificates (`tail-sum-cubic/`) are in shards 01–05 (20, 32,
+37, 1 and 4); the other 7,807 files are in `two-sink-cubic/`. These
+files are the only carrier of the 7,752 classes (7,658 direct, 94
+tail-sum) that the selected ledger settles by certificates. They cannot be
+regenerated: the package ships checkers only, and the numerical search
+and rationalization that found the squares are not delivered (a
+numerical Gram search would not reproduce them byte for byte anyway).
+They are not staged because of their size, following the precedent of
+source 06's bounded-sink certificates; Vladimir's rule of 2 October 2026,
+"Exclude heavy regenerable artifacts", does not decide their case, since
+they are not regenerable. They are kept, byte for byte, in the arrival
+commit.
+
+The full proof replay decodes them into a temporary directory, checks
+every certificate, the structural records, the orbit coverage, the
+self-tests and the sharpness, compares the result with the delivered
+receipt, and deletes the decoded data:
+
+```
+python -B verify.py --workers 4 --output fresh-replay.json      # about 1.5 h here, 6 GB of temporary disk
+python -B verify.py --workers 4 --temp-dir /big/volume --output fresh-replay.json   # to decode elsewhere
+```
+
+It was not run at intake. The figure of about 1.5 h is the rate of the
+delivered checker measured at placement on this laptop under load (3.8 s
+of one core per MB of certificate JSON on an 8.6 MB sample, so about
+19,100 core-seconds for the 5,038 MB), plus the orbit coverage and the
+structural check. At the write, on the idle machine, the same sample took
+5.5 s on one worker including the orbit coverage, which suggests well
+under an hour (extrapolated, not run). The delivered receipt records
+279 s on the delivery machine. What was run at intake on the reassembled
+package: the integrity check (PASS), and fifteen certificates, ids 0–7
+(shard 01), 1814–1817 (shard 02; 1817 is a tail-sum certificate) and
+8637–8639 (shard 06), decoded (their hashes match
+`proof-data-manifest.json`) and checked, with the two self-tests and the
+sharpness check:
+
+```
+mkdir -p sample out && cp inputs/cores.txt inputs/structural-9608.json inputs/preorder-coverage.json sample/
+python -B - <<'EOF'
+import tarfile
+want = {1: [0, 1, 2, 3, 4, 5, 6, 7], 2: [1814, 1815, 1816, 1817], 6: [8637, 8638, 8639]}
+for k, ids in want.items():
+    left = set(ids)
+    with tarfile.open('data/certificates-0%d.tar.xz' % k, 'r|xz') as tf:
+        for m in tf:
+            i = int(m.name.split('_')[-1].split('.')[0])
+            if i in left:
+                tf.extract(m, 'sample', filter='data')
+                left.discard(i)
+                if not left:
+                    break
+EOF
+python -B replay/check_extended.py sample --partial --workers 2 --output out/sample.json
+tar -xJf data/certificates-01.tar.xz -C sample tail-sum-cubic/certificate_762.json   # needed by the multiplier self-test
+python -B replay/selftest_extended_portable.py sample --output out/selftest-extended.json
+python -B replay/selftest_multiplier_portable.py sample --output out/selftest-multiplier.json
+python -B replay/check_sharpness_portable.py --output out/sharp.json
+```
+
+`check_extended.py` gives PARTIAL_PASS, with the full orbit coverage of
+all 2²⁰ labeled cores, and writes `out/sample-manifest.json`, whose 15
+records equal those of the delivered per-certificate manifest; the other
+three give PASS, and the sharpness output equals the delivered receipt.
+At placement this took 45, 78, 46 and 5 s under load; at the write, 6, 6,
+2 and under 1 s. (The `filter` argument of `tarfile` needs a current
+Python; omit it on an old one.)
+
+**Not regenerable, shipped as a derived container: the structural input.**
+`inputs/structural-9608.json` (4,004,583 bytes, SHA-256
+`e346cb3f54d78f46c38045798f55733aa76f6daebc56841380e50580ad66da86`) is the
+output of the unshipped producer: the cover, matroid and HPP-side witnesses
+that `replay/structural.py` checks for the 1,807 structural classes. It is
+shipped as `data/35-five-core-cubic-inputs-structural-9608.json.xz`
+(31,524 bytes), made at placement with XZ Utils 5.8.2 by
+
+```
+xz -9e --check=crc64 -T1 -c inputs/structural-9608.json > 35-five-core-cubic-inputs-structural-9608.json.xz
+```
+
+Two runs gave identical bytes, and the round trip is byte for byte
+(checked again at the write). Another xz version may compress
+differently; the decompressed bytes are what matter. Restore it with
+
+```
+xz -dc data/35-five-core-cubic-inputs-structural-9608.json.xz > structural-9608.json
+cmp structural-9608.json <pkg>/inputs/structural-9608.json        # or: sha256sum, compare with the value above
+```
+
+**Regenerable outputs and ledgers, not shipped** (also in the arrival
+commit). Times are those at the write (2 October 2026) on the intake
+laptop; at placement, on the same machine under load, the structural check
+took 103 s and the shard-06 hash check 33 s.
+
+- `audits/full-hybrid-20261001T164052Z-receipt-structural-records.json`
+  (2,182,680 bytes): rebuilt byte for byte (7 s) by
+
+  ```
+  mkdir -p src out && cp inputs/cores.txt inputs/structural-9608.json inputs/preorder-coverage.json src/
+  python -B replay/structural.py src --output out/structural-receipt.json   # PASS: 1,807 + 139 records
+  python -B - <<'EOF'
+  import json
+  b = json.load(open('out/structural-receipt-records.json'))
+  open('out/structural-records.json', 'w', newline='\n').write(
+      json.dumps({'structural': b['structural'], 'preorders': b['preorder']}, indent=2) + '\n')
+  EOF
+  cmp out/structural-records.json audits/full-hybrid-20261001T164052Z-receipt-structural-records.json
+  ```
+
+  `structural.py` writes the key `preorder` (and CRLF on Windows);
+  `replay/hybrid_extended.py`, which wrote the delivered file, writes
+  `preorders`. The script rewrites it accordingly. `structural.py` must run
+  inside the package, because it reads `replay/dependencies/`.
+- `audits/full-hybrid-20261001T164052Z-receipt-ledger.json` (778,231
+  bytes), the disjoint selected ledger: rebuilt byte for byte (under 1 s)
+  from the structural records and the certificate paths of
+  `proof-data-manifest.json`, by the rule of `replay/hybrid_extended.py`
+  (lines 71–80):
+
+  ```
+  python -B - <<'EOF'
+  import json, re
+  b = json.load(open('out/structural-records.json'))
+  method = {r['id']: r['method'] for r in b['structural']}
+  preorder = {r['id'] for r in b['preorders']}
+  cert = {}
+  for r in json.load(open('proof-data-manifest.json'))['files']:
+      m = re.fullmatch(r'(two-sink|tail-sum)-cubic/certificate_(\d+)\.json', r['path'])
+      if m:
+          cert[int(m.group(2))] = m.group(1)
+  ledger = []
+  for i in range(9608):
+      if i in method: s = method[i]
+      elif i in preorder: s = 'previous_weighted_preorder_degree_three_theorem'
+      elif cert.get(i) == 'tail-sum': s = 'tail_sum_rational_square_certificate'
+      elif cert.get(i) == 'two-sink': s = 'exact_rational_square_certificate'
+      else: s = 'MISSING'
+      ledger.append({'id': i, 'selected_method': s})
+  open('out/ledger.json', 'w', newline='\n').write(json.dumps(ledger, indent=2) + '\n')
+  EOF
+  cmp out/ledger.json audits/full-hybrid-20261001T164052Z-receipt-ledger.json
+  ```
+
+- `audits/full-hybrid-20261001T164052Z-receipt-certificate-manifest.json`
+  (6,610,973 bytes), one record per certificate file: written only by a
+  full run of `replay/hybrid_extended.py` on the decoded certificates.
+  `verify.py` runs it inside its temporary directory and deletes the
+  outputs with the decoded data, so call it directly (about 1.5 h with four
+  workers, 5.04 GB of decoded files):
+
+  ```
+  mkdir -p dec out && cp inputs/cores.txt inputs/structural-9608.json inputs/preorder-coverage.json dec/
+  for k in 1 2 3 4 5 6; do tar -xJf data/certificates-0$k.tar.xz -C dec; done
+  python -B replay/hybrid_extended.py dec --workers 4 --output out/full.json
+  # out/full-certificate-manifest.json; also out/full-ledger.json and out/full-structural-records.json
+  ```
+
+  Not run whole at intake; the fifteen sampled records were regenerated
+  equal as JSON, and the manifest's hash and totals were recomputed equal
+  to the receipt. Compare it as JSON (CRLF on Windows).
+- `proof-data-manifest.json` (1,509,544 bytes; SHA-256 and byte count of
+  the 7,904 decoded proof-data files) and `data-shards.json` (380,602
+  bytes; the six shards, their hashes and member lists): their rows come
+  from streaming the shards. At the write, all 7,904 rows and all six
+  member lists were reproduced in 29 s by
+
+  ```
+  python -B - <<'EOF'
+  import hashlib, json, tarfile
+  want = {r['path']: r for r in json.load(open('proof-data-manifest.json'))['files']}
+  index = {s['path']: s for s in json.load(open('data-shards.json'))['shards']}
+  for k in range(1, 7):
+      path = 'data/certificates-0%d.tar.xz' % k
+      names = []
+      with tarfile.open(path, 'r|xz') as tf:
+          for m in tf:
+              h = hashlib.sha256(tf.extractfile(m).read()).hexdigest()
+              assert (m.size, h) == (want[m.name]['bytes'], want[m.name]['sha256']), m.name
+              names.append(m.name)
+      assert names == index[path]['members'], path
+  for name in ('cores.txt', 'structural-9608.json', 'preorder-coverage.json'):
+      data = open('inputs/' + name, 'rb').read()
+      assert (len(data), hashlib.sha256(data).hexdigest()) == (want[name]['bytes'], want[name]['sha256'])
+  print('all rows equal')
+  EOF
+  ```
+
+  The header fields of both files (counts, totals, the hash of the full
+  replay receipt, the shard index's `seconds`) are records of the delivery
+  run. `verify.py` needs both files and `MANIFEST.json`, which pins them;
+  that is one more reason to replay from the arrival commit rather than
+  from shipped files.
+
+`inputs/cores.txt` is not shipped either: it is byte-identical to
+`data/34-five-core-discovery-cores.txt` (the same 9,608 representatives in
+the same order). Every delivered file of source 35 that is not shipped:
+
+| Part | Delivered path | Why not shipped |
+|---|---|---|
+| 1 | `MANIFEST.json` | package checksum ledger of 74 files; verify.py --integrity-only PASS at intake; survives in 096ee7b87 |
+| 1 | `README.md` | delivery README; provenance goes into the report README |
+| 1 | `article/certificate-summary.tex` | two count macros of the manuscript, OrdinaryCount 7,658 and MultiplierCount 94, printed at the write; survives in 096ee7b87 |
+| 1 | `article/universal-sink-five-core-cubic.pdf` | PDF of the printed manuscript; survives in 096ee7b87 |
+| 1 | `article/universal-sink-five-core-cubic.tex` | member manuscript; printed at the write as a new Part III section; survives in 096ee7b87 |
+| 1 | `audits/full-hybrid-20261001T164052Z-receipt-certificate-manifest.json` | heavy regenerable output, 6610973 B: per-certificate records written by replay/hybrid_extended.py; 15/15 sampled records regenerated value-identically by check_extended.py; its hash and totals recomputed equal to the receipt; whole file needs the full replay; survives in 096ee7b87 |
+| 1 | `audits/full-hybrid-20261001T164052Z-receipt-ledger.json` | regenerable output, 778231 B: the disjoint selected ledger; regenerated byte-identically from structural.py records and proof-data-manifest paths; survives in 096ee7b87 |
+| 1 | `audits/full-hybrid-20261001T164052Z-receipt-structural-records.json` | heavy regenerable output, 2182680 B: regenerated byte-identically by replay/structural.py in 103 s, key "preorder" written as "preorders" as hybrid_extended.py does; survives in 096ee7b87 |
+| 1 | `build.sh` | build helper for the unshipped manuscript; foreign /tmp/hamiltonian-rank-build paths; survives in 096ee7b87 |
+| 1 | `data-shards.json` | shard index of the unstaged shards, 380602 B; member lists regenerated equal from the shards (shard 06 checked); the README lists the six shard byte counts; the delivered verify.py checks their SHA-256; survives in 096ee7b87 |
+| 1 | `data/certificates-01.tar.xz` | proof-carrying certificate shard, 15524052 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 1 | `inputs/cores.txt` | byte-identical to tracked data/34-five-core-discovery-cores.txt, staged once |
+| 1 | `proof-data-manifest.json` | heavy regenerable ledger, 1509544 B: sha256 and bytes of the 7,904 decoded proof-data files; rows regenerated value-identically from the arrival shards (shard 06 in 33 s at placement; all 7,904 rows in 29 s at the write); see the recipes above; survives in 096ee7b87 |
+| 1 | `proof-dependencies/companion-archives.json` | checksum ledger; its five companion archives are byte-for-byte batch-73 archives 10, 34, 07, 06 and 22 of f8c3a392a (verified at intake; stated in the README); survives in 096ee7b87 |
+| 1 | `proof-dependencies/companion-statement-pins.json` | checksum ledger of the copied companion members, all byte-identical to f8c3a392a members (verified at intake); survives in 096ee7b87 |
+| 1 | `proof-dependencies/companion-statements/universal-sink-all-degrees-result/article-approval.json` | byte-identical to tracked data/10-sink-all-degrees-audit-article-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-all-degrees-result/universal-sink-all-degrees.tex` | source 10 manuscript (f8c3a392a universal-sink-all-degrees-package.zip), printed as host Section 11; byte-identical |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/article-certificate-approval.json` | byte-identical to tracked data/06-five-core-boundary-audits-article-certificate-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/article-ordinary-scope-approval.json` | byte-identical to tracked data/06-five-core-boundary-audits-article-ordinary-scope-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/core-appendix.tex` | source 06 appendix (f8c3a392a universal-sink-five-core-boundary-package-part-1.zip), printed in host Section 13; byte-identical |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/ordinary-scope-approval.json` | byte-identical to tracked data/06-five-core-boundary-audits-ordinary-scope-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-boundary-result/universal-sink-five-core-boundary.tex` | source 06 manuscript (f8c3a392a universal-sink-five-core-boundary-package-part-1.zip), printed as host Section 13; byte-identical |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-result/article-certificate-approval.json` | byte-identical to tracked data/34-five-core-audits-article-certificate-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-result/ordinary-and-scope-approval.json` | byte-identical to tracked data/34-five-core-audits-ordinary-and-scope-approval.json, staged once |
+| 1 | `proof-dependencies/companion-statements/universal-sink-five-core-result/universal-sink-five-core.tex` | source 34 manuscript (f8c3a392a universal-sink-five-core-package.zip), printed as host Section 12; byte-identical |
+| 1 | `proof-dependencies/role-rank-three-source.md` | byte-identical to tracked 22-independent-role-proofs-ROLE_MATCHING_RANK_THREE_COROLLARY.md, staged once |
+| 1 | `proof-dependencies/three-active-tail-approval.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/same_three_core/approval_receipt.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `proof-dependencies/three-active-tail-source.md` | byte-identical to tracked 22-independent-role-proofs-SAME_ORIENTATION_THREE_CORE_RAYLEIGH.md, staged once |
+| 1 | `replay/dependencies/n9r4Hpp.txt` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/one_tail_published_nine_side/n9r4Hpp.txt of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip; Kummer-Sert Zenodo 6108027, CC BY 4.0, NOTICE already in the host README |
+| 1 | `replay/dependencies/nine-positive-source-check.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/one_tail_published_nine_side/nine-side-matroid-audit-package.zip!primary-source-check.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `replay/dependencies/one-tail-approval.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/side1565_all_real_rayleigh/side1565-final-case-audit-package.zip!stable_side_approval.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `replay/dependencies/one-tail-theorem.md` | byte-identical to tracked 22-independent-role-proofs-ONE_TAIL_HPP_ROLE_COVER.md, staged once |
+| 1 | `replay/dependencies/physical-cover-three-approval.json` | byte-identical to tracked data/11-physical-cover-audits-assembly-approval.json, staged once |
+| 1 | `replay/dependencies/physical-cover-three-integrated-approval.json` | byte-identical to tracked data/11-physical-cover-audits-integrated-paper-approval.json, staged once |
+| 1 | `replay/dependencies/physical-cover-three-theorem.md` | byte-identical to tracked 11-physical-cover-proof-notes-PHYSICAL_COVER_THREE_ULC.md, staged once |
+| 1 | `replay/dependencies/physical-cover-three.tex` | source 11 manuscript (f8c3a392a physical-cover-three-result.zip), printed as host Section 7; byte-identical |
+| 1 | `replay/dependencies/preorder-degree-three-approval.json` | byte-identical to tracked data/22-independent-role-audit-global-mathematical-approval.json, staged once |
+| 1 | `replay/dependencies/preorder-degree-three-theorem.md` | byte-identical to tracked 22-independent-role-proofs-INDEPENDENT_ROLE_WEIGHTED_DEGREE3_THEOREM.md, staged once |
+| 1 | `replay/dependencies/role-cover-approval.json` | byte-identical to tracked data/20-role-cover-proofs-ic-ia-two_by_two_role_cover_audit_receipt.json, staged once |
+| 1 | `replay/dependencies/role-cover-theorem.md` | byte-identical to tracked 20-role-cover-proofs-ic-TWO_BY_TWO_ROLE_COVER_THEOREM.md, staged once |
+| 1 | `replay/dependencies/small-classification-source-check.json` | byte-identical to member complete-hybrid-audit-package.zip!dependencies/one_tail_hpp_side/one-tail-stable-side-audit-package.zip!primary-source-check.json of tracked data/22-independent-role-checker-role-degree-three-audit-package.zip |
+| 1 | `replay/dependencies/source-pins.json` | checksum ledger of replay/dependencies, all byte-identical to tracked files or f8c3a392a members (verified at intake); survives in 096ee7b87 |
+| 2 | `README.md` | delivery README, byte-identical copy in part 2; provenance goes into the report README |
+| 2 | `data/certificates-02.tar.xz` | proof-carrying certificate shard, 17021744 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 3 | `README.md` | delivery README, byte-identical copy in part 3; provenance goes into the report README |
+| 3 | `data/certificates-03.tar.xz` | proof-carrying certificate shard, 17018000 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 4 | `README.md` | delivery README, byte-identical copy in part 4; provenance goes into the report README |
+| 4 | `data/certificates-04.tar.xz` | proof-carrying certificate shard, 17020204 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 5 | `README.md` | delivery README, byte-identical copy in part 5; provenance goes into the report README |
+| 5 | `data/certificates-05.tar.xz` | proof-carrying certificate shard, 17012048 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+| 6 | `README.md` | delivery README, byte-identical copy in part 6; provenance goes into the report README |
+| 6 | `data/certificates-06.tar.xz` | proof-carrying certificate shard, 11456000 B; rational square certificates found by an unshipped producer, NOT regenerable; kept in 096ee7b87 universal-sink-five-core-cubic-package.zip |
+
+
+## Third-party data: Kummer–Sert notice
+
+`data/22-independent-role-checker-role-degree-three-audit-package.zip`
+contains, four times and unmodified, the file `n9r4Hpp.txt` (523,875 bytes,
+SHA-256 `a3c7a6eaebe02ef50998710282542be2751b218a6713853cdd2eecadbe1f1f86`,
+MD5 `c73d80267112a960df5485f159ab56e0`, equal to the publisher's), the
+certified-positive list of rank-four nine-element matroids with the
+half-plane property of
+
+> Mario Kummer and Büşra Sert, supplementary data to *Matroids on Eight
+> Elements with the Half-plane Property and Related Concepts*, Zenodo,
+> doi:[10.5281/zenodo.6108027](https://doi.org/10.5281/zenodo.6108027),
+> licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+It is redistributed here unmodified, as delivered, at these member paths:
+
+```
+complete-hybrid-audit-package.zip!/dependencies/one_tail_published_nine_side/n9r4Hpp.txt
+complete-hybrid-audit-package.zip!/dependencies/one_tail_published_nine_side/nine-side-matroid-audit-package.zip!/n9r4Hpp.txt
+complete-hybrid-audit-package.zip!/dependencies/side1565_all_real_rayleigh/side1565-final-case-audit-package.zip!/proper-minors-audit-package.zip!/n9r4Hpp.txt
+complete-hybrid-audit-package.zip!/dependencies/side1565_all_real_rayleigh/side1565-final-case-audit-package.zip!/proper-minors-audit-package.zip!/published-list-dependency.zip!/n9r4Hpp.txt
+```
+
+The delivered package attributes the file (source 22's bibliography and its
+audit records) but states no licence; this notice supplies it. Source 35's
+package carries a fifth, identical copy at `replay/dependencies/n9r4Hpp.txt`;
+it is not shipped (it is the file above), but it is in the arrival commit
+`096ee7b87`. The rest
+of the report is MIT-0 like the repository.
+
+## Delivery names and discrepancies
+
+- **Delivered paths in shipped files.** All shipped code, receipts, audits
+  and proof notes use their delivered paths (for example
+  `reproducibility/sources/…`, `code/two-attachment/…`,
+  `checker/role-cover-package.zip`), and many receipts record SHA-256
+  values of package files; they are kept byte for byte. The checkers
+  address files by the delivered layout, so they run only in the
+  reconstructed packages.
+- **Absolute container paths.** Forty-five shipped files of source 16,
+  eight of source 23, source 20's `verify.py` and three of its receipts,
+  and source 06's `audits/four-active-compression.json` record paths such as
+  `/workspace/shared/…` or `/tmp/degree4-independent-package-O4TFzS`; the
+  delivered wrappers map the `/workspace/shared` prefix. The unshipped
+  `build.sh` files and LaTeX build logs refer to
+  `/tmp/hamiltonian-rank-build` and `/usr/share/texlive`.
+- **Files named but not delivered.** Source 16's notes and checkers name
+  files that were never delivered, among them `degree4_certificates.zip`
+  (patched out by its `verify.py`), `classify_quartics.py`,
+  `certify_quartics.py`, `certify_exceptions.py`, `finish_exception.py`,
+  `exhaust8.cpp`, `exhaust8.log`, `verify_supports.py`,
+  `exhaust9_canonical.cpp`, `audit_canonical.cpp`, `hall_recount.log`,
+  `hall_pairs.csv`, `exhaust10_regenerated.log`, `recount.log`,
+  `verify_certificates.log`, the producers of the normalized face and
+  alias tables, and `sparse_squares_degree4/6.jsonl`; source 10's checker
+  mentions the producer's `all-cloud-cubic` directory. These are producer
+  traces; no shipped proof step reads them.
+- **Historical receipts.** Source 16's
+  `package_fast_replay_71_coverage.json` ("full a4 positivity remains
+  open"), `face_orbit_audit.json`, `article_scope_audit_provisional.json`
+  and `global_binomial_square_audit.json` (the template-26-only output of
+  the checker) are checkpoint receipts superseded by the final coverage;
+  the delivered wrapper deletes historical receipts before a replay.
+  Source 23's `audits/integration_approval.json` says "this is not a final
+  ZIP approval" (its release boundary was pending). Source 22 notes that
+  some provenance notes keep draft-status wording. Source 34's
+  `ORDINARY_PROOFS.md` line 13 ("No claim that this reduced polynomial is
+  always nonnegative is made by this note") predates the certificates that
+  prove it (dated note in Part III).
+- **CRLF.** Source 25's `data/25-degree-three-code-a1-quadratic_certificates.csv`
+  has CRLF line endings throughout, as delivered (`csv.writer` without
+  `newline=''`); a `-text` line in `SetTheory/Cardinals/.gitattributes`
+  keeps its bytes. All other shipped text files are LF.
+- **Byte copies shipped once.** Files delivered in several packages are
+  shipped under the first owner's prefix: source 16's 24 role-cover files
+  under `20-role-cover-`, its `GALLAI_EDMONDS_REDUCTION.md` under
+  `22-independent-role-`, its `a4_polynomials.jsonl` once (source 23's copy
+  not shipped), source 23's two files of archive 31 under
+  `23-template26-`, and the shared discovery files and catalogues of
+  sources 34 and 06 under `34-five-core-`. Embedded exact copies of whole
+  packages (source 25 and manuscript 26 inside source 16, source 20 inside
+  source 22 and archive 31, archive 31 inside source 23, source 12 inside
+  source 11) are not shipped.
+- **Corrections in the text.** Source 20's appendix has "labels0,1" for
+  "labels $0,1$" (corrected as in source 16). Source 16 lists the authors of
+  arXiv:2605.26916 as "Chapoton and Athanasiadis", source 25 as
+  "Athanasiadis and Chapoton"; the bibliography uses the latter and notes
+  the former. Source 16's citation of "the previously established weighted
+  bipartite rank-at-most-four theorem" is supplemented by the stronger
+  `mrn:w:rf:cor:rankfive`.
+- **Credits.** The PDF metadata of sources 11, 12, 15, 16, 20, 22 and 25
+  credits OpenAI; their visible title pages do not. Source 23 has no author
+  line.
+- **Source 35 (batch 77).**
+  - *One README, six copies.* Each of the six parts carries the same
+    delivery `README.md` (5,195 bytes); none is shipped.
+  - *Delivery names.* The shipped checkers import their siblings by
+    delivered name (`import check`, `import check_extended`, `import
+    structural`) and read `replay/dependencies/`, `inputs/`, `audits/` and
+    the decoded certificate directories, so they run only in the
+    reassembled package (or, for the sharpness check, in a directory with
+    the two files renamed back). `35-five-core-cubic-audits-FINAL_AUDIT.md`
+    names `packaging-file-manifest.json`; the delivered file is
+    `proof-data-manifest.json` (not shipped), the same bytes: its SHA-256
+    `ff956659…` is the `packaging_file_manifest_sha256` of
+    `data/35-five-core-cubic-audits-full-approval.json`.
+    `35-five-core-cubic-audits-ONE_TAIL_HPP_SCOPE.md` cites files of
+    earlier work directories (`../weighted-preorder-gamma/…`,
+    `../independent-role-degree-three-result/…`,
+    `../weighted-nontotal7-hybrid-independent-audit/…`,
+    `../weighted-nine-side-matroid-independent-audit/…`) that were never
+    delivered as such; the theorem they hold is source 22's
+    `ONE_TAIL_HPP_ROLE_COVER.md`, shipped as
+    `22-independent-role-proofs-ONE_TAIL_HPP_ROLE_COVER.md`. Its closing
+    "Audit boundary" ("does not yet approve any new five-core pruning
+    record") predates the final audit that does.
+  - *Release replay not recorded.* The delivery README says that "detached
+    release information" pins the final ZIPs; it is not in the archive.
+    `data/35-five-core-cubic-audits-article-approval.json` records
+    `release_archive_replay_included: false` with the remaining step "Clean
+    combined extraction and full replay of the final candidate ZIP files",
+    and `FINAL_AUDIT.md` ends the same way. The delivered full receipt is
+    therefore the pre-release replay. At intake the integrity check passed
+    on the reassembled parts and a sample was replayed; the full replay was
+    not run.
+  - *Unnamed companions.* The manuscript and its ledger cite their inputs
+    only as "previously delivered" or "established" results identified by
+    archive hashes. The report replaces them by labels; the five companion
+    archives are, byte for byte, batch-73 archives 10, 34, 07, 06 and 22,
+    and the companion manuscripts and approvals it carries are copies of
+    files already shipped or printed here (the table above).
+  - *Historical wording.* Some pinned dependency notes say "proposed" or
+    describe then-open parts; `35-five-core-cubic-DEPENDENCIES.md` explains
+    that later approvals pin the same bytes.
+  - *Not shipped by rule.* The manuscript, its PDF, the count macros
+    `article/certificate-summary.tex` (typed into the article) and
+    `build.sh`, which refers to `/tmp/hamiltonian-rank-build`, are not
+    shipped; they are in the arrival commit.
+  - *No CR bytes.* No delivered text file of source 35 contains a CR byte,
+    so no `.gitattributes` line was needed.

@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of sixty-three research reports on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of sixty-six research reports on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -60,10 +60,10 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Sixty-three mathematical research packages,\\
+ {\large Sixty-six mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
- {\small September 2026}
+ {\small October 2026}
 \end{center}
 
 \vspace{4pt}
@@ -71,11 +71,11 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the sixty-three research packages stored under
+This document catalogues the sixty-six research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
-The collection divides in five, and so does the directory tree.  Twenty-three
+The collection divides in five, and so does the directory tree.  Twenty-five
 reports, under \dir{docs/surreal}, are about the surreal field $\No$ itself and
 its real Hahn subfields: birthdays and their behaviour under multiplication,
 the option graphs of surreal forms, genetic functions and gaps, two questions
@@ -84,7 +84,8 @@ automorphisms, Gamma functions, differential transcendence of explicit
 surreals, Hahn-valued measures and probability, Markov generators,
 transcendence over bounded-support series, diagonal matrix scaling, vector
 and tensor fields, Euclidean three-space and its rotations, and finite
-probability, independent surreal copies, and six reports on Conway's omnific integers $\Oz$: their
+probability, finite polytopes at surreal scales, independent surreal copies,
+the structure of $\No$ as a real vector space, and six reports on Conway's omnific integers $\Oz$: their
 Diophantine geometry, their set-sized quotients, the automorphisms that
 preserve them, their algebraic groups and lattices, and the discrete initial
 subgroups they normalize, and continued fractions with omnific digits.
@@ -104,7 +105,7 @@ commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  Two, under \dir{docs/physics}, address physical models: the first asks what
 surreal scalars do and do not buy in general relativity; the second asks the
 same of finite quantum operations and gauge models. Neither claims an
-experimental prediction.  The last nine, under
+experimental prediction.  The last ten, under
 \dir{docs/foundations-and-computation}, stand outside all of these: they are
 about the subject rather than inside it, asking in what foundation this
 mathematics legally lives, how one computes with it exactly, which surreal
@@ -112,8 +113,9 @@ numbers are computable at all, how the surreal field of one set-theoretic
 universe looks from a larger one, which universe of hereditary sets a
 birthday cutoff remembers, which surreals and omnific integers are
 definable, how omnific integers can be named exactly, and how large-cardinal
-embeddings act on normal forms, and which restricted exponential languages
-over omnific integers are decidable.
+embeddings act on normal forms, which restricted exponential languages
+over omnific integers are decidable, and how the well-orders of the proper
+class $\No$ compare lexicographically.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -140,7 +142,7 @@ latexmk -pdf manifest.tex \&\& latexmk -c manifest.tex
 
 \section{The surreal field}
 
-Twenty-three reports about $\No$ and its real Hahn subfields.  Two questions of
+Twenty-five reports about $\No$ and its real Hahn subfields.  Two questions of
 Lipparini on evaluating formal sums; two independent halves of Gonshor's
 product-birthday conjecture, on domains neither of which contains the other;
 the subgraph question from Roughan's paper on birthday arithmetic; a genetic
@@ -151,7 +153,8 @@ transcendence of explicit surreals; Hahn-valued measures and probability;
 Markov generators at every valuation scale; transcendence over bounded-support
 series; diagonal matrix scaling; vector and tensor fields in every
 dimension; Euclidean three-space and $\mathrm{SO}(3,\No)$; and finite surreal
-probability; and six reports on the omnific integers $\Oz$, written from
+probability; finite polytopes at surreal scales, from batches 58 and 59; $\No$
+as a real vector space, from batch 73; and six reports on the omnific integers $\Oz$, written from
 batches 24--29: Diophantine geometry, set-sized quotients, preserving
 automorphisms, groups and lattices, and discrete initial subgroups with their
 omnific normalization, together with continued fractions. A further report proposes independent copies with
@@ -164,7 +167,10 @@ The five earlier omnific reports are merges, grown by later additions: the
 Diophantine report assembles fifteen manuscripts, the quotient report
 twenty-four, the preserving-automorphism report fifteen, the groups and lattices
 report five and the initial-subgroup report two. The continued-fraction report
-is a written single-source report. Assembly, independent proof
+is a written single-source report. The polytope report merges twelve
+manuscripts, six from each of batches 58 and 59, into ten Parts on three
+spines, and the vector-space report three independent manuscripts of
+batch 73 that answer one question. Assembly, independent proof
 review and Lean coverage are separate; the ledger maps the ring and
 constant-term package, degree laws, units, finite elements and exact
 omnific floor and ordinary polynomial-root rigidity of the Diophantine
@@ -635,6 +641,69 @@ the cases $p=t$ and $p=\tfrac12+t$ of the i.i.d.\ corollary of
 \nolinkurl{surreal/hahn-valued-measures-and-probability}, which it answers no
 question of.  No physical interpretation is claimed, in line with
 \nolinkurl{physics/surreal-scalars-and-spacetime}.  One manuscript; not
+refereed, no Lean verification, priority not certified.}
+
+\entry{Polytopes at surreal scales}
+{surreal/polytopes-at-surreal-scales}
+{article.pdf}{twelve manuscripts, delivered 30~September 2026}
+{Finite polytopes over a set-sized real closed field $K\supseteq\R$ inside
+$\No$, with its bounded ring and standard part, in ten Parts on three spines.
+Part~I: for a fixed real configuration of $n$ points of affine dimension $d$
+with surreal heights, at most $m\le n-d-1$ real layers keep the leading term
+of every dependence evaluation; the sign type is an oriented partial flag of
+minimal polynomial germ degree exactly $m-1$, and support-initial lifting
+histories are exactly the finite marked regular refinement chains, sharp for
+planar parabolic polygons.  Part~II realizes every prescribed
+triangle/quadrilateral history under coordinate truncation.  Part~III: the
+scale lattice and a full-dimensional affine residue, even when the standard
+part collapses the polytope, and finite rational-grid segment models
+preserving all mixed-volume valuations at once.  Part~IV: real traces,
+algebraic descent, and a quadrilateral whose lattice counts
+$(n+1)^2-\lceil\alpha n\rceil$ have a generating function that is not
+D-finite.  Part~V: for every $n\ge4$, two strictly convex $n$-gons agreeing in
+shadow, oriented matroid and all-order jets at $\omega^{-\omega}$, one of
+logarithmic linear and semidefinite extension complexity and one with
+$\mathrm{xc}(\mathrm{xc}-1)\ge2n$; such invisible gaps exist exactly when the
+jet scale's valuation is not an order unit.  Parts~VI--X (batch~59):
+mixed-volume tomography, where no finite list of mixed-area probes recognizes
+every planar scale lattice; an exact realization criterion for mixed-volume
+profiles, under which a matroid-type profile is realizable exactly when the
+matroid is representable over~$\R$, with an unrealizable strictly Lorentzian
+Fano profile; Lawrence polytopes whose face-preserving vertex arcs need
+degree exponential in~$k$; omnific integer hulls generated by an explicit
+finite set from one ordinary Graver test set, finitely for all boxed
+right-hand sides exactly when every row is rational in direction; and
+set-sized presentations, where a small hull that is also a small halfspace
+class is a polytope.  Merged from twelve manuscripts; not refereed, no Lean
+verification, priority not certified.}
+
+\entry{The surreal numbers as a real vector space}
+{surreal/real-vector-space-structure}
+{article.pdf}{three manuscripts, delivered 1~October 2026 (batch~73)}
+{What is the natural basis of the proper-class vector space $\No$ over its
+canonical copy of $\R$?  The monomials $\omega^\gamma$ are a canonical
+\emph{Hahn} basis (unique set-supported strong expansions) and the basis of
+every one-dimensional layer of the associated graded algebra
+$\mathrm{gr}\,\No\cong\R[\No]$, but a Hamel basis only of the finite-support
+subspace.  No set spans $\No$; in NBG with global choice a class Hamel basis
+exists, may contain every monomial, and must contain a proper class of
+infinite-support vectors with supports of unbounded cardinality.  Every
+infinite support window $A$ has Hamel dimension $|\R|^{|A|}$, and for every
+nonzero set-sized exponent group $\Gamma$ the finite-monomial part of
+$\R((t^\Gamma))$ has codimension $|\R((t^\Gamma))|$.  The canonical linear
+structure is described in detail: support projections and their commutant,
+positive diagonal operators, valuation bases on finite-dimensional subspaces
+and their global failure, strong linear maps as Hahn-compatible column
+families, the strong real dual, the vanishing order-bounded dual, and why
+normal forms are not Schauder expansions.  Part~IV: for real exponent groups
+the Euler operator $t^\gamma\mapsto\gamma t^\gamma$ makes $\R((t^\Gamma))$ modulo its
+finite-monomial part a continuum-dimensional $\R(X)$-vector space, whose
+commuting real-linear maps are strong coefficient multipliers, and the
+finite-monomial part has no invariant complement.  Merged from three
+independent manuscripts that give the same answer by different proofs (no
+set spans; a class Hamel basis by a global well-order and by staged Hahn
+fields), printed once with second and third routes; results of the
+three-duals, exponential-automorphism and omnific reports are pointers.  Not
 refereed, no Lean verification, priority not certified.}
 
 \entry{Omnific integers and omnific--Diophantine geometry}
@@ -2381,7 +2450,7 @@ no Lean formalization, priority not certified.}
 
 \section{Foundations and computation}
 
-Nine reports that take the rest of the collection, or the surreal field as a
+Ten reports that take the rest of the collection, or the surreal field as a
 set-theoretic object, as their object.  The first three range over the whole subject; the others emphasize set
 theory, definability and computability, including a restricted exponential
 language for omnific arithmetic.  Each of
@@ -2392,8 +2461,11 @@ cutoffs, are merges of four and five
 manuscripts delivered on 22~September 2026, each proving one spine several
 times under different hypotheses.  Two more, from batch 27, address definable
 surreals and omnific integers (two manuscripts) and omnific notations
-(three). The critical-point-defects report now integrates four manuscripts;
-the newest report treats exponential relations over omnific integers.
+(three). The critical-point-defects report now integrates four manuscripts,
+and the exponential-relations report treats a restricted exponential
+language for omnific integers.  The newest, from batch~80, merges four
+independent manuscripts on the lexicographic orders of the well-orders of
+$\No$.
 
 \entry{Foundations for surreal and surcomplex mathematics}
 {foundations-and-computation/foundations}
@@ -2626,5 +2698,44 @@ degree of its rational cut; admitting $\exp(xy)=\exp(z)$ gives
 undecidability. This does not define an exponential on all surcomplex
 numbers or decide the unrestricted surreal exponential field. Independent
 proof review and Lean formalization remain pending.}
+
+\entry{Lexicographic orders of well-orderings of the surreal numbers}
+{foundations-and-computation/surreal-well-orders}
+{article.pdf}{four manuscripts, delivered 2~October 2026 (batch~80)}
+{How do the well-orders of the proper class $\No$ compare lexicographically,
+and what does the comparison see?  For sets of surreals the enumeration
+order behaves as for every infinite linear alphabet: cardinality,
+universality, ordinal and cube spectra, coding length, extrema and
+adjacency are the theorems of the research-report collection's report on
+the well-orderings of the reals, printed as pointers with second routes.
+Birthday cutoffs bring one exception: with $\mu=2^{<\kappa}$, the minimal
+slice of $\No_{<\kappa}$ is equimorphic with $\mathbb{B}_{\kappa\cdot\kappa}$
+exactly when $\kappa$ is a singular strong limit, and with $\mathbb{B}_\mu$
+otherwise ($\kappa=\beth_\omega$ is an unconditional example), which
+answers that report's question on other ground orders in part.  Set-length
+surreal words embed into $\No$ with birthday bounds but are not isomorphic
+to it, with a complete obstruction to filling their set cuts.  Over GB without set
+choice, a class well-order of $\No$ exists exactly when global choice holds.
+All class well-orders of a labelled class are compared directly, with
+elementary comprehension and without elementary transfinite recursion; the
+order has a canonical set-like initial part, convex fibres and exact
+adjacency by finite residual permutations.  For set-like global
+well-orders in GBC, bounded-support codes interpolate every uniformly
+set-indexed cut and form a class isomorphic to $\No$, finite support does
+not suffice, binary class orders are equimorphic, no uniform coding is
+exhaustive, and omitted ranges give raw cuts.  For inaccessible $\kappa$,
+both orders are identified in $(V_\kappa,\mathcal{P}(V_\kappa))$ and the
+unrestricted one does not embed into the set-like one; in KM with global
+choice there is no definable uniform embedding.  \emph{Merged from four
+independent manuscripts, two pairs of which share an archive name without
+being editions; the core proved up to four times is printed once with the
+other proofs as routes or notes, and the base proves the choice equivalence
+without set choice, answering another source's question.}  Universality and
+homogeneity of $\No$ are classical.  Reciprocal notes went to the reals,
+real-vector-space, birthday-cutoff and foundations reports.  Four
+finite-check programs are shipped; a finite check proves no infinite
+theorem.  Proof review pending; not refereed, no Lean formalization (four
+inputs it uses are proved in Lean on the sign carrier), priority not
+certified.}
 
 \end{document}

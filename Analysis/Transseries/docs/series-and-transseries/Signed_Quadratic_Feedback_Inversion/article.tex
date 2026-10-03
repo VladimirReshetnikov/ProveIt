@@ -1,0 +1,1446 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{bookmark}
+\definecolor{ink}{RGB}{25,46,65}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.7em}{}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Signed quadratic-feedback inversion}
+\fancyhead[R]{\small Research draft, 29 September 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=4pt,topsep=5pt,leftmargin=1.7em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for ProveIt editorial notes, so that the article's own numbering is unchanged
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+\newcommand{\R}{\mathbb R}\newcommand{\C}{\mathbb C}\newcommand{\N}{\mathbb N}
+\newcommand{\ee}{\mathrm e}\newcommand{\dd}{\mathrm d}
+\newcommand{\U}{\widehat U}\newcommand{\V}{\widehat V}
+\newcommand{\B}{\mathcal B}\newcommand{\I}{\mathcal I}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\DeclareMathOperator{\Res}{Res}
+\hypersetup{pdftitle={Signed Quadratic-Feedback Inversion: A Finite-Core Resolution and Sharp Entire Borel Growth},pdfauthor={AI-assisted research draft prepared for Vladimir Reshetnikov},pdfsubject={Resolution of a repository-local inverse asymptotic conjecture, signed finite-core universality, and Borel growth}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{ink} Signed Quadratic-Feedback Inversion\par}
+\vspace{0.5em}
+{\Large A finite-core resolution and sharp entire Borel growth\par}
+\vspace{1em}
+Research article prepared for Vladimir Reshetnikov\\
+29 September 2026
+\end{center}
+\begin{abstract}
+The ProveIt article on finite-core universality leaves conjectural a signed
+coefficient equivalent for the compositional inverse of
+$\U(q)=\sum_{j\ge1}q^j\exp(a j^2\U(q))$, $a>0$.
+We give a proof by reversing the defining equation before performing
+large-order analysis. The crucial estimate is an arbitrary-algebraic-accuracy
+reduction to one action above a sufficiently large analytic core. Its proof
+uses absolute bounds only after the cancellations within the core have been
+resummed. A merger defect for quadratic actions suppresses all remaining
+multiple-tail terms.
+
+If $r_n(1+r_n)\ee^{2r_n}=an$ and
+$S_n=\exp(nr_n(1+2r_n)/(1+r_n))/\sqrt{2r_n^2+4r_n+1}$, the result is
+$v_n\sim-S_n\exp(-(1+1/a)r_n)$. More generally, arbitrary real changes to
+finitely many weights and slopes preserve the equivalent, with
+$1+1/a$ replaced by $(\lambda_1+w_2)/a$. Thus eventual negativity survives
+finite signed perturbations. Although a large auxiliary core is used in the
+proof, the leading inverse equivalent needs only the first two actions;
+the one-action core is insufficient in the pure model.
+
+A second saddle calculation determines the entire ordinary Borel transform:
+if $s(s+1)=aR$ and $b=(\lambda_1+w_2)/a$, then
+$-\B\V(R)\sim\exp(s\ee^{2s}/a-bs)/\sqrt{2s+1}$.
+This is also its maximum-modulus equivalent. It locates the positive-direction
+Borel obstruction at infinity, not at a finite Borel singularity.
+The article includes complete estimates, exact finite identities, reproducible
+checks, scope limitations, and twelve further research questions.
+\end{abstract}
+
+\noindent\textbf{Proof and novelty status.}
+This is a conventional mathematical research draft, not a Lean-verified or
+independently refereed paper. The principal result resolves a precisely
+identified \emph{repository-local} conjecture. No claim of worldwide
+publication priority or of solving unrestricted transseries summability is
+made. The central estimates are proved here rather than imported from the
+repository's positive-coefficient arguments.
+
+\clearpage
+\setcounter{tocdepth}{1}\tableofcontents
+\clearpage
+
+\section{The question and the change of viewpoint}
+\label{sec:context}
+
+\subsection{The exact repository target}
+The ProveIt transseries collection develops formal inversion, support control,
+large-order estimates, analytic realization, and quantitative asymptotics.
+Its manuscript \emph{Finite-Core Universality and Sharp Large Order for
+Countable Exponential-Feedback Transseries} explicitly labels
+\begin{equation}
+ v_n\sim-S_n\exp\bigl(-(1+1/a)r_n\bigr)
+ \label{eq:target}
+\end{equation}
+as the ``Quadratic inverse equivalent'' conjecture
+(TeX label \texttt{conj:quadratic-inverse}) \cite{repo-core}.
+The manuscript proves the corresponding sharp inverse statement for
+superquadratic feedback, but explains why that proof stops at the quadratic
+boundary: its expansion parameter grows rather than tends to zero.
+Its exact one-tail inverse-response identity suggests \eqref{eq:target},
+while leaving dominance of that response unproved.
+
+We address that missing dominance step. The point is not to compute more
+terms in the inverse, nor to extrapolate a positive forward-coefficient
+argument across a sign change. Instead, put $t=\U(q)$ and invert the
+\emph{defining equation}:
+\begin{equation}
+ t=\sum_{j\ge1}w_jq^j\ee^{\lambda_jt},\qquad q=\V(t).
+ \label{eq:direct}
+\end{equation}
+At fixed $t$, the feedback exponentials are now coefficients of a power
+series in $q$. A finite part of that series can be inverted analytically.
+Only the remaining large actions are expanded. This separates the
+cancellation-producing background from the combinatorial tail estimate.
+
+% ed. (2026-09-29): "tree" -> "commit"; the identifier is a commit (the batch-47 catalogue commit), not a Git tree object
+The inspected repository commit was
+\path{0c973d8f5e7ef4550f4df1bf486d890037fd9f14}.
+The relevant \texttt{article.tex} blob was
+\path{c2b6faf623003111e9d9e6bbb162a67429f3ce42}.
+The bibliography and package provenance file give the exact path. The
+inspection was targeted, not an exhaustive audit of all branches or incoming
+research archives.
+
+% ed. (2026-09-29): editorial note on status and on uncited or later repository material (negative-ray and regularity articles; weighted-type package)
+\begin{ednote}
+The claimed proof below has not been independently reviewed; a second,
+independent claimed proof of the same conjecture is \cite{ed:qef} (see the
+note after Theorem~\ref{thm:main}). The inspected snapshot also contained
+two articles that this one does not cite. The negative-ray article
+\cite{ed:nrs} asks, in its research question ``Signed coefficient
+asymptotics and actual least error''
+(\path{Negative_Ray_Summation_Exponential_Feedback/article.tex},
+lines 1429--1438), for a signed asymptotic equivalent of the inverse
+coefficients in the quadratic case; Theorem~\ref{thm:main} answers that
+part for the inverse (the case $a=1$ with no exceptions), while the series
+$\widehat P$ and the actual least truncation error there are not treated.
+The regularity article \cite{ed:reg}, Theorem~\texttt{thm:borelintro}
+(\path{Exponential_Feedback_Regularity_Classification/article.tex},
+lines 301--316), proves the forward analogue of Theorem~\ref{thm:borel},
+$\log\log B_{\mathcal U}(t)\sim2\sqrt t$ for $\lambda_j=j^2$, the same
+rate as \eqref{eq:Bgrowth} at $a=1$. The later weighted-type package
+\cite{ed:swt} (batch~48), which could not be seen from this snapshot,
+proves for $\lambda_j\sim aj^2$ that the normalized roots
+$(|v_n|\log(n+\ee)^{2n}/n!)^{1/n}$ have limsup $4a$ and that
+$\limsup\log\log\max_{|z|=R}|B(z)|/\sqrt R=2\sqrt a$ ($4$ and $2$ for
+$\lambda_j=j^2$); in the pure model Corollary~\ref{cor:gevrey} and
+\eqref{eq:Bgrowth} upgrade both limsups to limits with the same values.
+\end{ednote}
+
+\subsection{Established tools and the proposed contribution}
+Lagrange inversion is classical; we use its formal and parameter-dependent
+versions in the form surveyed by Gessel \cite{gessel}. Transseries supply the
+formal asymptotic setting, not an automatic assertion of analytic convergence
+\cite{edgar}. The distinction between formal Borel transforms, analytic
+continuation, and Laplace growth is standard in summability theory
+\cite{sauzin}.
+
+Borinsky's algebra of factorially divergent series provides an important
+comparison \cite{borinsky}. Our coefficients are smaller than every fixed
+positive exponential multiple of $n!$, even after multiplying by any power
+of $n$. Consequently they have the \emph{zero} asymptotic expansion in every
+fixed positive-$\alpha$ gamma scale used there. They are not excluded from
+those classes; rather, those particular asymptotic invariants do not detect
+the moving logarithmic scale resolved here.
+
+The proposed contributions are the signed quadratic equivalent, its
+finite-perturbation universality, the sharp two-action leading core, and the
+explicit maximum-modulus equivalent for the inverse Borel transform. The
+underlying inversion formula, Gaussian integral, and Cauchy estimates are
+not claimed as new.
+
+\section{Model, notation, and main theorems}
+\label{sec:main}
+
+\begin{definition}[Eventually quadratic feedback]
+Fix $a>0$. Let $w_j,\lambda_j\in\R$, $j\ge1$, satisfy $w_1=1$ and
+\begin{equation}
+ w_j=1,\qquad \lambda_j=aj^2\qquad(j>M_0)
+ \label{eq:model}
+\end{equation}
+for some fixed integer $M_0$. No positivity assumption is imposed on the
+finitely many exceptional weights or slopes. Define $\U\in q\R[[q]]$ by
+\begin{equation}
+ \U(q)=\sum_{j\ge1}w_jq^j\ee^{\lambda_j\U(q)},
+ \qquad \V=\U^{\langle-1\rangle}=\sum_{n\ge1}v_nt^n.
+ \label{eq:modelU}
+\end{equation}
+Set
+\begin{equation}
+ c=\lambda_1+w_2,\qquad b=c/a,\qquad
+ C_0=1+|\lambda_1|+|w_2|.
+ \label{eq:cb}
+\end{equation}
+All parameters and all core sizes in this article are fixed while $n$ tends
+to infinity.
+\end{definition}
+
+The right side of \eqref{eq:modelU} is locally finite in the $q$-adic
+filtration. Its coefficient of $q^n$ depends only on coefficients of $\U$
+of degrees less than $n$, because every summand has a factor $q^j$.
+This proves existence and uniqueness recursively. Also
+$\U(q)=q+cq^2+O(q^3)$, so its formal compositional inverse exists. Substitution
+of $q=\V(t)$ gives \eqref{eq:direct}; conversely, the unique tangent-to-identity
+formal solution of \eqref{eq:direct} is that inverse.
+
+For $n>0$ let $r_n$ be the unique positive solution of
+\begin{equation}
+ r_n(1+r_n)\ee^{2r_n}=an.
+ \label{eq:r}
+\end{equation}
+Define
+\begin{equation}
+ j_n=\frac{n}{1+r_n},\quad k_n=\frac{nr_n}{1+r_n},\quad
+ D_n=2r_n^2+4r_n+1,
+ \qquad
+ S_n=\frac{\exp\!\left(\dfrac{nr_n(1+2r_n)}{1+r_n}\right)}{\sqrt{D_n}}.
+ \label{eq:S}
+\end{equation}
+These are continuous saddle quantities; $j_n$ need not be an integer.
+In particular,
+$r_n\sim\tfrac12\log n$, $j_n\sim2n/\log n$, and
+$k_n\sim n$.
+
+\begin{theorem}[Signed quadratic inverse universality]
+\label{thm:main}
+Under \eqref{eq:model},
+\begin{equation}
+ \boxed{\displaystyle v_n\sim-S_n\ee^{-br_n}.}
+ \label{eq:main}
+\end{equation}
+In particular, $v_n<0$ for all sufficiently large $n$, including when some
+of the exceptional primitive weights are negative.
+For the pure model $w_j=1$, $\lambda_j=aj^2$ for every $j$,
+this is precisely \eqref{eq:target}.
+\end{theorem}
+
+The theorem concerns formal coefficients. For $t>0$ and $q\ne0$, the
+quadratic tail in \eqref{eq:direct} does not even tend to zero in modulus.
+Thus no claim about an ordinary positive-real inverse obtained by summing
+that kernel is implicit in the theorem.
+
+% ed. (2026-09-29): editorial note naming the other, independent claimed proof (batch 49) and the checked agreement
+\begin{ednote}
+A second, independent claimed proof of \eqref{eq:target} is
+\cite{ed:qef}, Theorem~\texttt{thm:main}, written from the same snapshot
+without knowledge of this article (neither cites the other; neither has
+been independently reviewed). It inverts the kernel first, groups the
+exact tree expansion by large actions and merges multiple large actions in
+a positive majorant. Its hypotheses differ and neither set contains the
+other: it requires nonnegative changes of finitely many weights and
+slopes, but allows eventual slopes $aj^2+dj+e$, with factor
+$\exp((d-\lambda_1-w_2)r_n/a)$, which is \eqref{eq:main} at $d=0$. Its
+exact inverse coefficients equal the ones recorded here at every common
+degree (through $220$ for $a=1$ and $180$ for $a=2$), and its positive-ray
+Borel equivalent is the one in Theorem~\ref{thm:borel}. It also proves the
+sharp relative error of every fixed core with at least two actions and
+the constant $\ee^{\kappa/(2a)}$ for a slope perturbation
+$\kappa j/\log j$; the signed exceptions, the one-action criterion of
+Theorem~\ref{thm:two} and the maximum-modulus equivalent are proved only
+here.
+% ed. (2026-09-29): added on filing batch 50; a third independent claimed proof.
+A third independent claimed proof, written without knowledge of either, is
+\path{Signed_Condensation_Sharp_Quadratic_Reversion/} (batch~50; its
+Theorem~\texttt{thm:main}), under the hypotheses of \cite{ed:qef}. It adds
+the least formal inverse term (its Theorem~\texttt{thm:least}); its
+minimizing index sharpens the one of the corollary ``Least formal term'' in
+Section~\ref{sec:consequences} here, and its value is new. Its exact coefficients equal those recorded here at every
+common degree. It has not been independently reviewed.
+\end{ednote}
+
+For a fixed $M\ge1$, define the analytic core and its inverse by
+\begin{equation}
+ H_M(q,t)=\sum_{j=1}^M w_jq^j\ee^{\lambda_jt},\qquad
+ H_M(Q_M(t),t)=t,
+ \qquad
+ A_M(t)=\frac{1}{\partial_qH_M(Q_M(t),t)}.
+ \label{eq:core}
+\end{equation}
+The local implicit function theorem applies because
+$\partial_qH_M(0,0)=1$.
+The formal one-tail response is
+\begin{equation}
+ L_M(t)=A_M(t)\sum_{j>M}w_jQ_M(t)^j\ee^{\lambda_jt},
+ \qquad \ell_{n,M}=[t^n]L_M(t).
+ \label{eq:L}
+\end{equation}
+This is a locally finite formal series, not a convergent sum at positive $t$.
+
+\begin{theorem}[The leading core is exactly two actions]
+\label{thm:two}
+Under \eqref{eq:model}, every fixed $M\ge2$ satisfies
+\begin{equation}
+ \ell_{n,M}\sim S_n\ee^{-br_n},\qquad
+ v_n\sim-\ell_{n,M}.
+ \label{eq:two}
+\end{equation}
+For the one-action core,
+\begin{equation}
+ \ell_{n,1}\sim S_n\ee^{-(\lambda_1/a)r_n},\qquad
+ \frac{v_n}{-\ell_{n,1}}\sim\ee^{-(w_2/a)r_n}.
+ \label{eq:one}
+\end{equation}
+Hence $M=2$ is the smallest sufficient core in the pure model.
+For a general finite perturbation, $M=1$ is sufficient exactly when $w_2=0$.
+\end{theorem}
+
+The proof uses a larger \emph{auxiliary} core to control the remainder.
+Theorem~\ref{thm:two} is not obtained by assuming that a direct absolute bound
+works optimally at $M=2$.
+
+\begin{theorem}[Sharp entire Borel growth]
+\label{thm:borel}
+The ordinary Borel transform
+\begin{equation}
+ B(z)=\B\V(z):=\sum_{n\ge1}\frac{v_n}{n!}z^n
+ \label{eq:Borel}
+\end{equation}
+is entire. For $R>0$ put
+\begin{equation}
+ s=s(R)=\frac{\sqrt{1+4aR}-1}{2}.
+ \label{eq:sR}
+\end{equation}
+Then, as $R\to+\infty$,
+\begin{equation}
+ \boxed{\displaystyle
+ -B(R)\sim \max_{|z|=R}|B(z)|
+ \sim \frac{\exp\!\left(\dfrac{s\ee^{2s}}a-bs\right)}{\sqrt{2s+1}}.}
+ \label{eq:Bmain}
+\end{equation}
+In particular,
+\begin{equation}
+ \lim_{R\to\infty}\frac{\log\log\max_{|z|=R}|B(z)|}{\sqrt R}=2\sqrt a,
+ \label{eq:Bgrowth}
+\end{equation}
+and the ordinary positive-ray Borel--Laplace integral diverges for every
+positive Laplace parameter.
+\end{theorem}
+
+\section{Exact formal inversion with a frozen parameter}
+\label{sec:formal}
+
+\subsection{A marked tail expansion}
+Fix $M\ge\max(M_0,2)$ temporarily. Let $P_M(s,t)$ denote the analytic inverse
+of $q\mapsto H_M(q,t)$, so $H_M(P_M(s,t),t)=s$.
+The first variable $s$ and the external parameter $t$ must be kept separate.
+In particular, differentiation below is with respect to $s$, with $t$
+\emph{frozen}.
+
+Introduce a marker $z$ for primitive actions larger than $M$ and let $V_z(t)$
+solve
+\begin{equation}
+ H_M(V_z(t),t)+z\sum_{j>M}V_z(t)^j\ee^{aj^2t}=t.
+ \label{eq:marked}
+\end{equation}
+For ordered tuples $\boldsymbol{h}=(h_1,\ldots,h_m)$ with $h_i>M$, write
+\begin{equation}
+ J=\sum_i h_i,\qquad
+ \Lambda=a\sum_i h_i^2,\qquad
+ \mathcal D_{m,J}(t)=\frac1{m!}
+ \left.\partial_s^{m-1}\!\left(P_{M,s}(s,t)P_M(s,t)^J\right)\right|_{s=t}.
+ \label{eq:Dmj}
+\end{equation}
+
+\begin{lemma}[Exact core-resummed expansion]
+\label{lem:formal}
+Coefficientwise in $t$,
+\begin{equation}
+ V_z(t)=Q_M(t)+
+ \sum_{m\ge1}(-z)^m
+ \sum_{h_1,\ldots,h_m>M}\ee^{\Lambda t}\mathcal D_{m,J}(t).
+ \label{eq:exact-marked}
+\end{equation}
+The contribution with $m=1$ is $-zL_M(t)$.
+Moreover, $\mathcal D_{m,J}(t)$ is divisible by $t^{J-m+1}$.
+\end{lemma}
+\begin{proof}
+Put $s=H_M(V_z(t),t)$ in \eqref{eq:marked}. Then
+$s=t-zT(P_M(s,t),t)$, with $T(q,t)=\sum_{j>M}q^j\ee^{aj^2t}$.
+Lagrange's expansion around $s=t$, applied to $P_M(s,t)$, gives
+\[
+ P_M(s,t)=P_M(t,t)+
+ \sum_{m\ge1}\frac{(-z)^m}{m!}
+ \left.\partial_s^{m-1}\bigl(P_{M,s}(s,t)T(P_M(s,t),t)^m\bigr)\right|_{s=t}.
+\]
+Expanding the $m$th power gives \eqref{eq:exact-marked}.
+For a completely formal justification, truncate the primitive action index
+and the desired $t$-degree first, perform the finite formal calculation,
+and then remove the truncation. Since $P_M(s,t)$ is divisible by $s$,
+the differentiated product is divisible by $s^{J-m+1}$.
+After $s=t$, a tuple can contribute to $[t^n]$ only if
+$J-m+1\le n$. With $h_i\ge M+1$, this implies $mM+1\le n$ and bounds
+every $h_i$. Thus all relevant sums are finite. Finally
+$P_{M,s}(t,t)=A_M(t)$, proving the $m=1$ assertion.
+\end{proof}
+
+This formula is where the inverse cancellation is handled. The coefficients
+of $P_M$, and therefore of $\mathcal D_{m,J}$, may have either sign. We do
+not replace the core by the absolute values of its Taylor coefficients.
+We estimate its analytic values on a shrinking circle only after it has
+been inverted exactly.
+
+\subsection{An independent finite identity in the pure model}
+The pure model admits a useful separate check. Set $q=\ee^{-at}z$ in
+\eqref{eq:direct}. Then
+\begin{equation}
+ t=z+\sum_{d\ge1}z^{d+1}\ee^{a d(d+1)t}.
+ \label{eq:excesskernel}
+\end{equation}
+Inverting in $z$ by Lagrange, while keeping the $t$ in the exponentials
+fixed, yields
+\begin{equation}
+\begin{split}
+ v_n={}&\frac{(-a)^{n-1}}{(n-1)!}\\
+ &+\sum_{D=1}^{n-1}\ \sum_{\substack{m\ge1,\ d_1+\cdots+d_m=D\\ d_i\ge1}}
+ \frac{(-1)^m(D+m)!}{m!(D+1)!}
+ \frac{\left[a\left(\sum_i d_i(d_i+1)-1\right)\right]^{n-D-1}}
+ {(n-D-1)!}.
+\end{split}
+\label{eq:explicit}
+\end{equation}
+Indeed the $m$th perturbation contributes
+$(-1)^m\partial_z^{m-1}(z^{D+m})/m!$ at $z=t$, followed by multiplication
+by $\ee^{-at}$. Formula~\eqref{eq:explicit} is finite and exact, but it is
+not a stable numerical large-order algorithm: substantial signed
+cancellation remains. Its role in the package is independent low-order
+verification of the direct triangular recurrence.
+
+\section{The bare action saddle}
+\label{sec:bare}
+
+For integers $1\le j\le n$, put $k=n-j$ and
+\begin{equation}
+ T_{n,j}=\frac{(aj^2)^k}{k!},\qquad
+ Z_n=\sum_{j=1}^nT_{n,j}.
+ \label{eq:T}
+\end{equation}
+At $k=0$ the expression is $1$. These positive quantities are comparison
+weights, not inverse coefficients.
+
+\begin{lemma}[Bare saddle and slowly varying tilt]
+\label{lem:bare}
+For every fixed real $\beta$,
+\begin{equation}
+ Z_n\sim S_n,\qquad
+ \sum_{j=1}^nT_{n,j}\exp\!\left(-\beta\frac{n-j}{j}\right)
+ \sim S_n\ee^{-\beta r_n}.
+ \label{eq:bare-tilt}
+\end{equation}
+The relevant action window is centered at $j_n$, with variance
+\begin{equation}
+ \sigma_n^2=\frac{k_n}{D_n}\sim\frac{2n}{(\log n)^2}.
+ \label{eq:sigma}
+\end{equation}
+For any fixed $C>0$, comparison weights multiplied by
+$\sqrt{n+1}\exp(Cj+Cn/j)$ have exponentially negligible total mass outside
+\begin{equation}
+ \I_n=\left[\frac{n}{2\log n},\frac{8n}{\log n}\right]
+ \label{eq:coarse}
+\end{equation}
+when their coefficient radii $k/(aj^2)$ are bounded by a sufficiently small
+fixed constant. Indices for which those radii are larger can instead be
+bounded at a fixed radius by $\exp(O(n))$.
+\end{lemma}
+\begin{proof}
+Stirling's formula, away from $k=0$, gives
+\begin{equation}
+ T_{n,j}=\frac{\ee^{f_n(j)}}{\sqrt{2\pi(n-j)}}
+ \left(1+O\bigl((n-j)^{-1}\bigr)\right),\quad
+ f_n(j)=(n-j)\left(1+\log\frac{aj^2}{n-j}\right).
+ \label{eq:f}
+\end{equation}
+Differentiation gives
+\begin{align}
+ f_n'(j)&=-\log\frac{aj^2}{n-j}+\frac{2(n-j)}j,\label{eq:fd1}\\
+ f_n''(j)&=-\frac4j-\frac{2(n-j)}{j^2}-\frac1{n-j}<0.\label{eq:fd2}
+\end{align}
+Thus there is a unique stationary point. Setting $r=(n-j)/j$ in
+$f_n'(j)=0$ gives \eqref{eq:r}, hence $j=j_n$. At that point,
+\begin{equation}
+ f_n(j_n)=\frac{nr_n(1+2r_n)}{1+r_n},\qquad
+ -f_n''(j_n)=\frac{D_n}{k_n}.
+ \label{eq:fstationary}
+\end{equation}
+On $j\asymp n/\log n$, the third derivative is
+$O(n/j^3)$ and the fourth is $O(n/j^4)$. Therefore, for
+$j=j_n+\sigma_n x$ with $|x|\le\log n$,
+\[
+ f_n(j)=f_n(j_n)-x^2/2+O((1+|x|)^3/\sqrt n).
+\]
+The Stirling prefactor is uniform there. Summation of the lattice Gaussian,
+whose mesh is $1/\sigma_n\to0$, gives
+\[
+ \sum_jT_{n,j}\sim
+ \frac{\ee^{f_n(j_n)}}{\sqrt{2\pi k_n}}\sqrt{2\pi}\sigma_n=S_n.
+\]
+Strict concavity and \eqref{eq:fd2} bound the portion of $\I_n$ outside that
+window by a polynomial factor times $\ee^{-c(\log n)^2}S_n$.
+
+For the tilt, put $r(j)=n/j-1$. In the same window,
+\[
+ |r(j)-r_n|\le C\frac{n}{j_n^2}\sigma_n\log n
+ =O((\log n)^2/\sqrt n)=o(1).
+\]
+Thus the tilt is uniformly $\ee^{-\beta r_n}(1+o(1))$ in the central window.
+On $\I_n$ it is at most a fixed power of $n$, so the Gaussian tail bound
+remains sufficient.
+
+Here are details of the coarser localization, also needed below. Write
+$x=j\log n/n$. Uniformly for $x$ in a fixed compact subinterval of $(0,\infty)$,
+\begin{equation}
+ \frac{f_n(j)}n=
+ \log n-2\log\log n+\log a+1+2\log x-x+o(1).
+ \label{eq:macro}
+\end{equation}
+The function $\phi(x)=2\log x-x$ has its unique maximum at $x=2$ and a
+strictly smaller value on $x\le1/2$ or $x\ge8$. To make the off-window
+comparison uniform, put $\theta=j/n$ and $L=\log n$. There is the exact identity
+\begin{align}
+ \frac{f_n(j)}n&=L-2\log L+\log a+1+\phi(x)+E_a(\theta),\label{eq:global-macro}\\
+ E_a(\theta)&=-2\theta\log\theta-\theta(\log a+1)
+                -(1-\theta)\log(1-\theta).\nonumber
+\end{align}
+With $0\log0=0$, $E_a$ is bounded on $[0,1]$ and tends to zero as
+$\theta\downarrow0$. In the small-radius range $k/(aj^2)\le\delta$,
+either $j\ge n/2$ or $j\ge\sqrt{n/(2a\delta)}$. Thus the decoration,
+divided by $n$, is $C\theta+C/j+o(1)$, with $C/j=o(1)$ uniformly.
+For $x\le1/2$ and for $8\le x\le K$, where $K$ is fixed, both
+$E_a(\theta)$ and $C\theta$ tend uniformly to zero. The strict loss of
+$\phi$ proves the desired bound there. Choose $K>8$ so large that
+$\phi(K)+\sup E_a+C<\phi(2)-1$. As $\phi$ is decreasing after $2$,
+\eqref{eq:global-macro} gives a loss at least $n/2$ for $x\ge K$,
+for large $n$. Together these estimates give a loss at least $\eta n$
+outside \eqref{eq:coarse}. The Stirling prefactor costs only a polynomial;
+the endpoint $k=0$ is handled directly and contributes an exponential
+decoration, still negligible compared with $S_n$.
+
+Finally, if $k/(aj^2)>\delta$ for fixed $\delta>0$, then $j=O(\sqrt n)$.
+A Cauchy bound at radius $\delta$ has logarithm at most
+$n\log(1/\delta)+aj^2\delta+O(j)=O(n)$.
+This is negligible compared with
+$\log S_n=n\log n-2n\log\log n+O(n)$.
+This proves both the localization statements and \eqref{eq:bare-tilt}.
+\end{proof}
+
+The only use of the last, decorated assertion will have a fixed $C$.
+No uniformity as the core or the model parameters vary with $n$ is being
+asserted.
+
+\section{A signed finite-core reduction with arbitrary algebraic accuracy}
+\label{sec:reduction}
+
+\subsection{Core bounds independent of the number of retained actions}
+The first jet of $P_M(s,t)/s$ is independent of $M$ once $M\ge2$:
+\begin{equation}
+ \log\frac{P_M(s,t)}s=-\lambda_1t-w_2s+O((|s|+|t|)^2).
+ \label{eq:Pjet}
+\end{equation}
+For each fixed $M$ there is consequently a radius $\delta_M>0$ on which
+\begin{equation}
+ |P_M(s,t)|\le |s|\exp(C_0(|s|+|t|)),\qquad |P_{M,s}(s,t)|\le2.
+ \label{eq:Pbounds}
+\end{equation}
+The radius may depend on all the retained data, but the displayed constant
+$C_0=1+|\lambda_1|+|w_2|$ does not grow with $M$. This distinction permits
+us to choose a larger auxiliary core without a circular dependence of the
+power-saving exponent on that choice.
+
+\begin{lemma}[Derivative estimate]
+\label{lem:D-bound}
+For every fixed sufficiently large $M$, every tuple in
+\eqref{eq:Dmj}, and every sufficiently small $\tau>0$,
+\begin{equation}
+ \sup_{|t|=\tau}|\mathcal D_{m,J}(t)|
+ \le \frac{4^mJ^{m-1}}{m!}\,
+ \tau^{J-m+1}\exp(3C_0J\tau).
+ \label{eq:D-bound}
+\end{equation}
+The smallness threshold for $\tau$ depends on $M$ but not on the tuple.
+\end{lemma}
+\begin{proof}
+For $m=1$, this follows directly from \eqref{eq:Pbounds}.
+For $m\ge2$, take a Cauchy circle in the $s$ variable centered at $s=t$
+with radius $\rho=(m-1)\tau/J$. Since $J\ge m(M+1)$, this circle lies in
+$|s|\le2\tau$. On it,
+\[
+ |P_M(s,t)|^J\le
+ \tau^J\left(1+\frac{m-1}J\right)^J\ee^{3C_0J\tau}
+ \le \tau^J\ee^{m-1+3C_0J\tau}.
+\]
+Cauchy's derivative estimate and the factor $1/m!$ in
+\eqref{eq:Dmj} give
+\[
+ |\mathcal D_{m,J}|
+ \le\frac2m\left(\frac{\ee J}{m-1}\right)^{m-1}
+ \tau^{J-m+1}\ee^{3C_0J\tau}.
+\]
+Since $(m-1)!\le(m-1)^{m-1}$ and $2\ee^{m-1}\le4^m$, this is
+\eqref{eq:D-bound}.
+\end{proof}
+
+\subsection{Merging the tail actions}
+For a tuple let
+\begin{equation}
+ d_i=h_i-1\ge M,\quad D=\sum_i d_i,\quad j=D+1=J-m+1,\quad k=n-j.
+ \label{eq:merge-notation}
+\end{equation}
+The effective single action $j$ has the same minimal $t$-degree as the tuple.
+Its quadratic excess over the tuple is
+\begin{equation}
+ \Delta=j^2-\sum_i h_i^2
+ =D^2-\sum_i d_i^2-(m-1)
+ =2\sum_{i<l}d_id_l-(m-1)\ge0.
+ \label{eq:defect}
+\end{equation}
+This exact identity is the tail-suppression mechanism.
+
+\begin{lemma}[Coefficient bound by a merged action]
+\label{lem:merged}
+For $j\in\I_n$, $m\ge1$, and all sufficiently large $n$,
+\begin{equation}
+ \left|[t^n]\ee^{\Lambda t}\mathcal D_{m,J}(t)\right|
+ \le C\sqrt{n+1}\,T_{n,j}\,
+ \frac{4(8j)^{m-1}}{m!}\,
+ \exp(6C_0j\tau)\exp(-a\tau\Delta),
+ \qquad \tau=\frac{k}{aj^2}.
+ \label{eq:merged-bound}
+\end{equation}
+Here and below constants can depend on the fixed model and core.
+\end{lemma}
+\begin{proof}
+In \eqref{eq:D-bound}, $J=j+m-1\le2j$. Cauchy's coefficient bound at
+$|t|=\tau$ is therefore at most
+\[
+ \frac{4(8j)^{m-1}}{m!}\tau^{-k}
+ \ee^{a(j^2-\Delta)\tau+6C_0j\tau}.
+\]
+At $\tau=k/(aj^2)$,
+\[
+ \frac{\tau^{-k}\ee^k}{T_{n,j}}=
+ \frac{k!\ee^k}{k^k}\le C\sqrt{k+1}
+\]
+by Stirling's bound. On $\I_n$, $\tau\to0$, so the analytic estimates
+apply uniformly for large $n$.
+\end{proof}
+
+\subsection{One giant tail action versus several}
+We now sum the bounds without assuming signs of any core coefficients.
+Let $L=\max_i d_i$ and $E=D-L$.
+If $L\ge D/2$ and $m\ge2$, then $E\ge M$ and
+\begin{equation}
+ \Delta\ge2LE-(m-1)\ge(D-1/M)E\ge jE/2
+ \label{eq:giantdefect}
+\end{equation}
+for large $j$. On $\I_n$, $k/j\ge(\log n)/9$ eventually. Hence
+\begin{equation}
+ \ee^{-a\tau\Delta}\le n^{-E/20}.
+ \label{eq:powertail}
+\end{equation}
+The constants $9$ and $20$ are deliberately loose.
+
+For fixed $m$, choose a position for the largest component (at most $m$
+choices) and sum the other $m-1$ components. Dropping the upper bound on
+their total only enlarges the bound. Put
+\[
+ z_n=\sum_{d\ge M}n^{-d/20}
+ =\frac{n^{-M/20}}{1-n^{-1/20}}\le2n^{-M/20}
+\]
+for sufficiently large $n$. The sum of the tuple factors in
+\eqref{eq:merged-bound} with a giant and $m\ge2$ is at most
+\begin{equation}
+ 4\sum_{m\ge2}\frac{(8jz_n)^{m-1}}{(m-1)!}
+ =4(\ee^{8jz_n}-1)=O(jn^{-M/20})
+ \label{eq:giantsum}
+\end{equation}
+when $M>20$.
+
+If no component is at least $D/2$, then
+$\sum_i d_i^2\le LD<D^2/2$ and $m-1\le D/M$.
+Thus $\Delta\ge j^2/3$ for large $j$. The suppression in
+\eqref{eq:merged-bound} is at most $\ee^{-k/3}$.
+There are at most $2^D$ ordered compositions of $D$, and
+\[
+ \sum_{m\ge1}\frac{4(8j)^{m-1}}{m!}\le4\ee^{8j}.
+\]
+The total tuple factor in the no-giant case is consequently at most
+$4\ee^{9j-k/3}=\ee^{-\eta n}$ on $\I_n$ for large $n$.
+All these estimates allow overcounting ties for the largest component.
+
+Finally, on $\I_n$,
+\begin{equation}
+ \ee^{6C_0j\tau}
+ =\exp\!\left(\frac{6C_0}a\frac{k}j\right)
+ \le n^{12C_0/a}.
+ \label{eq:corepoly}
+\end{equation}
+Combining \eqref{eq:merged-bound}--\eqref{eq:corepoly}, summing over $j$,
+and using Lemma~\ref{lem:bare}, bounds the multi-tail contribution in the
+coarse window by
+\begin{equation}
+ C S_n\,n^{3/2+12C_0/a-M/20}+S_n\ee^{-\eta n}.
+ \label{eq:remainder-coarse}
+\end{equation}
+
+\subsection{Off-window contributions and the finite-core theorem}
+Outside $\I_n$, first ignore the nonnegative merger defect. The sum of all
+tuple combinatorial factors with fixed $j$ is bounded by $\ee^{Cj}$, by the
+same composition estimate just used. In the small-radius range the total
+coefficient majorant is therefore
+\[
+ C\sqrt{n+1}\,T_{n,j}\exp(Cj+Cn/j).
+\]
+Lemma~\ref{lem:bare} makes its off-window sum exponentially negligible
+relative to $S_n$. In the complementary range $j=O(\sqrt n)$, use a fixed
+Cauchy radius small enough for the core instead. The logarithm of the total
+bound is $O(n)$, again negligible. The coefficient of the analytic series
+$Q_M$ is also at most exponential in $n$.
+
+\begin{theorem}[Arbitrary algebraic accuracy after a finite core]
+\label{thm:reduction}
+For every fixed $A>0$ there is a fixed $M$ such that
+\begin{equation}
+ \boxed{\displaystyle
+ v_n+\ell_{n,M}=O\!\left(S_n n^{-A-|b|}\right).}
+ \label{eq:finite-accuracy}
+\end{equation}
+One sufficient, non-optimal choice is any integer $M\ge\max(M_0,2)$ satisfying
+\begin{equation}
+ \frac M{20}>A+3+\frac{12C_0}{a}+|b|.
+ \label{eq:corechoice}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Use the exact expansion \eqref{eq:exact-marked} at $z=1$.
+The $m=1$ term is $-L_M$. The remaining tuple terms satisfy
+\eqref{eq:remainder-coarse} in $\I_n$ and the exponentially smaller
+estimates outside it. The strict inequality in \eqref{eq:corechoice}
+absorbs the factor $n^{3/2}$ and leaves more than the required saving.
+The analytic core coefficient is negligible on the same scale.
+\end{proof}
+
+\begin{remark}[Why this proves a signed statement]
+The forward coefficients never enter the proof. The inverse response itself
+has size $S_n$ times a possibly small power of $n$; a merely $o(S_n)$ error
+would not suffice. The explicit saving in \eqref{eq:finite-accuracy} beats
+that polynomial suppression. This is exactly the obstacle avoided by using
+a sufficiently large auxiliary core before reducing to the minimal core.
+\end{remark}
+
+\section{Evaluation of the one-tail inverse response}
+\label{sec:one-tail}
+
+For every fixed $M\ge2$, the diagonal core has expansion
+\begin{equation}
+ Q_M(t)=t-ct^2+O(t^3),\qquad A_M(t)=1+O(t).
+ \label{eq:Qjet}
+\end{equation}
+Consequently, in a fixed disk about zero,
+\begin{equation}
+ \log\frac{Q_M(t)}t=-ct+R_M(t),\qquad R_M(t)=O(t^2).
+ \label{eq:logQ}
+\end{equation}
+For large tail actions the one-tail summand is
+\begin{equation}
+ A_M(t)Q_M(t)^j\ee^{aj^2t}
+ =t^j\ee^{\alpha_jt}E_j(t),\qquad
+ \alpha_j=aj^2-cj,
+ \quad E_j(t)=A_M(t)\ee^{jR_M(t)}.
+ \label{eq:factor-one}
+\end{equation}
+For all sufficiently large $j$, $\alpha_j>0$, even when $c$ is negative.
+
+\begin{lemma}[Uniform inner coefficient estimate]
+\label{lem:inner}
+Uniformly for integers $j\in\I_n$, with $k=n-j$,
+\begin{equation}
+ [t^k]\ee^{\alpha_jt}E_j(t)
+ =\frac{\alpha_j^k}{k!}
+ \left(1+O\left(\frac{(\log n)^3}{n}\right)\right).
+ \label{eq:inner}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the radius $\rho=k/\alpha_j$. On $\I_n$,
+$\rho=O((\log n)^2/n)$ and $j\rho^2=O((\log n)^3/n)$.
+By analyticity and \eqref{eq:logQ},
+\[
+ \sup_{|t|=\rho}|E_j(t)-1|\le C(\rho+j\rho^2)=:\varepsilon_n.
+\]
+The Cauchy integral for the error is at most
+\[
+ \varepsilon_n\rho^{-k}\frac1{2\pi}
+ \int_{-\pi}^{\pi}\ee^{k\cos\theta}\,\dd\theta
+ \le C\varepsilon_n\rho^{-k}\frac{\ee^k}{\sqrt{k+1}}.
+\]
+The last bound follows from $1-\cos\theta\ge2\theta^2/\pi^2$ on
+$[-\pi,\pi]$. Stirling's lower bound shows that this is at most
+$C\varepsilon_n\alpha_j^k/k!$. The coefficient with $E_j=1$ is exactly
+$\alpha_j^k/k!$. Notice that the entire factor $\ee^{-cjt}$ was absorbed
+into $\alpha_j$ before taking absolute values; failing to do this would
+lose the polynomial cancellation we need.
+\end{proof}
+
+Since $\alpha_j/(aj^2)=1-b/j$, on $\I_n$ we have
+\begin{equation}
+ \frac{\alpha_j^k}{(aj^2)^k}
+ =\exp\left(-b\frac{k}j+O(k/j^2)\right)
+ =\ee^{-bk/j}\left(1+O((\log n)^2/n)\right).
+ \label{eq:tilt}
+\end{equation}
+Summing \eqref{eq:inner} and using Lemma~\ref{lem:bare} gives
+\begin{equation}
+ \ell_{n,M}\sim S_n\ee^{-br_n}.
+ \label{eq:L-asymptotic}
+\end{equation}
+The off-window terms are controlled by the $m=1$ version of the analytic
+majorant used in Section~\ref{sec:reduction}. Finitely many nonquadratic
+or exceptional summands are analytic at zero and contribute only
+exponentially growing coefficients. Thus \eqref{eq:L-asymptotic} holds for
+\emph{every} fixed $M\ge2$, even if that core does not contain all exceptional
+actions.
+
+\begin{proof}[Proof of Theorems~\ref{thm:main} and \ref{thm:two}]
+Choose the auxiliary $M$ from Theorem~\ref{thm:reduction}, for instance with
+$A=1$. Since $r_n<\log n$ eventually,
+$\ee^{-br_n}\ge n^{-|b|}$. Hence the error in
+\eqref{eq:finite-accuracy} is $o(S_n\ee^{-br_n})$.
+Combine it with \eqref{eq:L-asymptotic} to obtain \eqref{eq:main}.
+The same one-tail equivalent for any other fixed $M\ge2$ then proves
+\eqref{eq:two} without a second remainder estimate at that smaller core.
+
+For $M=1$, $Q_1(t)=t\ee^{-\lambda_1t}$ and
+$A_1(t)=\ee^{-\lambda_1t}$. The preceding one-tail calculation applies with
+$c=\lambda_1$; the additional factor $A_1(t)=1+O(t)$ does not alter the
+equivalent. Division by \eqref{eq:main} gives \eqref{eq:one}.
+As $r_n\to\infty$, its right side tends to $1$ exactly for $w_2=0$,
+to $0$ for $w_2>0$, and to $+\infty$ for $w_2<0$.
+\end{proof}
+
+\subsection{What the suppression factor measures}
+At the bare inner saddle $t\approx k/(aj^2)$,
+\[
+ j\log(Q_M(t)/t)=-cjt+O(jt^2)
+ =-\frac ca\frac kj+o(1).
+\]
+The outer saddle has $k/j=r_n$. This gives the entire leading penalty
+$\ee^{-br_n}$. Only the quadratic coefficient of the inverse core survives.
+All higher diagonal core coefficients are multiplied by quantities beginning
+with $jt^2=O((\log n)^3/n)$.
+
+This mechanism differs from simply substituting the forward coefficient
+asymptotic into a few inverse-composition terms. In the pure model, the
+repository's forward result is
+$u_n\sim S_n\exp((1+1/a)r_n^2)$ \cite{repo-core}.
+\emph{Combining that external forward theorem with our independent inverse
+theorem} gives
+\begin{equation}
+ \frac{-v_n}{u_n}\sim
+ \exp\bigl(-(1+1/a)(r_n^2+r_n)\bigr).
+ \label{eq:forward-comparison}
+\end{equation}
+The forward theorem is needed only for this comparison, not for any of our
+inverse or Borel proofs.
+
+\subsection{An explicit two-action formula}
+For the pure model,
+\begin{equation}
+ Q_2(t)=\frac{\ee^{-3at}}2\left(\sqrt{1+4t\ee^{2at}}-1\right),\qquad
+ A_2(t)=\frac{\ee^{-at}}{\sqrt{1+4t\ee^{2at}}}.
+ \label{eq:Q2}
+\end{equation}
+These are the branches analytic at zero. Let
+$C(z)=(1-\sqrt{1-4z})/(2z)$ be the Catalan series.
+Then $Q_2=t\ee^{-at}C(-t\ee^{2at})$, and the elementary identity
+\[
+ \frac{C(z)^j}{\sqrt{1-4z}}=
+ \sum_{h\ge0}\binom{2h+j}{h}z^h
+\]
+(obtainable by Lagrange inversion) gives the finite coefficient formula
+\begin{equation}
+ \ell_{n,2}=\sum_{j=3}^n\ \sum_{h=0}^{n-j}
+ (-1)^h\binom{2h+j}{h}
+ \frac{\left[a(j^2-j-1+2h)\right]^{n-j-h}}{(n-j-h)!}.
+ \label{eq:L2exact}
+\end{equation}
+Thus a completely explicit finite sum already has the correct full inverse
+equivalent. It is still a signed sum; exact arithmetic or adequate working
+precision is necessary.
+
+\section{Consequences for coefficient growth and formal transseries}
+\label{sec:consequences}
+
+\begin{corollary}[Ratio law and exact Gevrey threshold]
+\label{cor:gevrey}
+Under \eqref{eq:model},
+\begin{align}
+ \frac{v_n}{v_{n-1}}&\sim\ee^{2r_n}
+ \sim\frac{4an}{(\log n)^2},\label{eq:ratio}\\
+ |v_n|^{1/n}&\sim\frac{4an}{\ee(\log n)^2},\label{eq:root}\\
+ \log\frac{|v_n|}{n!}
+ &=-2n\log\log n+n\log(4a)+o(n).\label{eq:fact-growth}
+\end{align}
+The inverse has radius of convergence zero. It is Gevrey-$1$ of zero
+exponential type: for every $A>0$ there is $C_A<\infty$ with
+$|v_n|\le C_AA^nn!$. It is not Gevrey-$s$ for any $s<1$.
+\end{corollary}
+\begin{proof}
+Extend $r_n$ smoothly to positive real $n$. Implicit differentiation gives
+\begin{equation}
+ r'(n)=\frac{r(1+r)}{n(2r^2+4r+1)}.
+ \label{eq:rprime}
+\end{equation}
+For $F(n)=nr(1+2r)/(1+r)$, the envelope identity is $F'(n)=2r$.
+The logarithmic derivative of $\sqrt{2r^2+4r+1}$ is $O(1/n)$ and
+$br'(n)=O(1/n)$. Thus the ratio of successive smooth equivalents is
+$\ee^{2r_n}(1+o(1))$. The two relative errors in Theorem~\ref{thm:main}
+also have ratio tending to one. This proves \eqref{eq:ratio}.
+
+Using \eqref{eq:r},
+\[
+ \frac1n\log|v_n|=2r_n-1+\frac1{1+r_n}+o(1),\qquad
+ \ee^{2r_n}=\frac{an}{r_n(1+r_n)}.
+\]
+This proves \eqref{eq:root}; Stirling then gives \eqref{eq:fact-growth}.
+The conclusions follow directly. For $s<1$,
+$\log(|v_n|/(n!)^s)=(1-s)n\log n-2n\log\log n+O(n)$,
+which exceeds $n\log A$ eventually for every fixed $A$.
+\end{proof}
+
+\begin{corollary}[Flatness in every fixed positive factorial scale]
+For all $\alpha>0$, all real $\beta$, and every integer $K\ge0$,
+\begin{equation}
+ v_n=o\bigl(\alpha^{n+\beta}\Gamma(n+\beta-K)\bigr).
+ \label{eq:gammaflat}
+\end{equation}
+Thus the gamma-scale asymptotic derivation of \cite{borinsky}, with any
+fixed positive $\alpha$, assigns the zero expansion to this divergent inverse.
+\end{corollary}
+\begin{proof}
+The logarithm of the ratio in \eqref{eq:gammaflat} equals
+$-2n\log\log n+O(n)+O(\log n)$, which tends to $-\infty$.
+This is exactly the all-zero case of the fixed gamma-scale definition.
+\end{proof}
+
+\begin{corollary}[Least formal term]
+For $t>0$, let $N(t)$ minimize $|v_n|t^n$ over sufficiently large indices
+past the eventual-sign threshold. Then, as $t\downarrow0$,
+\begin{equation}
+ N(t)\sim\frac{(\log(1/t))^2}{4at}.
+ \label{eq:least}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The terms eventually grow without bound for fixed $t$, by
+\eqref{eq:root}. Their successive ratios are asymptotic to
+$t\ee^{2r_n}$, an increasing smooth comparison.
+At its crossing of $1$, $r=\frac12\log(1/t)$ and the corresponding real
+index is $r(1+r)/(at)$. The uniform eventual relative bounds furnished by
+\eqref{eq:ratio} confine any minimizing index to a relative $o(1)$
+window about this value.
+\end{proof}
+
+This is a statement about formal terms, not a remainder estimate for an
+actual analytic realization. Substituting $t=\ee^{-x}$ gives an exponential
+transseries with a least-term index asymptotic to $x^2\ee^x/(4a)$.
+No summability conclusion is inferred from this formal optimization.
+
+\section{Entire Borel growth: a second, explicit saddle}
+\label{sec:borel}
+
+\subsection{Passing from coefficient equivalents to an entire function}
+Equation~\eqref{eq:fact-growth} proves that $B$ in \eqref{eq:Borel} is entire.
+By Theorem~\ref{thm:main}, its coefficients are eventually negative.
+Let
+\[
+ \widetilde B(R)=\sum_{n\ge1}\frac{S_n\ee^{-br_n}}{n!}R^n.
+\]
+All terms are positive, and their sum tends to infinity faster than every
+polynomial. The coefficient equivalent implies
+\begin{equation}
+ -B(R)\sim\widetilde B(R).
+ \label{eq:Btransfer}
+\end{equation}
+To see this without an unjustified interchange of limits, fix $\varepsilon>0$.
+For every $n$ beyond a fixed threshold, the ratio of the actual negative
+coefficient to the positive comparison coefficient is between
+$1-\varepsilon$ and $1+\varepsilon$. Sum those inequalities. The finitely
+many discarded terms form a polynomial, negligible relative to
+$\widetilde B(R)$. Then let $\varepsilon\downarrow0$.
+
+\subsection{Stationary point and determinant}
+For continuous $n>0$, use $r=r(n)$ from \eqref{eq:r} and define
+\begin{equation}
+ h_R(n)=F(n)+n(1-\log n)+n\log R,
+ \qquad F(n)=\frac{nr(1+2r)}{1+r}.
+ \label{eq:hR}
+\end{equation}
+By Stirling,
+\begin{equation}
+ \frac{S_n\ee^{-br_n}R^n}{n!}
+ =\frac{\ee^{h_R(n)-br_n}}{\sqrt{2\pi nD_n}}
+ \left(1+O(n^{-1})\right).
+ \label{eq:Bterm}
+\end{equation}
+The exact derivative identities are
+\begin{align}
+ h_R'(n)&=2r-\log n+\log R
+ =\log\frac{aR}{r(1+r)},\label{eq:hprime}\\
+ h_R''(n)&=-\frac{2r+1}{n(2r^2+4r+1)}<0.\label{eq:hsecond}
+\end{align}
+Thus the saddle is characterized simply by $r=s$, where $s(1+s)=aR$.
+Its real index and exponent are
+\begin{equation}
+ n_R=R\ee^{2s}=\frac{s(1+s)}a\ee^{2s},\qquad
+ h_R(n_R)=\frac{s\ee^{2s}}a.
+ \label{eq:Bstationary}
+\end{equation}
+The variance in the coefficient index is
+\begin{equation}
+ \Sigma_R^2=\frac{n_R(2s^2+4s+1)}{2s+1}.
+ \label{eq:Bvariance}
+\end{equation}
+
+\begin{lemma}[The outer Laplace sum]
+\label{lem:Bsum}
+As $R\to\infty$,
+\begin{equation}
+ \widetilde B(R)\sim
+ \frac{\ee^{h_R(n_R)-bs}}{\sqrt{2s+1}}.
+ \label{eq:Bsum}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The width satisfies $\Sigma_R/n_R=O(\sqrt{s/n_R})\to0$.
+In a neighborhood of $n_R$ with relative width tending to zero,
+\eqref{eq:rprime} gives $r(n)-s=O(|n-n_R|/n_R)$.
+The amplitude $\ee^{-br}/\sqrt{2\pi nD}$ therefore has relative change
+$o(1)$ on a Gaussian window.
+Differentiating \eqref{eq:hsecond} gives
+$h_R'''(n)=O(1/(n_R^2s))$ there, so
+$h_R'''\Sigma_R^3=O(\sqrt{s/n_R})\to0$.
+Taylor expansion and lattice Gaussian summation yield
+\[
+ \widetilde B(R)\sim
+ \frac{\ee^{h_R(n_R)-bs}}{\sqrt{2\pi n_R(2s^2+4s+1)}}
+ \sqrt{2\pi}\Sigma_R
+ =\frac{\ee^{h_R(n_R)-bs}}{\sqrt{2s+1}}.
+\]
+
+For completeness, the tail localization follows from the global strict
+concavity \eqref{eq:hsecond}. On $[n_R/2,2n_R]$,
+$-h_R''$ is comparable to $1/(n_Rs)$, giving Gaussian decay outside an
+expanding central window. At the endpoints the exponent loses at least
+a fixed multiple of $n_R/s$. For $n\ge2n_R$, the decreasing derivative
+satisfies $h_R'(n)\le h_R'(2n_R)\le-c/s$ for large $R$; thus the remaining
+sum is bounded by a geometric tail after its already negligible endpoint.
+The lower tail is handled by the analogous positive derivative to the
+left of $n_R/2$. The amplitudes grow or decay only by fixed powers of $n$
+and logarithms there, so they do not offset these exponential losses.
+This also justifies discarding finitely many small indices and using
+Stirling uniformly in the contributing range.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:borel}]
+Combine \eqref{eq:Btransfer}, Lemma~\ref{lem:Bsum}, and
+\eqref{eq:Bstationary}. Because $v_n<0$ eventually,
+\[
+ |B(R)|\le\max_{|z|=R}|B(z)|
+ \le\sum_{n\ge1}|v_n|R^n/n!=-B(R)+P(R),
+\]
+where $P$ is a fixed polynomial accounting for the finitely many coefficients
+with the other sign. Since $-B(R)$ has the growth already proved,
+$P(R)=o(-B(R))$, which gives the maximum-modulus equivalent.
+
+Taking logarithms twice in \eqref{eq:Bmain}, the leading expression is
+$2s+\log(s/a)+o(1)$. As $s\sim\sqrt{aR}$, this proves
+\eqref{eq:Bgrowth}. In our ordinary Borel convention the positive-ray
+Laplace expression would be
+\[
+ \frac1t\int_0^\infty\ee^{-R/t}B(R)\,\dd R,\qquad t>0.
+\]
+The integrand is eventually negative, and
+$\log(-B(R))-R/t\to+\infty$. It therefore does not tend to zero and its
+integral diverges. The same obstruction rules out positive-direction
+ordinary $1$-summability; analyticity alone is not enough without the
+required exponential-growth bound \cite{sauzin}.
+\end{proof}
+
+\subsection{Interpretation and limits}
+The Borel transform has no finite singularities at all. Nevertheless it
+cannot be integrated by the ordinary positive-direction Laplace kernel.
+The obstruction is its growth at infinity. This supplies a concrete example
+where exact Gevrey-$1$ regularity, an entire Borel transform, and failure of
+ordinary directional Borel summation coexist.
+
+The formula does not classify other complex directions. Cancellations along
+nonreal rays can substantially change growth. Nor does it identify a unique
+acceleration procedure or a canonical sectorial realization. Those are
+separate analytic problems, listed below.
+
+\section{Exact computations and diagnostic evidence}
+\label{sec:computation}
+
+\subsection{Independent algebraic routes}
+The package computes the inverse through degree $220$ in four fixed models,
+using integer exponential normalization
+$V_n=n!v_n$. For integer weights and slopes these are integers.
+Let $P_{j,n}=n![t^n]\V(t)^j$. The identities
+\begin{align}
+ P_{j,n}&=\sum_{k=1}^{n-j+1}\binom nk V_kP_{j-1,n-k}
+ \qquad(j\ge2),\label{eq:recP}\\
+ V_n&=-\sum_{j=1}^n w_j
+ \sum_{k=j}^{n-\mathbf1_{j=1}}
+ \binom nk\lambda_j^{n-k}P_{j,k}
+ \qquad(n\ge2),\label{eq:recV}
+\end{align}
+with $V_1=P_{1,1}=1$, form a triangular exact algorithm.
+Formula~\eqref{eq:recV} is just the coefficient of \eqref{eq:direct}, with
+the unique unknown $V_n$ isolated.
+
+The first independent check uses \eqref{eq:explicit} through degree $12$
+for $a=1$ and $a=2$ (24 assertions). The second constructs the forward
+coefficients independently by the positive Lagrange identity
+\begin{equation}
+ u_n=\sum_{\substack{j_1+\cdots+j_m=n\\j_i\ge1,\ m\ge1}}
+ \frac{(a\sum_i j_i^2)^{m-1}}{m!}
+ \label{eq:forward-exact}
+\end{equation}
+and checks $\U(\V(t))=t$ through degree $11$ in both models (two block
+assertions). A separate symbolic script verifies six identities: the action
+curvature, the coefficient envelope derivative, the Borel curvature and
+stationary value, and two core-jet formulas. All 32 recorded assertions pass.
+These are finite exact checks, not formal proofs of the limit theorems.
+
+\subsection{What the numerical ratios show}
+Table~\ref{tab:pure} uses exact coefficients followed by 80-digit evaluation
+of the smooth comparison. The errors shown are not interval certificates.
+The two-core response is evaluated independently using \eqref{eq:L2exact}.
+
+\begin{table}[htbp]\centering\small
+\caption{Pure quadratic feedback. The predicted limit in both ratio columns is $1$.}
+\label{tab:pure}
+\begin{tabular}{rrrrr}\toprule
+$a$&$n$&$r_n$&$-v_n/(S_n\ee^{-(1+1/a)r_n})$&$-v_n/\ell_{n,2}$\\\midrule
+1&40&1.298005&0.607745&0.855019\\
+1&80&1.519691&0.725965&0.908128\\
+1&120&1.654076&0.780419&0.928350\\
+1&160&1.751348&0.813338&0.939697\\
+1&220&1.860772&0.844814&0.950076\\\addlinespace
+2&40&1.519691&0.656706&0.930063\\
+2&80&1.751348&0.768248&0.961094\\
+2&120&1.890976&0.817596&0.971321\\
+2&160&1.991732&0.846760&0.976658\\
+2&220&2.104802&0.874148&0.981282\\\bottomrule
+\end{tabular}
+\end{table}
+
+The main equivalent has substantial finite-$n$ corrections even at degree
+$220$; the table must not be described as near-perfect asymptotic agreement.
+The exact two-core expression absorbs more of those corrections and is
+noticeably closer. Neither observation replaces the proof of tail dominance.
+
+Two additional tests change only finitely many primitive data. In the first,
+$a=1$, $w_2=-2$, $w_3=3$, $\lambda_1=0$, and $\lambda_2=7$, with the other
+data pure. Here $c=-2$: the leading core factor is an enhancement
+$\ee^{2r_n}$ rather than a suppression. The ratio to the predicted equivalent
+is about $2.693$ at $n=220$, so the asymptotic regime is visibly slow.
+In the second, $a=1$, $w_2=-1$ and all other data are pure, so $c=0$ and
+the leading penalty cancels. The exact data for both models are included in
+\texttt{data/diagnostics.csv}; they are stress tests of the signed-core
+extension rather than evidence for a uniform onset bound.
+
+\subsection{Reproduction and numerical safeguards}
+Run
+\begin{verbatim}
+python code/verify.py --order 220
+python code/symbolic_checks.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The exact coefficient algorithm needs only Python's standard library.
+\texttt{mpmath} is used for the comparison values, and \texttt{sympy} for the
+six symbolic checks. The scripts validate the model normalization and retain
+all coefficient signs. The ordinary coefficients are recovered by dividing
+stored integers by $n!$; confusing the two normalizations would invalidate
+both the ratios and the Borel transform.
+
+The full exact algorithm is cubic in the truncation order in arithmetic
+operation count and uses a quadratic table. Its bit cost is larger because
+coefficient sizes increase rapidly. No complexity claim suppresses that
+integer-arithmetic cost.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+
+\begin{question}[Effective onset and small-$a$ uniformity]
+Replace the asymptotic neighborhoods in the core estimates by computable
+radii and constants. The target is a certified pair of bounds for
+$-v_n/(S_n\ee^{-br_n})$ with an explicit onset depending on $a$ and the
+exceptional data. The proof here is not uniform as $a\downarrow0$; the
+factor $b=1+1/a$ makes that limit especially delicate.
+\end{question}
+
+\begin{question}[An optimal signed remainder at the two-action core]
+Theorem~\ref{thm:two} proves $v_n\sim-\ell_{n,2}$ but obtains it through a
+large auxiliary core. Determine the first term of
+$v_n+\ell_{n,2}$ and a sharp relative error. The natural next contribution
+is one additional primitive action $3$, dressed by the two-action core;
+its cancellation and combinatorial factors should be kept exact.
+\end{question}
+
+\begin{question}[All-order inverse asymptotics]
+Derive explicit functions $P_k(r)$ for a full expansion
+$v_n\sim-S_n\ee^{-br_n}(1+P_1(r_n)/n+P_2(r_n)/n^2+\cdots)$,
+with a precise meaning for the growing logarithmic coefficients.
+The finite-core theorem supplies arbitrary algebraic tail savings, but this
+paper does not perform the complete two-saddle expansion or claim the
+polynomial form of every $P_k$ without proof.
+\end{question}
+
+\begin{question}[Which primitive data first enter each correction?]
+The leading term depends only on $\lambda_1+w_2$. The next logarithmic core
+jet is $2\lambda_1w_2+\tfrac32w_2^2-w_2\lambda_2-w_3$.
+Determine the exact filtration of primitive data in successive inverse
+asymptotic coefficients. Such a theorem would turn finite-core universality
+into an accuracy-dependent information budget.
+\end{question}
+
+\begin{question}[Subquadratic feedback]
+Extend the signed reduction to $\lambda_j=aj^p$ with $1<p<2$.
+The quantity $jt$ at the inverse saddle then grows faster than logarithmically,
+so a polynomial saving from a fixed crude majorant need not beat the core
+cancellation. The quadratic proof identifies the obstruction rather than
+solving it. A contour estimate that preserves more of the inverse core's
+phase may be necessary.
+\end{question}
+
+\begin{question}[Regularly varying perturbations of the quadratic tail]
+For $\lambda_j=aj^2L(j)$ with a controlled slowly varying function $L$,
+determine the correct merger-defect estimate and inverse penalty.
+The exact identity \eqref{eq:defect} is no longer available, but quantitative
+convexity and regular variation may replace it. Mere pointwise
+$\lambda_j/(aj^2)\to1$ is not enough to guarantee a multiplicative equivalent.
+\end{question}
+
+\begin{question}[Complex-direction Borel growth]
+Determine an indicator-type description of $B(Re^{i\theta})$ on fixed and
+shrinking angular sectors. The maximum-modulus theorem follows from eventual
+one-sign coefficients, but does not identify the cancellation curves away
+from the positive axis. Locate directions where ordinary Laplace growth
+might hold and determine their boundaries.
+\end{question}
+
+\begin{question}[Acceleration at the Borel point at infinity]
+Construct a summation or acceleration procedure adapted to
+$\log(-B(R))\sim s\ee^{2s}/a$, $s\sim\sqrt{aR}$.
+A useful result would identify a canonical analytic realization on a
+specified sector and prove compatibility with formal inversion. The positive
+ordinary Borel obstruction alone neither chooses such a procedure nor
+proves uniqueness.
+\end{question}
+
+\begin{question}[A moving-scale asymptotic calculus]
+Build an algebraic asymptotic calculus for sequences whose ratio is
+$n/(\log n)^2$ times a constant, rather than a fixed factorial ratio.
+The vanishing of every fixed positive-gamma-scale invariant in
+\eqref{eq:gammaflat} suggests the need for additional moving-scale data.
+Seek product and composition rules that recover the factor $\ee^{-br_n}$
+without a separate saddle calculation in each example.
+\end{question}
+
+\begin{question}[Negative-real analytic realization]
+For $t<0$, the Gaussian decay of $\ee^{aj^2t}$ makes the primitive tail
+convergent for fixed $q$. Analyze the small solution of \eqref{eq:direct}
+in complex neighborhoods of the negative axis, prove an asymptotic expansion
+there, and compare it with any accelerated realization from the preceding
+question. Domain control near $t=0$ must be included.
+\end{question}
+
+\begin{question}[Faster exact coefficient extraction]
+The triangular integer algorithm is cubic in arithmetic operations.
+Investigate fast truncated composition, divide-and-conquer recurrences,
+and parameter-dependent polynomial multiplication to reduce its cost.
+An effective implementation should report cancellation-sensitive working
+precision separately from algebraic operation counts.
+\end{question}
+
+\begin{question}[A staged Lean formalization]
+Begin with local finiteness, the frozen-parameter Lagrange identity,
+the merger defect, and the ordered-composition majorant. Then formalize
+analytic core estimates and the two saddle lemmas. These stages separate
+finite algebra, inequalities, and complex analysis; none is represented
+here as already checked by a proof assistant.
+\end{question}
+
+\section{Conclusion and proof boundary}
+The signed quadratic inverse conjecture can be resolved without pretending
+that its coefficients are positive. The method first sums the background
+cancellation into an analytic inverse core, then pays for all remaining
+large-action configurations with the exact quadratic merger defect.
+A large auxiliary core makes that payment arbitrarily small on the relevant
+polynomial scale. A separate one-tail saddle calculation then reduces the
+leading answer to just two primitive actions.
+
+The resulting equivalent is stable under arbitrary real finite perturbations,
+with its leading exponential correction determined by $\lambda_1+w_2$.
+It implies eventual negativity, a precise logarithmically damped factorial
+growth scale, and an explicit entire Borel maximum-modulus equivalent.
+The Borel obstruction occurs at infinity. None of these conclusions supplies
+a general acceleration theorem, an optimal finite-$n$ certificate, a uniform
+subquadratic theory, or a completed Lean development.
+
+\appendix
+\section{Core jets and the source of finite-order corrections}
+\label{app:jets}
+For $M\ge3$, expand $Q_M(t)=t-ct^2+q_3t^3+O(t^4)$.
+Substitution into $H_M(Q_M(t),t)=t$ gives
+\begin{align}
+ c&=\lambda_1+w_2,\\
+ q_3&=\frac{\lambda_1^2}{2}+3\lambda_1w_2+2w_2^2-w_2\lambda_2-w_3.
+\end{align}
+Hence
+\begin{equation}
+ \log\frac{Q_M(t)}t=-ct+
+ \left(2\lambda_1w_2+\frac32w_2^2-w_2\lambda_2-w_3\right)t^2+O(t^3),
+ \label{eq:logQ2}
+\end{equation}
+and
+\begin{equation}
+ A_M(t)=1-(\lambda_1+2w_2)t+O(t^2).
+\end{equation}
+In the pure model the quadratic logarithmic coefficient in
+\eqref{eq:logQ2} is $\tfrac12-2a$.
+At the inverse saddle its contribution has size
+$j t^2=O((\log n)^3/n)$. This explains why the leading equivalent can
+converge slowly while the two-core formula performs better at moderate
+orders. These scale estimates are not a claimed complete first-correction
+formula: the action-saddle displacement and its determinant also contribute.
+
+\section{Proof-dependency audit}
+\label{app:audit}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}}
+\toprule Result & Essential inputs & Status\\\midrule\endhead
+Formal inverse and marked response & Local finiteness; classical Lagrange inversion with frozen parameter & Proved here\\[5pt]
+Bare saddle & Stirling; strict concavity; lattice Gaussian sum & Proved here\\[5pt]
+Arbitrary-accuracy signed core reduction & Analytic core Cauchy estimate; exact merger defect; composition count; coarse localization & Proved here; constants not optimized\\[5pt]
+Inverse equivalent & Core reduction plus uniform one-tail saddle & Proved here\\[5pt]
+Minimal leading core & Same one-tail equivalent for every fixed $M\ge2$; explicit $M=1$ calculation & Proved here\\[5pt]
+Finite signed perturbations & Fixed analytic core; unchanged eventual quadratic tail & Proved here; not uniform in the perturbation data\\[5pt]
+Entire Borel equivalent & Coefficient theorem; eventual negativity; second real saddle & Proved here\\[5pt]
+Forward/inverse ratio \eqref{eq:forward-comparison} & Repository forward theorem plus present inverse theorem & Explicit external dependency\\[5pt]
+Finite exact checks & Integer recurrence; independent composition formulas; symbolic identities & Executed; not asymptotic proofs\\[5pt]
+Lean verification, acceleration, nonreal Borel indicator & Additional work & Not supplied\\\bottomrule
+\end{longtable}
+
+The reference to a classical Lagrange formula is not a hidden appeal to a
+positivity theorem. All sign-sensitive analytic estimates are displayed in
+Sections~\ref{sec:reduction} and \ref{sec:one-tail}. The two instances of
+asymptotic summation use positive comparison weights after the core
+cancellation has already been extracted. No numerical observation is an
+assumption in the proof chain.
+
+\section{Notation guide}
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.68\textwidth}}
+\toprule Symbol & Meaning\\\midrule\endhead
+$\U,\V$ & Formal forward series and its compositional inverse.\\[4pt]
+$v_n,V_n$ & Ordinary inverse coefficient and integer normalization $V_n=n!v_n$.\\[4pt]
+$a,w_j,\lambda_j$ & Positive quadratic-tail constant; real primitive weights and slopes.\\[4pt]
+$c,b,C_0$ & $\lambda_1+w_2$, $c/a$, and $1+|\lambda_1|+|w_2|$.\\[4pt]
+$H_M,P_M,Q_M,A_M$ & Finite kernel; its inverse in the first variable; diagonal inverse; inverse derivative.\\[4pt]
+$L_M,\ell_{n,M}$ & Formal one-tail inverse response and its ordinary coefficient; the inverse contains $-L_M$.\\[4pt]
+$m,h_i,J,\Lambda$ & Number of tail actions; tail indices; their sum; sum of their slopes.\\[4pt]
+$d_i,D,j,k,\Delta$ & Excess indices; total excess; merged action; coefficient complement; quadratic merger defect.\\[4pt]
+$r_n,j_n,k_n,D_n,S_n$ & Bare saddle coordinate, action, complement, determinant factor, and coefficient equivalent.\\[4pt]
+$B,R,s,n_R,\Sigma_R$ & Ordinary Borel transform; positive radius; explicit Borel saddle coordinate; index saddle; its width.\\\bottomrule
+\end{longtable}
+Here $D$ is total excess, $D_n$ a saddle determinant, and $\Delta$ the merger defect.
+
+\begin{thebibliography}{9}
+\bibitem{repo-core}
+Vladimir Reshetnikov, ProveIt repository,
+\emph{Finite-Core Universality and Sharp Large Order for Countable
+Exponential-Feedback Transseries}, research manuscript, 29 September 2026.
+Path: \path{Analysis/Transseries/docs/series-and-transseries/Finite_Core_Universality_Exponential_Feedback/article.tex}.
+Inspected TeX blob: \path{c2b6faf623003111e9d9e6bbb162a67429f3ce42}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{gessel}
+I. M. Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory,
+Series A \textbf{144} (2016), 212--249.
+\url{https://doi.org/10.1016/j.jcta.2016.06.018};
+\url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{borinsky}
+M. Borinsky, \emph{Generating asymptotics for factorially divergent sequences},
+arXiv:1603.01236, version 4, 8 October 2018.
+\url{https://arxiv.org/abs/1603.01236}.
+The comparison uses the fixed positive-$\alpha$ gamma-scale definition and
+its explicitly allowed all-zero asymptotic expansion.
+
+\bibitem{sauzin}
+D. Sauzin, \emph{Introduction to 1-summability and resurgence},
+arXiv:1405.0356 (2014).
+\url{https://arxiv.org/abs/1405.0356}.
+
+\bibitem{edgar}
+G. A. Edgar, \emph{Transseries for beginners}, arXiv:0801.4877 (2008).
+\url{https://arxiv.org/abs/0801.4877}.
+
+% ed. (2026-09-29): editorial bibliography entries for the repository articles cited in the editorial notes
+\bibitem{ed:qef}
+[Editorial addition] \emph{Quadratic Exponential Feedback after Reversion:
+Cancellation, Finite-Core Universality, and Sharp Borel Growth}, research
+article prepared for Vladimir Reshetnikov, ProveIt, filed in batch~49,
+\path{Analysis/Transseries/docs/series-and-transseries/Quadratic_Exponential_Feedback_After_Reversion/article.tex}.
+A second, independent claimed proof, not independently reviewed.
+
+\bibitem{ed:nrs}
+[Editorial addition] \emph{Negative-Ray Summation of Countable
+Exponential-Feedback Transseries}, research article prepared for Vladimir
+Reshetnikov, ProveIt, filed in batch~47 (in the inspected snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Negative_Ray_Summation_Exponential_Feedback/article.tex}.
+
+\bibitem{ed:reg}
+[Editorial addition] \emph{A sharp regularity classification for
+countable exponential-feedback transseries}, research draft prepared for
+Vladimir Reshetnikov, ProveIt, filed in batch~45 (in the inspected
+snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Exponential_Feedback_Regularity_Classification/article.tex}.
+
+\bibitem{ed:swt}
+[Editorial addition] \emph{Sharp Weighted Type Under Formal Reversion},
+research article prepared for Vladimir Reshetnikov, ProveIt, filed in
+batch~48 (after the inspected snapshot),
+\path{Analysis/Transseries/docs/series-and-transseries/Sharp_Weighted_Type_Formal_Reversion/article.tex}.
+\end{thebibliography}
+\end{document}

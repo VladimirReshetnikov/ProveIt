@@ -1,0 +1,51 @@
+FINITE RESULTS AND VERIFICATION
+
+Accepted orders: every integer m=2,...,128 (127 cases).
+Pressure intervals per method: 24,765, covering even degrees 2m,...,8m-2.
+Nonconstant response orders: 65,786.
+Strictly positive prefix coefficients: 18,957.
+Certified negative endpoints: 127.
+Exact compact outward-rounding inequalities: 99,060.
+
+The compact intervals enclose both independently propagated rational intervals.
+Every source, original pressure certificate, response trace and fresh-radius trace hash was checked.
+An additional implementation independently checked all accepted hashes, interval overlaps and prefix signs.
+
+Automatic comparison with 2*(floor(10m/3)-1):
+m=2: certified 12, proposed 10 (difference +2)
+m=5: certified 32, proposed 30 (difference +2)
+m=8: certified 52, proposed 50 (difference +2)
+m=11: certified 72, proposed 70 (difference +2)
+m=14: certified 92, proposed 90 (difference +2)
+m=90: certified 596, proposed 598 (difference -2)
+m=93: certified 616, proposed 618 (difference -2)
+m=96: certified 636, proposed 638 (difference -2)
+m=99: certified 656, proposed 658 (difference -2)
+m=102: certified 676, proposed 678 (difference -2)
+m=105: certified 696, proposed 698 (difference -2)
+m=108: certified 716, proposed 718 (difference -2)
+m=111: certified 736, proposed 738 (difference -2)
+m=114: certified 756, proposed 758 (difference -2)
+m=117: certified 776, proposed 778 (difference -2)
+m=120: certified 796, proposed 798 (difference -2)
+m=123: certified 816, proposed 818 (difference -2)
+m=126: certified 836, proposed 838 (difference -2)
+
+All other tested orders agree with that expression. These are finite comparisons, not an eventual formula.
+
+Preserved limitations:
+- Cases m=16,...,20 have some inconclusive coefficients strictly after the first-negative endpoint.
+- Initial auxiliary precision p=256 attempts at m=64 and128 were inconclusive and are recorded separately.
+- Repeated high-precision runs at m=64 (p=1536) and128 (p=2560) certified the entire required prefix and endpoint.
+- No finite calculation supplies an effective cutoff for an existential asymptotic theorem.
+
+Recorded resource use:
+- Ascending batch wall time: 6026.933 seconds, including reuse of precomputed high cases.
+- Sum of accepted producer wall times: 16512.790 seconds.
+- Sum of accepted independent-verifier wall times: 12699.947 seconds.
+- These sums overlap across concurrent cases and are not CPU-time measurements.
+- The runtime environment reported nine logical processors; the main batch used four cases concurrently, with four disjoint high-order cases temporarily added.
+- The largest case m=128 used 580.972 seconds for production and 560.073 seconds for independent residual verification.
+- Auxiliary precision p is recorded per case; the full integer scale also contains ((2m-1)!)^5.
+
+The source archive includes deterministic replay commands and all original hashes. The raw traces occupy several gigabytes and are regenerated rather than included.

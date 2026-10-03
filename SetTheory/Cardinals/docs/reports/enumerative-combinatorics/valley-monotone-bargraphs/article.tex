@@ -1,0 +1,1252 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black,
+ pdftitle={A Pole Hierarchy for Valley-Monotone Compositions},
+ pdfauthor={Research draft prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Valley-monotone compositions}\fancyhead[R]{\small Research draft}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{14pt}
+\setlength{\emergencystretch}{2em}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\C}{\mathbb C}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Res}{\operatorname{Res}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\calP}{\mathcal P}
+\newcommand{\calD}{\mathcal D}
+\newcommand{\calU}{\mathcal U}
+\DeclareMathOperator{\Log}{Log}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\title{\textbf{A Pole Hierarchy for\\Valley-Monotone Compositions}\\[7pt]
+\large Resolving a bargraph asymptotic conjecture linked to OEIS A001523,\\
+with exponential expansions, limit laws, and Lambert--\(W\) inversion}
+\author{Research draft prepared for Vladimir Reshetnikov}
+\date{October 1, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+A composition is valley-monotone when the heights of its interior valley
+plateaux are weakly increasing from left to right. These are the
+non-decreasing bargraphs of Fl\'orez, Ram\'irez, and Villamizar (2024).
+Their area-counting sequence was conjectured to have purely exponential
+growth, on the basis of a ratio at area~100. We give a self-contained
+analytic proof of that growth law, exact definitions of its constants,
+and integer-arithmetic certificates for their numerical values.
+The growth constant is determined directly by the generating function
+of the classical weakly unimodal composition sequence OEIS A001523.
+
+The proof reveals a stronger structure. A decomposition by minimum part
+produces infinitely many genuine, simple positive poles, increasing to
+one, whose coefficient contributions alternate in sign. Consequently the
+area generating function is not D-finite and its coefficients are not
+P-recursive. We prove a finite-pole expansion to every prescribed radius
+below one, a central limit theorem for the number of bottom-level valleys,
+and an exponentially tight limiting terminal component. The accumulating
+real poles admit an all-orders inverse-logarithmic expansion expressed
+through Lambert~\(W\), with an error beyond every inverse-logarithmic order.
+We also give exponential-sector inversion and the necessary integer
+threshold qualifications. The claims are conventional mathematical
+proofs, accompanied by reproducible checks, not Lean formalizations or
+independently peer-reviewed results.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{The question, the OEIS connection, and the scope of the result}
+
+\subsection{A published asymptotic conjecture}
+Let \(d(n)\) count nonempty compositions of \(n\) whose valley heights are
+weakly increasing. A valley is a maximal constant run with larger parts
+on both sides; endpoint runs are not valleys. For example,
+\((3,1,2,2,4,2,3)\) has valley heights \(1,2\), whereas
+\((3,2,3,1,2)\) has heights \(2,1\) and is excluded.
+The area of the corresponding bargraph is the sum of its column heights.
+The sequence begins
+\[
+1,2,4,8,16,32,64,128,256,512,1023,2042,4071,8106,16121,\ldots.
+\]
+The convention throughout is \(d(0)=0\).
+
+Conjecture~2.3 of Fl\'orez, Ram\'irez, and Villamizar~\cite{FRV}
+proposes an exponential equivalent for this sequence. The displayed
+numerical estimates in that conjecture are
+\begin{equation}\label{vmb:eq:published}
+\lambda_{100}=1.9764206780767492582\ldots,
+\qquad C_{100}=0.6039015148966519\ldots.
+\end{equation}
+Here the growth estimate is the finite ratio \(d(100)/d(99)\), not an
+exact definition of the limiting exponential base. We establish
+\begin{equation}\label{vmb:eq:main-intro}
+d(n)=C\lambda^n\bigl(1+O(\theta^n)\bigr),\qquad 0<\theta<1,
+\end{equation}
+with
+\begin{align*}
+\lambda&=1.97642067794583573531465245217332\ldots,\\
+C&=0.60390151906189910496030721536293\ldots.
+\end{align*}
+Thus the proposed \emph{form} is correct, while some displayed numerical
+digits must be replaced. Interpreting a finite decimal base literally in
+an asymptotic equivalent would be incorrect: an arbitrarily small fixed
+error in that base becomes exponentially significant as \(n\) grows.
+
+\subsection{What is, and is not, being claimed about OEIS}
+Let
+\begin{equation}\label{vmb:eq:A}
+A(q)=\sum_{n\geq0}a(n)q^n,\qquad a(n)=\text{OEIS A001523}(n).
+\end{equation}
+This is the classical sequence of weakly unimodal compositions, with
+\(a(0)=1\). Its leading stretched-exponential asymptotic is already
+known; the OEIS entry credits Auluck (1951) and links the 2024 bargraph
+paper~\cite{OEIS,FRV}. We do \emph{not} claim to solve a previously open
+leading-asymptotic problem for A001523 itself.
+
+Instead, the classical sequence is the exact input to a new pole
+analysis of the associated valley-monotone class. In particular, the
+reciprocal growth constant \(\rho=\lambda^{-1}\) is the unique solution
+in \((0,1)\) of
+\begin{equation}\label{vmb:eq:OEISroot}
+\boxed{\quad \rho(1-\rho)A(\rho)=1+\rho.\quad}
+\end{equation}
+No OEIS identifier for \(d(n)\) was verified in the searches for this
+report, so none is invented. The connection to OEIS is both explicit and
+structural, rather than an accidental match of a few terms.
+
+\subsection{Relationship to ProveIt and novelty boundary}
+The repository's \texttt{Analysis/Transseries} project separates
+asymptotic scales, flatness, and inverse expansions from the Fabius
+function development~\cite{ProveIt}. The present article fits that
+program, but does not require any unproved theorem from the repository.
+A repository search for \texttt{bargraphs} and \texttt{A001523} returned
+no matching files. This was a search-level overlap check, not an audit of
+every archive in the repository. The inspected repository tree had SHA
+\texttt{29aca108ed25d714f31b1316512777fbbdc8e006}.
+
+The generating-function decomposition is due to the 2024 paper; it is
+reproved below in minimum-part notation. The contributions developed
+here are the analytic resolution of the conjectured exponential form,
+the full positive-pole hierarchy and non-D-finiteness, the pole
+accumulation expansion, and the probabilistic and inverse consequences.
+Targeted searches located no earlier proof of this particular conjecture
+or these stronger conclusions. That is a bounded literature-search
+statement, not a guarantee of priority. General meromorphic coefficient
+extraction and analytic inversion are standard tools~\cite{FS}.
+
+\begin{writenote}[Added 2 October 2026, batch~75]
+This report is a single manuscript, printed in full: manuscript~04 of
+batch~75 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{OEIS\_\allowbreak Valley\_\allowbreak Monotone\_\allowbreak Bargraphs.zip}
+in commit \texttt{4b874cea0} and placed in commit \texttt{6ea60e367} in the
+research-report collection, among the enumerative-combinatorics reports
+(\nolinkurl{SetTheory/Cardinals/docs/reports}), not in the
+\texttt{Analysis/Transseries} project named above. The identifier called a
+``tree SHA'' above is the ProveIt \emph{commit} \texttt{29aca108e}
+(1~October 2026), an ancestor of the placement commit; it is this
+manuscript's pin. Nothing in this report is formalized in Lean or Rocq, and
+placement in the collection confers no formal status on any statement here.
+No OEIS number for the sequence $d(n)$ was verified, and the writing step
+assigns none; A001523 is the input sequence, not the target. The writing step
+changed the labels (every label now carries the prefix \texttt{vmb:}),
+renamed Theorem~\ref{vmb:thm:W} (delivered as ``Pole accumulation
+transseries''), set the bibliography ragged-right, and added these
+\textsf{[write]} notes and one reference \cite{vmb-tai}; no other statement,
+proof or number of the manuscript was altered. The Lambert-$W$ and
+rounding steps of Sections~\ref{vmb:sec:accumulation}
+and~\ref{vmb:sec:inverse} are instances of the transseries-and-inversion
+volume \cite{vmb-tai}, as the notes there say; no transseries in that
+volume's sense is constructed here.
+\end{writenote}
+
+\section{A decomposition by minimum part}\label{vmb:sec:decomposition}
+
+\subsection{Classes and notation}
+For an integer \(j\geq1\), let \(\calU_j\) be the nonempty weakly
+unimodal compositions whose parts are at least \(j\), and let
+\(\calD_j\) be the nonempty valley-monotone compositions with that same
+lower bound. Write
+\begin{equation}
+U_j(q)=\sum_{\alpha\in\calU_j}q^{|\alpha|},\qquad
+D_j(q)=\sum_{\alpha\in\calD_j}q^{|\alpha|},\qquad
+d_j(n)=\coeff qn D_j(q).
+\end{equation}
+Here \(|\alpha|\) is the sum of the parts. In particular,
+\(U_1=A-1\), \(D_1(q)=\sum_{n\geq1}d(n)q^n\).
+Define
+\begin{equation}\label{vmb:eq:HKQ}
+H_j(q)=\frac{q^j}{1-q^j},\quad
+K_j(q)=H_j(q)U_{j+1}(q),\quad
+Q_j(q)=1-q^j-q^jU_{j+1}(q).
+\end{equation}
+Thus
+\begin{equation}\label{vmb:eq:QK}
+Q_j(q)=(1-q^j)(1-K_j(q)).
+\end{equation}
+The series \(H_j\) counts a nonempty run of parts equal to~\(j\).
+
+\begin{lemma}[Unimodal decomposition]\label{vmb:lem:U}
+As formal power series,
+\begin{equation}\label{vmb:eq:Urec}
+U_j=H_j+\frac{U_{j+1}}{(1-q^j)^2}.
+\end{equation}
+Equivalently,
+\begin{equation}\label{vmb:eq:Usum}
+U_j(q)=\sum_{h\geq j}\frac{q^h}{1-q^h}
+                   \prod_{r=j}^{h-1}(1-q^r)^{-2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+An object either consists only of parts~\(j\), or has a nonempty middle
+object with all parts greater than~\(j\). In the second case, unimodality
+allows parts~\(j\) only in the initial and final runs. Those runs may be
+empty and are chosen independently, giving \((1-q^j)^{-2}\).
+This proves the recurrence. Iteration classifies an object by its maximum
+part~\(h\) and gives the sum. For each coefficient of fixed degree, only
+finitely many values of \(h\) contribute, so the formal iteration is
+legitimate.
+\end{proof}
+
+\begin{lemma}[Valley-monotone decomposition]\label{vmb:lem:D}
+As formal power series,
+\begin{equation}\label{vmb:eq:Drec}
+\boxed{\quad D_j=H_j+
+ \frac{D_{j+1}}{(1-q^j)^2(1-K_j)}
+ =H_j+\frac{D_{j+1}}{(1-q^j)Q_j}.\quad}
+\end{equation}
+\end{lemma}
+\begin{proof}
+The all-\(j\) object contributes \(H_j\). Otherwise split the
+composition into its maximal blocks of parts greater than~\(j\), with
+runs of \(j\)'s between them and possibly at the two ends.
+Each internal separating run is a valley of height~\(j\).
+
+Every block except the last must be unimodal. Indeed, an internal valley
+in an earlier block would have height greater than~\(j\) and would be
+followed by a separating valley of height~\(j\), violating the required
+order. A finite sequence without an internal valley is weakly unimodal:
+a downward change followed later by an upward change necessarily creates
+an intervening valley. Conversely, unimodal earlier blocks create no
+additional valleys and the last block may be any member of
+\(\calD_{j+1}\).
+
+The unique decomposition is therefore
+\[
+(\text{initial }j\text{-run})\;
+(\calU_{j+1}\,\text{nonempty }j\text{-run})^*\;
+\calD_{j+1}\;
+(\text{final }j\text{-run}).
+\]
+The two endpoint factors contribute \((1-q^j)^{-2}\); the repeated unit
+has generating function \(K_j\). This proves the formula, including
+uniqueness and the absence of overcounting.
+\end{proof}
+
+\begin{corollary}[Iterated series]\label{vmb:cor:Dsum}
+For \(j\geq1\),
+\begin{equation}\label{vmb:eq:Dsum}
+D_j(q)=\sum_{h\geq j} H_h(q)
+\prod_{r=j}^{h-1}\frac{1}{(1-q^r)Q_r(q)}.
+\end{equation}
+In particular,
+\begin{equation}\label{vmb:eq:paperGF}
+D_1(q)=\sum_{h\geq1}
+\frac{q^h}{\displaystyle\prod_{r=1}^{h}(1-q^r)
+                 \prod_{r=1}^{h-1}Q_r(q)}.
+\end{equation}
+\end{corollary}
+This agrees with the area specialization in~\cite{FRV}, where the
+paper's \(B_j\) is our \(U_{j+1}\). The boundary condition at large~\(j\)
+is coefficientwise disappearance: \(U_j,D_j\) have no terms below degree
+\(j\). It uniquely determines both recurrences.
+
+\subsection{The renewal kernel in terms of A001523}
+From \eqref{vmb:eq:Urec} at \(j=1\),
+\[
+U_2=(1-q)^2U_1-q(1-q).
+\]
+Consequently,
+\begin{equation}\label{vmb:eq:K-A}
+K_1(q)=q(1-q)A(q)-q
+      =\sum_{n\geq3}\bigl(a(n-1)-a(n-2)\bigr)q^n.
+\end{equation}
+Thus the differences of a classical OEIS sequence count the repeated
+units. This identity will also provide the probability distribution
+underlying the limit theorem.
+
+\section{Analytic continuation and the positive-pole hierarchy}
+
+\subsection{Normal convergence inside the unit disk}
+\begin{lemma}[Uniform estimates]\label{vmb:lem:bounds}
+Fix \(0<R<1\). Uniformly for \(|q|\leq R\), all the functions \(U_j\)
+are analytic and
+\begin{equation}\label{vmb:eq:Ubound}
+|U_j(q)|\leq B_R R^j,
+\qquad |K_j(q)|=O_R(R^{2j+1}),
+\qquad Q_j(q)=1+O_R(R^j),
+\end{equation}
+where \(B_R\) is finite and independent of~\(j\).
+\end{lemma}
+\begin{proof}
+The infinite product
+\(P_R=\prod_{r\geq1}(1-R^r)^{-2}\) is finite, since the sum of the
+absolute logarithms converges. Each term in \eqref{vmb:eq:Usum} is bounded
+by \(P_R R^h/(1-R)\). Summing for \(h\geq j\) gives
+\(B_R=P_R/(1-R)^2\), and local uniform convergence proves analyticity.
+The other estimates follow from \eqref{vmb:eq:HKQ}.
+\end{proof}
+
+\begin{theorem}[Meromorphic continuation]\label{vmb:thm:meromorphic}
+Every \(D_j\) extends to a single-valued meromorphic function on
+\(|q|<1\). Its possible poles there are among the zeros of
+\(Q_r\), \(r\geq j\). On each compact subdisk there are only finitely
+many possible poles.
+\end{theorem}
+\begin{proof}
+For sufficiently large \(r\), uniformly on a chosen compact subdisk,
+\(Q_r\) stays away from zero and
+\[
+\frac{1}{(1-q^r)Q_r(q)}=1+O_R(R^r).
+\]
+The corresponding tail products in \eqref{vmb:eq:Dsum} are uniformly
+bounded, because \(\sum_rR^r\) converges. The summands are therefore
+\(O_R(R^h)\) after separating finitely many initial denominator factors.
+The tail sum converges normally off those factors' zeros. Multiplying by
+the finite product of initial \(Q_r\)'s makes the sum analytic locally.
+Each initial \(Q_r\) is analytic and not identically zero, so its zeros
+are isolated and finite in a compact subdisk. These observations prove
+all the assertions.
+\end{proof}
+
+\subsection{Distinguished real roots}
+\begin{lemma}\label{vmb:lem:roots}
+For every \(j\geq1\) there is a unique \(\rho_j\in(0,1)\) with
+\(K_j(\rho_j)=1\), equivalently \(Q_j(\rho_j)=0\). Moreover,
+\begin{equation}\label{vmb:eq:rholadder}
+0<\rho_1<\rho_2<\cdots<1,
+\qquad \rho_j\longrightarrow1,
+\qquad Q_j'(\rho_j)<0.
+\end{equation}
+The only zero of \(Q_j\) on \(|q|\leq\rho_j\) is \(q=\rho_j\).
+\end{lemma}
+\begin{proof}
+On \((0,1)\), \(K_j\) is strictly increasing, starts at zero, and tends
+to infinity. The last claim follows already from the subclass consisting
+of one part greater than~\(j\), together with the nonempty separating
+run. Thus \(\rho_j\) exists uniquely and its derivative is positive.
+Equation~\eqref{vmb:eq:QK} then gives
+\(Q_j'(\rho_j)=-(1-\rho_j^j)K_j'(\rho_j)<0\).
+
+For positive \(q<1\), both \(H_j>H_{j+1}\) and
+\(U_{j+1}>U_{j+2}\). Hence \(K_j>K_{j+1}\), proving strict ordering
+of their unit crossings. The estimates in Lemma~\ref{vmb:lem:bounds} show
+that \(K_j(q)\to0\) for every fixed \(q<1\); this forces
+\(\rho_j\to1\).
+
+If \(|q|<\rho_j\), positivity gives
+\(|K_j(q)|\leq K_j(|q|)<1\), excluding zeros. On the boundary,
+equality with \(K_j(q)=1\) in the triangle inequality would force all
+nonzero summands of \(K_j(q)\) to be nonnegative real. Its support
+contains both \(2j+1\) and \(2j+2\): use a separating part~\(j\) and
+a singleton of height \(j+1\) or \(j+2\). Their consecutive exponents
+force \(q/\rho_j=1\). This proves boundary uniqueness.
+\end{proof}
+
+\begin{theorem}[Genuine simple poles and alternating amplitudes]
+\label{vmb:thm:ladder}
+For every \(k\geq j\), \(D_j\) has a genuine simple pole at
+\(\rho_k\). In particular, write the principal part of \(D_1\) there
+as
+\[
+\frac{C_k}{1-q/\rho_k}.
+\]
+Then
+\begin{equation}\label{vmb:eq:Ck}
+C_k=
+\frac{D_{k+1}(\rho_k)}{(1-\rho_k^k)(-\rho_k Q_k'(\rho_k))}
+\prod_{r=1}^{k-1}\frac{1}{(1-\rho_k^r)Q_r(\rho_k)},
+\qquad \operatorname{sgn}(C_k)=(-1)^{k-1}.
+\end{equation}
+These are exactly the positive real poles inside the unit disk.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{vmb:lem:roots}, \(D_{k+1}\) is analytic at \(\rho_k\):
+all of its possible pole factors have indices greater than~\(k\) and
+larger minimum zero modulus. Its defining positive series converges
+there and has positive value. Applying \eqref{vmb:eq:Drec} at level~\(k\)
+therefore produces a genuine simple pole, of amplitude
+\[
+\frac{D_{k+1}(\rho_k)}{(1-\rho_k^k)(-\rho_k Q_k'(\rho_k))}>0.
+\]
+For every \(r<k\), the recurrence at level~\(r\) adds an analytic
+term and multiplies the inherited pole by a finite nonzero factor
+\(((1-q^r)Q_r(q))^{-1}\). Since \(Q_r(\rho_k)<0\), each such factor
+changes its sign. This proves the formula, noncancellation, and sign.
+Theorem~\ref{vmb:thm:meromorphic} and uniqueness of each positive zero
+exclude any other positive poles.
+\end{proof}
+
+\begin{corollary}[Non-D-finiteness and non-P-recursiveness]
+\label{vmb:cor:nonD}
+None of the functions \(D_j\) is D-finite over \(\C(q)\). In
+particular \(d(n)\) satisfies no eventual nonzero linear recurrence
+with polynomial coefficients in~\(n\).
+\end{corollary}
+\begin{proof}
+A function satisfying a linear differential equation with polynomial
+coefficients can have finite-plane singularities only at the finitely
+many zeros of its leading coefficient. At every other point, standard
+local existence for a linear analytic differential equation continues
+its analytic branches holomorphically. The infinitely many poles
+\(\rho_k\), \(k\geq j\), contradict this requirement.
+
+For completeness, a polynomial-coefficient recurrence for the Taylor
+coefficients, after multiplication by powers of \(q\) and summation,
+yields a linear differential equation for the generating function, using
+\(q\,\dd/\dd q\) to encode multiplication by~\(n\). Any finite
+initial discrepancy is polynomial and may be annihilated by further
+differentiation. Thus an eventual recurrence would also imply
+D-finiteness, which has just been excluded.
+\end{proof}
+
+\section{The exponential law and certified constants}\label{vmb:sec:leading}
+
+\begin{theorem}[Leading asymptotics at every fixed minimum part]
+\label{vmb:thm:leading}
+For each fixed \(j\geq1\), there is \(R_j>\rho_j\), with
+\(R_j<1\), such that
+\begin{equation}\label{vmb:eq:leadingj}
+d_j(n)=c_j\rho_j^{-n}+O_j(R_j^{-n}),
+\qquad
+c_j=\frac{D_{j+1}(\rho_j)}
+{(1-\rho_j^j)^2\rho_jK_j'(\rho_j)}>0.
+\end{equation}
+For \(j=1\), \(c_1=C_1=C\) and \(\rho_1=\rho\), so this proves
+\eqref{vmb:eq:main-intro} and the intended form of Conjecture~2.3 of~\cite{FRV}.
+\end{theorem}
+\begin{proof}
+Lemma~\ref{vmb:lem:roots} and Theorem~\ref{vmb:thm:ladder} give a unique simple
+pole on the circle of convergence. Local finiteness of all possible
+poles permits a slightly larger closed disk containing no others.
+Subtract the principal part \(c_j/(1-q/\rho_j)\). The difference is
+analytic on a neighborhood of that disk. Cauchy's coefficient bound on
+its boundary gives the stated error. The formula for \(c_j\) follows
+from \eqref{vmb:eq:QK}. Equation~\eqref{vmb:eq:K-A} gives
+\eqref{vmb:eq:OEISroot}.
+\end{proof}
+
+There are no nonzero inverse-power corrections multiplying the leading
+exponential: for every fixed \(M\),
+\begin{equation}
+\frac{d(n)}{C\lambda^n}=1+o(n^{-M}).
+\end{equation}
+The missing information is instead in genuinely smaller exponential
+sectors. This is why an inverse-power fit to the leading term would
+conceal the analytic structure.
+
+\subsection{Exact definitions and integer-arithmetic enclosures}
+The constants are defined by
+\begin{equation}\label{vmb:eq:constants}
+K_1(\rho)=1,
+\qquad \lambda=\rho^{-1},
+\qquad C=\frac{D_2(\rho)}{(1-\rho)^2\rho K_1'(\rho)}.
+\end{equation}
+The accompanying \texttt{verify.py} proves the following enclosures with
+outward-rounded rational intervals, using integers only:
+\begin{equation}\label{vmb:eq:rhobound}
+\begin{gathered}
+0.50596515770080666537292224451833314155847753935777<\rho,\\
+\rho<0.50596515770080666537292224451833314155847753935778.
+\end{gathered}
+\end{equation}
+\begin{gather}
+1.976420677945835735314652452172
+<\lambda<1.976420677945835735314652452175,
+\label{vmb:eq:lambdabound}\\
+0.603901519061899104960307215362
+<C<0.603901519061899104960307215364.
+\label{vmb:eq:Cbound}
+\end{gather}
+The narrower machine-produced intervals are retained in
+\texttt{verification.json}. These bounds certify, in particular, the
+numerical distinction between the limit and the finite-area estimates.
+
+\begin{proposition}[Tail bounds used in the certificate]\label{vmb:prop:tail}
+For \(0<q<1\), put
+\(S_J(q)=q^{J+1}/(1-q)\). If \(S_J(q)<1\), then
+\begin{equation}\label{vmb:eq:tails}
+0\leq U_{J+1}(q),D_{J+1}(q)\leq\frac{S_J(q)}{1-S_J(q)},
+\quad
+0\leq U_{J+1}'(q)\leq\frac{S_J'(q)}{(1-S_J(q))^2}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+\(S_J\) counts a single allowed part. All nonempty ordered sequences
+of such parts have generating function \(S_J/(1-S_J)\), and contain
+both restricted classes as subclasses. Coefficientwise domination proves
+the first two inequalities and, after differentiating nonnegative
+coefficients, the derivative bound.
+\end{proof}
+The program uses \(J=250\) and endpoints in \(10^{-90}\mathbb Z\),
+propagates these tail intervals down to level~2, and tests the sign of
+\(Q_1\) at the two rational endpoints in \eqref{vmb:eq:rhobound}.
+To enclose \(C\), it uses the equivalent expression
+\begin{equation}\label{vmb:eq:Ccertificate}
+C=\frac{D_2(\rho)}
+{\rho(1-\rho)\{1+U_2(\rho)+\rho U_2'(\rho)\}}.
+\end{equation}
+Every division checks that its denominator interval excludes zero.
+No unbounded numerical tail is discarded.
+
+\section{Exponential expansions to arbitrary subunit radius}
+
+\begin{theorem}[Finite-pole expansion]\label{vmb:thm:sectors}
+Choose \(0<R<1\) such that \(D_1\) has no pole on \(|q|=R\), and let
+\(\calP_R\) be its finite set of actual poles inside that circle. Write
+the principal part at \(\zeta\in\calP_R\) in the form
+\[
+\sum_{\ell=1}^{m_\zeta}
+\frac{c_{\zeta,\ell}}{(1-q/\zeta)^\ell}.
+\]
+Then
+\begin{equation}\label{vmb:eq:allsectors}
+\boxed{\quad d(n)=
+\sum_{\zeta\in\calP_R}\sum_{\ell=1}^{m_\zeta}
+ c_{\zeta,\ell}\binom{n+\ell-1}{\ell-1}\zeta^{-n}
+ +O_R(R^{-n}).\quad}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Subtract all the displayed principal parts. The result is analytic in a
+neighborhood of the closed disk, so its coefficients are \(O_R(R^{-n})\)
+by Cauchy's formula. The coefficient of each subtracted rational term is
+the displayed binomial coefficient times \(\zeta^{-n}\).
+\end{proof}
+
+For positive real poles, \(m_{\rho_k}=1\) and
+\(c_{\rho_k,1}=C_k\). Thus these sectors have no polynomial
+prefactors. Nonreal conjugate pairs may yield exponentially small
+oscillations; multiplicities or coincidences among complex zeros may
+yield polynomial factors. Formula~\eqref{vmb:eq:allsectors} makes no
+unsupported simplicity assumption for those zeros.
+
+The numerical positive-real hierarchy begins as follows. The table's
+ordering is by \emph{positive real pole}, not by modulus of all complex
+poles. Apart from the first row, these decimal entries are numerical
+checks rather than rational certificates.
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+\(k\)&\(\rho_k\)&\(\rho_k^{-1}\)&\(C_k\)\\
+\midrule
+1&0.505965157700807&1.976420677945836&\phantom{-}0.603901519061899\\
+2&0.628520593778803&1.591037763755333&-0.434266071916591\\
+3&0.694915251028261&1.439024396889127&\phantom{-}0.097127120171435\\
+4&0.738032724347822&1.354953468877238&-0.008189474598318\\
+5&0.768802380990748&1.300724379536014&\phantom{-}0.000290088602322\\
+6&0.792097830048713&1.262470318771736&-0.000004651415177\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Meaning of ``all orders'']
+For every fixed exponential cutoff \(R<1\), only finitely many sectors
+are required and the remainder is proved. This does not assert that the
+infinite sum of all pole contributions converges, that the unit circle
+is a natural boundary, or that the positive-real poles alone constitute
+the complete expansion. In particular, we have not certified that
+\(\rho_2\) is the second-smallest modulus among \emph{all} poles.
+An all-orders algebraic expansion around the dominant term is trivial
+here; the finite-pole theorem is the substantive exponential refinement.
+\end{remark}
+
+\section{A renewal limit law and a tight terminal component}
+
+\subsection{Bottom-level valleys}
+Choose uniformly from the \(d(n)\) objects of area~\(n\), and let
+\(V_n\) be the number of valleys of height~1. Introduce a variable~\(u\)
+marking these valleys. The decomposition in Lemma~\ref{vmb:lem:D} gives
+\begin{equation}\label{vmb:eq:marked}
+D(q,u)=H_1(q)+\frac{B(q)}{1-uK(q)},
+\qquad B(q)=\frac{D_2(q)}{(1-q)^2},\quad K(q)=K_1(q).
+\end{equation}
+The repeated unit contributes exactly one height-1 valley.
+Define a positive integer random variable \(Z\) by
+\begin{equation}\label{vmb:eq:Z}
+\Prob(Z=s)=\coeff qs K(q)\,\rho^s.
+\end{equation}
+This is a probability distribution because \(K(\rho)=1\). It has
+exponential moments near zero and includes both \(s=3\) and \(s=4\)
+in its support. Put
+\begin{equation}\label{vmb:eq:MV}
+M=\E Z=\rho K'(\rho),\qquad
+V=\Var Z=\rho^2K''(\rho)+\rho K'(\rho)-M^2>0.
+\end{equation}
+
+\begin{theorem}[Gaussian bottom-valley count]\label{vmb:thm:CLT}
+As \(n\to\infty\),
+\begin{equation}\label{vmb:eq:CLT}
+\frac{V_n-\mu n}{\sqrt{\sigma^2n}}
+\ \Longrightarrow\ \mathcal N(0,1),
+\qquad \mu=\frac1M,\qquad \sigma^2=\frac{V}{M^3}.
+\end{equation}
+Moreover \(\E V_n=\mu n+O(1)\) and
+\(\Var V_n=\sigma^2n+O(1)\). Numerical evaluation gives
+\[
+\mu=0.1372487560663833542\ldots,
+\qquad \sigma^2=0.0368978521690088765\ldots.
+\]
+\end{theorem}
+\begin{proof}
+The implicit function theorem gives an analytic root \(r(u)\) near
+\(u=1\), satisfying \(uK(r(u))=1\) and \(r(1)=\rho\).
+Choose a closed disk slightly larger than \(\rho\) in which
+\eqref{vmb:eq:marked} at \(u=1\) has only its simple pole. Compactness and
+analytic perturbation preserve exactly this one nearby pole for complex
+\(u\) sufficiently close to~1. Subtracting it uniformly gives
+\begin{equation}\label{vmb:eq:quasipower}
+\E[u^{V_n}]=\frac{C(u)}{C(1)}
+\left(\frac{\rho}{r(u)}\right)^n(1+O(\vartheta^n)),
+\quad
+C(u)=\frac{B(r(u))}{u r(u)K'(r(u))},
+\end{equation}
+for some \(\vartheta<1\), locally uniformly in~\(u\).
+
+Set \(t(s)=\log r(e^s)\). Taking logarithms of the root equation gives
+\(\log K(e^{t(s)})=-s\). The first two derivatives of
+\(\log K(e^t)\) at \(t=\log\rho\) are respectively \(M\) and \(V\).
+Therefore
+\[
+t'(0)=-M^{-1},\qquad t''(0)=-VM^{-3}.
+\]
+Taking logarithms in \eqref{vmb:eq:quasipower} and differentiating twice
+proves the mean and variance statements. Substituting
+\(s=iz/\sqrt{\sigma^2n}\), subtracting the centering term, and using
+the analytic Taylor expansion gives a limiting characteristic function
+\(\exp(-z^2/2)\). This proves the asserted weak convergence.
+\end{proof}
+
+\subsection{Why almost all valleys are at height one}
+In the nonflat decomposition, let \(T_n\in\calD_2\) be the final
+block with parts greater than one, and let \(L_n,R_n\geq0\) be the
+lengths of the two endpoint runs of ones. The all-ones composition has
+probability \(1/d(n)\). On this exceptional object, define
+\((L_n,R_n)=(0,0)\) and let \(T_n=\dagger\) be a cemetery object of
+area zero. This convention is asymptotically irrelevant.
+
+\begin{theorem}[Boltzmann terminal limit]\label{vmb:thm:terminal}
+The triple \((L_n,T_n,R_n)\) converges in distribution to independent
+components \((L,T,R)\), where
+\begin{equation}\label{vmb:eq:terminal}
+\Prob(L=\ell)=\Prob(R=\ell)=(1-\rho)\rho^\ell,
+\qquad
+\Prob(T=\tau)=\frac{\rho^{|\tau|}}{D_2(\rho)}
+\quad(\tau\in\calD_2).
+\end{equation}
+The sizes of these components have uniformly bounded exponential moments
+for all sufficiently large~\(n\). The number of valleys above height
+one is therefore \(O_{\Prob}(1)\), and the total number of valleys has
+the same central limit theorem as \(V_n\).
+\end{theorem}
+\begin{proof}
+For a fixed triple \((\ell,\tau,r)\), its contribution is
+\(q^{\ell+|\tau|+r}/(1-K(q))\). Comparing its dominant residue with
+that of \eqref{vmb:eq:marked} at \(u=1\) gives limiting probability
+\[
+\frac{\rho^{\ell+|\tau|+r}}{B(\rho)}
+=(1-\rho)^2\rho^{\ell+r}
+ \frac{\rho^{|\tau|}}{D_2(\rho)},
+\]
+which factors as stated and sums to one.
+
+To justify tightness and exponential moments, mark endpoint length by
+\(v\) and terminal area by~\(w\). The numerator becomes
+\(D_2(wq)/(1-vq)^2\). Since \(D_2\) is analytic past \(\rho\),
+this numerator remains analytic on a common larger disk when real
+\(v,w>1\) are sufficiently close to~1. The same residue argument
+then bounds the marked expectation uniformly in~\(n\).
+All valleys above height one lie in~\(T_n\), and their number is at
+most its area. Their contribution divided by \(\sqrt n\) tends to
+zero in probability, so Slutsky's theorem transfers the central limit
+law to the total valley count.
+\end{proof}
+
+The limiting terminal area has mean
+\[
+\E|T|=\frac{\rho D_2'(\rho)}{D_2(\rho)}
+=6.2446300331882976716\ldots.
+\]
+This decimal is numerical, not one of the certified intervals above.
+The same arguments work at every fixed level~\(j\), with \(K_j\),
+\(D_{j+1}\), and runs of parts~\(j\). As an additional consequence of
+Theorem~\ref{vmb:thm:leading},
+\begin{equation}
+\Prob(\text{all parts are at least }2)
+\sim\frac{c_2}{c_1}\left(\frac{\rho_1}{\rho_2}\right)^n.
+\end{equation}
+Here \(c_2>0\) is the \emph{dominant amplitude of \(D_2\)}, not the
+negative amplitude \(C_2\) of the second positive pole of~\(D_1\).
+
+\section{How the real poles accumulate at one}\label{vmb:sec:accumulation}
+
+\subsection{An exact product comparison}
+For \(0<q<1\), define
+\begin{equation}
+P_{j+1}(q)=\prod_{h\geq j+1}(1-q^h)^{-2}.
+\end{equation}
+\begin{lemma}\label{vmb:lem:productcomparison}
+If \(y=q^j\), then
+\begin{equation}\label{vmb:eq:Pcomparison}
+\frac{1-yq}{2-yq}(P_{j+1}-1)
+\ \leq U_{j+1}\ \leq\frac12(P_{j+1}-1).
+\end{equation}
+\end{lemma}
+\begin{proof}
+Let \(A_h=\prod_{r=j+1}^h(1-q^r)^{-2}\), with \(A_j=1\).
+The term of \(U_{j+1}\) with maximum part~\(h\) is
+\[
+\frac{q^h}{1-q^h}A_{h-1}
+=\frac{1-q^h}{2-q^h}(A_h-A_{h-1}).
+\]
+The multiplicative factor lies between
+\((1-yq)/(2-yq)\) and~\(1/2\). Sum the positive telescoping
+increments and pass to the limit.
+\end{proof}
+
+Put
+\begin{equation}\label{vmb:eq:xt}
+t_j=-\log\rho_j,\qquad x_j=jt_j,\qquad y_j=e^{-x_j}=\rho_j^j,
+\qquad c=\log2.
+\end{equation}
+At the pole, the defining equation is
+\(U_{j+1}(\rho_j)=(1-y_j)/y_j\).
+
+\begin{lemma}[Pole-scale equation]\label{vmb:lem:scale}
+As \(j\to\infty\), \(x_j\to\infty\), \(x_j\sim\log j\), and
+\begin{equation}\label{vmb:eq:scale}
+\frac{2j e^{-x_j}}{x_j}
+=x_j+c+O\!\left(\frac{x_j^3}{j}\right).
+\end{equation}
+\end{lemma}
+\begin{proof}
+We know \(t_j\to0\). We first show \(y_j\to0\). Otherwise some
+subsequence has \(y_j\geq\delta>0\). The singleton subclass gives
+\(U_{j+1}(\rho_j)\geq\rho_j^{j+1}/(1-\rho_j)\to\infty\),
+whereas \((1-y_j)/y_j\) is bounded, a contradiction.
+Thus \(x_j\to\infty\).
+
+At the root, \eqref{vmb:eq:Pcomparison} gives
+\begin{equation}\label{vmb:eq:logP}
+\log P_{j+1}(\rho_j)=x_j+c+O(y_j).
+\end{equation}
+On the other hand, expanding the product logarithm absolutely gives,
+with \(t=t_j\), \(y=y_j\),
+\begin{align}
+\log P_{j+1}(e^{-t})
+ &=2\sum_{k\geq1}\frac{y^k}{k(e^{kt}-1)}\notag\\
+ &=\frac{2y}{t}+O\!\left(y+\frac{y^2}{t}\right).
+\label{vmb:eq:logPexp}
+\end{align}
+For the last estimate use
+\((e^t-1)^{-1}=t^{-1}+O(1)\) for \(k=1\), and
+\((e^{kt}-1)^{-1}\leq(kt)^{-1}\) for \(k\geq2\).
+
+Since \(y\to0\), the error is \(o(y/t)\), while the right side of
+\eqref{vmb:eq:logP} tends to infinity. It follows that
+\(2y/t\sim x\), or \(2j e^{-x}\sim x^2\). Taking logarithms gives
+\(x+2\log x=\log(2j)+o(1)\), hence \(x\sim\log j\) and
+\(y\asymp x^2/j\). Substituting this estimate back into
+\eqref{vmb:eq:logPexp} and \eqref{vmb:eq:logP} gives \eqref{vmb:eq:scale}.
+\end{proof}
+
+\subsection{A Lambert--\texorpdfstring{\(W\)}{W} expansion to all logarithmic orders}
+\begin{theorem}[Pole accumulation: a Lambert--\(W\) expansion]\label{vmb:thm:W}
+Let \(X_j>0\) be the unique positive solution of
+\begin{equation}\label{vmb:eq:X}
+e^{X_j}X_j(X_j+c)=2j,\qquad c=\log2,
+\end{equation}
+and set
+\begin{equation}\label{vmb:eq:w}
+w_j=2W\!\left(\sqrt{j/2}\right),
+\end{equation}
+where \(W\) is the positive real Lambert function. Then
+\begin{equation}\label{vmb:eq:xX}
+x_j=X_j+O\!\left(\frac{(\log j)^2}{j}\right).
+\end{equation}
+For every fixed \(m\geq1\),
+\begin{equation}\label{vmb:eq:xW}
+x_j=w_j+\sum_{k=1}^{m}\frac{\alpha_k(c)}{w_j^k}
+ +O_m(w_j^{-m-1})+O\!\left(\frac{w_j^2}{j}\right),
+\end{equation}
+where
+\begin{align}
+\alpha_1(c)&=-c,\notag\\
+\alpha_2(c)&=\frac{c(c+4)}2,\notag\\
+\alpha_3(c)&=-\frac{c(c^2+6c+12)}3,\notag\\
+\alpha_4(c)&=\frac{c(3c+8)(c^2+6c+12)}{12}.
+\label{vmb:eq:alphas}
+\end{align}
+The full series for \(X_j-w_j\) is convergent for sufficiently large
+\(w_j\); the difference between \(x_j\) and this logarithmic sector
+is smaller than every fixed inverse power of~\(\log j\).
+\end{theorem}
+\begin{proof}
+Let \(F_j(x)=2je^{-x}/x-x-c\). Its derivative is negative.
+Lemma~\ref{vmb:lem:scale} gives
+\(F_j(x_j)=O(x_j^3/j)\), while \(F_j(X_j)=0\).
+First, \(F_j'\leq-1\) gives
+\(|x_j-X_j|=O(x_j^3/j)=o(1)\). Thus throughout the interval between
+these two points, \(|F_j'|\asymp x_j\), because
+\(2je^{-x_j}/x_j\sim x_j\). A second application of the mean value
+theorem improves the difference to \(O(x_j^2/j)\), proving
+\eqref{vmb:eq:xX}.
+
+The definition of \(w=w_j\) is equivalent to \(e^w w^2=2j\).
+Write \(X=w+\varepsilon\), \(z=1/w\). Taking logarithms of
+\eqref{vmb:eq:X} and cancelling the equation for~\(w\) gives
+\begin{equation}\label{vmb:eq:implicit-eps}
+\varepsilon+2\log(1+z\varepsilon)
+ +\log\left(1+\frac{cz}{1+z\varepsilon}\right)=0.
+\end{equation}
+This is analytic near \((z,\varepsilon)=(0,0)\), with derivative~1
+with respect to~\(\varepsilon\). The analytic implicit function
+theorem supplies a convergent series
+\(\varepsilon=\sum_{k\geq1}\alpha_k(c)z^k\).
+Coefficient comparison gives \eqref{vmb:eq:alphas}, and gives every further
+coefficient recursively: substitute the already computed terms, and
+negate the coefficient of \(z^k\) to obtain \(\alpha_k\). The new
+coefficient occurs only in the first, linear term at that order.
+Combining this convergent expansion with \eqref{vmb:eq:xX} proves all claims.
+\end{proof}
+
+In particular,
+\begin{equation}\label{vmb:eq:rhorough}
+1-\rho_j\sim\frac{\log j}{j},\qquad
+x_j=\log j-2\log\log j+\log2+o(1).
+\end{equation}
+Higher expansions for \(\rho_j=e^{-x_j/j}\) and the growth bases
+\(\rho_j^{-1}=e^{x_j/j}\) now follow by ordinary exponential
+composition, with the error propagated explicitly. The theorem is a
+large-\(j\) statement about the pole locations; it does not by itself
+make the fixed-\(j\) coefficient estimate uniform when \(j\) grows with
+\(n\).
+
+\begin{writenote}[Added 2 October 2026, batch~75: an instance of repository results]
+The manuscript titled Theorem~\ref{vmb:thm:W} ``Pole accumulation
+transseries''; it is a single-scale Lambert-$W$ expansion of the pole
+positions, and the theorem has been renamed accordingly. Taking logarithms,
+\eqref{vmb:eq:X} reads $X+2\log X=\log(2j)-\log(1+c/X)$. Its dominant
+block $X+2\log X=\log(2j)$ is solved exactly by the Lambert core
+\texttt{p0:thm:lambert-core} of the transseries-and-inversion volume
+\cite{vmb-tai} (there $a=1$, $b=2>0$, principal branch), which gives
+$w_j=2W(\sqrt{j/2})$. The correction equation \eqref{vmb:eq:implicit-eps}
+is that volume's reversion about an arbitrary core,
+\texttt{p0:thm:core-reversion}, with $\Lambda=1$, $h=0$ and small
+parameter $t=z=1/w_j$; its triangular recurrence is the coefficient
+recursion described in the proof, and \texttt{code/expansion.py} implements
+it. The leading equation of Corollary~\ref{vmb:cor:polecount}, in the
+variable $x+c$, is another instance of that core (there $a=b=1$), which
+gives $x+c=W(4/t)$. These are instances of that apparatus, and no novelty
+is claimed for the method. What is specific to this report is the
+pole-scale equation (Lemma~\ref{vmb:lem:scale}) and the error terms in
+\eqref{vmb:eq:xX} and~\eqref{vmb:eq:xW}.
+\end{writenote}
+
+\subsection{Inverting the real-pole counting function}
+\begin{corollary}\label{vmb:cor:polecount}
+Let \(N_+(r)=\#\{j\geq1:\rho_j\leq r\}\), and put \(t=-\log r\).
+Then, as \(r\uparrow1\),
+\begin{equation}\label{vmb:eq:polecount}
+N_+(r)=\frac{W(4/t)-\log2}{t}
+       +O\!\left(\log\frac1t\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+At \(r=\rho_j\), rewrite \eqref{vmb:eq:scale} as
+\[
+\frac{2e^{-x}}{t}=x+c+O(tx^2),\qquad x=jt.
+\]
+The leading equation has solution \(x=W(4/t)-c\), since
+\(e^c=2\). Its derivative has order~\(x\), so the same two-stage
+mean-value argument gives an error \(O(tx)\) in~\(x\), or \(O(x)\)
+in~\(j\). Also \(x\asymp\log(1/t)\). Between consecutive real poles,
+monotonicity sandwiches the counting function between the two adjacent
+values. The leading expression in \eqref{vmb:eq:polecount} is decreasing
+in~\(t\), so the same error estimate holds throughout the gaps.
+\end{proof}
+
+\section{Inverting the area-counting asymptotics}\label{vmb:sec:inverse}
+
+\subsection{Finite-sector real interpolants}
+Choose a cutoff \(R>\rho\) as in Theorem~\ref{vmb:thm:sectors}.
+The finite principal-part expansion can be interpolated for real~\(x\)
+as
+\begin{equation}\label{vmb:eq:interpolant}
+F_R(x)=Ce^{Lx}\bigl(1+E_R(x)\bigr),\qquad L=\log\lambda>0.
+\end{equation}
+For a nonreal conjugate pair, use its real oscillatory expression; for
+a negative real pole use \(r^{-x}\cos(\pi x)\) in place of
+\((-r)^{-n}\), with the same polynomial prefactor. This prescription
+agrees with every integer coefficient contribution and is real analytic.
+All nonleading terms and each fixed derivative are bounded by a
+polynomial times \(e^{-\delta x}\), for some \(\delta>0\), because
+there are only finitely many poles in the chosen expansion.
+Consequently \(F_R\) is strictly increasing for sufficiently large~\(x\).
+This is a specified asymptotic interpolant, not a claim that a discrete
+sequence has a unique natural real interpolation.
+
+\begin{theorem}[Inverse-sector expansion]\label{vmb:thm:inverse}
+Let \(x_R(Y)\) solve \(F_R(x)=Y\) on its eventually increasing branch,
+and put \(x_0=L^{-1}\log(Y/C)\). Set
+\(\Phi(x)=-L^{-1}\log(1+E_R(x))\). Then
+\begin{equation}\label{vmb:eq:Lagrange}
+x_R(Y)=x_0+
+\sum_{k\geq1}\frac1{k!}
+\left(\frac{\dd}{\dd x}\right)^{k-1}
+\Phi(x)^k\bigg|_{x=x_0}.
+\end{equation}
+For each fixed cutoff and sufficiently large~\(Y\), this is a
+convergent small-correction expansion. In particular,
+\begin{equation}\label{vmb:eq:inverse2}
+x_R(Y)=x_0-\frac{E_R(x_0)}L
+ +\frac{E_R(x_0)^2}{2L}
+ +\frac{E_R(x_0)E_R'(x_0)}{L^2}
+ +O\!\left(P(x_0)e^{-3\delta x_0}\right)
+\end{equation}
+for a suitable fixed polynomial~\(P\).
+\end{theorem}
+\begin{proof}
+Writing \(x=x_0+h\) and taking logarithms in \eqref{vmb:eq:interpolant}
+gives the exact equation \(h=\Phi(x_0+h)\). On a fixed small complex
+neighborhood of~\(h=0\), \(\Phi\) and its derivative tend uniformly to
+zero as \(x_0\to\infty\). Analytic Lagrange inversion applies; it may
+also be obtained by inserting a parameter \(s\) into
+\(h=s\Phi(x_0+h)\), expanding at~\(s=0\), and using the uniform smallness
+to continue the series past \(s=1\). This proves \eqref{vmb:eq:Lagrange}.
+Expanding \(\Phi=-E_R/L+E_R^2/(2L)+O(E_R^3)\), the terms with
+\(k=1,2\) give \eqref{vmb:eq:inverse2}; all remaining terms have at least
+three exponentially small factors, with polynomial derivative bounds.
+\end{proof}
+
+For one simple real sector \(E_R(x)=b e^{-\Delta x}\), the first terms
+are especially transparent:
+\begin{equation}\label{vmb:eq:singleinverse}
+x_R(Y)=x_0-\frac bL\left(\frac YC\right)^{-\Delta/L}
+ +\left(\frac1{2L}-\frac\Delta{L^2}\right)b^2
+   \left(\frac YC\right)^{-2\Delta/L}+\cdots.
+\end{equation}
+For the \(\rho_k\) sector, \(b=C_k/C\) and
+\(\Delta=\log(\rho_k/\rho)\). With several poles, products create
+mixed exponent sums. One must retain any other sector of comparable or
+larger size before interpreting a displayed correction as the next term
+of an ordered asymptotic expansion.
+
+\subsection{Integer thresholds and the rounding obstruction}
+\begin{proposition}\label{vmb:prop:threshold}
+The sequence \(d(n)\) is strictly increasing for \(n\geq1\). Define
+\(N(Y)=\min\{n\geq1:d(n)\geq Y\}\). For each fixed cutoff~\(R\),
+there exists \(K_R>0\) such that for all sufficiently large~\(Y\),
+\begin{equation}\label{vmb:eq:ceilbounds}
+\left\lceil x_R(Y)-K_RY^{-\eta_R}\right\rceil
+\leq N(Y)\leq
+\left\lceil x_R(Y)+K_RY^{-\eta_R}\right\rceil,
+\qquad
+\eta_R=\frac{\log(R/\rho)}{\log\lambda}>0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Append a part~1 to any valid composition. No new valley is created,
+since the new step is nonascending; this is an injection from area~\(n\)
+to area~\(n+1\). The singleton \((n+1)\) is not in its image, proving
+strict increase.
+
+At integers, Theorem~\ref{vmb:thm:sectors} gives
+\(d(n)=F_R(n)+O_R(R^{-n})\). Near \(x_R(Y)\),
+\(F_R'(x)\asymp Y\), so the corresponding uncertainty in the crossing
+location is bounded by a constant times
+\(R^{-x_R}/Y=O(Y^{-\eta_R})\).
+One may make this precise first within a fixed distance of the crossing,
+using the mean value theorem; outside that distance the strict leading
+exponential separates the two sides. All integer points below the left
+shift have count below~\(Y\), and all those above the right shift have
+count at least~\(Y\). Taking ceilings yields the bounds.
+\end{proof}
+
+A single unconditional identity \(N(Y)=\lceil x_R(Y)\rceil\) would be
+unjustified when \(Y\) lies arbitrarily close to an actual integer
+threshold. Formula~\eqref{vmb:eq:ceilbounds} records the missing rounding
+information rather than hiding it in a real-variable error term.
+
+\begin{writenote}[Added 2 October 2026, batch~75: an instance of repository results]
+Proposition~\ref{vmb:prop:threshold} and the remark after it are the
+staircase theorem \texttt{p0:thm:staircase} of the transseries-and-inversion
+volume \cite{vmb-tai}: part~(1) gives $N(Y)=\lceil\nu(Y)\rceil$ for any
+increasing interpolation $\nu$ of the sequence, and part~(2), the
+separation condition with $\eta=K_RY^{-\eta_R}$, says that the two ceilings
+in \eqref{vmb:eq:ceilbounds} coincide, and then equal $N(Y)$, unless
+$x_R(Y)$ lies within $\eta$ of an integer. The generic arithmetic of those
+two parts is formalized in Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean},
+statements about an arbitrary monotone interpolation that give no formal
+status to this proposition. The series \eqref{vmb:eq:Lagrange} of
+Theorem~\ref{vmb:thm:inverse} is Lagrange's reversion formula (in formal
+form, \texttt{p0:thm:LB} of the same volume). No novelty is claimed for
+these methods.
+\end{writenote}
+
+\section{Reproducible computations and proof checks}\label{vmb:sec:checks}
+
+\subsection{Independent exact enumeration}
+The package includes two logically independent finite checks.
+First, a triangular coefficient algorithm implements
+\eqref{vmb:eq:Urec}--\eqref{vmb:eq:Drec} using integers and formal-series
+long division. Initializing \(U_{N+1}=D_{N+1}=0\) gives exactly all
+coefficients through degree~\(N\); omitted objects have area larger
+than~\(N\). Second, exhaustive enumeration generates every composition
+through area~17, collapses consecutive equal parts, extracts interior
+local minima, and checks their order directly. It agrees with the
+coefficient algorithm. Lower bounds on the parts equal to~2 and~3 are
+also checked independently through area~13.
+
+The nonempty \(U_1\) coefficients agree with the displayed A001523
+values through \(n=20\); its zero-degree coefficient differs only
+because \(A=1+U_1\). The exact computation also gives
+\[
+d(100)=233832578565556052089825216845.
+\]
+The program retains all coefficients through~200 in
+\texttt{verification.json}. Finite checks support the implementation;
+they are not substitutes for the asymptotic proofs.
+
+\subsection{Convergence of the finite ratios}
+Let \(\varepsilon_n=d(n)/(C\lambda^n)-1\). High-precision numerical
+comparison gives:
+\begin{center}
+\begin{tabular}{@{}rll@{}}
+\toprule
+\(n\)&\(d(n)/d(n-1)\)&\(\varepsilon_n\)\\
+\midrule
+10&2.0000000000000000000&\(-6.7798174\cdot10^{-2}\)\\
+20&1.9808570502327331233&\(-9.1891465\cdot10^{-3}\)\\
+30&1.9769260944011981878&\(-1.0612096\cdot10^{-3}\)\\
+50&1.9764273761888468482&\(-1.4002503\cdot10^{-5}\)\\
+75&1.9764207075861918763&\(-6.1918466\cdot10^{-8}\)\\
+100&1.9764206780767492582&\(-2.7346103\cdot10^{-10}\)\\
+150&1.9764206779458382883&\(-5.3327913\cdot10^{-15}\)\\
+200&1.9764206779458357354&\(-1.0399431\cdot10^{-19}\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The finite-area quantities reproduce both estimates in
+\eqref{vmb:eq:published}:
+\begin{align*}
+\frac{d(100)}{d(99)}
+ &=1.976420678076749258223519681232\ldots,\\
+\frac{d(100)}{(d(100)/d(99))^{100}}
+ &=0.603901514896651955795442836948\ldots.
+\end{align*}
+This identifies the source of the discrepancy exactly; it is not a
+change in the combinatorial definition or in the area indexing.
+
+\subsection{Files and execution}
+\texttt{verify.py} requires only the Python standard library. It checks
+exact enumeration, agreement with the supplied classical initial terms,
+and the rigorous rational intervals. Run
+\begin{verbatim}
+python verify.py
+\end{verbatim}
+The separate \texttt{numerics.py} requires \texttt{mpmath} and produces
+high-precision exploratory values for poles, residues, and limit-law
+constants. Its output explicitly distinguishes those numerical values
+from certified enclosures. A small optional \texttt{expansion.py}
+uses \texttt{sympy} to regenerate the \(\alpha_k(c)\) coefficients
+from \eqref{vmb:eq:implicit-eps}. The article is self-contained and can be
+compiled with
+\begin{verbatim}
+pdflatex article.tex
+pdflatex article.tex
+\end{verbatim}
+No source font files, downloaded papers, or repository files are bundled.
+
+\begin{writenote}[Added 2 October 2026, batch~75]
+In the repository the programs live in \texttt{code/} and their recorded
+outputs in \texttt{data/}. Each program writes its output file into its own
+directory (\texttt{verify.py} writes \texttt{verification.json},
+\texttt{numerics.py} writes \texttt{numerical\_results.json} and imports
+\texttt{verify}, \texttt{expansion.py} writes
+\texttt{expansion\_coefficients.json}), so the report's README runs them on
+a scratch copy. The delivered build script and PDF are not shipped; the
+README gives the build command.
+\end{writenote}
+
+\section{Further research questions and topics}\label{vmb:sec:future}
+
+\subsection{The nonreal pole spectrum}
+Determine the smallest-modulus nonreal poles, and certify their
+multiplicities and ordering relative to \(\rho_2,\rho_3,\ldots\).
+An effective route is to combine the explicit tail bounds with
+argument-principle or Rouch\'e certificates on rationally described
+contours. This would turn the abstract exponential cutoff in
+Theorem~\ref{vmb:thm:sectors} into a numerically explicit first several
+sectors, and could yield sharp eventual error signs or ratio
+monotonicity. These latter conclusions have \emph{not} been inferred
+from the numerical table.
+
+\subsection{Is the unit circle a natural boundary?}
+The real poles prove non-D-finiteness and obstruct meromorphic extension
+through~1. They do not prove a natural boundary at every point of the
+unit circle. A proof would need to locate noncancelling singularities
+approaching a dense set of boundary points, or otherwise preclude local
+continuation there. The factors \(Q_j\) and the root-of-unity structure
+of the unimodal products give a concrete starting point.
+
+\subsection{The next sector of pole accumulation}
+The estimate \(x_j-X_j=O((\log j)^2/j)\) is beyond all logarithmic
+orders. Determine its leading coefficient and a full expansion in
+powers of~\(1/j\), with coefficient functions of~\(w_j\).
+The proof suggests a systematic calculation: retain the \(k=2\) term
+in \eqref{vmb:eq:logPexp}, Euler--Maclaurin corrections to
+\((e^t-1)^{-1}\), and a sharper weighted telescoping expansion in
+Lemma~\ref{vmb:lem:productcomparison}. The resulting two-scale transseries
+should improve the pole-counting error beyond
+\(O(\log(1/t))\).
+
+\subsection{Joint limits and extreme heights}
+The renewal representation can mark the number of columns, the number
+of ones, peak heights, and the maximum height inside a repeated unit.
+A joint normal law for additive statistics should follow after proving
+nondegeneracy of the appropriate covariance matrix. Maximum height is
+not additive: determine whether its logarithmic scale exhibits a lattice
+Gumbel law and quantify any periodic phase. No extreme-value law is
+claimed in this report.
+
+\subsection{Moving lower bounds and a crossover problem}
+Theorem~\ref{vmb:thm:leading} holds for fixed~\(j\), while
+Theorem~\ref{vmb:thm:W} describes large~\(j\). Determine a uniform estimate
+for \(d_j(n)\) when \(j=j(n)\) grows. Since the pole gap shrinks as
+\(j\) increases, a one-pole approximation need not remain uniform.
+Locating the scale at which multiple poles interact would connect the
+fixed-level exponential regime with sparse-composition regimes.
+
+\subsection{Formalization and effective algorithms}
+A useful ProveIt contribution would formalize the finite combinatorial
+decomposition first, including the plateau convention, then develop a
+general locally finite pole-product lemma. The exact interval
+certificate is suitable for a small independently checked arithmetic
+kernel. A separate algorithmic question is whether the exact coefficients
+can be obtained substantially faster than triangular long division,
+using the rapidly increasing minimum degrees of the kernels and
+fast truncated multiplication. Non-P-recursiveness rules out a fixed
+polynomial recurrence, not fast coefficient algorithms.
+
+\appendix
+\section{A coefficient recurrence suitable for exact checking}
+Let all series be truncated modulo~\(q^{N+1}\). For descending
+\(j=N,N-1,\ldots,1\), compute
+\begin{align}
+Q_j&=1-q^j-q^jU_{j+1},\notag\\
+(1-q^j)^2U_j&=q^j(1-q^j)+U_{j+1},\label{vmb:eq:algorithm}\\
+(1-q^j)Q_jD_j&=q^jQ_j+D_{j+1}.\notag
+\end{align}
+Every denominator has constant term one. If
+\(v(q)w(q)=b(q)\), \(v(0)=1\), its coefficients are obtained by
+\[
+w_n=b_n-\sum_{k=1}^n v_k w_{n-k}.
+\]
+This requires no division in the coefficient ring. Initialization with
+zero at level \(N+1\) is exact at the requested order, so integrality
+of every computed coefficient is automatic. The enumeration proof in
+Section~\ref{vmb:sec:decomposition}, not integrality alone, identifies the
+objects being counted.
+
+\section{Claim ledger and limitations}
+\begin{longtable}{@{}p{0.33\textwidth}p{0.60\textwidth}@{}}
+\toprule
+Claim & Status and justification\\
+\midrule
+\endfirsthead
+\toprule
+Claim & Status and justification (continued)\\
+\midrule
+\endhead
+Published generating function & Prior result of~\cite{FRV}; independently
+rederived by the unique minimum-part decomposition.\\[3pt]
+Pure exponential equivalent & Proved in Theorem~\ref{vmb:thm:leading}, with
+exact constants and an exponentially smaller error.\\[3pt]
+Corrected numerical constants & Certified by standard-library integer
+interval arithmetic with explicit infinite-tail bounds.\\[3pt]
+Infinite positive poles; non-D-finiteness & Proved without a
+noncancellation assumption in Theorem~\ref{vmb:thm:ladder} and
+Corollary~\ref{vmb:cor:nonD}.\\[3pt]
+Arbitrary exponential cutoff & Proved in Theorem~\ref{vmb:thm:sectors}; not
+a claim of convergence of an infinite pole sum.\\[3pt]
+Limit laws & Proved by uniform analytic perturbation and direct
+characteristic-function convergence.\\[3pt]
+All logarithmic pole orders & Proved in Theorem~\ref{vmb:thm:W}; the
+\(1/j\)-scale correction remains to be sharpened.\\[3pt]
+Inverse expansion & Proved for a specified finite-sector interpolant;
+integer crossings are bounded with two ceilings.\\[3pt]
+Novelty and formal status & No matching prior proof found in the targeted
+search. No exhaustive priority claim, no Lean proof, and no independent
+peer review are asserted.\\
+\bottomrule
+\end{longtable}
+
+\begingroup
+\raggedright
+\begin{thebibliography}{9}
+\bibitem{FRV}
+R. Fl\'orez, J. L. Ram\'irez, and D. Villamizar,
+\emph{Restricted bargraphs and unimodal compositions},
+Journal of Combinatorial Theory, Series A \textbf{208} (2024), 105934.
+\href{https://doi.org/10.1016/j.jcta.2024.105934}{doi:10.1016/j.jcta.2024.105934}.
+Especially Section~2 and Conjecture~2.3. Publisher HTML consulted
+October~1, 2026.
+
+\bibitem{OEIS}
+OEIS Foundation Inc., \emph{A001523: Number of stacks, or planar
+partitions of \(n\); also number of weakly unimodal compositions of
+\(n\)}. \url{https://oeis.org/A001523}.
+Entry consulted October~1, 2026. The entry credits Auluck's known leading
+asymptotic and links the bargraph paper above.
+
+\bibitem{FS}
+P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics},
+Cambridge University Press, 2009. Chapters~IV--V for rational and
+meromorphic asymptotics, and Chapter~IX for parameter distributions.
+Author's book page: \url{https://sedgewick.io/books/analytic-combinatorics/}.
+
+\bibitem{ProveIt}
+V. Reshetnikov, \emph{ProveIt}, project repository, particularly
+\texttt{Analysis/Transseries/README.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Read-only inspection, October~1, 2026. No repository changes were made.
+
+\bibitem{vmb-tai}
+\emph{Transseries and inversion}, a volume of the ProveIt repository:
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}
+(theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:core-reversion},
+\texttt{p0:thm:staircase} and \texttt{p0:thm:LB}). Added in writing,
+batch~75.
+\end{thebibliography}
+\endgroup
+\end{document}

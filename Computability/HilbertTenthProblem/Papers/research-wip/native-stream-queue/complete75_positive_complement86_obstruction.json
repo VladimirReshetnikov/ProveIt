@@ -1,0 +1,759 @@
+{
+  "status": "PASS_POSITIVE_COMPLEMENT86_SCALAR_OBSTRUCTION",
+  "source": {
+    "certificate": {
+      "operations": 85,
+      "multiplications": 48,
+      "additions_subtractions": 37,
+      "equations": 1,
+      "witnesses": 19
+    },
+    "polynomial": {
+      "operations": 86,
+      "multiplications": 48,
+      "additions_subtractions": 38,
+      "degree": 203,
+      "witnesses": 19
+    },
+    "retained_coordinates": [
+      "Jrep",
+      "F",
+      "alpha",
+      "zplus",
+      "f",
+      "h",
+      "i",
+      "j",
+      "o",
+      "s",
+      "w",
+      "tau_gap",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ],
+    "comparisons": [
+      [
+        "eight_units",
+        1
+      ]
+    ],
+    "source": [
+      [
+        "tau_square",
+        "*",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "n2"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "twice_tau_gap",
+        "+",
+        "tau_gap",
+        "tau_gap"
+      ],
+      [
+        "first_signed_gap",
+        "-",
+        "twice_tau_gap",
+        "R10b"
+      ],
+      [
+        "first_cross",
+        "*",
+        "first_root_base",
+        "first_signed_gap"
+      ],
+      [
+        "norm_first",
+        "+",
+        "tau_square",
+        "first_cross"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "strong_difference",
+        "*",
+        "A",
+        "ic22"
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "strong_difference"
+      ],
+      [
+        "of",
+        "*",
+        "o",
+        "f"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "of",
+        "R10a"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "wn2"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "zplus",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "L16",
+        "strong_difference"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "jc",
+        "*",
+        "j",
+        "R10a"
+      ],
+      [
+        "linear_difference",
+        "-",
+        "aux_u_rhs",
+        "jc"
+      ],
+      [
+        "norm_linear",
+        "+",
+        "linear_difference",
+        "index_difference"
+      ],
+      [
+        "eight_units",
+        "*",
+        "seven_units",
+        "norm_linear"
+      ],
+      [
+        "polynomial",
+        "-",
+        "eight_units",
+        1
+      ]
+    ],
+    "checks": {
+      "complete_register_factor_output_identities": 384,
+      "signed_assignments": 192,
+      "positive_new_assignments_nonpositive_old_F": 48
+    },
+    "coordinate_meaning": "The supplied F now denotes QF=q-F_old; exact inverse F_old=q-F may be negative."
+  },
+  "degree": {
+    "fixtures": [
+      {
+        "B": 16,
+        "factor_degrees": [
+          14,
+          22,
+          42,
+          64,
+          9,
+          5,
+          38,
+          9
+        ],
+        "degree": 203,
+        "leading_coefficient": "-43534339124507370041615921291682286957878655841205267071976287177634092124968994293810271879509610148838932386448213884833080555836204439401626586914062500000000000000000000000000000000000"
+      },
+      {
+        "B": 128,
+        "factor_degrees": [
+          14,
+          22,
+          42,
+          64,
+          9,
+          5,
+          38,
+          9
+        ],
+        "degree": 203,
+        "leading_coefficient": "-277043718002860721764764326087419533569041688042680608484582273124756531556731780105794148346195834548878857160710004668030516754332818252174200304135741997321504115797498820877461807206740775683723229016337817203783581595830611222016726975852199857259327527481961170523969576978458103634825237988562644659887946716507483422948432511501019253329518503321709576192"
+      }
+    ],
+    "highest_form": "Parent normalized87 highest form with C_top=F-Z-alpha-2*d*x; no q term in C_top."
+  },
+  "seed": {
+    "q": 16,
+    "B": 16,
+    "cell_bits": 4,
+    "input": 1,
+    "inner_bits": 1,
+    "MC": 6,
+    "MF": 12,
+    "X": 32768,
+    "Y": 4096,
+    "E": 134217728,
+    "a": 134221824,
+    "A": 134221826,
+    "H": 536887299,
+    "Delta": 18015498574774275,
+    "P": 1099511627777,
+    "M": 255,
+    "alpha": 3,
+    "U": 11,
+    "mask": 438,
+    "input_index": 9,
+    "input_chi": 3619497246866025716010888311905841234743430026442539345555627196624819167826,
+    "input_psi": 26966532603021104901865837065765522553049413672143653339005738983009,
+    "Fv": 7238994439798986326434661966159697628126859091648198486740667829392192156242,
+    "delta": 1496851862916537783835531321509474120151966969246920,
+    "main_return_period": 2753268,
+    "rho0": 2,
+    "Z0": 7238994439798986326434661966159697628126859091648198486740667829393265930840,
+    "R0": 27689153732231122698612582020560843427585236025554359211783054447429242185508318,
+    "raw_step": 10267969593375,
+    "crt_gcd": 3,
+    "crt_index": 143215,
+    "p0": 27689153732231122698612582020560843427585236025554359211783055917956507500708943,
+    "step": 316199877967503874326528000,
+    "n_modulus": 67108864,
+    "n_residue": 14238248
+  },
+  "progressions": {
+    "complete_modular_progression_cases": 128,
+    "linear_vs_Pell_growth_cases": 165
+  },
+  "concrete_certificates": [
+    {
+      "precision_bits": 384,
+      "p": 27689153732231122698612582020560843428479406560240872014501246148159455756452943,
+      "n": 18909695711339583511386628105482078268425333847339916462699118496112267748786728,
+      "progression_index": 2827864894933348,
+      "c_interval": [
+        [
+          35759422801210404055106036512798496522190833756603876805607137212237521379119910941355527427604719374733535332825089,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394183
+        ],
+        [
+          35759422801210404055106036512798496531639452356743251319522828708731756533657038367221052557971765330732122078411592,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394183
+        ]
+      ],
+      "kY_interval": [
+        [
+          35755046200705659630046077958428469896290673891371512895615082953928960578088799728502952084785623903231829528183490,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394183
+        ],
+        [
+          35755046200705659630046077958428469902725458187946294234141723371926715458708596529480622523738718432334230497471469,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394183
+        ]
+      ],
+      "kY_plus_k_interval": [
+        [
+          35763775460032003785229194676680039346948947981677023518880613980040759640729934689374168625821948518442579486564394,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394183
+        ],
+        [
+          35763775460032003785229194676680039353385303270511710809882480628609314754474882807930202753847053080388999596714016,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394183
+        ]
+      ],
+      "exact_c_bit_length": 775297524164947735822896087094893836336628679317598201716592622480833932852394567,
+      "both_strict_ratios_certified": true,
+      "scope": "Integer interval certificate for exact Pell recipes; the huge Pell coordinates are not materialized."
+    },
+    {
+      "precision_bits": 512,
+      "p": 27689153732231122698612582020560843428479406560240872014501246148159455756452943,
+      "n": 18909695711339583511386628105482078268425333847339916462699118496112267748786728,
+      "progression_index": 2827864894933348,
+      "c_interval": [
+        [
+          12168301030522451844571349038073274376044650878831488648670654268023641811037951346363637802821462597495118145853387545677366442051342226779704949367410084,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394055
+        ],
+        [
+          12168301030522451844571349038073274376044650878831488648670654268023641811042671962334954788174468096488762848979040552055928264739404999948682585975137295,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394055
+        ]
+      ],
+      "kY_interval": [
+        [
+          12166811750543630037642604288766993535115835073605643812528562443223878810587765278882765191152598683145203462284088940567985304303866248209798575889748228,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394055
+        ],
+        [
+          12166811750543630037642604288766993535115835073605643812528562443223878810594200063059179860771042983263501668716171669973751572098737512852334366271014144,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394055
+        ]
+      ],
+      "kY_plus_k_interval": [
+        [
+          12169782163568665103569763127704680789396869213027910815412480549289119015375506432515304928748094923058080709223123141969491160091049809305552921245190061,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394055
+        ],
+        [
+          12169782163568665103569763127704680789396869213027910815412480549289119015381942787683950168354239038679337484553260579072866257541144431190433080715904529,
+          775297524164947735822896087094893836336628679317598201716592622480833932852394055
+        ]
+      ],
+      "exact_c_bit_length": 775297524164947735822896087094893836336628679317598201716592622480833932852394567,
+      "both_strict_ratios_certified": true,
+      "scope": "Integer interval certificate for exact Pell recipes; the huge Pell coordinates are not materialized."
+    }
+  ],
+  "full_source": {
+    "all_eight_symbolic_factor_identities": true,
+    "complete_symbolic_output_identity": true,
+    "source_zero_factors": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "checks": {
+      "formal_full_source_factor_output_maps": 192,
+      "signed_maps": 96
+    },
+    "scope": "Arbitrary exact rational identities corroborate the full source map; positive integer full zeros follow from the theorem and canonical auxiliary lift."
+  },
+  "witness_recipe": {
+    "p": "p0+step*t",
+    "n": "n_residue mod E/2, satisfying the two strict Pell ratios",
+    "c": "psi_A(p)",
+    "k": "2*psi_P(n)",
+    "Z": "(p-mask-M*q*(alpha+2d*x))/(M*(q-1))",
+    "F_new": "Z+alpha+2d*x",
+    "rho": "(Z-Fv)/H",
+    "gamma": "(chi_A(p)-a*c-X)/H",
+    "sigma": "gamma-rho",
+    "auxiliary": "m=2*c*p, f=chi_A(m), i=psi_A(m)/c^2; T=Delta*psi_A(m); V=chi_T(p)/T, y=psi_T(p), j=(V+p)/c, o=(V+c)/f"
+  },
+  "theorem": "Explicit scalar-mask-contract candidate86 has infinitely many full positive19-coordinate zeros with all eight factors1, R>q^4, C=0 and negative input root; the exact restored old F is negative.",
+  "limitations": "No actual universal program or false-membership input is instantiated. This refutes automatic positive restoration of F and the claimed inherited bound, not all86 circuits or by itself the candidate accepted-language theorem."
+}

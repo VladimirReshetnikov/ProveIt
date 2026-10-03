@@ -1,0 +1,208 @@
+{
+  "status": "PASS_RAW_FILTERED_CONTROLLER_EXPRESSIVENESS_OBSTRUCTION",
+  "normalization": {
+    "original_minus_centered": "F0*u0 + F1*u0 + F2*u0 + 2*H*cf - H*u0 - cf*q + cf",
+    "source_audits": [
+      {
+        "operations": 71,
+        "equations": 20,
+        "positive_witnesses": 29,
+        "source_sha256": "e67a2c0323e5f3309961ef8df259df9e0d1acad0345d248ed434a4e1e9807195"
+      },
+      {
+        "operations": 74,
+        "equations": 22,
+        "positive_witnesses": 31,
+        "source_sha256": "6a415fd45a517e00dfb8b929e1d13ede0825df2747698f4ceee23a2a6931248e"
+      }
+    ],
+    "source_family": "Exact raw2x paired filter, positive four words, zero queues, complete integral carry graph"
+  },
+  "families": [
+    {
+      "N": 2,
+      "ordinary_even_inputs": [
+        4,
+        12,
+        26
+      ]
+    },
+    {
+      "N": 4,
+      "ordinary_even_inputs": [
+        40,
+        120,
+        242
+      ]
+    },
+    {
+      "N": 6,
+      "ordinary_even_inputs": [
+        364,
+        1092,
+        2186
+      ]
+    },
+    {
+      "N": 8,
+      "ordinary_even_inputs": [
+        3280,
+        9840,
+        19682
+      ]
+    },
+    {
+      "N": 10,
+      "ordinary_even_inputs": [
+        29524,
+        88572,
+        177146
+      ]
+    },
+    {
+      "N": 12,
+      "ordinary_even_inputs": [
+        265720,
+        797160,
+        1594322
+      ]
+    }
+  ],
+  "prefix_tests": {
+    "controller_tuples": 6561,
+    "coordinate_range": [
+      -4,
+      4
+    ],
+    "prefix_compatible": 25,
+    "reachable_prefix_states": 19322,
+    "maximum_chosen_even_N": 4,
+    "endpoint_congruence_rejections": 8,
+    "strict_append_positivity_rejections": 16,
+    "remaining_trivial_controllers": 1,
+    "examples": [
+      {
+        "alpha": -4,
+        "beta": 0,
+        "gamma": -4,
+        "s": -2,
+        "N": 4,
+        "conclusion": "All three prefixes feasible, but the global endpoint fails modulo abs(gamma)"
+      },
+      {
+        "alpha": -2,
+        "beta": 0,
+        "gamma": -2,
+        "s": -1,
+        "N": 2,
+        "conclusion": "All three prefixes feasible, but the global endpoint fails modulo abs(gamma)"
+      },
+      {
+        "alpha": 0,
+        "beta": -4,
+        "gamma": -4,
+        "s": -2,
+        "N": 4,
+        "conclusion": "All three prefixes feasible, but the global endpoint fails modulo abs(gamma)"
+      }
+    ],
+    "scope": "Exhaustive bounded prefix tests and exact algebraic endpoint contradictions; no finite test is used as a universality proof"
+  },
+  "aligned_positive_maps": {
+    "positive_outer_maps": 80,
+    "block_lengths": [
+      2,
+      5
+    ],
+    "ordinary_inputs": [
+      1,
+      20
+    ],
+    "examples": [
+      {
+        "ell": 2,
+        "x": 1,
+        "m": 2,
+        "t": 6,
+        "W": 9,
+        "q": 729,
+        "fields": [
+          36,
+          3,
+          325,
+          28
+        ],
+        "initial": [
+          1,
+          1
+        ],
+        "time_blocks": 91,
+        "width_blocks": 1
+      },
+      {
+        "ell": 3,
+        "x": 1,
+        "m": 3,
+        "t": 9,
+        "W": 27,
+        "q": 19683,
+        "fields": [
+          351,
+          12,
+          9478,
+          325
+        ],
+        "initial": [
+          1,
+          1
+        ],
+        "time_blocks": 757,
+        "width_blocks": 1
+      },
+      {
+        "ell": 4,
+        "x": 1,
+        "m": 4,
+        "t": 12,
+        "W": 81,
+        "q": 531441,
+        "fields": [
+          3240,
+          39,
+          262441,
+          3160
+        ],
+        "initial": [
+          1,
+          1
+        ],
+        "time_blocks": 6643,
+        "width_blocks": 1
+      },
+      {
+        "ell": 5,
+        "x": 1,
+        "m": 5,
+        "t": 15,
+        "W": 243,
+        "q": 14348907,
+        "fields": [
+          29403,
+          120,
+          7144930,
+          29161
+        ],
+        "initial": [
+          1,
+          1
+        ],
+        "time_blocks": 59293,
+        "width_blocks": 1
+      }
+    ],
+    "full_extension": "By the proved positive paired Boolean converse; huge Pell coordinates not materialized"
+  },
+  "theorem": "Accepting every positive even x forces acceptance of every positive x",
+  "scope": "Raw sum I0+I1=2x and the fixed filter only; optional fixed block alignment; no general decidability claim",
+  "established_complete_universal_bound": 76
+}

@@ -1,0 +1,207 @@
+{
+  "scope": "Original computational evidence curated for the A333497 report; no research notes or third-party papers are included.",
+  "producer_artifacts": [
+    {
+      "file": "data/producer/exact_values_0_202.json",
+      "sha256": "5844e0cfcd5a470c1d64483f969a561426a4e5d6601bb29e2b001e4bdff0db1d",
+      "bytes": 23602,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/producer/symbolic_validation.json",
+      "sha256": "b96c057386edd36824893d9f9f8d799d163dc278a2dec9431b9faae8489f104b",
+      "bytes": 1865,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/producer/numerics_120dps.json",
+      "sha256": "28a50f2e25f4ee9e97cb3a26de3b0e070eb59d8072ac28a4b619b5d9188a770d",
+      "bytes": 23847,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/producer/numerics_150dps.json",
+      "sha256": "92e099973615ed292695ed7dbea14a87d6f2065b3f1686d740e9d427a297292a",
+      "bytes": 29404,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/producer/inverse_validation.json",
+      "sha256": "1c686b4ea540f8d1797b3050fc97e51a599549c2af0cf9870dd01d349fb5c909",
+      "bytes": 2084,
+      "unchanged_from_original": true
+    }
+  ],
+  "independent_artifacts": [
+    {
+      "file": "data/independent/exact_h_0_600.txt",
+      "sha256": "aa02b70dab0ee9522c1a5dea137dd6cd2158b0401671e85da9db160d774bf635",
+      "bytes": 286308,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/independent/independent_checks.json",
+      "sha256": "aba0b452fdb83f937876b49eeefb0fdd4fa281c2a974bf76e7fc9c8d6eb5dd25",
+      "bytes": 3661,
+      "unchanged_from_original": true
+    }
+  ],
+  "scripts": [
+    {
+      "file": "code/verify_symbolics.py",
+      "original_sha256": "acb7921ea170482f896765620edb7e203a467a6a159c52145e9ba8acfce03b7a",
+      "bundled_sha256": "962b26508b1229dcf7b42f47919117f3287810b8cacc7cb6bd005a72a591f245",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR.",
+        "Neutralize an incidental comment; the energy identity is unchanged."
+      ],
+      "mathematical_logic_changed": false
+    },
+    {
+      "file": "code/numerical_expansion.py",
+      "original_sha256": "33a35783e29cb65f959993720a724062420937602c231575953230544d14285c",
+      "bundled_sha256": "7d66fa1e63656459e2ee3fc16f458d2e3bec4c275125c547703c4e07ae5f6dbf",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR."
+      ],
+      "mathematical_logic_changed": false
+    },
+    {
+      "file": "code/verify_inverse.py",
+      "original_sha256": "e172bc8e60ff70ce6167ed290947e97a3d1752aa82a6a98035d8ac1077ec6eb8",
+      "bundled_sha256": "3bb4a04f4b22b6f00e795b3a21b53fe7a1db7b643358012111189c861589b677",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR.",
+        "Route input using HISTORIC_TREE_INPUT_DIR."
+      ],
+      "mathematical_logic_changed": false
+    },
+    {
+      "file": "code/independent_checks.py",
+      "original_sha256": "bc72460a2029e565dbf584c10e691306713866fec547e41f4c7dcad2bcb4bd70",
+      "bundled_sha256": "956429b804d88f08c07f0e8ce99361261acc613d6a36142711ac81f81e00572e",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR.",
+        "Route input using HISTORIC_TREE_INPUT_DIR."
+      ],
+      "mathematical_logic_changed": false
+    },
+    {
+      "file": "code/extensions/verify_stability.py",
+      "original_sha256": "bc901a063df26f1fbf37a24805749d38b98c5c6ee2ccb04a60dc1a7780c2a677",
+      "bundled_sha256": "1816ea87fd3c3413672e7dfc1b9a9690e87de34ab544bc5dd6a9423300188f17",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR."
+      ],
+      "mathematical_logic_changed": false
+    },
+    {
+      "file": "code/extensions/verify_audit.py",
+      "original_sha256": "a8682a2359cc8d563f27ba934a61e4e30c1e20d42a085d650b0000377ade644b",
+      "bundled_sha256": "8ba8064c20ca32ca47ccc2d49c00bbb6be762463a14a91021b223906b8c06ace",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR."
+      ],
+      "mathematical_logic_changed": false
+    },
+    {
+      "file": "code/extensions/verify_phase.py",
+      "original_sha256": "b8326ce9c1588297d8b009eeb54866372349ca4b91f9969331b114bbc3a5a590",
+      "bundled_sha256": "39d846a02f295deab6a0cabc4205eb5683475e3e852050d3c6c3557c9e8304e6",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR.",
+        "Read the newly generated producer phase certificate using HISTORIC_TREE_INPUT_DIR.",
+        "Read the original second exact reference via HISTORIC_TREE_REFERENCE_DIR; remove machine-specific absolute input paths."
+      ],
+      "mathematical_logic_changed": false
+    }
+  ],
+  "extension_original_artifacts": [
+    {
+      "file": "data/extensions/routh_certificates_2_40.json",
+      "sha256": "5ffe495098a4d95e9c08489a57b131a8e920d2ade889aef693b07d9b007a4be5",
+      "bytes": 94912,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/extensions/independent_complex_root_counts.json",
+      "sha256": "8b20b7faff7fd5e42e173b394f0ec93447cbb1ca3dff2e8a5888485e7304cc82",
+      "bytes": 436,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/extensions/compound_graph_certificate.json",
+      "sha256": "e2a8c88d2d85a7f5c2057b052a9a01b97783344617ed0a14305b5b2645fb2910",
+      "bytes": 215,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/extensions/certificate.json",
+      "sha256": "94bf5a2274fae1f0e82324edb8cf1ef2fd1c5e9262a36bcdb84fd29a48980d14",
+      "bytes": 7063,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/extensions/rational_phase_certificates_30_37.json",
+      "sha256": "b21a4cb552c8c1b87433ef4d8c32af91bc6e556b62ce350235f93584e1a18dba",
+      "bytes": 6712,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/extensions/phase_certificate.json",
+      "sha256": "cb36f82bffa74e90c70bb45299456aab28b64dd7f4325ef55799ccbe5cb19f05",
+      "bytes": 6353,
+      "unchanged_from_original": true
+    },
+    {
+      "file": "data/extensions/phase_finite.json",
+      "sha256": "98cf79cf80d509301ca94c32657c862a63417d8c884c6bf9432292e146c6de6f",
+      "bytes": 6320,
+      "unchanged_from_original": true,
+      "role": "Original second exact reference required by verify_phase.py; all values are independently recomputed and compared during replay."
+    }
+  ],
+  "extension_generated_artifacts": [
+    {
+      "file": "data/extensions/r4_exact_certificate.json",
+      "sha256": "b76f6a75e35bc3b5f36c3f1323e83dcc7a17a6dfe468445e682fd9c90f176f51",
+      "bytes": 2421,
+      "source": "New exact r=4 supplement generated by code/extensions/verify_r4_checks.py; not an original producer artifact."
+    },
+    {
+      "file": "data/extensions/exact_h_r4_0_100.json",
+      "sha256": "2e543001632f3098ece33ad1caad77f64b80c1f722802dd0494deb556112326e",
+      "bytes": 4004,
+      "source": "New exact r=4 supplement generated by code/extensions/verify_r4_checks.py; not an original producer artifact."
+    },
+    {
+      "file": "data/extensions/uniform_threshold_certificate.json",
+      "sha256": "10a991db8430dce9ade048a299cf120f2683e309304ace42def49e07e6013ab6",
+      "bytes": 795,
+      "source": "New exact rational threshold certificate generated by code/extensions/verify_uniform_constants.py."
+    }
+  ],
+  "generated_scripts": [
+    {
+      "file": "code/extensions/verify_r4_checks.py",
+      "bundled_sha256": "1d0f15eca4c29358ff5b01b0f2eb36e4fc6812b59168308d8d2112d6ca01ee2a",
+      "source": "New exact r=4 algebra and recurrence supplement."
+    },
+    {
+      "file": "code/extensions/verify_uniform_constants.py",
+      "bundled_sha256": "13744be4022642e53dcaaf68beabcaa739467f8a397e6c3e615c8b548f4ccb44",
+      "source": "New pure-standard-library rational threshold verifier."
+    }
+  ],
+  "historical_script_snapshots": [
+    {
+      "file": "code/extensions/verify_stability.py",
+      "original_sha256": "93f50c4971395dc4b08299ba6e3febc5da33256d35ca50eeaf0b376f844cd834",
+      "bundled_sha256": "398eeded4a6d0e5c08dace76fbd0f895b7f94b917b9d7f7edb43894809d71098",
+      "adaptations": [
+        "Add os import; route output using HISTORIC_TREE_OUTPUT_DIR."
+      ],
+      "mathematical_logic_changed": false
+    }
+  ]
+}

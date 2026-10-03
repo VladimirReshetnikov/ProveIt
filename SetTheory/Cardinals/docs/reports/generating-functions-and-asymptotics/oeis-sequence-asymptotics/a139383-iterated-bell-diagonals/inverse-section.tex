@@ -1,0 +1,53 @@
+Taking logarithms of \eqref{eq:main} gives explicit polynomials $A_{j,k}$ and smooth finite models
+\begin{equation}\label{eq:Gmodel}
+ G_{N,k}(t)=2t\log t-(1+\log2)t-\frac56\log t+\log(2C)+k
+       +\sum_{j=1}^N\frac{A_{j,k}(\log t)}{t^j}.
+\end{equation}
+At integer points the logarithmic error is
+$\Oh_{N,k}(t^{-N-1}(1+\log t)^D)$ for a finite effective $D$. Each chosen model $\exp(G_{N,k})$ is eventually strictly increasing, because
+\[
+ G_{N,k}'(t)=2\log t+1-\log2+\Oh_k((1+\log t)^D/t).
+\]
+The leading logarithmic term alone in fact contributes $-5/(6t)$ to the derivative, and all finite correction derivatives are smaller than the main term.
+
+Let $Y$ be the target, $y=\log Y$, and put
+\begin{equation}\label{eq:inversecore}
+ x=\frac{y}{2W_0(y/(2\sqrt{2e}))},\quad L=\log x,\quad S=2L+1-\log2.
+\end{equation}
+Then $2x\log x-(1+\log2)x=y$. Seek the inverse in the form
+\begin{equation}\label{eq:inverseansatz}
+ t=x+\sum_{j=0}^M x^{-j}U_{j,k}(L,S^{-1}).
+\end{equation}
+Each $U_{j,k}$ is polynomial in $L$ and $S^{-1}$ with constants formed from $\log(2C)$ and the forward contour moments. Taylor-expand \eqref{eq:Gmodel} at $x$ and cancel residual powers successively. At order $x^{-j}$ the new unknown occurs only as $S U_{j,k}$; its other occurrences have at least one extra inverse power of $x$. Division by $S$ gives a unique constructive recursion. In particular
+\begin{equation}\label{eq:inversefirst}
+ U_{0,k}=\frac{(5/6)L-\log(2C)-k}{S}.
+\end{equation}
+For illustration, if $a=U_{0,k}$ and $A_{1,k}$ is the first logarithmic forward coefficient, then
+\[
+ U_{1,k}=\frac{(5/6)a-a^2-A_{1,k}(L)}{S}.
+\]
+The same residual-cancellation rule constructs any prescribed finite order.
+
+This reversion has a remainder proof. The first correction is bounded, and every subsequent term has at most polynomial-logarithmic growth. For sufficiently large $x$ all Taylor arguments lie in $[x/2,2x]$. Finite Taylor remainders give a residual
+$\Oh(x^{-M-1}(1+\log x)^E)$ for some finite $E$, taking $N\geq M$. Since $G_{N,k}'\geq S/2$ in this interval, the mean-value theorem gives an inverse-index error
+\begin{equation}\label{eq:inverseerror}
+ \Oh\!\left(\frac{x^{-M-1}(1+\log x)^E}{S}\right).
+\end{equation}
+The first correction alone has the sharper bound
+$\Oh(\log^2 x/(xS))$. This proves inverses to every finite order for the specified smooth models; it does not choose a canonical interpolation of the integer sequence.
+
+\subsection{Safe treatment of the integer threshold}
+For fixed $k$ define the eventual discrete threshold
+$\nu_k(Y)=\min\{n\geq n_0:H(n,n+k)\geq Y\}$, where $n_0$ is large enough for the chosen remainder bounds. Monotonicity has a direct exact proof: \eqref{eq:rec} implies
+\[
+ H(n+1,n+1+k)\geq S(n+1,n)H(n,n+k)
+      =\binom{n+1}{2}H(n,n+k).
+\]
+Thus the sequence is strictly increasing once the positive terms and $n\geq2$ are reached.
+
+With an explicit uniform logarithmic remainder bound and an explicit inverse residual bound, enlarge the resulting index uncertainty to $\eta>0$ so that integers below $t-\eta$ have count below $Y$, while integers above $t+\eta$ have count above $Y$. A safe integer enclosure is
+\[
+ \left\lceil t-\eta\right\rceil\leq\nu_k(Y)
+       \leq\left\lfloor t+\eta\right\rfloor+1.
+\]
+A single rounding rule, such as $\nu_k(Y)=\lceil t\rceil$, is justified only after verifying separation from the relevant integer boundaries or checking the neighboring exact counts. The asymptotic $\Oh$ statements establish eventual enclosures but are not themselves numerically instantiated threshold certificates: effective constants and a validity range must be supplied for a concrete target.

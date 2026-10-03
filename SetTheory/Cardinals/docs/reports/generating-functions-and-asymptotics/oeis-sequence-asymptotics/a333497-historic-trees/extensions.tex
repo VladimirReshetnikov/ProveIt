@@ -1,0 +1,355 @@
+\section{The fourth order equation and reduced seven historic trees}\label{his:sec:r4}
+We now write $G=H_4$ for the all-one solution of $G^{(4)}=G^2$, with exponential coefficients $g_n$. Its recurrence is \eqref{his:eq:recurrence} with shift four and four initial ones, identifying OEIS A336009 \cite{oeisr4}. Write $\rho_4$ for its positive real blowup point and put
+\begin{equation}\label{his:eq:r4constants}
+ \la_4=\frac{11+i\sqrt{159}}2,\qquad \alpha_4=\frac{11}2,
+ \qquad a_4=840^{-1/4}.
+\end{equation}
+
+\begin{theorem}[The second proved instance]\label{his:thm:r4}
+There are $\rho_4>0$ and $C_4\ne0$ such that
+\begin{equation}\label{his:eq:r4count}
+ g_n=140(n+3)!\rho_4^{-n-4}\bigl(1+O(n^{-11/2})\bigr).
+\end{equation}
+The point $\rho_4$ is the unique singularity on the convergence circle. With $t=\rho_4-z$, a convergent local expansion is
+\begin{equation}\label{his:eq:r4local}
+ G(z)=840t^{-4}\mathcal F_4(Dt^{12},C_4t^{\la_4},\overline C_4t^{\overline{\la_4}}),
+ \qquad D=-\frac1{18052070400},
+\end{equation}
+where $\mathcal F_4$ is holomorphic near zero and has constant and all three linear coefficients equal to one. The fixed-grade coefficient and inverse statements in Sections~\ref{his:sec:r4grades} and \ref{his:sec:r4inverse} hold. In particular, the first oscillatory relative correction has nonzero amplitude and order $n^{-11/2}$.
+\end{theorem}
+
+\subsection{Finite blowup and the derivative upgrade}
+The following elementary observation works in every order, without claiming a universal power-law profile.
+\begin{lemma}[Finite positive blowup in every order]\label{his:lem:allblowup}
+For $r\ge2$, the all-one solution of $H_r^{(r)}=H_r^2$ has a finite positive right endpoint $\rho_r$ and $H_r(x)\to+\infty$ as $x\uparrow\rho_r$.
+\end{lemma}
+\begin{proof}
+All state derivatives are positive and increasing. Taylor's formula with integral remainder gives
+\[
+ H_r(x+u)\ge H_r(x)+H_r(x)^2u^r/r!
+\]
+whenever the interval exists. If the solution were global, recursively take
+$u_j=(r!/H_r(x_j))^{1/r}$ and $x_{j+1}=x_j+u_j$. Then $H_r(x_j)\ge2^j$ but
+$x_j\le(r!)^{1/r}\sum_{k\ge0}2^{-k/r}<\infty$, contradicting continuity at the finite limit of the $x_j$. At a finite endpoint, bounded $H_r$ would bound $H_r^{(r)}$ and, by repeated integration, every lower derivative; the ODE would extend. Thus the increasing $H_r$ diverges there.
+\end{proof}
+For $r=4$, Astashova's Theorem~3 \cite{astashova2013} now gives
+\begin{equation}\label{his:eq:r4real}
+ G(x)\sim840(\rho_4-x)^{-4}.
+\end{equation}
+To upgrade derivatives, use the following monotone-density argument. If
+$f(x)\sim c(\rho-x)^{-\beta}$ with $c,\beta>0$ and $f'$ nondecreasing, sandwich $f'(x)$ between the backward and forward secants at $x\pm\eps(\rho-x)$. First let $x\uparrow\rho$ for fixed $0<\eps<1$, then let $\eps\downarrow0$. This gives $f'(x)\sim c\beta(\rho-x)^{-\beta-1}$. Repeating for $G,G',G''$ is legitimate because $G'',G''',G^{(4)}$ are positive. Therefore
+\begin{equation}\label{his:eq:r4derivatives}
+ G^{(j)}(x)\sim840(4)_j(\rho_4-x)^{-4-j},\qquad 0\le j\le3,
+\end{equation}
+where $(r)_j=r(r+1)\cdots(r+j-1)$ and $(r)_0=1$.
+
+\subsection{Three dimensional linearization and time inversion}
+Set $p_j=G^{(j)}G^{-1-j/4}$ for $j=1,2,3$ and $\dd\tau/\dd x=G^{1/4}$. Then
+\begin{equation}\label{his:eq:r4planar}
+ \dot p_1=p_2-\tfrac54p_1^2,\quad
+ \dot p_2=p_3-\tfrac32p_1p_2,\quad
+ \dot p_3=1-\tfrac74p_1p_3.
+\end{equation}
+Equation \eqref{his:eq:r4derivatives} implies convergence to
+$(4a_4,20a_4^2,120a_4^3)$, and $\tau\to\infty$. The Jacobian and its polynomial are
+\begin{align}
+ A_4&=\begin{pmatrix}-10a_4&1&0\\-30a_4^2&-6a_4&1\\-210a_4^3&0&-7a_4\end{pmatrix},\label{his:eq:r4jac}\\
+ \det(sI-A_4)&=(s+12a_4)(s^2+11a_4s+70a_4^2).\nonumber
+\end{align}
+The three positive-real-part exponents are $\la_0=12$, $\la_+=\la_4$, and $\la_- =\overline{\la_4}$. Their negatives times $a_4$ are the eigenvalues. They are nonresonant: the real part of any sum of at least two exponents exceeds $11/2$; at degree two the only candidates below $12$ have real part $11$, and at degree three or more the minimum is $33/2>12$.
+
+Holomorphic Poincar\'e linearization gives $\dot u_j=-a_4\la_j u_j$ and $p_1=4a_4+P(u)$, normalized so the three linear coefficients of $P$ equal one. Every eigenvector has nonzero first component, as the first two rows of $A_4$ show. With $v=G^{-1/4}$, let
+\[
+ \mathcal L=\sum_j\la_j u_j\partial_{u_j},\qquad
+ \mathcal LS=-P/(4a_4),\qquad w=ve^{S(u)}.
+\]
+Then $\dot w=-a_4w$ exactly. Division by $\mathbf m\cdot\la$, whose real part is at least $(11/2)|\mathbf m|$, preserves convergence. If $E=e^{-S}$ and
+$B_{\mathbf m}=E_{\mathbf m}/(1+\mathbf m\cdot\la)$, then
+\[
+ t=(w/a_4)B(u),\qquad u_j=K_jw^{\la_j}.
+\]
+The implicit equation
+\[
+ R B(\eta_0R^{12},\eta_+R^{\la_4},\eta_-R^{\overline{\la_4}})=1,
+ \qquad \eta_j=K_j(a_4t)^{\la_j},
+\]
+has derivative one in $R$ at $(1,0)$. Exactly as in Section~3, it yields a holomorphic three-variable function and a convergent expansion in every fixed finite-angle sector. Its linear coefficients before normalization are
+\begin{equation}\label{his:eq:r4linearcoeff}
+ F_{e_j}=-\frac1{a_4(1+\la_j)}\ne0.
+\end{equation}
+After absorbing them into the three amplitudes, one obtains \eqref{his:eq:r4local}. At this point the amplitudes are real/conjugate as appropriate; their precise real value and complex nonvanishing are established next.
+
+\subsection{The conserved energy fixes the real mode}
+Direct differentiation shows that
+\begin{equation}\label{his:eq:r4energy}
+ \mathcal E=G'''G'-\tfrac12(G'')^2-\tfrac13G^3\equiv\frac16.
+\end{equation}
+In the convergent expansion, let $D$ be the relative coefficient of $t^{12}$. The three linear contributions of $840Dt^8$ to the constant term of \eqref{his:eq:r4energy} are, respectively,
+$-2304\cdot840^2D$, $-1120\cdot840^2D$, and $-840\cdot840^2D$. Their sum is $-4264\cdot840^2D$.
+No complex-mode combination contributes to this constant term: a real exponent in the relative semigroup has the form $12m+11k$, and $12m+11k=12$ has only the solution $(m,k)=(1,0)$ in nonnegative integers. Hence
+\[
+ -4264\cdot840^2D=\frac16,
+\]
+which gives the exact nonzero value in \eqref{his:eq:r4local}.
+
+\subsection{A backward positive system excludes a zero complex amplitude}
+Put $s=\log(\rho_4/t)$ and
+\[
+ Y_j=\frac{t^{4+j}G^{(j)}}{840(4)_j},\qquad 0\le j\le3.
+\]
+Then $Y_j'=(4+j)(Y_{j+1}-Y_j)$ for $j<3$ and $Y_3'=7(Y_0^2-Y_3)$. Subtracting the equilibrium, $W=Y-\mathbf1$ satisfies $W'=M(s)W$, where
+\[
+ M(s)=\begin{pmatrix}
+ -4&4&0&0\\0&-5&5&0\\0&0&-6&6\\7(Y_0(s)+1)&0&0&-7
+ \end{pmatrix}.
+\]
+All $Y_j$ are positive. For $J_0=\operatorname{diag}(1,-1,1,-1)$, the matrix $-J_0M(s)J_0$ is Metzler, meaning that all its off-diagonal entries are nonnegative. If $W$ were strictly alternating at some finite time $S$, then $J_0W(S)$ or its negative would be strictly positive. The backward trajectory $Z(u)=J_0W(S-u)$ solves $Z'=-J_0M(S-u)J_0Z$. A continuous Metzler system preserves a strictly positive initial vector over finite time, so strict alternation would already hold at $s=0$.
+
+However,
+\[
+ Y_j(0)=\frac{\rho_4^{4+j}}{840(4)_j},\qquad
+ \frac{Y_{j+1}(0)}{Y_j(0)}=\frac{\rho_4}{4+j}.
+\]
+The ratios decrease, so $\log Y_j(0)$ is strictly concave. The set of indices for which $Y_j(0)>1$ is an interval. After any zeros are deleted, $W(0)$ therefore has at most two sign changes and is not strictly alternating.
+
+If the complex amplitudes vanished, convergence and the nonzero real mode would give
+\[
+ G=840t^{-4}(1+Dt^{12}+O(t^{24})),\qquad
+ W=Dt^{12}\left(1,-2,\tfrac{14}5,-\tfrac{14}5\right)+O(t^{24}).
+\]
+This is strictly alternating for small positive $t$, a contradiction. Thus $C_4\ne0$, using \eqref{his:eq:r4linearcoeff}. This proof concerns the actual initial data and needs no numerical amplitude estimate.
+
+\subsection{All fixed coefficient grades}\label{his:sec:r4grades}
+The strict-majorization proof of Section~5 applies with four initial derivatives. The ordinary coefficients of $G$ and its first three derivatives are strictly positive. A common strict margin bounds their values at $re^{i\theta}$ by those at $r-\eps$; the fourth-order Taylor convolution then supplies a disk of radius $\rho_4-r+\eps$. Thus $\rho_4$ is the unique point on its dominant circle, and the convergent sector supplies a Delta domain.
+
+Expand \eqref{his:eq:r4local} as
+\begin{equation}\label{his:eq:r4triple}
+ G=840t^{-4}\sum_{m,k,l\ge0}c_{mkl}D^mC_4^k\overline C_4^{\,l}t^{\nu_{mkl}},
+ \qquad \nu_{mkl}=12m+k\la_4+l\overline{\la_4}.
+\end{equation}
+The constant and linear coefficients are one. Universally, at total degree at least two,
+\begin{equation}\label{his:eq:r4recurrence}
+ D_4(\nu_{\mathbf m})c_{\mathbf m}
+ =840\sum_{\mathbf0<\mathbf i<\mathbf m}^{\!*}c_{\mathbf i}c_{\mathbf m-\mathbf i},
+ \qquad
+ D_4(\nu)=(\nu+1)(\nu-12)(\nu-\la_4)(\nu-\overline{\la_4}).
+\end{equation}
+Here the starred sum means all componentwise $0\le\mathbf i\le\mathbf m$ except the two endpoints; it does not require strict inequality in each component. Equivalently, $D_4(\nu)=(4-\nu)(5-\nu)(6-\nu)(7-\nu)-1680$. The nonresonance check above proves that every denominator in \eqref{his:eq:r4recurrence} is nonzero. The recurrence may be justified in the three independent mode parameters before specializing to this orbit, so collisions among numerical exponents at high degree cause no ambiguity.
+
+Every term with $k=l$ has relative exponent $12m+11k$. Except for the constant, this is an integer at least $11$ and gives an analytic polynomial in $G$. These terms must be excluded from the coefficient expansion. For fixed $d\ge0$, define
+\begin{equation}\label{his:eq:r4Q}
+ Q^{(4)}_d(x)=1+
+ \sum_{\substack{1\le m+k+l\le d\\k\ne l}}
+ \frac{6c_{mkl}D^mC_4^k\overline C_4^{\,l}\rho_4^{\nu_{mkl}}}
+      {\Gamma(4-\nu_{mkl})}
+ \frac{\Gamma(x+4-\nu_{mkl})}{\Gamma(x+4)}.
+\end{equation}
+The factor is $\Gamma(4)=6$ before pairing. The same extra-grade/noninteger-tail argument proves
+\begin{equation}\label{his:eq:r4allgrades}
+ \frac{g_n}{140(n+3)!\rho_4^{-n-4}}
+ =Q^{(4)}_d(n)+O_d(n^{-\alpha_4(d+1)}).
+\end{equation}
+Total degree gives the convenient minimum weight $\alpha_4=11/2$; the real mode has the larger weight $12$. Thus this is a valid fixed-degree truncation even when a retained real-mode term has higher weight than an omitted focus term. For a sharper ordering one may instead retain all exponents up to a fixed real-part cutoff. Equal exponents, including those caused by $\la_4+\overline{\la_4}=11$, are combined after specialization. No logarithms result.
+
+With $K_4=6C_4\rho_4^{\la_4}/\Gamma(4-\la_4)\ne0$, the first grade is
+\begin{equation}\label{his:eq:r4first}
+ \frac{g_n}{140(n+3)!\rho_4^{-n-4}}
+ =1+2\Rea\!\left\{K_4\frac{\Gamma(n+4-\la_4)}{\Gamma(n+4)}\right\}
+   +O(n^{-11}).
+\end{equation}
+Its leading cosine has amplitude $2|K_4|$, angular frequency $\sqrt{159}/2$ in $\log n$, and relative order $n^{-11/2}$. The corresponding scaled limsup and liminf are $\pm2|K_4|$. In particular the relative error changes sign infinitely often and is not $O(n^{-6})$.
+
+\subsection{Inverses at every fixed grade}\label{his:sec:r4inverse}
+Define $\mathcal B_4(x)=140\Gamma(x+4)\rho_4^{-x-4}$ and
+$F^{(4)}_d=\log\mathcal B_4+\log Q^{(4)}_d$. Then
+\[
+ (F^{(4)}_d)'(x)=\psi(x+4)-\log\rho_4+O_d(x^{-13/2})>0
+\]
+eventually. If $x^{(4)}_d$ solves $F^{(4)}_d(x)=\log X$, the eventual inverse of $g_n$ lies between
+\[
+ \left\lceil x^{(4)}_d-M_d\frac{(x^{(4)}_d)^{-\alpha_4(d+1)}}{\log x^{(4)}_d}\right\rceil
+ \quad\hbox{and}\quad
+ \left\lceil x^{(4)}_d+M_d\frac{(x^{(4)}_d)^{-\alpha_4(d+1)}}{\log x^{(4)}_d}\right\rceil.
+\]
+This follows exactly as in Theorem~\ref{his:thm:inverse}, with eventual existence constants. No finite numerical certificate or unconditional ceiling rule is asserted. The first oscillatory displacement is \eqref{his:eq:inverse-oscillation} with $K,\la,\rho,3$ replaced by $K_4,\la_4,\rho_4,4$, and error $O(x^{-11}/\log x)$.
+
+The Lambert-$W$ start also carries over. In place of \eqref{his:eq:stirling},
+\[
+ \log\mathcal B_4(x)=x(\log(x/\rho_4)-1)+\tfrac72\log x
+ +\log(140\sqrt{2\pi})-4\log\rho_4+\frac{73}{12x}+O(x^{-2}).
+\]
+Thus replace $\rho$ by $\rho_4$ and $5/2$ by $7/2$ in \eqref{his:eq:y0}--\eqref{his:eq:y1}, with the displayed new constant. The one-step error remains $O(1/(y_0\log y_0))$.
+
+\section{The proposed equivalent fails at every sufficiently high order}\label{his:sec:obstruction}
+The positive low-order conclusions cannot be extended to the whole family.
+\begin{theorem}[Failure for every parameter at least twenty nine]\label{his:thm:counterexample}
+For every integer $r\ge30$, let $H_r^{(r)}=H_r^2$ with $H_r^{(j)}(0)=1$ for $0\le j<r$, and let $h_n^{(r)}$ be its exponential coefficients. There is no $\rho>0$ for which
+\begin{equation}\label{his:eq:false-equivalent}
+ h_n^{(r)}\sim\frac{(2r-1)!}{((r-1)!)^2}(n+r-1)!\rho^{-n-r}.
+\end{equation}
+Consequently Burghart and Wagner's Conjecture~1 is false for every $m=r-1\ge29$. In particular, at $r=30$ it fails for the specified sequence of reduced $59$-historic trees.
+\end{theorem}
+The distinction between the ODE order $r$, conjecture parameter $m=r-1$, and historic-tree order $2m+1=2r-1$ is essential. The theorem identifies no replacement asymptotic, proves no periodic limiting profile, and makes no assertion that $m=29$ is the first failing parameter. The even-order historic-tree Conjecture~2 is not addressed.
+
+\subsection{What a coefficient equivalent would force}
+For general $r\ge2$, put
+\begin{equation}\label{his:eq:Ar}
+ A_r=(r)_r=\frac{(2r-1)!}{(r-1)!},\qquad
+ G_r(x)=A_r(\rho-x)^{-r}.
+\end{equation}
+The conjectured comparison coefficients are exactly
+$G_r^{(n)}(0)=A_r(n+r-1)!\rho^{-n-r}/(r-1)!$. Suppose for contradiction that the equivalent holds for one fixed $r\ge30$. The root test makes the Taylor radius of $H_r$ equal to this $\rho$. For each fixed $j\ge0$, coefficient equivalence gives
+\[
+ H_r^{(j)}(x)\sim G_r^{(j)}(x)=A_r(r)_j(\rho-x)^{-r-j}
+ \qquad(x\uparrow\rho).
+\]
+Indeed, for any $\eps>0$, all but finitely many coefficients of the derivative series are within relative $\eps$ of those of $G_r^{(j)}$. The finite head stays bounded at $\rho$, while $G_r^{(j)}$ diverges. Divide the tail bounds by $G_r^{(j)}$ and let $\eps\downarrow0$. This is a direct Abelian argument, not a Tauberian converse or a complex transfer theorem.
+
+With $t=\rho-x$ and $s=\log(\rho/t)$, define
+\begin{equation}\label{his:eq:Yr}
+ Y_j(s)=\frac{t^{r+j}H_r^{(j)}(x)}{A_r(r)_j},\qquad 0\le j<r.
+\end{equation}
+All coordinates are positive, and the alleged equivalent forces $Y(s)\to\mathbf1$. Exact differentiation yields
+\begin{align}
+ Y_j'&=(r+j)(Y_{j+1}-Y_j),&&0\le j<r-1,\label{his:eq:Ysystem}\\
+ Y_{r-1}'&=(2r-1)(Y_0^2-Y_{r-1}).\nonumber
+\end{align}
+The Jacobian $J_r$ at $\mathbf1$ has diagonal $-(r+j)$, superdiagonal $r+j$, and bottom-left entry $2(2r-1)$. Its characteristic polynomial is
+\begin{equation}\label{his:eq:chi}
+ \chi_r(\mu)=\prod_{j=r}^{2r-1}(\mu+j)-2\prod_{j=r}^{2r-1}j,
+ \qquad \chi_r(1)=0.
+\end{equation}
+The mode $\mu=1$ corresponds to changing the blowup location.
+
+\subsection{An unstable conjugate pair for every order at least thirty}\label{his:sec:phase}
+Divide \eqref{his:eq:chi} by $A_r$. A root obeys
+\[
+ \prod_{j=r}^{2r-1}(1+\mu/j)=2.
+\]
+For $a\in[0,1]$, define $b(a)>0$ by the phase equation
+\begin{equation}\label{his:eq:phase}
+ \Phi_r(a,b(a)):=\sum_{j=r}^{2r-1}\arctan\frac{b(a)}{j+a}=2\pi.
+\end{equation}
+The left side increases continuously from $0$ to $r\pi/2$ with $b$, so $b(a)$ exists uniquely and depends continuously on $a$. Define the logarithmic modulus
+\begin{equation}\label{his:eq:logmod}
+ L_r(a)=\frac12\sum_{j=r}^{2r-1}
+ \log\frac{(j+a)^2+b(a)^2}{j^2}.
+\end{equation}
+At $a=1$, since $b(1)>0$, telescoping gives
+\[
+ L_r(1)>\sum_{j=r}^{2r-1}\log\frac{j+1}{j}=\log2.
+\]
+We show $L_r(0)<\log2$. Continuity then gives a root $\mu=a+ib(a)$ with $0<a<1$ and its conjugate. Together with $\mu=1$, this supplies at least three unstable eigenvalues.
+
+\paragraph{The finite bridge from thirty to thirty seven.}
+Set
+\[
+ b_*=\frac{228}{25},\quad
+ P(u)=u-\frac{u^3}3+\frac{u^5}5-\frac{u^7}7,\quad
+ Q(v)=v-\frac{v^2}2+\frac{v^3}3,
+\]
+and $L_8=2\sum_{k=0}^7((2k+1)3^{2k+1})^{-1}<\log2$. For nonnegative arguments,
+$P(u)\le\arctan u$ and $\log(1+v)\le Q(v)$: the derivatives of the differences are $u^8/(1+u^2)$ and $v^3/(1+v)$, respectively, and both differences vanish at zero.
+For each of the eight integers $30\le r\le37$, exact rational arithmetic gives
+\begin{align}
+ \sum_{j=r}^{2r-1}P(b_*/j)-\frac{44}7&>\frac1{200},\label{his:eq:finitephase}\\
+ L_8-\frac12\sum_{j=r}^{2r-1}Q((b_*/j)^2)&>\frac1{1000}.\label{his:eq:finitemod}
+\end{align}
+The archive contains the exact fractions and two independent replay implementations. These are finite rational inequalities, without rounded transcendental evaluations. Since $2\pi<44/7$, \eqref{his:eq:finitephase} implies $b(0)<b_*$. Monotonicity in $b$ and \eqref{his:eq:finitemod} then imply $L_r(0)<\log2$.
+
+\paragraph{The infinite range from thirty eight onward.}
+For $r\ge38$, use $\arctan u\ge u-u^3/3$, the integral bounds
+\[
+ \sum_{j=r}^{2r-1}\frac1j\ge\log2,\qquad
+ \sum_{j=r}^{2r-1}\frac1{j^3}\le\frac1{2(r-1)^2},
+\]
+and $\log2>56/81$, from the first two positive terms of its atanh series. The phase at $b=10$ is at least
+\begin{equation}\label{his:eq:infinitephase}
+ 10\log2-\frac{1000}{6(r-1)^2}
+ >10\frac{56}{81}-\frac{1000}{6\cdot37^2}
+ =\frac{753140}{110889}>\frac{44}7>2\pi.
+\end{equation}
+Thus $b(0)<10$. Since $\log(1+u)<u$ for $u>0$,
+\begin{equation}\label{his:eq:infinitemod}
+ L_r(0)<50\sum_{j=r}^{2r-1}j^{-2}
+ \le50\left(\frac1{r-1}-\frac1{2r-1}\right)
+ \le\frac{76}{111}<\frac{56}{81}<\log2.
+\end{equation}
+The rational function in the middle decreases for $r\ge2$. The strict gaps are exactly
+$56/81-76/111=20/2997$ and
+$753140/110889-44/7=392864/776223$.
+This completes the unstable-pair proof for every $r\ge30$.
+
+\subsection{Simple spectra without exponential aliasing}
+Let $P_r(\mu)=\prod_{j=r}^{2r-1}(\mu+j)$. Its derivative has $r-1$ distinct real zeros interlacing the roots. At any such critical point $\xi$, every factor has modulus at most $r-1$, so
+\[
+ |P_r(\xi)|\le(r-1)^r<r^r\le A_r<2A_r.
+\]
+Therefore $P_r-2A_r$ has no repeated root: all eigenvalues of $J_r$ are simple, uniformly in $r$.
+
+Gershgorin disks bound every imaginary part by $2(2r-1)<4r$. Choose
+\begin{equation}\label{his:eq:Tr}
+ \delta=\frac1{100r},\qquad T_r=\exp(\delta J_r).
+\end{equation}
+The imaginary spectral span after scaling is less than $0.08<2\pi$, so distinct eigenvalues cannot alias under exponentiation. The matrix $T_r$ is nonsingular with simple spectrum and at least three eigenvalues of modulus greater than one.
+
+\subsection{A closed cone containing the actual orbit}
+For a real vector $v$, let $s^-(v)$ count ordinary left-to-right sign changes after deleting zero coordinates, with $s^-(0)=0$. Define the closed, generally nonconvex cone
+\begin{equation}\label{his:eq:cone}
+ \mathcal C_3=\{v\in\R^r:s^-(v)\le2\}.
+\end{equation}
+To see closedness, a limit vector with three sign changes would have four ordered nonzero coordinates witnessing them; their signs persist in every sufficiently close vector.
+
+Writing $Z=Y-\mathbf1$, subtraction in \eqref{his:eq:Ysystem} gives the exact time-varying linear equation $Z'=M(s)Z$. The matrix $M$ has the same diagonal and superdiagonal as $J_r$, but bottom-left entry
+\begin{equation}\label{his:eq:corner}
+ (2r-1)(Y_0(s)+1)>0.
+\end{equation}
+Its third additive compound $M^{[3]}$ is Metzler. In a basis indexed by sorted three-element subsets, each off-diagonal move replaces a selected coordinate by its cyclic predecessor when that site is empty. An ordinary adjacent replacement has positive exterior sign; a wraparound crosses two selected coordinates and has sign $(-1)^2=+1$.
+
+The graph is strongly connected. Identify a vertex with three particles on a directed cycle; an edge moves one particle into a vacant neighboring site. The outgoing and incoming degrees count the cyclic $10$ and $01$ interfaces and are equal. The underlying undirected graph is connected because ordinary adjacent exchanges connect all three-element subsets. A finite weakly connected balanced directed graph is strongly connected: a source component in its condensation graph has no incoming edges, hence by degree balance no outgoing edges, contradicting weak connectedness unless it is the whole graph.
+
+The continuous-time strong $k$-positivity theorem \cite[Theorems~4--5]{weiss2021} now implies that every positive-time transition matrix has all third-order minors positive and preserves $\mathcal C_3\setminus\{0\}$. Its hypotheses hold on every compact time interval: coefficients are continuous and the fixed compound graph is irreducible with positive edges. In particular this applies to the constant matrix $J_r$, so $\exp(uJ_r)$ is strictly sign-regular of order three for $u>0$. Equivalently,
+\[
+ (\exp(uJ_r))^{(3)}=\exp(uJ_r^{[3]})>0
+\]
+entrywise, where the superscript $(3)$ denotes the multiplicative compound.
+
+At $s=0$ the actual initial data give
+\begin{equation}\label{his:eq:bjet}
+ b_j:=Y_j(0)=\frac{\rho^{r+j}}{A_r(r)_j},\qquad
+ \frac{b_{j+1}}{b_j}=\frac{\rho}{r+j}.
+\end{equation}
+The decreasing ratios make $\log b_j$ strictly concave. Its superlevel set $\{j:b_j>1\}$ is an interval, so $b_j-1$ has at most the block pattern negative/positive/negative, with zeros deleted. Therefore $Z(0)\in\mathcal C_3$. It is nonzero: $b_0=b_1=b_2=1$ would require both $\rho=r$ and $\rho=r+1$. Uniqueness prevents $Z$ from reaching zero at finite time. Consequently
+\begin{equation}\label{his:eq:orbitcone}
+ Z(s)\in\mathcal C_3\setminus\{0\}\qquad(s\ge0).
+\end{equation}
+
+\subsection{A spectral gap and a generalized stable manifold}
+The spectral separation theorem for nonsingular strictly sign-regular matrices \cite[Theorem~2(ii)--(iii)]{alseidi2019} applies to $T_r$ with $k=3$. Let $E_{\rm fast}$ be its top-three real spectral subspace and $E_{\rm slow}$ the invariant complement. It gives a strict modulus gap and
+\begin{equation}\label{his:eq:stablecone}
+ E_{\rm slow}\cap\mathcal C_3=\{0\}.
+\end{equation}
+This conclusion concerns every real linear combination in the entire complementary subspace. The uniform simplicity and nonaliasing check justifies the eigenvector formulation. Write $\sigma_-$ for the largest slow spectral modulus and $\sigma_+$ for the smallest fast modulus. Then
+\begin{equation}\label{his:eq:spectralgap}
+ \sigma_-<\sigma_+,
+ \qquad \sigma_+>1.
+\end{equation}
+Some slow eigenvalues may also be expanding or lie on the unit circle. No absence of imaginary-axis roots in all orders is assumed.
+
+Working in the centered coordinates $Z=Y-\mathbf1$, the time-$\delta$ map has derivative $T_r$ at zero. Lanford's generalized stable-manifold theorem \cite[Theorem~7.3.1(1),(3)]{lanford1997} gives a local $C^1$ invariant manifold tangent to $E_{\rm slow}$ that contains every sufficiently small forward orbit staying near zero. The hypotheses are exactly the strict gap \eqref{his:eq:spectralgap}, $\sigma_+>1$, a $C^1$ map, and a smooth cutoff available in finite dimension. In particular, the tail of any convergent orbit lies on this manifold.
+
+A sufficiently small punctured part of that manifold is disjoint from $\mathcal C_3$. Otherwise, normalizing a sequence of nonzero intersection points approaching zero would give a unit subsequential limit in both the tangent space $E_{\rm slow}$ and the closed cone, contradicting \eqref{his:eq:stablecone}. The nonzero orbit $Z$ stays in $\mathcal C_3$ by \eqref{his:eq:orbitcone}. Thus $Z$ cannot converge to $0$, equivalently $Y$ cannot converge to $\mathbf1$. This contradicts \eqref{his:eq:false-equivalent} and proves Theorem~\ref{his:thm:counterexample} for every $r\ge30$.
+
+The same argument excludes the pure real blowup law $H_r(x)\sim A_r(\rho_r-x)^{-r}$ at the actual finite endpoint: the monotone-density argument used in \eqref{his:eq:r4derivatives} would force convergence of the entire normalized jet. The proof does not identify its alternative behavior.
+
+\subsection{Independent finite spectral checks}
+The essential high-order proof uses the elementary phase estimates above. As an independent check, the archive also includes exact Routh calculations. At $r=30$, the degree-$29$ quotient $q=\chi_{30}/(\mu-1)$ has first-column signs
+\[
+ \underbrace{+,+,\ldots,+}_{28\ \mathrm{entries}},\quad-,\quad+,
+\]
+with no zero first-column entry or all-zero row. Thus $q$ has exactly two open-right-half-plane roots. At $r=29$ there are none. Polynomial greatest-common-divisor checks exclude repeated and imaginary-axis roots in these two finite cases; independent exact complex root counts agree. The order-$30$ compound graph replay visits all $\binom{30}{3}=4060$ vertices in each direction and checks all $11340$ transitions. These checks support the specific spectral crossing; they do not prove that a counting equivalent holds at every lower order or that $m=29$ is the first false case.
+
+\subsection{What is prior and what the obstruction adds}
+The polynomial \eqref{his:eq:chi} is already the characteristic polynomial in Chauvin, Gardy, Pouyanne, and Ton-That's \emph{B-urns} \cite[Section~4.1]{burns2016}. Their well-known urn transition at parameter $60$ concerns a real-part threshold $1/2$. The present blowup issue concerns crossing real part $0$, with the ODE-order parameter $r=30$. These are different thresholds for the same polynomial family; no affine identification with the parameter-$60$ polynomial is asserted.
+
+Kozlov \cite[Lemma~5.3]{kozlov1999} already proves extra unstable eigenvalues at sufficiently large quadratic order. Astashova's later work studies atypicality of power-law Cauchy data \cite{astashova2020}. Spectral instability or a measure-zero statement alone cannot exclude one specified initial vector. The additional ingredient here is the initial jet's low-sign-variation constraint, its forward invariance, and the separation of the whole stable subspace from that cone. This supplies the orbit-specific contradiction for each of the counting sequences with $r\ge30$.

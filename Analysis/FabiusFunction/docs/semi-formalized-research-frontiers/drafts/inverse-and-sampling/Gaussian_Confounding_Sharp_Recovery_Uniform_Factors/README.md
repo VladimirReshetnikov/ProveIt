@@ -105,3 +105,38 @@ The selected extension was compared with ProveIt at commit
 is credited, not presented as a new discovery. No claim of worldwide
 publication priority or resolution of an unrelated named conjecture is made.
 No repository files were modified.
+
+## Editorial amendments (ProveIt, 2026-09-29)
+
+In the editorial pass after batch 54 of the repository-level `docs/incoming/`
+drop zone (see `docs/incoming/README.md`), a later package of this tree was
+found to take up two of its research questions. The article gains reciprocal notes; its
+mathematical text is unchanged.
+
+- `article.tex`: an unnumbered environment `ednote` ("Editorial note
+  (ProveIt, 2026-09-29)") is defined after the last theorem style.
+- `article.tex`: after the research question "Classify all local strata with
+  unknown variance", a note records that
+  `../Local_Minimax_Geometry_Uniform_Factors/` (filed 2026-09-29,
+  unreviewed; its Corollary `cor:joint`) proves the candidate denominator
+  `eq:localconjecture` at the level of minimax sampling rates
+  `n^(-1/(2M))`, for Gaussian variance unknown in a compact interval away
+  from zero; the pairwise Hellinger-modulus form is not stated there. The
+  note adds that the same article's grid moment estimator attains the local
+  rates on every fixed stratum without being told the stratum (bearing on
+  "Adapt to collision and vanishing patterns"), is not efficient, and leaves
+  honest adaptive confidence sets open. `CLAIM_LEDGER.md` is the delivered
+  record and still marks the mixed-stratum formula CONJECTURAL.
+- `article.tex`: after the research question "Growing capacity and the
+  infinite-factor transition", a note records that
+  `../Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/` (filed
+  2026-09-29, unreviewed) treats square-summable infinite spectra for the
+  Gaussian variance alone (exact minimax risk `V/2`; uniform consistency
+  exactly under uniformly vanishing squared-scale tails); growing capacity
+  and the recovery of the half-lengths are not treated there. Both notes are
+  marked `% ed.`.
+- `article.pdf`: rebuilt with three `pdflatex -interaction=nonstopmode -halt-on-error article.tex` passes (MiKTeX pdfTeX): 19 pages, as before, 651,180
+  bytes; no error, undefined reference, rerun request, duplicate
+  destination or overfull box; no Type 3 font.
+- `SHA256SUMS.txt`, listed under Files, is no longer in the package; it was
+  retired when the package was filed.

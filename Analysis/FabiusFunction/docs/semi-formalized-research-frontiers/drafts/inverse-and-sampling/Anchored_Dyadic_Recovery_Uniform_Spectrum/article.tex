@@ -1,0 +1,1682 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable}
+\usepackage{enumitem,xurl,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Anchored Recovery of the Dyadic Uniform Spectrum},pdfauthor={Research manuscript prepared with ChatGPT},pdfsubject={Sharp stretched-exponential inverse moduli, geometric separation, and prefix stability}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Anchored dyadic recovery}
+\fancyhead[R]{\small Proofs and reproducible checks}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{3pt}
+\setlength{\emergencystretch}{3em}
+\setlist[enumerate]{itemsep=5pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+% ed. (2026-09-29): unnumbered environment for editorial notes.
+\newtheorem*{ednote}{Editorial note (ProveIt, 2026-09-29)}
+% ed. (2026-09-30): a second unnumbered environment for the notes of 2026-09-30.
+\newtheorem*{ednotelater}{Editorial note (ProveIt, 2026-09-30)}
+\DeclareMathOperator{\TV}{TV}
+\DeclareMathOperator{\Law}{Law}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\A}{\mathcal A}
+\newcommand{\K}{\mathcal K}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\up}{\operatorname{up}}
+\newcommand{\repoSHA}{39472967ce67566d7c530fd5b8d6a3a95e68fe22}
+\newcommand{\distK}{d_{\mathrm K}}
+
+\title{\textbf{Anchored Recovery of the\\Dyadic Uniform Spectrum}\\[7pt]
+\large A sharp stretched-exponential modulus,\\lacunary counterexamples to H\"older stability,\\and Lipschitz recovery of every fixed prefix}
+\author{Research manuscript prepared for Vladimir Reshetnikov\\
+\small AI-assisted mathematical draft with conventional proofs}
+\date{29 September 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+Let $\mu_a$ be the law of $\sum_{j\ge1}a_jU_j$, where the $U_j$ are
+independent uniforms on $[-1,1]$ and $a$ is a decreasing summable sequence.
+We resolve the anchored dyadic recovery question left in the ProveIt manuscript
+\emph{Recovering Uniform Factors}: one of the two laws being compared is now
+exactly the Rvachev law $\mu_0$, with spectrum $a_j^0=2^{-j}$.
+For either total variation or Kolmogorov distance, the anchored inverse modulus
+has the scale
+\[
+ \omega(\eps)=\exp\!\left[-\Theta\!\left(\sqrt{\log(1/\eps)}\right)\right].
+\]
+Thus no positive H\"older exponent is possible, but recovery at the reference
+law is faster than every negative power of $\log(1/\eps)$.
+The lower bound holds in the predecessor's exact fixed-variance,
+uniformly smooth class, and even after imposing
+$a_{j+1}\le\rho a_j$ for any fixed $\rho>1/2$.
+In contrast, every fixed leading prefix is locally Lipschitz-stable, with the
+rest of the spectrum completely unknown subject to a support bound.
+The upper proof reconstructs primitive factor periods from stable zero counts
+by divisor inversion. The lower proof perturbs the constant coefficient of a
+polynomial with geometrically spaced positive roots, matches many cumulants,
+and separates low-frequency cancellation from high-frequency smoothing.
+Explicit finite-error formulas, a testing sample-complexity theorem,
+exact rational regression tests, a proof audit, and further questions are included.
+The exponent $1/2$ is sharp; the leading constant in the stretched exponential
+is not determined.
+\end{abstract}
+
+\noindent\textbf{Status.} This is a proposed research contribution supported by
+proofs written below, not a Lean- or Rocq-checked result. The repository
+question and the comparison class are identified precisely. Literature priority
+has not been established exhaustively, and independent review remains necessary.
+
+\clearpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The question, the comparison class, and the contribution}
+\label{sec:question}
+
+\subsection{An anchored question that pairwise instability does not answer}
+
+The ProveIt Fabius-function research collection contains the manuscript
+\emph{Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
+Instability Near the Fabius--Rvachev Law} \cite{predecessor}.
+Its second research question asks whether a power-law inverse estimate might
+hold relative to the \emph{single exact dyadic reference spectrum}.
+The fourth asks whether geometric separation improves recovery, and the fifth
+asks about recovering only a fixed number of leading factors.
+These are logically distinct from its pairwise construction: two laws can be
+extremely close to each other and both approach a reference law without either
+being comparably close to that reference law.
+
+Here every lower-bound comparison is directly against the exact law $\mu_0$.
+Moreover, the perturbations do not insert a cluster of almost equal scales.
+They change finitely many existing even-indexed dyadic scales by small relative
+amounts and retain the odd-indexed scales exactly. Consequently they remain
+uniformly geometrically separated. This is the main structural difference
+from the predecessor's construction.
+
+The inspected repository reference is
+\begin{quote}\small\ttfamily\raggedright
+\repoSHA.
+\end{quote}
+The exact source path and the relevant question locations are recorded in
+\cref{sec:provenance}. The repository itself labels the predecessor as an
+unreviewed archival arrival. We do not use its quantitative theorems as
+unproved inputs: the present construction and both analytic bounds are proved
+independently below. Its class definition is retained deliberately, so that the
+new obstruction cannot be dismissed as a change to rougher densities.
+
+\subsection{Definitions}
+
+For $L>0$ let
+\begin{equation}
+ \A_L=\left\{a_1\ge a_2\ge\cdots\ge0:\ \sum_{j\ge1}a_j\le L\right\},
+ \qquad
+ X_a=\sum_{j\ge1}a_jU_j,\qquad \mu_a=\Law(X_a).
+ \label{eq:class}
+\end{equation}
+The series converges absolutely for every outcome. Zero entries are padding;
+they are not extra identifiable factors. Define
+\begin{equation}
+ d_\infty(a,b)=\sup_{j\ge1}|a_j-b_j|,
+ \qquad a^0=(2^{-1},2^{-2},\ldots),\qquad \mu_0=\mu_{a^0}.
+\end{equation}
+We write $f_0=\up$ for the density of $\mu_0$. With this convention,
+$\supp\mu_0=[-1,1]$, $\Var(X_{a^0})=1/9$, and $f_0(0)=1$.
+
+For probability measures let
+\begin{align}
+ \TV(\mu,\nu)&=\sup_B|\mu(B)-\nu(B)|,
+ \\
+ \distK(\mu,\nu)&=\sup_{x\in\R}|F_\mu(x)-F_\nu(x)|.
+\end{align}
+In particular $\distK\le\TV$, and for densities total variation is one-half
+the $L^1$ distance. Every logarithm is natural unless a base is displayed.
+
+\begin{definition}[The predecessor's smooth class]
+\label{def:K}
+Let $\K\subset\A_3$ consist of spectra whose laws have variance $1/9$ and
+a density $f_a\in C_c^\infty(\R)$ satisfying
+\begin{equation}
+ \norm{f_a^{(r)}}_\infty
+ \le 2^{r+1}\norm{f_0^{(r)}}_\infty\qquad(r=0,1,2,\ldots).
+ \label{eq:K}
+\end{equation}
+For $1/2<\rho<1$ put
+\[
+ \K_\rho=\{a\in\K:a_{j+1}\le\rho a_j\text{ for every }j\}.
+\]
+Both classes contain $a^0$.
+\end{definition}
+
+\begin{definition}[Anchored inverse modulus]
+For a class $\mathcal C$ containing $a^0$ and a law distance $D$, set
+\begin{equation}
+ \omega_{\mathcal C,D}(\eps)
+ =\sup\{d_\infty(a,a^0):a\in\mathcal C,
+                       \ D(\mu_a,\mu_0)\le\eps\}.
+ \label{eq:modulus}
+\end{equation}
+This is an anchored modulus, not a supremum over two freely varying spectra.
+\end{definition}
+
+\subsection{Main results}
+
+\begin{theorem}[Sharp anchored scale]
+\label{thm:main}
+Take $D=\TV$ or $D=\distK$. For each of the classes
+\[
+ \mathcal C=\A_L\ (L>1),\qquad \mathcal C=\K,
+ \qquad\text{or}\qquad \mathcal C=\K_\rho\ (1/2<\rho<1),
+\]
+there are positive constants $c,C,\eps_0$ such that
+\begin{equation}
+ \exp\!\left[-C\sqrt{\log(1/\eps)}\right]
+ \le\omega_{\mathcal C,D}(\eps)
+ \le\exp\!\left[-c\sqrt{\log(1/\eps)}\right]
+ \quad(0<\eps<\eps_0).
+ \label{eq:main}
+\end{equation}
+More quantitatively, the proofs give
+\begin{equation}
+ \sqrt{\log2}
+ \le \liminf_{\eps\downarrow0}
+ \frac{\log(1/\omega_{\mathcal C,D}(\eps))}{\sqrt{\log(1/\eps)}}
+ \le \limsup_{\eps\downarrow0}
+ \frac{\log(1/\omega_{\mathcal C,D}(\eps))}{\sqrt{\log(1/\eps)}}
+ \le \frac{20}{3}\sqrt{\log2}.
+ \label{eq:constant-bracket}
+\end{equation}
+No assertion that the two limiting constants coincide is made.
+\end{theorem}
+
+\begin{theorem}[Fixed prefixes are Lipschitz-stable]
+\label{thm:prefix-intro}
+For every $L\ge1$ and every fixed integer $r\ge1$ there are
+$C_{L,r}<\infty$ and $\eps_{L,r}>0$ such that
+\begin{equation}
+ \max_{1\le j\le r}|a_j-2^{-j}|
+ \le C_{L,r}\distK(\mu_a,\mu_0)
+ \quad\text{if }a\in\A_L,\quad
+ \distK(\mu_a,\mu_0)\le\eps_{L,r}.
+ \label{eq:prefix-main}
+\end{equation}
+The same is true with total variation. No tail separation, fixed tail, or
+finite-capacity assumption is required. One can take
+$\log C_{L,r}\le(\log2)r^2+O_L(r+1)$.
+\end{theorem}
+
+There is no contradiction. A fixed prefix and the whole infinite spectrum are
+different losses. The constants in the prefix theorem deteriorate rapidly as
+the prefix grows; the least detectable perturbed coordinate in the lower-bound
+construction also moves to infinity.
+
+The statistical consequence is likewise stated in a form that avoids a
+pointwise-estimation trap. Testing the fixed null $a=a^0$ against
+$d_\infty(a,a^0)\ge\delta$ has sample complexity
+\begin{equation}
+ N_*(\delta)=\exp\!\left[\Theta\!\left(\log^2(1/\delta)\right)\right]
+ \label{eq:testing-intro}
+\end{equation}
+for fixed nontrivial error levels. We prove this for alternatives in $\K_\rho$
+and give an upper test valid on all of $\A_3$.
+
+\subsection{What is new here, and what is established background}
+
+Qualitative identifiability of generalized uniform sums is established work:
+Billey and Swanson give a unique decreasing-sequence parametrization and a
+topological theory that also permits a Gaussian component \cite{billey}.
+Arias de Reyna is a primary source for the compactly supported smooth function
+and its transform conventions \cite{arias}. The use of Newton identities,
+Rouch\'e's theorem, Plancherel's theorem, and empirical distribution-function
+bounds is classical.
+
+The proposed contribution is the specific quantitative combination: an anchored
+stretched-exponential modulus with matching exponent; a counterexample family
+inside the exact smooth class and within any separation class $\rho>1/2$;
+and Lipschitz recovery of a fixed prefix despite an unrestricted infinite tail.
+These are not presented as new versions of identifiability itself. Nor does
+this article settle the predecessor's \emph{pairwise} optimal logarithmic
+modulus, its exact-support-endpoint question, or general minimax estimation over
+all spectra.
+
+\section{Analytic and algebraic preliminaries}
+\label{sec:prelim}
+
+\subsection{Entire transforms and their zeros}
+
+\begin{lemma}\label{lem:transform}
+For $a\in\A_L$ the characteristic function extends to the entire function
+\begin{equation}
+ \phi_a(z)=\E e^{izX_a}=\prod_{j\ge1}\sinc(a_jz),
+ \qquad \sinc z=\frac{\sin z}{z},\quad\sinc0=1.
+ \label{eq:product}
+\end{equation}
+Its positive zeros, with multiplicity, are exactly
+\begin{equation}
+ \left\{\frac{k\pi}{a_j}:a_j>0,\ k\ge1\right\}.
+ \label{eq:zero-multiset}
+\end{equation}
+In particular it has no nonreal zeros and no extra zeros created by the
+infinite product.
+\end{lemma}
+\begin{proof}
+Since $|X_a|\le L$, the expectation is entire by locally uniform domination.
+Independence gives the finite products, and absolute convergence of the random
+series gives their locally uniform convergence to the expectation. Alternatively,
+$\sum_j|\sinc(a_jz)-1|$ converges uniformly on every compact set because
+$\sum a_j^2<\infty$. After removing finitely many initial factors, every
+remaining factor is close to one and its analytic logarithm is summable.
+Thus the tail product is nonzero at every point not already a factor zero.
+Only finitely many factors can vanish at a given nonzero point, because such a
+factor must have $a_j\ge\pi/|z|$. This proves the multiplicity assertion.
+\end{proof}
+
+For the dyadic law put
+\begin{equation}
+ \Phi_0(w)=\phi_0(2\pi w)
+ =\prod_{j\ge1}\sinc(\pi 2^{1-j}w).
+ \label{eq:normalized-transform}
+\end{equation}
+Its positive zero at the integer $m$ has multiplicity
+\begin{equation}
+ c_m=1+v_2(m).
+ \label{eq:multiplicity}
+\end{equation}
+Indeed the contributing factors are precisely those with $2^{j-1}\mid m$.
+
+\subsection{Two measurement norms control the same contours}
+
+\begin{lemma}\label{lem:measurement}
+Suppose $\mu,\nu$ are supported in $[-L,L]$. Then
+\begin{align}
+ |\phi_\mu(z)-\phi_\nu(z)|
+ &\le2e^{L|\operatorname{Im}z|}\TV(\mu,\nu),
+ \label{eq:tv-entire}\\
+ |\phi_\mu(z)-\phi_\nu(z)|
+ &\le2L|z|e^{L|\operatorname{Im}z|}\distK(\mu,\nu).
+ \label{eq:ks-entire}
+\end{align}
+\end{lemma}
+\begin{proof}
+The first inequality follows by integrating $e^{izx}$ against the signed
+measure $\mu-\nu$, whose total mass variation is $2\TV(\mu,\nu)$.
+For the second, Stieltjes integration by parts gives
+\[
+ \phi_\mu(z)-\phi_\nu(z)
+ =-iz\int_{-L}^{L}e^{izx}(F_\mu(x)-F_\nu(x))\dd x.
+\]
+One may first integrate over a slightly larger interval, where the boundary
+terms vanish, so atoms at the endpoints cause no difficulty. Taking absolute
+values gives the claim.
+\end{proof}
+
+\subsection{Power sums and the logarithm of sinc}
+
+For $|u|<\pi$, Euler's sine product and absolute summation give
+\begin{equation}
+ \log\sinc u
+ =-\sum_{k\ge1}\frac{\zeta(2k)}{k\pi^{2k}}u^{2k}.
+ \label{eq:log-sinc}
+\end{equation}
+For real $|u|<\pi$ this is the real logarithm of a positive number. In the
+complex disk it is the analytic branch vanishing at zero. Thus equality of
+$\sum a_j^{2k}$ for $1\le k\le m$ implies equality of cumulants, and hence
+moments, through degree $2m+1$, since all odd cumulants vanish. We shall use
+this only for finite blocks, where all algebraic manipulations are immediate.
+
+\section{Recovering primitive periods from perturbed zero counts}
+\label{sec:periods}
+
+The crucial discrete step is not generic stability of a multiple root.
+It uses the fact that each uniform factor contributes \emph{an entire harmonic
+progression} of zeros.
+
+\begin{lemma}[Stable divisor reconstruction]
+\label{lem:periods}
+Fix $\eta=1/10$ and an integer $M\ge4$. Let
+$0<\beta_1\le\beta_2\le\cdots$ be a finite or locally finite sequence,
+with $\beta_i\to\infty$ in the infinite case. Suppose the multiset
+$\{k\beta_i:k\ge1\}$ has the following properties up to $2M+\eta$:
+all its points lie in the intervals
+\[
+ I_m=(m-\eta,m+\eta),\qquad 1\le m\le2M,
+\]
+and exactly $1+v_2(m)$ points, counting multiplicity, lie in $I_m$.
+Then for every power of two $d\le M$ there is exactly one primitive period
+$\beta(d)\in I_d$, and there are no other primitive periods at most
+$M+\eta$. Moreover,
+\begin{equation}
+ |\beta(d)-d|\le\frac{\eta\beta(d)}{M}.
+ \label{eq:period-accuracy}
+\end{equation}
+If $b_i=1/(2\beta_i)$, decreasingly ordered and padded by zeros when necessary,
+then
+\begin{equation}
+ d_\infty(b,a^0)\le\frac1{2M}.
+ \label{eq:period-spectral}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Any primitive period $\beta\le M+\eta$ itself is an observed zero, so it lies
+in a unique $I_d$, $1\le d\le M$. Write $\beta=d+e$, $|e|<\eta$.
+For all $k$ with $k\beta\le2M+\eta$, let $m_k$ be the integer satisfying
+$|k\beta-m_k|<\eta$. Taking $m_0=0$, consecutive integers satisfy
+\[
+ |(m_k-m_{k-1})-d|<3\eta<1.
+\]
+Therefore $m_k-m_{k-1}=d$, and induction gives
+\begin{equation}
+ m_k=kd,\qquad |ke|<\eta.
+ \label{eq:no-phase-slip}
+\end{equation}
+This prevents a progression from gradually drifting to a different lattice
+class. Merely locating its first zero would not give this conclusion.
+
+If $kd\le M$, then $k\beta\le M+M\eta<2M+\eta$, so this zero is indeed
+observed and belongs to $I_{kd}$. Conversely, a zero in $I_m$ for $m\le M$
+comes from a primitive period at most $M+\eta$, and \eqref{eq:no-phase-slip}
+shows that its associated integer $d$ divides $m$.
+Writing $n_d$ for the number of primitive periods in $I_d$, we obtain
+\begin{equation}
+ 1+v_2(m)=\sum_{d\mid m}n_d\qquad(1\le m\le M).
+ \label{eq:divisor-system}
+\end{equation}
+This triangular system has a unique solution. The solution is $n_d=1$ when
+$d$ is a power of two and $n_d=0$ otherwise, because a positive integer $m$
+has exactly $1+v_2(m)$ power-of-two divisors.
+
+For a recovered period put $K=\lfloor(2M+\eta)/\beta\rfloor$. Since
+$\beta\le M+\eta$, we have $K\ge M/\beta$. Equation
+\eqref{eq:no-phase-slip} yields $|e|\le\eta/K\le\eta\beta/M$.
+Consequently
+\[
+ \left|\frac1{2\beta(d)}-\frac1{2d}\right|
+ \le\frac{\eta}{2Md}.
+\]
+These are exactly the leading dyadic factors with $d\le M$. Every remaining
+period is greater than $M+\eta$, while the next dyadic primitive period is
+greater than $M$. The two nonnegative tails are therefore bounded above by
+$1/(2M)$. This proves \eqref{eq:period-spectral}.
+\end{proof}
+
+\begin{remark}
+The lemma is an approximate-lattice statement with exact multiplicities.
+It is robust to multiplicities in the unknown spectrum and makes no a priori
+separation assumption on that spectrum. Divisor inversion forces the relevant
+separation after the zero counts have been established.
+\end{remark}
+
+\section{An explicit upper modulus and the prefix theorem}
+\label{sec:upper}
+
+\subsection{A uniform lower bound away from the zero lattice}
+
+Keep $\eta=1/10$ and define, for $M\ge4$,
+\begin{align}
+ r_0&=2\pi\eta,& R_M&=2\pi(2M+\eta),
+ &J_M&=\left\lceil\log_2(2R_M)\right\rceil,\\
+ B_M&=e^{-1}\left(\frac{4\eta}{R_M}\right)^{J_M},
+ &\eps_M(L)&=\frac{B_M}{4(1+LR_M)e^{Lr_0}}.
+ \label{eq:thresholds}
+\end{align}
+
+\begin{lemma}\label{lem:lower-contour}
+The bound $|\phi_0(z)|\ge B_M$ holds on every circle
+$|z-2\pi m|=r_0$, $1\le m\le2M$, and at every real
+$z\in[r_0,R_M]$ outside the corresponding open disks.
+For real $0\le z\le r_0$, one has $\phi_0(z)>1/2$.
+\end{lemma}
+\begin{proof}
+For every complex $u$,
+\[
+ |\sin u|^2=\sin^2(\operatorname{Re}u)+\sinh^2(\operatorname{Im}u)
+ \ge\frac4{\pi^2}\operatorname{dist}(u,\pi\mathbb Z)^2.
+\]
+Here one reduces the real part to $[-\pi/2,\pi/2]$, uses
+$|\sin x|\ge2|x|/\pi$, and uses $|\sinh y|\ge|y|$.
+At any point specified in the lemma,
+$\operatorname{dist}(z,2\pi\mathbb Z)\ge r_0$.
+Since $2^j\pi\mathbb Z\subset2\pi\mathbb Z$ for $j\ge1$,
+\[
+ |\sinc(z/2^j)|
+ \ge\frac{2\operatorname{dist}(z,2^j\pi\mathbb Z)}{\pi|z|}
+ \ge\frac{4\eta}{R_M}\qquad(1\le j\le J_M).
+\]
+For $j>J_M$, $|z|2^{-j}\le1/4$. The power series of sinc gives
+$|\sinc u|\ge1-|u|^2/5\ge e^{-|u|^2}$ for $|u|\le1/2$.
+Their product is at least
+\[
+ \exp\left[-R_M^2\sum_{j>J_M}4^{-j}\right]\ge e^{-1}.
+\]
+This proves the claimed product bound. Finally, for real $z$,
+$\phi_0(z)=\E\cos(zX_{a^0})\ge1-z^2/18$, which exceeds $1/2$ on
+$[0,r_0]$.
+\end{proof}
+
+\begin{theorem}[Finite-error recovery certificate]
+\label{thm:finite-upper}
+Let $L\ge1$, $M\ge4$, and $a\in\A_L$. If either
+\[
+ \TV(\mu_a,\mu_0)\le\eps_M(L)
+ \quad\text{or}\quad
+ \distK(\mu_a,\mu_0)\le\eps_M(L),
+\]
+then
+\begin{equation}
+ d_\infty(a,a^0)\le\frac1{2M}.
+ \label{eq:finite-upper}
+\end{equation}
+\end{theorem}
+\begin{proof}
+By \cref{lem:measurement}, the transform difference on the circles and real
+segments of \cref{lem:lower-contour} is at most $B_M/2$.
+Rouch\'e's theorem therefore gives exactly $1+v_2(m)$ zeros inside each
+circle centered at $2\pi m$. All zeros of the unknown transform are real
+by \cref{lem:transform}. On the intervening real segments the unknown
+transform cannot vanish. On $[0,r_0]$ the same conclusion follows from the
+last assertion of \cref{lem:lower-contour} and the measurement bound.
+
+In the normalized coordinate $w=z/(2\pi)$, the primitive periods of the
+unknown factors are $\beta_j=1/(2a_j)$ for $a_j>0$. They satisfy all
+hypotheses of \cref{lem:periods}. That lemma gives the desired bound.
+\end{proof}
+
+\begin{corollary}[Upper stretched-exponential rate]
+\label{cor:upper}
+For either law distance, and any fixed $L\ge1$,
+\begin{equation}
+ \omega_{\A_L,D}(\eps)
+ \le C_L\exp\left[-\sqrt{\log2}\sqrt{\log(1/\eps)}\right]
+ \quad\text{for sufficiently small }\eps.
+ \label{eq:upper-asymptotic}
+\end{equation}
+\end{corollary}
+\begin{proof}
+The explicit threshold satisfies
+\begin{equation}
+ \log\frac1{\eps_M(L)}
+ =\frac{(\log M)^2}{\log2}+O_L(\log M+1).
+ \label{eq:threshold-asymptotic}
+\end{equation}
+To check this, use $R_M\asymp M$ and
+$J_M=\log M/\log2+O(1)$ in \eqref{eq:thresholds}.
+If $s=\log(1/\eps)$, take
+$M=\lfloor\exp(\sqrt{s\log2}-A_L)\rfloor$, with $A_L$ sufficiently
+large. The upper bound implicit in \eqref{eq:threshold-asymptotic} then
+ensures $\eps\le\eps_M(L)$. Apply \cref{thm:finite-upper}; rounding $M$
+changes only the multiplicative constant.
+\end{proof}
+
+\subsection{Why multiple transform zeros do not destroy prefix Lipschitzness}
+
+\begin{proof}[Proof of \cref{thm:prefix-intro}]
+Fix $r$ and take $M=\max(4,2^{r-1})$. When the law distance
+$\delta\le\eps_M(L)$, the proof of \cref{thm:finite-upper} identifies
+exactly one primitive period $\beta_j$ close to $d_j=2^{j-1}$ for each
+$j\le r$. Write $\Phi_a(w)=\phi_a(2\pi w)$.
+
+Let $S_j(a)$ be the sum, with multiplicities, of the zeros in
+$|w-d_j|<\eta$. The progression identification in \cref{lem:periods} gives
+\begin{equation}
+ S_j(a)=\sum_{i=1}^{j}2^{j-i}\beta_i,
+ \qquad \beta_j=S_j(a)-2S_{j-1}(a),\qquad S_0(a)=0.
+ \label{eq:centroid-recursion}
+\end{equation}
+The key is to estimate the \emph{sum} of a multiple-root cluster before
+attempting to identify its individual roots.
+
+On the contour $C_j:|w-d_j|=\eta$ we have
+$|\Phi_a/\Phi_0-1|\le1/2$. The principal logarithm of this ratio is
+well defined on a neighborhood of the contour. The argument principle and
+integration by parts along the closed contour yield
+\begin{align}
+ S_j(a)-S_j(a^0)
+ &=\frac1{2\pi i}\int_{C_j}w
+       \left(\frac{\Phi_a'}{\Phi_a}-\frac{\Phi_0'}{\Phi_0}\right)\dd w
+ \\
+ &=-\frac1{2\pi i}\int_{C_j}\log(\Phi_a/\Phi_0)\dd w.
+ \label{eq:centroid-log}
+\end{align}
+No logarithm inside the full disk is asserted: a branch on an annular
+neighborhood of the contour suffices for this identity.
+Using $|\log(1+u)|\le2|u|$ for $|u|\le1/2$, we get
+\begin{equation}
+ |S_j(a)-S_j(a^0)|
+ \le\frac{4\eta(1+LR_M)e^{Lr_0}}{B_M}\,\delta.
+ \label{eq:centroid-bound}
+\end{equation}
+The recursion \eqref{eq:centroid-recursion} bounds $|\beta_j-d_j|$ by
+three times this quantity. Since $\beta_j\ge(1-\eta)d_j$,
+\[
+ |a_j-2^{-j}|=\frac{|\beta_j-d_j|}{2\beta_jd_j}
+ \le\frac{2(1+LR_M)e^{Lr_0}}{B_M}\,\delta.
+\]
+Thus one may take $\eps_{L,r}=\eps_M(L)$ and the displayed coefficient
+as $C_{L,r}$. Its logarithm is $(\log2)r^2+O_L(r+1)$ by the same
+calculation as \eqref{eq:threshold-asymptotic}.
+\end{proof}
+
+\begin{remark}[A distinction from generic polynomial root bounds]
+A generic $j$-fold zero can split on a scale $\delta^{1/j}$. Here its
+constituent zeros are not arbitrary: they come from already identified
+harmonic progressions. Cluster sums vary linearly with the perturbation,
+and the recursion removes the earlier progressions. This extra structure
+is exactly what restores exponent one for every fixed prefix.
+\end{remark}
+
+\section{A positive-root perturbation of existing dyadic factors}
+\label{sec:construction}
+
+\subsection{A constant-coefficient perturbation with controlled real roots}
+
+Fix $0<\tau\le10^{-3}$, and let $n\ge2$. Define
+\begin{equation}
+ \begin{aligned}
+ x_j&=16^{-j}\quad(1\le j\le n),&
+ P_n(x)&=\prod_{j=1}^n(x-x_j),\\
+ \Delta_n&=\tau\prod_{j=1}^nx_j=\tau16^{-n(n+1)/2},&
+ Q_n&=P_n-\Delta_n.
+ \end{aligned}
+ \label{eq:root-polynomials}
+\end{equation}
+Only the constant coefficient changes. This elementary operation will preserve
+many power sums without requiring two moving reference spectra.
+
+\begin{lemma}[Separated positive roots]\label{lem:root-perturbation}
+The polynomial $Q_n$ has exactly one simple root $y_j$ in each interval
+$(3x_j/4,5x_j/4)$. In particular $y_1>\cdots>y_n>0$.
+For $\ell=n-j$, put
+\begin{equation}
+ w_\ell=(4/3)^\ell16^{-\ell(\ell+1)/2}.
+ \label{eq:w}
+\end{equation}
+Then
+\begin{align}
+ \frac{|y_j-x_j|}{x_j}&\le2\tau w_{n-j},
+ &\left|\frac{\sqrt{y_j}}{\sqrt{x_j}}-1\right|
+       &\le2\tau w_{n-j},                                      \label{eq:root-relative}\\
+ |\sqrt{y_n}-\sqrt{x_n}|&\ge\frac\tau3\,4^{-n}. \label{eq:root-lower}
+\end{align}
+The power sums satisfy
+\begin{equation}
+ \sum_{j=1}^ny_j^k=\sum_{j=1}^nx_j^k\quad(1\le k<n),
+ \qquad
+ \sum_{j=1}^ny_j^n-\sum_{j=1}^nx_j^n=n\Delta_n.
+ \label{eq:newton-match}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Write $q=1/16$. On the entire interval $[3x_j/4,5x_j/4]$, the product
+of distances to the preceding roots is bounded below by
+\[
+ \prod_{i<j}|x-x_i|
+ \ge\prod_{i<j}x_i\prod_{k\ge1}(1-\tfrac54q^k)
+ \ge\frac9{10}\prod_{i<j}x_i.
+\]
+The last inequality follows from
+$\prod(1-t_k)\ge1-\sum t_k$ for $0\le t_k\le1$ and
+$(5/4)\sum_{k\ge1}q^k=1/12$.
+The distances to the following roots satisfy, with $\ell=n-j$,
+\[
+ \prod_{i>j}|x-x_i|
+ \ge(\tfrac34 x_j)^\ell
+       \prod_{k\ge1}(1-\tfrac43q^k)
+ \ge\frac9{10}(\tfrac34)^\ell x_j^\ell,
+\]
+since $(4/3)\sum_{k\ge1}q^k=4/45$.
+At either endpoint of the interval, the remaining factor has magnitude
+$x_j/4$, so
+\begin{equation}
+ |P_n(x)|
+ \ge\frac{81}{400}(\tfrac34)^\ell
+             16^{\ell(\ell+1)/2}\prod_{i=1}^nx_i
+ \ge\frac{81}{400}\prod_{i=1}^nx_i>\Delta_n.
+ \label{eq:bracket-sign}
+\end{equation}
+The signs at the two endpoints are opposite. Subtracting $\Delta_n$ preserves
+these signs. The $n$ intervals are disjoint, hence contain $n$ different real
+roots of a polynomial of degree $n$. This also proves simplicity and exhausts
+all its roots.
+
+At $y_j$, the equation $|P_n(y_j)|=\Delta_n$ and the same estimates with
+the $j$th factor omitted give
+\[
+ \frac{|y_j-x_j|}{x_j}
+ \le\frac{100}{81}\tau(\tfrac43)^\ell16^{-\ell(\ell+1)/2}
+ \le2\tau w_\ell.
+\]
+For positive $u$, $|\sqrt{u}-1|\le|u-1|$, proving the second relative bound.
+For the last root, $0<y_n<x_i$ when $i<n$, and therefore
+\[
+ \Delta_n=|y_n-x_n|\prod_{i<n}(x_i-y_n)
+ \le |y_n-x_n|\prod_{i<n}x_i.
+\]
+It follows that $|y_n-x_n|\ge\tau x_n$. Dividing by
+$\sqrt{y_n}+\sqrt{x_n}<3\sqrt{x_n}$ proves \eqref{eq:root-lower}.
+Finally, Newton's identities show that the first $n-1$ power sums depend
+only on the unchanged coefficients. In degree $n$ the constant term enters
+with coefficient $n$, giving exactly the final formula in
+\eqref{eq:newton-match}.
+\end{proof}
+
+\subsection{The full infinite spectrum}
+
+Define $b^{(n)}$ by replacing just the first $n$ even-indexed factors:
+\begin{equation}
+ b^{(n)}_{2j}=\sqrt{y_j}\quad(1\le j\le n),
+ \qquad b^{(n)}_i=2^{-i}\quad\text{for every other }i.
+ \label{eq:b-spectrum}
+\end{equation}
+The order of the factors does not change. Indeed, the odd factor immediately
+before the $j$th replacement is $2\cdot4^{-j}$, the replacement lies between
+$\sqrt{3/4}\,4^{-j}$ and $\sqrt{5/4}\,4^{-j}$, and the next odd factor is
+$4^{-j}/2$.
+
+\begin{proposition}[Size, variance, and moment matching]
+\label{prop:construction-size}
+The spectra \eqref{eq:b-spectrum} satisfy
+\begin{equation}
+ \frac\tau3\,4^{-n}
+ \le d_\infty(b^{(n)},a^0)
+ \le\norm{b^{(n)}-a^0}_1
+ \le3\tau4^{-n}.
+ \label{eq:b-gap}
+\end{equation}
+Their laws have exactly the same moments as $\mu_0$ through degree $2n-1$,
+and have a different moment in degree $2n$. In particular their variance is
+exactly $1/9$. All their laws are supported in $[-2,2]$, and
+$b^{(n)}\in\A_L$ eventually for every $L>1$.
+\end{proposition}
+\begin{proof}
+The lower bound is \eqref{eq:root-lower}. For the upper bound, observe that
+$4^\ell w_\ell\le(1/3)^\ell$. Thus
+\[
+ \sum_{j=1}^n|\sqrt{y_j}-4^{-j}|
+ \le2\tau4^{-n}\sum_{\ell=0}^{n-1}4^\ell w_\ell
+ \le3\tau4^{-n}.
+\]
+The support assertions follow by summing the coefficients.
+Equation \eqref{eq:newton-match}, applied to their squared lengths, preserves
+the full even power sums through exponent $2n-2$. The logarithmic transform
+identity \eqref{eq:log-sinc} then preserves cumulants and moments through
+$2n-1$. Its coefficient in degree $2n$ is nonzero, and the power-sum change
+there is $n\Delta_n\ne0$, so that moment is different. The variance assertion
+is the case $k=1$ of \eqref{eq:newton-match}.
+\end{proof}
+
+\subsection{Membership in the exact smooth class}
+
+Preserving the variance alone would not answer the question in the
+predecessor's class. We next check every one of its infinitely many derivative
+bounds, with its stated constants.
+
+\begin{lemma}[Derivative norms of the reference and a convolution bound]
+\label{lem:derivatives}
+The density $f_0$ is smooth and
+\begin{equation}
+ \norm{f_0^{(r)}}_\infty=2^{r(r+1)/2}\qquad(r\ge0).
+ \label{eq:exact-derivative-norm}
+\end{equation}
+For any summable spectrum all of whose entries are positive, its density is
+smooth, and
+\begin{equation}
+ \norm{f_a^{(r)}}_\infty
+ \le\frac1{2\prod_{i=1}^{r+1}a_i}\qquad(r\ge0).
+ \label{eq:general-derivative-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Arbitrarily many positive uniform factors imply arbitrarily fast polynomial
+decay of the characteristic function, and hence a $C^\infty$ density by
+Fourier inversion. The density has compact support when the spectrum is
+summable. The first factor of $a^0$ has constant density one on
+$[-1/2,1/2]$, and the remaining sum is supported in the same interval.
+Consequently $\norm{f_0}_\infty=f_0(0)=1$.
+
+The tail after this first factor has the law of $X_{a^0}/2$.
+Differentiating its convolution with that first uniform gives
+\[
+ f_0'(x)=2\bigl(f_0(2x+1)-f_0(2x-1)\bigr).
+\]
+After $r$ further derivatives,
+\[
+ f_0^{(r+1)}(x)=2^{r+1}
+       \bigl(f_0^{(r)}(2x+1)-f_0^{(r)}(2x-1)\bigr).
+\]
+The two nonzero support interiors in this formula are disjoint; each argument
+ranges over the full interval $[-1,1]$ on its respective half. Smoothness
+makes every boundary derivative zero. The supremum norm therefore multiplies
+by exactly $2^{r+1}$ at each step, proving
+\eqref{eq:exact-derivative-norm}.
+
+For the general bound, differentiate each of the first $r$ uniform densities
+once in the distributional sense. The resulting signed measures have total
+variation $1/a_i$. Keep the next uniform as a density with supremum norm
+$1/(2a_{r+1})$ and the rest as a probability measure. Convolution and the
+already established smoothness give \eqref{eq:general-derivative-bound}.
+\end{proof}
+
+\begin{proposition}[Smoothness and geometric separation survive]
+\label{prop:K-membership}
+For $0<\tau\le10^{-3}$, every spectrum $b^{(n)}$ belongs to $\K$.
+Given any fixed $\rho\in(1/2,1)$, the choice
+\begin{equation}
+ 0<\tau\le\tau_\rho:=
+ \min\left(10^{-3},\frac{2\rho-1}{8(2\rho+1)}\right)
+ \label{eq:tau-rho}
+\end{equation}
+ensures $b^{(n)}\in\K_\rho$ for every $n\ge2$.
+\end{proposition}
+\begin{proof}
+Since $w_\ell\le(1/12)^\ell$, the sum of all relative changes to the
+nontrivial coordinates is at most
+\[
+ \sum_{j=1}^n\left|\frac{b^{(n)}_{2j}}{a^0_{2j}}-1\right|
+ \le\frac{24\tau}{11}<\frac12.
+\]
+For every prefix, the product of its coefficient ratios is consequently at
+least $1-24\tau/11>1/2$. Applying \eqref{eq:general-derivative-bound},
+\[
+ \norm{f_{b^{(n)}}^{(r)}}_\infty
+ \le\frac1{\prod_{i=1}^{r+1}2^{-i}}
+ =2^{(r+1)(r+2)/2}
+ =2^{r+1}\norm{f_0^{(r)}}_\infty.
+\]
+The support and variance conditions were proved in
+\cref{prop:construction-size}. This establishes $\K$ membership.
+
+Every coordinate ratio $b_i^{(n)}/a_i^0$ lies in $[1-2\tau,1+2\tau]$.
+Therefore
+\[
+ \frac{b_{i+1}^{(n)}}{b_i^{(n)}}
+ \le\frac{1+2\tau}{2(1-2\tau)}.
+\]
+This is at most $\rho$ whenever
+$\tau\le(2\rho-1)/(2(2\rho+1))$; \eqref{eq:tau-rho} is a stricter
+convenient choice. The index $i=2n$, where the unchanged tail resumes,
+is included in the same inequality.
+\end{proof}
+
+\section{A quantitative bound against the exact reference law}
+\label{sec:fourier}
+
+Moment matching by itself is not a bound on total variation. In particular,
+a low-frequency estimate cannot simply be extended to all frequencies.
+The following argument has a common smooth background, a small head
+perturbation, a moment-cancelled tail, and an explicit high-frequency integral.
+
+\subsection{The unchanged odd-indexed background}
+
+The odd-indexed factors have characteristic function
+\begin{equation}
+ H(t)=\prod_{\ell\ge0}\sinc\bigl(\tfrac12\,4^{-\ell}t\bigr).
+ \label{eq:odd-background}
+\end{equation}
+For every positive integer $K$ and $t\ne0$,
+\begin{equation}
+ |H(t)|\le2^{K^2}|t|^{-K}.
+ \label{eq:H-bound}
+\end{equation}
+Indeed $|\sinc u|\le\min(1,1/|u|)$ on the real axis. Apply the second
+bound to the first $K$ factors and the first bound to the others. The
+reciprocal product of those $K$ half-lengths is exactly $2^{K^2}$.
+
+There is also an unchanged even tail. More precisely, set
+\[
+ \Xi_n(t)=H(t)\prod_{j>n}\sinc(4^{-j}t),\quad
+ A_n(t)=\prod_{j=1}^n\sinc(4^{-j}t),\quad
+ B_n(t)=\prod_{j=1}^n\sinc(\sqrt{y_j}t).
+\]
+Then the full transform difference is
+\begin{equation}
+ \phi_{b^{(n)}}(t)-\phi_0(t)=\Xi_n(t)(B_n(t)-A_n(t)),
+ \qquad |\Xi_n(t)|\le|H(t)|.
+ \label{eq:full-difference}
+\end{equation}
+Keeping this common even tail in the identity is important, even though only
+its modulus bound is needed.
+
+\subsection{An explicit low-frequency estimate}
+
+For $n\ge16$ define
+\begin{align}
+ h&=\lfloor n/2\rfloor,&m&=\lfloor n/8\rfloor,
+ &K&=\lfloor3n/10\rfloor,&T&=2^{3n/5},                 \label{eq:cutoffs}\\
+ A&=5/64,&
+ D_n&=2\tau h(4/3)^n16^{-(n-h)(n-h+1)/2},              \label{eq:Dn}\\
+ r_n&=\frac{\sqrt{5/4}\,4^{-(h+1)}T}{\pi}.            \label{eq:rn}
+\end{align}
+In particular $m<n$, $K\ge1$, and $r_n<1$. The last fact follows from
+$h+1>n/2$, giving $r_n<(\sqrt{5/4}/\pi)2^{-2n/5}$.
+Introduce
+\begin{equation}
+ E_n=TD_n+\frac{2mD_n}{A}
+       \max\left(1,\frac{AT^2}{\pi^2}\right)^m
+       +\frac{4n r_n^{2m+2}}{(m+1)(1-r_n^2)}.
+ \label{eq:En}
+\end{equation}
+
+\begin{lemma}[Head--tail cancellation]\label{lem:low-frequency}
+For real $|t|\le T$ one has
+\begin{equation}
+ |B_n(t)-A_n(t)|\le E_n.
+ \label{eq:low-frequency}
+\end{equation}
+\end{lemma}
+\begin{proof}
+Split the two products after factor $h$. For the first $h$ factors,
+\cref{lem:root-perturbation} implies both
+\begin{equation}
+ \sum_{j\le h}|y_j-x_j|\le D_n,
+ \qquad
+ \sum_{j\le h}|\sqrt{y_j}-\sqrt{x_j}|\le D_n.
+ \label{eq:head-change}
+\end{equation}
+To see this, use $x_j,\sqrt{x_j}\le1$, $n-j\ge n-h$,
+$(4/3)^{n-j}\le(4/3)^n$, and the monotonicity of
+$\ell(\ell+1)/2$ for $\ell\ge0$.
+On the real axis, the sinc function is Lipschitz with constant at most one:
+write it as $\E e^{itU}$ and use $\E|U|\le1$. Telescoping products whose
+factors have modulus at most one therefore bounds the head difference by
+$TD_n$.
+
+All arguments of the tail factors have absolute value at most $\pi r_n<\pi$.
+Their products are positive, at most one, and admit the real logarithm
+\eqref{eq:log-sinc}. The total power sums agree through degree $n-1$.
+For $1\le k\le m$, the difference of the tail power sums is consequently
+the negative of the head difference. Since $x_j,y_j\le A$ and
+$|u^k-v^k|\le kA^{k-1}|u-v|$ on $[0,A]$, its magnitude is at most
+$kA^{k-1}D_n$. The contribution of these $m$ terms to the logarithm
+difference is at most
+\[
+ \sum_{k=1}^m\frac{2}{k\pi^{2k}}\,kA^{k-1}D_n T^{2k}
+ \le\frac{2mD_n}{A}\max\left(1,\frac{AT^2}{\pi^2}\right)^m.
+\]
+Here we used $\zeta(2k)<2$.
+
+For $k\ge m+1$ we need no cancellation. There are at most $n$ factors in
+each tail, and each squared scale is bounded by
+$(5/4)16^{-(h+1)}$. Thus the absolute difference of its power sums is at
+most twice $n$ times that bound to the $k$th power. Summing the logarithmic
+series gives
+\[
+ 4n\sum_{k\ge m+1}\frac{r_n^{2k}}k
+ \le\frac{4n r_n^{2m+2}}{(m+1)(1-r_n^2)}.
+\]
+Since $|e^u-e^v|\le|u-v|$ for real $u,v\le0$, the same sum bounds
+the difference of the two tail products. Combining the head and tail
+bounds proves \eqref{eq:low-frequency}.
+\end{proof}
+
+\subsection{The full-law error and its quadratic logarithm}
+
+\begin{theorem}[Explicit anchored total-variation bound]
+\label{thm:TV-bound}
+For $n\ge16$ define
+\begin{equation}
+ V_n=\min\left\{1,
+ \left(\frac{2TE_n^2+
+       8\,2^{2K^2}T^{1-2K}/(2K-1)}{2\pi}\right)^{1/2}\right\}.
+ \label{eq:Vn}
+\end{equation}
+Then
+\begin{equation}
+ \TV(\mu_{b^{(n)}},\mu_0)\le V_n,
+ \qquad
+ V_n\le\exp\left[-\frac{9\log2}{100}\,n^2+O_\tau(n)\right].
+ \label{eq:TV-superexp}
+\end{equation}
+The constant implicit in $O_\tau(n)$ is independent of $n$.
+\end{theorem}
+\begin{proof}
+On $[-T,T]$, \cref{lem:low-frequency} and $|\Xi_n|\le1$ bound the
+squared Fourier integral by $2TE_n^2$. On its complement,
+$|B_n-A_n|\le2$, and \eqref{eq:H-bound} gives
+\[
+ \int_{|t|>T}|\phi_{b^{(n)}}(t)-\phi_0(t)|^2\dd t
+ \le\frac{8\,2^{2K^2}T^{1-2K}}{2K-1}.
+\]
+Both densities are supported in $[-2,2]$. Cauchy--Schwarz and Plancherel,
+with the characteristic-function convention \eqref{eq:product}, give
+\[
+ \TV(\mu_{b^{(n)}},\mu_0)
+ =\tfrac12\norm{f_{b^{(n)}}-f_0}_1
+ \le\norm{f_{b^{(n)}}-f_0}_2
+ =\left(\frac1{2\pi}\int_{\R}
+       |\phi_{b^{(n)}}-\phi_0|^2\dd t\right)^{1/2}.
+\]
+This proves the finite formula.
+
+For clarity, the asymptotic exponents of every term are recorded explicitly.
+With $a=\log2$, the floor functions in \eqref{eq:cutoffs} give
+\begin{equation}
+ \begin{aligned}
+ \log D_n&=-\tfrac12 a n^2+O_\tau(n),
+ &\log T&=\tfrac35 a n,\\
+ \log r_n&=-\tfrac25 a n+O(1),
+ &m&=\tfrac18 n+O(1).
+ \end{aligned}
+\end{equation}
+Consequently the three positive terms of $E_n$ are bounded respectively by
+\begin{equation}
+ \exp[-\tfrac12 a n^2+O_\tau(n)],\quad
+ \exp[-\tfrac7{20}a n^2+O_\tau(n)],\quad
+ \exp[-\tfrac1{10}a n^2+O(n)].
+ \label{eq:E-exponents}
+\end{equation}
+For example, the middle term adds
+$m\log(AT^2/\pi^2)=\tfrac3{20}a n^2+O(n)$ to
+$\log D_n$, while the last uses
+$(2m+2)\log r_n=-\tfrac1{10}a n^2+O(n)$.
+The low-frequency contribution after taking the square root in
+\eqref{eq:Vn} is therefore at most
+$\exp[-\tfrac1{10}a n^2+O_\tau(n)]$.
+For the high-frequency contribution,
+\[
+ 2K^2\log2+(1-2K)\log T=-\tfrac9{50}a n^2+O(n).
+\]
+Its square root has exponent $-\tfrac9{100}a n^2+O(n)$ and is the larger
+of the two bounds. Combining them proves \eqref{eq:TV-superexp}.
+\end{proof}
+
+\begin{remark}[Why both parts of the Fourier argument are necessary]
+The first few changed factors are so small a perturbation that their
+contribution is quadratic-exponentially small in $n$. The remaining factors
+are small enough that a long truncated logarithmic expansion stays valid up
+to $T=2^{3n/5}$. Beyond $T$, cancellation is no longer used: the unchanged
+odd-indexed factors supply the decay. This separation avoids extrapolating
+a moment expansion through the zeros of sinc.
+\end{remark}
+
+\section{Completion of the anchored theorem and its interpretation}
+\label{sec:completion}
+
+\begin{proof}[Proof of \cref{thm:main}]
+The upper bound follows from \cref{cor:upper}. For $\K$ and $\K_\rho$
+use their inclusion in $\A_3$. In particular it yields the first inequality
+in \eqref{eq:constant-bracket}.
+
+For the lower bound fix $\tau>0$, using \eqref{eq:tau-rho} when needed.
+Put $c_0=9\log2/100$ and $s=\log(1/\eps)$. By
+\cref{thm:TV-bound}, there is $C_\tau$ for which
+$V_n\le\exp(-c_0n^2+C_\tau n)$ for all sufficiently large $n$.
+Choose
+\begin{equation}
+ n=\left\lceil\frac{\sqrt{s}}{\sqrt{c_0}}+B_\tau\right\rceil,
+ \label{eq:n-choice}
+\end{equation}
+where $B_\tau$ is a sufficiently large constant. Then $V_n\le\eps$.
+The constructed spectrum belongs to $\K$ and, with the smaller choice of
+$\tau$, to $\K_\rho$. It belongs to $\A_L$ for sufficiently large $n$
+whenever $L>1$. Since $\distK\le\TV$, it is admissible for both law
+metrics. Its parameter gap satisfies
+\[
+ \omega_{\mathcal C,D}(\eps)\ge\frac\tau3\,4^{-n}.
+\]
+Taking logarithms and using \eqref{eq:n-choice},
+\[
+ \log(1/\omega_{\mathcal C,D}(\eps))
+ \le\frac{\log4}{\sqrt{c_0}}\sqrt{s}+O_\tau(1)
+ =\frac{20}{3}\sqrt{\log2}\sqrt{s}+O_\tau(1).
+\]
+This proves the final inequality of \eqref{eq:constant-bracket}. The
+intermediate liminf--limsup inequality is automatic. The two-sided form
+\eqref{eq:main} follows after slightly weakening the constants to absorb
+bounded terms.
+\end{proof}
+
+\begin{corollary}[No anchored H\"older estimate, even with lacunarity]
+\label{cor:no-holder}
+In each class in \cref{thm:main}, no constants $C<\infty$ and $\alpha>0$
+can make
+\[
+ d_\infty(a,a^0)\le C D(\mu_a,\mu_0)^\alpha
+\]
+hold throughout a sufficiently small law neighborhood of $\mu_0$.
+On the other hand, for every $p>0$,
+\[
+ \omega_{\mathcal C,D}(\eps)=o\bigl((\log(1/\eps))^{-p}\bigr).
+\]
+\end{corollary}
+\begin{proof}
+For the first assertion the construction gives
+\[
+ \frac{d_\infty(b^{(n)},a^0)}{D(\mu_{b^{(n)}},\mu_0)^\alpha}
+ \ge\frac\tau3\exp\bigl(\alpha c_0n^2-O_\tau(n)\bigr)\longrightarrow\infty.
+\]
+The second assertion follows from the upper bound because
+$e^{-c\sqrt{s}}s^p\to0$ as $s\to\infty$.
+\end{proof}
+
+\subsection{Exactly which repository questions are answered}
+
+The anchored power-law question receives a negative answer in the very smooth
+class used by the predecessor, together with a positive quantitative replacement:
+the sharp exponent in the square root of the logarithm. Geometric separation
+with any fixed ratio strictly greater than $1/2$ does not restore a power law
+at the dyadic reference. The prefix question receives a positive answer under
+a single common support bound: every fixed prefix has exponent one, even with
+an unknown infinite tail.
+
+These conclusions do not say that the full inverse has this modulus between
+two arbitrary nearby spectra. The special zero lattice of the exact reference
+is used on every contour in the upper proof. Nor do they determine the exact
+support endpoint of the perturbed laws: their half-support lengths tend to
+one, but need not equal one. Fixed variance and fixed support endpoints are
+different restrictions.
+
+\subsection{Why the two exponents are geometrically natural}
+
+Resolving factors down to size about $1/M$ requires viewing transform zeros
+at frequencies of order $M$. There are about $\log_2 M$ active dyadic
+factors there, and a conservative product lower bound loses about
+$\exp[-(\log M)^2/\log2]$. This yields the square root when inverted.
+The construction realizes the converse scale through products of geometrically
+separated root distances: their logarithms are sums of arithmetic progressions,
+therefore quadratic in the number of factors.
+
+This explanation is not substituted for a proof. The finite formulas
+\eqref{eq:thresholds} and \eqref{eq:Vn} establish both directions without
+an appeal to numerical fitting. They also reveal the unresolved constant gap:
+the contour argument and the chosen head--tail cutoffs are not simultaneously
+optimized.
+
+\section{Testing complexity and honest confidence sets}
+\label{sec:statistics}
+
+\subsection{A testing formulation that is genuinely informative}
+
+An estimator identically equal to $a^0$ has zero loss when the truth is exactly
+$a^0$. For that reason, an assertion about ``the minimax estimation rate at a
+single point'' without a neighborhood or honesty condition is misleading.
+We instead consider testing a fixed null against separated alternatives.
+
+Fix $\rho\in(1/2,1)$. Let $N_\rho(\delta)$ be the least positive integer
+$N$ for which there is a possibly randomized test $0\le\psi\le1$, based
+on $N$ independent observations, with
+\begin{equation}
+ \E_{\mu_0^{\otimes N}}\psi\le\tfrac14,
+ \qquad
+ \sup_{\substack{a\in\K_\rho\\d_\infty(a,a^0)\ge\delta}}
+       \E_{\mu_a^{\otimes N}}(1-\psi)\le\tfrac14.
+ \label{eq:test-definition}
+\end{equation}
+The supremum is over the alternative, not over an arbitrarily chosen estimator
+at the null.
+
+\begin{theorem}[Quasi-polynomial sample complexity in inverse accuracy]
+\label{thm:testing}
+For fixed $\rho\in(1/2,1)$,
+\begin{equation}
+ N_\rho(\delta)=
+ \exp\left[\Theta_\rho\bigl(\log^2(1/\delta)\bigr)\right]
+ \quad(\delta\downarrow0).
+ \label{eq:testing}
+\end{equation}
+The constants obtained here satisfy
+\begin{equation}
+ \frac9{400\log2}
+ \le\liminf_{\delta\downarrow0}
+       \frac{\log N_\rho(\delta)}{\log^2(1/\delta)}
+ \le\limsup_{\delta\downarrow0}
+       \frac{\log N_\rho(\delta)}{\log^2(1/\delta)}
+ \le\frac2{\log2}.
+ \label{eq:testing-constants}
+\end{equation}
+The upper test works for all alternatives in $\A_3$, not just $\K_\rho$.
+The same order holds with alternatives in $\K$ or $\A_L$ for fixed $L>1$.
+\end{theorem}
+
+\begin{proof}
+Let $F_N$ be the empirical distribution function. We use the classical
+Dvoretzky--Kiefer--Wolfowitz--Massart bound
+\begin{equation}
+ \PP_F\!\left\{\sup_x|F_N(x)-F(x)|>u\right\}
+ \le2e^{-2Nu^2}\qquad(u>0).
+ \label{eq:DKW}
+\end{equation}
+Massart proved the sharp constant two; see \cite{massart} and the account
+in \cite{weidudley}. This is an external statistical input, not a new
+inequality claimed here.
+
+Take $M=\max(4,\lceil1/\delta\rceil)$ and
+$\eps_*=\eps_M(3)$. By \cref{thm:finite-upper}, any alternative with
+$d_\infty(a,a^0)\ge\delta$ has
+$\distK(\mu_a,\mu_0)>\eps_*$, since $1/(2M)<\delta$.
+Reject the null when
+\begin{equation}
+ \sup_x|F_N(x)-F_0(x)|>\eps_*/2.
+ \label{eq:cdf-test}
+\end{equation}
+Under the null, \eqref{eq:DKW} bounds the rejection probability by
+$2\exp(-N\eps_*^2/2)$. Under any alternative, acceptance implies an empirical
+CDF error larger than $\eps_*/2$ relative to its own law, and the same bound
+applies. Thus a finite upper bound is
+\begin{equation}
+ N_\rho(\delta)\le
+ \left\lceil\frac{2\log8}{\eps_M(3)^2}\right\rceil.
+ \label{eq:N-upper}
+\end{equation}
+Equation \eqref{eq:threshold-asymptotic} proves the upper logarithmic
+constant in \eqref{eq:testing-constants}.
+
+For the lower bound choose $\tau$ as in \eqref{eq:tau-rho} and, for small
+$\delta$, put
+\[
+ n=\left\lfloor\frac{\log(\tau/(3\delta))}{\log4}\right\rfloor.
+\]
+Then $n\ge16$ eventually and $d_\infty(b^{(n)},a^0)\ge\delta$.
+The elementary product-measure bound gives
+\[
+ \TV(\mu_{b^{(n)}}^{\otimes N},\mu_0^{\otimes N})
+ \le N\TV(\mu_{b^{(n)}},\mu_0)\le NV_n.
+\]
+For any test, its two error probabilities at these two laws sum to at least
+one minus this total variation. If $N\le1/(4V_n)$, their sum is at least
+$3/4$, which is incompatible with both being at most $1/4$.
+Therefore $N_\rho(\delta)>\lfloor1/(4V_n)\rfloor$.
+Using \eqref{eq:TV-superexp} and
+$n=\log(1/\delta)/\log4+O_\rho(1)$ yields
+\[
+ \log N_\rho(\delta)
+ \ge\frac{9}{400\log2}\log^2(1/\delta)-O_\rho(\log(1/\delta)).
+\]
+The same construction is available in $\K$ and eventually in $\A_L$ for
+any $L>1$; in the latter case the upper test uses $\eps_M(L)$.
+\end{proof}
+
+\subsection{Confidence sets that shrink at the reference}
+
+Fix $L\ge1$ and a coverage error $0<\alpha<1$. Define
+\begin{equation}
+ t_N=\sqrt{\frac{\log(2/\alpha)}{2N}},\qquad
+ \mathcal C_N=\{a\in\A_L:\sup_x|F_a(x)-F_N(x)|\le t_N\}.
+ \label{eq:confidence-set}
+\end{equation}
+For every $a\in\A_L$, \eqref{eq:DKW} gives
+$\PP_a\{a\in\mathcal C_N\}\ge1-\alpha$.
+At the reference law, on an event of that probability, every candidate in
+$\mathcal C_N$ satisfies $\distK(\mu_a,\mu_0)\le2t_N$.
+Hence
+\begin{equation}
+ \sup_{a\in\mathcal C_N}d_\infty(a,a^0)
+ \le\omega_{\A_L,\distK}(2t_N)
+ \le C_{L,\alpha}
+   \exp\left[-\sqrt{\frac{\log2}{2}}\sqrt{\log N}\right]
+ \label{eq:confidence-contraction}
+\end{equation}
+for sufficiently large $N$. For each fixed prefix, \cref{thm:prefix-intro}
+instead gives a radius at most $2C_{L,r}t_N=O_{L,r,\alpha}(N^{-1/2})$.
+
+These are honest coverage statements over $\A_L$ with contraction at the
+reference. They are not claimed as a globally optimal estimator, nor as a
+finite algorithm for representing the infinite-dimensional confidence set.
+Numerically implementing \eqref{eq:cdf-test} also requires validated values
+of $F_0$; its statistical proof assumes that reference CDF is known exactly.
+A uniform CDF approximation error can be included by enlarging the threshold,
+but an implementation and its numerical-error budget are separate tasks.
+
+\section{Reproducible checks and finite-error scales}
+\label{sec:checks}
+
+\subsection{Exact arithmetic, diagnostics, and what each establishes}
+
+The accompanying program \texttt{code/verify.py} uses Python's rational
+\texttt{Fraction} arithmetic for the finite polynomial checks. Its default
+choice is $\tau=1/1000$. On the run included with this article, it completed
+the following checks without an assertion failure:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Exact check & Number\\
+\midrule
+Opposite endpoint signs for the perturbed root intervals, $2\le n\le20$ & 209\\
+Unchanged power sums below degree $n$, $2\le n\le20$ & 190\\
+First changed power sum equals $n\Delta_n$ & 19\\
+Only the constant polynomial coefficient changes & 19\\
+Divisor inversion returns the power-of-two indicator, $1\le m\le512$ & 512\\
+\midrule
+Total finite exact checks & 949\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are regression checks, not a proof for all $n$ or a formal proof of
+the analytic theorems. The universal proofs are
+\cref{lem:periods,lem:root-perturbation,thm:TV-bound}.
+
+A separate part of the program uses \texttt{mpmath} for high-precision root
+bisection at $n=2,4,6,8$ and for evaluations of the explicit analytic bounds.
+The root calculations used 100, 100, 158, and 242 decimal digits,
+respectively. These values are floating-point diagnostics, not interval
+certificates. The exact rational endpoint signs and the proved isolation
+lemma are kept logically separate from the floating-point residuals.
+The recorded environment was Python 3.13.5 and \texttt{mpmath} 1.3.0.
+
+\subsection{Scale of the anchored witnesses}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$n$ & Gap lower bound $(\tau/3)4^{-n}$ & TV upper bound $V_n$\\
+\midrule
+16  & $7.7610\times10^{-14}$  & $2.1467\times10^{-6}$\\
+32  & $1.8070\times10^{-23}$  & $4.9268\times10^{-26}$\\
+64  & $9.7958\times10^{-43}$  & $1.2260\times10^{-106}$\\
+128 & $2.8787\times10^{-81}$  & $6.8525\times10^{-434}$\\
+256 & $2.4861\times10^{-158}$ & $5.3403\times10^{-1754}$\\
+512 & $1.8542\times10^{-312}$ & $9.2947\times10^{-7058}$\\
+\bottomrule
+\end{tabular}
+\caption{Rounded evaluations of the proved formulas, with $\tau=1/1000$.
+The second column is a lower bound, not a measured spectral distance.
+The third is an analytic upper bound, not numerical integration of an actual
+TV distance. The rounding displayed is not directed interval rounding.}
+\label{tab:lower-numeric}
+\end{table}
+
+The construction is intentionally conservative. At small $n$, the Fourier
+upper bound can be much larger than the spectral gap. The asymptotic
+obstruction emerges from the quadratic logarithm of the law bound versus the
+linear logarithm of the spectral gap. For example, the value of
+$-\log V_n/n^2$ at $n=512$ is approximately $0.06199$, approaching the
+proved upper-bound exponent $9\log2/100\approx0.06238$.
+This concerns $V_n$ alone; it does not identify the actual TV asymptotics.
+
+\subsection{Scale of a finite recovery certificate}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$M$ & $J_M$ & $\log_{10}\eps_M(3)$ & Guaranteed spectral error $1/(2M)$\\
+\midrule
+4    & 7  & $-18.7738$ & $1.2500\times10^{-1}$\\
+16   & 9  & $-28.9611$ & $3.1250\times10^{-2}$\\
+64   & 11 & $-41.5784$ & $7.8125\times10^{-3}$\\
+256  & 13 & $-56.6109$ & $1.9531\times10^{-3}$\\
+1024 & 15 & $-74.0537$ & $4.8828\times10^{-4}$\\
+4096 & 17 & $-93.9054$ & $1.2207\times10^{-4}$\\
+\bottomrule
+\end{tabular}
+\caption{Rounded evaluations of \eqref{eq:thresholds} for the support bound
+$L=3$. These sufficient thresholds deliberately favor a transparent uniform
+proof over good practical constants.}
+\label{tab:upper-numeric}
+\end{table}
+
+The upper certificate does not recover roots by numerically searching a noisy
+transform. It states an implication: a proved measurement bound below the
+threshold forces the correct finite divisor pattern and hence the displayed
+parameter accuracy. A practical solver would need a representation of the
+observed transform, validated contour bounds, and an error budget for each
+numerical operation.
+
+\subsection{How to reproduce the package}
+
+% ed. (2026-09-29): the program now writes to data-rerun/ by default, so a
+% plain run no longer overwrites the recorded files in data/.
+Run \texttt{python code/verify.py} from the package root, or invoke the
+script by its absolute path from another directory. It writes
+\nolinkurl{verification.json}, \nolinkurl{verification.txt},
+\nolinkurl{analytic_bounds.csv}, and \nolinkurl{rouche_thresholds.csv}
+to \nolinkurl{data-rerun/}, or to the directory given by
+\texttt{-{}-output-dir}; the recorded copies are in \nolinkurl{data/}. The exact checks use only the Python
+standard library; the diagnostic portion needs \texttt{mpmath}.
+The TeX source contains the displayed tables directly, so rebuilding the
+article does not require Python. Two passes of \texttt{pdflatex article.tex}
+resolve its references; \texttt{latexmk -pdf article.tex} is also suitable.
+No shell escape or network access is needed to compile it.
+
+\section{Proof dependencies and repository provenance}
+\label{sec:provenance}
+
+\subsection{Claim-level dependency audit}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.27\textwidth}p{0.65\textwidth}@{}}
+\toprule
+Claim & Inputs and scope\\
+\midrule
+Finite upper certificate & Entire sinc products, the explicit contour bound,
+Rouch\'e's theorem, and the stable divisor lemma. No separation assumption on
+the unknown spectrum.\\[4pt]
+Prefix Lipschitz theorem & The same finite zero counts plus the contour
+sum-of-zeros identity. A logarithm is used only near the contour, not across
+zeros in its interior.\\[4pt]
+Anchored counterexamples & Exact constant-coefficient perturbation, isolated
+positive roots, Newton identities, and the unchanged odd-indexed factors.\\[4pt]
+Smooth-class membership & Exact reference derivative norms and the product
+bound for every prefix, as well as exact variance matching.\\[4pt]
+TV bound & A real logarithm only below the first tail zero, and an independent
+high-frequency product bound followed by Plancherel.\\[4pt]
+Sharp exponent & The upper certificate and the explicit lower witnesses,
+with integer rounding handled in both conversions.\\[4pt]
+Testing result & The preceding deterministic results, product-TV contraction,
+and the external DKW--Massart inequality.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No mathematical conclusion is inferred solely from finite numerical tests.
+No theorem from an unreviewed repository research article is imported as an
+assumption. Conversely, use of standard analysis is explicit: this manuscript
+does not claim a new proof of Rouch\'e, Plancherel, or the DKW inequality.
+
+\subsection{Inspected source and exact question mapping}
+
+The principal predecessor at the pinned commit is
+\begin{quote}\small\ttfamily\raggedright
+Analysis/FabiusFunction/docs/\allowbreak
+semi-formalized-research-frontiers/\allowbreak
+drafts/inverse-and-sampling/\allowbreak
+Recovering\_Uniform\_Factors\_Fabius\_Rvachev/\allowbreak
+article.tex.
+\end{quote}
+Its content blob identifier is
+\begin{quote}\small\ttfamily\raggedright
+90395cdfd50b8d8e191d2753616fc47c890a3311.
+\end{quote}
+The repository snapshot is \texttt{\repoSHA}. It was read through the
+GitHub connector, including the opening definition of $\K$ and the final
+research-question section. The following titles specify the comparison more
+robustly than a line number alone:
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.46\textwidth}>{\raggedright\arraybackslash}p{0.46\textwidth}@{}}
+\toprule
+Predecessor question & Result here\\
+\midrule
+Pointwise recovery of the exact dyadic spectrum &
+\Cref{thm:main,cor:no-holder}: sharp stretched-exponential exponent and no
+H\"older estimate in the stated smooth class.\\[4pt]
+Geometrically separated classes &
+\Cref{prop:K-membership,thm:main}: negative power-law answer at the dyadic
+anchor for every fixed ratio $\rho>1/2$; not a full pairwise classification.\\[4pt]
+Fixed leading factors versus the complete sequence &
+\Cref{thm:prefix-intro}: local Lipschitz recovery of every fixed prefix with
+only an $\ell^1$ support bound on the unknown full spectrum.\\[4pt]
+Matching statistical upper bounds &
+\Cref{thm:testing} and \eqref{eq:confidence-contraction}: matching-order
+anchored testing and honest confidence contraction, not the predecessor's
+global minimax problem.\\
+\bottomrule
+\end{tabular}
+\end{center}
+% ed. (2026-09-29): Lean crosswalk; the article does not cite these theorems.
+\begin{ednote}
+Lean crosswalk, not cited by the article. The zero multiplicity
+$c_m=1+v_2(m)$ of \eqref{eq:multiplicity} is the machine-checked theorem
+\path{Fabius.analyticOrderAt_rvachevFourierProduct_int} in
+\path{Analysis/FabiusFunction/Lean/FabiusFunction/IntegerZeroAnalyticOrder.lean}.
+That $1+v_2(m)\ge r+1$ exactly when $2^r\mid m$, the divisor count behind
+\cref{lem:periods}, is
+\path{Fabius.dyadicZeroMultiplicity_ge_succ_iff_pow_two_dvd} in
+\path{DyadicZeroMultiplicity.lean} of the same directory. The derivative
+norms \eqref{eq:exact-derivative-norm} are
+\path{Fabius.isGreatest_abs_iteratedDeriv_rvachevUp}
+(\path{GlobalBounds.lean}), and the variance $1/9$ is
+\path{Fabius.integral_sq_mul_rvachev_eq_one_ninth}
+(\path{DyadicSpecializations.lean}). Exact identifiability of dyadic
+exponent sequences from zero orders, a noise-free counterpart of the
+divisor inversion, is proved in \path{GeneralizedRvachevIdentifiability.lean}.
+No quantitative statement of this article is formalized.
+\end{ednote}
+
+The adjacent inverse-and-sampling README was also inspected. It lists the
+finite-factor, Gaussian-confounding, and flat-boundary recovery articles as
+separate recent arrivals. Their fixed-capacity questions are different from
+the present unknown-infinite-tail prefix result. This was a targeted source
+review, not an exhaustive audit of every document in ProveIt or every paper
+in the literature. No repository file was modified.
+
+\subsection{A concrete formalization route}
+
+A natural first module is the finite divisor-count lemma: encode the observed
+zero incidences as a finite multiset, prove the no-phase-slip implication, and
+solve the triangular divisor system. This module does not need probability
+or Fabius analysis.
+
+A second algebraic module can formalize the geometric root intervals,
+constant-coefficient perturbation, Newton identities, and the prefix product
+bound. Rational endpoint inequalities offer small finite certificate instances,
+while the general estimates need elementary ordered-field and geometric-series
+lemmas. Positivity and preservation of sorted rank must remain explicit.
+
+The analytic modules should then separate three interfaces: compactly supported
+law distance to contour error; entire-product zeros and argument-principle
+counts; and the Fourier head--tail estimate with its $L^2$-to-TV conversion.
+Finally, metric corollaries and testing statements can be assembled from these
+interfaces. The sum-of-zeros proof should not be replaced by a generic root
+continuity theorem, since that would lose the prefix exponent one.
+
+This is a dependency plan, not a claim that a particular current mathlib API
+already exposes every required theorem. No Lean build was run, and no uncompiled
+Lean skeleton is included as apparent evidence of formal verification.
+
+\section{Further research questions}
+\label{sec:further}
+
+\begin{question}[The exact stretched-exponential constant]
+Does
+\[
+ \lim_{\eps\downarrow0}
+ \frac{\log(1/\omega_{\mathcal C,D}(\eps))}
+      {\sqrt{\log(1/\eps)}}
+\]
+exist, and how does it depend on the class and law metric? The present interval
+$[\sqrt{\log2},(20/3)\sqrt{\log2}]$ is wide. Optimizing the retained
+background, the root spacing of the replaced subsequence, and the Fourier
+cutoffs is one route to a better lower construction. A sharp contour product
+bound, rather than a common bound for every early factor, may improve the
+upper constant independently.
+\end{question}
+
+\begin{question}[Pairwise recovery on geometrically separated classes]
+Determine the optimal pairwise modulus when both unknown spectra satisfy
+$a_{j+1}\le\rho a_j$. The present upper argument fixes one transform to
+the exact dyadic zero lattice; it does not give a pairwise theorem uniformly
+on a neighborhood. Geometric separation removes the predecessor's dense
+blocks but does not remove the anchored counterexamples constructed here.
+A positive theorem must therefore have a modulus no better than the anchored
+stretched-exponential obstruction.
+\end{question}
+
+\begin{question}[The sharp separation boundary $\rho=1/2$]
+What happens if $a_{j+1}\le a_j/2$ exactly, with variance fixed at $1/9$?
+Our perturbations require slack above $1/2$. At equality, adjacent one-sided
+constraints may rule out the compensating scale changes that preserve many
+power sums. The case $\rho<1/2$ does not contain the dyadic reference at all,
+so it is a different anchored problem rather than a strengthening of the
+same one.
+\end{question}
+% ed. (2026-09-30): answered at the dyadic reference by a later package
+\begin{ednotelater}
+Answered by \path{../Lacunarity_Boundary_Geometric_Uniform_Spectra/}
+(batch~68 of the repository's \path{docs/incoming/}), written against this
+article and in its normalization ($U_j$ uniform on $[-1,1]$, variance
+$1/9$, so $\sum_ja_j^2=1/3$). If $a_{j+1}\le a_j/2$ for every $j$, then
+\[
+ \sup_j|a_j-2^{-j}|^2\le\tfrac{75}{4}\bigl(\tfrac{19}{675}-\E X_a^4\bigr),
+\]
+and the fourth-moment deficit vanishes only at $a^0$. Hence the anchored
+modulus at $\rho=1/2$ is $\Theta(\sqrt\eps)$, a power law, in total
+variation and in Kolmogorov distance, with matching deleted-factor
+witnesses in $\K$ whose ratios are at most $1/2$; the
+stretched-exponential scale of \cref{thm:main} does not persist at the
+boundary. At $\rho=1/2$ it also answers the next question negatively
+(there $\sum_ja_j\le1$, with equality only at $a^0$, so no witness with
+$\sum_jb_j=1$ exists), and the question on prefix constants inside its
+critical cone only (local Lipschitz constants $\Theta(2^r)$). The pairwise
+modulus, the exact-support question with slack, and the prefix constants
+on $\A_L$ remain open.
+\end{ednotelater}
+
+\begin{question}[Exact support together with exact variance]
+Can the lower witnesses be chosen with $\sum_jb_j=1$ exactly, while
+retaining variance $1/9$, geometric separation, and the sharp logarithmic
+exponent? The construction here controls the sum to within $3\tau4^{-n}$
+but does not fix it. A two-parameter polynomial perturbation may enforce
+the extra square-root sum, yet its effect on low-order cumulants and on the
+quadratic Fourier exponent needs proof.
+\end{question}
+
+\begin{question}[Sharp growth of prefix conditioning constants]
+Find the optimal dependence on $r$ of the local Lipschitz constant and the
+radius on which it applies. We prove an upper bound
+$\log C_{L,r}\le(\log2)r^2+O_L(r)$, but not a matching lower coefficient.
+This is the missing quantitative transition between root-$N$ confidence
+for a fixed prefix and stretched-logarithmic contraction for the complete
+spectrum. Allowing $r=r(N)$ to grow is an especially concrete formulation.
+\end{question}
+
+\begin{question}[Other arithmetic geometric references]
+For a reference $a_j=cq^j$, when does the full inverse have the same
+square-root logarithmic exponent, and when are fixed prefixes Lipschitz?
+If $q$ is the reciprocal of an integer, the zero multiplicities retain a
+divisibility structure, suggesting an analogue of \cref{lem:periods}.
+For a general $q$, the harmonics can be incommensurate and nearly collide.
+A proof must quantify those near coincidences rather than assume the dyadic
+counting argument survives unchanged.
+\end{question}
+
+\begin{question}[Square-summable spectra and Gaussian confounding]
+Extend quantitative anchored recovery to the parameter space allowing
+square-summable but nonsummable lengths and an unknown Gaussian component,
+as in the qualitative theory of Billey--Swanson \cite{billey}. Compact
+support is used decisively to turn Kolmogorov error into entire-transform
+error on contours. Which tail or exponential-moment hypothesis can replace
+it, and which parameter metric sees escaped Gaussian variance correctly?
+\end{question}
+% ed. (2026-09-29): the predecessor's corresponding question is answered, for
+% the Gaussian variance, by a package filed after this article's snapshot.
+\begin{ednote}
+The predecessor's corresponding question, ``Gaussian components and
+square-summable spectra'', is answered for the Gaussian-variance functional
+by the repository article
+\path{inverse-and-sampling/Gaussian_Dust_Christoffel_Recovery_Uniform_Factors/}
+(filed 2026-09-29, after the snapshot this article read; unreviewed), in a
+model with a known smooth compactly supported background: without a tail
+restriction the exact minimax risk for the variance is $V/2$ at every
+sample size. Quantitative recovery of the scales themselves in that space,
+anchored or pairwise, is not treated there.
+\end{ednote}
+
+\begin{question}[Validated inversion and proof-carrying certificates]
+Build a finite-prefix solver that outputs both candidate lengths and
+certificates for the contour inequalities and divisor counts. A useful first
+milestone is a checker for a fixed $M$ with rational enclosure data and a
+proved tail estimate for the reference sinc product. The statistical CDF
+error and the numerical transform error must be tracked separately. The
+explicit thresholds in \eqref{eq:thresholds} are a correctness baseline,
+not a recommendation to use their conservative constants unchanged.
+\end{question}
+
+\begin{question}[Adaptive confidence away from the exact anchor]
+Characterize reference spectra for which honest confidence sets have
+root-$N$ contraction for every fixed prefix, and quantify the whole-spectrum
+contraction across different references. The confidence construction
+\eqref{eq:confidence-set} is honest globally but its proved contraction rate
+here is anchored. Uniform adaptation would require a comparison theorem
+between local zero geometry and the inverse modulus, not merely the
+pointwise analysis of $\mu_0$.
+\end{question}
+
+\section{Conclusion}
+
+Exact identifiability of a uniform-convolution spectrum conceals several
+distinct quantitative regimes. At the dyadic Rvachev law, the entire infinite
+spectrum has an anchored modulus with the sharp scale
+$\exp[-\Theta(\sqrt{\log(1/\eps)})]$. It admits no positive H\"older
+exponent even under fixed variance, the predecessor's uniform bounds on all
+derivatives, and geometric separation arbitrarily close to the dyadic ratio.
+Yet every fixed leading prefix is locally Lipschitz when the unknown tail
+is constrained only by a common support bound.
+
+Both statements arise from the special structure of uniform factors. Harmonic
+zero progressions allow stable divisor reconstruction and stable cluster
+centroids; a constant-coefficient perturbation of separated squared scales
+hides a moving tail behind quadratically small logarithmic law error.
+The explicit certificates, statistical consequences, and finite checks make
+these proposed results suitable for independent review and a staged formal
+verification effort. The exact leading constants, the ratio-$1/2$ boundary,
+and pairwise stability on separated classes remain distinct next targets.
+
+\begin{thebibliography}{9}
+\small\raggedright
+
+\bibitem{predecessor}
+Vladimir Reshetnikov and contributors, ProveIt research collection.
+\emph{Recovering Uniform Factors: Exact Moment Fibres and Logarithmic
+Instability Near the Fabius--Rvachev Law}.
+AI-assisted research manuscript, archival arrival of 28 September 2026.
+Inspected at repository commit \texttt{\repoSHA}; exact path and blob are
+recorded in \cref{sec:provenance}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/39472967ce67566d7c530fd5b8d6a3a95e68fe22/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/Recovering_Uniform_Factors_Fabius_Rvachev/article.tex}{Pinned source manuscript}.
+The adjacent \href{https://github.com/VladimirReshetnikov/ProveIt/blob/39472967ce67566d7c530fd5b8d6a3a95e68fe22/Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/inverse-and-sampling/README.md}{collection README}
+records its unreviewed status.
+
+\bibitem{billey}
+Sara C. Billey and Joshua P. Swanson.
+\emph{The metric space of limit laws for $q$-hook formulas}.
+Combinatorial Theory \textbf{2}(2), 2022.
+DOI: \href{https://doi.org/10.5070/C62257868}{10.5070/C62257868}.
+\url{https://arxiv.org/abs/2010.12701v2}.
+The generalized-uniform and Gaussian-extended parametrizations are discussed
+in Section 3; qualitative identifiability is established background.
+
+\bibitem{arias}
+Juan Arias de Reyna.
+\emph{An infinitely differentiable function with compact support:
+Definition and properties}.
+arXiv:1702.05442, 2017.
+English translation of ``Definici\'on y estudio de una funci\'on
+indefinidamente diferenciable de soporte compacto,''
+Rev. Real Acad. Ciencias \textbf{76} (1982), 21--38.
+\url{https://arxiv.org/abs/1702.05442}.
+
+\bibitem{massart}
+Pascal Massart.
+\emph{The tight constant in the Dvoretzky--Kiefer--Wolfowitz inequality}.
+Annals of Probability \textbf{18}(3) (1990), 1269--1283.
+DOI: \href{https://doi.org/10.1214/aop/1176990746}{10.1214/aop/1176990746}.
+
+\bibitem{weidudley}
+Fan Wei and Richard M. Dudley.
+\emph{Dvoretzky--Kiefer--Wolfowitz inequalities for the two-sample case}.
+arXiv:1107.5356, 2011.
+\url{https://arxiv.org/abs/1107.5356}.
+The introductory account records the one-sample Massart bound used here;
+no two-sample extension is required by our testing argument.
+
+\end{thebibliography}
+\end{document}

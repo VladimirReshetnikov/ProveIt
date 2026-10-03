@@ -1,0 +1,596 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[T1]{fontenc}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+symbols.map}
+\usepackage{lmodern,microtype}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Exact enumeration of 201 avoiding ascent sequences},pdfsubject={Generating function proof and all orders asymptotics for OEIS A202062}}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\allowdisplaybreaks[2]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\asc}{\operatorname{asc}}
+\newcommand{\Disc}{\operatorname{Disc}}
+\newcommand{\Imn}{\operatorname{Im}}
+\usepackage{booktabs}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
+\title{Exact enumeration of 201 avoiding ascent sequences}
+\author{A proof and reproducible research report}
+\date{1 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We derive an exact generating tree for ascent sequences avoiding 201 and solve its two-catalytic functional equation by a rational invariant. This proves the cubic generating function conjectured by Guttmann and Kot\v{e}\v{s}ovec. A compact cubic parameterization yields their leading asymptotic equivalent with a simpler expression for the amplitude, an explicit expansion to every fixed algebraic order, and a controlled inverse expansion. The real model used for inversion is specified before rounding is discussed. Exact-arithmetic certificates accompany the proof; finite coefficient checks serve only as diagnostics.
+\end{abstract}
+
+\section{Results and attribution}\label{a62:sec:results}
+An ascent sequence is a word $w_1\cdots w_n$ of nonnegative integers with $w_1=0$ and
+\[
+ w_i\le 1+\asc(w_1\cdots w_{i-1})\quad(i\ge2),\qquad
+ \asc(w)=\#\{i:w_i<w_{i+1}\}.
+\]
+It avoids 201 if no $i<j<k$ satisfies $w_i>w_k>w_j$. Let $a_n$ count these words, including $a_0=1$, and let $G(x)=\sum_{n\ge0}a_nx^n$. This is OEIS A202062.
+
+\begin{theorem}\label{a62:thm:gf}
+Let $P(x)$ be the unique formal power-series root with $P(0)=1$ of
+\begin{equation}\label{a62:eq:param}
+ A(x,P)=(1-x)^2P^3+(x^2-1)P^2+xP+x=0.
+\end{equation}
+Then
+\begin{equation}\label{a62:eq:Gparam}
+G(x)=\frac{7(x^3-2x^2+2x-1)P^2+(8x^3-16x^2+6x+8)P+x^3+18x^2-20x-1}{8x^3}.
+\end{equation}
+The apparent pole at $x=0$ is removable. Equivalently, $G$ is the unique formal solution with $G(0)=1$ of $\mathcal P(x,G)=0$, where
+\begin{align}\label{a62:eq:Gpoly}
+\mathcal P(x,g)={}&64x^6(x-1)^2g^3\notag\\
+&+(-16x^8-400x^7+1136x^6-1008x^5+272x^4+16x^3)g^2\notag\\
+&+(x^8+148x^7+226x^6-1952x^5+2819x^4\notag\\
+&\hspace{22mm}-1512x^3+298x^2-28x+1)g\notag\\
+&-4x^7-335x^6+1419x^5-2082x^4+1249x^3-272x^2+27x-1.
+\end{align}
+\end{theorem}
+
+The cubic generating function and the leading asymptotic were conjectured by Guttmann--Kot\v{e}\v{s}ovec \cite{GK}. The contribution of this report is a structural proof, followed by rigorous arbitrary-order transfer and inversion. Cerbai's 2025 concluding discussion \cite{Cerbai} still records no known formula or generating function. A scoped literature check found no later proof; that observation is not a substitute for a comprehensive novelty review before publication.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+This report is a single manuscript, printed in full: manuscript~43 of
+batch~77 of ProveIt's incoming-reports intake, delivered as the archive
+\texttt{oeis-\allowbreak a202062-\allowbreak report.zip} in commit
+\texttt{096ee7b87} (main file \texttt{a202062-report.tex}, now
+\texttt{article.tex}) and placed in commit \texttt{f76fcb566} in the
+research-report collection, among the OEIS-sequence asymptotics reports.
+The manuscript names no ProveIt commit and continues no repository path, so
+it has no pin; its author line (above) names neither an author nor a tool.
+Nothing in this report is formalized in Lean or Rocq, and placement in the
+collection confers no formal status on any statement here. The writing step
+prefixed every label with \texttt{a62:}, restored the diacritic in
+``Kot\v{e}\v{s}ovec'' (printed ``Kote\v{s}ovec'' in the delivery), set the
+bibliography ragged-right, and added these \textsf{[write]} notes and two
+references \cite{a62-tai,a62-a61}; no statement, proof or number of the
+manuscript was altered.
+
+\emph{Family.} Conway, Conway, Elvey Price and Guttmann \cite{Conway}
+treat ascent sequences avoiding each pattern of length~3. Batch~77
+delivered work on three of them, filed as three neighbouring reports:
+this one (201, OEIS A202062: an algebraic generating function, growth
+$\mu^nn^{-9/2}$), \texttt{a202061-\allowbreak ascent-\allowbreak 120-\allowbreak deficit}
+\cite{a62-a61} (120, OEIS A202061: the same exponential rate $\mu$ with a
+stretched-exponential deficit, and a generating function that is not
+D-finite), and \texttt{a202058-\allowbreak ascent-\allowbreak 000-\allowbreak growth}
+(000, OEIS A202058: factorial growth). The three regimes and their methods
+are disjoint; the one shared quantity is the constant $\mu$ of
+Theorem~\ref{a62:thm:asymptotic}, which is also the growth constant of
+A202061 (Section~\ref{a62:sec:120} and its note). The Guttmann--Kot\v{e}\v{s}ovec paper
+\cite{GK} also studies L-convex polyominoes; the collection's
+\texttt{a126764-\allowbreak lconvex-\allowbreak polyominoes} proves their
+L-convex asymptotic and states that 201-avoiding ascent sequences are not
+addressed there. The two problems share only that paper: no generating
+function, constant, bijection or method is common to the two reports.
+
+\emph{Notation.} The manuscript reuses several letters with section-local
+meanings, and the neighbouring A202061 report uses some of the same letters
+for different quantities. Each symbol is printed as delivered; the table
+fixes its meaning by section, with the tempting false readings.
+\begin{center}\footnotesize
+\begin{tabular}{@{}p{0.13\linewidth}p{0.81\linewidth}@{}}
+\toprule
+symbol & meaning here (and what it is \emph{not})\\
+\midrule
+$a_n$, $b_n$ & $a_n$ counts 201-avoiders (A202062) throughout; $b_n$ counts 120-avoiders (A202061) in Section~\ref{a62:sec:120} only. In \cite{a62-a61} the letter $a_n$ (and $A(x)$) denotes A202061, not A202062.\\
+$\mu$, $\rho$ & $\mu=1/\rho=7.2958969432\ldots$, the largest root of $\mu^3-8\mu^2+5\mu+1=0$; the \emph{same} constant as $\mu$ (and $\rho$) in \cite{a62-a61}.\\
+$\kappa$ & $\kappa=9/2$, the power in $n^{-9/2}$ (Sections~\ref{a62:sec:sing}--\ref{a62:sec:inverse}). Not the critical-point constant $\kappa=0.2830\ldots$ of Part~I of \cite{a62-a61}, nor its third-order constant $\kappa=-1.9401\ldots$.\\
+$C$ & the amplitude $13.4299\ldots$ of Theorem~\ref{a62:thm:asymptotic}. Not the unspecified constants $c,C$ of the two-sided bound of \cite{a62-a61}, Part~I, nor its deficit constant $C_\star$.\\
+$\alpha$ & $\alpha=f_0+j_0+k_0$ in \eqref{a62:eq:consts} (Sections~\ref{a62:sec:inv}--\ref{a62:sec:cubic}); a free exponent in $q_k(\alpha)$, $g_m(\alpha)$ and the beta integral (Sections~\ref{a62:sec:sing}--\ref{a62:sec:inverse}). Neither is the $\alpha=0.5100\ldots$ of \cite{a62-a61}.\\
+$\beta$, $\beta_j$ & $\beta\in\Q((x))$ is the scalar of Proposition~\ref{a62:prop:quadratic}; $\beta_j$ are the Puiseux coefficients of $G$ at $\rho$ (Section~\ref{a62:sec:sing}). They are unrelated.\\
+$t$ & three local variables: $t=pq$ (with $s=p+q$) in Section~\ref{a62:sec:inv}; $x=t^2$, $p=tz$ in Section~\ref{a62:sec:cubic}; $t=\sqrt{1-x/\rho}$ in Section~\ref{a62:sec:sing}.\\
+$T$ & the state type $T(k,h)$ and its series $T(x;u,v)$ (Sections~\ref{a62:sec:tree}--\ref{a62:sec:kernel}); the rational trace $T$ of \eqref{a62:eq:trace} (Section~\ref{a62:sec:cubic}).\\
+$b$, $d$, $d_j$ & $b=1-x$ and $d=1/x+x-3$ (Sections~\ref{a62:sec:kernel}--\ref{a62:sec:cubic}); $b$ is not $b_n$. The inverse coefficients $d_j$ of Theorem~\ref{a62:thm:inverse} are unrelated to $d$.\\
+$R$ & the rational invariant $R(p)$ (Section~\ref{a62:sec:inv}); the cutoff radius $\rho<R<1$ (Section~\ref{a62:sec:inverse}).\\
+$w$ & a word (Sections~\ref{a62:sec:results}--\ref{a62:sec:tree}); the second kernel root (Section~\ref{a62:sec:kernel}); the cut density $w(u)$ (Section~\ref{a62:sec:inverse}).\\
+$K$, $e$ & the kernel $K(u,v)$ (Section~\ref{a62:sec:kernel}); the envelope constants $K$, $K_M$ and the error $e=Ks^\kappa e^{-\eta s}$ (Section~\ref{a62:sec:inverse}).\\
+$D$, $D_0$ & $D(u)=S(u,u)$ (Sections~\ref{a62:sec:kernel}--\ref{a62:sec:inv}); $D_0(x)=x^3+5x^2-8x+1$, the discriminant factor (Section~\ref{a62:sec:sing}).\\
+$A$, $A_c$, $A_*$ & $A(x,P)$ of \eqref{a62:eq:param} and $A_c(p)$ of Section~\ref{a62:sec:cubic} are the same polynomial ($b=1-x$); $A_*(s)$ is the real model \eqref{a62:eq:realmodel}. In \cite{a62-a61}, $A(x)$ is a generating function.\\
+$P$, $\mathcal P$ & $P=P_0$ is the parameter series, $P_\pm$ the two other critical branches; $\mathcal P(x,g)$ is the cubic \eqref{a62:eq:Gpoly} for $G$.\\
+$M$, $E$ & $M=\max w$ (Section~\ref{a62:sec:tree}) and a truncation order (Theorems~\ref{a62:thm:asymptotic}, \ref{a62:thm:inverse}); $E$ in the proof of Proposition~\ref{a62:prop:quadratic} and the series $E(z)$ of Theorem~\ref{a62:thm:inverse}.\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{An exact generating tree}\label{a62:sec:tree}
+For a nonempty prefix $w$, write $M=\max w$, $a=\asc(w)$, and $h=a+1-M$. Call a nonnegative integer $z$ \emph{active} if there are no $i<j$ in $w$ with $w_i>z>w_j$. Appending $z$ creates a 201 occurrence exactly when $z$ is not active. Every integer at least $M$ is active. Let $k$ be the number of active integers below $M$, including values not yet used.
+
+\begin{lemma}\label{a62:lem:state}
+For every avoiding prefix, $h\ge1$, and its last letter is either $M$ (type $T$), or the greatest active integer below $M$ (type $L$). The initial state is $T(0,1)$. Every child is represented once by
+\begin{align*}
+ T(k,h)&\longrightarrow T(k,h),& L(k,h)&\longrightarrow T(k,h+1),\\
+ T(k,h),\ L(k,h)&\longrightarrow L(i,h),&&1\le i\le k,\\
+ T(k,h),\ L(k,h)&\longrightarrow T(k+j,h+1-j),&&1\le j\le h.
+\end{align*}
+The first line appends $M$, the second appends active rank $i$, and the third appends $M+j$.
+\end{lemma}
+\begin{proof}
+The assertion holds for the word $0$. If an active $z<M$ is appended, the new descent pairs forbid exactly the previously active integers strictly between $z$ and $M$: the old maximum occurs before $z$, and no new pair can forbid an integer outside that interval. Thus the active submaximum list truncates at $z$. The old last letter is at least $z$, so there is no new ascent.
+
+Appending $M$ changes no active values and gives an ascent exactly from type $L$. Appending a new maximum $M+j$ creates an ascent but no descent pair, and the old maximum plus the $j-1$ intervening values become active submaximum values. The ascent bound permits precisely $1\le j\le h$, and the new slack is $h+1-j\ge1$. These observations prove the invariant and the full succession rule by induction. Each rank or jump specifies a unique legal letter; no information about gaps between active values is needed.
+\end{proof}
+
+\section{The catalytic equation and its reduction}\label{a62:sec:kernel}
+Let $T(x;u,v)$ and $L(x;u,v)$ weight a state by $x^nu^kv^h$, and set $S=T+L$. Their $x$-coefficients are polynomials in $u,v$. Lemma~\ref{a62:lem:state} gives
+\begin{align*}
+L&=\frac{xu}{1-u}\{S(1,v)-S(u,v)\},\\
+T&=xv+xT+xvL+\frac{xuv}{v-u}\{S(u,v)-S(u,u)\}.
+\end{align*}
+All divided differences are polynomial differences coefficientwise. Eliminating $T,L$ gives
+\begin{align}\label{a62:eq:kernel}
+K(u,v)S(u,v)={}&xv(1-u)(v-u)\notag\\
+&+xu(1-x+xv)(v-u)S(1,v)-xuv(1-u)S(u,u),\\
+K(u,v)={}&(1-x)(1-u)(v-u)+xu(1-x+xv)(v-u)-xuv(1-u).
+\notag
+\end{align}
+The desired function is $G=1+S(1,1)$.
+
+Put $b=1-x$, $D(u)=S(u,u)$, and $H(u)=(1-bu)D(u)$. On $K=0$, direct reduction gives
+\[
+ (1-bu)\frac{(b+xv)(v-u)}{v(1-u)}=xv,
+\]
+so \eqref{a62:eq:kernel} implies
+\[
+ H(u)=xvS(1,v)+(1-bu)(v/u-1).
+\]
+For the two $u$-roots $u,w$ at the same $v$, their product and sum give
+\[
+ uw=\frac{v}{b+xv},\qquad xv=x+b(u-1)(w-1).
+\]
+Subtracting the two boundary equations yields $H(u)-H(w)=-xv(u-w)$.
+
+Set $p=u-1$, $q=w-1$, $d=1/x+x-3$, and
+\begin{equation}\label{a62:eq:F}
+ F(p)=(x-bp)D(1+p)+xp.
+\end{equation}
+Then
+\begin{equation}\label{a62:eq:reduced}
+ F(p)-F(q)=-b(p-q)pq,
+ \qquad Q(p,q)=p+q-dpq+bpq(p+q+pq)=0.
+\end{equation}
+Here $F\in x\Q[p][[x]]$ and $G=1+F(0)/x$.
+
+\paragraph{Admissible substitutions.}
+After multiplication by $x$, the polynomial $Q$ specializes at $x=0$ to $-pq$. The implicit-function theorem over $\Q(p)$ supplies a unique branch
+\[
+ q=Q_0(x,p)=x+O(x^2)\in x\Q(p)[[x]].
+\]
+For this branch take $u=1+p$, $w=1+q$, and $v=1+bpq/x$. All three have nonnegative $x$-valuation and satisfy $K(u,v)=K(w,v)=0$. Thus the two evaluations of $S$ above are valid formal substitutions. Rational functions of $q$ are interpreted in $\Q(p)((x))$. No large-root substitution is being used implicitly.
+
+\section{Rational invariants and the quadratic identity}\label{a62:sec:inv}
+Define
+\[
+ R(p)=bp^2-(d+1)p-\frac{d}{bp}+\frac1{bp^2},\qquad I(p)=F(p)-R(p).
+\]
+Writing $s=p+q$ and $t=pq$, the kernel gives $s=t(d-bt)/(1+bt)$. Substitution proves
+\[
+ R(p)-R(q)=-b(p-q)pq,
+\]
+hence $I(p)=I(q)$.
+
+A second invariant is the following explicit rational function:
+\begin{align}\label{a62:eq:J}
+J(p)={}&bp^2-\frac{x^2-x+1}{x}p+\frac1{x-bp}
+ +\frac{4x^4-6x^3+5x^2-2x+1}{2bx^2}\notag\\
+&-\frac{x^2-x+1}{x^2(p+1)}+\frac b{x^2(p+1)^2}
+ -\frac d{bp}+\frac1{bp^2}.
+\end{align}
+Clearing denominators and reducing modulo $Q$ verifies $J(p)=J(q)$. One way to obtain it is to set $p_0=p$, $p_1=q$, and
+\[
+ p_{i+2}=\frac1{bp_i(1+p_{i+1})}.
+\]
+Exact reduction gives $p_7=p_0$, $p_8=p_1$, and $J=(b/2)\sum_{i=0}^6p_i^2$. The proof uses the displayed rational identity, so the orbit discovery is not an assumption.
+
+Let
+\begin{equation}\label{a62:eq:consts}
+ k_0=-\frac{x^2-2x+2}{x},\quad
+ j_0=\frac{4x^4-4x^3+x^2+1}{2bx^2},\quad
+ f_0=F(0),\quad \alpha=f_0+j_0+k_0.
+\end{equation}
+The tree supplies four exact special-value identities:
+\begin{equation}\label{a62:eq:special}
+ I(-1)=I(x/b)=k_0,\qquad I'(-1)=0,\qquad F'(0)=0.
+\end{equation}
+Indeed $D(0)=0$ and $[u]D(u)=x/(1-x)$, because $k+h=1$ occurs precisely for nonempty all-zero words. Thus $F(-1)=-x$ and $F'(-1)=x+x/b$. At $p=x/b$ the multiplier in \eqref{a62:eq:F} vanishes. Substitution into $R$ proves the first three claims. Finally each state has $1+k+h$ children, whence
+\[
+ D(1)=x+x\{D(1)+D'(1)\},
+\]
+which gives $F'(0)=xD'(1)-bD(1)+x=0$.
+
+\begin{lemma}[Formal invariant lemma]\label{a62:lem:invariant}
+If $E(p)\in\Q[p]((x))$ satisfies $E(p)=E(Q_0(x,p))$, then $E$ is independent of $p$.
+\end{lemma}
+\begin{proof}
+Take the lowest $x$-coefficient not already constant. Earlier constant coefficients cancel from both sides. At that order, substitution of $Q_0=x+O(x^2)$ into the polynomial coefficient gives its value at zero, so the coefficient must be constant. This contradiction proves the result. Bounded negative $x$-orders do not affect the argument.
+\end{proof}
+
+\begin{proposition}\label{a62:prop:quadratic}
+There is a scalar $\beta\in\Q((x))$ such that
+\begin{equation}\label{a62:eq:quadratic}
+ I(p)^2+(J(p)-\alpha)I(p)-k_0J(p)-\beta=0.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The identities \eqref{a62:eq:special} imply that $p^2(I-k_0)$ is divisible by $(p+1)^2(p-x/b)$ in $\Q[p]((x))$. Division by $p+1$ is coefficientwise. Division by $p-x/b$ is valid $x$-adically because $x/b=O(x)$: use $(p^m-r^m)/(p-r)$ with $r=x/b$, so only finitely many terms contribute at every $x$-order. The two divisors are coprime since $-1-r$ is a unit. Hence $(I-k_0)J\in p^{-4}\Q[p]((x))$; the moving pole really cancels in this ring.
+
+At $p=0$ the expansions are
+\begin{align*}
+ I(p)&=-\frac1{bp^2}+\frac d{bp}+f_0+(d+1+F'(0))p+O(p^2),\\
+ J(p)&=\frac1{bp^2}-\frac d{bp}+j_0-(d+1)p+O(p^2).
+\end{align*}
+In $E=I^2+(J-\alpha)I-k_0J$, the $p^{-4},p^{-3}$ terms cancel automatically and $p^{-2}$ cancels by \eqref{a62:eq:consts}. The remaining principal term is $-F'(0)/(bp)=0$. Thus $E\in\Q[p]((x))$. It is invariant because $I,J$ are, so Lemma~\ref{a62:lem:invariant} gives $E=\beta$.
+\end{proof}
+
+\section{Selecting the critical branches and proving the cubic}\label{a62:sec:cubic}
+Differentiating \eqref{a62:eq:quadratic} gives
+\begin{equation}\label{a62:eq:diff}
+ \Psi I'+(I-k_0)J'=0,\qquad \Psi=2I+J-\alpha.
+\end{equation}
+Put $x=t^2$, $p=tz$. The explicit rational functions and $F\in x\Q[p][[x]]$ give
+\[
+ t^3\Psi(t^2,tz)=z^{-1}-z+O(t).
+\]
+The leading expression has simple roots at $z=\pm1$. Consequently there are unique formal branches $P_\pm=\pm t+O(t^2)$ with $\Psi(P_\pm)=0$. Moreover
+\[
+ (I-k_0)(t^2,P_\pm)=\pm t^{-3}+O(t^{-2})\ne0.
+\]
+Equation~\eqref{a62:eq:diff} forces $J'(P_\pm)=0$.
+
+For complete factor bookkeeping, define
+\begin{align*}
+ A_c(p)&=b^2p^3+(x^2-1)p^2+xp+x,\\
+ B_c(p)&=x(x-1)p^3+2x(x-1)p^2+(x^2-3x+1)p-2x,\\
+ C_c(p)&=2x(x-1)p^3+(5x^2-5x+1)p^2+(4x^2-2x)p+x^2.
+\end{align*}
+Direct differentiation gives
+\[
+ J'(p)=\frac{A_c(p)B_c(p)C_c(p)}{bp^3x^2(p+1)^3(x-bp)^2}.
+\]
+At $p=t(\pm1+O(t))$, the factors $B_c=\pm t+O(t^2)$ and $C_c=t^2+O(t^3)$ are nonzero. Thus $A_c(P_\pm)=0$. The third root is the unique $P_0\in\Q[[x]]$ with $P_0(0)=1$, since $A_c(0,p)=p^2(p-1)$. This is the parameter $P$ in Theorem~\ref{a62:thm:gf}.
+
+Write $Z_\pm=J(P_\pm)$ and $Z_0=J(P_0)$. Their expansions begin
+\[
+ Z_\pm=\frac1{2t^4}\mp\frac2{t^3}+O(t^{-2}),\qquad
+ Z_0=\frac1{4t^4}+O(t^{-2}),
+\]
+so they are distinct. Evaluating the quadratic at $P_\pm$ shows that $Z_\pm$ are exactly the two roots of
+\[
+ \Delta(z)=(z-\alpha)^2+4(k_0z+\beta),
+\]
+and hence $Z_++Z_-=2\alpha-4k_0$.
+
+The sum of all three critical values is a rational trace:
+\begin{equation}\label{a62:eq:trace}
+ T=Z_++Z_-+Z_0=-\frac{23x^4-26x^3+3x^2+6x+5}{4x^2(x-1)}.
+\end{equation}
+For a compact direct verification, reduction of \eqref{a62:eq:J} modulo $A_c$ gives
+\begin{align*}
+J(p)\equiv-\frac{1}{4x^2(x-1)}\big[&
+7(x^4-3x^3+4x^2-3x+1)p^2\\
+&+(8x^4-24x^3+22x^2+2x-8)p\\
+&+8x^4-9x^3-7x^2+9x+2\big].
+\end{align*}
+Using the first two Newton sums of $A_c$ proves \eqref{a62:eq:trace}. Therefore
+\[
+ Z_0=T-2f_0-2j_0+2k_0.
+\]
+Since $f_0=x(G-1)$, reduction of this equation modulo $A_c(P_0)=0$ gives \eqref{a62:eq:Gparam}. Eliminating $P_0$ yields \eqref{a62:eq:Gpoly}. All these reductions are finite rational identities checked in the accompanying certificate. Finally $\mathcal P(0,g)=g-1$, so the implicit-function theorem gives the asserted unique formal branch. This completes the structural proof.
+
+\paragraph{Comparison with the conjecture.}
+Equation (3.1) of \cite{GK} is exactly equivalent to \eqref{a62:eq:Gpoly} under
+\[
+ y_2=12x^3G-\frac{x^4+26x^3-45x^2+18x+1}{x-1}.
+\]
+The printed final combination on their p.~10 has a sign error: with their $y_1$, the correct relation is $G=y_2/(12x^3)+y_1$. At $x=0$ their cubic specializes to $-4y_2^3+3y_2+1=0$, which also exposes the incorrect minus sign. The conjectured cubic itself is unchanged.
+
+\section{Dominant singularity and all orders}\label{a62:sec:sing}
+Let
+\[
+ D_0(x)=x^3+5x^2-8x+1,
+\]
+and let $\rho=0.137063339542724678\ldots$ be its smallest positive root. The other roots lie in $(-6.296,-6.295)$ and $(1.158,1.159)$. Since
+\[
+ \Disc_P A=-4x(x-1)^3D_0(x),
+\]
+$\rho$ is the only possible nonzero singularity on or inside $|x|=\rho$. The branch $P(0)=1$ is the largest real root for $0<x<\rho$, and at $\rho$ the two positive roots merge while the third remains negative. Their double root is
+\[
+ \tau=\frac{8-17\rho-3\rho^2}{7}.
+\]
+There are no other branch points or poles before modulus $1$. The origin is regular on this branch, and algebraic continuation in a slit disk gives a delta-domain at $\rho$.
+
+Set
+\[
+ \epsilon=6\rho^2+37\rho-5>0,\qquad \delta=\sqrt\epsilon>0,
+ \qquad t=\sqrt{1-x/\rho}.
+\]
+The convergent Puiseux expansion $P=\tau+\sum_{j\ge1}p_jt^j$ has $p_1=\delta$. For $m\ge2$, it is generated exactly by
+\begin{equation}\label{a62:eq:puiseux}
+ p_m=-\frac{[t^{m+1}]A\!\left(\rho(1-t^2),\tau+\delta t+\sum_{j=2}^{m-1}p_jt^j\right)}{A_{PP}(\rho,\tau)\delta}.
+\end{equation}
+Substitution in \eqref{a62:eq:Gparam} defines $G(\rho(1-t^2))=\sum_j\beta_jt^j$. Exact reduction by $D_0(\rho)=0$ gives
+\begin{align*}
+ \beta_1&=\beta_3=\beta_5=0,\\
+ \beta_7&=\delta(10-11\rho-2\rho^2),\\
+ \beta_9&=\delta\left(\frac{300}{7}-\frac{1233\rho}{14}-\frac{211\rho^2}{14}\right),\\
+ \beta_{11}&=\delta\left(\frac{9515}{56}-\frac{5703\rho}{8}-\frac{6581\rho^2}{56}\right),\\
+ \beta_{13}&=\delta\left(\frac{27161}{28}-\frac{335759\rho}{56}-\frac{109401\rho^2}{112}\right).
+\end{align*}
+In particular $\beta_7>0$: the singularity is nonremovable and its first nonintegral power is $7/2$.
+
+\begin{theorem}\label{a62:thm:asymptotic}
+Put $\mu=1/\rho$, $\kappa=9/2$, and
+\[
+ C=\frac{105}{16\sqrt\pi}\sqrt{6\rho^2+37\rho-5}(10-11\rho-2\rho^2)
+ =13.4299960869439\ldots.
+\]
+For every fixed integer $M\ge0$,
+\[
+ a_n=C\mu^n n^{-9/2}\left(\sum_{m=0}^M c_mn^{-m}+O_M(n^{-M-1})\right),\qquad c_0=1.
+\]
+Every $c_m$ belongs to $\Q(\rho)$ and is effectively computable. The first three are
+\begin{align*}
+ c_1&=-\frac{45\rho^2}{7}-\frac{1125\rho}{28}-\frac{153}{56}
+ =-8.35992148621264\ldots,\\
+ c_2&=\frac{84843\rho^2}{224}+\frac{523611\rho}{224}-\frac{252681}{896}
+ =45.4978274191815\ldots,\\
+ c_3&=-\frac{36595845\rho^2}{1792}-\frac{450865701\rho}{3584}
+       +\frac{124894341}{7168}
+ =-202.286141712984\ldots.
+\end{align*}
+\end{theorem}
+\begin{proof}
+Let $B_j(z)$ denote Bernoulli polynomials and define
+\[
+ q_k(\alpha)=\frac{(-1)^{k+1}\{B_{k+1}(-\alpha)-B_{k+1}(1)\}}{k(k+1)},\qquad
+ g_0(\alpha)=1,
+\]
+\[
+ g_m(\alpha)=\frac1m\sum_{k=1}^m kq_k(\alpha)g_{m-k}(\alpha).
+\]
+Subtracting the Stirling expansions for the gamma functions gives
+\[
+ \frac{\Gamma(n-\alpha)}{\Gamma(n+1)}
+ \sim n^{-\alpha-1}\sum_{m\ge0}g_m(\alpha)n^{-m}.
+\]
+The exact coefficient identity for a nonintegral power, followed by delta-domain transfer \cite{FS}, therefore gives the all-orders generator
+\begin{equation}\label{a62:eq:cm}
+ c_m=\sum_{j=0}^m\frac{\beta_{7+2j}}{\beta_7}(-1)^j(9/2)_j
+                g_{m-j}(7/2+j).
+\end{equation}
+The next omitted odd power gives the stated remainder. Integer local powers contribute no algebraic-order coefficient term. The field statement follows from \eqref{a62:eq:puiseux}: odd coefficients share the factor $\delta$, which cancels in their ratios. The displayed coefficients are exact applications of \eqref{a62:eq:cm}.
+\end{proof}
+
+The leading equivalent and amplitude agree with \cite{GK}; indeed
+\[
+ \beta_7^2=176\rho^2+1086\rho-139,
+\]
+and this number satisfies $z^3-1369z^2+17839z+1=0$, their amplitude polynomial.
+
+\section{A specified real inverse and integer thresholds}\label{a62:sec:inverse}
+An integer sequence has no canonical real inverse. Fix $R$ with $\rho<R<1$, close enough to $\rho$ that the local Puiseux series converges throughout $[\rho,R]$ and
+\[
+ w(u)=\frac1\pi\Imn G(u+i0)>0\qquad(\rho<u\le R).
+\]
+Such a choice exists because $w(u)\sim\beta_7(u/\rho-1)^{7/2}/\pi$. Define
+\begin{equation}\label{a62:eq:realmodel}
+ A_*(s)=\int_\rho^R w(u)u^{-s-1}\,du.
+\end{equation}
+This is positive and strictly increasing, since $u<1$. For the same cutoff $R$, Cauchy contour deformation gives the exact identity
+\[
+a_n=A_*(n)+\frac1{2\pi i}\int_{\gamma_R}G(z)z^{-n-1}\,dz,
+\]
+where $\gamma_R$ is the counterclockwise outer circle from angle $0+$ to $2\pi-$ with its two boundary values. The function is bounded on that arc and at its one-sided endpoints. Small indentations justify the limits, giving an error $O(R^{-n})$ with this same $R$.
+
+For completeness the real-$s$ expansion follows directly from the cut density
+\[
+w(u)=\frac1\pi\sum_{j\ge0}(-1)^j\beta_{7+2j}(u/\rho-1)^{7/2+j}
+\]
+and the beta integral, valid for fixed $\alpha>-1$ and $s>\alpha$,
+\[
+\int_\rho^\infty (u/\rho-1)^\alpha u^{-s-1}\,du
+=\rho^{-s}\frac{\Gamma(\alpha+1)\Gamma(s-\alpha)}{\Gamma(s+1)}.
+\]
+Replacing infinity by $R$ changes this by $O_\alpha(R^{-s}/s)$. A convergent Taylor remainder for the density is bounded by a constant times its next power on $[\rho,R]$; integrating that bound proves the full arbitrary-order expansion for real $s$. Gamma reflection gives exactly the coefficients in \eqref{a62:eq:cm}. Put $\lambda=\log\mu$. With $u=\rho e^v$, differentiation under the resulting finite Laplace integral gives
+\[
+\frac{d}{ds}\log A_*(s)=\lambda-\frac\kappa s+O(s^{-2}).
+\]
+Thus no differentiation of an uncontrolled remainder is needed. Different admissible cutoffs alter it only exponentially, so every inverse-expansion coefficient is independent of the cutoff.
+
+Let $N_*(Y)=A_*^{-1}(Y)$ for large $Y$. The leading inverse is
+\begin{equation}\label{a62:eq:lambert}
+ n_0(Y)=-\frac\kappa\lambda W_{-1}\!\left(-\frac\lambda\kappa(C/Y)^{1/\kappa}\right).
+\end{equation}
+This is the large solution of $Ce^{\lambda n}n^{-\kappa}=Y$. Define $\ell_j$ by
+\[
+ \log\left(1+\sum_{j\ge1}c_jz^j\right)=\sum_{j\ge1}\ell_jz^j.
+\]
+Thus $\ell_1=c_1$, $\ell_2=c_2-c_1^2/2$, and $\ell_3=c_3-c_1c_2+c_1^3/3$.
+
+\begin{theorem}\label{a62:thm:inverse}
+For each fixed $M\ge1$,
+\[
+ N_*(Y)=n_0+\sum_{j=1}^Md_jn_0^{-j}+O_M(n_0^{-M-1}).
+\]
+The coefficients are uniquely generated by the formal identity
+\begin{equation}\label{a62:eq:inversegen}
+ \lambda E(z)-\kappa\log(1+zE(z))
+ +\sum_{j\ge1}\ell_jz^j(1+zE(z))^{-j}=0,
+ \qquad E(z)=\sum_{j\ge1}d_jz^j.
+\end{equation}
+In particular,
+\begin{align*}
+ d_1&=-\ell_1/\lambda,\\
+ d_2&=-\ell_2/\lambda-\kappa\ell_1/\lambda^2,\\
+ d_3&=-\ell_3/\lambda-(\kappa\ell_2+\ell_1^2)/\lambda^2
+                       -\kappa^2\ell_1/\lambda^3.
+\end{align*}
+\end{theorem}
+\begin{proof}
+Set $s=n_0+E(1/n_0)$ in the logarithm of the expansion of $A_*$. The leading terms cancel by \eqref{a62:eq:lambert}, giving \eqref{a62:eq:inversegen}. At order $z^j$ the only new term is $\lambda d_j$, so the coefficients are unique. Truncation leaves a logarithmic residual of the next order. Since $d\log A_*(s)/ds=\lambda+O(1/s)$ is bounded away from zero, the mean-value theorem converts that residual into the stated inverse error.
+\end{proof}
+
+For the actual sequence define $N(Y)=\min\{n\ge0:a_n\ge Y\}$. The tree gives $a_{n+1}\ge2a_n$ for $n\ge1$, so this threshold is well-defined. The interpolation error and positive logarithmic derivative imply constants $K,\eta>0$ such that, with $s=N_*(Y)$,
+\[
+ \left\lceil s-Ks^\kappa e^{-\eta s}\right\rceil
+ \le N(Y)\le
+ \left\lceil s+Ks^\kappa e^{-\eta s}\right\rceil
+\]
+for all sufficiently large $Y$, with $\eta=\log(R/\rho)$. To check integer endpoints, set $e=Ks^\kappa e^{-\eta s}$, $n_+=\lceil s+e\rceil$ and $n_-=\lceil s-e\rceil-1$. Both are within distance two of $s$ eventually. The positive logarithmic derivative and the contour error imply $a_{n_+}\ge Y$ and $a_{n_-}<Y$ for sufficiently large $K$, proving both bounds including exact-integer cases. Hence if $\nu_M=n_0+\sum_{j=1}^Md_jn_0^{-j}$, then for some $K_M$,
+\[
+ \left\lceil\nu_M-K_Mn_0^{-M-1}\right\rceil
+ \le N(Y)\le
+ \left\lceil\nu_M+K_Mn_0^{-M-1}\right\rceil.
+\]
+These are eventual envelopes with constants depending on the truncation order; numerical certification at a specified finite $Y$ requires explicit remainder constants. An exact single ceiling is justified only when the approximation is separated from an integer by more than its error bound.
+
+\begin{writenote}[Added 2 October 2026, batch~77: an instance of repository results]
+The inversion of this section is an instance of the Lambert-centred
+inversion apparatus of the transseries-and-inversion volume
+\cite{a62-tai}, and no novelty is claimed for the method. The leading
+inverse \eqref{a62:eq:lambert} solves $\lambda n-\kappa\log n=\log(Y/C)$,
+which is \texttt{p0:thm:lambert-core} with $a=\lambda=\log\mu$,
+$b=-\kappa=-9/2$ and $L=\log(Y/C)$; its branch rule ($b<0$, large
+solution) selects $W_{-1}$, as above. The generator \eqref{a62:eq:inversegen}
+is the all-orders reversion around that core,
+\texttt{p0:thm:lambert-centered}, with the same $a$, $b$ and
+$Q(t)=\sum_{j\ge1}\ell_jt^j$; in particular its first coefficient
+$-q_1/a$ is $d_1=-\ell_1/\lambda$. The closing remark on a single ceiling
+is the separation condition, part~(2) of \texttt{p0:thm:staircase}.
+Part~(1) of that theorem (exact rounding $N=\lceil\nu\rceil$) is
+\emph{not} invoked here and does not apply as stated: the real model $A_*$
+of \eqref{a62:eq:realmodel} is not an interpolation of $(a_n)$, since
+$A_*(n)=a_n+O(R^{-n})$ only, which is why the bounds above are two-ceiling
+envelopes. The generic arithmetic of the staircase parts is formalized in
+Lean as \texttt{Fabius.staircase\_ceil} and
+\texttt{Fabius.staircase\_separation} in
+\nolinkurl{Analysis/FabiusFunction/Lean/FabiusFunction/StaircaseInversion.lean};
+those statements concern an arbitrary monotone function and give no formal
+status to Theorem~\ref{a62:thm:inverse}. What is specific to this report is
+the forward expansion of Theorem~\ref{a62:thm:asymptotic} that feeds the
+inversion, the cut-integral model \eqref{a62:eq:realmodel}, and the
+envelopes above.
+\end{writenote}
+
+\section{A consequence for 120 avoidance}\label{a62:sec:120}
+Let $b_n$ count ascent sequences avoiding 120, OEIS A202061. Conway, Conway, Elvey Price and Guttmann~\cite{Conway}, Theorem 4, prove independently of the conjectured generating function that 120 and 201 avoidance have equal exponential growth rates. Their result and Theorem~\ref{a62:thm:asymptotic} therefore give
+\[
+\lim_{n\to\infty}b_n^{1/n}=\mu,
+\qquad \mu^3-8\mu^2+5\mu+1=0,
+\]
+where $\mu$ is the largest root. This establishes only that growth constant for 120 avoidance. Its proposed stretched-exponential factor, power factor and amplitude remain conjectural.
+
+\begin{writenote}[Added 2 October 2026, batch~77: a second route, and a re-scoped sentence]
+The same batch delivered a direct proof of this growth constant, now in
+the collection report
+\texttt{oeis-\allowbreak sequence-\allowbreak asymptotics/\allowbreak a202061-\allowbreak ascent-\allowbreak 120-\allowbreak deficit}
+(full path in \cite{a62-a61}), Part~I (``Logarithmic deficit of 120 avoiding ascent
+sequences'', batch-77 manuscript~39): the main theorem of its section
+``Results and scope'' gives
+$\mu^ne^{-C\Phi(n)}\le b_n\le C\mu^ne^{-c\Phi(n)}$ with
+$\Phi(n)=n^{1/3}(\log n)^{2/3}$ (there the count is written $a_n$, and
+$c,C$ are unspecified constants), and its section ``An exact critical
+point'' identifies $\mu$ as the largest root of the same cubic. That proof
+uses neither the generating function of Theorem~\ref{a62:thm:gf} nor the
+Conway--Conway--Elvey Price--Guttmann comparison, so the route here
+(their Theorem~4 plus Theorem~\ref{a62:thm:asymptotic}) and the route
+there are independent second proofs of $\lim b_n^{1/n}=\mu$. The last
+sentence above, written without that report, is re-scoped as follows. The
+\emph{form} of the subexponential factor is no longer conjectural: Part~I
+of \cite{a62-a61} proves $n\log\mu-\log b_n=\Theta(\Phi(n))$ and rules out
+every equivalent $C_0\mu^n\exp(-dn^\gamma)n^g$ with $\gamma\ge1/3$, in
+particular the pure stretched exponent $3/8$ estimated numerically in
+\cite{Conway}; its later Parts determine the limit of
+$(n\log\mu-\log b_n)/\Phi(n)$ and the correction terms through every fixed
+inverse-logarithmic order. A power factor and an amplitude, that is, a
+multiplicative asymptotic equivalent for $b_n$, remain open there as here.
+Those statements are proved in \cite{a62-a61}, not in this report, and are
+equally unformalized.
+\end{writenote}
+
+\section{Reproducibility and further questions}\label{a62:sec:repro}
+The companion package provides:
+\begin{itemize}
+\item \texttt{verify\_exact.py}: exact checks of the kernel transformations, decoupler, invariant, critical factorization, trace, compact parameterization, cubic elimination, and the correctly signed Guttmann--Kot\v{e}\v{s}ovec identity;
+\item \texttt{puiseux.py}: exact number-field computation of Puiseux coefficients and arbitrary fixed-order relative corrections;
+\item \texttt{enumerate\_sequences.py}: independent direct-word verification of state transitions and initial tree counts, clearly separated from proof;
+\item \texttt{build.sh}: a reproducible PDF build from the editable \LaTeX{} source.
+\end{itemize}
+The proof does not invoke the experimentally guessed recurrence. The computer algebra verifies explicit finite identities over rational-function and number fields; the formal-series arguments are stated in the text.
+
+\begin{writenote}[Added 2 October 2026, batch~77]
+In the collection the four scripts and \texttt{build.sh} are in
+\texttt{code/}, and the seven recorded outputs and
+\texttt{requirements.txt} in \texttt{data/}, all byte-identical to the
+delivery. The list above omits the delivered \texttt{inverse.py}, which
+checks the formal residual of \eqref{a62:eq:inversegen} exactly through a
+chosen order, compares $d_1,d_2,d_3$ with Theorem~\ref{a62:thm:inverse},
+and evaluates the order-$M$ approximation at one numerical target without
+any rounding claim. \texttt{build.sh} compiles the delivered file name
+\texttt{a202062-report.tex}, which is shipped only as this
+\texttt{article.tex}; the delivered PDF is not shipped. \texttt{puiseux.py}
+and \texttt{inverse.py} write their result files beside themselves. The
+report's \texttt{README.md} gives rerun instructions on a scratch copy
+that leave the shipped files untouched.
+\end{writenote}
+
+Several questions remain useful. A direct bijective explanation of the order-seven kernel orbit could clarify the exceptional algebraicity. The joint distributions of the two state labels may admit further closed forms. Explicit numerical remainder constants would make the discrete inverse bounds directly executable at specified thresholds. The proof and its novelty should also receive conventional mathematical review before journal submission.
+
+\begingroup\raggedright
+\begin{thebibliography}{9}
+\bibitem{GK} A.~J. Guttmann and V. Kot\v{e}\v{s}ovec, \emph{A numerical study of L-convex polyominoes and 201-avoiding ascent sequences}, S\'eminaire Lotharingien de Combinatoire \textbf{87B} (2023), Article 2, 11 pp.\newline
+\url{https://www.mat.univie.ac.at/~slc/wpapers/lattpath/GuttmannKotesovec/GuttmannKotesovec.pdf}
+\bibitem{Cerbai} G. Cerbai, \emph{Pattern-avoiding modified ascent sequences}, Electronic Journal of Combinatorics \textbf{32}(3) (2025), P3.6.\newline
+\url{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v32i3p6/pdf/}
+\bibitem{Conway} A. R. Conway, M. Conway, A. Elvey Price and A. J. Guttmann, \emph{Pattern-avoiding ascent sequences of length 3}, Electronic Journal of Combinatorics \textbf{29}(4) (2022), P4.25, Theorem 4.\newline
+\url{https://www.combinatorics.org/ojs/index.php/eljc/article/download/v29i4p25/pdf/}
+\bibitem{FS} P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009, Chapters VI and VII.\newline
+\url{https://ac.cs.princeton.edu/home/}
+\bibitem{OEIS} OEIS Foundation, \emph{A202062: Number of ascent sequences avoiding the pattern 201}. Accessed 1 October 2026.\newline
+\url{https://oeis.org/A202062}
+\bibitem{a62-tai} [write] ProveIt, \emph{Transseries and inversion}, the
+transseries-and-inversion volume (\texttt{p0:thm:lambert-core},
+\texttt{p0:thm:lambert-centered}, \texttt{p0:thm:staircase}),
+\nolinkurl{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex}.
+\bibitem{a62-a61} [write] ProveIt research-report collection, the
+A202061 report: Part~I, \emph{Logarithmic deficit of 120 avoiding ascent
+sequences}, and Parts II--V (batch~77, manuscripts 39, 41, 40, 42, 38),
+\nolinkurl{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a202061-ascent-120-deficit}.
+\end{thebibliography}
+\endgroup
+\end{document}

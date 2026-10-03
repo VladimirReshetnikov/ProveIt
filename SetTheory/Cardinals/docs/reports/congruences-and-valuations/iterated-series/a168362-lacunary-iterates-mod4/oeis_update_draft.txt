@@ -1,0 +1,24 @@
+PROPOSED OEIS UPDATE FOR A168362 -- NOT SUBMITTED
+Prepared October 1, 2026. Independent review recommended.
+
+Let F(x)=sum_{j>=0} x^(2^j) and a(n)=[x^n]F^{o n}(x). For s>=1 put
+M_s=2^s-1 and define R_s modulo 2^s by
+
+  1_{d in R_s} = 1_{d=0} + sum_{i=0}^s
+    1_{ i OR ((i+d) mod 2^s) = M_s }  (mod 2).
+
+Then a(n) is even for every n>1. Moreover, a(n)=2 (mod 4) exactly for
+n in {2,3,4,6} and for n=2^r+2^s with r>s>=1, r>=3, and
+r-s (mod 2^s) in R_s. All other n>1 satisfy a(n)=0 (mod 4).
+
+The next exceptional indices after 520 are
+1028, 1032, 2056, 2064, 4100, 4104, 8200, 8208, ... .
+
+If E(X) counts exceptional indices up to X, then
+
+  E(X) = kappa*log_2(X) + O((log log X)^3),
+  kappa = sum_{s>=1} |R_s|/2^s
+        = 2.323930059308106... .
+
+A stronger array theorem holds: for every m,N>=1, [x^N]F^{o m}(x) is
+0 modulo 4 whenever N has at least three 1-bits in binary.
