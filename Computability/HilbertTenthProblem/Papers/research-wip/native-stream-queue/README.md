@@ -18,6 +18,15 @@ wrapper eliminates reverse-history witnesses through an affine map on natural
 zero sets. Its compact quadratic family still has an external source horizon;
 no fixed-arity universal arithmetic improvement follows.
 
+The [paid three-mass circuits](three_mass_arithmetic.md) turn that coordinate
+change into measured savings: **60→56** for an increment/decrement pair,
+**116→107** for three increments with native endpoints, and **114→105**
+for the corresponding compact cleaned target and clock. The
+[independent circuit review](review_three_mass_arithmetic.md) reconstructs all
+228 complete polynomial identities and counts every live gate. Both receipts
+pass root replay. The branch table and horizon remain external; the general
+87-operation universal bound is unchanged.
+
 The [mass-coordinate proof](review_three_mass_mass_coordinate_math.md) permits
 replacing each natural branch offset by `v=e+u`. Every complete natural zero
 restores `u=v−e≥0`, using the paid positive loader and the literal branch forms;

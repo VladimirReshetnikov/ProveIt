@@ -1,5 +1,16 @@
 # Continuation: universal straight-line certificates
 
+> Current batch-80 status: [all twelve arrivals](incoming_substrate_review_4e270aa46.md)
+> and their original placements have scoped proof/source reviews and root replays.
+> The new [three-mass coordinate proof](review_three_mass_mass_coordinate_math.md)
+> and [paid arithmetic compiler](three_mass_arithmetic.md) give a natural-zero
+> bijection and complete 60→56 /116→107 /114→105 examples. The
+> [independent circuit audit](review_three_mass_arithmetic.md) verifies 228 full
+> polynomial identities, paid endpoints and fair baselines. Both branch table
+> and horizon remain external; do not promote this to a universal gate bound.
+> The [auxiliary-ordinate scout](complete87_new_scout.md) is a scoped negative:
+> its twelve complete schedules reach only 88/165, dominated by 88/125.
+
 > The [ten-report intake](incoming_substrate_intake_aebfa386e.md) at
 > `ef2fc7990`/`aebfa386e` is fully reviewed (334 files/84 Python modules).
 > The [current review index](incoming_substrate_review_aebfa386e.md) links all
