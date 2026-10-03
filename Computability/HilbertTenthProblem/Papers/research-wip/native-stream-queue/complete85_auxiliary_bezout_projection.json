@@ -1,0 +1,664 @@
+{
+  "api": {
+    "complete_zero_map_fixtures_materialized": false,
+    "copies": 3,
+    "rejections": 25,
+    "warm_pins": 12
+  },
+  "degree_checks": [
+    {
+      "B": 16,
+      "coefficient_sha256": "4fe712dd227967612e7435ca0c5c231347b9dfbcf9f032ecbb3b890733ab3737",
+      "exact_degree": 175,
+      "factor_degrees": [
+        22,
+        18,
+        32,
+        60,
+        7,
+        2,
+        34
+      ],
+      "leading_coefficient": 138083545
+    },
+    {
+      "B": 32,
+      "coefficient_sha256": "f2eb21946ea378bdb7b942eff56db090446b6e7e5d1ffba8ede5339e84222359",
+      "exact_degree": 175,
+      "factor_degrees": [
+        22,
+        18,
+        32,
+        60,
+        7,
+        2,
+        34
+      ],
+      "leading_coefficient": 740505136
+    }
+  ],
+  "local": {
+    "auxiliary_graph": true,
+    "omitted_factor_correction": true,
+    "zero_only_divisibility": true
+  },
+  "numeric": {
+    "full_corrections": 32,
+    "positive_offzero_restoration_claimed": false,
+    "rational": 8
+  },
+  "packet": {
+    "entire_polynomial_identity": false,
+    "exact_degree": 175,
+    "factor_exact_degrees": [
+      22,
+      18,
+      32,
+      60,
+      7,
+      2,
+      34
+    ],
+    "fixed_numerals": [
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "free": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma",
+      "x",
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "full_positive_zero_bijection": true,
+    "ledger": {
+      "A": 37,
+      "M": 48,
+      "degree_upper": 185,
+      "operations": 85
+    },
+    "normalized": true,
+    "ordinary_input": "x",
+    "output": "polynomial",
+    "scope": "Positive ordinary input and18 positive witnesses, with exactly the inherited valid fixed-program numeral recipe. Full positive-zero bijection; offzero polynomial correction only.",
+    "source": [
+      [
+        "tau_square",
+        "*",
+        "tau_root",
+        "tau_root"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "q"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "first_next",
+        "+",
+        "first_root_base",
+        "R10b"
+      ],
+      [
+        "first_product",
+        "*",
+        "first_root_base",
+        "first_next"
+      ],
+      [
+        "norm_first",
+        "-",
+        "tau_square",
+        "first_product"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "ic2",
+        "*",
+        "i",
+        "c2"
+      ],
+      [
+        "ic22",
+        "*",
+        "ic2",
+        "ic2"
+      ],
+      [
+        "strong_difference",
+        "*",
+        "A",
+        "ic22"
+      ],
+      [
+        "R16",
+        "*",
+        "A",
+        "strong_difference"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "w"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "transport_quotient",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "L16",
+        "strong_difference"
+      ],
+      [
+        "auxiliary_Tf",
+        "*",
+        "auxiliary_quotient",
+        "f"
+      ],
+      [
+        "auxiliary_Tf_minus_one",
+        "-",
+        "auxiliary_Tf",
+        1
+      ],
+      [
+        "auxiliary_c_Tf",
+        "*",
+        "R10a",
+        "auxiliary_Tf_minus_one"
+      ],
+      [
+        "auxiliary_R_f2",
+        "*",
+        "r_lhs",
+        "L16"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "auxiliary_c_Tf",
+        "auxiliary_R_f2"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "polynomial",
+        "-",
+        "seven_units",
+        1
+      ]
+    ],
+    "whole_positive_orthant_map": false,
+    "witnesses": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ]
+  },
+  "parent_pins": {
+    "../../1980/PELL_RELAXED_AUXILIARY_PROOF.md": "9849260ea2776d26e9b615e0e1ed6fcd9b1c9e0e4cedb6cd8aaa2c0346ecbc90",
+    "complete113_asymmetric_retained109.md": "cee18b24b50fcea5f3cd6fa9fb20f8dbdd5ae9f5e99107e24ffff4e66b3305f0",
+    "complete75_asymmetric_scale_tradeoffs.md": "3fb7aad219cc05570531c2e806bd4f4998681777963063761106400514a146c2",
+    "complete75_coupled_index_linear88.md": "1533ef2411347335704f46a8a1020d8d46dea1147b03e9c9d35684a687172e39",
+    "complete75_normalized_strong87.md": "9c1cfa3ccd5a71c127c8e6aa341fad6e857788d708129e04ea177dbbcdccfb3b",
+    "complete75_reversed_auxiliary89.md": "4eddb6627b6261b1d8f8617006e443908574c0b7b2d3fdda15ff85dc86bd9700",
+    "complete86_factored_first_root.json": "2dfe46fe9c5537ff51eb3c542806c58242238363e6018f9daab7eabf0b6fe61e",
+    "complete86_factored_first_root.md": "9f2b50449e0724e523e9dd5d022f229b77504976f23ee52ca2917cf11ceb322b",
+    "complete86_factored_first_root.py": "29cf4100b846bcbabb05185550b7d9ead6b572746048b94998a13c83eeaff40f",
+    "complete86_transport_quotient_shear.json": "77ec7894c68f16e8d2dbb48f7c444bf7ab5e2c08f895bdad877f61b8c9c96efc",
+    "complete86_transport_quotient_shear.md": "fd0254d6cb0a35686cd824e3f29384c9aed8141444256ce0a9442133a2785541",
+    "complete86_transport_quotient_shear.py": "c1cb668ae5538d168652c07627c00255d9c00a7d6373feb45da8c7c3806c9c45"
+  },
+  "scope": "Normalized parent only; complete literal85=48M37A and18 positive witnesses. Full offzero correction, not same-polynomial equality. Positive-zero bijection and uniform exact degree175 are proved in the companion; no giant native Pell tuple is materialized.",
+  "source_sha256": "3f619205a670b420312ba31d52b89cd8c87c169763ddf6c317c2db44ef0698f0",
+  "status": "PASS",
+  "structural": {
+    "complete_product_correction": true,
+    "retained_factor_identities": 7,
+    "retained_instructions": 79
+  }
+}

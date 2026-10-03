@@ -14,13 +14,31 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
 The established arithmetic bounds are **74 operations for a complete
-certificate and 86 for one universal polynomial**. The
+certificate and 85 for one universal polynomial**. The
 [factored first-norm certificate](Papers/research-wip/native-stream-queue/complete74_factored_first_norm.md)
 costs **40M+34A**, including a version with **20 positive witnesses and nine
 comparisons**. It replaces `(E²+X)(kY)²` by `L(L+k)`, with E=XY and
 L=E(kY), preserving every complete comparison and the full SOS polynomial
 on all supplied tuples. The fully paid SOS version costs100 operations
 at exact degree84. Independent source and mathematical reviews pass.
+
+The [auxiliary quotient projection](Papers/research-wip/native-stream-queue/complete85_auxiliary_bezout_projection.md)
+lowers the complete universal polynomial to **85=48M+37A operations**, with
+**18 positive witnesses and uniform exact degree175**. It replaces the
+positive auxiliary pair o,j by one positive T and computes
+`V=c(Tf−1)−Rf²`, retaining the paid f-square. A norm gap forces V>0;
+restored auxiliary congruences and the retained ratio recover the positive
+index sign before the parent compiler theorem is invoked. This gives a
+bijection of full positive integer zero sets at the same ordinary input
+and fixed program numerals. Off zeros the full polynomials obey an explicit
+correction, rather than an equality at unchanged tuples.
+The [independent source review](Papers/research-wip/native-stream-queue/review_complete85_auxiliary_bezout_source.md)
+reconstructs all85 gates and expands the uniform leading form; the
+[mathematical review](Papers/research-wip/native-stream-queue/review_complete85_auxiliary_bezout_math.md)
+checks the noncircular positivity, rank, sign and inverse-divisibility proof.
+Author and both independent reviews pass fresh installed exact replay.
+The comparison-system bound remains74. Earlier entries retain their
+historical counts; this result supersedes the minimum86 polynomial bound.
 
 The
 [factored first-root construction](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
