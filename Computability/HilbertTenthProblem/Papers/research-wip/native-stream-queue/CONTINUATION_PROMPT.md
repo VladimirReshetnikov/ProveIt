@@ -12,6 +12,11 @@
 >252 package-qualified member paths and82 Git-only members; six complete roots
 > with334 files restore exactly. Preserve corrected-signal precedence over its
 > superseded archive. Typeset article revisions need separate semantic audits.
+> [Smooth83abbd7fa plus reciprocal7ec2b5a2a](review_smooth_typesetting_83abbd7fa.md)
+> and [clock/polynomialc5f6a3219/c03d95fe6](review_typesetting_c03d95fe6.md)
+> now pass those bounded audits. Three presentation issues have separate,
+> privately verified patches; applying them requires PDF rebuilds. Original
+> formulas/proofs and their domain/horizon limitations remain intact.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;

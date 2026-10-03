@@ -1,0 +1,28 @@
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/smooth-diophantine-finalizers/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/smooth-diophantine-finalizers/README.md
+@@ -289,7 +289,7 @@
+ mkdir -p r13/code
+ for f in smooth_compiler counter_frontend verify; do
+   cp $R/code/13-smooth-quartic-$f.py r13/code/$f.py; done
+-(cd r13 && uv run --no-project --with sympy==1.14.0 python code/verify.py)
++(cd r13 && uv run --no-project --python 3.13.5 --with sympy==1.14.0 python code/verify.py)
+ # writes r13/examples/*.json and r13/verification/results.json
+ for f in countdown_T3 inconsistent results; do
+   d=examples; [ $f = results ] && d=verification
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/smooth-diophantine-finalizers/article.tex
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/smooth-diophantine-finalizers/article.tex
+@@ -363,9 +363,11 @@
+ combination was not completed. The construction is presented as a research
+ result with proofs, not as a certified world-first theorem.
+ 
+-\wtag\ [Variable count: Poonen's lemma adds one variable to a single
+-equation $f$ and gives degree $2\deg f$ and smoothness over~$\Q$; applied to
+-$f=\sum_if_i^2$ for a quadratic system it would give degree eight. The price
++\wtag\ [Variable count: Poonen's Lemma~4.1 assumes a nonconstant
++polynomial $f$, adds one variable, and gives degree $2\deg f$ and smoothness
++over~$\Q$. For a quadratic system with nonconstant $f=\sum_i f_i^2$, this
++gives degree at most eight, exactly eight when some residual has degree two.
++The price
+ here of smoothness over all of~$\Z$, with an explicit certificate, degree
+ four and a natural-zero bijection, is four further variables. The
+ Hilbert's-tenth review~\cite{review13} also read Poonen's Lemma~4.1 and
