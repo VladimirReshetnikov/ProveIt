@@ -1,0 +1,55 @@
+--- a/code/compiler.py
++++ b/code/compiler.py
+@@ -120,7 +120,10 @@
+         if self.s < 2:
+             raise ValueError("this implementation requires at least two symbols")
+         table = tuple(self.table)
+-        accepting = frozenset(self.accepting)
++        accepting_values = tuple(self.accepting)
++        for value in accepting_values:
++            nat(value, "accepting symbol")
++        accepting = frozenset(accepting_values)
+         if len(table) != self.s ** 3:
+             raise ValueError("rule table must have exactly s**3 entries")
+         for a in table:
+@@ -169,10 +172,36 @@
+     feature_count: int
+ 
+     def __post_init__(self) -> None:
+-        # Freeze a deep copy rather than retaining mutable caller-owned mappings.
+-        object.__setattr__(self, "residuals", MappingProxyType({
+-            label: MappingProxyType(dict(expr)) for label, expr in self.residuals.items()
+-        }))
++        if type(self.rule) is not Rule:
++            raise TypeError("a system requires a validated Rule")
++        word = validate_word(self.rule, self.word)
++        names = tuple(self.names)
++        if any(type(name) is not str for name in names) or len(set(names)) != len(names):
++            raise ValueError("system variable names must be distinct strings")
++        nat(self.feature_count, "feature count")
++        # Check descriptors before exact arithmetic can encounter a float, and
++        # freeze every caller-owned container used by this system.
++        rows = {}
++        for label, expr in self.residuals.items():
++            if type(label) is not str:
++                raise TypeError("residual labels must be strings")
++            terms = {}
++            for key, coefficient in expr.items():
++                if (type(key) is not tuple or len(key) != 2
++                        or type(key[1]) is not tuple):
++                    raise ValueError("a term needs an exponent and a variable tuple")
++                exponent, variables = key
++                nat(exponent, "residual exponent")
++                if (any(type(name) is not str or name not in names for name in variables)
++                        or variables != tuple(sorted(variables))):
++                    raise ValueError("residual variables must be sorted interface names")
++                if type(coefficient) is not int:
++                    raise TypeError("residual coefficients must be exact integers")
++                terms[key] = coefficient
++            rows[label] = MappingProxyType(terms)
++        object.__setattr__(self, "word", word)
++        object.__setattr__(self, "names", names)
++        object.__setattr__(self, "residuals", MappingProxyType(rows))
+ 
+     def checked_witness(self, witness: Mapping[str, Mapping[int, int]]) -> dict[str, Poly]:
+         if set(witness) != set(self.names):
