@@ -1,5 +1,9 @@
 # WIP: native queue streams and research continuation
 
+[All twelve batch-80 archives](incoming_substrate_review_4e270aa46.md) have
+completed their scoped reviews and root replays. The inventory pins 388
+published member occurrences; the complete universal polynomial bound remains 87.
+
 The [batch-80 correction audit](review_batch80_corrected.md) verifies the new
 Tree Calculus, reset-net and sparse-lattice corrected packages at `4e270aa46`.
 The declared API repairs are present; every original report and mathematical
