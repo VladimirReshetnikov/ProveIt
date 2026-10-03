@@ -556,6 +556,56 @@ audited the written Parts; the report READMEs link those reviews, and the
 shipped programs are the delivered bytes, with the tree's patches not
 applied. No manuscript refutes a repository claim.
 
+Batch 80, twelve archives in one arrival commit, was placed in three
+clusters and opened no report in this collection; its third cluster became
+the surreal collection's new report
+[`surreal-well-orders`](../../../../Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders).
+Three archives are their authors' corrected code editions of batch-79
+packages: each repairs the input-domain defect that the Hilbert's-tenth
+research tree's review found in the shipped Python of
+`canonical-diophantine-certificates` Part XIX,
+`quadratic-orthant-certificates` Part VI and
+`signal-machine-collision-certificates` Part IV, with a guard equivalent to
+the review's patch and a new regression test. Their manuscripts are
+byte-identical to batch 79, so nothing printed changed; the corrected files
+supersede the batch-79 code and replace it under the same names (the old
+bytes stay in the placement commit). Four further manuscripts became Parts
+V–VI of
+[`signal-machine-collision-certificates`](hilbert-tenth-problem/signal-machine-collision-certificates)
+(conserved-mass thresholds): with many weight-one symbols, a universal
+reversible two-counter machine compiles to one fixed reversible cellular
+automaton at conserved mass three, so three units suffice for undecidable
+pattern occurrence, and, by inverse execution, for exact-pair reachability;
+with a single unit symbol, masses three and four stay decidable, so
+integer-state number-conserving automata need at least five particles.
+Duplicates (Vladimir asked to watch for them): one archive,
+`Single_Unit_Three_Mass_Decidability.zip`, is superseded by its attribution
+revision (the "(1)" copy, which credits earlier work and changes no
+mathematics, program or receipt), and nothing of it was placed. The
+three-mass manuscript re-proves the report's mass-two theorem
+(`smc:sl:thm:two`, Part IV) by the same argument, printed as a pointer, and
+its receipt is a byte-identical copy of Part IV's, not staged again; the
+exact-target manuscript is a declared extension of it whose five vendored
+programs are byte-identical to its own and are shipped once; the
+single-unit manuscript reruns Part IV's semilinearity architecture one mass
+higher, and the four-mass manuscript restates the single-unit ingredients,
+both marked with pointers. The four surreal manuscripts are independent
+texts, although two pairs share an archive name: none supersedes another.
+The core they prove up to four times (universality of `No`, the
+global-choice equivalence, interpolating cores, diagonal non-coding,
+binary-class equimorphism, inaccessible models) is printed there once, with
+the other proofs as routes or notes, and their set-sized layer, which
+re-proves
+[`lexicographic-well-orderings-of-reals`](ordinals-and-order-types/lexicographic-well-orderings-of-reals),
+is printed as pointers to it; that report gained a dated note, because one
+of the surreal manuscripts answers its question "Other ground orders" in
+part. Five rule and certificate exports of the three-mass manuscript
+(20.8 MB) were excluded with a rebuild recipe. The Hilbert's-tenth research
+tree reviewed all twelve archives before the writes, authenticated the
+placements and audited the written texts; its README patch for the three
+corrected-code Parts was applied in `7969f7168`. No manuscript refutes a
+repository claim.
+
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.

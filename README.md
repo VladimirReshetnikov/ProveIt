@@ -103,7 +103,7 @@ requirement to build Lean one module at a time.
   infinite ideal as kernel, the units are `±1`, every surreal has a unique
   omnific floor, integer polynomials have only their ordinary integer roots,
   and every nonzero finite quotient is `ℤ/nℤ`.  An audit checks that every
-  declaration uses only the standard axioms.  Beside it, 65 research reports
+  declaration uses only the standard axioms.  Beside it, 66 research reports
   on `No`, `No[i]` and `Oz` — among them proposed answers to published
   questions of Ehrlich–Kaplan and Kaplan–Krapp–Serra, and Diophantine
   geometry over `Oz` — with a ledger mapping their statements to Lean.
