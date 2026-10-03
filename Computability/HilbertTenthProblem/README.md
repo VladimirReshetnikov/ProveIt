@@ -67,6 +67,18 @@ polynomials with exact integer coefficients. All three installed receipts
 pass fresh replay. This rules out further gains only within that specified
 grouping family.
 
+The [literal asymmetric74 transfer](Papers/research-wip/native-stream-queue/complete74_asymmetric_scale_transfer.md)
+changes only X=wq³ to X=wq in the actual raw30, positive22 and signed20
+sources, keeping Y=sq³. Their comparison costs remain74 and full SOS costs
+130/106/100, while exact degrees fall to **44/68/68**. The inverse
+w_old=w_new/q² is proved integral and positive at every positive zero
+using the native equations before invoking the selected symmetric theorem;
+the signed20 argument does not assume omitted input positivity early.
+The [mathematical review](Papers/research-wip/native-stream-queue/review_complete74_asymmetric_scale_math.md) and
+[independent source/API review](Papers/research-wip/native-stream-queue/review_complete74_asymmetric_scale_source.md)
+pass, as do all three installed fresh receipts. This is a complete
+positive-zero transfer on valid compiler slices, with no operation saving.
+
 The [retained-index and quotient shift census](Papers/research-wip/native-stream-queue/complete74_index_transport_affine_scout.md)
 and [independent review](Papers/research-wip/native-stream-queue/review_complete74_index_transport_affine_scout.md)
 check243 complete schedules across the raw30, positive22 and signed20 sources.

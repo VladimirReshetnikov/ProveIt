@@ -63,6 +63,18 @@ integer coefficients. Author and both independent receipts pass fresh replay.
 This closes missing metadata and tied schedules in that exact finite grammar;
 it is not an unrestricted circuit lower bound or a new universal bound.
 
+The [literal asymmetric74 transfer](complete74_asymmetric_scale_transfer.md)
+changes only X=wq³ to X=wq in the actual raw30, positive22 and signed20
+sources, keeping Y=sq³. Their comparison costs remain74 and full SOS costs
+130/106/100, while exact degrees fall to **44/68/68**. The inverse
+w_old=w_new/q² is proved integral and positive at every positive zero
+using the native equations before invoking the selected symmetric theorem;
+the signed20 argument does not assume omitted input positivity early.
+The [mathematical review](review_complete74_asymmetric_scale_math.md) and
+[independent source/API review](review_complete74_asymmetric_scale_source.md)
+pass, as do all three installed fresh receipts. This is a complete
+positive-zero transfer on valid compiler slices, with no operation saving.
+
 The [retained-index and quotient shift census](complete74_index_transport_affine_scout.md)
 and [independent review](review_complete74_index_transport_affine_scout.md)
 check243 complete schedules across the raw30, positive22 and signed20 sources.
