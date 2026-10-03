@@ -267,6 +267,13 @@ checks3,249 fully charged main/input norm schedules with exact full-polynomial
 identities. The best changed schedule costs88; this finite family does not
 improve87. It is distinct from the earlier product-of-norms composition scout.
 
+The [auxiliary-ordinate coordinate scout](complete87_new_scout.md) checks twelve
+complete schedules for the two positive-zero coordinate maps `y=e±V`.
+The best costs **88=48M+40A**, with exact degree 165; the established 88/125
+point dominates it. Full polynomial substitution identities, a uniform
+positive-zero bijection proof and root receipt replay pass. This finite family
+gives no improvement to the 87-operation universal polynomial.
+
 The [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
 adds 106 complete schedules involving the strong norm: two pairings, all ordered
 triple compositions, and a common-c factorization. Their best costs are 91, 92
