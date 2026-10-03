@@ -35,6 +35,13 @@
 > with seven explicitly mapped deduplicated blocks and 124 unchanged companions.
 > Its separate patch qualifies natural-only duration padding and fixes the
 > scope-metadata description; root receipt and private git-apply checks pass.
+> The [final J3 transfer at 0ac86bb58](review_canonical_j3_0ac86bb58.md) preserves
+> 72 formal blocks, 117 displays, 958 inline formulas and 20 companions. Its
+> separate patch restores queue resource/drift guards, distinguishes ordinary
+> existential Pow elimination from unique fibers, and qualifies the arbitrary-
+> power storage question as only partly answered. Root replay/private patch
+> checks and the independent sandpile comparison read pass. Later revisions
+> still need their own audit; these checks do not cover future commits.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;

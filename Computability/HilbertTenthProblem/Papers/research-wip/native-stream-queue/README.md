@@ -32,6 +32,12 @@ explicit reuse of seven source blocks and preserves 124 companion paths. A
 separate patch qualifies the real-witness claim for duration padding and
 corrects the description of an emitted metadata difference.
 
+The [final J3 queue/sandpile integration](review_canonical_j3_0ac86bb58.md)
+preserves all source theorem blocks and its 20 companion files. Its new queue
+summaries need resource/drift guards and narrower claims about power elimination
+and the open storage question. The tested patch preserves the original theorems;
+root replay and the independent sandpile comparison check pass.
+
 The [existential congruence variant](presburger_congruence_existence15.md)
 further lowers the complete atom to **14 = 5M+9A** with five natural witnesses.
 Its truth output is exact, but its witness fibers are infinite. The separate
