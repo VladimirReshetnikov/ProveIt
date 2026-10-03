@@ -239,8 +239,19 @@ and a five-branch example from 840 to 456. Complete emitted gate lists,
 pay the whole evaluation, including finalization; the horizon remains external.
 
 
-The [U15 loader offset rewrite](u15_packed_loader_offset506.md) saves a further
-addition, giving complete ordinary-input points **506/4881, 508/3120,
+The [U15 consumed-affine rewrite](u15_packed_consumed_affine505.md) lowers the
+complete ordinary-input frontier to **505/4881, 507/3120, 509/2116, 511/1936**
+(operations/exact degree), with 209 multiplications and 87 positive witnesses.
+It saves one addition by rescheduling the controller's actual consumed forms;
+raw input drops to **318 grouped /320 ungrouped**. Every complete polynomial
+and all input/unbounded-duration obligations are unchanged. The
+[independent review](review_u15_consumed_affine505.md) derives the affine forms
+from the literal U15 table and verifies all eight complete sources. Both
+receipts pass fresh root replay. This improves the U15 route; the global
+87-operation universal polynomial is unchanged.
+
+The preceding [U15 loader offset rewrite](u15_packed_loader_offset506.md) saved
+one addition, giving complete ordinary-input points **506/4881, 508/3120,
 510/2116, 512/1936** (operations/exact degree). Each entire polynomial and all
 87 positive witnesses remain unchanged. The [independent review](review_u15_loader_offset506.md)
 proves equality of all eight emitted sources and transfers the exact degrees;

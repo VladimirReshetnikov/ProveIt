@@ -8,6 +8,13 @@
 > [independent circuit audit](review_three_mass_arithmetic.md) verifies 228 full
 > polynomial identities, paid endpoints and fair baselines. Both branch table
 > and horizon remain external; do not promote this to a universal gate bound.
+> Current [complete U15 sources](u15_packed_consumed_affine505.md) cost
+> **505/4881,507/3120,509/2116,511/1936**, all with209M and87 positive witnesses.
+> Raw schedules cost318/320. The controller closure loses1A with exact
+> same-coordinate polynomial identity, following the earlier loader1A saving.
+> [Independent literal-table and complete-source review](review_u15_consumed_affine505.md)
+> and both fresh root receipts pass. Only eight emitted forms are claimed;
+> no new whole-partition search or global87 improvement is asserted.
 > The [auxiliary-ordinate scout](complete87_new_scout.md) is a scoped negative:
 > its twelve complete schedules reach only 88/165, dominated by 88/125.
 
@@ -74,8 +81,8 @@
 > paid fused accepted-NAND predicate costs 17/21/15 in those modes. Its separate
 > [independent circuit audit](review_parity_truth_specialization.md) and root
 > writer replay pass. Keep parity-only, already-evaluated-input and natural-witness scope.
-> Four [exact U15 source rewrites](u15_packed_cross_projection507.md) now save
-> 2M+2A, giving ordinary schedules **507/4881,509/3120,511/2116,513/1936**
+> Earlier, four [exact U15 source rewrites](u15_packed_cross_projection507.md) now save
+> 2M+2A, giving the historical ordinary schedules **507/4881,509/3120,511/2116,513/1936**
 > and raw319. Every comparison and the whole polynomial are identical to the
 > respective pinned parent. The 87 positive witnesses, complete input loader,
 > unit-sign proof and unbounded duration are retained. Eight complete forms,
