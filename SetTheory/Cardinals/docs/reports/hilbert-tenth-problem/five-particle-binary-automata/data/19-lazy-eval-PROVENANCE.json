@@ -1,0 +1,50 @@
+{
+  "status": "portable adaptation",
+  "evaluator": {
+    "sha256": "42e8aa65c05fcf373a03a02be51ebb89a4fdcb1f1070ad776ffe1e8e99049c61",
+    "adaptation": "none; byte-preserved"
+  },
+  "compiler": {
+    "sha256": "f95a6028c9d3cc6f8b0b497cfc0cad68104da6d70e55205df04ad234e5d0c76f",
+    "adaptation": "none; byte-preserved; checked before execution by evaluator"
+  },
+  "source": {
+    "sha256": "fa61d06178d718511232a80a05e02192d940fde3c273f0c202f0623253b2ade3",
+    "uncompressed_bytes": 32034272,
+    "gzip_sha256": "2e21ed646509581a26503307e7af092076c95fca2125d683bd0a8775230e0757",
+    "provenance": "Report 17 optimized source.json",
+    "adaptation": "none; exact bytes compressed losslessly with gzip mtime 0"
+  },
+  "benchmark": {
+    "original_sha256": "d65efe1139c2878db5a28af719729a67578e14d51c95eb402a5bf734e61fccef",
+    "portable_sha256": "610ae5a9fb0de0e250d1326dfdf07c7a3944d8439b9b1dfa9a7ae58f9b6205f8",
+    "change": "Replace environment-specific absolute SOURCE path with SOURCE=HERE/'source.json'. Replay expands the verified source beside the script; benchmark algorithms and hash pin are unchanged."
+  },
+  "receipts": {
+    "original": "evidence contains original producer normal and optimized receipts; timings are environment-specific",
+    "replay": "fresh replay receipts are produced outside these byte-preserved originals"
+  },
+  "references": {
+    "report15.pdf": "90e8a6e12cbe29e4e3dec4aecad02550ca90e575cb85957d23f421503b6c3596",
+    "report17.pdf": "3fe7d028cdde0adff57f74ca2182a9c1d655aaec31949c2d3983d40175117c2a"
+  },
+  "producer_manifest_sha256": "b73fe2a930732fbb5310226004cc508ad29f2c6c03ab03bf2942dab10453fdd6",
+  "packaging_checks": {
+    "package_checks.py": "New exact-type/API, immutability, dependency-before-execution and source-count checks; no evaluator changes.",
+    "check_startup_geometry.py": "New independent explicit expected-output check of all128 outputs; no benchmark or evaluator changes.",
+    "release_checks.py": "New temporary-copy integrity inventory, symlink, output-dir, and bytecode tests."
+  },
+  "portable_replay": {
+    "status": "passed",
+    "python": "3.12.14",
+    "platform": "Linux",
+    "execution_modes": [
+      "normal",
+      "optimized"
+    ],
+    "scripts_per_mode": 6,
+    "first_extracted_replay_seconds": 147.6122550059954,
+    "deterministic_trace_bytes_match": true,
+    "source_expansion_byte_count": 32034272
+  }
+}

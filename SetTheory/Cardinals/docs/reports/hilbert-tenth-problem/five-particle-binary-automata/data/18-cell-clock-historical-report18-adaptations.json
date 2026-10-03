@@ -1,0 +1,1153 @@
+{
+  "scope": "Exact reverse-verifiable portability edits. Original bytes are reconstructed and checked against mandatory sealed producer manifests. All formula/traversal/check bodies are retained; generated receipts are recreated separately.",
+  "adaptations": [
+    {
+      "origin": "report17",
+      "original_file": "PORTABILITY.md",
+      "portable_file": "PORTABILITY.md",
+      "original_sha256": "022c054521193ff7feb63bd8f0d6b35d4a0b070823fc5c936d061540d11a5b37",
+      "portable_sha256": "83a85271e5db3f184e2dda9981600c39201070619a68ee4e64fac8e7fa6e9edb",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            132,
+            198
+          ],
+          "portable_lines": [
+            "\n",
+            "## Report 18 extension: cellular-clock domination\n",
+            "\n",
+            "The preceding sections describe the retained Report 17 package. Report 18\n",
+            "changes no machine table, builder, loader, compiler reference, or inherited\n",
+            "proof. The new proof `cellular-clock/CA_CLOCK_DOMINATION.md` and final independent\n",
+            "`cellular-clock/audit/AUDIT.md` are copied byte-for-byte from their sealed\n",
+            "producer package. The shared-offset proof in `certificate-reference/` is also\n",
+            "byte-identical and mandatory-pinned; it is reference-only, with no certificate\n",
+            "code or universal polynomial replay claim.\n",
+            "\n",
+            "All six new stages are mandatory in both fresh replay modes. There are no\n",
+            "optional external-file checks, sibling-directory fallbacks, or skipped audit\n",
+            "programs. Both startup comparisons use the same pinned regenerated-baseline\n",
+            "route as the inherited graph audit. The new independent audit still performs\n",
+            "its own graph reconstruction, prime-clock accounting, and row traversal; the\n",
+            "baseline generator only materializes its already pinned input tables.\n",
+            "\n",
+            "Changes to original cellular-clock programs are limited to the following:\n",
+            "\n",
+            "- `clock_verify.py`: inject package-local mandatory pin verification and require\n",
+            "  the bundled source root; the default source points to the package parent\n",
+            "- `compare_empty_startup.py`: receive the pinned regenerated baseline in a\n",
+            "  context manager and use the bundled optimized source; all clock logic remains\n",
+            "- `audit/check_ca_clock.py`: local pinned source/baseline inputs; retain and check\n",
+            "  all five generated graph/source files for both machines; use bundled pinned\n",
+            "  compiler/ledger files instead of missing duplicate baseline copies; original\n",
+            "  external manifest reads are replaced by the mandatory manifest stage. Input\n",
+            "  receipt keys are stable logical names, never private absolute paths\n",
+            "- `audit/check_proof_corollaries.py` and `audit/check_old_new_startup.py`: local\n",
+            "  pinned inputs, regenerated baseline context, stable output names, and stable\n",
+            "  source labels for temporary baseline paths\n",
+            "- All independent audit receipts replace `python_optimization` with a shared\n",
+            "  `mode_policy` statement. The aggregate records actual interpreter flags and\n",
+            "  independently requires normal/optimized byte agreement\n",
+            "- `verify_manifests.py`: replace external full-workspace reads with mandatory\n",
+            "  locally pinned source-manifest identities, the relevant scientific-byte\n",
+            "  comparisons, complete retained Report 17 inventory checks, reversible edit\n",
+            "  verification, and seven regenerated baseline-output comparisons. Packaging\n",
+            "  separately verified every entry of the original inventories; this historical\n",
+            "  inspection is explicitly distinguished from portable replay\n",
+            "\n",
+            "`run_checks.py` extends the inherited offline harness from 14 to 20 stages and\n",
+            "21 to 28 canonical output files. It also negatively tests absence and corruption\n",
+            "of every mandatory scientific-input pin, including all new proof/reference/source\n",
+            "manifest pins. Three unchanged producer outputs (the main clock receipt, old/new\n",
+            "clock receipt, and full five-counter traces) must match their sealed producer\n",
+            "manifest hashes after each live replay. `verify_pins.py` extends the\n",
+            "immutable pin catalog, including saved row traces and the target ledger used by\n",
+            "new checks. `write_manifest.py` changes the release label. `README.md`,\n",
+            "`PORTABILITY.md`, and `PROVENANCE.json` explain the new scope. Mathematical\n",
+            "formula and traversal bodies are unchanged in all ported scientific scripts.\n",
+            "\n",
+            "`historical/report18-adaptations.json` gives exact original/portable hashes and\n",
+            "reverse line edits for all adapted inherited or producer scripts/documents.\n",
+            "The manifest checker reconstructs original bytes from those edits and requires\n",
+            "their identities to match the pinned original manifest. Generated receipts are\n",
+            "separately recreated and compared by the aggregate, rather than represented as\n",
+            "source-code edits. The final outer manifest binds all adapted/current bytes.\n",
+            "These hashes are identity checks, not digital signatures or a formal proof.\n",
+            "\n",
+            "Original producer manifests are retained byte-for-byte as historical records;\n",
+            "they include hashes for excluded logs and old output files, but none of those\n",
+            "logs or absolute-path receipts is delivered or required. The unchanged proof\n",
+            "and audit notes may discuss those producer-time checks; current executable\n",
+            "coverage is the aggregate, not an inference from their historical prose.\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    },
+    {
+      "origin": "report17",
+      "original_file": "PROVENANCE.json",
+      "portable_file": "PROVENANCE.json",
+      "original_sha256": "9e33ed360f5bdf7f3485e01fd0e538f302c710d0c2ae8de946fcf776f30fbd33",
+      "portable_sha256": "18dd4dcb0e68fcf3f7a004676893ca65805e70fec5f3628dc8784275dfe03640",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            55,
+            73
+          ],
+          "portable_lines": [
+            "  },\n",
+            "  \"report18_extension\": {\n",
+            "    \"package\": \"cellular-clock-domination-portable-reproducibility\",\n",
+            "    \"source_identity\": \"All seven optimized machine output files, generator and loader are unchanged from Report17\",\n",
+            "    \"producer_package\": \"cellular-clock-domination-20261003\",\n",
+            "    \"producer_manifest_sha256\": \"8f4903cd2aa96cd81351c5dce841f756bf92f1251dac28ad9b73b5138ef25cc9\",\n",
+            "    \"report17_manifest_sha256\": \"b0af9fe552f4c49abfd6a2fd2b0cce9ca3ac2fb735501af383b6d12129a741ff\",\n",
+            "    \"proof_files\": {\n",
+            "      \"cellular-clock/CA_CLOCK_DOMINATION.md\": \"f7385dc48b48fb4f3f95ca082477f36184d6b9cd83f8a97962e9edcc75f94c4c\",\n",
+            "      \"cellular-clock/audit/AUDIT.md\": \"478ac5263c76f7bfcf9511b7980f7514737c31996fa402b9118eb5f7492ca630\",\n",
+            "      \"certificate-reference/SHARED_OFFSET_PROOF.md\": \"ad12a61e02abe49c121ea3a838381eb780fe1803f2126b453287801025c4d99d\"\n",
+            "    },\n",
+            "    \"shared_offset_reference\": \"Byte-identical inherited proof only: finite-horizon CA timing residual, degree at most two, one extra variable and one square. No certificate program or universal polynomial is executed.\",\n",
+            "    \"adaptation_provenance\": \"historical/report18-adaptations.json contains reverse-verifiable exact edits tied to mandatory original source-manifest hashes. Generated receipts are recomputed in both modes.\",\n",
+            "    \"baseline_policy\": \"Regenerate the seven original baseline outputs using the pinned original builder; all seven historical hashes are mandatory. Do not read sibling releases.\",\n",
+            "    \"replay\": \"All20 stages mandatory in fresh isolated normal and optimized copies; all28 outputs must agree with each other and canonical files. No optional skipped checks.\",\n",
+            "    \"excluded\": \"Development logs, caches, private absolute paths, duplicate baseline table archive, third-party PDFs or text scans\",\n",
+            "    \"limitations\": \"Exact theorem-derived CA clocks are not CA execution. Human-readable proofs and finite corroboration are not proof-assistant formalization or unrestricted optimality.\"\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    },
+    {
+      "origin": "report17",
+      "original_file": "README.md",
+      "portable_file": "README.md",
+      "original_sha256": "106c124e395ae3315b4601226b0ba85140b699cb802fd939831c0d27a39de94d",
+      "portable_sha256": "7e9be3e83574d468b845e01aa180afdc01e2d9df5acf301cf4d8f1254da73ecd",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            0,
+            1
+          ],
+          "portable_lines": [
+            "# Report 18: portable cellular-clock domination reproducibility\n"
+          ],
+          "original_lines": [
+            "# Report 17: portable startup-optimization reproducibility\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            2,
+            5
+          ],
+          "portable_lines": [
+            "This package extends the sealed Report 17 offline replay with the complete\n",
+            "cellular-clock proof, independent audit, and **six mandatory executable stages**.\n",
+            "The optimized literal source is unchanged: SHA-256\n"
+          ],
+          "original_lines": [
+            "The literal source is exactly the new optimized machine, SHA-256\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            6,
+            7
+          ],
+          "portable_lines": [
+            "There are 122,622 controls and 141,561 literal branches.\n"
+          ],
+          "original_lines": [
+            "Only four incoming history-label pairs change at the five-counter layer.\n",
+            "All three-counter data operations and the complete clean-loader domain remain.\n",
+            "The expanded source still has 122,622 controls and 141,561 literal branches.\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            10,
+            14
+          ],
+          "portable_lines": [
+            "Use Python 3.9+ on a Unix-like system (tested with Python 3.12). Only the Python\n",
+            "standard library is required. No network, sibling release, paper PDF, third-party\n",
+            "text extraction, or absolute research-data path is required. Allow about 0.5 GB\n",
+            "of temporary disk and 1 GB of free memory. From this extracted directory run:\n"
+          ],
+          "original_lines": [
+            "The replay was tested with Python 3.12 on Linux; the scripts use Python 3.9+\n",
+            "standard-library features and LF text output (use a Unix-like environment).\n",
+            "No package installation,\n",
+            "network access, external release, primary-paper PDF, or user-specific path is\n",
+            "needed. Allow about 0.5 GB of temporary disk and 1 GB of free memory. Run from\n",
+            "this directory after extracting the complete release:\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            20,
+            25
+          ],
+          "portable_lines": [
+            "All 20 stages run in **separate fresh normal and `-O` copies**, using isolated\n",
+            "Python startup and the inherited offline audit guard. Every mandatory scientific\n",
+            "input has a known SHA-256 pin. All seven baseline tables are regenerated from the\n",
+            "original pinned generator and compared byte-for-byte with mandatory historical\n",
+            "identities. The old 54 MB table pair is not duplicated in the delivery.\n"
+          ],
+          "original_lines": [
+            "The aggregate checks all known scientific-input SHA-256 pins, verifies the exact\n",
+            "manifest inventory, then runs every verification stage in **separate fresh\n",
+            "normal and `-O` copies**, with isolated Python startup. It checks identical\n",
+            "normal/optimized results, canonical receipt/trace equality, and unchanged\n",
+            "non-generated inputs. Corrupt-input and missing-baseline-pin negative controls\n",
+            "must fail. Network construction and external-data reads are explicitly denied\n",
+            "and negatively tested. No delivered file is modified and no logs or caches are\n",
+            "created in the supplied package. The final JSON printed to the terminal is the\n",
+            "fresh replay result. `replay-receipt.json` records the packaging-time run of this\n",
+            "same harness. Runtime duration varies by Python version and computer.\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            26,
+            35
+          ],
+          "portable_lines": [
+            "The aggregate compares all 28 generated receipts/traces byte-for-byte across\n",
+            "modes and against their canonical delivered counterparts. Mode information is\n",
+            "recorded by the aggregate; portable audit receipts deliberately use a\n",
+            "mode-independent schema. Absence and corruption of every mandatory scientific-input pin,\n",
+            "including proof/reference/source-manifest and baseline pins, network construction,\n",
+            "and external data reads must be rejected. No delivered file is modified and\n",
+            "no logs or Python caches are generated by the default aggregate command.\n",
+            "The final JSON printed to the terminal is the fresh result;\n",
+            "`replay-receipt.json` records the release-author replay.\n"
+          ],
+          "original_lines": [
+            "The audit guard enforces the stated restrictions for these standard-library\n",
+            "scripts; it is not a security sandbox for malicious Python/native code. Python's\n",
+            "runtime installation is available, while external research data is not.\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            36,
+            39
+          ],
+          "portable_lines": [
+            "The standard-library guard checks reproducibility restrictions. It is not a\n",
+            "security sandbox for malicious Python/native code. Interpreter runtime files\n",
+            "remain available; external research inputs do not.\n"
+          ],
+          "original_lines": [
+            "To rerun an individual checker, use `python -B checker_name.py`, for example:\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            40,
+            45
+          ],
+          "portable_lines": [
+            "Individual stages can also be run with `python -B script.py`, or `python -B -O\n",
+            "script.py`. They regenerate their named canonical outputs in this package. For\n",
+            "non-mutating verification use the aggregate. Release authors alone can run\n",
+            "`python -B run_checks.py --record`, then `python -B write_manifest.py` to update\n",
+            "canonical receipts and the exact inventory. Neither is needed by readers.\n"
+          ],
+          "original_lines": [
+            "```sh\n",
+            "python -B independent_relabel_check.py\n",
+            "python -B verify_exact_delta.py\n",
+            "python -B verify_rebuild.py\n",
+            "```\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            46,
+            47
+          ],
+          "portable_lines": [
+            "## New scientific material\n"
+          ],
+          "original_lines": [
+            "Individual checkers regenerate their named JSON receipts/traces **in the current\n",
+            "package directory**. These deterministic outputs should remain byte-identical.\n",
+            "For a completely non-mutating invocation, use the aggregate harness above.\n",
+            "`python -B build_source.py` regenerates the seven optimized table/build files.\n",
+            "`python -B loader.py --left 101 --right 01 --particles` prints a clean input and\n",
+            "five-particle coordinates without allocating CA factors.\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            48,
+            70
+          ],
+          "portable_lines": [
+            "- `cellular-clock/CA_CLOCK_DOMINATION.md`: complete unbounded clock-domination,\n",
+            "  strictness, first-encounter, count-invariance, and startup-optimality proof\n",
+            "- `cellular-clock/audit/AUDIT.md`: complete independent audit, including exact\n",
+            "  old/new empty-startup comparison; both proof notes are frozen original bytes\n",
+            "- `cellular-clock/clock_verify.py`: 685 actual representative prime-macro tests,\n",
+            "  204,983 literal rows, saved prefix replays, all 233 single orientation flips,\n",
+            "  exact recorder formulas, 4,096 startup comparisons at 36,864 boundaries\n",
+            "- `cellular-clock/audit/check_ca_clock.py`: independently reconstructs all\n",
+            "  5,451 five-counter and 141,561 literal rows; 21,277 successful and 10,136\n",
+            "  blocked macro trials; 2,795,605 literal rows; 975 recorder embeddings\n",
+            "- `cellular-clock/audit/check_proof_corollaries.py`: independent exact rational\n",
+            "  phase-coefficient identities, startup affine history difference, and complete\n",
+            "  saved literal-row replays\n",
+            "- `cellular-clock/compare_empty_startup.py` and\n",
+            "  `cellular-clock/audit/check_old_new_startup.py`: independent old/new startup\n",
+            "  computations; the latter saves every one of the 142 old and 24 new\n",
+            "  five-counter rows in `audit/old-new-five-row-traces.json`\n",
+            "- `cellular-clock/verify_manifests.py`: mandatory manifest, inherited inventory,\n",
+            "  proof identity, exact portability-edit, and scientific source-byte checks\n",
+            "- `certificate-reference/SHARED_OFFSET_PROOF.md`: byte-identical inherited\n",
+            "  finite-horizon shared-offset certificate proof, supplied as proof-only\n",
+            "  reference; no associated certificate executable is run\n"
+          ],
+          "original_lines": [
+            "The aggregate's `--record` flag is for release authors only: after both modes\n",
+            "pass and agree, it replaces the canonical generated artifacts and saved replay\n",
+            "receipt. A release author must run `python -B write_manifest.py` to regenerate the\n",
+            "exact manifest afterward. This\n",
+            "flag is unnecessary for verification and is never used by the default command.\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            71,
+            72
+          ],
+          "portable_lines": [
+            "## Provenance and scope\n"
+          ],
+          "original_lines": [
+            "## Contents and scope\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            73,
+            84
+          ],
+          "portable_lines": [
+            "All Report 17 mathematical material, scientific tables, builders, loader,\n",
+            "compiler references, and orientation notes are retained. `PORTABILITY.md`\n",
+            "explains inherited and new adaptations. `historical/report18-adaptations.json`\n",
+            "contains exact reversible line edits with original and portable hashes; replay\n",
+            "reconstructs each original and verifies it against a pinned producer manifest.\n",
+            "`historical/source-manifests/` contains the byte-identical original manifests.\n",
+            "Their excluded files are historical identity records, not required replay inputs.\n",
+            "`historical/source-manifest-inspection.json` records the separate packaging-time\n",
+            "inspection of those original inventories. No historical PASS replaces a live\n",
+            "check. The outer `manifest.json` covers every delivered regular file except\n",
+            "itself and rejects extra files and symlinks.\n"
+          ],
+          "original_lines": [
+            "- `source.json`, the layer tables, certificates, and pinned source dependency:\n",
+            "  complete literal construction and all finite verification inputs\n",
+            "- `OPTIMIZATION.md`, `PROOF.md`, `independent-macro-audit.md`, and\n",
+            "  `independent-relabel-audit.md`: unbounded invariants and the clean-input\n",
+            "  paired-boundary time comparison, with explicit inherited provenance\n",
+            "- `baseline/`: original generator, original loader, and mandatory seven-output\n",
+            "  hashes; the old 54 MB table pair is regenerated temporarily, never duplicated\n",
+            "- `exact-delta-receipt.json`: four pair swaps, eight changed five-counter rows,\n",
+            "  expanded-name differences, unchanged dimensions, and old/new clock comparison\n",
+            "- `initialization-receipt.json` and `empty-*-trace.json`: actually traversed\n",
+            "  startup and exactly one first TM transition, with every literal row recorded\n",
+            "- `baseline-rebuild-receipt.json` and `byte-exact-rebuild-receipt.json`: exact\n",
+            "  generated-table comparisons, distinguished from external-release preservation\n",
+            "- `PORTABILITY.md`, `PROVENANCE.json`, and `historical/`: readable adaptation\n",
+            "  ledger and bounded historical provenance\n",
+            "- `manifest.json`: exact file inventory, sizes, and SHA-256 digests, excluding\n",
+            "  only the manifest itself; extra files, missing files, and symlinks are errors\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            85,
+            91
+          ],
+          "portable_lines": [
+            "The source hashes, proof hashes, reference-only scope, and exact pin catalog are\n",
+            "in `PROVENANCE.json` and `verify_pins.py`. The proof and original audit describe\n",
+            "their producer workspace; the portable route below uses the single bundled\n",
+            "source plus a pinned regenerated baseline, never sibling directories. References\n",
+            "to original receipts/logs in the unchanged audit describe its historical run;\n",
+            "new receipts are freshly computed by the mandatory aggregate.\n"
+          ],
+          "original_lines": [
+            "Empty input executes 138 literal steps through initialization, then 210 more\n",
+            "through the first TM transition, for 348 executed steps. The corresponding CA\n",
+            "clocks are **predicted**, not CA executions. The old 79,936,151,060,302-step\n",
+            "literal startup is a theorem-derived clock, not an executed two-counter trace.\n",
+            "The nonzero-scratch `T=1` literal prologue is likewise predicted, not traversed.\n",
+            "Finite tests corroborate the separately supplied all-input proofs; they do not\n",
+            "prove universality by experiment or constitute a proof-assistant formalization.\n",
+            "Primary-paper visual evidence is historical, and the four-mass lower-bound\n",
+            "report is an external mathematical dependency, not part of this offline replay.\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            92,
+            100
+          ],
+          "portable_lines": [
+            "The 348-row optimized literal prefix is actually traversed. Its 4,182,055,332\n",
+            "CA microedges, the old startup's 126,594,455,831,808,973,674,445,902 microedges,\n",
+            "and all whole-prime CA clocks are **theorem-derived**, not CA executions.\n",
+            "No gate array, truth table, billions-step CA trajectory, full old literal\n",
+            "startup, universal polynomial, or proof-assistant formalization is supplied.\n",
+            "Theorems establish unbounded claims; executable finite checks corroborate them.\n",
+            "The primary universality and four-mass lower-bound results retain their inherited\n",
+            "external mathematical dependency scope.\n"
+          ],
+          "original_lines": [
+            "## Orientation-optimality addendum\n",
+            "\n",
+            "`orientation-addendum/` contains the independently audited finite-trace\n",
+            "first-encounter theorem, including simultaneous clean-startup optimality among\n",
+            "static orientations of these fixed templates. Exactly `2^227` of the `2^233`\n",
+            "assignments attain that startup optimum. These are proof notes, not another\n",
+            "source or a global optimality claim. The aggregate verifies their sealed\n",
+            "identity in both modes with `verify_orientation_pins.py`; it does not claim\n",
+            "new execution coverage for the theorem's inherited arithmetic corroboration.\n"
+          ]
+        }
+      ]
+    },
+    {
+      "origin": "report17",
+      "original_file": "run_checks.py",
+      "portable_file": "run_checks.py",
+      "original_sha256": "42b1a272a6df1c85dbec66cfa6552db49f2dda5f654bd1c96af3bcade598f7a7",
+      "portable_sha256": "2e7a6147e22e33116fab38117e21d8b3d7b552fe2ac5a28c75e8b2d0594184cc",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            23,
+            27
+          ],
+          "portable_lines": [
+            "        'verify_exact_delta.py','verify_rebuild.py','verify_orientation_pins.py',\n",
+            "        'cellular-clock/verify_manifests.py','cellular-clock/clock_verify.py',\n",
+            "        'cellular-clock/compare_empty_startup.py','cellular-clock/audit/check_ca_clock.py',\n",
+            "        'cellular-clock/audit/check_proof_corollaries.py','cellular-clock/audit/check_old_new_startup.py')\n"
+          ],
+          "original_lines": [
+            "        'verify_exact_delta.py','verify_rebuild.py','verify_orientation_pins.py')\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            36,
+            41
+          ],
+          "portable_lines": [
+            "         'baseline-rebuild-receipt.json','orientation-addendum/pin-verification-receipt.json',\n",
+            "         'cellular-clock/portable-input-manifest-receipt.json',\n",
+            "         'cellular-clock/clock-receipt.json','cellular-clock/old-new-empty-startup-receipt.json',\n",
+            "         'cellular-clock/audit/receipt.json','cellular-clock/audit/corollaries-receipt.json',\n",
+            "         'cellular-clock/audit/old-new-startup-receipt.json','cellular-clock/audit/old-new-five-row-traces.json')\n"
+          ],
+          "original_lines": [
+            "         'baseline-rebuild-receipt.json','orientation-addendum/pin-verification-receipt.json')\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            69,
+            70
+          ],
+          "portable_lines": [
+            "    with tempfile.TemporaryDirectory(prefix='report18-offline-replay-') as temp:\n"
+          ],
+          "original_lines": [
+            "    with tempfile.TemporaryDirectory(prefix='report17-offline-replay-') as temp:\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            83,
+            88
+          ],
+          "portable_lines": [
+            "            producer=json.loads((copy/'historical/source-manifests/cellular-clock-manifest.json').read_text())\n",
+            "            exact_producer_outputs=('clock-receipt.json','old-new-empty-startup-receipt.json','audit/old-new-five-row-traces.json')\n",
+            "            for name in exact_producer_outputs:\n",
+            "                raw=data['cellular-clock/'+name];expected=producer['files'][name]\n",
+            "                require(len(raw)==expected['bytes'] and sha(raw)==expected['sha256'],'Fresh scientific output differs from sealed producer: '+name)\n"
+          ],
+          "original_lines": []
+        },
+        {
+          "portable_line_range": [
+            107,
+            118
+          ],
+          "portable_lines": [
+            "            # Every mandatory scientific-input pin must reject absence and corruption.\n",
+            "            from verify_pins import KNOWN_SHA256\n",
+            "            mandatory_pins=sorted(KNOWN_SHA256)\n",
+            "            for name in mandatory_pins:\n",
+            "                target=copy/name;saved=target.read_bytes();target.unlink()\n",
+            "                rejected=launch(copy,'verify_pins.py',mode)\n",
+            "                require(rejected.returncode!=0 and 'Missing/nonregular mandatory pinned input' in rejected.stderr,'Missing mandatory pin accepted: '+name)\n",
+            "                target.write_bytes(saved+b' ')\n",
+            "                rejected=launch(copy,'verify_pins.py',mode)\n",
+            "                require(rejected.returncode!=0 and 'SHA-256 mismatch' in rejected.stderr,'Corrupt mandatory pin accepted: '+name)\n",
+            "                target.write_bytes(saved)\n"
+          ],
+          "original_lines": []
+        },
+        {
+          "portable_line_range": [
+            126,
+            127
+          ],
+          "portable_lines": [
+            "            negative.append(dict(mode=mode,all_mandatory_pins_missing_and_corrupt_rejected=mandatory_pins,corrupt_input_rejected=True,corrupt_source_rejected=True,missing_baseline_pins_rejected=True,network_denied=True,external_data_read_denied=True))\n"
+          ],
+          "original_lines": [
+            "            negative.append(dict(mode=mode,corrupt_input_rejected=True,corrupt_source_rejected=True,missing_baseline_pins_rejected=True,network_denied=True,external_data_read_denied=True))\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            136,
+            137
+          ],
+          "portable_lines": [
+            "        receipt=dict(status='PASS',source_sha256=SOURCE_SHA256,producer_outputs_byte_identical=list(exact_producer_outputs),scope='All active checks run in separate fresh isolated copies with mandatory known scientific-input pins, denied network and external data reads, no optional sibling-release dependencies, and exact normal/-O output agreement. No original/frozen directory is accessed.',modes=records,negative_controls=negative,copy_integrity=unchanged,generated_files={name:dict(bytes=len(raw),sha256=sha(raw)) for name,raw in sorted(artifacts[0].items())},limitations='Mathematical universality and compiler proofs are human-readable dependencies; executable finite checks do not constitute a formal proof assistant. Primary-paper visual provenance is historical. Predicted CA clocks are not CA execution.')\n"
+          ],
+          "original_lines": [
+            "        receipt=dict(status='PASS',source_sha256=SOURCE_SHA256,scope='All active checks run in separate fresh isolated copies with mandatory known scientific-input pins, denied network and external data reads, no optional sibling-release dependencies, and exact normal/-O output agreement. No original/frozen directory is accessed.',modes=records,negative_controls=negative,copy_integrity=unchanged,generated_files={name:dict(bytes=len(raw),sha256=sha(raw)) for name,raw in sorted(artifacts[0].items())},limitations='Mathematical universality and compiler proofs are human-readable dependencies; executable finite checks do not constitute a formal proof assistant. Primary-paper visual provenance is historical. Predicted CA clocks are not CA execution.')\n"
+          ]
+        }
+      ]
+    },
+    {
+      "origin": "report17",
+      "original_file": "verify_pins.py",
+      "portable_file": "verify_pins.py",
+      "original_sha256": "e568eaa8598549e06f3c8ea72fffa255b9acc132d7358374d2c90ddb87b20f4b",
+      "portable_sha256": "7e4845bc424aced6498a760649f6c6b7e06a7d41568ce5b6649cd3795ea13405",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            31,
+            33
+          ],
+          "portable_lines": [
+            "KNOWN_SHA256.update({'cellular-clock/CA_CLOCK_DOMINATION.md': 'f7385dc48b48fb4f3f95ca082477f36184d6b9cd83f8a97962e9edcc75f94c4c', 'cellular-clock/audit/AUDIT.md': '478ac5263c76f7bfcf9511b7980f7514737c31996fa402b9118eb5f7492ca630', 'certificate-reference/SHARED_OFFSET_PROOF.md': 'ad12a61e02abe49c121ea3a838381eb780fe1803f2126b453287801025c4d99d', 'historical/source-manifests/baseline-source-manifest.json': 'd9d53eb20ded56f5840d603542b30c4d2b97f1e8e6f9a1f5ce2937fa396b4444', 'historical/source-manifests/cellular-clock-audit-manifest.json': '594fc86902062e1a5533115439edebd6878eaf33e7183792e0b1b344188e61c2', 'historical/source-manifests/cellular-clock-manifest.json': '8f4903cd2aa96cd81351c5dce841f756bf92f1251dac28ad9b73b5138ef25cc9', 'historical/source-manifests/optimized-source-manifest.json': 'bc7ef047e14499de6048789f93ae7ec082d679f4787c96b6c1bf7fbff0343d89', 'historical/source-manifests/report17-manifest.json': 'b0af9fe552f4c49abfd6a2fd2b0cce9ca3ac2fb735501af383b6d12129a741ff', 'target-ledger.json': '2357630cdf2b538ca11cfd9e4fe2883c6cb13b211c8ad67c6f134b19c3cd4b63', 'empty-prologue-literal-trace.json': '30b9994002b66e962a53a131d6f60b35cdce7808722a3b4769892a6b7af8d780', 'empty-first-tm-literal-trace.json': '204fadeb547f7909c9dc4f0dd2eed3a305502262570f7b7224c732b95aa9b46b', 'empty-through-first-tm-literal-trace.json': '6f6374db5fb0f8ce1de3afb628cbee1e46c354ad98d88b0d2c278601f6005e4d', 'empty-prologue-five-trace.json': '976ab022bf26da4ff20925afffdfded464c1bb5df067acba4e93ae8f68f30817', 'empty-first-tm-five-trace.json': '1e62cd569bdd41520fa2d03fdabae2e2139dd978ceb7a9c6972109e3c096e6cf'})\n",
+            "\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    },
+    {
+      "origin": "report17",
+      "original_file": "write_manifest.py",
+      "portable_file": "write_manifest.py",
+      "original_sha256": "3f25ab1495baea83071a57d8813fe085f0f42cd9834b5f811b0b38888a85d8c7",
+      "portable_sha256": "4af0f17fdbd3fd0dac54418bf8e19862f8e1391bb912288add1610a5ec4c272f",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            18,
+            19
+          ],
+          "portable_lines": [
+            "manifest=dict(package='report18-cellular-clock-domination-portable-reproducibility',date='2026-10-03',source_sha256=SOURCE_SHA256,predecessor_source_sha256='38c586706fa1069442d3e5103151adb156448b7d7c783f5c46d9d507b87fe73a',inventory_policy='Every regular delivered file except manifest.json itself; extra files and symlinks are rejected by verifier',files=records)\n"
+          ],
+          "original_lines": [
+            "manifest=dict(package='report17-startup-optimization-portable-reproducibility',date='2026-10-03',source_sha256=SOURCE_SHA256,predecessor_source_sha256='38c586706fa1069442d3e5103151adb156448b7d7c783f5c46d9d507b87fe73a',inventory_policy='Every regular delivered file except manifest.json itself; extra files and symlinks are rejected by verifier',files=records)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "origin": "cellular-clock",
+      "original_file": "clock_verify.py",
+      "portable_file": "cellular-clock/clock_verify.py",
+      "original_sha256": "85932fe35aa641fb228f8246380afadac5fc29eeaeef4b93bbe611934ceb0bb7",
+      "portable_sha256": "214870bd4add20900083a24d137a9f7e1235ae8d5a845652b568b0db74eabc80",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            10,
+            15
+          ],
+          "portable_lines": [
+            "import sys\n",
+            "sys.dont_write_bytecode = True\n",
+            "ROOT = Path(__file__).resolve().parent.parent\n",
+            "sys.path.insert(0, str(ROOT))\n",
+            "from verify_pins import verify_inputs\n"
+          ],
+          "original_lines": []
+        },
+        {
+          "portable_line_range": [
+            16,
+            17
+          ],
+          "portable_lines": [
+            "DEFAULT = ROOT\n"
+          ],
+          "original_lines": [
+            "DEFAULT = HERE.parent/'reversible-initialization-optimization-20261003'\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            129,
+            131
+          ],
+          "portable_lines": [
+            "    verify_inputs()\n",
+            "    require(root.resolve() == ROOT, 'Only bundled pinned source is permitted')\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    },
+    {
+      "origin": "cellular-clock",
+      "original_file": "compare_empty_startup.py",
+      "portable_file": "cellular-clock/compare_empty_startup.py",
+      "original_sha256": "661a213a74b1aaaafc2dff5da6e13c8a46b6d81027cff8299cb10eb84602d085",
+      "portable_sha256": "dee4fa4500f29b7ea8802f169f0404d8a7b88c1777cc389342d6b5db2ce75565",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            6,
+            9
+          ],
+          "portable_lines": [
+            "ROOT=HERE.parent\n",
+            "from verify_pins import verify_inputs\n",
+            "from baseline_support import regenerated_baseline\n"
+          ],
+          "original_lines": [
+            "BASE=HERE.parent\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            10,
+            12
+          ],
+          "portable_lines": [
+            "def compare(baseline):\n",
+            "    verify_inputs()\n"
+          ],
+          "original_lines": [
+            "def main():\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            14,
+            16
+          ],
+          "portable_lines": [
+            "        root = baseline if name == 'literal-reversible-source-20261003' else ROOT\n",
+            "        machine=json.loads((root/'reversible5.json').read_text())\n"
+          ],
+          "original_lines": [
+            "        machine=json.loads((BASE/name/'reversible5.json').read_text())\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            33,
+            37
+          ],
+          "portable_lines": [
+            "def main():\n",
+            "    with regenerated_baseline() as baseline:\n",
+            "        compare(baseline)\n",
+            "\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    },
+    {
+      "origin": "cellular-clock",
+      "original_file": "verify_manifests.py",
+      "portable_file": "cellular-clock/verify_manifests.py",
+      "original_sha256": "78216ef381a2d5a114ee528078bf45d646060c87872a02b3fd2c7632038693ca",
+      "portable_sha256": "cee561510b0f1e96922d0a6d89122a82ecab7aadc352d33e52fef365af50c228",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            1,
+            6
+          ],
+          "portable_lines": [
+            "\"\"\"Verify mandatory local manifest pins, relevant scientific bytes, and exact edits.\n",
+            "\n",
+            "This does not reread excluded historical artifacts or external source packages.\n",
+            "The original baseline's seven table identities are materialized and verified.\n",
+            "\"\"\"\n"
+          ],
+          "original_lines": [
+            "\"\"\"Verify frozen dependency manifests and this addendum manifest, if present.\"\"\"\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            7,
+            17
+          ],
+          "portable_lines": [
+            "import hashlib\n",
+            "import json\n",
+            "import sys\n",
+            "sys.dont_write_bytecode = True\n",
+            "HERE = Path(__file__).resolve().parent\n",
+            "ROOT = HERE.parent\n",
+            "sys.path.insert(0, str(ROOT))\n",
+            "from verify_pins import verify_inputs, KNOWN_SHA256, SOURCE_SHA256\n",
+            "from baseline_support import regenerated_baseline, OUTPUTS as BASELINE_OUTPUTS\n",
+            "from run_checks import OUTPUTS\n"
+          ],
+          "original_lines": [
+            "import hashlib,json\n",
+            "HERE=Path(__file__).resolve().parent\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            18,
+            37
+          ],
+          "portable_lines": [
+            "\n",
+            "def require(ok, detail):\n",
+            "    if not ok:\n",
+            "        raise RuntimeError(detail)\n",
+            "\n",
+            "\n",
+            "def sha(raw):\n",
+            "    return hashlib.sha256(raw).hexdigest()\n",
+            "\n",
+            "\n",
+            "def read_manifest(name):\n",
+            "    return json.loads((ROOT / 'historical/source-manifests' / name).read_text())\n",
+            "\n",
+            "\n",
+            "def check_record(path, rec):\n",
+            "    require(path.is_file() and not path.is_symlink(), 'Missing/nonregular manifest input: ' + path.name)\n",
+            "    raw = path.read_bytes()\n",
+            "    require(len(raw) == rec['bytes'] and sha(raw) == rec['sha256'], 'Manifest scientific bytes mismatch: ' + path.name)\n",
+            "\n"
+          ],
+          "original_lines": [
+            "def verify(root,name):\n",
+            "    raw=(root/name).read_bytes();manifest=json.loads(raw);count=0\n",
+            "    for relative,record in manifest['files'].items():\n",
+            "        file=root/relative;data=file.read_bytes()\n",
+            "        if len(data)!=record['bytes'] or hashlib.sha256(data).hexdigest()!=record['sha256']:\n",
+            "            raise RuntimeError(('Manifest mismatch',str(file)))\n",
+            "        count+=1\n",
+            "    return dict(directory=root.name,manifest=name,manifest_sha256=hashlib.sha256(raw).hexdigest(),checked_files=count,status='PASS')\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            39,
+            116
+          ],
+          "portable_lines": [
+            "    pin_count = verify_inputs()\n",
+            "    optimized = read_manifest('optimized-source-manifest.json')\n",
+            "    baseline = read_manifest('baseline-source-manifest.json')\n",
+            "    predecessor = read_manifest('report17-manifest.json')\n",
+            "    producer = read_manifest('cellular-clock-manifest.json')\n",
+            "    audit = read_manifest('cellular-clock-audit-manifest.json')\n",
+            "    require(optimized['source_sha256'] == predecessor['source_sha256'] == SOURCE_SHA256, 'Optimized manifest identity')\n",
+            "    require(baseline['source_sha256'] == '38c586706fa1069442d3e5103151adb156448b7d7c783f5c46d9d507b87fe73a', 'Baseline manifest identity')\n",
+            "    original_manifests = {'report17': predecessor, 'cellular-clock': producer}\n",
+            "    changes = json.loads((ROOT / 'historical/report18-adaptations.json').read_text())['adaptations']\n",
+            "    by_target = {}\n",
+            "    for change in changes:\n",
+            "        target = change['portable_file']\n",
+            "        require(target not in by_target, 'Duplicate adaptation target')\n",
+            "        by_target[target] = change\n",
+            "        raw = (ROOT / target).read_bytes()\n",
+            "        require(sha(raw) == change['portable_sha256'], 'Portable adaptation identity: ' + target)\n",
+            "        lines = raw.decode('utf-8').splitlines(keepends=True)\n",
+            "        original = []; cursor = 0\n",
+            "        for edit in change['reverse_edits']:\n",
+            "            a, b = edit['portable_line_range']\n",
+            "            require(cursor <= a <= b <= len(lines), 'Invalid edit range')\n",
+            "            require(lines[a:b] == edit['portable_lines'], 'Portable edit mismatch')\n",
+            "            original.extend(lines[cursor:a]); original.extend(edit['original_lines']); cursor = b\n",
+            "        original.extend(lines[cursor:])\n",
+            "        reconstructed = ''.join(original).encode('utf-8')\n",
+            "        require(sha(reconstructed) == change['original_sha256'], 'Original reconstruction identity')\n",
+            "        rec = original_manifests[change['origin']]['files'][change['original_file']]\n",
+            "        require(change['original_sha256'] == rec['sha256'] and len(reconstructed) == rec['bytes'], 'Original manifest/edit mismatch')\n",
+            "    # Full retained Report17 inventory, with generated outputs explicitly distinguished.\n",
+            "    inherited = []\n",
+            "    for name, rec in predecessor['files'].items():\n",
+            "        if name in OUTPUTS or name == 'replay-receipt.json':\n",
+            "            require((ROOT / name).is_file(), 'Missing inherited canonical output: ' + name)\n",
+            "            status = 'REGENERATED_AND_COMPARED_BY_AGGREGATE'\n",
+            "        elif name in by_target:\n",
+            "            require(by_target[name]['origin'] == 'report17', 'Wrong inherited provenance')\n",
+            "            status = 'EXACT_PORTABILITY_EDIT_VERIFIED'\n",
+            "        else:\n",
+            "            check_record(ROOT / name, rec)\n",
+            "            status = 'BYTE_IDENTICAL'\n",
+            "        inherited.append({'file': name, 'status': status})\n",
+            "    # Every retained producer note/checker is either identical or reverse-verifiable.\n",
+            "    producer_files = ['CA_CLOCK_DOMINATION.md', 'audit/AUDIT.md', 'clock_verify.py',\n",
+            "                      'compare_empty_startup.py', 'verify_manifests.py', 'audit/check_ca_clock.py',\n",
+            "                      'audit/check_proof_corollaries.py', 'audit/check_old_new_startup.py']\n",
+            "    for name in producer_files:\n",
+            "        target = 'cellular-clock/' + name\n",
+            "        if target not in by_target:\n",
+            "            check_record(ROOT / target, producer['files'][name])\n",
+            "        else:\n",
+            "            require(by_target[target]['origin'] == 'cellular-clock', 'Wrong producer provenance')\n",
+            "    require(producer['proof_sha256'] == sha((HERE / 'CA_CLOCK_DOMINATION.md').read_bytes()) == audit['reviewed_proof_sha256'], 'Proof/audit manifest linkage')\n",
+            "    audit_path = ROOT / 'historical/source-manifests/cellular-clock-audit-manifest.json'\n",
+            "    require(producer['audit_manifest_sha256'] == sha(audit_path.read_bytes()), 'Audit manifest linkage')\n",
+            "    # Read all bundled immutable source entries shared with the original manifest.\n",
+            "    scientific = []\n",
+            "    for name in sorted(set(KNOWN_SHA256) & set(optimized['files'])):\n",
+            "        # Proof-only orientation notes were added after this source manifest.\n",
+            "        check_record(ROOT / name, optimized['files'][name]); scientific.append(name)\n",
+            "    with regenerated_baseline() as old:\n",
+            "        for name in BASELINE_OUTPUTS:\n",
+            "            check_record(old / name, baseline['files'][name])\n",
+            "    receipt = {'status': 'PASS', 'scope': 'Local mandatory manifest identities, exact reverse-verifiable portability edits, retained Report17 inventory, pinned scientific inputs, and all seven regenerated baseline source outputs. Excluded upstream files are not reread.',\n",
+            "               'mandatory_input_pins': pin_count, 'source_sha256': SOURCE_SHA256,\n",
+            "               'manifest_sha256': {p.name: sha(p.read_bytes()) for p in sorted((ROOT / 'historical/source-manifests').iterdir())},\n",
+            "               'inherited_files': inherited, 'producer_proof_and_checker_files': producer_files,\n",
+            "               'portable_edit_count': len(changes), 'scientific_source_entries_compared': scientific,\n",
+            "               'baseline_source_entries_compared': list(BASELINE_OUTPUTS),\n",
+            "               'proof_only_shared_offset_reference_sha256': sha((ROOT / 'certificate-reference/SHARED_OFFSET_PROOF.md').read_bytes()),\n",
+            "               'limitations': 'Hash/inventory and finite replay checks do not mechanically prove the theorems. Shared-offset certificate proof is reference-only; no certificate executable or universal polynomial is evaluated.'}\n",
+            "    (HERE / 'portable-input-manifest-receipt.json').write_text(json.dumps(receipt, indent=2) + '\\n')\n",
+            "    print(json.dumps(receipt, indent=2))\n",
+            "\n",
+            "\n",
+            "if __name__ == '__main__':\n",
+            "    main()\n"
+          ],
+          "original_lines": [
+            "    receipts=[]\n",
+            "    for directory,manifest in (\n",
+            "        ('reversible-initialization-optimization-20261003','manifest.json'),\n",
+            "        ('literal-reversible-source-20261003','manifest.json'),\n",
+            "        ('reversible-initialization-optimization-20261003','first-encounter-manifest.json')):\n",
+            "        receipts.append(verify(HERE.parent/directory,manifest))\n",
+            "    (HERE/'frozen-input-manifest-receipt.json').write_text(json.dumps(dict(status='PASS',manifests=receipts),indent=2)+'\\n')\n",
+            "    if (HERE/'manifest.json').exists():receipts.append(verify(HERE,'manifest.json'))\n",
+            "    print(json.dumps(dict(status='PASS',manifests=receipts),indent=2))\n",
+            "if __name__=='__main__':main()\n"
+          ]
+        }
+      ]
+    },
+    {
+      "origin": "cellular-clock",
+      "original_file": "audit/check_ca_clock.py",
+      "portable_file": "cellular-clock/audit/check_ca_clock.py",
+      "original_sha256": "3f24fa640adb04c5ae861711d192dca81217c25d9c768307001594bd1e812b16",
+      "portable_sha256": "e86d0e9ac6d7af34d88535b5ccc2948c2f078d48f66b084c10cd01923a25575c",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            16,
+            22
+          ],
+          "portable_lines": [
+            "ROOT = HERE.parent.parent\n",
+            "sys.dont_write_bytecode = True\n",
+            "sys.path.insert(0, str(ROOT))\n",
+            "from verify_pins import verify_inputs\n",
+            "from baseline_support import regenerated_baseline\n",
+            "OPT = ROOT\n"
+          ],
+          "original_lines": [
+            "BASE = HERE.parent.parent\n",
+            "OPT = BASE / 'reversible-initialization-optimization-20261003'\n",
+            "OLD = BASE / 'literal-reversible-source-20261003'\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            369,
+            371
+          ],
+          "portable_lines": [
+            "def run(OLD):\n",
+            "    verify_inputs()\n"
+          ],
+          "original_lines": [
+            "def main():\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            375,
+            380
+          ],
+          "portable_lines": [
+            "             'source.json')\n",
+            "    paths = {label + '/' + name: root / name for label, root in (('optimized', OPT), ('regenerated-baseline', OLD)) for name in names}\n",
+            "    for name in ('target-ledger.json', 'compiler-reference/reversible_binary.py', 'compiler-reference/COMPILER_PROOF.md'):\n",
+            "        paths['optimized/' + name] = OPT / name\n",
+            "    before = {label: sha(path) for label, path in paths.items()}\n"
+          ],
+          "original_lines": [
+            "             'source.json', 'manifest.json', 'target-ledger.json', 'compiler-reference/reversible_binary.py',\n",
+            "             'compiler-reference/COMPILER_PROOF.md')\n",
+            "    before = {str(root / name): sha(root / name) for root in (OPT, OLD) for name in names}\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            485,
+            486
+          ],
+          "portable_lines": [
+            "    after = {label: sha(path) for label, path in paths.items()}\n"
+          ],
+          "original_lines": [
+            "    after = {name: sha(Path(name)) for name in before}\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            487,
+            490
+          ],
+          "portable_lines": [
+            "    receipt = {'status': 'PASS', 'mode_policy': 'Executed separately under normal and -O by run_checks.py',\n",
+            "               'independence': 'No producer clock checker imported; complete pinned graphs reconstructed independently; baseline materialized by its pinned generator; no CA compiled or evaluated',\n",
+            "               'source_sha256': before['optimized/source.json'], 'lambda': lam,\n"
+          ],
+          "original_lines": [
+            "    receipt = {'status': 'PASS', 'python_optimization': sys.flags.optimize,\n",
+            "               'independence': 'No producer builder/checker imported; complete frozen graphs reconstructed; no CA compiled or evaluated',\n",
+            "               'source_sha256': before[str(OPT / 'source.json')], 'lambda': lam,\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            507,
+            512
+          ],
+          "portable_lines": [
+            "def main():\n",
+            "    with regenerated_baseline() as baseline:\n",
+            "        run(baseline)\n",
+            "\n",
+            "\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    },
+    {
+      "origin": "cellular-clock",
+      "original_file": "audit/check_proof_corollaries.py",
+      "portable_file": "cellular-clock/audit/check_proof_corollaries.py",
+      "original_sha256": "0ed01491420ef196ed1dc8626b183d1af7a2d8b644863eed6058e37aa31ea6b6",
+      "portable_sha256": "0a4d110b04011a9f36d4f9076cab7ef0cce9db964bc80b142f2c02e802201293",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            10,
+            16
+          ],
+          "portable_lines": [
+            "ROOT = HERE.parent.parent\n",
+            "sys.dont_write_bytecode = True\n",
+            "sys.path.insert(0, str(ROOT))\n",
+            "from verify_pins import verify_inputs\n",
+            "from baseline_support import regenerated_baseline\n",
+            "OPT = ROOT\n"
+          ],
+          "original_lines": [
+            "BASE = HERE.parent.parent\n",
+            "OPT = BASE / 'reversible-initialization-optimization-20261003'\n",
+            "OLD = BASE / 'literal-reversible-source-20261003'\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            44,
+            46
+          ],
+          "portable_lines": [
+            "def run(OLD):\n",
+            "    verify_inputs()\n"
+          ],
+          "original_lines": [
+            "def main():\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            104,
+            105
+          ],
+          "portable_lines": [
+            "        'status': 'PASS', 'mode_policy': 'Executed separately under normal and -O by run_checks.py',\n"
+          ],
+          "original_lines": [
+            "        'status': 'PASS', 'python_optimization': sys.flags.optimize,\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            115,
+            116
+          ],
+          "portable_lines": [
+            "    output = HERE / 'corollaries-receipt.json'\n"
+          ],
+          "original_lines": [
+            "    output = HERE / ('corollaries-receipt-optimized.json' if sys.flags.optimize else 'corollaries-receipt.json')\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            120,
+            125
+          ],
+          "portable_lines": [
+            "def main():\n",
+            "    with regenerated_baseline() as baseline:\n",
+            "        run(baseline)\n",
+            "\n",
+            "\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    },
+    {
+      "origin": "cellular-clock",
+      "original_file": "audit/check_old_new_startup.py",
+      "portable_file": "cellular-clock/audit/check_old_new_startup.py",
+      "original_sha256": "39a8d2f99a91b8aaa9fef8d4a7a204289fd245d12661027883397893d88caee6",
+      "portable_sha256": "95babd6316127a85038641364ad357b8fc59a3c1e6682fe9ff1bcf6a5718caf4",
+      "reverse_edits": [
+        {
+          "portable_line_range": [
+            15,
+            18
+          ],
+          "portable_lines": [
+            "ROOT = HERE.parent.parent\n",
+            "from verify_pins import verify_inputs\n",
+            "from baseline_support import regenerated_baseline\n"
+          ],
+          "original_lines": [
+            "BASE = HERE.parent.parent\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            30,
+            31
+          ],
+          "portable_lines": [
+            "def run(root, label):\n"
+          ],
+          "original_lines": [
+            "def run(root):\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            72,
+            73
+          ],
+          "portable_lines": [
+            "    return {'source': label, 'source_sha256': sha(root / 'source.json'),\n"
+          ],
+          "original_lines": [
+            "    return {'source': root.name, 'source_sha256': sha(root / 'source.json'),\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            83,
+            87
+          ],
+          "portable_lines": [
+            "def compare(baseline):\n",
+            "    verify_inputs()\n",
+            "    results = [run(baseline, 'literal-reversible-source-20261003'),\n",
+            "               run(ROOT, 'reversible-initialization-optimization-20261003')]\n"
+          ],
+          "original_lines": [
+            "def main():\n",
+            "    results = [run(BASE / name) for name in ('literal-reversible-source-20261003',\n",
+            "                                           'reversible-initialization-optimization-20261003')]\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            94,
+            95
+          ],
+          "portable_lines": [
+            "    receipt = {'status': 'PASS', 'mode_policy': 'Executed separately under normal and -O by run_checks.py',\n"
+          ],
+          "original_lines": [
+            "    receipt = {'status': 'PASS', 'python_optimization': sys.flags.optimize,\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            99,
+            100
+          ],
+          "portable_lines": [
+            "    output = HERE / 'old-new-startup-receipt.json'\n"
+          ],
+          "original_lines": [
+            "    output = HERE / ('old-new-startup-receipt-optimized.json' if sys.flags.optimize else 'old-new-startup-receipt.json')\n"
+          ]
+        },
+        {
+          "portable_line_range": [
+            104,
+            109
+          ],
+          "portable_lines": [
+            "def main():\n",
+            "    with regenerated_baseline() as baseline:\n",
+            "        compare(baseline)\n",
+            "\n",
+            "\n"
+          ],
+          "original_lines": []
+        }
+      ]
+    }
+  ]
+}

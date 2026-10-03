@@ -1,0 +1,72 @@
+{
+  "schema": "reversible-two-counter-v1",
+  "controls": [
+    "S",
+    "A",
+    "B",
+    "C",
+    "D",
+    "HALT"
+  ],
+  "start": "S",
+  "halt": "HALT",
+  "class_cut": 0,
+  "branches": [
+    {
+      "name": "row0",
+      "source": "S",
+      "target": "A",
+      "side": -1,
+      "delta": 0,
+      "guard": {
+        "op": "eq",
+        "counter": 0,
+        "value": 0
+      }
+    },
+    {
+      "name": "row1",
+      "source": "A",
+      "target": "B",
+      "side": -1,
+      "delta": 1,
+      "guard": {
+        "op": "true"
+      }
+    },
+    {
+      "name": "row2",
+      "source": "B",
+      "target": "C",
+      "side": -1,
+      "delta": 0,
+      "guard": {
+        "op": "gt",
+        "counter": 0,
+        "value": 0
+      }
+    },
+    {
+      "name": "row3",
+      "source": "C",
+      "target": "D",
+      "side": -1,
+      "delta": -1,
+      "guard": {
+        "op": "gt",
+        "counter": 0,
+        "value": 0
+      }
+    },
+    {
+      "name": "row4",
+      "source": "D",
+      "target": "HALT",
+      "side": -1,
+      "delta": 0,
+      "guard": {
+        "op": "true"
+      }
+    }
+  ]
+}

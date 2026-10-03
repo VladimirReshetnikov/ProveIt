@@ -1,0 +1,456 @@
+{
+  "status": "PASS",
+  "source_sha256": "fa61d06178d718511232a80a05e02192d940fde3c273f0c202f0623253b2ade3",
+  "producer_outputs_byte_identical": [
+    "clock-receipt.json",
+    "old-new-empty-startup-receipt.json",
+    "audit/old-new-five-row-traces.json"
+  ],
+  "scope": "All active checks run in separate fresh isolated copies with mandatory known scientific-input pins, denied network and external data reads, no optional sibling-release dependencies, and exact normal/-O output agreement. No original/frozen directory is accessed.",
+  "modes": [
+    {
+      "mode": "normal",
+      "python_flags": [
+        "-I",
+        "-B"
+      ],
+      "stages": [
+        {
+          "script": "verify_pins.py",
+          "status": "PASS",
+          "stdout_sha256": "1eb933d3900c4cc899766feada1c04179473c7a31840cae979389c7d0fdb6046"
+        },
+        {
+          "script": "check_primary_table.py",
+          "status": "PASS",
+          "stdout_sha256": "9e99400286e6fc987cd959c64368eb239cd4cddceca737e262ba1bc3fb621c01"
+        },
+        {
+          "script": "verify_virtual3.py",
+          "status": "PASS",
+          "stdout_sha256": "4c7768cb56a94d11dc13d1af44d26d5ffd0f9baa54339c93953b4935a6cc7418"
+        },
+        {
+          "script": "validate_source.py",
+          "status": "PASS",
+          "stdout_sha256": "90375154a775f134eea4d24df9042d66c5687f6d81aa30d6c4d4239b9f5f07e5"
+        },
+        {
+          "script": "verify_affine.py",
+          "status": "PASS",
+          "stdout_sha256": "a35ffde691e0f7525c6e2969ba10f025a820cea125a192912758e87fedbd0a6f"
+        },
+        {
+          "script": "independent_audit.py",
+          "status": "PASS",
+          "stdout_sha256": "e81ae4966ce40ddf2fe6309404cecc4e3ab8eef9038072dfdae6b9f3443bad9e"
+        },
+        {
+          "script": "class_expansion_ledger.py",
+          "status": "PASS",
+          "stdout_sha256": "147285337b01b4c24379c6797b651bf167ebd5679713b0664334aa10dcfaa477"
+        },
+        {
+          "script": "test_loader.py",
+          "status": "PASS",
+          "stdout_sha256": "3107f6a40ff998de6e3b6273db2f48b233956af0e24dc0ec65ea21edc2158abd"
+        },
+        {
+          "script": "test_concrete.py",
+          "status": "PASS",
+          "stdout_sha256": "aed868c12966bdcceac8e8e3bb73e4e2948d89cca76363fd52ada919f1cf9080"
+        },
+        {
+          "script": "verify_initialization.py",
+          "status": "PASS",
+          "stdout_sha256": "bc129f65dc5e6512eb11eba551fae57904cccb61ecfefdcf19a1c340a0e6441c"
+        },
+        {
+          "script": "independent_relabel_check.py",
+          "status": "PASS",
+          "stdout_sha256": "b9ae73244eefb144fd54d64ea8fc7ac022ed60b40bd66e86e786cd5acbbc325d"
+        },
+        {
+          "script": "verify_exact_delta.py",
+          "status": "PASS",
+          "stdout_sha256": "3f8ddfd89afdc63231718e6c0b6a745ddd158f2e7b266d62a21ce214c5f2891b"
+        },
+        {
+          "script": "verify_rebuild.py",
+          "status": "PASS",
+          "stdout_sha256": "1fb74068cd27211a9441e77883d32ab22736a6694c51bb92f3b77a4b92e9cd47"
+        },
+        {
+          "script": "verify_orientation_pins.py",
+          "status": "PASS",
+          "stdout_sha256": "8d4848caa37784f3be22be1675e29db1d3b47b03cc996238c9b805e9294f7ee4"
+        },
+        {
+          "script": "cellular-clock/verify_manifests.py",
+          "status": "PASS",
+          "stdout_sha256": "75b8eda219f037525e415a9bc55058d12bb72625275fef84c25d50aa59f5e042"
+        },
+        {
+          "script": "cellular-clock/clock_verify.py",
+          "status": "PASS",
+          "stdout_sha256": "d53f89272299becb0e505d4dfe5f926b76328be5497104b0547dc425798c035c"
+        },
+        {
+          "script": "cellular-clock/compare_empty_startup.py",
+          "status": "PASS",
+          "stdout_sha256": "5bb95e3221d0b7ec02074f3636b02366de0609b2c3e55b79718269772838a00b"
+        },
+        {
+          "script": "cellular-clock/audit/check_ca_clock.py",
+          "status": "PASS",
+          "stdout_sha256": "784ffbb3010564f17ca9e8b4a171fb4142e9e35112546a97832c52ae55d1b0de"
+        },
+        {
+          "script": "cellular-clock/audit/check_proof_corollaries.py",
+          "status": "PASS",
+          "stdout_sha256": "c743e4419f2399e959d8e532f9bdca43bcb6c04b73fa371ec15a52d2045ada1e"
+        },
+        {
+          "script": "cellular-clock/audit/check_old_new_startup.py",
+          "status": "PASS",
+          "stdout_sha256": "e3c584fb6a4af02dd603a27645348b4237c07fb47256196b7bd97778670e78df"
+        }
+      ]
+    },
+    {
+      "mode": "optimized",
+      "python_flags": [
+        "-I",
+        "-B",
+        "-O"
+      ],
+      "stages": [
+        {
+          "script": "verify_pins.py",
+          "status": "PASS",
+          "stdout_sha256": "1eb933d3900c4cc899766feada1c04179473c7a31840cae979389c7d0fdb6046"
+        },
+        {
+          "script": "check_primary_table.py",
+          "status": "PASS",
+          "stdout_sha256": "9e99400286e6fc987cd959c64368eb239cd4cddceca737e262ba1bc3fb621c01"
+        },
+        {
+          "script": "verify_virtual3.py",
+          "status": "PASS",
+          "stdout_sha256": "4c7768cb56a94d11dc13d1af44d26d5ffd0f9baa54339c93953b4935a6cc7418"
+        },
+        {
+          "script": "validate_source.py",
+          "status": "PASS",
+          "stdout_sha256": "90375154a775f134eea4d24df9042d66c5687f6d81aa30d6c4d4239b9f5f07e5"
+        },
+        {
+          "script": "verify_affine.py",
+          "status": "PASS",
+          "stdout_sha256": "a35ffde691e0f7525c6e2969ba10f025a820cea125a192912758e87fedbd0a6f"
+        },
+        {
+          "script": "independent_audit.py",
+          "status": "PASS",
+          "stdout_sha256": "e81ae4966ce40ddf2fe6309404cecc4e3ab8eef9038072dfdae6b9f3443bad9e"
+        },
+        {
+          "script": "class_expansion_ledger.py",
+          "status": "PASS",
+          "stdout_sha256": "147285337b01b4c24379c6797b651bf167ebd5679713b0664334aa10dcfaa477"
+        },
+        {
+          "script": "test_loader.py",
+          "status": "PASS",
+          "stdout_sha256": "3107f6a40ff998de6e3b6273db2f48b233956af0e24dc0ec65ea21edc2158abd"
+        },
+        {
+          "script": "test_concrete.py",
+          "status": "PASS",
+          "stdout_sha256": "aed868c12966bdcceac8e8e3bb73e4e2948d89cca76363fd52ada919f1cf9080"
+        },
+        {
+          "script": "verify_initialization.py",
+          "status": "PASS",
+          "stdout_sha256": "bc129f65dc5e6512eb11eba551fae57904cccb61ecfefdcf19a1c340a0e6441c"
+        },
+        {
+          "script": "independent_relabel_check.py",
+          "status": "PASS",
+          "stdout_sha256": "b9ae73244eefb144fd54d64ea8fc7ac022ed60b40bd66e86e786cd5acbbc325d"
+        },
+        {
+          "script": "verify_exact_delta.py",
+          "status": "PASS",
+          "stdout_sha256": "3f8ddfd89afdc63231718e6c0b6a745ddd158f2e7b266d62a21ce214c5f2891b"
+        },
+        {
+          "script": "verify_rebuild.py",
+          "status": "PASS",
+          "stdout_sha256": "1fb74068cd27211a9441e77883d32ab22736a6694c51bb92f3b77a4b92e9cd47"
+        },
+        {
+          "script": "verify_orientation_pins.py",
+          "status": "PASS",
+          "stdout_sha256": "8d4848caa37784f3be22be1675e29db1d3b47b03cc996238c9b805e9294f7ee4"
+        },
+        {
+          "script": "cellular-clock/verify_manifests.py",
+          "status": "PASS",
+          "stdout_sha256": "75b8eda219f037525e415a9bc55058d12bb72625275fef84c25d50aa59f5e042"
+        },
+        {
+          "script": "cellular-clock/clock_verify.py",
+          "status": "PASS",
+          "stdout_sha256": "d53f89272299becb0e505d4dfe5f926b76328be5497104b0547dc425798c035c"
+        },
+        {
+          "script": "cellular-clock/compare_empty_startup.py",
+          "status": "PASS",
+          "stdout_sha256": "5bb95e3221d0b7ec02074f3636b02366de0609b2c3e55b79718269772838a00b"
+        },
+        {
+          "script": "cellular-clock/audit/check_ca_clock.py",
+          "status": "PASS",
+          "stdout_sha256": "784ffbb3010564f17ca9e8b4a171fb4142e9e35112546a97832c52ae55d1b0de"
+        },
+        {
+          "script": "cellular-clock/audit/check_proof_corollaries.py",
+          "status": "PASS",
+          "stdout_sha256": "c743e4419f2399e959d8e532f9bdca43bcb6c04b73fa371ec15a52d2045ada1e"
+        },
+        {
+          "script": "cellular-clock/audit/check_old_new_startup.py",
+          "status": "PASS",
+          "stdout_sha256": "e3c584fb6a4af02dd603a27645348b4237c07fb47256196b7bd97778670e78df"
+        }
+      ]
+    }
+  ],
+  "negative_controls": [
+    {
+      "mode": "normal",
+      "all_mandatory_pins_missing_and_corrupt_rejected": [
+        "baseline/build_source.py",
+        "baseline/expected-outputs.json",
+        "baseline/loader.py",
+        "build-stats.json",
+        "build_source.py",
+        "cellular-clock/CA_CLOCK_DOMINATION.md",
+        "cellular-clock/audit/AUDIT.md",
+        "certificate-reference/SHARED_OFFSET_PROOF.md",
+        "certificates.json",
+        "compiler-reference/COMPILER_PROOF.md",
+        "compiler-reference/SOURCE_SCHEMA.md",
+        "compiler-reference/reversible_binary.py",
+        "dependency/PROOF.md",
+        "dependency/UniversalTM15x2.tm.txt",
+        "dependency/macro_certificates.json",
+        "dependency/tm_table.json",
+        "dependency/virtual3.json",
+        "dependency/virtual3.txt",
+        "empty-first-tm-five-trace.json",
+        "empty-first-tm-literal-trace.json",
+        "empty-prologue-five-trace.json",
+        "empty-prologue-literal-trace.json",
+        "empty-through-first-tm-literal-trace.json",
+        "historical/source-manifests/baseline-source-manifest.json",
+        "historical/source-manifests/cellular-clock-audit-manifest.json",
+        "historical/source-manifests/cellular-clock-manifest.json",
+        "historical/source-manifests/optimized-source-manifest.json",
+        "historical/source-manifests/report17-manifest.json",
+        "loader.py",
+        "normalized3.json",
+        "orientation-addendum/FIRST_ENCOUNTER_OPTIMALITY.md",
+        "orientation-addendum/first-encounter-independent-audit.md",
+        "orientation-addendum/first-encounter-manifest.json",
+        "primitive3.json",
+        "reversible2-primitives.json",
+        "reversible5.json",
+        "source.json",
+        "target-ledger.json"
+      ],
+      "corrupt_input_rejected": true,
+      "corrupt_source_rejected": true,
+      "missing_baseline_pins_rejected": true,
+      "network_denied": true,
+      "external_data_read_denied": true
+    },
+    {
+      "mode": "optimized",
+      "all_mandatory_pins_missing_and_corrupt_rejected": [
+        "baseline/build_source.py",
+        "baseline/expected-outputs.json",
+        "baseline/loader.py",
+        "build-stats.json",
+        "build_source.py",
+        "cellular-clock/CA_CLOCK_DOMINATION.md",
+        "cellular-clock/audit/AUDIT.md",
+        "certificate-reference/SHARED_OFFSET_PROOF.md",
+        "certificates.json",
+        "compiler-reference/COMPILER_PROOF.md",
+        "compiler-reference/SOURCE_SCHEMA.md",
+        "compiler-reference/reversible_binary.py",
+        "dependency/PROOF.md",
+        "dependency/UniversalTM15x2.tm.txt",
+        "dependency/macro_certificates.json",
+        "dependency/tm_table.json",
+        "dependency/virtual3.json",
+        "dependency/virtual3.txt",
+        "empty-first-tm-five-trace.json",
+        "empty-first-tm-literal-trace.json",
+        "empty-prologue-five-trace.json",
+        "empty-prologue-literal-trace.json",
+        "empty-through-first-tm-literal-trace.json",
+        "historical/source-manifests/baseline-source-manifest.json",
+        "historical/source-manifests/cellular-clock-audit-manifest.json",
+        "historical/source-manifests/cellular-clock-manifest.json",
+        "historical/source-manifests/optimized-source-manifest.json",
+        "historical/source-manifests/report17-manifest.json",
+        "loader.py",
+        "normalized3.json",
+        "orientation-addendum/FIRST_ENCOUNTER_OPTIMALITY.md",
+        "orientation-addendum/first-encounter-independent-audit.md",
+        "orientation-addendum/first-encounter-manifest.json",
+        "primitive3.json",
+        "reversible2-primitives.json",
+        "reversible5.json",
+        "source.json",
+        "target-ledger.json"
+      ],
+      "corrupt_input_rejected": true,
+      "corrupt_source_rejected": true,
+      "missing_baseline_pins_rejected": true,
+      "network_denied": true,
+      "external_data_read_denied": true
+    }
+  ],
+  "copy_integrity": [
+    {
+      "mode": "normal",
+      "non_generated_files_unchanged": true,
+      "no_cache_or_log_byproducts": true
+    },
+    {
+      "mode": "optimized",
+      "non_generated_files_unchanged": true,
+      "no_cache_or_log_byproducts": true
+    }
+  ],
+  "generated_files": {
+    "affine-receipt.json": {
+      "bytes": 275,
+      "sha256": "a35ffde691e0f7525c6e2969ba10f025a820cea125a192912758e87fedbd0a6f"
+    },
+    "baseline-rebuild-receipt.json": {
+      "bytes": 1385,
+      "sha256": "8cbee956bc0a76e69e1679c04415b9cd068e6584779e220bbf886fb6285c63e9"
+    },
+    "byte-exact-rebuild-receipt.json": {
+      "bytes": 1150,
+      "sha256": "b04cbd38a663805d48a4f4322fba73870ca1f05dc8a4a74df838a917903778c7"
+    },
+    "cellular-clock/audit/corollaries-receipt.json": {
+      "bytes": 1845,
+      "sha256": "c743e4419f2399e959d8e532f9bdca43bcb6c04b73fa371ec15a52d2045ada1e"
+    },
+    "cellular-clock/audit/old-new-five-row-traces.json": {
+      "bytes": 64963,
+      "sha256": "c7e46bdf9b83aad9ce9294d878ae50fd5240846596aec0a5a9e1d007793bc497"
+    },
+    "cellular-clock/audit/old-new-startup-receipt.json": {
+      "bytes": 2034,
+      "sha256": "e3c584fb6a4af02dd603a27645348b4237c07fb47256196b7bd97778670e78df"
+    },
+    "cellular-clock/audit/receipt.json": {
+      "bytes": 4720,
+      "sha256": "66f4ae4e12baf0769ad59cfbfc858712647bcf63829b40fbb3f7709a26cc2c14"
+    },
+    "cellular-clock/clock-receipt.json": {
+      "bytes": 3017,
+      "sha256": "d9a43ff6bda89c317acbf6f480f1116d5c8fc2270ed84602547622b18b31c878"
+    },
+    "cellular-clock/old-new-empty-startup-receipt.json": {
+      "bytes": 820,
+      "sha256": "5bb95e3221d0b7ec02074f3636b02366de0609b2c3e55b79718269772838a00b"
+    },
+    "cellular-clock/portable-input-manifest-receipt.json": {
+      "bytes": 9908,
+      "sha256": "75b8eda219f037525e415a9bc55058d12bb72625275fef84c25d50aa59f5e042"
+    },
+    "class-expansion-ledger.json": {
+      "bytes": 512,
+      "sha256": "147285337b01b4c24379c6797b651bf167ebd5679713b0664334aa10dcfaa477"
+    },
+    "concrete-receipt.json": {
+      "bytes": 372,
+      "sha256": "aed868c12966bdcceac8e8e3bb73e4e2948d89cca76363fd52ada919f1cf9080"
+    },
+    "empty-first-tm-five-trace.json": {
+      "bytes": 5605,
+      "sha256": "1e62cd569bdd41520fa2d03fdabae2e2139dd978ceb7a9c6972109e3c096e6cf"
+    },
+    "empty-first-tm-literal-trace.json": {
+      "bytes": 37669,
+      "sha256": "204fadeb547f7909c9dc4f0dd2eed3a305502262570f7b7224c732b95aa9b46b"
+    },
+    "empty-prologue-five-trace.json": {
+      "bytes": 6084,
+      "sha256": "976ab022bf26da4ff20925afffdfded464c1bb5df067acba4e93ae8f68f30817"
+    },
+    "empty-prologue-literal-trace.json": {
+      "bytes": 24704,
+      "sha256": "30b9994002b66e962a53a131d6f60b35cdce7808722a3b4769892a6b7af8d780"
+    },
+    "empty-through-first-tm-literal-trace.json": {
+      "bytes": 62216,
+      "sha256": "6f6374db5fb0f8ce1de3afb628cbee1e46c354ad98d88b0d2c278601f6005e4d"
+    },
+    "exact-delta-receipt.json": {
+      "bytes": 8889,
+      "sha256": "3f8ddfd89afdc63231718e6c0b6a745ddd158f2e7b266d62a21ce214c5f2891b"
+    },
+    "independent-audit-receipt.json": {
+      "bytes": 1671,
+      "sha256": "e81ae4966ce40ddf2fe6309404cecc4e3ab8eef9038072dfdae6b9f3443bad9e"
+    },
+    "independent-relabel-receipt.json": {
+      "bytes": 4737,
+      "sha256": "b9ae73244eefb144fd54d64ea8fc7ac022ed60b40bd66e86e786cd5acbbc325d"
+    },
+    "initialization-receipt.json": {
+      "bytes": 4218,
+      "sha256": "bc129f65dc5e6512eb11eba551fae57904cccb61ecfefdcf19a1c340a0e6441c"
+    },
+    "loader-api-receipt.json": {
+      "bytes": 191,
+      "sha256": "3107f6a40ff998de6e3b6273db2f48b233956af0e24dc0ec65ea21edc2158abd"
+    },
+    "loader-empty-tape.json": {
+      "bytes": 165,
+      "sha256": "b07e68a48456d49df791e09b9f255a9ac4bff881fc078640f84c0a00f6ea433b"
+    },
+    "orientation-addendum/pin-verification-receipt.json": {
+      "bytes": 876,
+      "sha256": "8d4848caa37784f3be22be1675e29db1d3b47b03cc996238c9b805e9294f7ee4"
+    },
+    "primary-table-receipt.json": {
+      "bytes": 523,
+      "sha256": "9e99400286e6fc987cd959c64368eb239cd4cddceca737e262ba1bc3fb621c01"
+    },
+    "prologue-predicted-clocks.json": {
+      "bytes": 1465,
+      "sha256": "10e81915cef7002eafa6652db6cc1d085080137b26ed1857cf2579a5b5a5cddf"
+    },
+    "schema-injection-receipt.json": {
+      "bytes": 486,
+      "sha256": "90375154a775f134eea4d24df9042d66c5687f6d81aa30d6c4d4239b9f5f07e5"
+    },
+    "target-ledger.json": {
+      "bytes": 404,
+      "sha256": "2357630cdf2b538ca11cfd9e4fe2883c6cb13b211c8ad67c6f134b19c3cd4b63"
+    }
+  },
+  "limitations": "Mathematical universality and compiler proofs are human-readable dependencies; executable finite checks do not constitute a formal proof assistant. Primary-paper visual provenance is historical. Predicted CA clocks are not CA execution."
+}

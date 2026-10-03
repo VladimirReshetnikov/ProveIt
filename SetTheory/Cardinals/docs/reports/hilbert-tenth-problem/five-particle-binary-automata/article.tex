@@ -1,0 +1,791 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,microtype,graphicx,booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt}
+\setlist{itemsep=2pt,topsep=4pt}
+\clubpenalty=10000\widowpenalty=10000\displaywidowpenalty=10000
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Reversible binary five-particle computation}\fancyhead[R]{\small Report 15}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}\newcommand{\Z}{\mathbb Z}\newcommand{\R}{\mathbb R}
+\newcommand{\supp}{\operatorname{supp}}\newcommand{\Swap}{\operatorname{Swap}}
+\newcommand{\sgn}{\operatorname{sgn}}\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\enc}{\operatorname{enc}}\newcommand{\Hh}{\mathsf H}\newcommand{\Oo}{\mathsf O}\newcommand{\Ii}{\mathsf I}
+\title{Globally reversible binary computation\\with five particles\\[4pt]\large An explicit finite-radius compiler and counted\\finite-horizon Diophantine certificates}
+\author{Report 15 \quad Mathematical construction and reproducible audit}
+\date{3 October 2026}
+\hypersetup{pdftitle={Globally reversible binary computation with five particles},pdfauthor={Report 15}}
+\begin{document}
+\maketitle
+\begin{abstract}
+A finite partial-injective deterministic machine with two natural counters is
+compiled into one time-independent cellular automaton on the full binary shift.
+Every encoded configuration has exactly five occupied sites and an otherwise
+zero background. The automaton is globally reversible, conserves the ordinary
+number of ones, and has an explicit finite radius. Full-shift reversibility is
+proved by an isolated equal-mass pattern-swap lemma valid on arbitrary dense or
+infinite inputs; simulation correctness is a separate matching argument on a
+precisely delimited admissible set. Forward and backward copies of a subdivided
+counter computation reflect at missing edges. The classical existence of a
+universal reversible two-counter source gives a five-particle universality
+existence theorem, without pretending that a literal universal source table has
+been materialized here. We count all gate factors and radii, give exact clocks,
+and construct degree-at-most-four sum-of-squares certificates for fixed finite
+source horizons, with exact natural witness fibers and explicit costs. A small
+fully materialized accepting machine, its complete raw particle orbit, vector
+figure, and exact replay tests accompany the proof. A separate, byte-preserved
+four-mass decidability report supplies the matching lower bound. These are
+mathematical proofs with independent computational and mathematical audits,
+not proof-assistant formalizations or claims of novelty or priority.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Scope and theorem}
+We use $\N=\{0,1,2,\ldots\}$. A binary configuration is an element
+$x\in\{0,1\}^{\Z}$. Its support is $\supp(x)=\{i:x_i=1\}$; for finite support,
+its numerical mass is $M(x)=|\supp(x)|$. A radius-$R$ cellular automaton (CA) is
+given by one map $f:\{0,1\}^{2R+1}\to\{0,1\}$ used at every integer site and
+every time. Reversible means bijective on the \emph{entire} full shift, not
+merely injective on encoded or finite configurations. We call it
+number-conserving when $M(Fx)=M(x)$ for every finite-support $x$. The all-zero
+configuration is fixed by the construction.
+
+\begin{theorem}[Effective reversible five-particle compiler]\label{thm:main}
+Let $C$ be a finite deterministic partial-injective two-natural-counter machine
+of the form in Section~\ref{sec:source}, with $m$ controls, $p$ nonzero-update
+branches, $a$ zero-update branches and class cutoff $J$. Suppose its designated
+halt control has no outgoing branch. An effective procedure constructs:
+\begin{enumerate}
+\item a binary, translation-equivariant, time-independent, finite-radius CA
+$F$ that is bijective on $\{0,1\}^{\Z}$ and preserves finite numerical mass;
+\item a computable injection from source IDs into configurations with exactly
+five ones and zero elsewhere; and
+\item one finite anchored binary word whose occurrence along the encoded
+forward orbit is equivalent to eventual reachability of the source halt
+control.
+\end{enumerate}
+The factor count, radius bound, encoding diameter and exact source-edge clock
+are given explicitly below. No spatial checkerboard, external step counter,
+changing background or additional stored particle is used.
+\end{theorem}
+
+\begin{corollary}[Universality by a fixed source]\label{cor:universal}
+There exists a fixed globally reversible, number-conserving binary CA of finite
+radius for which occurrence of a fixed finite anchored halt word is undecidable
+on a computable family of initial configurations containing exactly five ones.
+\end{corollary}
+\begin{proof}
+Choose a fixed universal deterministic Turing machine, apply the effective
+reversible two-counter simulation theorem of Morita~\cite{morita1996}, make the
+terminal-control normalization in Section~\ref{sec:source}, then apply
+Theorem~\ref{thm:main}. The resulting source, compiler parameters, CA and observer
+are fixed; only the effectively encoded finite input varies.
+\end{proof}
+
+This is universality in an effective finite-input halting-observation sense.
+It is not a claim of intrinsic universality, real-time simulation, efficient
+input conversion, radius optimality, or a printed universal binary truth table.
+The explicit executable example in this release is finite and accepting, but
+is \emph{not} universal. The universal reversible source is supplied by an
+existence-by-effective-construction theorem, rather than by an instantiated
+list of universal transition rows in this report.
+
+\section{Source machine and primary attribution}\label{sec:source}
+A source ID is $(q,c_0,c_1)\in Q\times\N^2$. Each branch $e$ specifies source
+$q_e$, target $q'_e$, a selected counter $j_e\in\{0,1\}$, an update
+$\Delta_e\in\{-1,0,1\}$ and a finite Boolean predicate $G_e(c_0,c_1)$ built
+from atoms $c_j=k$ and $c_j>k$, where $k\in\N$. The other counter is unchanged.
+The following are hypotheses on \emph{all} source IDs:
+\begin{enumerate}
+\item enabled branches have natural-number outputs;
+\item branch domains with a common source control are pairwise disjoint;
+\item actual branch image domains with a common target control are pairwise
+disjoint.
+\end{enumerate}
+The exact image predicate is
+\[
+ I_e(c')=\bigl[c'-\Delta_e\mathbf e_{j_e}\in\N^2\bigr]
+ \wedge G_e(c'-\Delta_e\mathbf e_{j_e}).                 \tag{1}\label{eq:image}
+\]
+It is computed from the branch; it is not an independently trusted guard.
+These hypotheses make the source transition relation a partial injection.
+An ID outside every branch domain is stuck. It counts as a halt observation
+only if its control is the designated $h$.
+
+Choose a finite $J$ such that every domain and image predicate is determined
+by each counter's class
+\[
+ \mathcal K_J=\{0,1,\ldots,J,\star\},\qquad \star=\{J+1,J+2,\ldots\}.
+\]
+Finite class enumeration verifies disjointness for predicates satisfying this
+cutoff promise. The parser uses a sufficient syntactic criterion that includes
+all atom thresholds and their updated-counter shifts. This criterion can
+reject logically redundant formulas even if a smaller cutoff would suffice;
+that is a deliberate validation restriction. Counter values are exact
+nonnegative integers. Floats and Boolean values masquerading as integers do
+not provide source IDs.
+
+\subsection{What is imported from Morita, and what is added here}
+Morita's 1996 Definitions 2.1--2.3 (printed pp.~304--306) specify natural-counter
+IDs and reversible counter-machine transitions. Theorem 4.1 (p.~313) reduces
+reversible $k$-counter computation to two counters by an effective prime
+encoding. Theorem 4.2 (p.~319) simulates each deterministic Turing machine by a
+reversible two-counter machine~\cite{morita1996}. Thus no uncounted history or
+work register remains beyond the final two counters and finite control.
+
+Its row types translate into this interface as follows:
+\begin{center}
+\begin{tabular}{lll}\toprule
+Row type & Domain on selected counter $c$ & Update\\\midrule
+zero test & $c=0$ & $0$\\
+positive test & $c>0$ & $0$\\
+increment & true & $+1$\\
+decrement & $c>0$ & $-1$\\
+no change & true & $0$\\\bottomrule
+\end{tabular}
+\end{center}
+Here $J=1$ suffices for all domains and exact images. For example, increment's
+image is positive, while an increment restricted to zero has image exactly
+one. A reverse gate must use these images, not blindly reuse a forward test.
+
+The cited definition designates a final control but does not explicitly ban
+outgoing rows from it. \emph{Our normalization} deletes all such rows. This
+restricts a partial injection and preserves first reachability of that control.
+It does not claim to preserve post-halt behavior. If a predecessor-free initial
+control is wanted, Morita--Imai 2001, Lemma 3.5 (printed pp.~245--246), supplies
+a reversible two-counter normal form with no row entering its initial
+control~\cite{moritaimai2001}. Apply that first, then delete final-control exits.
+This extra condition is used for exact finite reflection cycles and the clean
+target construction, but not for the forward halt-pattern equivalence.
+
+Prime encoding can be expensive in time and value. The input conversion need
+only be computable. No numerical values of $m,p,a$ for a literal universal
+reversible table are claimed here, and no nonreversible source table from a
+previous report is silently substituted.
+
+\section{An isolated swap on every binary input}\label{sec:swap}
+The all-input lemma is the reason malformed configurations cannot undermine
+global reversibility.
+
+Fix $B\ge1$ and two finite supports $P,Q\subseteq[-B,B]$ with equal nonzero
+cardinality $k$. Suppose $P$ and $Q$ are not translates. Their coordinate zero
+is an assigned key, not necessarily the leftmost occupied site. A position $u$
+is a \emph{raw key} in $x$ when the ones in $[u-B,u+B]$ are exactly $u+P$ or
+exactly $u+Q$. Let a local, translation-covariant contextual predicate read
+within radius $T$ of the key, and assume it has the \emph{same truth value at
+paired endpoints} when outside bits are fixed. Set
+\[
+ L_B=3B+1,\qquad M_B=\max(L_B+B,T+B)+1,\qquad r_B=M_B+2B. \tag{2}\label{eq:swapconst}
+\]
+A raw key $u$ is eligible if:
+\begin{enumerate}
+\item its only ones in $[u-L_B,u+L_B]$ are its displayed $k$ particles;
+\item no other raw key lies at distance at most $M_B$; and
+\item the contextual predicate holds.
+\end{enumerate}
+Swap $u+P$ and $u+Q$ at all eligible keys simultaneously and leave every other
+bit unchanged. Denote this map by $\Swap(P,Q;B,G,T)$.
+
+\begin{lemma}[All-input isolated-swap lemma]\label{lem:swap}
+The displayed map is an involutive binary CA of radius at most $r_B$. It
+preserves numerical mass on every finite configuration. These statements hold
+without any density, finite-support or well-formedness promise on the input
+for the involution and locality claims.
+\end{lemma}
+\begin{proof}
+Distinct eligible keys are farther than $M_B$ apart. Their radius-$B$ cores
+are disjoint. This makes even an infinite family of simultaneous rewrites
+well-defined. No other active core intersects the radius-$L_B$ isolation halo
+or radius-$T$ contextual window of an active key, since intersection would
+force key distance at most $L_B+B$ or $T+B$.
+
+Write $y$ for the rewritten configuration. We first prove that the \emph{entire
+raw-key set}, not merely the active subset, is unchanged. A raw-test window
+that changes intersects the rewritten core of some active key $u$. Its key
+$v$ has $|v-u|\le2B$, so its entire window is contained in
+$[u-3B,u+3B]$. In $x$ this larger interval has just $u+P$ or $u+Q$ as its $k$
+ones. In $y$ it has precisely the other support. If the window at $v$ is raw
+at either endpoint, its $k$ ones must therefore be the \emph{entire} support
+of the active pattern at that endpoint. Nontranslation of $P,Q$ forces its
+label to be that of the active pattern. A nonempty finite set cannot equal a
+nonzero translate of itself, so $v=u$. Every active key remains raw after
+its own rewrite. All other raw-test windows that could change are nonraw on
+both sides. This proves raw-key invariance, including changes involving a
+required zero in a matching window.
+
+Consequently, the no-other-raw-key condition is invariant. An active key
+retains isolation because its only changed particles are its own equal-mass
+core. It retains the contextual condition by the paired-endpoint assumption
+and separation from all other active cores. An inactive raw key that is
+blocked by another raw key stays blocked. An inactive raw key with no such
+blocker is farther than $M_B$ from every active key, so none of its code,
+isolation or context tests can change. Thus eligibility is unchanged at every
+key. A second application rewrites exactly the same disjoint cores and
+restores their original patterns: $\Swap^2(x)=x$ for every $x$.
+
+For an output site $i$, only keys within $B$ can write at $i$. A key's
+eligibility is determined by its radius-$(M_B+B)$ input window, which covers
+the raw-key exclusion, isolation and context tests. Radius $M_B+2B$ about $i$
+therefore suffices. Every test is in relative coordinates, proving translation
+equivariance. Finally, for finite input there are finitely many disjoint active
+cores, and each replaces $k$ ones by $k$ ones. This proves mass conservation.
+\end{proof}
+
+The guard requirement is genuinely cross-endpoint. Giving the $P$ endpoint
+a constant true guard and the $Q$ endpoint a constant false guard would break
+the involution, although each constant is individually insensitive to bits.
+Every contextual gate below uses one identical predicate of unchanged exterior
+bits at both endpoints, so it meets the stronger requirement directly.
+
+A finite ordered composition of these gates is a full-shift reversible,
+number-conserving CA. Its inverse applies the same involutions in reverse
+order. The ordered product itself need not be an involution.
+
+\section{Five-particle geometry}\label{sec:geometry}
+There are $m+2p$ unsigned head modes: $\Hh_q$ for each source control, and
+$\Oo_e,\Ii_e$ for each nonzero branch. Give each signed mode $u^+,u^-$ a
+\emph{distinct} gap $d(u^\pm)$ in $\{1,\ldots,D\}$, where
+\begin{align}
+ D&=2m+4p, & S&=2D+2, & B_2&=D+1,\notag\\
+ L&=3D+4, & B_3&=4D+5, & Z&=10B_3+10+2J=40D+60+2J. \tag{3}\label{eq:constants}
+\end{align}
+A signed head $u^\sigma$ at anchor $x$ is the pair $\{x,x+d(u^\sigma)\}$.
+The anchor is always its leftmost particle, even during leftward travel.
+
+The home encoding, with origin zero, is
+\[
+ \enc(q,c_0,c_1)=
+ \{-(Z+c_0),\;0,\;Z+c_1,\;S,\;S+d(\Hh_q^+)\}.        \tag{4}\label{eq:encoding}
+\]
+It has exactly five distinct occupied sites. Three singleton markers encode
+the left endpoint, origin, and right endpoint. The endpoints carry counter
+values by their distances to the origin. The remaining close pair encodes all
+control and sign information. The singleton particles have no hidden colors.
+The initial diameter is $2Z+c_0+c_1$.
+
+On the admissible microstates below, marker separations are at least $Z$.
+All head-to-marker distances are at least $S-D=D+2$, while the head's internal
+gap is at most $D$. Thus the head is the unique close pair. Removing it leaves
+three markers whose middle member is the origin. This proves effective
+geometric decoding and disambiguates roles with only binary sites. In
+particular, signed mode information is paid for in pair spacing and radius,
+not in additional particles or a larger alphabet.
+
+\section{The partial micrograph and its exact clock}\label{sec:micrograph}
+For a nonzero branch $e$, write $v=-1$ for the left counter and $v=+1$ for the
+right. Let $o$ be the origin, $m$ the selected endpoint, and $c$ its old counter
+value. Replace its source edge by the following finite path of unsigned
+microstates:
+\begin{enumerate}
+\item \textbf{Dispatch.} Replace a home $\Hh_{q_e}$ head at $o+S$ by an
+$\Oo_e$ head at $o+vS$, under $G_e$.
+\item \textbf{Outbound travel.} Move its anchor by $v$ at each microedge,
+from $o+vS$ to $m-vS$.
+\item \textbf{Endpoint interaction.} Move the selected endpoint to
+$m'=m+v\Delta_e$ and change the head to $\Ii_e$ at $m'-vS$.
+\item \textbf{Return travel.} Move its anchor by $-v$ at each microedge until
+$o+vS$.
+\item \textbf{Commit.} Change to $\Hh_{q'_e}$ at $o+S$, under the exact
+image predicate $I_e$ evaluated on the post-counters.
+\end{enumerate}
+A zero-update branch is one directly guarded home-to-home microedge.
+
+\begin{definition}[Admissible microstates]\label{def:admissible}
+The unsigned admissible set consists of every home ID in $Q\times\N^2$ and
+only the strict intermediate configurations on a displayed subdivision of an
+\emph{enabled} source edge $e,c$ satisfying $G_e(c)$. The doubled admissible
+set contains a plus and minus copy of exactly this set.
+\end{definition}
+
+Arbitrary geometrically plausible outbound or return packets are \emph{not}
+included merely because their spacings look reasonable. Branch-domain and
+exact-image compatibility are part of admissibility. Global CA reversibility
+will not depend on this restriction, but simulation closure does.
+
+\begin{lemma}[Injective subdivision and time]\label{lem:subdivision}
+The micrograph on admissible unsigned states is a partial injection. A
+nonzero branch at selected counter $c$ has exactly
+\[
+ \tau_e(c)=3+2(Z+c)+\Delta_e-4S                         \tag{5}\label{eq:clock}
+\]
+microedges; a zero-update branch has one.
+\end{lemma}
+\begin{proof}
+Distinct branch labels distinguish intermediate paths. An outbound mode
+retains old counters and branch label; a return mode retains the post-counters
+and branch label, from which the old counters are recovered. Its anchor fixes
+its unique position within that corridor. Home successors are unique by
+source-domain disjointness. Home predecessors are unique by disjointness of
+actual branch images. Therefore subdivisions neither branch nor merge
+improperly. Their outbound and return travel lengths are respectively
+$Z+c-2S$ and $Z+c+\Delta_e-2S$. Both are nonnegative with a large strict margin
+by (3). Adding dispatch, endpoint interaction and commit gives (5).
+\end{proof}
+
+For motion of direction $w\in\{-1,+1\}$ near a marker $m$, a marker behind
+the head has anchor $x=m+wt$, with travel allowed for $t\ge S$. A marker ahead
+has $x=m-wt$, with travel allowed for $t>S$; at $t=S$ the next edge is the
+appropriate interaction. There is no travel edge from behind distance $S-1$
+into a dispatched or reversed state. These endpoint conventions are essential
+to the matching argument.
+
+\section{The edge matching as concrete pattern swaps}\label{sec:edge}
+For each unsigned microedge $z\to z'$, we want the transposition
+$z^+\leftrightarrow z'^-$. The following finite list of individual isolated
+swaps is composed once, in any one fixed order, to form the edge block $E$.
+The fixed order is part of the compiled local rule.
+
+\subsection{Free flight}
+For each moving mode $u$ with direction $w$, use a two-particle gate with
+$B=B_2$, $T=0$ and supports
+\[
+ P=\{0,d(u^+)\},\qquad Q=\{w,w+d(u^-)\}.              \tag{6}\label{eq:free}
+\]
+Its invariant key is the \emph{predecessor} anchor $x$. It is eligible on an
+admissible predecessor exactly when no marker lies within $[x-L,x+L]$.
+The gate's raw key is unique because any raw pair must be the unique close
+pair. The reverse endpoint still checks isolation at $x$, not at its new
+anchor $x+w$.
+
+\subsection{Contact travel}
+For each moving $u$ of direction $w$, use three-particle gates keyed at the
+contacted marker zero, with $B=B_3,T=0$:
+\begin{align}
+ \{0,wt,wt+d(u^+)\}&\longleftrightarrow
+ \{0,w(t+1),w(t+1)+d(u^-)\}, && S\le t\le L; \tag{7}\label{eq:behind}\\
+ \{0,-wt,-wt+d(u^+)\}&\longleftrightarrow
+ \{0,-w(t-1),-w(t-1)+d(u^-)\}, && S+1\le t\le L. \tag{8}\label{eq:ahead}
+\end{align}
+These cover the complement of free flight on valid predecessors near a marker.
+All integer $t$ in the displayed ranges give separate finite gate factors.
+
+\paragraph{The free/contact boundary, both directions.}
+Behind a marker, departure from predecessor distance $L$ uses (7), ending
+at distance $L+1$. The potential inverse of (6) still tests the predecessor
+key at distance $L$, and therefore sees the marker and is blocked. Ahead of
+a marker, arrival from predecessor distance $L+1$ uses (6), ending at distance
+$L$. There is no gate (8) with predecessor distance $L+1$, so it cannot compete.
+At behind distance $S$, an outgoing travel edge exists but no incoming travel
+edge from $S-1$ does; dispatch or endpoint reversal supplies that incoming
+edge. At ahead distance $S$, travel has no outgoing edge; endpoint interaction
+or commit supplies it. These statements remain true for $w=-1$ because (6)
+preserves the predecessor key rather than redefining it by the sign of travel.
+
+\subsection{Dispatch, endpoint and commit}
+Each nonzero branch supplies three triple gates, with $B=B_3$:
+\begin{align}
+ \{0,S,S+d(\Hh_{q_e}^+)\}
+ &\longleftrightarrow\{0,vS,vS+d(\Oo_e^-)\},          \tag{9}\label{eq:dispatch}\\
+ \{0,-vS,-vS+d(\Oo_e^+)\}
+ &\longleftrightarrow\{v\Delta_e,v\Delta_e-vS,
+ v\Delta_e-vS+d(\Ii_e^-)\},                           \tag{10}\label{eq:endpoint}\\
+ \{0,vS,vS+d(\Ii_e^+)\}
+ &\longleftrightarrow\{0,S,S+d(\Hh_{q'_e}^-)\}.       \tag{11}\label{eq:commit}
+\end{align}
+The dispatch gate uses $G_e$, the commit gate uses $I_e$, and the endpoint gate
+has no context. The endpoint gate's invariant key is the \emph{old} endpoint
+coordinate, including when its reverse endpoint is inspected.
+
+For a zero-update branch use the triple gate
+\[
+ \{0,S,S+d(\Hh_{q_e}^+)\}\longleftrightarrow
+ \{0,S,S+d(\Hh_{q'_e}^-)\},                           \tag{12}\label{eq:zero}
+\]
+with the same source/image predicate $G_e=I_e$.
+
+\subsection{Reading bounded counter classes without storing anything}
+At a home gate's origin key, read the bits at $-(Z+k)$ and $Z+k$ for
+$0\le k\le J$. In an admissible state one present bit determines its finite
+class; all-zero reads indicate $\star$. If more than one bit appears on a
+side on a malformed input, define the guard false. This is a finite Boolean
+word test of radius $T=Z+J$.
+
+All read positions are outside the swapped support. At each of (9), (11)
+and (12), the same origin key, same exterior bits, and same predicate are used
+at both endpoints. Hence the contextual gate satisfies Lemma~\ref{lem:swap}
+on the full shift, not just the intended data.
+
+Every displayed triple has three distinct sites, one uniquely close pair of
+gap at most $D$, and other gaps greater than $D$. Plus and minus gaps differ,
+so the two supports are not translates. Their extremes lie in $[-B_3,B_3]$;
+in particular, the largest contact departure endpoint is $L+1+D=B_3$.
+Other markers are outside its particle-isolation halo because
+$Z>3B_3+1$, with margin even for the old-key displacement in (10). Any raw
+triple must contain the unique close pair and its nearby marker. Its gap
+identifies the endpoint label, and then its anchor identifies the key. Thus
+there is only one raw key on an admissible state. A large contextual
+raw-key-exclusion radius cannot accidentally veto the intended gate.
+
+\begin{lemma}[Matching and closure]\label{lem:matching}
+On the doubled admissible set, $E$ acts exactly as the matching that exchanges
+$z^+$ with $z'^-$ for each unsigned microedge $z\to z'$, and fixes unmatched
+vertices. No order choice among its fixed gate factors changes this action.
+\end{lemma}
+\begin{proof}
+A plus state belongs only to its outgoing microedge; a minus state belongs only
+to its incoming microedge. Equations (6)--(12) realize precisely those edges,
+with the travel-boundary cases above eliminating overlap and gaps. At homes,
+plus incidence is unique by domain disjointness and minus incidence by exact
+image disjointness. Conversely, a minus home passing $I_e$ has a unique natural
+predecessor $c=c'-\Delta_e\mathbf e_{j_e}$ satisfying $G_e(c)$ by (1).
+Its inverse commit or direct gate therefore enters an \emph{included}
+subdivision, not spurious moving geometry. Forward dispatch similarly enters
+an enabled subdivision. Branch labels preserve intermediate uniqueness.
+Thus every gate stays in the admissible set and realizes its one matching
+edge there. Once one factor moves a vertex to its partner, no other matching
+edge is incident at the partner, so subsequent factors do nothing to it.
+\end{proof}
+
+The matching claim is restricted to admissible configurations. It is not a
+claim that $E$ itself is an involution on every malformed configuration.
+Full-shift reversibility follows instead from the independently involutive
+factors, which require no matching hypothesis.
+
+\section{Phase flip, reflection and observation}\label{sec:reflection}
+The signed phase block $P$ uses the following factors. For each moving $u$,
+include the pair gate
+\[
+ \{0,d(u^+)\}\longleftrightarrow\{0,d(u^-)\}
+ \quad(B_2,T=0).                                    \tag{13}
+\]
+For each moving $u$, each $s\in\{-1,+1\}$ and $S\le t\le L$, include
+\[
+ \{0,st,st+d(u^+)\}\longleftrightarrow
+ \{0,st,st+d(u^-)\}\quad(B_3,T=0).                   \tag{14}
+\]
+For each $q\in Q$, include the home triple
+\[
+ \{0,S,S+d(\Hh_q^+)\}\longleftrightarrow
+ \{0,S,S+d(\Hh_q^-)\}\quad(B_3,T=0).                 \tag{15}
+\]
+On an admissible state, precisely one phase gate is active. At a moving anchor
+with no marker within $L$, it is the pair gate. Otherwise there is one nearby
+marker at a distance in $[S,L]$, and exactly one contact phase gate applies.
+At a home the origin supplies its home phase gate. A phase flip keeps the
+anchor fixed, so it cannot change this classification. The fixed-order block
+$P$ therefore acts as sign reversal on admissible states.
+
+Define \emph{one CA time step} to be
+\[
+                         F=P\circ E.                \tag{16}\label{eq:F}
+\]
+This is one fixed composition of finitely many translation-equivariant local
+rules. Composition of radius-$r_i$ rules has radius at most $\sum_i r_i$.
+Evaluating the factors internally is an algorithm for the single local map
+$f$; it is not an externally alternating CA, a spatial phase convention or an
+extra clock layer. Its full-shift inverse is the reverse list of the same
+involutions. Thus Lemma~\ref{lem:swap} proves full-shift bijectivity and finite
+mass conservation independently of simulation validity.
+
+On an admissible plus vertex with successor, $E$ moves to its successor's
+minus copy and $P$ restores plus. On a minus vertex with predecessor, $E$
+moves to its predecessor's plus copy and $P$ restores minus. At a missing
+outgoing or incoming edge, $E$ fixes the vertex and $P$ flips its sign in one
+step. This proves the desired reversible reflection dynamics.
+
+\begin{proposition}[Exact reflection cycle]\label{prop:cycle}
+If a starting source ID has no predecessor and its forward computation reaches
+terminal halt after $T$ microedges, the encoded orbit has exactly $2T+2$
+states, visiting the full forward history, then the full reverse history, then
+returning to its initial plus state.
+\end{proposition}
+\begin{proof}
+A finite partial-injective path from a predecessor-free start to a terminal
+vertex has $T+1$ distinct unsigned vertices. Plus and minus copies are distinct
+because their gaps differ. The forward and backward traversals take $T$ steps
+each; the two boundary sign flips each take one. This visits each of the
+$2T+2$ signed vertices once before returning.
+\end{proof}
+
+In particular, a reversible orbit does not enter a separate periodic attractor
+or freeze at halt. Its backward history is part of its own cycle.
+
+The observer is the anchored binary word on $[0,S+D]$ with ones exactly at
+\[
+                 \{0,S,S+d(\Hh_h^+)\},              \tag{17}\label{eq:observer}
+\]
+and zeros at all other sites in that interval. Its length is $3D+3$. Both
+endpoints lie outside the word. The unique head gap identifies the halt plus
+home. No moving head or other home mode can give that gap. The interval's
+origin and fixed head position force the home geometry on admissible states.
+
+If the forward source run reaches $h$, the observer occurs. For the converse,
+a different stuck home may reflect, but a backward traversal cannot newly
+reach an $h$ home: that would require an outgoing microedge from $h$, and
+$h$ is terminal. Reflection only retraces the same path component. Therefore
+the observer occurs along the full encoded orbit if and only if the forward
+source computation reaches $h$. The negative halt code is different. This
+also explains why terminal-control normalization is required for the stated
+unrestricted-in-time observation equivalence.
+
+\section{The exact resource ledger}\label{sec:ledger}
+All factors use alphabet $\{0,1\}$; all encoded microstates have mass five.
+Unoccupied guard-reading positions store no data. With constants (3), the
+factor counts and individual radius bounds are:
+\begin{center}
+\begin{tabular}{lrr}\toprule
+Factor category & Number & Radius bound\\\midrule
+Pair gates & $4p$ & $r_2=6D+8$\\
+Unguarded triple gates & $8pD+23p+m$ & $r_3=24D+32$\\
+Contextual triple gates & $2p+a$ & $r_c=Z+J+12D+16$\\\midrule
+All factors & $8pD+29p+m+a$ & sum below\\\bottomrule
+\end{tabular}
+\end{center}
+To check the count, each of $2p$ moving modes has one free-flight and one
+pair-phase gate. Its contact travel contributes $(L-S+1)+(L-S)=2D+5$
+triples; contact phase contributes $2(L-S+1)=2D+6$. Add $p$ unguarded endpoint
+triples, $m$ home-phase triples, $2p$ contextual dispatch/commit triples, and
+$a$ contextual direct triples. This gives every row above.
+
+For $T=0$, (2) gives radius $6B+2$, which yields $r_2,r_3$ after substitution.
+For contextual triples, $T=Z+J$ dominates and the radius is
+$T+3B_3+1=r_c$. Therefore a valid explicit composition radius is
+\begin{align}
+ R={}&4p(6D+8)+(8pD+23p+m)(24D+32)\notag\\
+     &+(2p+a)(Z+J+12D+16).                            \tag{18}\label{eq:radius}
+\end{align}
+This is a counted upper bound, not a minimum radius. A literal local truth
+table has $2^{2R+1}$ binary entries. It can be generated by finite composition
+of the factor algorithms, but writing it explicitly would typically be far
+larger than the gate description. Compilation is effective without any claim
+that this truth-table expansion is practical.
+
+For a source path of $H$ branches with old selected values $c_{t,j_t}$, its
+first halt time is
+\[
+ T=\sum_{t=0}^{H-1}\left\{
+ \begin{array}{ll}1,&\Delta_{e_t}=0,\\
+ 3+2Z+\Delta_{e_t}-4S+2c_{t,j_t},&\Delta_{e_t}\ne0.
+ \end{array}\right.                                 \tag{19}\label{eq:totalclock}
+\]
+A certificate's source horizon is $H$, not this counter-dependent CA time.
+After at most $H$ source steps, both counters are at most their initial value
+plus $H$, their sum is at most the initial sum plus $H$, and the entire
+subdivided path remains inside a span of at most
+\[
+                         2Z+c_{0,0}+c_{0,1}+H.       \tag{20}\label{eq:diameter}
+\]
+The head stays between endpoints throughout. These are value/diameter bounds;
+they are not bit-complexity estimates.
+
+\input{certificate-section.tex}
+\input{clean-target-section.tex}
+
+\section{A fully materialized accepting example}\label{sec:example}
+The release supplies this entire source table: controls $\mathtt{START}$ and
+$\mathtt{HALT}$, initial control $\mathtt{START}$, terminal control
+$\mathtt{HALT}$, and one branch
+\[
+ (\mathtt{START},c_0,c_1)\longmapsto
+ (\mathtt{HALT},c_0+1,c_1) \quad\hbox{for every }(c_0,c_1)\in\N^2.
+\]
+The start has no predecessor and the image at halt is exactly $c_0>0$.
+With $J=1$, the parameters are
+\[
+ m=2,\ p=1,\ a=0,\ D=8,\ S=18,\ B_2=9,\ L=28,\ B_3=37,\ Z=382.
+\]
+The eight signed gaps, in order, are
+\[
+ \Hh_{\mathtt{START}}^\pm:1,2;\quad
+ \Hh_{\mathtt{HALT}}^\pm:3,4;\quad
+ \Oo_e^\pm:5,6;\quad \Ii_e^\pm:7,8.
+\]
+For input $(0,0)$, the raw initial and first halt supports are exactly
+\[
+ \{-382,0,18,19,382\},\qquad \{-383,0,18,21,382\}.
+\]
+There are $47$ edge factors and $48$ phase factors, for $95$ total; the
+composition radius bound is $21150$ and the observer length is $27$. Its
+one source edge takes
+\[
+ 1+346+1+347+1=696
+\]
+CA steps: dispatch, outbound travel, endpoint interaction, return travel,
+commit. The reflection period is $1394$. The observer occurs just at time
+$696$ in that cycle. The raw trace includes all occupied coordinates at every
+time, and the next state after the complete cycle is checked against the
+initial support, using the actual full gate composition.
+
+\begin{figure}[p]
+\centering
+\includegraphics[width=\textwidth]{figures/accepting-orbit.pdf}
+\caption{Raw five-particle space--time trace of the fully materialized
+one-increment source. Every mark is drawn from the recorded occupied
+coordinates; it is not an illustration inferred only from source-level
+control. The large panel shows the full reflection cycle, and the detail
+panels expose the close pair near dispatch and halt, where its two particles
+would otherwise visually merge. The exact trace and deterministic vector
+renderer are included.}\label{fig:orbit}
+\end{figure}
+
+The four explicit free/contact demonstrations cover both directions and both
+boundary cases. In a departure case a triple gate acts at predecessor distance
+$L$ and its reverse pair competitor is blocked at the same predecessor key.
+In an arrival case a pair gate acts at predecessor distance $L+1$, with no
+contact gate at that predecessor distance. These finite demonstrations support
+rather than replace the general argument in Section~\ref{sec:edge}.
+
+\section{Verification, reproducibility and limitations}\label{sec:verification}
+The portable archive separates the authored article, finite compiler and
+source fixtures, certificate implementation and examples, vector renderer,
+and the companion lower-bound article. It requires only Python's standard
+library for mathematical replay. Rebuilding the articles additionally requires
+a normal \LaTeX{} installation with the packages declared in their sources.
+No third-party primary-source PDF, screenshot, private working note, execution
+log, bytecode cache or external dependency installation is bundled.
+
+The replay runner checks the SHA256 manifest before testing, stages mutable
+outputs in a temporary directory, runs the exact checks, and compares
+reproduced mathematical outputs with frozen fixtures. Its purpose is to make
+the release independently executable after fresh extraction, with no absolute
+workspace paths or network dependency. Generated elapsed-time measurements
+are not mathematical fixtures and are not compared byte for byte.
+
+\input{verification-details.tex}
+
+The independent isolated-swap proof establishes reversibility on the infinite
+full shift. A periodic-ring exhaustive check corroborates it for one tiny
+instance: all $2^{17}=131072$ binary inputs with support-radius parameter
+$B=1$ were tested, and $3060$ change. Every case preserves raw keys,
+eligibility, mass and the square-identity law. This is finite corroboration,
+not an exhaustive check of the general theorem.
+
+The independent geometric compiler stress test uses $m=5,p=4,a=1,J=2$ and
+$954$ gates. It checks $31957$ source-path microedges, $63914$ signed endpoint
+checks and $250$ signed homes. Its deliberately merging target control has
+disjoint \emph{actual} image predicates; it also tests decrement on both
+sides, stuck states, image gaps, interaction endpoints and the free/contact
+boundary. These checks isolate potential geometric and predicate errors,
+but neither this finite source nor the accepting example proves universal
+source existence.
+
+The release's claims have four distinct supports: the all-input mathematical
+lemma, the admissible simulation proof, the classical universal-source theorem,
+and reproducible finite implementation checks. None is silently used in place
+of another. The software is an audited research implementation, not a certified
+proof assistant extraction. The mathematical audit does not certify a literal
+universal source table that is absent from the release.
+
+\section{The five-particle threshold and relation to earlier work}\label{sec:threshold}
+The companion Report 12 proves a separate four-mass decision theorem for fixed
+one-dimensional finite-alphabet conservative CAs with a unique zero-weight
+vacuum, positive integer nonvacuum weights, and at most one weight-one symbol.
+For mass at most four, exact finite-configuration reachability and finite-pattern
+occurrence, anchored or anywhere, are decidable. Its proof handles translating
+packets and expanding shuttles rather than assuming timed semilinearity.
+It is included with its original \LaTeX{}, PDF and vector figure
+byte-preserved~\cite{report12}.
+
+\begin{corollary}[Matched binary reversible particle threshold]\label{cor:threshold}
+Taking the separate four-mass decision theorem as proved in the companion,
+five is the least number of ones allowing undecidable effective finite-input
+halt-pattern occurrence or exact finite-target reachability for a fixed
+one-dimensional globally reversible, number-conserving binary CA of arbitrary
+finite radius. For exact reachability, both the initial and target
+configurations are computable functions of the input.
+\end{corollary}
+\begin{proof}
+The companion applies to all binary conservative CAs and hence to their
+reversible subclass, excluding a computable halting reduction at mass at most
+four. Corollary~\ref{cor:universal} gives such a reduction with exactly five
+ones. Corollary~\ref{cor:exact} supplies the five-particle exact-target upper
+bound, and the same companion supplies its mass-at-most-four lower bound.
+All statements use finite zero-background inputs and their specified local
+observations or exact finite targets.
+\end{proof}
+
+This matched statement explicitly depends on two proofs. The upper construction
+does not reprove the four-mass theorem. The companion's numerical four-mass
+statement is broader in alphabet and does not by itself provide the binary
+upper bound. Its byte-preserved version predates the present reversible binary
+upper construction, so its discussion of that previously open part is read
+in that chronological context.
+
+Morita--Imai's 2001 construction provides a finite-zero-background,
+number-conserving reversible simulation with a numerical triple-part alphabet;
+its reported mass depends on the source-control count~\cite{moritaimai2001}.
+Morita's 2012 construction gives a one-dimensional reversible
+number-conserving CA with $96$ numerical states, but its discussed universal
+configurations have an infinite ultimately periodic background~\cite{morita2012}.
+Neither statement alone is a binary five-one construction. These are relevant
+precedents, not inputs to the isolated binary-swap proof.
+
+The 2016 article by Alhazov and Imai is directly relevant to particle
+complexity~\cite{alhazovimai2016}. Its full construction was not available in
+the targeted source review used here, so no inference about its exact binary,
+reversible or optimality scope is made. An unsuccessful or incomplete search
+is not a novelty or priority argument. No claim of being the first such
+construction is made in this report.
+
+\section{Research questions and sharpenings}
+The construction raises concrete questions that do not affect the established
+bounds:
+\begin{enumerate}
+\item \textbf{Literal universal source.} Materialize and independently audit a
+universal reversible two-counter table in the accepted schema. This would turn
+symbolic $m,p,a,J$ into numerical universal parameters and permit end-to-end
+source-level replay of a chosen encoded computation.
+\item \textbf{Radius and gate optimization.} The sum-of-factor bound is
+intentionally generous. Can one reuse gap codes, reduce isolation halos, or
+prove a smaller composed dependency cone without losing all-input reversibility?
+Can the fixed five-particle construction be made near a useful minimal radius?
+\item \textbf{More economical certificates.} Finite class normalization can
+multiply branch count by $(J+2)^2$. Can a direct guard-circuit encoding preserve
+a unique natural witness fiber with fewer residuals and controlled degree?
+\item \textbf{Uniform versus bounded arithmetization.} The horizon here is
+compiled syntax. A single horizon-free polynomial representing the same
+unbounded reachability relation would require an additional genuine uniform
+arithmetization theorem, not a reinterpretation of these bounded certificates.
+\item \textbf{Mechanized proof.} Formalize the all-input raw-key invariance
+lemma, enabled-edge admissibility, and signed matching construction in a proof
+assistant; relate the executable sparse-set implementation to its local-rule
+semantics.
+\item \textbf{Conservation and small-particle lower bounds.} Examine how the
+separate four-mass analysis changes with multiple distinguishable unit labels,
+nonuniform schedules, higher-dimensional lattices or active zero-weight
+backgrounds. The current threshold does not cover those different models.
+\end{enumerate}
+
+\begin{thebibliography}{9}
+\bibitem{morita1996}
+K.~Morita. \emph{Universality of a reversible two-counter machine}.
+Theoretical Computer Science 168(2) (1996), 303--320.
+\href{https://doi.org/10.1016/S0304-3975(96)00081-3}{doi:10.1016/S0304-3975(96)00081-3}.
+Definitions 2.1--2.3 and Theorems 4.1--4.2.
+
+\bibitem{moritaimai2001}
+K.~Morita and K.~Imai. \emph{Number-conserving reversible cellular automata and
+their computation-universality}. RAIRO Theoretical Informatics and Applications
+35(3) (2001), 239--258.
+\href{https://www.numdam.org/item/ITA_2001__35_3_239_0/}{Primary publisher record}.
+In particular Lemma 3.5 and Theorem 3.6.
+
+\bibitem{morita2012}
+K.~Morita. \emph{Universality of One-Dimensional Reversible and Number-Conserving
+Cellular Automata}. 2012.
+\href{https://arxiv.org/abs/1208.2760}{arXiv:1208.2760}.
+
+\bibitem{alhazovimai2016}
+A.~Alhazov and K.~Imai. \emph{Particle Complexity of Universal Finite
+Number-Conserving Cellular Automata}. CANDAR 2016, 209--214.
+\href{https://doi.org/10.1109/CANDAR.2016.0045}{doi:10.1109/CANDAR.2016.0045}.
+Full construction not independently inspected in this report's source review.
+
+\bibitem{report12}
+\emph{Four mass units and exact reachability}. Companion Report 12,
+3 October 2026. Separate authored proof and binary timing certificate,
+included byte-preserved in this release. AI-assisted mathematical research
+report; not a refereed publication or proof-assistant formalization.
+\end{thebibliography}
+\end{document}

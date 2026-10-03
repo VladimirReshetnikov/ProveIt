@@ -1,0 +1,132 @@
+{
+  "status": "passed",
+  "frozen_sha256": "f95a6028c9d3cc6f8b0b497cfc0cad68104da6d70e55205df04ad234e5d0c76f",
+  "lazy_sha256": "42e8aa65c05fcf373a03a02be51ebb89a4fdcb1f1070ad776ffe1e8e99049c61",
+  "counts": {
+    "sources": 5,
+    "gate_descriptors": 1471,
+    "endpoint_candidate_checks": 14710,
+    "sparse_gate_checks": 52956,
+    "guard_checks": 268,
+    "step_checks": 830,
+    "validation_checks": 15,
+    "subset_step_checks": 8192,
+    "validation_fuzz_checks": 1000
+  },
+  "cascade_input": [
+    -118,
+    -112,
+    0,
+    18,
+    23
+  ],
+  "cascades": {
+    "E": {
+      "events": [
+        {
+          "index": 0,
+          "name": "free:('O', 'e')",
+          "before": [
+            -118,
+            -112,
+            0,
+            18,
+            23
+          ],
+          "after": [
+            -119,
+            -114,
+            0,
+            18,
+            23
+          ]
+        },
+        {
+          "index": 1,
+          "name": "behind:('O', 'e'):18",
+          "before": [
+            -119,
+            -114,
+            0,
+            18,
+            23
+          ],
+          "after": [
+            -119,
+            -114,
+            0,
+            19,
+            25
+          ]
+        }
+      ],
+      "twice": [
+        -118,
+        -112,
+        0,
+        19,
+        25
+      ]
+    },
+    "P": {
+      "events": [
+        {
+          "index": 0,
+          "name": "phase-free:('O', 'e')",
+          "before": [
+            -118,
+            -112,
+            0,
+            18,
+            23
+          ],
+          "after": [
+            -118,
+            -113,
+            0,
+            18,
+            23
+          ]
+        },
+        {
+          "index": 12,
+          "name": "phase-near:('O', 'e'):1:18",
+          "before": [
+            -118,
+            -113,
+            0,
+            18,
+            23
+          ],
+          "after": [
+            -118,
+            -113,
+            0,
+            18,
+            24
+          ]
+        }
+      ],
+      "twice": [
+        -118,
+        -112,
+        0,
+        18,
+        24
+      ]
+    }
+  },
+  "validation_precedence": [
+    {
+      "type": "TypeError",
+      "message": "branches[2].side must be an exact integer (not bool or float)"
+    },
+    {
+      "type": "TypeError",
+      "message": "branches[2].side must be an exact integer (not bool or float)"
+    }
+  ],
+  "elapsed_seconds": 12.04078790100175,
+  "optimization_level": 0,
+  "audit_sha256": "ce40c39260b0aebdef1dd295bd28bfb12c84022ec6b5a5f9b94d19bbafa57aa9"
+}
