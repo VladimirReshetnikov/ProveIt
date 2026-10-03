@@ -1,0 +1,111 @@
+--- a/SetTheory/Cardinals/docs/reports/README.md
++++ b/SetTheory/Cardinals/docs/reports/README.md
+@@ -509,9 +509,10 @@
+ clusters and opened two reports in
+ [`hilbert-tenth-problem`](hilbert-tenth-problem):
+ [`polynomial-witness-histories`](hilbert-tenth-problem/polynomial-witness-histories)
+-(unique linear certificates whose unknowns are a fixed number of finite
+-polynomials over ℕ[X,Y], ℕ[X] or any commutative ring, from three
+-manuscripts, the second answering the first's question on one coordinate)
++(unique certificates whose unknowns are a fixed number of finite
++polynomials: affine-linear over ℕ[X,Y] or a nonzero commutative ring, and
++quadratic over ℕ[X] with a shared stride, from three manuscripts, the
++second answering the first's question on one coordinate)
+ and
+ [`smooth-diophantine-finalizers`](hilbert-tenth-problem/smooth-diophantine-finalizers)
+ (five more variables turn any quadratic certificate into a quartic that is
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/README.md
+@@ -942,9 +942,10 @@
+ `smc:cs:thm:packet` and its fixed-horizon sums are a statement of the same
+ kind as Theorem 137.1 (`pqc:pm:thm:trace`): a degree-two polynomial,
+ squares of affine residuals plus unsquared products of nonnegative
+-quantities, with one natural zero at an externally fixed horizon. The
+-dynamics differ (the event map of a conservative signal machine, a
+-piecewise-linear map on `ℕ^d`, against a clipped rational network), and so
++quantities, with an empty-or-singleton natural fibre at an externally
++fixed horizon for the signal packet. The dynamics differ (the partial
++piecewise integer-linear event map of a conservative signal machine on
++`ℕ^d`, against a total clipped rational network), and so
+ do the gadgets (one selector and one input copy per branch, against the
+ clamp of Lemma `pqc:pm:lem:clamp`, which needs no branch selector). A dated
+ note of 2 October 2026 after the paragraph relating Theorem 137.1 to Part
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/article.tex
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/article.tex
+@@ -16121,8 +16121,8 @@
+ sibling report \code{signal-machine-collision-certificates} (written in
+ \code{bd8a8afd6}; its source~12, batch-79 manuscript~16) proves a statement of
+ the same kind for a different dynamics. Its Theorem \code{smc:cs:thm:packet}
+-gives, for a homogeneous-guarded piecewise-linear map on $\N^d$ with finitely
+-many branches, a degree-two step polynomial with exactly one natural witness
++gives, for a partial homogeneous-guarded piecewise integer-linear map on
++$\N^d$ with finitely many disjoint branches, a degree-two step polynomial with exactly one natural witness
+ for each step, and its horizon sum chains one such packet per step, so that
+ for an externally fixed horizon the natural fibre is empty or a singleton;
+ the map there is the event map of a fixed reversible, number-conserving
+@@ -16134,7 +16134,8 @@
+ three-piece map $\sigma$ by two excess variables and no branch selector (the
+ remark ``No branch selector is needed''), and the scales $D_t$ here make a
+ rational trajectory integral, while the sibling report lifts its rational
+-event coordinates by a uniform common denominator. Neither report proves
++event coordinates by the positive pivot denominator of each branch; a
++uniform common-denominator lift is a separate alternative there. Neither report proves
+ the other's theorem.
+ 
+ \section{Projective quadratic certificates for real-input reachability}
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/article.tex
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/article.tex
+@@ -4737,7 +4737,7 @@
+ \end{writenote}
+ 
+ \begin{writenote}
+-Added 2~October 2026 (batch~79, reciprocal note). The same selector/copy device, with the selector \emph{not} added to the right factor, is the step packet of Part~III of the neighbouring report \emph{Signal-machine collision certificates} (its source~12, batch-79 manuscript~16; Theorem \lab{smc:cs:thm:packet} there). There a finitely branched, homogeneous-guarded piecewise-linear map on $\N^d$ gets one selector $b_r$, one input copy $X_r$ and one slack per inequality guard on each branch, and the products are $\bigl(\sum_{h\ne r}b_h\bigr)\bigl(\sum_iX_{r,i}\bigr)$; the map is instantiated for the event map of a fixed reversible, number-conserving universal signal machine with 18 live signals, and fixed horizons are chained exactly as $P_T$ chains instructions here. That polynomial has the form~\eqref{qoc:eq:spine}, but its source claims exactness over natural witnesses only. The note after the theorem there shows that its nonnegative real fibre is nevertheless natural at every natural input $X\ne0$, since two positive selectors would force every copy, hence $X$, to vanish; at $X=0$ the weaker gate leaves fractional selectors possible on branches without a strict guard, which the selector term used here excludes. The selector/copy construction is credited there to Balas's disjunctive formulation. No theorem is shared.
++Added 2~October 2026 (batch~79, reciprocal note). The same selector/copy device, with the selector \emph{not} added to the right factor, is the step packet of Part~III of the neighbouring report \emph{Signal-machine collision certificates} (its source~12, batch-79 manuscript~16; Theorem \lab{smc:cs:thm:packet} there). There a finitely branched, homogeneous-guarded piecewise-linear map on $\N^d$ gets one selector $b_r$, one input copy $X_r$ and one slack per inequality guard on each branch, and the products are $\bigl(\sum_{h\ne r}b_h\bigr)\bigl(\sum_iX_{r,i}\bigr)$; the map is instantiated for the event map of a fixed reversible, number-conserving universal signal machine with 18 live signals, and fixed horizons are chained exactly as $P_T$ chains instructions here. That polynomial has the form~\eqref{qoc:eq:spine}, but its source claims exactness over natural witnesses only. The note after the theorem there shows that its nonnegative real fibre is nevertheless natural at every natural input $X\ne0$, since two positive selectors would force every copy, hence $X$, to vanish; at $X=0$ strict branches have zero selectors and disjointness permits at most one branch with only homogeneous equality and weak guards, so the complete packet's fibre is natural there too. The selector term used here enforces one-hot selection by the gates alone, independently of that branch condition. The selector/copy construction is credited there to Balas's disjunctive formulation. No theorem is shared.
+ \end{writenote}
+ 
+ 
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/README.md
+@@ -559,8 +559,12 @@
+   adds an elementary observation that neither source makes: two positive
+   selectors force every local copy, hence the input `X`, to vanish, so the
+   nonnegative real fibre of Part III's packet is natural at every natural
+-  input `X ≠ 0`; adding the selector term would remove the exception at
+-  `X = 0` without changing the ledger. That report's relation section and
++  input `X ≠ 0`. At `X = 0`, strict branches have zero selectors and
++  disjointness allows at most one branch with only homogeneous weak or
++  equality guards, so the complete packet's real fibre is natural there
++  too. Adding the selector term forces one-hot selection by the gates
++  alone, independently of this branch condition, without changing the
++  witness and residual ledger. That report's relation section and
+   a note after its Theorem `qoc:um:thm:poly` point back here.
+ - **[`probabilistic-quantum-and-continuous-computation`](../probabilistic-quantum-and-continuous-computation)**:
+   its trace theorem `pqc:pm:thm:trace` is the same kind of fixed-horizon,
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/article.tex
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/article.tex
+@@ -2930,7 +2930,7 @@
+ 
+ \wtag\ Two remarks place Theorem~\ref{smc:cs:thm:packet} in the collection. (i) Source~12 states nonnegativity on natural arguments only, but $P$ is nonnegative on the whole real nonnegative orthant: the residuals enter squared, and each complementarity product $\bigl(\sum_{h\ne r}b_h\bigr)\bigl(\sum_iX_{r,i}\bigr)$ is a product of two affine forms with nonnegative coefficients. So \eqref{smc:cs:eq:polynomial} has exactly the form $\sum_iA_i^2+\sum_jB_jC_j$ of the spine of \emph{quadratic-orthant-certificates} (its equation \texttt{qoc:eq:spine}), the format of that report's three Parts. This is a statement about the sign of $P$ only; no claim is made here that the nonnegative real zeros of $P$ are natural. (ii) The one-step graph $\{(X,F(X))\}$ of a homogeneous-guarded piecewise-linear map on $\NN^d$ with finitely many branches is a semilinear set, so the \emph{existence} of a single-fold representation of degree two, nonnegative on the real orthant, also follows from Theorem \texttt{cdc:of:thm:singlefoldsl} of Part~XI of \emph{canonical-diophantine-certificates}, via Presburger quantifier elimination. The construction here is explicit, needs no elimination, and carries the exact ledger \eqref{smc:cs:eq:variables}--\eqref{smc:cs:eq:residual-count}; that is what this Part contributes, not the existence statement. The fixed-horizon sum \eqref{smc:cs:eq:trace} is of the same ``one natural zero, fixed horizon'' kind as the trace polynomial of Theorem \texttt{pqc:pm:thm:trace} in \emph{probabilistic-quantum-and-continuous-computation}, which handles a different dynamics with a clamp gadget.
+ 
+-\wtag\ \textbf{Added 2 October 2026 (batch 79): the strong selector gates of \emph{quadratic-orthant-certificates}.} Part~V of that report (its source~16, batch-79 manuscript~09, written in commit \texttt{11abe5008}) uses the same selector device for the branches of literal counter programs, with one change: its products $\bigl(\sum_{k\ne r}e_{j,k}\bigr)\bigl(e_{j,r}+\sum_i x_{j,r,i}\bigr)$ (its equation \texttt{qoc:um:eq:polynomial}) add the selector itself to the right factor. Two positive selectors would then make some product positive, so the gate forces one-hot selection over the nonnegative reals, and for natural inputs the nonnegative real zero fibre of that polynomial is its natural fibre (its Theorem \texttt{qoc:um:thm:poly}); its source~17 isolates the gate as Lemma \texttt{qoc:rn:lem:gates} and uses it again for reset-net traces in its Part~VI. The products of~\eqref{smc:cs:eq:polynomial} lack that term, and source~12 claims exactness over natural witnesses only. An elementary observation, not made by either source, shows how far the present gates reach. At a nonnegative real zero of~\eqref{smc:cs:eq:polynomial}, if two selectors were positive, every first factor $\sum_{h\ne r}b_h$ would be positive, so every local copy $X_r$ would vanish and $X=0$ by~\eqref{smc:cs:eq:copy}. Hence, for natural $X\ne0$ and natural $Y$, exactly one selector equals one, every inactive copy and slack vanishes, the active slacks are the integers $L(X)-1$ and $L(X)$, and the nonnegative real fibre is the natural one; only at $X=0$ do the gates alone leave fractional selectors possible, among branches without a strict guard, since~\eqref{smc:cs:eq:strictguard} forces $b_r=0$ at $X_r=0$. Adding $b_r$ to each right factor, as in that report, would remove this exception without changing the counts \eqref{smc:cs:eq:variables}--\eqref{smc:cs:eq:residual-count}. Neither report re-proves a theorem of the other.
++\wtag\ \textbf{Added 2 October 2026 (batch 79): the strong selector gates of \emph{quadratic-orthant-certificates}.} Part~V of that report (its source~16, batch-79 manuscript~09, written in commit \texttt{11abe5008}) uses the same selector device for the branches of literal counter programs, with one change: its products $\bigl(\sum_{k\ne r}e_{j,k}\bigr)\bigl(e_{j,r}+\sum_i x_{j,r,i}\bigr)$ (its equation \texttt{qoc:um:eq:polynomial}) add the selector itself to the right factor. Two positive selectors would then make some product positive, so the gate forces one-hot selection over the nonnegative reals, and for natural inputs the nonnegative real zero fibre of that polynomial is its natural fibre (its Theorem \texttt{qoc:um:thm:poly}); its source~17 isolates the gate as Lemma \texttt{qoc:rn:lem:gates} and uses it again for reset-net traces in its Part~VI. The products of~\eqref{smc:cs:eq:polynomial} lack that term, and source~12 claims exactness over natural witnesses only. An elementary observation, not made by either source, shows how far the present gates reach. At a nonnegative real zero of~\eqref{smc:cs:eq:polynomial}, if two selectors were positive, every first factor $\sum_{h\ne r}b_h$ would be positive, so every local copy $X_r$ would vanish and $X=0$ by~\eqref{smc:cs:eq:copy}. Hence, for natural $X\ne0$ and natural $Y$, exactly one selector equals one, every inactive copy and slack vanishes, the active slacks are the integers $L(X)-1$ and $L(X)$, and the nonnegative real fibre is the natural one. At $X=0$ all local copies vanish, and~\eqref{smc:cs:eq:strictguard} forces $b_r=0$ for every branch with a strict guard. Every branch with only homogeneous equality and weak guards contains zero; disjointness therefore allows at most one such branch. The selector equation then makes the whole packet's nonnegative real fibre natural at zero as well (or empty). The weak gates alone do not enforce one-hot selection at zero. Adding $b_r$ to each right factor, as in that report, would enforce it independently of branch disjointness, without changing the counts \eqref{smc:cs:eq:variables}--\eqref{smc:cs:eq:residual-count}. Neither report re-proves a theorem of the other.
+ 
+ \subsection{The exact witness and residual ledger}
+ Let $E,T,W$ be, respectively, the total counts of equality, strict, and weak guards across all $B$ branches. There are
+--- a/SetTheory/Cardinals/docs/reports/manifest.tex
++++ b/SetTheory/Cardinals/docs/reports/manifest.tex
+@@ -3824,10 +3824,10 @@
+ \entry{Quadratic orthant certificates: maximal parallelism, timed irreversible races, a fixed Waterfall universal machine, active membranes and reset Petri nets}
+ {hilbert-tenth-problem/quadratic-orthant-certificates}
+ {article.pdf}{batch~78: Maximal\_Parallel\_Diophantine.zip + Total\_Quadratic\_Diophantine\_Semantics.zip + Waterfall\_Diophantine\_Certificates.zip; batch~79: Membrane\_Motif\_Research\_Package.zip, Universal\_Membrane\_Research\_Package.zip, Reset\_Petri\_Net\_Certificates.zip}
+-{Each Part compiles a fixed finite system into one integer polynomial of
+-degree two, nonnegative on the real orthant, whose natural zeros biject with
+-the semantic objects and whose unsquared products express a condition that
+-balance equations cannot; Parts~I--III sit at the level $D^{+}_2=\mathrm{SL}$
++{Parts~I--III, V and~VI compile fixed finite systems into integer polynomials
++of degree two, nonnegative on the real orthant, whose natural zeros biject
++with the semantic objects and whose unsquared products express a condition
++that balance equations cannot; Part~IV uses degree four. Parts~I--III sit at the level $D^{+}_2=\mathrm{SL}$
+ of the degree classification in Part~XI of
+ \dir{canonical-diophantine-certificates}.  Part~I certifies one maximal
+ parallel round of a multiset-rewriting system with $d+2m+4H$ natural

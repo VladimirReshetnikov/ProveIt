@@ -51,6 +51,14 @@ patch qualifies exact-size uniqueness, the two DAG-growth base cases and the
 single-fold input translation, and updates two collection counts. Root replay
 matches the receipt. The later corrected-code placement has a separate boundary.
 
+The [new catalogue and reciprocal-note review](review_batch79_j2_bbc67d225.md)
+finds four prose issues: linear versus quadratic polynomial witnesses, a stale
+all-quadratic Part count, branchwise versus uniform signal scaling, and a
+zero-input caveat that omits disjoint guards. A tested seven-file patch corrects
+them. For the complete original signal packet, the disjoint homogeneous guards
+make its nonnegative-real fibre natural even at zero input; the isolated weak
+gates alone do not force this. Existing arithmetic ledgers are unchanged.
+
 The assembled-report reviews now also cover [Part XVII sign charts](review_signcharts_f97814421.md):
 79 formal environments and 91 display occurrences survive with their multiplicities,
 and all 29 companion files retain the original bytes. The externally fixed widths,
