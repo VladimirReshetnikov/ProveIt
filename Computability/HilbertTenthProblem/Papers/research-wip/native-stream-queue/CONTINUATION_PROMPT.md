@@ -79,10 +79,21 @@
 > persistent phase. Four original A→AH examples violate Genera's hypothetical
 > prefix condition and are cleanup-only; author MD now says so explicitly.
 > Independent fixtures add eight valid halts and preserve the2274 padded
-> false accept. Input ports X=A[J+(D−1)R],P0 cost2M+2A including slack
-> only after the regular recoder and exact width are paid. The numerical
-> universal Genera table, ordinary-input decoder and native width binding
-> remain open; the205-operation011 example is a different fixed program.
+> false accept. The [paid exact-width loader](grill_tag_exact_width_loader.md)
+> now closes regular recoder and width binding for the explicit binary(x+1)
+> input contract. With u=x+1, positive s=q−u and s+beta=u+1 force canonical
+> q=2^bit_length(u), including power-of-two boundaries. Cleared E encoding
+> costs3M+2A; P0=Q retains positive native slack and rejects padded widths.
+> True E words satisfy3X<Q, so the strong same-width converse and positive
+> Zweak=Zstrong+2X map apply without padding. All37 loader residuals belong
+> inside U*(1+S_H+S_L)−1, not added unweighted to the old polynomial.
+> General increment247+mu(b); actual N3 reject-all table has1,568 phases,
+> native16033, composition16291=4996M+11295A,3217 witnesses,48 comparisons,
+> degreeupper283247. The205-operation011 count is unrelated. The
+> [independent audit](review_grill_tag_exact_width_loader.md) and both root
+> receipts pass. Numerical universal Genera recognizer and its intended
+> ordinary-input language remain open. Do not use the dyadic-duration recoder:
+> canonical input length need not be dyadic. Preserve frozen parent packets.
 
 > New [three-mass unbounded raw/clock bridge](three_mass_unbounded_interface.md)
 > and [independent review](review_three_mass_unbounded_interface.md) both pass

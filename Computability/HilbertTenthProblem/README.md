@@ -42,8 +42,12 @@ Lean formalization or an unrestricted optimality claim.
 The [corrected Grill halt bridge](Papers/research-wip/native-stream-queue/grill_tag_halt_bridge.md)
 and its [independent review](Papers/research-wip/native-stream-queue/review_grill_tag_halt_bridge.md)
 prove halting equivalence at the exact encoded width, including cleanup.
-The existing padding counterexample remains; the ordinary-input recoder,
-exact-width binding and fixed universal source are still separate obligations.
+The [paid exact-width loader](Papers/research-wip/native-stream-queue/grill_tag_exact_width_loader.md)
+now supplies canonical binary(x+1) input and fixes the queue width. Its
+complete1,568-phase illustration costs16,291 operations and has an
+[independent source/proof audit](Papers/research-wip/native-stream-queue/review_grill_tag_exact_width_loader.md).
+Both fresh receipts pass. A numerical universal recognizer and its
+ordinary-input language theorem remain open.
 
 The [three-mass raw-history bridge](Papers/research-wip/native-stream-queue/three_mass_unbounded_interface.md)
 now represents unbounded fixed-source reachability with an exact physical

@@ -60,8 +60,15 @@ retains the same-numeral padding counterexample: exact initial width is
 still essential. Root and independent review clarified four cleanup-only
 fixtures that fall outside the original Genera halt convention; four others
 are valid whole simulations. Both receipts pass fresh root replay. The
-conditional binary block loader costs2M+2A after unpaid recoder/width ports;
-no fixed universal source or complete ordinary-input count is claimed.
+historical conditional loader has a new
+[complete paid exact-width composition](grill_tag_exact_width_loader.md).
+It encodes binary(x+1), binds the native width to the recoder's certified power,
+and includes all37 added residuals inside the existing integer-unit anchor.
+The actual1,568-phase reject-all example costs16,291 operations, with3,217
+positive witnesses; the [independent audit](review_grill_tag_exact_width_loader.md)
+reconstructs its complete source and same-width positive converse. Both
+fresh root receipts pass. Exact loading is now paid for this contract;
+a numerical universal source and its input-language theorem remain open.
 
 The [three-mass unbounded interface](three_mass_unbounded_interface.md) now
 pays raw fixed-source reachability and an exact physical clock through the
