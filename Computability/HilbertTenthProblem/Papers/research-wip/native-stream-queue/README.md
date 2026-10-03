@@ -120,6 +120,15 @@ source identities across nine programs, including literal one-phase no-ops.
 Both receipts pass root replay. The 31-witness interface and degree upper
 bound 1187 remain; these are still small-program, nonuniversal examples.
 
+The [phase-residual rewrite](grill_tag_native_phase_residual206.md) further
+reduces the strong-cone source from 209 to **206=93M+113A**, preserving its
+entire polynomial on every supplied tuple. A complementary weighted phase sum
+removes one multiplication and two additions. The
+[independent review](review_grill_native_phase_residual206.md) expands the
+actual selector, repunit and phase formulas and proves 14 complete source
+identities, including periods 1, 2, 3, 4 and 5. Both receipts pass root replay.
+The 31 positive witnesses and degree upper bound 1187 remain unchanged.
+
 The [weak-cone child](grill_tag_native_weak_cone.md) implements the padding
 corollary, reducing that complete source to **208=93M+115A**. It replaces
 P0=3x+Z0 by P0=x+Z0. Fresh native-domain arguments and the padding theorem
