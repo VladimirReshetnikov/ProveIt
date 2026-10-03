@@ -171,6 +171,105 @@ Author and review pass fresh installed replay. Their degree fields remain
 upper bounds304/208; the separate parent exact-degree proof and polynomial
 identity also establish unchanged exact degrees. No universal bound changes.
 
+The [shared projective macro compiler](Papers/research-wip/native-stream-queue/group_projective_shared_macro_automaton.md)
+transfers continuation sharing to the complete one-kernel product-scale/tail
+architecture. The explicitly emitted private/shared sources cost
+**236=99M+137A →230=98M+132A**, with34→33 positive witnesses, six comparisons
+and exact degree1789. Both graphs already use eight lanes; the saving is
+six operations and one edge witness, with the ordinary input and positive
+height constructor retained. These are bounded schedule results, not
+packing optima. **This fixture's positive-input language is empty**: its
+fourth coordinate never changes to the required endpoint. It is an
+arithmetic compiler benchmark, not a new universal bound or an accepting
+computation example. The general branching-flow/native-interface proof
+preserves the existential input language; different graphs and lane maps
+do not have the same polynomial. The [independent review](Papers/research-wip/native-stream-queue/review_group_projective_shared_macro_automaton.md)
+checks both saved winners:466 paid live gates,18 full graph coefficients,
+366 retained-register identities, both complete outputs, and two independent
+full coefficient expansions proving degree1789. The other28 schedules
+receive metadata checks only. Author and review pass fresh installed exact
+replay; the established74/86 universal bounds are unchanged.
+
+The [inverse-graph folding theorem](Papers/research-wip/native-stream-queue/group_inverse_stallings_controller.md)
+now permits changing physical word spellings while preserving the evaluated
+matrix subgroup. An identity-connector proof covers every fold, including
+folds at the base vertex; fresh histories and height recover the same
+existential projective input predicate. Its explicit inverse-closed table
+has a canonical **28-edge,13-state,32-lane** core. Four construction routes,
+54 folds,378 individual path lifts and independent spanning-tree bases
+verify the saved graph. Root checked the full proof/source and fresh
+installed receipt replay passes. This packet has no complete arithmetic
+ledger; fewer graph vertices alone do not establish an operation saving.
+The universal alphabet remains uninstantiated and the74/86 bounds unchanged.
+
+The [nonempty inverse-macro compiler](Papers/research-wip/native-stream-queue/group_projective_inverse_macro_sharing.md)
+now emits four complete sources for one proper, nonempty ordinary-input
+predicate. Original private paths cost492; exact word-language sharing
+costs432; equivalent Nielsen generators give **371=150M+221A**,54 positive
+witnesses, six comparisons and exact degree4909. The folded28-edge graph
+costs376 under general weighted flow, illustrating why fewer states do
+not imply fewer operations. Input2 has a genuine124-step accepting outer
+history; a modulo5 obstruction excludes input1. Positive native extensions
+are proved, not materialized. All height/input conditions remain. The
+numerical alphabet is not asserted universal; the74/86 bounds are unchanged.
+The [independent review](Papers/research-wip/native-stream-queue/review_group_projective_inverse_macro_sharing.md)
+checks all four complete arrays:1,671 paid live gates,144 outer/native
+polynomial identities,740 retained registers,24 complete comparisons and
+eight exact-degree certificates. Eight genuine accepting outer fixtures
+pass. The60-schedule census is checked as metadata; the other56 arrays
+are not independently reconstructed. Author and review pass fresh installed
+exact replay, including the direct pretyping margin B≥608>m.
+
+The [unit top mask](Papers/research-wip/native-stream-queue/group_projective_unit_top_mask.md) separately saves
+one multiplication in the complete product-scale/tail compiler: the retained
+power T2 replaces the paid product2*T2. Strict native-field positivity still
+holds before radix typing, and both masks give the same lower AND condition.
+The three saved full sources improve244→**243=102M+141A**,236→235 and230→229,
+with unchanged witnesses, comparisons and exact degrees2829/1789/1789.
+This preserves the full positive-zero projection to outer coordinates with
+fresh native witnesses, not the whole polynomial or the native tuple.
+These saved tables are arithmetic benchmarks with empty endpoint predicates;
+the general fixed-table theorem gives no new numerical universal bound.
+The [independent review](Papers/research-wip/native-stream-queue/review_group_projective_unit_top_mask.md) checks
+all707 paid gates and complete changed interfaces, all old/new finalizers,
+and three independent dense degree expansions. It proves the exact full
+polynomial correction and its strictly lower degree. Author and review
+pass fresh installed exact replay; all predecessor bytes are unchanged.
+
+The [nonempty mask tradeoff](Papers/research-wip/native-stream-queue/group_projective_nonempty_mask_frontier.md)
+composes the unit top mask with the actual Nielsen compiler, giving
+**370=149M+221A at exact degree4909**. A second complete source pays one
+multiplication for J*R8(P), keeps J*R32(P) for the controller, and shortens
+the range-body scale P72→P48: **371=150M+221A at exact degree3517**.
+Both retain54 positive witnesses, six comparisons, all17 finalizer gates
+and every height/input obligation. Pretyping block bounds and the typed
+low-eight mask identity preserve the full outer-coordinate projection
+with fresh native extensions. Inputs2 and7 have genuine accepting outer
+histories; no complete native Pell zero is materialized. These are two
+saved sources, not a global frontier or a numerical universal improvement.
+The [independent review](Papers/research-wip/native-stream-queue/review_group_projective_nonempty_mask_frontier.md)
+reconstructs both complete arrays and all741 live gates, proves24 graph/scale
+and31 joined scalar polynomials, checks740 retained registers and both
+full finalizers, and independently expands both whole polynomials for exact
+degree. Four new accepting outer fixtures use doubled height choices.
+Author and review pass fresh installed exact replay; all predecessor bytes
+remain unchanged.
+
+The [direct-height obstruction](Papers/research-wip/native-stream-queue/group_projective_height_projection_obstruction.md)
+rejects deleting D=u+height_slack from the projective compiler. An actual
+32-letter macro table has no accepted positive ordinary input, but the
+complete projected source admits x=511 and infinitely many more inputs.
+Changing only initial unselected history digits absorbs the input carry;
+all outer equations, range typing and the full prescribed AND still hold.
+The saved464/463-operation parent/candidate are fully paid examples, not
+optima or the separate244/243 ten-letter case. The
+[independent review](Papers/research-wip/native-stream-queue/review_group_projective_height_projection.md) checks
+927 paid gates,29 outer polynomials,463 full register identities and the
+positive component-native extension. Both installed receipts pass fresh
+replay; finite outer fixtures explicitly use native placeholders, while
+full false-zero existence is proved parametrically. Valid parents and the
+74/86 universal bounds remain unchanged.
+
 
 
 The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)
