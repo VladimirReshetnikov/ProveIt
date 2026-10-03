@@ -63,7 +63,15 @@
 > paid fused accepted-NAND predicate costs 17/21/15 in those modes. Its separate
 > [independent circuit audit](review_parity_truth_specialization.md) and root
 > writer replay pass. Keep parity-only, already-evaluated-input and natural-witness scope.
-> The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
+> Four [exact U15 source rewrites](u15_packed_cross_projection507.md) now save
+> 2M+2A, giving ordinary schedules **507/4881,509/3120,511/2116,513/1936**
+> and raw319. Every comparison and the whole polynomial are identical to the
+> respective pinned parent. The 87 positive witnesses, complete input loader,
+> unit-sign proof and unbounded duration are retained. Eight complete forms,
+> including four partition representatives, pass root replay and an
+> [independent complete-source audit](review_u15_cross_projection507.md), with
+> literal degree expansions and unchanged finalizer checks. This does not
+> rerun all 4,140 older partitions or improve the global 87-operation bound.
 > The [primary Grill Tag source review](review_grill_encoding_e.md) finds that
 > encoding E's second grill has a−2 ones in prose but requires a−4 to match
 > the stated widths and run list. All 10,240 bounded two-generation compiler

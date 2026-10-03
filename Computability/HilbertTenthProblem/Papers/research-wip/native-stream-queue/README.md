@@ -65,8 +65,19 @@ and a five-branch example from 840 to 456. Complete emitted gate lists,
 pay the whole evaluation, including finalization; the horizon remains external.
 
 
-The [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
-gives **511/4881,513/3120,515/2116,517/1936** (operations/exact degree),
+Four [exact U15 source identities](u15_packed_cross_projection507.md) remove
+two multiplications and two additions from the complete equations. The ordinary
+input schedules now cost **507/4881, 509/3120, 511/2116, 513/1936**
+(operations/exact degree), with 209 multiplications and 87 positive witnesses.
+Raw input drops to 319 operations. Each entire polynomial, comparison, native
+unit factor and finalizer is unchanged; ordinary input and unbounded duration
+remain paid. All eight emitted forms pass root replay and the
+[independent full-source audit](review_u15_cross_projection507.md), including
+literal modular expansions attaining all exact degrees. The global
+87-operation benchmark remains unchanged.
+
+The preceding [complete direct U15 partition search](u15_unit_partition_frontier.md)
+gave **511/4881,513/3120,515/2116,517/1936** (operations/exact degree),
 all with211 multiplications and87 positive witnesses. In particular,517
 retains degree1936 using six fewer operations than the ungrouped523 source.
 The search emits all877 partitions and4,140 SOS/single-anchor schedules;
