@@ -1,5 +1,6 @@
 \documentclass[11pt,letterpaper]{article}
-% Report liveness-beyond-halting: three manuscripts merged in the batch-62 write phase.
+% Report liveness-beyond-halting: three manuscripts merged in the batch-62 write phase;
+% Part VI = source 12 (batch 79, manuscript 04), added in the batch-79 write phase.
 % Base = source 10 (batch 62, manuscript 10); members = source 03 (batch 62, manuscript 03)
 % and source 11 (batch 63, manuscript 01).  Preamble: source 10's, extended by the macros
 % of sources 03 and 11 that their printed text uses.
@@ -26,8 +27,8 @@
 \definecolor{wash}{HTML}{F1F6F7}
 \hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
  pdftitle={Beyond Halting: Recurrence, Progress Deadlines and Diophantine Liveness},
- pdfauthor={ProveIt research report merged from three AI-assisted manuscripts},
- pdfsubject={Computability, Diophantine representation, recurrence, progress deadlines, hyperimmune-free degrees, quadratic transition laws}}
+ pdfauthor={ProveIt research report merged from four AI-assisted manuscripts},
+ pdfsubject={Computability, Diophantine representation, recurrence, progress deadlines, hyperimmune-free degrees, quadratic transition laws, clock-degree spectra}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textsc{Beyond Halting}}
@@ -113,6 +114,15 @@
 \newcommand{\eps}{\varepsilon}
 \newcommand{\M}{\mathcal M}
 \newcommand{\T}{\mathcal T}
+% ---- source 12 (batch 79; its \N, \Z, \Q, \R, \B, \pref, \ind, \code, \repo are the ones above;
+%      its unused \rk is not defined; its \Clock (a \mathcal D) clashes with source 10's \Clock and
+%      is \csClock; its other new macros carry the same cs prefix; its \secref is printed by \cref) ----
+\newcommand{\csdegT}{\operatorname{deg}_{T}}
+\newcommand{\csSpec}{\operatorname{Spec}_{\rm clk}}
+\newcommand{\csClock}{\mathcal D}
+\newcommand{\csBS}{\operatorname{BSpec}}
+\newcommand{\csCone}[1]{\mathord{\uparrow}\!#1}
+\newcommand{\cszero}{\mathbf 0}
 % ---- merge ----
 \newcommand{\wtag}{\textup{[write]}}% marks text written in the batch-62 write phase
 \newcommand{\srcnote}[1]{\par\smallskip\noindent{\small\itshape #1}\par\smallskip}
@@ -127,7 +137,7 @@
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{0.3in}
-{\large\color{accent}\textsc{ProveIt research report \textperiodcentered{} merged from three manuscripts}}\par
+{\large\color{accent}\textsc{ProveIt research report \textperiodcentered{} merged from four manuscripts}}\par
 \vspace{0.3in}
 {\Huge\bfseries\color{ink} Beyond Halting}\par
 \vspace{0.17in}
@@ -135,7 +145,7 @@
 \vspace{0.25in}
 {\large A progress-modulus hierarchy, quadratic transition laws,\par and the limits of finite certificates}\par
 \vspace{0.3in}
-{\normalsize Manuscripts dated September 30, 2026; merged in the batch-62 write phase.}\par
+{\normalsize Manuscripts dated September 30 and October 2, 2026; merged in the batch-62 write phase,\par Part~VI added in the batch-79 write phase.}\par
 \vspace{0.3in}
 \begin{resultbox}
 \small
@@ -155,11 +165,15 @@ Computable runs, computable deadlines and recurrence are strictly nested.
 gives the labelled transition relation of a counter machine, with coefficient height at
 most eight (source 03's control-vector encoding) or six (source 11's incoming-edge
 encoding); a fixed such law already has $\an$-complete recurrence, and degree one does not suffice.
+
+\textbf{Clock-degree spectra} (source 12, Part~VI). Every $\Delta^0_2$ degree is a least clock
+degree; spectra with no least degree exist; a least clock degree is hyperarithmetic.
 \end{resultbox}
 \vfill
 \small
-\textbf{Status.} \wtag{} A merge of three AI-assisted, unrefereed research manuscripts, two
-delivered in batch~62 and one in batch~63 of ProveIt's incoming reports (\cref{lbh:sec:provenance}).
+\textbf{Status.} \wtag{} A merge of four AI-assisted, unrefereed research manuscripts, two
+delivered in batch~62, one in batch~63 and one, printed as Part~VI, in batch~79 of ProveIt's
+incoming reports (\cref{lbh:sec:provenance}).
 The theorems carry conventional mathematical proofs; the accompanying Python programs perform
 finite exact checks and are not proofs. No statement of this report is formalized in Lean or Rocq,
 although the report sits beside ProveIt's formal Hilbert's-tenth-problem project, whose MRDP
@@ -199,6 +213,14 @@ machines the deadline certificate can be kept at degree two (source~11). Exact r
 piecewise-affine realizations exist on $[0,1]^3$ (source~10) and in a planar strip (source~11);
 faithful block simulations preserve every recurrence notion; and no total computable reduction
 maps any of these liveness properties to finite polynomial solvability.
+
+\wtag{} Part~VI (source~12, added in batch~79) answers this report's question on deadline spectra
+beyond c.e.\ cones in part. Clock problems are, up to uniform computable transformations, the upward
+effectively closed mass problems of Baire space; every $\Delta^0_2$ degree and every degree of a
+unique path through a recursive tree, including $\mathbf0^{(r)}$ and $\mathbf0^{(\omega)}$, is a
+least clock degree; unions of incomparable cones have no least degree; and a least clock degree
+contains a self-modulus and is hyperarithmetic. Its two-stack compiler reaches degree two with
+$3(T+1)+9mT+k$ natural coordinates, a degree-two form of the quartic above.
 \end{abstract}
 
 \begingroup
@@ -320,9 +342,12 @@ systems and proves the strongest conclusions (the hyperimmune-free characterizat
 c.e.\ deadline spectra, the bounded-gap row). Sources~03 and~11 prove the same hierarchy by
 other routes, through degree-two counter-machine transition laws of their own. The three titles,
 abstracts, status statements and the introductions of sources~03 and~11 are printed in
-\cref{lbh:sec:manuscripts}.
+\cref{lbh:sec:manuscripts}. A fourth manuscript, delivered in batch~79 (manuscript~04 of that
+batch) and called \emph{source~12}, was written as an answer to \cref{lbh:q:spectra}; it was added
+in the batch-79 write phase as Part~VI, after the existing Parts, without renumbering them
+(\cref{lbh:cs:sec:source}).
 
-After the conventions (\cref{lbh:conv:sec}) the material is arranged by subject in five Parts:
+After the conventions (\cref{lbh:conv:sec}) the material is arranged by subject in six Parts:
 \begin{center}
 \small
 \begin{tabularx}{\textwidth}{@{}lXl@{}}
@@ -334,6 +359,7 @@ II & Scheduler degrees, explicit separations and the deterministic case (\cref{l
 III & Low-degree transition laws and finite certificates (\cref{lbh:part:certificates}) & 03, 11, 10\\
 IV & Transport, fairness and exact geometric realizations (\cref{lbh:part:realizations}) & 10, 03, 11\\
 V & Fixed-arity signatures, no-go theorems, implementation, formalization and questions (\cref{lbh:part:limits}) & 10, 03, 11\\
+VI & Clock-degree spectra beyond c.e.\ cones and quadratic progress certificates (\cref{lbh:part:spectra}) & 12\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -358,7 +384,10 @@ name, source~03's are \texttt{lbh:qd:}$+$its own name, and source~11's are
 \texttt{lbh:ql:}$+$its own name; labels written in the merge use \texttt{lbh:conv:},
 \texttt{lbh:part:}, \texttt{lbh:sec:} and \texttt{lbh:q:}. No source label was dropped.
 Where a statement of source~03 or~11 is merged into a statement of source~10, its label sits on
-the printed statement.
+the printed statement. Source~12 (Part~VI) has its own conventions, stated in
+\cref{lbh:cs:sec:source}: its sections carry \srctag{12}, its labels are \texttt{lbh:cs:}$+$its own
+name, and labels written for it in the batch-79 write use \texttt{lbh:cs:} and
+\texttt{lbh:part:spectra}.
 
 \subsection{What is printed once}\label{lbh:conv:union}
 \wtag{} The three sources prove one hierarchy, but for different systems. A theorem about
@@ -380,7 +409,8 @@ printed.
 
 \subsection{Notions and symbols across the three sources}\label{lbh:conv:dictionary}
 \wtag{} Each source keeps its own names inside its own text; no mathematical symbol of any source
-was renamed. The dictionary below matches them.
+was renamed. The dictionary below matches them; source~12's notation is matched against it in
+\cref{lbh:cs:sec:notation}.
 \begin{center}
 \small
 \begin{longtable}{@{}p{0.27\textwidth}p{0.2\textwidth}p{0.2\textwidth}p{0.23\textwidth}@{}}
@@ -454,7 +484,8 @@ sharpness (\cref{lbh:sec:threecompilers}).
 \section{The three manuscripts}\label{lbh:sec:manuscripts}
 \wtag{} Each subsection gives one manuscript's title and date as delivered, its abstract and
 status statement verbatim, and, for sources~03 and~11, its own introduction; source~10's
-introduction is \cref{lbh:sec:intro}. The delivered author lines named the assistant used or the
+introduction is \cref{lbh:sec:intro}. (Source~12, the manuscript of Part~VI, is introduced in
+\cref{lbh:cs:sec:ms12}.) The delivered author lines named the assistant used or the
 addressee of the manuscript; they are replaced here by the neutral description ``AI-assisted
 research manuscript'' (\cref{lbh:sec:provenance}).
 
@@ -1986,6 +2017,8 @@ compute some adequate deadline is upward closed. The relative theorem
 characterizes it without confusing a schedule with a program that prints
 that schedule. Determining finer properties of this deadline-degree
 spectrum is one of the research questions in \cref{lbh:sec:questions}.
+\srcnote{\wtag{} Batch~79: Part~VI (source~12) determines several of these properties; see the note
+after \cref{lbh:q:spectra}.}
 \section{Explicit separations and exact deadline-degree spectra}\label{lbh:sec:examples}
 
 \subsection{A computable clock need not compute a scheduler}
@@ -2143,6 +2176,11 @@ negative statement. The construction identifies exactly which oracles are
 sufficient, and it supplies a matching least-degree accepting schedule.
 The ingredients are enumeration moduli and recursive trees; the theorem
 packages them as a uniform liveness and exact-substrate realization.
+\srcnote{\wtag{} Batch~79, 2 October 2026: \cref{lbh:thm:ce-spectrum} is the c.e.\ case of
+source~12's \cref{lbh:cs:cor:delta} (Part~VI), which realizes every $\Delta^0_2$ degree as a least
+clock degree by a first-matching-stage tree with a unique path, for source~12's own fixed two-stack
+interpreter; the key inequality is the same (\cref{lbh:cs:eq:clock-bound}). Source~12 does not
+restate the least-scheduler-degree clause (\cref{lbh:cs:sec:relation}).}
 
 \begin{corollary}\label[corollary]{lbh:cor:halting-spectrum}
 There is an input with recurrent runs but no computable deadline, whose
@@ -2554,6 +2592,10 @@ For counter machines, source~11's degree-two deadline certificate
 (\cref{lbh:ql:cor:deadlinepoly}) uses the same surplus device as source~10's deadline residual
 (\cref{lbh:eq:deadline-residual}) but keeps the whole certificate at degree two, where
 source~10's two-stack trace needs degree four.
+\srcnote{\wtag{} Batch~79, 2 October 2026: for two-stack traces as well, source~12's
+\cref{lbh:cs:thm:quadratic} (Part~VI) keeps the labelled-trace certificate with deadlines at degree
+two, with $3(T+1)+9mT+k$ natural coordinates and unique helpers; \cref{lbh:cs:sec:relation} compares
+it with \cref{lbh:thm:compiler}.}
 
 Report~A of this category (\path{canonical-diophantine-certificates}) encodes a zero guard of a
 counter program by the squared product $e_{i,a}x_{i,p}=0$ (its \texttt{cdc:eq:zero-guard}) or by
@@ -3486,6 +3528,13 @@ is not asserted to survive that replacement. In particular,
 \cref{lbh:thm:compiler} does not resolve the finite-fold or single-fold
 Diophantine representation questions.
 \end{remark}
+\srcnote{\wtag{} Batch~79, 2 October 2026: source~12's \cref{lbh:cs:thm:quadratic} (Part~VI) is a
+degree-two form of \cref{lbh:thm:compiler}: the same bijection between natural zeros and
+rule-labelled legal runs meeting all deadlines, with every auxiliary unique (inactive helpers
+included), for binary stacks with six primitive operations, at total degree two instead of four. It
+uses $3(T+1)+9mT+k$ coordinates for $m$ rules (more than $H(3+R+G)+k$), is nonnegative only where its
+selectors and helpers are nonnegative, and its bijection is proved over $\N$ only. The comparison is
+in \cref{lbh:cs:sec:relation}. The boundary of \cref{lbh:rem:singlefold} applies to it unchanged.}
 
 \subsection{Deadline compactness as a quartic schema}
 For a fixed computable deadline $d$, set $H=d(k)$ in the compiler, retaining
@@ -3793,6 +3842,9 @@ closed or the functions continuous. Rational interval guards and exact
 real arithmetic are part of the mathematical semantics. None of these
 statements asserts noise tolerance, experimentally realizable infinite
 precision, or a physical solution of the halting problem.
+\srcnote{\wtag{} Batch~79: source~12's \cref{lbh:cs:thm:affine} (Part~VI) is this theorem's coding,
+digit for digit after $d=1+2b$, used to transfer the new spectra of Part~VI by the same step-exact
+argument.}
 
 \subsection{One deterministic map with the scheduler in the initial point}
 The external control stream can instead be encoded in one more real
@@ -4796,6 +4848,20 @@ computable from that set; an arbitrary limit approximation need not have
 a convergence modulus computable from its limit. Nonprincipal spectra
 would distinguish ``some sufficiently strong oracle'' from a unique least
 clock resource.
+\srcnote{\wtag{} Batch~79, 2 October 2026: answered in part by Part~VI (source~12, batch-79
+manuscript~04, written as an answer to this question). Every $\Delta^0_2$ degree is a least clock
+degree of an input of a fixed two-stack system (\cref{lbh:cs:cor:delta}), by first matching stages,
+which avoid the convergence-modulus obstacle described above without contradicting it
+(\cref{lbh:cs:thm:firstmatch}); every degree of a unique path through a recursive Baire-space tree is
+least (\cref{lbh:cs:cor:singleton}), including $\mathbf0^{(r)}$ and $\mathbf0^{(\omega)}$
+(\cref{lbh:cs:thm:jump-tree}); nonprincipal spectra exist (\cref{lbh:cs:cor:nonprincipal}); a least
+degree contains a self-modulus and is hyperarithmetic (\cref{lbh:cs:thm:least}), and no nonzero
+hyperimmune-free degree is least (\cref{lbh:cs:cor:hif}). Up to uniform computable transformations,
+clock problems are the upward effectively closed mass problems (\cref{lbh:cs:thm:closed}). Which
+upward-closed classes of degrees occur, and which degrees are least, remain open: source~12 proves
+$\mathcal S\subseteq\mathcal L\subseteq\mathcal M\subseteq\{\text{hyperarithmetic}\}$
+(\cref{lbh:cs:eq:gap}) without the middle equalities, and its questions
+\cref{lbh:cs:q:classification,lbh:cs:q:selfmodulus,lbh:cs:q:minimal} re-scope this one.}
 
 \begin{question}[A verified effective-closed-subclass compiler]
 Can a repository implementation accept a certified computable tree
@@ -4808,6 +4874,8 @@ part of a proof assistant implementation is not polynomial arithmetic;
 it is packaging the compactness argument that proves termination of every
 search. An initial target can avoid HIF degrees entirely and establish a
 usable bridge from safety invariants to explicit progress programs.
+\srcnote{\wtag{} Batch~79: compare source~12's \cref{lbh:cs:q:verified} (Part~VI), verified
+first-match compilation composed with a verified tree interpreter and polynomial compiler.}
 
 \par\smallskip\noindent\textit{Overlapping question of source 03, ``Effective selection inside the deadline fragment'':} \Cref{lbh:qd:thm:cbnotcp} shows that computable deadlines alone do not permit
 computable path selection. Which additional conditions on branching,
@@ -4835,6 +4903,8 @@ functions. A fixed effective family of total clocks gives one kind of index
 set; arbitrary program indices with a totality condition give another. The
 proof of \cref{lbh:ql:thm:sigma3} suggests a systematic treatment, but the exact
 hardness can depend on which clock descriptions are allowed.
+\srcnote{\wtag{} Batch~79: compare source~12's \cref{lbh:cs:q:resource} (Part~VI), which asks the
+same for its conversion $b\mapsto d_b$ and for native graph, queue and reaction substrates.}
 
 \begin{question}[Clock synthesis under regular reachability abstractions]
 Which effective regular abstractions certify a nonempty closed subclass
@@ -4985,6 +5055,9 @@ optimal across all compilers.
 \srcnote{\wtag{} Compare Report~A's question \texttt{cdc:q:degree} and Report~B's question
 \texttt{pqc:q:smaller}. For counter machines, source~11's deadline certificate
 (\cref{lbh:ql:cor:deadlinepoly}) already stays at degree two.}
+\srcnote{\wtag{} Batch~79: for two-stack traces, source~12's \cref{lbh:cs:thm:quadratic} lowers
+the degree to two at the price of more coordinates ($3(T+1)+9mT+k$); its
+\cref{lbh:cs:q:guards} asks whether the $8mT$ sign helpers can be reduced.}
 \begin{question}[Concrete fixed-arity MRDP extraction]
 Can the three c.e. relations used in \cref{lbh:thm:polynomial-signatures} be
 compiled to explicit fixed polynomials with audited witness counts,
@@ -5226,7 +5299,8 @@ include the kind of infinite witness they preserve, and make the quantifiers
 visible in the theorem statement.
 \section{Provenance}\label{lbh:sec:provenance}
 \wtag{} This report was built from three manuscripts in the batch-62 write phase of ProveIt's
-incoming reports.
+incoming reports; a fourth, source~12, was added as Part~VI in the batch-79 write phase (paragraph
+``Part~VI'' below).
 \begin{center}
 \small
 \begin{tabularx}{\textwidth}{@{}lp{0.2\textwidth}Xll@{}}
@@ -5236,6 +5310,7 @@ Source & Batch, manuscript & Archive (arrival commit) & Pin & Placed\\
 10 (base) & 62, 10 & \path{Beyond_Halting_Diophantine_Liveness.zip} (\texttt{b57c0b5ff}); main file \path{beyond_halting.tex}, 34-page PDF & \texttt{b6bf6406a}, \texttt{b998f70c6} & \texttt{adeddcecc}\\
 03 & 62, 03 & \path{Quadratic_Diophantine_Dynamics.zip} (\texttt{b57c0b5ff}); 26-page PDF & \texttt{4e128356d} & \texttt{adeddcecc}\\
 11 & 63, 01 & \path{quadratic_infinite_computation.zip} (\texttt{a4268e78e}); 27-page PDF & \texttt{e18718e83} & \texttt{62f1ad07c}\\
+12 & 79, 04 & \path{clock_spectra_research.zip} (\texttt{060e08a07}); 23-page PDF & \texttt{e58b724c2} & \texttt{bbaf322e5}\\
 \bottomrule
 \end{tabularx}
 \end{center}
@@ -5314,6 +5389,1730 @@ report root. Source~11's \path{code/quadratic_dynamics.py}, \path{code/verify.py
 \path{SOURCE_NOTES.md} are shipped with the prefix \path{11-quadratic-laws-} likewise. The three
 manuscripts, their delivered READMEs and PDFs, and the checksum manifests are not shipped; this
 text replaces the manuscripts. The README lists every shipped file.
+\paragraph{Part VI (batch 79).} \wtag{} Source~12 (batch~79, manuscript~04; arrival
+\texttt{060e08a07}, placed in \texttt{bbaf322e5}, pin \texttt{e58b724c2}) contributed the
+tree-bounding realization of clock spectra, the normal form by upward effectively closed mass
+problems, unique-path cones, the first-matching-stage singleton tree for every computable
+approximation of a $\Delta^0_2$ set, the deferred-oracle tree for jump hierarchies, effective unions
+and nonprincipal spectra, the self-modulus and hyperarithmetic restriction on least degrees with its
+domination corollary, the guard gadget and degree-two two-stack compiler with its cubic variant, the
+coherent quadratic progress family, the parity-guarded and rational affine substrates, a seven-rule
+certificate example, eight questions, two appendices, and its programs. At its pin this report's
+text was the batch-62/63 text, unchanged until the batch-78 note on reaction systems.
+Where the write had to choose:
+\begin{itemize}
+\item \emph{Placement.} Source~12 is printed whole as Part~VI after Part~V, not inside Part~II next
+to \cref{lbh:thm:ce-spectrum}, so that no existing Part, section or label number changes; its two
+appendices are the last two sections of Part~VI, so that the appendix lettering is unchanged.
+\item \emph{Re-proofs.} Its explorer, fixed interpreter, compactness step, coherent family and
+affine coding are this report's own constructions; they are printed in source~12's text with
+pointers and without novelty claims (\cref{lbh:cs:sec:relation}). Its degree-two compiler is
+printed as a degree-two form of \cref{lbh:thm:compiler}, not as a replacement.
+\item \emph{Notation.} No printed symbol was renamed; six macros carry a \texttt{cs} prefix, one of
+them because source~12's \texttt{\textbackslash Clock} clashes with source~10's
+(\cref{lbh:cs:sec:notation}). Bibliography keys carry the prefix \texttt{cs-}; source~12's
+Matiyasevich entry is printed separately from \cite{matiyasevich1970} because of its annotation.
+\item \emph{Front matter.} Source~12's author line is quoted as delivered, as the batch-79 records
+ask, unlike the neutral description used for sources~10, 03 and~11.
+\item \emph{Questions and labels.} Its eight questions are printed as question environments with
+added labels (\texttt{lbh:cs:q:}); overlaps with \cref{lbh:sec:questions} are marked by bracketed
+notes in both places. Dated notes record the answer under \cref{lbh:q:spectra} and the relation
+after \cref{lbh:thm:ce-spectrum}, \cref{lbh:thm:compiler} and \cref{lbh:thm:geometry}.
+\item \emph{Review.} The programme's review of source~12 (commit \texttt{2c311e525}) and its patch
+are disclosed in \cref{lbh:cs:sec:review}; the shipped program is the unpatched original.
+\end{itemize}
+Source~12's \path{code/clock_certificates.py}, \path{code/test_all.py}, \path{code/verify_export.py},
+\path{build.sh}, \path{examples/quadratic_certificate.json}, \path{test_results.json} and
+\path{source_audit.md} are shipped with the prefix \path{12-clock-spectra-} in \path{code/},
+\path{data/} and the report root. Its manuscript, delivered README and PDF are not shipped; Part~VI
+replaces the manuscript.
+\part{Clock-degree spectra beyond c.e.\ cones: limit computations, unique-path trees and quadratic progress certificates (source 12)}\label{lbh:part:spectra}
+\srcnote{\wtag{} Part~VI was added in the batch-79 write phase (2~October 2026). It prints source~12,
+one manuscript written as an answer to \cref{lbh:q:spectra}, complete and in its own order. Every
+\wtag{} in Part~VI is text of that write; text without a marker in
+\crefrange{lbh:cs:sec:intro}{lbh:cs:app:audit} is source~12's. Its first section records the
+manuscript, its relation to Parts~I--V, its notation and the programme's review of its programs.}
+
+\section{Source 12 and its place in this report}\label{lbh:cs:sec:source}
+
+\subsection{The manuscript}\label{lbh:cs:sec:ms12}
+\wtag{} \emph{Beyond Enumerable Clock Cones: Limit Computations, Unique-Path Trees, and Quadratic
+Diophantine Progress. Two-stack machines and exact rational affine substrates.} Research article
+and executable certificate package; author line as delivered: ``Prepared for Vladimir Reshetnikov /
+OpenAI ChatGPT'', dated October 2, 2026 (a 23-page PDF, not shipped). It is batch~79, manuscript~04
+of ProveIt's incoming reports, delivered as \path{clock_spectra_research.zip} in arrival commit
+\texttt{060e08a07} and placed in commit \texttt{bbaf322e5}. It is called \emph{source~12} here, after
+the prefix \path{12-clock-spectra-} of its shipped files; the number continues this report's own
+file sequence and is not a batch number. Its pin is \texttt{e58b724c2}: it inspected this report at
+that commit, where \path{article.tex} was the batch-62/63 text of Parts~I--V. The only later change
+to that text before this write is the batch-78 note after the question ``Other unconventional
+substrates with timing certificates'' in \cref{lbh:sec:questions}, which source~12 does not use.
+Source~12 takes \cref{lbh:q:spectra} as its explicit research target.
+
+Its title-page summary box read as follows.
+\begin{quote}\small
+\textbf{A concrete repository question.} Which degrees can be the least
+computational resource sufficient to supply deadlines for an infinite
+recurrent computation? The inspected report establishes computably
+enumerable cones and asks for extensions.
+
+\textbf{Answers developed here.} Every limit-computable degree is realizable.
+Every degree of a unique path through a recursive Baire-space tree is
+realizable, including the jump hierarchies explicitly constructed below.
+Finite unions of incomparable cones yield spectra with no least degree.
+Every least degree, if one exists, contains a self-modulus and is
+hyperarithmetic.
+
+\textbf{Arithmetic realization.} A natural-number quadratic polynomial
+has zeros in bijection with the legal labelled two-stack runs satisfying
+all prescribed finite deadlines. Its helpers, including those belonging
+to inactive rules, are unique. An exact rational affine realization
+preserves the same clock spectra.
+\end{quote}
+Its status statement:
+\begin{quote}\small
+\textbf{Status and attribution.} This is an unrefereed AI-generated research
+manuscript. All main claims have mathematical proofs below; finite exact
+Python checks support the compiler implementation, not the infinitary
+proofs. There is no Lean or Rocq verification in this package. Classical
+unique-path, modulus, jump-hierarchy, and incomparability ingredients are
+credited. The contribution is a constructive answer to specified parts of
+the repository's question and its certificate realization; literature-wide
+priority and a complete classification of least clock degrees are not claimed.
+\end{quote}
+Its abstract:
+\begin{quote}\small
+A progress clock for a nondeterministic machine is a total function $d$
+such that one infinite run produces its $k$th accepting event by time
+$d(k)$ for every $k$. The oracle supplying $d$ need not compute that run.
+We study the degrees that can supply such clocks, rather than reclassifying
+unrestricted recurrence.
+
+We give a uniform realization of the bounding-degree spectrum of any
+recursive tree on $\N$. Up to uniform computable transformations,
+clock problems are precisely upward effectively closed mass problems
+in Baire space. A recursive tree with unique path $f$ therefore yields
+exactly the cone above $\csdegT(f)$. For any computable approximation to a
+$\Delta^0_2$ set $A$, a first-matching-stage construction produces such a
+tree with unique path Turing equivalent to $A$; convergence moduli are not
+assumed computable from $A$. A second, deferred-oracle-check construction
+produces unique paths coding effective transfinite jump hierarchies.
+Finite and effective countable disjoint sums give nonprincipal spectra.
+Conversely, any least clock degree contains a self-modulus, and the
+classical modulus theorem implies that it is hyperarithmetic.
+
+To realize the results arithmetically, we give a guarded-affine quadratic
+gadget with a unique natural lift and an explicit two-stack compiler.
+For $m$ rules, external horizon $T$, and $k$ deadlines, its quadratic has
+$3(T+1)+9mT+k$ natural coordinates and a zero-set bijection with labelled
+runs. Its exact rational affine counterpart acts on a coded subset of
+$[0,1]^3$ with identical event times. The paper distinguishes this growing
+family of finite quadratics from a fixed-arity Diophantine representation,
+and includes executable code, exact test results, and further research
+questions.
+\end{quote}
+\wtag{} The delivered author line is quoted above as delivered, as the batch-79 records ask; for
+sources~10, 03 and~11 the batch-62 write replaced the author lines by a neutral description
+(\cref{lbh:sec:ms10}). The delivered README and source audit (the latter shipped verbatim as
+\path{12-clock-spectra-source_audit.md}) add no theorem.
+
+\subsection{What source 12 shares with Parts I--V}\label{lbh:cs:sec:relation}
+\wtag{} Source~12 was written against this report and says which of its themes it does not claim
+(\cref{lbh:cs:sec:intro}). Several of its constructions are this report's own, re-proved for its
+purposes. They are printed in full in source~12's text below, each with a bracketed \wtag{} pointer,
+and \emph{no novelty is claimed for any of them}:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.36\textwidth}X@{}}
+\toprule
+Source 12 & The same construction in Parts~I--V\\
+\midrule
+The explorer $E_T$ (\cref{lbh:cs:sec:realization}) & The unary-guess recursive-tree checker after
+\cref{lbh:lem:analytic-tree}, used again in the proof of \cref{lbh:thm:ce-spectrum}\\
+The fixed interpreter $U$ (\cref{lbh:cs:prop:fixed}) & \Cref{lbh:sec:universal}: the tape on two
+stacks, a fixed block code, designated pulse steps\\
+The compactness half of \cref{lbh:cs:thm:closed} & \Cref{lbh:thm:compact} (``for every deadline,
+computable or not''); $\operatorname{Good}_M(\delta)$ is source~10's $\Fin(e,d\pref k)$ of
+\cref{lbh:def:deadline}, stated for runs of a finitely branching machine with horizon
+$\max(k,d(1),\ldots,d(k))$ in place of schedules of length $d(k)$\\
+Why earlier deadlines cannot be discarded & \Cref{lbh:sec:traps} and the three counterexample
+machines of Part~I\\
+The family \eqref{lbh:cs:eq:quasi} and \cref{lbh:cs:prop:coherent} & The quartic schema
+\eqref{lbh:eq:schema}, here at degree two; for counter machines, source~11's degree-two deadline
+certificates (\cref{lbh:ql:cor:deadlinepoly})\\
+The affine cube, \cref{lbh:cs:thm:affine} & \Cref{lbh:thm:geometry}, with the identical base-four
+coding: source~12's $x(w)$ of \eqref{lbh:cs:eq:realcode} is source~10's $\rho(w)$ of
+\eqref{lbh:eq:rational-stack} after the digit relabelling $d=1+2b$ (as source~11's $\eta$ is), and
+its push, pop and guard laws are \eqref{lbh:eq:affine-push}--\eqref{lbh:eq:affine-top}\\
+Timing-faithful simulation & \Cref{lbh:sec:simulation}\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\paragraph{An extension of \cref{lbh:thm:ce-spectrum}.} Every c.e.\ set is $\Delta^0_2$, so the
+spectrum equation \eqref{lbh:eq:spectrum} for c.e.\ degrees is the c.e.\ case of source~12's
+\cref{lbh:cs:cor:delta}, each for its own fixed two-stack system (completeness or realization for
+one fixed system is not automatically a statement about another, \cref{lbh:conv:union}). The
+routes differ: source~10's tree $T_A$ has every majorant of the enumeration modulus as a path, while
+source~12's tree $T_a$ has exactly one path. The decisive inequality is the same:
+\eqref{lbh:cs:eq:clock-bound} is the step $g(i)\le\tau_f(i+1)\le d(i+1)$ in the proof of
+\cref{lbh:thm:ce-spectrum}. Source~12 does not restate source~10's least-\emph{scheduler}-degree
+clause. For its singleton trees it follows by the argument of that proof: a schedule of the
+explorer computes the unique path from its completed unary guesses, and the path computes a schedule
+that makes exactly those guesses. This sentence is an observation of the write, not a statement of
+source~12. \Cref{lbh:cor:halting-spectrum} is the case $A=\emptyset'$.
+
+\paragraph{A degree-two form of \cref{lbh:thm:compiler}.} Source~12's \cref{lbh:cs:thm:quadratic}
+proves the conclusion of source~10's two-stack compiler at total degree two instead of four: the
+natural zeros are in bijection with the rule-labelled legal runs of the horizon that meet every
+prescribed deadline, and every auxiliary coordinate, including the helpers of inactive rules, is
+uniquely determined by the run. It is stronger in degree only, and the two theorems differ in
+format:
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.2\textwidth}XX@{}}
+\toprule
+ & Source 10, \cref{lbh:thm:compiler} & Source 12, \cref{lbh:cs:thm:quadratic}\\
+\midrule
+rules & stack symbols $1,3$; guards unrestricted, empty, top-$1$, top-$3$; updates stay, push,
+pop (a pop needs a top guard) & binary stacks; per stack one of stay, empty test, push $b$,
+pop $b$ (the pop tests the top bit)\\
+stack code & $\nu$, base four, $\nu(\epsilon)=1$ \eqref{lbh:eq:stackcode} & binary with a leading
+sentinel, minus one; empty stack $0$\\
+degree & $4$: a sum of squares of quadratic residuals & $2$: squares of affine forms plus the
+unsquared products $ab$ and $s(a+b)$ of \cref{lbh:cs:lem:gadget}\\
+where it is nonnegative & every real point & every point with $s,a,b\ge0$; the bijection is proved
+over $\N$ only: the gadget lemma fails for a signed helper, and the bijection fails over
+$\Q_{\ge0}$ (the review's examples after the domain paragraph of \cref{lbh:cs:sec:quadratic})\\
+initial configuration & substituted as constants & three coordinates retained (three fewer if
+substituted, as source~12 notes)\\
+deadlines & $1\le d_1<\cdots<d_k\le H$ & $0\le d_i\le T$, in any order\\
+coordinates & $H(3+R+G)+k$ & $3(T+1)+9mT+k$ ($m$ rules)\\
+residuals & $H(4R+E+2G+2)+k$ listed quadratic residuals & one polynomial with $3+T+4mT+k$ summands
+(counted at this write)\\
+\bottomrule
+\end{tabularx}
+\end{center}
+For the same machine ($m=R$, at most $2R$ top guards) source~12 uses more coordinates: it pays
+$8mT$ sign helpers to lower the degree, as it says itself. Its cubic variant
+(\cref{lbh:cs:sec:quadratic}, last paragraph) has $3(T+1)+mT+k$ coordinates. Degree two for
+\emph{counter} machines was already reached in Part~III without auxiliaries (source~03's
+\cref{lbh:qd:thm:compiler}, source~11's \cref{lbh:ql:thm:compiler}) and, with deadlines, by
+\cref{lbh:ql:cor:deadlinepoly}; the comparison of \cref{lbh:sec:threecompilers} said that source~10's
+two-stack trace needs degree four, and source~12 removes that difference for two-stack traces. The
+gadget $G(D,s,a,b)=(D-a+b)^2+ab+s(a+b)$ is a compact form, in one natural-domain term, of the
+canonical positive and negative parts gated by a selector in Report~A's canonical branch activation
+(\texttt{cdc:wf:lem:activation} in \path{canonical-diophantine-certificates}). None of this improves
+the operation count of a fixed universal polynomial (\cref{lbh:cs:sec:quasi}).
+
+\paragraph{What source 12 answers.} \Cref{lbh:q:spectra} asks which upward-closed classes of
+degrees occur as clock spectra of single inputs of a fixed two-stack system, and which degrees can
+be least. Source~12 answers it in part. Every $\Delta^0_2$ degree, every degree of a unique path
+through a recursive Baire-space tree, and in particular $\mathbf0^{(r)}$ and $\mathbf0^{(\omega)}$,
+is a least clock degree (\cref{lbh:cs:cor:delta,lbh:cs:cor:singleton,lbh:cs:thm:jump-tree});
+spectra with exactly two minimal degrees and no least degree exist (\cref{lbh:cs:cor:nonprincipal});
+a least degree must contain a self-modulus and is hyperarithmetic (\cref{lbh:cs:thm:least}), and no
+nonzero hyperimmune-free degree is least (\cref{lbh:cs:cor:hif}). Up to uniform computable
+transformations the clock problems are exactly the upward effectively closed mass problems
+(\cref{lbh:cs:thm:closed}). It leaves open which inclusions of \eqref{lbh:cs:eq:gap} are equalities,
+and its remark after \cref{lbh:cs:thm:closed} says that it does not claim that every upward
+collection of degrees has an effectively closed presentation. The commentary after
+\cref{lbh:q:spectra} warns that an arbitrary limit approximation need not have a convergence modulus
+computable from its limit; source~12 does not contradict this but avoids it, since first matching
+stages are not settling times (\cref{lbh:cs:thm:firstmatch}, \cref{lbh:cs:ex:early}). A dated note
+under \cref{lbh:q:spectra} records the answer there.
+
+\subsection{Notation of Part VI}\label{lbh:cs:sec:notation}
+\wtag{} Source~12 keeps its own symbols; none was renamed, and its printed symbols are unchanged.
+Only macro names in the source file differ from the delivery, where they would have clashed with
+this report's macros (source~12's $\csClock$, written \texttt{\textbackslash Clock} there, is
+written \texttt{\textbackslash csClock} here; \texttt{\textbackslash Spec}, \texttt{\textbackslash BS},
+\texttt{\textbackslash Cone}, \texttt{\textbackslash degT} and \texttt{\textbackslash zero} received
+the same \texttt{cs} prefix, and its \texttt{\textbackslash secref} is printed by
+\texttt{\textbackslash cref}). The letters below mean something else in Parts~I--V; the tempting
+false reading is to carry the meaning across the Part boundary.
+\begin{center}
+\small
+\begin{longtable}{@{}p{0.14\textwidth}p{0.4\textwidth}p{0.38\textwidth}@{}}
+\toprule
+Symbol & In Part VI (source 12) & Not to be read as (Parts I--V)\\
+\midrule
+\endhead
+$\csClock_M$ & the set of adequate deadlines of $M$ & source~10's $\Clock(e)$, the predicate
+``some run meets some computable deadline''\\
+$\csSpec(M)$ & the degrees computing an adequate deadline & the same notion as source~10's
+$\operatorname{Spec}_{\mathrm{clk}}(e)$, but source~12 admits every total deadline, not only
+strictly increasing ones; it shows after \eqref{lbh:cs:eq:spec} that the spectrum is unchanged\\
+$d$, $\delta$ & a total deadline, monotone or not; a finite vector $0\le d_i\le T$ in any order &
+source~10's strictly increasing $d$ and $1\le d_1<\cdots<d_k\le H$\\
+tick, $N_\rho(t)$ & a transition entering $F$; no initial tick & source~10's accepting visit and
+$N_{e,f}(t)$; source~10's $N$ is also its variable count \eqref{lbh:eq:Ncount}\\
+$\rho$ & a run & source~10's rational stack code $\rho(w)$, which is source~12's $x(w)$\\
+$f$ & a path through a tree on $\N$ & source~10's accepting schedule, a binary sequence\\
+$u$, $v$ & binary stack codes with a sentinel, empty stack $0$ & source~10's base-four $\nu$, empty
+stack $1$\\
+$T$ & a recursive tree, and the external horizon & source~10's horizon $H$\\
+$H_k$; $H_L$, $H_{<a}$ & $\max(k,d(1),\ldots,d(k))$; the jump hierarchy & source~10's horizon $H$;
+source~03's halting label $H$\\
+$m$ & the number of rules & source~10's $R$; the number of edges in sources~03 and~11\\
+$G(D,s,a,b)$ & the guard gadget \eqref{lbh:cs:eq:gadget} & source~10's $G$, the number of top
+guards in $H(3+R+G)+k$\\
+$D$ & an affine residual $D_{t,r,j}$; also a decidable set of row indices & source~10's predicate
+$\Fixed=\mathsf D$; the state dimension $D$ of sources~03 and~11\\
+$E_T$, $E$ & the explorer; the union machine & source~10's number $E$ of empty guards; source~03's
+energy $E_M$\\
+$U$ & source~12's fixed two-stack interpreter & source~03's universal network $U$ and $E_U$\\
+$\mathcal S,\mathcal L,\mathcal M$ & classes of degrees in \eqref{lbh:cs:eq:gap} & the machines
+$\mathcal M$ of sources~10 and~11\\
+$s$, $a$, $b$ & selectors $s_{t,r}$, stages $s$, gadget inputs; the approximation $a(s,j)$, helpers,
+a degree $\mathbf a$, a row index; a bound $b$, helpers, bits & ---\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\subsection{The programme's review and the shipped programs}\label{lbh:cs:sec:review}
+\wtag{} The Hilbert's-tenth-problem programme reviewed source~12 together with two other archives in
+\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_spectral_060e08a07.md}
+(commit \texttt{2c311e525}, 2~October 2026; indexed in that directory's
+\path{incoming_substrate_review_2a8a39599.md}). It found that the main constructions survive: the
+Good predicate and compactness, the explorer conversion (computable, with no claimed elementary or
+primitive-recursive overhead), the first-match singleton, the deferred-oracle checker and the
+disjoint unions, the least-degree argument with Monin--Patey's Corollary~2.2 checked against the
+primary source, the gadget, the count $3(T+1)+9mT+k$ and the labelled-trace bijection (duplicate
+rules give distinct zeros), the quasi-Diophantine boundary and the base-four affine coding. Its
+finding~4 concerns the program, not a theorem: \path{code/clock_certificates.py} (shipped as
+\path{code/12-clock-spectra-clock_certificates.py}) lets a compiled \code{Machine} keep the caller's
+mutable rule, initial-state and accepting-state containers, so that mutating them after compilation
+leaves an old zero validating while the descriptor and export claim a different initial state; and
+\code{encode\_stack([0.0])} returned the float $1.0$. The tested repair is
+\path{spectral_repairs_060e08a07/clock_boundaries.patch} in the same directory. \emph{The shipped
+program is the unpatched original}; the patch is not applied here, and neither defect affects a
+theorem. The review also exhibits two domain examples, printed after the domain paragraph of
+\cref{lbh:cs:sec:quadratic}, and it records that the degree-two trace polynomial charges $9mT$
+coordinates and an external horizon and beats no fixed universal construction of the programme.
+
+\subsection{What Part VI does not claim}\label{lbh:cs:sec:nonclaims}
+\wtag{} Collected from source~12's text, with nothing added: no fixed universal quadratic
+Diophantine equation; no single-fold or finite-fold MRDP; no improvement of a fixed universal
+polynomial's operation count; no numerically instantiated universal two-stack table (the seven-rule
+fixture is not universal); no implementation of an oracle for a $\Delta^0_2$ set, of the
+transfinite jump, or of an infinite-path solver; no complete classification of least clock degrees;
+no uniform self-modulus from leastness; no continuity, noise tolerance or Hilbert's tenth problem
+over $\Q$ for the affine substrate; no literature-wide priority (unique paths and moduli, jump
+hierarchies, Friedberg--Muchnik and the modulus theorem are classical and credited); and no Lean or
+Rocq verification. The finite Python checks test the compiler implementation and do not prove the
+infinitary theorems. ProveIt's formal Hilbert's-tenth-problem project has formalized none of
+Part~VI's statements.
+
+\section{The question, the repository, and the contribution boundary\srctag{12}}\label{lbh:cs:sec:intro}
+
+\subsection{Why clocks are a genuine extra resource}
+Finite successful computations and infinite successful computations have
+different kinds of witnesses. A finite computation is a finite string.
+An infinite run that produces infinitely many designated events is a
+function, and so is a schedule of deadlines for those events. Representing
+finite prefixes by polynomial equations does not, by itself, say how much
+information a single compatible infinite computation requires.
+
+The present question is quantitative in a computability-theoretic sense:
+which oracle degrees can supply enough time for one recurrent run to keep
+making progress? This is subtler than asking which oracles can produce a
+recurrent run. A bound on a path through an infinite tree can be easier
+to compute than the path itself. Our proofs preserve that distinction.
+
+\subsection{What was already available}
+The inspected \repo{} manuscript \emph{Beyond Halting: Recurrence, Progress
+Deadlines and Diophantine Liveness} already treats the relationship between
+computable clocks, closed classes of accepting schedules, and
+hyperimmune-free schedulers. It establishes clock cones above c.e.\ degrees,
+and asks explicitly for spectra beyond those cones, including which degrees
+can be least \cite{cs-repo-liveness}. We take its question
+\code{lbh:q:spectra} as our research target. We do not claim its recurrence
+hierarchy, its compactness argument, or its counter-machine quadratic
+laws as new results.
+\srcnote{\wtag{} The inspected manuscript is this report, Parts~I--V; its question is
+\cref{lbh:q:spectra} and its c.e.\ clock cones are \cref{lbh:thm:ce-spectrum}. Source~12's citations
+\cite{cs-repo-liveness} are kept as provenance; the pointers of \cref{lbh:cs:sec:relation} name the
+labels they refer to.}
+
+The source was inspected at revision
+\begin{center}\small
+\code{e58b724c25bd34533b7a5834cfcbe873dfa01288}.
+\end{center}
+Its path is
+\begin{quote}\small
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/}\allowbreak
+\path{liveness-beyond-halting/article.tex}.
+\end{quote}
+The current Hilbert-tenth-problem README was also inspected.\footnote{\wtag{} On the default
+branch on 2~October 2026, not frozen at the pin (source~12's source audit says so); the README at this
+write still states the programme's fixed universal bounds of 75 and 87 operations, which source~12
+neither uses nor improves.} It explicitly
+distinguishes external-horizon certificates from its fixed universal
+polynomial bounds \cite{cs-repo-readme}. No operation-count improvement to those
+universal constructions is claimed here. Our proofs do not depend on their
+numerical ledgers.
+
+\subsection{What this paper actually proves}
+The contribution has three layers. First, a tree-exploration compiler
+identifies clock spectra with path-bounding spectra. Second, explicit tree
+constructions extend the c.e.\ cone result to all limit-computable degrees
+and to the jump hierarchies below. Third, a canonical quadratic compiler
+realizes every finite progress obligation of the resulting two-stack
+systems. The rational affine substrate is a step-for-step re-encoding of
+that same computation, not a separate appeal to universality.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.23\textwidth}Xp{0.23\textwidth}@{}}
+\toprule
+Claim & Exact scope & Status here\\
+\midrule
+Tree bounding realization & All recursive Baire-space trees & Constructive proof\\
+Limit-computable cones & Every $A\leq_T\emptyset'$ & Explicit singleton-tree proof\\
+Higher cones & The effective jump hierarchies defined in \cref{lbh:cs:sec:jumps} & Explicit singleton-tree proof\\
+Nonprincipal spectra & Unions of incomparable realized cones & Constructive proof\\
+Necessary restriction & A least degree contains a self-modulus & Proof plus classical modulus theorem\\
+Finite arithmetic & Degree two; natural domain; external $T$ & Proof and tested compiler\\
+Universal numerical table & One fixed interpreter exists & Not instantiated in code\\
+Full least-degree classification & Beyond the sufficient and necessary classes above & Left unresolved\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The classical relationship between unique-path trees and uniform moduli
+is particularly important. It predates this paper; Gerdes reviews its
+history and develops nonuniform self-moduli \cite{cs-gerdes}. We give the
+short arguments needed for the machine application rather than rebrand
+that relationship as a new result. Similarly, the jump-hierarchy examples
+are a transparent realization of familiar computability-theoretic objects,
+not a new hierarchy.
+
+\section{Semantics and the tree-bounding realization\srctag{12}}\label{lbh:cs:sec:realization}
+
+\subsection{Machines, ticks, and oracle spectra}
+We use $\N=\{0,1,2,\ldots\}$. A machine has effectively encoded finite
+configurations, a computably obtainable finite list of outgoing labelled
+transitions from each configuration, and a decidable tick designation.
+At most one tick is produced by a transition. Time is the number of
+primitive transitions. A halted run is not extended by artificial ticks.
+For a run $\rho$, let $N_\rho(t)$ be the number of ticks among its first
+$t$ transitions.
+
+\begin{definition}[Adequate deadline and clock spectrum]
+A total function $d:\N_{>0}\to\N$ is an \emph{adequate deadline} for an
+initialized machine $M$ if some infinite run $\rho$ satisfies
+\begin{equation}\label{lbh:cs:eq:clock}
+ N_\rho(d(k))\geq k\qquad(k\geq1).
+\end{equation}
+Write $\csClock_M$ for the set of all such $d$, and define
+\begin{equation}\label{lbh:cs:eq:spec}
+ \csSpec(M)=\{\csdegT(X):\text{some }d\in\csClock_M\text{ satisfies }d\leq_T X\}.
+\end{equation}
+For a degree $\mathbf a$, write
+$\csCone{\mathbf a}=\{\mathbf x:\mathbf a\leq\mathbf x\}$.
+\end{definition}
+
+A deadline need not be monotone. Replacing it by
+$\widehat d(k)=k+\max_{i\leq k}d(i)$ gives a strictly increasing adequate
+deadline computable from it. Thus allowing arbitrary total deadlines does
+not enlarge the degree spectrum. Pointwise enlarging an adequate deadline
+always preserves adequacy.
+
+A tree $T\subseteq\N^{<\N}$ is prefix closed. Throughout, \emph{recursive}
+means that membership in $T$ is decidable by a total algorithm. Its path
+set is $[T]=\{f:\forall n\ f\pref n\in T\}$. A bound $b\in\N^\N$ is
+pointwise: $f\leq b$ means $f(n)\leq b(n)$ for every $n$.
+
+\begin{definition}[Bounding spectrum]
+For a recursive tree $T$, put
+\begin{equation}\label{lbh:cs:eq:bspec}
+ \csBS(T)=\{\csdegT(X):\exists b\leq_T X\ \exists f\in[T]\ (f\leq b)\}.
+\end{equation}
+The bound, but not necessarily the path, is computed by $X$.
+\end{definition}
+
+\subsection{The explorer}
+Given a program deciding $T$, construct the following machine $E_T$.
+It stores a finite tuple $\sigma$, initially empty. At the next stage it
+guesses a number $n$ in unary: a binary choice either increments a counter
+and continues, or stops. Each increment costs at least one primitive
+transition. It appends $n$ to $\sigma$, runs the decision procedure for
+$\sigma\in T$, and halts on rejection. On acceptance it emits exactly one
+tick and starts the next stage. There are no ticks inside a guessing loop
+or a membership computation.
+
+This is an effective finitely branching machine. It can be implemented
+by two binary stacks; a concrete primitive rule format appears in
+\cref{lbh:cs:sec:quadratic}. The compiler uses the membership program as data.
+No algorithm is asserted to recognize whether a supplied program is total
+or whether its accepted set is a tree. Those are semantic hypotheses of
+the theorem.
+\srcnote{\wtag{} [The explorer is the recurrent machine of the paragraph after
+\cref{lbh:lem:analytic-tree}, which guesses the next entry in unary, checks the tree and pulses on
+success, and the tree-verification interpreter of the proof of \cref{lbh:thm:ce-spectrum}; it is
+printed as source~12 states it, with no novelty claimed.]}
+
+\begin{theorem}[Tree-bounding realization]\label{lbh:cs:thm:tree-realization}
+Uniformly from a total decision procedure for a recursive tree $T$, the
+explorer $E_T$ satisfies
+\begin{equation}\label{lbh:cs:eq:realization}
+ \csSpec(E_T)=\csBS(T).
+\end{equation}
+More explicitly, an adequate deadline uniformly gives a bound on some
+path, and a bound on some path uniformly gives an adequate deadline.
+The latter transformation does not require computing a path.
+\end{theorem}
+
+\begin{proof}
+Every recurrent run completes infinitely many guesses and membership
+checks. Its successive guesses form a path $f\in[T]$. Conversely, every
+$f\in[T]$ determines a recurrent run: make exactly its prescribed guesses
+and execute the deterministic checks. An infinite unfinished guess or
+check produces only finitely many ticks and is irrelevant.
+
+Suppose $d$ is adequate and let $f$ be the path selected by its witnessing
+run. Before tick $n+1$, the machine spent at least $f(n)$ transitions on
+the $n$th unary guess. Therefore
+\begin{equation}\label{lbh:cs:eq:clock-bound}
+ f(n)\leq d(n+1).
+\end{equation}
+The function $b(n)=d(n+1)$ is a bound computable from $d$.
+\srcnote{\wtag{} [The same step is $g(i)\le\tau_f(i+1)\le d(i+1)$ in the proof of
+\cref{lbh:thm:ce-spectrum}.]}
+
+Conversely, suppose $b$ bounds at least one path. To compute a deadline
+$d_b(k)$, enumerate the finitely many tuples
+\[
+ \sigma\in\prod_{n<k}\{0,\ldots,b(n)\}.
+\]
+For each tuple simulate the explorer with those guesses until it either
+rejects or produces its $k$th tick. Each simulation terminates: all guesses
+are finite and every membership test is total. Take the maximum of these
+finite runtimes, increasing it to at least $k$ if necessary. This is a
+computation from the finite oracle segment $b\pref k$.
+
+Any path bounded by $b$ has its $k$-prefix among the tuples just simulated.
+The corresponding run therefore produces its $k$th tick by $d_b(k)$.
+The \emph{same} path works for every $k$. This proves adequacy and the
+claimed uniform transformations.
+\end{proof}
+
+The finite maximum in this proof is essential. Substituting ``choose a
+bounded path'' would make the proof circular: obtaining a bound is in
+general strictly weaker than selecting an infinite branch.
+
+\subsection{One fixed two-stack system}
+
+\begin{proposition}[Uniform interpreter]\label[proposition]{lbh:cs:prop:fixed}
+There is one fixed finitely branching binary two-stack machine $U$ and
+an effective map taking a tree-program index $e$ to a finite input $x_e$
+such that the conclusion of \cref{lbh:cs:thm:tree-realization} holds for
+$U(x_e)$ whenever $e$ decides a recursive tree.
+\end{proposition}
+
+\begin{proof}
+Fix a universal tape-machine interpreter for finite programs, with an
+explicit binary-choice instruction and a distinguished tick instruction.
+Implement the explorer program as a finite program for this interpreter.
+Its input contains $e$ and an initially empty tuple.
+
+A tape configuration is represented by the tape contents on either side
+of the head, with the nearest cells at the tops of two stacks; the scanned
+symbol and finite control are held in the control state. Encode every
+symbol of the fixed tape alphabet by a fixed-length binary block.
+A tape step is implemented by a finite sequence of bit pushes, bit pops,
+and empty tests. Empty tape regions are interpreted as blanks. The
+interpreter's finite alphabet and instruction set are fixed, so the
+resulting two-stack transition table is fixed.
+
+Use dedicated control states to emit one tick, and only one, for each
+explorer tick. All decoding, guessing, and interpreter steps are unticked.
+A completed unary increment consumes at least one target transition.
+The lower bound \eqref{lbh:cs:eq:clock-bound} survives. For the reverse direction,
+perform the finite simulations in the proof of
+\cref{lbh:cs:thm:tree-realization} using this actual interpreter's primitive
+transition count. They remain total. Hence the same spectrum equality
+holds, including all interpretation overhead.
+\end{proof}
+
+This is an effective existence construction, not a small-universal-machine
+claim. The package implements certificates for supplied finite tables; it
+does not include an instantiated transition table for $U$.
+\srcnote{\wtag{} [\Cref{lbh:cs:prop:fixed} is a second route to \cref{lbh:sec:universal}, by the
+same argument: the tape on two stacks, a fixed block code, designated pulse steps, no
+small-universal-machine claim.]}
+
+\section{The structural class of clock problems\srctag{12}}\label{lbh:cs:sec:closed}
+
+\subsection{Adequate clocks form an upward effectively closed class}
+A subset of Baire space is \emph{effectively closed} if it is the path set
+of a recursive tree. Equivalently its complement is an effectively
+enumerable union of basic open cylinders. A class is \emph{upward} here
+in the \emph{pointwise function order}, not merely in Turing degrees.
+
+\begin{theorem}[Closed-class normal form]\label{lbh:cs:thm:closed}
+For every initialized effective finitely branching machine $M$, the set
+$\csClock_M$ is upward and effectively closed. Conversely, for every upward
+effectively closed class $C\subseteq\N^\N$, there is an explorer whose
+clock problem and the problem of producing a member of $C$ are uniformly
+computably equivalent. Thus clock problems are, up to these uniform
+transformations, exactly upward effectively closed mass problems.
+\end{theorem}
+
+\begin{proof}
+For a finite tuple $\delta=(d(1),\ldots,d(k))$, set
+\[
+ H_k=\max\bigl(\{k\}\cup\{d(i):1\leq i\leq k\}\bigr).
+\]
+Let $\operatorname{Good}_M(\delta)$ mean that some legal length-$H_k$ run
+satisfies all $k$ deadline conditions in \eqref{lbh:cs:eq:clock}. This predicate
+is decidable: effectively enumerate the finite tree of all runs through
+that horizon and check the finitely many counts. If it holds for
+$\delta$, it holds for every initial subtuple by truncating the witnessing
+run. Hence the good tuples form a recursive tree.
+
+An adequate $d$ has every prefix good. Conversely, suppose every prefix
+is good. Consider the tree whose length-$t$ nodes are legal runs satisfying every
+requirement with index $i\leq t$ and deadline $d(i)\leq t$. It is finitely
+branching and prefix closed. It has a node at every length $t$: take a
+witness for $\operatorname{Good}_M(d\pref t)$ and truncate it to time $t$.
+K\"onig's lemma gives an infinite path. Its prefix at any time
+$t\geq\max(i,d(i))$ checks the $i$th requirement, so the resulting run
+satisfies every deadline.
+This proves effective closedness. Upwardness follows directly from the
+monotonicity of $N_\rho(t)$.
+\par\wtag{} [The compactness half just proved is \cref{lbh:thm:compact}, which holds for every
+deadline, computable or not; $\operatorname{Good}_M$ is source~10's $\Fin$ of
+\cref{lbh:def:deadline} for runs of a finitely branching machine. New here is the reading of the
+adequate deadlines as an upward effectively closed class of Baire space and the converse normal form
+below.]\par
+
+For the converse write $C=[T]$ for a recursive tree. An arbitrary effective
+closed-set presentation can be put in this form by delaying enumerated
+exclusions to the length of the node being checked. Apply
+\cref{lbh:cs:thm:tree-realization}. An adequate $d$ computes $b(n)=d(n+1)$, which
+bounds a path $f\in C$. Upwardness gives $b\in C$. Conversely, a member
+$h\in C$ is a bound on itself, so the finite-maximum algorithm produces
+an adequate $d_h$. Both maps are single oracle algorithms on their stated
+domains. The case $C=\varnothing$ is vacuous on both sides.
+\end{proof}
+
+\begin{remark}[Meaning of ``equivalent'']
+The two transformations need not be inverses and need not preserve a
+specific point of either class. They solve one mass problem uniformly
+from a solution to the other, the usual notion of Medvedev equivalence.
+Their induced degree spectra are equal. This does not assert that every
+upward collection of Turing degrees has an effective closed presentation.
+\end{remark}
+
+\subsection{Why earlier deadlines cannot be discarded}
+The predicate $\operatorname{Good}_M$ checks \emph{all} earlier deadlines,
+not only the last one. This is a semantic requirement, not an accounting
+choice. A machine can first guess an arbitrary $n$, then emit exactly $n$
+ticks and halt. It has a finite run with $k$ ticks for each $k$, but no
+recurrent run. Those finite witnesses can use different initial guesses.
+A common deadline on the first tick bounds the initial unary guess and
+prevents this escape. This compactness distinction is already central
+in the prior report \cite{cs-repo-liveness}; our normal form uses it rather
+than treating isolated finite successes as compatible witnesses.
+\srcnote{\wtag{} [In this report: \cref{lbh:sec:traps} and the counterexample machines of Part~I,
+three independent proofs that finite horizons checked separately do not suffice.]}
+
+\section{Unique paths and all limit-computable clock cones\srctag{12}}\label{lbh:cs:sec:delta}
+
+\subsection{Recovering a unique path from a bound}
+
+\begin{lemma}[Unique bounded-path recovery]\label[lemma]{lbh:cs:lem:unique}
+If a recursive tree $T\subseteq\N^{<\N}$ has exactly one path $f$, then
+every total $b\geq f$ computes $f$, uniformly from $b$ and an index for $T$.
+\end{lemma}
+
+\begin{proof}
+Restrict to
+\[
+ T_b=\{\sigma\in T:\forall i<|\sigma|\ \sigma(i)\leq b(i)\}.
+\]
+This is a $b$-computable, $b$-bounded finitely branching tree with unique
+path $f$. To determine $f\pref n$, search levels $h\geq n$ until all nodes
+at level $h$ have the same prefix of length $n$. Each level is a finite
+effectively searchable product. It is nonempty because $f\pref h\in T_b$.
+
+The search terminates. There are finitely many length-$n$ nodes. Each node
+other than $f\pref n$ has no infinite extension, so its finitely branching
+subtree has finite height by K\"onig's lemma. Beyond the maximum of these
+finitely many heights, only the true prefix remains. Output it.
+\end{proof}
+
+\begin{corollary}[Singleton-tree cones]\label[corollary]{lbh:cs:cor:singleton}
+If $[T]=\{f\}$ for a recursive tree, then
+\[
+ \csSpec(E_T)=\csCone{\csdegT(f)}.
+\]
+The same equality holds for the corresponding input of the fixed machine
+$U$.
+\end{corollary}
+\begin{proof}
+A deadline computes a bound on $f$, hence computes $f$ by
+\cref{lbh:cs:lem:unique}. Conversely $f$ computes a bound on itself and thus a
+deadline by \cref{lbh:cs:thm:tree-realization}.
+\end{proof}
+
+The recovery lemma is the familiar unique-path/uniform-modulus argument
+\cite{cs-gerdes}. The application is that a \emph{clock}, even without a
+scheduler, is forced into exactly the desired degree cone.
+
+\subsection{The first-matching-stage construction}
+Let $a:\N\times\N\to\B$ be total computable, and assume
+\begin{equation}\label{lbh:cs:eq:approx}
+ \lim_{s\to\infty}a(s,j)=A(j)\qquad(j\in\N).
+\end{equation}
+Write $a_s\pref n=(a(s,0),\ldots,a(s,n-1))$. The limit lemma identifies
+sets with such approximations as precisely the sets computable from
+$\emptyset'$ \cite{cs-shoenfield}. Only the displayed approximation hypothesis
+is used in the proof below.
+
+\begin{theorem}[First matches give a recursive singleton]\label{lbh:cs:thm:firstmatch}
+For $n\geq1$, define
+\begin{equation}\label{lbh:cs:eq:firstmatch}
+ f_A(n-1)=\min\{s\geq n:a_s\pref n=A\pref n\}.
+\end{equation}
+Uniformly from $a$, one can construct a recursive tree $T_a$ with
+$[T_a]=\{f_A\}$. Moreover $f_A\equiv_T A$.
+\end{theorem}
+
+\begin{proof}
+A tuple $\sigma=(s_1,\ldots,s_k)$ belongs to $T_a$ exactly when the
+following finite conditions hold. For each $1\leq n\leq k$, require
+$s_n\geq n$. Put $w_n=a_{s_n}\pref n$. Require that these words are
+nested, so $w_n=w_{n+1}\pref n$ whenever $n<k$. Finally require
+\begin{equation}\label{lbh:cs:eq:minimalmatch}
+ a_t\pref n\ne w_n\qquad(n\leq t<s_n).
+\end{equation}
+Every test is finite and computable. The conditions are inherited by
+initial tuples, so $T_a$ is a recursive tree.
+
+Convergence guarantees the existence of every minimum in
+\eqref{lbh:cs:eq:firstmatch}. Its chosen word is $A\pref n$; these words are
+nested and each stage is minimal for its word. Hence every prefix of
+$f_A$ belongs to $T_a$.
+
+Now let $(s_n)_{n\geq1}$ be any infinite path. Its nested words determine
+one binary sequence $B$. Fix a bit $j$ and choose a stage $s_0$ after which
+$a(s,j)=A(j)$. For any $n>j$ with $n\geq s_0$, we have $s_n\geq n\geq s_0$,
+so
+\[
+ B(j)=a(s_n,j)=A(j).
+\]
+Thus $B=A$. Condition \eqref{lbh:cs:eq:minimalmatch} now forces each $s_n$ to be
+the least stage at least $n$ matching $A\pref n$, namely $f_A(n-1)$.
+This proves uniqueness.
+
+Given $A$ and the fixed approximation program, a finite search computes
+the minimum in \eqref{lbh:cs:eq:firstmatch}, so $f_A\leq_T A$. Conversely
+\[
+ A(j)=a\bigl(f_A(j),j\bigr),
+\]
+because coordinate $j$ certifies a word of length $j+1$. Hence
+$A\leq_T f_A$.
+\end{proof}
+
+\begin{corollary}[All limit-computable cones]\label[corollary]{lbh:cs:cor:delta}
+For every $\Delta^0_2$ set $A$, there is an effectively specified finite
+input $x_a$ for the fixed two-stack system $U$ such that
+\begin{equation}\label{lbh:cs:eq:delta-cone}
+ \csSpec(U(x_a))=\csCone{\csdegT(A)}.
+\end{equation}
+The construction is uniform in an index for a convergent computable
+approximation to $A$, not in a decision procedure for convergence.
+\end{corollary}
+\begin{proof}
+Combine \cref{lbh:cs:thm:firstmatch,lbh:cs:cor:singleton,lbh:cs:prop:fixed}.
+\end{proof}
+\srcnote{\wtag{} [\Cref{lbh:thm:ce-spectrum} is the c.e.\ case of \cref{lbh:cs:cor:delta}, for
+source~10's own fixed system and by a different tree; see \cref{lbh:cs:sec:relation} for the
+comparison and the scheduler clause.]}
+
+This answers the specific obstacle raised in the inspected repository
+question: moving beyond c.e.\ cones need not require an $A$-computable
+\emph{settling-time} modulus for an arbitrary approximation to $A$.
+First matching stages and nested consistency suffice.
+\srcnote{\wtag{} [The obstacle is the commentary after \cref{lbh:q:spectra}: an arbitrary limit
+approximation need not have a convergence modulus computable from its limit. That remark stays true;
+first matching stages avoid the need for one.]}
+
+\begin{example}[A first match can occur before a later error]\label{lbh:cs:ex:early}
+Take $A(j)=j\bmod2$. Define a computable approximation that flips bit $0$
+at stages $3,4,5$, flips bit $1$ at stages $0,1,2$, and agrees with $A$
+otherwise. Its first ten coordinates from \eqref{lbh:cs:eq:firstmatch} are
+\[
+ (1,6,6,6,6,6,7,8,9,10).
+\]
+The first coordinate is $1$, although bit $0$ becomes incorrect at stage
+$3$. The code tests this example exactly. It is a finite illustration of
+the distinction, not a substitute for the general proof.
+\end{example}
+
+The requirement $s_n\geq n$ cannot simply be omitted: without it, a path
+could repeatedly reuse a bounded collection of early, incorrect stages.
+Minimality is also substantive: without it the path need not be unique,
+and its degree need not equal that of the limit.
+
+\section{Higher cones by deferred oracle verification\srctag{12}}\label{lbh:cs:sec:jumps}
+
+The previous construction applies to a limit-computable set without an
+oracle. We now give a separate recursive-tree construction for iterated
+jumps. This makes the extension beyond c.e.\ degrees particularly concrete:
+it includes $\cszero''$ and $\cszero^{(\omega)}$. The underlying existence of
+singleton degrees and moduli high in the hyperarithmetic hierarchy is
+classical; compare \cite[Section~4]{cs-gerdes}. The purpose here is to expose
+a checker suitable for the tree-exploration interface.
+
+\subsection{A hierarchy along an effective well-order}
+Fix a decidable set $D\subseteq\N$ and a decidable relation $<_L$ on $D$
+which is a well-order. This well-foundedness is a hypothesis, not a
+property the compiler decides. Fix an effective pairing bijection
+$\langle\cdot,\cdot\rangle:\N^2\to\N$ and an enumeration of oracle machines.
+For $a\in D$, define, by well-founded recursion,
+\begin{align}
+ H_{<a}(\langle b,n\rangle)
+   &=\begin{cases}J_b(n),&b\in D\text{ and }b<_L a,\\0,&\text{otherwise},\end{cases}
+       \label{lbh:cs:eq:lowerjoin}\\
+ J_a&=(H_{<a})',\qquad
+ J_a(n)=\ind\{\Phi_n^{H_{<a}}(n)\text{ halts}\}.
+       \label{lbh:cs:eq:jump}
+\end{align}
+Let $H_L(\langle a,n\rangle)=J_a(n)$ for $a\in D$, and let it be zero
+otherwise. This specifies the representation of the hierarchy; no hidden
+choice of a limit-stage notation is needed in the checker.
+
+\begin{theorem}[A recursive singleton for the hierarchy]\label{lbh:cs:thm:jump-tree}
+Uniformly from indices for the decidable presentation $(D,<_L)$, one can
+construct a recursive tree $S_L\subseteq\N^{<\N}$ which, under the
+well-order hypothesis, has a unique path $f_L$ satisfying
+\[
+ f_L\equiv_T H_L.
+\]
+Consequently $\csSpec(E_{S_L})=\csCone{\csdegT(H_L)}$.
+\end{theorem}
+
+\begin{proof}
+Use a fixed convention counting machine transitions, so every halting
+computation has a unique first halting time $t\geq0$. The intended value
+of coordinate $\langle a,n\rangle$ is zero when $a\notin D$ or when the
+computation in \eqref{lbh:cs:eq:jump} does not halt. Otherwise it is $t+1$.
+Call this total function $f_L$.
+
+Here is the recursive finite test. Given a tuple $\sigma$ of length
+$\ell$, first require $\sigma(\langle a,n\rangle)=0$ for every available
+coordinate with $a\notin D$. For a coordinate with $a\in D$, regard an
+available lower oracle bit $J_b(m)$ as $1$ precisely when
+$\sigma(\langle b,m\rangle)>0$. A query outside $D$ or not below $a$ is
+answered $0$ by definition. A query to a lower coordinate not yet present
+in $\sigma$ is \emph{unknown}.
+
+If the coordinate claims a positive value $t+1$, simulate the indicated
+oracle machine for at most $t$ steps, also inspecting the initial state
+for a time-zero halt. If an unknown query is encountered, defer the check.
+If the finite simulation can be completed with known answers, reject
+unless its first halt is exactly at time $t$. In particular an earlier
+halt or failure to halt by time $t$ rejects the claim.
+
+If the coordinate claims zero, simulate for $\ell$ steps, stopping early
+if a query is unknown. Reject only if a halt has been witnessed using
+known answers. Accept the tuple if none of these finite tests rejects.
+All simulations have explicit finite budgets, so this predicate is
+recursive even when the relation $<_L$ supplied to it is not well-founded.
+
+Rejection persists under extension. Every rejecting computation uses only
+answers already present, and these answers cannot change. The zero-claim
+time budget only increases. Thus accepted tuples form a prefix-closed
+tree $S_L$.
+
+The true function $f_L$ passes every test. Consider any infinite path $g$.
+For a fixed coordinate, every finite oracle computation uses finitely many
+queries. All its queried coordinates eventually occur in a long enough
+prefix of $g$. Therefore a positive claim in $g$ must give the exact first
+halting time relative to the lower-row bits determined by $g$. A zero
+claim must describe genuine nonhalting relative to those bits: otherwise
+a long enough prefix and time budget would detect a halt.
+
+Use well-founded induction on $a$. If all rows below $a$ agree with the
+intended hierarchy, the oracle for row $a$ is exactly $H_{<a}$. The preceding
+paragraph then uniquely forces the zero or exact-time value of every
+coordinate in row $a$. This also handles the least row, whose oracle is
+identically zero. Hence $g=f_L$, proving uniqueness.
+
+From $f_L$ we obtain every bit of $H_L$ by testing positivity. From $H_L$
+we first decide whether a coordinate halts. For a positive answer we
+simulate it, answering lower-row queries from $H_L$, until its first halt,
+and output that time plus one. Thus $f_L\equiv_T H_L$. Apply
+\cref{lbh:cs:cor:singleton} for the spectrum assertion.
+\end{proof}
+
+\subsection{Examples and limits of the construction}
+If $D$ has one element, $H_L$ has degree $\cszero'$. For an ordinary finite
+order of length $r\geq1$, its last row has degree $\cszero^{(r)}$ and computes
+all preceding rows, so
+\[
+ \csdegT(H_L)=\cszero^{(r)}.
+\]
+For $D=\N$ in its usual order, row $n$ has degree $\cszero^{(n+1)}$ and the
+whole join has degree
+\[
+ \csdegT(H_L)=\csdegT\Bigl(\bigoplus_{n\in\N}\emptyset^{(n+1)}\Bigr)
+ =\cszero^{(\omega)}.
+\]
+These degree computations follow immediately by induction from
+\eqref{lbh:cs:eq:lowerjoin}--\eqref{lbh:cs:eq:jump} with the fixed standard presentations.
+In particular the two-row example already supplies a least clock degree
+strictly above every c.e.\ degree.
+
+For a general supplied computable well-order, \cref{lbh:cs:thm:jump-tree}
+asserts exactly the degree of the hierarchy as defined above. It does not
+require effectively recognizing an arbitrary presentation as a well-order,
+computing its ordinal type, or building an ordinal-notation oracle into
+the machine. The finite checker knows only membership in $D$, the order
+comparison, and finite program simulations. The noncomputable hierarchy
+is forced by consistency across an infinite path, not placed into the
+finite machine description.
+
+\begin{remark}[Why ``unknown'' is not zero]
+Replacing a missing oracle coordinate by zero would be unsound. A
+positive claim might be rejected because a temporarily zero answer caused
+a spurious halt; or a negative claim might survive for the wrong reason.
+Deferred checks avoid both errors. The finite verifier records only what
+its current prefix actually determines. This is also why the tree is
+prefix closed without needing a computable order-respecting enumeration
+of all lower rows.
+\end{remark}
+
+\section{Nonprincipal spectra and the restriction on least degrees\srctag{12}}\label{lbh:cs:sec:nonprincipal}
+
+\subsection{Effective disjoint sums}
+
+\begin{theorem}[Union construction]\label{lbh:cs:thm:unions}
+Let $(T_n)_{n\in\N}$ be a uniformly recursive family of trees. There is
+an effective finitely branching machine $E$ such that
+\begin{equation}\label{lbh:cs:eq:union}
+ \csSpec(E)=\bigcup_{n\in\N}\csBS(T_n).
+\end{equation}
+The analogous statement holds for a finite family.
+\end{theorem}
+
+\begin{proof}
+The machine first guesses an index $n$ in unary, without ticks, then
+commits permanently to explorer $E_{T_n}$. A run that never commits has
+no ticks. Every recurrent run therefore has one fixed committed index.
+
+If $X$ computes an adequate deadline for this combined machine, take a
+run witnessing it and its committed index $n$. Its later guesses are
+bounded by the absolute deadlines just as in \eqref{lbh:cs:eq:clock-bound}.
+The same oracle thus computes a bound on a path through $T_n$, proving
+membership in the right side of \eqref{lbh:cs:eq:union}. This implication is a
+statement about degree membership: it does not claim a uniform algorithm
+that extracts the correct component from the deadline.
+
+Conversely, if $\csdegT(X)\in\csBS(T_n)$ for a particular $n$, hardcode that
+finite index, choose it at the start, and use the finite-maximum deadline
+construction for the selected explorer, adding the fixed initialization
+overhead. This produces an $X$-computable adequate deadline for $E$.
+\end{proof}
+
+\begin{corollary}[A spectrum with no least degree]\label[corollary]{lbh:cs:cor:nonprincipal}
+Let $\mathbf a,\mathbf b$ be incomparable degrees of limit-computable
+sets. There is a finite input of $U$ whose clock spectrum is
+\[
+ \csCone{\mathbf a}\ \cup\ \csCone{\mathbf b}.
+\]
+It has exactly two minimal degrees, $\mathbf a$ and $\mathbf b$, and no
+least degree. Such incomparable degrees exist, already among c.e.\ degrees
+by the Friedberg--Muchnik theorem \cite{cs-friedberg}.
+\end{corollary}
+\begin{proof}
+Apply \cref{lbh:cs:cor:delta,lbh:cs:thm:unions}. A least degree would belong to one of the
+two cones and lie below the generator of the other, contradicting
+incomparability. Every degree strictly above one generator is not minimal.
+The fixed interpreter implements the disjoint-sum program as finite data.
+\end{proof}
+
+The same proof realizes the union of the cones above any given finite
+antichain of singleton-tree degrees. The countable version requires
+\emph{uniform} tree presentations; an arbitrary noneffective list of
+realizable degrees is not an input to the theorem.
+
+\subsection{A least degree must contain a self-modulus}
+
+\begin{definition}[Modulus and self-modulus]
+A function $f\in\N^\N$ is a modulus for $A$ if every total $g\geq f$
+computes $A$. It is a \emph{self-modulus} if every total $g\geq f$ computes
+$f$. Uniform self-moduli additionally require one fixed Turing functional
+to recover $f$ from every such $g$. These definitions use pointwise
+majorization; eventual-majorization variants have the same nonuniform
+degree consequence after finitely many corrections.
+\end{definition}
+
+\begin{theorem}[Necessary condition for a least clock degree]\label{lbh:cs:thm:least}
+If $\csSpec(M)$ is nonempty and has a least degree $\mathbf a$, then
+$\mathbf a$ contains a self-modulus. In particular $\mathbf a$ is a
+hyperarithmetic degree.
+\end{theorem}
+
+\begin{proof}
+Choose an oracle $X$ of degree $\mathbf a$ and an adequate deadline
+$d\leq_T X$. The function $d$ itself is an oracle computing an adequate
+deadline. Hence $\csdegT(d)\in\csSpec(M)$. Leastness and $d\leq_T X$ imply
+$\csdegT(d)=\mathbf a$.
+
+Every $g\geq d$ is again adequate, so its degree belongs to the spectrum.
+Leastness now gives $\csdegT(d)\leq\csdegT(g)$. Thus every pointwise majorant
+of $d$ computes $d$: the function $d$, after the harmless index shift from
+$\N_{>0}$ to $\N$, is a self-modulus.
+
+The classical modulus theorem says that a function admits a modulus if
+and only if it is hyperarithmetic. Apply it to $d$; a self-modulus is, in
+particular, a modulus for itself. A modern proof and attribution are given
+by Monin and Patey \cite[Corollary~2.2]{cs-monin-patey}.
+\end{proof}
+
+\begin{corollary}[A domination obstruction]\label[corollary]{lbh:cs:cor:hif}
+No nonzero hyperimmune-free degree can be the least degree of a clock
+spectrum. More generally, if every total function computed by $X$ is
+pointwise dominated by a function computed by $Y$, then
+\[
+ \csdegT(X)\in\csSpec(M)\quad\Longrightarrow\quad\csdegT(Y)\in\csSpec(M).
+\]
+\end{corollary}
+\begin{proof}
+Dominate an $X$-computable adequate deadline by a $Y$-computable function.
+Upwardness makes the latter adequate. For a hyperimmune-free degree,
+every computed total function has a computable eventual bound; finitely
+many exceptions can be corrected by fixed constants to give a computable
+pointwise bound. Thus the computable degree would also belong to the
+spectrum, precluding a nonzero least hyperimmune-free degree.
+\end{proof}
+\srcnote{\wtag{} [Compare \cref{lbh:thm:core}: a computable adequate deadline exists exactly when an
+accepting schedule of hyperimmune-free degree exists; \cref{lbh:cs:cor:hif} is the complementary
+statement that a nonzero hyperimmune-free degree is never the least clock degree.]}
+
+Notice that \cref{lbh:cs:thm:least} produces only a \emph{nonuniform}
+self-modulus. Leastness gives a Turing reduction for each majorant; it
+does not provide one reduction that works for all majorants. The unique-path
+construction, by contrast, has a uniform recovery algorithm. Gerdes's
+work makes clear that uniform and nonuniform self-moduli must be
+separated \cite{cs-gerdes}. We therefore do not silently upgrade the necessary
+condition to the sufficient one.
+
+\subsection{The precise remaining gap}
+Let $\mathcal S$ be the degrees of unique paths through recursive
+Baire-space trees, $\mathcal L$ the degrees occurring as a least clock
+degree, and $\mathcal M$ the degrees containing a self-modulus. The proved
+inclusions are
+\begin{equation}\label{lbh:cs:eq:gap}
+ \mathcal S\ \subseteq\ \mathcal L\ \subseteq\ \mathcal M
+ \ \subseteq\ \{\text{hyperarithmetic degrees}\}.
+\end{equation}
+All limit-computable degrees and all the explicit jump-hierarchy degrees
+in \cref{lbh:cs:sec:jumps} belong to the leftmost class by the constructions
+above. We do not prove equality of the middle classes. The structural
+normal form of \cref{lbh:cs:thm:closed} restates the missing part as a precise
+effective closed-set problem, rather than as an unspecified search for
+faster computations.
+
+\section{A canonical quadratic two-stack compiler\srctag{12}}\label{lbh:cs:sec:quadratic}
+
+\subsection{Primitive stack rules}
+A binary stack is a finite bit word. Store the bits from bottom to top
+after a leading sentinel $1$ in the binary expansion of $u+1$. Thus the
+empty stack has code $u=0$. For $b\in\B$, a push has law
+\[
+ u'=2u+b+1,
+\]
+and a pop of bit $b$ has law
+\[
+ u=2u'+b+1.
+\]
+The latter automatically enforces nonemptiness and the correct top bit
+when $u,u'\in\N$.
+
+The six permitted operations are stay, empty test, push $0$, push $1$,
+pop $0$, and pop $1$. Each has an affine residual $F_o(u,u')$:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Operation $o$ & Residual $F_o(u,u')$\\
+\midrule
+Stay & $u'-u$\\
+Empty test and stay & $u+u'$\\
+Push bit $b$ & $u'-2u-b-1$\\
+Pop bit $b$ & $u-2u'-b-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For the empty test the equivalence uses nonnegativity: $u+u'=0$ forces
+both codes to be zero.
+
+A rule $r$ consists of a source state $\alpha_r$, a target state
+$\beta_r$, and one operation on each stack. A configuration is
+$c=(q,u,v)\in\N^3$. The rule is legal from $c$ to $c'$ exactly when four
+affine residuals vanish:
+\begin{align}
+ D_{r,1}&=q-\alpha_r,&D_{r,2}&=q'-\beta_r,\label{lbh:cs:eq:res-state}\\
+ D_{r,3}&=F_{o_r}(u,u'),&D_{r,4}&=F_{p_r}(v,v').\label{lbh:cs:eq:res-stack}
+\end{align}
+Accepting states form a fixed finite set $F$; a transition ticks when its
+target state lies in $F$. Programs are arranged so that each intended
+event visits a dedicated accepting state once. No initial tick is counted.
+
+\subsection{The guarded-affine gadget}
+
+\begin{lemma}[Unique natural lift of an affine guard]\label[lemma]{lbh:cs:lem:gadget}
+For $D\in\Z$ and $s,a,b\in\N$, put
+\begin{equation}\label{lbh:cs:eq:gadget}
+ G(D,s,a,b)=(D-a+b)^2+ab+s(a+b).
+\end{equation}
+Then $G=0$ if and only if
+\begin{equation}\label{lbh:cs:eq:gadget-zero}
+ a=\max(D,0),\qquad b=\max(-D,0),\qquad sD=0.
+\end{equation}
+In particular the helpers $a,b$ are unique even when $s=0$.
+When $D$ is an affine polynomial, $G$ has total degree at most two.
+\end{lemma}
+
+\begin{proof}
+All three summands in \eqref{lbh:cs:eq:gadget} are nonnegative on the stated
+domain. Their vanishing gives $D=a-b$, $ab=0$, and $s(a+b)=0$.
+The first two equations determine the positive and negative parts of $D$
+uniquely. The last equation then says $s|D|=0$, equivalently $sD=0$.
+The converse follows by substitution. Affineness of $D$ gives the degree
+bound by inspection.
+\end{proof}
+
+This construction exchanges helper coordinates for a lower degree. The
+more direct guard $sD^2$ is nonnegative on naturals and imposes the same
+active residual, but has degree three. Our gadget retains a unique lift
+rather than allowing arbitrary unused sign decompositions.
+\srcnote{\wtag{} [The gadget packs into one natural-domain term the canonical positive and negative
+parts gated by a selector of Report~A's canonical branch activation
+(\texttt{cdc:wf:lem:activation} in \path{canonical-diophantine-certificates}); it is not new as a
+technique.]}
+
+\subsection{The complete polynomial}
+Fix an initialized machine with $m$ labelled rules, an external horizon
+$T\geq0$, and deadlines $\delta=(d_1,\ldots,d_k)$ with $0\leq d_i\leq T$.
+Use variables $c_t=(q_t,u_t,v_t)$ for $0\leq t\leq T$. For each time
+$t<T$, use natural selectors $s_{t,r}$ for $0\leq r<m$. The equation
+\[
+ \sum_{r<m}s_{t,r}=1
+\]
+automatically makes them one-hot. No separate Boolean equations are needed.
+
+For every $(t,r,j)$ with $j\in\{1,2,3,4\}$, introduce two natural helpers
+$a_{t,r,j},b_{t,r,j}$. Let $D_{t,r,j}$ denote the residuals in
+\eqref{lbh:cs:eq:res-state}--\eqref{lbh:cs:eq:res-stack} at $(c_t,c_{t+1})$. Finally
+introduce one natural slack $z_i$ per deadline and put
+\begin{equation}\label{lbh:cs:eq:count}
+ C_i=\sum_{t<d_i}\ \sum_{r:\beta_r\in F}s_{t,r}.
+\end{equation}
+For the fixed initial configuration $c^{\rm in}$, define
+\begin{align}
+ P_{M,T,\delta}={}&
+ \sum_{j=1}^{3}(c_{0,j}-c^{\rm in}_j)^2
+ +\sum_{t<T}\left(\sum_{r<m}s_{t,r}-1\right)^2\notag\\
+ &+\sum_{t<T}\sum_{r<m}\sum_{j=1}^{4}
+ G(D_{t,r,j},s_{t,r},a_{t,r,j},b_{t,r,j})\notag\\
+ &+\sum_{i=1}^{k}(C_i-i-z_i)^2.
+ \label{lbh:cs:eq:complete-poly}
+\end{align}
+This is an explicit polynomial over $\Z$, not an appeal to MRDP.
+All variables are quantified over $\N$.
+
+\begin{theorem}[Quadratic labelled-trace bijection]\label{lbh:cs:thm:quadratic}
+The natural zero set of \eqref{lbh:cs:eq:complete-poly} is in bijection with the
+legal length-$T$ labelled runs of $M$ satisfying
+$N_\rho(d_i)\geq i$ for every $1\leq i\leq k$. The polynomial has total
+degree at most two and exactly
+\begin{equation}\label{lbh:cs:eq:count-vars}
+ 3(T+1)+9mT+k
+\end{equation}
+supplied natural coordinates in this construction. Every auxiliary
+coordinate is uniquely determined by the labelled run.
+\end{theorem}
+
+\begin{proof}
+Each summand in \eqref{lbh:cs:eq:complete-poly} is nonnegative over the natural
+domain, so a zero forces every summand to vanish. The first group fixes
+the initial configuration. The selector sum at each time selects exactly
+one labelled rule. By \cref{lbh:cs:lem:gadget}, the four residuals of that rule
+vanish; hence it is a legal transition. For inactive rules the gadget
+still uniquely fixes their residuals' positive and negative parts.
+The count $C_i$ is therefore the actual number of ticks by time $d_i$.
+The last square gives $z_i=C_i-i\geq0$, exactly the deadline condition.
+
+Conversely, a legal labelled run fixes its configurations and one-hot
+selectors. For every residual, active or inactive, take its canonical
+positive and negative parts as helpers. The active residuals are zero,
+so every gadget vanishes. Set $z_i=N_\rho(d_i)-i$. These are natural for a
+run satisfying the deadlines. All summands vanish, and every coordinate
+has been fixed uniquely. Projection to the labelled run and this lift
+are inverse maps.
+\par\wtag{} [\Cref{lbh:cs:thm:quadratic} is a degree-two form of source~10's quartic
+\cref{lbh:thm:compiler}, for a different but equivalent rule format and stack code, with more
+coordinates; \cref{lbh:cs:sec:relation} compares the two precisely.]\par
+
+There are $3(T+1)$ configuration coordinates, $mT$ selectors, $8mT$
+helpers, and $k$ deadline slacks. Every residual is affine and every
+count is linear, so all summands have degree at most two.
+\end{proof}
+
+Substituting the initial configuration rather than retaining its three
+coordinates reduces the count by three. We retain them so that the
+implementation has a uniform configuration array and a directly checkable
+initial-state boundary.
+
+\subsection{Finiteness, domains, and a cubic tradeoff}
+For fixed data there are at most $m^T$ labelled traces, and a label sequence
+has at most one execution. Thus the zero set is finite. More concretely,
+any legal stack code obeys
+\begin{equation}\label{lbh:cs:eq:stack-bound}
+ u_t+2\leq 2^t(u_0+2),\qquad v_t+2\leq2^t(v_0+2).
+\end{equation}
+Indeed a push satisfies $u'+2\leq2(u+2)$, and the other operations do not
+increase the code. State values are bounded by the largest state numeral
+or the initial state; selectors are Boolean; deadline slacks are at most
+$T$; and the sign helpers are bounded by the absolute affine residuals of
+these bounded coordinates. These are effective finite-height bounds for
+each fixed horizon, not bounds uniform in an unbounded computation.
+
+The domain restriction is indispensable. Over signed integers $ab$ and
+$s(a+b)$ need not be nonnegative, and a row of selectors summing to one
+need not be one-hot. The theorem does not assert the same zero set over
+$\Z$ or $\Q$. Replacing natural coordinates by four-square sums would
+change both degree and fiber multiplicities.
+\srcnote{\wtag{} The programme's review (\cref{lbh:cs:sec:review}) gives two examples. With a signed
+helper, $(D,s,a,b)=(1,1,1,-1)$ gives $G=(1-1-1)^2+1\cdot(-1)+1\cdot0=0$ although the selected
+residual is $D=1\neq0$. Over $\Q_{\ge0}$, when two identical stay rules are enabled at a step, the
+selectors $\tfrac12,\tfrac12$ on those two rules (with zero helpers) give a zero that is no labelled
+run: the natural-domain trace bijection does not extend to nonnegative rationals.}
+
+There is also a smaller-coordinate cubic variant. Replace every gadget
+in \eqref{lbh:cs:eq:complete-poly} by $s_{t,r}D_{t,r,j}^2$ and omit all $a,b$
+variables. The same argument on naturals gives a labelled-trace bijection
+with $3(T+1)+mT+k$ coordinates, now of degree at most three. This variant
+shows exactly what is being traded: the quadratic version pays $8mT$
+additional canonical coordinates to lower the degree. Neither construction
+is advertised as an optimal variable count.
+
+\section{Quasi-Diophantine infinite progress\srctag{12}}\label{lbh:cs:sec:quasi}
+
+\subsection{One clock, all finite obligations}
+For a total deadline $d$, let $\delta_k=(d(1),\ldots,d(k))$ and use
+$H_k=\max(k,d(1),\ldots,d(k))$ as in \cref{lbh:cs:sec:closed}. The preceding
+theorem gives
+\begin{equation}\label{lbh:cs:eq:quasi}
+ d\in\csClock_M\quad\Longleftrightarrow\quad
+ \forall k\geq1\ \exists\mathbf z_k\in\N^{v_k}:
+ P_{M,H_k,\delta_k}(\mathbf z_k)=0,
+\end{equation}
+where $v_k=3(H_k+1)+9mH_k+k$.
+
+\begin{proposition}[Coherent quadratic progress]\label[proposition]{lbh:cs:prop:coherent}
+Equivalence \eqref{lbh:cs:eq:quasi} holds. Its right side is also equivalent to
+the existence of a compatible family of these canonical certificates,
+where compatibility means agreement after truncating a labelled run and
+retaining the helpers and deadline slacks that remain in the shorter
+problem.
+\end{proposition}
+
+\begin{proof}
+An adequate run restricts to a legal prefix at every $H_k$, and its
+canonical lift supplies all the required zeros. The lifts are compatible:
+helper values depend only on local residuals, and the slack for an earlier
+deadline depends only on the retained earlier part of the run.
+
+Conversely, zeros at every level project to finite runs witnessing the
+predicate $\operatorname{Good}_M(\delta_k)$. The compactness proof in
+\cref{lbh:cs:thm:closed} gives a single infinite run meeting all deadlines.
+Its canonical lifts provide a compatible family. Thus one need not assume
+that an arbitrary initial choice of levelwise zeros was already compatible;
+compactness selects a compatible family. Restriction maps themselves need
+not be surjective onto every shorter zero.
+\end{proof}
+\srcnote{\wtag{} [\Cref{lbh:cs:prop:coherent} is the quartic schema \eqref{lbh:eq:schema} of
+source~10 at degree two, for source~12's compiler; source~11's compatible certificates
+(\cref{lbh:ql:cor:deadlinepoly}) are the counter-machine form. The remark after
+\eqref{lbh:eq:schema} applies here too: for a fixed computable $d$ the right side is decidable level
+by level, and the predicate is $\ppi1$.]}
+
+This is the sense in which the construction is \emph{quasi-Diophantine}:
+it is an explicit family of finite polynomial conditions with a shared
+infinite functional parameter. Existence of a recurrent run is
+\[
+ \exists d\in\N^{\N_{>0}}\ \forall k\geq1\ \exists\mathbf z_k:
+ P_{M,H_k,\delta_k}(\mathbf z_k)=0.
+\]
+Specifying that $d$ be computable from a particular oracle $X$ produces
+exactly the spectra studied above. A natural number coding a computable
+function is not a replacement for an arbitrary $d$. For example the
+$\cszero''$-cone construction is recurrent but has no computable adequate
+clock.
+
+\subsection{What ordinary MRDP does and does not add}
+Finite tuple coding turns
+$\operatorname{Good}_M(\delta)$ into an ordinary decidable relation on
+natural-number codes. MRDP therefore gives a fixed-arity polynomial
+representation of that coded finite relation; this is the established
+computability-to-Diophantine bridge used throughout the repository
+\cite{cs-repo-liveness,cs-repo-readme,cs-matiyasevich}. Our explicit quadratics serve
+a different purpose: they expose the actual finite configurations,
+rule labels, and unique helper values, at the cost of horizon-dependent
+arity.
+
+A fixed-arity MRDP representation obtained by that general route is not
+asserted here to preserve the unique fibers of
+\eqref{lbh:cs:eq:complete-poly}. Nor does it remove the infinite clock parameter
+or the quantifier over all finite obligations. The following distinctions
+must therefore be kept separate:
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{0.28\textwidth}Xp{0.22\textwidth}@{}}
+\toprule
+Object & What it certifies & Limitation\\
+\midrule
+$P_{M,T,\delta}$ & A labelled finite run with all listed deadlines & Arity grows with $T$\\
+An MRDP polynomial for $\operatorname{Good}$ & Existence of a coded finite successful prefix & No fiber bound claimed\\
+The family in \eqref{lbh:cs:eq:quasi} & One infinite run fitting a fixed clock & Infinitely many obligations\\
+Existential functional clock & Unrestricted recurrent computation & Not a finite natural witness\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+In particular, this paper does not prove single-fold or finite-fold MRDP,
+does not produce a fixed universal quadratic Diophantine equation, and
+does not improve a fixed universal polynomial's operation count. Its
+finite zero-set bijections are exact but belong to a different representation
+regime.
+
+\section{Unconventional substrates with the same spectra\srctag{12}}\label{lbh:cs:sec:substrates}
+
+\subsection{Congruence-guarded affine lattice computation}
+The shifted stack equations already define a two-register affine substrate
+with finite control. Its instructions multiply by two and add one or two,
+or perform the partial affine inverses
+\[
+ u\mapsto\frac{u-1}{2}\quad(u\geq1,\ u\text{ odd}),\qquad
+ u\mapsto\frac{u-2}{2}\quad(u\geq2,\ u\text{ even}).
+\]
+It also has the zero guard. Thus all the spectra above occur in an explicit
+finite-control, parity-guarded rational affine relation on $\N^2$.
+This is a two-register generalized-Collatz-style substrate in the stated
+sense; no identification with a particular named one-register Collatz
+problem is intended. The certificate compiler is native to its transitions.
+
+\subsection{A rational affine relation inside a unit cube}
+Encode a finite stack with top-first bits $b_1,\ldots,b_\ell$ by
+\begin{equation}\label{lbh:cs:eq:realcode}
+ x(b_1\cdots b_\ell)=\sum_{j=1}^{\ell}\frac{1+2b_j}{4^j},
+ \qquad x(\varepsilon)=0.
+\end{equation}
+Every code is rational in $[0,1)$, and finite words have distinct codes.
+A push of $b$ has affine law
+\begin{equation}\label{lbh:cs:eq:affine-push}
+ x'=(x+1+2b)/4.
+\end{equation}
+A pop of $b$ has inverse law
+\begin{equation}\label{lbh:cs:eq:affine-pop}
+ x'=4x-(1+2b),
+\end{equation}
+with guard
+\[
+ x\in[1/4,1/2)\quad(b=0),\qquad
+ x\in[3/4,1)\quad(b=1).
+\]
+An empty test is the guard $x=0$. Staying is the identity.
+
+If the finite control states are numbered $0,\ldots,Q$, represent state
+$q$ by $z=(q+1)/(Q+2)$. Each labelled two-stack rule becomes a rational
+affine update of $(z,x,y)$ on its guarded domain: the state coordinate is
+set to the target-state rational, and the other two coordinates use
+\eqref{lbh:cs:eq:affine-push}, \eqref{lbh:cs:eq:affine-pop}, or the identity. Overlapping
+rule domains mean nondeterministic choice, just as in the source system.
+
+\begin{theorem}[Exact affine transfer]\label{lbh:cs:thm:affine}
+For every initialized finite two-stack table $M$, the construction above
+gives a finite rational piecewise-affine relation in $[0,1]^3$ with a
+rational initial point whose labelled trajectories are in step-for-step
+bijection with those of $M$. Tick times, adequate deadlines, and clock
+spectra are identical. Consequently the cones and nonprincipal spectra
+proved in this paper occur in one fixed such relation with varying
+finite rational inputs, after fixing the interpreter $U$.
+\end{theorem}
+
+\begin{proof}
+A nonempty finite stack code has first base-four digit $1$ or $3$ and a
+remaining tail in $[0,1)$. This places it in exactly the corresponding
+guard interval. Applying \eqref{lbh:cs:eq:affine-pop} removes that digit; applying
+\eqref{lbh:cs:eq:affine-push} inserts it. Empty and stay instructions are equally
+exact. Thus every source rule agrees with its affine rule on coded
+configurations, and every legal affine rule at a coded configuration
+has the corresponding legal source operation.
+
+Starting at the rational code of a finite configuration, induction shows
+that every later point is again the code of a finite configuration. The
+state update and labelled rule are preserved at every step. The encoding
+is injective: in two distinct finite base-four expansions with digits
+$1,3$, the first differing digit outweighs the difference of the finite
+tails; a strict inequality follows because the tails are finite. Hence
+the correspondence is bijective. Accepting states and transition counts
+are unchanged, proving the clock assertions. Fixing the finite table of
+$U$ fixes this affine relation; only its initial coded input varies.
+\end{proof}
+\srcnote{\wtag{} [The coding \eqref{lbh:cs:eq:realcode}--\eqref{lbh:cs:eq:affine-pop} is source~10's
+\eqref{lbh:eq:rational-stack}--\eqref{lbh:eq:affine-top} after the relabelling $d=1+2b$, and
+\cref{lbh:cs:thm:affine} is \cref{lbh:thm:geometry}, which already transfers the c.e.\ spectra; the
+new spectra transfer by the same step-exact argument. Only the control coordinate differs:
+$(q+1)/(Q+2)$ here, $q/(s+1)$ in source~10.]}
+
+No continuity or noise tolerance is claimed. The ambient cube is compact,
+but the set of finite codes is countable and not closed; the guards are
+not those of a globally continuous map. The construction assumes exact
+rational arithmetic of unbounded precision. In particular an arbitrary
+nearby real point is not a substitute for a finite input word. The
+polynomial certificates quantify natural stack codes, not arbitrary
+rational coordinates, and do not resolve Hilbert's tenth problem over
+$\Q$.
+
+\subsection{Why timing preservation matters}
+Turing completeness by itself is not enough to transport a clock
+spectrum. A simulator could introduce an infinite silent computation
+while trying to implement a single source step, or could manufacture
+accepting events during housekeeping. Our constructions exclude both:
+the tree explorer emits only after total completed checks, the fixed
+interpreter has explicitly designated event states, and the affine
+translation preserves every primitive step. General timing-faithful
+simulation is discussed in the earlier report \cite{cs-repo-liveness}; the
+present implementations state the necessary conditions rather than
+appeal to an unspecified universality reduction.
+\srcnote{\wtag{} [The earlier report's discussion is \cref{lbh:sec:simulation}.]}
+
+\section{Implementation, experiments, and reproducibility\srctag{12}}\label{lbh:cs:sec:implementation}
+
+\subsection{What the package implements}
+The accompanying \code{code/clock\_certificates.py} is a standard-library-only
+Python implementation. It provides a sparse exact integer polynomial
+representation; a validated finite rule format; the quadratic compiler
+\eqref{lbh:cs:eq:complete-poly}; a natural-domain zero checker; canonical lifting
+of a labelled trace; JSON export of the complete polynomial; and the
+finite-node predicate of \cref{lbh:cs:thm:firstmatch}. An independent list-of-bits
+interpreter is used to generate traces. It does not use the affine residual
+formulas to decide stack transitions.
+
+The compiler rejects negative horizons and out-of-range deadlines, preserves
+all inactive-rule helpers, checks that the supplied assignment has exactly
+the declared variables, and rejects negative coordinates before evaluating
+the polynomial. A JSON export is a full monomial list, not merely a hash,
+operation count, or informal circuit description. Coefficients and values
+use arbitrary-precision integers.
+
+The code does \emph{not} implement an oracle for $A$, the transfinite jump,
+a general infinite-path solver, or a small fixed universal table. The
+function \code{first\_matches} takes the finite queried values of the
+limit as an explicitly supplied callable. Its example limit is computable.
+The transfinite theorem is proved mathematically, not claimed to be
+validated by a finite toy halting experiment.
+\srcnote{\wtag{} [Delivered names. \path{code/clock_certificates.py}, \path{code/test_all.py},
+\path{code/verify_export.py}, \path{examples/quadratic_certificate.json},
+\path{test_results.json}, \path{build.sh} and \path{source_audit.md} are shipped as
+\path{code/12-clock-spectra-clock_certificates.py}, \path{code/12-clock-spectra-test_all.py},
+\path{code/12-clock-spectra-verify_export.py}, \path{data/12-clock-spectra-quadratic_certificate.json},
+\path{data/12-clock-spectra-test_results.json}, \path{code/12-clock-spectra-build.sh} and
+\path{12-clock-spectra-source_audit.md}. The shipped program is the unpatched original; the
+programme's review found two input-boundary defects in it and supplies a patch
+(\cref{lbh:cs:sec:review}).]}
+
+\subsection{A complete finite certificate example}
+The seven-rule test fixture has states $0,1,2$, accepting state $2$, and
+initial configuration $(0,0,0)$:
+\begin{center}\small
+\begin{tabular}{@{}clll@{}}
+\toprule
+Label & State change & Left stack & Right stack\\
+\midrule
+$0$ & $0\to0$ & Push $0$ & Stay\\
+$1$ & $0\to0$ & Push $1$ & Stay\\
+$2$ & $0\to1$ & Stay & Stay\\
+$3$ & $1\to1$ & Pop $0$ & Push $0$\\
+$4$ & $1\to1$ & Pop $1$ & Push $1$\\
+$5$ & $1\to2$ & Empty test & Stay\\
+$6$ & $2\to0$ & Stay & Stay\\
+\bottomrule
+\end{tabular}
+\end{center}
+This is a \emph{nonuniversal test fixture}. It guesses a finite left-stack
+word, transfers its bits to the right, ticks when the left stack is empty,
+and returns to state $0$.
+
+For horizon $T=5$, deadline $d_1=4$, and labels $(1,2,4,5,6)$, the
+configuration sequence is
+\[
+ (0,0,0),\ (0,2,0),\ (1,2,0),\ (1,0,2),\ (2,0,2),\ (0,0,2).
+\]
+There is one tick, at time $4$, and the deadline slack is zero. The
+exported polynomial has degree $2$, $334$ declared variables, and $1494$
+nonzero monomials. Its canonical zero assignment is included in
+\path{examples/quadratic_certificate.json}. The variable count is exactly
+$3\cdot6+9\cdot7\cdot5+1=334$.
+
+\subsection{Exact finite checks performed}
+The supplied test program was run under Python 3.13.5. All checks passed.
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}Xr@{}}
+\toprule
+Check & Cases\\
+\midrule
+Guard gadget, $-8\leq D\leq8$, $0\leq s\leq2$, $0\leq a,b\leq10$ & 6,171\\
+Stack residuals versus independent list semantics & 49,920\\
+Labelled one-step configuration candidates versus list semantics & 81,648\\
+Finite trace/deadline combinations through horizon six & 817\\
+Accepted canonical certificates among those combinations & 314\\
+Deadline failures rejected among those combinations & 503\\
+Admissible one-coordinate unit perturbations rejected at the sample zero & 430\\
+First-match-tree candidate nodes through length four & 4,681\\
+Explicit malformed-input cases rejected & 7\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The two trace outcome rows partition the 817 combinations; they are not
+additional independent test inputs. The local transition test ranges over
+all source and target states in $\{0,1,2\}$, both stack codes in
+$\{0,\ldots,5\}$, and every fixture rule. The stack-only test uses old
+codes $0$ through $63$, new codes $0$ through $129$, and all six operations.
+The first-match test includes the early-match/nonsettling example and
+checks prefix closure on every accepted node in its finite search.
+
+These experiments can detect sign errors, wrong parity, missing empty
+conditions, degree/count discrepancies, and unconstrained helpers. They
+do not exhaust the natural domain of the polynomial and do not establish
+any infinitary theorem. Those conclusions rely on the proofs, not the
+number of tested cases.
+
+\subsection{Reproduction commands and formalization targets}
+From the extracted package directory run
+\begin{lstlisting}
+python3 code/test_all.py
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{lstlisting}
+The first command regenerates the complete example polynomial and
+\code{test\_results.json}. The TeX source uses an internal bibliography;
+no BibTeX run or network access is required.
+\srcnote{\wtag{} [The listing keeps the delivered layout: \path{article.tex} is source~12's
+manuscript, which is not shipped, and the programs import one another by delivered names and
+rewrite \path{examples/} and \path{test_results.json}. Rerun them on a copy with the delivered
+layout, as the README describes. At this write (Python 3.14.4) both commands passed; the regenerated
+certificate equals the shipped one after LF normalization, and the test record differs only in the
+\code{python} field.]}
+
+A proof-assistant implementation should keep three interfaces separate.
+The finite algebraic layer proves the guard lemma and the labelled-trace
+bijection over naturals. The semantic layer proves the explorer's
+path-bounding correspondence with explicit primitive runtime. The
+computability layer proves unique bounded-path recovery and the
+first-match-tree theorem. Only the last step of \cref{lbh:cs:thm:least} needs
+the external hyperarithmetic modulus theorem. Keeping this dependency
+isolated makes the remaining main constructive results independently
+formalizable without importing the entire hyperarithmetic hierarchy.
+
+\section{Further research questions\srctag{12}}\label{lbh:cs:sec:questions}
+
+These are precise questions left open by this article. They are not all
+claimed to be new or previously published open problems; overlap with the
+repository's existing agenda is identified where relevant.
+\srcnote{\wtag{} The eight questions of source~12 follow, unchanged. Labels were added to them; a
+bracketed note after a question names an overlapping question of \cref{lbh:sec:questions}.}
+
+\begin{question}[The least-degree classification]\label[question]{lbh:cs:q:classification}
+Which of the inclusions in \eqref{lbh:cs:eq:gap} are equalities? Equivalently,
+which degrees can be least among the degrees computing a member of a
+nonempty upward effectively closed Baire-space class?
+\end{question}
+This sharpens the repository's spectrum question to a representation
+problem for effective closed classes. A proof cannot simply identify
+nonuniform and uniform self-moduli.
+\srcnote{\wtag{} [It refines \cref{lbh:q:spectra}, which source~12 answers in part
+(\cref{lbh:cs:sec:relation}).]}
+
+\begin{question}[Realizing a nonuniform self-modulus]\label[question]{lbh:cs:q:selfmodulus}
+Suppose $f$ is a self-modulus, with no uniform recovery procedure assumed.
+Can one effectively present an upward closed class whose solution degrees
+form exactly $\csCone{\csdegT(f)}$, using suitable finite definability data for
+$f$? What additional hypothesis on that data is necessary?
+\end{question}
+The input must be finite. Treating the entire noncomputable function as
+a machine parameter would trivialize the problem and is not an answer.
+Gerdes's definability questions provide a relevant classical boundary
+\cite{cs-gerdes}.
+
+\begin{question}[Minimal versus least resources]\label[question]{lbh:cs:q:minimal}
+Which antichains occur as the complete set of minimal degrees of a clock
+spectrum? Can a spectrum with minimal degrees but no least degree have
+minimal elements not containing a self-modulus?
+\end{question}
+The proof of \cref{lbh:cs:thm:least} uses leastness, not merely minimality.
+The union construction supplies controlled finite examples but does not
+classify general antichains or spectra with no minimal elements.
+
+\begin{question}[Numerically instantiated universality]\label[question]{lbh:cs:q:numerical}
+Instantiate the fixed binary two-stack interpreter, including input
+loading, error behavior, and tick control, and export its complete finite
+quadratic certificates. What are the actual rule count, coefficient
+heights, and arithmetic evaluation costs?
+\end{question}
+This is a concrete missing implementation step. A numerical claim must
+include the transition table and the ordinary-input encoding, not merely
+a universality citation.
+\srcnote{\wtag{} [Overlapping questions: \cref{lbh:q:qd-universal} of source~03, with source~11's
+overlapping ``A completely expanded fixed universal law'' printed after it, and source~10's remark
+after \cref{lbh:sec:universal} that no explicit small universal table is claimed.]}
+
+\begin{question}[Lower-cost canonical quadratic guards]\label[question]{lbh:cs:q:guards}
+Can sign helpers be shared across rules with related affine residuals
+while preserving every complete natural witness tuple, or at least a
+specified bijection of zero sets? Can the $8mT$ helper budget be reduced
+without raising degree or introducing unconstrained inactive witnesses?
+\end{question}
+Any proposed saving should state whether it preserves supplied tuples,
+projects fibers, or gives only equivalence of the outer accepted relation.
+These are different guarantees.
+\srcnote{\wtag{} [Overlapping question: ``Smaller exact local certificates'' in
+\cref{lbh:sec:questions}, which asks the same for source~10's quartic counts while keeping degree
+at most four; \cref{lbh:cs:thm:quadratic} lowers the degree to two and pays $8mT$ helpers.]}
+
+\begin{question}[Verified first-match compilation]\label[question]{lbh:cs:q:verified}
+Formalize \cref{lbh:cs:thm:firstmatch} uniformly in a computable approximation,
+including the distinction between first matches and settling times, and
+compose it with a verified tree interpreter and polynomial compiler.
+\end{question}
+This would give a small, auditable formal answer to a portion of the
+repository's spectrum question without requiring a new priority argument.
+\srcnote{\wtag{} [Overlapping question: ``A verified effective-closed-subclass compiler'' in
+\cref{lbh:sec:questions}, which asks for the verified compiler from a certified tree to a deadline
+program.]}
+
+\begin{question}[Resource-bounded clocks and native substrates]\label[question]{lbh:cs:q:resource}
+Which of the realized spectra survive when the finite-maximum conversion
+$b\mapsto d_b$ is constrained to primitive-recursive, elementary, or other
+specified overheads? Can equally explicit clock-preserving certificates
+be built for graph interaction, queue rewriting, or prioritized reaction
+substrates?
+\end{question}
+The arbitrary total tree decider permits arbitrarily expensive checks.
+The finite maximum is computable but not automatically in a fixed resource
+class. This refines the related resource-clock and substrate questions
+already present in \cite{cs-repo-liveness}.
+\srcnote{\wtag{} [Overlapping questions: ``Primitive-recursive and resource-bounded clocks'' in
+\cref{lbh:sec:questions} with source~11's overlapping ``Witness spectra beyond computable deadlines''
+printed after it, and ``Other unconventional substrates with timing certificates'' there.]}
+
+\begin{question}[Robust affine semantics]\label[question]{lbh:cs:q:robust}
+Which deadline spectra remain realizable after replacing exact rational
+codes by a specified perturbation model, or after demanding a globally
+continuous dynamics? Can a noise-tolerant coding preserve least clock
+degrees without putting infinite information into the initial condition?
+\end{question}
+The exact affine construction alone does not answer this. Its high-order
+digits are unbounded memory, and uniform positive noise can erase them.
+\srcnote{\wtag{} [Overlapping question: ``Robust encodings and noise'' in \cref{lbh:sec:questions},
+with source~11's overlapping ``Robust planar computation'' printed after it.]}
+
+\section{Conclusion\srctag{12}}
+\wtag{} [``The repository's c.e.\ clock-cone construction'' is \cref{lbh:thm:ce-spectrum}.]\par
+The repository's c.e.\ clock-cone construction extends substantially
+without assuming that an arbitrary limit-computable set can compute the
+settling time of its approximation. First matching stages supply a
+recursive singleton tree of exactly the desired degree. Tree exploration
+then turns any bound on that unique path into an adequate progress clock,
+and conversely any adequate clock into enough information to recover the
+path. Deferred finite oracle checks extend the construction to explicit
+jump hierarchies. Disjoint sums produce nonprincipal spectra; leastness,
+when present, forces a self-modulus and hence a hyperarithmetic degree.
+
+The arithmetic realization is equally explicit at the finite level:
+quadratic natural zero sets encode the labelled computations with unique
+helpers and all deadlines retained. The same clocks occur in exact
+rational affine dynamics through a stepwise encoding. The distinction
+between a finite polynomial witness and an infinite shared clock is not
+an obstacle to hide; it is the organizing principle that makes the
+representation faithful.
+
+\srcnote{\wtag{} Source~12's two appendices follow as the last two sections of Part~VI, so that this report's appendix lettering is unchanged.}
+\section{Pseudocode for the two tree constructions (source 12's Appendix A)\srctag{12}}\label{lbh:cs:app:trees}
+
+The first-matching-stage checker is particularly short. Here
+\code{Approx(s,n)} returns the first $n$ bits of stage $s$.
+\begin{lstlisting}
+FirstMatchNode(s[1..k]):
+    previous_word := empty
+    for n := 1,...,k:
+        if s[n] < n: reject
+        word := Approx(s[n], n)
+        if prefix(word, n-1) != previous_word: reject
+        for t := n,...,s[n]-1:
+            if Approx(t, n) == word: reject
+        previous_word := word
+    accept
+\end{lstlisting}
+No query to the limit $A$ is made by this checker. The approximation's
+convergence is used only in the proof that its infinite path is unique.
+
+The deferred hierarchy checker has a different structure:
+\begin{lstlisting}
+HierarchyNode(sigma):
+    L := length(sigma)
+    for each coordinate i < L:
+        (a,n) := unpair(i)
+        if a not in D:
+            if sigma[i] != 0: reject
+            continue
+        partial_oracle(b,m):
+            if b not in D or not (b <_L a): return 0
+            j := pair(b,m)
+            if j >= L: return UNKNOWN
+            return indicator(sigma[j] > 0)
+        if sigma[i] > 0:
+            t := sigma[i]-1
+            simulate machine n on n up to first halt or time t
+            if UNKNOWN is queried: defer this coordinate
+            else if first halt time is not exactly t: reject
+        else:
+            simulate machine n on n for L steps
+            if UNKNOWN is queried: defer this coordinate
+            else if a halt is witnessed: reject
+    accept
+\end{lstlisting}
+For a positive claim, ``defer'' is permitted only when the simulation
+actually reaches an unavailable query before its verification is complete.
+An already observed wrong halting time must be rejected. In both cases
+already established rejection remains valid under extension.
+
+\section{An audit checklist for the proofs and implementation (source 12's Appendix B)\srctag{12}}\label{lbh:cs:app:audit}
+
+The domain is always $\N$ in the finite polynomial theorem. The residuals
+are affine, and no hidden multiplication of two residual variables occurs
+inside $D$. Each selected rule is constrained by both its source and target
+state equations. Every inactive rule has canonical sign helpers. Empty
+stack tests use a sum of two natural codes, not a signed-integer shortcut.
+Tick counts include only transitions entering designated accepting states,
+not the initial state or arbitrary simulator states. Every finite progress
+test includes all earlier deadlines. The tree-to-clock conversion takes
+finite maxima of total simulations and never assumes a computable path.
+The unique-path recovery takes finite bounded levels and uses compactness
+only to prove that its search terminates. The jump checker defers unknown
+oracle queries and does not assume that lower rows occur earlier in the
+coordinate enumeration. The least-degree argument proves a nonuniform
+self-modulus and invokes the modulus theorem only for hyperarithmeticity.
+Finally, horizon-dependent unique finite witnesses are not promoted to a
+single-fold fixed-arity MRDP representation.
+
+
 \appendix
 \section{Reproduction and artifact manifest}\label{lbh:app:reproduction}
 
@@ -5623,5 +7422,63 @@ Recurrent reachability analysis in regular model checking.
 \url{https://doi.org/10.1007/978-3-540-89439-1_15}.
 Author-hosted text:
 \url{https://homepages.inf.ed.ac.uk/libkin/papers/lpar08b.pdf}.
+
+% ---- source 12 (batch 79, manuscript 04); keys prefixed cs- ----
+\bibitem{cs-repo-liveness}
+ProveIt research reports.
+\emph{Beyond Halting: Recurrence, Progress Deadlines and Diophantine
+Liveness}. Merged AI-assisted manuscript, source manuscripts dated
+September 30, 2026. Inspected at commit
+\code{e58b724c25bd34533b7a5834cfcbe873dfa01288}; especially question
+\code{lbh:q:spectra}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/e58b724c25bd34533b7a5834cfcbe873dfa01288/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/liveness-beyond-halting/article.tex}.
+\wtag{} This report: the text cited is Parts~I--V, which source~12 inspected at its pin.
+
+\bibitem{cs-repo-readme}
+V. Reshetnikov and contributors.
+\emph{ProveIt: Hilbert's tenth problem project README}.
+Repository documentation, inspected October 2, 2026.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/Computability/HilbertTenthProblem/README.md}.
+
+\bibitem{cs-gerdes}
+P. Gerdes.
+\emph{Harrington's Solution to McLaughlin's Conjecture and Non-uniform
+Self-moduli}. arXiv:1012.3427, initially posted 2010; inspected PDF dated
+August 23, 2021. Especially Section~4.\newline
+\url{https://arxiv.org/abs/1012.3427}.
+
+\bibitem{cs-monin-patey}
+B. Monin and L. Patey.
+\emph{$\Pi^0_1$ Encodability and Omniscient Reductions}.
+arXiv:1603.01086. Especially Corollary~2.2, attributing the modulus
+characterization to Solovay and to Groszek--Slaman.\newline
+\url{https://arxiv.org/abs/1603.01086}.
+DOI: \href{https://doi.org/10.1215/00294527-2018-0020}{10.1215/00294527-2018-0020}.
+
+\bibitem{cs-shoenfield}
+J. R. Shoenfield.
+On degrees of unsolvability.
+\emph{Annals of Mathematics}, second series, 69(3):644--653, 1959.\newline
+DOI: \href{https://doi.org/10.2307/1970028}{10.2307/1970028}.
+
+\bibitem{cs-friedberg}
+R. M. Friedberg.
+Two recursively enumerable sets of incomparable degrees of unsolvability
+(solution of Post's problem, 1944).
+\emph{Proceedings of the National Academy of Sciences of the USA},
+43(2):236--238, 1957.\newline
+DOI: \href{https://doi.org/10.1073/pnas.43.2.236}{10.1073/pnas.43.2.236}.
+The independent Muchnik result is the other source of the name
+Friedberg--Muchnik theorem.
+
+\bibitem{cs-matiyasevich}
+Yu. V. Matiyasevich.
+Enumerable sets are Diophantine.
+\emph{Soviet Mathematics Doklady}, 11:354--358, 1970.
+English translation of \emph{Doklady Akademii Nauk SSSR}, 191(2):279--282.
+The present article uses MRDP only for the comparison in
+\cref{lbh:cs:sec:quasi}, not for the explicit quadratic compiler.
+\wtag{} The same paper as \cite{matiyasevich1970}, printed separately with source~12's annotation.
+
 \end{thebibliography}
 \end{document}
