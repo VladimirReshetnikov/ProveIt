@@ -140,6 +140,17 @@ and both fresh replays pass. This preserves existential solutions over all
 retained coordinates; the full parent has nonunique terminal-field fibers.
 ExternalN and the universal74/86 bounds remain unchanged.
 
+The [Tree leaf-tag projection](Papers/research-wip/native-stream-queue/eager_tree_leaf_tag_projection.md)
+then removes one witness per row with the natural-integer guard s(s−1).
+It saves another2N−1 additions, reaching **955 operations and91 witnesses
+atN=8**, with exact degree72. The complete natural zero sets are in bijection
+with the terminal parent's, but this requires the stated integer domain.
+The finalizer mixes unsquared nonnegative guards with residual squares.
+The [mathematical challenge](Papers/research-wip/native-stream-queue/review_eager_tree_leaf_tag_math.md)
+and [full source review](Papers/research-wip/native-stream-queue/review_eager_tree_leaf_tag_projection.md)
+pass, as do all three fresh replays. ExternalN and the universal74/86 bounds
+are unchanged.
+
 The [coded suffix-membership interface](Papers/research-wip/native-stream-queue/eager_tree_beta_membership_interface.md)
 costs **16 operations**, or17 with a guard, and uses four natural witnesses.
 It supplies a local component for compressing Tree certificates, plus an

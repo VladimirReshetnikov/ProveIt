@@ -334,6 +334,44 @@
 > identities, checks18 copies and134 rejects including24 warm pins.
 > Public sizes remain1..8, while the proof describes the uniform externalN
 > template. Freeze both trios and all predecessors; universal74/86 unchanged.
+> The [Tree leaf-tag projection](eager_tree_leaf_tag_projection.md) removes
+> everyt0. Compute s=t1+t2+(t3+t4), reusing the paid active port, and last
+> s=t1+t2; use(s−1)*(z−S(y)) for the leaf residual. Replace each old one-hot
+> SQUARE by UNSQUARED s(s−1). The source hasN integer-nonnegative guards and
+> 7N ordinary residual squares,8N finalizer terms; do not call it plainSOS.
+> CompleteidentityFchild=Fparent[t0=1−s]+sum s(s−1). Each natural/integer guard
+> is nonnegative; at a natural child zero eachs=0or1, so all removed tags
+> restore naturally and all parent residuals vanish. Conversely every parent
+> natural zero projects. This is a full zero-tuple bijection with the
+> immediate terminal parent, not with every older projected ancestor.
+> Integer pullback is unconditional; NATURAL restoration requires a zero.
+> FullM=(3N²+81N−46)/2,A=(3N²+(127−2cleanup)N−76)/2,
+> cleanedtotal3N²+103N−61,witnesses12N−5. Save2N−1A, unchangedM.
+> N8=955=397M+558A/91w/degree72; N1=45=19M+26A/7w/degree6.
+> Certificate body addsN guard products; finalizer dropsN old tag squares,
+> so multiplication savings cancel. Exactdegree6 atN1, otherwise10N−8;
+> diagonal leaders remain17 or8*2^(10(N−1))+2^(8(N−1)).
+> Nonnegative rational examples have guard−1/4 cancel leafsquare1/4, so
+> natural zero equivalence must not be extended to nonnegative reals.
+> Nor is it a full signed-parent bijection: N1,t0=−1,t1=0,t2=2,a0,b1,y0,z1,
+> x=program12,argument0,output1 has parent0 but projected child2.
+> The [independent mathematical challenge](review_eager_tree_leaf_tag_math.md)
+> reconstructs all16 parent-cut/count/degree proofs,96 full corrections,
+> 72 genuine natural zero maps and both domain boundaries. Author and math
+> receipts pass fresh root replay. This math review does not audit the
+> maintained child/API; keep it distinct from the separate source review.
+> The [independent full source review](review_eager_tree_leaf_tag_projection.md)
+> proves all16 complete ring corrections without author-supplied cuts,
+> recounts7,700 live gates and verifies504 residuals,72 guards and16 exact
+> degrees. It checks44 genuine natural bijections,147 rejects including27
+> warm pins,18 copies and both domain counterexamples. All three fresh root
+> receipts pass. Preserve author, math and full-review trios and all parents.
+> Next separate source reduction to investigate: substitute root rowx/y/z
+> directly by ordinaryprogram/argument/output. A root-only read-only probe
+> of all16 terminal forms finds three private binding subtractions plus
+> three squares/three sum additions, suggesting9 operations and3 witnesses
+> can be removed uniformly. No maintained successor or reviewed new bound
+> for that projection is included here; retain it as the next concrete scout.
 > The [Tree beta-membership interface](eager_tree_beta_membership_interface.md)
 > emits a complete16=5M+11A local polynomial,17=6M+11A when guarded, with
 > FOUR natural witnesses independent ofN and exactdegree6/7. For supplied

@@ -154,6 +154,25 @@ normalized terminal-field-zero slice. The
 every source, degree, graph identity and public map; both fresh root receipts
 pass. The fixed-arity universal bounds stay74/86.
 
+The [Tree leaf-tag projection](eager_tree_leaf_tag_projection.md) removes
+one more witness per row. Withs the sum of the other tags, replace the
+one-hot square by the unsquared guard **s(s−1)**, which is nonnegative on
+natural integers. At a complete zero it forcess=0 or1, restoringt0=1−s
+naturally and giving a bijection with the terminal parent's natural zeros.
+Sharing the existing active-tag sum saves **2N−1 additions**, so the cleaned
+full count is **3N²+103N−61**, with **12N−5 witnesses**. AtN=8 this is
+**955=397M+558A,91 witnesses and degree72**; atN=1 it is45 at degree6.
+The finalizer containsN unsquared integer guards and7N residual squares.
+Its complete pullback differs from the parent by the sum of those guards;
+arbitrary natural tuples need not restore naturally, and a rational false
+zero rules out extending the zero-bijection claim to nonnegative reals.
+The [independent mathematical challenge](review_eager_tree_leaf_tag_math.md)
+reconstructs all16 schedules and confirms the natural-domain proof. The
+[independent full source review](review_eager_tree_leaf_tag_projection.md)
+also checks the maintained circuits, complete ring corrections, exact degrees
+and all public maps. All three receipts pass fresh root replay. The external
+row count and universal74/86 bounds remain unchanged.
+
 The [coded suffix-membership interface](eager_tree_beta_membership_interface.md)
 gives a complete **16-operation** local polynomial, or **17 with an active
 guard**, using four natural witnesses at exact degree6/7. It certifies a
