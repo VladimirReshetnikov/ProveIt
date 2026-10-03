@@ -1,6 +1,6 @@
 # Review of the ten-report intake at aebfa386e
 
-This is the continuing proof/source review of the [byte-pinned intake](incoming_substrate_intake_aebfa386e.md). Original archives remain unchanged. A completed row means full mathematical/source reading, author replay in isolation, and a portable independent review receipt; it does not mean proof-assistant verification or a universal-operation improvement.
+This is the continuing proof/source review of the [byte-pinned intake](incoming_substrate_intake_aebfa386e.md). Original archive bytes remain unchanged. The subsequent [six-report placement](review_placement_224ca41df.md) removed some ZIPs from the checkout while preserving them in Git; all 81 placed files match their archived sources and a portable helper restores runnable layouts. A completed row means full mathematical/source reading, author replay in isolation, and a portable independent review receipt; it does not mean proof-assistant verification or a universal-operation improvement.
 
 | Report | Review status | Result |
 |---|---|---|

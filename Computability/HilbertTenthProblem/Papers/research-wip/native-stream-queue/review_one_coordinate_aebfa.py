@@ -128,7 +128,7 @@ def run(root,patch,authors=False):
    for script in ('code/verify.py','code/export_example.py'):
     subprocess.run([sys.executable,script],cwd=dest,check=True,capture_output=True,text=True,timeout=300);check('original_author_command',True)
    saved={p.name:json.loads(p.read_text()) for p in sorted((root/'results').glob('*.json'))};actual={p.name:json.loads(p.read_text()) for p in sorted((dest/'results').glob('*.json'))}
-   check('all_saved_json_exactly_reproduced',same(saved,actual));out['author_json']=actual
+   check('all_saved_json_exactly_reproduced',same(saved,actual));out['author_json_sha256']={name:hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest() for name,value in actual.items()}
    for f in ('example_system.json','example_witness.json','example_quartic.json'):
     check('author_mathematical_export_bytes',(root/'results'/f).read_bytes()==(dest/'results'/f).read_bytes())
  # Direct descriptor exactness is separate from high-level compile_system correctness.
