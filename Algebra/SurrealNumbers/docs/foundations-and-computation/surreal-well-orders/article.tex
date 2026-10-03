@@ -133,6 +133,14 @@
 \newcommand{\card}[1]{\lvert #1\rvert}
 \newcommand{\code}[1]{\texttt{\small #1}}
 \newcommand{\merge}{\textsf{[merge]}}
+% ---- batch-81 macros (sources 13--18; Section 1.3.1 lists the renamings)
+\newcommand{\dens}{\operatorname{d}}
+\newcommand{\cell}{\operatorname{cell}}
+\newcommand{\weight}{\operatorname{w}}
+\newcommand{\ci}{\operatorname{ci}}
+\newcommand{\GapChar}{\operatorname{GapChar}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\WordsInc}{\mathcal T^{\mathrm{inc}}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
   breaklines=true,frame=single,rulecolor=\color{black!20},
   backgroundcolor=\color{black!2},showstringspaces=false}
@@ -435,6 +443,143 @@ Source~08's displayed equations (1)--(13) keep their numbers as
 \end{longtable}
 \endgroup
 
+% ---- hand chunk notation81 (batch 81, write 1 of 4)
+\subsubsection{Addendum of 3 October 2026: notation for sources 13--18}\label{swo:sub:notation81}
+
+\merge\ The six batch-81 sources (\cref{swo:sub:batch81}) reuse the symbols
+above with other meanings, and several reuse this report's macro names for
+other objects. The convention below is fixed before any of their material is
+printed; it applies to Parts~VI--IX and changes nothing in Parts~I--V. Every
+renaming is listed; the tempting false reading is printed where confusion is
+likely.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+Here & Meaning, and the batch-81 sources' symbols\\
+\midrule\endhead
+$\kappa$, $\mu$, $r$, $q$ &
+$\kappa$ is an infinite cardinal used as a birthday cutoff,
+$\mu=2^{<\kappa}=\card{\No_{<\kappa}}$, $r=\cf\kappa$ and $q=\cf\mu$, as in
+source~17. Renamed: source~18's $\nu$, $\tau$ (printed $r$, $q$; in source~18's
+general principle, $\nu$ stays the point character of an abstract order $D$);
+source~14's $\tau=\cf\kappa$ (printed $r$); source~15's $\delta=\cf\kappa$ in its
+saturation section (printed $r$). Source~16 writes $\kappa$ for the
+cardinality of a general alphabet and $\theta$ for the cutoff; in its text
+these are printed $\mu$ and $\kappa$. Sources~13--18's $X_\kappa$ and
+source~16's $X_\theta$ are printed $\No_{<\kappa}$. \emph{False reading:} $r$ is
+a cofinality, never a coding length (next row).\\[3pt]
+$X$, $\card X=\mu$ &
+A general alphabet: an infinite linearly ordered set, of cardinality $\mu$
+(source~18's convention; source~16's $\kappa$).\\[3pt]
+$\rho_\kappa$, $\B_\sigma\times_\lex m$ &
+Source~15's $r_\kappa$ ($\kappa\cdot\kappa$ at a singular strong-limit cutoff,
+$\mu$ otherwise; by \cref{swo:st:thm:transition} it is
+$\bl(\WO_\mu(\No_{<\kappa}))$), renamed to keep $r=\cf\kappa$; and source~15's
+$D_{\sigma,m}=\B_\sigma\times_{\lex}\{0,\ldots,m-1\}$, the binary cube with a
+finite chain of $m$ points as last coordinate, renamed because source~15's
+core is $\mathcal D$. Source~18's letter $\rho$ for a regular cardinal is
+printed $\theta$, as in source~17.\\[3pt]
+$\dens$, $\cell$, $\weight$ &
+Density, cellularity (a supremum, not necessarily attained) and weight of an
+order topology, as in the reals report; sources~15--18 write $d$, $c$, $w$.
+Cellularity is never written $c$. Source~15's $d(a,b)$ (a first-difference
+coordinate) and source~18's $d_*=\mu^{<\mu}$ keep their letters.\\[3pt]
+$\ci$, characters &
+$\ci$ is coinitiality. The left and right characters of a point $x$ are
+$\cf(L_{<x})$ and $\ci(L_{>x})$ (sources~17, 18; source~15 writes
+$\operatorname{cf}^-(f)$, $\operatorname{ci}^+(f)$). A point character, the
+global cofinality of the order, and the character of a gap are three
+different invariants (source~18's warning).\\[3pt]
+$\GapChar(L)$, $\Reg$ &
+The set of characters $(\cf A,\ci B)$ of the gaps $(A,B)$ of $L$, a gap having
+nonempty sides with no endpoints (principal cuts and the external ends are
+excluded). Source~17's $\Sigma(L)$ and source~18's $\operatorname{GapSpec}(L)$
+are printed with the reals report's symbol $\GapChar$; the report
+\path{surreal-fields-across-universes} writes $\operatorname{GapSpec}$. $\Reg$
+is the class of infinite regular cardinals (source~17's
+$\operatorname{Reg}_\infty$; the reals report writes $\Reg(<\kappa)$ for those
+below $\kappa$).\\[3pt]
+$\eta_\nu$ &
+Source~17: for regular $\nu$, every cut $A<B$ with $\card A,\card B<\nu$ is
+filled; sources~15 and~18: every cut with $\card A+\card B<\nu$ (resp.\
+$\card{A\cup B}<\nu$) is filled, for any infinite cardinal $\nu$. Empty sides
+are allowed throughout. For regular $\nu$ the three definitions agree with
+this report's $\eta_\kappa$ (\cref{swo:sec:notation}), and every threshold
+statement printed concerns the regular cardinal $r$.\\[3pt]
+$P$, $[p]$, $C_p$; straddling &
+$P=\WO_\mu(\No_{<\kappa})$ is the minimal slice (sources~17, 18; source~15
+writes $L$). For an injective prefix $p$, $[p]$ (source~17) and $C_p$
+(sources~16, 18, and source~11 in Part~IV) are the same cylinder. A cylinder
+that meets both sides of a cut \emph{straddles} it; this is the word of
+sources~16, 17 and~18 and is used in all batch-81 Parts. Sources~13 and~14 say
+that a prefix \emph{crosses} a cut, source~15 that it is \emph{persistent};
+these words are explained where printed.\\[3pt]
+$\WordsAll$, $\Words$, $\WordsInc$ &
+All set-length words, injective set-length words, numerically increasing
+set-length words. Source~16's $\mathcal T$, $\mathcal T^{\mathrm{inj}}$,
+$\mathcal T^{\mathrm{inc}}$, whose macro \verb|\Words| names \emph{all} words
+while this report's \verb|\Words| names the injective ones; source~13's
+$\mathcal T$, $\mathcal I$ agree with this report. Source~18's centered classes $\mathcal C$, $\mathcal C_{\mathrm{inj}}$,
+$\mathcal C_{\mathrm{inc}}$ are printed $\WordsAll_c$, $\Words_c$,
+$\WordsInc_c$ (its $\mathcal C$ would clash with $\mathcal C_b$). Source~16's
+termination types $T_{\min}$, $T_\kappa$ are printed $\mathbf T_{\min}$,
+$\mathbf T_\kappa$. \emph{False reading:} source~16's $\mathcal T$ is not the
+injective class.\\[3pt]
+$\Hsl(\No)$, $\Hall(\No)$ &
+As in \cref{swo:sec:notation}. Renamed: $\mathfrak E$ (sources~13, 14, 16, 17)
+for set-like global orders (source~15 already writes
+$\mathfrak W_{\mathrm{sl}}$); source~14's $\mathfrak W$ (macro \verb|\Hwell|),
+source~16's $\mathfrak H$ and source~17's $\mathfrak W$ (macro \verb|\HWO|) for
+all class well-orders (sources~13 and~15 already write
+$\mathfrak W_{\mathrm{all}}$). Source~18's macros \verb|\Hsl|, \verb|\Hall|
+print script $\mathscr H_{\mathrm{sl}}$, $\mathscr H_{\mathrm{all}}$ there and
+$\mathfrak W_{\mathrm{sl}}$, $\mathfrak W_{\mathrm{all}}$ here.\\[3pt]
+$\Jinj$ &
+Class injections $\Ord\to\No$, as source~11's $\Jinj$ (sources~13, 14, 17 write
+$\mathfrak J$ with the macro \verb|\J|; source~16 writes $\mathfrak I$ with
+the macro \verb|\I|; source~15's $\mathfrak I$). \emph{False reading:}
+source~16's \verb|\I| is not this report's $\I=\mathcal I$, the class of
+injective set-length words.\\[3pt]
+$\Pbd(b)$, $\Psupp(b)$ &
+The core, as in \cref{swo:sec:notation}, in the source's own coding: normalized
+permutations $\Pbd(b)$ for sources~15 ($\mathcal D$) and~16 ($\mathcal P_b$);
+fixed-point-free support codes $\Psupp(b)$ for sources~13 ($\mathcal D$), 14
+($\mathcal P_b$), 17 ($\mathcal C_b$) and~18 ($\mathcal C_b$, macro
+\verb|\Pbd|). \emph{False reading:} source~18's \verb|\Pbd| is the support
+coding, not this report's $\Pbd(e_0)$; the two codings have the same
+evaluations.\\[3pt]
+$\mathcal P_{<\kappa}(b)$ &
+Source~14's support-cardinality layer: codes whose support has cardinality
+less than $\kappa$. \emph{False reading:} it is not $\Pbd$, whose subscript
+means bounded (set-sized) support; source~14 itself warns that a cardinality
+filtration and an ordinal-height filtration must not share the word
+``bounded''.\\[3pt]
+$\equi$, $<_\lex$ &
+Equimorphism is $\equi$ for all six sources (source~16's
+$\simeq_{\mathrm{emb}}$; source~18's macro \verb|\equim| prints
+$\rightleftarrows$ there and $\simeq_e$ here). Source~14's macro \verb|\lex|
+prints the relation $<_{\mathrm{lex}}$; this report's \verb|\lex| is the
+subscript $\mathrm{lex}$, so source~14's relation is printed $<_\lex$.
+Source~18's bold $\mathbf B_\gamma$ is printed $\B_\gamma$.\\[3pt]
+Cuts of the core &
+A normalized class cut $(L,U)$ has a lower side $L$ without greatest element;
+the cut of an injective branch $F$ is written $L_F$ (source~16's $L_F$,
+source~17's $L_f$; source~14's $D_F$, $D^\pm_p$, $D_{p,H}$ and source~13's
+$(L,U)$ are explained where printed).\\[3pt]
+(S$NN$.$n$), labels &
+Displayed equations of source~$NN$ keep their numbers as (S$NN$.$n$), as for
+source~08. Labels: \code{swo:fs:} (13, replacing its \code{swf:}),
+\code{swo:tc:} (14), \code{swo:cb:} (15, keeping its internal \code{cce:} and
+\code{new:}, since dropping them would merge two of its labels),
+\code{swo:ds:} (16), \code{swo:gs:} (17), \code{swo:sh:} (18, keeping its
+internal \code{wv:}); unlabelled numbered statements get
+\code{swo:}\emph{sub}\code{:n}\emph{number}; labels written for the merge in
+Part~VI begin \code{swo:vi:}.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
 % ---- hand chunk claims
 \subsection{What the report claims, and what it does not}\label{swo:sec:claims}
 
@@ -669,6 +814,98 @@ It stays open for $n>0$, for longer strata, and for other alphabets
 weak global choice principle} \cite{HamkinsUnivChoice}: not settled here, as
 source~12 says after its \cref{swo:st:n14.5}.
 \end{enumerate}
+
+
+\smallskip
+\merge\ Dated note, 3 October 2026 (batch~81). Items~(c) and~(d) are completed
+and item~(e) is extended by Part~VI: the cut spectrum at singular cutoffs, the
+density, cellularity and cut cofinalities at regular cutoffs, and the longer
+strata $\mu\cdot\gamma+n$ of $\No_{<\kappa}$ (\cref{swo:vi:sec:status}).
+
+% ---- hand chunk batch81 (batch 81, write 1 of 4; later writes extend this subsection)
+\subsection{The batch-81 addition: six further manuscripts}\label{swo:sub:batch81}
+
+\merge\ (3 October 2026.) Six manuscripts of batch~81, all dated 3 October
+2026 and all continuing this report, are merged into it as one addition,
+sources~13--18. Sources~13--17 arrived in commit \code{9a4ce14e9} and were
+placed in \code{f0cd7032d} (batch~81L); source~18 arrived in \code{bd599ac06}
+and was placed in \code{c4720e1b2} (batch~81L2). Their local numbers continue
+this report's sequence; the batch-81 manuscript number is in the second
+column.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.05\textwidth}>{\raggedright\arraybackslash}p{0.04\textwidth}>{\raggedright\arraybackslash}p{0.45\textwidth}>{\raggedright\arraybackslash}p{0.12\textwidth}>{\raggedright\arraybackslash}p{0.18\textwidth}@{}}
+\toprule
+Src. & B81 & Manuscript (archive), pages & Pin & Labels, files\\
+\midrule\endhead
+13 & 01 & \emph{Lexicographic Orders of Surreal Well-Orderings: Further
+Structure}; 33~pp.\ (\path{Surreal_Well_Orders_Further_Study.zip}) &
+\code{0ecd158fd} & \code{swo:fs:}; \code{13-products-*}\\[3pt]
+14 & 02 & \emph{Lexicographic Well-Orders of the Surreals II: cut
+classification, support thresholds, and class-model absoluteness}; 33~pp.\
+(\path{lexicographic_surreal_well_orders_II.zip}) & \code{0ecd158fd} &
+\code{swo:tc:}; \code{14-trichotomy-*}\\[3pt]
+15 & 03 & \emph{Lexicographic Orders of Surreal Well-Orders: interpretations,
+canonical blocks, represented cuts, and fixed-type spectra}; 37~pp.\
+(\path{surreal_lexicographic_orders.zip}) & \code{0ecd158fd} &
+\code{swo:cb:}; \code{15-blocks-*}\\[3pt]
+16 & 04 & \emph{Lexicographic Orders of Surreal Well-Orders: Cuts, Canonical
+Blocks, and the Limits of Set-Sized Coding}; 33~pp.\
+(\path{surreal_well_orders_further.zip}) & \code{491ed8411} &
+\code{swo:ds:}; \code{16-strata-*}\\[3pt]
+17 & 05 & \emph{Lexicographic Well-Orders of the Surreal Numbers, II: exact cut
+spectra, branch recognition, optimal support reserves, and
+automorphism-extension obstructions}; 29~pp.\
+(\path{surreal_well_orders_further_study (1).zip}) & \code{0ecd158fd} &
+\code{swo:gs:}; \code{17-gaps-*}\\[3pt]
+18 & 06 & \emph{Lexicographic Well-Orders of the Surreal Numbers: Cuts,
+canonical class blocks, and changes of interpretation}; 53~pp.\
+(\path{surreal_lexicographic_orders_further_study.zip}) &
+\code{83befe707} & \code{swo:sh:}; \code{18-shuffle-*}\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The six are independent texts, not editions of one another. Every pair shares
+0.6--1.4\,\% of word 8-grams (preamble, this report's title and address,
+bibliography), no member file is shared, and the theorem sets differ.
+Sources~14 and~17 share only the inner directory name
+\code{surreal\_well\_orders\_II} and a ``II'' in the title; source~18's
+archive name extends source~15's, but its pin, structure and results differ.
+None supersedes another; all six are merged (union). Sources~13--17 read this
+report at commit \code{0be9b9134}, before the corrections of \code{0f52c0dca};
+source~18 read it at \code{83befe707}, after them, and before sources~13--17
+arrived, so it never saw them.
+
+They overlap heavily with each other and with this report. The
+represented-cut theorem that answers source~11's \cref{swo:n16.1} is proved
+in all six by one argument; all six re-prove the core layer of Part~IV
+(fresh separators, completion, interpolation, the core isomorphic to $\No$,
+the diagonal theorem, direct comparison); and the set-sized layer re-proves
+the reals report. What is new is a second wave of results on questions of
+this report: the topology, cut spectra and coding lengths of the set-sized
+strata at birthday cutoffs; the termination classification of word orders;
+the trichotomy, characters, automorphism orbits, absoluteness and support
+thresholds for cuts of the set-coded core; the canonical block decomposition
+of class well-orders with explicit condensation histories; product
+(non)absorption; a $\Sigma^1_1$ comprehension bound; and the countable models.
+
+The addition is printed by theme, not by source, because the sources overlap:
+Part~VI (\cref{swo:part:strata}) prints the set-sized strata. The rules of
+\cref{swo:sub:printing} apply unchanged: each shared result is printed once,
+with every source that proves it named; the other versions are numbered
+notes, genuinely different proofs are marked routes, and every label of every
+source survives with the prefixes of \cref{swo:sub:notation81}. Re-proofs of
+results of this report or of other repository reports are printed as notes
+with pointers, never with a novelty claim.
+
+\emph{Status.} Sources~13, 14, 15 and~17 call themselves AI-assisted and
+unrefereed; source~18's validation ``consists of conventional proofs and
+independent AI-assisted proof review''; source~16 says its checks are ``not
+external peer review''. None claims historical priority, peer review or a
+machine-checked formalization, and none is formalized here. The status files
+of sources~13, 14, 16 and~17 are shipped in this directory under their
+prefixed names.
 
 % ---- source 11, lines 127-189
 \section{The objects being studied}\label{swo:sec:objects}
@@ -2931,6 +3168,14 @@ for the minimal slice. The dichotomy computes binary coding length only;
 source~11's question on the exact cut spectrum and point characters of
 $\WO_\lambda(\No_{<\kappa})$ without $2^{<\kappa}=\kappa$ (\cref{swo:n16.7})
 stays open.
+
+\smallskip\noindent\merge\ Dated note, 3 October 2026 (batch~81): that question
+is now answered by sources~17, 15 and~18 in Part~VI: point characters
+$(q,q)$ with $q=\cf\mu$, the exact gap spectrum and its multiplicities, and
+the saturation threshold $\eta_{\cf\kappa}$ of $\WO_\mu(\No_{<\kappa})$, for
+every infinite cardinal $\kappa$ (\cref{swo:vi:sec:minimal,swo:vi:sec:status}).
+Source~15 extends the dichotomy itself to the strata $\mu\cdot\gamma+n$
+(\cref{swo:cb:new:thm:block-types}).
 
 % ---- hand chunk part2
 \part{Set-length words}\label{swo:part:words}
@@ -7019,6 +7264,2678 @@ successor-cardinal obstruction, then bounded-support prefix completion and
 small-family interpolation, reusing the existing small-cut interface. This
 is a proposal recorded for the collection's formalization work; no such
 module exists.
+
+% ---- hand chunk part6 (batch 81, write 1 of 4)
+\part{Set-sized strata: topology, cut spectra and block types}\label{swo:part:strata}
+
+\merge\ (3 October 2026.) This Part opens the batch-81 addition of six
+further manuscripts, sources~13--18 (\cref{swo:sub:batch81}); its notation is
+fixed in \cref{swo:sub:notation81}. It prints everything the six sources prove
+about set-sized enumeration orders: the density and cellularity of every
+stratum $\WO_\alpha(X)$ of every infinite linear alphabet
+(\cref{swo:ds:sec:topology}), conditional incompleteness and global
+characters (\cref{swo:ds:sec:gaps}), the cut spectrum of the alphabet
+$\No_{<\kappa}$ (\cref{swo:gs:sec:alphabet}), the characters, fusion theorem,
+exact gap spectrum and gap multiplicities of the minimal slice
+$\WO_\mu(\No_{<\kappa})$ (\cref{swo:vi:sec:minimal}), the coding lengths,
+cube spectra and density of the longer strata $\WO_{\mu\cdot\gamma+n}(\No_{<\kappa})$
+(\cref{swo:cb:new:sec:block-types}), and the six sources' set-sized baselines
+and warnings (\cref{swo:vi:sec:baselines}). \Cref{swo:vi:sec:status} records
+which questions of this report and of the reals report the Part answers.
+
+The bases are chosen by generality, as in Parts~I--V: source~16 for density,
+cellularity and incompleteness (every infinite alphabet, every stratum),
+source~17 for the alphabet and the minimal slice (every infinite cardinal
+cutoff, with no hypothesis on $2^{<\kappa}$), source~15 for the longer strata
+(the only source treating them). Source~18, written before sources~13--17 had
+arrived and without knowledge of them, proves most of the minimal-slice
+results a third time; its density, characters and interpolation proofs differ
+in detail and are printed as routes, its gap-spectrum proof repeats
+source~17's and is recorded in notes, and its general permutation principle
+and exact gap multiplicities are new and printed in full. The whole Part is
+set theory in $\ZFC$; no class is involved.
+
+Throughout the Part, $\kappa$ is an infinite cardinal used as a birthday
+cutoff, $\mu=2^{<\kappa}=\card{\No_{<\kappa}}$, $r=\cf\kappa$ and
+$q=\cf\mu$; a general alphabet $X$ is an infinite linearly ordered set of
+cardinality $\mu$. Source~16 wrote $\kappa$ for $\card X$ and $\theta$ for the
+cutoff, and source~18 wrote $\nu$, $\tau$ for $r$, $q$; their text is printed
+in the convention above (\cref{swo:sub:notation81}).
+
+% ---- source 16 (batch-81 manuscript 04), lines 470-596
+\section{Density and cellularity at every fixed type (source 16)}\label{swo:ds:sec:topology}
+
+\merge\ Source~16's Section~5, printed whole. Its $\kappa$ (the cardinality
+of $X$) is printed $\mu$, its cutoff $\theta$ is printed $\kappa$, and its
+$d$, $c$ are printed $\dens$, $\cell$ (\cref{swo:sub:notation81}); its
+equations keep their numbers as (S16.$n$). Source~18 proves the same theorem
+independently, with a different lemma and a different lower-bound family
+(\cref{swo:sh:sec:new-bounded-invariants}); the reals report proves the case
+$X=\mathbb R$ (\cref{swo:vi:note:lwo-density}).
+
+% ---- source 16 resumes (Section 5)
+
+For a set linear order $L$ with its \emph{order topology}, let $\dens(L)$ be the
+least cardinality of a dense subset. Let $\cell(L)$ be the supremum of the
+cardinalities of families of pairwise disjoint nonempty open sets.
+Always $\cell(L)\le \dens(L)\le|L|$. A prefix cylinder is the collection of
+enumerations extending one fixed injective prefix. Cylinders are convex,
+but need not themselves be open. Our lower bounds use actual open
+intervals lying inside cylinders; our upper bounds use a family that meets
+every nonempty open set.
+
+\begin{lemma}[No jump between distinct short-prefix branches]\label{swo:ds:lem:nojump}
+If $e<f$ in $\WO_\alpha(X)$ first differ at a coordinate
+$\delta<\mu$, then they are not adjacent.
+\end{lemma}
+\begin{proof}
+Write $p=e\res\delta=f\res\delta$ and $a=e(\delta)<b=f(\delta)$.
+If there is no point between $e$ and $f$, then $e$ must be the maximum of
+its $p\cat a$ cylinder, and $f$ the minimum of its $p\cat b$ cylinder.
+Any ascent in the remaining suffix of $e$ can be swapped to produce a
+larger member of its cylinder. Thus that suffix is numerically strictly
+decreasing. Similarly, the suffix of $f$ must be strictly increasing.
+Their common remaining label set is
+$X\setminus(\ran(p)\cup\{a,b\})$, of cardinality $\mu$. Its numerical
+order would be both a well-order and a reverse well-order. An infinite
+linear order cannot have both properties. This contradiction proves the
+claim.
+\end{proof}
+
+\begin{theorem}[Exact density and cellularity]\label{swo:ds:thm:density}
+Let $|X|=\mu$ be infinite and $|\alpha|=\mu$. Then
+\[
+ \dens(\WO_\alpha(X))=\cell(\WO_\alpha(X))=
+ \begin{cases}
+ \mu^{<\mu},&\alpha=\mu,\ \mu+1,\text{ or }\mu+2,\\
+ 2^\mu,&\text{all other }\alpha.
+ \end{cases}
+\tag{S16.3}\label{swo:ds:eq:density}
+\]
+Moreover $\dens(\WO(X))=\cell(\WO(X))=2^\mu$.
+No regularity assumption is needed.
+\end{theorem}
+\begin{proof}
+For any $\delta<\mu$ there are $\mu^{|\delta|}$ injective prefixes
+of length $\delta$, and each extends to an admissible enumeration. One
+way to see the lower count is to choose, for each coordinate, its label in
+a separate $\mu$-sized cell of a partition of $X$; the choices are
+automatically injective. Every such cylinder contains at least three
+points and hence a nonempty ambient open interval. Distinct cylinders at
+one level are disjoint and convex. Consequently
+\[
+ \cell(\WO_\alpha(X))\ge
+ \sup_{\delta<\mu}\mu^{|\delta|}=\mu^{<\mu}.
+\]
+
+Suppose $\alpha=\mu+n$, $n\le2$. Group enumerations by their common
+prefix of length $\mu$. A nonempty group has exactly $n!$ points,
+coming from the permutations of the omitted $n$ labels. Thus every group
+has at most two points. By \Cref{swo:ds:lem:nojump}, distinct groups have
+dense quotient order: if two groups were consecutive, the last point of
+the first and first point of the second would be adjacent and differ
+before $\mu$.
+
+It follows that every nonempty open set contains a cylinder specified
+before $\mu$, except possibly a singleton consisting of an isolated
+global endpoint. Indeed, select a group strictly between the relevant
+boundary groups, choose a member of it, and bound its first disagreement
+with the boundaries by a coordinate below $\mu$. The resulting prefix
+cylinder lies inside the open set. Select one completion for each
+injective prefix of length less than $\mu$ and add any isolated global
+endpoints. This gives a dense set of size at most
+\[
+ \sum_{\delta<\mu}\mu^{|\delta|}=\mu^{<\mu}.
+\]
+Together with the lower bound this proves the first line of
+\eqref{swo:ds:eq:density}, including singular $\mu$.
+
+If $\alpha=\mu+n$ for finite $n\ge3$, fix $F\subseteq X$ of size $n$.
+There are $2^\mu$ bijections $p:\mu\to X\setminus F$. The
+completion cylinder for each is a finite convex chain of $n!\ge6$
+points. An interior point has both immediate neighbors in that chain;
+the interval between those neighbors is its singleton, an open set in
+the entire order. Different prefixes give $2^\mu$ disjoint open
+singletons.
+
+In every remaining case $\alpha\ge\mu+\omega$. Let $\tau$ be the
+order type of the interval $[\mu,\alpha)$, so $\alpha=\mu+\tau$
+and $|\tau|$ is infinite. Choose $Y\subseteq X$ with
+$|Y|=|\tau|$ and $|X\setminus Y|=\mu$. Each of the $2^\mu$
+bijections $p:\mu\to X\setminus Y$ gives a convex cylinder of
+completions with residual order $\WO_\tau(Y)$. Every such cylinder has
+at least three points, so supplies a nonempty ambient open interval.
+These intervals are pairwise disjoint. The cardinal upper bound
+$|\WO_\alpha(X)|\le2^\mu$ finishes the proof for all strata.
+
+For $\WO(X)$ use the same construction with a fixed residual set of
+three labels. The resulting six-point cylinders are convex even when all
+enumeration lengths are admitted. Thus $\cell(\WO(X))\ge2^\mu$, and the
+cardinality bound gives equality throughout.
+\end{proof}
+
+\begin{remark}[Why two terminal labels differ from three]\label{swo:ds:n5.3}
+There can be $2^\mu$ adjacent pairs in $\WO_{\mu+2}(X)$ while its
+density is only $\mu^{<\mu}$. An adjacent pair does not contain an
+open interval. Three or more terminal labels give a permutation block
+with an interior point, and that point is isolated. This is why the
+topological transition occurs at $\mu+3$, rather than $\mu+1$ or
+$\mu+2$. If $\mu^{<\mu}=2^\mu$, the two displayed values
+coincide; the structural distinction still holds.
+\end{remark}
+
+\begin{corollary}[Birthday-stage topology]\label{swo:ds:cor:birthdaytopology}
+For every infinite cardinal $\kappa$, put $\mu=2^{<\kappa}$.
+Formula~\eqref{swo:ds:eq:density} applies to $\No_{<\kappa}$, whose
+cardinality is $\mu$.
+If $\kappa$ is regular and $2^{<\kappa}=\kappa$, the first three strata
+have density and cellularity $\kappa$, whereas all later strata and the
+full order have density and cellularity $2^\kappa$.
+\end{corollary}
+\begin{proof}
+Only the last simplification needs comment. Regularity and
+$2^{<\kappa}=\kappa$ imply $\kappa^{<\kappa}=\kappa$: for
+$\lambda<\kappa$, every function $\lambda\to\kappa$ has bounded range,
+and for $\rho<\kappa$ one has
+$\rho^\lambda\le2^{\rho\cdot\lambda}\le\kappa$. Taking the union of
+$\kappa$ bounds proves the assertion.
+\end{proof}
+
+\begin{note}[\merge; the reals report's case]\label{swo:vi:note:lwo-density}
+For $X=\mathbb R$, the reals report proves
+$\dens(\WO_\alpha)=\cell(\WO_\alpha)=2^{<\mathfrak c}$ for
+$\alpha\in\{\mathfrak c,\mathfrak c+1,\mathfrak c+2\}$ and $2^{\mathfrak c}$ for
+$\mathfrak c+3\le\alpha<\mathfrak c^+$ (\code{lwo:prop:all-strata-density}), with
+the adjacent pairs at $\mathfrak c+2$ and the isolated points from
+$\mathfrak c+3$ on (\code{lwo:prop:finite-topology}) and the minimal slice in
+\code{lwo:prop:fixed-topology}. Since $\mathfrak c^\lambda=2^\lambda$ for
+infinite $\lambda<\mathfrak c$, one has $\mathfrak c^{<\mathfrak c}=2^{<\mathfrak c}$,
+and \cref{swo:ds:thm:density} with $X=\mathbb R$ is exactly that result, by
+the same two mechanisms (short-prefix cylinders, and the finite terminal
+permutation block). Source~16 does not cite these statements; it cites the
+reals report only for the set baseline (\cref{swo:ds:thm:setspectrum}). New in
+source~16 is the generality: every infinite linear alphabet, of any
+cardinality including singular ones and $\aleph_0$, with no density or
+saturation assumption on $X$.
+\end{note}
+
+\begin{note}[\merge; the birthday-cutoff instances, and why three formulas agree]\label{swo:vi:note:instances}
+For $X=\No_{<\kappa}$, \cref{swo:ds:cor:birthdaytopology} gives
+$\dens=\cell=\mu^{<\mu}$ on $\WO_\mu$, $\WO_{\mu+1}$, $\WO_{\mu+2}$ and
+$2^\mu$ on every longer stratum. Three other sources compute instances:
+source~17 for the minimal slice ($\dens=\weight=\cell=\mu^{<\mu}$,
+\cref{swo:gs:thm:invariants}), source~18 for every stratum of every alphabet
+(\cref{swo:sh:thm:new-minimal-density,swo:sh:thm:new-all-types-density},
+printed next), and source~15 for the block types $\WO_{\mu\cdot\gamma+n}$, with
+the value $2^{<\mu}$ when $\rho_\kappa=\mu$, $\gamma=1$ and $n\le2$, and $2^\mu$
+otherwise (\cref{swo:cb:new:cor:block-density}). The formulas agree. If
+$\mu>\kappa$ then $\mu\le2^\kappa$, so for $\lambda<\mu$ one has
+$\mu^\lambda\le2^{\kappa\cdot\lambda}=2^{\max(\kappa,\lambda)}\le2^{<\mu}$,
+whence $\mu^{<\mu}=2^{<\mu}$. If $\mu=\kappa$ is regular then $2^{<\kappa}=\kappa$
+and $\kappa^{<\kappa}=\kappa$ (proof of \cref{swo:ds:cor:birthdaytopology}). If
+$\mu=\kappa$ is singular, $\kappa$ is a strong limit, $\rho_\kappa=\kappa\cdot\kappa$
+falls under source~15's second case, and
+$\kappa^{<\kappa}=2^\kappa$ (\cref{swo:sh:cor:new-regular-singular-invariants}).
+In every case the four sources give the same cardinal.
+\end{note}
+
+% ---- source 18 (batch-81 manuscript 06), lines 493-664
+\subsection{Source 18's route: exact cardinal invariants of bounded enumeration orders}
+\label{swo:sh:sec:new-bounded-invariants}
+
+\merge\ Source~18's Section~4 up to its residual-alphabet subsection,
+printed whole as a second route to \cref{swo:ds:thm:density}. Source~18
+presents these theorems as advances; within batch~81 source~16 proves them too,
+and source~18 could not know it (its pin precedes the arrival of
+sources~13--17). Source~18's status table says that its proof review
+``corrected the arbitrary-alphabet density construction to include possible
+isolated global endpoints''; source~16's proof treats the same endpoints
+(``except possibly a singleton consisting of an isolated global endpoint'').
+Its remaining subsections are printed in \cref{swo:vi:sub:sh-chars}, its
+residual-alphabet lemmas in \cref{swo:sh:lem:new-residual-alphabet,swo:sh:lem:new-cardinal-cofinalities}.
+
+% ---- source 18 resumes (Section 4)
+
+Throughout this section, $X$ is an infinite linearly ordered set of
+cardinality $\mu$, identified with its initial ordinal when it is used as
+an index.  If $|\alpha|=\mu$, write
+\[
+ \WO_\alpha(X)=\{e:\alpha\longrightarrow X:e\text{ is bijective}\},
+\]
+ordered by the first unequal coordinate.  A proper-prefix comparison
+never occurs between two exhaustive enumerations of the same carrier.
+We use $\dens(L)$ for the least cardinality of a topologically dense subset
+of the order topology, and $\cell(L)$ for the supremum of the cardinalities
+of pairwise disjoint families of nonempty open sets.  The lower-bound
+families constructed below attain the asserted cellularities, so no
+convention concerning whether the supremum is attained affects the
+answers.  All assertions in this section are theorems of ZFC.
+
+\subsubsection{Prefix cylinders and the minimal enumeration type}
+
+For an injective prefix $p:\delta\to X$, $\delta\leq\alpha$, its cylinder
+is
+\[
+ C_p=\{e\in\WO_\alpha(X):e\restriction\delta=p\}.
+\]
+Every cylinder is convex.  If $\delta<\mu$, the cylinder is nonempty:
+both the unused alphabet and the remaining index set have cardinality
+$\mu$, so a bijection between them completes the prefix.  Such a
+cylinder has at least three elements, obtained, for example, by
+permuting three unused labels in a fixed completion.  It therefore
+contains a nonempty open interval of the ambient enumeration order.
+The entire cylinder need not be open; the proof uses only the open
+interval it contains.
+
+\begin{lemma}[The dense order of cofinite prefixes]
+\label{swo:sh:lem:new-cofinite-prefixes}
+For $n<\omega$, let
+\[
+ Q_n(X)=\{p:\mu\to X:p\text{ is injective and }
+                       |X\setminus\operatorname{ran}p|=n\}.
+\]
+With first-difference comparison, $Q_n(X)$ is a dense linear order.
+Consequently $\WO_\mu(X)=Q_0(X)$ is dense.
+\end{lemma}
+
+\begin{proof}
+Take $p<p'$ and let $\delta<\mu$ be their first disagreement.  If there
+are $\delta<\beta<\gamma<\mu$ with $p(\beta)<p(\gamma)$, interchanging
+these two entries gives $p<s<p'$, with $s\in Q_n(X)$.  Similarly, a
+descent $p'(\beta)>p'(\gamma)$ after $\delta$ gives $p<s<p'$ by an
+interchange in $p'$.  If neither operation is available, the tail of
+$p$ after $\delta$ is strictly decreasing and the tail of $p'$ after
+$\delta$ is strictly increasing.  Their ranges have an infinite common
+subset: they omit from $X$ only their common prefix, of size less than
+$\mu$, two first-disagreement labels, and two finite sets of omitted
+labels.  On that common subset the numerical order would be both a
+well-order and a reverse well-order.  This is impossible for an
+infinite set.  Indeed, an infinite well-order contains an initial
+suborder of type $\omega$, which has no largest element.  Thus one of
+the interchanges is available.
+\end{proof}
+
+\begin{theorem}[Exact density and cellularity at the minimal type]
+\label{swo:sh:thm:new-minimal-density}
+For every infinite linearly ordered alphabet $X$ of cardinality $\mu$,
+\[
+ \boxed{\quad \dens(\WO_\mu(X))
+                 =\cell(\WO_\mu(X))=\mu^{<\mu}.\quad}
+\]
+No regularity assumption on $\mu$, and no density assumption on $X$,
+is needed.
+\end{theorem}
+
+\begin{proof}
+There are $\mu^{<\mu}$ injective prefixes of length less than $\mu$.
+For the upper bound, choose one completion for each such prefix.  Given
+$e<f$, density supplies $g$ strictly between them.  Choose
+$\delta<\mu$ larger than both first-disagreement coordinates of
+$(e,g)$ and $(g,f)$.  Then
+$C_{g\restriction\delta}\subseteq(e,f)$, so the selected completions
+are dense.  Since a dense linear order with at least two points has no
+isolated endpoint, meeting all nonempty open intervals also gives
+topological density.  This proves $d\leq\mu^{<\mu}$, and a dense set
+meets every member of a disjoint nonempty open family, giving $c\leq d$.
+
+For the lower bound, choose distinct labels $a_\delta\in X$ for
+$\delta<\mu$.  For each $\delta$, take every injective prefix of
+length $1+\delta$ whose first label is $a_\delta$.  There are
+$\mu^{|\delta|}$ such prefixes.  To justify this count for infinite
+$\delta$, functions $\delta\to\mu$ can be encoded as injective maps
+$\delta\to\delta\times\mu\cong\mu$ by recording the coordinate
+alongside its value; the reverse inequality is immediate.  The finite
+cases are equally direct.  Prefixes in different chosen levels have
+different first labels, while two distinct prefixes within a level
+have equal lengths and disagree.  Their cylinders are therefore
+pairwise disjoint.  Choose one nonempty open interval in each cylinder.
+The resulting disjoint family has cardinality
+\[
+ \sum_{\delta<\mu}\mu^{|\delta|}=\mu^{<\mu},
+\]
+because $1+\delta<\mu$ for every $\delta<\mu$.  This proves the lower
+bound and also proves that the stated cellularity is attained.
+\end{proof}
+
+\subsubsection{A sharp transition at the third terminal coordinate}
+
+\begin{theorem}[Density and cellularity for every fixed type]
+\label{swo:sh:thm:new-all-types-density}
+If $|X|=\mu$ is infinite and $\mu\leq\alpha<\mu^+$, then
+\[
+ \boxed{
+ \dens(\WO_\alpha(X))=\cell(\WO_\alpha(X))=
+ \begin{cases}
+  \mu^{<\mu},&\alpha\in\{\mu,\mu+1,\mu+2\},\\[2pt]
+  2^\mu,&\mu+3\leq\alpha<\mu^+.
+ \end{cases}}
+\]
+These formulas are valid for arbitrary numerical orders on $X$.
+\end{theorem}
+
+\begin{proof}
+First take $\alpha=\mu+n$ with $n\leq2$.  Restriction to the first
+$\mu$ coordinates exhibits $\WO_{\mu+n}(X)$ as a lexicographic
+sum over $Q_n(X)$ of finite fibers of size $n!$; the omitted $n$ labels
+are the only possible final labels.  Each fiber has at most two points.
+By \Cref{swo:sh:lem:new-cofinite-prefixes}, the quotient $Q_n(X)$ is
+dense.  Thus every nonempty open interval in
+$\WO_{\mu+n}(X)$ contains a point whose $\mu$-prefix lies
+strictly between the prefixes of its two bounds: if the bounds had
+the same prefix, their fiber of at most two points would have empty
+open interval.  A prefix of this intermediate point of length less
+than $\mu$, taken beyond both relevant first disagreements, has its
+entire cylinder inside the interval.  Choose one completion of every
+prefix of length less than $\mu$, and also include the global least
+and greatest points whenever they exist.  The resulting family is
+topologically dense: it meets every nonempty open interval, while
+the added endpoints handle a possible isolated endpoint in a two-point
+terminal fiber.  Adding at most two points does not change its
+cardinality bound $\mu^{<\mu}$.  The antichain of cylinders from the
+preceding proof gives the matching lower bound.  This argument
+explicitly deals with the possible jumps
+when $n=2$; it does not assume that every cylinder is open, or that
+every interval contains a point separated from both bounds merely by
+choosing an arbitrary intermediate point.
+
+Now suppose $\alpha\geq\mu+3$, and write $\alpha=\mu+\beta$, where
+$\beta$ is the order type of its tail after the first $\mu$ positions.
+Choose $T\subseteq X$ with $|T|=|\beta|$ and
+$|X\setminus T|=\mu$.  If $|\beta|=\mu$, use a partition of $X$ into
+two $\mu$-element sets; otherwise remove a set of size $|\beta|$.
+There are $2^\mu$ bijections $p:\mu\to X\setminus T$.  This standard
+count follows either from the cardinality theorem for well-order
+enumerations or directly by orienting $\mu$ disjoint pairs of labels.
+For each such $p$, the cylinder $C_p$ consists of all continuations
+that biject $\beta$ onto $T$.  Since $\beta\geq3$, it contains at least
+three points and hence a nonempty open interval.  The cylinders are
+pairwise disjoint because the prefixes are distinct and have the same
+length.  We obtain $2^\mu$ disjoint nonempty open intervals.  On the
+other hand, $|\WO_\alpha(X)|\leq\mu^\mu=2^\mu$, so no density
+or cellularity can exceed $2^\mu$.
+\end{proof}
+
+\begin{remark}\label{swo:sh:n4.4}
+For $\mu^{<\mu}<2^\mu$, the values for $\mu+2$ and $\mu+3$ differ.
+Thus merely adding one terminal coordinate can change both density
+and cellularity.  For singular strong-limit $\mu$, both expressions
+are already $2^\mu$, so the geometric distinction remains but the
+cardinal invariants coincide.  The formula is a new consequence beyond
+the baseline's finite-residual adjacency classification; it is not a
+new claim about the already-established ordinal embedding spectrum.
+\end{remark}
+
+% ---- source 16 (batch-81 manuscript 04), lines 597-670
+\section{Countable incompleteness and global characters (source 16)}\label{swo:ds:sec:gaps}
+
+\merge\ Source~16's Section~6 up to its subsection on regular saturated
+stages, which is printed in \cref{swo:vi:sub:ds-regular}.
+
+% ---- source 16 resumes (Section 6)
+
+Conditional Dedekind completeness means that every nonempty bounded-above
+set has a supremum, equivalently every nonempty bounded-below set has an
+infimum. It should not be confused with filling all small strict cuts,
+with order density, or with the completeness of a separately adjoined
+Dedekind completion.
+
+\begin{theorem}[Every infinite stratum is incomplete]\label{swo:ds:thm:incomplete}
+For every infinite linearly ordered set $X$ and every ordinal $\alpha$
+with $|\alpha|=|X|$, $\WO_\alpha(X)$ is not conditionally Dedekind
+complete. A countable bounded monotone family witnesses this failure.
+The same conclusion holds for $\WO(X)$.
+\end{theorem}
+\begin{proof}
+Every infinite linear order contains an increasing or decreasing
+$\omega$-sequence. For completeness, choose a countable set of distinct
+points and color each pair of its indices according to the numerical
+comparison; the infinite Ramsey theorem gives such a sequence.
+First assume $a_0<a_1<a_2<\cdots$ in $X$, and put $p(n)=a_{2n}$.
+
+For each $n\ge0$ choose $U_n$ extending the finite prefix
+\[
+ (a_0,a_2,\ldots,a_{2n-2},a_{2n+1}),
+\]
+and for $n\ge1$ choose $L_n$ extending
+\[
+ (a_0,a_2,\ldots,a_{2n-2},a_{2n-1}).
+\]
+All these prefixes extend to the prescribed type $\alpha$. First
+disagreement gives $L_n<L_{n+1}$, $U_{n+1}<U_n$, and $L_n<U_m$ for
+all $n,m$. Hence $(U_n)$ is bounded below.
+
+Let $g$ be any lower bound. If it first differs from the infinite prefix
+$p$ at a finite coordinate $j$, it must differ downward: an upward
+difference would give $g>U_{j+1}$. Consequently $g<L_n$ for every
+$n>j$, so it is not the greatest lower bound.
+
+Otherwise $g$ agrees with all of $p$. Its remaining suffix contains all
+odd labels $a_{2n+1}$. That suffix cannot be numerically strictly
+decreasing: the positions of these increasing labels would form an
+infinite descending sequence of ordinals. It therefore has an ascent.
+Swap the two labels of such an ascent. The new enumeration has the same
+type, is strictly above $g$, and still agrees with $p$ at every finite
+coordinate. It remains below every $U_n$. Again $g$ is not greatest.
+If no completion of $p$ with the specified type exists, this second case
+simply never occurs.
+
+Thus $(U_n)$ has no infimum. Reversing the numerical alphabet treats a
+decreasing $\omega$-sequence and yields the dual failure of a supremum.
+The argument for the full order is identical: swapping an ascent preserves
+whatever ordinal type the candidate bound happens to have.
+\end{proof}
+
+\begin{proposition}[Global characters from the first label]\label{swo:ds:prop:globalcf}
+If $X$ has no greatest element, then
+\[
+ \cf(\WO_\alpha(X))=\cf(\WO(X))=\cf(X)
+\]
+for every admissible infinite $\alpha$. There is a dual statement for
+coinitiality when $X$ has no least element. In particular, for every
+infinite cardinal cutoff $\kappa$, all the fixed strata and the full
+order on $\No_{<\kappa}$ have global cofinality and coinitiality $\cf(\kappa)$.
+\end{proposition}
+\begin{proof}
+Complete a cofinal family of possible first labels to enumerations. It is
+cofinal in the lexicographic order. Conversely, the first labels of a
+cofinal family of enumerations must be cofinal in $X$, or a larger first
+label would put an enumeration above the entire family. For $\No_{<\kappa}$,
+the ordinals below $\kappa$ are numerically cofinal and the negatives
+coinitial. Any family with bounded birthdays is bounded numerically, so
+the least possible size is $\cf(\kappa)$.
+\end{proof}
+
+\begin{note}[\merge; global characters in sources~15, 17 and~18]\label{swo:vi:note:globalcf}
+For the minimal slice of $\No_{<\kappa}$, the global part of
+\cref{swo:ds:prop:globalcf} ($\cf=\ci=r$) is also proved by source~17
+(\cref{swo:gs:thm:invariants}, with the same value for every cylinder in
+\cref{swo:gs:lem:cylinder-base}), by source~15 (\cref{swo:cb:new:thm:local-characters})
+and by source~18 (\cref{swo:sh:thm:new-minimal-characters}, also for
+$\WO_{\mu+n}$, and \cref{swo:sh:lem:gap-cylinders} for cylinders), each by the
+same first-label projection. Source~16's proposition is the general form: it
+holds for every stratum and for the full order $\WO(X)$ of any alphabet
+without a greatest element. Source~16's subsection ``Regular saturated
+stages'', the last part of its Section~6, is printed in
+\cref{swo:vi:sub:ds-regular} with the other gap spectra.
+\end{note}
+
+% ---- source 17 (batch-81 manuscript 05), lines 428-578
+\section{The cut spectrum of the alphabet \texorpdfstring{$\No_{<\kappa}$}{No<kappa} (source 17)}
+\label{swo:gs:sec:alphabet}
+
+\merge\ Source~17's Section~4, printed whole. Its $\Sigma(L)$ is printed
+$\GapChar(L)$ (the reals report's symbol), and its displayed equations keep
+their numbers as (S17.$n$). At regular uncountable $\kappa$ its main theorem
+is already in the repository (\cref{swo:vi:note:alphabet-univ}). Sources~15
+and~18 prove the alphabet lemmas again; their statements follow in
+\cref{swo:sh:lem:new-residual-alphabet,swo:cb:new:lem:power-sup-cofinality,swo:sh:lem:alphabet-gap-spectrum}.
+
+% ---- source 17 resumes (Section 4)
+
+For the remainder of the set-sized analysis, fix an infinite cardinal
+$\kappa$, regarded as an initial ordinal, and write
+\[\tag{S17.3}\label{swo:gs:eq:parameters}
+ X=\No_{<\kappa},\qquad \mu=2^{<\kappa},\qquad
+ r=\cf\kappa,\qquad q=\cf\mu.
+\]
+Here $\No_{<\kappa}$ consists of all sign sequences of ordinal length below
+$\kappa$, ordered by first difference with $-<\text{termination}<+$.
+We write $\Reg$ for the infinite regular cardinals.
+No arithmetic closure of $X$ is assumed. In particular, no field hypothesis
+is being inferred from the mere fact that $\kappa$ is a cardinal.
+
+\begin{definition}[Characters and genuine gaps]\label{swo:gs:n4.1}
+For a point $x$ of a dense order $L$ without endpoints, its left and right
+characters are $\cf(L_{<x})$ and $\ci(L_{>x})$. A \emph{gap} is a partition
+$L=A\sqcup B$ into nonempty initial and final parts, with $A<B$, such that
+$A$ has no greatest element and $B$ no least element. Its character is
+$(\cf A,\ci B)$; $\GapChar(L)$ denotes the set of these pairs. Thus a split
+immediately before or after an actual point is not a gap. Cofinalities of
+orders with a greatest element would be $1$, but do not occur in
+$\GapChar(L)$.
+\end{definition}
+
+\subsection{Size, intervals, and deletion}
+\begin{lemma}\label{swo:gs:lem:alphabet-size}
+The order $X$ has cardinality $\mu$. Every nonempty open interval and every
+nonempty open ray in $X$ has cardinality $\mu$. Consequently, deletion of
+fewer than $\mu$ labels leaves an order-dense, cofinal and coinitial
+suborder, with $\mu$ labels still in each nonempty interval and ray.
+\end{lemma}
+\begin{proof}
+There are $2^{|\alpha|}$ sign sequences of length $\alpha$, so
+$|X|=\sum_{\alpha<\kappa}2^{|\alpha|}=2^{<\kappa}$; the supremum on the
+right is at least $\kappa$ and absorbs the number of summands.
+Given $a<b$, choose a sign sequence $z$ strictly between them, of length
+below $\kappa$. A sufficiently long extension of $z$ fixes its comparisons
+with $a,b$ before any subsequent signs. Hence an entire sign cone lies
+inside $(a,b)$. If its fixed prefix has length $\delta<\kappa$, then all
+extensions of lengths $\delta+\gamma$, $\gamma<\kappa$, remain below
+$\kappa$: an infinite initial ordinal is closed under sums of two smaller
+ordinals. This cone has $\mu$ elements. The same construction applies to
+rays. Removing fewer than $\mu$ elements cannot empty a set of cardinality
+$\mu$ and leaves its cardinality unchanged, even when $\mu$ is singular.
+\end{proof}
+
+\begin{lemma}\label{swo:gs:lem:alphabet-character}
+The cofinality and coinitiality of $X$ are $r$, and every point of $X$ has
+left and right character $r$. The same assertions hold in
+$Y=X\setminus Z$ whenever $|Z|<\mu$.
+\end{lemma}
+\begin{proof}
+The ordinal surreals below $\kappa$ are cofinal, and a cofinal sequence of
+ordinals of length $r$ gives an upper bound $r$. A family of fewer than
+$r$ sign sequences has bounded birthdays below $\kappa$ and is bounded
+above and below by ordinal surreals, proving the reverse bound.
+
+At $x$, the sequences
+\[
+ x\cat-\cat+^\gamma\quad\text{and}\quad
+ x\cat+\cat-^\gamma \qquad(\gamma<\kappa)
+\]
+are respectively cofinal below and coinitial above $x$; a cofinal choice
+of $\gamma$'s of length $r$ suffices. Conversely, fewer than $r$ points
+have bounded birthdays. A longer sign extension of $x$ lies between
+$x$ and all the points on the appropriate side. Hence the character is
+not smaller than $r$.
+
+For $Y$, replace each member of a cofinal or coinitial sequence by a
+remaining label in an appropriate interval. Such labels exist by
+\Cref{swo:gs:lem:alphabet-size}. Any smaller sequence cofinal in $Y$ would
+also be cofinal in the relevant interval or ray of $X$, by density.
+\end{proof}
+
+\subsection{The alphabet's own gaps}
+The alphabet is not Dedekind complete. Even at a regular uncountable
+cutoff, its gaps need not have two equal characters. Distinguishing this
+fact from its uniform \emph{point} characters is essential.
+
+\begin{theorem}[Cut spectrum of the birthday alphabet]\label{swo:gs:thm:alphabet-gaps}
+\[
+ \GapChar(X)=\{(r,r)\}\ \cup\
+ \{(\theta,r),(r,\theta):\theta\in\Reg,\ \theta<\kappa\}.
+\]
+If $|Z|<\mu$, the same formula holds for $X\setminus Z$.
+\end{theorem}
+\begin{proof}
+Let $(A,B)$ be a gap of $X$. Define a sign sequence $s$ of length $\kappa$
+by set recursion: at stage $\alpha$, the already defined prefix
+$s\res\alpha$ is in $X$, so put $s(\alpha)=+$ if that prefix belongs to
+$A$, and $s(\alpha)=-$ if it belongs to $B$. Put
+\[
+ I_+=\{\alpha<\kappa:s(\alpha)=+\},\qquad
+ I_-=\{\alpha<\kappa:s(\alpha)=-\}.
+\]
+The nodes $s\res\alpha$ for $\alpha\in I_+$ increase and are cofinal in
+$A$; the nodes for $\alpha\in I_-$ decrease and are coinitial in $B$.
+To verify cofinality, compare any $x\in A$ with the path $s$. If $x$ is a
+path prefix it is one of the displayed lower nodes. Otherwise the first
+disagreement cannot place $x$ to the right of the chosen path: at a minus
+choice the corresponding node is in $B$. It therefore places $x$ below a
+lower node. The dual argument handles $B$.
+
+Neither index set has a greatest element, since the cut is a gap. At
+least one is unbounded in $\kappa$ and has cofinality $r$. An unbounded
+other side also has cofinality $r$; a bounded other side has an infinite
+regular cofinality $\theta<\kappa$. This proves the upper inclusion.
+Conversely, the path $+^\theta\cat-^{\kappa}$, with the evident length
+$\kappa$ interpretation, has lower and upper index cofinalities
+$(\theta,r)$. Reversing signs gives $(r,\theta)$. A path with both signs
+cofinal in $\kappa$ gives $(r,r)$. In each case the induced partition has
+no endpoint, as the associated node sequences have no last member.
+
+Now let $Y=X\setminus Z$ be as stated. Density of $Y$ implies that a gap
+of $Y$ corresponds either to a gap of $X$ or to a single removed point of
+$X$: there cannot be two $X$-points between the two sides, because a
+$Y$-point would lie between them. At an $X$-gap, density preserves both
+cofinalities by choosing intermediate $Y$-points. At a removed point both
+characters are $r$ by \Cref{swo:gs:lem:alphabet-character}. Conversely, every
+$X$-gap survives restriction to $Y$, with the same characters. This proves
+the deletion assertion.
+\end{proof}
+
+\begin{example}[A warning about equal-character guesses]\label{swo:gs:n4.5}
+For $\kappa>\omega$, the path which first has $\omega$ plus signs and then
+only minus signs determines an $(\omega,r)$ gap. It lies at a boundary of
+a limit sign cone. The cone itself contains many surreal numbers; none is
+its missing boundary point. Thus uniform point character $r$ does not mean
+that every gap has character $(r,r)$.
+\end{example}
+
+\begin{lemma}\label{swo:gs:lem:cofinality-inequality}
+One has $\mu\ge\kappa$ and $q\ge r$.
+\end{lemma}
+\begin{proof}
+The first assertion follows from the count in
+\Cref{swo:gs:lem:alphabet-size}. If the increasing cardinal sequence
+$2^\nu$, $\nu<\kappa$, never reaches its supremum $\mu$, a purported
+cofinal family in $\mu$ of size below $r$ is bounded by some $2^\nu$:
+choose an index bound for each of its members and then use
+$\cf\kappa=r$ to bound all those indices. Thus $\cf\mu\ge r$.
+If the supremum is attained, the powers are constantly $\mu$ for all
+sufficiently large cardinals $\nu<\kappa$. K\"onig's inequality
+$\cf(2^\nu)>\nu$ then gives $\cf\mu\ge\kappa$. For completeness, that
+inequality follows from $\rho^{\cf\rho}>\rho$ for infinite cardinals
+$\rho$, applied to $\rho=2^\nu$: if $\cf\rho\le\nu$, then
+$\rho^{\cf\rho}\le(2^\nu)^\nu=2^\nu$, a contradiction.
+\end{proof}
+
+\begin{note}[\merge; the repository's case of \cref{swo:gs:thm:alphabet-gaps}]\label{swo:vi:note:alphabet-univ}
+At a regular uncountable cutoff $\kappa$, \cref{swo:gs:thm:alphabet-gaps} is
+the case $M=N$ of the cutoff gap decomposition of the report
+\path{surreal-fields-across-universes} (\code{univ:gs:lem:boundary}), quoted in
+\path{birthday-cutoffs-and-hereditary-sets} (\code{hset:rem:cutoffgaps}): with
+no fresh signs, the gap pairs of $\No_{<\kappa}$ are $(\theta,\kappa)$ and
+$(\kappa,\theta)$ for every infinite regular $\theta\le\kappa$, realized by the
+same sign paths $+^\theta\cat-^\kappa$. Source~17 does not cite these reports.
+New in source~17 are the singular cutoffs, where the bounded side ranges over
+the regular $\theta<\kappa$ while the unbounded side has character
+$r=\cf\kappa<\kappa$; the countable cutoff $\kappa=\omega$, where only
+$(\omega,\omega)$ occurs; and the deletion clause.
+\end{note}
+
+\begin{note}[Source~18, Lemmas~4.5 and~5.3, and source~15, Lemma~9.1]\label{swo:sh:lem:new-residual-alphabet}\label{swo:sh:lem:gap-small-deletion}\label{swo:cb:new:lem:full-size-intervals}
+Source~18's Lemma~4.5 (``Large intervals and unchanged cut sides after
+deletion''): \emph{every nonempty numerical open interval in $\No_{<\kappa}$
+has cardinality $\mu$; if $U\subseteq\No_{<\kappa}$ has cardinality less than
+$\mu$, then $\No_{<\kappa}\setminus U$ meets every such interval; in
+particular (1) $\cf(\No_{<\kappa})=\ci(\No_{<\kappa})=r$, (2) immediately below
+or above any point the cofinality or coinitiality is $r$, and (3) every
+nonprincipal side of a cut retains its cofinality or coinitiality after
+deletion of $U$, as do the two open sides at a point, even a deleted one}
+(an endpoint retained in the residual alphabet still gives a principal side
+of character~$1$). Its Lemma~5.3 (``Small deletions preserve order
+density'') repeats this for $R=X\setminus U$ and adds that \emph{every proper
+gap of $R$ has character in $\GapChar(X)\cup\{(r,r)\}$}. Source~15's Lemma~9.1
+(``Full-size numerical intervals''): \emph{every nonempty open interval of
+$\No_{<\kappa}$, and every nonempty open ray, contains a sign-prefix cone
+order-isomorphic to $\No_{<\kappa}$; in particular each has cardinality $\mu$.}
+These are \cref{swo:gs:lem:alphabet-size,swo:gs:lem:alphabet-character} and the
+deletion clause of \cref{swo:gs:thm:alphabet-gaps}, by the same sign-cone
+argument. Source~15 makes the cone explicit in three cases (neither endpoint a
+prefix of the other: take $a\cat+$; $a$ a proper prefix of $b$: take
+$b\cat-$; $b$ a proper prefix of $a$: take $a\cat+$), and source~18 obtains
+the cone from the birthday-controlled separator theorem
+(\cref{swo:sk:sec:toolkit}) and adds an explicit approach to a point from
+below by $x\cat-\cat+^\gamma$, $\gamma$ cofinal in $\kappa$, and from above by
+the sign-reversed words.
+\end{note}
+
+\begin{note}[Source~15, Lemma~9.3, and source~18, Lemma~4.6]\label{swo:cb:new:lem:power-sup-cofinality}\label{swo:sh:lem:new-cardinal-cofinalities}
+Both sources state more than \cref{swo:gs:lem:cofinality-inequality}:
+\emph{$q\geq r$; if the supremum $2^{<\kappa}$ is not attained then $q=r$, and
+if it is attained, $2^\lambda=\mu$ for some cardinal $\lambda<\kappa$, then
+$q\geq\kappa$.} The proofs are source~17's: cofinal exponents give $q\le r$ in
+the unattained case, a shorter cofinal family would have bounded exponent
+witnesses, and in the attained case K\"onig's inequality
+$\cf(2^\lambda)>\lambda$ for all $\lambda$ between the attaining exponent and
+$\kappa$ gives $q\ge\kappa$.
+\end{note}
+
+\begin{note}[Source~18, Lemma~5.2, ``Alphabet gap spectrum'']\label{swo:sh:lem:alphabet-gap-spectrum}
+\emph{For $X=\No_{<\kappa}$, $\GapChar(X)=\{(r,r)\}\cup\{(\theta,r),(r,\theta):
+\theta<\kappa$ an infinite regular cardinal$\}$; every point has left and right
+character $r$, and the global cofinality and coinitiality are also $r$.} This
+is \cref{swo:gs:thm:alphabet-gaps} with
+\cref{swo:gs:lem:alphabet-character}, by the same recursion $s(\alpha)=+$ if and
+only if $s\res\alpha\in A$. Source~18 adds the warning that the lemma
+``corrects a tempting but false simplification: unfilled alphabet cuts need
+not all have character $(r,r)$''; at $\kappa=\omega_1$ the cut below all
+positive infinite elements, represented by $+^\omega-^{\omega_1}$, has
+character $(\omega,\omega_1)$, and ``the asymmetric alphabet gaps will,
+however, already be covered by the longer-prefix construction in $P$''. This
+is the point of \cref{swo:gs:n4.5}.
+\end{note}
+
+% ---- hand chunk minimal slice
+\section{The minimal slice \texorpdfstring{$\WO_\mu(\No_{<\kappa})$}{W\_mu(No<kappa)} (source 17; routes of sources 15, 16 and 18)}\label{swo:vi:sec:minimal}
+
+\merge\ Source~17's Sections~5 and~6 are printed in their order, with two
+insertions: source~18's general permutation principle
+(\cref{swo:vi:sub:sh-general}), stated before source~17's exact gap spectrum
+because that theorem and source~16's are instances of it, and source~18's
+multiplicities (\cref{swo:vi:sub:sh-mult}). The second and third routes to the
+characters and the saturation threshold (sources~15 and~18) follow source~17's
+saturation corollary. Source~17 writes $[p]$ for the cylinder of an injective
+prefix $p$; sources~16 and~18 write $C_p$ for the same set. All three call a
+cylinder meeting both sides of a cut \emph{straddling}.
+
+% ---- source 17 (batch-81 manuscript 05), lines 579-656
+\subsection{Exact local and topological invariants of the minimal slice (source 17)}
+\label{swo:gs:sec:topology}
+
+Put $P=\WO_\mu(X)$. For an injective prefix $p:\alpha\to X$ with
+$\alpha<\mu$, let
+\[
+ [p]=\{f\in P:f\res\alpha=p\},\qquad Y_p=X\setminus\ran p.
+\]
+The set $Y_p$ has cardinality $\mu$. Every such prefix has a completion:
+the remaining ordinal interval $[\alpha,\mu)$ has order type $\mu$, so a
+bijection from it to $Y_p$ suffices. This elementary extension fact would
+be false for arbitrary prescribed prefixes of length $\mu$.
+
+\begin{lemma}[The cylinder base]\label{swo:gs:lem:cylinder-base}
+Every $[p]$ is nonempty, convex, and clopen in the order topology of $P$.
+The cylinders form a base. No cylinder has an endpoint. Moreover,
+\[
+ \cf[p]=\ci[p]=r.
+\]
+\end{lemma}
+\begin{proof}
+Convexity is the first-difference property. Given $f\in[p]$, change its
+entry at coordinate $\alpha$ to a fresh smaller or larger label and then
+complete. \Cref{swo:gs:lem:alphabet-size} provides such labels after deletion
+of $f[\alpha]$. This produces bounds on either side of $f$ within $[p]$,
+proving openness and absence of endpoints. All length-$\alpha$ cylinders
+partition $P$, so the complement is also open. For $a<f<b$, a prefix of
+$f$ extending beyond its first differences with $a,b$ has its entire
+cylinder inside $(a,b)$. This proves the base assertion.
+
+The first unused coordinate maps the cylinder onto $Y_p$ in lexicographic
+blocks. Choosing one completion for cofinally many first unused labels
+shows $\cf[p]\le\cf Y_p=r$. Conversely, the first unused entries of a
+cofinal family in $[p]$ must be cofinal in $Y_p$, since otherwise a larger
+entry starts a cylinder above the entire family. Coinitiality is dual.
+\end{proof}
+
+\begin{theorem}[Characters and size invariants]\label{swo:gs:thm:invariants}
+Every point $f\in P$ has character $(q,q)$, and
+\[\tag{S17.4}\label{swo:gs:eq:invariants}
+ \cf P=\ci P=r,\qquad \dens(P)=\weight(P)=\cell(P)=\mu^{<\mu}.
+\]
+Here $\dens$ is density, $\weight$ is topological weight, and $\cell$ is cellularity
+\emph{as the supremum} of cardinalities of pairwise disjoint families of
+nonempty open sets. In particular, $P$ is zero-dimensional. The formula
+for $\cell$ does not assert that its supremum is always attained by one family.
+\end{theorem}
+\begin{proof}
+For each coordinate $\delta<\mu$, choose $f^-_\delta<f<f^+_\delta$ whose
+first difference from $f$ is exactly $\delta$. Such choices are possible
+by the preceding lemma. Along a cofinal set of coordinates of order type
+$q$, the lower choices are increasing and cofinal below $f$, and the
+upper choices are decreasing and coinitial above it. Conversely, for a
+family of fewer than $q$ elements below $f$, the first-difference
+coordinates are bounded below $\mu$. A lower approximation differing
+later lies above them all. Thus neither point character is below $q$.
+The global cofinalities are \Cref{swo:gs:lem:cylinder-base} at the root.
+
+The number of prefixes is at most
+$\sum_{\alpha<\mu}\mu^{|\alpha|}=\mu^{<\mu}$, giving that upper bound
+for weight, density, and cellularity. At each fixed length $\alpha$, the
+cylinders are disjoint nonempty open sets. For $1\le\lambda<\mu$, the
+number of injective $\lambda$-words over $X$ is $\mu^\lambda$: a fixed
+injection $j:\lambda\times X\to X$ sends any function $h$ to the injection
+$\xi\mapsto j(\xi,h(\xi))$. Hence both density and cellularity are at least
+$\mu^\lambda$ for every such $\lambda$. Taking suprema gives the reverse
+bound. Finally $d\le w$ and $c\le w$ complete the equalities. The clopen
+base gives zero-dimensionality.
+\end{proof}
+
+\begin{remark}\label{swo:gs:n5.3}
+The point character is controlled by $\cf\mu$, whereas the cofinality of
+a whole cylinder is controlled by $\cf\kappa$. These can differ.
+Confusing the two would lose the central feature of the cut classification
+below. Hereditary density also equals $\mu^{<\mu}$, since every subspace
+has weight at most $\weight(P)$ and $P$ itself attains this density.
+\end{remark}
+
+\begin{note}[Source~17, Proposition~5.4, ``Set-alphabet background, with a direct proof'']\label{swo:gs:prop:local-universality}
+\emph{The order $P$ has cardinality $2^\mu$. Every linear order of cardinality
+at most $\mu$ embeds into every nonempty open interval of $P$. An ordinal
+$\beta$ embeds in $P$ if and only if $\beta<\mu^+$; the same bound holds for
+reverse well-ordered suborders.} Source~17 calls these ``already part of the
+source's theory''. They are the set baseline (\cref{swo:sw:setspectrum};
+reals report \code{lwo:prop:cardinality}, \code{lwo:thm:ordinal-spectrum},
+\code{lwo:sp:thm:universality}) applied inside a cylinder, whose residual
+alphabet has size $\mu$, together with \cref{swo:gs:lem:cylinder-base}; the
+proof is the pair-orientation, initial-segment and coordinate-stabilization
+argument of \cref{swo:sw:fixed}.
+\end{note}
+
+% ---- source 17 (batch-81 manuscript 05), lines 696-724
+\subsubsection{Fusion with an exhaustiveness requirement}
+\begin{theorem}[A dense-open fusion theorem]\label{swo:gs:thm:fusion}
+The intersection of fewer than $q$ open sets is open. The intersection of
+at most $q$ dense open subsets of $P$ is dense. In particular, when
+$q=\omega$, $P$ is a Baire space.
+\end{theorem}
+\begin{proof}
+At a point in fewer than $q$ open sets, choose a cylinder neighborhood for
+each. Their prefix lengths have supremum below $\mu$, so the longest
+union prefix gives a cylinder inside the intersection.
+
+Let $(U_i)_{i<q}$ be dense open sets and start with any nonempty cylinder.
+Write $X=\bigcup_{i<q}X_i$, where the $X_i$ are increasing and each has
+cardinality below $\mu$. Recursively refine the current prefix to a
+cylinder contained in $U_i$, using density and the cylinder base, and then
+append every member of $X_i$ not yet used, in a set well-order of length
+below $\mu$. At stages below $q$, the accumulated length is still below
+$\mu$, including at limit stages. At the end the union has length exactly
+$\mu$ and range $X$: its length is at most $\mu$, and it has used $\mu$
+distinct labels. It is therefore an element of $P$, belongs to every
+$U_i$, and extends the starting prefix. Fewer dense open sets can be
+padded by copies of $P$.
+\end{proof}
+
+The coverage step is essential. Bare prefix fusion of length $\mu$ can
+produce an injective word omitting a label, which is not a point of $P$.
+The theorem does not claim a complete metrizability or a general
+isomorphism classification.
+
+\begin{note}[\merge; repository analogues and the regular size-matched case]\label{swo:vi:note:slice-analogues}
+For regular $\kappa$ with $2^{<\kappa}=\kappa$ one has $\mu=r=q=\kappa$, and the
+character part of \cref{swo:gs:thm:invariants} is source~11's
+\cref{swo:sw:permutationeta} (every local and global character $\kappa$, and
+$\eta_\kappa$). For $X=\mathbb R$ the reals report proves the analogues:
+point characters $\cf\mathfrak c$ and global characters $\omega$
+(\code{lwo:prop:fixed-topology}), weight $2^{<\mathfrak c}$
+(\code{lwo:sp:prop:minimalweight}), and that fewer than $\cf\mathfrak c$ open sets
+have open intersection (\code{lwo:rk:cor:Pspace}). Sources~15, 17 and~18 do not
+cite these. New in sources~15, 17 and~18 is the alphabet $\No_{<\kappa}$ at
+every infinite cardinal $\kappa$, in particular the separation of the point
+character $q=\cf\mu$ from the global character $r=\cf\kappa$; new in
+source~17 is the second half of \cref{swo:gs:thm:fusion}, where every
+fusion sequence must also exhaust the alphabet.
+\end{note}
+
+\begin{note}[Source~15, Theorem~9.2, ``Local and global cofinalities'']\label{swo:cb:new:thm:local-characters}
+Source~15 writes $L=\WO_\mu(\No_{<\kappa})$ for $P$, and
+$\operatorname{cf}^-(f)$, $\operatorname{ci}^+(f)$ for the cofinality of
+$L_{<f}$ and the coinitiality of $L_{>f}$. \emph{For every $f\in L$,
+$\operatorname{cf}^{-}(f)=\operatorname{ci}^{+}(f)=\cf\mu$; the global
+cofinality and coinitiality are $\cf\kappa$; consequently the ordinary local
+topological character of every point of $L$ is $\cf\mu$.} This is the
+character part of \cref{swo:gs:thm:invariants}, by the same argument (a swap of
+the entry at $\eta$ with a later occurrence of a fresh smaller or larger label
+gives $f^\mp_\eta$ with first difference exactly $\eta$; cofinally many $\eta$
+suffice, fewer than $\cf\mu$ first differences are bounded). Source~15 adds the
+local base of size $\cf\mu$ formed by pairs from the two sides, and the
+examples: ``at the cutoff $\kappa=\omega_1$ the alphabet cardinal is
+$\mu=2^{\aleph_0}$. The global cofinality is always $\omega_1$, whereas the
+local character is $\cf(2^{\aleph_0})$. Under cardinal arithmetic making these
+cardinals different, the distinction survives at every point of the
+permutation order. At the singular strong-limit cutoff $\kappa=\beth_\omega$,
+every point has countable local character, even though the density and
+cellularity of the minimal slice are $2^\kappa$.''
+\end{note}
+
+% ---- source 17 (batch-81 manuscript 05), lines 725-830
+\subsection{The complete nonprincipal cut spectrum of the minimal slice (source 17)}
+\label{swo:gs:sec:cuts}
+
+\subsubsection{Three ways that a cut can occur}
+For a gap $(A,B)$ of $P$, say that a cylinder $[p]$ \emph{straddles} the
+cut when it meets both $A$ and $B$. There is at most one straddling cylinder
+at any fixed length, because the cylinders at that length are disjoint
+convex blocks.
+
+\begin{lemma}[Cut trichotomy]\label{swo:gs:lem:cut-trichotomy}
+Every gap of $P$ is of exactly one of the following structural forms,
+using the first stage at which the construction stops.
+\begin{enumerate}
+\item \textbf{A coordinate cut.} Some straddling $[p]$, of length
+$\alpha<\mu$, has no straddling child. Its children are partitioned by a
+proper cut of the residual alphabet $Y_p$.
+\item \textbf{A limit-prefix boundary.} At a nonzero limit
+$\delta<\mu$, all shorter prefixes on a coherent path straddle, but the
+union cylinder $[p]$ lies wholly on one side. The cut is exactly the left
+or right boundary of $[p]$.
+\item \textbf{An omitted-range branch.} A coherent prefix straddles at
+every length below $\mu$. Their union is an injection
+$f:\mu\to X$ which is not surjective, and the gap is comparison with $f$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Begin at the empty prefix, whose cylinder straddles. At a successor stage,
+continue into the unique straddling child when it exists; otherwise every
+child belongs wholly to one side, giving case 1. At a limit
+$\delta<\mu$, the union is an injective prefix and has a nonempty cylinder.
+If that cylinder does not straddle, it is wholly on one side. Every word
+strictly below it differs at an earlier coordinate, and is below a lower
+member of an earlier straddling cylinder, so belongs to $A$. The dual
+argument holds above the cylinder. This proves exactly the boundary
+assertion in case 2.
+
+If the process continues through all lengths below $\mu$, let $f$ be the
+union injection. For any $g\in P$ different from $f$, its first difference
+determines its cut side: a later straddling cylinder gives witnesses which
+force the orientation. If $f$ were surjective it would itself belong to
+$P$. Whichever side contains it would then have an endpoint, contrary to
+the gap hypothesis. Thus $f$ is not surjective, and all words in $P$ are
+classified by their comparison with it. These alternatives cover the
+set recursion through $\mu$, and are disjoint by the first stopping stage.
+\end{proof}
+
+\begin{lemma}[Characters in the three cases]\label{swo:gs:lem:cut-characters}
+In case 1, the gap character belongs to $\GapChar(X)\cup\{(r,r)\}$.
+In case 2 it is respectively $(\cf\delta,r)$ or $(r,\cf\delta)$.
+In case 3 it is $(q,q)$.
+\end{lemma}
+\begin{proof}
+In case 1 partition the residual alphabet into nonempty parts $U<V$,
+according as a child lies on the lower or upper side. If $U$ has no
+largest label, the lower character is $\cf U$; choose one point in
+cofinally many children. If $U$ has largest label $u$, the last lower
+child is cofinal on the lower side and has cofinality $r$. The upper side
+has the dual description. When neither side has an endpoint,
+\Cref{swo:gs:thm:alphabet-gaps} applies to $Y_p$. When one has an endpoint,
+the other has character $r$ by \Cref{swo:gs:lem:alphabet-character}; the
+endpoint side is replaced by an entire child of character $r$.
+
+At the left boundary of a limit cylinder $[p]$, lower approximations
+obtained by a smaller fresh entry at coordinates cofinal in $\delta$ are
+cofinal below the cylinder. No family of fewer than $\cf\delta$ can be
+cofinal, since its first disagreements with $p$ would be bounded below
+$\delta$. The upper side has $[p]$ as a coinitial subset, and the cylinder
+has coinitiality $r$. The right boundary is dual.
+
+For an omitted-range branch, approximations from either side at cofinally
+many coordinates give upper bounds $q$ for both characters. Fewer than
+$q$ disagreements are bounded, so a later approximation is closer to the
+branch. This proves equality.
+\end{proof}
+
+% ---- source 18 (batch-81 manuscript 06), lines 1282-1317
+\subsection{A general permutation-order principle (source 18)}
+\label{swo:vi:sub:sh-general}
+
+The tree argument is not specific to surreal numbers.  It separates
+the contribution of the alphabet from the new cuts introduced by
+long prefixes and omitted branches.
+
+\begin{theorem}[Gap spectrum under permutation expansion]
+\label{swo:sh:thm:general-permutation-gap-spectrum}
+Let $D$ be a dense linear order without endpoints of infinite
+cardinality $\mu$.  Assume that every nonempty open interval has
+cardinality $\mu$, every point has the same two-sided character
+$\nu$, and both global cofinalities are also $\nu$.  Let
+$\operatorname{Perm}_\mu(D)$ be the lexicographic order on bijections
+$\mu\to D$, and put $q=\operatorname{cf}\mu$.  Then
+\[
+\begin{aligned}
+\GapChar(\operatorname{Perm}_\mu(D))
+={}&\GapChar(D)
+ \cup\{(\nu,\nu),(q,q)\}\\
+ &{}\cup\{(\theta,\nu),(\nu,\theta):
+       \theta<\mu\text{ is an infinite regular cardinal}\}.
+\end{aligned}
+\]
+\end{theorem}
+
+\begin{proof}
+Small deletions leave an order dense in $D$, so the residual-cut
+analysis and the straddling-cylinder trichotomy apply verbatim.
+These give the upper bound.  All the explicitly added pairs are
+attained by the same prefix-boundary and omitted-branch constructions.
+Finally, each gap of $D$ lifts to a gap of the permutation order by
+placing a permutation on the left or right according to its first
+digit.  With neither digit side principal, the two characters are
+unchanged.  This gives the reverse inclusion.
+\end{proof}
+
+\begin{proof}[\merge\ The steps the proof leaves to the reader]
+Source~18 writes ``apply verbatim''; the two facts it uses are written out
+here. Put $P=\operatorname{Perm}_\mu(D)$.
+
+\emph{Small deletions add only $(\nu,\nu)$.} Let $U\subseteq D$ with
+$\card U<\mu$ and $R=D\setminus U$. Every interval of $D$ has $\mu$ points, so
+$R$ meets every interval of $D$; in particular $R$ is dense, has no endpoints,
+and has global cofinalities $\nu$ and point characters $(\nu,\nu)$, because
+cofinal and coinitial families transfer between $D$ and $R$ through points of
+the other order. Let $(A,B)$ be a gap of $R$. Two points of $D$ cannot lie
+between $A$ and $B$, since a point of $R$ would lie between them. If no point
+of $D$ lies between them, the downward closure of $A$ and the upward closure of
+$B$ in $D$ form a gap of $D$ with the same characters. If one point $x$ of $D$
+lies between them, then $x\in U$, $A$ is cofinal in $D_{<x}$ and $B$ coinitial in
+$D_{>x}$, and the character is the point character $(\nu,\nu)$ of $x$. Hence
+$\GapChar(R)\subseteq\GapChar(D)\cup\{(\nu,\nu)\}$.
+
+\emph{The three cases.} Let $(A,B)$ be a gap of $P$. The prefixes $p$ of
+length below $\mu$ whose cylinders $C_p$ meet both sides form a chain under
+extension, as in \cref{swo:gs:lem:cut-trichotomy}. If there is a longest one,
+$p$, the residual alphabet $R_p=D\setminus\ran p$ (with $\card{\ran p}<\mu$) is
+cut into the digits whose child cylinders lie in $A$ and those whose child
+cylinders lie in $B$; both parts are nonempty and, $R_p$ being dense, they do
+not both have endpoints. If neither has one, the character of $(A,B)$ is the
+character of this gap of $R_p$, which lies in $\GapChar(D)\cup\{(\nu,\nu)\}$ by
+the first step: $A\cap C_p$ is cofinal in $A$ and is the lexicographic sum of
+the lower child cylinders. If the lower part has a last digit $u$, $A$ is
+cofinally the child cylinder $C_{p\cat u}$, whose cofinality is that of its
+residual alphabet, $\nu$, while $B$ approaches $u$ from above in $R_p$, with
+coinitiality $\nu$; the dual case is the same, so the character is
+$(\nu,\nu)$. If the straddling lengths have a limit supremum $\delta<\mu$, the
+union $p$ has a nonempty cylinder lying on one side, the gap is a boundary of
+$C_p$, and its character is $(\cf\delta,\nu)$ or $(\nu,\cf\delta)$: the
+approximations with a smaller (larger) unused digit at coordinates cofinal in
+$\delta$ exist because rays of $D$ contain intervals of size $\mu$, and $C_p$ has
+global characters $\nu$. If the lengths are cofinal in $\mu$, the union is a
+nonsurjective injection $\mu\to D$ and the character is $(q,q)$, exactly as in
+case~3 of \cref{swo:gs:lem:cut-characters}. This proves the upper bound.
+
+\emph{Attainment.} For a regular $\theta<\mu$, the two boundaries of the
+cylinder of an injective prefix of length $\theta$ have characters $(\theta,\nu)$
+and $(\nu,\theta)$; the lower boundary of a one-digit cylinder
+$C_{\langle x\rangle}$ has character $(\nu,\nu)$, since its lower side
+approaches the digit $x$ from below and $C_{\langle x\rangle}$ has coinitiality
+$\nu$; a bijection of $\mu$ onto $D\setminus\{x\}$ gives $(q,q)$; and a gap of $D$
+lifts at the first digit, as source~18 says.
+\end{proof}
+
+% ---- source 17 (batch-81 manuscript 05), lines 725-830 (chunk lines 77-107)
+\begin{theorem}[Exact gap spectrum]\label{swo:gs:thm:gap-spectrum}
+For every infinite cardinal $\kappa$, with the parameters in
+\eqref{swo:gs:eq:parameters},
+\[\tag{S17.5}\label{swo:gs:eq:gap-spectrum}
+ \boxed{\displaystyle
+ \GapChar\bigl(\WO_\mu(\No_{<\kappa})\bigr)
+ =\{(r,r),(q,q)\}\ \cup\
+ \{(\theta,r),(r,\theta):\theta\in\Reg,\ \theta<\mu\}.}
+\]
+\end{theorem}
+\begin{proof}
+The upper inclusion follows from the two preceding lemmas and
+$\kappa\le\mu$: alphabet gap pairs involving a regular cardinal below
+$\kappa$ already belong to the displayed set.
+
+For $(r,r)$, fix a label $x\in X$ and place on the lower side every word
+whose first entry is at most $x$, and on the upper side every word whose
+first entry exceeds $x$. The last lower child has cofinality $r$, and the
+upper first-entry ray has coinitiality $r$. Neither side has an endpoint.
+
+For any infinite regular $\theta<\mu$, choose an injective prefix of
+length $\theta$. Its two boundary cuts have characters $(\theta,r)$ and
+$(r,\theta)$ by the limit-boundary calculation. The fresh smaller and
+larger labels used there exist at every coordinate, so both sides of
+both cuts are nonempty.
+
+Finally choose a bijection $f:\mu\to X\setminus\{x\}$ for some label
+$x$. Each proper prefix is completable in $P$, but $f$ itself is not in
+$P$. Its comparison cut is a gap of character $(q,q)$.
+\end{proof}
+
+\begin{note}[\merge; \cref{swo:gs:thm:gap-spectrum} as an instance]\label{swo:vi:note:gs-instance}
+$D=\No_{<\kappa}$ satisfies the hypotheses of
+\cref{swo:sh:thm:general-permutation-gap-spectrum} with $\nu=r$:
+\cref{swo:gs:lem:alphabet-size,swo:gs:lem:alphabet-character} give the interval
+size and the uniform point and global characters. With
+$\GapChar(\No_{<\kappa})$ from \cref{swo:gs:thm:alphabet-gaps}, whose
+asymmetric pairs ($\theta<\kappa$) are among those with $\theta<\mu$, the
+principle returns exactly \eqref{swo:gs:eq:gap-spectrum}. Source~17's proof
+above is the direct one.
+\end{note}
+
+\begin{note}[Source~18, Theorem~5.1, ``Exact gap spectrum'', and Lemma~5.4]\label{swo:sh:thm:exact-gap-spectrum}\label{swo:sh:lem:gap-cylinders}\label{swo:sh:sec:exact-gap-spectrum}
+Source~18's Section~5 ``settles the cut-spectrum question for the
+minimal-length permutation order at every infinite cardinal birthday cutoff''.
+It writes $P$ for the bijections $\mu\to\No_{<\kappa}$, defines a
+\emph{proper Dedekind gap} as a partition $P=A\sqcup B$ into nonempty sets with
+$A<B$, $A$ without greatest and $B$ without least element, of character
+$(\cf A,\ci B)$, and writes $\GapChar(P)$ for the set of characters (``this
+convention excludes principal cuts and the two external ends''). Its
+Theorem~5.1 is \eqref{swo:gs:eq:gap-spectrum} together with: \emph{every
+displayed pair is attained; (1) every point of $P$ has left and right
+character $q$; (2) the global cofinality and coinitiality are $r$; (3) the
+principal cuts have character $(1,q)$ or $(q,1)$; (4) if empty sides are
+assigned cofinality $0$, the external ends have character $(0,r)$ and $(r,0)$.}
+Its Lemma~5.4: \emph{every cylinder $C_p$ has cofinality and coinitiality $r$
+and no endpoints; if $p$ has nonzero limit length $\delta<\mu$, the lower
+boundary of $C_p$ is a proper gap of character $(\cf\delta,r)$ and the upper
+boundary one of character $(r,\cf\delta)$.} These are
+\cref{swo:gs:lem:cylinder-base}, case~2 of \cref{swo:gs:lem:cut-characters} and
+\cref{swo:gs:thm:gap-spectrum,swo:gs:thm:invariants}, and source~18's proof is
+source~17's: the straddling prefixes form a chain under extension, and its
+three cases (a longest straddling prefix, a limit supremum $\delta<\mu$, lengths
+cofinal in $\mu$) are the three cases of \cref{swo:gs:lem:cut-trichotomy}, in
+the same order, with the same character computations. Source~18 attains
+$(r,r)$ by the boundary of a successor-length cylinder
+$C_{\langle x\rangle}$ (the exterior side approaches the digit $x$) rather than
+by source~17's first-entry split; ``every infinite regular $\theta<\mu$ can be
+used as $\delta$'' in Lemma~5.4, so the asymmetric pairs are attained
+``independently of which of them already occur as gaps in the alphabet''.
+\end{note}
+
+% ---- source 16 (batch-81 manuscript 04), lines 671-734
+\subsection{Source 16's route: regular saturated stages over any saturated alphabet}
+\label{swo:vi:sub:ds-regular}
+
+\merge\ The last subsection of source~16's Section~6. It is printed here,
+after source~17's spectrum, because it computes the same spectrum for the
+regular size-matched case and generalizes it to every regular saturated
+alphabet of the same size (\cref{swo:vi:note:ds-instance}).
+
+% ---- source 16 resumes (Subsection 6.1)
+
+Suppose $\mu$ is regular infinite and $X$ is an $\eta_\mu$ order of
+size $\mu$. The earlier report proves that $\WO_\mu(X)$ is itself
+$\eta_\mu$, with every local and global cofinality and coinitiality
+$\mu$ (\cref{swo:sw:permutationeta}).
+Here is the mechanism. If one side is empty, choose a fresh first label
+beyond all first labels on the other side and complete it. For two
+nonempty families of fewer than $\mu$ lower and upper enumerations,
+bound their cross first disagreements below $\mu$.
+Follow their forced common coordinates until the active next labels have
+strictly separated lower and upper sets. Choose a fresh interpolating
+label using saturation, and complete the resulting prefix. Fewer than
+$\mu$ used labels can be avoided by a further small cut. The procedure
+must stop before the bound is passed. Small cut filling gives the lower
+character bound; \Cref{swo:ds:thm:setspectrum} gives the upper bound.
+
+\begin{theorem}[Complete gap-character spectrum]\label{swo:ds:thm:gap-spectrum}
+Under the preceding hypotheses, the cofinality pairs of proper unfilled
+Dedekind cuts in $\WO_\mu(X)$ are exactly
+\[
+ (\mu,\lambda)\quad\text{and}\quad(\lambda,\mu),
+ \qquad \omega\le\lambda\le\mu,\quad\lambda\text{ regular}.
+\tag{S16.4}\label{swo:ds:eq:gap-spectrum}
+\]
+Both sides of a cut here are nonempty, and neither has an endpoint.
+\end{theorem}
+\begin{proof}
+The two characters are infinite regular cardinals. Neither exceeds
+$\mu$, because a larger character would produce a monotone sequence
+of type $\mu^+$, contrary to \Cref{swo:ds:thm:setspectrum}. They cannot
+both be below $\mu$: cofinal and coinitial sets of those sizes would
+form a strict small cut, and saturation would insert a point in the
+supposed unfilled cut. This proves necessity.
+
+For an infinite regular $\lambda<\mu$, fix an injective prefix $p$ of
+length $\lambda$. Its completion cylinder $C_p$ is convex and has no
+endpoints; its cofinality and coinitiality are $\mu$, by the same
+saturation argument. The cut just above the entire cylinder has lower
+character $\mu$. Enumerations above the cylinder first differ upward
+from $p$ at some coordinate below $\lambda$. Choose such upward
+deviations at a cofinal sequence of coordinates in $\lambda$; their
+completions form a coinitial family of size $\lambda$ on that upper
+side. Fewer than $\lambda$ deviation coordinates are bounded, and a
+later upward deviation lies below all of them. Thus the upper character
+is exactly $\lambda$. The cylinder has no maximum and the upper side
+has no minimum, so this cut is unfilled. The lower edge gives
+$(\lambda,\mu)$.
+
+For $(\mu,\mu)$ fix $a\in X$ and split the order according to
+first label $\le a$ or $>a$. The lower side is cofinally the cylinder
+with first label $a$, of character $\mu$. The upper side has
+coinitiality $\mu$, inherited from the native segment above $a$.
+Both sides have no endpoint. This realizes the final case.
+\end{proof}
+
+For regular $\kappa$ satisfying $2^{<\kappa}=\kappa$, these conclusions
+apply to $\No_{<\kappa}$. They answer the earlier report's regular-stage
+density, cellularity, and cut-character questions under precisely those
+hypotheses. Singular stages and regular stages of larger cardinality
+require separate analysis; the theorem does not erase the singular
+coding phenomenon in \eqref{swo:ds:eq:singular}.
+
+\begin{note}[\merge; source~16's theorem as an instance]\label{swo:vi:note:ds-instance}
+An $\eta_\mu$ order $X$ of regular cardinality $\mu$ satisfies the hypotheses
+of \cref{swo:sh:thm:general-permutation-gap-spectrum} with $\nu=\cf\mu=\mu$:
+it is dense without endpoints, its intervals have size $\mu$, and every point
+and both ends have character $\mu$, by saturation and $\card X=\mu$. An
+$\eta_\mu$ order has no gap with both characters below $\mu$, so the principle
+gives the pairs $(\mu,\theta)$, $(\theta,\mu)$ with $\theta\le\mu$ regular,
+which is \eqref{swo:ds:eq:gap-spectrum}. For $X=\No_{<\kappa}$ with $\kappa$
+regular and $2^{<\kappa}=\kappa$, \cref{swo:ds:thm:gap-spectrum} and
+\cref{swo:gs:n6.7} coincide. Source~17 is more general in the cutoff (any
+$\kappa$, no hypothesis on $2^{<\kappa}$), source~16 in the alphabet (any
+regular saturated alphabet). For $X=\mathbb R$ the reals report's
+\code{lwo:rk:thm:Pgaps} is the corresponding spectrum,
+$\{(\omega,\theta),(\theta,\omega):\theta<\mathfrak c\text{ regular}\}
+\cup\{(\cf\mathfrak c,\cf\mathfrak c)\}$; it is source~17's formula with
+$r=\omega$, $q=\cf\mathfrak c$, $\mu=\mathfrak c$ and the alphabet spectrum
+$\GapChar(\mathbb R)=\varnothing$ (the formula's $(r,r)$ comes from a principal
+digit split, and $(\omega,\omega)$ is the case $\theta=\omega$). Neither
+source~16 nor source~17 cites it.
+\end{note}
+
+% ---- source 18 (batch-81 manuscript 06), lines 1318-1479
+\subsection{How many gaps have each character? (source 18)}
+\label{swo:vi:sub:sh-mult}
+
+\merge\ ``The same classification'' and ``the three cases'' below are the
+straddling-cylinder classification of the gaps of $P$: a longest straddling
+prefix, a limit supremum of straddling lengths below $\mu$, and lengths
+cofinal in $\mu$, which are cases~1, 2 and~3 of \cref{swo:gs:lem:cut-trichotomy}
+(\cref{swo:sh:thm:exact-gap-spectrum}). Source~18's $d_*$ is the density
+$\mu^{<\mu}$ of $P$ (\cref{swo:gs:thm:invariants}); its prefix variable $q$ is
+printed $p'$, since $q=\cf\mu$ here. The theorem is the minimal-slice
+analogue of the reals report's count of $2^{\mathfrak c}$ gaps of $\W$
+(\code{lwo:sp:thm:gapcount}), which source~18 does not cite.
+
+The same classification gives exact multiplicities, not just a list
+of the possible character pairs.  Write
+\[
+d_*=\mu^{<\mu}=\sup_{\lambda<\mu}\mu^{|\lambda|}.
+\]
+This is also the cardinality of the tree of injective prefixes of
+length less than $\mu$.
+
+\begin{theorem}[Exact multiplicities]\label{swo:sh:thm:gap-multiplicities}
+The minimal permutation order $P$ has exactly $2^\mu$ proper
+Dedekind gaps.  For a pair $(a,b)$ in the spectrum of
+\Cref{swo:sh:thm:exact-gap-spectrum}, let $G_{a,b}$ be the set of
+proper gaps of that character.  Then
+\[
+\boxed{
+|G_{a,b}|=\begin{cases}
+2^\mu,&(a,b)=(q,q),\\
+d_*,&(a,b)\ne(q,q).
+\end{cases}}
+\]
+In particular, the Dedekind completion of $P$, with or without its
+two external ends, has cardinality $2^\mu$.
+\end{theorem}
+
+\begin{proof}
+First, every full nonsurjective injection $f:\mu\to X$ gives a
+proper gap of character $(q,q)$.  Fix $x_*\in X$ and consider
+injections into $X\setminus\{x_*\}$.  There are $2^\mu$ such
+injections: for a lower bound partition this set into $\mu$ disjoint
+pairs and choose one entry of each pair according to a binary word;
+the upper bound is $\mu^\mu=2^\mu$.
+
+Distinct injections give distinct gaps.  If $f<g$ first differ at
+$\alpha$, choose an unused digit strictly between $f(\alpha)$ and
+$g(\alpha)$ and extend the common prefix followed by that digit to
+a bijection.  This is possible because the intervening interval has
+cardinality $\mu$, while fewer than $\mu$ digits have been used.
+The resulting member of $P$ lies strictly between $f$ and $g$.
+There are therefore at least $2^\mu$ gaps of character
+$(q,q)$.
+
+For an upper bound on all gaps, the tree of short prefixes has
+cardinality $d_*\le 2^\mu$, an alphabet of size $\mu$ has at most
+$2^\mu$ cuts, and there are at most $\mu^\mu=2^\mu$ full injections.
+The three cases of the straddling-cylinder classification therefore
+give at most $2^\mu$ gaps altogether.  This proves both the total
+number and the multiplicity of $(q,q)$.
+
+Next fix an infinite regular $\theta<\mu$.  There are exactly $d_*$
+prefixes whose lengths have cofinality $\theta$.  For the nontrivial
+lower bound, take any infinite cardinal $\lambda$ with
+$\theta\le\lambda<\mu$ and put
+\[
+\delta=\lambda\cdot\theta.
+\]
+Then $\delta<\mu$, $|\delta|=\lambda$, and
+$\operatorname{cf}\delta=\theta$.  There are $\mu^\lambda$ injective
+words of this length.  One way to see the lower bound is to partition
+$X$ into $\lambda$ disjoint sets, each of cardinality $\mu$, and
+choose the digit at each coordinate from its assigned set.  Taking
+the supremum over $\lambda$ gives $d_*$.  The opposite bound is the
+cardinality of the whole prefix tree.
+
+Distinct prefixes give distinct lower-boundary cuts.  For
+incomparable prefixes, an unused digit strictly between their first
+disagreeing digits yields a permutation between their cylinders;
+the interval has size $\mu$ and fewer than $\mu$ digits have been used.
+If $p'$ properly extends $p$, choose at the first additional coordinate
+an unused digit smaller than the corresponding digit of $p'$.
+This gives a point of $C_p$ below all of $C_{p'}$; a larger choice gives
+a point above all of $C_{p'}$.  Thus the lower boundaries, and also
+the upper boundaries, are distinct in this case as well.  Consequently
+there are at least $d_*$ gaps of each character $(\theta,r)$ and
+$(r,\theta)$.
+
+It remains to bound the number of gaps of any character other than
+$(q,q)$.  Full-length omitted branches contribute none of
+these.  Limit-cylinder boundaries contribute at most $d_*$ gaps.
+For the maximal-prefix case distinguish two possibilities.
+
+If $q=r$, the character being counted is not $(r,r)$.
+In the alphabet sign-path description, a gap not of character
+$(r,r)$ has one sign set bounded below $\kappa$, so its path is
+eventually constant.  There are at most
+$\sum_{\delta<\kappa}2^{|\delta|}=\mu$ such paths.  Deleting a small
+set only adds $(r,r)$ gaps, and a principal digit cut likewise
+lifts to that character.  Thus each maximal prefix contributes at
+most $\mu$ gaps of the character under consideration, and all short
+prefixes together contribute at most $d_*\cdot\mu=d_*$.
+
+If $q\ne r$, then $\mu>\kappa$: equality would give
+$\operatorname{cf}\mu=\operatorname{cf}\kappa$.  Every alphabet cut
+is represented by a length-$\kappa$ sign word, so there are at most
+$2^\kappa$ of them.  Cuts created by deletions and retained points
+add at most $\mu$.  Since $\kappa<\mu$,
+\[
+2^\kappa\le\mu^\kappa\le d_*.
+\]
+Again all maximal prefixes together contribute at most $d_*$ gaps.
+
+Every allowed character other than $(q,q)$ has the form
+$(\theta,r)$ or $(r,\theta)$ for a regular $\theta<\mu$.
+The only apparent exception would be $(r,r)$ with $r=\mu$,
+but then $\kappa=\mu$ is regular and $q=r$, so that pair is
+precisely the already excluded $(q,q)$.
+The prefix-boundary lower bound therefore applies to every remaining
+character, completing the multiplicity calculation.
+
+Finally $|P|=2^\mu$, and its completion adds one point for each
+proper gap (and optionally its two ends).  The completion cardinality
+is consequently $2^\mu$.
+\end{proof}
+
+\subsubsection{Consequences and distinctions}
+
+The exact formula makes several distinctions transparent.
+\begin{enumerate}
+\item If $\mu=\kappa$ is regular, then $r=q=\kappa$ and the
+ spectrum is
+ \[
+ \{(\kappa,\kappa)\}\cup
+ \{(\theta,\kappa),(\kappa,\theta):
+          \theta<\kappa\text{ infinite regular}\}.
+ \]
+ In particular, the order's $\eta_\kappa$ property does not prohibit
+ asymmetric gaps with one small side.
+\item At a singular strong-limit cutoff, $\mu=\kappa$ and
+ $r=q=\operatorname{cf}\kappa$.  The asymmetric pairs range
+ over every infinite regular $\theta<\kappa$, including regular
+ cardinals much larger than $\operatorname{cf}\kappa$.
+\item If $\kappa=\omega_1$ and $2^{\aleph_0}=\aleph_2$, the proper
+ gap spectrum consists exactly of
+ \[
+ (\omega,\omega_1),\quad(\omega_1,\omega),\quad
+ (\omega_1,\omega_1),\quad(\omega_2,\omega_2).
+ \]
+ Every point has character $(\omega_2,\omega_2)$, while both global
+ cofinalities are $\omega_1$.  Thus local character, global character,
+ and gap character cannot be conflated.
+\item If $\kappa=\omega$, then $\mu=r=q=\omega$ and every
+ proper gap has character $(\omega,\omega)$.
+\end{enumerate}
+
+The set of possible character pairs depends only on $\mu$, $r$,
+and $q$; its proof retains substantially more information.
+Every gap has a precise structural cause: a split between next
+digits, a boundary of a limit-length cylinder, or a nonsurjective
+branch of full length.  Coinciding character pairs need not have
+the same structural cause.  Nor does equality of these spectra by
+itself establish order isomorphism.
+
+Natural further problems include classifying the order of the gaps
+of each character, studying which of the three mechanisms can be
+recognized intrinsically from the pure linear order, and extending
+the analysis to strata of nonminimal enumeration length.  In the
+last problem a prefix can leave a small residual alphabet near the
+end of the domain, so the uniform large-interval argument used here
+no longer applies without a separate analysis of the ordinal tail.
+
+% ---- source 17 (batch-81 manuscript 05), lines 831-898
+\subsection{Saturation and illustrative cases (source 17)}
+\begin{definition}\label{swo:gs:n6.4}
+For an infinite regular cardinal $\tau$, an order is an $\eta_\tau$ order
+when every pair of separated sets $A<B$, each of size below $\tau$, has a
+strict interpolant. Empty sides are allowed.
+\end{definition}
+
+\begin{corollary}[Exact saturation threshold]\label{swo:gs:cor:saturation}
+The order $P$ is an $\eta_r$ order, and is not an $\eta_{r^+}$ order.
+\end{corollary}
+\begin{proof}
+Suppose $A<B$ have sizes below $r$ and no strict interpolant. If one side
+is empty, the other would be cofinal or coinitial in $P$, contradicting
+\eqref{swo:gs:eq:invariants}. If both are nonempty, let
+\[
+ D=\{x:\exists a\in A\ (x\le a)\},\qquad
+ U=\{x:\exists b\in B\ (b\le x)\}.
+\]
+They are disjoint, and no strict interpolant means that they cover $P$.
+If $D$ has a greatest element $x$, then $B$ is coinitial immediately above
+$x$, contradicting right point character $q\ge r$. If $U$ has a least
+element, the dual contradiction uses $A$. If neither has an endpoint,
+$(D,U)$ is a gap with both characters below $r$, forbidden by
+\eqref{swo:gs:eq:gap-spectrum}.
+An $(r,r)$ gap exists; cofinal and coinitial witnesses of size $r$ show
+failure of $\eta_{r^+}$.
+\end{proof}
+
+\begin{example}[The countable birthday cutoff]\label{swo:gs:n6.6}
+At $\kappa=\omega$, $X$ is the order of finite sign sequences,
+$\mu=r=q=\omega$, and $P$ has countable weight and density, character
+$(\omega,\omega)$ at every point, and only $(\omega,\omega)$ gaps.
+It is a Baire, zero-dimensional order. These facts do not identify it
+with the real line, whose order topology has a completely different
+connectedness structure.
+\end{example}
+
+\begin{example}[Regular size-matched cutoffs]\label{swo:gs:n6.7}
+If $\kappa$ is regular and $2^{<\kappa}=\kappa$, then $\mu=r=q=\kappa$.
+The gap spectrum is
+\[
+ \{(\kappa,\kappa)\}\cup
+ \{(\theta,\kappa),(\kappa,\theta):\theta\in\Reg,\ \theta<\kappa\}.
+\]
+The order is $\eta_\kappa$ but not $\eta_{\kappa^+}$. The small character
+on one side of a limit-prefix boundary does not violate $\eta_\kappa$,
+because the other side requires $\kappa$ witnesses.
+\end{example}
+
+\begin{example}[A singular strong-limit cutoff]\label{swo:gs:n6.8}
+At $\kappa=\beth_\omega$, one has $\mu=\kappa$ and $r=q=\omega$.
+Every point has countable character, but for every infinite regular
+$\theta<\kappa$ there are gaps of character $(\theta,\omega)$ and
+$(\omega,\theta)$. Weight, density and cellularity are
+$\kappa^{<\kappa}=2^\kappa$. This complements rather than replaces the
+source's $\kappa\cdot\kappa$ binary-coding-length theorem
+(\cref{swo:st:thm:transition}).
+
+\smallskip\noindent\merge\ (3 October 2026.) Source~17 wrote ``are
+$\kappa^{<\kappa}$, with no extra cardinal-arithmetic simplification
+asserted''. At a singular strong limit $\kappa$ one has
+$2^\kappa\le\kappa^{\cf\kappa}\le\kappa^{<\kappa}\le2^\kappa$, so the value
+is $2^\kappa$; source~18 proves this identity in
+\cref{swo:sh:cor:new-regular-singular-invariants}, and source~15 obtains the
+same value $2^\kappa$ from its block-type theorem
+(\cref{swo:cb:new:cor:block-density}).
+\end{example}
+
+\begin{remark}[What has not been classified]\label{swo:gs:n6.9}
+The preceding formulas concern the minimal type $\mu$. They do not extend
+by replacing $\mu$ with an arbitrary ordinal $\alpha$ of cardinality
+$\mu$: a prefix of length below $\alpha$ can already use $\mu$ labels,
+leaving a radically smaller residual alphabet. Nor do equal values of
+these invariants imply order-isomorphism. Both issues remain in the
+research program at the end of this article.
+\end{remark}
+
+\subsection{Source 15's route to the saturation threshold}\label{swo:cb:new:sec:local-geometry}
+
+\merge\ Source~15's Section~9, ``Exact local characters at every cardinal
+cutoff''. Its Lemma~9.1 is recorded in
+\cref{swo:cb:new:lem:full-size-intervals}, its Theorem~9.2 in
+\cref{swo:cb:new:thm:local-characters} and its Lemma~9.3 in
+\cref{swo:cb:new:lem:power-sup-cofinality};
+its saturation theorem is proved directly, by a prefix search, not from the
+gap spectrum as in \cref{swo:gs:cor:saturation}, and is printed in full. Its
+$\delta=\cf\kappa$ is printed $r$. Its first sentence describes this report at
+source~15's pin; the point characters it mentions are now
+\cref{swo:gs:thm:invariants}.
+
+% ---- source 15 (batch-81 manuscript 03), lines 1655-1871 (chunk lines 4-19)
+
+The repository leaves the point characters of
+$\WO_{2^{<\kappa}}(\No_{<\kappa})$ open when
+$2^{<\kappa}$ need not equal $\kappa$.  They can be computed exactly.
+The local invariant is controlled by the enumeration length, whereas
+the global invariant is controlled by the numerical alphabet.
+
+Throughout this section let
+\[
+ X=\No_{<\kappa},\qquad \mu=2^{<\kappa},\qquad
+ r=\cf\kappa,\qquad L=\WO_\mu(X),
+\]
+where $\kappa$ is an infinite initial cardinal.  For $f\in L$, write
+$\operatorname{cf}^{-}(f)$ for the cofinality of the open initial
+segment $L_{<f}$, and $\operatorname{ci}^{+}(f)$ for the coinitiality
+of the open final segment $L_{>f}$.
+% ---- source 15 (batch-81 manuscript 03), lines 1655-1871 (chunk lines 115-120)
+
+We use the convention that an order is $\eta_\nu$ if every cut
+$A<B$ with $|A|+|B|<\nu$ has a strict interpolant, including the
+cases where one side is empty.  This does not assert that an arbitrary
+cut with larger sides is filled.
+
+% ---- source 15 (batch-81 manuscript 03), lines 1655-1871 (chunk lines 146-218)
+\begin{theorem}[Exact saturation threshold for the minimal slice]
+\label{swo:cb:new:thm:saturation-threshold}
+The order $L=\WO_\mu(\No_{<\kappa})$ is $\eta_{\cf\kappa}$.
+For every infinite cardinal $\nu>\cf\kappa$, it is not $\eta_\nu$.
+Equivalently, among infinite cardinal cut-size parameters,
+\[
+             L\text{ is }\eta_\nu
+                \quad\Longleftrightarrow\quad \nu\leq\cf\kappa.
+\]
+In particular, at every regular $\kappa$, the minimal slice is
+$\eta_\kappa$ without the additional assumption
+$2^{<\kappa}=\kappa$.
+\end{theorem}
+\begin{proof}
+Let $A<B$ be subsets of $L$ with $|A|+|B|<r$.
+Any family of fewer than $r$ surreal labels has birthdays
+bounded below $\kappa$.  Consequently, for any strict numerical cut
+formed by such labels, there are two points $u<v$ of $X$ strictly
+between its sides.  This follows from the usual surreal cut
+construction applied twice; all resulting birthdays stay below
+$\kappa$.  The same statement holds with an empty side.
+By \Cref{swo:cb:new:lem:full-size-intervals}, the interval $(u,v)$ has
+cardinality $\mu$.  Thus a numerical cut of this size admits a
+separator outside any prescribed set of fewer than $\mu$ labels.
+
+If one of $A,B$ is empty, choose the first entry strictly above all
+first entries on the left or below all first entries on the right,
+and complete to a permutation.  Suppose both are nonempty.  For
+each $(a,b)\in A\times B$, let $d(a,b)<\mu$ be its first-difference
+coordinate.  By \Cref{swo:cb:new:lem:power-sup-cofinality},
+\[
+        \beta=\sup\{d(a,b)+1:a\in A,\ b\in B\}<\mu.
+\]
+
+Build an injective prefix $p$, keeping as active those rows of
+$A$ and $B$ that still agree with $p$.  At a stage $\eta$, every
+active left value at coordinate $\eta$ is at most every active
+right value.  If a value occurs on both sides, it is unique; append
+that value to $p$ and keep the rows taking it.  Every discarded left
+row is already below all extensions of the new prefix, and every
+discarded right row is already above them.  The appended value is
+fresh because it belongs to active injective rows.
+
+If the active value sets have no common value, they form a strict
+numerical cut.  Choose a separator outside the range of $p$ using
+the preceding full-size-interval argument, append it, and stop.
+If an active side becomes empty, use the same argument for the
+resulting one-sided cut.  At a limit stage take the union of the
+prefixes and retain the rows that extend it.  The search cannot
+still have active rows on both sides at stage $\beta$: such a pair
+would agree at every coordinate below $\beta$, contradicting the definition of
+$\beta$.  Therefore it stops with a prefix of length less than
+$\mu$.
+
+That prefix has used fewer than $\mu$ labels.  Its remaining labels
+and remaining positions both have cardinality $\mu$, and an
+exhaustive completion has order type $\mu$.  Every such completion
+lies strictly above $A$ and below $B$, proving $\eta_r$.
+
+Finally, \Cref{swo:cb:new:thm:local-characters} gives a global
+cofinal subset of size $r$.  Together with an empty right side
+it is a cut of total size below every cardinal $\nu>r$, but
+it has no upper interpolant.  Hence no such $\eta_\nu$ property
+holds.
+\end{proof}
+
+These results settle the point-character part, and the maximal uniform
+cut-size threshold, of the earlier minimal-slice question.  They do
+not compute its full two-sided unrealized-cut spectrum.  In
+particular, saturation below $\cf\kappa$ and failure above that
+threshold do not specify which individual larger pairs of regular
+cofinalities occur as gaps.
+
+\smallskip\noindent\merge\ (3 October 2026.) The ``full two-sided
+unrealized-cut spectrum'' that source~15 leaves open is source~17's
+\cref{swo:gs:thm:gap-spectrum} (and source~18's
+\cref{swo:sh:thm:exact-gap-spectrum}); its multiplicities are
+\cref{swo:sh:thm:gap-multiplicities}.
+
+% ---- source 18 (batch-81 manuscript 06), lines 755-975
+\subsection{Source 18's route and extension: characters, interpolation and two regimes}
+\label{swo:vi:sub:sh-chars}
+
+\merge\ The rest of source~18's Section~4, printed whole. Its point
+characters and interpolation theorem are source~17's
+\cref{swo:gs:thm:invariants,swo:gs:cor:saturation} and source~15's
+\cref{swo:cb:new:thm:saturation-threshold}, proved again with a different
+interpolation argument (bounded dropout coordinates); it extends both to the
+types $\mu+n$ and to the finite-cofinite prefix orders $Q_n$
+(\cref{swo:sh:lem:new-cofinite-prefixes}), and it exhibits a bounded $(r,r)$
+obstruction explicitly. Its corollary on two regimes merges with source~17's
+examples \cref{swo:gs:n6.7,swo:gs:n6.8}; its second part supplies the value
+$\kappa^{<\kappa}=2^\kappa$ used in \cref{swo:gs:n6.8}.
+
+% ---- source 18 resumes (Subsection 4.4)
+\subsubsection{Exact point characters and global cofinalities}
+
+For a point $e$ in a linear order, its left character means the
+cofinality of $(-\infty,e)$, and its right character means the
+coinitiality of $(e,\infty)$.  An immediate predecessor or successor
+therefore gives character $1$ on the respective side.
+
+\begin{theorem}[Complete local and global characters at the minimal type]
+\label{swo:sh:thm:new-minimal-characters}
+Every point of $\WO_\mu(\No_{<\kappa})$ has left and right character
+$q=\operatorname{cf}(\mu)$, whereas
+\[
+ \operatorname{cf}(\WO_\mu(\No_{<\kappa}))
+ =\operatorname{ci}(\WO_\mu(\No_{<\kappa}))=r.
+\]
+More generally, $Q_n(\No_{<\kappa})$ has point characters $(q,q)$ for
+every finite $n$.  Accordingly, in
+$\WO_{\mu+n}(\No_{<\kappa})$:
+\begin{itemize}
+\item if $n=0$ or $1$, every point has characters $(q,q)$;
+\item if $n\geq2$, the first and last points of each finite $n!$-point
+      fiber have characters $(q,1)$ and $(1,q)$ respectively;
+\item all interior points of a finite fiber have characters $(1,1)$.
+\end{itemize}
+Interior points exist exactly when $n\geq3$.  The global cofinality and
+coinitiality remain $r$ for every finite $n$.
+\end{theorem}
+
+\begin{proof}
+Fix $p\in Q_n(\No_{<\kappa})$ and $\delta<\mu$.  There are $\mu$ labels
+numerically below $p(\delta)$, and equally many above it.  The labels
+used before $\delta$, together with the finitely many labels omitted
+from $p$, exclude fewer than $\mu$ labels.  Choose a smaller available
+label which therefore occurs later in the $\mu$-prefix, and transpose
+its occurrence with position $\delta$.  This gives $p^-_\delta<p$
+with first difference exactly $\delta$.  An analogous transposition
+gives $p^+_\delta>p$.
+
+As $\delta$ runs along an increasing cofinal sequence in $\mu$, the
+points $p^-_\delta$ increase cofinally toward $p$, while
+$p^+_\delta$ decrease coinitially toward it.  This proves both upper
+bounds $q$.  Conversely, fewer than $q$ points below $p$ have
+first-disagreement coordinates bounded below $\mu$.  Changing $p$ at
+a later coordinate gives a point above all of them and below $p$.
+They cannot be cofinal.  The dual argument gives the right lower
+bound.  This proves the character statement for $Q_n$.
+
+The map $e\mapsto e(0)$ is onto $\No_{<\kappa}$ and respects comparisons
+whenever the first coordinates differ.  A family cofinal in the
+enumeration order must therefore have first coordinates cofinal in
+$\No_{<\kappa}$; conversely, choose one enumeration over every member of
+a numerical cofinal sequence.  This proves the global cofinality
+formula, and the coinitiality formula is dual.  Finally,
+$\WO_{\mu+n}(\No_{<\kappa})$ is the lexicographic sum over $Q_n$ of
+finite ordered fibers of size $n!$.  Immediate neighbors inside a
+fiber give character $1$, while approach to the outside of a fiber is
+controlled by the character $q$ of the quotient point.
+\end{proof}
+
+\subsubsection{Sharp interpolation at every infinite cardinal cutoff}
+
+We say that $L$ is $\eta_r$ if for all sets $A,B\subseteq L$ with
+$|A\cup B|<r$ and $a<b$ for every $a\in A,b\in B$, there is
+$z\in L$ satisfying $A<z<B$.  Empty sides are allowed.  The sharpness
+result below also uses a bounded cut with both sides nonempty, so it
+does not depend on the empty-side convention.
+
+\begin{theorem}[Exact guaranteed interpolation]
+\label{swo:sh:thm:new-cutoff-interpolation}
+For every infinite initial cardinal $\kappa$, with notation as above,
+\[
+ \WO_\mu(\No_{<\kappa})\text{ is }\eta_r,
+ \qquad r=\operatorname{cf}(\kappa).
+\]
+It has a bounded unfilled cut of character $(r,r)$, so it is not
+$\eta_{r^+}$.  The same interpolation and sharpness assertions hold
+for $\WO_{\mu+1}(\No_{<\kappa})$.  For $n\geq2$, adjacent points in
+the terminal fibers already preclude $\eta_\omega$.
+\end{theorem}
+
+\begin{proof}[Proof of interpolation]
+First $\No_{<\kappa}$ is $\eta_r$.  A family of fewer than $r$ numerical
+options has birthdays bounded below $\kappa$, so the set-cut theorem
+supplies a separator with birthday less than $\kappa$.  Applying it
+twice supplies a nonempty interval of possible separators, still
+between the prescribed options.  By
+\Cref{swo:sh:lem:new-residual-alphabet}, such an interval has $\mu$
+labels.
+
+Let $A<B$ be sets of input enumerations with $|A\cup B|<r$.  We
+construct an injective common prefix $p$ until a completion separating
+the inputs becomes possible.  At a prefix of length $\delta<\mu$,
+the active inputs are
+\[
+ A_p=\{a\in A:a\restriction\delta=p\},\qquad
+ B_p=\{b\in B:b\restriction\delta=p\}.
+\]
+The invariant is that all discarded lower inputs lie below every
+completion of $p$, while all discarded upper inputs lie above every
+completion of $p$.  Let $L$ and $U$ be the sets of next entries of the
+active lower and upper inputs.  Then every $l\in L$ is at most every
+$u\in U$.
+
+If $L\cap U=\varnothing$, the two next-entry sets are strictly
+separated (with empty sides permitted).  Choose an interval of
+numerical separators between them.  It has $\mu$ labels, whereas
+$\operatorname{ran}p$ has size less than $\mu$.  Choose an unused
+separator $z$ in it.  Every completion of $p\frown(z)$ lies strictly
+between all inputs, and an exhaustive completion of the required type
+exists by cardinality.  The construction stops.
+
+Otherwise, $L\cap U$ consists of exactly one label $z$: two different
+common labels would contradict $L\leq U$.  This label is unused, since
+an active input is injective.  Append it to $p$.  Inputs with a smaller
+lower entry or a larger upper entry are discarded in the correct
+direction, maintaining the invariant.  At limits take the union of
+the prefixes.
+
+Suppose the construction never stopped before $\mu$.  The union is an
+injective word $p$ of length $\mu$.  Every input whose $\mu$-prefix
+differs from $p$ drops out at its first disagreement.  There are fewer
+than $r\leq q=\operatorname{cf}(\mu)$ inputs, so these dropout
+coordinates are bounded below $\mu$.  At most one input can have
+$\mu$-prefix exactly $p$: for type $\mu$ the whole enumeration is
+determined, and for type $\mu+1$ its single omitted label determines
+the last entry.  Since $A<B$, that one input cannot lie on both sides.
+Beyond the bound on the dropout coordinates, at least one active side
+is therefore empty, forcing the stopping case.  This contradiction
+proves that the construction stops at a coordinate below $\mu$.
+\end{proof}
+
+\begin{proof}[Proof of the bounded obstruction]
+Choose a sign word $s$ of length exactly $\kappa$ such that both its
+plus positions and minus positions are cofinal in $\kappa$, and whose
+first two signs are $+,-$.  For example, use the parity of the finite
+tail of each ordinal coordinate.  Then $0<s<1$, while
+$s\notin \No_{<\kappa}$.  Prefixes $s\restriction\gamma$ at cofinally many
+positions with $s(\gamma)=+$ lie below $s$ and are cofinal below its
+cut in $\No_{<\kappa}$; prefixes at cofinally many minus positions are
+coinitial above it.  Choose such two cofinal collections indexed by
+$r$.
+
+Every $x\in \No_{<\kappa}$ has its comparison with $s$ decided before
+$\kappa$.  A sufficiently long chosen prefix therefore passes $x$ on
+the appropriate side.  No element of $\No_{<\kappa}$ separates the two
+prefix families.  Neither side can have a smaller cofinal family:
+fewer than $r$ birthdays are bounded below $\kappa$, and a longer
+appropriate prefix passes every label in that family.  Thus this is
+a bounded numerical gap of character $(r,r)$.
+
+Pull the cut back under the first-coordinate map
+$e\mapsto e(0)$.  Choose arbitrary completions for the two numerical
+cofinal families.  A hypothetical separating enumeration would need
+its first entry to lie in the missing numerical cut, which is
+impossible.  Conversely those completions are cofinal and coinitial
+on their respective sides, and the first-coordinate projection
+proves the matching lower bounds.  Enumerations starting with $0$ and
+$1$ bound the whole configuration.  This supplies the claimed
+bounded $(r,r)$ obstruction.
+\end{proof}
+
+\subsubsection{Regular and singular consequences}
+
+\begin{corollary}[Two especially transparent regimes]
+\label{swo:sh:cor:new-regular-singular-invariants}
+\begin{enumerate}
+\item If $\kappa$ is regular and $2^{<\kappa}=\kappa$, then
+\[
+ |\WO_\kappa(\No_{<\kappa})|=2^\kappa,\qquad
+ \dens=\cell=\kappa,
+\]
+and every local character and global cofinality or coinitiality is
+$\kappa$.  The order is $\eta_\kappa$ and has a bounded unfilled
+$(\kappa,\kappa)$-cut.
+\item If $\kappa$ is a singular strong-limit cardinal, then
+\[
+ |\WO_\kappa(\No_{<\kappa})|=2^\kappa,\qquad
+ \dens=\cell=2^\kappa,
+\]
+while every point character and both global cofinalities are
+$\operatorname{cf}(\kappa)$.  Its sharp interpolation threshold is
+$\eta_{\operatorname{cf}(\kappa)}$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+In the regular case, $\kappa^{<\kappa}=\kappa$.  For a fixed
+$\lambda<\kappa$, every function $\lambda\to\kappa$ has bounded
+range, and the possibilities for each range bound are at most
+$2^{<\kappa}=\kappa$; summing over $\kappa$ range bounds gives
+$\kappa^\lambda=\kappa$ for nonzero $\lambda<\kappa$.
+
+In the singular strong-limit case, $2^{<\kappa}=\kappa$.  Let
+$r=\operatorname{cf}(\kappa)$ and take a cofinal sequence
+$(\kappa_\xi)_{\xi<r}$ below $\kappa$.  A subset of $\kappa$ is
+determined by its intersections with the $\kappa_\xi$.  Each
+intersection has fewer than $\kappa$ possibilities by the strong-limit
+hypothesis, so
+\[
+ 2^\kappa\leq\kappa^r
+       \leq\kappa^{<\kappa}\leq\kappa^\kappa=2^\kappa.
+\]
+Thus $\kappa^{<\kappa}=2^\kappa$.  The other conclusions now follow
+from the preceding theorems and the baseline cardinality theorem.
+\end{proof}
+
+\paragraph{What these results settle, and what they do not.}
+The baseline explicitly left density, cellularity and much of the
+singular-cutoff interpolation analysis as continuation questions.
+The preceding theorems determine density and cellularity for every
+fixed enumeration type and every infinite alphabet, and give exact
+local/global characters and sharp guaranteed interpolation at every
+infinite initial birthday cutoff for the minimal slice.  They do not
+identify the order up to isomorphism.  In particular, equality of
+these invariants is not an isomorphism theorem, and the old exact
+ordinal spectrum remains logically separate from the new topological
+information.  The full spectrum of unfilled cut characters requires
+an additional analysis of boundaries of transfinite prefix cylinders.
+
+% ---- source 15 (batch-81 manuscript 03), lines 1214-1654
+
+\section{Longer strata: every cardinal-block type (source 15)}
+\label{swo:cb:new:sec:block-types}\label{swo:cb:sec:fixed}
+
+\merge\ Source~15's Section~8, printed whole: the only batch-81 treatment of
+strata longer than the minimal one. Its $r_\kappa$ is printed $\rho_\kappa$
+(by \cref{swo:st:thm:transition}, $\rho_\kappa=\bl(\WO_\mu(\No_{<\kappa}))$), so
+that $r$ keeps the meaning $\cf\kappa$; its $D_{\sigma,m}$ is printed
+$\B_\sigma\times_\lex m$, so that no letter clashes with its core $\mathcal D$
+(\cref{swo:sub:notation81}). The section extends source~12's
+\cref{swo:st:thm:transition} ($\gamma=1$, $n=0$) along the targets of
+\cref{swo:st:n14.1}. Its entry code (\cref{swo:cb:lem:entrycode}) is source~12's
+\cref{swo:st:lem:code} and source~16's mechanism in (S16.2); its cube clause is
+\cref{swo:st:lem:strictcube} (reals report \code{lwo:thm:cube-strict}); its row
+scheduler (\cref{swo:cb:new:lem:block-scheduler}) is source~12's
+\cref{swo:st:lem:scheduler} run blockwise along $\gamma$; its finite-deletion
+lemma (\cref{swo:cb:new:lem:finite-deletion}) is \cref{swo:st:lem:cones} with a
+finite set removed; its finite-capacity lemma is, by its own account, the
+finite-fiber fusion argument of the reals report. Source~15 states its
+finite-deletion lemma for singular strong-limit $\kappa$; the hypothesis is not
+used in its proof.
+
+% ---- source 15 resumes (Section 8)
+The earlier minimal-slice theorem (\cref{swo:st:sec:transition}) extends to all enumeration types whose
+remainder on division by the alphabet cardinal is finite.  This includes
+the explicitly proposed next cases $\mu\cdot2$ and $\mu\cdot\gamma+n$.
+It does not classify an additional infinite remainder smaller than $\mu$.
+All products and sums of ordinals in this section are ordinal operations.
+
+Let $\kappa$ be an infinite initial cardinal, and put
+\[
+ X=\No_{<\kappa},\qquad \mu=|X|=2^{<\kappa},\qquad
+ \rho_\kappa=
+ \begin{cases}
+  \kappa\cdot\kappa,&\kappa\text{ is a singular strong-limit cardinal},\\
+  \mu,&\text{otherwise}.
+ \end{cases}
+\]
+For an ordinal $\alpha$ with $|\alpha|=\mu$, write $\WO_\alpha(X)$ for
+the bijections $\alpha\to X$, compared by their first unequal entry in
+the numerical order of $X$.  For a positive integer $m$, write
+\[
+ \B_\sigma\times_{\lex}m=\B_\sigma\times_{\mathrm{lex}}\{0,\ldots,m-1\},
+ \qquad \B_\sigma=(2^\sigma,<_{\mathrm{lex}}),
+\]
+the finite chain $m=\{0,\ldots,m-1\}$ being the last coordinate.
+
+\begin{lemma}[An explicit entry code and the strict cube hierarchy]\label{swo:cb:lem:entrycode}
+Replace each minus sign by $00$, each plus by $11$, and terminate with
+$01$. The resulting code $c(s)$ is prefix-free and preserves numerical
+surreal order. Its length is $2\cdot\bd(s)+2$, less than $\kappa$
+for $s\in\No_{<\kappa}$. Furthermore,
+\[
+ \B_\alpha\emb\B_\beta\quad\Longleftrightarrow\quad\alpha\leq\beta.
+\]
+\end{lemma}
+\begin{proof}
+The three blocks $00<01<11$ encode precisely minus, termination, and
+plus. Distinct completed codes cannot be proper prefixes: at the first
+termination of one of them the other either terminates too or has a
+different block. Padding a completed entry therefore does not alter its
+comparison with another entry.
+
+For the cube assertion, extension by zeros gives the embedding when
+$\alpha\leq\beta$. Suppose $\alpha>\beta$ and an embedding in the other
+direction exists. Successively read target bits, retaining at each step
+a full source child cylinder whose image lies on one side of the next
+target-bit split. Such a child exists: if the lower child does not lie
+wholly below the split, every point of the upper child lies above it.
+At limits take unions of the chosen prefixes. After $\beta$ steps, all
+points extending one source prefix of length $\beta$ have the same whole
+target word. There are at least two source extensions since
+$\beta<\alpha$, contradicting injectivity. This is the same cylinder
+fusion mechanism used in the prior binary-length calculations.
+\end{proof}
+
+When $\mu=\kappa$ is singular, $\kappa$ is a strong limit. Otherwise
+$2^\rho=\kappa$ for some $\rho<\kappa$ would also give
+$2^\lambda=\kappa$ at $\lambda=\max(\rho,\cf\kappa)<\kappa$,
+contradicting K\"onig's inequality $\cf(2^\lambda)>\lambda$.
+Thus the three cases used below are exhaustive.
+
+\begin{theorem}[Cardinal blocks and a finite terminal permutation]
+\label{swo:cb:new:thm:block-types}
+For every $0<\gamma<\mu^+$ and every $n<\omega$,
+\[
+ \boxed{\quad
+ \WO_{\mu\cdot\gamma+n}(\No_{<\kappa})
+       \equi (\B_{\rho_\kappa\cdot\gamma}\times_{\lex}n!).
+ \quad}
+\]
+In particular, if $\kappa$ is a singular strong limit, then
+\[
+ \WO_{\kappa\cdot\gamma+n}(\No_{<\kappa})
+       \equi
+       \B_{\kappa\cdot\kappa\cdot\gamma}
+          \times_{\mathrm{lex}}\{0,\ldots,n!-1\}.
+\]
+The statement concerns equimorphism; it does not identify these
+permutation orders with the generally nondense binary products.
+\end{theorem}
+
+We give the scheduler detail before proving the theorem, since a
+cardinality-preserving reindexing alone would not preserve lexicographic
+order.
+
+\begin{lemma}[Blockwise row scheduling]
+\label{swo:cb:new:lem:block-scheduler}
+Let $Y$ be a linearly ordered set of infinite cardinality $\kappa$, let
+$0<\gamma<\kappa^+$, and put $\lambda=\kappa\cdot\gamma$.
+Suppose that $Y$ contains pairwise disjoint subsets $(Y_i)_{i<\lambda}$,
+each of cardinality $\kappa$, with an order embedding
+$\phi_i:X\to Y_i$, and that
+$Z=Y\setminus\bigcup_{i<\lambda}Y_i$ is either empty or has
+cardinality $\kappa$.  Then
+\[
+                   X^\lambda_{\mathrm{lex}}\emb\WO_\lambda(Y).
+\]
+\end{lemma}
+\begin{proof}
+For each $i<\lambda$, fix a bijection $b_i:\kappa\to Y_i$.
+For $x\in X$, transpose $\phi_i(x)$ with $b_i(0)$ in that enumeration;
+denote the result by $b_{i,x}$.  Its first value is $\phi_i(x)$,
+and for equal $x$ the whole row is the same.
+
+Split the variable rows into the consecutive blocks
+$\{\kappa\cdot\beta+\xi:\xi<\kappa\}$, $\beta<\gamma$.
+Within one block schedule row--column pairs $(\xi,j)\in\kappa^2$
+first by $\max(\xi,j)$ and then lexicographically inside each level.
+Every pair has fewer than $\kappa$ predecessors: all earlier pairs lie
+in a square bounded below $\kappa$, and such a square has cardinality
+less than $\kappa$, even when $\kappa$ is singular.  The schedule
+therefore has order type $\kappa$.  The first occurrence of row $\xi$
+is $(\xi,0)$, and these first occurrences have increasing row indices.
+
+If $Z\ne\varnothing$, include its fixed $\kappa$-long enumeration as a
+filler row before the variable rows in the first block.  The row-index
+order is $1+\kappa=\kappa$, so the same construction applies.  The
+filler row has no input parameter.  Every later block uses only its
+$\kappa$ variable rows.
+
+For $x=(x_i)_{i<\lambda}$, output the entries of $b_{i,x_i}$ by these
+successive block schedules.  Each block has length $\kappa$ and there
+are $\gamma$ blocks, so the output has length exactly $\lambda$.
+The disjoint rows and the filler exhaust $Y$ exactly once.
+
+If inputs $x<_{\mathrm{lex}}x'$ first differ at row
+$i=\kappa\cdot\beta+\xi$, earlier blocks agree completely.  In block
+$\beta$, every output before the first entry of row $i$ comes from a
+lower row or from the fixed filler.  Those outputs agree.  The first
+unequal output is therefore $\phi_i(x_i)<\phi_i(x'_i)$ at the first
+entry of row $i$.  This proves both injectivity and order preservation.
+No regularity of $\gamma$ or $\kappa$ was used.
+\end{proof}
+
+\begin{lemma}[Finite deletion does not obstruct the singular scheduler]
+\label{swo:cb:new:lem:finite-deletion}
+If $\kappa$ is a singular strong limit, $X=\No_{<\kappa}$,
+$F\subseteq X$ is finite, and $\lambda=\kappa\cdot\gamma$ for
+$0<\gamma<\kappa^+$, then
+\[
+                   X^\lambda_{\mathrm{lex}}
+                         \emb\WO_\lambda(X\setminus F).
+\]
+\end{lemma}
+\begin{proof}
+For $\xi<\kappa$, let $C_\xi$ be the sign-sequence cone with prefix
+$+^\xi\concat -$.  The cones are disjoint, and prefixing gives an
+order isomorphism $X\to C_\xi$.  Indeed,
+$\xi+1+\eta<\kappa$ for $\xi,\eta<\kappa$, because $\kappa$ is an
+initial cardinal; deletion of the prefix gives the inverse.  Each
+cone has cardinality $\kappa$.  At most finitely many cones meet $F$.
+Select $\kappa$ unaffected cones and index them by $\lambda$, which
+has cardinality $\kappa$.
+
+The complement of those selected cones in $X\setminus F$ has
+cardinality $\kappa$: it contains all but finitely many of the
+all-plus sequences, one for each length below $\kappa$, and is a
+subset of $X$.  The preceding lemma now applies, with that complement
+as the filler.  In particular, no unexplained bijection of a grid with
+$\lambda$ is being used in place of a lexicographic scheduler.
+\end{proof}
+
+\begin{proof}[Proof of \Cref{swo:cb:new:thm:block-types}]
+Write $\lambda=\mu\cdot\gamma$ and $\sigma=\rho_\kappa\cdot\gamma$.
+We first construct the upper embedding.  Use the repository's
+prefix-free, numerical-order-preserving binary code $c(s)$ for each
+$s\in X$, with positive length less than $\kappa$.
+
+If $\mu>\kappa$, pad each individual entry code to length $\kappa$.
+Prefix-freeness ensures that this preserves all entry comparisons.
+A block of $\mu$ entries then consumes ordinal length
+$\kappa\cdot\mu=\mu$.  Applying this separately to the $\gamma$
+successive blocks gives a prefix code of length
+$\mu\cdot\gamma=\sigma$.
+
+If $\mu=\kappa$ and $\kappa$ is regular, concatenate the unpadded
+codes in each $\kappa$-entry block.  Each proper partial sum of their
+lengths is below $\kappa$ by regularity, while the full sum is
+$\kappa$ because all code lengths are positive.  Each block therefore
+consumes exactly $\kappa$, again giving length $\sigma$.
+
+In the remaining case $\mu=\kappa$ is singular, it is a strong limit.
+Pad each entry code to length $\kappa$.  Each block now consumes
+$\kappa\cdot\kappa$, and the complete $\lambda$-entry prefix has
+code length $\kappa\cdot\kappa\cdot\gamma=\sigma$.
+
+In all cases, a prefix of length $\lambda$ from a bijection
+$\lambda+n\to X$ has a binary code of length exactly $\sigma$.
+The remaining $n$ labels form a finite set determined by that prefix.
+Append the rank of their terminal permutation in its increasing
+lexicographic list of $n!$ permutations.  Different prefixes compare
+inside the binary code; equal prefixes have the same remaining labels
+and compare by the finite rank.  This gives
+$\WO_{\lambda+n}(X)\emb (\B_{\sigma}\times_{\lex}n!)$.
+
+For the reverse embedding in either nonexceptional case, reserve a
+fixed $n$-element set $F\subseteq X$ and partition $X\setminus F$
+into pairs indexed by $\lambda$.  Such a partition exists because
+$|\lambda|=\mu$.  List each pair in its increasing or decreasing
+orientation according to the corresponding bit of a member of
+$\B_\lambda$.  Since $\lambda$ is a nonzero limit ordinal,
+$2\cdot\lambda=\lambda$.  Append the requested one of the $n!$
+permutations of $F$.  Here $\sigma=\lambda$, giving the required
+embedding.
+
+It remains to obtain the longer cube in the singular strong-limit
+case.  Let $\delta=\cf\kappa<\kappa$, and choose nonzero ordinals
+$(\tau_j)_{j<\delta}$ cofinal in $\kappa$, with
+$\sum_{j<\delta}\tau_j=\kappa$.  The identities
+\[
+ \delta\cdot\kappa=\kappa,
+ \qquad
+ \delta\cdot\lambda=\delta\cdot(\kappa\cdot\gamma)=\lambda
+\]
+allow the $\lambda$ input coordinates of $X^\lambda$ to be grouped
+into $\lambda$ consecutive blocks of $\delta$ coordinates.  In each
+block, restrict its $j$th coordinate to surreals whose sign sequences
+have length exactly $\tau_j$.  That coordinate is a copy of
+$\B_{\tau_j}$, so the entire restricted product is
+\[
+ \B_{\sum_{i<\lambda}\sum_{j<\delta}\tau_j}
+       =\B_{\kappa\cdot\lambda}
+       =\B_{\kappa\cdot\kappa\cdot\gamma}
+       =\B_\sigma.
+\]
+By \Cref{swo:cb:new:lem:finite-deletion}, this product embeds into
+$\WO_\lambda(X\setminus F)$.  Append any of the $n!$ permutations
+of $F$, obtaining $(\B_{\sigma}\times_{\lex}n!)\emb\WO_{\lambda+n}(X)$.
+\end{proof}
+
+\subsection{Exact coding lengths, embedded cubes, and comparisons}
+\label{swo:vi:sub:cb-coding}
+
+The next capacity argument is the finite-fiber fusion argument already
+used in the real-alphabet report.  It is included to make the numerical
+consequences of the extension explicit.
+
+\begin{lemma}[Finite fibers over a binary cube]
+\label{swo:cb:new:lem:finite-capacity}
+Let $\sigma,\tau$ be nonzero limit ordinals and let $m,n$ be positive
+integers.  Then
+\[
+ (\B_{\sigma}\times_{\lex}m)\emb (\B_{\tau}\times_{\lex}n)
+ \quad\Longleftrightarrow\quad
+ \sigma<\tau\ \text{or}\
+      (\sigma=\tau\ \text{and}\ m\leq n).
+\]
+Moreover,
+\[
+ \bl(\B_{\sigma}\times_{\lex}m)=\sigma+\lceil\log_2m\rceil,
+ \qquad
+ \B_\theta\emb (\B_{\sigma}\times_{\lex}m)
+ \quad\Longleftrightarrow\quad
+ \theta\leq\sigma+\lfloor\log_2m\rfloor.
+\]
+\end{lemma}
+\begin{proof}
+For equal binary lengths, suppose
+$f:(\B_{\sigma}\times_{\lex}m)\emb (\B_{\sigma}\times_{\lex}n)$.  Recursively choose a source
+binary prefix $s_\xi$ and target binary prefix $t_\xi$, both of
+length $\xi$, such that
+\[
+ f\bigl(C_{s_\xi}\times\{0,\ldots,m-1\}\bigr)
+     \subseteq C_{t_\xi}\times\{0,\ldots,n-1\}.
+\]
+At a successor stage the target's next bit cuts the image into two
+ordered parts.  Of the source cylinder's two full children, at least
+one lies wholly on one side of that cut: if its lower child is not
+wholly on the lower side, its upper child is wholly on the upper side.
+Keep that child and the corresponding target bit.  At a limit stage
+take unions of prefixes.  The invariant persists, and the source
+cylinder remains nonempty.  At stage $\sigma$, all $m$ points over
+one source binary sequence lie in one target fiber of size $n$.
+Thus $m\leq n$.  The converse is immediate.
+
+Coding the finite chain of size $m$ by
+$\lceil\log_2m\rceil$ bits gives
+$(\B_{\sigma}\times_{\lex}m)\emb\B_{\sigma+\lceil\log_2m\rceil}$.
+No cube shorter than $\sigma$ can contain $(\B_{\sigma}\times_{\lex}m)$, since it
+already contains $\B_\sigma$ and the binary cube hierarchy is
+strict.  A target $\B_{\sigma+j}=(\B_{\sigma}\times_{\lex}2^j)$ with $j<\omega$
+can contain it only if $m\leq2^j$, by the same fusion argument.
+This proves the coding-length formula.
+
+Likewise, $\B_{\sigma+j}$ embeds into $(\B_{\sigma}\times_{\lex}m)$ exactly when
+$2^j\leq m$.  Once the first forbidden finite extension has been
+excluded, every larger cube is excluded because it contains that
+extension.  This proves the complete cube spectrum.
+
+Finally, if $\sigma<\tau$, then
+$\sigma+\lceil\log_2m\rceil<\tau$ because $\tau$ is a limit.
+Code into that shorter cube and then into the target.  If
+$\tau<\sigma$, the target codes into a cube of length
+$\tau+\lceil\log_2n\rceil<\sigma$, whereas the source contains
+$\B_\sigma$; strictness excludes an embedding.  This proves the
+comparison criterion.
+\end{proof}
+
+\begin{corollary}[The complete invariant on these block types]
+\label{swo:cb:new:cor:block-invariants}
+Under the hypotheses of \Cref{swo:cb:new:thm:block-types}, put
+$\sigma=\rho_\kappa\cdot\gamma$.  Then
+\[
+ \bl\bigl(\WO_{\mu\cdot\gamma+n}(\No_{<\kappa})\bigr)
+       =\sigma+\lceil\log_2(n!)\rceil,
+\]
+and
+\[
+ \B_\theta\emb\WO_{\mu\cdot\gamma+n}(\No_{<\kappa})
+ \quad\Longleftrightarrow\quad
+ \theta\leq\sigma+\lfloor\log_2(n!)\rfloor.
+\]
+For $0<\gamma,\eta<\mu^+$ and $m,n<\omega$,
+\[
+ \WO_{\mu\cdot\gamma+n}(\No_{<\kappa})
+      \emb\WO_{\mu\cdot\eta+m}(\No_{<\kappa})
+ \quad\Longleftrightarrow\quad
+ \gamma<\eta\ \text{or}\
+       (\gamma=\eta\ \text{and}\ n!\leq m!).
+\]
+\end{corollary}
+\begin{proof}
+Apply the finite-capacity lemma and use strict monotonicity in the right
+argument of $\gamma\mapsto \rho_\kappa\cdot\gamma$ for a fixed
+nonzero left factor.  Here each $\rho_\kappa\cdot\gamma$ is a nonzero
+limit ordinal.
+\end{proof}
+
+For an unconditional singular example, take $\kappa=\beth_\omega$.
+The types $\kappa\cdot2$, $\kappa\cdot2+3$, and $\kappa^2$ have
+binary coding lengths respectively
+\[
+ \kappa^2\cdot2,\qquad \kappa^2\cdot2+3,\qquad \kappa^3.
+\]
+The type $\kappa\cdot2+3$ contains the cube of length
+$\kappa^2\cdot2+2$ but not the cube of its own coding length.
+These distinctions are invisible to cardinality and to the ordinal
+embedding spectrum, which remain $2^\kappa$ and
+$\{\beta:\beta<\kappa^+\}$ throughout.
+
+\subsection{Density and cellularity, including the singular minimal slice}
+\label{swo:vi:sub:cb-density}
+
+Write $\dens(L)$ for the least cardinality of a dense subset in the order
+topology, and $\cell(L)$ for the supremum of cardinalities of families of
+pairwise disjoint nonempty open sets.  An additional consequence of the
+coding theorem is an exact answer for these two invariants on the same
+block types.  In particular, the singular minimal slice has the largest
+possible cellularity, a fact not visible from its unchanged ordinal
+embedding spectrum.
+
+\begin{corollary}[Density and cellularity of the block types]
+\label{swo:cb:new:cor:block-density}
+For $L=\WO_{\mu\cdot\gamma+n}(\No_{<\kappa})$ as above,
+\[
+ \dens(L)=\cell(L)=
+ \begin{cases}
+ 2^{<\mu},&\rho_\kappa=\mu,\ \gamma=1,\ n\leq2,\\
+ 2^\mu,&\text{otherwise}.
+ \end{cases}
+\]
+Consequently
+\[
+ d\bigl(\WO_\mu(\No_{<\kappa})\bigr)
+ =c\bigl(\WO_\mu(\No_{<\kappa})\bigr)
+ =
+ \begin{cases}
+ 2^\kappa,&\kappa\text{ is a singular strong limit},\\
+ 2^{<\mu},&\text{otherwise}.
+ \end{cases}
+\]
+\end{corollary}
+\begin{proof}
+First consider $\rho_\kappa=\mu$, $\gamma=1$, and $n\leq2$.
+The finite factor $n!$ has size at most two.  There is an embedding
+$f:L\to (\B_{\mu}\times_{\lex}n!)$.  No point of $L$ is isolated.  Indeed, $L$
+has no endpoints because the native surreal alphabet has neither a
+least nor a greatest element; swapping the first entry with a smaller
+or larger label moves either way without changing the enumeration type.
+The adjacency criterion for exhaustive permutations applies inside a
+fixed type: if the unused remainder at a first difference is infinite,
+an ascent in the lower tail or a descent in the upper tail gives an
+intermediate permutation of the same type.  Adjacency is therefore
+confined to the finite terminal permutation component.  For $n\leq2$
+each such component has at most two points, so no point has both an
+immediate predecessor and an immediate successor.  Thus no point is
+isolated, and every nonempty open set contains at least five points.
+
+For every binary prefix $s$ of length less than $\mu$ whose cylinder
+meets the first-coordinate projection of $f[L]$, choose one element
+$x_s\in L$ whose image has that prefix.  There are at most
+$\sum_{\xi<\mu}2^{|\xi|}=2^{<\mu}$ such choices.  These choices are
+dense.  To see this, take five increasingly ordered points
+$x_0<\cdots<x_4$ in any given nonempty open interval.  Each binary
+fiber has at most two points, so the binary first coordinate of
+$f(x_2)$ is strictly between those of $f(x_0)$ and $f(x_4)$.
+Choose a prefix long enough to distinguish it from both outer
+coordinates.  Its whole binary cylinder lies strictly between them,
+and the chosen $x_s$ lies in the original open interval.  Hence
+$\dens(L)\leq2^{<\mu}$.
+
+Conversely $L$ contains $\B_\mu$.  For each $\xi<\mu$, its
+$2^{|\xi|}$ cylinders of length $\xi$ each contain three ordered
+points.  The ambient open intervals in $L$ between the images of
+the outer two points are nonempty, since they contain the image of
+the middle point, and they are pairwise disjoint.  Therefore
+$\cell(L)\geq2^{<\mu}$, proving equality in the first
+case since always $\cell(L)\leq \dens(L)$.
+
+In every remaining case, put $\sigma=\rho_\kappa\cdot\gamma$.
+If $\sigma>\mu$, the embedded cube $\B_\sigma$ has $2^\mu$
+distinct cylinders of prefix length $\mu$, each with at least three
+points because $\sigma$ is a limit ordinal greater than $\mu$.
+The preceding interval construction gives $\cell(L)\geq2^\mu$.
+If $\sigma=\mu$ but $n\geq3$, the embedded order $(\B_{\mu}\times_{\lex}n!)$
+has a fiber with at least three points over each of its $2^\mu$
+binary sequences.  The intervals between the images of its first
+and last fiber points are again pairwise disjoint and nonempty.
+Thus $\cell(L)\geq2^\mu$ here as well.  Finally
+$\dens(L)\leq|L|=2^\mu$, giving the claimed equalities.
+\end{proof}
+
+\subsection{The boundary of the result}
+\label{swo:vi:sub:cb-boundary}
+
+Write a general admissible type as
+$\alpha=\mu\cdot\gamma+\zeta$, $\zeta<\mu$.
+The theorem settles the case that $\zeta$ is finite.  When $\zeta$
+is infinite, the preceding long prefix leaves a residual numerical
+suborder of cardinality $|\zeta|$; that residual order varies with
+the prefix.  Neither the size nor the coding behavior of this smaller
+alphabet can simply be replaced by those of $\No_{<\kappa}$.
+An exact treatment must control the possible residual suborders and
+the code lengths available uniformly for their permutations.  Thus
+the result gives a precise affirmative continuation of the proposed
+cardinal-block program while leaving the smaller infinite-tail
+classification explicitly open.
+
+\begin{remark}[\merge; the reals report's display at $X=\No_{<\kappa}$]\label{swo:vi:rem:lwo-display}
+The reals report asks under which hypotheses on $X$ the display
+$\WO_{\lambda+n}(X)\equi\B_\lambda\times_\lex n!$ still holds (its question
+``Other ground orders'', \code{lwo:sec:research}); its batch-80 note records
+that \cref{swo:st:thm:transition} gives the case $n=0$, $\lambda=\mu$ for
+$X=\No_{<\kappa}$, except at a singular strong limit. For $\lambda=\mu\cdot\gamma$,
+$0<\gamma<\mu^+$, and every $n<\omega$, \cref{swo:cb:new:thm:block-types} gives
+$\WO_{\lambda+n}(\No_{<\kappa})\equi\B_{\rho_\kappa\cdot\gamma}\times_\lex n!$, and
+by \cref{swo:cb:new:lem:finite-capacity} two such products with nonzero limit
+lengths are equimorphic only when the lengths are equal. So the display holds
+whenever $\kappa$ is not a singular strong limit ($\rho_\kappa=\mu$). At a
+singular strong limit ($\mu=\kappa$, $\rho_\kappa=\kappa\cdot\kappa$) it holds
+exactly when $\kappa\cdot\kappa\cdot\gamma=\kappa\cdot\gamma$, that is, when
+$\gamma=\kappa^\omega\cdot\delta$ for some ordinal $\delta$ (then
+$\kappa\cdot\gamma=\gamma$, by Cantor normal form to base $\kappa$); it fails
+for $\gamma=1,2,\kappa,\ldots$. The display is therefore not simply false at
+singular strong limits. Strata $\lambda$ that are not multiples of $\mu$
+(the first is $\mu+\omega$), cutoffs that are not cardinals, and other alphabets
+remain open, as source~15 says in \cref{swo:vi:sub:cb-boundary}.
+\end{remark}
+
+% ---- hand chunk baselines
+\section{Set-sized baselines and warnings in sources 13--18}\label{swo:vi:sec:baselines}
+
+\merge\ Every batch-81 source restates the set-sized baseline of the reals
+report and of Part~I (\cref{swo:sw:fixed,swo:sw:setspectrum}): cardinality
+$2^\mu$, universality for orders of size at most $\mu$, and the exact ordinal
+spectrum $\beta<\mu^+$. They are recorded here once, with the sources' own
+provenance statements, followed by the set-level warnings of sources~13, 14
+and~17. None of these statements is new.
+
+\begin{note}[Source~16, Theorem~4.1, ``Basic set-alphabet results'']\label{swo:ds:thm:setspectrum}\label{swo:ds:sec:setbaseline}
+Source~16's Section~4 fixes ``an infinite linearly ordered set $X$ of
+cardinality $\mu$'' and records that exhaustive enumerations are
+prefix-incomparable and that an injective prefix of length less than $\mu$
+extends to a bijection of every ordinal type $\alpha$ with $\card\alpha=\mu$.
+\emph{The orders $\WO(X)$ and $\WO_\mu(X)$ have cardinality $2^\mu$. Every
+linear order of cardinality at most $\mu$ embeds into $\WO_\mu(X)$. For every
+ordinal $\beta$, $\beta\emb\WO(X)$ if and only if $\beta<\mu^+$, and the same
+statement holds with $\WO_\mu(X)$ in place of $\WO(X)$, and for the reverse of
+$\beta$.} Its proof is the pair-orientation, initial-segment and
+coordinate-stabilization proof of \cref{swo:sw:fixed}. Source~16's status line:
+``Theorem~4.1 is background from the ProveIt reals and surreal reports; it is
+reproved here to make the later arguments self-contained. In particular,
+`all ordinals embed' is false at every fixed set stage.''
+
+% ---- source 16 (batch-81 manuscript 04), lines 438-469 (chunk lines 2-33)
+\emph{Birthday cutoffs and a singular distinction} (source~16's
+Subsection~4.1).
+For $\No_{<\kappa}$, $\kappa$ an infinite cardinal, substitute
+$\mu=2^{<\kappa}$ for the alphabet cardinal in
+\Cref{swo:ds:thm:setspectrum}. The ordinal embedding cutoff is $\mu^+$,
+not automatically $\kappa^+$. The earlier report also proves a sharper
+binary-coding distinction:
+\[
+ \WO_\mu(\No_{<\kappa})\equi
+ \begin{cases}
+ 2^{\kappa\cdot\kappa}_{\lex},
+      &\kappa\text{ is a singular strong-limit cardinal},\\
+ 2^\mu_{\lex},&\text{otherwise}.
+ \end{cases}
+\tag{S16.2}\label{swo:ds:eq:singular}
+\]
+Here $\kappa\cdot\kappa$ is ordinal multiplication. This statement is
+equimorphism, meaning embeddings in both directions, not isomorphism.
+
+The upper coding mechanism replaces a negative sign by $00$, a positive
+sign by $11$, and termination by $01$. These codes are prefix-free and
+preserve numerical comparison. At a regular stage, a sum of fewer than
+$\kappa$ code lengths remains below $\kappa$. At a singular strong-limit
+stage it can already reach $\kappa$ before all $\kappa$ coordinates have
+been processed; padding every entry to length $\kappa$ gives total length
+$\kappa\cdot\kappa$. The matching lower bound in the report uses a
+cofinal sequence of sign lengths and an order-preserving row scheduler
+(\cref{swo:st:thm:transition}).
+We do not reclassify the binary coding ranks of all longer strata here.
+The topological classification below, by contrast, covers every admissible
+enumeration length and every infinite alphabet.
+\end{note}
+
+\begin{note}[Source~18, Theorem~3.1, ``Set-sized universality and the exact ordinal spectrum'']\label{swo:sh:thm:set-spectrum}\label{swo:sh:sec:fixed}
+Source~18's Section~3 defines $\WO(X)$ and $\WO_\alpha(X)$ as here, notes that
+two exhaustive enumerations are never proper prefixes of one another, so that
+no termination convention is needed, and that ``labels are essential: two
+two-point well-orders can be isomorphic as abstract orders and still have
+different first numerical labels''. \emph{Let $X$ be an infinite linear order of
+cardinality $\mu$. Then $\card{\WO(X)}=\card{\WO_\mu(X)}=2^\mu$. Every linear
+order of cardinality at most $\mu$ embeds into $\WO_\mu(X)$. An ordinal $\beta$
+embeds into $\WO(X)$ if and only if $\beta<\mu^+$. The same exact spectrum holds
+for reverse ordinals and for every nonempty stratum $\WO_\alpha(X)$.} The proof
+is that of \cref{swo:sw:fixed}; source~18 adds that the stabilization argument
+``uses the regularity of the successor cardinal $\mu^+$, not regularity of
+$\mu$'', and that cardinality $2^\mu$ is a poor guide, since such an order
+contains no increasing sequence of type $\mu^+$. Its subsection ``What the
+existing binary-rank result adds'' restates \cref{swo:st:thm:transition}
+(binary coding length $\kappa\cdot\kappa$ at a singular strong-limit cutoff,
+$\mu$ otherwise), calls it ``background rather than a dependency of our new
+cut-spectrum proof'', and adds: ``Replacing these ordinal sums by
+cardinalities would erase a genuine distinction. Our results below add
+topological information not determined by this coding length.''
+\end{note}
+
+\begin{note}[Source~15, Lemma~3.2 and Theorem~3.3, ``Set-sized baseline, from the prior reports'']\label{swo:cb:lem:prefixfree}\label{swo:cb:thm:sets}\label{swo:cb:sec:baseline}
+Source~15's Lemma~3.2 (``Exhaustiveness removes prefix ambiguity''):
+\emph{distinct exhaustive bijective enumerations of the same set have a first
+unequal coordinate in both domains; neither is a proper prefix of the other.}
+Its Theorem~3.3 is the baseline of \cref{swo:ds:thm:setspectrum} for every
+nonempty fixed-type slice, proved as in \cref{swo:sw:fixed}, with the fixed type
+$\alpha=\lambda+n$ handled by reserving $n$ final labels and orienting pairs
+indexed by $\lambda$. Source~15 says: ``This proof uses no special property of
+real or surreal arithmetic. It is reproduced to fix the dependence of the
+later theorems; its content is already in the audited reports. If $X$ is
+finite of size $n$, the whole order is the finite chain of its $n!$
+permutations. The empty carrier has one empty well-order.'' Its subsections on
+birthday cutoffs and on set-length words, which close its Section~3, follow.
+Its Lemma~3.1 (fresh separators) belongs to the class layer and is recorded
+with the other batch-81 restatements of \cref{swo:lem:delete}.
+\end{note}
+
+% ---- source 15 (batch-81 manuscript 03), lines 251-365 (chunk lines 77-124)
+
+\subsection{Source 15's birthday cutoffs and set-length words}
+\label{swo:vi:sub:cb-base}
+
+\merge\ The last two subsections of source~15's Section~3; its $X_\kappa$ is
+printed $\No_{<\kappa}$, and its forward reference to its Section~8 points to
+\cref{swo:cb:new:sec:block-types}.
+
+\subsubsection{Birthday cutoffs}
+
+For an infinite initial cardinal $\kappa$, let
+\[
+ X_\kappa=\No_{<\kappa},\qquad \mu=|X_\kappa|=2^{<\kappa}.
+\]
+Counting sign levels proves the cardinality formula: the supremum of their
+cardinalities is at least $\kappa$, and the union of $\kappa$ levels does
+not exceed it. The preceding theorem gives
+\[
+ |\WO(X_\kappa)|=2^{2^{<\kappa}},\qquad
+ \beta\emb\WO(X_\kappa)\ \Longleftrightarrow\ 
+ \beta<(2^{<\kappa})^+.
+\]
+At regular $\kappa$, a cut using fewer than $\kappa$ labels has birthdays
+bounded below $\kappa$, and the usual cut construction stays in the
+cutoff. Singular $\kappa$ need not have this property. The fixed-type
+calculation in \Cref{swo:cb:sec:fixed} makes the distinction visible even
+when the cardinalities and ordinal spectra coincide.
+
+\subsubsection{Why all set-length words are a different order}
+
+If $X$ varies, the class of all pairs $(X,R)$ with $X$ a set of surreals
+and $R$ a well-order is a legitimate class of sets. Its ordinal
+enumerations are injective set-length words. Proper prefixes now occur.
+For example $(0)$ is a prefix of $(0,1)$. One may put shorter words first,
+shorter words last, or use a termination symbol placed inside the alphabet.
+These comparisons agree on exhaustive enumerations of a fixed carrier but
+need not agree on variable carriers.
+
+The prior report gives an explicit self-delimiting sign code embedding all
+set-length surreal words, with shorter-first order, into $\No$. Its code
+also exhibits why this order need not be isomorphic to $\No$: a word of
+nonzero limit length is the supremum of its shorter prefixes, whereas a
+surreal point has no set-sized cofinal family below it. Restricting to
+successor-length words removes that particular obstruction and yields
+a class order isomorphic to $\No$ in $\GBC$ (this report's
+\cref{swo:part:words}, source~11's Sections~9--11 there).
+An embedding theorem therefore must not be strengthened to an isomorphism
+theorem merely because both carriers are proper classes.
+
+% ---- source 13 (batch-81 manuscript 01), lines 417-492
+\subsection{Source 13's fixed-set section}\label{swo:fs:swf:sec:fixed}
+
+\merge\ Source~13's Section~4, ``The fixed-set theory and birthday
+fragments'', printed whole; its theorem, a restatement credited by source~13
+itself, is printed as a note, and its $X_\kappa$ is printed $\No_{<\kappa}$.
+
+The set-sized layer is important both in its own right and as a safe
+formalization starting point. We record its already-established results
+with their provenance rather than repeating the earlier report in full.
+
+\begin{note}[Source~13, Theorem~4.1, ``Fixed-alphabet results from the repository'']\label{swo:fs:swf:thm:fixed}
+Let $X$ be an infinite linearly ordered set, $|X|=\mu$, and compare
+exhaustive enumerations using its label order. Then
+\[
+ |\W(X)|=2^\mu,
+ \qquad
+ \beta\emb\W(X)\ \Longleftrightarrow\ \beta<\mu^+,
+\]
+and the same spectrum holds for reversed ordinals. Every linear order
+of cardinality at most $\mu$ embeds in $\W(X)$.
+\par\emph{Provenance and proof mechanisms} (source~13).
+These are the general-alphabet results of the repository's real
+well-ordering report, carried into Section 6 of the surreal report
+(\cite{ProveItReals}; \cref{swo:sw:fixed}). The cardinal lower bound codes independent
+binary choices by pair reversals in an enumeration; the upper bound
+counts well-order relations on $X$. Universality uses binary codes for
+initial segments of a small order. The ordinal upper bound is a
+prefix-stabilization obstruction, stronger than a cardinality bound.
+We invoke that established written theorem here; this paragraph is not
+a replacement proof of its stabilization argument.
+\end{note}
+
+For an infinite cardinal $\kappa$, let
+\[
+       \No_{<\kappa},\qquad \mu=2^{<\kappa}.
+\]
+Counting signs gives $|\No_{<\kappa}|=\mu$: there are $2^{|\alpha|}$ sign
+sequences of length $\alpha$, and the union over $\alpha<\kappa$ has
+that supremum cardinality. Thus the ordinal spectrum of
+$\W(\No_{<\kappa})$ is exactly the ordinals below $(2^{<\kappa})^+$.
+This does not say that only ordinals below the birthday cutoff embed.
+
+\subsubsection{A warning about the minimal-length layer}
+
+Write $\B_\theta=(\{0,1\}^\theta,<_{\lex})$, and write $L\equi M$ for
+mutual order embeddability. The merged surreal report proves the
+following sharper distinction (\cref{swo:st:thm:transition}, Theorem~8.3 of
+the report at its pin):
+\[
+ \W_\mu(X_\kappa)\equi
+ \begin{cases}
+  \B_{\kappa\cdot\kappa}, &\kappa\text{ singular strong limit},\\
+  \B_\mu, &\text{otherwise},
+ \end{cases}
+ \qquad \mu=2^{<\kappa}.
+\]
+The multiplication in $\kappa\cdot\kappa$ is \emph{ordinal}
+multiplication. At a singular strong limit, $\mu=\kappa$, but the
+lengths $\kappa$ and $\kappa\cdot\kappa$ need not have the same
+lexicographic effect. This is an existing result, not an advance of the
+present manuscript.
+
+There is no automatic passage from equimorphism to isomorphism, from a
+minimal-length stratum to all strata, or from independently chosen
+cutoff embeddings to a coherent global map. The last passage requires
+agreement on overlaps. These distinctions become especially visible in
+the product obstruction below.
+
+\subsubsection{Set-sized approximations to the new cut theorem}
+
+For an arbitrary set alphabet, prefix cylinders can terminate by
+exhaustion and can have extrema. The crossing arguments of
+source~13's Section~8 (its reconstruction of cuts from prefix cylinders) still provide a useful tree description, but
+its clean all-ordinal formulation depends on two genuinely global facts:
+every set prefix has a completion, and after deleting its range there
+are fresh labels on both sides of any remaining set cut. A bounded
+alphabet need not have either property at its boundary. Therefore the
+new global theorem is not asserted by simply replacing $\No$ by every
+birthday fragment in its statement.
+
+\begin{note}[Source~14, Theorem~2.1, ``Set-carrier baseline, inherited'']\label{swo:tc:thm:setbaseline}
+\emph{In $\ZFC$, if $\card X=\mu$ is infinite, then $\card{\WO(X)}=2^\mu$ and
+$\beta\emb\WO(X)$ if and only if $\beta<\mu^+$, for ordinals $\beta$. Every
+linear order of cardinality at most $\mu$ embeds in $\WO(X)$. Adjacent pairs
+are exactly the consecutive permutations of a finite residual alphabet after a
+common prefix.} This is \cref{swo:sw:fixed} with source~11's adjacency theorem
+(reals report \code{lwo:thm:adjacency}). Source~14 prints it as ``inherited from
+the repository, not a new result of this continuation'' and gives no proof:
+``The complete proof is in the predecessor report; we do not substitute
+counting for that argument.'' Its set-level remark follows.
+\end{note}
+
+% ---- source 14 (batch-81 manuscript 02), lines 257-306 (chunk lines 26-55)
+
+\merge\ The rest of source~14's Subsection~2.2, ``Fixed carriers and the
+inherited spectra''.
+
+The size assertion is plausible for two different reasons: a relation on
+$X$ has at most $2^\mu$ possibilities, while independently choosing the
+orientation of $\mu$ disjoint pairs gives $2^\mu$ distinct well-orders.
+The ordinal upper bound is a lexicographic obstruction, not a cardinality
+bound: $2^\mu$ can be much larger than $\mu^+$. The complete proof is in
+the predecessor report; we do not substitute counting for that argument.
+
+For an infinite cardinal $\kappa$, sign sequences give
+\[
+ |\No_{<\kappa}|=2^{<\kappa}.
+\]
+Thus \Cref{swo:tc:thm:setbaseline} applies with $\mu=2^{<\kappa}$.
+The repository also proves a more refined minimal-slice dichotomy:
+with $\mathbb B_\delta=(\{0,1\}^{\delta},<_{\rm lex})$,
+\[
+ \W_\mu(\No_{<\kappa})\equim
+ \begin{cases}
+   \mathbb B_{\kappa\cdot\kappa},&\kappa\text{ is singular strong limit},\\
+   \mathbb B_\mu,&\text{otherwise}.
+ \end{cases}
+\]
+Here $\cdot$ is \emph{ordinal} multiplication and $\equim$ means mutual
+order embeddability, not isomorphism. This inherited result should not be
+confused with the support-cardinal theorem proved below: birthday bounds
+restrict the alphabet, whereas support bounds restrict how much of a
+fixed global enumeration is changed.
+
+% ---- source 17 (batch-81 manuscript 05), lines 189-217
+\subsection{Source 17's labelled well-orders of a fixed set}\label{swo:vi:sub:gs-base}
+
+\merge\ Source~17's Subsection~2.1, from its map of interpretations.
+Let $(X,<)$ be a set with a specified linear order. A well-ordering $R$ of
+$X$ has a unique exhaustive enumeration
+$e_R:\alpha_R\longrightarrow X$, where $\alpha_R$ is its ordinal type.
+For two distinct well-orders, neither exhaustive enumeration is a proper
+prefix of the other: after listing every label once there is no fresh label
+to append. Therefore a first unequal coordinate exists, and we define
+\[
+ R<_{\lex}S\quad\Longleftrightarrow\quad
+ e_R(\delta)<e_S(\delta),\qquad
+ \delta=\min\{\xi:e_R(\xi)\ne e_S(\xi)\}.
+\]
+Write $\WO(X)$ for all such well-orders, and $\WO_\alpha(X)$ for the
+suborder with enumeration type exactly $\alpha$. Equivalently,
+$\WO_\alpha(X)$ consists of bijections $\alpha\to X$.
+The notation $\WO_\mu(X)$ below always uses the initial ordinal of the
+cardinal $\mu=|X|$.
+
+The source establishes, for infinite $|X|=\mu$,
+\[
+ |\WO(X)|=2^\mu,
+ \qquad
+ \beta\text{ embeds in }\WO(X)\ \Longleftrightarrow\ \beta<\mu^+,
+\]
+and universality for linear orders of cardinality at most $\mu$
+(\cref{swo:sw:setspectrum}; \cite{ProveItReals}). These are labelled-order results. Quotienting
+well-orders by abstract order-isomorphism removes exactly the labels on
+which the comparison depends.
+
+% ---- hand chunk status
+\section{What this Part answers}\label{swo:vi:sec:status}
+
+\merge\ Dated notes, 3 October 2026. Each item names the question, where it is
+asked, and the result that answers it. Where the question index of
+\cref{swo:sec:questions} (dated 2 October 2026) says otherwise, these notes
+supersede it.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Source~11's question on the cut spectrum and point characters of
+the minimal slice without $2^{<\kappa}=\kappa$} (\cref{swo:n16.7}):
+\textbf{answered}. Point characters $(q,q)$, global characters $r$, density,
+weight and cellularity $\mu^{<\mu}$ (\cref{swo:gs:thm:invariants}), the exact gap
+spectrum (\cref{swo:gs:thm:gap-spectrum}), its multiplicities
+(\cref{swo:sh:thm:gap-multiplicities}), and the saturation threshold $\eta_r$
+(\cref{swo:gs:cor:saturation,swo:cb:new:thm:saturation-threshold,swo:sh:thm:new-cutoff-interpolation}).
+\item \emph{Source~12's question on the invariants of
+$\WO_\mu(\No_{<\kappa})$} (\cref{swo:st:n14.3}): answered except for the
+isomorphism type and homogeneity, which no source determines (source~17's
+\cref{swo:gs:n6.9}; source~18 says ``equality of these invariants is not an
+isomorphism theorem'').
+\item \emph{Source~08's question~2, invariants at regular cutoffs}
+(\cref{swo:sk:sec:research}): \textbf{answered}. Density and cellularity of
+every stratum (\cref{swo:ds:thm:density,swo:ds:cor:birthdaytopology}), point
+characters and cut cofinalities (\cref{swo:ds:thm:gap-spectrum,swo:gs:n6.7}).
+This completes item~(d) of \cref{swo:sec:answers}.
+\item \emph{Source~08's question~3, which small cuts fail at singular cutoffs}:
+answered in character terms by \cref{swo:gs:thm:alphabet-gaps,swo:gs:thm:gap-spectrum}
+(source~17 does not claim this question); its coding half was already answered
+by \cref{swo:st:thm:transition} (item~(c) of \cref{swo:sec:answers}).
+\item \emph{Source~12's question on all fixed enumeration types}
+(\cref{swo:st:n14.1}) \emph{and source~08's question~4}: answered for
+$\alpha=\mu\cdot\gamma+n$, $0<\gamma<\mu^+$, $n<\omega$, the first targets the
+question suggests (\cref{swo:cb:new:thm:block-types,swo:cb:new:cor:block-invariants}); open
+for an infinite remainder $\zeta<\mu$ (\cref{swo:vi:sub:cb-boundary}). The
+density of every stratum is \cref{swo:ds:thm:density}.
+\item \emph{Source~09's direction~7, what survives away from inaccessible
+truncations} (\cref{swo:ec:sec:research}): answered for the minimal slice; it
+is $\eta_r$ and not $\eta_{r^+}$, $r=\cf\kappa$
+(\cref{swo:gs:cor:saturation,swo:cb:new:thm:saturation-threshold}).
+\item \emph{The reals report's question ``Other ground orders''}
+(\code{lwo:sec:research}; item~(e) of \cref{swo:sec:answers}): answered further
+for $X=\No_{<\kappa}$, every stratum $\lambda=\mu\cdot\gamma$ and every $n$
+(\cref{swo:vi:rem:lwo-display}); open for strata that are not of this form,
+for noncardinal cutoffs and for other alphabets.
+\item \emph{The reals report's questions on other alphabets}
+(\code{lwo:rk:q:alphabets}, \code{lwo:sp:q:alphabets}): the density and
+cellularity of every stratum and the incompleteness of every stratum are
+settled for every infinite linear alphabet (\cref{swo:ds:thm:density,swo:ds:thm:incomplete});
+the gap spectrum is settled for the minimal slice of every alphabet satisfying
+the hypotheses of \cref{swo:sh:thm:general-permutation-gap-spectrum}, which
+bears on the ``general cut-spine transfer theorem'' that
+\code{lwo:sp:q:alphabets} asks for; the gap spectrum of the full order
+$\WO(X)$ stays open.
+\end{enumerate}
+Source~16 also says that its regular-stage results ``answer the earlier
+report's regular-stage density, cellularity, and cut-character questions
+under precisely those hypotheses'' (end of \cref{swo:vi:sub:ds-regular}), and
+source~15 that its block theorem gives ``a precise affirmative continuation of
+the proposed cardinal-block program'' (\cref{swo:vi:sub:cb-boundary}); items~(c)
+and~(e) record the same.
 
 % ---- hand chunk questions_head
 \cleardoublepage\phantomsection
