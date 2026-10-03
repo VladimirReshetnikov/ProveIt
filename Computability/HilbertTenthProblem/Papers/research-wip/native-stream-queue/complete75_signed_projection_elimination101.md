@@ -1,5 +1,11 @@
 # A 101-operation polynomial from a signed projection
 
+> The [factored first-norm descendant](complete74_factored_first_norm.md)
+> saves one multiplication, giving **74=40M+34A** with the same supplied
+> witnesses, comparisons and complete SOS polynomial as this source.
+> The three raw/positive/signed forms cost130/106/100 as fully paid SOS
+> polynomials, with exact degrees52/84/84. This historical proof is retained.
+
 The fixed complete75 compiler admits a single polynomial with **20 strictly
 positive existential witnesses**, exact degree **84**, and evaluation cost
 **101=50M+51A**. Its comparison certificate costs **75=41M+34A** and has

@@ -1,5 +1,21 @@
 # A 75-operation fixed-index universal certificate
 
+> The later [all-value first-norm refactoring](../research-wip/native-stream-queue/complete74_factored_first_norm.md)
+> lowers the comparison bound to **74=40M+34A**, with unchanged30/22/20
+> positive-witness versions and19/11/9 comparisons. Each retains exactly
+> its parent's complete comparisons and SOS polynomial. The20-coordinate
+> SOS costs100 at exact degree84. Independent source and mathematical
+> reviews pass. This original75 proof and source remain historical parents.
+>
+> The current single-polynomial descendant is the
+> [factored first-root construction](../research-wip/native-stream-queue/complete86_factored_first_root.md):
+> **86=48M+38A**,19 positive witnesses, exact degree179, with an alternative
+> **87=47M+40A** at degree135. Its complete positive-zero bijection retains
+> the ordinary input and every other parent factor. Independent source and
+> mathematical reviews pass. This note's75-operation comparison certificate
+> and original proof remain unchanged; the later progress history below
+> retains its historical counts.
+
 For every recursively enumerable set S of positive integers, fixed program
 numerals can be computed so that the system below has strictly positive
 integer witnesses exactly for ordinary input x in S. The complete arithmetic

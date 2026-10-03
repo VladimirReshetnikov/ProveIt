@@ -73,6 +73,37 @@ An [independent complete-source review](review_three_mass_arithmetic.md) verifie
 all 228 emitted polynomial identities, fair old-coordinate baselines and paid
 loaders/endpoints. The external horizon and universal-compiler obligations remain.
 
+The separate [endpoint-penalty rewrite](three_mass_endpoint_penalties.md)
+retains every witness and exact degree two, reaching51/51 for the two-step
+native/clean pair and100/98 for three increments. Complete natural zero tuples
+are unchanged. Its [broader independent audit](review_three_mass_endpoint_penalties_full.md)
+checks128 complete pairs over64 actual certificates, with fresh root replay.
+
+A subsequent [guarded selector projection](three_mass_selector_projection.md)
+removes one natural witness per nonempty step. The complete native/clean
+increment-decrement examples cost47/46; the three-increment examples cost91/88.
+Core witnesses fall8→6 and18→15 while degree rises to three. The
+[independent review](review_three_mass_selector_projection.md) reconstructs
+all252 complete polynomials and18,847 live paid gates, and both fresh root
+receipts pass. The explicit guard is essential: direct unguarded elimination
+has an actual complete false-halt zero. This remains a fixed-horizon result.
+
+The [safe composition](three_mass_projected_endpoint_penalties.md) combines
+the two reductions at46/45 operations for the native/clean two-step pair and
+86/83 for three increments, retaining the projected witnesses and degree three.
+A conditional extra selector barrier handles overlapping endpoint masks at
+horizon one; its necessity has an actual complete false-halt counterexample.
+The [independent audit](review_three_mass_projected_endpoint_penalties.md)
+checks all783 emitted coefficient polynomials, exact degrees and56,077 live
+gates. Both author and independent receipts pass fresh root replay.
+
+Exhausting the allowed [per-step omitted-branch choices](three_mass_mixed_branch_search.md)
+further lowers the two-step native/clean pair to44/43, with six witnesses and
+degree three. All744 schedules over62 layouts are counted; the three-increment
+pair remains86/83. The [independent search audit](review_three_mass_mixed_branch_search.md)
+checks the exact enumeration, all live-gate counts and complete winning
+polynomials. Both receipts have fresh matching root replays.
+
 The low-mass canonical corollary also admits the previously proved
 [five-witness congruence substitution](presburger_congruence_five.md): after
 Presburger quantifier elimination its auxiliary count improves from
@@ -173,11 +204,51 @@ release entrypoints. Unchanged author suites were not rerun for byte-only
 placements. New assembled mathematics or later editorial revisions need
 separate semantic reviews; they do not inherit a proof check from placement.
 
-## Newly merged publication awaiting its own audit
+## Subsequent publication boundaries
 
 The surreal synthesis at `d51fafea806cbd48ba29be017eff85cdd9653b14` and
-`0be9b913487fa2cc0e16cea6545c55f33b4446d8` arrived during the final sync of
-this review/reduction pass and was merged from `acb0041e1`. Its four changed
-paths contain the assembled four-source article, new crosswalk/questions,
-README, PDF and notation update. Review this composition next; the original
-archive and staging verdicts above remain explicitly confined to their pins.
+`0be9b913487fa2cc0e16cea6545c55f33b4446d8` now has a completed scoped
+[new-prose audit](review_surreal_synthesis_0be9b9134.md) and
+[preservation census](review_surreal_transfer_0be9b9134.md). The prose audit
+reads all98 editorial blocks, README and notation changes; its separate
+three-location patch corrects two P3 findings, supported by an exact finite
+noncoherence counterexample and all29 original member sizes/hashes.
+
+The preservation audit accounts for all166 original formal occurrences:
+124 normalized-exact statements,41 declared duplicate notes, and one original
+question retained in a new answered remark. All198 original labels occur
+exactly once;830 references resolve. All112 displays in100 copied ranges
+retain order and multiplicity;35 displays outside those ranges are explicitly
+not claimed verbatim. All14 code/data companions are byte-identical across
+placement and both writes. Basic PDF checks pass without a build/layout claim.
+Root read both checkers and notes and freshly reproduced both receipts.
+
+The [reciprocal surreal notes at a13efdd51](review_surreal_reciprocal_a13efdd51.md)
+now pass a separate scoped audit of all12 publication paths. The four old
+articles are retained by exact ordered insertion-only maps:461 formal blocks,
+251 proofs,457 displays and820 labels;39 companions remain byte-exact. All
+new referenced numbers and relative links resolve. The complete new prose
+retains the relevant regularity, GB/choice and recursion limits; no new defect.
+Root read and freshly replayed the checker. PDF page/basic checks do not claim
+a fresh build or layout review.
+
+The [mass Parts V–VI publication review](review_signal_batch80_typesetting_ef114b0bb.md)
+completes the separate `ef114b0bb` boundary (three publication paths). It
+accounts for all75 source formal/proof occurrences (71 retained,4 proof
+pointers) and105 displays (98 retained,7 declared deduplications). The215
+companion files are unchanged;417 labels,846 references,48 bibliography keys
+and156 citation occurrences resolve. All new editorial and README claims
+receive their documented semantic read.
+
+Two P3 summary findings have a separate privately tested patch: restore the
+source-dependent compiler quantifiers before fixing a universal source, and
+qualify the five-particle construction's reversibility as unasserted. The
+[independent challenge](review_signal_batch80_quantifiers_ef114b0bb.md) confirms
+the first finding and the properly restricted quartic degree-minimality claim.
+Root read the complete helpers/notes, authenticated challenge pins and exact
+anchors, checked parser coverage of every declared source theorem environment,
+and freshly replayed the full receipt and private patch application. The PDF
+is byte-authenticated only; no rebuild or visual inspection is asserted.
+These three current publication boundaries are reviewed within their stated
+scopes; later revisions remain separate. No universal arithmetic improvement
+is inferred from any of these transfers.

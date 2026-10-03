@@ -1,17 +1,983 @@
 # Continuation: universal straight-line certificates
 
-> **Next review boundary, newly merged:** surreal report publication commits
-> `d51fafea806cbd48ba29be017eff85cdd9653b14` and
-> `0be9b913487fa2cc0e16cea6545c55f33b4446d8` (upstream merge `acb0041e1`).
-> They add the four-source synthesis, crosswalk/questions/README, first PDF and
-> a notation update: four changed paths, including about6,287 TeX delta lines.
-> The [four original archive reviews](review_batch80_surreal.md) and
-> [base staging audit](review_surreal_placement_ccc046989.md) remain valid at
-> their pins; they do not review this new composition. Audit original-to-final
-> formal preservation and new explanatory claims, including the existing GBC
-> well-foundedness qualification. Read `Algebra/SurrealNumbers/AGENTS.md` for
-> any work under that subtree. This pending boundary does not invalidate the
-> completed U15/three-mass arithmetic and corrected-code publication audits below.
+> **Current established universal bounds:74 certificate operations /86 polynomial operations.**
+> **Current exact degrees at86/87 operations:178/134.** The
+> [transport quotient shear](complete86_transport_quotient_shear.md) supplies
+> t=zplus-w*C and changes only kinner=K+w*q to K+w plus the quotient name.
+> Nt=(K+w)*C+(q-F)-t*(q-1) has exact degree2. All seven other factors and
+> finalizers remain literal; costs48M+38A and47M+40A,19 positive witnesses.
+> Full signed polynomial identity uses zplus=t+w*C. At a full positive zero,
+> Nt=+-1 forces C>=0 for both sources, and parent rt=(K+w+1)C+Z+alpha+ell*x-eps>0
+> proves t>0 without a native/compiler conclusion. Thus full positive zero
+> sets are in bijection; neither map preserves the full positive orthant.
+> [Independent full review](review_complete86_transport_quotient_shear.md)
+> and both installed receipts pass fresh / replay. Exact factor/leading-form
+> proof is uniform on valid inherited fixed-program numeral slices. Raw
+> gate-propagation188/144 must not be confused with exact178/134. Current
+> combined catalogue starts86/178,87/134,88/122,89/112,90/108,91/102,92/80,
+> 93/72,94/62,95/54,96/50,97/48,98/44; retain106/42,108/28,110/24 separately.
+> The [saved-source shear probe](transport_shear_frontier_probe.md) and
+> [independent review](review_transport_shear_frontier_probe.md) now justify
+> the additional88/122,89/112,90/108 as actual universal upper-bound witnesses.
+> Author and review fresh installed / replays pass. Inventory is exactly13
+> first-root saved+5 older asymmetric grouped+10 older linear/gap grouped+
+> 11 direct aliases; never claim the101 ledger-only plans were reconstructed.
+> Review checks39 full identities/3,616 paid gates/actual unit finalizers;
+> 15 exact integer-coefficient full expansions and120 leaders cover winners
+> and two direct aliases. All three winners use product-minus-one. Degree
+> proofs are uniform on valid fixed numeral slices, not inferred from finite
+> expansions. Scope is reviewed saved circuits, not a new partition census
+> or maintained public compiler. Preserve the original probe-stage note.
+> The [complete26-base shear census](transport_shear_partition_census.md)
+> and [independent weighted census](transport_shear_weighted_census_independent.md)
+> now close the saved-metadata/tie gap:59,262 partitions,298,672 SOS/anchor
+> plans; no additional point beyond the current13-point catalogue. Root's
+> source packet reuses authenticated predecessor base builders, never their
+> old census/verify, and emits/recounts all202 per-base/per-cost winners
+> totaling19,375=9,702M+9,673A. It proves202 whole source pullbacks,18,567
+> retained registers,808 full values202rational,190 core factor degrees and
+> 202 whole degree expansions. The independent checker reads ancestry JSON
+> without parent Python, enumerates least-element blocks, and cross-checks
+> all26 minima by subset DP plus distinguished-anchor scans. Predicted202
+> cost/degree/M/A minima match literal winners; no independent full202-source
+> audit is claimed by that weighted checker. The separate [full source audit](review_transport_shear_partition_census.md)
+> now reconstructs all26 cores and202 complete winners from pinned ancestry JSON,
+> including172 SOS/30 anchor finalizers,12 pure products,18,567 register identities,
+> 202 exact integer full coefficient pullbacks/degrees,190 factor+18 comparison
+> leaders and202 separately recomputed modular coefficient hashes. It imports no
+> author Python and reruns no old census. All three installed / replays pass.
+> Do not repeat a metadata-only search or promote this finite negative result
+> to a lower bound outside the26 cores and SOS/single-anchor grammar.
+> Earlier first-root and rewrite-census degrees below describe their frozen
+> predecessor coordinates, not the new quotient-shear polynomials.
+> The [complete74 factorization](complete74_factored_first_norm.md) replaces
+> `(E²+X)*(kY)²` by `L*(L+k)`, L=E*(kY), E=XY, saving one multiplication.
+> This is the identical polynomial on all tuples, with unchanged coordinates,
+> every comparison and every retained program/input condition. The actual
+> k port is supplied k in raw30, computed R10b in positive22/signed20;
+> never assume k=eta+zeta off-zero in raw30. The three systems have
+> 74=40M+34A,30/22/20 positive witnesses and19/11/9 comparisons. Complete
+> SOS costs130/106/100, exact degrees52/84/84. The
+> [source audit](review_complete74_factored_first_norm_source.md) and
+> [mathematical challenge](review_complete74_factored_first_norm_math.md)
+> pass, as do author and independent fresh root replays. Historical75 and
+> 86 source/receipt bytes remain frozen. No full native Pell tuple is built.
+> The [literal asymmetric74 transfer](complete74_asymmetric_scale_transfer.md)
+> changes only X=wq³ to X=wq in the actual raw30, positive22 and signed20
+> sources, keeping Y=sq³. Their comparison costs remain74 and full SOS costs
+> 130/106/100, while exact degrees fall to **44/68/68**. The inverse
+> w_old=w_new/q² is proved integral and positive at every positive zero
+> using the native equations before invoking the selected symmetric theorem;
+> the signed20 argument does not assume omitted input positivity early.
+> The [mathematical review](review_complete74_asymmetric_scale_math.md) and
+> [independent source/API review](review_complete74_asymmetric_scale_source.md)
+> pass, as do all three installed fresh receipts. This is a complete
+> positive-zero transfer on valid compiler slices, with no operation saving.
+>
+> The [complete74 equation-orientation family](complete74_equation_orientation_census.md)
+> saves56 complete same-zero comparison/SOS sources. Reversing available
+> retained definitions and substituting protected auxiliary values gives
+> exact degrees **20/48/64** at unchanged SOS costs **130/106/100**, with
+> 30/22/20 positive witnesses and74=40M+34A comparison operations.
+> Symmetric/asymmetric minima are20/20,56/48,84/64. Every defining and
+> protecting comparison remains paid; this is zero-set equivalence, not
+> an unconditional identity between the changed polynomials. The
+> [independent source review](review_complete74_equation_orientation_source.md)
+> and [independent symbolic-degree review](review_complete74_equation_orientation_census.md)
+> pass: all56 circuits,6,656 paid gates,856 residuals and96 unchanged protecting
+> residuals are checked. The degree review retains all six fixed numerals
+> symbolically and certifies a nonvanishing maximal leader for every source.
+> All three installed receipts pass fresh replay; the74/86 bounds are unchanged.
+>
+> The [asymmetric cross-cone scout](complete74_asymmetric_cross_cone_scout.md)
+> checks18 complete reassociations of the scale and packing cones, finding
+> no operation saving. Five multiplications are necessary only in its stated
+> four-output monomial model; the broader74-operation optimum is not proved.
+> All full sources and finalizers are saved, and fresh receipt replay passes.
+>
+> The [retained-index and quotient shift census](complete74_index_transport_affine_scout.md)
+> and [independent review](review_complete74_index_transport_affine_scout.md)
+> check243 complete schedules across the raw30, positive22 and signed20 sources.
+> Shifts in {-1,0,1} on r,j,h,zquot, with all consumers and finalizers paid,
+> leave the minimum at **74=40M+34A**; SOS minima remain130/106/100 with exact
+> degrees52/84/84. The twelve minimum schedules have positive-zero bijections:
+> pretyping packing excludes a restored zero index, and the main and strong
+> norms exclude a restored zero auxiliary quotient. The other231 schedules
+> claim only all-value affine pullbacks. Both installed receipts pass fresh
+> replay. This is a finite grammar result, not a general affine lower bound.
+>
+> The [nonlinear first-index scout](complete74_nonlinear_index_projection_scout.md)
+> emits three full graph projections using `r=actual_k-h*UM-1`, paying both
+> remaining r consumers. Certificate cost stays74; removing one comparison
+> and coordinate gives full SOS counts127/103/97, exact degrees52/84/84 and
+> 29/21/19 retained positive-coordinate interfaces. These are **provisional
+> candidates**: restoration of a positive r is unproved, so their positive
+> zeros are not yet known to recognize the parent language. The packing
+> remainder excludes zero but does not by itself exclude a negative index.
+> The [independent source-only review](review_complete74_nonlinear_index_projection.md)
+> confirms all three complete graphs, costs and exact degrees while leaving
+> the positive inverse unproved. Both installed receipts pass fresh replay.
+> No established universal bound or witness record changes.
+
+> The [signed first-index bootstrap](review_complete74_nonlinear_index_bootstrap.md)
+> recovers p≥13, the ordinary auxiliary rank and r≡±p modulo c for all three
+> nonlinear projections without assuming r>0. Raw30/positive22 further force
+> q even and r=±p; a negative branch has2n+p−1=vE with1≤v≤3q+2. A parametric
+> positive auxiliary construction realizes r=−p at arbitrarily large rank
+> indices, so auxiliary signs alone cannot remove that branch. This is not
+> a full negative compiler zero. The complete inverse remains unresolved,
+> including the additional signed20 bounds. Root checked the proof and the
+> installed exact receipt replays successfully; no universal bound changes.
+>
+>
+> The previously suggested asymmetric74 transfer is now complete above;
+> do not repeat that source/proof task or the18-layout scale/packing scout.
+> The56 equation orientations lower degree but do not save operations.
+> Further grouping or elimination must retain the protecting comparisons,
+> or prove their restoration separately. In particular, the nonlinear
+> first-index projection still lacks a positive inverse; none of the new
+> asymmetric or same-coordinate orientation proofs fills that gap.
+> Continue with paid interactions outside these bounded families or another
+> computational substrate, including its ordinary-input and acceptance costs.
+>
+> The [native coefficient transfer](native_pell_factored_first_coefficient.md)
+> now checks the actual E=XY and kY cones in six full sources. Prescribed
+> AND becomes63=32M+31A (22 witnesses,16 comparisons,SOS110/degree28);
+> positive-scale AND63 has21 witnesses,15 comparisons,SOS107/upperdegree28.
+> Historical coefficient-transfer mass-clock totals are597/472/470/473;
+> the separate endpoint successor below emits594/469/467/470.
+> Every full polynomial is identical on all supplied tuples; supplied k
+> remains independent away from the ratio equation and native R9=tau(tau+1).
+> The [independent audit](review_native_pell_factored_first_coefficient.md)
+> proves all six full DAG identities; both fresh root receipts pass.
+> Preserve all nine pinned parent files, including their historical notes.
+> Native norm-unit forms already remove the coefficient cone; no extra saving
+> applies there. This prescribed AND63 differs from the older unrestricted63.
+> The [unbounded mass endpoint projection](three_mass_unbounded_endpoint_projection.md)
+> emits four complete sources594/469/467/470, saving3=1M+2A and one positive
+> witness from each coefficient-transfer predecessor. Full M/A pairs are
+> 235/359,180/289,178/289,185/285; witnesses58/56/56/56,19 comparisons.
+> Upper degrees stay2344/1192/1192/1192; do not promote them to exact degrees.
+> Exact signed graph pullback: F=y,eta_old=eta+K. Natural-zero bijection is
+> ONLY onto the parent eta_old>K slice, not all parent witness tuples.
+> Child height n_initial+K*y+q_h+T+eta is positive before native typing,
+> including y=0. Retained global bound forces J>=1 and duration t>=1;
+> typed digit cancellation forces target=last positive next digit, hence
+> rejects y=0 before restoring positive F. Fresh sufficiently large dyadic
+> height/native witnesses establish the same fixed raw natural(x,y,T)
+> relation and exact clock with unbounded existential runtime.
+> The [independent review](review_three_mass_unbounded_endpoint_projection.md)
+> proves all four full graph identities directly without author cuts, checks
+> 2,000 live gates,54 outer histories and23,478 integer chronology cases.
+> Author and review receipts pass fresh installed root replay.
+> No new ordinary universal loader/table/bound. Existing paid input bridge
+> counts below still refer to their frozen coefficient-transfer parents.
+> The [target-free height](three_mass_target_free_height.md) now emits the
+> maintained four successors592/467/465/468, saving another2A with all19
+> comparisons and58/56/56/56 positive witnesses retained. Upper degrees
+> stay2344/1192/1192/1192. Private height changes from n0+target+eta+K+T
+> to n0+T+eta; the target remains paid in chronological transport.
+> Full signed pullback eta_endpoint=eta-K*y-q_h preserves every comparison
+> and the whole polynomial. It is not a positive witness map or zero-set
+> bijection: genuine nop x40,y41,T7880,h8192,eta111 restores endpointeta=-96
+> and coefficienteta=-91. Direct h>=2 pretyping and integer-target digit
+> cancellation recover target>0 and the same exact no-wrap clock. Separate
+> fresh-height/native-witness completeness gives the same fixed raw triples.
+> Author, the separate [math/probe review](review_three_mass_target_free_height_math.md)
+> and [maintained full review](review_three_mass_target_free_height.md) pass
+> fresh installed root replay. The full review reconstructs all four literal
+> polynomials, proves eight whole graph identities to both parent levels,
+> checks1,992 paid gates/76 residuals,57 outer histories,h2 boundaries and
+> all seven APIs, including84 warm pin failures across twelve dependencies.
+> Inverse eta=eta_endpoint+K*y+q_h gives a one-way positive parent embedding;
+> it does not restore every child tuple positively or give a fiber bijection.
+> Preserve all frozen parent/probe/math trios. No ordinary universal loader
+> or universal operation change follows; old paid input-bridge totals retain
+> their own frozen predecessor source.
+> The [time-free-height obstruction](three_mass_time_free_height_obstruction.md)
+> and [independent review](review_three_mass_time_free_height_obstruction.md)
+> rule out a uniform additional1A deletion. Full candidate totals591/466/464/467
+> are syntactic counts only. Actual incdec path1->7->3 has ticks308+308=616.
+> Genuine prescribed h1024 uses parenteta407; embedding into candidate gives
+> eta1023, sameB=2^37 and same positive native witnesses. Clockhat309->308,
+> T616->137438954087 preserves every complete comparison and gives a false
+> exact time. General >=2-step positive-tick Q=sum_{i>=1}tau_i(1+...+B^(i-1))>=1
+> proves the same obstruction in this literal scheme. Author and independent
+> installed / receipts pass, with literal full identities and genuine outer
+> seed/AND checks; full native witnesses exist by the pinned prescribed-height
+> theorem and are not materialized. The exactly-one-step zero3/nop/positive3
+> examples are separate exceptions, adding no unbounded-computation benefit.
+> The [bounded one-step specialization](three_mass_one_step_height.md) and
+> [independent review](review_three_mass_one_step_height.md) now certify the
+> three exceptions466/464/467,56w19eq,upperdegree1192; incdec is rejected.
+> Actual slopes30 are divisible by K5, initial control goes to halt/trap,
+> every other control traps. Typed accepted paths therefore have exactly one
+> step; tick<=1152h+8<B-1 makes naturalT force clockhat1 and T=tick.
+> Full signed map eta_parent=eta-T; reverseeta=eta_parent+T positive on all
+> domain assignments. Genuine nop x0,y1,T200,h2,eta1 restores signedeta=-199.
+> Both installed / replays pass. Review reconstructs1,397 gates,114 operands,
+> all90 exact macro/tick rows and3 whole clock expansions. This is a bounded
+> illustrative source/proof packet, not a broad maintained API audit. Its
+> raw relations y=x+1,T=192(x+1)+8 plus a simple mod3 guard have no benefit
+> for unbounded computation. Do not pursue additional one-step-only gate
+> deletions as progress on universal arithmetic complexity.
+> The [factored first-root reduction](complete86_factored_first_root.md)
+> gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
+> alternative gives87=47M+40A, degree135. The old first factor
+> `g²+L(2g−k)` becomes `T²−L(L+k)` with a supplied positive `tau_root`.
+> L is the retained paid `first_root_base=UM*ksn2`; k=eta+zeta≥2.
+> At a complete zero the first factor is±1, so T²−L²=Lk±1>0 and g=T−L>0.
+> This proves a bijection of full positive zero sets before using any
+> inherited compiler conclusions. Every other factor and fixed numeral is
+> unchanged. Both the [source review](review_complete86_first_root_source.md)
+> and [mathematical challenge](review_complete86_first_root_math.md) pass,
+> as do fresh author/reviewer replays. No full astronomical witness is
+> materialized; the quantified proof supplies the universal conclusion.
+> These are distinct from the historical failed weakened/squared-scale86
+> proposals and unresolved independent-gamma87. Keep those boundaries.
+> Earlier log entries below use their historical benchmark statements.
+> The [thirteen-base grouping transfer](complete86_first_root_partitions.md)
+> and [independent review](review_complete86_first_root_partitions.md) are now
+> complete, with both fresh root receipts passing. All actual asymmetric
+> X=wq,Y=sq³ parents are used (not the discarded preliminary symmetric bases).
+> Census29,631 partitions/149,336 finalizers; all101 best-by-cost full sources
+> are emitted and recounted, with202 independent full modular degree checks.
+> Combined old+new frontier:86/179,87/135,88/123,89/113,90/109,91/102,92/80,
+> 93/72,94/62,95/54,96/50,97/48,98/44. The four new degree improvements beyond
+> standalone86/87 are88/123,91/102,92/80,95/54. New-family-only89/119,90/114,
+> 93/76,94/64 are dominated by retained older points. All retain19 positive
+> witnesses. At grouped zeros first prove N0'=±1, then T>L, then invoke the
+> old positive-gap theorem, including auxiliary-gap positivity in its old order.
+> Do not describe finite partition optimality as an unrestricted lower bound.
+> The [selective positive-gap family](complete74_gap_selective_projection113.md)
+> now adds113=53M+60A/exactdegree28 with24 positive witnesses and13 residuals.
+> Start from actual raw74 with X=wq^3,Y=sq^3,L=XY^2*k. Restore tau=L+g;
+> first residual becomes1-g^2-L(2g-k), with comparison operands reversed.
+> On old zeros tau^2-L^2=L*k+1>0 proves g>0 before any parent conclusion.
+> Eliminate q,C,k,d,kappa,mu; retain a,c. All selected graph definitions
+> are unconditionally positive. The full old SOS after restoration equals
+> the new SOS on all tuples; complete positive zero sets are in bijection.
+> Default residual degrees1,5,4,14,5,9,8,8,6,10,2,3,7; unique SOS leader
+> Bm1^18*w^2*s^4*(eta+zeta)^2*Jrep^18*(2g-eta-zeta)^2 proves exact28
+> uniformly for every admissible fixed program slice. All256 subsets have
+> certificate75=40M+35A, full cost131-3n,30-n witnesses,19-n comparisons.
+> Family frontier113/28,110/68(two forms),107/84; only113/28 extends the
+> earlier combined catalogue. The [independent full review](review_complete74_gap_selective_projection113.md)
+> and both root receipts pass. Review reconstructs all256 literal sources,
+> complete SOS/graph identities and multivariate leading forms independently.
+> No full native Pell zero is materialized. Minimum bounds remain74/86.
+> The [protected main/input grouping](complete113_main_input_units111.md)
+> now gives111=53M+58A/exactdegree30 on the SAME24 positive coordinates.
+> Replace private R15=Ac2+1 and norm_rhs=scaled_kappa2+1 with the actual
+> norms Nm=d^2-Delta*c^2 and Ni=mu^2-Delta*kappa^2; add Nm*Ni=1.
+> Delta=a^2+4a+3 is0 or3 mod4, so neither integer norm can be-1, before
+> using any other equation. Product1 therefore recovers both old units.
+> Other11 residuals remain identical. Certificate76=41M+35A,12 residuals;
+> complete111 saves2A against113. Exact off-zero correction is
+> F111-F113=(Nm-1)*(Ni-1)*(Nm*Ni+Nm+Ni-1), not polynomial equality.
+> Main/input degrees8/7, product15; unique full leader
+> 16*Bm1^12*w^4*Jrep^12*delta^4*a^10 proves exact30 uniformly on every
+> admissible fixed program slice. The [independent review](review_complete113_main_input_units111.md)
+> and both root receipts pass. That milestone's frontier appends111/30,
+> 113/28 to86/179 through98/44; new points have24w, earlier points19w.
+> This is one proved grouping, not a new complete partition census.
+> The [retained-coordinate asymmetric family](complete113_asymmetric_retained109.md)
+> now extends the current catalogue by109/34 and111/24, both24w, superseding
+> the preceding111/30 and113/28 points. Four full forms are emitted:
+> sos113/24, pair111/24, triple109/42, two_pairs109/34, with complete
+> symmetric references113/28,111/30,109/50,109/44 respectively.
+> Change only wn2=w*n2 to w*q; Y=s*q^3 and the ordinary strong equation
+> remain. Forward w_new=q^2*w_old gives exact whole polynomial equality.
+> Reverse integrality is proved BEFORE parent universality: raw packing
+> 3q+1<=R<q^4, E>=q^4>R, relaxed rank and minus/minus auxiliary congruences
+> give p=R; first-index congruence then gives2n=R+1. The lower ratio forces
+> 2^R<a and the root projection givesX=2^R, henceq^3|X andq^2|w_new.
+> Keep raw S'=q^2 and R+1=E boundaries; never import F+Z<q from a different
+> normalized source. Restoring a,c as positive supplied coordinates is part
+> of the theorem. No native typing is used before this inverse is established.
+> Nm,Ni cannot be-1 modulo4 sinceDelta=a^2+4a+3 is0 or3; Na cannot be-1
+> since its coefficient(ic^2)^2 is a square. Thus(N0*Nm)=1 and(Ni*Na)=1
+> recover all four units on ALL integer tuples, without a first-norm sign
+> premise. The optional first-norm descent is separate. Integer grouping
+> and positive-only scale restoration are different statements.
+> Full109=53M+56A has11 residuals, degree34 leader
+> 16*a^10*c^12*delta^4*i^4*j^4. Full111=53M+58A has12 residuals,
+> degree24 leaderBm1^14*w^2*s^4*(eta+zeta)^2*Jrep^14*(2g-eta-zeta)^2.
+> The [independent full review](review_complete113_asymmetric_retained109.md)
+> reconstructs all eight current/reference circuits and uniform leaders.
+> Both author/reviewer receipts pass fresh root replay. The separate
+> [mathematical challenge](review_asymmetric_retained109_math.md) agrees;
+> its math-only header deliberately excludes source/API/degree certification.
+> The three1980 notes FIXED_RAW_UNIVERSAL_75_PROOF, PELL_RELAXED_AUXILIARY_PROOF,
+> HALF_PARAMETER_PELL_92_PROOF and pell_kernel_half_binomial42 are now pinned
+> proof provenance: preserve their bytes, including historical notices.
+> Put future status updates in these landing documents. No Git fallback
+> bypasses a mismatched source/proof pin. Minimum operation bounds stay74/86.
+
+> The [index-unit107/109 construction](complete109_index_unit_tradeoffs107.md)
+> and [independent review](review_complete109_index_unit_tradeoffs107.md) are
+> complete; author and reviewer receipts pass fresh root replay. Replace
+> private r1=r+1;R11=r1+hpm1 by index_partial=R10b-r and
+> Nk=index_partial-hpm1. Nk-1 is exactly the old index residual, costing
+> the same2A, with actual paid R10b=eta+zeta. The two full sources are
+> 109=53M+56A/degree32 (11 comparisons, certificate77) and
+> 107=53M+54A/degree42 (10 comparisons, certificate78), both24 witnesses.
+> Groups are(N0*Nm),(Nk*Ni),Na and(N0*Ni),(Nk*Nm*Na) respectively.
+> Nm,Ni,Na cannot be-1 modulo4; each group has at most one unprotected
+> factor. This proves entire INTEGER zero-set equality at identical
+> coordinates with the actual asymmetric sos113/24 parent; no native
+> typing or new positive scale theorem is required. Other eight residuals
+> are identical. The full off-zero corrections are the new grouped squares
+> minus the five old unit squares, and are explicitly coefficient-checked.
+> Exact degree uses unit degrees12,4,7,10,7 and uniform multivariate leaders
+> from actual source expansion, on every admissible fixed program slice.
+> Current frontier appends107/42,109/32,111/24 to86/179 through98/44;
+> earlier points have19w, these have24w. Minimum bounds stay74/86.
+> All22 inherited source/proof pins are strict; no historical suite is
+> imported. Preserve the frozen author and review trios. Only these two
+> new partitions are claimed, not a complete grouping census.
+> The [complete five-unit census](complete_unit_partition_frontier109.md)
+> and [independent full review](review_complete_unit_partition_frontier109.md)
+> now establish109=53M+56A/exactdegree28, superseding109/32 above.
+> All37 partitions separating N0,Nk are emitted from the actual75-gate core;
+> the census contains8 two-group,19 three-group,9 four-group and1 five-group
+> schedules. Their4,039 complete gates and410 comparisons are recounted.
+> The family frontier is107/42,109/28,111/24, all24 positive witnesses.
+> The default groups[N0],[Nm,Na],[Ni,Nk] have TWO maximal degree14 residuals;
+> their squared leading forms sum, with ga^4*a^4*i^4*j^4*c^12 coefficient256.
+> The [separate mathematical census](review_index_unit_partitions_math.md)
+> expands the default polynomial and checks all37 degree/cost schedules.
+> Author, math and full-review receipts pass fresh root replay. Full integer
+> zero-set equivalence holds at identical coordinates by the modulo4 signs;
+> the all-singleton form alone has zero off-zero correction. All25 inherited
+> source/proof pins remain strict. Other15 partitions are unclassified by
+> this criterion; no unrestricted grouping lower bound is proved. Preserve
+> the frozen author and both review trios. Minimum bounds remain74/86.
+> The [complete six-unit census](complete_six_unit_partition_frontier106.md)
+> and [independent full review](review_complete_six_unit_partition_frontier106.md)
+> now establish106/42,108/28,110/24, all24 positive witnesses, superseding
+> the three preceding five-unit frontier points. The separately authored
+> [bound-unit scout](complete_bound_unit_scout.md) supplies independent source
+> reconstruction for the maintained compiler's audit; that reuse is disclosed.
+> Author, scout and independent-review receipts pass fresh root replay.
+> Actual Nb=raw_bound-repunit adds1A; Nb-1 equals comparison0 identically
+> because q=repunit+1 remains paid and shared. Core76=40M+36A, seven other
+> residuals and k product groups give full102+2k=53M+(49+2k)A operations.
+> All151 partitions separating Nk,Nb are emitted, with16/65/55/14/1 forms
+> at2/3/4/5/6 groups. Exactly77 also separate N0,Nk,Nb and preserve the
+> entire INTEGER zero set; their frontier is108/30,110/24. All151 preserve
+> POSITIVE integer zeros: before any equation, actual q>=2 and V=XY²>1
+> exclude N0=-1 by the pinned minimal-index Pell descent. Never extend this
+> argument to signed tuples; the extra74 carry no such integer theorem.
+> Six exact unit degrees are12,4,7,10,7,1. For108/28, groups[N0,Nb],
+> [Nm,Na],[Ni,Nk] have two maximal degree14 residuals; their summed leader
+> retains coefficient256 of ga^4*a^4*i^4*j^4*c^12. All151 uniform degree
+> proofs extract alpha^0 or alpha^2 before specializing the other free
+> coordinates, so arbitrary fixed program numerals cannot cancel the leader.
+> The complete census contains16,448 paid gates and1,580 comparisons.
+> Only the six-singleton partition is the identical parent polynomial;
+> every other packet records the complete six-unit correction explicitly.
+> All31 inherited source/proof pins are strict, including the scout and
+> five-unit trios. Other52 partitions are unclassified by this criterion.
+> No new input theorem, witness coordinate or external time bound is used;
+> current minimum operation bounds remain74/86. Preserve all frozen files.
+
+
+> The [eager Tree occurrence-flow reduction](eager_tree_occurrence_flow.md)
+> and [independent full review](review_eager_tree_occurrence_flow_full.md)
+> pass fresh root receipts. From the corrected imported base kernel replace
+> h_i=1+sum_sj p_isj*h_j by mu_i=delta_i0+sum_js mu_j*p_jsi.
+> Tags/selectors remain natural; their retained sum equations force0/1.
+> Root mass>=1 propagates along edges; a root-reachable cycle contradicts
+> the positive entry/injection. Reachable DAG induction establishes the
+> root application. For a parent inverse, replace unreachable rows by valid
+> leaf dummies and assign reachable heights. Forward root path counts give
+> mu=0 on unreachable rows. Both directions retain the same externalN and
+> represented natural(program,argument,output) triples, not witness sets.
+> Arbitrary new zeros can have disconnected circulations, even feeding the
+> root; do not assert mu0=1 or minimal path counts at every new zero.
+> New complete ledgerM=12N²+56N+3,A=15N²+68N+6, total27N²+124N+9,
+> exactlyN−1A below parent. Same3N²+19N naturalw,23N+3 quadratic residuals,
+> exactdegree4 from retained pairing residual and noncancellation ofSOS.
+> The full all-value correction is exactly the sum of new flow squares
+> minus the old height squares; all remaining residuals match identically.
+> This is the finite base certificate, not the larger canonical/unique-fiber
+> system. N remains external; no ordinary-input loader or fixed-arity bound.
+> Preserve the imported kernel and both current frozen trios.
+> The [Tree root projection](eager_tree_root_projection.md) and
+> [independent full review](review_eager_tree_root_projection.md) pass root
+> replays. Set mu0=1 and all3N incoming-root pointers to0; delete the now
+> identically zero root balance. For an arbitrary parent zero, first replace
+> unreachable rows by leaves and recompute minimal root occurrence counts.
+> The restricted DAG has no incoming root edge. A full circulation fixture
+> with mu0=3 shows naive projection fails, while normalization gives a zero.
+> Same represented natural triples at each externalN; a coordinate bijection
+> only with the normalized parent slice. Whole polynomial graph identity
+> holds on arbitrary assignments after restoring the constants.
+> Witnesses3N²+16N−1,residuals23N+2,exactdegree4. Selective cleanup costs
+> 27N²+94N+9 forN>=2; N1 is142 because singleton sums have no removable
+> addition. Optional preexisting0+b cleanup savesN more additions, giving
+> 27N²+93N+9 and141. Both complete schedules are emitted forN1..8.
+> Public calls pin parentPY and actual kernel; CLI verify also pins parent
+> JSON/MD. Do not claim every-call companion pin guarding. No fixed arity,
+> unique witness theorem, positive-only conversion or universal cost follows.
+> The [triangular Tree projection](eager_tree_triangular_projection.md)
+> and [full independent review](review_eager_tree_triangular_projection.md)
+> pass fresh root replays. After replacing unreachable rows by valid leaves,
+> topologically order the reachable DAG root-first and put dummy rows last.
+> Permute BOTH row fields and every pointer target; external program/argument/
+> output bindings stay at the unchanged root. Hardwire p[i,s,j]=0 forj<=i
+> and drop allN flow/height coordinates and their equations. Induction on
+> row index proves soundness. The(154,1) fixture needs an actual permutation;
+> simply deleting its backward pointers fails.
+> Witnesses(3N²+33N)/2,residuals22N+3,exactdegree4 for everyN>=1.
+> Selective fullM=(9N²+101N+6)/2,A=6N²+61N+17,total(21N²+223N+40)/2.
+> Static0+b cleanup savesN more: total(21N²+221N+40)/2. All12 zero-minus-
+> target subtractions in the final row stay paid; no CSE or optimality claim.
+> Recursively restore mu in increasing order and h in decreasing order.
+> These polynomial graphs make every deleted row identically zero over any
+> commutative ring and give exact WHOLE polynomial identities to both actual
+> parents. Natural masses>=0/heights>=1 prove bijections only to their
+> triangular zero slices, and represented-triple equivalence with all zeros.
+> ExternalN remains, as do natural rather than positive-only coordinates;
+> no universal or canonical-unique-fiber theorem follows. Preserve both trios.
+> The [Tree constructor projection](eager_tree_constructor_projection.md)
+> and [independent full review](review_eager_tree_constructor_projection.md)
+> pass fresh root receipts. Each triangular row unconditionally defines
+> d=F(a,b),e=F(a,y),q=F(0,b),j=F(2a+1,b),k=F(d,c), with
+> F(u,v)=(u+v)(u+v+1)+2v+2. Alias the five supplied coordinates to their
+> existing paid RHS registers, substitute d into k, and delete the five
+> graph residuals. Every constructor gate remains live and paid. Restoring
+> these definitions is uniquely natural-valued before any other equation.
+> Full childSOS=parentSOS(restoration) on every tuple; natural zero fibers
+> are in bijection with the ENTIRE triangular parent at the sameN.
+> Witnesses(3N²+23N)/2,residuals17N+3. CompleteM=(9N²+91N+6)/2,
+> A=6N²+51N+17, selective total(21N²+193N+40)/2. Static cleanup subtractsN
+> moreA, giving(21N²+191N+40)/2. This saves5NM+10NA=15N full operations
+> in either mode. Exact degree rises4->10: the full leading polynomial is
+> sum_i t[i,4]^2*(a[i]+b[i])^8, with coefficient1 of t[0,4]^2*a[0]^8.
+> Other residuals have degree at most3; no zero-set tag condition is used
+> to lower the formal degree, evenN1. AtN8 cleanup gives1456ops/188w.
+> All six parent artifacts and the original kernel are pinned on every
+> public build/check. Preserve both new trios and the earlier quartic
+> tradeoff; this still has externalN, no universal operation improvement
+> and no canonical unique-computation-fiber claim.
+> The [coded Tree lookup scout](eager_tree_coded_lookup_scout.md) and
+> [independent full review](review_eager_tree_coded_lookup_scout.md) pass
+> fresh root replay. Use P(u,v)=(u+v)^2+u, injective on NATURALS by disjoint
+> shells[s²,s²+s], and C(x,y,z)=P(z,P(x,y)). P(0,0)=0 is essential for
+> inactive slots; the positive-offset Tree constructor cannot replace it.
+> Retain natural one-hot tags and pointer sums. Replace nine field lookups
+> by three coded lookups, preserving ALL natural zero tuples at the SAME
+> supplied coordinates. This is not signed/rational zero equivalence or
+> whole-polynomial equality. Full correction=new lookup squares−old squares.
+> The paid e=F(a,y) cone yields P(a,y)=p−y,P(y,a)=p−a with p=(a+y)(a+y+1).
+> Its defining equation was already deleted; p stays live via t1(z−F(a,y)).
+> Only new code gates use syntactic CSE. Never emit dead row0 triple code.
+> CompleteM=(3N²+87N+2)/2,A=3N²+(67−cleanup)N+7, exactdegree10.
+> With cleanup total(9N²+219N+16)/2; atN8 this is1172=445M+727A.
+> The hybrid first target P((t3+t4)u,t3P(b,y)+t4P(y,a)) agrees only on
+> permitted tag charts, saves2NA and raises exactdegree to12. Cleanup
+> total(9N²+215N+16)/2, atN8=1156=445M+711A. Both retain
+> (3N²+23N)/2 natural witnesses and11N+3 residuals; N8=188w/91res.
+> Census416 recipes acrossN1..8, two cleanups, six orders and stated sharing
+> choices is finite, not a global optimum or416 distinct polynomials.
+> Public API supports only savedN1..8; the proof/formulas generalize the
+> externalN templates. Preserve all parent and author/reviewer bytes.
+> No paid ordinary-input recoder or fixed-arity universal bound follows.
+> The [Tree pointer-product projection](eager_tree_pointer_product_scout.md)
+> and [independent full review](review_eager_tree_pointer_product_scout.md)
+> pass fresh root receipts. Replace each pointer sum AND coded lookup by
+> active*product_{j>i}(C_j−D_i,s)=0; active is t3+t4,t3+t4,t3 and empty
+> product1 is folded. Natural one-hot tags prove active0/1. A zero product
+> selects some later matching code, so restoring the least matching pointer
+> gives a parent zero. Inactive pointers restore0. All local/root residuals
+> remain literal; no flow/rank constraints survive in this actual parent.
+> Eliminate3N(N−1)/2 pointer coordinates, then two formally unused lastu/v
+> fields, restored0. Last residuals areactive,active,t3, forcingt3=t4=0
+> naturally, but those tags and the lastc field remain supplied in this
+> committed source. Same retained-coordinate existential projection, NOT
+> same tuples or a bijection: duplicate-row pointers and lastu/v give
+> explicit nonunique parent fibers. No signed-domain theorem is claimed.
+> CompleteM=(3N²+81N−24)/2,A=(3N²+(131−2cleanup)N−38)/2,
+> cleanedtotal3N²+105N−31,witnesses13N−2,residuals8N+3.
+> N8=1001=408M+593A/102w/67res, exactdegree72; N1=77/11w/11res/degree10.
+> Generaldegree max(10,10N−8): forN>=2 the rootthird-slot leader is
+> (−1)^(N−1)t3^N(u+v)^(4N−4), giving residualdegree5N−4.
+> Both lastactive residual occurrences remain separately squared; no
+> global CSE, lasttag normalization or duplicate-residual cleanup is used.
+> Full correction=new product squares−old rowsum squares−old lookup squares,
+> at arbitrary old pointer/lastu/v values. All16 savedN1..8 forms are paid.
+> Parent_pins metadata now deep-copies the authenticated dictionary; root
+> review found and repaired the returned alias before integration. Preserve
+> the repaired author/reviewer trios. ExternalN and universal74/86 remain.
+> The [Tree terminal-row projection](eager_tree_terminal_projection.md) and
+> [independent full review](review_eager_tree_terminal_projection.md) pass
+> fresh root receipts. In the actual pointer-product parent, the last three
+> residual occurrences areactive,active,t3, so a natural zero hast3=t4=0.
+> Lastc then appears only in a term killed byt4. Substitute lastt3,t4,c=0,
+> fold only transitively affected gates, prune dead gates and delete three
+> zero residuals. All16 forms save31=11M+20A (certificate8M+17A, finalizer3M+3A).
+> Full graph identity holds with arbitrary lastc once both tags arezero;
+> natural restoration sets allthree0. This is exact existential projection
+> on retained coordinates, and a bijection only to the lastc0 parent slice.
+> CompleteM=(3N²+81N−46)/2,A=(3N²+(131−2cleanup)N−78)/2,
+> cleanedtotal3N²+105N−62,witnesses13N−5,residuals8N.
+> N8=970=397M+573A/99w/64res/degree72; N1=46=19M+27A/8w/8res/degree6.
+> Exactdegree6 atN1, otherwise10N−8. The entire diagonal leading coefficient
+> is17 atN1, otherwise8*2^(10(N−1))+2^(8(N−1)); no quotient-ring degree used.
+> Review reconstructs all16 sources and7,828 paid gates, proves both graph
+> identities, checks18 copies and134 rejects including24 warm pins.
+> Public sizes remain1..8, while the proof describes the uniform externalN
+> template. Freeze both trios and all predecessors; universal74/86 unchanged.
+> The [Tree leaf-tag projection](eager_tree_leaf_tag_projection.md) removes
+> everyt0. Compute s=t1+t2+(t3+t4), reusing the paid active port, and last
+> s=t1+t2; use(s−1)*(z−S(y)) for the leaf residual. Replace each old one-hot
+> SQUARE by UNSQUARED s(s−1). The source hasN integer-nonnegative guards and
+> 7N ordinary residual squares,8N finalizer terms; do not call it plainSOS.
+> CompleteidentityFchild=Fparent[t0=1−s]+sum s(s−1). Each natural/integer guard
+> is nonnegative; at a natural child zero eachs=0or1, so all removed tags
+> restore naturally and all parent residuals vanish. Conversely every parent
+> natural zero projects. This is a full zero-tuple bijection with the
+> immediate terminal parent, not with every older projected ancestor.
+> Integer pullback is unconditional; NATURAL restoration requires a zero.
+> FullM=(3N²+81N−46)/2,A=(3N²+(127−2cleanup)N−76)/2,
+> cleanedtotal3N²+103N−61,witnesses12N−5. Save2N−1A, unchangedM.
+> N8=955=397M+558A/91w/degree72; N1=45=19M+26A/7w/degree6.
+> Certificate body addsN guard products; finalizer dropsN old tag squares,
+> so multiplication savings cancel. Exactdegree6 atN1, otherwise10N−8;
+> diagonal leaders remain17 or8*2^(10(N−1))+2^(8(N−1)).
+> Nonnegative rational examples have guard−1/4 cancel leafsquare1/4, so
+> natural zero equivalence must not be extended to nonnegative reals.
+> Nor is it a full signed-parent bijection: N1,t0=−1,t1=0,t2=2,a0,b1,y0,z1,
+> x=program12,argument0,output1 has parent0 but projected child2.
+> The [independent mathematical challenge](review_eager_tree_leaf_tag_math.md)
+> reconstructs all16 parent-cut/count/degree proofs,96 full corrections,
+> 72 genuine natural zero maps and both domain boundaries. Author and math
+> receipts pass fresh root replay. This math review does not audit the
+> maintained child/API; keep it distinct from the separate source review.
+> The [independent full source review](review_eager_tree_leaf_tag_projection.md)
+> proves all16 complete ring corrections without author-supplied cuts,
+> recounts7,700 live gates and verifies504 residuals,72 guards and16 exact
+> degrees. It checks44 genuine natural bijections,147 rejects including27
+> warm pins,18 copies and both domain counterexamples. All three fresh root
+> receipts pass. Preserve author, math and full-review trios and all parents.
+> The former nine-operation root scout is completed by the
+> [Tree direct-root projection](eager_tree_direct_root_projection.md) and
+> [independent full review](review_eager_tree_direct_root_projection.md).
+> Substitute r0_x/r0_y/r0_z directly by ordinary program/argument/output.
+> All16 complete forms remove only three private binding subtractions,
+> their three squares and three final additions: save9=3M+6A and3 witnesses.
+> Whole graph identity Fchild=Fleaf[root fields=ordinary ports] holds on
+> all supplied values. Restoration copies natural ports unconditionally;
+> nonnegative parent finalizer terms force the root bindings at every
+> natural zero. This gives a full immediate-parent natural-zero bijection,
+> without changing the fiber restrictions of older projections.
+> The mixed finalizer has7N−3 squares andN unsquared guards,8N−3 terms.
+> Cleaned total3N²+103N−70, natural witnesses12N−8;
+> N8=946=394M+552A/88w/exactdegree72;
+> N1=36=16M+20A/4w/exactdegree6.
+> Exactdegree is6 atN1 and10N−8 otherwise; the complete diagonal polynomial
+> is unchanged by aliasing the root ports. Independent review checks16
+> whole graph identities,6,588 retained certificate expressions,456 residuals,
+> 72 guards,48 zero bindings,7,556 live gates and16 exact degrees, plus
+> natural maps and strict APIs. Both fresh root receipts pass. Freeze
+> both trios and all parents; externalN and universal74/86 remain unchanged.
+> The [Tree beta-membership interface](eager_tree_beta_membership_interface.md)
+> emits a complete16=5M+11A local polynomial,17=6M+11A when guarded, with
+> FOUR natural witnesses independent ofN and exactdegree6/7. For supplied
+> A,b,i,N,D, setj+1=i+h+2,g=b(j+1),m=g+1 and square/sum
+> A−D−qm, g−D−s, N−(j+1)−k. Natural zeros mean somei<j<N hasbeta(A,b,j)=D.
+> The guarded form multiplies this nonnegative SOS by a supplied natural
+> active port; actual Tree target/active computations still require payment.
+> CRT b=N!*(1+maxvalues) encodes every finite sequence, but is witness
+> selection, not a free compiled factorial. The fixed-size intermediate
+> formula uses14 code columns (13 row fields plus their triple code), one
+> common modulus scale, existentialN>=1 and one bounded universal row check.
+> All decoded local rules, root accesses and row/code coherence are retained.
+> Existing MRDPCore factorial/CRT and DiophantineTrace cipher closure proofs
+> supply mathematical existence; no new Lean build or counted compiler is
+> claimed. First paid obligation: compile that entire bounded universal,
+> including local witnesses/bounds, variable powers, factorials and finalizer.
+> Fixed exponent52 only certifiesQ=8^(32x), not generic variable-base power.
+> Concrete missing-coherence counterfeit: actualN3 rows encode[400,2,2],
+> fake column[400,2,25] passes18 local/root residuals and9 guarded atoms for
+> falseapp(4,0)=0 (true6); original full polynomial279841. Separate composite
+> divisibility counterexampleB6,D0,values2,3 prevents using divisibility alone
+> as zero-factor membership. Signed/rational domain counterexamples retained.
+> The [independent review](review_eager_tree_beta_membership_interface.md)
+> expands both full sources/leaders, recounts33 live gates, reconstructs the
+> complete counterfeit independently and reads the cited closure contracts.
+> Both fresh root receipts pass. No full unbounded Tree polynomial/count.
+> The [beta three-query sharing](eager_tree_beta_three_query_sharing.md)
+> computesI=i+2 once and emitsactive*(S0+S1)+t3*S2 for three full ungated
+> suffix atoms. Exact whole-polynomial equality toactive*S0+active*S1+t3*S2
+> holds over every commutative ring, with identical nine residuals and12
+> private natural witnesses. Full supplied-active source50=17M+33A versus
+> baseline53=18M+35A; computedactive=t3+t4 source51=17M+34A versus54.
+> Degree7 remains exact with independent target ports. No free index shift,
+> target computation, row/code coherence or bounded universal elimination.
+> Supplied-active mode does not inferactive=t3+t4; computed mode pays it.
+> Both syntactic15 shortcuts are false: H=i+h losesH>=i; S=D+s losesS>=D.
+> Explicit natural false zeros have inverseh orsinteger−1. No standalone
+> atom reduction or general lower bound follows. The
+> [independent review](review_eager_tree_beta_three_query_sharing.md) rebuilds
+> all four sources/208 gates, both full polynomials/leaders and18 residuals,
+> checks58 rejects including15 warm pins and9 copies. Both fresh root
+> receipts pass. Preserve both parent forms and the new author/review trios.
+> The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
+> and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
+> pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual
+> path A0,B0,C0,G1,G0,H0,I1->J1 has left digits[0,0,1,0,0,B/2,B/4−1],
+> right[0,0,0,0,1,2,5],Lf=B/8−1,Rf11. Left local defects B,−1 cancel
+> between adjacent packed positions. Aggregate H+G+ZL+ZR+ZU<P with positive
+> slack, all5 actual outer rows and33 unchanged typed lanes hold. Only the
+> left range lane fails. Widening that mask byP³(B−D)J makes all34 joined
+> lanes and current disjoint tags pass. Literal execution instead reaches
+> I0 before instruction7 and then A1 with tapes(0,2): a false finite history.
+> Full formal-B identities are checked in both actualraw320/318 sources
+> of the505 compiler. This rawR0=0 fixture is NOT an ordinary-loader zero;
+> no full native Pell assignment or nonhalting claim is materialized.
+> Retained source rejects correctly; do not delete that range hypothesis
+> merely from aggregate magnitude, clock sums or a circular no-repeat bound.
+> This is a scoped negative result, not a universal arithmetic improvement.
+> The [coefficient-only census](complete87_shared_coefficient_scout.md) is
+> frozen separately: reachable-set counts1/13/116/891 exclude at most three
+> multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
+> monomial ports. All21 minimal completions retain87; no general lower bound.
+
+> The [two-cone recoder128](native_binary_recoder_factored128.md) and
+> [independent delta review](review_native_binary_recoder_factored128.md)
+> now pass both fresh root receipts. Inline certificate128=65M+63A,
+> SOS229=99M+130A,49 positive auxiliaries,34 comparisons,exactdegree40.
+> Generic-width formula126+mu(b),SOS227+mu(b),degree2max(20,b+1);
+> four guarded concrete packets cover widths4,32,784 and the full exact-width
+> Grill source. The latter is16289=4994M+11295A,3217 witnesses,48 comparisons,
+> upperdegree283247. Full same-coordinate polynomial equality follows from
+> two distinct geo__/and__ L9 cuts using their actual supplied positive k.
+> All20,343 shared registers and150 comparisons match. The hist__and__ cone
+> is already removed by the old first_unit form, so no third saving applies.
+> Standalone recoder length stays existential; canonical binary(x+1) length
+> is enforced only by the separate exact-width wrapper. No universal table.
+> The [geometry46 transfer](group_linked_binary_geometry46.md) now emits
+> both complete primitive variants: shared46=25M+21A/SOS84 and computed-B
+> 48=27M+21A/SOS86, both19 positive auxiliaries/13 comparisons/exactdegree28.
+> The [independent expansion](review_group_linked_binary_geometry46.md)
+> verifies both full141-term polynomials, every residual, literal finalizers
+> and exact symbolic scale transport; author/review fresh root receipts pass.
+> Shared-B population semantics still assumes external B>=8q² using the
+> pinned dilation132§2 extension. Standalone computes B=8q² in two paid
+> products. P dyadic typing, repunit and computation are not in these counts.
+> Actual k stays supplied; tau*(tau+1) remains the untouched right side.
+
+> The [isolated auxiliary norm](auxiliary_norm_five_gate_lower_bound.md) now
+> has a sharp5=3M+2A lower bound for exact division-free evaluation at independent
+> K,V,y over Q. Two products force an affine hyperplane restriction that the
+> target cannot have; one addition gives a monomial times a binomial power,
+> excluded by primitive linear-in-K irreducibility. The
+> [independent review](review_auxiliary_norm_five_gate_lower_bound.md) challenges
+> both normal forms and uses separate standard-library symbolic algebra.
+> Author and review receipts pass fresh root replay. Do not promote this to a
+> lower bound for actual computed K,V, other shared ports or changed zero sets.
+> Further auxiliary-factor savings must exploit structure outside this interface.
+
+> The [sharp first-norm bound](first_norm_five_gate_lower_bound.md) now
+> handles the actual dependent paid ports T,X,Y,k,E=XY,Z=kY, proving3M+2A
+> necessary and attained. For <=2M specializeY=1: quartic−X²k² forces
+> the first product Q=qXk+rX+sk+t; restrictingX=0 forces both next linear
+> parts to be T-only, so their product cannot supply required cubic−Xk².
+> For <=1A all ports are monomials; irreducibility via odd X-valuation of
+> (kY)²X(XY²+1) excludes a monomial times a binomial power. The
+> [independent challenge](review_first_norm_five_gate_lower_bound.md) and
+> both fresh root receipts pass. This is exact component evaluation only,
+> not whole86 optimality, a bound with other paid registers, or a zero-set
+> replacement bound. It does not cover geometry's tau*(tau+1) target.
+
+> The [joint strong/auxiliary census](complete86_joint_strong_auxiliary_scout.md)
+> now tests292,320 schedules:6 paid charts*2 deterministic factoring modes*
+> 203 six-term partitions*120 common Horner orders. The best stays86=48M+38A,
+> with220 ties and no85. Every actual complete DAG is charged, including
+> shared_H=i*Ac2 when used and every retained factor/input/finalizer.
+> Exact58,113 local and complete finalizer identities and348,678 retained
+> factor DAG checks are summed within the12 chart/mode groups, not global
+> distinctness. Full polynomial equality preserves19w and exactdegree179.
+> The [independent review](review_complete86_joint_strong_auxiliary_scout.md)
+> proves all6 charts/all12 saved complete minima, recounts1,040 live gates
+> and independently enumerates203 partitions/120 orders. It reads the
+> full scout but does NOT regenerate its complete per-choice histograms.
+> Both fresh root author/review receipts pass. Grammar is fixed block order,
+> common Horner order, fixed binary powers and optional first exact sorted
+> binomial divisor. No arbitrary cross-factor or coordinate-change bound.
+> This extends the earlier multiplication-only coefficient census; do not
+> confuse it with a general lower bound or repeat the free-t rank obstruction.
+
+> The [affine-port scout](complete86_affine_port_scout.md) and
+> [independent full census](review_complete86_affine_port_scout.md) pass
+> fresh root replays. Six explicit joint main/input-root schedules, followed
+> by one local reassociation/distribution/factoring/square-conjugate move,
+> generate1300 move instances,882 within-seed DAGs and874 globally distinct
+> complete DAGs. Minimum86=48M+38A,127ties; whole-polynomial identities
+> preserve19 positive witnesses and degree179. Global commutative CSE and
+> constant/unit folding are equally applied to the unchanged86 baseline.
+> Independent generation proves all1300 local occurrence identities plus
+> 12 seed cuts, recounts77043 paid gates and checks2646 complete outputs.
+> This is one-move finite coverage, not recursive optimization or a lower
+> bound for arbitrary circuits. The separate gap rewrite q*u−Z still
+> costs86 becauseu−Z remains shared. The recorded complement_u=q−F port
+> gives a syntactic85 expression with signed inverseF=q−u, but its frozen
+> packet establishes no positive inverse and no complete-zero counterexample.
+> Keep any later complement obstruction separate; never count85 as a bound.
+> All12 predecessor blobs and both new trios remain frozen; no historical
+>292320-family rerun is needed.
+
+> The [complement-port obstruction](review_complete86_complement_port_math.md)
+> and [independent challenge](review_complete86_complement_port_independent.md)
+> now reject that particular85-gate expression, with fresh root receipts.
+> For EVERYx>0 and unchanged valid fixed compiler numerals, they construct
+> all19 positive child coordinates with F=q−u<0 and all8 factors+1.
+> Choose t=L!>e=2dx+b, d|t, q=2^t; prime-power Euler divisibility gives
+> t|q(q−1). Write A0=q(q²−1), T'=MCJ+1+q(MF0J−1), where sourceMF=MF0+B−1.
+> SetZ=1,W=2^e,C=W+1. Since t|A0, X=2^R has a fixed residue moduloq−1
+> alongR=A0u+T'. Chooseu0=1−(K+2^(T'modt))C mod(q−1),
+> u=u0+(q−1)(2^(8t+8)−1). The exact long-complement identity gives
+> popcountR>3t+2, R=3mod4, R>q^4, u>q and positivealpha/zplus.
+> Extend ONLY the half-binomial positive CONVERSE to this largeR: explicit
+> X=2^R,Y=half-binomial-floor givea>8r,6XY²>a andratioerror<16r/(X+1)<1/2.
+> Henceeta,zeta,h,s,w,tau_root are positive. The normalized canonical
+> m=2cR,i=psi_A(m)/c² and odd-Chebyshev minus identities givepositivef,i,j,o,y.
+> gamma_0=gamma_1=0,gamma_(n+1)=2A gamma_n−gamma_(n−1)+2^(n−1)
+> givespositive rho=gamma_e,sigma=gamma_R−gamma_e; delta>0 atodd e>=3.
+> This is a FULL positive-zero counterfamily, not merely off-zero inverse
+> failure. Helpers check literal sources and bounded components; they do
+> not materialize the complete auxiliary tower. The old bounded soundness
+> theorem is never applied outside its hypotheses. Preserve both new trios
+> and the affine scout's frozen narrower statement. Universal74/86 remains;
+> no arbitrary85-operation lower bound follows.
+
+> The [two-move census](complete86_two_move_scout.md) and
+> [independent full review](review_complete86_two_move_scout.md) now pass
+> fresh installed root receipts. Exactly the six affine seeds plus at most
+> TWO local moves give66,673 complete DAGs, with no cost cutoff/beam pruning.
+> First layer874/1,300 moves; second192,823 instances/17,548 distinct local
+> cut identities, plus12 seed identities. All5,882,977 paid live gates are
+> recounted. Costs86..91 have2,661/13,366/24,249/19,145/6,460/792 sources;
+> the sole M/A frontier is48/38. All original26 ports and19 positive witnesses
+> remain; complete polynomial equality transfers exactdegree179 and zeros.
+> Review uses its pinned prior independent engine, never author grammar code.
+> Its graph hashes differ from author allocation-ID serializations; do not
+> claim it reproduced all author byte hashes. All12 complete representatives
+> are independently verified, with48 numeric outputs; author checks133,346
+> full outputs across the whole census. Initial tuple/list receipt descriptors
+> were repaired before final freeze and replay. Routes are replay descriptors,
+> not standalone expanded proof certificates. No three-move closure, new
+> coordinate theorem or global lower bound. Keep universal74/86 unchanged.
+
+> The [marked-word obstruction](complete86_marked_word_obstruction.md)
+> rejects supplying positiveC_word instead of positivealpha. The literal
+> alpha->C_after_alpha->marked_rhs chain loses2A (84=48M+36A); u−Z then
+> becomes private to the gap, so(q−1)u+(u−Z)=qu−Z saves anotherA (83=48M+35A).
+> Ordinary2dx stays paid. Signed inversealpha=q−F−Z−2dx−C_word gives both
+> complete graph identities, but loses the packed input width bound.
+> Use a canonical accepted parent zero:q=2^t=B^N,t=dN,e=2dx+b odd>=3,
+> W=2^e<q,e<t,R>=q². Shiftordinaryx'=x+N,e'=e+2t<3t<q²<=R,
+> W'=q²W,C'=Z+W',zplus'=zplus+(K+X)(q+1)W. KeepF and the entire main/first/
+> auxiliary tower unchanged. gamma_n=(chi_A(n)−a psi_A(n)−2^n)/(4a+3)
+> hasgamma0=gamma1=0 andgamma_(n+1)=2A gamma_n−gamma_(n−1)+2^(n−1).
+> Setdelta'=(psi_A(e')−e')/(A²−1)>0,rho'=gamma_e',sigma'=gamma_R−gamma_e'>0.
+> Their sum preserves the actual shared main root. Exact transport
+> compensation and the new input norm make all8 full factors1, all19
+> supplied coordinates positive; restoredalpha'<0. The valid fixed compiler
+> forS={1} gainsfalseinput1+N. This is NOT all-input acceptance for every
+> compiler and NOT an unrestricted83/84 lower bound. Finite Pell cases are
+> components only; the full proof transports the canonical parent witness
+> without materializing its enormous auxiliary tower. The
+> [independent review](review_complete86_marked_word_obstruction.md) checks
+> both entire sources,165 retained-gate identities,16 factor identities,
+> both full outputs, canonical asymmetric provenance and the quantified proof.
+> Both fresh root receipts pass. Preserve both trios and all parents.
+> The [Grill halt bridge](grill_tag_halt_bridge.md) and
+> [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
+> root replay. Corrected E uses a−4 in its second long grill. At the unique
+> produced halt, a10a L/R block shifts later blocks by3a; support lies in
+> odd positions below5a/2 modulo7a, so the shift erases all later ones.
+> Cleanup gives E(prefix), E_H* and zeros, then exactly2a(j+1) zeros, then
+> the first empty queue. General valid-source iffhalting proof includes
+> persistent phase. Four original A→AH examples violate Genera's hypothetical
+> prefix condition and are cleanup-only; author MD now says so explicitly.
+> Independent fixtures add eight valid halts and preserve the2274 padded
+> false accept. The [paid exact-width loader](grill_tag_exact_width_loader.md)
+> now closes regular recoder and width binding for the explicit binary(x+1)
+> input contract. With u=x+1, positive s=q−u and s+beta=u+1 force canonical
+> q=2^bit_length(u), including power-of-two boundaries. Cleared E encoding
+> costs3M+2A; P0=Q retains positive native slack and rejects padded widths.
+> True E words satisfy3X<Q, so the strong same-width converse and positive
+> Zweak=Zstrong+2X map apply without padding. All37 loader residuals belong
+> inside U*(1+S_H+S_L)−1, not added unweighted to the old polynomial.
+> General increment247+mu(b); actual N3 reject-all table has1,568 phases,
+> native16033, parent composition16291=4996M+11295A (now16289 by the
+> exact two-cone transfer above),3217 witnesses,48 comparisons,
+> degreeupper283247. The205-operation011 count is unrelated. The
+> [independent audit](review_grill_tag_exact_width_loader.md) and both root
+> receipts pass. Numerical universal Genera recognizer and its intended
+> ordinary-input language remain open. Do not use the dyadic-duration recoder:
+> canonical input length need not be dyadic. Preserve frozen parent packets.
+
+> New [three-mass unbounded raw/clock bridge](three_mass_unbounded_interface.md)
+> and [independent review](review_three_mass_unbounded_interface.md) both pass
+> fresh root replay. Encode n=K(N−1)+q, use modulus6K, totalize halt/missing
+> guards to a rejecting trap. Accepted current states are distinct and≤mh,
+> so duration≤mh and total clock≤2384mh². Paid B=C*h² with C≥2384m+2
+> makes the existing selected quotient lanes plus one new clock quotient
+> exact modulo B−1. All20 comparisons and final SOS are emitted; native
+> clocks only, natural external x,y,T, fixed arity and unbounded duration.
+> Original totals598/473/471/474; historical coefficient transfer597/472/470/473,
+> witnesses59/57/57/57. Endpoint successor594/469/467/470 has58/56/56/56
+> witnesses and19 comparisons; both fresh root receipts pass. All stated
+> degrees remain upper bounds.
+> Root read both full source/proof packets and checked the inherited history
+> proof. No full native Pell witness, cleaned-clock total or universal source
+> table is claimed. Raw input x+1 retains the (v2,v3) cofactor obstruction.
+> Author CLI is cold-process only; preserve its three frozen review-pinned
+> files, including pre-review prose. This closes raw history/clock payment,
+> not the ordinary universal input/program decoder obligation.
+
+> The [paid exponential mass input](three_mass_exponential_input_bridge.md)
+> and [independent review](review_three_mass_exponential_input_bridge.md)
+> now pass both fresh root receipts. For positive x, computeQ=2^(96x) with
+> the authenticated52-operation exponent and load raw inputQ-1. The sole
+> K*z+q0 path folds toK*Q+(q0-K) with no extra gate. All20 history residuals
+> remain paid. Default `(U-1)^2+S` adds54=32M+22A and12positive auxiliaries,
+> giving651/526/524/527, with71/69/69/69 private witnesses and unchanged
+> degreeupper2344/1192. The same-cost anchorU*(1+S)-1 has larger bounds
+> 2398/1246; its off-zero gap is(U-1)*(S-U+2), not polynomial equality.
+> Both exclude the genuine negative-unit exponent branch. Parameters are
+> positive x and natural y,T; existential positive y,T add2w but no gates.
+> Exact source valuations are(96x,0). A separate201-state/202-instruction
+> reversible prefix reaches(x,0) in198x+4 source steps; it is NOT compiled
+> into these four costs. Appending a recognizer requires its own proved
+> unary(x,0) input contract and a no-incoming initial state. Morita-Imai's
+> simulation/no-incoming statements alone do not establish that contract.
+> No all-r.e unary-input theorem or numerical universal table is claimed.
+> Author and reviewer reconstruct all8 complete DAGs/160 retained residuals;
+> independent sparse factor expansions confirm exponentdegree54. Preserve
+> all frozen parents. No astronomical full native/Pell witness is built.
+
+> The [prime-power source protocol](three_mass_prime_power_input_theorem.md)
+> closes the input-encoding gap at theorem level, using the actual Morita1996
+> primary Theorems3.1/4.1 (pp308/313). First preserves the input tuple with
+> two new zero counters; second maps it exactly to(product primes^counters,0).
+> A CM3 unary stack loader starts at(x,0,0); prepending a virtual divide96
+> makes its initial convention(96x,0,0). Its separated reversible compression
+> therefore starts at(2^(96x),0). Original-label boundary invariants exclude
+> spurious accepting outputs and preserve a no-incoming initial label.
+> A fixed CM5 interpreter uses(96x,e,0,0,0), with scratch separate from e,
+> hence a fixed reversible source has prime input(2^(96x)*3^e,0).
+> The [independent source review](review_three_mass_prime_power_input_theorem.md)
+> and root author/reviewer replays pass; root also checked the primary PDF.
+> This is an effective fixed-source theorem, not an expanded universal table.
+>
+> The [paid double exponent](three_mass_double_exponential_input.md) computes
+> Q1=2^(96x),Q2=2^(96*C*Q1), for fixedpositiveC. LoadQ2 through the complete
+> raw history; its valuations are(96*C*Q1,0). A SEPARATE physical divide96
+> prefix then reaches(C*Q1,0), matching the source protocol withC=3^e.
+> FixedC folds into r2=(48C)*Q1 at the sole old48*z consumer; no variable
+> program product is treated as free. Safe SOS enforces U1=U2=1 separately.
+> The unchecked U1U2 anchor fails on the two genuine negative branches for
+> nop; a rejecting divider cannot repair an example that does not include it.
+> Increment over single-layer bridge54=32M+22A/+12w; over raw108=64M+44A/+24w.
+> Complete four toy totals705/580/578/581,83/81/81/81w,22comparisons,
+> degreeupper2344/1192. BothC1/C3 full packets and arbitrarypositivefixedC
+> are supported. Positive y,T add2w for a one-parameter halting predicate.
+> The [independent full-source audit](review_three_mass_double_exponential_input.md)
+> and both fresh root receipts pass. Numerical universal table, both compiled
+> preprocessors, full arithmetic cost and resulting physical clock remain
+> to be instantiated. Never transfer the toy counts to that universal source.
+
+> Latest three-mass examples: the [per-step branch search](three_mass_mixed_branch_search.md)
+> reaches44native/43clean for INC2;DEC2 at h=2, using implicit indices[0,1],
+> Horner guards and both endpoint penalties. Six witnesses, degree3. The
+> three-increment forms stay86/83 with15 witnesses. All62 index layouts and
+> 744 stated schedules are enumerated, including identical baseline modes.
+> The [independent review](review_three_mass_mixed_branch_search.md) verifies
+> every gate ledger and complete ordered grid, and all four full winners.
+> Both root receipts pass. No new emitter rewrite or universal-bound claim.
+>
+> The [safe projection/endpoint composition](three_mass_projected_endpoint_penalties.md)
+> is complete: native/clean two-step46/45 operations with6 witnesses;
+> three-increment86/83 with15 witnesses, exact degree3. Group each projected
+> endpoint mask with its step guard. Weight the selector barrier by2 only if
+> both endpoint masks contain the implicit branch at h=1; otherwise weight1.
+> The strict lower bound(S−1)(wS−r)>0 excludes S>=2. An actual full false-halt
+> packet scores0 without this repair and2 with it. The
+> [independent audit](review_three_mass_projected_endpoint_penalties.md)
+> verifies783 full polynomials/degrees,261 literal baselines and56,077 live
+> gates; root read/replayed both receipts. No universal-bound improvement.
+>
+> The [quadratic endpoint-penalty variant](three_mass_endpoint_penalties.md)
+> retains all2Bh witnesses and degree2, reaching51/51 native/clean two-step
+> and100/98 three-increment totals. Both nonnegative linear endpoint masks
+> replace state-code squares, with equality of complete natural zero tuples.
+> The [broader independent review](review_three_mass_endpoint_penalties_full.md)
+> reconstructs128 complete old/new pairs over64 actual certificates; all10,702
+> paid gates are live. A separate saved-packet review covers14 pairs. Root
+> read/replayed both independent receipts and the author receipt. This is a
+> separate degree/witness alternative to the cubic composition above.
+>
+> The [guarded three-mass selector projection](three_mass_selector_projection.md)
+> now removes one natural selector per nonempty step: witness count(2B−1)h,
+> degree3 for B>=2,h>0. Complete native/clean two-step costs56→47/46 and
+> three-increment costs107→91,105→88. Its nonnegative cubic guard restores
+> the missing selector uniquely at every natural zero; naïve substitution
+> admits a complete false-halt zero and is explicitly rejected. The
+> [independent review](review_three_mass_selector_projection.md) checks252
+> full coefficient identities,18,847livegates,76baselinecounts and24 mixed
+> branch/clock variants. Root read/replayed both receipts. These counts
+> do not include the separately counted endpoint-penalty variants.
+>
+> The surreal synthesis at `d51fafea806cbd48ba29be017eff85cdd9653b14` /
+> `0be9b913487fa2cc0e16cea6545c55f33b4446d8` now has both scoped reviews:
+> [new prose](review_surreal_synthesis_0be9b9134.md) and
+> [original-to-assembled preservation](review_surreal_transfer_0be9b9134.md).
+> All166 original formal occurrences are accounted for (124 normalized exact,
+> 41 declared duplicate notes, one question retained in an answered remark).
+> All198 source labels occur once;830 references resolve;112 copied-range
+> displays retain order/multiplicity;14 code/data companions are byte-exact.
+> The35 other original displays lie outside copied ranges and are not claimed
+> verbatim. All29 original archive members are authenticated. Root read both
+> helpers/notes and reproduced both receipts. The separate three-location
+> patch corrects restriction-coherence wording and the non-PDF size qualifier;
+> it remains unapplied to the maintained article/PDF. No new transfer defect.
+>
+> The [reciprocal surreal notes](review_surreal_reciprocal_a13efdd51.md) at
+> `a13efdd51` now pass their separate scoped audit: all12 changed paths are
+> pinned; the four old articles are insertion-only with461 formal blocks,
+> 251 proofs,457 displays,820 labels and39 unchanged companions. All cited
+> statement/subsection numbers and new links resolve. New prose retains its
+> regularity, GB/set-choice and set-recursion hypotheses. Root read the full
+> helper/note and added prose and freshly reproduced the receipt. No new defect.
+>
+> The [mass Parts V–VI publication review](review_signal_batch80_typesetting_ef114b0bb.md)
+> at `ef114b0bb` is now complete within its stated transfer/prose scope.
+> All75 formal/proof occurrences are accounted for (71 retained,4 proof
+> pointers); all105 displays (98 retained,7 declared deduplications);215
+> companions unchanged. All417 labels/846 references and48 bibliography
+> keys/156 citations resolve. The tested two-location patch restores compiler
+> quantifiers and qualifies the unasserted reversibility of the five-particle
+> citation. The [independent semantic challenge](review_signal_batch80_quantifiers_ef114b0bb.md)
+> confirms the first finding and the quartic minimality claim in the joint
+> real-orthant-nonnegative class. Root read all frozen helpers/notes, verified
+> challenge pins/anchors and parser coverage of all declared source theorem
+> environments, and freshly replayed the receipt/private patch application.
+> No unchanged author suite, PDF build or visual QA was run. Patches remain
+> separate; original source/program/publication bytes remain preserved.
+>
+> **Completed current publication boundaries:** surreal synthesis `0be9b9134`,
+> reciprocal notes `a13efdd51`, and mass Parts V–VI `ef114b0bb`. Later changes
+> still need separate review. Next arithmetic work must distinguish the new
+> 44/43 finite-horizon examples from the fixed-arity universal87 bound: a
+> fixed universal source, ordinary-input decoder and unbounded-history
+> encoding remain unpaid. Investigate a complete interface before treating
+> physical mass, degree or these worked circuit counts as a universal bound.
 
 > Current batch-80 status: [all twelve arrivals](incoming_substrate_review_4e270aa46.md)
 > and their original placements have scoped proof/source reviews and root replays.
@@ -319,7 +1285,22 @@
 > for the irreversible-catalogue compiler. Their review notes distinguish
 > proved local transformations from shipped general compiler interfaces.
 >
-> The latest [product-scale group compiler](group_projective_product_radix_scale.md)
+> The [smaller native quotient shift](group_projective_tail_quotient_shift.md)
+> keeps the illustrative group compiler at **227 certificate /244=103M+141A**,
+> 6 comparisons and36 positive witnesses, with **exact degree2829**. It replaces
+> X=q(w+S) by X=q(w+(q-1)F3), using an already-paid tail product. The positive-zero
+> bijection proves E=XY>2r+3 before rank recovery, then restores the old positive
+> quotient after recovering X=2^(2r+1). It preserves the unbounded fixed-table
+> input relation. The [independent mathematical challenge](review_group_projective_tail_quotient_math.md)
+> checks both index signs and inverse positivity. The separate
+> [complete source/API audit](review_group_projective_tail_quotient_source.md)
+> proves all244 register identities and independently expands the full polynomial
+> at two moduli, attaining degree2829. Author and both independent receipts pass
+> fresh installed replay. The earlier3396 is a parent
+> upper bound; no numerical universal alphabet is instantiated, and the universal
+> 74/86 operation bounds are unchanged.
+>
+> The preceding [product-scale group compiler](group_projective_product_radix_scale.md)
 > saves one multiplication by using q=32BP^a to type both history radices,
 > then simplifying the top AND mask to2. The illustrative ten-letter table
 > has **227 certificate /244=103M+141A operations**,6 comparisons,36 witnesses
@@ -327,7 +1308,58 @@
 > relation with fresh native witnesses. The numerical universal subgroup
 > alphabet remains uninstantiated, so244 is not a numerical universal bound.
 >
-> The latest [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
+> The [smaller U9 native quotient shift](neary_woods_universal_tail_quotient253.md)
+> keeps **253=132M+121A operations**, one comparison and43 positive witnesses,
+> and has **exact total degree982** with all supplied program parameters counted as
+> variables. Only the eleven fixed compiler numeral ports have degree zero.
+> The source emits both the default four-program-parameter form and the
+> separate fifth duration-bound form. The existing tail product replaces the
+> larger quotient offset, with a full positive-zero bijection to each immediate
+> parent on valid program slices. The proof first obtains E>2r+3 and handles
+> the normalized strong equation before recovering the native exponent and
+> restoring the positive old quotient. The [independent mathematical review](review_neary_woods_tail_quotient_math.md)
+> checks both native strong variants in all16 saved parent layouts. The separate
+> [source/degree/API review](review_neary_woods_tail_quotient_source.md)
+> proves exact982 from sixteen nonzero leading forms for the actual fixed
+> compiler coefficients, supported by four complete coefficient expansions.
+> This does not assert exact982 after specializing the program parameters.
+> The two-source author packet retains its upper-only metadata. All three installed
+> receipts pass fresh replay; the parent1147 remains a historical upper bound.
+> The independent74/86 universal operation bounds are unchanged.
+>
+> The [all-sixteen U9 source transfer](neary_woods_tail_quotient_all16.md) now
+> extends that shift to every saved eligible layout: eight native bases at two
+> duration interfaces. All sixteen complete source arrays, ordinary strong
+> comparisons, fixed numeral recipes and finalizers remain paid. Each degree
+> upper bound falls by165; the eight distinct new bounds are795,802,837,848,
+> 957,964,975,982. The author packet proves4,102 register pullbacks and checks
+> 192 full values, including32 rational cases; fresh installed replay passes.
+> The [independent full source review](review_neary_woods_tail_quotient_all16.md)
+> reconstructs all sixteen sources,4,102 paid gates,240 factor ports and24 ordinary
+> residuals, including their complete finalizers and fixed numeral recipes. Both
+> installed receipts pass fresh replay. These are upper bounds and a saved-source
+> transfer, with no new grouping census or change to the74/86 records.
+>
+> The [fresh U9 tail grouping census](neary_woods_universal_tail_partitions.md)
+> now improves the43-witness catalogue to **253/982,255/848,256/802,257/604,
+> 258/558,259/404,260/398,261/312**, with degree upper bounds. It optimizes
+> all120 group-count choices across eight eligible bases, compiles240 complete
+> minimizers at both duration interfaces and saves30 full frontier sources.
+> All64,918 paid registers have complete grouped signed pullbacks; every ordinary
+> comparison and finalizer remains included. The43-witness degree floor is312
+> in this grouping grammar; the unchanged44-witness266/212 endpoint remains.
+> The [independent bin-packing review](review_u9_tail_weighted_minima.md)
+> proves all120 minima using a different search and analytical anchor bounds.
+> The [independent full source review](review_neary_woods_universal_tail_partitions.md)
+> reconstructs every one of the240 schedules and30 saved arrays, proves all
+> 64,918 grouped register identities and240 complete finalizers, and verifies
+> all paid degree ledgers. Author and both installed review receipts pass fresh
+> replay. These finite-family degree improvements do not lower the established
+> 74/86 operation records.
+
+
+>
+> The preceding [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
 > gives **252 certificate /253=132M+121A operations**, one comparison,
 > 43 positive witnesses, four fixed program parameters and degree at most1147.
 > Its paid product b*P^9 types both history radices; fixed top tags2,1 let a
@@ -339,6 +1371,12 @@
 > the rest44. The finite propagated-objective floors are372 with43 witnesses
 > and212 overall, attained at261 and266 operations. Fixed45 ends269/212.
 > These optimize the stated finite objective, not exact degree or all circuits.
+> That census uses the preceding source coordinates; no repartitioning after the
+> smaller quotient shift is claimed.
+> A concrete next extension is to emit and source-audit the remaining14 saved
+> product-scale layouts under this shift, then optimize their new factor weights.
+> The all16 mathematical recipe check alone does not establish those new source
+> APIs, degree certificates or a new partition census; do not rerun old suites.
 >
 > The preceding [paid native bound](neary_woods_universal_native_bound254.md)
 > gives254/1203 by reusing r=(q-1)S in X=q(S+beta)>r. Its triangular
