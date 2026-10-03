@@ -8,6 +8,10 @@
 > renamed source files and restores six original runnable layouts from Git.
 > The [bbaf322e5 placement](review_placement_bbaf322e5.md) similarly covers64 more
 > unchanged files from six earlier deliveries; no new theorem is inferred.
+> The [a7ae02511 placement](review_placement_a7ae02511.md) covers246 additions,
+>252 package-qualified member paths and82 Git-only members; six complete roots
+> with334 files restore exactly. Preserve corrected-signal precedence over its
+> superseded archive. Typeset article revisions need separate semantic audits.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;
