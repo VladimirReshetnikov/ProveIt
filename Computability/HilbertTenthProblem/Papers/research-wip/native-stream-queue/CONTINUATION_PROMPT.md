@@ -17,6 +17,10 @@
 > now pass those bounded audits. Three presentation issues have separate,
 > privately verified patches; applying them requires PDF rebuilds. Original
 > formulas/proofs and their domain/horizon limitations remain intact.
+> The [Part XVII sign-chart transfer](review_signcharts_f97814421.md) also passes:
+> 79 formal blocks and 91 display occurrences, matched without reusing targets,
+> with 29 unchanged companion files and a fresh root receipt. Its power atoms,
+> external bit width and fixed-phase qualifications remain explicit.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;

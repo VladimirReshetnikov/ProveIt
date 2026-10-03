@@ -11,6 +11,11 @@ the signal schedule saves 7,569,906 operations per event packet, reaching
 17,822,616; reset gates save 761 additions per source step. These
 external-horizon/local results leave the global 87-operation bound unchanged.
 
+The assembled-report reviews now also cover [Part XVII sign charts](review_signcharts_f97814421.md):
+79 formal environments and 91 display occurrences survive with their multiplicities,
+and all 29 companion files retain the original bytes. The externally fixed widths,
+power atoms, phase counts and unapplied executable repairs remain disclosed.
+
 The [existential congruence variant](presburger_congruence_existence15.md)
 further lowers the complete atom to **14 = 5M+9A** with five natural witnesses.
 Its truth output is exact, but its witness fibers are infinite. The separate
