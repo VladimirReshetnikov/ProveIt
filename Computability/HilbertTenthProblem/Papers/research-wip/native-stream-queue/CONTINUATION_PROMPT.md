@@ -3,9 +3,11 @@
 > Next priority: [ten new reports](incoming_substrate_intake_aebfa386e.md) arrived
 > at `ef2fc7990`/`aebfa386e` during the final frontier push. They are merged,
 > byte-inventoried (334 files/84 Python modules). The [current review index](incoming_substrate_review_aebfa386e.md)
-> records seven completed packets; corrected signals, reset nets and mixing remain.
+> records eight completed packets; corrected signals and reset nets remain.
 > The [224ca41df placement audit](review_placement_224ca41df.md) authenticates all81
 > renamed source files and restores six original runnable layouts from Git.
+> The [bbaf322e5 placement](review_placement_bbaf322e5.md) similarly covers64 more
+> unchanged files from six earlier deliveries; no new theorem is inferred.
 > Keep each remaining packet pending until full proof/source review and replays.
 > The preceding turn made verified arithmetic progress through the complete
 > U15 frontier511/4881,513/3120,515/2116,517/1936, all reviewed and published.
