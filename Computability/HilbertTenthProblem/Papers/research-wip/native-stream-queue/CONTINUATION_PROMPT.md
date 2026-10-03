@@ -64,6 +64,11 @@
 > [independent circuit audit](review_parity_truth_specialization.md) and root
 > writer replay pass. Keep parity-only, already-evaluated-input and natural-witness scope.
 > The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
+> The [primary Grill Tag source review](review_grill_encoding_e.md) finds that
+> encoding E's second grill has a−2 ones in prose but requires a−4 to match
+> the stated widths and run list. All 10,240 bounded two-generation compiler
+> fixtures support the correction. The full compiler and its halt/input
+> contracts remain unaudited; do not assume a universal raw-input bridge.
 > A new [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
 > checks 106 complete schedules, including both strong-containing pairs, all
 > ordered triple compositions and a common-c factorization. Best costs 91/92/94

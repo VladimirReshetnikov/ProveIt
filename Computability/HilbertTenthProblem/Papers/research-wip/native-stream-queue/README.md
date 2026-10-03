@@ -51,6 +51,12 @@ paid accepted-NAND example costs 17 operations. The [independent review](review_
 checks all eighteen complete circuits; this local result leaves the universal
 87-operation bound unchanged.
 
+A [primary-source Grill Tag audit](review_grill_encoding_e.md) finds a four-bit
+error in the published E encoding. Changing its second grill from a−2 to a−4
+ones matches the displayed widths and production list; 10,240 independent
+two-generation fixtures pass. This bounded check does not certify the full
+compiler, halt protocol or ordinary-input universality.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
