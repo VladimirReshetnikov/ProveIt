@@ -2295,6 +2295,25 @@ automata at size quadratic in the number of records; not answered). The
 note on `cdc:q:ski` was written with Part XIX. No question of this report
 is answered.
 
+**Reciprocal note (batch 80, cluster K2).** The same cluster added Parts V
+and VI to
+[signal-machine-collision-certificates](../signal-machine-collision-certificates/)
+(written in `ef114b0bb` from batch-80 manuscripts 10, 02, 05 and 03, its
+sources 14–17). One dated note of 2 October 2026, without a new label,
+follows the batch-78 note after `cdc:of:thm:classification` (Part XI): that
+report's source 17 (batch-80 manuscript 03, not this report's manuscript
+03) gives a natural-dynamics instance of the step from degree three to
+degree four. A binary number-conserving cellular automaton of radius at
+most six (`smc:fm:prop:rule`) hits an anchored pattern exactly at the times
+`k² + (2d − 11)k` (`smc:fm:prop:hits`, `smc:fm:eq:hits`); with `d = 7 + x`
+these are `k² + (2x + 3)k`, so the hit set `{(x, t)}` is not semilinear and,
+by `𝒟⁺₃ = SL`, has no orthant-nonnegative representation of degree at most
+three, while that report's squared quadratic `[k² + (2x + 3)k − t]²`
+(`smc:fm:eq:quartic`) is a single-fold one of degree four. The dynamics,
+the formula and the quartic are that source's; this report supplies only
+the degree lower bound, as that report already says. No question of this
+report is answered.
+
 Part XVII (manuscripts 17 and 18) relies on no formal declaration either.
 17 cites, as the classical input of its order-two theorem, the
 single-fold unary exponential representation `JM1984.RM.re_sfu` and
@@ -2465,7 +2484,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The recorded build has 608 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -2552,6 +2571,19 @@ line. Every label and every earlier bibliography number is unchanged (the
 entries; `repo-b80rev` is item 99). The pages with the new note in
 `cdc:et:sec:reproduce`, the note after the artifact index, the provenance
 table and the bibliography were rendered and inspected.
+
+The batch-80 reciprocal note of cluster K2 (one dated note after
+`cdc:of:thm:classification`; no label, macro, package or bibliography
+entry) keeps the build at 608 pages; it moves later material in Sections
+90–98 one page on (59 `\newlabel` page fields change), and the shift is
+absorbed within Part XII. The build has no
+errors, warnings, undefined references or citations, multiply defined
+labels, duplicate destinations or overfull boxes, the same single
+underfull line, and the same thirteen "Infinite glue shrinkage" messages
+as a rebuild of the previous text in the same environment. Every label
+and bibliography number is unchanged (the `.aux` of that rebuild
+compared, 3132 `\newlabel` and 99 `\bibcite` entries). The page of the
+note (page 260) was rendered and inspected.
 
 ## Rerunning the checks
 
@@ -3795,6 +3827,15 @@ same decisions.
   question "Substrate-transfer theorems", and in Part XVI after the question
   "Local certificates on adaptive support geometry" (see "Reciprocal notes
   (batch 79, cluster J2)" above). They cite those reports' labels by name;
+  no label was added, renamed or renumbered, and no printed text was
+  changed.
+- **Batch-80 reciprocal note (cluster K2).** One dated `[write]` note of
+  2 October 2026, in Part XI after the batch-78 note that follows
+  `cdc:of:thm:classification`, points to source 17 of Part VI of
+  `signal-machine-collision-certificates` (written in `ef114b0bb`): a
+  non-semilinear hit set of a binary number-conserving automaton, outside
+  `𝒟⁺₃` by that theorem, with a single-fold quartic (see "Reciprocal note
+  (batch 80, cluster K2)" above). It cites that report's labels by name;
   no label was added, renamed or renumbered, and no printed text was
   changed.
 - **Batch 80, cluster K1 (corrected code edition of 21).** A dated

@@ -399,8 +399,9 @@ source 17's 34 as `qoc:rn:`, and twelve new ones (`qoc:mm:part`,
 removed, and every one of them still prints the same number (compared in the
 `.aux` files of the committed and the new build). Bibliography keys of the
 new Parts carry `mm:`, `um:` or `rn:`. The batch-79 reciprocal notes
-(cluster J2) added no label; the report still has 307, and no label's
-number changed (compared in the `.aux`).
+(cluster J2) and the batch-80 reciprocal note (cluster K2) added no label;
+the report still has 307, and no label's number changed (compared in the
+`.aux`).
 
 Each Part keeps its source's numbering by section: source 08's Section *n*
 is Section *n* + 1 (Sections 2–16), source 12's is *n* + 16 (Sections
@@ -638,7 +639,18 @@ The report does **not** claim:
   `review_batch79_j2_bbc67d225.md`, finding 4). Its Part IV, like Part IV here, has degree four.
   Dated notes in this report's relation section and after Theorem
   `qoc:um:thm:poly` record this; neither report re-proves a theorem of the
-  other.
+  other. Reciprocal note (batch 80, cluster K2, 2 October 2026): the
+  certificates of that report's Part V (its sources 14 and 15, batch-80
+  manuscripts 10 and 02, written in `ef114b0bb`) for raw-integer
+  two-counter branches use the inactive-product gate
+  `(E_t − e_tj)(e_tj + u_tj)` of Lemma `qoc:rn:lem:gates`, with one base
+  per branch (`smc:tm:eq:certificate`, `smc:ct:eq:poly`,
+  `smc:tm:thm:certificate`). One-hot selection and inactive vanishing
+  therefore hold there over the nonnegative reals too, but divisibility of
+  the raw value by a prime needs natural values (that report's real
+  assignment `e = 1`, `u = 1/2`), so those certificates are exact over the
+  naturals only. A dated note after the lemma records this; no theorem is
+  shared.
 - **This report's own questions.** Part IV answers in part Part I's question
   "Add dynamic membranes without witness multiplicity" (one step, histories
   modulo renaming) and covers division and dissolution, which Part I's
@@ -844,7 +856,15 @@ citations, multiply defined labels, duplicate destinations or overfull or
 underfull boxes, and with the same seven "Infinite glue shrinkage"
 messages as a rebuild of the previous text in the same environment. The
 307 labels keep their numbers (compared in the `.aux`); pages after
-Section 60 move up by one.
+Section 60 move up by one. The batch-80 reciprocal note after Lemma 68.1
+(`qoc:rn:lem:gates`; cluster K2, no label, macro, package or bibliography
+entry) moves the pages from Section 69 to Appendix G up by one and leaves
+the total at 170 pages, with no errors, warnings, undefined references or
+citations, multiply defined labels, duplicate destinations or overfull or
+underfull boxes, and five "Infinite glue shrinkage" messages (seven in a
+rebuild of the previous text in the same environment). All 307 labels and
+56 bibliography entries keep their numbers (compared in the `.aux`), and
+the page of the note (page 136) was rendered and inspected.
 
 The article is generated reproducibly from the delivered manuscripts by
 merge scripts with anchored insertions (Parts IV–VI were appended to the
