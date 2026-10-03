@@ -8,6 +8,7 @@
 \usepackage[dvipsnames]{xcolor}
 \usepackage{enumitem,listings,fancyhdr}
 \usepackage[unicode,pdfencoding=auto,psdextra]{hyperref}
+\usepackage{xurl}% write: line breaks in long paths and labels
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
  pdftitle={Smooth Everywhere, Universal on the Integers},
  pdfauthor={Research prepared for Vladimir Reshetnikov with ChatGPT},
@@ -48,14 +49,19 @@
 \newcommand{\guard}{g}
 \newcommand{\source}{\mathcal S}
 \newcommand{\variety}{\mathcal X}
+% Write phase (batch 79, cluster J1): marks text added when the manuscript
+% was written into the collection; unmarked text is the source's own.
+\newcommand{\wtag}{\textup{[write]}}
+\newcommand{\Dplus}{\mathcal D^{+}}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
  frame=single,rulecolor=\color{black!25},showstringspaces=false,
  xleftmargin=5pt,xrightmargin=5pt,aboveskip=8pt,belowskip=8pt}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
-\vspace*{16mm}
+\vspace*{2mm}% write: was 16mm, to keep the added status sentence on this page
 {\Large\color{MidnightBlue} PROVEIT\quad /\quad RESEARCH MANUSCRIPT\par}
 \vspace{12mm}
 {\Huge\bfseries Smooth Everywhere,\\[4pt]
@@ -96,12 +102,191 @@ general phenomenon.
 Not a Lean/Coq formalization; not peer reviewed. No finite-fold MRDP theorem,
 no solution to Hilbert's tenth problem over $\Q$, and no improvement to the
 repository's universal operation-count records is claimed.
+
+\smallskip\noindent{\small\raggedright\wtag\ Written into ProveIt's research-report collection
+(\emph{hilbert-tenth-problem}) from batch-79 manuscript~13. ``Smooth'' means
+the affine model is smooth over~$\Z$; Lemma~\ref{sdf:lem:lifting} and
+Theorem~\ref{sdf:thm:counter} re-present results of the collection's report
+\emph{canonical-diophantine-certificates}. See the
+\hyperref[sdf:sec:preface]{editorial preface} and
+Appendix~\ref{sdf:app:provenance}.\par}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \tableofcontents
 \newpage
 
-\section{The problem: preserve computation, simplify the geometry}
+\phantomsection\label{sdf:sec:preface}
+\addcontentsline{toc}{section}{Editorial preface}
+\section*{Editorial preface}
+
+\wtag\ This preface, the bracketed notes marked \wtag\ in the text,
+Appendix~\ref{sdf:app:provenance} and the bibliography entries marked \wtag\
+were written when the manuscript was placed in ProveIt's research-report
+collection. Everything else is the manuscript as delivered, with its
+numbering of sections, statements and equations. Its labels gained the
+prefix \texttt{sdf:}, and labels were added to three numbered results that
+had none (Theorem~\ref{sdf:thm:weights}, Corollaries~\ref{sdf:cor:five}
+and~\ref{sdf:cor:nobound}), to some sections, to the research questions and
+to Appendix~\ref{sdf:app:export}.
+
+\paragraph{The source.} The report is built from one manuscript, batch-79
+manuscript~13 of ProveIt's incoming reports (archive
+\path{Smooth_Quartic_Diophantine_Certificates.zip}, arrival commit
+\texttt{ef2fc7990}, placed by commit \texttt{224ca41df}). It names the
+repository commit \texttt{a845ab5d0} as the snapshot it compared against
+(Section~\ref{sdf:sec:repo} and Appendix~\ref{sdf:app:provenance}). It is an
+AI-assisted research manuscript (``Developed with ChatGPT'') prepared for
+Vladimir Reshetnikov. Its proofs are conventional and its checks are finite
+exact computations; it is unrefereed, and nothing in it is formalized in
+Lean or Rocq.
+
+\paragraph{Already reviewed.} After placement, the Hilbert's-tenth research
+tree reviewed the archive (commit \texttt{fd4a2e8d3}; files
+\path{review_smooth_quartic_aebfa386e.md}, \texttt{.py} and \texttt{.json}
+in \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/},
+indexed in \path{incoming_substrate_review_aebfa386e.md})~\cite{review13}.
+Its verdict is ``PASS within the stated mathematical and implementation
+scope'': it replayed all 21,128 assertions of the delivered verifier and
+reproduced both example exports byte for byte, checked the integral Jacobian
+identity in every characteristic, the fibre bijections, geometric
+integrality, the dyadic and $2$-adic constructions and the restricted
+guard-weight optimality, and ran independent checks (12,636 integer and 640
+natural fibre tuples, 120 counter runs against a separate interpreter). It
+found no theorem defect and no required repair. It stresses five scope
+points that the text below already states: the size bounds of
+Proposition~\ref{sdf:prop:size} count monomials, not arithmetic operations;
+``degree four'' is witness degree, and a loader parameter treated as a
+coordinate gives total degree six (Section~\ref{sdf:sec:parameter-degree});
+the counter frontend has an external horizon and accepts halting \emph{by}
+that horizon, so it is not a fixed-arity compiler; fixed-arity universality
+comes only from an existing MRDP relation and proves no single-fold MRDP
+theorem; and the code is not an authenticated checker for edited certificate
+objects or hostile JSON. The finalizer gives no smaller operation schedule
+for the repository's 87-operation universal polynomial.
+
+\paragraph{What is new and what is re-proved.} The main new content is the
+arithmetic geometry of the final equation: smoothness of the affine model
+over~$\Z$ with an explicit integral B\'ezout certificate
+(Sections~\ref{sdf:sec:smooth}--\ref{sdf:sec:integrality}), local and dyadic
+points (Section~\ref{sdf:sec:local}), rational density and the two real
+components (Section~\ref{sdf:sec:real}), the weighted-guard classification
+(Section~\ref{sdf:sec:guards}) and the power-of-two padding
+(Section~\ref{sdf:sec:power-two}). Three pieces re-present results already in
+the collection's report \emph{canonical-diophantine-certificates} (CDC
+below)~\cite{cdcreport}; they are printed because the argument uses them, with
+\wtag\ notes at each and no novelty claimed:
+\begin{itemize}
+\item Lemma~\ref{sdf:lem:lifting}, natural version, is CDC's unique-extension
+quadratization, \path{cdc:wf:lem:quadratization}, with the same proof
+($F^+-F^-$ circuits, one natural variable per gate, uniqueness by induction
+along the circuit); the integer version with subtraction gates is the same
+induction. The sum-of-squares step $H=\sum q_i^2$ is CDC's
+\path{cdc:wf:eq:sos}.
+\item Theorem~\ref{sdf:thm:counter} is a second presentation of CDC's
+counter-program adapter: one-hot control equations, the zero guard
+\eqref{sdf:eq:zeroedge}, which is CDC's \path{cdc:eq:zero-guard}, the
+externally fixed horizon of CDC's Section \path{cdc:pt:sec:boundary}, and
+the halt self-loop caveat of \path{cdc:ct:sec:substrates}. New here are
+only the exact counts $n_T$, $m_T$ and the positive-edge slack equation
+\eqref{sdf:eq:posedge} with natural selectors summing to one in place of
+Boolean rows.
+\item The computability core of Theorem~\ref{sdf:thm:hardness} is CDC's
+quartic normalization, \path{cdc:of:prop:quartic} (every computably
+enumerable set has a quartic representation by MRDP, circuit lifting and a
+sum of squares), together with Poonen's smooth-variety undecidability, which
+the manuscript credits itself. The new content of that theorem is the
+geometric package (a)--(e).
+\end{itemize}
+Three further credits are added as \wtag\ notes: Ramanujan's list of
+universal diagonal quaternary forms for Lemma~\ref{sdf:lem:1122}, Minsky's
+two-counter universality beside the formalized reductions of
+Section~\ref{sdf:sec:counter}, and a variable count beside Poonen's lemma in
+Section~\ref{sdf:sec:novelty}.
+
+\paragraph{A non-claim of the collection met in finalized form.} The report
+\emph{probabilistic-quantum-and-continuous-computation} (PQC)~\cite{pqcreport}
+proves that each zero of its quartic Boolean-circuit energy $\mathcal E_C$
+is a nondegenerate minimum (\path{pqc:ql:thm:hessian}) and, in the remark
+``Nondegenerate minimum versus smooth hypersurface'' that follows it, does
+not claim that the hypersurface $\mathcal E_C=0$ is nonsingular. It cannot
+be: $\mathcal E_C$ is a sum of squares, so its gradient vanishes at every
+real zero, which is the observation that opens Section~1 below. The residuals
+of $\mathcal E_C$ are integer polynomials of degree at most two, so
+Theorem~\ref{sdf:thm:main} applies to them. Five further variables give a
+quartic whose affine hypersurface is smooth over~$\Z$, with the same natural
+(here Boolean) zeros. The price is positivity. The finalized polynomial
+takes negative real values, so its zeros are no longer energy minima, and the
+Morse statement of PQC and the smoothness statement here concern different
+polynomials. Neither report proves the other's statement.
+
+\paragraph{Relation to CDC Part~XI.} CDC's Part~XI classifies
+representations by polynomials that are nonnegative on the whole real orthant
+(the classes $\Dplus_d$ of \path{cdc:of:thm:classification}). The finalized
+polynomial $F$ of \eqref{sdf:eq:F} is never in such a class: at the dyadic
+point \eqref{sdf:eq:dyadic} the coordinates $t,u,z_j$ are positive, and
+$F_u=2tR=2B/K^3$ and $F_{z_j}=\lambda_j(4z_j-1)=2\lambda_jA_j/K^2$ are not
+all zero, because $A_1^2+A_2^2+2A_3^2+2B^2=K^4-2c>0$. Decreasing one
+coordinate with a nonzero derivative slightly gives a point with nonnegative
+coordinates where $F<0$. Some sign change is forced: a polynomial that is
+nonnegative near one of its zeros has zero gradient there, so a hypersurface
+smooth at a zero inside the open orthant changes sign there. The manuscript
+uses positivity only on the integer lattice (Lemma~\ref{sdf:lem:guard}),
+which is among the settings that CDC's README, in its scope note for
+manuscript~09 (CDC's Part~XI), says that Part's theorem does not cover
+(``positivity only on natural points'').
+
+\paragraph{Batch-79 siblings.} Several manuscripts of the same batch end with
+an ordinary sum of squares of integer residuals of degree at most two in
+natural unknowns, which is exactly the input of Theorem~\ref{sdf:thm:main}:
+manuscript~03's bounded-bit quartic (placed for CDC's Part~XVII), and the
+bounded ordinary exports of manuscripts~06 and~15 (``Coefficient extraction
+at an external bound'' and ``Bounded ordinary quartic export'', Parts~I
+and~II of the report \emph{polynomial-witness-histories}). Each could be
+followed by this finalizer at the cost of five variables; no source states
+that composition, and none cites this manuscript, which arrived after four of
+them. Manuscript~02's exports keep fixed-base power atoms and are not
+ordinary polynomial equations, so the finalizer does not apply to them as
+they stand; the unbounded exports of~06 and~15 have polynomial-valued unknowns
+and are outside its integer setting. Manuscript~15's question whether one
+equation can have degree two or three is not answered here: the finalizer
+stays at degree four.
+
+\paragraph{Notation.} The manuscript reuses several letters between its
+algebraic sections and its counter frontend, and some coincide with letters
+of neighbouring reports. No symbol was renamed. The table lists the readings;
+the right column gives the other reading in this report, or the
+tempting false one.
+
+\begin{center}
+\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.15\textwidth}%
+ >{\raggedright\arraybackslash}p{0.38\textwidth}%
+ >{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+Symbol or term & Main meaning & Other meaning in this report, or the tempting false reading\\
+\midrule
+\endhead
+$F$ & the finalized quartic \eqref{sdf:eq:F} in $n+5$ variables & not nonnegative over $\R$ or on the orthant; not CDC's MRDP polynomial $F(x,y)$ nor PQC's energy $\mathcal E_C$\\
+$g$ & the guard $\guard(z)=2z^2-z$ & Section~\ref{sdf:sec:counter}: $g$ is the number of guarded edges\\
+$E$ & the Euler combination $E=4H$ (\eqref{sdf:eq:EDJ}, Section~\ref{sdf:sec:guards}) & Section~\ref{sdf:sec:counter}: the number of edges\\
+$D_j$ & $D_j=F_{z_j}$ (Section~\ref{sdf:sec:smooth}) & countdown example: $D$ is the decrement edge\\
+$H$ & $\sum_i q_i^2$ & countdown example: the halt self-loop edge\\
+$t$, $q_i$, $c$ & homogenizing coordinate; homogeneous lift; $c=\sum_if_i(0)^2$ \eqref{sdf:eq:c} & Section~\ref{sdf:sec:counter}: target state $t(e)$, state variable $q_{s,i}$, counter $c_{s,j}$\\
+$p$, $d$, $h$ & a prime; the power-of-two degree of Theorem~\ref{sdf:thm:padding}; $h(z_1)$ of \eqref{sdf:eq:2adic} & Section~\ref{sdf:sec:counter}: number of positive-decrement edges, slack $d_{s,e}$, halt state $h$\\
+$B$ & the coordinate with $K^4-2c=A_1^2+A_2^2+2A_3^2+2B^2$ (Theorem~\ref{sdf:thm:dyadic}) & Corollary~\ref{sdf:cor:height}: the box radius\\
+$w_j$, $W$ & guard weights and their total (Section~\ref{sdf:sec:guards}) & $w$: a gate variable (Lemma~\ref{sdf:lem:lifting}) and the second guard variable of \eqref{sdf:eq:bad-weighted}; $w_j$: rescaled guard coordinates in the proof of Theorem~\ref{sdf:thm:components}\\
+$N$ & the integer $K^4-2c$ (Section~\ref{sdf:sec:local}) & not $\N=\{0,1,2,\ldots\}$ (as in CDC)\\
+smooth, good reduction & the affine scheme $\variety\to\Spec\Z$ is smooth & not smoothness of a projective closure, nor a smooth proper model (neither claimed)\\
+dyadic point & a point of $\variety(\Z[1/2])$, here with nonnegative coordinates & not density of dyadic points (not claimed)\\
+degree four & degree in the witness variables of a specialized equation & not total degree with input parameters as coordinates (six, Section~\ref{sdf:sec:parameter-degree})\\
+canonical, witness-faithful & natural zeros in bijection with the source's & not single-fold or finite-fold MRDP (not claimed)\\
+finalizer & a post-processing of a quadratic system into one equation & not the operation-count ``finalizers'' of the Hilbert's-tenth research tree; this one costs more operations than a sum of squares\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{The problem: preserve computation, simplify the geometry}\label{sdf:sec:intro}
 
 A computational certificate normally begins as a list of equations. States,
 registers, scheduling choices, memory contents, and auxiliary multiplication
@@ -127,7 +312,7 @@ arithmetic and geometry: smoothness, rational points, real connectedness, and
 local integral points can all be harmless while integer solvability still
 carries an arbitrary computably enumerable problem.
 
-\subsection{Relation to the repository}
+\subsection{Relation to the repository}\label{sdf:sec:repo}
 
 The ProveIt repository already has a substantial collection of witness-faithful
 Diophantine frontends. The reviewed canonical-certificate collection includes
@@ -152,7 +337,15 @@ Other overview files were read on the live branch. This was not an exhaustive
 repository audit, a build, or a verification of every theorem mentioned in
 its documentation.
 
-\subsection{Known antecedent and the precise novelty boundary}
+\wtag\ [At the write, the status file read at this commit is unchanged (same
+blob, Appendix~\ref{sdf:app:provenance}). Two of the frontend tools used
+below are already in the collection's report
+\emph{canonical-diophantine-certificates}, and a non-claim of the report
+\emph{probabilistic-quantum-and-continuous-computation} bears on the main
+theorem; the \hyperref[sdf:sec:preface]{editorial preface} gives the
+pointers.]
+
+\subsection{Known antecedent and the precise novelty boundary}\label{sdf:sec:novelty}
 
 Poonen proved that integer solvability can be preserved while replacing an
 equation by one defining a smooth geometrically integral affine variety over
@@ -170,18 +363,27 @@ dyadic and local points. A comprehensive priority search for this exact
 combination was not completed. The construction is presented as a research
 result with proofs, not as a certified world-first theorem.
 
+\wtag\ [Variable count: Poonen's lemma adds one variable to a single
+equation $f$ and gives degree $2\deg f$ and smoothness over~$\Q$; applied to
+$f=\sum_if_i^2$ for a quadratic system it would give degree eight. The price
+here of smoothness over all of~$\Z$, with an explicit certificate, degree
+four and a natural-zero bijection, is four further variables. The
+Hilbert's-tenth review~\cite{review13} also read Poonen's Lemma~4.1 and
+Corollary~4.3 and found that they support this attribution and do not
+contain the five-variable formula; it was not a complete priority search.]
+
 \subsection{Reading map}
 
-Sections~\ref{sec:main}--\ref{sec:integrality} prove the algebraic finalizer.
-Sections~\ref{sec:local}--\ref{sec:real} prove the arithmetic and real-geometric
-claims. Section~\ref{sec:guards} explains why three weighted guards are the
+Sections~\ref{sdf:sec:main}--\ref{sdf:sec:integrality} prove the algebraic finalizer.
+Sections~\ref{sdf:sec:local}--\ref{sdf:sec:real} prove the arithmetic and real-geometric
+claims. Section~\ref{sdf:sec:guards} explains why three weighted guards are the
 smallest successful choice in the specified weight-four architecture.
-Sections~\ref{sec:counter}--\ref{sec:undecidable} connect the finalizer to
+Sections~\ref{sdf:sec:counter}--\ref{sdf:sec:undecidable} connect the finalizer to
 computation, carefully separating external time bounds from fixed-arity
 unbounded representations. The implementation and its limits are recorded
-in Section~\ref{sec:implementation}.
+in Section~\ref{sdf:sec:implementation}.
 
-\section{Conventions and the quadratic interface}\label{sec:interface}
+\section{Conventions and the quadratic interface}\label{sdf:sec:interface}
 
 Throughout, $\N=\{0,1,2,\ldots\}$. A polynomial with integer coefficients is
 evaluated in $\Z$ even when its variables range over $\N$. Negative
@@ -204,7 +406,7 @@ The interpretation is not part of the algebraic data.
 
 \subsection{Functional arithmetic-circuit lifting}
 
-\begin{lemma}[Quadratic lifting]\label{lem:lifting}
+\begin{lemma}[Quadratic lifting]\label{sdf:lem:lifting}
 A finite system of integer polynomial equations can effectively be replaced
 by a quadratic system whose projection onto the original variables is a
 bijection of integer zero sets. Over $\N$, the same statement holds using
@@ -235,6 +437,15 @@ of a pre-existing Diophantine representation unique. For example, a
 representation of halting may have many auxiliary solutions before any
 circuit gates are introduced. That multiplicity survives lifting.
 
+\wtag\ [The natural version of Lemma~\ref{sdf:lem:lifting} is the
+unique-extension quadratization of the collection's report
+\emph{canonical-diophantine-certificates}, Lemma
+\path{cdc:wf:lem:quadratization}, with the same proof: circuits for $f^+$
+and $f^-$, one natural variable per gate, uniqueness by induction along the
+circuit. The integer version adds subtraction gates to the same induction.
+No novelty is claimed for either; the lemma is printed because
+Theorem~\ref{sdf:thm:hardness} uses both versions.]
+
 \subsection{Affine smoothness and degree conventions}
 
 Our geometric object is the affine scheme
@@ -255,36 +466,36 @@ ideal certifies relative smoothness in every characteristic.
 Degree four will always mean degree in the \emph{witness variables of a
 specialized equation}. When input parameters become coordinates of a single
 master polynomial, their contribution to total degree must be counted again;
-Section~\ref{sec:parameter-degree} does so explicitly.
+Section~\ref{sdf:sec:parameter-degree} does so explicitly.
 
-\section{The five-variable finalizer}\label{sec:main}
+\section{The five-variable finalizer}\label{sdf:sec:main}
 
 Write each source residual as
 \[
  f_i(x)=\sum_{|\alpha|\le2}c_{i,\alpha}x^\alpha.
 \]
 Its homogeneous quadratic lift is
-\begin{equation}\label{eq:q}
+\begin{equation}\label{sdf:eq:q}
  q_i(x,t)=\sum_{|\alpha|\le2}c_{i,\alpha}x^\alpha t^{2-|\alpha|}.
 \end{equation}
 The expression $t^2 f_i(x/t)$ is a useful mnemonic for $t\ne0$; the
-polynomial definition \eqref{eq:q}, valid also at $t=0$, is authoritative.
+polynomial definition \eqref{sdf:eq:q}, valid also at $t=0$, is authoritative.
 Set
-\begin{equation}\label{eq:ingredients}
+\begin{equation}\label{sdf:eq:ingredients}
  H(x,t)=\sum_{i=1}^m q_i(x,t)^2,\qquad
  R=tu-1,\qquad \guard(z)=2z^2-z.
 \end{equation}
 Put $\lambda=(\lambda_1,\lambda_2,\lambda_3)=(1,1,2)$. The finalizer is
 \begin{equation}\boxed{\displaystyle
  F(x,t,u,z)=H(x,t)+(tu-1)^2+
-             \guard(z_1)+\guard(z_2)+2\guard(z_3).}\label{eq:F}
+             \guard(z_1)+\guard(z_2)+2\guard(z_3).}\label{sdf:eq:F}
 \end{equation}
 Here $z=(z_1,z_2,z_3)$, and all five new variables are distinct from the
 source variables.
 
-\begin{theorem}[Canonical smooth quartic finalizer]\label{thm:main}
+\begin{theorem}[Canonical smooth quartic finalizer]\label{sdf:thm:main}
 For every quadratic interface in $n$ variables, the polynomial
-\eqref{eq:F} has the following properties.
+\eqref{sdf:eq:F} has the following properties.
 \begin{enumerate}[label=\textnormal{(\roman*)}]
 \item Its coefficients are integers and its total degree is exactly four.
 \item The map $a\mapsto(a,1,1,0,0,0)$ is a bijection from
@@ -314,7 +525,7 @@ claims are: the first three are statements about an integer lattice, the
 fourth and fifth about schemes, and the last two about rational, real, and
 local points. None is being substituted for another.
 
-\begin{proposition}[Size bounds]\label{prop:size}
+\begin{proposition}[Size bounds]\label{sdf:prop:size}
 If $f_i$ has $s_i$ nonzero monomials, the number of monomials of $F$ is at
 most
 \[
@@ -340,28 +551,28 @@ quadratic number of input-term products with polynomial-length coefficients.
 These are expanded-polynomial bounds, not claims about the smallest arithmetic
 circuit or the repository's universal operation-count records.
 
-\section{Exact integer fibres and witness heights}\label{sec:fibres}
+\section{Exact integer fibres and witness heights}\label{sdf:sec:fibres}
 
-\begin{lemma}[A one-zero integer guard]\label{lem:guard}
+\begin{lemma}[A one-zero integer guard]\label{sdf:lem:guard}
 For every $z\in\Z$, $\guard(z)\ge0$, with equality if and only if $z=0$.
 For every $z\in\R$,
-\begin{equation}\label{eq:guard-complete}
+\begin{equation}\label{sdf:eq:guard-complete}
  \guard(z)=2\left(z-\frac14\right)^2-\frac18.
 \end{equation}
 \end{lemma}
 \begin{proof}
 For $z\ge1$, $z(2z-1)>0$; for $z\le-1$, both factors are negative, so
 again their product is positive. The remaining integer is zero.
-Completing the square gives \eqref{eq:guard-complete}.
+Completing the square gives \eqref{sdf:eq:guard-complete}.
 \end{proof}
 
-\begin{proof}[Proof of Theorem~\ref{thm:main}(i)--(iii)]
+\begin{proof}[Proof of Theorem~\ref{sdf:thm:main}(i)--(iii)]
 Each $q_i$ is homogeneous of degree two, so $H$ has degree at most four.
 The monomial $t^2u^2$ has coefficient one in $F$: no term of $H$ involves
 $u$, and the guards involve neither $t$ nor $u$. Thus the degree is exactly
 four, including for the empty or identically zero source system.
 
-On an integer tuple, every summand in \eqref{eq:F} is nonnegative.
+On an integer tuple, every summand in \eqref{sdf:eq:F} is nonnegative.
 Consequently $F=0$ forces
 \[
  q_i(x,t)=0\ (1\le i\le m),\qquad tu=1,\qquad z_1=z_2=z_3=0.
@@ -379,7 +590,7 @@ If all coordinates are natural, $tu=1$ forces $t=u=1$. The resulting
 inverse map is simply projection onto $x$. No sign choice remains.
 \end{proof}
 
-\begin{corollary}[Exact counting and height transfer]\label{cor:height}
+\begin{corollary}[Exact counting and height transfer]\label{sdf:cor:height}
 Let $B\ge1$ be an integer, and count zeros whose coordinates have absolute
 value at most $B$. The number of target natural zeros is exactly the number
 of source natural zeros; the number of target integer zeros is twice the
@@ -405,7 +616,7 @@ becomes visible only away from the integer lattice, where the guards may
 be negative and $t$ may be a nonintegral unit.
 \end{remark}
 
-\section{Smoothness in every characteristic}\label{sec:smooth}
+\section{Smoothness in every characteristic}\label{sdf:sec:smooth}
 
 There are two complementary proofs. The first explains the choice of
 constants through critical values. The second gives an integral identity
@@ -415,13 +626,13 @@ suitable for independent symbolic checking and eventual formalization.
 
 Put $Q=H+R^2$, so $F=Q+\sum_j\lambda_j\guard(z_j)$.
 
-\begin{lemma}[Only two possible critical values]\label{lem:critical}
+\begin{lemma}[Only two possible critical values]\label{sdf:lem:critical}
 Over any field of characteristic different from two, every critical point
 of $Q$ has value either zero or one.
 \end{lemma}
 \begin{proof}
 Homogeneity of $H$ gives the polynomial identity
-\begin{equation}\label{eq:Euler}
+\begin{equation}\label{sdf:eq:Euler}
  \sum_{i=1}^n x_iQ_{x_i}+tQ_t-uQ_u=4H.
 \end{equation}
 The contributions of $R^2$ cancel between the last two terms. At a critical
@@ -431,7 +642,7 @@ If $t\ne0$, then $R=0$ and $Q=0$. If $t=0$, then $R=-1$ and $Q=1$.
 
 A singular point of $F=0$ in odd characteristic would satisfy
 $4z_j-1=0$ for all three guards. Their weighted values sum to $-4/8$, so
-$Q=1/2$. That contradicts Lemma~\ref{lem:critical}. In characteristic two,
+$Q=1/2$. That contradicts Lemma~\ref{sdf:lem:critical}. In characteristic two,
 $F_{z_1}=4z_1-1=1$, which rules out singularities directly.
 
 This calculation is coefficient independent. In particular, no assumption
@@ -441,7 +652,7 @@ system is used.
 \subsection{An integral unit-ideal certificate}
 
 For derivatives of the full polynomial $F$, define
-\begin{equation}\label{eq:EDJ}
+\begin{equation}\label{sdf:eq:EDJ}
  \begin{split}
  E&=\sum_{i=1}^n x_iF_{x_i}+tF_t-uF_u=4H,\\
  D_j&=F_{z_j}=\lambda_j(4z_j-1),\\
@@ -451,33 +662,33 @@ For derivatives of the full polynomial $F$, define
 The rightmost equalities are identities over $\Z$, not reductions on the
 zero set.
 
-\begin{proposition}[Universal Jacobian identity]\label{prop:jacobian}
+\begin{proposition}[Universal Jacobian identity]\label{sdf:prop:jacobian}
 In $\Z[x,t,u,z]$,
-\begin{equation}\label{eq:four}
+\begin{equation}\label{sdf:eq:four}
  4u(2R-1)F_u-(2R+1)J=4
 \end{equation}
 and therefore
 \begin{equation}\boxed{\displaystyle
- z_1\bigl[4u(2R-1)F_u-(2R+1)J\bigr]-D_1=1.}\label{eq:unit}
+ z_1\bigl[4u(2R-1)F_u-(2R+1)J\bigr]-D_1=1.}\label{sdf:eq:unit}
 \end{equation}
 In particular, $1$ belongs to the ideal generated by $F$ and its partial
 derivatives.
 \end{proposition}
 \begin{proof}
 Substitute $F_u=2tR$ and $J=8R^2-4$ into the left side of
-\eqref{eq:four}, and use $tu=R+1$. It becomes
+\eqref{sdf:eq:four}, and use $tu=R+1$. It becomes
 \[
  8R(R+1)(2R-1)-(2R+1)(8R^2-4)=4.
 \]
 Multiplying by $z_1$ and subtracting $D_1=4z_1-1$ gives
-\eqref{eq:unit}. By \eqref{eq:EDJ}, both $E$ and $J$ are explicit
+\eqref{sdf:eq:unit}. By \eqref{sdf:eq:EDJ}, both $E$ and $J$ are explicit
 combinations of the equation and its derivatives. Every product $(4z_j-1)D_j$ is a derivative times a polynomial, so it
 also belongs to the same ideal.
 \end{proof}
 
 For direct certificate exchange, no nested abbreviations are necessary.
 Let $F_v=\partial F/\partial v$, and set
-\begin{equation}\label{eq:coefficients}
+\begin{equation}\label{sdf:eq:coefficients}
 \begin{aligned}
  A&=-8z_1(2R+1),\\
  B_{x_i}&=2z_1(2R+1)x_i,&
@@ -486,15 +697,15 @@ Let $F_v=\partial F/\partial v$, and set
  B_{z_j}&=z_1(2R+1)(4z_j-1)-\delta_{j1}.
 \end{aligned}
 \end{equation}
-Expansion of \eqref{eq:unit} gives
-\begin{equation}\boxed{\displaystyle AF+\sum_v B_vF_v=1.}\label{eq:bezout}
+Expansion of \eqref{sdf:eq:unit} gives
+\begin{equation}\boxed{\displaystyle AF+\sum_v B_vF_v=1.}\label{sdf:eq:bezout}
 \end{equation}
 Here $\deg A\le3$ and $\deg B_v\le4$, so every summand in this certificate
 has degree at most seven. The degree bound is independent of the number of
 source equations and the size of their coefficients.
 
-\begin{proof}[Proof of smoothness in Theorem~\ref{thm:main}]
-The identity \eqref{eq:bezout} persists under every base change. On the
+\begin{proof}[Proof of smoothness in Theorem~\ref{sdf:thm:main}]
+The identity \eqref{sdf:eq:bezout} persists under every base change. On the
 hypersurface, the partial derivatives generate the unit ideal. The open
 subsets where one partial is invertible form a standard-smooth cover
 \cite{stacks}. Thus $\variety\to\Spec\Z$ is smooth. It is locally one
@@ -512,9 +723,9 @@ space; the point construction below is performed after integer
 specialization.
 \end{remark}
 
-\section{Geometric integrality and the special fibre at two}\label{sec:integrality}
+\section{Geometric integrality and the special fibre at two}\label{sdf:sec:integrality}
 
-\begin{proposition}\label{prop:integral}
+\begin{proposition}\label{sdf:prop:integral}
 Every geometric fibre of $\variety\to\Spec\Z$ is integral.
 In characteristic two the fibre is isomorphic to affine $(n+4)$-space.
 \end{proposition}
@@ -550,18 +761,18 @@ The phrase ``good reduction'' in this article refers to the displayed
 \emph{affine} smooth model. It does not say that the naive projective closure
 is smooth, or that there is a smooth proper model over $\Z$.
 
-\section{Dyadic points and the complete absence of local obstructions}\label{sec:local}
+\section{Dyadic points and the complete absence of local obstructions}\label{sdf:sec:local}
 
 \subsection{An explicit point after inverting only two}
 
 Let
-\begin{equation}\label{eq:c}
+\begin{equation}\label{sdf:eq:c}
  c=\sum_{i=1}^m f_i(0)^2\in\N.
 \end{equation}
 Choose $K=2^k$ with $K^4>2c$, and set $N=K^4-2c>0$.
 Lagrange's four-square theorem supplies nonnegative integers
 $a_1,\ldots,a_4$ such that
-\begin{equation}\label{eq:four-square}
+\begin{equation}\label{sdf:eq:four-square}
  N=a_1^2+a_2^2+a_3^2+a_4^2.
 \end{equation}
 We use this classical theorem only for a finite integer, not as a statement
@@ -569,7 +780,7 @@ about representing computations; it is also the standard bridge from
 natural to integer witnesses in Diophantine undecidability arguments
 \cite[Section 5]{poonen}.
 
-\begin{lemma}[An elementary universal weighted form]\label{lem:1122}
+\begin{lemma}[An elementary universal weighted form]\label{sdf:lem:1122}
 Every nonnegative integer is of the form
 \[
  A_1^2+A_2^2+2A_3^2+2B^2,
@@ -589,13 +800,18 @@ coordinate nonnegative. For $A/B\ge0$, represent the integer $AB$ and
 divide all four coordinates by $B$.
 \end{proof}
 
-\begin{theorem}[Constructive dyadic solubility]\label{thm:dyadic}
+\wtag\ [The form $x^2+y^2+2z^2+2w^2$ is one of the universal positive
+diagonal quaternary forms listed by Ramanujan~\cite{ramanujan}; the
+elementary parity proof above derives its universality from Lagrange's
+theorem.]
+
+\begin{theorem}[Constructive dyadic solubility]\label{sdf:thm:dyadic}
 Choose a representation
 \[
  K^4-2c=A_1^2+A_2^2+2A_3^2+2B^2.
 \]
 Then the coordinates
-\begin{equation}\label{eq:dyadic}
+\begin{equation}\label{sdf:eq:dyadic}
  x=0,\qquad t=\frac1K,\qquad u=K+\frac BK,\qquad
  z_j=\frac14+\frac{A_j}{2K^2}\quad(1\le j\le3)
 \end{equation}
@@ -615,7 +831,7 @@ $K^4-2c$. All denominators are powers of two. The coordinates satisfy
 $1/4\le z_j\le3/4$ and $K\le u\le2K$.
 
 For a reduced rational $a/b$ with $b>0$, use coordinate height
-$\max\{|a|,b\}$. All coordinates in \eqref{eq:dyadic} have height at most
+$\max\{|a|,b\}$. All coordinates in \eqref{sdf:eq:dyadic} have height at most
 $4K^2$. If $c\ge1$, minimality gives $(K/2)^4\le2c$, hence $K^4\le32c$.
 The case $c=0$ has $K=1$. These inequalities give the claimed bounds.
 \end{proof}
@@ -624,21 +840,21 @@ The small height bound is not a deterministic polynomial-time claim for
 finding a four-square decomposition in the bit model. The included reference
 routine uses a finite pair-table search, and explicitly limits the size of
 that search. A supplied decomposition can instead be checked immediately
-by \eqref{eq:four-square}.
+by \eqref{sdf:eq:four-square}.
 
 \subsection{Integral points at all primes}
 
-\begin{theorem}[Every integral local test succeeds]\label{thm:local}
+\begin{theorem}[Every integral local test succeeds]\label{sdf:thm:local}
 For every prime $p$, $\variety(\Z_p)$ is nonempty. Consequently the equation
 has a solution modulo every positive integer.
 \end{theorem}
 \begin{proof}
-For an odd prime $p$, the dyadic point \eqref{eq:dyadic} is already integral
+For an odd prime $p$, the dyadic point \eqref{sdf:eq:dyadic} is already integral
 in $\Z_p$, because its denominators are powers of two.
 
 For $p=2$, fix $x=0$, $t=u=1$, and $z_2=z_3=0$. The remaining equation
 is
-\begin{equation}\label{eq:2adic}
+\begin{equation}\label{sdf:eq:2adic}
  h(z_1):=c+2z_1^2-z_1=0.
 \end{equation}
 Modulo two it has the root $z_1\equiv c$, and $h'(z_1)=4z_1-1$ is odd.
@@ -665,10 +881,10 @@ Hasse principle: rational points are already available globally.
 
 \subsection{A five-variable counterexample requiring no machine encoding}
 
-\begin{example}[An everywhere soluble equation with no integer point]\label{ex:one}
+\begin{example}[An everywhere soluble equation with no integer point]\label{sdf:ex:one}
 Take the inconsistent source equation $1=0$, with no source variables.
 Then
-\begin{equation}\label{eq:inconsistent}
+\begin{equation}\label{sdf:eq:inconsistent}
  t^4+(tu-1)^2+\guard(z_1)+\guard(z_2)+2\guard(z_3)=0
 \end{equation}
 has no integer solution. Indeed, vanishing forces $tu=1$ and $t^4=0$,
@@ -679,7 +895,7 @@ which are incompatible. Nevertheless it has the dyadic point
 \]
 Here $K=2$ and $14=0^2+2^2+2\cdot1^2+2\cdot2^2$.
 The Jacobian identity proves smoothness over $\Z$, not just at this point;
-Theorem~\ref{thm:local} supplies all integral local points.
+Theorem~\ref{sdf:thm:local} supplies all integral local points.
 \end{example}
 
 This example is elementary, but its role in the general reduction is
@@ -688,7 +904,7 @@ integer solvability encodes arbitrary halting behaviour. The phenomenon is
 not restricted to isolated inconsistent equations that an algorithm could
 recognize syntactically.
 
-\section{Rational density and the real locus}\label{sec:real}
+\section{Rational density and the real locus}\label{sdf:sec:real}
 
 \subsection{Rational points in the quadric fibres}
 
@@ -699,11 +915,11 @@ At every real point, completing the weighted guard squares gives
 \]
 In particular $t$ is nonzero. We may therefore project onto the base
 $b=(x,t)$ and recover $u=(R+1)/t$ from $R$. Put
-\begin{equation}\label{eq:rho}
+\begin{equation}\label{sdf:eq:rho}
  \rho(b)=\frac12-H(x,t),\qquad y_j=z_j-\frac14.
 \end{equation}
 The remaining equation is the ellipsoid
-\begin{equation}\label{eq:sphere}
+\begin{equation}\label{sdf:eq:sphere}
  R^2+2y_1^2+2y_2^2+4y_3^2=\rho(b).
 \end{equation}
 For rational $b$ with $\rho(b)>0$, this quadric has a rational point.
@@ -711,7 +927,7 @@ Indeed, after multiplication by two, its left side becomes
 \[
  (2y_1)^2+(2y_2)^2+2(2y_3)^2+2R^2,
 \]
-and Lemma~\ref{lem:1122} represents the positive rational $2\rho(b)$.
+and Lemma~\ref{sdf:lem:1122} represents the positive rational $2\rho(b)$.
 
 A nonsingular ellipsoid with rational coefficients and a rational point has
 dense rational points in its real locus. A line through the rational point
@@ -722,7 +938,7 @@ lower-dimensional exceptional set, and rational parameters are dense in
 real parameters. Equivalently, use stereographic projection after fixing
 a rational point and its rational tangent hyperplane.
 
-\begin{theorem}[Real and Zariski density]\label{thm:density}
+\begin{theorem}[Real and Zariski density]\label{sdf:thm:density}
 The set $\variety(\Q)$ is dense in $\variety(\R)$ in the Euclidean topology
 and is Zariski dense in $\variety_\Q$.
 \end{theorem}
@@ -759,7 +975,7 @@ denominators, were used in the quadric argument.
 
 \subsection{Exactly two path components}
 
-\begin{theorem}\label{thm:components}
+\begin{theorem}\label{sdf:thm:components}
 The real locus has exactly two path components, distinguished by the sign
 of $t$, or equivalently the sign of $u$.
 \end{theorem}
@@ -771,17 +987,17 @@ On $\variety(\R)$, the sum of the guards is at least $-1/2$. Hence
 \]
 Thus $t,u$ are nonzero and have the same sign. Both signs occur, for example
 by changing $(x,t,u)$ to $(-x,-t,-u)$ in the point
-\eqref{eq:dyadic}. No continuous path can join the two signs.
+\eqref{sdf:eq:dyadic}. No continuous path can join the two signs.
 
 To show that the positive part is path connected, use coordinates
 \[
  y=x/t,\qquad r=tu-1,\qquad w_j=\sqrt{2\lambda_j}(z_j-1/4),\qquad t>0.
 \]
 If $S(y)=\sum_i f_i(y)^2$, the equation becomes
-\begin{equation}\label{eq:real-model}
+\begin{equation}\label{sdf:eq:real-model}
  t^4S(y)+r^2+\sum_{j=1}^3w_j^2=\frac12.
 \end{equation}
-Conversely, every solution of \eqref{eq:real-model} with $t>0$ gives an
+Conversely, every solution of \eqref{sdf:eq:real-model} with $t>0$ gives an
 original point: $u=(1+r)/t>0$ since $|r|\le1/\sqrt2$.
 
 For fixed $y$, decreasing $t$ makes the squared radius
@@ -806,7 +1022,7 @@ component has an $S^3$ factor in the real description. If the only residual
 is the constant $1$, the corresponding radius closes at a finite positive
 $t$. We do not assert a single source-independent diffeomorphism type.
 
-\section{Why three weighted guards: a sharp restricted obstruction}\label{sec:guards}
+\section{Why three weighted guards: a sharp restricted obstruction}\label{sdf:sec:guards}
 
 The five-variable result is not obtained merely by deleting one guard from
 a sum of four identical ones. The weights and the use of the unit residual
@@ -815,7 +1031,7 @@ in the rational-point construction are essential.
 \subsection{Classification by total guard weight}
 
 Consider the more general architecture
-\begin{equation}\label{eq:Fweights}
+\begin{equation}\label{sdf:eq:Fweights}
  F_{\mathbf w}=H+(tu-1)^2+\sum_{j=1}^k w_j(2z_j^2-z_j),
  \qquad w_j\in\Z_{>0},\quad w_1=1,
 \end{equation}
@@ -826,13 +1042,13 @@ uniform certificate at the prime two. Define
  J_W=8F_{\mathbf w}-2E-\sum_j(4z_j-1)D_j=8R^2-W.
 \]
 A general elimination identity is
-\begin{equation}\label{eq:general-guard}
+\begin{equation}\label{sdf:eq:general-guard}
  W(8-W)=4u(8R-W)(F_{\mathbf w})_u-(8R+8-W)J_W.
 \end{equation}
 It follows by substituting $(F_{\mathbf w})_u=2tR$ and $tu=R+1$.
 
-\begin{theorem}[Universal smoothness in the weighted architecture]
-Under $w_1=1$, the hypersurface \eqref{eq:Fweights} is smooth over $\Z$
+\begin{theorem}[Universal smoothness in the weighted architecture]\label{sdf:thm:weights}
+Under $w_1=1$, the hypersurface \eqref{sdf:eq:Fweights} is smooth over $\Z$
 for \emph{every} quadratic source system if and only if
 \[
  W\in\{4,16\}.
@@ -840,7 +1056,7 @@ for \emph{every} quadratic source system if and only if
 \end{theorem}
 \begin{proof}
 In the quotient by the equation and all its derivatives, $D_1=0$ gives
-$4z_1=1$, so two is invertible. Identity \eqref{eq:general-guard} says that
+$4z_1=1$, so two is invertible. Identity \eqref{sdf:eq:general-guard} says that
 $W(8-W)$ is zero in that quotient. For $W=4$ or $W=16$ it is a nonzero
 signed power of two. The quotient is therefore the zero ring, proving that
 the Jacobian ideal is the unit ideal and the hypersurface is smooth.
@@ -873,7 +1089,7 @@ satisfy the smoothness theorem. They do \emph{not}, however, give a dyadic
 point for every source. This is not merely a failure of our chosen
 point-construction algorithm.
 
-\begin{lemma}[A dyadic ternary-form obstruction]\label{lem:dyadic-obstruction}
+\begin{lemma}[A dyadic ternary-form obstruction]\label{sdf:lem:dyadic-obstruction}
 If an integer $N$ satisfies $N\equiv10\pmod{16}$, the equation
 \[
  X^2+3Y^2+2Z^2=N
@@ -898,9 +1114,9 @@ Reduction modulo four makes $Z$ odd, so $2Z^2\equiv2\pmod{16}$.
 The equation would imply $a^2+3b^2\equiv2\pmod4$, which is impossible.
 \end{proof}
 
-\begin{proposition}[Failure of the two-guard dyadic guarantee]\label{prop:two-guard}
+\begin{proposition}[Failure of the two-guard dyadic guarantee]\label{sdf:prop:two-guard}
 For the source consisting of three constant residuals equal to one,
-\begin{equation}\label{eq:bad-weighted}
+\begin{equation}\label{sdf:eq:bad-weighted}
  3t^4+(tu-1)^2+\guard(z)+3\guard(w)=0
 \end{equation}
 has no point over $\Z[1/2]$, although its affine model is smooth over $\Z$.
@@ -918,11 +1134,11 @@ representation by $X^2+3Y^2+2Z^2$ of the integer
 \[
  N=2^{4k}-6a^4\equiv10\pmod{16}.
 \]
-This contradicts Lemma~\ref{lem:dyadic-obstruction}. Smoothness follows
+This contradicts Lemma~\ref{sdf:lem:dyadic-obstruction}. Smoothness follows
 from total weight four and first weight one.
 \end{proof}
 
-\begin{corollary}[Five auxiliaries are optimal in the weight-four family]
+\begin{corollary}[Five auxiliaries are optimal in the weight-four family]\label{sdf:cor:five}
 Among finalizers of the form
 \[
  H+(tu-1)^2+\sum_jw_j\guard(z_j),\qquad
@@ -932,12 +1148,18 @@ which must be smooth over $\Z$ and have a dyadic point for every source,
 at least three guard variables are necessary. The choice $(1,1,2)$ is
 sufficient, so five total auxiliary variables are optimal within this family.
 \end{corollary}
+\noindent\wtag\ [In Corollary~\ref{sdf:cor:five}, $w_j\in\Z_{>0}$, as in
+\eqref{sdf:eq:Fweights}; the display ``$w_j>0$'' is the source's. The
+normalization $w_1=1$ of Theorem~\ref{sdf:thm:weights} is not assumed: the
+all-even weightings $(4)$ and $(2,2)$ are excluded by the all-even argument
+of the proof below, and $(1,3)$ and $(1,1,2)$ have a weight one after
+reordering.]
 \begin{proof}
 With one guard the only weight is four. With two guards the weights are,
 up to order, $(2,2)$ or $(1,3)$. All-even weights give a zero gradient
 modulo two for the zero source $H=0$, and a nonempty singular fibre.
-The remaining pair $(1,3)$ is excluded by Proposition~\ref{prop:two-guard}.
-Theorem~\ref{thm:main} proves sufficiency of three guards.
+The remaining pair $(1,3)$ is excluded by Proposition~\ref{sdf:prop:two-guard}.
+Theorem~\ref{sdf:thm:main} proves sufficiency of three guards.
 \end{proof}
 
 This is a restricted optimality theorem. It does not rule out a different
@@ -945,7 +1167,7 @@ unit gadget, a different nonnegative polynomial guard, a different total
 weight, or a construction with fewer variables that avoids this architecture
 entirely.
 
-\section{A concrete Turing-complete frontend}\label{sec:counter}
+\section{A concrete Turing-complete frontend}\label{sdf:sec:counter}
 
 The finalizer does not depend on a particular language. Nevertheless, an
 executable frontend makes the semantics and the witness-count claims
@@ -989,6 +1211,9 @@ argument for universality of the program class. The small worked example
 below uses only one counter and is not itself a universal machine.
 Formalized reductions through Minsky machines and FRACTRAN provide an
 independent established context for this substrate choice \cite{coq}.
+\wtag\ [Minsky showed that two counters already suffice for universal
+computation~\cite{minsky}; the three-counter simulation above is a direct
+argument, not a sharper count.]
 
 \subsection{A quadratic certificate for an external horizon}
 
@@ -1007,36 +1232,36 @@ Introduce natural variables
 edge selectors $a_{s,e}$ for $s<T$, and one slack $d_{s,e}$ for every
 positive-decrement edge at every time $s<T$. The equations at time $s$ are
 \begin{align}
- \sum_e a_{s,e}&=1,\label{eq:oneedge}\\
+ \sum_e a_{s,e}&=1,\label{sdf:eq:oneedge}\\
  q_{s,i}&=\sum_{e:s(e)=i}a_{s,e},&
- q_{s+1,i}&=\sum_{e:t(e)=i}a_{s,e},\label{eq:states}\\
- c_{s+1,j}&=c_{s,j}+\sum_e\delta_{e,j}a_{s,e}.\label{eq:update}
+ q_{s+1,i}&=\sum_{e:t(e)=i}a_{s,e},\label{sdf:eq:states}\\
+ c_{s+1,j}&=c_{s,j}+\sum_e\delta_{e,j}a_{s,e}.\label{sdf:eq:update}
 \end{align}
 For an edge testing counter $j$, impose
 \begin{align}
- a_{s,e}c_{s,j}&=0&&\text{on a zero edge},\label{eq:zeroedge}\\
- a_{s,e}c_{s,j}-a_{s,e}-d_{s,e}&=0&&\text{on a positive edge}.\label{eq:posedge}
+ a_{s,e}c_{s,j}&=0&&\text{on a zero edge},\label{sdf:eq:zeroedge}\\
+ a_{s,e}c_{s,j}-a_{s,e}-d_{s,e}&=0&&\text{on a positive edge}.\label{sdf:eq:posedge}
 \end{align}
 The initial one-hot state and initial counters are fixed by linear
 equations. Finally impose $q_{T,h}=1$, where $h$ is the halt state.
 Every displayed residual is of degree at most two.
 
-\begin{theorem}[Canonical bounded counter certificates]\label{thm:counter}
+\begin{theorem}[Canonical bounded counter certificates]\label{sdf:thm:counter}
 The natural zero set of this quadratic system is empty if the program has
 not halted by time $T$, and is a singleton if it has. The same statement
 holds for its smooth quartic finalization, with five additional variables.
 The quadratic interface has
 \begin{align}
- n_T&=(\ell+r)(T+1)+(E+p)T,\label{eq:nT}\\
- m_T&=(\ell+r)+T(1+2\ell+r+g)+1.\label{eq:mT}
+ n_T&=(\ell+r)(T+1)+(E+p)T,\label{sdf:eq:nT}\\
+ m_T&=(\ell+r)+T(1+2\ell+r+g)+1.\label{sdf:eq:mT}
 \end{align}
 \end{theorem}
 \begin{proof}
 Because the selectors are natural and sum to one, exactly one selector is
 one and all the others are zero. The state equations identify its source
 and target. No separate Boolean equation is needed. On a selected zero
-edge, \eqref{eq:zeroedge} forces the counter to be zero. On a selected
-positive edge, \eqref{eq:posedge} says $c_{s,j}=1+d_{s,e}$, so the
+edge, \eqref{sdf:eq:zeroedge} forces the counter to be zero. On a selected
+positive edge, \eqref{sdf:eq:posedge} says $c_{s,j}=1+d_{s,e}$, so the
 counter is positive. On an inactive positive edge, that same equation
 forces its slack to be zero, rather than leaving an arbitrary witness.
 
@@ -1052,7 +1277,7 @@ There are $(\ell+r)(T+1)$ state and counter variables, $ET$ selectors,
 and $pT$ slacks. The initial rows number $\ell+r$. Each step has one
 selector-sum row, $2\ell$ state rows, $r$ update rows, and $g$ guard
 rows. There is one final endpoint row. This gives
-\eqref{eq:nT}--\eqref{eq:mT}, and Theorem~\ref{thm:main} gives the
+\eqref{sdf:eq:nT}--\eqref{sdf:eq:mT}, and Theorem~\ref{sdf:thm:main} gives the
 last assertion.
 \end{proof}
 
@@ -1062,6 +1287,18 @@ zero-set theorem for the finalizer still holds, but it refers to the
 integer zeros of the source equations, which need not describe legal
 counter executions. A separate domain encoding is required before using
 this frontend as an integer execution certificate.
+
+\wtag\ [Theorem~\ref{sdf:thm:counter} is a second presentation of the
+counter-program adapter of \emph{canonical-diophantine-certificates}: its
+one-hot control equations, the zero guard \eqref{sdf:eq:zeroedge}, which is
+that report's equation \path{cdc:eq:zero-guard}, the externally fixed
+horizon of its Section \path{cdc:pt:sec:boundary} (arity growing with
+$T$), and the halt self-loop caveat of its Section
+\path{cdc:ct:sec:substrates}. New here are only the exact counts
+\eqref{sdf:eq:nT}--\eqref{sdf:eq:mT} and the positive-edge slack equation
+\eqref{sdf:eq:posedge}, with natural selectors summing to one in place of
+Boolean rows. The worked example below is printed as an illustration of the
+finalizer.]
 
 \subsection{Worked example: a countdown program}
 
@@ -1098,7 +1335,7 @@ Here $H=9/256$, $R^2=1/256$, and the weighted guard sum is $-10/256$.
 The endpoint condition is not being claimed to hold by itself at this
 rational tuple. Only the full finalized equation vanishes.
 
-\section{Consequences for unbounded computation}\label{sec:undecidable}
+\section{Consequences for unbounded computation}\label{sdf:sec:undecidable}
 
 \subsection{An undecidable smooth quartic class}
 
@@ -1108,10 +1345,10 @@ both directions and machine translations, is established in the work of
 Larchey-Wendling and Forster \cite{coq}. Here MRDP is a background theorem,
 not a result reproved by the finite counter compiler.
 
-\begin{theorem}[A geometrically restricted complete problem]\label{thm:hardness}
+\begin{theorem}[A geometrically restricted complete problem]\label{sdf:thm:hardness}
 Integer solvability is computably enumerable complete, under computable
 many-one reductions, even on the explicit class of quartic polynomials
-produced by \eqref{eq:F}. Every instance in this class comes with
+produced by \eqref{sdf:eq:F}. Every instance in this class comes with
 \begin{enumerate}[label=\textnormal{(\alph*)}]
 \item a smooth affine model over $\Z$ with geometrically integral fibres;
 \item a bounded-degree integral Jacobian certificate;
@@ -1125,7 +1362,7 @@ quadratic-lifting version of the class.
 \end{theorem}
 \begin{proof}
 Given an integer polynomial equation, apply the integer version of
-Lemma~\ref{lem:lifting}, then the finalizer. Integer solvability is
+Lemma~\ref{sdf:lem:lifting}, then the finalizer. Integer solvability is
 preserved at both stages. Equivalently, to start from a natural MRDP
 representation, introduce integer variables for each original natural
 witness and impose that it is a sum of four integer squares. These
@@ -1138,11 +1375,11 @@ The known computably enumerable completeness of Diophantine solvability
 therefore transfers to the displayed subclass. Membership remains
 computably enumerable by enumerating integer tuples and evaluating the
 polynomial. All geometric and arithmetic promises follow from
-Theorem~\ref{thm:main}; their certificates can be generated with the
+Theorem~\ref{sdf:thm:main}; their certificates can be generated with the
 reduction and do not require discovering an integer solution.
 
 For natural solvability, use the natural circuit lifting in
-Lemma~\ref{lem:lifting}. The finalizer then preserves the full natural
+Lemma~\ref{sdf:lem:lifting}. The finalizer then preserves the full natural
 zero set bijectively.
 \end{proof}
 
@@ -1150,6 +1387,18 @@ This theorem is compatible with the older smooth-variety undecidability
 result cited in the introduction. Its content is a specific simultaneous
 normal form, including an everywhere smooth \emph{integer} model and
 explicit positive evidence for all the easier existence notions.
+
+\wtag\ [The computability core of Theorem~\ref{sdf:thm:hardness}, MRDP
+followed by unique circuit lifting and a sum of squares of degree four, is
+the quartic normalization of \emph{canonical-diophantine-certificates},
+Proposition \path{cdc:of:prop:quartic}; the new content is the package
+(a)--(e). In the formal project beside the collection, MRDP is the Lean
+theorem \texttt{Diophantine.mrdp}
+(\path{Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean}), and the
+natural-to-integer four-square substitution of the second route appears as
+\texttt{exists\_sqTerm\_eq} in
+\path{Computability/HilbertTenthProblem/Lean/Diophantine/Paper1978/Enumeration.lean};
+neither formalizes any statement of this report.]
 
 \subsection{Fixed arity versus external duration}
 
@@ -1159,7 +1408,7 @@ finalized family. This is a legitimate fixed-arity unbounded statement,
 because the source already comes from MRDP or another proved unbounded
 representation.
 
-By contrast, the counter frontend of Section~\ref{sec:counter} creates
+By contrast, the counter frontend of Section~\ref{sdf:sec:counter} creates
 $n_T$ variables and $m_T$ equations. Its horizon is an external compiler
 argument. The facts that each accepting bounded run has one witness and
 that finalization adds only five variables do not combine to give a
@@ -1173,7 +1422,7 @@ fixed polynomial while preserving all multiplicities is an additional
 problem. It is not accomplished by treating a loop in the compiler as a
 polynomial variable.
 
-\subsection{Input parameters and total degree}\label{sec:parameter-degree}
+\subsection{Input parameters and total degree}\label{sdf:sec:parameter-degree}
 
 Suppose a master family uses an input parameter $a$ only through a loader
 $v-a=0$, while the remaining quadratic equations have fixed integer
@@ -1201,7 +1450,7 @@ contracts must not be conflated.
 
 \subsection{A separation between rational and integer search}
 
-\begin{corollary}[No computable bound for the least integer witness]
+\begin{corollary}[No computable bound for the least integer witness]\label{sdf:cor:nobound}
 There is no computable function of the finite source description that
 bounds the height of an integer point on every solvable compiled instance.
 This remains true even when the dyadic point and Jacobian certificate are
@@ -1210,24 +1459,24 @@ included as additional input data.
 \begin{proof}
 Such a function would turn integer solvability into a finite search over a
 box of its computed radius, deciding the complete problem in
-Theorem~\ref{thm:hardness}. The additional data are computably produced
+Theorem~\ref{sdf:thm:hardness}. The additional data are computably produced
 from the same source description and do not change the reduction.
 \end{proof}
 
 The rational side is starkly different: a point of polynomially bounded
 coordinate height in $\sqrt{c+1}$ is always available. Thus small rational
 solutions do not bound the size of the first integer solution. The exact
-height transfer in Corollary~\ref{cor:height} also shows that this
+height transfer in Corollary~\ref{sdf:cor:height} also shows that this
 separation is not caused by huge integer auxiliary values introduced by
 the finalizer.
 
-\section{A direct higher-degree extension}\label{sec:power-two}
+\section{A direct higher-degree extension}\label{sdf:sec:power-two}
 
 Quadratic lifting is useful for degree four, but it is not needed for
 smoothness itself. A power-of-two padding gives a second tradeoff: keep
 only five new variables and permit a larger degree.
 
-\begin{theorem}[Power-of-two homogeneous padding]\label{thm:padding}
+\begin{theorem}[Power-of-two homogeneous padding]\label{sdf:thm:padding}
 Let $f_i\in\Z[x]$ have degrees at most $D$. Choose a positive power of
 two $d\ge\max\{1,D\}$ and set
 \[
@@ -1235,7 +1484,7 @@ two $d\ge\max\{1,D\}$ and set
  \qquad F=H+(tu-1)^2+\guard(z_1)+\guard(z_2)+2\guard(z_3),
 \]
 where homogenization is interpreted polynomially. Then the natural and
-integer zero-set correspondences of Theorem~\ref{thm:main} still hold.
+integer zero-set correspondences of Theorem~\ref{sdf:thm:main} still hold.
 The affine model is smooth over $\Z$ with geometrically integral fibres,
 and it has dyadic points and integral points at all primes. Its degree is
 at most $\max\{4,2d\}$.
@@ -1277,7 +1526,7 @@ circuit lifting. Only the quadratic version is implemented in the supplied
 reference compiler; this section is a proved extension, not an additional
 software feature.
 
-\section{Implementation, exact checks, and reproducibility}\label{sec:implementation}
+\section{Implementation, exact checks, and reproducibility}\label{sdf:sec:implementation}
 
 \subsection{Files and interfaces}
 
@@ -1300,6 +1549,22 @@ polynomial evaluation, finite exhaustive checks, and export generation.\\
 \end{tabular}
 \end{center}
 
+\wtag\ [Shipped names. In this report's directory the delivered files carry
+the prefix \path{13-smooth-quartic-}: \path{code/smooth_compiler.py},
+\path{code/counter_frontend.py}, \path{code/verify.py} and the
+\path{Makefile} are \path{code/13-smooth-quartic-*}; the two exports
+\path{examples/countdown_T3.json} and \path{examples/inconsistent.json}, the
+records \path{verification/results.json} and
+\path{verification/document_qa.json}, and \path{requirements.txt} are
+\path{data/13-smooth-quartic-*}; \path{RESEARCH_STATUS.md} and
+\path{SOURCE_AUDIT.md} are at the report root under the same prefix. The
+delivered PDF, the run log (a copy of \path{results.json}) and the checksum
+file are not shipped; the PDF of this report is a new build. Delivered names
+below are the source's. The programs import each other by their delivered
+names and write into \path{examples/} and \path{verification/} beside
+\path{code/}, so they must be run in a copy with the delivered layout; the
+report's README gives the recipe.]
+
 A \texttt{QuadraticSystem} copies its variables and residuals into immutable
 tuples. It rejects undeclared symbols, repeated variable names,
 nonintegral coefficients, floating-point coefficients, and residual degree
@@ -1318,8 +1583,12 @@ four-square representation for independent exact checking instead.
 
 The included run used Python 3.13.5 and SymPy 1.14.0 with seed 20261002.
 All 21,128 recorded assertions passed. The principal groups are shown in
-Table~\ref{tab:checks}; the exact full breakdown is in
+Table~\ref{sdf:tab:checks}; the exact full breakdown is in
 \texttt{verification/results.json}.
+\wtag\ [Shipped as \path{data/13-smooth-quartic-results.json}. A rerun at
+placement (Python 3.14.4 and 3.13.5, SymPy 1.14.0, on a copy) and the
+Hilbert's-tenth review~\cite{review13} both reproduced all 21,128 assertions
+and the 40 group counts.]
 
 \begin{table}[htbp]
 \centering
@@ -1342,7 +1611,7 @@ Malformed-input rejection checks & 21\\
 \bottomrule
 \end{tabular}
 \caption{Selected groups of exact checks; not a replacement for the proofs.}
-\label{tab:checks}
+\label{sdf:tab:checks}
 \end{table}
 
 The source systems used for symbolic checks include zero-variable cases,
@@ -1364,8 +1633,8 @@ The sparse JSON evaluator multiplies integer coefficients by powers of
 supplied coordinates; it does not call SymPy substitution into the original
 residual list. On seeded tuples its result is compared with direct
 homogeneous-residual evaluation. For the Jacobian identity, both the nested
-formula \eqref{eq:unit} and the expanded coefficient formula
-\eqref{eq:bezout} are checked symbolically from the actual emitted $F$.
+formula \eqref{sdf:eq:unit} and the expanded coefficient formula
+\eqref{sdf:eq:bezout} are checked symbolically from the actual emitted $F$.
 
 \subsection{What the checks establish and what they do not}
 
@@ -1407,8 +1676,13 @@ rational_point, metadata = dyadic_point(certificate)
 assert certificate.evaluate(rational_point) == 0
 assert certificate.jacobian_certificate()["unit"] == 1
 \end{lstlisting}
+\wtag\ [Both listings assume the delivered layout; in this report's
+directory neither \path{requirements.txt} nor \path{code/verify.py} exists
+under that name, and \path{verify.py} rewrites the two exports and
+\path{results.json} in place. Use the copy recipe of the report's README; on
+this machine the interpreter is \texttt{py}.]
 
-\section{Formalization plan and theorem boundaries}\label{sec:boundaries}
+\section{Formalization plan and theorem boundaries}\label{sdf:sec:boundaries}
 
 A useful formalization should mirror the actual proof boundary rather than
 importing the final statement as a large opaque axiom. The algebraic core
@@ -1419,8 +1693,8 @@ units of $\Z$, and homogeneous lifting. These yield the natural bijection,
 the signed integer bijection, and the height correspondence. Their proofs
 need no algebraic geometry.
 
-Next formalize the identities \eqref{eq:Euler}, \eqref{eq:EDJ}, and
-\eqref{eq:bezout} over a general commutative coefficient ring. One may
+Next formalize the identities \eqref{sdf:eq:Euler}, \eqref{sdf:eq:EDJ}, and
+\eqref{sdf:eq:bezout} over a general commutative coefficient ring. One may
 represent the certificate as a finite tuple of polynomials and check the
 single ring identity. An exported, independently checked identity is a
 natural target, but a theorem connecting such a checker to polynomial
@@ -1454,27 +1728,27 @@ positive weight-four guard architecture; it is not a general lower bound
 for smooth Diophantine representations.
 \end{itemize}
 
-\section{Further research questions and concrete next targets}\label{sec:future}
+\section{Further research questions and concrete next targets}\label{sdf:sec:future}
 
 The following questions are proposals arising from this construction.
 Unless explicitly stated otherwise, they are not assertions that no answer
 exists in the literature. A dedicated priority search should accompany any
 attempt to publish a claimed resolution.
 
-\begin{question}[Four auxiliary variables with the full package]
+\begin{question}[Four auxiliary variables with the full package]\label{sdf:q:four}
 Can another integer-polynomial finalizer preserve every natural zero set
 bijectively, remain quartic and smooth over $\Z$, and guarantee a dyadic
 point for every source while adding at most four variables?
 \end{question}
-Proposition~\ref{prop:two-guard} excludes the most immediate candidate,
+Proposition~\ref{sdf:prop:two-guard} excludes the most immediate candidate,
 not all candidates. A successful construction must avoid the ternary-form
 obstruction rather than merely find a better algorithm for that form.
 Promising search spaces include unequal guard centres, nonquadratic guards
 whose total degree stays four, or a replacement for the product-unit
 constraint.
 
-\begin{question}[Other total weights]
-Within \eqref{eq:Fweights}, can two positive guards of total weight sixteen
+\begin{question}[Other total weights]\label{sdf:q:weights}
+Within \eqref{sdf:eq:Fweights}, can two positive guards of total weight sixteen
 give the complete dyadic guarantee for every quadratic source?
 \end{question}
 The smoothness classification allows total weight sixteen. It leaves a
@@ -1484,18 +1758,18 @@ condition. The rational point problem becomes a ternary quadratic-form
 problem coupled to fourth-power scaling. An exact local obstruction or a
 uniform construction would materially extend the sharp result above.
 
-\begin{question}[A totally quartic, relatively smooth universal family]
+\begin{question}[A totally quartic, relatively smooth universal family]\label{sdf:q:totalquartic}
 Can one obtain a single polynomial of total degree four in both input
 parameters and witnesses, with every integer-input fibre smooth over $\Z$,
 while preserving a universal natural relation and retaining the same
 local-solubility guarantees?
 \end{question}
-Section~\ref{sec:parameter-degree} gives a total-degree-six master family
+Section~\ref{sdf:sec:parameter-degree} gives a total-degree-six master family
 and explains why homogenizing the parameter changes the relative-smoothness
 claim. An input loader compatible with both total degree and the relative
 Euler identity is the specific missing component.
 
-\begin{question}[A smaller Jacobian certificate]
+\begin{question}[A smaller Jacobian certificate]\label{sdf:q:jacobian}
 Can the degree-seven expanded identity be replaced uniformly by a
 certificate whose products all have degree at most six, or by a shorter
 arithmetic circuit with the same universal coefficient contract?
@@ -1503,19 +1777,19 @@ arithmetic circuit with the same universal coefficient contract?
 This is a certificate-optimization problem, not an attempt to improve a
 universal halting polynomial's operation count by ignoring its frontend.
 The precise optimization object should include the equation, all derivative
-costs, and the coefficient tuple in \eqref{eq:coefficients}.
+costs, and the coefficient tuple in \eqref{sdf:eq:coefficients}.
 
-\begin{question}[Controlled higher topology]
+\begin{question}[Controlled higher topology]\label{sdf:q:topology}
 Which topological invariants of the two real components can be read from
 the real zero set of the source system, and can the construction be modified
 to make every real component contractible?
 \end{question}
-The model \eqref{eq:real-model} gives a concrete starting point. Its fibres
+The model \eqref{sdf:eq:real-model} gives a concrete starting point. Its fibres
 change from a capped sphere family to a cylinder at source real zeros.
 The number of components is fixed, but a full homotopy or diffeomorphism
 classification is not supplied here.
 
-\begin{question}[Strong approximation and integral obstructions]
+\begin{question}[Strong approximation and integral obstructions]\label{sdf:q:strong}
 What can be said about strong approximation, and about more refined
 obstructions to integral points, on these explicit affine varieties?
 \end{question}
@@ -1525,17 +1799,17 @@ many places with integral control away from them. A meaningful answer must
 respect the undecidability theorem: no proposed effectively complete,
 uniform terminating obstruction procedure can decide all compiled inputs.
 
-\begin{question}[Density of restricted-denominator points]
+\begin{question}[Density of restricted-denominator points]\label{sdf:q:dyadicdensity}
 For which source systems are the dyadic points dense in a real component?
 Can a bounded set of additional denominator primes guarantee density?
 \end{question}
-The proof of Theorem~\ref{thm:density} uses rational parametrizations with
+The proof of Theorem~\ref{sdf:thm:density} uses rational parametrizations with
 unrestricted denominators. Replacing them by dyadic parameters does not
 preserve all denominator conditions automatically. This is a distinct
 arithmetic approximation problem, not an immediate corollary of the
 existence construction.
 
-\begin{question}[Smooth models over other arithmetic rings]
+\begin{question}[Smooth models over other arithmetic rings]\label{sdf:q:rings}
 Which discretely ordered domains or rings of $S$-integers admit analogues
 with exact control of unit-induced witness multiplicity?
 \end{question}
@@ -1545,7 +1819,7 @@ over unchanged to a general ring of integers. A useful extension should
 state exactly what replaces the lattice order and how the unit group acts
 on fibres.
 
-\begin{question}[A verified finalizer integrated with repository frontends]
+\begin{question}[A verified finalizer integrated with repository frontends]\label{sdf:q:verified}
 Can the five-variable transformation be formalized once and instantiated
 on the repository's existing causal, queue, heap, and interaction-net
 interfaces without changing their semantic contracts?
@@ -1554,8 +1828,14 @@ A practical first milestone is the homogeneous lift plus the explicit
 Jacobian certificate. A second is a proved checker for the sparse JSON
 format. A third is one full frontend-to-smooth-quartic theorem with an
 explicit distinction between natural and integer witnesses.
+\wtag\ [Open at the write. The interfaces named are Parts of the
+collection's report \emph{canonical-diophantine-certificates}, which are
+research text, not formal developments; the Lean project
+\path{Computability/HilbertTenthProblem} has no smoothness or finalizer
+module, and the review's portable helper~\cite{review13} is an independent
+replay, not a proved checker.]
 
-\begin{question}[A detailed publication and priority audit]
+\begin{question}[A detailed publication and priority audit]\label{sdf:q:priority}
 Which parts of the combined normal form are already implicit in known
 smoothness reductions or in work on integral local-to-global phenomena?
 \end{question}
@@ -1565,8 +1845,12 @@ should separately track good reduction at every prime, fixed auxiliary
 count, dyadic sections after specialization, the exact natural bijection,
 and the bounded-degree Jacobian certificate. These properties should not
 be collapsed into the vague phrase ``smooth Diophantine representation.''
+\wtag\ [Open at the write. The Hilbert's-tenth review~\cite{review13} checked
+Poonen's Lemma~4.1 and Corollary~4.3, the mechanized MRDP record and the
+Stacks Project criterion, and states that it was not a complete historical
+priority search.]
 
-\section{Conclusion}
+\section{Conclusion}\label{sdf:sec:conclusion}
 
 The construction separates three layers that are easily confused. The source
 quadratic equations contain the computational semantics. The integer gap of
@@ -1595,7 +1879,7 @@ points, and only two real components can carry the full difficulty of
 integer computation.
 
 \appendix
-\section{The complete countdown residual list}\label{app:countdown}
+\section{The complete countdown residual list}\label{sdf:app:countdown}
 
 For the input two and horizon $T=3$, use variables
 \[
@@ -1633,7 +1917,7 @@ polynomials, add them, and then add $(tu-1)^2+\guard(z_1)+\guard(z_2)+
 unspecified universal representation. Its expanded 97-term coefficient
 list is in \texttt{examples/countdown\_T3.json}.
 
-\section{The export and verification boundary}
+\section{The export and verification boundary}\label{sdf:app:export}
 
 Each JSON export records an ordered variable list and a list of terms.
 A term has an integer coefficient and an exponent vector of the same
@@ -1654,13 +1938,17 @@ identity semantics before using such an export as a theorem input.
 
 The file \texttt{examples/inconsistent.json} uses the constant source
 residual $1$ with one unused source variable. It therefore has one more
-free source coordinate than Example~\ref{ex:one}; it is the product of
+free source coordinate than Example~\ref{sdf:ex:one}; it is the product of
 that example with an affine line. The printed five-variable equation and
 its rational point are checked separately by the zero-variable test.
 This distinction is intentional and is not a mismatch in the auxiliary
 variable count.
 
-\section{Provenance and scope of the source review}
+\wtag\ [The two exports are shipped as
+\path{data/13-smooth-quartic-countdown_T3.json} and
+\path{data/13-smooth-quartic-inconsistent.json}.]
+
+\section{Provenance and scope of the source review}\label{sdf:app:sourcereview}
 
 The source comparison consisted of the repository root overview, the
 Hilbert-tenth-problem overview, the canonical-certificate collection
@@ -1682,6 +1970,82 @@ construction, the weighted two-guard obstruction, and the detailed
 counter frontend were developed in this manuscript and checked as
 reported. Their status is that of proved research claims awaiting
 independent mathematical review, not established publication priority.
+
+\section{Provenance of this report}\label{sdf:app:provenance}
+
+\wtag\ The report was built from \emph{one} manuscript, batch-79
+manuscript~13 of ProveIt's incoming reports (cluster J1 of that batch). It
+arrived as the archive \path{Smooth_Quartic_Diophantine_Certificates.zip} in
+commit \texttt{ef2fc7990} (2 October 2026), with inner directory
+\path{smooth_diophantine/}: the main file \path{article.tex} (1,733 lines,
+printed here), a 28-page PDF, a delivery README, research-status and
+source-audit notes, three Python modules, a Makefile, two exports, two
+verification records, a run log, a requirements file and a checksum file
+(16 members; the checksum file verified 15 of 15 at placement). Commit
+\texttt{224ca41df} placed it as this new report and staged its programs,
+data and notes byte-identical to the delivery.
+
+\paragraph{Pin.} The manuscript names the repository commit
+\path{a845ab5d0f4591294ef3c2d92feaeb5825a8d543} and the blob
+\path{e768b2284c6723d21d77edfb24f786ccdb83585a} of
+\path{canonical-diophantine-certificates/01-causal-traces-RESEARCH_STATUS.md}
+(Section~\ref{sdf:sec:repo} and Appendix~\ref{sdf:app:sourcereview}); its
+source audit also names the root README blob \texttt{bc4c514b61e3}. Both
+blobs are unchanged at the write.
+
+\paragraph{Contribution.} Everything in the report except the text marked
+\wtag: the finalizer and Theorem~\ref{sdf:thm:main} with its proofs, the
+size bounds, the weighted-guard classification and the restricted
+optimality, the counter frontend and its worked example, the undecidability
+corollaries, the power-of-two padding, the implementation and its recorded
+checks, ten research questions, and two appendices on the countdown
+certificate and the export boundary.
+
+\paragraph{Where the write had to choose.}
+\begin{itemize}
+\item \emph{Placement.} The manuscript post-processes any quadratic system,
+CDC's or not, and its subject is the arithmetic geometry of the final
+equation rather than a substrate, so it was placed as a new report rather
+than as a further Part of \emph{canonical-diophantine-certificates} after
+that report's Part~XI (the alternative recorded at placement).
+\item \emph{Re-proved results.} Lemma~\ref{sdf:lem:lifting},
+Theorem~\ref{sdf:thm:counter} and the computability core of
+Theorem~\ref{sdf:thm:hardness} re-present results of that report. They are
+kept in full, because later proofs use them, with \wtag\ pointers naming
+the host labels and no novelty claimed.
+\item \emph{Numbering.} The editorial preface is unnumbered, so the
+manuscript's section, statement, equation and table numbers are unchanged;
+this appendix is Appendix~\ref{sdf:app:provenance}, after the manuscript's
+Appendices~\ref{sdf:app:countdown}--\ref{sdf:app:sourcereview}.
+\item \emph{Text kept as delivered.} The title page, the author line
+(``Prepared for Vladimir Reshetnikov / Developed with ChatGPT'') and the PDF
+metadata are the source's; one \wtag\ sentence was added to the status box.
+The display ``$w_j>0$'' of Corollary~\ref{sdf:cor:five} is kept, with a
+\wtag\ note giving $w_j\in\Z_{>0}$. No symbol was renamed and no
+normalization changed; the preface's notation table lists the reused
+letters.
+\item \emph{Added text.} The preface; \wtag\ notes in
+Sections~\ref{sdf:sec:repo}, \ref{sdf:sec:novelty}, \ref{sdf:sec:interface}
+(after Lemma~\ref{sdf:lem:lifting}), \ref{sdf:sec:local} (after
+Lemma~\ref{sdf:lem:1122}), \ref{sdf:sec:guards} (after
+Corollary~\ref{sdf:cor:five}), \ref{sdf:sec:counter},
+\ref{sdf:sec:undecidable}, \ref{sdf:sec:implementation} (shipped file names,
+reruns) and \ref{sdf:sec:future} (Questions~\ref{sdf:q:verified}
+and~\ref{sdf:q:priority}) and in Appendix~\ref{sdf:app:export}; this
+appendix; and the bibliography entries
+\cite{cdcreport,pqcreport,review13,ramanujan,minsky}.
+\end{itemize}
+
+\paragraph{Files.} The report directory holds this text
+(\path{article.tex}, \path{article.pdf}), a report README, the delivered
+\path{RESEARCH_STATUS.md} and \path{SOURCE_AUDIT.md} as
+\path{13-smooth-quartic-RESEARCH_STATUS.md} and
+\path{13-smooth-quartic-SOURCE_AUDIT.md}, the programs and Makefile in
+\path{code/} and the exports, records and requirements file in
+\path{data/}, all under the prefix \path{13-smooth-quartic-}. Not shipped:
+the delivered PDF and README, the run log (the results record plus one
+newline) and the checksum file. They survive in the archive of commit
+\texttt{ef2fc7990}.
 
 \begin{thebibliography}{9}
 
@@ -1728,6 +2092,38 @@ Repository path
 \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/01-causal-traces-RESEARCH_STATUS.md}.
 Read at commit \texttt{a845ab5d0f4591294ef3c2d92feaeb5825a8d543};
 blob \texttt{e768b2284c6723d21d77edfb24f786ccdb83585a}.
+
+\bibitem{cdcreport}
+\wtag\ ProveIt research-report collection,
+\emph{Canonical Diophantine certificates}, report directory
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/};
+cited by label (\path{cdc:}\dots), which does not resolve in this file.
+AI-assisted, unrefereed, not formalized.
+
+\bibitem{pqcreport}
+\wtag\ ProveIt research-report collection,
+\emph{Probabilistic, quantum and continuous computation}, report directory
+\path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation/};
+cited by label (\path{pqc:}\dots). AI-assisted, unrefereed, not
+formalized.
+
+\bibitem{review13}
+\wtag\ ProveIt, Hilbert's-tenth research tree,
+\emph{Review: Smooth Quartic Diophantine Certificates},
+\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_smooth_quartic_aebfa386e.md},
+with replay helper and receipt (\texttt{.py}, \texttt{.json}), commit
+\texttt{fd4a2e8d3}, 2 October 2026.
+
+\bibitem{ramanujan}
+\wtag\ S. Ramanujan,
+\emph{On the expression of a number in the form $ax^2+by^2+cz^2+du^2$},
+Proceedings of the Cambridge Philosophical Society \textbf{19} (1917),
+11--21.
+
+\bibitem{minsky}
+\wtag\ M. L. Minsky,
+\emph{Computation: Finite and Infinite Machines},
+Prentice-Hall, Englewood Cliffs, NJ, 1967.
 
 \end{thebibliography}
 \end{document}
