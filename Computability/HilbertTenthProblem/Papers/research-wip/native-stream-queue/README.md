@@ -69,6 +69,17 @@ checks full sources, exact corrections, graph semantics and cyclic examples;
 author and reviewer receipts pass fresh root replay. N stays external, so
 this does not change the universal74/86 bounds.
 
+The [Tree root projection](eager_tree_root_projection.md) further removes
+**3N+1 witness coordinates** by choosing root mass1 and zero incoming root
+pointers. With the separately charged static cleanup it costs
+**27N²+93N+9 operations forN>=2**, or141 forN=1, with3N²+16N−1 natural
+witnesses,23N+2 residuals and exact degree4. An arbitrary parent zero must
+first have unreachable rows replaced and masses recomputed; simply deleting
+the coordinates can fail. The child is in bijection with the normalized
+parent slice and represents the same triples at the same externalN. Its
+[independent source and semantic review](review_eager_tree_root_projection.md)
+and both fresh root receipts pass. The universal bounds remain74/86.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

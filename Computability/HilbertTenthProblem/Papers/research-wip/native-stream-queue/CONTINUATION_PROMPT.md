@@ -161,6 +161,23 @@
 > This is the finite base certificate, not the larger canonical/unique-fiber
 > system. N remains external; no ordinary-input loader or fixed-arity bound.
 > Preserve the imported kernel and both current frozen trios.
+> The [Tree root projection](eager_tree_root_projection.md) and
+> [independent full review](review_eager_tree_root_projection.md) pass root
+> replays. Set mu0=1 and all3N incoming-root pointers to0; delete the now
+> identically zero root balance. For an arbitrary parent zero, first replace
+> unreachable rows by leaves and recompute minimal root occurrence counts.
+> The restricted DAG has no incoming root edge. A full circulation fixture
+> with mu0=3 shows naive projection fails, while normalization gives a zero.
+> Same represented natural triples at each externalN; a coordinate bijection
+> only with the normalized parent slice. Whole polynomial graph identity
+> holds on arbitrary assignments after restoring the constants.
+> Witnesses3N²+16N−1,residuals23N+2,exactdegree4. Selective cleanup costs
+> 27N²+94N+9 forN>=2; N1 is142 because singleton sums have no removable
+> addition. Optional preexisting0+b cleanup savesN more additions, giving
+> 27N²+93N+9 and141. Both complete schedules are emitted forN1..8.
+> Public calls pin parentPY and actual kernel; CLI verify also pins parent
+> JSON/MD. Do not claim every-call companion pin guarding. No fixed arity,
+> unique witness theorem, positive-only conversion or universal cost follows.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual

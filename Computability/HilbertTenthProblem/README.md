@@ -62,6 +62,14 @@ certificate for the same input/output triple at the sameN. The
 and fresh replays pass. N remains external, so this is a finite-certificate
 improvement without a new universal operation bound or uniqueness theorem.
 
+The [Tree root projection](Papers/research-wip/native-stream-queue/eager_tree_root_projection.md)
+then eliminates3N+1 natural witnesses and, with static cleanup, gives
+**27N²+93N+9 operations forN>=2** (141 forN=1), still at exact degree4.
+Graph normalization preserves represented triples at the sameN; the direct
+coordinate correspondence holds only on the normalized parent slice. Its
+[independent review](Papers/research-wip/native-stream-queue/review_eager_tree_root_projection.md)
+and both fresh receipts pass. The universal operation bound is unchanged.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)
