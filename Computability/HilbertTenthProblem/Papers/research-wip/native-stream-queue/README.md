@@ -8,12 +8,18 @@ At every complete positive zero, the product-unit equation forces `T>L`,
 so the inverse gap is positive and the full parent theorem transfers.
 All other factors and ordinary-input obligations remain paid. The alternative
 ordinary-strong circuit costs87=47M+40A at exact degree135. The separate
-comparison-system bound remains75. Both the
+comparison-system bound is now **74=40M+34A**, by the
+[factored first-norm identity](complete74_factored_first_norm.md). This
+retains every comparison of its75 parent; the20-witness/nine-equation
+version gives the same degree84 SOS polynomial in100 paid operations.
+Its [source audit](review_complete74_factored_first_norm_source.md) and
+[mathematical review](review_complete74_factored_first_norm_math.md) pass,
+with fresh root receipts. The86 construction also has an
 [independent source audit](review_complete86_first_root_source.md) and
-[mathematical challenge](review_complete86_first_root_math.md) pass; all three
-receipts have fresh root replays. Earlier entries below retain their
+[mathematical challenge](review_complete86_first_root_math.md); its author
+and both review receipts pass fresh root replay. Earlier entries below retain their
 historical counts and benchmark statements; the current numerical bounds
-are75/86. The grouping frontier has not yet been recomputed for this change.
+are74/86. The grouping frontier has not yet been recomputed for this change.
 The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
 a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.

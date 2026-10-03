@@ -29,10 +29,13 @@ The [native-stream queue WIP handoff](research-wip/native-stream-queue/README.md
 preserves the conditional six/eight-operation stream component, portable
 independent audits, unfinished controller research and archived scratch
 evidence. Its [continuation prompt](research-wip/native-stream-queue/CONTINUATION_PROMPT.md)
-records the current75-operation certificate and86-operation polynomial
+records the current74-operation certificate and86-operation polynomial
 bounds alongside the historical handoff. The
-[complete half-binomial75 proof](1980/FIXED_RAW_UNIVERSAL_75_PROOF.md)
-supplies the comparison bound; the
+[factored first-norm certificate](research-wip/native-stream-queue/complete74_factored_first_norm.md)
+supplies **74=40M+34A**, including20 positive witnesses and nine comparisons.
+It preserves every comparison and complete SOS polynomial of its reviewed75
+parent by an all-value identity. Its fully paid SOS costs100 at exact degree84.
+The
 [factored first-root proof](research-wip/native-stream-queue/complete86_factored_first_root.md)
 supplies **86=48M+38A**, with19 positive witnesses and exact degree179.
 Its ordinary-strong alternative costs87=47M+40A at exact degree135.
@@ -44,7 +47,7 @@ and [mathematical](research-wip/native-stream-queue/review_complete86_first_root
 audits and fresh receipt replays pass. The earlier88/125 alternative
 remains a separate degree tradeoff. Subsequent progress entries retain
 their historical counts and contemporary benchmark statements; the current
-numerical bounds are75/86.
+numerical bounds are74/86.
 
 The [completed nine-report review](research-wip/native-stream-queue/incoming_substrate_review_2a8a39599.md)
 validates the recent spectral, clock, polynomial-history, boundary, sandpile,

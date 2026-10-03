@@ -13,8 +13,16 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1982 | J. P. Jones | Universal Diophantine Equation | *J. Symbolic Logic* 47, 549–571 | XeLaTeX |
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
-The established arithmetic bounds are **75 operations for a complete
+The established arithmetic bounds are **74 operations for a complete
 certificate and 86 for one universal polynomial**. The
+[factored first-norm certificate](Papers/research-wip/native-stream-queue/complete74_factored_first_norm.md)
+costs **40M+34A**, including a version with **20 positive witnesses and nine
+comparisons**. It replaces `(E²+X)(kY)²` by `L(L+k)`, with E=XY and
+L=E(kY), preserving every complete comparison and the full SOS polynomial
+on all supplied tuples. The fully paid SOS version costs100 operations
+at exact degree84. Independent source and mathematical reviews pass.
+
+The
 [factored first-root construction](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
 costs **48M+38A**, with **19 positive witnesses and exact degree179**.
 Its ordinary-strong alternative costs **87=47M+40A**, with exact degree135;
@@ -42,7 +50,7 @@ An ordinary universal-input decoder remains unpaid; no universal bound is
 inferred from these598/473/471/474-operation raw examples.
 
 The progress entries below preserve their historical counts and contemporary
-benchmark statements; the current complete numerical bounds are75/86.
+benchmark statements; the current complete numerical bounds are74/86.
 The preceding complete
 [fixed-table matrix compiler](Papers/research-wip/native-stream-queue/group_projective_label_aligned_lanes.md)
 has an illustrative **228-operation certificate / 245-operation polynomial
@@ -1235,7 +1243,10 @@ retains its full strong equation.
   The [factored first root](Papers/research-wip/native-stream-queue/complete86_factored_first_root.md)
   then gives86/179 and87/135, retaining19 positive witnesses through a full
   positive-zero bijection. The75-operation certificate and86-operation
-  polynomial bounds remain distinct. This proved reduction is separate
+  polynomial bounds remain distinct. The later
+  [all-value first-norm refactoring](Papers/research-wip/native-stream-queue/complete74_factored_first_norm.md)
+  lowers the comparison bound to74=40M+34A, with20 positive witnesses and
+  nine comparisons, retaining the separate86 polynomial. These proved reductions are separate
   from the unsound or unresolved historical86/87 proposals below.
   The [weakened-bound86 candidate](Papers/research-wip/native-stream-queue/complete75_weakened_bound86_candidate.md)
   has exact signed parent identities and positive completeness. Its new

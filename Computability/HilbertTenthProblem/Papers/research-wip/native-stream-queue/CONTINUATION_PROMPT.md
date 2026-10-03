@@ -1,6 +1,20 @@
 # Continuation: universal straight-line certificates
 
-> **Current established universal bounds:75 comparison /86 polynomial.**
+> **Current established universal bounds:74 comparison /86 polynomial.**
+> The [complete74 factorization](complete74_factored_first_norm.md) replaces
+> `(E²+X)*(kY)²` by `L*(L+k)`, L=E*(kY), E=XY, saving one multiplication.
+> This is the identical polynomial on all tuples, with unchanged coordinates,
+> every comparison and every retained program/input condition. The actual
+> k port is supplied k in raw30, computed R10b in positive22/signed20;
+> never assume k=eta+zeta off-zero in raw30. The three systems have
+> 74=40M+34A,30/22/20 positive witnesses and19/11/9 comparisons. Complete
+> SOS costs130/106/100, exact degrees52/84/84. The
+> [source audit](review_complete74_factored_first_norm_source.md) and
+> [mathematical challenge](review_complete74_factored_first_norm_math.md)
+> pass, as do author and independent fresh root replays. Historical75 and
+> 86 source/receipt bytes remain frozen. No full native Pell tuple is built.
+> Investigate applying this exact paid coefficient block to other native
+> compilers only after checking their actual E=XY and kY producer cones.
 > The [factored first-root reduction](complete86_factored_first_root.md)
 > gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
 > alternative gives87=47M+40A, degree135. The old first factor
