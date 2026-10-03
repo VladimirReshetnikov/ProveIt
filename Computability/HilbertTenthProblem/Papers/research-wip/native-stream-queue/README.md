@@ -68,6 +68,17 @@ all260 finalizer gates and the177 unchanged scientific files. These reports
 supply concrete substrate data but do not improve85 operations or instantiate
 the inverse-closed Higman alphabet needed by the separate group route.
 
+The [193-generator directed successor](group_directed_semigroup193.md)
+further reduces that matrix alphabet by keeping `[J1]` as its terminal word.
+It retains 91 rewrite rules, four context-copy tiles and one separator, with
+the same finite-U15-input target map. All193 matrices are explicit. The saved
+accepting derivation uses12 rewrites,83 tiles and167 matrix generators; its
+full product equals the unchanged target. Root and an independent reviewer
+check the proof, literal arrays and fresh receipt. The largest coefficient
+grows from26 to31 magnitude bits, while total entry magnitude bits decrease.
+This establishes a smaller universal directed semigroup, with no new
+Diophantine gate bound or inverse-closed group claim.
+
 The preceding complete universal polynomial costs **86=48M+38A**, with19 positive
 witnesses and exact degree178 after the
 [transport quotient shear](complete86_transport_quotient_shear.md). It supplies
