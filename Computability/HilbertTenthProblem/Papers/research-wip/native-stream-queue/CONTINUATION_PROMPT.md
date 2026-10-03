@@ -90,6 +90,15 @@
 > and an independent reviewer check the arrays, full product correction,
 > binary-power fixture and normal/optimized receipts. The 85 bound is unchanged.
 >
+> The [scaled first-index obstruction](first_index_scaled_obstruction.md)
+> closes the old scout's scale gap. For odd t>=11, p=t(t+2), n=t(t+1),
+> X=2^p and Y=2^(t+1) satisfy X=wq,Y=sq^3 at q=16, both Pell norms,
+> the strict ratio and positive main projection, but leave index remainder
+> t^2-1. Three instances also satisfy the literal R=p packing expression
+> and necessary mask conditions. These are not full candidate zeros or
+> valid compiled histories. Exact bounded source checks and independent
+> Pell/proof review pass; the 81/82 candidates and minimum85 remain unchanged.
+>
 > The [general eight-lane range transfer](group_projective_general_separate_range.md)
 > now covers the canonical nonempty matrix-history graph family. Separating its
 > physical range mask from its controller width lowers the uniform exact degree
