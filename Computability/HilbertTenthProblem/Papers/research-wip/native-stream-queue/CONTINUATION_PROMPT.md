@@ -84,6 +84,18 @@
 > The quartic family grows with the fixed horizon; it supplies no fixed-arity
 > universal or unrestricted finite-fold representation.
 >
+> The [dimension-independent four-mass review](review_dimension_independent_four_mass.md)
+> checks the new reachability decision theorem in every finite spatial dimension,
+> under conserved positive symbol weights and at most one unit symbol, together
+> with its other CA hypotheses. Exact support contacts lie on finitely many
+> arithmetic rays; successful nonparallel switches are confined to a computable
+> bounded region. Continuing large-gap motion reduces to a guarded one-counter
+> system, with a separate absolute-drift cutoff and no-unit-symbol case.
+> Root and an independent reviewer find no gap. New contact/Cramer/counter
+> checks and fresh normal/optimized receipts pass. This excludes that mass-four
+> substrate as a universal finite-observation loader; it supplies no general
+> CA implementation or universal arithmetic-circuit lower bound.
+>
 > The [planar four-particle review](review_binary_planar_four_particle31.md)
 > checks the new binary shuttle rule and independently reconstructs its
 > 614-gate local certificate,693 residuals and complete3,403-term quartic.
