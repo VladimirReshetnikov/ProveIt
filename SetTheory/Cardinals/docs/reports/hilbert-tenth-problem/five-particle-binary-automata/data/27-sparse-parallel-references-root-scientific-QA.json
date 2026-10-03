@@ -1,0 +1,339 @@
+{
+  "status": "PASS",
+  "scope": "frozen scientific packet; final report27 release not yet reviewed",
+  "manifest_sha256": "311e6293d0b28528b63e8f9e0eadd1a4fa91d7dc5c1b208c3e2654be37cdd7fa",
+  "source_files_unchanged": 39,
+  "invariance_fields": [
+    "bytes",
+    "modes",
+    "mtime_ns"
+  ],
+  "proof_and_code_review": [
+    "PROOF.md",
+    "sparse_parallel.py",
+    "audit-candidate-completeness.md",
+    "benchmark_universal.py",
+    "audit_candidate_completeness.py",
+    "test_sparse_parallel.py"
+  ],
+  "modes": [
+    "normal",
+    "optimized"
+  ],
+  "receipts": {
+    "normal": {
+      "audit-candidate-receipt.json": {
+        "status": "passed",
+        "source_cases": 14,
+        "endpoint_containment_checks": 17504,
+        "full_candidate_map_comparisons": 1120,
+        "actual_block_candidate_selection_output_comparisons": 2240,
+        "sparse_guard_comparisons": 2560,
+        "optimized": false,
+        "scope": "Small-source finite tests supplement the symbolic proof; no universal enumeration."
+      },
+      "universal-receipt.json": {
+        "status": "passed",
+        "source_bytes": 32034272,
+        "source_sha256": "fa61d06178d718511232a80a05e02192d940fde3c273f0c202f0623253b2ade3",
+        "valid_state_reference_trace_sha256": "6f8c9aa889a62c577a8c988120a48393b32480a7750e2fd49a860c8727c00e1f",
+        "metadata_sha256": "42e8aa65c05fcf373a03a02be51ebb89a4fdcb1f1070ad776ffe1e8e99049c61",
+        "evaluator_sha256": "785082d121622f8fc755ed7039ee6efe719964296eec7d76ad44495dc5c6c2c1",
+        "ledger": {
+          "m": 122622,
+          "p": 66066,
+          "a": 75495,
+          "J": 0,
+          "D": 509508,
+          "S": 1019018,
+          "B2": 509509,
+          "L": 1528528,
+          "B3": 2038037,
+          "Z": 20380380,
+          "E": 134645688597,
+          "P": 134645669658,
+          "factors": 269291358255,
+          "radius": 91711698,
+          "observer_length": 1528527,
+          "particles": 5,
+          "alphabet": [
+            0,
+            1
+          ],
+          "old_radius": 3292955588459274804,
+          "edge_radius": 67255251,
+          "phase_radius": 24456447,
+          "edge_read_radius": 20380380,
+          "phase_read_radius": 6114112,
+          "edge_exclusion": 44836834,
+          "phase_exclusion": 16304298,
+          "new_rule_off_admissible": true
+        },
+        "old_execution_traps_installed": true,
+        "compile_seconds": 4.080758739000885,
+        "startup_steps": 128,
+        "startup_seconds": 0.10734146700997371,
+        "malformed_cases": 128,
+        "malformed_seconds": 0.09663378699042369,
+        "max_candidate_types": 4,
+        "max_raw_keys": 2,
+        "max_selected_keys": 2,
+        "max_prospective_queries": 2,
+        "total_seconds": 4.627292681005201,
+        "peak_rss_kib": 376652
+      },
+      "test-sparse-parallel-receipt.json": {
+        "status": "passed",
+        "optimized": false,
+        "section": "all",
+        "counts": {
+          "rejections": 259,
+          "candidate_map_equalities": 16366,
+          "active_map_equalities": 16366,
+          "block_output_equalities": 16366,
+          "block_involution_checks": 16366,
+          "trace_checks": 12,
+          "whole_step_equalities": 16366,
+          "whole_inverse_checks": 16366,
+          "configurations": 8183,
+          "invalid_source_equalities": 19,
+          "no_eager_runtime_checks": 1,
+          "large_source_factors": 780035,
+          "large_source_materialized_distinct": 5,
+          "raw_probe_bound_checks": 32,
+          "max_unverified_raw_probes": 8,
+          "max_verified_raw_probes": 16,
+          "sources": 10,
+          "factor_equalities": 1140,
+          "endpoint_orientations": 2280,
+          "endpoint_spoilers": 2280,
+          "local_radius_checks": 1761,
+          "encoded_states": 192,
+          "random_supports": 120,
+          "huge_translations": 20,
+          "enabled_guard_endpoints": 46,
+          "exhaustive_supports": 3072,
+          "simultaneous_block_checks": 2,
+          "exclusion_boundaries": 8,
+          "detector_configurations": 162,
+          "candidate_interval_checks": 40
+        },
+        "fixtures": {
+          "cascade": {
+            "input": [
+              -118,
+              -112,
+              0,
+              18,
+              23
+            ],
+            "blocks": {
+              "E": {
+                "initial_candidates": [
+                  [
+                    0,
+                    -119,
+                    1
+                  ]
+                ],
+                "naive_output": [
+                  -119,
+                  -114,
+                  0,
+                  18,
+                  23
+                ]
+              },
+              "P": {
+                "initial_candidates": [
+                  [
+                    47,
+                    -118,
+                    1
+                  ]
+                ],
+                "naive_output": [
+                  -118,
+                  -113,
+                  0,
+                  18,
+                  23
+                ]
+              }
+            }
+          },
+          "exhaustive_universe_sizes": [
+            11,
+            10
+          ],
+          "simultaneous_copies": 3
+        },
+        "elapsed_seconds": 52.215981385001214,
+        "oracle_sha256": {
+          "parallel_particles.py": "2c8b639646a587a51bddeaac16e46d2dbd8c4e8138ac67a2601025334d4a64cd",
+          "frozen_reversible_binary.py": "f95a6028c9d3cc6f8b0b497cfc0cad68104da6d70e55205df04ad234e5d0c76f"
+        },
+        "sparse_parallel_sha256": "785082d121622f8fc755ed7039ee6efe719964296eec7d76ad44495dc5c6c2c1",
+        "test_sha256": "21b49ccd2730536b511aeca7ded6f466abca2d3ee89d7217cfb290a4a30ce45f"
+      }
+    },
+    "optimized": {
+      "universal-receipt-optimized.json": {
+        "status": "passed",
+        "source_bytes": 32034272,
+        "source_sha256": "fa61d06178d718511232a80a05e02192d940fde3c273f0c202f0623253b2ade3",
+        "valid_state_reference_trace_sha256": "6f8c9aa889a62c577a8c988120a48393b32480a7750e2fd49a860c8727c00e1f",
+        "metadata_sha256": "42e8aa65c05fcf373a03a02be51ebb89a4fdcb1f1070ad776ffe1e8e99049c61",
+        "evaluator_sha256": "785082d121622f8fc755ed7039ee6efe719964296eec7d76ad44495dc5c6c2c1",
+        "ledger": {
+          "m": 122622,
+          "p": 66066,
+          "a": 75495,
+          "J": 0,
+          "D": 509508,
+          "S": 1019018,
+          "B2": 509509,
+          "L": 1528528,
+          "B3": 2038037,
+          "Z": 20380380,
+          "E": 134645688597,
+          "P": 134645669658,
+          "factors": 269291358255,
+          "radius": 91711698,
+          "observer_length": 1528527,
+          "particles": 5,
+          "alphabet": [
+            0,
+            1
+          ],
+          "old_radius": 3292955588459274804,
+          "edge_radius": 67255251,
+          "phase_radius": 24456447,
+          "edge_read_radius": 20380380,
+          "phase_read_radius": 6114112,
+          "edge_exclusion": 44836834,
+          "phase_exclusion": 16304298,
+          "new_rule_off_admissible": true
+        },
+        "old_execution_traps_installed": true,
+        "compile_seconds": 3.862138860000414,
+        "startup_steps": 128,
+        "startup_seconds": 0.11380578200623859,
+        "malformed_cases": 128,
+        "malformed_seconds": 0.10101219100761227,
+        "max_candidate_types": 4,
+        "max_raw_keys": 2,
+        "max_selected_keys": 2,
+        "max_prospective_queries": 2,
+        "total_seconds": 4.620485260995338,
+        "peak_rss_kib": 379936
+      },
+      "test-sparse-parallel-optimized-receipt.json": {
+        "status": "passed",
+        "optimized": true,
+        "section": "all",
+        "counts": {
+          "rejections": 259,
+          "candidate_map_equalities": 16366,
+          "active_map_equalities": 16366,
+          "block_output_equalities": 16366,
+          "block_involution_checks": 16366,
+          "trace_checks": 12,
+          "whole_step_equalities": 16366,
+          "whole_inverse_checks": 16366,
+          "configurations": 8183,
+          "invalid_source_equalities": 19,
+          "no_eager_runtime_checks": 1,
+          "large_source_factors": 780035,
+          "large_source_materialized_distinct": 5,
+          "raw_probe_bound_checks": 32,
+          "max_unverified_raw_probes": 8,
+          "max_verified_raw_probes": 16,
+          "sources": 10,
+          "factor_equalities": 1140,
+          "endpoint_orientations": 2280,
+          "endpoint_spoilers": 2280,
+          "local_radius_checks": 1761,
+          "encoded_states": 192,
+          "random_supports": 120,
+          "huge_translations": 20,
+          "enabled_guard_endpoints": 46,
+          "exhaustive_supports": 3072,
+          "simultaneous_block_checks": 2,
+          "exclusion_boundaries": 8,
+          "detector_configurations": 162,
+          "candidate_interval_checks": 40
+        },
+        "fixtures": {
+          "cascade": {
+            "input": [
+              -118,
+              -112,
+              0,
+              18,
+              23
+            ],
+            "blocks": {
+              "E": {
+                "initial_candidates": [
+                  [
+                    0,
+                    -119,
+                    1
+                  ]
+                ],
+                "naive_output": [
+                  -119,
+                  -114,
+                  0,
+                  18,
+                  23
+                ]
+              },
+              "P": {
+                "initial_candidates": [
+                  [
+                    47,
+                    -118,
+                    1
+                  ]
+                ],
+                "naive_output": [
+                  -118,
+                  -113,
+                  0,
+                  18,
+                  23
+                ]
+              }
+            }
+          },
+          "exhaustive_universe_sizes": [
+            11,
+            10
+          ],
+          "simultaneous_copies": 3
+        },
+        "elapsed_seconds": 51.30764305999037,
+        "oracle_sha256": {
+          "parallel_particles.py": "2c8b639646a587a51bddeaac16e46d2dbd8c4e8138ac67a2601025334d4a64cd",
+          "frozen_reversible_binary.py": "f95a6028c9d3cc6f8b0b497cfc0cad68104da6d70e55205df04ad234e5d0c76f"
+        },
+        "sparse_parallel_sha256": "785082d121622f8fc755ed7039ee6efe719964296eec7d76ad44495dc5c6c2c1",
+        "test_sha256": "21b49ccd2730536b511aeca7ded6f466abca2d3ee89d7217cfb290a4a30ce45f"
+      },
+      "audit-candidate-receipt-optimized.json": {
+        "status": "passed",
+        "source_cases": 14,
+        "endpoint_containment_checks": 17504,
+        "full_candidate_map_comparisons": 1120,
+        "actual_block_candidate_selection_output_comparisons": 2240,
+        "sparse_guard_comparisons": 2560,
+        "optimized": true,
+        "scope": "Small-source finite tests supplement the symbolic proof; no universal enumeration."
+      }
+    }
+  },
+  "producer_receipts_match_except_machine_fields": true,
+  "universal_traces_match_exactly": true
+}

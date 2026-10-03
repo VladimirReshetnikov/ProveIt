@@ -1,0 +1,88 @@
+{
+  "endpoint_equalities": 56,
+  "optimized": false,
+  "seconds": 8.775851488113403,
+  "sources": [
+    {
+      "branches": [
+        {
+          "delta": 1,
+          "guard": {
+            "op": "true"
+          },
+          "name": "left",
+          "side": -1,
+          "source": "q",
+          "target": "r"
+        },
+        {
+          "delta": 1,
+          "guard": {
+            "op": "true"
+          },
+          "name": "right",
+          "side": 1,
+          "source": "r",
+          "target": "s"
+        },
+        {
+          "delta": 0,
+          "guard": {
+            "op": "true"
+          },
+          "name": "done",
+          "side": 1,
+          "source": "s",
+          "target": "h"
+        }
+      ],
+      "class_cut": 0,
+      "controls": [
+        "q",
+        "r",
+        "s",
+        "h"
+      ],
+      "halt": "h",
+      "schema": "reversible-two-counter-v1",
+      "start": "q"
+    },
+    {
+      "branches": [
+        {
+          "delta": 0,
+          "guard": {
+            "counter": 0,
+            "op": "eq",
+            "value": 0
+          },
+          "name": "zero",
+          "side": 1,
+          "source": "q",
+          "target": "h"
+        },
+        {
+          "delta": 0,
+          "guard": {
+            "counter": 0,
+            "op": "gt",
+            "value": 0
+          },
+          "name": "nonzero",
+          "side": 1,
+          "source": "q",
+          "target": "h"
+        }
+      ],
+      "class_cut": 1,
+      "controls": [
+        "q",
+        "h"
+      ],
+      "halt": "h",
+      "schema": "reversible-two-counter-v1",
+      "start": "q"
+    }
+  ],
+  "status": "PASS"
+}

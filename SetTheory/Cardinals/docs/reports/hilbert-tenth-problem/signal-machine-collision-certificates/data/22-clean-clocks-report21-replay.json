@@ -1,0 +1,240 @@
+{
+  "status": "passed",
+  "python": "3.12.14",
+  "source_release_unchanged": true,
+  "deterministic_bytes_unchanged": true,
+  "modes": [
+    "normal",
+    "optimized"
+  ],
+  "scripts": [
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.064
+    },
+    {
+      "command": [
+        "emit_clean_clocks.py",
+        "--check"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.115
+    },
+    {
+      "command": [
+        "check_semantics.py",
+        "--check"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.766
+    },
+    {
+      "command": [
+        "audit/check_emitted_circuits.py",
+        "--expect",
+        "audit/independent_emitted_circuit_audit.json"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.215
+    },
+    {
+      "command": [
+        "audit/check_degree_certificate.py"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.064
+    },
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.064
+    },
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.065
+    },
+    {
+      "command": [
+        "emit_folded_clocks.py",
+        "--check"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.115
+    },
+    {
+      "command": [
+        "audit/check_folded_clocks.py",
+        "--expect",
+        "audit/independent_folded_clock_audit.json"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 1.823
+    },
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.065
+    },
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.165
+    },
+    {
+      "command": [
+        "emit_clean_clocks.py",
+        "--check"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.265
+    },
+    {
+      "command": [
+        "check_semantics.py",
+        "--check"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.917
+    },
+    {
+      "command": [
+        "audit/check_emitted_circuits.py",
+        "--expect",
+        "audit/independent_emitted_circuit_audit.json"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.316
+    },
+    {
+      "command": [
+        "audit/check_degree_certificate.py"
+      ],
+      "optimized": true,
+      "expected_fail_closed": true,
+      "returncode": 1,
+      "seconds": 0.165
+    },
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.165
+    },
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.165
+    },
+    {
+      "command": [
+        "emit_folded_clocks.py",
+        "--check"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.265
+    },
+    {
+      "command": [
+        "audit/check_folded_clocks.py",
+        "--expect",
+        "audit/independent_folded_clock_audit.json"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 1.919
+    },
+    {
+      "command": [
+        "verify_manifest.py"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.165
+    },
+    {
+      "command": [
+        "release_checks.py"
+      ],
+      "optimized": false,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.315
+    },
+    {
+      "command": [
+        "release_checks.py"
+      ],
+      "optimized": true,
+      "expected_fail_closed": false,
+      "returncode": 0,
+      "seconds": 0.515
+    }
+  ],
+  "integrity": {
+    "status": "passed",
+    "files_verified": 102,
+    "frozen_files": 90,
+    "mathematical_manifest_sha256": "1bf1225aa950ad1d4f842c8bf098e1935925cd1d52c90453b7696c1321648f95",
+    "folded_manifest_sha256": "3896e694780c6620f3097503165925abc18285b8c40ff9c7c1755b092bde73ca"
+  },
+  "secondary_degree_optimized": "expected fail-closed rejection",
+  "full_independent_degree_audit": "passes normal and optimized",
+  "third_party_python_executed": false,
+  "limits": {
+    "wall_seconds": 300,
+    "unix_cpu_seconds": 240,
+    "unix_address_space_bytes": 2147483648
+  },
+  "receipt_scope": "Pre-seal replay of all mathematical suites and integrity attacks; this record itself is then added to the complete release inventory."
+}
