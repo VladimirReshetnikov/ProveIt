@@ -27,6 +27,16 @@ for the corresponding compact cleaned target and clock. The
 pass root replay. The branch table and horizon remain external; the general
 87-operation universal bound is unchanged.
 
+The [safe combined construction](three_mass_projected_endpoint_penalties.md)
+reaches **46/45** operations for native/clean two-step certificates and
+**86/83** for three increments, with six/fifteen witnesses and degree three.
+It groups endpoint penalties with the selector guard and doubles one barrier
+only when both endpoint masks can be negative at the same one-step packet.
+An actual false-halt zero proves that condition is necessary. The
+[independent audit](review_three_mass_projected_endpoint_penalties.md) verifies
+all783 candidate polynomials and56,077 live gates; both fresh root receipts pass.
+These are complete external-horizon examples, not a new universal bound.
+
 The [endpoint-penalty variant](three_mass_endpoint_penalties.md) preserves
 **degree two** and all witnesses while reducing the native/clean two-step
 circuits to **51/51**, and the three-increment circuits to **100/98**.

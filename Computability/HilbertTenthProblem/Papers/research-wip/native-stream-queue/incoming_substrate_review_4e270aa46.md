@@ -88,6 +88,15 @@ all252 complete polynomials and18,847 live paid gates, and both fresh root
 receipts pass. The explicit guard is essential: direct unguarded elimination
 has an actual complete false-halt zero. This remains a fixed-horizon result.
 
+The [safe composition](three_mass_projected_endpoint_penalties.md) combines
+the two reductions at46/45 operations for the native/clean two-step pair and
+86/83 for three increments, retaining the projected witnesses and degree three.
+A conditional extra selector barrier handles overlapping endpoint masks at
+horizon one; its necessity has an actual complete false-halt counterexample.
+The [independent audit](review_three_mass_projected_endpoint_penalties.md)
+checks all783 emitted coefficient polynomials, exact degrees and56,077 live
+gates. Both author and independent receipts pass fresh root replay.
+
 The low-mass canonical corollary also admits the previously proved
 [five-witness congruence substitution](presburger_congruence_five.md): after
 Presburger quantifier elimination its auxiliary count improves from

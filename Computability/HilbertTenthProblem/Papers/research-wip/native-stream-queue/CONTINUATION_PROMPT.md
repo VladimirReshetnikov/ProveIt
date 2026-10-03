@@ -1,5 +1,16 @@
 # Continuation: universal straight-line certificates
 
+> The [safe projection/endpoint composition](three_mass_projected_endpoint_penalties.md)
+> is complete: native/clean two-step46/45 operations with6 witnesses;
+> three-increment86/83 with15 witnesses, exact degree3. Group each projected
+> endpoint mask with its step guard. Weight the selector barrier by2 only if
+> both endpoint masks contain the implicit branch at h=1; otherwise weight1.
+> The strict lower bound(S−1)(wS−r)>0 excludes S>=2. An actual full false-halt
+> packet scores0 without this repair and2 with it. The
+> [independent audit](review_three_mass_projected_endpoint_penalties.md)
+> verifies783 full polynomials/degrees,261 literal baselines and56,077 live
+> gates; root read/replayed both receipts. No universal-bound improvement.
+>
 > The [quadratic endpoint-penalty variant](three_mass_endpoint_penalties.md)
 > retains all2Bh witnesses and degree2, reaching51/51 native/clean two-step
 > and100/98 three-increment totals. Both nonnegative linear endpoint masks
@@ -8,7 +19,7 @@
 > reconstructs128 complete old/new pairs over64 actual certificates; all10,702
 > paid gates are live. A separate saved-packet review covers14 pairs. Root
 > read/replayed both independent receipts and the author receipt. This is a
-> separate alternative to the projection below; safe composition is pending.
+> separate degree/witness alternative to the cubic composition above.
 >
 > The [guarded three-mass selector projection](three_mass_selector_projection.md)
 > now removes one natural selector per nonempty step: witness count(2B−1)h,
