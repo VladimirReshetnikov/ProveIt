@@ -171,6 +171,21 @@ Author and review pass fresh installed replay. Their degree fields remain
 upper bounds304/208; the separate parent exact-degree proof and polynomial
 identity also establish unchanged exact degrees. No universal bound changes.
 
+The [direct-height obstruction](Papers/research-wip/native-stream-queue/group_projective_height_projection_obstruction.md)
+rejects deleting D=u+height_slack from the projective compiler. An actual
+32-letter macro table has no accepted positive ordinary input, but the
+complete projected source admits x=511 and infinitely many more inputs.
+Changing only initial unselected history digits absorbs the input carry;
+all outer equations, range typing and the full prescribed AND still hold.
+The saved464/463-operation parent/candidate are fully paid examples, not
+optima or the separate244/243 ten-letter case. The
+[independent review](Papers/research-wip/native-stream-queue/review_group_projective_height_projection.md) checks
+927 paid gates,29 outer polynomials,463 full register identities and the
+positive component-native extension. Both installed receipts pass fresh
+replay; finite outer fixtures explicitly use native placeholders, while
+full false-zero existence is proved parametrically. Valid parents and the
+74/86 universal bounds remain unchanged.
+
 
 
 The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)
