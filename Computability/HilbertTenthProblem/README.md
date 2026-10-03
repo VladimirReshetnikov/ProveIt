@@ -40,6 +40,21 @@ Author and both independent reviews pass fresh installed exact replay.
 The comparison-system bound remains74. Earlier entries retain their
 historical counts; this result supersedes the minimum86 polynomial bound.
 
+The [ordinary-strong auxiliary projection](Papers/research-wip/native-stream-queue/complete86_ordinary_auxiliary_projection.md)
+adds a lower-degree alternative: **86=47M+39A operations,18 positive witnesses,
+and uniform exact degree131**. It uses the same computed V, with a separate
+ordinary Pell-rank argument proving the divisibility and positivity needed
+to restore both deleted coordinates. The full positive zero sets are in
+bijection with the ordinary87 parent. Its all-value correction is polynomial
+with independent j; setting j=(V+R)/c gives a rational pullback away from c=0.
+The [independent source review](Papers/research-wip/native-stream-queue/review_complete86_ordinary_auxiliary_source.md)
+reconstructs the complete circuit and both finalizers and expands all seven
+factors; the [mathematical review](Papers/research-wip/native-stream-queue/review_complete86_ordinary_auxiliary_math.md)
+checks ordinary rank, the auxiliary gap and the positive index sign in order.
+All three installed receipts pass fresh replay. The raw propagated degree141
+is only an upper bound. Thus the current eighteen-witness choices include
+**85 operations/degree175 and86/131**; the comparison-system bound remains74.
+
 The [general eight-lane range transfer](Papers/research-wip/native-stream-queue/group_projective_general_separate_range.md)
 now covers the canonical nonempty matrix-history graph family. Separating its
 physical range mask from its controller width lowers the uniform exact degree
