@@ -49,6 +49,67 @@
 > This is an exact frontier within two fixed cores and the stated finalizer
 > rules; it is not a general circuit lower bound. The minimum stays85.
 >
+> The [linear-input quotient family](complete_linear_auxiliary_quotient_family.md)
+> adds complete universal polynomials at **87 operations/degree 119,
+> 88/109 and 89/103**, all with **18 positive witnesses**. A fourth complete
+> 88/113 source records the other auxiliary-gap choice. Each restores a full
+> positive zero of its own saved parent; the ordinary rank and signed auxiliary
+> argument establish integrality and positivity before invoking that theorem.
+> The [independent review](review_linear_auxiliary_quotient_family.md) checks
+> all 352 paid gates, expands every coefficient of the 28 factor instances,
+> and verifies all four full leading forms and both finalizers per source.
+> Author and review exact receipts pass; a separate mathematical challenge
+> finds no gap. The reviewed 18-witness choices now include **85/175,86/131,
+> 87/119,88/109,89/103,91/80,93/64**. This is a union of saved constructions,
+> not a new grouping census or global optimum; the minimum remains 85.
+>
+> The [linear-core grouping family](complete_linear_auxiliary_partition_frontier.md)
+> adds six complete universal choices: **90 operations/degree 98,92/76,93/60,
+> 94/56,95/50 and96/44**, all with **18 positive witnesses**. Every source has
+> exactly its immediate parent's full positive integer zero set. Two literal
+> strong-singleton folds save additions without changing the grouped polynomial.
+> The author emits and checks all 16,560 declared plans, totaling 1,561,928 gates,
+> and saves ten complete frontier arrays. The
+> [independent review](review_complete_linear_auxiliary_partition_frontier.md)
+> reconstructs those ten arrays and all 915 gates, expands all 28 factor
+> polynomials and ten full leaders, and independently enumerates every weighted
+> objective and multiplicity. It does not rebuild the unsaved author stream.
+> Fresh author/review receipts and a separate proof read pass. The resulting
+> reviewed 18-witness choices include **85/175,86/131,87/119,88/109,89/103,90/98,
+> 91/80,92/76,93/60,94/56,95/50,96/44**. This is a finite comparison of the stated
+> saved families; the minimum remains 85, with no global optimality claim.
+>
+> The [first-index deletion scout](first_index_quotient_deletion_scout.md)
+> saves two fully paid 17-witness candidate arrays at 81/82 operations and
+> exact degrees 168/124, but **neither is a proved universal representation**.
+> Removing h and its private index cone requires restoring
+> h=(k−R−1)/E as a positive integer. An exact first/main Pell and strict-ratio
+> fixture has positive numerator but remainder 2; its odd Y fails the full
+> q-scaling conditions, so it is only a subsystem obstruction. The retained
+> outer/scaling equations remain the unresolved soundness obligation. Root
+> and an independent reviewer check the arrays, full product correction,
+> binary-power fixture and normal/optimized receipts. The 85 bound is unchanged.
+>
+> The [scaled first-index obstruction](first_index_scaled_obstruction.md)
+> closes the old scout's scale gap. For odd t>=11, p=t(t+2), n=t(t+1),
+> X=2^p and Y=2^(t+1) satisfy X=wq,Y=sq^3 at q=16, both Pell norms,
+> the strict ratio and positive main projection, but leave index remainder
+> t^2-1. Three instances also satisfy the literal R=p packing expression
+> and necessary mask conditions. These are not full candidate zeros or
+> valid compiled histories. Exact bounded source checks and independent
+> Pell/proof review pass; the 81/82 candidates and minimum85 remain unchanged.
+>
+> The [auxiliary quotient block audit](complete_auxiliary_quotient_block_scout.md)
+> proves that the exact producer `V=c(Tf−1)−Rf²` needs **3M+2A** in its declared
+> independent-port model. Its complete Horner and flat rewrites tie the current
+> 85/86 costs. Two sound normalized positive-gap charts cost 88/91 operations,
+> with degree upper bounds only. All eight sources retain 18 positive witnesses
+> and the ordinary input. The [independent review](review_complete_auxiliary_quotient_block_scout.md)
+> checks the proof's cancellation cases and both restored `f` consumers; fresh
+> normal and optimized replays cover all 692 gates. This local minimum excludes
+> other paid core dependencies and zero-equivalent replacements. It is not a
+> whole-circuit bound, and the universal minimum remains 85 operations.
+>
 > The [general eight-lane range transfer](group_projective_general_separate_range.md)
 > now covers the canonical nonempty matrix-history graph family. Separating its
 > physical range mask from its controller width lowers the uniform exact degree
@@ -84,6 +145,36 @@
 > construction supplies a paid ordinary-input, fixed-arity unbounded compiler;
 > the minimum universal polynomial remains 85 operations. Natural return-time
 > multipliers must also remain distinct from the paid real-orthant theorem.
+>
+> The [event-budget and clean-clock intake](review_event_budget_clean_clock_intake.md)
+> distinguishes the finite five-particle scheduler from the fixed-arity,
+> unbounded three-mass clock theorem. The separate
+> [direct clean-clock construction](three_mass_direct_clean_clock.md) then
+> saves **six operations and one witness** from each of the four folded report
+> fixtures: complete costs **597/472/470/473**, with **59/57/57/57 positive
+> witnesses** and exact degrees **2344/1192/1192/1192**. Clean time itself sets
+> the height margin, and an enlarged fixed radix proves the clock cannot wrap.
+> The [independent review](review_three_mass_direct_clean_clock.md) reconstructs
+> all 2,012 paid gates, checks the entire packed clock against all 120 physical
+> tick rows, and verifies every exact degree. Fresh author and review receipts
+> pass, with a separate proof challenge finding no gap. These are four fixed
+> nonuniversal raw-input sources; ordinary-input loading and a numerical
+> universal source remain unpaid. The universal minimum stays 85 operations.
+>
+> The [cellular-clock domination intake](review_cellular_clock_domination18_intake.md)
+> finds no gap in Report18's clock comparison within its fixed source templates;
+> 166 saved primitive records reproduce the two startup clocks. This physical
+> speed improvement supplies no paid ordinary-input loader or smaller arithmetic
+> compiler. The separate [input-free-height obstruction](three_mass_input_free_height_obstruction.md)
+> rejects a tempting one-addition saving in all four direct clean-clock sources.
+> An exact endpoint/clock symmetry gives infinitely many full positive zeros
+> at false fixed-time raw inputs. The
+> [independent review](review_three_mass_input_free_height_obstruction.md)
+> checks all 2,008 candidate gates, full parent-lift identities, arbitrary-iterate
+> residual invariance and exact degrees; separate mathematical review passes.
+> Full positive counterfamilies use the sound parent's native existence theorem;
+> only outer examples are numerically materialized. The sound parent costs and
+> universal minimum of 85 operations remain unchanged.
 >
 > The [parallel-particle report review](review_parallel_particle_reports.md)
 > checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
