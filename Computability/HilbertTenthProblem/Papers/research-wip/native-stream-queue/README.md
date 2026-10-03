@@ -16,6 +16,12 @@ The assembled-report reviews now also cover [Part XVII sign charts](review_signc
 and all 29 companion files retain the original bytes. The externally fixed widths,
 power atoms, phase counts and unapplied executable repairs remain disclosed.
 
+The [mixing/Green transfer review](review_typesetting_957351037.md) identifies an
+error in the new introduction: connected finite-support responses use a signed
+dipole, while point-source columns have infinite support. The original theorems
+are preserved. A separate patch and an immediate-halt counterexample document
+the correction; the report text and PDF remain unchanged.
+
 The [existential congruence variant](presburger_congruence_existence15.md)
 further lowers the complete atom to **14 = 5M+9A** with five natural witnesses.
 Its truth output is exact, but its witness fibers are infinite. The separate

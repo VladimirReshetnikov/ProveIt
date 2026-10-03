@@ -21,6 +21,11 @@
 > 79 formal blocks and 91 display occurrences, matched without reusing targets,
 > with 29 unchanged companion files and a fresh root receipt. Its power atoms,
 > external bit width and fixed-phase qualifications remain explicit.
+> The [mixing/Green transfer](review_typesetting_957351037.md) preserves 176 formulas
+> and 57 proofs, but the new common theorem confuses a connected point-source
+> column with the signed dipole. The pinned correction restores this essential
+> distinction and the factor-two resistance; root replay and private patch
+> application pass. The maintained PDF still needs rebuilding when applied.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;
