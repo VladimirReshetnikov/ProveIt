@@ -96,6 +96,19 @@ represented triples at the same externalN; its coordinate bijections concern
 the triangular parent slices. The canonical unique-fiber refinement and
 fixed-arity universal bounds are separate.
 
+The [Tree constructor projection](eager_tree_constructor_projection.md)
+then removes five unconditional constructor coordinates per row, saving
+**15N operations and5N witnesses**. With static cleanup the complete
+polynomial costs **(21N²+191N+40)/2**, has(3N²+23N)/2 natural witnesses
+and17N+3 residuals, and has **exact degree10**. AtN=8 this gives1,456
+operations and188 witnesses, versus the triangular quartic's1,576 and228.
+Restoring the five polynomial definitions is natural-valued on every child
+tuple and gives an exact whole-polynomial graph identity and a bijection
+with all triangular-parent natural zeros. The
+[independent full review](review_eager_tree_constructor_projection.md)
+and both fresh root receipts pass. The quartic remains a useful degree
+tradeoff; externalN and the universal74/86 bounds are unchanged.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

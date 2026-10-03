@@ -245,6 +245,27 @@
 > triangular zero slices, and represented-triple equivalence with all zeros.
 > ExternalN remains, as do natural rather than positive-only coordinates;
 > no universal or canonical-unique-fiber theorem follows. Preserve both trios.
+> The [Tree constructor projection](eager_tree_constructor_projection.md)
+> and [independent full review](review_eager_tree_constructor_projection.md)
+> pass fresh root receipts. Each triangular row unconditionally defines
+> d=F(a,b),e=F(a,y),q=F(0,b),j=F(2a+1,b),k=F(d,c), with
+> F(u,v)=(u+v)(u+v+1)+2v+2. Alias the five supplied coordinates to their
+> existing paid RHS registers, substitute d into k, and delete the five
+> graph residuals. Every constructor gate remains live and paid. Restoring
+> these definitions is uniquely natural-valued before any other equation.
+> Full childSOS=parentSOS(restoration) on every tuple; natural zero fibers
+> are in bijection with the ENTIRE triangular parent at the sameN.
+> Witnesses(3N²+23N)/2,residuals17N+3. CompleteM=(9N²+91N+6)/2,
+> A=6N²+51N+17, selective total(21N²+193N+40)/2. Static cleanup subtractsN
+> moreA, giving(21N²+191N+40)/2. This saves5NM+10NA=15N full operations
+> in either mode. Exact degree rises4->10: the full leading polynomial is
+> sum_i t[i,4]^2*(a[i]+b[i])^8, with coefficient1 of t[0,4]^2*a[0]^8.
+> Other residuals have degree at most3; no zero-set tag condition is used
+> to lower the formal degree, evenN1. AtN8 cleanup gives1456ops/188w.
+> All six parent artifacts and the original kernel are pinned on every
+> public build/check. Preserve both new trios and the earlier quartic
+> tradeoff; this still has externalN, no universal operation improvement
+> and no canonical unique-computation-fiber claim.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual

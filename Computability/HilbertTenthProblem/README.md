@@ -79,6 +79,16 @@ Its [independent review](Papers/research-wip/native-stream-queue/review_eager_tr
 and fresh replays pass. Equality of represented triples holds at each
 externalN; no fixed-arity universal bound or unique certificate is claimed.
 
+The [Tree constructor projection](Papers/research-wip/native-stream-queue/eager_tree_constructor_projection.md)
+saves another **15N operations and5N witnesses**, at the cost of raising
+the exact degree to10. With static cleanup its full count is
+**(21N²+191N+40)/2**, with(3N²+23N)/2 natural witnesses. AtN=8 this is
+1,456 operations and188 witnesses. Polynomial restoration gives a bijection
+with all natural zeros of the triangular parent at the sameN. The
+[independent review](Papers/research-wip/native-stream-queue/review_eager_tree_constructor_projection.md)
+and both fresh receipts pass. This finite cost/degree tradeoff leaves the
+universal operation bounds unchanged.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)
