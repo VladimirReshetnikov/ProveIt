@@ -58,6 +58,17 @@ pass, as does an independent read of the helper and three main proof notes.
 The quartic family grows with the fixed horizon; it supplies no fixed-arity
 universal or unrestricted finite-fold representation.
 
+The [planar four-particle review](review_binary_planar_four_particle31.md)
+checks the new binary shuttle rule and independently reconstructs its
+614-gate local certificate,693 residuals and complete3,403-term quartic.
+Its exact radius6 and Boolean degree45 concern a particular local rule;
+the quartic certifies one output bit using614 natural auxiliaries.
+The all-input conservation and parameterized orbit proofs pass review,
+with separate short orbit checks and fresh normal/optimized receipts.
+The specified shuttle has explicit timing and spatial-count formulas.
+No universal simulation or fixed-arity unbounded Diophantine encoding is
+supplied, so neither614 nor degree4 changes the universal arithmetic bound.
+
 The [new negative-index/fiber report review](review_incoming_negative_index_fibers.md)
 **refutes the exact symmetric signed19 nonlinear-index candidate**: its
 complete positive existential projection contains every positive ordinary
