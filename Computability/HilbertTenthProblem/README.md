@@ -597,7 +597,18 @@ zeros. The ten-base search exhausts20,474 partitions and102,902
 SOS/anchor choices. These are exact finite-family degrees and optima,
 not unrestricted arithmetic or universal-degree lower bounds.
 
-The latest [product-scale group compiler](Papers/research-wip/native-stream-queue/group_projective_product_radix_scale.md)
+The [smaller native quotient shift](Papers/research-wip/native-stream-queue/group_projective_tail_quotient_shift.md)
+keeps the illustrative group compiler at **227 certificate /244=103M+141A**,
+6 comparisons and36 positive witnesses, with **exact degree2829**. It replaces
+X=q(w+S) by X=q(w+(q-1)F3), using an already-paid tail product. The positive-zero
+bijection proves E=XY>2r+3 before rank recovery, then restores the old positive
+quotient after recovering X=2^(2r+1). It preserves the unbounded fixed-table
+input relation. The [independent mathematical challenge](Papers/research-wip/native-stream-queue/review_group_projective_tail_quotient_math.md)
+checks both index signs and inverse positivity. The earlier3396 is a parent
+upper bound; no numerical universal alphabet is instantiated, and the universal
+74/86 operation bounds are unchanged.
+
+The preceding [product-scale group compiler](Papers/research-wip/native-stream-queue/group_projective_product_radix_scale.md)
 saves one multiplication by using q=32BP^a to type both history radices,
 then simplifying the top AND mask to2. The illustrative ten-letter table
 has **227 certificate /244=103M+141A operations**,6 comparisons,36 witnesses

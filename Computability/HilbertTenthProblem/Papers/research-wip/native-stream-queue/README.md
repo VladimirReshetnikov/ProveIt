@@ -1219,7 +1219,18 @@ zeros. The ten-base search exhausts20,474 partitions and102,902
 SOS/anchor choices. These are exact finite-family degrees and optima,
 not unrestricted arithmetic or universal-degree lower bounds.
 
-The latest [product-scale group compiler](group_projective_product_radix_scale.md)
+The [smaller native quotient shift](group_projective_tail_quotient_shift.md)
+keeps the illustrative group compiler at **227 certificate /244=103M+141A**,
+6 comparisons and36 positive witnesses, with **exact degree2829**. It replaces
+X=q(w+S) by X=q(w+(q-1)F3), using an already-paid tail product. The positive-zero
+bijection proves E=XY>2r+3 before rank recovery, then restores the old positive
+quotient after recovering X=2^(2r+1). It preserves the unbounded fixed-table
+input relation. The [independent mathematical challenge](review_group_projective_tail_quotient_math.md)
+checks both index signs and inverse positivity. The earlier3396 is a parent
+upper bound; no numerical universal alphabet is instantiated, and the universal
+74/86 operation bounds are unchanged.
+
+The preceding [product-scale group compiler](group_projective_product_radix_scale.md)
 saves one multiplication by using q=32BP^a to type both history radices,
 then simplifying the top AND mask to2. The illustrative ten-letter table
 has **227 certificate /244=103M+141A operations**,6 comparisons,36 witnesses
@@ -3123,6 +3134,7 @@ New research and the completed75-operation construction:
 | [Exact U9 product-scale partitions](neary_woods_universal_product_scale_partitions.md) | **253/1147 to261/372 with43w;266/212 with44w**. New partition gains257/710,258/664. | All sixteen bases and all partitions/anchors,480 literal ledgers. Finite propagated-objective floors372 and212; no exact-degree or global lower-bound claim. |
 | [Exact U9 native-bound partitions](neary_woods_universal_native_bound_partitions.md) | Historical254/1203,258/742,259/696 with43w; floors392 fixed43 and212 overall. | Exhaustive sixteen-base predecessor before the product-scale change; original sources remain unchanged. |
 | [Positive q-F coordinate obstruction](complete75_positive_complement86_obstruction.md) | Candidate86=48M+38A,19w,degree203; not a universal bound. | Infinite complete positive scalar-contract zeros with R>q^4,C=0 and negative restored F. Exact ratio certificate and canonical auxiliary lift. Historical scalar scope; the separate successor above proves an actual all-input collapse. |
+| [Smaller group quotient shift](group_projective_tail_quotient_shift.md) | Same illustrative **227 certificate /244=103M+141A**,6eq36w; **exact degree2829**, versus parent upper3396. | One changed operand uses the paid (q−1)F3 offset. Pretyping E>2r+3 recovers the native exponent before the signed inverse becomes positive. Full positive-zero bijection; numerical universal alphabet remains uninstantiated. |
 | [Product native group scale](group_projective_product_radix_scale.md) | Illustrative **227 certificate /244=103M+141A**,6eq36w,degree at most3396; aligned8 gives226/2132. | Prescribed q=32BP^a types B,P before the top AND test. One M saved; same fixed-table input predicate with fresh native witnesses. Numerical universal alphabet remains uninstantiated. |
 | [Label-aligned controller lanes](group_projective_label_aligned_lanes.md) | Preceding fixed-m planner retains the ten-letter245 default; nonaligned8 improves242 to227, unbalanced12 improves273 to270, reversed16 improves294 to281. | Storage lanes alone are permuted; physical word/state flow stay fixed. Fresh native witnesses prove input equivalence; distinct tables are not universal numerical instances. |
 | [Radix4 input recoder](native_binary_input_dilation129.md) | Complete129=65M+64A relation,49 positive witnesses,34 equations; polynomial230,degree40. | Weaker raw geometry uses J>=9,J>q directly. Different function and polynomial from radix16/130. |
