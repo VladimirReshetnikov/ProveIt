@@ -172,6 +172,15 @@ signed-index/height receipt replays pass through that cache. The guide maps
 permanent reading locations and the actual older command interfaces;
 archive copying itself adds no scientific review or arithmetic claim.
 
+The [Reports35–38 replay supplement](reviewed_reports35_38_archive_replay.md)
+preserves the four newly retired sandpile, negative-index and turmite archives:
+**3,075,016 exact historical bytes**, with 24 authenticated member records.
+Seventeen records match new placed files, five match existing frozen sources,
+and two context notes remain archive-only. The helper writes an external cache;
+all frozen research sources and receipts remain unchanged. Fresh sandpile
+author/reviewer and Report37 checks pass against the recovered archives.
+This preserves reproducibility and adds no arithmetic or universality claim.
+
 The [literal reversible-source review](review_literal_universal_reversible_source16.md)
 checks all 141,561 primitive rows of the fixed two-counter machine and their
 exact natural-number domain/image disjointness. The source and macro proofs
