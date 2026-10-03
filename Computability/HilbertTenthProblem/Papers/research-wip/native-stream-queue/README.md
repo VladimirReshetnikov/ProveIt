@@ -70,6 +70,18 @@ signed-index/height receipt replays pass through that cache. The guide maps
 permanent reading locations and the actual older command interfaces;
 archive copying itself adds no scientific review or arithmetic claim.
 
+The [literal reversible-source review](review_literal_universal_reversible_source16.md)
+checks all 141,561 primitive rows of the fixed two-counter machine and their
+exact natural-number domain/image disjointness. The source and macro proofs
+supply clean-input nonblocking, closing the earlier premise needed for
+five-particle periodicity to encode universal halting. Separate proof review
+and fresh installed replay pass, including the small complete quartic.
+Its finite-tape loader still uses exponential preprocessing, and its degree-four
+certificate has 141,565 witnesses per externally fixed source step. Neither
+construction supplies a paid ordinary-input, fixed-arity unbounded compiler;
+the minimum universal polynomial remains 85 operations. Natural return-time
+multipliers must also remain distinct from the paid real-orthant theorem.
+
 The [parallel-particle report review](review_parallel_particle_reports.md)
 checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
 natural-witness quartics. An independent reconstruction matches the complete
@@ -80,6 +92,18 @@ its isolation-only counterexample. Both normal and optimized fresh replays
 pass, as does an independent read of the helper and three main proof notes.
 The quartic family grows with the fixed horizon; it supplies no fixed-arity
 universal or unrestricted finite-fold representation.
+
+The [dimension-independent four-mass review](review_dimension_independent_four_mass.md)
+checks the new reachability decision theorem in every finite spatial dimension,
+under conserved positive symbol weights and at most one unit symbol, together
+with its other CA hypotheses. Exact support contacts lie on finitely many
+arithmetic rays; successful nonparallel switches are confined to a computable
+bounded region. Continuing large-gap motion reduces to a guarded one-counter
+system, with a separate absolute-drift cutoff and no-unit-symbol case.
+Root and an independent reviewer find no gap. New contact/Cramer/counter
+checks and fresh normal/optimized receipts pass. This excludes that mass-four
+substrate as a universal finite-observation loader; it supplies no general
+CA implementation or universal arithmetic-circuit lower bound.
 
 The [planar four-particle review](review_binary_planar_four_particle31.md)
 checks the new binary shuttle rule and independently reconstructs its
