@@ -37,6 +37,17 @@
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
 > monomial ports. All21 minimal completions retain87; no general lower bound.
 
+> The [isolated auxiliary norm](auxiliary_norm_five_gate_lower_bound.md) now
+> has a sharp5=3M+2A lower bound for exact division-free evaluation at independent
+> K,V,y over Q. Two products force an affine hyperplane restriction that the
+> target cannot have; one addition gives a monomial times a binomial power,
+> excluded by primitive linear-in-K irreducibility. The
+> [independent review](review_auxiliary_norm_five_gate_lower_bound.md) challenges
+> both normal forms and uses separate standard-library symbolic algebra.
+> Author and review receipts pass fresh root replay. Do not promote this to a
+> lower bound for actual computed K,V, other shared ports or changed zero sets.
+> Further auxiliary-factor savings must exploit structure outside this interface.
+
 > The [Grill halt bridge](grill_tag_halt_bridge.md) and
 > [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
 > root replay. Corrected E uses a−4 in its second long grill. At the unique

@@ -25,6 +25,13 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
+The [isolated auxiliary-norm lower bound](auxiliary_norm_five_gate_lower_bound.md)
+proves that `K*V²−(K−1)*y²` needs exactly3M+2A from independent supplied
+K,V,y, even allowing arbitrarily many operations of the other kind in each
+separate bound. The [independent review](review_auxiliary_norm_five_gate_lower_bound.md)
+and both root replays pass. This limits exact local evaluation only; shared
+computed ports, coordinate changes and equivalent zero sets remain open.
+
 The [corrected Grill halt bridge](grill_tag_halt_bridge.md) proves exact-width
 encoded halting equivalence, including the final queue cleanup. A3a phase
 shift sends every remaining active block position to a zero run. The
