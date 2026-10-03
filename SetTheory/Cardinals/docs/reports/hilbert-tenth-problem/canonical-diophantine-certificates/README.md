@@ -1,9 +1,9 @@
 # Canonical Diophantine certificates
 
-**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles and exponential trajectories**
+**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories and compressed queue traces**
 
-This is a research report dated 30 September 2026, with Parts XV–XVII dated 2 October
-2026, merged from eighteen manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
+This is a research report dated 30 September 2026, with Parts XV–XVIII dated 2 October
+2026, merged from twenty manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
 of batch 61, which is numbered 07 here, four of batch 62 (its
 manuscripts 01, 02, 04 and 05), numbered 08–11 here and added as Parts X–XIII
 after the report had been written, and one of batch 63 (its manuscript 02),
@@ -12,9 +12,12 @@ manuscripts 01, 04 and 05), numbered 13–15 here and merged into one Part,
 XV, and a fourth of batch 78 (its manuscript 06, placed separately in
 cluster H3), numbered 16 here and added as Part XVI, and two of batch 79
 (its manuscripts 02 and 03, cluster J1), numbered 17 and 18 here and merged
-into Part XVII. The base is manuscript 05, *Canonical
+into Part XVII, and two more of batch 79 (its manuscripts 05 and 11, cluster
+J3), numbered 19 and 20 here: 19 proves Part XVI's main theorems again and
+is printed inside Part XVI as a marked second route, and 20 is added as Part
+XVIII. The base is manuscript 05, *Canonical
 Trace Polytopes*; its `article.tex` was staged unprefixed and has been
-replaced in place by the merged text. All eighteen manuscripts prove the same
+replaced in place by the merged text. All twenty manuscripts prove the same
 kind of theorem: an explicit integer polynomial whose natural zeros are in
 bijection with the bounded executions (or trace classes of executions) of a
 discrete substrate, with exactly one witness each; in 12 the execution is a
@@ -27,7 +30,12 @@ represented by its odometer and stable endpoint. In 17 and 18 the object is
 the complete discrete sign chart of a positive-base exponential polynomial
 (a loop guard along an exponentially growing trajectory), with one witness
 in arithmetic augmented by exact power atoms `y = b^n`, or, for an
-externally fixed exponent bit bound, in an ordinary quartic. They continue the Lean
+externally fixed exponent bit bound, in an ordinary quartic. In 19 the object
+is again the sandpile odometer, certified by a system of quadratic residuals
+and, on `ℤ³`, by a fixed normal form of 47 finite-deviation fields. In 20 it
+is a reliable FIFO execution whose transition trace is supplied as a
+straight-line grammar, and a supplied closed macro that repeats
+indefinitely. They continue the Lean
 project `Computability/HilbertTenthProblem`, whose trace interfaces assert
 only that such representations exist. Author lines: "Research report
 prepared for the ProveIt project" (01), "Research manuscript for the ProveIt
@@ -46,7 +54,12 @@ metadata reads "OpenAI, research draft prepared for Vladimir Reshetnikov")
 and "Research prepared with ChatGPT for Vladimir Reshetnikov's ProveIt
 program" (14), "Research report prepared for the ProveIt project" (16),
 and "Research manuscript prepared with ChatGPT for the ProveIt program" (17
-and 18, also their PDF metadata). The article prints the batch-62, batch-78
+and 18, also their PDF metadata), "Research-assistance draft prepared for
+the ProveIt project" (19; its PDF metadata reads "OpenAI research-assistance
+draft for the ProveIt project") and "Research prepared for Vladimir
+Reshetnikov / Developed with ChatGPT for the ProveIt research program" (20;
+its PDF metadata reads "Research prepared for Vladimir Reshetnikov with
+ChatGPT"). The article prints the batch-62, batch-78
 and batch-79 author lines in neutral form and records these assistant names only in its
 provenance appendix; the author lines of 12 and 16 name no assistant.
 
@@ -70,6 +83,8 @@ provenance appendix; the author lines of 12 and 16 name no assistant.
 | 16 | batch 78, manuscript 06 | `sandpile_diophantine_research`, inner directory `sandpile_diophantine_certificates` (27-page PDF) | *Cubic Diophantine Certificates Without Computation Histories: Canonical sandpile odometers, spatial universality, and exact eventual periods* | `928ea9701` | `1977e6ea6` | `41e7f1189` | Section 3.16 (abstract, package statement, §1); Part XVI (§§2–16, Appendices A–B) |
 | 17 | batch 79, manuscript 02 | `Positive_Spectrum_Diophantine`, inner directory `Positive_Spectrum_Diophantine` (27-page PDF) | *Beyond Polynomial Trajectories: Canonical Exponential-Diophantine Certificates for Computation* | `e58b724c2` | `060e08a07` | `224ca41df` | Section 3.17 (scope box, abstract, §1); Part XVII (§§2–14, Appendices A–B), printed first |
 | 18 | batch 79, manuscript 03 | `Spectral_Guards_Without_Time_Expansion`, inner directory `Spectral_Guards` (25-page PDF) | *Spectral Guards Without Time Expansion: Canonical Diophantine certificates for exponentially long linear computation* | `e58b724c2` | `060e08a07` | `224ca41df` | Section 3.18 (status boxes, abstract, §1); Part XVII (§§2–14, Appendices A–B), second route |
+| 19 | batch 79, manuscript 05 | `no_borrowed_firings`, inner directory `no_borrowed_firings` (24-page PDF) | *No Borrowed Firings: Canonical Diophantine Certificates for Abelian Sandpiles* | `e58b724c2` | `060e08a07` | `bbaf322e5` | Section 3.19 (abstract, §1); Part XVI, Sections M19.1–M19.14 (opening, §§2–14) and M19.A–M19.B (Appendices A–B), a marked second route |
+| 20 | batch 79, manuscript 11 | `Compressed_Queue_Diophantine_Research`, inner directory `Compressed_Queue_Diophantine` (28-page PDF) | *Compressed Queue Computation: Grammar-size quartic certificates, exact periodic acceleration, and certified infinite loops* | `44983ed7e` | `ef2fc7990` | `bbaf322e5` | Section 3.20 (status box, abstract, §1); Part XVIII (§§2–15, Appendices A–B) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
@@ -84,7 +99,11 @@ Manuscript 16 is Part XVI in its own order, closing with its validation,
 formalization route, questions, conclusion and appendices. Manuscripts 17
 and 18 form Part XVII: 17's Sections 2–12, then 18's as a second route, a
 written comparison, both question lists, both conclusions and both
-appendices. The Parts are: I Exact commutation and resource algebra;
+appendices. Manuscript 19 is printed inside Part XVI after 16's conclusion,
+in its own sections M19.1–M19.14, numbered outside the report's sequence so
+that no number moved, and its appendices M19.A–M19.B follow 16's;
+manuscript 20 is Part XVIII in its own order, closing with its validation,
+formalization path, questions, conclusion and appendices. The Parts are: I Exact commutation and resource algebra;
 II Canonical trace classes; III Compressed repetition and accelerators; IV
 Polynomial trajectories; V Memory logs, RAM and graph evaluation; VI Queues:
 tag systems and FIFO networks; VII FRACTRAN, SKI and term rewriting; VIII
@@ -96,9 +115,11 @@ Conservative priority reaction networks and a canonical-fuel form of the
 finite-fold problem; XIV History-free routing certificates: last exits,
 compressed periods and a rank-function bottleneck; XV Interaction
 combinators: exact wiring, loop-exact gluing and bounded quartic frontends;
-XVI Cubic sandpile certificates, spatial closure and exact periods; XVII
-Exponential trajectories: positive-spectrum sign charts and the order-two
-power boundary.
+XVI Sandpile certificates: cubic polynomials and quadratic systems, spatial
+closure, fixed fields and exact periods; XVII Exponential trajectories:
+positive-spectrum sign charts and the order-two power boundary; XVIII
+Compressed queue traces: grammar-size quartics, exact macro repetition and
+infinite-loop certificates.
 
 The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 `725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07),
@@ -107,7 +128,8 @@ The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12), and `439c0a2d9c1052595f3de6a29c11511a24fb2e11` (13),
 `6914ccca6685baf53b7a35f25efc89366c76ba74` (14) and
 `928ea97017a25ebe56d240c84f27d2275d818c75` (15 and 16), and
-`e58b724c25bd34533b7a5834cfcbe873dfa01288` (17 and 18). The pin of 07 is the commit
+`e58b724c25bd34533b7a5834cfcbe873dfa01288` (17, 18 and 19), and
+`44983ed7ebfd545de55bfdb50e040c82f3d24295` (20). The pin of 07 is the commit
 in which 01–03 arrived; 07 was written after 04 and 06, names them by title
 as its companion manuscripts, and arrived after this report was placed but
 before it was written. The batch-60 placement commit `7498484af` also placed
@@ -159,6 +181,23 @@ cite, `Lean/Diophantine/Paper1984/DPR.lean` (17) and
 `Lean/Diophantine/Common/DiophantineTrace.lean` (18, blob `08e5796b2`), are
 unchanged at the batch-79 write; the project README has grown since and
 still states the 75- and 87-operation figures.
+
+Manuscripts 19 and 20 were written on 2 October 2026. 19 was pinned at
+`e58b724c2` (11:52), the pin of 17 and 18, when Parts I–XIV had been
+written; 16's archive had arrived (`1977e6ea6`, 11:34) but was placed only
+at 13:31 (`41e7f1189`), so 16 and 19 are independent texts, and 19's
+repository search for "sandpile" found only `12-rle-routing-SOURCES.md`.
+19 read the project README, the MRDP guide and that ledger. 20 was pinned
+at `44983ed7e` (14:30), when Parts I–XV had been written; it read the
+collection README, this report's README and
+`07-queue-causality-lean_integration.md` (blob `019f1bb2c`), and could not
+retrieve the article (1,456,594 bytes at that pin), so about a quarter of
+it re-proves Parts I and VI in one coordinate. 19 arrived in `060e08a07`
+(14:27) with 17 and 18, 20 in `ef2fc7990` (16:44); both were placed by
+`bbaf322e5` (batch 79, cluster J3). The MRDP guide, the routing ledger and
+the integration note are unchanged at this write; the project README and
+this report's README have grown, and the project README still states the
+75- and 87-operation figures.
 
 What each manuscript contributes:
 
@@ -327,18 +366,61 @@ What each manuscript contributes:
   class); a million-horizon chart with nine occupied blocks; exports for
   `4^n − 10·2^n + 16` (power atoms: 1,294 witnesses, 1,212 residuals, 104
   atoms; quartic `B = 3`: 1,935 witnesses, 1,995 residuals).
+- **19** (a second route to 16, written independently) for a finite
+  loopless undirected multigraph with an absorbing sink: support burning
+  and canonical parallel burning ranks characterized by two local
+  inequalities (as in 16); a system of `12n+16E` quadratic residuals in
+  `11n+12E` natural witnesses (`E` distinct unordered adjacent pairs, which
+  19 writes `m`) with exactly one natural zero, carrying the odometer, if
+  legal stabilization terminates and none otherwise; its sum of squares is
+  a quartic of exact degree four with an integral rejection gap; unique
+  positivity, comparison and mask gadgets; a complete 34-variable example
+  (201 monomials) and a false integer root once negative helpers are
+  allowed; a no-firing halo on a lattice cube (`47ℓ³−30ℓ²` witnesses and
+  `60ℓ³−42ℓ²` residuals in `ℤ³`, `ℓ = 2R+1`); one fixed radius-one quartic
+  difference expression with 47 finite-deviation fields and 60 local
+  residuals in `ℤ³` whose field solution exists, uniquely, exactly when the
+  input stabilizes globally, with unique finite codes and a decidable code
+  verifier, and so, with Cairns's theorem, a `Σ⁰₁`-complete relation with a
+  unique field witness; no computable input-only bound on the support
+  radius, the number of fired sites or the code length; and the height
+  bound `u ≤ M/2((R+1)²−x₁²)` in a supplied cube.
+- **20** for reliable FIFO actions along a prescribed straight-line trace
+  grammar (`g` nodes, `l` leaves, `c` concatenations): the causal endpoint
+  theorem `q →τ r ⇔ |q| ≥ R(τ) and qV(τ) = U(τ)r` (the one-queue case of
+  07's network theorem); a quartic with exactly `6g+3c+1` natural witnesses
+  and `6l+9c+3` quadratic residuals with one zero exactly when the trace
+  connects the supplied words, quantifying no intermediate queue (a
+  17-node grammar of `2^16` steps gives 151 variables and a witness of
+  103,873 bits); the exact number `min(N_len, ⌊M/a⌋)` of copies of a
+  closed macro; infinite repeatability as the word equation
+  `U^{b/d} q = q V^{a/d}`; a Fine–Wilf pumping threshold
+  `⌈(L+a+b−d)/a⌉`; an ordinary unique-witness quartic with `6g+3c+2H+1`
+  witnesses for a supplied infinite loop; powered schemas with at most two
+  explicit `Pow` predicates per power node; `d` channels; polynomial-time
+  decision of supplied grammars through Jeż's external algorithm; no
+  computable bound on the size of accepting grammars, and incompleteness of
+  periodic lassos for universal divergence.
 
 **Status.** The report is AI-assisted and unrefereed. None of its theorems
 is formalized in Lean or Rocq, and no manuscript ships Lean or Rocq files.
 The Python programs are finite exact checks of the implementations and
 examples, not proofs; the proofs are the mathematical arguments of the
-article.
+article. The research programme's review of 2 October 2026
+(`review_compressed_queue_aebfa.md`, commit `be1fc3f62`) found that the
+low-level `Poly` and `Action` constructors of manuscript 20 accept
+non-integer coefficients and mutable read words; the compiler's own output
+is unaffected and the theorems are not touched. The shipped
+`code/20-compressed-queue-queue_certificates.py` is the original; the
+tested repair is `compressed_queue_exact_inputs.patch` in
+`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`
+(see Disclosures, which also record the reviews of 16, 17, 18 and 19).
 
 ## Files
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 509 pages
+article.pdf                              the compiled report, 571 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -359,6 +441,8 @@ README.md                                this guide
 16-sandpile-SOURCES.md                   manuscript 16's pinned repository files, literature and novelty boundary
 17-positive-spectrum-SOURCE_AUDIT.md     manuscript 17's pin, inspected repository files, literature and verification scope
 18-spectral-guards-SOURCES.md            manuscript 18's pin and blob, inspected repository files, literature and claim boundary
+19-no-borrowed-firings-SOURCES.md        manuscript 19's pin, inspected repository files, literature and contribution status
+20-compressed-queue-CLAIMS_AND_PROVENANCE.md  manuscript 20's claims (by its own theorem numbers), scope, pin, sources and validation
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
 code/01-causal-traces-demo.py            the 11-witness large-count example (prints; writes no file)
@@ -438,6 +522,13 @@ code/18-spectral-guards-quartic_compiler.py  functional gates, power-atom and bo
 code/18-spectral-guards-run_tests.py     main tests (seed 20261002); rewrites the seven examples and results.json
 code/18-spectral-guards-spectral_guards.py   sequences, ladders, chart construction, endpoint verifier, first negative index, tail threshold
 code/18-spectral-guards-supplementary_checks.py  54 single-mode assignments and fractional-input rejections; writes supplementary_checks.json
+code/19-no-borrowed-firings-Makefile     manuscript 19's make targets (all, check, pdf, clean), delivery paths (do not use it here)
+code/19-no-borrowed-firings-sandpile_certificates.py  exact polynomials, graph and periodic-input interfaces, cube and field certificates, field verifier (prints a demo)
+code/19-no-borrowed-firings-verify.py    finite checks (seed 20261002); rewrites examples/ and verification/ beside itself
+code/20-compressed-queue-Makefile        manuscript 20's make targets (all, pdf, verify, clean), delivery paths (do not use it here)
+code/20-compressed-queue-check_certificate.py  independent checker of the two exports (does not import the compiler; prints JSON)
+code/20-compressed-queue-queue_certificates.py  actions, grammars, radix and resource summaries, finite and infinite-loop compilers, loop analyzer
+code/20-compressed-queue-verify.py       259,025 exact checks (seed 20261002); rewrites the two exports and verification.json in ../data
 
 data/01-causal-traces-build_validation.json   build and rendering record of the delivered 29-page PDF
 data/01-causal-traces-canonical_history.json  32-witness, 48-residual causal-history polynomial and certificate
@@ -565,24 +656,26 @@ data/18-spectral-guards-jordan_block.json          chart of (n-2)(n-5)2^n on [0,
 data/18-spectral-guards-million_step_chart.json    chart of (2^n-2^400)(2^n-2^600) on [0,10^6]: nine occupied blocks, 75 evaluations
 data/18-spectral-guards-results.json               recorded run of run_tests.py (seed 20261002; 3,087 + 700 charts, 704 forged, 3,134 perturbations)
 data/18-spectral-guards-supplementary_checks.json  recorded run of supplementary_checks.py (54 assignments, 4 fractional-input rejections, 2 exports)
+data/19-no-borrowed-firings-pdf_preflight.json  delivery record of the delivered 24-page PDF (no script writes it)
+data/19-no-borrowed-firings-results.json   recorded run of verify.py (Python 3.13.5; 43 graphs, 4,855 inputs, 305,620 candidate odometers, 290 witnesses; elapsed time)
+data/19-no-borrowed-firings-results.txt    the same run as text (the delivery's latest_run.txt is a byte copy, not shipped)
+data/19-no-borrowed-firings-three_dimensional_avalanche.json  odometer and ranks of 100 chips at the origin of Z^3 (19 fired sites, 49 topplings)
+data/19-no-borrowed-firings-three_dimensional_field_certificate.json  its normalized 47-field exception table (57 sites)
+data/19-no-borrowed-firings-two_vertex_certificate.json  the 34-variable, 40-residual system and its 201-monomial quartic
+data/19-no-borrowed-firings-two_vertex_witness.json  its unique witness (zero-based vertex indices)
+data/20-compressed-queue-example_quartic.json  four-action example: 31 variables, 33 residuals, 98 monomials, and its witness
+data/20-compressed-queue-export_checks.json   recorded output of check_certificate.py on the two exports (PASS)
+data/20-compressed-queue-infinite_growth_quartic.json  nine-variable infinite-loop quartic (11 residuals, 29 monomials)
+data/20-compressed-queue-verification.json  recorded run of verify.py (Python 3.13.5; 259,025 assertions)
 ```
 
-Placed in this directory after the batch-79 cluster-J1 placement and not
-yet printed in the article (the writes that print them will describe
-them): manuscript 19 (batch-79 manuscript 05, cluster J3, to be printed
-inside Part XVI as a second route) and manuscript 20 (batch-79 manuscript
-11, cluster J3, Part XVIII), placed by `bbaf322e5`, and manuscript 21
-(batch-79 manuscript 17, cluster J2, Part XIX), placed by `a7ae02511`:
+Placed in this directory and not yet printed in the article (the write
+that prints them will describe them): manuscript 21 (batch-79 manuscript
+17, cluster J2), placed by `a7ae02511`:
 
 ```
-19-no-borrowed-firings-SOURCES.md
-20-compressed-queue-CLAIMS_AND_PROVENANCE.md
 21-eager-tree-VERIFICATION.md
-code/19-no-borrowed-firings-{Makefile,sandpile_certificates.py,verify.py}
-code/20-compressed-queue-{Makefile,check_certificate.py,queue_certificates.py,verify.py}
 code/21-eager-tree-{analyze_growth,audit_exact_count,build_pdf,canonical,canonical_overlay_audit,canonical_projected,canonical_projected_audit,constant_bit_bound,counter_source,eager_compiler,export_shared_macro,independent_audit,independent_compiler_audit,independent_growth_audit,independent_shared_audit,reproduce,shared_compression,symbolic_audit,tree_kernel,verify_packet_assumptions,verify_shared_macro}.py
-data/19-no-borrowed-firings-{pdf_preflight.json,results.json,results.txt,three_dimensional_avalanche.json,three_dimensional_field_certificate.json,two_vertex_certificate.json,two_vertex_witness.json}
-data/20-compressed-queue-{example_quartic,export_checks,infinite_growth_quartic,verification}.json
 data/21-eager-tree-{audit_exact_count_receipt,canonical_identity,canonical_overlay_receipt,canonical_projected_audit_receipt,canonical_projected_identity,canonical_projected_receipt,canonical_receipt,constant_bit_bound,counter_source_receipt,cyclic_counterfeit,eager_compiler_receipt,exact_growth_receipt,identity_certificate,independent_compiler_receipt,independent_growth_receipt,independent_receipt,independent_shared_receipt,literal_universal_tree,packet_assumptions_receipt,receipt,shared_compression_program,shared_compression_receipt,shared_symbolic_proofs,sources,symbolic_receipt,universal_code_circuit,universal_lambda_source}.json
 data/21-eager-tree-literal_universal_tree.sexpr
 data/21-eager-tree-requirements-optional.txt
@@ -590,14 +683,15 @@ data/21-eager-tree-requirements-optional.txt
 
 The directory holds 296 files: 24 at the root (the article, its PDF, this
 README and twenty-one provenance and audit files), 106 in `code/` and 166 in
-`data/`. Of these, 71 (3 at the root, 28 in `code/`, 40 in `data/`) belong
-to manuscripts 19–21, listed in the second block above; the other 225 (21
-at the root, 78 in `code/`, 126 in `data/`) are the article, its PDF, this
-README and the files of manuscripts 01–18. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
+`data/`. Of these, 51 (1 at the root, 21 in `code/`, 29 in `data/`) belong
+to manuscript 21, listed in the second block above; the other 245 (23
+at the root, 85 in `code/`, 137 in `data/`) are the article, its PDF, this
+README and the files of manuscripts 01–20. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
 9, 10 14, 11 9, 12 9, 13 9, 14 12, 15 10, 16 19 (1 at the root, 7 in
-`code/`, 11 in `data/`), 17 13 (1, 6, 6) and 18 16 (1, 5, 10). Every file of
-manuscripts 01–18 except
+`code/`, 11 in `data/`), 17 13 (1, 6, 6), 18 16 (1, 5, 10), 19 11 (1, 3, 7)
+and 20 9 (1, 4, 4). Every file of
+manuscripts 01–20 except
 `article.tex`, `article.pdf` and `README.md` is byte-identical to the
 delivery.
 
@@ -627,6 +721,8 @@ manuscripts take a sub-prefix:
 | 16 | `cdc:sp:` | `cdc:sp:thm:support` |
 | 17 | `cdc:ps:` | `cdc:ps:thm:powbarrier` |
 | 18 | `cdc:sg:` | `cdc:sg:thm:quartic` |
+| 19 | `cdc:nb:` | `cdc:nb:thm:fields` |
+| 20 | `cdc:cq:` | `cdc:cq:thm:compiler` |
 
 Labels written in the merge use `cdc:conv:` (the Conventions section),
 `cdc:bd:` (merged statements of Part IX, such as the universal-halting
@@ -733,6 +829,36 @@ the previous build have the same numbers and types in the new `.aux`
 sections and Section 3.17's within subsections (17's equation (1.1) is
 (3.17.1)); 17's Table 1 is Table 31, after every existing captioned
 table.
+
+The batch-79 cluster-J3 write (manuscript 19 inside Part XVI, Part XVIII)
+raised the count from 1322 to 1482. It adds all 129 labels of manuscripts
+19 and 20 (19 67, 20 62), each with its sub-prefix and none dropped (the
+two share bare names such as `sec:scope`, `sec:compiler`, `sec:examples`
+and `eq:counts`, and 20's `sec:subtrates`, a typo, is spelled
+`cdc:cq:sec:substrates`), and 31 written labels: the two manuscript
+subsections (`cdc:sec:ms19`, `cdc:sec:ms20`), the Part
+(`cdc:part:cqueue`), two conventions sections (`cdc:conv:b79-nb`, a
+subsection of 19's opening, and `cdc:conv:b79-XVIII`), 19's opening
+section (`cdc:nb:sec:opening`), six labels on sections that the
+manuscripts left unlabelled (`cdc:nb:sec:conclusion`,
+`cdc:nb:app:dependencies`, `cdc:nb:app:artifacts`, `cdc:cq:sec:conclusion`,
+`cdc:cq:app:notation`, `cdc:cq:app:package`), nine question labels
+(`cdc:nb:q:smaller`, `…:digraphs`, `…:scalar`, `…:sparse`, `…:geometry`,
+`…:local`, `…:planar`, `…:abelian`, `…:formal`) and ten
+(`cdc:cq:q:constants`, `…:cubic`, `…:summaries`, `…:phases`, `…:periodic`,
+`…:simulation`, `…:partialorder`, `…:loss`, `…:practice`, `…:exports`). No
+existing label was renamed, removed or renumbered: the 1322 labels of the
+previous build have the same numbers, types and anchors in the new `.aux`
+(compared entry by entry), except two retitled entries (`cdc:sec:manuscripts`,
+now "The twenty manuscripts", and `cdc:part:sandpile`, whose Part title now
+names both routes) and the hyperlink anchor of the unnumbered paragraph
+`cdc:conv:b62q` (number 71 unchanged; seven unnumbered paragraphs were added
+before it). Manuscript 19's sections inside Part XVI are numbered M19.1–M19.14
+and M19.A–M19.B, outside the report's sequence (their theorems and
+equations M19.`N`.`k`), so that Part XVI's appendices stay Sections
+173–174 and Part XVII stays Sections 175–206; its conventions longtable
+restores the table counter, so 17's Table 1 is still Table 31. Part XVIII
+is Sections 207–223, after every existing numbered section.
 
 Text written during the merge is marked `[write]` in the article.
 
@@ -1106,6 +1232,56 @@ Q1–Q10 are Research questions 199.1–199.10 (199.1 also prints 18's first
 question), and 18's other eight questions are 200.1–200.8. Neither
 delivered README nor audit cites a theorem by number.
 
+**Manuscript 19** (package root `no_borrowed_firings/`; flat, with
+`examples/` and `verification/`)
+
+| Delivered | Shipped |
+|---|---|
+| `Makefile` | `code/19-no-borrowed-firings-Makefile` |
+| `SOURCES.md` | `19-no-borrowed-firings-SOURCES.md` |
+| `sandpile_certificates.py` | `code/19-no-borrowed-firings-sandpile_certificates.py` |
+| `verify.py` | `code/19-no-borrowed-firings-verify.py` |
+| `examples/three_dimensional_avalanche.json` | `data/19-no-borrowed-firings-three_dimensional_avalanche.json` |
+| `examples/three_dimensional_field_certificate.json` | `data/19-no-borrowed-firings-three_dimensional_field_certificate.json` |
+| `examples/two_vertex_certificate.json` | `data/19-no-borrowed-firings-two_vertex_certificate.json` |
+| `examples/two_vertex_witness.json` | `data/19-no-borrowed-firings-two_vertex_witness.json` |
+| `verification/pdf_preflight.json` | `data/19-no-borrowed-firings-pdf_preflight.json` |
+| `verification/results.json` | `data/19-no-borrowed-firings-results.json` |
+| `verification/results.txt` | `data/19-no-borrowed-firings-results.txt` |
+
+**Manuscript 20** (package root `Compressed_Queue_Diophantine/`)
+
+| Delivered | Shipped |
+|---|---|
+| `CLAIMS_AND_PROVENANCE.md` | `20-compressed-queue-CLAIMS_AND_PROVENANCE.md` |
+| `Makefile` | `code/20-compressed-queue-Makefile` |
+| `code/check_certificate.py` | `code/20-compressed-queue-check_certificate.py` |
+| `code/queue_certificates.py` | `code/20-compressed-queue-queue_certificates.py` |
+| `code/verify.py` | `code/20-compressed-queue-verify.py` |
+| `data/example_quartic.json` | `data/20-compressed-queue-example_quartic.json` |
+| `data/export_checks.json` | `data/20-compressed-queue-export_checks.json` |
+| `data/infinite_growth_quartic.json` | `data/20-compressed-queue-infinite_growth_quartic.json` |
+| `data/verification.json` | `data/20-compressed-queue-verification.json` |
+
+Manuscript 19 is printed inside Part XVI as Sections M19.1–M19.14 (M19.1
+is a written opening in place of its Section 1, which is Section 3.19.1;
+its Section `N ≥ 2` is Section M19.`N`) and M19.A–M19.B (its Appendices
+A–B), after Part XVI's Section 172 and after its Section 174 respectively.
+Its theorem and equation numbers `N.k` become M19.`N`.`k` (its Theorem 6.1,
+the finite compiler, is Theorem M19.6.1, and its equation (6.12), the
+counts, is (M19.6.12)); its nine questions are Research questions
+M19.13.1–M19.13.9. Part XVIII is Sections 207–223 of the article: 207 its
+conventions, 208–221 manuscript 20's Sections 2–15 (its Section `N` is
+Section `206+N`), and 222–223 its Appendices A–B; its Section 1 is Section
+3.20.1. Its theorem and equation numbers `N.k` become `(206+N).k`, because
+both are numbered within sections and the write added no numbered item
+there: its Theorem 3.3 is Theorem 209.3, 5.1 is 211.1, 7.1 and 7.2 are
+213.1 and 213.2, 8.2 is 214.2, 9.1 is 215.1, 10.2 is 216.2, 11.1 is 217.1,
+12.2 and 12.3 are 218.2 and 218.3, and its Corollary 12.1 is Corollary
+218.1 (20's claims ledger cites the theorems by its own numbers); its ten
+research items are Research questions 220.1–220.10. 19's delivered texts
+cite no theorem by number.
+
 **Not shipped.** The manuscripts (`article.tex`) and delivery READMEs of
 members 01, 02, 03, 04, 06 and 07: they survive in their arrival commits
 (`725d2ebb6` for 01–03, `c1f56f842` for 04 and 06, `b998f70c6` for 07), as
@@ -1155,11 +1331,23 @@ shipped: 17's `data/test_log.txt` (the same bytes as
 `validation/test_output.txt` (the same bytes as `validation/results.json`).
 The largest file of the two is 18's `hidden_negative_quartic.json`
 (483,010 bytes), so nothing was excluded as a heavy regenerable artifact
-and no data need reconstructing.
+and no data need reconstructing. For the batch-79 additions 19 and 20: their
+`article.tex`, delivery `README.md` and PDFs (24 and 28 pages) survive in
+the arrival commits `060e08a07` and `ef2fc7990`, as members of
+`no_borrowed_firings.zip` and `Compressed_Queue_Diophantine_Research.zip`
+(`git show 060e08a07:docs/incoming/no_borrowed_firings.zip`,
+`git show ef2fc7990:docs/incoming/Compressed_Queue_Diophantine_Research.zip`).
+19's checksum ledger `SHA256SUMS` (15/15) was verified and retired at
+placement (`bbaf322e5`); 20 delivered no ledger. Two in-archive copies were
+not shipped: 19's `verification/latest_run.txt` (the same bytes as
+`verification/results.txt`) and 20's `data/verification_stdout.txt` (the
+same bytes as `data/verification.json`). The largest file of the two is
+19's `three_dimensional_field_certificate.json` (35,829 bytes), so nothing
+was excluded as heavy and no data need reconstructing.
 
 ## What is claimed and what is not
 
-The report claims the theorems of the eighteen manuscripts, with the proofs
+The report claims the theorems of the twenty manuscripts, with the proofs
 printed in the article: bijections between the natural zeros of explicit
 integer polynomials and bounded executions, trace classes or logs of the
 substrates listed above, with one witness per execution or class, exact
@@ -1201,7 +1389,17 @@ triangular and fixed-phase transfers), the order-two equivalence and the
 rotation count; 18's endpoint theorem with its pair count, the `O(D⁴)`
 compiler, the bounded-bit quartics, the height bounds, the chart
 constructor, the tail threshold and all-time certificate, the affine macro
-certificates and the residue-class oscillation theorem. It does not claim the following. Each item is stated by at least the
+certificates and the residue-class oscillation theorem. For Part XVI, also
+19's quadratic residual system with its integral gap, its gadgets, its
+halo, the fixed-field normal form with its unique codes, its completeness
+statement (conditional on Cairns's theorem) and its seed and code-length
+statements, besides its second proofs of 16's theorems. For Part XVIII: 20's
+endpoint theorem (a second route to Part VI's), the grammar-size quartic
+with its exact counts, the exact repetition count, the conjugacy
+criterion, the pumping threshold, the infinite-loop quartic, the powered
+schemas with their explicit predicates, the multichannel extension, the
+compressed decision corollary (conditional on Jeż's algorithm) and the two
+impossibility theorems. It does not claim the following. Each item is stated by at least the
 manuscripts named; the article keeps every one of them.
 
 - **No priority.** No manuscript establishes historical or literature-wide
@@ -1250,10 +1448,20 @@ manuscripts named; the article keeps every one of them.
   base 1 is Part IV's sign tower and quartic (`cdc:pt:thm:tower`,
   `cdc:pt:thm:main`), and 17's power-graph lemma re-proves
   `cdc:pt:prop:exponential-boundary`; the article prints these as
-  pointers, with no novelty claimed.
+  pointers, with no novelty claimed. Batch 79, cluster J3: 19 says that the
+  priority of its products "has not been established" and claims neither
+  burning nor universality (Section 1, `SOURCES.md`); its support
+  criterion, ranks, halo, height bound and radius barrier are also 16's,
+  proved independently the same day, and an editorial note claims
+  priority for neither. 20 asserts no priority (status box, Section 1.3,
+  claims ledger), credits queue action algebras to
+  Huschenbett–Kuske–Zetzsche, loop acceleration and queue universality to
+  Köcher, the two-period theorem to Fine–Wilf (Rankin) and cyclic-tag
+  universality to Cook and Woods–Neary; its resource algebra and endpoint
+  theorem are Part I's and Part VI's, printed with pointers.
 - **Not formal.** No new Lean, Rocq or Coq proof was written or compiled,
   the repository's Lean build and axiom audits were not rerun, and
-  repository documentation is not treated as a kernel audit (all eighteen;
+  repository documentation is not treated as a kernel audit (all twenty;
   16's MRDP axiom audit was not rerun, and its formalization route names
   "proposed module boundaries, not names of already implemented files").
   17 and 18 present formalization checklists only (17's Appendix B, 18's
@@ -1397,6 +1605,38 @@ manuscripts named; the article keeps every one of them.
   constructors accept inputs mutated after validation (three cases found
   by the research tree's review; see Disclosures); no theorem depends on
   them.
+- **19, scope.** Finite loopless undirected multigraphs; directed toppling
+  matrices are excluded, and the directed example shows why. The natural
+  domain is essential (a false integer root exists with negative helpers);
+  replacing natural witnesses by four integer squares keeps existence and
+  destroys uniqueness. The 47 fields are fields, not 47 integer witnesses:
+  no uniqueness-preserving conversion to a fixed-arity integer polynomial,
+  no single-fold MRDP, no arithmetic-operation optimality, no improvement
+  of the 87-operation bound and no Lean claim. The rejection gap is
+  discrete; no numerical conditioning is claimed. The counts are not
+  claimed optimal, and the linear size is a residual-level statement for
+  unbounded degree. Cairns's simulation is imported, not reproved or
+  instantiated; the questions attributed to Cairns are not certified as
+  open in October 2026. The height bound is conditional on a supplied cube
+  and not sharp; the radius bounds exclude computable majorants only. The
+  lower-level cube interface leaves the stable-tail and containment
+  obligations to the caller. The tests cover finite graphs and explicit
+  avalanches, not a universal Turing-machine-to-sandpile compiler.
+- **20, scope.** The whole trace grammar (or macro, or lasso) is supplied:
+  no schedule synthesis, no inference of macros, no claim that a long
+  computation has a small grammar. The endpoints are actual words;
+  arbitrary numbers are not assumed to be radix encodings. Witnesses range
+  over `ℕ`; no uniqueness over `ℤ`. The size bounds count variables and
+  residuals, not bit lengths (the doubling example's witness has 103,873
+  bits). Powered schemas keep explicit `Pow` predicates and are not
+  ordinary polynomials; no single-fold or finite-fold MRDP. Periodic lassos
+  are sound but incomplete. Corollary 218.1 relies on Jeż's external
+  algorithm, which the package does not implement; the measured runtimes
+  are not a realization of it. Simulations of other models need not
+  preserve grammar size. The pumping threshold is not claimed optimal, and
+  the constants are not claimed optimal. Two low-level constructors accept
+  noninteger coefficients and mutable read words (found by the research
+  tree's review; see Disclosures); no theorem depends on them.
 - **17, scope.** Bases are fixed positive integers (or rationals after a
   fixed scaling, where minimizing `Kq^n f(n)` is not minimizing `f(n)`);
   positive algebraic irrational bases are outside the encoding. Repetition
@@ -1803,6 +2043,48 @@ latter's finalizer post-processes any quadratic residual system, such as
 18's bounded-bit residuals, but no note about it was added here. No
 neighbouring report was edited in this write.
 
+Manuscripts 19 and 20 rely on no formal declaration either. 19 cites, as
+context only, the MRDP guide `Lean/MRDP.md` and its natural-witness
+interface `Diophantine.mrdp` (`Lean/Diophantine/MRDP.lean`) for its
+ordinary-existence corollary, and the project README's 87-operation
+figure, which it does not improve; its formalization paragraph is a
+proposal. 20 names no Lean declaration; its formalization path follows
+07's integration note (`07-queue-causality-lean_integration.md`, "not an
+implemented formalization"). No theorem of 19 or 20 is formalized in Lean
+or Rocq, neither ships Lean or Rocq files, and placing them beside the
+formal project confers no formal status on them. The separately
+maintained research tree reviewed both archives:
+`review_boundary_sandpile_060e08a07.md` (`49bc4c654`, indexed in
+`incoming_substrate_review_2a8a39599.md`) finds no semantic or domain
+defect in 19 and verifies a projection to `8n+12E` witnesses and `9n+16E`
+residuals (44 fields and 57 residuals in `ℤ³`), a zero-set equivalence
+with no operation saving claimed; `review_compressed_queue_aebfa.md`
+(`be1fc3f62`, indexed in `incoming_substrate_review_aebfa386e.md`) finds
+no theorem-level defect in 20, reproduces two constructor defects (see
+Disclosures) with the patch `compressed_queue_exact_inputs.patch`, which
+is not applied here, and verifies a projection of the finite compiler to
+`6c+1` coordinates and `6c+3` residuals. Its review of the placement
+(`review_placement_bbaf322e5.md`, `5b633fcf9`) authenticates the shipped
+files against the archives and supplies a portable stager,
+`replay_placed_substrates_bbaf322e5.py`, that restores the delivered
+layouts from Git.
+
+**Relations (batch 79, cluster J3).** 19 is a second route to Part XVI's
+answer to Part XIV's question "Infinite-background abelian computation"
+(a dated note after that question), and answers nothing else. 20 answers
+the queue clause of `cdc:q:storage` (reliable FIFO actions have an exact
+six-coordinate summary composing by unique quadratic gadgets; arbitrary
+powers keep explicit exponentiation predicates) and bears in part on
+`cdc:q:acceleration` (prescribed macros only) and `cdc:q:readcounts`
+(action-dependent reads along a supplied schedule); dated notes record
+this after the three questions. The research tree's projections answer in
+part 19's first question and 20's first (dated notes in the article).
+Part XVIII cites the neighbouring report *liveness-beyond-halting* by its
+label `lbh:qd:prop:lasso` (finite-region lassos and the remark that lassos
+are not complete), and Part XVI and Part XVIII cite each other for the
+same borrowing obstruction. No neighbouring report was edited in this
+write.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -1820,10 +2102,10 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 509 pages (196 before batch 62, 306 before batch 63,
+The recorded build has 571 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII),
+509 after Part XVII, 571 after manuscripts 19 and 20),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -1860,6 +2142,23 @@ ledger are set ragged right (one underfull line otherwise). The title page,
 Sections 3.17 and 198, the opening and conventions of Part XVII, Table 31,
 the merged question and the provenance table were rendered and inspected.
 
+Manuscripts 19 and 20 (batch 79, cluster J3) add fourteen macros (19's
+`\degS`, `\GE`, `\NZ`, `\FS`, `\shift`; 20's `\pref`, `\suff`, `\lcp`,
+`\readw`, `\writew`, `\scale`, `\res`, `\sur`, and `\qval` for 20's
+radix value, which 20 wrote `\code`), two counters (`cdcsavedsection`,
+`cdcsavedtable`) and a length macro `\cdctocsec` for the width of section
+numbers in the contents (2.1em, and 3.6em for the entries M19.x), and no
+package. Built in a scratch directory with
+`latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX,
+pdfTeX): 571 pages, no errors, warnings, undefined references or citations,
+multiply defined labels, duplicate destinations or overfull boxes, and the
+same single underfull line as before. Layout-only changes: the three
+columns of 19's Section-1 table are set ragged right, and 19's two
+`\Needspace` hints are dropped. The title page, the contents page with the
+entries M19.x, Sections 3.19–3.20, the opening of 19's block (M19.1), its
+compiler section, and the opening of Part XVIII were rendered and
+inspected.
+
 ## Rerunning the checks
 
 Every suite needs Python 3.10 or later and the standard library only,
@@ -1868,7 +2167,7 @@ except 16's three verifiers, which need SymPy 1.14.0
 suite rewrites its recorded outputs at fixed paths relative to its own
 location, and most scripts import their siblings by delivered name, so run
 them **on a copy with the delivered layout**, never in the report
-directory. The recipes below build such copies, `r01` … `r18`, beside
+directory. The recipes below build such copies, `r01` … `r20`, beside
 `code/` and `data/`: run them in a scratch copy of the report directory
 (copying `code/` and `data/` is enough), not in the collection. Where the
 Windows `python` alias does not resolve, use `py`.
@@ -1984,6 +2283,17 @@ for f in profiles compiler check_export test_profiles test_applications; do cp c
 mkdir -p r18/code r18/examples r18/validation
 for f in spectral_guards quartic_compiler run_tests supplementary_checks; do cp code/18-spectral-guards-$f.py r18/code/$f.py; done
 (cd r18 && py code/run_tests.py > /dev/null && py code/supplementary_checks.py > /dev/null)
+
+# 19: rewrites r19/examples/*.json and r19/verification/results.{json,txt}
+mkdir -p r19
+for f in sandpile_certificates verify; do cp code/19-no-borrowed-firings-$f.py r19/$f.py; done
+(cd r19 && py verify.py > /dev/null && py sandpile_certificates.py)
+
+# 20: rewrites r20/data/{example_quartic,infinite_growth_quartic,verification}.json, then the independent check
+mkdir -p r20/code r20/data
+for f in queue_certificates verify check_certificate; do cp code/20-compressed-queue-$f.py r20/code/$f.py; done
+(cd r20 && py code/verify.py > /dev/null \
+  && py code/check_certificate.py data/example_quartic.json data/infinite_growth_quartic.json > data/export_checks.json)
 ```
 
 The recipes for 08–12 use `py`, which resolves on this machine; the
@@ -2061,7 +2371,19 @@ coordinates, 1,703 and 1,767 residuals, 52 power atoms each). 18's seven
 examples, `results.json` and `supplementary_checks.json` equal the shipped
 ones after removing carriage returns (no elapsed time is recorded). The
 research tree's review reports the same outcome for the delivered programs
-and for its patched copies.
+and for its patched copies. The recipes for 19 and 20 were run the same way
+in the batch-79 cluster-J3 write (Python 3.14.4, Windows; about 9 and 5
+seconds). 19's `verify.py` prints its text report with `status: PASS`; its
+four regenerated examples equal the shipped ones after removing carriage
+returns, and `results.json` and `results.txt` differ only in the Python
+version (3.13.5 recorded) and `elapsed_seconds` (5.014 recorded);
+`sandpile_certificates.py` prints 34 variables, 40 residuals, degree 4,
+odometer `[2, 1]` and ranks `[2, 1]`. 20's two exports and
+`export_checks.json` equal the shipped ones after removing carriage
+returns, and `verification.json` (`"status": "PASS"`, 259,025 checks)
+differs only in the Python version. The research tree's reviews report the
+same outcome; its review of 20 also reruns the delivered programs with its
+patch applied.
 
 **Hazards.**
 
@@ -2114,6 +2436,19 @@ and for its patched copies.
   three times on `article.tex`, which is now the merged article, and their
   `clean` targets delete its auxiliary files; 17's `test` target writes
   `data/test_log.txt`, which is not shipped, and both use `python3`.
+- Batch 79, cluster J3: 19's `verify.py` writes `examples/` and
+  `verification/` beside itself (the script's own directory), and 20's
+  `verify.py` writes into `data/` beside its own `code/` directory,
+  overwriting recorded files; run them only inside `r19` and `r20`. The
+  shipped `code/19-no-borrowed-firings-verify.py` and
+  `code/20-compressed-queue-verify.py` fail at their imports
+  (`sandpile_certificates`, `queue_certificates`), because the siblings
+  carry prefixes. 19's checks are assertions: do not run it with
+  `python -O`. Do not use `code/19-no-borrowed-firings-Makefile` or
+  `code/20-compressed-queue-Makefile`: their `pdf` targets run `latexmk` on
+  `article.tex`, which is now the merged article, their `clean` targets
+  delete its auxiliary files, and their checks call `python` with the
+  delivered names.
 - Every suite overwrites its recorded outputs at paths fixed relative to the
   script (the parent of the script's directory in 01, 03, 04, 05, 06, 07,
   08, 09 and 10; the working directory in 02; the `--output` paths in 11). The shipped `code/` scripts that import
@@ -2363,6 +2698,66 @@ and for its patched copies.
   are the delivered bytes, and applying them to the prefixed copies (with
   the file names rewritten) is left to the owner of that tree. No theorem
   of Part XVII depends on the defects.
+- **Batch 79, cluster J3 (manuscripts 19 and 20): shipped text that uses
+  delivery names or names unshipped files.** `19-no-borrowed-firings-SOURCES.md`
+  speaks of "this package", "the present paper" and "the article" (19's
+  delivered text, now Section 3.19 and Sections M19.1–M19.14 and
+  M19.A–M19.B of Part XVI) and names repository paths only.
+  `20-compressed-queue-CLAIMS_AND_PROVENANCE.md` cites 20's theorems by its
+  own numbers (mapped in "Delivered names and shipped names" above and in
+  the article's conventions of Part XVIII), speaks of "the article" and
+  "this manuscript", runs `python code/verify.py` and says that the PDF was
+  compiled and rendered (the 28-page PDF is not shipped; it survives in
+  `ef2fc7990`). `code/19-no-borrowed-firings-Makefile` runs
+  `python verify.py` and `latexmk` on `article.tex`;
+  `code/20-compressed-queue-Makefile` runs `python code/verify.py`,
+  `python code/check_certificate.py data/…` and `latexmk` on
+  `article.tex`. The scripts use delivery names in their imports and paths:
+  19 (`sandpile_certificates`; `examples/`, `verification/`), 20
+  (`queue_certificates`; `../data/`). Recorded data name delivery files:
+  `data/20-compressed-queue-export_checks.json` names
+  `example_quartic.json` and `infinite_growth_quartic.json`;
+  `data/19-no-borrowed-firings-pdf_preflight.json` describes the delivered
+  24-page PDF (not shipped), and no script writes it. 19's and 20's
+  verification records give Python 3.13.5 of the deliveries' runs, and
+  19's an elapsed time. The article prints the shipped names where 19 and
+  20 name their files in prose and keeps their listings in the delivered
+  layout with notes.
+- **Batch 79, cluster J3: corrections and renamings in the printed text.**
+  19's source breaks one subscript (a line break where `\rm` was meant, so
+  its PDF prints `deg_madj`); the article prints `\deg_{\mathrm{adj}}(v)`
+  with a bracket. 19's `m` (distinct unordered adjacent pairs) is printed
+  as `E`, 16's letter, and its number of residuals `E` as `𝓡`; 20's
+  `\code` (its radix value `𝖢`) is typeset with `\qval` and its `\Pow`
+  with this report's (upright, not sans-serif). 19 says that "no existing
+  repository file has been changed"; it describes its own delivery.
+- **Batch 79, cluster J3: reviews of 19 and 20.** The review
+  `review_boundary_sandpile_060e08a07.md` (`49bc4c654`) of the
+  Hilbert's-tenth-problem research tree reruns 19's two entry points, finds
+  no semantic or domain defect and supplies no patch; it notes that
+  `Poly.evaluate` is an unrestricted algebraic evaluator, not a domain
+  guard (the domain checks are in `Certificate.vector` and `evaluate`).
+  The review `review_compressed_queue_aebfa.md` (`be1fc3f62`) reproduces
+  two defects of 20's low-level constructors in `queue_certificates.py`
+  (shipped as `code/20-compressed-queue-queue_certificates.py`): `Poly(terms)`
+  (line 132) accepts noninteger coefficients, so for
+  `Poly({(): float(2**60), (0,): -1.0})` the natural witness `2**60+1`
+  gives the floating residual `0.0` and a directly constructed
+  `Certificate` accepts, although the exact residual is −1; and
+  `Action(read=['0'], write='0')` keeps the caller's mutable list, so
+  changing it after compilation leaves the old certificate at zero. The
+  compiler's own output is unaffected (integer coefficients; the export
+  checker rejects floats). The tested patch
+  `compressed_queue_exact_inputs.patch` (SHA-256 `ed4aa550…3501`, beside the
+  review in
+  `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`)
+  is **not applied**: the shipped program is the delivered bytes, and
+  applying it to the prefixed copy is left to the owner of that tree. All
+  259,025 author checks pass with and without it. No theorem of Part XVIII
+  depends on the defects. That tree's index once called Part XVI "a
+  different report from the new quartic No Borrowed Firings archive"; that
+  is true of the archives and their formats, but the theorems coincide, as
+  the article's editorial note says.
 - **Byte-identical duplicates within a manuscript** (checked with `cmp`):
   03's `test_results.json` and `test_run.txt`, `linear_test_results.json`
   and `linear_test_run.txt`, and `example-events.json` and
@@ -2373,8 +2768,10 @@ and for its patched copies.
   byte-identical to the build script of another batch-78 manuscript, placed
   in another report. Batch 79 shipped none of 17's and 18's in-archive
   copies (17's `data/test_log.txt`, 18's `validation/test_output.txt`).
-  The console files are the scripts' printed JSON. No two files of
-  different manuscripts are identical.
+  The console files are the scripts' printed JSON. Batch 79, cluster J3,
+  shipped neither 19's `verification/latest_run.txt` (a copy of
+  `results.txt`) nor 20's `data/verification_stdout.txt` (a copy of
+  `verification.json`). No two files of different manuscripts are identical.
 - **Machine-dependent fields.** 08's `receipt.json` and 10's
   `verification.json` (and hence `test_output.txt`) record an elapsed time,
   which a rerun changes; nothing else in the batch-62 records depends on
@@ -2384,7 +2781,9 @@ and for its patched copies.
   receipts record neither; its `BUILD_REPORT.json` records Python 3.13.5,
   SymPy 1.14.0 and pdfTeX 1.40.26 of the delivery's own run. In batch 79,
   17's `test_results.json` records an `elapsed_seconds` field, and 18's
-  `artifact_checks.json` the Python version 3.13.5 of the delivery's run.
+  `artifact_checks.json` the Python version 3.13.5 of the delivery's run;
+  19's `results.json` and `results.txt` record Python 3.13.5 and an
+  `elapsed_seconds` field, and 20's `verification.json` Python 3.13.5.
 - **Missing final newlines.** Four of 06's JSON files end without a newline
   and are kept so: `canonical_huge_witness.json`,
   `canonical_multiplication_certificate.json`,
@@ -2413,7 +2812,13 @@ and for its patched copies.
   `code/compiler.py` is not 06's, 17's `data/test_results.json` is not the
   `test_results.json` of 03, 06 or 12, and 18's `validation/results.json`
   is not the `results.json` of 04, 07 or 11; all are different files,
-  told apart by their prefixes.
+  told apart by their prefixes. In batch 79, cluster J3, 19 delivers yet
+  another `verify.py` (at its package root) and 20 a `code/verify.py`, and
+  20's `code/queue_certificates.py` is not 07's `code/queue_certificates.py`
+  (shipped as `code/07-queue-causality-queue_certificates.py`); 20's
+  `data/verification.json` and `data/example_quartic.json` are not the
+  files of those names of 14, 15, 02 or 07; all are told apart by their
+  prefixes.
 - **Two Cantone–Cuzziol–Omodeo papers.** 02, 04, 05 and 06 cite
   Cantone, Cuzziol and Omodeo, *On Diophantine singlefold specifications*,
   Le Matematiche 79(2) (2024), 585–620 (merged key `cco2024`). 07 cites a
@@ -2456,6 +2861,16 @@ and for its patched copies.
   Scholarpedia article 2012) and `hfg2024` (17 cites the journal version);
   18's `RepoLean`, `RepoCertificates`, `LF`, `HFG`, `CCO` and `Mat` into
   `repo-trace`, `repo-cdc`, `lf2022`, `hfg2024`, `cco2024` and `mat2010`.
+  19 inspected `e58b724c2`, the pin of 17 and 18, and 20 inspected
+  `44983ed7e` through the GitHub connector (its claims ledger records the
+  root tree `ecc70fbdb`); their descriptions of this report are of the
+  versions with Parts I–XIV and I–XV. 19's keys `proveit-h10`,
+  `proveit-mrdp`, `proveit-routing` and `cairns` are merged into
+  `repo-h10`, `repo-mrdp`, `repo-rtsources` and `cairns`, and its `dhar`,
+  Dhar's 1998 review, became the new entry `dhar1998` (not the 1990
+  article `dhar1990`); 20's `repo`, `cook` and `woodsneary` are merged into
+  `repo-cdc`, `cook` and `woods-neary`, and its `queueprior` (07's
+  integration note) became the new entry `repo-qcint`.
 
 ## Merge decisions
 
@@ -2766,6 +3181,49 @@ same decisions.
   remark that follows `cdc:pt:thm:tower`, in Part IX after
   `cdc:pt:prop:exponential-boundary`, and at Source 02 of
   `cdc:q:compression` (answered in part, and re-scoped). The title-page
+  lines naming the AI assistant are in the provenance appendix only.
+- **Batch 79, cluster J3 (manuscript 19 inside Part XVI, Part XVIII).** 19
+  proves Part XVI's main theorems again, independently and from a pin at
+  which Part XVI did not exist, so it is not a new Part: it is printed
+  inside Part XVI after 16's conclusion and before 16's appendices, as a
+  marked second route in its own sections M19.1–M19.14 (M19.1 a written
+  opening with the source paragraph, an editorial note on priority, the
+  relation to other Parts, the setting and a conventions table; M19.`N` its
+  Section `N`), and its two appendices follow 16's as M19.A–M19.B; these
+  sections are numbered outside the report's sequence, so that no existing
+  section, theorem, equation or table number moved. Its Section 1 and
+  abstract are Section 3.19. Brackets before 19's least-action lemma,
+  termination lemma, support theorem, rank theorem, halo theorem, radius
+  theorem, cardinality corollary (first assertion), height theorem and
+  coordinate bound name 16's statements; 19's proofs are kept as second
+  routes. Its directed example and borrowed-firing example, the same as
+  16's, are printed as delivered with brackets. A comparison paragraph
+  explains why neither certificate improves the other (`11n+12E`
+  witnesses and `12n+16E` quadratic residuals, projected `8n+12E`,
+  against 16's cubics with `13n+12E` and `10n+6E` coordinates; degree two
+  and a quartic against one cubic) and how Part XI applies. New, with
+  credit: the residual system and gap, the gadgets, the field normal form,
+  the unique codes, the completeness statement, the seed lemma and the
+  code-length clause. 20 is appended as Part XVIII after Part XVII and
+  before the appendices, in its own order (Sections 2–15 and Appendices
+  A–B); its Section 1, abstract and status box are Section 3.20. Its
+  resource algebra and minimum gadget (Part I) and its endpoint theorem
+  (the one-queue case of Part VI's network theorem) carry brackets and are
+  kept as second routes, with no novelty claimed. Questions: 19's nine and
+  20's ten are labelled `question` environments (20's were numbered
+  paragraphs), with lines naming the overlapping questions; none is merged.
+  Renamed: 19's `m` is `E` and its residual count `E` is `𝓡`; 20's `\code`
+  is `\qval`, its `\Pow` prints with this report's, and its label
+  `sec:subtrates` is `cdc:cq:sec:substrates`. Corrected: 19's broken
+  subscript. Bibliography: seven items merged, six new entries (`dhar1998`,
+  `hkz`, `kocher`, `rankin`, `jez`, `repo-qcint`) and the two reviews
+  (`repo-bsrev`, `repo-cqrev`) added (93 distinct works in all). Dated
+  `[write]` notes: after Part XIV's question on infinite-background abelian
+  computation (a second route), after `cdc:q:storage` (queue clause
+  answered), after `cdc:q:acceleration` and `cdc:q:readcounts` (in part),
+  and after 19's and 20's first questions (answered in part by the
+  research tree's projections). The research tree's reviews of both
+  archives are disclosed; the patch for 20 is not applied. The title-page
   lines naming the AI assistant are in the provenance appendix only.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
