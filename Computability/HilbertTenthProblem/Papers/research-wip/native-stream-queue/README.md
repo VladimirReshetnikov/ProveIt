@@ -19,6 +19,20 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
+The [three-mass unbounded interface](three_mass_unbounded_interface.md) now
+pays raw fixed-source reachability and an exact physical clock through the
+existing residue-history compiler. A rejecting halt totalization bounds
+accepted duration by the number of distinct encoded states; a squared-height
+radix then prevents clock congruence wrap. Four complete examples cost
+598/473/471/474 operations, with59/57/57/57 positive witnesses and20
+comparisons. The [independent review](review_three_mass_unbounded_interface.md)
+and both root replays pass. The author note retains its pre-review status
+as frozen provenance; the completed review supplies the current status.
+Raw halting is invariant under payload cofactors coprime to6, so ordinary
+universal input and a numerical universal source remain separate obligations.
+These unbounded examples have a different contract from the44/43 fixed-horizon
+circuits below and do not improve the86-operation universal polynomial.
+
 [All twelve batch-80 archives](incoming_substrate_review_4e270aa46.md) have
 completed their scoped reviews and root replays. The inventory pins 388
 published member occurrences; the complete universal polynomial bound remains 87.

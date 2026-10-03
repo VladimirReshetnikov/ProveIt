@@ -23,6 +23,22 @@
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
 > monomial ports. All21 minimal completions retain87; no general lower bound.
 
+> New [three-mass unbounded raw/clock bridge](three_mass_unbounded_interface.md)
+> and [independent review](review_three_mass_unbounded_interface.md) both pass
+> fresh root replay. Encode n=K(N−1)+q, use modulus6K, totalize halt/missing
+> guards to a rejecting trap. Accepted current states are distinct and≤mh,
+> so duration≤mh and total clock≤2384mh². Paid B=C*h² with C≥2384m+2
+> makes the existing selected quotient lanes plus one new clock quotient
+> exact modulo B−1. All20 comparisons and final SOS are emitted; native
+> clocks only, natural external x,y,T, fixed arity and unbounded duration.
+> Example totals598/473/471/474, witnesses59/57/57/57; degrees are upper bounds.
+> Root read both full source/proof packets and checked the inherited history
+> proof. No full native Pell witness, cleaned-clock total or universal source
+> table is claimed. Raw input x+1 retains the (v2,v3) cofactor obstruction.
+> Author CLI is cold-process only; preserve its three frozen review-pinned
+> files, including pre-review prose. This closes raw history/clock payment,
+> not the ordinary universal input/program decoder obligation.
+
 > Latest three-mass examples: the [per-step branch search](three_mass_mixed_branch_search.md)
 > reaches44native/43clean for INC2;DEC2 at h=2, using implicit indices[0,1],
 > Horner guards and both endpoint penalties. Six witnesses, degree3. The

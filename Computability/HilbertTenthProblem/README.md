@@ -28,6 +28,13 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
+The [three-mass raw-history bridge](Papers/research-wip/native-stream-queue/three_mass_unbounded_interface.md)
+now represents unbounded fixed-source reachability with an exact physical
+clock. Its [independent review](Papers/research-wip/native-stream-queue/review_three_mass_unbounded_interface.md)
+checks all four complete examples and the proof excluding clock wrap.
+An ordinary universal-input decoder remains unpaid; no universal bound is
+inferred from these598/473/471/474-operation raw examples.
+
 The progress entries below preserve their historical counts and contemporary
 benchmark statements; the current complete numerical bounds are75/86.
 The preceding complete
