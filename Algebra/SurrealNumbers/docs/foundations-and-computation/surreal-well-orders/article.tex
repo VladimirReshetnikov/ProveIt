@@ -527,6 +527,20 @@ A second note there authenticates the placement
 review is pinned to the delivered archives and does not cover the text
 written for this merge; it is not an entry of the surreal collection's review
 record, where this report's review is pending.
+(\merge\ Added 3 October 2026: the same tree has since reviewed the merged
+text as well. Its synthesis review
+(\path{review_surreal_synthesis_0be9b9134.md}, commit \code{280583d2f}) read
+every passage written for the merge and found no mathematical defect under
+the stated hypotheses, but two overstatements, both corrected here in
+place: the choice recursion of \cref{swo:cf:choice} had been called a
+``coherent'' sequence of well-orders in \cref{swo:rem:answered-choice} and
+\cref{swo:st:n14.5}, and the README had understated the largest delivered
+file. Its preservation audit
+(\path{review_surreal_transfer_0be9b9134.md}, commit \code{afb706742})
+accounts for all 166 formal statements of the four sources (124 printed
+with normalized-exact bodies, 41 as duplicate-result notes, one question
+inside an answered remark). Neither is an entry of the collection's review
+record either.)
 \end{itemize}
 
 % ---- hand chunk formal
@@ -3637,7 +3651,7 @@ $w_\alpha$ of $V_\alpha$ are built by set-valued recursion from the given
 well-order of the sign sequences of length $\theta=\otp(V_\beta,w_\beta)$, a
 subset $A\subseteq V_\beta$ being coded by the sign sequence $s_A$ of length
 exactly $\theta$, so no ordinal coding of a transitive closure has to be
-chosen. The proof thus produces a coherent sequence of well-orders of the sets
+chosen. The proof thus produces a uniformly defined sequence of well-orders of the sets
 $V_\alpha$, in particular of the power sets of ordinals, which is the
 comparison the question suggests. The same mechanism, at the level of
 sets, is the ordinal-graph coding of the birthday-cutoff report
@@ -3645,6 +3659,20 @@ sets, is the ordinal-graph coding of the birthday-cutoff report
 well-orderable transitive closure) \cite{ProveItHset}; that theorem concerns
 a different statement and is unchanged. Hamkins's question whether surreal
 universality implies global choice \cite{HamkinsUnivChoice} is not affected.
+(Corrected in place on 3 October 2026, following the Hilbert's-tenth
+programme's review
+\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_surreal_synthesis_0be9b9134.md}
+(commit \code{280583d2f}): this note had called the sequence
+``coherent''. The orders $w_\alpha$ are uniformly defined, but a later one
+need not restrict to an earlier one. If $W$ puts $-$ before $+$ among the
+sign sequences of length one and $+-$ before $--$ among those of length two,
+then $w_2$ puts $\varnothing$ before $\{\varnothing\}$ (codes $-$ and $+$),
+while $w_3$ puts $\{\varnothing\}$ before $\varnothing$ (codes $+-$ and
+$--$). The proof of \cref{swo:cf:choice} needs only the uniform definition:
+it selects the $w_{\rk(A)}$-least element of each nonempty set~$A$.
+Ordering all sets by rank and then, within rank~$\gamma$, by
+$w_{\gamma+1}$, as at the limit stages, does give a class well-order whose
+restrictions to the sets $V_\alpha$ cohere; the proof does not use it.)
 \end{remark}
 
 % ---- hand chunk choice09_head
@@ -7333,9 +7361,13 @@ ordinals and with uniform ordinal presentations of transitive closures.
 \merge\ \emph{Answered (2 October 2026).} Source 11's \cref{swo:cf:choice} proves the
 equivalence over GB with no set-level choice: a class well-order of the
 sign-sequence surreals is equivalent to global choice. Its proof is
-precisely a coherent well-ordering of the power sets $V_{\beta+1}$,
+precisely a uniform well-ordering of the power sets $V_{\beta+1}$,
 obtained by set-valued recursion from the given well-order on the sign
 sequences of each length $\theta$; see \cref{swo:rem:answered-choice}.
+(Corrected on 3 October 2026 after the Hilbert's-tenth review
+\path{review_surreal_synthesis_0be9b9134.md}: ``uniform'' replaces
+``coherent'', since these orders need not extend one another;
+\cref{swo:rem:answered-choice} gives a finite example.)
 \end{remark}
 This is separate from the question whether surreal universality for
 class linear orders itself implies global choice, raised by Hamkins

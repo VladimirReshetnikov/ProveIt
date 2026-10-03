@@ -63,12 +63,13 @@ mass at most two. Sections 1.7–1.11 introduce them.
 observation (batch 80).** Both work in Part IV's weighted model (finite
 alphabet and radius, positive integer weights, a unique zero-weight vacuum).
 Part V (sources 14 and 15): when many symbols have weight one (a power-set
-alphabet of Boolean channels, weight = cardinality), a fixed globally
-reversible, mass-conserving cellular automaton of forward and inverse radius
-at most four (radius one by four-site blocking at the same clock, or by
-four-phase dilation at four times the time) simulates every separated
-reversible two-counter machine at total mass exactly three, with gap
-`12·2^a·3^b` and a clean halt symbol, so three is the least mass with
+alphabet of Boolean channels, weight = cardinality), every finite separated
+reversible two-counter machine M compiles to a globally reversible,
+mass-conserving cellular automaton F_M of forward and inverse radius at most
+four (radius one by four-site blocking at the same clock, or by four-phase
+dilation at four times the time). Its canonical simulation has total mass
+exactly three, gap `12·2^a·3^b` and a clean halt symbol. Fixing a universal
+source machine gives one fixed rule, so three is the least mass with
 fixed-rule undecidable pattern occurrence there (Theorems 49.1–49.2, with
 Part IV's Theorem 44.1 as the lower half); exact type and row counts, exact
 microtimes and a degree-two natural certificate with a unique witness at each
@@ -121,7 +122,12 @@ scopes", with no repair or correction; its index
 concern the archives and the placement; the assembled text of Parts V and VI
 has not been reviewed by the research tree ("A subsequent assembled
 mathematical write will need a new semantic-transfer review", in the
-placement review).
+placement review). That review has since been done (3 October 2026):
+`review_signal_batch80_typesetting_ef114b0bb.md` and the independent
+challenge `review_signal_batch80_quantifiers_ef114b0bb.md` (commit
+`f787251a2`) pass the transfer of Parts V and VI and corrected two summaries
+written for the merge; both corrections are applied (see "Reviews and
+patches").
 
 **Batch 80 (corrected code edition of source 13).** A corrected edition of
 source 13's archive, `Sparse_Lattice_Diophantine_Certificates_corrected.zip`
@@ -146,7 +152,7 @@ confirms the repair.
 
 ```
 article.tex                                                     the report, standalone LaTeX with an internal bibliography
-article.pdf                                                     the compiled report, 193 pages (unnumbered title page, then pages 1–192)
+article.pdf                                                     the compiled report, 194 pages (unnumbered title page, then pages 1–193)
 README.md                                                       this guide
 07-collision-geometry-PROVENANCE.md                             source 07's repository and literature provenance, as delivered
 11-signal-certificates-REPRODUCIBILITY.md                       source 11's reproducibility record, as delivered
@@ -1193,6 +1199,31 @@ except where a source itself shipped the patched program (source 12).
   Its README-only patch `batch80_historical_stager_launch.patch` was
   applied on 2 October 2026 to way (b) under "Rerunning the programs" and
   to the paragraph after it.
+- Batch-80 write of Parts V and VI: `review_signal_batch80_typesetting_ef114b0bb.md`,
+  with the independent challenge `review_signal_batch80_quantifiers_ef114b0bb.md`
+  (commit `f787251a2`), reviews the write `ef114b0bb`. It accounts for
+  every formal statement, proof and display of sources 14–17 (75 statements
+  and proofs: 71 retained, 4 printed as proof pointers; 105 displays: 98
+  retained, 7 declared deduplications), all 252 earlier labels and 36
+  earlier bibliography keys, and confirms the degree-four minimality note
+  of Part VI in its stated class (integer polynomials nonnegative on the
+  whole real orthant, natural witnesses). It found two overstatements in
+  text written for the merge, and its patch
+  `signal_batch80_quantifiers_ef114b0bb.patch` **was applied verbatim** on
+  3 October 2026: (1) the summary of Part V near the top of this README had
+  "a fixed" reversible automaton simulate every separated reversible
+  two-counter machine, whereas Theorem 49.1 (`smc:tm:thm:compiler`)
+  compiles each machine M into its own automaton F_M (alphabet, types and
+  canonical encoding depend on M), and Theorem 49.2 obtains one fixed rule
+  by fixing a universal source; (2) the last cell of the threshold table in
+  Section 1.12 called the Alhazov–Imai construction "not reversible",
+  whereas its abstract only does not assert reversibility (as the report's
+  own literature paragraphs already said). The same change made the
+  article's abstract sentence on Part V say, with source 14's own abstract,
+  that a fixed reversible automaton simulates *a universal* reversible
+  two-counter machine at mass three (it had said "reversible two-counter
+  machines"), and the item "The programme's reviews" of Section 1.14
+  credits the review in a dated note.
 
 ## Build
 
@@ -1202,7 +1233,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX, in a scratch directory; standard packages (Latin Modern, AMS,
 mathtools, microtype, booktabs, longtable, ragged2e, xcolor, TikZ, enumitem,
-fancyhdr, listings, xurl, hyperref, graphicx, pict2e). The committed build has 193 pages: no
+fancyhdr, listings, xurl, hyperref, graphicx, pict2e). The committed build has 194 pages: no
 errors, no undefined references or citations, no multiply defined labels,
 no duplicate destinations, no overfull boxes. The log's only box messages
 are four underfull lines in bibliography entries: three in `reversible`,
@@ -1248,6 +1279,19 @@ the provenance table of Parts V–VI (page 182) were rendered and inspected.
 Source 17's figure is its delivered vector PDF (embedded TrueType fonts, no
 Type 3 fonts), included unchanged from `figures/`; a scratch build needs
 that directory beside `article.tex`.
+
+The corrections of 3 October 2026 after the review of the K2 write (one
+table cell, one abstract phrase and one dated note; no label, macro or
+bibliography entry) take the report to 194 pages (unnumbered title page,
+then pages 1–193): the note lengthens Section 1.14, Part I's text starts on
+page 31, and Figure 5 moves to page 172. The log is as described above (no
+errors, warnings, undefined references or citations, multiply defined
+labels, duplicate destinations or overfull boxes; the same four underfull
+bibliography lines). The `.aux` of a build of the previous text has the
+same 417 labels with the same numbers and the same 48 bibliography numbers.
+The title page (the abstract still fits on it), the threshold table
+(page 24), the note (page 27) and the opening of Part I (page 30) were
+rendered and inspected.
 
 ## Rerunning the programs
 
