@@ -14,13 +14,28 @@ universal Diophantine equations by James P. Jones and coauthors:
 | 1984 | J. P. Jones, Yu. V. Matiyasevich | Register Machine Proof of the Theorem on Exponential Diophantine Representation of Enumerable Sets | *J. Symbolic Logic* 49, 818–829 | pdfLaTeX |
 
 The established arithmetic bounds are **74 operations for a complete
-certificate and 85 for one universal polynomial**. The
+certificate and 84 for one universal polynomial**. The
 [factored first-norm certificate](Papers/research-wip/native-stream-queue/complete74_factored_first_norm.md)
 costs **40M+34A**, including a version with **20 positive witnesses and nine
 comparisons**. It replaces `(E²+X)(kY)²` by `L(L+k)`, with E=XY and
 L=E(kY), preserving every complete comparison and the full SOS polynomial
 on all supplied tuples. The fully paid SOS version costs100 operations
 at exact degree84. Independent source and mathematical reviews pass.
+
+The [scaled strong output](Papers/research-wip/native-stream-queue/complete84_scaled_strong_output.md) lowers the
+complete universal polynomial to **84=47M+37A operations**, with **18 positive
+witnesses and uniform exact degree 187**. Reusing the paid main coefficient
+saves one multiplication across the strong and auxiliary blocks. The entire
+new polynomial is `F84=Delta*F85`; `Delta=(a+1)(a+3)>0` on every allowed
+positive tuple before any equation is imposed. Thus the full positive zero
+sets, ordinary input and fixed-program recipe are unchanged.
+The [independent review](Papers/research-wip/native-stream-queue/review_complete84_scaled_strong_output.md) checks
+all 84 gates, the complete output identity and the uniform degree argument;
+a separate mathematical challenge and fresh normal/optimized replays pass.
+The gate-propagated degree 197 is only an upper bound. The comparison-system
+bound remains **74**; the lower-degree **85/175** and other reviewed choices
+remain available. Earlier entries retain their historical counts; the current
+minimum polynomial count is **84**, with no global optimality claim.
 
 The [auxiliary quotient projection](Papers/research-wip/native-stream-queue/complete85_auxiliary_bezout_projection.md)
 lowers the complete universal polynomial to **85=48M+37A operations**, with

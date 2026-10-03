@@ -1,5 +1,20 @@
 # WIP: native queue streams and research continuation
 
+The [scaled strong output](complete84_scaled_strong_output.md) lowers the
+complete universal polynomial to **84=47M+37A operations**, with **18 positive
+witnesses and uniform exact degree 187**. Reusing the paid main coefficient
+saves one multiplication across the strong and auxiliary blocks. The entire
+new polynomial is `F84=Delta*F85`; `Delta=(a+1)(a+3)>0` on every allowed
+positive tuple before any equation is imposed. Thus the full positive zero
+sets, ordinary input and fixed-program recipe are unchanged.
+The [independent review](review_complete84_scaled_strong_output.md) checks
+all 84 gates, the complete output identity and the uniform degree argument;
+a separate mathematical challenge and fresh normal/optimized replays pass.
+The gate-propagated degree 197 is only an upper bound. The comparison-system
+bound remains **74**; the lower-degree **85/175** and other reviewed choices
+remain available. Earlier entries retain their historical counts; the current
+minimum polynomial count is **84**, with no global optimality claim.
+
 The [auxiliary quotient projection](complete85_auxiliary_bezout_projection.md)
 lowers the complete universal polynomial to **85=48M+37A operations**, with
 **18 positive witnesses and uniform exact degree175**. It replaces the
