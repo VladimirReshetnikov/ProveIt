@@ -1,0 +1,141 @@
+{
+  "description": "Two-decrement countdown followed by the zero branch; three transitions.",
+  "program": [
+    [
+      "test",
+      0,
+      0,
+      1
+    ],
+    [
+      "halt"
+    ]
+  ],
+  "source": [
+    0,
+    2,
+    0,
+    0
+  ],
+  "alpha": 3,
+  "base": 3,
+  "q": 55,
+  "green_value": "21/55",
+  "vector": [
+    {
+      "vertex": [
+        0,
+        2,
+        0,
+        0
+      ],
+      "coefficient": 21
+    },
+    {
+      "vertex": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "coefficient": 8
+    },
+    {
+      "vertex": [
+        0,
+        0,
+        0,
+        4
+      ],
+      "coefficient": 3
+    },
+    {
+      "vertex": [
+        1,
+        0,
+        0,
+        14
+      ],
+      "coefficient": 1
+    }
+  ],
+  "variables": [
+    "u0",
+    "u1",
+    "u2",
+    "u3",
+    "q"
+  ],
+  "residuals": [
+    {
+      "vertex": [
+        0,
+        0,
+        0,
+        4
+      ],
+      "coefficients": {
+        "u2": 3,
+        "u1": -1,
+        "u3": -1
+      },
+      "constant": 0
+    },
+    {
+      "vertex": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "coefficients": {
+        "u1": 3,
+        "u0": -1,
+        "u2": -1
+      },
+      "constant": 0
+    },
+    {
+      "vertex": [
+        0,
+        2,
+        0,
+        0
+      ],
+      "coefficients": {
+        "u0": 3,
+        "u1": -1,
+        "q": -1
+      },
+      "constant": 0
+    },
+    {
+      "vertex": [
+        1,
+        0,
+        0,
+        14
+      ],
+      "coefficients": {
+        "u3": 3,
+        "u2": -1
+      },
+      "constant": 0
+    },
+    {
+      "vertex": "terminal normalization",
+      "coefficients": {
+        "u3": 1
+      },
+      "constant": -1
+    }
+  ],
+  "quadratic_semantics": "Sum of squares of every listed residual equals zero.",
+  "assignment": {
+    "u0": 21,
+    "u1": 8,
+    "u2": 3,
+    "u3": 1,
+    "q": 55
+  }
+}

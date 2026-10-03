@@ -1,0 +1,13 @@
+.PHONY: all pdf verify clean
+
+all: verify pdf
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	python code/verify.py
+	python code/check_certificate.py data/example_quartic.json data/infinite_growth_quartic.json
+
+clean:
+	latexmk -c article.tex
