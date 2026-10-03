@@ -942,14 +942,26 @@ one contents page, so every later page number moves up by one.
 `smc:cs:thm:packet` and its fixed-horizon sums are a statement of the same
 kind as Theorem 137.1 (`pqc:pm:thm:trace`): a degree-two polynomial,
 squares of affine residuals plus unsquared products of nonnegative
-quantities, with one natural zero at an externally fixed horizon. The
-dynamics differ (the event map of a conservative signal machine, a
-piecewise-linear map on `ℕ^d`, against a clipped rational network), and so
+quantities, at an externally fixed horizon: Theorem 137.1 has exactly one
+natural zero, while the signal packet has an empty-or-singleton natural
+fibre. The dynamics differ (the partial
+piecewise integer-linear event map of a conservative signal machine on
+`ℕ^d`, with finitely many disjoint branches, against a total clipped
+rational network), and so
 do the gadgets (one selector and one input copy per branch, against the
-clamp of Lemma `pqc:pm:lem:clamp`, which needs no branch selector). A dated
+clamp of Lemma `pqc:pm:lem:clamp`, which needs no branch selector), and so
+do the integer lifts (the signal report's compiled lift multiplies by the
+positive pivot speed of each branch, a uniform common denominator being a
+separate alternative there, against the scales `D_t` here). A dated
 note of 2 October 2026 after the paragraph relating Theorem 137.1 to Part
 III's neural corollary records this, and Section 36.4 and Appendix F.6 list
-it. No theorem is shared and no question of this report is answered. The
+it. This paragraph and that note were corrected in place on 2 October
+2026 following the Hilbert's-tenth programme's review
+`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_batch79_j2_bbc67d225.md`
+(commit `37a829e0b`, finding 3): they had called the signal fibre "one
+natural zero", left the event map's partiality and branch disjointness
+implicit, and named the optional uniform common-denominator lift as the
+compiled one. No theorem is shared and no question of this report is answered. The
 signal-machine report already pointed here (its note after
 `smc:cs:thm:packet`). The cluster's other outputs, Parts IV–VI of
 `quadratic-orthant-certificates` and Part XIX of

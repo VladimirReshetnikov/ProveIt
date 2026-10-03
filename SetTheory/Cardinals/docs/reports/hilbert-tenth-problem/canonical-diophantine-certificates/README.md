@@ -2418,10 +2418,19 @@ placement (`review_placement_a7ae02511.md`, `653349f6a`) authenticates the
 51 files placed by `a7ae02511` against the archive and supplies a portable stager,
 `replay_placed_substrates_a7ae02511.py`, that restores the delivered
 layout from Git. Four of those 51 files were replaced by corrected bytes in
-the batch-80K1 placement, so since batch 80 the stager authenticates only a
-checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
-restores the original edition; on a current checkout it stops with "Placed
-source differs". For the corrected layout extract the batch-80 archive.
+the batch-80K1 placement. For an original-edition restoration, pass an
+unchanged historical checkout (for example, a worktree at `a7ae02511`) as
+`--repo`. Invoke the helper from a recent checkout, with its sibling
+`placement_a7ae02511_inventory.json` beside it: neither file exists at
+`a7ae02511`. A current corrected checkout passed as `--repo` stops with
+"Placed source differs". For the corrected layout extract the batch-80 archive.
+These launch instructions were corrected on 2 October 2026 from the
+programme's README-only patch `batch80_historical_stager_launch.patch`
+(applied verbatim), written by its review
+`review_batch80_correction_publication_86267b8a3.md` (commit
+`fbad71e8c`), which otherwise passes the batch-80K1 corrected-code update
+of this README and article (through `c8d3ff5cb`) and leaves the earlier
+exact-size and base-case qualifications of Part XIX outside its verdict.
 
 **Relations (batch 79, cluster J2).** Part XIX answers in part, for
 another calculus, Source 01 of `cdc:q:ski` (a validity-free coding, a
