@@ -1,6 +1,6 @@
 \documentclass[11pt,a4paper]{article}
-% Report A of batch 60 (with batch 61), extended in batches 62, 63, 78 and 79: twenty manuscripts merged; base = manuscript 05.
-% Preamble: manuscript 05's, extended by the macros of manuscripts 01-04, 06 and 07, and (batch 62) 08-11, and (batch 63) 12, and (batch 78) 13-15; manuscript 16 (batch 78, cluster H3) adds no macro; manuscripts 17-18 (batch 79, cluster J1) add \Pow, \wt and \Repart; manuscripts 19-20 (batch 79, cluster J3) add \degS, \GE, \NZ, \FS, \shift (19) and \qval, \pref, \suff, \lcp, \readw, \writew, \scale, \res, \sur (20).
+% Report A of batch 60 (with batch 61), extended in batches 62, 63, 78 and 79: twenty-one manuscripts merged; base = manuscript 05.
+% Preamble: manuscript 05's, extended by the macros of manuscripts 01-04, 06 and 07, and (batch 62) 08-11, and (batch 63) 12, and (batch 78) 13-15; manuscript 16 (batch 78, cluster H3) adds no macro; manuscripts 17-18 (batch 79, cluster J1) add \Pow, \wt and \Repart; manuscripts 19-20 (batch 79, cluster J3) add \degS, \GE, \NZ, \FS, \shift (19) and \qval, \pref, \suff, \lcp, \readw, \writew, \scale, \res, \sur (20); manuscript 21 (batch 79, cluster J2) adds \Leaf, \Stem, \Fork, \Apply, \tcode, \FV, \clos and \ev.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsthm,mathtools}
@@ -27,7 +27,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\scshape Canonical Diophantine Certificates}
-\fancyhead[R]{\small Research report (twenty manuscripts)}
+\fancyhead[R]{\small Research report (twenty-one manuscripts)}
 \fancyfoot[C]{\thepage}
 \renewcommand{\headrulewidth}{0.3pt}
 \setlength{\parskip}{4pt plus 1pt}
@@ -198,6 +198,15 @@
 \newcommand{\scale}{\mathsf P}% manuscript 20: radix scale of a word
 \newcommand{\res}{\mathsf R}% manuscript 20: resource threshold
 \newcommand{\sur}{\mathsf S}% manuscript 20: resource output
+% ---- batch 79 (cluster J2): manuscript 21 ----
+\newcommand{\Leaf}{\mathsf L}% manuscript 21: the three tree constructors
+\newcommand{\Stem}{\mathsf S}
+\newcommand{\Fork}{\mathsf F}
+\newcommand{\Apply}{\mathsf A}% manuscript 21: computational application
+\newcommand{\tcode}{\operatorname{code}}% manuscript 21: its \code (this report's \code prints names)
+\newcommand{\FV}{\operatorname{FV}}% manuscript 21: free variables
+\newcommand{\clos}[2]{\langle #1,#2\rangle}% manuscript 21: its \cl, a closure (this report's \cl is manuscript 04's)
+\newcommand{\ev}[3]{E(#1,#2)\mathbin{\Downarrow}#3}% manuscript 21: eager application judgment
 \newcounter{cdcsavedsection}% [write] batch 79: holds the section counter across manuscript 19's sections M19.x
 \newcounter{cdcsavedtable}% [write] batch 79: holds the table counter across manuscript 19's conventions table
 \newcounter{cdcsavedequation}% [write] batch 62: holds the global equation counter across the batch-62 material
@@ -209,34 +218,34 @@
 % ---- merge ----
 \newcommand{\wtag}{\textup{[write]}}% marks text written in the batch-60/61 write phase
 \newcommand{\srcnote}[1]{\par\smallskip\noindent{\small\itshape #1}\par\smallskip}
-\hypersetup{pdftitle={Canonical Diophantine Certificates},pdfauthor={Research report merged from twenty manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Witness-faithful Diophantine representations of bounded computation: trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories and compressed queue traces}}
+\hypersetup{pdftitle={Canonical Diophantine Certificates},pdfauthor={Research report merged from twenty-one manuscripts prepared for Vladimir Reshetnikov},pdfsubject={Witness-faithful Diophantine representations of bounded computation: trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories, compressed queue traces and eager Tree Calculus}}
 \newcommand{\srctag}[1]{\texorpdfstring{\hspace{0.5em}{\normalfont\small\color{accent}[#1]}}{ [#1]}}
 
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{2mm}
-{\color{accent}\large\scshape ProveIt research report \textperiodcentered{} merged from twenty manuscripts\par}
+{\color{accent}\large\scshape ProveIt research report \textperiodcentered{} merged from twenty-one manuscripts\par}
 \vspace{5mm}
 {\color{ink}\fontsize{26}{31}\selectfont\bfseries Canonical Diophantine Certificates\par}
 \vspace{4mm}
 {\large Witness-faithful polynomial representations of bounded computation:
-trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, reaction networks, routing networks, interaction combinators, sandpiles, exponential trajectories and compressed queue traces\par}
+trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, reaction networks, routing networks, interaction combinators, sandpiles, exponential trajectories, compressed queue traces and eager Tree Calculus\par}
 \vspace{4mm}
 {Research report prepared for Vladimir Reshetnikov. Manuscripts dated September 30 and October 2, 2026; merged in the batch-60/61 write phase and extended in the batch-62, batch-63, batch-78 and batch-79 write phases.\par}
 \vspace{3mm}
 \hrule
 \vspace{2mm}
 \begin{abstract}
-\wtag{} An existential Diophantine representation says that a computation exists; it need not preserve which computation occurred, how many computations occurred, or how many arithmetic witnesses describe one of them. This report collects twenty manuscripts that construct \emph{witness-faithful} (single-fold or parsimonious) polynomial representations of bounded computation and locate the boundary beyond which such representations are as hard as the open single-fold and finite-fold problems.
+\wtag{} An existential Diophantine representation says that a computation exists; it need not preserve which computation occurred, how many computations occurred, or how many arithmetic witnesses describe one of them. This report collects twenty-one manuscripts that construct \emph{witness-faithful} (single-fold or parsimonious) polynomial representations of bounded computation and locate the boundary beyond which such representations are as hard as the open single-fold and finite-fold problems.
 
-For Petri nets and interval-guarded translations, an explicit convex quadratic integer polynomial has its natural zeros in bijection with the commutation classes of enabled executions of exact length~$T$; its nonnegative real zero set is a bounded rational polytope whose lattice points are exactly those zeros (Part~II, manuscript~05). Quartic second routes (manuscripts~04 and~06), a Cartier--Foata variant for bounded causal height (manuscript~01), exact all-marking commutation tests, an exponential automaton-state lower bound and $\sharpP$-completeness of counting accompany it (Parts~I and~II). Single-fold quartics of fixed arity describe multisets, fixed-word powers and nested repetitions of counter actions independently of the repetition counts (Part~III); the relation ``$p(i)\ge0$ for all $i\le T$'' with $O((d+1)^3)$ witnesses independent of~$T$ (Part~IV); random-access memory logs with $24L$ witnesses (Part~V); cyclic-tag, deletion-tag and fixed-read FIFO executions with one coordinate per consumed symbol and one guard slack, together with a proof that faithful polynomial word memory needs two natural coordinates (Part~VI); and FRACTRAN runs and scheduled SKI reductions (Part~VII). Part~VIII collects further substrates. Four later manuscripts add dynamic heaps modulo fresh names (Part~X), a sharp degree threshold for orthant-nonnegative polynomials and order-free tile assembly (Part~XI), priority pumping (Part~XII) and a reaction network with one shared fallback (Part~XIII); a twelfth adds history-free certificates for chip-routing networks, one quartic per routing topology, uniform in the initial loads and run lengths, whose unique natural zero carries the exact firing counts (Part~XIV). Three manuscripts of batch~78 add exact port wiring for Lafont's interaction combinators: a sharp $2/5$--$2/3$ bound on how often the parity of the cyclic wires of a random closure tells two perfect matchings apart, bounded six-rule quartic compilers with $O(C_0+F+T)$ coordinates and one witness per legal schedule, built on a ten-pattern annihilation kernel and on variants of Part~V's memory certificate, and a canonical permutation-orbit certificate with an implemented fixed-schedule compiler (Part~XV). A sixteenth, of the same batch, adds abelian sandpiles: for each finite undirected sink graph one cubic, uniform in the initial heights, whose unique natural zero carries the exact odometer and stable endpoint, certified by support burning and canonical burning ranks instead of a toppling history; a one-layer collar extends it to finite global stabilization on $\Z^d$, for which no computable bound on the necessary radius exists, and the eventual period along an input ray is computed exactly (Part~XVI). A second route to that Part, written independently on the same day, replaces the cubic by a system of quadratic residuals and adds a fixed-field normal form: on $\Z^3$, 47 fields with prescribed periodic tails and 60 local quadratic residuals have a unique finite-deviation solution exactly when the sandpile halts globally (Part~XVI, manuscript~19). Two manuscripts of batch~79 extend Part~IV from polynomial to positive-base exponential trajectories: the complete sign chart of $\sum_b P_b(n)b^n$, on a finite horizon or on all of $\N$, has a unique certificate with $D^2+1$ interval slots and $O(D^3)$ quadratic residuals and fixed-base power atoms, independently of the horizon, and an ordinary single-fold quartic for every externally fixed exponent bit bound (Part~XVII). A twentieth measures FIFO computation by a straight-line grammar of its transition trace: for a grammar with $g$ nodes and $c$ concatenations, one quartic with exactly $6g+3c+1$ natural witnesses has one zero if the prescribed trace connects the prescribed queue words and none otherwise; the exact number of repetitions of a closed queue macro has a closed formula, and indefinite repetition of a supplied macro has an ordinary unique-witness quartic of size linear in its grammar (Part~XVIII).
+For Petri nets and interval-guarded translations, an explicit convex quadratic integer polynomial has its natural zeros in bijection with the commutation classes of enabled executions of exact length~$T$; its nonnegative real zero set is a bounded rational polytope whose lattice points are exactly those zeros (Part~II, manuscript~05). Quartic second routes (manuscripts~04 and~06), a Cartier--Foata variant for bounded causal height (manuscript~01), exact all-marking commutation tests, an exponential automaton-state lower bound and $\sharpP$-completeness of counting accompany it (Parts~I and~II). Single-fold quartics of fixed arity describe multisets, fixed-word powers and nested repetitions of counter actions independently of the repetition counts (Part~III); the relation ``$p(i)\ge0$ for all $i\le T$'' with $O((d+1)^3)$ witnesses independent of~$T$ (Part~IV); random-access memory logs with $24L$ witnesses (Part~V); cyclic-tag, deletion-tag and fixed-read FIFO executions with one coordinate per consumed symbol and one guard slack, together with a proof that faithful polynomial word memory needs two natural coordinates (Part~VI); and FRACTRAN runs and scheduled SKI reductions (Part~VII). Part~VIII collects further substrates. Four later manuscripts add dynamic heaps modulo fresh names (Part~X), a sharp degree threshold for orthant-nonnegative polynomials and order-free tile assembly (Part~XI), priority pumping (Part~XII) and a reaction network with one shared fallback (Part~XIII); a twelfth adds history-free certificates for chip-routing networks, one quartic per routing topology, uniform in the initial loads and run lengths, whose unique natural zero carries the exact firing counts (Part~XIV). Three manuscripts of batch~78 add exact port wiring for Lafont's interaction combinators: a sharp $2/5$--$2/3$ bound on how often the parity of the cyclic wires of a random closure tells two perfect matchings apart, bounded six-rule quartic compilers with $O(C_0+F+T)$ coordinates and one witness per legal schedule, built on a ten-pattern annihilation kernel and on variants of Part~V's memory certificate, and a canonical permutation-orbit certificate with an implemented fixed-schedule compiler (Part~XV). A sixteenth, of the same batch, adds abelian sandpiles: for each finite undirected sink graph one cubic, uniform in the initial heights, whose unique natural zero carries the exact odometer and stable endpoint, certified by support burning and canonical burning ranks instead of a toppling history; a one-layer collar extends it to finite global stabilization on $\Z^d$, for which no computable bound on the necessary radius exists, and the eventual period along an input ray is computed exactly (Part~XVI). A second route to that Part, written independently on the same day, replaces the cubic by a system of quadratic residuals and adds a fixed-field normal form: on $\Z^3$, 47 fields with prescribed periodic tails and 60 local quadratic residuals have a unique finite-deviation solution exactly when the sandpile halts globally (Part~XVI, manuscript~19). Two manuscripts of batch~79 extend Part~IV from polynomial to positive-base exponential trajectories: the complete sign chart of $\sum_b P_b(n)b^n$, on a finite horizon or on all of $\N$, has a unique certificate with $D^2+1$ interval slots and $O(D^3)$ quadratic residuals and fixed-base power atoms, independently of the horizon, and an ordinary single-fold quartic for every externally fixed exponent bit bound (Part~XVII). A twentieth measures FIFO computation by a straight-line grammar of its transition trace: for a grammar with $g$ nodes and $c$ concatenations, one quartic with exactly $6g+3c+1$ natural witnesses has one zero if the prescribed trace connects the prescribed queue words and none otherwise; the exact number of repetitions of a closed queue macro has a closed formula, and indefinite repetition of a supplied macro has an ordinary unique-witness quartic of size linear in its grammar (Part~XVIII). A twenty-first certifies eager evaluation in Barry Jay's Tree Calculus: for every externally fixed bound $N$ on the number of distinct calls, one quartic with $3N^2+19N$ natural witnesses describes exactly the terminating applications whose canonical proof DAG has at most $N$ nodes, a refinement has exactly one witness at the exact DAG size, and a strict compiler that reflects call-by-value termination yields a literal universal tree of 175 constructor-DAG nodes (Part~XIX).
 
 Part~IX proves, with proofs from four manuscripts and a sketch in a fifth, that a single-fold (finite-fold) polynomial for universal halting exists exactly when every computably enumerable set has a single-fold (finite-fold) Diophantine representation, which is an open problem that this report does not solve. Part~XIV proves that a single-fold (finite-fold) representation of the graph of one monotone Boolean function computable in polynomial time is equivalent to the same open statement, and Part~XVI restates Part~IX's equivalence for the uniform halting relation of Cairns's three-dimensional sandpiles. Part~XVII proves that already the complete sign-chart graph of $2^n-y$ has a single-fold (finite-fold) ordinary representation exactly when every computably enumerable set has one.
 \end{abstract}
 \vspace{2mm}
 \begin{resultbox}
-\small\textbf{Status.} \wtag{} A merge of twenty AI-assisted, unrefereed manuscripts, six delivered in batch~60, one in batch~61, four in batch~62, one in batch~63, four in batch~78 and four in batch~79 of ProveIt's incoming reports (\cref{cdc:sec:provenance}). The theorems carry ordinary mathematical proofs; the accompanying Python programs perform finite exact checks and are not proofs. No statement of this report is formalized in Lean or Rocq, although the report sits beside ProveIt's formal Hilbert's-tenth-problem project; the project declarations it cites are named in the README. Global priority is not claimed for any construction, and no resolution of the general single-fold or finite-fold problem is claimed. Every manuscript's own status statement is printed in \cref{cdc:sec:manuscripts}.
+\small\textbf{Status.} \wtag{} A merge of twenty-one AI-assisted, unrefereed manuscripts, six delivered in batch~60, one in batch~61, four in batch~62, one in batch~63, four in batch~78 and five in batch~79 of ProveIt's incoming reports (\cref{cdc:sec:provenance}). The theorems carry ordinary mathematical proofs; the accompanying Python programs perform finite exact checks and are not proofs. No statement of this report is formalized in Lean or Rocq, although the report sits beside ProveIt's formal Hilbert's-tenth-problem project; the project declarations it cites are named in the README. Global priority is not claimed for any construction, and no resolution of the general single-fold or finite-fold problem is claimed. Every manuscript's own status statement is printed in \cref{cdc:sec:manuscripts}.
 \end{resultbox}
 \end{titlepage}
 \hypersetup{pageanchor=true}
@@ -283,9 +292,9 @@ The distinction between polynomial representability and finite-fold or single-fo
 
 
 \subsection{How this report is organized}\label{cdc:sec:organization}
-\wtag{} This report merges twenty manuscripts written independently for the same purpose, witness-faithful Diophantine compilation of bounded computation. Six (numbered 01--06 here) were delivered in batch~60 of ProveIt's incoming reports and pin the repository at \texttt{e8bb0931d}; the seventh (07) was delivered in batch~61, pins \texttt{725d2ebb6}, and names manuscripts~04 and~06 as its companions. Four more (08--11) were delivered in batch~62, pin \texttt{4e128356d} (manuscript~11 also names \texttt{ccfb084ad}), and form Parts~X--XIII; they were written without knowledge of this report. Manuscript~12 was delivered in batch~63, pins \texttt{e18718e83} and forms Part~XIV; it too was written without knowledge of this report. Manuscripts 13--15 were delivered together in batch~78, pin \texttt{439c0a2d9}, \texttt{6914ccca6} and \texttt{928ea9701}, and are merged by subject into Part~XV; manuscript~14 cites this report's README, and the other two do not cite the report. Manuscript~16, of the same batch, pins \texttt{928ea9701} and forms Part~XVI; it read manuscript~12's source ledger, not this report's article. Manuscripts 17 and~18 were delivered together in batch~79, both pin \texttt{e58b724c2}, prove one theorem by two routes and are merged in Part~XVII; they read this report's README, not its article. Manuscripts 19 and~20 were delivered in the same batch, pin \texttt{e58b724c2} and \texttt{44983ed7e}, and did not read the article either: manuscript~19 proves the main theorems of Part~XVI again, independently of manuscript~16, and is printed inside Part~XVI as a marked second route, with its own section numbers M19.1--M19.14 so that no number of the report moved; manuscript~20 forms Part~XVIII. Manuscript~05, whose introduction the preceding subsections reproduce, is the base: its trace-class theorem has the weakest hypothesis and the strongest conclusion among the four manuscripts that prove one (\cref{cdc:part:traces}). The twenty titles, abstracts and status statements, and every manuscript's own introduction, are printed in \cref{cdc:sec:manuscripts}; \cref{cdc:sec:provenance} records their archives, pins and commits.
+\wtag{} This report merges twenty-one manuscripts written independently for the same purpose, witness-faithful Diophantine compilation of bounded computation. Six (numbered 01--06 here) were delivered in batch~60 of ProveIt's incoming reports and pin the repository at \texttt{e8bb0931d}; the seventh (07) was delivered in batch~61, pins \texttt{725d2ebb6}, and names manuscripts~04 and~06 as its companions. Four more (08--11) were delivered in batch~62, pin \texttt{4e128356d} (manuscript~11 also names \texttt{ccfb084ad}), and form Parts~X--XIII; they were written without knowledge of this report. Manuscript~12 was delivered in batch~63, pins \texttt{e18718e83} and forms Part~XIV; it too was written without knowledge of this report. Manuscripts 13--15 were delivered together in batch~78, pin \texttt{439c0a2d9}, \texttt{6914ccca6} and \texttt{928ea9701}, and are merged by subject into Part~XV; manuscript~14 cites this report's README, and the other two do not cite the report. Manuscript~16, of the same batch, pins \texttt{928ea9701} and forms Part~XVI; it read manuscript~12's source ledger, not this report's article. Manuscripts 17 and~18 were delivered together in batch~79, both pin \texttt{e58b724c2}, prove one theorem by two routes and are merged in Part~XVII; they read this report's README, not its article. Manuscripts 19 and~20 were delivered in the same batch, pin \texttt{e58b724c2} and \texttt{44983ed7e}, and did not read the article either: manuscript~19 proves the main theorems of Part~XVI again, independently of manuscript~16, and is printed inside Part~XVI as a marked second route, with its own section numbers M19.1--M19.14 so that no number of the report moved; manuscript~20 forms Part~XVIII. Manuscript~21, of the same batch, names no ProveIt commit (its only pin is Barry Jay's Tree Calculus repository) and cites neither the repository nor this report; it forms Part~XIX. Manuscript~05, whose introduction the preceding subsections reproduce, is the base: its trace-class theorem has the weakest hypothesis and the strongest conclusion among the four manuscripts that prove one (\cref{cdc:part:traces}). The twenty-one titles, abstracts and status statements, and every manuscript's own introduction, are printed in \cref{cdc:sec:manuscripts}; \cref{cdc:sec:provenance} records their archives, pins and commits.
 
-After the conventions (\cref{cdc:conv:sec}), the material is arranged by subject in eighteen Parts:
+After the conventions (\cref{cdc:conv:sec}), the material is arranged by subject in nineteen Parts:
 \begin{center}
 \small
 \begin{tabularx}{\textwidth}{@{}lXl@{}}
@@ -310,10 +319,11 @@ XV & Interaction combinators: exact wiring, loop-exact gluing and bounded quarti
 XVI & Sandpile certificates: cubic polynomials and quadratic systems, spatial closure, fixed fields and exact periods (\cref{cdc:part:sandpile}) & 16; 19 (second route)\\
 XVII & Exponential trajectories: positive-spectrum sign charts and the order-two power boundary (\cref{cdc:part:exp}) & 17, 18\\
 XVIII & Compressed queue traces: grammar-size quartics, exact macro repetition and infinite-loop certificates (\cref{cdc:part:cqueue}) & 20\\
+XIX & Eager Tree Calculus: exact quartic proof-DAG certificates and a literal universal tree (\cref{cdc:et:part}) & 21\\
 \bottomrule
 \end{tabularx}
 \end{center}
-The back matter collects each manuscript's implementation and validation record (\cref{cdc:sec:validation}), its formalization proposals (\cref{cdc:sec:formal}), the merged research questions (\cref{cdc:sec:questions}), the remaining conclusions, the manuscripts' appendices, the provenance record and one merged bibliography. These back-matter sections cover manuscripts 01--07; each of Parts~X--XIV is one of manuscripts 08--12 in its own order, closing with that manuscript's validation, formalization plan, research questions, conclusion and appendices. Part~XV merges manuscripts 13--15 by subject and closes with their validation, research questions, conclusions and appendices. Part~XVI is manuscript~16 in its own order, with its validation, formalization route, research questions and conclusion, followed by manuscript~19 as a marked second route (Sections M19.1--M19.14), manuscript~16's appendices and manuscript~19's (M19.A--M19.B). Part~XVII prints manuscript~17 and then manuscript~18 as a second route, followed by a comparison, both question lists, both conclusions and both appendices. Part~XVIII is manuscript~20 in its own order, closing with its validation, formalization path, research questions, conclusion and appendices.
+The back matter collects each manuscript's implementation and validation record (\cref{cdc:sec:validation}), its formalization proposals (\cref{cdc:sec:formal}), the merged research questions (\cref{cdc:sec:questions}), the remaining conclusions, the manuscripts' appendices, the provenance record and one merged bibliography. These back-matter sections cover manuscripts 01--07; each of Parts~X--XIV is one of manuscripts 08--12 in its own order, closing with that manuscript's validation, formalization plan, research questions, conclusion and appendices. Part~XV merges manuscripts 13--15 by subject and closes with their validation, research questions, conclusions and appendices. Part~XVI is manuscript~16 in its own order, with its validation, formalization route, research questions and conclusion, followed by manuscript~19 as a marked second route (Sections M19.1--M19.14), manuscript~16's appendices and manuscript~19's (M19.A--M19.B). Part~XVII prints manuscript~17 and then manuscript~18 as a second route, followed by a comparison, both question lists, both conclusions and both appendices. Part~XVIII is manuscript~20 in its own order, closing with its validation, formalization path, research questions, conclusion and appendices. Part~XIX is manuscript~21 in its own order, closing with its reproducibility record, six research questions, closing remarks and appendices.
 
 A result proved by several manuscripts is printed once, at the place named in \cref{cdc:sec:provenance}, and credits every manuscript that proves it; a genuinely different proof or construction of the same result is kept as a marked second route. Two such mergers change the shape of the text: the universal-halting equivalence is one theorem, \cref{cdc:bd:thm:universal}, and the absence of a computable witness-height bound is one proposition, \cref{cdc:bd:prop:nobound}. At the places where the other manuscripts stated them, a note points to the merged statement and the manuscript's own proof follows.
 
@@ -771,7 +781,7 @@ Consequently an $O(T)$ circuit need not expand to $O(T)$ monomials. For example,
 The horizon $T$, the input word, and the program are parameters of the \emph{construction}, not additional unknowns. A symbol such as $2^T$ is an integer coefficient computed before solving the equation. Products indexed by $i<T$ are finite syntactic products for that particular polynomial.
 
 
-\section{The twenty manuscripts}\label{cdc:sec:manuscripts}
+\section{The twenty-one manuscripts}\label{cdc:sec:manuscripts}
 \wtag{} Each subsection below gives one manuscript's title, author line and date as delivered, its abstract and status statement verbatim, and then its own introduction (except manuscript~05's, which is \cref{cdc:sec:intro}). The introductions describe each manuscript's results in its own terms and numbering-free words; where they name a theorem, the reference points to where this report prints it.
 
 \subsection{Manuscript 05 (base): Canonical Trace Polytopes}\label{cdc:sec:ms05}
@@ -3039,6 +3049,85 @@ These results are independently proved constructions. Whether their exact
 combination or optimal constants are new in the wider literature remains
 an open bibliographic question; the manuscript does not equate an
 unverified priority claim with a proved mathematical statement.
+
+
+% ---- batch 79 (cluster J2): manuscript 21 (batch-79 manuscript 17) ----
+\subsection{Manuscript 21: Eager Tree Calculus}\label{cdc:et:sec:ms}
+\srcnote{\wtag{} Manuscript~21 was delivered in batch~79 of ProveIt's incoming reports (arrival commit \texttt{aebfa386e}) and placed by \texttt{a7ae02511} (batch~79, cluster J2), after Parts~XVII and~XVIII had been placed; this subsection gives its title page, abstract and Section~1. Title-page heading ``Research report, 2 October 2026''; title ``Eager Tree Calculus''; subtitle ``Exact quartic proof-DAG certificates, operational universality, and binary sharing compression''; ``Prepared for Vladimir Reshetnikov'' (its PDF metadata reads ``Research report prepared for Vladimir Reshetnikov''; it names no AI assistant); running heads ``Eager Tree Calculus'' and ``Exact certificates and universality''. It names no ProveIt commit: its only pin is the upstream commit \texttt{baa877d916eb640280ed2df7ef4385ecd5957d19} of Barry Jay's Tree Calculus repository, and it cites neither ProveIt nor this report. Batch~79, manuscript~17 (\path{Eager_Tree_Calculus_Research_Package.zip}, inner directory \path{eager-tree-certificates}; 30-page PDF). Printed here (the title-page box, the title-page status lines, abstract and Section~1) and in Part~XIX (Sections 2--12 and Appendices A--B, \cref{cdc:et:part}); its verification note is shipped as \path{21-eager-tree-VERIFICATION.md}. In this report ``manuscript~17'' means the batch-79 source of Part~XVII, not this one.}
+
+\begin{resultbox}
+\small
+% ---- manuscript 21, lines 58-67 ----
+\textbf{Main result.} For every externally fixed $N\geq1$, one explicit quartic polynomial over natural witnesses describes exactly the terminating applications whose canonical proof DAG has at most $N$ nodes. It uses $3N^2+19N$ witnesses and $23N+3$ quadratic residuals. Pointer lookup, local shape constraints, well-foundedness, and exact unfolded call cost are all charged.
+
+\medskip
+\textbf{Canonical refinement.} Positive occurrence flow and ordered call keys give exactly one natural witness at the exact DAG size. This family still has externally varying arity.
+
+\medskip
+\textbf{Operational frontend.} A strict compiler preserves and reflects weak call-by-value termination. A literal fixed universal tree has 175 constructor-DAG nodes, with its enormous numerical code charged through 175 quadratic equations.
+
+\medskip
+\textbf{Sharing theorem.} A different fixed program admits a unary-input family with exponentially many unfolded calls but $O(n^2)$ total natural-witness bits, with a very large fixed constant explicitly retained.
+\end{resultbox}
+
+\noindent{\small
+% ---- manuscript 21, lines 71-73 ----
+Semantics pinned to Barry Jay's original repository, commit\par
+\texttt{baa877d916eb640280ed2df7ef4385ecd5957d19}.\par
+Ordinary mathematical proofs and executable independent checks. No proof-assistant verification, fixed-arity universal polynomial, arithmetic record, or priority claim is made.
+\par}
+
+\paragraph{Abstract.}
+% ---- manuscript 21 (batch-79 manuscript 17), line 78 ----
+We give a direct arithmetization of finite eager value-application proofs in the original Tree Calculus. A bijection between finite tree values and natural numbers makes all constructor constraints quadratic. Natural one-hot selectors implement every premise lookup, while additive call-cost equations prohibit circular proofs and retain the exact weight of their unfolded derivations. The resulting sum of squares has degree exactly four. A canonical refinement adds positive occurrence flow and call ordering to obtain empty-or-singleton natural fibers at exact DAG size. We prove exact soundness and completeness relative to an external bound on the number of distinct calls, establish a termination-reflecting compiler from weak call-by-value lambda calculus, and exhibit a literal fixed universal tree. We then distinguish two kinds of sharing: a simple family compresses proof rows but has exponentially large input codes, whereas a separately specified fixed program gives genuine asymptotic binary-witness compression. The latter is certified by finite symbolic kernel proofs and induction, although its fixed scalar program code itself occupies hundreds of gigabytes. Complete generators, literal constructor DAGs, certificate fixtures, independent checkers, and reproducible receipts accompany this report.
+
+\srcnote{\wtag{} The package is shipped with this report: its nineteen programs and the two drivers \path{reproduce.py} and \path{build_pdf.py} as \path{code/21-eager-tree-*}; the 26 JSON fixtures and receipts, the S-expression \path{literal_universal_tree.sexpr}, \path{sources.json} and \path{requirements-optional.txt} as \path{data/21-eager-tree-*}; and \path{VERIFICATION.md} as \path{21-eager-tree-VERIFICATION.md}. The manuscript's \path{eager-tree-certificates.tex} and PDF, its \path{README.md}, the checksum ledger \path{MANIFEST.sha256} (verified, 55 of 55 entries, and retired) and its checker \path{verify_manifest.py} are not shipped; its text is this subsection and Part~XIX.}
+
+% ---- manuscript 21, lines 83-124 ----
+\srcnote{\wtag{} [Section~1 of manuscript~21, ``Results, conventions, and exact scope''; its three subsections follow.]}
+
+\subsubsection{The main results}\label{cdc:et:sec:overview}
+Throughout, $\N=\{0,1,2,\ldots\}$. Tree values are finite objects; numerical witnesses are natural integers. Signed polynomial residuals are allowed, and a residual can be negative away from its zero set.
+
+The central certificate theorem is the following statement, proved in Section~\ref{cdc:et:sec:polynomial}:
+\begin{equation}\label{cdc:et:eq:mainintro}
+\exists\mathbf w\in\N^{3N^2+19N}\ P_N(p,n,o;\mathbf w)=0
+\quad\Longleftrightarrow\quad
+\ev{p}{n}{o}\ \text{and}\ D(p,n)\leq N.
+\end{equation}
+Here $E$ denotes the exact eager relation transported to natural codes, $D$ is the number of distinct input pairs in its unique finite evaluation, and $N\geq1$ is fixed \emph{outside} the formula. The polynomial is the sum of squares of $23N+3$ explicitly listed residuals of degree at most two.
+
+A canonical refinement additionally has exactly one natural witness when $N$ equals the exact number of distinct calls, and no witness otherwise. For $N\geq2$ it uses $3N^2+22N-3$ coordinates and $31N$ residuals. It retains external, varying arity.
+
+The operational result supplies an exact universality interface. There is a specific finite tree $U$ and a computable compiler $\operatorname{IN}$ on closed lambda terms such that
+\begin{equation}\label{cdc:et:eq:uintro}
+\exists w\ \ev{U}{\operatorname{IN}(m)}{w}
+\quad\Longleftrightarrow\quad m\ \text{terminates under weak left-to-right CBV}.
+\end{equation}
+The output is an interpreted closure; it is not stipulated to equal a fixed numeral. The all-natural input domain of $U$ is recursively enumerable complete under computable many-one reductions.
+
+Finally, a sharing result separates proof size from integer-code size. For another literal fixed tree $R$, unary stem inputs $v_n=\Stem^n(\Leaf)$ satisfy
+\begin{equation}\label{cdc:et:eq:rintro}
+\ev{R}{v_n}{I},\qquad H_n=562\cdot2^n-468,
+\qquad D_n=64n+113\quad(n\geq2).
+\end{equation}
+The two base sizes are $D_0=44$ and $D_1=179$. The resulting natural witnesses have $O(n^2)$ total binary length. The fixed constant in this bound is enormous and explicitly counted.
+
+\subsubsection{Four quantities that must not be conflated}
+\begin{enumerate}
+\item A \emph{constructor tree} represents one finite value. Its constructor DAG may share repeated subtrees.
+\item An \emph{application proof DAG} represents a terminating computation. Its edges are ordered premise occurrences; equal children can occur more than once.
+\item A \emph{scalar natural code} represents a constructor tree by repeated polynomial pairing. Its binary length can be exponential in the size of a compact tree description.
+\item An \emph{arithmetic circuit} evaluates polynomial residuals. Unit-cost gate counts do not measure bit operations on their possibly enormous integer operands.
+\end{enumerate}
+A small object in the first or second sense need not be small in the third or fourth. Every resource claim below identifies the quantity being bounded.
+
+\subsubsection{Source version and attribution}
+The value grammar and five eager cases are pinned to Jay's original source~\cite{jaykernel,jayreflective,jaytree}. The current \texttt{treecalcul.us} implementation and the later \texttt{disp-lang} presentation are not used to substitute different rules. The original Coq quotient equality, conventionally written \texttt{===}, is also not an eager-termination relation. In particular, an equation-preservation result in \code{Extensional_Programs.v} does not alone provide the reflection direction in~\eqref{cdc:et:eq:uintro}. Section~\ref{cdc:et:sec:compiler} proves that direction operationally.
+
+The core implementations and ordinary replay use only the Python standard library; optional symbolic checks additionally use SymPy. No release implementation imports or executes upstream Tree Calculus code. Primary sources establish the provenance and the standard CBV universality input~\cite{dallago}. The proofs and explicit certificate construction below are given in this report. No exhaustive novelty search or priority assertion is implied.
+
+\srcnote{\wtag{} Batch~79, 2 October 2026. Manuscript~21 inspected no ProveIt file and cites neither the repository nor this report; the opening of Part~XIX (\cref{cdc:et:part}) relates it to the conventions and to Parts~V, VII and~IX. The research tree's review \cite{repo-etrev} checked the five eager rules against the pinned Rust source cited here.}
 
 % [write] batch 78: restore the global equation counter.
 \counterwithout{equation}{subsection}
@@ -10795,6 +10884,8 @@ For horizon $T$ and a maximum context depth $D$, construct a certificate with $\
 \end{question}
 
 \emph{Source 04.} The fixed-schedule theorem is not this result. A direct disjunction over all paths of length at most $D$ has exponentially many branches. A prospective construction should choose one direction bit per active depth, enforce one canonical stopping point, and force all unused suffix variables to zero. It must also guarantee that a shorter path does not acquire many padded encodings. An even stronger version would choose a canonical reduction strategy, rather than count arbitrary schedules.
+
+\wtag{} Batch~79, 2 October 2026: Source~01 is answered in part, for another calculus, by Part~XIX (manuscript~21). For Barry Jay's eager Tree Calculus it supplies the three milestones named there: term validity is automatic, because the coding of tree values is a bijection onto $\N$ with quadratic constructor equations (\cref{cdc:et:lem:bijection}); the evaluation-strategy-specific reflection theorem is a strict compiler from weak left-to-right call-by-value lambda calculus that preserves and reflects termination (\cref{cdc:et:thm:adequacy}); and the canonical certificate has exactly one natural witness at the exact size of the memoized proof DAG, with every pointer lookup charged (\cref{cdc:et:thm:canonical}). It treats neither SKI nor Iota, nor the repository's two lambda models, and its arity grows with an external bound on the number of distinct calls. Source~04 is only touched: Part~XIX avoids schedules altogether, certifying the big-step proof DAG with $\Theta(N^2)$ selector coordinates, and gives no bijection with scheduled SKI reductions.
 
 \begin{question}[Faithful graph-rewriting front ends; source 05]\label{cdc:q:graphfront}
 Can bounded term-graph or interaction-net histories be compiled with a canonical node-allocation discipline and a proved commutation quotient that respects shared substructure?
@@ -30432,6 +30523,1078 @@ regenerated from the shipped code with a fixed seed; it is evidence that
 the stated examples and finite domains were checked, not a substitute
 for soundness, completeness, or uniqueness proofs.
 
+
+% ---- batch 79 (cluster J2): Part XIX, manuscript 21 (batch-79 manuscript 17) ----
+\part{Eager Tree Calculus: exact quartic proof-DAG certificates and a literal universal tree}\label{cdc:et:part}
+
+\paragraph{Source and scope.} \wtag{} This Part is manuscript~21, ``Eager Tree Calculus: Exact quartic proof-DAG certificates, operational universality, and binary sharing compression'' (batch~79, manuscript~17; archive \path{Eager_Tree_Calculus_Research_Package.zip}, inner directory \path{eager-tree-certificates}; arrival commit \texttt{aebfa386e}; no ProveIt pin, Jay's upstream commit \texttt{baa877d91} pins the semantics; placed by \texttt{a7ae02511}; shipped files prefixed \path{21-eager-tree-}; labels \texttt{cdc:et:}). It prints the manuscript's Sections 2--12 and its two appendices in their own order: a natural coding bijection of Jay's tree values with quadratic constructor equations (\cref{cdc:et:lem:bijection,cdc:et:prop:codegrowth}); the five eager value-application rules and their deterministic costs (\cref{cdc:et:def:kernel,cdc:et:lem:determinism}); proof DAGs, additive call costs as a well-foundedness certificate, the canonical reachable quotient and a cyclic counterfeit (\cref{cdc:et:lem:height,cdc:et:prop:canonical}); the fully charged quartic with $3N^2+19N$ natural witnesses and $23N+3$ quadratic residuals for an externally fixed bound $N$ on the number of distinct calls (\cref{cdc:et:thm:certificate}) and its literal gate ledger (\cref{cdc:et:prop:ledger}); a strict bracket-abstraction compiler from weak left-to-right call-by-value lambda calculus that preserves and reflects termination (\cref{cdc:et:lem:abstraction,cdc:et:thm:adequacy}); a counter-program frontend, a quoted-syntax interpreter and a literal universal tree $U$ of 175 constructor-DAG nodes with an r.e.-complete halting domain (\cref{cdc:et:prop:counter,cdc:et:lem:interpreter,cdc:et:thm:universal}), whose scalar code is charged by 175 quadratic equations (\cref{cdc:et:cor:universalpoly}); canonical certificates with empty-or-singleton natural fibres at the exact DAG size (\cref{cdc:et:thm:canonical}); row compression versus binary compression, with a fixed 108-node program $R$ whose unary inputs have $\Theta(2^n)$ unfolded calls, $O(n^2)$ witness bits and exact canonical DAG size $64n+113$ (\cref{cdc:et:thm:binarysharing,cdc:et:thm:exactgrowth}), and a general counting principle for instantiated unary templates (\cref{cdc:et:prop:unarytemplates}); the reproducibility record, six research questions and the closing remarks; and, as appendices, the two literal constructor tables and the artifact index. Its title page, abstract and Section~1 are \cref{cdc:et:sec:ms}; the conventions of this Part are \cref{cdc:et:conv}.
+
+\paragraph{Relation to the other Parts.} \wtag{} Manuscript~21 names no ProveIt commit and cites neither the repository nor this report; it re-proves no theorem printed above, but it uses devices of the conventions and of Parts~V and~VII, and its closing remarks allude to their certificates without a reference (the note after them names them).
+\begin{itemize}
+\item \emph{Part~VII.} The scheduled SKI compiler (\cref{cdc:wf:thm:ski}) and its rewriting corollary (\cref{cdc:wf:cor:rewrite}) certify small-step, context-closed reduction along an \emph{external} schedule, with a unique witness. Manuscript~21 certifies a different object in a different calculus: the memoized big-step proof DAG of Jay's eager Tree Calculus, with no schedule (the DAG is existential, its lookups paid by one-hot selectors, its acyclicity by additive costs), with nonunique witnesses in the base family and canonical uniqueness only at the exact DAG size. Its constructor code is Part~VII's pairing device in another alphabet: $f(a,b)=2\pi(a,b)+2$ with $\pi$ the Cantor pairing of \cref{cdc:wf:lem:treecode} (compare \cref{cdc:ct:lem:pair}), stems taking the odd codes. Its growth bound (\cref{cdc:et:prop:codegrowth}) is the qualification of \cref{cdc:wf:prop:ski-height}, with a matching $\Theta(2^k)$ lower bound added, and the sentence that follows that proposition, that better tree or DAG encodings are a concrete research target, is manuscript~21's first question (\cref{cdc:et:q:pairing}); the binary-sharing theorem (\cref{cdc:et:thm:binarysharing}) is a partial step for one fixed program, while the scalar code overhead stays enormous.
+\item \emph{Part~V.} The remark after \cref{cdc:mem:cor:graph} observes that the family $D_{j+1}=\app(D_j,D_j)$ has $j+1$ graph nodes and $2^j$ leaves; manuscript~21's family $a_k$ (\cref{cdc:et:sec:sharing}) makes the same observation for proof rows and shows that it is not a binary compression, and its fixed program $R$ gives one. Part~V's memory-log certificates (\cref{cdc:mem:thm:memory,cdc:mem:thm:linear-memory}) are the kind of charged addressing codec that its second question asks for in place of the $\Theta(N^2)$ selector matrix (\cref{cdc:et:q:lookup}).
+\item \emph{Conventions.} The inactive-field equations \eqref{cdc:et:eq:inactive} are the branch-activation device of \cref{cdc:wf:lem:activation} (manuscript~04's, printed with the conventions).
+\item \emph{Part~IX.} The base and canonical families have an arity that grows with the external $N$, and the manuscript claims no fixed-arity, single-fold or finite-fold representation; that question is \cref{cdc:bd:thm:universal} and \cref{cdc:q:compression}. The Part answers in part, for another calculus, the first source of \cref{cdc:q:ski} and bears on its fourth; see the dated note there.
+\end{itemize}
+ProveIt's Hilbert's-tenth-problem research tree, maintained separately, reviewed this archive on the day it arrived \cite{repo-etrev}: it finds no theorem-level defect, confirms the five eager rules against Jay's pinned source, reproduces the counts, the exact degree, the universal tree's bit interval and the growth formulas, refines the bit interval of $R$, and reports one defect of the evaluator's input boundary with a tested patch that is not applied to the shipped programs; the note after \cref{cdc:et:prop:ledger} and the notes at \eqref{cdc:et:eq:rbits} and in \cref{cdc:et:sec:reproduce} give the details.
+
+\paragraph{Setting and hypotheses.} \wtag{} Finite tree values of Jay's original Tree Calculus and its five eager value-application rules, pinned to his commit \texttt{baa877d91}; later dialects and the equational quotient of his Coq development are not used. Witnesses range over $\N$; uniqueness is claimed only over $\N$, never over $\Z$ or the nonnegative reals, and only at the exact canonical DAG size. The bound $N$ on distinct calls is fixed \emph{outside} each formula, so each theorem is a family of polynomials of growing arity; the theorems bound numbers of witnesses and residuals, the degree and unit-cost gate counts, not the bit lengths of the witnesses, which can be exponential, and the fixed codes of $U$ and $R$ (about $4.5\cdot10^{10}$ and more than $1.39\cdot10^{12}$ bits) are charged by constructor circuits and never materialized. Input loading is a computable reduction, not an uncharged polynomial. Nothing here is a fixed-arity universal polynomial, a single-fold or finite-fold MRDP theorem, an improvement of the project's 75- and 87-operation bounds, or a Lean or Rocq development.
+
+\section{Conventions of Part~XIX}\label{cdc:et:conv}
+\wtag{} The letters are manuscript~21's. Its macro \verb|\code| for the coding map is typeset with \verb|\tcode| (same glyph, $\tcode$), because this report's \verb|\code| prints file and declaration names; its \verb|\file| for file names is this report's \verb|\code| (the same definition); its closure macro \verb|\cl| is typeset with \verb|\clos| (same glyph), because this report's \verb|\cl| is manuscript~04's closure operator; its \verb|\eqtag| (upright rule names in the kernel display) is written out. \verb|\Leaf|, \verb|\Stem|, \verb|\Fork|, \verb|\Apply|, \verb|\FV| and \verb|\ev| are added to the preamble with their meanings. The tempting false readings are to read $K$, $I$ and $\mathsf S$ as the SKI combinators of Part~VII (here $K=\Stem(\Leaf)$ and $I$ are Tree Calculus values with codes $1$ and~$10$, and $\Stem$ is a constructor), to read $f$ as Part~VII's $\App$ (both are Cantor pairing shifted, by different affine maps), and to read $H$ as Part~VII's total context depth (here it is an unfolded call cost).
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.75\textwidth}@{}}
+\toprule
+Symbol & Meaning in Part~XIX, and the clash\\
+\midrule
+\endhead
+manuscript 21 & batch~79's manuscript~17. In this report ``manuscript~17'' always means the batch-79 source of Part~XVII.\\
+$\Leaf$, $\Stem$, $\Fork$; $\Apply$ & the three constructors of tree values (sans-serif L, S, F) and, in \cref{cdc:et:sec:compiler} only, computational application. $\Stem$ is not Part~VII's combinator $S$; manuscript~19's shift $\shift$ and Part~XVIII's resource output $\sur$ print with the same glyph and are unrelated.\\
+$K$, $I$, $K_\Leaf$, $\omega$, $\Omega$ & the Tree Calculus values $\Stem(\Leaf)$ and $\Fork(\Stem(\Leaf),\Stem(\Leaf))$ (codes $1$, $10$), $\Fork(\Leaf,\Leaf)$, the divergent tree of \cref{cdc:et:sec:dag} and the lambda term $(\lambda x.x\,x)(\lambda x.x\,x)$. Not the SKI combinators $K$, $I$ of Part~VII (codes $1$, $2$ there).\\
+$\tcode$, $s(a)=2a+1$, $f(a,b)$ & the coding bijection of \cref{cdc:et:lem:bijection}, with $f(a,b)=(a+b)(a+b+1)+2b+2=2\pi(a,b)+2$. Part~VII's SKI code is $\App(\ell,r)=3+\pi(\ell,r)$ (\cref{cdc:wf:lem:treecode}); Part~XIV's pairing is $\pi_{\mathrm C}$.\\
+$E$, $\ev{x}{y}{z}$ & the exact eager value-application relation of \cref{cdc:et:def:kernel}. Not an edge set or a number of adjacent pairs (Part~XVI), nor Part~VII's equation count $E_{\mathrm{SKI}}$.\\
+$D(x,y)$, $D_n$ & the number of nodes of the canonical reachable proof DAG (\cref{cdc:et:prop:canonical}). Not Part~XVII's order $D$ nor the context depth $D$ of \cref{cdc:q:ski}.\\
+$N$; $W_N$, $P_N$, $C_N$, $P^U_N$ & the externally fixed bound on proof rows; the witness count, the base quartic, the canonical sum of squares, the fixed-$U$ quartic. $C$ alone is the compiler of \cref{cdc:et:sec:compiler}, and Part~VII's $C(n,\ell,r)$ is its application residual.\\
+$H$, $h_i$, $H_n$ & unfolded call costs. Not Part~VII's total context depth $H$, nor Part~XVIII's chain length.\\
+$t_{i,a}$, $\delta_{i,s,\ell}$, $r$; $j_i$, $k_i$ & one-hot rule tags, premise selectors and $r=t_3+t_4$; the scalar fields $j_i,k_i$ are not row indices.\\
+$\kappa_i,\sigma_i,\rho_i,\mu_i$ & keys, gaps, flow slacks and path counts of \cref{cdc:et:sec:canonical}; $\rho$ alone is an environment in \cref{cdc:et:sec:compiler}.\\
+$B_x$, $B_*$, $B_n$, $B$ & bracket abstraction, the fixed bit constant $4\,688\,954\,427\,625$, a witness width, and the set of ground calls of a base proof; $B_i(\mathit{loop})$ are instruction branches. Not a radix or a set of bases.\\
+$U$, $U_\lambda$, $R$, $\mathcal U_m$ & the literal universal tree and its lambda source, the fixed sharing program, an instantiated template union. Part~XIV's $\mathcal U$ is its universal one-router system and Part~XVIII's a universal queue program.\\
+$C$, $J$, $Q$, $\operatorname{IN}$, $Z$, $\Phi$ & the compiler, the closure encoding, quoted syntax, the input map, the CBV fixed-point combinator and the interpreter body of \cref{cdc:et:sec:compiler,cdc:et:sec:universal}; $Q_i$ are label selectors.\\
+$M$, $A$ & multiplication and addition-class gates of a literal ledger. Not Part~XVIII's residual count $M$.\\
+\bottomrule
+\end{longtable}
+\endgroup
+No other symbol is renamed. Manuscript~21's \verb|\N|, \verb|\Z| and \verb|\bits| are this report's. Where it names its own files in prose and in its artifact index, the delivered names are kept and notes give the shipped names. ``Appendix~A'' and ``Appendix~B'' in its text are the last two sections of this Part. Equations are numbered within sections.
+
+% ---- manuscript 21, lines 126-974 ----
+\section{Natural coding of tree values\srctag{21}}
+\label{cdc:et:sec:coding}
+\begin{definition}
+The algebra of tree values is freely generated by
+\[
+T::=\Leaf\mid\Stem(T)\mid\Fork(T,T).
+\]
+Its natural encoding is
+\begin{align}
+\tcode(\Leaf)&=0,\label{cdc:et:eq:leafcode}\\
+\tcode(\Stem(A))&=s(\tcode(A)),& s(a)&=2a+1,\label{cdc:et:eq:stemcode}\\
+\tcode(\Fork(A,B))&=f(\tcode(A),\tcode(B)),&
+f(a,b)&=(a+b)(a+b+1)+2b+2.\label{cdc:et:eq:forkcode}
+\end{align}
+We freely identify values with their natural codes when the interpretation is clear. Thus $\ev{x}{y}{z}$ may use either trees or codes.
+\end{definition}
+
+\begin{lemma}[Bijection]\label{cdc:et:lem:bijection}
+The map $\tcode$ is a bijection from finite tree values to $\N$. Every child code is strictly smaller than its parent code.
+\end{lemma}
+\begin{proof}
+The leaf has code zero, stems have exactly the positive odd codes, and forks have positive even codes. An odd $n$ has unique child $(n-1)/2<n$. For an even $n\geq2$, put $q=(n-2)/2$. There is a unique $w\in\N$ with
+\[
+\frac{w(w+1)}2\leq q<\frac{(w+1)(w+2)}2.
+\]
+Set $b=q-w(w+1)/2$ and $a=w-b$. Then $0\leq b\leq w$, $a\geq0$, and $f(a,b)=n$. Uniqueness is the usual diagonal decomposition of Cantor pairing. Directly, $f(a,b)>a$ and $f(a,b)>b$ for all $a,b\in\N$. Recursive decoding therefore terminates. Induction on a code proves that it decodes uniquely, and structural induction on a tree proves that decoding its encoding recovers that tree.
+\end{proof}
+
+The certificate uses only the linear equation for $s$ and the quadratic equation for $f$. Division and square roots occur only in an external decoder, never as primitive operations in the polynomial.
+\srcnote{\wtag{} [The coding is the pairing device of Part~VII (\cref{cdc:wf:lem:treecode}; compare \cref{cdc:ct:lem:pair}) for a three-constructor alphabet: $f(a,b)=2\pi(a,b)+2$ for the Cantor pairing $\pi(a,b)=\frac12(a+b)(a+b+1)+b$, and the stems take the odd codes.]}
+
+\begin{proposition}[Representation growth]\label{cdc:et:prop:codegrowth}
+There are $k$-node constructor chains whose codes have $\Theta(2^k)$ bits. Conversely, if $q$ is an already supplied natural code and its decoded tree has $t$ nonleaf constructor occurrences, then
+\[
+t\leq\log_2(q+1).
+\]
+\end{proposition}
+\begin{proof}
+For the first assertion, let $b_0=0$ and $b_{k+1}=f(b_k,0)=b_k^2+b_k+2$. After a fixed initial segment, taking logarithms gives $\log b_{k+1}=2\log b_k+O(1)$, with a positive lower bound on $\log b_k$; hence $\log b_k=\Theta(2^k)$.
+
+For the second assertion prove $q+1\geq2^t$ by structural induction. A stem doubles its child's code plus one. For a fork,
+\[
+f(a,b)+1-2(a+1)(b+1)=a(a-1)+b(b+1)+1\geq1.
+\]
+Combining the child bounds gives $f(a,b)+1\geq2^{1+t_A+t_B}$, as required.
+\end{proof}
+
+The decoder-size upper bound does not make a source-to-code compiler efficient. The direction of the map matters: construction by nested pairing can create an enormous code even when its source syntax is small.
+\srcnote{\wtag{} [The first assertion makes the qualification of \cref{cdc:wf:prop:ski-height} sharp for this code: already chains of $k$ constructors have codes of $\Theta(2^k)$ bits.]}
+
+\section{The exact eager application relation\srctag{21}}
+\label{cdc:et:sec:kernel}
+\begin{definition}[Five rules]\label{cdc:et:def:kernel}
+Let $E$ be the least relation generated by the following rules:
+\begin{align}
+\ev{\Leaf}{y}{\Stem(y)},&&\textup{leaf}\label{cdc:et:eq:k0}\\
+\ev{\Stem(a)}{y}{\Fork(a,y)},&&\textup{stem}\label{cdc:et:eq:k1}\\
+\ev{\Fork(\Leaf,b)}{y}{b},&&\textup{constant}\label{cdc:et:eq:k2}
+\end{align}
+\begin{equation}\label{cdc:et:eq:k3}
+\frac{\ev{b}{y}{u}\qquad\ev{a}{y}{v}\qquad\ev{u}{v}{z}}
+{\ev{\Fork(\Stem(a),b)}{y}{z}},
+\end{equation}
+\begin{equation}\label{cdc:et:eq:k4}
+\frac{\ev{y}{a}{u}\qquad\ev{u}{b}{z}}
+{\ev{\Fork(\Fork(a,b),c)}{y}{z}}.
+\end{equation}
+The recursive premises are processed in the displayed order. Rule~\eqref{cdc:et:eq:k4} does not use $c$ after establishing the function's shape.
+\end{definition}
+
+The input operands in each $E$ judgment are already values. For compound application syntax, both the function and the argument must first be evaluated eagerly. A result obtainable only by discarding an unevaluated divergent argument is not a result of this relation.
+
+\begin{definition}[Unfolded call cost]
+Every occurrence of a rule counts once. A leaf, stem, or constant inference has cost $1$; a recursive inference has cost
+\[
+H=1+\sum_{\text{premise occurrences}}H_j.
+\]
+Duplicate premise occurrences contribute separately. The count includes the leaf and stem application cases; it is neither a machine-instruction count nor a count restricted to selected rewrite contractions.
+\end{definition}
+
+\begin{lemma}[Determinism and canonical cost]\label{cdc:et:lem:determinism}
+For a fixed input pair $(x,y)$, any two finite derivations of $E$ have the same result, the same ordered immediate premise input pairs, and the same unfolded call cost.
+\end{lemma}
+\begin{proof}
+The unique tree decomposition fixes the root rule. Induct on one finite derivation and invert the second. The first three rules force the output immediately. In rule~\eqref{cdc:et:eq:k3}, compare the first premises to obtain the same $u$, then the second premises to obtain the same $v$, then compare the final premises on the now identical pair $(u,v)$. The induction hypothesis equates the three output costs, so their sums agree. In rule~\eqref{cdc:et:eq:k4}, the first premise fixes $u$ before the second pair can be compared; the same argument applies. All induction appeals use proper subderivations of the first derivation.
+\end{proof}
+
+\section{Proof DAGs, exact costs, and circular counterfeits\srctag{21}}
+\label{cdc:et:sec:dag}
+A proof DAG consists of finitely many rows labeled $(x_i,y_i,z_i)$, one kernel case per row, and an ordered list of pointers to its required premises. Row order need not be topological. The root may come first. Duplicate pointers are allowed. Extra rows need not be reachable from the root.
+
+\begin{lemma}[Cost is a well-foundedness certificate]\label{cdc:et:lem:height}
+Suppose every row satisfies its local kernel inference and carries a natural number $h_i$ satisfying
+\begin{equation}\label{cdc:et:eq:height}
+h_i=1+\sum_{j\text{ in the premise list of }i}h_j.
+\end{equation}
+Then all rows have finite $E$ derivations, and $h_i$ is exactly the unfolded call cost of row $i$.
+\end{lemma}
+\begin{proof}
+Equation~\eqref{cdc:et:eq:height} implies $h_i\geq1$. Along each edge $i\to j$, all summands are nonnegative and the leading constant is positive, so $h_i>h_j$. A directed cycle would give a strictly decreasing cycle of integers, which is impossible. Induction on $h_i$ reconstructs a finite derivation of each row and, by the same equation, computes exactly its unfolded cost. This proof applies to unreachable rows as well.
+\end{proof}
+
+Conversely, any finite acyclic locally correct graph has unique heights obtained from~\eqref{cdc:et:eq:height} in bottom-up order. A topological schedule may be used to compute these heights, but no schedule is assumed or uncharged in the certificate.
+
+\begin{proposition}[Canonical reachable quotient]\label{cdc:et:prop:canonical}
+A finite $E$ derivation can be quotiented by equality of application input pairs $(x,y)$. The quotient is a sound acyclic proof DAG, unique up to row renaming with ordered premise slots preserved. Let $D(x,y)$ be its number of nodes. Every sound proof DAG for $(x,y)$ has at least $D(x,y)$ rows.
+\end{proposition}
+\begin{proof}
+Lemma~\ref{cdc:et:lem:determinism} shows that equal input pairs have equal outputs, costs, and ordered premise pairs. Thus the quotient's labels and pointers are well-defined. Canonical costs strictly decrease along every edge, so merging cannot introduce a cycle. The least relation and deterministic inversion fix the fully unfolded derivation and hence its set of distinct pairs. In any other sound graph, following the root's forced premises reaches a row for each of those pairs; unequal pairs cannot occupy the same row.
+\end{proof}
+
+\subsection{An identity certificate}
+Let
+\[
+K=\Stem(\Leaf),\qquad I=\Fork(\Stem(\Leaf),\Stem(\Leaf)),\qquad\tcode(K)=1,\quad\tcode(I)=10.
+\]
+For every $y$, the derivation of $\ev{I}{y}{y}$ contains the following four calls:
+\[
+\ev{K}{y}{\Fork(\Leaf,y)},\quad
+\ev{\Leaf}{y}{\Stem(y)},\quad
+\ev{\Fork(\Leaf,y)}{\Stem(y)}{y},\quad
+\ev{I}{y}{y}.
+\]
+At $y=I$, a root-first row presentation is
+\begin{center}
+\begin{tabular}{rrrrl}
+\toprule
+row & $x$ & $y$ & $z$ & cost and premises\\
+\midrule
+0 & 10 & 10 & 10 & $h_0=4$, pointers $(1,2,3)$\\
+1 & 1 & 10 & 132 & $h_1=1$, none\\
+2 & 0 & 10 & 21 & $h_2=1$, none\\
+3 & 132 & 21 & 10 & $h_3=1$, none\\
+\bottomrule
+\end{tabular}
+\end{center}
+The bundled fixture supplies all auxiliary fields and all one-hot selectors.
+
+\subsection{Why local matching alone is unsound}
+Define
+\[
+\omega=\Fork(\Stem(I),I),\qquad\tcode(\omega)=1014.
+\]
+A putative derivation $\ev{\omega}{\omega}{z}$ must first derive two copies of $\ev{I}{\omega}{\omega}$, each of cost $4$. Its third premise is the same root judgment $\ev{\omega}{\omega}{z}$. No finite derivation exists.
+
+Nevertheless, for every proposed output $z$, one can make a locally matching graph by pointing the first two root premises to the same genuine identity proof and the third premise back to the root. With the root assigned any natural cost, all nonheight residuals in Section~\ref{cdc:et:sec:polynomial} vanish. Its root height residual is always
+\[
+h-1-4-4-h=-9.
+\]
+Consequently the full sum of squares is $81$, not $0$. Dropping just the height condition would accept every output of a genuinely divergent application. Positivity of arbitrary labels without the additive equation would not repair this defect.
+
+\section{The fully charged quartic polynomial\srctag{21}}
+\label{cdc:et:sec:polynomial}
+Fix $N\geq1$. For each $0\leq i<N$, introduce fourteen natural scalar fields
+\[
+x_i,y_i,z_i,h_i,a_i,b_i,c_i,u_i,v_i,d_i,e_i,q_i,j_i,k_i,
+\]
+five natural tags $t_{i,0},\ldots,t_{i,4}$, and $3N$ natural selectors
+\[
+\delta_{i,s,\ell}\qquad(1\leq s\leq3,\ 0\leq\ell<N).
+\]
+The symbols $j_i,k_i$ are scalar fields; they are not row indices. There are
+\[
+W_N=N(14+5+3N)=3N^2+19N
+\]
+witness coordinates. The public parameters are $(p,n,o)\in\N^3$.
+
+Below, suppress the row subscript $i$ on local fields and tags, and put $r=t_3+t_4$. Each displayed equality contributes one residual obtained by subtracting its right side from its left side.
+
+\subsection{Ten shape and conclusion equations}
+\begin{align}
+\sum_{a=0}^4t_a&=1,\label{cdc:et:eq:tags}\\
+d=f(a,b),\quad e=f(a,y),\quad q&=f(0,b),\label{cdc:et:eq:candidates1}\\
+j=f(s(a),b),\qquad k&=f(d,c),\label{cdc:et:eq:candidates2}\\
+x&=t_1s(a)+t_2q+t_3j+t_4k,\label{cdc:et:eq:shape}\\
+t_0(z-s(y))&=0,\qquad t_1(z-e)=0,\qquad t_2(z-b)=0.\label{cdc:et:eq:outputs}
+\end{align}
+The three equations in~\eqref{cdc:et:eq:candidates1}, two in~\eqref{cdc:et:eq:candidates2}, and three in~\eqref{cdc:et:eq:outputs} are counted separately. Naturality plus~\eqref{cdc:et:eq:tags} makes the tags one-hot, so Boolean equations are unnecessary. The five candidate-constructor equations are unconditional. Unused candidates need not be zero, but only the selected candidate affects $x$ or $z$. The field $d$ keeps the nested fork candidate $k$ quadratic in supplied coordinates.
+
+\subsection{Three actual pointer-choice equations}
+For every row $i$, require
+\begin{equation}\label{cdc:et:eq:selectors}
+\sum_{\ell=0}^{N-1}\delta_{i,1,\ell}=r_i,\qquad
+\sum_{\ell=0}^{N-1}\delta_{i,2,\ell}=r_i,\qquad
+\sum_{\ell=0}^{N-1}\delta_{i,3,\ell}=t_{i,3}.
+\end{equation}
+Each active list selects exactly one actual row; an inactive list is entirely zero. There is no primitive random-access lookup, index oracle, or hidden range predicate.
+
+\subsection{Nine premise-label equations}
+For each slot $s$, the three selector sums
+\[
+\left(\sum_\ell\delta_{i,s,\ell}x_\ell,
+\sum_\ell\delta_{i,s,\ell}y_\ell,
+\sum_\ell\delta_{i,s,\ell}z_\ell\right)
+\]
+are set equal, coordinate by coordinate, to the corresponding triple below:
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+slot & target triple\\
+\midrule
+1 & $(t_3b+t_4y,\ t_3y+t_4a,\ ru)$\\
+2 & $(t_3a+t_4u,\ t_3y+t_4b,\ t_3v+t_4z)$\\
+3 & $(t_3u,\ t_3v,\ t_3z)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For tag $3$, these are exactly the three premises of~\eqref{cdc:et:eq:k3}; for tag $4$, the first two are the premises of~\eqref{cdc:et:eq:k4}. All inactive targets vanish automatically.
+
+\subsection{One cost equation and three boundary equations}
+The final row equation is
+\begin{equation}\label{cdc:et:eq:costpoly}
+h_i=1+\sum_{s=1}^3\sum_{\ell=0}^{N-1}\delta_{i,s,\ell}h_\ell.
+\end{equation}
+Add the boundary residuals
+\begin{equation}\label{cdc:et:eq:boundary}
+x_0-p,\qquad y_0-n,\qquad z_0-o.
+\end{equation}
+Thus each row contributes $10+3+9+1=23$ residuals, and there are $23N+3$ in total. Denote them by $R_{N,1},\ldots,R_{N,23N+3}$ and define
+\begin{equation}\label{cdc:et:eq:PN}
+P_N(p,n,o;\mathbf w)=\sum_{a=1}^{23N+3}R_{N,a}(p,n,o;\mathbf w)^2.
+\end{equation}
+
+\begin{theorem}[Exact quartic certificate]\label{cdc:et:thm:certificate}
+For each externally fixed $N\geq1$, $P_N$ is an explicitly defined integer polynomial of total degree exactly four, with $3N^2+19N$ natural witnesses, and~\eqref{cdc:et:eq:mainintro} holds.
+\end{theorem}
+\begin{proof}
+Every residual is at most quadratic: constructor residuals are quadratic, and all lookup and tag-selection terms are products of two coordinates. The sum of squares vanishes over natural integers exactly when every residual vanishes.
+
+For soundness, natural tags select a genuine value shape. Natural selector lists select in-range rows. The nine matching equations give precisely the chosen rule's premise judgments. Equation~\eqref{cdc:et:eq:costpoly} forbids every cycle by Lemma~\ref{cdc:et:lem:height}; hence all rows have finite derivations. The boundary identifies the root with $(p,n,o)$. Its canonical reachable quotient has at most $N$ distinct pairs by Proposition~\ref{cdc:et:prop:canonical}.
+
+For completeness, take the canonical proof DAG of a terminating root with $D\leq N$. Place its root first and append $N-D$ harmless rows $\ev{\Leaf}{\Leaf}{\Stem(\Leaf)}$. Set each tag and premise selector to its indicated one-hot value, choose the genuine decomposition fields and intermediate outputs, and use canonical unfolded costs. Set unused $a,b,c,u,v$ to zero, then compute all five unconditional candidates from their equations. Every residual vanishes.
+
+Finally the degree is exactly four, not just bounded by four. The homogeneous degree-two part of $d-f(a,b)$ is nonzero. The homogeneous degree-four part of $P_N$ is a sum of squares of all degree-two residual parts. Such a sum over the real polynomial ring cannot vanish identically unless each squared polynomial is zero: evaluation at every real tuple would otherwise contradict nonnegativity. Thus cancellation cannot remove the quartic part.
+\end{proof}
+
+\begin{remark}[Fibers are not unique]
+Canonical evaluation is unique; the full witness tuple is not. Row permutations, duplication, padding, and inactive coordinates can all vary. Indeed, a single leaf certificate for $\ev{0}{5}{11}$ admits arbitrarily large unused values $(a,b,c,u,v)$, with the candidate fields recomputed. No finite-fiber or single-fold claim follows from this construction.
+\end{remark}
+
+\section{Literal arithmetic ledger\srctag{21}}
+\label{cdc:et:sec:ledger}
+A multiplication is one $M$ gate; addition or subtraction is one $A$ gate. Constants are free terminals, but operations involving constants are charged. An ordered sum uses a left fold beginning at its first term. The concrete circuit reuses $s(a)$, $s(y)$ and $t_3+t_4$ as declared. It does not optimize away the zero in $f(0,b)$.
+
+A fork computation uses
+\[
+q=a+b,\qquad f(a,b)=q(q+1)+2b+2,
+\]
+and therefore costs $2M+4A$ in this literal convention. The residual subtraction is charged separately.
+
+\begin{proposition}[Exact gate counts]\label{cdc:et:prop:ledger}
+The declared circuit has the following counts:
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+circuit & multiplication gates & addition-class gates\\
+\midrule
+all residuals & $12N^2+33N$ & $15N^2+46N+3$\\
+complete sum of squares & $12N^2+56N+3$ & $15N^2+69N+5$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Hence the full polynomial costs $27N^2+125N+8$ arithmetic gates.
+\end{proposition}
+\begin{proof}
+For one row the declared schedule gives the following operation counts. Each residual subtraction is included in its row below.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+block & $M$ & $A$\\
+\midrule
+Shared $s(a),s(y),t_3+t_4$ & $2$ & $3$\\
+Tag sum & $0$ & $5$\\
+Five constructor candidates & $10$ & $25$\\
+Function-shape selection & $4$ & $4$\\
+Three nonrecursive outputs & $3$ & $3$\\
+Three selector sums & $0$ & $3N$\\
+Nine target coordinates & $14$ & $5$\\
+Nine label lookups & $9N$ & $9N$\\
+Cost equation & $3N$ & $3N+1$\\
+\midrule
+Total per row & $12N+33$ & $15N+46$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Multiplying by $N$ and adding the three boundary subtractions gives the first line of the proposition. The code also records these counts operator by operator.
+
+The sum of squares adds one multiplication per residual, namely $23N+3$, and $23N+2$ additions between adjacent squares. Adding those numbers gives the second line and the total.
+\end{proof}
+
+For the identity example, $N=4$ gives $124$ witnesses and $95$ residuals. Residual construction costs $324M+427A=751$ gates; the complete polynomial costs $419M+521A=940$ gates. These are literal counts rather than optimality assertions.
+\srcnote{\wtag{} Batch~79, 2 October 2026. The research tree's review \cite{repo-etrev} reproduces the base counts $3N^2+19N$, $23N+3$ and $27N^2+125N+8$, the canonical counts of \cref{cdc:et:thm:canonical} and the exact degree four, with 72 independently expanded residual and sum-of-squares evaluations on arbitrary natural tuples and 72 literal gate and count checks.}
+
+Naturality is essential. Replacing the witness domain by arbitrary integers destroys the one-hot argument and the height positivity argument. Moving to positive-only witnesses would require a separately specified and charged change of coordinates.
+
+\section{A strict compiler with termination reflection\srctag{21}}
+\label{cdc:et:sec:compiler}
+\subsection{Constructor metasyntax}
+For the compiler proof only, use expressions
+\[
+t::=x\mid\Leaf\mid\Stem(t)\mid\Fork(t,t)\mid\Apply(t,t).
+\]
+Here $\Stem$ and $\Fork$ are \emph{constructors}, while $\Apply$ is computational application. Evaluation in an environment $\rho$ first evaluates constructor children and constructs their value; it evaluates $\Apply(m,n)$ left-to-right and then invokes $E$ on the resulting values. Variables are looked up in $\rho$. Its weight counts only invoked $E$ inference occurrences. Constructor creation and lookup have weight zero in this auxiliary measure.
+
+A \emph{value template} contains no $\Apply$ node. Instantiating its variables by values produces a value with weight zero. These constructors are syntactic bookkeeping for building finite inputs; they are not additional operational primitives of $E$. If values are written using raw application syntax, $\Stem(t)$ is $\Leaf\,t$ and $\Fork(t,u)$ is $(\Leaf\,t)\,u$; the extra finite construction work must be charged when that presentation is used.
+
+\subsection{Value-producing bracket abstraction}
+Let $K_\Leaf=\Fork(\Leaf,\Leaf)$. Define the structural operation $B_x$ by
+\begin{align}
+B_x(x)&=I,\\
+B_x(y)&=\Fork(\Leaf,y)&& (y\ne x),\\
+B_x(\Leaf)&=K_\Leaf,\\
+B_x(\Apply(m,n))&=\Fork(\Stem(B_x(n)),B_x(m)),\\
+B_x(\Stem(m))&=\Fork(\Stem(B_x(m)),K_\Leaf),\\
+B_x(\Fork(m,n))&=\Fork\bigl(\Stem(B_x(n)),
+                    \Fork(\Stem(B_x(m)),K_\Leaf)\bigr).
+\end{align}
+Every result is a value template and contains no free $x$. The concrete compiler first applies the safe optimization
+\begin{equation}\label{cdc:et:eq:safeopt}
+B_x(t)=\Fork(\Leaf,t)
+\quad\text{if $t$ is a value template and $x\notin\FV(t)$}.
+\end{equation}
+It does not apply this shortcut to an arbitrary $x$-free computation. Such a shortcut could evaluate a divergent computation while constructing a lambda value.
+
+\begin{lemma}[Strict abstraction, both directions]\label{cdc:et:lem:abstraction}
+Let $\rho$ assign tree values to the free variables of $t$ other than $x$, and let $v$ be any tree value. Put $b=B_x(t)\rho$. Then, for every $w$,
+\begin{equation}\label{cdc:et:eq:abstraction}
+\ev{b}{v}{w}\quad\Longleftrightarrow\quad t,\rho[x\mapsto v]\Downarrow w.
+\end{equation}
+Either finite derivation constructs one on the other side. If $h$ is the $E$ cost on the left and $g$ is the expression weight on the right, these derivations satisfy $g<h$.
+\end{lemma}
+\begin{proof}
+Induct on $t$. For $t=x$, the four-call identity derivation returns $v$, whereas variable lookup has weight zero. Other variables and $\Leaf$ are returned by a one-call constant case. In the optimized case~\eqref{cdc:et:eq:safeopt}, the template is independent of $x$, is returned by one constant rule, and has zero evaluation weight.
+
+For $t=\Apply(m,n)$, rule~\eqref{cdc:et:eq:k3} first applies $B_x(m)\rho$ to $v$, then $B_x(n)\rho$ to $v$, then applies the two results. The induction hypotheses identify exactly the two expression evaluations; the final $E$ derivation is identical. If the abstraction-side operand costs are $h_m,h_n$, the corresponding expression weights are $g_m,g_n$, and the final application costs $k$, then
+\[
+h=1+h_m+h_n+k>g_m+g_n+k=g.
+\]
+Inversion of the same uniquely forced rule recovers the premises and proves the reverse implication as well.
+
+For $\Stem(m)$, the first premise returns $\Leaf$ using $K_\Leaf$, the next computes the instantiated $m$, and the last applies $\Leaf$ to that result. Thus it constructs exactly a stem, with $h=h_m+3$ and $g=g_m$. For $\Fork(m,n)$, the inner abstraction constructs a stem of the first result, and the outer rule applies that stem to the second result, constructing their fork. The weights are $h=h_m+h_n+5$ and $g=g_m+g_n$. Rule inversion in both constructor cases recovers exactly these evaluations. This proves the claimed correspondence and strict inequality in every case.
+\end{proof}
+
+\subsection{Source closures and compilation}
+The source is ordinary weak left-to-right CBV lambda calculus:
+\[
+m::=x\mid m\,m\mid\lambda x.m.
+\]
+A value is a closure $\clos{\lambda x.m}{\eta}$. Environments and closures are \emph{hereditarily finite, acyclic values}, as produced by ordinary evaluation without cyclic \texttt{letrec} environments. A finite cyclic pointer graph is not an admissible environment for the following recursive encoding.
+
+Variables return their environment closures; a lambda captures the current environment; an application evaluates its function and argument, then evaluates the captured body with the argument bound to its formal parameter. Every term is closed relative to its environment. Alpha-renaming is used where needed to avoid capture. Set
+\begin{align}
+C(x)&=x,& C(m\,n)&=\Apply(C(m),C(n)),\nonumber\\
+C(\lambda x.m)&=B_x(C(m)),\label{cdc:et:eq:compiler}\\
+J(\clos{\lambda x.m}{\eta})
+ &=B_x(C(m))[y\mapsto J(\eta(y))].\label{cdc:et:eq:closurecode}
+\end{align}
+Equation~\eqref{cdc:et:eq:closurecode} is well-founded structural recursion on the closure environment. The result is an actual tree value. Retaining unused environment bindings does not change that fact.
+
+\begin{theorem}[Exact closure adequacy]\label{cdc:et:thm:adequacy}
+For every admissible source environment $\eta$ and source term $m$,
+\begin{align}
+m,\eta\Downarrow c&\ \Longrightarrow\ C(m),J\eta\Downarrow J(c),\label{cdc:et:eq:forward}\\
+C(m),J\eta\Downarrow w&\ \Longrightarrow\
+\exists c\ \bigl(m,\eta\Downarrow c\ \land\ w=J(c)\bigr).\label{cdc:et:eq:reverse}
+\end{align}
+In particular, compilation preserves and reflects termination.
+\end{theorem}
+\begin{proof}
+For~\eqref{cdc:et:eq:forward}, induct on the source big-step derivation. Variable and lambda rules are immediate from the definitions and value-template property. In an application, the induction hypotheses produce the two encoded closure values. The abstraction lemma for the function closure identifies its target application with the compiled captured body in the encoded environment extended by the argument. The body induction hypothesis gives the required result.
+
+For~\eqref{cdc:et:eq:reverse}, strongly induct on the number of $E$ inference occurrences in the target expression derivation, allowing all $m$ and admissible $\eta$ at a given weight. Variable and lambda cases require no recursive appeal. In an application, the final $E$ call has positive cost. Each operand evaluation therefore has strictly smaller weight, so induction recovers a source function closure and source argument closure, with the precise encoding relation. Inverting the abstraction lemma gives a compiled body computation of weight strictly smaller than that final $E$ call, and hence smaller than the whole application. A further induction appeal reconstructs the source body evaluation and its encoded result. The source application rule now proves the claim.
+\end{proof}
+
+This reverse proof does not rely on a casually assumed substitution-commutation identity. It uses represented captured environments and a strict well-founded weight decrease. A forward simulation alone, or equality in an equational quotient, would not suffice.
+
+\begin{remark}[ProveIt's combinatory-logic development]\label{cdc:et:rem:combinatory}
+\wtag{} The formal project \path{Computability/CombinatoryLogic} proves in Lean and in Rocq that closed weak lambda calculus with context-closed beta reduction compiles into pure SK, SKI and Iota by an occurs-aware bracket abstraction, in which a body independent of the bound variable is abstracted as $K\,p$ at once: the same idea as the safe optimization \eqref{cdc:et:eq:safeopt}. The formalized declarations are \path{CombinatoryLogic.LambdaToSK.Polynomial.abstract} and \path{CombinatoryLogic.LambdaToSK.Polynomial.abstract_correct} in Lean and \path{SKPolynomial.abstract} and \path{SKPolynomial.abstract_correct} in \path{Coq/SKPolynomial.v}; the headline compilers are \path{CombinatoryLogic.Universality.ski_turing_complete} and \path{CombinatoryLogic.Universality.iota_turing_complete}. They are forward operational simulations, and the project does not claim that its compilers reflect reduction \cite{repo-cl}. \Cref{cdc:et:thm:adequacy} is a different theorem: its target is Jay's eager Tree Calculus, its source semantics is weak left-to-right call by value with closures (neither the project's context-closed beta relation nor the call-by-value calculus L of its Coq equivalence \code{RecursiveEquivalence}), and it reflects termination. No statement of this Part is formalized, and printing it beside the formal project confers no formal status on it.
+\end{remark}
+
+\section{Operational universality and a literal fixed interpreter\srctag{21}}
+\label{cdc:et:sec:universal}
+\subsection{An explicit CBV-safe counter-program frontend}
+Weak CBV lambda calculus supports an effective Turing simulation~\cite{dallago}. For an additional concrete operational interface, take a finite deterministic counter program with $k\geq1$ registers and $m\geq1$ labels. Instructions are increment, decrement-with-zero-test, and halt. Write
+\begin{align}
+\mathsf N_0&=\lambda z\,s.z,&
+\mathsf N_{n+1}&=\lambda z\,s.s\,\mathsf N_n,\\
+\mathsf{SUCC}&=\lambda n\,z\,s.s\,n,&
+Q_i&=\lambda b_0\cdots b_{m-1}.b_i,\\
+\mathsf{UNIT}&=\lambda u.u,&
+Z&=\lambda f.(\lambda x.f(\lambda v.x\,x\,v))
+                 (\lambda x.f(\lambda v.x\,x\,v)).
+\end{align}
+Applications associate to the left, and multiargument lambdas abbreviate nested lambdas. For a value $f$, $Zf$ unfolds in finitely many CBV steps to $f$ applied to a \emph{value} recursive argument. Calling that value resumes the same recursive computation; constructing it does not eagerly self-apply.
+
+Every instruction branch is a value $B_i(\mathit{loop})=\lambda r_1\cdots r_k.\,b_i$. The body for increment of register $j$ followed by label $\ell$ is
+\[
+b_i=\mathit{loop}\ Q_\ell\ r_1\cdots(\mathsf{SUCC}\ r_j)\cdots r_k.
+\]
+For decrement with zero label $\ell_0$ and positive label $\ell_1$, it is
+\begin{align*}
+b_i=r_j\;&(\lambda d.\mathit{loop}\ Q_{\ell_0}\ r_1\cdots\mathsf N_0\cdots r_k)\\
+        &(\lambda p.\lambda d.\mathit{loop}\ Q_{\ell_1}\ r_1\cdots p\cdots r_k)
+        \ \mathsf{UNIT}.
+\end{align*}
+For halt, $b_i=r_1$. Define
+\begin{align*}
+\mathsf{STEP}_P&=\lambda\mathit{loop}\ q\ r_1\cdots r_k.
+       (q\ B_0(\mathit{loop})\cdots B_{m-1}(\mathit{loop}))r_1\cdots r_k,\\
+\mathsf{RUN}_P&=Z\,\mathsf{STEP}_P.
+\end{align*}
+All unselected instruction branches are values. In the zero test both alternatives are thunks, and only the selected one is forced with $\mathsf{UNIT}$. The successor handler first receives the predecessor.
+
+\begin{proposition}[Counter-program correspondence]\label{cdc:et:prop:counter}
+On a valid Scott-encoded state, $\mathsf{RUN}_P$ terminates exactly when the counter program halts, and returns the Scott value of its first register at halt.
+\end{proposition}
+\begin{proof}
+A nonhalting instruction performs a finite, deterministic block of CBV administrative steps and then exactly its prescribed successor call. Induction on a halting run proves preservation and output correctness. Conversely, invert a finite source derivation. A nonhalting instruction can return only through the proper subderivation of its successor call. Iterating the inversion strictly decreases derivation size, so it eventually reaches the sole nonrecursive return branch, halt. The states encountered are the unique program run.
+\end{proof}
+The release implements this constructor and checks increment, positive decrement, zero decrement, and transfer between two registers. Both decrement tests place an infinite loop in the unselected branch. Compiling a lambda that suspends the entire program gives a tree value with a one-input interface; the source construction and input loading are genuine work.
+
+\subsection{Quoted syntax and functional environments}
+For a closed, well-scoped de Bruijn source term, encode syntax by Scott values:
+\begin{align}
+Q(\mathsf{Var}\ n)&=\lambda v\,l\,a.v\,\mathsf N_n,\\
+Q(\mathsf{Lam}\ b)&=\lambda v\,l\,a.l\,Q(b),\\
+Q(\mathsf{App}\ m\,n)&=\lambda v\,l\,a.a\,Q(m)\,Q(n).
+\end{align}
+Fresh binders are used at every constructor. An interpreted environment is a function from Scott indices to interpreted closures, extended by
+\[
+\mathsf{EXT}(a,e)=\lambda n.n\,a\,e.
+\]
+Index zero returns $a$; a successor calls $e$ on its predecessor. Let
+\[
+\Omega=(\lambda x.x\,x)(\lambda x.x\,x),\qquad
+\mathsf{EMPTY}=\lambda n.\Omega.
+\]
+The empty environment is a value; it diverges only when an unbound index is accessed.
+
+Define these finite, closed lambda terms:
+\begin{align}
+\Phi={}&\lambda ev\,term\,env.\ term\nonumber\\
+ &\quad(\lambda n.env\,n)\nonumber\\
+ &\quad(\lambda body.\lambda arg.ev\,body\,(\lambda n.n\,arg\,env))\nonumber\\
+ &\quad(\lambda fun\,argt.(ev\,fun\,env)(ev\,argt\,env)),\label{cdc:et:eq:phi}\\
+U_\lambda={}&\lambda program.(Z\Phi)\,program\,\mathsf{EMPTY}.\label{cdc:et:eq:ulambda}
+\end{align}
+All three case handlers are values. In particular, the lambda handler returns a closure before inspecting its body, and the application handler evaluates the function before the argument and then applies them.
+
+\begin{lemma}[CBV interpreter correspondence]\label{cdc:et:lem:interpreter}
+For every closed, well-scoped de Bruijn term $m$,
+\[
+U_\lambda Q(m)\ \text{terminates}
+\quad\Longleftrightarrow\quad
+m\ \text{terminates under weak left-to-right CBV}.
+\]
+The returned value represents the source result as an interpreted closure.
+\end{lemma}
+\begin{proof}
+Put $D=\lambda x.\Phi(\lambda v.x\,x\,v)$ and $e=\lambda v.D\,D\,v$. The fixed-point expression $Z\Phi$ finitely enters $\Phi e$; applying $e$ to quoted syntax and an environment re-enters this evaluator. Represent a finite source environment by iterated $\mathsf{EXT}$ and a source closure $\clos{\mathsf{Lam}\ b}{\eta}$ by the host closure
+\[
+\lambda arg.e\,Q(b)\,\mathsf{EXT}(arg,E\eta),
+\]
+with the indicated values captured.
+
+Prove evaluation and closure-application correspondence simultaneously. For a variable, induction on its Scott index passes through exactly the required number of $\mathsf{EXT}$ layers. Well-scoping prevents reaching $\mathsf{EMPTY}$. For a lambda, Scott dispatch selects the second handler and returns precisely the representing closure without evaluating its body. For application, the third handler performs exactly the source function evaluation, argument evaluation, and closure-body evaluation, in that order. Forward induction on the source derivation proves preservation.
+
+For reflection, invert a finite host derivation. Scott dispatch and fixed-point unfolding consist of finitely many positive administrative beta steps. Each required evaluator or closure-body invocation lies in a proper subderivation. Strong induction on host derivation size reconstructs the corresponding source premises and source rule. There is no other return branch in $\Phi$, so no extra terminating source behavior is introduced.
+\end{proof}
+
+\subsection{The fixed tree and its r.e.-complete domain}
+Set
+\[
+U=C(U_\lambda),\qquad \operatorname{IN}(m)=C(Q(m)).
+\]
+Both are actual tree values. For named terms, first translate to de Bruijn indices.
+\begin{theorem}[A literal universal eager tree]\label{cdc:et:thm:universal}
+For every closed well-scoped source term $m$, equation~\eqref{cdc:et:eq:uintro} holds. The set
+\[
+H_U=\{n\in\N:\exists o\in\N\ \ev{\tcode(U)}{n}{o}\}
+\]
+is recursively enumerable complete under computable many-one reductions.
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{cdc:et:thm:adequacy} to the closed application $U_\lambda Q(m)$, then Lemma~\ref{cdc:et:lem:interpreter}. The compilation of each operand is a value, so its compiled application is exactly the single root application of $U$ to $\operatorname{IN}(m)$. Membership in $H_U$ is semidecidable by enumerating finite kernel derivations. Weak-CBV halting, which is r.e.-complete by its effective Turing simulation, reduces to it by the total computable map
+\[
+m\longmapsto\tcode(C(Q(m))).
+\]
+Arbitrary trees outside the well-formed input image are permitted in $H_U$; their behavior does not obstruct this hardness reduction.
+\end{proof}
+
+The literal DAG in Appendix~A (\cref{cdc:et:app:literal}) has 175 nodes, root 174, one leaf, 71 stems, and 103 forks. Its unshared expansion has 949 constructor occurrences and depth 58, with a leaf counted as depth one. It has no unresolved combinator names, evaluator calls, or parameters. The complete 949-node expression and the source lambda AST are also supplied as machine-readable files.
+
+\section{Charging the universal constant and the loader\srctag{21}}
+\label{cdc:et:sec:fixedcode}
+The scalar integer $\tcode(U)$ has not been materialized. A rigorous interval computation gives
+\begin{equation}\label{cdc:et:eq:ubits}
+44\,926\,990\,249\ \leq\bits(\tcode(U))\ \leq\ 44\,960\,544\,677.
+\end{equation}
+This is about $5.6$ gigabytes of packed binary data, before textual printing or runtime overhead. The interval checker keeps exact codes while their bitlength is at most 4096, then propagates the stem identity and fork upper bound in~\eqref{cdc:et:eq:bitrules}, together with the fork lower bound proved after~\eqref{cdc:et:eq:rbits}. The printed literal table therefore determines the interval by a finite integer-only computation; no giant arithmetic operation is hidden in the check.
+\srcnote{\wtag{} Batch~79, 2 October 2026. The research tree's review \cite{repo-etrev} reproduces the interval \eqref{cdc:et:eq:ubits} by an independent propagation.}
+
+\subsection{A unique finite constructor circuit}
+For each literal constructor node $i$, introduce a fresh natural coordinate $\gamma_i$ and one residual according to its tag:
+\begin{align}
+\gamma_i-0&=0&& (\Leaf),\\
+\gamma_i-(2\gamma_j+1)&=0&& (\Stem(j)),\\
+\gamma_i-\bigl((\gamma_j+\gamma_k)(\gamma_j+\gamma_k+1)+2\gamma_k+2\bigr)&=0
+&& (\Fork(j,k)).
+\end{align}
+Every child index is smaller than its parent. Thus the 175 equations have exactly one solution, obtained by forward evaluation. Replace $x_0-p$ in the base certificate by $x_0-\gamma_{174}$ and append the 175 residuals before taking the sum of squares. Call the result $P^U_N(n,o;\mathbf w,\boldsymbol\gamma)$.
+
+\begin{corollary}[Charged fixed-universal graph]\label{cdc:et:cor:universalpoly}
+For each fixed $N\geq1$, $P^U_N$ has degree exactly four, $3N^2+19N+175$ natural witnesses, and $23N+178$ quadratic residuals. Its zero set projects exactly to
+\[
+\ev{\tcode(U)}{n}{o}\quad\text{with}\quad D(\tcode(U),n)\leq N.
+\]
+For the bounded halting-domain relation, existentially quantifying $o$ adds one witness coordinate. If a separate public coordinate $p$ is retained, the equality $p=\gamma_{174}$ adds a further residual.
+\end{corollary}
+\begin{proof}
+The constructor circuit fixes the unique intended program code; the remaining statement is Theorem~\ref{cdc:et:thm:certificate}. Adding these quadratic residuals cannot remove the nonzero quartic part.
+\end{proof}
+
+Using the literal fork schedule of Section~\ref{cdc:et:sec:ledger} and an optimized leaf residual, the leaf residual is written as $\gamma_0$ itself and costs no gate, a stem residual costs $1M+2A$, and a fork residual costs $2M+5A$. The 175-residual extension therefore costs $277M+657A$. Its squares cost another $175M$, and extending the nonempty sum costs another $175A$. The total fixed-$U$ sum-of-squares ledger is
+\begin{align}
+M_U(N)&=12N^2+56N+455,\\
+A_U(N)&=15N^2+69N+837,\\
+M_U(N)+A_U(N)&=27N^2+125N+1292.
+\end{align}
+These counts include the constant circuit rather than treating an unprinted multi-gigabyte integer as a free unspecified parameter.
+
+\subsection{Loader accounting and the remaining quantifier gap}
+The effective reduction is explicitly
+\[
+m\ \longmapsto\ \operatorname{deBruijn}(m)\ \longmapsto\ Q(m)
+\ \longmapsto\ C(Q(m))\ \longmapsto\ \tcode(C(Q(m))).
+\]
+For a particular finite source input, its generated constructor DAG has a quadratic code circuit of the same form, one coordinate and one equation per node. That circuit is input-loading work. If a raw integer is first represented by a unary Scott numeral, constructing that numeral is further work; it is not absorbed into the 175-node fixed program.
+
+The theorem establishes a computable reduction, not an uncharged polynomial graph for this loader. Likewise,
+\[
+\ev{p}{n}{o}\quad\Longleftrightarrow\quad
+\text{there exists some external }N\text{ with a zero of }P_N
+\]
+is a union of variable-arity formulas. Writing ``there exists $N$'' in prose does not package their unbounded witness vectors into one fixed-arity polynomial. A uniform sequence codec and a fully charged raw-integer loader would be additional results. The report supplies neither, and makes no fixed-arity MRDP or universal-polynomial size record claim.
+\srcnote{\wtag{} [By the finite-search argument of \cref{cdc:bd:prop:nobound}, no computable function of $n$ bounds $D(\tcode(U),n)$ on the halting domain $H_U$: for fixed $N$ it is decidable whether $\ev{\tcode(U)}{n}{o}$ holds for some $o$ with $D(\tcode(U),n)\le N$ (evaluate with memoization, rejecting a re-entered active call and stopping after $N$ distinct calls), so such a bound would decide the r.e.-complete set $H_U$ of \cref{cdc:et:thm:universal}. The external $N$ is therefore essential, as the manuscript says.]}
+
+\section{Canonical certificates with exactly one natural witness\srctag{21}}
+\label{cdc:et:sec:canonical}
+The base polynomial deliberately allows padding and inactive-field freedom. A separate refinement removes those freedoms and recognizes the \emph{exact} canonical DAG size. This is useful when uniqueness of a certificate, rather than padding flexibility, is the desired invariant.
+
+\subsection{Keys, positive occurrence flow, and inactive fields}
+Retain the core coordinates and residuals. For each nonroot row $1\leq i<N$, add a key $\kappa_i$ with
+\begin{equation}\label{cdc:et:eq:keys}
+\kappa_i=f(x_i,y_i).
+\end{equation}
+For $1\leq i<N-1$, add a natural gap $\sigma_i$ and require
+\begin{equation}\label{cdc:et:eq:keyorder}
+\kappa_{i+1}=\kappa_i+1+\sigma_i.
+\end{equation}
+Since $f$ is injective, the nonroot input pairs are distinct and have a uniquely determined increasing order. There is intentionally no root key and no explicit root-distinctness equation.
+
+For each row add a natural slack $\rho_i$ and define the affine expression $\mu_i=1+\rho_i$. Require
+\begin{equation}\label{cdc:et:eq:flow}
+\mu_i=[i=0]+\sum_{j=0}^{N-1}\sum_{s=1}^3\mu_j\delta_{j,s,i}.
+\end{equation}
+Here $[i=0]$ is the fixed constant $1$ at the root and $0$ elsewhere. The quantity $\mu_i$ will count root-to-row paths, with duplicate premise slots counted as separate edge occurrences.
+
+Finally impose five inactive-field equations on every row:
+\begin{align}
+a(t_0+t_2)&=0,& b(t_0+t_1)&=0,\nonumber\\
+c(t_0+t_1+t_2+t_3)&=0,&u(t_0+t_1+t_2)&=0,\label{cdc:et:eq:inactive}\\
+v(t_0+t_1+t_2+t_4)&=0.\nonumber
+\end{align}
+They set exactly the unused local fields to zero in each rule. The existing candidate-constructor equations then determine $d,e,q,j,k$ uniquely. Every new residual is at most quadratic.
+\srcnote{\wtag{} [Inactive-field zeroing is the branch-activation device of \cref{cdc:wf:lem:activation}.]}
+
+\begin{lemma}[Reachability and occurrence counts]\label{cdc:et:lem:flow}
+In a natural zero of the refined system, every row is root-reachable. On a finite acyclic root-reachable graph, equation~\eqref{cdc:et:eq:flow} has a unique solution, with $\mu_i$ equal to the number of root-to-$i$ paths counted with edge multiplicity. Moreover
+\begin{equation}\label{cdc:et:eq:flowidentity}
+\sum_i\mu_i=h_0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Acyclicity already follows from the core height equations. If an unreachable vertex exists, choose a vertex in the induced finite DAG of unreachable vertices having no incoming edge from another unreachable vertex. No reachable vertex points to it, since that would make it reachable. It is not the root, so its flow equation says $\mu_i=0$, contrary to $\mu_i\geq1$. Thus every row is reachable.
+
+The root has no incoming edge: such an edge from a reachable vertex would create a cycle. Starting with its flow value $1$ and proceeding in topological order, equation~\eqref{cdc:et:eq:flow} uniquely counts all root-to-row paths. All counts are positive, so $\rho_i=\mu_i-1$ is natural.
+
+For the identity, let $A_{ij}$ count premise-slot occurrences from $i$ to $j$. In vector notation, $h=\mathbf1+Ah$ and $\mu=e_0+A^{\mathsf T}\mu$. Therefore
+\[
+\sum_i\mu_i=\mu^{\mathsf T}(h-Ah)
+=(\mu^{\mathsf T}-\mu^{\mathsf T}A)h=e_0^{\mathsf T}h=h_0.
+\]
+In particular, each flow count is at most the total unfolded call cost.
+\end{proof}
+
+\begin{lemma}[Root distinctness is automatic]\label{cdc:et:lem:rootdistinct}
+No nonroot row in a refined zero has the root's input pair.
+\end{lemma}
+\begin{proof}
+If row $i\ne0$ had the root input pair, Lemma~\ref{cdc:et:lem:determinism} would force $h_i=h_0$. But Lemma~\ref{cdc:et:lem:flow} provides a nonempty path from the root to $i$, along which heights strictly decrease. Thus $h_i<h_0$, a contradiction.
+\end{proof}
+
+\begin{theorem}[Empty-or-singleton natural fibers]\label{cdc:et:thm:canonical}
+Fix $N\geq1$ and let $g=\max(N-2,0)$. The sum of squares $C_N$ of the core and refined residuals has degree exactly four, with
+\begin{align}
+V_N^{\rm can}&=3N^2+21N-1+g,\label{cdc:et:eq:canvars}\\
+R_N^{\rm can}&=30N+2+g.\label{cdc:et:eq:canres}
+\end{align}
+For fixed natural parameters $(p,n,o)$, its natural witness fiber is empty unless $\ev{p}{n}{o}$ and $D(p,n)=N$. When both conditions hold, its fiber consists of exactly one tuple.
+\end{theorem}
+\begin{proof}
+The core supplies sound finite evaluations. Lemma~\ref{cdc:et:lem:flow} gives reachability, the sorted keys distinguish all nonroot pairs, and Lemma~\ref{cdc:et:lem:rootdistinct} distinguishes the root. Consequently the graph is precisely the canonical reachable quotient, so $N=D(p,n)$.
+
+Conversely, place the root of that quotient first and all other rows in increasing order of $f(x_i,y_i)$. Choose the forced rule, active decomposition fields, intermediate values, and ordered premise pointers. Set inactive fields to zero; compute the candidate constructors and canonical heights. Choose the unique positive path counts and gaps. All residuals vanish.
+
+For uniqueness, the reachable call set, root, and sorted positions are fixed. Determinism and injective tree decomposition fix each row's output, rule, active fields and premise targets. Thus each pointer list is fixed. Heights are canonical; equation~\eqref{cdc:et:eq:inactive} fixes all formerly free fields. Constructor candidates, flow slacks, keys and gaps are uniquely determined. This exhausts the coordinates.
+
+Relative to the base, there are $(N-1)+N+g=2N-1+g$ new coordinates and $(N-1)+N+5N+g=7N-1+g$ new residuals, yielding the stated counts. Quadratic degree and the nonzero original quartic part give exact degree four.
+\end{proof}
+
+For $N\geq2$, the counts simplify to $3N^2+22N-3$ witnesses and $31N$ residuals; for $N=1$, they are $23$ and $32$. The literal implementation has
+\begin{align}
+M_{\mathrm{can}}(N)&=15N^2+70N+g,\\
+A_{\mathrm{can}}(N)&=18N^2+93N-1+4g.
+\end{align}
+Its total is $33N^2+168N-11$ for $N\geq2$, and $195$ for $N=1$. For example, the canonical identity certificate has $133$ witnesses, $124$ residuals, and $1189$ gates.
+
+Attaching a fixed constructor circuit preserves the singleton property because its own natural solution is unique. The fixed-$U$ canonical version adds 175 coordinates and 175 residuals; under the optimized-leaf convention of Section~\ref{cdc:et:sec:fixedcode}, it adds 1284 gates. Thus its total is $33N^2+168N+1273$ for $N\geq2$ and $1479$ at $N=1$. Existentially quantifying the output adds one coordinate; the output itself is deterministic.
+
+\begin{remark}[Precise uniqueness boundary]
+This theorem is over natural coordinates, not nonnegative real coordinates. Also, its arity depends on the externally fixed $N$. For a fixed terminating input there is only one admissible $N$ and one witness in that member of the family, but this is not a fixed-arity single-fold Diophantine representation and does not settle a single-fold MRDP problem. Unlike the base family, the canonical family cannot be padded to a prescribed upper bound.
+\end{remark}
+
+\section{Sharing: row compression versus binary compression\srctag{21}}
+\label{cdc:et:sec:sharing}
+\subsection{A transparent example and its limitation}
+Let $a_0=I$ and $a_{k+1}=\Fork(\Stem(a_k),a_k)$. Their scalar codes obey
+\[
+a_0=10,\qquad a_{k+1}=9a_k^2+11a_k+4.
+\]
+For all $k$, $\ev{a_k}{I}{I}$. At level $k+1$, rule~\eqref{cdc:et:eq:k3} uses the level-$k$ judgment twice and $\ev{I}{I}{I}$ once. Therefore
+\[
+H_0=4,\qquad H_{k+1}=1+2H_k+4,\qquad H_k=9\cdot2^k-5.
+\]
+The canonical DAG has exactly $k+4$ nodes: the four identity calls and the $k$ newer pairs $(a_i,I)$. At $k=1$ all three root premise pointers coincide; multiplicity must still be three, not one.
+
+This is exponential compression of inference occurrences into rows. It is not exponential compression of the whole binary certificate: for $a\geq1$,
+\[
+9a^2\leq9a^2+11a+4\leq24a^2,
+\]
+so $\bits(a_k)=\Theta(2^k)$. At $k=8$, there are $12$ distinct calls, $2299$ unfolded calls, and $1681$ input bits. The example is valuable precisely because it exposes the difference between graph sharing and a cheap input encoding.
+\srcnote{\wtag{} [Compare the remark after \cref{cdc:mem:cor:graph} (Part~V), where the family $D_0=K$, $D_{j+1}=\app(D_j,D_j)$ shows the sharing of term nodes; here the sharing of proof rows is shown not to compress the binary certificate, and the fixed program $R$ below gives a family that does.]}
+
+\subsection{A literal fixed program with unary input}
+A stronger family uses one fixed tree $R$, specified by the complete 108-node table in Appendix~A (\cref{cdc:et:app:literal}). Let
+\[
+v_0=\Leaf,\qquad v_{n+1}=\Stem(v_n),\qquad\tcode(v_n)=2^n-1.
+\]
+The input code has exactly $n$ bits when $n\geq1$. Define the fixed constant
+\[
+B_*=4\,688\,954\,427\,625.
+\]
+
+\begin{theorem}[Fixed-program binary-witness compression]\label{cdc:et:thm:binarysharing}
+For the literal tree $R$ and all $n\geq0$,
+\[
+\ev{R}{v_n}{I},\qquad H_n=562\cdot2^n-468.
+\]
+A proof DAG has $44$ rows at $n=0$ and at most $N_n=149n+30$ rows for $n\geq1$. Theorem~\ref{cdc:et:thm:exactgrowth} below sharpens this to the exact canonical size $D_n=64n+113$ for every $n\geq2$. Every $(x,y,z)$ code in the chosen DAG has at most $64n+B_*$ bits. For $n\geq1$ the full base-polynomial witness can be encoded in at most
+\begin{equation}\label{cdc:et:eq:binarybound}
+19N_n\bigl(256n+4B_*+9\bigr)+3N_n^2
+\end{equation}
+bits, with fixed-width scalar fields and Boolean selector entries. Thus its total witness length is $O(n^2)$ while its unfolded derivation has $\Theta(2^n)$ calls.
+\end{theorem}
+
+The fixed program is intentionally specified by a literal constructor table, not merely an uninstantiated recursive equation. A generator constructs it using a delayed fixed point, a zero selector, a predecessor, and a branch that evaluates the same recursive call twice before returning its first result. The proof below does not assume the generator or compiler correct: it uses only the literal program and independently checked symbolic kernel derivations.
+
+\subsection{Finite symbolic proof and induction}
+The artifact \code{shared_symbolic_proofs.json} supplies 164 shared constructor templates over $\Leaf,\Stem,\Fork$ and one opaque value placeholder $X$. It includes three complete proof DAGs:
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+case & root judgment & rows & root cost\\
+\midrule
+base $0$ & $\ev{R}{\Leaf}{I}$ & 44 & $94$\\
+base $1$ & $\ev{R}{\Stem(\Leaf)}{I}$ & 179 & $656$\\
+step & $\ev{R}{\Stem(\Stem(X))}{I}$ & 150 & $2H+468$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The step has one designated hypothesis row $\ev{R}{\Stem(X)}{I}$ of cost $H$. Its other 149 rows are ordinary kernel inferences. The placeholder is never inspected as a function of unknown shape; every nonhypothesis rule matches an explicit constructor. Both copies of the recursive call share the hypothesis row, retaining their ordered edge multiplicities.
+
+Every row has an affine cost $aH+b$ with natural coefficients. A separate verifier checks that each nonhypothesis cost is one plus its premise costs, and verifies strict decrease along each edge at $H=1$. This supplies an acyclicity ranking independent of any graph-order assumption. It also verifies that the symbolic $R$ is structurally identical to the exported 108-node literal and that the claimed $I$ is the identity tree.
+
+\begin{proof}[Proof of the semantic and row-count parts of Theorem~\ref{cdc:et:thm:binarysharing}]
+For any tree value substituted for $X$, and any actual proof attached at the designated hypothesis, substitution preserves every nonhypothesis inference because their constructor matches are explicit. Replacing the hypothesis by a derivation of cost $H$ therefore gives a derivation of cost $2H+468$. Substituting $X=v_{n-2}$ proves the step from level $n-1$ to $n$ for $n\geq2$.
+
+The two bases give $H_0=94$ and $H_1=656=2H_0+468$. The recurrence solves to $H_n=562\cdot2^n-468$. For graph composition, retain the previous proof and append at most 149 nonhypothesis rows per step. Starting with 179 rows at $n=1$ gives $179+149(n-1)=149n+30$. Merging any additional duplicate calls only decreases this count. Padding to exactly that upper bound is permitted for the base polynomial.
+\end{proof}
+
+\subsection{The exact canonical DAG size}
+The conservative bound can be sharpened to a closed formula for the actual canonical quotient, using a complete equality classification of the finite constructor templates.
+\begin{theorem}[Exact call-set growth]\label{cdc:et:thm:exactgrowth}
+For the same literal program and inputs,
+\[
+D_0=44,\qquad D_1=179,\qquad D_n=64n+113\quad\text{for every }n\geq2.
+\]
+\end{theorem}
+\begin{proof}
+Let $B$ be the 179 ground call pairs of the second base. Remove the single hypothesis from the symbolic step and denote its 149 nonhypothesis pair templates by $T_i(X)$, retaining their original zero-based step-row indices. All 44, 179 and 150 rows in the two bases and step, respectively, are root-reachable; their symbolic call pairs are distinct within each schematic proof. These finite properties are checked directly in the released row artifact.
+
+For $m\geq0$, put
+\[
+\mathcal U_m=B\cup\{T_i(\Stem^k(\Leaf)):i\text{ nonhypothesis},\ 0\leq k\leq m\}.
+\]
+Substituting $X=\Leaf$ in the step and attaching the second base gives exactly $\mathcal U_0$ at input $v_2$. Substituting $X=v_{n-2}$ and attaching the previous proof proves inductively that $\mathcal U_{n-2}$ is the exact reachable call set at input $v_n$. Reachability prevents surplus rows; deterministic inversion forces the same unfolded proof and therefore the same canonical pair set. Hence $D_n=|\mathcal U_{n-2}|$.
+
+Here is the complete equality method used to count that set for all $m$, rather than extrapolate samples. Strip the maximal initial stem chain at each compared term root. The remaining head is a fork, a leaf, or $X$. Two fork heads agree exactly when their chain lengths and corresponding children agree. A fork head cannot match a leaf or placeholder head after unary substitution. The latter heads yield unary chains of length $c$ or $c+k$. Recursing over the finite constructor DAG reduces equality of $T_i(\Stem^k(\Leaf))$ and $T_j(\Stem^\ell(\Leaf))$ to a finite conjunction of equations of the forms
+\[
+0=c,\qquad k=c,\qquad\ell=c,\qquad k-\ell=c.
+\]
+Solving these equations over nonnegative integers is complete because the constructor algebra is free. For two variable templates the solution is empty, one translation line, or one point. Each individual variable stream is injective, as any occurrence of $X$ supplies a strictly increasing unary leaf length.
+
+The exhaustive classification of the literal 149 templates gives 80 ground templates, all already in $B$, and 69 variable templates. Among their $2346$ unordered pairs, 2340 never meet, five satisfy a translation equality, and one meets at a single point. The five disjoint translation pairs are
+\[
+(2,61),\ (3,140),\ (4,141),\ (5,142),\ (53,62),
+\]
+and each has exactly the relation $k-\ell=-1$. The other 59 templates are singleton streams. Over $0\leq k,\ell\leq m$, each singleton contributes $m+1$ points and each paired group contributes $m+2$. Thus the sum of variable-group sizes is
+\[
+59(m+1)+5(m+2)=64m+69.
+\]
+One can label a paired group by the intervals $[0,m]$ and $[-1,m-1]$; their union is $[-1,m]$. A negative endpoint here is only an abstract equality-class label, not a negative-depth tree input.
+
+The only isolated cross-group equality is $T_6(0)=T_{141}(0)$. All intersections with the base occur at parameter zero, with this complete list:
+\begin{center}
+\begin{tabular}{lrrrrrrr}
+\toprule
+variable step row & $6$ & $11$ & $61$ & $62$ & $140$ & $141$ & $142$\\
+matching base row & $4$ & $10$ & $2$ & $50$ & $3$ & $4$ & $5$\\
+\bottomrule
+\end{tabular}
+\end{center}
+There are seven variable-\emph{group} points already represented in the base. The cross-group pair also consists of two of those points, both matching base row 4; it requires no additional subtraction after those seven have been removed. There are no later-index exceptions. Therefore
+\[
+|\mathcal U_m|=179+(64m+69)-7=64m+241.
+\]
+Substitute $m=n-2$. The ground base counts separately give $D_0=44$ and $D_1=179$; extending the affine formula to $n=1$ would be incorrect.
+\end{proof}
+
+The complete finite equality classification is in \code{exact_growth_receipt.json}. Its generator and an independent structural verifier check the literal data, including every nonempty equality relation and every base intersection. Direct finite evaluations compare entire call sets, rather than cardinalities alone, as additional regression evidence.
+
+\subsection{A general finite unary-template counting principle}
+The equality argument has a useful consequence independent of the particular evaluator.
+\begin{proposition}[Eventual affine template growth]\label{cdc:et:prop:unarytemplates}
+Let $B$ be a finite set of ground ordered tuples over the free algebra $\Leaf,\Stem,\Fork$, and let $T_1(X),\ldots,T_r(X)$ be finitely many ordered tuples of constructor templates with one placeholder. Then
+\[
+a_m=\left|B\cup\{T_i(\Stem^k(\Leaf)):1\leq i\leq r,\ 0\leq k\leq m\}\right|
+\]
+is eventually affine in $m$. Its integer slope, intercept, and a sufficient threshold are computable by finite structural equality checks.
+\end{proposition}
+\begin{proof}
+Absorb ground templates into the fixed set and deduplicate it. The preceding complete classifier says equality between two nonconstant streams is empty, a translation, or one point. Translation equivalence partitions the streams: composing two translation identities gives equality for all sufficiently large valid indices, so the pair classifier returns the composed translation. Injectivity of a variable stream ensures consistent signed offsets within each class.
+
+If a translation class has distinct offsets $s_1<\cdots<s_h$, its contribution at cutoff $m$ is the union of the integer intervals $[s_i,m+s_i]$. Once
+\[
+m\geq\max\bigl(\{0\}\cup\{s_{i+1}-s_i-1:1\leq i<h\}\bigr),
+\]
+that union is one interval and has $m+s_h-s_1+1$ elements. There are finitely many isolated equalities between classes and finitely many intersections with the fixed set. Raise the threshold above all original nonnegative input indices in those events. The events are then all present.
+
+Construct the finite graph whose vertices are affected class-coordinate points and affected fixed elements, with edges their equality events. If it has $v$ vertices and $c$ connected components, identifying these duplicate points subtracts exactly $v-c$ from the sum of class contributions and fixed-set size. This correction is constant after the threshold. Summing the affine class sizes proves the claim, with slope equal to the number of nonconstant translation classes, and supplies the stated finite algorithm.
+\end{proof}
+
+This proposition counts instantiated template sets. To apply it to an evaluator's canonical DAG, the separate deterministic-proof and full-reachability argument must first identify that set with the actual call set. It is not a universality or general evaluator-growth theorem.
+
+\subsection{Uniform bit bounds and the fixed overhead}
+Use $\bits(0)=0$. The code equations imply
+\begin{equation}\label{cdc:et:eq:bitrules}
+\bits(s(a))=\bits(a)+1,\qquad
+\bits(f(a,b))\leq2\max\{\bits(a),\bits(b)\}+3.
+\end{equation}
+If $X$ has at most $m$ bits, each constructor template $T$ has an affine bound $A_Tm+B_T$. The coefficients are calculated without constructing giant integers:
+\begin{align*}
+\Leaf &: (0,0), & X &: (1,0),\\
+\Stem(T)&:(A_T,B_T+1),\qquad&
+\Fork(T,V)&:(2\max(A_T,A_V),\ 2\max(B_T,B_V)+3).
+\end{align*}
+Across all step-row labels, the maximum slope is $64$ and the maximum intercept is $B_*$. Both bases have zero slope and intercept at most $B_*$. With $X=v_{n-2}$ this bounds every row accumulated through level $n$ by $M_n=64n+B_*$ bits.
+
+\begin{proof}[Completion of Theorem~\ref{cdc:et:thm:binarysharing}]
+The selected decomposition fields $a,b,c$ are subtree codes, so are no larger than the relevant row code. Intermediate outputs $u,v$ already occur as premise labels. Unused fields can be zero. If all row labels have at most $M$ bits, the five unconditional candidates $d,e,q,j,k$ have at most $4M+9$ bits, by at most two applications of~\eqref{cdc:et:eq:bitrules}. The heights are at most $H_n<2^{n+10}$. Hence every one of the $19N_n$ scalar-or-tag coordinates fits in
+\[
+B_n=256n+4B_*+9
+\]
+bits. The $3N_n^2$ selector entries are Boolean, needing one bit each. A fixed-width encoding with these publicly known widths has length~\eqref{cdc:et:eq:binarybound}. Since $B_*$ is a fixed constant and $N_n=O(n)$, the total is $O(n^2)$.
+\end{proof}
+
+The fixed overhead is not merely an accidentally loose estimate of a small number. A certified interval gives
+\begin{equation}\label{cdc:et:eq:rbits}
+1\,390\,419\,544\,301\leq\bits(\tcode(R))\leq B_*.
+\end{equation}
+For a fork whose largest child has $b\geq1$ bits, $f(a,c)\geq\max(a,c)^2$ implies at least $2b-1$ bits; a fork of zero children has two bits. Propagating this lower rule and the upper rule through the literal table proves~\eqref{cdc:et:eq:rbits}. The code consequently occupies hundreds of gigabytes of raw bits. It was not materialized, and neither was a full scalar polynomial zero for this family. The structural certificates plus the encoding theorem prove that those scalar witnesses exist.
+\srcnote{\wtag{} Batch~79, 2 October 2026. The interval \eqref{cdc:et:eq:rbits} is valid but loose. Keeping exact codes up to 4096 bits and propagating the same two rules beyond, the research tree's review obtains $2\,501\,742\,332\,141\le\bits(\tcode(R))\le2\,503\,889\,815\,785$ \cite{repo-etrev}, inside \eqref{cdc:et:eq:rbits}; the manuscript's numbers, including $B_*$, are printed unchanged, and every bound that uses $B_*$ remains valid.}
+
+For scale, the structural experiment at $n=20$ found 1393 distinct calls and $589\,299\,244$ unfolded calls. The proved conservative row bound is $3010$, and the exact formula confirms $64\cdot20+113=1393$ canonical rows. The experiment is supplementary evidence; the finite symbolic proof plus induction establishes all $n$.
+
+\subsection{Charging the fixed program and canonical refinement}
+The $R$ table has one leaf, 39 stems and 68 forks. Add 108 uniquely determined constructor coordinates and residuals, replacing the root program binding by its final coordinate. With the leaf residual taken as the coordinate itself, the combined sum of squares adds $283M+526A=809$ gates. The charged fixed-$R$ base family therefore has
+\begin{align*}
+W_N^R&=3N^2+19N+108,& R_N^R&=23N+111,\\
+G_N^R&=27N^2+125N+817.
+\end{align*}
+The witness bit bound~\eqref{cdc:et:eq:binarybound} acquires at most $108B_*$ more bits. The fixed code is thus charged even though its binary expansion is omitted.
+
+For the canonical polynomial use the actual size $N=D(R,v_n)$, namely $N=64n+113$ for $n\geq2$ and the two separate base sizes, rather than the padded upper bound. Its keys and gaps fit within the same width $B_n$, and Lemma~\ref{cdc:et:lem:flow} bounds flow slacks by $h_0$. Its complete witness length is at most
+\[
+(21N-1+\max(N-2,0))B_n+3N^2,
+\]
+plus $108B_*$ when the fixed-$R$ constructor circuit is attached. This remains $O(n^2)$ and now has a unique natural witness at its exact, unpadded size. The program $R$ is a terminating sharing example, not the universal interpreter $U$.
+
+\section{Reproducibility, checks, and research directions\srctag{21}}
+\label{cdc:et:sec:reproduce}
+\subsection{What is proved and what is tested}
+Theorems~\ref{cdc:et:thm:certificate}, \ref{cdc:et:thm:adequacy}, \ref{cdc:et:thm:universal}, and \ref{cdc:et:thm:canonical} have ordinary mathematical proofs above. Theorem~\ref{cdc:et:thm:binarysharing} combines a finite explicit kernel-proof artifact, independently executable verification of all its rows, and mathematical induction. None is claimed to have been checked in a proof assistant.
+
+The core implementation checks 10,000 code round trips, 6400 constructor pairs, and 768 small input pairs. Of the latter, 767 terminate with full scalar polynomial zeros and matching structural evaluations; one is a detected recursive cycle, with no budget-inconclusive trials in that particular grid. All five kernel cases occur. Separate checks cover padding, malformed natural coordinates, repeated premise multiplicity, false cyclic outputs, and evaluator reuse after interruption.
+
+Independent kernel checking uses a separately written weak-CBV expression reducer, a differently implemented coding inverse, and independently expanded residual equations. Independent compiler checks include 707 closed terms with exact compiled normal-form comparisons and 28 terminating interpreter cases, plus true/false sentinel observations. Fuel exhaustion in separate divergent examples is recorded as inconclusive computation, not as a proof of divergence.
+
+The canonical implementation checks the 767 terminating grid cases; all 184 single-coordinate upward or admissible downward perturbations of its identity fixture are rejected. It rejects a core-valid duplicate of the root through occurrence flow alone. These finite tests support the implementation but do not replace the uniqueness proof.
+
+\srcnote{\wtag{} Batch~79, 2 October 2026. The research tree's review \cite{repo-etrev} found no theorem-level defect. It reports one defect at the evaluator's input boundary (its finding P3): the method \code{Evaluation.app} of the shipped \path{code/21-eager-tree-tree_kernel.py} checks its first code only when it decomposes it and does not validate its second code before the cache lookup, so that \code{Evaluation().app(0,-1)} returns $-1$, and \code{app(0,True)} stores a record whose argument is Boolean, which a later valid \code{app(0,1)} reuses; the certificate generated from it then fails the natural-coordinate checker. The polynomial checker rejects such a certificate, so this is not a false arithmetic zero. The tested repair \path{eager_tree_exact_application_inputs.patch}, beside the review in \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/}, adds exact natural-integer validation of both codes; it is not applied to the shipped program. The review reran all 19 author stages, including the symbolic ones, on the original and the repaired copies, reproduced the 26 saved JSON objects, and added 774 independent assertions.}
+
+\subsection{Bundle layout and execution}
+The release contains this PDF and its complete LaTeX source; a \code{code/} directory with runnable standard-library generators, literal data, and certificate fixtures; separate independent checkers; and checksums. It contains no third-party paper PDFs and no expanded giant numerical constants.
+
+From the release directory, the standard-library replay is
+\begin{lstlisting}
+python3 reproduce.py
+\end{lstlisting}
+The optional symbolic degree checks additionally require SymPy and are run by
+\begin{lstlisting}
+python3 reproduce.py --symbolic
+\end{lstlisting}
+To rebuild the PDF using a normal TeX installation:
+\begin{lstlisting}
+python3 build_pdf.py
+\end{lstlisting}
+The core fixture files contain genuine scalar coordinates. Universal and fixed-$R$ constructor files instead describe their huge code coordinates intensionally through finite exact circuits. Running the structural replay does not allocate those giant integers.
+\srcnote{\wtag{} In ProveIt the PDF, the LaTeX source, the delivered README and the checksums (\path{MANIFEST.sha256}, verified with 55 of 55 entries at placement, and \path{verify_manifest.py}) are not shipped; the programs, including \path{reproduce.py} and \path{build_pdf.py}, are shipped as \path{code/21-eager-tree-*}, and the fixtures, receipts and literal data as \path{data/21-eager-tree-*}. The commands are for the delivered layout, in which \path{reproduce.py} runs each program inside \path{code/}, where the receipts and fixtures are rewritten, and writes logs into \path{replay-output/}; the README of this report gives a recipe on a copy. \path{build_pdf.py} compiles \path{eager-tree-certificates.tex}, which is not shipped.}
+
+\subsection{Promising next questions}
+\srcnote{\wtag{} [Manuscript~21 posed its six items as a numbered list; they are question environments here, titled by their headings, with unchanged text. A \wtag{} line after four of them names a related result or question of this report; the items are not merged.]}
+
+\begin{question}[Reduce pairing growth without losing cheap constructors; source 21]\label{cdc:et:q:pairing}
+The present bijection is particularly transparent and quadratic, but repeatedly squares code magnitudes. What alternative coding has a better compiled bit profile while keeping shape recognition, constructors, and exact input loading fully charged?
+\end{question}
+
+\wtag{} Compare the sentence after \cref{cdc:wf:prop:ski-height} in Part~VII, which names better tree or DAG encodings for SKI codes as a research target.
+
+\begin{question}[Improve lookup cost honestly; source 21]\label{cdc:et:q:lookup}
+The selector matrix makes lookup explicit but uses $\Theta(N^2)$ coordinates. A smaller sequence, routing, or addressing codec would have to pay for bounds, extraction and consistency, rather than hiding them behind a memory primitive.
+\end{question}
+
+\wtag{} Compare Part~V's memory-log certificates (\cref{cdc:mem:thm:memory,cdc:mem:thm:linear-memory}), which pay bounds, extraction and consistency for a log of $L$ accesses with $O(L)$ witnesses; whether they lower the cost of the premise lookup here is not addressed.
+
+\begin{question}[Package the varying arity; source 21]\label{cdc:et:q:arity}
+A fixed-arity Diophantine result needs an explicit unbounded sequence representation and its complete arithmetic compilation. The canonical singleton family is a useful intermediate object, but its varying arity is precisely the remaining obstacle.
+\end{question}
+
+\wtag{} Compare \cref{cdc:q:compression}; by \cref{cdc:bd:thm:universal}, a fixed-arity single-fold representation for the universal tree would settle the open single-fold problem.
+
+\begin{question}[Reduce the fixed scalar overhead; source 21]\label{cdc:et:q:overhead}
+The numerical sizes of $U$ and $R$ dominate small instances. Optimizing the literal trees or selecting a less explosive coding could make structural compression usable at a realistic binary scale. Node count alone is the wrong objective.
+\end{question}
+
+\begin{question}[Mechanize the semantic interface; source 21]\label{cdc:et:q:mechanize}
+Formalizing the strict abstraction converse, closure adequacy, and canonical quotient would turn the ordinary proof chain into a checked theorem. The finite symbolic sharing proof is a natural small first target.
+\end{question}
+
+\wtag{} Compare \cref{cdc:q:verified}; ProveIt's combinatory-logic development formalizes an occurs-aware bracket abstraction for SK, not for Tree Calculus (\cref{cdc:et:rem:combinatory}).
+
+\begin{question}[Study minimization and uniqueness separately; source 21]\label{cdc:et:q:padding}
+Canonical ordering gives a unique certificate at exact size but prevents padding. It may be useful to compare arithmetic cost, proof size and verification complexity for the padded and canonical families rather than optimize only one headline count.
+\end{question}
+
+The dual equations $h=\mathbf1+Ah$ and $\mu=e_0+A^{\mathsf T}\mu$ cleanly separate termination from reachability, while call ordering removes representational ambiguity. This suggests a reusable design for other deterministic memoized evaluators whose local decomposition and keys admit similarly charged polynomial checks; extending it is a research direction, not a proved universal metatheorem. Earlier canonical and scheduled SKI certificate constructions remain relevant: the present result is specific to the exact Jay kernel and its charged frontend.
+\srcnote{\wtag{} Batch~79, 2 October 2026. The earlier constructions meant here are those of this report, which the manuscript does not cite: Part~VII's scheduled SKI compiler (\cref{cdc:wf:thm:ski}) and Part~V's canonical graph-evaluation certificates for combinator DAGs (\cref{cdc:mem:cor:graph}); manuscript~21 was written without reading this report.}
+
+The construction is a concrete esoteric-substrate result: computation occurs in an untyped tree-value application algebra, while the arithmetic certificate describes its proof DAG directly. Its useful distinctions are exact eagerness, fully charged lookup, a positive well-foundedness invariant, a literal universal frontend, and a careful separation of structural compression from binary code size.
+
+% ---- manuscript 21, lines 978-1109 (its \clearpage and \appendix dropped) ----
+\section{Literal constructor tables\srctag{21}}
+\label{cdc:et:app:literal}
+\srcnote{\wtag{} [Appendix~A of manuscript~21. The two tables are also shipped as \path{data/21-eager-tree-literal_universal_tree.json} and \path{data/21-eager-tree-shared_compression_program.json}.]}
+Each table is topologically ordered. The entry $\Leaf$ has no children, $\Stem(j)$ uses child $j$, and $\Fork(j,k)$ uses ordered children $j,k$. Reading entries from smaller to larger indices defines one finite value without evaluation, search, or an unspecified constant. A leaf counts as one constructor occurrence. The universal table's root is 174; the sharing table's root is 107.
+
+\subsection{The universal tree}
+\small
+\begin{longtable}{rl@{\quad}rl@{\quad}rl@{\quad}rl}
+\toprule
+index & constructor & index & constructor & index & constructor & index & constructor\\
+\midrule\endhead
+0 & $\Leaf$ & 1 & $\Stem(0)$ & 2 & $\Fork(1,1)$ & 3 & $\Stem(2)$\\
+4 & $\Fork(3,2)$ & 5 & $\Fork(0,4)$ & 6 & $\Stem(5)$ & 7 & $\Fork(6,5)$\\
+8 & $\Fork(0,7)$ & 9 & $\Stem(8)$ & 10 & $\Fork(0,0)$ & 11 & $\Fork(0,10)$\\
+12 & $\Stem(11)$ & 13 & $\Stem(10)$ & 14 & $\Fork(13,10)$ & 15 & $\Fork(3,14)$\\
+16 & $\Stem(15)$ & 17 & $\Fork(16,10)$ & 18 & $\Stem(17)$ & 19 & $\Fork(18,10)$\\
+20 & $\Fork(0,19)$ & 21 & $\Stem(20)$ & 22 & $\Fork(16,14)$ & 23 & $\Stem(22)$\\
+24 & $\Fork(23,10)$ & 25 & $\Stem(24)$ & 26 & $\Fork(25,10)$ & 27 & $\Fork(21,26)$\\
+28 & $\Stem(27)$ & 29 & $\Fork(28,10)$ & 30 & $\Stem(29)$ & 31 & $\Fork(30,14)$\\
+32 & $\Stem(31)$ & 33 & $\Fork(32,10)$ & 34 & $\Stem(33)$ & 35 & $\Fork(34,10)$\\
+36 & $\Fork(12,35)$ & 37 & $\Stem(36)$ & 38 & $\Fork(18,14)$ & 39 & $\Stem(38)$\\
+40 & $\Fork(39,10)$ & 41 & $\Stem(40)$ & 42 & $\Fork(41,10)$ & 43 & $\Fork(12,42)$\\
+44 & $\Stem(43)$ & 45 & $\Fork(0,44)$ & 46 & $\Stem(45)$ & 47 & $\Fork(46,10)$\\
+48 & $\Fork(37,47)$ & 49 & $\Stem(48)$ & 50 & $\Fork(49,10)$ & 51 & $\Stem(50)$\\
+52 & $\Fork(51,10)$ & 53 & $\Fork(12,52)$ & 54 & $\Stem(53)$ & 55 & $\Fork(54,10)$\\
+56 & $\Stem(55)$ & 57 & $\Fork(56,10)$ & 58 & $\Fork(12,57)$ & 59 & $\Stem(58)$\\
+60 & $\Fork(0,14)$ & 61 & $\Stem(60)$ & 62 & $\Fork(0,3)$ & 63 & $\Stem(62)$\\
+64 & $\Fork(63,10)$ & 65 & $\Fork(16,64)$ & 66 & $\Stem(65)$ & 67 & $\Fork(66,14)$\\
+68 & $\Stem(67)$ & 69 & $\Fork(68,10)$ & 70 & $\Stem(69)$ & 71 & $\Fork(70,10)$\\
+72 & $\Fork(21,71)$ & 73 & $\Stem(72)$ & 74 & $\Fork(73,10)$ & 75 & $\Stem(74)$\\
+76 & $\Fork(75,10)$ & 77 & $\Fork(12,76)$ & 78 & $\Stem(77)$ & 79 & $\Fork(78,10)$\\
+80 & $\Stem(79)$ & 81 & $\Fork(80,10)$ & 82 & $\Fork(61,81)$ & 83 & $\Stem(82)$\\
+84 & $\Fork(83,10)$ & 85 & $\Stem(84)$ & 86 & $\Fork(85,10)$ & 87 & $\Fork(12,86)$\\
+88 & $\Stem(87)$ & 89 & $\Fork(88,10)$ & 90 & $\Stem(89)$ & 91 & $\Fork(90,10)$\\
+92 & $\Fork(12,91)$ & 93 & $\Stem(92)$ & 94 & $\Fork(0,12)$ & 95 & $\Stem(94)$\\
+96 & $\Fork(95,10)$ & 97 & $\Fork(93,96)$ & 98 & $\Stem(97)$ & 99 & $\Fork(98,10)$\\
+100 & $\Stem(99)$ & 101 & $\Fork(100,10)$ & 102 & $\Fork(59,101)$ & 103 & $\Stem(102)$\\
+104 & $\Fork(103,10)$ & 105 & $\Stem(104)$ & 106 & $\Fork(105,14)$ & 107 & $\Stem(106)$\\
+108 & $\Fork(107,10)$ & 109 & $\Stem(108)$ & 110 & $\Fork(109,10)$ & 111 & $\Fork(12,110)$\\
+112 & $\Stem(111)$ & 113 & $\Fork(0,2)$ & 114 & $\Stem(113)$ & 115 & $\Fork(114,19)$\\
+116 & $\Stem(115)$ & 117 & $\Fork(0,116)$ & 118 & $\Stem(117)$ & 119 & $\Fork(118,10)$\\
+120 & $\Fork(44,119)$ & 121 & $\Stem(120)$ & 122 & $\Fork(121,10)$ & 123 & $\Stem(122)$\\
+124 & $\Fork(123,14)$ & 125 & $\Stem(124)$ & 126 & $\Fork(125,10)$ & 127 & $\Stem(126)$\\
+128 & $\Fork(127,10)$ & 129 & $\Fork(12,128)$ & 130 & $\Stem(129)$ & 131 & $\Fork(0,130)$\\
+132 & $\Stem(131)$ & 133 & $\Fork(132,10)$ & 134 & $\Fork(37,133)$ & 135 & $\Stem(134)$\\
+136 & $\Fork(135,10)$ & 137 & $\Stem(136)$ & 138 & $\Fork(137,14)$ & 139 & $\Stem(138)$\\
+140 & $\Fork(139,10)$ & 141 & $\Stem(140)$ & 142 & $\Fork(141,10)$ & 143 & $\Fork(12,142)$\\
+144 & $\Stem(143)$ & 145 & $\Fork(0,66)$ & 146 & $\Stem(145)$ & 147 & $\Fork(146,10)$\\
+148 & $\Fork(16,147)$ & 149 & $\Stem(148)$ & 150 & $\Fork(0,149)$ & 151 & $\Stem(150)$\\
+152 & $\Fork(151,10)$ & 153 & $\Fork(144,152)$ & 154 & $\Stem(153)$ & 155 & $\Fork(154,10)$\\
+156 & $\Stem(155)$ & 157 & $\Fork(156,10)$ & 158 & $\Fork(112,157)$ & 159 & $\Fork(0,158)$\\
+160 & $\Stem(159)$ & 161 & $\Fork(16,19)$ & 162 & $\Stem(161)$ & 163 & $\Fork(162,64)$\\
+164 & $\Stem(163)$ & 165 & $\Fork(0,164)$ & 166 & $\Stem(165)$ & 167 & $\Fork(166,10)$\\
+168 & $\Fork(16,167)$ & 169 & $\Stem(168)$ & 170 & $\Fork(169,168)$ & 171 & $\Fork(0,170)$\\
+172 & $\Fork(160,171)$ & 173 & $\Fork(3,172)$ & 174 & $\Fork(9,173)$ &  & \\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\clearpage
+\subsection{The fixed sharing program}
+\small
+\begin{longtable}{rl@{\quad}rl@{\quad}rl@{\quad}rl}
+\toprule
+index & constructor & index & constructor & index & constructor & index & constructor\\
+\midrule\endhead
+0 & $\Leaf$ & 1 & $\Fork(0,0)$ & 2 & $\Stem(1)$ & 3 & $\Stem(0)$\\
+4 & $\Fork(0,3)$ & 5 & $\Fork(0,4)$ & 6 & $\Stem(5)$ & 7 & $\Fork(3,3)$\\
+8 & $\Stem(7)$ & 9 & $\Fork(2,1)$ & 10 & $\Fork(8,9)$ & 11 & $\Stem(10)$\\
+12 & $\Fork(11,1)$ & 13 & $\Stem(12)$ & 14 & $\Fork(13,1)$ & 15 & $\Fork(11,14)$\\
+16 & $\Stem(15)$ & 17 & $\Fork(0,8)$ & 18 & $\Stem(17)$ & 19 & $\Fork(18,1)$\\
+20 & $\Fork(16,19)$ & 21 & $\Stem(20)$ & 22 & $\Fork(0,7)$ & 23 & $\Fork(0,22)$\\
+24 & $\Stem(23)$ & 25 & $\Stem(4)$ & 26 & $\Fork(25,0)$ & 27 & $\Fork(24,26)$\\
+28 & $\Fork(0,27)$ & 29 & $\Fork(8,28)$ & 30 & $\Fork(24,29)$ & 31 & $\Fork(0,30)$\\
+32 & $\Stem(31)$ & 33 & $\Fork(0,1)$ & 34 & $\Stem(33)$ & 35 & $\Fork(0,33)$\\
+36 & $\Stem(35)$ & 37 & $\Fork(2,7)$ & 38 & $\Stem(37)$ & 39 & $\Fork(38,1)$\\
+40 & $\Fork(36,39)$ & 41 & $\Fork(25,40)$ & 42 & $\Fork(0,41)$ & 43 & $\Fork(0,42)$\\
+44 & $\Stem(43)$ & 45 & $\Fork(44,14)$ & 46 & $\Stem(45)$ & 47 & $\Fork(46,1)$\\
+48 & $\Stem(47)$ & 49 & $\Fork(48,1)$ & 50 & $\Fork(0,49)$ & 51 & $\Stem(50)$\\
+52 & $\Fork(11,9)$ & 53 & $\Stem(52)$ & 54 & $\Fork(53,1)$ & 55 & $\Stem(54)$\\
+56 & $\Fork(55,1)$ & 57 & $\Fork(51,56)$ & 58 & $\Stem(57)$ & 59 & $\Fork(58,1)$\\
+60 & $\Stem(59)$ & 61 & $\Fork(60,1)$ & 62 & $\Fork(34,61)$ & 63 & $\Stem(62)$\\
+64 & $\Fork(63,1)$ & 65 & $\Stem(64)$ & 66 & $\Fork(65,1)$ & 67 & $\Fork(34,66)$\\
+68 & $\Stem(67)$ & 69 & $\Fork(0,6)$ & 70 & $\Stem(69)$ & 71 & $\Fork(70,1)$\\
+72 & $\Fork(68,71)$ & 73 & $\Stem(72)$ & 74 & $\Fork(73,1)$ & 75 & $\Stem(74)$\\
+76 & $\Fork(75,1)$ & 77 & $\Fork(68,76)$ & 78 & $\Stem(77)$ & 79 & $\Fork(78,1)$\\
+80 & $\Stem(79)$ & 81 & $\Fork(80,1)$ & 82 & $\Fork(32,81)$ & 83 & $\Stem(82)$\\
+84 & $\Fork(0,2)$ & 85 & $\Stem(84)$ & 86 & $\Fork(85,1)$ & 87 & $\Fork(83,86)$\\
+88 & $\Fork(0,87)$ & 89 & $\Fork(21,88)$ & 90 & $\Fork(0,89)$ & 91 & $\Stem(90)$\\
+92 & $\Fork(91,90)$ & 93 & $\Fork(8,92)$ & 94 & $\Fork(0,93)$ & 95 & $\Fork(0,94)$\\
+96 & $\Stem(95)$ & 97 & $\Fork(96,49)$ & 98 & $\Stem(97)$ & 99 & $\Fork(98,1)$\\
+100 & $\Stem(99)$ & 101 & $\Fork(100,1)$ & 102 & $\Fork(6,101)$ & 103 & $\Stem(102)$\\
+104 & $\Fork(103,101)$ & 105 & $\Stem(104)$ & 106 & $\Fork(105,30)$ & 107 & $\Fork(2,106)$\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\section{Artifact index and logical dependencies\srctag{21}}
+\label{cdc:et:app:artifacts}
+\srcnote{\wtag{} [Appendix~B of manuscript~21. The index uses the delivered names: a program \path{X.py} is shipped as \path{code/21-eager-tree-X.py} and a fixture \path{X.json} as \path{data/21-eager-tree-X.json}. The receipts, \path{sources.json}, \path{requirements-optional.txt} and the two drivers, which the index omits, are shipped the same way.]}
+\begin{longtable}{p{0.45\textwidth}p{0.49\textwidth}}
+\toprule
+artifact & role\\
+\midrule\endhead
+\code{tree_kernel.py} & Natural encoding, exact memoized kernel, structural evaluator, complete polynomial circuit and gate counter\\
+\code{identity_certificate.json} & Full $N=4$ scalar certificate for $\ev{10}{10}{10}$\\
+\code{cyclic_counterfeit.json} & Full false local proof, rejected by the height residual with SOS value $81$\\
+\code{eager_compiler.py} & Strict bracket compiler, source CEK evaluator, quoted-syntax interpreter, universal artifacts\\
+\code{literal_universal_tree.json} & Complete 175-node constructor table of $U$\\
+\code{literal_universal_tree.sexpr} & Complete unshared 949-node value expression\\
+\code{universal_lambda_source.json} & Finite source lambda AST with structural macro expansion\\
+\code{universal_code_circuit.json} & All 175 explicit constant-code residuals\\
+\code{counter_source.py} & Explicit counter-table-to-CBV source constructor and four checked examples\\
+\code{canonical.py} & Canonical baseline with explicit root-distinctness equations; supplies certificate generation\\
+\code{canonical_projected.py} & Preferred canonical polynomial after eliminating provably redundant root comparisons\\
+\code{canonical_projected_identity.json} & Complete unique natural witness for the canonical $N=4$ identity example\\
+\code{shared_compression_program.json} & Complete 108-node constructor table of $R$\\
+\code{shared_symbolic_proofs.json} & Two bases and one schematic induction proof, with all rows, pointers and affine costs\\
+\code{verify_shared_macro.py} & Standalone symbolic-row, acyclicity, program-identity and bit-bound verifier\\
+\code{shared_compression.py} & Generator and structural finite experiments for the fixed sharing program\\
+\code{export_shared_macro.py} & Exports the finite symbolic kernel proofs\\
+\code{independent_audit.py} & Independent kernel semantics, residual expansion and counterexample checks\\
+\code{independent_compiler_audit.py} & Independent de Bruijn substitution semantics and tree context reduction\\
+\code{independent_shared_audit.py} & Independent symbolic proof checking, graph composition and mutation rejection\\
+\code{constant_bit_bound.py} & Integer-only interval bound for the universal scalar's bitlength\\
+\code{canonical_projected_audit.py} & Independent canonical constraint and uniqueness-regression checks\\
+\code{analyze_growth.py} & Complete unary-template equality classification and exact all-$n$ DAG-size formula\\
+\code{verify_packet_assumptions.py} & Kernel proof validity and full reachability for the exact-growth identification\\
+\code{audit_exact_count.py} & Independent direct evaluation and whole-call-set comparisons\\
+\code{independent_growth_audit.py} & Independent all-index structural equality classification\\
+\bottomrule
+\end{longtable}
+
+The encoding and kernel lemmas feed the base polynomial theorem. The strict compiler and interpreter proofs feed operational universality; the literal constructor circuit then supplies the fixed-program arithmetization. The canonical theorem refines the base independently of universality. The sharing theorem uses the frozen kernel, finite symbolic derivations and the encoding bound; it does not require trusting the source generator. This separation lets each obligation be checked without promoting an experimental termination observation into a general theorem.
+
 % [write] batch 62: restore the global equation counter of the appendices.
 \counterwithout{equation}{section}
 \setcounter{equation}{\value{cdcsavedequation}}
@@ -30741,7 +31904,7 @@ the resources required by a zero power.
 \clearpage
 
 \section{Provenance of this report}\label{cdc:sec:provenance}
-\wtag{} This report was built from twenty manuscripts. Six arrived in batch~60 of ProveIt's incoming reports (arrival commits \texttt{725d2ebb6} and \texttt{c1f56f842}) and were placed by commit \texttt{7498484af}; the seventh arrived alone in batch~61 (\texttt{b998f70c6}) and was placed by \texttt{3bf66a8bc} as the report's seventh member, before the report was written. Four more arrived in batch~62 (arrival commit \texttt{b57c0b5ff}), after the report had been written, and were placed by \texttt{adeddcecc} as additions 08--11; they form Parts~X--XIII. A twelfth arrived in batch~63 (arrival commit \texttt{a4268e78e}), after Parts~X--XIII had been written, and was placed by \texttt{62f1ad07c} as addition~12; it forms Part~XIV. Three more arrived together in batch~78 (arrival commit \texttt{1977e6ea6}), after Part~XIV had been written, and were placed by \texttt{aa11f3fef} as additions 13--15; they form Part~XV. A sixteenth arrived in the same commit and was placed by \texttt{41e7f1189} (batch~78, cluster H3) as addition~16; it forms Part~XVI. Two more arrived together in batch~79 (arrival commit \texttt{060e08a07}), after Part~XVI had been written, and were placed by \texttt{224ca41df} (batch~79, cluster J1) as additions 17 and~18; they form Part~XVII. Two more arrived in batch~79 (arrival commits \texttt{060e08a07} and \texttt{ef2fc7990}), after Part~XVII had been placed, and were placed by \texttt{bbaf322e5} (batch~79, cluster J3) as additions 19 and~20: manuscript~19 proves Part~XVI's main theorems again and is printed inside Part~XVI as a marked second route, and manuscript~20 forms Part~XVIII. Each manuscript's source and delivery README survive only in its arrival commit, except manuscript~05's source, which is the base of this article; no manuscript PDF is shipped.
+\wtag{} This report was built from twenty manuscripts. Six arrived in batch~60 of ProveIt's incoming reports (arrival commits \texttt{725d2ebb6} and \texttt{c1f56f842}) and were placed by commit \texttt{7498484af}; the seventh arrived alone in batch~61 (\texttt{b998f70c6}) and was placed by \texttt{3bf66a8bc} as the report's seventh member, before the report was written. Four more arrived in batch~62 (arrival commit \texttt{b57c0b5ff}), after the report had been written, and were placed by \texttt{adeddcecc} as additions 08--11; they form Parts~X--XIII. A twelfth arrived in batch~63 (arrival commit \texttt{a4268e78e}), after Parts~X--XIII had been written, and was placed by \texttt{62f1ad07c} as addition~12; it forms Part~XIV. Three more arrived together in batch~78 (arrival commit \texttt{1977e6ea6}), after Part~XIV had been written, and were placed by \texttt{aa11f3fef} as additions 13--15; they form Part~XV. A sixteenth arrived in the same commit and was placed by \texttt{41e7f1189} (batch~78, cluster H3) as addition~16; it forms Part~XVI. Two more arrived together in batch~79 (arrival commit \texttt{060e08a07}), after Part~XVI had been written, and were placed by \texttt{224ca41df} (batch~79, cluster J1) as additions 17 and~18; they form Part~XVII. Two more arrived in batch~79 (arrival commits \texttt{060e08a07} and \texttt{ef2fc7990}), after Part~XVII had been placed, and were placed by \texttt{bbaf322e5} (batch~79, cluster J3) as additions 19 and~20: manuscript~19 proves Part~XVI's main theorems again and is printed inside Part~XVI as a marked second route, and manuscript~20 forms Part~XVIII. A twenty-first arrived in batch~79 (arrival commit \texttt{aebfa386e}) and was placed by \texttt{a7ae02511} (batch~79, cluster J2) as addition~21, after Parts~XVII and~XVIII had been placed; it forms Part~XIX. Each manuscript's source and delivery README survive only in its arrival commit, except manuscript~05's source, which is the base of this article; no manuscript PDF is shipped.
 
 \begingroup\footnotesize\setlength{\tabcolsep}{3pt}
 \begin{longtable}{@{}p{0.035\textwidth}>{\raggedright\arraybackslash}p{0.25\textwidth}p{0.1\textwidth}p{0.1\textwidth}p{0.1\textwidth}>{\raggedright\arraybackslash}p{0.3\textwidth}@{}}
@@ -30769,6 +31932,7 @@ No. & Archive (batch, manuscript) & Arrival & Pin & Placed & Contribution (Parts
 18 & \path{Spectral_Guards_Without_Time_Expansion.zip} (79, 03) & \texttt{060e08a07} & \texttt{e58b724c2} & \texttt{224ca41df} & second route with input bases, exact pair count, $O(D^4)$ compiler, bounded-bit quartics, witness heights, chart algorithm, tail threshold, affine macros, million-step example, residue-class oscillation (XVII)\\
 19 & \path{no_borrowed_firings.zip} (79, 05) & \texttt{060e08a07} & \texttt{e58b724c2} & \texttt{bbaf322e5} & second route: support burning, ranks, halo, height bound, radius barrier; degree-two residual system and integral gap, $\NZ$/$\GE$/mask gadgets, 34-variable example, fixed 47-field normal form, unique field codes, completeness, seed lemma, code-length bound (XVI, M19)\\
 20 & \path{Compressed_Queue_Diophantine_Research.zip} (79, 11) & \texttt{ef2fc7990} & \texttt{44983ed7e} & \texttt{bbaf322e5} & endpoint theorem (second route), grammar-size quartic, exact macro repetition, conjugacy criterion, pumping threshold, infinite-loop quartic, powered schemas, several channels, compressed decision, grammar-size and lasso limits (XVIII)\\
+21 & \path{Eager_Tree_Calculus_Research_Package.zip} (79, 17) & \texttt{aebfa386e} & none; Jay's\newline\texttt{baa877d91} & \texttt{a7ae02511} & tree coding, eager kernel, proof DAGs and cost acyclicity, charged base quartic and ledger, termination-reflecting compiler, counter frontend, interpreter, literal universal tree and its charged code, canonical singleton fibres, row versus binary sharing, fixed sharing program, exact DAG growth, template counting (XIX)\\
 \bottomrule
 \end{longtable}
 \endgroup
@@ -30788,16 +31952,19 @@ No. & Archive (batch, manuscript) & Arrival & Pin & Placed & Contribution (Parts
 \item \emph{Batch 78, cluster H3 (manuscript 16).} Appended as Part~XVI after Part~XV and before the appendices, in its own order (its Sections 2--16 and both appendices), so that no existing number changed; its title page, abstract, package statement and Section~1 are Section~3.16, and the Section~3 heading became ``The sixteen manuscripts''. It duplicates no printed theorem, so nothing is merged: its least-action lemma is printed with a note crediting Fey, Levine and Peres and pointing to \cref{cdc:rt:lem:least}; its single-fold boundary with a note that it is \cref{cdc:bd:thm:universal}, (a)$\Leftrightarrow$(b), for Cairns's sandpile relation; its radius theorem with a note that its finite search is \cref{cdc:bd:prop:nobound}'s. Its eight questions (unnumbered subsections) are \texttt{question} environments at the end of the Part, cross-referenced, not merged. Renamed: its pairing $\pi$ is $\pi_{\mathrm S}$; its \verb|\ind| prints as \verb|\indset|, and \verb|\Ccmp|, \verb|\Poly|, \verb|\diag| are written out. Where it names its files in prose, the shipped names are printed; its command listing keeps the delivered layout with a note. Bibliography: its keys \texttt{matiyasevich}, \texttt{repo-readme} and \texttt{repo-routing} are mapped to \cite{mat2010}, \cite{repo-h10} and a new entry \cite{repo-rtsources}; \cite{cairns}, \cite{friedrich-levine} and \cite{repo-mrdp} are extended; \cite{jarai} and \cite{bayer-david} are new, and \cite{dhar1990} and \cite{fey-levine-peres} are added by the write (R06.3 of the batch dossier). Dated \wtag{} notes: Part~XIV's questions on infinite-background abelian computation (answered for undirected graphs) and on more general abelian processors (answered in part), \cref{cdc:q:restricted} (answered in part), Part~XIV's opening and its remark on Cairns, Part~IX's universal-halting equivalence and no-bound proposition, and, inside Part~XVI, the relation to Part~XI's degree classification, which sharpens the manuscript's cubic-degree boundary, and the three constructor defects reproduced by the research tree's review \cite{repo-icrev}, whose patch is not applied.
 \item \emph{Batch 79, cluster J1 (manuscripts 17 and 18).} The two manuscripts prove one theorem, the endpoint-certified sign chart of a positive-base exponential polynomial, by one method in independent texts, so they are merged into one Part, appended after Part~XVI and before the appendices; no existing number changed. Base: manuscript~17, because its scope is wider (the infinite horizon inside the verifier, $O(D^3)$ size, the applications and the order-two boundary). Its Sections 2--12 come first, then manuscript~18's Sections 2--12 as the second route, a written comparison (\cref{cdc:sec:b79-routes}), both question lists, both conclusions and the four appendices. Their title pages, abstracts, status statements and introductions are Sections 3.17--3.18 (equations numbered within subsections), and the Section~3 heading became ``The eighteen manuscripts''. Manuscript~18's ladder, monotonicity identity, zero bound, capacity bound, endpoint theorem, power-assisted compiler and chart algorithm are printed with brackets that name manuscript~17's results and say why the second proof is kept (its bases are inputs); its oscillation theorem is printed as the residue-class strengthening of manuscript~17's rotation theorem, with notes both ways. The case of base~$1$ is Part~IV's sign tower and quartic (\cref{cdc:pt:thm:tower,cdc:pt:thm:main}), and manuscript~17's power-graph lemma re-proves \cref{cdc:pt:prop:exponential-boundary}; these are pointers, with no novelty claimed, and manuscript~17's affine, triangular, first-failure and fixed-phase statements carry notes naming the Part~IV statements they generalize. Questions: manuscript~17's Q1 and manuscript~18's first question are merged into one environment that prints both texts; the other seventeen are printed in their lists and cross-referenced. Renamed: no symbol; \verb|\Pow|, \verb|\wt| and \verb|\Repart| were added to the preamble, manuscript~17's \verb|\pin| is printed literally, manuscript~18's \verb|\repo| is replaced by the word ProveIt, its \verb|\pathcode| prints as \verb|\code| and its status boxes as this report's boxes. Editorial brackets correct manuscript~17's description of its two-point expansion check, which is not a polynomial-identity test, and qualify manuscript~18's description of its serialized-residual check; both cite the research tree's review \cite{repo-sprev}, whose two patches are not applied. Where the two name their files in prose, the shipped names are printed; their listings keep the delivered layout with notes. Bibliography: eleven items merged into existing entries, six new entries and the review (the head of the batch-79 items lists the keys). Dated notes: after the remark that follows \cref{cdc:pt:thm:tower} in Part~IV, after \cref{cdc:pt:prop:exponential-boundary} in Part~IX, and at Source~02 of \cref{cdc:q:compression} (answered in part, and re-scoped). The title-page lines that named the AI assistant are recorded here only: the author lines and PDF metadata of manuscripts 17 and~18, ``Research manuscript prepared with ChatGPT for the ProveIt program''.
 \item \emph{Batch 79, cluster J3 (manuscripts 19 and 20).} Manuscript~19 proves the main theorems of Part~XVI again, independently and from a pin at which Part~XVI did not exist, so it is not a new Part: it is printed inside Part~XVI after manuscript~16's conclusion, as a marked second route in its own sections M19.1--M19.14 (Section M19.$k$ is its Section~$k$; its Section~1, abstract and title page are Section~3.19), and its two appendices follow manuscript~16's as M19.A--M19.B; these sections are numbered outside the report's sequence, so that no existing section, theorem or equation number moved. Its least-action lemma, support theorem, rank theorem, halo theorem, radius theorem, the first assertion of its cardinality corollary and its height bound and coordinate bound carry brackets naming manuscript~16's statements, and its proofs are kept as second routes; its directed example, the same as manuscript~16's, is printed as delivered with a bracket; an editorial note claims priority for neither manuscript, and a comparison paragraph says why neither certificate improves the other (degree-two residual system against one cubic). Manuscript~20 is appended as Part~XVIII after Part~XVII and before the appendices, in its own order; its Section~1, abstract and status box are Section~3.20. About a quarter of it re-proves Part~I's resource algebra and Part~VI's endpoint theorem in one coordinate; brackets say so, with no novelty claim. Renamed: manuscript~19's $m$ (distinct unordered adjacent pairs) is written $E$, as in manuscript~16, and its number of residuals $E$ is written $\mathcal R$; manuscript~20's \verb|\code| (the radix value) is typeset with \verb|\qval|, and its \verb|\Pow| with this report's; its label \verb|sec:subtrates| is spelled \verb|cdc:cq:sec:substrates|. Corrected: a broken subscript in manuscript~19 (a line break where \verb|\rm| was meant) is printed as $\deg_{\mathrm{adj}}(v)$. Manuscript~19's nine questions are labelled and printed with lines naming the overlapping questions of manuscript~16, Part~XIV and \cref{cdc:sec:questions}; manuscript~20's ten numbered research paragraphs are question environments. Dated notes: \cref{cdc:q:storage} (queue clause answered), \cref{cdc:q:acceleration,cdc:q:readcounts} (in part), Part~XIV's question on infinite-background abelian computation (a second route), manuscript~19's first question and manuscript~20's first (answered in part by the research tree's projections). The research tree's reviews \cite{repo-bsrev,repo-cqrev} are disclosed; the second supplies a patch that is not applied. Where the two manuscripts name their files in prose, the shipped names are printed; their listings keep the delivered layout with notes. Bibliography: seven items merged into existing entries, six new entries and the two reviews (the head of the batch-79 J3 items lists the keys). The title-page lines that named the AI assistant are recorded here only: manuscript~19's PDF metadata ``OpenAI research-assistance draft for the ProveIt project''; manuscript~20's second author line ``Developed with ChatGPT for the ProveIt research program'' and its PDF metadata ``Research prepared for Vladimir Reshetnikov with ChatGPT''.
+\item \emph{Batch 79, cluster J2 (manuscript 21).} Appended as Part~XIX after Part~XVIII and before the appendices, in its own order (its Sections 2--12 and both appendices), so that no existing number changed; its title page, title-page status lines, abstract and Section~1 are Section~3.21, and the Section~3 heading became ``The twenty-one manuscripts''. It duplicates no printed theorem, so nothing is merged; its coding, its growth bound, its inactive-field equations and its sharing example carry notes naming the devices of the conventions and of Parts~V and~VII that they share (\cref{cdc:wf:lem:treecode,cdc:wf:prop:ski-height,cdc:wf:lem:activation,cdc:mem:cor:graph}), and its unreferenced allusion to ``earlier canonical and scheduled SKI certificate constructions'' now names \cref{cdc:wf:thm:ski,cdc:mem:cor:graph}. Renamed: its \verb|\code| is \verb|\tcode| and its \verb|\cl| is \verb|\clos| (same glyphs), its \verb|\file| is this report's \verb|\code|, and its \verb|\eqtag| is written out; ``Appendix~A'' references carry the section number. Its six numbered research directions are question environments, with lines naming related questions of this report. Written additions: the Part's opening and conventions, a note that no computable function bounds the external $N$ on the universal domain (by \cref{cdc:bd:prop:nobound}), a remark on ProveIt's combinatory-logic development (\cref{cdc:et:rem:combinatory}), the dated note under \cref{cdc:q:ski}, and the review notes. The research tree's review \cite{repo-etrev} is disclosed; its patch is not applied, and its tighter bit interval for the sharing program is printed beside the manuscript's unchanged numbers. Bibliography: four new entries for manuscript~21's sources (\cite{jaykernel,jayreflective,jaytree,dallago}) and the review. Manuscript~21's author line and PDF metadata name no AI assistant.
 \item \emph{Additions.} The conventions (\cref{cdc:conv:sec}), the Part openings, the remarks on the formalized exponential counterpart (\cref{cdc:bd:rem:sfu}) and on the project's tag-system notes (\cref{cdc:qc:rem:tagnotes}), and every other paragraph marked \wtag{}.
 \end{itemize}
 
-\paragraph{Labels.} \wtag{} Every label carries the prefix \texttt{cdc:}. Manuscript~05's labels keep their names after it (\texttt{cdc:thm:main}); the other manuscripts' labels carry a second prefix: 01 \texttt{cdc:ct:}, 02 \texttt{cdc:pt:}, 03 \texttt{cdc:mem:}, 04 \texttt{cdc:wf:}, 06 \texttt{cdc:cs:}, 07 \texttt{cdc:qc:}. Labels written in the merge use \texttt{cdc:conv:}, \texttt{cdc:bd:}, \texttt{cdc:part:}, \texttt{cdc:sec:}, \texttt{cdc:q:}, or a manuscript's prefix for a section it did not label (\texttt{cdc:wf:sec:interfaces}). Batch~62 adds the sub-prefixes \texttt{cdc:nh:} (08), \texttt{cdc:of:} (09), \texttt{cdc:pf:} (10) and \texttt{cdc:rx:} (11); its written labels are \texttt{cdc:part:heaps}, \texttt{cdc:part:assembly}, \texttt{cdc:part:pumping}, \texttt{cdc:part:reactions}, \texttt{cdc:conv:b62-08} to \texttt{cdc:conv:b62-11}, \texttt{cdc:conv:b62q}, \texttt{cdc:sec:ms08} to \texttt{cdc:sec:ms11}, nine \texttt{cdc:q:} labels added to existing questions, and \texttt{cdc:of:sec:degree}, \texttt{cdc:of:sec:assembly}, \texttt{cdc:of:sec:reproduction} for manuscript~09's three parts. Batch~63 adds the sub-prefix \texttt{cdc:rt:} (12); its written labels are \texttt{cdc:part:routing}, \texttt{cdc:conv:b63-XIV}, \texttt{cdc:sec:ms12}, \texttt{cdc:rt:app:reproduction} and \texttt{cdc:rt:app:dependencies} for manuscript~12's two appendices, and \texttt{cdc:q:beyond} and \texttt{cdc:q:varperiods} on two existing questions. Batch~78 adds the sub-prefixes \texttt{cdc:ew:} (13), \texttt{cdc:nt:} (14) and \texttt{cdc:ng:} (15) for the manuscripts' labels, and \texttt{cdc:ic:} for sections written in the merge. Its written labels are \texttt{cdc:part:wiring}, \texttt{cdc:conv:b78-wiring}, \texttt{cdc:sec:ms13} to \texttt{cdc:sec:ms15}, twelve \texttt{cdc:ic:} labels, nine section and appendix labels in manuscript~14's namespace (\texttt{cdc:nt:sec:intro}, \ldots, \texttt{cdc:nt:app:sources}), the 34 equation labels \texttt{cdc:nt:eq:2.1} to \texttt{cdc:nt:eq:11.1}, named after manuscript~14's hand-set numbers, and \texttt{cdc:nh:q:frontend} on an existing question of Part~X. For manuscript~16, batch~78 adds the sub-prefix \texttt{cdc:sp:}; its written labels are \texttt{cdc:part:sandpile}, \texttt{cdc:conv:b78-XVI}, \texttt{cdc:sec:ms16}, \texttt{cdc:sp:prop:twosite} and \texttt{cdc:sp:cor:sites} on two unlabelled statements of the manuscript, and \texttt{cdc:sp:q:digraphs} on its first question. Batch~79 adds the sub-prefixes \path{cdc:ps:} (17) and \path{cdc:sg:} (18); its written labels are \path{cdc:part:exp}, \path{cdc:conv:b79-XVII}, \path{cdc:sec:ms17}, \path{cdc:sec:ms18} and \path{cdc:sec:b79-routes}, six labels on sections that the manuscripts left unlabelled (\path{cdc:ps:sec:construct}, \path{cdc:ps:sec:conclusions}, \path{cdc:ps:app:checklist}, \path{cdc:sg:sec:conclusion}, \path{cdc:sg:app:format} and \path{cdc:sg:app:ledger}), and eighteen question labels (\path{cdc:ps:q:1} to \path{cdc:ps:q:10}, and \path{cdc:sg:q:capacity}, \path{cdc:sg:q:values}, \path{cdc:sg:q:algebraic}, \path{cdc:sg:q:frontend}, \path{cdc:sg:q:branching}, \path{cdc:sg:q:tail}, \path{cdc:sg:q:complex} and \path{cdc:sg:q:bounded}). Batch~79, cluster J3, adds the sub-prefixes \path{cdc:nb:} (19) and \path{cdc:cq:} (20); its written labels are \path{cdc:sec:ms19}, \path{cdc:sec:ms20}, \path{cdc:part:cqueue}, \path{cdc:conv:b79-nb}, \path{cdc:conv:b79-XVIII}, \path{cdc:nb:sec:opening}, six labels on sections that the manuscripts left unlabelled (\path{cdc:nb:sec:conclusion}, \path{cdc:nb:app:dependencies}, \path{cdc:nb:app:artifacts}, \path{cdc:cq:sec:conclusion}, \path{cdc:cq:app:notation}, and \path{cdc:cq:app:package}), nine question labels \path{cdc:nb:q:smaller} to \path{cdc:nb:q:formal} and ten \path{cdc:cq:q:constants} to \path{cdc:cq:q:exports}.
+\paragraph{Labels.} \wtag{} Every label carries the prefix \texttt{cdc:}. Manuscript~05's labels keep their names after it (\texttt{cdc:thm:main}); the other manuscripts' labels carry a second prefix: 01 \texttt{cdc:ct:}, 02 \texttt{cdc:pt:}, 03 \texttt{cdc:mem:}, 04 \texttt{cdc:wf:}, 06 \texttt{cdc:cs:}, 07 \texttt{cdc:qc:}. Labels written in the merge use \texttt{cdc:conv:}, \texttt{cdc:bd:}, \texttt{cdc:part:}, \texttt{cdc:sec:}, \texttt{cdc:q:}, or a manuscript's prefix for a section it did not label (\texttt{cdc:wf:sec:interfaces}). Batch~62 adds the sub-prefixes \texttt{cdc:nh:} (08), \texttt{cdc:of:} (09), \texttt{cdc:pf:} (10) and \texttt{cdc:rx:} (11); its written labels are \texttt{cdc:part:heaps}, \texttt{cdc:part:assembly}, \texttt{cdc:part:pumping}, \texttt{cdc:part:reactions}, \texttt{cdc:conv:b62-08} to \texttt{cdc:conv:b62-11}, \texttt{cdc:conv:b62q}, \texttt{cdc:sec:ms08} to \texttt{cdc:sec:ms11}, nine \texttt{cdc:q:} labels added to existing questions, and \texttt{cdc:of:sec:degree}, \texttt{cdc:of:sec:assembly}, \texttt{cdc:of:sec:reproduction} for manuscript~09's three parts. Batch~63 adds the sub-prefix \texttt{cdc:rt:} (12); its written labels are \texttt{cdc:part:routing}, \texttt{cdc:conv:b63-XIV}, \texttt{cdc:sec:ms12}, \texttt{cdc:rt:app:reproduction} and \texttt{cdc:rt:app:dependencies} for manuscript~12's two appendices, and \texttt{cdc:q:beyond} and \texttt{cdc:q:varperiods} on two existing questions. Batch~78 adds the sub-prefixes \texttt{cdc:ew:} (13), \texttt{cdc:nt:} (14) and \texttt{cdc:ng:} (15) for the manuscripts' labels, and \texttt{cdc:ic:} for sections written in the merge. Its written labels are \texttt{cdc:part:wiring}, \texttt{cdc:conv:b78-wiring}, \texttt{cdc:sec:ms13} to \texttt{cdc:sec:ms15}, twelve \texttt{cdc:ic:} labels, nine section and appendix labels in manuscript~14's namespace (\texttt{cdc:nt:sec:intro}, \ldots, \texttt{cdc:nt:app:sources}), the 34 equation labels \texttt{cdc:nt:eq:2.1} to \texttt{cdc:nt:eq:11.1}, named after manuscript~14's hand-set numbers, and \texttt{cdc:nh:q:frontend} on an existing question of Part~X. For manuscript~16, batch~78 adds the sub-prefix \texttt{cdc:sp:}; its written labels are \texttt{cdc:part:sandpile}, \texttt{cdc:conv:b78-XVI}, \texttt{cdc:sec:ms16}, \texttt{cdc:sp:prop:twosite} and \texttt{cdc:sp:cor:sites} on two unlabelled statements of the manuscript, and \texttt{cdc:sp:q:digraphs} on its first question. Batch~79 adds the sub-prefixes \path{cdc:ps:} (17) and \path{cdc:sg:} (18); its written labels are \path{cdc:part:exp}, \path{cdc:conv:b79-XVII}, \path{cdc:sec:ms17}, \path{cdc:sec:ms18} and \path{cdc:sec:b79-routes}, six labels on sections that the manuscripts left unlabelled (\path{cdc:ps:sec:construct}, \path{cdc:ps:sec:conclusions}, \path{cdc:ps:app:checklist}, \path{cdc:sg:sec:conclusion}, \path{cdc:sg:app:format} and \path{cdc:sg:app:ledger}), and eighteen question labels (\path{cdc:ps:q:1} to \path{cdc:ps:q:10}, and \path{cdc:sg:q:capacity}, \path{cdc:sg:q:values}, \path{cdc:sg:q:algebraic}, \path{cdc:sg:q:frontend}, \path{cdc:sg:q:branching}, \path{cdc:sg:q:tail}, \path{cdc:sg:q:complex} and \path{cdc:sg:q:bounded}). Batch~79, cluster J3, adds the sub-prefixes \path{cdc:nb:} (19) and \path{cdc:cq:} (20); its written labels are \path{cdc:sec:ms19}, \path{cdc:sec:ms20}, \path{cdc:part:cqueue}, \path{cdc:conv:b79-nb}, \path{cdc:conv:b79-XVIII}, \path{cdc:nb:sec:opening}, six labels on sections that the manuscripts left unlabelled (\path{cdc:nb:sec:conclusion}, \path{cdc:nb:app:dependencies}, \path{cdc:nb:app:artifacts}, \path{cdc:cq:sec:conclusion}, \path{cdc:cq:app:notation}, and \path{cdc:cq:app:package}), nine question labels \path{cdc:nb:q:smaller} to \path{cdc:nb:q:formal} and ten \path{cdc:cq:q:constants} to \path{cdc:cq:q:exports}. Manuscript~21 (batch~79, cluster J2) adds the sub-prefix \path{cdc:et:}, used for its own 74 labels and for every label written in its merge: \path{cdc:et:sec:ms}, \path{cdc:et:part}, \path{cdc:et:conv}, \path{cdc:et:rem:combinatory} and the six question labels \path{cdc:et:q:pairing}, \path{cdc:et:q:lookup}, \path{cdc:et:q:arity}, \path{cdc:et:q:overhead}, \path{cdc:et:q:mechanize} and \path{cdc:et:q:padding}.
 
 \paragraph{Source audits of manuscripts 13 and 14.} \wtag{} Manuscript~13's Appendix~B and manuscript~14's Appendix~D are printed below as delivered. Manuscript~15's audit is its shipped \path{15-no-ghost-wires-PROVENANCE.md}; it records the revision \texttt{928ea9701} (which it calls a recursive-tree revision; it is a commit), the note blob \texttt{764c98229} and the \path{MRDP.lean} blob \texttt{74aea8c5e}, says that no Lean or Rocq build was run and that priority was not established, and lists the primary sources of its bibliography. Manuscript~13's \path{13-exact-wiring-SOURCES.md} repeats its Appendix~B with the literature annotated, and manuscript~14's \path{data/14-net-topology-source_audit.json} records its Appendix~D in machine-readable form.
 
 \paragraph{Source audits of manuscripts 17 and 18.} \wtag{} Manuscript~17's provenance checklist is its Appendix~B (\cref{cdc:ps:app:checklist}); its source audit is shipped as \path{17-positive-spectrum-SOURCE_AUDIT.md}, which records the pin, the three repository files it read (the project README, this report's README and \path{DPR.lean}) and the primary literature it consulted, with the limits of each consultation. Manuscript~18's \path{18-spectral-guards-SOURCES.md} records the pin, the blob of \path{DiophantineTrace.lean}, this report's README and \path{02-poly-trajectories-sources.md}, and its literature. Neither audit claims priority, a proof-assistant check or an exhaustive search.
 
 \paragraph{Source audits of manuscripts 19 and 20.} \wtag{} Manuscript~19's audit is shipped as \path{19-no-borrowed-firings-SOURCES.md}: the pin, the three repository files it read (the project README, the MRDP guide and \path{12-rle-routing-SOURCES.md}), the result of its search for ``sandpile'', and Dhar's review and Cairns's paper with the sections inspected; it claims no priority, optimal count, single-fold compression or Lean certification. Manuscript~20's \path{20-compressed-queue-CLAIMS_AND_PROVENANCE.md} lists its theorems by its own numbers (mapped in \cref{cdc:conv:b79-XVIII}), its semantic scope, the pin with its root tree \texttt{ecc70fbdb}, the three repository files it read (the collection README, this report's README and \path{07-queue-causality-lean_integration.md}, blob \texttt{019f1bb2c}), the size and blob \texttt{95f1a6cbd} of this report's article at its pin, which it could not retrieve, and its external sources; it proposes, and does not certify, novelty of the combined compiler.
+
+\paragraph{Verification note of manuscript 21.} \wtag{} Manuscript~21 has no source audit; its pin, sources and verification scope are in its Section~1.3, in \path{data/21-eager-tree-sources.json} (Jay's commit \texttt{baa877d91}, the four pinned upstream files and Dal Lago--Martini) and in \path{21-eager-tree-VERIFICATION.md}, which separates proofs, fixtures, finite checks and symbolic checks, records that \code{python3 reproduce.py --symbolic} passed all 19 stages and that the 30 rendered pages were inspected, and lists its deliberate limits (no giant scalar code materialized, varying arity, gate counts not bit operations). It claims no proof-assistant certification and no priority.
 
 % ---- manuscript 13, lines 1694-1719 ----
 \subsection{Manuscript 13: Source audit and research provenance}
@@ -30848,7 +32015,7 @@ correctness of an unformalized repository theorem.
 \begin{thebibliography}{99}
 \small
 \raggedright
-\item[] \wtag{} One bibliography for the twenty manuscripts. An item cited by several manuscripts is printed once; the manuscripts citing it are listed at its end, and a detail given by only one of them is kept and attributed. Repository items are pinned at \texttt{e8bb0931d67f80d9fce87a8cddb0f661ff19f956} (manuscripts 01--06) or \texttt{725d2ebb6909fe11a13a92354c0f47367a3cbbf5} (manuscript~07); the cited files of \path{Computability/HilbertTenthProblem} are identical at the two commits. Manuscript~07's two ``companion'' items were manuscripts~04 and~06 of this report and are not repeated. Manuscripts 08--11 (batch~62) cite the repository at \texttt{4e128356d0ef75308be8ed405d89aea2ffdb8a57}; every file they cite, in \path{Computability}, \path{Logic/PresburgerArithmetic} and the vendored Rocq library, is identical at the three pins. Manuscript~12 (batch~63) cites the repository at \texttt{e18718e837d43e162252f9a314e8cb797fbd1a1f}; no file under \path{Computability/HilbertTenthProblem} differs between \texttt{e8bb0931d} and that pin. Manuscripts 13--15 (batch~78) cite the repository at \texttt{439c0a2d9c1052595f3de6a29c11511a24fb2e11}, \texttt{6914ccca6685baf53b7a35f25efc89366c76ba74} and \texttt{928ea97017a25ebe56d240c84f27d2275d818c75}, all of 2 October 2026; the research note and the Lean file they cite are unchanged at the batch-78 write, and the project README has grown since without changing the figures they quote. Manuscript~16 (batch~78) cites the repository at \texttt{928ea97017a25ebe56d240c84f27d2275d818c75}, the pin of manuscript~15. Manuscripts 17 and~18 (batch~79) cite the repository at \texttt{e58b724c25bd34533b7a5834cfcbe873dfa01288}, when Parts~I--XIV had been written; \path{DPR.lean} and \path{DiophantineTrace.lean} are unchanged at the batch-79 write, and the project README, which has grown since, still states the figures of 75 and 87 operations. Manuscript~19 (batch~79) cites the repository at \texttt{e58b724c25bd34533b7a5834cfcbe873dfa01288}, the pin of manuscripts 17 and~18, and manuscript~20 at \texttt{44983ed7ebfd545de55bfdb50e040c82f3d24295}, when Parts~I--XV had been written; the files they cite are unchanged at the batch-79 write, except the project README and this report's README, which have grown (the project README still states the figures of 75 and 87 operations).
+\item[] \wtag{} One bibliography for the twenty manuscripts. An item cited by several manuscripts is printed once; the manuscripts citing it are listed at its end, and a detail given by only one of them is kept and attributed. Repository items are pinned at \texttt{e8bb0931d67f80d9fce87a8cddb0f661ff19f956} (manuscripts 01--06) or \texttt{725d2ebb6909fe11a13a92354c0f47367a3cbbf5} (manuscript~07); the cited files of \path{Computability/HilbertTenthProblem} are identical at the two commits. Manuscript~07's two ``companion'' items were manuscripts~04 and~06 of this report and are not repeated. Manuscripts 08--11 (batch~62) cite the repository at \texttt{4e128356d0ef75308be8ed405d89aea2ffdb8a57}; every file they cite, in \path{Computability}, \path{Logic/PresburgerArithmetic} and the vendored Rocq library, is identical at the three pins. Manuscript~12 (batch~63) cites the repository at \texttt{e18718e837d43e162252f9a314e8cb797fbd1a1f}; no file under \path{Computability/HilbertTenthProblem} differs between \texttt{e8bb0931d} and that pin. Manuscripts 13--15 (batch~78) cite the repository at \texttt{439c0a2d9c1052595f3de6a29c11511a24fb2e11}, \texttt{6914ccca6685baf53b7a35f25efc89366c76ba74} and \texttt{928ea97017a25ebe56d240c84f27d2275d818c75}, all of 2 October 2026; the research note and the Lean file they cite are unchanged at the batch-78 write, and the project README has grown since without changing the figures they quote. Manuscript~16 (batch~78) cites the repository at \texttt{928ea97017a25ebe56d240c84f27d2275d818c75}, the pin of manuscript~15. Manuscripts 17 and~18 (batch~79) cite the repository at \texttt{e58b724c25bd34533b7a5834cfcbe873dfa01288}, when Parts~I--XIV had been written; \path{DPR.lean} and \path{DiophantineTrace.lean} are unchanged at the batch-79 write, and the project README, which has grown since, still states the figures of 75 and 87 operations. Manuscript~19 (batch~79) cites the repository at \texttt{e58b724c25bd34533b7a5834cfcbe873dfa01288}, the pin of manuscripts 17 and~18, and manuscript~20 at \texttt{44983ed7ebfd545de55bfdb50e040c82f3d24295}, when Parts~I--XV had been written; the files they cite are unchanged at the batch-79 write, except the project README and this report's README, which have grown (the project README still states the figures of 75 and 87 operations). Manuscript~21 (batch~79) cites no ProveIt file; its four sources are Barry Jay's upstream repository at commit \texttt{baa877d916eb640280ed2df7ef4385ecd5957d19} and Dal Lago--Martini.
 
 \bibitem{repo-h10}
 V. Reshetnikov (and contributors).
@@ -30889,7 +32056,7 @@ V. Reshetnikov.
 \path{Computability/CombinatoryLogic/README.md}, inspected September 30, 2026.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/e8bb0931d67f80d9fce87a8cddb0f661ff19f956/Computability/CombinatoryLogic/README.md}.
 Manuscript~08 cites the README and associated source at the batch-62 pin: \url{https://github.com/VladimirReshetnikov/ProveIt/tree/4e128356d0ef75308be8ed405d89aea2ffdb8a57/Computability/CombinatoryLogic}.
-Cited by manuscripts 01, 03, 04, 08.
+Cited by manuscripts 01, 03, 04, 08; the batch-79 write of Part~XIX cites it in \cref{cdc:et:rem:combinatory}.
 
 \bibitem{repo-mrdp}
 V. Reshetnikov, ProveIt repository.
@@ -31570,6 +32737,39 @@ Cited in the batch-79 write only.
 V. Reshetnikov (and contributors).
 \emph{Independent review: Compressed Queue Diophantine Research}, research note.
 \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_compressed_queue_aebfa.md}, commit \texttt{be1fc3f625153690af7befc9f0371e2e8e4e08cc} (2 October 2026), with its helper and receipt and the patch \path{compressed_queue_exact_inputs.patch} (SHA-256 \texttt{ed4aa5503033bb2c89dbe16eccdef62ad16101014c7c5c080d6c6f8d77a33501}) beside it; indexed in \path{incoming_substrate_review_aebfa386e.md}. It finds no theorem-level defect, reproduces two defects of the low-level constructors, and verifies a projection to $6c+1$ coordinates and $6c+3$ residuals (\cref{cdc:cq:sec:compiler,cdc:cq:sec:validation}). The patch is not applied to the shipped program.
+Cited in the batch-79 write only.
+
+
+\bibitem{jaykernel}
+B. Jay.
+\emph{Tree Calculus}, original Rust evaluator, pinned commit \texttt{baa877d916eb640280ed2df7ef4385ecd5957d19}, \code{trees/src/lib.rs}, \texttt{Program}, \texttt{apply\_values}, and eager \texttt{eval}.
+\url{https://github.com/barry-jay-personal/tree-calculus/blob/baa877d916eb640280ed2df7ef4385ecd5957d19/trees/src/lib.rs}.
+Cited by manuscript 21.
+
+\bibitem{jayreflective}
+B. Jay.
+\code{Reflective_Programs.v}, branch-first evaluation relation, lines 39--49, same pinned commit.
+\url{https://github.com/barry-jay-personal/tree-calculus/blob/baa877d916eb640280ed2df7ef4385ecd5957d19/Reflective_Programs.v#L39-L49}.
+Cited by manuscript 21.
+
+\bibitem{jaytree}
+B. Jay.
+\code{Tree_Calculus.v}, value grammar and axiomatic equational quotient, same pinned commit.
+\url{https://github.com/barry-jay-personal/tree-calculus/blob/baa877d916eb640280ed2df7ef4385ecd5957d19/Tree_Calculus.v}.
+See also \code{Extensional_Programs.v} for the distinct equational compiler setting:
+\url{https://github.com/barry-jay-personal/tree-calculus/blob/baa877d916eb640280ed2df7ef4385ecd5957d19/Extensional_Programs.v}.
+Cited by manuscript 21.
+
+\bibitem{dallago}
+U. Dal Lago and S. Martini.
+\emph{An Invariant Cost Model for the Lambda Calculus}. arXiv:cs/0511045, 2005. Sections 2 and 4 give the weak-CBV setting and effective Turing simulation.
+\url{https://arxiv.org/abs/cs/0511045}.
+Cited by manuscript 21.
+
+\bibitem{repo-etrev}
+V. Reshetnikov (and contributors).
+\emph{Independent review: Eager Tree Calculus}, research note.
+\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_eager_tree_aebfa.md}, commit \texttt{3b5989da92a7f2b0cea2e7039c527ff99b795299} (2 October 2026), with its replay helper and receipt and the patch \path{eager_tree_exact_application_inputs.patch} (SHA-256 \texttt{bb669fe7b71621d6fbe968ce8ed5833092dee996e262a78a6471f0aeb9bccdfe}) beside it; indexed in \path{incoming_substrate_review_aebfa386e.md}. It finds no theorem-level defect, reproduces the counts, the universal tree's bit interval and the growth formulas, refines the bit interval of the sharing program, and reports one defect of the evaluator's input boundary (\cref{cdc:et:sec:reproduce}). The patch is not applied to the shipped program.
 Cited in the batch-79 write only.
 
 \end{thebibliography}
