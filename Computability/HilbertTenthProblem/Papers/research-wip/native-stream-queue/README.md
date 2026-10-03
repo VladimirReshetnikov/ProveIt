@@ -130,6 +130,17 @@ eight source substitutions and 82 actual outer/AND fixtures, explicitly
 distinguishing these fixtures from full native Pell zeros. Both receipts
 pass root replay; no universal decoder is inferred.
 
+The [encoded-padding obstruction](grill_tag_encoded_padding_obstruction.md)
+shows why the corrected creator fragment cannot directly provide the missing
+ordinary-input decoder. One fixed 1,176-entry compiled program has an infinite
+family of encoded inputs whose intended runs provably never halt; adding six
+terminal zero bits makes them halt after exactly 2,268k+6 steps. The numeric
+input is unchanged and both widths satisfy the strong cone. The
+[independent review](review_grill_encoded_padding_obstruction.md) reconstructs
+the program and blocks, proves the local identities underlying the infinite
+family, and reproduces two complete FIFO traces. Both receipts pass root replay.
+This refutes that direct decoder, not Grill universality or all possible decoders.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
