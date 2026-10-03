@@ -4,7 +4,22 @@ The [batch-80 correction audit](review_batch80_corrected.md) verifies the new
 Tree Calculus, reset-net and sparse-lattice corrected packages at `4e270aa46`.
 The declared API repairs are present; every original report and mathematical
 fixture is unchanged. Six targeted normal/optimized replay runs and actual
-baseline comparisons pass. Review of the other nine new archives is in progress.
+baseline comparisons pass.
+
+The [three-mass and exact-target review](review_batch80_three_mass.md) also
+passes both full author replays and independent literal checks. Three conserved
+units suffice in the weighted Boolean-channel model; many distinct unit-weight
+labels and a large finite rule are essential parts of its interface. The exact-target
+wrapper eliminates reverse-history witnesses through an affine map on natural
+zero sets. Its compact quadratic family still has an external source horizon;
+no fixed-arity universal arithmetic improvement follows.
+
+The [four surreal order reports](review_batch80_surreal.md) pass their finite
+replays and the scoped mathematical review, with one separate prose correction
+about fixed-relation internal well-foundedness in GBC. Their different coding
+and class-order results are complementary. They supply neither an effective
+universal machine nor a paid Diophantine interface. The remaining three
+low-mass archive variants are under final replay.
 
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
