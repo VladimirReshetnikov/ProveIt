@@ -188,6 +188,37 @@
 > independent sparse factor expansions confirm exponentdegree54. Preserve
 > all frozen parents. No astronomical full native/Pell witness is built.
 
+> The [prime-power source protocol](three_mass_prime_power_input_theorem.md)
+> closes the input-encoding gap at theorem level, using the actual Morita1996
+> primary Theorems3.1/4.1 (pp308/313). First preserves the input tuple with
+> two new zero counters; second maps it exactly to(product primes^counters,0).
+> A CM3 unary stack loader starts at(x,0,0); prepending a virtual divide96
+> makes its initial convention(96x,0,0). Its separated reversible compression
+> therefore starts at(2^(96x),0). Original-label boundary invariants exclude
+> spurious accepting outputs and preserve a no-incoming initial label.
+> A fixed CM5 interpreter uses(96x,e,0,0,0), with scratch separate from e,
+> hence a fixed reversible source has prime input(2^(96x)*3^e,0).
+> The [independent source review](review_three_mass_prime_power_input_theorem.md)
+> and root author/reviewer replays pass; root also checked the primary PDF.
+> This is an effective fixed-source theorem, not an expanded universal table.
+>
+> The [paid double exponent](three_mass_double_exponential_input.md) computes
+> Q1=2^(96x),Q2=2^(96*C*Q1), for fixedpositiveC. LoadQ2 through the complete
+> raw history; its valuations are(96*C*Q1,0). A SEPARATE physical divide96
+> prefix then reaches(C*Q1,0), matching the source protocol withC=3^e.
+> FixedC folds into r2=(48C)*Q1 at the sole old48*z consumer; no variable
+> program product is treated as free. Safe SOS enforces U1=U2=1 separately.
+> The unchecked U1U2 anchor fails on the two genuine negative branches for
+> nop; a rejecting divider cannot repair an example that does not include it.
+> Increment over single-layer bridge54=32M+22A/+12w; over raw108=64M+44A/+24w.
+> Complete four toy totals705/580/578/581,83/81/81/81w,22comparisons,
+> degreeupper2344/1192. BothC1/C3 full packets and arbitrarypositivefixedC
+> are supported. Positive y,T add2w for a one-parameter halting predicate.
+> The [independent full-source audit](review_three_mass_double_exponential_input.md)
+> and both fresh root receipts pass. Numerical universal table, both compiled
+> preprocessors, full arithmetic cost and resulting physical clock remain
+> to be instantiated. Never transfer the toy counts to that universal source.
+
 > Latest three-mass examples: the [per-step branch search](three_mass_mixed_branch_search.md)
 > reaches44native/43clean for INC2;DEC2 at h=2, using implicit indices[0,1],
 > Horner guards and both endpoint penalties. Six witnesses, degree3. The

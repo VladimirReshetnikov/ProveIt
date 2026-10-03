@@ -59,8 +59,8 @@ The [three-mass raw-history bridge](Papers/research-wip/native-stream-queue/thre
 now represents unbounded fixed-source reachability with an exact physical
 clock. Its [independent review](Papers/research-wip/native-stream-queue/review_three_mass_unbounded_interface.md)
 checks all four complete examples and the proof excluding clock wrap.
-An ordinary universal-input decoder remains unpaid; no universal bound is
-inferred from these raw examples. The
+A numerical universal source and its full circuit remain unexpanded; no
+universal bound is inferred from these raw examples. The
 [native first-coefficient transfer](Papers/research-wip/native-stream-queue/native_pell_factored_first_coefficient.md)
 reduces them to597/472/470/473 operations and gives a63-operation prescribed
 binary AND certificate. All six complete polynomials are unchanged; the
@@ -72,7 +72,17 @@ adds54 operations to load payload2^(96x) for positive ordinary x, giving
 complete fixed-source totals651/526/524/527. Its sum-of-squares finalizer
 preserves the existing degree upper bounds; independent composition review
 and fresh receipts pass. This proves the input relation for four specified
-machines. A universal source and its intended input protocol remain open.
+machines. The double-layer construction below supplies a universal input
+protocol; its numerical universal table remains to be expanded.
+
+The [prime-power source theorem](Papers/research-wip/native-stream-queue/three_mass_prime_power_input_theorem.md)
+now gives that explicit ordinary-input protocol using Morita's original
+tuple-preserving and prime-product simulations. The
+[double-exponential arithmetic bridge](Papers/research-wip/native-stream-queue/three_mass_double_exponential_input.md)
+pays for its two exponent layers: four complete fixed-source examples cost
+705/580/578/581 operations. Independent source and circuit reviews pass.
+These costs exclude the unexpanded universal simulation and division tables;
+the source theorem does not establish a numerical universal operation bound.
 
 The [geometry component](Papers/research-wip/native-stream-queue/group_linked_binary_geometry46.md)
 now costs46 operations with a shared scale, or48 with its scale computed.

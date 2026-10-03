@@ -139,6 +139,27 @@ maps counter values(96x,0) to(x,0); its instructions are excluded from the
 four measured circuits. Neither this prefix nor source Turing completeness
 supplies an all-r.e. unary-input theorem or a numerical universal table.
 
+The [prime-power input theorem](three_mass_prime_power_input_theorem.md)
+now supplies the precise alternative protocol. Morita1996 preserves the
+initial multi-counter tuple and then uses its prime-product encoding.
+Explicit unary loaders and two separate divide96 preprocessors give
+ordinary-input universality for an effectively constructed three-mass
+source family. A fixed interpreter can use program sliceC=3^e; its numerical
+table remains unexpanded. The
+[independent source review](review_three_mass_prime_power_input_theorem.md)
+checks the initialization, original-state invariants and exact scope.
+
+The [paid double-exponential bridge](three_mass_double_exponential_input.md)
+loads mass valuations(96*C*2^(96x),0), adding54=32M+22A and12 positive
+witnesses to the single-layer circuits. Its four complete fixed-source
+totals are**705/580/578/581**, with83/81/81/81 private witnesses and unchanged
+degree upper bounds2344/1192. The fixed coefficient48C folds into the sole
+second-exponent input product. Both exponent signs remain separately
+enforced. The [independent circuit audit](review_three_mass_double_exponential_input.md)
+and fresh author/reviewer replays pass. These measured examples exclude
+the universal simulation and division tables; a numerical universal
+operation bound still requires their full compilation and accounting.
+
 [All twelve batch-80 archives](incoming_substrate_review_4e270aa46.md) have
 completed their scoped reviews and root replays. The inventory pins 388
 published member occurrences; the complete universal polynomial bound remains 87.
