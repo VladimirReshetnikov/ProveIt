@@ -68,6 +68,20 @@ coefficients and complete finalist leaders. Both fresh installed receipts pass.
 This is an exact frontier within two fixed cores and the stated finalizer
 rules; it is not a general circuit lower bound. The minimum stays85.
 
+The [linear-input quotient family](Papers/research-wip/native-stream-queue/complete_linear_auxiliary_quotient_family.md)
+adds complete universal polynomials at **87 operations/degree 119,
+88/109 and 89/103**, all with **18 positive witnesses**. A fourth complete
+88/113 source records the other auxiliary-gap choice. Each restores a full
+positive zero of its own saved parent; the ordinary rank and signed auxiliary
+argument establish integrality and positivity before invoking that theorem.
+The [independent review](Papers/research-wip/native-stream-queue/review_linear_auxiliary_quotient_family.md) checks
+all 352 paid gates, expands every coefficient of the 28 factor instances,
+and verifies all four full leading forms and both finalizers per source.
+Author and review exact receipts pass; a separate mathematical challenge
+finds no gap. The reviewed 18-witness choices now include **85/175,86/131,
+87/119,88/109,89/103,91/80,93/64**. This is a union of saved constructions,
+not a new grouping census or global optimum; the minimum remains 85.
+
 The [general eight-lane range transfer](Papers/research-wip/native-stream-queue/group_projective_general_separate_range.md)
 now covers the canonical nonempty matrix-history graph family. Separating its
 physical range mask from its controller width lowers the uniform exact degree
