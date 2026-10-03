@@ -1,7 +1,22 @@
 # Continuation: universal straight-line certificates
 
-> **Current established universal bounds:74 certificate operations /85 polynomial operations.**
-> **Current minimum polynomial:85=48M+37A,18 positive witnesses,exact degree175.**
+> **Current established universal bounds:74 certificate operations /84 polynomial operations.**
+> **Current minimum polynomial:84=47M+37A,18 positive witnesses,exact degree187.**
+>
+> The [scaled strong output](complete84_scaled_strong_output.md) lowers the
+> complete universal polynomial to **84=47M+37A operations**, with **18 positive
+> witnesses and uniform exact degree 187**. Reusing the paid main coefficient
+> saves one multiplication across the strong and auxiliary blocks. The entire
+> new polynomial is `F84=Delta*F85`; `Delta=(a+1)(a+3)>0` on every allowed
+> positive tuple before any equation is imposed. Thus the full positive zero
+> sets, ordinary input and fixed-program recipe are unchanged.
+> The [independent review](review_complete84_scaled_strong_output.md) checks
+> all 84 gates, the complete output identity and the uniform degree argument;
+> a separate mathematical challenge and fresh normal/optimized replays pass.
+> The gate-propagated degree 197 is only an upper bound. The comparison-system
+> bound remains **74**; the lower-degree **85/175** and other reviewed choices
+> remain available. Earlier entries retain their historical counts; the current
+> minimum polynomial count is **84**, with no global optimality claim.
 >
 > The [auxiliary quotient projection](complete85_auxiliary_bezout_projection.md)
 > lowers the complete universal polynomial to **85=48M+37A operations**, with
@@ -224,6 +239,18 @@
 > The specified shuttle has explicit timing and spatial-count formulas.
 > No universal simulation or fixed-arity unbounded Diophantine encoding is
 > supplied, so neither614 nor degree4 changes the universal arithmetic bound.
+>
+> The [Report37 exact-obstruction review](review_exact_negative_obstruction37.md)
+> confirms a full negative-zero criterion for the raw29/positive21 projections,
+> with only `q,w` left unbounded. It does not establish existence or exclusion;
+> the inverse problems remain open. Five archived/current source pairs match,
+> and fresh bounded arithmetic checks pass. Its necessary `F>=q` is incompatible
+> with the normalized universal source's retained `F+Z<q` bootstrap.
+> The [Report38 turmite intake](review_turmite_first_revisit38_intake.md) checks
+> polynomial first-revisit detection and exact finite observations, with possible
+> exponential Boolean expansion. Its shared Boolean-DAG certificate is a proposed
+> component; first-hit minimality and an ordinary-input universal loader remain
+> unpaid. Neither report changes the universal operation bound.
 >
 > The [new negative-index/fiber report review](review_incoming_negative_index_fibers.md)
 > **refutes the exact symmetric signed19 nonlinear-index candidate**: its
