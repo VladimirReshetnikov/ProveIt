@@ -109,6 +109,21 @@ with all triangular-parent natural zeros. The
 and both fresh root receipts pass. The quartic remains a useful degree
 tradeoff; externalN and the universal74/86 bounds are unchanged.
 
+The [coded Tree lookup scout](eager_tree_coded_lookup_scout.md) replaces
+nine field comparisons per row by three comparisons of injective natural
+triple codes. With static cleanup the degree10 source now costs
+**(9N²+219N+16)/2 operations**; a separate degree12 chart costs
+**(9N²+215N+16)/2**. AtN=8 these are **1,172 and1,156 operations**,
+both with the same188 natural witnesses and91 residuals. The theorem
+preserves every complete natural zero tuple at identical coordinates,
+using the retained one-hot tags and pointer sums. The polynomials differ;
+signed or rational zero equivalence is not asserted. The
+[independent full review](review_eager_tree_coded_lookup_scout.md)
+checks all416 complete schedules, exact degrees and polynomial corrections;
+both fresh root receipts pass. The public prototype covers savedN=1..8,
+while the proof and count formulas apply to the uniform externalN template.
+This finite-certificate improvement leaves the universal74/86 bounds unchanged.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

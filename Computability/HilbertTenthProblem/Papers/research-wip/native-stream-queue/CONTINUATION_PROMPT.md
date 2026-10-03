@@ -266,6 +266,29 @@
 > public build/check. Preserve both new trios and the earlier quartic
 > tradeoff; this still has externalN, no universal operation improvement
 > and no canonical unique-computation-fiber claim.
+> The [coded Tree lookup scout](eager_tree_coded_lookup_scout.md) and
+> [independent full review](review_eager_tree_coded_lookup_scout.md) pass
+> fresh root replay. Use P(u,v)=(u+v)^2+u, injective on NATURALS by disjoint
+> shells[s²,s²+s], and C(x,y,z)=P(z,P(x,y)). P(0,0)=0 is essential for
+> inactive slots; the positive-offset Tree constructor cannot replace it.
+> Retain natural one-hot tags and pointer sums. Replace nine field lookups
+> by three coded lookups, preserving ALL natural zero tuples at the SAME
+> supplied coordinates. This is not signed/rational zero equivalence or
+> whole-polynomial equality. Full correction=new lookup squares−old squares.
+> The paid e=F(a,y) cone yields P(a,y)=p−y,P(y,a)=p−a with p=(a+y)(a+y+1).
+> Its defining equation was already deleted; p stays live via t1(z−F(a,y)).
+> Only new code gates use syntactic CSE. Never emit dead row0 triple code.
+> CompleteM=(3N²+87N+2)/2,A=3N²+(67−cleanup)N+7, exactdegree10.
+> With cleanup total(9N²+219N+16)/2; atN8 this is1172=445M+727A.
+> The hybrid first target P((t3+t4)u,t3P(b,y)+t4P(y,a)) agrees only on
+> permitted tag charts, saves2NA and raises exactdegree to12. Cleanup
+> total(9N²+215N+16)/2, atN8=1156=445M+711A. Both retain
+> (3N²+23N)/2 natural witnesses and11N+3 residuals; N8=188w/91res.
+> Census416 recipes acrossN1..8, two cleanups, six orders and stated sharing
+> choices is finite, not a global optimum or416 distinct polynomials.
+> Public API supports only savedN1..8; the proof/formulas generalize the
+> externalN templates. Preserve all parent and author/reviewer bytes.
+> No paid ordinary-input recoder or fixed-arity universal bound follows.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual

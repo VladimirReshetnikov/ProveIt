@@ -89,6 +89,16 @@ with all natural zeros of the triangular parent at the sameN. The
 and both fresh receipts pass. This finite cost/degree tradeoff leaves the
 universal operation bounds unchanged.
 
+The [coded Tree lookup reduction](Papers/research-wip/native-stream-queue/eager_tree_coded_lookup_scout.md)
+then combines each triple of field comparisons using a zero-preserving
+injective natural code. AtN=8 it lowers the complete count from1,456 to
+**1,172 operations at degree10**, or **1,156 at degree12** in a separate
+chart. Both retain188 natural witnesses and exactly the same natural zero
+tuples. The [independent review](Papers/research-wip/native-stream-queue/review_eager_tree_coded_lookup_scout.md)
+checks all416 schedules and their full polynomial corrections; author and
+review receipts pass fresh replay. The prototype coversN=1..8, with general
+externalN count formulas and proof. No fixed-arity universal bound changes.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)
