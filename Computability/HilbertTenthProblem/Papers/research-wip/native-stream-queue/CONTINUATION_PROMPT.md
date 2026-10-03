@@ -360,6 +360,22 @@
 > expands both full sources/leaders, recounts33 live gates, reconstructs the
 > complete counterfeit independently and reads the cited closure contracts.
 > Both fresh root receipts pass. No full unbounded Tree polynomial/count.
+> The [beta three-query sharing](eager_tree_beta_three_query_sharing.md)
+> computesI=i+2 once and emitsactive*(S0+S1)+t3*S2 for three full ungated
+> suffix atoms. Exact whole-polynomial equality toactive*S0+active*S1+t3*S2
+> holds over every commutative ring, with identical nine residuals and12
+> private natural witnesses. Full supplied-active source50=17M+33A versus
+> baseline53=18M+35A; computedactive=t3+t4 source51=17M+34A versus54.
+> Degree7 remains exact with independent target ports. No free index shift,
+> target computation, row/code coherence or bounded universal elimination.
+> Supplied-active mode does not inferactive=t3+t4; computed mode pays it.
+> Both syntactic15 shortcuts are false: H=i+h losesH>=i; S=D+s losesS>=D.
+> Explicit natural false zeros have inverseh orsinteger−1. No standalone
+> atom reduction or general lower bound follows. The
+> [independent review](review_eager_tree_beta_three_query_sharing.md) rebuilds
+> all four sources/208 gates, both full polynomials/leaders and18 residuals,
+> checks58 rejects including15 warm pins and9 copies. Both fresh root
+> receipts pass. Preserve both parent forms and the new author/review trios.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual

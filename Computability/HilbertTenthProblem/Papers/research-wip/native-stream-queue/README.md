@@ -170,6 +170,18 @@ both full polynomials, the concrete counterexample and the cited closure
 interfaces; author and review receipts pass fresh root replay. No new
 universal bound follows.
 
+The [three-query sharing successor](eager_tree_beta_three_query_sharing.md)
+lowers the complete local batch from53 to **50=17M+33A**, or from54 to
+**51=17M+34A** when it computes the shared active tag itself. It paysi+2
+once and factors the first two queries' common guard. The entire polynomial,
+twelve natural witnesses and exact degree7 are unchanged. All target-code
+arithmetic and global row coherence remain additional obligations. Two
+concrete false zeros also reject particular15-gate coordinate shortcuts.
+The [independent review](review_eager_tree_beta_three_query_sharing.md)
+reconstructs all four full schedules and exact coefficient identities;
+both fresh root receipts pass. The standalone16/17 atom and universal74/86
+bounds stay unchanged.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

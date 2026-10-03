@@ -150,6 +150,14 @@ The [independent review](Papers/research-wip/native-stream-queue/review_eager_tr
 and both fresh replays pass. The16/17 counts are component costs and do not
 improve the universal bound.
 
+The [three-query successor](Papers/research-wip/native-stream-queue/eager_tree_beta_three_query_sharing.md)
+shares index arithmetic and guards to reduce the complete local batch from53
+to **50 operations**, or51 with the shared tag computed internally. It
+preserves the whole polynomial, twelve witnesses and exact degree7. Target
+arithmetic and complete table verification remain outside this local count.
+The [independent review](Papers/research-wip/native-stream-queue/review_eager_tree_beta_three_query_sharing.md)
+and both fresh replays pass.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)
