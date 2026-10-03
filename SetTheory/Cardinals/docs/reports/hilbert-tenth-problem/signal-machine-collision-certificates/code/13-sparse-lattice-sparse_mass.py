@@ -32,6 +32,26 @@ class Poly:
     """Canonical sparse polynomial; negative variable indices are free inputs."""
     terms: tuple[tuple[tuple[int, ...], int], ...]
 
+    def __post_init__(self):
+        """Validate direct construction; use make() to canonicalize exact terms."""
+        if type(self.terms) is not tuple:
+            raise ValueError("polynomial terms must be an immutable tuple")
+        last_monomial = None
+        for term in self.terms:
+            if type(term) is not tuple or len(term) != 2:
+                raise ValueError("polynomial terms must be immutable pairs")
+            monomial, coefficient = term
+            if type(monomial) is not tuple:
+                raise ValueError("polynomial monomials must be immutable tuples")
+            for index in monomial:
+                integer(index, "polynomial variable")
+            integer(coefficient, "coefficient")
+            if coefficient == 0 or monomial != tuple(sorted(monomial)):
+                raise ValueError("polynomial terms must be canonical and nonzero")
+            if last_monomial is not None and monomial <= last_monomial:
+                raise ValueError("polynomial monomials must be distinct and sorted")
+            last_monomial = monomial
+
     @staticmethod
     def make(terms):
         acc = {}

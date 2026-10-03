@@ -1,5 +1,18 @@
 # Source provenance and scope
 
+## 3 October 2026 constructor-boundary correction
+
+This corrected code release independently reproduces the direct-constructor
+defect discussed in commit
+`9975af7e1354b83422dc9a2dc13abce4992d0c26` of
+https://github.com/VladimirReshetnikov/ProveIt/commit/9975af7e1354b83422dc9a2dc13abce4992d0c26.
+That external patch was inspected read-only; no downloaded review code was run.
+A minimal local `Poly.__post_init__` validation guard was written and tested.
+No optional optimization was incorporated. `CORRECTION.md` records the exact
+scope and tests. The earlier provenance below describes the original release;
+the corrected producer hash is recorded in the refreshed coefficient and release
+receipts. All original PDF, TeX, fixture, and table bytes remain unchanged.
+
 ## Mathematical report and implementation
 
 The report and reproduction programs were prepared with AI assistance for this research project. They are ordinary mathematical arguments and executable checks, not a machine-checked formal proof. The preferred compiler uses a single natural one-hot selector over the full list of local input rows. A separately implemented factorized compiler is retained only as a clearly labeled baseline.

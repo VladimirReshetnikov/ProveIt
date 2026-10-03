@@ -17,3 +17,5 @@ python3 two-reset-audit/compare_release_net.py
 python3 shared-reset-arcs/build_shared.py
 python3 shared-checks/audit_shared.py
 python3 shared-checks/audit_prime_macros.py
+python3 checks/audit_exact_domains.py
+python3 -O checks/audit_exact_domains.py

@@ -29,6 +29,9 @@ def main():
         for key in ignore:a.pop(key,None);b.pop(key,None)
         if a!=b:raise AssertionError(f'Receipt mismatch: {new.name} and {old.name}')
     py=sys.executable
+    text=run('poly-exactness',[py,str(code/'core/test_poly_exactness.py')])
+    (out/'poly-exactness.json').write_text(text)
+    same_json(out/'poly-exactness.json',ROOT/'receipts/poly-exactness.json')
     run('core-checks',[py,str(code/'core/run_checks.py')])
     same_json(code/'core/check_results.json',ROOT/'receipts/core-checks.json')
     for p in (ROOT/'replay/core/fixtures').glob('*.json'):

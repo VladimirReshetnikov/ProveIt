@@ -46,10 +46,16 @@ def compile_net(program,*,initial_affine=None,parameters=None):
 def initial(net,L,R):
     """The default three-counter affine input helper; other interfaces supply their own map."""
     assert net['data_places'][:3]==['L','R','T']
-    assert type(L) is int and L>=0 and type(R) is int and R>=0
+    if type(L) is not int or L<0 or type(R) is not int or R<0:
+        raise ValueError('Initial counters must be exact nonnegative integers')
     return {'L':L,'R':R,'budget':L+R,'q:START':1}
 
 def fire(net,marking,transition):
+    if type(marking) is not dict:
+        raise ValueError('A marking must be a dictionary')
+    places=set(net['places'])
+    if any(type(p) is not str or p not in places or type(n) is not int or n<0 for p,n in marking.items()):
+        raise ValueError('A marking must use known places and exact nonnegative integers')
     t=net['transitions'][transition] if type(transition) is int else transition
     if any(marking.get(p,0)<n for p,n in t['pre'].items()):raise ValueError('transition disabled: '+t['name'])
     out={p:marking.get(p,0)-t['pre'].get(p,0) for p in net['places']}

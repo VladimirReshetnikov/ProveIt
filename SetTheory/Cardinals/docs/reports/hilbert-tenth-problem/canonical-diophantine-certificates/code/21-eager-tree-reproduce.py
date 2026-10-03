@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parent
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--symbolic', action='store_true', help='also run SymPy degree and canonical-overlay checks')
 args = parser.parse_args()
-steps = ['tree_kernel.py', 'eager_compiler.py', 'counter_source.py',
+steps = ['test_application_domain.py', 'tree_kernel.py', 'eager_compiler.py', 'counter_source.py',
          'shared_compression.py', 'export_shared_macro.py', 'verify_shared_macro.py',
          'canonical.py', 'canonical_projected.py',
          'independent_audit.py', 'independent_compiler_audit.py',
