@@ -1264,7 +1264,10 @@
 > upper bound falls by165; the eight distinct new bounds are795,802,837,848,
 > 957,964,975,982. The author packet proves4,102 register pullbacks and checks
 > 192 full values, including32 rational cases; fresh installed replay passes.
-> Independent source review is pending. These are upper bounds and a saved-source
+> The [independent full source review](review_neary_woods_tail_quotient_all16.md)
+> reconstructs all sixteen sources,4,102 paid gates,240 factor ports and24 ordinary
+> residuals, including their complete finalizers and fixed numeral recipes. Both
+> installed receipts pass fresh replay. These are upper bounds and a saved-source
 > transfer, with no new grouping census or change to the74/86 records.
 
 > The author packet retains its upper-only metadata. All three installed
