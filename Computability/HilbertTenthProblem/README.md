@@ -194,13 +194,16 @@ signed-index/height receipt replays pass through that cache. The guide maps
 permanent reading locations and the actual older command interfaces;
 archive copying itself adds no scientific review or arithmetic claim.
 
-The [Reports35–38 replay supplement](Papers/research-wip/native-stream-queue/reviewed_reports35_38_archive_replay.md)
-preserves the four newly retired sandpile, negative-index and turmite archives:
+The [Reports35–38 placement-snapshot replay](Papers/research-wip/native-stream-queue/reviewed_reports35_38_placement_snapshot_replay.md)
+preserves four retired sandpile, negative-index and turmite archives:
 **3,075,016 exact historical bytes**, with 24 authenticated member records.
-Seventeen records match new placed files, five match existing frozen sources,
-and two context notes remain archive-only. The helper writes an external cache;
-all frozen research sources and receipts remain unchanged. Fresh sandpile
-author/reviewer and Report37 checks pass against the recovered archives.
+Seventeen records match fixed placement-commit blobs, five match current frozen
+sources, and two context notes remain archive-only. This supersedes the
+[frozen current-file replay](Papers/research-wip/native-stream-queue/reviewed_reports35_38_archive_replay.md) for
+working trees with the published turmite README/article edits. Original
+historical bytes remain exact; the later editorial files are not authentication
+inputs. All frozen research sources and receipts remain unchanged, and the
+three affected sandpile/Report37 receipts replay through the external cache.
 This preserves reproducibility and adds no arithmetic or universality claim.
 
 The [literal reversible-source review](Papers/research-wip/native-stream-queue/review_literal_universal_reversible_source16.md)
