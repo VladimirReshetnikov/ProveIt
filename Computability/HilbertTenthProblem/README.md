@@ -78,6 +78,18 @@ norms exclude a restored zero auxiliary quotient. The other231 schedules
 claim only all-value affine pullbacks. Both installed receipts pass fresh
 replay. This is a finite grammar result, not a general affine lower bound.
 
+The [nonlinear first-index scout](Papers/research-wip/native-stream-queue/complete74_nonlinear_index_projection_scout.md)
+emits three full graph projections using `r=actual_k-h*UM-1`, paying both
+remaining r consumers. Certificate cost stays74; removing one comparison
+and coordinate gives full SOS counts127/103/97, exact degrees52/84/84 and
+29/21/19 retained positive-coordinate interfaces. These are **provisional
+candidates**: restoration of a positive r is unproved, so their positive
+zeros are not yet known to recognize the parent language. The packing
+remainder excludes zero but does not by itself exclude a negative index.
+Author and fresh installed receipt replay pass; independent review is
+pending. No established universal bound or witness record changes.
+
+
 The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)
 and [independent census](Papers/research-wip/native-stream-queue/review_complete86_affine_port_scout.md)
 also check874 complete circuits from six joint-root schedules and one local
