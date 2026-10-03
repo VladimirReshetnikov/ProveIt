@@ -150,6 +150,21 @@
 > nonuniversal raw-input sources; ordinary-input loading and a numerical
 > universal source remain unpaid. The universal minimum stays 85 operations.
 >
+> The [cellular-clock domination intake](review_cellular_clock_domination18_intake.md)
+> finds no gap in Report18's clock comparison within its fixed source templates;
+> 166 saved primitive records reproduce the two startup clocks. This physical
+> speed improvement supplies no paid ordinary-input loader or smaller arithmetic
+> compiler. The separate [input-free-height obstruction](three_mass_input_free_height_obstruction.md)
+> rejects a tempting one-addition saving in all four direct clean-clock sources.
+> An exact endpoint/clock symmetry gives infinitely many full positive zeros
+> at false fixed-time raw inputs. The
+> [independent review](review_three_mass_input_free_height_obstruction.md)
+> checks all 2,008 candidate gates, full parent-lift identities, arbitrary-iterate
+> residual invariance and exact degrees; separate mathematical review passes.
+> Full positive counterfamilies use the sound parent's native existence theorem;
+> only outer examples are numerically materialized. The sound parent costs and
+> universal minimum of 85 operations remain unchanged.
+>
 > The [parallel-particle report review](review_parallel_particle_reports.md)
 > checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
 > natural-witness quartics. An independent reconstruction matches the complete
