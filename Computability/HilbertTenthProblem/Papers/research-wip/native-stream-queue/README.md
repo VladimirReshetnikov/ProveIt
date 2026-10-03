@@ -75,6 +75,12 @@ The [mathematical review](review_complete74_asymmetric_scale_math.md) and
 pass, as do all three installed fresh receipts. This is a complete
 positive-zero transfer on valid compiler slices, with no operation saving.
 
+The [asymmetric cross-cone scout](complete74_asymmetric_cross_cone_scout.md)
+checks18 complete reassociations of the scale and packing cones, finding
+no operation saving. Five multiplications are necessary only in its stated
+four-output monomial model; the broader74-operation optimum is not proved.
+All full sources and finalizers are saved, and fresh receipt replay passes.
+
 The [retained-index and quotient shift census](complete74_index_transport_affine_scout.md)
 and [independent review](review_complete74_index_transport_affine_scout.md)
 check243 complete schedules across the raw30, positive22 and signed20 sources.
