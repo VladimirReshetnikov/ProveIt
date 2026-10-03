@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={The surreal and surcomplex reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of sixty-five research reports on surreal and surcomplex numbers}}
+  pdfsubject={Catalogue of sixty-six research reports on surreal and surcomplex numbers}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -60,7 +60,7 @@
 
 \begin{center}
  {\LARGE\bfseries\color{Ink} The surreal and surcomplex reports}\\[8pt]
- {\large Sixty-five mathematical research packages,\\
+ {\large Sixty-six mathematical research packages,\\
  on the surreal field, its algebraic closure, its quaternion algebra,\\
  their reach into physics, and the foundations and computation of all of them}\\[10pt]
  {\small October 2026}
@@ -71,7 +71,7 @@
 \section*{Scope}
 \addcontentsline{toc}{section}{Scope}
 
-This document catalogues the sixty-five research packages stored under
+This document catalogues the sixty-six research packages stored under
 \dir{docs}.  Each entry names the problem the report attacks, the result it
 claims, and the delivery it arrived in.
 
@@ -105,7 +105,7 @@ commutativity behind for Hamilton's division algebra $\mathbb{H}_{\No}$ over
 $\No$.  Two, under \dir{docs/physics}, address physical models: the first asks what
 surreal scalars do and do not buy in general relativity; the second asks the
 same of finite quantum operations and gauge models. Neither claims an
-experimental prediction.  The last nine, under
+experimental prediction.  The last ten, under
 \dir{docs/foundations-and-computation}, stand outside all of these: they are
 about the subject rather than inside it, asking in what foundation this
 mathematics legally lives, how one computes with it exactly, which surreal
@@ -113,8 +113,9 @@ numbers are computable at all, how the surreal field of one set-theoretic
 universe looks from a larger one, which universe of hereditary sets a
 birthday cutoff remembers, which surreals and omnific integers are
 definable, how omnific integers can be named exactly, and how large-cardinal
-embeddings act on normal forms, and which restricted exponential languages
-over omnific integers are decidable.
+embeddings act on normal forms, which restricted exponential languages
+over omnific integers are decidable, and how the well-orders of the proper
+class $\No$ compare lexicographically.
 
 These reports were previously part of a larger collection, in a repository
 whose subject was elsewhere; they were moved here with their git history.
@@ -2449,7 +2450,7 @@ no Lean formalization, priority not certified.}
 
 \section{Foundations and computation}
 
-Nine reports that take the rest of the collection, or the surreal field as a
+Ten reports that take the rest of the collection, or the surreal field as a
 set-theoretic object, as their object.  The first three range over the whole subject; the others emphasize set
 theory, definability and computability, including a restricted exponential
 language for omnific arithmetic.  Each of
@@ -2460,8 +2461,11 @@ cutoffs, are merges of four and five
 manuscripts delivered on 22~September 2026, each proving one spine several
 times under different hypotheses.  Two more, from batch 27, address definable
 surreals and omnific integers (two manuscripts) and omnific notations
-(three). The critical-point-defects report now integrates four manuscripts;
-the newest report treats exponential relations over omnific integers.
+(three). The critical-point-defects report now integrates four manuscripts,
+and the exponential-relations report treats a restricted exponential
+language for omnific integers.  The newest, from batch~80, merges four
+independent manuscripts on the lexicographic orders of the well-orders of
+$\No$.
 
 \entry{Foundations for surreal and surcomplex mathematics}
 {foundations-and-computation/foundations}
@@ -2694,5 +2698,44 @@ degree of its rational cut; admitting $\exp(xy)=\exp(z)$ gives
 undecidability. This does not define an exponential on all surcomplex
 numbers or decide the unrestricted surreal exponential field. Independent
 proof review and Lean formalization remain pending.}
+
+\entry{Lexicographic orders of well-orderings of the surreal numbers}
+{foundations-and-computation/surreal-well-orders}
+{article.pdf}{four manuscripts, delivered 2~October 2026 (batch~80)}
+{How do the well-orders of the proper class $\No$ compare lexicographically,
+and what does the comparison see?  For sets of surreals the enumeration
+order behaves as for every infinite linear alphabet: cardinality,
+universality, ordinal and cube spectra, coding length, extrema and
+adjacency are the theorems of the research-report collection's report on
+the well-orderings of the reals, printed as pointers with second routes.
+Birthday cutoffs bring one exception: with $\mu=2^{<\kappa}$, the minimal
+slice of $\No_{<\kappa}$ is equimorphic with $\mathbb{B}_{\kappa\cdot\kappa}$
+exactly when $\kappa$ is a singular strong limit, and with $\mathbb{B}_\mu$
+otherwise ($\kappa=\beth_\omega$ is an unconditional example), which
+answers that report's question on other ground orders in part.  Set-length
+surreal words embed into $\No$ with birthday bounds but are not isomorphic
+to it, with a complete obstruction to filling their set cuts.  Over GB without set
+choice, a class well-order of $\No$ exists exactly when global choice holds.
+All class well-orders of a labelled class are compared directly, with
+elementary comprehension and without elementary transfinite recursion; the
+order has a canonical set-like initial part, convex fibres and exact
+adjacency by finite residual permutations.  For set-like global
+well-orders in GBC, bounded-support codes interpolate every uniformly
+set-indexed cut and form a class isomorphic to $\No$, finite support does
+not suffice, binary class orders are equimorphic, no uniform coding is
+exhaustive, and omitted ranges give raw cuts.  For inaccessible $\kappa$,
+both orders are identified in $(V_\kappa,\mathcal{P}(V_\kappa))$ and the
+unrestricted one does not embed into the set-like one; in KM with global
+choice there is no definable uniform embedding.  \emph{Merged from four
+independent manuscripts, two pairs of which share an archive name without
+being editions; the core proved up to four times is printed once with the
+other proofs as routes or notes, and the base proves the choice equivalence
+without set choice, answering another source's question.}  Universality and
+homogeneity of $\No$ are classical.  Reciprocal notes went to the reals,
+real-vector-space, birthday-cutoff and foundations reports.  Four
+finite-check programs are shipped; a finite check proves no infinite
+theorem.  Proof review pending; not refereed, no Lean formalization (four
+inputs it uses are proved in Lean on the sign carrier), priority not
+certified.}
 
 \end{document}
