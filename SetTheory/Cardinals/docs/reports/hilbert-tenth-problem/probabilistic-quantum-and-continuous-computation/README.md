@@ -81,8 +81,8 @@ question is re-scoped below dimension four or seven continuation outcomes.
 
 ```
 article.tex                                           the report, standalone LaTeX with an internal bibliography
-article.pdf                                           the compiled report, 341 pages (unnumbered title page,
-                                                      contents pages 1-20, then pages 21-340)
+article.pdf                                           the compiled report, 342 pages (unnumbered title page,
+                                                      contents pages 1-20, then pages 21-341)
 README.md                                             this guide
 07-quantum-mortality-STATUS.md                        source 07's verification and dependency status, as delivered
 09-continuous-barriers-PROVENANCE.md                  source 09's repository inspection, sources and claim boundaries, as delivered
@@ -332,7 +332,9 @@ previous text).
 
 Batch 79 (one note, no new Part) added no label; the report still has
 **1138 labels**, and no label's number changed (checked against the `.aux` of
-a build of the previous text).
+a build of the previous text). The same holds after batch 79's cluster J2
+note (one further note, no new Part): still 1138 labels, every label and
+bibliography number unchanged against a build of the previous text.
 
 Numbering: source 08's Section *n* is Section *n* + 1 here for *n* = 2–8
 (Part I), and its Sections 9, 10, 11 are Sections 11, 12, 33; source 07's
@@ -932,6 +934,29 @@ the remark records this, and Section 36.4 and Appendix F.5 list it; no label
 was added or renumbered (compared in the `.aux`). The new contents line adds
 one contents page, so every later page number moves up by one.
 
+**Related reports (batch 79, cluster J2).** Cluster J2 (placement
+`a7ae02511`) added no Part here either. It added Parts III and IV to
+[`signal-machine-collision-certificates`](../signal-machine-collision-certificates/README.md)
+(written in `bd8a8afd6`; batch-79 manuscripts 16 and 19, arrival
+`aebfa386e`, its sources 12 and 13). That report's Theorem
+`smc:cs:thm:packet` and its fixed-horizon sums are a statement of the same
+kind as Theorem 137.1 (`pqc:pm:thm:trace`): a degree-two polynomial,
+squares of affine residuals plus unsquared products of nonnegative
+quantities, with one natural zero at an externally fixed horizon. The
+dynamics differ (the event map of a conservative signal machine, a
+piecewise-linear map on `ℕ^d`, against a clipped rational network), and so
+do the gadgets (one selector and one input copy per branch, against the
+clamp of Lemma `pqc:pm:lem:clamp`, which needs no branch selector). A dated
+note of 2 October 2026 after the paragraph relating Theorem 137.1 to Part
+III's neural corollary records this, and Section 36.4 and Appendix F.6 list
+it. No theorem is shared and no question of this report is answered. The
+signal-machine report already pointed here (its note after
+`smc:cs:thm:packet`). The cluster's other outputs, Parts IV–VI of
+`quadratic-orthant-certificates` and Part XIX of
+`canonical-diophantine-certificates`, get no note here. No label was added
+or renumbered (compared in the `.aux`); the note adds one body page, so page
+numbers after it move up by one.
+
 ## Build
 
 TeX Live or MiKTeX with lmodern, amsmath/amssymb/amsthm, mathtools,
@@ -943,7 +968,7 @@ No external figures, bibliography database or downloads are needed.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX, pdfTeX) has 341 Letter pages, with no errors,
+The recorded build (MiKTeX, pdfTeX) has 342 Letter pages, with no errors,
 undefined references or citations, multiply defined labels, duplicate
 destinations, LaTeX or package warnings, or overfull boxes; there are 17
 underfull boxes, in narrow table cells and in a few source paragraphs. All
@@ -1455,3 +1480,16 @@ in each source's implementation section gives the shipped names (for source
   minimum versus smooth hypersurface" (after Theorem 42.1); a bullet in
   Section 36.4; Appendix F.5. No existing text was changed and no label was
   added, renamed or renumbered.
+
+**Batch 79, cluster J2 (one note, Appendix F.6).**
+
+- **No new Part.** Batch 79's cluster J2 (placement commit `a7ae02511`)
+  added Parts III and IV to `signal-machine-collision-certificates`
+  (written in `bd8a8afd6`; batch-79 manuscripts 16 and 19, arrival
+  `aebfa386e`); this report received one dated note of 2 October 2026,
+  checked against that report's Theorem `smc:cs:thm:packet`, its
+  fixed-horizon sum and its integer lift.
+- **Written text** (`[write]`): the note after the paragraph "Relation to
+  Part III's neural corollary" (after Theorem 137.1 and Example 137.4); a
+  bullet in Section 36.4; Appendix F.6. No existing text was changed and no
+  label was added, renamed or renumbered.

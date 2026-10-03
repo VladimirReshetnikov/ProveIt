@@ -296,6 +296,10 @@ names, source 13's 53 as `smc:sl:` plus theirs, and seven new labels, which
 use `smc:cs:` although some cover both Parts: `smc:cs:part`, `smc:sl:part`
 and the five front subsections `smc:cs:sec:batch79`, `smc:cs:sec:notation`,
 `smc:cs:sec:relation`, `smc:cs:sec:status`, `smc:cs:sec:questions`.
+The batch-79 reciprocal notes (cluster J2: the note after
+`smc:cs:thm:packet` and a parenthesis in `smc:cs:sec:relation`) added no
+label; the report still has 252, and no label's number changed (compared in
+the `.aux`).
 
 Each Part keeps its source's numbering of statements, by section: source
 07's Section *n* is Section *n* + 1 here (Sections 2–16), so its Theorem
@@ -545,6 +549,19 @@ treated signal machines before batch 78 apart from the programme's review.
   no convex quadratic certificate, whereas the sums of squares of Parts I–II
   are convex. That report names this one in its relation section
   (`qoc:sec:relation`); neither report re-proves a theorem of the other.
+  Reciprocal note (batch 79, cluster J2, 2 October 2026): that report's
+  Parts V and VI (its sources 16 and 17, batch-79 manuscripts 09 and 18,
+  written in `11abe5008`) use Part III's selector/copy device with the
+  selector added to the right factor of each product,
+  `(Σ_{k≠r} e_k)(e_r + Σ x_r)` (`qoc:um:eq:polynomial`,
+  `qoc:rn:lem:gates`), which makes their nonnegative real fibres natural.
+  A dated note after Part III's packet theorem compares the two gates and
+  adds an elementary observation that neither source makes: two positive
+  selectors force every local copy, hence the input `X`, to vanish, so the
+  nonnegative real fibre of Part III's packet is natural at every natural
+  input `X ≠ 0`; adding the selector term would remove the exception at
+  `X = 0` without changing the ledger. That report's relation section and
+  a note after its Theorem `qoc:um:thm:poly` point back here.
 - **[`probabilistic-quantum-and-continuous-computation`](../probabilistic-quantum-and-continuous-computation)**:
   its trace theorem `pqc:pm:thm:trace` is the same kind of fixed-horizon,
   one-natural-zero statement as Part III's horizon sums, for different
@@ -639,6 +656,16 @@ no duplicate destinations, no overfull boxes. The log's only box messages
 are four underfull lines in bibliography entries: three in `reversible`,
 which the delivered source 07 already produces, and one in `moritaimai`,
 source 13's entry as delivered.
+
+The rebuild for the batch-79 reciprocal notes (cluster J2) found that the
+batch-79 build had in fact two "destination with the same identifier
+(name{table.4})" warnings: the uncaptioned notation longtable of Parts
+III–IV steps the table counter, which `\addtocounter{table}{-1}` then
+rewinds, so its hyperlink anchor collided with that of Table 4. The
+longtable now gets its own anchor name (`\theHtable` redefined inside its
+`center` group); no printed number or text changed, and the new build has
+119 pages and the clean log described above, with no duplicate destination
+(label numbers compared in the `.aux`).
 
 ## Rerunning the programs
 
