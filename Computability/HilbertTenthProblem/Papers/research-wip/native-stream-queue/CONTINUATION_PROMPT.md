@@ -90,6 +90,23 @@
 > positive projection/restoration histories. Both author and review receipts
 > reproduce from the maintained repository. Real-witness and missing initial
 > code-bound counterexamples document the exact domain limits.
+> The following [Grill word-closure compiler](grill_tag_word_closure.md) reduces
+> cost to **10t+7−z(t)**, with t+1 positive witnesses and exact degree 2t+2.
+> It computes scaled prefix products directly from the Boolean head word.
+> Zeros imply first halt at some time ≤t; actual first halts give zeros at
+> their own time. Posthalt extensions exist, so do not claim a bijection with
+> causal width histories or equivalence to "halt by t" for each fixed t.
+> Only the union over external horizons equals the padded-input halting
+> relation. Uniform packing and a universal raw-input decoder remain open.
+> The [independent closure review](review_grill_word_closure_independent.md)
+> passes 144 complete source/count/degree proofs and a census of 247 positive
+> closures, including 20 posthalt examples. Both frozen receipts reproduce
+> from the maintained directory; the author and reviewer notes were read.
+> Next unimplemented circuit candidate: write c_i=2(H_i−1)/3 and replace the
+> closure content row by B−x−Σ c_i T_i. The old content residual minus the
+> width residual is three times this expression. Zero-run phases have c_i=0,
+> so a sparse emitted schedule may save work. No gate count or checked source
+> for this alternative is claimed yet; retain the positive input-width bound.
 > A new [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
 > checks 106 complete schedules, including both strong-containing pairs, all
 > ordered triple compositions and a common-c factorization. Best costs 91/92/94

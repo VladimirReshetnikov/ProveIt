@@ -69,6 +69,17 @@ decoder and uniform history packing remain open. An
 circuits and 193 positive history bijections; both suites pass root replay.
 The global bound stays 87.
 
+The [Grill word-closure compiler](grill_tag_word_closure.md) removes the
+remaining width witnesses and costs **10t+7−z(t)**, with t+1 positive witnesses
+and degree 2t+2. Its global word equality implies a genuine halt by t, but can
+include symbols after the first halt. Actual halts supply zeros at their actual
+time, so the union over external horizons preserves the same padded-input
+halting relation. This is a smaller varying-size family, not a fixed-arity
+universal bound or a bijection with causal history witnesses. Its
+[independent audit](review_grill_word_closure_independent.md) proves 144 complete
+source/count/degree identities and checks all 247 positive closures in a
+bounded census. Both author and independent receipts pass root replay.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
