@@ -39,19 +39,19 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
-The [index-unit construction](Papers/research-wip/native-stream-queue/complete109_index_unit_tradeoffs107.md)
-adds complete universal polynomials with **109 operations at exact degree32**
-and **107 at exact degree42**, both with24 positive witnesses. Rearranging
-the existing index equation and grouping protected integer norm factors
-preserves the entire integer zero set of its asymmetric113/24 parent on
-unchanged coordinates. The [independent review](Papers/research-wip/native-stream-queue/review_complete109_index_unit_tradeoffs107.md)
-checks complete sources, corrections, paid ledgers and uniform exact degrees;
-both frozen receipts pass fresh replay. Ordinary input and unbounded duration
-remain paid. The [retained-coordinate asymmetric family](Papers/research-wip/native-stream-queue/complete113_asymmetric_retained109.md)
-still supplies **111/24** and the positive integral scale-restoration theorem.
-These three points extend the86/179 through98/44 operation/degree catalogue.
-Earlier points use19 witnesses; these use24. No global optimality is claimed,
-and the minimum operation bounds remain74/86.
+The [complete five-unit census](Papers/research-wip/native-stream-queue/complete_unit_partition_frontier109.md)
+adds **109 operations at exact degree28**, improving the earlier109/32
+construction while retaining107/42 and111/24. All37 permitted complete
+sources preserve the entire integer zero set of their asymmetric113/24
+parent on unchanged coordinates, with24 positive witnesses. The
+[independent full review](Papers/research-wip/native-stream-queue/review_complete_unit_partition_frontier109.md)
+and [separate mathematical census](Papers/research-wip/native-stream-queue/review_index_unit_partitions_math.md)
+verify all sources, corrections, exact degrees and paid ledgers; all three
+frozen receipts pass fresh replay. The degree28 proof includes both maximal
+residual squares. Ordinary input and unbounded duration remain paid.
+These points extend the86/179 through98/44 operation/degree catalogue;
+earlier points use19 witnesses. This exhausts a specified37-partition sign
+criterion, with no global optimality claim. Minimum bounds remain74/86.
 
 The [eager Tree occurrence-flow reduction](Papers/research-wip/native-stream-queue/eager_tree_occurrence_flow.md)
 saves **N−1 additions** in the complete N-row quartic certificate, giving

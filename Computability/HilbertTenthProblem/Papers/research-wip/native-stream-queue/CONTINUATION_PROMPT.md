@@ -140,18 +140,23 @@
 > All22 inherited source/proof pins are strict; no historical suite is
 > imported. Preserve the frozen author and review trios. Only these two
 > new partitions are claimed, not a complete grouping census.
-> Next unit-family leads (NOT yet catalogue bounds): the finite five-unit
-> criterion separating N0 and Nk has37 partitions out of52. A root probe
-> and independent source-based math challenge support109/28 with groups
-> [N0],[Nm,Na],[Ni,Nk]. It has TWO leading degree14 squares, whose sum
-> contains ga^4*a^4*i^4*j^4*c^12 with coefficient256. The bounded frontier
-> is107/42,109/28,111/24; a full author census/API packet is in progress.
-> Independent math trio is /tmp/review_index_unit_partitions_math.*, frozen
-> source165dc8479997282bcddff1edc728259831a07fbc89bda6d11c87ea646e1a8ed0,
-> receiptb14112b3df1990c353f9006ab771dd5140da9fc1b6d8f01b6b53268a6254b547,
-> note95047482d789166f49a9eca90a75d954459c90b1e35a54d4d82882e17724fb1a.
-> It does not review the forthcoming author's API; finish that audit before
-> replacing109/32 in this catalogue. Preserve the current frozen107 packet.
+> The [complete five-unit census](complete_unit_partition_frontier109.md)
+> and [independent full review](review_complete_unit_partition_frontier109.md)
+> now establish109=53M+56A/exactdegree28, superseding109/32 above.
+> All37 partitions separating N0,Nk are emitted from the actual75-gate core;
+> the census contains8 two-group,19 three-group,9 four-group and1 five-group
+> schedules. Their4,039 complete gates and410 comparisons are recounted.
+> The family frontier is107/42,109/28,111/24, all24 positive witnesses.
+> The default groups[N0],[Nm,Na],[Ni,Nk] have TWO maximal degree14 residuals;
+> their squared leading forms sum, with ga^4*a^4*i^4*j^4*c^12 coefficient256.
+> The [separate mathematical census](review_index_unit_partitions_math.md)
+> expands the default polynomial and checks all37 degree/cost schedules.
+> Author, math and full-review receipts pass fresh root replay. Full integer
+> zero-set equivalence holds at identical coordinates by the modulo4 signs;
+> the all-singleton form alone has zero off-zero correction. All25 inherited
+> source/proof pins remain strict. Other15 partitions are unclassified by
+> this criterion; no unrestricted grouping lower bound is proved. Preserve
+> the frozen author and both review trios. Minimum bounds remain74/86.
 > A separate prospective six-unit source adds Nb=raw_bound-repunit for1A;
 > Nb-1 is exactly comparison0 since actual q=repunit+1 remains computed
 > and shared. Core76=40M+36A and seven other residuals give full102+2k

@@ -33,29 +33,30 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
-The [index-unit construction](complete109_index_unit_tradeoffs107.md)
-now adds **109=53M+56A at exact degree32** and **107=53M+54A at exact degree42**,
-both with24 positive witnesses. Two existing additions express the index
-condition as a unit; grouping it with protected integer norms then removes
-comparisons. The complete polynomials have exactly the same integer zero
-sets as their asymmetric113/24 parent on the same supplied coordinates.
-Their [independent review](review_complete109_index_unit_tradeoffs107.md)
-checks full emitted sources, all-value corrections, uniform exact degrees,
-complete ledgers and strict source/proof guards. Both author and review
-receipts pass fresh root replay. Ordinary input and unbounded duration remain
-paid. The minimum operation bounds stay74/86.
+The [complete five-unit census](complete_unit_partition_frontier109.md)
+now gives **109=53M+56A at exact degree28**, with24 positive witnesses.
+It emits all37 partitions that keep the first and index units separate,
+using the existing integer sign proofs for the other three norm factors.
+The default groups are N0, Nm*Na and Ni*Nk. Its degree28 leading form
+includes both maximal residual squares, with a fixed-parameter-independent
+coefficient256. Every complete source has the same entire integer zero set
+as the asymmetric113/24 parent on unchanged coordinates. The
+[independent full review](review_complete_unit_partition_frontier109.md)
+and [separate mathematical census](review_index_unit_partitions_math.md)
+check the full sources, corrections, exact degrees, paid ledgers and proof
+scope. Author and both review receipts pass fresh root replay.
 
-The combined operation/degree frontier appends107/42,109/32 and111/24 to
+The combined operation/degree frontier appends107/42,109/28 and111/24 to
 86/179 through98/44 above. These retained-coordinate points use24 witnesses;
-the earlier points use19. The [asymmetric family](complete113_asymmetric_retained109.md)
+the earlier points use19. The census improves the earlier
+[index-unit109/32](complete109_index_unit_tradeoffs107.md) and retains its
+107/42 point. The [asymmetric family](complete113_asymmetric_retained109.md)
 and its [full review](review_complete113_asymmetric_retained109.md) supply
-111/24 and the positive integral scale restoration before parent universality.
-Their earlier109/34 is superseded by109/32. The
-[113/28 positive-gap family](complete74_gap_selective_projection113.md) and
-[111/30 protected grouping](complete113_main_input_units111.md) remain frozen
-reviewed predecessors. Exact coordinate identities and off-zero grouping
-corrections remain separate from the positive integer witness theorem.
-No global arithmetic optimality or general grouping census is claimed.
+the positive integral scale restoration before parent universality.
+Ordinary input and unbounded duration remain paid. The minimum operation
+bounds stay74/86. This census exhausts the stated37-partition criterion;
+the other15 set partitions remain unclassified, with no global optimality
+claim. Historical sources and receipts remain frozen.
 
 The [eager Tree occurrence-flow certificate](eager_tree_occurrence_flow.md)
 reduces the complete finite N-row polynomial from27N²+125N+8 to
