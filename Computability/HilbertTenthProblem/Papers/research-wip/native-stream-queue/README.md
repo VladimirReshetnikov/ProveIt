@@ -22,6 +22,11 @@ dipole, while point-source columns have infinite support. The original theorems
 are preserved. A separate patch and an immediate-halt counterexample document
 the correction; the report text and PDF remain unchanged.
 
+The [signal/sparse assembled report](review_signal_typesetting_bd8a8afd6.md)
+also preserves the source mathematics and 71 companion files. Its new signal
+abstract drops the partial/piecewise qualifiers; a separate tested patch restores
+them. Sparse-lattice mass, natural-domain and external-horizon limits remain correct.
+
 The [existential congruence variant](presburger_congruence_existence15.md)
 further lowers the complete atom to **14 = 5M+9A** with five natural witnesses.
 Its truth output is exact, but its witness fibers are infinite. The separate

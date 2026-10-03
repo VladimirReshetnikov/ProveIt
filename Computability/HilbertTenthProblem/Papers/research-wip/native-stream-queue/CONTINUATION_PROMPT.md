@@ -26,6 +26,11 @@
 > column with the signed dipole. The pinned correction restores this essential
 > distinction and the factor-two resistance; root replay and private patch
 > application pass. The maintained PDF still needs rebuilding when applied.
+> The [signal/sparse transfer](review_signal_typesetting_bd8a8afd6.md) preserves
+> all 23 formal blocks, 106 displays and 949 inline formulas with ordered
+> occurrence matching, plus 71 companion files. The new abstract needs the
+> partial/piecewise/homogeneous map qualifiers restored; its separate patch
+> and receipt pass root replay. The sparse editorial read found no new defect.
 > New verified reductions: [five-witness congruence](presburger_congruence_five.md)
 > costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
 > saves T[7M+M(M−1)] coordinates and rows without a gate claim;
