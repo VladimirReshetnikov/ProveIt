@@ -63,11 +63,28 @@
 > regularity, GB/set-choice and set-recursion hypotheses. Root read the full
 > helper/note and added prose and freshly reproduced the receipt. No new defect.
 >
-> **Remaining publication boundary:** `ef114b0bb` writes signal-machine
-> Parts V–VI for three-mass universality and unique-unit mass-three/four
-> decidability (three paths). The archive and placement audits remain valid;
-> the assembled publication review is in progress. Both new publication
-> commits arrived in upstream `ecc9185aa`, merged at `e0680a7fb`.
+> The [mass Parts V–VI publication review](review_signal_batch80_typesetting_ef114b0bb.md)
+> at `ef114b0bb` is now complete within its stated transfer/prose scope.
+> All75 formal/proof occurrences are accounted for (71 retained,4 proof
+> pointers); all105 displays (98 retained,7 declared deduplications);215
+> companions unchanged. All417 labels/846 references and48 bibliography
+> keys/156 citations resolve. The tested two-location patch restores compiler
+> quantifiers and qualifies the unasserted reversibility of the five-particle
+> citation. The [independent semantic challenge](review_signal_batch80_quantifiers_ef114b0bb.md)
+> confirms the first finding and the quartic minimality claim in the joint
+> real-orthant-nonnegative class. Root read all frozen helpers/notes, verified
+> challenge pins/anchors and parser coverage of all declared source theorem
+> environments, and freshly replayed the receipt/private patch application.
+> No unchanged author suite, PDF build or visual QA was run. Patches remain
+> separate; original source/program/publication bytes remain preserved.
+>
+> **Completed current publication boundaries:** surreal synthesis `0be9b9134`,
+> reciprocal notes `a13efdd51`, and mass Parts V–VI `ef114b0bb`. Later changes
+> still need separate review. Next arithmetic work must distinguish the new
+> 44/43 finite-horizon examples from the fixed-arity universal87 bound: a
+> fixed universal source, ordinary-input decoder and unbounded-history
+> encoding remain unpaid. Investigate a complete interface before treating
+> physical mass, degree or these worked circuit counts as a universal bound.
 
 > Current batch-80 status: [all twelve arrivals](incoming_substrate_review_4e270aa46.md)
 > and their original placements have scoped proof/source reviews and root replays.

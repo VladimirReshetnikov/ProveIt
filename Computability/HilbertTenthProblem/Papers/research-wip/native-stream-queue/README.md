@@ -82,8 +82,17 @@ code/data companions retain their bytes. Both scoped reviews have fresh root
 receipts. The [reciprocal notes at a13efdd51](review_surreal_reciprocal_a13efdd51.md)
 also pass their separate audit: all461 formal blocks,251 proofs,457 displays
 and39 companions are preserved, cited numbers/links resolve, and the new prose
-retains the stated hypotheses. Root replay passes. Mass Parts V–VI at
-`ef114b0bb` remain the next separate publication review.
+retains the stated hypotheses. Root replay passes.
+
+The [mass Parts V–VI publication audit](review_signal_batch80_typesetting_ef114b0bb.md)
+now covers `ef114b0bb`: all75 original formal/proof occurrences and105 displays
+are accounted for, including the declared deduplications;215 companions are
+unchanged. Two P3 summary corrections have a tested separate patch: preserve
+the machine-dependent compiler quantifiers, and replace an unsupported claim
+of nonreversibility by “reversibility not asserted”. The
+[independent challenge](review_signal_batch80_quantifiers_ef114b0bb.md) also
+confirms the restricted quartic minimality claim. Fresh root replay and private
+patch application pass; the maintained reports/PDFs retain their reviewed bytes.
 
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction

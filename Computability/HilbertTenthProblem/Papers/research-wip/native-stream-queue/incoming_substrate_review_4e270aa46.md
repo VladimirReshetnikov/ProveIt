@@ -232,6 +232,23 @@ retains the relevant regularity, GB/choice and recursion limits; no new defect.
 Root read and freshly replayed the checker. PDF page/basic checks do not claim
 a fresh build or layout review.
 
-The remaining mass Parts V–VI boundary is `ef114b0bb` (three publication
-paths), merged with the reciprocal notes at `e0680a7fb`. Its assembled-prose
-and transfer review is in progress, separate from original archive verdicts.
+The [mass Parts V–VI publication review](review_signal_batch80_typesetting_ef114b0bb.md)
+completes the separate `ef114b0bb` boundary (three publication paths). It
+accounts for all75 source formal/proof occurrences (71 retained,4 proof
+pointers) and105 displays (98 retained,7 declared deduplications). The215
+companion files are unchanged;417 labels,846 references,48 bibliography keys
+and156 citation occurrences resolve. All new editorial and README claims
+receive their documented semantic read.
+
+Two P3 summary findings have a separate privately tested patch: restore the
+source-dependent compiler quantifiers before fixing a universal source, and
+qualify the five-particle construction's reversibility as unasserted. The
+[independent challenge](review_signal_batch80_quantifiers_ef114b0bb.md) confirms
+the first finding and the properly restricted quartic degree-minimality claim.
+Root read the complete helpers/notes, authenticated challenge pins and exact
+anchors, checked parser coverage of every declared source theorem environment,
+and freshly replayed the full receipt and private patch application. The PDF
+is byte-authenticated only; no rebuild or visual inspection is asserted.
+These three current publication boundaries are reviewed within their stated
+scopes; later revisions remain separate. No universal arithmetic improvement
+is inferred from any of these transfers.
