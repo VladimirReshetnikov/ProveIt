@@ -44,6 +44,13 @@ the signal schedule saves 7,569,906 operations per event packet, reaching
 17,822,616; reset gates save 761 additions per source step. These
 external-horizon/local results leave the global 87-operation bound unchanged.
 
+The [Tree Calculus Part XIX transfer](review_tree_typesetting_954261e15.md)
+preserves 42 formal blocks, 83 displays, 12 tables/listings and 806 inline
+formula occurrences in order, plus 51 original companions. Its separate tested
+patch qualifies exact-size uniqueness, the two DAG-growth base cases and the
+single-fold input translation, and updates two collection counts. Root replay
+matches the receipt. The later corrected-code placement has a separate boundary.
+
 The assembled-report reviews now also cover [Part XVII sign charts](review_signcharts_f97814421.md):
 79 formal environments and 91 display occurrences survive with their multiplicities,
 and all 29 companion files retain the original bytes. The externally fixed widths,

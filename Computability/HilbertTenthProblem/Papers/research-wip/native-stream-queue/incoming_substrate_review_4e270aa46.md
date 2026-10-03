@@ -130,8 +130,8 @@ specific universal source, an ordinary-input loader, unbounded-duration
 representation, and a complete gate schedule. The present reviews establish
 the projection and its precise domain, not that further construction.
 
-Assembled-report transfers have separate revision boundaries. The Tree Calculus
-Part XIX editorial/source audit and subsequent corrected-code placement are
+Assembled-report transfers have separate revision boundaries. The [Tree Calculus
+Part XIX editorial/source audit](review_tree_typesetting_954261e15.md) and subsequent corrected-code placement are
 tracked separately from the original archive proofs. New catalogue and
 surreal-collection edits are likewise checked as transfers, rather than
 silently inheriting the archive review.
