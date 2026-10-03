@@ -468,7 +468,7 @@ evaluator's input boundary; the shipped
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 605 pages
+article.pdf                              the compiled report, 607 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -2225,6 +2225,38 @@ priority programs) and "A small explicit fixed interpreter" (an analogue in
 another substrate, not an answer). No question of this report is answered
 in full.
 
+**Reciprocal notes (batch 79, cluster J2).** The same cluster added Parts
+III and IV to
+[signal-machine-collision-certificates](../signal-machine-collision-certificates/)
+(`smc:`, written in `bd8a8afd6` from batch-79 manuscripts 16 and 19, its
+sources 12 and 13) and Parts IV–VI to
+[quadratic-orthant-certificates](../quadratic-orthant-certificates/)
+(written in `11abe5008` from batch-79 manuscripts 08, 09 and 18, its
+sources 15, 16 and 17). Six dated notes of 2 October 2026 record the
+relations here, without new labels, citing those reports' labels by name:
+after the discussion that follows `cdc:of:thm:singlefoldsl` (Part XI; the
+signal-machine report's Part III step packet `smc:cs:thm:packet` is an
+explicit single-fold quadratic whose existence also follows from that
+theorem, and its Part IV quartic `smc:sl:cor:fixedarity` is a degree-four
+second route to it); after the example following `cdc:mem:lem:compare`
+(Part V; the same Part IV re-derives the comparison gadget and the
+two-field case of `cdc:mem:prop:comparator-cost`); after the paragraph that
+follows `cdc:ex:gap` (Part II; the quadratic-orthant report's Theorem
+`qoc:rn:thm:trace` generalizes `cdc:thm:main` with empty independence to
+reset nets and makes every nonnegative real zero natural, where `P₂` is
+convex with non-lattice real zeros); after `cdc:rx:thm:threshold` (Part
+XIII; its Lemma `qoc:rn:lem:fuel` is the same theorem for reset nets, and
+its peak certificate is a degree-two counterpart of `cdc:rx:thm:QL`); after
+the question "Substrate-transfer theorems" (Part XIII; its Parts V and VI
+are two more substrate instances, a literal membrane translation in the
+opposite direction and an exact pump threshold measured in counter mass,
+not tape span; the question stays open); and after Part XVI's question
+"Local certificates on adaptive support geometry" (the signal-machine
+report's Part IV pays the named costs for one-dimensional conservative
+automata at size quadratic in the number of records; not answered). The
+note on `cdc:q:ski` was written with Part XIX. No question of this report
+is answered.
+
 Part XVII (manuscripts 17 and 18) relies on no formal declaration either.
 17 cites, as the classical input of its order-two theorem, the
 single-fold unary exponential representation `JM1984.RM.re_sfu` and
@@ -2373,10 +2405,10 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 605 pages (196 before batch 62, 306 before batch 63,
+The recorded build has 607 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -2443,6 +2475,15 @@ the Lean and Rocq declaration names in the written remark print with
 `\path` so that they can break. The title page, Section 3.21, the
 question `cdc:q:ski` with its note, the opening and conventions of Part
 XIX and the universal-tree table were rendered and inspected.
+
+The batch-79 reciprocal notes of cluster J2 (six dated notes, no label, no
+macro, no package) add two pages: 607 pages, with the same clean log (no
+errors, warnings, undefined references or citations, multiply defined
+labels, duplicate destinations or overfull boxes) and the same single
+underfull line. Every label and bibliography number is unchanged (the
+`.aux` of a build of the previous text compared, 3132 `\newlabel` entries).
+The pages with the notes after `cdc:ex:gap` and after the question on
+adaptive support geometry were rendered and inspected.
 
 ## Rerunning the checks
 
@@ -3640,6 +3681,17 @@ same decisions.
   and the review `repo-etrev`; 98 distinct works in all), and `repo-cl`
   is cited by the written remark. 21's author line and PDF metadata name
   no AI assistant.
+- **Batch-79 reciprocal notes (cluster J2).** Six dated `[write]` notes of
+  2 October 2026 point to Parts III–IV of `signal-machine-collision-certificates`
+  and Parts IV–VI of `quadratic-orthant-certificates`: in Part XI after the
+  discussion following `cdc:of:thm:singlefoldsl`, in Part V after the example
+  following `cdc:mem:lem:compare`, in Part II after the paragraph following
+  `cdc:ex:gap`, in Part XIII after `cdc:rx:thm:threshold` and after the
+  question "Substrate-transfer theorems", and in Part XVI after the question
+  "Local certificates on adaptive support geometry" (see "Reciprocal notes
+  (batch 79, cluster J2)" above). They cite those reports' labels by name;
+  no label was added, renamed or renumbered, and no printed text was
+  changed.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as

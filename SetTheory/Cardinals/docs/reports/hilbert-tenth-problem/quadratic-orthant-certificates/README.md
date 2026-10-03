@@ -363,7 +363,9 @@ source 17's 34 as `qoc:rn:`, and twelve new ones (`qoc:mm:part`,
 `qoc:rn:app:compiler`). None of the 189 earlier labels was renamed or
 removed, and every one of them still prints the same number (compared in the
 `.aux` files of the committed and the new build). Bibliography keys of the
-new Parts carry `mm:`, `um:` or `rn:`.
+new Parts carry `mm:`, `um:` or `rn:`. The batch-79 reciprocal notes
+(cluster J2) added no label; the report still has 307, and no label's
+number changed (compared in the `.aux`).
 
 Each Part keeps its source's numbering by section: source 08's Section *n*
 is Section *n* + 1 (Sections 2–16), source 12's is *n* + 16 (Sections
@@ -585,7 +587,20 @@ The report does **not** claim:
   the hypotheses were not checked in detail (`[write]` note in Section 7).
 - **[`signal-machine-collision-certificates`](../signal-machine-collision-certificates)**
   (batch 78, cluster H2) uses the same family of degree-two certificates
-  for rational signal machines. No theorem is shared.
+  for rational signal machines. No theorem is shared. Reciprocal note
+  (batch 79, cluster J2, 2 October 2026): that report's Part III (its
+  source 12, batch-79 manuscript 16, written in `bd8a8afd6`) is now in this
+  report's own format. Its step packet `smc:cs:thm:packet`, for a
+  finitely branched homogeneous-guarded piecewise-linear map instantiated
+  for an 18-signal conservative universal signal machine, is literally of
+  the form `qoc:eq:spine`, with selector gates
+  `(Σ_{h≠r} b_h)(Σ_i X_{r,i})`: Part V's strong gates without the selector
+  in the right factor. Its source claims natural exactness only; the note
+  after its packet theorem shows that the real fibre is natural at every
+  natural input `X ≠ 0`. Its Part IV, like Part IV here, has degree four.
+  Dated notes in this report's relation section and after Theorem
+  `qoc:um:thm:poly` record this; neither report re-proves a theorem of the
+  other.
 - **This report's own questions.** Part IV answers in part Part I's question
   "Add dynamic membranes without witness multiplicity" (one step, histories
   modulo renaming) and covers division and dissolution, which Part I's
