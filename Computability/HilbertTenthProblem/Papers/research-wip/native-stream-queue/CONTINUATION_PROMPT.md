@@ -58,6 +58,23 @@
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
 > monomial ports. All21 minimal completions retain87; no general lower bound.
 
+> The [two-cone recoder128](native_binary_recoder_factored128.md) and
+> [independent delta review](review_native_binary_recoder_factored128.md)
+> now pass both fresh root receipts. Inline certificate128=65M+63A,
+> SOS229=99M+130A,49 positive auxiliaries,34 comparisons,exactdegree40.
+> Generic-width formula126+mu(b),SOS227+mu(b),degree2max(20,b+1);
+> four guarded concrete packets cover widths4,32,784 and the full exact-width
+> Grill source. The latter is16289=4994M+11295A,3217 witnesses,48 comparisons,
+> upperdegree283247. Full same-coordinate polynomial equality follows from
+> two distinct geo__/and__ L9 cuts using their actual supplied positive k.
+> All20,343 shared registers and150 comparisons match. The hist__and__ cone
+> is already removed by the old first_unit form, so no third saving applies.
+> Standalone recoder length stays existential; canonical binary(x+1) length
+> is enforced only by the separate exact-width wrapper. No universal table.
+> A concrete next lead is standalone group_linked_binary_geometry47:
+> its literal coefficient may give geometry46, but no complete standalone
+> geometry46 source/receipt is emitted or claimed by this checkpoint.
+
 > The [isolated auxiliary norm](auxiliary_norm_five_gate_lower_bound.md) now
 > has a sharp5=3M+2A lower bound for exact division-free evaluation at independent
 > K,V,y over Q. Two products force an affine hyperplane restriction that the
@@ -88,7 +105,8 @@
 > Zweak=Zstrong+2X map apply without padding. All37 loader residuals belong
 > inside U*(1+S_H+S_L)−1, not added unweighted to the old polynomial.
 > General increment247+mu(b); actual N3 reject-all table has1,568 phases,
-> native16033, composition16291=4996M+11295A,3217 witnesses,48 comparisons,
+> native16033, parent composition16291=4996M+11295A (now16289 by the
+> exact two-cone transfer above),3217 witnesses,48 comparisons,
 > degreeupper283247. The205-operation011 count is unrelated. The
 > [independent audit](review_grill_tag_exact_width_loader.md) and both root
 > receipts pass. Numerical universal Genera recognizer and its intended

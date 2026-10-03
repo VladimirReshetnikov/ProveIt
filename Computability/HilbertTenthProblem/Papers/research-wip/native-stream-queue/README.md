@@ -44,6 +44,16 @@ reconstructs all six complete polynomial identities from frozen sources;
 author and review receipts pass root replay. All use actual supplied k.
 These component/raw-clock savings leave the universal74/86 bounds unchanged.
 
+The [two-cone recoder transfer](native_binary_recoder_factored128.md) reduces
+the complete inline binary recoder to**128=65M+63A**, with49 positive
+auxiliaries,34 comparisons and229-operation SOS of exact degree40.
+Both the geometry and AND coefficient cones save one multiplication.
+The fully paid exact-width Grill example becomes**16,289=4,994M+11,295A**,
+with every comparison, witness and finalizer retained. Its degree remains
+an upper bound. The [independent delta audit](review_native_binary_recoder_factored128.md)
+checks all four selected complete packets; both root receipts pass.
+The already translated history norm supplies no third coefficient saving.
+
 The [isolated auxiliary-norm lower bound](auxiliary_norm_five_gate_lower_bound.md)
 proves that `K*V²−(K−1)*y²` needs exactly3M+2A from independent supplied
 K,V,y, even allowing arbitrarily many operations of the other kind in each
@@ -64,7 +74,8 @@ historical conditional loader has a new
 [complete paid exact-width composition](grill_tag_exact_width_loader.md).
 It encodes binary(x+1), binds the native width to the recoder's certified power,
 and includes all37 added residuals inside the existing integer-unit anchor.
-The actual1,568-phase reject-all example costs16,291 operations, with3,217
+The actual1,568-phase reject-all parent costs16,291 operations before the
+exact two-cone reduction to16,289 above, with3,217
 positive witnesses; the [independent audit](review_grill_tag_exact_width_loader.md)
 reconstructs its complete source and same-width positive converse. Both
 fresh root receipts pass. Exact loading is now paid for this contract;

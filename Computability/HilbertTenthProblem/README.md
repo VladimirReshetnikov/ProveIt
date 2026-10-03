@@ -44,10 +44,16 @@ and its [independent review](Papers/research-wip/native-stream-queue/review_gril
 prove halting equivalence at the exact encoded width, including cleanup.
 The [paid exact-width loader](Papers/research-wip/native-stream-queue/grill_tag_exact_width_loader.md)
 now supplies canonical binary(x+1) input and fixes the queue width. Its
-complete1,568-phase illustration costs16,291 operations and has an
+complete1,568-phase parent illustration costs16,291 operations and has an
 [independent source/proof audit](Papers/research-wip/native-stream-queue/review_grill_tag_exact_width_loader.md).
 Both fresh receipts pass. A numerical universal recognizer and its
 ordinary-input language theorem remain open.
+
+The [two-cone recoder transfer](Papers/research-wip/native-stream-queue/native_binary_recoder_factored128.md)
+reduces that exact-width example to**16,289** operations and the complete
+inline binary recoder to**128** (229 for its degree40 SOS polynomial).
+All complete polynomials and coordinates are unchanged; independent review
+and fresh receipts pass. These remain component and fixed-program results.
 
 The [three-mass raw-history bridge](Papers/research-wip/native-stream-queue/three_mass_unbounded_interface.md)
 now represents unbounded fixed-source reachability with an exact physical
