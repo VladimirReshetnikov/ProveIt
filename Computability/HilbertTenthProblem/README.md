@@ -663,6 +663,19 @@ residuals, including their complete finalizers and fixed numeral recipes. Both
 installed receipts pass fresh replay. These are upper bounds and a saved-source
 transfer, with no new grouping census or change to the74/86 records.
 
+The [fresh U9 tail grouping census](Papers/research-wip/native-stream-queue/neary_woods_universal_tail_partitions.md)
+now improves the43-witness catalogue to **253/982,255/848,256/802,257/604,
+258/558,259/404,260/398,261/312**, with degree upper bounds. It optimizes
+all120 group-count choices across eight eligible bases, compiles240 complete
+minimizers at both duration interfaces and saves30 full frontier sources.
+All64,918 paid registers have complete grouped signed pullbacks; every ordinary
+comparison and finalizer remains included. The43-witness degree floor is312
+in this grouping grammar; the unchanged44-witness266/212 endpoint remains.
+Author and fresh installed receipt replays pass. Independent weighted and
+full source reviews are pending. These finite-family degree improvements do
+not lower the established74/86 operation records.
+
+
 The author packet retains its upper-only metadata. All three installed
 receipts pass fresh replay; the parent1147 remains a historical upper bound.
 The independent74/86 universal operation bounds are unchanged.
