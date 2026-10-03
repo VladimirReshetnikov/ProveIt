@@ -58,4 +58,4 @@ python review_sparse_lattice_aebfa386e.py \
   --expect review_sparse_lattice_aebfa386e.json
 ```
 
-Two separately reviewed extensions are being developed: affine/quadratic wire projection of the finite-horizon compiler, and a five-witness congruence atom for the low-mass post-elimination compiler. Their counts are kept separate from this original-report review and from the unchanged universal87-operation ledger.
+Two separately reviewed extensions are now available: [wire projection](sparse_lattice_projection.md) of the finite-horizon compiler, and a [five-witness congruence atom](presburger_congruence_five.md) for the low-mass post-elimination compiler. Their counts are kept separate from this original-report review and from the unchanged universal87-operation ledger.

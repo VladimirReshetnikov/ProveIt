@@ -22,3 +22,5 @@ For smooth quartics, root also reproduced the pinned portable receipt, including
 The complete universal bound remains **87 operations**. The direct U15 frontier remains **511/4881, 513/3120, 515/2116, 517/1936** (operations/exact degree). None of the still-pending reports is admitted into those ledgers.
 
 The reviewed [five-witness congruence atom](presburger_congruence_five.md) removes one natural coordinate per fixed-modulus atom and improves its displayed complete atom SOS schedule from22 to21 operations. This is an exact graph identity within the post-elimination Presburger compiler; it does not change the universal bound.
+
+The separately reviewed [sparse-lattice wire projection](sparse_lattice_projection.md) removes `T[7M+M(M−1)]` natural coordinates and quadratic rows, retaining exact graph polynomial equality and the natural-zero bijection. Residual degree stays at most two; no unmeasured gate saving is asserted.
