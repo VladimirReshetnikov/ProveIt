@@ -111,6 +111,15 @@ weaker cone P0>x gives the same existential language, permitting a separate
 one-multiplication source reduction. That is a language equivalence, not
 equality of polynomials or witness fibers; the decoder remains unproved.
 
+The [native phase-sharing child](grill_tag_native_phase_sharing.md) reduces
+the complete `(0,1,1)` source from **219 to 209=94M+115A**, preserving the
+entire polynomial, all coordinates and every native/finalizer requirement.
+Its raw alternative drops from 243 to 233. The
+[independent review](review_grill_native_phase_shared.md) proves 18 complete
+source identities across nine programs, including literal one-phase no-ops.
+Both receipts pass root replay. The 31-witness interface and degree upper
+bound 1187 remain; these are still small-program, nonuniversal examples.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
