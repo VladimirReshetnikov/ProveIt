@@ -84,6 +84,12 @@ checks3,249 fully charged main/input norm schedules with exact full-polynomial
 identities. The best changed schedule costs88; this finite family does not
 improve87. It is distinct from the earlier product-of-norms composition scout.
 
+The [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
+adds 106 complete schedules involving the strong norm: two pairings, all ordered
+triple compositions, and a common-c factorization. Their best costs are 91, 92
+and 94; none improves 87. Exact polynomial identities preserve the complete
+positive zero set and degree 169. Root replay reproduces the pinned receipt.
+
 
 The [factored history index](u15_packed_factored_index532.md) removes four
 additions from536 on exactly the same polynomial:532 ordinary/334 raw.

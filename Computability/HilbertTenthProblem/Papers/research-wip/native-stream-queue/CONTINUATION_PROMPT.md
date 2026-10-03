@@ -64,6 +64,11 @@
 > [independent circuit audit](review_parity_truth_specialization.md) and root
 > writer replay pass. Keep parity-only, already-evaluated-input and natural-witness scope.
 > The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
+> A new [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
+> checks 106 complete schedules, including both strong-containing pairs, all
+> ordered triple compositions and a common-c factorization. Best costs 91/92/94
+> do not improve 87. All-value polynomial identities retain degree 169 and the
+> full supplied positive zero set; the fresh root replay matches its receipt.
 > The [connected routing SLP](connected_cross_routing_slp.md) additionally emits
 > the full unchanged polynomial with shared selector/column/row sums: transfer
 > 245→206 and five-branch fixture 840→456. Both the 20,455-check writer and
