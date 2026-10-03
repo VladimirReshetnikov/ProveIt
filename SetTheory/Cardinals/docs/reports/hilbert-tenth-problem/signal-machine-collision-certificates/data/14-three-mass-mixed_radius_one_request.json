@@ -1,0 +1,86 @@
+{
+  "machine": {
+    "states": [
+      "q0",
+      "q1",
+      "q2",
+      "q3",
+      "q4",
+      "q5",
+      "q6",
+      "q7",
+      "q8",
+      "halt"
+    ],
+    "halt": "halt",
+    "instructions": [
+      {
+        "source": "q0",
+        "target": "q1",
+        "operation": "inc",
+        "counter": 0
+      },
+      {
+        "source": "q1",
+        "target": "q2",
+        "operation": "inc",
+        "counter": 1
+      },
+      {
+        "source": "q2",
+        "target": "q3",
+        "operation": "positive",
+        "counter": 0
+      },
+      {
+        "source": "q3",
+        "target": "q4",
+        "operation": "positive",
+        "counter": 1
+      },
+      {
+        "source": "q4",
+        "target": "q5",
+        "operation": "dec",
+        "counter": 0
+      },
+      {
+        "source": "q5",
+        "target": "q6",
+        "operation": "dec",
+        "counter": 1
+      },
+      {
+        "source": "q6",
+        "target": "q7",
+        "operation": "zero",
+        "counter": 0
+      },
+      {
+        "source": "q7",
+        "target": "q8",
+        "operation": "zero",
+        "counter": 1
+      },
+      {
+        "source": "q8",
+        "target": "halt",
+        "operation": "nop",
+        "counter": 0
+      }
+    ]
+  },
+  "initial_state": "q0",
+  "horizon": 9,
+  "input_spec": {
+    "mode": "fixed_raw",
+    "N": 1
+  },
+  "output_spec": {
+    "mode": "free"
+  },
+  "time_spec": {
+    "mode": "free"
+  },
+  "clock_scale": 4
+}
