@@ -19,6 +19,18 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
+The [corrected Grill halt bridge](grill_tag_halt_bridge.md) proves exact-width
+encoded halting equivalence, including the final queue cleanup. A3a phase
+shift sends every remaining active block position to a zero run. The
+[independent review](review_grill_tag_halt_bridge.md) checks arbitrary halt
+indices, persistent phases and eight new valid FIFO first halts. It also
+retains the same-numeral padding counterexample: exact initial width is
+still essential. Root and independent review clarified four cleanup-only
+fixtures that fall outside the original Genera halt convention; four others
+are valid whole simulations. Both receipts pass fresh root replay. The
+conditional binary block loader costs2M+2A after unpaid recoder/width ports;
+no fixed universal source or complete ordinary-input count is claimed.
+
 The [three-mass unbounded interface](three_mass_unbounded_interface.md) now
 pays raw fixed-source reachability and an exact physical clock through the
 existing residue-history compiler. A rejecting halt totalization bounds

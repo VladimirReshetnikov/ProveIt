@@ -23,6 +23,21 @@
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
 > monomial ports. All21 minimal completions retain87; no general lower bound.
 
+> The [Grill halt bridge](grill_tag_halt_bridge.md) and
+> [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
+> root replay. Corrected E uses a−4 in its second long grill. At the unique
+> produced halt, a10a L/R block shifts later blocks by3a; support lies in
+> odd positions below5a/2 modulo7a, so the shift erases all later ones.
+> Cleanup gives E(prefix), E_H* and zeros, then exactly2a(j+1) zeros, then
+> the first empty queue. General valid-source iffhalting proof includes
+> persistent phase. Four original A→AH examples violate Genera's hypothetical
+> prefix condition and are cleanup-only; author MD now says so explicitly.
+> Independent fixtures add eight valid halts and preserve the2274 padded
+> false accept. Input ports X=A[J+(D−1)R],P0 cost2M+2A including slack
+> only after the regular recoder and exact width are paid. The numerical
+> universal Genera table, ordinary-input decoder and native width binding
+> remain open; the205-operation011 example is a different fixed program.
+
 > New [three-mass unbounded raw/clock bridge](three_mass_unbounded_interface.md)
 > and [independent review](review_three_mass_unbounded_interface.md) both pass
 > fresh root replay. Encode n=K(N−1)+q, use modulus6K, totalize halt/missing
