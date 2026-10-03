@@ -56,7 +56,10 @@ the catalogue above. All202 per-base/per-cost winning complete sources are
 saved and recounted, totaling19,375 paid gates, with whole polynomial
 pullbacks and degree checks. The [independent weighted census](transport_shear_weighted_census_independent.md)
 uses a different enumeration and a subset dynamic program; all26 families
-and202 predicted minima agree. Both installed receipts pass fresh replay.
+and202 predicted minima agree. A separate [full source review](review_transport_shear_partition_census.md)
+reconstructs every saved source and finalizer without author Python, proves
+18,567 register identities, and expands all202 complete polynomials with exact
+integer coefficients. Author and both independent receipts pass fresh replay.
 This closes missing metadata and tied schedules in that exact finite grammar;
 it is not an unrestricted circuit lower bound or a new universal bound.
 
@@ -1237,7 +1240,11 @@ X=q(w+S) by X=q(w+(q-1)F3), using an already-paid tail product. The positive-zer
 bijection proves E=XY>2r+3 before rank recovery, then restores the old positive
 quotient after recovering X=2^(2r+1). It preserves the unbounded fixed-table
 input relation. The [independent mathematical challenge](review_group_projective_tail_quotient_math.md)
-checks both index signs and inverse positivity. The earlier3396 is a parent
+checks both index signs and inverse positivity. The separate
+[complete source/API audit](review_group_projective_tail_quotient_source.md)
+proves all244 register identities and independently expands the full polynomial
+at two moduli, attaining degree2829. Author and both independent receipts pass
+fresh installed replay. The earlier3396 is a parent
 upper bound; no numerical universal alphabet is instantiated, and the universal
 74/86 operation bounds are unchanged.
 

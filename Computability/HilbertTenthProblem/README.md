@@ -61,8 +61,11 @@ The [complete finite grouping census](Papers/research-wip/native-stream-queue/tr
 checks298,672 SOS/anchor choices across26 sheared bases, finding no additional
 operation/degree pair. It emits all202 per-cost winning complete circuits.
 An [independent weighted census and subset calculation](Papers/research-wip/native-stream-queue/transport_shear_weighted_census_independent.md)
-agree on every minimum, and both fresh installed receipts pass. This rules
-out further gains only within that specified grouping family.
+agree on every minimum. The separate [full source review](Papers/research-wip/native-stream-queue/review_transport_shear_partition_census.md)
+independently reconstructs all202 complete sources and expands their entire
+polynomials with exact integer coefficients. All three installed receipts
+pass fresh replay. This rules out further gains only within that specified
+grouping family.
 
 The [retained-index and quotient shift census](Papers/research-wip/native-stream-queue/complete74_index_transport_affine_scout.md)
 and [independent review](Papers/research-wip/native-stream-queue/review_complete74_index_transport_affine_scout.md)
@@ -615,7 +618,11 @@ X=q(w+S) by X=q(w+(q-1)F3), using an already-paid tail product. The positive-zer
 bijection proves E=XY>2r+3 before rank recovery, then restores the old positive
 quotient after recovering X=2^(2r+1). It preserves the unbounded fixed-table
 input relation. The [independent mathematical challenge](Papers/research-wip/native-stream-queue/review_group_projective_tail_quotient_math.md)
-checks both index signs and inverse positivity. The earlier3396 is a parent
+checks both index signs and inverse positivity. The separate
+[complete source/API audit](Papers/research-wip/native-stream-queue/review_group_projective_tail_quotient_source.md)
+proves all244 register identities and independently expands the full polynomial
+at two moduli, attaining degree2829. Author and both independent receipts pass
+fresh installed replay. The earlier3396 is a parent
 upper bound; no numerical universal alphabet is instantiated, and the universal
 74/86 operation bounds are unchanged.
 

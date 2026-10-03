@@ -40,7 +40,12 @@
 > without parent Python, enumerates least-element blocks, and cross-checks
 > all26 minima by subset DP plus distinguished-anchor scans. Predicted202
 > cost/degree/M/A minima match literal winners; no independent full202-source
-> audit is claimed by that weighted checker. Both installed / replays pass.
+> audit is claimed by that weighted checker. The separate [full source audit](review_transport_shear_partition_census.md)
+> now reconstructs all26 cores and202 complete winners from pinned ancestry JSON,
+> including172 SOS/30 anchor finalizers,12 pure products,18,567 register identities,
+> 202 exact integer full coefficient pullbacks/degrees,190 factor+18 comparison
+> leaders and202 separately recomputed modular coefficient hashes. It imports no
+> author Python and reruns no old census. All three installed / replays pass.
 > Do not repeat a metadata-only search or promote this finite negative result
 > to a lower bound outside the26 cores and SOS/single-anchor grammar.
 > Earlier first-root and rewrite-census degrees below describe their frozen
@@ -1220,7 +1225,11 @@
 > bijection proves E=XY>2r+3 before rank recovery, then restores the old positive
 > quotient after recovering X=2^(2r+1). It preserves the unbounded fixed-table
 > input relation. The [independent mathematical challenge](review_group_projective_tail_quotient_math.md)
-> checks both index signs and inverse positivity. The earlier3396 is a parent
+> checks both index signs and inverse positivity. The separate
+> [complete source/API audit](review_group_projective_tail_quotient_source.md)
+> proves all244 register identities and independently expands the full polynomial
+> at two moduli, attaining degree2829. Author and both independent receipts pass
+> fresh installed replay. The earlier3396 is a parent
 > upper bound; no numerical universal alphabet is instantiated, and the universal
 > 74/86 operation bounds are unchanged.
 >
