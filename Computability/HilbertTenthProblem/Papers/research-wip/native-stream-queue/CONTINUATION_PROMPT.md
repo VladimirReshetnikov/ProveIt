@@ -30,6 +30,15 @@
 > proof challenge pass. Generic divisor/sign cases and accepted-input soundness
 > remain open; the established universal minimum stays **84 operations**.
 >
+> The [native index mismatch](free_coefficient83_native_alias.md) strengthens
+> that proof obstruction: a scaled Pell family retains positive integral h and
+> both auxiliary equations while its main index differs from the abstract target R. The required auxiliary CRT condition is checked separately.
+> A uniform modulo-17 argument nevertheless excludes this entire family from
+> the necessary base-16 masks for every compatible q=16^k. The input and
+> transport factors are outside the construction; there is no full compiler
+> counterexample or new universal bound. The [independent review](review_free_coefficient83_native_alias.md)
+> checks the index, congruence and mask arguments with fresh exact arithmetic.
+>
 > The [complete Report30 first-hit fixture](original_frame_first_hit30_fixture.md)
 > reduces one explicit original-frame mass-four orbit certificate to
 > **35=11M+24A operations, three natural witnesses and exact degree four**.
