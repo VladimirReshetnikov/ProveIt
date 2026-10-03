@@ -37,6 +37,19 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [sandpile Report 35/36 intake](Papers/research-wip/native-stream-queue/review_sandpile35_36_intake.md) approves the
+finite-prism cubic and its real-orthant upgrade within the stated proof scope.
+The [shared arithmetic](Papers/research-wip/native-stream-queue/sandpile_shared_arithmetic35_36.md) saves exactly
+**(V+4E) multiplications and E additions** between two paid schedules, giving
+natural base costs **54→53,143→136,831→763** at exact degree three. The
+[independent review](Papers/research-wip/native-stream-queue/review_sandpile_shared_arithmetic35_36.md) checks all
+24 complete sources, 8,788 live gates, 38,012 coefficient entries and 24 complete
+zeros from three legal stabilizations; fresh normal/optimized receipts pass.
+Arity still grows with the external prism. Real quantifier elimination also
+shows that fixed-arity ordinary-input real/natural existence equivalence
+would permit only finite or cofinite input sets. A universal packing must
+therefore leave that real-exact interface. The minimum remains **84 operations**.
+
 The [auxiliary quotient projection](Papers/research-wip/native-stream-queue/complete85_auxiliary_bezout_projection.md)
 lowers the complete universal polynomial to **85=48M+37A operations**, with
 **18 positive witnesses and uniform exact degree175**. It replaces the
