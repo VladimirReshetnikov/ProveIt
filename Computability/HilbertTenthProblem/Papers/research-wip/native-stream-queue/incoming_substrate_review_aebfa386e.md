@@ -7,7 +7,7 @@ This is the continuing proof/source review of the [byte-pinned intake](incoming_
 | Compressed queue | [Complete](review_compressed_queue_aebfa.md) | Two low-level constructor repairs; natural-zero projection to `6c+1` witnesses and `6c+3` quadratic rows for an external grammar with `c` concatenations |
 | Corrected conservative signals | In progress | Comparing the previous repairs and rerunning the complete packet |
 | Reset Petri nets | In progress | Full source/frontend and timing audit |
-| Eager tree calculus | In progress | External DAG, arithmetic and universality interfaces |
+| Eager tree calculus | [Complete](review_eager_tree_aebfa.md) | Paid DAG/canonicalization and literal universal-tree audit; evaluator input repair, both 19-script replays pass |
 | One-coordinate certificates | In progress | Polynomial unknowns, stride and coefficient-bound scope |
 | Smooth quartics | [Complete](review_smooth_quartic_aebfa386e.md) | Full integral smoothness and domain audit; all 21,128 author checks and byte-identical exports replayed; no repair needed |
 | Coercive Green functions | In progress | Infinite graph and finite-support arithmetic interface |
