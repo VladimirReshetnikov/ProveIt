@@ -1,16 +1,21 @@
 # Continuation: universal straight-line certificates
 
-> Next priority: [ten new reports](incoming_substrate_intake_aebfa386e.md) arrived
-> at `ef2fc7990`/`aebfa386e` during the final frontier push. They are merged,
-> byte-inventoried (334 files/84 Python modules). The [current review index](incoming_substrate_review_aebfa386e.md)
-> records eight completed packets; corrected signals and reset nets remain.
+> The [ten-report intake](incoming_substrate_intake_aebfa386e.md) at
+> `ef2fc7990`/`aebfa386e` is fully reviewed (334 files/84 Python modules).
+> The [current review index](incoming_substrate_review_aebfa386e.md) links all
+> ten proof/source audits, isolated original/repaired replays, and pinned fixes.
 > The [224ca41df placement audit](review_placement_224ca41df.md) authenticates all81
 > renamed source files and restores six original runnable layouts from Git.
 > The [bbaf322e5 placement](review_placement_bbaf322e5.md) similarly covers64 more
 > unchanged files from six earlier deliveries; no new theorem is inferred.
-> Keep each remaining packet pending until full proof/source review and replays.
-> The preceding turn made verified arithmetic progress through the complete
-> U15 frontier511/4881,513/3120,515/2116,517/1936, all reviewed and published.
+> New verified reductions: [five-witness congruence](presburger_congruence_five.md)
+> costs21 rather than22 for the full displayed atom; [sparse wire projection](sparse_lattice_projection.md)
+> saves T[7M+M(M−1)] coordinates and rows without a gate claim;
+> [signal guards](review_signal_guard_projection_independent.md) save1,449,018
+> coordinates and7,489,424 operations in the stated complete one-step schedule;
+> [reset gates](review_reset_petri_net_aebfa386e.md) save761 additions per source step.
+> Respect the natural-only zero-set claims and external horizons. None lowers87.
+> The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
 
 
 > Historical handoff below. The current comparison frontier is
