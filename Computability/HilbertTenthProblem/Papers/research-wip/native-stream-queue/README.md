@@ -27,6 +27,14 @@ for the corresponding compact cleaned target and clock. The
 pass root replay. The branch table and horizon remain external; the general
 87-operation universal bound is unchanged.
 
+The [per-step branch search](three_mass_mixed_branch_search.md) further reduces
+the native/clean two-step circuits to **44/43 = 16M+28A /17M+26A** with six
+witnesses and degree three. Three increments stay at86/83 with15 witnesses.
+All62 per-step branch layouts and744 stated schedules are included; the
+[independent search review](review_three_mass_mixed_branch_search.md) recounts
+every circuit, checks the fair constant-index subset and expands each winner.
+Both fresh root receipts pass. These remain external-horizon examples.
+
 The [safe combined construction](three_mass_projected_endpoint_penalties.md)
 reaches **46/45** operations for native/clean two-step certificates and
 **86/83** for three increments, with six/fifteen witnesses and degree three.

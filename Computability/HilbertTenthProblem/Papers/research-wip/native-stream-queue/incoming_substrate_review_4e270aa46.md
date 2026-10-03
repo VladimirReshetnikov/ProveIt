@@ -97,6 +97,13 @@ The [independent audit](review_three_mass_projected_endpoint_penalties.md)
 checks all783 emitted coefficient polynomials, exact degrees and56,077 live
 gates. Both author and independent receipts pass fresh root replay.
 
+Exhausting the allowed [per-step omitted-branch choices](three_mass_mixed_branch_search.md)
+further lowers the two-step native/clean pair to44/43, with six witnesses and
+degree three. All744 schedules over62 layouts are counted; the three-increment
+pair remains86/83. The [independent search audit](review_three_mass_mixed_branch_search.md)
+checks the exact enumeration, all live-gate counts and complete winning
+polynomials. Both receipts have fresh matching root replays.
+
 The low-mass canonical corollary also admits the previously proved
 [five-witness congruence substitution](presburger_congruence_five.md): after
 Presburger quantifier elimination its auxiliary count improves from

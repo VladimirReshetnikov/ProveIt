@@ -1,5 +1,14 @@
 # Continuation: universal straight-line certificates
 
+> Latest three-mass examples: the [per-step branch search](three_mass_mixed_branch_search.md)
+> reaches44native/43clean for INC2;DEC2 at h=2, using implicit indices[0,1],
+> Horner guards and both endpoint penalties. Six witnesses, degree3. The
+> three-increment forms stay86/83 with15 witnesses. All62 index layouts and
+> 744 stated schedules are enumerated, including identical baseline modes.
+> The [independent review](review_three_mass_mixed_branch_search.md) verifies
+> every gate ledger and complete ordered grid, and all four full winners.
+> Both root receipts pass. No new emitter rewrite or universal-bound claim.
+>
 > The [safe projection/endpoint composition](three_mass_projected_endpoint_penalties.md)
 > is complete: native/clean two-step46/45 operations with6 witnesses;
 > three-increment86/83 with15 witnesses, exact degree3. Group each projected
