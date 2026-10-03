@@ -47,7 +47,12 @@ now represents unbounded fixed-source reachability with an exact physical
 clock. Its [independent review](Papers/research-wip/native-stream-queue/review_three_mass_unbounded_interface.md)
 checks all four complete examples and the proof excluding clock wrap.
 An ordinary universal-input decoder remains unpaid; no universal bound is
-inferred from these598/473/471/474-operation raw examples.
+inferred from these raw examples. The
+[native first-coefficient transfer](Papers/research-wip/native-stream-queue/native_pell_factored_first_coefficient.md)
+reduces them to597/472/470/473 operations and gives a63-operation prescribed
+binary AND certificate. All six complete polynomials are unchanged; the
+[independent audit](Papers/research-wip/native-stream-queue/review_native_pell_factored_first_coefficient.md)
+and both fresh receipts pass.
 
 The progress entries below preserve their historical counts and contemporary
 benchmark statements; the current complete numerical bounds are74/86.

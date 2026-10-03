@@ -25,6 +25,17 @@ a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.
 This restricted negative result does not cover the new first-root change.
 
+The [native first-coefficient transfer](native_pell_factored_first_coefficient.md)
+now gives a **63=32M+31A prescribed AND certificate**, with22 positive
+auxiliaries and16 comparisons; its full degree28 SOS costs110 operations.
+The positive-scale form also costs63, with21 auxiliaries,15 comparisons and
+107-operation SOS. The same literal identity lowers the four current unbounded
+mass-clock polynomials to**597/472/470/473**, preserving every condition and
+coordinate. The [independent audit](review_native_pell_factored_first_coefficient.md)
+reconstructs all six complete polynomial identities from frozen sources;
+author and review receipts pass root replay. All use actual supplied k.
+These component/raw-clock savings leave the universal74/86 bounds unchanged.
+
 The [isolated auxiliary-norm lower bound](auxiliary_norm_five_gate_lower_bound.md)
 proves that `K*V²−(K−1)*y²` needs exactly3M+2A from independent supplied
 K,V,y, even allowing arbitrarily many operations of the other kind in each
@@ -49,7 +60,8 @@ pays raw fixed-source reachability and an exact physical clock through the
 existing residue-history compiler. A rejecting halt totalization bounds
 accepted duration by the number of distinct encoded states; a squared-height
 radix then prevents clock congruence wrap. Four complete examples cost
-598/473/471/474 operations, with59/57/57/57 positive witnesses and20
+598/473/471/474 operations before the exact one-multiplication transfer above,
+with59/57/57/57 positive witnesses and20
 comparisons. The [independent review](review_three_mass_unbounded_interface.md)
 and both root replays pass. The author note retains its pre-review status
 as frozen provenance; the completed review supplies the current status.

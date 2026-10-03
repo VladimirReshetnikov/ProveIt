@@ -13,8 +13,18 @@
 > [mathematical challenge](review_complete74_factored_first_norm_math.md)
 > pass, as do author and independent fresh root replays. Historical75 and
 > 86 source/receipt bytes remain frozen. No full native Pell tuple is built.
-> Investigate applying this exact paid coefficient block to other native
-> compilers only after checking their actual E=XY and kY producer cones.
+> The [native coefficient transfer](native_pell_factored_first_coefficient.md)
+> now checks the actual E=XY and kY cones in six full sources. Prescribed
+> AND becomes63=32M+31A (22 witnesses,16 comparisons,SOS110/degree28);
+> positive-scale AND63 has21 witnesses,15 comparisons,SOS107/upperdegree28.
+> Current unbounded mass-clock polynomials become597/472/470/473.
+> Every full polynomial is identical on all supplied tuples; supplied k
+> remains independent away from the ratio equation and native R9=tau(tau+1).
+> The [independent audit](review_native_pell_factored_first_coefficient.md)
+> proves all six full DAG identities; both fresh root receipts pass.
+> Preserve all nine pinned parent files, including their historical notes.
+> Native norm-unit forms already remove the coefficient cone; no extra saving
+> applies there. This prescribed AND63 differs from the older unrestricted63.
 > The [factored first-root reduction](complete86_factored_first_root.md)
 > gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
 > alternative gives87=47M+40A, degree135. The old first factor
@@ -71,7 +81,8 @@
 > makes the existing selected quotient lanes plus one new clock quotient
 > exact modulo B−1. All20 comparisons and final SOS are emitted; native
 > clocks only, natural external x,y,T, fixed arity and unbounded duration.
-> Example totals598/473/471/474, witnesses59/57/57/57; degrees are upper bounds.
+> Parent totals598/473/471/474; current exact transfer597/472/470/473,
+> witnesses59/57/57/57; degrees remain upper bounds.
 > Root read both full source/proof packets and checked the inherited history
 > proof. No full native Pell witness, cleaned-clock total or universal source
 > table is claimed. Raw input x+1 retains the (v2,v3) cofactor obstruction.
