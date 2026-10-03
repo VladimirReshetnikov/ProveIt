@@ -98,6 +98,17 @@ reviewed 18-witness choices include **85/175,86/131,87/119,88/109,89/103,90/98,
 91/80,92/76,93/60,94/56,95/50,96/44**. This is a finite comparison of the stated
 saved families; the minimum remains 85, with no global optimality claim.
 
+The [auxiliary quotient block audit](Papers/research-wip/native-stream-queue/complete_auxiliary_quotient_block_scout.md)
+proves that the exact producer `V=c(Tf−1)−Rf²` needs **3M+2A** in its declared
+independent-port model. Its complete Horner and flat rewrites tie the current
+85/86 costs. Two sound normalized positive-gap charts cost 88/91 operations,
+with degree upper bounds only. All eight sources retain 18 positive witnesses
+and the ordinary input. The [independent review](Papers/research-wip/native-stream-queue/review_complete_auxiliary_quotient_block_scout.md)
+checks the proof's cancellation cases and both restored `f` consumers; fresh
+normal and optimized replays cover all 692 gates. This local minimum excludes
+other paid core dependencies and zero-equivalent replacements. It is not a
+whole-circuit bound, and the universal minimum remains 85 operations.
+
 The [general eight-lane range transfer](Papers/research-wip/native-stream-queue/group_projective_general_separate_range.md)
 now covers the canonical nonempty matrix-history graph family. Separating its
 physical range mask from its controller width lowers the uniform exact degree

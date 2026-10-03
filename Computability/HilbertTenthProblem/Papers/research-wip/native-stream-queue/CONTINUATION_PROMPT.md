@@ -99,6 +99,17 @@
 > valid compiled histories. Exact bounded source checks and independent
 > Pell/proof review pass; the 81/82 candidates and minimum85 remain unchanged.
 >
+> The [auxiliary quotient block audit](complete_auxiliary_quotient_block_scout.md)
+> proves that the exact producer `V=c(Tf−1)−Rf²` needs **3M+2A** in its declared
+> independent-port model. Its complete Horner and flat rewrites tie the current
+> 85/86 costs. Two sound normalized positive-gap charts cost 88/91 operations,
+> with degree upper bounds only. All eight sources retain 18 positive witnesses
+> and the ordinary input. The [independent review](review_complete_auxiliary_quotient_block_scout.md)
+> checks the proof's cancellation cases and both restored `f` consumers; fresh
+> normal and optimized replays cover all 692 gates. This local minimum excludes
+> other paid core dependencies and zero-equivalent replacements. It is not a
+> whole-circuit bound, and the universal minimum remains 85 operations.
+>
 > The [general eight-lane range transfer](group_projective_general_separate_range.md)
 > now covers the canonical nonempty matrix-history graph family. Separating its
 > physical range mask from its controller width lowers the uniform exact degree
