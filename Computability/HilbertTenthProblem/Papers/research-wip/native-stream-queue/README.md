@@ -96,6 +96,21 @@ construction supplies a paid ordinary-input, fixed-arity unbounded compiler;
 the minimum universal polynomial remains 85 operations. Natural return-time
 multipliers must also remain distinct from the paid real-orthant theorem.
 
+The [event-budget and clean-clock intake](review_event_budget_clean_clock_intake.md)
+distinguishes the finite five-particle scheduler from the fixed-arity,
+unbounded three-mass clock theorem. The separate
+[direct clean-clock construction](three_mass_direct_clean_clock.md) then
+saves **six operations and one witness** from each of the four folded report
+fixtures: complete costs **597/472/470/473**, with **59/57/57/57 positive
+witnesses** and exact degrees **2344/1192/1192/1192**. Clean time itself sets
+the height margin, and an enlarged fixed radix proves the clock cannot wrap.
+The [independent review](review_three_mass_direct_clean_clock.md) reconstructs
+all 2,012 paid gates, checks the entire packed clock against all 120 physical
+tick rows, and verifies every exact degree. Fresh author and review receipts
+pass, with a separate proof challenge finding no gap. These are four fixed
+nonuniversal raw-input sources; ordinary-input loading and a numerical
+universal source remain unpaid. The universal minimum stays 85 operations.
+
 The [parallel-particle report review](review_parallel_particle_reports.md)
 checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
 natural-witness quartics. An independent reconstruction matches the complete
