@@ -18,6 +18,13 @@ wrapper eliminates reverse-history witnesses through an affine map on natural
 zero sets. Its compact quadratic family still has an external source horizon;
 no fixed-arity universal arithmetic improvement follows.
 
+The [mass-coordinate proof](review_three_mass_mass_coordinate_math.md) permits
+replacing each natural branch offset by `v=e+u`. Every complete natural zero
+restores `u=v−e≥0`, using the paid positive loader and the literal branch forms;
+the clean reverse-history lift also composes. The proof preserves unique natural
+fibers and has a fresh independent 10,080-tuple source census. It does not extend
+to nonnegative real witnesses or by itself establish a gate saving.
+
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction
 about fixed-relation internal well-foundedness in GBC. Their different coding
