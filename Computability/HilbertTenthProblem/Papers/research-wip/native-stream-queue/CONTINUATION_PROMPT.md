@@ -1,5 +1,16 @@
 # Continuation: universal straight-line certificates
 
+> The [guarded three-mass selector projection](three_mass_selector_projection.md)
+> now removes one natural selector per nonempty step: witness count(2B−1)h,
+> degree3 for B>=2,h>0. Complete native/clean two-step costs56→47/46 and
+> three-increment costs107→91,105→88. Its nonnegative cubic guard restores
+> the missing selector uniquely at every natural zero; naïve substitution
+> admits a complete false-halt zero and is explicitly rejected. The
+> [independent review](review_three_mass_selector_projection.md) checks252
+> full coefficient identities,18,847livegates,76baselinecounts and24 mixed
+> branch/clock variants. Root read/replayed both receipts. These counts
+> do not include the separate endpoint-penalty variants still under review.
+>
 > The surreal synthesis at `d51fafea806cbd48ba29be017eff85cdd9653b14` /
 > `0be9b913487fa2cc0e16cea6545c55f33b4446d8` now has both scoped reviews:
 > [new prose](review_surreal_synthesis_0be9b9134.md) and

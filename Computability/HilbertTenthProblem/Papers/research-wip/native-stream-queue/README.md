@@ -27,6 +27,15 @@ for the corresponding compact cleaned target and clock. The
 pass root replay. The branch table and horizon remain external; the general
 87-operation universal bound is unchanged.
 
+The [guarded selector projection](three_mass_selector_projection.md) removes
+one witness per nonempty step, giving **56→47** native and **56→46** compact-clean
+for the two-step example, and **107→91 /105→88** for three increments.
+Witnesses drop8→6 and18→15; degree rises to three. The
+[independent review](review_three_mass_selector_projection.md) verifies all252
+complete coefficient identities and18,847 live paid gates, and rejects an
+actual false halt caused by unguarded substitution. Both fresh root receipts
+pass; the external-horizon scope and global87 bound remain unchanged.
+
 The [mass-coordinate proof](review_three_mass_mass_coordinate_math.md) permits
 replacing each natural branch offset by `v=e+u`. Every complete natural zero
 restores `u=v−e≥0`, using the paid positive loader and the literal branch forms;

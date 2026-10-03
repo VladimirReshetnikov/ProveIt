@@ -73,6 +73,15 @@ An [independent complete-source review](review_three_mass_arithmetic.md) verifie
 all 228 emitted polynomial identities, fair old-coordinate baselines and paid
 loaders/endpoints. The external horizon and universal-compiler obligations remain.
 
+A subsequent [guarded selector projection](three_mass_selector_projection.md)
+removes one natural witness per nonempty step. The complete native/clean
+increment-decrement examples cost47/46; the three-increment examples cost91/88.
+Core witnesses fall8→6 and18→15 while degree rises to three. The
+[independent review](review_three_mass_selector_projection.md) reconstructs
+all252 complete polynomials and18,847 live paid gates, and both fresh root
+receipts pass. The explicit guard is essential: direct unguarded elimination
+has an actual complete false-halt zero. This remains a fixed-horizon result.
+
 The low-mass canonical corollary also admits the previously proved
 [five-witness congruence substitution](presburger_congruence_five.md): after
 Presburger quantifier elimination its auxiliary count improves from
