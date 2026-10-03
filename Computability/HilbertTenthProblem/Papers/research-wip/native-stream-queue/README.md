@@ -120,6 +120,17 @@ confirms all three complete graphs, costs and exact degrees while leaving
 the positive inverse unproved. Both installed receipts pass fresh replay.
 No established universal bound or witness record changes.
 
+The [signed first-index bootstrap](review_complete74_nonlinear_index_bootstrap.md)
+recovers p≥13, the ordinary auxiliary rank and r≡±p modulo c for all three
+nonlinear projections without assuming r>0. Raw30/positive22 further force
+q even and r=±p; a negative branch has2n+p−1=vE with1≤v≤3q+2. A parametric
+positive auxiliary construction realizes r=−p at arbitrarily large rank
+indices, so auxiliary signs alone cannot remove that branch. This is not
+a full negative compiler zero. The complete inverse remains unresolved,
+including the additional signed20 bounds. Root checked the proof and the
+installed exact receipt replays successfully; no universal bound changes.
+
+
 
 The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
 a separate multiplication-only family: four gates remain necessary for its
