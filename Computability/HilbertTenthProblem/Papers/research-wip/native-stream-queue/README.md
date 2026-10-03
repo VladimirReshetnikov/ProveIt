@@ -60,6 +60,17 @@ and202 predicted minima agree. Both installed receipts pass fresh replay.
 This closes missing metadata and tied schedules in that exact finite grammar;
 it is not an unrestricted circuit lower bound or a new universal bound.
 
+The [retained-index and quotient shift census](complete74_index_transport_affine_scout.md)
+and [independent review](review_complete74_index_transport_affine_scout.md)
+check243 complete schedules across the raw30, positive22 and signed20 sources.
+Shifts in {-1,0,1} on r,j,h,zquot, with all consumers and finalizers paid,
+leave the minimum at **74=40M+34A**; SOS minima remain130/106/100 with exact
+degrees52/84/84. The twelve minimum schedules have positive-zero bijections:
+pretyping packing excludes a restored zero index, and the main and strong
+norms exclude a restored zero auxiliary quotient. The other231 schedules
+claim only all-value affine pullbacks. Both installed receipts pass fresh
+replay. This is a finite grammar result, not a general affine lower bound.
+
 The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
 a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.

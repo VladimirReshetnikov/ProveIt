@@ -57,6 +57,17 @@
 > [mathematical challenge](review_complete74_factored_first_norm_math.md)
 > pass, as do author and independent fresh root replays. Historical75 and
 > 86 source/receipt bytes remain frozen. No full native Pell tuple is built.
+> The [retained-index and quotient shift census](complete74_index_transport_affine_scout.md)
+> and [independent review](review_complete74_index_transport_affine_scout.md)
+> check243 complete schedules across the raw30, positive22 and signed20 sources.
+> Shifts in {-1,0,1} on r,j,h,zquot, with all consumers and finalizers paid,
+> leave the minimum at **74=40M+34A**; SOS minima remain130/106/100 with exact
+> degrees52/84/84. The twelve minimum schedules have positive-zero bijections:
+> pretyping packing excludes a restored zero index, and the main and strong
+> norms exclude a restored zero auxiliary quotient. The other231 schedules
+> claim only all-value affine pullbacks. Both installed receipts pass fresh
+> replay. This is a finite grammar result, not a general affine lower bound.
+>
 > The [native coefficient transfer](native_pell_factored_first_coefficient.md)
 > now checks the actual E=XY and kY cones in six full sources. Prescribed
 > AND becomes63=32M+31A (22 witnesses,16 comparisons,SOS110/degree28);
