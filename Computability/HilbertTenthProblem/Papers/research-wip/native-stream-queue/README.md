@@ -57,6 +57,18 @@ ones matches the displayed widths and production list; 10,240 independent
 two-generation fixtures pass. This bounded check does not certify the full
 compiler, halt protocol or ordinary-input universality.
 
+The [Grill Tag arithmetic scout](grill_tag_affine_scout.md) gives a positive
+affine representation whose terminal state forces dyadic widths. With external
+horizon t, one aggregate equation uniquely restores all intermediate content
+coordinates, saving 3(t−1) additions and t−1 witnesses. Adding integer
+Boolean factors without squaring saves another t multiplications. The complete
+projected circuit costs 15t+2−z(t), where z(t) counts zero runs in the fixed
+phase schedule. Its input is a paid padded-binary-x relation; a universal
+decoder and uniform history packing remain open. An
+[independent audit](review_grill_arithmetic_independent.md) checks 384 complete
+circuits and 193 positive history bijections; both suites pass root replay.
+The global bound stays 87.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations

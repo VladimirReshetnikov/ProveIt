@@ -77,6 +77,19 @@
 > the stated widths and run list. All 10,240 bounded two-generation compiler
 > fixtures support the correction. The full compiler and its halt/input
 > contracts remain unaudited; do not assume a universal raw-input bridge.
+> The separate [Grill affine scout](grill_tag_affine_scout.md) pays for a
+> fixed-horizon padded-binary-x relation via P0=3x+Z0. The empty endpoint
+> forces dyadic widths, and a weighted aggregate restores each positive
+> intermediate content coordinate uniquely. Projected cost 15t+2−z(t)
+> saves 3(t−1) additions and t−1 witnesses over the full history; z(t)
+> counts zero run lengths. Both finalizers add integer Boolean factors
+> without squaring. Keep the external horizon, unaudited universal decoder
+> and unresolved uniform weighted-history packing explicit; neither is free.
+> Its [independent review](review_grill_arithmetic_independent.md) proves the
+> literal polynomials/counts/degrees of 384 complete circuits and checks 193
+> positive projection/restoration histories. Both author and review receipts
+> reproduce from the maintained repository. Real-witness and missing initial
+> code-bound counterexamples document the exact domain limits.
 > A new [strong-norm composition scout](complete87_strong_norm_composition_scout.md)
 > checks 106 complete schedules, including both strong-containing pairs, all
 > ordered triple compositions and a common-c factorization. Best costs 91/92/94
