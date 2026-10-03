@@ -130,6 +130,33 @@ a full negative compiler zero. The complete inverse remains unresolved,
 including the additional signed20 bounds. Root checked the proof and the
 installed exact receipt replays successfully; no universal bound changes.
 
+The [shared macro automaton](group_macro_automaton_sharing.md) lowers the
+complete fixed-table matrix polynomial from **443=179M+264A** to
+**414=169M+245A**, with83→75 positive witnesses and47 comparisons.
+Sharing one common continuation reduces the padded edge table16→8;
+a general chronological flow adapter handles the resulting branching graph.
+The ordinary input24x+12, all matrix endpoints and the paid radix margin16
+remain. The [independent review](review_group_macro_automaton_sharing.md)
+checks exact unbounded language equivalence, all five complete schedules,
+235 residual identities and2,227 paid live gates, and proves exact degrees
+304/208. Author and review pass fresh installed replay. Cross-graph
+correspondence is existential input-language equivalence with fresh native
+extensions, not a full polynomial identity or witness bijection. This fixture
+is not a universal alphabet; the74/86 universal bounds and later projective
+compiler are unchanged.
+
+The [two native coefficient factorizations](group_macro_factored_coefficients.md)
+then save two more multiplications in each complete source. The shared form
+costs **412=167M+245A**, with comparison source272=120M+152A, the same47
+equations and75 positive witnesses: **443→412** overall. The supplied k
+and both triangular roots remain literal; this step preserves the entire
+polynomial at every supplied tuple within each graph. The
+[independent review](review_group_macro_factored_coefficients.md) reconstructs
+all five sources,235 residuals and finalizers, and2,217 paid polynomial gates.
+Author and review pass fresh installed replay. Their degree fields remain
+upper bounds304/208; the separate parent exact-degree proof and polynomial
+identity also establish unchanged exact degrees. No universal bound changes.
+
 
 
 The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
