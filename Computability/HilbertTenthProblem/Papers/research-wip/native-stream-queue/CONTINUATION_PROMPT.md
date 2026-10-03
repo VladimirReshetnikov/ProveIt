@@ -97,8 +97,6 @@
 > bounds. This is a missing scoped source/proof transfer to investigate, not a
 > new kernel theorem or an already verified successor. Do not rerun old suites
 > or silently apply the old symmetric proof to the changed X definition.
-
-
 >
 > The [native coefficient transfer](native_pell_factored_first_coefficient.md)
 > now checks the actual E=XY and kY cones in six full sources. Prescribed
@@ -1283,6 +1281,9 @@
 > proves exact982 from sixteen nonzero leading forms for the actual fixed
 > compiler coefficients, supported by four complete coefficient expansions.
 > This does not assert exact982 after specializing the program parameters.
+> The two-source author packet retains its upper-only metadata. All three installed
+> receipts pass fresh replay; the parent1147 remains a historical upper bound.
+> The independent74/86 universal operation bounds are unchanged.
 >
 > The [all-sixteen U9 source transfer](neary_woods_tail_quotient_all16.md) now
 > extends that shift to every saved eligible layout: eight native bases at two
@@ -1315,9 +1316,6 @@
 > 74/86 operation records.
 
 
-> The author packet retains its upper-only metadata. All three installed
-> receipts pass fresh replay; the parent1147 remains a historical upper bound.
-> The independent74/86 universal operation bounds are unchanged.
 >
 > The preceding [product-scale U9 polynomial](neary_woods_universal_product_scale253.md)
 > gives **252 certificate /253=132M+121A operations**, one comparison,
