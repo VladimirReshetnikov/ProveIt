@@ -1,5 +1,11 @@
 # Intake of ten newly arrived substrate reports
 
+Historical intake snapshot. All ten reviews are now complete; see the
+[current review index](incoming_substrate_review_aebfa386e.md) for conclusions,
+repairs and replay helpers. The pending labels below record intake-time status.
+Subsequent placement commits removed the original ZIP paths from the checkout;
+the byte-pinned archives remain recoverable from Git.
+
 Commits `ef2fc7990` and `aebfa386e` arrived while the U15 partition frontier
 was being published and were merged normally. The [inventory](incoming_substrate_intake_aebfa386e.json)
 pins all ten original archive hashes and every member byte hash: **334 files,

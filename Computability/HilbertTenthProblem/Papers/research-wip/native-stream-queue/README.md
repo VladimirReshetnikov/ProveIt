@@ -1,10 +1,21 @@
 # WIP: native queue streams and research continuation
 
-[Ten newly arrived reports](incoming_substrate_intake_aebfa386e.md) at
-`ef2fc7990`/`aebfa386e` are inventoried (334 files/84 Python modules); their
-[full review is underway](incoming_substrate_review_aebfa386e.md). The queue
-packet is reviewed and repaired, with a proved finite-grammar witness reduction.
-The review index distinguishes completed packets from pending work.
+[All ten reports](incoming_substrate_review_aebfa386e.md) received at
+`ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
+The reviews preserve the delivered sources and provide pinned repair patches,
+complete receipts, and explicit domain/horizon limits. Verified reductions
+include queue and sparse-lattice wire projections, ten-row polynomial-semiring
+certificates, a 21-operation five-witness congruence atom, and natural-only
+signal/reset simplifications. The signal schedule saves 7,489,424 operations
+per event packet; reset gates save 761 additions per source step. These
+external-horizon/local results leave the global 87-operation bound unchanged.
+
+The [complete connected routing evaluators](connected_cross_routing_slp.md)
+retain every original equation and the entire polynomial on all integer tuples.
+Shared row/column sums reduce the transfer example from245 to206 operations
+and a five-branch example from840 to456. Complete emitted gate lists,
+20,455 checks and an [independent full-source reconstruction](review_connected_cross_routing_slp.md)
+pay the whole evaluation, including finalization; the horizon remains external.
 
 
 The [complete direct U15 partition frontier](u15_unit_partition_frontier.md)
