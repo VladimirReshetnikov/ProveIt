@@ -143,6 +143,18 @@
 > extensions, not a full polynomial identity or witness bijection. This fixture
 > is not a universal alphabet; the74/86 universal bounds and later projective
 > compiler are unchanged.
+
+> The [two native coefficient factorizations](group_macro_factored_coefficients.md)
+> then save two more multiplications in each complete source. The shared form
+> costs **412=167M+245A**, with comparison source272=120M+152A, the same47
+> equations and75 positive witnesses: **443→412** overall. The supplied k
+> and both triangular roots remain literal; this step preserves the entire
+> polynomial at every supplied tuple within each graph. The
+> [independent review](review_group_macro_factored_coefficients.md) reconstructs
+> all five sources,235 residuals and finalizers, and2,217 paid polynomial gates.
+> Author and review pass fresh installed replay. Their degree fields remain
+> upper bounds304/208; the separate parent exact-degree proof and polynomial
+> identity also establish unchanged exact degrees. No universal bound changes.
 >
 >
 > The previously suggested asymmetric74 transfer is now complete above;
