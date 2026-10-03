@@ -31,13 +31,24 @@ and both review receipts pass fresh root replay. Earlier entries below retain th
 historical counts and benchmark statements; the current numerical bounds
 are74/86. The [recomputed thirteen-base grouping family](complete86_first_root_partitions.md)
 adds four operation/exact-degree improvements:**88/123,91/102,92/80,95/54**.
-Including the new shear and retained older asymmetric points gives86/178,87/134,88/123,
-89/113,90/109,91/102,92/80,93/72,94/62,95/54,96/50,97/48,98/44.
+The reviewed saved-source shear below and retained older points give
+**86/178,87/134,88/122,89/112,90/108,91/102,92/80,93/72,94/62,
+95/54,96/50,97/48,98/44**.
 Every source retains19 positive witnesses and ordinary input. Its
 [independent audit](review_complete86_first_root_partitions.md) reproduces
 29,631 partitions,149,336 finalizers,101 full certificate/polynomial ledgers
 and202 complete modular degree expansions. Both fresh root receipts pass.
 This is a finite-family frontier; the minimum operation bound stays86.
+The [saved-source shear probe](transport_shear_frontier_probe.md) and
+[independent review](review_transport_shear_frontier_probe.md) add actual
+ordinary-input universal witnesses at **88/122,89/112,90/108**, all19 positive
+witnesses. Both installed receipts pass fresh replay. All39 saved circuits
+retain their full finalizers and operation counts; the transport unit proof
+gives a positive-zero bijection before native decoding. Exact-degree proofs
+are uniform on valid fixed-program numeral slices. This is a reviewed set
+of saved source witnesses, with no new partition census or public compiler.
+The original probe note's unpromoted status records its earlier author stage.
+
 The [shared-coefficient scout](complete87_shared_coefficient_scout.md) exhausts
 a separate multiplication-only family: four gates remain necessary for its
 two target monomials, and all21 complete schedules tie the old87 cost.

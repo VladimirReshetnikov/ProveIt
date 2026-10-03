@@ -14,9 +14,20 @@
 > and both installed receipts pass fresh / replay. Exact factor/leading-form
 > proof is uniform on valid inherited fixed-program numeral slices. Raw
 > gate-propagation188/144 must not be confused with exact178/134. Current
-> combined catalogue starts86/178,87/134,88/123,89/113,90/109,91/102,92/80,
+> combined catalogue starts86/178,87/134,88/122,89/112,90/108,91/102,92/80,
 > 93/72,94/62,95/54,96/50,97/48,98/44; retain106/42,108/28,110/24 separately.
-> Grouped shear transfers are a separate bounded lead until reviewed.
+> The [saved-source shear probe](transport_shear_frontier_probe.md) and
+> [independent review](review_transport_shear_frontier_probe.md) now justify
+> the additional88/122,89/112,90/108 as actual universal upper-bound witnesses.
+> Author and review fresh installed / replays pass. Inventory is exactly13
+> first-root saved+5 older asymmetric grouped+10 older linear/gap grouped+
+> 11 direct aliases; never claim the101 ledger-only plans were reconstructed.
+> Review checks39 full identities/3,616 paid gates/actual unit finalizers;
+> 15 exact integer-coefficient full expansions and120 leaders cover winners
+> and two direct aliases. All three winners use product-minus-one. Degree
+> proofs are uniform on valid fixed numeral slices, not inferred from finite
+> expansions. Scope is reviewed saved circuits, not a new partition census
+> or maintained public compiler. Preserve the original probe-stage note.
 > Earlier first-root and rewrite-census degrees below describe their frozen
 > predecessor coordinates, not the new quotient-shear polynomials.
 > The [complete74 factorization](complete74_factored_first_norm.md) replaces

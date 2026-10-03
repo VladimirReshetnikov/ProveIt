@@ -48,6 +48,15 @@ finalizer remain paid. The [independent full review](Papers/research-wip/native-
 and both installed fresh receipts pass. The degree proof is uniform on
 valid fixed-program numeral slices; no universal operation saving is claimed.
 
+The [saved-source transfer](Papers/research-wip/native-stream-queue/transport_shear_frontier_probe.md)
+and [independent review](Papers/research-wip/native-stream-queue/review_transport_shear_frontier_probe.md)
+add **88 operations/degree122,89/112 and90/108**. These actual complete
+circuits are universal upper-bound witnesses with19 positive auxiliaries
+under their inherited program recipes. All39 saved circuit transfers and
+full finalizers are checked, with uniform exact-degree proofs and both
+fresh installed replays passing. No new exhaustive partition search or
+maintained public compiler is claimed.
+
 The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)
 and [independent census](Papers/research-wip/native-stream-queue/review_complete86_affine_port_scout.md)
 also check874 complete circuits from six joint-root schedules and one local
