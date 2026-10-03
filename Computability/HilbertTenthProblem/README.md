@@ -92,6 +92,18 @@ signed-index/height receipt replays pass through that cache. The guide maps
 permanent reading locations and the actual older command interfaces;
 archive copying itself adds no scientific review or arithmetic claim.
 
+The [literal reversible-source review](Papers/research-wip/native-stream-queue/review_literal_universal_reversible_source16.md)
+checks all 141,561 primitive rows of the fixed two-counter machine and their
+exact natural-number domain/image disjointness. The source and macro proofs
+supply clean-input nonblocking, closing the earlier premise needed for
+five-particle periodicity to encode universal halting. Separate proof review
+and fresh installed replay pass, including the small complete quartic.
+Its finite-tape loader still uses exponential preprocessing, and its degree-four
+certificate has 141,565 witnesses per externally fixed source step. Neither
+construction supplies a paid ordinary-input, fixed-arity unbounded compiler;
+the minimum universal polynomial remains 85 operations. Natural return-time
+multipliers must also remain distinct from the paid real-orthant theorem.
+
 The [parallel-particle report review](Papers/research-wip/native-stream-queue/review_parallel_particle_reports.md)
 checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
 natural-witness quartics. An independent reconstruction matches the complete
