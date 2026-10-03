@@ -12,8 +12,14 @@ units suffice in the weighted Boolean-channel model; many distinct unit-weight
 labels and a large finite rule are essential parts of its interface. The exact-target
 wrapper eliminates reverse-history witnesses through an affine map on natural
 zero sets. Its compact quadratic family still has an external source horizon;
-no fixed-arity universal arithmetic improvement follows. The remaining seven
-new archives are under review.
+no fixed-arity universal arithmetic improvement follows.
+
+The [four surreal order reports](review_batch80_surreal.md) pass their finite
+replays and the scoped mathematical review, with one separate prose correction
+about fixed-relation internal well-foundedness in GBC. Their different coding
+and class-order results are complementary. They supply neither an effective
+universal machine nor a paid Diophantine interface. The remaining three
+low-mass archive variants are under final replay.
 
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
