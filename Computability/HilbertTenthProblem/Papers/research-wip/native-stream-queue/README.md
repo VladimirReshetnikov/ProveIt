@@ -120,6 +120,16 @@ source identities across nine programs, including literal one-phase no-ops.
 Both receipts pass root replay. The 31-witness interface and degree upper
 bound 1187 remain; these are still small-program, nonuniversal examples.
 
+The [weak-cone child](grill_tag_native_weak_cone.md) implements the padding
+corollary, reducing that complete source to **208=93M+115A**. It replaces
+P0=3x+Z0 by P0=x+Z0. Fresh native-domain arguments and the padding theorem
+preserve the existential input language; the positive zero sets on identical
+coordinates are disjoint. The exact algebraic relation instead shifts Z0 by
+−2x. The [independent review](review_grill_native_weak_cone.md) verifies all
+eight source substitutions and 82 actual outer/AND fixtures, explicitly
+distinguishing these fixtures from full native Pell zeros. Both receipts
+pass root replay; no universal decoder is inferred.
+
 The [complete connected routing evaluators](connected_cross_routing_slp.md)
 retain every original equation and the entire polynomial on all integer tuples.
 Shared row/column sums reduce the transfer example from 245 to 206 operations
