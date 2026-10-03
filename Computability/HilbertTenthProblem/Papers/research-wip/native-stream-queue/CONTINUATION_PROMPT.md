@@ -289,6 +289,32 @@
 > Public API supports only savedN1..8; the proof/formulas generalize the
 > externalN templates. Preserve all parent and author/reviewer bytes.
 > No paid ordinary-input recoder or fixed-arity universal bound follows.
+> The [Tree pointer-product projection](eager_tree_pointer_product_scout.md)
+> and [independent full review](review_eager_tree_pointer_product_scout.md)
+> pass fresh root receipts. Replace each pointer sum AND coded lookup by
+> active*product_{j>i}(C_j−D_i,s)=0; active is t3+t4,t3+t4,t3 and empty
+> product1 is folded. Natural one-hot tags prove active0/1. A zero product
+> selects some later matching code, so restoring the least matching pointer
+> gives a parent zero. Inactive pointers restore0. All local/root residuals
+> remain literal; no flow/rank constraints survive in this actual parent.
+> Eliminate3N(N−1)/2 pointer coordinates, then two formally unused lastu/v
+> fields, restored0. Last residuals areactive,active,t3, forcingt3=t4=0
+> naturally, but those tags and the lastc field remain supplied in this
+> committed source. Same retained-coordinate existential projection, NOT
+> same tuples or a bijection: duplicate-row pointers and lastu/v give
+> explicit nonunique parent fibers. No signed-domain theorem is claimed.
+> CompleteM=(3N²+81N−24)/2,A=(3N²+(131−2cleanup)N−38)/2,
+> cleanedtotal3N²+105N−31,witnesses13N−2,residuals8N+3.
+> N8=1001=408M+593A/102w/67res, exactdegree72; N1=77/11w/11res/degree10.
+> Generaldegree max(10,10N−8): forN>=2 the rootthird-slot leader is
+> (−1)^(N−1)t3^N(u+v)^(4N−4), giving residualdegree5N−4.
+> Both lastactive residual occurrences remain separately squared; no
+> global CSE, lasttag normalization or duplicate-residual cleanup is used.
+> Full correction=new product squares−old rowsum squares−old lookup squares,
+> at arbitrary old pointer/lastu/v values. All16 savedN1..8 forms are paid.
+> Parent_pins metadata now deep-copies the authenticated dictionary; root
+> review found and repaired the returned alias before integration. Preserve
+> the repaired author/reviewer trios. ExternalN and universal74/86 remain.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual

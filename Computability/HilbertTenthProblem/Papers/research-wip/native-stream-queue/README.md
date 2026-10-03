@@ -124,6 +124,22 @@ both fresh root receipts pass. The public prototype covers savedN=1..8,
 while the proof and count formulas apply to the uniform externalN template.
 This finite-certificate improvement leaves the universal74/86 bounds unchanged.
 
+The [Tree pointer-product projection](eager_tree_pointer_product_scout.md)
+replaces each active lookup by a product of code differences over later
+rows, removing all pointer coordinates and two unused last-row fields.
+With static cleanup it costs **3N²+105N−31 operations**, with **13N−2
+natural witnesses**,8N+3 residuals and exact degree **max(10,10N−8)**.
+AtN=8 this is **1,001 operations,102 witnesses and degree72**. The
+degree10/12 coded sources remain separate degree tradeoffs. The precise
+theorem is existential projection onto the retained natural coordinates;
+different matching rows give nonunique parent lifts. The
+[independent full review](review_eager_tree_pointer_product_scout.md)
+checks all16 full sources, projection/lift semantics, exact degrees and
+the complete polynomial correction. Both fresh root receipts pass. Root
+review also fixed a mutable provenance alias without changing the circuit.
+The prototype coversN=1..8; the externalN proof does not yield a new
+fixed-arity universal bound.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

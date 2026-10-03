@@ -113,6 +113,15 @@ checks all416 schedules and their full polynomial corrections; author and
 review receipts pass fresh replay. The prototype coversN=1..8, with general
 externalN count formulas and proof. No fixed-arity universal bound changes.
 
+The [Tree pointer-product projection](Papers/research-wip/native-stream-queue/eager_tree_pointer_product_scout.md)
+then removes the pointer witnesses by expressing membership in the later
+row codes as a vanishing product. AtN=8 it costs **1,001 operations with102
+natural witnesses**, at exact degree72. Its theorem preserves existential
+solutions over the retained row fields; parent lifts can be nonunique.
+The [independent full review](Papers/research-wip/native-stream-queue/review_eager_tree_pointer_product_scout.md)
+and fresh replays pass. The degree10/12 alternatives remain useful, and
+externalN still prevents claiming a new fixed-arity universal bound.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)
