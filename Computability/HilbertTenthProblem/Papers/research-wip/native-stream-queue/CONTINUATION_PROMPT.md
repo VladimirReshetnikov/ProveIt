@@ -49,6 +49,17 @@
 > This is an exact frontier within two fixed cores and the stated finalizer
 > rules; it is not a general circuit lower bound. The minimum stays85.
 >
+> The [first-index deletion scout](first_index_quotient_deletion_scout.md)
+> saves two fully paid 17-witness candidate arrays at 81/82 operations and
+> exact degrees 168/124, but **neither is a proved universal representation**.
+> Removing h and its private index cone requires restoring
+> h=(k−R−1)/E as a positive integer. An exact first/main Pell and strict-ratio
+> fixture has positive numerator but remainder 2; its odd Y fails the full
+> q-scaling conditions, so it is only a subsystem obstruction. The retained
+> outer/scaling equations remain the unresolved soundness obligation. Root
+> and an independent reviewer check the arrays, full product correction,
+> binary-power fixture and normal/optimized receipts. The 85 bound is unchanged.
+>
 > The [general eight-lane range transfer](group_projective_general_separate_range.md)
 > now covers the canonical nonempty matrix-history graph family. Separating its
 > physical range mask from its controller width lowers the uniform exact degree
