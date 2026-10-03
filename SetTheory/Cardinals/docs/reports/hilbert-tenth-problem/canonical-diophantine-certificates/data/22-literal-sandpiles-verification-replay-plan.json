@@ -1,0 +1,114 @@
+{
+  "checks": [
+    {
+      "args": [],
+      "capture": "file",
+      "cwd": "evidence/loader",
+      "label": "loader_gates",
+      "receipt": "evidence/loader/gates/gate_receipt.json",
+      "script": "evidence/loader/gates/check_gates.py"
+    },
+    {
+      "args": [],
+      "capture": "file",
+      "cwd": "evidence/loader",
+      "label": "loader_ca",
+      "receipt": "evidence/loader/ca/verification.json",
+      "script": "evidence/loader/ca/test_lazy_u15.py"
+    },
+    {
+      "args": [
+        "--output",
+        "geometry/router_checks.json"
+      ],
+      "capture": "file",
+      "cwd": "evidence/loader",
+      "label": "loader_router",
+      "receipt": "evidence/loader/geometry/router_checks.json",
+      "script": "evidence/loader/geometry/periodic_router.py"
+    },
+    {
+      "args": [
+        "--audit"
+      ],
+      "capture": "file",
+      "cwd": "evidence/loader",
+      "label": "loader_circuit",
+      "receipt": "evidence/loader/compiler/circuit_manifest.json",
+      "script": "evidence/loader/compiler/literal_loader.py"
+    },
+    {
+      "args": [],
+      "capture": "file",
+      "cwd": "evidence/loader",
+      "label": "loader_coefficients",
+      "receipt": "evidence/loader/compiler/coefficient_checks.json",
+      "script": "evidence/loader/compiler/test_coefficients.py"
+    },
+    {
+      "args": [],
+      "capture": "file",
+      "cwd": "evidence/loader",
+      "label": "loader_worked_example",
+      "receipt": "evidence/loader/compiler/worked_example.json",
+      "script": "evidence/loader/compiler/make_example.py"
+    },
+    {
+      "args": [],
+      "capture": "stdout",
+      "cwd": "evidence/composition",
+      "label": "composition_primary",
+      "receipt": "evidence/composition/verification.json",
+      "script": "evidence/composition/test_prism_certificate.py"
+    },
+    {
+      "args": [],
+      "capture": "stdout",
+      "cwd": "evidence/composition",
+      "label": "composition_bound",
+      "receipt": "evidence/composition/example_hypothetical_bound.json",
+      "script": "evidence/composition/literal_composition.py"
+    },
+    {
+      "args": [],
+      "capture": "stdout",
+      "cwd": "evidence/composition",
+      "label": "composition_direct_model",
+      "receipt": "evidence/composition/review/audit_independent_results.json",
+      "script": "evidence/composition/review/audit_independent.py"
+    },
+    {
+      "args": [],
+      "capture": "stdout",
+      "cwd": "evidence/composition",
+      "label": "composition_polynomial",
+      "receipt": "evidence/composition/review/audit_ledger.json",
+      "script": "evidence/composition/review/audit_polynomial.py"
+    },
+    {
+      "args": [],
+      "capture": "stdout",
+      "cwd": "evidence/composition",
+      "label": "composition_crosscheck",
+      "receipt": "evidence/composition/review/audit_crosscheck_results.json",
+      "script": "evidence/composition/review/audit_crosscheck.py"
+    },
+    {
+      "args": [],
+      "capture": "stdout",
+      "cwd": "evidence/composition",
+      "label": "composition_streaming",
+      "receipt": "evidence/composition/review/audit_streaming_results.json",
+      "script": "evidence/composition/review/audit_streaming.py"
+    },
+    {
+      "args": [],
+      "capture": "stdout",
+      "cwd": "evidence/composition",
+      "label": "composition_adapter",
+      "receipt": "evidence/composition/review/audit_adapter_results.json",
+      "script": "evidence/composition/review/audit_adapter.py"
+    }
+  ],
+  "schema": "report35-replay-plan-v1"
+}

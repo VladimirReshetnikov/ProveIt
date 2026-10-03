@@ -1,0 +1,703 @@
+\documentclass[11pt,letterpaper]{article}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,fancyhdr,float,graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\hypersetup{pdftitle={Research Report 38 First Revisit Detection and Exact Pattern Queries for Periodic Turmites},pdfauthor={}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Research Report 38}\fancyhead[R]{\small Finite defect periodic turmites}
+\fancyfoot[C]{\thepage}\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}\newcommand{\N}{\mathbb N}
+\newcommand{\ind}{\mathbf 1}\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\lcm}{\operatorname{lcm}}\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\title{\textbf{First Revisit Detection and Exact Pattern Queries}\\[4pt]
+\textbf{for Finite Defect Periodic Turmites}\\[9pt]
+\large Polynomial bit complexity and executable affine lane calculus\\[7pt]
+\normalsize Research Report 38}
+\author{Mathematical research report}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For a cyclic left/right turmite rule, an explicitly listed periodic colour tile, and finitely many binary encoded defects, the first repeated lattice position is decidable in polynomial bit time. The algorithm returns the exact first time and an earlier witness, or certifies that every position is fresh forever. Its affine lane output has polynomial size even when the first revisit occurs exponentially late. We give the complete event driven proof, a numerical first revisit bound, and bounds on temporary Diophantine arithmetic. We also implement exact occurrence and least time for finite unions of heading restrictions, coordinate congruences, finite head site sets, and finite head relative colour stencils. An elementary signed progression calculus replaces the original general Presburger decision subroutine. The observation algorithm terminates without expanding a long flight or a whole residue period, but no polynomial complexity bound is claimed for its Boolean expansion. All observations use the board before departure and stop at the first repeated arrival when a revisit exists. Finite local observations on a certified fresh run are eventually periodic; this is not a periodicity assertion for the whole board. The accompanying frozen source packet and enclosing replay tools separate proofs, finite experiments, historical evidence, and release integrity.
+\end{abstract}
+
+\section{Conclusions and scope}\label{sec:scope}
+The central decision problem asks whether a moving head ever returns to a lattice position it previously occupied. Repetition of the heading is not required. In the model studied here, all departures before that event read an unmodified cell. This observation converts the first revisit problem into a static walk problem. Periodicity then compresses each defect free excursion, and a finite number of defect encounters suffices to settle the entire infinite question.
+
+The report establishes three distinct conclusions.
+\begin{enumerate}
+\item \textbf{First revisit is in P.} The input contains an explicit rule and tile, a finite defect map, and a starting position and heading. No one visit promise is assumed. The decision, exact first time, repeated position, earlier witness, and compressed valid path are computable in polynomial bit time.
+\item \textbf{Exact first pattern occurrence is implemented.} On the certified path domain, finite unions of the stated clauses have decidable occurrence and an exact least time. This includes genuinely changing board colour tests, not merely head position tests. The implementation uses integer arithmetic, generalized CRT, and finite signed sums of progression indicators.
+\item \textbf{Finite observations stabilize by phase.} On a globally fresh run, every fixed finite head relative colour stencil and the heading are eventually periodic. Coordinate congruences supply a further computable period factor. This concerns the finite observation, not the entire evolving board.
+\end{enumerate}
+
+The polynomial theorem applies only to the first item. General first hit compilation can create exponentially many signed terms; neither that procedure nor general Presburger elimination is claimed to run in polynomial time. The algorithm does not analyze arbitrary post-revisit dynamics and does not make an ordinary ant physically halt.
+
+\paragraph{Scientific provenance.}
+This article consolidates the frozen original boundary proof, the complete observation implementation proof, and the separate bit complexity review dated 3 October 2026. The original boundary program left the general first hit subroutine unimplemented; the active extension supplies it. The historical original is preserved unchanged. A limited source search is evidence about what was inspected, not a priority proof. We make no novelty claim, no claim of a completed literal two visit universal tile and input loader, and no sharp one versus two visit threshold claim.
+
+\section{Model and exact output contract}\label{sec:model}
+Let $m\ge1$ and let the explicitly listed word $w\in\{L,R\}^m$ specify the turn for each colour $0,\ldots,m-1$. Let $u,v\ge1$ and let
+\[
+ b:\{0,\ldots,u-1\}\times\{0,\ldots,v-1\}\longrightarrow\{0,\ldots,m-1\}
+\]
+be an explicitly listed tile. The implementation stores rows indexed by $y$, then columns indexed by $x$. A finite map $D:\Z^2\rightharpoonup\{0,\ldots,m-1\}$ overrides the tile:
+\begin{equation}\label{eq:c0}
+ c_0(x,y)=\begin{cases}
+ D(x,y),&(x,y)\in\dom(D),\\
+ b(x\bmod u,y\bmod v),&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Redundant defects, equal to the underlying tile colour, are allowed. Coordinates, periods, and integer parameters use ordinary binary notation; the colour rule and every tile entry are explicitly present. A succinct circuit description of an exponentially large tile is a different input model.
+
+The starting head position is $p_0\in\Z^2$ and its heading is $h_0\in\{0,1,2,3\}$. The headings are north, east, south, west, respectively; positive $x$ points east and positive $y$ north. Their unit vectors are $e(0)=(0,1)$, $e(1)=(1,0)$, $e(2)=(0,-1)$, and $e(3)=(-1,0)$.
+
+Time $t$ denotes the configuration \emph{before departure}. At time $t$, read $q=c_t(p_t)$, turn right or left according to $w_q$, increment the colour at $p_t$ modulo $m$, and move one unit in the new heading. This convention agrees with the formal rotate, increment, move definition in the primary turmite paper~\cite{maldonado}.
+
+Define the first repeated arrival time by
+\begin{equation}\label{eq:tau}
+ \tau=\min\{t\ge1:\exists s<t\ (p_s=p_t)\},
+\end{equation}
+with $\tau=\infty$ if the set is empty. Define the certified time domain
+\[
+ \mathcal T=\begin{cases}\{0,\ldots,\tau\},&\tau<\infty,\\
+ \N,&\tau=\infty.
+ \end{cases}
+\]
+The first repeated arrival belongs to $\mathcal T$. Its departure and later configurations do not belong to the claim.
+
+\begin{definition}[Affine lane]\label{def:lane}
+A lane $A=(a_A,d_A,t_A,\ell_A,N_A,g_A)$ represents
+\[
+ p_{t_A+n\ell_A}=a_A+n d_A,\qquad h_{t_A+n\ell_A}=g_A,
+ \qquad 0\le n\le N_A,
+\]
+where $a_A,d_A\in\Z^2$, $\ell_A\ge1$, and $N_A\in\N\cup\{\infty\}$. A singleton has $N_A=0$. Lane endpoints are inclusive.
+\end{definition}
+The returned lanes partition the times in $\mathcal T$, although on the revisit branch two times can have the same spatial position. Infinity is stored as a fixed symbol, not as an integer.
+
+\begin{theorem}[Total first revisit algorithm]\label{thm:main}
+For every valid input, there is a total algorithm that returns either
+\begin{enumerate}
+\item $\tau<\infty$, $p_\tau$, an earlier $s<\tau$ with $p_s=p_\tau$, and an exact lane representation through time $\tau$; or
+\item a certificate that $\tau=\infty$, an exact lane representation of every time, and a final translated periodic tail
+\begin{equation}\label{eq:tail}
+ p_{T_0+i+nL}=a_i+n\delta,\qquad h_{T_0+i+nL}=g_i
+ \quad(0\le i<L,\ n\ge0),
+\end{equation}
+where $1\le L\le4uv$ and $0\ne\delta\in u\Z\times v\Z$.
+\end{enumerate}
+The algorithm has polynomial bit complexity in the ordinary explicit input length and produces at most $(K+1)4uv$ lanes, where $K=|\dom(D)|$.
+\end{theorem}
+Sections~\ref{sec:shadow}--\ref{sec:algorithm} prove totality and correctness. Section~\ref{sec:complexity} supplies the bit complexity argument, which requires more than a count of large integer operations.
+
+\section{Static shadow and periodic excursions}\label{sec:shadow}
+\begin{lemma}[Static shadow]\label{lem:shadow}
+Consider the walk that always reads $c_0$ and never changes the board. Its positions and headings agree with the actual turmite through their common first repeated arrival, inclusive. Their first repeated arrival times are equal.
+\end{lemma}
+\begin{proof}
+Before a first repeated arrival, each departure is from a position never previously departed from. Its actual colour is therefore $c_0$ at that position. Starting with the same head, induction gives the same turn, unit step, and next heading for the two walks. The induction establishes the arrival at the first repeat as well; it does not require the next departure to agree. If either walk repeated earlier than the other, the induction up to that time would give the same earlier spatial equality in both, a contradiction.
+\end{proof}
+Colour queries still require the evolving board and will be reconstructed separately.
+
+\begin{lemma}[The projected transition is a permutation]\label{lem:permutation}
+On the defect free background, the transition of the projected state
+\[
+ (x\bmod u,y\bmod v,h)
+\]
+is a permutation of a set of size $S=4uv$.
+\end{lemma}
+\begin{proof}
+Given a successor position residue $q$ and heading $h'$, subtract $e(h')$ to obtain the predecessor position residue. Its tile colour determines the turn that was applied there. Undo that quarter turn to recover the unique predecessor heading. Every successor thus has exactly one predecessor.
+\end{proof}
+Consequently each projected orbit is a pure cycle, with no transient. From a restart at time $r$, compute the cycle's first $L$ positions and headings, $1\le L\le S$. If its displacement after $L$ steps is $\delta$, then
+\begin{equation}\label{eq:excursion}
+ p_{r+i+nL}=a_i+n\delta,\qquad h_{r+i+nL}=g_i,
+ \qquad 0\le i<L,\quad n\ge0.
+\end{equation}
+Its $L$ phases are $L$ lanes. Returning to the same residue and heading forces $\delta\in u\Z\times v\Z$. The reference implementation accommodates a generic finite state transient followed by a cycle, but Lemma~\ref{lem:permutation} implies that its transient parameter is always zero on these inputs.
+
+If $\delta=0$, the hypothetical excursion repeats its start after $L$ moves. Nonzero drift alone does not certify spatial self avoidance: distinct phases can still intersect. All phase pairs must be checked.
+
+\section{The exact lane intersection primitive}\label{sec:intersection}
+Given a prospective lane $A$ and an old lane $B$, minimize the new time $t_A+\ell_A n$ subject to
+\begin{align}\label{eq:relation}
+ a_A+n d_A&=a_B+k d_B,\\
+ 0\le n\le N_A,\quad&0\le k\le N_B,\nonumber\\
+ t_B+\ell_B k&<t_A+\ell_A n.\nonumber
+\end{align}
+An infinite endpoint omits its upper inequality. When $B$ is a static defect or target, omit the final chronological condition. Because $\ell_A>0$, minimizing new time is the same as minimizing $n$.
+
+\subsection{Rank two}
+The spatial matrix has columns $d_A,-d_B$. If its determinant is nonzero, Cramer's rule gives the unique rational pair $(n,k)$. Integer divisibility checks decide whether that pair is integral. Check nonnegativity, inclusive endpoints, and, if requested, strict chronology. A passing pair is the unique feasible pair; otherwise no intersection exists.
+
+\subsection{Rank one}
+Choose a nonzero coordinate equation $an+bk=c$. Put $g=\gcd(a,b)>0$. If $g\nmid c$, there is no solution. Otherwise extended Euclid gives $ax+by=g$ and the full integer family
+\begin{equation}\label{eq:bezout}
+ n=n_0+s z,\qquad k=k_0+r z,\qquad
+ n_0=x(c/g),\quad k_0=y(c/g),\quad s=b/g,\quad r=-a/g.
+\end{equation}
+Substitution into the other spatial equation tests whether it holds identically or the rank one system is inconsistent. Each remaining bound is an integer inequality
+\[
+ C+E z\ge0.
+\]
+For $E>0$ it imposes $z\ge\lceil-C/E\rceil$; for $E<0$ it imposes $z\le\lfloor C/(-E)\rfloor$; for $E=0$ it is either tautological or impossible. In particular strict chronology becomes
+\begin{equation}\label{eq:strict}
+ t_A+\ell_A n_0-t_B-\ell_B k_0-1
+       +(\ell_A s-\ell_B r)z\ge0.
+\end{equation}
+The minus one is necessary: equality of arrival times must be excluded.
+
+Intersecting the bounds produces one integer interval, possibly unbounded. If it is empty, return no hit. If $s>0$, minimize at its lower endpoint; if $s<0$, minimize at its upper endpoint. The bound $n\ge0$ guarantees that the required endpoint is finite. If $s=0$, any feasible parameter gives the same $n$; use an available endpoint or zero. Reconstruct $(n,k)$ and return the new time and earlier witness.
+
+\subsection{Rank zero}
+Both spatial steps vanish. Unequal bases make the relation empty. For equal bases, the earliest old index is $k=0$, and it makes chronology easiest because $\ell_B>0$. With no chronology the minimizing index is $n=0$; with chronology it is
+\begin{equation}\label{eq:rankzero}
+ n=\max\left(0,\left\lceil\frac{t_B+1-t_A}{\ell_A}\right\rceil\right).
+\end{equation}
+Check its endpoint. This case includes stationary lanes and zero drift cycles.
+
+\begin{proposition}[Exact primitive]\label{prop:primitive}
+These three cases terminate using exact integer arithmetic and return the earliest feasible new time and an old witness, or correctly report emptiness. They handle negative coordinates and drifts, zero components, finite and infinite endpoints, same lane tests, and different headings at an equal position.
+\end{proposition}
+\begin{proof}
+The spatial system has exactly one of the three ranks. Cramer's rule is exhaustive in rank two. Equation~\eqref{eq:bezout} parameterizes all integer solutions in rank one, and every remaining constraint is included in the parameter interval, so minimizing its affine image is exact. In rank zero, existence of any chronological old index implies existence of $k=0$, yielding~\eqref{eq:rankzero}. No branch tests heading equality, as required by~\eqref{eq:tau}.
+\end{proof}
+
+\section{Accelerating to the next decisive event}\label{sec:algorithm}
+At a restart time $r$, maintain the current position and heading and a list $H$ representing exactly the arrivals at times $s<r$. Thus the current arrival at $r$ is excluded from history. Initially $r=0$ and $H$ is empty.
+
+\begin{enumerate}
+\item Construct the prospective defect free excursion $E$ from the current head using~\eqref{eq:excursion}.
+\item Use strict chronology to find the earliest intersection of any lane of $E$ with any lane of $H$ or $E$. Call its time $C$, or $\infty$ if every pair is empty.
+\item Test every lane of $E$ against every defect, treated as a singleton spatial target without chronology. Let the earliest defect arrival be $F$, or $\infty$.
+\item If $C<\infty$ and $C\le F$, return that repeat, its earlier witness, and $H$ together with $E$ truncated through $C$.
+\item If $C=F=\infty$, return $H$ and all of $E$ as the complete fresh path and no revisit certificate.
+\item Otherwise $F<C$. Append $E$ through time $F$ to $H$, perform the one departure prescribed by the input defect colour at that fresh position, and restart at $r=F+1$.
+\end{enumerate}
+Truncating a lane at time $b$ replaces its endpoint by
+\[
+ \min\left(N_A,\left\lfloor\frac{b-t_A}{\ell_A}\right\rfloor\right)
+\]
+and discards it if that endpoint is negative. The operation never enumerates its represented points.
+
+\begin{proposition}[Invariant and event ownership]\label{prop:invariant}
+At every restart, the history is exact, its arrivals are pairwise spatially distinct, and all prior departures agree with the actual turmite. The first terminal event is the actual first repeated arrival, or a valid certificate that no repeat ever occurs.
+\end{proposition}
+\begin{proof}
+Assume the invariant at $r$. Before $F$, the prospective walk reads the correct initial board because it has not hit an overriding defect. Before $C$, all positions are fresh by the exhaustive prospective/history and prospective/prospective pair checks. Lemma~\ref{lem:shadow} therefore validates these steps.
+
+If $C\le F$ is finite, the head reaches a repeated position at $C$ and no earlier repeat exists. A defect tie does not change this: the arrival is already repeated, independently of what a subsequent departure would do. The truncated representation includes $C$.
+
+If both event times are infinite, the entire prospective tail avoids all defects and has no collision with itself or with history. It therefore agrees with the actual walk forever and is globally fresh. Its drift must be nonzero, since zero drift would supply a same phase collision after one cycle.
+
+If $F<C$, the defect position at time $F$ is fresh. A prior occurrence in $H$ or $E$ would have yielded $C\le F$. The actual colour there is exactly the override colour from $D$, so the special turn and unit move are correct. The appended history contains times through $F$ and excludes the new current arrival at $F+1$, preserving the invariant. If the move lands on an old point, the next iteration detects a collision at local time zero; it is not missed.
+\end{proof}
+
+\begin{proposition}[Termination and size]\label{prop:termination}
+There are at most $K$ processed defect departures and $K+1$ excursion constructions. The output contains at most $(K+1)S$ lanes, where $S=4uv$. A simple implementation uses at most
+\begin{equation}\label{eq:paircount}
+ P=S^2\frac{(K+1)(K+2)}2+SK(K+1)
+\end{equation}
+pair intersection calls, plus $O((K+1)S)$ projected successor steps.
+\end{proposition}
+\begin{proof}
+Each processed defect position is fresh. A second arrival at a previously processed defect would be a historical collision at or before that arrival, and would terminate instead. Hence at most $K$ such departures occur. At the stage with $j$ previously processed defects, the history has at most $jS$ lanes. Testing the at most $S$ new lanes against history and all new lanes requires at most $(j+1)S^2$ calls; testing all defects requires at most $SK$ more. Sum over $j=0,\ldots,K$ to obtain~\eqref{eq:paircount}. Each excursion adds at most $S$ lanes.
+\end{proof}
+
+\paragraph{What can be checked in a certificate.}
+Retain the excursion start states, their projected cycles, their cut times, the fresh defect departures, and, when present, the final unbounded cycle. Every listed local transition is checkable. Comparing the excursion lanes with all defects verifies the first defect cut, and the same exact intersection primitive verifies all earlier disjointness conditions and the final tail's avoidance. Thus the no revisit claim rests on finite exact checks of infinite affine sets, rather than on an arbitrary simulation timeout.
+
+\section{Polynomial bit complexity}\label{sec:complexity}
+A polynomial number of arithmetic calls does not by itself prove membership in P: large temporary solutions could acquire too many bits. We bound both the candidate events and the arithmetic inside a call. The proof applies to the active first revisit engine and the same mathematical algorithm in the frozen original.
+
+\subsection{Parameters and a numerical first revisit bound}
+Let
+\begin{align}\label{eq:bounds}
+ S&=4uv,&K&=|\dom(D)|,\\
+ R&=\max\{|z_x|,|z_y|:z=p_0\text{ or }z\in\dom(D)\},&B&=R+S+1,\nonumber\\
+ Q&=S(2B+1),&A_0&=Q+1,\nonumber\\
+ T_*&=(K+1)A_0.&&\nonumber
+\end{align}
+$R$ includes the starting position even when there are no defects. The symbols $B,Q$ here are complexity bounds; the observation calculus below uses separate symbols for its eventual threshold and period.
+
+\begin{theorem}[Uniform numerical and representation bounds]\label{thm:bounds}
+If a first revisit exists, $\tau\le T_*$. Every restart time, stored lane base time, and finite new time returned by any pair call in the first revisit algorithm is at most $T_*$. All finite stored lane endpoints have index at most $2B$. Every lane base has each spatial coordinate of magnitude at most $B$. On the no revisit branch the tail starts no later than $KA_0$.
+\end{theorem}
+The numerical value of $T_*$ can be exponential in the binary input length. Its bit length is polynomial, and no loop counts from zero to $T_*$.
+
+\subsection{Bounded bases and completed history}
+A restart position is either $p_0$ or one unit from a defect. Its coordinate magnitudes are at most $R+1$. A phase base is reached in fewer than $S$ further moves, so it lies in $[-B,B]^2$. The extra point used to compute the drift is also in that box. Each component of $\delta$ has magnitude at most $L\le S$, and phase differences in the same excursion obey
+\begin{equation}\label{eq:phasebound}
+ |a_{i,q}-a_{j,q}|\le|i-j|\le L-1
+\end{equation}
+for each coordinate $q$.
+
+Consider a completed finite excursion ending at defect $z$ at time $F$. In a retained lane its last point is $e=a_i+N\delta$. By the truncation formula,
+\[
+ 0\le F-(r+i+NL)\le L-1.
+\]
+The hypothetical walk needs fewer than $S$ unit moves from $e$ to $z$, so $e\in[-B,B]^2$. Every coordinate of an intermediate affine point lies between the corresponding coordinates of its endpoints. Thus \emph{every historical point}, including those encoded by an extremely long lane, lies in this fixed box.
+
+If $\delta\ne0$, choose a coordinate $q$ with $\delta_q\ne0$. Then
+\[
+ N|\delta_q|=|e_q-a_{i,q}|\le2B,
+\]
+so $N\le2B$. If $\delta=0$, the excursion would revisit its start after $L$ steps, while the processed defect satisfies $F<C\le r+L$. Every retained lane then has endpoint zero. This controls all completed history before the final stage.
+
+\subsection{Local indices in every pair call}
+Historical times are strictly below the current restart $r$, whereas prospective times are at least $r$. Once index domains are imposed, chronology is automatic for a prospective/history pair.
+
+\paragraph{Prospective lane versus history.}
+Suppose $a_i+n\delta=y$ is a historical point. For nonzero drift, choose a nonzero coordinate of $\delta$; both the base and $y$ lie in $[-B,B]^2$, so $n|\delta_q|\le2B$ and every feasible $n\le2B$. The old witness index is bounded by its historical endpoint. For zero drift, any matching historical point is already matched at new index zero.
+
+\paragraph{Prospective lane versus a defect.}
+The target's coordinates have magnitude at most $R\le B$. The same argument gives $n\le2B$ for nonzero drift and minimizing $n=0$ for zero drift. Thus a far away or unreachable defect cannot hide an uncontrolled intermediate event time.
+
+\paragraph{Two phases with nonzero drift.}
+Both phases have drift $\delta$ and period $L$. Their equality is
+\[
+ (n-k)\delta=a_j-a_i.
+\]
+There is at most one integer $d=n-k$ satisfying it. Equation~\eqref{eq:phasebound} gives $|d|\le L-1\le S-1$. Chronology is exactly
+\[
+ i-j+Ld>0,
+\]
+independent of a common increment of the indices. If it holds, the minimizing pair is
+\[
+ n=\max(0,d),\qquad k=\max(0,-d),
+\]
+so both are at most $S-1\le2B$. If it fails, the ordered phase pair is empty. In particular, a same phase nonzero drift pair has $d=0$ and is correctly rejected by strict chronology.
+
+\paragraph{Two phases with zero drift.}
+Unequal bases never match. For equal bases choose $k=0$; the minimizing $n$ is zero when $i>j$ and one otherwise. Thus $n\le1\le2B$. The phase zero lane compared with itself guarantees a repeat at $r+L$.
+
+Every finite new time returned by any of these calls therefore satisfies
+\begin{equation}\label{eq:candidate}
+ r+i+Ln\le r+(S-1)+2BS<r+Q.
+\end{equation}
+This bound applies to discarded candidates as well as the winning event.
+
+\subsection{Absolute times and the terminal excursion}
+After a processed defect, $r'=F+1$, and~\eqref{eq:candidate} implies $r'-r\le Q\le A_0$. After $j$ defect departures, $r\le jA_0$. Any candidate at that stage lies below $jA_0+Q\le T_*$. A stored phase base time is also at most $T_*$ because $i<S\le A_0$.
+
+If the final event is a collision with winning index $n\le2B$, every other phase's endpoint when truncated at the same time is at most $n$: shifting its phase changes the quotient by zero or minus one. Thus every finite output endpoint is at most $2B$. Its points need not lie in the smaller historical box, but the sufficient bound
+\begin{equation}\label{eq:terminalcoord}
+ |\text{coordinate}|\le B+2BS=B(2S+1)
+\end{equation}
+holds. A final infinite tail is stored by at most $S$ unbounded lanes; its future coordinates are symbolic. This proves Theorem~\ref{thm:bounds}.
+
+\subsection{Temporary arithmetic inside the primitive}
+Put
+\begin{align}\label{eq:intermediate}
+ U&=2T_*+4BS^2+2B(S+1)+2S^2+4,\\
+ M&=2T_*+4(S+1)^2U+4(B+1).\nonumber
+\end{align}
+These intentionally loose bounds cover the integer arithmetic arising from calls on the algorithm's lanes. They are not bounds for arbitrary externally supplied lanes in the general relation API.
+\begin{enumerate}
+\item Spatial matrix coefficients have magnitude at most $S$; right hand sides, being base differences, have magnitude at most $2B$. Determinants have magnitude at most $2S^2$ and Cramer numerators at most $4BS$. Dividing by a nonzero integer cannot increase the numerator's magnitude when the quotient is integral.
+\item Extended Euclid acts only on coefficients of magnitude at most $S$. Its stored Bezout coefficients have magnitude at most $S$, with zero input cases bounded by one; its quotient--coefficient products are bounded by $S^2$. Scaling by the right hand side divided by the gcd gives $|n_0|,|k_0|\le2BS$. Parameter direction coefficients have magnitude at most $S$.
+\item Testing the other spatial equation produces terms and sums bounded by $4BS^2$. Index bound constants have magnitude at most $2B(S+1)$. The chronological constant in~\eqref{eq:strict} has magnitude at most $2T_*+4BS^2+1$ and its coefficient at most $2S^2$. Every constant and coefficient entering the interval calculation is below $U$ in magnitude.
+\item An interval endpoint is a floor or ceiling quotient by a nonzero integer, so its magnitude is at most $U$. The selected parameter is an endpoint or zero. Reconstructed indices therefore have magnitude at most $2BS+SU\le2SU$.
+\item Multiplication by a time period or displacement and addition of a base produce magnitudes at most $T_*+2S^2U+B<M$. Rank zero arithmetic, cycle construction, and truncation are smaller.
+\end{enumerate}
+These estimates include inconsistent systems, nonintegral candidates, unsatisfiable intervals, discarded pair answers, and expressions formed before cancellation. They close the gap that would remain if only returned events had been bounded. Rule and colour indices are separately bounded by $m$.
+
+\subsection{Bit operation conclusion}
+A common bit width bound is
+\begin{align}\label{eq:beta}
+ \beta&=1+\left\lceil\log_2\bigl(\max(M,m)+1\bigr)\right\rceil\nonumber\\
+ &=O\!\left(\log(K+2)+\log(S+1)+\log(R+S+2)+\log(m+1)\right).
+\end{align}
+Each pair uses a bounded number of arithmetic operations besides extended Euclid, whose number of iterations is $O(\log(S+1))$. Schoolbook integer arithmetic gives the coarse total bound $O(P\beta^3)$ for the pair calls. Input validation, finite state cycle construction, truncation, and writing the lane records are polynomial as well. Hash table average case assumptions are unnecessary: finite arrays or deterministic dictionaries suffice, and even linear scans add only polynomial overhead.
+
+If $N_{\mathrm{in}}$ is the ordinary explicit binary input length, then
+\[
+ S=O(N_{\mathrm{in}}),\quad K=O(N_{\mathrm{in}}),\quad m=O(N_{\mathrm{in}}),
+ \quad\log(R+1)=O(N_{\mathrm{in}}).
+\]
+Hence $P=O(N_{\mathrm{in}}^4)$ and $\beta=O(N_{\mathrm{in}})$. The arithmetic estimate is at most $O(N_{\mathrm{in}}^7)$, a coarse upper bound rather than an optimized runtime characterization of Python. The compressed output occupies $O((K+1)S\beta)$ bits, up to ordinary record overhead. This completes Theorem~\ref{thm:main}.
+
+\section{The exact observation language}\label{sec:observations}
+A clause is a conjunction of the following optional restrictions:
+\begin{enumerate}
+\item The heading lies in a finite specified subset of $\{0,1,2,3\}$.
+\item Each specified integer linear coordinate congruence holds:
+\[
+ c_x(p_t)_x+c_y(p_t)_y\equiv r\pmod q,\qquad q>0.
+\]
+\item The head lies in a finite specified set of absolute lattice positions.
+\item For every stencil entry $(f,\alpha)$, the pre-departure colour at offset $f\in\Z^2$ is exactly $\alpha$:
+\[
+ c_t(p_t+f)=\alpha,\qquad0\le\alpha<m.
+\]
+\end{enumerate}
+A query is a finite union of clauses. A missing heading or site restriction is unrestricted; an explicitly empty allowed set is impossible. Empty stencils and congruence lists are true. An empty clause union is false. Repeated stencil entries are interpreted conjunctively, so contradictory entries make a clause false. Palette size one is valid.
+
+\begin{theorem}[Exact first hit]\label{thm:query}
+For every valid input and query of this language, occurrence in $\mathcal T$ is decidable. If it occurs, its exact least time, head position and heading, and a witnessing lane and clause can be returned. Otherwise the result is explicitly none. The procedure is implemented using only exact standard library integer arithmetic.
+\end{theorem}
+
+\subsection{Reconstructing the pre-departure board}
+For $t\in\mathcal T$ and $y\in\Z^2$, define
+\[
+ V(y,t)=\ind\{\exists s<t:p_s=y\}.
+\]
+Every cell has been departed from at most once before $t$. Even at $t=\tau$, the second departure from $p_\tau$ has not occurred. Therefore
+\begin{equation}\label{eq:colour}
+ c_t(y)=\bigl[c_0(y)+V(y,t)\bigr]\bmod m.
+\end{equation}
+This identity is generally false after departure at $\tau$. A future head point in the compressed representation must not count as visited yet; strict chronology is essential.
+
+\subsection{The original Presburger formulation}\label{sec:presburger}
+Let the valid path lanes be $A_1,\ldots,A_J$. For a fixed head lane $A$, set $x(n)=a_A+n d_A$ and $t(n)=t_A+n\ell_A$, and let $\operatorname{Dom}_A(n)$ mean $n\ge0$ together with its finite endpoint when present. At offset $f$ write
+\begin{equation}\label{eq:visitformula}\begin{aligned}
+ \operatorname{Visit}_{A,f}(n)\ \Longleftrightarrow\
+ \bigvee_{j=1}^{J}\exists k\,[&\operatorname{Dom}_{A_j}(k)\ \wedge\
+ a_{A_j}+k d_{A_j}=x(n)+f\\
+ &\wedge\ t_{A_j}+k\ell_{A_j}<t(n)].
+\end{aligned}\end{equation}
+The initial colour predicate is
+\begin{equation}\label{eq:initialformula}\begin{aligned}
+ \operatorname{Initial}_{q}(y)\ \Longleftrightarrow\
+ &\bigvee_{z\in\dom(D):D(z)=q}(y=z)\\
+ &\vee\left[\bigwedge_{z\in\dom(D)}(y\ne z)
+ \ \wedge\!\bigvee_{(i,j):b(i,j)=q}
+    (y_x\equiv i\pmod u\ \wedge\ y_y\equiv j\pmod v)\right].
+\end{aligned}\end{equation}
+At offset $f$, the desired colour $\alpha$ is exactly
+\begin{align}\label{eq:colourpredicate}
+ &[\operatorname{Initial}_{\alpha}(x(n)+f)\wedge\neg\operatorname{Visit}_{A,f}(n)]\nonumber\\
+ &\qquad\vee[\operatorname{Initial}_{\alpha-1\bmod m}(x(n)+f)
+                       \wedge\operatorname{Visit}_{A,f}(n)].
+\end{align}
+Adding the lane domain, heading restriction, sites, congruences, and the equation $t=t(n)$ gives a first order Presburger formula $\operatorname{Hit}(t)$. Vector equality means two linear equalities. All disjunctions outside the lane index quantifiers are finite and explicit.
+
+A fixed constructive Presburger decision procedure, such as Cooper's elimination procedure~\cite{cooper}, decides $\exists t\ge0\ \operatorname{Hit}(t)$. If true, test existence in $[0,b]$ for $b=0,1,2,4,\ldots$ until successful and then bisect. The bounded existence predicate is monotone, so this returns the exact minimum. This route is a complete effective proof, not a termination oracle. It was specified but not executed by the original program.
+
+The extension implements a specialized route instead. Its quantified relations involve only two lane indices, whose projection has a particularly simple form. The following construction avoids a general solver and avoids enumerating a huge modulus period.
+
+\section{The executable signed progression calculus}\label{sec:calculus}
+\subsection{Atoms and exact intersection}
+An interval congruence atom is
+\begin{equation}\label{eq:atom}
+ \mathcal A(l,h,r,q)=\{n\in\N:l\le n\le h,\ n\equiv r\pmod q\},
+ \qquad q>0,
+\end{equation}
+with $h=\infty$ allowed. Canonicalization clamps the lower bound to zero, advances to the first admissible integer, and, if bounded, retreats to the last admissible integer. Empty atoms disappear; a singleton uses step one. Thus stored endpoints are attained points.
+
+To intersect residue classes $r_1\pmod{q_1}$ and $r_2\pmod{q_2}$, put $g=\gcd(q_1,q_2)$. If $g\nmid r_2-r_1$, they are disjoint. Otherwise put $q'_2=q_2/g$ and solve
+\[
+ k\equiv\frac{r_2-r_1}{g}\left(\frac{q_1}{g}\right)^{-1}\pmod{q'_2}.
+\]
+When $q'_2=1$, take $k=0$. The combined residue is $r_1+q_1k$ modulo $\lcm(q_1,q_2)$. Intersect the intervals and round inward to that residue. This proves closure under intersection using generalized CRT, including noncoprime moduli, modulus one, negative residues, and huge endpoints.
+
+An atom's count in a finite interval $[L,H]$ is zero if there is no point. Otherwise, if $f$ is its first surviving point and $H'$ the smaller upper endpoint, it is
+\begin{equation}\label{eq:count}
+ 1+\left\lfloor\frac{H'-f}{q}\right\rfloor.
+\end{equation}
+Neither counting nor intersection enumerates the represented points.
+
+\subsection{Projection of a lane relation}
+\begin{lemma}[One atom projection]\label{lem:projection}
+For lanes $A,B$, the set of new indices $n$ for which there exists an old index $k$ satisfying~\eqref{eq:relation} is one interval congruence atom or empty. The same statement holds without chronology.
+\end{lemma}
+\begin{proof}
+In rank two, retain the unique integral feasible solution's $n$ as a singleton. In rank one, use~\eqref{eq:bezout} and intersect every bound, including~\eqref{eq:strict}, to obtain an integer parameter interval. If $s=0$, a nonempty interval projects to the singleton $n_0$. Otherwise its affine image $n_0+sz$ is an arithmetic progression with step $|s|$. For $s>0$, its first point comes from the lower parameter endpoint and its last point from the upper endpoint; for $s<0$ these roles reverse. The constraint $n\ge0$ ensures a finite lower image endpoint even if the parameter interval is unbounded. In rank zero, unequal bases are empty; equal bases allow $k=0$ and impose exactly the threshold~\eqref{eq:rankzero}, intersected with the new domain. This is an interval atom.
+\end{proof}
+The implementation's \code{relation_indices} performs this projection rather than merely returning the first point. Shifting a head lane by a stencil offset changes its spatial base and leaves its time, period, heading, and endpoint unchanged. A static target is represented as a singleton lane and queried without chronology.
+
+A coordinate congruence restricted to a lane has form $an\equiv b\pmod q$. It is empty unless $\gcd(a,q)$ divides $b$; otherwise division by that gcd and a modular inverse give a single residue class. This also handles $a=0$ and $q=1$.
+
+\subsection{Boolean combinations as signed indicator sums}
+Represent a set of nonnegative integers by the finite signed sum
+\begin{equation}\label{eq:signed}
+ F(n)=\sum_{\mathcal A}c_{\mathcal A}\ind_{\mathcal A}(n),
+ \qquad c_{\mathcal A}\in\Z.
+\end{equation}
+The invariant is that $F(n)\in\{0,1\}$ for every $n\in\N$. Individual coefficients can be negative. Public construction begins with the empty set, one validated atom, or the nonnegative universe. Boolean operations use
+\begin{equation}\label{eq:boolean}
+ F\wedge G=FG,\qquad \neg F=1-F,\qquad F\vee G=F+G-FG.
+\end{equation}
+Distribute products over the finite sums and use
+$\ind_{\mathcal A}\ind_{\mathcal B}=\ind_{\mathcal A\cap\mathcal B}$.
+Equal canonical atoms are combined and zero coefficients removed.
+
+\begin{lemma}[Boolean invariant]\label{lem:boolean}
+Every expression built by these public constructors and operations has a finite representation~\eqref{eq:signed} and remains the exact Boolean indicator of the represented set.
+\end{lemma}
+\begin{proof}
+The assertion holds for all constructors. Intersection closure keeps each finite product finite. The three identities~\eqref{eq:boolean} are exactly the truth tables for conjunction, negation, and disjunction on zero and one. Structural induction proves the result.
+\end{proof}
+Arbitrary injected signed coefficients are outside this contract. Merely counting a general signed function could give zero through cancellation while it was nonzero at some points; the Boolean invariant prevents that error.
+
+\subsection{Global emptiness and the exact minimum}
+Linearity and~\eqref{eq:count} give the exact number of represented points in any finite interval. By Lemma~\ref{lem:boolean}, this count is a nonnegative integer and is zero exactly when that interval contains no member.
+
+For a finite signed representation define
+\begin{align}\label{eq:eventual}
+ B_F&=\max\bigl(\{0\}\cup\{\text{first}(\mathcal A):\mathcal A\text{ unbounded}\}
+      \cup\{\text{last}(\mathcal A)+1:\mathcal A\text{ bounded}\}\bigr),\\
+ Q_F&=\lcm\{\text{step}(\mathcal A):\mathcal A\text{ unbounded}\},\nonumber
+\end{align}
+where the empty least common multiple is one. For $n\ge B_F$, every bounded atom has vanished and every unbounded atom is an unrestricted congruence class. Thus $F$ is $Q_F$ periodic there.
+
+\begin{proposition}[Finite exact minimum bracket]\label{prop:min}
+The represented set is empty if and only if its count on $[0,B_F+Q_F-1]$ is zero. Otherwise the exact minimum is found by binary search with predicate $\operatorname{count}[0,h]>0$ on that interval.
+\end{proposition}
+\begin{proof}
+The interval contains the entire exceptional prefix and one complete eventual period. A member beyond it can be reduced by multiples of $Q_F$ to a member of its tail period. Hence zero count is equivalent to global emptiness. If the count is positive, the interval brackets the minimum, and prefix nonemptiness is a monotone predicate. Binary search returns its first true value.
+\end{proof}
+This takes $O(\log(B_F+Q_F+1))$ counting calls, each a finite signed sum over the current terms. A huge least common multiple is manipulated as an integer, not expanded into a residue array. The number of terms, coefficient sizes, and intermediate Boolean products may nevertheless be large. No polynomial bound for arbitrary observation formulas follows.
+
+\subsection{Compiling a complete clause and taking the first event}
+For a fixed head lane $A$ and offset $f$, apply Lemma~\ref{lem:projection} to the shifted lane and each full path lane. Their finite union is exactly $\operatorname{Visit}_{A,f}$, with strict chronology excluding present and future arrivals.
+
+The initial colour set is compiled in two parts: union the matching defect singleton relations, then union the matching tile residue conjunctions after masking out \emph{all} defect matches. This is exactly~\eqref{eq:initialformula}; defect overrides take precedence even if they are redundant. Compile~\eqref{eq:colourpredicate} using the Boolean algebra and intersect over stencil entries. Intersect also the lane domain, constant heading test, allowed site union, and each linear congruence. These steps produce the exact set of satisfying indices for one lane and one clause.
+
+Find its minimum by Proposition~\ref{prop:min}. Since time increases strictly with lane index, this yields that lane and clause's least event time. Minimize over the finitely many pairs of lanes and clauses. Every time in $\mathcal T$ appears in exactly one lane, and all predicates were compiled exactly, so the resulting hit or explicit none proves Theorem~\ref{thm:query}. Time zero, the first collision, and a collision tied with a defect remain included. Formula~\eqref{eq:colourpredicate} is also correct when $m=1$, because its two initial colour predicates coincide.
+
+\section{Eventual periodicity of finite observations}\label{sec:periodicity}
+Assume $\tau=\infty$, and use the final tail~\eqref{eq:tail}. Fix phase $i$ and offset $f$, so the observed position is
+\[
+ y(n)=a_i+n\delta+f.
+\]
+The background colour at $y(n)$ is constant, since $\delta$ is a tile period. Because $\delta\ne0$, this sequence meets each fixed defect and each point of the finite pre-tail history at most once. Those exceptions can be bounded without expanding that history.
+
+Choose a coordinate $q$ with $\delta_q\ne0$. Compute $m_0,M_0$, the minimum and maximum of that coordinate over all bounded pre-tail lanes and all defects. A bounded lane's extrema occur at its two endpoints. If that finite collection is empty, its exception threshold is zero. Otherwise write $z=(a_i+f)_q$ and take
+\begin{equation}\label{eq:exception}
+ n_{i,f}^{\mathrm{exc}}=
+ \begin{cases}
+ \max(0,\lfloor(M_0-z)/\delta_q\rfloor+1),&\delta_q>0,\\
+ \max(0,\lfloor(z-m_0)/(-\delta_q)\rfloor+1),&\delta_q<0.
+ \end{cases}
+\end{equation}
+Beyond that threshold, the observed point is strictly past every finite exceptional point in the chosen coordinate.
+
+An earlier visit belonging to tail phase $j$ must satisfy
+\[
+ a_j-a_i-f=d\delta,\qquad k=n-d
+\]
+for an integer $d$, unique if it exists. Its time is earlier precisely when
+\begin{equation}\label{eq:tailchronology}
+ j-i-dL<0.
+\end{equation}
+If~\eqref{eq:tailchronology} holds, the visit exists exactly for $n\ge\max(0,d)$; otherwise it never contributes. Thus every tail contribution to the visited indicator is a threshold. Take the maximum of the applicable thresholds and~\eqref{eq:exception}, then the maximum over the finite set of phases and offsets. This yields a computable $N_0$ after which every requested colour is constant within each phase. The complete stencil and heading are therefore $L$ periodic in absolute time from $T_0+N_0L$ onward.
+
+For a coordinate congruence $\ell(p_t)\equiv r\pmod q$, a phase index increment changes its left hand side by $\ell(\delta)$. A valid period in phase index is
+\[
+ \frac{q}{\gcd(q,\ell(\delta))}.
+\]
+The least common multiple over all requested congruences gives a computable factor $Q_{\mathrm{obs}}$, with empty least common multiple one. The resulting observations have eventual absolute period $LQ_{\mathrm{obs}}$. A finite allowed absolute site set is eventually avoided by nonzero drift; its exception threshold is obtained by the same coordinate argument. Finite unions of clauses preserve the common eventual period.
+
+\paragraph{Why the whole board is different.}
+The head can drift while its visited trail grows and fixed initial defects remain behind. A finite window moving with the head eventually loses sight of these finite exceptions, which is all this proof needs. It does not show that the whole infinite board becomes a translate of itself after $L$ steps.
+
+\section{Worked examples with enormous exact times}\label{sec:examples}
+\subsection{An affine staircase and an exponentially late revisit}
+Use rule $w=RL$, start at the origin heading north, and use the checkerboard
+\[
+ b=\begin{pmatrix}0&1\\1&0\end{pmatrix},\qquad u=v=2.
+\]
+With no defects, induction gives
+\begin{equation}\label{eq:staircase}
+ p_{2j}=(j,j),\ h_{2j}=0;\qquad
+ p_{2j+1}=(j+1,j),\ h_{2j+1}=1\quad(j\ge0).
+\end{equation}
+At each even time the fresh colour zero turns north to east; at the next odd time colour one turns east to north. The head path never repeats. The projected cycle has $L=4$ and $\delta=(2,2)$, with four phase lanes:
+\begin{center}
+\begin{tabular}{@{}ccccc@{}}
+\toprule
+Phase $i$ & Base $a_i$ & Heading $g_i$ & Time & Point\\
+\midrule
+0 & $(0,0)$ & north & $4n$ & $(2n,2n)$\\
+1 & $(1,0)$ & east & $1+4n$ & $(1+2n,2n)$\\
+2 & $(1,1)$ & north & $2+4n$ & $(1+2n,1+2n)$\\
+3 & $(2,1)$ & east & $3+4n$ & $(2+2n,1+2n)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{figure}[ht]
+\centering
+\setlength{\unitlength}{0.62cm}
+\begin{picture}(12,7)
+\put(0,0.5){\vector(1,0){6}}\put(0.5,0){\vector(0,1){6}}
+\put(6.2,0.35){$x$}\put(0.25,6.3){$y$}
+\put(0.5,0.5){\circle*{0.13}}\put(0.1,0.05){$0$}
+\thicklines
+\put(0.5,0.5){\vector(1,0){1}}\put(1.5,0.5){\vector(0,1){1}}
+\put(1.5,1.5){\vector(1,0){1}}\put(2.5,1.5){\vector(0,1){1}}
+\put(2.5,2.5){\vector(1,0){1}}\put(3.5,2.5){\vector(0,1){1}}
+\put(3.5,3.5){\vector(1,0){1}}\put(4.5,3.5){\vector(0,1){1}}
+\put(4.5,4.5){\vector(1,0){1}}\put(5.5,4.5){\vector(0,1){1}}
+
+\put(4.7,5.8){\small continues}
+\put(7.0,5.2){\small At the distant defect:}
+\put(7.5,2.2){\circle*{0.16}}\put(9.5,4.2){\circle{0.22}}
+\put(7.5,2.2){\vector(1,0){2}}\put(9.5,2.2){\vector(0,1){2}}
+\put(9.5,4.2){\vector(-1,0){2}}\put(7.5,4.2){\vector(0,-1){2}}
+\put(9.8,4.15){\small $(M,M)$}
+\put(6.75,1.5){\small $(M-1,M-1)$}
+\put(7.3,0.8){\small repeated at $2M+2$}
+\end{picture}
+\caption{Exact staircase geometry. Left: the first ten unit steps of~\eqref{eq:staircase}. Right: a translated local square at a defect of colour one at $(M,M)$. The bottom and right edges are traversed before the defect; its westward departure and the next southward step return to the lower left point. The right inset is schematic in location, with each edge representing one lattice step.}
+\label{fig:staircase}
+\end{figure}
+
+Now set $M=10^{100}$ and add the single defect $D(M,M)=1$. The initial colour at this even parity site is changed from zero to one. The head reaches it at time $2M$ while heading north. The defect turns it west, so at time $2M+1$ it is at $(M-1,M)$ heading west. That fresh odd parity site has colour one and turns the head south. Thus
+\begin{equation}\label{eq:hugecollision}
+ \tau=2M+2,\qquad p_\tau=(M-1,M-1),\qquad s=2M-2.
+\end{equation}
+The new point at $2M+1$ is outside the earlier staircase; the next point is its first collision. At the earlier witness time the heading was north, while at the repeat it is south. A full head state repetition test would incorrectly miss this event.
+
+The released test computes~\eqref{eq:hugecollision} using two excursions and six compressed lanes. With $S=16$, $K=1$, $R=M$, the coarse theorem gives $T_*=64M+1122$, safely above $2M+2$. More generally, replacing $M$ by $2^b$ produces a family whose first repeat is exponential in the defect coordinate's bit length. No path of that length is materialized.
+
+\subsection{A genuine two cell pattern whose first hit is huge}
+Return to the same staircase with \emph{no defects}. Ask for heading north, $x\equiv0\pmod M$, and the exact two cell stencil
+\begin{equation}\label{eq:examplequery}
+ c_t(p_t)=0,\qquad c_t(p_t+(-1,-1))=1.
+\end{equation}
+At a northward arrival $t=2j$, the current fresh cell has initial colour zero. At $j=0$, the offset cell $(-1,-1)$ has never been visited and has colour zero, so the stencil fails. At every $j\ge1$, the offset cell is the former head point at time $2j-2$; it has been incremented once from zero to one. Thus the stencil eliminates $j=0$ and holds at every later northward arrival. The congruence makes $j$ a multiple of $M$, giving the exact first hit
+\begin{equation}\label{eq:hugehit}
+ t_{\mathrm{hit}}=2\cdot10^{100},\qquad
+ p_{t_{\mathrm{hit}}}=(10^{100},10^{100}),\qquad h_{t_{\mathrm{hit}}}=0.
+\end{equation}
+Because $M$ is even, the witnessing four phase lane is phase zero with index $M/2$. The packaged \code{example-result.json} records this result and the four lane count. This query is not equivalent merely to an input coordinate congruence: the evolving stencil is what excludes time zero.
+
+The first revisit time bound in Section~\ref{sec:complexity} does not bound arbitrary observation first hit times. This defect free run has no revisit at all, and its query's modulus can be arbitrarily large.
+
+\subsection{An unseen defect and a collision endpoint query}
+An off-path defect can matter to a stencil without ever changing the head's motion. Put $N=10^{100}+7$ and override $(N,N+1)$ to colour zero. That site is above the staircase and is never occupied. At a northward arrival, the offset $(0,1)$ has background colour one and is unvisited, except at the override. The query ``heading north and offset $(0,1)$ has colour zero'' therefore first holds at $2N$. The active tests compute exactly $2\cdot10^{100}+14$.
+
+In the collision example, a query requiring heading south, head site $(M-1,M-1)$, and current colour one holds at $\tau=2M+2$. The cell was changed on its first departure, and has not yet been changed a second time. This is a valid endpoint observation under~\eqref{eq:colour}. Attempting the same one visit colour reconstruction after this departure is outside the contract.
+
+\section{Implementation interfaces and assurance}\label{sec:implementation}
+The active standard library modules are \code{one_visit.py} and \code{observations.py}. The former implements the total first revisit decision and lane representation; the latter implements atoms, CRT intersections, relation projection, signed Boolean algebra, exact count/minimum, and the full clause compiler. No general Presburger package is installed or invoked.
+
+\paragraph{End to end entry point.}
+The recommended call is \code{observations.solve(rule, tile, defects, start, heading, clauses)}. It constructs the certified path and uses the same input board and rule for the query. The lower level \code{first_hit(result, rule, tile, defects, clauses)} has a substantive precondition: the supplied result must be the certified result for those same inputs. It does not authenticate a hand forged or mismatched result. The theorem is not a claim about arbitrary mutated Python objects.
+
+\paragraph{Input and optimization guards.}
+The active copy of the boundary engine replaced removable assertions with explicit exceptions. The active libraries contain no \code{assert} statements; their public validation and internal consistency guards still execute under \code{python -O}. Tests use \code{unittest} assertion methods, which are not removed by optimization.
+
+\paragraph{The reviewed iterator defect.}
+Independent review found that an earlier version consumed one shot clause iterators while validating them, silently changing later execution. The final \code{Clause} constructor materializes each field, including nested entries, into immutable tuples exactly once. Regression tests compare tuple and iterator forms, nested iterators, repeated queries, and mutation of the original input list. The preserved review records the initial finding and its resolution; it does not conceal the superseded failure.
+
+\subsection{Author tests and independent checks}
+Both the 16 author test groups and the seven independent groups pass in ordinary and optimized Python. The author regressions include:
+\begin{itemize}
+\item 1,344 exhaustive small binary instances, 3,000 randomized turmite instances, 60,000 exact lane comparisons, and 1,000 projected permutation checks
+\item 1,000 random Boolean expressions, 10,000 projected lane relations with 400,000 point checks, and 350 complete query comparisons with an evolving board
+\item enormous exact times, zero drift, unreachable defects, defect and collision ties, time zero and collision endpoints, invalid inputs, and iterator regression cases
+\end{itemize}
+The independent checker uses direct congruence evaluation, separately compiled Boolean truth tables, direct spatial membership, and a separately written changing board simulator. It does not use the release collision or colour reconstruction functions as its correctness oracles. Its seven groups cover:
+\begin{itemize}
+\item 1,470 small atom inputs, 8,000 CRT intersections, and 350 arbitrary four predicate Boolean truth tables
+\item 18,000 lane pairs, balanced as 6,000 of each rank, with 2,448,000 membership comparisons and both chronology modes
+\item 356 separate evolving board runs, 251 digit endpoints, a 501 digit CRT product, equal time exclusions, first collision colour observations, 17 invalid input checks, and iterator normalization
+\end{itemize}
+Finite revisit simulator comparisons cover their entire certified domains. Infinite run comparisons inspect finite prefixes and manageable reported hits; those experiments cannot alone prove absence of a later event. Global nonoccurrence is proved by the exact minimum bracket and is also tested on analytic impossible cases. Tests supplement the proofs.
+
+The separate complexity review additionally records 10,000 deterministic random bound checks with seed 301003. That historical supplementary check is not a new executable test in this release and is not a premise of the mathematical proof. Its recorded result is retained in the frozen note without inventing a replayable checker for it.
+
+\subsection{Frozen evidence and the enclosing release}
+The complete 31 file source packet is retained under \code{evidence/source-packet/}. Its manifest file is pinned by SHA256
+\begin{center}\small
+\code{7dfd4f270ad7bf667bc123aace7bd97fd13b992949a9dfc8e3dca3f8105cea62}.
+\end{center}
+That packet includes the historical \code{boundary-context/}, the active implementation and tests, the original normal and optimized logs, the observation review, and the complexity note. Every source byte is preserved. Original elapsed times remain part of that historical evidence and are not presented as deterministic output.
+
+The source packet's own \code{verify_release.py} is a testing gate rather than a complete enclosing authenticity gate: it can use current hashes as its preservation baseline and allows caller selected output under the packet. The report therefore supplies a separate enclosing verifier. It checks the pinned source identity and every approved executable, rejects an output directory within the release, and stages only the active modules and author/independent tests. Historical boundary Python and the packet's own gate remain inert; no upstream repository code is executed.
+
+Fresh logs, compiler products, temporary extraction, visual review images, and test receipts belong outside the frozen release. New test processes are run in ordinary and optimized modes with explicit exit checks. Reproducible scientific stdout and outcomes are compared after excluding only the nondeterministic unittest elapsed-time field. Raw original logs remain unchanged. Hash verification, test replay, and proof validity are separate claims: none substitutes for the others.
+
+The enclosing tools also support external no-shell-escape PDF rebuilding, deterministic ZIP construction, safe moved archive extraction and replay, and regression cases for tampering and hostile archive paths. The external QA receipt records the actual executed checks and final artifact digests. These mechanisms detect alteration relative to the approved local trust anchor; a hash manifest is not a digital signature or an identity proof for an unknown distributor.
+
+\section{Consequences for universality and further research}\label{sec:consequences}
+\begin{corollary}[No reduction through globally fresh runs]\label{cor:universality}
+There is no computable reduction of an undecidable language that maps every input to a globally one visit finite defect periodic turmite run and characterizes acceptance by a query in the finite observation language of Section~\ref{sec:observations}.
+\end{corollary}
+\begin{proof}
+Apply the reduction, run the total first revisit algorithm, and evaluate the exact query on its certified all-time domain. Under the stated reduction contract every produced run is globally fresh, so Theorem~\ref{thm:query} decides acceptance. This would decide the undecidable language. The one visit class itself is decidable; no undecidable promise is hidden here. Fixing the rule or tile only restricts the input family and does not invalidate the argument.
+\end{proof}
+
+Maldonado, Gajardo, Hellouin de Menibus, and Moreira prove universality for nontrivial cyclic turmites with periodic backgrounds and finite perturbations; their Section 5 explicitly describes an at-most-two-visits property of their constructions~\cite{maldonado}. This is relevant upper-side context. The present report does not turn those diagrams into a literal coordinate atlas, input loader, and guarded accepting-port equivalence. Such a physical interface must specify exactly which head or stencil event means acceptance and prove both directions. Physical halting or return to a chosen absolute site does not follow merely from universality.
+
+Several focused next questions remain.
+\begin{enumerate}
+\item \textbf{Observation complexity.} Bound term growth for restricted stencils or congruence families, or devise a more compact representation that avoids distributive blowup while preserving exact count and minimum. A polynomial observation result would require a separate proof.
+\item \textbf{Sharper first revisit bounds.} Improve the deliberately loose $T_*$ and $O(N_{\mathrm{in}}^7)$ estimates, determine tight parameter dependencies, and separate decision from certificate construction complexity.
+\item \textbf{A literal two visit interface.} Supply explicit periodic colour coordinates, a finite input loader, exhaustive gadget visit accounting, and an iff acceptance port in the stated observation class. This is needed before asserting a sharp threshold in a common formal model.
+\item \textbf{Independently checkable certificates.} Formalize the cycle, truncation, intersection, and colour reconstruction claims in a small proof checker or proof assistant. The current standard library replay checks are strong finite evidence, not machine checked proofs of all inputs.
+\item \textbf{Model changes.} Investigate succinct tiles, other lattices or turning rules, multiple heads, and restricted post-repeat dynamics separately. The permutation, fresh-cell, and bounded-defect arguments must be re-established rather than assumed to transfer.
+\end{enumerate}
+
+\appendix
+\section{Reader guide to the reproducible materials}\label{app:guide}
+The report source and PDF are \code{Research_Report38.tex} and \code{Research_Report38.pdf}. The frozen packet's main scientific entry points are:
+\begin{itemize}
+\item \code{boundary-context/proof.md}: original total decision, Presburger formulation, eventual periodicity, and universality scope
+\item \code{PROOF.md}: the complete specialized first hit set calculus and colour compiler
+\item \code{complexity-review.md}: the numerical and intermediate bit bounds for first revisit
+\item \code{review.md}: independent implementation and mathematics audit, including the resolved iterator hazard
+\item \code{example.py} and \code{example-result.json}: the exact first hit at $2\cdot10^{100}$
+\end{itemize}
+Use the enclosing release's instructions and verifier rather than executing historical context scripts. Python 3.10 or later is required by the source syntax; a local pdfLaTeX installation and standard TeX packages are needed only to rebuild the PDF. The scientific algorithms themselves use the Python standard library. No online service is required for replay.
+
+\section{Selected boundary cases and why they are covered}\label{app:cases}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.26\textwidth}>{\raggedright\arraybackslash}p{0.69\textwidth}@{}}
+\toprule
+Case & Reason the algorithm remains exact\\
+\midrule
+\endhead
+Repeated position with a new heading & Spatial equality is the only revisit criterion; headings are used for dynamics and optional query restrictions\\[4pt]
+Defect at the starting point & Its first arrival has $F=0$ and is processed before its departure unless a genuine earlier collision exists, which is impossible at time zero\\[4pt]
+Defect tied with a repeat & Collision wins at $C=F$; its repeated arrival is included, and the subsequent turn is not used\\[4pt]
+Move from a defect directly to history & The next restart's local index zero is checked against all history\\[4pt]
+Redundant or unreachable defect & Redundant overrides are harmless fresh events; unreachable defects generate no candidate and do not obstruct the final certificate\\[4pt]
+Zero drift or stationary relation & Rank zero handles stationary matches; a zero drift cycle necessarily supplies a repeat\\[4pt]
+Negative drift and parameter direction & Floor and ceiling bounds retain signs; negative parameter step reverses which endpoint gives the first projected index\\[4pt]
+Equal-time lane matches & The integer minus one in strict chronology excludes the current arrival and future arrivals\\[4pt]
+One colour palette & Increment is modulo one; the two initial colour alternatives coincide, and the Boolean visited split remains valid\\[4pt]
+Empty or contradictory query & Empty clause union is false, an unrestricted empty clause is true, and contradictory stencil entries have empty intersection\\[4pt]
+Huge first hit or large CRT product & Endpoints, periods and counts are exact integers; neither the trajectory nor the complete residue period is expanded\\[4pt]
+A query beyond first revisit & The certified domain ends at the repeated arrival. No claim about a later board is supplied\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{9}
+\bibitem{maldonado}
+Diego Maldonado, Anah\'{i} Gajardo, Benjamin Hellouin de Menibus, and Andr\'{e}s Moreira.
+\emph{Nontrivial Turmites are Turing-universal}. arXiv:1702.05547v1, 18 February 2017.
+Formal model in Section 1, simulation in Theorems 2.1 and 3.1, and visit accounting in Section 5.
+\url{https://arxiv.org/abs/1702.05547}; primary full text at
+\url{https://arxiv.org/html/1702.05547}. Inspected 3 October 2026.
+
+\bibitem{cooper}
+D. C. Cooper. \emph{Theorem Proving in Arithmetic without Multiplication}.
+In \emph{Machine Intelligence 7}, 1972, pp. 91--99.
+Primary scan cited in the frozen boundary source audit:
+\url{https://www21.in.tum.de/teaching/logik/SS16/Exercises/Cooper.pdf}.
+Used for the original constructive Presburger route; the executable extension here uses the fully specified elementary calculus in Section~\ref{sec:calculus}.
+
+\bibitem{packet}
+\emph{Effective one-visit turmite boundary and complete exact first-hit implementation packet}.
+Frozen local research sources dated 3 October 2026. Complete contents and SHA256 manifest are retained in \code{evidence/source-packet/}; its fixed manifest identity is stated in Section~\ref{sec:implementation}. Includes separate original proof, extension proof, complexity review, independent review, active source, test evidence, and the unchanged historical boundary context. This is the source record for the present article, not an external publication or priority assertion.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "args": [
+        "--output",
+        "verification.json"
+      ],
+      "capture": "file",
+      "cwd": "evidence/real",
+      "label": "main-exact-checks",
+      "receipt": "evidence/real/verification.json",
+      "script": "evidence/real/exact_checks.py"
+    },
+    {
+      "args": [
+        "--output",
+        "independent_coefficient_ledger_receipt.json"
+      ],
+      "capture": "file",
+      "cwd": "evidence/real",
+      "label": "independent-coefficient-ledger",
+      "receipt": "evidence/real/independent_coefficient_ledger_receipt.json",
+      "script": "evidence/real/independent_coefficient_ledger_checks.py"
+    }
+  ],
+  "required_sympy": "1.14.0",
+  "schema": "report36-replay-plan-v1"
+}
