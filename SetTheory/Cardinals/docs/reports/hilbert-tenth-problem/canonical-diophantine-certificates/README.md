@@ -1,9 +1,9 @@
 # Canonical Diophantine certificates
 
-**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories and compressed queue traces**
+**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories, compressed queue traces and eager Tree Calculus**
 
-This is a research report dated 30 September 2026, with Parts XV–XVIII dated 2 October
-2026, merged from twenty manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
+This is a research report dated 30 September 2026, with Parts XV–XIX dated 2 October
+2026, merged from twenty-one manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
 of batch 61, which is numbered 07 here, four of batch 62 (its
 manuscripts 01, 02, 04 and 05), numbered 08–11 here and added as Parts X–XIII
 after the report had been written, and one of batch 63 (its manuscript 02),
@@ -15,9 +15,10 @@ cluster H3), numbered 16 here and added as Part XVI, and two of batch 79
 into Part XVII, and two more of batch 79 (its manuscripts 05 and 11, cluster
 J3), numbered 19 and 20 here: 19 proves Part XVI's main theorems again and
 is printed inside Part XVI as a marked second route, and 20 is added as Part
-XVIII. The base is manuscript 05, *Canonical
+XVIII, and one more of batch 79 (its manuscript 17, cluster J2), numbered
+21 here and added as Part XIX. The base is manuscript 05, *Canonical
 Trace Polytopes*; its `article.tex` was staged unprefixed and has been
-replaced in place by the merged text. All twenty manuscripts prove the same
+replaced in place by the merged text. All twenty-one manuscripts prove the same
 kind of theorem: an explicit integer polynomial whose natural zeros are in
 bijection with the bounded executions (or trace classes of executions) of a
 discrete substrate, with exactly one witness each; in 12 the execution is a
@@ -35,7 +36,9 @@ is again the sandpile odometer, certified by a system of quadratic residuals
 and, on `ℤ³`, by a fixed normal form of 47 finite-deviation fields. In 20 it
 is a reliable FIFO execution whose transition trace is supplied as a
 straight-line grammar, and a supplied closed macro that repeats
-indefinitely. They continue the Lean
+indefinitely. In 21 it is a terminating eager application in Barry Jay's
+Tree Calculus, represented by its memoized proof DAG, for an externally
+fixed bound on the number of distinct calls. They continue the Lean
 project `Computability/HilbertTenthProblem`, whose trace interfaces assert
 only that such representations exist. Author lines: "Research report
 prepared for the ProveIt project" (01), "Research manuscript for the ProveIt
@@ -59,9 +62,10 @@ the ProveIt project" (19; its PDF metadata reads "OpenAI research-assistance
 draft for the ProveIt project") and "Research prepared for Vladimir
 Reshetnikov / Developed with ChatGPT for the ProveIt research program" (20;
 its PDF metadata reads "Research prepared for Vladimir Reshetnikov with
-ChatGPT"). The article prints the batch-62, batch-78
+ChatGPT") and "Prepared for Vladimir Reshetnikov" (21; its PDF metadata
+reads "Research report prepared for Vladimir Reshetnikov"). The article prints the batch-62, batch-78
 and batch-79 author lines in neutral form and records these assistant names only in its
-provenance appendix; the author lines of 12 and 16 name no assistant.
+provenance appendix; the author lines of 12, 16 and 21 name no assistant.
 
 | Report no. | Batch, manuscript | Archive | Title | Pin | Arrived | Placed | Printed in |
 |---|---|---|---|---|---|---|---|
@@ -85,6 +89,7 @@ provenance appendix; the author lines of 12 and 16 name no assistant.
 | 18 | batch 79, manuscript 03 | `Spectral_Guards_Without_Time_Expansion`, inner directory `Spectral_Guards` (25-page PDF) | *Spectral Guards Without Time Expansion: Canonical Diophantine certificates for exponentially long linear computation* | `e58b724c2` | `060e08a07` | `224ca41df` | Section 3.18 (status boxes, abstract, §1); Part XVII (§§2–14, Appendices A–B), second route |
 | 19 | batch 79, manuscript 05 | `no_borrowed_firings`, inner directory `no_borrowed_firings` (24-page PDF) | *No Borrowed Firings: Canonical Diophantine Certificates for Abelian Sandpiles* | `e58b724c2` | `060e08a07` | `bbaf322e5` | Section 3.19 (abstract, §1); Part XVI, Sections M19.1–M19.14 (opening, §§2–14) and M19.A–M19.B (Appendices A–B), a marked second route |
 | 20 | batch 79, manuscript 11 | `Compressed_Queue_Diophantine_Research`, inner directory `Compressed_Queue_Diophantine` (28-page PDF) | *Compressed Queue Computation: Grammar-size quartic certificates, exact periodic acceleration, and certified infinite loops* | `44983ed7e` | `ef2fc7990` | `bbaf322e5` | Section 3.20 (status box, abstract, §1); Part XVIII (§§2–15, Appendices A–B) |
+| 21 | batch 79, manuscript 17 | `Eager_Tree_Calculus_Research_Package`, inner directory `eager-tree-certificates` (30-page PDF) | *Eager Tree Calculus: Exact quartic proof-DAG certificates, operational universality, and binary sharing compression* | none (Jay's upstream `baa877d91`) | `aebfa386e` | `a7ae02511` | Section 3.21 (title-page box and status lines, abstract, §1); Part XIX (§§2–12, Appendices A–B) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
@@ -103,7 +108,9 @@ appendices. Manuscript 19 is printed inside Part XVI after 16's conclusion,
 in its own sections M19.1–M19.14, numbered outside the report's sequence so
 that no number moved, and its appendices M19.A–M19.B follow 16's;
 manuscript 20 is Part XVIII in its own order, closing with its validation,
-formalization path, questions, conclusion and appendices. The Parts are: I Exact commutation and resource algebra;
+formalization path, questions, conclusion and appendices; manuscript 21 is
+Part XIX in its own order, closing with its reproducibility record, six
+questions, closing remarks and appendices. The Parts are: I Exact commutation and resource algebra;
 II Canonical trace classes; III Compressed repetition and accelerators; IV
 Polynomial trajectories; V Memory logs, RAM and graph evaluation; VI Queues:
 tag systems and FIFO networks; VII FRACTRAN, SKI and term rewriting; VIII
@@ -119,7 +126,8 @@ XVI Sandpile certificates: cubic polynomials and quadratic systems, spatial
 closure, fixed fields and exact periods; XVII Exponential trajectories:
 positive-spectrum sign charts and the order-two power boundary; XVIII
 Compressed queue traces: grammar-size quartics, exact macro repetition and
-infinite-loop certificates.
+infinite-loop certificates; XIX Eager Tree Calculus: exact quartic proof-DAG
+certificates and a literal universal tree.
 
 The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 `725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07),
@@ -129,7 +137,9 @@ live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12), and `439c0a2d9
 `6914ccca6685baf53b7a35f25efc89366c76ba74` (14) and
 `928ea97017a25ebe56d240c84f27d2275d818c75` (15 and 16), and
 `e58b724c25bd34533b7a5834cfcbe873dfa01288` (17, 18 and 19), and
-`44983ed7ebfd545de55bfdb50e040c82f3d24295` (20). The pin of 07 is the commit
+`44983ed7ebfd545de55bfdb50e040c82f3d24295` (20); 21 names no ProveIt commit
+and pins only Barry Jay's Tree Calculus repository at
+`baa877d916eb640280ed2df7ef4385ecd5957d19`. The pin of 07 is the commit
 in which 01–03 arrived; 07 was written after 04 and 06, names them by title
 as its companion manuscripts, and arrived after this report was placed but
 before it was written. The batch-60 placement commit `7498484af` also placed
@@ -198,6 +208,17 @@ it re-proves Parts I and VI in one coordinate. 19 arrived in `060e08a07`
 the integration note are unchanged at this write; the project README and
 this report's README have grown, and the project README still states the
 75- and 87-operation figures.
+
+Manuscript 21 was written on 2 October 2026 (its PDF was built at 14:30
+Pacific time) without inspecting ProveIt: it names no ProveIt commit,
+cites neither the repository nor this report, and pins its semantics to
+Barry Jay's upstream commit `baa877d91`. It arrived in `aebfa386e`
+(16:47), with the batch-79 manuscripts placed in the neighbouring reports
+*signal-machine-collision-certificates* and *quadratic-orthant-certificates*,
+and was placed by `a7ae02511` (17:39; batch 79, cluster J2), after Parts
+XVII and XVIII had been placed. Its closing remarks allude, without a
+reference, to "earlier canonical and scheduled SKI certificate
+constructions"; these are Part VII's and Part V's, and a note says so.
 
 What each manuscript contributes:
 
@@ -401,6 +422,28 @@ What each manuscript contributes:
   decision of supplied grammars through Jeż's external algorithm; no
   computable bound on the size of accepting grammars, and incompleteness of
   periodic lassos for universal divergence.
+- **21** for Barry Jay's original Tree Calculus with its five eager
+  value-application rules: a coding bijection of tree values with `ℕ`
+  (`code(F(a,b)) = (a+b)(a+b+1)+2b+2`) with quadratic constructor
+  equations; additive call costs as a well-foundedness certificate for
+  proof DAGs (a cyclic counterfeit is rejected with sum of squares 81);
+  for every externally fixed `N ≥ 1` a quartic of exact degree four with
+  `3N²+19N` natural witnesses and `23N+3` quadratic residuals whose zero
+  set projects to the terminating applications with at most `N` distinct
+  calls, every pointer lookup paid by one-hot selectors, with a literal
+  ledger of `27N²+125N+8` gates; a canonical refinement with exactly one
+  natural witness at the exact DAG size (`3N²+22N−3` witnesses, `31N`
+  residuals for `N ≥ 2`); a strict bracket-abstraction compiler from weak
+  left-to-right call-by-value lambda calculus that preserves and reflects
+  termination; a counter-program frontend and a quoted-syntax
+  interpreter giving a literal universal tree `U` of 175 constructor-DAG
+  nodes (949 unshared) with an r.e.-complete halting domain, whose
+  44,926,990,249–44,960,544,677-bit code is charged by 175 quadratic
+  equations, never materialized; and, for a different fixed 108-node
+  program `R` on unary inputs, `H_n = 562·2^n−468` unfolded calls with
+  `O(n²)` witness bits and the exact canonical DAG size `D_n = 64n+113`
+  (`n ≥ 2`; `D_0 = 44`, `D_1 = 179`), proved by a finite symbolic kernel
+  proof, induction and a complete template-equality classification.
 
 **Status.** The report is AI-assisted and unrefereed. None of its theorems
 is formalized in Lean or Rocq, and no manuscript ships Lean or Rocq files.
@@ -415,12 +458,17 @@ is unaffected and the theorems are not touched. The shipped
 tested repair is `compressed_queue_exact_inputs.patch` in
 `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`
 (see Disclosures, which also record the reviews of 16, 17, 18 and 19).
+The same tree's review of manuscript 21 (`review_eager_tree_aebfa.md`,
+commit `3b5989da9`) found no theorem-level defect and one defect of the
+evaluator's input boundary; the shipped
+`code/21-eager-tree-tree_kernel.py` is the original, and the tested repair
+`eager_tree_exact_application_inputs.patch` lies beside that review.
 
 ## Files
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 571 pages
+article.pdf                              the compiled report, 605 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -443,6 +491,7 @@ README.md                                this guide
 18-spectral-guards-SOURCES.md            manuscript 18's pin and blob, inspected repository files, literature and claim boundary
 19-no-borrowed-firings-SOURCES.md        manuscript 19's pin, inspected repository files, literature and contribution status
 20-compressed-queue-CLAIMS_AND_PROVENANCE.md  manuscript 20's claims (by its own theorem numbers), scope, pin, sources and validation
+21-eager-tree-VERIFICATION.md            manuscript 21's verification scope: evidence by type, deliberate limits, portability
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
 code/01-causal-traces-demo.py            the 11-witness large-count example (prints; writes no file)
@@ -529,6 +578,27 @@ code/20-compressed-queue-Makefile        manuscript 20's make targets (all, pdf,
 code/20-compressed-queue-check_certificate.py  independent checker of the two exports (does not import the compiler; prints JSON)
 code/20-compressed-queue-queue_certificates.py  actions, grammars, radix and resource summaries, finite and infinite-loop compilers, loop analyzer
 code/20-compressed-queue-verify.py       259,025 exact checks (seed 20261002); rewrites the two exports and verification.json in ../data
+code/21-eager-tree-analyze_growth.py  complete unary-template equality classification and the exact all-n DAG size; writes exact_growth_receipt.json
+code/21-eager-tree-audit_exact_count.py  independent direct evaluations and whole-call-set comparisons; writes audit_exact_count_receipt.json
+code/21-eager-tree-build_pdf.py  manuscript 21's PDF builder: three pdflatex passes on eager-tree-certificates.tex, which is not shipped (do not use it)
+code/21-eager-tree-canonical.py  canonical baseline with explicit root-distinctness equations; writes canonical_identity.json and canonical_receipt.json
+code/21-eager-tree-canonical_overlay_audit.py  optional SymPy checks of the canonical overlay; writes canonical_overlay_receipt.json
+code/21-eager-tree-canonical_projected.py  the preferred canonical polynomial (31N residuals); writes canonical_projected_identity.json and its receipt
+code/21-eager-tree-canonical_projected_audit.py  optional SymPy checks of the canonical polynomial and its uniqueness regressions; writes its receipt
+code/21-eager-tree-constant_bit_bound.py  integer-only bit interval of code(U); writes constant_bit_bound.json
+code/21-eager-tree-counter_source.py  counter-table-to-CBV source constructor and four checked examples; writes counter_source_receipt.json
+code/21-eager-tree-eager_compiler.py  strict bracket compiler, CEK evaluator, quoted-syntax interpreter, universal tree; writes the universal artifacts
+code/21-eager-tree-export_shared_macro.py  exports the finite symbolic kernel proofs of R (shared_symbolic_proofs.json)
+code/21-eager-tree-independent_audit.py  independent kernel semantics, residual expansion and counterexample checks; writes independent_receipt.json
+code/21-eager-tree-independent_compiler_audit.py  independent de Bruijn substitution semantics and tree context reduction; writes its receipt
+code/21-eager-tree-independent_growth_audit.py  independent all-index structural equality classification; writes independent_growth_receipt.json
+code/21-eager-tree-independent_shared_audit.py  independent symbolic-proof checking, graph composition and mutation rejection; writes its receipt
+code/21-eager-tree-reproduce.py  manuscript 21's replay driver: runs the 16 (with --symbolic 19) stages in code/ and writes replay-output/
+code/21-eager-tree-shared_compression.py  generator and finite structural experiments for R; writes shared_compression_program.json and its receipt
+code/21-eager-tree-symbolic_audit.py  optional SymPy expansion of the small-N residual systems (exact degree four); writes symbolic_receipt.json
+code/21-eager-tree-tree_kernel.py  coding, memoized eager kernel, structural evaluator, polynomial circuit and gate counter; writes the two fixtures and receipt.json
+code/21-eager-tree-verify_packet_assumptions.py  kernel-proof validity and full reachability for the exact-growth identification; writes its receipt
+code/21-eager-tree-verify_shared_macro.py  standalone symbolic-row, acyclicity, program-identity and bit-bound verifier (prints JSON; writes no file)
 
 data/01-causal-traces-build_validation.json   build and rendering record of the delivered 29-page PDF
 data/01-causal-traces-canonical_history.json  32-witness, 48-residual causal-history polynomial and certificate
@@ -667,32 +737,45 @@ data/20-compressed-queue-example_quartic.json  four-action example: 31 variables
 data/20-compressed-queue-export_checks.json   recorded output of check_certificate.py on the two exports (PASS)
 data/20-compressed-queue-infinite_growth_quartic.json  nine-variable infinite-loop quartic (11 residuals, 29 monomials)
 data/20-compressed-queue-verification.json  recorded run of verify.py (Python 3.13.5; 259,025 assertions)
-```
-
-Placed in this directory and not yet printed in the article (the write
-that prints them will describe them): manuscript 21 (batch-79 manuscript
-17, cluster J2), placed by `a7ae02511`:
-
-```
-21-eager-tree-VERIFICATION.md
-code/21-eager-tree-{analyze_growth,audit_exact_count,build_pdf,canonical,canonical_overlay_audit,canonical_projected,canonical_projected_audit,constant_bit_bound,counter_source,eager_compiler,export_shared_macro,independent_audit,independent_compiler_audit,independent_growth_audit,independent_shared_audit,reproduce,shared_compression,symbolic_audit,tree_kernel,verify_packet_assumptions,verify_shared_macro}.py
-data/21-eager-tree-{audit_exact_count_receipt,canonical_identity,canonical_overlay_receipt,canonical_projected_audit_receipt,canonical_projected_identity,canonical_projected_receipt,canonical_receipt,constant_bit_bound,counter_source_receipt,cyclic_counterfeit,eager_compiler_receipt,exact_growth_receipt,identity_certificate,independent_compiler_receipt,independent_growth_receipt,independent_receipt,independent_shared_receipt,literal_universal_tree,packet_assumptions_receipt,receipt,shared_compression_program,shared_compression_receipt,shared_symbolic_proofs,sources,symbolic_receipt,universal_code_circuit,universal_lambda_source}.json
-data/21-eager-tree-literal_universal_tree.sexpr
-data/21-eager-tree-requirements-optional.txt
+data/21-eager-tree-audit_exact_count_receipt.json  recorded run of audit_exact_count.py (whole call-set comparisons)
+data/21-eager-tree-canonical_identity.json  canonical-baseline witness of the identity example
+data/21-eager-tree-canonical_overlay_receipt.json  recorded run of canonical_overlay_audit.py
+data/21-eager-tree-canonical_projected_audit_receipt.json  recorded run of canonical_projected_audit.py
+data/21-eager-tree-canonical_projected_identity.json  the unique natural witness of the canonical N = 4 identity certificate (133 witnesses, 124 residuals)
+data/21-eager-tree-canonical_projected_receipt.json  recorded run of canonical_projected.py (184 single-coordinate mutations rejected)
+data/21-eager-tree-canonical_receipt.json  recorded run of canonical.py
+data/21-eager-tree-constant_bit_bound.json  bit interval 44,926,990,249–44,960,544,677 of code(U), with the SHA-256 of its input table
+data/21-eager-tree-counter_source_receipt.json  recorded run of counter_source.py
+data/21-eager-tree-cyclic_counterfeit.json  the false locally matching proof of omega omega, rejected by its height residual (sum of squares 81)
+data/21-eager-tree-eager_compiler_receipt.json  recorded run of eager_compiler.py
+data/21-eager-tree-exact_growth_receipt.json  the complete template-equality classification behind D_n = 64n+113
+data/21-eager-tree-identity_certificate.json  full N = 4 scalar certificate of E(10,10) = 10 (124 witnesses, 95 residuals)
+data/21-eager-tree-independent_compiler_receipt.json  recorded run of independent_compiler_audit.py (707 compiled normal forms)
+data/21-eager-tree-independent_growth_receipt.json  recorded run of independent_growth_audit.py
+data/21-eager-tree-independent_receipt.json  recorded run of independent_audit.py
+data/21-eager-tree-independent_shared_receipt.json  recorded run of independent_shared_audit.py
+data/21-eager-tree-literal_universal_tree.json  the 175-node constructor table of U (Appendix A)
+data/21-eager-tree-literal_universal_tree.sexpr  the unshared 949-node expression of U
+data/21-eager-tree-packet_assumptions_receipt.json  recorded run of verify_packet_assumptions.py, with SHA-256 of the two R files
+data/21-eager-tree-receipt.json  recorded run of tree_kernel.py (10,000 round trips, 768 input pairs)
+data/21-eager-tree-requirements-optional.txt  sympy>=1.13,<2, for the optional symbolic stages only
+data/21-eager-tree-shared_compression_program.json  the 108-node constructor table of R (Appendix A)
+data/21-eager-tree-shared_compression_receipt.json  recorded run of shared_compression.py (finite structural experiments for R)
+data/21-eager-tree-shared_symbolic_proofs.json  two base proofs and the schematic step proof of R (44, 179 and 150 rows), with affine costs
+data/21-eager-tree-sources.json  the pinned upstream sources (Jay's commit baa877d91, four files) and Dal Lago-Martini
+data/21-eager-tree-symbolic_receipt.json  recorded run of symbolic_audit.py
+data/21-eager-tree-universal_code_circuit.json  the 175 constant-code residuals of U
+data/21-eager-tree-universal_lambda_source.json  the finite source lambda AST of U
 ```
 
 The directory holds 296 files: 24 at the root (the article, its PDF, this
 README and twenty-one provenance and audit files), 106 in `code/` and 166 in
-`data/`. Of these, 51 (1 at the root, 21 in `code/`, 29 in `data/`) belong
-to manuscript 21, listed in the second block above; the other 245 (23
-at the root, 85 in `code/`, 137 in `data/`) are the article, its PDF, this
-README and the files of manuscripts 01–20. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
+`data/`. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
 9, 10 14, 11 9, 12 9, 13 9, 14 12, 15 10, 16 19 (1 at the root, 7 in
-`code/`, 11 in `data/`), 17 13 (1, 6, 6), 18 16 (1, 5, 10), 19 11 (1, 3, 7)
-and 20 9 (1, 4, 4). Every file of
-manuscripts 01–20 except
-`article.tex`, `article.pdf` and `README.md` is byte-identical to the
+`code/`, 11 in `data/`), 17 13 (1, 6, 6), 18 16 (1, 5, 10), 19 11 (1, 3, 7),
+20 9 (1, 4, 4) and 21 51 (1, 21, 29). Every file of manuscripts 01–21
+except `article.tex`, `article.pdf` and `README.md` is byte-identical to the
 delivery.
 
 ## Labels
@@ -723,6 +806,7 @@ manuscripts take a sub-prefix:
 | 18 | `cdc:sg:` | `cdc:sg:thm:quartic` |
 | 19 | `cdc:nb:` | `cdc:nb:thm:fields` |
 | 20 | `cdc:cq:` | `cdc:cq:thm:compiler` |
+| 21 | `cdc:et:` | `cdc:et:thm:certificate` |
 
 Labels written in the merge use `cdc:conv:` (the Conventions section),
 `cdc:bd:` (merged statements of Part IX, such as the universal-halting
@@ -859,6 +943,22 @@ equations M19.`N`.`k`), so that Part XVI's appendices stay Sections
 173–174 and Part XVII stays Sections 175–206; its conventions longtable
 restores the table counter, so 17's Table 1 is still Table 31. Part XVIII
 is Sections 207–223, after every existing numbered section.
+
+The batch-79 cluster-J2 write (Part XIX) raised the count from 1482 to
+1566. It adds all 74 labels of manuscript 21 with the sub-prefix `cdc:et:`,
+none dropped, and 10 written labels, which carry the same sub-prefix:
+the manuscript subsection `cdc:et:sec:ms` (Section 3.21), the Part
+`cdc:et:part`, its conventions section `cdc:et:conv`, the remark
+`cdc:et:rem:combinatory`, and six question labels (`cdc:et:q:pairing`,
+`…:lookup`, `…:arity`, `…:overhead`, `…:mechanize`, `…:padding`). No
+existing label was renamed, removed or renumbered: the 1482 labels of the
+previous build have the same numbers, types and anchors in the new `.aux`
+(2,964 entries compared one by one), except one retitled entry
+(`cdc:sec:manuscripts`, now "The twenty-one manuscripts") and the
+hyperlink anchor of the unnumbered paragraph `cdc:conv:b62q` (number 71
+unchanged; Section 3.21 adds an unnumbered paragraph before it). Section
+3.21's equations are numbered within the subsection ((3.21.1)–(3.21.3));
+Part XIX is Sections 224–237, after every existing numbered section.
 
 Text written during the merge is marked `[write]` in the article.
 
@@ -1263,6 +1363,62 @@ delivered README nor audit cites a theorem by number.
 | `data/infinite_growth_quartic.json` | `data/20-compressed-queue-infinite_growth_quartic.json` |
 | `data/verification.json` | `data/20-compressed-queue-verification.json` |
 
+**Manuscript 21** (package root `eager-tree-certificates/`)
+
+| Delivered | Shipped |
+|---|---|
+| `VERIFICATION.md` | `21-eager-tree-VERIFICATION.md` |
+| `reproduce.py` | `code/21-eager-tree-reproduce.py` |
+| `build_pdf.py` | `code/21-eager-tree-build_pdf.py` |
+| `code/analyze_growth.py` | `code/21-eager-tree-analyze_growth.py` |
+| `code/audit_exact_count.py` | `code/21-eager-tree-audit_exact_count.py` |
+| `code/canonical.py` | `code/21-eager-tree-canonical.py` |
+| `code/canonical_overlay_audit.py` | `code/21-eager-tree-canonical_overlay_audit.py` |
+| `code/canonical_projected.py` | `code/21-eager-tree-canonical_projected.py` |
+| `code/canonical_projected_audit.py` | `code/21-eager-tree-canonical_projected_audit.py` |
+| `code/constant_bit_bound.py` | `code/21-eager-tree-constant_bit_bound.py` |
+| `code/counter_source.py` | `code/21-eager-tree-counter_source.py` |
+| `code/eager_compiler.py` | `code/21-eager-tree-eager_compiler.py` |
+| `code/export_shared_macro.py` | `code/21-eager-tree-export_shared_macro.py` |
+| `code/independent_audit.py` | `code/21-eager-tree-independent_audit.py` |
+| `code/independent_compiler_audit.py` | `code/21-eager-tree-independent_compiler_audit.py` |
+| `code/independent_growth_audit.py` | `code/21-eager-tree-independent_growth_audit.py` |
+| `code/independent_shared_audit.py` | `code/21-eager-tree-independent_shared_audit.py` |
+| `code/shared_compression.py` | `code/21-eager-tree-shared_compression.py` |
+| `code/symbolic_audit.py` | `code/21-eager-tree-symbolic_audit.py` |
+| `code/tree_kernel.py` | `code/21-eager-tree-tree_kernel.py` |
+| `code/verify_packet_assumptions.py` | `code/21-eager-tree-verify_packet_assumptions.py` |
+| `code/verify_shared_macro.py` | `code/21-eager-tree-verify_shared_macro.py` |
+| `code/audit_exact_count_receipt.json` | `data/21-eager-tree-audit_exact_count_receipt.json` |
+| `code/canonical_identity.json` | `data/21-eager-tree-canonical_identity.json` |
+| `code/canonical_overlay_receipt.json` | `data/21-eager-tree-canonical_overlay_receipt.json` |
+| `code/canonical_projected_audit_receipt.json` | `data/21-eager-tree-canonical_projected_audit_receipt.json` |
+| `code/canonical_projected_identity.json` | `data/21-eager-tree-canonical_projected_identity.json` |
+| `code/canonical_projected_receipt.json` | `data/21-eager-tree-canonical_projected_receipt.json` |
+| `code/canonical_receipt.json` | `data/21-eager-tree-canonical_receipt.json` |
+| `code/constant_bit_bound.json` | `data/21-eager-tree-constant_bit_bound.json` |
+| `code/counter_source_receipt.json` | `data/21-eager-tree-counter_source_receipt.json` |
+| `code/cyclic_counterfeit.json` | `data/21-eager-tree-cyclic_counterfeit.json` |
+| `code/eager_compiler_receipt.json` | `data/21-eager-tree-eager_compiler_receipt.json` |
+| `code/exact_growth_receipt.json` | `data/21-eager-tree-exact_growth_receipt.json` |
+| `code/identity_certificate.json` | `data/21-eager-tree-identity_certificate.json` |
+| `code/independent_compiler_receipt.json` | `data/21-eager-tree-independent_compiler_receipt.json` |
+| `code/independent_growth_receipt.json` | `data/21-eager-tree-independent_growth_receipt.json` |
+| `code/independent_receipt.json` | `data/21-eager-tree-independent_receipt.json` |
+| `code/independent_shared_receipt.json` | `data/21-eager-tree-independent_shared_receipt.json` |
+| `code/literal_universal_tree.json` | `data/21-eager-tree-literal_universal_tree.json` |
+| `code/literal_universal_tree.sexpr` | `data/21-eager-tree-literal_universal_tree.sexpr` |
+| `code/packet_assumptions_receipt.json` | `data/21-eager-tree-packet_assumptions_receipt.json` |
+| `code/receipt.json` | `data/21-eager-tree-receipt.json` |
+| `code/shared_compression_program.json` | `data/21-eager-tree-shared_compression_program.json` |
+| `code/shared_compression_receipt.json` | `data/21-eager-tree-shared_compression_receipt.json` |
+| `code/shared_symbolic_proofs.json` | `data/21-eager-tree-shared_symbolic_proofs.json` |
+| `code/symbolic_receipt.json` | `data/21-eager-tree-symbolic_receipt.json` |
+| `code/universal_code_circuit.json` | `data/21-eager-tree-universal_code_circuit.json` |
+| `code/universal_lambda_source.json` | `data/21-eager-tree-universal_lambda_source.json` |
+| `sources.json` | `data/21-eager-tree-sources.json` |
+| `requirements-optional.txt` | `data/21-eager-tree-requirements-optional.txt` |
+
 Manuscript 19 is printed inside Part XVI as Sections M19.1–M19.14 (M19.1
 is a written opening in place of its Section 1, which is Section 3.19.1;
 its Section `N ≥ 2` is Section M19.`N`) and M19.A–M19.B (its Appendices
@@ -1280,7 +1436,18 @@ there: its Theorem 3.3 is Theorem 209.3, 5.1 is 211.1, 7.1 and 7.2 are
 12.2 and 12.3 are 218.2 and 218.3, and its Corollary 12.1 is Corollary
 218.1 (20's claims ledger cites the theorems by its own numbers); its ten
 research items are Research questions 220.1–220.10. 19's delivered texts
-cite no theorem by number.
+cite no theorem by number. Part XIX is Sections 224–237: 224 its
+conventions, 225–235 manuscript 21's Sections 2–12 (its Section `N` is
+Section `223+N`), and 236–237 its Appendices A–B; its Section 1 is Section
+3.21.1–3.21.3 (three subsubsections). Its theorem numbers `N.k` become
+`(223+N).k` (its Theorem 5.1, the base quartic, is Theorem 228.1; 7.2,
+adequacy, 230.2; 8.3, the universal tree, 231.3; 10.3, the canonical
+theorem, 233.3; 11.1 and 11.2, the sharing and growth theorems, 234.1 and
+234.2); the written remark 230.3 follows the last numbered item of its
+Section 7, and its six research directions are Research questions
+235.1–235.6. Its equations, numbered globally in the delivery, are
+numbered within sections here. Its delivered texts cite no theorem by
+number.
 
 **Not shipped.** The manuscripts (`article.tex`) and delivery READMEs of
 members 01, 02, 03, 04, 06 and 07: they survive in their arrival commits
@@ -1343,11 +1510,20 @@ not shipped: 19's `verification/latest_run.txt` (the same bytes as
 `verification/results.txt`) and 20's `data/verification_stdout.txt` (the
 same bytes as `data/verification.json`). The largest file of the two is
 19's `three_dimensional_field_certificate.json` (35,829 bytes), so nothing
-was excluded as heavy and no data need reconstructing.
+was excluded as heavy and no data need reconstructing. For the batch-79
+addition 21: its `eager-tree-certificates.tex`, delivery `README.md` and
+30-page PDF survive in the arrival commit `aebfa386e`, as members of
+`Eager_Tree_Calculus_Research_Package.zip`
+(`git show aebfa386e:docs/incoming/Eager_Tree_Calculus_Research_Package.zip`;
+SHA-256 `5c6c1002…04ab4`, 595,430 bytes). Its checksum ledger
+`MANIFEST.sha256` (55/55) was verified and retired at placement
+(`a7ae02511`), with its checker `verify_manifest.py`, which checks only
+that ledger. Its largest file is `shared_symbolic_proofs.json` (88,147
+bytes), so nothing was excluded as heavy and no data need reconstructing.
 
 ## What is claimed and what is not
 
-The report claims the theorems of the twenty manuscripts, with the proofs
+The report claims the theorems of the twenty-one manuscripts, with the proofs
 printed in the article: bijections between the natural zeros of explicit
 integer polynomials and bounded executions, trace classes or logs of the
 substrates listed above, with one witness per execution or class, exact
@@ -1399,7 +1575,16 @@ with its exact counts, the exact repetition count, the conjugacy
 criterion, the pumping threshold, the infinite-loop quartic, the powered
 schemas with their explicit predicates, the multichannel extension, the
 compressed decision corollary (conditional on Jeż's algorithm) and the two
-impossibility theorems. It does not claim the following. Each item is stated by at least the
+impossibility theorems. For Part XIX: 21's coding bijection and growth
+bounds, determinism and canonical costs, the cost-acyclicity lemma and
+canonical quotient, the base quartic with its exact counts, degree and
+ledger, the strict-abstraction lemma and closure adequacy, the counter and
+interpreter correspondences, the universal-tree theorem (conditional on
+the classical effective Turing simulation of weak call by value), the
+charged fixed-universal corollary, the canonical singleton theorem with
+its counts, the binary-sharing and exact-growth theorems for the fixed
+program `R` (whose finite symbolic proof is checked by the shipped
+programs, not printed in full), and the template-counting proposition. It does not claim the following. Each item is stated by at least the
 manuscripts named; the article keeps every one of them.
 
 - **No priority.** No manuscript establishes historical or literature-wide
@@ -1458,10 +1643,16 @@ manuscripts named; the article keeps every one of them.
   Huschenbett–Kuske–Zetzsche, loop acceleration and queue universality to
   Köcher, the two-period theorem to Fine–Wilf (Rankin) and cyclic-tag
   universality to Cook and Woods–Neary; its resource algebra and endpoint
-  theorem are Part I's and Part VI's, printed with pointers.
+  theorem are Part I's and Part VI's, printed with pointers. Batch 79,
+  cluster J2: 21 makes no priority claim and implies no exhaustive novelty
+  search (title page, Section 1.3); the Tree Calculus and its eager rules
+  are Jay's and the weak call-by-value Turing simulation is Dal Lago and
+  Martini's; its coding is Part VII's Cantor-pairing device in another
+  alphabet and its inactive-field equations manuscript 04's activation
+  device, printed with pointers.
 - **Not formal.** No new Lean, Rocq or Coq proof was written or compiled,
   the repository's Lean build and axiom audits were not rerun, and
-  repository documentation is not treated as a kernel audit (all twenty;
+  repository documentation is not treated as a kernel audit (all twenty-one;
   16's MRDP axiom audit was not rerun, and its formalization route names
   "proposed module boundaries, not names of already implemented files").
   17 and 18 present formalization checklists only (17's Appendix B, 18's
@@ -1470,6 +1661,9 @@ manuscripts named; the article keeps every one of them.
   The formalization sections of 08, 09, 10, 11 and 12 are likewise
   proposals; 12's five-layer Lean plan names no module as existing, and
   "none of these new layers has been kernel-checked".
+  21 says that none of its theorems has been checked in a proof assistant
+  (Section 12.1, `VERIFICATION.md`), and its question on mechanizing the
+  semantic interface is a proposal.
   07's `lean_integration.md` and the formalization sections of 01, 03, 04
   and 05 are proposals; 03's module names are "proposals, not files claimed
   to exist". The Python programs are finite exact checks: they do not prove
@@ -1507,7 +1701,11 @@ manuscripts named; the article keeps every one of them.
   resolution", in its delivered README), and it is no lower bound for every order-two shape.
   Replacing the power atoms of 17's and 18's systems by MRDP witnesses
   keeps existence and loses the unique witness. Neither manuscript resolves
-  the Skolem or Positivity problems.
+  the Skolem or Positivity problems. 21's canonical family has one witness
+  only at the exact DAG size and only over `ℕ`; it is "not a fixed-arity
+  single-fold Diophantine representation and does not settle a single-fold
+  MRDP problem", and the union over all `N` is a union of variable-arity
+  formulas, not one polynomial.
 - **Families, not fixed arity.** Every construction is a family indexed by
   a horizon, height, log length or schedule, whose number of variables grows
   with that parameter: 01's causal height `H` is a compiler parameter
@@ -1550,7 +1748,13 @@ manuscripts named; the article keeps every one of them.
   `B`, valid for `T < 2^B`. Their counts are coordinates, residuals and
   atoms, not bit lengths (a value at the horizon `T` has about `T log b`
   bits; 18's squaring table about `2^B log M`) or expanded monomials, and
-  neither improves the 75/87 figures.
+  neither improves the 75/87 figures. 21's polynomials are families
+  indexed by the external bound `N` on distinct calls, which no computable
+  function of the input bounds on the universal domain (the article's note
+  after its loader section, by `cdc:bd:prop:nobound`); its gate counts are
+  unit-cost operations on integers that can be gigabytes long (the code of
+  `U` has about 4.5·10¹⁰ bits, that of `R` more than 1.39·10¹²), and it
+  claims no universal-polynomial size record.
 - **13, scope.** The sharp theorem concerns bare labelled matchings and
   all closing matchings: summaries for a restricted family of contexts, or
   overapproximating reachability analyses, are not ruled out. The state-bit
@@ -1637,6 +1841,26 @@ manuscripts named; the article keeps every one of them.
   the constants are not claimed optimal. Two low-level constructors accept
   noninteger coefficients and mutable read words (found by the research
   tree's review; see Disclosures); no theorem depends on them.
+- **21, scope.** The semantics is Jay's original eager Tree Calculus at
+  `baa877d91`, not later dialects and not the equational quotient of his
+  Coq files; results obtainable only by discarding an unevaluated
+  divergent argument are not results. Environments are hereditarily
+  finite and acyclic. The base fibres are not unique (padding, row
+  permutations, inactive fields), and the canonical fibre is unique only
+  over `ℕ` (not over the nonnegative reals) and at the exact size; it
+  cannot be padded. Naturality is essential; no positive-only change of
+  coordinates is supplied. Input loading (de Bruijn translation, quoting,
+  compilation, coding) is a computable reduction, not an uncharged
+  polynomial; no raw-integer loader or sequence codec is given. The codes
+  of `U` and `R` were not materialized, and no scalar zero of the `R`
+  family was evaluated; `R` is a terminating sharing example, not the
+  universal interpreter. Gate counts use literal schedules and are not
+  bit-operation bounds or optimality claims. Fuel exhaustion in the tests
+  is recorded as inconclusive, not as divergence. The template-counting
+  proposition counts instantiated template sets, not evaluator call
+  sets in general. One evaluator method accepts non-natural inputs
+  (found by the research tree's review; see Disclosures); no theorem
+  depends on it.
 - **17, scope.** Bases are fixed positive integers (or rationals after a
   fixed scaling, where minimizing `Kq^n f(n)` is not minimizing `f(n)`);
   positive algebraic irrational bases are outside the encoding. Repetition
@@ -2085,6 +2309,53 @@ are not complete), and Part XVI and Part XVIII cite each other for the
 same borrowing obstruction. No neighbouring report was edited in this
 write.
 
+Manuscript 21 relies on no formal declaration and cites no ProveIt file.
+Its compiler theorem borders the formal project
+`Computability/CombinatoryLogic` (Lean and Rocq), which proves that
+closed weak lambda calculus with context-closed beta reduction compiles
+into pure SK, SKI and Iota by an occurs-aware bracket abstraction, the
+idea of 21's safe optimization: `CombinatoryLogic.LambdaToSK.Polynomial.abstract`
+and `CombinatoryLogic.LambdaToSK.Polynomial.abstract_correct`
+(`Lean/CombinatoryLogic/LambdaToSK.lean`), `SKPolynomial.abstract` and
+`SKPolynomial.abstract_correct` (`Coq/SKPolynomial.v`), with the headline
+compilers `CombinatoryLogic.Universality.ski_turing_complete` and
+`CombinatoryLogic.Universality.iota_turing_complete`
+(`Lean/CombinatoryLogic/Universality.lean`). Those are forward
+simulations, and that project does not claim reduction reflection; 21's
+adequacy theorem has another target (Jay's eager Tree Calculus), another
+source semantics (weak left-to-right call by value with closures, neither
+the project's context-closed beta relation nor the call-by-value calculus
+L of its Coq `RecursiveEquivalence`) and reflects termination. The
+article's remark 230.3 (`cdc:et:rem:combinatory`) says so. No theorem of
+21 is formalized in Lean or Rocq, it ships no Lean or Rocq file, and
+placing it beside the formal projects confers no formal status on it.
+The separately maintained research tree reviewed the archive:
+`review_eager_tree_aebfa.md` (`3b5989da9`, indexed in
+`incoming_substrate_review_aebfa386e.md`) finds no theorem-level defect,
+checks the five rules against Jay's pinned Rust source, reproduces the
+counts, the exact degree, the universal tree's bit interval and the
+growth formulas, narrows the bit interval of `R` to
+2,501,742,332,141–2,503,889,815,785, and supplies the patch
+`eager_tree_exact_application_inputs.patch` for one evaluator input
+defect (see Disclosures), which is not applied here. Its review of the
+placement (`review_placement_a7ae02511.md`, `653349f6a`) authenticates the
+51 shipped files against the archive and supplies a portable stager,
+`replay_placed_substrates_a7ae02511.py`, that restores the delivered
+layout from Git.
+
+**Relations (batch 79, cluster J2).** Part XIX answers in part, for
+another calculus, Source 01 of `cdc:q:ski` (a validity-free coding, a
+strategy-specific reflection theorem and a canonical unique-witness
+certificate at exact size, for Jay's Tree Calculus rather than SKI or
+Iota) and only touches its Source 04 (it avoids schedules); a dated note
+after the question records this. Its first question restates the
+research target that Part VII names after `cdc:wf:prop:ski-height`, and
+its binary-sharing theorem is a partial step towards it for one fixed
+program. Notes in the Part point to Part VII's coding and scheduled
+compiler, Part V's graph evaluator and sharing remark, manuscript 04's
+activation lemma and Part IX. No neighbouring report was edited in this
+write.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -2102,10 +2373,10 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 571 pages (196 before batch 62, 306 before batch 63,
+The recorded build has 605 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -2159,15 +2430,30 @@ entries M19.x, Sections 3.19–3.20, the opening of 19's block (M19.1), its
 compiler section, and the opening of Part XVIII were rendered and
 inspected.
 
+Part XIX (batch 79, cluster J2) adds eight macros (`\Leaf`, `\Stem`,
+`\Fork`, `\Apply`, `\FV`, `\ev`, and `\tcode` and `\clos` for 21's
+`\code` and `\cl`, which would clash with this report's) and no package
+(21's `amssymb`, `lmodern`, `multicol` and `bookmark` are not needed).
+Built in a scratch directory with
+`latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX,
+pdfTeX): 605 pages, no errors, warnings, undefined references or
+citations, multiply defined labels, duplicate destinations or overfull
+boxes, and the same single underfull line as before. Layout-only change:
+the Lean and Rocq declaration names in the written remark print with
+`\path` so that they can break. The title page, Section 3.21, the
+question `cdc:q:ski` with its note, the opening and conventions of Part
+XIX and the universal-tree table were rendered and inspected.
+
 ## Rerunning the checks
 
 Every suite needs Python 3.10 or later and the standard library only,
 except 16's three verifiers, which need SymPy 1.14.0
-(`data/16-sandpile-requirements.txt`; the recipe uses `uv`). Every
+(`data/16-sandpile-requirements.txt`; the recipe uses `uv`), and the
+three optional symbolic stages of 21 (SymPy, `data/21-eager-tree-requirements-optional.txt`). Every
 suite rewrites its recorded outputs at fixed paths relative to its own
 location, and most scripts import their siblings by delivered name, so run
 them **on a copy with the delivered layout**, never in the report
-directory. The recipes below build such copies, `r01` … `r20`, beside
+directory. The recipes below build such copies, `r01` … `r21`, beside
 `code/` and `data/`: run them in a scratch copy of the report directory
 (copying `code/` and `data/` is enough), not in the collection. Where the
 Windows `python` alias does not resolve, use `py`.
@@ -2294,6 +2580,15 @@ mkdir -p r20/code r20/data
 for f in queue_certificates verify check_certificate; do cp code/20-compressed-queue-$f.py r20/code/$f.py; done
 (cd r20 && py code/verify.py > /dev/null \
   && py code/check_certificate.py data/example_quartic.json data/infinite_growth_quartic.json > data/export_checks.json)
+
+# 21: rewrites the 26 JSON files and the S-expression in r21/code, and writes r21/replay-output/
+mkdir -p r21/code
+for f in code/21-eager-tree-*.py; do cp "$f" "r21/code/${f#code/21-eager-tree-}"; done
+for f in data/21-eager-tree-*; do cp "$f" "r21/code/${f#data/21-eager-tree-}"; done
+mv r21/code/reproduce.py r21/code/build_pdf.py r21/code/sources.json r21/code/requirements-optional.txt r21/
+(cd r21 && py reproduce.py)
+# optional: also the three SymPy stages
+(cd r21 && uv run --no-project --with sympy==1.14.0 python reproduce.py --symbolic)
 ```
 
 The recipes for 08–12 use `py`, which resolves on this machine; the
@@ -2383,7 +2678,25 @@ odometer `[2, 1]` and ranks `[2, 1]`. 20's two exports and
 returns, and `verification.json` (`"status": "PASS"`, 259,025 checks)
 differs only in the Python version. The research tree's reviews report the
 same outcome; its review of 20 also reruns the delivered programs with its
-patch applied.
+patch applied. The recipe for 21 was run the same way in the batch-79
+cluster-J2 write (Python 3.14.4, Windows; about 20 seconds, and 34 with
+the symbolic stages and `uv` start-up): all 16 stages (19 with
+`--symbolic`) pass, "All requested checks passed". All 27 regenerated files
+equal the shipped ones after removing carriage returns, except six
+receipts (`audit_exact_count_receipt`, `constant_bit_bound`,
+`exact_growth_receipt`, `independent_growth_receipt`,
+`independent_shared_receipt`, `packet_assumptions_receipt`), which differ
+only in `*_sha256` fields that hash `shared_symbolic_proofs.json`,
+`shared_compression_program.json` or `literal_universal_tree.json` as
+rewritten on Windows with CRLF line endings; the shipped values
+(`0341fdac…`, `f136280b…`, `c6b64709…`) are the hashes of the LF files.
+On POSIX, or with Python writing LF, those fields agree too. Alternatively,
+extract the delivered archive into a scratch directory
+(`git show aebfa386e:docs/incoming/Eager_Tree_Calculus_Research_Package.zip > et.zip`,
+unzip, `cd eager-tree-certificates`) and run `py verify_manifest.py` (55
+entries) **before** `py reproduce.py`; this was also tested (about 33
+seconds, all 16 stages pass). The research tree's review reports the same
+outcome, with all 19 stages, for the original and for its patched copy.
 
 **Hazards.**
 
@@ -2449,6 +2762,20 @@ patch applied.
   `article.tex`, which is now the merged article, their `clean` targets
   delete its auxiliary files, and their checks call `python` with the
   delivered names.
+- Batch 79, cluster J2: 21's `reproduce.py` runs every stage with
+  `code/` as working directory, and the stages rewrite their fixtures and
+  receipts there; it also writes `replay-output/` beside itself. Run it
+  only inside `r21` (or in an extracted archive). The shipped
+  `code/21-eager-tree-*` programs that import a sibling (`tree_kernel`,
+  `eager_compiler` and others) fail at that import, because the siblings
+  carry prefixes, and `code/21-eager-tree-reproduce.py` finds no
+  `code/` below itself. On Windows the regenerated files have CRLF line
+  endings, so six receipts record different self-hashes (see above), and
+  `verify_manifest.py` then reports a digest mismatch: run it before the
+  replay. Do not run `code/21-eager-tree-build_pdf.py`: it creates
+  `build/` beside itself and runs `pdflatex` three times on
+  `eager-tree-certificates.tex`, which is not shipped. The delivered
+  texts write `python3`, which may not resolve on Windows; use `py`.
 - Every suite overwrites its recorded outputs at paths fixed relative to the
   script (the parent of the script's directory in 01, 03, 04, 05, 06, 07,
   08, 09 and 10; the working directory in 02; the `--output` paths in 11). The shipped `code/` scripts that import
@@ -2758,6 +3085,60 @@ patch applied.
   different report from the new quartic No Borrowed Firings archive"; that
   is true of the archives and their formats, but the theorems coincide, as
   the article's editorial note says.
+- **Batch 79, cluster J2 (manuscript 21): shipped text that uses delivery
+  names or names unshipped files.** `21-eager-tree-VERIFICATION.md`
+  describes "the release", runs `python3 reproduce.py --symbolic`, says
+  that the LaTeX source builds and that all 30 rendered pages were
+  inspected (the source and PDF are not shipped; they survive in
+  `aebfa386e`), and says that receipts are written beside the scripts and
+  logs into `replay-output/`. `code/21-eager-tree-reproduce.py` runs
+  `code/<stage>.py` by delivered name; `code/21-eager-tree-build_pdf.py`
+  compiles `eager-tree-certificates.tex`. The programs import each other
+  and read and write their fixtures by delivered names in their working
+  directory. `data/21-eager-tree-sources.json` says that no upstream code
+  is bundled. Six receipts record SHA-256 hashes of the delivered LF
+  files `shared_symbolic_proofs.json`, `shared_compression_program.json`
+  and `literal_universal_tree.json` (shipped with prefixes;
+  byte-identical). The article prints the shipped names in notes where 21
+  names its files and keeps its artifact index in the delivered names.
+- **Batch 79, cluster J2: renamings and notes in the printed text.** 21's
+  `\code` (the coding map) is typeset with `\tcode` and its `\cl` (a
+  closure) with `\clos`, with unchanged glyphs; its `\file` is this
+  report's `\code` (the same definition) and its `\eqtag` is written
+  out; "Appendix A" references carry the section number (236); its
+  numbered research directions are question environments. Its closing
+  remark alludes to "earlier canonical and scheduled SKI certificate
+  constructions" without a reference; a note names Part VII's
+  `cdc:wf:thm:ski` and Part V's `cdc:mem:cor:graph`. Its interval
+  1,390,419,544,301–4,688,954,427,625 for the bit length of `code(R)`
+  (and so the constant `B_*`) is valid but loose: the research tree's
+  review obtains 2,501,742,332,141–2,503,889,815,785 with exact codes up
+  to 4096 bits, and the placement dossier's own propagation (exact up to
+  4096 bits, then the cruder fork rule) gives 2,501,742,332,141–2,506,037,299,433; a
+  note prints the review's interval beside the manuscript's unchanged
+  numbers, and every bound that uses `B_*` stays valid. Its interval for
+  `code(U)` is reproduced by the review.
+- **Batch 79, cluster J2: review of 21.** The review
+  `review_eager_tree_aebfa.md` (`3b5989da9`) of the Hilbert's-tenth-problem
+  research tree finds no theorem-level defect. Its finding P3 concerns
+  `Evaluation.app` in `tree_kernel.py` (shipped as
+  `code/21-eager-tree-tree_kernel.py`; the review cites line 65, where its
+  patch hunk begins, and the method starts at line 67): the first code is
+  checked only when it is decomposed and the second is not validated
+  before the cache lookup, so `Evaluation().app(0,-1)` returns −1, and
+  `app(0,True)` stores a record with a Boolean argument that a later
+  valid `app(0,1)` reuses, after which the generated certificate fails the
+  natural-coordinate checker. The polynomial checker rejects such a
+  certificate, so this is not a false arithmetic zero. The tested patch
+  `eager_tree_exact_application_inputs.patch` (SHA-256 `bb669fe7…cdfe`,
+  beside the review in
+  `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`)
+  adds exact natural-integer validation of both codes and is **not
+  applied**: the shipped program is the delivered bytes. The review reran
+  all 19 author stages on the original and the repaired copies, reproduced
+  the 26 saved JSON objects (normalizing only the changed source digest),
+  and added 774 independent assertions. No theorem of Part XIX depends on
+  the defect.
 - **Byte-identical duplicates within a manuscript** (checked with `cmp`):
   03's `test_results.json` and `test_run.txt`, `linear_test_results.json`
   and `linear_test_run.txt`, and `example-events.json` and
@@ -2771,7 +3152,8 @@ patch applied.
   The console files are the scripts' printed JSON. Batch 79, cluster J3,
   shipped neither 19's `verification/latest_run.txt` (a copy of
   `results.txt`) nor 20's `data/verification_stdout.txt` (a copy of
-  `verification.json`). No two files of different manuscripts are identical.
+  `verification.json`). Batch 79, cluster J2: 21 has no in-archive copy.
+  No two files of different manuscripts are identical.
 - **Machine-dependent fields.** 08's `receipt.json` and 10's
   `verification.json` (and hence `test_output.txt`) record an elapsed time,
   which a rerun changes; nothing else in the batch-62 records depends on
@@ -2784,6 +3166,9 @@ patch applied.
   `artifact_checks.json` the Python version 3.13.5 of the delivery's run;
   19's `results.json` and `results.txt` record Python 3.13.5 and an
   `elapsed_seconds` field, and 20's `verification.json` Python 3.13.5.
+  21's receipts record no elapsed time or Python version, but six of them
+  record SHA-256 hashes of files that a rerun rewrites, which depend on
+  the platform's line endings.
 - **Missing final newlines.** Four of 06's JSON files end without a newline
   and are kept so: `canonical_huge_witness.json`,
   `canonical_multiplication_certificate.json`,
@@ -2870,7 +3255,9 @@ patch applied.
   Dhar's 1998 review, became the new entry `dhar1998` (not the 1990
   article `dhar1990`); 20's `repo`, `cook` and `woodsneary` are merged into
   `repo-cdc`, `cook` and `woods-neary`, and its `queueprior` (07's
-  integration note) became the new entry `repo-qcint`.
+  integration note) became the new entry `repo-qcint`. 21 inspected no
+  ProveIt commit; its four keys `jaykernel`, `jayreflective`, `jaytree`
+  and `dallago` are new entries, with its `\href` links printed as URLs.
 
 ## Merge decisions
 
@@ -3225,6 +3612,34 @@ same decisions.
   research tree's projections). The research tree's reviews of both
   archives are disclosed; the patch for 20 is not applied. The title-page
   lines naming the AI assistant are in the provenance appendix only.
+- **Batch 79, cluster J2 (Part XIX).** 21 duplicates no printed theorem,
+  so it is appended whole as Part XIX after Part XVIII and before the
+  appendices, in its own order (Sections 2–12 and Appendices A–B), so
+  that no existing section, theorem, equation or table number moved; its
+  title-page box and status lines, abstract and Section 1 are Section
+  3.21, and the Section 3 heading became "The twenty-one manuscripts".
+  Written: the Part's opening (source and scope, relation to the other
+  Parts, the review, setting and hypotheses) and a conventions section
+  with a table of letters and their clashes (K, I and the stem `𝖲` are
+  not Part VII's combinators; `f` is not Part VII's `App`; `H` is a call
+  cost, not Part VII's context depth); notes at 21's coding (Part VII's
+  pairing, `f = 2π+2`), growth bound (`cdc:wf:prop:ski-height`),
+  inactive-field equations (`cdc:wf:lem:activation`), sharing example
+  (the remark after `cdc:mem:cor:graph`) and closing allusion (naming
+  `cdc:wf:thm:ski` and `cdc:mem:cor:graph`); a note that no computable
+  function bounds the external `N` on the universal domain (by
+  `cdc:bd:prop:nobound`); a remark on ProveIt's combinatory-logic
+  development naming its formalized declarations and claiming no formal
+  status; four review notes; and lines after four of the six questions.
+  Dated `[write]` note: after `cdc:q:ski` (Source 01 answered in part for
+  another calculus; Source 04 only touched). Renamed: 21's `\code` is
+  `\tcode`, its `\cl` is `\clos`, its `\file` is this report's
+  `\code`. The review's patch is not applied; its tighter interval for
+  `R` is printed beside 21's numbers, which are unchanged. Bibliography:
+  five new entries (`jaykernel`, `jayreflective`, `jaytree`, `dallago`
+  and the review `repo-etrev`; 98 distinct works in all), and `repo-cl`
+  is cited by the written remark. 21's author line and PDF metadata name
+  no AI assistant.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as
