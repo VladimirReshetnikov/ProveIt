@@ -44,6 +44,16 @@ Both fresh root receipts pass. The new113/28 point extends the catalogue
 above; exact degrees hold on every admissible fixed program slice. Ordinary
 input and unbounded duration remain paid. The minimum bounds stay74/86.
 
+The [protected norm grouping](complete113_main_input_units111.md) adds
+**111=53M+58A at exact degree30**, on the same24 positive witnesses. The
+actual main and input norms cannot equal minus one modulo4, so their two
+unit equations can be replaced by one product-unit equation. This saves
+two additions in the fully paid SOS. Its
+[independent source and mathematical review](review_complete113_main_input_units111.md)
+and both fresh root receipts pass. The complete integer zero sets agree;
+an explicit correction identity records the different off-zero polynomials.
+Both111/30 and113/28 extend the achieved operation/degree catalogue.
+
 The [native first-coefficient transfer](native_pell_factored_first_coefficient.md)
 now gives a **63=32M+31A prescribed AND certificate**, with22 positive
 auxiliaries and16 comparisons; its full degree28 SOS costs110 operations.

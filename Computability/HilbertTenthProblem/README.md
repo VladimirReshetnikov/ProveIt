@@ -47,6 +47,14 @@ checks all256 coordinate projections, full circuits and uniform exact degrees.
 Both fresh root receipts pass. This improves the achieved degree tradeoff;
 the minimum operation bounds remain74/86.
 
+The [protected norm grouping](Papers/research-wip/native-stream-queue/complete113_main_input_units111.md)
+also gives **111 operations at exact degree30**, with the same24 witnesses.
+A modulo4 obstruction permits combining the main and input unit equations;
+the complete integer zero sets agree. Its
+[independent review](Papers/research-wip/native-stream-queue/review_complete113_main_input_units111.md)
+and both fresh root receipts pass. Both111/30 and113/28 are new achieved
+operation/degree tradeoffs.
+
 The [corrected Grill halt bridge](Papers/research-wip/native-stream-queue/grill_tag_halt_bridge.md)
 and its [independent review](Papers/research-wip/native-stream-queue/review_grill_tag_halt_bridge.md)
 prove halting equivalence at the exact encoded width, including cleanup.

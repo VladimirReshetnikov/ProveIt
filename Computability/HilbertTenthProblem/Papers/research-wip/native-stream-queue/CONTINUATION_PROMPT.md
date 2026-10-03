@@ -70,6 +70,21 @@
 > and both root receipts pass. Review reconstructs all256 literal sources,
 > complete SOS/graph identities and multivariate leading forms independently.
 > No full native Pell zero is materialized. Minimum bounds remain74/86.
+> The [protected main/input grouping](complete113_main_input_units111.md)
+> now gives111=53M+58A/exactdegree30 on the SAME24 positive coordinates.
+> Replace private R15=Ac2+1 and norm_rhs=scaled_kappa2+1 with the actual
+> norms Nm=d^2-Delta*c^2 and Ni=mu^2-Delta*kappa^2; add Nm*Ni=1.
+> Delta=a^2+4a+3 is0 or3 mod4, so neither integer norm can be-1, before
+> using any other equation. Product1 therefore recovers both old units.
+> Other11 residuals remain identical. Certificate76=41M+35A,12 residuals;
+> complete111 saves2A against113. Exact off-zero correction is
+> F111-F113=(Nm-1)*(Ni-1)*(Nm*Ni+Nm+Ni-1), not polynomial equality.
+> Main/input degrees8/7, product15; unique full leader
+> 16*Bm1^12*w^4*Jrep^12*delta^4*a^10 proves exact30 uniformly on every
+> admissible fixed program slice. The [independent review](review_complete113_main_input_units111.md)
+> and both root receipts pass. Current combined frontier appends111/30,
+> 113/28 to86/179 through98/44; new points have24w, earlier points19w.
+> This is one proved grouping, not a new complete partition census.
 > The [coefficient-only census](complete87_shared_coefficient_scout.md) is
 > frozen separately: reachable-set counts1/13/116/891 exclude at most three
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
