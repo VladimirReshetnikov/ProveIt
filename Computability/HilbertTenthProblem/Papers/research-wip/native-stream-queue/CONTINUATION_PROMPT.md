@@ -375,6 +375,25 @@
 > This extends the earlier multiplication-only coefficient census; do not
 > confuse it with a general lower bound or repeat the free-t rank obstruction.
 
+> The [affine-port scout](complete86_affine_port_scout.md) and
+> [independent full census](review_complete86_affine_port_scout.md) pass
+> fresh root replays. Six explicit joint main/input-root schedules, followed
+> by one local reassociation/distribution/factoring/square-conjugate move,
+> generate1300 move instances,882 within-seed DAGs and874 globally distinct
+> complete DAGs. Minimum86=48M+38A,127ties; whole-polynomial identities
+> preserve19 positive witnesses and degree179. Global commutative CSE and
+> constant/unit folding are equally applied to the unchanged86 baseline.
+> Independent generation proves all1300 local occurrence identities plus
+> 12 seed cuts, recounts77043 paid gates and checks2646 complete outputs.
+> This is one-move finite coverage, not recursive optimization or a lower
+> bound for arbitrary circuits. The separate gap rewrite q*u−Z still
+> costs86 becauseu−Z remains shared. The recorded complement_u=q−F port
+> gives a syntactic85 expression with signed inverseF=q−u, but its frozen
+> packet establishes no positive inverse and no complete-zero counterexample.
+> Keep any later complement obstruction separate; never count85 as a bound.
+> All12 predecessor blobs and both new trios remain frozen; no historical
+>292320-family rerun is needed.
+
 > The [Grill halt bridge](grill_tag_halt_bridge.md) and
 > [independent review](review_grill_tag_halt_bridge.md) are frozen and pass
 > root replay. Corrected E uses a−4 in its second long grill. At the unique

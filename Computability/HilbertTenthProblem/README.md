@@ -39,6 +39,14 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
+The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)
+and [independent census](Papers/research-wip/native-stream-queue/review_complete86_affine_port_scout.md)
+also check874 complete circuits from six joint-root schedules and one local
+rewrite. Their minimum remains86, with127 ties, preserving the entire
+polynomial and degree179. Both fresh receipts pass. This finite negative
+result is not a global lower bound; its separate85-operation coordinate
+lead is not certified as a universal representation.
+
 The [complete six-unit census](Papers/research-wip/native-stream-queue/complete_six_unit_partition_frontier106.md)
 now gives **106 operations at exact degree42**, **108 at degree28**, and
 **110 at degree24**, each with24 positive witnesses. A paid bound-unit
