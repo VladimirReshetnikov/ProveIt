@@ -1,0 +1,99 @@
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/README.md
+@@ -2418,10 +2418,12 @@
+ 51 files placed by `a7ae02511` against the archive and supplies a portable stager,
+ `replay_placed_substrates_a7ae02511.py`, that restores the delivered
+ layout from Git. Four of those 51 files were replaced by corrected bytes in
+-the batch-80K1 placement, so since batch 80 the stager authenticates only a
+-checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
+-restores the original edition; on a current checkout it stops with "Placed
+-source differs". For the corrected layout extract the batch-80 archive.
++the batch-80K1 placement. For an original-edition restoration, pass an
++unchanged historical checkout (for example, a worktree at `a7ae02511`) as
++`--repo`. Invoke the helper from a recent checkout, with its sibling
++`placement_a7ae02511_inventory.json` beside it: neither file exists at
++`a7ae02511`. A current corrected checkout passed as `--repo` stops with
++"Placed source differs". For the corrected layout extract the batch-80 archive.
+ 
+ **Relations (batch 79, cluster J2).** Part XIX answers in part, for
+ another calculus, Source 01 of `cdc:q:ski` (a validity-free coding, a
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/README.md
+@@ -761,11 +761,13 @@
+   restores the complete delivered layouts of sources 15–17 from Git. That
+   statement is about the files of `a7ae02511` and remains true there; 4 of
+   them (13 across three reports) were replaced by corrected bytes in the
+-  batch-80K1 placement. Since batch 80 the stager authenticates only a
+-  checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
+-  restores the original editions; on a current checkout it stops with
+-  "Placed source differs". For the corrected layout of source 17 extract
+-  the batch-80 archive.
++  batch-80K1 placement. For original-edition restoration, pass an unchanged
++  historical checkout (for example, a worktree at `a7ae02511`) as `--repo`,
++  while invoking the later helper from a recent checkout with its required
++  sibling `placement_a7ae02511_inventory.json`. Neither helper nor inventory
++  exists at `a7ae02511`. A current corrected checkout passed as `--repo`
++  stops with "Placed source differs". For the corrected layout of source 17
++  extract the batch-80 archive.
+ 
+ ## Licensing of the third-party machine data
+ 
+@@ -888,13 +890,14 @@
+ 
+ 1. extract the arrival archives (commands under "Delivered names"); they
+    contain every file, including the excluded ones;
+-2. run the research programme's stager,
+-   `py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py --repo . --destination <new directory>`
+-   from the repository root (it authenticates the placed files and restores
+-   the complete layouts from Git). Since batch 80 run it only from a
+-   checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`); it then
+-   restores source 17's original edition, and on a current checkout it
+-   stops at the replaced files; or
++2. create an unchanged historical checkout, for example with
++   `git worktree add <historical-checkout> a7ae02511`, then run
++   `py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py --repo <historical-checkout> --destination <new-directory>`
++   from a recent repository root where the helper and its required sibling
++   `placement_a7ae02511_inventory.json` exist. Neither file exists in the
++   `a7ae02511` checkout. This restores the original editions from the
++   historical placed bytes; passing the current corrected checkout as
++   `--repo` stops at the replaced files; or
+ 3. rebuild the layouts from the shipped files with the snippet under
+    "Reconstructing the excluded data", then regenerate the excluded files.
+ 
+--- a/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/README.md
++++ b/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/README.md
+@@ -916,11 +916,12 @@
+ git show 4e270aa46:docs/incoming/Sparse_Lattice_Diophantine_Certificates_corrected.zip > r13/sl.zip   # corrected edition
+ (cd r12 && unzip -q cs.zip)    # r12/conservative-signal-release/
+ (cd r13 && unzip -q sl.zip)    # r13/sparse-lattice-release/
+-# (b) from the shipped files, with the research tree's placement stager
+-#     (authenticates the shipped bytes, restores the omitted members from Git;
+-#      the destination must not exist)
++# (b) original editions: run the later helper from this recent checkout,
++#     with its sibling placement_a7ae02511_inventory.json present.
++#     The historical checkout and destination below must not exist yet.
++git worktree add ../source-a7ae02511 a7ae02511
+ py Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/replay_placed_substrates_a7ae02511.py \
+-   --repo . --destination ../placed-a7ae02511
++   --repo ../source-a7ae02511 --destination ../placed-a7ae02511
+ ```
+ 
+ Way (a) is the tested one. Way (b) was tried at this write on this Windows
+@@ -930,11 +931,12 @@
+ complete package manifest differs" while checking the six package roots it
+ restores (the other four belong to `quadratic-orthant-certificates` and
+ `canonical-diophantine-certificates`). The stager is the research tree's
+-program, not part of this report. Since batch 80 it authenticates only a
+-checkout of `a7ae02511` (`git worktree add <dir> a7ae02511`), where it
+-restores source 13's original edition; on a current checkout it stops
+-earlier, with "Placed source differs" at the five replaced files. For the
+-corrected layout use way (a).
++program, not part of this report. Since batch 80, use an unchanged
++historical checkout as its `--repo` argument to restore the original edition.
++Invoke the helper from a recent checkout with its required sibling inventory:
++neither helper nor inventory exists at `a7ae02511`. Passing a current
++corrected checkout as `--repo` stops earlier, with "Placed source differs"
++at replaced files. For the corrected layout use way (a).
+ 
+ Then, in `conservative-signal-release/` (source 12): `sh run-replay.sh` runs
+ the ten original commands; it hard-codes `python3` and rewrites its receipts

@@ -1,7 +1,24 @@
 # Continuation: universal straight-line certificates
 
+> **Next review boundary, newly merged:** surreal report publication commits
+> `d51fafea806cbd48ba29be017eff85cdd9653b14` and
+> `0be9b913487fa2cc0e16cea6545c55f33b4446d8` (upstream merge `acb0041e1`).
+> They add the four-source synthesis, crosswalk/questions/README, first PDF and
+> a notation update: four changed paths, including about6,287 TeX delta lines.
+> The [four original archive reviews](review_batch80_surreal.md) and
+> [base staging audit](review_surreal_placement_ccc046989.md) remain valid at
+> their pins; they do not review this new composition. Audit original-to-final
+> formal preservation and new explanatory claims, including the existing GBC
+> well-foundedness qualification. Read `Algebra/SurrealNumbers/AGENTS.md` for
+> any work under that subtree. This pending boundary does not invalidate the
+> completed U15/three-mass arithmetic and corrected-code publication audits below.
+
 > Current batch-80 status: [all twelve arrivals](incoming_substrate_review_4e270aa46.md)
 > and their original placements have scoped proof/source reviews and root replays.
+> The [corrected-code publication audit](review_batch80_correction_publication_86267b8a3.md)
+> covers all nine new report paths through86267b8a3: formal blocks are preserved,
+> and one tested README patch fixes how to launch the later historical stager.
+> Keep earlier editorial patches separate; they were not applied by this update.
 > The new [three-mass coordinate proof](review_three_mass_mass_coordinate_math.md)
 > and [paid arithmetic compiler](three_mass_arithmetic.md) give a natural-zero
 > bijection and complete 60→56 /116→107 /114→105 examples. The

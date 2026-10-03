@@ -34,6 +34,11 @@ the clean reverse-history lift also composes. The proof preserves unique natural
 fibers and has a fresh independent 10,080-tuple source census. It does not extend
 to nonnegative real witnesses or by itself establish a gate saving.
 
+A later surreal synthesis, published in `d51fafea8` and `0be9b9134`, has now
+been merged. Its assembled article, new crosswalk/questions, README, PDF and
+notation update are the **next pending review boundary**. The original archive
+and staging reviews below do not certify that new composition.
+
 The [four surreal order reports](review_batch80_surreal.md) pass their finite
 replays and the scoped mathematical review, with one separate prose correction
 about fixed-relation internal well-foundedness in GBC. Their different coding
@@ -55,6 +60,15 @@ preserve 116 files and explicit shared copies; [surreal staging](review_surreal_
 preserves 16 files with one complete base manuscript. At those pins the mass
 Parts and the surreal synthesis have not yet been written. Flattened release
 companions still require the original package layout for their runners.
+
+The [later corrected-code publication audit](review_batch80_correction_publication_86267b8a3.md)
+covers all nine changed paths through `86267b8a3`. The three reports preserve
+1,309 formal statement/proof occurrences and their display/label sequences;
+the new API descriptions match the reviewed repairs. One reproduction issue
+has a tested three-README patch: the historical checkout predates the replay
+helper and its inventory, so invoke the later helper with `--repo` naming the
+historical checkout. Root replay passes. Earlier editorial corrections retain
+their separate status; this update changes no universal arithmetic bound.
 
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
