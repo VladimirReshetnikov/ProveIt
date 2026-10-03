@@ -154,6 +154,22 @@ normalized terminal-field-zero slice. The
 every source, degree, graph identity and public map; both fresh root receipts
 pass. The fixed-arity universal bounds stay74/86.
 
+The [coded suffix-membership interface](eager_tree_beta_membership_interface.md)
+gives a complete **16-operation** local polynomial, or **17 with an active
+guard**, using four natural witnesses at exact degree6/7. It certifies a
+later matching entry of a supplied CRT-coded sequence, paying the quotient,
+remainder and index bounds. It also specifies a fixed-size Tree formula with
+fourteen code columns and one bounded universal row condition. Existing
+Lean closure proofs cover mathematical Diophantine existence; their full
+arithmetic compilation and the ordinary-input loader remain uncounted here.
+An actual three-row false Tree result passes all retained local rows and
+nine membership guards when the code column is left unlinked. This proves
+why row/code coherence must be retained. The
+[independent review](review_eager_tree_beta_membership_interface.md) checks
+both full polynomials, the concrete counterexample and the cited closure
+interfaces; author and review receipts pass fresh root replay. No new
+universal bound follows.
+
 The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 shows why the aggregate bound cannot replace the left-tape range lane in
 the current U15 route. A false seven-step history satisfies all five actual

@@ -131,6 +131,16 @@ and both fresh replays pass. This preserves existential solutions over all
 retained coordinates; the full parent has nonunique terminal-field fibers.
 ExternalN and the universal74/86 bounds remain unchanged.
 
+The [coded suffix-membership interface](Papers/research-wip/native-stream-queue/eager_tree_beta_membership_interface.md)
+costs **16 operations**, or17 with a guard, and uses four natural witnesses.
+It supplies a local component for compressing Tree certificates, plus an
+explicit bounded-universal formula for the whole row table. A checked false
+acceptance shows why code entries must be tied to actual rows. Compiling
+that complete consistency condition into a counted polynomial remains open.
+The [independent review](Papers/research-wip/native-stream-queue/review_eager_tree_beta_membership_interface.md)
+and both fresh replays pass. The16/17 counts are component costs and do not
+improve the universal bound.
+
 The [Waterfall range-lane audit](Papers/research-wip/native-stream-queue/waterfall_packed_range_obstruction.md)
 proves that the aggregate packed bound alone still permits false tape
 histories. The [independent review](Papers/research-wip/native-stream-queue/review_waterfall_packed_range_obstruction.md)

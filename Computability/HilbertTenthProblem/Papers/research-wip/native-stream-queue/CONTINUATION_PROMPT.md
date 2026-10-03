@@ -334,6 +334,32 @@
 > identities, checks18 copies and134 rejects including24 warm pins.
 > Public sizes remain1..8, while the proof describes the uniform externalN
 > template. Freeze both trios and all predecessors; universal74/86 unchanged.
+> The [Tree beta-membership interface](eager_tree_beta_membership_interface.md)
+> emits a complete16=5M+11A local polynomial,17=6M+11A when guarded, with
+> FOUR natural witnesses independent ofN and exactdegree6/7. For supplied
+> A,b,i,N,D, setj+1=i+h+2,g=b(j+1),m=g+1 and square/sum
+> A−D−qm, g−D−s, N−(j+1)−k. Natural zeros mean somei<j<N hasbeta(A,b,j)=D.
+> The guarded form multiplies this nonnegative SOS by a supplied natural
+> active port; actual Tree target/active computations still require payment.
+> CRT b=N!*(1+maxvalues) encodes every finite sequence, but is witness
+> selection, not a free compiled factorial. The fixed-size intermediate
+> formula uses14 code columns (13 row fields plus their triple code), one
+> common modulus scale, existentialN>=1 and one bounded universal row check.
+> All decoded local rules, root accesses and row/code coherence are retained.
+> Existing MRDPCore factorial/CRT and DiophantineTrace cipher closure proofs
+> supply mathematical existence; no new Lean build or counted compiler is
+> claimed. First paid obligation: compile that entire bounded universal,
+> including local witnesses/bounds, variable powers, factorials and finalizer.
+> Fixed exponent52 only certifiesQ=8^(32x), not generic variable-base power.
+> Concrete missing-coherence counterfeit: actualN3 rows encode[400,2,2],
+> fake column[400,2,25] passes18 local/root residuals and9 guarded atoms for
+> falseapp(4,0)=0 (true6); original full polynomial279841. Separate composite
+> divisibility counterexampleB6,D0,values2,3 prevents using divisibility alone
+> as zero-factor membership. Signed/rational domain counterexamples retained.
+> The [independent review](review_eager_tree_beta_membership_interface.md)
+> expands both full sources/leaders, recounts33 live gates, reconstructs the
+> complete counterfeit independently and reads the cited closure contracts.
+> Both fresh root receipts pass. No full unbounded Tree polynomial/count.
 > The [Waterfall packed-range obstruction](waterfall_packed_range_obstruction.md)
 > and [independent formal-B review](review_waterfall_packed_range_obstruction.md)
 > pass root replays. At rawL0=R0=0,B=2^a,a>=9,D=B/64,t=7, the actual
