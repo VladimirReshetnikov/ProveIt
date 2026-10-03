@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 178 independent mathematical research packages}}
+  pdfsubject={Catalogue of 180 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -35,14 +35,14 @@
 
 % \entry{title}{directory}{main document}{source archive}{description}
 \newcommand{\entry}[5]{%
-  \par\medskip\noindent
+  \par\medskip\interlinepenalty=10000 \noindent
   \refstepcounter{entrynum}%
   \textbf{\theentrynum.\; #1}\par\nopagebreak
-  \nopagebreak{\raggedright\small\color{Ink}%
+  \nopagebreak{\raggedright\small\noindent\color{Ink}%
     \nolinkurl{#2/}\textbf{\nolinkurl{#3}}\par}\nopagebreak
-  \nopagebreak{\raggedright\footnotesize\color{gray}%
+  \nopagebreak{\raggedright\footnotesize\noindent\color{gray}%
     from \texttt{#4}\par}\nopagebreak
-  \smallskip\noindent #5\par}
+  \smallskip\interlinepenalty=0 \noindent #5\par}
 
 \newcommand{\dir}[1]{\texttt{#1}}
 \newcommand{\Q}{\mathbb{Q}}
@@ -53,7 +53,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and seventy-eight independent mathematical research packages,\\
+  {\large One hundred and eighty independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 2 October 2026}
@@ -63,14 +63,15 @@
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and seventy-eight research packages stored
+This document catalogues the one hundred and eighty research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other seventy-six came through ProveIt's incoming-reports procedure
+other seventy-eight came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
 batch~72, sixteen in batch~73, two in batch~74, three in batch~75, two in
-batch~76, thirty-four in batch~77 and three in batch~78 --- whose archives remain in the repository's history.  Later batches
+batch~76, thirty-four in batch~77, three in batch~78 and two in
+batch~79 --- whose archives remain in the repository's history.  Later batches
 also extended existing reports; their entries name the batch.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
@@ -184,9 +185,9 @@ original archive names are recorded with every entry.
 \midrule
 \dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\dir{hilbert-tenth-problem} & --- & 7\\
+\dir{hilbert-tenth-problem} & --- & 9\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{178}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{180}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -3506,22 +3507,24 @@ the constant matching resolvent.}
 
 \section{Hilbert's tenth problem}
 
-Seven reports on Diophantine representations of computation that control
+Nine reports on Diophantine representations of computation that control
 their witnesses, beside the formal project
 \dir{Computability/HilbertTenthProblem}, which proves MRDP in both
 directions in Lean, the universal pair $(58,4)$ and the single-fold unary
 exponential representation of Jones and Matiyasevich.  The first three
 (canonical certificates; probabilistic, quantum and continuous computation;
-liveness beyond halting) continue that project.  The other four, added in
-batches~76 and~78 (groups as substrates, signal machines, stochastic and
-thermal exactness, quadratic orthant certificates), treat further
-substrates and use MRDP at most as an imported theorem.  None of the
+liveness beyond halting) continue that project.  The other six, added in
+batches~76, 78 and~79 (groups as substrates, signal machines, stochastic and
+thermal exactness, quadratic orthant certificates, polynomial witness
+histories, smooth finalizers), treat further substrates or witness domains
+and use MRDP at most as an imported theorem.  Batch~79 also extended five
+of the older reports.  None of the
 reports' own theorems is formalized; each README names the project
 declarations it builds on or relates to.
 
 \entry{Canonical Diophantine certificates}
 {hilbert-tenth-problem/canonical-diophantine-certificates}
-{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip; batch~62: Names\_to\_Numbers\_Diophantine\_Heaps.zip, order\_free\_diophantine.zip, ProveIt\_Priority\_Pumping\_Diophantine.zip, one\_shared\_fallback\_research.zip; batch~63: Diophantine\_Certificates\_Without\_Histories.zip; batch~78: Exact\_Wiring\_Diophantine\_Report.zip, Topology\_Is\_Not\_Free\_Interaction\_Nets.zip, no\_ghost\_wires.zip, sandpile\_diophantine\_research.zip}
+{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip; batch~62: Names\_to\_Numbers\_Diophantine\_Heaps.zip, order\_free\_diophantine.zip, ProveIt\_Priority\_Pumping\_Diophantine.zip, one\_shared\_fallback\_research.zip; batch~63: Diophantine\_Certificates\_Without\_Histories.zip; batch~78: Exact\_Wiring\_Diophantine\_Report.zip, Topology\_Is\_Not\_Free\_Interaction\_Nets.zip, no\_ghost\_wires.zip, sandpile\_diophantine\_research.zip; batch~79: Positive\_Spectrum\_Diophantine.zip, Spectral\_Guards\_Without\_Time\_Expansion.zip, no\_borrowed\_firings.zip, Compressed\_Queue\_Diophantine\_Research.zip, Eager\_Tree\_Calculus\_Research\_Package.zip}
 {Diophantine representations that control their witnesses, not only their
 existence.  For Petri nets and interval-guarded translations, a convex
 quadratic integer polynomial whose natural zeros are in bijection with the
@@ -3581,8 +3584,39 @@ Cairns's imported universality theorem has no computable bound; and the
 exact minimal eventual period of stabilization along an input ray.  It
 answers Part~XIV's question on infinite-background abelian computation for
 undirected graphs, and its single-fold equivalence for Cairns's relation is
-an instance of Part~IX's.  Merged from sixteen manuscripts; not a Lean
-formalization.}
+an instance of Part~IX's.  Batch~79 added a second route inside
+Part~XVI, written independently: $12n+16E$ quadratic residuals in $11n+12E$
+natural witnesses with exactly one natural zero, carrying the odometer,
+whose sum of squares is a quartic with an integral rejection gap, and on
+$\mathbb Z^3$ one fixed radius-one normal form with 47 finite-deviation
+fields whose field solution exists, uniquely, exactly when the input
+stabilizes (neither ledger improves the other).  Part~XVII (batch~79, from
+two manuscripts proving one theorem by two routes): complete discrete sign
+charts of positive-base exponential polynomials along a loop, verified at
+run endpoints only (a row of order $m$ has at most $2m-1$ sign runs,
+sharp), with one witness per input in arithmetic augmented by power atoms
+$y=b^n$ ($O(D^3)$ witnesses for fixed bases, $O(D^4)$ with the bases as
+inputs) or, for an externally fixed bit bound, in an ordinary quartic; the
+complete sign-chart graph of $2^n-y$ has a single-fold (finite-fold)
+representation exactly when every c.e.\ set has one, which sharpens a
+proposition of Part~IX; and $\Re\bigl((3+4i)^n\bigr)$ changes sign with
+positive density on every residue class.  Part~XVIII (batch~79): for
+reliable FIFO actions along a straight-line trace grammar, a quartic with
+exactly $6g+3c+1$ natural witnesses and one zero exactly when the trace
+connects the supplied words, quantifying no intermediate queue; exact macro
+repetition counts, infinite repeatability as a word equation, a Fine--Wilf
+pumping threshold and unique-witness quartics for supplied infinite loops;
+its re-proofs of Parts~I and~VI in one coordinate are printed as pointers.
+Part~XIX (batch~79): for Barry Jay's Tree Calculus under eager evaluation
+and every externally fixed bound $N$ on distinct calls, a quartic with
+$3N^2+19N$ natural witnesses whose zeros project to the terminating
+applications (memoized proof DAGs, made well-founded by additive call
+costs), a canonical refinement with exactly one witness, a strict
+bracket-abstraction compiler from weak call-by-value $\lambda$-calculus,
+and a literal universal tree of 175 constructor-DAG nodes with an
+r.e.-complete halting domain, whose code of about $4.5\cdot10^{10}$ bits
+is charged by 175 quadratic equations and never materialized.  Merged from
+twenty-one manuscripts; not a Lean formalization.}
 
 \entry{Diophantine laws of probabilistic, quantum and continuous computation}
 {hilbert-tenth-problem/probabilistic-quantum-and-continuous-computation}
@@ -3634,11 +3668,14 @@ points to the sibling reports \dir{stochastic-and-thermal-exactness},
 which answers Part~VII's structural-subclass question negatively in part
 (dated notes), and
 \dir{signal-machine-collision-certificates}, which shares no theorem.
+A dated note (batch~79) applies the finalizer of
+\dir{smooth-diophantine-finalizers} to Part~V's Boolean-circuit quartics,
+whose zero sets are singular at every real zero.
 Merged from thirteen manuscripts; not a Lean formalization.}
 
 \entry{Beyond halting: recurrence, progress deadlines and Diophantine liveness}
 {hilbert-tenth-problem/liveness-beyond-halting}
-{article.pdf}{Beyond\_Halting\_Diophantine\_Liveness.zip, Quadratic\_Diophantine\_Dynamics.zip (batch~62); batch~63: quadratic\_infinite\_computation.zip}
+{article.pdf}{Beyond\_Halting\_Diophantine\_Liveness.zip, Quadratic\_Diophantine\_Dynamics.zip (batch~62); batch~63: quadratic\_infinite\_computation.zip; batch~79: clock\_spectra\_research.zip}
 {For computable finitely branching systems, existence of a recurrent run
 with a computable progress deadline is $\Sigma^0_3$-complete and equivalent
 to a nonempty effectively closed class of accepting schedules, and to an
@@ -3650,7 +3687,16 @@ coefficients at most eight gives the transition relation of counter
 networks (degree two is minimal); a second, incoming-edge encoding has
 height six, a sum-of-squares quartic companion and an exact planar
 realization; and a two-stack quartic certifies finite runs meeting
-prescribed deadlines.  Merged from three manuscripts; not a Lean
+prescribed deadlines.  Part~VI (batch~79) answers in part the report's
+question on deadline spectra beyond c.e.\ cones: clock problems are, up to
+uniform computable transformations, the upward effectively closed mass
+problems of Baire space; every $\Delta^0_2$ degree, and every degree of a
+unique path through a recursive tree (among them $\mathbf 0^{(r)}$ and
+$\mathbf 0^{(\omega)}$), is a least clock degree of an input of a fixed
+two-stack system; unions of incomparable cones have no least degree, and a
+least clock degree is hyperarithmetic and contains a self-modulus.  Its
+degree-two two-stack certificate is a second route, at lower degree, to the
+report's quartic compiler.  Merged from four manuscripts; not a Lean
 formalization.}
 
 \entry{Groups as Diophantine substrates}
@@ -3687,9 +3733,9 @@ that share no theorem, the Heisenberg setup printed once; one Mihailova
 step is a second route to the probabilistic-quantum report's.  Not a Lean
 formalization.}
 
-\entry{Collision geometry is linear: Diophantine certificates for rational signal machines}
+\entry{Collision geometry is linear: Diophantine certificates for rational signal machines and conservative particle dynamics}
 {hilbert-tenth-problem/signal-machine-collision-certificates}
-{article.pdf}{batch~78: Collision\_Geometry\_Diophantine\_Signal\_Machines.zip + Signal\_Machine\_Diophantine\_Certificates.zip}
+{article.pdf}{batch~78: Collision\_Geometry\_Diophantine\_Signal\_Machines.zip + Signal\_Machine\_Diophantine\_Certificates.zip; batch~79: Conservative\_Signal\_Frontend\_Corrected.zip, Sparse\_Lattice\_Diophantine\_Certificates.zip; superseded, not printed: Conservative\_Signal\_Diophantine\_Frontend.zip}
 {A rational signal machine computes by collisions of finitely many kinds of
 particles moving at fixed rational speeds on a line.  Once a complete finite
 collision history is fixed, its realizations are exactly the natural zeros
@@ -3709,13 +3755,30 @@ $60^K\max(1,M_0)$ for the four-speed interface of Durand-Lose's universal
 machine, which is not transcribed.  Part~I's convex-quadratic barrier is a
 special case of Part~XI of \dir{canonical-diophantine-certificates}, printed
 as a second route.  No fixed-arity polynomial for unbounded halting is
-claimed.  \emph{Merged from two independent manuscripts proving one theorem
-by two routes, both printed in full;} not a Lean formalization.}
+claimed.  Part~III (batch~79) writes out a fixed reversible,
+number-conserving universal signal machine with 114 meta-signals, 445
+two-to-two rules and exactly 18 live signals on every encoded input,
+compiled from Morita's 15-state, 6-symbol reversible universal Turing
+machine through Durand-Lose's conservative stacks; its event dynamics is an
+18-dimensional partial piecewise homogeneous integer-linear map, and every
+fixed horizon has an explicit canonical quadratic certificate (4{,}196{,}998
+auxiliaries per step for the literal machine).  This answers Part~I's
+question on an audited universal frontend, except for an ordinary-integer
+loader; the manuscript is the corrected edition of an earlier delivery,
+which is superseded.  Part~IV (batch~79) compiles a fixed horizon of
+one-dimensional partitioned number-conserving lattice dynamics into one
+quartic sum of squares with a unique natural witness, corrects a sign in
+Morita and Imai's construction, and proves decidability and effective
+semilinearity at total mass at most two.  Four large packet and fixture
+files of Parts~III and~IV are regenerated rather than stored.  \emph{Parts~I and~II are two
+independent manuscripts proving one theorem by two routes, both printed in
+full; Parts~III and~IV come from two further manuscripts;} not a Lean
+formalization.}
 
 \entry{Stochastic and thermal exactness: exact events in uniformly convergent systems}
 {hilbert-tenth-problem/stochastic-and-thermal-exactness}
-{article.pdf}{batch~78: ProveIt\_Exact\_Erasure\_Research.zip + ProveIt\_Exact\_Convergence\_Research.zip + Thermal\_Arithmetic\_Diophantine\_Hamiltonians.zip}
-{One pattern in three settings: an approximation converges uniformly at a
+{article.pdf}{batch~78: ProveIt\_Exact\_Erasure\_Research.zip + ProveIt\_Exact\_Convergence\_Research.zip + Thermal\_Arithmetic\_Diophantine\_Hamiltonians.zip; batch~79: Mixing\_Does\_Not\_Remove\_Arithmetic.zip, Coercive\_Green\_Diophantine.zip + Well\_Conditioned\_Diophantine\_Computation.zip}
+{One pattern in five settings: an approximation converges uniformly at a
 known rate, while an exact event of the same system is undecidable.
 Part~I lifts integer matrix mortality to strictly positive rational
 column-stochastic matrices with no common invariant complex line, entries
@@ -3738,18 +3801,33 @@ no-cutoff and finite-fold steps are those of
 \dir{canonical-diophantine-certificates}, printed as pointers; defects that
 the research tree found in three shipped programs are disclosed, not
 patched, and Part~II's two largest certificates are regenerated by its code
-rather than stored.  \emph{Merged from three manuscripts that share no
+rather than stored.  Part~IV (batch~79): every nonzero rational polynomial
+$P$ of translation rank $r(P)$ is realized by $s=r(P)+1$ states (optimal)
+with commuting, invertible, strictly positive doubly stochastic rational
+matrices in any band around $1/s$, acceptance $1/s+\varepsilon q^{|n|}P(n)$
+and total-variation contraction $\theta^L$; on a fixed alphabet, with the
+input on a rational quadratic B\'ezier curve or a line segment, the exact
+hit of the equilibrium value is c.e.-complete, with no computable horizon.
+It reuses Part~I's lift, printed as a pointer.  Part~V (batch~79, two
+manuscripts proving one theorem by two routes): uniformly coercive
+operators $\alpha I-A$ on computable path forests, and on a connected graph
+of maximum degree three, with polynomial-time approximable inverses, whose
+unique normalized integer Green certificates exist exactly on halting
+inputs; the rational Green values are classified by a Pell equation,
+finite support and attainment of a strongly convex energy are undecidable,
+and membership over $\mathbb Z[S^{-1}]$ is decidable for every finite prime
+set $S$.  \emph{Merged from six manuscripts; Parts~I--IV share no
 theorem;} a sibling of
 \dir{probabilistic-quantum-and-continuous-computation}, not a Lean
 formalization.}
 
-\entry{Quadratic orthant certificates: maximal parallelism, timed irreversible races and a fixed Waterfall universal machine}
+\entry{Quadratic orthant certificates: maximal parallelism, timed irreversible races, a fixed Waterfall universal machine, active membranes and reset Petri nets}
 {hilbert-tenth-problem/quadratic-orthant-certificates}
-{article.pdf}{batch~78: Maximal\_Parallel\_Diophantine.zip + Total\_Quadratic\_Diophantine\_Semantics.zip + Waterfall\_Diophantine\_Certificates.zip}
+{article.pdf}{batch~78: Maximal\_Parallel\_Diophantine.zip + Total\_Quadratic\_Diophantine\_Semantics.zip + Waterfall\_Diophantine\_Certificates.zip; batch~79: Membrane\_Motif\_Research\_Package.zip, Universal\_Membrane\_Research\_Package.zip, Reset\_Petri\_Net\_Certificates.zip}
 {Each Part compiles a fixed finite system into one integer polynomial of
 degree two, nonnegative on the real orthant, whose natural zeros biject with
 the semantic objects and whose unsquared products express a condition that
-balance equations cannot; all three sit at the level $D^{+}_2=\mathrm{SL}$
+balance equations cannot; Parts~I--III sit at the level $D^{+}_2=\mathrm{SL}$
 of the degree classification in Part~XI of
 \dir{canonical-diophantine-certificates}.  Part~I certifies one maximal
 parallel round of a multiset-rewriting system with $d+2m+4H$ natural
@@ -3769,7 +3847,85 @@ and an empty or singleton fibre; its arity grows with~$k$.  Re-proofs and
 generalizations of Part~XI's results are printed as second routes; the
 research tree's reduction to 107 witnesses at $k=7$ and its independent
 finding of the same Neary--Woods erratum are credited.  Iijil's two machine
-data files are third-party and not under MIT-0.  \emph{Merged from three
-independent manuscripts that share no theorem;} not a Lean formalization.}
+data files are third-party and not under MIT-0.  Parts~IV--VI were added
+in batch~79.  Part~IV certifies one maximally parallel step of
+polarizationless noncooperative active membranes with division and
+dissolution by a sum of squares of quadratic residuals (degree four, one
+polynomial per finite schema), with exact inclusion maximality, an exact
+variable and residual ledger, the sharp next-population bound $2^n-1$ and a
+four-rule system that defeats identical-subtree sharing.  Part~V gives two
+literal universal active-membrane frontends for the Neary--Woods machine
+(affine: 528 three-counter instructions and 2{,}544 rules; prime: 8{,}408
+two-counter instructions and 34{,}605 rules), both c.e.-complete, the
+transcendental density of the prime language, of Turing degree
+$\mathbf 0'$, and outcome quadratics whose products are strong selector
+gates, so that every zero over the real orthant is natural and every fibre
+is empty or a singleton.  Part~VI builds a unit-weight reset Petri net (539
+places, 771 transitions, 233 reset arcs from three places) with
+c.e.-complete exact-target reachability, exactly one accepting word at each
+length of an arithmetic progression and a canonical certificate with $2813h$
+witnesses, natural over the nonnegative reals; it re-derives Part~V's
+program layer without citing it, which is printed once.  Seventeen heavy
+schemas and traces of Parts~V and~VI are regenerated rather than stored.  \emph{Merged from six manuscripts: the first three
+share no theorem, and Parts~IV and~V are complementary;} not a Lean
+formalization.}
+
+\entry{Polynomial witness histories: unique linear certificates with finite polynomial unknowns}
+{hilbert-tenth-problem/polynomial-witness-histories}
+{article.pdf}{batch~79: unique\_polynomial\_histories.zip + one\_coordinate\_certificates.zip + Linear\_Boundary\_Transport\_Research.zip}
+{Certificates whose unknowns are a fixed number of finite polynomials rather
+than integers: identities linear in them (in Part~II of degree two, every
+product through one shared stride), a clock that makes the whole witness
+unique with $0/1$ coefficients, and no computable input-only bound on its
+degree or support.  Part~I compiles cellular computation over $\N[X,Y]$
+with $s^3+s+5$ polynomial unknowns and $3s+3$ affine-linear rows (or
+$3\lceil\log_2 s\rceil+6$ unit-coefficient rows, or nine weighted rows),
+with a unique Boolean-coefficient witness exactly at a first singleton
+acceptance, exact degrees, a $\Sigma^0_1$-complete fixed matrix and a
+single quadratic.  Part~II answers Part~I's question on one coordinate
+negatively: coefficient-bounded univariate linear systems over $\N[X]$ are
+decided by a finite-state procedure, so no universal univariate linear
+compiler has computably bounded witness heights; eleven degree-two
+identities with the self-calibrating stride $S=X^{m+2h+2}$ keep the full
+unique Boolean history, in bijection with Part~I's witnesses.  Part~III,
+independent of both: linear boundary transport uniform over every nonzero
+commutative ring, a compiler with $q+d$ linear identities in $q+2d$ sorted
+polynomial unknowns, a row-tagged single equation, an exact
+integer/rational energy gap and a Hilbert-space range theorem.  A fixed
+number of polynomial unknowns is not a fixed number of integer unknowns: no
+ordinary fixed-arity representation is claimed, the no-bound results are
+the bounded-search argument of Part~IX of
+\dir{canonical-diophantine-certificates}, and undecidability of linear
+equations over polynomial semirings is older work (Narendran).  Three
+expanded-polynomial exports of 1.0--1.6\,MB are regenerated by the shipped
+code rather than stored.  \emph{Merged from three manuscripts, one
+answering another;} not a Lean formalization.}
+
+\entry{Smooth everywhere, universal on the integers: smooth Diophantine finalizers}
+{hilbert-tenth-problem/smooth-diophantine-finalizers}
+{article.pdf}{batch~79: Smooth\_Quartic\_Diophantine\_Certificates.zip}
+{For integer polynomials $f_i$ of degree at most two with homogeneous
+quadratic lifts $q_i(x,t)$, the finalizer
+$F=\sum_i q_i(x,t)^2+(tu-1)^2+g(z_1)+g(z_2)+2g(z_3)$, $g(z)=2z^2-z$, is a
+quartic in five more variables whose natural zeros are in bijection with
+those of the system and whose integer zeros are exactly two sign-related
+copies of its integer zeros, while its affine scheme is smooth over
+$\mathbb Z$ with geometrically integral fibres, certified by an explicit
+integral B\'ezout identity $AF+\sum_v B_vF_v=1$ of product degree at most
+seven.  It has a nonnegative point over $\mathbb Z[1/2]$, points over every
+$\mathbb Z_p$ and modulo every integer, rational points dense in its real
+locus and exactly two real path components, so no local obstruction
+remains.  With first weight one, universal smoothness holds exactly for
+total guard weight 4 or~16, and three guards (five auxiliaries) are optimal
+within positive weight-four guard families; also a bounded counter-program
+frontend with a unique natural witness, c.e.-completeness on the compiled
+class with no computable bound on the least integer witness, and
+power-of-two padding to higher degree.  General smooth-variety
+undecidability is Poonen's; the counter adapter and the quartic
+normalization are those of \dir{canonical-diophantine-certificates},
+credited; no finite-fold or single-fold MRDP theorem is claimed.  A dated
+note in \dir{probabilistic-quantum-and-continuous-computation} applies the
+finalizer to that report's Boolean-circuit quartics.  From one manuscript;
+not a Lean formalization.}
 
 \end{document}
