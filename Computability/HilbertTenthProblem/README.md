@@ -53,6 +53,15 @@ These three points extend the86/179 through98/44 operation/degree catalogue.
 Earlier points use19 witnesses; these use24. No global optimality is claimed,
 and the minimum operation bounds remain74/86.
 
+The [eager Tree occurrence-flow reduction](Papers/research-wip/native-stream-queue/eager_tree_occurrence_flow.md)
+saves **N−1 additions** in the complete N-row quartic certificate, giving
+27N²+124N+9 operations with unchanged natural witness count. Incoming flow
+excludes reachable cycles, and replacing unreachable rows restores a parent
+certificate for the same input/output triple at the sameN. The
+[independent full review](Papers/research-wip/native-stream-queue/review_eager_tree_occurrence_flow_full.md)
+and fresh replays pass. N remains external, so this is a finite-certificate
+improvement without a new universal operation bound or uniqueness theorem.
+
 The [corrected Grill halt bridge](Papers/research-wip/native-stream-queue/grill_tag_halt_bridge.md)
 and its [independent review](Papers/research-wip/native-stream-queue/review_grill_tag_halt_bridge.md)
 prove halting equivalence at the exact encoded width, including cleanup.

@@ -57,6 +57,18 @@ reviewed predecessors. Exact coordinate identities and off-zero grouping
 corrections remain separate from the positive integer witness theorem.
 No global arithmetic optimality or general grouping census is claimed.
 
+The [eager Tree occurrence-flow certificate](eager_tree_occurrence_flow.md)
+reduces the complete finite N-row polynomial from27N²+125N+8 to
+**27N²+124N+9 operations**, savingN−1 additions. All3N²+19N natural
+witnesses and exact degree4 remain. Nonnegative incoming flow excludes
+root-reachable cycles; replacing unreachable rows by valid leaves restores
+a parent certificate at the sameN. This preserves represented input/output
+triples, with no claim of equal witness sets or uniqueness. The
+[independent complete review](review_eager_tree_occurrence_flow_full.md)
+checks full sources, exact corrections, graph semantics and cyclic examples;
+author and reviewer receipts pass fresh root replay. N stays external, so
+this does not change the universal74/86 bounds.
+
 The [native first-coefficient transfer](native_pell_factored_first_coefficient.md)
 now gives a **63=32M+31A prescribed AND certificate**, with22 positive
 auxiliaries and16 comparisons; its full degree28 SOS costs110 operations.

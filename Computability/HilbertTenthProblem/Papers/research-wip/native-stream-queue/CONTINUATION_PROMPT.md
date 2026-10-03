@@ -140,6 +140,27 @@
 > All22 inherited source/proof pins are strict; no historical suite is
 > imported. Preserve the frozen author and review trios. Only these two
 > new partitions are claimed, not a complete grouping census.
+> The [eager Tree occurrence-flow reduction](eager_tree_occurrence_flow.md)
+> and [independent full review](review_eager_tree_occurrence_flow_full.md)
+> pass fresh root receipts. From the corrected imported base kernel replace
+> h_i=1+sum_sj p_isj*h_j by mu_i=delta_i0+sum_js mu_j*p_jsi.
+> Tags/selectors remain natural; their retained sum equations force0/1.
+> Root mass>=1 propagates along edges; a root-reachable cycle contradicts
+> the positive entry/injection. Reachable DAG induction establishes the
+> root application. For a parent inverse, replace unreachable rows by valid
+> leaf dummies and assign reachable heights. Forward root path counts give
+> mu=0 on unreachable rows. Both directions retain the same externalN and
+> represented natural(program,argument,output) triples, not witness sets.
+> Arbitrary new zeros can have disconnected circulations, even feeding the
+> root; do not assert mu0=1 or minimal path counts at every new zero.
+> New complete ledgerM=12N²+56N+3,A=15N²+68N+6, total27N²+124N+9,
+> exactlyN−1A below parent. Same3N²+19N naturalw,23N+3 quadratic residuals,
+> exactdegree4 from retained pairing residual and noncancellation ofSOS.
+> The full all-value correction is exactly the sum of new flow squares
+> minus the old height squares; all remaining residuals match identically.
+> This is the finite base certificate, not the larger canonical/unique-fiber
+> system. N remains external; no ordinary-input loader or fixed-arity bound.
+> Preserve the imported kernel and both current frozen trios.
 > The [coefficient-only census](complete87_shared_coefficient_scout.md) is
 > frozen separately: reachable-set counts1/13/116/891 exclude at most three
 > multiplication gates for Q=Delta*i²*c⁴ and K=Delta²*i²*c⁴ at its five paid
