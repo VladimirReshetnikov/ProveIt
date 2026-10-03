@@ -1,0 +1,95 @@
+--- a/src/substrate.py
++++ b/src/substrate.py
+@@ -9,6 +9,7 @@
+ from fractions import Fraction
+ from math import isqrt
+ from typing import Iterable, Mapping
++from types import MappingProxyType
+ 
+ 
+ def nat(x: object, name: str = "value") -> int:
+@@ -279,12 +280,18 @@
+     raise AssertionError("invertible recurrence did not return to a scalar power")
+ 
+ 
++def exact_primes(primes: Iterable[int]) -> tuple[int, ...]:
++    # Validate before set deduplication: 2 and 2.0 compare equal in Python.
++    values = tuple(primes)
++    if any(not is_prime(p) for p in values):
++        raise ValueError("S must contain only exact integer primes")
++    return tuple(sorted(set(values)))
++
++
+ def localization_bound(m: int, primes: Iterable[int]) -> dict:
+     """All S-smooth D_L have L < first_excluded_length (a sufficient bound)."""
+     odd_parameter(m)
+-    ps = tuple(sorted(set(primes)))
+-    if any(not is_prime(p) for p in ps):
+-        raise ValueError("S must contain only primes")
++    ps = exact_primes(primes)
+     C = 1
+     ranks = []
+     for p in ps:
+@@ -303,9 +310,7 @@
+     nat(n)
+     if n == 0:
+         raise ValueError("smoothness requires a positive integer")
+-    ps = tuple(set(primes))
+-    if any(not is_prime(p) for p in ps):
+-        raise ValueError("prime set required")
++    ps = exact_primes(primes)
+     for p in ps:
+         while n % p == 0:
+             n //= p
+@@ -347,12 +352,42 @@
+     rows: tuple[Linear, ...]
+     cross_terms: tuple[tuple[str, str], ...]
+ 
++    def __post_init__(self) -> None:
++        if type(self.variables) not in (tuple, list) or type(self.parameters) not in (tuple, list):
++            raise ValueError("coordinate names must be a tuple or list")
++        variables, parameters = tuple(self.variables), tuple(self.parameters)
++        names = variables + parameters
++        if any(type(name) is not str or not name for name in names) or len(set(names)) != len(names):
++            raise ValueError("coordinate names must be nonempty, distinct exact strings")
++        if type(self.rows) not in (tuple, list) or type(self.cross_terms) not in (tuple, list):
++            raise ValueError("rows and cross terms must be a tuple or list")
++        rows = []
++        for row in self.rows:
++            if not isinstance(row, Mapping):
++                raise ValueError("linear rows must be mappings")
++            copied = dict(row)
++            if any(type(name) is not str or (name and name not in names) or type(coefficient) is not int
++                   for name, coefficient in copied.items()):
++                raise ValueError("rows require declared names and exact integer coefficients")
++            rows.append(MappingProxyType(copied))
++        cross = []
++        for pair in self.cross_terms:
++            if type(pair) not in (tuple, list) or len(pair) != 2 or any(type(name) is not str or name not in names for name in pair):
++                raise ValueError("cross terms require two declared coordinate names")
++            cross.append(tuple(pair))
++        object.__setattr__(self, "variables", variables)
++        object.__setattr__(self, "parameters", parameters)
++        object.__setattr__(self, "rows", tuple(rows))
++        object.__setattr__(self, "cross_terms", tuple(cross))
++
+     def _validate_assignment(self, assignment: Mapping[str, int]) -> None:
+         for name in self.variables + self.parameters:
+             if name not in assignment or type(assignment[name]) is not int:
+                 raise ValueError(f"missing or nonintegral coordinate: {name}")
+ 
+     def energy(self, assignment: Mapping[str, int], natural: bool = True) -> int:
++        if type(natural) is not bool:
++            raise ValueError("natural must be an exact Boolean")
+         self._validate_assignment(assignment)
+         if natural and any(assignment[x] < 0 for x in self.variables + self.parameters):
+             raise ValueError("the zero-set theorem is over natural coordinates")
+@@ -372,7 +407,7 @@
+ 
+     def export(self) -> dict:
+         return {"domain": "natural numbers", "variables": self.variables, "parameters": self.parameters,
+-                "linear_residuals": self.rows, "nonnegative_cross_terms": self.cross_terms,
++                "linear_residuals": tuple(dict(row) for row in self.rows), "nonnegative_cross_terms": self.cross_terms,
+                 "expanded_polynomial": [{"coefficient": c, "variables": mon} for mon, c in sorted(self.expanded().items())],
+                 "total_degree": max(map(len, self.expanded()), default=0)}
+ 

@@ -10,8 +10,8 @@ This is the continuing proof/source review of the [byte-pinned intake](incoming_
 | Eager tree calculus | [Complete](review_eager_tree_aebfa.md) | Paid DAG/canonicalization and literal universal-tree audit; evaluator input repair, both 19-script replays pass |
 | One-coordinate certificates | In progress | Polynomial unknowns, stride and coefficient-bound scope |
 | Smooth quartics | [Complete](review_smooth_quartic_aebfa386e.md) | Full integral smoothness and domain audit; all 21,128 author checks and byte-identical exports replayed; no repair needed |
-| Coercive Green functions | In progress | Infinite graph and finite-support arithmetic interface |
-| Well-conditioned computation | In progress | Infinite graph and normalized integer witnesses |
+| Coercive Green functions | [Complete](review_coercive_connected_aebfa386e.md) | Full coercivity, normalization and finite-support audit; original 110,522 checks and independent exact replays pass |
+| Well-conditioned computation | [Complete](review_coercive_connected_aebfa386e.md) | Connected dipole/finite-prime/sparsity proofs; export-alias and input-type repairs; original/repaired 38,524 checks pass |
 | Mixing | In progress | Exact-series dimension versus arithmetic/zero-set complexity |
 | Sparse lattice dynamics | [Complete](review_sparse_lattice_aebfa386e.md) | Exact polynomial-constructor repair; both complete 18-stage replays and large source-fixture regeneration pass |
 
