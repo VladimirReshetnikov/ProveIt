@@ -1,5 +1,9 @@
 # WIP: native queue streams and research continuation
 
+[All twelve batch-80 archives](incoming_substrate_review_4e270aa46.md) have
+completed their scoped reviews and root replays. The inventory pins 388
+published member occurrences; the complete universal polynomial bound remains 87.
+
 The [batch-80 correction audit](review_batch80_corrected.md) verifies the new
 Tree Calculus, reset-net and sparse-lattice corrected packages at `4e270aa46`.
 The declared API repairs are present; every original report and mathematical
@@ -29,6 +33,13 @@ body and executables preserved. A prior five-witness congruence atom removes
 one coordinate per congruence in its canonical quartic corollary, after
 quantifier elimination. These results do not lower the universal bound.
 
+The subsequent placements are also authenticated: [corrected code](review_batch80_corrected_placement_8a4e64732.md)
+now carries all three API repairs; [mass companions](review_batch80_mass_placement_345a9e44e.md)
+preserve 116 files and explicit shared copies; [surreal staging](review_surreal_placement_ccc046989.md)
+preserves 16 files with one complete base manuscript. At those pins the mass
+Parts and the surreal synthesis have not yet been written. Flattened release
+companions still require the original package layout for their runners.
+
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
 The reviews preserve the delivered sources and provide pinned repair patches,
@@ -39,6 +50,21 @@ signal/reset simplifications. With [complementarity rescheduling](signal_complem
 the signal schedule saves 7,569,906 operations per event packet, reaching
 17,822,616; reset gates save 761 additions per source step. These
 external-horizon/local results leave the global 87-operation bound unchanged.
+
+The [Tree Calculus Part XIX transfer](review_tree_typesetting_954261e15.md)
+preserves 42 formal blocks, 83 displays, 12 tables/listings and 806 inline
+formula occurrences in order, plus 51 original companions. Its separate tested
+patch qualifies exact-size uniqueness, the two DAG-growth base cases and the
+single-fold input translation, and updates two collection counts. Root replay
+matches the receipt. The later corrected-code placement has a separate boundary.
+
+The [new catalogue and reciprocal-note review](review_batch79_j2_bbc67d225.md)
+finds four prose issues: linear versus quadratic polynomial witnesses, a stale
+all-quadratic Part count, branchwise versus uniform signal scaling, and a
+zero-input caveat that omits disjoint guards. A tested seven-file patch corrects
+them. For the complete original signal packet, the disjoint homogeneous guards
+make its nonnegative-real fibre natural even at zero input; the isolated weak
+gates alone do not force this. Existing arithmetic ledgers are unchanged.
 
 The assembled-report reviews now also cover [Part XVII sign charts](review_signcharts_f97814421.md):
 79 formal environments and 91 display occurrences survive with their multiplicities,
