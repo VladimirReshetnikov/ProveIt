@@ -60,6 +60,16 @@ certificates and checks8 genuine accepted outer histories. Both installed
 receipts pass fresh replay. This generalizes the matrix route's range packing;
 it supplies no numerical universal alphabet or new universal bound.
 
+After the manuscript placements retired the incoming ZIPs, the
+[archive replay guide](reviewed_report_archive_replay.md) preserves access
+to all23 original computational packages:60,110,941 authenticated bytes
+from one fixed Git revision. It writes an external cache and a checked link
+to current proof sources, leaving every frozen review and pin unchanged.
+Normal/optimized replay, independent path/no-overwrite checks, and fresh
+signed-index/height receipt replays pass through that cache. The guide maps
+permanent reading locations and the actual older command interfaces;
+archive copying itself adds no scientific review or arithmetic claim.
+
 The [parallel-particle report review](review_parallel_particle_reports.md)
 checks the new two-involution CA, its sparse evaluator, and its fixed-horizon
 natural-witness quartics. An independent reconstruction matches the complete
@@ -94,6 +104,19 @@ the new family has negative computed W. The sound74 parent and normalized85
 construction retain different constraints and are unaffected. The ordinary
 native-fiber classification is also consistent, but its auxiliary progression
 must not be copied unchanged to the normalized strong equation.
+
+The [canonical height and discrepancy review](review_incoming_counterexample_heights.md)
+confirms Report34's fixed-family height expansion and its exact rotation
+counting term. Unbounded discrepancy rules out the proposed smooth two-term
+count with a bounded error; all-orders height expansions do not remove that
+obstruction. A separate literal check of all eight signed20 orientation
+sources transfers the negative-index family to their corresponding
+**eight signed19 children**, using only the forward scale map and retained
+strong/linear protections. It does not affect the positive-index parents.
+Independent analytic review and fresh normal/optimized receipts pass;
+48 formal logarithm coefficients and the complete normal-form factorization
+are checked without constructing enormous compiler zeros. No arithmetic
+bound or whole-fiber counting theorem is added.
 
 The [matrix and Grill report intake](review_incoming_matrix_grill.md)
 reconstructs all229 literal directed-semigroup generators and derives a
