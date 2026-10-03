@@ -299,6 +299,16 @@ T from the height then permits T+(B-1). Both installed receipts pass fresh
 replay. The three exactly-one-step programs are separate exceptions; this
 obstruction is about exact-clock preservation, not a universal lower bound.
 
+The [bounded one-step specialization](three_mass_one_step_height.md) and
+[independent review](review_three_mass_one_step_height.md) establish those
+three exceptions at complete costs**466/464/467**, all56 positive witnesses,
+19 comparisons and degree upper bound1192. Their actual tables force one
+step; the tick is below B-1, so natural T forces clockhat1 and exact time.
+The full signed parent map is eta_parent=eta-T, with an unconditional
+positive embedding in the reverse direction. Both installed receipts pass.
+These elementary fixed-program relations add no unbounded-computation
+benefit and are not a maintained API milestone or new universal bound.
+
 The [two-cone recoder transfer](native_binary_recoder_factored128.md) reduces
 the complete inline binary recoder to**128=65M+63A**, with49 positive
 auxiliaries,34 comparisons and229-operation SOS of exact degree40.

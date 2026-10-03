@@ -109,6 +109,20 @@
 > seed/AND checks; full native witnesses exist by the pinned prescribed-height
 > theorem and are not materialized. The exactly-one-step zero3/nop/positive3
 > examples are separate exceptions, adding no unbounded-computation benefit.
+> The [bounded one-step specialization](three_mass_one_step_height.md) and
+> [independent review](review_three_mass_one_step_height.md) now certify the
+> three exceptions466/464/467,56w19eq,upperdegree1192; incdec is rejected.
+> Actual slopes30 are divisible by K5, initial control goes to halt/trap,
+> every other control traps. Typed accepted paths therefore have exactly one
+> step; tick<=1152h+8<B-1 makes naturalT force clockhat1 and T=tick.
+> Full signed map eta_parent=eta-T; reverseeta=eta_parent+T positive on all
+> domain assignments. Genuine nop x0,y1,T200,h2,eta1 restores signedeta=-199.
+> Both installed / replays pass. Review reconstructs1,397 gates,114 operands,
+> all90 exact macro/tick rows and3 whole clock expansions. This is a bounded
+> illustrative source/proof packet, not a broad maintained API audit. Its
+> raw relations y=x+1,T=192(x+1)+8 plus a simple mod3 guard have no benefit
+> for unbounded computation. Do not pursue additional one-step-only gate
+> deletions as progress on universal arithmetic complexity.
 > The [factored first-root reduction](complete86_factored_first_root.md)
 > gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
 > alternative gives87=47M+40A, degree135. The old first factor

@@ -276,6 +276,13 @@ unchanged native witnesses. The proof applies to any accepted path of at
 least two positive-tick steps in this clock scheme. One-step programs are
 separate exceptions. Both installed source and review receipts pass.
 
+The [one-step exception](Papers/research-wip/native-stream-queue/three_mass_one_step_height.md)
+and [bounded independent review](Papers/research-wip/native-stream-queue/review_three_mass_one_step_height.md)
+verify the separate466/464/467 examples. Their actual tables force one
+step, making the retained positive clock quotient exact without a time
+bound in the height. Both installed replays pass. These simple fixed-program
+relations provide no improvement for unbounded universal computation.
+
 The [paid three-mass input bridge](Papers/research-wip/native-stream-queue/three_mass_exponential_input_bridge.md)
 adds54 operations to load payload2^(96x) for positive ordinary x, giving
 complete fixed-source totals651/526/524/527. Its sum-of-squares finalizer
