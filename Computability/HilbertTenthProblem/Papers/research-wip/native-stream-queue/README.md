@@ -56,6 +56,15 @@ preserves 16 files with one complete base manuscript. At those pins the mass
 Parts and the surreal synthesis have not yet been written. Flattened release
 companions still require the original package layout for their runners.
 
+The [later corrected-code publication audit](review_batch80_correction_publication_86267b8a3.md)
+covers all nine changed paths through `86267b8a3`. The three reports preserve
+1,309 formal statement/proof occurrences and their display/label sequences;
+the new API descriptions match the reviewed repairs. One reproduction issue
+has a tested three-README patch: the historical checkout predates the replay
+helper and its inventory, so invoke the later helper with `--repo` naming the
+historical checkout. Root replay passes. Earlier editorial corrections retain
+their separate status; this update changes no universal arithmetic bound.
+
 [All ten reports](incoming_substrate_review_aebfa386e.md) received at
 `ef2fc7990`/`aebfa386e` have completed proof/source review and isolated replay.
 The reviews preserve the delivered sources and provide pinned repair patches,

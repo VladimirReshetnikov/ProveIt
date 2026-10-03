@@ -151,6 +151,12 @@ Assembled-report transfers have separate revision boundaries:
 - [Corrected-code placement](review_batch80_corrected_placement_8a4e64732.md):
   all 21 changed supplements match their corrected archives. The implementation
   repairs are now maintained; 145 physical files serve 146 member paths.
+- [Corrected-code publication through 86267b8a3](review_batch80_correction_publication_86267b8a3.md):
+  all nine changed paths are pinned. The three reports preserve 1,309 formal
+  statement/proof occurrences, all measured display/label sequences and their
+  mathematical macro definitions. A tested three-README patch corrects the
+  historical-helper launch instructions; earlier editorial findings remain
+  separate. Basic PDF page/text checks pass without a layout or rebuild claim.
 - [Mass companion placement](review_batch80_mass_placement_345a9e44e.md):
   116 direct files, 13 explicit aliases and 33 archive-only members account
   for all 162 source occurrences. The existing article, README and PDF are
