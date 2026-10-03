@@ -28,6 +28,10 @@
 > input-row rescheduling exposes copy-column sums at unchanged cost, and the
 > finalizer is charged. Combined projected cost: 17,822,616 operations.
 > Respect the natural-only zero-set claims and external horizons. None lowers87.
+> If canonical fibers are unnecessary, the [existential congruence variant](presburger_congruence_existence15.md)
+> costs 14=5M+9A with five natural witnesses and exact truth, but infinite fibers.
+> Only its truth output can be shared. Independent full-NAND counts are 53→39;
+> both full sources and domain/privacy counterexamples have fresh root replays.
 > The complete U15 frontier511/4881,513/3120,515/2116,517/1936 is unchanged.
 > The [connected routing SLP](connected_cross_routing_slp.md) additionally emits
 > the full unchanged polynomial with shared selector/column/row sums: transfer
