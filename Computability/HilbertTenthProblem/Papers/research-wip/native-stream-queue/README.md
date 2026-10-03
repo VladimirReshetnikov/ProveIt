@@ -1,7 +1,17 @@
 # WIP: native queue streams and research continuation
 
 The complete universal polynomial now costs **86=48M+38A**, with19 positive
-witnesses and exact degree179. The
+witnesses and exact degree178 after the
+[transport quotient shear](complete86_transport_quotient_shear.md). It supplies
+`t=zplus-w*C`, replacing `(K+w*q)*C` by `(K+w)*C` in the transport factor.
+A full positive-zero bijection follows from the transport unit equation
+before invoking the native or compiler theorem. The ordinary-strong form
+retains87=47M+40A and reaches exact degree134. All seven other factors and
+all19 positive witnesses remain; no operation count changes. The
+[independent full review](review_complete86_transport_quotient_shear.md) and
+both installed receipts pass fresh replay. Exact factor degrees establish
+178/134 uniformly on valid fixed-program numeral slices; raw gate bounds
+188/144 are only upper bounds. The preceding
 [factored first-root proof and complete circuits](complete86_factored_first_root.md)
 replace `g²+L(2g−k)` by `T²−L(L+k)`, supplying `T=L+g`.
 At every complete positive zero, the product-unit equation forces `T>L`,
@@ -21,7 +31,7 @@ and both review receipts pass fresh root replay. Earlier entries below retain th
 historical counts and benchmark statements; the current numerical bounds
 are74/86. The [recomputed thirteen-base grouping family](complete86_first_root_partitions.md)
 adds four operation/exact-degree improvements:**88/123,91/102,92/80,95/54**.
-The union with all retained older asymmetric points is86/179,87/135,88/123,
+Including the new shear and retained older asymmetric points gives86/178,87/134,88/123,
 89/113,90/109,91/102,92/80,93/72,94/62,95/54,96/50,97/48,98/44.
 Every source retains19 positive witnesses and ordinary input. Its
 [independent audit](review_complete86_first_root_partitions.md) reproduces
@@ -49,7 +59,7 @@ reconstructs all151 sources and finalizers from the separately authored
 [bound-unit scout](complete_bound_unit_scout.md), verifies every exact leading
 form and complete correction, and audits domain metadata and public guards.
 Author, scout and independent-review receipts pass fresh root replay. The
-combined operation/degree frontier appends106/42,108/28,110/24 to86/179
+combined operation/degree frontier appends106/42,108/28,110/24 to86/178
 through98/44 above; these new points use24 witnesses, earlier points19.
 The [five-unit census](complete_unit_partition_frontier109.md), its
 [full review](review_complete_unit_partition_frontier109.md) and
@@ -253,6 +263,20 @@ existential runtime. The [independent review](review_three_mass_unbounded_endpoi
 proves all four full graph identities and checks the chronology and domain
 transport; both installed receipts pass fresh root replay. This supplies no new ordinary universal loader or bound,
 and does not silently change the frozen input-bridge compositions below.
+
+The [target-free height successor](three_mass_target_free_height.md) removes
+another **two additions** from each complete clock polynomial, reaching
+**592/467/465/468** with all19 comparisons and58/56/56/56 positive witnesses
+retained. It computes `h=n_initial+T+eta`; direct chronology and clock proofs
+work from `h>=2`. Signed slack substitution preserves the whole polynomial,
+but can restore a negative parent slack. Separate fresh-height completeness
+preserves the represented raw triples. The author,
+[math/probe review](review_three_mass_target_free_height_math.md) and
+[maintained full review](review_three_mass_target_free_height.md) pass fresh
+installed root replay. The full review independently reconstructs all four
+polynomials and their complete predecessor identities, and checks all seven
+public APIs. Degree figures remain upper bounds, and no ordinary-input
+universal decoder or bound is added.
 
 The [two-cone recoder transfer](native_binary_recoder_factored128.md) reduces
 the complete inline binary recoder to**128=65M+63A**, with49 positive

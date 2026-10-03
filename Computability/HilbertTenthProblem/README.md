@@ -39,6 +39,15 @@ independently verify the result. The source and both review receipts pass
 fresh replay. This is a mathematical proof with executable checks, not a
 Lean formalization or an unrestricted optimality claim.
 
+The [transport quotient shear](Papers/research-wip/native-stream-queue/complete86_transport_quotient_shear.md)
+now lowers those exact degrees to **178 at86 operations** and **134 at87**.
+Supplying `t=zplus-w*C` makes the transport factor quadratic. Its unit
+condition proves both directions of the positive-zero correspondence before
+any native decoding is used. All19 witnesses, other seven factors and full
+finalizer remain paid. The [independent full review](Papers/research-wip/native-stream-queue/review_complete86_transport_quotient_shear.md)
+and both installed fresh receipts pass. The degree proof is uniform on
+valid fixed-program numeral slices; no universal operation saving is claimed.
+
 The [affine-port scout](Papers/research-wip/native-stream-queue/complete86_affine_port_scout.md)
 and [independent census](Papers/research-wip/native-stream-queue/review_complete86_affine_port_scout.md)
 also check874 complete circuits from six joint-root schedules and one local
@@ -81,7 +90,7 @@ positive coordinates. The [independent review](Papers/research-wip/native-stream
 reconstructs every circuit, correction and exact leading form from the
 separately authored scout. Author, scout and review receipts pass fresh
 replay. These replace the reviewed five-unit points107/42,109/28,111/24
-and extend the86/179 through98/44 catalogue, whose earlier points use19
+and extend the86/178 through98/44 catalogue, whose earlier points use19
 witnesses. Ordinary input and unbounded duration remain paid. The minimum
 operation bounds stay74/86; no global optimality claim is made.
 
@@ -239,6 +248,17 @@ checks all four full graph identities and the domain proof; both installed
 receipts pass fresh root replay. This does not supply a new ordinary universal input loader
 or improve the 74/86 bounds. The input-bridge counts below retain their
 frozen predecessor sources.
+
+The [target-free height](Papers/research-wip/native-stream-queue/three_mass_target_free_height.md)
+then saves another **two additions**, reaching **592/467/465/468** with all
+19 comparisons retained. Direct soundness works with `h=n_initial+T+eta>=2`;
+fresh-height completeness preserves the same raw input/output/clock triples.
+The signed parent substitution can make its slack negative, so no positive
+witness bijection is claimed. Author,
+[math/probe review](Papers/research-wip/native-stream-queue/review_three_mass_target_free_height_math.md)
+and [full maintained-source review](Papers/research-wip/native-stream-queue/review_three_mass_target_free_height.md)
+pass fresh installed replay. All four complete polynomial identities and
+seven maintained APIs are independently checked. Universal bounds stay74/86.
 
 The [paid three-mass input bridge](Papers/research-wip/native-stream-queue/three_mass_exponential_input_bridge.md)
 adds54 operations to load payload2^(96x) for positive ordinary x, giving

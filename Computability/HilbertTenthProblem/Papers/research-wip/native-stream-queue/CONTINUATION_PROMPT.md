@@ -1,6 +1,24 @@
 # Continuation: universal straight-line certificates
 
 > **Current established universal bounds:74 certificate operations /86 polynomial operations.**
+> **Current exact degrees at86/87 operations:178/134.** The
+> [transport quotient shear](complete86_transport_quotient_shear.md) supplies
+> t=zplus-w*C and changes only kinner=K+w*q to K+w plus the quotient name.
+> Nt=(K+w)*C+(q-F)-t*(q-1) has exact degree2. All seven other factors and
+> finalizers remain literal; costs48M+38A and47M+40A,19 positive witnesses.
+> Full signed polynomial identity uses zplus=t+w*C. At a full positive zero,
+> Nt=+-1 forces C>=0 for both sources, and parent rt=(K+w+1)C+Z+alpha+ell*x-eps>0
+> proves t>0 without a native/compiler conclusion. Thus full positive zero
+> sets are in bijection; neither map preserves the full positive orthant.
+> [Independent full review](review_complete86_transport_quotient_shear.md)
+> and both installed receipts pass fresh / replay. Exact factor/leading-form
+> proof is uniform on valid inherited fixed-program numeral slices. Raw
+> gate-propagation188/144 must not be confused with exact178/134. Current
+> combined catalogue starts86/178,87/134,88/123,89/113,90/109,91/102,92/80,
+> 93/72,94/62,95/54,96/50,97/48,98/44; retain106/42,108/28,110/24 separately.
+> Grouped shear transfers are a separate bounded lead until reviewed.
+> Earlier first-root and rewrite-census degrees below describe their frozen
+> predecessor coordinates, not the new quotient-shear polynomials.
 > The [complete74 factorization](complete74_factored_first_norm.md) replaces
 > `(E²+X)*(kY)²` by `L*(L+k)`, L=E*(kY), E=XY, saving one multiplication.
 > This is the identical polynomial on all tuples, with unchanged coordinates,
@@ -45,14 +63,28 @@
 > Author and review receipts pass fresh installed root replay.
 > No new ordinary universal loader/table/bound. Existing paid input bridge
 > counts below still refer to their frozen coefficient-transfer parents.
-> Next source-reduction lead: omit the endpoint entirely from height and use
-> h=n_initial+T+eta. A separate bounded probe deletes two private additions,
-> but it is not yet a maintained/reviewed successor. Prove native pretyping
-> at h>=2, arbitrary-integer-target digit cancellation and the full clock
-> theorem directly. Signed restoration eta_coefficient=eta-target need not
-> be positive: genuine nop outer data x40,y41,T7880,h8192,eta111 restore
-> eta_coefficient=-91. Do not reuse the current slice bijection; represented
-> triples require separate soundness and fresh-height completeness.
+> The [target-free height](three_mass_target_free_height.md) now emits the
+> maintained four successors592/467/465/468, saving another2A with all19
+> comparisons and58/56/56/56 positive witnesses retained. Upper degrees
+> stay2344/1192/1192/1192. Private height changes from n0+target+eta+K+T
+> to n0+T+eta; the target remains paid in chronological transport.
+> Full signed pullback eta_endpoint=eta-K*y-q_h preserves every comparison
+> and the whole polynomial. It is not a positive witness map or zero-set
+> bijection: genuine nop x40,y41,T7880,h8192,eta111 restores endpointeta=-96
+> and coefficienteta=-91. Direct h>=2 pretyping and integer-target digit
+> cancellation recover target>0 and the same exact no-wrap clock. Separate
+> fresh-height/native-witness completeness gives the same fixed raw triples.
+> Author, the separate [math/probe review](review_three_mass_target_free_height_math.md)
+> and [maintained full review](review_three_mass_target_free_height.md) pass
+> fresh installed root replay. The full review reconstructs all four literal
+> polynomials, proves eight whole graph identities to both parent levels,
+> checks1,992 paid gates/76 residuals,57 outer histories,h2 boundaries and
+> all seven APIs, including84 warm pin failures across twelve dependencies.
+> Inverse eta=eta_endpoint+K*y+q_h gives a one-way positive parent embedding;
+> it does not restore every child tuple positively or give a fiber bijection.
+> Preserve all frozen parent/probe/math trios. No ordinary universal loader
+> or universal operation change follows; old paid input-bridge totals retain
+> their own frozen predecessor source.
 > The [factored first-root reduction](complete86_factored_first_root.md)
 > gives86=48M+38A, exact degree179,19 positive witnesses. Its ordinary-strong
 > alternative gives87=47M+40A, degree135. The old first factor
