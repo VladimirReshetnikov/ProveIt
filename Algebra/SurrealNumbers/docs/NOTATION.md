@@ -1915,3 +1915,24 @@ and quaternion algebra those order notions have their separately stated
 meanings. The [computer-algebra report](foundations-and-computation/computer-algebra/article.tex)
 (`cas:sec-objects`) treats these distinctions as representation requirements,
 not interchangeable spellings for software constructors.
+
+The [surreal well-orders report](foundations-and-computation/surreal-well-orders/article.tex)
+(`swo:sec:notation`) fixes one notation for its four sources. There `GB`
+includes no choice principle, as in `found:sub:gbconvention`; its sources 09
+and 12 prove the global-choice equivalence over GB **with** set choice, written
+`GB + AC` there. Birthday is `bd(x)` (its sources wrote `ℓ(x)` and `b(s)`; in
+its sources 08 and 09 the letter `b` is a baseline class bijection
+`Ord → No`). The birthday cutoff is `No_{<κ}`; its sources' `X_κ`, `X_θ` and
+`S_κ` are renamed, and source 12's `S_κ` is the reals report's `S_{<κ}`, not
+`S_{<κ⁺}`. `𝒲(X)` is the lexicographic order of all exhaustive well-order
+enumerations of a set `X`, and `𝒲_α(X)` those of length exactly `α`, as in the
+reals report; `ℓ₂(L)` is binary coding length (source 12's "binary coding
+rank"), not the von Neumann rank `rank(x)`. `𝔚_sl(No)` and `𝔚_all(No)` are
+the set-like and the arbitrary class well-orders of `No`: predicates on class
+variables, not classes. `𝔹_γ = (2^γ, <_lex)` is a binary cube, `𝔹_Ord` the
+order of class binary words on `Ord`, and `≃_e` equimorphism (embeddings both
+ways, not isomorphism). The class of bounded-support perturbations of a
+baseline enumeration has two codings with the same evaluations, `𝒫_bd(e₀)`
+(normalized permutations) and `𝒫_s(b)` (fixed-point-free support codes).
+`𝓘` is the class of injective set-length words with proper prefixes first
+(source 09 wrote `𝒯`), and `𝒯` the class of all set-length words.
