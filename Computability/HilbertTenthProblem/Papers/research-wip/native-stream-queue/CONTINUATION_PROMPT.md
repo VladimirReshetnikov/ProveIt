@@ -114,6 +114,20 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [multiplier-dependent strong-root theorem](complete84_multiplier_dependent_root_absorption.md)
+> extends the polynomial substitution obstruction to all88 values independent
+> of f,T,y_aux, including i and its two computed products. For fixed G of degree
+> t and coefficient norm L>=1, every substituted zero satisfies
+> **G!=0 and 2d*x+b<R<c<max(12t,5)+1+ceil(log2(L^2+2))**.
+> Fixing the old85 values produces an integer polynomial in i; a nonzero
+> strong-norm polynomial gives a Cauchy bound that conflicts with i>c^(c-1).
+> The signed f/T map and zero-f exclusion retain their precise earlier domains.
+> The [independent review](review_complete84_multiplier_dependent_root_absorption.md)
+> checks all84 source rows, all88 argument weights, complete sign/zero identities
+> and the quantified root bound. Fresh normal/optimized checks pass. The whole
+> input projection is finite on this fixed-polynomial interface; universal84 is unchanged.
+>
+>
 > The [strong-root substitution theorem](complete84_strong_root_absorption.md)
 > rules out every fixed integer polynomial replacement f=G(E) on the85-value
 > interface independent of i,f,T,y_aux: every resulting positive zero satisfies

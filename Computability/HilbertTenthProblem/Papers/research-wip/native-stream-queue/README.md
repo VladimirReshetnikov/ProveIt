@@ -111,6 +111,19 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [multiplier-dependent strong-root theorem](complete84_multiplier_dependent_root_absorption.md)
+extends the polynomial substitution obstruction to all88 values independent
+of f,T,y_aux, including i and its two computed products. For fixed G of degree
+t and coefficient norm L>=1, every substituted zero satisfies
+**G!=0 and 2d*x+b<R<c<max(12t,5)+1+ceil(log2(L^2+2))**.
+Fixing the old85 values produces an integer polynomial in i; a nonzero
+strong-norm polynomial gives a Cauchy bound that conflicts with i>c^(c-1).
+The signed f/T map and zero-f exclusion retain their precise earlier domains.
+The [independent review](review_complete84_multiplier_dependent_root_absorption.md)
+checks all84 source rows, all88 argument weights, complete sign/zero identities
+and the quantified root bound. Fresh normal/optimized checks pass. The whole
+input projection is finite on this fixed-polynomial interface; universal84 is unchanged.
+
 The [strong-root substitution theorem](complete84_strong_root_absorption.md)
 rules out every fixed integer polynomial replacement f=G(E) on the85-value
 interface independent of i,f,T,y_aux: every resulting positive zero satisfies
@@ -5076,6 +5089,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Multiplier-dependent strong-root absorption](complete84_multiplier_dependent_root_absorption.md) | Fixed polynomial f=G on88 f/T/y-independent values, including i and S,S², has finite input projection | Integer Cauchy bound versus strong-rank growth; quotient/ordinate-dependent substitutions remain outside this theorem |
 | [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md) | One-program466/two-program465 operations,67 witnesses; one addition saved by exact full-polynomial identity | Same codes and separate fixed-program interfaces; degree bounds5091/5160, universal84 unchanged |
 | [Joint U21 control recoding](residue_affine_sparse_joint_recoding.md) | One-program467/two-program466 complete operations,67 witnesses each; one fewer addition per array | Each own-parent supplied positive zero set preserved; degree bounds5091/5160, no cross-interface map or universal84 improvement |
 | [Strong Pell-root absorption](complete84_strong_root_absorption.md) | Fixed polynomial f=G on85 auxiliary-independent values has finite input projection, including signed G and an empty zero sector | Uses the signed-T rank lemma; substitutions depending on auxiliary coordinates remain outside this theorem |
