@@ -122,6 +122,17 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [joint auxiliary rescaling bound](Papers/research-wip/native-stream-queue/complete84_auxiliary_monomial_scaling.md)
+charges f^2, the full quotient, auxiliary coefficient and strong factor
+together. Every monomial rescaling of the strong factor needs at least
+7M+3A when monomials are produced first and then combined by binary linear
+operations. A complete equivalent84 source attains this restricted bound.
+The [independent review](Papers/research-wip/native-stream-queue/review_complete84_auxiliary_monomial_scaling.md)
+checks the unbounded exponent proof, actual dependent paid inputs and full
+source identity; normal/optimized replays pass. Mixed arithmetic circuits,
+additional paid relations and changes to the retained coefficient are outside
+this result; no global lower bound is claimed.
+
 The [monomial-rescaling bound](Papers/research-wip/native-stream-queue/first_norm_monomial_scaling_bound.md)
 shows that every nonzero monomial multiple of the first norm still needs
 at least 3M and 2A at its six dependent paid inputs. Each bound permits
