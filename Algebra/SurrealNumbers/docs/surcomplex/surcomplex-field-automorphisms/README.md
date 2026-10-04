@@ -735,6 +735,18 @@ self-embeddings and their images, under GBC (Corollary 70.4,
 Theorem 8.2 and after Proposition 9.4, record this; no label or number
 changed, and no result here uses that report.
 
+[polish-models-of-omnific-arithmetic](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)
+(`pma:`, batch 92): its Part XV shows (Remark 204.2, `pma:rk:rem:ks`) that
+Lemma 4.2.4 of the Kuhlmann–Serra preprint arXiv:2107.03362v3 is false as
+stated. The `K`-summable character `u(n) = (1+t)^n` on `k(t)` induces
+`f(t) ↦ f(t+t²)`, which is not onto, so a summable unit character need not
+come from a strongly additive automorphism: the two-direction care of
+Definition 17.1 is needed. This report does not use that lemma. On
+left-finite Levi-Civita fields the principal-unit substitutions are all onto
+exactly in finite rational rank (`pma:rk:prop:monoid`), which bears on,
+without answering, Question 29.2 (`saut:fs:q:nonfull`). A dated note after
+Definition 17.1 records this.
+
 ## Stale statements corrected
 
 The source compared itself with the repository at `dcf8666` (Section 13, kept
@@ -814,7 +826,9 @@ with this MiKTeX (the PDF committed then, 37 pages, was built with pdfTeX
 1.40.22). The two dated batch-84 notes (after the discussion of Theorem 8.2
 and after Proposition 9.4) take the build to 90 pages (pages 1–86), with the
 same clean log, its two informational longtable lines included, and no label
-or number changed. A clean compile proves nothing about the proofs. Source 01
+or number changed. The batch-92 note after Definition 17.1 leaves 90 pages,
+with the same clean log, and changes no number (all 458 `.aux` labels and the
+citation numbers compared against a build of the committed text). A clean compile proves nothing about the proofs. Source 01
 delivered no code or data.
 
 ## Rerun source 02's checks

@@ -15,7 +15,7 @@ Reshetnikov; unrefereed; nothing in it is formalized in Lean or Rocq.
 
 ```
 article.tex                     the report, standalone LaTeX with an internal bibliography
-article.pdf                     the compiled report, 108 pages
+article.pdf                     the compiled report, 109 pages
 README.md                       this guide
 source_audit.md                 source 01: source and verification audit, as delivered
 02-convex-factors-PROVENANCE.md source 02: provenance and proof-status record, as delivered
@@ -679,6 +679,16 @@ Source 03 (Section 27.5, "Place in the collection") adds these relations:
   `isg:cf:cor:unit` admit no unit-preserving additive map to `Oz`, as both
   sources prove again (`pma:atr:prop:surreal`). A dated note after the
   paragraph following `isg:cf:cor:unit` records this.
+  Batch 92 added its Parts XIII–XV. Part XV's canonical integer part of the
+  left-finite Levi-Civita field `L^Q` over `R_alg` is again `A_Sh`
+  (`pma:rk:prop:integerpart`); every field self-embedding of `L^Q` is onto
+  (`pma:rk:thm:finite`), and the automorphism `t ↦ t + t²` carries `A_Sh` to a
+  different integer part (after `pma:rk:cor:ipcriterion`). Part XIV shows that
+  the nonnegative cone of the real-coefficient ring `Z + Σ_{q>0} R X^q`
+  satisfies Euclidean division and every integer-root axiom but has no Polish
+  topology with continuous addition and Borel multiplication
+  (`pma:egt:thm:main`). A dated note after the Shepherdson paragraph
+  (Section 21.3) records this.
 - **Formal projects.** The `Oz` ingredients of source 03 are formalized in
   `Algebra/SurrealNumbers/Surreal/Foundations/OmnificResidues.lean`
   (`omnific_int_dvd_iff`, `omnific_prime_pow_dvd_iff`,
@@ -862,9 +872,12 @@ From this directory, with a TeX distribution providing pdfLaTeX, `newtx`,
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 108 pages with no errors, warnings, overfull or underfull
+The build gives 109 pages with no errors, warnings, overfull or underfull
 boxes, undefined references, multiply defined labels or duplicate
-destinations; the title page is one page. Remove the auxiliary files
+destinations; the title page is one page. The batch-92 note after the
+Shepherdson paragraph (Section 21.3) took it from 108 to 109 pages and
+changed no number (all 626 labels and the citation numbers compared in the
+`.aux` files against a build of the committed text). Remove the auxiliary files
 afterwards (`latexmk -c`).
 
 ## Rerunning the checks

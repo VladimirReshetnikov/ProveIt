@@ -212,6 +212,13 @@ coding and free-algebra universality of `No` over ZF).
   restricted to subsets of a fixed countable `L ⊆ Q` the locus of `P_-` is
   Borel exactly when `L` is scattered; this bears on, but does not answer,
   Question 13.1 (note after Theorem 6.3).
+  Part XV (batch 92): its `pma:rk:thm:scaling` uses the integer comparisons
+  of Lemma 3.4 for embeddings between left-finite Levi-Civita fields, where
+  the value-group map is multiplication by a real `λ > 0`, and
+  `pma:rk:thm:parameters` classifies those embeddings; the fields are
+  complete and uncountable, so Question 13.8 is not answered, and its Cantor
+  family of self-copies (`pma:rk:thm:family`) is a different object from the
+  families here (note after Lemma 3.4).
 - [`surreal-fields-across-universes`](../surreal-fields-across-universes/)
   (`univ:`), Part VIII: `univ:gs:thm:boolean` also indexes real closed fields
   by subsets of a set (the class fields `No^{M_A}` of Cohen extensions), but

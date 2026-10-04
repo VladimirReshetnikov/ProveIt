@@ -264,3 +264,8 @@ Hermitian 2×2 pairs with integer real and imaginary components in
 `{−2,−1,0,1,2}`; all agreed, and the 18,145 positive cases also matched
 the rank formula. These finite diagnostics do not prove the general theorem.
 The current 33-page PDF was rebuilt with three clean `pdflatex` passes.
+It was rebuilt again for the batch-92 note in the Kuhlmann–Serra
+bibliography entry (4 October 2026), with `latexmk` under MiKTeX (pdfTeX
+1.40.29): still 33 pages, no errors, warnings, undefined references,
+multiply defined labels, duplicate destinations or overfull boxes, and all
+89 `.aux` labels with the numbers of a build of the committed text.

@@ -1966,6 +1966,18 @@ Appendix A.3 records these.
   the false reason in the sentence after Theorem 27.3 that `f06e67d10`
   corrected. A dated note after Theorem 29.6 records this; no result here uses
   it.
+- [`polish-models-of-omnific-arithmetic`](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)
+  (`pma:`; batch 92). Its Part XV shows (Remark 204.2, `pma:rk:rem:ks`) that
+  Lemma 4.2.4 of the Kuhlmann–Serra preprint arXiv:2107.03362v3, which this
+  report credits for the ambient decomposition, is false as stated: the
+  `K`-summable character `u(n) = (1+t)^n` on `K = k(t)` induces
+  `f(t) ↦ f(t+t²)`, whose image `k(t+t²)` is proper because `t ↦ −1−t` fixes
+  `t+t²`. Nothing here uses that inclusion: Theorem 5.1 and the characters
+  (3.3) start from a given strong automorphism, and for the omnific pair
+  strongness is proved (Theorem 23.2). Its question `pma:rk:q:integerpairs`
+  asks, for left-finite Levi-Civita fields and their canonical integer part,
+  the pair question that Theorem 3.3 answers for strong 1-automorphisms of
+  Hahn fields. A dated note after Theorem 5.1 records this.
 
 ## What was run
 
@@ -2016,7 +2028,9 @@ Remark 23.3 took the build from 220 to 221 pages and changed no number (all
 729 labels and 27 citation numbers compared in the `.aux` files against a
 build of the committed text). The batch-73 note after Theorem 5.1 leaves 221
 pages and changes no number (same comparison), and so does the batch-84 note
-after Theorem 29.6 (same comparison, citation numbers included).
+after Theorem 29.6 (same comparison, citation numbers included), and so does
+the batch-92 note after Theorem 5.1 (same comparison: 1,458 `.aux` labels,
+citation numbers included).
 
 Fourteen of the shipped scripts can write files (thirteen check scripts and 16's build
 script; 19's `build.sh` creates two empty directories before failing, and 17's and 20's

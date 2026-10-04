@@ -331,6 +331,21 @@ formalization program and 18 questions.
   induced maps of rank chains and components added. A dated `[write]` note
   after Proposition 10.1 (4 October 2026, batch 90) records this. No theorem
   of this report is re-proved or answered there.
+- [polish-models-of-omnific-arithmetic](../../foundations-and-computation/polish-models-of-omnific-arithmetic/README.md)
+  (batch 92, Part XV, `pma:rk:`) proves a set-sized Archimedean analogue for
+  the left-finite Levi-Civita fields `L^Γ` over the real algebraic numbers:
+  every field embedding `L^Γ → L^Δ` scales valuations by one real `λ > 0` and
+  is continuous with closed image (`pma:rk:thm:scaling`, the Archimedean case
+  of Proposition 10.1's argument, with continuity an instance of
+  `sse:an:top:criterion`), and every self-embedding is onto exactly in finite
+  rational rank (`pma:rk:thm:main`), with a Cantor family of proper closed
+  immediate self-copies in infinite rank (`pma:rk:thm:family`). Its Remark
+  204.2 (`pma:rk:rem:ks`) shows that Lemma 4.2.4 of the Kuhlmann–Serra
+  preprint arXiv:2107.03362v3 is false as stated: the summable character
+  `u(n) = (1+t)^n` on `k(t)` induces `f(t) ↦ f(t+t²)`, which is not onto.
+  This report cites that paper only as background. A dated `[write]` note
+  after Proposition 10.1 (4 October 2026, batch 92) records this; no question
+  of this report is answered.
 
 Reciprocal dated notes pointing here were added to
 omnific-preserving-automorphisms, independent-surreal-copies,
