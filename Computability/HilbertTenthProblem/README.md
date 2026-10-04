@@ -175,6 +175,21 @@ Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
 
+The [aggregate positive input budget](Papers/research-wip/native-stream-queue/complete83_aggregate_input_budget.md)
+uses the whole positive input interval in the unchanged83 source. Its exact
+least CRT representative must satisfy `ell*k0<S0`; a sufficient guarantee is
+`Hreq<=ceil(S0/ell)`, where `Hreq=A³/gcd(A³,C0)` and C0 is the central binomial
+coefficient. The capped carry factor is exactly `A²/Hreq`; with half the
+radix left as slack, a factor of at least `6ell` suffices. This replaces the
+older separate per-prime thresholds by a combined requirement of polynomial
+size. The [independent review](Papers/research-wip/native-stream-queue/review_complete83_aggregate_input_budget.md)
+checks the complete proof,23 actual source rows,269793 CRT endpoint cases,
+5652 cap cases and a full504-term local example. Fresh normal/optimized
+receipts passed before freezing. The local example fails the actual source
+slack and is explicitly scoped accordingly. Occurrence of the required
+carry factor and the enlarged-z binary population condition remain open;
+no actual compiler zero or universal83 theorem is claimed.
+
 The [source-coupled input-lifting theorem](Papers/research-wip/native-stream-queue/complete83_source_coupled_input_lifting.md)
 constructs exact linear resonances at every odd radix prime while preserving
 the actual fixed compiler and, for sufficiently large family parameters,

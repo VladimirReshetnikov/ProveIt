@@ -153,6 +153,21 @@ Fresh metadata/finite-height checks pass before freezing; the PDF and external
 bibliography were not independently verified. No paid integer compiler or
 operation saving is supplied, and the established universal84 bound remains.
 
+The [aggregate positive input budget](complete83_aggregate_input_budget.md)
+uses the whole positive input interval in the unchanged83 source. Its exact
+least CRT representative must satisfy `ell*k0<S0`; a sufficient guarantee is
+`Hreq<=ceil(S0/ell)`, where `Hreq=A³/gcd(A³,C0)` and C0 is the central binomial
+coefficient. The capped carry factor is exactly `A²/Hreq`; with half the
+radix left as slack, a factor of at least `6ell` suffices. This replaces the
+older separate per-prime thresholds by a combined requirement of polynomial
+size. The [independent review](review_complete83_aggregate_input_budget.md)
+checks the complete proof,23 actual source rows,269793 CRT endpoint cases,
+5652 cap cases and a full504-term local example. Fresh normal/optimized
+receipts passed before freezing. The local example fails the actual source
+slack and is explicitly scoped accordingly. Occurrence of the required
+carry factor and the enlarged-z binary population condition remain open;
+no actual compiler zero or universal83 theorem is claimed.
+
 The [source-coupled input-lifting theorem](complete83_source_coupled_input_lifting.md)
 constructs exact linear resonances at every odd radix prime while preserving
 the actual fixed compiler and, for sufficiently large family parameters,
@@ -5429,6 +5444,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Aggregate positive input budget](complete83_aggregate_input_budget.md) | Exact CRT/slack criterion and capped factorization Hreq=A³/gcd(A³,C0); a polynomial-size combined carry factor suffices with half-radix slack. Independent proof/source and fresh checks pass. | Actual carry-factor occurrence and enlarged-z binary population remain unproved; local arithmetic example is not a positive source tuple. |
 | [Borel conjugacy and effective-presentation boundary](review_new_borel_62846e17a.md) | Full manuscript/inert helper read; six-member archive and manifest authenticated. New review-side computable exponent group has co-c.e.-complete finite Euler-conjugacy slice. | No existential Diophantine certificate for that orientation; no paid compiler. Saved jets not replayed; PDF and external sources unverified. |
 | [Source-coupled odd-prime input lifting](complete83_source_coupled_input_lifting.md) | Exact linear resonance representatives fit positive outer slack eventually; normalized input bijections and CRT give conditional simultaneous odd-prime completion. Independently reviewed. | Requires odd central valuations at least2a and a separate binary population condition; no actual full source zero or universal83 result. |
 | [Odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md) | Exact quotient-carry identities; actual positive F=Kz family forbids A² dividing R+1 or R+3 for n>=5. Independent proof/source challenge and fresh receipts pass. | Excludes simultaneous deep-resonance strategies only; mixed branches, sufficient quotient carries and odd-primary completion remain open. |
