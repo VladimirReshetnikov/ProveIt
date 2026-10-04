@@ -70,6 +70,16 @@
 > and fresh normal/optimized receipts check the full source and criterion.
 > The established universal minimum remains **84 operations**.
 >
+> The [sparse-marker obstruction](complete83_sparse_marker_obstruction.md)
+> excludes the root-gap80 outer family from independent-gamma83: no positive
+> zero on authentic compiler numerals has Z=1, F=4 and W=2^(2d*x+b), even
+> after changing its input Pell witnesses. On the full half-binomial curve,
+> the main congruence forces X=2^R; the actual raw compiler field then excludes
+> F=4 for every dyadic rotation. The [independent review](review_complete83_sparse_marker_obstruction.md)
+> checks the unchanged 83-gate source and both proofs. Normal/optimized replays,
+> 512 additional curve points and 5,243 fresh local rotation checks pass.
+> This is a family obstruction; the full 83-operation language remains open.
+>
 > The [main-root-gap80 chart](complete80_main_root_gap_collapse.md)
 > replaces five main-root producers by one positive root-gap addition, giving
 > **80=45M+35A**,18 positive witnesses and exact degree207. It is refuted:
