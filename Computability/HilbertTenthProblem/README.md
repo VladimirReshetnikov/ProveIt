@@ -2849,6 +2849,19 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
+The [joint U21 control recoding](Papers/research-wip/native-stream-queue/residue_affine_sparse_joint_recoding.md)
+reduces the complete one-program source to **467=171M+296A** operations and
+the two-program source to **466=171M+295A**, each with67 positive witnesses.
+Their certificates cost447/446 operations; degree bounds remain5091/5160.
+New injective codes have maximum40 and retain halt code14. Sharing the paid
+29-times-state-selector term across the current and target words removes one
+addition from each full source. The [independent review](Papers/research-wip/native-stream-queue/review_residue_affine_sparse_joint_recoding.md)
+checks both actual arrays, all36 edges and supplied-hat coefficients, the
+complete finalizer correction, degree bounds and native typing before code
+comparison. Each source preserves its own parent's supplied positive zeros;
+the one-program and two-program interfaces remain distinct. Fresh normal and
+optimized checks pass. The separate universal84 construction is unchanged.
+
 The [recoded one-program U21 source](Papers/research-wip/native-stream-queue/residue_affine_sparse_recoded468.md)
 reaches **448 certificate /468=171M+297A polynomial operations**, retaining
 67 positive witnesses, seven comparisons and degree at most5091.

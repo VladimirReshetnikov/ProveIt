@@ -3662,6 +3662,20 @@ historical87/degree203 theorem, weakened86 and independent-gamma87.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
 >
+> The [joint U21 control recoding](residue_affine_sparse_joint_recoding.md)
+> reduces the complete one-program source to **467=171M+296A** operations and
+> the two-program source to **466=171M+295A**, each with67 positive witnesses.
+> Their certificates cost447/446 operations; degree bounds remain5091/5160.
+> New injective codes have maximum40 and retain halt code14. Sharing the paid
+> 29-times-state-selector term across the current and target words removes one
+> addition from each full source. The [independent review](review_residue_affine_sparse_joint_recoding.md)
+> checks both actual arrays, all36 edges and supplied-hat coefficients, the
+> complete finalizer correction, degree bounds and native typing before code
+> comparison. Each source preserves its own parent's supplied positive zeros;
+> the one-program and two-program interfaces remain distinct. Fresh normal and
+> optimized checks pass. The separate universal84 construction is unchanged.
+>
+>
 > The [recoded one-program U21 source](residue_affine_sparse_recoded468.md)
 > reaches **448 certificate /468=171M+297A polynomial operations**, retaining
 > 67 positive witnesses, seven comparisons and degree at most5091.
