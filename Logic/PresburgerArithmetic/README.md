@@ -98,6 +98,13 @@ README and begins its proposed modules with the same coset-invariance
 requirement; Part XII (`pma:gcm:`) gives a criterion for a Polish
 Presburger cone to extend to a Polish group (continuous partial
 subtraction), which does not touch this project's integer semantics.
+Parts XIII–XVII (batches 92 and 93) do not read this project: Part XIII
+(`pma:ord:`) classifies the Borel Presburger orders on `R × E` and, with
+Parts IV, IX and XII, every uncountable locally compact Polish Presburger
+model with continuous partial subtraction, and Part XVI (`pma:hbo:`) builds
+Polish Presburger models from Borel orders on Hilbert spaces; both use only
+the classical theory of Z-groups and leave this project's integer
+semantics untouched.
 **Nothing in that report is formalized**, and nothing in this project
 depends on it.
 

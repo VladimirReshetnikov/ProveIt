@@ -16,6 +16,41 @@ hypotheses, limitations and provenance.
 
 ## Newest reports
 
+Batches 91 to 95 (4 October 2026) add no report and extend three.
+[Polish models of omnific arithmetic](foundations-and-computation/polish-models-of-omnific-arithmetic/)
+grew from fifteen to twenty manuscripts: Parts XIII–XV from batch 92
+(placed in `e24ce2ce0`, written in `4af6f191d`: Borel Presburger orders in
+one real dimension, with a classification of every uncountable locally
+compact Polish Presburger model with continuous partial subtraction; the
+exponent-group threshold; rational rank and self-embeddings of Levi-Civita
+fields, with a counterexample showing Lemma 4.2.4 of a Kuhlmann–Serra
+preprint false as stated) and Parts XVI–XVII from batch 93 (`5e4d8eed8`,
+`9a8894d0a`, Lean-scope correction `b8bc36acc`: Borel orders on separable
+Hilbert spaces, and Borel summability and derivations of left-finite
+series fields). [Definable surreals and omnific integers](foundations-and-computation/definable-surreals-and-omnific-integers/)
+gained Parts II–III from batch 93 (`47a77daba`, `c7d65e30b`: real
+parameters, countable assembly, independent of ZFC, and the strong
+`R`-and-`Ord` fixed field, merged from two independent manuscripts;
+definable operations, absoluteness without a same-reals hypothesis and a
+parameter-free interpretation of set theory in `(No, +, ·, <, Oz, Ω)`).
+[Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/)
+gained Part IX from batch 95 (`350b9a954`, `abba38172`: surreal-only and
+omnific foundations bi-interpretable with ZFC, and the boundary at NBG,
+merged from two independent manuscripts). Reciprocal notes are in
+`9bffd43d5`, `c70ced0dd` and `ddb36da6c`. The Hilbert's-tenth research tree reviewed the
+publications (`c3da7b57a`, `0bb0baf45`, `341c9f187`) and the reciprocal
+notes of batch 92 (`fa3ead76f`), correcting guide wording and restoring
+omitted hypotheses while retaining the earlier text. Batch 91 brought
+nothing here; batch 92's box and hat manuscripts and batch 93's
+commuting-action manuscript went to the research-report collection
+(`measurable-box-games`, `naming-elementary-embeddings`), and batch 94 and
+two of batch 95's archives to `Analysis/Transseries`. Apart from two
+statements that coincide with theorems the Lean library already proves
+(the fraction-field fact of the birthday-cutoff report's Part IX, and the
+`Γ = Z` image clause of a corollary of the Polish report's Part XVII, over
+fields of characteristic zero), none of the new material is formalized or
+indexed in the formalization ledger yet.
+
 Batches 87 to 90 (3 and 4 October 2026) add one report and extend four.
 Batch 90 (placed in `12076b2e8`, written in `6f5f9954c`) adds
 [a Cantor space of surreal subfields](foundations-and-computation/cantor-families-of-surreal-subfields/),
@@ -488,13 +523,13 @@ quantum theory and no measurable infinitesimal.
 | [Computer algebra](foundations-and-computation/computer-algebra/) | Exact denotation, coefficient access, equality and approximation; three distinct Wolfram prototypes |
 | [Computable surreals](foundations-and-computation/computable-surreals/) | Structural names, effective left-finite Hahn names and bounded-denominator Puiseux names |
 | [Surreal fields across universes](foundations-and-computation/surreal-fields-across-universes/) | External saturation of an inner model's `No^M` in a same-ordinal outer universe: new ordinal sequences, fresh-sign gaps, first new birthday, nonconjugate surcomplex real forms; exact gap spectra under Cohen, Easton, Prikry and Namba forcing, real traces, and equal-spectrum fields that are not isomorphic (Part VIII, batch 37) |
-| [Definable surreals and omnific integers](foundations-and-computation/definable-surreals-and-omnific-integers/) | The definable surreals form a real closed subfield, elementary in `No` and closed under `exp`, `log` and the omnific floor; `No ∩ HOD = No^HOD`, and `V = HOD` iff every omnific integer in `(0, ω)` is ordinal definable; the maximal initial core |
+| [Definable surreals and omnific integers](foundations-and-computation/definable-surreals-and-omnific-integers/) | The definable surreals form a real closed subfield, elementary in `No` and closed under `exp`, `log` and the omnific floor; `No ∩ HOD = No^HOD`, and `V = HOD` iff every omnific integer in `(0, ω)` is ordinal definable; the maximal initial core; Part II (batch 93): real parameters, countable assembly (independent of ZFC, from Con(ZFC)) and the common fixed field of the strong automorphisms fixing `R ∪ Ord`; Part III (batch 93): definable operations, absoluteness of normal forms without a same-reals hypothesis, and a parameter-free interpretation of `(V, ∈)` in `(No, +, ·, <, Oz, Ω)`; five manuscripts |
 | [Omnific notations](foundations-and-computation/omnific-notations/) | Holonomic towers, hereditary forms and rational `ω`-terms with decidable equality and floor; raw `d`-block equality is `Π⁰₁`-complete and support validity `Π¹₁`-complete |
-| [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation; Parts VI–VII (batch 89): Replacement-free cuts, definable-family schemes equivalent to ordinal bounding, Collection spectra of urelement kernel models, and choiceless universality (`X ↪ No` iff `X ↪ P(α)`, `KWP_1`, permutation models); Part VIII (batch 90): named group actions on atoms and Replacement, an exact orbit criterion and a strict kernel hierarchy; eight manuscripts |
+| [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation; Parts VI–VII (batch 89): Replacement-free cuts, definable-family schemes equivalent to ordinal bounding, Collection spectra of urelement kernel models, and choiceless universality (`X ↪ No` iff `X ↪ P(α)`, `KWP_1`, permutation models); Part VIII (batch 90): named group actions on atoms and Replacement, an exact orbit criterion and a strict kernel hierarchy; Part IX (batch 95): surreal-only and omnific foundations bi-interpretable with ZFC, round-trip axiomatizations, no theory uniformly interpretable in ZFC interprets NBG, and class lifts bi-interpretable with GBC and KM; ten manuscripts |
 | [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Four manuscripts on the claimed exact support threshold for two transports, defect coefficients, and descent to the target model; proof review pending |
 | [Exponential relations over omnific integers](foundations-and-computation/exponential-relations-over-omnific-integers/) | Toric relations and a decidable additive language with algebraic exponential predicates; elementary cores and computability boundaries; proof review pending |
 | [Surreal well-orders](foundations-and-computation/surreal-well-orders/) | Lexicographic orders of the well-orders of `No`: set cutoffs with the singular `κ·κ` transition, set-length words, choiceless GB ⇔ global choice, direct comparison and adjacency of all class well-orders, a bounded-support core ≅ `No` interpolating set-indexed cuts, diagonal non-coding, inaccessible and KM models; twenty-three manuscripts (Parts VI–XIV from batches 81 and 83: strata, gap spectra and topology, termination types, cuts of the core, block decompositions and condensation histories; Part XV from batch 89: countable global choice over Zermelo set theory, conditionally nonconservative, and exact rank-model spectra at every limit height); the set-sized layer re-proves the reals report; proof review pending |
-| [Polish models of omnific arithmetic](foundations-and-computation/polish-models-of-omnific-arithmetic/) | Glazer's Question 2 answered affirmatively as printed: the cone of `ℝ ×→ ℤ` is an uncountable locally compact Polish model of Presburger arithmetic with continuous addition, embedded additively in `Oz`; Borel presentations of Hahn fields exist exactly for scattered supports, and no Polish recoding of the finite principal-part ring makes addition continuous; continuous Presburger arithmetic and a Polish semiring cone failing open induction (Part III), local compactness forcing countability (Part IV), Polish Hahn, Puiseux and Levi-Civita fields (Part V); Baire-category rigidity of discretely ordered rings (Part VI), nonsplit models and exact continuity (Part VII), a **claimed, unreviewed** ATR₀ answer to Glazer's Question 1 (Part VIII), locally compact cones (Part IX), elementary embeddings and Polish submodels of lexicographic models (Part X), local geometric codes (Part XI), Polish group completions and class manifolds (Part XII); fifteen manuscripts; proof review pending |
+| [Polish models of omnific arithmetic](foundations-and-computation/polish-models-of-omnific-arithmetic/) | Glazer's Question 2 answered affirmatively as printed: the cone of `ℝ ×→ ℤ` is an uncountable locally compact Polish model of Presburger arithmetic with continuous addition, embedded additively in `Oz`; Borel presentations of Hahn fields exist exactly for scattered supports, and no Polish recoding of the finite principal-part ring makes addition continuous; continuous Presburger arithmetic and a Polish semiring cone failing open induction (Part III), local compactness forcing countability (Part IV), Polish Hahn, Puiseux and Levi-Civita fields (Part V); Baire-category rigidity of discretely ordered rings (Part VI), nonsplit models and exact continuity (Part VII), a **claimed, unreviewed** ATR₀ answer to Glazer's Question 1 (Part VIII), locally compact cones (Part IX), elementary embeddings and Polish submodels of lexicographic models (Part X), local geometric codes (Part XI), Polish group completions and class manifolds (Part XII); Borel Presburger orders in one real dimension (Part XIII), the exponent-group threshold (Part XIV), rational rank and self-embeddings of Levi-Civita fields, with a counterexample to a Kuhlmann–Serra lemma (Part XV), Borel orders on separable Hilbert spaces (Part XVI), Borel summability and derivations of left-finite series fields (Part XVII); twenty manuscripts; proof review pending |
 | [A Cantor space of surreal subfields](foundations-and-computation/cantor-families-of-surreal-subfields/) | Countable real closed subfields of one explicit countable surreal field as a closed Cantor family with unique finite supports; Borel-complete isomorphism, an analytic-complete fixed-source embedding locus, complete analytic embeddability inside one field (the unrestricted theorem is Calderoni–Marker–Motto Ros–Shani's), the finite-transcendence openness threshold and two generic regimes; one manuscript; proof review pending |
 
 A mathematical closure theorem need not supply a uniform algorithm on the
