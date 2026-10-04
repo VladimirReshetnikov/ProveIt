@@ -1,0 +1,2223 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{xcolor,booktabs,longtable,array,enumitem,fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{HTML}{17354A}
+\definecolor{accent}{HTML}{176B75}
+\definecolor{pale}{HTML}{F1F6F7}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Self-Embeddings of the Surreal Numbers},
+ pdfauthor={Research study prepared for Vladimir Reshetnikov}}
+\setlength{\parskip}{4pt}
+\setlength{\tabcolsep}{2.5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Self-Embeddings of the Surreal Numbers}
+\fancyhead[R]{\small 3 October 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\On}{\mathbf{On}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\bday}{\operatorname{b}}
+\newcommand{\NF}[1]{\R((\omega^{#1}))}
+\newcommand{\pref}{\preccurlyeq_s}
+\newcommand{\spref}{\prec_s}
+\newcommand{\concat}{\mathbin{\frown}}
+\newcommand{\val}{\operatorname{v}}
+\newcommand{\OrdExp}{\operatorname{Exp}}
+\newcommand{\floorOz}[1]{\left\lfloor #1\right\rfloor_{\Oz}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newtcolorbox{overview}{colback=pale,colframe=accent,boxrule=0.6pt,arc=1mm,
+ left=3mm,right=3mm,top=2mm,bottom=2mm,breakable}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\begin{document}
+\begin{titlepage}
+\vspace*{13mm}
+{\color{accent}\large RESEARCH ARTICLE}\par
+\vspace{7mm}
+{\color{ink}\Huge\bfseries Self-Embeddings of\\[3mm] the Surreal Numbers}\par
+\vspace{7mm}
+{\LARGE Rigidity, Hahn lifts, topology,\\and size-safe foundations}\par
+\vspace{12mm}
+{\large Prepared for Vladimir Reshetnikov}\par
+{\large 3 October 2026}\par
+\vspace{12mm}
+\begin{overview}
+\textbf{Central separation.} For every set $A\subseteq\No$, there is a
+\emph{proper, cofinal, continuous ordered-field self-embedding} fixing
+$A\cup\R\cup\On$ pointwise. It preserves all admissible Hahn sums,
+normal-form truncations, omnific integrality, and omnific floors. Its image
+is a closed nowhere-dense subfield. These constraints therefore do not
+force surjectivity or rigidity.
+
+In sharp contrast, preserving birthdays without increase forces an order
+embedding to be the identity; an order embedding with simplicity-initial
+image must be onto; and an exponential field self-embedding fixing the
+natural valuation pointwise must be the identity.
+\end{overview}
+\vfill
+\noindent\textbf{Repository basis.} \code{VladimirReshetnikov/ProveIt}, snapshot\par
+\noindent\code{b0d4af4f30b24529fec877e2ad4a5952888146e9}.\par
+\medskip
+\noindent\small This is a research synthesis with proofs supplied in the text,
+not a claim of publication priority. It distinguishes established literature,
+repository results, deductions proved here, and unresolved directions.
+No new Lean verification or independent repository build is claimed.
+\end{titlepage}
+
+\begin{abstract}
+A self-embedding of the surreal numbers can mean an injection of sign
+sequences, an order embedding, a simplicity-tree embedding, a field
+embedding, an elementary embedding in a specified language, or a map
+respecting valuation, normal forms, exponentiation, a derivation, or
+particular distinguished subclasses. These notions have markedly different
+rigidity and size behavior. We organize them into a common framework.
+Our main constructive device is a two-stage Hahn lift that faithfully
+converts any increasing class embedding of $\No$ into a strongly
+$\R$-linear ordered-field self-embedding. It gives explicit proper maps
+fixing every real, every ordinal, and any prescribed set of additional
+surreals; it also gives bounded elementary subfield copies fixing any
+prescribed set. We classify monomial strong embeddings by an additive
+exponent embedding and a positive real character, compute their fixed
+fields and images, and analyze their iterated-image cores.
+For the full surreal order topology we prove a field-embedding dichotomy:
+cofinal images give continuous embeddings, whereas noncofinal images are
+discrete and the maps are nowhere continuous. We separate this topology
+from Hahn summability, simplicity limits, and differentiation.
+Building on the repository's displacement argument, we prove exponential
+valuation rigidity without surjectivity and a uniqueness theorem for
+cofinal exponential embeddings with the same value-group action.
+Finally we give class-theoretic, universe-indexed, and Lean-oriented
+formulations that avoid powerclass, truth-predicate, and improper-cut
+paradoxes, and formulate a focused research program.
+\end{abstract}
+
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The question is a family of questions}\label{sec:scope}
+
+An embedding is always relative to a signature and to a category of
+allowable maps. In this article, an \emph{order embedding} preserves and
+reflects the numerical order; a \emph{field embedding} is unital; and a
+\emph{proper embedding} is injective but not surjective. Unless a cutoff or
+universe is explicitly named, the domain and codomain are the entire
+proper class $\No$ in one fixed ambient set/class universe.
+
+We use $\N=\{0,1,2,\ldots\}$.
+The two fundamental orders must not be conflated. Numerical order is
+linear. Simplicity is the tree order of being an initial segment of a sign
+sequence. Being born earlier is weaker than being a proper sign prefix.
+Likewise, an image that is closed under deleting late \emph{normal-form
+terms} need not be closed under deleting late \emph{signs}.
+
+\begin{longtable}{P{31mm}P{54mm}P{65mm}}
+\toprule
+Structure retained & Meaning & Main outcome here \\
+\midrule
+\endhead
+Bare class carrier & Injective class map & Numerous proper maps; little arithmetic content. \\
+Numerical order & $x<y\iff jx<jy$ & Copies in any open interval; proper cofinal copies too. \\
+Simplicity tree & Prefix preservation/reflection & Rich tree maps; branch swaps are allowed without order. \\
+Order and simplicity & Both relations & Proper substructures exist; automorphisms are rigid. \\
+Birthdays or ambient cuts & Nonincreasing birthdays, or canonical cut preservation & Identity. \\
+Additive group & Additive, ordered & Hahn relabeling of exponents is sufficient. \\
+Ordered field & $0,1,+,\cdot,< $ & Proper cofinal and bounded copies exist. \\
+Hahn structure & Strong sums and monomial data & Explicit classification within the monomial class. \\
+Natural valuation & Comparisons, or pointwise values & These are different requirements; neither alone gives general field rigidity. \\
+$\omega$-map / exponential & $j(\omega^x)=\omega^{jx}$ / $j(\exp x)=\exp(jx)$ & Distinct operations; valuation-pointwise compatibility gives rigidity. \\
+Elementary structure & All first-order formulas of a fixed language & Automatic for ordered-field embeddings in the field language, not in arbitrary expansions. \\
+Definability & Definable graph in a named language & O-minimal definable field self-embeddings are the identity. \\
+Omnific / differential data & $\Oz$, its floor, a chosen derivation & Extra structures require separate compatibility statements. \\
+\bottomrule
+\end{longtable}
+
+No finite list can exhaust all expansions of $\No$ by arbitrarily chosen
+predicates. The meaningful aim is to cover the standard structures and
+provide a method for analyzing additional constraints.
+
+\subsection{Relation to existing work and to the repository}
+The language of \emph{surreal substructures}, developed systematically by
+Bagayoko and van der Hoeven, studies images isomorphic to
+$(\No,<,\spref)$ and provides much more than the elementary prefix examples
+below \cite{BVH}. Our constructions in the field category use the classical
+normal-form and ordered-field theory of Conway and Gonshor, with the
+set-sized field analysis of van den Dries and Ehrlich
+\cite{Conway,Gonshor,vdDE}.
+
+Kaplan, Krapp, and Serra's version~3 of \emph{Decomposing the automorphism
+group of the surreal numbers} is the relevant recent comparison point
+\cite{KKS}. It separates valuation, monomial, strong-linearity, exponential,
+and $\omega$-map constraints. Its Question~5.4 asks about exponential
+1-automorphisms; Question~5.6 concerns $\omega$-map-preserving field
+automorphisms. The repository's exponential-rigidity report supplies a
+finite displacement argument directed at the former question
+\cite{RepoExp}. We reproduce the applicable proof and extend the
+comparison argument to cofinal self-embeddings, while making no priority
+claim and not treating the latter question as solved.
+
+\begin{overview}
+\textbf{Evidence boundary.} The pinned repository contains actual Lean
+source for universe-indexed sign sequences and generic exponential-profile
+lemmas. The inspected generic exponential module explicitly lists the
+instantiation with the actual surreal exponential as pending. This article
+uses conventional mathematical proofs for that bridge. The source
+inspection is not an independent kernel build. The new Hahn-lift,
+stabilizer, topology, and iteration arguments below are proved in this
+article, not certified by the included finite regression tests.
+\end{overview}
+
+\section{A foundation that does not manufacture paradoxes}\label{sec:foundations}
+
+\subsection{Set-length signs and set-supported normal forms}
+Represent a surreal by a function $x:\alpha\to\{-,+\}$, where $\alpha$ is an
+ordinal and hence a set. Its birthday is $\bday(x)=\alpha$. For comparison,
+extend the sign function by the termination symbol $0$, ordered by
+$-<0<+$. The first disagreement gives numerical order. Write
+$x\pref y$ when $x$ is a sign prefix of $y$, and $x\spref y$ when it is a
+proper prefix. The empty sequence is $0$.
+
+The canonical option sets are
+\begin{align}
+ L_x&=\{x\restriction\beta:\beta<\bday(x),\ x(\beta)=+\},\\
+ R_x&=\{x\restriction\beta:\beta<\bday(x),\ x(\beta)=-\}.
+\end{align}
+They are sets, and $x=\{L_x\mid R_x\}$. More precisely, the numbers between
+these canonical options are exactly the sign extensions of $x$. For
+arbitrary sets $L<R$, the notation $\{L\mid R\}$ denotes the unique simplest
+surreal strictly between them. These standard sign and cut facts are the
+foundational input used below \cite{Conway,Gonshor}.
+
+Every surreal has a unique normal form
+\begin{equation}\label{eq:nf}
+ x=\sum_{a\in A}r_a\omega^a,
+ \qquad r_a\in\R\setminus\{0\},
+\end{equation}
+where $A$ is a \emph{set} reverse well-ordered by numerical order. Equivalently,
+its exponents form a strictly decreasing ordinal-indexed sequence. The
+notation $\NF{E}$ will mean the class of such series with support contained
+in $E$. It is only an additive subgroup when $E$ is an arbitrary subclass;
+if $E$ is an ordered additive subgroup, it is a Hahn subfield.
+
+For $x\ne0$, let $a_0=\max\supp(x)$ and set
+\begin{equation}\label{eq:valuation}
+ \val(x)=-a_0,\qquad \val(0)=\infty.
+\end{equation}
+Thus $\val(\omega^a)=-a$. The valuation group is identified with
+$(\No,+,<)$, but the occurrence of $\No$ as value group should remain
+logically distinct from its occurrence as field.
+
+\begin{definition}[Strong summability]
+A \emph{set-indexed} family $(x_i)_{i\in I}$ is Hahn-summable if the union of
+its normal-form supports is reverse well-ordered and every exponent
+occurs in only finitely many supports. The sum is then formed coefficient
+by coefficient. A map is strongly additive if it preserves these families
+and their sums; it is strongly $\R$-linear if it also respects real scalar
+multiplication.
+\end{definition}
+This is a support condition, not a limit in the full surreal order topology.
+In particular, an arbitrary proper-class family is not a legal Hahn sum.
+
+\subsection{Three legitimate size registers}
+\paragraph{Definable classes in ZFC.}
+Each surreal is a set code, and a specified embedding is given by a formula,
+possibly with set parameters. Assertions about every definable embedding
+are metatheoretic schemes, not quantification over a set of all formulas
+with a universally available truth predicate. All explicit maps in our
+Hahn constructions are definable from their stated data.
+
+\paragraph{Two-sorted class theory.}
+In GBC, or in a suitable NBG presentation, an embedding may be a class graph.
+Class replacement ensures that its image of a set is a set. This suffices
+for mapping supports, taking preimages of a set inside an injective image,
+and performing the explicit constructions below. Global choice is useful
+for a global back-and-forth using a set-like enumeration; it is not needed
+for the displayed rational formulas and Hahn relabelings.
+
+One may quantify over an individual class embedding, or finitely many
+class embeddings, in class theory. One may \emph{not} form a class whose
+members are all those proper-class graphs: classes are not elements of
+classes. Thus ``the group of all automorphisms of $\No$'' is an external
+collection with operations, or an abbreviation for finite class-quantified
+statements. A genuine carrier of all such maps requires a higher sort,
+a larger universe, or a restricted set-coded family. KKS explicitly
+highlights this point in its foundational conventions \cite{KKS}.
+
+\paragraph{Universe-indexed types.}
+Fix a small universe $U$ and work externally in a larger universe $V$.
+The surreals with $U$-small ordinal lengths form a $V$-set, denoted
+$\No_U$. They are not a $U$-set. Maps $\No_U\to\No_U$, maps
+$\No_U\to\No_V$, and restrictions of maps on a still larger surreal
+universe are different objects. An external set of signs need not be an
+internally available support. An external cut need not be an admissible
+internal cut.
+
+This is directly reflected by the inspected repository declaration
+\begin{verbatim}
+structure SignSequence : Type (u + 1) where
+  birthday : Ordinal.{u}
+  signAt : Ordinal.{u} -> SignType
+  signAt_ne_zero_iff : forall i, signAt i != 0 <-> i < birthday
+\end{verbatim}
+The display uses ASCII logical notation for readability; the exact Lean
+source uses its usual Unicode syntax. The file proves that bounded birthday
+fragments are small and that the entire carrier is not small at level $u$
+\cite{RepoSigns}.
+
+\subsection{What is forbidden, and what needs extra axioms}
+The expression $\{\No\mid\varnothing\}$ is not a surreal cut: its left side
+is a proper class. Nor is there a single surreal sign sequence of length
+``all ordinals.'' These errors would falsely produce an element above every
+surreal and immediately contradict ordinary field arithmetic.
+
+Similarly, a universal satisfaction predicate for an arbitrary proper-class
+structure is not supplied merely by writing the word ``elementary.'' One
+can state preservation for each fixed formula. In the ordered-field
+language, quantifier elimination gives an especially clean reduction to
+finite algebraic/order data.
+
+Set-valued recursion along $\On$, with a set of earlier values at each set
+stage, is different from recursion that assigns an entire class at each
+stage. The latter leads to elementary transfinite recursion principles
+stronger than bare GBC in the usual class-theoretic setting
+\cite{HamkinsETR}. We do not silently use such principles to construct the
+maps in this article. In particular, a set-like global back-and-forth has
+set-sized partial maps at every ordinal stage; its final union is a class,
+not a set.
+
+Finally, a field self-embedding of $\No$ is not an elementary embedding of
+the set-theoretic universe $(V,\in)$. The underlying membership relation on
+set codes is not part of the ordered-field signature. Large-cardinal and
+Kunen-style questions about universe embeddings therefore cannot be
+transferred to the present field maps without a separate interpretation
+theorem. Coding $\No$ by sets does not provide such a theorem by itself.
+
+\section{Order and simplicity: flexibility and rigidity}\label{sec:tree}
+
+\subsection{Three explicit order embeddings}
+\begin{proposition}[Interval compression]\label{prop:compression}
+The map
+\[
+ c(x)=\frac{x}{1+|x|}
+\]
+is an increasing bijection $\No\to(-1,1)$, with inverse
+$c^{-1}(y)=y/(1-|y|)$. Consequently every nonempty open interval contains
+an order-isomorphic copy of the entire surreal class.
+\end{proposition}
+\begin{proof}
+For $x\ge0$, the formula is $1-(1+x)^{-1}$, which is strictly increasing
+with image $[0,1)$. The negative half is obtained by oddness. The inverse
+formula is verified separately on the two signs. An affine increasing
+bijection carries $(-1,1)$ to any prescribed bounded open interval; the
+half-line variants follow by equally elementary fractional formulas.
+\end{proof}
+No cardinal paradox occurs: an interval of a proper-class field is itself
+a proper class. This map is not additive and is not a field embedding.
+
+\begin{proposition}[Prefix copies]\label{prop:prefix}
+For a fixed sign sequence $p$, put $P_p(x)=p\concat x$. Then $P_p$ preserves
+and reflects order and simplicity. Its image is the convex class of all
+extensions of $p$, and
+\[
+ \bday(P_p(x))=\bday(p)+\bday(x),
+\]
+where addition is ordinal addition. If $p\ne0$, the embedding is proper.
+\end{proposition}
+\begin{proof}
+The common prefix $p$ postpones every first disagreement by its length.
+It also preserves exactly the initial-segment relations among the suffixes.
+The characterization of the image is immediate. If two extensions bracket
+another sign sequence numerically, that sequence cannot disagree with $p$
+at an earlier position, so the image is convex. The empty sequence is not
+in the image when $p$ is nonempty.
+\end{proof}
+Ordinal addition matters: a nonempty prefix need not strictly increase an
+infinite birthday. For example $1+\omega=\omega$.
+
+\begin{proposition}[Sign repetition]\label{prop:repeat}
+For an integer $m\ge2$, let $D_m(x)$ replace every sign of $x$ by $m$
+consecutive copies of that sign. Then $D_m$ is a proper, cofinal and
+coinitial order-and-simplicity embedding fixing $0$, with
+\[
+ \bday(D_m(x))=m\cdot\bday(x).
+\]
+Its image is discrete in the ambient order topology and $D_m$ is nowhere
+continuous.
+\end{proposition}
+\begin{proof}
+At a first differing sign, repeated minus, termination, and repeated plus
+occur in the same order as the original three symbols. Prefix relations
+are preserved and reflected. The one-sign sequence $+$ is omitted, so the
+map is proper. Images of sufficiently long all-plus sequences lie above
+any given surreal; all-minus sequences give coinitiality.
+
+For $z=D_m(x)$, let $z^-=z\concat(-)$ and $z^+=z\concat(+)$. The interval
+$(z^-,z^+)$ contains no other point of the image: any image extending $z$
+has at least two copies of its next sign and lies beyond the corresponding
+endpoint. All other image points disagree earlier or terminate earlier.
+Thus each image point is isolated. The source has no isolated points, so
+continuity at any point is impossible.
+\end{proof}
+For example $D_2(1)=2$, but $D_2(1/2)$ has signs $++--$ and equals $5/4$;
+therefore $D_2$ is not additive. Also $D_m(\omega)=\omega$, since
+$m\cdot\omega=\omega$. These examples already show that cofinality,
+continuity, and birthday growth are different issues for order embeddings.
+
+\subsection{Simplicity without order}
+The rooted binary sign tree has many automorphisms if the order of the two
+children is forgotten. At each node one may decide whether to interchange
+the two outgoing branches, recursively. These automorphisms preserve
+birthdays and prefix relations but need not preserve numerical order.
+Global sign reversal $x\mapsto-x$ is the simplest example: it reverses
+numerical order and is not a unital field homomorphism. Every order-reversing
+self-embedding is the composite of negation with an order-preserving one.
+
+\begin{lemma}[Reflection follows from order]\label{lem:reflection}
+An order embedding that preserves sign-prefix relations automatically
+reflects them.
+\end{lemma}
+\begin{proof}
+If $y\spref x$, preservation and injectivity preclude $jx\pref jy$.
+If $x,y$ are incomparable, their longest common prefix $p$ lies strictly
+between them numerically, after interchanging $x,y$ if needed. The images
+extend $jp$ and lie on opposite sides of it. They therefore depart along
+opposite branches and are incomparable. These exhaust the alternatives
+to $x\pref y$.
+\end{proof}
+
+\subsection{Rigidity statements with different hypotheses}
+\begin{theorem}[Birthday rigidity]\label{thm:birthday}
+If $j:\No\to\No$ is an order embedding and
+$\bday(jx)\le\bday(x)$ for every $x$, then $j=\id$.
+\end{theorem}
+\begin{proof}
+Induct on $\alpha=\bday(x)$. Every canonical option of $x$ has smaller
+birthday and is fixed by induction. Therefore $jx$ lies between $L_x$ and
+$R_x$, so it extends $x$. Its birthday cannot exceed $\alpha$ by hypothesis;
+hence it is exactly $x$.
+\end{proof}
+
+\begin{proposition}\label{prop:treebirthday}
+Every simplicity embedding satisfies $\bday(jx)\ge\bday(x)$.
+Every order-and-simplicity automorphism of $\No$ is the identity.
+\end{proposition}
+\begin{proof}
+The proper prefixes of $x$ form a chain of order type $\bday(x)$; their
+images form a strictly increasing chain of proper prefixes of $jx$.
+Consequently $\bday(x)\le\bday(jx)$. For an automorphism, apply the same
+argument to its inverse to obtain equality of birthdays, then use
+\cref{thm:birthday}.
+\end{proof}
+This is compatible with the proper maps $P_p$ and $D_m$: an embedding into
+an image is not an automorphism of the whole tree.
+
+\begin{proposition}[Canonical construction rigidity]\label{prop:cutrigid}
+An order embedding preserving ambient canonical cuts,
+\[
+ j\{L\mid R\}=\{j[L]\mid j[R]\}
+\]
+for every admissible set cut, is the identity. It is enough to require this
+for the canonical cuts of individual surreals.
+\end{proposition}
+\begin{proof}
+Transfinite induction fixes all options and then fixes the simplest
+number between them. The empty cut fixes $0$ at the first step.
+\end{proof}
+Equivalently, preserving the root, the two labeled immediate successors,
+and unions of all set-sized prefix chains forces the identity. Omitting
+limit-chain preservation leaves room for extra signs at limit birthdays.
+Preservation only for countable chains does not justify a conclusion at
+arbitrary uncountable birthdays.
+
+\begin{remark}[Relative cuts are not ambient cuts]
+If $S$ is the image of an order-and-simplicity embedding, the image of a cut
+is the simplest suitable point \emph{inside $S$}. It need not be the
+simplest suitable point in all of $\No$. This relative notion is central
+to surreal substructures \cite{BVH}; replacing it with the ambient notion
+would incorrectly rule out the elementary prefix examples.
+\end{remark}
+
+
+\subsection{Closed substructures and their fixed points}
+The rigidity of automorphisms implies uniqueness of the parameterization
+of any given surreal substructure: compose two proposed parameterizations
+with one another's inverses. Monomials and purely infinite numbers supply
+further standard substructure examples beyond the prefix cones; their
+substructure parameterizations are not thereby field embeddings
+\cite{Gonshor,BVH}.
+
+There is also a useful fixed-point theorem under an explicit closure
+hypothesis. The following gives a direct proof of this basic closed-
+substructure phenomenon, part of the broader theory in \cite{BVH}.
+
+\begin{theorem}[Closed sign images have a full fixed-point substructure]
+\label{thm:closedtree}
+Let $j$ be an order-and-simplicity embedding. Suppose its image is closed
+under unions of nonempty set-sized sign-prefix chains. Then $j$ commutes
+with those unions, and $\Fix(j)$ is itself a surreal substructure.
+\end{theorem}
+\begin{proof}
+Let $C$ be a nonempty set-sized prefix chain and $x=\bigcup C$.
+By the image-closure assumption, $y=\bigcup j[C]$ lies in the image.
+Its preimage is an upper bound of $C$, while $jx$ is an upper bound of
+$j[C]$. The two least-upper-bound properties give $jx=y$.
+
+Whenever $u\pref ju$, put
+\[
+ c_j(u)=\bigcup_{n<\omega}j^n(u).
+\]
+This is fixed by union preservation. It is the least fixed sign extension
+of $u$: if $u\pref z=jz$, induction gives $j^n u\pref z$ for every $n$.
+In particular $c_j(0)$ is the least fixed point in simplicity.
+If $x$ is fixed, then $u=x\concat(\pm)$ satisfies $u\pref ju$.
+Indeed $ju$ extends $x$ and lies on the same numerical side of $x$ as $u$.
+Thus $c_j(x\concat(-))$ and $c_j(x\concat(+))$ are the least fixed
+extensions on the two respective branches.
+
+Construct a map $\Phi$ from sign sequences by sending the empty sequence
+to $c_j(0)$, adjoining a sign by the corresponding least-fixed-extension
+operation, and taking unions at limit lengths. All these unions are sets;
+union preservation by $j$ keeps every output fixed. At each successor
+step the image strictly extends its predecessor on the specified side.
+Hence $\Phi$ preserves and reflects numerical order and simplicity.
+
+To see that its image is all of $\Fix(j)$, take a fixed $z$. Its least
+fixed prefix is $c_j(0)$. As long as the constructed prefix is not $z$,
+follow the next sign of $z$ and then take the least fixed extension on
+that branch. This remains a prefix of $z$. At limits take unions. The
+process must reach $z$: otherwise it would produce more than
+$\bday(z)$ strict prefix extensions inside the set-length sequence $z$.
+Thus $\Phi$ is onto the fixed-point class.
+\end{proof}
+
+For example, $D_m$ commutes with sign-chain unions and its image is closed
+under them, so its fixed points form a surreal substructure. Yet $D_m$
+is nowhere continuous in the numerical order topology by
+\cref{prop:repeat}. The two kinds of continuity are not interchangeable.
+
+\section{Initial images and the distinction between two truncations}\label{sec:initial}
+
+\begin{definition}
+A subclass $S\subseteq\No$ is \emph{simplicity-initial} if $x\in S$ and
+$y\pref x$ imply $y\in S$. A normal-form truncation discards a final segment
+of the decreasing list of exponents in \eqref{eq:nf}. These two operations
+are unrelated definitions and must be tracked separately.
+\end{definition}
+
+\begin{theorem}[An initial full-sized order copy is the whole class]
+\label{thm:initial}
+If an order embedding $j:\No\to\No$ has simplicity-initial image $S$, then
+$S=\No$. Simplicity preservation by $j$ is not required.
+\end{theorem}
+\begin{proof}
+The order $S$ inherits interpolation for every set cut: take preimages
+under $j$, interpolate in $\No$, then apply $j$.
+Suppose $S\ne\No$, and choose an omitted $x$ of least birthday. Every
+proper prefix of $x$ belongs to $S$. In particular $L_x,R_x\subseteq S$.
+Interpolation in $S$ gives $y\in S$ with $L_x<y<R_x$. Such a $y$ extends
+$x$. Initiality then gives $x\in S$, a contradiction.
+\end{proof}
+The conclusion is surjectivity, not identity. A nonidentity ordered-field
+automorphism has image $\No$, which is certainly initial. Adding simplicity
+preservation gives identity by \cref{prop:treebirthday}.
+
+This theorem does not conflict with initial embeddings of set-sized
+ordered fields into $\No$ \cite{EhrlichKaplan}. A set-sized field need not
+interpolate every set cut of its underlying order. The full class $\No$
+does, and that extra property drives the proof.
+
+\begin{proposition}[A proper subfield is not convex]\label{prop:convexfield}
+A convex subfield of an ordered field is the whole field. More generally,
+a subfield containing a nonempty open interval is the whole field.
+\end{proposition}
+\begin{proof}
+For the first statement, if $a>0$ lies above the convex subfield, then
+$0<a^{-1}<1$ puts $a^{-1}$ in the subfield, hence also $a$.
+For the second, subtract two points of the interval to obtain an interval
+$(-\delta,\delta)$ inside the subfield. For arbitrary $x$ in the ambient
+field choose $0<t<\delta/(1+|x|)$. Both $t$ and $tx$ lie in that interval,
+so $x=(tx)/t$ belongs to the subfield.
+\end{proof}
+Thus the convex prefix copies and interval copies are inherently different
+from proper field copies. The field images constructed next are closed
+under normal-form truncation, but by \cref{thm:initial} they cannot be
+simplicity-initial.
+
+\section{Hahn relabeling and a double-lift construction}\label{sec:hahn}
+
+The principal construction is deliberately modular. Relabeling the
+exponents of a surreal needs only an order embedding and produces an
+\emph{additive} embedding. Relabeling exponents by an \emph{additive}
+embedding then produces a field embedding. Keeping these two levels
+separate prevents a common false claim that every monotone change of
+exponent preserves multiplication.
+
+\subsection{The additive lift of an order embedding}
+Let $f:\No\to\No$ be an increasing class embedding. Define
+\begin{equation}\label{eq:addlift}
+ A_f\left(\sum_a r_a\omega^a\right)
+       =\sum_a r_a\omega^{f(a)}.
+\end{equation}
+The sum on the right is legal: the image of its support is a set and an
+order-isomorphic copy of a reverse well-order.
+
+\begin{theorem}[Additive lift]\label{thm:addlift}
+The map $A_f$ is a strongly $\R$-linear ordered additive-group embedding.
+It preserves and reflects Hahn summability, and
+\begin{align}
+ \im A_f&=\NF{f(\No)},\label{eq:addimage}\\
+ A_f\circ A_g&=A_{f\circ g},\label{eq:addfunctor}\\
+ \Fix(A_f)&=\NF{\Fix(f)}.\label{eq:addfixed}
+\end{align}
+It is surjective exactly when $f$ is surjective, and its image is cofinal
+exactly when $f(\No)$ is cofinal.
+\end{theorem}
+\begin{proof}
+Addition and real scalar multiplication are coefficientwise. An increasing
+injection preserves the largest differing exponent and its coefficient,
+so it preserves order and is injective. The two summability conditions are
+invariant under an injective order relabeling: support order type is
+unchanged, as is the number of indices contributing to a coefficient.
+Equation~\eqref{eq:addimage} follows by pulling back a support contained in
+$f(\No)$ under the inverse class map on that image. Class replacement
+makes the pulled-back support a set. Composition is immediate termwise.
+
+If $A_f(x)=x$, its support $B$ satisfies $f[B]=B$. The restriction of $f$ is
+an order automorphism of the reverse well-order $B$, hence is the identity
+on $B$. Conversely, support in $\Fix(f)$ gives a fixed series. This proves
+\eqref{eq:addfixed} without assuming $f$ is onto on the whole class.
+
+Surjectivity follows from the image formula; an omitted exponent omits its
+monomial. If $f(\No)$ is cofinal, images of monomials dominate any given
+normal form. If it is not cofinal, choose a strict upper bound $b$ for it.
+Every nonzero $A_f(x)$ has largest exponent below $b$, so
+$|A_f(x)|<\omega^b$. Its image is bounded.
+\end{proof}
+
+Even the image of $1$ changes in general: $A_f(1)=\omega^{f(0)}$.
+The symbol $A_f$ should never be called a field embedding unless the
+additional multiplicative conditions have been verified.
+
+\subsection{The field lift of an additive embedding}
+Let $\tau:(\No,+,<)\to(\No,+,<)$ be an ordered additive-group embedding.
+Define
+\begin{equation}\label{eq:fieldlift}
+ H_\tau\left(\sum_a r_a\omega^a\right)
+       =\sum_a r_a\omega^{\tau(a)}.
+\end{equation}
+
+\begin{theorem}[Field lift]\label{thm:fieldlift}
+The map $H_\tau$ is a unital ordered-field embedding, fixes $\R$ pointwise,
+and is strongly $\R$-linear. It preserves and reflects Hahn summability.
+Moreover,
+\begin{align}
+ \im H_\tau&=\NF{\tau(\No)},\label{eq:fieldimage}\\
+ H_\tau H_\rho&=H_{\tau\circ\rho},\label{eq:fieldfunctor}\\
+ \val(H_\tau x)&=\tau(\val x)\quad(x\ne0),\label{eq:fieldvalue}\\
+ \Fix(H_\tau)&=\NF{\Fix(\tau)}.\label{eq:fieldfixed}
+\end{align}
+Surjectivity and cofinality are respectively equivalent to surjectivity
+and cofinality of $\tau$.
+\end{theorem}
+\begin{proof}
+The additive-lift proof applies to addition and supports. Since
+$\tau(0)=0$, constants are fixed. For multiplication, the identity
+$\tau(a+b)=\tau(a)+\tau(b)$ carries every convolution term
+$r_as_b\omega^{a+b}$ to the corresponding term of the product of the
+images. The usual finiteness of contributions to a Hahn product coefficient
+is unchanged. Thus multiplication is preserved. Injectivity then implies
+preservation of inverses, because $H_\tau(x)H_\tau(x^{-1})=1$.
+
+The image, composition, fixed-point, and cofinality statements follow by
+the same support arguments as above. Finally, if $a$ is the leading
+exponent of $x$, then
+$\val(H_\tau x)=-\tau(a)=\tau(-a)=\tau(\val x)$.
+\end{proof}
+
+The image is a real-closed field, because it is isomorphic to $\No$. This
+uses the real closedness of the surreal field, not an unsupported assertion
+that arbitrary birthday cutoffs are fields. Each image is also closed
+under all normal-form truncations.
+
+\begin{theorem}[Double lift]\label{thm:doublelift}
+For an increasing class embedding $f:\No\to\No$, put
+\begin{equation}\label{eq:doublelift}
+ J_f=H_{A_f}.
+\end{equation}
+Then $J_f$ is a strongly $\R$-linear ordered-field self-embedding, and
+\[
+ J_fJ_g=J_{f\circ g},\qquad J_{\id}=\id.
+\]
+The assignment is faithful: $J_f=J_g$ implies $f=g$. It preserves and
+reflects surjectivity and cofinality.
+\end{theorem}
+\begin{proof}
+The first lift is an ordered additive embedding, so the second is a field
+embedding. Both composition laws give the displayed identity. Faithfulness
+can be read off from a single family of test elements:
+\begin{equation}\label{eq:testelement}
+ J_f\bigl(\omega^{\omega^a}\bigr)=\omega^{\omega^{f(a)}}.
+\end{equation}
+Injectivity of the $\omega$-map twice recovers $f(a)$. The remaining
+assertions follow by applying the image criteria for the two lifts.
+\end{proof}
+
+The construction converts an order-embedding problem into a field-embedding
+problem without pretending that the original $f$ was additive. Statements
+about the ``monoid'' of all such maps are understood in the external or
+finite-class-quantified sense of \cref{sec:foundations}. The formulas also
+give ordinary monoid homomorphisms on any legitimate set-coded family
+closed under composition.
+
+\subsection{Classification with real weights}
+There is a useful exact classification within a specified strong monomial
+class. It should not be mistaken for a classification of every field
+embedding of $\No$.
+
+\begin{theorem}[Weighted monomial classification]\label{thm:weighted}
+Let $\tau$ be an ordered additive embedding of $\No$, and let
+$\chi:(\No,+)\to(\R_{>0},\cdot)$ be a group homomorphism. Then
+\begin{equation}\label{eq:weighted}
+ H_{\tau,\chi}\left(\sum_a r_a\omega^a\right)
+ =\sum_a r_a\chi(a)\omega^{\tau(a)}
+\end{equation}
+is a strongly $\R$-linear ordered-field embedding. Conversely, every
+strongly $\R$-linear field embedding sending every monomial $\omega^a$ to
+a positive real multiple of a monomial has this unique form.
+Its image is $\NF{\tau(\No)}$, and
+\begin{equation}\label{eq:weightedfixed}
+ \Fix(H_{\tau,\chi})=
+ \NF{\Fix(\tau)\cap\ker\chi}.
+\end{equation}
+Here $\ker\chi=\{a:\chi(a)=1\}$. Composition is given by
+\[
+ (\tau_1,\chi_1)(\tau_2,\chi_2)
+ =\left(\tau_1\tau_2,
+     a\longmapsto\chi_2(a)\chi_1(\tau_2(a))\right).
+\]
+\end{theorem}
+\begin{proof}
+The character law and additivity of $\tau$ prove multiplicativity on
+monomials; strong sums extend it to all products. Positive coefficients
+preserve the sign of the leading term. Conversely, unique normal forms of
+the images of monomials determine $\tau(a)$ and $\chi(a)$. Multiplication
+of monomials forces additivity and the character law. The strict order of
+Archimedean classes of monomials forces $\tau$ to be an order embedding.
+Strong real linearity determines the map on every series.
+
+Every series supported on $\tau(\No)$ is in the image: pull back each
+exponent and divide its real coefficient by the corresponding nonzero
+$\chi(a)$. For fixed points, equality of supports again makes $\tau$ the
+identity on the support. Equality of nonzero coefficients then requires
+$\chi(a)=1$ at each exponent. The composition formula follows by applying
+the two maps to $\omega^a$.
+\end{proof}
+
+General strong embeddings can send a monomial to a monomial times a
+nonconstant unit, and general field embeddings need not be strong at all.
+The theorem makes no claim about those larger classes. The full
+surreal-field and Hahn-field automorphism literature includes such distinctions
+\cite{KKS,KS}.
+
+\section{Proper embeddings fixing every real and ordinal}\label{sec:stabilizers}
+
+\subsection{A completely explicit example}
+Define the increasing map
+\begin{equation}\label{eq:fminus}
+ f_-(a)=
+ \begin{cases}
+ \displaystyle\frac{a}{1-a},&a<0,\\[2mm]
+ a,&a\ge0.
+ \end{cases}
+\end{equation}
+It maps the negative half-line bijectively onto $(-1,0)$ and fixes the
+nonnegative half-line. Therefore it is an order isomorphism
+$\No\to(-1,\infty)$, proper and cofinal. Let
+\[
+ \tau_-=A_{f_-},\qquad J_-=H_{\tau_-}.
+\]
+
+\begin{theorem}[An ordinal-fixing proper field copy]\label{thm:explicit}
+The field embedding $J_-$ is proper and cofinal, fixes every real and every
+ordinal, and preserves all Hahn-summable families and all normal-form
+truncations. It moves the explicit omnific integer
+\[
+ J_-\bigl(\omega^{\omega^{-1}}\bigr)
+     =\omega^{\omega^{-1/2}}.
+\]
+The element $\omega^{\omega^{-1}}$ does not belong to its image.
+\end{theorem}
+\begin{proof}
+Properness and cofinality follow from \cref{thm:doublelift}. Real constants
+are fixed by every field lift. The Cantor normal form of an ordinal has
+ordinal exponents and is its Conway normal form. Since $f_-$ fixes every
+nonnegative exponent, $A_{f_-}$ fixes every ordinal. Applying the outer
+lift now fixes the Cantor normal form of every ordinal as well.
+
+The displayed motion follows from $f_-(-1)=-1/2$. The exponent $-1$ is
+omitted by $f_-$, so $\omega^{-1}$ is omitted by $A_{f_-}$. Consequently the
+outer monomial $\omega^{\omega^{-1}}$ is omitted by $J_-$.
+\end{proof}
+
+There is no contradiction between ``omitted'' and ``moved'': an element
+of the domain need not belong to the range, although it certainly has an
+image. Also, $J_-(\omega^{-1})=\omega^{-1}$, because $A_{f_-}$ fixes the
+constant $-1$. The map does not merely replace every visible occurrence
+of $\omega$ by a new base; the level of each normal-form exponent matters.
+
+\subsection{Fixing an arbitrary prescribed set}
+\begin{definition}[Two-level exponent footprint]
+For a set $A\subseteq\No$, define the set
+\begin{equation}\label{eq:footprint}
+ E(A)=\bigcup_{x\in A}\ \bigcup_{a\in\supp(x)}\supp(a).
+\end{equation}
+This consists of the exponents occurring in the normal forms of the
+exponents occurring in members of $A$.
+\end{definition}
+The expression is a set by replacement and union. That elementary size
+observation makes the following stabilizer theorem possible.
+
+\begin{lemma}[Footprint criterion]\label{lem:footprint}
+If $f$ fixes $E(A)$ pointwise, then $J_f$ fixes $A$ pointwise.
+\end{lemma}
+\begin{proof}
+For every outer exponent $a$ in a member of $A$, the support of $a$ is
+fixed by $f$. Thus $A_f(a)=a$. The outer field lift then leaves every
+normal form in $A$ unchanged.
+\end{proof}
+
+\begin{theorem}[Large stabilizers, including proper maps]\label{thm:stabilizer}
+For every set $A\subseteq\No$, there exists a proper cofinal strongly
+$\R$-linear field embedding fixing $A\cup\R\cup\On$ pointwise.
+There also exists a nonidentity strongly $\R$-linear field automorphism
+fixing that same class pointwise.
+\end{theorem}
+\begin{proof}
+Choose $\beta<0$ below every member of the set $E(A)$, using set-cut
+interpolation. Define
+\begin{equation}\label{eq:fbeta}
+ f_\beta(a)=
+ \begin{cases}
+ \displaystyle\beta+\frac{a-\beta}{1-(a-\beta)},&a<\beta,\\[2mm]
+ a,&a\ge\beta.
+ \end{cases}
+\end{equation}
+This is an increasing bijection from $\No$ onto $(\beta-1,\infty)$.
+It fixes $E(A)$ and every nonnegative exponent. The footprint criterion
+fixes $A$; the ordinal argument of \cref{thm:explicit} fixes $\On$; and
+\cref{thm:doublelift} supplies properness and cofinality of $J_{f_\beta}$.
+
+For the automorphism, replace the lower branch by an affine dilation:
+\begin{equation}\label{eq:gbeta}
+ g_\beta(a)=
+ \begin{cases}
+ \beta+2(a-\beta),&a<\beta,\\
+ a,&a\ge\beta.
+ \end{cases}
+\end{equation}
+This is a nonidentity order automorphism of $\No$ with the same fixed
+upper tail. Its double lift is a nonidentity field automorphism by
+faithfulness, with all the required fixed points.
+\end{proof}
+
+\begin{corollary}[No set of extra parameters is a rigidity base]
+Even after all reals and all ordinals are fixed, no set of additional
+surreal parameters forces every strongly $\R$-linear monomial field
+self-embedding to be the identity, or even to be surjective.
+\end{corollary}
+The fixed class $\On$ is itself proper. The statement is therefore
+stronger than simply observing that a saturated object has nontrivial
+automorphisms over a small set.
+
+\subsection{Bounded field copies fixing prescribed data}
+\begin{theorem}[Bounded copies]\label{thm:boundedcopy}
+For every set $A\subseteq\No$, there is a strongly $\R$-linear field
+self-embedding fixing $A\cup\R$ whose entire image is bounded in $\No$.
+It can also be chosen to fix $\omega$.
+\end{theorem}
+\begin{proof}
+Choose $\gamma>0$ above every member of $E(A)$, and put
+\begin{equation}\label{eq:fupper}
+ f^+_\gamma(a)=
+ \begin{cases}
+ a,&a\le\gamma,\\[1mm]
+ \displaystyle\gamma+\frac{a-\gamma}{1+(a-\gamma)},&a>\gamma.
+ \end{cases}
+\end{equation}
+The range is $(-\infty,\gamma+1)$. Therefore for every $x$,
+\[
+ |A_{f^+_\gamma}(x)|<\omega^{\gamma+1}.
+\]
+The exponents of every image under $J_{f^+_\gamma}$ are consequently below
+$\omega^{\gamma+1}$, giving the common strict bound
+\begin{equation}\label{eq:boundedbound}
+ |J_{f^+_\gamma}(y)|<\omega^{\omega^{\gamma+1}}
+ \qquad(y\in\No).
+\end{equation}
+The footprint criterion fixes $A$. Constants are fixed, and
+$f^+_\gamma(0)=0$ gives $A_{f^+_\gamma}(1)=1$, hence $J_{f^+_\gamma}(\omega)=\omega$.
+\end{proof}
+A bounded subfield is not an Archimedean subfield. It can contain infinite
+elements, all their inverses, and arbitrarily complicated prescribed set
+families, while a still larger ambient surreal bounds the entire class
+image. Such an embedding cannot fix every ordinal, since the ordinals are
+cofinal in $\No$.
+
+\section{Omnific floors, fixed fields, and iteration}\label{sec:fixed}
+
+\subsection{Omnific integrality is preserved and reflected}
+Conway's omnific integers have the normal-form description
+\begin{equation}\label{eq:oz}
+ \Oz=\left\{x:\supp(x)\subseteq\No_{\ge0},\quad [x]_0\in\Z\right\},
+\end{equation}
+where $[x]_0$ is the coefficient of $\omega^0$, taken as zero when absent.
+Every surreal has a unique omnific floor $a$ with $a\le x<a+1$.
+These are the usual omnific conventions, also used in the repository's
+constructed omnific ring \cite{Conway,RepoMain}.
+
+\begin{proposition}[Omnific compatibility]\label{prop:oz}
+Every weighted monomial embedding $H_{\tau,\chi}$ satisfies
+\[
+ x\in\Oz\iff H_{\tau,\chi}(x)\in\Oz,
+ \qquad
+ H_{\tau,\chi}(\floorOz{x})=
+ \floorOz{H_{\tau,\chi}(x)}.
+\]
+It preserves the constant coefficient and commutes with normal-form
+truncations at corresponding support positions.
+\end{proposition}
+\begin{proof}
+An additive ordered embedding fixes zero and preserves and reflects the
+sign of every exponent. Since $\chi(0)=1$, the constant coefficient is
+unchanged. This proves the membership equivalence. If $a$ is the omnific
+floor of $x$, apply the ordered field embedding to $a\le x<a+1$.
+The image of $a$ is omnific, and uniqueness of the floor gives the formula.
+Termwise relabeling plainly commutes with deleting a final support segment.
+\end{proof}
+This includes the negative-infinitesimal boundary: the floor of a negative
+infinitesimal is $-1$, not zero. The proof does not rely on ignoring that
+boundary. Preserving $\Oz$ as a predicate is much weaker than fixing it
+pointwise: the moved element in \cref{thm:explicit} belongs to $\Oz$.
+
+\subsection{Fixed fields do not determine surjectivity}
+\begin{proposition}[General fixed-field facts]\label{prop:fixedgeneral}
+The fixed field of any ordered-field self-embedding of $\No$ is real
+closed. No point has a nontrivial finite orbit, and
+$\Fix(j^n)=\Fix(j)$ for every positive integer $n$.
+\end{proposition}
+\begin{proof}
+The fixed points form a subfield. For a polynomial with fixed coefficients,
+its finite set of roots in $\No$ is carried injectively into itself. The
+induced map is a strictly increasing permutation of a finite ordered set,
+so fixes every root. In particular positive square roots and a root of
+any odd-degree polynomial lie in the fixed field, proving real closedness.
+If $jx>x$, its forward iterates are strictly increasing; if $jx<x$, they
+are strictly decreasing. Neither case gives a periodic point.
+\end{proof}
+
+Let
+\begin{equation}\label{eq:B}
+ B=\NF{\No_{\ge0}}.
+\end{equation}
+This is the additive subgroup of purely infinite parts plus real constants.
+It need not be confused with $\Oz$, whose constant term must be integral.
+Since $\Fix(f_-)=\No_{\ge0}$, the two lift formulas give
+\begin{equation}\label{eq:Jfixed}
+ \Fix(\tau_-)=B,\qquad \Fix(J_-)=\NF{B}.
+\end{equation}
+Now take $g(a)=2a$ for $a<0$ and $g(a)=a$ for $a\ge0$. Its double lift is
+an automorphism, but it has exactly the same fixed field $\NF{B}$ as the
+proper embedding $J_-$. Consequently neither this fixed field nor its
+inclusion of all ordinals can detect whether an embedding is onto.
+
+\subsection{The largest reversible core}
+\begin{definition}
+For an injective field endomorphism $j$, define its iterated-image core by
+\begin{equation}\label{eq:core}
+ K_\infty(j)=\bigcap_{n<\omega}j^n(\No).
+\end{equation}
+This is an intersection specified by quantification over natural numbers,
+not a set containing proper-class fields as elements.
+\end{definition}
+
+\begin{proposition}\label{prop:core}
+The restriction of $j$ to $K_\infty(j)$ is an automorphism. This is the
+largest subfield on which $j$ restricts to an automorphism. The core is
+real closed and can strictly contain $\Fix(j)$.
+\end{proposition}
+\begin{proof}
+Forward invariance is immediate. For $x\in K_\infty(j)$ let $j(y)=x$.
+Since $x\in j^{n+1}(\No)$ for every $n$, injectivity implies
+$y\in j^n(\No)$ for every $n$. Thus $y$ lies in the core, proving
+surjectivity of the restriction. A subfield on which $j$ is bijective
+lies in every iterated image, proving maximality.
+
+Each iterated image is real closed. Their intersection is real closed:
+for a polynomial over the intersection, all of its real roots in $\No$
+belong to each image field, since a real-closed subfield has no proper
+ordered algebraic extension inside $\No$. Thus the positive square-root
+and odd-degree-root tests hold in the intersection. Strict containment is
+shown in the next example.
+\end{proof}
+If $j$ is proper, its finite iterated images are strictly decreasing:
+$j^n(\No)=j^{n+1}(\No)$ would, by injectivity of $j^n$, imply
+$\No=j(\No)$. Nevertheless the hierarchy stabilizes at the countable
+intersection because $j(K_\infty)=K_\infty$. No stronger transfinite
+recursion is needed for this stabilization.
+
+For a pure monomial lift,
+\begin{equation}\label{eq:hcore}
+ K_\infty(H_\tau)=\NF{\bigcap_{n<\omega}\tau^n(\No)}.
+\end{equation}
+Indeed, membership is exactly the requirement that every exponent belong
+to every iterated exponent image.
+
+For $f_-$, direct iteration gives
+\[
+ f_-^n(a)=\frac{a}{1-na}\quad(a<0),\qquad
+ f_-^n(\No)=(-1/n,\infty)\quad(n\ge1).
+\]
+Let
+\[
+ C=\bigcap_{n\ge1}(-1/n,\infty),\qquad G=\NF{C}.
+\]
+The class $C$ consists of nonnegative surreals together with negative
+real-infinitesimals. Although $C$ itself need not be an additive group,
+$G$ is an additive subgroup: supports in any fixed class are closed under
+addition and negation of series. The formulas for the lifts give
+\begin{equation}\label{eq:Jcore}
+ K_\infty(J_-)=\NF{G}.
+\end{equation}
+This core is larger than $\NF{B}=\Fix(J_-)$. For example, the exponent
+$a=\omega^{-1/\omega}$ lies in $G\setminus B$. Hence $\omega^a$ lies in
+the core but is not fixed. A map can therefore act reversibly and
+nontrivially on its core while being proper on the entire class.
+
+\section{Topology: cofinality, discrete copies, and closed images}\label{sec:topology}
+
+Throughout this section, the order topology is understood through interval
+neighborhoods in the \emph{full} surreal class. We do not form a set of all
+open subclasses. At a universe cutoff, the internally available
+neighborhoods may be fewer, so an external ambient subspace topology can
+be strictly finer than an internal order topology.
+
+\subsection{Why set-indexed limits are misleading}
+\begin{proposition}[Set-sized subsets are closed and discrete]
+\label{prop:setdiscrete}
+Every set $A\subseteq\No$ is closed and discrete in the full surreal order
+topology. Every convergent set-indexed net is eventually constant.
+\end{proposition}
+\begin{proof}
+Fix $x\in\No$. The nonzero distances $|x-a|$ for $a\in A\setminus\{x\}$
+form a set of positive surreals. By interpolating the cut between $0$ and
+that set, choose $\delta>0$ below every such distance. Then
+$(x-\delta,x+\delta)$ meets $A$ in at most $\{x\}$. This isolates points
+of $A$ and gives a neighborhood disjoint from $A$ at every point outside
+$A$. For a set-indexed net, apply the same argument to its set of values
+and its proposed limit. The isolating neighborhood forces eventual
+constancy.
+\end{proof}
+The proposition is not a statement that every subclass is discrete.
+The full class $\No$ is densely ordered. It says that a set-sized probe
+cannot capture every infinitesimal scale of the ambient class.
+
+\begin{corollary}[Existing set suprema are trivial]\label{cor:setsup}
+If a nonempty set $A\subseteq\No$ has a supremum in $\No$, then it has a
+maximum, equal to that supremum. Thus every order embedding preserves
+suprema of nonempty sets whenever those suprema exist in $\No$.
+\end{corollary}
+\begin{proof}
+If $u$ is a supremum not attained in $A$, choose $\delta>0$ below all
+positive distances $u-a$. Then $u-\delta$ is still an upper bound, a
+contradiction. A maximum is preserved by any order embedding.
+\end{proof}
+Accordingly, ``preserves all existing set suprema'' is far weaker here
+than ambient simplest-cut preservation. A simplest surreal between two
+sets is not generally their numerical supremum or infimum.
+
+\subsection{The field-embedding dichotomy}
+For a general order embedding, continuity at $x$ requires its images of
+the left and right neighborhoods to approach $jx$ from the corresponding
+sides. Cofinality of the entire image says nothing by itself about this
+local condition, as $D_m$ shows. Field structure changes the answer.
+
+\begin{theorem}[Cofinality is exactly continuity for field embeddings]
+\label{thm:topdichotomy}
+For an ordered-field self-embedding $j$ of $\No$, the following are
+equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $j(\No)$ is cofinal in $\No$;
+\item $j$ is continuous at $0$;
+\item $j$ is continuous everywhere;
+\item $j$ is a homeomorphism onto its image with the ambient subspace topology.
+\end{enumerate}
+If these conditions fail, the image is discrete in $\No$ and $j$ is
+nowhere continuous.
+\end{theorem}
+\begin{proof}
+A cofinal subfield has positive elements arbitrarily close to zero, by
+inversion. Given $\varepsilon>0$, choose $\delta>0$ in the domain with
+$0<j\delta<\varepsilon$. Then $|h|<\delta$ implies
+$|jh|<\varepsilon$, proving continuity at zero. Additivity translates this
+to every point.
+
+Conversely, continuity at zero provides arbitrarily small positive image
+elements: for a neighborhood of radius $\varepsilon$, use a positive
+$h<\delta$ in a source neighborhood mapped into it. Inverses of these
+positive image elements are cofinal.
+
+The inverse from the image is always continuous: a source interval
+$(x-\delta,x+\delta)$ is the inverse image, within the range, of the ambient
+interval $(jx-j\delta,jx+j\delta)$. Thus continuity of $j$ makes it a
+topological embedding.
+
+If the subfield image $K$ is not cofinal, choose $B>0$ strictly above all
+of $K$. For $0<k\in K$, its inverse also belongs to $K$, so
+$k^{-1}<B$ and $k>B^{-1}$. Distinct points of $K$ are therefore separated
+by more than $B^{-1}$. The image is discrete; continuity would isolate a
+point of the densely ordered domain, which is impossible.
+\end{proof}
+
+\begin{theorem}[Monomial images are closed]\label{thm:closedimage}
+For any ordered additive subgroup $G\subseteq\No$, the subfield
+$\NF{G}$ is closed in the ambient order topology. If it is proper, it is
+nowhere dense. In particular every proper image in
+\cref{thm:weighted} is closed and nowhere dense.
+\end{theorem}
+\begin{proof}
+Take $x\notin\NF{G}$. Its support has a largest exponent $a$ outside $G$.
+Let $p$ be the truncation of $x$ to exponents strictly greater than $a$;
+then $p\in\NF{G}$. Write $r=[x]_a\ne0$.
+For any $y\in\NF{G}$, either $y-p$ has a nonzero term above $a$, in which
+case that term dominates $x-y$, or the leading term of $x-y$ at exponent
+$a$ is exactly $r\omega^a$. In both cases
+\[
+ |x-y|>\tfrac12|r|\omega^a.
+\]
+Hence a neighborhood of $x$ misses the subfield. This proves closedness.
+A proper subfield has no interior by \cref{prop:convexfield}, so a closed
+proper subfield is nowhere dense.
+\end{proof}
+
+\begin{corollary}[Strengthened stabilizer conclusion]\label{cor:strongstabilizer}
+The proper embeddings in \cref{thm:stabilizer} are continuous and are
+homeomorphisms onto closed nowhere-dense subfields. The embeddings of
+\cref{thm:boundedcopy} have discrete images and are nowhere continuous.
+Both families preserve all admissible Hahn sums.
+\end{corollary}
+There is therefore no implication from strong Hahn summability to
+continuity in the ambient order topology. Nor does a continuous cofinal
+field embedding have to have a dense image.
+
+\subsection{An everywhere-zero derivative of a nonconstant automorphism}
+There are two different uses of ``derivation'' in surreal mathematics:
+an algebraic operator on field elements, and the pointwise derivative of
+a function in the order topology. The latter already exhibits a striking
+separation.
+
+\begin{proposition}\label{prop:zeroderivative}
+Let $c>1$ be a surreal and let $S_c=H_{a\mapsto ca}$. This is an increasing
+field automorphism. As a function $\No\to\No$, its order-topological
+derivative exists at every point and equals zero. Its inverse
+$S_{1/c}$ has no surreal-valued derivative at any point.
+\end{proposition}
+\begin{proof}
+Multiplication by $c$ is an ordered additive automorphism, so the field-lift
+theorem applies. Additivity makes every difference quotient independent
+of the base point:
+\[
+ \frac{S_c(x+h)-S_c(x)}h=\frac{S_c(h)}h.
+\]
+For $h\ne0$,
+\begin{equation}\label{eq:derivval}
+ \val\!\left(\frac{S_c(h)}h\right)=(c-1)\val(h).
+\end{equation}
+Given $\varepsilon>0$, choose $\eta$ with
+$(c-1)\eta>\val(\varepsilon)$, and then take
+$0<|h|<\omega^{-\eta}$. The quotient has valuation greater than
+$\val(\varepsilon)$, so its absolute value is below $\varepsilon$.
+This proves derivative zero by the full $\varepsilon$--$\delta$ definition.
+For $S_{1/c}$ the coefficient $(1/c-1)$ is negative. As $h$ becomes small
+through monomials of arbitrarily large valuation, the positive quotient
+exceeds every prescribed positive surreal. It cannot have a surreal limit.
+\end{proof}
+The familiar real mean-value conclusion ``derivative zero implies
+constant'' requires hypotheses unavailable here. A set-indexed sequence
+of $h$'s is not sufficient to test the limit, by
+\cref{prop:setdiscrete}. This example is not a statement about the
+Berarducci--Mantova derivation, considered in \cref{sec:differential}.
+
+\section{Valuation, leading terms, and the \texorpdfstring{$\omega$}{omega}-map}\label{sec:valuation}
+
+\subsection{Three different valuation constraints}
+For a field embedding $j$, distinguish:
+\begin{align*}
+\text{comparison preservation: }&
+ \val x<\val y\iff\val(jx)<\val(jy);\\
+\text{pointwise valuation fixation: }&
+ \val(jx)=\val x;\\
+\text{leading-term fixation: }&
+ \operatorname{lt}(jx)=\operatorname{lt}(x).
+\end{align*}
+The last implies the second, which implies the first. The first is
+automatic for surreal field embeddings.
+
+\begin{proposition}\label{prop:valueaction}
+Every field self-embedding of $\No$ is order preserving and induces a
+unique ordered additive-group embedding $\tau_j$ of its natural value
+group satisfying
+\begin{equation}\label{eq:valueaction}
+ \val(jx)=\tau_j(\val x)\qquad(x\ne0).
+\end{equation}
+The induced map on the residue field $\R$ is the identity. This does not,
+by itself, say that the distinguished embedded copy of $\R$ is fixed
+pointwise.
+\end{proposition}
+\begin{proof}
+Positive elements of a real-closed field are exactly nonzero squares, so
+a field embedding preserves positivity. The Archimedean comparison of two
+positive elements is expressed using inequalities with ordinary integer
+multiples. Since $j$ fixes the integers and reflects order, it preserves
+and reflects these comparisons. Thus it induces an order embedding on
+Archimedean classes. Multiplication gives additivity of the induced value
+map, and surjectivity of $\val$ gives uniqueness.
+
+The valuation ring of finite elements and its infinitesimal ideal are
+preserved and reflected. The induced ordered field embedding of the
+residue field $\R$ into itself fixes rational cuts, hence is the identity.
+It determines the standard part of $j(r)$, not necessarily $j(r)$ itself.
+\end{proof}
+
+Within the weighted monomial class, a simple pointwise-valuation example
+is obtained from $\tau=\id$ and
+\[
+ \chi(a)=2^{[a]_{-1}}.
+\]
+Coefficient extraction is additive, so this is a positive real character.
+The resulting automorphism fixes $\R$ and every ordinal, preserves $\Oz$
+and its floor, and fixes every valuation, but
+\[
+ H_{\id,\chi}\bigl(\omega^{\omega^{-1}}\bigr)
+    =2\omega^{\omega^{-1}}.
+\]
+Pointwise value fixation is therefore not field rigidity.
+
+\subsection{A controlled unit twist fixes even the leading term}
+We now give a fully supported example outside the real-weighted monomial
+class. It demonstrates why leading terms alone do not settle the field
+problem.
+
+Let $t=\omega^{-1}$, let $\beta<0$, and let
+$\ell_\beta(a)=[a]_\beta\in\R$. For $r\in\R$, define the usual formal
+binomial unit
+\[
+ (1+t)^r=\sum_{n\ge0}\binom rn t^n.
+\]
+These are legal Hahn series. Define
+\begin{equation}\label{eq:unitlift}
+ U_\beta\left(\sum_a r_a\omega^a\right)
+ =\sum_a r_a\omega^a(1+t)^{\ell_\beta(a)}.
+\end{equation}
+
+\begin{proposition}[Strong leading-term stabilizers]\label{prop:unitlift}
+The map $U_\beta$ is a strongly $\R$-linear field automorphism that fixes
+the leading term of every nonzero surreal. It fixes $\R$ and every ordinal.
+For any prescribed set $A$, $\beta<0$ can be chosen so that it also fixes
+$A$ pointwise. Nevertheless it is nonidentity.
+\end{proposition}
+\begin{proof}
+For a reverse well-ordered support $B$, the support of the proposed image
+is contained in $B-\N$. This is reverse well-ordered. Each exponent has
+only finitely many representations $a-n$ with $a\in B$, $n\in\N$:
+otherwise $B$ would contain an infinite increasing sequence of the form
+$b+n$. Thus the displayed family is summable. The same argument, together
+with the local finiteness of a summable input family, proves strong
+additivity.
+
+The real binomial identity $(1+t)^{r+s}=(1+t)^r(1+t)^s$ and additivity of
+$\ell_\beta$ prove multiplicativity. The term $n=0$ preserves the leading
+term, while all correction terms have strictly smaller exponents.
+Because $\beta<0$, we have $\ell_\beta(-1)=0$, so $U_\beta(t)=t$.
+Consequently $U_\beta$ fixes every binomial unit above, by strong real
+linearity. Replacing $\ell_\beta$ by $-\ell_\beta$ in the formula gives an
+inverse: the two units cancel on every monomial and hence on every series.
+
+Ordinals have no negative exponents in their own normal forms, so
+$\ell_\beta$ vanishes on every ordinal exponent occurring in a Cantor
+normal form. This fixes all ordinals. Taking $\beta$ below every member of
+$E(A)$ similarly fixes every outer exponent of every member of $A$.
+Finally,
+\[
+ U_\beta\bigl(\omega^{\omega^\beta}\bigr)
+  =\omega^{\omega^\beta}(1+\omega^{-1})
+  \ne\omega^{\omega^\beta},
+\]
+which proves nontriviality.
+\end{proof}
+
+This example does \emph{not} preserve omnific integrality: for $\beta<0$,
+the displayed image has the negative exponent $\omega^\beta-1$, whereas
+the original element belongs to $\Oz$. It therefore supplies a useful
+separation from the floor-preserving monomial embeddings. It will also
+fail exponential compatibility by \cref{thm:exprigidity}.
+
+\subsection{Fixing residues need not fix real elements}
+There is an explicit algebraic mechanism for moving a real by an
+infinitesimal. In ZFC, choose a transcendental real $r$ and a derivation
+$d:\R\to\R$ with $d(r)=1$, defined first on a transcendence basis and then
+extended uniquely through the algebraic extension. Let $\Delta$ act
+coefficientwise on surreal normal forms, fixing every monomial. Then
+\begin{equation}\label{eq:taylorshift}
+ T(x)=\sum_{n\ge0}\frac{t^n\Delta^n(x)}{n!},\qquad t=\omega^{-1},
+\end{equation}
+is well-defined by the same support bound $\supp(x)-\N$.
+The iterated Leibniz rule proves multiplicativity. Since $\Delta(t)=0$,
+the series with $-t$ is its inverse, by the binomial cancellation at each
+coefficient. Thus $T$ is an ordered, strongly additive field automorphism
+fixing every leading term, but $T(r)=r+t$. It is not $\R$-linear. This is
+a formal operator exponential of $t\Delta$, not the Gonshor exponential
+function on field elements.
+
+\subsection{Truncation thresholds and the \texorpdfstring{$\omega$}{omega}-map}
+Let $T_{>c}$ discard all normal-form terms with exponent at most $c$.
+For a weighted monomial embedding the precise covariance formula is
+\begin{equation}\label{eq:truncation}
+ H_{\tau,\chi}T_{>c}=T_{>\tau(c)}H_{\tau,\chi}.
+\end{equation}
+Thus preservation of corresponding truncations does not mean commuting
+with every \emph{fixed} threshold operator. Within this class, commuting
+with every $T_{>c}$ forces $\tau=\id$: otherwise choose a threshold strictly
+between an exponent and its image and test the monomial at that exponent.
+Real weights can still remain.
+
+The Conway map $\Omega(x)=\omega^x$ is an increasing isomorphism from the
+additive group of exponents to the multiplicative monomial group. It is
+not Gonshor's total exponential $\exp$. Its image is only the monomials,
+whereas $\exp$ is onto all positive surreals.
+
+\begin{theorem}[$\omega$-map and valuation rigidity]\label{thm:omegarigidity}
+A field self-embedding satisfying
+$j(\omega^x)=\omega^{j(x)}$ for every $x$ and
+$\val(jy)=\val(y)$ for every $y\ne0$ is the identity.
+\end{theorem}
+\begin{proof}
+For every $x$,
+\[
+ -jx=\val(\omega^{jx})=\val(j(\omega^x))=\val(\omega^x)=-x.
+\]
+No surjectivity or strong additivity is used.
+\end{proof}
+For a general field embedding commuting with $\Omega$, the same calculation
+shows $\tau_j(x)=j(x)$. In the pure monomial class $j=H_\tau$, compatibility
+is therefore exactly the functional equation
+\begin{equation}\label{eq:omegafunctional}
+ \tau=H_\tau.
+\end{equation}
+Solving this equation, and then treating nonmonomial embeddings, is a
+substantial separate problem. The ordinal-fixing maps $J_-$ do not solve
+it: at $x=\omega^{-1}$, their exponent action and field action differ.
+
+\section{Exponential rigidity from finite displacement}\label{sec:exponential}
+
+This section separates three claims: a finite identity about arbitrary
+field endomorphisms, a profile theorem for ordered exponential fields,
+and its application to the actual surreal exponential. The first two
+have generic counterparts in the inspected repository source
+\cite{RepoExp,RepoProfile}; the third still needs its formal bridge in
+that development.
+
+\subsection{The finite engine}
+\begin{lemma}[Displacement amplification]\label{lem:amplify}
+Let $F$ be an ordered field and $\sigma:F\to F$ a unital field
+endomorphism. If $D(a)=\sigma(a)-a\ne0$, then for every $B>0$ the element
+\begin{equation}\label{eq:probe}
+ b=\frac{2B(1+|\sigma(a)|)}{|D(a)|}
+\end{equation}
+satisfies
+\[
+ \max\{|D(b)|,|D(ab)|\}>B.
+\]
+Consequently every nonidentity field endomorphism has displacement image
+cofinal and coinitial in $F$.
+\end{lemma}
+\begin{proof}
+The exact identity is the twisted Leibniz rule
+\begin{equation}\label{eq:twisted}
+ D(ab)=\sigma(a)D(b)+bD(a),
+\end{equation}
+not $aD(b)+bD(a)$. If both displayed displacements were at most $B$ in
+absolute value, then
+\[
+ |bD(a)|=|D(ab)-\sigma(a)D(b)|\le B+|\sigma(a)|B.
+\]
+But the definition of $b$ makes its left side
+$2B(1+|\sigma(a)|)$, a contradiction. This proves unbounded absolute
+displacement. Since $D$ is additive and $D(-x)=-D(x)$, it proves both
+cofinality and coinitiality.
+\end{proof}
+
+\begin{corollary}[Bounded displacement is rigid]\label{cor:boundeddisp}
+If one field element $B$ bounds $|\sigma(x)-x|$ for every $x$, then
+$\sigma=\id$. More generally, if all displacements lie in a proper convex
+additive subgroup of $F$, then $\sigma=\id$.
+\end{corollary}
+\begin{proof}
+For the second statement, choose $b$ outside the proper convex subgroup.
+Every element of the subgroup has absolute value less than $|b|$;
+otherwise convexity would place $b$ in it. Apply the first statement.
+\end{proof}
+The bound may be an infinite field element. Replacing it by an ordinary
+integer bound would lose the intended surreal application. Notice also
+that $A_{f_-}$ is a nonidentity \emph{additive} embedding with infinitesimal
+displacement. Thus the field hypothesis cannot be dropped.
+
+\subsection{Profiles in an ordered exponential field}
+Let $E:(F,+,<)\to(F_{>0},\cdot,<)$ be an onto ordered exponential, and let
+$w:F^\times\to\Gamma$ be an onto nontrivial convex valuation. Put
+\[
+ \nu(x)=w(E(x)).
+\]
+This is an additive, surjective, order-reversing map. Its kernel is a
+proper convex additive subgroup of $F$.
+
+\begin{theorem}[Profile rigidity]\label{thm:profile}
+If a field endomorphism $\sigma$ satisfies $\nu(\sigma x)=\nu(x)$ for
+every $x$, then $\sigma=\id$. In particular this holds if $\sigma$
+commutes with $E$ and $w(\sigma y)=w(y)$ for every nonzero $y$.
+\end{theorem}
+\begin{proof}
+The hypothesis places every $\sigma x-x$ in $\ker\nu$. This kernel is
+proper and convex, so \cref{cor:boundeddisp} applies. For the last
+assertion,
+\[
+ \nu(\sigma x)=w(E(\sigma x))=w(\sigma(E(x)))=w(E(x))=\nu(x).
+\]
+\end{proof}
+This proof needs no strong summability, no normal forms, no fixed
+coefficient field, and no surjectivity of $\sigma$.
+
+\subsection{The actual surreal exponential}
+Gonshor's exponential is an increasing isomorphism
+$(\No,+)\to(\No_{>0},\cdot)$ extending the real exponential
+\cite{Gonshor,vdDE,BM}. For its natural-valuation profile,
+\begin{equation}\label{eq:expkernel}
+ \ker(\val\circ\exp)=\mathcal O,
+ \qquad
+ \mathcal O=\{x: |x|<n\text{ for some }n\in\N\}.
+\end{equation}
+Indeed, a real bound on $x$ gives positive real upper and lower bounds on
+$\exp x$. If $x$ is positive infinite, monotonicity puts $\exp x$ above
+every real exponential of an integer, so it is infinite; for negative
+infinite $x$, its exponential is infinitesimal. This proves
+\eqref{eq:expkernel} without an explicit normal-form formula for $\exp$.
+Every member of $\mathcal O$ has absolute value less than $\omega$.
+
+\begin{theorem}[Exponential valuation rigidity for self-embeddings]
+\label{thm:exprigidity}
+Suppose $j:\No\to\No$ is a field embedding, $j\exp=\exp j$, and
+$\val(jy)=\val(y)$ for every $y\ne0$. Then $j=\id$.
+In particular, every exponential leading-term-preserving self-embedding
+is the identity.
+\end{theorem}
+\begin{proof}
+For every $x$,
+\[
+ \val(\exp(jx-x))
+ =\val(j(\exp x))-\val(\exp x)=0.
+\]
+Thus $jx-x$ is finite by \eqref{eq:expkernel}, and all displacements have
+the common bound $\omega$. Apply \cref{lem:amplify}.
+\end{proof}
+The conclusion applies to automorphisms as a special case and therefore
+addresses the pointwise-leading-term condition in KKS Question~5.4.
+The repository already presents the generic self-embedding implication;
+the present contribution is an explicit integration of that argument
+with the much broader embedding taxonomy. Correctness of the displayed
+proof is separate from priority, and no exhaustive priority assessment
+is claimed.
+
+\begin{theorem}[Nontrivial exponential maps move values cofinally]
+\label{thm:expvalue}
+If $j$ is a nonidentity exponential field self-embedding and $\tau_j$ is
+its value-group action, then
+\[
+ \{\tau_j(\gamma)-\gamma:\gamma\in\No\}
+\]
+is cofinal and coinitial in the value group. Consequently $j$ cannot
+induce the identity modulo any proper convex subgroup of that group.
+\end{theorem}
+\begin{proof}
+Let $\nu=\val\circ\exp$. Compatibility gives
+\begin{equation}\label{eq:profileintertwine}
+ \nu(jx-x)=\tau_j(\nu x)-\nu x.
+\end{equation}
+The image of the displacement $jx-x$ is cofinal and coinitial by
+\cref{lem:amplify}. Applying the onto order-reversing map $\nu$ preserves
+these two unboundedness properties, with their directions exchanged.
+Since $\nu$ is onto, the right side ranges over precisely the asserted
+set. A proper convex subgroup of an ordered group is bounded by any
+positive element outside it, so it cannot contain this displacement set.
+\end{proof}
+
+For $J_-$ and, more generally, $J_{f_\beta}$, the exponent action
+$A_f(x)-x$ has only negative exponents and is therefore infinitesimal.
+Hence these maps cannot commute with the total exponential. This proves
+failure of exponential compatibility without guessing a complicated
+individual value of $\exp$. The unit twists and Taylor shifts of
+\cref{sec:valuation} fail it for the even stronger reason that their value
+action is exactly the identity.
+
+\subsection{A uniqueness theorem beyond automorphisms}
+A trivial kernel for an automorphism-group action implies faithfulness by
+composing with an inverse. A self-embedding need not have a global inverse,
+so the same reasoning is invalid for an embedding monoid. A direct
+comparison supplies a useful replacement.
+
+\begin{lemma}[Two-map bounded-displacement comparison]\label{lem:twomap}
+Let $\sigma_1,\sigma_2:F\to F$ be field embeddings of an ordered field.
+Suppose $\sigma_2(F)$ is cofinal and one $B>0$ bounds
+$|\sigma_1(x)-\sigma_2(x)|$ for all $x$. Then $\sigma_1=\sigma_2$.
+\end{lemma}
+\begin{proof}
+Put $d(x)=\sigma_1(x)-\sigma_2(x)$. The correct product identity is
+\[
+ d(ab)=\sigma_1(a)d(b)+\sigma_2(b)d(a).
+\]
+If $d(a)\ne0$, cofinality supplies $b$ such that
+\[
+ |\sigma_2(b)d(a)|>B(1+|\sigma_1(a)|).
+\]
+The product identity and the proposed bound on $d$ give the opposite
+inequality. Thus there can be no such $a$.
+\end{proof}
+
+\begin{theorem}[Cofinal exponential embeddings have unique value lifts]
+\label{thm:expunique}
+Let $j_1,j_2:\No\to\No$ be exponential field embeddings with the same
+value-group action. If at least one has cofinal image, then $j_1=j_2$.
+\end{theorem}
+\begin{proof}
+For every $x$, equal value actions and exponential compatibility imply
+\[
+ \val(\exp(j_1x-j_2x))
+ =\val(j_1(\exp x))-\val(j_2(\exp x))=0.
+\]
+Thus $j_1x-j_2x$ is finite and has uniform bound $\omega$.
+Interchange the two maps if necessary and apply \cref{lem:twomap}.
+\end{proof}
+This extends the comparison mechanism from the presence of a surjective
+map to the presence of a cofinal image. It does \emph{not} prove
+uniqueness of arbitrary bounded exponential embeddings with the same
+value action. That is a precise remaining question, rather than an
+inference from a trivial kernel.
+
+\subsection{What remains flexible in the exponential category}
+The preceding theorems do not say that the whole exponential structure is
+rigid. The known homogeneity theory for the surreal exponential field
+allows nontrivial exponential automorphisms; the pointwise value-group
+kernel is the restrictive condition \cite{KKS,EhrlichKaplan}.
+Likewise, a nontrivial value action with cofinal displacement is only a
+necessary condition for lifting to an exponential embedding. Equation
+\eqref{eq:profileintertwine}, compatibility with the actual logarithm of
+monomials, and compatibility with multiplication impose further conditions.
+The double lift is a field construction, not a universal solution of
+those conditions.
+
+\section{Elementarity, definability, and other signatures}\label{sec:modeltheory}
+
+\subsection{Field elementary does not mean set-theoretically elementary}
+\begin{proposition}\label{prop:elementary}
+Every field self-embedding of $\No$ is elementary in the language of
+ordered fields. Every order self-embedding is elementary in the language
+of dense linear orders without endpoints.
+\end{proposition}
+\begin{proof}
+Both statements follow from quantifier elimination for the corresponding
+theories. A field embedding preserves and reflects polynomial equations
+and inequalities, and an order embedding preserves and reflects the
+atomic order relations. Quantifier elimination reduces every fixed
+formula to these data. This argument is a formula-by-formula scheme for
+the proper-class structures and does not require a powerclass of types.
+\end{proof}
+In particular, the bounded copies from \cref{thm:boundedcopy} are elementary
+subfields in the ordered-field language. The discrete image of $D_m$ is an
+elementary suborder in the pure order language. First-order elementarity
+is not ambient topological density, continuity, or simplicity preservation.
+
+For the exponential language there is an additional standard input:
+$(\No,+,\cdot,<,\exp)$ is an elementary extension of the real exponential
+field, whose theory is model complete \cite{vdDE,BM,Wilkie}. Hence an
+exponential field self-embedding is elementary in that language as well.
+This does not make a non-exponential field embedding elementary in the
+exponential expansion.
+
+Adding simplicity, birthdays, or a predicate for $\Oz$ changes the
+language again. For example the root and the two labeled immediate
+successors are first-order definable in $(\No,<,\spref)$. A nonempty
+prefix map fails to fix the root; $D_m$ fails to preserve immediate
+successors. They are therefore not elementary embeddings of that expanded
+structure. Their status as relation embeddings is weaker.
+
+\subsection{O-minimal definability is a strong rigidity condition}
+\begin{theorem}[Definable field self-embeddings are trivial]
+\label{thm:definable}
+Let $F$ be a real-closed field, possibly represented as a class, with an
+o-minimal expansion. A field self-embedding whose graph is definable in
+that expansion, with parameters allowed, is the identity.
+\end{theorem}
+\begin{proof}
+Its fixed field is definable and infinite, since it contains $\Q$.
+By o-minimality it contains a nonempty interval. A subfield containing an
+interval is the whole field by \cref{prop:convexfield}.
+\end{proof}
+This applies to the pure ordered surreal field and to its standard
+exponential expansion. In contrast, ``definable in set theory from the
+normal-form construction'' is a much larger notion. The map $f_-$ itself
+is given by a piecewise rational formula in the ordered field, but its
+double lift $J_-$ cannot have a graph definable in that o-minimal field
+language. Extracting all normal-form exponents changes the expressive
+resources.
+
+There is no conflict with the parameter-stabilizer theorem. Fixing a class
+of named elements does not make a map definable from finitely many of them.
+A single formula in a language with individual constants still uses only
+finitely many constants.
+
+\subsection{Algebraic variants and surcomplex extensions}
+A nonzero ring homomorphism from a field to a field is injective and
+unital: the image of $1$ is a nonzero idempotent, hence $1$. Dropping the
+unital condition therefore only adds the zero homomorphism, which is not
+an embedding. Additive-group embeddings and real-linear embeddings are
+much less rigid, as $A_f$ shows. The $\omega$-map itself is a useful
+additive-to-multiplicative embedding, but it is not a field endomorphism.
+
+For the surcomplex field $\No(i)$, every real-surreal field embedding $j$
+has two extensions
+\[
+ j_+(a+bi)=j(a)+j(b)i,\qquad
+ j_-(a+bi)=j(a)-j(b)i.
+\]
+Both are field embeddings, and these are exactly the extensions of $j$,
+because $i$ must map to one of the two roots of $X^2+1$. Their images are
+$j(\No)(i)$; properness and surjectivity correspond to those of $j$.
+These statements concern embeddings respecting the specified real form.
+Arbitrary embeddings of the algebraically closed field $\No(i)$ need not
+preserve that real form, so the two-extension classification is not a
+classification of all surcomplex embeddings.
+
+Finally, maps on pre-games or on particular cut presentations must first
+respect equality of represented surreal values before they descend to
+$\No$. A graph embedding of presentation trees, a map of sign sequences,
+and a well-defined map of the quotient field are different constructions.
+A proof assistant should retain this distinction rather than infer it
+from similar notation.
+
+\section{Differential constraints and composition}\label{sec:differential}
+
+Fix a particular surreal derivation $\partial$, rather than merely the
+assertion that some derivation exists. The Berarducci--Mantova construction
+provides a strong derivation compatible with $\exp$, with constant field
+$\R$; its distinguished simplest choice satisfies $\partial\omega=1$
+\cite{BM}. A differential embedding must satisfy
+\[
+ \partial(jx)=j(\partial x).
+\]
+This is not the derivative of the function $x\mapsto jx$ in
+\cref{prop:zeroderivative}.
+
+\begin{proposition}[Two necessary differential conditions]
+\label{prop:differential}
+If $j$ commutes with a derivation whose constant field is $\R$, then $j$
+fixes $\R$ pointwise. If also $\partial\omega=1$, then
+$j(\omega)-\omega\in\R$.
+\end{proposition}
+\begin{proof}
+For $r\in\R$, $\partial(jr)=j(0)=0$, so $jr\in\R$. The restriction
+$j|_\R$ is an ordered field embedding of $\R$ into itself and fixes every
+rational cut, hence is the identity. Furthermore
+$\partial(j\omega-\omega)=j(1)-1=0$.
+\end{proof}
+These are necessary conditions, not a classification. In particular,
+fixing $\omega$ alone does not prove differential compatibility for the
+proper maps constructed above.
+
+On a domain of transseries where substitution by $g$ is defined and the
+usual chain rule is valid, the substitution map $C_g(f)=f\circ g$ satisfies
+\[
+ \partial C_g(f)=C_g(\partial f)\,\partial g.
+\]
+If it is to commute with the derivation, testing the variable itself
+forces $\partial g=1$. A domain closed under this substitution and a
+support theorem are still needed. One cannot extend this observation to
+a global composition on all surreals merely by writing a formal symbol
+$f\circ g$.
+
+The operator exponential in \eqref{eq:taylorshift} illustrates the same
+point in a controlled setting: a fixed negative support shift made every
+operator series summable. For an arbitrary surreal derivation, neither
+$\sum_n\partial^n(x)/n!$ nor a proposed inverse is automatically summable.
+Differential, exponential, and Hahn-continuity conditions should therefore
+be formalized independently and combined only after proving their
+compatibility.
+
+\section{Cutoffs, universes, and a concrete formalization plan}\label{sec:formal}
+
+\subsection{Set-sized cutoff models require a smaller quantifier}
+Write $\No_{<\kappa}$ for the surreals of birthday below $\kappa$.
+An arbitrary ordinal cutoff need not be closed under field operations.
+For an uncountable regular cardinal $\kappa$, the established bounded-Hahn
+identification gives
+\begin{equation}\label{eq:kappahahn}
+ \No_{<\kappa}=\R((\omega^{\No_{<\kappa}}))_{<\kappa},
+\end{equation}
+where supports have cardinality less than $\kappa$; see van den Dries and
+Ehrlich and its use in KKS Remark~2.3 \cite{vdDE,KKS}. This is the right
+setting for literal set-sized embedding monoids in ZFC.
+
+\begin{proposition}[Transfer of the explicit constructions]
+\label{prop:cutofftransfer}
+At such a cutoff, the Hahn lifts are valid whenever their exponent maps
+are self-maps of $\No_{<\kappa}$. In particular the rational lower-tail and
+upper-tail maps above yield the corresponding proper cofinal and bounded
+field embeddings of $\No_{<\kappa}$. The parameter-stabilizer assertions
+hold for prescribed sets $A$ of size less than $\kappa$, with parameters
+chosen inside $\No_{<\kappa}$.
+\end{proposition}
+\begin{proof}
+The rational formulas stay inside the cutoff field. Their inverse formulas
+on their stated ranges also stay inside it. Relabeling a support does
+not change its cardinality, so \eqref{eq:kappahahn} supplies both lifts.
+For $|A|<\kappa$, regularity ensures $|E(A)|<\kappa$, since it is a union
+of fewer than $\kappa$ sets, each of size less than $\kappa$, twice.
+The birthdays in this footprint have a bound below $\kappa$, providing
+an internal lower or upper parameter. The earlier proofs then apply.
+\end{proof}
+The hypothesis $|A|<\kappa$ is essential to this transfer. Externally
+$\No_{<\kappa}$ itself is a set, and an embedding fixing every member of
+that set is the identity. Thus the full-class theorem ``fix any prescribed
+set'' must not be copied verbatim into a larger-universe view of a
+set-sized cutoff.
+
+Similarly, the topological statement that every set subset is closed and
+discrete becomes the statement for subsets of size less than $\kappa$.
+Larger nets and larger cuts may behave differently. The field-embedding
+continuity dichotomy itself needs only ordered-field arguments and
+continues to hold with the cutoff's own order topology.
+
+\subsection{Coherent restrictions rather than a fictitious last stage}
+A class map $j$ has a set-valued restriction to every bounded birthday
+fragment. Consequently, for each ordinal $\alpha$ there is an ordinal
+$F(\alpha)$ bounding the birthdays of all $j(x)$ with $\bday(x)<\alpha$.
+There is a closed unbounded class of limit ordinals $\lambda$ satisfying
+$F(\alpha)<\lambda$ for every $\alpha<\lambda$: repeatedly close a starting
+ordinal under $F$ and take a countable supremum. At such $\lambda$,
+$j[\No_{<\lambda}]\subseteq\No_{<\lambda}$.
+
+This does not imply that those closure ordinals are regular cardinals or
+that their birthday fragments are fields. Closure under a class map and
+closure under arithmetic are separate obligations. Conversely, a family
+$j_\alpha$ of stage maps defines a global map only if it is coherent on
+overlaps. Unrelated embeddings at larger and larger cutoffs do not form
+a global embedding merely because every stage has some embedding.
+
+An especially safe universe formulation takes $U$-small supports, builds
+the carrier in the next universe, and proves lift theorems polymorphically
+in $U$. The final equivalence with sign-sequence arithmetic must be an
+actual theorem, not a type alias silently treating a support representation
+as the already constructed field.
+
+\subsection{What was actually inspected in ProveIt}
+All paths below are relative to \code{Algebra/SurrealNumbers/} at the
+snapshot printed on the title page.
+
+\begin{longtable}{P{68mm}P{82mm}}
+\toprule
+Inspected source & Relevant declarations and boundary \\
+\midrule
+\endhead
+\code{Surreal/Foundations/}\newline
+\code{SignSequence.lean}
+& Universe-indexed signs, first-disagreement order, ordinal embedding,
+\code{birthdays\_bounded}, \code{small\_bounded}, \code{not\_small},
+\code{IsPrefix}, and \code{Simpler}. This file alone is not the field/Hahn
+identification. \\
+\code{Surreal/Algebra/}\newline
+\code{ExponentialProfile.lean}
+& Generic \code{OrderedExp}, displacement probes,
+\code{eq\_id\_of\_commute}, value maps, and profile-comparison lemmas.
+Its header explicitly leaves actual surreal exponential instantiation
+pending. \\
+\code{docs/surreal/}\newline
+\code{exponential-automorphism-}\newline
+\code{rigidity/README.md}
+& Research claims, the twisted-product engine, source-version audit,
+and the distinction between generic Lean results and the actual surreal
+application. \\
+\code{README.md}
+& Project-level account of the sign-sequence field, normal forms,
+omnific integers, and its formalization ledger. This is reported project
+status, not an independent build performed for this article. \\
+\bottomrule
+\end{longtable}
+
+The inspected portions of the two Lean files were their first 200 and
+180 lines, respectively; these include definitions, theorem headers, and
+some actual proofs. Assertions about later declarations were read from
+the module's detailed header, not independently checked in their complete
+proof bodies. The repository also points to
+\code{Surreal/Algebra/SigmaDerivation.lean}; that dependency was not separately
+compiled for this article.
+
+\subsection{Proposed modules and proof obligations}
+A practical development should follow the mathematical dependencies rather
+than start with a single enormous theorem about ``all embeddings.''
+
+\paragraph{Layer 1: the sign tree.}
+Extend the existing sign-sequence API with concatenation and repetition,
+then prove first-disagreement preservation, prefix reflection, birthday
+rigidity, and initial-image surjectivity. The properness witnesses are
+concrete omitted sign sequences. The all-ordinal statements must quantify
+over \code{Ordinal.\{u\}} without assuming it is small at universe $u$.
+
+\paragraph{Layer 2: a support-relabeling interface.}
+Define a generic map on small-support Hahn series from an ordered embedding
+of exponent types. Prove support transport, injectivity, strong sum
+preservation and reflection, and image characterization. Only afterward
+add an additive hypothesis on the exponent map and prove multiplication.
+This makes it impossible to confuse $A_f$ with a field homomorphism.
+
+\paragraph{Layer 3: the double lift and stabilizers.}
+Use the proved equivalence between the actual surreal field and small
+normal forms. Construct $J_f$, establish functoriality and faithfulness,
+and implement the two-level footprint. Its smallness theorem is as
+important as its arithmetic theorem. Prove omitted-monomial witnesses,
+real and ordinal fixation, and the bounded-image inequality separately.
+
+\paragraph{Layer 4: topology and omnific data.}
+State continuity through the ordinary order topology of the universe-indexed
+carrier. Keep internal small sets separate from all sets in the larger
+universe. The cofinality/continuity theorem is generic to ordered fields;
+closedness of monomial images uses the support API. Omnific-floor
+compatibility should reuse the actual floor uniqueness theorem, including
+the negative-infinitesimal correction.
+
+\paragraph{Layer 5: exponential bridges.}
+Instantiate the generic profile lemmas with the actual surreal exponential
+and natural valuation. Required bridges are: positivity and multiplicative
+additivity of $\exp$, monotonicity, surjectivity onto positives, the
+valuation conventions, and the finite-kernel statement
+\eqref{eq:expkernel}. Then add the two-map cofinal comparison lemma, which
+needs only a finite product identity and an order-cofinality hypothesis.
+
+A schematic, \emph{not compiled}, API boundary is:
+\begin{verbatim}
+-- Exponent order only: an additive lift.
+additiveLift (f : Exponent -> Exponent) (hf : StrictMono f)
+
+-- Exponent addition as well: a field lift.
+fieldLift (tau : AdditiveOrderEmbedding Exponent Exponent)
+
+-- Surreal-specific bridge through the normal-form equivalence.
+doubleLift (f : No -> No) (hf : StrictMono f)
+
+-- Quantify only over a small parameter family at universe u.
+fixesSmallFamily (A : I -> No) [Small.{u} I]
+\end{verbatim}
+The type names here describe a proposed interface; they are not claims
+that declarations with those exact names already exist in Mathlib or the
+repository. A verified implementation should expose its universe
+parameters, exact imports, and axiom audit along with its theorem names.
+
+\section{A research agenda with precise targets}\label{sec:agenda}
+
+The following questions are divided between classification problems,
+sharpenings of the present results, and formalization tasks. Except where
+an examined published version is named, they are proposed research targets,
+not assertions that the entire literature has left them open. A literature
+and proof audit should precede any claim of priority.
+
+\subsection{Exponential and \texorpdfstring{$\omega$}{omega}-map embeddings}
+\begin{question}[Characterize exponential value actions]
+Which ordered additive embeddings $\tau:\No\to\No$ occur as the natural
+value action of an exponential field self-embedding? Start with
+\eqref{eq:profileintertwine}; add the logarithms of monomials and the
+multiplicative identities of the prospective field map. Cofinal
+value-displacement is necessary, but a sufficient compatibility criterion
+has not been supplied here.
+\end{question}
+
+\begin{question}[Remove or justify the cofinality hypothesis]
+Must two exponential self-embeddings with the same value action agree
+when both images are bounded? The proof of \cref{thm:expunique} fails at
+one precise step: a bounded image cannot amplify a fixed nonzero difference
+arbitrarily. Resolve whether a different exponential argument repairs that
+step or whether bounded counterexamples exist.
+\end{question}
+
+\begin{question}[Proper exponential copies]
+Classify the possible ranges of proper exponential self-embeddings,
+including whether a bounded range can occur for the actual Gonshor
+exponential. The bounded field copies in this article are not examples
+of exponential copies. A candidate must be checked against the full
+exponential, not merely its infinitesimal power series.
+\end{question}
+
+\begin{question}[$\omega$-map compatibility]
+Solve $\tau=H_\tau$ in the strong pure-monomial class, and then study
+$\Omega$-compatible maps outside that class. Relate this to Questions~5.6
+and~5.7 of the examined KKS version, concerning nontrivial
+$\Omega$-automorphisms and extension of order automorphisms of generalized
+$\varepsilon$-numbers. Pointwise value fixation is already excluded by
+\cref{thm:omegarigidity}; it is not the remaining case.
+\end{question}
+
+\subsection{Combining tree structure with arithmetic}
+\begin{question}[Field and simplicity together]
+Classify field self-embeddings that preserve the sign-prefix relation.
+Neither the general Hahn construction nor the prefix construction solves
+this combined problem. An initial image is impossible for a proper map,
+but prefix preservation need not imply initiality of the image.
+\end{question}
+
+\begin{question}[Elementary embeddings of the sign hierarchy]
+Determine the proper elementary self-embeddings, if any, of
+$(\No,<,\spref)$ and of an explicitly two-sorted expansion by birthdays
+and ordinals. Such maps must fix the root and preserve labeled immediate
+successors. Identify which limit-stage properties become first-order
+visible and which remain external chain-completeness requirements.
+\end{question}
+
+\begin{question}[Weaker birthday controls]
+Replace the global inequality $\bday(jx)\le\bday(x)$ by bounds on selected
+stages, a cofinal family, or a prescribed ordinal growth function. Determine
+when those weaker bounds force identity, surjectivity, or a specific
+substructure. The ordinal addition in prefix maps and ordinal multiplication
+in repetition maps provide useful sharp test cases.
+\end{question}
+
+\subsection{Hahn images, fixed fields, and dynamics}
+\begin{question}[Beyond monomial images]
+Which strongly additive field embeddings admit a factorization into a
+pure exponent lift, a real character, and a controlled unit twist? The
+unit construction \eqref{eq:unitlift} proves that support control is
+essential. A general homomorphism into the unit group need not support a
+well-defined strongly additive substitution.
+\end{question}
+
+\begin{question}[Prescribe the fixed field]
+Which real-closed subfields of $\No$ arise as fixed fields of proper
+embeddings or of automorphisms? The formula
+$\NF{\Fix\tau\cap\ker\chi}$ solves a concrete subclass, and the pair
+$J_-$, $J_g$ shows that identical fixed fields can occur on opposite sides
+of surjectivity. Seek invariants that distinguish the maps when the fixed
+field does not.
+\end{question}
+
+\begin{question}[Prescribe the reversible core]
+Which pairs of real-closed fields $L\subseteq K\subseteq\No$ can occur as
+$L=\Fix(j)$ and $K=K_\infty(j)$? For a single injective map the image
+hierarchy already stabilizes at its countable intersection, by
+\cref{prop:core}; there is no further transfinite descent to discover.
+The remaining problem is to prescribe that stable core and its nontrivial
+automorphism, and to identify the restrictions imposed by a Hahn lift.
+\end{question}
+
+\begin{question}[The stabilizer structure]
+Study the composition and centralizers of the explicit families fixing
+$A\cup\R\cup\On$. The double lift is faithful, so order-embedding
+semigroup phenomena can be transported into the field category. Determine
+which of these phenomena survive stronger constraints such as fixed
+valuation, omnific floors, or a chosen derivation.
+\end{question}
+
+\begin{question}[Floor-preserving maps outside the monomial class]
+Characterize field embeddings preserving $\Oz$ and its floor without
+assuming monomial images. The unit twists above fail omnific preservation,
+whereas every real-weighted monomial lift succeeds. Identify the support
+conditions responsible for this boundary, and separately investigate
+pointwise fixation of $\Oz$ rather than just predicate preservation.
+\end{question}
+
+\subsection{Topology, differentiation, and foundations}
+\begin{question}[Closed images beyond strong monomial maps]
+Which field self-embeddings have closed images in the full order topology?
+All real-weighted monomial images do. Determine what happens for
+non-strong embeddings and for immediate embeddings with unchanged value
+group and residue field. Do not infer density merely from cofinality.
+\end{question}
+
+\begin{question}[Differential centralizers]
+Classify embeddings commuting with the chosen Berarducci--Mantova
+derivation, with or without exponential compatibility. The necessary
+conditions of \cref{prop:differential} supply an inexpensive first filter.
+Any proposed construction by composition should specify its domain,
+chain rule, and summability theorem.
+\end{question}
+
+\begin{question}[A scale-sensitive calculus]
+Compare full order-topological differentiation, valuation-based
+asymptotics, and derivatives of formal transseries substitutions. Explain
+systematically which additional regularity conditions exclude the
+zero-derivative field automorphisms of \cref{prop:zeroderivative}. Ordinary
+set sequences alone cannot supply the needed regularity test.
+\end{question}
+
+\begin{question}[Universe and cutoff absoluteness]
+For transitive universes or cutoff fields, determine which embedding
+properties are absolute: strong summability, cofinality, initiality, and
+being elementary in a fixed language. New supports and new cuts in a
+larger universe can change these answers. Coherent stage maps, rather
+than arbitrary stagewise existence statements, should be the basic data.
+\end{question}
+
+\begin{question}[Minimal foundational strength]
+Separate the axioms required for explicit Hahn lifts, global
+back-and-forth, general class-valued recursions, and a literal carrier of all
+class embeddings. Give translations between formula schemes, GBC with
+specified recursion principles, and universe-indexed type theory. No one
+of these should be advertised as automatically equivalent to the others.
+\end{question}
+
+\begin{question}[Near-term formalization]
+First formalize the generic two-map comparison lemma and the
+cofinality/continuity dichotomy; both are finite algebra/order arguments.
+Next formalize support relabeling and the footprint theorem. Finally
+complete the actual surreal exponential/valuation bridge and derive the
+self-embedding rigidity corollary from the existing generic module.
+These tasks have clear interfaces and independently checkable endpoints.
+\end{question}
+
+\section{Synthesis and an assumption checklist}\label{sec:conclusion}
+
+The most informative answer is not a single yes or no to the existence of
+nontrivial self-embeddings. It is the following set of separations.
+
+\begin{overview}
+\textbf{Flexibility with substantial arithmetic.}
+There are proper elementary ordered-field self-embeddings that fix every
+real, every ordinal, and any additional prescribed set; preserve Hahn
+sums, corresponding normal-form truncations, omnific integrality and
+floors; and are continuous with cofinal closed nowhere-dense image.
+There are also bounded, nowhere-continuous elementary field copies fixing
+any prescribed set and all reals.
+
+\textbf{Rigidity from construction data.}
+Nonincreasing birthdays force an order embedding to be the identity.
+Preserving ambient simplest cuts does the same. A simplicity-initial
+image of a full order copy must be the whole class. An order-and-simplicity
+automorphism is the identity.
+
+\textbf{Rigidity from exponential scale data.}
+An exponential field self-embedding fixing natural-valuation values
+pointwise is the identity. Nontrivial exponential embeddings must move
+values cofinally in both directions. Among cofinal exponential embeddings,
+the value action determines the map uniquely.
+\end{overview}
+
+For any proposed new theorem about a surreal self-embedding, check the
+following before treating it as established: the exact language; set versus
+class size; support admissibility; whether ``initial'' refers to signs or
+normal forms; whether valuation is fixed pointwise or only up to an induced
+map; whether continuity is topological or strong-Hahn; and whether an
+inverse or a uniform truth predicate has been used without being available.
+These checks are not peripheral bookkeeping. Several of the sharpest
+mathematical distinctions in this article occur exactly at those boundaries.
+
+\appendix
+\section{Result and verification ledger}\label{app:ledger}
+
+\begin{longtable}{P{56mm}P{47mm}P{47mm}}
+\toprule
+Result family & Mathematical basis & Verification status in this delivery \\
+\midrule
+\endhead
+Sign sequences, normal forms, real closedness & Classical surreal theory;
+repository carrier and field development & Imported standard foundations;
+selected source inspection, not an independent build. \\
+Order/simplicity examples and rigidity & First-disagreement and canonical
+cut arguments & Complete proofs in this article; finite sign tests only
+as regression checks. \\
+Hahn lifts and weighted classification & Support transport and finite
+coefficient convolution & Complete proofs in this article; no Lean
+certification claimed. \\
+Arbitrary-set stabilizers and bounded copies & Two-level support footprint
+plus rational maps & Complete proofs, explicit bounds and omissions;
+rational regression tests included. \\
+Closed images and topology dichotomy & Ordered-field arguments and first
+missing exponent & Complete proofs in this article. \\
+Fixed fields and reversible core & Ordered finite-root argument and
+support membership & Complete proofs in this article. \\
+Unit twists and Taylor shifts & Neumann support control and formal
+binomial identities & Proofs given; finite binomial checks are not an
+infinite-support proof. \\
+Displacement/profile rigidity & Repository finite engine and generic
+profile framework & Conventional proof reproduced; generic source
+inspected; actual surreal bridge not machine-checked here. \\
+Cofinal comparison of two exponential maps & Two-map product identity and
+finite-kernel bridge & Complete proof in this article; suggested new
+generic formalization task. \\
+Model-theoretic and differential background & Quantifier elimination,
+Wilkie, surreal exponential and derivation literature & Imported theorems
+are cited; consequences are proved or explicitly qualified. \\
+Research agenda & Questions and proposed interfaces & No assertion that
+all listed questions are certified open in the literature. \\
+\bottomrule
+\end{longtable}
+
+The accompanying \code{verify.py} uses exact rational arithmetic. It checks
+finite sign-order and prefix identities, the rational branch formulas and
+iterates, finite Hahn relabeling identities, and binomial coefficients.
+These tests are designed to catch transcription mistakes. They do not
+prove statements about arbitrary ordinal-length signs, proper classes,
+real coefficients, or all well-ordered supports. The mathematical proofs
+are the argument for those generalizations.
+
+\section{Source audit and reproducibility}\label{app:sources}
+
+The repository inspection was pinned to commit
+\code{b0d4af4f30b24529fec877e2ad4a5952888146e9}. The principal recent paper was
+read in arXiv version \code{2509.22374v3}, whose submission history dates
+that version to 23 April 2026. Version pinning is intentional: question
+numbers and foundational conventions should not be silently transferred
+between versions. Rendered HTML dates need not be publication or
+submission dates. The relevant PDF page containing Questions~5.4 and~5.6
+was also visually inspected during research.
+
+The report uses no bundled external font files and no external figures.
+The source is a single \code{article.tex}, with its bibliography included.
+A standard TeX Live installation with \code{newtx}, \code{amsmath},
+\code{tcolorbox}, \code{hyperref}, and \code{cleveref} can build it with
+\code{latexmk -pdf article.tex}. The included build script and README
+record the same procedure. This delivery contains no uncompiled Lean
+file represented as a verified result; the API sketch in
+\cref{sec:formal} is explicitly a design sketch.
+
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\begin{thebibliography}{99}
+\setlength{\itemsep}{5pt}
+\addcontentsline{toc}{section}{References}
+
+\bibitem{Conway}
+J. H. Conway, \emph{On Numbers and Games}, Academic Press, 1976;
+second edition, A K Peters, 2001.
+
+\bibitem{Gonshor}
+H. Gonshor, \emph{An Introduction to the Theory of Surreal Numbers},
+London Mathematical Society Lecture Note Series 110,
+Cambridge University Press, 1986.
+
+\bibitem{vdDE}
+L. van den Dries and P. Ehrlich, Fields of surreal numbers and
+exponentiation, \emph{Fundamenta Mathematicae} \textbf{167} (2001),
+173--188; erratum, \textbf{168} (2001), 295--297.
+\href{https://doi.org/10.4064/fm167-2-3}{doi:10.4064/fm167-2-3}.
+
+\bibitem{BVH}
+V. Bagayoko and J. van der Hoeven, Surreal substructures,
+\emph{Fundamenta Mathematicae} \textbf{266} (2024), 25--96.
+\href{https://arxiv.org/abs/2305.02001}{arXiv:2305.02001}.
+Author version: \url{https://www.texmacs.org/joris/sss/sss.html}.
+
+\bibitem{KKS}
+E. Kaplan, L. S. Krapp, and M. Serra,
+\emph{Decomposing the Automorphism Group of the Surreal Numbers},
+\href{https://arxiv.org/abs/2509.22374v3}{arXiv:2509.22374v3},
+version submitted 23 April 2026. Examined version: v3;
+consulted 3 October 2026.
+
+\bibitem{KS}
+S. Kuhlmann and M. Serra, The automorphism group of a valued field of
+generalised formal power series, \emph{Journal of Algebra}
+\textbf{605} (2022), 339--376.
+\href{https://doi.org/10.1016/j.jalgebra.2022.04.023}
+{doi:10.1016/j.jalgebra.2022.04.023}.
+\href{https://arxiv.org/abs/2107.03362}{arXiv:2107.03362}.
+
+\bibitem{EhrlichKaplan}
+P. Ehrlich and E. Kaplan, Surreal ordered exponential fields,
+\emph{Journal of Symbolic Logic} \textbf{86} (2021), 1066--1115.
+\href{https://arxiv.org/abs/2002.07739}{arXiv:2002.07739}.
+
+\bibitem{BM}
+A. Berarducci and V. Mantova, Surreal numbers, derivations and transseries,
+\emph{Journal of the European Mathematical Society}
+\textbf{20} (2018), 339--390.
+\href{https://arxiv.org/abs/1503.00315}{arXiv:1503.00315}.
+
+\bibitem{Wilkie}
+A. J. Wilkie, Model completeness results for expansions of the ordered
+field of real numbers by restricted Pfaffian functions and the exponential
+function, \emph{Journal of the American Mathematical Society}
+\textbf{9} (1996), 1051--1094.
+\href{https://www.jstor.org/stable/2152916}{Stable article record}.
+
+\bibitem{HamkinsETR}
+J. D. Hamkins, Second-order transfinite recursion is equivalent to
+Kelley--Morse set theory, author research exposition, 23 July 2017.
+\href{https://jdh.hamkins.org/second-order-transfinite-recursion-is-equivalent-to-kelley-morse-set-theory/}{Author exposition and links to the underlying class-recursion work}.
+Cited for the distinction between elementary class recursion and stronger
+second-order recursion, not as a claim that they are the same principle.
+
+\bibitem{RepoMain}
+V. Reshetnikov, \emph{ProveIt: Surreal Numbers}, repository and research
+collection, pinned commit
+\code{b0d4af4f30b24529fec877e2ad4a5952888146e9}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b0d4af4f30b24529fec877e2ad4a5952888146e9/Algebra/SurrealNumbers}{Pinned surreal project on GitHub}.
+Project README inspected 3 October 2026.
+
+\bibitem{RepoSigns}
+\emph{ProveIt}, \code{Surreal/Foundations/SignSequence.lean}, in the
+surreal project of \cite{RepoMain}; first 200 lines inspected.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b0d4af4f30b24529fec877e2ad4a5952888146e9/Algebra/SurrealNumbers/Surreal/Foundations/SignSequence.lean}{Pinned sign-sequence source on GitHub}.
+
+\bibitem{RepoExp}
+\emph{ProveIt}, \emph{Cofinal Displacement and Rigidity of Exponential
+Automorphisms}, research report and accompanying README,
+\code{docs/surreal/exponential-automorphism-rigidity/}, in \cite{RepoMain}.
+Report dated 21 September 2026; unrefereed AI-assisted draft with generic
+formalization recorded at the inspected snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/b0d4af4f30b24529fec877e2ad4a5952888146e9/Algebra/SurrealNumbers/docs/surreal/exponential-automorphism-rigidity}{Pinned report directory on GitHub}.
+
+\bibitem{RepoProfile}
+\emph{ProveIt}, \code{Surreal/Algebra/ExponentialProfile.lean}, in
+\cite{RepoMain}; first 180 lines inspected, including the detailed scope
+and pending-instantiation header.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/b0d4af4f30b24529fec877e2ad4a5952888146e9/Algebra/SurrealNumbers/Surreal/Algebra/ExponentialProfile.lean}{Pinned exponential-profile source on GitHub}.
+
+\end{thebibliography}
+\endgroup
+\end{document}
