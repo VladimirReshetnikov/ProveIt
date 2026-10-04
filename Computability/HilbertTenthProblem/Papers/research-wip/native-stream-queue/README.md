@@ -3484,6 +3484,19 @@ the original state chronology. The complete supplied positive zero set
 agrees with537, including arbitrary positive program/input parameters;
 the fixed recipe E=3^e retains universality on ordinary positive x.
 
+The [direct two-program U21 recoding](residue_affine_sparse_recoded467.md)
+reaches **447 certificate /467=171M+296A polynomial operations**, with
+67 positive witnesses, seven comparisons and uniform degree at most5160.
+It retains h=x+eta and B=C*h on fixed slices E=3^e,C dyadic>=64,C>E.
+The same maximum code41 fits B>=128 even at h=2. Its actual388-row base,
+native source and five non-control residuals stay literal. The
+[independent review](review_residue_affine_sparse_recoded467.md) checks the
+complete467 source and the pre-control native proof; bounded injectivity
+then gives identical supplied positive zeros with470. Full outputs obey
+the explicit residual-square correction. Fresh author/review normal/optimized
+checks pass. This is a direct two-program result, with no positive-coordinate
+map to the one-program source or change to universal84.
+
 The [two-program U21 control-pair source](residue_affine_sparse_shared470.md)
 reaches **450 certificate / 470=175M+295A polynomial operations**, with
 seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
@@ -5002,6 +5015,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Recoded two-program U21](residue_affine_sparse_recoded467.md) | **447 certificate /467=171M+296A**,7 comparisons,67 witnesses,two fixed program parameters,degree at most5160. | Direct470 successor; code41 bound holds at B>=128,h=2, retaining fixed dyadic C>=64,C>E. Same supplied positive zeros on valid slices. |
 | [Auxiliary-ordinate polynomial obstruction](complete84_auxiliary_ordinate_absorption.md) | All93 quotient/ordinate-independent values give R<=3*deg(G)+ceil(log2 L) and finite ordinary-input projection after y_aux=G. | Both V signs and signed G covered; G=0 impossible before native recovery. No circuit saving or claim for quotient-dependent expressions. |
 | [Matrix cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) | **1,415/1,412/1,412/1,409** complete operations;141/140/140/139 witnesses; exact degrees35,587/53,345/53,347/71,105. | Joint Horner evaluation saves2M per complete source; identical full polynomials and supplied positive zeros,550 coefficient rows. |
 | [Recoded one-program U21](residue_affine_sparse_recoded468.md) | **448 certificate /468=171M+297A**,7 comparisons,67 witnesses,one fixed program,degree at most5091. | Bounded injective codes and paid selector bases save3 operations from471; same supplied positive zeros, explicit full-output correction. |

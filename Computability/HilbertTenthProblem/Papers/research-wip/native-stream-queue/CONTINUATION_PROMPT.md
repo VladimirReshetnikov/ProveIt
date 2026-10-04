@@ -3671,6 +3671,20 @@ historical87/degree203 theorem, weakened86 and independent-gamma87.
 > agrees with537, including arbitrary positive program/input parameters;
 > the fixed recipe E=3^e retains universality on ordinary positive x.
 >
+> The [direct two-program U21 recoding](residue_affine_sparse_recoded467.md)
+> reaches **447 certificate /467=171M+296A polynomial operations**, with
+> 67 positive witnesses, seven comparisons and uniform degree at most5160.
+> It retains h=x+eta and B=C*h on fixed slices E=3^e,C dyadic>=64,C>E.
+> The same maximum code41 fits B>=128 even at h=2. Its actual388-row base,
+> native source and five non-control residuals stay literal. The
+> [independent review](review_residue_affine_sparse_recoded467.md) checks the
+> complete467 source and the pre-control native proof; bounded injectivity
+> then gives identical supplied positive zeros with470. Full outputs obey
+> the explicit residual-square correction. Fresh author/review normal/optimized
+> checks pass. This is a direct two-program result, with no positive-coordinate
+> map to the one-program source or change to universal84.
+>
+>
 > The [two-program U21 control-pair source](residue_affine_sparse_shared470.md)
 > reaches **450 certificate / 470=175M+295A polynomial operations**, with
 > seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
