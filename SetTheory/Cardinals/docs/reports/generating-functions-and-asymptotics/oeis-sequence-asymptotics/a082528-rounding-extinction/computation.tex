@@ -1,4 +1,4 @@
-\section{Exact computation and numerical evidence}\label{sec:computation}
+\section{Exact computation and numerical evidence}\label{rex:sec:computation}
 
 The accompanying program serves two purposes: it checks that independent
 finite implementations agree with the definitions, and it illustrates
@@ -9,7 +9,7 @@ separately identified as numerical diagnostics.
 \subsection{Integer and rational exponents}
 
 For integer $m\geq1$, the backward recurrence has the purely integer form
-\begin{equation}\label{eq:integer-algorithm}
+\begin{equation}\label{rex:eq:integer-algorithm}
  q_{k-1}=\left\lfloor
  \frac{k^m q_k+(k-1)^m-1}{(k-1)^m}
  \right\rfloor.
@@ -17,12 +17,12 @@ For integer $m\geq1$, the backward recurrence has the purely integer form
 It computes $T_m(K)$ in $K-1$ arithmetic steps and uses only one current
 quotient if no profile is retained. These are counts of arithmetic
 operations, not a bit-complexity bound. For fixed $m$, all integer
-values involved have $O_m(\log K)$ bits by \cref{eq:global-bound}.
+values involved have $O_m(\log K)$ bits by \cref{rex:eq:global-bound}.
 
 Exact computation is also possible for rational $m=p/q>0$, written in
 lowest terms. Given the integer quotient $v=q_k$, the next backward
 quotient is the least integer $u$ satisfying
-\begin{equation}\label{eq:rational-root}
+\begin{equation}\label{rex:eq:rational-root}
  u^q(k-1)^p\geq v^q k^p.
 \end{equation}
 This is an integer-root problem. Let
@@ -32,7 +32,7 @@ $r^qD=N$, and $r+1$ otherwise. The final comparison is exact, including
 the cases where the algebraic expression is an integer.
 
 Independently, the forward quotients satisfy
-\begin{equation}\label{eq:forward-quotient}
+\begin{equation}\label{rex:eq:forward-quotient}
  Q_1=n,\qquad
  Q_k=\floor{\left(\frac{k-1}{k}\right)^m Q_{k-1}}.
 \end{equation}
@@ -71,13 +71,13 @@ calculations; the infinite statements rest on the preceding proofs.
 \small
 \input{data/threshold_table.tex}
 \caption{Exact backward thresholds and numerical normalizations.
-The last column tends to $1$ by \cref{thm:main}; its displayed values
+The last column tends to $1$ by \cref{rex:thm:main}; its displayed values
 use high-precision evaluation of $c_m$. The full data file also includes
 $K=100000$. The exponent $m=1/2$ uses exact integer square roots.}
-\label{tab:thresholds}
+\label{rex:tab:thresholds}
 \end{table}
 
-Table~\ref{tab:thresholds} shows both the correct scale and the irregular
+Table~\ref{rex:tab:thresholds} shows both the correct scale and the irregular
 finite errors. For example, for $m=2$ the normalized error at $K=10000$
 is larger than at $K=1000$. Neither monotonic convergence nor a
 particular rate follows from the theorem or from these samples.
@@ -89,7 +89,7 @@ particular rate follows from the theorem or from these samples.
 backward recurrence. The Gamma constants are used only in the
 normalization. The irregular excursions illustrate why estimating
 a discrete error law requires more than a smooth fitted curve.}
-\label{fig:thresholds}
+\label{rex:fig:thresholds}
 \end{figure}
 
 \subsection{The predicted shapes}
@@ -101,11 +101,11 @@ a discrete error law requires more than a smooth fitted curve.}
 by their terminal stage $K$, approach the explicit piecewise linear
 function $y_3$. The plot stays away from $t=0$, where $y_3$ diverges;
 the proof handles that endpoint through weighted tail bounds.}
-\label{fig:backward}
+\label{rex:fig:backward}
 \end{figure}
 
-Figure~\ref{fig:backward} directly illustrates the compact convergence
-proved in \cref{prop:profile}. Figure~\ref{fig:forward} uses actual
+Figure~\ref{rex:fig:backward} directly illustrates the compact convergence
+proved in \cref{rex:prop:profile}. Figure~\ref{rex:fig:forward} uses actual
 forward trajectories, which were not used to construct the limiting
 profile. For the cubic process, the exact stopping indices for initial
 values $10^3,10^6,10^9$ are respectively $9,51,287$. The step curves
@@ -118,7 +118,7 @@ converge to the continuous weighted profile $F_3$.
 forward trajectories, with time divided by the exact stopping index.
 The limiting curve is $F_3(t)=c_3t^3y_3(t)$. Its continuous value at
 $t=0$ is $1$, despite the divergence of the unweighted quotient profile.}
-\label{fig:forward}
+\label{rex:fig:forward}
 \end{figure}
 
 \subsection{Certified constant intervals}
@@ -127,15 +127,15 @@ $t=0$ is $1$, despite the divergence of the unweighted quotient profile.}
 \centering
 \small
 \input{data/constant_intervals.tex}
-\caption{Finite-product enclosures from \cref{prop:certificates} at
+\caption{Finite-product enclosures from \cref{rex:prop:certificates} at
 $j=1000$. The outer decimal endpoints are rounded outward by exact
 integer arithmetic, so the displayed intervals retain the enclosure.
 The middle column is a numerical evaluation of the exact Gamma formula.}
-\label{tab:certificates}
+\label{rex:tab:certificates}
 \end{table}
 
 The exact rational numerators and denominators underlying
-Table~\ref{tab:certificates} are included in
+Table~\ref{rex:tab:certificates} are included in
 \begin{quote}\ttfamily
 data/constant\_certificates.json
 \end{quote}
@@ -154,7 +154,7 @@ python reproduce.py
 \end{quote}
 The exact checks alone require only the Python standard library:
 \begin{quote}\ttfamily
-python reproduce.py --exact-only --out replay\_exact
+python reproduce.py -{}-exact-only -{}-out replay\_exact
 \end{quote}
 The full replay additionally uses \texttt{mpmath} and
 \texttt{matplotlib}; it requires no network access. Compile
@@ -176,4 +176,32 @@ weighted tail estimate.
 No proof-assistant development accompanies this report. The executable
 checks are finite computations and are not described as a formal
 verification of the real-parameter theorem.
+
+\begin{writenote}[Added 3 October 2026, batch~85]
+This section describes the delivered archive. In the repository the files
+keep their bytes but not all their places: the program is
+\texttt{code/\allowbreak reproduce.py}, \texttt{requirements.txt} and the
+recorded \texttt{verification.json} are in \texttt{data/}, the delivered
+\texttt{README.txt} is replaced by the report's \texttt{README.md}, and the
+delivered 25-page PDF was not shipped (the repository's
+\texttt{article.pdf} is a rebuild of this source with the \textsf{[write]}
+notes; the delivered one survives in the arrival commit). The program reads
+\texttt{data/\allowbreak oeis\_prefixes.json} relative to its own directory
+and, without \texttt{-{}-out}, writes into that directory, so it must not be
+run in place: run from \texttt{code/} it would not find its fixture file. The
+command above was printed in the delivered PDF with en dashes for its double
+hyphens (a typewriter-font ligature); the writing step set them as two
+hyphens, the only change to the delivered text outside the labels, the
+notes and the preamble. The
+report's \texttt{README.md} rebuilds the delivered layout on a scratch copy
+and replays there. At intake (3 October 2026) the full replay on such a copy
+passed in 92.5\,s; the seven CSV files were byte-identical to the recorded
+ones, the two JSON and two \TeX\ data files differed only by CRLF line ends
+(Python text mode on Windows), \texttt{verification.json} only in its
+runtime and Python-version fields, and the three PNG figures only in
+rendering. The OEIS terms in \texttt{data/\allowbreak oeis\_prefixes.json}
+are OEIS content, licensed by The OEIS Foundation under CC~BY-SA~4.0; they
+are not covered by the repository's MIT-0 licence. No Lean or Rocq
+development in ProveIt treats this subject.
+\end{writenote}
 
