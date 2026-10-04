@@ -1,0 +1,20 @@
+.PHONY: all pdf check clean
+
+PYTHON ?= python3
+LATEXMK ?= latexmk
+
+all: pdf check
+
+pdf:
+	mkdir -p build
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error -outdir=build article.tex
+	cp build/article.pdf article.pdf
+
+check:
+	mkdir -p audit
+	$(PYTHON) code/check_identities.py > audit/checks.json.tmp
+	mv audit/checks.json.tmp audit/checks.json
+
+clean:
+	rm -rf build
+	rm -f audit/checks.json.tmp
