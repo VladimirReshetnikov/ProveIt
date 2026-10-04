@@ -589,6 +589,15 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [paid affine reuse](Papers/research-wip/native-stream-queue/matrix193_affine_reuse_scout.md) lowers the complete
+matrix polynomial to **1,621=791M+830A**, with146 positive witnesses and
+unchanged exact degree35,587. Reusing the already paid sum r181=r144+1
+removes one private coefficient producer; the component now has577 gates.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_affine_reuse_scout.md) checks the full literal edit,
+all676 coefficient entries and the whole polynomial identity. Fresh normal
+and optimized receipts pass. This standalone source retains IDLE and does
+not yet compose the positive controller charts; no optimality is claimed.
+
 The [combined entry/controller charts](Papers/research-wip/native-stream-queue/matrix193_entry_controller_charts.md)
 incorporate the coefficient and flow savings into three fully emitted sources.
 Either single chart uses **1,619=790M+829A** with145 positive witnesses;
@@ -600,7 +609,7 @@ matrix alternatives preserve ordinary input and have these explicit tradeoffs:
 
 | Controller hats computed from retained coordinates | Operations | Positive witnesses | Exact degree |
 |---|---:|---:|---:|
-| None: entry-and-flow parent | 1,622 | 146 | 35,587 |
+| None: paid affine reuse | 1,621 | 146 | 35,587 |
 | LOAD or SWITCH | 1,619 | 145 | 53,347 |
 | LOAD and SWITCH | 1,616 | 144 | 71,107 |
 
