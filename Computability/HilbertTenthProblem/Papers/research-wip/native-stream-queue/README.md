@@ -140,6 +140,22 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md)
+prove the exact quotient-carry identities at linear and quadratic resonances.
+A linear tie still needs additional quotient carries; an unbounded family
+refutes an inference from resonance, parity and size alone. Quadratic ties
+supply at least2a carries, but the actual `F=Kz` source and positive slack
+imply **A² does not divide either R+1 or R+3 for every permitted n>=5**,
+where A is the entire odd part of q. Thus neither all-prime quadratic ties
+nor all-prime linear depths of at least2a can be forced by this shortcut.
+The [independent review](review_complete83_odd_primary_carry_budget.md)
+checks the complete proof, literal source expansion, both exact congruence
+remainders, digitwise carry identities and64 synthetic slack obstructions.
+Fresh normal/optimized receipts passed before freezing; no predecessor was
+run. Retained Correction remark1 restricts the r+1/r+2 translation to odd R.
+Mixed branches, quotient carries and full odd-primary completion remain open;
+the obstruction does not exclude the family or change the universal84 bound.
+
 The [sparse-coefficient two-primary theorem](complete83_outer_family_sparse_two_primary.md)
 strengthens the actual outer-family cutoff to **every permitted n>=5**.
 The literal clause census gives `pc(K)<=30M`, `v2(K)=3ab`, `M<3b`, and
@@ -5385,6 +5401,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md) | Exact quotient-carry identities; actual positive F=Kz family forbids A² dividing R+1 or R+3 for n>=5. Independent proof/source challenge and fresh receipts pass. | Excludes simultaneous deep-resonance strategies only; mixed branches, sufficient quotient carries and odd-primary completion remain open. |
 | [Sparse compiler coefficients: n>=5 binary cutoff](complete83_outer_family_sparse_two_primary.md) | Actual clause sparsity bounds the three high-digit population losses by less than d/2; every permitted n>=5 passes the full two-primary condition. Independent proof/source review and fresh finite checks pass. | n=1, odd-primary completion, full positive source zero and universal83 remain unproved. |
 | [Uniform two-primary cutoff9](complete83_outer_family_uniform_two_primary.md) and [independent proof challenge](review_complete83_outer_family_uniform_two_primary.md) | Every allowed n>=9 passes the2-primary scale condition, uniformly across original compiler numerals, using actual fixed-mask density | n=1/5 and all odd-primary completion remain outside this packet; no full zero or universal83 |
 | [Eventual two-primary success](complete83_outer_family_two_primary.md) and [independent review](review_complete83_outer_family_two_primary.md) | Explicit fixed-compiler threshold makes the2-primary cubed-scale condition automatic on the constructed non-dyadic family tail | Odd-primary scale conditions remain open; no actual full source zero or universal83 conclusion |

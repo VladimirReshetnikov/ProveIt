@@ -162,6 +162,22 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [odd-primary carry budget and source obstruction](Papers/research-wip/native-stream-queue/complete83_odd_primary_carry_budget.md)
+prove the exact quotient-carry identities at linear and quadratic resonances.
+A linear tie still needs additional quotient carries; an unbounded family
+refutes an inference from resonance, parity and size alone. Quadratic ties
+supply at least2a carries, but the actual `F=Kz` source and positive slack
+imply **A² does not divide either R+1 or R+3 for every permitted n>=5**,
+where A is the entire odd part of q. Thus neither all-prime quadratic ties
+nor all-prime linear depths of at least2a can be forced by this shortcut.
+The [independent review](Papers/research-wip/native-stream-queue/review_complete83_odd_primary_carry_budget.md)
+checks the complete proof, literal source expansion, both exact congruence
+remainders, digitwise carry identities and64 synthetic slack obstructions.
+Fresh normal/optimized receipts passed before freezing; no predecessor was
+run. Retained Correction remark1 restricts the r+1/r+2 translation to odd R.
+Mixed branches, quotient carries and full odd-primary completion remain open;
+the obstruction does not exclude the family or change the universal84 bound.
+
 The [sparse-coefficient two-primary theorem](Papers/research-wip/native-stream-queue/complete83_outer_family_sparse_two_primary.md)
 strengthens the actual outer-family cutoff to **every permitted n>=5**.
 The literal clause census gives `pc(K)<=30M`, `v2(K)=3ab`, `M<3b`, and
