@@ -15,6 +15,15 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [three-commit publication review](review_report_publications_83926d574.md)
+covers upstream through83926d574 with exact textual read scopes. All616
+new arithmetic/ant evidence files match prior archive members, but the
+promised manuscript parts and updated main guides are absent at that
+revision. The Polish-arithmetic PartsVI–IX preserve their stated scope
+limits, including the unreviewed ATR0 claim; no finite paid compiler was
+found. Root independently rechecked all616 byte mappings and the recorded
+Polish read spans. These arrivals do not change the84-operation bound.
+
 The [independent-gamma83 scout](complete83_independent_gamma_scout.md)
 removes the private main/input quotient sum from the actual84 source,
 giving **83=47M+36A,18 positive witnesses, exact degree187**. Its
