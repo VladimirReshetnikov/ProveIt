@@ -138,13 +138,17 @@
 > foundations/reversion archives have the bounded intake linked below; the
 > complex-transseries placementec91f8c7c itself retains only commit-summary/
 > diff-statistic intake. The newer foundations placement350b9a954, Polish
-> PartsXVI–XVII publication9a8894d0a and cyclotomic correction7389d7de4 have
-> only commit-summary/diff-statistic intake here. Earlier guide-only and
+> PartsXVI–XVII publication9a8894d0a, cyclotomic correction7389d7de4,
+> definable-operations publicationc7d65e30b and transseries placement6132faa30
+> have only commit-summary/diff-statistic intake here. Earlier guide-only and
 > ancillary-placement reviews keep their exact boundaries. Padded
 > reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 > or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 > cheaper loading/accepting-history compiler is still needed for a universal
 > improvement. The universal84/187 and85/155 points remain unchanged.
+>
+>
+> The [shared-projection83 scout](complete83_shared_projection_scout.md), with [independent complete-source review](review_complete83_shared_projection_scout.md), emits83=46M37A operations,18 positive witnesses and exact degree187 by supplying U in place of rho*(4a+3). The full all-ring forward identity and all83 live rows are proved; the conditional inverse requires (4a+3)|U. Its [positive-zero analysis](complete83_shared_projection_math.md), with [independent mathematical review](review_complete83_shared_projection_math.md), proves that every valid-slice zero still has input index v=u, but only the shifted power relation X-W=2^R-2^u. The missing divisibility is exactly the vanishing of their common offset e. All18 positive coordinates are parametrically constructed for an explicit scalar diagnostic with q16,R49023,W0,e=-512, cubed Y-scale and both binary masks; the numerals are not certified compiler data, so this is neither a rejected-input counterexample nor an improved universal bound. Fresh source/degree checks and the [scalar diagnostic receipt](complete83_shared_projection_math.json) remain distinct from the symbolic huge-witness proof; root independently verifies all14 mathematical source pins and the scalar residues, valuations and masks. The valid-program nonzero-offset sector and ordinary-input language remain open.
 >
 >
 > The [affine input-coupling theorem](complete83_affine_input_coupling.md), with [independent source and proof review](review_complete83_affine_input_coupling.md), controls joint cancellation between delta and rho in independent-gamma83. For fixed integer coefficient polynomials P,Q,S on exactly71 bounded exterior values, a full positive zero satisfying P delta+Q rho=S with (P,Q) nonzero is canonical or has R²<8t+4+ceil(log2(23L²)). Thus the noncanonical ordinary inputs are explicitly bounded; if this cutoff is at most49², every such zero is canonical. The nonsquare Pell-conic eliminant proves the height bound without separately bounding the two input witnesses. The simultaneous-zero coefficient sector remains unrestricted. Fresh author/reviewer checks authenticate the unchanged83 rows, all71 exterior values and ten literal input rows, with exact coefficient identities and normal/optimized receipt equality. No relation is added for free, no completeness result or new circuit is claimed, and no universal bound changes.
