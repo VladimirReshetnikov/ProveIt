@@ -161,6 +161,15 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [kernel first-row recoding](matrix193_kernel_row_projection.md)
+> keeps all 193 generators while reducing the varying target to two integers.
+> A kernel subgroup makes each block uniquely determined by its first row;
+> the complete generic assembly costs **6=4M+2A** from correctly indexed Pell
+> coordinates. Its Pell parameter is **4417**, and the largest matrix entry
+> falls to **29 magnitude bits**. The [independent review](review_matrix193_kernel_row_projection.md)
+> checks the full array and projected target. The exact index relation and
+> unbounded product certificate remain unpaid; the universal bound stays **84**.
+>
 > The [complete Schreier recoding](matrix193_schreier_recode.md) preserves
 > all193 generators and the same finite-input membership language through
 > a faithful twenty-letter basis from an explicit19-sheet cover. The
