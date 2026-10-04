@@ -145,13 +145,34 @@
 > adaptation78333302d now has a bounded computational-interface review; its
 > imported source implementations and archives are not audited. Batch95
 > reciprocal ddb36da6c now has the bounded review linked below. The BCH
-> history/adaptation abb123637/ad52ef11e has only log/commit-description
-> intake here. Earlier guide-only and
+> history/adaptation abb123637/ad52ef11e now has a bounded formal-interface
+> review, an analytic-domain correction and a rebuilt combined PDF. Earlier guide-only and
 > ancillary-placement reviews keep their exact boundaries. Padded
 > reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 > or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 > cheaper loading/accepting-history compiler is still needed for a universal
 > improvement. The universal84/187 and85/155 points remain unchanged.
+>
+>
+> The [sparse-coefficient two-primary theorem](complete83_outer_family_sparse_two_primary.md)
+> strengthens the actual outer-family cutoff to **every permitted n>=5**.
+> The literal clause census gives `pc(K)<=30M`, `v2(K)=3ab`, `M<3b`, and
+> `b>=125`. Counting the populations of the three high-digit deficits proves
+> that their combined loss is less than `d/2`; the two or more unchanged
+> low mask cells then give `pc(r)>3D+1`. The inherited unique-central-term
+> argument supplies the full binary cubed-scale divisibility condition.
+> The [independent review](review_complete83_outer_family_sparse_two_primary.md)
+> checks the complete proof and literal compiler spans, with fresh36 synthetic
+> clause cases,16400 subtraction identities and13440 signed deficit cases;
+> normal/optimized receipts passed before freezing. Author and predecessor
+> helpers were not replayed. The first member n=1 and every odd-primary
+> completion remain open; no full source zero or universal83 result follows.
+>
+>
+> The [uniform two-primary cutoff](complete83_outer_family_uniform_two_primary.md), with [independent proof challenge](review_complete83_outer_family_uniform_two_primary.md), proves that every permitted outer-family member with n>=9 passes the power-of-two cubed-scale condition for every original powers-of-five compiler. The exact complement identity pc(Dmask)=|E| and the fixed support bound give pc(MC)>4d/5. Counting every bit in the unchanged low cells, rather than one bit per cell, and bounding the high deficits by ell<3d/2+1 removes the compiler-dependent threshold. Fresh author arithmetic checks and root's independent quantified proof challenge pass; n=1 and n=5 are not decided here. The odd-primary conditions, complete noncanonical zeros and universal83 remain open. No compiler numeral, source instruction or arithmetic bound changes.
+>
+>
+> The [eventual two-primary success theorem](complete83_outer_family_two_primary.md), with [independent carry and source review](review_complete83_outer_family_two_primary.md), removes the power-of-two condition on an explicit infinite tail of the actual-compiler non-dyadic outer family. For Astar=64(4dK+4d+1), ell=bitlength(Astar), every permitted n>=3ell+5 has v2(M_r(X))=popcount(r)>=3v2(q)+1. Low repeated MC digits exclude denominator resonances; three disjoint high complement blocks provide the population bound. The proof keeps all compiler numerals fixed and retains the corrected missing-constant identities and extra-factor congruence in a numbered review remark. Fresh independent exact expansions and digit checks corroborate the quantified argument without materializing X, Y or Pell witnesses. Full completion on this tail now depends only on the odd-prime scale conditions, which remain unproved; no full zero, rejected input or universal83 bound is claimed.
 >
 >
 > The [actual-compiler non-dyadic outer family](complete83_nondyadic_outer_family.md), with [independent proof and literal-source review](review_complete83_nondyadic_outer_family.md), keeps every fixed numeral of the original powers-of-five compiler and constructs infinitely many positive outer tuples with W=0. A residue split chooses q=Q(Q+1)/2 or q=Q(2Q-1), where Q=B^n and n=1 modulo4. Small source-bound C=Z and a constructed ordinary input satisfy the original slack, packed-index and exponent congruences; q(q-1) divides X, giving a positive literal transport quotient. A full18-witness completion follows conditionally from the single four-term congruence modulo2q^3, which remains unproved and untested for actual compiler members. Independent review checks65 literal rows and all83 rows' topology/liveness, plus135 explicitly synthetic arithmetic cases. No passing full zero, rejected input, prescribed-input construction or universal83 conclusion is asserted.
@@ -182,6 +203,9 @@
 >
 >
 > The [affine input-coupling theorem](complete83_affine_input_coupling.md), with [independent source and proof review](review_complete83_affine_input_coupling.md), controls joint cancellation between delta and rho in independent-gamma83. For fixed integer coefficient polynomials P,Q,S on exactly71 bounded exterior values, a full positive zero satisfying P delta+Q rho=S with (P,Q) nonzero is canonical or has R²<8t+4+ceil(log2(23L²)). Thus the noncanonical ordinary inputs are explicitly bounded; if this cutoff is at most49², every such zero is canonical. The nonsquare Pell-conic eliminant proves the height bound without separately bounding the two input witnesses. The simultaneous-zero coefficient sector remains unrestricted. Fresh author/reviewer checks authenticate the unchanged83 rows, all71 exterior values and ten literal input rows, with exact coefficient identities and normal/optimized receipt equality. No relation is added for free, no completeness result or new circuit is claimed, and no universal bound changes.
+>
+>
+> The [BCH import and finite-coefficient review](review_bch_ad52ef11e.md), with [independent bounded mathematical challenge](review_bch_ad52ef11e_independent.md), reads752 selected immutable lines and all six adaptation text diffs atad52ef11e. It corrects an overbroad analytic inverse-law sentence, retains its global reading with the A=2πi counterexample in a numbered remark, and rebuilds the79-page combined PDF. The formal word-cut proof supplies exact rational coefficients; n!lcm(1,...,n) clears every degree-n denominator. Fresh word-selecting nilpotent matrices independently reproduce all126 words through degree6, while5,190 supplied rows pass denominator/schema checks. Fully supplied finite rational cutoff evaluation is decidable and supplies no unbounded halting representation or paid fixed-arity compiler. General Lie/PBW and convergence proofs, the Lean build, original papers, external attribution and degree7–12 numerator recomputation remain outside this review.
 >
 >
 > The [batch94B transseries placement review](review_transseries_6132faa30.md) reads all three guide/attribute diffs and 2,767 explicitly scoped lines of the action-cone and modular-cusp packages at6132faa30. All45 archive members,43 exact placements and43 manifest entries are authenticated; a [separate fresh reauthentication](reauth_transseries_6132faa30.md) checks the immutable records in862 checks. No correction was found in the selected interfaces. A computable proper-weight example shows that finite truncations, even with a computable size bound, need not admit uniform complete enumeration; this clarifies the source's retained effectivity questions. Analytic factor counts, finite wall counts and coefficient truncations supply no paid fixed-arity integer compiler. Full analytic proofs, external attribution, PDFs and supplied numerical programs remain outside this review.
