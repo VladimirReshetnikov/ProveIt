@@ -1131,6 +1131,17 @@ All labels exist at HEAD.
 
 ## Corrections and stale statements
 
+**Review Remark R4 (4 October 2026, characteristic zero).** Before correction
+`b8bc36acc`, the Part XVII scope note described the five listed Lean items as
+“proved in Lean over every field”; its article remarks likewise overstated
+the derivative-image theorem. In `F₂((X))`, the series `X` has zero residue,
+but the coefficient of `X` in every derivative is `2 a₂ = 0`, so it has no
+primitive. The image and primitive-existence theorems require characteristic
+zero, exactly as the current Lean section and corrected scope note state.
+The residue identities and the termwise primitive definition remain valid
+over every field; that definition alone does not give a primitive theorem.
+This remark retains the earlier false extension and its counterexample.
+
 **Review Remark R1 (4 October 2026, zero derivation).** The Part XVII guide
 originally said “in rank one D = aE with kernel R and image
 `{g : ct(g/a) = 0}`.” The condition `a ≠ 0` is necessary: at `a = 0`, D is
