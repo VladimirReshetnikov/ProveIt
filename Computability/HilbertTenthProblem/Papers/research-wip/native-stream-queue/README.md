@@ -108,6 +108,20 @@ scoped valuation counterexamples; normal/optimized replays pass. These are
 native residue filters, with no prescribed-history realization or bound on
 the full order gcd. The 83-operation language remains unresolved.
 
+The [residual-order obstruction](gamma83_residual_order_obstruction.md)
+proves that both input-Pell parity branches have the same exact spacing
+modulus m on a fixed full positive gamma83 zero, subject to positive width.
+It also constructs free arithmetic hosts satisfying the extracted finite
+three-power filters but with **17^k dividing m** for every k, while both
+old power tests fail for every squaring exponent. The
+[independent review](review_gamma83_residual_order_obstruction.md)
+checks the all-k argument and independently reconstructs all six saved
+CRT hosts; installed normal/optimized receipts pass. These hosts omit
+the native formula and computation constraints, including the native
+finite range at fixed t. This proves a limitation of the extracted
+filters, not an unbounded native modulus or a false-input zero. The
+83-operation language remains unresolved and the universal bound is84.
+
 The [native three-power construction](complete83_gamma_native_three_power_control.md)
 controls every fixed finite u>=2 on genuine accepting histories of the
 parity-normalized compiler. It arranges **3^u*dh dividing R** and
