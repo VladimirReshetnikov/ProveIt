@@ -111,6 +111,19 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [multiplier-dependent strong-root theorem](complete84_multiplier_dependent_root_absorption.md)
+extends the polynomial substitution obstruction to all88 values independent
+of f,T,y_aux, including i and its two computed products. For fixed G of degree
+t and coefficient norm L>=1, every substituted zero satisfies
+**G!=0 and 2d*x+b<R<c<max(12t,5)+1+ceil(log2(L^2+2))**.
+Fixing the old85 values produces an integer polynomial in i; a nonzero
+strong-norm polynomial gives a Cauchy bound that conflicts with i>c^(c-1).
+The signed f/T map and zero-f exclusion retain their precise earlier domains.
+The [independent review](review_complete84_multiplier_dependent_root_absorption.md)
+checks all84 source rows, all88 argument weights, complete sign/zero identities
+and the quantified root bound. Fresh normal/optimized checks pass. The whole
+input projection is finite on this fixed-polynomial interface; universal84 is unchanged.
+
 The [strong-root substitution theorem](complete84_strong_root_absorption.md)
 rules out every fixed integer polynomial replacement f=G(E) on the85-value
 interface independent of i,f,T,y_aux: every resulting positive zero satisfies
@@ -633,6 +646,17 @@ conditional timed-chart proof and confirms the explicit binary certificate's
 Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
+
+The [shared matrix-action fusion](matrix193_shared_action_fusion.md)
+lowers the four complete sources to **1,399 / 1,396 / 1,396 / 1,393 operations**.
+Combining two scaled input rows before applying their common fixed matrix
+saves4M+2A per chart. The coefficient component is534=288M+246A; all supplied
+coordinates, every retained old value and each full polynomial are unchanged.
+Witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105 remain.
+The [independent review](review_matrix193_shared_action_fusion.md) reconstructs
+all5,584 rows, verifies the eight-port identity, all16 coefficient words and
+every actual finalizer under the same computed Q. Fresh normal/optimized
+checks pass. Earlier terminal/IDLE inverse scopes and universal84 are unchanged.
 
 The [joint matrix-state factor rewrite](matrix193_joint_state_factor.md)
 reduces the four complete sources to **1,405 / 1,402 / 1,402 / 1,399 operations**.
@@ -3471,6 +3495,18 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
+The [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md)
+reduces the complete one-program source to **466=171M+295A** and the
+two-program source to **465=171M+294A**, with67 positive witnesses each.
+The paid identity G17=A3+D9 replaces17G17+D9+D14 by18G17+D14-A3,
+removing one addition while retaining every state code and the entire
+polynomial. Certificate costs are446/445; degree bounds remain5091/5160.
+The [independent review](review_residue_affine_sparse_prime_recenter.md)
+reconstructs all931 rows, verifies the actual selector supports, every full
+control word and complete output identity, and checks both original interfaces.
+Fresh normal/optimized checks pass. Each source preserves its own parent's
+supplied positive zeros; the separate universal84 bound is unchanged.
+
 The [joint U21 control recoding](residue_affine_sparse_joint_recoding.md)
 reduces the complete one-program source to **467=171M+296A** operations and
 the two-program source to **466=171M+295A**, each with67 positive witnesses.
@@ -5064,6 +5100,9 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Shared fixed-matrix action](matrix193_shared_action_fusion.md) | Complete1399/1396/1396/1393;534 coefficient rows; saves4M+2A per chart by full-polynomial identity | Same supplied tuples, witnesses and exact degrees; inherited ordinary-input scope, universal84 unchanged |
+| [Multiplier-dependent strong-root absorption](complete84_multiplier_dependent_root_absorption.md) | Fixed polynomial f=G on88 f/T/y-independent values, including i and S,S², has finite input projection | Integer Cauchy bound versus strong-rank growth; quotient/ordinate-dependent substitutions remain outside this theorem |
+| [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md) | One-program466/two-program465 operations,67 witnesses; one addition saved by exact full-polynomial identity | Same codes and separate fixed-program interfaces; degree bounds5091/5160, universal84 unchanged |
 | [Joint U21 control recoding](residue_affine_sparse_joint_recoding.md) | One-program467/two-program466 complete operations,67 witnesses each; one fewer addition per array | Each own-parent supplied positive zero set preserved; degree bounds5091/5160, no cross-interface map or universal84 improvement |
 | [Strong Pell-root absorption](complete84_strong_root_absorption.md) | Fixed polynomial f=G on85 auxiliary-independent values has finite input projection, including signed G and an empty zero sector | Uses the signed-T rank lemma; substitutions depending on auxiliary coordinates remain outside this theorem |
 | [Signed auxiliary-quotient absorption](complete84_signed_quotient_absorption.md) | Every fixed polynomial T=G on93 T/y-independent values has finite input projection; G=0 impossible | Direct signed-domain rank/bounds only; no full signed-T compiler transfer or operation reduction |

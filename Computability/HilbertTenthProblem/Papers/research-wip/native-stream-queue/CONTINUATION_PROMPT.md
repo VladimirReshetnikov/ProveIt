@@ -114,6 +114,20 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [multiplier-dependent strong-root theorem](complete84_multiplier_dependent_root_absorption.md)
+> extends the polynomial substitution obstruction to all88 values independent
+> of f,T,y_aux, including i and its two computed products. For fixed G of degree
+> t and coefficient norm L>=1, every substituted zero satisfies
+> **G!=0 and 2d*x+b<R<c<max(12t,5)+1+ceil(log2(L^2+2))**.
+> Fixing the old85 values produces an integer polynomial in i; a nonzero
+> strong-norm polynomial gives a Cauchy bound that conflicts with i>c^(c-1).
+> The signed f/T map and zero-f exclusion retain their precise earlier domains.
+> The [independent review](review_complete84_multiplier_dependent_root_absorption.md)
+> checks all84 source rows, all88 argument weights, complete sign/zero identities
+> and the quantified root bound. Fresh normal/optimized checks pass. The whole
+> input projection is finite on this fixed-polynomial interface; universal84 is unchanged.
+>
+>
 > The [strong-root substitution theorem](complete84_strong_root_absorption.md)
 > rules out every fixed integer polynomial replacement f=G(E) on the85-value
 > interface independent of i,f,T,y_aux: every resulting positive zero satisfies
@@ -645,6 +659,18 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [shared matrix-action fusion](matrix193_shared_action_fusion.md)
+> lowers the four complete sources to **1,399 / 1,396 / 1,396 / 1,393 operations**.
+> Combining two scaled input rows before applying their common fixed matrix
+> saves4M+2A per chart. The coefficient component is534=288M+246A; all supplied
+> coordinates, every retained old value and each full polynomial are unchanged.
+> Witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105 remain.
+> The [independent review](review_matrix193_shared_action_fusion.md) reconstructs
+> all5,584 rows, verifies the eight-port identity, all16 coefficient words and
+> every actual finalizer under the same computed Q. Fresh normal/optimized
+> checks pass. Earlier terminal/IDLE inverse scopes and universal84 are unchanged.
+>
+>
 > The [joint matrix-state factor rewrite](matrix193_joint_state_factor.md)
 > reduces the four complete sources to **1,405 / 1,402 / 1,402 / 1,399 operations**.
 > Deferring paid powers through five state blocks removes twenty products and
@@ -987,7 +1013,9 @@
 > Joint X cleanup/state Horner evaluation removes two further multiplications,
 > giving the intermediate 1,409 operations and 550 coefficient rows.
 > Joint state-factor deferral removes ten more multiplications, giving the
-> current 1,399 operations and 540 coefficient rows in the complete both-chart source.
+> intermediate 1,399 operations and 540 coefficient rows. Shared fixed-matrix
+> action then saves four multiplications and two additions, giving the current
+> 1,393 operations and 534 coefficient rows in the complete both-chart source.
 > None of these completed savings may be subtracted again.
 >
 > The [packed selected-output construction](matrix193_packed_output_scout.md)
@@ -3661,6 +3689,19 @@ historical87/degree203 theorem, weakened86 and independent-gamma87.
 > 134=64M+70A,21w5eq,degree at most748; zero duration costs two more gates.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
+>
+> The [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md)
+> reduces the complete one-program source to **466=171M+295A** and the
+> two-program source to **465=171M+294A**, with67 positive witnesses each.
+> The paid identity G17=A3+D9 replaces17G17+D9+D14 by18G17+D14-A3,
+> removing one addition while retaining every state code and the entire
+> polynomial. Certificate costs are446/445; degree bounds remain5091/5160.
+> The [independent review](review_residue_affine_sparse_prime_recenter.md)
+> reconstructs all931 rows, verifies the actual selector supports, every full
+> control word and complete output identity, and checks both original interfaces.
+> Fresh normal/optimized checks pass. Each source preserves its own parent's
+> supplied positive zeros; the separate universal84 bound is unchanged.
+>
 >
 > The [joint U21 control recoding](residue_affine_sparse_joint_recoding.md)
 > reduces the complete one-program source to **467=171M+296A** operations and
