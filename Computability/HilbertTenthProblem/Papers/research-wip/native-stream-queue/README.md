@@ -136,6 +136,17 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [complete Schreier recoding](matrix193_schreier_recode.md) preserves
+all193 generators and the same finite-input membership language through
+a faithful twenty-letter basis from an explicit19-sheet cover. The
+universal block has trace-46 and its square has **Pell parameter1057**, down
+from39979681. The [independent full-array review](review_matrix193_schreier_recode.md)
+reconstructs all3088 new entries, every lower block and the full167-generator
+accepting product; author/review normal and optimized replays pass.
+Some coefficients grow (maximum31→33 bits). The conditional12-operation
+target assembly still leaves its exact index and unbounded membership
+relations unpaid, so the universal polynomial bound remains84.
+
 The [faithful parabolic obstruction](u15_faithful_parabolic_obstruction.md)
 shows that the universal U15 block W=(01)^3 11 stays hyperbolic under
 **every faithful SL2(Z) representation**, with a stated GL2(Z) extension.
