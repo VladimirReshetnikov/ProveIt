@@ -1180,7 +1180,19 @@ those notes ask for.
   do for abelian sandpiles what Parts II–III do for the ant: a literal
   periodic substrate, a finite loader for the same machine U15 (there in a
   34-state lazy CA convention that Report 40 does not import) and a
-  certificate. No shared theorem.
+  certificate. No shared theorem. Part XXI (Research Reports 50, 52, 53,
+  54; batch 91, written in `fb2287290`; labels `cdc:fx:`, `cdc:bt:`,
+  `cdc:rp:`, `cdc:us:`) restates and re-proves Report 42's power macro
+  (`ptr:ai:lem:exp`) as its macro POWER, without citing it, inside
+  fixed-arity polynomials of exact degree 18 for raw periodic sandpile
+  inputs; its note after `cdc:fx:sec:power` credits it. That is the only
+  shared statement.
+- **[`group-theoretic-substrates`](../group-theoretic-substrates)**, Part VI
+  (Research Report 55; batch 91, written in `b93c4a0b5`; labels `gts:cm:`):
+  its POWER module (`gts:cm:sec:power`) is the same fifteen equations,
+  printed there as a marked second route to `ptr:ai:lem:exp`, and expanded
+  1,475 times in one fixed-arity polynomial of exact degree 12 with 184,016
+  gates. No other shared theorem.
 - **[`fixed-universal-polynomials`](../fixed-universal-polynomials)**: the
   programme's universal-polynomial chain (Grill route, complete74/80/84
   candidates, Reports 23–25, 33, 34, 37 and batch 88's Reports 39, 41, 43,
@@ -1203,8 +1215,20 @@ those notes ask for.
 - **`five-particle-binary-automata`, `signal-machine-collision-certificates`**:
   other discrete-dynamics substrates of the category; they cite related work
   of Gajardo and Maldonado on cellular automata and pebble automata, not
-  turmites. No shared theorem. No other report of the collection treats
-  turmites, Langton's ant or first revisits.
+  turmites. No shared theorem, except that `signal-machine-collision-certificates`
+  (batch 91, written in `61c9e3eb2`) prints the same power macro once, as
+  Lemma `smc:fd:lem:power` of its Part X with a note naming
+  `ptr:ai:lem:exp`: Report 58 takes it from Report 55 and calls it twice,
+  Report 59 displays it again, Report 60 (Part XI) uses it, Reports 65 and
+  66 (Parts XII–XIII) use its base-two instance; Report 67 shrinks it to
+  22, 16, 14, 13 and 12 leaves (`smc:pp:thm:modules`), and Report 69
+  composes with the twelve-leaf form. No other report of the collection treats turmites,
+  Langton's ant or first revisits.
+- **Reciprocal notes (batch 91, 4 October 2026).** One dated note in
+  Section 42.4, after the paragraph on the small Pell examples that follows
+  Lemma 42.4.1 (`ptr:ai:lem:exp`), records the three
+  re-derivations above (cdc Part XXI, gts Part VI, smc Parts X–XIII). No
+  label, macro, package or bibliography entry is added.
 - **The formal project.** **Placement beside a Lean/Rocq development confers
   no formal status**; no statement of this report is formalized. The
   standard theorem Part I invokes in Section 7.2, decidability of Presburger
@@ -1247,6 +1271,16 @@ entry) leaves the build at 132 pages with the same log (the same single
 underfull box) and every `.aux` label number and page unchanged against a
 build of the committed text; its page (printed page 32) was rendered and
 inspected.
+
+The batch-91 reciprocal note (4 October 2026; one dated paragraph in
+Section 42.4 after Lemma 42.4.1, on `canonical-diophantine-certificates`
+Part XXI, `group-theoretic-substrates` Part VI and
+`signal-machine-collision-certificates` Parts X–XIII; no label, macro,
+package or bibliography entry) leaves the build at 132 pages with the same
+log (the same single underfull box) and every `.aux` label number unchanged
+against a build of the committed text; it moves Sections 42.5–42.11 one page
+later (printed pages 76–84), the slack being taken up before Report 44. Its
+page (printed page 75) was rendered and inspected.
 
 ## Rerunning the programs
 

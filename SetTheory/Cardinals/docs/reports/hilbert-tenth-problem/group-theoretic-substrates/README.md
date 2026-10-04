@@ -1035,7 +1035,19 @@ semigroup, form this one.
   of a packet named `sandpile-repeated-target-20261004` (by that name Report
   53's; shipped there as `26-repeated-target-science-SOURCE_NOTES.md`; the
   review records no digest, so byte identity is not established). No theorem
-  is shared.
+  is shared except the containment lemma: `gts:cm:lem:sub` and that Part's
+  `cdc:fx:lem:subset` are the same statement for the same equation system,
+  proved independently (reciprocal notes of 4 October 2026, batch 91, in
+  both relation texts).
+- **Reciprocal notes (batch 91, 4 October 2026).** Two dated `[write]`
+  sentences in Section 1's relation list: in the
+  `signal-machine-collision-certificates` item (that Part is now written,
+  `61c9e3eb2`; it prints the module once as Report 58's `smc:fd:lem:power`,
+  names Report 55 as the origin of the three files, and uses it again in
+  Reports 59, 60, 65 and 66, Report 67 shrinking it to 22–12 leaves,
+  `smc:pp:thm:modules`), and in the `canonical-diophantine-certificates`
+  item (the shared containment lemma). No label, macro, package or
+  bibliography entry is added.
 - **The formal project.** The report sits in the collection, not in
   `Computability/HilbertTenthProblem`, and **placement beside a Lean/Rocq
   development confers no formal status**. Parts I, II and IV import MRDP only
@@ -1097,6 +1109,17 @@ opening and letter table (printed pages 144–145), Sections 77–78 (147), the
 ledger (160), the questions and open items (166), the provenance
 table (172), Appendices L–M (178) and the end of the bibliography
 (185).
+
+The batch-91 reciprocal notes (4 October 2026; two dated `[write]`
+sentences in Section 1's relation list, in the
+`signal-machine-collision-certificates` and
+`canonical-diophantine-certificates` items; no label, macro, package or
+bibliography entry) leave the build at 186 pages with the same log (the
+same three underfull lines) and every `.aux` label number unchanged against
+a build of the committed text; they move the material of printed pages
+28–38 (Part I, from equation (6) to Section 10) one page later, and
+later pages are unchanged. Their
+pages (printed 22–23) were rendered and inspected.
 
 ## Rerunning the programs
 

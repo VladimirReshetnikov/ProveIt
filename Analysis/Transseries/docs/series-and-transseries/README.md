@@ -222,6 +222,15 @@ reconciliation, provenance) complete it.
   `audit_symbolic.py`, `coefficient_tools.wl`), `verification/source3/`
   (`verify.py`, `reference_implementation.wl`); the volume's numerical tables
   are their recorded runs, which the consolidation did not rerun.
+- See also (4 October 2026, batch 91O): the research report
+  `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a196460-clipping-tables`,
+  whose Part I applies, without citing it, this volume's Chapter 8 method
+  for connected labelled graphs (Theorem 8.1 `t2:thm:graphs`, Corollary 8.2
+  `t2:cor:graph-range`, Theorem 2.12 `t1:thm:certificate`) and the canonical
+  volume's staircase theorem (Theorem J.43 `p0:thm:staircase` of
+  `Transseries_And_Inversion/`) to OEIS A196460, with the sign of the
+  inverse remainder made sharp; that report credits both volumes. It is
+  filed in the research-report collection, not here.
 
 ### Provenance of the companion
 
