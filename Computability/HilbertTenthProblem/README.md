@@ -504,15 +504,28 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [uniform matrix-context compiler](Papers/research-wip/native-stream-queue/matrix193_uniform_context_packing.md)
+now emits the complete fixed-controller source: **176,586=58,770M+117,816A**,
+19,644 positive witnesses and exact degree2,360,653. Eight fixed coefficient
+ports absorb program contexts; a paid matrix SWITCH keeps the controller
+independent of the program while preserving ordinary input. The
+[independent source review](Papers/research-wip/native-stream-queue/review_matrix193_uniform_context_packing.md)
+checks every row, selector, residual and the exact degree. Normal/optimized
+receipts,32 full modular checks and ten diagnostic outer histories pass.
+This is a uniform construction upper bound above84; arbitrary coefficient
+assignments and the274-gate all-input diagnostic are not universal recipes.
+The enormous actual packed/native witness is supplied by the proof, not
+claimed as a materialized fixture.
+
 The [literal matrix shear controllers](Papers/research-wip/native-stream-queue/matrix193_unit_shear_controller.md)
 expand both actual96-pair tables and the LOAD action into complete private
 paths. The contextual fixture has32,821 edges and m=65,536; the original
 context-independent table has **19,613 edges and m=32,768**. The
 [independent review](Papers/research-wip/native-stream-queue/review_matrix193_unit_shear_controller.md) reconstructs
 both numeric arrays and checks386 matrix factors and52,430 unit shears.
-Normal/optimized receipts pass. Context can be moved to the initial row
-and one matrix switch, but that switch's packed arithmetic remains a
-separate obligation here. The295,647 contextual figure is a construction
+Normal/optimized receipts pass. The uniform compiler above pays the
+initial-context row and matrix-switch arithmetic left open by this packet.
+The295,647 contextual figure is a construction
 bound, not an emitted universal DAG; the universal minimum remains84.
 
 The [marked-loader matrix packing](Papers/research-wip/native-stream-queue/matrix193_marked_loader_packing.md)
@@ -522,7 +535,7 @@ the typed phase-switch state prevents count wraparound. The fully emitted
 **187=86M+101A** diagnostic has27 positive witnesses and exact degree1789.
 The actual matrix193 transfer is an effective finite compiler recipe with
 bound **9n+3log2(m)+210** and n+29 positive witnesses, after explicit shear
-expansion; its numerical controller is not emitted. The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_marked_loader_packing.md)
+expansion; that packet does not emit the numerical controller. The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_marked_loader_packing.md)
 checks the native63-row interface, full source, degree, positive count bridge
 and zero-input/empty-TILE boundaries. Normal/optimized receipts pass.
 The diagnostic is nonuniversal; the universal bound remains84.
