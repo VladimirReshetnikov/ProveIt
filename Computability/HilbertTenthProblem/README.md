@@ -22,6 +22,25 @@ L=E(kY), preserving every complete comparison and the full SOS polynomial
 on all supplied tuples. The fully paid SOS version costs100 operations
 at exact degree84. Independent source and mathematical reviews pass.
 
+The [quadratic root elimination](Papers/research-wip/native-stream-queue/complete90_signed_root_elimination.md)
+gives a complete universal polynomial with **90=52M+38A operations**,
+**17 positive witnesses**, and **uniform exact degree 406**. It deletes the
+strong root `f`, retains all 67 parent rows independent of `f`, and pays for
+23 new rows computing the full quadratic field norm. Every row and supplied
+port is live. On the full retained positive domain, `D>c>0` makes the inverse
+denominator nonzero before any native equations are imposed. Each new zero
+therefore restores a unique nonzero integer `f`; the accepted signed-quotient
+positivity theorem and literal `(f,T)→(-f,-T)` symmetry force `f>0`.
+Deletion and restoration give a bijection of complete positive zero sets,
+preserving the ordinary input and unchanged valid fixed-program recipe.
+The [independent review](Papers/research-wip/native-stream-queue/review_complete90_signed_root_elimination.md)
+rebuilds the full source, verifies the output identities and exact degree,
+and checks the uniformly nonzero coefficient `1024*Bm1^252`. Root repeats
+fresh normal/optimized author and reviewer receipts; a separate mathematical
+challenge finds no gap. The naive degree bound is 426. This is a new witness
+tradeoff; **84/187 with 18 witnesses** remains the minimum-operation choice,
+and **85/155**, **86/131** and the other degree tradeoffs remain available.
+
 The [reduced auxiliary coefficient](Papers/research-wip/native-stream-queue/complete85_reduced_auxiliary_degree.md)
 gives a complete **85=47M+38A**, **18-witness** universal polynomial of
 **uniform exact degree155**, improving the previous **85/175** choice.
@@ -104,6 +123,10 @@ The [hat-surplus Part II publication review](Papers/research-wip/native-stream-q
 The [three surreal publication reviews](Papers/research-wip/native-stream-queue/review_surreal_publication_5c32fda02.md) cover the Cantor-subfield integration at6f5f9954c, named-symmetry Part VIII at1404038df, and perfect-gap source04 at5c32fda02. All17 immutable blobs and nine raw diffs are authenticated;3779 precisely scoped diff lines were read. The label censuses are56→70,296→372 and236→313. Named operations remain distinct from a uniform evaluator, and the exact PA residue-image theorem uses nonstandard finite sums/overspill and one shared standard-system oracle. The inspected interfaces supply no paid ordinary-integer compiler. The perfect-gap proof and its imported Borel-standard-system theorem are not fully reviewed; PDF/build and historical finite-test claims remain outside the evidence.
 
 The [Parts XI–XII publication review](Papers/research-wip/native-stream-queue/review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
+
+The [OEIS placement review](Papers/research-wip/native-stream-queue/review_oeis_placement_ec8ae3dc7.md) authenticates all285 files atec8ae3dc7 against760 original members. The new host article and guide reproduce the first release; the second release has ancillary proof/evidence placement, with its main811-line article and172-line guide unintegrated. The inspected clipping-table theorem allows unbounded positive inputs but fixes the entire finite table in its coefficients; its zero/one-witness classification does not give a uniform paid compiler as the table grows. Root checks all member, placed-file and read-span hashes. The later sharp-uniform analytic proof, stored checks, PDF builds and external attributions remain unverified.
+
+The [batch91 ancillary placement review](Papers/research-wip/native-stream-queue/review_batch91_placements_22a8ca89e.md) authenticates2030 added files and42954437 bytes atb0a536b63/d750d98dd/22a8ca89e against the original24 archives. The22 retired ZIPs supply sandpile, signal/gap, matrix and CA evidence; all eight host article/guide blobs remain unchanged, so these commits do not integrate the new main manuscripts. Fresh normal/optimized receipts are identical. The earlier mathematical reviews retain their exact scopes; byte placement adds no proof certification or arithmetic bound. The subsequent OEIS publication is reviewed separately.
 
 The [batch90 placement review](Papers/research-wip/native-stream-queue/review_batch90_placement_12076b2e8.md)
 authenticates all32 added files against the53 pinned archive members at
