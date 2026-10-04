@@ -140,6 +140,20 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [support-complexity intake review](review_new_support_complexity_fb9f5884b.md)
+authenticates the eight-member archive arriving at **7be14aa84**, unchanged
+at fb9f5884b, and reads the complete1629-line manuscript plus the pinned
+145-line Lean interface. No proof defect was found within its stated
+classical dependencies. The infinite certificate spaces and continuous
+regularizations do not provide a finite integer compiler. Two new review-side
+observations sharpen the boundary: a computable legal array can have no
+computable incidence-certificate sequence, and even singleton-support
+strong-summability recognition on arbitrary computable arrays cannot have a
+uniform existential Diophantine compiler. These statements do not contradict
+the report's explicit scope. Fresh metadata checks pass; supplied tests were
+not replayed, and the PDF, external papers and prior Library question were
+not independently verified. The universal84 frontier is unchanged.
+
 The [Borel conjugacy intake review](review_new_borel_62846e17a.md) covers the
 complete1874-line manuscript at **62846e17a**, all six archive members and
 all five delivered checksum entries. Its rank-one classification, centralizers
@@ -5444,6 +5458,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Support complexity, certificates and effective boundaries](review_new_support_complexity_fb9f5884b.md) | Full1629-line manuscript and pinned Lean interface read; eight-member archive authenticated. Two new computability deductions distinguish infinite certificates from ordinary existential integer witnesses. | No paid finite compiler; supplied finite tests not rerun, external foundations accepted at stated scope, PDF and historical Library question unverified. |
 | [Aggregate positive input budget](complete83_aggregate_input_budget.md) | Exact CRT/slack criterion and capped factorization Hreq=A³/gcd(A³,C0); a polynomial-size combined carry factor suffices with half-radix slack. Independent proof/source and fresh checks pass. | Actual carry-factor occurrence and enlarged-z binary population remain unproved; local arithmetic example is not a positive source tuple. |
 | [Borel conjugacy and effective-presentation boundary](review_new_borel_62846e17a.md) | Full manuscript/inert helper read; six-member archive and manifest authenticated. New review-side computable exponent group has co-c.e.-complete finite Euler-conjugacy slice. | No existential Diophantine certificate for that orientation; no paid compiler. Saved jets not replayed; PDF and external sources unverified. |
 | [Source-coupled odd-prime input lifting](complete83_source_coupled_input_lifting.md) | Exact linear resonance representatives fit positive outer slack eventually; normalized input bijections and CRT give conditional simultaneous odd-prime completion. Independently reviewed. | Requires odd central valuations at least2a and a separate binary population condition; no actual full source zero or universal83 result. |
