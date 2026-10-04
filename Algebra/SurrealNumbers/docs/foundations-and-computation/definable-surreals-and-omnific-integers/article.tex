@@ -3344,9 +3344,14 @@ classification stays open (\cref{dsn:op:q:support}).
 \emph{\Cref{dsn:q:cost}.} Answered in part: the canonical operations,
 normal-form evaluation, $\Oz$ and the floor have $\Delta_1$ graphs over ZFC,
 and $x$ and $\Mc(x)$ have the same $\Sigma_n$, $\Pi_n$ and $\Delta_n$
-singleton status with an additive description-length bound
-(\cref{dsn:op:thm:canonical-delta-one,dsn:op:prop:definition-complexity-transfer,dsn:op:cor:code-levels});
-optimality and the other codes remain open.
+singleton status
+(\cref{dsn:op:thm:canonical-delta-one,dsn:op:prop:definition-complexity-transfer,dsn:op:cor:code-levels}).
+Source~06's proposed additive description-length bound still requires the
+explicit syntax accounting of \cref{dsn:op:q:length}; optimality and the
+other codes also remain open. \emph{Review clarification (4 October 2026):}
+the published summary said ``with an additive description-length bound.''
+That wording overstated the proof status: the credited source~06 sketch is
+retained as \cref{dsn:op:q:length}, not refuted or promoted to a proved bound.
 \emph{\Cref{dsn:q:cost-birthday}} is refined by
 \cref{dsn:op:q:cost} and by the birthday-cost questions of
 \cref{dsn:rp:sec:agenda}, and \cref{dsn:q:rho} is extended by
@@ -5741,12 +5746,12 @@ ordinal-definable terms. We now give a version tailored to that task.
 For a nonnegative surreal $a$ set
 \begin{equation}\label{dsn:ca:eq:band}
  u(a)=\frac{a}{1+a},\qquad
- e_n(a)=2^{-n-1}+2^{-n-2}u(a)\quad(n<\omega).
+ b_n(a)=2^{-n-1}+2^{-n-2}u(a)\quad(n<\omega).
 \end{equation}
 For $f:\omega\to\Ord$, interpreting $f(n)$ as a surreal ordinal, put
 \begin{equation}\label{dsn:ca:eq:code}
  \boxed{\displaystyle
- \Zc(f)=\sum_{n<\omega}\omega^{e_n(f(n))}.}
+ \Zc(f)=\sum_{n<\omega}\omega^{b_n(f(n))}.}
 \end{equation}
 No monotonicity assumption is made on $f$.
 
@@ -5765,13 +5770,13 @@ by fixed parameter-free ambient formulas. In particular
 \begin{proof}
 For $a\ge0$ one has $0\le u(a)<1$, whence
 \begin{equation}\label{dsn:ca:eq:bounds}
- 2^{-n-1}\le e_n(a)<3\cdot2^{-n-2}.
+ 2^{-n-1}\le b_n(a)<3\cdot2^{-n-2}.
 \end{equation}
 The entire band for index $n+1$ lies below the band for $n$, since
 \[
  3\cdot2^{-n-3}<2^{-n-1}.
 \]
-Thus the sequence $e_n(f(n))$ is strictly decreasing regardless of the
+Thus the sequence $b_n(f(n))$ is strictly decreasing regardless of the
 values or repetitions in $f$. Any nonempty subset of this support has
 a largest element, namely the one with the least natural index. The
 normal form is therefore valid and Hahn-summable. All its exponents
@@ -5779,7 +5784,7 @@ are positive, so it is omnific with zero constant term. Its leading
 exponent is less than $3/4<1$; comparison of leading terms gives
 $0<\Zc(f)<\omega$.
 
-Fixing $n$, the term $\omega^{e_n(f(n))}$ is definable from the ordinal
+Fixing $n$, the term $\omega^{b_n(f(n))}$ is definable from the ordinal
 $f(n)$ and the natural numeral $n$. This proves individual $\OD$
 definability without asserting a uniform $\OD$ assignment of these
 ordinals as $n$ varies.
@@ -5810,8 +5815,8 @@ Even a repeated or oscillating ordinal sequence is faithfully encoded.
 \begin{example}[A finite check of the formulas]\label{dsn:ca:ex:finite}
 For the initial values $f(n)=n$, the first four exponents are
 \[
- e_0(0)=\tfrac12,\quad e_1(1)=\tfrac5{16},\quad
- e_2(2)=\tfrac16,\quad e_3(3)=\tfrac{11}{128}.
+ b_0(0)=\tfrac12,\quad b_1(1)=\tfrac5{16},\quad
+ b_2(2)=\tfrac16,\quad b_3(3)=\tfrac{11}{128}.
 \]
 Substituting each one into \eqref{dsn:ca:eq:decode} recovers $0,1,2,3$ exactly.
 The supplied verification script tests the rational formula and band
@@ -6646,9 +6651,9 @@ Put
 \]
 Each $y_n$ is definable from the ordinal $\kappa_n$ and is a monomial
 with positive exponent, so it is an ordinal-definable omnific integer.
-The exponents $e_n$ are strictly decreasing, making the family
+The exponents $e_{\kappa_n}$ are strictly decreasing, making the family
 Hahn-summable.  They all satisfy
-$0<e_n\leq\Omega(-1)<1/2$.  The sum $q=\sum_n y_n$ is therefore
+$0<e_{\kappa_n}\leq\Omega(-1)<1/2$.  The sum $q=\sum_n y_n$ is therefore
 purely infinite and positive, with leading exponent less than $1/2$.
 Normal-form comparison gives $0<q<\Omega(1/2)$, so $z=\omega+q$
 has the asserted location and constant term.
@@ -11402,9 +11407,13 @@ Coefficient-indexed derivations and partial integration &
 Definable instance and extension &
 General diagonal Euler derivations have precedents; this family and its
 normalized partial inverses are given by intrinsic coefficient formulas.\\
-Fixed Levy levels and literal description length & Extension &
-\(\Delta_1\) graph, range and inverse for \(Q\); a stated finite-alphabet
-syntax convention for the additive bound.\\
+Fixed Levy levels and literal description length &
+Levels preserved; length bound proposed &
+\(\Delta_1\) graph, range and inverse for \(Q\).
+The finite-alphabet convention alone does not finish the additive-bound
+accounting; see \cref{dsn:op:q:length}. The earlier row called both an
+``Extension'' with ``a stated finite-alphabet syntax convention for the
+additive bound''; the length claim remains source~06's credited proposal.\\
 Elementary-theory and inclusion equivalences & Consequence &
 Two syntactic translations, and absoluteness of old graph codes for
 the inclusion statement.\\

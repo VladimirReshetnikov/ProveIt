@@ -545,16 +545,32 @@ replace `ω` by a real. The floor tests re-implement the floor formula they
 test, and the coset test works in a finite group algebra; neither suite
 touches definability, `HOD` or transfinite objects.
 
+## Publication review corrections (4 October 2026)
+
+The bounded review of publication `c7d65e30b` completes the promised source 05
+band-exponent rename to `b_n` and the two Prikry references to `e_{κ_n}`.
+The Part I cost summary and contribution ledger now distinguish established
+Levy-level preservation from source 06's proposed additive description-length
+bound. Both retain the earlier wording and point to the credited, still-open
+Question 42.14; the length claim has not been refuted.
+
+The edited source was built directly with three `pdflatex -no-shell-escape`
+passes in a scratch directory. The current PDF has 160 pages, 346 unique labels,
+823 resolved literal internal references and 190 citations to 45 bibliography
+keys. The final log has no warnings, undefined references or bad boxes.
+Physical PDF pages 48, 82, 93 and 156 were visually checked. This build and source
+check do not certify the full manuscript mathematics or replay supplied code.
+
 ## Build and reproduce
 
 ```
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build uses standard packages only and gives no errors, warnings, overfull
-or underfull boxes, undefined references, multiply defined labels or duplicate
-destinations (160 pages). Build in a scratch directory; the auxiliary files
-are not kept here.
+The original publication recorded a standard-package build with no errors,
+warnings, overfull or underfull boxes, undefined references, multiply defined
+labels or duplicate destinations (160 pages). The current review build is
+recorded above. Build in a scratch directory; auxiliary files are not kept here.
 
 07's script writes `verification.json` into the current directory unless
 `--output` is given, and `make verify` in 07's Makefile does the same; 04's
