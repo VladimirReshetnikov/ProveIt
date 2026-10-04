@@ -15,6 +15,18 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [batch89 follow-up review](review_batch89_remaining_writes_e3e58a882.md)
+confirms that global-choice PartXV and cuts/choiceless PartsVI–VII are now
+present at193e2e942/e3e58a882. All prior labels survive and all47/42/52
+original manuscript labels are included. The [root corrections](review_batch89_topology_corrections.md)
+fix two source-label counts and restore omitted hypotheses in a README
+summary. The exact corrected source patch leaves all labels and theorem
+statements unchanged; PDFs were authenticated but not rebuilt. Presburger
+PartX remains absent at the checked merge. The actual central statements
+read retain their important scope limits, and no finite paid Diophantine
+compiler was found. These findings replace only the three resolved
+placement gaps in the older revision-specific review below.
+
 The [later publication review](review_report_publications_aa9a7ec80.md)
 now confirms the actual arithmetic PartsVI–VIII and ant PartsII–IV at
 85ea6145d/119a1325d. Their checked domains, candidate identities and cost
@@ -55,6 +67,225 @@ this candidate. The [independent review](review_complete83_independent_gamma_sco
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
 
+The [input-witness power gap](complete83_input_witness_power_gap.md)
+sharpens the unresolved83 dichotomy: every noncanonical full positive zero
+has both delta and rho greater than c^(L-1), where L=floor(A*u/R)>=55.
+Canonical zeros instead have delta<c/Delta and rho<gamma<c. Thus either
+witness bound at c^54 suffices for a positive parent84 inverse. The
+[independent review](review_complete83_input_witness_power_gap.md) checks
+full-zero premises, both strict inequalities and all twenty source cuts;
+normal/optimized replays pass. These bounds are not imposed by the circuit,
+and same-input noncanonical zeros already exceed them. The83 language
+remains unresolved; variable powers here are mathematical estimates only.
+
+The [input-quotient dichotomy](complete83_input_quotient_dichotomy.md)
+classifies every full positive independent-gamma83 zero: the literal
+parent-restorable branch has rho<gamma<c, and every other completion has
+rho>c>gamma. Only the first branch has the intended input Pell index u;
+noncanonical even/odd indices are at least A*u / u+2Delta. The
+[independent review](review_complete83_input_quotient_dichotomy.md)
+checks the complete source mapping and noncircular native proof. Normal and
+optimized replays, 2,300 additional threshold cases and 608,850 fresh residue
+checks pass. The upper branch includes accepted same-input completions,
+so neither a false input nor a new universal bound is established.
+
+The [sparse-marker obstruction](complete83_sparse_marker_obstruction.md)
+excludes the root-gap80 outer family from independent-gamma83: no positive
+zero on authentic compiler numerals has Z=1, F=4 and W=2^(2d*x+b), even
+after changing its input Pell witnesses. On the full half-binomial curve,
+the main congruence forces X=2^R; the actual raw compiler field then excludes
+F=4 for every dyadic rotation. The [independent review](review_complete83_sparse_marker_obstruction.md)
+checks the unchanged 83-gate source and both proofs. Normal/optimized replays,
+512 additional curve points and 5,243 fresh local rotation checks pass.
+This is a family obstruction; the full 83-operation language remains open.
+
+The [main-root-gap80 chart](complete80_main_root_gap_collapse.md)
+replaces five main-root producers by one positive root-gap addition, giving
+**80=45M+35A**,18 positive witnesses and exact degree207. It is refuted:
+**every positive input** has a full positive zero on each authentic fixed
+compiler slice. An arbitrary-large-X half-binomial construction solves
+transport while retaining both ratio bounds and the first-index/input/
+auxiliary factors. The [independent review](review_complete80_main_root_gap_collapse.md)
+checks the all-input construction, all80 rows,80 additional whole-source
+maps and four complete degree expansions; normal/optimized receipts pass.
+This chart drops the main exponent congruence and is distinct from the
+unresolved independent-gamma83. The universal bound remains84.
+
+The [strong-root substitution theorem](complete84_strong_root_absorption.md)
+rules out every fixed integer polynomial replacement f=G(E) on the85-value
+interface independent of i,f,T,y_aux: every resulting positive zero satisfies
+**G!=0 and 2d*x+b<R<c<4*deg(G)+ceil(log2 L)**. Normalized strong rank gives
+f>c^c for every completion. Simultaneous sign reversal of f and T restores
+signed G to the proved signed-quotient domain while preserving all arguments.
+The zero-f sector is empty by a full-source divisibility identity before
+index recovery. The [independent review](review_complete84_strong_root_absorption.md)
+checks the precise signed domain, strict cutoff, all85 arguments and complete
+sign/zero-root contractions. Fresh author/review normal/optimized checks pass.
+This closes a polynomial substitution class; the universal84 circuit is unchanged.
+
+The [signed auxiliary-quotient substitution theorem](complete84_signed_quotient_absorption.md)
+rules out fixed polynomial replacements T=G(E) on the93-value interface
+independent of T and y_aux: every resulting positive zero satisfies
+**G!=0 and 2d*x+b<R<=3*deg(G)+ceil(log2 L)+3**. The proof permits either sign
+of T, directly recovers the Pell rank R and all exterior bounds, and proves
+|T|>f^(R-4). It does not assume positive restoration of old auxiliary coordinates,
+R=3 modulo4 or canonical input decoding. The [independent review](review_complete84_signed_quotient_absorption.md)
+checks the quantified sign/rank argument, all84 source rows, all93 boundary
+values and the complete factorization. Fresh normal/optimized checks pass.
+This is a finite-input obstruction on the stated substitution interface;
+a full signed-T compiler theorem is not claimed, and universal84 is unchanged.
+
+The [auxiliary-ordinate substitution theorem](complete84_auxiliary_ordinate_absorption.md)
+rules out every fixed polynomial replacement y_aux=G(E) with infinite input
+projection, where E contains all70 computed and23 supplied values independent
+of the auxiliary quotient and y_aux. At every resulting positive zero,
+**2d*x+b<R<=3*deg(G)+ceil(log2 L)**, with L the coefficient norm, at least1.
+The proof recovers an odd auxiliary Pell index n>=R for either sign of V,
+then uses y_aux>f^(R-1) and the bound |E_j|<=f^3. Signed nonzero G restores
+the parent by y_aux=|G|. The G=0 sector is empty by a full-source divisibility
+identity before native recovery. The [independent proof review](review_complete84_auxiliary_ordinate_absorption.md)
+checks the complete93-value boundary and the noncircular sign/zero arguments.
+Fresh normal/optimized source checks pass. This excludes a substitution
+class while retaining universal84; quotient-dependent substitutions remain open.
+
+The [exterior auxiliary-substitution theorem](complete84_exterior_auxiliary_absorption.md)
+rules out every fixed polynomial replacement i=G(E) with an infinite input
+projection in its nonzero sector. E consists of all 64 computed values and
+21 free values independent of i, f, the auxiliary quotient and y_aux.
+At a positive parent zero, each exterior value is below c^4 while
+**i > c^(c-2)**. For polynomial degree t and coefficient norm L, every
+substituted zero with G nonzero therefore has c <= 4t+2+ceil(log2(max(1,L))).
+Evenness in i allows signed G via i=|G|. The exact G=0 sector is separately
+G=0, f=y_aux=1 and P5=1, with no native-rank conclusion.
+The [root source/proof review](review_complete84_exterior_auxiliary_absorption.md)
+and [independent mathematical challenge](review_complete84_exterior_auxiliary_absorption_math.md)
+pass, including all 85 exterior bounds, the actual shifted compiler numerals,
+full-source evenness and zero-i contraction. Fresh normal/optimized checks pass.
+This excludes a broad substitution class; auxiliary-dependent expressions,
+changed constraints and the zero sector remain open. Universal84 is unchanged.
+
+The [unprotected auxiliary ten-gate theorem](complete84_auxiliary_direct_q_exclusion.md)
+closes the remaining direct-Q cancellation case. Simultaneous production of
+V=cTf-c-Rf², Q=Delta²*i²*c⁴ and S=Delta*f²-Q needs **exactly ten gates**
+from independent Delta,c,i,f,T,R and the two additional paid ports c²,Delta*c².
+The existing7M+3A schedule attains this bound without protecting any Q producer
+or final S subtraction. The [independent proof review](review_complete84_auxiliary_direct_q_exclusion.md)
+checks all three-addition placements with temporarily free monomials, restores
+the original interface before product-count arguments, and checks both the
+factor-origin obstruction and the first quadratic-i-degree contradiction.
+Root independently challenged the complete proof. This is a local arithmetic
+theorem; the full universal bound remains84=47M+37A,18 witnesses,degree187.
+
+The earlier [nine-gate frontier](complete84_auxiliary_nine_gate_frontier.md),
+[proper-pivot exclusion](complete84_auxiliary_proper_pivot_exclusion.md),
+[no-i-monomial-product condition](complete84_auxiliary_no_i_monomial_products.md)
+and [mixed-cut bound](complete84_auxiliary_mixed_cut.md) are authenticated
+intermediate steps. Their formerly open direct-Q case is now excluded at this
+same paid interface. The new proof does not assert global84 optimality,
+a lower bound for changed interfaces, or an obstruction to positive-zero
+replacements and coordinate charts. No new circuit or numerical search is
+used to establish the theorem.
+
+The [joint auxiliary rescaling bound](complete84_auxiliary_monomial_scaling.md)
+charges f^2, the full quotient, auxiliary coefficient and strong factor
+together. Every monomial rescaling of the strong factor needs at least
+7M+3A when monomials are produced first and then combined by binary linear
+operations. A complete equivalent84 source attains this restricted bound.
+The [independent review](review_complete84_auxiliary_monomial_scaling.md)
+checks the unbounded exponent proof, actual dependent paid inputs and full
+source identity; normal/optimized replays pass. Mixed arithmetic circuits,
+additional paid relations and changes to the retained coefficient are outside
+this result; no global lower bound is claimed.
+
+The [polynomial-scaling obstruction](first_norm_polynomial_scaling_bound.md)
+extends the first-norm result to every nonzero polynomial multiplier G,
+including nonmonomials and multiples of the norm itself. At exactly the six
+paid ports T,X,Y,k,XY,kY, computing G times the first norm still requires
+**at least 3M and at least 2A**, with no degree or support restriction on G.
+Generic specialization preserves its relevant degree; the remaining quartic
+case and a support-width argument give the two independent lower bounds.
+The [independent proof review](review_first_norm_polynomial_scaling_bound.md)
+checks all quantifiers, the two-product normal form, binomial-factor exclusion
+and the literal current84 boundary. Fresh normal/optimized checks pass.
+Extra paid registers and joint computations remain open; no global minimum
+or new complete circuit is claimed. Universal84 is unchanged.
+
+The [monomial-rescaling bound](first_norm_monomial_scaling_bound.md)
+shows that every nonzero monomial multiple of the first norm still needs
+at least 3M and 2A at its six dependent paid inputs. Each bound permits
+unboundedly many operations of the other kind. The
+[independent review](review_first_norm_monomial_scaling_bound.md)
+checks the quantified degree and factorization arguments and the actual84
+source cut; normal/optimized replays pass. This excludes four-gate monomial
+rescalings in that component. The polynomial extension above now also excludes
+isolated nonmonomial scaling; joint computations and other paid registers
+remain outside both component theorems.
+
+The [simultaneous shared-fork scout](complete84_shared_fork_scout.md)
+finds no saving in a larger finite rewrite grammar: two producer outputs,
+a shared binary intermediate, at most three new gates, and later independent
+registers are allowed. Across 26,680 prefixes, all 791 matching acyclic
+schedules cost at least 84 after full-output liveness. The
+[independent review](review_complete84_shared_fork_scout.md) checks the
+exact rejection logic; normal/optimized replays and a separate 151,728-branch
+subset enumeration pass. This is a named-schedule result for all-ring
+identities, not a global lower bound or a restriction on positive charts.
+
+The [computed-wire census](complete83_computed_gamma_obstruction.md)
+rejects **all72 acyclic existing-wire replacements** for the main quotient,
+including later producers that can be rescheduled. Every full source costs
+**83=47M+36A**, with17 positive witnesses and exact degree187–301, but
+has no positive zero on a valid compiler slice. A sign-safe bootstrap and
+consecutive-Pell gaps cover the full grammar. The [independent review](review_complete83_computed_gamma_obstruction.md)
+checks all5,976 gates,432 additional full-source assignments and144 dense
+modular degree expansions; normal/optimized receipts pass. This extends
+the supplied-witness census without excluding new expressions or general
+rewrites. Universal84 and unresolved independent-gamma83 remain unchanged.
+
+The [direct-witness census](complete83_direct_gamma_witness_obstruction.md)
+rejects all seventeen ways to replace the main quotient by another supplied
+positive witness. Each complete source costs **83=47M+36A**, has17 positive
+witnesses and exact degree187, but has **no positive zero on a valid compiler
+slice**. Size, parity and consecutive-Pell-coefficient gaps cover every
+literal port; the equal-rho boundary is also excluded. The
+[independent review](review_complete83_direct_gamma_witness_obstruction.md)
+checks the complete arrays, all positive proof interfaces and the uniform
+degree. Installed normal/optimized receipts and408 additional full-source
+assignments pass. This finite grammar does not resolve independent-gamma83
+or exclude nonlinear reuse; the universal bound remains84.
+
+The [multiplicative-gamma83 chart](complete83_multiplicative_gamma_obstruction.md)
+transfers the historical quotient-divisibility obstruction to the current
+source: **83=47M+36A**,18 positive witnesses, exact degree188, but **no
+positive zero on any valid compiler slice**. Sharing rho*H by imposing
+gamma=rho*sigma forces an impossible divisibility between native Pell
+projection values. The [independent review](review_complete83_multiplicative_gamma_obstruction.md)
+checks all retained source rows, the sigma=1 boundary, the uniform degree
+and the monic remainder proof; installed normal/optimized receipts pass.
+This rejects that literal shortcut. The separate independent-gamma83
+language remains unresolved, and the universal bound remains84.
+
+The [squared-scale charts](complete83_squared_scale_collapse.md) emit two
+complete **83=46M+37A** sources, with18 positive witnesses and exact degrees
+**156 and174**. Both are **refuted on every positive input** of every
+inherited modified compiler. The historical population construction now
+transfers through the current first root, direct-w transport and positive
+Bezout quotient. Complete pullbacks and uniform degree leaders are checked
+in the [independent review](review_complete83_squared_scale_collapse.md);
+fresh normal/optimized receipts pass. These are distinct from both the
+upper-ratio deletion and unresolved independent-gamma83. The established
+universal polynomial bound remains84.
+
+The [upper-ratio deletion](complete83_upper_ratio_deletion_collapse.md)
+emits a distinct **83=47M+36A**,18-witness,degree187 source by supplying
+k instead of eta+zeta. It is **refuted on every positive input** for every
+inherited valid compiler: the retained first-index, shared input, original
+bound and current auxiliary factors all complete positively, while the
+restored zeta is negative. The [independent review](review_complete83_upper_ratio_deletion_collapse.md)
+checks the literal current-source transfer and all seven factor values;
+normal/optimized replays pass. This closes the current version of the
+historical upper-ratio failure and does not settle independent-gamma83.
+
 The [gamma83 power tests](complete83_gamma_power_tests.md)
 give exact sufficient conditions for a false ordinary input, without
 factoring the native modulus H. On a genuine accepting history at input4
@@ -74,6 +305,96 @@ checks the exceptional residue, actual compiler hypotheses and two precisely
 scoped valuation counterexamples; normal/optimized replays pass. These are
 native residue filters, with no prescribed-history realization or bound on
 the full order gcd. The 83-operation language remains unresolved.
+
+The [residual-order obstruction](gamma83_residual_order_obstruction.md)
+proves that both input-Pell parity branches have the same exact spacing
+modulus m on a fixed full positive gamma83 zero, subject to positive width.
+It also constructs free arithmetic hosts satisfying the extracted finite
+three-power filters but with **17^k dividing m** for every k, while both
+old power tests fail for every squaring exponent. The
+[independent review](review_gamma83_residual_order_obstruction.md)
+checks the all-k argument and independently reconstructs all six saved
+CRT hosts; installed normal/optimized receipts pass. These hosts omit
+the native formula and computation constraints, including the native
+finite range at fixed t. This proves a limitation of the extracted
+filters, not an unbounded native modulus or a false-input zero. The
+83-operation language remains unresolved and the universal bound is84.
+
+The [odd-prime compiler transfer](complete84_odd_prime_compiler_transfer.md)
+extends the actual fixed-numeral recipe to **every fixed odd prime ell>=5**,
+with the same ordinary-input language and unchanged84-operation source.
+After parity normalization, every fixed finite u>=1 admits genuine histories
+with **gcd(Delta,2^(2*3^u*dh)-1)=3** and the coprime quotient after removing
+3^(u+1), where d and h are ell-powers. The joint Boolean construction,
+actual high-monomial correction and independent spatial/time padding are
+checked in the [independent review](review_complete84_odd_prime_compiler_transfer.md).
+Installed normal/optimized receipts pass. The prime is fixed before compiling;
+this is a new coefficient recipe, not a change of prime in old numeric
+instances or an infinite simultaneous filter. The universal bound remains84
+and independent-gamma83 remains unresolved.
+
+The [native repunit filter](complete83_gamma_native_repunit_filter.md)
+uses the actual source identity **Jrep dividing R** to extend the finite
+prime exclusions. Fix a reference five-power N0 and any divisor D0 of
+(B^N0-1)/(B-1) before time padding; every sufficiently large later length
+preserves D0 dividing R. For n=3^u*dh*D0, the genuine-history construction
+achieves **gcd(Delta,2^(2n)-1)=3** and the coprime quotient after removing
+3^(u+1). The [independent review](review_complete83_gamma_native_repunit_filter.md)
+checks the full packing cone, physical switches and noncircular padding.
+An elementary prime-divisor argument proves a strict extension beyond
+orders dividing2*3^u*5^j for every actual compiler. Installed normal and
+optimized receipts pass. The order8 case at17 and the full alias modulus
+remain unresolved; the source and universal84 bound are unchanged.
+
+The [native three-power construction](complete83_gamma_native_three_power_control.md)
+controls every fixed finite u>=2 on genuine accepting histories of the
+parity-normalized compiler. It arranges **3^u*dh dividing R** and
+**gcd(Delta,2^(2*3^u*dh)-1)=3**, with coprime quotient after removing
+**3^(u+1)**. A new Boolean subset lemma modulo3dN initializes R modulo9;
+upper-bit CRT then controls the higher ternary digits and minus-prime
+carries together. This includes finite prime sets with orders dividing
+2*3^u*5^j, such as19,73,262657. The [independent review](review_complete83_gamma_native_three_power_control.md)
+checks the actual coefficient valuation, padding order and fresh positive
+extension; installed normal/optimized receipts pass. Other order factors
+remain uncontrolled, and gamma83's language and the universal84 bound
+remain unchanged.
+
+The [compiler parity padding](gamma_parity_padding_scout.md) makes the
+stronger finite-prime filter available for a representation of **every
+c.e. language**. The actual ordered-window API permits an odd alphabet
+and, when needed, one additional all-fresh-symbol window. Horizontal
+overlap and the unchanged origin Start exclude that window from every
+marked history, preserving ordinary input and End distance2x. The
+[independent review](review_gamma_parity_padding_scout.md) and root source
+inspection verify the actual API, marker conventions, cyclic connectivity
+and fresh positive completeness. All fixed numerals are rebuilt; this
+does not remove the hypothesis for a previously fixed coefficient slice
+or equate unresolved gamma83 languages across slices. The arithmetic
+schedule and universal84 bound are unchanged.
+
+The [modulo-17 grid criterion](gamma17_carried_prefix_obstruction.md)
+derives the exact endpoint interval of the existing physical dummy moves.
+A shared carried base17 prefix forces every move to preserve the same
+native residue; bad states11 and16 then prevent that particular grid
+from removing17 from Delta. The [independent review](review_gamma17_carried_prefix_obstruction.md)
+checks the normalized digit rule, actual packing change and interval proof,
+with378 additional complete binomial rows and72 scalar identities.
+Normal/optimized receipts pass. No bad genuine baseline is constructed;
+the earlier unrestricted formula-state theorem is not a history realization.
+The universal bound remains84 and independent-gamma83 remains unresolved.
+
+The [small-prime digit rules](complete83_gamma_small_prime_digit_rules.md)
+extend the genuine-history filter for actual compilers with an even
+window-selector count and odd tile-alphabet size. For E=dh, each accepted
+input has witnesses with **gcd(Delta,2^(6E)-1)=3**, coprime quotient
+**(2^(6E)-1)/9**, and v3(m)<=1. This adds finite control of primes such
+as7,151 and331. A separate complete digit-state theorem shows that scalar
+congruences and finite lower digits alone leave every native-formula
+residue possible at the listed bases other than1, modulo5,7,13,17, when
+higher digits are unrestricted. These extensions are not asserted to be histories. The [independent review](review_complete83_gamma_small_prime_digit_rules.md)
+checks both proofs, all75 prefix certificates and the corrected weighted
+congruence. Fresh normal/optimized receipts pass. Compiler parity remains
+a hypothesis, and independent-gamma83 remains unresolved.
 
 The [finite native prime filter](complete83_gamma_native_finite_prime_avoidance.md)
 strengthens the accepting-history construction: for every fixed adequate
@@ -313,6 +634,443 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [joint matrix-state factor rewrite](matrix193_joint_state_factor.md)
+reduces the four complete sources to **1,405 / 1,402 / 1,402 / 1,399 operations**.
+Deferring paid powers through five state blocks removes twenty products and
+restores ten, saving10M with no new witnesses or fixed numerals. The coefficient
+component is540=292M+248A. Full polynomial identities preserve the same supplied
+positive zeros, witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105.
+The [independent review](review_matrix193_joint_state_factor.md) reconstructs
+all5,608 rows, checks124 changed intermediate values per chart, fourteen restored
+contributions, all16 complete coefficient words and each entire finalizer/output.
+Fresh author and review normal/optimized checks pass. Earlier terminal/IDLE
+maps retain ordinary-input scope; the separate universal84 bound is unchanged.
+
+The [cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) lowers the four
+complete matrix sources to **1,415 / 1,412 / 1,412 / 1,409 operations**.
+Two joint Horner evaluations absorb the X cleanup cubics into their paid
+state terms, saving two multiplications in every chart. The coefficient
+component is now550=302M+248A; selector242, native63 and grouped97 rows remain
+literal. Full polynomial identities preserve supplied positive zeros,
+witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105.
+The [independent review](review_matrix193_cleanup_tail_fusion.md) reconstructs
+all5,648 rows and checks every retained value by automatic normalization in
+the actual computed Q, all16 coefficient words and all four finalizers.
+Fresh author and review normal/optimized checks pass. The six new fixed
+numerals are explicit; earlier terminal/IDLE maps retain ordinary-input scope.
+The separate universal84 bound remains unchanged.
+
+The [selector/scaled-power composition](matrix193_selector_scaled_composition.md)
+combines both arithmetic edits in four complete matrix sources:
+
+| Controller chart | M | A | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|---:|---:|
+| None |685|732|1,417|141|35,587|
+| Flow |684|730|1,414|140|53,345|
+| Population |684|730|1,414|140|53,347|
+| Both |683|728|1,411|139|71,105|
+
+The [scaled-power reuse](matrix193_scaled_power_reuse.md) uses an existing
+negative multiple of Q^12 with Q^150 to replace two Q^162-related products
+by one. Its [independent review](review_matrix193_scaled_power_reuse.md)
+checks the private deletion and all paid dependencies. The combined sources
+retain the 242 shared-selector rows and use the same complete 552-row
+coefficient arrays as that separate branch. Entire polynomial identities
+preserve immediate-parent positive zeros and exact degrees; all 5,656 rows
+are live. Fresh normal/optimized replays pass. The earlier terminal/IDLE
+comparisons retain ordinary-input scope, and universal84 is unchanged.
+The [independent composition review](review_matrix193_selector_scaled_composition.md)
+checks the full source identities, both literal components and actual finalizers;
+its separate normal/optimized replays also pass.
+
+The [shared selector blocks](matrix193_selector_block_sharing.md) reduce the
+complete matrix sources to **1,418 / 1,415 / 1,415 / 1,412 operations**, with
+141 / 140 / 140 / 139 positive witnesses and unchanged exact degrees
+35,587 / 53,345 / 53,347 / 71,105. Nine identical interior runs in the X and Y
+selector words share their Horner evaluations. Every concatenation is paid;
+five existing powers suffice. The full saving is 46M + 46A per source.
+The [independent review](review_matrix193_selector_block_sharing.md) expands
+both entire words through the actual grouped additions into raw edge hats,
+then proves the whole output identities and checks all 5,660 live rows.
+Fresh author and independent normal/optimized replays pass. Fixed coefficient,
+native and finalizer definitions are unchanged. Positive zero tuples match
+the immediate parents; earlier terminal/IDLE projection limits remain.
+This branch retains the 553-row coefficient component. Universal84 is unchanged.
+
+The [terminal-carry/power composition](matrix193_terminal_power_composition.md)
+combines the24-gate, four-witness terminal-carry reduction with34 saved power
+and repunit operations. Its complete matrix sources are:
+
+| Controller chart | M | A | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|---:|---:|
+| None |732|778|1,510|141|35,587|
+| Flow |731|776|1,507|140|53,345|
+| Population |731|776|1,507|140|53,347|
+| Both |730|774|1,504|139|71,105|
+
+Every entire polynomial equals its immediate terminal-carry parent on the
+same supplied coordinates; that parent's witness counts and new exact degrees
+therefore transfer. All6,028 rows are live. Full coefficient identities,
+actual finalizer traces and fresh normal/optimized replays pass. The earlier
+terminal-carry and IDLE comparisons retain only ordinary-input equivalence.
+The separate universal84 construction is unchanged; no global minimum is
+claimed. All listed savings are already included in these totals.
+The [independent review](review_matrix193_terminal_power_composition.md)
+reconstructs every edit and deletion, proves52 local identities and the four
+entire output identities, and passes separate normal/optimized replays.
+
+The [positive terminal-carry chart](matrix193_terminal_carry_chart.md)
+removes four dot bounds and eight centering subtractions, saving4M+20A and
+four positive witnesses per grouped-power parent. Complete totals are
+**1,544 /1,541 /1,541 /1,538**, with141 /140 /140 /139 witnesses and exact
+degrees35,587 /53,345 /53,347 /71,105. The middle-coefficient ambiguity moves
+into terminal fields; typed terminal bounds and shared fields force paired
+carries to agree. Positive completeness uses a common carryQ^193. The reverse
+proof preserves ordinary input and may reconstruct height/history/native
+coordinates. The [source review](review_matrix193_terminal_carry_chart.md)
+and separate [mathematical review](review_matrix193_terminal_carry_chart_math.md)
+pass: all6,164 rows, full polynomial contracts, all16 coefficient words,
+interleaved finalizers and new degree leaders are checked. Fresh author and
+independent normal/optimized replays pass. This branch omits the
+cross-stage34-gate saving, now included in the composition above; universal84
+remains unchanged.
+
+The [cross-stage power/repunit reuse](matrix193_cross_stage_power_reuse.md)
+saves another30M+4A per complete matrix source. Eleven powers and two repunits
+reuse retained paid values across stages, with dependencies explicitly
+rescheduled. Complete totals are **1,534 /1,531 /1,531 /1,528**, with unchanged
+145 /144 /144 /143 witnesses and degrees35,587 /53,347 /53,347 /71,107.
+The [independent review](review_matrix193_cross_stage_power_reuse.md) verifies every retained pure-Q
+polynomial, the13 changed definitions and34 deletions, and traces all actual
+finalizer nodes through interleaved chart listings. Whole-polynomial identities,
+all16 coefficient words and fresh normal/optimized replays pass. Immediate-parent
+positive zeros agree exactly; the earlier IDLE inverse retains ordinary-input
+scope. Universal84 remains unchanged.
+
+The [grouped-population/power composition](matrix193_grouped_power_composition.md)
+combines25 saved additions and24 saved multiplications in each complete matrix
+source. Its alternatives are:
+
+| Computed controller hats | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None | 1,568 | 145 | 35,587 |
+| LOAD or SWITCH | 1,565 | 144 | 53,347 |
+| LOAD and SWITCH | 1,562 | 143 | 71,107 |
+
+The [independent review](review_matrix193_grouped_power_composition.md) reconstructs all6,260 rows
+in both composition orders, verifies36 power identities and all16 coefficient
+words/2,704 entries, and checks full interfaces, liveness and native/finalizer
+boundaries. The complete polynomials and positive zero tuples equal their
+immediate grouped parents; exact degrees transfer on identical variables.
+Fresh author and independent normal/optimized checks pass. Comparison with
+pre-IDLE ancestors retains only ordinary-input equivalence. Universal84 is
+unchanged; no matrix minimality claim is made.
+
+The [coefficient power reuse](matrix193_coefficient_power_reuse.md)
+removes24 multiplications per complete source by reusing earlier paid packing
+powers at nine coefficient outputs. Its553=305M+248A component appears in
+four full arrays costing1,593 /1,590 /1,590 /1,587, with unchanged witnesses,
+exact degrees and positive zero tuples. These arrays branch from the earlier
+IDLE/affine source and do not include the separate grouped-population edit.
+The [independent review](review_matrix193_coefficient_power_reuse.md) checks the actual exponent identities,
+all24 private deletions and the complete source/interface boundary. Full local,
+coefficient and output identities plus fresh normal/optimized replays pass.
+
+The [grouped population reuse](matrix193_grouped_population_reuse.md)
+saves25 additions in each complete matrix array. The total edge population
+reuses24 additions already needed for disjoint selector groups; one duplicate
+packing sum is also removed. That branch costs **1,592 / 1,589 / 1,589 /
+1,586**, with145 /144 /144 /143 positive witnesses and unchanged exact degrees
+35,587 /53,347 /53,347 /71,107. The [independent review](review_matrix193_grouped_population_reuse.md)
+reconstructs all6,356 rows, verifies the98-hat identity and all coefficient
+words, and checks whole-polynomial identities on identical supplied coordinates.
+Fresh author and independent normal/optimized checks pass. The universal84
+bound remains unchanged.
+
+The [combined IDLE/affine construction](matrix193_idle_affine_reuse.md)
+incorporates the577-row coefficient component into all four IDLE-free sources.
+Every complete polynomial is identical to its immediate IDLE-free parent,
+and its matrix alternatives are:
+
+| Computed controller hats | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None | 1,617 | 145 | 35,587 |
+| LOAD or SWITCH | 1,614 | 144 | 53,347 |
+| LOAD and SWITCH | 1,611 | 143 | 71,107 |
+
+The [independent review](review_matrix193_idle_affine_reuse.md) checks all6,456 rows,
+all16 coefficient words/2,704 entries, full identities and degree transfers.
+Fresh author and independent normal/optimized checks pass. Positive zero tuples
+are identical to each immediate IDLE-free parent; comparison with ancestors
+retaining IDLE preserves ordinary input through fresh witnesses. The established
+universal84 bound remains unchanged.
+
+The [IDLE-free matrix sources](matrix193_idle_free_scout.md) remove one positive
+witness and four paid gates from each controller variant. Exact edge-sum and
+controller-word cancellations give these complete arrays:
+
+| Computed controller hats | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None | 1,618 | 145 | 35,587 |
+| LOAD or SWITCH | 1,615 | 144 | 53,347 |
+| LOAD and SWITCH | 1,612 | 143 | 71,107 |
+
+The [independent review](review_matrix193_idle_free_scout.md) reconstructs all6,460 rows,
+proves the complete IDLE=1 polynomial pullbacks and checks surviving uniform
+degree leaders. Reverse ordinary-input completeness uses fresh histories and
+native witnesses with no optional IDLE steps; it does not preserve arbitrary
+common witness tuples. Fresh author/review normal and optimized receipts pass.
+The separate577-row affine coefficient saving is not included in these arrays,
+and the established universal84 bound remains unchanged.
+
+The [paid affine reuse](matrix193_affine_reuse_scout.md) lowers the complete
+matrix polynomial to **1,621=791M+830A**, with146 positive witnesses and
+unchanged exact degree35,587. Reusing the already paid sum r181=r144+1
+removes one private coefficient producer; the component now has577 gates.
+The [independent review](review_matrix193_affine_reuse_scout.md) checks the full literal edit,
+all676 coefficient entries and the whole polynomial identity. Fresh normal
+and optimized receipts pass. This standalone source retains IDLE and does
+not yet compose the positive controller charts; no optimality is claimed.
+
+The [combined entry/controller charts](matrix193_entry_controller_charts.md)
+incorporate the coefficient and flow savings into three fully emitted sources.
+Either single chart uses **1,619=790M+829A** with145 positive witnesses;
+the joint chart uses **1,616=789M+827A** with144. The
+[independent review](review_matrix193_entry_controller_charts.md) checks all4,854 new rows,
+complete polynomial pullbacks, positive integer inverses and exact degree
+transfer. Author and review normal/optimized receipts pass. The current
+preceding matrix alternatives preserve ordinary input and have these explicit tradeoffs:
+
+| Controller hats computed from retained coordinates | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None: paid affine reuse | 1,621 | 146 | 35,587 |
+| LOAD or SWITCH | 1,619 | 145 | 53,347 |
+| LOAD and SWITCH | 1,616 | 144 | 71,107 |
+
+The joint chart retains the IDLE witness. No new diagnostic or giant native
+fixture is claimed; the established universal84 bound remains unchanged.
+
+The [positive controller charts](matrix193_positive_controller_charts.md)
+remove the uniquely determined LOAD or SWITCH edge hat, or both, from the
+composed1679 parent. Full sources use **1,674/1,676/1,671 operations** and
+**145/145/144 positive witnesses**. Their exact degrees increase to
+**53,347/53,347/71,107**. The [independent review](review_matrix193_positive_controller_charts.md)
+checks all5,914 rows across six full arrays, exact polynomial pullbacks,
+positive integer inverses and uniform degree leaders. Fresh normal/optimized
+receipts pass. These preserve every common supplied coordinate and ordinary
+input; they do not yet include entry sharing, and the universal84 bound stays
+unchanged. The improvement in witness count has an explicit degree cost.
+
+The [entry-and-flow composition](matrix193_entry_flow_scout.md)
+emits the complete **1,622=791M+831A** matrix polynomial, retaining146 positive
+witnesses and exact degree35,587. The578-gate coefficient component and the
+two-addition controller saving coexist in one fully counted source. The
+[independent review](review_matrix193_entry_flow_scout.md) checks the literal full-array edit,
+private removed cone, all retained expressions and unchanged native kernel;
+fresh normal/optimized receipts and full-source modular checks pass. The
+entire polynomial is unchanged on the same supplied coordinates. This remains
+an alternative route above the established universal84 bound.
+
+The [entry-shared coefficient evaluator](matrix193_entry_shared_coefficient_scout.md)
+reduces the complete matrix polynomial to **1,624=791M+833A operations**,
+with146 positive witnesses and unchanged exact degree35,587. Pairing adjacent
+read symbols and sharing trace-two matrix entries reduces the coefficient
+component from633 to578 gates. The [independent review](review_matrix193_entry_shared_coefficient_scout.md)
+reconstructs all676 coefficients, the full source and every retained row;
+normal/optimized exact receipts pass. This preserves the entire polynomial
+on the same supplied coordinates. The separate flow reduction is not yet
+composed into this emitted source; the universal84 frontier is unchanged.
+
+The [controller-flow simplification](matrix193_controller_flow_scout.md)
+removes two additions from the complete matrix source, giving
+**1,677=801M+876A operations**,146 positive witnesses and exact degree35,587.
+Using the already paid P=(B-1)J+1 makes the old flow residual exactly
+1+(B-1)EL-ES. The [independent review](review_matrix193_controller_flow_scout.md)
+checks every changed and retained row, full liveness and the complete
+polynomial identity; normal/optimized replays and64 modular comparisons pass.
+All supplied coordinates and the ordinary-input language are unchanged.
+
+The [combined matrix construction](matrix193_composed_output_scout.md)
+uses **1,679=801M+878A operations**, **146 positive witnesses** and exact
+degree **35,587**. It combines direct edge-hat packing, structured coefficient
+evaluation and bounded high quotients, saving783 operations and four witnesses
+from the balanced parent. Five additional paid powers/repunit values are shared
+in the complete emitted source. The [independent review](review_matrix193_composed_output_scout.md)
+reconstructs every row, verifies all thirteen coefficient inputs and five
+shares, and proves full polynomial equality to the bounded-high parent.
+Normal/optimized replays and48 independent whole-source modular comparisons
+pass. Ordinary input and the fixed-program recipe are preserved; this remains
+an alternate matrix route above the established universal84 frontier.
+
+The [structured coefficient evaluator](matrix193_structured_coefficient_scout.md)
+reduces the complete matrix construction to **1,756=795M+961A operations**,
+with150 positive witnesses and unchanged exact degree35,587. Factoring the
+actual word triples replaces1,344 Horner rows by638 paid live rows. The
+[independent review](review_matrix193_structured_coefficient_scout.md)
+reconstructs all96 paired matrices,51 triples and four complete coefficient
+polynomials, then checks the entire literal source substitution. Author and
+independent normal/optimized receipts pass. The full polynomial is unchanged;
+this standalone saving does not yet include hat packing or the146-witness
+chart, and the universal84 frontier remains unchanged.
+
+The [edge-hat packing rewrite](matrix193_hat_packing_scout.md)
+reduces the complete matrix source to **2,390=1,134M+1,256A operations**,
+with150 positive witnesses and unchanged exact degree35,587. Shared fixed
+cardinality polynomials replace97 individual edge shifts. The
+[independent review](review_matrix193_hat_packing_scout.md) proves the full
+all-ring identity, including every native input and all twenty residuals;
+normal/optimized receipts and independent modular comparisons pass. This
+saves72 operations on the matrix route and preserves every supplied coordinate.
+It does not yet include the separate146-witness chart or change universal84.
+
+The [bounded-high-quotient chart](matrix193_bounded_high_output.md)
+reduces the balanced matrix construction from150 to **146 positive witnesses**
+at the same **2,462 operations** and exact degree35,587. Four signed high
+pairs become one positive hat each by subtracting an already paid half-scale.
+The [independent review](review_matrix193_bounded_high_output.md) checks the
+full positive pullback, reverse tail bound and new degree tie, with64 fresh
+whole-source modular pullbacks and normal/optimized replays. The fixed-program
+recipe and ordinary input are preserved; the universal84 minimum is unchanged.
+
+The [balanced-output construction](matrix193_balanced_output_scout.md)
+reduces the matrix route to **2,462=1,124M+1,338A** operations and **150 positive
+witnesses**, saving another 700 gates and two witnesses. Signed block
+centering removes four selector corrections and two word-sum extractions;
+paid balanced remainders recover the signed matrix increments. Exact degree
+rises to **35,587**. The [source review](review_matrix193_balanced_output_scout.md)
+checks both complete arrays and all twenty comparisons; the separate
+[mathematical review](review_matrix193_balanced_output_math.md) checks the
+full low-tail bound, extraction uniqueness and corrected projection onto
+common non-extraction ports. Fresh normal/optimized replays pass. The actual
+outer example has unchanged packing fields, including negative products and
+high quotients; its huge literal outer DAG and native Pell tuple are not
+materialized. The overall universal frontier remains 84.
+
+The [packed selected-output construction](matrix193_packed_output_scout.md)
+lowers the matrix route to **3,162=1,467M+1,695A** operations and **152 positive
+witnesses**, saving 993 gates and 308 witnesses. Two whole output blocks,
+paid carry-free products and bounded digit extractions retain the fixed
+controller and ordinary input. Exact degree rises to **34,817**. The
+[independent review](review_matrix193_packed_output_scout.md) checks every
+source row, coefficient word, comparison and degree; a separate mathematical
+challenge and root normal/optimized replays pass. All new power exponents
+are fixed by the table. The actual zero-input example's packed fields and
+four products are materialized; its full huge literal outer-DAG evaluation
+and native Pell tuple are not claimed. The global universal bound remains 84.
+
+The [atomic matrix-context compiler](matrix193_atomic_context_packing.md)
+reduces the matrix route from 176,586 to **4,155=1,529M+2,626A** operations,
+with 460 positive witnesses and exact degree 34,045. Its 99-edge controller
+uses whole matrix actions; 72 shared left-action classes reduce the physical
+selection block to 340 lanes, with only four range lanes. The
+[independent review](review_matrix193_atomic_context_packing.md)
+checks the full source, grouping, ordinary-input bridge and exact degree.
+Normal/optimized receipts pass. The actual 83-tile zero-input example's
+84-cell outer packing is materialized, including its 22,203,446-bit q,
+joined AND and six comparisons; its native Pell extension remains proved.
+This improves the matrix construction while the universal frontier stays 84.
+The 227-operation diagnostic is an all-input example, not a universal one.
+
+The [uniform matrix-context compiler](matrix193_uniform_context_packing.md)
+now emits the complete fixed-controller source: **176,586=58,770M+117,816A**,
+19,644 positive witnesses and exact degree2,360,653. Eight fixed coefficient
+ports absorb program contexts; a paid matrix SWITCH keeps the controller
+independent of the program while preserving ordinary input. The
+[independent source review](review_matrix193_uniform_context_packing.md)
+checks every row, selector, residual and the exact degree. Normal/optimized
+receipts,32 full modular checks and ten diagnostic outer histories pass.
+This is a uniform construction upper bound above84; arbitrary coefficient
+assignments and the274-gate all-input diagnostic are not universal recipes.
+The enormous actual packed/native witness is supplied by the proof, not
+claimed as a materialized fixture.
+
+The [literal matrix shear controllers](matrix193_unit_shear_controller.md)
+expand both actual96-pair tables and the LOAD action into complete private
+paths. The contextual fixture has32,821 edges and m=65,536; the original
+context-independent table has **19,613 edges and m=32,768**. The
+[independent review](review_matrix193_unit_shear_controller.md) reconstructs
+both numeric arrays and checks386 matrix factors and52,430 unit shears.
+Normal/optimized receipts pass. The uniform compiler above supplies the
+initial row and pays for the matrix switch left open by this packet.
+The 295,647 contextual figure remains a construction bound.
+The best established universal count is 84.
+
+The [marked-loader matrix packing](matrix193_marked_loader_packing.md)
+gives a fixed-arity route for arbitrary-duration synchronized row histories.
+A private LOAD edge and one positive quotient enforce the ordinary input;
+the typed phase-switch state prevents count wraparound. The fully emitted
+**187=86M+101A** diagnostic has27 positive witnesses and exact degree1789.
+The actual matrix193 transfer is an effective finite compiler recipe with
+bound **9n+3log2(m)+210** and n+29 positive witnesses, after explicit shear
+expansion; that packet does not emit the numerical controller. The [independent review](review_matrix193_marked_loader_packing.md)
+checks the native63-row interface, full source, degree, positive count bridge
+and zero-input/empty-TILE boundaries. Normal/optimized receipts pass.
+The diagnostic is nonuniversal; the universal bound remains84.
+
+The [positive CRT duration refinement](matrix193_positive_crt_duration.md)
+lowers the fixed-duration matrix bound further to **140h+7 operations**, with
+**31h+1 positive witnesses** and degree at most10. A fixed CRT choice of the
+sphere radius forces all eighteen sphere roots to be nonzero; positive signs,
+the nonsquare circle and shifted CRT quotients make25 local auxiliaries
+positive directly. Only six coordinates per step need paid offset conversion.
+The133-operation local grammar, ordinary input and matrix history relation
+are preserved with newly compiled constants, independent of input or duration.
+The [independent review](review_matrix193_positive_crt_duration.md) checks the
+full147/287 sources for h=1,2, uniform positivity proof and coefficient recipe;
+frozen normal/optimized receipts pass. Constants are substantially larger.
+This remains an integer fixed-duration result. The marked-loader route above
+uses a separate packed construction; the universal bound remains84.
+
+The [centered CRT matrix selector](matrix193_centered_crt_selector.md)
+lowers the complete integer countdown from154 to **133=64M+69A**, with26
+auxiliary integer witnesses and exact degree10. A circle selects exactly96
+labels; centered doubled coefficients use three-square sphere certificates.
+All row doublings, CRT quotient uses and the full countdown are paid. The
+[independent review](review_matrix193_centered_crt_selector.md) checks the
+complete107/133 sources and the lower-degree125/151 alternatives. For fixed h,
+the positive representation costs **165h+7**, with **31h+1 positive witnesses**
+and degree at most10; full h=1,2 arrays are saved. Installed normal/optimized
+receipts pass. The smaller arithmetic count uses larger fixed numerals;
+integer exactness does not extend to real witnesses. Arbitrary-duration
+packing of this CRT grammar remains unpaid; the universal bound stays84.
+
+The [integer CRT matrix selector](matrix193_crt_selector.md)
+lowers the full countdown from1179 to **154=73M+81A**, with35 auxiliary
+integer witnesses and exact degree10. Fixed CRT tables, seven interval
+certificates and computed remainders replace all six interpolants; a
+**172-operation, degree6** alternative is also saved. The
+[independent review](review_matrix193_crt_selector.md)
+reconstructs all600 local rows,34,881 coefficients and both positive-history
+sources. The integer restriction is essential and explicit rational false
+transitions are saved. For fixed h, the fully paid positive representation
+costs **195h+7**, with **40h+1 positive witnesses** and degree at most10.
+The inherited Gamma1 invariant supports the same local upper bound for
+arbitrary fixed contexts. Installed normal/optimized receipts pass.
+Unbounded fixed-arity packing remains unpaid; the universal bound stays84.
+
+The [six-column matrix selector](matrix193_unimodular_selector.md) lowers
+the complete countdown polynomial to **1179=591M+588A**, saving374 gates
+from the irregular-selector parent. The synchronized count is1153;
+exact degrees remain194/192 over both reals and integers. Determinant1
+and nonzero pivots on all192 actual matrices let two lookup columns be
+removed while retaining the full paired action. The [independent review](review_matrix193_unimodular_selector.md)
+reconstructs all576 coefficients and checks all2332 rows and the complete
+residual identities; installed normal/optimized author and audit replays
+pass. Fixed h costs**1180h+7**, with6h signed witnesses. Unbounded packing
+and positive conversion remain unpaid; the universal bound stays84.
+
+The [irregular matrix selector](matrix193_irregular_selector.md) lowers the
+complete countdown predicate to **1553=778M+775A** over both reals and
+signed integers, at exact degree194. Its synchronized source costs1527
+at exact degree192. One affine lookup column saves188 gates against the
+previous real source; the full squared selector and26-gate wrapper remain.
+The [independent review](review_matrix193_irregular_selector.md) reconstructs
+all768 coefficients by a separate closed formula and checks all3080 rows;
+fresh normal/optimized author and review receipts pass. Fixed h gives
+**1554h+7 gates and6h signed witnesses**. The211075-bit common scale uses
+the established arbitrary fixed-numeral convention. Unbounded packing and
+positive-witness conversion remain unpaid; the universal bound stays84.
+
 The [paid matrix selector](matrix193_newton_selector.md) lowers the
 complete countdown predicate to **1740=871M+869A** over signed integers,
 or1741 over reals, with exact degree194 and one extra selector per step.
@@ -328,8 +1086,8 @@ The [lookup schedule scout](matrix193_lookup_schedule_scout.md) verifies
 78 repeated-prefix permutations and a rank-nine affine-independence
 certificate. Its [review](review_matrix193_lookup_schedule_scout.md) confirms
 the24-gate cleanup-prefix saving. Irregular nodes make one column affine
-but require a211075-bit scale and a squared selector; their full local
-predicate with compact fixed-numeral recipes is still unbuilt.
+but require a211075-bit scale and a squared selector; the later complete
+irregular-selector packet above now pays and verifies that construction.
 
 The [grouped matrix choices](matrix193_grouped_row_choices.md) save
 **24 additions** in each complete local source: **2015=1103M+912A** for
@@ -2713,7 +3471,59 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The latest single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
+The [joint U21 control recoding](residue_affine_sparse_joint_recoding.md)
+reduces the complete one-program source to **467=171M+296A** operations and
+the two-program source to **466=171M+295A**, each with67 positive witnesses.
+Their certificates cost447/446 operations; degree bounds remain5091/5160.
+New injective codes have maximum40 and retain halt code14. Sharing the paid
+29-times-state-selector term across the current and target words removes one
+addition from each full source. The [independent review](review_residue_affine_sparse_joint_recoding.md)
+checks both actual arrays, all36 edges and supplied-hat coefficients, the
+complete finalizer correction, degree bounds and native typing before code
+comparison. Each source preserves its own parent's supplied positive zeros;
+the one-program and two-program interfaces remain distinct. Fresh normal and
+optimized checks pass. The separate universal84 construction is unchanged.
+
+The [recoded one-program U21 source](residue_affine_sparse_recoded468.md)
+reaches **448 certificate /468=171M+297A polynomial operations**, retaining
+67 positive witnesses, seven comparisons and degree at most5091.
+New injective state codes have maximum41 and halt code14. Their paid
+expressions reuse the unchanged389-row base and save4M at the cost of1A
+relative to471. The [independent review](review_residue_affine_sparse_recoded468.md)
+checks the actual36-edge table, all control coefficients, five paid basis
+vectors and complete finalizer correction. Native typing precedes the code
+comparison, proving identical supplied positive zeros on the same one-program
+interface E=3^e, ordinary x and B=64(E+x+eta). The full polynomials differ
+off zero. Fresh author/review normal/optimized checks pass; universal84 is unchanged.
+
+The [U21 control-pair successor](residue_affine_sparse_shared471.md)
+reaches **451 certificate / 471=175M+296A polynomial operations**, with
+seven comparisons, 67 positive witnesses, one fixed program parameter and
+degree **at most 5091**. Five already paid control pairs replace additions
+in prime-selector prefixes; the paid G3+G5 population prefix replaces the
+separate 2*G5 scalar product. Together they save 1M+5A from the actual477
+source, with no new register or changed supplied coordinate. The complete
+polynomial and all 471 retained values agree identically with that parent.
+The [independent review](review_residue_affine_sparse_shared471.md) checks the
+simultaneous schedule, actual selector bindings, native rows, finalizer,
+height h=E+x+eta and radix B=64h. Fresh normal/optimized checks pass; the
+ordinary-input recipe E=3^e and the separate universal84 bound are unchanged.
+
+The preceding [one-program shared U21 compiler](residue_affine_sparse_shared477.md)
+reaches **457 certificate / 477=176M+301A polynomial operations**, with
+seven comparisons, 67 positive witnesses and degree **at most 5091**.
+Its complete polynomial equals the actual 505 source on the same supplied
+coordinates. Reusing paid selector groups, sharing the range repunit and
+cancelling the population in the joint payload save 1M+27A. The original
+height h=E+x+eta and radix B=64h remain literally paid, retaining the sole
+fixed program parameter E=3^e and ordinary positive input x. The
+[independent review](review_residue_affine_sparse_shared477.md) checks every
+row, binds the exact local identities to actual upstream expressions, and
+recovers the inherited degree bound using the main-norm cancellation.
+Fresh normal and optimized checks pass. This improves the independent U21
+route; the separate 84-operation universal frontier remains unchanged.
+
+The preceding single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
 gives **485 certificate /505=177M+328A polynomial operations**,
 seven comparisons,67 positive witnesses and degree **at most5091**.
 Injective state codes reuse paid prime/action selector sums and two partial
@@ -2722,6 +3532,49 @@ transport. After unchanged native typing, coded digit equality is exactly
 the original state chronology. The complete supplied positive zero set
 agrees with537, including arbitrary positive program/input parameters;
 the fixed recipe E=3^e retains universality on ordinary positive x.
+
+The [direct two-program U21 recoding](residue_affine_sparse_recoded467.md)
+reaches **447 certificate /467=171M+296A polynomial operations**, with
+67 positive witnesses, seven comparisons and uniform degree at most5160.
+It retains h=x+eta and B=C*h on fixed slices E=3^e,C dyadic>=64,C>E.
+The same maximum code41 fits B>=128 even at h=2. Its actual388-row base,
+native source and five non-control residuals stay literal. The
+[independent review](review_residue_affine_sparse_recoded467.md) checks the
+complete467 source and the pre-control native proof; bounded injectivity
+then gives identical supplied positive zeros with470. Full outputs obey
+the explicit residual-square correction. Fresh author/review normal/optimized
+checks pass. This is a direct two-program result, with no positive-coordinate
+map to the one-program source or change to universal84.
+
+The [two-program U21 control-pair source](residue_affine_sparse_shared470.md)
+reaches **450 certificate / 470=175M+295A polynomial operations**, with
+seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
+The six paid-pair/population-prefix identities are checked directly against
+the actual476 source, saving 1M+5A without new registers. All 470 retained
+values and the full polynomial agree on identical supplied coordinates.
+The fixed recipe remains E=3^e with dyadic C>=64, C>E, and literal height
+h=x+eta and radix B=Ch for ordinary positive input x. The
+[independent review](review_residue_affine_sparse_shared470.md) reconstructs
+the complete source and automatically normalizes its actual-hat affine
+expressions, checking the native rows, finalizer and main-norm degree
+cancellation. Fresh normal/optimized checks pass. This is a direct476
+successor; no positive-coordinate map to the one-program471 source is claimed.
+
+The preceding [shared U21 residue-affine source](residue_affine_sparse_shared476.md)
+reaches **456 certificate / 476=176M+300A polynomial operations**, with
+seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
+It saves 25 additions by reusing a disjoint paid selector partition, two
+operations by sharing a range repunit, and one addition through a joint
+payload identity. The entire polynomial equals the default 504 parent on
+identical supplied coordinates. Two fixed program parameters E,C retain
+E=3^e and dyadic C>=64, C>E, independent of ordinary positive input x.
+The [independent review](review_residue_affine_sparse_shared476.md) reconstructs
+all 476 rows from untouched parent bytes, proves the complete output identity,
+and checks all 67 witnesses, 72 native rows and 20 finalizer rows. A parent-row
+aliasing error in the first author checker was corrected before publication;
+the revised source and independent normal/optimized replays pass. The emitted
+circuit and arithmetic saving were unaffected. Only the default coupled/shared
+product successor is emitted; no exact-degree or below84 claim is made.
 
 A separate [program-radix tradeoff](residue_affine_sparse_program_radix504.md)
 uses **two fixed program parameters** E,C and gives **484 certificate
@@ -4211,6 +5064,14 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Joint U21 control recoding](residue_affine_sparse_joint_recoding.md) | One-program467/two-program466 complete operations,67 witnesses each; one fewer addition per array | Each own-parent supplied positive zero set preserved; degree bounds5091/5160, no cross-interface map or universal84 improvement |
+| [Strong Pell-root absorption](complete84_strong_root_absorption.md) | Fixed polynomial f=G on85 auxiliary-independent values has finite input projection, including signed G and an empty zero sector | Uses the signed-T rank lemma; substitutions depending on auxiliary coordinates remain outside this theorem |
+| [Signed auxiliary-quotient absorption](complete84_signed_quotient_absorption.md) | Every fixed polynomial T=G on93 T/y-independent values has finite input projection; G=0 impossible | Direct signed-domain rank/bounds only; no full signed-T compiler transfer or operation reduction |
+| [Joint matrix-state factors](matrix193_joint_state_factor.md) | Complete1405/1402/1402/1399;540 coefficient rows; ten fewer multiplications by exact whole-polynomial identity | Same witnesses/degrees and inherited ordinary-input scope; universal84 unchanged |
+| [Recoded two-program U21](residue_affine_sparse_recoded467.md) | **447 certificate /467=171M+296A**,7 comparisons,67 witnesses,two fixed program parameters,degree at most5160. | Direct470 successor; code41 bound holds at B>=128,h=2, retaining fixed dyadic C>=64,C>E. Same supplied positive zeros on valid slices. |
+| [Auxiliary-ordinate polynomial obstruction](complete84_auxiliary_ordinate_absorption.md) | All93 quotient/ordinate-independent values give R<=3*deg(G)+ceil(log2 L) and finite ordinary-input projection after y_aux=G. | Both V signs and signed G covered; G=0 impossible before native recovery. No circuit saving or claim for quotient-dependent expressions. |
+| [Matrix cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) | **1,415/1,412/1,412/1,409** complete operations;141/140/140/139 witnesses; exact degrees35,587/53,345/53,347/71,105. | Joint Horner evaluation saves2M per complete source; identical full polynomials and supplied positive zeros,550 coefficient rows. |
+| [Recoded one-program U21](residue_affine_sparse_recoded468.md) | **448 certificate /468=171M+297A**,7 comparisons,67 witnesses,one fixed program,degree at most5091. | Bounded injective codes and paid selector bases save3 operations from471; same supplied positive zeros, explicit full-output correction. |
 | [Actual positive-complement86 collapse](complete75_positive_complement86_all_input_collapse.md) | The specific86-operation candidate accepts every positive input on every actual modified compiler slice. | Full19-positive-coordinate existence proof and exact rejecting-program corollary; Dirichlet/CRT/rotation plus complete normalized lift. No giant zero materialized;75/87 unchanged. |
 | [Two more paid U21 selector pairs](korec_packed_selector_sharing378.md) | **378=141M+237A**,50w,one program,degree at most21549; two-program377/40706. | Two exact1A prefix replacements retain complete integer polynomials, supplied coordinates and degree dictionaries. |
 | [Shifted U21 factor frontier](korec_packed_selector_reuse_partitions.md) | **386/7704 with50w or389/3896 with51w**; two-program385/14552 or388/7352. | All68 parent group-count winners lose2A; unchanged weights transport exact finite optima and attained floors. |
@@ -4260,6 +5121,10 @@ New research and the completed75-operation construction:
 | [Shifted U9 program offset](neary_woods_universal_offset258.md) | **257 certificate /258=133M+125A**,1eq43w,four positive program parameters,degree at most3861; mapped269/608/44w and266/1344/43w. | E'=E−1 changes valid program recipes; accepted ordinary inputs preserved, not an all-tuple positive bijection. Selected mapped family only. |
 | [U9 lower-history unit](neary_woods_universal_lower_unit259.md) | **258 certificate /259=133M+126A**,1eq43w,four positive program parameters,degree at most3861. | Same supplied coordinates and positive zeros on valid program/input slices; negative lower sign contradicts the actual sentinel suffix. |
 | [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
+| [One-program U21 control-pair sharing](residue_affine_sparse_shared471.md) | **451 certificate /471=175M+296A**,7 comparisons,67 positive witnesses,one fixed program parameter,degree at most5091. | Six exact simultaneous rewrites save1M+5A from477; every retained value, the full polynomial, and all supplied positive zeros are unchanged. |
+| [One-program shared U21 source](residue_affine_sparse_shared477.md) | **457 certificate /477=176M+301A**,7 comparisons,67 positive witnesses,one fixed program parameter,degree at most5091. | Complete polynomial identity to actual505; saves1M+27A while retaining h=E+x+eta and B=64h. |
+| [Two-program U21 control-pair sharing](residue_affine_sparse_shared470.md) | **450 certificate /470=175M+295A**,7 comparisons,67 positive witnesses,two fixed program parameters,degree at most5160. | Direct full polynomial identity to476 saves1M+5A; retains dyadic C>=64,C>E and B=C(x+eta) for ordinary input x. |
+| [Shared U21 selector/payload source](residue_affine_sparse_shared476.md) | **456 certificate /476=176M+300A**,7 comparisons,67 positive witnesses,two fixed program parameters,degree at most5160. | Complete polynomial identity to the default504 coupled/shared product source; disjoint selector sums, shared range repunit and joint payload cancellation save1M+27A. |
 | [Fixed sparse program radix](residue_affine_sparse_program_radix504.md) | **484 certificate /504=177M+327A**,7eq67w, two fixed program parameters E,C plus raw x,uniform degree at most5160. | C dyadic>=64 and C>E=3^e permits h=x+eta, B=Ch. One C serves all inputs; direct soundness/completeness includes h=2. A parameter tradeoff, not an identical supplied-zero-set rewrite. |
 | [Paid sparse control codes](residue_affine_sparse_control_codes.md) | **485 certificate /505=177M+328A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Reuse paid selector sums and prefixes in injective current/target codes. Complete control cost106→74; identical positive zeros with537 after unchanged typing and exact chronology. |
 | [Derived sparse terminal bound](residue_affine_sparse_terminal537.md) | **517 certificate /537=193M+344A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Initial-only height h=E+x+eta; typed payload transport derives F below the radix. Positive parent extension and direct soundness preserve the universal relation; inverse height gap may be nonpositive. |

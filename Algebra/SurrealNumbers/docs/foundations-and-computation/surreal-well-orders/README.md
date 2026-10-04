@@ -656,10 +656,13 @@ first.
     (Theorem 109.9, source 19; **the strongest unreviewed claim of batch 83**),
     which is decidable (Corollary 109.22, source 20).
 16. **Countable global choice and surreal coding over Zermelo set theory
-    (Part XV, source 31).** Over Zermelo set theory, a selector on `D`-small
-    sets and a uniform assignment of injections into `D` are interconvertible
-    by uniform definitions, without Replacement or ordinal collapse (Theorem
-    XV.3.3); bounded trace compression needs no Collection (Theorem XV.4.1);
+    (Part XV, source 31).** Over Zermelo set theory, with fixed well-orders
+    on `D` and its code set `C_D` and Separation in the relevant expanded
+    language, a selector on `D`-small sets and a uniform assignment of
+    injections into `D` are interconvertible by uniform definitions, without
+    Replacement or ordinal collapse (Theorem XV.3.3). Ordinary Choice supplies
+    the code well-order in `ZC`. Bounded trace compression needs no Collection
+    (Theorem XV.4.1);
     `ZC + GC_{≤ω} + Sep(c)`, and the same with Foundation, is not conservative
     over `ZC` (`ZC_F`), even with selection only from countably infinite sets
     (Theorem XV.5.1, Corollaries XV.5.3–XV.5.4), **conditional on source 31's

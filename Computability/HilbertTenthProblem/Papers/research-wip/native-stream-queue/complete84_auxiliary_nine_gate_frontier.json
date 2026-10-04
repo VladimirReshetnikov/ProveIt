@@ -1,0 +1,2093 @@
+{
+  "attaining_packet": {
+    "all_ring_relation": "F_attaining=F84",
+    "coordinate_map": "identity",
+    "exact_degree": 187,
+    "factor_exact_degrees": [
+      22,
+      18,
+      32,
+      60,
+      7,
+      2,
+      46
+    ],
+    "factor_values_at_positive_zeros": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      "A"
+    ],
+    "factors": [
+      "norm_first",
+      "norm_main",
+      "norm_input",
+      "norm_aux",
+      "norm_index",
+      "norm_transport",
+      "norm_strong"
+    ],
+    "fixed_numerals": [
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "free": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma",
+      "x",
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "full_polynomial_identity": false,
+    "ledger": {
+      "A": 37,
+      "M": 47,
+      "all_rows_and_ports_live": true,
+      "total": 84
+    },
+    "normalized": true,
+    "ordinary_input": "x",
+    "output": "polynomial",
+    "same_positive_zero_tuples": true,
+    "scope": "Complete ordinary universal polynomial on the unchanged valid fixed-program recipe; no global circuit optimality claim.",
+    "source": [
+      [
+        "tau_square",
+        "*",
+        "tau_root",
+        "tau_root"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "q"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "first_next",
+        "+",
+        "first_root_base",
+        "R10b"
+      ],
+      [
+        "first_product",
+        "*",
+        "first_root_base",
+        "first_next"
+      ],
+      [
+        "norm_first",
+        "-",
+        "tau_square",
+        "first_product"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "w"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "transport_quotient",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "mixed_cT",
+        "*",
+        "R10a",
+        "auxiliary_quotient"
+      ],
+      [
+        "mixed_Rf",
+        "*",
+        "r_lhs",
+        "f"
+      ],
+      [
+        "mixed_linear",
+        "-",
+        "mixed_cT",
+        "mixed_Rf"
+      ],
+      [
+        "mixed_f_linear",
+        "*",
+        "f",
+        "mixed_linear"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "mixed_f_linear",
+        "R10a"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "aux_coefficient_root",
+        "*",
+        "i",
+        "Ac2"
+      ],
+      [
+        "R16",
+        "*",
+        "aux_coefficient_root",
+        "aux_coefficient_root"
+      ],
+      [
+        "scaled_f_square",
+        "*",
+        "A",
+        "L16"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "scaled_f_square",
+        "R16"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "polynomial",
+        "-",
+        "seven_units",
+        "A"
+      ]
+    ],
+    "unrestricted_signed_zero_equivalence": false,
+    "witness_domain": "strictly positive integers",
+    "witnesses": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ]
+  },
+  "external_cut_consumers": {
+    "L16": [],
+    "R16": [
+      "L17"
+    ],
+    "aux_coefficient_root": [],
+    "aux_u_rhs": [
+      "H2",
+      "H2"
+    ],
+    "auxiliary_R_f2": [],
+    "auxiliary_Tf": [],
+    "auxiliary_Tf_minus_one": [],
+    "auxiliary_c_Tf": [],
+    "norm_strong": [
+      "seven_units"
+    ],
+    "scaled_f_square": []
+  },
+  "local_polynomials": {
+    "P": [
+      [
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        1
+      ],
+      [
+        [
+          1,
+          4,
+          2,
+          0,
+          0,
+          0
+        ],
+        -1
+      ]
+    ],
+    "Q": [
+      [
+        [
+          2,
+          4,
+          2,
+          0,
+          0,
+          0
+        ],
+        1
+      ]
+    ],
+    "S": [
+      [
+        [
+          1,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        1
+      ],
+      [
+        [
+          2,
+          4,
+          2,
+          0,
+          0,
+          0
+        ],
+        -1
+      ]
+    ],
+    "V": [
+      [
+        [
+          0,
+          0,
+          0,
+          2,
+          0,
+          1
+        ],
+        -1
+      ],
+      [
+        [
+          0,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        -1
+      ],
+      [
+        [
+          0,
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        1
+      ]
+    ],
+    "W": [
+      [
+        [
+          1,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        1
+      ]
+    ]
+  },
+  "necessary_cancellation_pivots": [
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            2,
+            4,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        0,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            2,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        0,
+        1,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            2,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        0,
+        2,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            2,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        0,
+        3,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            2,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        0,
+        4,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            1,
+            4,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        1,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            1,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        1,
+        1,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "square",
+          "other": [
+            1,
+            2,
+            1,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        1,
+        2,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            1,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        1,
+        2,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            1,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        1,
+        3,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        1,
+        4,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            0,
+            4,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        2,
+        0,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            0,
+            3,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        2,
+        1,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            0,
+            2,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        2,
+        2,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i_free",
+          "other": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        2,
+        3,
+        2,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "times_i",
+          "other": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        2,
+        4,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "Q_restoration": [
+        {
+          "form": "alias",
+          "other": null
+        },
+        {
+          "form": "times_i_free",
+          "other": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "U_exponents": [
+        2,
+        4,
+        2,
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "parent_packet": {
+    "all_ring_relation": "F84=A*F85 on the identical supplied coordinates",
+    "coordinate_map": "identity",
+    "exact_degree": 187,
+    "factor_exact_degrees": [
+      22,
+      18,
+      32,
+      60,
+      7,
+      2,
+      46
+    ],
+    "factor_values_at_positive_zeros": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      "A"
+    ],
+    "factors": [
+      "norm_first",
+      "norm_main",
+      "norm_input",
+      "norm_aux",
+      "norm_index",
+      "norm_transport",
+      "norm_strong"
+    ],
+    "fixed_numerals": [
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "free": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma",
+      "x",
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "full_polynomial_identity": false,
+    "ledger": {
+      "A": 37,
+      "M": 47,
+      "core_A": 36,
+      "core_M": 41,
+      "core_total": 77,
+      "finalizer_A": 1,
+      "finalizer_M": 6,
+      "finalizer_total": 7,
+      "total": 84
+    },
+    "normalized": true,
+    "ordinary_input": "x",
+    "output": "polynomial",
+    "same_positive_zero_tuples": true,
+    "scope": "Complete ordinary universal polynomial on the unchanged valid fixed-program recipe; no global circuit optimality claim.",
+    "source": [
+      [
+        "tau_square",
+        "*",
+        "tau_root",
+        "tau_root"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "q"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "first_next",
+        "+",
+        "first_root_base",
+        "R10b"
+      ],
+      [
+        "first_product",
+        "*",
+        "first_root_base",
+        "first_next"
+      ],
+      [
+        "norm_first",
+        "-",
+        "tau_square",
+        "first_product"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "cam2",
+        "*",
+        "R10a",
+        "R12"
+      ],
+      [
+        "D1",
+        "+",
+        "wn2",
+        "cam2"
+      ],
+      [
+        "gamma_sum",
+        "+",
+        "rho",
+        "sigma"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "gam",
+        "*",
+        "gamma_sum",
+        "a4m5"
+      ],
+      [
+        "R14",
+        "+",
+        "D1",
+        "gam"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "w"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "transport_quotient",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "auxiliary_Tf",
+        "*",
+        "auxiliary_quotient",
+        "f"
+      ],
+      [
+        "auxiliary_Tf_minus_one",
+        "-",
+        "auxiliary_Tf",
+        1
+      ],
+      [
+        "auxiliary_c_Tf",
+        "*",
+        "R10a",
+        "auxiliary_Tf_minus_one"
+      ],
+      [
+        "auxiliary_R_f2",
+        "*",
+        "r_lhs",
+        "L16"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "auxiliary_c_Tf",
+        "auxiliary_R_f2"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "aux_coefficient_root",
+        "*",
+        "i",
+        "Ac2"
+      ],
+      [
+        "R16",
+        "*",
+        "aux_coefficient_root",
+        "aux_coefficient_root"
+      ],
+      [
+        "scaled_f_square",
+        "*",
+        "A",
+        "L16"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "scaled_f_square",
+        "R16"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "polynomial",
+        "-",
+        "seven_units",
+        "A"
+      ]
+    ],
+    "unrestricted_signed_zero_equivalence": false,
+    "witness_domain": "strictly positive integers",
+    "witnesses": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ]
+  },
+  "pins": {
+    "complete84_auxiliary_mixed_cut.json": "1aa60da5b6b7278efdfd8535d10ec8f9af604b729b1f95c124eca714721dfc47",
+    "complete84_auxiliary_mixed_cut.md": "b16bcf8b4013345d25a5d2bbb0598ae2caaaeaa31a529e00af7ea4647d78d7f2",
+    "complete84_auxiliary_mixed_cut.py": "a77f326d98550ed21643d5f1ea2aa25d9dca7d9a7fdca26c40e8bf1cdf80c13a",
+    "complete84_scaled_strong_output.json": "8b2bc5d0b4db90c168107b7ded2cb4ca08df0098ed190851a3db4f1e49a9c0cf",
+    "complete84_scaled_strong_output.md": "01eb7df6688c08c6788a3c7a1cc272ca5ffc1a87734fd622dbec8a64ae974ade",
+    "complete84_scaled_strong_output.py": "8b4dd58c849ae79751f1be6638f1b9e3f9072a714c5479eadf1039f10d0c7737"
+  },
+  "positive_i_divisors_examined": 30,
+  "proof_certificates": {
+    "Q_S_relation_matrix_on_W_Q": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        -1
+      ]
+    ],
+    "laurent_P": [],
+    "laurent_V": [
+      [
+        [
+          0,
+          0,
+          2,
+          0,
+          1
+        ],
+        -1
+      ],
+      [
+        [
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        -1
+      ],
+      [
+        [
+          1,
+          0,
+          1,
+          1,
+          0
+        ],
+        1
+      ]
+    ],
+    "noncollinear_minor": -1,
+    "relation_determinant": -1,
+    "three_addition_cases": [
+      {
+        "V_grouping": "monomial_sum",
+        "mixed_products": 0,
+        "targets": {
+          "V_and_W": {
+            "individual_lower_bounds": [
+              2,
+              2,
+              2
+            ],
+            "monomials": [
+              [
+                0,
+                1,
+                0,
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                1
+              ],
+              [
+                1,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ],
+            "product_lower_bound": 5,
+            "shared_new_divisors": [
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ]
+          },
+          "V_and_f_squared": {
+            "individual_lower_bounds": [
+              2,
+              2,
+              1
+            ],
+            "monomials": [
+              [
+                0,
+                1,
+                0,
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ],
+            "product_lower_bound": 4,
+            "shared_new_divisors": [
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "V_grouping": "c_times_Tf_minus_one",
+        "mixed_products": 1,
+        "targets": {
+          "V_and_W": {
+            "individual_lower_bounds": [
+              1,
+              2,
+              2
+            ],
+            "monomials": [
+              [
+                0,
+                0,
+                0,
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                1
+              ],
+              [
+                1,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ],
+            "product_lower_bound": 5,
+            "shared_new_divisors": [
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ]
+          },
+          "V_and_f_squared": {
+            "individual_lower_bounds": [
+              1,
+              2,
+              1
+            ],
+            "monomials": [
+              [
+                0,
+                0,
+                0,
+                1,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ],
+            "product_lower_bound": 4,
+            "shared_new_divisors": [
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ]
+          }
+        }
+      },
+      {
+        "V_grouping": "f_times_cT_minus_Rf",
+        "mixed_products": 1,
+        "targets": {
+          "V_and_W": {
+            "individual_lower_bounds": [
+              1,
+              1,
+              2
+            ],
+            "monomials": [
+              [
+                0,
+                1,
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                1,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ],
+            "product_lower_bound": 5,
+            "shared_new_divisors": []
+          },
+          "V_and_f_squared": {
+            "individual_lower_bounds": [
+              1,
+              1,
+              1
+            ],
+            "monomials": [
+              [
+                0,
+                1,
+                0,
+                0,
+                1,
+                0
+              ],
+              [
+                0,
+                0,
+                0,
+                1,
+                0,
+                1
+              ],
+              [
+                0,
+                0,
+                0,
+                2,
+                0,
+                0
+              ]
+            ],
+            "product_lower_bound": 4,
+            "shared_new_divisors": []
+          }
+        }
+      }
+    ],
+    "variable_order": [
+      "Delta",
+      "c",
+      "i",
+      "f",
+      "T",
+      "R"
+    ]
+  },
+  "scope": "Unbounded necessary conditions, not existence or exclusion of all nine-gate circuits. Exactly17 pivot monomials remain necessary; no candidate claimed. Constants/scalar multiples free in lower-bound relaxation; attaining literal full84 charges every use.",
+  "source_sha256": "e4197911e04fe9379fb0801ce01559ec371e3955d025486a3f84644aa17d48e2",
+  "status": "PASS",
+  "theorems": {
+    "monomial_producing_additions_in_that_budget": 1,
+    "necessary_pivot_count": 17,
+    "only_possible_at_most_nine_budget": {
+      "A": 4,
+      "M": 5
+    },
+    "products_if_Q_has_monomial_cone_at_least": 6,
+    "products_with_exactly_three_additions_at_least": 7,
+    "unrestricted_additions_at_least": 3,
+    "unrestricted_products_at_least": 5
+  }
+}
