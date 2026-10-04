@@ -154,6 +154,9 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [signed-transport partial decoding theorem](complete83_signed_transport_partial_recovery.md), with [independent proof review](review_complete83_signed_transport_partial_recovery.md), handles the difference of two rotations on the typed dyadic W=0 branch. Cyclic binary borrows and a clean clause band recover genuine local windows; positive anchor contributions stop borrows before the parity tests, forcing a nontrivial whole-cell positive rotation. Further positive contributions restore every cell's occupancy and exact horizontal overlap. The low vertical tests retain a negative shifted copy and possible borrow, so this packet does not invoke the old computation or marker theorem. Fresh independent cyclic-subtraction and separated-layout checks pass normally and under optimized Python. No source, witness count or universal-operation bound changes.
+>
+>
 > The [dyadic native-mask recovery theorem](complete83_dyadic_native_mask_recovery.md), with [independent proof and source review](review_complete83_dyadic_native_mask_recovery.md), proves that every valid-compiler shared-projection83 zero with dyadic q and W=0 has popcount(R)=3log₂(q)+2 and both native AND masks. The four binomial valuations confine any low-population escape to one tied case; the literal transport then forces a repeated maximal word whose low field digit contradicts the actual +4 mask. The representative argument permits internal subtraction borrows. Independent exact source expansions, polynomial identities, 292,571 nonexception valuation cases, 7,942 rotation examples (6,690 with borrows) and 21,336 inverse-population cases pass. Z=C is now typed, with Start present and End absent, but the field multiplier remains a difference of two rotations: synchronization and computation recovery are still open at this packet. No arithmetic source or universal bound changes.
 >
 >
