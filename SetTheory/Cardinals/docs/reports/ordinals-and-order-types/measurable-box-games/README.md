@@ -2,30 +2,51 @@
 
 **Sharp measurable prediction bounds, exact decision-tree enumeration, and an
 all-orders asymptotic expansion (Part I); no universal sublinear bound for
-measurable hat guessing (Part II)**
+measurable hat guessing (Part II); adaptive box games beyond cylinder
+measurability (Part III); two queries in expectation: sharp information
+thresholds and the exact inspection cost of infinite hat guessing (Part IV)**
 
-A research report in two Parts, built from two manuscripts. Part I (3 October
+A research report in four Parts, built from five manuscripts. Part I (3 October
 2026) is a manuscript on Elliot Glazer's *A choiceless box game paradox*
 (arXiv:2211.10474). Part II (added 4 October 2026) is a manuscript on the
 surplus of correct guesses in Nathaniel Eldredge's infinite binary hat game
 (arXiv:2508.02828); it names Part I as its most direct source and settles
-Part I's Research question Q9 for one family of parameters. Both author lines
-read "Prepared for Vladimir Reshetnikov" (Part II: "Research report prepared
-for …") and carry no AI wording; like the other deliveries of the intake,
-both are AI-assisted.
+Part I's Research question Q9 for one family of parameters. Part III (added
+4 October 2026, batch 92) classifies every extension of the product measure to
+the success events of adaptive box players and answers Part I's questions Q2
+(for Borel and universally measurable outputs; the Baire-property case stays
+open) and Q5. Part IV (added the same day) merges two independent manuscripts
+that determine the cost of inspecting hats needed for a divergent surplus —
+exactly two expected queries per player — answering Part II's Research question
+29.2; one of them also settles Q9 for a larger family. The author lines of
+Parts I–III and of Part IV's source 04 read "Prepared for Vladimir Reshetnikov"
+or "Research report prepared for …" and carry no AI wording; **Part IV's base,
+source 06, has no author line, and its PDF metadata name the author as
+"ChatGPT research report"**. Like the other deliveries of the intake, all five
+are AI-assisted.
 
 | Source | Manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 01 | batch 87, manuscript 02 | `glazer_box_games_research.zip` (364,051 bytes; inner directory `glazer_box_games/`, main file `article.tex`, 999 lines, 24-page US Letter PDF), arrival commit `fa0a0576e` | `6fef5383b` (`6fef5383b126be343cccc9baf47081ef37ab5afe`, the article's `\commit` macro, quoted in Section 1 and in every repository URL of its bibliography) | `d151b39ca` | Part I: abstract, Sections 1–16, Appendices A–B |
 | 02 | batch 90, manuscript 02 | `hat_guessing_research.zip` (550,545 bytes; inner directory `hat_guessing_research/`, main file `hat_guessing_growth.tex`, 1,587 lines, 22-page A4 PDF), arrival commit `a162e4386` | `7c0f2d9f9` (`7c0f2d9f92c3d51ec85703bed1022924a4b7359b`, quoted in Section 17.2 and bibliography entry 12) | `12076b2e8` | Part II: Sections 17–29, Appendices C–E |
+| 03 | batch 92, manuscript 03 | `adaptive_box_games_research.zip` (485,758 bytes; inner directory `adaptive_box_games/`, main file `adaptive_box_games.tex`, 1,207 lines, 29-page US Letter PDF), arrival commit `9dc8db274` | `1afa38bf9` (`1afa38bf984377eb85a5569cf6376054994a17a5`, its `\snap` macro, Section 30 and bibliography entries 15–16) | `e38f368c2` | Part III: Sections 30–44, Appendices F–G |
+| 04 | batch 92, manuscript 04 | `hat_inspection_frontier.zip` (491,169 bytes; inner directory `hat_inspection_frontier/`, main file `hat_inspection_frontier.tex`, 2,319 lines, 31-page A4 PDF), arrival commit `9dc8db274` | `9fe62865d` (`9fe62865dc30d71256183466b744b98ebf7e64d6`, Section 59.2, bibliography entry 29) | `e38f368c2` | Part IV, second source: Sections 59–69 |
+| 05 | batch 92, manuscript 06 | `hat_query_thresholds_package.zip` (478,565 bytes; inner directory `hat_query_thresholds/`, main file `hat_query_thresholds.tex`, 1,919 lines, 26-page US Letter PDF), arrival commit `afd7ffabb` | `9fe62865d` (its `\pin` macro, Section 45.4 and bibliography entries 26–28) | `e38f368c2` | Part IV, base: Sections 45–58 |
+
+The source numbers are this report's local sequence (they are the file
+prefixes `01`–`05`); the batch-92 manuscripts 04 and 06 keep their batch
+numbers in the article ("source 04", "source 06"), so source 06 has the file
+prefix `05-hat-queries-`.
 
 **Status:** AI-assisted, unrefereed, not formalized: no Lean or Rocq
 declaration exists for any statement of this report, and its place in the
-collection confers no formal status. The finite computations of both Parts
-were executed (by the packages and again at intake); the infinite theorems
-rest on the written proofs only. **Historical priority is not established**
-for either Part; Part II explicitly disclaims priority for its coding
-mechanism (Ebert–Merkle–Vollmer 2003) and for the slow-density phenomenon.
+collection confers no formal status. The finite computations of all Parts
+were executed (by the packages and again at intake or write); the infinite
+theorems rest on the written proofs only. **Historical priority is not
+established** for any Part; Part II explicitly disclaims priority for its
+coding mechanism (Ebert–Merkle–Vollmer 2003) and for the slow-density
+phenomenon, and Part IV's block construction is Eldredge's (his
+Proposition 6.6), credited by both of its sources.
 
 ## Part I
 
@@ -119,8 +140,10 @@ first class only.
 - Theorem 12.1 needs its promise and gives no complexity bound;
   `BB_time` is a program-length running-time function, **not** Rado's
   n-state score function, and the inequality is conditional on the compiler.
-- Questions Q2–Q12 are directions, not all recognized open problems. Q9 is
-  now settled for one family by Part II (below) and otherwise open. No
+- Questions Q2–Q12 are directions, not all recognized open problems. Since
+  batch 92, Q2 is answered for Borel and universally measurable outputs and
+  Q5 completely (Part III), and Q9 is settled for the families of Parts II and
+  IV and for the trivial ranges of Remark 15.1 (below); the rest is open. No
   endorsement or authorship by Glazer is implied.
 
 ### Checks made at intake (batch 87)
@@ -306,14 +329,299 @@ free targets, because each blind map succeeds on exactly half of the
 configurations (Proposition 7.1); so in this family the legal and blind optima
 coincide. The write adds that the same holds for every `n ≥ m` (extra boxes
 unread). The family contains `(6,2,6)`, `t = 4`, optimum 3/4; Part I's
-three-box benchmark `(3,2,3)`, `t = 2` (also 3/4) is not in it. All other
-parameters, and the location of the first legal/blind gap, stay open. A dated
+three-box benchmark `(3,2,3)`, `t = 2` (also 3/4) is not in it. A dated
 note after Part I's questions (Section 15) records this; Part II's Research
 question 29.4 continues Q9 for fixed targets.
 
+*Corrected 4 October 2026, batch 92.* This paragraph and the batch-90 note
+went on to say that all other parameters stay open. That was false when
+written, and both stay on record with the refutation in **Remark 15.1**
+(after the batch-92 note in Section 15): for every `(m,q,n)` the optimum is 1
+when `t ≤ ⌊m/q⌋` (Theorem 3.1's constant team reads no box) and 0 when
+`t > m`; and `(3,2,3)`, `t = 2`, was already settled by Part I itself, since
+every blind binary map succeeds on half of the configurations (Proposition
+7.1), so Markov's inequality gives at most `(3/2)/2 = 3/4`, which the three-box
+team attains. Since batch 92, Part IV's source 04 settles the larger family
+`(m(2^r−1), 2, m(2^r−1))`, `t = m·2^(r−1)`, for every `m ≥ 1` (optimum
+`1 − 2^(−r)`, legal = blind; Theorems 65.4–65.5 and the note after them),
+which contains both Part II's family (even `m`) and the three-box benchmark.
+Still open: `q = 2` outside these families, every `q ≥ 3` with
+`⌊m/q⌋ < t ≤ m`, and the first parameters at which the legal and blind optima
+differ (in every settled case they coincide).
+
+## Part III
+
+### The questions
+
+Part I's Research questions Q2 (does Theorem 3.1 survive when cylinder
+measurability is replaced by full product-topology Borel measurability, the
+Baire property or universal measurability?) and Q5 (characterize all
+extensions of the product measure to a finite team's success events,
+including their joint laws). They are the report's questions, not Glazer's.
+
+### What it proves
+
+Numbers are the printed ones: the manuscript's Section `k` is Section `k+29`,
+its statement `k.m` is `(k+29).m`, its equation `(k)` is `(III.k)`, its
+Appendices A–B are F–G and its Figure 1 is Figure 2. Setting: finite alphabet
+`Q`, `q ≥ 2`, standard Borel box labels `I`, `X = Q^I`, cylinder σ-algebra `Σ`
+with its product probability `μ` and completion `𝒜`; outputs `τ = (b,a)` blind
+and `𝒜`-measurable ("regular"); success events not assumed measurable.
+
+- **Lemma 32.1, Lemma 32.2, Corollary 32.3, Lemma 32.4, Corollary 32.6:**
+  countable factorization; the open-set sandwich and completion regularity
+  `Σ ⊆ ℬ(X) ⊆ 𝒜` with null (and meagre) errors (Kakutani; Gryllakis–Koumoullis,
+  credited); an invariant good set for countably many outputs; universally
+  measurable outputs are `𝒜`-measurable.
+- **Lemmas 33.1–33.2:** diffuse targets escape every countable set; the
+  internal success mass of a player is `α_p/q`, `α_p` the atomic mass of its
+  target law.
+- **Definition 34.1, Lemma 35.1, Theorem 35.2:** the measurable random set
+  `Γ(x)` of feasible success patterns (players sharing a diffuse target must
+  agree on one colour); every pattern event `E_H` has inner measure
+  `μ{Γ ⊆ H}` and outer measure `μ{Γ ∩ H ≠ ∅}`.
+- **Theorem 36.1 (answers Q5):** every extension to `σ(𝒜, E_1, …, E_m)`
+  corresponds to `𝒜`-measurable densities `h_s ≥ 0`, `Σ h_s = 1`, `h_s = 0` off
+  `{s ∈ Γ}`, unique a.e., and every such family defines one; Corollaries
+  36.3–36.4: exact ranges of every payoff expectation; uniqueness iff every
+  target law is purely atomic.
+- **Theorem 37.1:** one player with atomic target mass `α`: inner measure
+  `α/q`, outer `1 − (q−1)α/q`, every value in between attained; success is
+  measurable iff `α = 1`, and then has probability `1/q`. A version for
+  independent strictly positive non-uniform colour laws (Section 37.1).
+- **Theorem 38.1:** the joint pattern laws form `Σ_T w_T Δ(T)` with Hall
+  (marriage-type) inequalities (Artstein's selection polytope, credited).
+- **Theorems 39.1–39.2, Corollary 39.3 (answer Q2's Borel and universal
+  clauses):** a fair extension for finite teams; the guaranteed score is
+  exactly `⌊m/q⌋` for regular, full Borel and universally measurable blind
+  outputs; losing witnesses avoid any prescribed null set; `⌊mr/q⌋` for lists.
+- Section 40: examples (every `α`; shared targets force correlations;
+  distinct diffuse targets allow every joint law).
+- **Theorem 41.1:** countable teams: extensions ⇔ base-measurable kernels
+  `K` with `K(x, Γ(x)) = 1` (blindness not needed); **Theorem 41.2:** the
+  guaranteed lower asymptotic success density is exactly `1/q`.
+- **Proposition 42.1:** a category normal form for Baire-property outputs,
+  and an invariant comeagre **null** set, showing why the averaging proof
+  does not transfer; Q2's Baire-property clause is **left open**.
+- Section 43: logical scope, the executed finite checks, a six-stage
+  formalization plan; Section 44: directions R1–R12; Appendices F (assumption
+  and result ledger) and G (sources and reproducibility).
+
+### What Part III does not claim
+
+- Glazer's unrestricted ZF question (Q1) is not resolved; the questions are
+  the report's, not Glazer's; no endorsement by Glazer.
+- The Baire-property clause of Q2 is unresolved; neither a strategy nor an
+  impossibility is inferred for it.
+- Completion regularity, the measure-extension machinery (Łoś–Marczewski),
+  the selection polytope (Artstein) and factorization (Fremlin) are classical
+  and credited; Part I's cylinder minimax, target collapse and diagonal example
+  are not claimed again.
+- Historical priority is not established, nor a breakthrough; no
+  proof-assistant certificate; the finite checks do not verify the infinite
+  proofs (on a finite space every target law is atomic; the diffuse weights in
+  the polytope tests are formal).
+- ZFC is the ambient theory; weak-choice strength is not determined; infinite
+  alphabets and nonproduct laws are separate problems; the formalization
+  stages are proposals.
+
+### Relation to Parts I and II
+
+Re-proofs of Part I: Lemma 32.1 is Lemma 2.4 (`mbg:lem:support`), the
+fairness identity of Lemma 33.2 is the fibre identity in the proof of
+Theorem 3.1, Theorem 39.1 is Theorem 4.1 for finite teams with completed
+measurability. Extensions: Theorem 39.2 and the lists of Section 39.1 extend
+Theorem 3.1 and Corollary 3.3. Generalizations: Theorems 35.2, 36.1 and 37.1
+generalize Theorems 6.1 (the case `α = 0`), 6.2 (one event) and 5.1. Contacts
+with Part II only: the comeagre null set of Section 42 and Part II's conull
+meagre success sets (Theorems 26.1–26.2) show the same divergence of measure
+and category on different objects, and Theorem 41.2 (worst case, adaptive
+targets) and Theorem 25.1 (almost surely, own-hat targets) do not imply each
+other.
+
+### Checks made at the write (batch 92)
+
+- **Pin and repository claims.** `1afa38bf9` ("Jointly recode U21 control
+  words …", 4 October 2026) is an ancestor of the placement; it holds this
+  report after its batch-87 write and before Part II's placement, so the
+  manuscript read Part I only. Its claims hold: Q2 and Q5 are as quoted; the
+  intake note listed all twelve questions as open at the pin; the cylinder
+  minimax, collapse and diagonal example are Part I's; Part I gives blind maps
+  no legal tree executes. Nothing refuted; no retraction.
+- **Delivered checker** on a scratch copy (Python 3.14.4, Windows): passed in
+  about a second; its standard output equals
+  `data/03-adaptive-extensions-finite_results.json` after stripping CR bytes.
+  The 236/276 split of worst scores over the 512 ordered triples agrees with
+  Part I's own table (Section 13).
+- The cited literature was not re-read at the write.
+
+## Part IV
+
+### The question
+
+Part II's Research question 29.2, "Information cost versus guaranteed
+growth": if player `i` may inspect at most `q(i)` other hats, which excess
+profiles remain attainable; in particular, does a uniform bound on `q(i)`
+permit `D_n → +∞` almost surely; and how does a bound on the number of
+queries differ from a bound on their distance? Two manuscripts written against
+the same commit answer it independently, by the same construction, and
+neither cites the other; they are not editions of one text.
+
+### How the two sources are merged
+
+**Source 06 is the base** (README section 2 of the intake procedure): on the
+shared spine it has the weaker hypotheses and stronger conclusions (any
+visibility graph with finitely many colours, Baire-measurable rules, null
+*and* meagre divergence sets) and it answers all three clauses of 29.2.
+Source 04's proofs assume deterministic decision trees, the hypothesis of
+source 06's threshold theorem too, so nothing taken from it rests on a
+stronger hypothesis. To keep both numberings, source 06 is printed first and
+whole (its Section `k` is Section `k+44`, Sections 45–58), then source 04 (its
+Section `k` is Section `k+58`, Sections 59–69); statements and equations
+follow the same offsets. Every statement of both is printed in its own place.
+Where source 04 states a result source 06 has proved, a dated note says so; a
+proof repeating source 06's argument is replaced by a pointer (source 04's
+proofs of Lemma 62.1, the path lemma, and Lemma 63.1, the block law; each
+note restates what the omitted proof contained), and genuinely different
+proofs are printed as second routes (Theorem 61.3, the bounded-depth
+obstruction by a sign bound and martingale convergence; Lemmas 61.1–61.2;
+Theorem 63.3 and Lemma 63.4, the rates by Kronecker's lemma). Section 45.6
+tabulates the shared results.
+
+### What it proves
+
+From source 06 (Sections 45–58):
+
+- **Lemmas 47.1–47.2:** cylinder density; a conditional sign criterion.
+- **Theorem 48.2, Lemma 48.3, Corollary 48.4:** a visibility graph with a
+  finite colouring forces `P(Σ Y_i ≤ 0), P(Σ Y_i ≥ 0) ≥ 2^(−r)` and null
+  (measurable rules) and meagre (Baire rules) divergence events; a common
+  bound on adaptive queries gives a finite colouring — **answering the
+  uniform-bound clause of 29.2 negatively**, with probability zero.
+- **Lemmas 49.1–49.2, Corollary 49.3, Proposition 49.4:** degree bound for
+  decision trees, the sign bound `1/(4·9^k)` (sharper `e^(−2k)/4` cited to
+  O'Donnell), a Fourier-tail obstruction.
+- **Theorem 50.1, Theorem 50.2:** sparse-support cancellation; with one
+  query per player the best probability of strictly positive surplus over all
+  finite teams is exactly `3/4` (zero queries: `1/2`).
+- **Lemma 51.1, Corollary 51.2, Proposition 51.3:** a reachable path of `L`
+  queries costs `2 − 2^(1−L)` in expectation, so a uniform expected cap below
+  2 forces bounded depth; `E Q < 2` iff the tree is a path.
+- **Propositions 52.2–52.3:** Eldredge's block, evaluated partner first with
+  early stopping: surplus `−m`/`+1`/`0` with probabilities `4^(−m)`,
+  `m·4^(−m)`; the S player's query count is `min(G, 2m−1)`, `G` geometric.
+- **Theorem 53.1, Lemma 53.2, Theorem 53.3, Proposition 53.4:** schedules
+  with `⌈4^m/m^(1+ε)⌉` blocks give `D_n ~ (log_4 n)^(1−ε)/(1−ε)` and
+  `D_n ~ log log n`; **the exact deterministic expected-query threshold is
+  2** (`inf sup_i E Q_i = 2`, for positive-probability and for almost-sure
+  divergence), attained by a computable strategy with `E Q_i < 2` for each
+  player; the construction's success set is conull and meagre.
+- **Theorems 54.2–54.4, Proposition 54.5 (answer 29.2's other clauses
+  qualitatively):** for count budgets eventually ≥ 1, almost-sure divergence
+  ⇔ positive-probability divergence ⇔ `q` unbounded; `h(i) → ∞` permits count
+  and distance budgets together; an explicit budget allowed as a count but not
+  as a distance; acyclic directed visibility gives independent fair
+  correctness.
+- **Proposition 55.1, Theorem 55.2:** random seeds with bounded depth still
+  fail; with free private coins every expected cap `C > 1` suffices.
+- Section 56: checks and a formalization route; Section 57: Research
+  questions 57.1–57.12; Section 58: contribution ledger.
+
+From source 04 (Sections 59–69), besides its own versions of the shared core:
+
+- **Theorem 62.2, Corollaries 62.3 and 62.5:** if `P(D_n → +∞) > 0` then
+  `sup_i E φ(Q_i) ≥ E φ(G)` for **every** nonnegative nondecreasing cost `φ`:
+  no common gap below 2, moments `2, 6, 26`, `E z^Q ≥ z/(2−z)` for
+  `1 ≤ z < 2`, none for `z ≥ 2`; Proposition 63.2 attains all of them at once
+  (Theorem 60.1).
+- **Proposition 63.5, Theorem 63.6, Proposition 63.7:** endpoint central
+  limit theorem with exact variance `Σ k(k+1)R_k 4^(−k)`; realized average
+  inspection cost → `3/2` almost surely; maximal cost `~ log_2 n`.
+- **Lemma 64.1, Theorem 64.2, Corollary 64.4, Theorem 64.5, Proposition
+  64.7:** covariance through influences; `Var T_n ≤ n + Σ E Q_i`, sharp;
+  concentration; bounded mean inspection forces `S_n/n → 1/2` almost surely;
+  spectral escape.
+- **Theorems 65.2–65.5 (finite teams):** first-moment saturation
+  `P(S ≥ s) = n/(2s)` forces at least `s − 1` inspections of every hat at
+  every all-wrong input, so depth ≥ `s − 1`; at depth `s − 1` it is possible
+  **iff** `n = m(2^r − 1)`, `s = m·2^(r−1)`, and then the failure set is affine
+  with every nonzero parity-check column repeated `m` times (affine Hamming
+  codes for odd `n` at strict majority; Bonisoli's classification, credited
+  and re-proved in the binary case); a replicated trace strategy over
+  `GF(2^r)` attains every such pair. **This settles Part I's Q9 for
+  `(m(2^r−1), 2, m(2^r−1))`, `t = m·2^(r−1)`, every `m ≥ 1`**, extending
+  Part II's Corollary 20.3 (even `m`), and answers Research questions 29.4 and
+  29.5 at minimum depth.
+- Section 66: a formalization route; Section 67: the finite checks;
+  Section 68: Research questions 68.1–68.12; Section 69: summary.
+
+### What Part IV does not claim
+
+- Eldredge's block rule and the almost-sure divergence it gives are his
+  (Proposition 6.6), credited by both sources; the growth results of Part II
+  are not re-claimed; hypercontractivity (Bonami, Austrin–Håstad, O'Donnell)
+  and the constant-weight classification (Bonisoli) are classical.
+- The threshold is `sup_i E Q_i = 2` for **deterministic** trees; individual
+  means are below 2; with free randomness the problem changes (a public coin
+  breaks the positive-probability lower bound, private coins make every
+  `C > 1` sufficient), and the randomized optimum is open.
+- Divergence is not eventual positivity (Remark 61.4); the average cost `3/2`
+  is attained, not claimed optimal; finite bounds beyond one query are not
+  claimed optimal.
+- The count-budget classification assumes finitely many zero budgets; count
+  and distance differ; general distance profiles are unclassified.
+- The finite classification is at minimum depth only: it does not classify
+  all optimal strategies or higher-depth extremizers; the affine Hamming
+  conclusion is for odd team sizes.
+- Finite checks do not prove the general or infinite statements; no
+  proof-assistant formalization; unrefereed; priority not established; no
+  endorsement by Glazer; Glazer's unrestricted problem is not addressed.
+
+### Checks made at the write (batch 92)
+
+- **Pin.** `9fe62865d` ("Merge branch 'main'", 4 October 2026, 09:56 UTC−7) is
+  an ancestor of the placement and contains Part II's archive
+  `docs/incoming/hat_guessing_research.zip` (arrival `a162e4386`) but not its
+  placement, so both sources read Part II as the delivered
+  `hat_guessing_growth.tex`, where 29.2 is Research question 13.2 (lines
+  1278–1284). That archive path no longer exists; the archive survives in
+  `a162e4386`.
+- **Repository claims.** Source 06's (the question, Part II's stronger growth
+  constructions, the box-game and list-coding context) and source 04's (the
+  predecessor's blob, sizes, line ranges and Theorem 3.2; Part I's blob, its
+  Q9–Q12 and the functions of `code/verify_certificates.py`; the list-coding
+  blobs `74164ac6`, `b7e037f4`, `c9f8f650` and declarations) all hold. Source
+  04's claim that its finite results address the box-game report's
+  finite-teamwork program holds for Q9; neither source refines Q11. Nothing
+  refuted; no retraction.
+- **Programs** on scratch copies (Python 3.14.4, Windows): source 04's
+  verifier passed ("Passed 19 exhaustive cases, 59546 hat assignments", about
+  6 s) and reproduced its JSON; source 06's block verifier (about 18 s)
+  reproduced its JSON, and its orbit verifier (about 1 s) reproduced its JSON
+  except `elapsed_seconds` (0.393909 delivered); all comparisons after CR
+  stripping. At placement both of source 06's programs also passed under
+  `python -O`, its `SHA256SUMS.txt` matched 8/8, and an independent program
+  confirmed the trace teams, the block law and the three-player value 3/4.
+  The totals printed in Sections 56 and 67 (87,380 assignments; 104,330
+  profiles; 59,546 assignments and 838,498 own-hat comparisons) equal the
+  shipped JSON.
+- **Eldredge.** Source 06 puts his credit to Glazer and Wang on "p. 14",
+  source 04 in the paragraph before his Proposition 6.6; the placement found
+  it in that paragraph of the v2 HTML text. Austrin–Håstad, Bonami, Bonisoli,
+  O'Donnell, Lietz–Winkel and the Samaritan Research page were not checked.
+- **Editorial corrections** (disclosed in Section 45.5 and at the places):
+  source 04's correctness sign `ε_i g_i`, called `Y_i` in its Section 2 but
+  `X_i` in its Sections 3 and 6, is `Y_i` throughout, as in source 06, where
+  `X_i` is the hat; source 04's "D player" (clashing with the surplus `D_n`)
+  is source 06's "T player"; source 04's equation (5.18), now (63.18), printed
+  `3/2 − 1/2 , 4^(1−k_b)` with a comma for a product, corrected with a dated
+  note. Source 04's bibliography lists Butler, Hajiaghayi, Kleinberg and
+  Leighton, *Hat guessing games* (2008), which its text never cites; the
+  entry is kept and cited from Section 45.5, unchecked.
+
 ## Relation to the repository
 
-**Formal status.** No statement of either Part is formalized in Lean or Rocq.
+**Formal status.** No statement of any Part is formalized in Lean or Rocq.
 Part I's manuscript read three files at its pin, all byte-identical at its
 write: `Computability/BusyBeaver/Lean/BusyBeaver/Core.lean` (blob `4961655e`),
 `Logic/PeanoArithmetic/ListCoding/README.md` (`74164ac6`) and
@@ -324,7 +632,9 @@ development formalizes blank-tape machines, halting scores and the domination
 theorem with the compiler as a stated hypothesis; it says nothing about the
 horizon `H` or `BB_time` of Section 12. Part II proposes encoding its finite
 tables with the list-coding interfaces (Section 28.2); no such development
-exists.
+exists. Parts III and IV propose formalization stages (Sections 43.3, 56.3
+and 66) and Part IV's sources read the list-coding files (unchanged since);
+no Lean or Rocq file states any of their results.
 
 **Review in the Hilbert's-tenth research tree.** Before Part I's placement,
 another session reviewed all six batch-87 archives at their arrival revision
@@ -355,12 +665,30 @@ the placement by byte comparison (every placed Part II file equals its archive
 member; the CSV keeps its CRLF bytes; host article and README unchanged at
 the placement) without reading the files as mathematics. No bound of that
 programme changes; no scope correction follows. Section 17.3 records both.
+For batch 92, the same tree's
+`review_latest_five_9dc8db274.md` (commit `3c25fbb55`, before the placement)
+inventoried Part III's and Part IV's source 04 archives with three others: it
+read only the delivery `README.txt` of each (lines 1–97 and 1–96),
+authenticated members by hash, ran nothing, and routed them as measurable
+extension laws (no algorithmic compiler follows from extending a measure) and
+as query costs (the charged resource is observed hats, not arithmetic gates;
+public randomness changes the model). `review_hat_threshold_afd7ffabb.md`
+(commit `b560cee86`) reviewed source 06 mathematically: its README and
+`SOURCE_NOTES.txt` in full and its lines 216–578, 795–1380 and 1466–1663
+(Sections 46–49.3, 51–54.3 and 55–56 here), with "no finding in the inspected
+proof"; it verified the checksum file 8/8, ran no program, did not check the
+sharper constant cited to O'Donnell, the bibliography or novelty, and does not
+supersede the README-only intake of source 04. Not reviewed there: Section 45,
+Proposition 49.4, Section 50, Theorem 54.4, Proposition 54.5, Sections 57–58
+and all of source 04. Both leave that programme's arithmetic bounds
+unchanged; no scope correction follows. Sections 30.3 and 45.5 record them.
 
-**Neighbouring reports.** None shares a theorem or a question with either
+**Neighbouring reports.** None shares a theorem or a question with any
 Part. Before batch 90 nothing in ProveIt treated box, hat, guessing or
 prediction games (search of the tracked tree at the batch-87 placement,
-including `2211.10474` and A005271); Part II is now the repository's hat-game
-material, and the batch-90 placement found no other.
+including `2211.10474` and A005271); Parts II–IV are now the repository's
+hat- and box-game material, and the batch-90 and batch-92 placements found no
+other.
 
 - `../games-on-ordinals/` holds different games: in
   `open-query-membership-games` a Seeker asks open-set queries about a hidden
@@ -371,7 +699,14 @@ material, and the batch-90 placement found no other.
 - `../non-baire-translation-invariant-ideal/` is the nearest in spirit to
   Part I: a ZFC construction, from a free ultrafilter, of an ideal without the
   Baire property, the kind of irregular object Research question Q2 asks
-  about for the Baire-property version of Theorem 3.1.
+  about for the Baire-property version of Theorem 3.1. Since batch 92 that
+  is the only clause of Q2 still open (Part III, Section 42), and Part III's
+  invariant comeagre null set is another ZFC measure-versus-category contrast;
+  no theorem is shared.
+- `../games-on-ordinals/open-query-membership-games` also counts adaptive
+  queries and certifies finite budgets; Part IV's query costs concern
+  observed hats in a guessing game, not open-set queries about a hidden point;
+  no theorem is shared.
 - The five sister manuscripts of batch 87 concern Glazer's *other* question
   paper, *A Topological Tennenbaum Theorem* (arXiv:2311.13699), and became
   Parts VI–IX of
@@ -387,7 +722,13 @@ material, and the batch-90 placement found no other.
 single manuscript and that nothing in ProveIt treats hat games was true at its
 write; a dated batch-90 note there now says both are superseded by Part II,
 and the batch-87 note "All twelve questions stay open as printed" is
-qualified by a dated note on Q9. No other sentence of Part I became false.
+qualified by a dated note on Q9. Batch 92 added dated notes in Section 1.4
+(four Parts), after Section 15 (Q2 and Q5 answered, Q9's larger family) and
+after Part II's questions (29.2 answered; 29.4 and 29.5 at minimum depth;
+29.10 still open), and Remark 15.1, which refutes the batch-90 sentence
+"Every other (m,q,n,t) remains open" (it was false when written; it stays on
+record). The line above the contents now announces four Parts. No other
+sentence of Parts I–II became false.
 
 ## Notation
 
@@ -408,9 +749,40 @@ cylinder σ-algebra on uncountable products). The table of Section 17.4 gives
 each with its Part I meaning. No symbol was renamed; the manuscript's `\PP`,
 `\EE` print with Part I's macros for the same symbols ℙ, 𝔼.
 
+Part III (table in Section 30.4) keeps its letters: `𝒜` (completion), `ℬ(X)`,
+`𝓕` (the enlarged σ-algebra, **not** Part II's blackboard `𝔽` of `𝔽_2`; its
+macro `\F` was renamed `\Fext` because Part II's `\F` is the blackboard
+letter), `Γ`, `D_s`, `D_H`, `L_H` (not the surplus `D_n`), `G` (good set), `α`
+(atomic mass), `T`, `K`, `Ω_m`, and the directions R1–R12. Its `\Prob` prints
+with Part I's `ℙ` macro; its colours and result box are Part I's.
+
+Part IV (table in Section 45.7) keeps both sources' letters with two
+renamings in source 04, disclosed in Section 45.5: its correctness sign
+`ε_i g_i` is `Y_i` throughout (source 04 also called it `X_i`, which is the
+hat in source 06), and its "D player" is source 06's "T player". `F_n` (06)
+and `T_n` (04) are the same quantity `2D_n`, **not** Part I's `F_n`; `G` is a
+geometric variable (and in source 06 a visibility graph), `Q_i` a query count
+(not Part I's alphabet), `q(i)` and `h(i)` count and distance budgets; source
+04's indicator macro with an argument prints as before through a new macro
+`\indic`, its "almost surely" macro as those words.
+
 ## Labels
 
-Every label carries the prefix `mbg:`; Part II's carry `mbg:hat:`. Part I:
+Every label carries the prefix `mbg:`; Part II's carry `mbg:hat:`, Part
+III's `mbg:ext:`, Part IV's `mbg:qry:` (source 06) and `mbg:insp:` (source
+04). **334 labels** since batch 92 (126 before; none removed or renamed): the
+199 delivered labels of the three batch-92 manuscripts (62, 66 and 71),
+prefixed with every reference updated, and nine added by the write —
+`mbg:ext:part`, `mbg:ext:sec:provenance`, `mbg:ext:sec:notation`,
+`mbg:qry:part`, `mbg:qry:sec:provenance`, `mbg:qry:sec:merge`,
+`mbg:qry:sec:notation`, `mbg:qry:sec:conclusions` (source 06's unlabelled
+Section 14) and `mbg:insp:rem:q9-open-claim` (Remark 15.1). All 126 earlier
+labels and all 13 earlier bibliography numbers print as before (compared with
+a build of the committed text), and every one of the 199 delivered labels
+prints its source's number shifted by the stated offset (compared with
+standalone builds of the three manuscripts). The history of the first 126:
+
+Part I:
 the manuscript's 61 labels were prefixed before anything cited them and every
 reference updated (19 `\ref`, 44 `\eqref`); the batch-87 write added four
 (`mbg:sec:provenance`, `mbg:sec:notation`, `mbg:app:ledger`,
@@ -464,31 +836,84 @@ The batch-90 write:
   `\FIN`, the `question` environment, the colour `muted` and the manuscript's
   `\lstset` to the preamble, which change nothing in Part I.
 
-No statement, proof or non-claim of either manuscript was changed.
+The batch-92 write:
+
+- appended Part III (manuscript 03) after Part II's appendices and Part IV
+  (sources 06, then 04) after Part III's appendices, before the shared
+  bibliography; the line above the contents now announces four Parts;
+- numbered Part III's sections by the offset 29 (appendices F–G), its
+  consecutively numbered equations as `(III.k)`; Part IV's by the offsets 44
+  (source 06) and 58 (source 04), with equations numbered within sections
+  from Part IV on (`\counterwithin`), as both manuscripts did; Part III's
+  figure is Figure 2;
+- added dated `[write]` notes: in Part I, Section 1.4 (four Parts) and after
+  Section 15 (status of Q2, Q5 and Q9), plus **Remark 15.1**; in Part II,
+  after Section 29 (status of 29.2, 29.4, 29.5, 29.10) and a dated addition to
+  bibliography entry 10 (Eldredge); in Part III, at its head (offsets),
+  Sections 30.3–30.4 (provenance, notation), after Section 43.2 (shipped
+  names, rerun), after Section 44 (status of R1–R12), in Appendix G (delivery
+  names); in Part IV, at its head (offsets, merge rule), Sections 45.5–45.7
+  (provenance, merge, notation), after Corollary 48.4, Lemma 49.2,
+  Theorem 50.2, Proposition 51.3, Proposition 52.3, Theorem 53.3,
+  Proposition 53.4, Section 54, Section 55, Section 56.2, Section 57, at the
+  end of Section 59 and of Section 60.3, before Lemma 61.1, after Theorem 61.3,
+  in place of source 04's proofs of Lemmas 62.1 and 63.1, after Theorem 63.3,
+  after equation (63.18) (the correction), at the end of Section 65, Section
+  67 and Section 68, and at the head of Section 69; and dated notes in the new
+  bibliography entries that merge or identify sources;
+- printed the title pages as Part headings with abstracts and status boxes
+  (and source 04's keywords); set Part I's macros for `\Prob`/`\PP`, `\EE`,
+  `\repo`, Part I's remark style, colours and result box; added `tikz` and
+  `pgfplots` (Part III's figure is drawn by the manuscript's own code), the
+  macros `\Fext`, `\A`, `\B`, `\cyl`, `\conv`, `\extsnap`, `\qrypin`,
+  `\indic`, `\norm` and the operators `\Var`, `\Inf` to the preamble, which
+  change nothing in Parts I–II;
+- merged duplicate bibliography entries (Glazer's paper, Łoś–Marczewski,
+  Eldredge and Ebert–Merkle–Vollmer are Parts I–II's entries 1, 4, 10, 11;
+  Glazer's dissertation, the predecessor, the box-game report and list
+  coding are one entry each, entries 14, 26–28); new entries 14–35 follow
+  Part II's.
+
+No statement, proof or non-claim of any manuscript was changed, apart from
+the disclosed renamings, the pointer proofs and the one corrected typo of
+Part IV.
 
 ## Files
 
 ```text
-README.md                                    this guide (replaces Part I's delivered README.md, staged under this name)
-article.tex                                  the report: Part I (delivered article.tex) and Part II (hat_guessing_growth.tex), labels prefixed, [write] notes
-article.pdf                                  compiled report, 53 pages (unnumbered title page, then pages 1-52)
-02-hat-surplus-source_audit.txt              Part II: delivered source and claim audit (source_audit.txt)
-code/verify_certificates.py                  Part I: exact finite enumerations and certificate checks (standard library)
-code/formal_series.py                        Part I: exact rational formal-series coefficients through a chosen degree
-code/Makefile                                Part I: delivered targets pdf, verify, clean (delivery layout; see below)
-code/02-hat-surplus-verify_hat_strategy.py   Part II: exhaustive finite verifier (standard library)
-code/02-hat-surplus-make_figures.py          Part II: regenerates Figure 1 (Matplotlib, NumPy)
-code/02-hat-surplus-README.txt               Part II: delivered verifier README (code/README.txt)
-code/02-hat-surplus-Makefile                 Part II: delivered targets pdf, verify, figures (delivery layout)
-code/02-hat-surplus-LICENSE.txt              Part II: the code's own permissive licence (code/LICENSE.txt)
-data/certificates.json                       Part I: the four-box non-executable blind rule and the three-box team with P(score >= 2) = 3/4
-data/verification_report.json                Part I: recorded run of verify_certificates.py
-data/formal_series_report.json               Part I: recorded run of formal_series.py --degree 10
-data/02-hat-surplus-verification.json        Part II: recorded verifier run (nine cases)
-data/02-hat-surplus-examples.json            Part II: one good and one bad block assignment
-data/02-hat-surplus-example_prefix.csv       Part II: prefix path of the good example (CRLF, as delivered)
-figures/02-hat-surplus-block_prefix.pdf      Part II: Figure 1, included by article.tex
-figures/02-hat-surplus-block_prefix.png      Part II: raster copy of Figure 1 (not used by the article)
+README.md                                         this guide (replaces Part I's delivered README.md, staged under this name)
+article.tex                                       the report: Parts I-IV (delivered article.tex, hat_guessing_growth.tex, adaptive_box_games.tex, hat_query_thresholds.tex with hat_inspection_frontier.tex), labels prefixed, [write] notes
+article.pdf                                       compiled report, 143 pages (unnumbered title page, then pages 1-142)
+02-hat-surplus-source_audit.txt                   Part II: delivered source and claim audit (source_audit.txt)
+04-hat-inspection-PROOF_STATUS.txt                Part IV, source 04: delivered proof-status record (PROOF_STATUS.txt)
+04-hat-inspection-SOURCE_AUDIT.txt                Part IV, source 04: delivered source and claim audit (SOURCE_AUDIT.txt)
+05-hat-queries-SOURCE_NOTES.txt                   Part IV, source 06: delivered source snapshot and contribution audit (SOURCE_NOTES.txt)
+code/verify_certificates.py                       Part I: exact finite enumerations and certificate checks (standard library)
+code/formal_series.py                             Part I: exact rational formal-series coefficients through a chosen degree
+code/Makefile                                     Part I: delivered targets pdf, verify, clean (delivery layout; see below)
+code/02-hat-surplus-verify_hat_strategy.py        Part II: exhaustive finite verifier (standard library)
+code/02-hat-surplus-make_figures.py               Part II: regenerates Figure 1 (Matplotlib, NumPy)
+code/02-hat-surplus-README.txt                    Part II: delivered verifier README (code/README.txt)
+code/02-hat-surplus-Makefile                      Part II: delivered targets pdf, verify, figures (delivery layout)
+code/02-hat-surplus-LICENSE.txt                   Part II: the code's own permissive licence (code/LICENSE.txt)
+code/03-adaptive-extensions-verify_finite.py      Part III: exact finite checks, JSON on standard output (verify_finite.py)
+code/03-adaptive-extensions-finite_checks_README.txt  Part III: methods and scope of the finite checks (finite_checks_README.txt)
+code/04-hat-inspection-verify_finite.py           Part IV, source 04: exhaustive checks of blocks and trace teams (code/verify_finite.py)
+code/04-hat-inspection-build.sh                   Part IV, source 04: three pdflatex passes of the unshipped manuscript (build.sh)
+code/05-hat-queries-verify_hat_queries.py         Part IV, source 06: block and query-algorithm verifier (verify_hat_queries.py)
+code/05-hat-queries-verify_orbit_bounds.py        Part IV, source 06: one-query enumeration and orbit verifier (verify_orbit_bounds.py)
+data/certificates.json                            Part I: the four-box non-executable blind rule and the three-box team with P(score >= 2) = 3/4
+data/verification_report.json                     Part I: recorded run of verify_certificates.py
+data/formal_series_report.json                    Part I: recorded run of formal_series.py --degree 10
+data/02-hat-surplus-verification.json             Part II: recorded verifier run (nine cases)
+data/02-hat-surplus-examples.json                 Part II: one good and one bad block assignment
+data/02-hat-surplus-example_prefix.csv            Part II: prefix path of the good example (CRLF, as delivered)
+data/03-adaptive-extensions-finite_results.json   Part III: recorded output of the checker (finite_results.json)
+data/04-hat-inspection-verification.json          Part IV, source 04: recorded run, 19 cases (data/verification.json)
+data/05-hat-queries-hat_query_verification.json   Part IV, source 06: recorded block-verifier run (hat_query_verification.json)
+data/05-hat-queries-orbit_verification.json       Part IV, source 06: recorded orbit-verifier run (orbit_verification.json)
+figures/02-hat-surplus-block_prefix.pdf           Part II: Figure 1, included by article.tex
+figures/02-hat-surplus-block_prefix.png           Part II: raster copy of Figure 1 (not used by the article)
 ```
 
 Every file except `README.md`, `article.tex` and `article.pdf` is
@@ -497,7 +922,13 @@ byte-identical to its delivery. Part I: placement moved the programs and
 (`12076b2e8`) added the prefix `02-hat-surplus-` and kept the delivered
 `code/`, `data/` and `figures/` layout; the audit moved to the report root.
 `data/02-hat-surplus-example_prefix.csv` is delivered with CRLF line ends and
-kept so by a `-text` line in `SetTheory/Cardinals/.gitattributes`.
+kept so by a `-text` line in `SetTheory/Cardinals/.gitattributes`. Parts III
+and IV: placement (`e38f368c2`) added the prefixes `03-adaptive-extensions-`,
+`04-hat-inspection-` and `05-hat-queries-`, put programs and build script in
+`code/`, outputs in `data/`, audits and notes at the report root, and moved
+Part III's methods text to `code/` (as Part II's `code/README.txt`); no staged
+file has CR bytes. The batch-92 packages ship no licence file; their code is
+the packages' own and falls under the repository's MIT-0.
 
 **Licence.** `code/02-hat-surplus-LICENSE.txt` is the Part II package's own
 licence for its original code: permission to use, copy, modify, publish,
@@ -515,6 +946,20 @@ Part II — `hat_guessing_growth.tex` (its text is Part II of `article.tex`),
 the delivered 22-page A4 `hat_guessing_growth.pdf` and the top-level
 `README.txt`; the package has no checksum manifest:
 `git show a162e4386:docs/incoming/hat_guessing_research.zip > <scratch>/hat_guessing_research.zip`.
+Part III — `adaptive_box_games.tex` (its text is Part III), the delivered
+29-page `adaptive_box_games.pdf` (455,311 bytes) and `README.txt`; no
+checksum manifest:
+`git show 9dc8db274:docs/incoming/adaptive_box_games_research.zip > <scratch>/adaptive_box_games_research.zip`.
+Part IV, source 04 — `hat_inspection_frontier.tex` (Sections 59–69), the
+delivered 31-page A4 `hat_inspection_frontier.pdf` (451,026 bytes) and
+`README.txt`; no checksum manifest:
+`git show 9dc8db274:docs/incoming/hat_inspection_frontier.zip > <scratch>/hat_inspection_frontier.zip`.
+Part IV, source 06 — `hat_query_thresholds.tex` (Sections 45–58), the
+delivered 26-page `hat_query_thresholds.pdf` (439,236 bytes, metadata author
+"ChatGPT research report"), `README.txt` and the checksum manifest
+`SHA256SUMS.txt` (eight entries, verified 8/8 at placement, dropped by
+repository policy):
+`git show afd7ffabb:docs/incoming/hat_query_thresholds_package.zip > <scratch>/hat_query_thresholds_package.zip`.
 Nothing was excluded as heavy.
 
 Delivered text that names the delivery layout or a file not shipped:
@@ -540,6 +985,28 @@ notes there give the shipped names). The verifier's default output is
 would write unprefixed `verification.json`, `examples.json` and
 `example_prefix.csv` into this report's `data/`; the figure script always
 writes `figures/block_prefix.pdf` and `.png` beside `code/`'s parent.
+Part III — `code/03-adaptive-extensions-finite_checks_README.txt` and the
+article's Appendix G (`python3 verify_finite.py > finite_results.json`, the
+build of `adaptive_box_games.tex`; notes in Sections 43.2 and G give the
+shipped names); the program prints its JSON to standard output and writes no
+file.
+Part IV, source 04 — `code/04-hat-inspection-build.sh`
+(`pdflatex hat_inspection_frontier.tex`, three passes);
+`code/04-hat-inspection-verify_finite.py` (always writes
+`../data/verification.json` relative to itself, so run in place it would add
+an unprefixed `data/verification.json` here); `04-hat-inspection-SOURCE_AUDIT.txt`
+(`PROOF_STATUS.txt`, `docs/incoming/hat_guessing_research.zip`, which no
+longer exists in the tree); `04-hat-inspection-PROOF_STATUS.txt` (the same
+archive); `data/04-hat-inspection-verification.json` (its block records say
+`D_query_counts_per_player` for the role printed as T); the article's
+Section 67 (delivery names; a note there gives the shipped ones).
+Part IV, source 06 — both programs (default outputs
+`hat_query_verification.json` and `orbit_verification.json` beside the
+program, so run in place they would add unprefixed files to `code/`; both
+accept `--output`); `05-hat-queries-SOURCE_NOTES.txt` (the retired archive
+path); the article's Section 56 (delivery names; a note there gives the
+shipped ones). Source 06's verifier and its delivered README call the T role
+D.
 
 ## Rerun the checks (on a scratch copy)
 
@@ -604,11 +1071,57 @@ one only in its creation date (6 bytes), and the PNG has the same size
 gives a visibly equivalent but differently encoded PDF. The shipped figure
 files are the delivered ones.
 
+**Part III.** The checker prints its JSON to standard output; redirect it
+into a scratch file. Python 3.9 or newer, standard library only. From this
+directory:
+
+```sh
+D=$(pwd); T=$(mktemp -d)
+cp code/03-adaptive-extensions-verify_finite.py "$T/verify_finite.py"
+cd "$T"
+py verify_finite.py > finite_results.json        # exit status 0; "status": "all_exact_checks_passed"
+tr -d '\r' < finite_results.json | cmp -s - "$D/data/03-adaptive-extensions-finite_results.json" && echo "same  finite_results.json"
+```
+
+At the write (4 October 2026, Python 3.14.4, Windows) it ran in about a
+second and printed `same` (on Windows the redirected output has CRLF line
+ends, hence the `tr`).
+
+**Part IV.** Source 04's verifier writes `../data/verification.json`
+relative to itself, so copy it into a `code/` directory of a scratch tree;
+source 06's programs write beside themselves (or to `--output PATH`). Python
+3.8 (source 04) or 3.10 (source 06) or newer, standard library only. From
+this directory:
+
+```sh
+D=$(pwd); T=$(mktemp -d); mkdir -p "$T/code"
+cp code/04-hat-inspection-verify_finite.py "$T/code/verify_finite.py"
+cp code/05-hat-queries-verify_hat_queries.py "$T/verify_hat_queries.py"
+cp code/05-hat-queries-verify_orbit_bounds.py "$T/verify_orbit_bounds.py"
+cd "$T"
+py code/verify_finite.py                          # "Passed 19 exhaustive cases, 59546 hat assignments."
+py verify_hat_queries.py                          # writes hat_query_verification.json here
+py verify_orbit_bounds.py                         # writes orbit_verification.json here
+s() { tr -d '\r' < "$1"; }
+cmp <(s data/verification.json) "$D/data/04-hat-inspection-verification.json" && echo "same  verification.json"
+cmp <(s hat_query_verification.json) "$D/data/05-hat-queries-hat_query_verification.json" && echo "same  hat_query_verification.json"
+cmp <(s orbit_verification.json | grep -v elapsed_seconds) <(grep -v elapsed_seconds "$D/data/05-hat-queries-orbit_verification.json") && echo "same  orbit_verification.json (but elapsed time)"
+```
+
+At the write (Python 3.14.4, Windows) the three runs took about 6, 18 and
+1 seconds and all three comparisons printed `same`. Source 06's checks are
+explicit runtime tests and also pass under `python -O` (checked at
+placement); source 04's verifier is not documented for `-O`, so run it
+without. The build script `code/04-hat-inspection-build.sh` compiles the
+unshipped `hat_inspection_frontier.tex`; to rebuild the delivered PDF,
+extract the archive (see "Not shipped") and run it there.
+
 ## Build the PDF
 
 pdfLaTeX with newtxtext/newtxmath, amsthm, geometry, microtype, mathtools,
 booktabs, longtable, array, enumitem, xcolor, fancyhdr, titlesec, tcolorbox,
-xurl, graphicx, listings and hyperref; the bibliography is inline. The
+xurl, graphicx, listings, tikz, pgfplots and hyperref; the bibliography is
+inline. The
 article includes `figures/02-hat-surplus-block_prefix.pdf`, so copy it too.
 Build in a scratch copy:
 
@@ -618,10 +1131,13 @@ cp article.tex "$B/"; cp figures/02-hat-surplus-block_prefix.pdf "$B/figures/"
 cd "$B"; latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The committed PDF was built this way with MiKTeX: 53 pages; no errors or
-warnings, no undefined references or citations, no multiply defined labels,
-no duplicate PDF destinations, no overfull or underfull boxes. The batch-87
-text, built the same way, gives 26 pages with the same clean log; its
+The committed PDF was built this way with MiKTeX (4 October 2026, batch 92):
+143 pages; no errors or warnings, no undefined references or citations, no
+multiply defined labels, no duplicate PDF destinations, no overfull or
+underfull boxes. The log has four informational lines "Infinite glue
+shrinkage found in box being split" (ignored by TeX when a page breaks inside
+a framed box or note); the committed batch-90 text, built the same way (53
+pages), has one. The batch-87 text gives 26 pages with a clean log; its
 delivered source gave 24 pages and one duplicate-destination warning
 (`page.1`), removed as described under Labels.
 
@@ -644,7 +1160,31 @@ delivered source gave 24 pages and one duplicate-destination warning
   the placement. Batch 90 of `docs/incoming`, manuscript 02 of six; arrival
   `a162e4386`, placement `12076b2e8`, written in the batch-90 write phase
   (4 October 2026).
-- Each Part is a single source: the report made no merge choices beyond
-  placing manuscript 02 of batch 90 as a Part of this report (it names
-  Part I as its most direct source and answers its Q9 for a family) rather
-  than as a separate report.
+- Part III, sources cited by the manuscript: Glazer, arXiv:2211.10474 and
+  his Harvard dissertation (2023); Part I of this report at the pin
+  `1afa38bf9` (4 October 2026), an ancestor of the placement; Kakutani
+  (1943), Gryllakis–Koumoullis (1990), Fremlin's *Measure Theory* (254P, 4A2E,
+  4A3N, 4A3S), Łoś–Marczewski (1949), Artstein (1983), Janson (2013), Vidmar
+  (2021). Batch 92 of `docs/incoming`, manuscript 03 of six; arrival
+  `9dc8db274`, placement `e38f368c2`, written in the batch-92 write phase
+  (4 October 2026).
+- Part IV, sources cited by the manuscripts: Eldredge, arXiv:2508.02828v2
+  (the block rule, credited); Glazer, arXiv:2211.10474 and his dissertation;
+  Part II (as the delivered `hat_guessing_growth.tex`), Part I and the
+  list-coding project at the common pin `9fe62865d` (4 October 2026), an
+  ancestor of the placement; source 06 also Ebert–Merkle–Vollmer (2003),
+  Bonami (1970) and O'Donnell (2014/2021); source 04 also Austrin–Håstad
+  (2009, 2011), Bonisoli (1984), Lietz–Winkel (2024), a Samaritan Research
+  article (2025) and, uncited in its text, Butler–Hajiaghayi–Kleinberg–Leighton
+  (2008). Batch 92, manuscripts 06 (arrival `afd7ffabb`) and 04 (arrival
+  `9dc8db274`); placement `e38f368c2`; written in the batch-92 write phase.
+- Merge choices. Parts I–III are single sources. Manuscripts 03, 04 and 06
+  were placed here, not as reports of their own, because they answer named
+  questions of this report (Q2, Q5; 29.2; Q9, 29.4, 29.5). Part IV merges 06
+  (base) and 04, which prove the same core by the same construction; the
+  choices — base 06, both printed in their own numbering, shared statements
+  kept in both places with dated cross-notes, two of source 04's proofs
+  replaced by pointers to source 06's identical arguments, its other shared
+  proofs kept as second routes — are described in Section 45.6 and under
+  "How the two sources are merged" above. Placing manuscript 02 of batch 90 as
+  Part II was the only earlier choice.
