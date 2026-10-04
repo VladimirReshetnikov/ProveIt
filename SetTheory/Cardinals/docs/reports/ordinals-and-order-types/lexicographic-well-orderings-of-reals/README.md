@@ -221,6 +221,17 @@ well-orderings of ℝ compared at the first unequal real entry:
   dated notes, "[Added 3 October 2026, batch 81: …]", after the question of
   Section 26.6, after the commentary of Research question 26.8 and after
   Research question 26.9, record this (one page more; no label or number
+  changed). Since batch 83 (its sources 19–30) that report also gives, for
+  every ordinal α of cardinality μ, a coding sandwich
+  𝔹_{ϱ_lo} × n! ↪ 𝒲_α(S_{<θ}) ↪ 𝔹_{ϱ_up} × n! with the exact cube spectrum,
+  the two bounds agreeing unless some residual cardinal is a singular
+  non-strong limit at most θ (its Theorems 64.7, 64.11, source 19); the
+  display of Section 26.6 in ZFC at every cardinal cutoff θ < ℵ_ω, θ = ω₁
+  included (its Corollary 64.20, source 30), and at every noncardinal cutoff
+  ω < θ < ω₁ (its Corollary 78.10, source 29); and the weight μ^{<μ} or 2^μ
+  of the strata of type μ + n over every infinite linear alphabet (its
+  Corollary 63.12, source 30). A fourth note in Section 26.6, "[Added 3
+  October 2026, batch 83: …]", records this (no page, label or number
   changed).
 - `Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceSimplicity.lean`
   is cited by source 06 as context for bounded sign orders (Section 22). None
