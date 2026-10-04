@@ -1,0 +1,91 @@
+{
+  "title": "Perfect Transcendence Gaps: exact finite regression checks",
+  "scope": "Finite arithmetic only. Not a proof assistant or an infinitary certificate.",
+  "status": "PASS",
+  "checks": {
+    "digit_recoding": {
+      "status": "PASS",
+      "exhaustive_words": 23941,
+      "prefix_residue_checks": 139168,
+      "arbitrary_tail_checks": 23941,
+      "word_length_range": [
+        0,
+        5
+      ],
+      "words_by_prime": {
+        "2": 63,
+        "3": 364,
+        "5": 3906,
+        "7": 19608
+      }
+    },
+    "laurent_tails": {
+      "status": "PASS",
+      "seed": 20261003,
+      "sample_pairs": 1000,
+      "exact_identity_checks": 38000,
+      "note": "Finite rational Laurent polynomials only; no Hahn-support proof."
+    },
+    "p_adic_newton": {
+      "status": "PASS",
+      "prime": 7,
+      "polynomial": "X^2 - 2",
+      "seed": "3",
+      "iterations_checked": 7,
+      "records": [
+        {
+          "iteration": 0,
+          "residual_valuation": 1,
+          "checked_modulus": 7,
+          "root_residue": 3
+        },
+        {
+          "iteration": 1,
+          "residual_valuation": 2,
+          "checked_modulus": 49,
+          "root_residue": 10
+        },
+        {
+          "iteration": 2,
+          "residual_valuation": 4,
+          "checked_modulus": 2401,
+          "root_residue": 2166
+        },
+        {
+          "iteration": 3,
+          "residual_valuation": 8,
+          "checked_modulus": 5764801,
+          "root_residue": 1802916
+        },
+        {
+          "iteration": 4,
+          "residual_valuation": 16,
+          "checked_modulus": 13841287201,
+          "root_residue": 5916488742
+        },
+        {
+          "iteration": 5,
+          "residual_valuation": 32,
+          "checked_modulus": 13841287201,
+          "root_residue": 5916488742
+        },
+        {
+          "iteration": 6,
+          "residual_valuation": 64,
+          "checked_modulus": 13841287201,
+          "root_residue": 5916488742
+        }
+      ]
+    },
+    "profinite_finite_stages": {
+      "status": "PASS",
+      "factorial_residue_samples": 720,
+      "decoded_residue_checks": 4320,
+      "coherent_prefix_checks": 15120,
+      "idempotents_mod_8_factorial": 16,
+      "prime_coordinate_recovery_checks": 64,
+      "boolean_operation_checks": 272,
+      "note": "Finite stages only; does not verify overspill or standard systems."
+    }
+  }
+}

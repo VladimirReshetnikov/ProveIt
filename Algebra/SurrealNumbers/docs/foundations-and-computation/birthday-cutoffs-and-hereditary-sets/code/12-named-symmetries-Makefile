@@ -1,0 +1,12 @@
+.PHONY: all verify pdf clean
+
+all: verify pdf
+
+verify:
+	python3 verify_orbit_spectra.py --output verification_results.json
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
+
+clean:
+	latexmk -c article.tex

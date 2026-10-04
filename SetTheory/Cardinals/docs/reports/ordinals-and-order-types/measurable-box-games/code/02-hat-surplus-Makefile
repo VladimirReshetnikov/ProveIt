@@ -1,0 +1,14 @@
+.PHONY: all pdf verify figures
+
+all: pdf
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error hat_guessing_growth.tex
+	pdflatex -interaction=nonstopmode -halt-on-error hat_guessing_growth.tex
+	pdflatex -interaction=nonstopmode -halt-on-error hat_guessing_growth.tex
+
+verify:
+	python3 code/verify_hat_strategy.py
+
+figures:
+	python3 code/make_figures.py
