@@ -2893,6 +2893,31 @@ Corollary 12.1 (`ptr:cor:universality`) is the matching lower side for
 globally one-visit turmite runs. No shared theorem. A dated item in Part
 XX's "Relation to the other Parts" list records it, without a new label.
 
+**Reciprocal notes (batch 88, 3 October 2026).**
+[periodic-turmite-first-revisits](../periodic-turmite-first-revisits/)
+now answers that question 3 in its Parts II–IV (Research Reports 40, 42, 44,
+47, 48; written in `119a1325d`; labels `ptr:la:`, `ptr:ai:`, `ptr:pc:`,
+`ptr:sc:`, `ptr:fu:`): a literal periodic Langton ant for the same U15 with
+a finite loader, at most two visits per cell and an iff residue-and-heading
+port (Theorem 40.1.1, `ptr:la:thm:interface`), the sharp one/two-visit
+boundary (Corollary 40.1.2, `ptr:la:cor:boundary`), and one fixed positive
+polynomial for the fixed U15 sentinel-pair halting language through the ant
+(Theorem 44.1.1, `ptr:pc:thm:complete`; 465 witnesses, exact degree
+2,304,000; 14,658,934 operations from the literals 1 and 3, 14,620,711 in
+the programme's later packets). It is the turmite analogue of Part XX's
+construction, with its own 32-state encoding of U15 rather than Part XX's
+34-state lazy CA and with the program-to-tape encoder imported in both; it
+is not an ordinary-input loader in the programme's sense, and there is no
+shared theorem. A second dated item in Part XX's "Relation to the other
+Parts" list records it; the batch-83 item stays as written.
+[fixed-universal-polynomials](../fixed-universal-polynomials/) (Parts
+VI–VIII, written in `85ea6145d`) tabulates the candidates below the
+84-operation record in its Table 3 and prints the refutations of the
+first-index deletions (Part VII) and of the free-coefficient 83 and
+square/product 82 candidates (Part VIII); a dated note in Part XX's
+paragraph "No effect on the universal bound" points there. Neither note
+adds a label, macro, package or bibliography entry.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -3057,6 +3082,19 @@ other Parts" list, on `periodic-turmite-first-revisits`; no label, macro,
 package or bibliography entry) leaves the build at 652 pages with the same
 clean log, the same single underfull line and seventeen "Infinite glue
 shrinkage" messages; its page (printed page 587) was rendered and inspected.
+
+The batch-88 reciprocal notes (3 October 2026; a second dated item in Part
+XX's "Relation to the other Parts" list, on Parts II–IV of
+`periodic-turmite-first-revisits`, and a dated addition to Part XX's
+paragraph "No effect on the universal bound", on Table 3 and Parts VII–VIII
+of `fixed-universal-polynomials`; no label, macro, package or bibliography
+entry) leave the build at 652 pages with the same clean log, the same single
+underfull line and seventeen "Infinite glue shrinkage" messages, compared
+with a build of the committed text. Every `.aux` label number is unchanged;
+the item moves Part XX's material from printed page 588 to 621 by one page,
+which the end of Part XX absorbs (40 labels change page). Its pages (printed
+pages 587–588) and that of the second note (620) were rendered and
+inspected.
 
 ## Rerunning the checks
 
