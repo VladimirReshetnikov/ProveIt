@@ -38,6 +38,65 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [four sandpile certificate reports](review_new_sandpiles_0d7f51c44.md)
+> at **0d7f51c44** give fixed-arity certificates with unbounded witness values
+> for binary stabilization, binary target firing, repeated target firing,
+> and finite total global stabilization. Their supplied sources have
+> **11469/14778/17275/14571 operations**, **2566/3308/3865/3262 witnesses**
+> and **exact degree18**. Fresh checks of all58093 rows verify closure,
+> liveness, the literal sum-of-squares suffixes and a full-source degree18
+> specialization with coefficient48; root repeats normal/optimized receipts.
+> All320 member hashes and30 exact text-read spans are authenticated.
+> Raw physical-input decoding and an existential box/radix are paid, while
+> the imported physical universality simulations and raw machine-input
+> reduction remain separate dependencies. No complete residual-to-macro
+> reconstruction or universal-operation improvement is claimed.
+>
+>
+> The [eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md)
+> at **0d7f51c44** have2622 authenticated entries and27 exact text-read records.
+> Fresh independent checks, repeated by root on the literal source, confirm
+> Report55's **184016=72093M+111923A**, **41309-witness**, **exact-degree12**
+> chronological matrix certificate and all23618 squared residuals. Its fixed
+> matrix context and imported module semantics remain explicit. Reports66/69
+> reduce witnesses for separately compiled finite-horizon tables; Report67's
+> **12** counts POWER leaves, with no optimized gate source supplied at that
+> interface. The two A196460 reports concern finite-table counts, while
+> Reports70/71 improve CA recognition radii and require new arithmetic
+> evaluators for their changed rules. No lower paid unbounded compiler was
+> found in the recorded read scope; the universal84/187 and85/155 points remain.
+>
+>
+> The [twelve signal/particle reports](review_new_signals_0d7f51c44.md)
+> at **0d7f51c44** have2035 authenticated archive members and57 recorded
+> text-read spans. Reports64–65 supply the strongest future interface:
+> one guarded five-live-signal machine per fixed counter program, followed
+> by an exact `30D` instruction clock. Their integer formulas still have
+> arity growing with the chosen horizon `T`; the fixed-arity unbounded
+> history representation is missing. The reported **344/367**-operation
+> rotation certificates and **48/57**-operation local-realization certificates
+> represent decidable predicates, not universal halting. The real-input
+> nonexistence result does not prohibit integer-input Diophantine certificates.
+> Root independently authenticated all archive/member/read-span hashes.
+> Chronology proofs and reported arithmetic source counts were not rebuilt
+> in this scoped intake; no new universal bound is entered.
+>
+>
+> The [batch90 placement review](review_batch90_placement_12076b2e8.md)
+> authenticates all32 added files against the53 pinned archive members at
+> **12076b2e8**. Only the new Cantor-subfields report receives its article and
+> guide; the other five manuscripts have ancillary evidence placed, with
+> all eight existing host article/guide files unchanged. Thus Polish PartX
+> is present, while the proposed PartsXI–XII and other listed integrations
+> remain pending at that revision. Root repeats the exact placement receipt
+> in normal and optimized modes. No mathematical read scope is enlarged by
+> byte equality. A [later five-archive intake](review_latest_five_9dc8db274.md)
+> at **9dc8db274** reads436 lines across the five primary READMEs and pins
+> all42 members; exponent/rank topology, one-dimensional classification and
+> game-query claims remain distinct from a paid integer compiler. Manuscript
+> bodies in this latest intake are unreviewed.
+>
+>
 > The [seven-report reciprocal-note review](review_reciprocal_fc1ad4275.md)
 > covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
 > articles remain identical and all54 introduced label references resolve.
