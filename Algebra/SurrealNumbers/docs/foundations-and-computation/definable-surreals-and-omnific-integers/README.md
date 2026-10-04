@@ -302,6 +302,22 @@ Appendix A.3 records these.
   over set-sized real closed fields (`Oz = R_R`; `2^𝔠` pairwise nonisomorphic
   among them), and cite Theorem 16.2 for the rings `I_A`. An unnumbered note
   after Theorem 16.2 records this; it changed no number and no page count.
+- [`discrete-initial-subgroups-and-omnific-normalization`](../../surreal/discrete-initial-subgroups-and-omnific-normalization/)
+  (`isg:sc:`; batch 86, its source 03). By Proposition 16.1, `I_A` has
+  division by every ordinary integer and the retraction `ct`, so its
+  `isg:sc:thm:boundary` applies: the nonnegative part of `I_A` satisfies
+  open induction (Corollary 4.6) but not `IΔ0`, as for `Oz`. That report
+  states its theorems for set-sized rings and reads class applications as in
+  `isg:sc:sec:classes`; this report does not make `I_A` a set (only the
+  externally countable `I^M_A` of a transitive set model `M`), so its
+  Presburger initiality criterion is not applied here.
+- [`polish-models-of-omnific-arithmetic`](../polish-models-of-omnific-arithmetic/)
+  (`pma:`; batch 86): `pma:bor:thm:arithmetic` (Part II) and
+  `pma:ser:prop:iopen` (Part V) prove open induction for finite
+  principal-part integer parts by the route of Corollary 4.6; Part V's ring
+  is countable (real algebraic coefficients) and lives in a Polish ordered
+  field. One unnumbered note after Corollary 4.6 records both relations
+  (batch 86).
 
 ## What was run
 

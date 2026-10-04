@@ -122,7 +122,11 @@ note says so.
   denominator `ζ(2s-1)` whose zero-poles refute the recorded OEIS
   equivalents there; a `[write]` note in Part I, Section 7, compares the
   location of the zero-poles (here `0 < ℜs < 1/2`, so they do not affect
-  Part I's theorems). The comparison was added at the merge.
+  Part I's theorems). The comparison was added at the merge. Its Part II
+  (batch 86) proves from the same pole that the ratio to the refuted model
+  has liminf 0 and limsup infinity, with `log(a_n/m_n) = Ω±(n^(1/4))`
+  (Theorem 12.5 there); a second dated `[write]` note, added with the
+  batch-86 reciprocal notes right after the first, records this.
 
 ## Labels
 

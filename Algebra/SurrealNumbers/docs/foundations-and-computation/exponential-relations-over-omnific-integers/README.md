@@ -259,7 +259,23 @@ domains stays open.
 arithmetic; division with remainder is its residue lemma
 `isg:cf:lem:residues`, and the lexicographic order (2.3) is the split form
 `G ≅ G^dv ⊕_lex Z` of `isg:cf:main:presburger` with `G^dv = J`. Nothing here
-concerns initiality.
+concerns initiality. Its batch-86 source 03 bears on the tameness of Theorem
+6.2: with multiplication, bounded formulas over `Oz_≥0` with the single
+parameter `ω` express all of arithmetic, through its single-bound quadratic
+compiler (`isg:sc:thm:compiler`; `Oz` satisfies its hypotheses by
+`isg:sc:cor:omnific`). A `[write]` note after the remark following Theorem
+6.2 records the contrast.
+
+**[polish-models-of-omnific-arithmetic](../polish-models-of-omnific-arithmetic/)**
+(`pma:`; batch 86) — the collection's other Presburger report. It proves the
+`Z`-group facts again for split groups `D ×_lex Z` with `D` divisible
+(`pma:pr:prop:zgroup`, `pma:pr:thm:qe`, `pma:pr:cor:fullpresburger`) and
+gives their nonnegative cones Polish topologies with continuous addition, an
+affirmative answer to Glazer's Question 2 as printed, priority not
+established (`pma:pr:thm:main`). The cones embed additively, not as rings,
+in `Oz` (`pma:pr:thm:omnific`) and admit no unital semiring multiplication
+(`pma:pr:thm:no_semiring`). This report puts no topology on `Oz`. A
+`[write]` note after the paragraph following Proposition 2.2 records this.
 
 **[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**
 (`dsn:`) — its elementary substructures and maximal initial core

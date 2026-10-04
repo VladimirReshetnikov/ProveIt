@@ -126,6 +126,11 @@ for `a_b(n)`: `Fabius.staircase_ceil` and `Fabius.staircase_separation` in
   treat this product or the two OEIS formulas.
 - `a301981-unitary-divisor-partitions` (same batch): another pure OEIS
   equivalent that misses a nonconstant factor, there driven by zeta zeros.
+  Its Part II (batch 86) proves that there the ratio to the OEIS model has
+  liminf 0 and limsup infinity, unlike the ratio here, whose limit points
+  fill the compact interval `[min H, max H]` (Corollary 6.1); a dated
+  sentence added to the Section 1 note in the batch-86 reciprocal notes
+  records the contrast.
 - (The write made these pointers here only and edited none of those
   reports. A one-line reciprocal pointer in `a033552-catalan-partitions`
   was added in a separate commit, `222291f94`.)

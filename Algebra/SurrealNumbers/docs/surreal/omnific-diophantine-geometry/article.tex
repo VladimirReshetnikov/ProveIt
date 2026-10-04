@@ -3448,6 +3448,27 @@ ring language: the sentence $\forall t\,\Std(t)$ holds in $\Z$ and fails in
 $\Oz$.
 \end{remark}
 
+\noindent[Added 3 October 2026, batch 86: the existential formula $\Std(t)$
+has \emph{bounded} counterparts on $\Oz_{\ge0}$. Enayat, \L e\l yk and
+Visser (arXiv:2508.14758v2, Theorem~2.9) prove that $\N$ is
+$\Delta_0$-definable, by ``every $y\le x$ is a sum of four squares of
+elements $\le y$'', in the nonnegative part of every ordered Dorroh ring,
+and $\Oz$ is one, with ideal $\Pi$. Source~03 of the discrete-initial-subgroups
+report (\fn{docs/surreal/discrete-initial-subgroups-and-omnific-normalization},
+Sections~19--22 there; AI-assisted, unrefereed, not formalized) gives a dyadic
+bounded definition: its base case and successor step hold in every
+discretely ordered ring with division with remainder by~$2$
+(\replabel{isg:sc:lem:successor}), it defines exactly the standard natural
+numbers when there is also division by~$3$ and a normalized integer character
+(\replabel{isg:sc:thm:dyadic}), so in $\Oz_{\ge0}$
+(\replabel{isg:sc:cor:omnific}), and it yields a single failed bounded
+induction instance (\replabel{isg:sc:thm:boundary}). Neither formula is existential, so
+neither bears on \cref{odg:q:guard}. The uniqueness of the retraction
+(\cref{odg:prop:canonicalct}) extends to normalized \emph{additive} maps to
+$\Z$ on every discretely ordered ring with division by~$2$
+(\replabel{isg:sc:prop:repair}). The symbol $\Std$ keeps its meaning here;
+that report writes $\mathsf{Std}^{\mathrm{dy}}$ for its bounded formula.]
+
 \section{Diophantine arithmetic in omnific rings}\label{odg:def:sec:arithmetic}
 
 This section and the next two are built from sources 06 and 07, written
@@ -6380,6 +6401,31 @@ through the injective evaluation map $T\mapsto t$. With this retraction,
 according as $\spz(\mathbf x)$ is rational or not, with the same normalization.
 The primitive or nonprimitive status is the same in the model and in $\Oz$,
 although the ideal of all denominators becomes much larger.
+
+\noindent[Added 3 October 2026, batch 86: the report
+\fn{docs/foundations-and-computation/polish-models-of-omnific-arithmetic}
+(AI-assisted, unrefereed, not formalized) studies topologies on this ring.
+Its source~06 gives the nonnegative cone of $\Pmod_t$ the topology of the
+disjoint sum of the points of $\N$ and the strata of fixed degree and
+constant term; the cone is then uncountable, locally compact and Polish,
+addition and multiplication are jointly continuous, its additive reduct
+satisfies full Presburger arithmetic and its semiring structure
+$\mathsf{PA}^-$, and it fails open induction at $x^2<t$, which defines the
+standard natural numbers (\replabel{pma:cp:thm:polynomial},
+\replabel{pma:cp:thm:openfailure}). Its source~08 shows that no uncountable
+set-sized unital subring of $\Oz$, for instance $\Pmod_t$, carries a
+Hausdorff locally compact second-countable additive-group topology for which
+the order is Borel (\replabel{pma:lc:cor:omnific}); so that cone topology is
+induced by no such group topology on the ring (\replabel{pma:cp:sec:meet}).
+Its source~09 proves \cref{odg:thm:floor} again, with
+$t^q\mapsto\omega^{-q}$, for the countable integer part
+$\Z\oplus\bigoplus_{q<0}\R_{\mathrm{alg}}t^q$ of the real-algebraic Puiseux
+and Levi-Civita fields, and shows that this floor is Baire class one with
+discontinuity set exactly that integer part
+(\replabel{pma:ser:thm:commonip}, \replabel{pma:ser:thm:floorregularity});
+its source~03 restricts \cref{odg:thm:floor} to the Puiseux field
+(\replabel{pma:bor:lem:floor}). Nothing in that report is formalized; the
+Lean proof of \cref{odg:thm:floor} does not mention those fields.]
 
 \begin{proposition}[Generator counts \src{08}]\label{odg:frac:prop:generators}
 The ideal $t\R[t]$ of $\Pmod_t$ needs exactly $\mathfrak c=|\R|$ generators, and so

@@ -38,7 +38,7 @@ established**.
 
 ```
 article.tex                                   the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                   the compiled report, 190 pages (unnumbered title page, then pages 1-189)
+article.pdf                                   the compiled report, 191 pages (unnumbered title page, then pages 1-190)
 README.md                                     this guide
 05-omnific-presburger-CLAIM_LEDGER.md         05's claim ledger, as delivered (05's own theorem numbers)
 05-omnific-presburger-SOURCES.md              05's sources and priority record, as delivered
@@ -396,6 +396,18 @@ All labels exist at HEAD.
   86's manuscript 10, on the standard cut, was written there. Its ring
   `Z + XQ[X]` fails open induction at the same formula as 06's Theorem 38.2,
   and its Shepherdson ring is 09's integer part `I_k` for `k = R_alg`.
+  Manuscript 10 is that report's source 03 (Sections 19–22); its obstruction
+  precedes any topology (`isg:sc:thm:nochar`, `isg:sc:cor:omnific`,
+  `isg:sc:cor:fragment`), and it answers neither of Glazer's questions (a
+  sentence added in the batch-86 reciprocal notes, in the paragraph "The
+  same failed instance elsewhere" of Section 42).
+- The batch-86 reciprocal notes added pointers to this report in
+  `omnific-notations` (after its Remark 23.4: Parts II and V),
+  `exponential-relations-over-omnific-integers` (after its Proposition 2.2:
+  Part I), `omnific-diophantine-geometry` (after its Proposition 15.43:
+  Parts II–V) and `definable-surreals-and-omnific-integers` (after its
+  Corollary 4.6: Parts II and V), and README pointers there and in
+  `discrete-initial-subgroups-and-omnific-normalization`.
 - [`definable-surreals-and-omnific-integers`](../definable-surreals-and-omnific-integers/)
   and [`omnific-diophantine-geometry`](../../surreal/omnific-diophantine-geometry/):
   open induction, the floor, and the polynomial models `Z + tR[t]`.
@@ -468,7 +480,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 pdfLaTeX with `newpxtext`/`newpxmath`, `tcolorbox`, `cleveref`, `aliascnt`,
 `tikz` (07's figure). The build has no errors, no LaTeX, package or hyperref
 warnings, no overfull or underfull boxes, no undefined or multiply defined
-references and no duplicate destinations; 190 pages. Commit only
+references and no duplicate destinations; 191 pages. Commit only
 `article.pdf`, not the auxiliary files.
 
 ## Rerunning the finite checks

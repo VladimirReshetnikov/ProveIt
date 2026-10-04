@@ -263,6 +263,19 @@ Appendix A.4 and A.5.
 - [`definable-surreals-and-omnific-integers`](../definable-surreals-and-omnific-integers/),
   written from the same batch: set-theoretic definability, not computability;
   cited by directory only.
+- [`polish-models-of-omnific-arithmetic`](../polish-models-of-omnific-arithmetic/)
+  (batch 86): its Part II (source 03) proves the boldface counterparts of the
+  Π¹₁ validity results: `pma:bor:lem:KB` (a fixed midpoint Kleene–Brouwer
+  embedding reduces well-foundedness continuously to `WO(Q)`), the
+  scattered/nonscattered dichotomy `pma:bor:thm:dichotomy`, and
+  Π¹₁-completeness for 0–1 codes with values in `[X,2X)` (`pma:bor:thm:local`).
+  It cites `onot:neg:lem:kbtree`, `onot:neg:thm:pionesone` and
+  `onot:neg:rem:secondroute` for the lightface statements. Its Part V
+  (source 09) is a further second proof that full rational Hahn codes are
+  Π¹₁-complete (`pma:ser:thm:hcodes`), and shows that the Puiseux and
+  Levi-Civita code domains are Σ⁰₂- and Π⁰₃-complete (`pma:ser:thm:pcodes`,
+  `pma:ser:thm:lcodes`). It answers none of this report's questions. An
+  unnumbered note after Remark 23.4 records this.
 
 ## Build
 
@@ -275,7 +288,8 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The build has no errors, no LaTeX or package warnings, no overfull or underfull
 boxes, no undefined references and no duplicate destinations. The batch-33
 cross-report notes in Section 2 are unnumbered; against a build of the text
-before them, the page count (69) and every label number are unchanged. Commit only
+before them, the page count (69) and every label number are unchanged; the same
+holds for the batch-86 note after Remark 23.4. Commit only
 `article.pdf`, not the auxiliary files.
 
 ## Reproducing the finite checks
