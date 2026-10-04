@@ -111,6 +111,19 @@
 > native residue filters, with no prescribed-history realization or bound on
 > the full order gcd. The 83-operation language remains unresolved.
 >
+> The [compiler parity padding](gamma_parity_padding_scout.md) makes the
+> stronger finite-prime filter available for a representation of **every
+> c.e. language**. The actual ordered-window API permits an odd alphabet
+> and, when needed, one additional all-fresh-symbol window. Horizontal
+> overlap and the unchanged origin Start exclude that window from every
+> marked history, preserving ordinary input and End distance2x. The
+> [independent review](review_gamma_parity_padding_scout.md) and root source
+> inspection verify the actual API, marker conventions, cyclic connectivity
+> and fresh positive completeness. All fixed numerals are rebuilt; this
+> does not remove the hypothesis for a previously fixed coefficient slice
+> or equate unresolved gamma83 languages across slices. The arithmetic
+> schedule and universal84 bound are unchanged.
+>
 > The [small-prime digit rules](complete83_gamma_small_prime_digit_rules.md)
 > extend the genuine-history filter for actual compilers with an even
 > window-selector count and odd tile-alphabet size. For E=dh, each accepted
