@@ -18,7 +18,7 @@
 \hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
  pdftitle={Discrete Initial Groups and Omnific Normalization},
  pdfauthor={AI-assisted research draft prepared for the Surreal project},
- pdfsubject={Sign-tree surgery, a proposed solution of an Ehrlich--Kaplan question, convex factors and profinite obstructions, the standard cut and bounded induction}}
+ pdfsubject={Sign-tree surgery, a proposed solution of an Ehrlich--Kaplan question, convex factors and profinite obstructions, the standard cut and bounded induction, perfect transcendence gaps}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textsc{Discrete initial groups}}
@@ -105,6 +105,19 @@
 \newcommand{\im}{\operatorname{im}}
 \newcommand{\rk}{\operatorname{qr}}
 \newcommand{\Asc}{\mathcal{A}}
+% Notation of the fourth source (perfect transcendence gaps); see isg:ptg:sec:conventions.
+\newcommand{\Qp}{\mathbb{Q}_p}
+\newcommand{\Zp}{\mathbb{Z}_p}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\EFA}{\mathsf{EFA}}
+\newcommand{\SSy}{\operatorname{SSy}}
+\newcommand{\acl}{\operatorname{acl}}
+\newcommand{\trdeg}{\operatorname{trdeg}}
+\newcommand{\Frac}{\operatorname{Frac}}
+\newcommand{\Dep}{\operatorname{Dep}}
+\newcommand{\Dig}{\operatorname{Dig}}
+\newcommand{\Bit}{\operatorname{Bit}}
+\newcommand{\cfrak}{\mathfrak{c}}
 \newcommand{\source}[1]{\textup{\cite{#1}}}
 \newcommand{\replabel}[1]{\nolinkurl{#1}}
 \newcommand{\fn}[1]{\nolinkurl{#1}}
@@ -125,8 +138,8 @@ an Ehrlich--Kaplan question, and convex factors\par}
 \vspace{5mm}
 {\large AI-assisted research draft prepared for the Surreal project\par}
 \vspace{2mm}
-23 September 2026; third source 3 October 2026 \textperiodcentered{}
-three-source report of the collection
+23 September 2026; third and fourth sources 3 October 2026
+\textperiodcentered{} four-source report of the collection
 \vspace{4mm}
 \begin{abstract}
 We give an explicit construction proposed as an affirmative solution of
@@ -164,6 +177,15 @@ homomorphism to $\Z$, and that bounded truth in a computable such ring is
 as hard as true arithmetic. With the second manuscript's criterion, the
 additive group of every nonstandard model of $\mathsf{I}\Delta_0$ is not
 initially realizable, whereas open induction does not suffice.
+A fourth manuscript identifies the profinite residue image of a
+nonstandard model of Peano arithmetic: it consists exactly of the residue
+sequences computable from one member of the standard system, which it
+recovers as its idempotents. For Borel models, the real and $p$-adic
+points computable from the standard system form analytic subfields that
+leave a perfect algebraic-independence gap, which survives countably many
+extra constants and coefficient-preserving Hahn extension; it yields
+continuum many algebraically independent omnific integers that vanish in
+every finite quotient.
 \end{abstract}
 \vspace{2mm}
 \begin{statusbox}
@@ -177,8 +199,9 @@ question and its motivating example, but did not establish exhaustive
 novelty. At placement in the collection every step was checked by hand
 and no gap was found (\cref{isg:sec:provenance}); that check is not a
 refereeing, and the literature search was targeted, not exhaustive.
-The second manuscript (\cref{isg:cf:sec:intro}) and the third
-(\cref{isg:sc:sec:intro}) have the same status.
+The second manuscript (\cref{isg:cf:sec:intro}), the third
+(\cref{isg:sc:sec:intro}) and the fourth (\cref{isg:ptg:sec:intro})
+have the same status.
 \end{statusbox}
 \vfill
 {\small\textbf{Keywords:} surreal numbers; omnific integers; initial
@@ -333,21 +356,25 @@ the real coefficient at that minimum. No claim of multiplicativity is
 made, and none is needed for the published ordered-group question.
 
 \subsection{Conventions shared with the collection}\label{isg:sec:conventions}
-This report is built from three manuscripts: source~01, the normalization
+This report is built from four manuscripts: source~01, the normalization
 manuscript (\cref{isg:sec:intro,isg:sec:background,isg:sec:bottom,isg:sec:surgery,isg:sec:transport,isg:sec:normalization,isg:sec:classification,isg:sec:quotient,isg:sec:complex,isg:sec:examples}
 and Appendix~\ref{isg:app:compact}), source~02, the convex-factor manuscript
 (\cref{isg:cf:sec:intro}, \cref{isg:cf:sec:cuts,isg:cf:sec:compression,isg:cf:sec:factors,isg:cf:sec:presburger,isg:cf:sec:factorial,isg:cf:sec:modeltheory,isg:cf:sec:complex,isg:cf:sec:boundaries}
-and Appendix~\ref{isg:cf:app:core}), and source~03, the standard-cut
+and Appendix~\ref{isg:cf:app:core}), source~03, the standard-cut
 manuscript (\cref{isg:sc:sec:intro} and
-\cref{isg:sc:sec:detector,isg:sc:sec:characters,isg:sc:sec:rings,isg:sc:sec:compiler}).
+\cref{isg:sc:sec:detector,isg:sc:sec:characters,isg:sc:sec:rings,isg:sc:sec:compiler}),
+and source~04, the transcendence-gap manuscript (\cref{isg:ptg:sec:intro} and
+\cref{isg:ptg:sec:standard,isg:ptg:sec:perfect,isg:ptg:sec:residues,isg:ptg:sec:hahn}).
 Their provenance, the placement reviews and
 the relation to other reports are in \cref{isg:sec:provenance}. Statements
 added in the merge of the first two sources, and proved here, are marked
 \textup{[merge]}; statements added when source~03 was written in, and
-proved here, are marked \textup{[write]}. The following conventions are
-fixed here once; the notation of source~02 is fixed in
-\cref{isg:cf:sec:conventions}, and that of source~03 in
-\cref{isg:sc:sec:conventions}.
+proved here, are marked \textup{[write]}; the one statement added when
+source~04 was written in is marked \textup{[write~04]}. The following
+conventions are fixed here once; the notation of source~02 is fixed in
+\cref{isg:cf:sec:conventions}, that of source~03 in
+\cref{isg:sc:sec:conventions}, and that of source~04 in
+\cref{isg:ptg:sec:conventions}.
 \begin{enumerate}
 \item \emph{Initial} always means closed under proper sign-sequence
       prefixes, as in the definition of the definable-surreals report
@@ -525,6 +552,50 @@ definability of the standard cut in such rings, including $\Oz$, was
 already known \cite[Theorem~2.9]{ELV}, and so was the failure of
 induction beyond open induction in $\Oz$ \cite{JerabekMO}; what source~03
 adds is stated in \cref{isg:sc:sec:overview}.
+
+\subsection{Standard systems and perfect transcendence gaps}\label{isg:ptg:sec:intro}
+Source~03 shows that the residue image $\im\res_{R_M}\subseteq\Zhat$ of a
+nonstandard model $M$ of $\Idelta$ is not contained in $\Z$
+(\cref{isg:sc:cor:profiles}) and asks which subrings of $\Zhat$ occur as
+such images (\cref{isg:sc:q:images}). The fourth source of this report,
+\emph{Perfect Transcendence Gaps in Borel Arithmetic: Standard Systems,
+$p$-adic Shadows, Hahn Fields, and Omnific Integers}, answers this for
+nonstandard models of full Peano arithmetic: the image is exactly the ring
+$\Zhat(\mathcal S)$ of profinite integers whose factorial residue
+sequences are computable from one member of the standard system
+$\mathcal S=\SSy(M)$, and the idempotents of that ring recover
+$\mathcal S$ (\cref{isg:ptg:thm:profinite,isg:ptg:cor:idempotents}). Its
+other main results are:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item if $k\subsetneq\R$ or $k\subsetneq\Qp$ is an analytic subfield,
+      relatively algebraically closed, then adjoining any countable set of
+      constants and taking the relative algebraic closure leaves a proper,
+      null and meager field, over which every nonempty open set contains
+      an algebraically independent Cantor set
+      (\cref{isg:ptg:thm:headline}); the mechanism is that an analytic
+      subfield cannot have positive countable transcendence degree
+      (\cref{isg:ptg:lem:derivation});
+\item for a nonstandard Borel model of $\PA$, the real and $p$-adic
+      points computable from members of $\SSy(M)$ form such fields
+      (\cref{isg:ptg:thm:scalar}), by Glazer's theorem that Borel models
+      lack full standard system, imported (\cref{isg:ptg:fact:glazer});
+\item the $p$-adic residue image of $R_M$ is exactly the valuation ring of
+      the $p$-adic field so obtained (\cref{isg:ptg:thm:residue});
+\item a coefficient-preserving Hahn transfer gives continuum many purely
+      infinite omnific integers $r\omega$, algebraically independent over a
+      restricted Hahn field and zero in every finite quotient, although the
+      family is discrete in the surreal order topology
+      (\cref{isg:ptg:thm:hahn,isg:ptg:thm:omnific}).
+\end{itemize}
+The identification of the image covers Peano arithmetic only; for
+$\Idelta$ the question stays open, and it is re-scoped in a dated note after
+its statement. With Scott's classical theorem the images of the countable
+nonstandard models of $\PA$ are exactly the rings $\Zhat(\mathcal S)$ of
+countable Scott sets (\cref{isg:ptg:cor:images}, \textup{[write~04]}).
+Source~04 did not know this report: one of its corollaries is weaker than
+\cref{isg:sc:thm:nochar}, its Hahn transfer follows from a lemma of another
+report, and part of its comparison of completions is a set-sized version of
+facts already proved in Lean for $\Oz$ (\cref{isg:ptg:sec:overview}).
 
 \section{Foundations and the imported initiality criterion}\label{isg:sec:background}
 
@@ -4351,10 +4422,1455 @@ existential observation places no upper bound on the bounded truth sets
 just studied. In particular, it must not be confused with the stronger
 notion of Diophantine correctness for formulas allowing inequalities.
 
+\section{Standard systems and computable scalar fields}\label{isg:ptg:sec:standard}
+
+\subsection{The fourth source}\label{isg:ptg:sec:overview}
+\Cref{isg:ptg:sec:standard,isg:ptg:sec:perfect,isg:ptg:sec:residues,isg:ptg:sec:hahn}
+are source~04, \emph{Perfect Transcendence Gaps in Borel Arithmetic:
+Standard Systems, $p$-adic Shadows, Hahn Fields, and Omnific Integers}
+(26 pages, 3~October 2026). It does not mention initial subgroups or this
+report. It was placed here because its exact profinite image
+(\cref{isg:ptg:thm:profinite}) answers \cref{isg:sc:q:images}, a question
+this report names, for nonstandard models of Peano arithmetic; the
+question asks about $\Idelta$, and is re-scoped after its statement.
+Everything in these four sections is source~04's, with the symbols renamed
+as in \cref{isg:ptg:sec:conventions}, except the corollary marked
+\textup{[write~04]} and the bracketed comparisons, each of which says that
+it was added at this write.
+
+\paragraph{The questions, as source~04 states them.} The overlap is between
+two concrete themes. Glazer studies descriptive restrictions on models of
+arithmetic, including the failure of Borel models to have full standard
+system and automatic-continuity obstructions to topological arithmetic
+\cite{GlazerSS,Glazer}. ProveIt contains formal and exploratory work on
+arithmetic coding, computability, Conway normal forms, omnific integers and
+ordinary congruence completions \cite{ProveItPTG}. Source~04 asks what a
+standard-system restriction says about the \emph{coefficient fields} used
+in the latter constructions. Does failure to code every real merely omit
+some names, or does it leave an irreparable algebraic deficit? Can
+adjoining countably many external constants repair the deficit? Can
+adding arbitrary well-ordered Hahn supports repair it? Can finite
+congruence data detect what is missing? The first two questions are
+answered negatively, and the text explains exactly why the third can also
+have a negative answer.
+
+\paragraph{A general theorem behind the arithmetic.} Throughout
+\cref{isg:ptg:sec:standard,isg:ptg:sec:perfect,isg:ptg:sec:residues,isg:ptg:sec:hahn},
+``analytic'' refers to a continuous image of a Polish space, or
+equivalently to a projection of a Borel set. It does not refer to
+power-series analyticity. The work is in ordinary ZFC unless a different
+foundation is explicitly discussed.
+
+\begin{theorem}[Perfect gap after countably many parameters]\label{isg:ptg:thm:headline}
+Let $F$ be $\R$ or $\Qp$, and let $k\subsetneq F$ be an analytic subfield
+relatively algebraically closed in $F$. For any countable $Y\subset F$, put
+\[
+ k_Y=\acl_F(k(Y))
+ =\{x\in F:x\text{ is algebraic over }k(Y)\}.
+\]
+Then $k_Y$ is a proper analytic dense subfield of $F$, is null for additive
+Haar measure, and is meager. For each $n\geq1$, the set of algebraically
+dependent $n$-tuples over $k_Y$ is analytic, null, and meager in $F^n$.
+Every nonempty open $U\subset F$ therefore contains a Cantor set
+algebraically independent over $k_Y$, and
+\[
+ \trdeg(F/k_Y)=\cfrak.
+\]
+\end{theorem}
+
+The word \emph{countable} concerns an external set of parameters. There is
+no hypothesis that those parameters are computable or belong to a model.
+The theorem also permits $k$ to be uncountable. Consequently a proof that
+simply enumerates all polynomials over $k$ would be invalid. The aggregate
+dependence relations, rather than the individual polynomials, are the
+objects to which category and measure arguments are applied. The proof is
+assembled in \cref{isg:ptg:sec:perfectsets}.
+
+\paragraph{The arithmetic and omnific conclusions.} For a Turing ideal
+$\mathcal S$, the field $\mathcal K_F(\mathcal S)$ is defined in
+\cref{isg:ptg:sec:fields}. Write $\mathcal K_\infty(\mathcal S)=\mathcal K_\R(\mathcal S)$
+and $\mathcal K_p(\mathcal S)=\mathcal K_{\Qp}(\mathcal S)$.
+
+\begin{theorem}[Arithmetic-to-Hahn gap]\label{isg:ptg:thm:arithmetic}
+Let $M$ be a nonstandard Borel model of $\PA$ and $\mathcal S=\SSy(M)$.
+For each $F=\R,\Qp$, the field $\mathcal K_F(\mathcal S)$ satisfies the
+hypotheses, hence the conclusions, of \cref{isg:ptg:thm:headline}.
+Moreover:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item For the difference ring $R_M$, the residue homomorphism
+$\res_p:R_M\to\Zp$ has image $\mathcal K_p(\mathcal S)\cap\Zp$. Its image
+is dense, null, and meager, and its fraction field is
+$\mathcal K_p(\mathcal S)$.
+\item If $Y\subset\R$ is countable and
+$k_{\R,Y}=\acl_\R(\mathcal K_\infty(\mathcal S)(Y))$, there is a Cantor set
+$P\subset(1,2)$ whose elements are algebraically independent even over the
+Hahn field $k_{\R,Y}((t^\Q))$ inside $\R((t^\Q))$.
+\item Under $t=\omega^{-1}$, the family $\{r\omega:r\in P\}$ consists of
+purely infinite omnific integers, is algebraically independent over
+$k_{\R,Y}((t^\Q))$, and maps to zero modulo every positive ordinary
+integer.
+\end{enumerate}
+\end{theorem}
+
+\textup{[}Its parts are proved as
+\cref{isg:ptg:thm:scalar,isg:ptg:cor:advice,isg:ptg:thm:residue,isg:ptg:cor:residuesmall,isg:ptg:cor:hahnarith,isg:ptg:thm:omnific};
+this pointer is the write's.\textup{]} In the last assertion the \emph{coefficients} form a Cantor set in the real
+topology. The resulting omnific family is not asserted to be perfect in the
+surreal order topology; indeed, it is discrete in that topology. This
+distinction is proved in \cref{isg:ptg:sec:topologies}. A complementary
+reconstruction theorem identifies the full profinite image and recovers
+$\mathcal S$ as its Boolean algebra of idempotents
+(\cref{isg:ptg:thm:profinite,isg:ptg:cor:idempotents}).
+
+\paragraph{Relation to previous work and novelty boundary, as source~04
+states it.} Fatalini and Schindler explicitly credit independent
+observations of Ben de Bondt and Glazer that adding any new real to a
+suitable set-theoretic universe yields maximal transcendence degree over
+its old real field \cite[Section~2]{FataliniSchindler}. This is a close
+conceptual precursor, not a new result of source~04. Their setting involves
+reals of nested universes; source~04 uses external analytic fields attached
+to one arithmetic standard system and obtains perfect, measure, category,
+$p$-adic, and Hahn conclusions. Ye, Yu, and Zhao study analytic subfields
+of both $\R$ and $\Qp$, including obstructions to maximal subfields
+omitting a specified point \cite[Proposition~2.6]{YeYuZhao}. Their paper
+appeared online in 2026, so it is included in the novelty check rather than
+overlooked. Edgar and Miller's dimension theorem gives a further
+consequence for the real fields: their Hausdorff dimension is zero
+\cite{EdgarMiller}. The existence of perfect independent sets once the
+relevant relations are meager is Mycielski's classical theorem
+\cite{Mycielski,DolezalKubis}.
+
+The results developed in source~04 are the countable-parameter derivation
+argument, the assembled perfect-gap theorem, the exact
+standard-system/residue identifications (including profinite idempotents),
+and their coefficient-preserving Hahn and congruence applications. Some
+individual ingredients are elementary or may already occur in the
+literature in another form. The search undertaken for source~04 does not
+establish first publication. The mathematical claims stand on their stated
+proofs and dependencies, not on a ``breakthrough'' label. In particular,
+neither the general Scott-set problem nor the reverse-mathematical questions
+in Glazer's topological paper are claimed resolved.
+
+\paragraph{Relation to this report and its neighbours.}
+\textup{[}This paragraph is the write's; source~04 cites neither this report
+nor the other reports named here.\textup{]} The difference ring $R_M$ is
+that of \cref{isg:sc:sec:nogo} (source~04 writes $D=M-M$), and $\res_p$,
+$\res_{R_M}$ are the coordinates and the whole of the canonical map
+$\res_R$ of \cref{isg:sc:sec:residues}. \Cref{isg:ptg:thm:profinite}
+strengthens \cref{isg:sc:cor:profiles}, which says only that
+$\im\res_{R_M}\not\subseteq\Z$, to an exact description in the Peano case,
+and so answers \cref{isg:sc:q:images} for Peano arithmetic
+(\cref{isg:ptg:sec:images}). \Cref{isg:ptg:cor:nomap}, no unital ring map
+$R_M\to\Z$, is weaker than \cref{isg:sc:thm:nochar,isg:sc:cor:noadd,isg:sc:cor:omnific},
+which exclude every additive map sending $1$ to $1$, already for $\Idelta$.
+The ring $\Asc(k,\Q)$ of \cref{isg:ptg:sec:comparison} is source~03's
+$\Asc(k,\Gamma)$ at $\Gamma=\Q$; \cref{isg:ptg:prop:tail} and the
+$\Asc$-half of \cref{isg:ptg:thm:completions} are its set-sized versions of
+facts proved in Lean for the class-sized $\Oz$, and the point of
+\cref{isg:ptg:thm:completions} is the one made after
+\cref{isg:sc:prop:diagonal}: the canonical image, not the completion,
+separates the rings. \Cref{isg:ptg:thm:hahn} is an immediate consequence of
+a lemma of the independent-surreal-copies report
+(\replabel{isc:cp:lem:coeffld}). These relations are recorded at the
+statements concerned and in \cref{isg:sec:provenance}.
+
+\subsection{Conventions of the fourth source}\label{isg:ptg:sec:conventions}
+Source~04 works in ZFC, with set-sized Hahn fields only
+(\cref{isg:ptg:sec:classes}). Several of its symbols are renamed here,
+because the letters are in use elsewhere in this report. The renaming
+changes no statement.
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\textwidth}>{\raggedright\arraybackslash}p{0.19\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}@{}}
+\toprule
+here & in source~04 & reason for the change\\
+\midrule
+\endhead
+$\mathcal S$, $\mathcal T$ (Turing ideals; $\mathcal S=\SSy(M)$) & $S$, $T$ &
+ $S_n$ are source~02's factorial partial sums; $\Tdy$ is a theory\\
+$\mathsf A$, $\mathsf B$, $\mathsf A_z$ (subsets of $\N$, oracles) & $A$,
+ $B$, $A_z$ & $A$ is the initial group of \cref{isg:thm:A}, $B$ that of
+ \cref{isg:thm:C}\\
+$\mathcal K_F(\mathcal S)$, $\mathcal K_\infty(\mathcal S)$,
+ $\mathcal K_p(\mathcal S)$ & $K_F(S)$, $K_\infty(S)$, $K_p(S)$ & $K_\alpha$
+ is the dyadic-spine group, with $K_0=\Z$ (\cref{isg:thm:B})\\
+$k$, $k_Y$, $k_{F,Y}$ (fields) & $K$, $H_C$, $H_{F,C}$, $H$ & $K_\alpha$;
+ $H$ is the image group of \cref{isg:thm:A,isg:thm:B}\\
+$Y$ (countable set of parameters) & $C$ & $C\subseteq C'$ are convex
+ subgroups (\cref{isg:cf:main:factor}); $\C$ is the complex field\\
+$R_M$, $\res_p$, $\res_{R_M}$ & $D=M-M$, $\rho_p$, $\widehat\rho$ & $\D$
+ is $\Z[1/2]$; $\rho$ is root deletion (\cref{isg:lem:rho}); $R_M$ and
+ $\res_R$ as in \cref{isg:sc:sec:nogo,isg:sc:sec:residues}\\
+$\Zp(\mathcal S)=\mathcal K_p(\mathcal S)\cap\Zp$ & $A_p(S)$ & $A_p$ is the
+ bottom coefficient group (\cref{isg:prop:bottom})\\
+$\Zhat(\mathcal S)$ & $B(S)$ & $B$ as above\\
+$r_{n!}(z)$ (residue modulo $n!$) & $r_n(z)$ & $r_n(x)$ is the residue
+ modulo $n$ in \cref{isg:cf:lem:residues}\\
+$\mathbf 1_{\mathsf A}$ (idempotents) & $e_A$ & $e$ is the least positive
+ element of a $\Z$-group\\
+$\tilde d_i$, $\tilde r_n$ (internally decoded digits and residues) & $e_i$, $e_n$ & as for $e_A$\\
+$w$ (bit width of a digit block) & $k$ & $k$ is a field here\\
+$\Asc(k,\Q)=\Z+\Pi_k$, $\Pi_k$ & $R_L=\Z+I_L$, $I_L$ & it is source~03's
+ $\Asc(k,\Gamma)$ at $\Gamma=\Q$ (\cref{isg:sc:sec:rings}); $\Pi_k$ is its
+ purely infinite part, as $\Pi$ in $\Oz=\Z\oplus\Pi$\\
+$\Gamma$ (Hahn exponent group) & $G$ & $G$ is an ordered group throughout
+ \cref{isg:cf:sec:cuts}; source~03 also writes $\Gamma$\\
+$\partial$, $\widetilde\partial$ (derivations) & $\partial$, $D$ & $D$ as
+ above\\
+$\mathbf b=(b_j)_{j\in I}$ (transcendence basis) & $B=\{b_j:j\in J\}$ &
+ $B$ as above; $J(B)$ is the suspension of \cref{isg:thm:suspension}\\
+$Q$ (a polynomial in \cref{isg:ptg:lem:derivation} and in $\Dep_n$) & $P$ &
+ $P$ is also source~04's Cantor set, kept\\
+$\mathcal X$, $\mathcal P$, $\eta$ (product space, Cantor subset,
+ homeomorphism) & $X$, $Q$, $h$ & $X$ is source~03's indeterminate; $h$ a
+ nonstandard element in \cref{isg:cf:thm:PA}\\
+$\mathcal E$ (finite set of exponent vectors) & $E$ & $E$ is an exponent
+ interval in \cref{isg:cf:sec:compression}\\
+\bottomrule
+\end{longtable}
+\endgroup
+Kept unchanged: $p$, always an ordinary prime, as in
+\cref{isg:sc:sec:sharp} (unrelated to the minimum exponent $p$ of
+\cref{isg:sec:bottom}); $M$ for a model of arithmetic and $N$ for a
+nonstandard element of it; $F$ for $\R$ or $\Qp$ (unrelated to $F(h)$ in
+\cref{isg:cf:thm:PA} and to the field $F$ of \cref{isg:cf:sec:periods});
+$P$ for an independent Cantor set; $t$ for the Hahn variable, with
+$t^\gamma$ infinitesimal for $\gamma>0$ as in \cref{isg:sc:sec:rings};
+$\ct$ for constant extraction (\cref{isg:sec:conventions}). Letters used
+only inside one proof ($U$, $V$ for neighbourhoods, $m(X)$ for a minimal
+polynomial, $a$, $c$ for elements of $M$, $T_j$ for indeterminates) are
+local to that proof. In \cref{isg:ptg:rem:analytic} source~04's $t$ is
+written $\tau$, since $t$ is the Hahn variable, and where source~04 writes
+$Y$ for a polynomial variable it is $X_n$ or $X_2$ here, since $Y$ is the
+parameter set. The shipped records of source~04 use its own letters
+and its own numbering. Its statements are numbered here as follows.
+\begin{center}\small
+\begin{tabular}{@{}lll@{\qquad}lll@{}}
+\toprule
+statement & source~04 & here & statement & source~04 & here\\
+\midrule
+Theorem & 1.1 & \ref{isg:ptg:thm:headline} & Corollary & 6.1 & \ref{isg:ptg:cor:advice}\\
+Theorem & 1.2 & \ref{isg:ptg:thm:arithmetic} & Theorem & 6.2 & \ref{isg:ptg:thm:simultaneous}\\
+Lemmas & 2.1--2.3 & \ref{isg:ptg:lem:traces}--\ref{isg:ptg:lem:analyticss} & Theorem & 7.1 & \ref{isg:ptg:thm:residue}\\
+Theorem & 2.4 & \ref{isg:ptg:fact:glazer} (imported fact) & Corollary & 7.2 & \ref{isg:ptg:cor:residuesmall}\\
+Corollary & 2.5 & \ref{isg:ptg:cor:sssmall} & Theorem & 7.3 & \ref{isg:ptg:thm:profinite}\\
+Definition & 3.1 & \ref{isg:ptg:def:field} & Corollary & 7.4 & \ref{isg:ptg:cor:idempotents}\\
+Lemma & 3.2 & \ref{isg:ptg:lem:analyticfield} & Proposition & 8.1 & \ref{isg:ptg:prop:tail}\\
+Proposition & 3.3 & \ref{isg:ptg:prop:faithful} & Theorem & 8.2 & \ref{isg:ptg:thm:completions}\\
+Lemma & 3.4 & \ref{isg:ptg:lem:roots} & Corollary & 8.3 & \ref{isg:ptg:cor:nomap}\\
+Theorem & 3.5 & \ref{isg:ptg:thm:scalar} & Theorem & 9.1 & \ref{isg:ptg:thm:hahn}\\
+Lemma & 4.1 & \ref{isg:ptg:lem:derivation} & Corollary & 9.2 & \ref{isg:ptg:cor:hahnarith}\\
+Proposition & 4.2 & \ref{isg:ptg:prop:hulls} & Theorem & 10.1 & \ref{isg:ptg:thm:omnific}\\
+Remark & 4.3 & \ref{isg:ptg:rem:analytic} & Section & 11 & \ref{isg:ptg:sec:limits}\\
+Lemma & 5.1 & \ref{isg:ptg:lem:small} & Section & 12 & part of \ref{isg:sec:audit}\\
+Proposition & 5.2 & \ref{isg:ptg:prop:relations} & Questions & 13.1--13.11 & \ref{isg:ptg:q:weaker}--\ref{isg:ptg:q:lean}\\
+Corollary & 5.3 & \ref{isg:ptg:cor:dimension} & Appendices & A, B & parts of \ref{isg:sec:audit}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Source~04's equations were numbered within sections; here they continue the
+report's single sequence.
+
+\subsection{Borel models and external traces}\label{isg:ptg:sec:traces}
+A Borel model, in \cref{isg:ptg:sec:standard,isg:ptg:sec:perfect,isg:ptg:sec:residues,isg:ptg:sec:hahn},
+has a standard Borel underlying set, with Borel addition and
+multiplication, and satisfies $\PA$ in the usual first-order sense. One may
+choose a compatible Polish presentation of the underlying standard Borel
+space. The topology is presentation data, not an order topology that is
+assumed to make arithmetic continuous.
+
+A standard numeral is the interpretation of an ordinary $n\in\N$. An element
+is nonstandard when it exceeds every standard numeral. A model is
+nonstandard when it has such an element. The set of standard numerals is an
+external subset; it is not assumed internally definable.
+
+For $a\in M$, define its standard binary trace
+\[
+ b_M(a)=\{n\in\N:M\models\Bit(a,\bar n)=1\}.
+\]
+The standard system is
+\[
+ \mathcal S=\SSy(M)=\{b_M(a):a\in M\}\subseteq2^\N.
+\]
+Here bits are least-significant first, including zeros beyond the ordinary
+length for standard integers. This convention is useful for residues.
+
+\begin{lemma}[Coding definable traces]\label{isg:ptg:lem:traces}
+In a nonstandard model of $\PA$, every set
+$\{n\in\N:M\models\varphi(\bar n,\bar a)\}$ belongs to $\SSy(M)$.
+Consequently the binary-trace definition agrees with the definition using
+all parameter-definable subsets of the standard cut.
+\end{lemma}
+\begin{proof}
+For every arithmetic formula $\varphi(i,\bar a)$, full induction proves
+finite binary comprehension:
+\[
+ \forall b\ \exists c\ \forall i<b\,
+ [\Bit(c,i)=1\ \longleftrightarrow\ \varphi(i,\bar a)].
+\]
+One proves this by induction on $b$, choosing whether to add $2^b$ at the
+successor step and maintaining $c<2^b$. Classical excluded middle is used
+for the instance of $\varphi$; full induction allows its complexity.
+Evaluate the theorem at any nonstandard $b\in M$. The resulting $c$ has
+the required bits at every standard position. The converse is immediate
+because the bit relation is arithmetic.
+\end{proof}
+
+\begin{lemma}[Turing-ideal closure]\label{isg:ptg:lem:ideal}
+$\mathcal S=\SSy(M)$ is a nonempty Turing ideal: it contains every
+computable set, is closed under finite Turing joins, and is downward closed
+under Turing reducibility.
+\end{lemma}
+\begin{proof}
+The even/odd interleaving of two traces is a definable trace, so finite
+joins are covered by \cref{isg:ptg:lem:traces}. Suppose an oracle program
+computes the characteristic function of $\mathsf B$ from
+$\mathsf A=b_M(a)$, and is total on the standard inputs. In $M$, use the bit
+oracle of $a$ and define $\varphi(n,a)$ to mean that the deterministic
+oracle computation halts with output one.
+
+For a standard input, the actual computation is a standard finite run and
+uses only standard positions of $\mathsf A$. That same run exists in $M$.
+Arithmetic proves determinism and the impossibility of two incompatible
+halting outputs. Thus a nonstandard purported run cannot change the answer
+already furnished by the standard halting run. The standard trace of
+$\varphi$ is precisely $\mathsf B$, and \cref{isg:ptg:lem:traces} applies.
+Taking an oracle-free program proves that all computable sets occur.
+Nonemptiness is also witnessed by the empty set.
+\end{proof}
+
+This argument does not need the stronger Scott-set path property. The
+Turing-ideal part is exactly what the subsequent computable-field
+construction consumes. Conversely, no claim is made that an arbitrary
+Turing ideal is the standard system of a model of arithmetic.
+
+\subsection{Analyticity and the external input from Glazer}\label{isg:ptg:sec:glazer}
+\begin{lemma}[The trace image is analytic]\label{isg:ptg:lem:analyticss}
+If $M$ is Borel, $b_M:M\to2^\N$ is Borel, and $\SSy(M)$ is analytic.
+\end{lemma}
+\begin{proof}
+For each fixed positive standard $m$, $\PA$ proves the existence and
+uniqueness of a remainder $r<m$ in division by $m$. For each standard
+$r<m$, the statement $a=mq+r$ for some $q\in M$ defines an analytic set of
+$a$, since arithmetic is Borel. Its complement is the finite union of the
+corresponding analytic sets for the other remainders. It is therefore
+Borel by the analytic/coanalytic separation theorem. The $n$th standard
+bit is determined by the remainder modulo $2^{n+1}$, so each coordinate of
+$b_M$ is Borel. Its image is analytic.
+\end{proof}
+
+Source~04 uses the following external result in precisely the indicated
+strength.
+
+\begin{fact}[Glazer's standard-system theorem; input]\label{isg:ptg:fact:glazer}
+A Borel model of elementary function arithmetic does not have full
+standard system. In particular, for a nonstandard Borel model $M$ of
+$\PA$, one has $\SSy(M)\ne2^\N$.
+\end{fact}
+
+Glazer states the stronger Borel-quotient version in his February 2024
+seminar slides \cite[slide~4]{GlazerSS}. Source~04 neither reproves that
+result nor claims its weaker metatheory for the new arguments below. Its
+applications use ordinary Borel models of $\PA$ in ZFC. The distinction is
+substantive: the full induction used in \cref{isg:ptg:lem:traces} should
+not silently be replaced by bounded induction.
+\textup{[}Added at this write: source~04 cites the theorem from the
+seminar announcement and slides; this write consulted neither and did not
+look for a published proof. Every statement below about a Borel model
+depends on it, through the properness of $\SSy(M)$. Statements that do not
+mention Borel models do not depend on it; among them are the exact images
+of \cref{isg:ptg:thm:residue,isg:ptg:thm:profinite}, the Boolean
+reconstruction of \cref{isg:ptg:cor:idempotents}, and
+\cref{isg:ptg:lem:traces,isg:ptg:lem:ideal,isg:ptg:prop:faithful,isg:ptg:lem:roots,isg:ptg:cor:nomap,isg:ptg:cor:images,isg:ptg:thm:hahn}.\textup{]}
+
+\begin{corollary}[A preliminary size gap]\label{isg:ptg:cor:sssmall}
+If $M$ is a nonstandard Borel model of $\PA$, $\SSy(M)$ is a dense null
+meager subset of Cantor space.
+\end{corollary}
+\begin{proof}
+Under symmetric difference it is a subgroup, by computability closure. It
+contains the finite sets, so is dense. It is analytic and proper. An
+analytic subgroup has the Baire property and is Haar measurable. A
+nonmeager or positive-measure subgroup is open by the category or measure
+difference-set theorem. An open subgroup is closed, and a dense closed
+subgroup is the whole group. This contradicts properness.
+\end{proof}
+
+Nullness alone does not yet prove the desired algebraic independence. The
+missing work is to preserve properness after adjoining parameters and
+taking roots, and then to control dependence in every finite arity.
+
+\subsection{Fields computable from a Turing ideal}\label{isg:ptg:sec:fields}
+Use the usual rational presentations of $\R$ and $\Qp$. A fast name for
+$x\in\R$ is a rational sequence $(q_n)$ with $|q_n-x|\leq2^{-n}$. For
+$x\in\Qp$, use $|q_n-x|_p\leq p^{-n}$. A name is computable from
+$\mathsf A\subseteq\N$ when an oracle program with oracle $\mathsf A$
+outputs the rational $q_n$ on input $n$.
+
+\begin{definition}[Computable scalar field]\label{isg:ptg:def:field}
+For a nonempty Turing ideal $\mathcal S$ and $F\in\{\R,\Qp\}$, set
+\[
+ \mathcal K_F(\mathcal S)=\{x\in F:\text{some fast name of }x
+                   \text{ is computable from some }\mathsf A\in\mathcal S\}.
+\]
+No uniform choice of a name or an oracle for every element is part of the
+definition.
+\end{definition}
+
+Rational field operations are computable on fast names. To invert a
+nonzero point, one searches for a certified positive lower bound on its
+absolute value; the search terminates because the point is nonzero. Finite
+joins combine the coefficient oracles. Hence $\mathcal K_F(\mathcal S)$ is
+a subfield containing $\Q$, and it is dense in $F$.
+
+\begin{lemma}[Analyticity of the scalar field]\label{isg:ptg:lem:analyticfield}
+If $\mathcal S\subseteq2^\N$ is analytic, then
+$\mathcal K_F(\mathcal S)\subseteq F$ is analytic.
+\end{lemma}
+\begin{proof}
+For a fixed oracle-program index $e$, the relation ``the $e$th program with
+oracle $\mathsf A$ outputs a total rational sequence $(q_n)$, and
+$|q_n-x|_F\leq\epsilon_n$ for all $n$'' is Borel in $(\mathsf A,x)$.
+Halting at each input is a countable Boolean combination of finite-oracle
+conditions, and each approximation inequality is closed in $x$ once the
+finite computation is fixed. Intersect with $\mathsf A\in\mathcal S$,
+project to $x$, and take the countable union over $e$. Analytic sets are
+closed under these operations.
+\end{proof}
+
+\subsection{No information is lost by passing to a local field}
+For $\mathsf A\in2^\N$, consider the two encodings
+\begin{align}
+ c_\infty(\mathsf A)&=\sum_{n\geq0}2\mathsf A(n)3^{-(n+1)},\label{isg:ptg:eq:cantorcode}\\
+ c_p(\mathsf A)&=\sum_{n\geq0}\mathsf A(n)p^n.\label{isg:ptg:eq:pcode}
+\end{align}
+The first lies in the ordinary ternary Cantor set, and the second lies in
+$\Zp$. Both have a fast name computable from $\mathsf A$. Conversely, a fast
+name recovers the digits, uniformly on the indicated image. In the real
+case the two child intervals are separated by a nonempty middle gap. In the
+$p$-adic case a sufficiently accurate approximation determines the next
+residue, and hence the next digit. There is no binary-expansion ambiguity
+in either construction.
+
+\begin{proposition}[Faithful passage from ideals to fields]\label{isg:ptg:prop:faithful}
+For Turing ideals $\mathcal S,\mathcal T$ and $F\in\{\R,\Qp\}$,
+\[
+ \mathcal S\subseteq\mathcal T\quad\Longleftrightarrow\quad
+ \mathcal K_F(\mathcal S)\subseteq\mathcal K_F(\mathcal T).
+\]
+In particular, $\mathcal K_F(\mathcal S)=F$ if and only if
+$\mathcal S=2^\N$.
+\end{proposition}
+\begin{proof}
+The forward implication is immediate. For the reverse, take
+$\mathsf A\in\mathcal S$. Then $c_F(\mathsf A)\in\mathcal K_F(\mathcal T)$,
+so it has a fast name computable from some $\mathsf B\in\mathcal T$. Digit
+recovery gives $\mathsf A\leq_T\mathsf B$, hence $\mathsf A\in\mathcal T$.
+For the final assertion, every point of $F$ has some fast name, and the
+graph of a name can itself be coded by a subset of $\N$.
+\end{proof}
+
+\subsection{Relative algebraic closure: the effective root argument}
+\begin{lemma}[Individual roots are oracle-computable]\label{isg:ptg:lem:roots}
+Let $f\in F[X]$ be nonzero, with its finitely many coefficients computable
+from one oracle $\mathsf A$. Each root $\alpha\in F$ of $f$ has a fast name
+computable from $\mathsf A$. The assertion is nonuniform in the choice of
+the root and its finite isolating data.
+\end{lemma}
+\begin{proof}
+If $\alpha$ has multiplicity $m$, replace $f$ by $f^{(m-1)}$. Its
+coefficients remain $\mathsf A$-computable, and $\alpha$ is now a simple
+root. The integer $m$ is a finite parameter; no algorithm to find all
+multiplicities uniformly is being asserted.
+
+For $F=\R$, a rational root already has a computable name. For an
+irrational root, choose rational endpoints surrounding $\alpha$ in a small
+interval on which $f'$ has constant nonzero sign and $f$ has opposite signs
+at the endpoints. The endpoints are finite data. Bisection computes
+$\alpha$: at any rational midpoint the value of $f$ is nonzero, because
+$\alpha$ is the only root in the interval and is irrational. Its sign is
+therefore eventually certified by refining the coefficient approximations.
+The nested interval lengths provide a computable error bound.
+
+For $F=\Qp$, make a rational scaling of the variable and multiply the
+polynomial by a power of $p$ so that the chosen root and all coefficients
+are integral. These are again finite choices; they can be undone at the
+end. Write the resulting polynomial as $g$. Choose a rational $a\in\Zp$
+sufficiently close to the simple root that
+\[
+ s=v_p(g'(a))\geq0,\qquad
+ \delta=v_p(g(a))-2s>0.
+\]
+A rational root is handled separately. For a nonrational root such an $a$
+exists by continuity and simplicity. Newton iteration
+\[
+ a_0=a,\qquad a_{j+1}=a_j-\frac{g(a_j)}{g'(a_j)}
+\]
+is computable from $\mathsf A$. Taylor expansion over $\Zp$ shows
+inductively that the derivative valuation stays $s$, while
+\[
+ v_p(g(a_j))\geq 2s+2^j\delta,
+ \qquad v_p(a_j-\alpha)\geq s+2^j\delta.
+\]
+For the induction step, the linear term is canceled by Newton's correction;
+the remaining terms have at least twice the valuation of that correction.
+Its valuation exceeds $s$, so the derivative valuation does not change. The
+same estimates show that the limit is the unique root in the selected
+Hensel neighbourhood. The displayed error estimate turns the sequence into
+a fast name. All divisions are by nonzero quantities with the fixed
+certified valuation. No undecidable test of whether an intermediate
+residual is exactly zero is needed.
+\end{proof}
+
+\begin{theorem}[Relatively algebraically closed scalar fields]\label{isg:ptg:thm:scalar}
+For every Turing ideal $\mathcal S$, $\mathcal K_F(\mathcal S)$ is
+relatively algebraically closed in $F$. If $\mathcal S$ is proper and
+analytic, it is a proper analytic relatively algebraically closed dense
+subfield. Furthermore,
+\[
+ \mathcal K_\infty(\mathcal S)\preccurlyeq (\R,+,\cdot,<),\qquad
+ \mathcal K_p(\mathcal S)\preccurlyeq(\Qp,+,\cdot)
+\]
+in their respective field languages.
+\end{theorem}
+\begin{proof}
+If $\alpha\in F$ is algebraic over $\mathcal K_F(\mathcal S)$, combine
+oracles for the finitely many coefficients of an annihilating polynomial.
+Their join belongs to $\mathcal S$, and \cref{isg:ptg:lem:roots} gives a
+name for $\alpha$. Analyticity and properness follow from
+\cref{isg:ptg:lem:analyticfield,isg:ptg:prop:faithful}.
+
+A relatively algebraically closed subfield of $\R$ is real closed: positive
+square roots and roots of odd-degree polynomials lie in $\R$ and are
+algebraic. Quantifier elimination for real closed fields then gives the
+elementary embedding.
+
+For the $p$-adic assertion use Macintyre's quantifier elimination in the
+language with power predicates \cite{Macintyre}. A unary formula over
+$\mathcal K=\mathcal K_p(\mathcal S)$ is a Boolean combination of
+polynomial equalities and conditions that polynomial values are $n$th
+powers. If a witnessing point annuls a nonzero polynomial over
+$\mathcal K$, it belongs to $\mathcal K$ by relative algebraic closure.
+Otherwise all tested nonzero polynomial values stay nonzero locally, and
+their power classes are locally constant: $(\Qp^\times)^n$ is open by
+Hensel's lemma. Thus the same formula holds on a neighbourhood containing a
+rational point. This proves the Tarski--Vaught condition. Power predicates
+agree on $\mathcal K$ and $\Qp$ by relative algebraic closure, so the claim
+also holds in the pure ring language.
+\end{proof}
+
+The elementary-subfield assertion is logically distinct from computability.
+It says that the small field satisfies the same first-order field theory
+with its own parameters. It does not make it topologically complete and
+does not provide a computable selector for solutions of arbitrary formulas.
+
+\section{The analytic-derivation obstruction and perfect gaps}\label{isg:ptg:sec:perfect}
+
+\subsection{No positive countable transcendence degree}\label{isg:ptg:sec:derivation}
+The following lemma is the main mechanism for surviving external
+parameters. The zero-transcendence-degree case is intentionally excluded
+in its statement; relative algebraic closure handles that case in the
+application.
+
+\begin{lemma}[No positive countable transcendence degree]\label{isg:ptg:lem:derivation}
+Let $F=\R$ or $\Qp$, and let $k\subseteq F$ be an analytic subfield. Then
+$\trdeg(F/k)$ is not a positive finite or countably infinite cardinal.
+\end{lemma}
+\begin{proof}
+Suppose $\mathbf b=(b_j)_{j\in I}$ is a nonempty finite or countable
+transcendence basis, with $0\in I\subseteq\N$. On the rational function
+field $k(\mathbf b)$ define a $k$-derivation $\partial$ by
+\[
+ \partial b_0=1,\qquad \partial b_j=0\quad(j\ne0).
+\]
+Algebraic independence makes formal differentiation well defined. Because
+the characteristic is zero, the algebraic extension $F/k(\mathbf b)$ is
+separable, and $\partial$ has a unique extension $\widetilde\partial:F\to F$.
+For completeness, if $m(X)$ is a separable minimal polynomial of $\alpha$,
+the only possible extension is
+\[
+ \widetilde\partial(\alpha)=-\frac{m^{\partial}(\alpha)}{m'(\alpha)},
+\]
+where $m^{\partial}$ differentiates the coefficients. This formula defines a
+compatible derivation on each simple finite extension; uniqueness makes
+the definitions agree on overlaps and hence on their union.
+
+We now prove that $\widetilde\partial$ is Borel. A pair $(x,y)\in F^2$
+belongs to its graph if and only if there is a polynomial $Q$ with
+coefficients in $k$, in a finite list of the indeterminates
+$(T_j)_{j\in I}$ and one more indeterminate $X$, such that
+\begin{align}
+ Q(\mathbf b,x)&=0,\label{isg:ptg:eq:witness1}\\
+ Q_X(\mathbf b,x)&\ne0,\label{isg:ptg:eq:witness2}\\
+ yQ_X(\mathbf b,x)+Q_{T_0}(\mathbf b,x)&=0.\label{isg:ptg:eq:witness3}
+\end{align}
+Here $Q_{T_0}=0$ when $T_0$ does not occur. Every $x$ has such a witness:
+clear denominators in its separable minimal polynomial over $k(\mathbf b)$.
+The clearing factor does not vanish at $\mathbf b$, so condition
+\eqref{isg:ptg:eq:witness2} survives. Differentiating
+\eqref{isg:ptg:eq:witness1} proves necessity of
+\eqref{isg:ptg:eq:witness3}; it also proves that any witness yields the
+unique value $\widetilde\partial(x)$.
+
+There are countably many choices of finite variable lists and monomial
+patterns. For each pattern, the coefficient tuples form a finite power of
+the analytic set $k$, and the displayed constraints are Borel conditions
+given by continuous polynomial evaluation. Projection and a countable union
+show that the graph is analytic. No enumeration of the elements of $k$ has
+been used.
+
+A total single-valued function between Polish spaces with analytic graph
+is Borel: for any open target set $V$, both its inverse image and its
+complement are analytic, obtained by projecting the graph restricted to $V$
+and to its complement. They are therefore Borel. Since
+$\widetilde\partial$ is additive, the automatic-continuity theorem for
+Borel homomorphisms of Polish groups makes it continuous. Finally
+$\widetilde\partial$ vanishes on $\Q$, and $\Q$ is dense in both possible
+fields $F$. Hence $\widetilde\partial=0$, contradicting
+$\widetilde\partial(b_0)=1$.
+\end{proof}
+
+Here is the small category argument underlying automatic continuity, to
+expose its exact role. Given a target neighbourhood $U$ of zero, choose a
+symmetric neighbourhood $V$ whose fourfold sum is contained in $U$. Cover
+the separable target by countably many translates of $V$. One of their
+inverse images is nonmeager and has the Baire property. The difference of
+that inverse image with itself contains a neighbourhood of zero by
+Pettis's theorem, and the image of this difference lies in $V-V\subseteq
+U$. This is continuity at zero. The Baire-property and analytic-graph facts
+used here are standard descriptive set theory \cite{Kechris}.
+
+\begin{proposition}[Countable algebraic hulls remain proper]\label{isg:ptg:prop:hulls}
+Under the hypotheses of \cref{isg:ptg:thm:headline}, for every countable
+$Y\subset F$ the field $k_Y=\acl_F(k(Y))$ is analytic, relatively
+algebraically closed in $F$, and proper.
+\end{proposition}
+\begin{proof}
+The field $k(Y)$ is the union of values of rational expressions with
+finitely many coefficients from $k$ and finitely many parameters from $Y$,
+restricted to nonzero denominators. The family of expression patterns and
+parameter lists is countable. Each range is analytic. The set of roots in
+$F$ of nonzero polynomials over this generated field is likewise analytic.
+It is a subfield, and transitivity of algebraic extensions proves relative
+algebraic closure.
+
+If $k_Y=F$, then $\trdeg(F/k)\leq\aleph_0$. It cannot be zero, because $k$
+is relatively algebraically closed in $F$ and proper. It cannot be positive
+and countable by \cref{isg:ptg:lem:derivation}. This contradiction proves
+properness.
+\end{proof}
+
+\begin{remark}[Why the analytic hypothesis matters]\label{isg:ptg:rem:analytic}
+With unrestricted choice one can choose a transcendence basis $T$ of
+$F/\Q$, remove one member $\tau$, and form
+$k=\acl_F(\Q(T\setminus\{\tau\}))$. This is a proper relatively
+algebraically closed subfield with $\trdeg(F/k)=1$ and
+$\acl_F(k(\tau))=F$. The lemma proves that this $k$ cannot be analytic.
+Thus the hypothesis excludes an actual failure mode, not merely an
+inconvenient proof technique.
+\end{remark}
+
+\subsection{Nullness and meagerness of every hull}
+\begin{lemma}[Proper analytic subfields are small]\label{isg:ptg:lem:small}
+Every proper analytic subfield of $\R$ or $\Qp$ is dense, null, and meager.
+\end{lemma}
+\begin{proof}
+It contains $\Q$, hence is dense. It has the Baire property and is
+measurable for the completed additive Haar measure. A positive-measure set
+has a difference set containing a neighbourhood of zero; a nonmeager set
+with the Baire property has the same conclusion. For a subgroup the
+difference set is the subgroup itself. It would therefore be open, hence
+also closed, and density would force equality with the ambient field. This
+contradicts properness.
+\end{proof}
+
+For $\Qp$, density is important: a proper open additive subgroup such as
+$\Zp$ certainly exists. It is the field's containment of the dense prime
+field, not an assertion that $\Qp$ is connected, that rules out this
+possibility.
+
+\subsection{Aggregate polynomial dependence}
+For a subfield $k'\subseteq F$, define
+\[
+ \Dep_n(k')=\{\bar x\in F^n:
+   \exists Q\in k'[X_1,\ldots,X_n]\setminus\{0\},\ Q(\bar x)=0\}.
+\]
+Repeated coordinates are dependent, but the definition also makes sense
+for arbitrary ordered tuples. If $k'$ is analytic, this set is analytic:
+use countably many finite monomial patterns and project over the nonzero
+coefficient tuples in finite powers of $k'$.
+
+\begin{proposition}[All dependence relations are null and meager]\label{isg:ptg:prop:relations}
+Under the hypotheses of \cref{isg:ptg:thm:headline}, $\Dep_n(k_Y)$ is null
+and meager in $F^n$ for every $n\geq1$.
+\end{proposition}
+\begin{proof}
+The case $n=1$ is $\Dep_1(k_Y)=k_Y$, because $k_Y$ is relatively
+algebraically closed. It is null and meager by
+\cref{isg:ptg:prop:hulls,isg:ptg:lem:small}.
+
+Suppose the claim holds for $n-1$. Fix an $(n-1)$-tuple $\bar a$
+algebraically independent over $k_Y$. In a nonzero polynomial
+$Q(\bar X,X_n)$ over $k_Y$, at least one coefficient as a polynomial in
+$X_n$ is a nonzero polynomial in $\bar X$. Independence ensures it does not
+vanish at $\bar a$. Thus
+\[
+ \{x:(\bar a,x)\in\Dep_n(k_Y)\}
+      =\acl_F(k_Y(\bar a))
+      =\acl_F(k(Y\cup\{a_1,\ldots,a_{n-1}\})).
+\]
+The last equality follows by algebraic transitivity in both directions. It
+is a proper null meager field by the preceding propositions. For dependent
+$\bar a$, the section is the whole of $F$, but those base points form a
+null meager set by induction.
+
+The full relation is analytic, hence universally measurable and has the
+Baire property. Fubini's theorem, on finite-measure boxes and then on a
+countable cover of $F^n$, proves nullness. The Kuratowski--Ulam theorem
+proves meagerness. These arguments apply to completed measures; no
+Borelness stronger than analyticity is required.
+\end{proof}
+
+\subsection{Perfect sets and cardinality}\label{isg:ptg:sec:perfectsets}
+Mycielski's theorem says that in a perfect completely metrizable space, a
+countable family of meager relations of finite arities has a perfect
+independent set; one can take a compact Cantor subset
+\cite{Mycielski,DolezalKubis}. Apply it in any nonempty open $U\subset F$
+to the restrictions of the relations $\Dep_n(k_Y)$. Open subspaces of a
+Polish space are Polish, and these spaces have no isolated points. The
+resulting Cantor set $P$ has no polynomial dependence among any finite
+tuple of distinct members. Consequently $|P|=\cfrak$, so
+$\trdeg(F/k_Y)\geq\cfrak$; the reverse inequality is $|F|=\cfrak$. This
+completes the proof of \cref{isg:ptg:thm:headline}.
+
+There are two different ``largeness'' assertions here. The set of all
+independent $n$-tuples is conull and comeager, whereas the particular
+Cantor set furnished by the theorem may have measure zero. No
+positive-measure independent Cantor set is claimed. For any probability law
+on $F^n$ absolutely continuous with respect to Haar measure, an $n$-tuple
+sampled from that law is independent over $k_Y$ with probability one.
+
+\begin{corollary}[The real hull has dimension zero; inherited consequence]\label{isg:ptg:cor:dimension}
+For $F=\R$, every $k_Y$ in \cref{isg:ptg:thm:headline} has Hausdorff
+dimension zero.
+\end{corollary}
+\begin{proof}
+It is a proper analytic real closed subfield. Apply Edgar and Miller's
+theorem on such subfields \cite{EdgarMiller}.
+\end{proof}
+
+This is stronger than real nullness but is not a new dimension theorem.
+Source~04 does not transfer it without proof to $p$-adic Hausdorff
+dimension.
+
+\subsection{Arithmetic consequences}
+\Cref{isg:ptg:lem:ideal,isg:ptg:lem:analyticss}, together with Glazer's
+theorem (\cref{isg:ptg:fact:glazer}), make $\mathcal S=\SSy(M)$ a proper
+analytic Turing ideal for every nonstandard Borel $M\models\PA$.
+\Cref{isg:ptg:thm:scalar} therefore supplies exactly the hypotheses of
+\cref{isg:ptg:thm:headline} for every $\mathcal K_F(\mathcal S)$.
+
+\begin{corollary}[Countable external advice does not close the gap]\label{isg:ptg:cor:advice}
+For a nonstandard Borel $M\models\PA$, a countable set $Y\subset F$, and
+$F=\R$ or $\Qp$, let
+\[
+ k_{F,Y}=\acl_F(\mathcal K_F(\SSy(M))(Y)).
+\]
+Then every nonempty open set in $F$ contains a Cantor set independent over
+$k_{F,Y}$, all finite dependence relations over $k_{F,Y}$ are null and
+meager, and $\trdeg(F/k_{F,Y})=\cfrak$.
+\end{corollary}
+
+Adjoining arbitrary countably many constants is stronger than adjoining
+only computable ones; the latter are already in the scalar field. It is
+also different from supplying a single oracle that encodes all those
+constants and then closing under \emph{all} computations relative to that
+oracle. Such a Turing-ideal enlargement is a different construction, not
+covered by this field-generation assertion. The claim is about field
+generation and relative algebraic closure, as the formula states.
+
+\subsection{One Cantor parameter space for all local fields}
+There are countably many places under consideration. They can be treated
+simultaneously, without imposing an artificial identification of real and
+$p$-adic digits.
+
+\begin{theorem}[Simultaneous local perfect families]\label{isg:ptg:thm:simultaneous}
+Fix a nonstandard Borel $M\models\PA$, and use the fields $k_{F,Y}$ of
+\cref{isg:ptg:cor:advice}. For each $v\in\{\infty\}\cup\{p:p\text{
+prime}\}$, let $F_\infty=\R$, $F_p=\Qp$, and let $Y_v\subset F_v$ be
+countable. There are continuous injections
+\[
+ f_\infty:2^\N\to(1,2),\qquad
+ f_p:2^\N\to\Zp\quad(p\text{ prime})
+\]
+such that, for every place $v$, the image of $f_v$ is algebraically
+independent over $k_{F_v,Y_v}$. More generally one can prescribe a nonempty
+open real interval and a nonempty open $p$-adic ball at each place.
+\end{theorem}
+\begin{proof}
+Let $U_\infty=(1,2)$ and $U_p=\Zp$, and form the countable product
+\[
+ \mathcal X=U_\infty\times\prod_p U_p.
+\]
+It is a perfect Polish space. For each $v,n$, pull back the meager relation
+$\Dep_n(k_{F_v,Y_v})\cap U_v^n$ along the coordinate map
+$\mathcal X^n\to U_v^n$. This map is continuous, open, and surjective, so
+the pullback of a nowhere dense set is nowhere dense and the pullback of a
+meager set is meager. Mycielski's theorem supplies a Cantor subset
+$\mathcal P\subset\mathcal X$ independent for this countable family of
+relations.
+
+Choose a homeomorphism $\eta:2^\N\to\mathcal P$ and set
+$f_v=\pi_v\circ\eta$. These maps are continuous. They are injective because
+equality of two $v$-coordinates is the polynomial relation $X_1-X_2=0$,
+which has been excluded for distinct members of $\mathcal P$. All the other
+independence requirements hold by construction. Replacing the factors by
+the prescribed open intervals or balls proves the last assertion.
+\end{proof}
+
+The injections need not be computable, and the theorem does not say that
+one digit sequence, interpreted unchanged at every place, works. Those are
+stronger synchronization requirements. It does give a single compact
+parameter space with continuously varying, mutually independent families
+at all places.
+
+\section{The residue image of a nonstandard Peano model}\label{isg:ptg:sec:residues}
+
+\subsection{The residue homomorphism}
+Let $M$ be a nonstandard model of $\PA$ and $R_M$ its difference ring, the
+ring of formal differences of elements of $M$ (\cref{isg:sc:sec:nogo}).
+Two pairs represent the same difference when $(a,b)\sim(a',b')$ if
+$a+b'=a'+b$. Cancellativity and the ordinary arithmetic identities make
+this an integral domain. Only its algebraic structure is needed; no Polish
+quotient topology on $R_M$ is assumed.
+
+For every positive standard integer $m$, division with remainder gives
+\begin{equation}\label{isg:ptg:eq:finite}
+ R_M/mR_M\simeq\Z/m\Z.
+\end{equation}
+The isomorphism is the unique one carrying standard numerals to their
+ordinary residue classes. In particular, the compatible prime-power
+remainders give a unital ring homomorphism
+\begin{equation}\label{isg:ptg:eq:res}
+ \res_p:R_M\longrightarrow\varprojlim_n\Z/p^n\Z=\Zp.
+\end{equation}
+It has kernel $\bigcap_{n\geq1}p^nR_M$. This kernel is nonzero: for a
+nonstandard $N\in M$, the nonzero element $p^N$ is divisible by every
+standard $p^n$. \textup{[}Added at this write:
+\eqref{isg:ptg:eq:finite} is the standard division of
+\cref{isg:sc:lem:idiv}, which needs only $\Idelta$, read through
+\cref{isg:sc:sec:residues}; $\res_p$ is the $p$-adic coordinate of the map
+$\res_{R_M}:R_M\to\Zhat$ there.\textup{]}
+
+\subsection{Digits and the standard system}
+Fix a bit width $w\geq1$ with $2^w\geq p$. For $z\in\Zp$, write
+\[
+ z=\sum_{i\geq0}d_i p^i,\qquad 0\leq d_i<p,
+\]
+and encode each $d_i$ into a block of $w$ binary bits. Write
+$\Dig_p(z)\in2^\N$ for the resulting set. Fast $p$-adic names and these
+block-digit codes are mutually computable, uniformly for integral inputs.
+Thus
+\begin{equation}\label{isg:ptg:eq:digit}
+ z\in\mathcal K_p(\mathcal S)\cap\Zp
+ \quad\Longleftrightarrow\quad
+ \Dig_p(z)\in\mathcal S.
+\end{equation}
+For the forward direction combine a name-computing oracle with Turing
+downward closure; for the reverse, the finite sums of the digit expansion
+are a fast name.
+
+\begin{theorem}[Exact residue-image theorem]\label{isg:ptg:thm:residue}
+For any nonstandard $M\models\PA$, whether Borel or not, and
+$\mathcal S=\SSy(M)$, one has
+\begin{equation}\label{isg:ptg:eq:exact}
+ \res_p(R_M)=\mathcal K_p(\mathcal S)\cap\Zp=:\Zp(\mathcal S),\qquad
+ \Frac(\Zp(\mathcal S))=\mathcal K_p(\mathcal S).
+\end{equation}
+In fact every element of the image is the shadow of an element of $M$, not
+merely a formal difference.
+\end{theorem}
+\begin{proof}
+For $a\in M$, each ordinary $p$-adic digit of $\res_p(a)$ is specified by
+an arithmetic formula about division by standard powers of $p$. The
+corresponding binary block-digit set is a parameter-definable trace and
+hence belongs to $\mathcal S$ by \cref{isg:ptg:lem:traces}. Equation
+\eqref{isg:ptg:eq:digit} gives $\res_p(a)\in\Zp(\mathcal S)$. Since
+$\Zp(\mathcal S)$ is a subring, the same holds for all differences.
+
+Conversely let $z\in\Zp(\mathcal S)$, and choose $c\in M$ whose binary
+trace is $\Dig_p(z)$. Internally decode the $i$th block of $w$ bits of $c$,
+and reduce that decoded number modulo $p$; call the result $\tilde d_i$. This
+reduction ensures $0\leq \tilde d_i<p$ at \emph{all} internal indices, even where
+$c$ has no externally prescribed meaning. At every standard $i$, one has
+$\tilde d_i=d_i$.
+
+Choose any nonstandard $N\in M$. $\PA$ proves totality of the primitive
+recursive finite-sum operation, so it has the internal element
+\[
+ a=\sum_{i<N}\tilde d_i p^i.
+\]
+For every standard $n$, reduction of this internal sum modulo $p^n$ leaves
+exactly the first $n$ terms, which agree with $z$. Hence $\res_p(a)=z$. No
+interchange of an external infinite sum with a ring homomorphism has
+occurred: only finite arithmetic, internally evaluated at $N$, and standard
+residues have been used.
+
+Finally every $x\in\mathcal K_p(\mathcal S)$ becomes integral after
+multiplication by some standard power $p^m$. The scalar $p^mx$ still
+belongs to $\mathcal K_p(\mathcal S)$, so $x=(p^mx)/p^m$ lies in
+$\Frac(\Zp(\mathcal S))$. The opposite inclusion holds because
+$\mathcal K_p(\mathcal S)$ is a field.
+\end{proof}
+
+\begin{corollary}[Dense but incomplete residue information]\label{isg:ptg:cor:residuesmall}
+If $M$ is nonstandard and Borel, $\Zp(\mathcal S)$ is a proper dense null
+meager subring of $\Zp$. It is the valuation ring of
+$\mathcal K_p(\mathcal S)$ for the restricted $p$-adic valuation. Its
+metric completion is $\Zp$, while the metric completion of
+$\mathcal K_p(\mathcal S)$ is $\Qp$.
+\end{corollary}
+\begin{proof}
+Density follows from the standard integers. Properness follows from
+\eqref{isg:ptg:eq:exact} and properness of $\mathcal K_p(\mathcal S)$: if
+$\Zp(\mathcal S)=\Zp$, its fraction field would be $\Qp$. Nullness and
+meagerness follow by intersecting the null meager field
+$\mathcal K_p(\mathcal S)$ with the open set $\Zp$. A valuation ring
+consists precisely of the nonnegative-valuation members of its field. The
+completion statements follow from density inside the indicated complete
+metric spaces.
+\end{proof}
+
+There is a sharp distinction between having every \emph{finite} residue
+and having every coherent infinite residue sequence. For every $n$, the map
+to $\Z/p^n\Z$ is onto; nevertheless, the set of coherent sequences actually
+realized by elements of $R_M$ is only $\Zp(\mathcal S)$. Relative algebraic
+closure of its fraction field does not repair this topological omission.
+
+\subsection{The full profinite image and its idempotents}\label{isg:ptg:sec:profinite}
+The same question has an exact answer simultaneously at all primes. Write
+$\Zhat=\varprojlim_m\Z/m\Z\simeq\prod_p\Zp$, with its ordinary compact ring
+topology, and let $\res_{R_M}:R_M\to\Zhat$ be the canonical residue map. A
+convenient effective representation of $z\in\Zhat$ is the sequence
+\[
+ r_{n!}(z)\in\{0,\ldots,n!-1\},\qquad r_{n!}(z)\equiv z\pmod{n!}
+ \quad(n\geq1).
+\]
+These residues determine $z$ because the factorial moduli are cofinal for
+divisibility. For a Turing ideal $\mathcal S$, put
+\[
+ \Zhat(\mathcal S)=\{z\in\Zhat:(r_{n!}(z))_{n\geq1}
+       \text{ is computable from some }\mathsf A\in\mathcal S\}.
+\]
+The arithmetic operations on these residue sequences are computable, so
+$\Zhat(\mathcal S)$ is a subring. It contains the ordinary integers.
+
+\begin{theorem}[Exact profinite image]\label{isg:ptg:thm:profinite}
+For every nonstandard $M\models\PA$ and $\mathcal S=\SSy(M)$,
+\[
+ \res_{R_M}(R_M)=\res_{R_M}(M)=\Zhat(\mathcal S).
+\]
+\end{theorem}
+\begin{proof}
+Fix a primitive recursive injective pairing function $\langle n,j\rangle$
+on natural numbers. Since $n!<2^{n^2}$ for $n\geq1$, code the factorial
+residue sequence by
+\[
+ \mathsf A_z=\{\langle n,j\rangle:n\geq1,\ j<n^2,
+                   \Bit(r_{n!}(z),j)=1\}.
+\]
+This code and the residue sequence compute one another. Thus
+$z\in\Zhat(\mathcal S)$ exactly when $\mathsf A_z\in\mathcal S$. For
+$a\in M$, the code of $\res_{R_M}(a)$ is a parameter-definable trace, so
+belongs to $\mathcal S$. Closure under differences gives
+$\res_{R_M}(R_M)\subseteq\Zhat(\mathcal S)$.
+
+Conversely, let $z\in\Zhat(\mathcal S)$ and choose $c\in M$ with binary
+trace $\mathsf A_z$. For every internal $n\geq1$, define in $M$
+\[
+ \tilde r_n=\Bigl(\sum_{j<n^2}
+       \Bit(c,\langle n,j\rangle)2^j\Bigr)\bmod n!.
+\]
+For standard $n$, this equals $r_{n!}(z)$. Hence the arithmetic property
+\[
+ \Phi(N):\quad
+ \forall\,1\leq i\leq j\leq N\quad \tilde r_j\equiv \tilde r_i\pmod{i!}
+\]
+holds for every standard $N$. Overspill supplies a nonstandard $N$ with
+$\Phi(N)$. In this elementary use of overspill, if there is a least failure
+of $\Phi$, it is nonstandard and its predecessor is a nonstandard success;
+if there is no failure, any nonstandard $N$ works. The least-number
+principle is available in $\PA$ with parameter $c$.
+
+Set $a=\tilde r_N\in M$. For every standard $n$, the property $\Phi(N)$ gives
+$a\equiv r_{n!}(z)\pmod{n!}$. Since every ordinary modulus divides a
+factorial, $\res_{R_M}(a)=z$. All coding and summation in this proof are
+internal finite arithmetic. Overspill is used here explicitly, rather than
+assuming that arbitrary nonstandard residue prefixes are already coherent.
+\end{proof}
+
+Enumerate the ordinary primes as $p_0,p_1,\ldots$. For
+$\mathsf A\subseteq\N$, let $\mathbf 1_{\mathsf A}\in\prod_i\mathbb Z_{p_i}$
+have $i$th coordinate $1$ if $i\in\mathsf A$ and $0$ otherwise.
+
+\begin{corollary}[The standard system is the Boolean algebra of idempotents]\label{isg:ptg:cor:idempotents}
+With the canonical prime coordinates understood,
+\[
+ \{e\in\Zhat(\mathcal S):e^2=e\}=\{\mathbf 1_{\mathsf A}:\mathsf A\in\mathcal S\}.
+\]
+This identification is a Boolean-algebra isomorphism, where intersection is
+multiplication and complementation is $e\mapsto1-e$. If $\mathcal S$ is
+proper, then
+\[
+ \Zhat(\mathcal S)\ \subsetneq\ \prod_p \Zp(\mathcal S).
+\]
+If $\mathcal S$ is proper and analytic, $\Zhat(\mathcal S)$ is a proper
+analytic dense null meager subring of $\Zhat$.
+\end{corollary}
+\begin{proof}
+Every idempotent in the product has coordinates zero or one, since each
+$\Zp$ is an integral domain. The factorial-residue code of
+$\mathbf 1_{\mathsf A}$ is computable from $\mathsf A$: only finitely many
+membership bits are needed for each factorial modulus, and the finite
+Chinese remainder algorithm combines them. Conversely, the residue modulo
+$p_i$ recovers $\mathsf A(i)$. Consequently
+$\mathbf 1_{\mathsf A}\in\Zhat(\mathcal S)$ if and only if
+$\mathsf A\in\mathcal S$, proving the first assertion and its compatibility
+with Boolean operations.
+
+Every coordinate projection of $\Zhat(\mathcal S)$ is $\Zp(\mathcal S)$ by
+the two exact image theorems. Choose $\mathsf A\notin\mathcal S$. Each
+coordinate of $\mathbf 1_{\mathsf A}$ is the ordinary integer zero or one,
+so $\mathbf 1_{\mathsf A}\in\prod_p\Zp(\mathcal S)$, but
+$\mathbf 1_{\mathsf A}\notin\Zhat(\mathcal S)$. This proves strictness, not
+merely the possibility of strictness.
+
+Analyticity follows by projecting the Borel oracle-computation relation
+over $\mathcal S$, as in \cref{isg:ptg:lem:analyticfield}. The ordinary
+integers are dense in $\Zhat$ by finite Chinese remainders. A proper
+analytic dense subgroup of this compact group is null and meager, by the
+same difference-set argument as \cref{isg:ptg:cor:sssmall}.
+\end{proof}
+
+The ordinary finite quotients of $\Zhat(\mathcal S)$ itself are also
+unchanged. For $m\geq1$, if $x\in\Zhat(\mathcal S)\cap m\Zhat$, the residue
+of $x/m$ modulo $n!$ is computed by taking the residue of $x$ modulo $mn!$
+and dividing its integer representative by $m$. The representative is
+divisible by $m$, and factorial codes compute residues at every ordinary
+modulus. Thus $x/m\in\Zhat(\mathcal S)$ and
+\[
+ m\Zhat(\mathcal S)=\Zhat(\mathcal S)\cap m\Zhat,\qquad
+ \Zhat(\mathcal S)/m\Zhat(\mathcal S)\simeq\Z/m\Z.
+\]
+Its ordinary profinite completion is therefore $\Zhat$. Thus the
+distinguished profinite image remembers the complete standard system
+through its idempotents, even though its finite quotients and its
+completion do not. The coordinatewise product loses the requirement of one
+shared oracle, and is strictly larger whenever the standard system is
+proper. This answers the full-profinite version of the residue-image
+question, rather than leaving simultaneous realization implicit.
+
+\subsection{Canonical residue images of Peano models}\label{isg:ptg:sec:images}
+\Cref{isg:sc:q:images} asks which subrings of $\Zhat$ occur as
+$\im\res_{R_M}$ for nonstandard $M\models\Idelta$, and records that
+\cref{isg:sc:cor:profiles} proves only that the image is not contained in
+$\Z$. For models of Peano arithmetic \cref{isg:ptg:thm:profinite} answers
+it: the image is $\Zhat(\SSy(M))$, determined by the standard system alone.
+The image contains every profinite integer with a computable factorial
+residue sequence, because $\SSy(M)$ contains every computable set
+(\cref{isg:ptg:lem:ideal}); for instance the parameter $\zeta_*$ of
+\eqref{isg:cf:eq:explicitparameter}, whose residues modulo $n!$ are the
+computable $S_n$, and which is the residue of the element $F(h)$ in the
+proof of \cref{isg:cf:thm:PA}. Saturation
+and the choice of model enter only through $\SSy(M)$. The following
+statement, added at this write, lists the images that occur among countable
+models. A \emph{Scott set} is a nonempty Turing ideal
+$\mathcal S\subseteq2^\N$ such that every infinite binary tree coded in
+$\mathcal S$ has an infinite path in $\mathcal S$.
+
+\begin{corollary}[Residue images of countable Peano models; \textup{[write~04]}]\label{isg:ptg:cor:images}
+Distinct standard systems of nonstandard models of $\PA$ give distinct
+residue images. A subring $\Lambda\subseteq\Zhat$ is $\im\res_{R_M}$ for
+some countable nonstandard $M\models\PA$ if and only if
+$\Lambda=\Zhat(\mathcal S)$ for a countable Scott set $\mathcal S$; and then
+$\mathcal S$ is the set of $\mathsf A\subseteq\N$ with
+$\mathbf 1_{\mathsf A}\in\Lambda$.
+\end{corollary}
+\begin{proof}
+By \cref{isg:ptg:thm:profinite}, $\im\res_{R_M}=\Zhat(\SSy(M))$, and by
+the first assertion of \cref{isg:ptg:cor:idempotents}, which uses only that
+$\SSy(M)$ is a Turing ideal, the idempotents of this ring are exactly the
+$\mathbf 1_{\mathsf A}$ with $\mathsf A\in\SSy(M)$. So the image determines
+$\SSy(M)$, which proves the first and the last assertion. The standard
+system of every nonstandard model of $\PA$ is a Scott set, and by Scott's
+theorem \cite{Scott} every countable Scott set is the standard system of a
+countable nonstandard model of $\PA$; both are classical and imported here.
+A countable $M$ has a countable standard system. This proves the
+equivalence.
+\end{proof}
+
+The corollary is the write's combination of \cref{isg:ptg:thm:profinite,isg:ptg:cor:idempotents}
+with Scott's theorem; source~04 states neither it nor the Scott-set
+description, and says only that it does not claim to solve Scott's general
+problem. For uncountable models the images are the rings $\Zhat(\mathcal S)$
+of the standard systems that occur; which uncountable Scott sets occur is
+Scott's problem, open in general and not addressed here. For models of
+$\Idelta$ that are not models of $\PA$ the question stays open: the proofs
+of \cref{isg:ptg:lem:traces,isg:ptg:thm:residue,isg:ptg:thm:profinite} use
+induction for arbitrary arithmetic formulas, overspill and the totality of
+the internal finite sums. See the note after \cref{isg:sc:q:images}.
+
+\subsection{Equal completions, different arithmetic images}\label{isg:ptg:sec:comparison}
+The comparison with omnific integers is clearest first in a set-sized ring
+where all constructions are elementary. Let $k\subseteq\R$ be a subfield and
+put
+\begin{align}
+ \Pi_k&=\{f\in k((t^\Q)):\supp(f)\subset\Q_{<0}\},\label{isg:ptg:eq:tail}\\
+ \Asc(k,\Q)&=\Z+\Pi_k.\label{isg:ptg:eq:tailring}
+\end{align}
+The support of each Hahn series is well ordered in the increasing order on
+$\Q$. In the surreal interpretation $t=\omega^{-1}$, negative $t$-exponents
+represent purely infinite terms. There is no requirement that the negative
+support be finite. \textup{[}Added at this write: this is source~03's ring
+$\Asc(k,\Gamma)$ of \cref{isg:sc:sec:rings} with $\Gamma=\Q$, where the
+ring retraction $\ct$ and standard division are already stated.\textup{]}
+
+\begin{proposition}[The ordinary residue tower of $\Asc(k,\Q)$]\label{isg:ptg:prop:tail}
+$\Asc(k,\Q)$ is a ring. Constant extraction $\ct:\Asc(k,\Q)\to\Z$ is a
+surjective unital ring homomorphism with kernel $\Pi_k$. For every
+$n\geq1$,
+\[
+ \Asc(k,\Q)/n\Asc(k,\Q)\simeq\Z/n\Z,
+\]
+compatibly with reduction maps. Every homomorphism from $\Asc(k,\Q)$ to a
+finite ring annihilates $\Pi_k$ and factors through $\ct$.
+\end{proposition}
+\begin{proof}
+Sums of negative exponents remain negative, so $\Pi_k$ is closed under
+multiplication, and multiplication by an element of $\Z+\Pi_k$ preserves
+it. The constant term of a product in $\Asc(k,\Q)$ is exactly the product
+of its integer constant terms: no pair of negative exponents can sum to
+zero. This proves the ring and homomorphism assertions.
+
+For every nonzero ordinary integer $n$, division of all coefficients by $n$
+preserves $\Pi_k$, so $\Pi_k=n\Pi_k$. It follows that
+\[
+ n\Asc(k,\Q)=n\Z+\Pi_k=\ct^{-1}(n\Z),
+\]
+which proves the quotient formula. If a finite target ring has
+characteristic $m>0$ and $f\in\Pi_k$, write $f=mg$ with $g\in\Pi_k$. Its
+image is zero. The factorization is then through the constant-term
+quotient. This last argument does not need the homomorphism to be
+surjective.
+\end{proof}
+
+\textup{[}Added at this write: for the class-sized $\Oz$ these statements
+are \replabel{odg:thm:finitequotients} and \cref{isg:cf:prop:omnificresidue},
+and they are proved in Lean: \fn{omnificQuotientZModEquiv}
+(\fn{OmnificResidues.lean}), and \fn{omnific_finite_hom_kills_purelyInfinite}
+and \fn{omnific_finite_hom_factors} (\fn{OmnificFiniteQuotients.lean}),
+namespace \fn{Surreal.Foundations.SignSequence}. Under $t=\omega^{-1}$,
+$\Asc(\R,\Q)$ is a set-sized subring of $\Oz$ with the same constant term
+(\cref{isg:ptg:sec:omnific}); the proposition for $\Asc(k,\Q)$ is not
+formalized.\textup{]}
+
+The ordinary $p$-adic completion means the inverse limit over the standard
+ideals $p^nR$. It follows that
+\begin{equation}\label{isg:ptg:eq:samecompletion}
+ \widehat{(R_M)}_p\simeq\Zp\simeq\widehat{\Asc(k,\Q)}_p.
+\end{equation}
+These identifications are ring isomorphisms and homeomorphisms for the
+inverse-limit topologies. Nevertheless the canonical images are
+\begin{equation}\label{isg:ptg:eq:differentimages}
+ \im\bigl(R_M\to\widehat{(R_M)}_p\bigr)=\Zp(\mathcal S),\qquad
+ \im\bigl(\Asc(k,\Q)\to\widehat{\Asc(k,\Q)}_p\bigr)=\Z.
+\end{equation}
+For example,
+\[
+ \frac1{p+1}\in\Zp(\mathcal S)\setminus\Z,
+\]
+because it is a rational $p$-adic integer and is computable. Therefore
+these two images are different even when both completions and all the
+finite stages are identified canonically.
+
+\begin{theorem}[Finite completion does not determine the canonical image]\label{isg:ptg:thm:completions}
+A signed nonstandard $\PA$ ring $R_M$ and the omnific-type ring $\Asc(k,\Q)$
+have identical ordinary finite residue systems and identical ordinary
+$p$-adic completions, but their canonical images in those completions are
+different. If $R_M$ comes from a Borel model, its image has the proper
+analytic fraction field of \cref{isg:ptg:thm:scalar}; the image of
+$\Asc(k,\Q)$ is always the ordinary integers.
+\end{theorem}
+\begin{proof}
+Combine \eqref{isg:ptg:eq:finite}, \cref{isg:ptg:prop:tail} and
+\cref{isg:ptg:thm:residue}. The transition maps are all the ordinary
+residue reductions, so the inverse limits agree as claimed.
+Equation~\eqref{isg:ptg:eq:differentimages} and the exhibited rational
+element separate the images.
+\end{proof}
+
+\textup{[}Added at this write: for $\Oz$ the second half is
+\replabel{odg:eq:profinite} and is proved in Lean: the canonical maps to
+the $p$-adic and to the profinite completion are constant extraction
+followed by the ordinary embedding of $\Z$ (\fn{omnificPadicCompletionEquiv_of}
+in \fn{OmnificPadicCompletion.lean}, \fn{omnificProfiniteCompletionEquiv_of}
+in \fn{OmnificProfiniteCompletion.lean}). The first half is
+\cref{isg:ptg:thm:residue}. The theorem is the exact Peano form of the
+remark after \cref{isg:sc:prop:diagonal}: neither the finite quotients nor
+the abstract inverse limit separate omnific from nonstandard arithmetic,
+and the canonical image does.\textup{]}
+
+\begin{corollary}[A useful nonidentification]\label{isg:ptg:cor:nomap}
+There is no unital ring homomorphism $R_M\to\Z$, and hence none
+$R_M\to\Asc(k,\Q)$. This holds for every nonstandard $\PA$ model, without
+the Borel hypothesis.
+\end{corollary}
+\begin{proof}
+A unital homomorphism $h:R_M\to\Z$ preserves each standard remainder: from
+$d=p^nq+r$ it follows that $h(d)\equiv r\pmod{p^n}$. Therefore $\res_p(d)$
+would equal the ordinary integer $h(d)$ inside $\Zp$, forcing
+$\Zp(\mathcal S)\subseteq\Z$, a contradiction. Composing a hypothetical map
+to $\Asc(k,\Q)$ with $\ct$ gives the forbidden map to $\Z$.
+\end{proof}
+
+\textup{[}Added at this write: \cref{isg:sc:thm:nochar} proves more,
+for every nonstandard model $M$ of $\Idelta$, namely
+$\Hom_\Z((R_M)_{\rm add},\Z)=0$; so there is no additive map $R_M\to\Z$ sending $1$ to $1$, and by
+\cref{isg:sc:cor:noadd,isg:sc:cor:omnific} none into $\Asc(k,\Q)$ or $\Oz$.
+The proof above is a second route to the ring-homomorphism case for
+Peano models, through the residue image: it is the criterion of
+\cref{isg:sc:prop:diagonal}, applied with the explicit non-diagonal
+residue $1/(p+1)$.\textup{]}
+
+This corollary is included to prevent an incorrect interpretation of the
+bridge. Source~04 does \emph{not} embed the original $\PA$ ring into the
+omnific integers. It transports algebraic information about the
+\emph{scalar field extracted from its standard system}. The two routes must
+not be conflated.
+
+\section{Hahn coefficients and an invisible omnific family}\label{isg:ptg:sec:hahn}
+
+\subsection{Coefficientwise independence in Hahn fields}
+For a field $k$ and an ordered abelian set-group $\Gamma$, the Hahn field
+$k((t^\Gamma))$ consists of formal sums
+\[
+ f=\sum_{\gamma\in\Gamma}a_\gamma t^\gamma
+\]
+with well-ordered support. Equality is coefficientwise. Addition is
+coefficientwise, and multiplication is the usual well-defined convolution.
+If $k\subseteq k'$, the series with coefficients in $k$ form the subfield
+$k((t^\Gamma))$ of $k'((t^\Gamma))$. Only standard Hahn arithmetic is used;
+no topology on the collection of all possible coefficient fields is needed.
+
+\begin{theorem}[Coefficient-preserving independence transfer]\label{isg:ptg:thm:hahn}
+Let $k\subseteq k'$ be fields and $\Gamma$ an ordered abelian set-group. If
+$P\subseteq k'$ is algebraically independent over $k$, its constant images
+in $k'((t^\Gamma))$ are algebraically independent over $k((t^\Gamma))$.
+More generally, for any choices $u_r\in k((t^\Gamma))^\times$ indexed by
+$r\in P$, the family $\{u_rr:r\in P\}$ is algebraically independent over
+$k((t^\Gamma))$.
+\end{theorem}
+\begin{proof}
+Take distinct $r_1,\ldots,r_m\in P$ and a polynomial
+\[
+ Q(X_1,\ldots,X_m)=\sum_{\nu\in\mathcal E}a_\nu X^\nu,
+ \qquad a_\nu\in k((t^\Gamma)),
+\]
+where $\mathcal E\subseteq\N^m$ is finite. Suppose $Q(\bar r)=0$. Write
+$a_\nu=\sum_\gamma a_{\nu,\gamma}t^\gamma$. The coefficient of $t^\gamma$
+in the assumed equality is
+\begin{equation}\label{isg:ptg:eq:hahncoefficient}
+ \sum_{\nu\in\mathcal E}a_{\nu,\gamma}\,\bar r^{\nu}=0.
+\end{equation}
+This is a polynomial relation over $k$. Independence of the $r_i$ forces
+$a_{\nu,\gamma}=0$ for every $\nu$ and every $\gamma$. Hence every
+$a_\nu=0$ and $Q=0$.
+
+Only a finite outer sum was used in \eqref{isg:ptg:eq:hahncoefficient};
+this is not an illicit exchange of arbitrary infinite sums. For the final
+assertion, substitution $X_i\mapsto u_{r_i}X_i$ is an automorphism of the
+polynomial ring over $k((t^\Gamma))$, with inverse
+$X_i\mapsto u_{r_i}^{-1}X_i$. It preserves nonzero polynomials and reduces
+the assertion to the constant case.
+\end{proof}
+
+\textup{[}Added at this write: the first assertion is an immediate
+consequence of the coefficient-extension lemma of the
+independent-surreal-copies report, \replabel{isc:cp:lem:coeffld}: for
+$k\subseteq k'$, the fields $k'$ and $k((t^\Gamma))$ are linearly disjoint
+over $k$ inside $k'((t^\Gamma))$, in the same small-$t$ convention. The
+distinct monomials in $P$ are linearly independent over $k$, hence over
+$k((t^\Gamma))$, which is algebraic independence. The proof above is the
+same coefficient comparison.\textup{]}
+
+There is no bound on the cardinality or complexity of the supports beyond
+the set-sized Hahn definition. The theorem therefore identifies an exact
+limitation of support enrichment: introducing more monomials and longer
+well-ordered supports cannot create a polynomial relation between scalar
+constants whose coefficients are still restricted to $k$.
+
+\begin{corollary}[Persistent real coefficient gap]\label{isg:ptg:cor:hahnarith}
+For a nonstandard Borel $M\models\PA$, countable $Y\subseteq\R$, and
+$k_{\R,Y}=\acl_\R(\mathcal K_\infty(\SSy(M))(Y))$, choose a Cantor set
+$P\subset(1,2)$ independent over $k_{\R,Y}$. Then for every ordered abelian
+set-group $\Gamma$, the same $P$ is independent over
+$k_{\R,Y}((t^\Gamma))$ inside $\R((t^\Gamma))$.
+\end{corollary}
+\begin{proof}
+Use \cref{isg:ptg:cor:advice,isg:ptg:thm:hahn}.
+\end{proof}
+
+A corresponding complex-coefficient statement also holds. If $P$ is real
+and independent over $k'\subseteq\R$, it is independent over $k'(i)$:
+split a putative relation into real and imaginary parts.
+\Cref{isg:ptg:thm:hahn} then gives independence over $k'(i)((t^\Gamma))$ in
+$\C((t^\Gamma))$. This is the relevant surcomplex analogue; it makes no
+assertion about independence over the whole surcomplex field.
+
+\subsection{A bounded-support route into the surreals}\label{isg:ptg:sec:omnific}
+For rational exponents, Conway normal forms give the familiar embedding
+\begin{equation}\label{isg:ptg:eq:surrealmap}
+ \R((t^\Q))\longrightarrow\No,
+ \qquad \sum_q a_q t^q\longmapsto\sum_q a_q\omega^{-q}.
+\end{equation}
+Increasing well-ordered $t$-support becomes decreasing well-ordered Conway
+support in the usual reverse-order convention. Normal-form addition and
+multiplication agree with Hahn arithmetic. The identification between
+surreal normal forms and Hahn-style arithmetic is also part of the ProveIt
+development consulted by source~04 \cite{ProveItPTG}; a primary modern
+treatment is \cite{BKMM}.
+
+Under \eqref{isg:ptg:eq:surrealmap}, $\Asc(\R,\Q)=\Z+\Pi_\R$ is a set-sized
+subring of Conway's omnific integers: all nonconstant growth exponents are
+positive and the constant coefficient is an ordinary integer. In particular
+$r\omega$ is an omnific integer for every $r\in\R$.
+
+\begin{theorem}[An invisible independent family at one scale]\label{isg:ptg:thm:omnific}
+Let $M$, $\mathcal S$, $Y$, $k_{\R,Y}$ and $P$ be as in
+\cref{isg:ptg:cor:hahnarith}, with $\Gamma=\Q$. The family
+\[
+ \mathcal Z=\{z_r=r\omega:r\in P\}
+\]
+has cardinality $\cfrak$, is algebraically independent over the embedded
+field $k_{\R,Y}((t^\Q))$, and has the following properties:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item Every $z_r$ is purely infinite and lies in the set-sized ring
+$\Asc(\R,\Q)\subset\Oz$.
+\item For every positive ordinary integer $n$, every $z_r$ belongs to
+$n\Asc(\R,\Q)$ and therefore maps to zero in $\Oz/n\Oz$.
+\item Every homomorphism from $\Asc(\R,\Q)$ to a finite ring kills the
+whole family. Nevertheless, for each finite distinct tuple
+$z_{r_1},\ldots,z_{r_m}$, evaluation gives an injective homomorphism
+\[
+ k_{\R,Y}((t^\Q))[X_1,\ldots,X_m]\hookrightarrow\R((t^\Q)).
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Use \cref{isg:ptg:thm:hahn} with $u_r=t^{-1}=\omega$. Each element has
+negative $t$-support $\{-1\}$ and zero constant term. Since
+$z_r/n=(r/n)\omega\in\Asc(\R,\Q)$, it is divisible by every ordinary $n$.
+The finite-image assertion is \cref{isg:ptg:prop:tail}. The evaluation map
+is injective exactly because the tuple is algebraically independent over
+the specified coefficient field.
+\end{proof}
+
+The coefficient field is essential. Over the full real field, two nonzero
+members $r\omega$ and $s\omega$ satisfy $sX_1-rX_2=0$. This does not
+contradict the theorem because those coefficients need not belong to
+$k_{\R,Y}((t^\Q))$. The statement neither claims independence over $\R$
+nor mistakes algebraic independence for independence of distinct valuation
+scales: all these elements use the \emph{same} scale $\omega$.
+\textup{[}Added at this write: each $z_r$ is, separately, transcendental
+over $\R$, as every infinite omnific integer is (Lean
+\fn{omnific_transcendental_of_not_finite} in
+\fn{OmnificPolynomialRoots.lean}); what fails over $\R$ is the joint
+independence. By \replabel{odg:thm:finitequotients} every element of
+$\Pi$, not only these, is zero in every $\Oz/n\Oz$.\textup{]}
+
+\subsection{Which topology has the perfect set?}\label{isg:ptg:sec:topologies}
+The Cantor structure lives on $P\subset\R$ and may be transported to
+$\mathcal Z$ as a coefficient-parameter topology. It is not the topology
+induced by the order on $\No$. If $r\ne s$ are real, then $|r-s|\omega$
+exceeds every positive ordinary integer. Consequently
+\[
+ (r\omega-1,r\omega+1)\cap\mathcal Z=\{r\omega\}.
+\]
+Thus $\mathcal Z$ is discrete in the surreal order topology. The same
+warning applies to the Hahn valuation topology: distinct nonzero constant
+differences have valuation zero, and the common monomial factor does not
+turn the real coefficient topology into that topology.
+
+This is why ``Cantor-parameterized omnific family'' is the accurate phrase.
+The real coefficient set is perfect; the omnific image carries several
+inequivalent natural topologies, and perfectness is not invariant under
+changing them.
+
+\subsection{Set theory without class paradoxes}\label{isg:ptg:sec:classes}
+All fields, models, countable parameter sets, Cantor sets, and Hahn
+supports used in the main proofs are sets. For $\Gamma=\Q$ the domain of
+\eqref{isg:ptg:eq:surrealmap} is a set; its images are set-coded surreal
+sign sequences, and their birthdays have an ordinal bound by Replacement.
+One can therefore perform the entire application in a sufficiently large
+set-sized initial segment of the ambient class of surreal numbers, without
+treating the proper class $\No$ as an element of itself.
+
+In a class theory, \eqref{isg:ptg:eq:surrealmap} is simply a class-defined
+map on a set domain. In a universe-polymorphic type theory, the same proof
+should first be stated for a set-sized Hahn field and an embedding into a
+larger universe. Neither a global well-order of all surreals nor
+quantification over a ``set of all class embeddings'' is needed. The
+general coefficient theorem is a scheme over set-sized $\Gamma$, not a Hahn
+construction whose exponent group is assumed to be a set while it is
+actually the whole proper class $\No$. This is the same discipline as
+\cref{isg:sec:background} and \cref{isg:sc:sec:classes}.
+
+\subsection{Scope, sharpness, and what is not constructed}\label{isg:ptg:sec:limits}
+\paragraph{Nonstandardness cannot simply be removed.} For the standard
+model $M=\N$, binary traces of single integers are only finite sets. They
+are not a Turing ideal containing all computable sets. Its signed ring is
+$\Z$ and its residue image is $\Z\subset\Zp$, not the valuation ring of all
+computable $p$-adic numbers. Thus the nonstandard hypothesis is already
+necessary for the exact coding bridge as stated.
+
+\paragraph{Topological and algebraic closure point in opposite
+directions.} For a Borel nonstandard model, $\mathcal K_p(\mathcal S)$ is
+algebraically closed relative to $\Qp$ but is not metrically complete. Its
+topological completion is all of $\Qp$, whereas adjoining countably many
+constants and taking relative algebraic closure still leaves a perfect
+transcendence gap. The completion adds limits of arbitrary Cauchy
+sequences, not merely roots of polynomials or values of finitely many field
+operations. Similarly, allowing every Hahn support with coefficients in
+$k_{\R,Y}$ is not the same operation as replacing $k_{\R,Y}$ by its
+topological completion.
+
+\paragraph{No named transcendental witness is supplied.} Every computable
+real belongs to $\mathcal K_\infty(\mathcal S)$, and every computable
+$p$-adic point belongs to $\mathcal K_p(\mathcal S)$. Consequently no member
+of the independent sets can have a computable name. In particular the
+theorem does not produce a new independence result about a pair of
+familiar computable constants. It produces independence \emph{over a field
+already containing all such constants}.
+
+There is also no computable injection from all of Cantor space into one of
+the independent sets: evaluating it at the computable branch $0^\N$ would
+give a computable point of that set, a contradiction. A continuous
+injection exists by \cref{isg:ptg:thm:simultaneous}, but a code for it
+carries additional noncomputable information. The proof is existential,
+not a finite approximation algorithm for the full perfect family.
+
+\paragraph{No global theory of arbitrary presentations is assumed.} The
+scalar field depends only on the standard system, not on a selected Polish
+topology on the presentation of $M$. The Borel hypothesis is used to obtain
+analyticity and properness, and not to select canonical oracles for
+elements. The argument also does not require continuous arithmetic
+operations, a Polish topology on the signed quotient ring, or a Borel
+global root-selection function. All such stronger assertions would need
+separate proofs.
+
 \section{Verification, provenance, and a formalization route}\label{isg:sec:audit}
 
 Each subsection below first gives source~01's record, as delivered, and
-then source~02's; ``this manuscript'' in source~01's text means source~01.
+then those of sources~02, 03 and~04; ``this manuscript'' in source~01's text means source~01.
 
 \subsection{The exact dependency chain}
 The proof separates into three kinds of input. Standard surreal
@@ -4425,6 +5941,51 @@ is over formulas, rings, and such bounds; no computable test for
 infinitude in arbitrary presentations is asserted. An effective
 presentation and a specified element code are needed for the upper
 many-one reduction.
+
+\emph{Source~04.} The perfect-gap theorem
+(\cref{isg:ptg:thm:headline}) depends on the analytic-derivation lemma
+(\cref{isg:ptg:lem:derivation}: extension of a derivation through a
+separable algebraic extension, the analytic graph, and automatic continuity
+of Borel homomorphisms), on Fubini and Kuratowski--Ulam for the aggregate
+relations, and on Mycielski's theorem, in the form of
+\cite[Theorem~1]{DolezalKubis}. The arithmetic applications add
+\cref{isg:ptg:lem:traces,isg:ptg:lem:ideal,isg:ptg:lem:analyticss}, which
+use full induction, Glazer's theorem (\cref{isg:ptg:fact:glazer}),
+imported, and quantifier elimination for real closed fields and for $\Qp$
+\cite{Macintyre}, imported. The exact images
+(\cref{isg:ptg:thm:residue,isg:ptg:thm:profinite}) use only definable
+traces, internal finite sums and, for the profinite image, an explicit
+overspill; they need no Borel hypothesis. The Hahn and omnific statements
+use coefficient comparison and the rational Hahn slice of the surreal
+normal forms. The real dimension corollary imports Edgar and Miller's
+theorem \cite{EdgarMiller} and is not used elsewhere. Source~04's
+dependency and novelty ledger, its Appendix~B, reads as follows with this
+report's numbers (its shipped \fn{04-transcendence-gaps-theorem_ledger.md}
+is a longer version with source~04's numbers).
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.35\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
+\toprule
+Claim & Principal dependency & Status \\
+\midrule
+\endhead
+No full Borel standard system & Glazer's seminar theorem & External input, not reproved (\cref{isg:ptg:fact:glazer}). \\
+Scalar-field algebraic closure & Oracle root computation & Proved, using standard effective local methods (\cref{isg:ptg:thm:scalar}). \\
+No positive countable transcendence degree & Analytic graph of a derivation; automatic continuity & Full proof; priority not certified (\cref{isg:ptg:lem:derivation}). \\
+Perfect parameter-robust gap & Proper hulls, Fubini, Kuratowski--Ulam, Mycielski & Assembled theorem proved; classical inputs credited (\cref{isg:ptg:thm:headline}). \\
+Real Hausdorff dimension zero & Edgar--Miller theorem & Inherited corollary, not a new dimension result (\cref{isg:ptg:cor:dimension}). \\
+Exact $p$-adic residue image & $\PA$ definable traces and internal recoding & Full proof, without a Borel hypothesis (\cref{isg:ptg:thm:residue}). \\
+Full profinite image and idempotents & Factorial residue codes, overspill, and finite CRT & Exact shared-oracle image and Boolean reconstruction proved (\cref{isg:ptg:thm:profinite,isg:ptg:cor:idempotents}). \\
+Simultaneous places & Open coordinate projections and Mycielski & Proved; no uniform digit claim (\cref{isg:ptg:thm:simultaneous}). \\
+Hahn coefficient transfer & Coefficient equality and finite polynomial sums & Full elementary proof (\cref{isg:ptg:thm:hahn}). \\
+Invisible omnific family & Perfect real coefficients and Hahn transfer & Proved on an explicit set-sized slice (\cref{isg:ptg:thm:omnific}). \\
+Equal completions, different images & Exact residue image and constant-term quotient & Full comparison proof (\cref{isg:ptg:thm:completions}). \\
+Lean/Rocq endpoints & Future formalization work & Not implemented or verified in source~04's package. \\
+\bottomrule
+\end{longtable}
+\endgroup
+\noindent The \textup{[write~04]} corollary (\cref{isg:ptg:cor:images})
+adds the exact profinite image, the Boolean reconstruction and Scott's
+theorem \cite{Scott}, imported.
 
 \subsection{Finite regression checks supplied with the article}
 The accompanying Python program \texttt{verify.py} (shipped in this
@@ -4574,6 +6135,64 @@ made on a copy or with an explicit \texttt{--output}. The shipped
 \fn{data/03-standard-cut-BUILD_AUDIT.json} records the delivered PDF (20
 pages, no overfull boxes or unresolved references), which is not shipped.
 
+\emph{Source~04.} Its delivered files are shipped unchanged under these
+names:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+shipped here & delivered as\\
+\midrule
+\fn{code/04-transcendence-gaps-verify.py} & \fn{verify.py}\\
+\fn{data/04-transcendence-gaps-verification.json} & \fn{verification.json}\\
+\fn{04-transcendence-gaps-theorem_ledger.md} & \fn{theorem_ledger.md}\\
+\fn{04-transcendence-gaps-source_audit.md} & \fn{source_audit.md}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The program uses only the Python standard library and exact arithmetic;
+there are no floating-point near-zero tests, and it does not use
+\texttt{assert}, so its checks also run under \texttt{python -O}. It checks
+finite base-digit recodings, factorial residues and idempotent Chinese
+remainders, arithmetic of finite rational Laurent tails and constant terms,
+the quotient-divisibility identities used for $\Asc(k,\Q)$, and exact
+rational Newton iterates for a $7$-adic root of $X^2-2$. Its recorded run
+returns \texttt{PASS}:
+\begin{center}\small
+\begin{tabular}{@{}p{0.72\textwidth}r@{}}
+\toprule
+Check family & Count\\
+\midrule
+Base-$p$ digit words, $p=2,3,5,7$, lengths $0$--$5$ (exhaustive) & 23,941\\
+Prefix-residue comparisons & 139,168\\
+Recodings with an uncontrolled tail & 23,941\\
+Exact finite Laurent-tail identities (1,000 seeded pairs, seed 20261003) & 38,000\\
+Exact Newton stages for a $7$-adic root of $X^2-2$ & 7\\
+Factorial-residue samples & 720\\
+Decoded factorial-residue checks & 4,320\\
+Finite coherence comparisons & 15,120\\
+Idempotents modulo $8!$ & 16\\
+Prime-coordinate recovery checks & 64\\
+Boolean-operation identities & 272\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are regression checks of finite identities appearing in the proofs.
+They cannot certify algebraic independence over an uncountable field,
+existence of a perfect set, a Borel-model theorem, Glazer's theorem,
+overspill or transfinite Hahn arithmetic; a finite check reporting
+``passed'' must not be promoted into any of those assertions, and symbolic
+variables in a test are not numerical transcendental witnesses. The Newton
+check caps its modulus at $7^{12}$ by design, so its record shows the same
+checked modulus for iterations 4--6 while the residual valuations
+$16,32,64$ are checked exactly. The program writes \fn{verification.json}
+beside itself unless \texttt{--output} is given; shipped in \fn{code/}, it
+would write \fn{code/verification.json}, not the shipped record. At this
+write it was rerun on a copy with a scratch output file (Python 3.14.4): it
+passed in a few seconds, and its JSON content was identical to the shipped
+record. Source~04's delivered checksum manifest \fn{SHA256SUMS} (seven
+files) was verified at placement and dropped, as repository policy
+requires.
+
 \subsection{Relationship to the Surreal repository}
 The repository review examined the public README, the introductory
 coverage and dependency ledger, and targeted searches for overlap
@@ -4705,6 +6324,66 @@ development \fn{Logic/PresburgerArithmetic} decides additive arithmetic
 over the ordinary integers. Neither formalizes any statement of source~03.
 \textup{[}This paragraph's last three sentences are the write's.\textup{]}
 
+\emph{Source~04.}\label{isg:ptg:sec:relationLean} Its repository review was
+made at the ProveIt commit
+\begin{center}\small\ttfamily
+7d9b8b957fa6a1cc28636ac8fce3cfaa6d230031,
+\end{center}
+a merge commit and an ancestor of its placement commit \texttt{12076b2e8},
+through a GitHub connector. It inspected
+\fn{Algebra/SurrealNumbers/README.md} and
+\fn{Logic/PeanoArithmetic/ListCoding/README.md}, both unchanged at this
+write, and the root README and directory metadata for navigation; it did
+not review all reports or formal source files, and no Lean or Rocq build or
+kernel audit was run for it. Its two claims about these files are true: the
+surreal guide documents normal forms, omnific constant extraction, finite
+quotients, the $p$-adic completion and its canonical image, and it
+separates formalized foundations from unrefereed reports; the list-coding
+guide distinguishes the standard-natural interpretation of its formulas from
+internally derived universal theorems. \textup{[}Added at this write: the
+$\Oz$ facts named there are Lean theorems, not only documentation; the
+declarations corresponding to \cref{isg:ptg:prop:tail,isg:ptg:thm:completions,isg:ptg:thm:omnific}
+are named at those statements. No statement of source~04, and not the
+\textup{[write~04]} corollary, is formalized. As for source~03, a
+nonstandard model of arithmetic in the repository's syntax would be a
+\fn{SetTheory.PA.PreModel}, not a \fn{SetTheory.PA.Model}.\textup{]}
+
+Source~04's formalization plan, as it gives it. The list-coding distinction
+prevents a false formalization claim: a Lean proof about evaluating a
+formula in $\N$ does not, by itself, justify using its totality at a
+nonstandard $N\in M$. The exact-residue theorem requires a syntactic $\PA$
+derivation, or a separate semantic theorem valid in every $\PA$ model, for
+the bounded digit-recoding and finite-sum operations. This additional
+obligation is recorded rather than silently imported from the
+standard-model coding documentation.
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}@{}}
+\toprule
+Layer & Mathematical interface & Verification obligation \\
+\midrule
+\endhead
+Arithmetic traces & Parameter-definable traces and standard bits & $\PA$ finite comprehension; deterministic oracle runs; standard-system Turing closure. \\
+Descriptive coding & Analytic $\mathcal S$ and analytic $\mathcal K_F(\mathcal S)$ & Borel remainder maps; represented-space computation; analytic projection lemmas. \\
+Local root closure & Individual real and $p$-adic roots & Nonuniform isolating data; effective sign bisection; quantitative Newton estimates. \\
+Derivations & Countable-basis differential extension & Extension through separable algebraic fields; exact analytic graph characterization. \\
+Category and measure & Aggregate dependence relations & Completed Haar measures, Fubini, Kuratowski--Ulam, and Mycielski. \\
+Residue bridge & $\res_p(R_M)=\mathcal K_p(\mathcal S)\cap\Zp$ & Nonstandard digit recoding; inverse-limit compatibility; both inclusions of the image. \\
+Hahn transfer & Coefficient extraction of finite relations & \Cref{isg:ptg:thm:hahn}; scalar substitution by invertible monomials. \\
+Omnific application & Normal forms and constant extraction & Embedding the rational Hahn slice; comparison of topologies; finite quotient maps. \\
+\bottomrule
+\end{longtable}
+\endgroup
+The most economical first formal target is \cref{isg:ptg:thm:hahn}. It has
+no descriptive set theory, no arithmetic-model coding, and no proper-class
+quantification. After that, \cref{isg:ptg:prop:tail} and the same-scale
+application provide a small end-to-end algebraic certificate. The
+analytic-derivation lemma is a second, independent high-value target. Its
+graph equivalence \eqref{isg:ptg:eq:witness1}--\eqref{isg:ptg:eq:witness3}
+should be formalized before any measurable-function wrapper is attached to
+it. No Lean file is included merely to give an impression of machine
+verification. Source~04's proofs were developed and reviewed at the
+mathematical level, and the repository was not built for it.
+
 \subsection{Novelty and literature status}
 The new contributions claimed provisionally here are the explicit
 root-relocation map together with its exact predecessor identity, its
@@ -4763,12 +6442,42 @@ is available. Source~03's own literature search did not establish priority
 for any exact formulation, and the \textup{[write]} statements of
 \cref{isg:sc:sec:fragment} add no claim of priority.
 
+\emph{Source~04.} Its claimed contributions are the countable-parameter
+derivation argument (\cref{isg:ptg:lem:derivation}), the assembled
+perfect-gap theorem, the exact standard-system/residue identifications,
+including the profinite idempotents, and their coefficient-preserving Hahn
+and congruence applications. It credits Fatalini and Schindler's
+attribution to Ben de Bondt and Glazer as a close conceptual precursor
+\cite[Section~2]{FataliniSchindler}, Ye, Yu and Zhao's
+\cite[Proposition~2.6]{YeYuZhao} as nearby work on analytic subfields of
+$\R$ and $\Qp$, Edgar and Miller for the dimension corollary, and Mycielski
+for perfect independent sets; it establishes no priority, for the
+assembled theorem or for its components. This report narrows the claim
+further. \Cref{isg:ptg:cor:nomap} is weaker than
+\cref{isg:sc:thm:nochar,isg:sc:cor:noadd,isg:sc:cor:omnific} of source~03;
+\cref{isg:ptg:thm:hahn} follows at once from
+\replabel{isc:cp:lem:coeffld}; \cref{isg:ptg:prop:tail} and the
+$\Asc$-half of \cref{isg:ptg:thm:completions} are set-sized versions of
+statements proved in Lean for $\Oz$ (\replabel{odg:thm:finitequotients},
+\replabel{odg:eq:profinite}); and that the canonical image, not the
+completion, separates the rings is said after \cref{isg:sc:prop:diagonal}.
+What remains proposed as new, within this collection, is
+\cref{isg:ptg:lem:derivation} with \cref{isg:ptg:prop:hulls} (whose
+relation to \cite[Proposition~2.6]{YeYuZhao} was not compared at this
+write), the perfect-gap and simultaneous-place theorems, the scalar fields
+$\mathcal K_F(\SSy(M))$ with their faithfulness and elementarity, the exact
+residue images (\cref{isg:ptg:thm:residue,isg:ptg:thm:profinite}) and the
+idempotent reconstruction, the comparison of
+\cref{isg:ptg:thm:completions} as a statement about Peano rings, and the
+same-scale omnific family. The \textup{[write~04]} corollary adds no claim
+of priority; its combinatorial content is Scott's theorem.
+
 \subsection{Provenance, placement review, and place in the collection}
 \label{isg:sec:provenance}
 
-\paragraph{Three sources.} This report is built from three manuscripts;
-sources~01 and~02 were merged in batch~29, and source~03 was added in
-batch~86.
+\paragraph{Four sources.} This report is built from four manuscripts;
+sources~01 and~02 were merged in batch~29, source~03 was added in
+batch~86, and source~04 in batch~90.
 
 \emph{Source~01} is \emph{Discrete Initial Groups and Omnific
 Normalization} (24 pages, 23~September 2026), manuscript~09 of the
@@ -4828,6 +6537,62 @@ except the statements marked \textup{[write]} and the comparisons marked as
 the write's, the source-03 paragraphs of \cref{isg:sec:audit}, Questions
 \ref{isg:sc:q:detector}--\ref{isg:sc:q:milestone}, and non-claims
 \textup{(N30)}--\textup{(N41)}.
+
+\emph{Source~04} is \emph{Perfect Transcendence Gaps in Borel Arithmetic:
+Standard Systems, $p$-adic Shadows, Hahn Fields, and Omnific Integers}
+(26 pages, 3~October 2026; ``research manuscript prepared for Vladimir
+Reshetnikov'', marked AI-assisted and unrefereed), manuscript~06 of the
+collection's batch~90, delivered as the archive
+\fn{Perfect_Transcendence_Gaps_Package.zip} in the arrival commit
+\texttt{a162e4386} (inner directory \fn{perfect_transcendence_gap/}). It
+was delivered with a README, a theorem ledger, a source audit, the program
+\fn{verify.py}, its record \fn{verification.json} and a checksum manifest.
+It was placed in commit \texttt{12076b2e8} as an addition, with the prefix
+\fn{04-transcendence-gaps-}, continuing this directory's local sequence
+after \fn{03-standard-cut-}; the four staged files are listed, with their
+delivered names, in the source-04 paragraph of \cref{isg:sec:audit} (finite
+checks). Its LaTeX source, PDF and README are not shipped and survive in
+the arrival commit; its checksum manifest was verified (seven of seven
+files) and dropped. Its repository pin is \texttt{7d9b8b957}. It
+contributes
+\cref{isg:ptg:sec:standard,isg:ptg:sec:perfect,isg:ptg:sec:residues,isg:ptg:sec:hahn}
+except \cref{isg:ptg:cor:images} and the comparisons marked as the
+write's, the source-04 paragraphs of \cref{isg:sec:audit}, Questions
+\ref{isg:ptg:q:weaker}--\ref{isg:ptg:q:lean}, and non-claims
+\textup{(N42)}--\textup{(N55)}.
+
+\paragraph{How the merge was made (source~04).} Source~04 was placed as an
+addition because its exact profinite image answers \cref{isg:sc:q:images},
+a question this report names, for nonstandard models of Peano arithmetic;
+the question asks about $\Idelta$, so it is answered in part and re-scoped
+in a dated note after its statement. Source~04 does not cite this report,
+so its relation to the report is stated by the write: the paragraph
+``Relation to this report and its neighbours'' of
+\cref{isg:ptg:sec:overview}, the bracketed comparisons after
+\cref{isg:ptg:fact:glazer}, \eqref{isg:ptg:eq:res},
+\cref{isg:ptg:prop:tail,isg:ptg:thm:completions,isg:ptg:cor:nomap,isg:ptg:thm:hahn,isg:ptg:thm:omnific}
+and in \cref{isg:sec:audit}, the subsection \cref{isg:ptg:sec:images} with
+the corollary \cref{isg:ptg:cor:images}, marked \textup{[write~04]}, and
+(N56). The alternatives considered at placement were a part of the report
+\nolinkurl{docs/foundations-and-computation/polish-models-of-omnific-arithmetic},
+which studies Borel and Polish models of arithmetic motivated by Glazer
+but names no question that source~04 answers, and a new report; the
+perfect-gap material, the bulk of source~04, travels with it. Source~04's
+material is printed as it stands, in four new sections inserted after
+\cref{isg:sc:sec:compiler}; the former Sections~23--25 (verification,
+questions, conclusion) moved down by four, so the questions numbered 24.$x$
+at the write of source~03 are now 28.$x$, and no theorem-like number of
+Sections~1--22 or of the appendices changed. Its symbols are renamed as in
+\cref{isg:ptg:sec:conventions}, which also gives the correspondence of its
+numbering, because its shipped ledger and audit use its own. Its
+introduction is \cref{isg:ptg:sec:intro,isg:ptg:sec:overview}; its
+dependency ledger, executable checks, formalization plan and novelty
+material are source-04 paragraphs of \cref{isg:sec:audit}; its eleven
+questions follow source~03's in \cref{isg:sec:further}; its limitations are
+(N42)--(N55); its conclusion is a paragraph of \cref{isg:sec:conclusion}.
+The checklist of Appendix~\ref{isg:app:checklist} gained six rows. No
+mathematical statement, proof or example of sources~01--03 changed, and no
+label was renamed or removed.
 
 \paragraph{How the merge was made (source~03).} Source~03 was placed as an
 addition because, with \cref{isg:cf:main:presburger}, it answers part of
@@ -4978,6 +6743,28 @@ natural numbers are $\Delta_0$-definable in the nonnegative part of every
 ordered Dorroh ring. The \textup{[write]} statements were proved at this
 write. This review is not a refereeing.
 
+\paragraph{Placement review (source~04).} At this write, source~04's proofs
+were read in full and checked by hand, and no error was found: the trace and
+Turing-ideal lemmas, the analyticity of $b_M$ and of the scalar fields, the
+size gap, faithfulness of the digit encodings, the real bisection and the
+$p$-adic Newton estimates of \cref{isg:ptg:lem:roots}, both elementarity
+arguments (the $p$-adic one through local constancy of power classes), the
+derivation lemma (the witness conditions
+\eqref{isg:ptg:eq:witness1}--\eqref{isg:ptg:eq:witness3}, uniqueness of the
+value, analyticity of the graph without enumerating $k$, and the passage
+from analytic graph to Borel to continuous), properness of the hulls, the
+Fubini and Kuratowski--Ulam induction, the product argument for all places
+(injectivity from the relation $X_1-X_2=0$), both inclusions of the
+$p$-adic and profinite images with the overspill step, the idempotents, the
+strict inclusion and the finite quotients of $\Zhat(\mathcal S)$, the
+residue tower of $\Asc(k,\Q)$, the comparison and the nonidentification,
+the Hahn transfer, the omnific family and its discreteness. Glazer's
+theorem, Mycielski's theorem in the form of \cite[Theorem~1]{DolezalKubis},
+Macintyre's quantifier elimination, Edgar and Miller's theorem and the
+classical descriptive set theory were taken as imported and not re-proved;
+Scott's theorem, used by the \textup{[write~04]} corollary, likewise. This
+review is not a refereeing.
+
 \paragraph{Literature.} The placement review of source~01 ran targeted web
 searches (``discrete initial subgroup'', ``initial subgroup'' together
 with ``omnific integers'', and the title of \cite{EK}). They found only
@@ -5003,6 +6790,13 @@ Je\v r\'abek's MathOverflow answer \cite{JerabekMO}, Phillips's article
 \cite{Phillips} and Shepherdson's paper \cite{Shepherdson} were not
 re-checked; source~03 itself consulted Phillips only through the
 publisher's extract and Shepherdson only through \cite{Raffer}.
+For source~04, none of its citations was re-checked at this write: the
+seminar announcement and slides of \cite{GlazerSS}, the versions of
+\cite{FataliniSchindler,YeYuZhao,EdgarMiller,DolezalKubis,BKMM} and
+\cite{Mycielski,Macintyre,Kechris} are as source~04 records them in its
+shipped source audit, which also says that the original Mycielski PDF was
+not fetched. Its citation of Glazer's \emph{A Topological Tennenbaum
+Theorem} is \cite{Glazer}, already checked for source~03.
 
 \paragraph{Place in the collection.} At the placement of source~01, no
 other report named Question~2 (Question~9.1) of Ehrlich and Kaplan, and
@@ -5088,6 +6882,32 @@ Source~03 is not topological, and its obstruction precedes any topology
 proves the failed open-induction instance $x^2<t$ in $\Z+t\R[t]$, which
 is the instance given for $\Asc_0$ in \cref{isg:sc:sec:rings}. No
 \texttt{isg:sc:} statement has a Lean implementation.
+
+Source~04 (batch 90) adds these neighbours. The independent-surreal-copies
+report proves the coefficient-extension lemma
+\replabel{isc:cp:lem:coeffld} from which \cref{isg:ptg:thm:hahn} follows,
+and itself studies algebraic independence in Hahn fields;
+source~04's coefficient fields $k_{\R,Y}$ are a new instance, not a new
+method. The Diophantine report proves the finite quotients and the
+$p$-adic and profinite completions of $\Oz$
+(\replabel{odg:thm:finitequotients}, \replabel{odg:eq:profinite}), of which
+\cref{isg:ptg:prop:tail} and the $\Asc$-half of
+\cref{isg:ptg:thm:completions} are set-sized versions; its example of
+$\omega$, $\sqrt2\,\omega$ and $0$, identical in every finite quotient, is
+of the same kind as the family of \cref{isg:ptg:thm:omnific}, whose
+members are moreover algebraically independent over a large coefficient
+field; $\omega$ and $\sqrt2\,\omega$ are not members, since $1$ and
+$\sqrt2$ are computable. The report
+\nolinkurl{docs/foundations-and-computation/polish-models-of-omnific-arithmetic}
+studies Borel and Polish models of arithmetic after Glazer's topological
+paper; source~04 uses a different paper of Glazer's, on standard systems,
+needs no topology on $R_M$ (\cref{isg:ptg:sec:limits}), and answers none
+of that report's questions. The report
+\nolinkurl{docs/foundations-and-computation/cantor-families-of-surreal-subfields},
+written from another manuscript of the same delivery, studies Cantor
+families of countable subfields of one countable surreal field; it shares
+words with source~04 (Cantor families, subfields), not theorems. No
+\texttt{isg:ptg:} statement has a Lean implementation.
 
 \section{Further questions and exact boundaries}\label{isg:sec:further}
 
@@ -5241,6 +7061,26 @@ $M\models\Idelta$? \Cref{isg:sc:cor:profiles} proves only that this image
 contains more than the diagonal integers. Investigate how induction,
 saturation, and the chosen model constrain the extra residue profiles.
 \end{question}
+\emph{Note (4~October 2026, at the write of source~04): answered for Peano
+arithmetic, re-scoped for $\Idelta$.} For every nonstandard model $M$ of
+Peano arithmetic, $\im\res_{R_M}=\Zhat(\SSy(M))$, the ring of profinite
+integers whose factorial residue sequences are computable from one member
+of the standard system (\cref{isg:ptg:thm:profinite}); its idempotents are
+exactly the $\mathbf 1_{\mathsf A}$ with $\mathsf A\in\SSy(M)$
+(\cref{isg:ptg:cor:idempotents}), so the image determines the standard
+system and depends on nothing else, and it contains every profinite integer
+with a computable factorial residue sequence, $\zeta_*$ among them. With
+Scott's theorem, the images of the countable nonstandard models of $\PA$
+are exactly the $\Zhat(\mathcal S)$ for countable Scott sets $\mathcal S$
+(\cref{isg:ptg:cor:images}, \textup{[write~04]}). Still open: the question
+as posed, for models of $\Idelta$ that are not models of $\PA$, where the
+proofs of source~04 do not apply (they use induction for arbitrary
+arithmetic formulas, overspill and internal finite sums;
+\cref{isg:ptg:q:weaker} asks for the weakest theory that suffices), and
+the uncountable Peano case beyond the Scott-set description, which is
+Scott's problem. For $\Idelta$, \cref{isg:sc:cor:profiles} remains the only
+information here. \Cref{isg:ptg:q:completions} asks a related question
+about completions with a distinguished image.
 
 \begin{question}[Fixed syntactic resources]\label{isg:sc:q:resources}
 Classify truth complexity when the single-bound quadratic fragment has a
@@ -5289,6 +7129,136 @@ use of the incorrect unrestricted uniqueness lemma in \cite{ELV} and
 replace it either by a chosen witnessing ideal or by a valid additional
 hypothesis.
 
+The next eleven questions are source~04's. Except where a cited literature
+problem is explicitly named, they are not asserted to be previously
+published open problems. They are ordered by the clarity of the next proof
+obligation rather than by an unsupported prediction of difficulty.
+
+\begin{question}[Weaker arithmetic]\label{isg:ptg:q:weaker}
+What is the weakest arithmetical theory for which its nonstandard Borel
+models have the complete exact-residue and local-field package proved in
+\cref{isg:ptg:sec:standard,isg:ptg:sec:perfect,isg:ptg:sec:residues,isg:ptg:sec:hahn}?
+\end{question}
+The specific tasks are to separate definable-trace coding, downward Turing
+closure, and nonstandard finite recoding. Glazer's no-full-system input
+already reaches $\EFA$, but the Peano proof uses stronger induction. A
+successful weakening must replace those uses, not simply change ``$\PA$''
+to ``$\EFA$'' in the statement. \textup{[}Added at this write: for the residue images, this
+bears directly on \cref{isg:sc:q:images}, which asks about
+$\Idelta$.\textup{]}
+
+\begin{question}[Effective strength of the perfect-gap construction]\label{isg:ptg:q:strength}
+Given codes for the analytic field and its relative-closure property, what
+oracle strength is sufficient to produce a code for an independent Cantor
+set? Which reverse-mathematical subsystem proves the countable-parameter
+version?
+\end{question}
+The derivation proof and the Mycielski extraction have different logical
+costs. The inability to give a computable parametrization without extra
+information is already established in \cref{isg:ptg:sec:limits}; it does
+not settle the optimal relative construction.
+
+\begin{question}[Descriptive complexity of the scalar image]\label{isg:ptg:q:complexity}
+Which Borel ranks or analytic non-Borel complexities occur for $\SSy(M)$,
+$\mathcal K_\infty(\SSy(M))$, and $\mathcal K_p(\SSy(M))$ as $M$ varies
+through Borel nonstandard $\PA$ models?
+\end{question}
+\Cref{isg:ptg:prop:faithful} recovers ideal inclusion from field inclusion,
+but does not identify an optimal descriptive complexity. The digit
+embeddings give natural lower-bound reductions that a classification should
+exploit.
+
+\begin{question}[A shared digit family at all places]\label{isg:ptg:q:digits}
+Can one choose a Cantor family of binary sets $\mathsf A$ such that the
+fixed encodings $c_\infty(\mathsf A)$ and $c_p(\mathsf A)$ are
+simultaneously algebraically independent over all the corresponding model
+fields?
+\end{question}
+\Cref{isg:ptg:thm:simultaneous} allows different continuous coordinate
+maps. It does not answer this version. Pullback of a meager relation by an
+arbitrary continuous embedding need not be meager, so the earlier product
+argument cannot simply be reused on the diagonal digit image.
+
+\begin{question}[$p$-adic dimension]\label{isg:ptg:q:dimension}
+What are the possible Hausdorff and packing dimensions of proper analytic
+relatively algebraically closed subfields of $\Qp$, especially those arising
+from standard systems?
+\end{question}
+The proof establishes Haar-nullness and meagerness. It does not show
+$p$-adic dimension zero. A comparison with the real ring-dimension
+phenomena studied by Edgar--Miller and Ye--Yu--Zhao is a concrete starting
+point, not a license to transfer their real conclusion.
+
+\begin{question}[Realization of local shadows]\label{isg:ptg:q:realization}
+Which proper analytic subfields $k\preccurlyeq\Qp$ are of the form
+$\mathcal K_p(\SSy(M))$ for a Borel nonstandard $\PA$ model? Which
+compatible collections of real and $p$-adic fields arise from one standard
+system?
+\end{question}
+Being elementary, analytic, and relatively algebraically closed is
+necessary, but the oracle closure encoded by \cref{isg:ptg:prop:faithful}
+imposes additional structure. The realization question should keep the
+underlying Scott-set requirements separate from local field theory.
+
+\begin{question}[Intrinsic reconstruction of computation]\label{isg:ptg:q:reconstruction}
+Can Turing reducibility on $\mathcal S$ be reconstructed from the ring
+$\Zhat(\mathcal S)$ with its named prime-coordinate residue maps, without
+supplying an external oracle-coding convention?
+\end{question}
+\Cref{isg:ptg:thm:profinite,isg:ptg:cor:idempotents} answer the exact-image
+and Boolean-reconstruction questions. They do not automatically recover the
+additional computability relation on the idempotents. A useful next result
+would specify the allowed language and distinguish definability,
+interpretability, and external effective reconstruction.
+
+\begin{question}[Regularity below analyticity]\label{isg:ptg:q:regularity}
+Which regularity assumptions on $k$ suffice for the full perfect-gap
+theorem when analyticity is unavailable?
+\end{question}
+A useful formulation should state regularity for the aggregate polynomial
+relations and the graph of the induced derivation, not merely
+measurability of $k$ itself. The transcendence-degree-one counterexample of
+\cref{isg:ptg:rem:analytic} shows why unrestricted subfields cannot satisfy
+the theorem.
+
+\begin{question}[Beyond coefficient-preserving Hahn extensions]\label{isg:ptg:q:beyond}
+Which transformations that mix coefficients and exponents preserve a
+perfect scalar independence gap? What is the corresponding statement for
+exponential or differential Hahn fields?
+\end{question}
+The coefficient proof answers the coefficient-preserving case exactly. An
+exponential operation can convert coefficient information into an exponent
+or vice versa, so a proposed extension must specify which operations and
+which normal forms are available.
+
+\begin{question}[Completions with a distinguished image]\label{isg:ptg:q:completions}
+What additional invariant, beyond the abstract profinite completion,
+classifies the pairs $(\widehat{(R_M)}_p,\im R_M)$ for Borel $\PA$ models,
+and distinguishes them from omnific-type completion pairs?
+\end{question}
+\Cref{isg:ptg:thm:completions} proves that the distinguished image is
+indispensable. Through the exact-image theorem it carries a standard-system
+field, so computability and model-theoretic invariants have a direct entry
+point. \textup{[}Added at this write: by \cref{isg:ptg:thm:residue} the distinguished image is
+$\Zp(\SSy(M))$, so the pair determines the field $\mathcal K_p(\SSy(M))$,
+and by \cref{isg:ptg:prop:faithful} the standard system, as a subset of $\Zp$; the profinite
+version is \cref{isg:ptg:cor:images}.\textup{]}
+
+\begin{question}[A machine-checked bridge]\label{isg:ptg:q:lean}
+Can the Hahn independence theorem and the exact $p$-adic trace-image
+theorem be verified in Lean with an explicit dependency ledger, without
+adding the analytic corollaries as axioms?
+\end{question}
+The first target is coefficient algebra; the second requires correct
+nonstandard arithmetic semantics. A useful initial contribution would prove
+the finite recoding operation in every $\PA$ model, explicitly closing the
+gap between standard-model formula evaluation and internal $\PA$
+derivability identified in the source-04 paragraph of
+\cref{isg:sec:audit}. \textup{[}Added at this write: for $\Oz$ the finite quotients and
+completions are already Lean theorems (\cref{isg:ptg:sec:comparison}); the
+repository has no Lean development of nonstandard models of $\PA$
+(\cref{isg:ptg:sec:relationLean}).\textup{]}
+
 \subsection{Non-claims, collected}\label{isg:sec:nonclaims}
 The limitations stated at their places in the text, in the shipped
 source audit and in the shipped provenance record of source~02 are
@@ -5297,7 +7267,9 @@ stated. Items \textup{(N1)}--\textup{(N15)} are source~01's; in them
 ``the manuscript'' means source~01. Items \textup{(N16)}--\textup{(N29)}
 are source~02's. Items \textup{(N30)}--\textup{(N41)} are source~03's,
 with its shipped source audit, except \textup{(N41)}, which limits the
-\textup{[write]} statements.
+\textup{[write]} statements. Items \textup{(N42)}--\textup{(N56)} are
+source~04's, with its shipped source audit and theorem ledger, except
+\textup{(N56)}, which limits the \textup{[write~04]} statement.
 \begin{enumerate}[label=\textup{(N\arabic*)},leftmargin=*]
 \item \emph{Status.} The manuscript is unrefereed. It is a proposed
       solution with full proposed proofs, not an independently certified
@@ -5501,13 +7473,85 @@ with its shipped source audit, except \textup{(N41)}, which limits the
       do not show that $\Tdy$ is strictly weaker than $\Idelta$, and do not
       address whether nonstandard models of $\Idelta$ realize the
       factorial type $\tau_*$.
+\item \emph{Status of source~04.} It is an AI-assisted, unrefereed research
+      manuscript. Its proofs are ordinary mathematics; no Lean or Rocq
+      verification of its new deductions is included or claimed, and the
+      repository was not rebuilt for it. The hand check of
+      \cref{isg:sec:provenance} is not a refereeing.
+\item \emph{External inputs.} Glazer's standard-system theorem
+      (\cref{isg:ptg:fact:glazer}), cited from seminar slides,
+      Mycielski's theorem, classical descriptive set theory, quantifier
+      elimination for real closed fields and for $\Qp$, and Edgar and
+      Miller's dimension theorem are inputs, not new proofs. The $\EFA$
+      and Borel-quotient strength of Glazer's theorem is not inherited by
+      the new deductions, which use full Peano arithmetic.
+\item \emph{Priority.} Historical priority is not established for the
+      assembled theorem or for any component. Fatalini and Schindler's
+      attribution to de Bondt and Glazer is a close precursor, credited;
+      \cref{isg:ptg:lem:derivation} is near
+      \cite[Proposition~2.6]{YeYuZhao}, and the relation was not compared
+      at this write. Some ingredients may occur in the literature in
+      another form; no ``breakthrough'' label is claimed.
+\item \emph{Not Scott's problem, not Glazer's questions.} Neither the
+      general Scott-set problem nor the reverse-mathematical questions of
+      Glazer's topological paper is claimed resolved, and no arbitrary
+      Turing ideal is claimed to be a standard system.
+\item \emph{Topology of the omnific family.} The family of
+      \cref{isg:ptg:thm:omnific} is Cantor-parameterized by its real
+      coefficients but discrete in the surreal order topology and in the
+      valuation topology (\cref{isg:ptg:sec:topologies}).
+\item \emph{Restricted coefficient field.} Its independence is over
+      $k_{\R,Y}((t^\Q))$, not over $\R$ or $\No$, and it is not
+      independence of distinct valuation scales.
+\item \emph{Set-sized only.} Only set-sized Hahn fields are used; $\No$ is
+      never treated as a set, and no global well-order of the surreals is
+      needed (\cref{isg:ptg:sec:classes}).
+\item \emph{No effective witnesses.} The root lemma is nonuniform: no
+      uniform all-roots selector and no algorithm for multiplicities. No
+      member of an independent set is computable, no computable
+      parametrization or injection of the Cantor sets exists, the
+      continuous injections of \cref{isg:ptg:thm:simultaneous} need not be
+      computable, and no single digit sequence is claimed to work at every
+      place.
+\item \emph{Measure and dimension.} No positive-measure independent Cantor
+      set is claimed. Real Hausdorff dimension zero is inherited from Edgar
+      and Miller, not a new theorem, and no $p$-adic dimension statement is
+      made.
+\item \emph{No embedding into $\Oz$.} Source~04 does not embed the Peano
+      ring into $\Oz$; \cref{isg:ptg:cor:nomap} is a safeguard. What is
+      transported is the scalar field of the standard system.
+\item \emph{Scope of the countable advice.} \Cref{isg:ptg:cor:advice}
+      concerns field generation and relative algebraic closure, not the
+      enlargement of the Turing ideal by an oracle. The elementary subfields
+      are not complete and come with no computable selector. No Polish
+      topology on $R_M$, continuity of arithmetic, or Borel global root
+      selection is assumed or claimed.
+\item \emph{Questions.} The eleven questions are source~04's own, not
+      established open problems.
+\item \emph{Finite checks of source~04.} They check finite identities
+      only, and certify no independence over an uncountable field, perfect
+      set, Borel-model theorem, Glazer's theorem, overspill, standard system
+      or transfinite Hahn arithmetic.
+\item \emph{Repository review of source~04.} It read two repository
+      guides at its pin through a connector, reviewed no report or formal
+      file in full, and ran no build; it did not know this report or the
+      independent-surreal-copies report, and its weaker or derivable
+      statements are credited at their places. No third-party papers are
+      redistributed with it. Elliot Glazer is not an author of source~04,
+      and no review or endorsement by him is implied.
+\item \emph{Scope of the \textup{[write~04]} statement.}
+      \Cref{isg:ptg:cor:images} covers countable models of Peano arithmetic
+      and rests on Scott's theorem, imported. It does not address
+      uncountable models beyond the Scott-set description, or models of
+      $\Idelta$.
 \end{enumerate}
 The statements marked \textup{[merge]} add no claim of priority; they are
 proved from the two sources and, for \cref{isg:cf:cor:periods}, from
 statements of the trigonometry report cited by label, whose own
 non-claims remain in force there. The same holds for the statements marked
 \textup{[write]}, proved from sources~02 and~03 and, for
-\cref{isg:sc:rem:ELV}, from \cite[Theorem~2.9]{ELV}.
+\cref{isg:sc:rem:ELV}, from \cite[Theorem~2.9]{ELV}. The statement marked \textup{[write~04]} adds no claim of priority
+either; it is proved from source~04 and Scott's theorem \cite{Scott}.
 
 \section{Conclusion}\label{isg:sec:conclusion}
 The obstruction in the Ehrlich--Kaplan question is not the numerical
@@ -5566,6 +7610,25 @@ $2$ repairs the uniqueness. Read through source~02's criterion, the
 additive group of a nonstandard model of bounded arithmetic has no initial
 surreal realization, while open induction leaves room for one; the exact
 threshold between them is open.
+
+Source~04 reads the negative standard-system theorem positively, as a
+source of large independent families. A Borel arithmetic model's
+accessible local scalars form dense elementary subfields, but analytic
+regularity prevents a finite or countably infinite transcendence basis from
+closing the ambient local field. This yields conull and comeager
+independent tuples and perfect independent sets, even after arbitrary
+countable algebraic supplementation. The $p$-adic image of the Peano ring
+is not merely bounded by that scalar field: it is exactly its valuation
+ring. The full profinite image additionally recovers the standard system as
+its Boolean algebra of idempotents and is strictly smaller than the product
+of its local images when that system is proper; for Peano arithmetic this
+answers the residue-image question of source~03, which stays open for
+$\Idelta$. On the surreal side, coefficientwise Hahn arithmetic transports
+the deficit without weakening it, and the resulting same-scale omnific
+elements separate algebraic information from ordinary finite congruence
+information. Identical completions can conceal different canonical images,
+and Cantor coefficient structure can coexist with a discrete surreal order
+topology.
 
 \appendix
 \section{A compact proof for independent checking}\label{isg:app:compact}
@@ -5715,7 +7778,29 @@ repair needs $\ED_2$, which $\Z[X]$ lacks.\\[4pt]
 The \textup{[write]} corollary &
 \Cref{isg:sc:cor:fragment}: $G(M)$ is a set-sized $\Z$-group, so
 \cref{isg:cf:main:presburger} applies; the argument uses no factorial
-type.\\
+type.\\[4pt]
+\multicolumn{2}{@{}l}{\emph{Source~04 (perfect transcendence gaps).}}\\[2pt]
+Uncountable fields, countable parameters &
+\Cref{isg:ptg:prop:hulls,isg:ptg:prop:relations}: category and measure are
+applied to the aggregate relations $\Dep_n$, never to an enumeration of
+polynomials over an uncountable $k$.\\[4pt]
+Analytic graph &
+\Cref{isg:ptg:lem:derivation}: the graph of $\widetilde\partial$ is
+analytic; Borelness comes from totality and single-valuedness, continuity
+from additivity.\\[4pt]
+Internal sums and overspill &
+\Cref{isg:ptg:thm:residue,isg:ptg:thm:profinite}: the sums are internally
+coded finite sums at a nonstandard $N$; the coherent prefix comes from an
+explicit overspill, not an external infinite sum.\\[4pt]
+One shared oracle &
+\Cref{isg:ptg:cor:idempotents}: $\Zhat(\mathcal S)$ requires one oracle for
+all moduli and is strictly smaller than $\prod_p\Zp(\mathcal S)$.\\[4pt]
+Coefficient field and topology &
+\Cref{isg:ptg:thm:omnific}: independence over $k_{\R,Y}((t^\Q))$, not over
+$\R$; the family is discrete in the surreal order topology.\\[4pt]
+Strength of the imported theorem &
+\Cref{isg:ptg:fact:glazer}: used only for nonstandard Borel models of
+$\PA$; the trace lemmas use full induction.\\
 \bottomrule
 \end{longtable}
 
@@ -5912,5 +7997,70 @@ ProveIt, \fn{Algebra/SurrealNumbers/Surreal/Foundations/OmnificResidues.lean},
 at the snapshot of \cite{ProveIt}, blob
 \texttt{aacd3cac89e9f55ef6b74710cdbffbfd0f2664eb} (unchanged at this
 write).
+\bibitem{GlazerSS}
+\begingroup\raggedright E.~Glazer, \emph{Explicit models of arithmetic do not have full standard
+system}, MOPA seminar, New York, 27~February 2024. Seminar announcement and
+22-slide presentation, especially slide~4. Announcement:
+\url{https://nylogic.github.io/mopa/2024/02/27/explicit-models-of-arithmetic-do-not-have-full-standard-system.html}.
+Slides: \url{https://nylogic.github.io/files/GlazerSlides022024.pdf}.
+Cited by source~04; not consulted at its write.\par\endgroup
+
+\bibitem{FataliniSchindler}
+A.~Fatalini and R.~Schindler, \emph{The transcendence degree of the reals
+over certain set-theoretical subfields}, arXiv:2412.00616v2 (revised
+12~January 2026), Section~2; \url{https://doi.org/10.1017/jsl.2025.19}.
+Cited by source~04.
+
+\bibitem{YeYuZhao}
+J.~Ye, L.~Yu, and X.~Zhao, \emph{When is $A+xA=\mathbb R$}, The Journal of
+Symbolic Logic, First View (2026), \url{https://doi.org/10.1017/jsl.2026.10232};
+preprint arXiv:2505.00556v2. Cited by source~04 for its Proposition~2.6.
+
+\bibitem{EdgarMiller}
+G.~A.~Edgar and C.~Miller, \emph{Hausdorff dimension, analytic sets and
+transcendence}, author preprint, 8~June 2001,
+\url{https://math.osu.edu/~edgar/preprints/miller/hdimpre.pdf}. Cited by
+source~04.
+
+\bibitem{Mycielski}
+J.~Mycielski, \emph{Independent sets in topological algebras}, Fundamenta
+Mathematicae \textbf{55} (1964), 139--147,
+\url{https://doi.org/10.4064/fm-55-2-139-147}. Cited by source~04 through
+the formulation of \cite[Theorem~1]{DolezalKubis}.
+
+\bibitem{DolezalKubis}
+M.~Dole\v zal and W.~Kubi\'s, \emph{Perfect independent sets with respect
+to infinitely many relations}, Archive for Mathematical Logic \textbf{55}
+(2016), 847--856; preprint arXiv:1510.05127v1. Cited by source~04.
+
+\bibitem{Macintyre}
+A.~Macintyre, \emph{On definable subsets of $p$-adic fields}, The Journal
+of Symbolic Logic \textbf{41} (1976), 605--610,
+\url{https://doi.org/10.2307/2272038}. Cited by source~04.
+
+\bibitem{Kechris}
+A.~S.~Kechris, \emph{Classical Descriptive Set Theory}, Graduate Texts in
+Mathematics 156, Springer, 1995. Cited by source~04 for analytic sets,
+Baire regularity, automatic continuity and the Kuratowski--Ulam theorem.
+
+\bibitem{BKMM}
+A.~Berarducci, S.~Kuhlmann, V.~Mantova, and M.~Matusinski,
+\emph{Exponential fields and Conway's omega-map}, arXiv:1810.03029v2.
+Cited by source~04 for the normal-form/Hahn framework only.
+
+\bibitem{Scott}
+D.~Scott, \emph{Algebras of sets binumerable in complete extensions of
+arithmetic}, in \emph{Recursive Function Theory}, Proceedings of Symposia
+in Pure Mathematics~5, American Mathematical Society, 1962, 117--121. Used
+at the write of source~04 (\cref{isg:ptg:cor:images}); not cited by any
+source.
+
+\bibitem{ProveItPTG}
+V.~Reshetnikov, \emph{ProveIt}, repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt}, at the commit
+\texttt{7d9b8b957fa6a1cc28636ac8fce3cfaa6d230031}, the pin of source~04,
+which read \fn{Algebra/SurrealNumbers/README.md} and
+\fn{Logic/PeanoArithmetic/ListCoding/README.md} there (both unchanged at
+this write).
 \end{thebibliography}
 \end{document}
