@@ -15,6 +15,24 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [PartX publication and six-archive intake review](review_polish_partx_c9bc70d8f.md)
+confirms that the missing Presburger PartX is now written at **c9bc70d8f**.
+The full new guide and entire article diff were read; all708 prior labels
+survive among784 current labels, including all55 delivered source16 labels.
+The rational-product, additive-language and inherited-topology hypotheses
+remain explicit. Effective pivot computation and inverse-row cost remain
+questions, with no finite paid Diophantine compiler in the text read.
+Six new archives at **a162e4386** have53 authenticated members; all seven
+delivery/code READMEs were read, with additional selected local-geometric-code
+sections. That route assumes an existing beta code and its bounded universal
+recurrence; conversion to ordinary exponentiation and general code construction
+remain separate obligations. Root independently rechecked all publication
+blobs, diff hashes, label transfers and archive member hashes. Unread proofs,
+PDF layout and stored finite test results are not promoted to reviewed
+evidence. The new topology archive's partial-subtraction completion criterion
+is routed for later proof review. This resolves the older revision-specific
+PartX gap without changing the arithmetic bounds.
+
 The [batch89 follow-up review](review_batch89_remaining_writes_e3e58a882.md)
 confirms that global-choice PartXV and cuts/choiceless PartsVI–VII are now
 present at193e2e942/e3e58a882. All prior labels survive and all47/42/52
@@ -5100,6 +5118,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [PartX publication and six arrivals](review_polish_partx_c9bc70d8f.md) | Actual Presburger PartX present atc9bc70d8f;708→784 labels,55 delivered labels retained; six ZIPs/53 members authenticated | Bounded text scope; no paid compiler found; local beta-code recurrence/recoding obligations remain |
 | [Shared fixed-matrix action](matrix193_shared_action_fusion.md) | Complete1399/1396/1396/1393;534 coefficient rows; saves4M+2A per chart by full-polynomial identity | Same supplied tuples, witnesses and exact degrees; inherited ordinary-input scope, universal84 unchanged |
 | [Multiplier-dependent strong-root absorption](complete84_multiplier_dependent_root_absorption.md) | Fixed polynomial f=G on88 f/T/y-independent values, including i and S,S², has finite input projection | Integer Cauchy bound versus strong-rank growth; quotient/ordinate-dependent substitutions remain outside this theorem |
 | [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md) | One-program466/two-program465 operations,67 witnesses; one addition saved by exact full-polynomial identity | Same codes and separate fixed-program interfaces; degree bounds5091/5160, universal84 unchanged |

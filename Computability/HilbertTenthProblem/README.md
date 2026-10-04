@@ -37,6 +37,24 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [PartX publication and six-archive intake review](Papers/research-wip/native-stream-queue/review_polish_partx_c9bc70d8f.md)
+confirms that the missing Presburger PartX is now written at **c9bc70d8f**.
+The full new guide and entire article diff were read; all708 prior labels
+survive among784 current labels, including all55 delivered source16 labels.
+The rational-product, additive-language and inherited-topology hypotheses
+remain explicit. Effective pivot computation and inverse-row cost remain
+questions, with no finite paid Diophantine compiler in the text read.
+Six new archives at **a162e4386** have53 authenticated members; all seven
+delivery/code READMEs were read, with additional selected local-geometric-code
+sections. That route assumes an existing beta code and its bounded universal
+recurrence; conversion to ordinary exponentiation and general code construction
+remain separate obligations. Root independently rechecked all publication
+blobs, diff hashes, label transfers and archive member hashes. Unread proofs,
+PDF layout and stored finite test results are not promoted to reviewed
+evidence. The new topology archive's partial-subtraction completion criterion
+is routed for later proof review. This resolves the older revision-specific
+PartX gap without changing the arithmetic bounds.
+
 The [batch89 follow-up review](Papers/research-wip/native-stream-queue/review_batch89_remaining_writes_e3e58a882.md)
 confirms that global-choice PartXV and cuts/choiceless PartsVI–VII are now
 present at193e2e942/e3e58a882. All prior labels survive and all47/42/52
