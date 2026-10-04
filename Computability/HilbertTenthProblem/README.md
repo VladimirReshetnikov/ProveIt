@@ -578,6 +578,16 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [entry-shared coefficient evaluator](Papers/research-wip/native-stream-queue/matrix193_entry_shared_coefficient_scout.md)
+reduces the complete matrix polynomial to **1,624=791M+833A operations**,
+with146 positive witnesses and unchanged exact degree35,587. Pairing adjacent
+read symbols and sharing trace-two matrix entries reduces the coefficient
+component from633 to578 gates. The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_entry_shared_coefficient_scout.md)
+reconstructs all676 coefficients, the full source and every retained row;
+normal/optimized exact receipts pass. This preserves the entire polynomial
+on the same supplied coordinates. The separate flow reduction is not yet
+composed into this emitted source; the universal84 frontier is unchanged.
+
 The [controller-flow simplification](Papers/research-wip/native-stream-queue/matrix193_controller_flow_scout.md)
 removes two additions from the complete matrix source, giving
 **1,677=801M+876A operations**,146 positive witnesses and exact degree35,587.

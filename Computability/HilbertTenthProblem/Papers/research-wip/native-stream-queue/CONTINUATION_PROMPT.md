@@ -559,6 +559,16 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [entry-shared coefficient evaluator](matrix193_entry_shared_coefficient_scout.md)
+> reduces the complete matrix polynomial to **1,624=791M+833A operations**,
+> with146 positive witnesses and unchanged exact degree35,587. Pairing adjacent
+> read symbols and sharing trace-two matrix entries reduces the coefficient
+> component from633 to578 gates. The [independent review](review_matrix193_entry_shared_coefficient_scout.md)
+> reconstructs all676 coefficients, the full source and every retained row;
+> normal/optimized exact receipts pass. This preserves the entire polynomial
+> on the same supplied coordinates. The separate flow reduction is not yet
+> composed into this emitted source; the universal84 frontier is unchanged.
+>
 > The [controller-flow simplification](matrix193_controller_flow_scout.md)
 > removes two additions from the complete matrix source, giving
 > **1,677=801M+876A operations**,146 positive witnesses and exact degree35,587.
@@ -625,7 +635,7 @@
 > materialized. The overall universal frontier remains 84.
 >
 > The former coefficient-evaluation and bounded-high proposals are now
-> implemented and reviewed in the combined source above. Its633-gate shared
+> implemented and reviewed in the combined source above. The new578-gate shared
 > coefficient component and controller/packing interfaces are the current
 > arithmetic targets; the four high-pair witness removals are already included.
 >
