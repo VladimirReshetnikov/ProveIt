@@ -56,6 +56,19 @@ bound remains **74**; the lower-degree **85/155** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [eight arithmetic/compiler arrivals](Papers/research-wip/native-stream-queue/review_new_arithmetic_0d7f51c44.md)
+at **0d7f51c44** have2622 authenticated entries and27 exact text-read records.
+Fresh independent checks, repeated by root on the literal source, confirm
+Report55's **184016=72093M+111923A**, **41309-witness**, **exact-degree12**
+chronological matrix certificate and all23618 squared residuals. Its fixed
+matrix context and imported module semantics remain explicit. Reports66/69
+reduce witnesses for separately compiled finite-horizon tables; Report67's
+**12** counts POWER leaves, with no optimized gate source supplied at that
+interface. The two A196460 reports concern finite-table counts, while
+Reports70/71 improve CA recognition radii and require new arithmetic
+evaluators for their changed rules. No lower paid unbounded compiler was
+found in the recorded read scope; the universal84/187 and85/155 points remain.
+
 The [twelve signal/particle reports](Papers/research-wip/native-stream-queue/review_new_signals_0d7f51c44.md)
 at **0d7f51c44** have2035 authenticated archive members and57 recorded
 text-read spans. Reports64–65 supply the strongest future interface:

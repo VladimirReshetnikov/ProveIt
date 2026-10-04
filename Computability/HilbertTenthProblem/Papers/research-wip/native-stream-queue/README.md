@@ -34,6 +34,19 @@ bound remains **74**; the lower-degree **85/155** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md)
+at **0d7f51c44** have2622 authenticated entries and27 exact text-read records.
+Fresh independent checks, repeated by root on the literal source, confirm
+Report55's **184016=72093M+111923A**, **41309-witness**, **exact-degree12**
+chronological matrix certificate and all23618 squared residuals. Its fixed
+matrix context and imported module semantics remain explicit. Reports66/69
+reduce witnesses for separately compiled finite-horizon tables; Report67's
+**12** counts POWER leaves, with no optimized gate source supplied at that
+interface. The two A196460 reports concern finite-table counts, while
+Reports70/71 improve CA recognition radii and require new arithmetic
+evaluators for their changed rules. No lower paid unbounded compiler was
+found in the recorded read scope; the universal84/187 and85/155 points remain.
+
 The [twelve signal/particle reports](review_new_signals_0d7f51c44.md)
 at **0d7f51c44** have2035 authenticated archive members and57 recorded
 text-read spans. Reports64–65 supply the strongest future interface:
@@ -5161,6 +5174,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md) |2622 entries authenticated; actual matrix184016 gates/41309w/exactdegree12 checked;27 text-read records | Finite-table arity and12-leaf POWER counts are separate resources; changed CA rules lack a transferred arithmetic evaluator |
 | [Twelve signal and particle arrivals](review_new_signals_0d7f51c44.md) |2035 member hashes,12 full READMEs and57 exact read spans; guarded five-signal counter/clock interface identified | Horizon-dependent arity still unbounded;344/367 rotation and48/57 local-realization counts concern decidable predicates; no universal reduction |
 | [Seven-report reciprocal notes](review_reciprocal_fc1ad4275.md) | Fourteen text diffs read;3359 unchanged labels;54 introduced references resolve atfc1ad4275 | Scoped transfer/hypothesis review; external theorem interfaces and PDF builds unreviewed; arithmetic bounds unchanged |
 | [Reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md) | Complete85=47M+38A,18 witnesses, uniform exact degree155; identical integer zero tuples to84/187 | Improves85/175; universality on inherited positive fixed slices, minimum count84 and86/131 unchanged |
