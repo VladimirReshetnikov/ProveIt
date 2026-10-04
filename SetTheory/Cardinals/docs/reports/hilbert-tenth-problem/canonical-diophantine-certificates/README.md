@@ -5524,3 +5524,20 @@ same decisions.
   kept); 06's unused `\word` dropped in favour of 07's. No mathematical
   symbol was renamed; letters that change meaning between Parts are listed
   in the conventions.
+
+## Reciprocal-note review correction
+
+The [scoped review of `1fdcaf5a6`](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_reciprocal_1fdcaf5a6.md) found that the exhaustive
+shared-result summaries omitted the common fifteen-equation POWER theorem.
+The current comparison names both POWER and binary containment, without
+claiming an exhaustive count. Group-theoretic-substrates Remark 1.1
+(`gts:rem:shared-power-containment-correction`) retains and refutes the former
+“No other theorem is shared”, containment-only and one-result claims; the
+CDC note retains its original sentence and points to that numbered remark.
+
+Three direct `pdflatex -no-shell-escape` passes rebuilt this edited article
+to 742 pages. All 1940 labels (including optional-type labels) are unique and local references/citations
+resolve, with no overfull boxes. The final log has 1 underfull-box
+message in untouched text; the only warning reports intentionally disabled shell escape.
+PDF page 646 was visually checked for the correction. The immutable review
+records its exact source-read limits; no packaged or frozen program ran.
