@@ -2823,7 +2823,21 @@ the original state chronology. The complete supplied positive zero set
 agrees with537, including arbitrary positive program/input parameters;
 the fixed recipe E=3^e retains universality on ordinary positive x.
 
-The [shared U21 residue-affine source](Papers/research-wip/native-stream-queue/residue_affine_sparse_shared476.md)
+The [two-program U21 control-pair source](Papers/research-wip/native-stream-queue/residue_affine_sparse_shared470.md)
+reaches **450 certificate / 470=175M+295A polynomial operations**, with
+seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
+The six paid-pair/population-prefix identities are checked directly against
+the actual476 source, saving 1M+5A without new registers. All 470 retained
+values and the full polynomial agree on identical supplied coordinates.
+The fixed recipe remains E=3^e with dyadic C>=64, C>E, and literal height
+h=x+eta and radix B=Ch for ordinary positive input x. The
+[independent review](Papers/research-wip/native-stream-queue/review_residue_affine_sparse_shared470.md) reconstructs
+the complete source and automatically normalizes its actual-hat affine
+expressions, checking the native rows, finalizer and main-norm degree
+cancellation. Fresh normal/optimized checks pass. This is a direct476
+successor; no positive-coordinate map to the one-program471 source is claimed.
+
+The preceding [shared U21 residue-affine source](Papers/research-wip/native-stream-queue/residue_affine_sparse_shared476.md)
 reaches **456 certificate / 476=176M+300A polynomial operations**, with
 seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
 It saves 25 additions by reusing a disjoint paid selector partition, two

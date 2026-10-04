@@ -3445,7 +3445,21 @@ the original state chronology. The complete supplied positive zero set
 agrees with537, including arbitrary positive program/input parameters;
 the fixed recipe E=3^e retains universality on ordinary positive x.
 
-The [shared U21 residue-affine source](residue_affine_sparse_shared476.md)
+The [two-program U21 control-pair source](residue_affine_sparse_shared470.md)
+reaches **450 certificate / 470=175M+295A polynomial operations**, with
+seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
+The six paid-pair/population-prefix identities are checked directly against
+the actual476 source, saving 1M+5A without new registers. All 470 retained
+values and the full polynomial agree on identical supplied coordinates.
+The fixed recipe remains E=3^e with dyadic C>=64, C>E, and literal height
+h=x+eta and radix B=Ch for ordinary positive input x. The
+[independent review](review_residue_affine_sparse_shared470.md) reconstructs
+the complete source and automatically normalizes its actual-hat affine
+expressions, checking the native rows, finalizer and main-norm degree
+cancellation. Fresh normal/optimized checks pass. This is a direct476
+successor; no positive-coordinate map to the one-program471 source is claimed.
+
+The preceding [shared U21 residue-affine source](residue_affine_sparse_shared476.md)
 reaches **456 certificate / 476=176M+300A polynomial operations**, with
 seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
 It saves 25 additions by reusing a disjoint paid selector partition, two
@@ -5000,6 +5014,7 @@ New research and the completed75-operation construction:
 | [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
 | [One-program U21 control-pair sharing](residue_affine_sparse_shared471.md) | **451 certificate /471=175M+296A**,7 comparisons,67 positive witnesses,one fixed program parameter,degree at most5091. | Six exact simultaneous rewrites save1M+5A from477; every retained value, the full polynomial, and all supplied positive zeros are unchanged. |
 | [One-program shared U21 source](residue_affine_sparse_shared477.md) | **457 certificate /477=176M+301A**,7 comparisons,67 positive witnesses,one fixed program parameter,degree at most5091. | Complete polynomial identity to actual505; saves1M+27A while retaining h=E+x+eta and B=64h. |
+| [Two-program U21 control-pair sharing](residue_affine_sparse_shared470.md) | **450 certificate /470=175M+295A**,7 comparisons,67 positive witnesses,two fixed program parameters,degree at most5160. | Direct full polynomial identity to476 saves1M+5A; retains dyadic C>=64,C>E and B=C(x+eta) for ordinary input x. |
 | [Shared U21 selector/payload source](residue_affine_sparse_shared476.md) | **456 certificate /476=176M+300A**,7 comparisons,67 positive witnesses,two fixed program parameters,degree at most5160. | Complete polynomial identity to the default504 coupled/shared product source; disjoint selector sums, shared range repunit and joint payload cancellation save1M+27A. |
 | [Fixed sparse program radix](residue_affine_sparse_program_radix504.md) | **484 certificate /504=177M+327A**,7eq67w, two fixed program parameters E,C plus raw x,uniform degree at most5160. | C dyadic>=64 and C>E=3^e permits h=x+eta, B=Ch. One C serves all inputs; direct soundness/completeness includes h=2. A parameter tradeoff, not an identical supplied-zero-set rewrite. |
 | [Paid sparse control codes](residue_affine_sparse_control_codes.md) | **485 certificate /505=177M+328A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Reuse paid selector sums and prefixes in injective current/target codes. Complete control cost106→74; identical positive zeros with537 after unchanged typing and exact chronology. |
