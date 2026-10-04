@@ -1,0 +1,91 @@
+\section{Trotter and symmetric product formulas}\label{sec:splitting}
+The source page mentions the Suzuki--Trotter decomposition without displaying a particular version. We prove the basic product limit, the symmetric second-order formula, and a recursive construction of arbitrarily high even order. All analytic statements in this section concern matrices or bounded elements of a Banach algebra.
+
+\subsection{The product limit and its complete effective exponent}
+\begin{theorem}[Lie--Trotter formula]\label{thm:trotter}
+For every fixed $t$,
+\begin{equation}\label{eq:trotter}
+ e^{t(X+Y)}=\lim_{n\to\infty}
+ \bigl(e^{tX/n}e^{tY/n}\bigr)^n.
+\end{equation}
+For sufficiently large $n$ the following is an exact convergent expansion:
+\begin{equation}\label{eq:trotter-all}
+ \bigl(e^{tX/n}e^{tY/n}\bigr)^n
+ =\exp\!\left(t(X+Y)+
+       \sum_{k\geq2}\frac{t^k}{n^{k-1}}Z_k(X,Y)\right).
+\end{equation}
+The error in \cref{eq:trotter} is $O(n^{-1})$, uniformly for $t$ in any fixed compact set.
+\end{theorem}
+\begin{proof}
+For large $n$, the step size is inside the convergence domain of \cref{thm:convergence}. Homogeneity gives
+$\log(e^{tX/n}e^{tY/n})=\sum_{k\geq1}(t/n)^kZ_k$.
+Taking the $n$th power multiplies this one logarithm by $n$, since its exponential commutes with itself. This proves \cref{eq:trotter-all}. Its exponent differs from $t(X+Y)$ by $O(n^{-1})$, uniformly on compact $t$ sets by the majorant. The exponential difference estimate in the proof of \cref{thm:convergence} proves the limit and its error bound.
+\end{proof}
+Thus the Zassenhaus viewpoint explains which correction factors are discarded, while BCH provides a particularly direct proof of the limit and all corrections to its effective exponent.
+
+\subsection{Symmetry removes every even degree}
+Put
+\begin{equation}\label{eq:strang}
+ S_2(t)=e^{tX/2}e^{tY}e^{tX/2}.
+\end{equation}
+Because $S_2(-t)=S_2(t)^{-1}$, its formal or local logarithm is odd:
+\begin{equation}\label{eq:strang-log}
+ \log S_2(t)=t(X+Y)+\sum_{j\geq1}t^{2j+1}E_{2j+1}.
+\end{equation}
+Substituting \cref{eq:Z1,eq:Z2,eq:Z3} twice into
+$\BCH(\BCH(tX/2,tY),tX/2)$ gives
+\begin{equation}\label{eq:strang-E3}
+ E_3=-\frac1{24}[X,[X,Y]]-\frac1{12}[Y,[X,Y]].
+\end{equation}
+For an explicit coefficient check, first put $A=tX/2$, $B=tY$ and expand
+$\BCH(A,B)=A+B+[A,B]/2+[A,[A,B]]/12+[B,[B,A]]/12+O(t^4)$.
+A second BCH with $A$ adds $[B,A]/2$ at degree two, cancelling the first correction. The degree-three terms collect to
+$-[A,[A,B]]/6+[B,[B,A]]/6$; replacing $A,B$ by $tX/2,tY$ gives \cref{eq:strang-E3}.
+
+Exactly as for Trotter,
+\begin{equation}\label{eq:strang-all}
+ S_2(t/n)^n=\exp\!\left(t(X+Y)+
+        \sum_{j\geq1}\frac{t^{2j+1}}{n^{2j}}E_{2j+1}\right)
+ \longrightarrow e^{t(X+Y)},
+\end{equation}
+with error $O(n^{-2})$. Every $E_{2j+1}$ is determined by iterated BCH, or by the following full multi-exponential formula.
+
+For arbitrary $A_1,\ldots,A_m$, expansion of the ordinary logarithm gives
+\begin{equation}\label{eq:multi-bch}
+ \log\!\left(\prod_{i=1}^{m}e^{tA_i}\right)
+ =\sum_{k\geq1}\frac{(-1)^{k-1}}{k}
+ \sum_{\substack{r_{ji}\geq0\\\sum_i r_{ji}>0\ (1\leq j\leq k)}}
+ \frac{t^{\sum_{j,i}r_{ji}}}
+      {\prod_{j,i}r_{ji}!}
+ \prod_{j=1}^{k}\left(\prod_{i=1}^{m}A_i^{r_{ji}}\right).
+\end{equation}
+It follows by writing the product minus one as its nonconstant exponential-block series and taking its logarithm, exactly as in \cref{thm:word-cut}. Coefficient extraction in \cref{eq:multi-bch} is finite at every order, and the primitive-element proof applies to any finite alphabet, so every homogeneous result is a Lie polynomial. Taking $(A_1,A_2,A_3)=(X/2,Y,X/2)$ determines every term of \cref{eq:strang-log} without an unspecified remainder.
+
+\subsection{Arbitrarily high even order by a five-factor recursion}
+The recursive symmetric construction below is the five-factor Suzuki scheme \cite{Suzuki}; its order conditions follow directly from BCH.
+
+\begin{theorem}[Symmetric recursive splitting]\label{thm:suzuki}
+Suppose a symmetric product $S_{2k}$ satisfies
+\[
+ S_{2k}(-t)=S_{2k}(t)^{-1},\qquad
+ \log S_{2k}(t)=tH+t^{2k+1}E+O(t^{2k+3}),\quad H=X+Y.
+\]
+Define
+\begin{align}
+ p_k&=\frac1{4-4^{1/(2k+1)}},\label{eq:suzuki-p}\\
+ S_{2k+2}(t)&=S_{2k}(p_kt)^2\,
+ S_{2k}((1-4p_k)t)\,S_{2k}(p_kt)^2.\label{eq:suzuki-recursion}
+\end{align}
+Then $S_{2k+2}$ is symmetric and
+$\log S_{2k+2}(t)=tH+O(t^{2k+3})$.
+Starting from \cref{eq:strang}, this constructs every even order, and
+$S_{2k}(t/n)^n=e^{tH}+O(n^{-2k})$ for fixed $t$.
+\end{theorem}
+\begin{proof}
+The palindromic order of the factors proves symmetry. Up to degree $2k+1$, their logarithms add: commutators of their leading terms vanish since all are multiples of $H$, and a commutator involving one error term has degree at least $2k+2$. The coefficient of $tH$ is $4p_k+(1-4p_k)=1$. The coefficient of $t^{2k+1}E$ is
+\[
+ 4p_k^{2k+1}+(1-4p_k)^{2k+1}=0,
+\]
+by \cref{eq:suzuki-p}. Symmetry makes the logarithm odd, so there is no degree $2k+2$ term either. This gives the claimed order. The global $n$-step estimate follows by multiplying the local logarithm by $n$, as in \cref{thm:trotter}.
+\end{proof}
+The middle time coefficient is negative; that poses no problem for bounded exponentials, but is a reason not to transplant this statement without additional hypotheses to arbitrary one-sided semigroups. Every higher effective-exponent coefficient of these products is explicitly obtainable from \cref{eq:multi-bch}. If $[X,Y]$ is central, \cref{eq:central-bch} shows that already $S_2(t)=e^{t(X+Y)}$ exactly.

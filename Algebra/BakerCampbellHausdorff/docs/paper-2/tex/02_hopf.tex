@@ -1,0 +1,104 @@
+\section{Why the logarithm is a Lie series}\label{sec:hopf}
+We prove the primitive-element statement used in the source article rather than treating it as a black box. The proof simultaneously constructs the projection that produces Dynkin's formula.
+
+\subsection{The coproduct and group-like elements}
+Define the continuous algebra homomorphism
+\begin{equation}\label{eq:coproduct}
+ \Delta:\widehat\TT\longrightarrow\widehat\TT\ot\widehat\TT,
+ \qquad
+ \Delta X=X\otimes1+1\otimes X,\quad
+ \Delta Y=Y\otimes1+1\otimes Y.
+\end{equation}
+Here the target is the \emph{completed} tensor product
+$\prod_{p,q\geq0}\TT_p\otimes\TT_q$, with the total-degree interpretation of multiplication and infinite sums. An ordinary algebraic tensor product is not sufficient for arbitrary formal series. Explicitly, if $w=a_1\cdots a_n$, then
+\begin{equation}\label{eq:unshuffle}
+ \Delta w=\sum_{I\subseteq\{1,\ldots,n\}}a_I\otimes a_{I^c},
+\end{equation}
+where $a_I$ lists the selected letters in their original order. The counit $\eps$ selects the constant coefficient. Coassociativity and the counit equations can be checked on $X,Y$ and then extended by multiplicativity and continuity.
+
+An element $P$ is \emph{primitive} when
+$\Delta P=P\otimes1+1\otimes P$.
+An element $g\in1+F^1\widehat\TT$ is \emph{group-like} when
+$\Delta g=g\otimes g$.
+The normalization of the constant term is part of this definition.
+
+\begin{proposition}\label{prop:group-like}
+For $P\in F^1\widehat\TT$, $P$ is primitive if and only if $e^P$ is group-like. Group-like elements form a group under multiplication.
+\end{proposition}
+\begin{proof}
+Continuity and multiplicativity give $\Delta(e^P)=e^{\Delta P}$. If $P$ is primitive, the two tensor factors commute, so
+\[
+ e^{\Delta P}=e^{P\otimes1}e^{1\otimes P}=e^P\otimes e^P.
+\]
+Conversely, if $g=e^P$ is group-like, then
+\begin{align*}
+ \Delta P&=\log(\Delta g)
+ =\log\bigl((g\otimes1)(1\otimes g)\bigr)\\
+ &=\log(g\otimes1)+\log(1\otimes g)
+ =P\otimes1+1\otimes P.
+\end{align*}
+The commuting-logarithm rule applies because both factors have constant term one. Finally,
+$\Delta(gh)=(g\otimes g)(h\otimes h)=gh\otimes gh$,
+and $\Delta(g^{-1})=(\Delta g)^{-1}=g^{-1}\otimes g^{-1}$.
+\end{proof}
+
+\subsection{An explicit primitive-element projection}
+For a word $w$ of length $n$, define
+\[
+ S(w)=(-1)^n\rev(w),\qquad N(w)=n w,
+ \qquad S(1)=1,\quad N(1)=0.
+\]
+The map $S$ is an antihomomorphism. For endomorphisms $f,g$ of $\TT$, their convolution is
+$ f*g=m(f\otimes g)\Delta$, where $m$ is multiplication.
+
+\begin{lemma}[Antipode and right Dynkin operator]\label{lem:dynkin-operator}
+The map $S$ satisfies $\Id*S=S*\Id=\eta\eps$, where $\eta$ inserts scalars. The convolution
+\begin{equation}\label{eq:dynkin-operator}
+ D=N*S
+\end{equation}
+satisfies $D(w)=R(w)$ for every nonempty word.
+\end{lemma}
+\begin{proof}
+Use the finite notation $\Delta w=\sum u\otimes v$ and put
+$K(w)=\sum uS(v)$. If $a$ is a letter, then
+$\Delta(aw)=\sum au\otimes v+u\otimes av$ and $S(av)=-S(v)a$.
+Consequently
+\[
+ K(aw)=aK(w)-K(w)a=0.
+\]
+Since $K(1)=1$, this proves $\Id*S=\eta\eps$. The corresponding calculation using a final letter proves the other antipode identity (or one can use uniqueness of the convolution inverse in the connected graded algebra).
+
+Next, $N(au)=aN(u)+au$. Therefore
+\begin{align*}
+ D(aw)
+ &=\sum N(au)S(v)+N(u)S(av)\\
+ &=aD(w)-D(w)a+aK(w).
+\end{align*}
+For $w\ne1$, the last term vanishes. For $w=1$, it equals $a$, so $D(a)=a$. Induction now gives $D(aw)=[a,D(w)]$, which is exactly right nesting.
+\end{proof}
+
+\begin{theorem}[Primitive elements and Dynkin--Specht--Wever]\label{thm:friedrichs}
+A homogeneous $P\in\TT_n$, $n>0$, is primitive if and only if it belongs to $\LL(X,Y)_n$. For such a $P$,
+\begin{equation}\label{eq:dsw}
+ D(P)=nP,\qquad
+ P=\frac1n\sum_{|w|=n}\coeff{w}P\,R(w).
+\end{equation}
+Thus $D/n$ is an idempotent projection of $\TT_n$ onto $\LL(X,Y)_n$, and the primitive elements of $\widehat\TT$ are exactly $\widehat\LL(X,Y)$.
+\end{theorem}
+\begin{proof}
+If $P$ is homogeneous and primitive, then
+\[
+ D(P)=m(N\otimes S)(P\otimes1+1\otimes P)=nP.
+\]
+By \cref{lem:dynkin-operator}, $D(P)$ is a linear combination of nested commutators. Division by $n$ is permitted in characteristic zero, proving $P\in\LL$ and the displayed formula.
+
+Conversely, $X,Y$ are primitive, and the bracket of primitive elements is primitive: the mixed terms in $[\Delta U,\Delta V]$ cancel because the tensor factors commute. Hence every Lie polynomial is primitive. Since $D$ always takes values in Lie polynomials, applying $D$ once more gives $D^2=nD$ on degree $n$. Finally, $\Delta$ preserves total degree, so a completed series is primitive exactly when each homogeneous component is primitive. Its degree-zero component must be zero, since a primitive scalar $c$ would satisfy $c=2c$.
+\end{proof}
+
+\begin{theorem}[Formal BCH theorem]\label{thm:formal-bch}
+There is a unique $Z\in F^1\widehat\TT$ satisfying $e^Z=e^Xe^Y$. It belongs to $\widehat\LL(X,Y)$, has rational coefficients, and its degree-one term is $X+Y$.
+\end{theorem}
+\begin{proof}
+Uniqueness and existence in the completed associative algebra follow from \cref{lem:exp-log}. Since $X,Y$ are primitive, their exponentials and the product $e^Xe^Y$ are group-like. Its logarithm is primitive by \cref{prop:group-like}, and hence a Lie series by \cref{thm:friedrichs}. Rationality follows from the factorial and logarithmic coefficients. Taking degree one gives $Z_1=X+Y$.
+\end{proof}
+This proves all the structural assertions about primitive and group-like elements needed for BCH. The Hopf-algebra interpretation is compatible with universal enveloping algebras, as explained and proved in \cref{sec:pbw}.

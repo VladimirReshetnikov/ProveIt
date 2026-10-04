@@ -1,0 +1,131 @@
+\section{Removing the \texorpdfstring{$O(Y^2)$}{O(Y2)}: a complete expansion in one variable}\label{sec:y-expansion}
+The term $O(Y^2)$ in the source article means terms containing at least two occurrences of $Y$, not merely terms of total degree at least two. We now determine all of those terms. Put $A=\ad_X$ and $B=\ad_Y$.
+
+\subsection{An explicit all-terms formula}
+\begin{theorem}[Operator-block expansion]\label{thm:operator-block}
+The full BCH series is
+\begin{equation}\label{eq:operator-block}
+ \boxed{\displaystyle
+ Z=X+Y+\sum_{k\geq1}\frac{(-1)^{k+1}}{k(k+1)}
+ \sum_{\substack{r_i,s_i\geq0\\r_i+s_i>0}}
+ \frac{A^{r_1}B^{s_1}\cdots A^{r_k}B^{s_k}Y}
+ {(1+\sum_i s_i)\prod_i r_i!s_i!}.}
+\end{equation}
+In particular, the term with exactly $q\geq1$ occurrences of $Y$ is
+\begin{equation}\label{eq:Hq-explicit}
+ H_q=\delta_{q1}Y+
+ \sum_{k\geq1}\frac{(-1)^{k+1}}{k(k+1)q}
+ \sum_{\substack{r_i+s_i>0\\\sum_i s_i=q-1}}
+ \frac{A^{r_1}B^{s_1}\cdots A^{r_k}B^{s_k}Y}
+ {\prod_i r_i!s_i!},
+ \qquad Z=X+\sum_{q\geq1}H_q.
+\end{equation}
+At fixed total degree all the sums are finite. Any summand with $s_k>0$ vanishes.
+\end{theorem}
+\begin{proof}
+Expand the operator in \cref{eq:poincare} using \cref{eq:psi}. Since
+\[
+ e^Ae^{tB}-I
+ =\sum_{r+s>0}\frac{t^s}{r!s!}A^rB^s,
+\]
+its $k$th power is the ordered block product in \cref{eq:operator-block}, with a factor $t^{\sum_i s_i}$. The sign from $(I-e^Ae^{tB})^k$ changes the coefficient to $(-1)^{k+1}/(k(k+1))$. Integrating $t^{\sum_i s_i}$ gives $1/(1+\sum_i s_i)$. There is one final $Y$, so the number of $Y$'s is $1+\sum_i s_i$. This proves both equations. The last assertion follows from $B^sY=0$ for $s>0$.
+\end{proof}
+Unlike a finite display with an unspecified remainder, \cref{eq:Hq-explicit} gives every term with three, four, or arbitrarily many $Y$'s as well.
+
+\subsection{A triangular recurrence in the number of \texorpdfstring{$Y$}{Y}'s}
+There is a useful alternative, especially when $X$ is held fixed. Define $H_0=X$ and
+\[
+ Z(X,\eps Y)=\sum_{q\geq0}\eps^qH_q.
+\]
+Equation \cref{eq:y-ode} gives, for every $q\geq1$,
+\begin{equation}\label{eq:Hq-recursion}
+ \boxed{\displaystyle
+ qH_q=\sum_{m\geq0}b_m^+
+ \sum_{\substack{j_1,\ldots,j_m\geq0\\j_1+\cdots+j_m=q-1}}
+ \ad_{H_{j_1}}\cdots\ad_{H_{j_m}}Y.}
+\end{equation}
+For $m=0$ the contribution is $Y$ if $q=1$ and zero otherwise. Every index $j_i$ is less than $q$, so this is triangular in the $Y$-degree. The outer sum may contain arbitrarily many $X$'s, but it is finite in every fixed total degree. It follows simply by expanding $h(\ad_Z)$ and equating the coefficient of $\eps^{q-1}$.
+
+For $q=1$ the only indices are zero, giving
+\begin{align}
+ H_1&=h(A)Y=\frac{A}{1-e^{-A}}Y
+ =\frac A2\left(1+\coth\frac A2\right)Y,\label{eq:H1}\\
+ &=Y+\tfrac12[X,Y]+\tfrac1{12}[X,[X,Y]]
+ -\tfrac1{720}\ad_X^4Y+\tfrac1{30240}\ad_X^6Y+\cdots .\nonumber
+\end{align}
+This proves both versions of the source article's linear-in-$Y$ formula. The quotients and the product with $\coth$ mean the regular function $h$; neither expression calls for an inverse of $A$ at zero.
+
+For $q=2$, \cref{eq:Hq-recursion} gives the full quadratic term
+\begin{equation}\label{eq:H2-frechet}
+ H_2=\frac12\sum_{m\geq1}b_m^+
+        \sum_{r=0}^{m-1}A^r[H_1,A^{m-1-r}Y].
+\end{equation}
+No higher $Y$-degree has been suppressed inside this expression.
+
+\subsection{A bivariate generating function for the complete quadratic term}
+\begin{theorem}[Quadratic kernel]\label{thm:quadratic-kernel}
+Let
+\begin{equation}\label{eq:K}
+ K(u,v)=\frac{h(u)}{2u}\bigl(h(u+v)-h(v)\bigr)
+       =\sum_{p,q\geq0}k_{pq}u^pv^q.
+\end{equation}
+The apparent quotient by $u$ is a regular divided difference. Then
+\begin{equation}\label{eq:H2-kernel}
+ \boxed{\displaystyle
+ H_2=\sum_{p,q\geq0}k_{pq}[A^pY,A^qY],\qquad
+ k_{pq}=\frac12\sum_{a=0}^{p}b_a^+b_{p+q+1-a}^+
+                 \binom{p+q+1-a}{p+1-a}.}
+\end{equation}
+Thus every coefficient of the quadratic part is an explicit finite sum of Bernoulli coefficients.
+\end{theorem}
+\begin{proof}
+On a bracket $[A^pY,A^qY]$, the derivation $A$ acts as multiplication by $u+v$ in the symbolic two-variable description: this is precisely \cref{eq:derivation}. The replacement of the first $Y$ by $H_1=h(A)Y$ acts as $h(u)$, and $A^{m-1-r}$ on the second $Y$ acts as $v^{m-1-r}$. Hence \cref{eq:H2-frechet} is represented by
+\[
+ \frac{h(u)}2\sum_{m\geq1}b_m^+
+ \sum_{r=0}^{m-1}(u+v)^r v^{m-1-r}.
+\]
+The finite geometric identity
+\[
+ \sum_{r=0}^{m-1}(u+v)^r v^{m-1-r}
+ =\frac{(u+v)^m-v^m}{u}
+\]
+turns this into \cref{eq:K}. Expanding $h(u)$ and the divided difference, then extracting $u^pv^q$, gives the stated finite coefficient sum.
+\end{proof}
+Because brackets are antisymmetric, $K$ can equivalently be replaced by
+\[
+ \frac{K(u,v)-K(v,u)}2
+ =\frac14\left\{
+ \frac{h(u)}u\bigl(h(u+v)-h(v)\bigr)
+ -\frac{h(v)}v\bigl(h(u+v)-h(u)\bigr)\right\}.
+\]
+For orientation, the first terms, grouped by the number of $X$'s, are
+\begin{equation}\label{eq:H2-first}
+ H_2=-\frac1{12}[Y,AY]-\frac1{24}[Y,A^2Y]
+     -\frac1{180}[Y,A^3Y]-\frac1{120}[AY,A^2Y]
+     +\ord_X(4),
+\end{equation}
+where $\ord_X(4)$ means at least four $X$'s and exactly two $Y$'s. The kernel \cref{eq:K}, not this short display, is the full expansion.
+
+\subsection{Analytic meaning when \texorpdfstring{$X$}{X} is not close to zero}
+In a finite-dimensional Lie group, $f(\ad_X)$ is invertible exactly when $\ad_X$ has no eigenvalue $2\pi\ii k$ with $k\in\mathbb Z\setminus\{0\}$. This follows because the zeros of the entire function $f$ are exactly those numbers, and triangularization evaluates its diagonal entries on the eigenvalues. When this condition holds, the inverse function theorem gives an exponential chart centered at $X$, and $\log(e^Xe^{\eps Y})$ has a local branch equal to $X$ at $\eps=0$. Here $h(\ad_X)$ means the inverse of $f(\ad_X)$, not necessarily its Taylor series at zero. In particular, one must not evaluate the infinite Bernoulli sum in \cref{eq:Hq-recursion} literally when that series diverges. The following finite-at-each-order replacement gives the actual local analytic expansion.
+
+Put $A=\ad_X$. For operators $E_1,\ldots,E_m$, let $D^mh(A)[E_1,\ldots,E_m]$ be the $m$th Fr\'echet derivative of the holomorphic matrix function $h$. It has the explicit resolvent formula
+\begin{equation}\label{eq:frechet-resolvent}
+ D^mh(A)[E_1,\ldots,E_m]
+ =\frac1{2\pi\ii}\int_\Gamma h(z)
+ \sum_{\pi\in S_m}R(z)E_{\pi(1)}R(z)\cdots E_{\pi(m)}R(z)\,\dd z,
+ \quad R(z)=(zI-A)^{-1}.
+\end{equation}
+Here $\Gamma$ is a finite union of positively oriented contours enclosing the spectrum, with interiors on which $h$ is holomorphic; it can be chosen to avoid every pole. For real Lie groups use the complexified adjoint operator. The result preserves the real subspace because the function and the construction are invariant under complex conjugation.
+
+The complete local coefficients at this fixed regular $X$ satisfy $H_1=h(A)Y$ and, for $q\geq2$,
+\begin{equation}\label{eq:Hq-analytic}
+ \boxed{\displaystyle
+ qH_q=\sum_{m=1}^{q-1}\frac1{m!}
+ \sum_{\substack{j_1,\ldots,j_m\geq1\\j_1+\cdots+j_m=q-1}}
+ D^mh(A)[\ad_{H_{j_1}},\ldots,\ad_{H_{j_m}}]Y.}
+\end{equation}
+Both sums are finite, and only earlier $H_j$ occur. In particular,
+$2H_2=Dh(A)[\ad_{h(A)Y}]Y$.
+To prove these formulas, expand the resolvent of $A+E$ by its uniformly convergent Neumann series on $\Gamma$ for sufficiently small $E$. Extracting the coefficient multilinear in $E_1,\ldots,E_m$ yields \cref{eq:frechet-resolvent}. Substitute
+$E=\sum_{j\geq1}\eps^j\ad_{H_j}$ in the resulting Taylor series of $h(A+E)$ and compare powers of $\eps$ in $Z'=h(\ad_Z)Y$. The $m$th derivative carries the factor $1/m!$, giving \cref{eq:Hq-analytic}. Analyticity of the local inverse of the exponential ensures convergence for sufficiently small $\eps$. This separates the all-orders local expansion around a regular $X$ from the total-degree expansion around $(0,0)$.
