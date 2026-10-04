@@ -375,6 +375,17 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [six-column matrix selector](matrix193_unimodular_selector.md) lowers
+> the complete countdown polynomial to **1179=591M+588A**, saving374 gates
+> from the irregular-selector parent. The synchronized count is1153;
+> exact degrees remain194/192 over both reals and integers. Determinant1
+> and nonzero pivots on all192 actual matrices let two lookup columns be
+> removed while retaining the full paired action. The [independent review](review_matrix193_unimodular_selector.md)
+> reconstructs all576 coefficients and checks all2332 rows and the complete
+> residual identities; installed normal/optimized author and audit replays
+> pass. Fixed h costs**1180h+7**, with6h signed witnesses. Unbounded packing
+> and positive conversion remain unpaid; the universal bound stays84.
+>
 > The [irregular matrix selector](matrix193_irregular_selector.md) lowers the
 > complete countdown predicate to **1553=778M+775A** over both reals and
 > signed integers, at exact degree194. Its synchronized source costs1527
