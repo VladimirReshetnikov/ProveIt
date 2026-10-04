@@ -145,6 +145,19 @@ finite range at fixed t. This proves a limitation of the extracted
 filters, not an unbounded native modulus or a false-input zero. The
 83-operation language remains unresolved and the universal bound is84.
 
+The [odd-prime compiler transfer](complete84_odd_prime_compiler_transfer.md)
+extends the actual fixed-numeral recipe to **every fixed odd prime ell>=5**,
+with the same ordinary-input language and unchanged84-operation source.
+After parity normalization, every fixed finite u>=1 admits genuine histories
+with **gcd(Delta,2^(2*3^u*dh)-1)=3** and the coprime quotient after removing
+3^(u+1), where d and h are ell-powers. The joint Boolean construction,
+actual high-monomial correction and independent spatial/time padding are
+checked in the [independent review](review_complete84_odd_prime_compiler_transfer.md).
+Installed normal/optimized receipts pass. The prime is fixed before compiling;
+this is a new coefficient recipe, not a change of prime in old numeric
+instances or an infinite simultaneous filter. The universal bound remains84
+and independent-gamma83 remains unresolved.
+
 The [native repunit filter](complete83_gamma_native_repunit_filter.md)
 uses the actual source identity **Jrep dividing R** to extend the finite
 prime exclusions. Fix a reference five-power N0 and any divisor D0 of
