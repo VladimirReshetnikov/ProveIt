@@ -195,6 +195,15 @@ operation bound. The separate [incoming topology triage](Papers/research-wip/nat
 records all 25 archive members and three complete README reads from the
 new Presburger/omnific bundles, with no manuscript or program validation.
 
+The [six-archive Baire/Polish review](Papers/research-wip/native-stream-queue/review_baire_polish_arithmetic_intake.md)
+authenticates the later arrival at `fa0a0576e` and records its exact read scope.
+The [independent audit](Papers/research-wip/native-stream-queue/review_baire_polish_arithmetic_intake_independent.md)
+checks all 49 members and 26 manuscript spans. Internal MRDP, promised
+finite-oracle table extraction and finite stream truth revisions provide
+useful structural results, but no complete paid universal polynomial was
+found in the inspected material. Full manuscript claims are not certified;
+all archived programs remain inert and the arithmetic frontier is unchanged.
+
 The [new Glazer/Polish intake](Papers/research-wip/native-stream-queue/recent_incoming_substrate_triage_20261003.md)
 pins five further archives and 33 members. Its scoped source read identifies
 a quadratic-atom compiler over one infinite ring interval. Universal
