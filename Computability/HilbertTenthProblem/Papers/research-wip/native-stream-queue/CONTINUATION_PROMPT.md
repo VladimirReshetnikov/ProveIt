@@ -196,6 +196,16 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [counted-suffix lift](matrix195_counted_suffix.md)
+> gives an exact ordinary-input target for **195 integer matrices in dimension 7**.
+> A three-coordinate control block forces exactly x suffix letters, eliminating
+> the separate external Pell-index relation. The target copies x directly and
+> costs **zero assembly gates**. The [independent review](review_matrix195_counted_suffix.md)
+> checks all 9,555 entries, four actual accepting computations and both proof
+> directions; fresh normal/optimized replays pass. The singular alphabet is
+> program-specific, accepting words gain x+1 factors, and the unbounded
+> product certificate remains unpaid. The universal polynomial bound stays 84.
+>
 > The [synchronized-row reduction](matrix193_synchronized_rows.md)
 > replaces the actual 193-generator product relation by 96 common tile
 > choices on four signed coordinates, with an unrestricted equivalence proof.
