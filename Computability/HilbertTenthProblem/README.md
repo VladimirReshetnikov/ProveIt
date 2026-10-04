@@ -589,6 +589,28 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [terminal-carry/power composition](Papers/research-wip/native-stream-queue/matrix193_terminal_power_composition.md)
+combines the24-gate, four-witness terminal-carry reduction with34 saved power
+and repunit operations. The complete current matrix sources are:
+
+| Controller chart | M | A | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|---:|---:|
+| None |732|778|1,510|141|35,587|
+| Flow |731|776|1,507|140|53,345|
+| Population |731|776|1,507|140|53,347|
+| Both |730|774|1,504|139|71,105|
+
+Every entire polynomial equals its immediate terminal-carry parent on the
+same supplied coordinates; that parent's witness counts and new exact degrees
+therefore transfer. All6,028 rows are live. Full coefficient identities,
+actual finalizer traces and fresh normal/optimized replays pass. The earlier
+terminal-carry and IDLE comparisons retain only ordinary-input equivalence.
+The separate universal84 construction is unchanged; no global minimum is
+claimed. All listed savings are already included in these totals.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_terminal_power_composition.md)
+reconstructs every edit and deletion, proves52 local identities and the four
+entire output identities, and passes separate normal/optimized replays.
+
 The [positive terminal-carry chart](Papers/research-wip/native-stream-queue/matrix193_terminal_carry_chart.md)
 removes four dot bounds and eight centering subtractions, saving4M+20A and
 four positive witnesses per grouped-power parent. Complete totals are
@@ -601,8 +623,9 @@ coordinates. The [source review](Papers/research-wip/native-stream-queue/review_
 and separate [mathematical review](Papers/research-wip/native-stream-queue/review_matrix193_terminal_carry_chart_math.md)
 pass: all6,164 rows, full polynomial contracts, all16 coefficient words,
 interleaved finalizers and new degree leaders are checked. Fresh author and
-independent normal/optimized replays pass. This branch does not yet include
-the cross-stage34-gate saving below; universal84 remains unchanged.
+independent normal/optimized replays pass. This branch omits the
+cross-stage34-gate saving, now included in the composition above; universal84
+remains unchanged.
 
 The [cross-stage power/repunit reuse](Papers/research-wip/native-stream-queue/matrix193_cross_stage_power_reuse.md)
 saves another30M+4A per complete matrix source. Eleven powers and two repunits
