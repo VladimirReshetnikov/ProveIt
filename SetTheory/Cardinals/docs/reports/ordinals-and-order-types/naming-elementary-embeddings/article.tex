@@ -10,6 +10,7 @@
 \usepackage{enumitem}
 \usepackage{xcolor}
 \usepackage{fancyhdr}
+\usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage[nameinlink,noabbrev]{cleveref}
 \definecolor{ink}{RGB}{26,49,69}
@@ -55,6 +56,8 @@
 \newaliascnt{question}{theorem}
 \newtheorem{question}[question]{Question}
 \aliascntresetthe{question}
+\crefname{question}{Question}{Questions}% [write] batch 93: Part I's questions are now cited by \cref
+\Crefname{question}{Question}{Questions}
 \theoremstyle{remark}
 \newaliascnt{remark}{theorem}
 \newtheorem{remark}[remark]{Remark}
@@ -88,6 +91,18 @@
 \newcommand{\Ireal}{I(\boldsymbol f)}
 \newcommand{\jbf}{\boldsymbol J}
 \newcommand{\repo}[1]{\texttt{\detokenize{#1}}}
+% [write] Macros of Part II (batch 93, manuscript 01). The manuscript's \kerat,
+% \TC, \Rep, \Coll, \RP, \cont, \At, \Set, \ran and \cf coincide with Part I's.
+\newcommand{\Mk}{M_\kappa(A)}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\ZZ}{\mathbb Z}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\FF}{\mathbb F}
+\newcommand{\Ord}{\mathsf{Ord}}
+\newcommand{\dcl}{\operatorname{dcl}}
+\newcommand{\Stab}{\operatorname{Stab}}
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\id}{\operatorname{id}}
 \newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 \newcommand{\status}[1]{\par\noindent\colorbox{lightgray}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{#1}}\par}
@@ -124,6 +139,7 @@ October 2026
 \hypersetup{pageanchor=true}
 
 \pagenumbering{roman}
+{\footnotesize\noindent\textbf{[write]} Since 4 October 2026 the report has two Parts: Part~\ref{nee:part:one} (Sections~\ref{nee:sec:intro}--\ref{nee:sec:conclusion} and Appendices~\ref{nee:app:bounded}--\ref{nee:app:checks}; batch~89, labels \texttt{nee:}) is the original report, with its numbering unchanged; Part~\ref{nee:ca:part} (from Section~\ref{nee:ca:sec:intro}; batch~93, labels \texttt{nee:ca:}) treats commuting actions and uniformly named groups, answers Question~10.4 of Part~\ref{nee:part:one}, and answers Question~10.1 for commuting permutations and the fixed-action part of Question~10.10. The abstract below is Part~\ref{nee:part:one}'s; Part~\ref{nee:ca:part} has its own. One bibliography serves both Parts.\par}
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 Let $A$ be an external set of atoms, let $\kappa$ be an infinite cardinal with $|A|\geq\kappa$, and let $M_\kappa(A)$ consist of the objects whose transitive closures involve fewer than $\kappa$ atoms. This is a standard kernel-ideal model of replacement-based set theory with urelements and choice. Every injection $f:A\to A$ has a canonical, amenable elementary lift $j_f:M_\kappa(A)\to M_\kappa(A)$ fixing every pure set. Nevertheless, naming these lifts can invalidate Replacement.
@@ -149,6 +165,9 @@ We also classify the initial elementary self-embeddings, determine precisely whi
 \endgroup
 \clearpage
 \pagenumbering{arabic}
+
+\part{Atom components, Replacement, and reflection}
+\label{nee:part:one}
 
 \section{Motivation, scope, and the contribution boundary}\label{nee:sec:intro}
 
@@ -193,7 +212,7 @@ No assertion below is advertised as the solution of an open problem explicitly p
 \label{nee:sec:provenance}
 
 \begin{writenote}[Added 3 October 2026, batch~89]
-This report is a single manuscript, printed in full: manuscript~05 of batch~89 of ProveIt's incoming-reports intake, delivered as the archive \texttt{Naming\_\allowbreak Elementary\_\allowbreak Embeddings\_\allowbreak Research.zip} (330,868 bytes; inner directory \texttt{Naming\_\allowbreak Elementary\_\allowbreak Embeddings/}, main file \texttt{article.tex}, 1041 lines, a 27-page US Letter PDF) in the arrival commit \texttt{8ea27d6c0}, and placed in commit \texttt{23adb85f9} in the research-report collection as \texttt{ordinals-and-order-types/\allowbreak naming-elementary-embeddings}. It contains no surreal mathematics and continues the formal projects \nolinkurl{SetTheory/ZF} and \nolinkurl{SetTheory/BoundedConsistency}, so it was filed in the collection, in the category that already holds ProveIt's other set-theoretic reports, rather than in either project. The author lines read ``Prepared for Vladimir Reshetnikov'' and ``Research manuscript prepared with ChatGPT''; the report is AI-assisted, unrefereed and not formalized. Its four sister manuscripts of batch~89 became additions to surreal-collection reports: Part~XV of \nolinkurl{Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders} (manuscript~01), Part~X of \nolinkurl{.../polish-models-of-omnific-arithmetic} (02), and Parts~VI and~VII of \nolinkurl{.../birthday-cutoffs-and-hereditary-sets} (03 and~04). Only manuscript~03 shares a theorem with this report (see below). Being a single source, the report needed no merge choices. The write prefixed all 64 delivered labels with \texttt{nee:} and updated every reference (38 \verb|\cref| keys, 13 \verb|\eqref|); added the two labels \texttt{nee:sec:provenance} and \texttt{nee:sec:notation}; added these dated \textbf{[write]} notes, the title-page line and the \texttt{pageanchor} switch around the title page (a delivered build gave a duplicate \texttt{page.1} destination). No statement, proof, number or non-claim of the manuscript was changed; no section, theorem or equation number moved.
+This report is a single manuscript, printed in full: manuscript~05 of batch~89 of ProveIt's incoming-reports intake, delivered as the archive \texttt{Naming\_\allowbreak Elementary\_\allowbreak Embeddings\_\allowbreak Research.zip} (330,868 bytes; inner directory \texttt{Naming\_\allowbreak Elementary\_\allowbreak Embeddings/}, main file \texttt{article.tex}, 1041 lines, a 27-page US Letter PDF) in the arrival commit \texttt{8ea27d6c0}, and placed in commit \texttt{23adb85f9} in the research-report collection as \texttt{ordinals-and-order-types/\allowbreak naming-elementary-embeddings}. It contains no surreal mathematics and continues the formal projects \nolinkurl{SetTheory/ZF} and \nolinkurl{SetTheory/BoundedConsistency}, so it was filed in the collection, in the category that already holds ProveIt's other set-theoretic reports, rather than in either project. The author lines read ``Prepared for Vladimir Reshetnikov'' and ``Research manuscript prepared with ChatGPT''; the report is AI-assisted, unrefereed and not formalized. Its four sister manuscripts of batch~89 became additions to surreal-collection reports: Part~XV of \nolinkurl{Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders} (manuscript~01), Part~X of \nolinkurl{.../polish-models-of-omnific-arithmetic} (02), and Parts~VI and~VII of \nolinkurl{.../birthday-cutoffs-and-hereditary-sets} (03 and~04). Only manuscript~03 shares a theorem with this report (see below). Being a single source, the report needed no merge choices. The write prefixed all 64 delivered labels with \texttt{nee:} and updated every reference (38 \verb|\cref| keys, 13 \verb|\eqref|); added the two labels \texttt{nee:sec:provenance} and \texttt{nee:sec:notation}; added these dated \textbf{[write]} notes, the title-page line and the \texttt{pageanchor} switch around the title page (a delivered build gave a duplicate \texttt{page.1} destination). No statement, proof, number or non-claim of the manuscript was changed; no section, theorem or equation number moved. [Added 4 October 2026, batch~93: this paragraph describes what is now Part~\ref{nee:part:one}. Batch-93 manuscript~01, \emph{Commuting Actions and Replacement}, written against this report, became Part~\ref{nee:ca:part} (Section~\ref{nee:ca:sec:provenance} gives its provenance); wrapping the text above as Part~\ref{nee:part:one} moved no number, and the single source of Part~\ref{nee:part:one} still needed no merge choices.]
 
 \emph{Pin and repository claims.} The pin \texttt{2b7b388ba81a3355b19a7c2d2fe797e92f572355} (Section~\ref{nee:sec:formalization} and the repository entries of the bibliography) is the ProveIt commit ``Catalogue batches 81 to 86'' of 3 October 2026, an ancestor of the placement. The three repository files the manuscript read are byte-identical at the pin and at the write: \nolinkurl{SetTheory/ZF/Lean/ZF/Zf.lean} (blob \texttt{b33db57cf}), \nolinkurl{SetTheory/BoundedConsistency/README.md} (\texttt{ebb5d1bfa}) and \nolinkurl{Algebra/SurrealNumbers/docs/surreal/surreal-self-embeddings/README.md} (\texttt{554357db9}). What Sections~\ref{nee:sec:intro}, \ref{nee:sec:partial} and~\ref{nee:sec:formalization} say about them is accurate: \texttt{Zf.lean} declares \texttt{Sep\_form}, \texttt{Func\_form}, \texttt{Image\_form}, \texttt{Repl\_form}, \texttt{ZFax}, \texttt{ZFprov} and \texttt{ZFax\_s}, with schema constructors over the formula type \texttt{Form}, semantic bridges and an internal finite-recursion theorem; the bounded-consistency README states a numeralwise endpoint, chooses partial satisfaction over Levy reflection, and records that its quantifier-group rank, in a syntax without primitive bounded quantifiers, is strictly finer than the Levy hierarchy; the self-embedding report is marked unrefereed and not formalized. No repository statement is contradicted, and nothing needed retraction.
 
@@ -939,6 +958,10 @@ The following are proposed projects arising from the present results. They are n
 For a fixed finite tuple $\boldsymbol f$, determine the exact atom kernel of the definable closure of a parameter set in the expanded model. The proof of \cref{nee:thm:profile} bounds it by component closure plus $D_\kappa(\boldsymbol f)$, but this bound can be larger than necessary. Which atoms or entire finite blocks are actually definable, rather than merely protected from a fresh-component swap?
 \end{question}
 
+\begin{writenote}[Answered for commuting permutations, 4 October 2026, batch~93]
+For a finite tuple of \emph{commuting permutations} the bound is exact: \cref{nee:ca:thm:dcl} of Part~\ref{nee:ca:part} proves, at every infinite cutoff including $\kappa=\omega$, that the atom kernel of the objects uniquely definable from $\bar a$ is exactly $G\cdot\bigcup_i\kerat(a_i)\cup D_\kappa(\boldsymbol p)$, the orbit saturation (here the component closure) of the parameter kernels together with the whole small-type part, and that pure parameters add nothing. \Cref{nee:ca:ex:ray-dcl} shows that this formula fails as stated for a non-surjective injection at $\kappa=\omega$ (the root of a ray is definable). The question stays open for injections, for non-commuting tuples, and for the atom-valued part of definable closure; Questions~\ref{nee:ca:q:nonabelian} and~\ref{nee:ca:q:injections} of Part~\ref{nee:ca:part} continue it.
+\end{writenote}
+
 \begin{question}[Noninitial elementary embeddings]
 Classify elementary self-embeddings of $M_\kappa(A)$ without requiring transitive range. Can one obtain a useful dichotomy separating canonical atom lifts from embeddings that alter the pure core or introduce noncanonical members into images of sets? Any such theorem must state its external class-existence assumptions explicitly.
 \end{question}
@@ -947,9 +970,13 @@ Classify elementary self-embeddings of $M_\kappa(A)$ without requiring transitiv
 For canonical lifts, a proper parameter-definable map cannot fix a parameter defining it. Investigate analogous statements for noninitial maps, for embeddings between different cutoffs, and for richer predicates on atoms. The key issue is whether the stabilizer argument still forces the atom action to be small.
 \end{question}
 
-\begin{question}[Commuting named automorphisms]
+\begin{question}[Commuting named automorphisms]\label{nee:q:commuting}
 The continuum-sized type family used in the two-name lower bound is noncommutative. Determine the sharp threshold for a fixed number of \emph{commuting} atom permutations. Their components are transitive actions of a finitely generated abelian group, whose stabilizer structure is much more restricted. This suggests that commutation can lower the type-count threshold, but the uniform internal recognition and all boundary cases should be proved separately.
 \end{question}
+
+\begin{writenote}[Answered, 4 October 2026, batch~93]
+\Cref{nee:ca:thm:commuting} of Part~\ref{nee:ca:part} answers this question in full: for every fixed $r\geq1$, every infinite $\kappa$ and every atom set with $|A|\geq\kappa$, every $r$-tuple of commuting atom permutations keeps expanded Replacement if and only if $\cf(\kappa)>\omega$, the threshold of a single name. The boundary cases are covered: at $\kappa=\omega$ a shift fails, and at uncountable cutoffs of countable cofinality the distinct-cycle construction of the proof of \cref{nee:thm:robust} for $r=1$ (\cref{nee:ex:alephomega} at $\aleph_\omega$), padded by identities, fails. The uniform internal recognition the question asks for is \cref{nee:ca:lem:stab-definable} (stabilizer classes are parameter-free definable at every cutoff); the type count is \cref{nee:ca:lem:abelian-types}. Part~\ref{nee:ca:part} goes further: commuting permutations together with $t$ commuting injections have threshold $\cf(\kappa)>\omega$ for $t\leq1$ and $\cf(\kappa)>\cont$ for $t\geq2$ (\cref{nee:ca:thm:mixed}); for a finitely generated group named by generators the threshold is $\cf(\kappa)>\tau(G)$, the number of conjugacy classes of subgroups, at uncountable $\kappa$, and finiteness of $G$ at $\kappa=\omega$ (\cref{nee:ca:grp:robust}). For finitely many commuting involutions, and more generally a finite group, at $\kappa=\omega$ the answer was already in the repository as Corollary~58.2 of Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets} (\texttt{hset:ns:cor:finitegroup}; see the note after \cref{nee:ca:cor:finite-group}).
+\end{writenote}
 
 \begin{question}[Other bounded-degree signatures]
 Extend the component-profile criterion to relational structures on atoms of uniformly bounded or countable degree. Identify hypotheses ensuring that component types have pure set codes recognizable internally without the Replacement scheme under examination. The fresh-component sufficiency argument is flexible; necessity depends on the definability of the complete type blocks.
@@ -971,9 +998,13 @@ Which parts of the criteria survive without ambient choice? Enumeration of count
 Determine the least syntactic complexity of a formula witnessing failure of expanded Replacement in the real-coded two-name construction. The limit-cutoff Collection obstruction is already $\Delta_0$, but the component-block selector uses unbounded quantification. Can the two-name obstruction be lowered to a sharp prenex level without importing Collection through normalization?
 \end{question}
 
-\begin{question}[Forcing and preservation properties]
+\begin{question}[Forcing and preservation properties]\label{nee:q:forcing}
 The CH characterization suggests a systematic forcing analysis of $\mathsf{Rob}_r(\kappa,A)$. Track which cutoffs, atom reservoirs, and external class parameters are held fixed when the pure continuum changes. Distinguish preservation of one already given expanded structure from universal preservation over all tuples in a forcing extension.
 \end{question}
+
+\begin{writenote}[Fixed-action part answered, 4 October 2026, batch~93]
+\Cref{nee:ca:thm:forcing} of Part~\ref{nee:ca:part} answers the fixed-action part: for a ground tuple of injections on a ground atom set, set forcing that keeps $\kappa$ a cardinal does not change whether the rebuilt expansion satisfies expanded Replacement (component types and the small-type part $D_\kappa(\boldsymbol f)$ are absolute). It does not assert that the old class model or the truth value of each formula is unchanged, nor that Collection is absolute under collapses below $\kappa$. Open: what happens when $\kappa$ is collapsed and the model is rebuilt at the new cutoff, and the universal properties $\mathsf{Rob}_r(\kappa,A)$, whose counterexamples may be new actions of the extension (\cref{nee:ca:q:forcing} of Part~\ref{nee:ca:part}).
+\end{writenote}
 
 \begin{question}[Bounded consistency with atoms and named maps]
 Can ProveIt's externally indexed partial-satisfaction construction be adapted to a replacement-based urelement theory without accidentally adding Collection? After that, determine exactly which enlarged-language schema instances are needed to formalize the component-profile proof. A theorem about an external family of bounded-consistency derivations must remain distinct from its universal closure in the object language.
@@ -984,7 +1015,7 @@ Develop a reusable Lean interface that packages a definable class model, its val
 \end{question}
 
 \begin{writenote}[Status of the questions, 3 October 2026, batch~89]
-None of the twelve questions is answered in ProveIt. The two that name the repository remain open there: \nolinkurl{SetTheory/BoundedConsistency} proves its numeralwise endpoint for pure ZFC only, with no atoms and no named maps, and no Lean interface of the kind the last question asks for exists. On the question about removing ambient choice: Part~VII of \nolinkurl{Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets} (batch-89 manuscript~04) works in choiceless permutation models with atoms, but about surreal coding and universality; it says nothing about named lifts, Replacement or Collection in the models here. [Added 4 October 2026, batch~90:] Part~VIII of the same surreal report (batch-90 manuscript~05) asks the finite-cutoff counterparts of four of these questions for named group actions: its Question~65.1 is the question on general atom ideals, its Question~65.3 the one on other bounded-degree signatures, its Question~65.6 the one on minimal complexity of failed instances, and its Question~65.12 the one on machine-checked certificates; for the question on commuting named automorphisms, its Question~65.4 notes that finitely many commuting involutions generate a finite group and so never destroy Replacement at the finite cutoff (its Corollary~58.2). None of these is answered there. Conversely, \cref{nee:thm:profile}(1) and \cref{nee:thm:robust} answer in part its Question~65.2 (infinite kernel bounds), and \cref{nee:thm:collection,nee:thm:reflection} its Question~65.11 (reflection and Collection in expanded models), for finitely many named injections; dated notes after those two questions there record this. See also the note at the end of \cref{nee:sec:replacement}.
+None of the twelve questions is answered in ProveIt. The two that name the repository remain open there: \nolinkurl{SetTheory/BoundedConsistency} proves its numeralwise endpoint for pure ZFC only, with no atoms and no named maps, and no Lean interface of the kind the last question asks for exists. On the question about removing ambient choice: Part~VII of \nolinkurl{Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets} (batch-89 manuscript~04) works in choiceless permutation models with atoms, but about surreal coding and universality; it says nothing about named lifts, Replacement or Collection in the models here. [Added 4 October 2026, batch~90:] Part~VIII of the same surreal report (batch-90 manuscript~05) asks the finite-cutoff counterparts of four of these questions for named group actions: its Question~65.1 is the question on general atom ideals, its Question~65.3 the one on other bounded-degree signatures, its Question~65.6 the one on minimal complexity of failed instances, and its Question~65.12 the one on machine-checked certificates; for the question on commuting named automorphisms, its Question~65.4 notes that finitely many commuting involutions generate a finite group and so never destroy Replacement at the finite cutoff (its Corollary~58.2). None of these is answered there. Conversely, \cref{nee:thm:profile}(1) and \cref{nee:thm:robust} answer in part its Question~65.2 (infinite kernel bounds), and \cref{nee:thm:collection,nee:thm:reflection} its Question~65.11 (reflection and Collection in expanded models), for finitely many named injections; dated notes after those two questions there record this. See also the note at the end of \cref{nee:sec:replacement}. [Added 4 October 2026, batch~93: the first sentence of this note is no longer true. Part~\ref{nee:ca:part} of this report (batch-93 manuscript~01) answers \cref{nee:q:commuting} in full, \cref{nee:q:dcl} for commuting permutations and the fixed-action part of \cref{nee:q:forcing}; dated notes after those three questions give the details. Questions~10.1 and~10.10 stay open beyond those parts, and the other nine questions are untouched. Part~\ref{nee:ca:part}'s own questions (Section~\ref{nee:ca:sec:future}) continue Questions~10.1, 10.6, 10.7, 10.8, 10.9, 10.10 and~10.12, as the note after them records.]
 \end{writenote}
 
 \section{Conclusion and proof-status summary}\label{nee:sec:conclusion}
@@ -995,6 +1026,10 @@ For uncountable cutoffs, that union is small exactly when full expanded Replacem
 These statements are proved for an explicitly constructed family over an external set of atoms. The foundational construction is known; the proposed new content is the expansion analysis and its sharp classifications. The article does not settle CH, does not contradict results about elementary embeddings of pure universes, and does not claim that an external semantic argument has already been turned into a Lean proof.
 
 The most concrete next mathematical tests are the commuting-automorphism case and the minimal complexity of the two-name failure. The most concrete implementation test is whether a formal library can distinguish base-language Replacement, amenability of named maps, and Replacement over the expanded formula type throughout the entire development.
+
+\begin{writenote}[Added 4 October 2026, batch~93]
+The commuting-automorphism case is settled in Part~\ref{nee:ca:part} (\cref{nee:ca:thm:commuting}); the minimal complexity of the two-name failure remains open (\cref{nee:ca:q:complexity}).
+\end{writenote}
 
 \appendix
 \section{An explicitly bounded injection-to-atoms formula}\label{nee:app:bounded}
@@ -1067,7 +1102,1274 @@ These are exact finite regression tests of the combinatorial constructions, not 
 In ProveIt the program is \nolinkurl{code/verify_finite.py}, the build script \nolinkurl{code/build.sh}, and the recorded run and the delivered build audit are \nolinkurl{data/verification_results.json} and \nolinkurl{data/BUILD_AUDIT.json}; the source audit is \nolinkurl{SOURCE_AUDIT.md} beside this article. The delivered \texttt{build.sh} builds the \texttt{article.tex} of its own directory, so in this layout it must be run on a copy with the article beside it. At the write the program was rerun on a scratch copy (Python~3.14.4): it passed, and its report equals the recorded one except for the field \texttt{python\_version} (3.14.4 against the delivered 3.13.5). The delivered \texttt{BUILD\_AUDIT.json} describes the delivered 27-page PDF and lists the hashes of the delivered files, among them the delivered PDF and README, which are not shipped; the article and PDF in ProveIt are the written versions. The report's README gives the replay commands.
 \end{writenote}
 
-\begin{thebibliography}{9}
+% ===================== Part II (batch 93, manuscript 01) =====================
+\clearpage
+\fancyhead[L]{\small\textsc{Naming Elementary Embeddings}}
+\fancyhead[R]{\small Part~II: commuting actions}
+\part{Commuting actions and Replacement}
+\label{nee:ca:part}
+
+% Part II continues the section numbers of Part I after its appendices.
+\setcounter{section}{11}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theHsection}{ca.\arabic{section}}
+\makeatletter\gdef\Hy@chapapp{\Hy@chapterstring}\makeatother
+
+{\Large Exact cofinality thresholds, definable kernels, and uniform naming\par}
+\smallskip
+{\large A solution to ProveIt Question 10.4 with further classification theorems\par}
+\smallskip
+{Research manuscript prepared with ChatGPT, 4 October 2026\par}
+
+\status{\textbf{Status and scope.} This article supplies complete arguments for its stated results in an explicitly specified family of models. The atom-kernel construction and the component-profile criterion are prior work, credited and reproved where needed. The commuting, mixed-injection, definable-kernel, and uniform-naming refinements are the contributions developed here. The work answers a question recorded as open in the inspected ProveIt report; publication priority beyond that report is not established. These are mathematical proofs, not machine-checked proofs. Elliot Glazer and Bokai Yao are cited researchers, not authors or endorsers of this manuscript.}
+
+\paragraph{Abstract.}
+Let $A$ be an external set of atoms, let $\kappa$ be an infinite cardinal with $|A|\geq\kappa$, and retain exactly those sets whose transitive closures involve fewer than $\kappa$ atoms. Naming an atom injection by its canonical elementary lift can change which instances of Replacement hold. We determine exactly what commutation contributes to this phenomenon. Every fixed finite nonempty family of commuting atom permutations preserves expanded Replacement for every action precisely when $\cf(\kappa)>\omega$. More generally, for commuting signatures with $s$ designated permutations and $t$ additional injections, the threshold is $\omega$ when $t\leq1$ and is $2^{\aleph_0}$ when $t\geq2$. The latter bound is witnessed by explicit lattice staircases; the two coordinate maps can individually preserve Replacement and have only pure fixed points while their joint expansion fails Replacement.
+
+For a finitely generated group $G$, the uncountable-cutoff threshold is the number of conjugacy classes of subgroups of $G$, with a separate and exact finite-cutoff criterion. For commuting permutations we also determine the complete atom kernel of definable closure, including the finite-cutoff case. Finally, an action of $\bigoplus_\omega C_2$ on two-point orbits shows that naming every group element separately can preserve Replacement at every cutoff while a single amenable binary evaluation map for the same action destroys it. The article explains the relation to Glazer--Yao reflection theory, gives explicit failed schema instances, distinguishes established results from the new refinements, and proposes a focused research program.
+
+{\footnotesize\noindent\textbf{[write]} Part~II of this report since 4 October 2026: batch-93 manuscript~01 of ProveIt's incoming-reports intake, printed in full (label prefix \texttt{nee:ca:}). It continues Part~I and answers its Question~10.4 (\cref{nee:q:commuting}), its Question~10.1 for commuting permutations (\cref{nee:q:dcl}) and the fixed-action part of its Question~10.10 (\cref{nee:q:forcing}). Section~$n$ of the manuscript is Section~$n+11$ here, so its item~$n.k$ is item~$(n+11).k$ (its Theorem~4.3 is \cref{nee:ca:thm:commuting}); its Appendices~A and~B are Appendices~D and~E; its equations, numbered consecutively there, are numbered within sections here. ``ProveIt Question~10.4'' and every other number of Part~I that the manuscript quotes are unchanged. Provenance, the overlap with Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets} (prior in the repository), the imported group-theoretic fact and the notation are in Sections~\ref{nee:ca:sec:provenance} and~\ref{nee:ca:sec:notation}.\par}
+
+\section{The research intersection and the results}\label{nee:ca:sec:intro}
+
+The subject is the interaction between symmetry and axiom schemes in set theory with atoms. An atom is an object which may belong to sets but has no members of its own. Once atoms are permitted, a universe may satisfy Replacement and the Axiom of Choice while lacking a set that contains all its atoms. This makes it possible to examine exactly how extra named structure changes definability.
+
+Glazer and Yao's \emph{Reflection Principles in ZFU} develops the interaction of Collection, reflection, and choice in urelement set theory, including constructions controlled by small atom kernels \cite{GY2026}. The directly relevant ProveIt report, \emph{Naming Elementary Embeddings}, studies canonical lifts of atom maps in a particularly explicit kernel model \cite{RepoNaming}. Its Question 10.4 asks for the sharp Replacement threshold when finitely many named atom permutations commute. The same report's Question 10.1 asks how sharp its bound on definable kernels can be.
+
+We answer Question 10.4 for every positive finite number of names. We also give an exact answer to the kernel question in the commuting-permutation setting and extend the analysis to commuting injections and uniformly named group actions. The setting is deliberately concrete: the conclusions below concern the specified models, rather than all models of urelement set theory or all elementary embeddings.
+
+\subsection{The basic model and the meaning of preservation}
+
+The atom kernel $\kerat(x)$ is the set of atoms occurring anywhere in the transitive closure of $\{x\}$. In an ambient universe with Choice, define
+\begin{equation}\label{nee:ca:eq:model-intro}
+\Mk=\{x\in U(A):|\kerat(x)|<\kappa\}.
+\end{equation}
+Here $U(A)$ is the cumulative universe over the external \emph{set} $A$ of atoms. The model contains all pure sets, so it contains arbitrarily large pure sets even when only finitely many atoms may occur in any one of its objects.
+
+An injection $f:A\to A$ extends recursively to a map $j_f$ on sets. The base model regards $j_f$ as an external elementary map; adjoining a symbol $J$ for it creates new first-order formulas. \emph{Expanded Replacement} means that Replacement is valid for every formula of this enlarged language, with arbitrary internal set parameters. It is stronger than the assertion that the graph of $j_f$ restricted to each internal set is internal.
+
+Throughout the article $\cont=2^{\aleph_0}$ is computed in the ambient pure universe. A statement of \emph{universal preservation} quantifies over all actions of the indicated kind on the fixed atom set $A$. Failure of this universal statement means that a counterexample action exists; it does not mean that every action fails.
+
+\subsection{Main classification in one table}
+
+The following table summarizes the universal statements. Every row assumes $\kappa$ infinite and $|A|\geq\kappa$.
+
+\begin{center}
+\begin{tabular}{@{}L{0.59\linewidth}L{0.33\linewidth}@{}}
+\toprule
+Named structure & Exact condition for universal Replacement \\
+\midrule
+A fixed finite nonempty family of commuting permutations & $\cf(\kappa)>\omega$ \\[4pt]
+Commuting permutations together with at most one additional injection, with at least one name & $\cf(\kappa)>\omega$ \\[4pt]
+At least two additional commuting injections & $\cf(\kappa)>\cont$ \\[4pt]
+An action of a fixed finite group, named by generators & Every infinite $\kappa$ \\[4pt]
+An action of a finitely generated $G$, with $\kappa>\omega$ & $\cf(\kappa)>\tau(G)$ \\[4pt]
+An action of a finitely generated $G$, with $\kappa=\omega$ & $G$ is finite \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here $\tau(G)=|\Sub(G)/G|$, where $G$ acts on its subgroups by conjugation. In the mixed rows, an ``additional injection'' is not required to be surjective; it is permitted to be a permutation. The lower bounds can be made genuinely nonsurjective where stated below.
+
+The first row answers the repository question. The second and third identify a finer boundary: one noninvertible direction is still controlled by countably many types, whereas two such directions admit a binary sequence of boundary data. The group formulation explains why a number of generators alone cannot determine the answer.
+
+\subsection{What is inherited and what is proved here}
+
+\begin{longtable}{@{}L{0.30\linewidth}L{0.61\linewidth}@{}}
+\toprule
+Result or ingredient & Provenance and role \\
+\midrule
+\endhead
+The model $\Mk$ and base Replacement & A specialization of the kernel-ideal constructions in urelement set theory; see Yao \cite{Yao2023} and Glazer--Yao \cite{GY2026}. We give the needed symmetry proof. \\[5pt]
+The component-profile criterion & Theorem 5.1 of the inspected ProveIt report \cite{RepoNaming}. It is stated and reproved in \cref{nee:ca:sec:profile}, and is not claimed as a new result. \\[5pt]
+Transitive group actions as coset actions & Standard group theory \cite{Mitchell2014}. The new use is the exact Replacement classification by the resulting type count. \\[5pt]
+Commuting and mixed signatures & Theorems proved here, including the boundary cases requested by ProveIt Question 10.4. \\[5pt]
+Definable atom kernels & An exact refinement proved here for commuting permutations, addressing Question 10.1 in that setting. \\[5pt]
+Separate names versus uniform evaluation & An explicit separation proved here. It uses ordinary finitary first-order syntax on both sides. \\[5pt]
+Collection and reflection & The underlying criteria are already in \cite{RepoNaming}; we explain their commuting-action consequences without claiming a new general reflection theorem. \\[5pt]
+Fixed-action forcing stability & A profile-based refinement proved here, answering the fixed-action part of Question 10.10 when the cutoff remains a cardinal. \\
+\bottomrule
+\end{longtable}
+
+The repository source was inspected at commit
+\nolinkurl{a9ab9a69872c2fb7464097af32fd7b76c75cb030}.
+The source's dated status note says that its twelve proposed questions remain unanswered there. This is a precise, limited novelty claim: the present work resolves the commuting question recorded in that source. No claim is made to have settled an open problem expressly posed in Glazer and Yao's paper, or to have established historical priority for every corollary.
+
+\subsection{Provenance and place in this report}
+\label{nee:ca:sec:provenance}
+
+\begin{writenote}[Added 4 October 2026, batch~93]
+\emph{Source.} This Part is a single manuscript, printed in full: manuscript~01 of batch~93 of ProveIt's incoming-reports intake, delivered as the archive \texttt{commuting\_\allowbreak actions\_\allowbreak replacement.zip} (690,120 bytes; inner directory \texttt{commuting\_\allowbreak actions\_\allowbreak replacement/}, main file \texttt{commuting\_\allowbreak actions\_\allowbreak replacement.tex}, 1,283 lines, 61 labels, 8 bibliography entries, a 31-page US Letter PDF) in the arrival commit \texttt{2faa3b37a}, and placed in commit \texttt{47a77daba} as Part~II of this report (files prefixed \texttt{02-commuting-actions-}, labels \texttt{nee:ca:}). It was filed here rather than beside Part~VIII of \nolinkurl{Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets} because it is written as a continuation of Part~\ref{nee:part:one} and answers Part~\ref{nee:part:one}'s questions. The author line reads ``Research manuscript prepared with ChatGPT'', 4 October 2026; the Part is AI-assisted, unrefereed and not formalized. Being a single source, it needed no merge choices: every statement, proof, example, remark, question and non-claim of the manuscript is printed. The write prefixed all 61 labels with \texttt{nee:ca:} and updated every reference; gave the twelve questions of Section~\ref{nee:ca:sec:future} labels; replaced the manuscript's title page and abstract environment by the Part heading, the status box and the paragraph ``Abstract''; dropped its separate table of contents; set its questions on the shared theorem counter (their numbers do not change, since Section~\ref{nee:ca:sec:future} contains nothing else numbered); numbered its equations within sections (in the manuscript they run consecutively: its (1) is (12.1), (2)--(3) are (13.1)--(13.2), (4)--(5) are (14.1)--(14.2), (6) is (15.1), (7)--(11) are (16.1)--(16.5), (12) is (17.1), (13)--(14) are (18.1)--(18.2) and (15)--(17) are (19.1)--(19.3)); pointed its figure at the shipped file; merged its bibliography into the report's (below); and added these dated \textbf{[write]} notes, the notation table of Section~\ref{nee:ca:sec:notation} and \cref{nee:ca:q:primary}. Item $n.k$ of the manuscript is item $(n+11).k$ here; its Appendices~A and~B are Appendices~\ref{nee:ca:app:conventions} and~\ref{nee:ca:app:sources}. No statement, proof or non-claim was changed.
+
+\emph{Pin and repository claims.} The pin \texttt{a9ab9a69872c2fb7464097af32fd7b76c75cb030} (Section~\ref{nee:ca:sec:intro} above, Appendix~\ref{nee:ca:app:sources} and the bibliography entries \cite{RepoNaming,RepoZFca}) is the ProveIt commit ``Audit eight arithmetic compiler reports and the complete degree-12 matrix DAG'' of 4 October 2026, an ancestor of the placement. The manuscript's quoted blob \texttt{5426fc8da5f470efc448c3dff041751d0d7dc4a9} is exactly this report's \texttt{article.tex} at the pin; it differs from Part~\ref{nee:part:one} as printed only by the two dated notes of the batch-90 reciprocal commit \texttt{e50dde15b}, so every number of~\cite{RepoNaming} that the manuscript quotes (Theorems~5.1, 6.1, 7.5, 7.7; Questions~10.1, 10.4, 10.10) is the number in Part~\ref{nee:part:one}: \cref{nee:thm:profile,nee:thm:robust,nee:thm:collection,nee:thm:reflection} and \cref{nee:q:dcl,nee:q:commuting,nee:q:forcing}. The manuscript's other repository statements are true at the pin and at this write: \nolinkurl{SetTheory/ZF/Lean/ZF/Zf.lean} (blob \texttt{b33db57cf}, the same at Part~\ref{nee:part:one}'s pin \texttt{2b7b388ba}, at this pin and at the write) declares \texttt{Sep\_form}, \texttt{Func\_form}, \texttt{Image\_form}, \texttt{Repl\_form}, \texttt{ZFax} and \texttt{ZFprov}, and no urelement model is formalized; the dated note of Part~\ref{nee:part:one} said that its twelve questions were unanswered, which was true until this Part. No repository statement is contradicted, and nothing needed retraction.
+
+\emph{Formal status.} No statement of this Part is formalized in Lean or Rocq; the formal-status note of Section~\ref{nee:sec:provenance} applies unchanged (the formula type of \nolinkurl{SetTheory/ZF} has no atom predicate and no function symbols), and the milestones of Section~\ref{nee:ca:sec:verification} are proposals.
+
+\emph{Prior in the repository: Part~VIII of the surreal report.} Batch-90 manuscript~05, \emph{Named Symmetries and Replacement}, is Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets} (its source~12, labels \texttt{hset:ns:}). It works only at the finite cutoff, with a uniformly named action of an arbitrary pure set-sized group. Its text was written in commit \texttt{1404038df} (4 October 2026, 10:57), twelve minutes after this manuscript's pin (10:45; the batch-90 placement \texttt{12076b2e8}, an ancestor of the pin, staged only its files), so this manuscript does not cite it. Several results here meet it at $\kappa=\omega$; Part~VIII is prior in the repository, the proofs are independent, and both stand. At $\kappa=\omega$: \cref{nee:ca:cor:finite-group} is its Corollary~58.2 (\texttt{hset:ns:cor:finitegroup}); the finite-cutoff clause of \cref{nee:ca:grp:robust} follows from its Theorem~58.1 (\texttt{hset:ns:thm:full}) with its Proposition~62.1 (\texttt{hset:ns:prop:finitewords}); \cref{nee:ca:uni:separate} is its Proposition~62.2 (\texttt{hset:ns:prop:language}) with Corollary~58.2; \cref{nee:ca:uni:profile} is Theorem~58.1, which there holds for every pure set-sized group; \cref{nee:ca:uni:fg} is Proposition~62.1, there for free-group words; and \cref{nee:ca:uni:two_point} makes the separation of its Theorem~62.3 (\texttt{hset:ns:thm:evaluator}) with the same group $\bigoplus_\omega C_2$ but a different witness (below). New here: everything at uncountable cutoffs (\cref{nee:ca:grp:robust} for $\kappa>\omega$, \cref{nee:ca:uni:profile} for $\kappa>\omega$, \cref{nee:ca:uni:finite_orbit}), and the witness of \cref{nee:ca:uni:two_point}, whose orbits have at most two atoms, which works at every $\kappa$ with $\cf(\kappa)\leq\cont$, whose evaluator is amenable, and which has a converse for $\cf(\kappa)>\cont$; Part~VIII's witness is the regular action, with infinite orbits, at $\kappa=\omega$ only. Dated notes after each of these results record the overlap, and a note after \cref{nee:ca:q:formal} relates the questions. The rest of the Part (commuting and mixed signatures, staircases, definable kernels, the forcing theorem) has no counterpart there.
+
+\emph{Relation to Part~\ref{nee:part:one}.} The manuscript reproves and credits Part~\ref{nee:part:one}'s foundations: \cref{nee:ca:lem:base-confinement} is \cref{nee:lem:nonew}, \cref{nee:ca:prop:base} is \cref{nee:thm:base} (Yao's construction, specialized; also Theorem~32.2 of Part~VI of \nolinkurl{birthday-cutoffs-and-hereditary-sets}, \texttt{hset:zr:thm:supportbase}), \cref{nee:ca:prop:lifts} is part of \cref{nee:thm:lifts}, \cref{nee:ca:lem:recognition} is \cref{nee:lem:recognize} with \cref{nee:lem:paths}, and \cref{nee:ca:thm:profile} is \cref{nee:thm:profile}. \Cref{nee:ca:lem:type-threshold} abstracts the sharpness constructions of \cref{nee:thm:robust} and \cref{nee:lem:decomp}; \cref{nee:ca:thm:joint-failure} is a commuting, proper-injection variant of \cref{nee:cor:jointunsafe}, whose two permutations do not commute; \cref{nee:ca:thm:commuting-collection} is a consequence of \cref{nee:thm:collection,nee:thm:reflection}, as the manuscript says, and its failure at limit cutoffs is \cref{nee:lem:limitcoll}.
+
+\emph{An imported fact.} \Cref{nee:ca:grp:exception} rests on an existence theorem of Ivanov and Ol'shanskii~\cite{IO1991}, read in Smith's paper~\cite{Smith1995}; it is not proved here. The note after that remark records what was checked, and \cref{nee:ca:q:primary} records what is missing. Nothing else in this Part is stated without proof, and no claim of the manuscript was found to be wrong.
+
+\emph{The bibliography.} The manuscript's entries for~\cite{GY2026} and~\cite{Yao2023} are Part~\ref{nee:part:one}'s and are printed once (the manuscript adds the full-text address \url{https://arxiv.org/html/2602.21970v1} and dates Yao's dissertation ``2023'' with arXiv v3 ``June 2023''). Its entry \texttt{RepoZF}, pinned at \texttt{a9ab9a698}, is cited as~\cite{RepoZFca}, so that Part~\ref{nee:part:one}'s entry~\cite{RepoZF}, pinned at \texttt{2b7b388ba}, stays as it was; the file is the same blob at both pins. The entries \cite{RepoNaming,Mitchell2014,CGP2010,Smith1995,IO1991} are new.
+
+\emph{Non-claims of the delivery README} (not shipped), beyond those in the text: the manuscript is not peer reviewed, and the ``independent review'' within its preparation (Appendix~\ref{nee:ca:app:sources}) is not external review; it claims the resolution of the repository's question only, not worldwide priority, and not the settlement of an open problem posed by Glazer and Yao, whose work is a credited source, not an endorsement or coauthorship; the scripts supplement the proofs and establish no infinite classification, cardinal arithmetic, forcing theorem, class-model theorem or axiom scheme; and the upstream repository was inspected, not modified.
+
+\emph{Checks at the write.} The delivered finite checks were rerun on a scratch copy (Python~3.14.4, standard library, about 2\,s): they pass, with 347,278 explicit checks, and the output is byte-identical to the recorded one. The delivered figure generator, run on a scratch copy with Matplotlib~3.10.8, regenerates a byte-identical \texttt{staircases.pdf} (TrueType fonts, no Type~3) and a pixel-identical \texttt{staircases.png} (RGBA, $1970\times1659$; differently compressed). Section~\ref{nee:ca:sec:verification} and Appendix~\ref{nee:ca:app:sources} name the delivered files; in ProveIt they are \nolinkurl{code/02-commuting-actions-verify_examples.py}, \nolinkurl{code/02-commuting-actions-make_figure.py}, \nolinkurl{data/02-commuting-actions-verification_output.txt} and \nolinkurl{figures/02-commuting-actions-staircases.pdf} (with its PNG preview). The generator writes \texttt{figures/staircases.*} beside itself, so it must be run on a copy; the report's README gives the commands. Appendix~\ref{nee:ca:app:sources} says that a LinkedIn page identifies Glazer; it gives no address, and none is recorded here.
+\end{writenote}
+
+\subsection{Notation of Part~II}
+\label{nee:ca:sec:notation}
+
+\begin{writenote}[Added 4 October 2026, batch~93]
+No symbol was renamed; the only changes are the label prefix and one citation key (above). The objects of Part~\ref{nee:part:one} keep their meaning: $\Mk$ is $M_\kappa(A)$ of \eqref{nee:eq:model}, and $\kerat$, $j_f$, $\mathcal N_{\kappa,\boldsymbol f}$, $\mathcal T_r$, $B_t$, $D_\kappa(\boldsymbol f)$, $V_\alpha(C)$, $\cont$, $\Rep$, $\Coll$, $\RP$ are as there. Several letters carry more than one meaning in this Part:
+\begin{center}\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.2\textwidth}>{\raggedright\arraybackslash}p{0.72\textwidth}}
+\toprule
+Symbol & Meaning here (and what it is not)\\
+\midrule
+$\NN$ & the natural numbers. \emph{Not} Part~\ref{nee:part:one}'s macro $\mathcal N_{\kappa,\boldsymbol f}$, the expanded model\\
+$U_S$ & the staircase \eqref{nee:ca:eq:staircase} coded by $S\subseteq\NN$; \emph{not} the cumulative universe $U(A)$\\
+$F$, $G$ & in Section~\ref{nee:ca:sec:mixed}, the two coordinate maps of a staircase; elsewhere $G$ is a group: $\ZZ^r$ in Section~\ref{nee:ca:sec:dcl}, a finitely generated group in Section~\ref{nee:ca:grp:section}, a countable group or $\bigoplus_\omega C_2$ in Section~\ref{nee:ca:uni:section}. In \cref{nee:lem:typecount} of Part~\ref{nee:part:one}, $G_S$ is an involution of $\ZZ$\\
+$H$ & in Section~\ref{nee:ca:sec:mixed}, the group $\ZZ^s$ acting through the permutations; in Section~\ref{nee:ca:sec:dcl}, $H(\bar a)$ is the protected union $G\cdot P\cup D_\kappa(\boldsymbol p)$, the counterpart of \eqref{nee:eq:H}; in Sections~\ref{nee:ca:grp:section}--\ref{nee:ca:uni:section}, a subgroup; in Section~\ref{nee:ca:sec:reflection}, a reservoir of atoms, as in \cref{nee:lem:reservoir}. Never the hereditary-size universe $H_\kappa$\\
+$K$ & a subgroup (a stabilizer) in Sections~\ref{nee:ca:sec:commuting}--\ref{nee:ca:sec:dcl} and \cref{nee:ca:uni:separate}; in the proof of \cref{nee:ca:thm:joint-failure}, a set of atoms\\
+$\boldsymbol p$, $p_i$, $p$ & in Sections~\ref{nee:ca:sec:mixed}--\ref{nee:ca:sec:dcl}, named commuting permutations; elsewhere $p$ is a parameter tuple, as in Part~\ref{nee:part:one}\\
+$B_K$ & the atoms with stabilizer exactly $K$: the type block $B_t$ of $t=\ZZ^r/K$\\
+$E(g,x)$ & the uniform evaluator \eqref{nee:ca:uni:eq:evaluation} of a group action. It is Part~VIII's evaluator $T(i,a,b)$ (\texttt{hset:ns:thm:evaluator}) and its named action graph $\mathsf{Act}$ (source~12's $E$) of \nolinkurl{birthday-cutoffs-and-hereditary-sets}; \emph{not} the enumeration predicate $E$ of Part~VI there, which names an injection of $\kappa$ into the atoms (see the note after \cref{nee:cor:alllocal})\\
+$\tau(G)$, $\tau_{\mathrm{fin}}(G)$ & numbers of conjugacy classes of all subgroups, of finite-index subgroups; not Part~VIII's involution $\tau$ nor Part~VI's $\tau=\cf\kappa$ there\\
+$\mathcal K(\dcl(\bar a))$ & scheme notation for the kernels of uniquely definable objects (before \cref{nee:ca:thm:dcl}); no truth predicate\\
+universal preservation & preservation for every action of the stated kind on $A$: for $r$ arbitrary injections this is Part~\ref{nee:part:one}'s $\mathsf{Rob}_r(\kappa,A)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+\section{Foundations, kernels, and canonical lifts}\label{nee:ca:sec:foundations}
+
+\subsection{External and internal sets}
+
+Work in a well-founded ambient set theory with the Axiom of Choice and an external set $A$ of urelements. Equivalently, ordinary ZFC can implement the entire construction with tagged atoms, tagged sets, and an interpreted membership relation. The use of $U(A)$ as a cumulative class does not require an inaccessible cardinal. The cardinal bounds used below are external cardinal bounds.
+
+Write $\At(x)$ for ``$x$ is an atom'' and $\Set(x)$ for its negation. Extensionality applies to sets. For every object $x$ put
+\[
+\kerat(x)=\{a\in A:a\in\TC(\{x\})\}.
+\]
+Thus $\kerat(a)=\{a\}$ for an atom, whereas a pure set has empty kernel. A set of atoms $B\subseteq A$ belongs to $\Mk$ exactly when $|B|<\kappa$.
+
+The distinction between ``$B$ is an external set'' and ``$B$ is an internal set of $\Mk$'' is essential. Every atom is internal. The totality $A$ is an external set but is not an internal set, because $|A|\geq\kappa$. Conversely, every pure set is internal, with no restriction on its cardinality or rank.
+
+For an atom set $C$, use the hierarchy
+\[
+V_0(C)=C,\qquad V_{\alpha+1}(C)=\mathcal P(V_\alpha(C))\cup C,
+\qquad V_\lambda(C)=\bigcup_{\alpha<\lambda}V_\alpha(C).
+\]
+Every object supported on $C$ occurs in some $V_\alpha(C)$. Each displayed stage is an external set. When $|C|<\kappa$, every object in every stage is internal.
+
+\begin{remark}[The semantic convention]\label{nee:ca:rem:semantics}
+All assertions about a formula holding in $\Mk$ mean the external relativization of that \emph{fixed} formula to the definable class \eqref{nee:ca:eq:model-intro}. Elementarity, Replacement, reflection, and definable-closure assertions are interpreted as schemes. We do not posit an internal truth predicate for a proper-class structure or an internal set of all class embeddings. Whenever a proof collects witnesses, it uses external Collection for the fixed translated formula and then checks the kernel bound. This convention also governs the definable-kernel theorem in \cref{nee:ca:sec:dcl}.
+\end{remark}
+
+\subsection{Why the base model satisfies Replacement}
+
+The following elementary identities organize the argument:
+\begin{align}
+y\in x&\ \Longrightarrow\ \kerat(y)\subseteq\kerat(x),\label{nee:ca:eq:kernel-basic}\\
+\kerat(\{x,y\})&=\kerat(x)\cup\kerat(y),\notag\\
+\kerat(\mathcal P(x))&\subseteq\kerat(x),\notag\\
+\kerat(Y)&=\bigcup_{y\in Y}\kerat(y)\quad\text{for an external set }Y.\notag
+\end{align}
+A finite union of sets of cardinality below an infinite $\kappa$ still has cardinality below $\kappa$, even if $\kappa$ is singular. It follows that $\Mk$ is transitive, closed under subsets of its internal sets, and closed under Pairing, Union, and Powerset.
+
+Every permutation $\pi$ of $A$ lifts recursively to an automorphism $\widehat\pi$ of $U(A)$ and of $\Mk$. If $\pi$ fixes $\kerat(x)$ pointwise, then $\widehat\pi(x)=x$.
+
+\begin{lemma}[Base-language confinement]\label{nee:ca:lem:base-confinement}
+If a formula of $\{\in,\At\}$ uniquely defines $y$ from internal parameters $x,p$, then
+\[
+\kerat(y)\subseteq\kerat(x)\cup\kerat(p).
+\]
+\end{lemma}
+\begin{proof}
+Suppose an atom $b$ occurs in $y$ but not in $x$ or $p$. Since the union of their three kernels has size below $\kappa$, there is $c\in A$ outside that union. Interchanging $b$ and $c$ fixes $x,p$ and changes the kernel of $y$. Its lift is a base-language automorphism and therefore produces a second output for the same uniquely defining formula. This is impossible.
+\end{proof}
+
+\begin{proposition}[The base theory]\label{nee:ca:prop:base}
+The model $\Mk$ satisfies the usual urelement axioms with Separation, Replacement, and the assertion that every set can be well-ordered. Its pure part is the full ambient pure universe. Its internal cardinality for each internal set agrees with the external cardinality.
+\end{proposition}
+\begin{proof}
+The structural axioms follow from \eqref{nee:ca:eq:kernel-basic}. For a functional formula on an internal domain $w$, external Replacement supplies its range $Y$. Applying \cref{nee:ca:lem:base-confinement} separately to each input gives
+\[
+\kerat(Y)\subseteq\kerat(w)\cup\kerat(p),
+\]
+so $Y$ is internal. Separation holds because every externally separated subset of an internal set has no new atoms.
+
+An external well-order of $w$ has kernel contained in $\kerat(w)$, and hence belongs to the model. The graph of any external bijection between $w$ and its pure cardinal has the same kernel bound. All pure objects are present, so there are no additional restrictions on pure ordinals, cardinal arithmetic, or the pure coding sets used below.
+\end{proof}
+
+Collection is not included in the conclusion. In urelement set theory with an internally proper class of atoms, it is a distinct issue; \cref{nee:ca:sec:reflection} states the relevant distinction explicitly.
+
+\subsection{Elementary and amenable lifts}
+
+For an injection $f:A\to A$, define
+\[
+j_f(a)=f(a),\qquad
+j_f(x)=\{j_f(z):z\in x\}\quad\text{if }\Set(x).
+\]
+Then
+\begin{equation}\label{nee:ca:eq:lift-kernel}
+\kerat(j_f(x))=f[\kerat(x)].
+\end{equation}
+The recursive map preserves ranks and maps $\Mk$ to itself. It fixes every pure object. Composition of atom maps corresponds to composition of their lifts; in particular commuting atom maps have commuting lifts.
+
+\begin{proposition}[Canonical lifts]\label{nee:ca:prop:lifts}
+Every $j_f$ is a base-language elementary self-embedding of $\Mk$. For each internal set $w$, the restriction graph $j_f\mathbin{\upharpoonright}w$ is internal. If $f$ is a permutation, $j_f$ is an automorphism.
+\end{proposition}
+\begin{proof}
+Let $\bar x$ be a finite tuple of parameters and put $P=\bigcup_i\kerat(x_i)$. The partial bijection $f\mathbin{\upharpoonright}P:P\to f[P]$ extends to a permutation $\pi$ of $A$: both complements have cardinality $|A|$, because $|P|<\kappa\leq|A|$. On every object in the tuple, $\widehat\pi$ agrees with $j_f$. An automorphism preserves the truth of any fixed base-language formula, which proves elementarity on $\bar x$.
+
+The graph of $j_f\mathbin{\upharpoonright}w$ has kernel contained in
+$\kerat(w)\cup f[\kerat(w)]$, a set of size below $\kappa$. This is the asserted amenability. An inverse atom permutation lifts to an inverse automorphism when $f$ is bijective.
+\end{proof}
+
+\begin{definition}[The expanded model]
+For a finite tuple $\boldsymbol f=(f_1,\ldots,f_r)$ of atom injections, let
+\[
+\mathcal N_{\kappa,\boldsymbol f}
+=(\Mk,\in,\At,j_{f_1},\ldots,j_{f_r}).
+\]
+The symbols $J_1,\ldots,J_r$ are genuine function symbols. Expanded Replacement permits them inside every formula of the scheme. A lifted atom permutation is an automorphism of this expanded structure whenever its atom action commutes with each $f_i$.
+\end{definition}
+
+Expanded Separation always holds: an externally defined subset of an internal set remains internal. The issue for Replacement is that a set of individually small outputs may collectively involve too many atoms.
+
+\section{The component-profile criterion}\label{nee:ca:sec:profile}
+
+This section supplies the central prior tool in a self-contained form. Its content is Theorem 5.1 of \cite{RepoNaming}. The later classifications depend on the number and definability of its component types.
+
+\subsection{Codes and entire type blocks}
+
+Make the atoms into a labelled directed graph, with an $i$-edge from $a$ to $f_i(a)$. A component is a connected component of the underlying undirected graph. There are at most $2r$ neighbors at each vertex, since an injection gives at most one predecessor of each label. Every component is therefore finite or countably infinite.
+
+Let $\mathcal T_r$ be the pure set of isomorphism types of connected structures with $r$ total injections on a nonempty finite ordinal or on $\omega$. A type may be represented by the set of all its codes, so no definable choice of representative is needed. Define
+\begin{equation}\label{nee:ca:eq:blocks}
+B_t=\{a\in A:\text{the component of }a\text{ has type }t\},\qquad
+D_\kappa(\boldsymbol f)=\bigcup_{\substack{t\in\mathcal T_r\\ |B_t|<\kappa}}B_t.
+\end{equation}
+The word ``block'' always refers to all copies of one component type. A countable component can belong to a block of arbitrarily large cardinality.
+
+\begin{lemma}[Recognition without expanded Replacement]\label{nee:ca:lem:recognition}
+For $\kappa>\omega$, membership $a\in B_t$ is uniformly first-order definable in the expanded language, with the pure type $t$ as a parameter. At $\kappa=\omega$ the same holds for finite component types. A specified finite path is definable at every cutoff.
+\end{lemma}
+\begin{proof}
+A path is represented by a function on a finite ordinal. A forward step of label $i$ requires $J_i(a)=b$; a backward step requires $J_i(b)=a$. The graph of a successful finite path uses finitely many atoms, so it is internal even at $\kappa=\omega$.
+
+For a full type, ask for a pure code $c\in t$ and an injective set function $h$ from its domain into the atoms. Require $a$ in its range, preservation of every labelled operation, and closure of its range under incoming edges. The image is connected, closed under both directions of every edge, and contains $a$, so it is exactly the component of $a$. Conversely an enumeration of the actual component has a graph with at most countably many atoms. It is internal when $\kappa>\omega$, and it is internal at $\kappa=\omega$ when the component is finite. These are external kernel checks on particular graphs, not applications of expanded Replacement.
+\end{proof}
+
+\begin{theorem}[Component-profile criterion; prior work]\label{nee:ca:thm:profile}
+For a nonempty finite tuple of atom injections,
+\[
+\mathcal N_{\kappa,\boldsymbol f}\models\Rep
+\quad\Longleftrightarrow\quad |D_\kappa(\boldsymbol f)|<\kappa
+\qquad(\kappa>\omega).
+\]
+At $\kappa=\omega$, expanded Replacement holds exactly when every component is finite and $D_\omega(\boldsymbol f)$ is finite.
+\end{theorem}
+\begin{proof}
+\emph{Necessity at an uncountable cutoff.}
+On the pure domain $\mathcal T_r$, define $F(t)$ to be the set of all atoms of type $t$ if such an internal set exists, and $\varnothing$ otherwise. By \cref{nee:ca:lem:recognition} this is a single first-order definition. Set Extensionality makes its output unique. Its external value is $B_t$ exactly when $|B_t|<\kappa$, and is empty otherwise. Replacement would collect the range of $F$ into an internal set. The union of that range is $D_\kappa(\boldsymbol f)$, so this union must have size below $\kappa$.
+
+\emph{The additional finite-cutoff obstruction.}
+Fix an atom $a$. On the pure set of finite words in the forward and backward labels, define the value to be the endpoint of the path starting at $a$, using $a$ as a default when a backward step does not exist. The endpoint is uniquely specified by a finite graph. Its range is the entire component of $a$. Expanded Replacement at $\kappa=\omega$ would make this component finite. Once every component is finite, the preceding selector argument over the pure finite types proves that $D_\omega$ is finite.
+
+\emph{Sufficiency.}
+For a set $P$ of atoms let $\operatorname{cl}(P)$ be the union of components meeting $P$. If $\kappa>\omega$ and $|P|<\kappa$, then
+\begin{equation}\label{nee:ca:eq:component-closure}
+|\operatorname{cl}(P)|\leq\max(\aleph_0,|P|)<\kappa.
+\end{equation}
+At the finite cutoff the closure of a finite $P$ is finite when every component is finite. Suppose a formula uniquely specifies $y_x$ for each $x$ in an internal domain $w$, with parameter tuple $p$. Put
+\[
+H=\operatorname{cl}(\kerat(w)\cup\kerat(p))\cup D_\kappa(\boldsymbol f).
+\]
+The relevant right-hand conditions make $H$ small. It is a union of components.
+
+If $b\in\kerat(y_x)\setminus H$, its type block has size at least $\kappa$. For an uncountable $\kappa$ this block has at least $\kappa$ components: each has at most $\aleph_0$ vertices, and a family of fewer than $\kappa$ uniformly countable sets has union smaller than $\kappa$. Fewer than $\kappa$ components meet $H\cup\kerat(y_x)$, so there is a fresh component of the same type disjoint from that set. At $\kappa=\omega$, the same conclusion holds because this particular type has a fixed finite size and its block has infinitely many copies.
+
+Interchange the component of $b$ with the fresh component by a labelled isomorphism and its inverse, fixing every other component. This is an atom permutation commuting with every $f_i$. It fixes $x,p$, and it moves $b$ outside the old kernel of $y_x$. Its lift changes the unique output, a contradiction. Therefore every output kernel is contained in $H$. External Replacement collects the outputs into a set with kernel contained in $H$, which is internal. This proves every expanded instance.
+\end{proof}
+
+\begin{remark}[Where singular cardinal arithmetic is used]
+The proof does not assert that an arbitrary union of fewer than $\kappa$ small sets is small. That assertion can fail when $\kappa$ is singular. In \eqref{nee:ca:eq:component-closure} there is a \emph{uniform countable bound} on component sizes. Later unions of whole type blocks require the stronger comparison with $\cf(\kappa)$.
+\end{remark}
+
+\begin{lemma}[From a supply of types to a sharp bound]\label{nee:ca:lem:type-threshold}
+Suppose a class of finite-signature atom structures has at most $\theta$ countable connected types, is closed under disjoint unions, and admits a fixed harmless type for unused atoms. At an uncountable cutoff, $\cf(\kappa)>\theta$ ensures universal Replacement. If $\theta$ is infinite and there are $\theta$ distinct types available independently, then every $\kappa>\omega$ with $\cf(\kappa)\leq\theta$ admits a counterexample.
+\end{lemma}
+\begin{proof}
+For the positive direction, a union of fewer than $\cf(\kappa)$ sets, each of size below $\kappa$, has size below $\kappa$. Apply this to the small type blocks.
+
+For the converse put $\delta=\cf(\kappa)$. Choose $\delta$ distinct nonreserved types $t_i$ and infinite cardinals $\lambda_i<\kappa$ with $\sum_{i<\delta}\lambda_i=\kappa$. If $\kappa$ is regular use $\delta=\kappa$ and $\lambda_i=\aleph_0$; if it is singular use a cofinal sequence of infinite cardinals below it. Give type $t_i$ exactly $\lambda_i$ copies. Its block has size $\lambda_i$ because every component is nonempty and countable. Realize their disjoint union on $\kappa$ atoms and use the reserved type on any remainder. The small blocks together contain $\kappa$ atoms. The failed instance is the type-block selector in the proof of \cref{nee:ca:thm:profile}.
+\end{proof}
+
+\section{Commuting permutations: the exact answer}\label{nee:ca:sec:commuting}
+
+Fix $r\geq1$. A tuple of $r$ commuting permutations gives an action of the free abelian group $\ZZ^r$, where the standard basis vectors act by the named permutations. The action may have a kernel; faithfulness is not required.
+
+\subsection{Orbit classification and finite subgroup descriptions}
+
+\begin{lemma}\label{nee:ca:lem:abelian-types}
+Connected structures of $r$ commuting permutations are exactly the transitive $\ZZ^r$-sets $\ZZ^r/K$ for subgroups $K\leq\ZZ^r$. Two such labelled structures are isomorphic exactly when their subgroups are equal. There are countably infinitely many types.
+\end{lemma}
+\begin{proof}
+For an atom $a$, the orbit map $u\mapsto u\cdot a$ identifies its orbit with $\ZZ^r/\Stab(a)$. In a transitive action stabilizers change by conjugation; for an abelian group they do not change at all. Hence a labelled isomorphism preserves $K$, and equal $K$ gives the evident isomorphism.
+
+Every subgroup of $\ZZ^r$ is finitely generated. Here is a proof that also records the finitary information we need. Induct on $r$. Project a subgroup $K\leq\ZZ^{r-1}\times\ZZ$ to its last coordinate. Its image is $d\ZZ$. If $d=0$, use induction in $\ZZ^{r-1}$. If $d>0$, choose $v\in K$ with last coordinate $d$. Subtracting a suitable integer multiple of $v$ from any member of $K$ leaves an element of $K\cap(\ZZ^{r-1}\times\{0\})$, which is finitely generated by induction. Those generators together with $v$ generate $K$. Thus the set of subgroups is the image of a countable set of finite integer matrices. It is infinite, as witnessed by $n\ZZ\times\ZZ^{r-1}$ for positive $n$.
+\end{proof}
+
+The proof classifies labelled actions, not merely the abstract quotient groups. Changing the basis of $\ZZ^r$ would change the interpretation of the names, and is not an allowed isomorphism here.
+
+\begin{lemma}[Stabilizers can be recognized at every cutoff]\label{nee:ca:lem:stab-definable}
+For each fixed subgroup $K\leq\ZZ^r$, the class of atoms with stabilizer exactly $K$ is parameter-free definable in the expanded language. The definition is correct even at $\kappa=\omega$.
+\end{lemma}
+\begin{proof}
+Fix a finite integer matrix generating $K$. Its entries can be built into a formula by fixed numerals, and membership in its integer span is a first-order assertion about pure integers. A vector $u\in\ZZ^r$ determines a finite word in the named permutations and their inverses. Its value on $a$ is expressed by a finite path graph, which is internal by \cref{nee:ca:lem:recognition}. The required predicate says
+\begin{equation}\label{nee:ca:eq:stabilizer-formula}
+\At(a)\ \land\
+\forall u\in\ZZ^r\,
+\bigl(u\cdot a=a\ \longleftrightarrow\ u\in K\bigr).
+\end{equation}
+This abbreviates a first-order formula using the finite matrix and finite-path definition. It quantifies over words individually; it does not first assemble an orbit or a simultaneous table of all their values. All pure integer coding is available in $\Mk$.
+\end{proof}
+
+\begin{theorem}[Commuting-permutation threshold]\label{nee:ca:thm:commuting}
+For every fixed $r\geq1$, every infinite cardinal $\kappa$, and every atom set $A$ with $|A|\geq\kappa$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item Every $r$-tuple of commuting atom permutations has a canonical expansion of $\Mk$ satisfying expanded Replacement.
+\item $\cf(\kappa)>\omega$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+If $\cf(\kappa)>\omega$, then $\kappa>\omega$. By \cref{nee:ca:lem:abelian-types} the small-type part is a countable union of sets of size below $\kappa$, so it is small. Apply \cref{nee:ca:thm:profile}.
+
+If $\kappa=\omega$, let the first permutation shift a two-sided countably infinite orbit and let all other names act identically. Replacement on finite iterates of an atom would collect an infinite atom set, so it fails.
+
+If $\kappa>\omega$ and $\cf(\kappa)=\omega$, choose infinite cardinals $\lambda_n<\kappa$ cofinal in $\kappa$. On disjoint blocks $B_n$ of size $\lambda_n$, let the first permutation consist of cycles of exact length $n+2$, and make every other permutation the identity. Fix all atoms outside these blocks. The $B_n$ are precisely the entire blocks of those cycle types. Each is internal, but $|\bigcup_n B_n|=\kappa$. The formula sending $n$ to the complete set of atoms of exact period $n+2$ is total and single-valued and has no internal range. This is the required failed instance.
+\end{proof}
+
+This proves the threshold and both boundary cases requested in ProveIt Question 10.4. An arbitrary fixed finite number of commuting permutations therefore has the countable type threshold of one permutation.
+
+\begin{writenote}[Question~10.4 answered, 4 October 2026, batch~93]
+``ProveIt Question~10.4'' is \cref{nee:q:commuting} of Part~\ref{nee:part:one}; a dated note there records the answer. The positive half (countably many types, \cref{nee:ca:lem:abelian-types}) is new; the two counterexamples are those of \cref{nee:thm:robust} for one name, padded by identity names.
+\end{writenote}
+
+\begin{corollary}[Finite group relations]\label{nee:ca:cor:finite-group}
+If the named permutations generate an action of a fixed finite group, expanded Replacement holds at every infinite cutoff. In particular this is true of finitely many commuting permutations with fixed finite orders.
+\end{corollary}
+\begin{proof}
+A finite group has finitely many subgroups and all of its orbits are finite. Hence there are finitely many types and $D_\kappa$ is a finite union of small blocks. Both clauses of the finite-cutoff criterion are satisfied as well.
+\end{proof}
+
+\begin{example}[Why a fixed order bound matters]
+One arbitrary permutation may have cycles of every finite length and destroy Replacement at $\aleph_\omega$. An involution has only fixed-point and two-cycle types, so it never does. A finite tuple of commuting involutions acts through a finite elementary abelian $2$-group and has the same unconditional preservation property.
+\end{example}
+
+\begin{writenote}[Prior in the repository at the finite cutoff, 4 October 2026, batch~93]
+At $\kappa=\omega$, \cref{nee:ca:cor:finite-group} and the example above are Corollary~58.2 of Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets} (\texttt{hset:ns:cor:finitegroup}: every action of a finite pure group preserves Replacement, in particular one permutation of finite order), and that Part's Question~65.4 (\texttt{hset:ns:q:generators}) notes that commuting involutions generate a finite group. Part~VIII was written after this manuscript's pin (Section~\ref{nee:ca:sec:provenance}); the proofs are independent. For $\kappa>\omega$ the corollary is immediate from \cref{nee:ca:thm:profile}, as the proof shows.
+\end{writenote}
+
+\begin{remark}[Sharpness persists with faithful actions]
+For uncountable-cutoff counterexamples one can require the $\ZZ^r$-action to be faithful. Reserve a countable regular $\ZZ^r$-orbit, and use the cycle construction on the remaining $\kappa$ atoms. Its stabilizer type differs from the finite-cycle types, so the bad small blocks are unchanged. At the finite cutoff a regular orbit already witnesses failure. Faithfulness therefore does not improve \cref{nee:ca:thm:commuting}.
+\end{remark}
+
+\section{Commuting injections and the role of invertibility}\label{nee:ca:sec:mixed}
+
+Fix nonnegative integers $s,t$ with $s+t>0$. Consider pairwise commuting atom maps
+\[
+p_1,\ldots,p_s,f_1,\ldots,f_t,
+\]
+where the $p_i$ must be permutations and the $f_j$ need only be injections. Thus the maps give an action of the commutative monoid $\ZZ^s\times\NN^t$ in which every acting map is injective. The classification depends on $t$, rather than on $s+t$.
+
+\subsection{One injection over a finitely generated abelian action}
+
+Let $H=\ZZ^s$ act through the $p_i$, and let $f$ be one commuting injection. The case $s=0$ is included by taking $H$ trivial.
+
+\begin{lemma}[Orbit quotient and its normal forms]\label{nee:ca:lem:mixed-normal}
+A connected structure $(C;p_1,\ldots,p_s,f)$ is determined, up to labelled isomorphism, by the following data:
+\begin{enumerate}[label=(\roman*)]
+\item a subgroup $K\leq H$;
+\item a quotient shape: a one-sided ray, a two-sided chain, or a cycle of some positive length $n$;
+\item in the cycle case, an element $v\in H/K$.
+\end{enumerate}
+In particular there are countably many possible connected types.
+\end{lemma}
+\begin{proof}
+Commutation makes $f$ equivariant for the $H$-action. It sends the orbit $H\cdot a$ onto the orbit $H\cdot f(a)$. The induced map on the set of $H$-orbits is injective: if $f(b)=h\cdot f(a)$, then $f(b)=f(h\cdot a)$, so $b=h\cdot a$.
+
+Moreover $\Stab_H(a)=\Stab_H(f(a))$. One inclusion follows from equivariance. If $h\cdot f(a)=f(a)$, injectivity of $f$ gives $h\cdot a=a$, proving the other inclusion. Stabilizers are constant along $H$-orbits because $H$ is abelian. Thus every fiber in a connected quotient component is a copy of the same $Q=H/K$.
+
+The quotient graph of $f$ is connected and has one outgoing edge and at most one incoming edge at each vertex. It is a finite cycle, a ray, or a two-sided chain. Along each edge, $f$ gives an equivariant bijection between two copies of $Q$.
+
+For a ray choose a point $a_0$ in its initial fiber and put $a_i=f^i(a_0)$. The map
+\[
+Q\times\NN\longrightarrow C,\qquad(q,i)\longmapsto q\cdot a_i
+\]
+identifies the structure with the normal form in which $H$ translates the first coordinate and $f(q,i)=(q,i+1)$. For a two-sided chain, choose a point in one fiber and use the unique inverse fiber maps to define $a_i$ for negative $i$ as well. The same formula gives $Q\times\ZZ$ with the shift in its second coordinate. These choices only prove existence of an isomorphism; no canonical internal choice is being asserted.
+
+For a quotient cycle of length $n$, choose $a_0$ and set $a_i=f^i(a_0)$ for $0\leq i<n$. There is a unique $v\in Q$ with $f^n(a_0)=v\cdot a_0$. In the resulting coordinates,
+\begin{equation}\label{nee:ca:eq:holonomy}
+f(q,i)=
+\begin{cases}
+(q,i+1),&i<n-1,\\
+(q+v,0),&i=n-1.
+\end{cases}
+\end{equation}
+Changing the chosen point in a fiber does not change $v$, since translations commute. Moving the starting fiber around the cycle also preserves the same $n$-step translation. Conversely the displayed data construct the structure and distinguish its labelled isomorphism type.
+
+There are countably many $K$ by the finite-generation argument in \cref{nee:ca:lem:abelian-types}, countably many possible $n$, and countably many cosets $v$ for each $K$. This proves countability of the type set. There are infinitely many types already among the finite cycles with all $p_i$ trivial.
+\end{proof}
+
+The element $v$ is the residual translation after one turn around the cycle, often called its holonomy. No such datum survives on a ray or a chain because the successive choices of fiber coordinates remove each edge translation without encountering a cycle.
+
+\subsection{Two noninvertible directions encode a real}
+
+We next build continuum many connected types of two commuting injections. A slightly stronger construction than is needed makes both individual maps look as simple as possible.
+
+For $S\subseteq\NN$, define an integer sequence $d_S$ on $\ZZ$ by
+\begin{equation}\label{nee:ca:eq:drops}
+d_S(m)=
+\begin{cases}
+1,&m<0,\\
+3,&m=0,\\
+1+\mathbf 1_S(m-1),&m>0.
+\end{cases}
+\end{equation}
+Let $h_S(0)=0$ and extend uniquely to all integers by
+\begin{equation}\label{nee:ca:eq:height}
+h_S(m+1)=h_S(m)-d_S(m).
+\end{equation}
+The function is strictly decreasing, tends to $+\infty$ toward the left, and tends to $-\infty$ toward the right. Set
+\begin{equation}\label{nee:ca:eq:staircase}
+U_S=\{(m,n)\in\ZZ^2:n\geq h_S(m)\},\qquad
+F(m,n)=(m+1,n),\quad G(m,n)=(m,n+1).
+\end{equation}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{figures/02-commuting-actions-staircases.pdf}
+\caption{Finite windows in two of the infinite lattice structures $U_S$. Every lattice point on or above the indicated staircase belongs to $U_S$. The two coordinate injections commute. The unique height drop of $3$ fixes an isomorphism's horizontal translation, while the successive drops of $1$ or $2$ encode the bits of $S$. Only the displayed windows are finite; the definitions and the proof concern all of $\ZZ^2$.}
+\label{nee:ca:fig:staircases}
+\end{figure}
+
+\begin{lemma}[Staircase rigidity]\label{nee:ca:lem:staircase}
+For every $S\subseteq\NN$, $F,G:U_S\to U_S$ are commuting proper injections and their joint graph is connected. The unary components of each map are all one-sided rays. As structures with the two fixed function labels,
+\[
+(U_S;F,G)\cong(U_T;F,G)\quad\Longleftrightarrow\quad S=T.
+\]
+\end{lemma}
+\begin{proof}
+Since $h_S$ is decreasing, moving one step to the right preserves the defining inequality in \eqref{nee:ca:eq:staircase}; moving one step upwards does so as well. Both maps are restrictions of coordinate translations, so they are injective and commute. The point $(m,h_S(m))$ has no $G$-predecessor. At each column the strict drop leaves points with no $F$-predecessor. Thus both maps are nonsurjective.
+
+Given two points, choose an integer pair coordinatewise above both. It belongs to $U_S$ and is reached from each point by positive horizontal and vertical steps. This proves connectedness of the underlying undirected graph.
+
+Each fixed column is a vertical ray. For a fixed height $n$, strict monotonicity and the two limits of $h_S$ imply that
+\[
+\{m\in\ZZ:n\geq h_S(m)\}=\{m\in\ZZ:m\geq m_n\}
+\]
+for one integer $m_n$. Hence every horizontal component is a ray too.
+
+Suppose $\phi:U_S\to U_T$ is a labelled isomorphism. Preservation of each edge gives
+\[
+\phi(z+e_i)-(z+e_i)=\phi(z)-z\qquad(i=1,2)
+\]
+whenever the edge occurs. Connectedness makes the displacement constant. Thus $\phi(z)=z+(a,b)$ for some integers $a,b$, and surjectivity implies
+\[
+h_T(m+a)=h_S(m)+b\qquad(m\in\ZZ).
+\]
+Taking consecutive differences gives $d_T(m+a)=d_S(m)$. The drop $3$ occurs exactly at $m=0$ for every code, forcing $a=0$. The normalization $h_S(0)=h_T(0)=0$ forces $b=0$. Finally the drops for $m>0$ recover every bit of $S$, so $S=T$. Equality of the codes gives the identity isomorphism in the other direction.
+\end{proof}
+
+This is a classification of labelled graphs. Swapping the two operation names is not permitted. It is also a statement about countably infinite structures: any fixed finite window sees only finitely many bits, which is why the verification program is explicitly described as a finite check rather than a proof of the continuum claim.
+
+\begin{theorem}[Complete mixed-signature threshold]\label{nee:ca:thm:mixed}
+Let $s,t\geq0$ with $s+t>0$. For every infinite $\kappa$ and every $A$ with $|A|\geq\kappa$, universal preservation of expanded Replacement for pairwise commuting $s$ permutations and $t$ additional injections is equivalent to
+\begin{equation}\label{nee:ca:eq:mixed-threshold}
+\begin{cases}
+\cf(\kappa)>\omega,&t\leq1,\\
+\cf(\kappa)>\cont,&t\geq2.
+\end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+When $t=0$, apply \cref{nee:ca:thm:commuting}. When $t=1$, \cref{nee:ca:lem:mixed-normal} gives countably many types. The positive bound follows from \cref{nee:ca:thm:profile}. At uncountable countable-cofinality cutoffs, the distinct-cycle construction remains available because an injection name is allowed to act bijectively. At $\kappa=\omega$, a shift or a ray gives an infinite component. This proves sharpness for $t=1$.
+
+When $t\geq2$, there are at most $\cont$ countable structures in the fixed finite language. This proves the positive bound. By \cref{nee:ca:lem:staircase} there are already $\cont$ distinct connected types for two commuting injections. The block construction of \cref{nee:ca:lem:type-threshold}, with every other name the identity, gives failure at each uncountable cutoff with $\cf(\kappa)\leq\cont$. At the finite cutoff one ray suffices, or one may use a single staircase component. This proves the remaining boundary case.
+\end{proof}
+
+\subsection{Individually preserving maps with a joint failure}
+
+\begin{theorem}[Two commuting proper lifts with incompatible joint Replacement]\label{nee:ca:thm:joint-failure}
+Suppose $\kappa>\omega$, $|A|\geq\kappa$, and $\cf(\kappa)\leq\cont$. There are commuting proper injections $f,g:A\to A$ such that:
+\begin{enumerate}[label=(\roman*)]
+\item each of $j_f,j_g$ is an amenable elementary self-embedding of the base model;
+\item each one-symbol expansion satisfies full expanded Replacement;
+\item the expansion naming both maps fails expanded Replacement;
+\item the fixed objects of either lift are exactly the pure objects.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Reserve one staircase code first. Put $\delta=\cf(\kappa)$ and choose distinct codes $S_i$ for $i<\delta$ from the remaining $\cont$ codes, together with infinite $\lambda_i<\kappa$ whose cardinal sum is $\kappa$. Partition $\kappa$ atoms into $\lambda_i$ copies of $U_{S_i}$ for each $i$. If $|A|=\kappa$, use all of $A$ for these blocks. If $|A|>\kappa$, partition the remaining atoms into copies of the reserved staircase. This is possible because every staircase is countably infinite and the remainder can have cardinality $|A|$.
+
+Let $f,g$ be the coordinate injections on each copy. They commute and are both proper. Every unary component of either map is a ray. Thus, for each unary reduct, its sole nonempty type block is $A$, of size at least $\kappa$, and its small-type part is empty. The uncountable-cutoff profile criterion proves (ii). For the two-symbol structure, the block associated with $S_i$ has size $\lambda_i<\kappa$, and their union has size $\kappa$. The same criterion proves (iii). Part (i) is \cref{nee:ca:prop:lifts}.
+
+For (iv), each unary atom map is a disjoint union of rays. There is no nonempty subset $K\subseteq A$ with $f[K]=K$: an atom in such a set would have predecessors of all finite lengths in its ray, contradicting its finite distance from the root. If $j_f(x)=x$, \eqref{nee:ca:eq:lift-kernel} gives $f[\kerat(x)]=\kerat(x)$, so $\kerat(x)=\varnothing$. Conversely every pure object is fixed. The argument for $g$ is identical.
+\end{proof}
+
+The hypotheses concern a fixed action as well as a universal bound. At a cutoff such as $\aleph_\omega$, some single maps already fail Replacement, but the particular two maps in \cref{nee:ca:thm:joint-failure} do not. Their joint geometry creates the failure. At $\aleph_1$, the example works in every ambient universe with Choice, since $\aleph_1\leq\cont$.
+
+\section{The exact atom kernel of definable closure}\label{nee:ca:sec:dcl}
+
+The profile proof gives a uniform bound for unique outputs. For commuting permutations this bound is exact in a strong sense, and the result remains valid when $\kappa=\omega$.
+
+\subsection{What is being measured}
+
+Fix commuting permutations $\boldsymbol p=(p_1,\ldots,p_r)$, let $G=\ZZ^r$, and let $\bar a$ be a finite tuple of internal parameters. Put
+\[
+P=\bigcup_i\kerat(a_i),\qquad
+G\cdot P=\{g\cdot b:g\in G,\ b\in P\},\qquad
+H(\bar a)=G\cdot P\cup D_\kappa(\boldsymbol p).
+\]
+We use the notation
+\[
+\mathcal K(\dcl(\bar a))
+=\bigcup\{\kerat(y):y\text{ is uniquely definable from }\bar a\}
+\]
+only in the scheme sense of \cref{nee:ca:rem:semantics}. An equality with $H(\bar a)$ abbreviates two assertions: every fixed uniquely defining formula has its output kernel contained in $H(\bar a)$, and every atom of $H(\bar a)$ occurs in an explicitly exhibited definable object's kernel. No uniform satisfaction predicate is assumed.
+
+An atom occurring in a definable set need not itself be definable. For example, a unique two-element atom block can be definable even though its two atoms are interchanged by an automorphism. The object under study is the kernel of definable objects, not just the atom-valued part of ordinary definable closure.
+
+\begin{theorem}[Exact definable-kernel formula]\label{nee:ca:thm:dcl}
+For every infinite $\kappa$, every finite tuple of commuting atom permutations, and every finite tuple $\bar a$ of internal parameters,
+\begin{equation}\label{nee:ca:eq:dcl-exact}
+\mathcal K(\dcl(\bar a))
+=G\cdot\bigcup_i\kerat(a_i)\ \cup\ D_\kappa(\boldsymbol p).
+\end{equation}
+Allowing additional pure parameters does not enlarge this atom kernel.
+\end{theorem}
+\begin{proof}
+\emph{Every atom on the right occurs in a definable object.}
+For a fixed group word $g$, the object $j_g(a_i)$ is definable from $a_i$. Negative letters are expressed by the unique inverse of the corresponding permutation lift. Its kernel is $g[\kerat(a_i)]$. This exhibits every atom of $G\cdot P$ without requiring the entire saturation to be an internal set.
+
+For $K\leq G$, the block
+\[
+B_K=\{b\in A:\Stab_G(b)=K\}
+\]
+is parameter-free definable as a class by \cref{nee:ca:lem:stab-definable}. Whenever $|B_K|<\kappa$, it is an internal set uniquely specified by
+\[
+\Set(y)\ \land\ \forall b\,
+\bigl(b\in y\longleftrightarrow\At(b)\land\Stab_G(b)=K\bigr).
+\]
+The explicit set condition matters when the block is empty: it excludes atoms, which also have no members. Thus every atom of every small block occurs in a parameter-free definable object's kernel, proving the lower inclusion.
+
+\emph{No uniquely defined object introduces an atom outside the right side.}
+Suppose $y$ is uniquely defined from $\bar a$ and
+$b\in\kerat(y)\setminus H(\bar a)$. Its orbit $C$ is disjoint from $P$, and its entire type block is not small.
+
+If $\kappa>\omega$, the saturation $G\cdot P$ has size below $\kappa$. The large block of $b$ contains at least $\kappa$ countable components, so one can interchange $C$ with an isomorphic component avoiding $G\cdot P\cup\kerat(y)$. This atom permutation commutes with all the names, fixes $\bar a$, and sends $b$ outside the old kernel of $y$. Its lift contradicts uniqueness. In this argument one does \emph{not} protect all of $D_\kappa$ pointwise: it may be large, and it is unnecessary to protect it.
+
+Suppose instead that $\kappa=\omega$, so $P$ and $\kerat(y)$ are finite. If $C$ is infinite, its transitive abelian action is $G/K$. Translation by an element of $G/K$ commutes with the entire named action and can send $b$ to any prescribed point of $C$. Choose a point outside the finite set $\kerat(y)$, translate on $C$, and act identically on every other component. This fixes $\bar a$ and changes $y$, again a contradiction.
+
+If $C$ is finite, its type block must be infinite because $b\notin D_\omega$. Infinitely many copies of its fixed finite type are available. Swap $C$ with a copy avoiding the finitely many components meeting $P$ or $\kerat(y)$. This supplies the same contradiction.
+
+Every atom permutation used above fixes all pure objects. Therefore arbitrary additional pure parameters leave the upper bound unchanged, and the lower inclusion already needed none. This proves the final assertion.
+\end{proof}
+
+\begin{writenote}[Question~10.1 for commuting permutations, 4 October 2026, batch~93]
+For commuting permutations the component closure $\operatorname{cl}_{\boldsymbol p}(P)$ of \eqref{nee:eq:H} is the orbit saturation $G\cdot P$, so \cref{nee:ca:thm:dcl} says that the bound of Part~\ref{nee:part:one}'s Question~10.1 (\cref{nee:q:dcl}), component closure plus $D_\kappa$, is exactly the atom kernel of definable closure, at every cutoff. A dated note after \cref{nee:q:dcl} records this and what stays open.
+\end{writenote}
+
+\begin{corollary}[A single definable bound when the hull is small]\label{nee:ca:cor:single-hull}
+The class $H(\bar a)$ has a first-order definition from $\bar a$. If $|H(\bar a)|<\kappa$, it is itself one internal definable set of atoms, containing the kernels of all objects definable from $\bar a$.
+
+For $\kappa>\omega$, expanded Replacement holds exactly when the parameter-free definable kernel is smaller than $\kappa$.
+\end{corollary}
+\begin{proof}
+The first term of $H(\bar a)$ is defined by finite-word reachability from the atom kernels of the parameters. To define $D_\kappa$ uniformly, let a finite integer matrix code a subgroup of $G$, and ask whether there is an internal set containing exactly the atoms with that stabilizer. An atom belongs to $D_\kappa$ exactly when it belongs to one of these complete internal blocks. This quantifies over matrices as pure sets and over the individual block witnesses; it does not assume that all witnesses have already been collected. If the resulting class has size below $\kappa$, its external extension is an internal set and is uniquely defined by this formula.
+
+With no parameters, \cref{nee:ca:thm:dcl} gives precisely $D_\kappa$. The uncountable-cutoff equivalence is now \cref{nee:ca:thm:profile}. For a nonempty parameter tuple, the orbit saturation of its kernel is always small at an uncountable cutoff, so Replacement also makes its full hull small.
+\end{proof}
+
+At the finite cutoff the last equivalence requires an additional clause. A single regular infinite $\ZZ^r$-orbit has empty $D_\omega$ and no parameter-free definable atom kernel, yet Replacement fails once an atom is admitted as a parameter and all its iterates are collected. The orbit-finiteness condition in \cref{nee:ca:thm:profile} is therefore indispensable.
+
+\begin{example}[Definable kernels can be large without a collecting set]
+In the countable-cofinality cycle example, each $B_n$ is parameter-free definable. Their union has size $\kappa$ and cannot be an internal set. Formula \eqref{nee:ca:eq:dcl-exact} records exactly this external kernel, while making no assertion that the model contains a set of all parameter-free definable objects. The failed Replacement instance is what would otherwise perform the forbidden collection.
+\end{example}
+
+\begin{example}[Why injections require a correction at $\omega$]\label{nee:ca:ex:ray-dcl}
+Let $A$ be a single countably infinite ray and let one injection be its successor map. At $\kappa=\omega$, its entire ray block is infinite, so $D_\omega=\varnothing$. Nevertheless the root is the unique atom without a predecessor and is parameter-free definable. Every finite successor of the root is then definable. Thus the parameter-free definable kernel is all of $A$. This disproves the unchanged version of \eqref{nee:ca:eq:dcl-exact} for injections and explains the permutation hypothesis in the theorem.
+\end{example}
+
+\section{A group-theoretic threshold for named automorphisms}
+\label{nee:ca:grp:section}
+
+Commutation is one possible relation among named automorphisms.  A fixed
+finitely generated group provides a common framework for arbitrary such
+relations.  Let $G=\langle s_1,\ldots,s_r\rangle$ and let
+$\rho:G\to\operatorname{Sym}(A)$ be an external action.  Name the canonical
+lifts of $\rho(s_1),\ldots,\rho(s_r)$ in $\Mk$.  Relations in $G$ hold for
+these lifts because canonical lifting respects composition.  Neither
+faithfulness of the action nor finite presentation of $G$ is assumed.
+
+Write
+\begin{equation}\label{nee:ca:grp:eq:tau}
+ \tau(G)=\bigl|\{H:H\leq G\}/\text{conjugacy}\bigr|.
+\end{equation}
+This counts conjugacy classes of subgroups, rather than conjugacy classes
+of elements.  It measures how many different transitive atom components
+the named action can distinguish.
+
+\begin{lemma}[Transitive component types]\label{nee:ca:grp:types}
+The possible connected-component types for the named generators of $G$
+are exactly the transitive $G$-sets $G/H$, with $H$ taken up to conjugacy.
+\end{lemma}
+\begin{proof}
+The component containing $a$ is its orbit $Ga$.  If
+$H=\{g\in G:ga=a\}$, the map $gH\mapsto ga$ is an equivariant bijection
+$G/H\to Ga$.  Changing the basepoint conjugates its stabilizer.
+Conversely, an equivariant bijection $G/H\to G/K$ taking $H$ to $gK$
+identifies stabilizers and therefore gives $H=gKg^{-1}$.  A bijection
+preserving the named generators preserves their inverses and every word
+in them, so it is exactly a $G$-equivariant bijection.
+\end{proof}
+
+Because $G$ is finitely generated, it is countable.  All its transitive
+components are consequently finite or countably infinite.  There is no
+definability assumption hidden in the use of subgroup types.  The pure set
+of codes for connected structures in the finite generator language, with
+domain a positive finite ordinal or $\NN$, exists in $\Mk$, as does its
+quotient by isomorphism.  One can restrict that pure set to the codes
+satisfying the relations of $G$.  The group, its multiplication table, and
+a choice of words representing its elements are pure set parameters if
+needed.
+
+For $\kappa>\omega$, a component code is recognized at an atom by an
+internal enumeration graph preserving every generator, whose image
+contains that atom and is closed under incoming and outgoing labelled
+edges.  Such a graph has at most countably many atoms in its kernel.
+Finite components have finite enumeration graphs even when $\kappa=\omega$.
+Thus the type-block formula underlying Theorem~\ref{nee:ca:thm:profile} applies
+without using expanded Replacement to construct its witnesses.  This
+point matters: simply counting abstract subgroup types would not, by
+itself, supply an internal failed instance of an axiom scheme.
+
+\begin{theorem}[Exact group robustness threshold]\label{nee:ca:grp:robust}
+Let $G$ be a finitely generated group, with a fixed finite generating
+tuple.  Every action of $G$ on $A$ preserves Replacement after the canonical
+lifts of those generators are named if and only if
+\begin{equation}\label{nee:ca:grp:eq:robust}
+ \begin{cases}
+ G\text{ is finite},&\kappa=\omega,\\[2pt]
+ \cf(\kappa)>\tau(G),&\kappa>\omega.
+ \end{cases}
+\end{equation}
+In particular, the answer is independent of the finite generating tuple.
+\end{theorem}
+\begin{proof}
+Suppose first $\kappa>\omega$ and $\cf(\kappa)>\tau(G)$.  An action has at
+most $\tau(G)$ type blocks.  The union of its blocks of cardinality below
+$\kappa$ therefore has cardinality below $\kappa$, so
+Theorem~\ref{nee:ca:thm:profile} proves preservation.
+
+For the converse put $\delta=\cf(\kappa)$ and assume
+$\delta\leq\tau(G)$.  Choose pairwise nonconjugate subgroups $H_i$ for
+$i<\delta$, omitting $G$ itself.  Omitting one type does not reduce the
+available infinite cardinality.  Choose infinite cardinals
+$\lambda_i<\kappa$ with
+\[
+ \sum_{i<\delta}\lambda_i=\kappa.
+\]
+For regular $\kappa$, take $\delta=\kappa$ and every
+$\lambda_i=\aleph_0$; for singular $\kappa$, take a cofinal family of
+infinite cardinals below $\kappa$.
+
+On a subset of $A$ of cardinality $\kappa$, place $\lambda_i$ disjoint
+copies of $G/H_i$ for each $i<\delta$.  Fix the remaining atoms.  The
+selected type block $B_i$ has size $\lambda_i$, since each $G/H_i$ is
+nonempty and countable, and the selected blocks together have size
+$\kappa$.  The remainder has trivial type and cannot enlarge any $B_i$.
+Thus the small-type union violates the criterion in
+Theorem~\ref{nee:ca:thm:profile}.
+
+Explicitly, a pure sequence of the selected type codes is an internal
+parameter.  The formula sending $i$ to the set of all atoms having the
+$i$th type has a unique internal value $B_i$ for every $i<\delta$.
+Replacement for this function would produce a range set whose kernel
+contains their union of size $\kappa$.  This is the required failed
+instance, on the pure internal domain $\delta$.
+
+At $\kappa=\omega$, a finite group has only finitely many transitive
+types, all finite.  Its union of finite type blocks is finite, so the
+finite-cutoff clause of Theorem~\ref{nee:ca:thm:profile} applies.  If $G$ is
+infinite, place one regular $G$-orbit on a countable atom subset and fix
+the remainder.  From an atom in that orbit, endpoints of finite words in
+the generators and inverses are uniquely definable.  Every finite path
+graph exists internally.  Replacement on the pure set of words would
+collect the entire infinite orbit into an internal atom set, impossible
+at the finite-kernel cutoff.
+\end{proof}
+
+\begin{writenote}[The finite cutoff in the repository, 4 October 2026, batch~93]
+The clause for $\kappa=\omega$ also follows from Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets}, written after this manuscript's pin: by its Proposition~62.1 (\texttt{hset:ns:prop:finitewords}) the generator names define the uniform action, and its Theorem~58.1 (\texttt{hset:ns:thm:full}) then requires finite orbits and a finite exceptional set, which every action has exactly when $G$ is finite. The clause for $\kappa>\omega$, the threshold $\cf(\kappa)>\tau(G)$, is new here.
+\end{writenote}
+
+\subsection{The three possible type counts}
+
+\begin{proposition}[Cardinality trichotomy]\label{nee:ca:grp:spectrum}
+For a countable group $G$, the cardinal $\tau(G)$ is finite,
+$\aleph_0$, or $\cont$.
+\end{proposition}
+\begin{proof}
+Represent a subgroup by its characteristic function in $2^G$.  The
+subgroup conditions are closed: failure to contain the identity or to
+be closed under products and inverses has a finite witness.  Thus the
+space of subgroups is a closed subspace of the compact metrizable space
+$2^G$.  If uncountable, it has a nonempty perfect subset and therefore
+cardinality $\cont$.  For clarity, the perfect-set step follows by
+repeatedly splitting basic clopen neighborhoods around distinct
+condensation points; the resulting binary tree embeds $2^{\NN}$.
+Only countably many points can fail to be condensation points, since
+the space has a countable base.  Every conjugacy class of subgroups is
+countable, being an orbit of $G$.  Consequently an uncountable subgroup
+space has $\cont$ conjugacy classes as well.  The remaining possibilities
+are finite or countably infinite.
+\end{proof}
+
+For an infinite finitely generated abelian group the count is
+$\aleph_0$: every subgroup is finitely generated, so a countable collection
+of finite tuples lists them, and infinitely many finite-index subgroups
+give distinct types.  The same upper-bound argument applies whenever
+every subgroup of a countable group is finitely generated.  At the other
+extreme, the free group $F(a,b)$ has $\cont$ types.  The elements
+$a^n b a^{-n}$, $n\in\ZZ$, freely generate a subgroup with a countable
+free basis.  Indeed, after combining adjacent equal basis indices, expansion of a nonempty
+reduced word leaves nonzero powers of $a$ between consecutive nonzero powers of $b$,
+so it cannot reduce to the identity.  Distinct subsets of this basis
+generate distinct subgroups, giving $\cont$ subgroups; quotienting by
+the countable conjugacy classes preserves that cardinality.
+
+\begin{remark}[Infinite groups with finitely many types]\label{nee:ca:grp:exception}
+The finite alternative cannot be identified with finiteness of $G$.
+Smith records finitely generated infinite simple groups constructed by
+Ivanov and Ol'shanskii in which all proper nontrivial subgroups are
+conjugate~\cite[p.~69]{Smith1995}.  Such a group has $\tau(G)=3$.
+We use this published existence statement and do not reproduce that
+construction.  Theorem~\ref{nee:ca:grp:robust} then says that every named
+generator action preserves Replacement at every uncountable cutoff,
+while a regular orbit still defeats it at $\kappa=\omega$.  This is why
+the finite-cutoff clause must be stated separately.
+\end{remark}
+
+\begin{writenote}[An imported existence theorem, 4 October 2026, batch~93]
+This remark is not proved here: it imports the existence of a finitely generated infinite group all of whose proper nontrivial subgroups are conjugate, a construction of Ivanov and Ol'shanskii~\cite{IO1991} that the manuscript read only through Smith~\cite{Smith1995}. At the write, the first page of~\cite{Smith1995}, freely visible on the publisher's site, was checked: it attributes to Ivanov and Ol'shanskii finitely generated infinite simple groups with all proper nontrivial subgroups conjugate. The primary source (paywalled) was not consulted, by the manuscript or at the write. Given the existence statement, $\tau(G)=3$ is immediate: the classes are $\{1\}$, $G$, and the single class of proper nontrivial subgroups, which is nonempty because an infinite simple group is not cyclic. What depends on the import is only the claim that the two clauses of \cref{nee:ca:grp:robust} genuinely differ, that is, that an infinite finitely generated group can have finite $\tau(G)$; \cref{nee:ca:grp:robust} and \cref{nee:ca:grp:spectrum} are proved without it. \Cref{nee:ca:q:primary} records the missing primary check.
+\end{writenote}
+
+The topology of subgroup spaces has a much deeper established theory,
+including a complete analysis for countable abelian groups in
+\cite{CGP2010}. Only the elementary cardinality fact above is needed here.
+
+These results translate group structure into preservation properties of
+a set-theoretic scheme.  They do not classify groups with countably many
+subgroups or claim to solve the existing classification problems about
+subgroup spaces.  Their role is to identify exactly which invariant of
+a fixed finitely generated action controls this family of kernel models.
+
+\section{Uniformly evaluating an infinite family of automorphisms}
+\label{nee:ca:uni:section}
+
+There are two different ways to name an action of a countable group.
+In the first, the language has a separate unary symbol $J_g$ for each
+$g\in G$.  Every first-order formula still contains only finitely many
+of these symbols.  In the second, one binary symbol $E$ uniformly
+evaluates the action:
+\begin{equation}\label{nee:ca:uni:eq:evaluation}
+ E(g,x)=j_{\rho(g)}(x)\qquad(g\in G).
+\end{equation}
+Set $E(g,x)=x$ when $g\notin G$ to make it total, and allow the pure set
+$G$ as an internal parameter.  Now a single formula can quantify over
+all $g\in G$.  Although the individual maps in the two descriptions
+are identical, their Replacement schemes need not agree.
+
+\begin{proposition}[Separate names for a locally finite group]
+\label{nee:ca:uni:separate}
+If $G$ is locally finite, every action of $G$ preserves Replacement in
+the language of separate unary names at every infinite cutoff.
+For countable $G$, the converse holds for universal preservation at
+$\kappa=\omega$.
+\end{proposition}
+\begin{proof}
+A formula uses finitely many names.  They generate a finite subgroup
+when $G$ is locally finite, so Theorem~\ref{nee:ca:grp:robust} applies to that
+formula.  Conversely, if a finite subset generates an infinite subgroup
+$K$, a regular $G$-orbit on countably many atoms restricts to an infinite
+$K$-orbit.  The finite-word endpoint instance using those finitely many
+names fails at $\kappa=\omega$.
+\end{proof}
+
+\begin{proposition}[Uniform group profile]\label{nee:ca:uni:profile}
+For a countable group acting with a uniform evaluation name, the
+component-profile criterion of Theorem~\ref{nee:ca:thm:profile} holds with
+components equal to full $G$-orbits and types equal to conjugacy classes
+of stabilizers.  Consequently the universal robustness criterion
+\eqref{nee:ca:grp:eq:robust} holds for every countable group in this language,
+without a finite-generation assumption.
+\end{proposition}
+\begin{proof}
+Use pure codes for actions of the pure set $G$ on a positive finite
+ordinal or $\NN$.  An internal enumeration graph $h$ recognizes a
+component by requiring
+$h(g\cdot d)=E(g,h(d))$ for every $g\in G$ and every code element $d$.
+Transitivity of the code and inclusion of the chosen atom identify
+the image with its whole orbit.  This is one formula precisely because
+evaluation is uniform.  The graph is internal at uncountable cutoffs,
+and for finite orbits at the finite cutoff.
+
+The necessity argument therefore collects the small type blocks just
+as before.  At $\kappa=\omega$, the uniformly defined function
+$g\mapsto E(g,a)$ first forces every orbit to be finite.  For
+sufficiency, saturate the kernels of the input set and parameters
+under $G$, and adjoin the small-type part.  This protected union has
+size below $\kappa$: countable saturation preserves that bound when
+$\kappa>\omega$, while saturation of finitely many atoms is finite
+when all orbits are finite.  A fresh equivariant component swap fixes
+the protected union and changes any purported unique output using an
+atom outside it.  Its lift preserves $E$, so uniqueness confines all
+output kernels to the protected union.  External Replacement then
+produces an internal range.  Finally the sharp type-block construction
+in Theorem~\ref{nee:ca:grp:robust} uses only countability of $G$ and applies
+unchanged.
+\end{proof}
+
+\begin{writenote}[Prior in the repository at the finite cutoff, 4 October 2026, batch~93]
+At $\kappa=\omega$ both propositions are in Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets}, written after this manuscript's pin: \cref{nee:ca:uni:separate} is its finite-symbol principle, Proposition~62.2 (\texttt{hset:ns:prop:language}), together with Corollary~58.2 (\texttt{hset:ns:cor:finitegroup}); \cref{nee:ca:uni:profile} is its Theorem~58.1 (\texttt{hset:ns:thm:full}), stated there for a uniformly named action of an arbitrary pure set-sized group, its exceptional set $X_{\mathsf{Act}}$ being $D_\omega$ once all orbits are finite. The proofs are independent. For $\kappa>\omega$ both propositions are new here; \cref{nee:ca:uni:profile} answers in part that Part's Question~65.2 (\texttt{hset:ns:q:kernelbounds}), whose dated note lists ``actions of arbitrary pure groups at uncountable $\kappa$'' as open: for countable groups and full Replacement the criterion is the profile criterion with full orbits, and the universal threshold is $\cf(\kappa)>\tau(G)$. Uncountable groups and the bounded levels $\lambda<\kappa$ of that question remain open.
+\end{writenote}
+
+\subsection{A separation using only two-atom orbits}
+
+Take
+\[
+ G=\bigoplus_{n<\omega}C_2,
+\]
+coded as the pure set of finite subsets of $\NN$ with symmetric
+difference.  This group is locally finite.  For each nonempty
+$S\subseteq\NN$, its nonzero character
+\begin{equation}\label{nee:ca:uni:eq:character}
+ \chi_S(F)=|F\cap S|\pmod2
+\end{equation}
+defines a transitive action on $\{0,1\}$ by
+$F\cdot\varepsilon=\varepsilon+\chi_S(F)\pmod2$.
+Distinct characters have distinct kernels: an index-two subgroup has
+a unique nonzero quotient character to $C_2$.  Because $G$ is abelian,
+these kernels are never identified by conjugacy.  There are therefore
+$\cont$ different two-point transitive types.
+
+\begin{theorem}[An amenable uniform name can change Replacement]
+\label{nee:ca:uni:two_point}
+For every infinite $\kappa$ with $\cf(\kappa)\leq\cont$, there is an
+action of $G=\bigoplus_{n<\omega}C_2$ on $A$, all of whose orbits have
+size at most two, such that:
+\begin{enumerate}
+\item naming every individual lift separately preserves Replacement;
+\item naming the uniform evaluation function $E$ violates Replacement;
+\item $E$ is amenable: its restriction graph on every internal set of
+input pairs belongs to $\Mk$.
+\end{enumerate}
+For $\cf(\kappa)>\cont$, every uniformly named action of this group
+preserves Replacement.
+\end{theorem}
+\begin{proof}
+At $\kappa>\omega$, let $\delta=\cf(\kappa)$ and choose distinct
+nonempty codes $S_i$, $i<\delta$.  Choose small infinite multiplicities
+$\lambda_i$ with sum $\kappa$.  Put $\lambda_i$ copies of the two-point
+action of $\chi_{S_i}$ in a block $B_i$, and fix the remaining atoms.
+Then $|B_i|=\lambda_i<\kappa$, whereas the union of the $B_i$ has size
+$\kappa$.  At $\kappa=\omega$, take one copy of each of countably many
+distinct nonzero characters; each $B_i$ then has size two.
+
+In the uniform language the formula
+\begin{equation}\label{nee:ca:uni:eq:recognition}
+ \At(a)\ \wedge\ \forall g\in G\,
+ \bigl(E(g,a)=a\ \longleftrightarrow\ \chi_S(g)=0\bigr)
+\end{equation}
+recognizes the type of $\chi_S$.  Its arithmetic character computation
+is pure and uniformly definable.  A pure sequence of the selected
+$S_i$ therefore defines the unique internal block $B_i$ from $i$.
+Any Replacement range for these values would have a kernel reaching
+the cutoff.  This proves failure even though no orbit is infinite.
+Preservation for the separate-name expansion follows from
+Proposition~\ref{nee:ca:uni:separate}.
+
+For amenability, let $w$ be an internal set of input pairs and put
+$P=\kerat(w)$.  The kernel of any value $E(g,x)$ appearing on $w$ is
+contained in the saturation $GP$.  Since every orbit has at most two
+atoms, $|GP|\leq2|P|<\kappa$, with the evident finite interpretation.
+The externally constructed restriction graph has kernel contained in
+$GP$ and is therefore internal.  Finally $\tau(G)=\cont$ by the
+two-point types and the general continuum upper bound, so
+Proposition~\ref{nee:ca:uni:profile} gives the asserted positive threshold.
+\end{proof}
+
+The witness here does more than expose an unavailable infinite orbit.
+All individual named maps are commuting involutions, every full orbit
+has at most two atoms, and the uniform evaluation class is itself
+amenable.  The failed instance uses the ability of one formula to test
+all group indices and distinguish their stabilizers.  Replacing
+infinitely many separate names by a uniform evaluator is thus a
+substantive change to an axiom scheme.
+
+\begin{writenote}[Relation to Part~VIII of the surreal report, 4 October 2026, batch~93]
+Theorem~62.3 of Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets} (\texttt{hset:ns:thm:evaluator}), written after this manuscript's pin, makes the same separation for the same group at $\kappa=\omega$: countably many separately named involutions keep Replacement, and one uniform evaluator $T(i,a,b)$ destroys it. Its witness is the regular action of $\bigoplus_\omega C_2$ on atoms labelled by the group, whose orbit is infinite; the evaluator with one atom parameter then collects infinitely many single atoms, so already $\mathsf R_1$ (Replacement for outputs with at most one atom) fails. \Cref{nee:ca:uni:two_point} differs in four ways: every orbit has at most two atoms, so the failure comes from distinguishing stabilizers rather than from an infinite orbit; it holds at every $\kappa$ with $\cf(\kappa)\leq\cont$, not only at $\omega$; the evaluator is amenable; and the converse for $\cf(\kappa)>\cont$ is included. At $\kappa=\omega$ the two witnesses are also separated by the graded levels of that Part: for the witness above, every orbit is finite, and at most one atom (a fixed atom, when it is the only fixed one) has an orbit of size at most one under the centralizer of the action, because the transposition of a two-atom orbit commutes with the action; so by its Theorem~59.1 (\texttt{hset:ns:thm:graded}; its language is interdefinable with the evaluator $E$ by its Proposition~62.4) $\mathsf R_1$ holds, while $\mathsf R_2$ fails, since each of the infinitely many two-atom orbits is the only orbit of its type and so has centralizer orbits of size two. This last observation is the write's, by that theorem, and is not in either manuscript.
+\end{writenote}
+
+\begin{proposition}[Uniform evaluation for a finitely generated group]
+\label{nee:ca:uni:fg}
+If $G$ is finitely generated, its uniform evaluation function is definable
+from the finitely many generator names and a pure parameter.  Adjoining
+that evaluator therefore does not change whether Replacement holds.
+\end{proposition}
+\begin{proof}
+Choose a pure function assigning to every $g\in G$ a finite word in the
+generators and their inverses representing $g$.  To define $E(g,x)$,
+ask for the endpoint of a finite path starting at $x$ and following
+that word.  A positive letter applies its named lift; a negative
+letter requires the named lift of the next value to equal the previous
+value.  These steps are unique because the lifts are automorphisms.
+
+Every such finite path graph exists internally.  Its finitely many
+values have kernels which are images of $\kerat(x)$ under group elements,
+so their union has size below $\kappa$, even when $\kappa$ is singular
+or equals $\omega$.  The defining formula thus uses only the finite
+generator language and the pure word-selector parameter; it assumes
+no expanded Replacement.  Substituting this definition into an
+evaluation-language Replacement instance translates it to an instance
+in the generator language.  Conversely each generator is an evaluation
+at one fixed pure group element.
+\end{proof}
+
+This proposition specifies the boundary of the preceding counterexample.
+The issue is not merely that an index variable occurs in the notation.
+For finitely generated actions a finite path can evaluate every index
+using fixed named operations, and its existence is already guaranteed
+by the kernel bound.  For $\bigoplus_{n<\omega}C_2$, no finite family of
+group elements generates the full action; a formula in separate names
+has access only to a finite subgroup, while the uniform predicate
+\eqref{nee:ca:uni:eq:recognition} compares all its indices at once.
+
+\begin{writenote}[Added 4 October 2026, batch~93]
+At $\kappa=\omega$, \cref{nee:ca:uni:fg} is Proposition~62.1 of Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets} (\texttt{hset:ns:prop:finitewords}), stated there for the words of a pure free group on finitely many named permutations and written after this manuscript's pin; here it holds at every cutoff.
+\end{writenote}
+
+\subsection{Finite orbits and the profinite completion}
+
+There is an exact version of this phenomenon for any countable group.
+Define
+\[
+ \tau_{\mathrm{fin}}(G)=
+ \bigl|\{H\leq G:[G:H]<\omega\}/\text{conjugacy}\bigr|.
+\]
+
+\begin{corollary}[Universal preservation for finite-orbit actions]
+\label{nee:ca:uni:finite_orbit}
+Restrict to actions of a countable group $G$ whose every orbit is
+finite, and name their uniform evaluation function.  Every such action
+preserves Replacement exactly under the conditions
+\[
+ \begin{cases}
+ \tau_{\mathrm{fin}}(G)\text{ is finite},&\kappa=\omega,\\
+ \cf(\kappa)>\tau_{\mathrm{fin}}(G),&\kappa>\omega.
+ \end{cases}
+\]
+At the finite cutoff the condition is equivalent to finiteness of the
+profinite completion $\widehat G$.
+\end{corollary}
+\begin{proof}
+The uniform profile proof now uses only finite transitive types.
+At uncountable cutoffs its upper bound and sharp block construction
+apply with $\tau_{\mathrm{fin}}(G)$.  At the finite cutoff, finitely many
+types give a finite union of finite blocks.  Infinitely many types
+allow one copy of each of countably many distinct nontrivial types,
+whose finite blocks have infinite union.
+
+A finite-index subgroup has finitely many conjugates, since its
+normalizer contains it.  Hence finite $\tau_{\mathrm{fin}}(G)$ is
+equivalent to having finitely many finite-index subgroups.  Intersect
+their normal cores to obtain a finite-index normal subgroup $R$
+contained in every such subgroup.  Every finite quotient factors
+through $G/R$, so $\widehat G=G/R$ is finite.  Conversely, each
+finite-index subgroup is the inverse image of an open subgroup of
+$\widehat G$: its finite coset action extends to the profinite
+completion, and one takes the stabilizer of its distinguished coset.
+If $\widehat G$ is finite there are only finitely many such subgroups.
+\end{proof}
+
+For a finitely generated group there are only finitely many actions on
+each fixed finite labelled set: the images of finitely many generators
+determine the action.  Thus $\tau_{\mathrm{fin}}(G)$ is at most countable.
+The continuum-sized family of two-point types above relies on infinitely
+many generators and their uniform evaluation.  This explains precisely
+why its language distinction has no counterpart for a fixed finite
+generating tuple.
+
+\section{Collection and reflection in the commuting cases}\label{nee:ca:sec:reflection}
+
+The preceding results concern Replacement. The relation to Glazer and Yao's research becomes clearer when Collection and reflection are kept distinct. In the present external-choice models, the general Collection and full-reflection criteria were already established in \cite[Theorems 7.5 and 7.7]{RepoNaming}. We record and prove the consequence for the countable-type commuting signatures.
+
+\begin{theorem}[Collection and reflection for at most one injection]\label{nee:ca:thm:commuting-collection}
+Fix a finite nonempty commuting tuple of injections in which all but at most one map are permutations. In its canonical expansion of $\Mk$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item full expanded Collection;
+\item for every finite family $\Phi$ of expanded formulas and every internal set $w$, there is an internal transitive set $t$ with $w\subseteq t$, closed under the named functions, such that every formula in $\Phi$ is absolute between $t$ and the full model for all parameter tuples from $t$;
+\item $\kappa$ is an uncountable successor cardinal.
+\end{enumerate}
+This is a consequence of the prior Collection/reflection criterion and the type classification proved here.
+\end{theorem}
+\begin{proof}
+\emph{Failure at a limit cutoff.}
+Suppose $\kappa$ is a limit cardinal, with $\omega$ included. Choose a pure set $w$ of ordinals below $\kappa$ whose cardinalities are unbounded below $\kappa$. For $\omega$, take $w=\omega$. For each $\alpha\in w$ there is an internal graph of an injection from $\alpha$ into the atoms: it uses only $|\alpha|<\kappa$ atoms. A set collecting such graphs for all $\alpha\in w$ would have a kernel of size at least $|\alpha|$ for every $\alpha\in w$, contrary to the cutoff. This is a failed base-language Collection instance, so adding names cannot repair it.
+
+\emph{A common reservoir at a successor cutoff.}
+Write $\kappa=\nu^+$, with $\nu$ infinite. There are at most countably many component types, and every component is countable. Close the kernels of an internal input domain $w$ and its parameters under components; this uses at most $\nu$ atoms. Add every entire type block of size at most $\nu$. There are only countably many such blocks, so the resulting component-closed set $P^*$ still has size at most $\nu$.
+
+For each remaining realized type, choose $\nu$ components disjoint from $P^*$. Such a type has at least $\nu^+$ components. Their union with $P^*$ is a fixed component-closed reservoir $H$ of size at most $\nu$. If $y$ is any internal witness, its kernel meets at most $\nu$ components outside $P^*$. For each type, match those components injectively into its reservoir. Because the full component family has size at least $\nu^+$, the partial matching extends to a permutation of that family; choose the corresponding component isomorphisms. The resulting atom permutation commutes with all names and fixes $P^*$ pointwise. It carries $y$ to a witness whose kernel lies in $H$ while fixing every input and parameter.
+
+For a fixed total relation on $w$, external Collection and Choice now supply witnesses all supported on the same $H$. Their collected set is internal. This proves full expanded Collection independently of the cardinality of the pure part of $w$.
+
+\emph{Reflection.}
+For a finite family of formulas, include its subformulas, expressing universal quantifiers through negation and existence. Construct externally increasing sets
+\[
+X_n=V_{\alpha_n}(H_n)\qquad(n<\omega),
+\]
+where $H_n$ is component-closed of size at most $\nu$, the $\alpha_n$ increase, and the initial stage contains the desired parameters and elements of the prescribed internal set. Given $X_n$, the reservoir construction over $H_n$ compresses all needed witnesses while fixing their parameter tuples. There are only set-many tuples in $X_n$ and finitely many existential subformulas. External Collection gives a common rank bound, producing $H_{n+1},\alpha_{n+1}$ such that each true existential instance over $X_n$ has a witness in $X_{n+1}$.
+
+The union $t=\bigcup_n X_n$ is transitive, is closed under each named function, and has kernel of size at most $\nu$, so it is internal. Induction on the finite collection of formulas proves absoluteness between the full model and $t$. The existential step is precisely the witness property; the atomic step uses transitivity and closure under the named functions.
+
+Conversely full reflection implies Collection by reflecting a totality assertion and its matrix. For a domain $w$ and parameter tuple $p$, prescribe an internal set containing $w$ itself and all the entries of $p$, so that these objects belong to the reflecting set $t$. Transitivity then puts every element of $w$ in $t$. The witnesses supplied in $t$ are genuine witnesses by absoluteness, and $t$ itself is an internal collecting set. This completes the equivalence.
+\end{proof}
+
+\begin{remark}[The reservoir must grow]
+Reflection uses increasing atom reservoirs as well as increasing rank bounds. A single $V_\alpha(H)$ can contain its whole atom supply $H$ as one of its elements, whereas the full kernel model has no internal set of all atoms. The growing-reservoir proof avoids incorrectly treating one fixed atom supply as a reflecting universe.
+\end{remark}
+
+These results give several distinct possibilities. At an uncountable successor cutoff, every commuting-permutation expansion has full Replacement, Collection, and the specified full reflection. At a limit cardinal of uncountable cofinality, every such expansion still has Replacement, but Collection and full reflection fail. At a limit cardinal of countable cofinality, Replacement depends on the specific action's small-block profile, and Collection always fails.
+
+This does not recover or strengthen the choiceless separation theorem of Glazer and Yao. Their work varies choice and reflection principles in a broader collection of models. Here the ambient construction uses Choice, and the new classification varies the named action and the atom cutoff. The connection is the common role of atom symmetries in deciding whether witnesses can be confined to one internal set.
+
+\section{Forcing stability for a fixed finite action}\label{nee:ca:sec:forcing}
+
+The universal thresholds quantify over all available actions, so they can change when a forcing extension supplies new actions. For an action already present in the ground universe, the profile theorem yields a stronger stability statement. This answers the fixed-action part of the forcing question proposed in the repository \cite[Question 10.10]{RepoNaming} under an explicit hypothesis on the cutoff.
+
+\begin{theorem}[Preserving the cutoff preserves the verdict]\label{nee:ca:thm:forcing}
+Let $V\subseteq W=V[\mathcal G]$ be a set-forcing extension of the ambient universe. Suppose $A$, an infinite cardinal $\kappa$, and a fixed finite tuple $\boldsymbol f$ of injections on $A$ belong to $V$, with $|A|^V\geq\kappa$. Assume that the ground ordinal $\kappa$ remains a cardinal in $W$. Form the kernel model and the canonical lifts separately in $V$ and in $W$. Then the ground expansion satisfies expanded Replacement if and only if the rebuilt expansion in $W$ does.
+\end{theorem}
+\begin{proof}
+The atom set and the named maps have the same elements and values in both universes. A component is determined by finite paths through these values, so each component is the same ground set in $V$ and $W$. It is countable in $V$.
+
+We next show that the partition into component types does not change. Fix two ground components and ground enumerations of them. Their labelled isomorphisms correspond to infinite branches through a ground tree of finite partial isomorphisms, requiring at the $n$th stage that the first $n$ enumerated elements on both sides be covered. A ground isomorphism remains one in $W$. If there is no ground isomorphism, this tree is well-founded in $V$ and has an ordinal-valued rank function there. The same rank function remains valid in $W$ and precludes a new infinite branch. Thus no two previously different component types become isomorphic. Indexing types by the actual partition of components, rather than by all possible pure codes, gives the same blocks $B_t$ in both universes.
+
+For any ground set $X$, the assertion $|X|<\kappa$ is absolute under the stated cardinal hypothesis. A ground injection of $X$ into an ordinal below $\kappa$ persists and proves the forward direction. If $|X|^V\geq\kappa$, a ground injection of $\kappa$ into $X$ persists and, because $\kappa$ is still a cardinal, prevents $|X|^W<\kappa$.
+
+Consequently the family of small blocks $B_t$ is unchanged, its union $D_\kappa$ is the same ground set, and the smallness of that union is unchanged. At $\kappa=\omega$, the finiteness of every component and of $D_\omega$ is also absolute. Apply \cref{nee:ca:thm:profile} in the two universes. The models have different pure sets in general, but the criterion applies to all formulas and all internal parameters in each rebuilt model, which is exactly the required equivalence.
+\end{proof}
+
+\begin{writenote}[Question~10.10, fixed-action part, 4 October 2026, batch~93]
+``Question~10.10'' of~\cite{RepoNaming} is \cref{nee:q:forcing} of Part~\ref{nee:part:one}; a dated note there records this answer and what remains open (\cref{nee:ca:q:forcing}).
+\end{writenote}
+
+\begin{remark}[What can still change]
+The theorem permits a change of $\cf(\kappa)$ as long as $\kappa$ remains a cardinal. If such a change crosses a universal threshold, counterexample actions available in the extension need not be ground actions. The theorem does not assert that the old proper-class model is unchanged, that each old formula has the same truth value, or that Collection is absolute under arbitrary cardinal collapses below $\kappa$. For the countable-type commuting signatures of \cref{nee:ca:thm:commuting-collection}, preserving whether $\kappa$ is a successor cardinal additionally preserves Collection and the stated reflection scheme; forcing that preserves all cardinals is sufficient.
+\end{remark}
+
+\section{Formalization, verification, and proof dependencies}\label{nee:ca:sec:verification}
+
+\subsection{How the argument fits the existing ProveIt formalization}
+
+The inspected repository contains a formula-indexed ZF development at
+\nolinkurl{SetTheory/ZF/Lean/ZF/Zf.lean}. Its declarations include
+\texttt{Sep\_form}, \texttt{Func\_form}, \texttt{Image\_form},
+\texttt{Repl\_form}, \texttt{ZFax}, and \texttt{ZFprov} \cite{RepoZFca}.
+They provide a natural starting point for distinguishing a base formula language from the enlarged language used by a scheme. They do not already formalize the urelement class models, component profiles, or theorems of this article.
+
+A useful formalization should make the signature an explicit input. A proof of Replacement for formulas in $\{\in,\At\}$ must not automatically become a proof for formulas in $\{\in,\At,J_1,\ldots,J_r\}$. Similarly, an interface for amenability should assert the existence of individual restriction graphs and should not quietly include expanded Replacement.
+
+\begin{center}
+\begin{tabular}{@{}L{0.26\linewidth}L{0.65\linewidth}@{}}
+\toprule
+Milestone & Mathematical content to certify \\
+\midrule
+Syntax and interpretation & Separate atom and set predicates; finite function signatures; relativization of each schema instance. \\[5pt]
+The kernel model & Tagged universe, transitive closure, kernel operations, closure under subsets, and the fresh-atom proof of base Replacement. \\[5pt]
+Finite paths and lifts & Recursive lift, preservation of kernels, extension of a small partial injection to an atom permutation, and internal finite path graphs. \\[5pt]
+Component types & Pure countable codes, labelled isomorphisms, uniform recognition, and the fresh-component swap. \\[5pt]
+Commuting normal forms & Subgroups of $\ZZ^r$, the fiber quotient for one injection, holonomy on cycles, and rigidity of the coded staircases. \\[5pt]
+Schema certificates & An explicit input domain, functional formula, and cutoff-violating kernel for each negative example. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The core mathematical proof is amenable to modular formalization: finite combinatorics establishes the type families, elementary cardinal arithmetic gives their possible unions, and the kernel model converts those unions into schema instances. The hard formal boundary is semantic bookkeeping for a definable proper-class structure. An eventual formalization may instead work over externally quantified set models with explicit satisfaction and transport each fixed instance. Either route must state its metatheory rather than conceal a truth predicate.
+
+\subsection{The supplied computational checks}
+
+The file \texttt{verify\_examples.py} performs deterministic finite checks using integer arithmetic and finite sets only. Its recorded run passes 347,278 explicit checks. These cover all 256 eight-bit staircase prefixes continued by zeros, boundary decoding, coordinate closure and commutation, translated finite boundary shadows, all 15 subgroups of $(\ZZ/4\ZZ)^2$, quotient-action stabilizers and equivariant maps, and all 31 nonzero characters of $(\FF_2)^5$.
+
+The file \texttt{make\_figure.py} regenerates \cref{nee:ca:fig:staircases}. The picture is an exact integer-lattice visualization of the defining inequalities; it is not generated imagery. Both the vector figure and a high-resolution preview are included.
+
+The role of these checks is limited and useful. They test the explicit finite formulas underlying the constructions and make arithmetic or indexing errors reproducible. They do not prove that all infinite staircase codes are distinct, do not verify any infinite-cardinal argument, and do not certify any instance of set-theoretic Replacement. The mathematical proofs of those claims are supplied in the text. No Lean, Coq, or other proof-assistant verification is claimed.
+
+\begin{writenote}[Shipped layout and replay, 4 October 2026, batch~93]
+In ProveIt the two programs are \nolinkurl{code/02-commuting-actions-verify_examples.py} and \nolinkurl{code/02-commuting-actions-make_figure.py}, the recorded run is \nolinkurl{data/02-commuting-actions-verification_output.txt}, and the figure is \nolinkurl{figures/02-commuting-actions-staircases.pdf} with the preview \nolinkurl{figures/02-commuting-actions-staircases.png}. Both programs were rerun on scratch copies at the write (Section~\ref{nee:ca:sec:provenance}); the report's README gives the commands, which never write into this directory.
+\end{writenote}
+
+\subsection{Dependency audit}
+
+\begin{longtable}{@{}L{0.28\linewidth}L{0.34\linewidth}L{0.29\linewidth}@{}}
+\toprule
+Conclusion & Essential input & Boundary to preserve \\
+\midrule
+\endhead
+Commuting threshold & Finite descriptions of subgroups of $\ZZ^r$; type profile & Countability of types is used with cofinality, not mere size of $\kappa$. \\[5pt]
+One-injection threshold & Injective map on permutation orbits; untwisting of fiber maps & Induced fiber maps are bijections even though the global map may not be. \\[5pt]
+Two-injection lower bound & Rigid staircase boundary; block multiplicities & Complete infinite labelled types are distinct; finite shadows are only checks. \\[5pt]
+Exact definable kernel & Parameter-free subgroup definitions and transitive translations & Kernels of definable objects differ from individually definable atoms. \\[5pt]
+General group threshold & Coset-action classification and uniformly recognized codes & Subgroups are counted up to conjugacy; the finite-cutoff case is separate. \\[5pt]
+Uniformity separation & Infinitely many index-two stabilizers; finite reducts & A binary evaluator permits index quantification unavailable to a fixed finite list of unary names. \\[5pt]
+Collection and reflection & Compression into growing component reservoirs & Arbitrary witnesses require a reservoir argument; uniqueness alone gives only Replacement. \\
+\bottomrule
+\end{longtable}
+
+\section{Further research questions and topics}\label{nee:ca:sec:future}
+
+The questions below specify where the proved classifications end. They are proposed research tasks, not a claim that every formulation is a longstanding published open problem. The commuting-permutation question itself is no longer included as an open task in the setting of this article.
+
+\begin{question}[Atom-valued definable closure for nonabelian actions]\label{nee:ca:q:nonabelian}
+For a finitely generated nonabelian group $G$, determine the atoms that are individually definable from specified parameters, as distinct from the kernel of definable objects. The equivariant automorphism group of $G/H$ is controlled by $N_G(H)/H$. How does that normalizer quotient interact with the internal availability of complete orbit blocks? A useful first target is the infinite dihedral group, where orbit and stabilizer data remain explicit.
+\end{question}
+
+\begin{question}[Exact finite-kernel formulas for several injections]\label{nee:ca:q:injections}
+Develop the analogue of \cref{nee:ca:thm:dcl} when two or more commuting injections are named and $\kappa=\omega$. The ray in \cref{nee:ca:ex:ray-dcl} shows that boundary points create definable atoms absent from the small-block term. Which finite layers or distinguished boundary configurations account for all such atoms in the staircase families? Can the result be stated through a finite-boundary invariant of a cancellative monoid action?
+\end{question}
+
+\begin{question}[Relations among noninvertible generators]\label{nee:ca:q:monoids}
+Classify the connected-type cardinality for injective actions of specified finitely presented commutative monoids. The free case $\ZZ^s\times\NN^t$ is settled here. Relations such as $f^m=g^n$ can collapse two apparent directions. Determine when such relations force countably many types and when a staircase or another real-coded family survives.
+\end{question}
+
+\begin{question}[Using finer subgroup-space invariants]\label{nee:ca:q:subgroupspaces}
+The theorem uses only $\tau(G)$, but subgroup spaces have much finer topology and descriptive complexity; for countable abelian groups see \cite{CGP2010}. Can Cantor--Bendixson rank or a natural complexity bound on stabilizer codes control the syntactic complexity of failed Replacement instances? The first goal should be a precise theorem for a class of groups with already classified subgroup spaces.
+\end{question}
+
+\begin{question}[Decidability from a finite presentation]\label{nee:ca:q:decidability}
+For a finitely presented group $G$, what is the complexity of determining which of the finite, countable, and continuum type-count cases occurs? More realistically, find effective sufficient certificates for a countable bound, a perfect family of subgroup types, or a selected bad multiplicity profile. Any undecidability claim should be proved by an explicit reduction rather than inferred from the general difficulty of group theory.
+\end{question}
+
+\begin{question}[Separate names for groups that are not locally finite]\label{nee:ca:q:separate}
+Classify universal Replacement preservation for countable groups in the language of separate names. Local finiteness gives unconditional preservation, and finite generation is settled by \cref{nee:ca:grp:robust}. Between these cases, every formula sees a finitely generated subgroup, but only actions that extend to the whole group are available. Determine whether an invariant of extendible subgroup actions gives a sharp general criterion.
+\end{question}
+
+\begin{question}[Infinitary formulas]\label{nee:ca:q:infinitary}
+Replace ordinary first-order syntax by a precisely specified infinitary logic and re-evaluate the separate-name/uniform-evaluation distinction. For example, can a countable conjunction uniformly distinguish the index-two stabilizers used in \cref{nee:ca:uni:two_point}? The treatment must separately specify formula codes, satisfaction, the allowed parameters, and which Replacement or Collection scheme is being asserted.
+\end{question}
+
+\begin{question}[How much ambient Choice is necessary?]\label{nee:ca:q:choice}
+The present proofs use external Choice for cardinal arithmetic, families of isomorphisms, and witness selection after external Collection. Isolate these uses in the commuting case. Rooted finitely generated orbits have explicit word enumerations, but selecting and matching components still needs analysis. Establish the weakest natural choice hypotheses under which the exact threshold and the definable-kernel formula survive.
+\end{question}
+
+\begin{question}[Atom ideals beyond cardinal cutoffs]\label{nee:ca:q:ideals}
+Replace the condition $|\kerat(x)|<\kappa$ by membership in an atom ideal $I$. Seek conditions on $I$ and the action which are both necessary and sufficient for expanded Replacement. Closure under orbit saturation, closure under unions of recognizable small blocks, and the ability to transport witnesses into fresh copies are distinct requirements and should not be merged into one unexamined symmetry assumption.
+\end{question}
+
+\begin{question}[Complexity of a failed instance]\label{nee:ca:q:complexity}
+Find the least formula complexity needed to witness the negative examples. The type selector quantifies over whole blocks, while the staircase construction has a directly readable boundary. Can a lower-complexity formula uniformly recognize each coded block? The answer should distinguish a fixed code as parameter, a pure sequence of codes, and a parameter-free formula.
+\end{question}
+
+\begin{question}[Forcing beyond preservation of the cutoff]\label{nee:ca:q:forcing}
+\Cref{nee:ca:thm:forcing} settles the fixed-action question when the original cutoff remains a cardinal. Analyze what happens when that ordinal is collapsed and the model is rebuilt using its new cardinality as the cutoff. Find exact examples in which Replacement changes, and determine which changes of block sizes cause the transition. Separately, when cofinality changes but the cutoff remains a cardinal, identify how new actions witness any change in a universal threshold.
+\end{question}
+
+\begin{question}[Formal schema independence certificates]\label{nee:ca:q:formal}
+Build a reusable ProveIt interface certifying a definable model, its valid scheme instances, and one explicit failed instance in an expanded signature. Begin with the distinct-period example, then certify the two-point uniformity separation. This would provide a concrete test that the formal infrastructure keeps elementary lifts, amenability, base Replacement, and expanded Replacement separate.
+\end{question}
+
+\begin{writenote}[A question added at the write, 4 October 2026, batch~93]
+ProveIt's standing rule for unproved claims (\nolinkurl{docs/incoming/README.md}, Section~4, item~11) moves the one imported, unproved premise of this Part here.
+\end{writenote}
+
+\begin{question}[A primary check of the Ivanov--Ol'shanskii groups]\label{nee:ca:q:primary}
+\emph{Source:} \cref{nee:ca:grp:exception}, which credits Ivanov and Ol'shanskii~\cite{IO1991} through Smith~\cite[p.~69]{Smith1995}. \emph{Claim:} there is a finitely generated infinite group $G$ all of whose proper nontrivial subgroups are conjugate; then $\tau(G)=3$, so the finite-cutoff clause ``$G$ finite'' of \cref{nee:ca:grp:robust} and the clause ``$\cf(\kappa)>\tau(G)$'' read at $\kappa=\omega$ (that is, $\tau(G)$ finite) differ. \emph{Argument available:} none beyond Smith's attribution (checked on the first page of~\cite{Smith1995}); the title of~\cite{IO1991} names its method, graded diagrams in combinatorial group theory. \emph{Missing:} a check of the construction in the primary source, or in a textbook account of it, confirming finite generation, infinitude and conjugacy of all proper nontrivial subgroups; neither the manuscript nor the write consulted~\cite{IO1991}. Short of that, is there a more accessible infinite finitely generated group with finitely many conjugacy classes of subgroups?
+\end{question}
+
+\begin{writenote}[Status of the questions, 4 October 2026, batch~93]
+None of these thirteen questions is answered in ProveIt. Several continue questions of Part~\ref{nee:part:one} and of Part~VIII of \nolinkurl{birthday-cutoffs-and-hereditary-sets} (\texttt{hset:ns:}): \cref{nee:ca:q:nonabelian,nee:ca:q:injections} continue \cref{nee:q:dcl} beyond commuting permutations; \cref{nee:ca:q:infinitary} meets Question~10.6 (uncountably many names and infinitary syntax); \cref{nee:ca:q:choice} is Question~10.8 (removing ambient choice) for the commuting case; \cref{nee:ca:q:ideals} is Question~10.7 and Part~VIII's Question~65.1 (\texttt{hset:ns:q:ideals}); \cref{nee:ca:q:complexity} is Question~10.9 and Part~VIII's Question~65.6 (\texttt{hset:ns:q:complexity}); \cref{nee:ca:q:forcing} is the remainder of \cref{nee:q:forcing}; \cref{nee:ca:q:formal} is Question~10.12 and Part~VIII's Question~65.12 (\texttt{hset:ns:q:formalization}); \cref{nee:ca:q:separate,nee:ca:q:infinitary} meet Part~VIII's Questions~65.4 and~65.8 (\texttt{hset:ns:q:generators}, \texttt{hset:ns:q:evaluators}), which this Part answers in part (the notes after \cref{nee:ca:uni:profile,nee:ca:uni:two_point}).
+\end{writenote}
+
+% Part II's appendices continue Part I's letters.
+\setcounter{section}{3}
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\theHsection}{ca.app.\Alph{section}}
+\makeatletter\gdef\Hy@chapapp{\Hy@appendixstring}\makeatother
+
+\section{Conventions and construction data}\label{nee:ca:app:conventions}
+
+\begin{longtable}{@{}L{0.24\linewidth}L{0.66\linewidth}@{}}
+\toprule
+Notation & Meaning and location \\
+\midrule
+\endhead
+$A$ & An external set of atoms with $|A|\geq\kappa$; it is not an internal set of $\Mk$. \\[4pt]
+$\kerat(x)$ & Atoms occurring in $\TC(\{x\})$, including $x$ itself when $x$ is an atom. \\[4pt]
+$\Mk$ & All objects over $A$ whose atom kernels have cardinality below $\kappa$. Pure ranks are unrestricted. \\[4pt]
+$j_f$ & The recursively lifted atom injection $f$, fixing every pure object. \\[4pt]
+$B_t$ & All atoms in all components of type $t$, not a single component. \\[4pt]
+$D_\kappa$ & Union of the entire type blocks that are internal atom sets. It is always an external set but need not be internal. \\[4pt]
+$\tau(G)$ & Number of conjugacy classes of all subgroups of $G$. \\[4pt]
+$\tau_{\mathrm{fin}}(G)$ & Number of conjugacy classes of finite-index subgroups of $G$. \\[4pt]
+$E(g,x)$ & One binary evaluator for the whole group action, totalized by the identity outside the pure set $G$. \\[4pt]
+$\mathcal K(\dcl(\bar a))$ & Scheme notation for kernels of uniquely definable objects, as explained before \cref{nee:ca:thm:dcl}; not an added object-language truth predicate. \\
+\bottomrule
+\end{longtable}
+
+\subsection{An explicit singular-cutoff witness}
+
+At $\kappa=\aleph_\omega$, choose disjoint atom blocks $B_n$ of size $\aleph_n$. Partition $B_n$ into cycles of length $n+2$. Let $p$ rotate each cycle and fix any unused atoms. The single formula
+\[
+\text{``$y$ is the set of all atoms of exact $p$-period $n+2$''}
+\]
+has the unique internal value $B_n$ at each $n\in\omega$. The statement of exact period uses finite path graphs and the requirement that no shorter positive iterate returns to the atom. Its range cannot be an internal set because its kernel would contain $\bigcup_n B_n$, of size $\aleph_\omega$. Adding finitely many identity names gives commuting counterexamples of every finite positive arity.
+
+\subsection{An explicit regular-cutoff witness}
+
+At $\kappa=\aleph_1$, choose distinct staircase codes $S_\alpha$ for $\alpha<\omega_1$ and use countably many copies of each $U_{S_\alpha}$. Such a family of codes exists by Choice and $\aleph_1\leq\cont$. Each entire type block is countable. Their union has size $\aleph_1$.
+
+The pure sequence $\langle S_\alpha:\alpha<\omega_1\rangle$ is an internal parameter, even though it has uncountable size. Its type-block selector is functional on the internal pure domain $\omega_1$ and has no internal range. Each unary coordinate map has just the ray type and preserves Replacement. This explicitly illustrates why large pure input sets cannot be ignored in a model that restricts only atom kernels.
+
+\subsection{The finite-cutoff uniformity witness}
+
+Take $G=\bigoplus_\omega C_2$ and nonzero characters $\chi_{\{n\}}$ for $n<\omega$. Give each one exactly one two-atom orbit. Separate unary names preserve Replacement, since any finite set of them acts through a finite subgroup. With uniform evaluation, the formula comparing an atom's stabilizer with $\ker\chi_{\{n\}}$ defines the complete two-atom block. Collecting those blocks would require infinitely many atoms, which is forbidden at $\kappa=\omega$. The evaluator's restriction to any internal set still uses only finitely many atoms, so it remains amenable.
+
+\section{Source and verification record}\label{nee:ca:app:sources}
+
+The following record makes the research boundary reproducible without relying on an unpinned repository branch.
+
+\begin{itemize}\raggedright
+\item The target question and prior profile theorem were read in the full source of \emph{Naming Elementary Embeddings} at commit \nolinkurl{a9ab9a69872c2fb7464097af32fd7b76c75cb030}, file \nolinkurl{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/article.tex}. Its Git blob is \nolinkurl{5426fc8da5f470efc448c3dff041751d0d7dc4a9}. The question is Question 10.4, and the profile theorem is Theorem 5.1.
+\item The group-action connection to Glazer was checked against the full arXiv HTML of Glazer--Yao, version 1, 25 February 2026, especially its kernel-model discussion. LinkedIn identifies the researcher but is not used as the mathematical authority for the results.
+\item Smith's published 1995 PDF was read directly for the existence of an infinite finitely generated group with three conjugacy classes of subgroups. The construction itself is not reproduced. The original Ivanov--Ol'shanskii chapter is included bibliographically; its publisher metadata was checked, but its paywalled proof was not used.
+\item The main mathematical arguments received an independent review of the group types, mixed normal forms, strict staircase rigidity, the finite-cutoff definable-kernel argument, and the uniform-action construction. This is an additional review step within preparation of the manuscript, not external peer review.
+\item The exact finite checks are recorded in \texttt{verification\_output.txt}. The source and scripts are supplied so that arithmetic and figure generation can be reproduced. The semantic and infinite-cardinal conclusions remain mathematical proofs in the manuscript.
+\end{itemize}
+
+The literature checks support a direct research intersection and a concrete answer to the repository question. They do not establish that every proposed refinement is absent from all unpublished notes or the wider literature. Any submission for publication should retain the prior-work distinctions in \cref{nee:ca:sec:intro} and undergo an additional specialist review.
+
+% [write] One bibliography for both Parts (moved here from the end of Part I).
+\clearpage
+\fancyhead[R]{\small References}
+\begin{thebibliography}{99}
 \addcontentsline{toc}{section}{References}
 \raggedright
 
@@ -1112,5 +2414,54 @@ Vladimir Reshetnikov and contributors,
 research-report README, marked unrefereed and not formalized.
 \url{https://github.com/VladimirReshetnikov/ProveIt/blob/2b7b388ba81a3355b19a7c2d2fe797e92f572355/Algebra/SurrealNumbers/docs/surreal/surreal-self-embeddings/README.md}.
 
+% [write] Entries added with Part II (batch 93, manuscript 01).
+\bibitem{RepoNaming}
+Vladimir Reshetnikov and contributors,
+\emph{Naming Elementary Embeddings},
+AI-assisted, unrefereed research report in the ProveIt repository,
+filed 3 October 2026.
+\nolinkurl{SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/article.tex}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a9ab9a69872c2fb7464097af32fd7b76c75cb030/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/article.tex}{Pinned source at commit a9ab9a69872c2fb7464097af32fd7b76c75cb030}.
+Theorems 5.1, 6.1, 7.5, and 7.7; Questions 10.1, 10.4, and 10.10.
+[write] This is Part~\ref{nee:part:one} of the present report, as it stood at the pin; its numbers are unchanged (Section~\ref{nee:ca:sec:provenance}).
+
+\bibitem{RepoZFca}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: first-order ZF development},
+\nolinkurl{SetTheory/ZF/Lean/ZF/Zf.lean},
+same pinned commit as \cite{RepoNaming}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a9ab9a69872c2fb7464097af32fd7b76c75cb030/SetTheory/ZF/Lean/ZF/Zf.lean}{Pinned Lean source}.
+[write] Part~II's entry \texttt{RepoZF}, renamed; the file is the same blob as at the pin of~\cite{RepoZF}.
+
+\bibitem{Mitchell2014}
+Stephen A. Mitchell,
+\emph{Group actions and other topics in group theory},
+University of Washington lecture notes, 11 October 2014,
+especially Section 5 on transitive $G$-sets.
+\url{https://sites.math.washington.edu/~mitchell/Algf/gset.pdf}.
+
+\bibitem{CGP2010}
+Yves de Cornulier, Luc Guyot, and Wolfgang Pitsch,
+\emph{The space of subgroups of an abelian group},
+Journal of the London Mathematical Society \textbf{81} (2010), 727--746.
+\url{https://doi.org/10.1112/jlms/jdq016}.
+Preprint: \url{https://arxiv.org/abs/0811.1549}.
+
+\bibitem{Smith1995}
+Howard Smith,
+\emph{Groups with finitely many conjugacy classes of subgroups with large subnormal defect},
+Glasgow Mathematical Journal \textbf{37} (1995), 69--71.
+\url{https://doi.org/10.1017/S0017089500030408}.
+The existence statement used in \cref{nee:ca:grp:exception} is recorded on p.~69.
+
+\bibitem{IO1991}
+S. V. Ivanov and A. Yu. Ol'shanskii,
+\emph{Some applications of graded diagrams in combinatorial group theory},
+in C. M. Campbell and E. F. Robertson (eds.),
+\emph{Groups St Andrews 1989}, Vol.~2,
+London Mathematical Society Lecture Note Series 160,
+Cambridge University Press, 1991, pp.~258--308.
+\url{https://doi.org/10.1017/CBO9780511661846.004}.
+Original construction reference; the existence fact needed here was checked in \cite{Smith1995}.
 \end{thebibliography}
 \end{document}
