@@ -215,6 +215,15 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [synchronized-row reduction](Papers/research-wip/native-stream-queue/matrix193_synchronized_rows.md)
+replaces the actual 193-generator product relation by 96 common tile
+choices on four signed coordinates, with an unrestricted equivalence proof.
+Its complete local polynomial costs **2039 = 1103M + 936A**, degree 192;
+the [independent review](Papers/research-wip/native-stream-queue/review_matrix193_synchronized_rows.md) checks its
+source and proof, and normal/optimized replays pass. A fixed-duration
+certificate follows by summing nonnegative local factors. Unbounded
+packing and the ordinary-input index remain unpaid in this interface.
+
 The [fixed-context transfer](Papers/research-wip/native-stream-queue/matrix193_context_absorption.md)
 absorbs both program contexts into the existing 193 generator phases,
 reducing conditional target assembly from six to **3=2M+1A operations**.
