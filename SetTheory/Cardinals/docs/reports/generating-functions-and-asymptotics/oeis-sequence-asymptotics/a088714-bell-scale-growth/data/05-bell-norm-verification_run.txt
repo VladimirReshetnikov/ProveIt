@@ -1,0 +1,253 @@
+CHECK: finite_certificate.py 
+EXIT: 0
+Exact certificate: h_k < 0 for 3 <= k <= 31.
+
+
+
+CHECK: verify_sign.py 
+EXIT: 0
+PASS: exact sign h_k<0 for 3 <= k <= 128
+PASS: independent published BGG recurrence for 1 <= k <= 64
+PASS: 13 displayed OEIS terms
+PASS: b_16 > 100, b_15 > b_j for 1 <= j < 15
+PASS: far bound at 32 < 1/100, decreasing thereafter
+PASS: rational tail bound 9/10 < 1
+Certificate: /tmp/oeis_verification_s8w48y6k/sign_verification.json
+
+
+
+CHECK: independent_check.py 
+EXIT: 0
+{
+  "method_1": "BGG 2019 Lemma 14, direct coefficient extraction",
+  "method_2": "Riccati tanh and logarithmic-derivative heat coefficient construction",
+  "agreement_through_degree": 64,
+  "negative_degree_range": [
+    3,
+    64
+  ],
+  "first_seven_scaled_coefficients": [
+    "1",
+    "-14",
+    "86",
+    "-3660",
+    "-1042202",
+    "-247948260",
+    "-108448540420"
+  ],
+  "b_16": "61394155884765868567528125/604462909807314587353088",
+  "far_bound_k64_exact": "764031466554854484901625856/37608910510519071039902074217516707306379521",
+  "far_bound_k64_decimal": 2.031517148951065e-17,
+  "improved_far_bound_k32_exact": "4437222213480873984/6132610415680998648961",
+  "improved_far_bound_k32_decimal": 0.0007235454256371739,
+  "minimum_normalized_sign_margin_3_to_64": "61/105"
+}
+
+
+
+CHECK: large_order.py 
+EXIT: 0
+c_0,...,c_8 = 1, -1/3, -11/18, -1279/1620, -5089/9720, 124787/81648, 368256067/36741600, 8769001777/220449600, 173295857159/1322697600
+Saved: /tmp/oeis_verification_s8w48y6k/large_order_coefficients.json
+
+
+
+CHECK: verify_complement.py 
+EXIT: 0
+{
+  "status": "passed",
+  "max_sequence_index": 34,
+  "independent_coefficient_recurrence_checked_through": 32,
+  "endpoint_coefficient_identity_checked_through": 32,
+  "three_region_decompositions_checked": 209,
+  "endpoint_coefficients_d_0_through_d_9": [
+    2,
+    5,
+    24,
+    148,
+    1052,
+    8226,
+    69032,
+    612630,
+    5695004,
+    55094320
+  ],
+  "companion_coefficients_c_0_through_c_9": [
+    1,
+    1,
+    2,
+    6,
+    24,
+    118,
+    674,
+    4308,
+    30062,
+    225266
+  ],
+  "companion_endpoint_coefficients_e_0_through_e_9": [
+    1,
+    2,
+    5,
+    16,
+    64,
+    308,
+    1716,
+    10724,
+    73428,
+    541640
+  ],
+  "companion_decompositions_checked": 27,
+  "claims_not_tested": [
+    "all-index inequalities beyond the written proof",
+    "asymptotic error bounds",
+    "Bell normalization or local curvature"
+  ]
+}
+
+
+
+CHECK: normalization_diagnostics.py --max-index 600 --precision 80 --coefficients /workspace/scratch/adb70e96d03c/oeis_research/data/coefficients_600.txt --output /tmp/oeis_verification_s8w48y6k/normalization_80.json
+EXIT: 0
+{
+  "exact_terms_through": 600,
+  "decimal_precision": 80,
+  "guard_digits": 20,
+  "method": "exact triangular recurrence, Decimal Newton W, Decimal exp/ln",
+  "rows": [
+    {
+      "n": 25,
+      "W_n": "2.360150455522664176680493",
+      "a_n_over_N_n": "0.032465579672641099836204374706",
+      "r_n_minus_n_over_W_n": "2.539032788984430170805475",
+      "c_n_over_a_n_minus_1": "1.199848753695979548791858"
+    },
+    {
+      "n": 50,
+      "W_n": "2.860890177982210866757627",
+      "a_n_over_N_n": "0.038089854602216105457922231328",
+      "r_n_minus_n_over_W_n": "2.312570362508818601999379",
+      "c_n_over_a_n_minus_1": "1.118554272695769447420794"
+    },
+    {
+      "n": 100,
+      "W_n": "3.385630140290050184888244",
+      "a_n_over_N_n": "0.041763346108510062407701727677",
+      "r_n_minus_n_over_W_n": "2.205967625601075248157258",
+      "c_n_over_a_n_minus_1": "1.069134919792280396526080"
+    },
+    {
+      "n": 200,
+      "W_n": "3.929743268804617305720148",
+      "a_n_over_N_n": "0.044282054707947813324203791147",
+      "r_n_minus_n_over_W_n": "2.146342105938967190499839",
+      "c_n_over_a_n_minus_1": "1.039768648708735705883794"
+    },
+    {
+      "n": 400,
+      "W_n": "4.489682549519365300775223",
+      "a_n_over_N_n": "0.045986198155866944079609526016",
+      "r_n_minus_n_over_W_n": "2.110948265823219123552745",
+      "c_n_over_a_n_minus_1": "1.022599759159291045214928"
+    },
+    {
+      "n": 600,
+      "W_n": "4.823441895739008865834821",
+      "a_n_over_N_n": "0.046702103047004180951379239393",
+      "r_n_minus_n_over_W_n": "2.096967019354157005748052",
+      "c_n_over_a_n_minus_1": "1.016155103258837146842673"
+    }
+  ],
+  "limitations": [
+    "Finite diagnostics do not prove the asymptotic theorems.",
+    "The displayed normalized values are not certified bounds on C_*.",
+    "Decimal arithmetic here is not interval arithmetic."
+  ]
+}
+
+
+
+CHECK: normalization_diagnostics.py --max-index 600 --precision 120 --coefficients /workspace/scratch/adb70e96d03c/oeis_research/data/coefficients_600.txt --output /tmp/oeis_verification_s8w48y6k/normalization_120.json
+EXIT: 0
+{
+  "exact_terms_through": 600,
+  "decimal_precision": 120,
+  "guard_digits": 20,
+  "method": "exact triangular recurrence, Decimal Newton W, Decimal exp/ln",
+  "rows": [
+    {
+      "n": 25,
+      "W_n": "2.360150455522664176680493",
+      "a_n_over_N_n": "0.032465579672641099836204374706",
+      "r_n_minus_n_over_W_n": "2.539032788984430170805475",
+      "c_n_over_a_n_minus_1": "1.199848753695979548791858"
+    },
+    {
+      "n": 50,
+      "W_n": "2.860890177982210866757627",
+      "a_n_over_N_n": "0.038089854602216105457922231328",
+      "r_n_minus_n_over_W_n": "2.312570362508818601999379",
+      "c_n_over_a_n_minus_1": "1.118554272695769447420794"
+    },
+    {
+      "n": 100,
+      "W_n": "3.385630140290050184888244",
+      "a_n_over_N_n": "0.041763346108510062407701727677",
+      "r_n_minus_n_over_W_n": "2.205967625601075248157258",
+      "c_n_over_a_n_minus_1": "1.069134919792280396526080"
+    },
+    {
+      "n": 200,
+      "W_n": "3.929743268804617305720148",
+      "a_n_over_N_n": "0.044282054707947813324203791147",
+      "r_n_minus_n_over_W_n": "2.146342105938967190499839",
+      "c_n_over_a_n_minus_1": "1.039768648708735705883794"
+    },
+    {
+      "n": 400,
+      "W_n": "4.489682549519365300775223",
+      "a_n_over_N_n": "0.045986198155866944079609526016",
+      "r_n_minus_n_over_W_n": "2.110948265823219123552745",
+      "c_n_over_a_n_minus_1": "1.022599759159291045214928"
+    },
+    {
+      "n": 600,
+      "W_n": "4.823441895739008865834821",
+      "a_n_over_N_n": "0.046702103047004180951379239393",
+      "r_n_minus_n_over_W_n": "2.096967019354157005748052",
+      "c_n_over_a_n_minus_1": "1.016155103258837146842673"
+    }
+  ],
+  "limitations": [
+    "Finite diagnostics do not prove the asymptotic theorems.",
+    "The displayed normalized values are not certified bounds on C_*.",
+    "Decimal arithmetic here is not interval arithmetic."
+  ]
+}
+
+
+
+CHECK: asymptotic_check.py 8
+EXIT: 0
+Asymptotic expansion of h_k / (-b_k), x=1/k:
+173295857159*x**8/1322697600 + 8769001777*x**7/220449600 + 368256067*x**6/36741600 + 124787*x**5/81648 - 5089*x**4/9720 - 1279*x**3/1620 - 11*x**2/18 - x/3 + 1
+
+m=0: F_m(j)=1; contribution=1
+m=1: F_m(j)=-1/4; contribution=-205*x**8/16 - 547*x**7/64 - 91*x**6/16 - 61*x**5/16 - 5*x**4/2 - 7*x**3/4 - x**2 - x
+m=2: F_m(j)=j/24 + 1/96; contribution=18413*x**8/96 + 7393*x**7/96 + 2975*x**6/96 + 301*x**5/24 + 61*x**4/12 + 13*x**3/6 + 5*x**2/6 + 2*x/3
+m=3: F_m(j)=1/128 - j/96; contribution=5881*x**8/48 + 215*x**7/16 - 127*x**6/24 - 43*x**5/8 - 19*x**4/6 - 3*x**3/2 - 2*x**2/3
+m=4: F_m(j)=j**2/1152 + j/11520 - 43/30720; contribution=-1717829*x**8/2880 - 2633*x**7/24 - 3041*x**6/180 - 71*x**5/60 + 239*x**4/360 + 7*x**3/15 + 2*x**2/9
+m=5: F_m(j)=-j**2/4608 + 19*j/46080 - 47/368640; contribution=153623*x**8/240 + 30991*x**7/288 + 949*x**6/72 - 3*x**5/40 - 31*x**4/45 - 2*x**3/9
+m=6: F_m(j)=j**3/82944 - j**2/184320 - 2621*j/46448640 + 755/12386304; contribution=-9759907*x**8/30240 - 2390533*x**7/45360 - 34639*x**6/5040 - 4609*x**5/11340 + 17*x**4/135 + 4*x**3/81
+m=7: F_m(j)=-j**3/331776 + 23*j**2/2211840 - 1747*j/185794560 - 211/247726080; contribution=19723*x**8/144 + 757943*x**7/45360 + 10601*x**6/11340 - 71*x**5/405 - 4*x**4/81
+m=8: F_m(j)=j**4/7962624 - 7*j**3/39813120 - 11993*j**2/11147673600 + 9491*j/3185049600 - 236339/118908518400; contribution=-1825457*x**8/51840 - 1504163*x**7/340200 - 52313*x**6/170100 + 26*x**5/1215 + 2*x**4/243
+m=9: F_m(j)=-j**4/31850496 + j**3/5898240 - 13207*j**2/44590694400 + 2309*j/29727129600 + 3307/19025362944; contribution=133589*x**8/16200 + 84023*x**7/170100 - 4*x**6/135 - 2*x**5/243
+m=10: F_m(j)=j**5/955514880 - 11*j**4/3822059520 - 3403*j**3/267544166400 + 74873*j**2/1070176665600 - 1158187*j/10463949619200 + 748163/13951932825600; contribution=-169103*x**8/113400 - 25453*x**7/255150 + x**6/405 + 4*x**5/3645
+m=11: F_m(j)=-j**5/3822059520 + 31*j**4/15288238080 - 2039*j**3/356725555200 + 21083*j**2/4280706662400 + 2074243*j/376702186291200 - 4606447/502269581721600; contribution=36233*x**8/255150 - 13*x**7/3645 - 4*x**6/3645
+m=12: F_m(j)=j**6/137594142720 - j**5/30576476160 - 7753*j**4/77052719923200 + 135659*j**3/128421199872000 - 1395330283*j**2/474644754726912000 + 13915380091*j/4113587874299904000 - 95469677/81256056776294400; contribution=-97913*x**8/4592700 + 2*x**7/10935 + 4*x**6/32805
+m=13: F_m(j)=-j**6/550376570880 + 7*j**5/366917713920 - 24167*j**4/308210879692800 + 66401*j**3/513684799488000 + 81904939*j**2/1898579018907648000 - 121669657*j/299170027221811200 + 5338461433/14626090219732992000; contribution=-2*x**8/6561 - 4*x**7/32805
+m=14: F_m(j)=j**7/23115815976960 - 19*j**6/66045188505600 - 37*j**5/73970611126272 + 427333*j**4/36985305563136000 - 570858313*j**3/11391474113445888000 + 59230395197*j**2/592356653899186176000 - 306281449*j/3510261652735918080 + 17967123799/1053078495820775424000; contribution=2*x**8/492075 + 8*x**7/688905
+m=15: F_m(j)=-j**7/92463263907840 + 13*j**6/88060251340800 - 6131*j**5/7397061112627200 + 106229*j**4/49313740750848000 - 46669367*j**3/45565896453783552000 - 910428293*j**2/112829838837940224000 + 58728557753*j/3159235487462326272000 - 369806021/29456741141839872000; contribution=-8*x**8/688905
+m=16: F_m(j)=j**8/4438236667576320 - 23*j**7/11095591668940800 - 11*j**6/17752946670305280 + 86549*j**5/887647333515264000 - 3392272189*j**4/5467907574454026240000 + 133499713871*j**3/71082798467902341120000 - 78663474899*j**2/27079161321105653760000 + 3861453238927*j/2148280131474381864960000 + 75054289333/654713944830287806464000; contribution=2*x**8/2066715
+
+
+

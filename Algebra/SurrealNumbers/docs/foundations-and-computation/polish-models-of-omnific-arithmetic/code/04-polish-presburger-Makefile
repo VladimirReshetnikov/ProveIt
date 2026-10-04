@@ -1,0 +1,17 @@
+PYTHON ?= python3
+LATEXMK ?= latexmk
+ARTICLE := polish_presburger
+
+.PHONY: all pdf test clean
+all: test pdf
+
+pdf:
+	$(LATEXMK) -pdf -interaction=nonstopmode -halt-on-error $(ARTICLE).tex
+
+test:
+	$(PYTHON) verification.py --output verification_results.json
+
+clean:
+	rm -f $(ARTICLE).aux $(ARTICLE).log $(ARTICLE).out $(ARTICLE).toc \
+	      $(ARTICLE).fdb_latexmk $(ARTICLE).fls $(ARTICLE).synctex.gz
+	rm -rf __pycache__

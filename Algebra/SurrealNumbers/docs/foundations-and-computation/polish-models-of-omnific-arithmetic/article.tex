@@ -1,0 +1,1674 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newpxtext,newpxmath}
+\usepackage[a4paper,margin=28mm,headheight=15pt]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem,booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,
+ urlcolor=MidnightBlue,pdftitle={Polish Presburger Arithmetic inside the Omnific Integers},
+ pdfauthor={Research manuscript prepared with AI assistance for Vladimir Reshetnikov}]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{listings}
+\definecolor{ink}{HTML}{15394B}
+\definecolor{paperblue}{HTML}{F0F5F7}
+\tcbset{colback=paperblue,colframe=ink,boxrule=.45pt,arc=1mm,
+ left=3mm,right=3mm,top=2mm,bottom=2mm}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+ frame=single,rulecolor=\color{black!20},aboveskip=1em,belowskip=1em}
+\setlist[enumerate]{itemsep=.35em,topsep=.5em}
+\setlist[itemize]{itemsep=.3em,topsep=.5em}
+\setlength{\parskip}{.35em}
+\setlength{\parindent}{1.2em}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\scshape Polish Presburger Arithmetic}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\No}{\mathbf{No}}
+\newcommand{\Oz}{\mathbf{Oz}}
+\newcommand{\Baire}{\N^{\N}}
+\newcommand{\lex}{\mathbin{\overrightarrow\times}}
+\newcommand{\MR}{M_{\R}}
+\newcommand{\MB}{M_{\mathrm B}}
+\newcommand{\GD}{G_D}
+\newcommand{\MD}{M_D}
+\newcommand{\res}{\operatorname{res}}
+\newcommand{\Th}{\operatorname{Th}}
+\newcommand{\Aut}{\operatorname{Aut}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\ct}{\operatorname{ct}}
+\newcommand{\one}{\mathbf 1}
+\newcommand{\Dtwo}{\boldsymbol{\Delta}^{0}_{2}}
+\newcommand{\proofstatus}{\textit{Proof status.}}
+\title{\vspace{-1.5em}\color{ink}\bfseries
+Polish Presburger Arithmetic\\[.3em]
+inside the Omnific Integers\\[.6em]
+\large An affirmative construction for Glazer's Question 2,\\
+effective Baire-space models, and structural obstructions}
+\author{\normalsize Research manuscript prepared for Vladimir Reshetnikov}
+\date{October 3, 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We construct an uncountable Polish model of the full first-order theory
+$\Th(\N;0,1,+,<)$ whose addition is continuous. The simplest carrier is
+\[
+ \MR=(\R_{>0}\times\Z)\ \cup\ (\{0\}\times\N),
+\]
+with coordinatewise addition, lexicographic arithmetic order, and the
+subspace topology from $\R_{\rm usual}\times\Z_{\rm discrete}$.
+This gives an affirmative answer to Question 2 as stated on page 8 of
+Elliot Glazer's \emph{A Topological Tennenbaum Theorem}
+(arXiv:2311.13699v1). A second construction, using the lexicographically
+ordered group $\Q^{\N}$ with discrete rational coordinates, is explicitly
+homeomorphic to Baire space and has Type-2 computable addition. We prove
+quantifier elimination over the relevant ordered groups, including the
+full induction scheme on their positive cones. All definable relations
+are $\Dtwo$; in the Baire presentation they admit uniform finite-mind-change
+truth approximations. Rank two is optimal for the order relation in any
+uncountable Polish continuous-addition model.
+
+Both constructions are set-sized additive fragments of Conway's omnific
+integers. They admit no unital semiring multiplication whatsoever with
+the displayed addition and unit. We also classify the real model's
+unital endomorphisms and elementary submodels, exhibit proper clopen
+elementary self-copies of the Baire model, and isolate the stronger
+coset-invariance hypothesis needed to extend ProveIt's integer-specific
+Cooper lemmas to nonstandard groups.
+\end{abstract}
+
+\begin{tcolorbox}[title=Status and scope]
+The mathematical assertions designated as theorems are accompanied by
+proofs. The construction answers the cited question \emph{as written};
+independent bibliographic priority has not been established. Classical
+Presburger elimination and elementary topological-group facts are not
+claimed as new. This AI-assisted manuscript is not independently refereed
+or Lean-verified. The accompanying executable tests are finite checks, not
+a replacement for the proofs.
+\end{tcolorbox}
+
+\clearpage
+{\setlength{\parskip}{0pt}\small
+\tableofcontents
+}
+\clearpage
+
+\section{The research overlap and the precise target}
+\label{sec:overlap}
+
+The relevant intersection is \emph{topological and effective model theory
+of weak arithmetic}. Glazer's work supplies a sharply formulated question;
+ProveIt supplies two concrete mathematical interfaces: an executable
+Cooper quantifier-elimination development and a normal-form construction
+of the omnific integers. This makes it possible to connect an external
+Polish topology, internal induction, and exact surreal coordinates without
+appealing to the repository's unreviewed research claims.
+
+In the final section of \cite{Glazer}, Glazer asks:
+\begin{quote}
+Does some uncountable Polish space support a model of Presburger
+arithmetic with continuous addition?
+\end{quote}
+The source is Question 2 on page 8 of arXiv:2311.13699v1. We use precisely
+that formulation. The topology need not be the arithmetic order topology,
+and no multiplication is required. These two distinctions are essential.
+
+Glazer's obstruction for stronger arithmetic includes the impossibility
+of an uncountable Polish model of $Q+I\mathrm{Open}$ with continuous
+addition and Borel multiplication \cite[Corollary 1]{Glazer}. The earlier
+study of Enayat, Hamkins, and Wcis\l o \cite{EHW} motivates the broader
+problem of finding topological presentations of arithmetic. Our
+construction does not contradict those results: it supports the additive
+language, and its additive structure prevents a semiring expansion.
+
+\subsection{Repository interfaces actually inspected}
+
+The repository snapshot used here is
+\begin{center}
+\texttt{a11efab09a2d08f692a09829cb6d3440ddd1795a}.
+\end{center}
+The Presburger README \cite{RepoPresburger} describes a complete Lean
+integer quantifier eliminator and an independent Rocq/Coq proof of the
+normalized one-variable step. The inspected file
+\texttt{PresburgerArithmetic/Cooper.lean} \cite{RepoCooper} states
+\texttt{periodic\_interval} and \texttt{periodic\_has\_residue} for
+predicates on the ordinary type \texttt{Int}. Their hypotheses are entirely
+appropriate there. They must not be transferred unchanged to a
+nonstandard ordered group; \cref{sec:periodicity} gives an explicit
+counterexample and the correct replacement.
+
+The surreal README \cite{RepoSurreal} records an omnific ring whose normal
+forms have nonnegative exponents and integer constant term. Only this
+normal-form interface and the standard arithmetic of its additive group
+are needed below. We do not assume that the present topology or any of
+this article's theorems has already been formalized in that repository.
+
+\subsection{What is established, and what is not}
+
+The principal result is an explicit affirmative construction, rather than
+a claim that a difficult negative theorem has been overturned. The
+lexicographic algebra is classical. The contribution developed here is
+the precise topology and its application to the stated question, together
+with an effective Baire presentation and a collection of sharp structural
+consequences.
+
+The literature search verified the question in the source PDF and checked
+the arXiv record; it did not establish the absence of an earlier solution.
+Consequently, ``an affirmative answer to the stated question'' is the
+appropriate conclusion, not an independently certified first solution.
+No answer to Glazer's separate reverse-mathematical Question 1 is claimed.
+
+All constructions and proofs take place in ordinary ZFC with set-sized
+carriers. The notation $\Oz$ is used only to identify where explicit
+set-sized images lie. No topology on an unrestricted proper class, and no
+set of all surreal numbers, is used.
+
+\section{The construction in one theorem}
+\label{sec:main}
+
+We include $0$ in $\N$. For an ordered abelian group $D$, let
+\[
+ \GD=D\lex\Z
+\]
+mean the direct-product additive group with the $D$ coordinate more
+significant in the order. Thus
+\begin{equation}
+ (d,n)<(e,m)
+ \quad\Longleftrightarrow\quad
+ d<e\ \text{ or }\ (d=e\text{ and }n<m).
+ \label{eq:lex}
+\end{equation}
+Write $\one=(0,1)$ and let
+\begin{equation}
+ \MD=(\GD)_{\geq0}
+      =(D_{>0}\times\Z)\cup(\{0\}\times\N).
+ \label{eq:cone}
+\end{equation}
+The ambient product topology, whenever specified, is separate from
+\eqref{eq:cone}'s arithmetic order.
+
+\begin{theorem}[Polish and effective Presburger models]
+\label{thm:main}
+The following assertions hold.
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item With $D=\R$ in its usual topology, $\MR$ is an uncountable,
+locally compact Polish space without isolated points. Coordinatewise
+addition is continuous, and
+\[
+ (\MR;0,\one,+,<)\models\Th(\N;0,1,+,<).
+\]
+\item With $D=\Q^{\N}$, ordered by the first differing coordinate and
+with each rational coordinate discrete, the space $\MB=\MD$ is
+homeomorphic to $\Baire$. There is an explicit such homeomorphism under
+which addition, successor, and division by each positive standard integer
+are Type-2 computable.
+\item In both models, every first-order definable relation, with
+parameters, is $\Dtwo$. The order is neither open nor closed. In the Baire
+presentation, each formula has a computable bound on the number of
+changes in a convergent truth approximation, relative to its parameter
+codes.
+\item Both models embed as ordered additive submonoids of $\Oz$, fixing
+$0$ and $1$. Neither admits any unital semiring multiplication with its
+given addition, zero, and unit.
+\end{enumerate}
+\end{theorem}
+
+The proofs occupy \cref{sec:algebra,sec:topology,sec:baire,sec:borel,sec:omnific,sec:multiplication}.
+The first assertion alone answers the source question. The later assertions
+explain how much regularity is possible and where it necessarily stops.
+
+For orientation, an element $(r,-17)$ with $r>0$ is a \emph{positive}
+element of $\MR$. Indeed it exceeds every standard numeral $(0,k)$.
+Nevertheless,
+\begin{equation}
+ (1/j,0)\longrightarrow(0,0)
+ \qquad(j\longrightarrow\infty).
+ \label{eq:smallseq}
+\end{equation}
+in the chosen topology. Arithmetic size and topological proximity are
+different notions. The construction would fail if one silently demanded
+that this topology be the order topology.
+
+\section{Full Presburger arithmetic, not merely a few axioms}
+\label{sec:algebra}
+
+\subsection{Discretely ordered groups with standard residues}
+
+\begin{definition}
+A \emph{$\Z$-group} in this article is a linearly ordered abelian group
+$G$ with a distinguished least positive element $\one$, such that for
+every positive standard integer $m$ and every $x\in G$ there exist
+$q\in G$ and $r\in\{0,\ldots,m-1\}$ satisfying
+\begin{equation}
+ x=mq+r\one.
+ \label{eq:division}
+\end{equation}
+Here $mq$ denotes repeated addition by a \emph{standard} integer, not a
+new multiplication operation on $G$.
+\end{definition}
+
+Ordered abelian groups are torsion-free. The quotient and remainder in
+\eqref{eq:division} are unique: if $m(q-q')=(r'-r)\one$ and $q>q'$, then
+$q-q'\geq\one$, whereas $r'-r<m$; the other inequality is similar.
+We suppress $\one$ in standard integer constants when no confusion is
+possible.
+
+\begin{proposition}[The split lexicographic group]
+\label[proposition]{prop:zgroup}
+If $D$ is a divisible ordered abelian group, then $D\lex\Z$ is a
+$\Z$-group. Its standard division algorithm is
+\begin{equation}
+ (d,n)=m\bigl(d/m,\lfloor n/m\rfloor\bigr)+(0,n\bmod m).
+ \label{eq:explicitdivision}
+\end{equation}
+If $(d,n)\geq0$, the displayed quotient is nonnegative.
+\end{proposition}
+\begin{proof}
+Coordinatewise addition preserves the lexicographic order. A positive
+$(d,n)$ either has $d>0$, in which case it exceeds $(0,1)$, or has $d=0$
+and $n\geq1$. Thus $(0,1)$ is the least positive element. Divisibility
+and torsion-freeness of $D$ give the unique element $d/m$. Ordinary
+Euclidean division of $n$ now proves \eqref{eq:explicitdivision}.
+If $d>0$, then $d/m>0$, regardless of the integer quotient. If $d=0$
+and $n\geq0$, the integer quotient is nonnegative.
+\end{proof}
+
+The implication from these axioms to \emph{full} Presburger arithmetic is
+important enough to prove. We use the classical elimination architecture
+of Presburger and Cooper; \cite{Haase} supplies historical and algorithmic
+context. The proof below makes explicit which algebraic hypotheses are
+needed in a nonstandard group.
+
+\subsection{Coset invariance versus standard-shift periodicity}
+\label{sec:periodicity}
+
+For $m\geq1$, write $mG=\{mh:h\in G\}$. A predicate $P$ is
+\emph{$mG$-invariant} if
+\begin{equation}
+ y-z\in mG\quad\Longrightarrow\quad(P(y)\leftrightarrow P(z)).
+ \label{eq:cosetinv}
+\end{equation}
+This is stronger than invariance under the single standard shift $m\one$.
+
+\begin{example}[A false generalization of an integer lemma]
+\label[example]{ex:falseperiod}
+In $G=\R\lex\Z$, let $P(d,n)$ mean $d>0$. For every positive standard
+$m$,
+\[
+ P(x+m\one)\leftrightarrow P(x)
+\]
+holds. Yet $P$ has witnesses and is false at every standard residue
+$0,1,\ldots,m-1$. Thus
+\[
+ (\exists x\ P(x))\ \not\Longleftrightarrow\
+ \bigvee_{0\leq r<m}P(r\one).
+\]
+It also fails the naive finite-interval reduction with lower bound $0$
+and upper bound $(1,0)$. No flaw in the repository's \texttt{Int} theorem
+is involved: its domain is the ordinary integers, where every multiple
+is obtained by a standard finite iteration.
+\end{example}
+
+\begin{lemma}[The coset-invariant finite search]
+\label[lemma]{lem:finite}
+Let $G$ be a $\Z$-group, $m\geq1$ standard, and $P$ an $mG$-invariant
+predicate. For $L,U\in G$,
+\begin{align}
+ &\exists y\ (L\leq y\leq U\ \wedge\ P(y))
+ \nonumber\\[-.2em]
+ &\hspace{1.3cm}\Longleftrightarrow
+ \bigvee_{0\leq r<m}\bigl(L+r\leq U\ \wedge\ P(L+r)\bigr).
+ \label{eq:finitesearch}
+\end{align}
+With only an upper bound, candidates $U-r$ suffice; with only a lower
+bound, candidates $L+r$ suffice. With neither bound, the candidates are
+$0,\ldots,m-1$.
+\end{lemma}
+\begin{proof}
+Given a witness $y\geq L$, write $y-L=mh+r$ with $0\leq r<m$.
+One has $h\geq0$: otherwise $h\leq-1$, and then
+$mh+r\leq-m+(m-1)=-1$, contradicting $y-L\geq0$.
+Consequently
+\[
+ L\leq L+r\leq y\leq U.
+\]
+The difference $y-(L+r)=mh$ lies in $mG$, so $P(L+r)$ holds.
+Conversely every displayed candidate is already a witness. The same
+argument applied to $U-y$ proves the upper-bound version. Without bounds,
+use the standard remainder of $y$ itself.
+\end{proof}
+
+Congruence predicates have exactly the stronger invariance
+\eqref{eq:cosetinv}. If $M$ is a common multiple of finitely many standard
+moduli, any Boolean combination of congruences with those moduli is
+$MG$-invariant. This remains true with arbitrary nonstandard parameters:
+adding $Mh$ to a variable changes an affine congruence term by an element
+of each relevant modulus subgroup.
+
+\subsection{A self-contained elimination argument}
+
+Expand the ordered-group language by predicates
+\[
+ D_m(t)\quad\Longleftrightarrow\quad t\in mG
+ \qquad(m\geq2),
+\]
+and regard $D_1$ as always true. All of these are definable by existential
+formulas in the group language.
+
+\begin{theorem}[Classical Presburger elimination over $\Z$-groups]
+\label{thm:qe}
+In the expanded language
+\[
+ \{0,\one,+,-,\leq,(D_m)_{m\geq2}\},
+\]
+the axioms of $\Z$-groups eliminate quantifiers and form a complete theory.
+In particular every $\Z$-group is elementarily equivalent to
+$(\Z;0,1,+,-,\leq,(m\mid\cdot)_m)$.
+\end{theorem}
+\begin{proof}
+It suffices to eliminate one existential quantifier from a quantifier-free
+formula. Rewrite the formula in disjunctive normal form. Negated
+inequalities are replaced using discreteness, for example
+$\neg(s\leq t)\leftrightarrow t+1\leq s$. An equality is the conjunction
+of two inequalities; a disequality is a disjunction of strict inequalities.
+Finally, standard residue exhaustiveness gives
+\[
+ \neg D_m(t)\ \longleftrightarrow\
+ \bigvee_{r=1}^{m-1} D_m(t-r).
+\]
+Thus it is enough to eliminate $\exists x$ from a conjunction of affine
+inequalities and positive divisibility atoms, along with conjuncts not
+involving $x$.
+
+Let $A$ be a positive common multiple of every nonzero absolute coefficient
+of $x$ occurring in that conjunction; take $A=1$ if there are none. Set
+$y=Ax$ and add the condition $D_A(y)$. An atom
+\[
+ ax+t\leq0,\qquad a\neq0,
+\]
+can be multiplied by the positive standard integer $k=A/|a|$, giving
+\[
+ \operatorname{sgn}(a)y+kt\leq0.
+\]
+It is now an upper or lower bound on $y$. For a congruence, torsion-free
+cancellation gives the equivalence
+\begin{equation}
+ D_m(ax+t)
+ \quad\Longleftrightarrow\quad
+ D_{km}\bigl(\operatorname{sgn}(a)y+kt\bigr).
+ \label{eq:congscale}
+\end{equation}
+Indeed $kz\in kmG$ if and only if $z\in mG$: one direction multiplies a
+witness, and the other cancels $k$ from $kz=kmh$.
+The additional atom $D_A(y)$ is exactly what ensures that every candidate
+$y$ comes from a unique $x$.
+
+After normalizing signs, we have finitely many lower bounds $L_i\leq y$,
+finitely many upper bounds $y\leq U_j$, and a conjunction $P(y)$ of
+congruence conditions. Let $M$ be a positive common multiple of all their
+moduli, including $A$. Then $P$ is $MG$-invariant.
+
+If lower bounds exist, choose their maximum $L$. By
+\cref{lem:finite}, a witness exists exactly when one of
+$L,L+1,\ldots,L+M-1$ satisfies all the normalized conjuncts. The maximum
+need not be introduced as a new function symbol: take a finite disjunction
+over the indices $i$, require $L_h\leq L_i$ for every $h$, and substitute
+$L_i+r$ for $y$. This produces a quantifier-free formula in the parameters.
+If there are upper bounds but no lower bounds, choose a minimal $U_j$
+and substitute $U_j-r$. If no bounds exist, substitute the standard
+residues $r$. Conjuncts independent of $x$ are retained throughout.
+
+This eliminates one existential quantifier. Induction on formula
+complexity, replacing universal quantification by negated existential
+quantification, eliminates all quantifiers.
+
+A quantifier-free sentence uses only standard integer multiples of
+$\one$. Their order and their residues are the same in every $\Z$-group,
+by least positivity and uniqueness of standard remainders. Therefore all
+$\Z$-groups satisfy the same sentences. The ordinary integers are one
+such group, proving completeness and the final assertion.
+\end{proof}
+
+\begin{corollary}[The entire induction scheme]
+\label[corollary]{cor:fullpresburger}
+For every divisible ordered abelian group $D$,
+\[
+ (\MD;0,\one,+,<)\models\Th(\N;0,1,+,<).
+\]
+In particular it satisfies induction for every first-order formula of
+this additive language, with arbitrary parameters from $\MD$.
+\end{corollary}
+\begin{proof}
+By \cref{prop:zgroup,thm:qe}, $\GD\equiv\Z$. The nonnegative cone is
+uniformly definable by $x\geq0$. Relativizing every quantifier to that
+cone translates any sentence about $\MD$ into a sentence about $\GD$.
+The same translation in $\Z$ gives the ordinary nonnegative integers.
+Each universally closed induction instance is therefore true in $\MD$.
+\end{proof}
+
+\begin{proposition}[Definable least elements]
+\label[proposition]{prop:least}
+Every nonempty definable subset of $\MD$, allowing parameters, has a
+least element.
+\end{proposition}
+\begin{proof}
+Eliminate quantifiers and take a finite disjunction of conjunctions as
+in \cref{thm:qe}. Include $x\geq0$ explicitly. For each conjunction,
+the substitution $y=Ax$ introduces a lower bound $y\geq0$. Hence a
+nonempty conjunction has a least solution among the finitely many valid
+candidates at its maximum lower bound; the residue argument shows that
+one of these candidates lies below every witness. Dividing by $A$ is
+order-preserving. Finally take the minimum of the least solutions of the
+nonempty disjuncts.
+\end{proof}
+
+This also gives a direct induction check after elimination: a nonempty
+set of counterexamples to an induction instance would have a least
+member. It cannot be $0$, and its predecessor would contradict the
+induction step. The external standard part
+$\{(0,n):n\in\N\}$ is a proper inductive subset when $D\neq0$, but is
+not definable, even with parameters. Induction quantifies over definable
+sets, not over every external subset.
+
+\section{Polishness and a locally compact example}
+\label{sec:topology}
+
+A Polish space is a separable space whose topology is induced by some
+complete metric. A particular convenient metric may be incomplete
+without the space ceasing to be Polish. This distinction matters for
+open rays.
+
+\subsection{A useful exact criterion}
+
+We first record the standard subspace criterion with a proof, so that the
+completeness issue is visible.
+
+\begin{lemma}[Polish subspaces]
+\label[lemma]{lem:gdelta}
+A subspace $A$ of a Polish space $X$ is Polish if and only if $A$ is a
+$G_\delta$ subset of $X$.
+\end{lemma}
+\begin{proof}
+Fix a compatible complete metric $d$ on $X$. If $A=\bigcap_j U_j$ with
+$U_j$ open, consider on $A$ the continuous functions
+$f_j(x)=1/d(x,X\setminus U_j)$; when $U_j=X$, set $f_j=0$.
+The graph of $x\mapsto(f_j(x))_j$ is closed in $X\times\R^{\N}$.
+Indeed a limit outside some $U_j$ would force $f_j$ to tend to infinity,
+not to a real number. Projection identifies this closed graph
+homeomorphically with $A$. Countable products and closed subspaces of
+complete separable metric spaces are complete and separable.
+
+Conversely, let $\delta$ be a complete metric inducing the subspace
+topology on $A$. For each $n$, let $W_n$ be the union of all ambient open
+sets $U$ that meet $A$ and satisfy
+\[
+ \operatorname{diam}_d(U)<2^{-n},\qquad
+ \operatorname{diam}_{\delta}(U\cap A)<2^{-n}.
+\]
+These unions cover $A$. If $x\in\bigcap_n W_n$, choose $x\in U_n$ and
+$a_n\in U_n\cap A$. Then $a_n\to x$ in $d$. For each fixed $n$, all
+sufficiently late $a_k$ belong to $U_n$, so $(a_k)$ is $\delta$-Cauchy.
+Its $\delta$-limit lies in $A$, and agreement of the two topologies
+identifies that limit with $x$. Thus $A=\bigcap_n W_n$.
+\end{proof}
+
+\begin{theorem}[The positive-cone criterion]
+\label{thm:criterion}
+Let $D$ be a divisible ordered abelian group equipped with a Polish
+topological-group topology, not necessarily its order topology. Give
+$\Z$ the discrete topology. Then the subspace $\MD\subseteq D\times\Z$
+is Polish if and only if $D_{>0}$ is $G_\delta$ in $D$. When this holds,
+$D_{>0}$ is in fact $\Dtwo$, and addition on $\MD$ is continuous.
+\end{theorem}
+\begin{proof}
+If $D_{>0}$ is $G_\delta$, so is its union with the closed singleton
+$\{0\}$. On each clopen integer slice, the carrier \eqref{eq:cone} is
+either $D_{>0}$ or $D_{\geq0}$. A countable topological sum of
+$G_\delta$ subspaces is $G_\delta$ in the corresponding sum: its
+complement is a countable union of $F_\sigma$ subsets of the clopen
+slices. Apply \cref{lem:gdelta}.
+
+Conversely, the slice with integer coordinate $-1$ is closed in $\MD$
+and homeomorphic to $D_{>0}$. If $\MD$ is Polish, so is that slice, and
+\cref{lem:gdelta} makes $D_{>0}$ a $G_\delta$ subset of $D$.
+Negation is a homeomorphism on $D$, so $D_{<0}$ is $G_\delta$ as well.
+The complement of $D_{>0}$ is $D_{<0}\cup\{0\}$, also $G_\delta$.
+Thus $D_{>0}$ is both $F_\sigma$ and $G_\delta$.
+
+Finally the cone is closed under coordinatewise addition. Restricting
+continuous addition on $D\times\Z$ to a subspace with its image in that
+subspace gives a continuous map $\MD^2\to\MD$.
+\end{proof}
+
+\subsection{The real-coordinate model, including a complete metric}
+
+For $D=\R$, the positive cone is open. More explicitly, the slice
+\[
+ X_n=\{r:(r,n)\in\MR\}
+\]
+is $[0,\infty)$ when $n\geq0$ and $(0,\infty)$ when $n<0$. Hence
+\begin{equation}
+ \MR\ \cong\
+ \coprod_{n\geq0}[0,\infty)\ \sqcup\
+ \coprod_{n<0}(0,\infty).
+ \label{eq:rays}
+\end{equation}
+This proves separability, local compactness, and absence of isolated
+points directly.
+
+For a fully explicit compatible complete metric, define
+\[
+ d_n(r,s)=
+ \begin{cases}
+ \min\{1,|r-s|\},&n\geq0,\\
+ \min\{1,|\log r-\log s|\},&n<0,
+ \end{cases}
+\]
+and set
+\begin{equation}
+ d((r,n),(s,m))=
+ \begin{cases}d_n(r,s),&n=m,\\2,&n\neq m.\end{cases}
+ \label{eq:completemetric}
+\end{equation}
+Every Cauchy sequence is eventually contained in one slice. The closed
+ray with the first metric is complete; the open ray with the logarithmic
+metric is isometric, before truncation, to $\R$. Thus \eqref{eq:completemetric}
+is complete. It induces exactly the topology in \eqref{eq:rays}, which
+is the original product-subspace topology. Continuity of addition follows
+from that topology, not from a claim of uniform continuity in this metric.
+
+The map $r\mapsto(r,0)$ on $r>0$ establishes uncountability.
+Together with \cref{cor:fullpresburger}, this completes the simplest proof
+of the affirmative answer.
+
+\begin{remark}[Why the arithmetic order topology is not used]
+The least positive element is $\one$. In $\GD$, the order interval
+$(x-\one,x+\one)$ is the singleton $\{x\}$. The positive cone has the
+same discreteness at its minimum. Consequently its arithmetic order
+topology is discrete, and an uncountable such topology cannot be Polish.
+The topology of \eqref{eq:rays} is different, as \eqref{eq:completemetric}
+and the convergence in \eqref{eq:smallseq} explicitly demonstrate.
+\end{remark}
+
+\section{An explicit Baire-space realization}
+\label{sec:baire}
+
+Let
+\[
+ D_{\mathrm B}=\Q^{\N}
+\]
+with coordinatewise addition. Each factor $\Q$ is discrete, \emph{not}
+given its Euclidean subspace topology. Two distinct sequences are compared
+at the least index at which they differ. This lexicographic order makes
+$D_{\mathrm B}$ a divisible ordered abelian group. Its product topology is
+Polish and zero-dimensional; for example,
+\[
+ d_D(a,b)=2^{-\min\{j:a_j\neq b_j\}}
+ \quad(a\neq b),\qquad d_D(a,a)=0
+\]
+is a compatible complete metric.
+
+The sets
+\[
+ C_{k,q}=\{a:a_0=\cdots=a_{k-1}=0,\ a_k=q\},
+ \qquad k\in\N,\ q\in\Q_{>0},
+\]
+are clopen cylinders, and
+\begin{equation}
+ (D_{\mathrm B})_{>0}=\coprod_{k,q>0}C_{k,q}.
+ \label{eq:positivecylinders}
+\end{equation}
+No restriction is placed on later coordinates. Each cylinder is
+homeomorphic to $\Q^{\N}$. The nonnegative cone
+$(D_{\mathrm B})_{\geq0}$ is closed, since the negative cone is open.
+\cref{thm:criterion} already proves that
+\[
+ \MB=\bigl(D_{\mathrm B}\lex\Z\bigr)_{\geq0}
+\]
+is Polish. We now identify its homeomorphism type without relying on a
+space-classification theorem.
+
+\subsection{The zero branch and its explicit tree code}
+
+Fix computable bijections
+\[
+ e:\N\to\Q,\qquad e_+:\N\to\Q_{>0},\qquad
+ e_{\geq0}:\N\to\Q_{\geq0},
+\]
+with computable inverses. A code $s\in\Baire$ determines a sequence
+$a\in(D_{\mathrm B})_{\geq0}$ as follows. As long as all previously
+chosen coefficients are zero, set $a_j=e_{\geq0}(s_j)$. Once the first
+positive coefficient has appeared, use $a_j=e(s_j)$ at all later stages.
+This is a bijection: the inverse uses the corresponding enumeration at
+each step. A finite output prefix depends on exactly a finite input
+prefix, in both directions. Thus it is a homeomorphism
+\begin{equation}
+ \Baire\ \cong\ (D_{\mathrm B})_{\geq0}.
+ \label{eq:zerobranch}
+\end{equation}
+The all-zero rational sequence is not omitted; it is the branch that
+continues choosing zero indefinitely.
+
+\begin{theorem}[Baire-space carrier]
+\label{thm:baire}
+There is an explicit homeomorphism $h:\Baire\to\MB$.
+In particular $\MB$ is uncountable, has no isolated points, and is
+nowhere locally compact.
+\end{theorem}
+\begin{proof}
+Partition $\MB$ into the following countably many clopen blocks. For each
+$n\geq0$, take the entire slice
+$(D_{\mathrm B})_{\geq0}\times\{n\}$. For $n<0$, partition that slice
+further into $C_{k,q}\times\{n\}$ using
+\eqref{eq:positivecylinders}. By \eqref{eq:zerobranch}, every nonnegative
+slice is homeomorphic to Baire space; every negative-slice block is so
+by coding its unrestricted rational tail. A countable disjoint sum of
+copies of $\Baire$ is homeomorphic to $\Baire$: use the first natural
+coordinate to choose a block and the remaining coordinates to choose a
+point in it.
+
+For completeness, no nonempty basic cylinder of $\Baire$ is relatively
+compact. Its projection to the next unrestricted discrete coordinate
+has infinite image, whereas the continuous image of a compact set in a
+discrete space is finite. Every neighborhood contains such a cylinder.
+The other two assertions follow from the elementary properties of the
+product $\N^{\N}$.
+\end{proof}
+
+\subsection{A total code for every sequence of natural numbers}
+
+Here is a fully specified block indexing, also used in the accompanying
+program. Let $\langle a,b\rangle$ be Cantor's pairing function.
+The first digit of a Baire code is a tag. An even tag $2n$ specifies the
+nonnegative integer coordinate $n$ and the tree code
+\eqref{eq:zerobranch}. An odd tag
+\begin{equation}
+ 2\langle a,\langle k,b\rangle\rangle+1
+ \label{eq:tag}
+\end{equation}
+specifies integer coordinate $-a-1$, first positive rational coordinate
+$k$, and value $e_+(b)$ there. The remaining digits code the unrestricted
+rational tail using $e$.
+
+Every natural tag is of exactly one of these forms. Every infinite
+natural sequence therefore codes a valid element; no hidden domain test
+is required. Conversely, a point with negative integer coordinate has a
+first positive rational coefficient, so its tag and tail are uniquely
+recoverable. This describes $h$ and $h^{-1}$ explicitly.
+
+\begin{theorem}[Computable continuous arithmetic]
+\label{thm:effectiveops}
+Under this presentation, the operations
+\[
+ x+y,\qquad x+\one,\qquad
+ q_m(x)=\lfloor x/m\rfloor,\qquad r_m(x)=x\bmod m
+\]
+are Type-2 computable for every positive standard integer $m$. Here
+$q_m(x)$ is the unique quotient in the model's Euclidean division by $m$,
+not a real-valued floor operation. The remainders have their finite
+discrete topology.
+\end{theorem}
+\begin{proof}
+A Type-2 computation reads finitely many input digits to produce each
+requested output digit. Decode the integer coordinates $n,z$ of the two
+inputs. Each rational coefficient $a_j+b_j$ is computable from finite
+prefixes. If $n+z\geq0$, output tag $2(n+z)$ and encode the coefficient
+sequence by the nonnegative-cone tree. The tree decisions only inspect
+finite prefixes.
+
+If $n+z<0$, at least one input has a negative integer coordinate and hence
+a strictly positive coefficient sequence. Its tag supplies an index $k$
+of a positive leading coefficient. Since both coefficient sequences are
+lex-nonnegative, their sum is strictly positive and its first nonzero
+coordinate occurs at or before $k$. Search these finitely many
+coordinates, output the negative tag \eqref{eq:tag}, and then encode the
+tail. Thus the tag itself is computable; the algorithm does not attempt
+to decide whether an arbitrary sequence is identically zero.
+
+For division use
+\[
+ q_m(a,n)=(a/m,\lfloor n/m\rfloor),\qquad
+ r_m(a,n)=n\bmod m.
+\]
+If the quotient's integer coordinate is negative, the input integer
+coordinate was negative as well, and the same known leading index can
+be used. Otherwise the nonnegative tree code applies. Constants and
+successor are special cases of these finite-prefix procedures.
+\end{proof}
+
+The adjective ``computable'' here concerns operations on infinite
+sequence codes. It does not assert that every element is computable,
+or that equality and order of arbitrary streams can be decided in finite
+time. The distinction will be quantified next.
+
+\section{Definability, effective truth, and the optimal order rank}
+\label{sec:borel}
+
+A subset of a metrizable space is $\Dtwo$ when it is both $F_\sigma$ and
+$G_\delta$. Finite Boolean combinations of such sets are again $\Dtwo$.
+Closed sets, open sets, and clopen sets belong to this class.
+
+\begin{theorem}[All definable relations have low Borel rank]
+\label{thm:definableborel}
+Under the hypotheses of \cref{thm:criterion}, every first-order definable
+subset of $\MD^k$, with parameters, is $\Dtwo$.
+\end{theorem}
+\begin{proof}
+In $\GD=D\times\Z$, the strict positive cone is
+\[
+ (D_{>0}\times\Z)\cup(\{0\}\times\Z_{>0}).
+\]
+It is $\Dtwo$, as is its complement. Affine group terms are continuous
+maps to $\GD$, so their inequalities have $\Dtwo$ truth sets. Equalities
+have closed truth sets because the ambient group is Hausdorff.
+
+Divisibility is especially simple. Since $D$ is divisible,
+\begin{equation}
+ m\GD=D\times m\Z.
+ \label{eq:modslice}
+\end{equation}
+This is clopen. Thus congruence atoms have clopen truth sets, including
+when their affine terms contain parameters. Translate a cone formula
+into the group and apply \cref{thm:qe}. The result is a finite Boolean
+combination of these atoms. Finally restrict to $\MD^k$.
+\end{proof}
+
+\subsection{A formula-by-formula bound on changes of mind}
+
+\begin{theorem}[Effective finite-mind-change truth]
+\label{thm:mindchange}
+For each first-order Presburger formula $\varphi(\bar x;\bar p)$, one can
+compute a natural number $K_{\varphi}$ and an algorithm producing
+\[
+ A_s(\bar x;\bar p)\in\{0,1\}\qquad(s\in\N)
+\]
+from finite prefixes of the Baire codes, such that
+\[
+ \lim_s A_s(\bar x;\bar p)
+  =\mathbf 1_{\MB\models\varphi(\bar x;\bar p)}.
+\]
+For every input tuple the displayed sequence changes value at most
+$K_{\varphi}$ times. Parameter codes are supplied as oracles; they are
+not assumed computable.
+\end{theorem}
+\begin{proof}
+Compute a quantifier-free group formula equivalent to the relativized
+cone formula, by \cref{thm:qe}. An affine group term has the form
+$(c,n)$, where $n$ is an exactly computable integer and each rational
+coefficient $c_j$ is computable from finite prefixes of the inputs.
+
+To approximate the sign of $(c,n)$, first use the sign of $n$. At stage
+$s$, inspect $c_0,\ldots,c_{s-1}$. If a nonzero coefficient has been
+found, use the sign of the first such coefficient instead. If $c=0$,
+the initial answer was correct. Otherwise the answer becomes correct
+when the first nonzero coefficient is reached and never changes again.
+An equality atom can be handled in the same way: it starts with the
+answer determined by $n$ and becomes permanently false if a nonzero
+coefficient is found. A congruence atom is decided immediately from $n$
+by \eqref{eq:modslice}.
+
+Evaluate the fixed Boolean combination of these approximations at each
+stage. Its value can change only when an equality or inequality atom
+changes. The number of those atom occurrences is a computable bound
+$K_{\varphi}$. Each stage reads only finitely many digits. The truth set
+is effectively $F_\sigma$ because it is
+\[
+ \bigcup_N\bigcap_{s\geq N}\{\bar x:A_s(\bar x;\bar p)=1\},
+\]
+where the stage sets are effectively clopen relative to the parameter
+codes. The same expression with $0$ proves effective $G_\delta$ status.
+\end{proof}
+
+No effective stopping time is asserted: a later rational coordinate may
+be the first nonzero one. Deciding sentences and deciding arbitrary
+parameter instances are different problems. The former is ordinary
+Presburger decidability; the latter is represented here by a convergent,
+uniformly bounded-change process.
+
+\subsection{Why rank one is impossible for the order}
+
+\begin{theorem}[Open or closed arithmetic order forces discreteness]
+\label{thm:orderoptimal}
+Let $X$ carry a model of Presburger arithmetic and a topology in which
+successor $x\mapsto x+\one$ is continuous. If either of the relations
+$<$ or $\leq$ is open or closed in $X^2$, then $X$ is discrete.
+Consequently, in any uncountable Polish model with continuous addition,
+the arithmetic order is neither open nor closed.
+\end{theorem}
+\begin{proof}
+If $\leq$ is open, then for fixed $a$ both sets
+$\{x:x\leq a\}$ and $\{x:a\leq x\}$ are open. Their intersection is
+$\{a\}$, so every point is isolated.
+
+If $<$ is closed, taking the complement and reversing coordinates makes
+$\leq$ open. If $<$ is open, the discrete-order equivalence
+\[
+ x\leq y\quad\Longleftrightarrow\quad x<y+\one
+\]
+and continuity of successor make $\leq$ open. Finally, if $\leq$ is
+closed, then
+\[
+ x<y\quad\Longleftrightarrow\quad x+\one\leq y
+\]
+makes $<$ closed, reducing to the previous case.
+An uncountable discrete space is not separable, hence not Polish.
+\end{proof}
+
+Together, \cref{thm:definableborel,thm:orderoptimal} make the $\Dtwo$
+order bound optimal. This is a statement about the order relation, not
+about every individual definable set: many congruence sets are clopen.
+It also rules out a continuous Boolean-valued order test on the Baire
+model, despite its computable addition.
+
+\section{Which definable operations are continuous?}
+\label{sec:continuity}
+
+The coordinate topology makes several arithmetic operations exceptionally
+regular, but not every definable operation. This section identifies exact
+boundaries in the two explicit models.
+
+\begin{proposition}[Euclidean self-similarity]
+\label[proposition]{prop:selfsimilar}
+In $\MR$ and $\MB$, for each positive standard integer $m$ the map
+\begin{equation}
+ x\longmapsto\bigl(q_m(x),r_m(x)\bigr)
+ \label{eq:selfsimilar}
+\end{equation}
+is a homeomorphism from the model onto
+$M\times\{0,\ldots,m-1\}$, where the finite factor is discrete.
+Its inverse is $(q,r)\mapsto mq+r\one$.
+\end{proposition}
+\begin{proof}
+Uniqueness and existence are \cref{prop:zgroup}. In both chosen
+coefficient topologies, division of $d$ by $m$ is continuous. The integer
+maps $n\mapsto\lfloor n/m\rfloor$ and $n\mapsto n\bmod m$ are
+continuous on a discrete space. Hence \eqref{eq:selfsimilar} is
+continuous into the product. Repeated addition and addition of a fixed
+standard numeral make its inverse continuous.
+\end{proof}
+
+The same formula also explains why all standard congruences ignore the
+entire coefficient sequence. Two elements have the same remainder modulo
+every positive standard integer if and only if their integer coordinates
+agree. The forward direction uses the elementary fact that an ordinary
+integer divisible by every positive integer is zero. Their infinite
+coordinates can still be arbitrary and different.
+
+\begin{proposition}[The total predecessor has exactly one discontinuity]
+\label[proposition]{prop:pred}
+Define
+\[
+ p(0)=0,\qquad p(x)=x-\one\quad(x>0).
+\]
+In either explicit model, $p$ is continuous exactly at the points other
+than $0$.
+\end{proposition}
+\begin{proof}
+Away from $0$, this is a restriction of translation by $-\one$ in the
+ambient topological group. Since $\{0\}$ is closed, the nonzero domain
+is open, and translation has its image in the cone.
+
+In the real model let $t_j=1/j$; in the Baire model let $t_j=e_j$, the
+rational sequence with $1$ in coordinate $j$ and zeros elsewhere. In
+either case $t_j>0$ and $t_j\to0$ in $D$. Then
+\[
+ (t_j,0)\to0,\qquad p(t_j,0)=(t_j,-1).
+\]
+The latter sequence does not converge to $p(0)=0$, because its integer
+coordinate is always $-1$ and integer coordinates are discrete.
+\end{proof}
+
+\begin{theorem}[Exact discontinuity locus of truncated subtraction]
+\label{thm:truncated}
+For $M=\MR$ or $\MB$, let
+\[
+ T(x,y)=\max\{x-y,0\}
+\]
+using the arithmetic order in the ambient group. Its discontinuity locus
+is exactly
+\begin{equation}
+ \bigl\{((d,n),(d,z))\in M^2:n\neq z\bigr\}.
+ \label{eq:disclocus}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Both positive and negative cones in the coefficient group $D$ are open
+for our two examples. If the coefficient difference $d-e$ is nonzero,
+its sign is locally fixed. Thus $T$ locally agrees either with the
+continuous ambient difference or with the constant zero map.
+
+Suppose instead that $x=y$. Along inputs sufficiently near this pair,
+the integer difference is zero. The output is either their ambient
+difference or zero. For any neighborhood $V$ of zero in the ambient
+group, both possible outputs lie in $V$ when the inputs are sufficiently
+near $(x,x)$. This proves continuity there.
+
+It remains to consider equal coefficient coordinates and $k=n-z\neq0$.
+Use the positive null sequence $t_j$ from \cref{prop:pred}.
+If $k>0$, replace $y$ by $y+(t_j,0)$. These inputs converge to $(x,y)$,
+but their truncated differences are zero, whereas $T(x,y)=(0,k)$.
+If $k<0$, replace $x$ by $x+(t_j,0)$. The outputs are $(t_j,k)$, which
+cannot converge to the original value $0$ because their integer
+coordinate is the nonzero integer $k$. All perturbed inputs remain in
+the positive cone. This proves exactly \eqref{eq:disclocus}.
+\end{proof}
+
+The standard numerals form a closed, relatively discrete subset of both
+models, yet zero is not isolated in the whole space. This causes no
+conflict with \cref{prop:pred}. Nor does continuity of standard division
+imply continuity of every definable piecewise operation: the branch
+boundary is decisive.
+
+\section{Explicit set-sized fragments of the omnific integers}
+\label{sec:omnific}
+
+We use Conway normal-form notation
+\[
+ x=\sum_{\gamma\in S}r_\gamma\omega^\gamma,
+\]
+where $S$ is reverse well-ordered and all coefficients are real. In the
+omnific ring the occurring exponents are nonnegative, and the coefficient
+at exponent zero is an ordinary integer. This is the interface recorded
+in the repository's surreal development \cite{RepoSurreal}. Addition is
+coefficientwise, and a nonzero normal form has the sign of its leading
+coefficient.
+
+\begin{theorem}[One-scale and countable-scale realizations]
+\label{thm:omnific}
+There are injective ordered additive maps, fixing $0$ and $1$,
+\begin{align}
+ \iota_{\R}:\R\lex\Z&\longrightarrow\Oz,
+ &\iota_{\R}(r,n)&=r\omega+n,
+ \label{eq:realembedding}\\
+ \iota_{\mathrm B}:\Q^{\N}\lex\Z&\longrightarrow\Oz,
+ &\iota_{\mathrm B}(a,n)&=
+       \sum_{j=0}^{\infty}a_j\omega^{1/(j+1)}+n.
+ \label{eq:baireembedding}
+\end{align}
+Their positive images, equipped with the transported coefficient
+topologies, are respectively the Polish models $\MR$ and $\MB$.
+\end{theorem}
+\begin{proof}
+The first formula is a finite normal form. For the second, the fixed
+exponents
+\[
+ 1,\tfrac12,\tfrac13,\ldots
+\]
+strictly decrease and are positive. Every nonempty subset of these
+exponents has a largest element, namely the one with least index.
+Thus every possible support in \eqref{eq:baireembedding} is reverse
+well-ordered, and adjoining exponent zero preserves that property.
+The expression is a legitimate normal form, even when infinitely many
+coefficients are nonzero. All positive-exponent coefficients are real,
+and the constant term is the integer $n$, so the value is omnific.
+
+Uniqueness of normal forms gives injectivity. Addition of two such
+expressions is coordinatewise on a common fixed support, giving
+additivity. The leading nonzero coefficient is the first nonzero $a_j$;
+if all are zero, the sign is that of $n$. Therefore the map preserves
+and reflects the lexicographic order. The same reasoning proves the
+one-scale case. Transporting a topology through a bijection onto its
+image preserves all the asserted topological properties.
+\end{proof}
+
+\subsection{What this realization does and does not preserve}
+
+These are ordered additive embeddings, \emph{not} ring embeddings. Both
+images contain $\omega$, but neither contains $\omega^2$. Their
+multiplicative nonclosure is therefore immediate from the normal forms.
+The stronger theorem in \cref{sec:multiplication} will show that replacing
+surreal multiplication by some other multiplication cannot repair the
+problem while retaining the same carrier, addition, and unit.
+
+The topologies in \cref{thm:omnific} are precisely specified coefficient
+topologies. The real coordinate is Euclidean in
+\eqref{eq:realembedding}; the rational coordinates are discrete and
+combined by a product topology in \eqref{eq:baireembedding}. Neither is
+the discrete arithmetic order topology. No assertion that they are a
+canonical topology on all omnific integers is intended.
+
+The ordinary constant-term map becomes simply
+\[
+ \ct\bigl(\iota(d,n)\bigr)=n.
+\]
+It is continuous into the discrete integers for these models. Standard
+congruence data see only this coordinate, matching
+\eqref{eq:modslice}. The standard part itself remains externally
+specified and nondefinable in the Presburger structure.
+
+\subsection{Why no proper-class difficulty arises}
+
+The source sets $\R\times\Z$ and $\Q^{\N}\times\Z$ are ordinary sets.
+The normal-form constructions above are definable assignments on those
+sets. Replacement therefore gives set-sized images. The set of birthdays
+of their elements has an ordinal supremum; choosing a larger ordinal
+places both images inside a set-sized birthday cutoff of $\No$.
+No explicit optimal cutoff is needed for any theorem here.
+
+Accordingly, one can conduct the entire argument in the product-group
+models and use \cref{thm:omnific} only as a final realization theorem.
+This is also the most economical formalization strategy. It avoids
+making a class-sized object the carrier of a Polish space or a
+first-order structure in ordinary set-based semantics.
+
+\section{An absolute obstruction to multiplication}
+\label{sec:multiplication}
+
+A Borel obstruction would not rule out a wildly discontinuous
+multiplication. For the models constructed here, the obstruction is
+stronger and purely algebraic.
+
+\begin{definition}
+In a Presburger model $M$, a positive element $u$ is a
+\emph{cofinal infinite additive unit} if
+\[
+ u>n\one\quad\text{for every standard }n,
+\]
+and for every $x\in M$ there is a positive standard integer $N$ with
+$x\leq Nu$.
+The word ``unit'' here refers only to cofinality under repeated addition;
+it is not a multiplicative unit.
+\end{definition}
+
+\begin{theorem}[Cofinal-infinite-element obstruction]
+\label{thm:no_semiring}
+A Presburger model with a cofinal infinite additive unit cannot be
+expanded to a unital semiring with the same addition, zero, and
+multiplicative unit $\one$. No continuity, measurability, commutativity
+of multiplication, or induction involving multiplication is assumed.
+\end{theorem}
+\begin{proof}
+Suppose such a multiplication exists. Cofinality applied to $u^2$ gives
+a positive standard $N$ such that $u^2\leq Nu$. Since $u$ exceeds every
+standard numeral, it has a decomposition
+\[
+ u=(N+1)\one+v\qquad(v\in M).
+\]
+Distributivity and the unit law give
+\[
+ u^2=(N+1)u+vu\geq(N+1)u>Nu,
+\]
+a contradiction. The first inequality uses only that $vu$ belongs to the
+nonnegative carrier. The last one follows from $u>0$ and additive
+cancellation. In any semiring expansion of this additive monoid, its
+natural order $x\leq y\leftrightarrow\exists z\ (x+z=y)$ is already the
+Presburger order, so no additional order-compatibility axiom was hidden
+in the argument.
+\end{proof}
+
+\begin{corollary}
+\label[corollary]{cor:no_semiring_models}
+Neither $\MR$ nor $\MB$ admits a unital semiring multiplication with the
+displayed addition and unit.
+\end{corollary}
+\begin{proof}
+In $\MR$ take $u=(1,0)$. It exceeds every standard numeral, and an
+integer $N>r$ gives $(r,n)<Nu$. In $\MB$ take $u=(e_0,0)$, where $e_0$
+has first coefficient $1$ and all later coefficients zero. For any
+$(a,n)$ choose an integer $N>a_0$; comparison at coordinate zero gives
+$(a,n)<Nu$. Apply \cref{thm:no_semiring}.
+\end{proof}
+
+In their omnific realizations, this cofinal element is $\omega$.
+The missing larger scale $\omega^2$ is not merely a defect of one chosen
+multiplication: every possible semiring multiplication would have to
+produce an element growing faster than every standard multiple of
+$\omega$, which the additive carrier cannot contain.
+
+For a different uncountable Polish Presburger model that does allow a
+semiring expansion algebraically, Glazer's cited Borel obstruction for
+$Q+I\mathrm{Open}$ would still matter. Our argument is not a replacement
+for that general theorem; it identifies a stronger obstruction in these
+particular additive structures.
+
+\section{Endomorphisms, elementary submodels, and a contrast}
+\label{sec:embeddings}
+
+The two models have markedly different self-embedding behavior. All
+homomorphisms in the next theorem preserve addition, zero, and $\one$;
+continuity and injectivity are \emph{not} assumed.
+
+\begin{theorem}[Rigidity of the real-coordinate model]
+\label{thm:realendos}
+Every unital additive endomorphism $f:\MR\to\MR$ has the form
+\begin{equation}
+ f(r,n)=(cr,n)\qquad(c\in\R_{>0}).
+ \label{eq:endo}
+\end{equation}
+Conversely each such formula is an endomorphism. All of them are
+homeomorphisms and Presburger automorphisms. In particular $\MR$ has no
+proper elementary self-embedding.
+\end{theorem}
+\begin{proof}
+The group completion of the cancellative monoid $\MR$ is
+$G=\R\lex\Z$. Thus $f$ extends uniquely to an additive group map
+$F:G\to G$ fixing $\one$. Inside $G$,
+\[
+ \bigcap_{m\geq1}mG=\R\times\{0\}.
+\]
+One inclusion follows from real divisibility; the other follows because
+the integer coordinate of an element of the intersection is divisible
+by every positive integer. Every additive group map preserves this
+intersection. Hence
+\[
+ F(r,0)=(h(r),0),\qquad F(0,n)=(0,n)
+\]
+for some additive map $h:\R\to\R$.
+
+Since $f$ maps the positive cone into itself, $h(r)\geq0$ whenever
+$r\geq0$. Thus $h$ is monotone. If $c=h(1)$, rational comparisons and
+additivity give $h(r)=cr$ for every real $r$: sandwich $r$ between
+rational numbers and use the corresponding inequalities for $h$.
+Here $c\geq0$. But $c=0$ would send the positive element $(1,-1)$ to
+$(0,-1)$, outside the cone. Thus $c>0$.
+
+Formula \eqref{eq:endo} and its inverse with scalar $1/c$ preserve the
+cone, addition, order, and unit, and are continuous in the product
+coordinates. This proves all assertions.
+\end{proof}
+
+\begin{theorem}[All elementary submodels of the real model]
+\label{thm:submodels}
+The elementary submodels of $\MR$ are exactly
+\begin{equation}
+ M_E=(E\lex\Z)_{\geq0},
+ \qquad E\text{ a }\Q\text{-linear subspace of }\R.
+ \label{eq:submodels}
+\end{equation}
+Among them, the only ones Polish in the inherited topology are the
+standard copy $\N$ and the whole model $\MR$. Every nonzero proper
+choice of $E$ gives a dense, non-Polish elementary submodel.
+\end{theorem}
+\begin{proof}
+If $E$ is a $\Q$-linear subspace, then $E\lex\Z$ is a $\Z$-group.
+Its inclusion in $\R\lex\Z$ preserves and reflects the expanded
+quantifier-free language, including all congruences, since a standard
+modulus depends only on the integer coordinate. Quantifier elimination
+makes this inclusion elementary. Relativizing to positive cones proves
+$M_E\preccurlyeq\MR$.
+
+Conversely, let $S\preccurlyeq\MR$, and let $H=S-S$ be its group
+completion inside $G$. If $a,b\in S$ and $a-b\geq0$, the unique solution
+of $b+x=a$ lies in $S$ by elementarity. Therefore
+$S=H\cap\MR$. Since $H$ contains every standard integer, subtracting
+the integer coordinate from any $(r,n)\in H$ shows that
+$H=E\times\Z$ for an additive subgroup $E\leq\R$.
+For $r\in E_{\geq0}$, the model's unique division of $(r,0)$ by a
+positive standard $m$ has remainder zero and quotient $(r/m,0)$.
+Elementarity puts that quotient in $S$. Applying the same observation
+to negatives in $H$ shows $E$ is divisible, hence $\Q$-linear.
+
+If $E\neq0$, it contains all rational multiples of a nonzero real and
+is dense in $\R$. Thus $M_E$ is dense in every slice of $\MR$.
+Suppose $M_E$ is also Polish in the inherited topology. Its closed slice
+of integer coordinate zero is homeomorphic to $E\cap[0,\infty)$.
+By \cref{lem:gdelta}, this is $G_\delta$ in $\R$. Its negative is also
+$G_\delta$, so their union $E$ is $G_\delta$ in $\R$.
+For any $r\in\R$, the dense $G_\delta$ sets $E$ and $r+E$ intersect
+by the Baire category theorem. Hence $r\in E-E=E$, giving $E=\R$.
+Finally $E=0$ gives the relatively discrete standard copy $\N$, which
+is Polish, and $E=\R$ gives the whole model.
+\end{proof}
+
+For example, $E=\Q$ gives a countable dense elementary submodel. Its
+inherited topology is not Polish; there is no inconsistency between its
+density and the complete metric on the ambient model.
+
+\begin{theorem}[Clopen elementary self-copies of the Baire model]
+\label{thm:shift}
+Let
+\[
+ \sigma((a_0,a_1,a_2,\ldots),n)
+   =((0,a_0,a_1,a_2,\ldots),n).
+\]
+Then $\sigma:\MB\to\MB$ is a proper elementary embedding and a
+homeomorphism onto a clopen subspace. Its iterates satisfy
+\[
+ \bigcap_{k\geq0}\sigma^k(\MB)=\{(0,n):n\in\N\}.
+\]
+Thus a descending sequence of proper clopen elementary self-copies has
+intersection exactly the standard elementary submodel.
+\end{theorem}
+\begin{proof}
+Inserting an initial zero preserves and reflects the lexicographic
+order, addition, and every standard congruence. It maps the divisible
+coefficient group into the subgroup with first coordinate zero.
+Quantifier elimination gives elementarity, first for the groups and
+then for their cones. The image is exactly the subset with $a_0=0$,
+which is clopen because the first rational coordinate is discrete.
+Deleting that zero is a continuous inverse on the image. It is proper,
+since elements with $a_0>0$ are omitted.
+The $k$-th image has its first $k$ rational coordinates zero. Membership
+in all images therefore means that every rational coordinate is zero;
+positivity then forces $n\geq0$.
+\end{proof}
+
+These clopen submodels are external subsets, not Presburger-definable
+subsets, even with parameters: a proper definable subset containing zero
+and closed under successor would violate induction. Topological
+simplicity and internal definability are different properties.
+
+\section{A compactness obstruction independent of multiplication}
+\label{sec:compact}
+
+The positive answer on Baire space does not extend to every familiar
+uncountable Polish space. In particular compact carriers are impossible.
+The underlying fact is the standard compact-cancellative-monoid argument,
+which we include in its commutative form.
+
+\begin{lemma}[Compact cancellation produces inverses]
+\label[lemma]{lem:compactmonoid}
+Every compact Hausdorff commutative cancellative topological monoid is
+a group algebraically.
+\end{lemma}
+\begin{proof}
+Write the identity as $0$ and fix $a$. Let $S$ be the closure of
+$\{na:n\geq1\}$. Continuity of addition makes $S$ a nonempty compact
+subsemigroup. By the compact intersection property and Zorn's lemma,
+$S$ has a minimal nonempty compact subsemigroup $K$.
+
+For $x\in K$, the set $x+K$ is a nonempty compact subset of $K$ and is a
+subsemigroup: for $u,v\in K$,
+\[
+ (x+u)+(x+v)=x+(x+u+v)\in x+K.
+\]
+Minimality gives $x+K=K$. Since $x\in K$, there is $y\in K$ with
+$x+y=x=x+0$, and cancellation gives $y=0$. Thus $0\in K\subseteq S$.
+But $a+X$ is compact and hence closed, and contains every positive
+multiple of $a$. Therefore it contains $S$ and in particular $0$.
+So $a+b=0$ for some $b\in X$.
+\end{proof}
+
+\begin{corollary}[No compact positive-cone model]
+\label[corollary]{cor:compact}
+No model of Presburger arithmetic has a compact Hausdorff topology with
+continuous addition. In particular Cantor space cannot be a carrier,
+although Baire space can.
+\end{corollary}
+\begin{proof}
+Its addition is a commutative cancellative monoid. The lemma would give
+an additive inverse of $\one$, but no nonnegative element can sum with
+$\one$ to zero.
+\end{proof}
+
+This obstruction uses neither Borel definability nor multiplication. It
+is separate from \cref{thm:no_semiring}: the real model is locally
+compact but not compact, and the Baire model is nowhere locally compact.
+
+\section{Formalization and reproducibility}
+\label{sec:formalization}
+
+\subsection{A minimal theorem dependency graph}
+
+The construction naturally splits into independently checkable layers.
+The core algebra does not require real analysis or surreal numbers.
+First define a discretely ordered abelian group with standard residue
+representatives. Prove the coset-invariant finite-search lemma. Then
+prove coefficient normalization, elimination, completeness, and the
+positive-cone interpretation. Only afterward supply the real or
+rational-sequence carrier and its topology. The omnific realization can
+be verified last, as an independent bridge.
+
+A practical Lean development can use the following \emph{proposed}
+modules. These names are a plan, not existing checked files:
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.31\textwidth}>{\raggedright\arraybackslash}p{.61\textwidth}@{}}
+\toprule
+Proposed module & Required mathematical content\\
+\midrule
+\texttt{ZGroup.Basic} & Least positive element, standard residue witnesses,
+uniqueness, and order properties of the quotient.\\
+\texttt{ZGroup.CosetCooper} & Full $mG$-invariance and the finite-search
+criterion; the counterexample to weaker periodicity.\\
+\texttt{ZGroup.Elimination} & Affine-term semantics over an arbitrary
+$\Z$-group, coefficient scaling, quantifier elimination.\\
+\texttt{PolishPresburger.}\allowbreak\texttt{Real} & The positive cone of $\R\lex\Z$ and
+its complete slice metric.\\
+\texttt{PolishPresburger.}\allowbreak\texttt{Baire} & The rational-sequence cone and the
+explicit block/tree homeomorphism.\\
+\texttt{PolishPresburger.}\allowbreak\texttt{Structure} & Order-rank obstruction, absence of
+semiring expansions, and self-embedding theorems.\\
+\texttt{PolishPresburger.}\allowbreak\texttt{Omnific} & The fixed-support normal-form maps and
+their additive/order laws.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{The nonstandard Cooper boundary must be explicit}
+
+The inspected repository theorem \texttt{periodic\_interval} has an
+ordinary-integer predicate and a one-step periodicity hypothesis
+\cite{RepoCooper}. Its proof can iterate by any ordinary integer quotient.
+Over a general $\Z$-group, the quotient in $x-L=mq+r$ is an element of
+that group, not necessarily a standard numeral. A proof by ordinary
+natural-number induction cannot supply invariance under that shift for
+an arbitrary external predicate.
+
+The correct interface is therefore a predicate on the quotient $G/mG$,
+or equivalently the hypothesis \eqref{eq:cosetinv}. Affine congruence
+atoms satisfy it by algebra, and Boolean combinations preserve it. This
+makes the generalized arithmetic lemma reusable and prevents an
+incorrect formal transfer from being hidden by notation. The original
+integer theorem should be retained as an instance; it does not need to
+be weakened or retracted.
+
+The existing decision procedure's semantics are over integers. Reusing
+its syntax and transformations is plausible, but proving soundness over
+all $\Z$-groups is an additional obligation. The repository's existence
+of an executable integer eliminator, by itself, does not certify
+\cref{cor:fullpresburger} for a new carrier.
+
+\subsection{Executable material included with this manuscript}
+
+\texttt{polish\_presburger.py} implements exact finite-rank rational
+arithmetic and the Baire codec of \cref{sec:baire}. The codec uses a
+computable positive-rational enumeration and Cantor pairing, supplies
+addition and standard division on infinite-sequence oracles, and gives
+a one-change comparison approximation. Every Baire input code is valid.
+The lower-level encoding routine takes a positive-cone promise, documented
+in its interface; the public arithmetic operations preserve that promise.
+
+\texttt{verify.py} performs deterministic tests using exact
+\texttt{fractions.Fraction} arithmetic and a fixed seed. The executed
+run produced \textbf{17,930 successful checks}. They cover pairing and
+rational-enumeration round trips, additive and order identities,
+Euclidean division, cone closure, coset-invariant finite candidates,
+Baire-code prefix round trips, arithmetic output prefixes, the comparison
+change bound, and the predecessor boundary witness. The deliberately
+false weak-periodicity generalization is tested as a counterexample,
+not asserted as a theorem.
+
+\begin{tcolorbox}[title=Reproduction]
+\raggedright
+With Python 3.10 or later, run \texttt{python verify.py}. No external
+Python package is needed. The script writes
+\texttt{verification\_results.json}. Compile the article twice with
+\texttt{pdflatex -interaction=nonstopmode -halt-on-error
+polish\_presburger\_glazer.tex} to resolve references.
+\end{tcolorbox}
+
+Tests on finite-rank elements do not quantify over arbitrary elements of
+$\Q^{\N}$, and finite prefixes do not decide equality of infinite
+streams. Polishness, induction, and universal semantic statements are
+established by the proofs, not by the test count. No new Lean or Rocq
+formalization is included in this archive.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+
+The following questions are proposed directions arising from the proved
+results. Except where explicitly linked to the source question, their
+status is not presented as a certification that the literature has no
+answer.
+
+\begin{question}[A small formal certificate for the affirmative answer]
+Can the one-scale model, the full $\Z$-group elimination theorem, and
+its Polish topology be formalized with a compact audit boundary in
+ProveIt? The key initial milestone is the generic coset-invariant Cooper
+lemma, rather than merely a finite test of arithmetic identities.
+\end{question}
+
+\begin{question}[Prescribed zero-dimensional locally compact carriers]
+Which uncountable zero-dimensional locally compact Polish spaces support
+continuous-addition Presburger models? Compact spaces are excluded and
+Baire space is realized, but Baire space is nowhere locally compact.
+This leaves a meaningful topological region not settled by our examples.
+\end{question}
+
+\begin{question}[Connected and finite-dimensional carriers]
+What additional obstruction prevents or permits a continuous-addition
+model on a connected Polish space? Our locally compact model has
+countably many ray components, and the arithmetic order cannot be open
+or closed. A proof for a prescribed connected carrier must use more than
+the order-topology observation alone.
+\end{question}
+
+\begin{question}[Removing the algebraic obstruction to multiplication]
+Can one give an equally explicit Polish continuous-addition Presburger
+model whose underlying additive structure admits a unital semiring
+expansion? Any candidate must avoid a cofinal infinite additive unit.
+If one also requires $Q+I\mathrm{Open}$, the multiplication cannot be
+Borel by the cited obstruction. Separating algebraic expandability from
+Borel expandability is the central issue.
+\end{question}
+
+\begin{question}[Classifying admissible coefficient groups]
+Which divisible ordered Polish abelian groups have $G_\delta$ positive
+cone? \Cref{thm:criterion} turns this into an exact criterion for the
+split construction. Can their possible underlying topologies, order
+ranks, and continuous order-preserving endomorphisms be classified under
+useful additional hypotheses?
+\end{question}
+
+\begin{question}[Continuity of a richer definable language]
+How much of Presburger definable choice can be made continuous in one
+uncountable Polish presentation? Standard quotients and remainders are
+continuous here, but total predecessor and truncated subtraction are
+not everywhere continuous. Is there a natural maximal collection of
+definable operations admitting simultaneous continuity?
+\end{question}
+
+\begin{question}[Optimal finite-mind-change complexity]
+For a given Presburger formula, what is the smallest possible uniform
+change bound in the Baire presentation? The proof gives the number of
+order/equality atom occurrences after elimination. That bound need not
+be optimal and may be much larger than necessary. Relating the minimal
+bound to the finite difference hierarchy or to formula structure would
+refine the $\Dtwo$ result.
+\end{question}
+
+\begin{question}[Polish elementary-submodel lattices]
+Which lattices of closed or clopen elementary submodels can occur in a
+Polish continuous-addition Presburger model? The real model has only two
+Polish elementary submodels with inherited topology, whereas the Baire
+model has infinitely many proper clopen elementary self-copies with
+standard intersection. What intermediate behaviors can be realized?
+\end{question}
+
+\begin{question}[Canonical surreal cutoffs and topologies]
+Find useful explicit birthday bounds for the two fixed-support omnific
+images and formalize the coefficient-topology transport inside those
+cutoffs. More generally, which support sets admit Polish coefficient
+topologies with continuous addition and full Presburger induction on
+the resulting positive cone? Such a classification should keep ring
+closure separate from additive closure.
+\end{question}
+
+\begin{question}[Metatheoretic strength]
+What weak foundational theory suffices to certify the affirmative
+construction, including the chosen representation of Polishness?
+The real model has an explicit complete metric, and the Baire model has
+an explicit sequence code, so a general model-existence theorem is
+unnecessary. This is distinct from Glazer's Question 1 concerning the
+strength needed for his stronger-arithmetic obstruction.
+\end{question}
+
+\section{Conclusion}
+
+The affirmative construction can be summarized by one change of viewpoint:
+use the lexicographic order to interpret arithmetic, and a coefficient
+topology to interpret continuity. Divisibility of the leading-coordinate
+group supplies all standard residues; quantifier elimination then
+supplies full Presburger induction. Neither countability of the standard
+model nor discreteness of the arithmetic order forces the external
+presentation to be countable or discrete.
+
+The real model gives a locally compact answer, while the rational-sequence
+model gives a genuinely effective answer on Baire space. Their order
+relations have the smallest possible nontrivial Borel rank, yet they
+exhibit different elementary self-embedding behavior. Their realization
+inside $\Oz$ connects these results directly to the repository's
+normal-form arithmetic. Finally, the cofinal-infinite-element argument
+shows exactly why these additive examples cannot be mistaken for
+topological models of full arithmetic.
+
+\appendix
+\section{Worked examples and an audit of the hypotheses}
+\label{sec:audit}
+
+\subsection{A negative constant term is compatible with positivity}
+
+In $\MR$, take
+\[
+ x=(\tfrac32,-17),\qquad y=(\tfrac14,6).
+\]
+Both are positive, and
+\[
+ x+y=(\tfrac74,-11).
+\]
+Division of $x$ by $5$ gives
+\[
+ q_5(x)=(\tfrac3{10},-4),\qquad r_5(x)=3,
+\]
+because $-17=5(-4)+3$. The quotient is positive because its real
+coordinate is positive. A definition that incorrectly demanded a
+nonnegative integer coordinate for every element would break the
+predecessor and division axioms.
+
+\subsection{A nonstandard finite-candidate calculation}
+
+Let $L=(\tfrac12,-5)$, $U=(\tfrac23,0)$, and require
+\[
+ y\equiv(\tfrac7{13},2)\pmod{3G}.
+\]
+The real coefficient of a congruence parameter is irrelevant because
+$\R$ is divisible. Among $L,L+1,L+2$, the candidate $L+1$ has integer
+coordinate $-4\equiv2\pmod3$, so it is a witness. Every candidate lies
+below $U$, since its leading coefficient is $1/2<2/3$.
+No iteration a nonstandard number of times is used: the finite search is
+justified by full invariance on $3G$-cosets.
+
+\subsection{A Baire convergence that order cannot detect continuously}
+
+Let $e_j$ be the rational unit vector at coordinate $j$. Then
+\[
+ (e_j,0)\to(0,0),\qquad (e_j,0)>n\one
+ \quad\text{for every fixed standard }n.
+\]
+The initial coefficients eventually agree with zero to every prescribed
+finite length. In omnific notation this sequence is
+\[
+ \omega,\quad\omega^{1/2},\quad\omega^{1/3},\quad\ldots,
+\]
+which converges to zero in the \emph{specified coefficient topology},
+not in the arithmetic order topology. This is a concrete illustration,
+not a claim about an unspecified topology on surreal numbers.
+
+\subsection{Hypothesis checklist}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.62\textwidth}@{}}
+\toprule
+Potential pitfall & Resolution in the proofs\\
+\midrule
+\endhead
+Only the division axioms are checked &
+\Cref{thm:qe,cor:fullpresburger,prop:least} establish the complete theory
+and every additive induction instance.\\[.6em]
+An open ray is given an incomplete metric &
+\Cref{sec:topology} provides a compatible logarithmic metric on each
+open ray and a complete metric on the whole sum.\\[.6em]
+The intended topology is silently replaced by the order topology &
+Both topologies are explicitly distinguished; the arithmetic order
+topology is discrete.\\[.6em]
+Standard-shift invariance is used with a nonstandard quotient &
+\Cref{ex:falseperiod} exhibits the failure; \cref{lem:finite} uses
+invariance on $mG$-cosets instead.\\[.6em]
+The all-zero rational branch is lost &
+The nonnegative-cone tree in \eqref{eq:zerobranch} explicitly includes it.\\[.6em]
+Computing an output tag secretly requires deciding equality of streams &
+For a negative output integer coordinate, a negative input supplies a
+finite bound on the first positive coefficient.\\[.6em]
+A type-theoretic ``computable model'' is confused with a countable one &
+The presentation is Type-2 on all Baire sequences; not every element is
+computable, and order has only a limit decision procedure.\\[.6em]
+The omnific image is assumed closed under multiplication &
+It is only an additive fragment. \Cref{thm:no_semiring} rules out even
+an alternative semiring multiplication on the same carrier.\\[.6em]
+A proper class is treated as a Polish space &
+Only explicit set-sized images and a sufficiently large set-sized
+birthday cutoff are used.\\[.6em]
+Existing repository proofs are credited with new theorems &
+The formalization roadmap distinguishes the inspected integer theorems
+from the additional nonstandard and topological obligations.\\[.6em]
+Numerical testing is mistaken for a proof &
+The exact test scope is documented in \cref{sec:formalization}; no formal
+verification claim is made for this article.\\[.6em]
+An affirmative proof is mistaken for certified historical priority &
+The source question and version are identified; independent priority and
+refereeing remain separate from the mathematical proof.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{Glazer}
+Elliot Glazer,
+\emph{A Topological Tennenbaum Theorem},
+arXiv:2311.13699v1, submitted November 22, 2023.
+Question 2 is on page 8; the stronger-arithmetic obstruction used for
+comparison is Corollary 1 on page 3.
+\href{https://arxiv.org/abs/2311.13699}{arXiv record};
+\href{https://arxiv.org/pdf/2311.13699v1}{versioned manuscript}.
+
+\bibitem{EHW}
+Ali Enayat, Joel David Hamkins, and Bartosz Wcis\l o,
+\emph{Topological models of arithmetic},
+arXiv:1808.01270; published in \emph{Fundamenta Mathematicae}
+256 (2022), 171--193.
+\href{https://arxiv.org/abs/1808.01270}{arXiv record}.
+
+\bibitem{Haase}
+Christoph Haase,
+\emph{A survival guide to Presburger arithmetic},
+\emph{ACM SIGLOG News} 5(3) (2018), 67--82.
+DOI: \href{https://doi.org/10.1145/3242953.3242964}{10.1145/3242953.3242964}.
+\href{https://www.cs.ox.ac.uk/people/christoph.haase/home/publication/haa-18/haa-18.pdf}{Author's manuscript}.
+
+\bibitem{RepoPresburger}
+Vladimir Reshetnikov, \emph{ProveIt: Presburger arithmetic is decidable},
+\path{Logic/PresburgerArithmetic/README.md}, repository snapshot
+\texttt{a11efab09a2d08f692a09829cb6d3440ddd1795a}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a11efab09a2d08f692a09829cb6d3440ddd1795a/Logic/PresburgerArithmetic/README.md}{Pinned repository file}.
+
+\bibitem{RepoCooper}
+Vladimir Reshetnikov, \emph{ProveIt: the arithmetic heart of Cooper
+elimination},
+\path{Logic/PresburgerArithmetic/Lean/PresburgerArithmetic/Cooper.lean},
+lines 1--200 inspected at the same snapshot.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a11efab09a2d08f692a09829cb6d3440ddd1795a/Logic/PresburgerArithmetic/Lean/PresburgerArithmetic/Cooper.lean}{Pinned source file}.
+
+\bibitem{RepoSurreal}
+Vladimir Reshetnikov, \emph{ProveIt: Surreal},
+\path{Algebra/SurrealNumbers/README.md}, lines 1--230 inspected at the
+same snapshot; see the formalization discussion of normal forms,
+omnific integers, least positivity, and standard congruences.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/a11efab09a2d08f692a09829cb6d3440ddd1795a/Algebra/SurrealNumbers/README.md}{Pinned repository file}.
+\end{thebibliography}
+
+\end{document}
