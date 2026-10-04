@@ -37,6 +37,18 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [later publication review](Papers/research-wip/native-stream-queue/review_report_publications_aa9a7ec80.md)
+now confirms the actual arithmetic PartsVI–VIII and ant PartsII–IV at
+85ea6145d/119a1325d. Their checked domains, candidate identities and cost
+conventions agree with the frozen evidence; one README table-description
+error is corrected. The six reciprocal-note text deltas preserve all
+1672/732/266 article labels. Batch89 still omits four advertised topology
+manuscript integrations at23adb85f9 andaa9a7ec80; the later naming write
+repairs its own replay documentation but references those absent Parts.
+Root rechecked all21 placed byte copies and six unchanged article/guide
+blobs. Exact read scopes and remaining proof dependencies are explicit.
+The universal84 bound and unresolved independent-gamma83 status remain.
+
 The [three-commit publication review](Papers/research-wip/native-stream-queue/review_report_publications_83926d574.md)
 covers upstream through83926d574 with exact textual read scopes. All616
 new arithmetic/ant evidence files match prior archive members, but the
@@ -84,6 +96,18 @@ checks the exceptional residue, actual compiler hypotheses and two precisely
 scoped valuation counterexamples; normal/optimized replays pass. These are
 native residue filters, with no prescribed-history realization or bound on
 the full order gcd. The 83-operation language remains unresolved.
+
+The [finite native prime filter](Papers/research-wip/native-stream-queue/complete83_gamma_native_finite_prime_avoidance.md)
+strengthens the accepting-history construction: for every fixed adequate
+spatial padding h there are genuine positive witnesses with
+**gcd(Delta,2^(2dh)-1)=3 and v3(m)<=1**. Every canonical history already
+has gcd(Delta,2^(dh)+1)=3. A simultaneous prefix/CRT choice on ignored
+upper bits excludes the minus-factor primes while preserving all compiler
+conditions and the original positive slack. The [independent review](Papers/research-wip/native-stream-queue/review_complete83_gamma_native_finite_prime_avoidance.md)
+checks the order of padding choices, actual valuations and fresh witness
+reconstruction; normal/optimized receipts pass. Only a finite prime set
+is controlled on each history. Remaining order factors and the83-operation
+ordinary-input language stay unresolved; the universal bound remains84.
 
 The [genuine-history ternary control](Papers/research-wip/native-stream-queue/complete83_gamma_native_ternary_escape.md)
 constructs, for every accepted input, actual positive compiler witnesses
@@ -310,6 +334,24 @@ conditional timed-chart proof and confirms the explicit binary certificate's
 Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
+
+The [paid matrix selector](Papers/research-wip/native-stream-queue/matrix193_newton_selector.md) lowers the
+complete countdown predicate to **1740=871M+869A** over signed integers,
+or1741 over reals, with exact degree194 and one extra selector per step.
+The synchronized counts are1714/1715 at exact degree192. Integer-scaled
+Newton lookup preserves the matched tile pair; the cheaper version uses
+nonnegativity of the consecutive-node product only on integers.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_newton_selector.md) checks the
+full arrays and domain distinction; fresh normal/optimized replays pass.
+Fixed h gives1741h+7 operations and6h signed witnesses in the integer
+version. Unbounded packing and positive-witness conversion remain unpaid.
+
+The [lookup schedule scout](Papers/research-wip/native-stream-queue/matrix193_lookup_schedule_scout.md) verifies
+78 repeated-prefix permutations and a rank-nine affine-independence
+certificate. Its [review](Papers/research-wip/native-stream-queue/review_matrix193_lookup_schedule_scout.md) confirms
+the24-gate cleanup-prefix saving. Irregular nodes make one column affine
+but require a211075-bit scale and a squared selector; their full local
+predicate with compact fixed-numeral recipes is still unbuilt.
 
 The [grouped matrix choices](Papers/research-wip/native-stream-queue/matrix193_grouped_row_choices.md) save
 **24 additions** in each complete local source: **2015=1103M+912A** for

@@ -1487,8 +1487,8 @@ free-coefficient 83 candidate that Report 43 calls open, and
 `complete82_all_input_outer_collapse.md` (`dc03992d9`, 18:26 PDT) proves Report
 45's theorem by another construction; Report 45's audit observation is dated
 about forty minutes earlier, and neither text cites the other. The record is
-still 84 operations; Table 3 of the article lists eleven polynomials at or
-below it, because "82" and "83" each name several (the review's own table has
+still 84 operations; Table 3 of the article lists eleven polynomials,
+including the 85- and 86-operation parents, because "82" and "83" each name several (the review's own table has
 six rows). The odd-quotient, projection and Pell-growth lemmas re-proved in
 Reports 39–46 are Report 33's Lemmas 33.3.2–33.3.3 and standard estimates;
 Report 39 restates Part V's predicate and reconstruction; the small-norm lemma
