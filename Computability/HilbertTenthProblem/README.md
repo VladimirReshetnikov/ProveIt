@@ -37,6 +37,16 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [local producer scout](Papers/research-wip/native-stream-queue/complete84_local_producer_scout.md) finds no
+saving among zero-, one- or two-operation replacements at70 actual84
+producer rows. It enumerates4741 aliases and719027 inner expressions;
+all1064 matching schedules retain at least84 live gates. Modular values
+serve only as rejection filters, and full-output liveness charges every
+retained consumer. The [source and coverage review](Papers/research-wip/native-stream-queue/review_complete84_local_producer_scout.md)
+and fresh normal/optimized replays pass. This excludes only the stated
+single-producer all-value grammar, leaving joint identities and sound
+coordinate changes open.
+
 The [outer-slack 83 candidate](Papers/research-wip/native-stream-queue/complete83_outer_slack_collapse.md) saves
 one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
 source with 18 positive witnesses and exact degree 187. **Its inherited
