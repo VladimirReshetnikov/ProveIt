@@ -1,0 +1,603 @@
+\section{The problem and the principal results}\label{sec:results}
+
+Repeated rounding is a simple deterministic operation with unexpectedly
+structured large-scale behavior. Fix a real number $m>0$ and an integer
+$n\geq0$. Define
+\begin{equation}\label{eq:forward}
+ x_1=n,\qquad
+ x_k=k^m\floor{\frac{x_{k-1}}{k^m}}\quad(k\geq2),\qquad
+ \tau_m(n)=\min\{k\geq1:x_k=0\}.
+\end{equation}
+The value $x_k$ is nonnegative and does not increase with $k$. The stopping
+time is finite: once $k^m>n$, the next rounding gives zero. We use the
+convention $\tau_m(0)=1$. For $n>0$, one always has $\tau_m(n)\geq2$.
+When $m$ is not an integer, the intermediate values can be real; the
+quotient $x_k/k^m$ is nevertheless an integer for every $k\geq2$.
+
+The sequences for $m=1,2,3$ are respectively \OEIS{A073047},
+\OEIS{A082527}, and \OEIS{A082528}. Cloitre's entry for the cubic case also
+asks for the asymptotic law for every real $m>0$~\cite{oeis-linear,oeis-square,oeis-cube}.
+The following theorem determines that law and its constant.
+
+\begin{theorem}[Power-rounding extinction]\label{thm:main}
+For every fixed real $m>0$, set
+\begin{equation}\label{eq:constants}
+ c_m=m\,\Gamma\!\left(\frac{m}{m+1}\right)^{m+1},\qquad
+ L_m=\frac1{c_m}.
+\end{equation}
+Then, as the integer $n$ tends to infinity,
+\begin{equation}\label{eq:main}
+ \tau_m(n)\asym(c_m n)^{1/(m+1)}.
+\end{equation}
+Equivalently, if $T_m(K)$ is the smallest integer initial value that
+survives through stage $K$, then
+\begin{equation}\label{eq:threshold-main}
+ T_m(K)\asym L_m K^{m+1}.
+\end{equation}
+\end{theorem}
+
+In particular,
+\begin{align}
+ \tau_2(n)&\asym
+ \left(2\Gamma(2/3)^3n\right)^{1/3},\label{eq:square}\\
+ \tau_3(n)&\asym
+ \left(3\Gamma(3/4)^4n\right)^{1/4}.\label{eq:cube}
+\end{align}
+The constants are
+\begin{equation}\label{eq:decimals}
+ c_2=4.965917162430455473\ldots,\qquad
+ c_3=6.764822981008760234\ldots.
+\end{equation}
+These identify the values $4.96\ldots$ and $6.76\ldots$ conjectured
+numerically in the two OEIS entries. The specialization $c_1=\pi$ is the
+classical Tchoukaillon constant, whose prior history is discussed in
+\cref{sec:history}.
+
+The same proof identifies more than a stopping index. Define the crossing
+times
+\begin{equation}\label{eq:crossing-def}
+ t_0=1,\qquad
+ t_j=\prod_{r=1}^{j}\left(1-\frac1{(m+1)r}\right)\quad(j\geq1),
+\end{equation}
+and the continuous function $y_m:(0,1]\to[0,\infty)$ by
+\begin{equation}\label{eq:profile-def}
+ y_m(t)=\frac{(m+1)j-1}{m}\,t_{j-1}-jt,
+ \qquad t_j\leq t\leq t_{j-1}.
+\end{equation}
+The definitions agree at each shared endpoint. Set
+\begin{equation}\label{eq:mass-profile}
+ F_m(t)=c_m t^m y_m(t)\quad(0<t\leq1),\qquad F_m(0)=1.
+\end{equation}
+
+\begin{theorem}[The full extinction trajectory]\label{thm:forward-profile}
+Let $J=\tau_m(n)$ for $n>0$, and put
+\[
+ X_n(t)=\frac{x_{\max(1,\lfloor Jt\rfloor)}}n,
+ \qquad 0\leq t\leq1.
+\]
+Then
+\begin{equation}\label{eq:uniform-forward}
+ \sup_{0\leq t\leq1}|X_n(t)-F_m(t)|\longrightarrow0.
+\end{equation}
+Thus the fraction of the initial value remaining, plotted against the
+fraction of the extinction time elapsed, has an explicit deterministic
+limiting shape.
+\end{theorem}
+
+Our extension to more general weights uses a local condition on their
+successive ratios. This condition is stronger than specifying only their
+leading growth.
+
+\begin{theorem}[Smooth-weight universality]\label{thm:weights-main}
+Suppose $w_1=1$, $w_k>0$, and
+\begin{equation}\label{eq:smooth-weights}
+ k\left(\frac{w_k}{w_{k-1}}-1\right)\longrightarrow m>0.
+\end{equation}
+Replace $k^m$ in \cref{eq:forward} by $w_k$, and denote the corresponding
+threshold and stopping time by $T_w(K)$ and $\tau_w(n)$. Then
+\begin{equation}\label{eq:weights-main}
+ T_w(K)\asym L_m K w_K,\qquad
+ L_m\tau_w(n)w_{\tau_w(n)}\asym n.
+\end{equation}
+With $J=\tau_w(n)$, the normalized forward trajectory converges uniformly
+to the same $F_m$ in \cref{eq:mass-profile}.
+\end{theorem}
+
+Theorem~\ref{thm:weights-main} allows logarithmic factors, shifts, and many
+small perturbations. Its hypothesis cannot simply be replaced by ordinary
+regular variation: \cref{sec:clock} constructs weights
+$w_k\asym(k/r)^m$ for which the threshold constant is $L_m/r$.
+
+\subsection{What has and has not been resolved}
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.28\linewidth}p{.64\linewidth}@{}}
+\toprule
+Question or claim & Status in this report\\
+\midrule
+A082528, every real $m>0$ & The stated leading-equivalence conjecture is proved; $c_m$ is explicit.\\[3pt]
+A082527 and A082528 constants & The square and cube constants are determined by \cref{eq:square,eq:cube}.\\[3pt]
+A073047 leading equivalent & Recovered as a classical specialization, with no novelty claim.\\[3pt]
+A073047 bounded error & The stronger assertion $\tau_1(n)=\sqrt{\pi n}+O(1)$ is not proved here.\\[3pt]
+Full trajectories and smooth weights & Proved in \cref{thm:forward-profile,thm:weights-main}.\\[3pt]
+Quantitative discrete errors & No rate is inferred from the compactness argument; these are explicit research questions.\\[3pt]
+Historical priority & No matching general power theorem was found in the targeted source search; exhaustive priority is not certified.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All limits involving $m$ in the first three theorems hold for fixed $m>0$.
+They make no assertion uniform in a moving parameter $m=m(n)$.
+
+\section{Historical context and the ProveIt starting point}\label{sec:history}
+
+\subsection{The OEIS questions}
+
+Cloitre introduced the square and cube stopping sequences in April 2003.
+The entry for A082528 explicitly asks whether the first zero for real
+powers $k^m$ has order $(c(m)n)^{1/(m+1)}$. A082527 records the numerical
+constant $4.96\ldots$, and A082528 records $6.76\ldots$
+\cite{oeis-square,oeis-cube}. The entries were inspected during the source
+audit for this report. Their shared site-footer time is not treated as an
+individual sequence revision date.
+
+The square entry contains a minor arithmetic slip in its example for
+$n=10$: the correct intermediate value is
+$4\lfloor10/4\rfloor=8$. The reported stopping index $3$ is correct.
+The definitions, programs, and initial terms agree with
+\cref{eq:forward}; the slip has no effect on the theorem.
+
+\subsection{The classical linear sieve}
+
+When $m=1$, the backward threshold is A002491. Starting with $K$, one
+successively rounds upward to a multiple of $K-1,K-2,\ldots,1$. Its first
+values are
+\[
+ 1,2,4,6,10,12,18,22,30,34,\ldots.
+\]
+This is a standard description of the Tchoukaillon or Mancala sieve
+\cite{oeis-threshold}. Erd\H{o}s and Jabotinsky proved
+\begin{equation}\label{eq:classical-error}
+ T_1(K)=\frac{K^2}{\pi}+O(K^{4/3})
+\end{equation}
+and proposed the sharper $O(K)$ error~\cite{erdos-jabotinsky}.
+Their paper already analyzes successive ranges of equal integer
+increments. The use of such ranges and a product limit in the present
+proof belongs to that established method.
+
+There is a relevant caution about error terms. Broline and Loeb later
+claimed the sharper threshold estimate~\cite{broline-loeb}. Knuth's 2021
+comment recorded in A002491 identifies an accumulation-of-errors problem
+in that argument and explains why its stated estimates do not establish
+the claimed improvement~\cite{oeis-threshold}. We use neither that
+sharpening nor any consequence of it. The classical
+\cref{eq:classical-error} would imply
+\[
+ \tau_1(n)=\sqrt{\pi n}+O(n^{1/6}),
+\]
+whereas the $O(1)$ error recorded as presumptive in A073047 is a stronger
+assertion.
+
+Brown's exposition obtains the ordinary constant from successive
+parabolic pieces and a Wallis product~\cite{brown}. A 2023 answer by
+Thomas Leh\'ericy studies a different generalization, rounding upward to
+the $r$th admissible multiple, and obtains a ratio of Gamma
+functions~\cite{lehericy}. Its use of fixed increment regimes and a final
+truncation estimate is methodologically relevant. Its parameter changes
+the rounding rule; the parameter $m$ here changes the moduli themselves.
+The two statements concern different recurrences.
+
+We also checked Li's 2026 preprint on the two-dimensional Tchoukaillon
+array~\cite{li}. Its main theorem concerns a uniform quadratic
+approximation to array entries. It does not state the real-power
+extinction theorem proved here. None of our proofs depends on that
+preprint or on its discussion of sharp edge estimates.
+
+\subsection{Repository audit and choice of target}
+
+The research began with the current ProveIt repository~\cite{proveit}.
+Targeted searches and directory inspection showed extensive recent
+work on OEIS asymptotics, including Bell-scale growth, derivative
+expansion supports, and balanced-word enumeration. Those established
+results were taken into account when choosing a question with a clear
+remaining mathematical claim.
+
+The repository search was indexed at revision
+\begin{center}
+\small\texttt{ce37e13f4aa16819c87c3ccc611362d15758f2ac}.
+\end{center}
+Exact searches for A082527, A082528, A073047, A002491, and Tchoukaillon
+returned no matching treatment. We also inspected the 59-entry
+\texttt{oeis-sequence-asymptotics} directory and the 58-entry
+\texttt{series-and-transseries} directory at that revision. This is a
+bounded nonduplication check; it is not a claim to have read every file,
+binary, branch, or historical version of the repository.
+
+The present article extends the repository's research program through a
+new target. It is mathematically self-contained and assumes none of its
+unrefereed reports as a theorem. The substantive contribution claimed
+here is the real-parameter power theorem, its explicit constant, and the
+trajectory and weight extensions. The classical linear case and the
+increment-regime method are credited to the preceding literature.
+
+\section{Exact reversal: extinction as a survival threshold}\label{sec:duality}
+
+The forward process has a floor at every step and an initial value that
+changes with the question being asked. Fixing a terminal stage instead
+gives a convenient triangular recurrence.
+
+\begin{definition}[Backward quotient array]\label{def:backward}
+For an integer $K\geq1$, define
+\begin{equation}\label{eq:backward}
+ q_K^{(K)}=1,\qquad
+ q_{k-1}^{(K)}=\ceil{\left(\frac{k}{k-1}\right)^m q_k^{(K)}}
+ \quad(2\leq k\leq K),
+\end{equation}
+and put $T_m(K)=q_1^{(K)}$. We suppress the superscript $K$ when the
+terminal stage is fixed.
+\end{definition}
+
+\begin{lemma}[Survival duality]\label{lem:duality}
+For every integer $n\geq0$ and $K\geq1$,
+\begin{equation}\label{eq:duality}
+ \tau_m(n)>K\quad\Longleftrightarrow\quad n\geq T_m(K).
+\end{equation}
+More generally, a value $k^m Q$ at stage $k\leq K$, with $Q$ a
+nonnegative integer, survives through stage $K$ if and only if
+$Q\geq q_k^{(K)}$.
+\end{lemma}
+
+\begin{proof}
+At stage $K$, survival means a positive multiple of $K^m$, so its smallest
+integer quotient is $1$. Suppose the least quotient that survives from
+stage $k$ has been identified as $q_k$. An input $(k-1)^m Q$ produces an
+output at least $k^m q_k$ exactly when
+\[
+ \floor{\frac{(k-1)^m Q}{k^m}}\geq q_k
+ \quad\Longleftrightarrow\quad
+ Q\geq\frac{k^m q_k}{(k-1)^m}.
+\]
+The least admissible integer $Q$ is the ceiling in
+\cref{eq:backward}. Backward induction reaches stage $1$, where the
+initial value $n$ is already an integer and $1^m=1$.
+\end{proof}
+
+\begin{corollary}[Exact inverse and strict increase]\label{cor:inverse}
+The sequence $T_m(K)$ is strictly increasing and unbounded. For $n>0$,
+\begin{equation}\label{eq:exact-inverse}
+ \tau_m(n)=1+\max\{K\geq1:T_m(K)\leq n\}.
+\end{equation}
+Equivalently, $\tau_m(n)=J$ if and only if
+$T_m(J-1)\leq n<T_m(J)$.
+\end{corollary}
+
+\begin{proof}
+For terminal stage $K+1$, the quotient at stage $K$ is
+$\lceil((K+1)/K)^m\rceil\geq2$, whereas it is $1$ for terminal stage
+$K$. Every map $Q\mapsto\lceil aQ\rceil$ with $a>1$ is strictly
+increasing on the integers. Reversing further therefore gives
+$T_m(K+1)>T_m(K)$. Formula~\eqref{eq:exact-inverse} follows from
+\cref{lem:duality}.
+\end{proof}
+
+\subsection{The two estimates that control all rounding errors}
+
+Write
+\begin{equation}\label{eq:ak}
+ a_k=\left(\frac{k}{k-1}\right)^m-1
+     =\frac{m}{k}+O_m(k^{-2}).
+\end{equation}
+Because $q_k$ is an integer,
+\begin{equation}\label{eq:increment}
+ q_{k-1}-q_k=\ceil{a_kq_k}\geq1.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:positive-drift}
+ q_k\geq K-k+1.
+\end{equation}
+The inequality remains significant after scaling, even though
+$q_K/K\to0$.
+
+Multiplying the ceiling inequality by $(k-1)^m$ gives the second estimate:
+\begin{equation}\label{eq:weighted-error}
+ 0\leq (k-1)^m q_{k-1}-k^m q_k<(k-1)^m.
+\end{equation}
+Telescoping in either direction yields
+\begin{align}
+ 0&\leq T_m(K)-k^m q_k<\sum_{j=1}^{k-1}j^m,
+       \qquad (k\geq2),\label{eq:small-tail}\\
+ k^m q_k&\leq K^m+\sum_{j=k}^{K-1}j^m
+        \leq K^m+\frac{K^{m+1}}{m+1}.
+        \label{eq:global-bound}
+\end{align}
+For $k=1$, the difference in \cref{eq:small-tail} is exactly zero.
+The last inequality follows by comparing the increasing function $x^m$
+with its integral over $[1,K]$.
+
+Equation~\eqref{eq:small-tail} is the key matching estimate: after a
+macroscopic part of the backward trajectory has been computed, the
+entire remaining part changes its weighted value by at most an explicit
+sum. No assumption on the distribution of fractional parts is involved.
+
+\begin{example}[A cubic threshold]
+For $m=3$ and $K=4$, the backward quotients are
+\[
+ q_4=1,\qquad q_3=3,\qquad q_2=11,\qquad q_1=88.
+\]
+Thus $T_3(4)=88$. The initial value $88$ rounds through
+$88,88,81,64,0$, so its stopping time is $5$. The value $87$ rounds
+through $87,80,54,0$ and stops at $4$. This illustrates the strict
+inequality $\tau_m(n)>K$ in the survival convention.
+\end{example}
+
+\section{A rigorous scaling limit for the backward array}\label{sec:limit}
+
+For fixed $K$, define $y_K$ by linear interpolation through
+\begin{equation}\label{eq:interpolation}
+ y_K(k/K)=q_k^{(K)}/K,\qquad 1\leq k\leq K.
+\end{equation}
+Its domain is $[1/K,1]$. The limit will be considered on compact
+subintervals of $(0,1]$; the singular endpoint $0$ is handled afterward
+using \cref{eq:small-tail}.
+
+\begin{lemma}[Compactness away from zero]\label{lem:compactness}
+For every $0<\delta<1$, the restrictions of $y_K$ to $[\delta,1]$ are
+uniformly bounded and uniformly Lipschitz for all sufficiently large
+$K$. Every sequence of terminal stages tending to infinity has a
+subsequence whose interpolants converge locally uniformly on $(0,1]$.
+\end{lemma}
+
+\begin{proof}
+For $k\geq\delta K/2$, \cref{eq:global-bound} gives
+\[
+ \frac{q_k}{K}\leq
+ \left(\frac{K}{k}\right)^m\left(\frac1K+\frac1{m+1}\right),
+\]
+which is bounded independently of $K$. On an interpolation interval
+$((k-1)/K,k/K)$, its slope is
+\begin{equation}\label{eq:slope}
+ y_K'(t)=q_k-q_{k-1}=-\ceil{a_kq_k}.
+\end{equation}
+The expansion in \cref{eq:ak}, together with $q_k=O_\delta(K)$ and
+$k\geq\delta K/2$, bounds this slope uniformly. The small enlargement to
+$\delta/2$ handles the single grid interval containing $\delta$.
+Arzel\`a--Ascoli on $[1/r,1]$, followed by a diagonal subsequence over
+integers $r\geq2$, gives the stated compactness.
+\end{proof}
+
+\subsection{Selecting the nonzero terminal solution}
+
+Let $y$ be any subsequential limit. Since $y_K(1)=1/K$,
+\begin{equation}\label{eq:endpoint-limit}
+ y(1)=0.
+\end{equation}
+Equation~\eqref{eq:increment} implies, including between grid points,
+\begin{equation}\label{eq:limit-drift}
+ y(s)-y(t)\geq t-s\qquad(0<s<t\leq1).
+\end{equation}
+In particular, $y(t)\geq1-t>0$ for $t<1$.
+
+This is essential. If one wrote only
+$y'=-\lceil my/t\rceil$ with $y(1)=0$, the identically zero function
+would solve that terminal-value problem. The positive integer quotient
+$q_K=1$ forces a drift of at least one at each reversed step and rules
+out that spurious solution. We express this selection by the positive
+ceiling
+\begin{equation}\label{eq:positive-ceiling}
+ C(u)=\max\{1,\lceil u\rceil\},\qquad u\geq0.
+\end{equation}
+For positive $u$, it is the ordinary ceiling.
+
+\begin{lemma}[Passing through the ceiling discontinuities]\label{lem:ode}
+Every subsequential limit is locally absolutely continuous and satisfies
+\begin{equation}\label{eq:limit-ode}
+ y'(t)=-C\!\left(\frac{my(t)}t\right)
+ \quad\text{for almost every }t\in(0,1),
+\end{equation}
+together with \cref{eq:endpoint-limit,eq:limit-drift}.
+\end{lemma}
+
+\begin{proof}
+Local Lipschitz continuity has already been proved. Define
+$z(t)=my(t)/t$. For $0<s<t\leq1$, \cref{eq:limit-drift} gives
+\[
+ \frac{y(s)}s-\frac{y(t)}t
+ \geq y(t)\left(\frac1s-\frac1t\right)+\frac{t-s}{s}>0.
+\]
+Thus $z$ is continuous and strictly decreasing as $t$ increases.
+It is bounded on $[\delta,1]$, so it assumes an integer value at only
+finitely many points in that interval.
+
+Away from these exceptional points and $t=1$, let $k=\lceil Kt\rceil$.
+The ratio expansion in \cref{eq:ak} and local uniform convergence show
+\[
+ a_kq_k\longrightarrow\frac{my(t)}t=z(t).
+\]
+The ceiling is continuous at the noninteger limit, so its value converges
+to $C(z(t))$. Excluding also the countable union of grid points, \cref{eq:slope} therefore
+converges to the claimed right-hand side. The slope bounds from
+\cref{lem:compactness} permit dominated convergence in
+\[
+ y_K(t)=\frac1K-\int_t^1y_K'(s)\,ds.
+\]
+It follows that
+\[
+ y(t)=\int_t^1 C\!\left(\frac{my(s)}s\right)ds,
+\]
+which proves \cref{eq:limit-ode}.
+\end{proof}
+
+The argument does not assume uniform convergence of ceiling functions.
+It proves convergence away from a finite exceptional set on each compact
+interval and then uses an integrable uniform bound. That distinction is
+what makes the limiting equation rigorous.
+
+\subsection{Solving the increment regimes}
+
+\begin{proposition}[Explicit profile and uniqueness]\label{prop:profile}
+The function satisfying \cref{eq:endpoint-limit,eq:limit-drift,eq:limit-ode}
+is unique. It is precisely $y_m$ in \cref{eq:profile-def}; consequently
+\begin{equation}\label{eq:backward-convergence}
+ y_K\longrightarrow y_m
+ \quad\text{uniformly on every }[\delta,1],\quad\delta>0.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The function $z(t)=my(t)/t$ decreases strictly from infinity to zero as
+$t$ increases from zero to one. Its divergence at zero follows from
+$y(t)\geq1-t$. Therefore every positive integer $j$ is attained at a
+unique crossing time $t_j$.
+
+On $(t_j,t_{j-1})$, one has $j-1<z(t)<j$ and hence $y'(t)=-j$.
+Using $y(t_{j-1})=(j-1)t_{j-1}/m$ gives
+\[
+ y(t)=\frac{j-1}{m}t_{j-1}+j(t_{j-1}-t).
+\]
+At the next crossing, $y(t_j)=jt_j/m$, so
+\[
+ (m+1)j\,t_j=((m+1)j-1)t_{j-1}.
+\]
+This is exactly the product recurrence in \cref{eq:crossing-def}, and
+the formula for $y$ is \cref{eq:profile-def}. Since $t_0=1$, there is
+no undetermined constant. Every subsequential limit is the same.
+If convergence of the whole family failed on some compact interval,
+a failing subsequence would have a further convergent subsequence by
+\cref{lem:compactness}, contradicting this uniqueness.
+\end{proof}
+
+For example, the last portion of every limiting trajectory is
+$y_m(t)=1-t$ on $m/(m+1)\leq t\leq1$. The next portion has slope $-2$,
+the next slope $-3$, and so on. These slopes describe the integer
+quotient changes; the weighted remaining value is $t^m y_m(t)$.
+
+\section{The Gamma constant and the extinction law}\label{sec:constant}
+
+\subsection{Evaluating the crossing product}
+
+Write $a=m/(m+1)$, so $0<a<1$. The Gamma functional equation gives
+\begin{equation}\label{eq:gamma-product}
+ t_j=\frac{\Gamma(j+a)}{\Gamma(a)\Gamma(j+1)}.
+\end{equation}
+The needed asymptotic is
+\begin{equation}\label{eq:crossing-asym}
+ t_j\asym\frac{j^{-1/(m+1)}}{\Gamma(m/(m+1))}.
+\end{equation}
+For completeness, this can be proved without invoking an asymptotic
+expansion for $\Gamma$. The beta integral satisfies
+\[
+ B(a,j)=\int_0^1u^{a-1}(1-u)^{j-1}du
+       =\frac{\Gamma(a)\Gamma(j)}{\Gamma(j+a)},
+ \qquad t_j=\frac1{jB(a,j)}.
+\]
+After the substitution $v=ju$,
+\[
+ j^aB(a,j)=\int_0^j v^{a-1}(1-v/j)^{j-1}dv\longrightarrow\Gamma(a).
+\]
+Indeed, for $j\geq2$ the integrand, extended by zero to $[j,\infty)$,
+is bounded by $v^{a-1}e^{-v/2}$ and converges pointwise to
+$v^{a-1}e^{-v}$. Dominated convergence proves the limit and
+\cref{eq:crossing-asym}.
+
+\begin{lemma}[The small-time weighted limit]\label{lem:weighted-limit}
+The function $f_m(t)=t^m y_m(t)$ has a finite limit at zero, and
+\begin{equation}\label{eq:weighted-limit}
+ \lim_{t\downarrow0}f_m(t)
+ =\frac1{m\Gamma(m/(m+1))^{m+1}}=L_m.
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:f-derivative}
+ -t^m\leq f_m'(t)\leq0\quad\text{almost everywhere}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+Writing $z=my_m/t$ and applying \cref{eq:limit-ode},
+\[
+ f_m'(t)=t^m\bigl(z(t)-C(z(t))\bigr).
+\]
+For $z\geq0$, the difference belongs to $[-1,0]$. This proves
+\cref{eq:f-derivative}. Since $t^m$ is integrable on $(0,1)$,
+$f_m$ has a finite limit at zero. At a crossing time,
+\[
+ f_m(t_j)=\frac jm t_j^{m+1}
+ \longrightarrow\frac1{m\Gamma(m/(m+1))^{m+1}},
+\]
+by \cref{eq:crossing-asym}. These crossing times tend to zero, so their
+limit is the full limit of $f_m$.
+\end{proof}
+
+\subsection{Matching to the unscaled initial value}
+
+\begin{proof}[Proof of \cref{thm:main}]
+Fix $0<\delta<1$ and set $k=\lfloor\delta K\rfloor$. The backward
+profile theorem implies
+\[
+ \frac{k^m q_k}{K^{m+1}}
+ =\left(\frac kK\right)^m\frac{q_k}{K}
+ \longrightarrow f_m(\delta).
+\]
+The elementary Riemann sum gives
+\[
+ \frac1{K^{m+1}}\sum_{j=1}^{k-1}j^m
+ \longrightarrow\frac{\delta^{m+1}}{m+1}.
+\]
+Divide \cref{eq:small-tail} by $K^{m+1}$ to obtain
+\begin{align*}
+ f_m(\delta)
+ &\leq\liminf_{K\to\infty}\frac{T_m(K)}{K^{m+1}}\\
+ &\leq\limsup_{K\to\infty}\frac{T_m(K)}{K^{m+1}}
+ \leq f_m(\delta)+\frac{\delta^{m+1}}{m+1}.
+\end{align*}
+Now let $\delta\downarrow0$ and use \cref{lem:weighted-limit}. This
+proves \cref{eq:threshold-main}. The two limits were taken in the
+specified order; no uniform approximation near the singular endpoint
+has been assumed.
+
+For $J=\tau_m(n)$, the exact inverse gives
+$T_m(J-1)\leq n<T_m(J)$. As $n\to\infty$, necessarily $J\to\infty$,
+and both endpoints are asymptotic to $L_mJ^{m+1}$. Thus
+$n\asym L_mJ^{m+1}$, which is \cref{eq:main}.
+\end{proof}
+
+\subsection{The whole forward trajectory}
+
+\begin{proof}[Proof of \cref{thm:forward-profile}]
+Let $Q_k=x_k/k^m$ for $k\geq2$, and set $Q_1=n$. If
+$J=\tau_m(n)$, the forward trajectory survives stage $J-1$ but not
+stage $J$. The stagewise form of \cref{lem:duality} therefore gives
+\begin{equation}\label{eq:forward-sandwich}
+ q_k^{(J-1)}\leq Q_k<q_k^{(J)}
+ \qquad(1\leq k\leq J-1).
+\end{equation}
+Both bounding arrays have the same limiting shape, including after
+replacing the terminal scale $J-1$ by $J$. Their local uniform
+convergence and the continuity of $y_m$ give
+\[
+ \frac{Q_{\lfloor Jt\rfloor}}J\longrightarrow y_m(t)
+ \quad\text{locally uniformly for }0<t<1.
+\]
+Combining this with $n\asym L_mJ^{m+1}$ proves
+$X_n(t)\to c_m t^m y_m(t)$ for $0<t<1$.
+At the endpoints, $X_n(0)=1$ and $X_n(1)=0$. The limit $F_m$ is
+continuous on $[0,1]$ by \cref{lem:weighted-limit}.
+
+To promote pointwise convergence to uniform convergence, choose a finite
+partition of $[0,1]$ on whose subintervals the oscillation of $F_m$ is
+less than a prescribed $\varepsilon$. For large $n$, convergence holds
+within $\varepsilon$ at every partition point. Since each $X_n$ is
+nonincreasing, its values between consecutive partition points lie
+between its endpoint values. The resulting error is at most
+$2\varepsilon$ throughout the interval. This proves
+\cref{eq:uniform-forward}.
+\end{proof}
+
+The law describes the entire normalized loss curve, even at its early
+stages where the unweighted quotient $y_m(t)$ diverges. That endpoint
+is regular after multiplication by $t^m$.
+
+\input{extensions.tex}
+\input{computation.tex}
+\input{questions.tex}
+\input{bibliography.tex}

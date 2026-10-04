@@ -2,10 +2,11 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are fifty-five unmerged
-arrivals, fifty of 2026-09-29, one of 2026-09-30, one of 2026-10-01 and
-three of 2026-10-02, each filed whole with its PDF and then amended
-editorially (see "Arrivals of 2026-09-29 to 2026-10-02" below).
+2026-09-04 (see the end of this file). Beside them are fifty-six unmerged
+arrivals, fifty of 2026-09-29, one of 2026-09-30, one of 2026-10-01,
+three of 2026-10-02 and one of 2026-10-03, each filed whole with its PDF;
+all but the last were then amended editorially (see "Arrivals of
+2026-09-29 to 2026-10-02" below).
 
 The transseries Lean inventory and zero-gap result are computed by
 `Analysis/FabiusFunction/scripts/doc_audit.py --root
@@ -376,6 +377,14 @@ revision `4b874cea0` as the snapshot of a bounded overlap search; none
 cites a package of this group except that the A260879 article credits the
 canonical volume's Fubini chapter. The other sixty-eight archives went to
 the research-report collection under `SetTheory/Cardinals/docs/reports/`.
+
+The thirteenth delivery (2026-10-03, the drop zone's batch 85) brought one
+transseries package among nine archives, the exact inversion of the
+partition function for OEIS A306631 below. It pins the repository revision
+`d68b65ea0` but cites no package of this group and not the canonical
+volume. The other eight archives went to the research-report collection
+under `SetTheory/Cardinals/docs/reports/`. It has not yet had the
+editorial pass.
 
 All fifty-two packages of the nine deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
@@ -1991,6 +2000,28 @@ pole-lattice estimates overlap the volume's chapter "The Fubini numbers: an
 exact pole lattice" (`q2:sec:fubini`, `q2:thm:fubini`, `q2:thm:weighted`),
 which it credits; it sits beside the A006014 package, the other factorially
 forced quadratic recurrence (a different sequence); not formalized.
+
+[`Partition_Function_Exact_Inversion_OEIS_A306631/`](Partition_Function_Exact_Inversion_OEIS_A306631/)
+holds *Exact inversion of the partition function: a proof of OEIS A306631
+and sharp rounding bounds* (1,457-line source, its 23-page PDF, an exact
+rational-interval certificate `code/certify.py` with its recorded results,
+series and numerical programs, and a draft OEIS update that was not
+submitted). With `F` the increasing inverse of
+`H(x) = exp(π√(2x/3))/(4√3 x)`, it proves that rounding `F(p(n))` gives `n`
+for every `n ≥ 10` (failures exactly at `n = 2, 3, 4, 5, 7, 9`), that the
+ceiling gives `n` for every `n ≥ 2`, and the sharp extrema of the bias
+`n − F(p(n))` (infimum `1/24 + 3/π²`), with an effective bound for every
+`n ≥ 400` and an exact certificate below it. It continues the canonical
+volume's chapter on inverting the partition function (`p3:sec:top`), which
+it does not cite: its corrected-inverse coefficients, tail constant,
+parity term and eventual rounding re-derive `p3:thm:core-correction`,
+`p3:cor:N0-expansion`, `p3:thm:tail`, `p3:thm:leading-chirp`,
+`p3:thm:first-order` and `p3:thm:rounding`; its effective bound is the kind
+of tool `p3:conj:effective-threshold` asks for, but for a different
+inverse, so that conjecture stays open (`p3:rem:threshold`). Its CRLF
+`results/finite_comparisons.csv` is kept byte for byte by a `-text` line
+in the root `.gitattributes`; its checksum ledger is not shipped. Not
+formalized.
 
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the

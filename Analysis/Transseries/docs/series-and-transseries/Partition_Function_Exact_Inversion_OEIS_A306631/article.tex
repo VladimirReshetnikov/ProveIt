@@ -1,0 +1,1457 @@
+\documentclass[11pt]{article}
+\usepackage[letterpaper,margin=1in,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{listings}
+\hypersetup{pdftitle={Exact Inversion of the Partition Function: A Proof of OEIS A306631 and Sharp Rounding Bounds},pdfauthor={Research report prepared with ChatGPT},pdfsubject={Partition inversion, certified rounding, convergent corrections, and arithmetic exponential terms}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact inversion of the partition function}
+\fancyhead[R]{\small A306631}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\OO}{\mathcal O}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\rnd}{\operatorname{rnd}}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\rising}[2]{(#1)_{#2}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20}}
+
+\title{\textbf{Exact Inversion of the Partition Function}\\[0.4em]
+\large A proof of OEIS A306631 and sharp rounding bounds\\[0.4em]
+\normalsize Convergent inverse corrections, arithmetic exponential terms,\\and exact finite verification}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{3 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+Let $p(n)$ be the ordinary partition function, and let $F$ be the increasing
+inverse of $H(x)=e^{\pi\sqrt{2x/3}}/(4\sqrt3\,x)$. We prove the conjecture
+recorded in OEIS A306631 that rounding $F(p(n))$ recovers $n$ for every
+$n>9$. More precisely, its only failures for $n\ge2$ occur at
+$2,3,4,5,7,9$, whereas taking the ceiling succeeds for every $n\ge2$.
+The inverse bias $d_n=n-F(p(n))$ has the sharp, unattained infimum
+$\delta=1/24+3/\pi^2$. Its maximum on $n\ge2$ occurs uniquely at $2$;
+its maximum on $n\ge10$ occurs uniquely at $11$, where the bias is about
+$0.4984875754$. These extrema determine every constant shift that permits
+uniform exact rounding, the unique minimax shift, and a two-candidate
+inversion formula requiring one comparison with a partition value.
+
+A convergent power series describes the smooth dominant-sector bias, with
+an explicit geometric remainder bound. A second convergent series inverts
+the corrected dominant model. We compute twelve coefficients of each,
+prove a finite hierarchy of arithmetic exponential corrections, identify
+the leading parity term, and deduce fixed-order eventual alternating
+finite differences. The proof combines Rademacher's classical formula
+with an elementary tail estimate for $n\ge400$ and a reproducible
+rational-interval certificate for the remaining indices.
+\end{abstract}
+\vfill
+\noindent\textbf{Status.} This is an unrefereed research report. The analytic
+proofs and exact finite certificate are supplied, but are not formalized
+in Lean or Rocq. The literature and repository checks establish the
+specific conjecture being addressed, not publication priority for every
+consequence. Classical partition asymptotics and Rademacher's formula are
+not claimed as new.
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The problem, its status, and the main results}
+\subsection{A precise OEIS question}
+The OEIS entry A306631 defines the nearest-integer value of an inverse
+Hardy--Ramanujan approximation, expressed using the real branch
+$W_{-1}$ of the Lambert function. In the entry inspected on 3 October
+2026, the assertion that this sequence takes the value $n$ at the argument
+$p(n)$ for every $n>9$ is explicitly labeled a conjecture
+\cite{oeis306631}. Thus the question concerns an \emph{exact integer
+recovery property}, not merely asymptotic inversion.
+
+The ordinary partition function $p(n)$, OEIS A000041 \cite{oeis000041}, counts unordered
+partitions of $n$ into positive integers; $p(0)=1$. Put
+\begin{equation}\label{eq:constants}
+ a=\frac1{24},\qquad c=\pi\sqrt{\frac23},\qquad
+ \delta=a+\frac2{c^2}=\frac1{24}+\frac3{\pi^2}.
+\end{equation}
+For $x>0$, define
+\begin{equation}\label{eq:H}
+ H(x)=\frac{e^{c\sqrt x}}{4\sqrt3\,x}.
+\end{equation}
+The function $H$ is strictly increasing for $x>4/c^2$. Its inverse on
+that branch, restricted to $y\ge2$, is
+\begin{equation}\label{eq:F}
+ F(y)=\frac6{\pi^2}
+ W_{-1}\!\left(-\frac{\pi}{2\sqrt2\,3^{3/4}\sqrt y}\right)^2.
+\end{equation}
+Write
+\begin{equation}\label{eq:bias}
+ d_n=n-F(p(n)),\qquad n\ge2,
+ \qquad \rnd(x)=\lfloor x+\tfrac12\rfloor.
+\end{equation}
+The rounding convention at exact half-integers will matter for one
+endpoint of a shifted-rounding theorem, but not for the original
+conjecture: all its relevant comparisons are strict.
+
+\begin{theorem}[Exact rounding and sharp bias bounds]\label{thm:main}
+For every integer $n\ge2$,
+\begin{equation}\label{eq:ceiling}
+ 0<d_n<1,\qquad \lceil F(p(n))\rceil=n.
+\end{equation}
+The complete nearest-integer classification is
+\begin{equation}\label{eq:exceptions}
+ \rnd(F(p(n)))=
+ \begin{cases}
+ n-1,&n\in\{2,3,4,5,7,9\},\\
+ n,&\text{otherwise}.
+ \end{cases}
+\end{equation}
+Moreover, with
+\begin{equation}\label{eq:betas}
+ \beta_2=2-F(2),\qquad \beta_{11}=11-F(56),
+\end{equation}
+one has the sharp inequalities
+\begin{align}
+ \delta<d_n\le\beta_2&& (n\ge2),\label{eq:globalextreme}\\
+ \delta<d_n\le\beta_{11}&& (n\ge10).\label{eq:tailextreme}
+\end{align}
+Equality on the right holds only at $n=2$ and $n=11$, respectively.
+In both ranges the infimum is $\delta$, is not attained, and is approached
+as $n\to\infty$.
+\end{theorem}
+
+The conjectured threshold $10$ is therefore sharp: $9$ really is a
+failure. More surprisingly, the index closest to failure \emph{after}
+the threshold is $11$, not $10$. Certified enclosures give
+\begin{align*}
+ \delta&=0.34563021759367998099830505629584958\ldots,\\
+ \beta_2&=0.79661548126519453324805686994201716\ldots,\\
+ \beta_{11}&=0.49848757539660686901336470177641810\ldots.
+\end{align*}
+Sections~\ref{sec:tail}--\ref{sec:finite} prove the theorem. The reader
+interested only in resolving A306631 may stop after that proof.
+
+\subsection{What is established here, and what is classical}
+Rademacher's convergent formula is the external analytic input; we use
+the normalization in Johansson \cite{johansson}. Effective asymptotic
+expansions of the partition function itself have an extensive literature;
+Banerjee, Paule, Radu and Schneider \cite{banerjee} are a relevant modern
+reference. None of that machinery is presented here as a new discovery.
+The central deliverables of this report are the exact rounding
+classification, the sharp extrema and calibration statements, and
+explicitly controlled inverse formulas derived from that input.
+
+The ProveIt repository already contains work on all-orders asymptotics,
+inverse errors and integer thresholds. In particular, the inspected
+A292507 report \cite{repo292507} treats the binomial transform of
+partitions without ones. The present problem continues that methodology
+but concerns ordinary partition values and a \emph{global exact}
+rounding statement. The repository snapshot used for the source review
+was
+\begin{center}
+\texttt{d68b65ea064084fb121df9bb431b21d086f7be81}.
+\end{center}
+A targeted repository search for A306631 returned no match. This is a
+limited search result, not a guarantee that the subject is absent from
+every repository file or from the literature. No repository theorem is
+assumed in the proofs below, and no repository file has been modified.
+
+\subsection{Why ordinary asymptotic equivalence is insufficient}
+From $p(n)\sim H(n)$ one obtains only a coarse inverse approximation.
+The derivative
+\[
+ (\log H)'(n)\sim\frac{c}{2\sqrt n}
+\]
+tends to zero. A relative forward error of size $n^{-1/2}$ can therefore
+produce a nonzero constant inverse error. In fact the error tends to
+$\delta$, rather than to zero. A proof that rounding succeeds must place
+the \emph{entire} error sequence on the correct side of $1/2$; the
+exceptional behavior at small odd indices cannot be discarded.
+
+\section{The inverse branch and the exact partition expansion}
+\subsection{Branch selection}
+Logarithmic differentiation gives
+\begin{equation}\label{eq:logderivative}
+ (\log H)'(x)=\frac{c}{2\sqrt x}-\frac1x
+ =\frac{c^2(t-2)}{2t^2},\qquad t=c\sqrt x.
+\end{equation}
+The minimum of $H$ is $c^2e^2/(16\sqrt3)<2$, so the increasing inverse
+exists for all $y\ge2$. The elementary bounds $\pi^2<10$, $e<11/4$ and
+$\sqrt3>5/3$ already imply that this minimum is less than $121/64<2$.
+Solving $H(x)=y$ with $t=c\sqrt x>2$ gives
+\[
+ -\frac t2\,e^{-t/2}=-\frac{c}{4\,3^{1/4}\sqrt y}.
+\]
+The choice $t>2$ selects $W_{-1}$ and proves \eqref{eq:F}. The principal
+Lambert branch would instead select the decreasing branch and would not
+solve the OEIS question.
+
+\subsection{The external theorem and our normalization}
+For $n\ge1$ write
+\begin{equation}\label{eq:mu}
+ m=n-a,\qquad \mu=c\sqrt m,\qquad J(t)=t\cosh t-\sinh t.
+\end{equation}
+For relatively prime integers $h,k$, the Dedekind sum is
+\[
+ s(h,k)=\sum_{r=1}^{k-1}
+ \left(\!\left(\frac rk\right)\!\right)
+ \left(\!\left(\frac{hr}k\right)\!\right),
+\]
+where $((u))=u-\lfloor u\rfloor-1/2$ for nonintegral $u$, and $((u))=0$
+for integral $u$. Define
+\begin{equation}\label{eq:Ak}
+ A_k(n)=\sum_{\substack{0\le h<k\\(h,k)=1}}
+ \exp\!\left(\pi i\left(s(h,k)-\frac{2nh}{k}\right)\right).
+\end{equation}
+For $k=1$ the convention yields $A_1(n)=1$; also
+$A_2(n)=(-1)^n$. Termwise absolute values give $|A_k(n)|\le k$.
+Each $A_k(n)$ is periodic in $n$ modulo $k$.
+
+Rademacher's formula, in the equivalent normalization of
+\cite[Section~1]{johansson}, is
+\begin{equation}\label{eq:rademacher}
+ p(n)=\frac1{2\pi\sqrt2\,m^{3/2}}
+ \sum_{k\ge1}A_k(n)\sqrt k\,J(\mu/k).
+\end{equation}
+The classical identity \eqref{eq:rademacher} is quoted, not reproved.
+The estimates, inversions and finite verifications that follow are
+proved within this report.
+
+\section{An elementary effective Rademacher tail}\label{sec:tail}
+\begin{lemma}[Absolute tail bound]\label{lem:tail}
+For every $K\ge1$ and $n\ge1$, if $T_k(n)$ is the $k$th term of
+\eqref{eq:rademacher}, then
+\begin{equation}\label{eq:tail}
+ \left|p(n)-\sum_{k=1}^K T_k(n)\right|
+ \le\frac{2\pi^2}{9\sqrt{3K}}\,e^{\mu/(K+1)}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $t\ge0$,
+\[
+ J(t)=\int_0^t u\sinh u\,\dd u
+ \le\int_0^t u^2e^u\,\dd u\le\frac{t^3e^t}{3}.
+\]
+Consequently
+\[
+ |T_k(n)|\le\frac{c^3}{6\pi\sqrt2}
+ k^{-3/2}e^{\mu/k}
+ =\frac{\pi^2}{9\sqrt3}k^{-3/2}e^{\mu/k}.
+\]
+This also proves absolute convergence for fixed $n$. For $k>K$ use
+$e^{\mu/k}\le e^{\mu/(K+1)}$ and
+$\sum_{k>K}k^{-3/2}\le\int_K^\infty x^{-3/2}\dd x=2/\sqrt K$.
+\end{proof}
+
+The bound is deliberately elementary rather than optimal. Its purpose is
+to turn an infinite-index claim into a finite rational certificate, not
+to compete with optimized implementations of Rademacher's formula.
+
+Define the positive dominant sector, extended to real $x>a+c^{-2}$, by
+\begin{equation}\label{eq:M}
+ M(x)=\frac{e^{c\sqrt{x-a}}}{4\sqrt3\,(x-a)}
+ \left(1-\frac1{c\sqrt{x-a}}\right).
+\end{equation}
+Splitting the $k=1$ summand into its positive and negative exponentials
+shows that
+\[
+ T_1(n)=M(n)+\frac{e^{-\mu}}{4\sqrt3\,m}(1+\mu^{-1}).
+\]
+\begin{lemma}[Relative error of the dominant sector]\label{lem:relative}
+For $\mu\ge50$, write $p(n)=M(n)(1+\epsilon_n)$. Then
+\begin{equation}\label{eq:epsilon}
+ |\epsilon_n|\le\frac32\mu^2e^{-\mu/2}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The $K=1$ case of \eqref{eq:tail} and the displayed negative exponential
+term imply
+\begin{equation}\label{eq:epsilonprecise}
+ |\epsilon_n|\le
+ \frac{1+1/\mu}{1-1/\mu}e^{-2\mu}
+ +\frac43\frac{\mu^2}{1-1/\mu}e^{-\mu/2}.
+\end{equation}
+For $\mu\ge50$, the coefficient of $\mu^2e^{-\mu/2}$ in the second
+term is at most $200/147$. The first term divided by that same scale
+is at most $51/122500$, even after discarding its additional decaying
+exponential. The sum of those rational bounds is less than $3/2$.
+\end{proof}
+
+\section{A convergent model for the inverse bias}\label{sec:smooth}
+The dominant sector can be inverted without making a merely formal
+asymptotic ansatz. Its bias is an analytic function of $1/\mu$.
+
+\begin{lemma}[Analytic fixed point]\label{lem:v}
+There is a unique analytic solution with $|v(z)-1|\le1/4$ on
+$|z|\le1/20$ of
+\begin{equation}\label{eq:vfixed}
+ v(z)=-\frac{\log(1-z)}z
+       -\frac2z\log(1-z^2v(z)),\qquad v(0)=1.
+\end{equation}
+The apparent singularities at $z=0$ are removable. All Taylor
+coefficients of $v$ are nonnegative. In particular, for $0\le z\le1/20$,
+\begin{equation}\label{eq:vrealbounds}
+ 1+\frac52 z\le v(z)\le\frac54.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Use the analytic logarithms determined by their series at $1$. Put
+$r=1/20$ and $Q=5/4$. On $|z|\le r$, $|v-1|\le1/4$, the right-hand
+side of \eqref{eq:vfixed}, minus $1$, has modulus at most
+\[
+ \frac{r}{2(1-r)}+\frac{2rQ}{1-r^2Q}<\frac14.
+\]
+Its derivative with respect to $v$ has modulus at most
+\[
+ \frac{2r}{1-r^2Q}<\frac14.
+\]
+Uniform fixed-point iteration starting at $v=1$ is thus a contraction
+on that disk, and converges uniformly to an analytic solution. The same
+bounds hold in a slightly larger $z$-disk, so analyticity on a
+neighborhood of the closed disk is available for Cauchy estimates.
+
+Expanding \eqref{eq:vfixed} gives
+\begin{equation}\label{eq:vrec}
+ v_0=1,\qquad
+ v_j=\frac1{j+1}
+ +2\sum_{k=1}^{\lfloor(j+1)/2\rfloor}
+ \frac1k\coeff{z}{j-2k+1}v(z)^k\quad(j\ge1).
+\end{equation}
+Only earlier coefficients occur on the right, and they occur with
+nonnegative coefficients. Induction proves $v_j\ge0$, while
+$v_1=5/2$. The upper real bound is the fixed-point disk bound.
+\end{proof}
+
+\begin{definition}\label{def:B}
+For $|z|\le1/20$, set
+\begin{equation}\label{eq:B}
+ B(z)=a+\frac{2v(z)-z^2v(z)^2}{c^2}.
+\end{equation}
+\end{definition}
+\begin{proposition}[Exact dominant-sector identity]\label{prop:Bidentity}
+Whenever $\mu=c\sqrt{n-a}\ge50$,
+\begin{equation}\label{eq:Bidentity}
+ n-F(M(n))=B(1/\mu).
+\end{equation}
+The same identity holds for real $n$ in this range.
+\end{proposition}
+\begin{proof}
+Set $z=1/\mu$ and $\nu=\mu-zv(z)$. Equation~\eqref{eq:vfixed} is
+exactly
+\[
+ -zv-2\log(1-z^2v)=\log(1-z).
+\]
+Hence
+\[
+ \frac{e^\nu}{\nu^2}
+ =\frac{e^\mu}{\mu^2}(1-\mu^{-1}).
+\]
+Since $\nu>2$, the increasing inverse branch gives
+$F(M(n))=\nu^2/c^2$. Subtracting this quantity from
+$n=a+\mu^2/c^2$ proves the assertion.
+\end{proof}
+
+\begin{remark}
+The exact identity concerns $M(n)$, not $p(n)$. The distinction is
+essential: $B(1/\mu)$ is a convergent analytic main sector, whereas
+$d_n$ also contains arithmetic exponentially small terms. These terms
+will be made explicit in Section~\ref{sec:arithmetic}.
+\end{remark}
+
+\section{Uniform inequalities for every large index}\label{sec:effective}
+\begin{theorem}[Effective inverse estimate]\label{thm:effective}
+For every integer $n\ge400$, with $\mu=c\sqrt{n-a}$,
+\begin{equation}\label{eq:inverseerror}
+ |d_n-B(1/\mu)|\le
+ \frac{9\mu^3}{c^2}e^{-\mu/2}<\frac1{c^2\mu}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:largebracket}
+ \delta+\frac3{c^2\mu}<d_n<\frac{43}{100},
+ \qquad \lim_{n\to\infty}d_n=\delta.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The elementary bounds $25/8<\pi<22/7$ imply $625/96<c^2<7$.
+Thus $n\ge400$ gives
+$\mu^2>(625/96)(400-1/24)>2500$, so $\mu\ge50$.
+Let $z=1/\mu$. From \eqref{eq:vrealbounds},
+\begin{equation}\label{eq:Bbracket}
+ B(z)-\delta\ge\frac{5z-(25/16)z^2}{c^2},\qquad
+ 0<B(z)\le a+\frac{5}{2c^2}<\frac{43}{100}.
+\end{equation}
+Write $x_0=F(M(n))=n-B(z)$. We first locate $F(p(n))$ in
+$[n-1,n+1]$ rather than presupposing that location.
+
+For $x\in[n-1,n+1]$ put $t=c\sqrt x$. Since $c^2<7$ and $\mu\ge50$,
+we have $\mu-1<t<\mu+1$. The function $(t-2)/t^2$ decreases for
+$t>4$. Equation~\eqref{eq:logderivative} therefore gives
+\begin{equation}\label{eq:derivativebound}
+ (\log H)'(x)\ge\frac{c^2(\mu-1)}{2(\mu+1)^2}
+ \ge\frac{c^2}{3\mu}.
+\end{equation}
+The last inequality is equivalent to
+$\mu^2-7\mu-2\ge0$.
+
+The function $\mu^4e^{-\mu/2}$ decreases for $\mu\ge50$, and
+\begin{equation}\label{eq:expaux}
+ e^{25}>9\cdot50^4.
+\end{equation}
+In fact $e^{25}>25^{11}/11!>9\cdot50^4$, a comparison of integers
+after multiplication by $11!$. The accompanying exact certificate also
+checks the inequality. Consequently $9\mu^4e^{-\mu/2}<1$ throughout the range.
+Lemma~\ref{lem:relative} now gives $|\epsilon_n|<1/2$ and
+\begin{equation}\label{eq:logepsilon}
+ |\log(1+\epsilon_n)|\le2|\epsilon_n|
+ \le3\mu^2e^{-\mu/2}<\frac1{3\mu^2}.
+\end{equation}
+
+The point $x_0$ is more than $1/2$ from either endpoint of $[n-1,n+1]$,
+by \eqref{eq:Bbracket}. Integrating \eqref{eq:derivativebound} from
+$x_0$ to those endpoints shows that changing $\log M(n)$ by the amount
+in \eqref{eq:logepsilon} cannot cross either endpoint value of $\log H$;
+indeed $1/(3\mu^2)<c^2/(6\mu)$. Thus $F(p(n))$ lies inside that
+interval. Applying the mean value theorem there proves
+\[
+ |F(p(n))-F(M(n))|
+ \le\frac{3\mu}{c^2}|\log(1+\epsilon_n)|
+ \le\frac{9\mu^3}{c^2}e^{-\mu/2}.
+\]
+Together with \eqref{eq:expaux}, this is \eqref{eq:inverseerror}.
+
+Subtracting $z/c^2$ from the lower bound in \eqref{eq:Bbracket} gives
+\[
+ d_n-\delta>\frac{4z-(25/16)z^2}{c^2}
+ >\frac{3z}{c^2}.
+\]
+For the upper bound use $z\le1/50$ to obtain
+\[
+ d_n<a+\frac{5/2+1/50}{c^2}
+ =a+\frac{63}{25c^2}<\frac{43}{100}.
+\]
+For the last inequality, $c^2>625/96$ gives
+$a+63/(25c^2)<160777/375000<43/100$.
+The same elementary bound gives
+$\delta<5233/15000<7/20$. These are also checked in the certificate. Finally, $B(0)=\delta$
+and the error in \eqref{eq:inverseerror} tends to zero.
+\end{proof}
+
+\section{The exact finite certificate and completion of the proof}\label{sec:finite}
+\subsection{What must be checked}
+Every comparison below takes place at $x\ge1$, where $H$ is strictly
+increasing. Thus
+\begin{equation}\label{eq:comparisonrule}
+ d_n>s\ \Longleftrightarrow\ p(n)<H(n-s),\qquad
+ d_n<s\ \Longleftrightarrow\ p(n)>H(n-s).
+\end{equation}
+This avoids evaluating a Lambert function in any proof check.
+
+\begin{lemma}[Certified finite inequalities]\label{lem:finite}
+The following strict inequalities hold:
+\begin{align}
+ \frac7{20}<d_n<1&& (2\le n\le399),\label{eq:finiteall}\\
+ d_n<\frac{49}{100}&& (10\le n\le399,\ n\ne11),\label{eq:finite49}\\
+ \frac{498}{1000}<d_{11}<\frac{499}{1000},\qquad
+ &\frac{796}{1000}<d_2<\frac{797}{1000},\label{eq:finitespecial}\\
+ d_n<\frac{79}{100}&& (3\le n\le9).\label{eq:finite79}
+\end{align}
+For $2\le n\le9$, the inequality $d_n>1/2$ holds exactly at
+$n=2,3,4,5,7,9$; at $6,8$ one has $d_n<1/2$.
+\end{lemma}
+\begin{proof}[Proof by exact finite computation]
+The file \texttt{code/certify.py} implements \eqref{eq:comparisonrule}
+using only integer arithmetic, integer square roots and rational
+endpoints. It completed all 1,204 asserted comparisons, with every
+interval separated strictly from the comparison value. The independent
+recomputation of all partition values also agreed. The construction of
+the intervals, including their rigorous transcendental remainders, is
+given below so that the finite computation can be audited without
+trusting a floating-point library. Its machine-readable outcome is
+\texttt{results/certificate.json}.
+\end{proof}
+
+\subsection{Why the intervals are rigorous}
+All stored interval endpoints are integers divided by
+$S=10^{70}$. Addition is exact at this scale; multiplication and division
+round lower endpoints downward and upper endpoints upward. Square roots
+use integer square roots of scaled nonnegative integers, with an extra
+unit on an upper endpoint unless the square is exact. These operations
+enclose the corresponding real operations.
+
+For $\pi$, the program uses Machin's identity
+\[
+ \pi=16\arctan(1/5)-4\arctan(1/239).
+\]
+Each arctangent is enclosed between its alternating-series partial sum
+and that sum plus the next term. The program uses 60 terms and 15 terms,
+respectively, before rounding the rational endpoints outward.
+The identity follows by the tangent addition formula, with the relevant
+angles in the first quadrant.
+
+For $0\le t\le64$, it computes $\exp(t/64)$ through degree 80 and then
+squares the interval six times. On $0\le u\le1$ the omitted tail is
+bounded by
+\[
+ \sum_{j=81}^\infty\frac{u^j}{j!}
+ \le\frac1{81!}\sum_{r\ge0}82^{-r}
+ =\frac{82}{81\cdot81!}<\frac2{81!}<\frac1S.
+\]
+Adding one scaled unit to the upper endpoint is therefore sufficient
+before the six squarings. Every exponential argument required by the
+finite comparisons is below 64. The computation of $H$ then uses only
+these operations on rational arguments.
+
+Partition numbers are first computed by Euler's recurrence
+\begin{equation}\label{eq:pentagonal}
+ p(n)=\sum_{j\ge1}(-1)^{j-1}
+ \left(p\!\left(n-\frac{j(3j-1)}2\right)
+      +p\!\left(n-\frac{j(3j+1)}2\right)\right),
+\end{equation}
+with $p(0)=1$ and $p(t)=0$ for $t<0$. As an independent check, a second
+program loop multiplies the truncated factors $(1-q^j)^{-1}$ through
+$q^{399}$. Equivalently, starting with $b_0=1$ and $b_n=0$ for $n>0$,
+for each part size $j=1,\ldots,399$ it performs $b_n\leftarrow b_n+b_{n-j}$
+in increasing order of $n\ge j$. This enumerates the possible
+multiplicities of each part size. All 400 coefficients agree with
+\eqref{eq:pentagonal}. Thus even the pentagonal identity is not needed
+as an unchecked source of the finite data.
+
+The asserted $H$ comparisons are grouped as follows.
+\begin{center}
+\begin{tabular}{@{}p{0.73\linewidth}r@{}}
+\toprule
+Claim checked & Comparisons\\
+\midrule
+$7/20<d_n<1$ for $2\le n\le399$ & 796\\
+$d_n<49/100$ for $10\le n\le399$, $n\ne11$ & 389\\
+Two-sided brackets at $n=2$ and $n=11$ & 4\\
+$d_n<79/100$ for $3\le n\le9$ & 7\\
+Comparison with $1/2$ for $2\le n\le9$ & 8\\
+\midrule
+Total asserted $H$ comparisons & 1,204\\
+\bottomrule
+\end{tabular}
+\end{center}
+The smallest certified absolute separation among these comparisons
+exceeds $0.0002600145755$; it occurs in the check $d_2<0.797$.
+Additional exact checks establish $\delta<7/20$,
+\eqref{eq:expaux}, and the upper bound at the end of
+Theorem~\ref{thm:effective}. Rational bisection of $H$, again without
+Lambert $W$, supplies the displayed high-precision enclosures for
+$\beta_2$ and $\beta_{11}$.
+
+\subsection{Completion of the main theorem}
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+For $n\ge400$, Theorem~\ref{thm:effective} gives
+$\delta<d_n<0.43$. For $2\le n\le399$, Lemma~\ref{lem:finite} gives
+$0.35<d_n<1$, and $\delta<0.35$. This proves $0<d_n<1$ and hence the
+ceiling identity.
+
+For $n\ge10$, the finite bound is below $0.49$ except at $11$, where
+it is below $0.499$; the infinite tail is below $0.43$. Thus $d_n<1/2$
+for all $n\ge10$. The last assertion of Lemma~\ref{lem:finite}
+classifies the indices from $2$ to $9$. Since $0<d_n<1$, their rounded
+values are exactly those in \eqref{eq:exceptions}.
+
+The value $d_{11}>0.498$ is larger than every other $d_n$ on $n\ge10$:
+those with $n<400$ are below $0.49$, and the rest are below $0.43$.
+Similarly, $d_2>0.796$ exceeds the bounds $0.79$ for $3\le n\le9$
+and $0.499$ for $n\ge10$. Thus both maxima are unique.
+All $d_n$ exceed $\delta$, while Theorem~\ref{thm:effective} gives
+$d_n\to\delta$. This proves the sharp, unattained infima.
+\end{proof}
+
+\begin{remark}[Scope of the certificate]
+This is an exact-arithmetic computer-assisted proof of a finite lemma,
+not a numerical experiment at selected large indices. The infinite
+range has a separate analytic proof. Nevertheless, executing Python
+and checking its source is not the same as a small-kernel formal proof;
+no Lean or Rocq certification is claimed. Reproduction should use
+ordinary Python execution, not the \texttt{-O} flag, which removes
+assertions.
+\end{remark}
+
+\section{Optimal constant shifts and robust rounding}\label{sec:calibration}
+The sharp extrema provide more information than the truth of the
+original conjecture.
+
+\begin{theorem}[All successful shifts and the minimax shift]\label{thm:shifts}
+Let $S$ be either $\{n\in\N:n\ge2\}$ or $\{n\in\N:n\ge10\}$, and let
+$\beta$ be $\beta_2$ or $\beta_{11}$, respectively. For a real constant
+$s$, the identity
+\begin{equation}\label{eq:shiftedround}
+ \rnd(F(p(n))+s)=n\qquad(n\in S)
+\end{equation}
+holds if and only if
+\begin{equation}\label{eq:shiftinterval}
+ \beta-\frac12\le s\le\delta+\frac12.
+\end{equation}
+The unique constant shift minimizing the worst absolute real error is
+\begin{equation}\label{eq:minimax}
+ s_* =\frac{\beta+\delta}{2},\qquad
+ \inf_{s\in\R}\sup_{n\in S}|F(p(n))+s-n|
+ =\frac{\beta-\delta}{2}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+By the rounding convention, \eqref{eq:shiftedround} is equivalent to
+$-1/2\le s-d_n<1/2$ for every $n\in S$. The left inequalities require
+$s\ge\sup d_n-1/2=\beta-1/2$. The right inequalities allow precisely
+$s\le\delta+1/2$: equality is allowed because $d_n>\delta$ for every
+finite $n$, while any larger $s$ fails along a sequence tending to the
+infimum. This proves \eqref{eq:shiftinterval}.
+
+Since the range has supremum $\beta$ and infimum $\delta$,
+\[
+ \sup_{n\in S}|s-d_n|=\max\{|s-\delta|,|s-\beta|\}.
+\]
+The unique minimizer is the midpoint, with half the interval length as
+its value.
+\end{proof}
+
+For $n\ge10$, exact interval bisection gives
+\begin{align*}
+ s_*&=0.42205889649514342500583487903613384\ldots,\\
+ E_*&=0.07642867890146344400752982274028426\ldots.
+\end{align*}
+Thus a fixed shift reduces the worst real error on the conjectured
+range from almost $1/2$ to less than $0.077$. The set of all successful
+shifts is approximately
+\[
+ [-0.00151242460339313\ldots,\ 0.84563021759367998\ldots]
+ \qquad(n\ge10).
+\]
+For all $n\ge2$, the lower endpoint instead becomes
+$0.29661548126519453\ldots$. In particular $s=1/2$ works for every
+$n\ge2$, which is another expression of the ceiling theorem.
+
+The smallest symmetric numerical-error margin of the unshifted
+formula on $n\ge10$ is
+\begin{equation}\label{eq:roundmargin}
+ \rho=\frac12-\beta_{11}
+ =0.00151242460339313098663529822358189\ldots.
+\end{equation}
+An evaluation error of absolute value less than $\rho$ cannot change
+any of those rounded answers. No larger uniform symmetric margin can
+be valid, because the lower rounding boundary at $n=11$ is exactly
+$\rho$ away. At the boundary itself the result depends on the tie
+convention; our lower endpoint in \eqref{eq:shiftinterval} uses
+rounding half-integers upward.
+
+\section{Inverting the entire partition staircase}\label{sec:staircase}
+Exact inversion at partition values is different from inversion at an
+arbitrary real target. Define
+\begin{equation}\label{eq:N}
+ N(y)=\min\{n\ge0:p(n)\ge y\},\qquad y\ge42.
+\end{equation}
+Here the minimum exists because $p(n)$ is unbounded, and the relevant
+partition values are strictly increasing. Adding a part $1$ injects
+partitions of $n$ into those of $n+1$, while the one-part partition of
+$n+1$ is missing from that image for $n\ge1$.
+
+\begin{theorem}[Two candidates and one partition comparison]\label{thm:staircase}
+For $y\ge42$, put
+\begin{equation}\label{eq:k}
+ k(y)=\lfloor F(y)+\delta\rfloor+1.
+\end{equation}
+Then
+\begin{equation}\label{eq:onecomparison}
+ N(y)=
+ \begin{cases}
+ k(y),&p(k(y))\ge y,\\
+ k(y)+1,&p(k(y))<y.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Suppose first that $y>42$, and set $n=N(y)\ge11$.
+The inequalities $p(n-1)<y\le p(n)$ imply
+\[
+ n-1-d_{n-1}<F(y)\le n-d_n.
+\]
+Using $\delta<d_j\le\beta_{11}$ for $j\ge10$ gives
+\begin{equation}\label{eq:staircaseinterval}
+ F(y)+\delta<n<F(y)+1+\beta_{11}.
+\end{equation}
+The interval length is $1+\beta_{11}-\delta<2$. Its smallest possible
+integer is $k=\lfloor F(y)+\delta\rfloor+1$, so $n\in\{k,k+1\}$.
+Monotonicity of $p$ distinguishes these two possibilities by the one
+comparison in \eqref{eq:onecomparison}. For $y=42$, the finite bounds on
+$d_{10}$ give $9<F(42)+\delta<10$, so $k=10=N(42)$ directly.
+\end{proof}
+
+This counts evaluations of the \emph{partition function}, assuming the
+integer $k$ has been computed correctly. It is not a bit-complexity
+claim about Lambert $W$, nor a claim that a fixed floating-point
+precision always determines a floor for arbitrary real input.
+Certified intervals for $F(y)+\delta$ must resolve the floor, and an
+input exactly on a floor boundary needs an exact representation or an
+appropriate equality convention. The numerical experiment shipped here
+checks all 4,959 integer targets $42\le y\le5000$; the theorem itself
+covers all real $y\ge42$.
+
+\section{All-orders bias coefficients and an explicit remainder}\label{sec:coefficients}
+The fixed-point equation gives an exact rational algorithm for every
+coefficient of the analytic bias, not only its first few terms.
+
+\begin{theorem}[Convergent bias series]\label{thm:biasseries}
+On $|z|<1/20$,
+\begin{equation}\label{eq:Bseries}
+ B(z)=\delta+\frac1{c^2}\sum_{j\ge1}w_jz^j,
+\end{equation}
+where the $v_j$ are given by \eqref{eq:vrec} and
+\begin{equation}\label{eq:wrec}
+ w_j=2v_j-\coeff{z}{j-2}v(z)^2\qquad(j\ge1),
+\end{equation}
+with a negative-index coefficient interpreted as zero.
+For every $J\ge0$ and real $\mu>20$,
+\begin{equation}\label{eq:cauchyB}
+ \left|B(1/\mu)-\delta-\frac1{c^2}
+             \sum_{j=1}^Jw_j\mu^{-j}\right|
+ \le\frac{129}{256c^2}
+       \frac{(20/\mu)^{J+1}}{1-20/\mu}.
+\end{equation}
+Consequently, for $n\ge400$, the difference between $d_n$ and the same
+truncated series is at most the right-hand side of
+\eqref{eq:cauchyB} plus $9\mu^3e^{-\mu/2}/c^2$.
+\end{theorem}
+\begin{proof}
+The series follows from Lemma~\ref{lem:v} and \eqref{eq:B}. On
+$|z|=1/20$, that lemma gives
+\[
+ |c^2(B(z)-\delta)|
+ =|2(v-1)-z^2v^2|
+ \le\frac12+\frac1{400}\frac{25}{16}
+ =\frac{129}{256}.
+\]
+Cauchy's coefficient estimate gives
+$|w_j|\le(129/256)20^j$. Summing the resulting geometric tail proves
+\eqref{eq:cauchyB}. The assertion for $d_n$ follows from
+Theorem~\ref{thm:effective}.
+\end{proof}
+
+The first terms are
+\begin{equation}\label{eq:forwardterms}
+ d_n=\delta+\frac5{c^2\mu}
+ +\frac{29}{3c^2\mu^2}+\frac{113}{6c^2\mu^3}
+ +\frac{823}{20c^2\mu^4}+\OO(\mu^{-5}).
+\end{equation}
+More precisely, the complete convergent analytic series is accompanied
+by the exponentially small remainder in \eqref{eq:inverseerror}.
+In powers of $n^{-1/2}$ the first terms become
+\begin{align}\label{eq:npowers}
+ d_n={}&\delta+\frac5{c^3}n^{-1/2}
+ +\frac{29}{3c^4}n^{-1}\notag\\
+ &+\left(\frac{5a}{2c^3}+\frac{113}{6c^5}\right)n^{-3/2}
+ +\OO(n^{-2}).
+\end{align}
+The shift $a=1/24$ must not be dropped when converting higher terms.
+
+The finite algorithm in \texttt{code/series.py} uses exact rational
+arithmetic. It is triangular: the coefficient $v_j$ in
+\eqref{eq:vrec} depends only on $v_0,\ldots,v_{j-1}$, so any prescribed
+finite order requires only finitely many additions and multiplications.
+Positivity of $v_j$ does \emph{not}, without a further argument,
+establish positivity of all $w_j$, because \eqref{eq:wrec} includes a
+subtraction. The twelve positive values computed below are not used to
+assert that stronger statement.
+
+\section{A convergent corrected inverse at an arbitrary target}\label{sec:correctedinverse}
+The preceding series describes the error at a known index $n$. For
+inversion from a target $y$, one wants a correction expressed in terms
+of $F(y)$ instead. These are different series.
+
+For $\mu=c\sqrt{x-a}>1$, differentiation of \eqref{eq:M} yields
+\begin{equation}\label{eq:Mderivative}
+ (\log M)'(x)
+ =\frac{c^2(\mu^2-3\mu+3)}{2\mu^2(\mu-1)}>0.
+\end{equation}
+The numerator is $(\mu-3/2)^2+3/4$. Since $M$ increases from $0$ to
+$+\infty$ on $x>a+c^{-2}$, it has an inverse $G$ on $y>0$.
+
+\begin{theorem}[Convergent correction to the Lambert inverse]\label{thm:q}
+There is a unique analytic function $q$ satisfying $q(0)=1$,
+$|q(w)-1|\le1/4$ on $|w|\le1/20$, and
+\begin{equation}\label{eq:qeq}
+ wq-3\log(1+w^2q)+\log(1-w+w^2q)=0.
+\end{equation}
+For $u=F(y)$, $t=c\sqrt u>20$, and $w=1/t$,
+\begin{equation}\label{eq:Gexact}
+ G(y)=u+a+\frac{2q(w)+w^2q(w)^2}{c^2}
+ =u+\delta+\frac1{c^2}\sum_{j\ge1}r_jt^{-j}.
+\end{equation}
+The coefficients are rational and are determined successively by
+\begin{align}
+ q_0&=1,\notag\\
+ q_j&=\coeff{w}{j+1}
+ \{3\log(1+w^2q(w))-\log(1-w+w^2q(w))\},\label{eq:qrec}\\
+ r_j&=2q_j+\coeff{w}{j-2}q(w)^2.\label{eq:rrec}
+\end{align}
+For every $J\ge0$, truncation after $r_Jt^{-J}$ has absolute error
+at most
+\begin{equation}\label{eq:cauchyG}
+ \frac{129}{256c^2}\frac{(20/t)^{J+1}}{1-20/t}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Divide \eqref{eq:qeq} by $w$ and rearrange as the fixed-point equation
+\begin{equation}\label{eq:qmap}
+ q=\frac2w\log(1+w^2q)
+ -\frac1w\log\!\left(1-\frac{w}{1+w^2q}\right).
+\end{equation}
+As before, the apparent singularities at zero are removable. For
+$|w|\le r=1/20$, $|q-1|\le1/4$ and $Q=5/4$, the right-hand side minus
+$1$ has modulus at most
+\[
+ \frac{2rQ}{1-r^2Q}
+ +\frac{r^2Q}{1-r^2Q}
+ +\frac{r}{2(1-r^2Q)(1-r^2Q-r)}<\frac14.
+\]
+Here the last two terms bound the second logarithm in
+\eqref{eq:qmap} minus $1$. Differentiating the original rearrangement
+of \eqref{eq:qeq} bounds the $q$-derivative by
+\[
+ \frac{3r}{1-r^2Q}+\frac{r}{1-r-r^2Q}<\frac14.
+\]
+Uniform analytic contraction proves existence and uniqueness.
+Coefficient comparison gives \eqref{eq:qrec}; its right side depends
+only on earlier $q$ coefficients.
+
+For real $w=1/t>0$, set $\mu=t+wq(w)$ and $x=a+\mu^2/c^2$.
+The relation $M(x)=H(u)$, with $u=t^2/c^2$, is equivalent to
+\[
+ (\mu-t)-2\log(\mu/t)+\log(1-\mu^{-1})=0.
+\]
+Substitute $\mu/t=1+w^2q$ to obtain \eqref{eq:qeq}. The uniqueness of
+$G$ then gives \eqref{eq:Gexact}. Finally,
+\[
+ |2(q-1)+w^2q^2|\le\frac{129}{256}
+\]
+on $|w|=1/20$, so the same Cauchy argument as before proves
+\eqref{eq:cauchyG}.
+\end{proof}
+
+The first correction terms are
+\begin{equation}\label{eq:Gfirst}
+ G(y)=F(y)+\delta+\frac5{c^2t}
+ +\frac{29}{3c^2t^2}+\frac{83}{6c^2t^3}
+ +\frac{559}{60c^2t^4}+\OO(t^{-5}).
+\end{equation}
+The third coefficient is $83/6$, whereas the bias coefficient in
+\eqref{eq:forwardterms} is $113/6$. Interchanging them amounts to
+replacing the unknown index by its uncorrected inverse inside a
+higher-order term, and produces an incorrect expansion.
+
+\begin{table}[tbp]
+\centering
+\caption{Exact coefficients of the two convergent inverse constructions.
+Here $w_j$ belongs to $B(1/\mu)$ and $r_j$ to $G(y)-F(y)$.}\label{tab:coeffs}
+\medskip
+\begin{tabular}{@{}r rr@{}}
+\toprule
+$j$ & $w_j$ & $r_j$\\
+\midrule
+1 & $5$ & $5$\\
+2 & $29/3$ & $29/3$\\
+3 & $113/6$ & $83/6$\\
+4 & $823/20$ & $559/60$\\
+5 & $1517/15$ & $-611/30$\\
+6 & $338257/1260$ & $-112459/1260$\\
+7 & $938657/1260$ & $-101329/630$\\
+8 & $10713193/5040$ & $-228677/5040$\\
+9 & $15593947/2520$ & $1709167/2520$\\
+10 & $317064037/17325$ & $325098619/138600$\\
+11 & $19540325693/356400$ & $329128673/89100$\\
+12 & $1076961671111/6486480$ & $-9006152791/6486480$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+At actual partition targets, the corrected model is exponentially
+accurate rather than exact:
+\begin{equation}\label{eq:Gactual}
+ G(p(n))-n=\OO(\mu^3e^{-\mu/2}).
+\end{equation}
+To see this, combine \eqref{eq:epsilon} with the positive logarithmic
+derivative \eqref{eq:Mderivative}, whose reciprocal is $\OO(\mu)$
+on a fixed-width neighborhood of $n$. The same bracketing argument as
+in Theorem~\ref{thm:effective} applies for sufficiently large $n$.
+The bound in \eqref{eq:Gactual} tends to zero, so rounding $G(p(n))$
+eventually recovers $n$. No sharp starting index for that separate
+corrected-model rule is asserted here.
+
+\section{Arithmetic exponential corrections}\label{sec:arithmetic}
+The coefficients $A_k(n)$ create periodic fluctuations that no fixed
+power series in $n^{-1/2}$ can capture. We now isolate them at the
+inverse level with a controlled remainder.
+
+\begin{theorem}[Any fixed finite set of arithmetic sectors]\label{thm:sectors}
+Fix an integer $K\ge2$. Put $z=1/\mu$ and
+$\nu=\mu-v(z)/\mu$. As $n\to\infty$ through integers,
+\begin{align}
+ d_n={}&B(1/\mu)
+ -\frac{2\nu^2}{c^2(\nu-2)}
+ \sum_{k=2}^K\frac{A_k(n)}{\sqrt k}
+   \frac{1-k/\mu}{1-1/\mu}
+   e^{-(1-1/k)\mu}\notag\\
+ &+\OO_K\!\left(\mu^3
+       e^{-(1-1/(K+1))\mu}\right).
+ \label{eq:sectors}
+\end{align}
+The implied constant can depend on the fixed integer $K$, but not on
+$n$ or its residue class.
+\end{theorem}
+\begin{proof}
+Splitting $J(\mu/k)$ into exponentials, the positive-exponential part
+of the $k$th Rademacher summand is
+\[
+ P_{k,+}(n)=\frac{A_k(n)}{4\sqrt3\,m\sqrt k}
+ e^{\mu/k}(1-k/\mu).
+\]
+Its ratio to $M(n)$ is
+\begin{equation}\label{eq:sectorratio}
+ E_k(n)=\frac{A_k(n)}{\sqrt k}
+ \frac{1-k/\mu}{1-1/\mu}e^{-(1-1/k)\mu}.
+\end{equation}
+For fixed $K$, the negative-exponential parts of the first $K$ terms,
+after division by $M(n)$, are
+$\OO_K(e^{-(1+1/K)\mu})$. Lemma~\ref{lem:tail} bounds the remaining
+exact Rademacher tail divided by $M(n)$ by
+$\OO_K(\mu^2e^{-(1-1/(K+1))\mu})$. Therefore
+\begin{equation}\label{eq:epssectors}
+ \epsilon_n=\sum_{k=2}^K E_k(n)
+ +\OO_K(\mu^2e^{-(1-1/(K+1))\mu}).
+\end{equation}
+In particular, taking $K=2$ first shows
+$\epsilon_n=\OO(e^{-\mu/2})$: the polynomial factor in the next
+exponential is absorbed by the gap between its exponent and $1/2$.
+
+Let $\Phi(\ell)=F(e^\ell)$. At $\ell=\log M(n)$,
+\begin{equation}\label{eq:PhiDerivative}
+ \Phi'(\ell)=\frac{2\nu^2}{c^2(\nu-2)}=\OO(\mu).
+\end{equation}
+On a bounded neighborhood of this argument, $\Phi''(\ell)=\OO(1)$.
+Indeed $\ell=\nu-2\log\nu+\log(c^2/(4\sqrt3))$,
+so $\dd\nu/\dd\ell=\nu/(\nu-2)$, and direct differentiation of
+\eqref{eq:PhiDerivative} is bounded for large $\nu$.
+Taylor expansion in $h=\log(1+\epsilon_n)$ gives
+\[
+ F(p(n))-F(M(n))
+ =\frac{2\nu^2}{c^2(\nu-2)}\epsilon_n
+ +\OO(\mu\epsilon_n^2).
+\]
+The nonlinear error is $\OO(\mu e^{-\mu})$, smaller than the stated
+remainder for every fixed $K$. Substitution of \eqref{eq:epssectors}
+and the identity $d_n=B-(F(p(n))-F(M(n)))$ proves the result.
+\end{proof}
+
+\begin{corollary}[Leading parity effect]\label{cor:parity}
+Define the analytic amplitude near $z=0$ by
+\begin{equation}\label{eq:amplitude}
+ \mathcal A(z)=
+ \frac{(1-z^2v(z))^2(1-2z)}
+ {(1-2z-z^2v(z))(1-z)},\qquad\mathcal A(0)=1.
+\end{equation}
+Then
+\begin{equation}\label{eq:parity}
+ d_n=B(1/\mu)
+ -(-1)^n\frac{\sqrt2\,\mu}{c^2}
+ \mathcal A(1/\mu)e^{-\mu/2}
+ +\OO(\mu^3e^{-2\mu/3}).
+\end{equation}
+In particular the smooth-bias residual is eventually negative on even
+indices and positive on odd indices.
+\end{corollary}
+\begin{proof}
+Take $K=2$, use $A_2(n)=(-1)^n$, and substitute
+$\nu=\mu(1-z^2v)$. This simplifies the prefactor in
+\eqref{eq:sectors} to the amplitude in \eqref{eq:amplitude}.
+The quotient of the remainder by the leading exponential is
+$\OO(\mu^2e^{-\mu/6})\to0$, while $\mathcal A(1/\mu)\to1$.
+\end{proof}
+
+The first arithmetic layer explains why a smooth large-$n$ expansion
+can miss small odd-index behavior. It does not by itself prove the
+finite exceptions, which were separately certified.
+
+There is an important limitation to the word ``transseries'' here.
+The actions $1-1/k$ in \eqref{eq:sectors} accumulate at $1$, and
+nonlinear products of the first exponential layer also reach action
+$1$. Theorem~\ref{thm:sectors} is a rigorous \emph{fixed finite-sector}
+statement below that accumulation point. It is not a proof that a
+naively ordered infinite formal transseries remains valid across the
+accumulation. Developing an appropriate resummation there is a genuine
+further question.
+
+\section{Consequences for differences and perturbations}\label{sec:consequences}
+\subsection{Fixed-order eventual alternating differences}
+Write $\Delta f(n)=f(n+1)-f(n)$ and let
+$(1/2)_r=(1/2)(3/2)\cdots(r-1/2)$, with $(1/2)_0=1$.
+
+\begin{theorem}[Every fixed finite-difference order]\label{thm:differences}
+For every fixed integer $r\ge0$,
+\begin{equation}\label{eq:differenceasym}
+ (-1)^r\Delta^r(d_n-\delta)
+ \sim\frac5{c^3}(1/2)_r\,n^{-r-1/2}
+ \qquad(n\to\infty).
+\end{equation}
+Consequently $d_n$ is eventually strictly decreasing and strictly
+convex, and every fixed-order alternating difference is eventually
+positive.
+\end{theorem}
+\begin{proof}
+Let $f(x)=B((c\sqrt{x-a})^{-1})-\delta$. The convergent analytic
+series near infinity gives, for fixed $r$,
+\[
+ f^{(r)}(x)=(-1)^r\frac5{c^3}(1/2)_r x^{-r-1/2}
+ +\OO_r(x^{-r-1}).
+\]
+Termwise differentiation is justified by local uniform convergence on
+a complex neighborhood of each sufficiently large positive ray. For
+$r\ge1$,
+\[
+ \Delta^r f(n)=\int_{[0,1]^r}
+ f^{(r)}(n+t_1+\cdots+t_r)\,\dd t_1\cdots\dd t_r.
+\]
+The case $r=0$ is the original expansion. On the other hand,
+Theorem~\ref{thm:effective} bounds the discrete remainder
+$d_n-\delta-f(n)$ by an exponentially small function of $\sqrt n$.
+Its $r$th finite difference is bounded by the sum of $2^r$ such local
+bounds, which is smaller than every fixed negative power of $n$.
+Combining these facts proves \eqref{eq:differenceasym}.
+\end{proof}
+
+The order of quantifiers matters: for each fixed $r$ there exists a
+threshold $N_r$. No single threshold valid for all $r$ is claimed.
+The small-index increase from $d_{10}$ to $d_{11}$ also shows why
+``eventually decreasing'' cannot simply be strengthened to monotonicity
+throughout the OEIS conjecture's range.
+
+\subsection{The natural noise scale for recovering an index}
+\begin{proposition}[Inverse sensitivity at the critical scale]\label{prop:noise}
+Let $\eta\in\R$ be fixed and suppose
+\begin{equation}\label{eq:noisyinput}
+ y_n=p(n)\exp\!\left(\frac\eta{\sqrt n}+o(n^{-1/2})\right).
+\end{equation}
+Then
+\begin{equation}\label{eq:noiselimit}
+ F(y_n)-n\longrightarrow-\delta+\frac{2\eta}{c}.
+\end{equation}
+In particular, nearest-integer recovery eventually succeeds if
+\begin{equation}\label{eq:noiserange}
+ \frac c2(\delta-\tfrac12)<\eta<
+ \frac c2(\delta+\tfrac12).
+\end{equation}
+It eventually fails if the limit in \eqref{eq:noiselimit} lies outside
+$[-1/2,1/2]$. For the bias-corrected inverse $F(y_n)+\delta$, the
+corresponding sufficient condition is $|\eta|<c/4$.
+\end{proposition}
+\begin{proof}
+On the logarithmic target scale, the derivative in
+\eqref{eq:PhiDerivative}, now evaluated near $\log p(n)$, is
+$(2/c)\sqrt n+\OO(1)$. The mean value theorem applied to
+\eqref{eq:noisyinput} therefore gives
+$F(y_n)-F(p(n))\to2\eta/c$. Subtracting $d_n\to\delta$ proves
+\eqref{eq:noiselimit}. A limit strictly inside the rounding interval
+implies eventual success, and a limit strictly outside its closure
+implies eventual failure.
+\end{proof}
+
+At either boundary of \eqref{eq:noiserange}, the leading limit alone
+does not decide success; the next error term and the tie convention
+can matter. The proposition deliberately leaves these boundary cases
+unasserted.
+
+\subsection{Relation to the forward approximation in A050811}
+The sequence A050811 rounds $H(n)$ itself and records an asymptotic
+formula for its difference from $p(n)$ \cite{oeis050811}. Our inverse
+bias is consistent with that forward error. Indeed,
+$F(p(n))=n-d_n$ and $d_n\to\delta$ imply
+\[
+ \log\frac{H(n)}{p(n)}
+ =\log H(n)-\log H(n-d_n)
+ \sim\frac{c\delta}{2\sqrt n}.
+\]
+Consequently
+\begin{equation}\label{eq:forwarderror}
+ H(n)-p(n)\sim
+ \left(\frac1\pi+\frac\pi{72}\right)
+ \frac{e^{\pi\sqrt{2n/3}}}{4\sqrt2\,n^{3/2}}.
+\end{equation}
+Rounding $H(n)$ changes its value by at most $1/2$, negligible on this
+scale, so the same leading equivalent applies to A050811$(n)-p(n)$.
+The leading equivalent in \eqref{eq:forwarderror} is already present
+in that OEIS entry; it is included as a consistency check, not as a
+novel formula. In particular, a small and bounded inverse error is
+compatible with an unbounded forward error.
+
+\section{Reproducibility and numerical illustrations}\label{sec:computations}
+\subsection{Three deliberately separate forms of verification}
+The archive separates exact proof checks from illustrative numerical
+calculations.
+
+\paragraph{Finite proof certificate.}
+\texttt{code/certify.py} uses only the Python standard library, with
+integer and rational arithmetic. It verifies
+Lemma~\ref{lem:finite}, independently recomputes 400 partition values,
+and encloses the sharp constants. Its output is
+\texttt{results/certificate.json}; the companion CSV lists all 1,204
+interval comparisons with exact endpoints. The analytic large-index proof is
+not encoded in this program.
+
+\paragraph{Exact coefficient calculation.}
+\texttt{code/series.py} evaluates the triangular recurrences over the
+rational numbers. The supplied run computes order 12 and writes
+\texttt{results/coefficients.json}. Both defining logarithmic equations are also verified by exact
+substitution through degree 13. Its output is exact algebra,
+not a high-precision fit to partition data.
+
+\paragraph{Numerical experiments.}
+\texttt{code/experiments.py} uses \texttt{mpmath} with 130 decimal
+digits. It evaluates the Lambert inverse, the analytic fixed points,
+the parity residual and the staircase formula. The resulting
+\texttt{results/numerics.json} is explicitly labeled numerical, not
+an interval certificate. These experiments check implementation and
+illustrate scale; they are not substitutes for the analytic proofs.
+
+From the archive root, the reproduction commands are
+\begin{lstlisting}
+python code/certify.py --output results/certificate.json
+python code/series.py --order 12 --output results/coefficients.json
+python code/experiments.py --output results/numerics.json
+pdflatex -halt-on-error article.tex
+pdflatex -halt-on-error article.tex
+\end{lstlisting}
+Only the third command needs the optional \texttt{mpmath} dependency.
+The \texttt{Makefile} automates these targets. The certificate must be
+run without Python's assertion-removing optimization flag.
+
+\subsection{The small indices that decide the theorem}
+Table~\ref{tab:bias} gives rounded decimal illustrations. Their role is
+expository; all strict comparisons used in the proof were separately
+certified with rational intervals.
+\begin{center}
+\begin{longtable}{@{}r r l c@{}}
+\caption{Inverse bias and nearest-integer recovery.}\label{tab:bias}\\
+\toprule
+$n$ & $p(n)$ & $d_n$ (approximately) & Recovery\\
+\midrule
+\endfirsthead
+\toprule
+$n$ & $p(n)$ & $d_n$ (approximately) & Recovery\\
+\midrule
+\endhead
+2 & 2 & 0.796615481265 & fails\\
+3 & 3 & 0.756104945769 & fails\\
+4 & 5 & 0.502652583555 & fails\\
+5 & 7 & 0.645462483764 & fails\\
+6 & 11 & 0.438137374848 & succeeds\\
+7 & 15 & 0.569463332725 & fails\\
+8 & 22 & 0.450004070600 & succeeds\\
+9 & 30 & 0.505033636323 & fails\\
+10 & 42 & 0.440766683161 & succeeds\\
+11 & 56 & 0.498487575397 & succeeds\\
+12 & 77 & 0.420669769623 & succeeds\\
+13 & 101 & 0.473632529547 & succeeds\\
+14 & 135 & 0.431618414918 & succeeds\\
+15 & 176 & 0.452838038452 & succeeds\\
+\bottomrule
+\end{longtable}
+\end{center}
+The values at $4$ and $9$ lie just above $1/2$; the value at $11$ lies
+just below. An argument based only on a few leading terms at those
+indices would be unreliable.
+
+\subsection{Checking the parity term and the convergent tails}
+Let
+\[
+ R_n=d_n-B(1/\mu),\qquad
+ L_n=-(-1)^n\frac{\sqrt2\mu}{c^2}
+                  \mathcal A(1/\mu)e^{-\mu/2}.
+\]
+The quotient $R_n/L_n$ should tend to $1$ by
+Corollary~\ref{cor:parity}. The following rounded values use the full
+analytic fixed point in $B$ and $\mathcal A$, not a truncated polynomial.
+\begin{center}
+\begin{tabular}{@{}r r r@{}}
+\toprule
+$n$ & $R_n$ (approximately) & $R_n/L_n$ (approximately)\\
+\midrule
+100 & $-1.5380713277\cdot10^{-5}$ & $0.995255662344$\\
+400 & $-8.1517489953\cdot10^{-11}$ & $0.999897873292$\\
+401 & $+7.9066922485\cdot10^{-11}$ & $1.000195579199$\\
+1000 & $-4.2960209400\cdot10^{-17}$ & $0.999999260234$\\
+1001 & $+4.2118871198\cdot10^{-17}$ & $1.000001383952$\\
+2000 & $-3.0616805313\cdot10^{-24}$ & $0.999999994825$\\
+2001 & $+3.0188441869\cdot10^{-24}$ & $0.999999992109$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The oscillation of the ratios about $1$ reflects the next arithmetic
+sectors, not a failure of the leading parity prediction.
+
+For the twelve-term analytic bias approximation, the observed absolute
+errors in $B(1/\mu)$ at $n=400,1000,2000$ are approximately
+$4.81\cdot10^{-18}$, $1.22\cdot10^{-20}$ and $1.33\cdot10^{-22}$.
+These are much smaller than the deliberately conservative Cauchy bounds.
+At $n=2000$, the algebraic truncation error after twelve terms is larger
+than the leading parity residual. This illustrates why an exponentially
+small signal cannot automatically be read off after a fixed short
+power-series truncation, even at high arithmetic precision.
+
+For the corrected inverse, the experiments evaluate the twelve-term
+version of \eqref{eq:Gexact} at the target $M(n)$, where the exact answer
+is $n$. The errors (exact value minus approximation) at those same indices are about
+$-2.46\cdot10^{-19}$, $-6.22\cdot10^{-22}$ and
+$-6.79\cdot10^{-24}$. This tests the \emph{inverse} coefficient family
+independently of the forward-bias coefficients.
+
+\section{Further research questions and topics}\label{sec:research}
+The following questions are proposed continuations of the proved
+results. Except for the OEIS conjecture resolved above, no claim is
+made that every formulation has already appeared as an open problem
+in the literature.
+
+\paragraph{1. Locate the nearest complex singularities.}
+The radius $1/20$ is a convenient sufficient radius, not an optimal one.
+Determine the exact radii of convergence of $v$ and $q$, the dominant
+singularities on their convergence circles, and the resulting large-order
+asymptotics of $w_j$ and $r_j$. The fixed-point equations suggest studying
+simultaneous vanishing of the implicit equation and its derivative in
+the unknown function. A rigorous answer would give much sharper
+coefficient and truncation bounds than the elementary disk estimates.
+
+\paragraph{2. Prove or refute positivity of every bias coefficient.}
+All $v_j$ are nonnegative by the triangular recurrence, and the first
+twelve $w_j$ are positive. Determine whether $w_j>0$ for every $j\ge1$.
+If true, seek a positive recurrence or a combinatorial interpretation
+that explains the cancellation in $2v-z^2v^2$. Such a result could
+produce monotone lower approximants to the smooth bias.
+The sign-changing corrected-inverse coefficients $r_j$ provide a useful
+contrast: positivity must not be inferred merely from invertibility.
+
+\paragraph{3. Find sharp thresholds for finite differences.}
+For fixed $r$, Theorem~\ref{thm:differences} proves eventual positivity
+of $(-1)^r\Delta^r(d_n-\delta)$. Determine the least threshold $N_r$,
+starting with monotonicity and convexity, and study the growth of $N_r$
+with $r$. The parity term suggests that a joint regime with increasing
+$r$ is substantially different from the fixed-$r$ theorem. An effective
+proof should track both differentiation of the analytic sector and the
+amplification of alternating arithmetic errors.
+
+\paragraph{4. Understand the extremum on every terminal range.}
+For an integer $N\ge2$, define
+$\beta(N)=\sup_{n\ge N}d_n$. We determined it sharply for $N=2$ and
+$N=10$. Classify the maximizing index as a function of $N$, identify
+where that index changes, and derive an effective description of the
+optimal shift $(\beta(N)+\delta)/2$. Eventual monotonicity would imply
+$\beta(N)=d_N$ beyond a threshold, but does not describe the finite
+transition region.
+
+\paragraph{5. Resolve the accumulation of exponential actions.}
+The sector actions $1-1/k$ accumulate at $1$, while the square of the
+parity correction has action $1$. Construct a mathematically suitable
+resummation or grouped expansion through this level. The target should
+be a theorem with a uniform remainder when the number of retained
+Rademacher terms grows with $n$, not a formal rearrangement of infinitely
+many exponentials. The exact convergent Rademacher series supplies a
+natural starting point.
+
+\paragraph{6. Sharpen inverse algorithms and their certification.}
+Replace the simple two-candidate theorem by an adaptive method that
+combines the convergent correction series, interval Lambert evaluation
+and an effective Rademacher routine. Prove bit-complexity bounds in the
+size of the target, including inputs near the floor boundaries in
+\eqref{eq:k}. The one-comparison result alone does not resolve the
+cost of certifying that floor. Another concrete task is to determine
+the sharp threshold for rounding the corrected model $G(p(n))$.
+
+\paragraph{7. Extend exact inverse rounding beyond ordinary partitions.}
+For partitions into distinct parts, colored partitions, or restricted
+partition families with controlled exponential expansions, identify the
+correct inverse scaling, limiting bias and possible successful constant
+shifts. The appropriate analogue of the present theorem is a global
+rounding statement with explicit exceptional indices, not only an
+inverse asymptotic equivalent. Families whose forward relative error
+falls exactly at the inverse sensitivity scale are especially natural.
+
+\paragraph{8. Analyze the critical perturbation boundaries.}
+At $\eta=c(\delta\pm1/2)/2$, Proposition~\ref{prop:noise} leaves a
+half-integer limiting displacement. Add the next perturbation term,
+for example $\theta/n$, and classify eventual success or failure.
+After sufficiently many algebraic terms are canceled, the arithmetic
+parity term can become the first decision-making term. This offers a
+precise setting in which a beyond-all-orders correction controls an
+integer-valued outcome.
+
+\paragraph{9. Extract residue-sensitive error bounds.}
+The $k=2$ term distinguishes even and odd indices. Incorporate the
+$k=3,4,\ldots$ terms to obtain sharp inequalities on fixed residue
+classes and to reduce the analytic-to-finite cutoff. A useful deliverable
+would be a small rational certificate for the least possible cutoff
+in an explicit proof architecture, rather than merely a longer table
+of numerical confirmations.
+
+\paragraph{10. Formalize the proof and expose its dependencies.}
+Formalize the interval operations, the finite partition product and
+Lemma~\ref{lem:finite} in Lean or Rocq. Separately formalize the analytic
+contraction and inverse-error arguments. The large external dependency
+is Rademacher's formula: a formal development should clearly distinguish
+assuming an already-established statement of that theorem from
+formalizing its proof. A verified certificate checker would reduce the
+trusted code for the finite step without disguising that analytic
+boundary.
+
+\section{Conclusion}
+The conjecture in A306631 is an exact-recovery phenomenon that can be
+proved from classical partition analysis, but it is not a consequence
+of the leading asymptotic equivalent alone. The bias is bounded away
+from zero, approaches $1/24+3/\pi^2$, and has small-index arithmetic
+fluctuations decisive for rounding. The combination of an explicit
+infinite-range estimate and an exact rational finite certificate
+resolves the conjecture and identifies its complete exception set.
+
+The sharp extremum at $11$ then determines an optimal uniform shift,
+a numerical safety margin, and a two-candidate staircase inversion.
+The convergent analytic corrections and the separate arithmetic
+exponential layers explain how these discrete facts sit inside a more
+precise inverse theory. These are the concrete mathematical outcomes
+of the report; neither a sweeping priority claim nor a general solution
+to partition-function inversion is required for them.
+
+\appendix
+\section{A compact proof dependency ledger}\label{app:ledger}
+\begin{center}
+\begin{longtable}{@{}p{0.30\linewidth}p{0.62\linewidth}@{}}
+\toprule
+Result or object & Dependency and status\\
+\midrule
+\endfirsthead
+\toprule
+Result or object & Dependency and status\\
+\midrule
+\endhead
+Rademacher identity & Quoted classical theorem, in the normalization of
+Johansson \cite{johansson}. Not proved by the code.\\
+Elementary tail & Derived here from $|A_k(n)|\le k$ and an integral
+bound on $J(t)$.\\
+Convergent bias model & Analytic contraction, exact algebra and Cauchy
+estimates, proved here.\\
+All $n\ge400$ & Relative Rademacher error, derivative lower bound and
+an explicit bracketing argument, proved here.\\
+$2\le n\le399$ & Exhaustive strict comparisons with rational interval
+endpoints; standard-library certificate supplied and executed.\\
+Partition data & Exact finite-product computation independently checks
+all values used by the finite certificate.\\
+Sharp rounding and extrema & Analytic infinite range plus the exact
+finite lemma.\\
+Optimal shifts and staircase & Consequences of the sharp bias extrema
+and monotonicity.\\
+Inverse coefficient lists & Exact rational recurrences, not numerical
+fitting.\\
+Arithmetic corrections & Exact Rademacher sectors and Taylor expansion
+of the logarithmic inverse; fixed finite number of sectors.\\
+Numerical tables & High-precision illustrations; not used as proof of
+strict inequalities.\\
+Priority and formal status & Unrefereed report; limited search; no
+Lean/Rocq kernel checking claimed.\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{Suggested OEIS update and source audit}\label{app:oeis}
+An editor-ready draft is included as \texttt{OEIS\_update\_draft.txt}.
+Its central replacement for the conjectural statement is the following
+mathematical content, subject to independent editorial review:
+\begin{quote}
+For every integer $n\ge10$, A306631$(p(n))=n$. For $n\ge2$, the only
+exceptions to this identity are $2,3,4,5,7,9$, and at each exception the
+value is $n-1$.
+\end{quote}
+A second useful comment would state the ceiling identity and the sharp
+bias bounds, with a reference to a stable, publicly available version
+of this report after review. No OEIS submission was made as part of
+this work.
+
+The source audit distinguished the entry's own revision marker from
+the site-wide footer date. The A306631 internal page inspected for this
+report displayed its formula and conjecture, with entry revision
+\texttt{\#16, Feb 16 2025}. The report date records when that content was
+checked, not a claim that the conjecture was first posted on that date.
+The entry credits Jean-Fran\c{c}ois Alcover and dates its origin to
+2 March 2019 \cite{oeis306631}.
+
+The limited bibliographic check did not locate a prior proof of this
+specific exact-rounding statement. That negative search result is not
+a proof of novelty. The mathematical assertions are therefore stated
+as theorems proved in this report, with classical inputs credited,
+without claiming that every reformulation or consequence is
+historically unprecedented.
+
+\begin{thebibliography}{9}
+\bibitem{oeis306631}
+OEIS Foundation Inc., \emph{A306631: Inverse of the Hardy--Ramanujan
+asymptotic partition function}. Entry credited to Jean-Fran\c{c}ois
+Alcover, 2 March 2019. Internal revision \#16 displayed 16 February 2025;
+consulted 3 October 2026.
+\url{https://oeis.org/A306631/internal}.
+
+\bibitem{oeis000041}
+OEIS Foundation Inc., \emph{A000041: Number of partitions of $n$}.
+\url{https://oeis.org/A000041}.
+
+\bibitem{oeis050811}
+OEIS Foundation Inc., \emph{A050811: Partition numbers rounded to nearest
+integer given by the Hardy--Ramanujan approximate formula}.
+Consulted 3 October 2026.
+\url{https://oeis.org/A050811/internal}.
+
+\bibitem{johansson}
+F. Johansson, \emph{Efficient implementation of the
+Hardy--Ramanujan--Rademacher formula}, LMS Journal of Computation and
+Mathematics \textbf{15} (2012), 341--359.
+\url{https://doi.org/10.1112/S1461157012001088}.
+Preprint version 2:
+\url{https://arxiv.org/abs/1205.5991v2}.
+
+\bibitem{banerjee}
+K. Banerjee, P. Paule, C.-S. Radu and C. Schneider,
+\emph{Error bounds for the asymptotic expansion of the partition
+function}, 2022, arXiv:2209.07887.
+\url{https://arxiv.org/abs/2209.07887}.
+Cited for context on forward error bounds, not as a hidden proof
+assumption for the finite cutoff used here.
+
+\bibitem{repo292507}
+ProveIt repository maintained by V. Reshetnikov, \emph{All orders asymptotics and
+asymptotic inversion for A292507}, report dated 1 October 2026, with
+repository integration notes dated 2 October 2026. Inspected at commit
+\texttt{d68b65ea064084fb121df9bb431b21d086f7be81}, path
+\nolinkurl{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a292507-binomial-partition-transform/article.tex}.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+This repository source is methodological context, not a proof dependency.
+\end{thebibliography}
+\end{document}

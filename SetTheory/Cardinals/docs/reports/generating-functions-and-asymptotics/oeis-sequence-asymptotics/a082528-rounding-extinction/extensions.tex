@@ -1,0 +1,431 @@
+\section{Finite certificates and the dependence on the exponent}\label{sec:certificates}
+
+\subsection{Finite products bracket the exact constant}
+
+The constant in \cref{eq:constants} is expressed by a standard special
+function, but it also admits rigorous elementary enclosures.
+
+\begin{proposition}[Product certificates]\label{prop:certificates}
+For every $m>0$ and integer $j\geq1$,
+\begin{equation}\label{eq:L-brackets}
+ \frac jm t_j^{m+1}\leq L_m\leq
+ \left(\frac jm+\frac1{m+1}\right)t_j^{m+1}.
+\end{equation}
+Consequently,
+\begin{equation}\label{eq:c-brackets}
+ \frac{t_j^{-(m+1)}}{j/m+1/(m+1)}
+ \leq c_m\leq\frac mj t_j^{-(m+1)}.
+\end{equation}
+The ratio of the upper bound to the lower bound for $c_m$ is exactly
+$1+m/((m+1)j)$. For positive integer $m$, all endpoints are rational.
+\end{proposition}
+
+\begin{proof}
+Integrating \cref{eq:f-derivative} between $0$ and $t_j$ gives
+\[
+ 0\leq L_m-f_m(t_j)\leq\int_0^{t_j}t^m\,dt
+ =\frac{t_j^{m+1}}{m+1}.
+\]
+Since $f_m(t_j)=(j/m)t_j^{m+1}$, this proves
+\cref{eq:L-brackets}. All quantities are positive, so taking
+reciprocals proves \cref{eq:c-brackets}. The endpoint ratio follows
+by cancellation. When $m$ is a positive integer, the factors defining
+$t_j$ and the powers in these formulas are rational.
+\end{proof}
+
+These intervals certify the constant without floating-point Gamma
+evaluation. Their relative gap tends to zero at an explicit rate.
+They do not by themselves certify how close a finite threshold
+$T_m(K)$ is to its asymptotic equivalent: that is a different error
+problem.
+
+There is also an exact finite computation bound. If the backward
+recurrence has been computed only as far as stage $k$, then
+\begin{equation}\label{eq:partial-computation}
+ k^m q_k\leq T_m(K)<k^m q_k+\sum_{r=1}^{k-1}r^m
+ \quad(k\geq2).
+\end{equation}
+For integer $m$, this is a certified rational or integer enclosure of a
+particular threshold, independent of the asymptotic theorem.
+
+\subsection{An integral interpretation of the constant}
+
+Since $f_m(1)=0$, \cref{eq:f-derivative} also gives
+\begin{equation}\label{eq:residual-integral}
+ L_m=\int_0^1t^m
+ \left[C\!\left(\frac{my_m(t)}t\right)
+             -\frac{my_m(t)}t\right]dt.
+\end{equation}
+The term in brackets is a deterministic rounding residual. Formula
+\cref{eq:residual-integral} shows precisely how the successive
+increment regimes determine its weighted average. Replacing this
+residual by a fixed average would discard the dependence of its phase
+on the current quotient.
+
+The full-trajectory theorem gives a related limit for the distribution
+of the losses. For a trajectory ending at $J=\tau_m(n)$, define a
+probability measure on $[0,1]$ by
+\begin{equation}\label{eq:loss-measure}
+ \mu_n=\sum_{k=2}^{J}\frac{x_{k-1}-x_k}{n}\,\delta_{k/J}.
+\end{equation}
+Here $\delta_u$ denotes unit mass at $u$. The weights sum to one because
+$x_1=n$ and $x_J=0$.
+
+\begin{corollary}[Limiting distribution of rounding losses]\label{cor:losses}
+The measures $\mu_n$ converge weakly to the absolutely continuous
+probability measure with distribution function $1-F_m(t)$ and density
+\begin{equation}\label{eq:loss-density}
+ \rho_m(t)=c_m t^m
+ \left[C\!\left(\frac{my_m(t)}t\right)
+             -\frac{my_m(t)}t\right]
+ \quad\text{for almost every }0<t<1.
+\end{equation}
+In particular, $0\leq\rho_m(t)\leq c_m t^m$ and
+$\int_0^1\rho_m(t)dt=1$. The same conclusion holds under the
+smooth-weight hypothesis of \cref{thm:weights-main}.
+\end{corollary}
+
+\begin{proof}
+The distribution function of \cref{eq:loss-measure} is $1-X_n(t)$.
+The uniform convergence of the forward paths therefore proves
+convergence of these distribution functions to $1-F_m$. The
+derivative formula in \cref{eq:f-derivative}, including its integrable
+bound at zero, shows that the limit is absolutely continuous and gives
+\cref{eq:loss-density}. For smooth weights, use the forward-profile
+part of \cref{thm:weights-main}, proved below.
+\end{proof}
+
+No randomness has been introduced in this statement. The measure records
+what fraction of a fixed initial value is lost at each normalized stage.
+
+\subsection{Monotonicity and endpoint behavior of \texorpdfstring{$c_m$}{c(m)}}
+
+The explicit constant permits useful parameter calculations. Let
+$\gamma$ be Euler's constant and $\zeta$ the Riemann zeta function.
+
+\begin{proposition}[Dependence on $m$]\label{prop:parameter}
+The function $m\mapsto c_m$ is strictly increasing on $(0,\infty)$.
+Moreover,
+\begin{align}
+ \log c_m
+ &=-m\log m+(1-\gamma)m+O(m^2),
+        &&m\downarrow0,\label{eq:small-m}\\
+ \log c_m
+ &=\log m+\gamma+
+   \sum_{r=2}^{\infty}\frac{\zeta(r)}{r(m+1)^{r-1}},
+        &&m>0,\label{eq:large-m-series}\\
+ c_m
+ &=e^\gamma m\left(1+\frac{\pi^2}{12(m+1)}+O(m^{-2})\right),
+        &&m\to\infty.\label{eq:large-m}
+\end{align}
+In particular, $c_m\to1$ as $m\downarrow0$, and $c_m/m$ decreases
+strictly to $e^\gamma$ as $m\to\infty$.
+\end{proposition}
+
+\begin{proof}
+The convergent expansion
+\[
+ \log\Gamma(1-z)=\gamma z+
+      \sum_{r=2}^{\infty}\frac{\zeta(r)}r z^r,
+ \qquad |z|<1,
+\]
+is a standard Gamma identity~\cite{dlmf}. Substitute $z=1/(m+1)$
+to obtain \cref{eq:large-m-series}. Its positive terms decrease with
+$m$, which proves the assertion about $c_m/m$ and the expansion
+\cref{eq:large-m}. For small $m$, put $a=m/(m+1)$ and use
+$\log\Gamma(a)=-\log a-\gamma a+O(a^2)$; substitution in
+\cref{eq:constants} gives \cref{eq:small-m}.
+
+For strict monotonicity of $c_m$ itself, logarithmic differentiation gives
+\[
+ \frac{d}{dm}\log c_m
+ =\frac1m+\log\Gamma(a)+(1-a)\psi(a),
+ \qquad a=\frac m{m+1},
+\]
+where $\psi$ is the digamma function. Using its functional equation,
+this is
+\[
+ g(a)=\log\Gamma(1+a)-\log a+(1-a)\psi(1+a).
+\]
+We have $g(1)=0$, and the standard trigamma series~\cite{dlmf} gives
+\[
+ g'(a)=-\frac1a+(1-a)\psi'(1+a),\qquad
+ \psi'(1+a)=\sum_{r=1}^{\infty}\frac1{(r+a)^2}
+           <\int_a^{\infty}\frac{du}{u^2}=\frac1a.
+\]
+Thus $g'(a)<0$ for $0<a<1$ and consequently $g(a)>g(1)=0$.
+\end{proof}
+
+The limit $m\downarrow0$ is singular for the original process. At
+$m=0$, every modulus is $1$, so a positive integer initial value never
+changes and has no finite extinction time. The fixed-$m$ theorem does
+not justify interchanging the limits $m\downarrow0$ and $n\to\infty$.
+
+\section{Smoothly varying moduli}\label{sec:weights}
+
+This section proves \cref{thm:weights-main} in full. The useful
+information in \cref{eq:smooth-weights} is the local relative increment
+of the modulus; no differentiability of an interpolation is required.
+
+\subsection{Elementary consequences of the ratio hypothesis}
+
+\begin{lemma}[Regular variation and a summable tail]\label{lem:regular}
+Under \cref{eq:smooth-weights}, the weights tend to infinity and are
+eventually strictly increasing. For every compact interval
+$[\delta,M]\subset(0,\infty)$,
+\begin{equation}\label{eq:weight-ratio}
+ \frac{w_{\lfloor Kt\rfloor}}{w_K}\longrightarrow t^m
+ \quad\text{uniformly for }\delta\leq t\leq M.
+\end{equation}
+For each $0<\delta\leq1$,
+\begin{equation}\label{eq:weight-sum}
+ \frac1{K w_K}\sum_{1\leq j<\delta K}w_j
+ \longrightarrow\frac{\delta^{m+1}}{m+1}.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The ratio hypothesis implies
+\begin{equation}\label{eq:log-weight}
+ \log(w_k/w_{k-1})=\frac{m+o(1)}k.
+\end{equation}
+In particular the ratios are eventually larger than one, and the
+divergence of the harmonic series implies $w_k\to\infty$.
+Summing \cref{eq:log-weight} between $K$ and $\lfloor Kt\rfloor$
+proves \cref{eq:weight-ratio}. Uniformity follows because all relevant
+indices are at least a fixed positive multiple of $K$, while the sums
+of their reciprocals are uniformly bounded on $[\delta,M]$.
+
+For the sum near zero, choose $0<\varepsilon<m$. For all sufficiently
+large $\ell$,
+\[
+ \log(w_\ell/w_{\ell-1})\geq\frac{m-\varepsilon}{\ell}.
+\]
+It follows, for all sufficiently large $j\leq K$, that
+\begin{equation}\label{eq:power-domination}
+ \frac{w_j}{w_K}
+ \leq\exp\!\left(-(m-\varepsilon)
+                 \sum_{\ell=j+1}^{K}\frac1\ell\right)
+ \leq\left(\frac{j+1}{K+1}\right)^{m-\varepsilon}.
+\end{equation}
+The finitely many omitted weights have contribution tending to zero
+after division by $K w_K$. On $[\eta,\delta]$ for $\eta>0$, the
+locally uniform limit in \cref{eq:weight-ratio} gives the usual
+Riemann sum. The bound in \cref{eq:power-domination} makes the
+normalized sum over $j<\eta K$ uniformly small as $\eta\downarrow0$.
+Thus the full limit is $\int_0^\delta t^m dt$, proving
+\cref{eq:weight-sum}.
+\end{proof}
+
+The proof of this lemma is included to keep the main theorem independent
+of general regular-variation machinery. Its conclusion is the familiar
+regular variation of index $m$, obtained here from an explicit
+successive-ratio assumption.
+
+\subsection{The same backward profile}
+
+Define
+\begin{equation}\label{eq:weighted-backward}
+ q_K^{(K)}=1,\qquad
+ q_{k-1}^{(K)}=\ceil{\frac{w_k}{w_{k-1}}q_k^{(K)}},\qquad
+ T_w(K)=q_1^{(K)}.
+\end{equation}
+The proof of \cref{lem:duality} applies without change:
+\begin{equation}\label{eq:weighted-duality}
+ \tau_w(n)>K\quad\Longleftrightarrow\quad n\geq T_w(K).
+\end{equation}
+This remains valid even if finitely many early weights decrease. The
+normalization $w_1=1$ ensures that the integer initial values are exactly
+the admissible quotients at stage $1$.
+
+The exact error identity is now
+\begin{equation}\label{eq:weighted-error-general}
+ 0\leq w_{k-1}q_{k-1}-w_kq_k<w_{k-1}.
+\end{equation}
+It gives
+\begin{align}
+ w_kq_k&\leq w_K+\sum_{j=k}^{K-1}w_j,
+      \label{eq:weighted-global}\\
+ 0&\leq T_w(K)-w_kq_k<\sum_{j=1}^{k-1}w_j
+      \qquad(k\geq2).\label{eq:weighted-tail}
+\end{align}
+For $k\geq\delta K$, eventual monotonicity bounds the right-hand side
+of \cref{eq:weighted-global} by $(K+1)w_K$. Together with
+\cref{eq:weight-ratio}, this gives a uniform bound on $q_k/K$.
+
+Set $b_k=w_k/w_{k-1}-1$. On these macroscopic intervals,
+\[
+ q_{k-1}-q_k=\ceil{b_kq_k},\qquad b_k=\frac{m+o(1)}k>0.
+\]
+Thus the increments are uniformly bounded and at least one. The
+compactness, positive-drift, and ceiling-discontinuity arguments of
+\cref{sec:limit} apply verbatim. The limit equation is still
+$y'=-C(my/t)$, and its unique selected solution is $y_m$. Therefore
+\begin{equation}\label{eq:weighted-profile}
+ \frac{q_{\lfloor Kt\rfloor}^{(K)}}K\longrightarrow y_m(t)
+ \quad\text{locally uniformly on }(0,1].
+\end{equation}
+The finitely many weights before monotonicity begins are outside each
+fixed macroscopic interval once $K$ is large.
+
+\subsection{Matching and inversion}
+
+\begin{proof}[Proof of \cref{thm:weights-main}]
+Set $k=\lfloor\delta K\rfloor$ in \cref{eq:weighted-tail}.
+By \cref{eq:weight-ratio,eq:weighted-profile},
+\[
+ \frac{w_kq_k}{K w_K}\longrightarrow\delta^m y_m(\delta).
+\]
+By \cref{eq:weight-sum}, the normalized error sum tends to
+$\delta^{m+1}/(m+1)$. The same sandwich used for
+\cref{thm:main}, followed by $\delta\downarrow0$, gives
+$T_w(K)/(K w_K)\to L_m$.
+
+Let $J=\tau_w(n)$. Since $w_k\to\infty$, extinction is finite;
+as $n\to\infty$, its index tends to infinity. Formula
+\cref{eq:weighted-duality} gives
+\[
+ T_w(J-1)\leq n<T_w(J).
+\]
+The ratio hypothesis implies $w_{J-1}/w_J\to1$, so both bounds are
+asymptotic to $L_mJw_J$. This proves \cref{eq:weights-main}.
+
+For the forward trajectory, put $Q_k=x_k/w_k$. Survival through
+$J-1$ but not $J$ gives the exact sandwich
+\[
+ q_k^{(J-1)}\leq Q_k<q_k^{(J)}\qquad(1\leq k\leq J-1).
+\]
+Equation~\eqref{eq:weighted-profile} yields $Q_{\lfloor Jt\rfloor}/J
+\to y_m(t)$ locally uniformly in $(0,1)$. Therefore
+\[
+ \frac{x_{\lfloor Jt\rfloor}}n
+ =\frac{w_{\lfloor Jt\rfloor}}{w_J}\cdot
+   \frac{Q_{\lfloor Jt\rfloor}/J}{n/(Jw_J)}
+ \longrightarrow\frac{t^m y_m(t)}{L_m}=F_m(t).
+\]
+The endpoint values and the finite-mesh monotonicity argument from
+\cref{thm:forward-profile} again give uniform convergence on $[0,1]$.
+\end{proof}
+
+\subsection{Examples and consequences}
+
+\begin{corollary}[Logarithmic modifiers]\label{cor:log-weights}
+Let $m>0$, $b\in\R$, and $A>0$. Take $w_1=1$ and
+$w_k=A k^m(\log k)^b$ for $k\geq2$. Then
+\begin{equation}\label{eq:log-inverse}
+ \tau_w(n)\asym
+ \left(\frac{c_m(m+1)^b}{A}
+              \frac{n}{(\log n)^b}\right)^{1/(m+1)}.
+\end{equation}
+The same leading result holds if the weights are changed at finitely
+many stages.
+\end{corollary}
+
+\begin{proof}
+Logarithmic differences give
+\[
+ k\log(w_k/w_{k-1})=m+\frac{b}{\log k}+o(1),
+\]
+so \cref{eq:smooth-weights} holds. The threshold theorem gives
+$A J^{m+1}(\log J)^b\asym c_m n$.
+In particular $\log J\asym\log n/(m+1)$; substitution yields
+\cref{eq:log-inverse}. A finite change leaves the ratio hypothesis
+and the asymptotic expression for $w_K$ unchanged, so the same theorem
+applies.
+\end{proof}
+
+One may similarly take $w_k=A(k+\sigma)^m$ for all sufficiently large
+$k$, where $k+\sigma>0$. The stopping equivalent is
+$(c_m n/A)^{1/(m+1)}$. More generally, if
+$w_k=k^m\ell(k)$ satisfies \cref{eq:smooth-weights}, the clean inverse
+statement is
+\[
+ \tau_w(n)^{m+1}\ell(\tau_w(n))\asym c_m n.
+\]
+The profile theorem remains explicit even when this inverse has no
+elementary closed form.
+
+\begin{corollary}[Regular variation of the stopping index]\label{cor:inverse-rv}
+Under \cref{eq:smooth-weights}, for every $\lambda>0$,
+\[
+ \frac{\tau_w(\lfloor\lambda n\rfloor)}{\tau_w(n)}
+ \longrightarrow\lambda^{1/(m+1)}.
+\]
+\end{corollary}
+
+\begin{proof}
+The increasing function $K\mapsto L_mK w_K$ is eventually regularly
+varying with positive index $m+1$, by \cref{eq:weight-ratio}.
+For any constants $0<a<\lambda^{1/(m+1)}<b$, its ratios at
+$\lfloor aK\rfloor$ and $\lfloor bK\rfloor$ tend respectively to
+$a^{m+1}<\lambda$ and $b^{m+1}>\lambda$. Apply these inequalities
+at $K=\tau_w(n)$ and use \cref{eq:weights-main} and monotonicity of
+the stopping index. Let $a$ and $b$ approach
+$\lambda^{1/(m+1)}$.
+\end{proof}
+
+\section{Why the microscopic schedule matters}\label{sec:clock}
+
+It is tempting to regard $w_k\asym A k^m$ as all the information needed
+to determine extinction. The following exact construction shows why the
+local ratio condition is substantive.
+
+\begin{proposition}[Repeating each modulus]\label{prop:blocks}
+Fix an integer $r\geq2$ and put
+\begin{equation}\label{eq:block-weights}
+ w_k=\ceil{k/r}^{m}.
+\end{equation}
+For every integer $n>0$ and terminal stage $K\geq1$,
+\begin{align}
+ \tau_w(n)&=r\bigl(\tau_m(n)-1\bigr)+1,
+       \label{eq:block-time}\\
+ T_w(K)&=T_m(\lceil K/r\rceil).
+       \label{eq:block-threshold}
+\end{align}
+Although $w_k\asym(k/r)^m$ and the weights are regularly varying
+with index $m$,
+\begin{equation}\label{eq:block-constant}
+ \frac{T_w(K)}{K w_K}\longrightarrow\frac{L_m}{r}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+The operation $R_a(x)=a\lfloor x/a\rfloor$ is idempotent:
+$R_a(R_a(x))=R_a(x)$. Each modulus $j^m$ occurs at the stages
+$(j-1)r+1,\ldots,jr$. Only its first occurrence can change the
+current value. At the initial block the modulus is $1$, so it leaves
+the integer $n$ unchanged. If the unblocked process first vanishes
+when modulus $J^m$ is used, the blocked process first vanishes at
+stage $(J-1)r+1$. This proves \cref{eq:block-time}.
+
+Survival through stage $K$ of the blocked process is equivalent to
+survival through modulus $\lceil K/r\rceil^m$ of the unblocked
+process. Duality gives \cref{eq:block-threshold}. Apply
+\cref{eq:threshold-main} and
+$w_K=\lceil K/r\rceil^m$ to obtain
+\[
+ \frac{T_w(K)}{K w_K}
+ \asym L_m\frac{\lceil K/r\rceil}{K}\longrightarrow\frac{L_m}{r}.
+\]
+\end{proof}
+
+For $n=0$, both stopping times are $1$; the displayed positive-$n$
+formula need not be used. In the block example the quantity
+$k(w_k/w_{k-1}-1)$ is zero inside each block and approaches $rm$
+at its jumps. It therefore has no limit equal to $m$.
+
+For comparison, choose smooth weights $v_1=1$ and
+$v_k=(k/r)^m$ for $k\geq2$. They have the same leading equivalent
+as \cref{eq:block-weights}, but satisfy the local ratio hypothesis.
+Their stopping equivalent is
+\[
+ \tau_v(n)\asym(c_m r^m n)^{1/(m+1)},
+\]
+whereas \cref{eq:block-time} gives
+$\tau_w(n)\asym r(c_m n)^{1/(m+1)}$.
+The ratio tends to $r^{1/(m+1)}$. Thus even the leading stopping
+constant distinguishes the two schedules.
+
+This example supplies a precise research boundary. A theorem for all
+regularly varying moduli must include additional information about how
+their growth is distributed among individual rounding steps.

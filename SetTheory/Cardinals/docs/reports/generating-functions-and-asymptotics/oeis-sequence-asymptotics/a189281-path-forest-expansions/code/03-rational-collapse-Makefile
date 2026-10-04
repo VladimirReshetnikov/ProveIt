@@ -1,0 +1,13 @@
+.PHONY: all pdf test inverse clean
+all: test pdf
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+	pdflatex -interaction=nonstopmode -halt-on-error article.tex
+test:
+	python3 code/verify.py --order 100 --identity-order 16
+	python3 code/certify.py
+inverse:
+	python3 code/inverse_demo.py
+clean:
+	rm -f article.aux article.log article.out article.toc

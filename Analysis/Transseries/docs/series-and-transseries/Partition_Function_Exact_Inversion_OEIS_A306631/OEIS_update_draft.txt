@@ -1,0 +1,28 @@
+PROPOSED UPDATE FOR A306631 — FOR INDEPENDENT REVIEW
+Not submitted to OEIS.
+
+Suggested replacement for the conjectural formula:
+
+a(A000041(n)) = n for all n >= 10. More precisely, for integers n >= 2,
+a(A000041(n)) = n - 1 when n is one of 2, 3, 4, 5, 7, 9, and is n otherwise.
+
+Suggested additional comment:
+
+Let F(y) = 6/Pi^2 * LambertW(-1, -Pi/(2*sqrt(2)*3^(3/4)*sqrt(y)))^2,
+using the increasing real inverse branch. Then ceiling(F(A000041(n))) = n
+for every n >= 2. Writing d(n)=n-F(A000041(n)) and
+D=1/24+3/Pi^2, one has D<d(n)<=2-F(2) for n>=2, with equality only at n=2.
+On n>=10 the sharp upper bound is 11-F(56)=0.4984875753966068690...,
+attained only at n=11. In both ranges D is the unattained infimum, and
+d(n) tends to D.
+
+Reference to add after review and stable public posting:
+
+Exact Inversion of the Partition Function: A Proof of OEIS A306631 and
+Sharp Rounding Bounds, research report dated 3 October 2026.
+The report includes the analytic proof for n>=400 and the full exact
+rational-interval finite certificate. Do not describe it as a Lean/Rocq
+formalization or as peer reviewed.
+
+The manuscript's shifted-rounding endpoint statements use floor(x+1/2).
+There are no half-integer ties in the unshifted classification above.

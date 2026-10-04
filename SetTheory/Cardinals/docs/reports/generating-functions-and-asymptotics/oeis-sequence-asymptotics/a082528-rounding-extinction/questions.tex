@@ -1,0 +1,234 @@
+\section{Further research questions}\label{sec:questions}
+
+The leading constant is only the first part of the rounding problem.
+The following questions separate plausible next steps from conclusions
+already proved. They are proposed research problems; except for the
+historical linear question, their open status refers to this report
+and the sources inspected, not to an exhaustive classification of the
+literature.
+
+\begin{question}[Quantitative threshold errors]\label{q:rates}
+For fixed $m>0$, find a usable rate in
+\[
+ T_m(K)=L_mK^{m+1}+E_m(K).
+\]
+Which exponents $\delta_m>0$ admit
+$E_m(K)=O_m(K^{m+1-\delta_m})$? Can an explicit bound be obtained
+uniformly for $m$ in a compact subinterval of $(0,\infty)$?
+\end{question}
+
+The proof identifies the correct place to work: make the crossing
+times of the discrete quotient increments quantitative, then balance
+their accumulated errors against the omitted small-time tail. The
+classical $m=1$ estimate in \cref{eq:classical-error} supplies a
+benchmark. Compactness alone contains no numerical rate.
+
+\begin{question}[Bounded stopping-time error]\label{q:bounded}
+For which $m>0$, if any, does
+\[
+ \tau_m(n)=(c_mn)^{1/(m+1)}+O_m(1)
+\]
+hold? In particular, resolve the stronger bounded-error claim for
+$m=1$ recorded in A073047.
+\end{question}
+
+For pure powers, this is equivalent to
+$T_m(K)=L_mK^{m+1}+O_m(K^m)$. One direction follows by inverting the
+two neighboring threshold bounds. For the other, evaluate the
+stopping-time formula at the first integer of each survival interval,
+where the stopping index is $K+1$, and expand the resulting power.
+The two equivalent formulations indicate that an error term at the
+scale of a single threshold gap is required.
+
+\begin{question}[Signs and fluctuation scales]
+Does $T_m(K)-L_mK^{m+1}$ have an eventual sign? What are the natural
+scales of its upper and lower envelopes? Does any centered and scaled
+version have a limiting distribution along integer horizons?
+\end{question}
+
+The selected tabulated horizons have positive errors, while the denser
+plotted data include both signs. Neither observation establishes an
+eventual-sign theorem. The nonmonotone normalized errors show that a
+simple monotonicity argument would need additional structure. Any probabilistic terminology here would describe a
+distribution over sampled horizons, not randomness in the recurrence.
+
+\begin{question}[A theory of microscopic schedules]\label{q:schedules}
+Classify the limits for regularly varying weights when
+$k(w_k/w_{k-1}-1)$ oscillates, has repeated zero values, or follows a
+periodic pattern. Which information beyond the regular-variation
+index determines the extinction constant and the limiting profile?
+\end{question}
+
+The block construction gives a completely solved test family. A
+possible next class consists of a fixed periodic pattern of small
+relative increments. The ceiling acts before any averaging, so an
+effective drift would have to be derived from the individual phases
+of that pattern. Establishing such an averaging theorem is a
+substantive extension; it is not a consequence of
+\cref{thm:weights-main}.
+
+\begin{question}[Stability under sparse exceptional steps]
+How many exceptional ratios can be allowed without changing $L_m$?
+For example, suppose the local ratio condition holds outside a set
+of indices of density zero. Which bounds on the exceptional
+increments suffice, and can a sparse set of very large jumps change
+the constant?
+\end{question}
+
+Finite modifications are already covered. Passing from finitely many
+exceptions to a sparse infinite set requires controlling their
+combined effect on the quotient increments. Density alone need not
+control the size of those effects.
+
+\begin{question}[Moving exponents and singular regimes]
+Describe joint limits with $m=m(n)\downarrow0$ or $m=m(n)\to\infty$.
+Determine ranges in which the fixed-parameter equivalent remains
+uniform and identify any transition scales.
+\end{question}
+
+The discontinuity at $m=0$ makes the first question particularly
+interesting: positive integer values never vanish when every weight
+is exactly $1$. The explicit expansions in
+\cref{prop:parameter} describe the constants, but they do not control
+the speed of convergence of the underlying discrete process.
+
+\begin{question}[Rates for the full trajectory and loss distribution]
+Obtain explicit bounds for
+\[
+ \sup_{0\leq t\leq1}|X_n(t)-F_m(t)|
+\]
+and for convergence of the loss measures in
+\cref{cor:losses}. Can one derive asymptotics for individual moments
+or quantiles of the loss-time distribution with a controlled error?
+\end{question}
+
+The limiting density is explicit on each increment regime. It permits
+certified computation of limiting observables using finite sums and
+an integrable tail. Rates for the finite process again depend on
+discrete crossing errors rather than solely on the Gamma constant.
+
+\begin{question}[Sieve and game interpretations for higher powers]
+Is there a natural sieve or solitaire model whose survival thresholds
+are $T_m(K)$ for integer $m\geq2$? Can such a model explain the
+Gamma product combinatorially or connect the threshold gaps to an
+existing family of integer sequences?
+\end{question}
+
+The ordinary case has the Tchoukaillon interpretation. A higher-power
+model could expose monotonicity, congruence, or conservation
+properties not apparent in the floor recurrence. Any proposed model
+should first be proved equivalent to the exact backward recurrence,
+including its initial conditions.
+
+\begin{question}[Faster exact algorithms and formal verification]
+Can long consecutive ranges with a constant quotient increment be
+skipped in a provably correct exact algorithm? Can the general
+real-parameter theorem be formalized with a reusable library lemma
+for monotone discontinuous drift limits?
+\end{question}
+
+The present algorithm takes one arithmetic step per stage. The
+limiting piecewise linear structure suggests acceleration, but the
+exact locations of discrete transitions must be certified before
+steps can be skipped. For formalization, a useful first milestone is
+the exact survival duality and rational-exponent algorithm, followed
+by the compactness and endpoint-selection lemmas.
+
+\subsection{A practical order for continuing the work}
+
+The most direct continuation is a quantitative crossing-time analysis
+for the pure power family. In parallel, a periodic-ratio model can
+test how the constant changes when the local smoothness condition is
+relaxed. These two directions address the principal limitations of
+the present theorem: the absence of a finite error bound, and the
+dependence on the microscopic schedule.
+
+\appendix
+\section{Proof dependencies and source audit}\label{app:audit}
+
+\subsection{Logical dependencies}
+
+The extinction proof proceeds through five independently checkable
+steps:
+\begin{enumerate}
+\item Exact stagewise survival duality gives the backward ceiling
+recurrence and the inverse threshold relation.
+\item The integer increment bound and weighted rounding-error bound
+give compactness and force positive terminal drift.
+\item Strict monotonicity of $my(t)/t$ controls the ceiling
+discontinuities, yielding a rigorous limit equation.
+\item Solving its increment regimes gives the finite product;
+the beta integral evaluates its asymptotic constant.
+\item A telescoping estimate controls the entire omitted initial
+part, allowing the two limits to be taken in the correct order.
+\end{enumerate}
+The smooth-weight theorem reuses these steps after proving the local
+ratio and tail-sum consequences of its hypothesis. The forward-path
+theorem follows from a second use of the exact stagewise duality.
+No numerical estimate is an input to any of these proofs.
+
+Two independent mathematical reviews checked the ceiling passage,
+initial-value convention, smooth-weight tail, inversion, profile
+endpoint argument, and block counterexample. The exact finite
+verification was generated by a separate implementation. These
+reviews improve confidence but are not a substitute for peer review
+or formal verification.
+
+\subsection{Sources reviewed and scope of the novelty statement}
+
+The principal source records are the OEIS definitions and conjectures
+for A073047, A082527, and A082528; the classical threshold entry
+A002491; Erd\H{o}s and Jabotinsky's original sieve paper; the
+Broline--Loeb preprint and the criticism attributed to Knuth in the
+threshold entry; Brown's exposition; Leh\'ericy's 2023 proof for a
+different generalized rounding rule; and Li's 2026 Tchoukaillon
+preprint. The bibliography provides direct links.
+
+Targeted searches combined the exact sequence identifiers with
+power-rounding, asymptotic, Gamma, generalized sieve, and the
+classical authors' names. Searches within ProveIt used the exact
+sequence identifiers and Tchoukaillon-related terms. No matching
+real-power theorem or formula for $c_m$ was found in that review.
+This statement is intentionally bounded by the sources and search
+scope. A conjectural label remaining on an OEIS entry does not prove
+that no proof exists elsewhere.
+
+The result should therefore be described precisely: this report
+supplies a complete proof of the real-parameter conjecture as
+recorded in A082528, identifies the square and cube constants, and
+proves the stated extensions. It makes no claim to have newly
+discovered the linear $\pi$ law or the general increment-regime
+method. The numerical and symbolic evidence in the archive is
+reproducible and separately labeled.
+
+\section{Suggested OEIS update text}\label{app:oeis}
+
+The following concise mathematical statements are suitable for
+review before any submission. They have not been posted to OEIS.
+
+\paragraph{For A082527.}
+The conjectured asymptotic constant is
+\[
+c=2\Gamma(2/3)^3=4.965917162430455473\ldots.
+\]
+Thus $a(n)\asym(2\Gamma(2/3)^3n)^{1/3}$.
+This is the $m=2$ case of the power-rounding extinction theorem.
+
+\paragraph{For A082528.}
+For every fixed real $m>0$, if $x_1=n$ and
+$x_k=k^m\lfloor x_{k-1}/k^m\rfloor$, the first zero satisfies
+\[
+ a(n,m)\asym
+ \left(m\Gamma\!\left(\frac{m}{m+1}\right)^{m+1}n\right)^{1/(m+1)}.
+\]
+In particular, the cubic constant is
+$3\Gamma(3/4)^4=6.764822981008760234\ldots$.
+A proof is given by the backward survival thresholds and their
+piecewise linear scaling limit.
+
+\paragraph{For the linear cross-reference.}
+The $m=1$ specialization is the classical leading equivalent
+$a(n)\asym\sqrt{\pi n}$. It does not establish the stronger $O(1)$
+error term in A073047.
+
+\clearpage

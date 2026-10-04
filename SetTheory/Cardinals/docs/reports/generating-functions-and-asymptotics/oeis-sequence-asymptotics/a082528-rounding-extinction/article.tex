@@ -1,0 +1,89 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{inkblue}{RGB}{27,63,91}
+\definecolor{linkblue}{RGB}{24,84,125}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Gamma constants and scaling limits for rounding extinction},
+ pdfauthor={Research report prepared for Vladimir Reshetnikov with OpenAI}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Gamma constants for rounding extinction}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parindent}{1.4em}
+\setlength{\parskip}{3pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\asym}{\mathrel{\sim}}
+\newcommand{\OEIS}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+\newcommand{\cm}{c_m}
+\newcommand{\Lm}{L_m}
+\newcommand{\ym}{y_m}
+\newcommand{\Tm}{T_m}
+\title{\vspace{-1.2cm}\color{inkblue}\bfseries
+ Gamma Constants and Scaling Limits\\[4pt]
+ for Rounding Extinction\\[8pt]
+ \large Cloitre's power-rounding conjecture, smooth-weight universality,\\
+ and the limits of regular variation}
+\author{Research report prepared for Vladimir Reshetnikov\\
+ \small with OpenAI}
+\date{3 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+For $m>0$, start from an integer $n\geq0$ and repeatedly replace the current
+value by the largest multiple of $k^m$ below it, at stages $k=2,3,\ldots$.
+We prove that the first zero occurs at
+\[
+ \tau_m(n)\asym
+ \left[m\,\Gamma\!\left(\frac{m}{m+1}\right)^{m+1}n\right]^{1/(m+1)}.
+\]
+This establishes the real-parameter asymptotic conjecture recorded by
+Benoit Cloitre in OEIS A082528 and identifies the constants conjectured
+numerically for A082527 and A082528. The case $m=1$ recovers the classical
+Tchoukaillon asymptotic and is not a new claim.
+The proof reverses the rounding process, establishes a deterministic
+scaling limit despite a discontinuous ceiling function, and solves the
+limit through an explicit Gamma product. We also prove the same limit
+for positive weights satisfying $k(w_k/w_{k-1}-1)\to m$, give elementary
+finite-product certificates for the constant, and show by an exact block
+construction that ordinary regular variation alone does not determine it.
+Exact integer computations, including rational exponents, accompany the
+proof. Quantitative error terms, the bounded-error conjecture in the
+linear case, and more general microscopic rounding schedules remain open
+within this report.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Status.} Complete mathematical proofs are supplied here;
+the report is AI-assisted, unrefereed, and not formally verified.
+The historical search was targeted, not exhaustive.
+\newpage
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+\input{body.tex}
+\end{document}
