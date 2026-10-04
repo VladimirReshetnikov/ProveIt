@@ -82,6 +82,9 @@
 > in this scoped intake; no new universal bound is entered.
 >
 >
+> The [new hat-query threshold review](review_hat_threshold_afd7ffabb.md) checks the main deterministic threshold2 proof chain in1147 TeX lines, authenticates all9 archive members and reads both provenance guides. The coloring/cylinder obstruction and rare-loss block construction support the inspected theorem with its deterministic, fairness and budget hypotheses. Expected query cost is not a paid arithmetic gate count: unbounded decision-tree depth, lookup and finite accepting-certificate compilation remain open. Packaged programs were not executed; remaining manuscript sections and external attribution are unreviewed.
+>
+>
 > The [batch90 placement review](review_batch90_placement_12076b2e8.md)
 > authenticates all32 added files against the53 pinned archive members at
 > **12076b2e8**. Only the new Cantor-subfields report receives its article and

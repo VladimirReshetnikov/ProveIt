@@ -75,6 +75,8 @@ Root independently authenticated all archive/member/read-span hashes.
 Chronology proofs and reported arithmetic source counts were not rebuilt
 in this scoped intake; no new universal bound is entered.
 
+The [new hat-query threshold review](review_hat_threshold_afd7ffabb.md) checks the main deterministic threshold2 proof chain in1147 TeX lines, authenticates all9 archive members and reads both provenance guides. The coloring/cylinder obstruction and rare-loss block construction support the inspected theorem with its deterministic, fairness and budget hypotheses. Expected query cost is not a paid arithmetic gate count: unbounded decision-tree depth, lookup and finite accepting-certificate compilation remain open. Packaged programs were not executed; remaining manuscript sections and external attribution are unreviewed.
+
 The [batch90 placement review](review_batch90_placement_12076b2e8.md)
 authenticates all32 added files against the53 pinned archive members at
 **12076b2e8**. Only the new Cantor-subfields report receives its article and
@@ -5202,6 +5204,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [New hat-query threshold review](review_hat_threshold_afd7ffabb.md) | Main expected-cost threshold2 proof checked;1147 TeX lines and9-member manifest; deterministic/coin/count/distance scopes retained | No Turing-complete substrate or fixed-arity paid integer compiler in inspected sections; variable tree lookup and termination unpaid |
 | [Batch90 placement](review_batch90_placement_12076b2e8.md) and [five later arrivals](review_latest_five_9dc8db274.md) |32 exact file transfers; eight host article/guides unchanged; latest five README texts read and42 members pinned | Five manuscript integrations pending at12076b2e8; later bodies unreviewed; no new paid compiler |
 | [Four sandpile certificate arrivals](review_new_sandpiles_0d7f51c44.md) |Fixed arity, unbounded witnesses;11469/14778/17275/14571 gates, exactdegree18; all58093 rows structurally checked | Imported physical universality and machine-input conversion remain separate; no full macro-semantic reconstruction or smaller universal bound |
 | [Eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md) |2622 entries authenticated; actual matrix184016 gates/41309w/exactdegree12 checked;27 text-read records | Finite-table arity and12-leaf POWER counts are separate resources; changed CA rules lack a transferred arithmetic evaluator |
