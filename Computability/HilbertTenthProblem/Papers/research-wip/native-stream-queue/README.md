@@ -523,6 +523,20 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [balanced-output construction](matrix193_balanced_output_scout.md)
+reduces the matrix route to **2,462=1,124M+1,338A** operations and **150 positive
+witnesses**, saving another 700 gates and two witnesses. Signed block
+centering removes four selector corrections and two word-sum extractions;
+paid balanced remainders recover the signed matrix increments. Exact degree
+rises to **35,587**. The [source review](review_matrix193_balanced_output_scout.md)
+checks both complete arrays and all twenty comparisons; the separate
+[mathematical review](review_matrix193_balanced_output_math.md) checks the
+full low-tail bound, extraction uniqueness and corrected projection onto
+common non-extraction ports. Fresh normal/optimized replays pass. The actual
+outer example has unchanged packing fields, including negative products and
+high quotients; its huge literal outer DAG and native Pell tuple are not
+materialized. The overall universal frontier remains 84.
+
 The [packed selected-output construction](matrix193_packed_output_scout.md)
 lowers the matrix route to **3,162=1,467M+1,695A** operations and **152 positive
 witnesses**, saving 993 gates and 308 witnesses. Two whole output blocks,
