@@ -289,6 +289,24 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [paid matrix selector](matrix193_newton_selector.md) lowers the
+complete countdown predicate to **1740=871M+869A** over signed integers,
+or1741 over reals, with exact degree194 and one extra selector per step.
+The synchronized counts are1714/1715 at exact degree192. Integer-scaled
+Newton lookup preserves the matched tile pair; the cheaper version uses
+nonnegativity of the consecutive-node product only on integers.
+The [independent review](review_matrix193_newton_selector.md) checks the
+full arrays and domain distinction; fresh normal/optimized replays pass.
+Fixed h gives1741h+7 operations and6h signed witnesses in the integer
+version. Unbounded packing and positive-witness conversion remain unpaid.
+
+The [lookup schedule scout](matrix193_lookup_schedule_scout.md) verifies
+78 repeated-prefix permutations and a rank-nine affine-independence
+certificate. Its [review](review_matrix193_lookup_schedule_scout.md) confirms
+the24-gate cleanup-prefix saving. Irregular nodes make one column affine
+but require a211075-bit scale and a squared selector; their full local
+predicate with compact fixed-numeral recipes is still unbuilt.
+
 The [grouped matrix choices](matrix193_grouped_row_choices.md) save
 **24 additions** in each complete local source: **2015=1103M+912A** for
 four synchronized coordinates and **2041=1115M+926A** with the countdown.
