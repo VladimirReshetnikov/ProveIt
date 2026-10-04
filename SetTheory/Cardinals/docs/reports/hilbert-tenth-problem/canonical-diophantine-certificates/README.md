@@ -2879,10 +2879,19 @@ fixed-arity compression (the review's real-algebraic limit). Dated notes
 after those six questions say so. 23 credits Part VI of
 *quadratic-orthant-certificates* (`qoc:rn:lem:gates`, `qoc:rn:thm:trace`)
 for the real one-hot principle; the machine is that report's `U_{15,2}`
-and that of *group-theoretic-substrates* Part V (placed, not yet written),
-with the same imported encoder. No neighbouring report was edited in this
-write; reciprocal notes for those two reports are left to a separate
-commit.
+and that of *group-theoretic-substrates* Part V (written in `134dfc0c8`
+after this Part), with the same imported encoder. No neighbouring report
+was edited in this write; the batch-83 reciprocal notes (3 October 2026)
+are dated notes in those two reports, after `qoc:rn:prop:realobstruction`
+and in the relation list of *group-theoretic-substrates*.
+
+**Reciprocal note (batch 83, cluster H2).**
+[periodic-turmite-first-revisits](../periodic-turmite-first-revisits/)
+(Report 38, labels `ptr:`): its open question 3 asks for the turmite
+analogue of Part XX's literal periodic loader and acceptance event, and its
+Corollary 12.1 (`ptr:cor:universality`) is the matching lower side for
+globally one-visit turmite runs. No shared theorem. A dated item in Part
+XX's "Relation to the other Parts" list records it, without a new label.
 
 ## Build
 
@@ -2904,7 +2913,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 The recorded build has 652 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX, still 652 after the batch-82 reciprocal note),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX, still 652 after the batch-82 reciprocal note and after the batch-83 reciprocal note),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -3042,6 +3051,12 @@ underfull line; the log has seventeen informational "Infinite glue
 shrinkage" messages (fourteen were recorded for the Part XX build; no
 rebuild of the previous text was compared). Its page (printed page 271)
 was rendered and inspected.
+
+The batch-83 reciprocal note (one dated item in Part XX's "Relation to the
+other Parts" list, on `periodic-turmite-first-revisits`; no label, macro,
+package or bibliography entry) leaves the build at 652 pages with the same
+clean log, the same single underfull line and seventeen "Infinite glue
+shrinkage" messages; its page (printed page 587) was rendered and inspected.
 
 ## Rerunning the checks
 

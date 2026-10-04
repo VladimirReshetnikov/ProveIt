@@ -7,9 +7,10 @@
 \usepackage{lmodern,microtype}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage{booktabs,array,enumitem}
+\usepackage{booktabs,array,enumitem,longtable,graphicx}
 \usepackage{xcolor}
 \usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{xurl}
 \usepackage{fancyhdr}
 \pagestyle{fancy}\fancyhf{}
 \fancyhead[L]{\small Tournament score sequences}
@@ -24,6 +25,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
 \newcommand{\coef}[2]{[#1^{#2}]}
 \newcommand{\ii}{\mathrm i}
 \newcommand{\dd}{\mathrm d}
@@ -33,10 +35,23 @@
 \newcommand{\bigO}{\mathcal O}
 \newcommand{\RR}{\mathbb R}
 \DeclareMathOperator{\Var}{Var}
+% Part II (batch 85, manuscript 04) macros, as delivered
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\Law}{\mathcal L}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\dto}{\xrightarrow{\mathrm d}}
+\newcommand{\pto}{\xrightarrow{\Prob}}
+\newcommand{\Cev}{\mathcal C_n}
+\newcommand{\Fev}{\mathcal F_n}
+\DeclareMathOperator{\Cov}{Cov}
 \newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\emergencystretch=3em
  \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
  {\par\endgroup\smallskip}
-\hypersetup{pdftitle={Tournament score sequences and weighted component asymptotics},pdfauthor={},pdfsubject={Exact enumeration, fixed-order corrections, uniform logarithmic crossover and inverse localization}}
+\hypersetup{pdftitle={Tournament score sequences and weighted component asymptotics},pdfauthor={},pdfsubject={Exact enumeration, fixed-order corrections, uniform logarithmic crossover and inverse localization; Part II: conditional phase coexistence, Gamma and stable laws}}
 \begin{document}
 \thispagestyle{empty}
 \begin{center}
@@ -44,13 +59,17 @@
 \vspace{9pt}
 {\large Explicit corrections and uniform inverse models}\par
 \vspace{8pt}
-Research report\quad 2 October 2026
+Research report\quad 2 October 2026\par
+\vspace{3pt}
+Part~II: conditional phase coexistence\quad 3 October 2026
 \end{center}
 \vspace{8pt}
 \begin{abstract}
 The exact generating function for tournament score sequences permits a clean separation between an explicit square-root singularity and an analytic divisor remainder. We use that separation to derive computable asymptotic corrections for all and strong score sequences, and a uniform expansion for the generating function weighted by the number of irreducible components. The latter is valid to every fixed half-power order on a specified logarithmic subcritical window, with an absolute remainder. Its first two terms yield an explicit coexistence profile with a $\log\log n$ centering correction. We also give inverse-location results for specified one-variable models and, when $n$ is known, for component-weight calibration. Exact small-size enumeration, symbolic coefficient identities, numerical comparisons, and portable replay code accompany the proof.
 
 The leading enumeration theorem, exact generating function, and general renewal and heavy-traffic mechanisms are established prior work. The emphasis here is the explicit local lattice specialization, correction generators, uniform error bounds, and carefully delimited inverses. No exhaustive novelty claim is made.
+
+\emph{Part~II} (added 3 October 2026) answers the first further question of Part~I. Under a component weight approaching criticality at the coexistence rate, the score sequence is asymptotically a logistic mixture of a giant-block regime and a regime with a linear number of blocks. On the giant event the remaining blocks are, up to total variation $O(1/\log n)$, two independent geometric renewal strings, which gives Gamma$(2,1)$ laws for the block count and the giant's deficit, stable residual fluctuations, a mixed Fr\'echet law for the second-largest block and every fixed inverse-logarithmic correction; on the other event the centered block count has a $3/2$-stable limit jointly with a Fr\'echet largest block. Its coefficient input re-proves Part~I's uniform two-term theorem; the probabilistic results are new to the repository.
 \end{abstract}
 
 \section*{Results and scope at a glance}
@@ -120,9 +139,37 @@ $I$, $S$, $N_n$ & $I(z)$, $I_n$ strong sequences; $S(z)$, $S_n$ all sequences, $
 \end{tabular}
 \end{center}
 \end{writenote}
+
+\begin{writenote}[Added 3 October 2026, batch~85]
+Since 3 October 2026 this report has two Parts. Part~\ref{tss:part:one} is
+the batch-77 manuscript described in the preceding note, printed as before:
+its sections, equations, theorems and labels keep their numbers, so
+``Section~6'' and ``Section~9'' still mean what the manuscript of Part~II
+cites. The preceding note's ``single manuscript, printed in full'' now
+describes Part~\ref{tss:part:one}; its statement that no other report
+treats tournament score sequences remains true. Part~\ref{tss:cx:part}
+(Sections~\ref{tss:cx:sec:scope}--\ref{tss:cx:sec:questions} and two
+appendices) is manuscript~04 of batch~85, an AI-assisted, unrefereed and
+unformalized manuscript pinned at commit \texttt{d68b65ea0}. It answers
+Part~\ref{tss:part:one}'s first further question: at the weight
+$u_n(b_n+s)$ the structure is a logistic mixture, with probability tending
+to $(1+\e^{-s})^{-1}$ of one block of size $n-O_{\Prob}(n/\log n)$ and
+otherwise $n/a_c+O_{\Prob}(n^{2/3})$ blocks and no macroscopic block, and
+it derives conditional Gamma, stable, Fr\'echet and point-process laws,
+residual approximations to every fixed inverse-logarithmic order, and an
+$O(1/\log n)$ rate (Theorems~\ref{tss:cx:thm:mixture}--\ref{tss:cx:thm:finer},
+Proposition~\ref{tss:cx:prop:center}). The scope bullet above that calls
+the coexistence profile ``a coefficient asymptotic, not a proved conditional
+distributional mixture'' remains true of Corollary~\ref{tss:cor:coexist} by
+itself; the mixture is Part~II's theorem. Part~II's symbols $m$, $a_n$,
+$r_n$, $k$, $K$, $d$ and $B$ do not mean what they mean here; a separate
+table at the start of Part~II fixes them.
+\end{writenote}
 \clearpage
 \tableofcontents
 \clearpage
+
+\part{Explicit corrections and uniform inverse models}\label{tss:part:one}
 
 \section{The counting problem and established identities}
 \label{tss:sec:exact}
@@ -540,6 +587,23 @@ The balance is between the near-critical exponential coefficient contribution an
 
 Nothing in the coefficient decomposition alone identifies the conditional law of the number or sizes of blocks in either contribution. In particular, \eqref{tss:eq:coexist} is not a proved distributional mixture, and the factors $1$ and $\e^{-s}$ are not asserted to be mixture probabilities.
 
+\begin{writenote}[Added 3 October 2026, batch~85]
+Part~\ref{tss:cx:part} supplies the separate uniform estimates that this
+paragraph says the coefficient decomposition alone cannot give. It computes
+the weight of the event that one block exceeds $n/2$ exactly
+\eqref{tss:cx:eq:marked}, shows that this weight is asymptotic to the
+heavy-tail term (\eqref{tss:cx:eq:Bcoexist}, by the giant-deletion
+Theorem~\ref{tss:cx:thm:generalTV}) and that the complementary event carries
+the exponential term (\eqref{tss:cx:eq:fluidmass}, exhausted by local-limit
+windows). Hence, at $\tau=b_n+s$, the factor $1$ in \eqref{tss:eq:coexist}
+is the limiting relative weight of the giant-block event and the factor
+$\e^{-s}$ that of the event with a linear number of blocks, and
+$1/(1+\e^{-s})$ and $\e^{-s}/(1+\e^{-s})$ are mixture probabilities
+(Theorem~\ref{tss:cx:thm:mixture}). The two sentences above remain true of
+\eqref{tss:eq:coexist} on its own. Part~II is unrefereed, prepared with AI
+assistance and not formalized.
+\end{writenote}
+
 \section{What can be inverted and with what error}
 \label{tss:sec:inverse}
 An inverse requires a specified one-variable map. We give three such choices. In every case, a real inverse-location error is distinct from a guarantee about rounding to an integer threshold.
@@ -702,9 +766,1788 @@ The results suggest several concrete extensions without settling them:
 \item \textbf{Comparison with general renewal theorems.} Locate the strongest existing local lattice theorem that specializes to the present half-power structure, and compare its hypotheses and remainder constants with the explicit generator. This is necessary before claiming priority for any general mechanism.
 \end{enumerate}
 
+\begin{writenote}[Added 3 October 2026, batch~85]
+Question~1 is answered, for the weight $u_n(b_n+s)$ with $s$ in a compact
+interval, by Part~\ref{tss:cx:part} (unrefereed, AI-assisted, not
+formalized): the heavy-tail contribution comes from configurations with a
+unique block of size $n-O_{\Prob}(n/\log n)$, around which the remaining
+blocks form two nearly independent geometric renewal strings, and the
+exponential contribution from configurations with $n/a_c+O_{\Prob}(n^{2/3})$
+blocks and largest block of order $n^{2/3}$
+(Theorems~\ref{tss:cx:thm:mixture}--\ref{tss:cx:thm:finer}). Growing shifts
+$s_n\to\pm\infty$ are not covered (Part~II's question~RQ5). Question~2 is
+restated, still open, as Part~II's RQ6. For question~5, Part~II compares
+its mechanism with the Gibbs-partition, balls-in-boxes and big-jump
+literature (Section~\ref{tss:cx:sec:scope}); that comparison is a bounded
+source check, so the question stays open. Questions~3 and~4 are unchanged:
+Part~II's block counts grow with $n$, but under the moving weight
+$u_n(b_n+s)$, not in the fixed-$m$ law of \eqref{tss:eq:known} or the
+fixed-$M$ expansions.
+\end{writenote}
+
+\clearpage
+\fancyhead[R]{\small Part~II: conditional coexistence and fluctuations}
+\part{Conditional phase coexistence: giant blocks, Gamma laws, and stable fluctuations}\label{tss:cx:part}
+
+\paragraph{Summary.}
+We resolve the conditional component-law question left open in
+Part~\ref{tss:part:one}, the
+ProveIt report on tournament score sequences, OEIS A000571 and A351822.
+When each irreducible block receives a weight approaching its critical
+value at a specified logarithmic rate, we prove a logistic mixture of two
+structurally different regimes. One has a unique block of size
+$n-O_{\Prob}(n/\log n)$; the other has $n/m+O_{\Prob}(n^{2/3})$ blocks
+and no block of macroscopic size. In the first regime, removing the giant
+block leaves two independent geometric renewal strings up to a total
+variation error $O(1/\log n)$. This gives a Gamma$(2,1)$ law for both the
+rescaled block count and the giant's deficit, a stable law at the next
+scale, and an explicit mixed Fr\'echet law for the second-largest block.
+A positive polynomial tilt of the residual block count improves the
+approximation to every fixed inverse-logarithmic order.
+In the second regime, the centered number of blocks converges to the
+negative of a spectrally positive $3/2$-stable variable, jointly with
+an explicit Fr\'echet limit for the largest block.
+
+The exact enumeration identity, the leading asymptotic counts, and the
+general phenomenon of condensation have established precedents. The
+contribution here is a proved conditional description in the
+size-dependent tournament model, together with an elementary total
+variation argument and all normalization constants. The analytic input
+from the repository is reproved, and the stable local limit theorem is
+proved directly by Fourier inversion. Exact enumeration checks and
+floating-point diagnostics accompany the article. No priority claim is
+made for general Gibbs-partition or heavy-tail mechanisms.
+
+\paragraph{Main result in one display.}
+Let $K_n$ be the number of irreducible blocks and $M_{1,n}$ the largest
+block size. At the weight defined precisely in Section~\ref{tss:cx:sec:main},
+\[
+ \left(\frac{mK_n}{n},\frac{M_{1,n}}n\right)
+ \dto
+ \frac{1}{1+\e^{-s}}\,\delta_{(0,1)}
+ +\frac{\e^{-s}}{1+\e^{-s}}\,\delta_{(1,0)}.
+\]
+Here $m=1.7223486864\ldots$ is an explicitly defined mean block size.
+The first atom describes one giant block and a random sublinear number
+of remaining blocks; the second describes a linear number of blocks.
+
+\begin{writenote}[Added 3 October 2026, batch~85: provenance of Part~II]
+Part~II is a single manuscript, printed in full: manuscript~04 of batch~85
+of ProveIt's incoming-reports intake, \emph{Conditional phase coexistence
+for tournament score sequences: Giant blocks, Gamma laws, and stable
+fluctuations} (``Research manuscript: OEIS A000571 and A351822'', dated
+3 October 2026; a 1{,}687-line source and a 25-page PDF; its PDF metadata
+name the author as ``Research manuscript prepared with AI assistance'').
+It arrived as the archive
+\texttt{tournament\_\allowbreak coexistence\_\allowbreak research.zip}
+(wrapper directory \texttt{tournament\_\allowbreak coexistence/}, main file
+\texttt{tournament\_\allowbreak coexistence.tex}) in commit
+\texttt{317c1ce2e} and was placed in commit \texttt{713149ded} as an
+addition to this report. It pins the repository at commit
+\texttt{d68b65ea064084fb121df9bb431b21d086f7be81} and continues this
+report's \texttt{article.tex}; the report was not changed between the pin
+and the placement, so the manuscript read exactly the text printed as
+Part~\ref{tss:part:one}. Its code, data and figures are shipped with the
+prefix \texttt{02-coex-}; its own \LaTeX\ source, README, PDF and checksum
+list are not shipped and survive in the archive of the arrival commit.
+The manuscript is unrefereed and was prepared with AI assistance; its
+proofs are ordinary mathematical proofs, nothing in it is formalized in
+Lean or Rocq, and its place in this report confers no formal status.
+
+\emph{What it answers.} Part~II answers the first further question of
+Part~\ref{tss:part:one} (``Conditional component laws at coexistence'',
+Section~\ref{tss:sec:questions}) and supplies the separate estimates that
+the caveat at the end of Section~\ref{tss:sec:coexist} says the coefficient
+decomposition alone does not give: at $\tau=b_n+s$ the heavy-tail term
+(the factor $1$ in \eqref{tss:eq:coexist}) is the weight of the event
+$\Cev$ that one block exceeds $n/2$, and the exponential term (the factor
+$\e^{-s}$) is the weight of its complement $\Fev$
+(Theorem~\ref{tss:cx:thm:mixture}). Dated notes at those two places of
+Part~\ref{tss:part:one} say so.
+
+\emph{Overlap with Part~\ref{tss:part:one}, printed and credited.}
+Proposition~\ref{tss:cx:prop:uniform} and
+Corollary~\ref{tss:cx:cor:twoterms} re-prove Theorem~\ref{tss:thm:uniform}
+and Corollary~\ref{tss:cor:coexist} in the same normalization (a note in
+Section~\ref{tss:cx:sec:coefficient} gives the dictionary). The tail
+$q_j\sim dj^{-5/2}$ of Lemma~\ref{tss:cx:lem:tail} re-derives the mass tail
+of Part~\ref{tss:part:one}'s renewal interpretation
+(Section~\ref{tss:sec:split}, from \eqref{tss:eq:known}) with the constant
+$d$ made explicit, and its aperiodicity argument is the one of
+Section~\ref{tss:sec:contour}. The constants
+\eqref{tss:cx:eq:constants1}--\eqref{tss:cx:eq:constants2} extend
+\eqref{tss:eq:constants} ($m=a_c$), the centre \eqref{tss:cx:eq:center}
+is \eqref{tss:eq:center}, the split \eqref{tss:cx:eq:split} is
+\eqref{tss:eq:split}, the recurrences \eqref{tss:cx:eq:exactrec} are
+\eqref{tss:eq:score-recur}--\eqref{tss:eq:renewal}, and
+\eqref{tss:cx:eq:constantcompute} is \eqref{tss:eq:fastconstant}. The
+coefficients $1$, $5$, $105/4$ that open
+Proposition~\ref{tss:cx:prop:allorders} are those of
+\eqref{tss:eq:Hlarge}: both expand the same heavy-tail kernel, a
+consistency check rather than a duplicate. Part~II's exact enumeration
+program is an independent reimplementation of the Landau check of
+Part~\ref{tss:part:one}'s \texttt{code/\allowbreak check\_exact\_counting.py},
+extended to the giant-event polynomial. Everything else in Part~II is new
+to the repository: Theorems~\ref{tss:cx:thm:mixture}--\ref{tss:cx:thm:finer},
+\ref{tss:cx:thm:generalTV}, Corollaries~\ref{tss:cx:cor:split},
+\ref{tss:cx:cor:moments}, \ref{tss:cx:cor:density}, the direct local limit
+Lemma~\ref{tss:cx:lem:LLT}, Propositions~\ref{tss:cx:prop:allorders}
+and~\ref{tss:cx:prop:center}, and the point-process statements. The
+inversion \eqref{tss:cx:eq:Wcenter} is an instance of a theorem of the
+repository's transseries volume (note after it).
+
+\emph{Editorial changes.} Section~$k$ of the manuscript is
+Section~$k+9$ here, and its Appendices~A and~B are Appendices~A and~B;
+every label carries the prefix \texttt{tss:cx:}. The manuscript's
+references to ``the pinned ProveIt report'' (its citation \texttt{Repo},
+whose pin and file path this note records) now point to
+Part~\ref{tss:part:one}, in its abstract (the summary above), in
+Section~\ref{tss:cx:sec:scope} and in its status table; the bibliographies
+are merged, so the shared entries are Part~\ref{tss:part:one}'s and the
+four new ones (Bia\l as--Bogacz--Burda--Johnston, Stufler,
+Denisov--Dieker--Shneer, Armend\'ariz--Loulakis) are added. The two
+displayed figures are the shipped \texttt{02-coex-} files, and the shipped
+phase-profile figure, which the manuscript does not display, is added as
+Figure~\ref{tss:cx:fig:profiles} with a caption taken from the delivered
+code README. The two theorem titles of Section~\ref{tss:cx:sec:coefficient}
+name the Part~I results they restate, and the \textsf{[write]} notes are
+new. No statement, proof or number of the manuscript was altered.
+\end{writenote}
+
+\begin{writenote}[Added 3 October 2026, batch~85: notation of Part~II]
+Part~II keeps the manuscript's symbols, and several of them clash with
+Part~\ref{tss:part:one}'s. Within Part~II every symbol has the meaning
+below; the right column gives Part~\ref{tss:part:one}'s meaning, the
+tempting false reading. Shared notions keep one symbol: $\lambda$, $\mu$,
+$\rho$, $p$, $u_c$, $A$, $N_j$, $F(z)$, $R(z)$, $H(\tau)$, $\mathcal H$,
+$W$, $W_n(u)$, $W_{-1}$, $b_n$, $\tau$, $s$ (the coexistence shift),
+$q_j$, $S_n$, $I_n$, $E_n(w)$ (the resolvent error) and $M$ (a fixed
+truncation order) mean the same in both Parts. The manuscript's own
+symbol list is Appendix~\ref{tss:cx:app:notation}.
+{\footnotesize
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.41\linewidth}>{\raggedright\arraybackslash}p{0.38\linewidth}@{}}
+\toprule
+symbol & meaning in Part~II & \emph{not}: meaning in Part~\ref{tss:part:one}\\
+\midrule\endhead
+$m$ & mean critical block length $\e^{-\lambda}\mu/p=1.72234\ldots$, which is Part~I's $a_c$ & a number of strong blocks ($S_{n,m}$), or the index of $c_m^\sigma$, $C_m$\\
+$k$ & a block-count index ($S_{n,k}=[z^n]I^k$, sums over $k$) & $k=2/(3\mu)$, which is Part~II's $\kappa/m$\\
+$\kappa$ & $2\e^{-\lambda}/(3p)=d\,\Gamma(-3/2)$, the Puiseux and stable coefficient & (not used)\\
+$K_n$, $K_{L,n}$, $K_{R,n}$, $K(x)$ & numbers of blocks: in all, before and after the giant, of a sequence $x$ & $K$ a fixed truncation order or a generic constant\\
+$r$, $r_n$, $R_j$ & the normalized weight $r=up$, $r_n=(1+m\tau_n/n)^{-1}$, and $rm=a_n(\tau)$ of Part~I; $R_j=[z^j]R$ & $r_n=[z^n]R$ (Part~II's $R_n$)\\
+$u_n$ & $r_n/p$, which is Part~I's $u_n(\tau_n)$ & ---\\
+$a_n$, $a(k)$ & the stable scales $(\kappa n/m)^{2/3}$ and $(\kappa k)^{2/3}$ & $a_n(\tau)=u_n(\tau)c$, which is Part~II's $rm$\\
+$d$ & tail amplitude, $q_j\sim dj^{-5/2}$, $d=\e^{-\lambda}/(2\sqrt\pi\,p)$; $d\mid j$ in \eqref{tss:cx:eq:A} is a divisor & a divisor, or $d_j$ the coefficients of $D(w)$\\
+$D_n$, $D$ & the coexistence scale \eqref{tss:cx:eq:Dn}; $D$ its implicit-centre analogue in the proof of Proposition~\ref{tss:cx:prop:center} & $D(w)$, $D_j^\sigma$\\
+$B_n(r)$, $B_n$, $B(\delta)$ & $B_n(r)$ the unnormalized weight of $\Cev$; $B_n$ \emph{without argument} the second-maximum scale \eqref{tss:cx:eq:Bscale}, $B(\delta)$ the same scale as a function of $\delta$ (two meanings inside the manuscript, which its appendix discloses) & $B(t)$ the odd series, $b_j$, Bernoulli $B_j$\\
+$Z_n(r)$, $Z$ & $Z_n(r)=4^{-n}W_n(r/p)$; $Z$ the standard spectrally positive $3/2$-stable variable \eqref{tss:cx:eq:standardstable} & ---\\
+$h_n(T)$, $h$ & the density ratio in \eqref{tss:cx:eq:RN}; $h>0$ a small Chernoff parameter in Section~\ref{tss:cx:sec:phaseproof} & $h=\log4$\\
+$\delta$, $\delta_n$ & $1-r$, $1-r_n\sim m\tau_n/n$ & $\delta>0$ a fixed contour margin (Section~\ref{tss:sec:contour})\\
+$E$, $E_L$, $E_R$, $\E$ & exponential variables of mean one; $\E$ expectation & $E(v)$ the even part, $e_j$\\
+$G$ & a $\operatorname{Gamma}(2,1)$ variable & $G_s(x)$ the path model \eqref{tss:eq:pathmodel}\\
+$L$ & $\log n$ in Proposition~\ref{tss:cx:prop:center}; a cutoff in the strong-law argument of Section~\ref{tss:cx:sec:TV} & $L=\log Y$ in \eqref{tss:eq:inversecenter}\\
+$c_0$ & $\log(m/(4d))$ in Proposition~\ref{tss:cx:prop:center} & $c_0^\sigma=1$, the leading fixed-order coefficient\\
+$\Cev$, $\Fev$; $C$, $C_0$, $C_1,\ldots$ & the events $\{M_{1,n}>n/2\}$ and $\{M_{1,n}\le n/2\}$; generic or window constants & $C_m(\tau)$ the uniform terms, $C_\sigma$\\
+$F(x)$ & $\Prob(X\le x)$ in Section~\ref{tss:cx:sec:finer} (elsewhere $F(z)$ as in Part~I) & ---\\
+$t$ & $\sqrt{1-4z}$ in Section~\ref{tss:cx:sec:coefficient}; also a Fourier or Laplace variable, a size, and a ray parameter & the free weight parameter of $\mathcal M_{n,M}(t)$\\
+$z$ & the generating-function variable; in the proof of Proposition~\ref{tss:cx:prop:uniform} also the Hankel variable $nw$ & Part~I's Hankel variable is $s=nw$\\
+$q$, $Q$, $X$, $S_k^X$ & $q=\tau/n$ inside the proof of Proposition~\ref{tss:cx:prop:uniform} (as in Part~I); $Q$ the probability generating function of $q_j$; $X$, $X_i$ block lengths and $S_k^X$ their partial sums & ---\\
+$N_\delta$, $N$, $T$, $T_{L,n}$ & string counts and total lengths & $T_n^\sigma$ ($S_n$ or $I_n$)\\
+$J_s$, $J_f$, $J$ & a Bernoulli variable, a Laplace exponent, a block count & $J$ a compact interval\\
+$g$, $g_y$ & the stable density and its defective version & $g_\ell(\alpha)$ the gamma-ratio coefficients\\
+$\phi$, $\varphi$ & $\phi(t)=Q(\e^{\ii t})$; $\varphi$ Euler's totient as in Part~I & ---\\
+$\nu$, $\nu_\delta$, $\pi_s$ & the L\'evy intensity, the geometric-string law, the logistic weight $(1+\e^{-s})^{-1}$ & ---\\
+$\mathcal P$, $P_M$, $\mathsf R_r$, $\mathsf L_{n,r}$, $U$, $V$ & Poisson process, tilt polynomial, reference and actual residual laws, a uniform variable, the largest Poisson point & $R(z)$ is not $\mathsf R_r$\\
+$I$ & an interval of count coordinates in Section~\ref{tss:cx:sec:fluidmax} (elsewhere $I(z)$) & ---\\
+$M_{j,n}$ & the $j$th largest block size & $M$ a truncation order\\
+\bottomrule
+\end{longtable}}
+\end{writenote}
+
+\section{Problem, provenance, and contribution}
+\label{tss:cx:sec:scope}
+
+\subsection{The particular open question addressed}
+The pinned ProveIt report \emph{Tournament score sequences and weighted
+component asymptotics}, now Part~\ref{tss:part:one} of this report, proves
+a two-term coefficient expansion and a
+coexistence profile, then explicitly leaves the conditional laws of the
+component counts and sizes open. Its Section~\ref{tss:sec:questions}, first research
+question, asks which structural ranges produce the two terms. Its
+Section~\ref{tss:sec:coexist} emphasizes that the two terms alone were not yet identified
+as probabilities of two events.
+
+This article supplies that missing identification. The events are
+\[
+ \Cev=\{M_{1,n}>n/2\},\qquad \Fev=\{M_{1,n}\le n/2\}.
+\]
+The threshold $n/2$ makes the large block unique and gives an exact
+factorization. It does not impose an artificial asymptotic boundary:
+we prove that the maximum divided by $n$ tends to $1$ on $\Cev$ and to
+$0$ on $\Fev$. Any fixed threshold strictly between zero and one
+therefore yields asymptotically the same classification.
+
+The repository was inspected at commit
+\texttt{d68b65ea064084fb121df9bb431b21d086f7be81}.
+The continued report is under
+\path{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000571-tournament-score-sequences/},
+the directory of this report; its text at that commit is the text printed
+as Part~\ref{tss:part:one}.
+The research index also records extensive work on other OEIS sequences;
+the choice here advances an explicit remaining question instead of
+repeating the classical enumeration theorem.
+
+\subsection{What belongs to the literature}
+The score-sequence identity used below is due to Claesson, Dukes,
+Frankl\'in, and Stef\'ansson \cite{CDFS}; a shorter explanation is given
+by Bassan, Donderwinkel, and Kolesnik \cite{BDK}. Kolesnik proved the
+leading all-score and strong-score asymptotics and the limiting law of
+the number of blocks at the unweighted value $u=1$ \cite{Kolesnik}.
+Those are inputs and precedents, not open problems solved here.
+
+There is also substantial prior work on the probability mechanism.
+Variable-box-number balls-in-boxes models already exhibit a competition
+between a condensed state and an extensive number of boxes
+\cite{BBBJ}. Stufler's phase diagram for Gibbs partitions contains
+mixture regimes, stable count fluctuations, and descriptions of the
+remaining components after deletion of a maximum \cite{Stufler}.
+The large-deviation and conditional independence theory of
+Denisov--Dieker--Shneer and Armend\'ariz--Loulakis gives a general
+framework for a single large summand \cite{DDS,AL}.
+Logarithmic transitions between geometric-sum and heavy-tail
+contributions occur in the queueing literature \cite{OCBG}.
+
+Stufler's mixture theorem uses fixed inner and outer coefficient
+sequences with matched polynomial tails. Its condensed component count
+has a finite limit. The balls-in-boxes studies establish the ensemble
+and its phase transition. Neither comparison is replaced by a claim
+that mixture limits or stable fluctuations were previously unknown.
+
+The distinction relevant here is the changing outer weight
+$r_n^{K_n}$: $r_n\uparrow1$ at distance of order $\log n/n$.
+The condensed number of blocks grows on the scale $n/\log n$, rather
+than staying bounded. We prove the explicit conditional laws in this
+window for tournament weights. The elementary renewal-string argument
+is presented in full, so none of the general large-deviation theorems
+is invoked with unchecked hypotheses. The literature comparison is a
+bounded source check, not a proof of publication priority.
+
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.42\linewidth}>{\raggedright\arraybackslash}p{0.51\linewidth}@{}}
+\toprule
+Statement & Status in this article\\
+\midrule
+Exact count identity and block decomposition & Established input, with the elementary decomposition recalled.\\
+Leading $4^n n^{-5/2}$ asymptotics & Established result; the needed stronger local expansion is derived.\\
+Two-term logarithmic coefficient law & Repository result (Theorem~\ref{tss:thm:uniform} and Corollary~\ref{tss:cor:coexist} of Part~\ref{tss:part:one}), reproved in the manuscript; restated in Section~\ref{tss:cx:sec:coefficient}.\\
+Logistic probabilities of structural events & Proved here relative to the pinned report's open question.\\
+Geometric-string total variation approximation & Proved directly, with an $O(1/\log n)$ error in this model.\\
+Conditional Gamma, stable, and second-maximum laws & Proved here for the moving tournament weight.\\
+General existence of condensation or stable limits & Credited to prior theory; no claim of a new general phenomenon.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+This is an unrefereed research manuscript prepared with AI assistance.
+The proofs are ordinary mathematical proofs, not Lean or Rocq
+formalizations. The exact finite checks support the formulas but are
+not substitutes for the limiting arguments.
+
+\section{Score sequences and the exact renewal model}
+\label{tss:cx:sec:model}
+
+\subsection{Irreducible blocks}
+A tournament is an orientation of a complete graph. A score sequence
+is its nondecreasing list of out-degrees. Landau's characterization,
+as stated in \cite{CDFS}, says that a sequence of integers
+$(s_1,\ldots,s_n)$ is a score sequence if and only if
+\begin{equation}\label{tss:cx:eq:landau}
+ 0\le s_1\le\cdots\le s_n\le n-1,\qquad
+ \sum_{i=1}^j s_i\ge\binom j2\quad(j<n),\qquad
+ \sum_{i=1}^n s_i=\binom n2.
+\end{equation}
+It is \emph{strong} or \emph{irreducible} if every proper-prefix
+inequality is strict. A singleton is irreducible.
+
+If equality holds at a proper prefix of length $j$, split the sequence
+there and subtract $j$ from each entry of the second part. Both parts
+satisfy \eqref{tss:cx:eq:landau}. For example, the prefix sum condition for
+the translated second part follows from
+\[
+ \binom{j+\ell}{2}-\binom j2-j\ell=\binom\ell2.
+\]
+The first translated entry is nonnegative because the next prefix
+inequality implies $s_{j+1}\ge j$. Conversely, concatenating a score
+sequence of length $j$ with one whose entries have all been increased
+by $j$ preserves \eqref{tss:cx:eq:landau}. Cutting at every equality therefore
+gives a unique ordered list of irreducible blocks.
+
+Let $S_n$ count all score sequences and $I_n$ count nonempty strong
+ones, with $S_0=1$ and $I_0=0$. These are respectively A000571 and the
+positive-index part of A351822 \cite{OEIS}. The latter OEIS entry gives
+the empty object the value one; our generating function omits it.
+Write
+\[
+ S(z)=\sum_{n\ge0}S_nz^n,\quad
+ I(z)=\sum_{n\ge1}I_nz^n,\quad
+ S_{n,k}=[z^n]I(z)^k.
+\]
+Unique decomposition gives
+\begin{equation}\label{tss:cx:eq:weighted}
+ S(z)=\frac1{1-I(z)},\qquad
+ W(z,u)=\frac1{1-uI(z)},\qquad
+ W_n(u)=\sum_{k=1}^n S_{n,k}u^k\quad(n\ge1).
+\end{equation}
+The probability law studied here assigns to each score sequence $x$
+of length $n$ the probability $u^{K(x)}/W_n(u)$. Thus the random objects
+are score sequences, not uniformly random labeled tournaments.
+
+\subsection{Exact enumerative input and constants}
+Define
+\begin{equation}\label{tss:cx:eq:A}
+ N_j=\frac1{2j}\sum_{d\mid j}(-1)^{j+d}\varphi(j/d)\binom{2d}{d},
+ \qquad A(z)=\sum_{j\ge1}\frac{N_j}{j}z^j.
+\end{equation}
+Here $N_j$ is A145855. The established identity is
+\begin{equation}\label{tss:cx:eq:exact}
+ S(z)=\exp A(z),\qquad I(z)=1-\exp(-A(z)).
+\end{equation}
+We use \eqref{tss:cx:eq:exact} as a cited combinatorial theorem
+\cite{CDFS,BDK}; we do not reprove its nontrivial bijection.
+
+Set
+\begin{align}
+ \rho&=\tfrac14,& \lambda&=A(\rho),& \mu&=\rho A'(\rho),
+ &p&=1-\e^{-\lambda},\label{tss:cx:eq:constants1}\\
+ u_c&=p^{-1},& m&=\frac{\e^{-\lambda}\mu}{p},&
+ d&=\frac{\e^{-\lambda}}{2\sqrt\pi\,p},&
+ \kappa&=\frac{2\e^{-\lambda}}{3p}
+       =d\Gamma(-3/2).\label{tss:cx:eq:constants2}
+\end{align}
+The probability generating function of a critical block length is
+\begin{equation}\label{tss:cx:eq:Q}
+ Q(y)=\frac{I(\rho y)}p=\sum_{j\ge1}q_jy^j,
+ \qquad q_j=\frac{I_j4^{-j}}p.
+\end{equation}
+In particular, $Q(1)=1$ and $\E X=Q'(1)=m$ for $X$ with law $q$.
+
+For $r=up$, the normalized weighted count is exactly
+\begin{equation}\label{tss:cx:eq:Z}
+ Z_n(r)=4^{-n}W_n(u)
+       =[y^n]\frac1{1-rQ(y)}
+       =\sum_{k=1}^n r^k\Prob(X_1+\cdots+X_k=n).
+\end{equation}
+For any ordered positive lengths $\ell_1+\cdots+\ell_k=n$,
+their total unnormalized weight is
+$r^k\prod_iq_{\ell_i}$. Conditioning this measure on total length
+$n$ is identical to the score-sequence law after the internal blocks
+have been summed out.
+
+\section{Precise statements of the conditional limits}
+\label{tss:cx:sec:main}
+Use the constants in \eqref{tss:cx:eq:constants1}--\eqref{tss:cx:eq:constants2}, and put
+\begin{equation}\label{tss:cx:eq:center}
+ b_n=\frac12\log n+2\log\log n+\log\frac{m}{4d}
+     =\frac12\log n+2\log\log n+\log\frac{\mu\sqrt\pi}{2}.
+\end{equation}
+Fix $s\in\R$ and, for all sufficiently large $n$, let
+\begin{equation}\label{tss:cx:eq:rn}
+ \tau_n=b_n+s,\qquad
+ r_n=\frac1{1+m\tau_n/n},\qquad
+ u_n=\frac{r_n}{p},\qquad
+ \delta_n=1-r_n=\frac{m\tau_n}{n+m\tau_n}.
+\end{equation}
+The probability law below always uses the weight $u_n$.
+Let $M_{1,n}\ge M_{2,n}\ge\cdots$ be the ranked block sizes;
+missing sizes are zero. On $\Cev$, let $K_{L,n},K_{R,n}$ be the numbers
+of blocks before and after the giant, and let $T_{L,n},T_{R,n}$ be
+their total lengths. Then
+\[
+ K_n=K_{L,n}+K_{R,n}+1,\qquad
+ n-M_{1,n}=T_{L,n}+T_{R,n}.
+\]
+
+\begin{theorem}[Structural coexistence]\label{tss:cx:thm:mixture}
+With $\pi_s=(1+\e^{-s})^{-1}$,
+\begin{equation}\label{tss:cx:eq:phaseprob}
+ \Prob(\Cev)\longrightarrow\pi_s,
+ \qquad \Prob(\Fev)\longrightarrow1-\pi_s.
+\end{equation}
+Moreover,
+\begin{equation}\label{tss:cx:eq:jointmixture}
+ \left(\frac{mK_n}{n},\frac{M_{1,n}}n\right)
+ \dto \pi_s\delta_{(0,1)}+(1-\pi_s)\delta_{(1,0)}.
+\end{equation}
+These conclusions hold uniformly for $s$ in a fixed compact interval
+in the sense of bounded continuous test functions.
+\end{theorem}
+
+\begin{theorem}[Complete residual law on the giant event]\label{tss:cx:thm:TVmain}
+For each side independently, draw a count $G_{\delta}$ with
+\[
+ \Prob(G_{\delta}=k)=\delta(1-\delta)^k,\qquad k\ge0,
+\]
+and then draw that many independent block lengths with law $q$.
+The joint law of the actual left and right length strings, conditional
+on $\Cev$, is within $O(1/\tau_n)$ in total variation of the product
+of these two string laws with $\delta=\delta_n$.
+
+Consequently, if $E_L,E_R$ are independent exponential variables of
+mean one and $G=E_L+E_R$, then, conditionally on $\Cev$,
+\begin{equation}\label{tss:cx:eq:four}
+ (\delta_nK_{L,n},\delta_nK_{R,n},
+   \delta_nT_{L,n}/m,\delta_nT_{R,n}/m)
+ \dto(E_L,E_R,E_L,E_R),
+\end{equation}
+and
+\begin{equation}\label{tss:cx:eq:gamma}
+ \left(\delta_nK_n,\frac{\delta_n}{m}(n-M_{1,n})\right)
+ \dto(G,G),\qquad G\sim\operatorname{Gamma}(2,1).
+\end{equation}
+The density of $G$ is $x\e^{-x}\ind_{\{x>0\}}$.
+\end{theorem}
+
+\begin{theorem}[Stable block-count fluctuations on the other event]
+\label{tss:cx:thm:fluid}
+Let $Z$ be the real random variable with characteristic function
+\begin{equation}\label{tss:cx:eq:standardstable}
+ \E\e^{\ii tZ}=\exp\{(-\ii t)^{3/2}\},\qquad t\in\R,
+\end{equation}
+using the principal power. Put
+$a_n=(\kappa n/m)^{2/3}$. Conditionally on $\Fev$,
+\begin{equation}\label{tss:cx:eq:fluid}
+ \frac{m(K_n-n/m)}{a_n}\dto -Z,
+ \qquad \frac{M_{1,n}}n\pto0.
+\end{equation}
+In fact, the convergence is joint with
+\begin{equation}\label{tss:cx:eq:fluidmaxmain}
+ \left(\frac{m(K_n-n/m)}{a_n},\frac{M_{1,n}}{a_n}\right)
+ \dto(-Z,V),
+ \qquad
+ \Prob(V\le y)=\exp\!\left(-\frac1{2\sqrt\pi\,y^{3/2}}\right)
+ \quad(y>0).
+\end{equation}
+The pair $(Z,V)$ is constructed from the same Poisson point process
+in Section~\ref{tss:cx:sec:fluidmax}; its coordinates are dependent.
+In particular $K_n/n\pto1/m$ on $\Fev$.
+The stable variable is centered and spectrally positive; its negative
+appears because a positive excess in a sum of block lengths decreases
+the number of blocks needed to reach $n$.
+\end{theorem}
+
+Two further fluctuation theorems sharpen the description of $\Cev$.
+They are proved in Section~\ref{tss:cx:sec:finer}.
+\begin{theorem}[Residual fluctuation and second maximum]\label{tss:cx:thm:finer}
+Conditionally on $\Cev$, jointly,
+\begin{equation}\label{tss:cx:eq:residualstable}
+ \left(\delta_nK_n,
+ \frac{(n-M_{1,n})-m(K_n-1)}{(\kappa/\delta_n)^{2/3}}\right)
+ \dto (G,G^{2/3}Z),
+\end{equation}
+where $G\sim\operatorname{Gamma}(2,1)$ and $Z$ from
+\eqref{tss:cx:eq:standardstable} are independent on the right.
+If
+\begin{equation}\label{tss:cx:eq:Bscale}
+ B_n=\left(\frac{2d}{3\delta_n}\right)^{2/3},
+\end{equation}
+then, for $x>0$,
+\begin{equation}\label{tss:cx:eq:secondmax}
+ \Prob(M_{2,n}/B_n\le x\mid\Cev)
+ \longrightarrow (1+x^{-3/2})^{-2}.
+\end{equation}
+More precisely, for $t\ge0$ and $x>0$,
+\begin{equation}\label{tss:cx:eq:jointmax}
+ \E\left[\e^{-t\delta_nK_n}
+       \ind_{\{M_{2,n}\le B_nx\}}\mid\Cev\right]
+ \longrightarrow(1+t+x^{-3/2})^{-2}.
+\end{equation}
+\end{theorem}
+
+These statements distinguish three scales on the giant event:
+$n$ for the giant, $n/\log n$ for its deficit and the total number
+of remaining blocks, and $(n/\log n)^{2/3}$ for the largest remaining
+blocks and the centered fluctuation of their total length.
+On the other event the count and the largest block fluctuate on
+the larger scale $n^{2/3}$.
+
+\section{Analytic foundations and the uniform coefficient estimate}
+\label{tss:cx:sec:coefficient}
+
+\subsection{The singular part comes from one divisor}
+Separating $d=j$ in \eqref{tss:cx:eq:A} gives
+\begin{equation}\label{tss:cx:eq:split}
+ A(z)=F(z)+R(z),\qquad
+ F(z)=\frac12\sum_{j\ge1}\binom{2j}{j}\frac{z^j}{j^2}.
+\end{equation}
+Every proper divisor of $j$ is at most $j/2$. Bounding each binomial
+coefficient by $4^{j/2}$ and using at most $j$ divisors shows that
+$|[z^j]R(z)|\le2^{j-1}$. Hence $R$ is analytic for $|z|<1/2$.
+The function $F$ continues across the circle $|z|=1/4$ except at
+$z=1/4$, with a slit along the positive real direction.
+
+For $t=\sqrt{1-4z}$, differentiation of the binomial series gives
+\[
+ \frac{\dd F}{\dd t}
+ =-\frac{2t}{1-t^2}\log\frac2{1+t}.
+\]
+The derivative has a convergent power series at $t=0$. Its first odd
+contribution after integration is $2t^3/3$. With $w=1-y$ this gives
+\begin{align}
+ A(y/4)&=\lambda-\mu w+\tfrac23w^{3/2}+O(w^2),\label{tss:cx:eq:localA}\\
+ Q(y)&=1-mw+\kappa w^{3/2}+O(w^2).
+ \label{tss:cx:eq:localQ}
+\end{align}
+The expansions are convergent local Puiseux expansions on a slit
+neighborhood, not just asymptotic statements along the real axis.
+
+\begin{lemma}[Tail and aperiodicity]\label{tss:cx:lem:tail}
+The critical law has finite mean $m$, satisfies
+\begin{equation}\label{tss:cx:eq:qtail}
+ q_j=dj^{-5/2}(1+O(j^{-1})),\qquad
+ \Prob(X>x)\sim\frac{2d}{3}x^{-3/2},
+\end{equation}
+and has infinite variance. Also $q_1,q_3,q_4>0$, and
+$|Q(\e^{\ii t})|<1$ for $0<|t|\le\pi$.
+\end{lemma}
+\begin{proof}
+For noninteger $\beta$,
+\[
+ [y^j](1-y)^\beta
+ =\frac{\Gamma(j-\beta)}{\Gamma(-\beta)\Gamma(j+1)}
+ =\frac{j^{-\beta-1}}{\Gamma(-\beta)}(1+O(j^{-1})).
+\]
+Apply this identity to the first two nonanalytic terms of the convergent
+Puiseux expansion of $Q$. A contour dented around $y=1$, with its
+remaining part outside the unit circle, bounds the omitted terms at
+the corresponding higher powers. Analytic integer powers contribute
+no leading tail. Thus the leading coefficient is
+$\kappa/\Gamma(-3/2)=d$, and the next possible relative order is
+$1/j$. Summing the tail gives the second assertion. The moment claims
+follow by comparison with powers of $j$.
+
+The counts $I_1=I_3=I_4=1$ give the three positive probabilities.
+Equality in the triangle inequality for $Q(\e^{\ii t})$ would force
+$\e^{\ii t}=\e^{3\ii t}=\e^{4\ii t}$. Their exponent differences
+have greatest common divisor one, so $t=0$ modulo $2\pi$.
+\end{proof}
+
+\subsection{Two terms with an absolute remainder}
+The next proposition is the part of the earlier report needed here.
+We give the proof to keep the dependency on an unrefereed analytic
+argument reviewable.
+
+\begin{writenote}[Added 3 October 2026, batch~85: a re-proof of Part~I]
+Proposition~\ref{tss:cx:prop:uniform} and Corollary~\ref{tss:cx:cor:twoterms}
+are not new results. Proposition~\ref{tss:cx:prop:uniform} is
+Theorem~\ref{tss:thm:uniform} of Part~\ref{tss:part:one}, with
+\eqref{tss:cx:eq:H} equal to \eqref{tss:eq:H} and \eqref{tss:cx:eq:Hlarge}
+the first two terms of \eqref{tss:eq:Hlarge} (note
+$1/\Gamma(-3/2)=3/(4\sqrt\pi)$); the
+manuscript's ``earlier report'' is Part~\ref{tss:part:one}. The
+normalizations agree exactly: with $r=(1+m\tau/n)^{-1}$ and $u=r/p$ one has
+$u=u_n(\tau)$ of \eqref{tss:eq:parameter} (because $pm=c$), so
+$Z_n(r)=4^{-n}W_n(u_n(\tau))$, $rm=a_n(\tau)$ and $\kappa/m=k=2/(3\mu)$.
+Corollary~\ref{tss:cx:cor:twoterms} at $\tau=b_n+s$ is
+Corollary~\ref{tss:cor:coexist}: $m=a_c$ and $4d/m^2=2/(a_c\mu\sqrt\pi)$, so
+\eqref{tss:cx:eq:Zcoexist} is \eqref{tss:eq:coexist} divided by
+$a_c\sqrt n(\log n)^2$; its first display \eqref{tss:cx:eq:twoterms}, for
+any $\tau\asymp\log n$ in the window, is the same two-term reading of
+\eqref{tss:eq:uniform}. The manuscript's proof below follows
+Part~\ref{tss:part:one}'s Section~\ref{tss:sec:uniform} step for step
+(\eqref{tss:cx:eq:sector} is \eqref{tss:eq:lower}, \eqref{tss:cx:eq:resolvent}
+is \eqref{tss:eq:resolve}, \eqref{tss:cx:eq:Hankel} is
+\eqref{tss:eq:Htransfer}, and the zero exclusion on the circle is the same
+aperiodicity argument); it is printed, as delivered, so that Part~II can be
+checked on its own, and it is not a second route.
+\end{writenote}
+
+\begin{proposition}[Uniform logarithmic expansion; Theorem~\ref{tss:thm:uniform} restated]\label{tss:cx:prop:uniform}
+For fixed $C>0$, put $r=(1+m\tau/n)^{-1}$. Uniformly for
+$0\le\tau\le C\log n$,
+\begin{equation}\label{tss:cx:eq:uniform}
+ Z_n(r)=\frac1{rm}
+ \left\{\e^{-\tau}+\frac{\kappa}{m}n^{-1/2}H(\tau)\right\}
+ +O_C(n^{-1}),
+\end{equation}
+where
+\begin{equation}\label{tss:cx:eq:H}
+ H(\tau)=\sum_{j\ge0}\frac{(-1)^j(j+1)\tau^j}{\Gamma(j+1/2)}
+ =\frac{{}_1F_1(2;1/2;-\tau)}{\sqrt\pi}.
+\end{equation}
+As $\tau\to+\infty$,
+\begin{equation}\label{tss:cx:eq:Hlarge}
+ H(\tau)=\frac{1}{\Gamma(-3/2)\tau^2}
+          \left(1+\frac5\tau+O(\tau^{-2})\right).
+\end{equation}
+\end{proposition}
+\begin{proof}
+Let $w=1-y$ and $q=\tau/n$. Equation~\eqref{tss:cx:eq:localQ} gives
+\[
+ 1-rQ(y)=rm\left(w+q-\frac{\kappa}{m}w^{3/2}+O(w^2)\right).
+\]
+Fix $\theta$ with $\pi/2<\theta<\pi$. On
+$|\arg w|\le\theta$,
+\begin{equation}\label{tss:cx:eq:sector}
+ |w+q|\ge\cos(\theta/2)(|w|+q)\qquad(q\ge0).
+\end{equation}
+Consequently the $w^{3/2}$ perturbation is uniformly smaller than
+half the leading term in a sufficiently small fixed sector.
+Lemma~\ref{tss:cx:lem:tail} excludes denominator zeros on the unit circle
+away from $1$. Compactness and analytic continuation thicken that
+part of the contour a little outside the circle, uniformly for
+$r\to1$. Together these observations supply a common coefficient
+contour: local rays $w=te^{\pm\ii\theta}$, a joining arc of radius
+$1/n$ on their right, and outer pieces on which $|y|>1+\epsilon$.
+No assertion about a whole zero-free disk beyond the circle is needed.
+
+Expanding the resolvent on this contour gives
+\begin{equation}\label{tss:cx:eq:resolvent}
+ \frac1{1-rQ(y)}=\frac1{rm(w+q)}
+ +\frac{\kappa}{rm^2}\frac{w^{3/2}}{(w+q)^2}+E_n(w),
+\end{equation}
+where
+\[
+ |E_n(w)|\le C_1\left(
+ \frac{|w|^2}{(|w|+q)^2}
+ +\frac{|w|^3}{(|w|+q)^3}\right)\le2C_1.
+\]
+On each local ray the coefficient kernel is bounded by
+$C_2\exp(-c n|w|)$. Its integral against $E_n$ is $O(n^{-1})$;
+the joining arc has the same order of length. The outer contribution
+is exponentially small.
+
+The first coefficient in \eqref{tss:cx:eq:resolvent} is exactly
+$(1+\tau/n)^{-n-1}$. Its replacement by $\e^{-\tau}$ costs
+$O(n^{-1})$ uniformly on the stated window. For the second coefficient,
+use $z=nw$. With a fixed-angle Hankel contour $\mathcal H$ around the
+negative real direction, indented by a unit arc to its right,
+\begin{equation}\label{tss:cx:eq:Hankel}
+ [y^n]\frac{w^{3/2}}{(w+q)^2}
+ =n^{-1/2}\frac1{2\pi\ii}\int_{\mathcal H}
+       \e^z\frac{z^{3/2}}{(z+\tau)^2}\,\dd z+O(n^{-3/2}).
+\end{equation}
+Indeed \eqref{tss:cx:eq:sector} bounds the integrand apart from its exponential
+by $C|z|^{-1/2}$. On $|z|\le n^\eta$, $\eta<1/2$, replacing
+$(1-z/n)^{-n-1}$ by $\e^z$ has an integrable relative error
+$O((|z|+|z|^2)/n)$, and the rest of the rays decays exponentially.
+For $|\tau|<1$, expand $(z+\tau)^{-2}$ and integrate term by term;
+the reciprocal-gamma Hankel identity gives \eqref{tss:cx:eq:H}. Continuation
+along $\tau\ge0$ is valid by \eqref{tss:cx:eq:sector}. The pole at $z=-\tau$
+remains on the excluded negative direction throughout.
+
+Finally expand $(z+\tau)^{-2}$ on the part $|z|\le\tau/2$ of the same
+contour. The complementary rays have exponential decay. The first
+two integrals are $\tau^{-2}/\Gamma(-3/2)$ and
+$-2\tau^{-3}/\Gamma(-5/2)$; their ratio gives the coefficient $5$.
+This proves \eqref{tss:cx:eq:Hlarge} and the proposition.
+\end{proof}
+
+\begin{corollary}[The two positive contributions; Corollary~\ref{tss:cor:coexist} restated]\label{tss:cx:cor:twoterms}
+If $\tau\asymp\log n$ within a fixed logarithmic window, then
+\begin{equation}\label{tss:cx:eq:twoterms}
+ Z_n(r)=\frac{\e^{-\tau}}m(1+o(1))
+       +\frac{d}{m^2}\frac{n^{-1/2}}{\tau^2}(1+o(1)).
+\end{equation}
+At $\tau=b_n+s$, set
+\begin{equation}\label{tss:cx:eq:Dn}
+ D_n=\frac{4d}{m^2}\frac{n^{-1/2}}{(\log n)^2}.
+\end{equation}
+Then, uniformly for bounded $s$,
+\begin{equation}\label{tss:cx:eq:Zcoexist}
+ Z_n(r_n)=D_n(1+\e^{-s}+o(1)),\qquad
+ \frac{\e^{-\tau_n}}m=D_n\e^{-s}.
+\end{equation}
+\end{corollary}
+\begin{proof}
+Use $r=1+O(\log n/n)$ and $d=\kappa/\Gamma(-3/2)$ in
+Proposition~\ref{tss:cx:prop:uniform}. The absolute error $O(n^{-1})$ is
+$o(n^{-1/2}/\log^2 n)$. Substitution of \eqref{tss:cx:eq:center} proves the
+second statement.
+\end{proof}
+
+\section{An elementary total variation theorem for a giant block}
+\label{tss:cx:sec:TV}
+This section is independent of the analytic form of $Q$. It isolates
+the reason that two exponential variables, and hence a Gamma law,
+appear.
+
+\begin{definition}[Geometric renewal string]
+For a probability mass function $q$ on the positive integers and
+$0<\delta<1$, a geometric renewal string has law
+\begin{equation}\label{tss:cx:eq:string}
+ \nu_\delta(x_1,\ldots,x_k)
+   =\delta(1-\delta)^k\prod_{i=1}^k q_{x_i},
+ \qquad k\ge0.
+\end{equation}
+The empty string is included. Formula~\eqref{tss:cx:eq:string} is normalized
+because its sum over strings of length $k$ is
+$\delta(1-\delta)^k$.
+\end{definition}
+
+\begin{theorem}[Giant deletion for a changing geometric weight]
+\label{tss:cx:thm:generalTV}
+Let $q_j=dj^{-1-\alpha}(1+O(j^{-1}))$, where $d>0$ and $\alpha>1$,
+and let its mean $m$ be finite. Give an ordered string of total size
+$n$ weight $r^k\prod_iq_{x_i}$, where $r=1-\delta$ may depend on $n$.
+Suppose $\delta\to0$ and $n\delta\to\infty$.
+Let $C$ be the event that a block exceeds $n/2$, and let $B_n(r)$
+be its unnormalized weight. Then
+\begin{equation}\label{tss:cx:eq:generalB}
+ B_n(r)=\frac{r q_n}{\delta^2}
+       \left(1+O\left(\frac1{n\delta}+\frac1n\right)\right).
+\end{equation}
+The law of the two strings obtained by deleting this unique block,
+conditional on $C$, has total variation distance
+\begin{equation}\label{tss:cx:eq:generalTV}
+ O\left(\frac1{n\delta}+\frac1n\right)
+\end{equation}
+from $\nu_\delta\otimes\nu_\delta$.
+\end{theorem}
+\begin{proof}
+Choose independent left and right strings with this product law.
+Let $T$ be their combined total size and $J$ their combined number
+of blocks. Inserting a block of size $n-T$ between them gives an
+ordered string in $C$ precisely when $T<n/2$. The location of the
+large block is then determined uniquely. Hence
+\begin{equation}\label{tss:cx:eq:RN}
+ B_n(r)=\frac{r q_n}{\delta^2}\E h_n(T),\qquad
+ h_n(T)=\frac{q_{n-T}}{q_n}\ind_{\{T<n/2\}}.
+\end{equation}
+Furthermore, the conditional residual law has density
+$h_n(T)/\E h_n(T)$ with respect to the product string law. These
+are exact identities, before any limiting argument.
+
+For $0\le t<n/2$, the assumed tail gives, uniformly in $t$,
+\[
+ \frac{q_{n-t}}{q_n}
+ =(1-t/n)^{-1-\alpha}(1+O(n^{-1})),\qquad
+ \left|\frac{q_{n-t}}{q_n}-1\right|
+ \le C\left(\frac tn+\frac1n\right).
+\]
+Each string has expected size $mr/\delta$, so
+$\E T=2mr/\delta$. On $T\ge n/2$, $|h_n-1|=1$ and Markov's
+inequality applies. Therefore
+\begin{equation}\label{tss:cx:eq:L1}
+ \E|h_n(T)-1|
+ \le C'\left(\frac{\E T}{n}+\frac1n\right)
+ =O\left(\frac1{n\delta}+\frac1n\right).
+\end{equation}
+This proves \eqref{tss:cx:eq:generalB}. Finally,
+\[
+ \TV\left(\frac{h_n}{\E h_n}\nu_\delta^{\otimes2},
+           \nu_\delta^{\otimes2}\right)
+ =\frac12\E\left|\frac{h_n}{\E h_n}-1\right|
+ \le\frac{\E|h_n-1|}{\E h_n},
+\]
+which proves \eqref{tss:cx:eq:generalTV}.
+\end{proof}
+
+Only regular variation, rather than the displayed $O(j^{-1})$ error,
+is needed for an $o(1)$ total variation statement: on $t<n/2$ the
+ratio is bounded, and $T/n\pto0$. The stronger local tail is used
+to give the explicit rate.
+
+\subsection{Gamma laws and the location of the giant}
+Let $N_\delta$ be the count in one geometric string, and let
+$T_\delta$ be its total size. Then
+\begin{equation}\label{tss:cx:eq:geomlimit}
+ \delta N_\delta\dto E,\qquad E\sim\operatorname{Exp}(1).
+\end{equation}
+Also
+\begin{equation}\label{tss:cx:eq:randomLLN}
+ \delta(T_\delta-mN_\delta)\pto0.
+\end{equation}
+For completeness, choose $A>0$. The probability
+$N_\delta>A/\delta$ can be made uniformly small by increasing $A$.
+By the ordinary strong law,
+$\max_{k\le L}|\sum_{i\le k}(X_i-m)|/L\to0$ almost surely as
+$L\to\infty$. Apply this with $L=\lceil A/\delta\rceil$ to obtain
+\eqref{tss:cx:eq:randomLLN}. The argument uses only a finite first moment.
+
+Theorem~\ref{tss:cx:thm:generalTV}, with $\alpha=3/2$ and
+$n\delta_n\asymp\tau_n$, now proves Theorem~\ref{tss:cx:thm:TVmain}.
+It proves convergence of the entire strings, so every bounded
+statistic of them can be transferred; the statistic may itself
+depend on $n$.
+
+\begin{corollary}[A uniform split around the giant]\label{tss:cx:cor:split}
+Conditional on $\Cev$, jointly with $\delta_nK_n\dto G$,
+\begin{equation}\label{tss:cx:eq:uniformsplit}
+ \frac{K_{L,n}}{K_n-1}\dto U,\qquad
+ \frac{T_{L,n}}{n-M_{1,n}}\dto U,
+\end{equation}
+where $U$ is uniform on $(0,1)$ and independent of $G$.
+Ratios with zero denominator can be assigned any value.
+\end{corollary}
+\begin{proof}
+The four-coordinate limit \eqref{tss:cx:eq:four} reduces both ratios to
+$E_L/(E_L+E_R)$. The change of variables
+$(E_L,E_R)=(GU,G(1-U))$ has Jacobian $G$ and density $G\e^{-G}$
+on $G>0$, $0<U<1$. Thus $U$ is uniform and independent of $G$.
+The limiting denominator is positive almost surely.
+\end{proof}
+
+\section{Identification of the phase probabilities}
+\label{tss:cx:sec:phaseproof}
+For the tournament law, the exact marked-block identity in
+\eqref{tss:cx:eq:RN} is equivalently
+\begin{equation}\label{tss:cx:eq:marked}
+ B_n(r)=r\sum_{t<n/2}q_{n-t}
+             [y^t]\frac1{(1-rQ(y))^2}.
+\end{equation}
+It sums over the unique block exceeding half the total size.
+It does not confuse a count of marked blocks with the probability
+of an event containing several possible marks.
+
+Theorem~\ref{tss:cx:thm:generalTV} and \eqref{tss:cx:eq:rn} give
+\begin{align}
+ B_n(r_n)&\sim\frac{r_nq_n}{\delta_n^2}
+ \sim\frac{d}{m^2}\frac{n^{-1/2}}{\tau_n^2}
+ \sim D_n.\label{tss:cx:eq:Bcoexist}
+\end{align}
+Divide this by \eqref{tss:cx:eq:Zcoexist}. The result is
+$\Prob(\Cev)\to\pi_s$, proving \eqref{tss:cx:eq:phaseprob}.
+On $\Cev$, Theorem~\ref{tss:cx:thm:TVmain} implies
+$K_n/n\pto0$ and $M_{1,n}/n\pto1$ because
+$n\delta_n\to\infty$.
+
+\subsection{A short independent check from a probability generating function}
+The limiting block-count mixture can also be read from a controlled
+perturbation of the parameter. For fixed $t\ge0$,
+\begin{equation}\label{tss:cx:eq:LapK}
+ \E\e^{-tK_n/n}
+ =\frac{Z_n(r_n\e^{-t/n})}{Z_n(r_n)}.
+\end{equation}
+Write $r_n\e^{-t/n}=(1+m\tau'_n/n)^{-1}$. Exactly,
+\[
+ \tau'_n=\frac nm\left[(1+m\tau_n/n)\e^{t/n}-1\right]
+        =\tau_n+t/m+o(1).
+\]
+Uniformity in Corollary~\ref{tss:cx:cor:twoterms} yields
+\begin{equation}\label{tss:cx:eq:Laplimit}
+ \E\e^{-tK_n/n}\longrightarrow
+ \frac{1+\e^{-s-t/m}}{1+\e^{-s}}.
+\end{equation}
+This is the Laplace transform of atoms at $0$ and $1/m$. Since
+$0\le K_n/n\le1$, it identifies the weak limit and also all its
+moments. The argument needs the expansion for nearby parameters;
+an uncontrolled decomposition at one value would not suffice.
+
+The giant event already accounts for the whole limiting mass at
+$K_n/n=0$. Subtracting its bounded-test-function limits from
+\eqref{tss:cx:eq:Laplimit} proves $K_n/n\pto1/m$ on $\Fev$.
+
+\subsection{Exclusion of intermediate macroscopic blocks}
+Fix $\epsilon>0$, and choose $\eta>0$ so small that
+$m\eta<\epsilon/4$. For
+\[
+ k\ge n/m-\eta n,
+\]
+a specified block of size at least $\epsilon n$ leaves at most
+$(1-\epsilon)n$ for the other $k-1$ blocks. This is a fixed
+proportion below their mean for large $n$.
+Since $X\ge1$, its negative exponential moment exists. The finite
+mean expansion
+\[
+ \log\E\e^{-hX}=-mh+o(h)\qquad(h\downarrow0)
+\]
+shows, by choosing one sufficiently small fixed $h>0$, that
+\begin{equation}\label{tss:cx:eq:Chernoff}
+ \Prob(X_1+\cdots+X_{k-1}\le(1-\epsilon)n)\le\e^{-c_\epsilon n}
+\end{equation}
+uniformly over these $k\le n$. Marking the exceptional block,
+summing over its size and location, and over $k$, gives an
+unnormalized weight at most $n^2\e^{-c_\epsilon n}$, since $r_n^k\le1$
+and $\sum_jq_j=1$. Division by the polynomially small $Z_n(r_n)$
+still gives a vanishing probability.
+
+On $\Fev$, the complementary range of $k$ has probability tending
+to zero by the preceding count limit. Thus
+$M_{1,n}/n\pto0$ on $\Fev$. This completes the proof of
+Theorem~\ref{tss:cx:thm:mixture}. The same estimates, with parameters on a
+compact $s$-interval, give the asserted uniformity.
+
+\begin{corollary}[Macroscopic moments]\label{tss:cx:cor:moments}
+Let $J_s$ be Bernoulli with $\Prob(J_s=1)=1-\pi_s$. Then
+$mK_n/n\dto J_s$ and $M_{1,n}/n\dto1-J_s$, jointly. Consequently,
+\begin{align}
+ \frac{\E K_n}{n}&\longrightarrow\frac{1-\pi_s}{m},&
+ \frac{\Var K_n}{n^2}&\longrightarrow\frac{\pi_s(1-\pi_s)}{m^2},
+ \label{tss:cx:eq:moments}\\
+ \frac{\Cov(K_n,M_{1,n})}{n^2}
+ &\longrightarrow-\frac{\pi_s(1-\pi_s)}m.&\notag
+\end{align}
+\end{corollary}
+\begin{proof}
+The normalized variables are bounded, so weak convergence implies
+convergence of the indicated moments. This does not assert moment
+convergence for the unbounded stable or Gamma rescalings.
+\end{proof}
+
+\section{A direct stable local limit theorem and the fluid law}
+\label{tss:cx:sec:stable}
+
+\subsection{Local limit by Fourier inversion}
+\begin{lemma}[Lattice $3/2$-stable local limit]\label{tss:cx:lem:LLT}
+Let $S_k^X=X_1+\cdots+X_k$ and $a(k)=(\kappa k)^{2/3}$.
+The variable $Z$ in \eqref{tss:cx:eq:standardstable} has a continuous density
+$g$, and
+\begin{equation}\label{tss:cx:eq:LLT}
+ \sup_{\ell\in\mathbb Z}
+ \left|a(k)\Prob(S_k^X=\ell)
+       -g\left(\frac{\ell-mk}{a(k)}\right)\right|
+ \longrightarrow0.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Put $\phi(t)=Q(\e^{\ii t})$. The expansion \eqref{tss:cx:eq:localQ}
+implies
+\begin{equation}\label{tss:cx:eq:char}
+ \log\phi(t)=\ii mt+\kappa(-\ii t)^{3/2}+O(t^2).
+\end{equation}
+Indeed $1-\e^{\ii t}=-\ii t+O(t^2)$, and its principal
+$3/2$ power has the indicated leading term. For real $t$,
+\[
+ (-\ii t)^{3/2}
+ =-\frac{|t|^{3/2}}{\sqrt2}(1+\ii\operatorname{sgn}t).
+\]
+It follows that $|\phi(t)|\le\exp(-c|t|^{3/2})$ near zero.
+Away from zero Lemma~\ref{tss:cx:lem:tail} gives a strict uniform bound
+below one.
+
+The characteristic functions of $(S_k^X-mk)/a(k)$ converge pointwise
+to $\exp\{(-\ii t)^{3/2}\}$, by \eqref{tss:cx:eq:char}; their limit is
+continuous at zero and hence is a characteristic function. It is
+integrable, so its inverse Fourier transform is a continuous density
+$g$ of total integral one.
+
+Lattice inversion, followed by $v=a(k)t$, writes
+$a(k)\Prob(S_k^X=\ell)$ as the integral over
+$[-\pi a(k),\pi a(k)]$ of
+\[
+ \frac1{2\pi}
+ \e^{-\ii v(\ell-mk)/a(k)}
+ \left[\e^{-\ii mv/a(k)}\phi(v/a(k))\right]^k.
+\]
+The bracketed kernel converges in $L^1(\dd v)$ to
+$\exp\{(-\ii v)^{3/2}\}$. On the shrinking small-angle region
+it is bounded by $\exp(-c'|v|^{3/2})$; on the remaining angles
+the integral is at most $O(a(k)\gamma^k)$ for some $\gamma<1$.
+Dominated convergence proves the $L^1$ assertion. The oscillatory
+factor has modulus one for every $\ell$, so it also proves the
+uniform bound \eqref{tss:cx:eq:LLT}.
+\end{proof}
+
+\subsection{Central windows and exhaustion of the remaining mass}
+Let $a_n=a(n/m)=(\kappa n/m)^{2/3}$, interpreting the formula at a
+real argument, and define
+\[
+ x_{n,k}=\frac{m(k-n/m)}{a_n}.
+\]
+For $x_{n,k}$ in any fixed bounded interval,
+$a(k)/a_n\to1$ uniformly and \eqref{tss:cx:eq:LLT} gives
+\begin{equation}\label{tss:cx:eq:localwindow}
+ \Prob(S_k^X=n)=a_n^{-1}(g(-x_{n,k})+o(1)).
+\end{equation}
+Also, uniformly on this window,
+\begin{equation}\label{tss:cx:eq:weightwindow}
+ \frac{r_n^k}{\e^{-\tau_n}}\longrightarrow1.
+\end{equation}
+To check the latter, use
+$\log r_n=-m\tau_n/n+O(\tau_n^2/n^2)$ and
+$k=n/m+O(n^{2/3})$. The remaining exponent is
+$O(\tau_n n^{-1/3}+\tau_n^2/n)=o(1)$.
+
+For fixed $A<B$, a Riemann sum in \eqref{tss:cx:eq:localwindow} yields
+\begin{equation}\label{tss:cx:eq:windowmass}
+ \sum_{A\le x_{n,k}\le B}r_n^k\Prob(S_k^X=n)
+ =\frac{\e^{-\tau_n}}m
+   \left(\int_A^B g(-x)\,\dd x+o(1)\right).
+\end{equation}
+The mesh of $x_{n,k}$ is $m/a_n$, explaining the factor $1/m$.
+
+The contribution in this window having a block greater than $n/2$
+is exponentially small by \eqref{tss:cx:eq:Chernoff}. Hence
+\eqref{tss:cx:eq:windowmass} holds with the event $\Fev$ imposed.
+On the other hand, \eqref{tss:cx:eq:Zcoexist} and \eqref{tss:cx:eq:Bcoexist} imply
+\begin{equation}\label{tss:cx:eq:fluidmass}
+ Z_n(r_n)-B_n(r_n)\sim\frac{\e^{-\tau_n}}m.
+\end{equation}
+This subtraction is legitimate because $s$ is fixed, so both
+limiting contributions have positive finite relative weights.
+
+Divide \eqref{tss:cx:eq:windowmass} by \eqref{tss:cx:eq:fluidmass}.
+Letting $A\to-\infty$ and $B\to\infty$ exhausts mass one because
+$g$ is a probability density. This proves tightness of the conditional
+rescaled count as well as convergence on bounded intervals. The limit
+has density $g(-x)$, which is precisely the law of $-Z$.
+Together with Section~\ref{tss:cx:sec:phaseproof}, this proves
+Theorem~\ref{tss:cx:thm:fluid}.
+
+The exhaustion argument is useful: a local limit theorem alone does
+not control all possible intermediate ranges. The separately proved
+giant weight and total coefficient show that no additional range has
+unaccounted mass at coexistence.
+
+\subsection{Largest fluid block and its dependence on the count}
+\label{tss:cx:sec:fluidmax}
+Let $\mathcal P$ be a Poisson point process on $(0,\infty)$ with
+intensity
+\[
+ \nu(\dd v)=\frac{v^{-5/2}}{\Gamma(-3/2)}\,\dd v.
+\]
+Let $V$ be its largest point and define the compensated sum
+\begin{equation}\label{tss:cx:eq:PPPstable}
+ Z=\lim_{\epsilon\downarrow0}
+ \left(\sum_{\substack{v\in\mathcal P\\v>\epsilon}}v
+       -\int_\epsilon^\infty v\,\nu(\dd v)\right).
+\end{equation}
+The compensated contribution of points below one converges in
+$L^2$ because $\int_0^1v^2\nu(\dd v)<\infty$. Above one there are
+finitely many points almost surely, and their sum has finite mean.
+The exponential formula gives
+\[
+ \E\e^{\ii tZ}
+ =\exp\left\{\int_0^\infty
+       (\e^{\ii tv}-1-\ii tv)\nu(\dd v)\right\}
+ =\exp\{(-\ii t)^{3/2}\}.
+\]
+The last integral follows by two integrations by parts, or the
+gamma integral with a positive real damping parameter followed by
+a limit. Thus this is the same stable law as before. Also
+\[
+ \Prob(V\le y)=\exp\{-\nu((y,\infty))\}
+ =\exp\left(-\frac1{2\sqrt\pi\,y^{3/2}}\right).
+\]
+
+We prove the joint limit \eqref{tss:cx:eq:fluidmaxmain}, including its
+dependence. For $y>0$, define the defective density $g_y$ by
+\begin{equation}\label{tss:cx:eq:defective}
+ \int_\R\e^{\ii tx}g_y(x)\,\dd x
+ =\Psi_y(t)
+ =\exp\left\{(-\ii t)^{3/2}
+       -\int_y^\infty \e^{\ii tv}\nu(\dd v)\right\}.
+\end{equation}
+The Poisson formula identifies the right side as
+$\E[\e^{\ii tZ}\ind_{\{V\le y\}}]$. It is integrable: its modulus
+is bounded by
+$\exp\{\nu((y,\infty))-|t|^{3/2}/\sqrt2\}$.
+Consequently $g_y$ is continuous, nonnegative, and has total mass
+$\Prob(V\le y)$.
+
+Truncate the one-block characteristic function at $\lfloor ya_n\rfloor$:
+\[
+ \phi_{n,y}(t)=\sum_{j\le ya_n}q_j\e^{\ii tj}.
+\]
+For $k=n/m+O(a_n)$, regular variation and a Riemann sum imply
+\[
+ k\sum_{j>ya_n}q_j\e^{\ii tj/a_n}
+ \longrightarrow
+ \frac1{\Gamma(-3/2)}\int_y^\infty\e^{\ii tv}v^{-5/2}\,\dd v.
+\]
+Combining this with \eqref{tss:cx:eq:char} shows
+\[
+ \e^{-\ii tmk/a_n}\phi_{n,y}(t/a_n)^k\longrightarrow\Psi_y(t).
+\]
+Convergence is uniform on bounded count windows. The Fourier kernels
+again converge in $L^1$. Near zero, removal of the tail changes the
+characteristic function by at most $C_y/n$, and hence
+\[
+ |\phi_{n,y}(t/a_n)|^k
+ \le C'_y\exp(-c'|t|^{3/2})
+\]
+for small fixed $|t|/a_n$. One may obtain this bound by applying
+$|\phi_{n,y}|\le|\phi|+C_y/n$ to the exponential bound used in
+Lemma~\ref{tss:cx:lem:LLT}. Away from zero, the strict aperiodicity bound
+still applies for large $n$.
+
+Fourier inversion therefore gives, uniformly on bounded count windows,
+\[
+ a_n\Prob(S_k^X=n,\max_{i\le k}X_i\le ya_n)
+     =g_y(-x_{n,k})+o(1).
+\]
+After multiplying by $r_n^k$ and taking a Riemann sum, its weight
+on a fixed interval $I$ of count coordinates is
+\[
+ \frac{\e^{-\tau_n}}m
+       \left(\int_Ig_y(-x)\,\dd x+o(1)\right).
+\]
+For fixed $y$ this event lies in $\Fev$ for large $n$, because
+$a_n=o(n)$. Divide by \eqref{tss:cx:eq:fluidmass}. The already proved
+conditional tightness of the count permits $I$ to increase to all
+of $\R$. This yields the stated Fr\'echet marginal; bounded
+rectangles identify the joint law. The count and maximum marginals
+give joint tightness, completing the proof.
+
+The compensation term in \eqref{tss:cx:eq:defective} is necessary. Simply
+discarding the points above $y$ would change the deterministic
+centering as well as the probability that no such point occurs.
+The largest fluid block and the stable count fluctuation are thus
+two observables of one limiting process.
+
+The argument also identifies every large fluid block jointly. For
+nonnegative continuous $f$ of compact support in $(0,\infty)$,
+replace the truncated characteristic function by
+$\sum_jq_j\exp(\ii tj/a_n-f(j/a_n))$. The perturbation is $O(n^{-1})$
+and has exactly the same Fourier domination. Its limiting exponent is
+\[
+ (-\ii t)^{3/2}
+ -\int_0^\infty(1-\e^{-f(v)})\e^{\ii tv}\nu(\dd v).
+\]
+The same local inversion, count-window summation, and tightness
+argument prove joint convergence of the rescaled count and the
+point measure of block sizes to $(-Z,\mathcal P)$, with vague
+convergence on $(0,\infty)$. Here the mark $\exp(-\sum f)$ is at most
+one, so inserting $\Fev$ changes the central-window expectations
+by at most the exponentially small giant contamination in
+\eqref{tss:cx:eq:Chernoff}. In particular, any fixed number of
+largest fluid blocks converges to the corresponding ranked points.
+This is a statement about sizes; a functional limit keeping their
+positions in the ordered sequence is a separate question.
+
+\section{Finer laws inside the giant phase}
+\label{tss:cx:sec:finer}
+
+\subsection{Stable fluctuations at a Gamma random time}
+Let $N_\delta$ be the count in one independent geometric string.
+For $t\ge0$ and $\theta\in\R$, its exact transform is
+\begin{equation}\label{tss:cx:eq:geomtransform}
+ \E\exp\left\{-t\delta N_\delta+
+  \ii\theta\frac{T_\delta-mN_\delta}{(\kappa/\delta)^{2/3}}\right\}
+ =\frac{\delta}{
+  1-r\e^{-t\delta}
+  \E\exp\{\ii\theta(X-m)(\delta/\kappa)^{2/3}\}}.
+\end{equation}
+Equation~\eqref{tss:cx:eq:char} says that the last expectation is
+$1+\delta(-\ii\theta)^{3/2}+o(\delta)$. The denominator divided by
+$\delta$ tends to $1+t-(-\ii\theta)^{3/2}$. Squaring for two
+independent strings gives
+\begin{equation}\label{tss:cx:eq:mixedtransform}
+ \left(1+t-(-\ii\theta)^{3/2}\right)^{-2}.
+\end{equation}
+This is the joint transform of $(G,G^{2/3}Z)$: conditional on $G$,
+the second coordinate has characteristic function
+$\exp\{G(-\ii\theta)^{3/2}\}$. Total variation transfer and
+$\delta_n\to0$ permit replacing the residual count $K_n-1$ by $K_n$
+in the first coordinate. This proves \eqref{tss:cx:eq:residualstable}.
+
+The variables in \eqref{tss:cx:eq:gamma} should therefore not be read as
+independent. Their leading limits are the same random variable.
+Equation~\eqref{tss:cx:eq:residualstable} measures the smaller fluctuation
+around that common leading value.
+
+\subsection{Second-largest block and joint maximum law}
+Let $F(x)=\Prob(X\le x)$ and
+$B(\delta)=((2d/3)/\delta)^{2/3}$. By \eqref{tss:cx:eq:qtail},
+\begin{equation}\label{tss:cx:eq:tailB}
+ 1-F(B(\delta)x)=\delta x^{-3/2}(1+o(1))
+ \qquad(x>0).
+\end{equation}
+If $V_\delta$ is the largest size in one geometric string, with
+maximum zero for the empty string, summing the geometric series gives
+\begin{equation}\label{tss:cx:eq:maxtransform}
+ \E[\e^{-t\delta N_\delta}\ind_{\{V_\delta\le B(\delta)x\}}]
+ =\frac{\delta}{1-r\e^{-t\delta}F(B(\delta)x)}
+ \longrightarrow\frac1{1+t+x^{-3/2}}.
+\end{equation}
+The maximum of the two residual strings is the second-largest block
+of the original object on $\Cev$. Squaring \eqref{tss:cx:eq:maxtransform}
+and applying Theorem~\ref{tss:cx:thm:TVmain} proves
+\eqref{tss:cx:eq:secondmax}--\eqref{tss:cx:eq:jointmax}.
+
+There is a useful probabilistic reading: conditional on $G=g$, the
+limiting rescaled second maximum has distribution
+$\exp(-g x^{-3/2})$. Mixing this Fr\'echet distribution over
+$G\sim\operatorname{Gamma}(2,1)$ produces $(1+x^{-3/2})^{-2}$.
+Thus the second maximum and the total residual count are dependent.
+
+\subsection{All large residual blocks as a point process}
+The same computation describes more than the largest residual block.
+For a nonnegative continuous function $f$ with compact support in
+$(0,\infty)$, set
+\[
+ J_f=\int_0^\infty(1-\e^{-f(x)})\frac32x^{-5/2}\,\dd x.
+\]
+Regular variation gives
+\[
+ \delta^{-1}\E[1-\e^{-f(X/B(\delta))}]\longrightarrow J_f.
+\]
+Repeating the geometric sum with this factor instead of $F$ yields
+\begin{equation}\label{tss:cx:eq:process}
+ \E\left[\exp\left\{-t\delta_nK_n
+   -\sum_{j\ge2}f(M_{j,n}/B_n)\right\}\mid\Cev\right]
+ \longrightarrow(1+t+J_f)^{-2}.
+\end{equation}
+This specifies the Laplace functionals of the limiting point process.
+Given $G$, it is a Poisson point process on $(0,\infty)$ with
+intensity $G(3/2)x^{-5/2}\dd x$. This statement concerns points bounded
+away from zero. It does not assert that uncentered sums of all limiting
+points are finite; the intensity has a divergent first moment at zero,
+and centered stable fluctuations require compensation.
+
+\subsection{All fixed inverse-logarithmic corrections}\label{tss:cx:sec:allorders}
+
+Here $(a)_j=a(a+1)\cdots(a+j-1)$ and $(a)_0=1$. The expansion of the heavy-tail kernel has a direct interpretation
+in terms of the gamma residual geometry; the coefficients are not
+merely formal contour artifacts.
+
+\begin{proposition}[All fixed orders for the giant weight]\label{tss:cx:prop:allorders}
+Fix $C_0>0$ and an integer $M\geq0$. Let
+$r=(1+m\tau/n)^{-1}$ and $\delta=1-r$, with
+$1\leq\tau\leq C_0\log n$. Then, uniformly in this range,
+\[
+B_n(r)=\frac{rq_n}{\delta^2}
+ \left\{\sum_{j=0}^{M}(j+1)(5/2)_j\tau^{-j}
+                  +O_{M,C_0}(\tau^{-M-1})\right\}.
+\]
+In particular the expansion begins with $1+5/\tau+105/(4\tau^2)$,
+and its prefactor can equivalently be written as
+$(d/(rm^2))n^{-1/2}\tau^{-2}(1+O(n^{-1}))$.
+\end{proposition}
+
+\begin{proof}
+First, the tail estimate gives an elementary first absolute moment
+bound for centered sums:
+\[
+\E|S_k^X-mk|\leq Ck^{2/3}\qquad(k\geq1).
+\]
+Indeed, take $A=k^{2/3}$ and split each summand into its part at most
+$A$ and its remaining part. The assumed mass-function bound gives
+\[
+\E[X\mathbf1_{X>A}]\leq CA^{-1/2},\qquad
+\E[X^2\mathbf1_{X\leq A}]\leq CA^{1/2}.
+\]
+The centered truncated sum has first absolute moment at most its
+standard deviation, $\sqrt{CkA^{1/2}}$, and the centered tail sum
+has first absolute moment at most $2CkA^{-1/2}$. Both are
+$O(k^{2/3})$.
+
+Under the reference law write $N=N_L+N_R$, so $T$ has law $S_N^X$.
+Concavity and independence imply
+\[
+\E_r|T-mN|\leq C\E_rN^{2/3}
+ \leq C\delta^{-2/3}.
+\]
+Let $f(t)$ equal $(1-t)^{-5/2}$ for $0\leq t\leq1/2$ and equal
+$2^{5/2}$ for $t\geq1/2$. This is bounded and Lipschitz. Its use
+also controls the discontinuous cutoff in $h_n$:
+\[
+\E_r|h_n(T)-f(mN/n)|
+ =O\left(n^{-1}+\frac{\delta^{-2/3}}n
+            +\Prob_r(T\geq n/2)\right).
+\]
+Moreover
+\[
+\Prob_r(T\geq n/2)
+ \leq\Prob_r(N\geq n/(4m))
+       +\frac{4\E_r|T-mN|}{n}.
+\]
+For the negative-binomial variable $N$, the exact tail at integer
+$L\geq0$ is
+\[
+\Prob_r(N\geq L)=r^L(1+\delta L).
+\]
+Because $n\delta=mr\tau$ and $r\to1$ uniformly in the stated
+window, this proves
+\[
+\E_r|h_n(T)-f(mN/n)|
+ =O\left(n^{-1}+n^{-1/3}\tau^{-2/3}
+                        +(1+\tau)e^{-c\tau}\right)
+\]
+with a fixed $c>0$.
+
+For every fixed $M$, the global Taylor-remainder bound
+\[
+\left|f(t)-\sum_{j=0}^{M}\frac{(5/2)_j}{j!}t^j\right|
+ \leq C_Mt^{M+1}\qquad(t\geq0)
+\]
+holds. On $[0,1/2]$ it is the usual Taylor estimate; on
+$[1/2,\infty)$ it follows because $f$ is bounded and the displayed
+polynomial has degree $M$. The negative-binomial factorial moments
+are exact:
+\[
+\E_rN^{\underline j}=(j+1)!\left(\frac r\delta\right)^j.
+\]
+Converting ordinary moments to factorial moments and using
+$mr/(n\delta)=1/\tau$ gives
+\[
+\E_rf(mN/n)
+ =\sum_{j=0}^{M}(j+1)(5/2)_j\tau^{-j}
+                  +O_M(\tau^{-M-1}+n^{-1}).
+\]
+Finally, for $1\leq\tau\leq C_0\log n$, each of
+$n^{-1}$, $n^{-1/3}\tau^{-2/3}$, and
+$(1+\tau)e^{-c\tau}$ is $O_{M,C_0}(\tau^{-M-1})$.
+Insert the resulting expansion of $\E_rh_n(T)$ into the
+exact formula $B_n(r)=rq_n\delta^{-2}\E_rh_n(T)$.
+The equivalent prefactor follows from
+$rq_n/\delta^2=(d/(rm^2))n^{-1/2}\tau^{-2}(1+O(n^{-1}))$.
+\end{proof}
+
+\begin{corollary}[Explicit residual approximations to every fixed order]
+\label{tss:cx:cor:density}
+Let $\mathsf R_r$ denote the product of the two geometric-string
+reference laws in Theorem~\ref{tss:cx:thm:TVmain}, and write $N=N_L+N_R$.
+For a fixed integer $M\ge0$, define
+\[
+ P_M(x)=\sum_{j=0}^{M}\frac{(5/2)_j}{j!}x^j,\qquad
+ \frac{\dd\mathsf R_r^{(M)}}{\dd\mathsf R_r}
+   =\frac{P_M(mN/n)}{\E_r P_M(mN/n)}.
+\]
+This is a probability measure because the polynomial is positive
+on $[0,\infty)$ and $N$ has moments of every order. If
+$\tau\to\infty$ and $\tau\le C_0\log n$, then the actual joint
+residual-string law $\mathsf L_{n,r}$, conditional on $\Cev$, satisfies
+\[
+ \TV(\mathsf L_{n,r},\mathsf R_r^{(M)})
+       =O_{M,C_0}(\tau^{-M-1}).
+\]
+In particular, in the coexistence window this gives an explicit
+$O((\log n)^{-M-1})$ approximation for every fixed $M$.
+Conditionally on their two counts, the block lengths under
+$\mathsf R_r^{(M)}$ still have the independent law $q$.
+\end{corollary}
+\begin{proof}
+The absolute-value estimates in the preceding proof and its global
+Taylor bound give
+\[
+ \E_r|h_n(T)-P_M(mN/n)|=O_{M,C_0}(\tau^{-M-1}).
+\]
+Indeed the Taylor error has expectation at most
+$C_M(m/n)^{M+1}\E_rN^{M+1}=O_M(\tau^{-M-1})$.
+The exact residual density is $h_n(T)/\E_rh_n(T)$, and
+$\E_rh_n(T)=1+O(\tau^{-1})$ is bounded away from zero.
+For nonnegative integrable functions $h,P$,
+\[
+ \frac12\E\left|\frac h{\E h}-\frac P{\E P}\right|
+       \le\frac{\E|h-P|}{\E h}.
+\]
+Applying this inequality proves the assertion.
+\end{proof}
+
+\section{Centering, finite-size effects, and a reusable principle}
+\label{tss:cx:sec:center}
+
+\subsection{An implicit center that keeps the logarithmic corrections}
+The explicit $b_n$ is convenient for a theorem, but the
+$2\log\log n$ correction can be large at accessible sizes. A useful
+alternative is the large solution $\widehat b_n>2$ of
+\begin{equation}\label{tss:cx:eq:exactbalance}
+ \widehat b_n^2\e^{-\widehat b_n}
+       =\frac{d}{m\sqrt n}.
+\end{equation}
+For sufficiently large $n$ it is unique on $(2,\infty)$ because
+$x^2\e^{-x}$ is strictly decreasing there. In terms of the lower
+real Lambert branch,
+\begin{equation}\label{tss:cx:eq:Wcenter}
+ \widehat b_n=-2W_{-1}\left(-\frac12\sqrt{d/m}\,n^{-1/4}\right).
+\end{equation}
+This is the exact balance of the leading fluid and giant terms in
+\eqref{tss:cx:eq:twoterms}, not the exact finite-$n$ median of the giant
+event.
+
+\begin{writenote}[Added 3 October 2026, batch~85]
+The inversion \eqref{tss:cx:eq:Wcenter} is an instance of
+\texttt{p0:thm:lambert-core} of the repository's transseries volume,
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/transseries_and_inversion.tex},
+and no novelty is claimed for it. Taking logarithms in
+\eqref{tss:cx:eq:exactbalance} gives $x-2\log x=\Lambda$ with
+$\Lambda=\tfrac12\log n+\log(m/d)$ (the equation used in the proof of
+Proposition~\ref{tss:cx:prop:center}); this is the theorem's equation
+$aX+b\log X=\Lambda$ with $a=1$, $b=-2$, and its branch rule for $b<0$ gives
+two positive solutions once $\Lambda>2(1-\log2)$, the larger one,
+$X>|b|/a=2$, on the branch $W_{-1}$ at
+$z=(a/b)\e^{\Lambda/b}=-\tfrac12\sqrt{d/m}\,n^{-1/4}$. The order-zero inverse
+\eqref{tss:eq:lambert} of Part~\ref{tss:part:one} is the same theorem with
+$a=\log4$, $b=-5/2$ (the batch-77 note at the end of
+Section~\ref{tss:sec:inverse}).
+\end{writenote}
+
+\begin{proposition}[Refined center and error scale]\label{tss:cx:prop:center}
+Put $c_0=\log(m/(4d))$ and $L=\log n$. Then
+\begin{equation}\label{tss:cx:eq:centerexp}
+ \widehat b_n=b_n+\frac{8\log L+4c_0}{L}
+             +O\left(\frac{(\log L)^2}{L^2}\right).
+\end{equation}
+All the main theorems remain valid with $\tau_n=\widehat b_n+s$.
+For this choice, uniformly for bounded $s$,
+\begin{equation}\label{tss:cx:eq:probRate}
+ \Prob(\Cev)=\frac1{1+\e^{-s}}
+             +O\left(\frac1{\log n}\right).
+\end{equation}
+With the elementary center $b_n+s$, the same argument gives the
+weaker bound $O(\log\log n/\log n)$.
+\end{proposition}
+\begin{proof}
+Taking logarithms of \eqref{tss:cx:eq:exactbalance} gives
+$x-2\log x=L/2+\log(m/d)$. Substitute the right side of
+\eqref{tss:cx:eq:centerexp}; expansion of $\log x$ leaves a residual
+$O((\log L)^2/L^2)$. The derivative $1-2/x$ is bounded away from
+zero for large $x$, proving the expansion by the mean value theorem.
+In particular $\widehat b_n-b_n\to0$, which preserves all the
+limiting distributions.
+
+For the rate, write
+$D=d n^{-1/2}/(m^2\widehat b_n^2)$.
+Equation~\eqref{tss:cx:eq:exactbalance} makes
+$\e^{-(\widehat b_n+s)}/m=D\e^{-s}$ exactly. Theorem~\ref{tss:cx:thm:generalTV}
+gives $B_n=D(1+O(1/\log n))$, uniformly for bounded $s$.
+Proposition~\ref{tss:cx:prop:uniform} and \eqref{tss:cx:eq:Hlarge} give
+$Z_n=D(1+\e^{-s}+O(1/\log n))$; the relative contour error
+$O(n^{-1/2}\log^2 n)$ is smaller. Dividing proves
+\eqref{tss:cx:eq:probRate}. The last assertion follows from
+\eqref{tss:cx:eq:centerexp} and smoothness of the logistic function.
+\end{proof}
+
+The probability transition occurs over $O(1)$ changes of $s$, or
+$O(1/n)$ changes of $u$ around its moving center. The center itself
+lies below $u_c$ by order $\log n/n$. Confusing this displacement
+with the narrower transition width obscures the two scales.
+
+\subsection{What is specific to tournaments}
+Theorem~\ref{tss:cx:thm:generalTV} applies to any positive integer law with
+a finite mean and a regular power tail. The tournament identities
+supply the particular exponent $5/2$, the constants, and the
+uniform coefficient control. The stable exponent $3/2$ comes from
+the block tail, while Gamma shape two comes from having a string on
+each side of a unique giant.
+
+For a law $q_j\sim d j^{-1-\alpha}$ with $1<\alpha<2$, a two-term
+renewal estimate of the corresponding form would balance
+\[
+ \frac{\e^{-\tau}}m
+ \quad\hbox{and}\quad
+ \frac{d}{m^2}n^{1-\alpha}\tau^{-2}.
+\]
+It would have center
+\[
+ (\alpha-1)\log n+2\log\log n
+ +\log\frac{m(\alpha-1)^2}{d}.
+\]
+The giant-deletion theorem would then give the same Gamma law, and
+the appropriate stable local limit would give count fluctuations
+$n^{1/\alpha}$ in the linear-block regime. This is a deduction
+conditional on those two analytic inputs, not a blanket theorem
+under regular variation alone. It states the reusable architecture
+without silently assuming a uniform renewal expansion for every law.
+
+\section{Computation and reproducibility}
+\label{tss:cx:sec:computation}
+The computations accompanying this manuscript have two separate
+roles: exact checks of the finite combinatorial identities and
+numerical diagnostics of convergence. The proofs above do not rely
+on a numerical extrapolation.
+
+\subsection{Exact arithmetic checks}
+The exact recurrences are
+\begin{align}
+ nS_n&=\sum_{j=1}^nN_jS_{n-j},\label{tss:cx:eq:exactrec}\\
+ I_n&=S_n-\sum_{j=1}^{n-1}I_jS_{n-j},\notag\\
+ W_0(u)&=1,\qquad
+ W_n(u)=u\sum_{j=1}^nI_jW_{n-j}(u).\notag
+\end{align}
+For comparison with direct enumeration, the full block-count
+polynomial is obtained by retaining $u$ symbolically. The giant-event
+polynomial has the independent marked-block expression
+\begin{equation}\label{tss:cx:eq:exactgiantpoly}
+ \sum_{j>n/2}uI_j[z^{n-j}](1-uI(z))^{-2}.
+\end{equation}
+The verifier enumerates the integer tuples in \eqref{tss:cx:eq:landau}, cuts
+each at its equality indices, and compares both polynomials
+coefficient by coefficient. This checks the count, the block
+statistic, and the strict inequality defining the giant event.
+
+The completed run examined 125,476 nondecreasing candidate sequences
+over all lengths through $n=10$. Every exact comparison passed.
+At $n=10$, the block-count polynomial is
+\[
+ 573u+433u^2+246u^3+130u^4+55u^5+33u^6+7u^7+8u^8+u^{10},
+\]
+and the giant-event polynomial is
+\[
+ 573u+424u^2+225u^3+84u^4+35u^5.
+\]
+Their values at $u=1$ are $1486$ and $1341$. Exact counts through
+$n=200$ also supply independent checks of the normalized numerical
+recurrences.
+
+\subsection{Constants and floating diagnostics}
+If $R_j=[z^j]R(z)$ in \eqref{tss:cx:eq:split}, then
+\begin{equation}\label{tss:cx:eq:constantcompute}
+ \lambda=\frac{\pi^2}{12}-\log^2 2+\sum_{j\ge1}\frac{R_j}{4^j},
+ \qquad
+ \mu=\log2+\sum_{j\ge1}\frac{jR_j}{4^j}.
+\end{equation}
+The omitted tails after $M$ are bounded respectively by
+$2^{-M-1}$ and $(M+2)2^{-M-1}$. These are analytic truncation bounds;
+ordinary floating evaluations of the finite sums are still
+diagnostics unless their rounding is separately enclosed.
+
+Numerically the constants begin
+\[
+ \begin{aligned}
+ \lambda&=0.3302375439859293\ldots,&
+ \mu&=0.6739526018515949\ldots,\\
+ u_c&=3.5555932000209863\ldots,&
+ m&=1.7223486864283872\ldots.
+ \end{aligned}
+\]
+The numerical code works with $4^{-n}$-normalized coefficients to
+avoid exponential overflow. It evaluates $Z_n(r)$ by its positive
+renewal recurrence and evaluates \eqref{tss:cx:eq:marked} by a convolution.
+It compares the resulting giant probabilities with the limiting
+logistic curve around $\widehat b_n$. The default run computes
+normalized coefficients through $n=8000$. In the recorded environment
+the long-double type has 64 significant binary digits. Through
+$n=200$, its relative discrepancies from the exact counts are at
+most $1.1\cdot10^{-19}$ for $S_n$ and $1.7\cdot10^{-19}$ for $I_n$.
+These comparisons are useful numerical checks, not interval error
+bounds for every subsequent calculation.
+
+The measured center probabilities show why the distinction matters:
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+$n$ & $\widehat b_n$ & $\Prob(\Cev)$ at $s=0$\\
+\midrule
+512   & 8.1978140113 & 0.5241164884\\
+2000  & 9.0845092174 & 0.5341770504\\
+8000  & 9.9620885205 & 0.5498246417\\
+\bottomrule
+\end{tabular}
+\end{center}
+These values do not converge monotonically toward the limiting
+$1/2$. At $n=8000$, the giant weight is about $1.73615$ times its
+leading approximation, and the total weight is about $1.57882$
+times the sum of the two leading approximations. Terms such as
+$5/\tau$ and $105/(4\tau^2)$ in
+Proposition~\ref{tss:cx:prop:allorders} are still substantial when
+$\tau$ is only about ten. No theorem above claims a small
+finite-$n$ relative error from the leading terms alone.
+
+For Figure~\ref{tss:cx:fig:counts}, FFT polynomial powers were checked
+against the positive recurrence: the total-mass relative discrepancy
+was below $1.4\cdot10^{-15}$, and the giant-mass discrepancy below
+$1.0\cdot10^{-17}$. The computed conditional means are approximately
+$148.45$ blocks on $\Cev$ and $468.27$ on $\Fev$, whereas the
+leading scales give $134.45$ and $580.60$. This quantifies the
+visible finite-size correction rather than treating the plots as
+close asymptotic agreement.
+
+The package contains the source, compiled article, verification
+programs, recorded outputs, and figures. It is independent of a
+ProveIt checkout. No assertion is made that numerical agreement
+establishes a total variation estimate or a distributional limit.
+
+\begin{writenote}[Added 3 October 2026, batch~85]
+The preceding paragraph describes the delivered package. In this report
+its files carry the prefix \texttt{02-coex-}: the program
+\texttt{code/\allowbreak verify\_and\_plot.py} is
+\texttt{code/\allowbreak 02-coex-verify\_and\_plot.py}, the build script is
+\texttt{code/\allowbreak 02-coex-build.sh}, the code README is
+\texttt{02-coex-code-README.md} at the report root, the requirements and
+\texttt{provenance.json} are in \texttt{data/}, and every
+\texttt{data/} and \texttt{figures/} file keeps its name after the prefix.
+The delivered source, PDF, README and checksum list are not shipped; they
+survive in the archive of arrival commit \texttt{317c1ce2e}. Run as
+delivered, the program writes into \texttt{data/} and \texttt{figures/}
+beside \texttt{code/} under the unprefixed names, so the report's
+\texttt{README.md} runs it on a scratch copy with an explicit
+\texttt{--output-root}. Such a run at intake (Windows, Python~3.12, the
+pinned packages) passed every exact assertion with identical exact output;
+its floating diagnostics agreed with the recorded ones to a relative
+$7.2\cdot10^{-13}$ (coexistence table), $5\cdot10^{-15}$ (normalized
+counts and renewal masses) and an absolute $6.5\cdot10^{-14}$ (block-count
+distribution), but not digit for digit, because on that platform \texttt{numpy.longdouble} is
+ordinary double precision (52 stored mantissa bits against the recorded
+63), the platform dependence that the code README discloses. The figure
+showing the theoretical phase profiles, which the manuscript ships but does
+not display, is printed as Figure~\ref{tss:cx:fig:profiles}.
+\end{writenote}
+
+\clearpage
+\begin{figure}[p]
+ \centering
+ \includegraphics[width=0.90\linewidth]{figures/02-coex-giant_probability.pdf}
+ \caption{Slow finite-size behavior of the giant probability around
+ the implicit center \eqref{tss:cx:eq:exactbalance}. The limiting logistic
+ curve is shown for comparison. The finite curves are floating-point
+ diagnostics, not interval certificates or evidence of monotone convergence.}
+ \label{tss:cx:fig:probability}
+ \vspace{12pt}
+ \includegraphics[width=0.90\linewidth]{figures/02-coex-component_count_distribution.pdf}
+ \caption{Block-count probabilities at $n=1000$ and
+ $\tau=\widehat b_n$, separated by the giant event. The two curves
+ are joint probabilities with their indicated events, so their
+ combined mass is one. This finite distribution shows distinct
+ count ranges and substantial corrections to the limiting scales.}
+ \label{tss:cx:fig:counts}
+\end{figure}
+\begin{figure}[tbp]
+ \centering
+ \includegraphics[width=0.90\linewidth]{figures/02-coex-phase_profiles.pdf}
+ \caption{[Added in the write step, batch~85; caption from the delivered
+ code README.] Theoretical limiting densities, not numerical distribution
+ estimates: left, the $\operatorname{Gamma}(2,1)$ density $x\e^{-x}$ of the
+ rescaled giant deficit $x=\tau_n(n-M_{1,n})/n$ on $\Cev$
+ (Theorem~\ref{tss:cx:thm:TVmain}); right, the Fr\'echet density
+ $\tfrac32y^{-5/2}\exp(-y^{-3/2})$ of the largest block on $\Fev$ in the
+ variable $y=M_{1,n}/(2dn/(3m))^{2/3}$, which is $V$ of
+ \eqref{tss:cx:eq:fluidmaxmain} after the change of scale from $a_n$. The
+ curves illustrate the proved limits; they are not an independent numerical
+ test of them.}
+ \label{tss:cx:fig:profiles}
+\end{figure}
+\clearpage
+
+\section{Further research questions}
+\label{tss:cx:sec:questions}
+The following questions are not used as assumptions above. They
+continue the structural description at places where a new argument
+is actually needed.
+
+\begin{enumerate}[label=\textbf{RQ\arabic*.},leftmargin=*]
+\item \textbf{A functional limit retaining the order of the blocks.}
+The joint count and ranked-size limits are now proved. Retain instead
+positions in the ordered sequence and study the centered cumulative
+block-size path on the whole unit interval, jointly with the count.
+Specify the topology, the endpoint conditioning, and the placement
+of large jumps. This would give a structural bridge to functional
+Gibbs-partition limit theorems.
+
+\item \textbf{A sharp finite-size coexistence center.}
+Continuity and uniform logistic convergence already imply that,
+for sufficiently large $n$, a weight $u_n^*$ near the transition
+satisfies $\Prob_{n,u_n^*}(M_{1,n}>n/2)=1/2$.
+Prove local uniqueness and derive sharper root corrections beyond
+\eqref{tss:cx:eq:Wcenter}. The implicit leading balance is not an exact
+median equation. Monotonicity of
+this particular event in the block weight should be proved rather
+than inferred from its limiting profile.
+
+\item \textbf{Rare configurations and unbounded residual observables.}
+Corollary~\ref{tss:cx:cor:density} gives every fixed inverse-logarithmic
+order in total variation through an explicit count-polynomial tilt.
+Determine relative errors on specified rare residual configurations,
+or develop weighted-norm estimates controlling unbounded observables.
+These demands are stronger than total variation. For example,
+the unconditioned reference residual mass has an infinite second
+moment, whereas the actual residual mass is bounded by $n/2$.
+The polynomial tilt in the count alone does not remove this
+distinction.
+
+\item \textbf{Quantitative stable approximation.}
+Obtain explicit bounds for the conditional distribution in
+\eqref{tss:cx:eq:fluid}. The Fourier proof gives convergence but not an
+optimized rate. The exact next Puiseux coefficients may produce
+local corrections, but control outside fixed central windows must
+be retained.
+
+\item \textbf{Uniform growing shifts and the two pure regimes.}
+Extend the mixture theorem to $s=s_n\to\pm\infty$, identifying the
+largest ranges for which the phase-conditioned laws remain uniform.
+The compact-$s$ subtraction in \eqref{tss:cx:eq:fluidmass} is not uniform
+when one of the contributions becomes negligible. A proof must
+replace it with a relative estimate for the smaller event.
+
+\item \textbf{The critical and supercritical sides.}
+At $u=u_c$ the renewal mass is of order one, while for fixed
+$u>u_c$ a pole occurs inside the original convergence radius.
+Give a joint structural theorem connecting the logarithmic
+subcritical window, the critical law, and the moving supercritical
+pole. The present article does not analyze a negative $\tau$.
+
+\item \textbf{General weights and slowly varying tails.}
+Prove the required local two-term coefficient estimate for broader
+classes $q_j=j^{-1-\alpha}L(j)$, and determine how $L$ changes the
+center. Compare the exact hypotheses and conclusions with the
+Gibbs-partition and variable-box-number literature before asserting
+a new universality theorem.
+
+\item \textbf{Certified computation and exact sampling.}
+Use interval arithmetic for the constants and normalized recurrence
+to enclose finite-size phase probabilities. The product-string
+approximation also suggests a sampler on $\Cev$ with an explicit
+error budget; implement a rejection correction using $h_n(T)$ and
+prove its complexity.
+
+\item \textbf{Proof-assistant formalization.}
+Formalize the equality-index decomposition, the marked giant
+identity, and the total variation lemma first. They use finite
+combinatorics, geometric series, and elementary expectation bounds.
+Then formalize the stable local limit and the common-contour
+estimate as separate analytic dependencies. Merely checking the
+integer table would not formalize any of the limit theorems.
+\end{enumerate}
+
+\appendix
+\section{Notation and normalization checks}\label{tss:cx:app:notation}
+\begin{longtable}{@{}p{0.20\linewidth}p{0.72\linewidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule\endhead
+$S_n$, $I_n$ & All score sequences and nonempty irreducible score sequences.\\
+$S_{n,k}$ & Number with exactly $k$ irreducible blocks.\\
+$A$, $N_j$ & Logarithmic generating function and its divisor coefficients.\\
+$p$ & $I(1/4)=1-\e^{-\lambda}$; not a phase probability.\\
+$u$, $r=up$ & Weight per irreducible block and its critical normalization.\\
+$q_j$, $Q$ & Probability mass function of a critical block length and its pgf.\\
+$m$ & Mean of $q$; $m=\mu\e^{-\lambda}/p$.\\
+$d$ & Tail amplitude: $q_j\sim d j^{-5/2}$.\\
+$\kappa$ & Puiseux and stable coefficient: $\kappa=d\Gamma(-3/2)$.\\
+$Z_n(r)$ & Normalized total weight $4^{-n}W_n(r/p)$.\\
+$B_n(r)$ & Unnormalized weight of the event $M_{1,n}>n/2$.\\
+$B_n$ & Second-maximum scale in \eqref{tss:cx:eq:Bscale}, always without a parameter argument.\\
+$\delta_n$ & $1-r_n$, asymptotic to $m\tau_n/n$.\\
+$b_n$, $\widehat b_n$ & Elementary and implicit leading-balance centers.\\
+$s$, $\pi_s$ & Bounded displacement from the center and limiting giant probability.\\
+$K_n$, $M_{j,n}$ & Number of blocks and ranked sizes.\\
+$a_n$ & $(\kappa n/m)^{2/3}$, used to normalize the fluid count.\\
+$G$, $Z$ & Gamma$(2,1)$ and the standard stable law \eqref{tss:cx:eq:standardstable}.\\
+\bottomrule
+\end{longtable}
+
+Some checks prevent tempting normalization errors. First,
+\[
+ \Gamma(-3/2)=\frac{4\sqrt\pi}{3}>0,
+ \quad \frac{d}{m}=\frac1{2\mu\sqrt\pi},
+ \quad \frac{\kappa}{m}=\frac2{3\mu}.
+\]
+Second, the block-count scale in the fluid theorem is $a_n/m$,
+not $a_n$; inversion of a mean-$m$ sum supplies the extra factor.
+Third, on $\Cev$,
+\[
+ \delta_nK_n\approx\frac{m\tau_n}{n}K_n,
+ \qquad \frac{\delta_n}{m}(n-M_{1,n})
+       \approx\frac{\tau_n}{n}(n-M_{1,n}).
+\]
+Both converge to the same Gamma variable. Finally, the weights
+$\pi_s$ and $1-\pi_s$ are probabilities only after the exact
+large-block event has been identified.
+
+\section{Dependency and validation record}
+The theorem dependencies are short enough to state without a
+large diagram. The exact identity \eqref{tss:cx:eq:exact} and the
+decomposition \eqref{tss:cx:eq:weighted} yield the renewal model. The
+analytic split proves the local expansion and tail. The local
+expansion yields both the uniform two-term coefficient estimate
+and the Fourier local limit theorem. Independently, the tail and
+the finite mean yield the giant-deletion total variation theorem.
+The total weight and the giant weight identify the mixture.
+Central local-limit windows exhaust its other component. The
+residual transforms then give all finer giant-phase laws.
+
+The exact enumerative theorem is the only substantial outside
+combinatorial input whose full proof is not reproduced. Standard
+complex integration, Fourier inversion, weak-convergence criteria,
+and the strong law of large numbers are used in their usual forms.
+No unproved probabilistic large-deviation estimate is inserted.
+The full source and the output records make the arithmetic and
+typesetting reproducible; analytic correctness rests on the proofs.
+
+
 \begingroup
 \small\raggedright
-\begin{thebibliography}{9}
+\begin{thebibliography}{99}
 \setlength{\itemsep}{3pt}
 \bibitem{CDFS}
 A. Claesson, M. Dukes, A. F. Frankl\'in, and S. \"O. Stef\'ansson.
@@ -754,6 +2597,39 @@ OEIS Foundation.
 \href{https://oeis.org/A054946}{A054946}.
 Sequence identification and conventions, checked 2 October 2026.
 A054946 counts strongly connected labeled tournaments, not strong score sequences.
+Part~II's manuscript consulted A000571, A351822 and A145855 on 3 October 2026 (Pacific time).
+\bibitem{BBBJ}
+P. Bia\l as, L. Bogacz, Z. Burda, and D. Johnston.
+\emph{Finite size scaling of the balls in boxes model}.
+Nuclear Physics B 575 (2000), 599--612.
+\href{https://doi.org/10.1016/S0550-3213(00)00114-0}{doi:10.1016/S0550-3213(00)00114-0}.
+\href{https://arxiv.org/abs/hep-lat/9910047}{arXiv:hep-lat/9910047}.
+
+\bibitem{Stufler}
+B. Stufler.
+\emph{Gibbs partitions: a comprehensive phase diagram}.
+Annales de l'Institut Henri Poincar\'e, Probabilit\'es et Statistiques
+60 (2024), 1729--1766.
+\href{https://doi.org/10.1214/23-AIHP1371}{doi:10.1214/23-AIHP1371}.
+\href{https://arxiv.org/abs/2204.06982}{arXiv:2204.06982}.
+General mixture, component-count, residual, and extreme-size results
+for Gibbs partitions; cited for comparison of scope and priority.
+
+\bibitem{DDS}
+D. Denisov, A. B. Dieker, and V. Shneer.
+\emph{Large deviations for random walks under subexponentiality:
+The big-jump domain}.
+Annals of Probability 36 (2008), 1946--1991.
+\href{https://doi.org/10.1214/07-AOP382}{doi:10.1214/07-AOP382}.
+\href{https://arxiv.org/abs/math/0703265}{arXiv:math/0703265}.
+
+\bibitem{AL}
+I. Armend\'ariz and M. Loulakis.
+\emph{Conditional distribution of heavy tailed random variables
+on large deviations of their sum}.
+Stochastic Processes and their Applications 121 (2011), 1138--1147.
+\href{https://doi.org/10.1016/j.spa.2011.01.011}{doi:10.1016/j.spa.2011.01.011}.
+\href{https://arxiv.org/abs/0912.1516}{arXiv:0912.1516}.
 \end{thebibliography}
 \endgroup
 \end{document}

@@ -34,12 +34,27 @@
 \newtheorem{question}{Research question}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% Added by the ProveIt write phase (batch 85): with the 2025-26 LaTeX kernel
+% of MiKTeX, cleveref types every environment sharing the theorem counter as
+% "theorem" (a rebuild printed "theorem 3.2" for Lemma 3.2; the delivered PDF,
+% made with pdfTeX 1.40.25, did not). These aliases restore the delivered
+% cross-reference names; no label is changed.
+\AddToHook{env/proposition/begin}{\crefalias{theorem}{proposition}}
+\AddToHook{env/lemma/begin}{\crefalias{theorem}{lemma}}
+\AddToHook{env/corollary/begin}{\crefalias{theorem}{corollary}}
+\AddToHook{env/definition/begin}{\crefalias{theorem}{definition}}
+\AddToHook{env/example/begin}{\crefalias{theorem}{example}}
+\AddToHook{env/remark/begin}{\crefalias{theorem}{remark}}
 \newcommand{\N}{\mathbb N}
 \newcommand{\R}{\mathbb R}
 \newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\asym}{\mathrel{\sim}}
 \newcommand{\OEIS}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+% Added by the ProveIt write phase (batch 85): dated [write] notes.
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \newcommand{\cm}{c_m}
 \newcommand{\Lm}{L_m}
 \newcommand{\ym}{y_m}

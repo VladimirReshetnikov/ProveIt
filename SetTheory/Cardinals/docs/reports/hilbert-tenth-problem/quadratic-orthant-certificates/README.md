@@ -87,7 +87,7 @@ Section 76 (`qoc:rn:sec:reproduce`).
 
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 170 pages (unnumbered title page, then pages 1–169)
+article.pdf                                          the compiled report, 171 pages (unnumbered title page, then pages 1–170)
 README.md                                            this guide
 08-maximal-parallel-PROOF_AUDIT.md                   source 08's proof and scope audit, as delivered
 08-maximal-parallel-SOURCE_AUDIT.md                  source 08's source audit (repository pin, literature), as delivered
@@ -614,7 +614,16 @@ The report does **not** claim:
   for reset nets and generalizes Part II's trace certificates (`cdc:thm:main`,
   `cdc:wf:thm:petri`); its exact-target acceptance is the distinction behind
   `cdc:rx:thm:nopriority`. Parts V and VI bear on CDC's question
-  "Substrate-transfer theorems".
+  "Substrate-transfer theorems". Reciprocal note (batch 83, 3 October 2026,
+  after `qoc:rn:prop:realobstruction`): CDC Part XX (Reports 35 and 36)
+  credits `qoc:rn:lem:gates` and `qoc:rn:thm:trace` and proves by another
+  argument that every nonnegative real zero of its binary-odometer sandpile
+  cubic on a fixed prism is natural (`cdc:ro:thm:main`); the programme's
+  review `review_sandpile35_36_intake.md` (commit `c120b34df`) makes the
+  semialgebraic argument of `qoc:rn:prop:realobstruction`, without citing
+  this report, for existence at integer inputs (`cdc:ro:rem:qelimit`); and
+  Report 35 uses the same `U_{15,2}` table (byte-identical to
+  `data/16-universal-membrane-tm_table.json`).
 - **[`liveness-beyond-halting`](../liveness-beyond-halting)**: Part I's
   guarded register-machine embedding (one round per instruction) appears
   to satisfy the hypotheses of `lbh:thm:transfer` with block length one,
@@ -890,7 +899,12 @@ bibliography entry) leave the total at 170 pages, with no errors, warnings,
 undefined references or citations, multiply defined labels, duplicate
 destinations or overfull or underfull boxes, and six "Infinite glue
 shrinkage" messages; the pages of the first two notes (printed pages 74
-and 121) were rendered and inspected.
+and 121) were rendered and inspected. The batch-83 reciprocal note after
+Proposition 70.1 (`qoc:rn:prop:realobstruction`; 3 October 2026; no label,
+macro, package or bibliography entry) takes the report to 171 pages, with
+the same clean log and eight "Infinite glue shrinkage" messages; pages
+from Section 71 on move up by one, and the note's page (printed page 139)
+was rendered and inspected.
 
 The article is generated reproducibly from the delivered manuscripts by
 merge scripts with anchored insertions (Parts IV–VI were appended to the
