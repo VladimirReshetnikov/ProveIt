@@ -18,6 +18,18 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [batch89 follow-up review](review_batch89_remaining_writes_e3e58a882.md)
+> confirms that global-choice PartXV and cuts/choiceless PartsVI–VII are now
+> present at193e2e942/e3e58a882. All prior labels survive and all47/42/52
+> original manuscript labels are included. The [root corrections](review_batch89_topology_corrections.md)
+> fix two source-label counts and restore omitted hypotheses in a README
+> summary. The exact corrected source patch leaves all labels and theorem
+> statements unchanged; PDFs were authenticated but not rebuilt. Presburger
+> PartX remains absent at the checked merge. The actual central statements
+> read retain their important scope limits, and no finite paid Diophantine
+> compiler was found. These findings replace only the three resolved
+> placement gaps in the older revision-specific review below.
+>
 > The [later publication review](review_report_publications_aa9a7ec80.md)
 > now confirms the actual arithmetic PartsVI–VIII and ant PartsII–IV at
 > 85ea6145d/119a1325d. Their checked domains, candidate identities and cost
