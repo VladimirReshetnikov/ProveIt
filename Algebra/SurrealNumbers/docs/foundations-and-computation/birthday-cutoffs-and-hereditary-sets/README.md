@@ -46,7 +46,7 @@ data/            02-birthday-cutoffs-verification.json, -verification_summary.te
                  14-surreal-only-nbg-verification.json, -build_validation.json
 ```
 
-Every label in `article.tex` carries the prefix `hset:` (523 labels). Batch 37
+Every label in `article.tex` carries the prefix `hset:` (525 labels). Batch 37
 added `hset:rem:cutoffgaps` and changed no other number. Batch 89 added 140:
 65 `hset:zr:` labels in Part VI (source 10's 42 delivered labels with the
 prefix, its ten questions, and thirteen for the added numbered theorems,
@@ -58,8 +58,9 @@ prefix, its twelve questions, and thirteen for the added part, sections,
 convention, remarks and subsections. Batch 95 added 151, all `hset:sf:` labels in
 Part IX: its part, sections, results, equations, conventions, remarks and twenty
 questions, labelled at the write (a result proved by both sources carries one
-label, so the delivered labels, 76 and 70, are not kept one to one); the dated
-notes of batches 93 and 95 in earlier parts add none. No earlier label was
+label, so the delivered labels, 59 and 54, are not kept one to one); the dated
+notes of batches 93 and 95 in earlier parts add none. The later review adds
+two `hset:sf:` correction remarks, for effectivity and delivered label counts. No earlier label was
 renamed or removed and no earlier number changed. All 69
 labels of the delivered base text (source 09) survive with that prefix; three of
 them (`hset:prop:powerset`, `hset:sec:extensions`, `hset:app:verification`) now
@@ -222,8 +223,8 @@ does not mention them. All three pins are ancestors of the placement, and at eac
 this report's `article.tex` was the one of Parts I–VIII. The two manuscripts answer
 one assignment independently (shared 8-grams under 0.6 %, almost all
 bibliography). Not shipped (they survive in `ec91f8c7c`): source 13's manuscript
-(`surreal_omnific_foundations.tex`, 2,765 lines, 76 labels, 12 questions; a 34-page
-PDF) and `README.txt`; source 14's manuscript (`article.tex`, 1,836 lines, 70
+(`surreal_omnific_foundations.tex`, 2,765 lines, 59 labels, 12 questions; a 34-page
+PDF) and `README.txt`; source 14's manuscript (`article.tex`, 1,836 lines, 54
 labels, 11 questions; a 27-page PDF), `README.md` and `SHA256SUMS` (8 of 8 entries
 verified at placement). Section 80 holds the non-claims and provenance.
 
@@ -797,6 +798,24 @@ The finite PA/HF analogy both sources discuss is formalized in
 finite-generation HF theory; `AckermannHFCore.lean`). Nothing else of Part IX is
 formalized; sources 13 and 14 propose staged developments (Section 78), none of
 which exists.
+
+## Review corrections, 4 October 2026
+
+Lemma 73.8 now states the effective-source, enumerable-extension and computable-
+translation hypotheses needed for an effective axiom presentation. Remark 73.9
+retains the former unrestricted claim and the identity interpretation of true
+arithmetic as a counterexample. Remark 80.1 retains the former delivered-label
+counts 76/70 and records the correct literal counts 59/54. These corrections
+add two labels; the publication's original 151 new labels remain intact.
+
+Fresh review validation used three direct installed `pdflatex` passes with
+`-no-shell-escape`, all successful. The rebuilt PDF still has 212 pages; its
+final log has no warnings, undefined references/citations or bad boxes. A fresh
+literal census gives 525 distinct labels, 1,100 resolved reference occurrences,
+129 resolved citation-key occurrences and 41 bibliography keys. The correction
+pages (physical pages 171 and 206, printed pages 166 and 201) were visually
+inspected. No supplied program or builder was executed in this review. The
+historical execution records below remain separate from this fresh validation.
 
 ## What was run
 

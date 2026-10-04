@@ -9524,16 +9524,35 @@ Let $S$ and $T$ be bi-interpretable by $\I$ (interpreting $S$ in $T$) and $\J$
 (interpreting $T$ in $S$), with the definable isomorphisms provable in $S$ and $T$
 respectively. For every set $\Sigma$ of sentences of the language of $S$, the
 theories $S+\Sigma$ and $T+\{\sigma^\I:\sigma\in\Sigma\}$ are bi-interpretable by
-the same $\I$, $\J$ and isomorphisms; if $\Sigma$ is recursive, so is the second
-theory.
+the same $\I$, $\J$ and isomorphisms. If $T$ has a computably enumerable
+axiom set, $\Sigma$ is computably enumerable, and the translation
+$\sigma\mapsto\sigma^\I$ is computable, then the second theory is computably
+axiomatizable.
 \end{lemma}
 \begin{proof}
 $\I$ interprets $S+\Sigma$ in $T+\Sigma^\I$ by construction. For $\J$ it remains to
 see that $S+\Sigma$ proves $(\sigma^\I)^\J$ for $\sigma\in\Sigma$: this sentence
 says that $\sigma$ holds in $\I(\J(M))$, which $S$ proves equivalent to $\sigma$ by
 the definable isomorphism $M\cong\I(\J(M))$. The isomorphisms are unchanged, and
-their properties remain provable in the larger theories.
+their properties remain provable in the larger theories. Under the effective
+hypotheses, dovetail an enumeration of the axioms of $T$ with the computable
+translations of an enumeration of $\Sigma$. This enumerates an axiom set of
+$T+\Sigma^\I$.
 \end{proof}
+
+\begin{remark}[Effective hypotheses in the persistence lemma]
+\label{hset:sf:rem:persistence-effectivity}
+The merge of 4 October 2026 ended the lemma with ``if $\Sigma$ is recursive,
+so is the second theory.'' Without an effective axiomatization of the
+starting theory this is false: take $S=T=\operatorname{Th}(\mathbb N)$,
+identity interpretations, and $\Sigma=\varnothing$. The target remains true
+arithmetic, which is not computably axiomatizable: otherwise it would be a
+consistent, complete, computably axiomatized extension of arithmetic,
+contrary to incompleteness. The corrected clause also states effectivity
+of translation; fixed-formula interpretations between the finite languages
+used here satisfy that condition. The bi-interpretation assertion itself
+needs neither of these computability assumptions.
+\end{remark}
 
 This is classical and is used below for the class variants
 (\cref{hset:sf:cor:variants}); source 14 gives the same argument in the proof of
@@ -11775,10 +11794,10 @@ it; source 14 names \texttt{bd1de458b} (``New research reports'', 4 October 2026
 and its search excerpts came from the earlier indexed revision \texttt{fb2287290}.
 All three are ancestors of the placement, and at each this article was the one of
 Parts I--VIII. Both describe this report's README and source audit accurately.
-Source 13's manuscript (\path{surreal_omnific_foundations.tex}, 2,765 lines, 76
+Source 13's manuscript (\path{surreal_omnific_foundations.tex}, 2,765 lines, 59
 labels, 12 questions, 21 bibliography entries; a 34-page PDF) and its
 \path{README.txt} ship no code or data; source 14's manuscript (\path{article.tex},
-1,836 lines, 70 labels, 11 questions; a 27-page PDF), README, PDF and checksum file
+1,836 lines, 54 labels, 11 questions; a 27-page PDF), README, PDF and checksum file
 \path{SHA256SUMS} (8 of 8 entries verified at placement) are not shipped. They
 survive in the arrival commit. Shipped, byte-identical, all from source 14:
 \path{14-surreal-only-nbg-SOURCES_AND_STATUS.md},
@@ -11788,6 +11807,16 @@ survive in the arrival commit. Shipped, byte-identical, all from source 14:
 \path{data/14-surreal-only-nbg-build_validation.json}. The prefix
 \texttt{13-omnific-foundations-} names no file. The Hilbert's-tenth intake
 (\cref{hset:sf:rem:h10}) authenticated both archives.
+
+\begin{remark}[Delivered label-count correction]
+\label{hset:sf:rem:delivered-label-counts}
+The publication described source 13 as having ``76 labels'' and source 14
+as having ``70 labels.'' A fresh inventory of the immutable delivered
+\LaTeX{} sources gives 59 and 54 literal label declarations, respectively.
+The old numerals are retained here as incorrect provenance counts. This
+correction does not change the publication's 151 new merged labels or
+identify source declarations with generated cross-reference entries.
+\end{remark}
 
 \paragraph{How they are printed.} Source 13's text from its title-page boxes and
 abstract to its appendix is printed in full, in its order, as the spine: Sections~1--13
