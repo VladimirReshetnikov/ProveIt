@@ -97,6 +97,20 @@ Root independently authenticated all archive/member/read-span hashes.
 Chronology proofs and reported arithmetic source counts were not rebuilt
 in this scoped intake; no new universal bound is entered.
 
+The [batch90 placement review](Papers/research-wip/native-stream-queue/review_batch90_placement_12076b2e8.md)
+authenticates all32 added files against the53 pinned archive members at
+**12076b2e8**. Only the new Cantor-subfields report receives its article and
+guide; the other five manuscripts have ancillary evidence placed, with
+all eight existing host article/guide files unchanged. Thus Polish PartX
+is present, while the proposed PartsXI–XII and other listed integrations
+remain pending at that revision. Root repeats the exact placement receipt
+in normal and optimized modes. No mathematical read scope is enlarged by
+byte equality. A [later five-archive intake](Papers/research-wip/native-stream-queue/review_latest_five_9dc8db274.md)
+at **9dc8db274** reads436 lines across the five primary READMEs and pins
+all42 members; exponent/rank topology, one-dimensional classification and
+game-query claims remain distinct from a paid integer compiler. Manuscript
+bodies in this latest intake are unreviewed.
+
 The [seven-report reciprocal-note review](Papers/research-wip/native-stream-queue/review_reciprocal_fc1ad4275.md)
 covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
 articles remain identical and all54 introduced label references resolve.

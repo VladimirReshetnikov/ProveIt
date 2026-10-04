@@ -75,6 +75,20 @@ Root independently authenticated all archive/member/read-span hashes.
 Chronology proofs and reported arithmetic source counts were not rebuilt
 in this scoped intake; no new universal bound is entered.
 
+The [batch90 placement review](review_batch90_placement_12076b2e8.md)
+authenticates all32 added files against the53 pinned archive members at
+**12076b2e8**. Only the new Cantor-subfields report receives its article and
+guide; the other five manuscripts have ancillary evidence placed, with
+all eight existing host article/guide files unchanged. Thus Polish PartX
+is present, while the proposed PartsXI–XII and other listed integrations
+remain pending at that revision. Root repeats the exact placement receipt
+in normal and optimized modes. No mathematical read scope is enlarged by
+byte equality. A [later five-archive intake](review_latest_five_9dc8db274.md)
+at **9dc8db274** reads436 lines across the five primary READMEs and pins
+all42 members; exponent/rank topology, one-dimensional classification and
+game-query claims remain distinct from a paid integer compiler. Manuscript
+bodies in this latest intake are unreviewed.
+
 The [seven-report reciprocal-note review](review_reciprocal_fc1ad4275.md)
 covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
 articles remain identical and all54 introduced label references resolve.
@@ -5188,6 +5202,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Batch90 placement](review_batch90_placement_12076b2e8.md) and [five later arrivals](review_latest_five_9dc8db274.md) |32 exact file transfers; eight host article/guides unchanged; latest five README texts read and42 members pinned | Five manuscript integrations pending at12076b2e8; later bodies unreviewed; no new paid compiler |
 | [Four sandpile certificate arrivals](review_new_sandpiles_0d7f51c44.md) |Fixed arity, unbounded witnesses;11469/14778/17275/14571 gates, exactdegree18; all58093 rows structurally checked | Imported physical universality and machine-input conversion remain separate; no full macro-semantic reconstruction or smaller universal bound |
 | [Eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md) |2622 entries authenticated; actual matrix184016 gates/41309w/exactdegree12 checked;27 text-read records | Finite-table arity and12-leaf POWER counts are separate resources; changed CA rules lack a transferred arithmetic evaluator |
 | [Twelve signal and particle arrivals](review_new_signals_0d7f51c44.md) |2035 member hashes,12 full READMEs and57 exact read spans; guarded five-signal counter/clock interface identified | Horizon-dependent arity still unbounded;344/367 rotation and48/57 local-realization counts concern decidable predicates; no universal reduction |
