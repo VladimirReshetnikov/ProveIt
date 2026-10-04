@@ -1186,7 +1186,17 @@ those notes ask for.
   candidates, Reports 23–25, 33, 34, 37 and batch 88's Reports 39, 41, 43,
   45, 46). Parts III–IV give a different, vastly larger fixed polynomial for
   the U15 language through the ant; it does not bear on the 84-operation
-  record. No shared theorem.
+  record. No shared theorem. Reciprocal notes (batch 88, 3 October 2026):
+  the five batch-88 reports named are its Parts VI–VIII (written in
+  `85ea6145d`: Report 39's nonredundancy theorem; Report 41's refutation of
+  the 81- and 82-operation first-index deletions; Reports 43, 45 and 46 on
+  the free-coefficient 83 and square/product 82 candidates, both refuted by
+  the research tree), and its Table 3 lists every candidate below the
+  record. A dated note in Part I, at the end of the note on the programme's
+  index (Section 12), points there; that report's Section 0.5 gains the
+  matching note on Part III's polynomial, as does Part XX of
+  `canonical-diophantine-certificates`. No label, macro, package or
+  bibliography entry is added.
 - **[`quadratic-orthant-certificates`](../quadratic-orthant-certificates)**:
   holds the U15 table file that Report 40's `ca/u15_table.json` copies
   (`data/16-universal-membrane-tm_table.json`).
@@ -1229,6 +1239,14 @@ destinations, no overfull boxes, and one underfull box (badness 1019, in the
 completeness proof of Theorem 44.1.1), which the delivered Report 44 has as
 well. **Do not run the delivered `build_pdf.py` programs here**: they rebuild
 the delivered manuscripts against the delivered PDFs' bytes.
+
+The batch-88 reciprocal note (3 October 2026; a few sentences appended to
+the dated note on the programme's index in Section 12, on
+`fixed-universal-polynomials`; no label, macro, package or bibliography
+entry) leaves the build at 132 pages with the same log (the same single
+underfull box) and every `.aux` label number and page unchanged against a
+build of the committed text; its page (printed page 32) was rendered and
+inspected.
 
 ## Rerunning the programs
 

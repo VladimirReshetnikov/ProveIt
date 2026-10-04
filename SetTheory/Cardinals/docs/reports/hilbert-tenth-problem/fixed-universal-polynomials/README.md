@@ -1497,6 +1497,25 @@ candidates; the five Langton-ant reports of the same arrival are in
 `../periodic-turmite-first-revisits`. Part V's open sector list (Section 37.9)
 carries a dated note re-scoping it by Part VI; the question stays open.
 
+**Reciprocal notes (batch 88, 3 October 2026).**
+[periodic-turmite-first-revisits](../periodic-turmite-first-revisits/),
+Parts III–IV (Research Reports 42, 44, 47, 48; batch 88, cluster T1;
+written in `119a1325d`), holds one fixed polynomial for the fixed U15
+sentinel-pair halting language through a literal periodic Langton ant
+(Theorem 44.1.1, `ptr:pc:thm:complete`): 465 positive witnesses, exact
+degree 2,304,000, 2,307,457 operations with prescribed coefficients,
+14,658,934 from the literals 1 and 3 (the programme's later packets:
+14,620,711). It is not an ordinary-input loader for the programme's input
+convention, hence not an ordinary-input universal polynomial, imports the
+U15 program-to-tape encoding, and does not bear on the 84-operation record;
+no shared theorem. A dated paragraph after the first paragraph of Section
+0.5 of the article (printed page 23) records it. In the other direction, a
+dated note in that report (after its Part I remark on the programme's
+index) points to
+Parts VI–VIII here, and *canonical-diophantine-certificates* points to
+Table 3 from its Part XX paragraph "No effect on the universal bound".
+None of these notes adds a label, macro, package or bibliography entry.
+
 ## Other discrepancies and hazards
 
 - **Stale upper-bound prose, kept byte for byte.** `11-grill-poly-arithmetic-README.md`
@@ -1614,3 +1633,11 @@ candidates table (printed page 22), Part V's re-scoping note (132), the first
 pages of Parts VI and VIII (135, 178), Part VIII's letters table (179), the
 residual table of Part VI (153), Report 45's row list (212) and Report 46's
 second small-norm proof (233) were rendered and inspected.
+
+The batch-88 reciprocal note (3 October 2026; one dated paragraph in
+Section 0.5 on `periodic-turmite-first-revisits`; no label, macro, package
+or bibliography entry) leaves the build at 242 pages, with the same clean
+log (the same 22 underfull lines and the one enumitem warning) and every
+`.aux` label number and page unchanged against a build of the committed
+text; its page (printed page 23) was rendered and inspected. The page
+ranges in the file listing above are unchanged.
