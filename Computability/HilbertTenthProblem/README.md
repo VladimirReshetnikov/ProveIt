@@ -97,6 +97,10 @@ Root independently authenticated all archive/member/read-span hashes.
 Chronology proofs and reported arithmetic source counts were not rebuilt
 in this scoped intake; no new universal bound is entered.
 
+The [new hat-query threshold review](Papers/research-wip/native-stream-queue/review_hat_threshold_afd7ffabb.md) checks the main deterministic threshold2 proof chain in1147 TeX lines, authenticates all9 archive members and reads both provenance guides. The coloring/cylinder obstruction and rare-loss block construction support the inspected theorem with its deterministic, fairness and budget hypotheses. Expected query cost is not a paid arithmetic gate count: unbounded decision-tree depth, lookup and finite accepting-certificate compilation remain open. Packaged programs were not executed; remaining manuscript sections and external attribution are unreviewed.
+
+The [hat-surplus Part II publication review](Papers/research-wip/native-stream-queue/review_hat_publication_95527cf73.md) confirms integration at95527cf73, retains65 old plus55 prefixed manuscript labels and checks all250 references. Its821 read lines cover provenance, the sound finite pairing/syndrome optimum and the effective-cost interface. The construction uses block-size-dependent Boolean computations and requires a computable sublinearity modulus for its effective general schedule; it supplies no paid fixed-arity halting compiler. Infinite growth/category proofs, external attribution and packaged programs remain outside this review.
+
 The [batch90 placement review](Papers/research-wip/native-stream-queue/review_batch90_placement_12076b2e8.md)
 authenticates all32 added files against the53 pinned archive members at
 **12076b2e8**. Only the new Cantor-subfields report receives its article and
@@ -234,6 +238,8 @@ checks the all-input construction, all80 rows,80 additional whole-source
 maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
+
+The [full independent-boundary root theorem](Papers/research-wip/native-stream-queue/complete84_full_independent_root_absorption.md) and [independent review](Papers/research-wip/native-stream-queue/review_complete84_full_independent_root_absorption.md) extend the fixed-polynomial obstruction to **all91 existing f-independent values (67 computed,24 supplied)**, adding the actual quotient T, ordinate y and computed y² to the earlier88. Every fixed integer-polynomial replacement f=G has finite whole ordinary-positive-input projection on a valid fixed compiler slice. The proof excludes zero G before decoding and restores signs by changing both f and T. It specializes the actual auxiliary conic first: a nonzero resultant bounds T, while an identically zero resultant gives a rational88 expression whose nonsquare quadratic bounds i. Both branches have explicit cutoffs. Fresh author and independent source/algebra checks pass in normal and optimized modes; the84-operation source and its bound are unchanged. This is a fixed-substitution theorem, not a global arithmetic lower bound.
 
 The [multiplier-dependent strong-root theorem](Papers/research-wip/native-stream-queue/complete84_multiplier_dependent_root_absorption.md)
 extends the polynomial substitution obstruction to all88 values independent
