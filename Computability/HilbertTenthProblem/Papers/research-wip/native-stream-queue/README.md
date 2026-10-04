@@ -111,6 +111,18 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [strong-root substitution theorem](complete84_strong_root_absorption.md)
+rules out every fixed integer polynomial replacement f=G(E) on the85-value
+interface independent of i,f,T,y_aux: every resulting positive zero satisfies
+**G!=0 and 2d*x+b<R<c<4*deg(G)+ceil(log2 L)**. Normalized strong rank gives
+f>c^c for every completion. Simultaneous sign reversal of f and T restores
+signed G to the proved signed-quotient domain while preserving all arguments.
+The zero-f sector is empty by a full-source divisibility identity before
+index recovery. The [independent review](review_complete84_strong_root_absorption.md)
+checks the precise signed domain, strict cutoff, all85 arguments and complete
+sign/zero-root contractions. Fresh author/review normal/optimized checks pass.
+This closes a polynomial substitution class; the universal84 circuit is unchanged.
+
 The [signed auxiliary-quotient substitution theorem](complete84_signed_quotient_absorption.md)
 rules out fixed polynomial replacements T=G(E) on the93-value interface
 independent of T and y_aux: every resulting positive zero satisfies
@@ -5039,6 +5051,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Strong Pell-root absorption](complete84_strong_root_absorption.md) | Fixed polynomial f=G on85 auxiliary-independent values has finite input projection, including signed G and an empty zero sector | Uses the signed-T rank lemma; substitutions depending on auxiliary coordinates remain outside this theorem |
 | [Signed auxiliary-quotient absorption](complete84_signed_quotient_absorption.md) | Every fixed polynomial T=G on93 T/y-independent values has finite input projection; G=0 impossible | Direct signed-domain rank/bounds only; no full signed-T compiler transfer or operation reduction |
 | [Joint matrix-state factors](matrix193_joint_state_factor.md) | Complete1405/1402/1402/1399;540 coefficient rows; ten fewer multiplications by exact whole-polynomial identity | Same witnesses/degrees and inherited ordinary-input scope; universal84 unchanged |
 | [Recoded two-program U21](residue_affine_sparse_recoded467.md) | **447 certificate /467=171M+296A**,7 comparisons,67 witnesses,two fixed program parameters,degree at most5160. | Direct470 successor; code41 bound holds at B>=128,h=2, retaining fixed dyadic C>=64,C>E. Same supplied positive zeros on valid slices. |
