@@ -135,14 +135,18 @@
 > commuting-action, Polish-threshold and batch91 reciprocal publications now
 > have the bounded reviews linked below. All reported catalogue/box/signal/
 > reciprocal corrections are applied, with edited PDFs rebuilt. The next
-> unreviewed update is batch92 reciprocal notes9bffd43d5; the newer archives
-> 516049bf9/f300069cf and complex-transseries placementec91f8c7c retain only
-> commit-summary/diff-statistic intake here. Earlier transseries guide-only
-> and ancillary-placement reviews keep their exact boundaries. Padded
+> unreviewed publication update is batch92 reciprocal notes9bffd43d5. The six
+> new foundations/reversion archives have the bounded intake linked below;
+> complex-transseries placementec91f8c7c retains only commit-summary/diff-statistic
+> intake. Earlier guide-only and ancillary-placement reviews keep their exact
+> boundaries. Padded
 > reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 > or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 > cheaper loading/accepting-history compiler is still needed for a universal
 > improvement. The universal84/187 and85/155 points remain unchanged.
+>
+>
+> The [six-archive foundations and reversion intake](review_new_foundations_f300069cf.md) authenticates all75 regular members at their actual arrivals: foundations at ec91f8c7c, two reversion archives at516049bf9 and the Stokes pair atf300069cf. Complete guides/status/abstracts and selected birthday/graph and finite-action interfaces total2,548 read lines. Root independently authenticates all archive/member/read-span pins and the five complete checksum ledgers. The two foundations suggest a conditional comparison between quotient birthday and native birthday precedence, but complete round-trip proofs remain unread; ordinal-length storage and universal subset tests are not a paid ordinary-integer evaluator. Finite action bounds give growing finite enumeration, not fixed cost. Remaining bodies, external theorems, PDFs, supplied programs and analytic completion claims are explicitly outside this intake. The complex-transseries placement commit itself remains unreviewed. No universal arithmetic bound changes.
 >
 >
 > The [batch91 reciprocal-note review](review_reciprocal_1fdcaf5a6.md) reads all13 changed text diffs at1fdcaf5a6 and27 exact interface/instruction spans. It verifies the same15-equation POWER system and the separate containment lemma across the CDC and group reports, exposing their incorrect exhaustive shared-result summaries and stale one-result tally. The current articles and guides name both results without claiming an exhaustive count; GTS Remark1.1 retains and refutes all former phrases, and CDC retains its sentence with the same refutation/pointer. Root independently authenticates all38 before/after blobs,19 diffs,27 spans and24 named targets. Edited CDC/GTS sources rebuild directly in three no-shell-escape passes to742/186 pages; PDF pages646/24 were visually checked. All current1,940/464 labels (including optional-type labels) and local references/citations resolve, with no overfull boxes; one/three underfull messages remain in untouched text, and CDC reports disabled shell escape. The review's earlier1,924 CDC count explicitly counts literal untyped labels only. Imported Pell/physical simulations, full DAGs and historical execution remain qualified. No paid universal arithmetic bound changes.
