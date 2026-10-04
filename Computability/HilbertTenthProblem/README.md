@@ -89,6 +89,17 @@ this candidate. The [independent review](Papers/research-wip/native-stream-queue
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
 
+The [computed-wire census](Papers/research-wip/native-stream-queue/complete83_computed_gamma_obstruction.md)
+rejects **all72 acyclic existing-wire replacements** for the main quotient,
+including later producers that can be rescheduled. Every full source costs
+**83=47M+36A**, with17 positive witnesses and exact degree187–301, but
+has no positive zero on a valid compiler slice. A sign-safe bootstrap and
+consecutive-Pell gaps cover the full grammar. The [independent review](Papers/research-wip/native-stream-queue/review_complete83_computed_gamma_obstruction.md)
+checks all5,976 gates,432 additional full-source assignments and144 dense
+modular degree expansions; normal/optimized receipts pass. This extends
+the supplied-witness census without excluding new expressions or general
+rewrites. Universal84 and unresolved independent-gamma83 remain unchanged.
+
 The [direct-witness census](Papers/research-wip/native-stream-queue/complete83_direct_gamma_witness_obstruction.md)
 rejects all seventeen ways to replace the main quotient by another supplied
 positive witness. Each complete source costs **83=47M+36A**, has17 positive
