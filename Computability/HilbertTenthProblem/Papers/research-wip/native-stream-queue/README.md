@@ -108,6 +108,19 @@ scoped valuation counterexamples; normal/optimized replays pass. These are
 native residue filters, with no prescribed-history realization or bound on
 the full order gcd. The 83-operation language remains unresolved.
 
+The [native three-power construction](complete83_gamma_native_three_power_control.md)
+controls every fixed finite u>=2 on genuine accepting histories of the
+parity-normalized compiler. It arranges **3^u*dh dividing R** and
+**gcd(Delta,2^(2*3^u*dh)-1)=3**, with coprime quotient after removing
+**3^(u+1)**. A new Boolean subset lemma modulo3dN initializes R modulo9;
+upper-bit CRT then controls the higher ternary digits and minus-prime
+carries together. This includes finite prime sets with orders dividing
+2*3^u*5^j, such as19,73,262657. The [independent review](review_complete83_gamma_native_three_power_control.md)
+checks the actual coefficient valuation, padding order and fresh positive
+extension; installed normal/optimized receipts pass. Other order factors
+remain uncontrolled, and gamma83's language and the universal84 bound
+remain unchanged.
+
 The [compiler parity padding](gamma_parity_padding_scout.md) makes the
 stronger finite-prime filter available for a representation of **every
 c.e. language**. The actual ordered-window API permits an odd alphabet
