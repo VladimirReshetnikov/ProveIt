@@ -219,6 +219,17 @@ does not remove the hypothesis for a previously fixed coefficient slice
 or equate unresolved gamma83 languages across slices. The arithmetic
 schedule and universal84 bound are unchanged.
 
+The [modulo-17 grid criterion](Papers/research-wip/native-stream-queue/gamma17_carried_prefix_obstruction.md)
+derives the exact endpoint interval of the existing physical dummy moves.
+A shared carried base17 prefix forces every move to preserve the same
+native residue; bad states11 and16 then prevent that particular grid
+from removing17 from Delta. The [independent review](Papers/research-wip/native-stream-queue/review_gamma17_carried_prefix_obstruction.md)
+checks the normalized digit rule, actual packing change and interval proof,
+with378 additional complete binomial rows and72 scalar identities.
+Normal/optimized receipts pass. No bad genuine baseline is constructed;
+the earlier unrestricted formula-state theorem is not a history realization.
+The universal bound remains84 and independent-gamma83 remains unresolved.
+
 The [small-prime digit rules](Papers/research-wip/native-stream-queue/complete83_gamma_small_prime_digit_rules.md)
 extend the genuine-history filter for actual compilers with an even
 window-selector count and odd tile-alphabet size. For E=dh, each accepted
