@@ -1,0 +1,1046 @@
+\pdftrailerid{}
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[letterpaper,margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{microtype,booktabs,array,enumitem,graphicx}
+\usepackage{xcolor,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,urlcolor=blue!40!black,citecolor=blue!40!black]{hyperref}
+\hypersetup{pdftitle={Zero auxiliary clipping tables and all orders asymptotics of A196460},pdfauthor={},pdfsubject={Exact classification, counting, sharp asymptotics, and threshold inversion}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Zero auxiliary clipping tables}
+\fancyhead[R]{\small A196460}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.25em}
+\setlist{topsep=4pt,itemsep=2pt}
+\allowdisplaybreaks[1]
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Npos}{\mathbb Z_{>0}}
+\newcommand{\E}{\mathbb E}
+\newcommand{\la}{\lambda}
+\newcommand{\coeff}[2]{[#1^{#2}]}
+\newcommand{\As}{\mathcal A}
+\newcommand{\Rinv}{\mathcal R}
+\title{\bfseries Zero auxiliary clipping tables\\[3pt]
+\Large Exact counts and all orders asymptotics of A196460}
+\author{A standalone mathematical research article}
+\date{4 October 2026}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+A fixed Boolean clipping table on positive integer inputs is representable by
+one integer polynomial equation without existential auxiliary variables exactly
+when every accepted tail cell contains its full coordinate-flat closure.
+We prove this criterion and a one-positive-witness upper bound, then count the
+zero-auxiliary tables of side length $n+1$: their number is $C_n=1+a_n$, where
+$a_n$ is OEIS A196460. Boundary marks identify $a_n$ with an isolated-vertex
+weighted sum over labeled bipartite graphs. We give explicit polynomial
+coefficients for every fixed order of its exponentially small corrections,
+prove a uniform tail estimate, and derive logarithmic and Laurent inverse
+recurrences. Connected graphs with two named proper colors determine the
+leading coefficients and the sharp signs of the remainders. A finite smooth
+proxy and the mean-value theorem justify inversion at sequence values;
+a separate exact comparison resolves every integer threshold, including the
+exceptional value $C_0=2$. Existing sequence and relational-model interpretations
+are attributed. All asymptotic orders are fixed, and no convergence, novelty,
+or theorem-prover verification claim is made.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Keywords.} clipping tables; polynomial zero sets; A196460;
+bipartite graphs; asymptotic inversion; connected components.
+
+\section{The count and the questions it answers}
+
+Let $K\geq1$ be a fixed integer and let $S\subseteq\{1,\ldots,K\}^2$ be a
+Boolean table, with membership interpreted as acceptance. Define
+\[
+ c_K(x)=\min(x,K),\qquad
+ U_S=\{(A,B)\in\Npos^2:(c_K(A),c_K(B))\in S\}.
+\]
+The label $K$ is a \emph{tail}: it represents every integer at least $K$.
+A label $i<K$ represents only the integer $i$. We ask for the smallest
+number of positive existential auxiliary variables in a single
+integer-coefficient polynomial equation representing $U_S$. The table is
+fixed coefficient data. Its size is not an input; its coefficients and
+polynomial degree may depend on the entire table. No degree bound is imposed.
+
+Put $n=K-1$, and let $C_n$ be the number of tables whose minimum is zero.
+The exact answer is
+\begin{equation}\label{eq:count}
+ C_n=1+a_n,\qquad
+ a_n=\sum_{r,c=0}^n\binom nr\binom nc2^{(n-r)(n-c)}
+     =\sum_{j=0}^n\binom nj(1+2^j)^n.
+\end{equation}
+The last sum is the defining term formula in OEIS A196460
+\cite{oeis}. We prove the classification and count in Sections~\ref{sec:closure}
+and~\ref{sec:count}; every table not counted by $C_n$ has minimum exactly one.
+
+The dominant count is $2^{n^2}$, but the corrections have a useful explicit
+structure. For $k\geq0$ define the polynomial
+\begin{equation}\label{eq:P}
+ P_k(x)=\sum_{r=0}^k\binom xr\binom{x}{k-r}2^{r(k-r)},
+ \qquad
+ \binom xr=\frac{x(x-1)\cdots(x-r+1)}{r!},\quad \binom x0=1.
+\end{equation}
+For each \emph{fixed} $M\geq0$, as $n\to\infty$ through integers,
+\begin{equation}\label{eq:mainforward}
+ \frac{a_n}{2^{n^2}}
+ =\sum_{k=0}^M P_k(n)2^{-kn}
+   +O_M\!\left(n^{M+1}2^{-(M+1)n}\right).
+\end{equation}
+The error is nonnegative and its leading equivalent is explicit.
+The resulting zero-auxiliary fraction among all $2^{(n+1)^2}$ tables is
+asymptotic to $\tfrac12 4^{-n}$.
+
+For inversion set $\la=\log 2$, $s_n=\sqrt{\log_2 a_n}$ and $t_n=2^{-s_n}$.
+There are explicit Laurent polynomials $D_k$, beginning with
+$D_1=-1/\la$, such that for every fixed $M\geq1$,
+\begin{equation}\label{eq:maininverse}
+ n=s_n+\sum_{k=1}^M D_k(s_n)t_n^k
+      +O_M\!\left(s_n^M t_n^{M+1}\right).
+\end{equation}
+Sections~\ref{sec:logs}--\ref{sec:inverse} supply the recurrences and all
+analytic error arguments. Section~\ref{sec:threshold} explains why a
+real asymptotic inverse must be distinguished from an exact integer inverse.
+
+\paragraph{Relation to earlier work.}
+The OEIS entry credits Paul D. Hanna, 2 October 2011, for the sequence
+and V\'aclav Kotesovec, 25 June 2013, for $a_n\sim2^{n^2}$ \cite{oeis}.
+Svato\v{s}, Jung, T\'oth, Wang and Ku\v{z}elka list A196460 with a
+first-order relational sentence in Appendix A.1, Table 3, printed page 32
+of their 2023 paper \cite{svatos}. Section~\ref{sec:graphs} proves how
+its active-vertex interpretation gives the weighted bipartite graph count.
+The clipping-table interpretation uses the separately established
+coordinate-flat criterion, reproduced here with its one-witness construction
+\cite{native,lowaudit}. The present exposition and asymptotic proofs
+organize accepted mathematical source and independent audit material
+\cite{source,audit}. No priority or absence-of-prior-work assertion is intended.
+
+\section{A self contained zero versus one classification}\label{sec:closure}
+
+For a cell $a=(a_1,a_2)$ write
+\[
+ J(a)=\{\ell\in\{1,2\}:a_\ell=K\}.
+\]
+Its coordinate-flat closure is obtained by replacing any or all coordinates
+in $J(a)$ by arbitrary labels from $\{1,\ldots,K\}$, while leaving all
+other coordinates fixed. Call $S$ \emph{closed} if it contains this closure
+for every $a\in S$. Concretely, an accepted $(i,K)$ with $i<K$ forces the
+whole row $i$, an accepted $(K,j)$ with $j<K$ forces the whole column $j$,
+and an accepted $(K,K)$ forces the full table. Finite coordinates are
+not replaced: this is not the usual order-ideal condition on all coordinates.
+
+\begin{lemma}[An infinite grid determines a polynomial]\label{lem:grid}
+If a real polynomial in $d$ variables vanishes on
+$E_1\times\cdots\times E_d$, with every $E_j\subseteq\mathbb R$ infinite,
+then it is the zero polynomial.
+\end{lemma}
+\begin{proof}
+For $d=1$, a nonzero polynomial has only finitely many roots. Induct on $d$.
+Write the polynomial as $\sum_{q=0}^D f_q(X_1,\ldots,X_{d-1})X_d^q$.
+Fixing $(X_1,\ldots,X_{d-1})$ in the product of the first $d-1$ sets gives
+a univariate polynomial zero on $E_d$, so every coefficient $f_q$ is zero
+at that fixed tuple. Thus each $f_q$ vanishes on the full product of the
+first $d-1$ sets, and the induction hypothesis makes it identically zero.
+\end{proof}
+
+\begin{theorem}[Exact auxiliary minimum]\label{thm:classification}
+For a fixed clipping table $S$, the following conditions are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item There is an $R\in\mathbb Z[A,B]$ such that $R(A,B)=0$ on positive
+integer inputs exactly when $(A,B)\in U_S$.
+\item The table $S$ is closed under coordinate-flat replacement.
+\end{enumerate}
+Every table has a representation by one polynomial equality with one
+positive existential auxiliary variable. Consequently its exact minimum
+is zero if it is closed, and one otherwise.
+\end{theorem}
+\begin{proof}[Necessity and the zero-auxiliary construction]
+Suppose $R$ represents $U_S$ and $a\in S$. Fix each coordinate outside
+$J(a)$ at its label $a_\ell$. The remaining variables range independently
+over $\{K,K+1,\ldots\}$, and the restricted polynomial vanishes at every
+point of that infinite grid. Lemma~\ref{lem:grid} says that the restriction
+is identically zero. It therefore also vanishes when former tail
+coordinates are replaced by arbitrary positive integers below $K$.
+Exact representation forces all their clipped cells to remain accepted.
+This proves closure, and works even for real coefficients without any
+nonnegativity assumption on $R$.
+
+Conversely, put $X_1=A$, $X_2=B$ and define
+\begin{equation}\label{eq:zeropoly}
+ Z_a(X)=\sum_{\ell\notin J(a)}(X_\ell-a_\ell)^2,
+ \qquad R_S(X)=\prod_{a\in S}Z_a(X).
+\end{equation}
+An empty sum is $0$ and an empty product is $1$. Thus the empty table
+has $R_S=1$. If the all-tail cell is accepted, closure makes the table
+full and its factor is $0$, giving $R_S=0$ as required.
+In the remaining cases $Z_a$ vanishes precisely on the coordinate flat
+with the finite coordinates fixed. At any positive point of that flat,
+the clipped cell is one of the allowed replacements of $a$, so closure
+prevents unintended acceptance. Conversely, an accepted input makes the
+factor of its own clipped cell vanish. A product is zero exactly when
+one of its factors is zero, proving the desired equivalence.
+\end{proof}
+
+\begin{proof}[The one-positive-witness upper bound]
+For $K\geq2$ define
+\begin{equation}\label{eq:tailpoly}
+ p_K(x)=\prod_{h=1}^{K-1}(x-h)^2.
+\end{equation}
+For positive integers $x$ this is zero exactly when $x<K$, and strictly
+positive exactly when $x\geq K$. For each cell set
+\begin{equation}\label{eq:onepoly}
+ f_a(X,w)=\sum_{\ell\notin J(a)}(X_\ell-a_\ell)^2
+       +\left(w-\prod_{\ell\in J(a)}p_K(X_\ell)\right)^2,
+ \qquad Q_S(X,w)=\prod_{a\in S}f_a(X,w),
+\end{equation}
+where the inner empty product is $1$. Every factor is a sum of squares.
+For positive integers $X_1,X_2,w$, its vanishing forces all finite
+coordinates to have their prescribed labels. It also forces the product
+of the tail polynomials to equal $w>0$. Each factor $p_K(X_\ell)$ is
+nonnegative, so all tail coordinates are at least $K$. Conversely, on
+that clipped cell, choosing $w$ to be the displayed product gives a
+positive integer zero. Thus $f_a=0$ holds exactly on cell $a$ with this
+one witness value.
+
+The product $Q_S$ is zero if and only if an accepted cell factor is zero.
+Clipped cells partition $\Npos^2$, so the positive witness is unique for
+every accepted input. For $K=1$, the only possibilities are the full
+or empty table; use $(w-1)^2$ or $1$, respectively. Both also have
+zero-auxiliary representations $0$ and $1$. This proves the upper bound
+and, together with necessity, the exact minimum asserted.
+\end{proof}
+
+Strict positivity of the witness is essential in \eqref{eq:onepoly}:
+if $w=0$ were allowed, a below-threshold coordinate could make its tail
+polynomial zero and impersonate a tail. These are fixed finite-table
+statements. They neither establish global Diophantine minimality nor
+classify the auxiliary count of a larger composed encoding.
+
+\section{Counting tables by their boundary marks}\label{sec:count}
+
+Assume the corner $(K,K)$ is rejected. Let $R$ be the set of the $n$ finite
+row labels $i$ for which $(i,K)$ is accepted, and $T$ the set of the $n$
+finite column labels $j$ for which $(K,j)$ is accepted. These marks are
+read from the boundary, regardless of whether unmarked interior rows or
+columns happen to be full. If $|R|=r$ and $|T|=c$, closure forces every
+interior entry in a marked row or column. Precisely $(n-r)(n-c)$ interior
+entries remain independent Boolean choices. The boundary and rejected
+corner are already fixed.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=0.7cm,y=0.7cm,font=\small]
+\fill[blue!10] (0,1) rectangle (4,2);
+\fill[blue!10] (2,1) rectangle (3,5);
+\fill[gray!18] (4,1) rectangle (5,5);
+\fill[gray!18] (0,0) rectangle (5,1);
+\draw[step=1,gray!70,thin] (0,0) grid (5,5);
+\foreach \x in {0,1,2,3} {\node at (\x+.5,1.5) {$1$};}
+\foreach \y in {2,3,4} {\node at (2.5,\y+.5) {$1$};}
+\foreach \x in {0,1,3} {\foreach \y in {2,3,4} {\node at (\x+.5,\y+.5) {$*$};}}
+\foreach \y in {2,3,4} {\node at (4.5,\y+.5) {$0$};}
+\node at (4.5,1.5) {$1$};
+\foreach \x in {0,1,3,4} {\node at (\x+.5,.5) {$0$};}
+\node at (2.5,.5) {$1$};
+\foreach \x/\lab in {0/1,1/2,2/3,3/4,4/K} {\node at (\x+.5,5.4) {$\lab$};}
+\foreach \y/\lab in {4/1,3/2,2/3,1/4,0/K} {\node at (-.45,\y+.5) {$\lab$};}
+\draw[-{Stealth},thick] (6.0,2.0) -- (4.85,1.6);
+\node[anchor=west,align=left,text width=4.2cm] at (6,2.2)
+ {Accepted boundary marks\\force the highlighted row\\and column};
+\node[anchor=west,align=left,text width=5.0cm] at (6,4.5)
+ {$n=4$, $r=c=1$\\Nine free interior entries\\give $2^9$ tables for these marks};
+\draw[-{Stealth},thick] (3.5,-.8) -- (2.6,.2);
+\node[anchor=west] at (3.55,-.8) {column mark};
+\end{tikzpicture}
+\caption{Boundary data, not accidental full interior rows, define the marks.
+A $*$ is an arbitrary bit. The corner is rejected; accepting it gives the
+single additional full table.}
+\label{fig:boundary}
+\end{figure}
+
+There are $\binom nr\binom nc$ choices of marks. Summing over $r,c$ and
+adding the sole table with accepted corner proves the first identity
+in \eqref{eq:count}. To obtain the second, put $j=n-r$ and use
+\[
+ \sum_{c=0}^n\binom nc(2^j)^{n-c}=(1+2^j)^n.
+\]
+This also proves the formula at $n=0$: the double sum is $1$, and
+$C_0=2$. The initial counts are
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+$n$ & $a_n$ & $C_n$\\
+\midrule
+0&1&2\\
+1&5&6\\
+2&47&48\\
+3&1\,193&1\,194\\
+4&113\,855&113\,856\\
+5&46\,857\,665&46\,857\,666\\
+6&83\,540\,629\,607&83\,540\,629\,608\\
+\bottomrule
+\end{tabular}
+\end{center}
+Different boundary patterns on an all-one interior are different tables.
+They are correctly counted separately; only the full table with accepted
+corner is supplied by the additional $1$.
+
+\section{Bipartite graphs and the existing relational model}\label{sec:graphs}
+
+Take two distinguished labeled parts $L$ and $R$, each of size $n$.
+A graph is any subset of $L\times R$, so there are $n^2$ independently
+available edges. Write $i(G)$ for the total number of isolated vertices.
+
+\begin{proposition}\label{prop:graphs}
+The sequence has the weighted graph interpretation
+\begin{equation}\label{eq:graphweight}
+ a_n=\sum_G2^{i(G)}.
+\end{equation}
+For a uniform random graph in this model,
+\begin{equation}\label{eq:expectation}
+ \frac{a_n}{2^{n^2}}=\E[2^{i(G)}],\qquad
+ \E\binom{i(G)}k=P_k(n)2^{-nk}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Count pairs $(G,U)$ where $U$ is a subset of the isolated vertices.
+Choose $r$ marked left vertices and $c$ marked right vertices. Their incident
+edges must be absent and the other $(n-r)(n-c)$ edges are free, giving
+exactly the double sum in \eqref{eq:count}. For each fixed graph there are
+$2^{i(G)}$ mark sets.
+
+Directly, put an edge at each \emph{rejected} interior table entry. An
+accepted boundary mark can only occur at an isolated vertex, and any
+subset of isolated vertices can be marked. This is a bijection with the
+closed tables having rejected corner.
+
+For the second expectation, a specified collection of $r$ left and $k-r$
+right vertices is isolated precisely when $nk-r(k-r)$ distinct edges
+are absent. This event has probability $2^{-nk+r(k-r)}$. Sum over all
+choices of the collection, using \eqref{eq:P}. The first expectation
+follows by dividing \eqref{eq:graphweight} by $2^{n^2}$.
+\end{proof}
+
+Svato\v{s} et al. explicitly associate A196460 with the sentence
+\begin{equation}\label{eq:relational}
+ (\forall x\,\forall y\ [U(x)\lor B(x,y)])\ \land\
+ (\forall x\,\forall y\ [B(x,y)\lor U_1(y)])
+\end{equation}
+in Appendix A.1, Table 3, printed page 32 of version 1 \cite{svatos}.
+The independent unary predicates $U,U_1$ choose active subsets of the
+left and right copies of the domain. The relation $B$ must be true
+except possibly at a pair whose two copies are active. Interpret a false
+entry of $B$ as an edge. For any fixed graph, its nonisolated vertices
+must be active, while each isolated vertex can be active or inactive,
+yielding the weight $2^{i(G)}$ again. Although the relational structure
+uses one domain, the graph uses two distinguished copies: $B(x,x)$
+corresponds to an edge between copies, not a graph loop. All $n^2$ edge
+choices remain available. This graph reading is a direct interpretation
+of the existing sentence, not a claim to originate its combinatorial model.
+
+\section{All fixed order forward asymptotics}\label{sec:forward}
+
+Dividing \eqref{eq:count} by $2^{n^2}$ and grouping by $k=r+c$ gives the
+exact finite identity
+\begin{equation}\label{eq:sectors}
+ \As_n:=\frac{a_n}{2^{n^2}}
+    =\sum_{k=0}^{2n}P_k(n)2^{-kn}.
+\end{equation}
+At a nonnegative integer $n$, $\binom nr=0$ for $r>n$, so the polynomial
+formula \eqref{eq:P} is valid even when $k>n$, and $P_k(n)=0$ for $k>2n$.
+The same equality follows by averaging the finite identity
+$2^{i(G)}=\sum_k\binom{i(G)}k$ in \eqref{eq:expectation}.
+
+Every $P_k$ has exact degree $k$ and positive leading coefficient
+\begin{equation}\label{eq:alpha}
+ \alpha_k=\sum_{r=0}^k\frac{2^{r(k-r)}}{r!(k-r)!}.
+\end{equation}
+The first five polynomials are
+\begin{align}\label{eq:firstP}
+ P_0(x)&=1,&P_1(x)&=2x,\notag\\
+ P_2(x)&=3x^2-x,&
+ P_3(x)&=\frac{13}{3}x^3-5x^2+\frac23x,\notag\\
+ P_4(x)&=\frac{27}{4}x^4-\frac{33}{2}x^3+\frac{41}{4}x^2-\frac12x.
+\end{align}
+An exact finite regrouping alone is insufficient for an asymptotic
+expansion: its number of terms grows with $n$. We next control that tail.
+
+\begin{theorem}[Uniform tail for every fixed order]\label{thm:tail}
+For a fixed $M\geq0$ let
+$R_{n,M}=\As_n-\sum_{k=0}^MP_k(n)2^{-kn}$.
+If $n\geq M+1$ and $\rho_n:=2n2^{-n/2+1/4}<1$, then
+\begin{equation}\label{eq:explicit-tail}
+ 0\leq R_{n,M}\leq
+ \frac{(2n)^{M+1}2^{-(M+1)n+(M+1)^2/4}}
+      {(M+1)!(1-\rho_n)}
+       +2^{2n-3n^2/4}.
+\end{equation}
+In particular \eqref{eq:mainforward} holds. Its remainder is sharp:
+\begin{equation}\label{eq:forwardsharp}
+ R_{n,M}\sim\alpha_{M+1}n^{M+1}2^{-(M+1)n}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Since $r(k-r)\leq k^2/4$, Vandermonde's identity gives, for $0\leq k\leq2n$,
+\begin{equation}\label{eq:majorant}
+ 0\leq P_k(n)2^{-kn}
+ \leq B_{n,k}:=\binom{2n}k2^{-nk+k^2/4}.
+\end{equation}
+For $0\leq k<n$,
+\[
+ \frac{B_{n,k+1}}{B_{n,k}}
+ =\frac{2n-k}{k+1}2^{-n+k/2+1/4}
+ \leq2n2^{-n/2+1/4}=\rho_n.
+\]
+Consequently the sum over $M+1\leq k\leq n$ is at most
+$B_{n,M+1}/(1-\rho_n)$. The inequality
+$\binom{2n}{M+1}\leq(2n)^{M+1}/(M+1)!$ yields the first term of
+\eqref{eq:explicit-tail}.
+
+On $[n,2n]$ the function $-nk+k^2/4$ is decreasing, with value
+$-3n^2/4$ at $k=n$. Hence
+\[
+ \sum_{k=n+1}^{2n}B_{n,k}
+ \leq2^{-3n^2/4}\sum_{k=n+1}^{2n}\binom{2n}k
+ \leq2^{2n-3n^2/4}.
+\]
+This proves the explicit bound. Since $\rho_n\to0$, the first term is
+$O_M(n^{M+1}2^{-(M+1)n})$. The second is little-oh of that scale:
+the logarithm of their ratio has leading term $-3(\log2)n^2/4$.
+This proves \eqref{eq:mainforward}. For a concrete uniform range,
+$n\geq\max(M+1,16)$ permits replacing $1/(1-\rho_n)$ by $2$:
+$\rho_{16}<1/2$ and $\rho_n$ decreases thereafter.
+
+Finally apply the already proved expansion with order $M+1$ and subtract
+the truncation at $M$. Its first omitted term is
+$P_{M+1}(n)2^{-(M+1)n}\sim\alpha_{M+1}n^{M+1}2^{-(M+1)n}$.
+The next error divided by this scale is $O_M(n2^{-n})\to0$.
+This proves \eqref{eq:forwardsharp}.
+\end{proof}
+
+\begin{remark}[Fixed order does not mean convergence]\label{rem:fixed}
+The constants and the sufficiently large starting index may depend on $M$.
+No estimate here is uniform for a truncation order growing with $n$.
+For each integer $n$, \eqref{eq:sectors} is finite; no claim is made that
+$\sum_{k\geq0}P_k(x)2^{-kx}$ converges for noninteger $x$.
+Formal power series used below require no such convergence.
+\end{remark}
+
+\subsection{The rarity of zero auxiliary arity}
+
+The exact fraction of zero-auxiliary tables is
+\begin{equation}\label{eq:fraction}
+ F_n=\frac{C_n}{2^{(n+1)^2}}
+ =2^{-2n-1}\left(\As_n+2^{-n^2}\right).
+\end{equation}
+The additional full table contributes the isolated $2^{-n^2}$ inside
+the parentheses. It is smaller than every fixed exponential sector as
+$n\to\infty$. The first terms are therefore
+\begin{equation}\label{eq:rarity}
+ F_n=2^{-2n-1}\left[1+2n2^{-n}+(3n^2-n)2^{-2n}
+                    +O(n^3 2^{-3n})\right]
+ \sim\frac12 4^{-n}=2^{1-2K}.
+\end{equation}
+The complementary fraction $1-F_n$ has exact minimum one positive
+auxiliary by Theorem~\ref{thm:classification}. At $n=0$ the exact formula
+gives $F_0=1$, as both one-cell tables have minimum zero.
+
+\section{Logarithmic coefficients and connected colored graphs}\label{sec:logs}
+
+In the formal ring $\mathbb Q[x][[z]]$ define $L_k$ by
+\begin{equation}\label{eq:logdef}
+ \log\!\left(1+\sum_{k\geq1}P_k(x)z^k\right)
+       =\sum_{k\geq1}L_k(x)z^k.
+\end{equation}
+Differentiating with respect to $z$ and multiplying by the series inside
+the logarithm gives the explicit recurrence
+\begin{equation}\label{eq:Lrec}
+ L_k=P_k-\frac1k\sum_{j=1}^{k-1}jL_jP_{k-j}\qquad(k\geq1).
+\end{equation}
+Induction shows $\deg L_k\leq k$. The first four are
+\begin{align}\label{eq:firstL}
+ L_1(x)&=2x,\qquad L_2(x)=x^2-x,\notag\\
+ L_3(x)&=x^3-3x^2+\frac23x,\notag\\
+ L_4(x)&=\frac{19}{12}x^4-\frac{15}{2}x^3+\frac{101}{12}x^2-\frac12x.
+\end{align}
+
+\begin{proposition}[Actual logarithmic expansion]\label{prop:log}
+For every fixed $M\geq1$,
+\begin{equation}\label{eq:logasympt}
+ \log_2 a_n=n^2+\frac1\la\sum_{k=1}^M L_k(n)2^{-kn}
+            +O_M(n^{M+1}2^{-(M+1)n}),\qquad \la=\log2.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Theorem~\ref{thm:tail} at order zero gives
+$u_n:=\As_n-1=O(n2^{-n})\to0$. For fixed $M$ it also gives
+$u_n=\sum_{k=1}^MP_k(n)2^{-kn}+O_M(n^{M+1}2^{-(M+1)n})$.
+The derivative of $\log(1+u)$ is bounded near $u=0$, so substituting this
+truncation into the logarithm changes it by the same error order.
+Its Taylor polynomial through power $M$ has remainder
+$O(u_n^{M+1})=O_M(n^{M+1}2^{-(M+1)n})$.
+
+Expand that finite Taylor polynomial. A term with total exponential index
+$r$ has polynomial degree at most $r$. All retained terms of index
+$r\leq M$ combine to $L_r(n)2^{-rn}$ by \eqref{eq:logdef}.
+There are only finitely many other terms, all with $r\geq M+1$;
+they are bounded by $O_M(n^{M+1}2^{-(M+1)n})$ because $n2^{-n}\to0$.
+Finally divide by $\la$ and add $n^2$.
+\end{proof}
+
+To understand the top coefficients, let $b_k=k!\alpha_k$, with $b_0=1$.
+This counts simple graphs on $k$ labeled vertices equipped with a proper
+coloring by two \emph{named} colors: choose the $r$ labels of the first
+color and any of the $r(k-r)$ possible cross-color edges. These graphs
+have a variable color split; they are not the balanced $n$-by-$n$ ambient
+graphs counted in \eqref{eq:graphweight}.
+
+Let $c_k$ count the connected such colored graphs, where a singleton
+has two color choices. A colored graph decomposes uniquely into its
+connected colored components. Summing over partitions of its label set gives
+\begin{equation}\label{eq:expformula}
+ \sum_{k\geq0}b_k\frac{z^k}{k!}
+     =\exp\!\left(\sum_{k\geq1}c_k\frac{z^k}{k!}\right)
+\end{equation}
+formally. More explicitly, the coefficient at $z^k/k!$ on the right
+sums $\prod_{B\in\pi}c_{|B|}$ over every set partition $\pi$ of the $k$
+labels, which is exactly the component decomposition. Thus no analytic
+convergence or random-graph connectivity theorem enters this identity.
+
+Choosing the connected component containing label $1$ gives a constructive
+recurrence:
+\begin{equation}\label{eq:crec}
+ c_k=b_k-\sum_{j=1}^{k-1}\binom{k-1}{j-1}c_jb_{k-j}.
+\end{equation}
+Since $\deg P_k=k$, taking top-degree coefficients in \eqref{eq:logdef}
+amounts to taking the formal logarithm of $\sum\alpha_kz^k$.
+Equation~\eqref{eq:expformula} therefore proves
+\begin{equation}\label{eq:Lleading}
+ [x^k]L_k(x)=\frac{c_k}{k!}>0.
+\end{equation}
+Positivity follows directly: the singleton works for $k=1$, and a
+properly colored star supplies a connected example for every $k\geq2$.
+For reference, the exact values retained by the independent audit are
+\begin{center}
+\begin{tabular}{r r r}
+\toprule
+$k$ & $b_k$ & $c_k$\\
+\midrule
+1&2&2\\2&6&2\\3&26&6\\4&162&38\\
+5&1\,442&390\\6&18\,306&6\,062\\
+7&330\,626&134\,526\\8&8\,488\,962&4\,172\,198\\
+\bottomrule
+\end{tabular}
+\end{center}
+Applying Proposition~\ref{prop:log} at one additional order also gives
+the sharp logarithmic remainder
+\begin{equation}\label{eq:logsharp}
+ \log_2a_n-n^2-\frac1\la\sum_{k=1}^M L_k(n)2^{-kn}
+ \sim\frac{c_{M+1}}{\la(M+1)!}n^{M+1}2^{-(M+1)n}.
+\end{equation}
+In particular its sign is eventually positive for each fixed $M$.
+
+\section{Formal inverse coefficients with an actual error proof}\label{sec:inverse}
+
+We first define a formal series; we then justify it on the actual
+sequence values without introducing an interpolation of the sequence.
+For coefficient extraction treat $s$ and $t$ as independent and work in
+\[
+ \mathbb Q[\la,\la^{-1},s,s^{-1}][[t]].
+\]
+Here $\la$ is a formal symbol in the algebra; subsequently it is evaluated
+at $\log2>0$. Put $\delta_0=0$ and, recursively,
+\begin{align}
+ \delta_{m-1}(s,t)&=\sum_{j=1}^{m-1}D_j(s)t^j,\notag\\
+ D_m(s)&=-\frac{1}{2s}[t^m]\left\{
+ \delta_{m-1}(s,t)^2\right.\label{eq:Drec}\\[-2pt]
+ &\hspace{39mm}\left.{}+\frac1\la\sum_{k=1}^m
+ L_k(s+\delta_{m-1}(s,t))t^k
+ e^{-k\la\delta_{m-1}(s,t)}\right\}.\notag
+\end{align}
+Only finitely many Taylor coefficients contribute at each step. Equivalently,
+$\delta=\sum_{j\geq1}D_j(s)t^j$ uniquely solves the formal equation
+\begin{equation}\label{eq:formal-inverse}
+ 2s\delta+\delta^2+
+ \frac1\la\sum_{k\geq1}L_k(s+\delta)t^ke^{-k\la\delta}=0.
+\end{equation}
+At order $t^m$, the new $D_m$ occurs only in $2s\delta$. The square has
+no constant term, and each summand already carries a positive power of $t$.
+The coefficient of $D_m$ is therefore $2s$, invertible in this Laurent
+ring, proving both the recurrence and uniqueness.
+
+The first three coefficients are
+\begin{align}\label{eq:firstD}
+ D_1(s)&=-\frac1\la,\notag\\
+ D_2(s)&=-\frac{s+1}{2\la}+\frac{1}{2\la^2s},\notag\\
+ D_3(s)&=-\frac{s^2}{2\la}-\frac{1}{3\la}
+                      +\frac1{\la^2}+\frac1{\la^2s}.
+\end{align}
+The negative powers are harmless in the asymptotic region $s\to\infty$;
+these formulas are not meant for evaluation at $s=0$.
+
+\begin{lemma}[Degree bound and sign of the leading coefficient]\label{lem:Ddegree}
+The largest exponent of $s$ in $D_m$ is $m-1$, and
+\begin{equation}\label{eq:Dleading}
+ D_m(s)\sim-\frac{c_m}{2\la m!}s^{m-1}.
+\end{equation}
+In particular $D_m(s)=O_m(s^{m-1})$ for $s\geq1$ as $s\to\infty$.
+\end{lemma}
+\begin{proof}
+Induct on $m$. Assume every earlier $D_j$ has largest $s$ exponent at most
+$j-1$. A product of $p$ earlier inverse coefficients with total $t$-degree
+$m-k$ has largest $s$ exponent at most $m-k-p$. Derivatives of the polynomial
+$L_k$ can only lower its degree from at most $k$; the exponential introduces
+powers of $\la$ but no new powers of $s$. Thus every coefficient at
+$t^m$ in the sum of \eqref{eq:Drec} has exponent at most $m$ before division
+by $s$. If any earlier $D_j$ occurs, then $p\geq1$ and the bound is
+strictly less than $m$. The term $\delta_{m-1}^2$ has exponent at most
+$m-2$. The only possible contribution at exponent $m$ is therefore
+$\la^{-1}L_m(s)$, whose coefficient is $c_m/(\la m!)$ by
+\eqref{eq:Lleading}. Division by $-2s$ proves both the exact top degree
+and \eqref{eq:Dleading}. This also covers $m=1$.
+\end{proof}
+
+\begin{theorem}[Sequence-point inversion and its sharp sign]\label{thm:inverse}
+For $s_n=\sqrt{\log_2a_n}$, $t_n=2^{-s_n}$ and each fixed $M\geq1$,
+\begin{equation}\label{eq:inversebound}
+ n-\left(s_n+\sum_{k=1}^MD_k(s_n)t_n^k\right)
+       =O_M(s_n^M t_n^{M+1}).
+\end{equation}
+More sharply,
+\begin{equation}\label{eq:inversesharp}
+ n-\left(s_n+\sum_{k=1}^MD_k(s_n)t_n^k\right)
+ \sim-\frac{c_{M+1}}{2\la(M+1)!}s_n^M t_n^{M+1}.
+\end{equation}
+Every fixed truncation consequently overestimates the integer $n$
+for all sufficiently large $n$.
+\end{theorem}
+\begin{proof}
+Fix $M$ and introduce the \emph{finite} smooth function
+\begin{equation}\label{eq:proxy}
+ H_M(x)=x^2+\frac1\la\sum_{k=1}^ML_k(x)2^{-kx}.
+\end{equation}
+This is an explicit approximation, not an interpolation of $a_n$.
+Proposition~\ref{prop:log} gives at the actual integer $n$
+\begin{equation}\label{eq:resid1}
+ H_M(n)-s_n^2=O_M(n^{M+1}2^{-(M+1)n}).
+\end{equation}
+It also gives $s_n^2-n^2=O(n2^{-n})$. Division by $s_n+n$, which is
+at least $2n$ because $a_n\geq2^{n^2}$, yields
+\begin{equation}\label{eq:closeness}
+ s_n-n=O(2^{-n}),\qquad n\sim s_n,\qquad 2^{-n}/t_n\longrightarrow1.
+\end{equation}
+Define $\widehat n_M=s_n+\delta_M(s_n,t_n)$, where
+$\delta_M(s,t)=\sum_{j=1}^MD_j(s)t^j$.
+Lemma~\ref{lem:Ddegree} and $st\to0$ imply $\delta_M(s,t)=O_M(t)$
+along $t=2^{-s}$. Hence both $n$ and $\widehat n_M$ lie in
+$[s_n-1,s_n+1]$ for all sufficiently large $n$.
+
+We detail the residual bound at $\widehat n_M$, since purely formal
+cancellation is not an analytic error estimate. Substitute $s+\delta_M$
+into \eqref{eq:proxy}, set $t=2^{-s}$, and subtract $s^2$:
+\begin{equation}\label{eq:residualformula}
+ 2s\delta_M+\delta_M^2+
+ \frac1\la\sum_{k=1}^ML_k(s+\delta_M)t^ke^{-k\la\delta_M}.
+\end{equation}
+Expand the finite polynomials exactly. In the term with prefactor $t^k$,
+expand the exponential through power $M-k$ of $\delta_M$. The exponential
+remainder is $O_M(\delta_M^{M-k+1})$, uniformly for small $\delta_M$.
+As $L_k(s+\delta_M)=O_M(s^k)$ and $\delta_M=O_M(t)$, its contribution
+is $O_M(s^kt^{M+1})$, hence $O_M(s^{M+1}t^{M+1})$.
+
+The remaining expression is a finite polynomial in $t$ with Laurent
+coefficients in $s$. All coefficients through order $M$ vanish by
+\eqref{eq:Drec}. Every remaining coefficient of $t$-degree $r$ has
+largest $s$ exponent at most $r$: for $2s\delta_M$ this follows from
+Lemma~\ref{lem:Ddegree}; for $\delta_M^2$ the stronger bound $r-2$ holds;
+and for each expanded logarithmic summand the same product-degree
+argument as in that lemma gives at most $r$.
+Thus each of its finitely many terms with $r\geq M+1$ is
+$O_M(s^rt^r)=O_M(s^{M+1}t^{M+1})$, since $s\geq1$ and $st\to0$.
+Negative powers only improve this bound. We have proved
+\begin{equation}\label{eq:resid2}
+ H_M(\widehat n_M)-s_n^2
+       =O_M(s_n^{M+1}t_n^{M+1}).
+\end{equation}
+
+Differentiating only the finite function \eqref{eq:proxy}, uniformly on
+$[s_n-1,s_n+1]$, gives
+\[
+ H_M'(x)=2x+O_M(x^M2^{-x})\geq s_n
+\]
+for large $n$. Subtract \eqref{eq:resid1} from \eqref{eq:resid2}, use
+\eqref{eq:closeness} to compare the error scales, and apply the mean-value
+theorem between $n$ and $\widehat n_M$. Dividing by the derivative lower
+bound $s_n$ proves \eqref{eq:inversebound}.
+
+Finally use the proved bound at order $M+1$. The difference at order $M$
+is $D_{M+1}(s_n)t_n^{M+1}+O_M(s_n^{M+1}t_n^{M+2})$. The ratio of the
+last error to $s_n^Mt_n^{M+1}$ tends to zero because $s_nt_n\to0$.
+Lemma~\ref{lem:Ddegree} proves \eqref{eq:inversesharp} and its negative sign.
+\end{proof}
+
+\subsection{Replacing the sequence by the table count}
+
+Since $C_n=a_n+1$ and $a_n\geq2^{n^2}$,
+\begin{equation}\label{eq:Cchange}
+ \log_2C_n-\log_2a_n=\log_2(1+a_n^{-1})=O(2^{-n^2}).
+\end{equation}
+For $n\to\infty$, the square-root difference is $O(2^{-n^2}/n)$.
+Both are smaller than every fixed error sector above. Thus all fixed-order
+forward, logarithmic and inverse expansions, including their sharp
+remainder equivalents, hold with $C_n$ in place of $a_n$ and
+$s_n=\sqrt{\log_2C_n}$. This is an asymptotic statement; it does not erase
+the different exact endpoint at $n=0$.
+
+\section{Exact integer thresholds and the floor boundary}\label{sec:threshold}
+
+The double sum immediately gives, for every $n\geq0$,
+\begin{equation}\label{eq:brackets}
+ 2^{n^2}\leq a_n\leq2^{n^2+2n}<2^{(n+1)^2}.
+\end{equation}
+The lower bound is the term $r=c=0$. For the upper bound replace each
+$2^{(n-r)(n-c)}$ by $2^{n^2}$ and sum the binomial weights to obtain $4^n$.
+Consequently
+\begin{equation}\label{eq:floorpoint}
+ \left\lfloor\sqrt{\log_2a_n}\right\rfloor=n
+ \quad\text{for every }n\geq0,
+\end{equation}
+including $a_0=1$. Also $a_n$ is strictly increasing: each old $j\leq n$
+term of the single sum for $a_{n+1}$ is at least twice the corresponding
+term for $a_n$, because $\binom{n+1}{j}\geq\binom nj$ and $1+2^j\geq2$;
+there is an additional positive term at $j=n+1$.
+
+\begin{theorem}[One exact comparison suffices]\label{thm:threshold}
+For real $y\geq1$ put $m=\lfloor\sqrt{\log_2y}\rfloor$. Then
+\begin{equation}\label{eq:exactinverse}
+ N_a(y):=\max\{n\geq0:a_n\leq y\}
+   =\begin{cases}m-1,&y<a_m,\\m,&y\geq a_m.\end{cases}
+\end{equation}
+At $m=0$ only the second branch occurs. Below $y=1$ the defining set is empty.
+For $C_n$, the same two-branch rule with $C_m$ in place of $a_m$ holds
+for all $y\geq2$; below $2$ its defining set is empty.
+\end{theorem}
+\begin{proof}
+If $n<m$, then \eqref{eq:brackets} gives
+$a_n<2^{(n+1)^2}\leq2^{m^2}\leq y$. If $n>m$, then
+$a_n\geq2^{n^2}\geq2^{(m+1)^2}>y$. Only index $m$ remains undecided,
+and its exact comparison yields \eqref{eq:exactinverse}.
+When $m=0$, $y\geq1=a_0$, so the first branch cannot arise.
+
+For $n\geq1$, adding one to \eqref{eq:brackets} still gives
+$2^{n^2}<C_n<2^{(n+1)^2}$, since
+$2^{n^2+2n}+1<2^{n^2+2n+1}$. But $C_0=2$ equals $2^{1^2}$.
+If $y\geq2$, then $m\geq1$. We have $C_{m-1}\leq2^{m^2}\leq y$,
+with equality in the first inequality possible at $m=1$; all indices
+above $m$ fail. Strict increase of $C_n$ and comparison with $C_m$
+prove the claim.
+\end{proof}
+
+The sequence-point floor \eqref{eq:floorpoint} holds for $C_n$ when
+$n\geq1$, but \emph{fails at zero}:
+$\lfloor\sqrt{\log_2C_0}\rfloor=1$. In contrast the threshold theorem
+correctly gives $N_C(2)=0$.
+
+To locate the threshold in logarithmic coordinates, expand the square
+root in Proposition~\ref{prop:log}. With $q=2^{-m}$,
+\begin{equation}\label{eq:boundaryshift}
+ \sqrt{\log_2a_m}
+ =m+\frac q\la+
+ \left(\frac{m-1}{2\la}-\frac{1}{2\la^2m}\right)q^2
+ +O(m^2q^3).
+\end{equation}
+Indeed, $L_1(m)=2m$ contributes $q/\la$; $L_2(m)=m^2-m$
+contributes $(m-1)q^2/(2\la)$; and the quadratic square-root term
+contributes $-q^2/(2\la^2m)$. The next logarithmic term and all remaining
+square-root terms are $O(m^2q^3)$. This is an expansion for $m\to\infty$,
+not a formula to be evaluated at $m=0$.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,font=\small]
+\fill[blue!12] (0,0) rectangle (2,0.48);
+\fill[gray!12] (2,0) rectangle (10,0.48);
+\draw[-{Stealth},thick] (-.3,0) -- (10.55,0);
+\draw (0,-.12)--(0,.62);
+\draw[thick] (2,-.12)--(2,.62);
+\draw (10,-.12)--(10,.62);
+\node[below] at (0,-.15) {$m$};
+\node[below,align=center] at (2,-.15) {$s_m=\sqrt{\log_2a_m}$};
+\node[below] at (10,-.15) {$m+1$};
+\node at (1,.86) {$N_a(y)=m-1$};
+\node at (6,.86) {$N_a(y)=m$};
+\node[above,align=center] at (5,1.35)
+ {Coordinate $s=\sqrt{\log_2y}$; boundary displacement enlarged for visibility};
+\draw[<->] (0,-1.08)--(2,-1.08);
+\node[below] at (1,-1.1) {$s_m-m\sim2^{-m}/\la$};
+\end{tikzpicture}
+\caption{Within $m\leq\sqrt{\log_2y}<m+1$, the exact threshold is $a_m$.
+The boundary itself belongs to the right-hand interval. The diagram is
+schematic: the left interval has exponentially small width.}
+\label{fig:threshold}
+\end{figure}
+
+Thus $N_a(y)$ differs from $m$ precisely when
+$m\leq\sqrt{\log_2y}<\sqrt{\log_2a_m}$. An approximate boundary may classify
+$y$ only when its distance from the true comparison boundary exceeds a
+\emph{proved} error bound. Inside an uncertainty interval, use the exact
+comparison in \eqref{eq:exactinverse}. Neither a bare big-oh statement nor
+flooring a truncated real inverse automatically produces an exact integer
+answer. Formula~\eqref{eq:boundaryshift} has the same fixed-order expansion
+for $C_m$, with only the beyond-all-fixed-orders perturbation
+\eqref{eq:Cchange}.
+
+\section{Exact numerical evidence and its logical role}\label{sec:evidence}
+
+The source packet contains exact arithmetic checks through order six;
+a separate fresh independent audit extends formal checking through order
+eight \cite{source,audit}. The independently authored algebra checker
+derives inverse coefficients using the \emph{exponentiated} equation
+\begin{equation}\label{eq:alternative}
+ \sum_{k\geq0}P_k(s+\delta)t^k
+ \exp\!\bigl(\la((2s-k)\delta+\delta^2)\bigr)=1,
+\end{equation}
+whose new linear coefficient is $2\la s$, and checks cancellation in both
+this equation and \eqref{eq:formal-inverse}. This is a useful independent
+algebraic route, though finite-order cancellation cannot establish the
+infinite family of estimates proved above.
+
+The retained independent results include:
+\begin{itemize}
+\item all $66\,066$ Boolean tables for $K=1,2,3,4$, with closed counts
+$2,6,48,1194$, and $44\,298$ direct zero-polynomial evaluations;
+\item all $66\,067$ bipartite graphs for $n=0,1,2,3,4$, checking their
+weighted sums and every isolation factorial moment;
+\item $33\,868$ ordinary labeled graphs on $0$ through $6$ vertices,
+checking the colored counts by bipartiteness and connected components;
+\item $65$ sequence indices $n=0,\ldots,64$, $585$ values of the
+coefficient polynomials, and $4\,225$ exact majorant comparisons;
+\item $1\,012$ rational inverse-threshold comparisons, including small
+endpoints and probes on both sides of sequence and square boundaries;
+\item inverse cancellation through order eight, all displayed
+coefficients, the three leading-coefficient identities, and agreement
+with all $21$ source coefficient families through order six.
+\end{itemize}
+The majorants are checked after fourth powers so that no floating fourth
+root is required. Threshold floors are checked using integer bit lengths,
+integer square roots, and exact rational comparison, avoiding accidental
+rounding at boundaries.
+
+A separate retained interval check encloses $s_n$, $t_n$ and the signed
+inverse error using rational arithmetic: a positive atanh series with a
+geometric tail for logarithms, integer square roots for square roots,
+alternating Taylor bounds for $e^{-x}$, and outward $1024$-bit dyadic
+rounding after arithmetic. All $36$ cases with $n=16,32,64$, orders
+$M=1,\ldots,6$, and sequences $a,C$ have a strictly negative upper
+endpoint for the inverse remainder.
+
+For the $a$ sequence, write
+\[
+ \Rinv_{n,M}=n-s_n-\sum_{k=1}^MD_k(s_n)t_n^k,\qquad
+ J_{n,M}=-\frac{c_{M+1}}{2\la(M+1)!}s_n^Mt_n^{M+1}.
+\]
+Table~\ref{tab:ratios} reproduces selected decimal \emph{outward enclosures}
+from the retained exact endpoints. The ratio tends to one for each fixed
+$M$ by Theorem~\ref{thm:inverse}; the table illustrates both approach
+directions and the slower onset at a larger truncation order.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{r r l}
+\toprule
+$n$ & $M$ & Enclosure for $\Rinv_{n,M}/J_{n,M}$\\
+\midrule
+16&1&$[1.057106335697,\ 1.057106335698]$\\
+32&1&$[1.029841125557,\ 1.029841125558]$\\
+64&1&$[1.015272779531,\ 1.015272779532]$\\[2pt]
+16&3&$[0.893719133773,\ 0.893719133774]$\\
+32&3&$[0.948737227650,\ 0.948737227651]$\\
+64&3&$[0.974858114102,\ 0.974858114103]$\\[2pt]
+16&6&$[0.532599538158,\ 0.532599538159]$\\
+32&6&$[0.741284482732,\ 0.741284482733]$\\
+64&6&$[0.864003938458,\ 0.864003938459]$\\
+\bottomrule
+\end{tabular}
+\caption{Selected rigorous inverse-error ratios from the independent audit.
+These are retained numerical evidence, not newly rerun computations for
+this article and not a substitute for the fixed-order proof.}
+\label{tab:ratios}
+\end{table}
+
+\section{Further questions and the limits of the results}\label{sec:questions}
+
+\paragraph{Growing truncation order.}
+The proof fixes $M$ before letting $n$ grow. What is the widest useful
+range $M=M(n)$ for which a comparably precise remainder can be established?
+The factor $2^{r(k-r)}$ in \eqref{eq:P} grows rapidly with the sector index,
+so degree estimates alone do not settle this question. A useful answer
+would have to control the transition between the small-$k$ regime and the
+large-$k$ tail, rather than assert convergence of the fixed-order expansion.
+
+\paragraph{Rectangular and higher dimensional tables.}
+For a table with $p$ finite row labels and $q$ finite column labels, the
+same boundary argument immediately gives
+\[
+ C_{p,q}=1+\sum_{r=0}^p\sum_{c=0}^q
+           \binom pr\binom qc2^{(p-r)(q-c)}.
+\]
+This is a direct counting consequence, but asymptotics when $p/q$ varies
+or one side stays bounded require their own error analysis. In dimension
+at least three the coordinate-flat criterion and one-positive-witness
+formula extend, while boundary faces overlap in a more complicated pattern.
+A useful next problem is an exact counting representation that organizes
+those overlaps without double counting.
+
+\paragraph{Effective inverse certification.}
+The finite proxy proof yields an error order and the exact threshold
+rule yields a final integer answer. Can explicit derivative and Taylor
+constants be combined into a practical certified interval procedure that
+usually avoids forming the full integer $a_m$? The goal would be a
+proved stopping criterion, with exact comparison when the interval
+straddles the threshold. The asymptotic expansion by itself provides no
+such universal rounding guarantee.
+
+\paragraph{Representation cost inside the zero-auxiliary class.}
+The polynomial \eqref{eq:zeropoly} gives degree $2|S|$ when $S$ is nonempty
+and has no all-tail cell. It need not minimize degree, coefficient height,
+or number of monomials. Characterizing these costs within the closed tables
+is separate from minimizing auxiliary arity. The present count does not
+answer that optimization problem.
+
+\paragraph{Scope.}
+All proofs concern fixed finite tables on positive integer inputs and one
+polynomial equality. All asymptotic expansions are at fixed order. Formal
+series manipulations are justified only by the finite truncations and
+error arguments given here. In particular the ordinary and exponential
+generating functions of $a_n$ both have analytic radius zero, since
+$a_n\geq2^{n^2}$ implies both $a_n^{1/n}\to\infty$ and
+$(a_n/n!)^{1/n}\to\infty$. They can still be interpreted formally.
+No physical simulation, source interpreter, saved schedule or theorem
+prover was run to prepare this article. No external submission or novelty
+claim is implied by its preparation.
+
+\appendix
+\section{Evidence provenance and preservation boundary}\label{sec:provenance}
+
+The mathematical source is the sealed packet
+\texttt{arity-table-asymptotics-20261004}; the fresh independent audit is
+\texttt{independent-arity-asymptotics-audit-20261004}. The source and audit
+are retained in full in the accompanying source-and-evidence archive.
+Their code is historical evidence and is inert during the presentation
+build. Only separately owned presentation and packaging tools are used
+to compile and render this article. The accepted one-witness proof and
+its earlier audit are also retained as pinned text dependencies; the
+classification needed here is proved in full in Section~\ref{sec:closure}.
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{.28\textwidth}p{.67\textwidth}@{}}
+\toprule
+Object & SHA-256\\
+\midrule
+Source manifest & \texttt{6ae30398c52b6fe1d07a91346791ed3355}\newline
+\texttt{e7104c55b19a4103de257299293de1}\\[3pt]
+Source proof & \texttt{638e524d058deb926919d15b7df2dafc17}\newline
+\texttt{f7a44dc2688b33e06ee24f476b7c41}\\[3pt]
+Independent audit manifest & \texttt{737af333985bc079ecdd688f1854f7221}\newline
+\texttt{bb86169db7841d91a1115d2f94e7055}\\[3pt]
+Independent audit text & \texttt{7405fc28ea33b90ca80471ab368b667e}\newline
+\texttt{1728b374eb3098f3e62844a91e1f8ca7}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The source's authentic historical inventories recorded $249$ objects
+before and $376$ in its later inventory, with exactly $132$ differences:
+$44$ in the then-active Report 69 release tree and $88$ in the Report 70
+tree. These historical changes are preserved as recorded, not replaced
+by a retrospectively cleaner snapshot. The $62$ core objects outside
+those concurrent release trees were unchanged in the recorded interval,
+including bytes, sizes, modes, nanosecond modification times and directory
+metadata. The fresh audit independently recomputed that comparison.
+It also established its own equality boundary over $87$ specified input
+objects, beginning at 2026-10-04 15:23:38 UTC. Access times were excluded,
+because reads may update them. Neither historical result asserts
+whole-interval preservation of the two active release trees or attributes
+their changes to a particular actor.
+
+The article packaging records a separate, scoped before-and-after
+inventory for the actual source and audit inputs it copies. Source bytes,
+file modes and modification times are preserved in the copied dossier;
+the archive's inventory and verifier specify how full metadata is retained
+beyond the coarse timestamp field of a ZIP entry. Exact external build
+dependencies are locked separately from the mathematical inputs. The
+presentation build uses an isolated output directory, no shell escape,
+and full-page rendering. These are reproducibility and preservation
+boundaries, not claims of operating-system WORM storage or independent
+time attestation.
+
+The public OEIS page and versioned arXiv record/PDF text were consulted
+on 4 October 2026. The A196460 row was checked in extracted PDF text
+at printed page 32; a web screenshot request failed, so no visual
+inspection of that remote page is claimed. No raw arXiv PDF byte pin or
+independent authentication of its remote revision history is asserted.
+The source's bounded literature and workspace searches are retained with
+their limitations; they do not establish originality. The present article
+does not repeat those searches as an exhaustive negative result.
+
+\begin{thebibliography}{9}
+\bibitem{oeis}
+OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences},
+A196460. Entry by Paul D. Hanna, 2 October 2011; leading asymptotic
+credited to V\'aclav Kotesovec, 25 June 2013.
+\url{https://oeis.org/A196460}. Accessed 4 October 2026.
+
+\bibitem{svatos}
+M. Svato\v{s}, P. Jung, J. T\'oth, Y. Wang and O. Ku\v{z}elka,
+\emph{On Discovering Interesting Combinatorial Integer Sequences},
+arXiv:2302.04606v1, 2023. Appendix A.1, Table 3, printed p. 32.
+\url{https://arxiv.org/abs/2302.04606v1};
+\url{https://arxiv.org/pdf/2302.04606v1}.
+
+\bibitem{native}
+\emph{A one-positive-witness alternative, and exact zero-witness
+classification}, accepted mathematical source note, 4 October 2026,
+Sections 1--2 and 6. Retained as \texttt{ONE\_WITNESS.md} in the
+pinned closure dependencies. SHA-256:
+\texttt{9135dd0e829adb3190e99ed1b62f8d419}\newline
+\texttt{f9f7540cfd92a1acd1635726fa7172c}.
+
+\bibitem{lowaudit}
+\emph{Independent low-arity audit}, accepted audit dossier,
+4 October 2026, especially Section 8. Retained as a pinned text dependency.
+SHA-256:
+\texttt{6bf14006170df1e126fb98d8e06ee97cf}\newline
+\texttt{b51786f9ce11bcc0a37370a896d5afe}.
+
+\bibitem{source}
+\emph{Zero-auxiliary clipping tables and A196460}, mathematical proof
+and exact-evidence packet, 4 October 2026. Complete proof, source notes,
+checks and preservation ledger retained in \texttt{inputs/asymptotics}.
+Manifest and proof hashes appear in Appendix~\ref{sec:provenance}.
+
+\bibitem{audit}
+\emph{Independent audit of clipping table counts and asymptotic inverses},
+4 October 2026. Complete audit and exact rational evidence retained in
+\texttt{inputs/independent-audit}. Manifest and audit hashes appear in
+Appendix~\ref{sec:provenance}. Numerical ratios in Table~\ref{tab:ratios}
+are transcribed from its \texttt{evidence/enclosures.json}.
+\end{thebibliography}
+\end{document}

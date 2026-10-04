@@ -1,0 +1,729 @@
+                            Sharp uniform finite sector
+                             truncations of A196460
+                                    A companion mathematical article
+
+                                                    4 October 2026
+
+                                                         Abstract
+          The normalized terms of OEIS A196460 have an exact decomposition into 2n + 1 positive
+      sectors. For every n ≥ 32, we determine the largest relative excess of a tail over its first omitted
+      sector, simultaneously over every truncation order 0 ≤ M < 2n. The unique worst truncation
+      is M = 2n − 4, its excess is an explicit rational function, and the optimal asymptotic uniform
+      constant is 9/13. For the clipping-table count Cn = 1 + an , merging the extra contribution
+      into the terminal sector changes the exact maximum to 1/n, attained uniquely at M = 2n − 2.
+      Complement symmetry, a raising identity, and estimates on both discrete-Gaussian lattices give
+      elementary proofs. Separately, a sector coefficient is asymptotic to its leading monomial precisely
+      when k 2 /n → 0; an explicit central correction remains uniform for k = o(n2/3 ) and yields the
+                     2            √
+      transition e−c /4 at k ∼ c n. The finite-sector conclusions neither provide a growing-order
+      inverse expansion nor justify replacing all earlier coefficients by their leading terms. The threshold
+      32 is convenient, not asserted minimal. No novelty or priority claim is made.
+
+Keywords. A196460; finite sector expansions; sharp uniform tails; discrete Gaussian; clipping
+tables; growing-order asymptotics.
+
+
+1    The exact sectors and the scope of the question
+For an integer n ≥ 1, let
+                                                       n
+                                                                 !
+                                                       X n
+                                                an =             (1 + 2j )n .                                      (1)
+                                                       j=0
+                                                             j
+                                                                                                               2
+This is OEIS A196460, entered by Paul D. Hanna in 2011; the leading asymptotic an ∼ 2n is
+credited there to Václav Kotesovec in 2013 [1]. Define, for 0 ≤ k ≤ 2n,
+                                        !       !
+                                    n       n rc                                                   an
+                                                             S(n, k) = Pk (n)2−nk ,
+                            X
+               Pk (n) =                       2 ,                                           An =       .           (2)
+                           r+c=k
+                                    r       c                                                      2n2
+                          0≤r,c≤n
+
+Each Pk (n) is strictly positive: every allowed k admits at least one pair (r, c) in the indicated square.
+Expanding (1), then replacing both binomial indices by their complements, gives
+                                    n                       n
+                                                !    !                   !       !
+                                    X       n       n uv   X    n               n (n−r)(n−c)
+                           an =                       2 =                         2          ,
+                                  u,v=0
+                                            u       v     r,c=0
+                                                                r               c
+                                    n                              2n
+                                                !    !
+                                    X       n       n −n(r+c)+rc X
+                          An =                        2         =     S(n, k).                                     (3)
+                                  r,c=0
+                                            r       c             k=0
+Sharp uniform finite sector truncations                                                         A196460
+
+
+Thus the sector decomposition is finite and exact, including both endpoints.
+   The companion article [2] proves the zero-auxiliary-variable classification for Boolean tables
+clipped at K = n + 1, as well as the count Cn = 1 + an . Briefly, an accepted boundary mark
+forces its full row or column; with the tail corner rejected, r row marks and c column marks leave
+(n − r)(n − c) free interior entries. Summing their choices gives the double sum in (3). The accepted
+corner forces the single full table, accounting for the extra 1. We use this established count without
+repeating its closure classification or inverse theory.
+   The same companion explains the graph interpretation an = G 2i(G) : G ranges over graphs
+                                                                            P
+
+on two distinguished labeled parts of size n, and i(G) counts isolated vertices. Choosing a subset
+of isolated vertices marks the boundary. Its sector interpretation is S(n, k) = E i(G)
+                                                                                           
+                                                                                         k   for the
+uniform random graph. This is consistent with the existing two-unary, one-binary relational model
+for A196460 in Svatoš et al. [3]; the two graph parts are distinct copies of the domain, so all n2
+edges, including pairs of corresponding labels, remain available. These interpretations are credited
+background, not claims of a new model.
+   For every allowed truncation order, put
+                         2n
+                         X                                    Rn,M
+              Rn,M =             S(n, k),       En,M =                 − 1,       0 ≤ M < 2n.       (4)
+                        k=M +1
+                                                           S(n, M + 1)
+
+The question here is stronger than a statement for each fixed M : how well does the first omitted
+exact sector approximate the tail, uniformly over all 2n possible values of M ?
+Theorem 1.1 (Exact sharp bound for every truncation). For every integer n ≥ 32, simultaneously
+for all integers 0 ≤ M < 2n,
+                                                                3(3n2 + n + 1)
+                            0 ≤ En,M ≤ Kn ,           Kn =                      .                   (5)
+                                                              n(13n2 − 15n + 2)
+The upper equality holds uniquely at M = 2n − 4. Moreover,
+                         9       174n + 21                                                9
+                 Kn =      +                    ,                lim    max nEn,M =         .       (6)
+                        13n 13n(13n2 − 15n + 2)                 n→∞ 0≤M <2n              13
+In particular 9/13 is the optimal asymptotic uniform constant.
+Theorem 1.2 (Sharp bound for the clipping-table count). Let Cn = an + 1, and merge its additional
+normalized contribution into the terminal sector only:
+                                                                              2n
+                                 (
+                                   S(n, k),      0 ≤ k < 2n,           Cn    X
+                   SC (n, k) =                                             =     SC (n, k).         (7)
+                                   2S(n, 2n),    k = 2n.               2n2   k=0
+
+For n ≥ 32, simultaneously for 0 ≤ M < 2n,
+                                                P2n
+                                      C           k=M +1 SC (n, k)    1
+                                 0 ≤ En,M :=                       −1≤ .                            (8)
+                                                  SC (n, M + 1)       n
+The upper equality holds uniquely at M = 2n − 2. At M = 2n − 1 the relative excess is zero. The
+sharp asymptotic uniform constant in this merged convention is therefore 1.
+
+   The threshold 32 in both statements is chosen for the elementary estimates below. No minimal-
+threshold assertion is intended. Also, the normalization in Theorem 1.2 matters: if the additional
+   2
+2−n is left outside the sectors and the old denominator S is used, the excess at M = 2n − 1 is
+exactly 1, not O(1/n).
+
+                                                       2
+Sharp uniform finite sector truncations                                                           A196460
+
+
+2     Complement symmetry and the raising identity
+Two exact identities connect the middle of the sector range with its ends. First, substituting
+r = n − u, c = n − v gives
+                                 −n(r + c) + rc = −n2 + uv.
+Binomial symmetry therefore proves
+                                                           2
+                                  S(n, 2n − k) = 2−n Pk (n),                  0 ≤ k ≤ 2n.               (9)
+                                                       2
+In particular P0 (n) = 1 and S(n, 2n) = 2−n , which explains the terminal merge in (7).
+   Write wr,c = nr
+                       n rc
+                        c 2     , with all sums below restricted to valid r, c. For 0 ≤ k < 2n, the raising
+identity is                                           X
+                                                               wr,c (n − r)2c + (n − c)2r .
+                                                                                            
+                              (k + 1)Pk+1 (n) =                                                        (10)
+                                                     r+c=k
+
+Indeed, (n − r) nr = (r + 1) r+1
+                              n
+                                 , and multiplication by 2c changes 2rc to 2(r+1)c . Raising the first
+                                      
+
+coordinate therefore gives a target weight times its new first coordinate; raising the second gives
+that weight times its new second coordinate. Every target of total degree k + 1 is counted with total
+multiplier k + 1. Forbidden boundary moves have factor n − r = 0 or n − c = 0. This argument also
+covers k = 0 and k = 2n − 1.
+    Set
+                                 λ = log 2,          h = r − k/2,             D = n − k/2.
+The bracket in (10) equals
+                                          2k/2 2D cosh(λh) + 2h sinh(λh) .
+                                                                                  
+                                                                                                       (11)
+Here D > 0 for k < 2n, cosh(λh) ≥ 1, and h sinh(λh) ≥ 0. Dividing the sum by the positive Pk (n)
+proves
+                            Pk+1 (n)   2n − k k/2
+                                     ≥        2 ,      0 ≤ k < 2n.                         (12)
+                             Pk (n)     k+1
+  For a high-sector ratio, put ℓ = 2n − k. If n ≤ k < 2n, then 1 ≤ ℓ ≤ n; complement symmetry
+and (12) at ℓ − 1 give
+
+                    S(n, k + 1)   Pℓ−1 (n)           ℓ 2−(ℓ−1)/2             3
+                                =          ≤ gn,ℓ :=             ≤ qn :=           .              (13)
+                     S(n, k)       Pℓ (n)            2n − ℓ + 1           2(n + 1)
+                                                     √
+                           √ numerator has values 1, 2, 3/2 at ℓ = 1, 2, 3, and thereafter its next-to-
+For the last inequality, the
+current ratio is (ℓ + 1)/( 2ℓ) < 1. Its exact maximum is thus 3/2. The denominator is at least
+n + 1 throughout 1 ≤ ℓ ≤ n.
+
+
+3     Both discrete Gaussian lattices and every adjacent ratio
+To control low sectors we need an upper, rather than a lower, bound in (10). At fixed k, its
+normalized summand weights in h are proportional to
+                                                                          !            !
+                                       −h2                             n           n
+                                  b(h)2      ,       b(h) =                             .              (14)
+                                                                    k/2 + h     k/2 − h
+
+
+                                                                3
+Sharp uniform finite sector truncations                                                          A196460
+
+
+                                                                      2
+The lattice is Z for even k and Z + 12 for odd k. The factor 2k /4 cancels on normalizing. Extend b
+by zero outside the allowed finite support. It is symmetric, and for nonnegative h where the ratio is
+defined,
+                             b(h + 1)         (D − h)(k/2 − h)
+                                       =                            ≤ 1.                        (15)
+                                b(h)     (k/2 + h + 1)(D + h + 1)
+At the edge of the support the next value is zero, and beyond that b remains zero. Thus b decreases
+with |h|, including the degenerate supports at k = 0, 1.
+
+Lemma 3.1 (Decreasing reweighting). On either of the two lattices, give h probability proportional
+       2
+to 2−h . If b is nonnegative, symmetric, decreasing with |h|, and has positive mean, then for every
+integrable nonnegative increasing function f of |h|,
+
+                                                E[b(h)f (|h|)]
+                                    Eb f :=                    ≤ Ef (|h|),                            (16)
+                                                   Eb(h)
+
+provided the displayed expectations exist.
+
+Proof. For independent variables X, Y with the base Gaussian distribution,
+                                                                      
+                                 (b(X) − b(Y )) f (|X|) − f (|Y |) ≤ 0.
+
+Its expectation is 2 Cov(b, f ). Dividing the resulting inequality by Eb > 0 proves the claim. We
+apply the argument separately on each lattice, never by comparing the two lattices to each other.
+
+   Take
+                               f (x) = cosh(λx) + x sinh(λx),             x ≥ 0.
+Its derivative is nonnegative, and f (x) ≤ (1 + x)2x . If n ≥ 2 and 0 ≤ k ≤ n, then D ≥ 1. The
+expression in (11), divided by 2D2k/2 , is therefore at most f (|h|). We give an explicit common
+bound of 8 for its expectation.
+  On the integer lattice the Gaussian normalizing sum is at least 1. The j = 0, 1, 2 terms of the
+majorant sum to 13/2. Since j(j − 1) ≥ 2j for j ≥ 3,
+
+                                                        (j + 1)2−j(j−1)
+                                                    X
+                             EZ f (|h|) ≤ 1 + 2
+                                                    j≥1
+                                            13                     481
+                                                      (j + 1)4−j =
+                                                  X
+                                          ≤    +2                      < 8.                           (17)
+                                            2     j≥3
+                                                                   72
+
+On the half-integer lattice the two points ± 12 give a normalizing sum at least 2 · 2−1/4 . Set h = m + 12
+on the nonnegative half. Then
+                                        √ X                 2
+                       EZ+1/2 f (|h|) ≤ 2       (m + 23 )2−m
+                                                m≥0
+                                                                         
+                                           √     3                      √
+                                                      (m + 32 )2−m  = 5 2 < 8.
+                                                      X
+                                      ≤        2 +                                                   (18)
+                                                 2 m≥1
+
+The last step uses m2 ≥ m for m ≥ 1. These majorants also verify the absolute convergence required
+in Lemma 3.1.
+
+
+
+                                                          4
+Sharp uniform finite sector truncations                                                          A196460
+
+
+    Averaging the raising bracket and applying that lemma now gives
+
+              Pk+1 (n)    2n − k k/2          S(n, k + 1)
+                       ≤8       2 ,                       ≤ dn := 16n2−n/2 ,        0 ≤ k ≤ n.      (19)
+               Pk (n)      k+1                 S(n, k)
+
+The second bound deliberately sacrifices sharpness: 2n − k ≤ 2n, k + 1 ≥ 1, and k/2 − n ≤ −n/2
+suffice.
+   At n = 32, dn = √  1/128 and (n + 1)dn = 33/128 < 3/2. For successive n ≥ 32, the ratio of
+(n + 1)dn is (n + 2)/( 2n) < 1. Hence dn ≤ qn for every n ≥ 32. The low range 0 ≤ k ≤ n and the
+high range n ≤ k < 2n overlap at k = n and leave no gap. We have proved
+
+                         S(n, k + 1)
+                                     ≤ qn < 1     for all 0 ≤ k < 2n,     n ≥ 32.                   (20)
+                          S(n, k)
+
+Thus the S sectors decrease strictly, and (9) makes the P sectors increase strictly. A finite geometric
+majorant already gives the useful preliminary estimate
+                                            qn       3
+                           0 ≤ En,M ≤            =        ,      0 ≤ M < 2n.                        (21)
+                                          1 − qn   2n − 1
+All-order uniformity has therefore been established before any attempt to locate the sharp maximum.
+
+
+4     The unique worst tail
+Put j = M + 1 and ℓ = 2n − j. Then 1 ≤ j ≤ 2n and 0 ≤ ℓ ≤ 2n − 1. Reversing the finite tail using
+(9) yields the exact identity
+
+                                                           P0 + · · · + Pℓ−1
+                    En,M = Hℓ ,       H0 = 0,       Hℓ =                       (ℓ ≥ 1),             (22)
+                                                                  Pℓ
+where the common argument n is suppressed. Notice that ℓ = 2n is absent: it would correspond to
+M = −1, retaining no sectors. Equation (20) also implies
+
+                                                    Pℓ−1 /Pℓ
+                                             Hℓ ≤            .                                      (23)
+                                                     1 − qn
+We separate the possible ℓ into three ranges.
+
+
+4.1    Low first omitted sectors
+
+If j < n, the first ratio in the tail is bounded by dn , while every later ratio is bounded by qn .
+Consequently Hℓ ≤ dn /(1 − qn ). The quantity ndn /(1 − qn ) = 16n2 2−n/2 /(1 − qn ) decreases for
+n ≥ 32: n2 2−n/2 decreases because ((n + 1)/n)4 < 2, and 1/(1 − qn ) also decreases. At n = 32 their
+product is 11/42. Thus
+                                            11   9
+                                    nHℓ ≤      <        (j < n).                                (24)
+                                            42   13
+
+
+
+
+                                                    5
+Sharp uniform finite sector truncations                                                                  A196460
+
+
+4.2    High first omitted sectors away from the endpoint
+
+If j ≥ n, then 0 ≤ ℓ ≤ n. For 5 ≤ ℓ < n,
+                              gn,ℓ+1   ℓ + 1 2n − ℓ + 1 1  6 34 1
+                                     =                 √ ≤     √ < 1.                                       (25)
+                               gn,ℓ      ℓ     2n − ℓ    2 5 33 2
+Indeed, 2n − ℓ ≥ n + 1 ≥ 33. Therefore for 5 ≤ ℓ ≤ n,
+                                          5                                 5(n + 1)
+                      gn,ℓ ≤ gn,5 =             ,     Hℓ ≤ Bn :=                         .                  (26)
+                                       8(n − 2)                         4(n − 2)(2n − 1)
+We will compare this bound directly with H3 .
+
+
+4.3    The four small nonzero endpoint distances
+
+The finite definition gives
+
+       P0 = 1,                            P1 = 2n,                                       P2 = 3n2 − n,
+              13n3 − 15n2 + 2n                      27n4 − 66n3 + 41n2 − 2n
+       P3 =                    ,             P4 =                           .                               (27)
+                      3                                        4
+                                                                            2
+For example, P3 = 2 n3 + 8n n2 , and P4 = 2 n4 + 16n n3 + 16 n2 ; these also make the formulas
+                                                                 
+
+directly checkable. Thus
+                    1                                              2n + 1
+              H1 =    ,                                      H2 =           ,
+                   2n                                             n(3n − 1)
+                     3(3n2 + n + 1)                                 4(13n3 − 6n2 + 5n + 3)
+              H3 =                   ,                       H4 =                           .               (28)
+                   n(13n2 − 15n + 2)                              3n(27n3 − 66n2 + 41n − 2)
+All denominators are positive for the present range, either directly or from the positive sector
+definitions. In particular, 13n2 − 15n + 2 = (13n − 2)(n − 1) > 0 for n ≥ 2.
+   Algebra gives (6) with Kn = H3 , so nH3 > 9/13. In contrast,
+                                          1  9                   9
+                               nH1 =        < ,          nH2 <          (n > 22).
+                                          2  13                  13
+For H4 , the comparison nH4 < 9/13 reduces, after multiplication by positive denominators, to
+
+            53n3 − 1470n2 + 847n − 210 = n2 (53n − 1470) + 847n − 210 > 0                    (n ≥ 28).      (29)
+
+Finally, Bn < H3 in (26) reduces to
+
+                                 7n4 − 146n3 + 101n2 − 46n + 24 > 0.                                        (30)
+
+This holds already for n ≥ 21, since n3 (7n − 146) > 0 and 101n2 − 46n + 24 > 0 there.
+   The strict comparisons cover all allowed indices: H0 = 0; ℓ = 1, 2, 4 are below 9/(13n); ℓ = 3 is
+above it; 5 ≤ ℓ ≤ n are below H3 ; and j < n is covered by (24). This proves Theorem 1.1, including
+uniqueness. The change of index takes ℓ = 3 precisely to M = 2n − 4. Because the maximum is
+computed exactly for each n ≥ 32, its limiting constant is the ordinary rational-function limit in
+(6); no interchange of an uncontrolled supremum and a limit is involved. No smaller asymptotic
+uniform constant can work at the maximizing truncation.
+
+                                                         6
+Sharp uniform finite sector truncations                                                        A196460
+
+
+                                                                                            C
+      n    maximizer ℓ for an        max En,M           maximizer ℓ for merged Cn      max En,M
+      1                     1             1/2                                   1          1
+      2                     3           15/16                                   3          1
+      5                     9    2817473/10485760                               9   1408737/5242880
+      6                     4           35/222                                  1         1/6
+      8                     4        2105/19852                                 1         1/8
+      9                     3           11/120                                  1         1/9
+     32                     3          45/1984                                  1        1/32
+     64                     3      12353/1115520                                1        1/64
+    128                     3      49281/9005824                                1        1/128
+    160                     3     76961/17621440                                1        1/160
+
+Table 1: Exact tail maxima transcribed from the independent audit’s retained data [7]. Each
+displayed maximizer is unique. The original truncation index is M = 2n − ℓ − 1. The rows below 32
+illustrate finite behavior only; they do not extend the proved all-n threshold. No checker was rerun
+for this article.
+
+5     The extra full table and the terminal endpoint
+                                                         2
+The added 1 in Cn = an + 1 has normalized size 2−n = S(n, 2n). For ℓ ≥ 1 the first omitted sector
+is not terminal and is unchanged by merging. Dividing the added term by that sector gives
+
+                              C                  1
+                             En,M = Jℓ := Hℓ +          (ℓ ≥ 1),     J0 = 0.                       (31)
+                                                 Pℓ
+The separate value at ℓ = 0 is essential: the denominator itself is then the doubled terminal sector,
+and the tail contains only that sector. Formula Hℓ + 1/Pℓ must not be used at ℓ = 0.
+    Since P1 = 2n, J1 = 1/n. For ℓ ≥ 2, strict increase of the P sectors and Theorem 1.1 give
+                                                        1   1
+                                          Jℓ ≤ H3 +        < .
+                                                        P2  n
+The last strict inequality is exactly, after clearing positive denominators,
+
+                                      12n3 − 71n2 + 30n − 1 > 0.                                   (32)
+
+For n ≥ 6, its first two terms equal n2 (12n − 71) > 0, and 30n − 1 > 0 as well. This proves
+Theorem 1.2, with unique maximizer ℓ = 1, or M = 2n − 2.
+   If one retains the unmerged S sectors for Cn , the same calculation still applies for M ≤ 2n − 2.
+At the last truncation, however,
+
+                                    Cn 2n−1
+                                          X
+                                      2 −     S(n, k) = 2S(n, 2n).
+                                    2n    k=0
+
+Relative to the old first omitted sector, the excess is exactly 1. One may instead retain the additional
+term separately and approximate the an part by Theorem 1.1; discarding it is the operation that
+fails at this endpoint.
+
+
+
+
+                                                    7
+Sharp uniform finite sector truncations                                                        A196460
+
+
+6     Leading monomials have a different uniformity boundary
+The exact sectors are available over the full finite range, but replacing Pk (n) by its leading monomial
+is a different approximation. Define
+                                                 k
+                                                 X 2r(k−r)
+                                          αk =                       > 0.                          (33)
+                                                 r=0
+                                                       r!(k − r)!
+
+For fixed k, the polynomial obtained from the binomial products has degree k and leading coefficient
+                                  P k r(k−r)
+αk . The integer sequence k!αk = r r 2          is the established count of labeled graphs with two
+named proper colors, OEIS A047863 [4]. Its connected counterpart for k ≥ 1 is A002027 [5]; the
+entry’s value at zero is a separate convention. These known graph counts are background to the
+fixed-order logarithmic theory, not additional results needed for the tail maximization.
+    For 0 ≤ k ≤ n and r + c = k, write
+                                             r−1               c−1
+                                             Y           i     Y          i
+                                                                             
+                                  Bn,r,c =         1−                 1−      .                    (34)
+                                             i=0
+                                                          n    i=0
+                                                                            n
+
+Then Pk (n)/(αk nk ) is the weighted mean of these products with positive weights proportional
+to 2rc /(r!c!). All factors belong to (0, 1]. The elementary inequality i (1 − xi ) ≥ 1 − i xi for
+                                                                       Q                 P
+
+0 ≤ xi ≤ 1 yields
+                                  k(k − 1)    Pk (n)
+                              1−            ≤        ≤ 1,   0 ≤ k ≤ n.                        (35)
+                                     2n        αk nk
+Here r(r − 1) + c(c − 1) ≤ k(k − 1); a negative lower bound causes no problem.
+    There is also a useful upper bound on the entire finite range:
+
+                             Pk (n)         k(k − 2)
+                                                             
+                                    ≤ exp −          ,                 0 ≤ k ≤ 2n.                 (36)
+                             αk n k            4n
+For a valid pair r, c ≤ n, every product factor is positive, including when r = n or c = n. With
+h = r − k/2, use log(1 − x) ≤ −x and
+
+                                                               k(k − 2)
+                                 r(r − 1) + c(c − 1) =                  + 2h2
+                                                                  2
+to bound Bn,r,c by exp[−k(k − 2)/(4n) − h2 /n]. When k > n, the invalid pairs in the full αk sum
+contribute zero to Pk (n) and obey the same upper bound. Averaging proves (36). At k = 1 the
+displayed exponent is positive, which is harmless.
+
+Theorem 6.1 (Exact boundary for leading monomials). For any integer sequence 0 ≤ k(n) ≤ 2n,
+
+                                 Pk(n) (n)                           k(n)2
+                                            −→ 1         ⇐⇒                −→ 0.                   (37)
+                                αk(n) nk(n)                            n
+
+Proof. If k 2 /n → 0, then eventually k ≤ n, and (35) proves convergence. Conversely, if k 2 /n
+does not tend to zero, some subsequence satisfies k 2 /n ≥ δ > 0. On this subsequence k → ∞, so
+eventually k(k − 2)/(4n) ≥ δ/8. Equation (36) then bounds the ratio above by e−δ/8 < 1. This
+contradicts convergence to 1. No monotonicity of k(n) is assumed.
+
+
+
+                                                         8
+Sharp uniform finite sector truncations                                                     A196460
+
+
+7      An explicit central correction
+The square-root scale is the boundary for the uncorrected leading term. A simple correction gives a
+wider uniform range.
+
+Theorem 7.1 (Corrected coefficient estimate). For n ≥ 3 and 0 ≤ k ≤ n, put
+
+                                   k(k − 2)                     k(k − 1)(2k − 1)
+                             U=             ,         ε=                           .           (38)
+                                      4n                      12n2 (1 − (k − 1)/n)
+
+Then
+                                                  2               Pk (n)
+                                                     
+                                     e−ε 1 −              ≤ eU           ≤ 1.                  (39)
+                                                  n               αk nk
+In particular the corrected ratio differs from 1 by at most ε + 2/n. On the explicit subrange
+0 ≤ k ≤ n/2,
+                                             Pk (n)   2   k3
+                                  0 ≤ 1 − eU        ≤   +    .                            (40)
+                                              αk nk   n 3n2
+Consequently, uniformly for k = o(n2/3 ),
+                                                              "                   !#
+                           Pk (n)         k(k − 2)                         1  k3
+                                          
+                                k
+                                  = exp −                          1+O       + 2        .      (41)
+                           αk n              4n                            n n
+     √
+If k/ n → c ∈ (0, ∞), then
+                                              Pk (n)       2
+                                                   k
+                                                     −→ e−c /4 .                               (42)
+                                              αk n
+
+Proof. The αk weights of h = r − k/2 are proportional to
+                                                              !
+                                                    k       2
+                                                         2−h .
+                                                 k/2 + h
+
+The binomial factor is symmetric and decreases with |h| on the appropriate parity lattice. Applying
+Lemma 3.1 to f (|h|) = h2 bounds its second moment by the base Gaussian second moment. On the
+integer lattice, with denominator at least 1,
+                                                                        107
+                                                            j 2 4−j =
+                                                      X
+                                  EZ h2 ≤ 1 + 2                             < 2.               (43)
+                                                      j≥2
+                                                                         54
+
+The j = 1 terms give 1, and j 2 ≥ 2j for j ≥ 2 justifies the majorant. On the half-integer lattice,
+divide by the lower normalizing bound 2 · 2−1/4 and use m(m + 1) ≥ 2m to obtain
+                                                                           41
+                                                    (m + 12 )2 4−m =
+                                                X
+                               EZ+1/2 h2 ≤                                    < 2.             (44)
+                                                m≥0
+                                                                           27
+
+Thus in the αk distribution, Eh2 < 2 on either lattice.
+    For 0 ≤ x < 1, the series for − log(1 − x) gives
+
+                                             x2
+                                  −x −             ≤ log(1 − x) ≤ −x,                          (45)
+                                          2(1 − x)
+
+
+                                                          9
+Sharp uniform finite sector truncations                                                             A196460
+
+
+because m≥2 xm /m ≤ x2 /[2(1 − x)]. Apply this to the product (34). Every denominator 1 − i/n
+         P
+
+is at least 1 − (k − 1)/n > 0. Also
+                               r−1          c−1          k−1
+                               X            X            X            k(k − 1)(2k − 1)
+                                     i2 +         i2 ≤         i2 =                    .
+                               i=0          i=0          i=0
+                                                                             6
+
+To see the inequality, shift the second block of indices from 0, . . . , c − 1 to r, . . . , r + c − 1, which
+can only increase their squares. Summing (45) therefore gives
+
+                                            h2                        h2
+                                 −U −          − ε ≤ log Bn,r,c ≤ −U − .                                (46)
+                                            n                         n
+                                                                            2
+Exponentiate and average in the αk distribution. Since e−h /n ≥ 1 − h2 /n,
+
+                                                          2            Pk (n)       2
+                        e−ε (1 − 2/n) ≤ e−ε Ee−h /n ≤ eU                      ≤ Ee−h /n ≤ 1.
+                                                                       αk nk
+
+This proves (39). The cases k = 0, 1 are also included; their products may be checked directly and
+ε = 0. At k = n the denominator in (38) is 1/n > 0, so that endpoint remains valid even though
+the numerical bound is loose.
+   Using 1 − e−ε ≤ ε bounds the deficit by ε + 2/n. For k ≤ n/2, 1 − (k − 1)/n ≥ 1/2 and
+k(k − 1)(2k − 1) ≤ 2k 3 , giving ε ≤ k 3 /(3n2 ) and (40). Every sequence k = o(n2/3 ) eventually lies in
+                                                                                               √
+this subrange and has vanishing error, proving the uniform meaning of (41). Finally, if k/ n → c,
+then U → c2 /4 and the corrected ratio tends to 1, which yields (42).
+
+
+8    What the uniformity does and does not provide
+Theorems 1.1 and 1.2 control a finite sum of exact positive sectors. They permit any integer
+truncation order M = M (n) in the full range 0 ≤ M < 2n, even one approaching the terminal
+endpoint. The leading-monomial statements instead compare one coefficient at a time. Their
+narrower ranges are compatible with, and do not limit, the exact-sector tail theorem.
+   There is an additional distinction between coefficientwise relative accuracy and remainder-scale
+accuracy. Replacing every retained Pk (n) by αk nk can introduce errors in earlier sectors that are
+much larger than the first omitted sector. Neither Theorem 6.1 nor Theorem 7.1 licenses that
+substitution at the tail’s relative-error scale. The precise bounds proved here always identify which
+quantity is being approximated.
+   Similarly, a uniform finite-sector estimate does not by itself extend the companion’s fixed-order
+logarithmic or Laurent inverse expansions to growing orders. Composition, logarithms, and inversion
+require control of their own coefficients, accumulated errors, and any derivatives used in a real-
+variable argument. No convergence of an infinite sector series at noninteger arguments, and no exact
+integer inverse obtained by flooring an approximate real inverse, is claimed.
+   Several further questions are suggested by these proofs, but are not settled here. A growing-order
+logarithmic or inverse theorem would need an explicit admissible order range and an error bound
+stable under the relevant transformations. A central-range extension of (39) would require higher-
+order product corrections with uniform control beyond k = o(n2/3 ). Parity-sensitive Gaussian or
+theta refinements are a natural tool for that comparison, but the underlying theta asymptotic for
+k!αk is already recorded in A047863, credited to Kotesovec in 2013 [4]. The classical colored-graph
+
+                                                               10
+Sharp uniform finite sector truncations                                                       A196460
+
+
+literature is also identified there and in A002027. The remaining question is the additional uniformity
+for this two-parameter coefficient and its use in transformed expansions, not the discovery of the
+known parity constants.
+
+
+A     Evidence and preservation
+The mathematical source packet [6] and its fresh independent audit [7] are retained in full in
+the source-evidence bundle. The audit’s verdict is that no mathematical correction is required.
+The proofs in this article are analytic; finite exact computations corroborate their identities and
+comparisons but do not replace the all-n arguments.
+   The source’s stored standard-library checks cover n = 1, . . . , 128: 16 640 complement identities,
+16 512 raising identities and squared lower bounds, 15 520 global adjacent-ratio comparisons, 97
+complete maxima checks for each tail convention, and 2 498 elementary leading-sector comparisons.
+Its algebra evidence records the strict polynomial comparisons, Gaussian sums, and 129 exact
+leading-weight second moments.
+   The independent audit uses newly authored integer and rational arithmetic over n = 1, . . . , 160.
+It records 320 direct normalizations, 25 920 complement identities, 25 760 raising identities and
+squared lower bounds, and 24 768 global-ratio comparisons. It checks each sharp tail inequality,
+including equality only at its claimed unique index, in 24 768 cases per convention. It also records
+13 040 leading-product comparisons, 4 272 rigorous corrected-coefficient comparisons using rational
+exponential enclosures, and 321 exact second-moment comparisons. The corrected finite test range
+is only a corroborating subset; the analytic proof covers all n ≥ 3, 0 ≤ k ≤ n.
+   No scientific program in either packet or an upstream dependency was run or imported in preparing
+this article. The stored programs and their historical output are inert evidence. Only separately
+inspected presentation and packaging tools are used for typesetting, rendering, reproducibility checks,
+and archiving. Table 1 is a transcription of retained exact data, not a new scientific computation.
+   The source records an unchanged 51-object input boundary, captured after initial inert inspection
+and before its new sector checker ran. The independent audit records a separate unchanged 333-
+object boundary, including the full predecessor article release and its specified adjacent artifacts.
+These scoped historical claims are preserved as recorded. The source’s narrower boundary does
+not assert preservation of unrelated concurrent article trees; the audit’s later snapshot does not
+retroactively broaden that earlier claim. Earlier dependency histories retain their own qualifications.
+   The presentation bundle records its own before-and-after boundary for the inputs it reads and
+copies. It preserves source bytes, permission modes, and nanosecond modification times, including
+directory metadata; access times are excluded because reading may update them. The predecessor
+article is not revised. Authenticated copying and extraction record metadata beyond ZIP’s coarse
+timestamp field. External build dependencies are separately locked, and an isolated fresh-format
+no-shell-escape build records all three typesetting passes and their input union. The final PDF is
+rendered page by page for visual review. Read-only sealing and digest checks are integrity measures,
+not WORM storage or an independently trusted timestamp.
+
+
+
+
+                                                  11
+Sharp uniform finite sector truncations                                                     A196460
+
+
+
+ Object                            SHA-256
+ Source proof                      ebd92e3b5bdf684981b2ff248376ac29
+                                   0c57aec403169beee780fef9ea92aa65
+ Source manifest                   bf48296dc1bd86689df3dbef9cb3bba99
+                                   903ec84a32f226e2289ec79ea0a3a29
+ Independent audit                 4fa84b2ddfe383668c86ea0ad4d7419b
+                                   0304eb0d9a97725aecbdab7e3b63ff03
+ Audit manifest                    039c112bd070a8b48b92584c76ec05b3
+                                   876662bb82f186813a0fb445ddd9e36c
+
+
+    The public A196460, A047863, and A002027 pages were consulted as text on 4 October 2026 for
+the precise sequence attributions and known graph and theta context. The relational-model citation
+is also documented in the predecessor article’s retained primary-source check. No new exhaustive
+literature search or priority audit was performed. Neither the source archive nor this article is
+a theorem-prover verification or an endorsement of every unrelated scientific object retained in
+upstream dependency archives.
+
+
+References
+[1] OEIS Foundation Inc., The On-Line Encyclopedia of Integer Sequences, A196460. Entry by Paul
+    D. Hanna, 2 October 2011; leading asymptotic credited to Václav Kotesovec, 25 June 2013.
+    https://oeis.org/A196460. Consulted 4 October 2026.
+
+[2] Zero auxiliary clipping tables: Exact counts and all orders asymptotics of A196460, companion
+    article, 4 October 2026. Previously delivered fixed-order article; retained as an unchanged
+    reference in the source-evidence dossier. Sections 2–4 give the classification, count, and graph
+    interpretation; later sections treat fixed-order logarithmic and inverse expansions.
+
+[3] M. Svatoš, P. Jung, J. Tóth, Y. Wang and O. Kuželka, On Discovering Interesting Combinatorial
+    Integer Sequences, arXiv:2302.04606v1, 2023. Appendix A.1, Table 3, printed p. 32. https:
+    //arxiv.org/abs/2302.04606v1.
+
+[4] OEIS Foundation Inc., A047863, labeled graphs with two named proper colors. The entry
+    records the binomial-sum formula and parity-dependent theta asymptotic, the latter credited
+    to Václav Kotesovec, 24 June 2013; it also links the classical colored-graph literature. https:
+    //oeis.org/A047863. Consulted 4 October 2026.
+
+[5] OEIS Foundation Inc., A002027, connected labeled graphs with two named proper colors. The
+    value at zero uses the entry’s convention. https://oeis.org/A002027. Consulted 4 October
+    2026.
+
+[6] Uniform growing-order sector truncations for A196460, accepted proof and exact-evidence packet,
+    4 October 2026. Full packet retained in inputs/uniform-sectors; proof and manifest pins
+    appear in Appendix A.
+
+[7] Independent audit of uniform growing-sector truncations, 4 October 2026. Full analytic audit,
+    fresh exact evidence, and preservation records retained in inputs/independent-audit; audit
+    and manifest pins appear in Appendix A.
+
+
+
+                                                 12
+

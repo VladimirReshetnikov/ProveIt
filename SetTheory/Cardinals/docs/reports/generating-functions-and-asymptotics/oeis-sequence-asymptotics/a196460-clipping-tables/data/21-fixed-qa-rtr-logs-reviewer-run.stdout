@@ -1,0 +1,312 @@
+input-authentication: PASS
+original-preservation: PASS
+locked-build: PASS
+owned-selftests: PASS
+manifest-generation: PASS
+manifest-verification: PASS
+archive-a: PASS
+archive-b: PASS
+extraction: PASS
+relocated-verification: PASS
+relocated-locked-build: PASS
+reject-archive-extra: PASS
+/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/zipfile/__init__.py:1625: UserWarning: Duplicate name: 'ArityAsymptotics/INPUT_PINS.json'
+  return self._open_to_write(zinfo, force_zip64=force_zip64)
+reject-archive-duplicate: PASS
+reject-archive-symlink: PASS
+reject-archive-wrong-mode: PASS
+reject-archive-corrupt-payload: PASS
+{
+  "additional_archive_refusal_count": 5,
+  "candidate_pdf_sha256": "2a95d839ec43787f55cd73a7cb8e6a65635210388398f33b30396910cc128910",
+  "candidate_snapshot_manifest_sha256": "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+  "candidate_tex_sha256": "6569cdc99dc96bdf53c819d18ecfccad030771b5a1795b07c7deb02b3e7a901c",
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "check-inputs"
+      ],
+      "exit_status": 0,
+      "label": "input-authentication"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/freeze_inputs.py",
+        "verify-originals"
+      ],
+      "exit_status": 0,
+      "label": "original-preservation"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/build_article.py",
+        "--pins-sha",
+        "f330e99fd48b98ce57b1b205416d98acda22dbff63ca6ab2c0a769919120250d",
+        "--dependency-lock-sha",
+        "01477b108b9576ce8fe0fc3ee516e1c106e684940d335a6fe694c675e5e60f79",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/locked-build"
+      ],
+      "exit_status": 0,
+      "label": "locked-build"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/selftest.py",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/owned-selftests"
+      ],
+      "exit_status": 0,
+      "label": "owned-selftests"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "manifest",
+        "--output",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate-manifest.json"
+      ],
+      "exit_status": 0,
+      "label": "manifest-generation"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "verify",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d"
+      ],
+      "exit_status": 0,
+      "label": "manifest-verification"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "archive",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--output",
+        "/workspace/shared/independent-arity-article-release-review-20261004/release-a.zip"
+      ],
+      "exit_status": 0,
+      "label": "archive-a"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "archive",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--output",
+        "/workspace/shared/independent-arity-article-release-review-20261004/release-b.zip"
+      ],
+      "exit_status": 0,
+      "label": "archive-b"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "extract",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--archive",
+        "/workspace/shared/independent-arity-article-release-review-20261004/release-a.zip",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/extracted"
+      ],
+      "exit_status": 0,
+      "label": "extraction"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/extracted/tools/release.py",
+        "verify",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d"
+      ],
+      "exit_status": 0,
+      "label": "relocated-verification"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/extracted/tools/build_article.py",
+        "--pins-sha",
+        "f330e99fd48b98ce57b1b205416d98acda22dbff63ca6ab2c0a769919120250d",
+        "--dependency-lock-sha",
+        "01477b108b9576ce8fe0fc3ee516e1c106e684940d335a6fe694c675e5e60f79",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/relocated-build"
+      ],
+      "exit_status": 0,
+      "label": "relocated-locked-build"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "extract",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--archive",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-extra.zip",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-output-extra"
+      ],
+      "exit_status": 2,
+      "label": "reject-archive-extra"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "extract",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--archive",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-duplicate.zip",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-output-duplicate"
+      ],
+      "exit_status": 2,
+      "label": "reject-archive-duplicate"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "extract",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--archive",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-symlink.zip",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-output-symlink"
+      ],
+      "exit_status": 2,
+      "label": "reject-archive-symlink"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "extract",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--archive",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-wrong-mode.zip",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-output-wrong-mode"
+      ],
+      "exit_status": 2,
+      "label": "reject-archive-wrong-mode"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/independent-arity-article-release-review-20261004/candidate/tools/release.py",
+        "extract",
+        "--manifest-sha256",
+        "2d6e4f31b4f3362847cce11289459f3b60b710800f8b154ba21da128bc93b34d",
+        "--archive",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-corrupt-payload.zip",
+        "--output-dir",
+        "/workspace/shared/independent-arity-article-release-review-20261004/bad-output-corrupt-payload"
+      ],
+      "exit_status": 2,
+      "label": "reject-archive-corrupt-payload"
+    }
+  ],
+  "dependency_lock_sha256": "01477b108b9576ce8fe0fc3ee516e1c106e684940d335a6fe694c675e5e60f79",
+  "dependency_system_input_count": 264,
+  "input_pins_sha256": "a831a8433e0c85cd108df9a5f559428069ba8cec8cf302d2569087c5b63ccadb",
+  "inputs": {
+    "counts": {
+      "report69-low-arity-compilers-release-20261004": 44,
+      "report70-two-scale-radius-release-20261004": 88
+    },
+    "frozen_files": 46,
+    "historical_changes": 132,
+    "history_after": 376,
+    "history_before": 249,
+    "original_scoped_entries": 994,
+    "unchanged_core": 62
+  },
+  "manuscript_pins_sha256": "f330e99fd48b98ce57b1b205416d98acda22dbff63ca6ab2c0a769919120250d",
+  "original_candidate_preserved": true,
+  "owned_selftest_count": 39,
+  "page_count": 16,
+  "pdf_and_all_rasters_equal_across_relocated_locked_builds": true,
+  "repeated_zip_sha256": "c1863fb2e981fb38eeeacc07409f9b0a9ec98db334ce78e9820e31caf987142a",
+  "scientific_execution": false,
+  "scope": "Presentation and release tooling only. No scientific artifacts imported or executed. Candidate snapshot, not final release seal.",
+  "source_tools": {
+    "build_article.py": "35302b6e247dc27e4f1d87d107feb4d6b748513e72222a782ecb3a5ee4bbfb2e",
+    "freeze_inputs.py": "c44db716e024f2ebae44ec65f57be067615c81397c047c6546041e0a431b2cb5",
+    "release.py": "2515d07ae3a5136f89d9beeedab51fc7302ddba5db5124ace774e46d89a3f0a4",
+    "selftest.py": "b08cb95a06ce8d496c423defe0dbf755ca9e50b60f52047ebbb55bbda86033f6"
+  },
+  "status": "PASS"
+}
+
