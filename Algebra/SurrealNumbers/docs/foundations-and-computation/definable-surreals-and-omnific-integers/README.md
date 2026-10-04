@@ -17,7 +17,7 @@ Part I's numbering and labels did not change when Parts II and III were added.
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 160 pages
+article.pdf                                  the compiled report, 161 pages
 README.md                                    this guide
 04-hod-transcendence-AUDIT.md                source 04's research and verification audit, as delivered
 07-initial-core-SOURCE_AND_PROOF_AUDIT.md    source 07's source and proof audit, as delivered
@@ -397,6 +397,23 @@ sign-limit normal-form fact used for Theorem 34.1(3)–(4), a check: it follows
 from Gonshor's Theorems 5.11–5.12 as formulated by Bournez–Guilmant
 (Definition 2.20, Theorem 2.21; the write did not consult Gonshor's book).
 
+**Batch-95 notes (4 October 2026):** Part IX of
+[`birthday-cutoffs-and-hereditary-sets`](../birthday-cutoffs-and-hereditary-sets/)
+(batch 95) proves the comparison map for the birthday-enriched signature
+`(No; 0, 1, +, −, ·, <, ≺_b)` and natively for `Oz` (its Theorems 71.1, 72.2,
+`hset:sf:thm:graph`, `hset:sf:thm:roundtrip`), and shows (its Proposition
+74.2, `hset:sf:prop:reducts`) that for `(No, +, ·, <, Oz, Ω)` Question 42.1 in its specific
+form, a definable relation sending each surreal to the codes of its own sign
+sequence, is equivalent to the definability of birthday precedence there;
+whether it is definable is not decided, and the question stays open. A dated
+note after Question 42.1 records this; a second, after Question 42.3, records
+that the same proposition reduces only the analogue of 42.3 for
+interpretations with such a comparison to definability (its Question 79.3,
+`hset:sf:q:reducts`, asks which reducts qualify), and leaves 42.3 itself
+untouched. These notes move the page count from
+160 to 161 (the end of Section 42 and the bibliography shift by about one
+page); no label number changed.
+
 ## Unproved claims recorded as questions (Vladimir's rule of 4 October 2026)
 
 - **Question 28.17**: 02 imports "Namba forcing in the Laver-style
@@ -464,7 +481,10 @@ specializations only.
   (`hset:kw:thm:double`, double monomials `ω^(ω^j(x))`) and calibrates
   free-algebra universality of `No` and `Oz` over ZF by the first
   Kinna–Wagner principle (`hset:kw:thm:equivalences`); an unnumbered note
-  after Lemma 8.1 (batch 89) records this.
+  after Lemma 8.1 (batch 89) records this. Batch 95: its Part IX proves the
+  comparison map for the birthday-enriched signature and reduces
+  Question 42.1 for `(No, +, ·, <, Oz, Ω)` to the definability of birthday precedence
+  (`hset:sf:prop:reducts`); see the batch-95 notes under Part III above.
 - [`cantor-families-of-surreal-subfields`](../cantor-families-of-surreal-subfields/)
   (`csf:`, batch 90). Its Lemma 3.2 (`csf:lem:independence`) proves again the
   case `K = k` (real algebraic numbers), `G = {0}`, exponents `b ω^q` with
@@ -555,7 +575,7 @@ bound. Both retain the earlier wording and point to the credited, still-open
 Question 42.14; the length claim has not been refuted.
 
 The edited source was built directly with three `pdflatex -no-shell-escape`
-passes in a scratch directory. The current PDF has 160 pages, 346 unique labels,
+passes in a scratch directory. The PDF of that review had 160 pages, 346 unique labels,
 823 resolved literal internal references and 190 citations to 45 bibliography
 keys. The final log has no warnings, undefined references or bad boxes.
 Physical PDF pages 48, 82, 93 and 156 were visually checked. This build and source
@@ -569,8 +589,12 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 The original publication recorded a standard-package build with no errors,
 warnings, overfull or underfull boxes, undefined references, multiply defined
-labels or duplicate destinations (160 pages). The current review build is
-recorded above. Build in a scratch directory; auxiliary files are not kept here.
+labels or duplicate destinations (160 pages). The publication review build is
+recorded above. After the batch-95 notes, `latexmk -pdf` (pdflatex) gives 161
+pages with no errors, warnings, overfull or underfull boxes, undefined
+references, multiply defined labels or duplicate destinations, and the same
+692 `\newlabel` entries with unchanged numbers as the build of the committed
+text. Build in a scratch directory; auxiliary files are not kept here.
 
 07's script writes `verification.json` into the current directory unless
 `--output` is given, and `make verify` in 07's Makefile does the same; 04's

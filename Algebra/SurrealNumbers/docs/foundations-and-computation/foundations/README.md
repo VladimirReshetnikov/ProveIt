@@ -264,6 +264,15 @@ result as a check of the pinned revision.
   Chen–Hamkins–Yang (recorded here, `found:sub:announcement`) and prints a
   written proof of the global statement as a proof of the announced theorem,
   credited to them; the announced axiomatization is not addressed there.
+  Its Part IX (batch 95) gives explicit recursively axiomatized theories with
+  only surreal or omnific individuals, bi-interpretable with ZFC by a
+  round-trip recipe (`hset:sf:thm:theories`, `hset:sf:thm:surrealtheory`; the
+  announced intrinsic axioms stay unverified, `hset:sf:q:intrinsic`), proves
+  under Con(ZFC) that GBC is not uniformly interpretable in ZFC
+  (`hset:sf:thm:noint`), and gives a two-sorted class lift bi-interpretable
+  with GBC (`hset:sf:thm:classlift`). An unnumbered "Related (batch 95)" note
+  at the end of `found:sub:announcement` records this; the page count (96) and
+  all label numbers are unchanged.
 - [surreal-fields-across-universes](../surreal-fields-across-universes/)
   proves an external form of `found:thm:discrete`: for transitive `M ⊆ N`
   with the same ordinals, every `N`-set of elements of `No^M` is closed and
