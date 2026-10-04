@@ -111,6 +111,16 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [simultaneous shared-fork scout](Papers/research-wip/native-stream-queue/complete84_shared_fork_scout.md)
+finds no saving in a larger finite rewrite grammar: two producer outputs,
+a shared binary intermediate, at most three new gates, and later independent
+registers are allowed. Across 26,680 prefixes, all 791 matching acyclic
+schedules cost at least 84 after full-output liveness. The
+[independent review](Papers/research-wip/native-stream-queue/review_complete84_shared_fork_scout.md) checks the
+exact rejection logic; normal/optimized replays and a separate 151,728-branch
+subset enumeration pass. This is a named-schedule result for all-ring
+identities, not a global lower bound or a restriction on positive charts.
+
 The [computed-wire census](Papers/research-wip/native-stream-queue/complete83_computed_gamma_obstruction.md)
 rejects **all72 acyclic existing-wire replacements** for the main quotient,
 including later producers that can be rescheduled. Every full source costs
