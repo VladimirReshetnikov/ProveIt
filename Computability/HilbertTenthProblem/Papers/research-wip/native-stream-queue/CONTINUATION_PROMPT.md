@@ -44,6 +44,16 @@
 > proof challenge pass. Generic divisor/sign cases and accepted-input soundness
 > remain open; the established universal minimum stays **84 operations**.
 >
+> The [materialized nonunit diagnostic](complete83_nonunit_positive_diagnostic.md)
+> evaluates all83 rows at a positive supplied tuple and obtains factors
+> (1,1,1,1,1,−675,−1), discriminant675 and output zero.
+> Its **fixed numerals fail the compiler recipe**. It proves that positivity
+> alone cannot force the intended factor values; it supplies no falsely
+> accepted compiled input. The [independent review](review_complete83_nonunit_positive_diagnostic.md)
+> reconstructs all25 supplied integers and83 registers and independently
+> recovers all four Pell indices. Author and review pass fresh installed
+> normal/optimized replay. Valid-program soundness of83 remains open.
+>
 > The [native index mismatch](free_coefficient83_native_alias.md) strengthens
 > that proof obstruction: a scaled Pell family retains positive integral h and
 > both auxiliary equations while its main index differs from the abstract target R. The required auxiliary CRT condition is checked separately.
