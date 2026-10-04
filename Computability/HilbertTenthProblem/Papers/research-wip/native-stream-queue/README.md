@@ -567,12 +567,31 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [grouped-population/power composition](matrix193_grouped_power_composition.md)
+combines25 saved additions and24 saved multiplications in each complete matrix
+source. Its current alternatives are:
+
+| Computed controller hats | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None | 1,568 | 145 | 35,587 |
+| LOAD or SWITCH | 1,565 | 144 | 53,347 |
+| LOAD and SWITCH | 1,562 | 143 | 71,107 |
+
+The [independent review](review_matrix193_grouped_power_composition.md) reconstructs all6,260 rows
+in both composition orders, verifies36 power identities and all16 coefficient
+words/2,704 entries, and checks full interfaces, liveness and native/finalizer
+boundaries. The complete polynomials and positive zero tuples equal their
+immediate grouped parents; exact degrees transfer on identical variables.
+Fresh author and independent normal/optimized checks pass. Comparison with
+pre-IDLE ancestors retains only ordinary-input equivalence. Universal84 is
+unchanged; no matrix minimality claim is made.
+
 The [coefficient power reuse](matrix193_coefficient_power_reuse.md)
 removes24 multiplications per complete source by reusing earlier paid packing
 powers at nine coefficient outputs. Its553=305M+248A component appears in
 four full arrays costing1,593 /1,590 /1,590 /1,587, with unchanged witnesses,
 exact degrees and positive zero tuples. These arrays branch from the earlier
-IDLE/affine source and do not yet include the separate grouped-population edit.
+IDLE/affine source and do not include the separate grouped-population edit.
 The [independent review](review_matrix193_coefficient_power_reuse.md) checks the actual exponent identities,
 all24 private deletions and the complete source/interface boundary. Full local,
 coefficient and output identities plus fresh normal/optimized replays pass.
@@ -580,7 +599,7 @@ coefficient and output identities plus fresh normal/optimized replays pass.
 The [grouped population reuse](matrix193_grouped_population_reuse.md)
 saves25 additions in each complete matrix array. The total edge population
 reuses24 additions already needed for disjoint selector groups; one duplicate
-packing sum is also removed. Complete sources now cost **1,592 / 1,589 / 1,589 /
+packing sum is also removed. That branch costs **1,592 / 1,589 / 1,589 /
 1,586**, with145 /144 /144 /143 positive witnesses and unchanged exact degrees
 35,587 /53,347 /53,347 /71,107. The [independent review](review_matrix193_grouped_population_reuse.md)
 reconstructs all6,356 rows, verifies the98-hat identity and all coefficient
