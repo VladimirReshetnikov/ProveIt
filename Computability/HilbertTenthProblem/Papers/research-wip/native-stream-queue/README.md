@@ -27,22 +27,23 @@ full tuple. The [independent source review](review_complete83_outer_slack_collap
 and [mathematical challenge](review_complete83_outer_slack_collapse_math.md)
 check the complete source map, fixed compiler conditions and positive
 auxiliary reconstruction. Fresh normal/optimized receipts pass. This is a
-different candidate from the unproved free-coefficient 83 and square/product
+different candidate from the free-coefficient 83 and square/product
 82 constructions below; the established universal bound remains **84**.
 
-The [auxiliary square/product chart](complete82_auxiliary_square_product_chart.md)
-has a fully paid **82=45M+37A** source, 18 positive witnesses and exact
-degree185, but **universality remains unproved**. Supplying f² and T*f
-removes two gates from84 and preserves the complete polynomial under the
-forward substitution. On the stated positive odd-c sector, the three new
-auxiliary coordinates extend an outer tuple exactly when its five retained
-factors have product +1 or −1. Thus this block loses its former restrictions.
-Every accepted84 input also has full82 zeros with a nonsquare supplied f²,
-defeating the literal inverse without showing a falsely accepted input.
-The [independent review](review_complete82_auxiliary_square_product_chart.md)
-proves the full output identity and uniform degree from the actual rows and
-checks both-sign constructions. Fresh installed normal/optimized receipts
-pass. This candidate does not change the **84-operation universal bound**.
+The [82-operation all-input collapse](complete82_all_input_outer_collapse.md)
+refutes the inherited compiler representation of the square/product chart.
+Its unchanged **82=45M+37A** source, with 18 positive witnesses and exact
+degree185, has infinitely many full positive zeros at every positive input
+on every valid compiler slice, including the explicit rejecting program.
+The original outer slack and computed input root stay positive. An exact
+input Pell index and an unbounded main progression give all five retained
+factors +1; the positive auxiliary extension gives the remaining factors
+1 and Delta. Thus this is a false-input theorem, stronger than the earlier
+failure of a witness inverse. The [source cross-read](review_complete82_all_input_outer_collapse_source.md)
+and [mathematical review](review_complete82_all_input_outer_collapse_math.md)
+pass, as do fresh normal/optimized component receipts. The complete zeros
+are specified by an existence proof, not materialized. The established
+universal bound remains **84 operations**.
 
 The [free auxiliary coefficient scout](complete83_free_coefficient_scout.md)
 emits an **83-operation, degree-111 candidate**, whose **universality is unproved**.
@@ -111,6 +112,19 @@ conditional timed-chart proof and confirms the explicit binary certificate's
 Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
+
+The [U15 repeated-block interface](u15_unary_block_interface.md) gives an
+effective universal family `U_S W^x V_S` in the actual193-generator source,
+with the fixed eight-bit input block W=01010111. Its matrix has trace -8942;
+every nonempty concatenation of ordinary-symbol codes in this published
+encoding is hyperbolic. The even block has an exact Pell-power formula
+and a **12=8M+4A** target assembly from correctly indexed Pell coordinates.
+Their exact index relation and the unbounded membership certificate remain
+unpaid. The [independent review](review_u15_unary_block_interface.md) checks
+the primary initialization passages, matrix identities and assembly;
+fresh normal/optimized receipts pass. This resolves the repeated-block
+input interface, while the separate raw-ones affine slice remains unproved.
+The complete universal bound stays **84 operations**.
 
 The [matrix power-block analysis](matrix193_power_block_obstruction.md)
 provides an exact **8=4M+4A unary target loader**, with zero witnesses, for
