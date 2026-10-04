@@ -37,11 +37,21 @@
 \newcommand{\B}{\mathcal B}
 \newcommand{\code}[1]{\texttt{\detokenize{#1}}}
 \DeclareMathOperator{\Bin}{Bin}
+% Added by the ProveIt write phase (batch 85): repository paths in the
+% [write] notes may also break after a hyphen; dated [write] notes.
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks\do\-}
+% [write] typewriter text prints "--" as two hyphens (the delivered PDF set
+% the options --max-n and --brute-n with an en dash).
+\DisableLigatures[-]{encoding = T1, family = tt*}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 \allowdisplaybreaks[2]
 \setlist{nosep,leftmargin=1.6em}
 \setlength{\parskip}{0.25em}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \thispagestyle{empty}
 \vspace*{8mm}
@@ -89,6 +99,7 @@ Historical priority for the boundary refinements is not established.
 \textbf{Keywords:} transitive finite sets; source enumeration; Boolean layers;
 finite defects; entropy; polynomial recurrences; exact sampling.
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 {\small\setlength{\parskip}{0pt}\tableofcontents}
 \newpage
@@ -99,7 +110,7 @@ finite defects; entropy; polynomial recurrences; exact sampling.
 Let $a(n)$ be the largest possible number of sources in an extensional
 acyclic digraph on $n\ge1$ vertices. OEIS A182220 identifies this quantity
 and records, among other equivalent conjectural expressions,
-\begin{equation}\label{eq:oeis-conjecture}
+\begin{equation}\label{sbd:eq:oeis-conjecture}
  a(n)=n-1-\lfloor\log_2(n-1)\rfloor\qquad(n\ge3).
 \end{equation}
 The entry attributes this formula to Antti Karttunen, August 17, 2013
@@ -114,7 +125,7 @@ fixed distance below, this extremal boundary, and how do those counts
 behave?} Write $u(n,k)$ for the number of isomorphism classes with $n$
 vertices and $k$ sources. The labeled count is $n!u(n,k)$; the factor
 $n!$ will be justified, not assumed. Define
-\begin{equation}\label{eq:boundary-def}
+\begin{equation}\label{sbd:eq:boundary-def}
  q=q(n)=\lceil\log_2n\rceil,
  \qquad b_n^{(d)}=u(n,n-q-d),\qquad d\in\N_0,
 \end{equation}
@@ -163,6 +174,85 @@ also enumerates all extensional DAG isomorphism classes through seven
 vertices. The finite tests support error detection; the proofs, rather
 than the tests, establish the infinite statements.
 
+\begin{writenote}[Added 3 October 2026, batch~85]
+\emph{Provenance.} This report is manuscript~07 of batch~85 of ProveIt's
+\nolinkurl{docs/incoming} intake: the archive
+\nolinkurl{OEIS_A182220_Source_Boundary_Research.zip} (wrapper directory
+\nolinkurl{oeis_source_boundary/}), arrival commit \nolinkurl{9d6968c8a}, placed in
+\nolinkurl{ddf8df5d5} (batch~85C), written against the pin \nolinkurl{6bf7f30d0}
+quoted above. It is a single-source report. Its title block names no
+author and no tool. The write phase prefixed every label with
+\nolinkurl{sbd:}, added the dated notes marked [write], and kept the title page
+out of the PDF page anchors; no statement, proof or number was changed.
+
+\emph{Priority.} The formula $a(n)=n-\lceil\log_2n\rceil$ is \emph{not}
+presented as a new discovery. Its upper half is Tomescu's: on printed
+page~29 of the thesis \cite{tomescu}, which the intake read, the count of
+unlabeled EADs with $n$ vertices and $s$ sources is said to vanish unless
+$2^{n-s}\ge n$, equivalently $s\le n-\lceil\log_2n\rceil$, ``by
+extensionality and the pigeonhole principle''. What the present proof adds
+is the matching construction for every admissible source count (the
+sufficiency half of Theorem~\ref{sbd:thm:support}), itself elementary; no
+priority is claimed for it. The word ``conjecture'' in OEIS records the
+status of an entry's formula in the encyclopedia. It does not certify that
+the problem was open in the literature, nor that the proof below is the
+first.
+
+\emph{OEIS check.} On 3 October 2026 the intake read A182220 on
+\url{https://oeis.org/A182220}. Its formula section lists four conjectural
+expressions: Karttunen's \eqref{sbd:eq:oeis-conjecture} (2013), and others
+by W.~I.~Hurt (2014), P.~Barry (2017) and A.~Krivilev (August 2026, the
+``formula from August 2026'' of the package's \nolinkurl{SOURCES.md}). Each is
+elementarily equivalent to \eqref{sbd:eq:max} (Barry's counts the powers of
+two in $[1,n-1]$, Krivilev's the non-powers of two there), and the intake
+confirmed all four against \eqref{sbd:eq:max} for $n<600$, as well as the
+30 displayed terms. Theorem~\ref{sbd:thm:support} therefore settles all
+four.
+
+\emph{Repository.} The claims of this subsection still hold at the time
+of writing: no other file of the repository mentions A182220, A182162,
+A001192, A182161, extensional acyclic digraphs, Tomescu, Policriti or
+Peddicord. No Lean or Rocq declaration formalizes any statement of this
+report, and its place in the research-report collection confers no formal
+status; Section~\ref{sbd:sec:formal} is a plan. Related material, none of
+it a shared theorem:
+(i)~Lemma~\ref{sbd:lem:collapse} is the classical Mostowski collapse, which
+the surreal report
+\nolinkurl{Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets}
+proves for rooted well-founded codes as its \nolinkurl{hset:lem:collapse};
+(ii)~the collection report
+\nolinkurl{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a116379-bounded-identity-trees}
+counts rooted identity trees, the other classical coding of hereditarily
+finite sets (it cites Meir, Moon and Mycielski); and
+(iii)~Lemma~\ref{sbd:lem:jump} is a counterpart of a criterion of
+\nolinkurl{a003407-dyadic-scaling-rigidity}, discussed in a note after it.
+
+\emph{Notation.} Several letters carry more than one local meaning:
+\begin{itemize}
+\item $d$ is the defect, never the differential in $d/dp$ or $d/dz$;
+ $B_d(z)$ in \eqref{sbd:eq:Bgf} is a generating function, while
+ $B_{2j}$ in Theorem~\ref{sbd:thm:expansion} are Bernoulli numbers.
+\item $T=2^m$ in Sections~\ref{sbd:sec:entropy} and~\ref{sbd:sec:expansion},
+ but $T(n,k)$ in Appendix~\ref{sbd:app:oeis} is the labeled count
+ $n!\,u(n,k)$ of A182162, as is the symbol $E(n,a(n))$ in
+ \eqref{sbd:eq:extremal-count}, which the text does not define otherwise.
+\item $C$ is a transitive core (and $C$, $A$ constants in the proof of
+ Lemma~\ref{sbd:lem:jump}; $C_1(m,p)$ a correction coefficient);
+ $L$ is a source family, $L(z)$ the lacunary series of
+ Proposition~\ref{sbd:prop:maxgf}, and $L$ also a truncation order in
+ Theorem~\ref{sbd:thm:expansion}.
+\item $N=2^m$ in the fixed-deletion and arc sections, $N_r$ the jump
+ indices of Lemma~\ref{sbd:lem:jump}, $N(0,1)$ the normal law;
+ $p=n/T$ is a phase, $p_j$ the recurrence polynomials of
+ \eqref{sbd:eq:prec}; $R$ a removed family, $R_d$ a radius; $M=2^m-m$
+ and, in Theorem~\ref{sbd:thm:cover}, $A=u_m\binom Mk$.
+\item $\rho_n\in(1/2,1]$ is the dyadic phase $n/2^{q}$, whereas $p=n/T$
+ with $T=2^{q+d}$ lies in $(2^{-d-1},2^{-d}]$: the tempting reading
+ ``$p=\rho_n$'' is right only for $d=0$.
+\end{itemize}
+No symbol was renamed.
+\end{writenote}
+
 \section{Definitions and finite-set foundations}
 
 \subsection{Orientation conventions}
@@ -185,7 +275,7 @@ $\binom{M}{r}=0$ if $r<0$ or $r>M$ for nonnegative integer $M$.
 All logarithms without a subscript are natural.
 
 \subsection{Collapse, transitivity, and rigidity}
-\begin{lemma}[Finite collapse]\label{lem:collapse}
+\begin{lemma}[Finite collapse]\label{sbd:lem:collapse}
 For every EAD $D$, the recursion
 \[
  \phi(v)=\{\phi(w):w\in N^+(v)\}
@@ -215,7 +305,7 @@ distinct elements have distinct member sets. These two constructions
 are inverse, including at the empty set.
 \end{proof}
 
-\begin{corollary}[Rigidity]\label{cor:rigid}
+\begin{corollary}[Rigidity]\label{sbd:cor:rigid}
 Every EAD has trivial automorphism group. Consequently the number of
 labeled EADs with $n$ vertices and $k$ sources is $n!u(n,k)$, and the total
 number is $n!u_n$.
@@ -229,9 +319,9 @@ class, and source count is preserved by relabeling.
 This explains the normalization relating A182162 to $u(n,k)$ and
 A182161 to A001192 \cite{oeis162,oeis161,oeis1192}.
 
-\begin{lemma}[A sufficient bound on the small-core count]\label{lem:ubound}
+\begin{lemma}[A sufficient bound on the small-core count]\label{sbd:lem:ubound}
 For every $m\ge0$,
-\begin{equation}\label{eq:smallcore-bound}
+\begin{equation}\label{sbd:eq:smallcore-bound}
  1\le u_m\le 2^{\binom m2}.
 \end{equation}
 \end{lemma}
@@ -246,14 +336,14 @@ covering is not needed for the upper bound.
 
 \section{The exact source maximum and all feasible source counts}
 
-\begin{theorem}[Complete source support]\label{thm:support}
+\begin{theorem}[Complete source support]\label{sbd:thm:support}
 For $n\ge1$ and $k\ge1$, an EAD on $n$ vertices with exactly $k$ sources
 exists if and only if
-\begin{equation}\label{eq:feasible}
+\begin{equation}\label{sbd:eq:feasible}
  k\le n,\qquad n\le 2^{n-k}.
 \end{equation}
 In particular,
-\begin{equation}\label{eq:max}
+\begin{equation}\label{sbd:eq:max}
  \boxed{\ a(n)=n-\lceil\log_2n\rceil\ }.
 \end{equation}
 Every integer from $1$ through $a(n)$ occurs, so A182162 has no holes
@@ -287,8 +377,8 @@ maximum and the entire support assertion.
 
 \subsection{Elementary consequences for A182220}
 For $n\ge2$, $\lceil\log_2n\rceil=1+\lfloor\log_2(n-1)\rfloor$,
-which proves \eqref{eq:oeis-conjecture}. Also,
-\begin{equation}\label{eq:step}
+which proves \eqref{sbd:eq:oeis-conjecture}. Also,
+\begin{equation}\label{sbd:eq:step}
  a(n+1)-a(n)=1-\boldsymbol 1_{\{n\text{ is a power of }2\}},
  \qquad a(1)=1.
 \end{equation}
@@ -307,16 +397,16 @@ that ambiguity.
 The next consequence is included to separate the simple maximum sequence
 from the more intricate sequence counting its extremizers.
 
-\begin{proposition}\label{prop:maxgf}
+\begin{proposition}\label{sbd:prop:maxgf}
 For $|z|<1$,
-\begin{equation}\label{eq:maxgf}
+\begin{equation}\label{sbd:eq:maxgf}
  \sum_{n\ge1}a(n)z^n
  =\frac{z}{(1-z)^2}-\frac{z}{1-z}\sum_{j\ge0}z^{2^j}.
 \end{equation}
 The unit circle is a natural boundary for this generating function.
 \end{proposition}
 \begin{proof}
-Multiply the left side by $1-z$ and apply \eqref{eq:step} to obtain the
+Multiply the left side by $1-z$ and apply \eqref{sbd:eq:step} to obtain the
 identity. Let $L(z)=\sum_{j\ge0}z^{2^j}$ and let $\zeta$ be a root of unity
 of order $2^s$. For all $j\ge s$, $\zeta^{2^j}=1$; hence
 \[
@@ -324,7 +414,7 @@ of order $2^s$. For all $j\ge s$, $\zeta^{2^j}=1$; hence
 \]
 and its real part tends to infinity. At every such $\zeta\ne1$, the
 rational factor $z/(1-z)$ tends to a nonzero finite value, so the right
-side of \eqref{eq:maxgf} cannot extend holomorphically through $\zeta$.
+side of \eqref{sbd:eq:maxgf} cannot extend holomorphically through $\zeta$.
 These roots are dense on the circle. Analytic continuation across any
 point would give a neighborhood containing one of them, a contradiction.
 \end{proof}
@@ -337,21 +427,21 @@ lacunary-series theorem is needed.
 Let $F$ be the collapsed transitive set of a graph. Its nonsources are
 exactly the elements which occur as members of other elements of $F$.
 Thus the nonsource core is
-\begin{equation}\label{eq:union-core}
+\begin{equation}\label{sbd:eq:union-core}
  C=\bigcup F.
 \end{equation}
 It is itself transitive. Indeed, $x\in y\in C$ means that $y\in z$ for
 some $z\in F$; then $y\in F$, and therefore $x\in\bigcup F=C$.
 If $L=F\setminus C$ is the set of sources, then
-\begin{equation}\label{eq:coreform}
+\begin{equation}\label{sbd:eq:coreform}
  F=C\cup L,\qquad L\subseteq\PP(C)\setminus C.
 \end{equation}
 The last exclusion uses transitivity of $C$, so that $C\subseteq\PP(C)$.
-Conversely, \eqref{eq:coreform} always defines a transitive set, but its
+Conversely, \eqref{sbd:eq:coreform} always defines a transitive set, but its
 nonsource core equals $C$ only if $\bigcup(C\cup L)=C$.
 That covering condition is the sole extra constraint.
 
-\begin{lemma}[Automatic covering above half density]\label{lem:auto}
+\begin{lemma}[Automatic covering above half density]\label{sbd:lem:auto}
 Let $C$ be any transitive set of size $m\ge1$. If
 \[
  L\subseteq\PP(C)\setminus C,\quad |L|=k,\quad m+k>2^{m-1},
@@ -364,25 +454,25 @@ $C\cup L$ would avoid $c$. All $m+k$ distinct subsets would then lie in
 $\PP(C\setminus\{c\})$, which contains only $2^{m-1}$ subsets.
 \end{proof}
 
-\begin{theorem}[Complete classification of extremizers]\label{thm:classify}
+\begin{theorem}[Complete classification of extremizers]\label{sbd:thm:classify}
 Let $n\ge1$, $q=\lceil\log_2n\rceil$, and $k=n-q$.
 The EAD isomorphism classes attaining $a(n)$ sources are in bijection
 with pairs
-\begin{equation}\label{eq:extremal-pairs}
+\begin{equation}\label{sbd:eq:extremal-pairs}
  C\in\U_q,\qquad L\in\binom{\PP(C)\setminus C}{k},
 \end{equation}
 where $\U_q$ is the set of transitive sets of size $q$.
 Consequently
-\begin{equation}\label{eq:extremal-count}
+\begin{equation}\label{sbd:eq:extremal-count}
  \boxed{\ b_n^{(0)}=u_q\binom{2^q-q}{n-q},\qquad
  E(n,a(n))=n!u_q\binom{2^q-q}{n-q}\ }.
 \end{equation}
 \end{theorem}
 \begin{proof}
-Every extremizer has $q$ nonsources by Theorem~\ref{thm:support}, and
-\eqref{eq:union-core}--\eqref{eq:coreform} recover its unique pair $(C,L)$.
-Conversely, if $q\ge1$, then $n>2^{q-1}$, so Lemma~\ref{lem:auto}
-shows that every pair in \eqref{eq:extremal-pairs} has precisely $C$ as
+Every extremizer has $q$ nonsources by Theorem~\ref{sbd:thm:support}, and
+\eqref{sbd:eq:union-core}--\eqref{sbd:eq:coreform} recover its unique pair $(C,L)$.
+Conversely, if $q\ge1$, then $n>2^{q-1}$, so Lemma~\ref{sbd:lem:auto}
+shows that every pair in \eqref{sbd:eq:extremal-pairs} has precisely $C$ as
 its core and precisely $L$ as its source set. No two different pairs give
 the same transitive set, since the core is its union. Each core offers
 exactly $2^q-q$ available subsets. Rigidity supplies the labeled factor.
@@ -390,9 +480,9 @@ For $n=1$, $q=0$, and the single pair is
 $C=\varnothing$, $L=\{\varnothing\}$, giving the same formula.
 \end{proof}
 
-\begin{corollary}[Complete layers and sparse deletions]\label{cor:power}
+\begin{corollary}[Complete layers and sparse deletions]\label{sbd:cor:power}
 For $m\ge1$ and $0\le r<2^{m-1}$,
-\begin{equation}\label{eq:deletions}
+\begin{equation}\label{sbd:eq:deletions}
  b_{2^m-r}^{(0)}=u_m\binom{2^m-m}{r}.
 \end{equation}
 In particular $b_{2^m}^{(0)}=u_m$, and every extremizer on $2^m$ vertices
@@ -418,9 +508,9 @@ quantify this phenomenon at every power of two.
 \section{The marked-source sieve and finite-defect diagonals}
 
 \subsection{A classical identity, proved in the present normalization}
-\begin{proposition}[Marked sources]\label{prop:marked}
+\begin{proposition}[Marked sources]\label{sbd:prop:marked}
 For $0\le t\le n$,
-\begin{equation}\label{eq:marked}
+\begin{equation}\label{sbd:eq:marked}
  \sum_{s=t}^n\binom st u(n,s)
  =u_{n-t}\binom{2^{n-t}-(n-t)}{t}.
 \end{equation}
@@ -446,34 +536,34 @@ The identity is the marked-source version of the classical enumeration
 underlying the OEIS source sieve \cite{oeis162}. We use it as a proved
 starting point rather than a new counting principle.
 
-\begin{corollary}[Binomial inversion]\label{cor:sieve}
+\begin{corollary}[Binomial inversion]\label{sbd:cor:sieve}
 For $1\le k\le n$,
-\begin{equation}\label{eq:sieve}
+\begin{equation}\label{sbd:eq:sieve}
  u(n,k)=\sum_{t=k}^n(-1)^{t-k}\binom tk
  u_{n-t}\binom{2^{n-t}-(n-t)}{t}.
 \end{equation}
 Also
-\begin{equation}\label{eq:total-rec}
+\begin{equation}\label{sbd:eq:total-rec}
  u_0=1,\qquad
  u_n=\sum_{m=0}^{n-1}(-1)^{n-m-1}
  \binom{2^m-m}{n-m}u_m\quad(n\ge1).
 \end{equation}
 \end{corollary}
 \begin{proof}
-If $P_n(z)=\sum_su(n,s)z^s$, then \eqref{eq:marked} is equivalent to
+If $P_n(z)=\sum_su(n,s)z^s$, then \eqref{sbd:eq:marked} is equivalent to
 \[
  P_n(z)=\sum_{t=0}^n u_{n-t}
  \binom{2^{n-t}-(n-t)}{t}(z-1)^t.
 \]
-Extract $z^k$ to get \eqref{eq:sieve}. For $n>0$, evaluate at $z=0$,
-use $P_n(0)=0$, and isolate the term $t=0$ to get \eqref{eq:total-rec}.
+Extract $z^k$ to get \eqref{sbd:eq:sieve}. For $n>0$, evaluate at $z=0$,
+use $P_n(0)=0$, and isolate the term $t=0$ to get \eqref{sbd:eq:total-rec}.
 \end{proof}
 
 \subsection{Only finitely many correction terms survive}
-\begin{theorem}[Exact finite-defect formula]\label{thm:defect}
+\begin{theorem}[Exact finite-defect formula]\label{sbd:thm:defect}
 Fix $n\ge1$ and $d\ge0$ with $k=n-q-d\ge1$, and put $m=q+d$.
 Then
-\begin{equation}\label{eq:defect}
+\begin{equation}\label{sbd:eq:defect}
  \boxed{\ b_n^{(d)}=
  \sum_{j=0}^{d}(-1)^j\binom{k+j}{j}
  u_{m-j}\binom{2^{m-j}-(m-j)}{k+j}\ }.
@@ -483,7 +573,7 @@ $d+1$ displayed terms, using total counts only at the logarithmic indices
 $q,q+1,\ldots,q+d$.
 \end{theorem}
 \begin{proof}
-Substitute $t=k+j$ in \eqref{eq:sieve}. A potentially nonzero term must
+Substitute $t=k+j$ in \eqref{sbd:eq:sieve}. A potentially nonzero term must
 satisfy
 \[
  k+j\le2^{m-j}-(m-j),\quad\text{equivalently}\quad n\le2^{m-j}.
@@ -493,15 +583,15 @@ The surviving terms are exactly those displayed. All have a positive
 binomial coefficient in the stated range, though signs alternate.
 \end{proof}
 
-For $d=0$, \eqref{eq:defect} recovers the exact extremizer count, so
+For $d=0$, \eqref{sbd:eq:defect} recovers the exact extremizer count, so
 that count is also an immediate boundary specialization of the known
 sieve. At distance one it becomes
-\begin{equation}\label{eq:d1}
+\begin{equation}\label{sbd:eq:d1}
  b_n^{(1)}=u_{q+1}\binom{2^{q+1}-q-1}{n-q-1}
  -(n-q)b_n^{(0)}.
 \end{equation}
 At distance two, writing $k=n-q-2$,
-\begin{align}\label{eq:d2}
+\begin{align}\label{sbd:eq:d2}
  b_n^{(2)}={}&u_{q+2}\binom{2^{q+2}-q-2}{k}
  -(k+1)u_{q+1}\binom{2^{q+1}-q-1}{k+1}\notag\\
  &+\binom{k+2}{2}u_q\binom{2^q-q}{k+2}.
@@ -512,14 +602,14 @@ they are exact integer formulas, even when early terms nearly cancel.
 \section{Uniform covering estimates and random cores}
 
 \subsection{An estimate valid away from the extremal boundary as well}
-\begin{theorem}[Uniform core-covering bound]\label{thm:cover}
+\begin{theorem}[Uniform core-covering bound]\label{sbd:thm:cover}
 Let $m\ge0$, $k\ge1$, $n=m+k$, and $k\le M=2^m-m$.
 Set $A=u_m\binom Mk$. Then
-\begin{equation}\label{eq:cover}
+\begin{equation}\label{sbd:eq:cover}
  \boxed{\quad 0\le A-u(n,k)\le m\,2^{-k}A.\quad}
 \end{equation}
 For $m\ge1$, a sharper upper bound on the relative deficit is
-\begin{equation}\label{eq:cover-sharp}
+\begin{equation}\label{sbd:eq:cover-sharp}
  \frac{A-u(n,k)}{A}
  \le\frac{\binom{2^{m-1}-m}{k}}{\binom{2^m-m}{k}}
  \frac{\sum_s s\,u(m,s)}{u_m}.
@@ -545,15 +635,15 @@ version follows before replacing the number of sources by $m$.
 For $m=0$, the only admissible choice is $k=1$, and equality holds.
 \end{proof}
 
-The average core-source count in \eqref{eq:cover-sharp} is itself exact:
-Proposition~\ref{prop:marked}, with $t=1$, gives
-\begin{equation}\label{eq:mean-sources}
+The average core-source count in \eqref{sbd:eq:cover-sharp} is itself exact:
+Proposition~\ref{sbd:prop:marked}, with $t=1$, gives
+\begin{equation}\label{sbd:eq:mean-sources}
  \frac{\sum_s s\,u(m,s)}{u_m}
  =\frac{(2^{m-1}-m+1)u_{m-1}}{u_m}\qquad(m\ge1).
 \end{equation}
 In applications where $k-\log_2m\to+\infty$, the simpler bound already
 proves
-\begin{equation}\label{eq:general-equivalent}
+\begin{equation}\label{sbd:eq:general-equivalent}
  u(m+k,k)=u_m\binom{2^m-m}{k}
  \left(1+O(m2^{-k})\right).
 \end{equation}
@@ -578,7 +668,7 @@ More generally, write $\delta$ for the actual rejection probability.
 Conditioning a finite probability distribution on an event of probability
 $1-\delta$ changes it in total variation by exactly $\delta$.
 Taking the core marginal cannot increase total variation. Therefore
-\begin{equation}\label{eq:core-tv}
+\begin{equation}\label{sbd:eq:core-tv}
  \TV\bigl(\text{core law of a uniform }(n,k)\text{ EAD},
                \operatorname{Unif}(\U_m)\bigr)
  \le m2^{-k}.
@@ -586,7 +676,7 @@ Taking the core marginal cannot increase total variation. Therefore
 This bound is uniform over all core structures. It explains why small-core
 statistics can be transferred to the high-source part of the triangle.
 
-\section{The dyadic entropy law}
+\section{The dyadic entropy law}\label{sbd:sec:entropy}
 
 \subsection{Uniform logarithmic asymptotics}
 Define the binary entropy, in natural units, by
@@ -594,16 +684,16 @@ Define the binary entropy, in natural units, by
  H(p)=-p\log p-(1-p)\log(1-p),\qquad H(0)=H(1)=0.
 \]
 For a fixed defect $d$, set
-\begin{equation}\label{eq:phidef}
+\begin{equation}\label{sbd:eq:phidef}
  \rho_n=\frac{n}{2^{q(n)}}\in(1/2,1],\qquad
  \Phi_d(\rho)=\frac{2^d}{\rho}H\!\left(\frac{\rho}{2^d}\right).
 \end{equation}
 The strict lower endpoint for $\rho_n$ does not preclude subsequences
 converging to $1/2$.
 
-\begin{theorem}[Entropy profile]\label{thm:entropy}
+\begin{theorem}[Entropy profile]\label{sbd:thm:entropy}
 For every fixed $d\ge0$, as $n\to\infty$,
-\begin{equation}\label{eq:entropy}
+\begin{equation}\label{sbd:eq:entropy}
  \boxed{\quad \log b_n^{(d)}
        =n\Phi_d(\rho_n)+O_d((\log n)^2).\quad}
 \end{equation}
@@ -613,14 +703,14 @@ endpoints. No asymptotic formula for $u_m$ is needed.
 \begin{proof}
 Let $m=q+d$, $T=2^m$, and $k=n-m$. These parameters satisfy
 $m=O_d(\log n)$, $n\le T<2^{d+1}n$, and $k=n-O_d(\log n)$.
-Theorem~\ref{thm:cover} gives
-\begin{equation}\label{eq:loglead}
+Theorem~\ref{sbd:thm:cover} gives
+\begin{equation}\label{sbd:eq:loglead}
  \log b_n^{(d)}=\log u_m+\log\binom{T-m}{n-m}
                   +O_d(m2^{-k}).
 \end{equation}
 The small-core logarithm is $O_d((\log n)^2)$ by
-Lemma~\ref{lem:ubound}. The exact identity
-\begin{equation}\label{eq:binratio}
+Lemma~\ref{sbd:lem:ubound}. The exact identity
+\begin{equation}\label{sbd:eq:binratio}
  \binom{T-m}{n-m}=\binom Tn\frac{\fall nm}{\fall Tm}
 \end{equation}
 shows that the two binomial logarithms differ by $O_d(m)$:
@@ -628,33 +718,33 @@ every factor $(n-i)/(T-i)$ is bounded below by a positive constant
 depending only on $d$, for all sufficiently large $n$.
 
 For completeness, the elementary entropy bounds are
-\begin{equation}\label{eq:entropy-binom}
+\begin{equation}\label{sbd:eq:entropy-binom}
  \frac{e^{T H(n/T)}}{T+1}\le\binom Tn\le e^{T H(n/T)}.
 \end{equation}
 For $0<n<T$, consider a $\Bin(T,n/T)$ random variable. Its probability
 at $n$ is a maximum probability, hence is at least $1/(T+1)$ and at most
-one. Rearranging gives \eqref{eq:entropy-binom}; the endpoint cases are
+one. Rearranging gives \eqref{sbd:eq:entropy-binom}; the endpoint cases are
 immediate. It follows that $\log\binom Tn=T H(n/T)+O(\log T)$.
 Finally $T H(n/T)=n\Phi_d(\rho_n)$. Combining these estimates proves
-\eqref{eq:entropy}, with no loss of uniformity as $n/T\to1$.
+\eqref{sbd:eq:entropy}, with no loss of uniformity as $n/T\to1$.
 \end{proof}
 
 \subsection{Every subsequential exponential rate}
 Set
-\begin{equation}\label{eq:lambdadef}
+\begin{equation}\label{sbd:eq:lambdadef}
  \lambda_d=2^d H(2^{-d}),\qquad d\ge0.
 \end{equation}
 In particular $\lambda_0=0$, $\lambda_1=\log4$, and
 $e^{\lambda_2}=256/27$.
 
-\begin{theorem}[Complete growth-rate interval]\label{thm:rates}
+\begin{theorem}[Complete growth-rate interval]\label{sbd:thm:rates}
 For each fixed $d\ge0$, the set of subsequential limits of
 $(b_n^{(d)})^{1/n}$ is exactly
-\begin{equation}\label{eq:rates}
+\begin{equation}\label{sbd:eq:rates}
  [e^{\lambda_d},e^{\lambda_{d+1}}].
 \end{equation}
 Thus
-\begin{equation}\label{eq:extreme-rates}
+\begin{equation}\label{sbd:eq:extreme-rates}
  \liminf_{n\to\infty}(b_n^{(0)})^{1/n}=1,
  \qquad
  \limsup_{n\to\infty}(b_n^{(0)})^{1/n}=4.
@@ -691,7 +781,7 @@ vertex, just as increasing the allowed source deficit does.
 \section{Non-P-recursiveness of every fixed-defect boundary}
 
 A sequence $(c_n)$ is P-recursive if, for all sufficiently large $n$,
-\begin{equation}\label{eq:prec}
+\begin{equation}\label{sbd:eq:prec}
  \sum_{j=0}^{h}p_j(n)c_{n+j}=0
 \end{equation}
 for polynomials $p_j$, not all zero. Allowing a finite exceptional initial
@@ -699,7 +789,7 @@ segment makes the conclusion below stronger, not weaker.
 A formal power series is D-finite if it satisfies a nonzero homogeneous
 linear differential equation with polynomial coefficients.
 
-\begin{lemma}[An exponential-jump obstruction]\label{lem:jump}
+\begin{lemma}[An exponential-jump obstruction]\label{sbd:lem:jump}
 Suppose a nonnegative sequence $(c_n)$ has integers $N_r\to\infty$ and
 constants $\alpha<\beta$ such that, for every fixed $j\ge0$,
 \[
@@ -709,7 +799,7 @@ constants $\alpha<\beta$ such that, for every fixed $j\ge0$,
 Then $(c_n)$ is not P-recursive.
 \end{lemma}
 \begin{proof}
-Suppose \eqref{eq:prec} holds, and choose $h$ as the largest index with
+Suppose \eqref{sbd:eq:prec} holds, and choose $h$ as the largest index with
 $p_h\ne0$. If $h=0$, positivity along $(N_r)$ contradicts the recurrence.
 Otherwise apply it at $n=N_r+1-h$. For sufficiently large $r$, $p_h(n)$
 is nonzero, and ratios of fixed polynomials give a bound
@@ -723,14 +813,41 @@ invalidate the estimate. The argument also applies to complex
 polynomial coefficients.
 \end{proof}
 
-\begin{theorem}[Non-holonomicity]\label{thm:nonholonomic}
+\begin{writenote}[Added 3 October 2026, batch~85]
+The collection report
+\nolinkurl{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a003407-dyadic-scaling-rigidity}
+proves, in its Part~II, an obstruction that runs the other way. Its
+Corollary \nolinkurl{dsr:nh:cor:jumps} (a consequence of its local-growth
+rigidity theorem \nolinkurl{dsr:nh:thm:rigidity}, which rests on a G-function
+input) says that an eventually positive, exponentially bounded, integer
+P-recursive sequence without an $n$th-root limit must have
+$u_{n+1}/u_n>e^{\varepsilon n}$ for infinitely many $n$: upward
+exponential jumps are \emph{necessary} for such oscillation, and their
+absence rules P-recursiveness out. Lemma~\ref{sbd:lem:jump} is a
+\emph{sufficient} condition in the opposite situation: a jump preceded by a
+plateau of every fixed length at the lower rate rules P-recursiveness out.
+It needs neither integrality nor an exponential bound, and its proof is
+elementary. The two criteria are complementary, not competing. The
+boundary sequences $b^{(d)}$ do have the upward jumps (from
+$e^{\lambda_dN_r}$ to $e^{\lambda_{d+1}N_r}$ at $N_r=2^r$), so the a003407
+criterion cannot exclude their P-recursiveness, and
+Lemma~\ref{sbd:lem:jump} is the one that applies. Conversely, the
+3AP-free permutation counts of a003407 have only subexponential forward
+increases, so Lemma~\ref{sbd:lem:jump} does not apply to them. The
+plateau hypothesis ``for every fixed $j\ge0$'' is essential: a003407's
+example $3^n+(-3)^n+2^n$, which satisfies a constant-coefficient
+recurrence, jumps from rate $\log2$ at odd indices to $\log3$ at even
+ones, but its two-term window never stays at the lower rate.
+\end{writenote}
+
+\begin{theorem}[Non-holonomicity]\label{sbd:thm:nonholonomic}
 For every fixed $d\ge0$, neither $(b_n^{(d)})$ nor $(n!b_n^{(d)})$ is
 P-recursive. The ordinary generating function
-\begin{equation}\label{eq:Bgf}
+\begin{equation}\label{sbd:eq:Bgf}
  B_d(z)=\sum_{n\ge1}b_n^{(d)}z^n
 \end{equation}
 is not D-finite. Its radius of convergence is
-\begin{equation}\label{eq:radius}
+\begin{equation}\label{sbd:eq:radius}
  R_d=e^{-\lambda_{d+1}};
  \qquad R_0=\frac14.
 \end{equation}
@@ -738,7 +855,7 @@ is not D-finite. Its radius of convergence is
 \begin{proof}
 Take $N_r=2^r$. For every fixed $j\ge0$, the index $N_r-j$ remains in
 the dyadic block with $q=r$ when $r$ is large, and its phase tends to
-one. By Theorem~\ref{thm:entropy},
+one. By Theorem~\ref{sbd:thm:entropy},
 \[
  \log b_{N_r-j}^{(d)}=\lambda_d N_r+o(N_r).
 \]
@@ -746,8 +863,8 @@ At $N_r+1$, $q=r+1$ and the phase tends to $1/2$, giving
 \[
  \log b_{N_r+1}^{(d)}=\lambda_{d+1}N_r+o(N_r).
 \]
-The strict decrease proved in Theorem~\ref{thm:rates} yields
-$\lambda_{d+1}>\lambda_d$. Lemma~\ref{lem:jump} applies.
+The strict decrease proved in Theorem~\ref{sbd:thm:rates} yields
+$\lambda_{d+1}>\lambda_d$. Lemma~\ref{sbd:lem:jump} applies.
 
 If $n!b_n^{(d)}$ satisfied a polynomial recurrence, division by $n!$
 would give one for $b_n^{(d)}$: each factor $(n+j)!/n!$ is a polynomial
@@ -759,27 +876,27 @@ polynomial recurrence for its coefficients. Indeed, coefficients of
 $z^i(d/dz)^jB_d$ are shifted coefficients multiplied by falling
 factorials in the index; a common shift removes any negative indices.
 This contradicts what was just proved. Finally, the Cauchy--Hadamard
-formula and Theorem~\ref{thm:rates} give \eqref{eq:radius}.
+formula and Theorem~\ref{sbd:thm:rates} give \eqref{sbd:eq:radius}.
 \end{proof}
 
 \begin{remark}[What the theorem does not say]
 Non-D-finiteness does not by itself imply that the circle $|z|=R_d$ is a
 natural boundary, nor does it rule out useful nonlinear functional
 equations. We prove a natural boundary for the maximum sequence in
-Proposition~\ref{prop:maxgf}, but do not make that stronger claim for
+Proposition~\ref{sbd:prop:maxgf}, but do not make that stronger claim for
 $B_d$. The labeled ordinary generating series has radius zero; the
 series $B_d$ is also the exponential generating series of the labeled
 boundary counts.
 \end{remark}
 
-\section{An all-orders expansion inside a dyadic block}
+\section{An all-orders expansion inside a dyadic block}\label{sbd:sec:expansion}
 
 The entropy law is uniform even at complete layers. More detailed
 prefactors require staying away from the degeneracy $p=1$.
 This section retains $u_m$ exactly; it does not purport to replace the
 classical, separate asymptotic analysis of the total EAD count.
 
-\begin{theorem}[Explicit expansion with exact core amplitude]\label{thm:expansion}
+\begin{theorem}[Explicit expansion with exact core amplitude]\label{sbd:thm:expansion}
 Fix $d\ge0$ and $\varepsilon>0$. Let
 \[
  m=q+d,\quad T=2^m,\quad p=n/T,\quad k=n-m,
@@ -787,7 +904,7 @@ Fix $d\ge0$ and $\varepsilon>0$. Let
 \]
 Define $S_\ell(m)=\sum_{i=0}^{m-1}i^\ell$ and let $B_{2j}$ denote the
 Bernoulli numbers with $B_2=1/6$. For fixed integers $L\ge0$, $J\ge1$,
-\begin{align}\label{eq:allorders}
+\begin{align}\label{sbd:eq:allorders}
  \log b_n^{(d)}={}&\log u_m+T H(p)
  -\tfrac12\log\bigl(2\pi T p(1-p)\bigr)+m\log p\notag\\
  &-\sum_{\ell=1}^{L}
@@ -800,7 +917,7 @@ Bernoulli numbers with $B_2=1/6$. For fixed integers $L\ge0$, $J\ge1$,
 The first sum is empty when $L=0$.
 \end{theorem}
 \begin{proof}
-Start with \eqref{eq:loglead} and \eqref{eq:binratio}.
+Start with \eqref{sbd:eq:loglead} and \eqref{sbd:eq:binratio}.
 The logarithm of the falling-factorial ratio is
 \[
  m\log p+\sum_{i=0}^{m-1}
@@ -809,7 +926,7 @@ The logarithm of the falling-factorial ratio is
 \]
 Since $m=O_d(\log T)$ and $p\ge\varepsilon$, expand both logarithms
 through degree $L$. The coefficient of $T^{-\ell}$ is exactly the
-first sum in \eqref{eq:allorders}. Summing the elementary Taylor
+first sum in \eqref{sbd:eq:allorders}. Summing the elementary Taylor
 remainders gives $O(m^{L+2}/T^{L+1})$.
 
 Apply the Stirling expansion for $\log(T!)$, $\log((pT)!)$, and
@@ -819,11 +936,11 @@ terms is $O_{\varepsilon,J}(T^{-(2J+1)})$. This standard expansion follows,
 for example, by Euler--Maclaurin summation of $\log x$; its remainder
 has the asserted bound because $pT$ and $(1-p)T$ are both at least
 $\varepsilon T$. Finally include the covering error from
-\eqref{eq:loglead}.
+\eqref{sbd:eq:loglead}.
 \end{proof}
 
 In particular,
-\begin{align}\label{eq:first-prefactor}
+\begin{align}\label{sbd:eq:first-prefactor}
  b_n^{(d)}={}&
  \frac{u_m p^m e^{T H(p)}}{\sqrt{2\pi T p(1-p)}}
  \left[1+\frac{C_1(m,p)}T
@@ -840,13 +957,13 @@ For $d\ge1$, the actual phases have
 $p\in(2^{-d-1},2^{-d}]$, so a suitable fixed $\varepsilon$ covers the
 entire dyadic block. For $d=0$, the complete-layer edge $p\to1$ must
 instead be treated by the exact deletion formula
-\eqref{eq:deletions}. This is a genuine boundary change of asymptotic
+\eqref{sbd:eq:deletions}. This is a genuine boundary change of asymptotic
 regime, not an error to be removed by formally substituting $p=1$ in
 the Gaussian prefactor.
 
 \subsection{The fixed-deletion regime}
-For fixed $r\ge0$ and $N=2^m$, Corollary~\ref{cor:power} gives
-\begin{equation}\label{eq:fixedr}
+For fixed $r\ge0$ and $N=2^m$, Corollary~\ref{sbd:cor:power} gives
+\begin{equation}\label{sbd:eq:fixedr}
  b_{N-r}^{(0)}
  =u_m\frac{N^r}{r!}
  \left[1-\frac{rm+r(r-1)/2}{N}
@@ -855,7 +972,7 @@ For fixed $r\ge0$ and $N=2^m$, Corollary~\ref{cor:power} gives
 This follows directly by expanding
 $\binom{N-m}{r}=N^r/r!\prod_{i=0}^{r-1}(1-(m+i)/N)$.
 More generally, for $r=o(N)$ with $m+r<N$, an exact logarithmic series is
-\begin{equation}\label{eq:deletion-series}
+\begin{equation}\label{sbd:eq:deletion-series}
  \log\frac{r!\,b_{N-r}^{(0)}}{u_mN^r}
  =-\sum_{\ell\ge1}\frac{1}{\ell N^\ell}
        \sum_{i=0}^{r-1}(m+i)^\ell.
@@ -875,14 +992,14 @@ Since arcs are membership incidences,
 For $n=2^m-r$ with $0\le r<2^{m-1}$, an extremizer is
 $F=\PP(C)\setminus R$, where $C\in\U_m$ and
 $R\subseteq\PP(C)\setminus C$ has size $r$. Hence
-\begin{equation}\label{eq:arc-deficit}
+\begin{equation}\label{sbd:eq:arc-deficit}
  e(F)=m2^{m-1}-Z,\qquad Z=\sum_{S\in R}|S|.
 \end{equation}
 In particular, \emph{all} extremizers at $n=2^m$ have exactly
 $m2^{m-1}$ arcs, regardless of the core graph.
 
 For a fixed core $C$, the full deficit-counting polynomial is
-\begin{equation}\label{eq:arc-poly}
+\begin{equation}\label{sbd:eq:arc-poly}
  [z^r]\prod_{S\in\PP(C)\setminus C}(1+z w^{|S|}).
 \end{equation}
 Summing this over $C\in\U_m$ gives the exact unlabeled joint count by
@@ -894,11 +1011,11 @@ size and arc deficit. Equivalently, the product is the formal quotient
 The denominator divides the numerator as a polynomial product; it is
 not an analytic singularity assertion.
 
-\begin{theorem}[Total-variation binomial approximation]\label{thm:binomial}
+\begin{theorem}[Total-variation binomial approximation]\label{sbd:thm:binomial}
 Let $F$ be uniform among extremal EAD isomorphism classes on $n=2^m-r$
 vertices, where $m\ge1$ and $0\le r<2^{m-1}$. Define
 $Z=m2^{m-1}-e(F)$. Then
-\begin{equation}\label{eq:tvbin}
+\begin{equation}\label{sbd:eq:tvbin}
  \boxed{\quad
  \TV\bigl(\mathcal L(Z),\Bin(rm,1/2)\bigr)
  \le \min\left\{1,\frac{rm+\binom r2}{2^m}\right\}.
@@ -907,7 +1024,7 @@ $Z=m2^{m-1}-e(F)$. Then
 The same statement holds for a uniformly labeled extremizer.
 \end{theorem}
 \begin{proof}
-By Theorem~\ref{thm:classify}, the core is uniform on $\U_m$, and,
+By Theorem~\ref{sbd:thm:classify}, the core is uniform on $\U_m$, and,
 conditional on it, $R$ is a uniform $r$-subset of the available family.
 Fix a core and draw $r$ independent uniform subsets
 $S_1,\ldots,S_r$ of the entire Boolean cube $\PP(C)$.
@@ -929,15 +1046,15 @@ cores. Rigidity implies that uniform labeling gives the same induced
 law on isomorphism classes, proving the last assertion.
 \end{proof}
 
-\begin{corollary}[Boundary central limit law]\label{cor:clt}
+\begin{corollary}[Boundary central limit law]\label{sbd:cor:clt}
 If $m\to\infty$, $r=r(m)\ge1$, and $r(m+r)=o(2^m)$, then
-\begin{equation}\label{eq:clt}
+\begin{equation}\label{sbd:eq:clt}
  \frac{m2^{m-1}-e(F)-rm/2}{\sqrt{rm}/2}
  \ \Longrightarrow\ N(0,1).
 \end{equation}
 \end{corollary}
 \begin{proof}
-The total-variation error in \eqref{eq:tvbin} tends to zero.
+The total-variation error in \eqref{sbd:eq:tvbin} tends to zero.
 For $B\sim\Bin(rm,1/2)$, the characteristic function of
 $(B-rm/2)/(\sqrt{rm}/2)$ is
 $\cos(t/\sqrt{rm})^{rm}$, which tends to $e^{-t^2/2}$.
@@ -960,7 +1077,7 @@ The sum and squared sum of subset sizes in the available population are
 \]
 Writing $\mu_C=A_1/M$ and $v_C=A_2/M-\mu_C^2$, uniform
 sampling without replacement gives
-\begin{equation}\label{eq:moments}
+\begin{equation}\label{sbd:eq:moments}
  \E(Z\mid C)=r\mu_C,\qquad
  \Var(Z\mid C)=\frac{r(M-r)}{M-1}v_C\quad(M>1).
 \end{equation}
@@ -969,17 +1086,17 @@ $r$ sampled population entries: the covariance of two distinct sampled
 entries is $-v_C/(M-1)$. This derivation also specifies the variance
 normalization. When $M=1$, the sample is deterministic.
 These exact moments remain available outside the small-error range of
-Theorem~\ref{thm:binomial}.
+Theorem~\ref{sbd:thm:binomial}.
 
 \section{Exact verification and computational artifacts}
 
 \subsection{Three complementary checks}
 The accompanying program performs the following distinct checks.
-First, it computes $u_n$ from \eqref{eq:total-rec} and then evaluates the
+First, it computes $u_n$ from \eqref{sbd:eq:total-rec} and then evaluates the
 marked-source sieve. Second, it computes the source triangle using the
 source-deletion recurrence from Tomescu's Corollary 2.1.7
 \cite{tomescu}:
-\begin{align}\label{eq:deletionrec}
+\begin{align}\label{sbd:eq:deletionrec}
  u(n,s)=\frac1s\bigg[&\bigl(2^{n-s}-(n-1)\bigr)u(n-1,s-1)\notag\\
  &+\sum_{j=0}^{n-s-1}\binom{s+j}{j+1}
               2^{n-1-s-j}u(n-1,s+j)\bigg].
@@ -1058,11 +1175,11 @@ their ranges. No finite experiment is presented as a proof of
 non-P-recursiveness, the entropy theorem, or a limit distribution.
 
 \subsection{Computational complexity and numerical stability}
-For fixed $d$, \eqref{eq:defect} uses only $d+1$ terms after the total
+For fixed $d$, \eqref{sbd:eq:defect} uses only $d+1$ terms after the total
 counts through $q+d$ have been tabulated. This is an arithmetic-operation
 statement, not a bit-complexity claim: the binomial coefficients and the
 answers themselves have $\Theta_d(n)$ bits in the bulk. Near a complete
-layer, the exact complement form \eqref{eq:deletions} can be much smaller.
+layer, the exact complement form \eqref{sbd:eq:deletions} can be much smaller.
 
 Use integer binomial coefficients for exact evaluation. For large
 floating-point evaluations, use logarithms and either the covering
@@ -1072,15 +1189,32 @@ The program caps brute-force enumeration at seven vertices to make the
 exponential nature of that check explicit rather than silently attempting
 an infeasible extension.
 
+\begin{writenote}[Added 3 October 2026, batch~85]
+In the repository the two programs ship as \nolinkurl{code/verify.py} and
+\nolinkurl{code/check_asymptotics.py}, and their outputs under \nolinkurl{data/}.
+The delivered \nolinkurl{data/verification-output.txt} is not shipped: it was
+a byte copy of \nolinkurl{data/verification.json}, since the program prints the
+JSON report it writes. Both programs write beside themselves (into a
+\nolinkurl{data} directory next to the script, the second without an option),
+so the report's README gives a rerun on a scratch copy in the delivered
+layout. The intake ran them so on Python~3.14.4: \code{verify.py --max-n 64 --brute-n 7}
+passed in about 7\,s, \nolinkurl{check_asymptotics.py} in
+about 4\,s; the three CSV files were reproduced byte for byte, the JSON
+report up to Windows line endings, and both printed transcripts matched the
+recorded ones. The 17 terms of A001192 and 25 terms of A182162 that
+\nolinkurl{verify.py} embeds as test fixtures are OEIS data, published under
+CC~BY-SA~4.0.
+\end{writenote}
+
 \section{Formalization route and further research}
 
-\subsection{A finite, auditable formalization route}
+\subsection{A finite, auditable formalization route}\label{sbd:sec:formal}
 A formal development need not begin with the full set-theoretic collapse.
 Represent a finite digraph by a Boolean relation on a finite vertex type.
 Define the finite set of out-neighbors, sourcehood, acyclicity, and
 extensionality. The maximum-source proof then reduces to an injection
 from vertices into the finite powerset of the nonsources, followed by
-the explicit construction in Theorem~\ref{thm:support}.
+the explicit construction in Theorem~\ref{sbd:thm:support}.
 
 A useful next layer would prove that deletion of sources preserves
 out-neighborhoods and extensionality. This supports a marked-source
@@ -1097,7 +1231,7 @@ The deliverable contains no Lean source and makes no claim of kernel
 verification. This paragraph is a development plan, not an assertion that
 particular library declarations already implement the argument.
 
-\subsection{Specific research questions}
+\subsection{Specific research questions}\label{sbd:sec:questions}
 The following questions are proposed directions, not claims that each
 has been certified open in the published literature.
 
@@ -1111,7 +1245,7 @@ powers of two.
 
 \paragraph{2. A sharper small-core amplitude.}
 Combine an explicit, verified asymptotic expansion for $u_m$ with
-\eqref{eq:allorders}. Since $m\asymp\log n$, the resulting corrections
+\eqref{sbd:eq:allorders}. Since $m\asymp\log n$, the resulting corrections
 live on scales different from the Boolean-layer saddle. Distinguish
 statements uniform in the dyadic phase from fixed-phase expansions.
 
@@ -1194,7 +1328,7 @@ historical priority, natural boundaries of the extremizer series,
 growing defects, and full formal verification remain explicitly separate.
 
 \appendix
-\section{Suggested concise OEIS-facing statements}
+\section{Suggested concise OEIS-facing statements}\label{sbd:app:oeis}
 
 \paragraph{A182220.}
 For every $n\ge1$, $a(n)=n-\lceil\log_2n\rceil$.
@@ -1212,7 +1346,7 @@ Let $T(n,k)$ denote the labeled count. For $q=\lceil\log_2n\rceil$,
  T(n,n-q)=n!\,\mathrm{A001192}(q)\binom{2^q-q}{n-q}.
 \]
 More generally, for $d\ge0$ and $k=n-q-d\ge1$, formula
-\eqref{eq:defect}, multiplied by $n!$, gives an exact $(d+1)$-term
+\eqref{sbd:eq:defect}, multiplied by $n!$, gives an exact $(d+1)$-term
 expression. These are specializations of the marked-source sieve,
 with the extremal case also admitting the direct Boolean-core bijection.
 
@@ -1226,6 +1360,15 @@ $\liminf(b_n^{(0)})^{1/n}=1$, and $\limsup(b_n^{(0)})^{1/n}=4$,
 and it is not P-recursive. No assertion is made that this sequence
 currently lacks an OEIS entry; a sequence-value and literature search
 should precede any new-entry proposal.
+
+\begin{writenote}[Added 3 October 2026, batch~85]
+This appendix is draft text. Nothing in it was submitted to OEIS, by the
+package's author (question~10 of Section~\ref{sbd:sec:questions}) or by the
+intake, and this report submits nothing. Any proposal must keep
+Tomescu's credit for the upper bound and is a human editor's decision after
+independent review. The intake did not search OEIS for the boundary
+sequence displayed above.
+\end{writenote}
 
 \section{Proof-status ledger}
 \begin{longtable}{p{0.32\textwidth}p{0.61\textwidth}}
@@ -1250,6 +1393,8 @@ Historical priority of refinements & Not established by the available search.\\
 \bottomrule
 \end{longtable}
 
+% [write] ragged right: the long URL and commit hash below left three underfull lines.
+\begingroup\raggedright
 \begin{thebibliography}{99}
 \bibitem{oeis220}
 OEIS Foundation, \emph{A182220: Largest number of sources of an extensional
@@ -1309,4 +1454,5 @@ Vladimir Reshetnikov, \emph{ProveIt}, repository snapshot
 inspected October 3, 2026. Used for project context and a limited
 nonduplication search, not as a mathematical premise.
 \end{thebibliography}
+\endgroup
 \end{document}
