@@ -64,6 +64,15 @@ saved regrouping is the identical 84-operation polynomial, with all
 producer costs retained. This local bound leaves extra registers,
 source-specific relations and changed producers open.
 
+The [joint root producer checks](complete84_joint_root_cut.md) emit two
+complete all-value rewrites: sharing the main/input quotient product stays
+at84 gates, while first/main product expansion costs87. The
+[independent review](review_complete84_joint_root_cut.md) checks both
+identities and a9-gate minimum only for the separated bilinear root cut
+with independent a,H and two final offsets. The actual relation H=4a+3
+is outside that bound. Fresh normal/optimized receipts pass; no improved
+universal bound or global circuit minimum is claimed.
+
 The [local producer scout](complete84_local_producer_scout.md) finds no
 saving among zero-, one- or two-operation replacements at70 actual84
 producer rows. It enumerates4741 aliases and719027 inner expressions;
