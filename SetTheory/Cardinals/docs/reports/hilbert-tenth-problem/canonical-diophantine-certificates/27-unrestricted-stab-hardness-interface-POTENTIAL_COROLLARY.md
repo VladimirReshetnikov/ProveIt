@@ -1,0 +1,5 @@
+Assuming the independently audited physical-input equivalence, the polynomial's positive-integer input language is r.e.-complete after adjoining the pinned Report35 loader theorem and its inherited U15 universality dependency. Hardness already holds with one fixed stable periodic tile and binary nonnegative seeds; period-multiple translation puts every finite seed inside the required nonnegative patch box without changing the tile.
+
+Cairns' Theorem 3 and §§5–6 concern finite total activity: finite initialization is followed by moving blank fronts, which a faster shutdown wave extinguishes after a machine halt. This is different from first firing at a target. The printed lazy-halting definition and initializer contain defects; the audit records its mathematical corrections and uses Report35's explicit finite-total contract. No author erratum, raw-program arithmetic compiler, or new resource count is claimed.
+
+Source: [Cairns, arXiv:1508.00161v2, §§5–6](https://arxiv.org/pdf/1508.00161v2#page=19).

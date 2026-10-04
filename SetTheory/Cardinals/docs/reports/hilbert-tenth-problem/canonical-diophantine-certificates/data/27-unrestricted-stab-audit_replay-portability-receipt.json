@@ -1,0 +1,88 @@
+{
+  "adapter_sha256": "c638da152240ce548d04cc99ae8c09df8281cec1fadefebb8fac89818bb198c1",
+  "all_three_receipts_byte_equal": true,
+  "frozen_checkers_only_no_submitted_author_upstream_or_lean_execution": true,
+  "frozen_scientific_files_changed": false,
+  "historical_fallback_reads": false,
+  "initial_replay_passed": true,
+  "metadata_root_and_output_relative": true,
+  "moved_bundle_entire_inventory_mode_mtime_hash_preserved": true,
+  "moved_tar_extraction_readonly_replay_passed": true,
+  "negative_guard_cases": [
+    {
+      "case": "existing-output",
+      "error": "RuntimeError: Replay output must be a fresh directory",
+      "rejected": true
+    },
+    {
+      "case": "inside-output",
+      "error": "RuntimeError: Replay output must be outside bundle",
+      "rejected": true
+    },
+    {
+      "case": "ancestor-output",
+      "error": "RuntimeError: Replay output cannot contain bundle",
+      "rejected": true
+    },
+    {
+      "case": "symlink-output",
+      "error": "RuntimeError: Symlink in output path is not permitted",
+      "rejected": true
+    },
+    {
+      "case": "tampered-dag",
+      "error": "RuntimeError: Frozen pin mismatch: science/evidence/polynomial-dag.json",
+      "rejected": true
+    },
+    {
+      "case": "tampered-checker",
+      "error": "RuntimeError: Frozen pin mismatch: independent_audit/check_exact.py",
+      "rejected": true
+    },
+    {
+      "case": "tampered-receipt",
+      "error": "RuntimeError: Frozen pin mismatch: independent_audit/exact-receipt.json",
+      "rejected": true
+    },
+    {
+      "case": "symlink-member",
+      "error": "RuntimeError: Symlink not permitted in frozen bundle: extra-link",
+      "rejected": true
+    },
+    {
+      "case": "nonregular-member",
+      "error": "RuntimeError: Nonregular frozen bundle entry: extra-fifo",
+      "rejected": true
+    }
+  ],
+  "original_fixture_removed_before_moved_replay": true,
+  "preservation_predicate_cases": [
+    {
+      "mutation": "file-byte",
+      "rejected": true
+    },
+    {
+      "mutation": "file-mode",
+      "rejected": true
+    },
+    {
+      "mutation": "file-mtime",
+      "rejected": true
+    },
+    {
+      "mutation": "directory-mode",
+      "rejected": true
+    },
+    {
+      "mutation": "directory-mtime",
+      "rejected": true
+    },
+    {
+      "mutation": "entry-inventory",
+      "rejected": true
+    }
+  ],
+  "receipt": "moved-readonly-replay/replay-receipt.json",
+  "source_text_rewritten": false,
+  "verdict": "PASS"
+}

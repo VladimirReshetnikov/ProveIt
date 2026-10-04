@@ -1,0 +1,100 @@
+{
+  "adapter_sha256": "b902f194356b6ad803184889e764653732278b40aa3e99aa904970674d676fff",
+  "all_frozen_inputs_preserved": true,
+  "bundle_entries_checked": 96,
+  "bundle_paths_are_root_relative": true,
+  "pinned_inputs": {
+    "dependencies/pell-pinned-fetch.json": "9c8f8911f4435fbaaa4216e1f949eca920b49594192719e6128f3c0c7b85f2c8",
+    "independent_audit/arithmetic-audit-receipt.json": "15cc70d844d3b69f0568d5171e4916db89e1bdfe07980d537b443772ecb61589",
+    "independent_audit/audit_arithmetic.py": "e566f7843a950ef4bd95ba4a87d33eb5224fa139288625662f7b1e1817d2675c",
+    "independent_audit/audit_source.py": "9923a9315595bcd13bb64d2528c62ffc77d90de2acd2652e66304b10c421b20d",
+    "independent_audit/semantic-challenge/independent-check-results.json": "4d7fe582a53138e1c7d42e0a1d2011bee6a58740c2e9827655072830ea1e86ff",
+    "independent_audit/semantic-challenge/independent_checks.py": "c0b837bdb83b3677a88e1cfc75189d540462cc16f27887291fe1970a3f49e60d",
+    "independent_audit/source-audit-receipt.json": "3befe9724413f4f7688068c542acf20669905def36c7e5192ca144cfd2c8dce9",
+    "science/evidence/polynomial-dag.json": "7bbc522a7e8ff8af23dd9f4b01b8fa783515b1e1de6941dc9a11e85c92f81ea6"
+  },
+  "preservation_checks": [
+    "file bytes",
+    "file size",
+    "file and directory mode",
+    "file and directory mtime_ns",
+    "entry inventory"
+  ],
+  "roles": {
+    "arithmetic": {
+      "actual_receipt": "arithmetic/arithmetic-audit-receipt.json",
+      "checker": "independent_audit/audit_arithmetic.py",
+      "checker_sha256": "e566f7843a950ef4bd95ba4a87d33eb5224fa139288625662f7b1e1817d2675c",
+      "expected_receipt": "independent_audit/arithmetic-audit-receipt.json",
+      "receipt_byte_equal": true,
+      "receipt_sha256": "15cc70d844d3b69f0568d5171e4916db89e1bdfe07980d537b443772ecb61589",
+      "worker": {
+        "checker": "independent_audit/audit_arithmetic.py",
+        "checker_sha256": "e566f7843a950ef4bd95ba4a87d33eb5224fa139288625662f7b1e1817d2675c",
+        "frozen_checker_bytes_unchanged": true,
+        "historical_path_fallback": false,
+        "isolated_python": true,
+        "read_redirects": {
+          "pell_source": 1
+        },
+        "receipt": "arithmetic-audit-receipt.json",
+        "receipt_writes": 1,
+        "redirect_targets": {
+          "pell_source": "dependencies/pell-pinned-fetch.json"
+        },
+        "role": "arithmetic",
+        "source_text_rewritten": false
+      }
+    },
+    "semantic": {
+      "actual_receipt": "semantic/independent-check-results.json",
+      "checker": "independent_audit/semantic-challenge/independent_checks.py",
+      "checker_sha256": "c0b837bdb83b3677a88e1cfc75189d540462cc16f27887291fe1970a3f49e60d",
+      "expected_receipt": "independent_audit/semantic-challenge/independent-check-results.json",
+      "receipt_byte_equal": true,
+      "receipt_sha256": "4d7fe582a53138e1c7d42e0a1d2011bee6a58740c2e9827655072830ea1e86ff",
+      "worker": {
+        "checker": "independent_audit/semantic-challenge/independent_checks.py",
+        "checker_sha256": "c0b837bdb83b3677a88e1cfc75189d540462cc16f27887291fe1970a3f49e60d",
+        "frozen_checker_bytes_unchanged": true,
+        "historical_path_fallback": false,
+        "isolated_python": true,
+        "read_redirects": {},
+        "receipt": "independent-check-results.json",
+        "receipt_writes": 3,
+        "redirect_targets": {},
+        "role": "semantic",
+        "source_text_rewritten": false
+      }
+    },
+    "source": {
+      "actual_receipt": "source/source-audit-receipt.json",
+      "checker": "independent_audit/audit_source.py",
+      "checker_sha256": "9923a9315595bcd13bb64d2528c62ffc77d90de2acd2652e66304b10c421b20d",
+      "expected_receipt": "independent_audit/source-audit-receipt.json",
+      "receipt_byte_equal": true,
+      "receipt_sha256": "3befe9724413f4f7688068c542acf20669905def36c7e5192ca144cfd2c8dce9",
+      "worker": {
+        "checker": "independent_audit/audit_source.py",
+        "checker_sha256": "9923a9315595bcd13bb64d2528c62ffc77d90de2acd2652e66304b10c421b20d",
+        "frozen_checker_bytes_unchanged": true,
+        "historical_path_fallback": false,
+        "isolated_python": true,
+        "read_redirects": {
+          "source_dag": 1
+        },
+        "receipt": "source-audit-receipt.json",
+        "receipt_writes": 1,
+        "redirect_targets": {
+          "source_dag": "science/evidence/polynomial-dag.json"
+        },
+        "role": "source",
+        "source_text_rewritten": false
+      }
+    }
+  },
+  "schema": "portable-frozen-independent-audit-replay-v1",
+  "scope": "Replays the independent source, arithmetic and semantic audits only. No submitted builder, author checker, upstream program, schedule, or Lean is executed.",
+  "source_rewriting": false,
+  "verdict": "PASS"
+}
