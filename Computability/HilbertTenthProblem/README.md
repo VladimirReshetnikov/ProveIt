@@ -85,6 +85,18 @@ scoped valuation counterexamples; normal/optimized replays pass. These are
 native residue filters, with no prescribed-history realization or bound on
 the full order gcd. The 83-operation language remains unresolved.
 
+The [finite native prime filter](Papers/research-wip/native-stream-queue/complete83_gamma_native_finite_prime_avoidance.md)
+strengthens the accepting-history construction: for every fixed adequate
+spatial padding h there are genuine positive witnesses with
+**gcd(Delta,2^(2dh)-1)=3 and v3(m)<=1**. Every canonical history already
+has gcd(Delta,2^(dh)+1)=3. A simultaneous prefix/CRT choice on ignored
+upper bits excludes the minus-factor primes while preserving all compiler
+conditions and the original positive slack. The [independent review](Papers/research-wip/native-stream-queue/review_complete83_gamma_native_finite_prime_avoidance.md)
+checks the order of padding choices, actual valuations and fresh witness
+reconstruction; normal/optimized receipts pass. Only a finite prime set
+is controlled on each history. Remaining order factors and the83-operation
+ordinary-input language stay unresolved; the universal bound remains84.
+
 The [genuine-history ternary control](Papers/research-wip/native-stream-queue/complete83_gamma_native_ternary_escape.md)
 constructs, for every accepted input, actual positive compiler witnesses
 with **a=0 mod9 and v3(m)<=1**. Moving permitted upper dummy bits
