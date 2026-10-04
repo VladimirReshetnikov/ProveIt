@@ -473,6 +473,17 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [literal matrix shear controllers](matrix193_unit_shear_controller.md)
+> expand both actual96-pair tables and the LOAD action into complete private
+> paths. The contextual fixture has32,821 edges and m=65,536; the original
+> context-independent table has **19,613 edges and m=32,768**. The
+> [independent review](review_matrix193_unit_shear_controller.md) reconstructs
+> both numeric arrays and checks386 matrix factors and52,430 unit shears.
+> Normal/optimized receipts pass. Context can be moved to the initial row
+> and one matrix switch, but that switch's packed arithmetic remains a
+> separate obligation here. The295,647 contextual figure is a construction
+> bound, not an emitted universal DAG; the universal minimum remains84.
+>
 > The [marked-loader matrix packing](matrix193_marked_loader_packing.md)
 > gives a fixed-arity route for arbitrary-duration synchronized row histories.
 > A private LOAD edge and one positive quotient enforce the ordinary input;
