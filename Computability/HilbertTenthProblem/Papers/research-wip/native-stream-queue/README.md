@@ -15,6 +15,20 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [auxiliary square/product chart](complete82_auxiliary_square_product_chart.md)
+has a fully paid **82=45M+37A** source, 18 positive witnesses and exact
+degree185, but **universality remains unproved**. Supplying f² and T*f
+removes two gates from84 and preserves the complete polynomial under the
+forward substitution. On the stated positive odd-c sector, the three new
+auxiliary coordinates extend an outer tuple exactly when its five retained
+factors have product +1 or −1. Thus this block loses its former restrictions.
+Every accepted84 input also has full82 zeros with a nonsquare supplied f²,
+defeating the literal inverse without showing a falsely accepted input.
+The [independent review](review_complete82_auxiliary_square_product_chart.md)
+proves the full output identity and uniform degree from the actual rows and
+checks both-sign constructions. Fresh installed normal/optimized receipts
+pass. This candidate does not change the **84-operation universal bound**.
+
 The [free auxiliary coefficient scout](complete83_free_coefficient_scout.md)
 emits an **83-operation, degree-111 candidate**, whose **universality is unproved**.
 Supplying S instead of computing i*Delta*c² saves one multiplication but loses
@@ -27,6 +41,16 @@ and proves the uniform degree. Fresh normal/optimized receipts and the separate
 proof challenge pass. Generic divisor/sign cases and accepted-input soundness
 remain open; the established universal minimum stays **84 operations**.
 
+The [materialized nonunit diagnostic](complete83_nonunit_positive_diagnostic.md)
+evaluates all83 rows at a positive supplied tuple and obtains factors
+(1,1,1,1,1,−675,−1), discriminant675 and output zero.
+Its **fixed numerals fail the compiler recipe**. It proves that positivity
+alone cannot force the intended factor values; it supplies no falsely
+accepted compiled input. The [independent review](review_complete83_nonunit_positive_diagnostic.md)
+reconstructs all25 supplied integers and83 registers and independently
+recovers all four Pell indices. Author and review pass fresh installed
+normal/optimized replay. Valid-program soundness of83 remains open.
+
 The [native index mismatch](free_coefficient83_native_alias.md) strengthens
 that proof obstruction: a scaled Pell family retains positive integral h and
 both auxiliary equations while its main index differs from the abstract target R. The required auxiliary CRT condition is checked separately.
@@ -35,6 +59,31 @@ the necessary base-16 masks for every compatible q=16^k. The input and
 transport factors are outside the construction; there is no full compiler
 counterexample or new universal bound. The [independent review](review_free_coefficient83_native_alias.md)
 checks the index, congruence and mask arguments with fresh exact arithmetic.
+
+The [full arithmetic index mismatch](free_coefficient83_full_arithmetic_alias.md)
+completes that native family with positive input, shared rho/sigma,
+packing and transport witnesses at diagnostic numerals. All seven intended
+factor values hold in the actual83 source, yet its main index p differs
+from its computed R. Exact finite CRT/packing arithmetic and a constructive
+Pell proof specify the full positive zero; the enormous tuple is not
+numerically materialized. The [independent review](review_free_coefficient83_full_arithmetic_alias.md)
+checks all83 rows by a formal rational substitution and expands the complete
+726-term output. **The radix and width fail the fixed-program recipe**,
+so this remains an arithmetic obstruction, not a compiler counterexample.
+Fresh installed normal/optimized receipts pass; the universal bound stays84.
+
+The [Report38 fixed-lane Boolean fixture](fixed_lane_boolean_occurrence38.md)
+compares three complete quartics for an occurrence query on an externally
+certified affine lane. The [independent affine rewrite](review_fixed_lane_boolean_occurrence38_affine.md)
+shares its affine producers and saves five additions in every form, giving
+complete counts116,125 and **109=42M+67A**. The best has23 natural witnesses
+and exact degree four. Each rewritten polynomial is identical to its own
+parent on every tuple; the different Boolean forms instead have canonical
+natural zero-set bijections. The check reconstructs all715 old/new gates
+and413 complete coefficients. Author and review pass installed normal and
+optimized replay, and a [separate mathematical cross-read](review_fixed_lane_boolean_occurrence38_affine_math.md)
+passes. Lane realization and first-hit minimality remain external, so this
+is an occurrence component and leaves the universal bound84 unchanged.
 
 The [complete Report30 first-hit fixture](original_frame_first_hit30_fixture.md)
 reduces one explicit original-frame mass-four orbit certificate to

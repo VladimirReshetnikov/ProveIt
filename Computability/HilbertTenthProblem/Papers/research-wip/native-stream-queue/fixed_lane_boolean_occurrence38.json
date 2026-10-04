@@ -1,0 +1,6722 @@
+{
+  "accepted_indices": [
+    1,
+    4,
+    8,
+    10,
+    15,
+    19,
+    22,
+    34,
+    36,
+    43,
+    46,
+    49
+  ],
+  "atom_affines": {
+    "A": "5*n-2",
+    "B": "n+1",
+    "C": "2*n+1",
+    "E": "3*n-3"
+  },
+  "atom_moduli": {
+    "A": 4,
+    "B": 5,
+    "C": 3,
+    "E": 7
+  },
+  "counts": {
+    "canonical_atom_equations": 354,
+    "complete_boolean_truth_table": 16,
+    "complete_live_sources": 3,
+    "complete_residual_inventory": 3,
+    "exact_boolean_reduction_defect": 1,
+    "exact_quartic": 3,
+    "genuine_complete_zero": 36,
+    "independent_complete_polynomial_coefficients": 3,
+    "independent_residual_coefficients": 78,
+    "natural_canonical_assignment": 354,
+    "paid_ledgers": 3,
+    "reject_mutated_unique_witness": 900,
+    "same_atom_domain_coordinate_interface": 2,
+    "same_paid_affine_atom_domain_prefix": 2,
+    "signed_index_acceptance": 354,
+    "whole_rational_values": 24,
+    "whole_signed_rational_values": 72
+  },
+  "expanded_query": "D AND ((A AND C) OR (B AND C) OR ((NOT A) AND (NOT B) AND E))",
+  "forms": [
+    {
+      "coefficient_count": 136,
+      "packet": {
+        "common_prefix_length": 61,
+        "exact_degree": 4,
+        "inputs": [
+          "n"
+        ],
+        "instructions": [
+          [
+            "twice_n",
+            "add",
+            "n",
+            "n"
+          ],
+          [
+            "x",
+            "add",
+            "twice_n",
+            1
+          ],
+          [
+            "three_n",
+            "add",
+            "twice_n",
+            "n"
+          ],
+          [
+            "y",
+            "sub",
+            "three_n",
+            2
+          ],
+          [
+            "x_plus_y",
+            "add",
+            "x",
+            "y"
+          ],
+          [
+            "L_A",
+            "sub",
+            "x_plus_y",
+            1
+          ],
+          [
+            "twice_x",
+            "add",
+            "x",
+            "x"
+          ],
+          [
+            "twice_x_minus_y",
+            "sub",
+            "twice_x",
+            "y"
+          ],
+          [
+            "L_B",
+            "sub",
+            "twice_x_minus_y",
+            3
+          ],
+          [
+            "L_E",
+            "sub",
+            "y",
+            1
+          ],
+          [
+            "upper",
+            "sub",
+            50,
+            "n"
+          ],
+          [
+            "lower_row",
+            "sub",
+            "n",
+            "lo"
+          ],
+          [
+            "upper_row",
+            "sub",
+            "upper",
+            "hi"
+          ],
+          [
+            "A_bs",
+            "mul",
+            "A_b",
+            "A_s"
+          ],
+          [
+            "A_rem",
+            "add",
+            "A_bs",
+            "A_b"
+          ],
+          [
+            "A_truth",
+            "sub",
+            1,
+            "A_b"
+          ],
+          [
+            "A_split",
+            "mul",
+            "A_qp",
+            "A_qm"
+          ],
+          [
+            "A_q",
+            "sub",
+            "A_qp",
+            "A_qm"
+          ],
+          [
+            "A_dq",
+            "mul",
+            4,
+            "A_q"
+          ],
+          [
+            "A_Ldq",
+            "sub",
+            "L_A",
+            "A_dq"
+          ],
+          [
+            "A_residue",
+            "sub",
+            "A_Ldq",
+            "A_rem"
+          ],
+          [
+            "A_rh",
+            "add",
+            "A_rem",
+            "A_h"
+          ],
+          [
+            "A_range",
+            "sub",
+            "A_rh",
+            3
+          ],
+          [
+            "A_boolean",
+            "mul",
+            "A_b",
+            "A_truth"
+          ],
+          [
+            "A_inactive",
+            "sub",
+            "A_bs",
+            "A_s"
+          ],
+          [
+            "B_bs",
+            "mul",
+            "B_b",
+            "B_s"
+          ],
+          [
+            "B_rem",
+            "add",
+            "B_bs",
+            "B_b"
+          ],
+          [
+            "B_truth",
+            "sub",
+            1,
+            "B_b"
+          ],
+          [
+            "B_split",
+            "mul",
+            "B_qp",
+            "B_qm"
+          ],
+          [
+            "B_q",
+            "sub",
+            "B_qp",
+            "B_qm"
+          ],
+          [
+            "B_dq",
+            "mul",
+            5,
+            "B_q"
+          ],
+          [
+            "B_Ldq",
+            "sub",
+            "L_B",
+            "B_dq"
+          ],
+          [
+            "B_residue",
+            "sub",
+            "B_Ldq",
+            "B_rem"
+          ],
+          [
+            "B_rh",
+            "add",
+            "B_rem",
+            "B_h"
+          ],
+          [
+            "B_range",
+            "sub",
+            "B_rh",
+            4
+          ],
+          [
+            "B_boolean",
+            "mul",
+            "B_b",
+            "B_truth"
+          ],
+          [
+            "B_inactive",
+            "sub",
+            "B_bs",
+            "B_s"
+          ],
+          [
+            "C_bs",
+            "mul",
+            "C_b",
+            "C_s"
+          ],
+          [
+            "C_rem",
+            "add",
+            "C_bs",
+            "C_b"
+          ],
+          [
+            "C_truth",
+            "sub",
+            1,
+            "C_b"
+          ],
+          [
+            "C_split",
+            "mul",
+            "C_qp",
+            "C_qm"
+          ],
+          [
+            "C_q",
+            "sub",
+            "C_qp",
+            "C_qm"
+          ],
+          [
+            "C_dq",
+            "mul",
+            3,
+            "C_q"
+          ],
+          [
+            "C_Ldq",
+            "sub",
+            "x",
+            "C_dq"
+          ],
+          [
+            "C_residue",
+            "sub",
+            "C_Ldq",
+            "C_rem"
+          ],
+          [
+            "C_rh",
+            "add",
+            "C_rem",
+            "C_h"
+          ],
+          [
+            "C_range",
+            "sub",
+            "C_rh",
+            2
+          ],
+          [
+            "C_boolean",
+            "mul",
+            "C_b",
+            "C_truth"
+          ],
+          [
+            "C_inactive",
+            "sub",
+            "C_bs",
+            "C_s"
+          ],
+          [
+            "E_bs",
+            "mul",
+            "E_b",
+            "E_s"
+          ],
+          [
+            "E_rem",
+            "add",
+            "E_bs",
+            "E_b"
+          ],
+          [
+            "E_truth",
+            "sub",
+            1,
+            "E_b"
+          ],
+          [
+            "E_split",
+            "mul",
+            "E_qp",
+            "E_qm"
+          ],
+          [
+            "E_q",
+            "sub",
+            "E_qp",
+            "E_qm"
+          ],
+          [
+            "E_dq",
+            "mul",
+            7,
+            "E_q"
+          ],
+          [
+            "E_Ldq",
+            "sub",
+            "L_E",
+            "E_dq"
+          ],
+          [
+            "E_residue",
+            "sub",
+            "E_Ldq",
+            "E_rem"
+          ],
+          [
+            "E_rh",
+            "add",
+            "E_rem",
+            "E_h"
+          ],
+          [
+            "E_range",
+            "sub",
+            "E_rh",
+            6
+          ],
+          [
+            "E_boolean",
+            "mul",
+            "E_b",
+            "E_truth"
+          ],
+          [
+            "E_inactive",
+            "sub",
+            "E_bs",
+            "E_s"
+          ],
+          [
+            "K_product",
+            "mul",
+            "A_b",
+            "B_b"
+          ],
+          [
+            "K_row",
+            "sub",
+            "K",
+            "K_product"
+          ],
+          [
+            "H",
+            "sub",
+            1,
+            "K"
+          ],
+          [
+            "left_product",
+            "mul",
+            "H",
+            "C_truth"
+          ],
+          [
+            "left_row",
+            "sub",
+            "left",
+            "left_product"
+          ],
+          [
+            "right_product",
+            "mul",
+            "K",
+            "E_truth"
+          ],
+          [
+            "right_row",
+            "sub",
+            "right",
+            "right_product"
+          ],
+          [
+            "branches",
+            "add",
+            "left",
+            "right"
+          ],
+          [
+            "query_row",
+            "sub",
+            "branches",
+            1
+          ],
+          [
+            "square_0",
+            "mul",
+            "lower_row",
+            "lower_row"
+          ],
+          [
+            "square_1",
+            "mul",
+            "upper_row",
+            "upper_row"
+          ],
+          [
+            "square_2",
+            "mul",
+            "A_split",
+            "A_split"
+          ],
+          [
+            "square_3",
+            "mul",
+            "A_residue",
+            "A_residue"
+          ],
+          [
+            "square_4",
+            "mul",
+            "A_range",
+            "A_range"
+          ],
+          [
+            "square_5",
+            "mul",
+            "A_boolean",
+            "A_boolean"
+          ],
+          [
+            "square_6",
+            "mul",
+            "A_inactive",
+            "A_inactive"
+          ],
+          [
+            "square_7",
+            "mul",
+            "B_split",
+            "B_split"
+          ],
+          [
+            "square_8",
+            "mul",
+            "B_residue",
+            "B_residue"
+          ],
+          [
+            "square_9",
+            "mul",
+            "B_range",
+            "B_range"
+          ],
+          [
+            "square_10",
+            "mul",
+            "B_boolean",
+            "B_boolean"
+          ],
+          [
+            "square_11",
+            "mul",
+            "B_inactive",
+            "B_inactive"
+          ],
+          [
+            "square_12",
+            "mul",
+            "C_split",
+            "C_split"
+          ],
+          [
+            "square_13",
+            "mul",
+            "C_residue",
+            "C_residue"
+          ],
+          [
+            "square_14",
+            "mul",
+            "C_range",
+            "C_range"
+          ],
+          [
+            "square_15",
+            "mul",
+            "C_boolean",
+            "C_boolean"
+          ],
+          [
+            "square_16",
+            "mul",
+            "C_inactive",
+            "C_inactive"
+          ],
+          [
+            "square_17",
+            "mul",
+            "E_split",
+            "E_split"
+          ],
+          [
+            "square_18",
+            "mul",
+            "E_residue",
+            "E_residue"
+          ],
+          [
+            "square_19",
+            "mul",
+            "E_range",
+            "E_range"
+          ],
+          [
+            "square_20",
+            "mul",
+            "E_boolean",
+            "E_boolean"
+          ],
+          [
+            "square_21",
+            "mul",
+            "E_inactive",
+            "E_inactive"
+          ],
+          [
+            "square_22",
+            "mul",
+            "K_row",
+            "K_row"
+          ],
+          [
+            "square_23",
+            "mul",
+            "left_row",
+            "left_row"
+          ],
+          [
+            "square_24",
+            "mul",
+            "right_row",
+            "right_row"
+          ],
+          [
+            "square_25",
+            "mul",
+            "query_row",
+            "query_row"
+          ],
+          [
+            "sum_1",
+            "add",
+            "square_0",
+            "square_1"
+          ],
+          [
+            "sum_2",
+            "add",
+            "sum_1",
+            "square_2"
+          ],
+          [
+            "sum_3",
+            "add",
+            "sum_2",
+            "square_3"
+          ],
+          [
+            "sum_4",
+            "add",
+            "sum_3",
+            "square_4"
+          ],
+          [
+            "sum_5",
+            "add",
+            "sum_4",
+            "square_5"
+          ],
+          [
+            "sum_6",
+            "add",
+            "sum_5",
+            "square_6"
+          ],
+          [
+            "sum_7",
+            "add",
+            "sum_6",
+            "square_7"
+          ],
+          [
+            "sum_8",
+            "add",
+            "sum_7",
+            "square_8"
+          ],
+          [
+            "sum_9",
+            "add",
+            "sum_8",
+            "square_9"
+          ],
+          [
+            "sum_10",
+            "add",
+            "sum_9",
+            "square_10"
+          ],
+          [
+            "sum_11",
+            "add",
+            "sum_10",
+            "square_11"
+          ],
+          [
+            "sum_12",
+            "add",
+            "sum_11",
+            "square_12"
+          ],
+          [
+            "sum_13",
+            "add",
+            "sum_12",
+            "square_13"
+          ],
+          [
+            "sum_14",
+            "add",
+            "sum_13",
+            "square_14"
+          ],
+          [
+            "sum_15",
+            "add",
+            "sum_14",
+            "square_15"
+          ],
+          [
+            "sum_16",
+            "add",
+            "sum_15",
+            "square_16"
+          ],
+          [
+            "sum_17",
+            "add",
+            "sum_16",
+            "square_17"
+          ],
+          [
+            "sum_18",
+            "add",
+            "sum_17",
+            "square_18"
+          ],
+          [
+            "sum_19",
+            "add",
+            "sum_18",
+            "square_19"
+          ],
+          [
+            "sum_20",
+            "add",
+            "sum_19",
+            "square_20"
+          ],
+          [
+            "sum_21",
+            "add",
+            "sum_20",
+            "square_21"
+          ],
+          [
+            "sum_22",
+            "add",
+            "sum_21",
+            "square_22"
+          ],
+          [
+            "sum_23",
+            "add",
+            "sum_22",
+            "square_23"
+          ],
+          [
+            "sum_24",
+            "add",
+            "sum_23",
+            "square_24"
+          ],
+          [
+            "sum_25",
+            "add",
+            "sum_24",
+            "square_25"
+          ]
+        ],
+        "ledger": {
+          "A": 76,
+          "M": 45,
+          "operations": 121,
+          "residuals": 26,
+          "witnesses": 25
+        },
+        "mode": "shared_mux",
+        "output": "sum_25",
+        "residual_names": [
+          "domain_lower",
+          "domain_upper",
+          "A_split",
+          "A_residue",
+          "A_range",
+          "A_boolean",
+          "A_inactive",
+          "B_split",
+          "B_residue",
+          "B_range",
+          "B_boolean",
+          "B_inactive",
+          "C_split",
+          "C_residue",
+          "C_range",
+          "C_boolean",
+          "C_inactive",
+          "E_split",
+          "E_residue",
+          "E_range",
+          "E_boolean",
+          "E_inactive",
+          "K_definition",
+          "left_definition",
+          "right_definition",
+          "final_truth"
+        ],
+        "residuals": [
+          "lower_row",
+          "upper_row",
+          "A_split",
+          "A_residue",
+          "A_range",
+          "A_boolean",
+          "A_inactive",
+          "B_split",
+          "B_residue",
+          "B_range",
+          "B_boolean",
+          "B_inactive",
+          "C_split",
+          "C_residue",
+          "C_range",
+          "C_boolean",
+          "C_inactive",
+          "E_split",
+          "E_residue",
+          "E_range",
+          "E_boolean",
+          "E_inactive",
+          "K_row",
+          "left_row",
+          "right_row",
+          "query_row"
+        ],
+        "witnesses": [
+          "lo",
+          "hi",
+          "A_qp",
+          "A_qm",
+          "A_b",
+          "A_s",
+          "A_h",
+          "B_qp",
+          "B_qm",
+          "B_b",
+          "B_s",
+          "B_h",
+          "C_qp",
+          "C_qm",
+          "C_b",
+          "C_s",
+          "C_h",
+          "E_qp",
+          "E_qm",
+          "E_b",
+          "E_s",
+          "E_h",
+          "K",
+          "left",
+          "right"
+        ]
+      },
+      "polynomial": [
+        [
+          [],
+          2582
+        ],
+        [
+          [
+            "A_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_b"
+          ],
+          3
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_b",
+            "A_b"
+          ],
+          1
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_s"
+          ],
+          4
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_s",
+            "A_s"
+          ],
+          3
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "B_b",
+            "B_b"
+          ],
+          1
+        ],
+        [
+          [
+            "A_b",
+            "A_h"
+          ],
+          2
+        ],
+        [
+          [
+            "A_b",
+            "A_h",
+            "A_s"
+          ],
+          2
+        ],
+        [
+          [
+            "A_b",
+            "A_qm"
+          ],
+          -8
+        ],
+        [
+          [
+            "A_b",
+            "A_qm",
+            "A_s"
+          ],
+          -8
+        ],
+        [
+          [
+            "A_b",
+            "A_qp"
+          ],
+          8
+        ],
+        [
+          [
+            "A_b",
+            "A_qp",
+            "A_s"
+          ],
+          8
+        ],
+        [
+          [
+            "A_b",
+            "A_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_s",
+            "A_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_s",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "A_b",
+            "B_b",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "A_h"
+          ],
+          -6
+        ],
+        [
+          [
+            "A_h",
+            "A_h"
+          ],
+          1
+        ],
+        [
+          [
+            "A_qm"
+          ],
+          -16
+        ],
+        [
+          [
+            "A_qm",
+            "A_qm"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qm",
+            "A_qm",
+            "A_qp",
+            "A_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "A_qm",
+            "A_qp"
+          ],
+          -32
+        ],
+        [
+          [
+            "A_qm",
+            "n"
+          ],
+          40
+        ],
+        [
+          [
+            "A_qp"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qp",
+            "A_qp"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qp",
+            "n"
+          ],
+          -40
+        ],
+        [
+          [
+            "A_s",
+            "A_s"
+          ],
+          1
+        ],
+        [
+          [
+            "B_b"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_b"
+          ],
+          3
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_b",
+            "B_b"
+          ],
+          1
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_s"
+          ],
+          4
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_s",
+            "B_s"
+          ],
+          3
+        ],
+        [
+          [
+            "B_b",
+            "B_h"
+          ],
+          2
+        ],
+        [
+          [
+            "B_b",
+            "B_h",
+            "B_s"
+          ],
+          2
+        ],
+        [
+          [
+            "B_b",
+            "B_qm"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_qm",
+            "B_s"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_qp"
+          ],
+          10
+        ],
+        [
+          [
+            "B_b",
+            "B_qp",
+            "B_s"
+          ],
+          10
+        ],
+        [
+          [
+            "B_b",
+            "B_s"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_s",
+            "B_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "B_s",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_h"
+          ],
+          -8
+        ],
+        [
+          [
+            "B_h",
+            "B_h"
+          ],
+          1
+        ],
+        [
+          [
+            "B_qm"
+          ],
+          10
+        ],
+        [
+          [
+            "B_qm",
+            "B_qm"
+          ],
+          25
+        ],
+        [
+          [
+            "B_qm",
+            "B_qm",
+            "B_qp",
+            "B_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "B_qm",
+            "B_qp"
+          ],
+          -50
+        ],
+        [
+          [
+            "B_qm",
+            "n"
+          ],
+          10
+        ],
+        [
+          [
+            "B_qp"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_qp",
+            "B_qp"
+          ],
+          25
+        ],
+        [
+          [
+            "B_qp",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_s",
+            "B_s"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b"
+          ],
+          -8
+        ],
+        [
+          [
+            "C_b",
+            "C_b"
+          ],
+          4
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_b",
+            "C_b"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_s"
+          ],
+          4
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_s",
+            "C_s"
+          ],
+          3
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "K",
+            "K"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b",
+            "C_h"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "C_h",
+            "C_s"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "C_qm"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_qm",
+            "C_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_qp"
+          ],
+          6
+        ],
+        [
+          [
+            "C_b",
+            "C_qp",
+            "C_s"
+          ],
+          6
+        ],
+        [
+          [
+            "C_b",
+            "C_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_s",
+            "C_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_s",
+            "n"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_b",
+            "K"
+          ],
+          4
+        ],
+        [
+          [
+            "C_b",
+            "K",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "K",
+            "left"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "left"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "n"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_h"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_h",
+            "C_h"
+          ],
+          1
+        ],
+        [
+          [
+            "C_qm"
+          ],
+          6
+        ],
+        [
+          [
+            "C_qm",
+            "C_qm"
+          ],
+          9
+        ],
+        [
+          [
+            "C_qm",
+            "C_qm",
+            "C_qp",
+            "C_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "C_qm",
+            "C_qp"
+          ],
+          -18
+        ],
+        [
+          [
+            "C_qm",
+            "n"
+          ],
+          12
+        ],
+        [
+          [
+            "C_qp"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_qp",
+            "C_qp"
+          ],
+          9
+        ],
+        [
+          [
+            "C_qp",
+            "n"
+          ],
+          -12
+        ],
+        [
+          [
+            "C_s",
+            "C_s"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "E_b"
+          ],
+          3
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_b",
+            "E_b"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_s"
+          ],
+          4
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_s",
+            "E_s"
+          ],
+          3
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "K",
+            "K"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b",
+            "E_h"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "E_h",
+            "E_s"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "E_qm"
+          ],
+          -14
+        ],
+        [
+          [
+            "E_b",
+            "E_qm",
+            "E_s"
+          ],
+          -14
+        ],
+        [
+          [
+            "E_b",
+            "E_qp"
+          ],
+          14
+        ],
+        [
+          [
+            "E_b",
+            "E_qp",
+            "E_s"
+          ],
+          14
+        ],
+        [
+          [
+            "E_b",
+            "E_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "E_s",
+            "E_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "E_s",
+            "n"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "K",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "K",
+            "right"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "n"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_h"
+          ],
+          -12
+        ],
+        [
+          [
+            "E_h",
+            "E_h"
+          ],
+          1
+        ],
+        [
+          [
+            "E_qm"
+          ],
+          -42
+        ],
+        [
+          [
+            "E_qm",
+            "E_qm"
+          ],
+          49
+        ],
+        [
+          [
+            "E_qm",
+            "E_qm",
+            "E_qp",
+            "E_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "E_qm",
+            "E_qp"
+          ],
+          -98
+        ],
+        [
+          [
+            "E_qm",
+            "n"
+          ],
+          42
+        ],
+        [
+          [
+            "E_qp"
+          ],
+          42
+        ],
+        [
+          [
+            "E_qp",
+            "E_qp"
+          ],
+          49
+        ],
+        [
+          [
+            "E_qp",
+            "n"
+          ],
+          -42
+        ],
+        [
+          [
+            "E_s",
+            "E_s"
+          ],
+          1
+        ],
+        [
+          [
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "K",
+            "K"
+          ],
+          3
+        ],
+        [
+          [
+            "K",
+            "left"
+          ],
+          2
+        ],
+        [
+          [
+            "K",
+            "right"
+          ],
+          -2
+        ],
+        [
+          [
+            "hi"
+          ],
+          -100
+        ],
+        [
+          [
+            "hi",
+            "hi"
+          ],
+          1
+        ],
+        [
+          [
+            "hi",
+            "n"
+          ],
+          2
+        ],
+        [
+          [
+            "left"
+          ],
+          -4
+        ],
+        [
+          [
+            "left",
+            "left"
+          ],
+          2
+        ],
+        [
+          [
+            "left",
+            "right"
+          ],
+          2
+        ],
+        [
+          [
+            "lo",
+            "lo"
+          ],
+          1
+        ],
+        [
+          [
+            "lo",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "n"
+          ],
+          -132
+        ],
+        [
+          [
+            "n",
+            "n"
+          ],
+          41
+        ],
+        [
+          [
+            "right"
+          ],
+          -2
+        ],
+        [
+          [
+            "right",
+            "right"
+          ],
+          2
+        ]
+      ]
+    },
+    {
+      "coefficient_count": 153,
+      "packet": {
+        "common_prefix_length": 61,
+        "exact_degree": 4,
+        "inputs": [
+          "n"
+        ],
+        "instructions": [
+          [
+            "twice_n",
+            "add",
+            "n",
+            "n"
+          ],
+          [
+            "x",
+            "add",
+            "twice_n",
+            1
+          ],
+          [
+            "three_n",
+            "add",
+            "twice_n",
+            "n"
+          ],
+          [
+            "y",
+            "sub",
+            "three_n",
+            2
+          ],
+          [
+            "x_plus_y",
+            "add",
+            "x",
+            "y"
+          ],
+          [
+            "L_A",
+            "sub",
+            "x_plus_y",
+            1
+          ],
+          [
+            "twice_x",
+            "add",
+            "x",
+            "x"
+          ],
+          [
+            "twice_x_minus_y",
+            "sub",
+            "twice_x",
+            "y"
+          ],
+          [
+            "L_B",
+            "sub",
+            "twice_x_minus_y",
+            3
+          ],
+          [
+            "L_E",
+            "sub",
+            "y",
+            1
+          ],
+          [
+            "upper",
+            "sub",
+            50,
+            "n"
+          ],
+          [
+            "lower_row",
+            "sub",
+            "n",
+            "lo"
+          ],
+          [
+            "upper_row",
+            "sub",
+            "upper",
+            "hi"
+          ],
+          [
+            "A_bs",
+            "mul",
+            "A_b",
+            "A_s"
+          ],
+          [
+            "A_rem",
+            "add",
+            "A_bs",
+            "A_b"
+          ],
+          [
+            "A_truth",
+            "sub",
+            1,
+            "A_b"
+          ],
+          [
+            "A_split",
+            "mul",
+            "A_qp",
+            "A_qm"
+          ],
+          [
+            "A_q",
+            "sub",
+            "A_qp",
+            "A_qm"
+          ],
+          [
+            "A_dq",
+            "mul",
+            4,
+            "A_q"
+          ],
+          [
+            "A_Ldq",
+            "sub",
+            "L_A",
+            "A_dq"
+          ],
+          [
+            "A_residue",
+            "sub",
+            "A_Ldq",
+            "A_rem"
+          ],
+          [
+            "A_rh",
+            "add",
+            "A_rem",
+            "A_h"
+          ],
+          [
+            "A_range",
+            "sub",
+            "A_rh",
+            3
+          ],
+          [
+            "A_boolean",
+            "mul",
+            "A_b",
+            "A_truth"
+          ],
+          [
+            "A_inactive",
+            "sub",
+            "A_bs",
+            "A_s"
+          ],
+          [
+            "B_bs",
+            "mul",
+            "B_b",
+            "B_s"
+          ],
+          [
+            "B_rem",
+            "add",
+            "B_bs",
+            "B_b"
+          ],
+          [
+            "B_truth",
+            "sub",
+            1,
+            "B_b"
+          ],
+          [
+            "B_split",
+            "mul",
+            "B_qp",
+            "B_qm"
+          ],
+          [
+            "B_q",
+            "sub",
+            "B_qp",
+            "B_qm"
+          ],
+          [
+            "B_dq",
+            "mul",
+            5,
+            "B_q"
+          ],
+          [
+            "B_Ldq",
+            "sub",
+            "L_B",
+            "B_dq"
+          ],
+          [
+            "B_residue",
+            "sub",
+            "B_Ldq",
+            "B_rem"
+          ],
+          [
+            "B_rh",
+            "add",
+            "B_rem",
+            "B_h"
+          ],
+          [
+            "B_range",
+            "sub",
+            "B_rh",
+            4
+          ],
+          [
+            "B_boolean",
+            "mul",
+            "B_b",
+            "B_truth"
+          ],
+          [
+            "B_inactive",
+            "sub",
+            "B_bs",
+            "B_s"
+          ],
+          [
+            "C_bs",
+            "mul",
+            "C_b",
+            "C_s"
+          ],
+          [
+            "C_rem",
+            "add",
+            "C_bs",
+            "C_b"
+          ],
+          [
+            "C_truth",
+            "sub",
+            1,
+            "C_b"
+          ],
+          [
+            "C_split",
+            "mul",
+            "C_qp",
+            "C_qm"
+          ],
+          [
+            "C_q",
+            "sub",
+            "C_qp",
+            "C_qm"
+          ],
+          [
+            "C_dq",
+            "mul",
+            3,
+            "C_q"
+          ],
+          [
+            "C_Ldq",
+            "sub",
+            "x",
+            "C_dq"
+          ],
+          [
+            "C_residue",
+            "sub",
+            "C_Ldq",
+            "C_rem"
+          ],
+          [
+            "C_rh",
+            "add",
+            "C_rem",
+            "C_h"
+          ],
+          [
+            "C_range",
+            "sub",
+            "C_rh",
+            2
+          ],
+          [
+            "C_boolean",
+            "mul",
+            "C_b",
+            "C_truth"
+          ],
+          [
+            "C_inactive",
+            "sub",
+            "C_bs",
+            "C_s"
+          ],
+          [
+            "E_bs",
+            "mul",
+            "E_b",
+            "E_s"
+          ],
+          [
+            "E_rem",
+            "add",
+            "E_bs",
+            "E_b"
+          ],
+          [
+            "E_truth",
+            "sub",
+            1,
+            "E_b"
+          ],
+          [
+            "E_split",
+            "mul",
+            "E_qp",
+            "E_qm"
+          ],
+          [
+            "E_q",
+            "sub",
+            "E_qp",
+            "E_qm"
+          ],
+          [
+            "E_dq",
+            "mul",
+            7,
+            "E_q"
+          ],
+          [
+            "E_Ldq",
+            "sub",
+            "L_E",
+            "E_dq"
+          ],
+          [
+            "E_residue",
+            "sub",
+            "E_Ldq",
+            "E_rem"
+          ],
+          [
+            "E_rh",
+            "add",
+            "E_rem",
+            "E_h"
+          ],
+          [
+            "E_range",
+            "sub",
+            "E_rh",
+            6
+          ],
+          [
+            "E_boolean",
+            "mul",
+            "E_b",
+            "E_truth"
+          ],
+          [
+            "E_inactive",
+            "sub",
+            "E_bs",
+            "E_s"
+          ],
+          [
+            "K_product",
+            "mul",
+            "A_b",
+            "B_b"
+          ],
+          [
+            "K_row",
+            "sub",
+            "K",
+            "K_product"
+          ],
+          [
+            "AC_product",
+            "mul",
+            "A_truth",
+            "C_truth"
+          ],
+          [
+            "AC_row",
+            "sub",
+            "AC",
+            "AC_product"
+          ],
+          [
+            "BC_product",
+            "mul",
+            "B_truth",
+            "C_truth"
+          ],
+          [
+            "BC_row",
+            "sub",
+            "BC",
+            "BC_product"
+          ],
+          [
+            "KE_product",
+            "mul",
+            "K",
+            "E_truth"
+          ],
+          [
+            "KE_row",
+            "sub",
+            "KE",
+            "KE_product"
+          ],
+          [
+            "joined_product",
+            "mul",
+            "AC",
+            "BC"
+          ],
+          [
+            "joined_sum",
+            "add",
+            "AC",
+            "BC"
+          ],
+          [
+            "joined_difference",
+            "sub",
+            "joined",
+            "joined_sum"
+          ],
+          [
+            "joined_row",
+            "add",
+            "joined_difference",
+            "joined_product"
+          ],
+          [
+            "branches",
+            "add",
+            "joined",
+            "KE"
+          ],
+          [
+            "query_row",
+            "sub",
+            "branches",
+            1
+          ],
+          [
+            "square_0",
+            "mul",
+            "lower_row",
+            "lower_row"
+          ],
+          [
+            "square_1",
+            "mul",
+            "upper_row",
+            "upper_row"
+          ],
+          [
+            "square_2",
+            "mul",
+            "A_split",
+            "A_split"
+          ],
+          [
+            "square_3",
+            "mul",
+            "A_residue",
+            "A_residue"
+          ],
+          [
+            "square_4",
+            "mul",
+            "A_range",
+            "A_range"
+          ],
+          [
+            "square_5",
+            "mul",
+            "A_boolean",
+            "A_boolean"
+          ],
+          [
+            "square_6",
+            "mul",
+            "A_inactive",
+            "A_inactive"
+          ],
+          [
+            "square_7",
+            "mul",
+            "B_split",
+            "B_split"
+          ],
+          [
+            "square_8",
+            "mul",
+            "B_residue",
+            "B_residue"
+          ],
+          [
+            "square_9",
+            "mul",
+            "B_range",
+            "B_range"
+          ],
+          [
+            "square_10",
+            "mul",
+            "B_boolean",
+            "B_boolean"
+          ],
+          [
+            "square_11",
+            "mul",
+            "B_inactive",
+            "B_inactive"
+          ],
+          [
+            "square_12",
+            "mul",
+            "C_split",
+            "C_split"
+          ],
+          [
+            "square_13",
+            "mul",
+            "C_residue",
+            "C_residue"
+          ],
+          [
+            "square_14",
+            "mul",
+            "C_range",
+            "C_range"
+          ],
+          [
+            "square_15",
+            "mul",
+            "C_boolean",
+            "C_boolean"
+          ],
+          [
+            "square_16",
+            "mul",
+            "C_inactive",
+            "C_inactive"
+          ],
+          [
+            "square_17",
+            "mul",
+            "E_split",
+            "E_split"
+          ],
+          [
+            "square_18",
+            "mul",
+            "E_residue",
+            "E_residue"
+          ],
+          [
+            "square_19",
+            "mul",
+            "E_range",
+            "E_range"
+          ],
+          [
+            "square_20",
+            "mul",
+            "E_boolean",
+            "E_boolean"
+          ],
+          [
+            "square_21",
+            "mul",
+            "E_inactive",
+            "E_inactive"
+          ],
+          [
+            "square_22",
+            "mul",
+            "K_row",
+            "K_row"
+          ],
+          [
+            "square_23",
+            "mul",
+            "AC_row",
+            "AC_row"
+          ],
+          [
+            "square_24",
+            "mul",
+            "BC_row",
+            "BC_row"
+          ],
+          [
+            "square_25",
+            "mul",
+            "KE_row",
+            "KE_row"
+          ],
+          [
+            "square_26",
+            "mul",
+            "joined_row",
+            "joined_row"
+          ],
+          [
+            "square_27",
+            "mul",
+            "query_row",
+            "query_row"
+          ],
+          [
+            "sum_1",
+            "add",
+            "square_0",
+            "square_1"
+          ],
+          [
+            "sum_2",
+            "add",
+            "sum_1",
+            "square_2"
+          ],
+          [
+            "sum_3",
+            "add",
+            "sum_2",
+            "square_3"
+          ],
+          [
+            "sum_4",
+            "add",
+            "sum_3",
+            "square_4"
+          ],
+          [
+            "sum_5",
+            "add",
+            "sum_4",
+            "square_5"
+          ],
+          [
+            "sum_6",
+            "add",
+            "sum_5",
+            "square_6"
+          ],
+          [
+            "sum_7",
+            "add",
+            "sum_6",
+            "square_7"
+          ],
+          [
+            "sum_8",
+            "add",
+            "sum_7",
+            "square_8"
+          ],
+          [
+            "sum_9",
+            "add",
+            "sum_8",
+            "square_9"
+          ],
+          [
+            "sum_10",
+            "add",
+            "sum_9",
+            "square_10"
+          ],
+          [
+            "sum_11",
+            "add",
+            "sum_10",
+            "square_11"
+          ],
+          [
+            "sum_12",
+            "add",
+            "sum_11",
+            "square_12"
+          ],
+          [
+            "sum_13",
+            "add",
+            "sum_12",
+            "square_13"
+          ],
+          [
+            "sum_14",
+            "add",
+            "sum_13",
+            "square_14"
+          ],
+          [
+            "sum_15",
+            "add",
+            "sum_14",
+            "square_15"
+          ],
+          [
+            "sum_16",
+            "add",
+            "sum_15",
+            "square_16"
+          ],
+          [
+            "sum_17",
+            "add",
+            "sum_16",
+            "square_17"
+          ],
+          [
+            "sum_18",
+            "add",
+            "sum_17",
+            "square_18"
+          ],
+          [
+            "sum_19",
+            "add",
+            "sum_18",
+            "square_19"
+          ],
+          [
+            "sum_20",
+            "add",
+            "sum_19",
+            "square_20"
+          ],
+          [
+            "sum_21",
+            "add",
+            "sum_20",
+            "square_21"
+          ],
+          [
+            "sum_22",
+            "add",
+            "sum_21",
+            "square_22"
+          ],
+          [
+            "sum_23",
+            "add",
+            "sum_22",
+            "square_23"
+          ],
+          [
+            "sum_24",
+            "add",
+            "sum_23",
+            "square_24"
+          ],
+          [
+            "sum_25",
+            "add",
+            "sum_24",
+            "square_25"
+          ],
+          [
+            "sum_26",
+            "add",
+            "sum_25",
+            "square_26"
+          ],
+          [
+            "sum_27",
+            "add",
+            "sum_26",
+            "square_27"
+          ]
+        ],
+        "ledger": {
+          "A": 81,
+          "M": 49,
+          "operations": 130,
+          "residuals": 28,
+          "witnesses": 27
+        },
+        "mode": "expanded_dnf",
+        "output": "sum_27",
+        "residual_names": [
+          "domain_lower",
+          "domain_upper",
+          "A_split",
+          "A_residue",
+          "A_range",
+          "A_boolean",
+          "A_inactive",
+          "B_split",
+          "B_residue",
+          "B_range",
+          "B_boolean",
+          "B_inactive",
+          "C_split",
+          "C_residue",
+          "C_range",
+          "C_boolean",
+          "C_inactive",
+          "E_split",
+          "E_residue",
+          "E_range",
+          "E_boolean",
+          "E_inactive",
+          "K_definition",
+          "AC_definition",
+          "BC_definition",
+          "KE_definition",
+          "joined_definition",
+          "final_truth"
+        ],
+        "residuals": [
+          "lower_row",
+          "upper_row",
+          "A_split",
+          "A_residue",
+          "A_range",
+          "A_boolean",
+          "A_inactive",
+          "B_split",
+          "B_residue",
+          "B_range",
+          "B_boolean",
+          "B_inactive",
+          "C_split",
+          "C_residue",
+          "C_range",
+          "C_boolean",
+          "C_inactive",
+          "E_split",
+          "E_residue",
+          "E_range",
+          "E_boolean",
+          "E_inactive",
+          "K_row",
+          "AC_row",
+          "BC_row",
+          "KE_row",
+          "joined_row",
+          "query_row"
+        ],
+        "witnesses": [
+          "lo",
+          "hi",
+          "A_qp",
+          "A_qm",
+          "A_b",
+          "A_s",
+          "A_h",
+          "B_qp",
+          "B_qm",
+          "B_b",
+          "B_s",
+          "B_h",
+          "C_qp",
+          "C_qm",
+          "C_b",
+          "C_s",
+          "C_h",
+          "E_qp",
+          "E_qm",
+          "E_b",
+          "E_s",
+          "E_h",
+          "K",
+          "AC",
+          "BC",
+          "KE",
+          "joined"
+        ]
+      },
+      "polynomial": [
+        [
+          [],
+          2583
+        ],
+        [
+          [
+            "AC"
+          ],
+          -2
+        ],
+        [
+          [
+            "AC",
+            "AC"
+          ],
+          2
+        ],
+        [
+          [
+            "AC",
+            "AC",
+            "BC"
+          ],
+          -2
+        ],
+        [
+          [
+            "AC",
+            "AC",
+            "BC",
+            "BC"
+          ],
+          1
+        ],
+        [
+          [
+            "AC",
+            "A_b"
+          ],
+          2
+        ],
+        [
+          [
+            "AC",
+            "A_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "AC",
+            "BC"
+          ],
+          2
+        ],
+        [
+          [
+            "AC",
+            "BC",
+            "BC"
+          ],
+          -2
+        ],
+        [
+          [
+            "AC",
+            "BC",
+            "joined"
+          ],
+          2
+        ],
+        [
+          [
+            "AC",
+            "C_b"
+          ],
+          2
+        ],
+        [
+          [
+            "AC",
+            "joined"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b"
+          ],
+          -4
+        ],
+        [
+          [
+            "A_b",
+            "A_b"
+          ],
+          4
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_b",
+            "A_b"
+          ],
+          1
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_s"
+          ],
+          4
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_s",
+            "A_s"
+          ],
+          3
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "B_b",
+            "B_b"
+          ],
+          1
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "C_b",
+            "C_b"
+          ],
+          1
+        ],
+        [
+          [
+            "A_b",
+            "A_h"
+          ],
+          2
+        ],
+        [
+          [
+            "A_b",
+            "A_h",
+            "A_s"
+          ],
+          2
+        ],
+        [
+          [
+            "A_b",
+            "A_qm"
+          ],
+          -8
+        ],
+        [
+          [
+            "A_b",
+            "A_qm",
+            "A_s"
+          ],
+          -8
+        ],
+        [
+          [
+            "A_b",
+            "A_qp"
+          ],
+          8
+        ],
+        [
+          [
+            "A_b",
+            "A_qp",
+            "A_s"
+          ],
+          8
+        ],
+        [
+          [
+            "A_b",
+            "A_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_s",
+            "A_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_s",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "A_b",
+            "B_b",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "C_b"
+          ],
+          4
+        ],
+        [
+          [
+            "A_b",
+            "C_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "A_h"
+          ],
+          -6
+        ],
+        [
+          [
+            "A_h",
+            "A_h"
+          ],
+          1
+        ],
+        [
+          [
+            "A_qm"
+          ],
+          -16
+        ],
+        [
+          [
+            "A_qm",
+            "A_qm"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qm",
+            "A_qm",
+            "A_qp",
+            "A_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "A_qm",
+            "A_qp"
+          ],
+          -32
+        ],
+        [
+          [
+            "A_qm",
+            "n"
+          ],
+          40
+        ],
+        [
+          [
+            "A_qp"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qp",
+            "A_qp"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qp",
+            "n"
+          ],
+          -40
+        ],
+        [
+          [
+            "A_s",
+            "A_s"
+          ],
+          1
+        ],
+        [
+          [
+            "BC"
+          ],
+          -2
+        ],
+        [
+          [
+            "BC",
+            "BC"
+          ],
+          2
+        ],
+        [
+          [
+            "BC",
+            "B_b"
+          ],
+          2
+        ],
+        [
+          [
+            "BC",
+            "B_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "BC",
+            "C_b"
+          ],
+          2
+        ],
+        [
+          [
+            "BC",
+            "joined"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b"
+          ],
+          -12
+        ],
+        [
+          [
+            "B_b",
+            "B_b"
+          ],
+          4
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_b",
+            "B_b"
+          ],
+          1
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_s"
+          ],
+          4
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_s",
+            "B_s"
+          ],
+          3
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "C_b",
+            "C_b"
+          ],
+          1
+        ],
+        [
+          [
+            "B_b",
+            "B_h"
+          ],
+          2
+        ],
+        [
+          [
+            "B_b",
+            "B_h",
+            "B_s"
+          ],
+          2
+        ],
+        [
+          [
+            "B_b",
+            "B_qm"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_qm",
+            "B_s"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_qp"
+          ],
+          10
+        ],
+        [
+          [
+            "B_b",
+            "B_qp",
+            "B_s"
+          ],
+          10
+        ],
+        [
+          [
+            "B_b",
+            "B_s"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_s",
+            "B_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "B_s",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "C_b"
+          ],
+          4
+        ],
+        [
+          [
+            "B_b",
+            "C_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_h"
+          ],
+          -8
+        ],
+        [
+          [
+            "B_h",
+            "B_h"
+          ],
+          1
+        ],
+        [
+          [
+            "B_qm"
+          ],
+          10
+        ],
+        [
+          [
+            "B_qm",
+            "B_qm"
+          ],
+          25
+        ],
+        [
+          [
+            "B_qm",
+            "B_qm",
+            "B_qp",
+            "B_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "B_qm",
+            "B_qp"
+          ],
+          -50
+        ],
+        [
+          [
+            "B_qm",
+            "n"
+          ],
+          10
+        ],
+        [
+          [
+            "B_qp"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_qp",
+            "B_qp"
+          ],
+          25
+        ],
+        [
+          [
+            "B_qp",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_s",
+            "B_s"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b"
+          ],
+          -10
+        ],
+        [
+          [
+            "C_b",
+            "C_b"
+          ],
+          5
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_b",
+            "C_b"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_s"
+          ],
+          4
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_s",
+            "C_s"
+          ],
+          3
+        ],
+        [
+          [
+            "C_b",
+            "C_h"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "C_h",
+            "C_s"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "C_qm"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_qm",
+            "C_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_qp"
+          ],
+          6
+        ],
+        [
+          [
+            "C_b",
+            "C_qp",
+            "C_s"
+          ],
+          6
+        ],
+        [
+          [
+            "C_b",
+            "C_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_s",
+            "C_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_s",
+            "n"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_b",
+            "n"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_h"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_h",
+            "C_h"
+          ],
+          1
+        ],
+        [
+          [
+            "C_qm"
+          ],
+          6
+        ],
+        [
+          [
+            "C_qm",
+            "C_qm"
+          ],
+          9
+        ],
+        [
+          [
+            "C_qm",
+            "C_qm",
+            "C_qp",
+            "C_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "C_qm",
+            "C_qp"
+          ],
+          -18
+        ],
+        [
+          [
+            "C_qm",
+            "n"
+          ],
+          12
+        ],
+        [
+          [
+            "C_qp"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_qp",
+            "C_qp"
+          ],
+          9
+        ],
+        [
+          [
+            "C_qp",
+            "n"
+          ],
+          -12
+        ],
+        [
+          [
+            "C_s",
+            "C_s"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "E_b"
+          ],
+          3
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_b",
+            "E_b"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_s"
+          ],
+          4
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_s",
+            "E_s"
+          ],
+          3
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "K",
+            "K"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b",
+            "E_h"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "E_h",
+            "E_s"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "E_qm"
+          ],
+          -14
+        ],
+        [
+          [
+            "E_b",
+            "E_qm",
+            "E_s"
+          ],
+          -14
+        ],
+        [
+          [
+            "E_b",
+            "E_qp"
+          ],
+          14
+        ],
+        [
+          [
+            "E_b",
+            "E_qp",
+            "E_s"
+          ],
+          14
+        ],
+        [
+          [
+            "E_b",
+            "E_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "E_s",
+            "E_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "E_s",
+            "n"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "K",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "K",
+            "KE"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "n"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_h"
+          ],
+          -12
+        ],
+        [
+          [
+            "E_h",
+            "E_h"
+          ],
+          1
+        ],
+        [
+          [
+            "E_qm"
+          ],
+          -42
+        ],
+        [
+          [
+            "E_qm",
+            "E_qm"
+          ],
+          49
+        ],
+        [
+          [
+            "E_qm",
+            "E_qm",
+            "E_qp",
+            "E_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "E_qm",
+            "E_qp"
+          ],
+          -98
+        ],
+        [
+          [
+            "E_qm",
+            "n"
+          ],
+          42
+        ],
+        [
+          [
+            "E_qp"
+          ],
+          42
+        ],
+        [
+          [
+            "E_qp",
+            "E_qp"
+          ],
+          49
+        ],
+        [
+          [
+            "E_qp",
+            "n"
+          ],
+          -42
+        ],
+        [
+          [
+            "E_s",
+            "E_s"
+          ],
+          1
+        ],
+        [
+          [
+            "K",
+            "K"
+          ],
+          2
+        ],
+        [
+          [
+            "K",
+            "KE"
+          ],
+          -2
+        ],
+        [
+          [
+            "KE"
+          ],
+          -2
+        ],
+        [
+          [
+            "KE",
+            "KE"
+          ],
+          2
+        ],
+        [
+          [
+            "KE",
+            "joined"
+          ],
+          2
+        ],
+        [
+          [
+            "hi"
+          ],
+          -100
+        ],
+        [
+          [
+            "hi",
+            "hi"
+          ],
+          1
+        ],
+        [
+          [
+            "hi",
+            "n"
+          ],
+          2
+        ],
+        [
+          [
+            "joined"
+          ],
+          -2
+        ],
+        [
+          [
+            "joined",
+            "joined"
+          ],
+          2
+        ],
+        [
+          [
+            "lo",
+            "lo"
+          ],
+          1
+        ],
+        [
+          [
+            "lo",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "n"
+          ],
+          -132
+        ],
+        [
+          [
+            "n",
+            "n"
+          ],
+          41
+        ]
+      ]
+    },
+    {
+      "coefficient_count": 124,
+      "packet": {
+        "common_prefix_length": 61,
+        "exact_degree": 4,
+        "inputs": [
+          "n"
+        ],
+        "instructions": [
+          [
+            "twice_n",
+            "add",
+            "n",
+            "n"
+          ],
+          [
+            "x",
+            "add",
+            "twice_n",
+            1
+          ],
+          [
+            "three_n",
+            "add",
+            "twice_n",
+            "n"
+          ],
+          [
+            "y",
+            "sub",
+            "three_n",
+            2
+          ],
+          [
+            "x_plus_y",
+            "add",
+            "x",
+            "y"
+          ],
+          [
+            "L_A",
+            "sub",
+            "x_plus_y",
+            1
+          ],
+          [
+            "twice_x",
+            "add",
+            "x",
+            "x"
+          ],
+          [
+            "twice_x_minus_y",
+            "sub",
+            "twice_x",
+            "y"
+          ],
+          [
+            "L_B",
+            "sub",
+            "twice_x_minus_y",
+            3
+          ],
+          [
+            "L_E",
+            "sub",
+            "y",
+            1
+          ],
+          [
+            "upper",
+            "sub",
+            50,
+            "n"
+          ],
+          [
+            "lower_row",
+            "sub",
+            "n",
+            "lo"
+          ],
+          [
+            "upper_row",
+            "sub",
+            "upper",
+            "hi"
+          ],
+          [
+            "A_bs",
+            "mul",
+            "A_b",
+            "A_s"
+          ],
+          [
+            "A_rem",
+            "add",
+            "A_bs",
+            "A_b"
+          ],
+          [
+            "A_truth",
+            "sub",
+            1,
+            "A_b"
+          ],
+          [
+            "A_split",
+            "mul",
+            "A_qp",
+            "A_qm"
+          ],
+          [
+            "A_q",
+            "sub",
+            "A_qp",
+            "A_qm"
+          ],
+          [
+            "A_dq",
+            "mul",
+            4,
+            "A_q"
+          ],
+          [
+            "A_Ldq",
+            "sub",
+            "L_A",
+            "A_dq"
+          ],
+          [
+            "A_residue",
+            "sub",
+            "A_Ldq",
+            "A_rem"
+          ],
+          [
+            "A_rh",
+            "add",
+            "A_rem",
+            "A_h"
+          ],
+          [
+            "A_range",
+            "sub",
+            "A_rh",
+            3
+          ],
+          [
+            "A_boolean",
+            "mul",
+            "A_b",
+            "A_truth"
+          ],
+          [
+            "A_inactive",
+            "sub",
+            "A_bs",
+            "A_s"
+          ],
+          [
+            "B_bs",
+            "mul",
+            "B_b",
+            "B_s"
+          ],
+          [
+            "B_rem",
+            "add",
+            "B_bs",
+            "B_b"
+          ],
+          [
+            "B_truth",
+            "sub",
+            1,
+            "B_b"
+          ],
+          [
+            "B_split",
+            "mul",
+            "B_qp",
+            "B_qm"
+          ],
+          [
+            "B_q",
+            "sub",
+            "B_qp",
+            "B_qm"
+          ],
+          [
+            "B_dq",
+            "mul",
+            5,
+            "B_q"
+          ],
+          [
+            "B_Ldq",
+            "sub",
+            "L_B",
+            "B_dq"
+          ],
+          [
+            "B_residue",
+            "sub",
+            "B_Ldq",
+            "B_rem"
+          ],
+          [
+            "B_rh",
+            "add",
+            "B_rem",
+            "B_h"
+          ],
+          [
+            "B_range",
+            "sub",
+            "B_rh",
+            4
+          ],
+          [
+            "B_boolean",
+            "mul",
+            "B_b",
+            "B_truth"
+          ],
+          [
+            "B_inactive",
+            "sub",
+            "B_bs",
+            "B_s"
+          ],
+          [
+            "C_bs",
+            "mul",
+            "C_b",
+            "C_s"
+          ],
+          [
+            "C_rem",
+            "add",
+            "C_bs",
+            "C_b"
+          ],
+          [
+            "C_truth",
+            "sub",
+            1,
+            "C_b"
+          ],
+          [
+            "C_split",
+            "mul",
+            "C_qp",
+            "C_qm"
+          ],
+          [
+            "C_q",
+            "sub",
+            "C_qp",
+            "C_qm"
+          ],
+          [
+            "C_dq",
+            "mul",
+            3,
+            "C_q"
+          ],
+          [
+            "C_Ldq",
+            "sub",
+            "x",
+            "C_dq"
+          ],
+          [
+            "C_residue",
+            "sub",
+            "C_Ldq",
+            "C_rem"
+          ],
+          [
+            "C_rh",
+            "add",
+            "C_rem",
+            "C_h"
+          ],
+          [
+            "C_range",
+            "sub",
+            "C_rh",
+            2
+          ],
+          [
+            "C_boolean",
+            "mul",
+            "C_b",
+            "C_truth"
+          ],
+          [
+            "C_inactive",
+            "sub",
+            "C_bs",
+            "C_s"
+          ],
+          [
+            "E_bs",
+            "mul",
+            "E_b",
+            "E_s"
+          ],
+          [
+            "E_rem",
+            "add",
+            "E_bs",
+            "E_b"
+          ],
+          [
+            "E_truth",
+            "sub",
+            1,
+            "E_b"
+          ],
+          [
+            "E_split",
+            "mul",
+            "E_qp",
+            "E_qm"
+          ],
+          [
+            "E_q",
+            "sub",
+            "E_qp",
+            "E_qm"
+          ],
+          [
+            "E_dq",
+            "mul",
+            7,
+            "E_q"
+          ],
+          [
+            "E_Ldq",
+            "sub",
+            "L_E",
+            "E_dq"
+          ],
+          [
+            "E_residue",
+            "sub",
+            "E_Ldq",
+            "E_rem"
+          ],
+          [
+            "E_rh",
+            "add",
+            "E_rem",
+            "E_h"
+          ],
+          [
+            "E_range",
+            "sub",
+            "E_rh",
+            6
+          ],
+          [
+            "E_boolean",
+            "mul",
+            "E_b",
+            "E_truth"
+          ],
+          [
+            "E_inactive",
+            "sub",
+            "E_bs",
+            "E_s"
+          ],
+          [
+            "K_product",
+            "mul",
+            "A_b",
+            "B_b"
+          ],
+          [
+            "K_row",
+            "sub",
+            "K",
+            "K_product"
+          ],
+          [
+            "E_minus_C",
+            "sub",
+            "E_truth",
+            "C_truth"
+          ],
+          [
+            "K_difference",
+            "mul",
+            "K",
+            "E_minus_C"
+          ],
+          [
+            "query_value",
+            "add",
+            "C_truth",
+            "K_difference"
+          ],
+          [
+            "query_row",
+            "sub",
+            "query_value",
+            1
+          ],
+          [
+            "square_0",
+            "mul",
+            "lower_row",
+            "lower_row"
+          ],
+          [
+            "square_1",
+            "mul",
+            "upper_row",
+            "upper_row"
+          ],
+          [
+            "square_2",
+            "mul",
+            "A_split",
+            "A_split"
+          ],
+          [
+            "square_3",
+            "mul",
+            "A_residue",
+            "A_residue"
+          ],
+          [
+            "square_4",
+            "mul",
+            "A_range",
+            "A_range"
+          ],
+          [
+            "square_5",
+            "mul",
+            "A_boolean",
+            "A_boolean"
+          ],
+          [
+            "square_6",
+            "mul",
+            "A_inactive",
+            "A_inactive"
+          ],
+          [
+            "square_7",
+            "mul",
+            "B_split",
+            "B_split"
+          ],
+          [
+            "square_8",
+            "mul",
+            "B_residue",
+            "B_residue"
+          ],
+          [
+            "square_9",
+            "mul",
+            "B_range",
+            "B_range"
+          ],
+          [
+            "square_10",
+            "mul",
+            "B_boolean",
+            "B_boolean"
+          ],
+          [
+            "square_11",
+            "mul",
+            "B_inactive",
+            "B_inactive"
+          ],
+          [
+            "square_12",
+            "mul",
+            "C_split",
+            "C_split"
+          ],
+          [
+            "square_13",
+            "mul",
+            "C_residue",
+            "C_residue"
+          ],
+          [
+            "square_14",
+            "mul",
+            "C_range",
+            "C_range"
+          ],
+          [
+            "square_15",
+            "mul",
+            "C_boolean",
+            "C_boolean"
+          ],
+          [
+            "square_16",
+            "mul",
+            "C_inactive",
+            "C_inactive"
+          ],
+          [
+            "square_17",
+            "mul",
+            "E_split",
+            "E_split"
+          ],
+          [
+            "square_18",
+            "mul",
+            "E_residue",
+            "E_residue"
+          ],
+          [
+            "square_19",
+            "mul",
+            "E_range",
+            "E_range"
+          ],
+          [
+            "square_20",
+            "mul",
+            "E_boolean",
+            "E_boolean"
+          ],
+          [
+            "square_21",
+            "mul",
+            "E_inactive",
+            "E_inactive"
+          ],
+          [
+            "square_22",
+            "mul",
+            "K_row",
+            "K_row"
+          ],
+          [
+            "square_23",
+            "mul",
+            "query_row",
+            "query_row"
+          ],
+          [
+            "sum_1",
+            "add",
+            "square_0",
+            "square_1"
+          ],
+          [
+            "sum_2",
+            "add",
+            "sum_1",
+            "square_2"
+          ],
+          [
+            "sum_3",
+            "add",
+            "sum_2",
+            "square_3"
+          ],
+          [
+            "sum_4",
+            "add",
+            "sum_3",
+            "square_4"
+          ],
+          [
+            "sum_5",
+            "add",
+            "sum_4",
+            "square_5"
+          ],
+          [
+            "sum_6",
+            "add",
+            "sum_5",
+            "square_6"
+          ],
+          [
+            "sum_7",
+            "add",
+            "sum_6",
+            "square_7"
+          ],
+          [
+            "sum_8",
+            "add",
+            "sum_7",
+            "square_8"
+          ],
+          [
+            "sum_9",
+            "add",
+            "sum_8",
+            "square_9"
+          ],
+          [
+            "sum_10",
+            "add",
+            "sum_9",
+            "square_10"
+          ],
+          [
+            "sum_11",
+            "add",
+            "sum_10",
+            "square_11"
+          ],
+          [
+            "sum_12",
+            "add",
+            "sum_11",
+            "square_12"
+          ],
+          [
+            "sum_13",
+            "add",
+            "sum_12",
+            "square_13"
+          ],
+          [
+            "sum_14",
+            "add",
+            "sum_13",
+            "square_14"
+          ],
+          [
+            "sum_15",
+            "add",
+            "sum_14",
+            "square_15"
+          ],
+          [
+            "sum_16",
+            "add",
+            "sum_15",
+            "square_16"
+          ],
+          [
+            "sum_17",
+            "add",
+            "sum_16",
+            "square_17"
+          ],
+          [
+            "sum_18",
+            "add",
+            "sum_17",
+            "square_18"
+          ],
+          [
+            "sum_19",
+            "add",
+            "sum_18",
+            "square_19"
+          ],
+          [
+            "sum_20",
+            "add",
+            "sum_19",
+            "square_20"
+          ],
+          [
+            "sum_21",
+            "add",
+            "sum_20",
+            "square_21"
+          ],
+          [
+            "sum_22",
+            "add",
+            "sum_21",
+            "square_22"
+          ],
+          [
+            "sum_23",
+            "add",
+            "sum_22",
+            "square_23"
+          ]
+        ],
+        "ledger": {
+          "A": 72,
+          "M": 42,
+          "operations": 114,
+          "residuals": 24,
+          "witnesses": 23
+        },
+        "mode": "optimized_mux",
+        "output": "sum_23",
+        "residual_names": [
+          "domain_lower",
+          "domain_upper",
+          "A_split",
+          "A_residue",
+          "A_range",
+          "A_boolean",
+          "A_inactive",
+          "B_split",
+          "B_residue",
+          "B_range",
+          "B_boolean",
+          "B_inactive",
+          "C_split",
+          "C_residue",
+          "C_range",
+          "C_boolean",
+          "C_inactive",
+          "E_split",
+          "E_residue",
+          "E_range",
+          "E_boolean",
+          "E_inactive",
+          "K_definition",
+          "final_truth"
+        ],
+        "residuals": [
+          "lower_row",
+          "upper_row",
+          "A_split",
+          "A_residue",
+          "A_range",
+          "A_boolean",
+          "A_inactive",
+          "B_split",
+          "B_residue",
+          "B_range",
+          "B_boolean",
+          "B_inactive",
+          "C_split",
+          "C_residue",
+          "C_range",
+          "C_boolean",
+          "C_inactive",
+          "E_split",
+          "E_residue",
+          "E_range",
+          "E_boolean",
+          "E_inactive",
+          "K_row",
+          "query_row"
+        ],
+        "witnesses": [
+          "lo",
+          "hi",
+          "A_qp",
+          "A_qm",
+          "A_b",
+          "A_s",
+          "A_h",
+          "B_qp",
+          "B_qm",
+          "B_b",
+          "B_s",
+          "B_h",
+          "C_qp",
+          "C_qm",
+          "C_b",
+          "C_s",
+          "C_h",
+          "E_qp",
+          "E_qm",
+          "E_b",
+          "E_s",
+          "E_h",
+          "K"
+        ]
+      },
+      "polynomial": [
+        [
+          [],
+          2580
+        ],
+        [
+          [
+            "A_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_b"
+          ],
+          3
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_b",
+            "A_b"
+          ],
+          1
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_s"
+          ],
+          4
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "A_s",
+            "A_s"
+          ],
+          3
+        ],
+        [
+          [
+            "A_b",
+            "A_b",
+            "B_b",
+            "B_b"
+          ],
+          1
+        ],
+        [
+          [
+            "A_b",
+            "A_h"
+          ],
+          2
+        ],
+        [
+          [
+            "A_b",
+            "A_h",
+            "A_s"
+          ],
+          2
+        ],
+        [
+          [
+            "A_b",
+            "A_qm"
+          ],
+          -8
+        ],
+        [
+          [
+            "A_b",
+            "A_qm",
+            "A_s"
+          ],
+          -8
+        ],
+        [
+          [
+            "A_b",
+            "A_qp"
+          ],
+          8
+        ],
+        [
+          [
+            "A_b",
+            "A_qp",
+            "A_s"
+          ],
+          8
+        ],
+        [
+          [
+            "A_b",
+            "A_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_s",
+            "A_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "A_s",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "A_b",
+            "B_b",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "A_b",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "A_h"
+          ],
+          -6
+        ],
+        [
+          [
+            "A_h",
+            "A_h"
+          ],
+          1
+        ],
+        [
+          [
+            "A_qm"
+          ],
+          -16
+        ],
+        [
+          [
+            "A_qm",
+            "A_qm"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qm",
+            "A_qm",
+            "A_qp",
+            "A_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "A_qm",
+            "A_qp"
+          ],
+          -32
+        ],
+        [
+          [
+            "A_qm",
+            "n"
+          ],
+          40
+        ],
+        [
+          [
+            "A_qp"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qp",
+            "A_qp"
+          ],
+          16
+        ],
+        [
+          [
+            "A_qp",
+            "n"
+          ],
+          -40
+        ],
+        [
+          [
+            "A_s",
+            "A_s"
+          ],
+          1
+        ],
+        [
+          [
+            "B_b"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_b"
+          ],
+          3
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_b",
+            "B_b"
+          ],
+          1
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_s"
+          ],
+          4
+        ],
+        [
+          [
+            "B_b",
+            "B_b",
+            "B_s",
+            "B_s"
+          ],
+          3
+        ],
+        [
+          [
+            "B_b",
+            "B_h"
+          ],
+          2
+        ],
+        [
+          [
+            "B_b",
+            "B_h",
+            "B_s"
+          ],
+          2
+        ],
+        [
+          [
+            "B_b",
+            "B_qm"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_qm",
+            "B_s"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_qp"
+          ],
+          10
+        ],
+        [
+          [
+            "B_b",
+            "B_qp",
+            "B_s"
+          ],
+          10
+        ],
+        [
+          [
+            "B_b",
+            "B_s"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_b",
+            "B_s",
+            "B_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "B_s",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_b",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "B_h"
+          ],
+          -8
+        ],
+        [
+          [
+            "B_h",
+            "B_h"
+          ],
+          1
+        ],
+        [
+          [
+            "B_qm"
+          ],
+          10
+        ],
+        [
+          [
+            "B_qm",
+            "B_qm"
+          ],
+          25
+        ],
+        [
+          [
+            "B_qm",
+            "B_qm",
+            "B_qp",
+            "B_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "B_qm",
+            "B_qp"
+          ],
+          -50
+        ],
+        [
+          [
+            "B_qm",
+            "n"
+          ],
+          10
+        ],
+        [
+          [
+            "B_qp"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_qp",
+            "B_qp"
+          ],
+          25
+        ],
+        [
+          [
+            "B_qp",
+            "n"
+          ],
+          -10
+        ],
+        [
+          [
+            "B_s",
+            "B_s"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_b"
+          ],
+          4
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_b",
+            "C_b"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_s"
+          ],
+          4
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "C_s",
+            "C_s"
+          ],
+          3
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_b",
+            "K",
+            "K"
+          ],
+          1
+        ],
+        [
+          [
+            "C_b",
+            "C_h"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "C_h",
+            "C_s"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "C_qm"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_qm",
+            "C_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_qp"
+          ],
+          6
+        ],
+        [
+          [
+            "C_b",
+            "C_qp",
+            "C_s"
+          ],
+          6
+        ],
+        [
+          [
+            "C_b",
+            "C_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_b",
+            "C_s",
+            "C_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "C_s",
+            "n"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_b",
+            "E_b",
+            "K"
+          ],
+          2
+        ],
+        [
+          [
+            "C_b",
+            "E_b",
+            "K",
+            "K"
+          ],
+          -2
+        ],
+        [
+          [
+            "C_b",
+            "n"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_h"
+          ],
+          -4
+        ],
+        [
+          [
+            "C_h",
+            "C_h"
+          ],
+          1
+        ],
+        [
+          [
+            "C_qm"
+          ],
+          6
+        ],
+        [
+          [
+            "C_qm",
+            "C_qm"
+          ],
+          9
+        ],
+        [
+          [
+            "C_qm",
+            "C_qm",
+            "C_qp",
+            "C_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "C_qm",
+            "C_qp"
+          ],
+          -18
+        ],
+        [
+          [
+            "C_qm",
+            "n"
+          ],
+          12
+        ],
+        [
+          [
+            "C_qp"
+          ],
+          -6
+        ],
+        [
+          [
+            "C_qp",
+            "C_qp"
+          ],
+          9
+        ],
+        [
+          [
+            "C_qp",
+            "n"
+          ],
+          -12
+        ],
+        [
+          [
+            "C_s",
+            "C_s"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "E_b"
+          ],
+          3
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_b"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_b",
+            "E_b"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_s"
+          ],
+          4
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "E_s",
+            "E_s"
+          ],
+          3
+        ],
+        [
+          [
+            "E_b",
+            "E_b",
+            "K",
+            "K"
+          ],
+          1
+        ],
+        [
+          [
+            "E_b",
+            "E_h"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "E_h",
+            "E_s"
+          ],
+          2
+        ],
+        [
+          [
+            "E_b",
+            "E_qm"
+          ],
+          -14
+        ],
+        [
+          [
+            "E_b",
+            "E_qm",
+            "E_s"
+          ],
+          -14
+        ],
+        [
+          [
+            "E_b",
+            "E_qp"
+          ],
+          14
+        ],
+        [
+          [
+            "E_b",
+            "E_qp",
+            "E_s"
+          ],
+          14
+        ],
+        [
+          [
+            "E_b",
+            "E_s"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "E_s",
+            "E_s"
+          ],
+          -2
+        ],
+        [
+          [
+            "E_b",
+            "E_s",
+            "n"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_b",
+            "n"
+          ],
+          -6
+        ],
+        [
+          [
+            "E_h"
+          ],
+          -12
+        ],
+        [
+          [
+            "E_h",
+            "E_h"
+          ],
+          1
+        ],
+        [
+          [
+            "E_qm"
+          ],
+          -42
+        ],
+        [
+          [
+            "E_qm",
+            "E_qm"
+          ],
+          49
+        ],
+        [
+          [
+            "E_qm",
+            "E_qm",
+            "E_qp",
+            "E_qp"
+          ],
+          1
+        ],
+        [
+          [
+            "E_qm",
+            "E_qp"
+          ],
+          -98
+        ],
+        [
+          [
+            "E_qm",
+            "n"
+          ],
+          42
+        ],
+        [
+          [
+            "E_qp"
+          ],
+          42
+        ],
+        [
+          [
+            "E_qp",
+            "E_qp"
+          ],
+          49
+        ],
+        [
+          [
+            "E_qp",
+            "n"
+          ],
+          -42
+        ],
+        [
+          [
+            "E_s",
+            "E_s"
+          ],
+          1
+        ],
+        [
+          [
+            "K",
+            "K"
+          ],
+          1
+        ],
+        [
+          [
+            "hi"
+          ],
+          -100
+        ],
+        [
+          [
+            "hi",
+            "hi"
+          ],
+          1
+        ],
+        [
+          [
+            "hi",
+            "n"
+          ],
+          2
+        ],
+        [
+          [
+            "lo",
+            "lo"
+          ],
+          1
+        ],
+        [
+          [
+            "lo",
+            "n"
+          ],
+          -2
+        ],
+        [
+          [
+            "n"
+          ],
+          -132
+        ],
+        [
+          [
+            "n",
+            "n"
+          ],
+          41
+        ]
+      ]
+    }
+  ],
+  "lane": {
+    "certificate": "external premise only; no actual turmite realization is claimed",
+    "domain": [
+      0,
+      50
+    ],
+    "position": [
+      "2*n+1",
+      "3*n-2"
+    ],
+    "time": "5*n+2"
+  },
+  "pins": {
+    "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/presburger_congruence_five.json": "a9bf8ced9cdc541fc918994b522b0675b961fe6acd74b6aef97e81f2723c5403",
+    "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/presburger_congruence_five.md": "ee158f85fc74e1027de08433f4e4d9065c2c7b219670519047116a04aa931fa5",
+    "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/presburger_congruence_five.py": "f33ba14f16009f4e825e00a91d1714696dadf34002ada3bf72fcbccc04a52cfc",
+    "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_presburger_congruence_five.md": "23e5142192d14bd98143a47a1a07a15d1d1ec115550957b0e7d42df88ac7c30e",
+    "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_turmite_first_revisit38_intake.md": "0742f42aa92b2b9f5b292176a730550d4e58aefd512c5c4a1e6f7fdf56944b8a",
+    "SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/periodic-turmite-first-revisits/source-packet-PROOF.md": "d4fa1ecec1b80d320a36ee464095c38fe671531757cc5dfcb85c3f8b62e30f12"
+  },
+  "scope": "Three complete fixed-lane supplied-index occurrence quartics. Same outer and 22 atom/domain coordinates; different canonical gate coordinates. Natural-witness zero equivalence, not all-value equality between the three SOS polynomials. No lane certification, first-hit minimality, turmite implementation, universal bound, or optimality claim.",
+  "shared_query": "D AND ((H AND C) OR ((NOT H) AND E)), H=A OR B",
+  "source_sha256": "a5d67356fedb18e9180b2ac420b1e54205678a4fcdaac2765146872a0c5194fe",
+  "status": "PASS",
+  "zero_fixtures": [
+    {
+      "index": 1,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 0,
+        "A_qm": 0,
+        "A_qp": 0,
+        "A_s": 2,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 0,
+        "B_s": 1,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 1,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 0,
+        "E_s": 0,
+        "K": 1,
+        "hi": 49,
+        "left": 0,
+        "lo": 1,
+        "right": 1
+      }
+    },
+    {
+      "index": 1,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 0,
+        "A_qm": 0,
+        "A_qp": 0,
+        "A_s": 2,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 0,
+        "B_s": 1,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 1,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 0,
+        "E_s": 0,
+        "K": 1,
+        "KE": 1,
+        "hi": 49,
+        "joined": 0,
+        "lo": 1
+      }
+    },
+    {
+      "index": 1,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 0,
+        "A_qm": 0,
+        "A_qp": 0,
+        "A_s": 2,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 0,
+        "B_s": 1,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 1,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 0,
+        "E_s": 0,
+        "K": 1,
+        "hi": 49,
+        "lo": 1
+      }
+    },
+    {
+      "index": 4,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 4,
+        "A_s": 1,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 1,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 3,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 4,
+        "E_qm": 0,
+        "E_qp": 1,
+        "E_s": 1,
+        "K": 0,
+        "hi": 46,
+        "left": 1,
+        "lo": 4,
+        "right": 0
+      }
+    },
+    {
+      "index": 4,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 4,
+        "A_s": 1,
+        "BC": 1,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 1,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 3,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 4,
+        "E_qm": 0,
+        "E_qp": 1,
+        "E_s": 1,
+        "K": 0,
+        "KE": 0,
+        "hi": 46,
+        "joined": 1,
+        "lo": 4
+      }
+    },
+    {
+      "index": 4,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 4,
+        "A_s": 1,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 1,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 3,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 4,
+        "E_qm": 0,
+        "E_qp": 1,
+        "E_s": 1,
+        "K": 0,
+        "hi": 46,
+        "lo": 4
+      }
+    },
+    {
+      "index": 8,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 9,
+        "A_s": 1,
+        "B_b": 1,
+        "B_h": 0,
+        "B_qm": 0,
+        "B_qp": 1,
+        "B_s": 3,
+        "C_b": 1,
+        "C_h": 0,
+        "C_qm": 0,
+        "C_qp": 5,
+        "C_s": 1,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 3,
+        "E_s": 0,
+        "K": 1,
+        "hi": 42,
+        "left": 0,
+        "lo": 8,
+        "right": 1
+      }
+    },
+    {
+      "index": 8,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 9,
+        "A_s": 1,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 0,
+        "B_qm": 0,
+        "B_qp": 1,
+        "B_s": 3,
+        "C_b": 1,
+        "C_h": 0,
+        "C_qm": 0,
+        "C_qp": 5,
+        "C_s": 1,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 3,
+        "E_s": 0,
+        "K": 1,
+        "KE": 1,
+        "hi": 42,
+        "joined": 0,
+        "lo": 8
+      }
+    },
+    {
+      "index": 8,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 9,
+        "A_s": 1,
+        "B_b": 1,
+        "B_h": 0,
+        "B_qm": 0,
+        "B_qp": 1,
+        "B_s": 3,
+        "C_b": 1,
+        "C_h": 0,
+        "C_qm": 0,
+        "C_qp": 5,
+        "C_s": 1,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 3,
+        "E_s": 0,
+        "K": 1,
+        "hi": 42,
+        "lo": 8
+      }
+    },
+    {
+      "index": 10,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 12,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 3,
+        "B_qm": 0,
+        "B_qp": 2,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 7,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 0,
+        "E_qm": 0,
+        "E_qp": 3,
+        "E_s": 5,
+        "K": 0,
+        "hi": 40,
+        "left": 1,
+        "lo": 10,
+        "right": 0
+      }
+    },
+    {
+      "index": 10,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 1,
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 12,
+        "A_s": 0,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 3,
+        "B_qm": 0,
+        "B_qp": 2,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 7,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 0,
+        "E_qm": 0,
+        "E_qp": 3,
+        "E_s": 5,
+        "K": 0,
+        "KE": 0,
+        "hi": 40,
+        "joined": 1,
+        "lo": 10
+      }
+    },
+    {
+      "index": 10,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 12,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 3,
+        "B_qm": 0,
+        "B_qp": 2,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 7,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 0,
+        "E_qm": 0,
+        "E_qp": 3,
+        "E_s": 5,
+        "K": 0,
+        "hi": 40,
+        "lo": 10
+      }
+    },
+    {
+      "index": 15,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 18,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 3,
+        "B_qm": 0,
+        "B_qp": 3,
+        "B_s": 0,
+        "C_b": 1,
+        "C_h": 1,
+        "C_qm": 0,
+        "C_qp": 10,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 6,
+        "E_s": 0,
+        "K": 1,
+        "hi": 35,
+        "left": 0,
+        "lo": 15,
+        "right": 1
+      }
+    },
+    {
+      "index": 15,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 18,
+        "A_s": 0,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 3,
+        "B_qm": 0,
+        "B_qp": 3,
+        "B_s": 0,
+        "C_b": 1,
+        "C_h": 1,
+        "C_qm": 0,
+        "C_qp": 10,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 6,
+        "E_s": 0,
+        "K": 1,
+        "KE": 1,
+        "hi": 35,
+        "joined": 0,
+        "lo": 15
+      }
+    },
+    {
+      "index": 15,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 18,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 3,
+        "B_qm": 0,
+        "B_qp": 3,
+        "B_s": 0,
+        "C_b": 1,
+        "C_h": 1,
+        "C_qm": 0,
+        "C_qp": 10,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 6,
+        "E_s": 0,
+        "K": 1,
+        "hi": 35,
+        "lo": 15
+      }
+    },
+    {
+      "index": 19,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 23,
+        "A_s": 0,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 4,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 13,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 1,
+        "E_qm": 0,
+        "E_qp": 7,
+        "E_s": 4,
+        "K": 0,
+        "hi": 31,
+        "left": 1,
+        "lo": 19,
+        "right": 0
+      }
+    },
+    {
+      "index": 19,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 23,
+        "A_s": 0,
+        "BC": 1,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 4,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 13,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 1,
+        "E_qm": 0,
+        "E_qp": 7,
+        "E_s": 4,
+        "K": 0,
+        "KE": 0,
+        "hi": 31,
+        "joined": 1,
+        "lo": 19
+      }
+    },
+    {
+      "index": 19,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 23,
+        "A_s": 0,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 4,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 13,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 1,
+        "E_qm": 0,
+        "E_qp": 7,
+        "E_s": 4,
+        "K": 0,
+        "hi": 31,
+        "lo": 19
+      }
+    },
+    {
+      "index": 22,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 27,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 1,
+        "B_qm": 0,
+        "B_qp": 4,
+        "B_s": 2,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 15,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 9,
+        "E_s": 0,
+        "K": 0,
+        "hi": 28,
+        "left": 1,
+        "lo": 22,
+        "right": 0
+      }
+    },
+    {
+      "index": 22,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 1,
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 27,
+        "A_s": 0,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 1,
+        "B_qm": 0,
+        "B_qp": 4,
+        "B_s": 2,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 15,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 9,
+        "E_s": 0,
+        "K": 0,
+        "KE": 0,
+        "hi": 28,
+        "joined": 1,
+        "lo": 22
+      }
+    },
+    {
+      "index": 22,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 27,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 1,
+        "B_qm": 0,
+        "B_qp": 4,
+        "B_s": 2,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 15,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 9,
+        "E_s": 0,
+        "K": 0,
+        "hi": 28,
+        "lo": 22
+      }
+    },
+    {
+      "index": 34,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 42,
+        "A_s": 0,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 7,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 23,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 5,
+        "E_qm": 0,
+        "E_qp": 14,
+        "E_s": 0,
+        "K": 0,
+        "hi": 16,
+        "left": 1,
+        "lo": 34,
+        "right": 0
+      }
+    },
+    {
+      "index": 34,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 1,
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 42,
+        "A_s": 0,
+        "BC": 1,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 7,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 23,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 5,
+        "E_qm": 0,
+        "E_qp": 14,
+        "E_s": 0,
+        "K": 0,
+        "KE": 0,
+        "hi": 16,
+        "joined": 1,
+        "lo": 34
+      }
+    },
+    {
+      "index": 34,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 42,
+        "A_s": 0,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 7,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 23,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 5,
+        "E_qm": 0,
+        "E_qp": 14,
+        "E_s": 0,
+        "K": 0,
+        "hi": 16,
+        "lo": 34
+      }
+    },
+    {
+      "index": 36,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 44,
+        "A_s": 1,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 7,
+        "B_s": 1,
+        "C_b": 1,
+        "C_h": 1,
+        "C_qm": 0,
+        "C_qp": 24,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 15,
+        "E_s": 0,
+        "K": 1,
+        "hi": 14,
+        "left": 0,
+        "lo": 36,
+        "right": 1
+      }
+    },
+    {
+      "index": 36,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 44,
+        "A_s": 1,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 7,
+        "B_s": 1,
+        "C_b": 1,
+        "C_h": 1,
+        "C_qm": 0,
+        "C_qp": 24,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 15,
+        "E_s": 0,
+        "K": 1,
+        "KE": 1,
+        "hi": 14,
+        "joined": 0,
+        "lo": 36
+      }
+    },
+    {
+      "index": 36,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 1,
+        "A_qm": 0,
+        "A_qp": 44,
+        "A_s": 1,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 7,
+        "B_s": 1,
+        "C_b": 1,
+        "C_h": 1,
+        "C_qm": 0,
+        "C_qp": 24,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 15,
+        "E_s": 0,
+        "K": 1,
+        "hi": 14,
+        "lo": 36
+      }
+    },
+    {
+      "index": 43,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 53,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 0,
+        "B_qm": 0,
+        "B_qp": 8,
+        "B_s": 3,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 29,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 18,
+        "E_s": 0,
+        "K": 1,
+        "hi": 7,
+        "left": 0,
+        "lo": 43,
+        "right": 1
+      }
+    },
+    {
+      "index": 43,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 53,
+        "A_s": 0,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 0,
+        "B_qm": 0,
+        "B_qp": 8,
+        "B_s": 3,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 29,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 18,
+        "E_s": 0,
+        "K": 1,
+        "KE": 1,
+        "hi": 7,
+        "joined": 0,
+        "lo": 43
+      }
+    },
+    {
+      "index": 43,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 2,
+        "A_qm": 0,
+        "A_qp": 53,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 0,
+        "B_qm": 0,
+        "B_qp": 8,
+        "B_s": 3,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 29,
+        "C_s": 0,
+        "E_b": 0,
+        "E_h": 6,
+        "E_qm": 0,
+        "E_qp": 18,
+        "E_s": 0,
+        "K": 1,
+        "hi": 7,
+        "lo": 43
+      }
+    },
+    {
+      "index": 46,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 57,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 9,
+        "B_s": 1,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 31,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 4,
+        "E_qm": 0,
+        "E_qp": 19,
+        "E_s": 1,
+        "K": 0,
+        "hi": 4,
+        "left": 1,
+        "lo": 46,
+        "right": 0
+      }
+    },
+    {
+      "index": 46,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 1,
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 57,
+        "A_s": 0,
+        "BC": 0,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 9,
+        "B_s": 1,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 31,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 4,
+        "E_qm": 0,
+        "E_qp": 19,
+        "E_s": 1,
+        "K": 0,
+        "KE": 0,
+        "hi": 4,
+        "joined": 1,
+        "lo": 46
+      }
+    },
+    {
+      "index": 46,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 0,
+        "A_h": 3,
+        "A_qm": 0,
+        "A_qp": 57,
+        "A_s": 0,
+        "B_b": 1,
+        "B_h": 2,
+        "B_qm": 0,
+        "B_qp": 9,
+        "B_s": 1,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 31,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 4,
+        "E_qm": 0,
+        "E_qp": 19,
+        "E_s": 1,
+        "K": 0,
+        "hi": 4,
+        "lo": 46
+      }
+    },
+    {
+      "index": 49,
+      "mode": "shared_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 0,
+        "A_qm": 0,
+        "A_qp": 60,
+        "A_s": 2,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 10,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 33,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 2,
+        "E_qm": 0,
+        "E_qp": 20,
+        "E_s": 3,
+        "K": 0,
+        "hi": 1,
+        "left": 1,
+        "lo": 49,
+        "right": 0
+      }
+    },
+    {
+      "index": 49,
+      "mode": "expanded_dnf",
+      "witnesses": {
+        "AC": 0,
+        "A_b": 1,
+        "A_h": 0,
+        "A_qm": 0,
+        "A_qp": 60,
+        "A_s": 2,
+        "BC": 1,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 10,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 33,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 2,
+        "E_qm": 0,
+        "E_qp": 20,
+        "E_s": 3,
+        "K": 0,
+        "KE": 0,
+        "hi": 1,
+        "joined": 1,
+        "lo": 49
+      }
+    },
+    {
+      "index": 49,
+      "mode": "optimized_mux",
+      "witnesses": {
+        "A_b": 1,
+        "A_h": 0,
+        "A_qm": 0,
+        "A_qp": 60,
+        "A_s": 2,
+        "B_b": 0,
+        "B_h": 4,
+        "B_qm": 0,
+        "B_qp": 10,
+        "B_s": 0,
+        "C_b": 0,
+        "C_h": 2,
+        "C_qm": 0,
+        "C_qp": 33,
+        "C_s": 0,
+        "E_b": 1,
+        "E_h": 2,
+        "E_qm": 0,
+        "E_qp": 20,
+        "E_s": 3,
+        "K": 0,
+        "hi": 1,
+        "lo": 49
+      }
+    }
+  ]
+}
