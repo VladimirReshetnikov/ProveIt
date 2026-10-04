@@ -1,0 +1,49 @@
+DRAFT ONLY -- NOT SUBMITTED
+Prepared 3 October 2026. Independent review and a stable public manuscript link
+should precede any submission. Preserve earlier source/conjecture attribution.
+
+A261781
+
+For k > 0, the reduced denominator of the ordinary generating function of
+column k is Product_{j=1..k}(2*(1-x)^j-1). Therefore its minimal eventual
+homogeneous recurrence with constant coefficients has order k*(k+1)/2.
+
+Proof: inclusion-exclusion expresses the column generating function as the
+alternating binomial sum of (1-x)^j/(2*(1-x)^j-1). For each j > 0 all j poles
+are simple and genuine. Poles from different j cannot coincide: at such a pole
+|1-x| = 2^(-1/j), which determines j. Thus no pole cancels. The generating
+functions and inclusion-exclusion are earlier results; this is their explicit
+minimality consequence.
+
+The fixed-column asymptotic constants are
+c(k)=1/(2*k*(2^(1/k)-1)), d(k)=1/(1-2^(-1/k)).
+The differences d(k+1)-d(k) strictly increase to 1/log(2).
+For d extended to x>0, d'(x)=(1/log(2))*(y/sinh(y))^2, y=log(2)/(2*x),
+which is strictly increasing and tends to 1/log(2).
+
+These statements prove the two claims labeled conjectures in the inspected
+October 3, 2026 entry, attributed there to Vaclav Kotesovec, October 14, 2017.
+Cite Munarini--Poneti--Rinaldi (2009) for the underlying generating functions.
+
+A261784
+
+Let L=log(2), t=2+LambertW_0(-2*exp(-2)). The decimal prefactor c in the
+already posted asymptotic has the exact expression
+c=2^(t/2)/(4*Pi*L*sqrt(t-1)). The growth rate is
+ d=4/(L^2*t*(2-t)).
+
+There is an all-orders fixed-truncation expansion
+ a(n) ~ c*d^n*(n!)^2/n * (1 + delta1/n + delta2/n^2 + delta3/n^3 + ...),
+where
+ delta1=-0.52180670155648266388914410306946945484974842970591...
+ delta2= 0.12828882808870577845979670423435993165024344140948...
+ delta3=-0.00244353842284859500374038095590013033570627782694...
+
+These decimals are evaluations of finite exact prescriptions, not fitted data.
+An explicit exact expression for delta1 is given in the article; all orders
+follow from its finite Stirling-kernel and Gaussian-moment algorithms.
+
+The leading rate and decimal prefactor were already posted by Kotesovec
+(February 18, 2017; updated April 20, 2024). Do not present those existing
+predictions as new, or describe the line as explicitly marked a conjecture.
+The additional report establishes proofs and higher-order refinements.

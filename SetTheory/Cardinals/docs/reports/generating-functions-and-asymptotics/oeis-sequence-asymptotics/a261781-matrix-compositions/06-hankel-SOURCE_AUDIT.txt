@@ -1,0 +1,104 @@
+SOURCE AND CONTRIBUTION AUDIT
+Matrix Compositions: Exact Spectra, Hankel Products, and Uniform Asymptotics
+Audit date: October 3-4, 2026 (Pacific/UTC).
+
+This is a bounded source audit, not a guarantee of historical priority.
+The article gives self-contained proofs and distinguishes established
+enumeration from the extensions proved in this work.
+
+1. PROVEIT REPOSITORY
+
+https://github.com/VladimirReshetnikov/ProveIt
+
+Indexed searches for A261780, A261781, and A261784 returned no matching
+report. The repository search exposed indexed commit
+ce37e13f4aa16819c87c3ccc611362d15758f2ac.
+This describes the observed search snapshot, not every branch or archive.
+
+The related matrix-compositions citation was in the A260700 report:
+SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/
+oeis-sequence-asymptotics/a260700-parabolic-double-cosets/SOURCES.md
+
+That report concerns equality of parabolic double-coset subsets and cites
+matrix compositions as related work. It is a different enumeration.
+No theorem from that report is assumed by the present proofs.
+
+2. CURRENT OEIS RECORDS
+
+A261780: https://oeis.org/A261780
+Counts nonnegative integer matrices of mass n with k ordered rows,
+positive column sums, and any number of columns. The entry gives
+(1-x)^k / (2(1-x)^k-1) as the fixed-k generating function and cites
+Munarini--Poneti--Rinaldi and Louchard.
+
+A261781: https://oeis.org/A261781
+Counts the same matrices with every row used. The entry contains two
+comments labeled conjectures, dated October 14, 2017, by Vaclav Kotesovec:
+an order k(k+1)/2 column recurrence, and
+d(k+1)-d(k) -> 1/log(2) for the exponential growth constants.
+The recurrence's existence and the underlying fixed-k growth formula
+already appear in older literature. The article adds explicit minimality
+and the initial-index qualification; it does not claim those older
+formulas as newly discovered.
+
+A261784: https://oeis.org/A261784
+The diagonal T(2n,n). It already records
+a(n) ~ c d^n (n!)^2/n,
+an exact Lambert-W expression for d, and a numerical c.
+The formula is attributed to Kotesovec, February 18, 2017, updated
+April 20, 2024. The article proves an exact expression for c, gives
+correction coefficients, and embeds the diagonal in a uniform ray
+expansion. Discovery of the leading law is not claimed.
+
+3. PRIMARY ENUMERATIVE WORK
+
+E. Munarini, M. Poneti, S. Rinaldi, Matrix Compositions,
+Journal of Integer Sequences 12 (2009), Article 09.4.8, 28 pages.
+https://cs.uwaterloo.ca/journals/JIS/VOL12/Rinaldi/rinaldi.html
+https://cs.uwaterloo.ca/journals/JIS/VOL12/Rinaldi/rinaldi.pdf
+
+Relevant results in that paper:
+- Proposition 1: unrestricted generating functions.
+- Propositions 12-13: root-of-unity formula and fixed-row asymptotics.
+- Propositions 22-24: no-zero-row inclusion-exclusion and rational GF.
+- Proposition 25: a recurrence of order binom(k+1,2).
+- Proposition 29: positive Stirling/Fubini transform.
+- Proposition 21: a size-k Cassini/Hankel identity for the unrestricted
+  fixed-height sequence, distinct from the size-binom(k+1,2) weighted
+  no-zero-row determinant proved in this article.
+
+Earlier version:
+E. Munarini, M. Poneti, S. Rinaldi, Matrix compositions,
+Proceedings of FPSAC 2006, San Diego, pp. 445-456.
+https://garsia.math.yorku.ca/fpsac06/papers/49.pdf
+Its Section 3 already includes the spectral formula and leading
+unrestricted fixed-row equivalent.
+
+4. CLOSEST PROBABILISTIC WORK INSPECTED
+
+G. Louchard, Matrix compositions: a probabilistic analysis,
+Pure Mathematics and Applications 19 (2008), nos. 2-3, 127-146.
+Author's long version dated July 10, 2008:
+https://guy.louchard.web.ulb.be/louchard.papers/compmat.ps
+Author's publication list, item 99:
+https://guy.louchard.web.ulb.be/index_old.htm
+
+This work fixes the row count and studies column count, column sizes,
+missing column sizes, and related Gaussian/Brownian asymptotics.
+An empty column size is different from a zero matrix row.
+Its text was inspected for the growing-row, empty-row results pursued
+here; no matching coverage-window statement was found.
+
+5. SEARCH BOUNDARY AND CONTRIBUTION CLAIM
+
+Targeted searches used the sequence IDs and combinations of matrix
+compositions, zero rows, Poisson, coupon, growing, and asymptotic.
+No matching statement of the specific factored maximal determinant,
+uniform spectral estimate, coverage correction, or dense-ray expansion
+in this article was located. This cannot exclude another source.
+
+The defensible claim is the collection of precise theorems and proofs
+given in the article, together with their documented relationship to
+the inspected literature. The work is unrefereed and has not been
+verified in a proof assistant. Exact computations check finite examples;
+high-precision numerical diagnostics illustrate asymptotic consequences.

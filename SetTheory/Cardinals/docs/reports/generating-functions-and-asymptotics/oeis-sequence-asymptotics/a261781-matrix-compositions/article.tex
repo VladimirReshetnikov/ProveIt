@@ -1,0 +1,2078 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,graphicx}
+\usepackage{xcolor}
+\definecolor{navy}{RGB}{26,52,81}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=navy,urlcolor=navy]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Matrix compositions: exact spectra and uniform asymptotics}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=6pt}
+\allowdisplaybreaks
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pp}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\TV}{d_{\mathrm{TV}}}
+\newcommand{\StirOne}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
+\newcommand{\StirTwo}[2]{\genfrac{\{} {\}}{0pt}{}{#1}{#2}}
+\DeclareMathOperator{\Pois}{Poisson}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Disc}{Disc}
+\hypersetup{pdftitle={Matrix Compositions: Exact Spectra, Hankel Products, and Uniform Asymptotics},pdfauthor={OpenAI ChatGPT},pdfsubject={OEIS A261781 and A261784; rigorous recurrence, determinant, coverage, and diagonal results}}
+
+\title{\textbf{Matrix Compositions:\\ Exact Spectra, Hankel Products,\\ and Uniform Asymptotics}\\[8pt]
+\large OEIS A261781, its empty-row transition,\\ and refined asymptotics for A261784}
+\author{OpenAI ChatGPT\\\small Research prepared for Vladimir Reshetnikov}
+\date{October 3, 2026 (Pacific time)}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $T(n,k)$ count nonnegative integer matrices of total sum $n$, with $k$
+ordered rows, an arbitrary number of ordered columns, and no zero row or
+column. These are the entries of OEIS A261781. We establish a collection of
+exact and asymptotic results for this family. First, its minimal eventual
+constant-coefficient recurrence has order $k(k+1)/2$, and its full-rank
+shifted Hankel determinants admit an explicit positive product formula,
+including a polynomial refinement marking the number of columns. Second,
+we give an exponential relative error bound for the unrestricted count that
+is uniform in the number of rows. This yields a Poisson empty-row law at
+$n=k(\log k+s)$, an explicit first correction with a summable error of
+order $(\log k)^2/k^2$, and the sharp total-variation rate with its leading
+constant. We also prove joint Gaussian--Poisson independence for column
+count and empty-row count in this window. Third, for $n/k$ in compact
+subsets of $(1,\infty)$, a positive Stirling-number transform gives a
+uniform saddle expansion to every fixed order. For A261784, this identifies
+the exact amplitude in the recorded leading equivalent and gives the first
+relative correction. Finally, fixing the number of columns produces a
+different explicit coverage threshold.
+
+Attribution matters here: the generating functions, a recurrence of the
+stated order, and fixed-row asymptotics were already published by Munarini,
+Poneti, and Rinaldi. Thus the two conjecture labels still present in A261781
+lead in part to a reconciliation with prior literature. The main extensions
+of this article are the factored determinant and the uniform distributional
+and asymptotic results. Full proofs, reproducible computations, a bounded
+source audit, and further research questions are included. These are
+unrefereed mathematical proofs; no proof-assistant verification or
+historical-priority guarantee is claimed.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{The problem, the sources, and the contribution}\label{sec:scope}
+
+\subsection{Why this family is worth studying}
+One generating function can behave quite differently when a parameter is
+fixed or grows with the coefficient index. Matrix compositions provide an
+especially explicit setting in which to study this difference. For fixed
+$k$, the sequence is a finite sum of exponential terms and has an exact
+linear recurrence. At $n\asymp k$, requiring every row to be used is a rare
+event, and a saddle point governs its count. At $n=k(\log k+O(1))$, the
+same requirement has a nondegenerate limiting probability. These regimes
+cannot be interchanged by simply substituting a growing $k$ into a
+fixed-$k$ asymptotic.
+
+The current A261781 entry attributes to V\'aclav Kot\v{e}\v{s}ovec two
+conjectures dated October 14, 2017: a column recurrence order
+$k(k+1)/2$, and the limit $d(k+1)-d(k)\to1/\log 2$ for its exponential
+growth constants \cite{oeis781}. Its companion A261780 counts the same
+matrices while allowing zero rows \cite{oeis780}. The diagonal
+$T(2N,N)$ is A261784 \cite{oeis784}.
+
+\subsection{What was already known}
+The primary enumerative source is \emph{Matrix Compositions} by Munarini,
+Poneti, and Rinaldi \cite{mpr2009}, preceded by a 2006 conference paper
+\cite{mpr2006}. In the 2009 article, Proposition~1 gives the generating
+function, Propositions~12--13 give a root-of-unity formula and fixed-row
+asymptotics, Propositions~22--24 give the no-zero-row inclusion--exclusion
+formula, Proposition~25 gives a recurrence of order $\binom{k+1}{2}$,
+and Proposition~29 gives the positive Stirling/Fubini transform used below.
+Our elementary derivations of these identities make the article
+self-contained; the identities themselves are attributed to those authors.
+
+Louchard \cite{louchard} studies fixed-row probabilistic asymptotics,
+including the number of columns and column-size statistics. An empty
+\emph{column size} in that work is distinct from a zero \emph{row} here.
+The A261784 entry already records a leading equivalent with numerical
+amplitude and an explicit exponential constant, credited to
+Kot\v{e}\v{s}ovec in 2017 and updated in 2024 \cite{oeis784}.
+
+Accordingly, this article does not claim the discovery of the fixed-row
+growth formula, recurrence existence, or the leading A261784 exponential
+rate. The first OEIS statement receives an explicit minimality proof and a
+careful indexing convention; the second follows from an already known
+closed form. The stronger developments concern exact determinants and
+uniform estimates as the number of rows grows.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}@{}}
+\toprule
+Topic & Existing foundation & Result established here\\
+\midrule
+Recurrences & Order-$\binom{k+1}{2}$ recurrence & Minimal eventual order; complete spectrum; initial impulse\\
+Hankel determinants & Size-$k$ identity for unrestricted matrices & Factored size-$\binom{k+1}{2}$ determinant with column weights\\
+Fixed-row asymptotics & Dominant pole and amplitude & Explicit error uniform in all $k\ge1$\\
+Empty rows & Exact inclusion--exclusion & Poisson window, first correction, sharp total variation\\
+Column count & Fixed-row Gaussian law & Joint Gaussian--Poisson limit; conditional limits\\
+Diagonal A261784 & Recorded leading equivalent & Exact amplitude, first correction, uniform all-orders ray expansion\\
+Fixed column count & Stars-and-bars enumeration & Explicit shifted coverage threshold when columns grow slowly\\
+\bottomrule
+\end{tabular}
+\caption{Attribution and the scope of the extensions. ``Established here'' describes the proofs in this article, not a claim of priority over all literature.}
+\label{tab:scope}
+\end{table}
+
+\subsection{Relation to ProveIt and the audit boundary}
+The target was selected after inspecting the OEIS research in ProveIt
+\cite{proveit}. Searches for A261780, A261781, and A261784 found no indexed
+matching report. The relevant repository hit for matrix compositions was
+a citation in the report on A260700 and parabolic double cosets, which
+studies a different enumeration. The repository search exposed indexed
+commit \texttt{ce37e13f4aa16819c87c3ccc611362d15758f2ac}; the search result
+is not an exhaustive statement about every branch or historical archive.
+No unformalized repository theorem is assumed in our proofs.
+
+The source audit compared current OEIS records with the primary 2006,
+2008, and 2009 works, and checked targeted searches for growing-row,
+empty-row, and coupon-collection results. It found no matching statement
+of the specific uniform expansions below. This is a bounded audit, so
+the responsible claim is a set of fully specified results and proofs,
+rather than a declaration of a historical breakthrough.
+
+\subsection{Notation and conventions}
+Throughout, $n$ is total matrix mass, $k$ is the number of rows, and $C$ is
+the number of columns. Unless stated otherwise, $M$ denotes the number of
+zero rows in an unrestricted uniformly chosen matrix. Write
+\[
+ L=\log 2,\qquad
+ a_k=2^{-1/k},\quad r_k=1-a_k,\quad
+ d_k=r_k^{-1},\quad c_k=\frac{a_k}{2kr_k}.
+\]
+The empty-row window uses $h=n/k$ and $\eta=k e^{-h}$. The dense-ray
+regime uses $\lambda=n/k$ and a saddle $r>0$; these are separate local
+notations. The falling factorial is $(x)_j=x(x-1)\cdots(x-j+1)$.
+All logarithms are natural. Constants in uniform big-$O$ notation may
+depend on the fixed compact sets specified in each theorem.
+
+We include one empty matrix at $n=0$ for each fixed height when zero rows
+are allowed. Thus $A(0,k)=1$, $A(n,0)=0$ for $n>0$,
+$T(0,0)=1$, and $T(0,k)=0$ for $k>0$. These conventions matter for
+recurrences and Hankel rank at the initial index.
+
+\section{Exact enumeration and the complete spectrum}\label{sec:exact}
+
+\begin{definition}
+A matrix composition of mass $n$ and height $k$ is a $k\times C$ matrix
+of nonnegative integers with positive column sums and total entry sum $n$.
+Its columns and rows are ordered. Let $A(n,k)$ count these matrices, and
+let $T(n,k)$ count those with every row nonzero.
+\end{definition}
+
+The word interpretation in A261781 is equivalent: a column of sum $i$
+specifies the multiplicities of the $k$ letters in an alphabetically
+ordered word of length $i$. Every letter occurs somewhere precisely when
+every row is nonzero. For example, $T(2,2)=3$: the one-column matrix
+with entries $1,1$, and the two $2\times2$ permutation matrices.
+
+\subsection{Generating functions and a positive transform}
+Let $u>0$ mark columns. Define
+\[
+ A(n,k;u)=\sum_B u^{C(B)},\qquad
+ T(n,k;u)=\sum_{B:\,M(B)=0}u^{C(B)}.
+\]
+At $u=1$ these reduce to the unweighted counts. A nonzero column has
+generating function $(1-z)^{-k}-1$, since a column of sum $i$ has
+$\binom{i+k-1}{i}$ possibilities. Taking an ordered sequence of columns
+gives the classical identity
+\begin{equation}\label{eq:gf}
+ F_k(z;u):=\sum_{n\ge0}A(n,k;u)z^n
+ =\frac{1}{1-u((1-z)^{-k}-1)}
+ =\frac{(1-z)^k}{(1+u)(1-z)^k-u}.
+\end{equation}
+This also gives the positive recurrence
+\begin{equation}\label{eq:positive-rec}
+ A(n,k;u)=u\sum_{i=1}^n\binom{i+k-1}{i}A(n-i,k;u)
+ \qquad(n\ge1,k\ge1).
+\end{equation}
+Deleting any designated set of zero rows proves inclusion--exclusion:
+\begin{equation}\label{eq:ie}
+ T(n,k;u)=\sum_{j=0}^k(-1)^{k-j}\binom{k}{j}A(n,j;u).
+\end{equation}
+Equations~\eqref{eq:gf}--\eqref{eq:ie} are established enumeration,
+not new formulas \cite{mpr2009,oeis780,oeis781}.
+
+For later use let $\mathsf F_q=\sum_{b=0}^q b!\StirTwo{q}{b}$ be the
+ordered Bell or Fubini number, with $\mathsf F_0=1$. The two Stirling
+triangles satisfy
+\[
+ x(x+1)\cdots(x+n-1)=\sum_q\StirOne{n}{q}x^q,
+ \qquad
+ (e^z-1)^k=k!\sum_{q\ge k}\StirTwo{q}{k}\frac{z^q}{q!}.
+\]
+Expanding \eqref{eq:gf} at $u=1$ in powers of $(1-z)^{-k}$ gives
+\[
+ A(n,k)=\frac12\sum_{b\ge0}2^{-b}\binom{n+kb-1}{n}
+ =\frac1{n!}\sum_{q=0}^n\StirOne{n}{q}\mathsf F_q k^q.
+\]
+For $n>0$ the $b=0$ term is zero. The identity
+$\mathsf F_q=\frac12\sum_{b\ge0}b^q2^{-b}$ follows by comparing the
+exponential generating functions, with the usual $0^0=1$ convention.
+Applying the $k$th binomial difference to $j^q$ yields
+\begin{equation}\label{eq:stirling}
+ \boxed{\displaystyle
+ T(n,k)=\frac{k!}{n!}\sum_{q=k}^n
+    \StirOne{n}{q}\StirTwo{q}{k}\mathsf F_q.}
+\end{equation}
+This is Proposition~29 of \cite{mpr2009}. Its nonnegative summands
+will allow controlled asymptotic replacement without alternating-sum
+cancellation. In particular $T(n,n)=\mathsf F_n$.
+
+\subsection{Every pole survives}
+For fixed $u>0$ put
+\[
+ b=\frac{u}{1+u},\qquad L_u=\log(1+1/u),\qquad
+ a_{j,u}=b^{1/j},\qquad \omega_j=e^{2\pi i/j}.
+\]
+The denominator in $F_j(z;u)$ has simple zeros
+$z_{j,\ell}=1-a_{j,u}\omega_j^\ell$, $0\le\ell<j$.
+Their residues are $-a_{j,u}\omega_j^\ell/((1+u)j)$.
+Consequently, for $n\ge1$,
+\begin{equation}\label{eq:weighted-binet}
+ A(n,j;u)=\frac{a_{j,u}}{(1+u)j}
+  \sum_{\ell=0}^{j-1}\omega_j^\ell
+     (1-a_{j,u}\omega_j^\ell)^{-n-1}.
+\end{equation}
+The polynomial part of $F_j$ is the constant $1/(1+u)$, so
+\eqref{eq:weighted-binet} is deliberately stated only for $n\ge1$.
+Its unweighted specialization is the published Binet formula
+\cite[Proposition~12]{mpr2009}.
+
+\begin{theorem}[Minimal recurrence and spectrum]\label{thm:minimal}
+Fix $k\ge1$ and $u>0$, and put $D=\binom{k+1}{2}$. The reduced
+denominator of $\sum_{n\ge0}T(n,k;u)z^n$ is
+\begin{equation}\label{eq:denom}
+ Q_{k,u}(z)=\prod_{j=1}^k\bigl((1+u)(1-z)^j-u\bigr).
+\end{equation}
+Thus the minimal eventual homogeneous constant-coefficient recurrence has
+order exactly $D$, over $\mathbb C$ as well as over $\mathbb R$.
+Its characteristic polynomial is
+\begin{equation}\label{eq:charpoly}
+ P_{k,u}(x)=\prod_{j=1}^k\bigl((1+u)(x-1)^j-u x^j\bigr).
+\end{equation}
+All $D$ characteristic roots are simple and nonzero. At $u=1$ the
+polynomial is monic with integer coefficients.
+\end{theorem}
+\begin{proof}
+Roots belonging to different factors in \eqref{eq:denom} cannot coincide:
+their distances from $1$ are $b^{1/j}$, strictly increasing with $j$.
+Within each factor the roots are simple. At a root of the $j$th factor,
+only the $j$th term in \eqref{eq:ie} has a pole, and its coefficient
+$(-1)^{k-j}\binom{k}{j}$ and residue are nonzero. Therefore no pole
+cancels. This proves the exact reduced denominator and its degree.
+
+If an eventual recurrence of smaller order existed, multiplying the
+generating function by its recurrence polynomial would give a polynomial;
+that recurrence polynomial would have to vanish at every one of these
+$D$ poles. Its degree would be at least $D$, a contradiction. Reversing
+the factors in \eqref{eq:denom} gives \eqref{eq:charpoly}; its leading
+coefficient is $(1+u)-u=1$ in each factor. No pole is zero, since
+$b<1$, and every corresponding characteristic root is finite and nonzero.
+\end{proof}
+
+\begin{remark}[The initial impulse]\label{rem:impulse}
+The rational function for $T(n,k;u)$ tends to $(-1)^k u/(1+u)$ as
+$z\to\infty$: the $j=0$ term of inclusion--exclusion is $(-1)^k$,
+and every other $F_j$ tends to $1/(1+u)$. Hence its numerator has
+degree $D$, not less than $D$. The denominator recurrence begins at
+$n=D+1$ for the full column indexed from zero; it is an order-$D$
+recurrence on the tail $T(1,k;u),T(2,k;u),\ldots$.
+At $u=1$, writing $Q_{k,1}(z)=\sum_{i=0}^D q_i z^i$, one has
+\[
+ \sum_{i=0}^D q_iT(D-i,k)=(-1)^{k+D}2^{k-1}\ne0.
+\]
+If a convention insists on an order-$r$ recurrence starting already at
+index $r$ on the unshifted column, its minimum is $D+1$, obtained by
+adjoining a zero characteristic root. This explains why the word
+``eventual'' is part of the theorem.
+\end{remark}
+
+\subsection{The growth-constant conjecture}
+The smallest-modulus pole of $F_k(z;1)$ is $r_k=1-2^{-1/k}$, uniquely.
+It is also the smallest-modulus pole across all terms of
+\eqref{eq:ie}, since $r_j>r_k$ for $j<k$. Thus, for each fixed $k$,
+\begin{equation}\label{eq:fixedk}
+ T(n,k)\sim c_kd_k^n,
+ \qquad d_k=\frac1{1-2^{-1/k}},\quad
+ c_k=\frac1{2k(2^{1/k}-1)}.
+\end{equation}
+The underlying pole and unrestricted asymptotic are classical
+\cite[Proposition~13]{mpr2009}; inclusion--exclusion transfers them
+to $T$. These constants agree with the numerical columns in A261781.
+
+\begin{corollary}\label{cor:increment}
+The second conjecture recorded in A261781 holds:
+\[
+ d_{k+1}-d_k\longrightarrow\frac1L.
+\]
+More precisely,
+\begin{align}
+ d_k&=\frac{k}{L}+\frac12+\frac{L}{12k}
+               -\frac{L^3}{720k^3}+O(k^{-5}),\label{eq:d-expand}\\
+ d_{k+1}-d_k&=\frac1L-\frac{L}{12k(k+1)}+O(k^{-4}),\label{eq:d-incr}\\
+ c_k&=\frac1{2L}-\frac1{4k}+\frac{L}{24k^2}
+                    -\frac{L^3}{1440k^4}+O(k^{-6}).\label{eq:c-expand}
+\end{align}
+\end{corollary}
+\begin{proof}
+Use the Taylor expansion at zero of $1/(1-e^{-x})-1/x$ with
+$x=L/k$. It is analytic in a neighborhood of zero; Taylor's theorem
+supplies the stated remainders. Then subtract adjacent values and use
+$c_k=(d_k-1)/(2k)$.
+\end{proof}
+
+\section{A factored Hankel determinant and its polynomial refinement}\label{sec:hankel}
+
+Let $T_u(n,k)$ be the polynomial that counts $k$-row matrix compositions
+of mass $n$, with no zero row or zero column, assigning weight $u$ to
+each column.  Thus $T_1(n,k)=T(n,k)$ is the triangle A261781.  For
+$k\geq1$ we set $T_u(0,k)=0$.  In the proofs we initially take $u>0$;
+the resulting determinant identity is a polynomial identity and hence
+extends to every complex $u$.
+
+Put
+\[
+ a=1+u,\qquad b=u,\qquad
+ d=\binom{k+1}{2},\qquad c=\binom{k+1}{3}.
+\]
+For $s\geq1$ define the $d$-by-$d$ Hankel determinant
+\[
+ H_{k,s}(u)=\det\bigl[T_u(s+p+q,k)\bigr]_{p,q=0}^{d-1}.
+\]
+
+\begin{theorem}[Maximal Hankel determinant]\label{thm:hankel}
+For all integers $k,s\geq1$, the following identity holds in
+$\mathbb Z[u]$:
+\begin{align}
+ H_{k,s}(u)
+ &=u^{d+2c}(1+u)^{k(s-1)+2c}
+   \prod_{j=1}^{k}\binom{k}{j}^{j}
+   \prod_{1\leq i<j\leq k}
+   \left((1+u)^{(j-i)/g_{ij}}-u^{(j-i)/g_{ij}}\right)^{2g_{ij}},
+ \label{eq:weighted-hankel-product}\\
+ g_{ij}&=\gcd(i,j).
+ \nonumber
+\end{align}
+Here $d+2c=\sum_{j=1}^{k}j^2=k(k+1)(2k+1)/6$.
+In particular, $H_{k,s}(u)>0$ for every real $u>0$, and
+\[
+ H_{k,s+1}(u)=(1+u)^kH_{k,s}(u).
+\]
+\end{theorem}
+
+The determinant is maximal for the positive-index tail: the infinite
+matrix $[T_u(1+p+q,k)]_{p,q\geq0}$ has rank exactly $d$ for $u>0$.
+Every minor of order greater than $d$ in that infinite matrix vanishes.
+The initial term at $n=0$ requires separate treatment, given below.
+
+\subsection{Exact spectrum and residue weights}
+
+Use the column-weight notation $T_u(n,k)=T(n,k;u)$ from
+Section~\ref{sec:exact}. The generating function and inclusion--exclusion
+have already been proved in~\eqref{eq:gf}--\eqref{eq:ie}.
+
+For $j\geq1$, set
+\[
+ P_j(t)=a(t-1)^j-bt^j.
+\]
+Since $a-b=1$, this is a monic polynomial of degree $j$.  Its roots
+can be written
+\[
+ \lambda=\frac{1}{1-r},\qquad r^j=\frac ba.
+\]
+For $u>0$ all such roots are finite and nonzero.  They are simple,
+and the root sets for distinct $j$ are disjoint: a common root would
+give an $r$ with two distinct prescribed moduli $(b/a)^{1/j}$.
+There are therefore exactly $d$ roots in the union of the root sets.
+
+Partial fractions yield, for $n\geq1$,
+\begin{equation}
+ T_u(n,k)=\sum_{j=1}^{k}\ \sum_{P_j(\lambda)=0}
+ w_{j,\lambda}\lambda^n,
+ \qquad
+ w_{j,\lambda}=(-1)^{k-j}\binom{k}{j}
+              \frac{\lambda-1}{aj}.
+ \label{eq:weighted-hankel-spectrum}
+\end{equation}
+All the weights are nonzero.  For completeness, at a pole
+$z_0=1/\lambda$, with $r=1-z_0$, the numerator of the rational
+generating function is $b/a$ and the derivative of its denominator
+is $-aj r^{j-1}$.  Its coefficient of $(1-\lambda z)^{-1}$ is thus
+\[
+ \frac{-\lambda(b/a)}{-aj r^{j-1}}
+ =\frac{\lambda r}{aj}
+ =\frac{\lambda-1}{aj}.
+\]
+The polynomial part of the unrestricted generating function is the
+constant $1/a$, so it does not affect any $n\geq1$ coefficient.
+
+\subsection{Root products, discriminants, and resultants}
+
+The following identities are enough to evaluate the determinant:
+\begin{align}
+ \prod_{P_j(\lambda)=0}\lambda &= a,\\
+ \prod_{P_j(\lambda)=0}(\lambda-1)&=(-1)^{j+1}b,
+ \label{eq:weighted-hankel-rootproducts}\\
+ \operatorname{Disc}(P_j)
+ &=(-1)^{(j-1)(j-2)/2}j^j(ab)^{j-1},
+ \label{eq:weighted-hankel-discriminant}\\
+ \operatorname{Res}(P_i,P_j)
+ &=(-1)^i(ab)^i
+   \left(a^{(j-i)/g}-b^{(j-i)/g}\right)^g,
+ \qquad 1\leq i<j,\quad g=\gcd(i,j).
+ \label{eq:weighted-hankel-resultant}
+\end{align}
+
+The first two identities follow from the constant coefficient of
+$P_j$ and from $P_j(1)=-b$.  At a root $\lambda$,
+\[
+ P_j'(\lambda)
+ =j\left(a(\lambda-1)^{j-1}-b\lambda^{j-1}\right)
+ =\frac{jb\lambda^{j-1}}{\lambda-1}.
+\]
+Taking products and using the root products gives
+\[
+ \prod_{P_j(\lambda)=0}P_j'(\lambda)
+ =(-1)^{j+1}j^j(ab)^{j-1}.
+\]
+For a monic degree-$j$ polynomial, multiplication by
+$(-1)^{j(j-1)/2}$ converts this product into its discriminant.
+Since
+\[
+ \frac{j(j-1)}2+j+1
+ \equiv\frac{(j-1)(j-2)}2\pmod2,
+\]
+this proves \eqref{eq:weighted-hankel-discriminant}.
+
+To prove the resultant formula, put $h=j-i$ and $g=\gcd(i,h)$.
+For a root of $P_i$ write $r=1-1/\lambda$, so that $r^i=b/a$.
+Then
+\[
+ P_j(\lambda)
+ =\lambda^j(ar^j-b)
+ =b\lambda^j(r^h-1).
+\]
+As $r$ ranges through the $i$ roots of $r^i=b/a$, its $h$th powers
+are the $i/g$ roots of
+\[
+ v^{i/g}=(b/a)^{h/g},
+\]
+each occurring with multiplicity $g$.  Consequently
+\begin{align*}
+ \prod_{r^i=b/a}(r^h-1)
+ &=(-1)^i\left(1-(b/a)^{h/g}\right)^g\\
+ &=(-1)^ia^{-h}\left(a^{h/g}-b^{h/g}\right)^g.
+\end{align*}
+Because $P_i$ is monic, its resultant with $P_j$ is the product of
+$P_j(\lambda)$ over its roots.  Using $\prod\lambda=a$ gives
+\begin{align*}
+ \operatorname{Res}(P_i,P_j)
+ &=b^ia^j(-1)^ia^{-h}
+   \left(a^{h/g}-b^{h/g}\right)^g\\
+ &=(-1)^i(ab)^i
+   \left(a^{h/g}-b^{h/g}\right)^g,
+\end{align*}
+as asserted.
+
+\subsection{Vandermonde evaluation}
+
+Enumerate all $d$ roots in \eqref{eq:weighted-hankel-spectrum} as
+$\lambda_1,\ldots,\lambda_d$, keeping the $j$-blocks together, and
+write $w_\nu$ for the corresponding weights.  The Hankel matrix
+factors as
+\[
+ \bigl[T_u(s+p+q,k)\bigr]_{p,q=0}^{d-1}
+ =V\operatorname{diag}(w_\nu\lambda_\nu^s)_{\nu=1}^{d}V^{\mathsf T},
+ \qquad V_{p,\nu}=\lambda_\nu^p.
+\]
+Hence
+\begin{equation}
+ H_{k,s}(u)
+ =\left(\prod_{\nu=1}^{d}w_\nu\lambda_\nu^s\right)
+  \prod_{\mu<\nu}(\lambda_\nu-\lambda_\mu)^2.
+ \label{eq:weighted-hankel-vandermonde}
+\end{equation}
+Splitting the squared Vandermonde product into within-block and
+between-block factors gives
+\[
+ \prod_{\mu<\nu}(\lambda_\nu-\lambda_\mu)^2
+ =\prod_{j=1}^{k}\operatorname{Disc}(P_j)
+  \prod_{1\leq i<j\leq k}\operatorname{Res}(P_i,P_j)^2.
+\]
+For one block, the weights, the root power, and the discriminant
+combine to
+\begin{align*}
+ &\left(\prod_{P_j(\lambda)=0}w_{j,\lambda}\lambda^s\right)
+  \operatorname{Disc}(P_j)\\
+ &\qquad=
+ (-1)^{j(k-j)+\binom j2}\binom{k}{j}^{j}
+ b^j a^{s-1}.
+\end{align*}
+There is no residual sign after multiplying over $j$, because
+\[
+ \sum_{j=1}^{k}\left(j(k-j)+\binom j2\right)
+ =2\binom{k+1}{3}=2c.
+\]
+The squared resultants supply
+\[
+ (ab)^{2\sum_{1\leq i<j\leq k}i}
+ \prod_{i<j}\left(a^{(j-i)/g_{ij}}-b^{(j-i)/g_{ij}}\right)^{2g_{ij}}
+ =(ab)^{2c}
+ \prod_{i<j}\left(a^{(j-i)/g_{ij}}-b^{(j-i)/g_{ij}}\right)^{2g_{ij}}.
+\]
+Substitution in \eqref{eq:weighted-hankel-vandermonde} proves
+\eqref{eq:weighted-hankel-product} for $u>0$.  Both sides are
+polynomials in $u$, so agreement on this interval proves the
+identity in $\mathbb Z[u]$.
+
+\subsection{The unweighted specialization}
+
+At $u=1$ the formula becomes
+\begin{equation}
+ \det\bigl[T(s+p+q,k)\bigr]_{p,q=0}^{d-1}
+ =2^{k(s-1)+2\binom{k+1}{3}}
+  \prod_{j=1}^{k}\binom{k}{j}^{j}
+  \prod_{1\leq i<j\leq k}
+  \left(2^{(j-i)/\gcd(i,j)}-1\right)^{2\gcd(i,j)}.
+ \label{eq:unweighted-hankel-product}
+\end{equation}
+The first few values of $H_{k,1}(1)$ are
+\[
+ H_{1,1}(1)=1,\qquad H_{2,1}(1)=8,\qquad H_{3,1}(1)=62208.
+\]
+For example, the complete $k=3$ polynomial is
+\[
+ H_{3,s}(u)=27u^{14}(1+u)^{3s+5}(1+2u)^2.
+\]
+
+This extends the Cassini-type phenomenon already observed for
+unrestricted matrix compositions.  In \cite[Proposition~21]{mpr2009},
+the unrestricted height-$k$ sequence has a $k$-by-$k$ determinant
+$(-1)^{\lfloor k/2\rfloor}2^{s-1}$.  Enforcing all rows to be used
+mixes the root sets for heights $1,\ldots,k$.  The determinant above
+has order $d=k(k+1)/2$ and includes the explicit pairwise resultant
+factors caused by that mixture.  The primary paper does not state
+this order-$d$ determinant; the proof here is independent of any
+priority claim.
+
+\subsection{Recurrence minimality and the initial-term correction}
+
+The nonzero determinant is an independent proof of the exact tail
+rank $d$ and the minimality in Theorem~\ref{thm:minimal}. It also makes
+the initial impulse of Remark~\ref{rem:impulse} quantitative.
+
+At $n=0$ the spectral sum has the value
+\[
+ \sum_{\nu=1}^{d}w_\nu=(-1)^{k+1}\frac{u}{1+u},
+\]
+whereas $T_u(0,k)=0$.  Thus the all-index identity is
+\begin{equation}
+ T_u(n,k)=\sum_{\nu=1}^{d}w_\nu\lambda_\nu^n
+ +(-1)^k\frac{u}{1+u}\,\mathbf1_{\{n=0\}}.
+ \label{eq:weighted-hankel-zero-correction}
+\end{equation}
+In particular, the minimal forward-shift annihilator valid from
+$n=0$ is $tP_{k,u}(t)$; the extra root is zero.  In the conventional
+eventual-recurrence language the order is still $d$.  This distinction
+also accounts for the rank of the unshifted infinite Hankel matrix
+when $u>0$:
+\[
+ \operatorname{rank}[T_u(p+q,k)]_{p,q\geq0}=d+1.
+\]
+Indeed, adjoining the zero root to the Vandermonde factorization
+gives the exact exceptional determinant
+\begin{equation}
+ \det\bigl[T_u(p+q,k)\bigr]_{p,q=0}^{d}
+ =(-1)^k\frac{u}{1+u}H_{k,2}(u).
+ \label{eq:weighted-hankel-initial-determinant}
+\end{equation}
+The extra squared Vandermonde factors are
+$\prod_\nu\lambda_\nu^2$, which change $H_{k,0}$ for the pure
+spectral extension into $H_{k,2}$.  At $u=1$,
+\[
+ \det\bigl[T(p+q,k)\bigr]_{p,q=0}^{d}
+ =(-1)^k2^{k-1}H_{k,1}(1).
+\]
+
+\subsection{Coefficient positivity and the location of the zeros}
+
+Every nonconstant difference factor on the right of
+\eqref{eq:weighted-hankel-product} is
+\[
+ (1+u)^m-u^m=\sum_{r=0}^{m-1}\binom mr u^r,
+\]
+which has positive coefficients.  Therefore
+$H_{k,s}(u)\in\mathbb Z_{\geq0}[u]$.
+This statement concerns these maximal determinants.  It does not
+assert total positivity of the Hankel matrix: for $k=2$, for example,
+\[
+ \det\begin{pmatrix}T_u(1,2)&T_u(2,2)\\
+                      T_u(2,2)&T_u(3,2)\end{pmatrix}
+ =-u^2(1+2u)^2<0\qquad(u>0).
+\]
+
+The factorization also determines the geometry of all complex zeros.
+Apart from $u=0$ and $u=-1$, every zero lies on the vertical line
+$\operatorname{Re}u=-1/2$.  Indeed, a zero of
+$(1+u)^m-u^m$ has the form
+\[
+ u=\frac{1}{\zeta-1},\qquad \zeta^m=1,\quad\zeta\ne1,
+\]
+and
+\[
+ \frac1{e^{i\theta}-1}
+ =-\frac12-\frac{i}{2}\cot\frac\theta2.
+\]
+The multiplicity at $u=0$ is exactly $\sum_{j=1}^{k}j^2$.
+When its displayed exponent is positive, the multiplicity at $u=-1$
+is exactly $k(s-1)+2\binom{k+1}{3}$.  All other multiplicities follow
+by collecting the cyclotomic difference factors in the product.
+
+
+
+\section{An exponential error bound uniform in the row count}\label{sec:uniform}
+
+The essential analytic input for the growing-row results is stronger than
+a fixed-parameter pole asymptotic. The bound below does not deteriorate
+when arbitrarily many poles are present.
+
+\begin{theorem}[Uniform dominant-pole estimate]\label{thm:uniform}
+For every $n,k\ge1$,
+\begin{equation}\label{eq:uniform}
+ A(n,k)=c_kd_k^n(1+\varepsilon_{n,k}),\qquad
+ |\varepsilon_{n,k}|\le B\rho^{n-1},
+\end{equation}
+where
+\begin{equation}\label{eq:uniform-constants}
+ B=\frac{\pi^2L^2}{24},\qquad
+ \rho=\left(1+\frac8{L^2}\right)^{-1/2}<0.239.
+\end{equation}
+More generally, with $b=u/(1+u)$, $L_u=\log(1+1/u)$,
+$a_{k,u}=e^{-L_u/k}$, $r_{k,u}=1-a_{k,u}$, and
+\[
+ d_k(u)=r_{k,u}^{-1},\qquad
+ \mu_k(u)=\frac{a_{k,u}}{(1+u)k r_{k,u}},
+\]
+one has
+\begin{equation}\label{eq:weighted-uniform}
+ A(n,k;u)=\mu_k(u)d_k(u)^n(1+\varepsilon_{n,k}(u)),
+ \quad |\varepsilon_{n,k}(u)|\le B(u)\rho(u)^{n-1},
+\end{equation}
+where
+\[
+ B(u)=\frac{\pi^2L_u^2}{48b},\qquad
+ \rho(u)=\left(1+\frac{16b}{L_u^2}\right)^{-1/2}.
+\]
+For $u$ in a fixed compact subset of $(0,\infty)$ the constants can
+be replaced by common $B_I<\infty$ and $\rho_I<1$.
+\end{theorem}
+\begin{proof}
+In \eqref{eq:weighted-binet}, divide by the positive $\ell=0$ term.
+Its coefficient is exactly $\mu_k(u)d_k(u)^n$. If
+$j=\min(\ell,k-\ell)$, then $\sin(\pi\ell/k)\ge2j/k$,
+$a_{k,u}\ge b$, and $r_{k,u}\le L_u/k$. Therefore
+\begin{align*}
+ |1-a_{k,u}\omega_k^\ell|^2
+ &=r_{k,u}^2+4a_{k,u}\sin^2(\pi\ell/k)\\
+ &\ge r_{k,u}^2\left(1+\frac{16b}{L_u^2}j^2\right).
+\end{align*}
+Put $D_u=16b/L_u^2$. There are at most two roots for each $j$, so
+\begin{align*}
+ |\varepsilon_{n,k}(u)|
+ &\le2\sum_{j\ge1}(1+D_u j^2)^{-(n+1)/2}\\
+ &\le2(1+D_u)^{-(n-1)/2}\sum_{j\ge1}\frac1{D_u j^2}
+ =\frac{\pi^2}{3D_u}\rho(u)^{n-1}.
+\end{align*}
+For $k=1$ the omitted sum is empty and the error is exactly zero.
+On a compact interval use its minimum $b$ and maximum $L_u$ in the
+same inequalities. At $u=1$, $b=1/2$, giving
+\eqref{eq:uniform-constants}.
+\end{proof}
+
+\begin{remark}
+The theorem controls the unrestricted count $A(n,k)$ uniformly. It does
+not say that $T(n,k)\sim c_kd_k^n$ uniformly: the subtraction enforcing
+all rows nonzero becomes significant when $n\approx k\log k$ and
+exponentially significant when $n\asymp k$. The next sections quantify
+these effects.
+\end{remark}
+
+\section{The empty-row transition and its first correction}\label{sec:poisson}
+
+Put $L=\log 2$ and suppose that $A(n,k)$ counts unrestricted objects on
+$k$ labelled rows, with
+\[
+ \sum_{n\geq0}A(n,k)z^n
+ =\frac{(1-z)^k}{2(1-z)^k-1}.
+\]
+For $m\geq1$ write
+\[
+ d_m=(1-e^{-L/m})^{-1},\qquad
+ c_m=\frac{d_m-1}{2m}.
+\]
+Theorem~\ref{thm:uniform} supplies the estimate
+\begin{equation}\label{eq:pc-pole}
+ A(n,m)=c_m d_m^n(1+\varepsilon_{n,m}),\qquad
+ |\varepsilon_{n,m}|\leq C_0\rho^{n-1},
+ \quad 0<\rho<1,
+\end{equation}
+uniformly for $m\geq1$ and $n\geq2$.
+
+Choose an unrestricted matrix of mass $n$ and height $k$ uniformly and let $M$ be its
+number of unused rows.  Its factorial moments are exactly
+\begin{equation}\label{eq:pc-moments}
+ b_j:=\mathbb E[(M)_j]
+ =(k)_j\frac{A(n,k-j)}{A(n,k)}\quad(0\leq j\leq k).
+\end{equation}
+Here $(x)_j=x(x-1)\cdots(x-j+1)$, $b_0=1$, and $b_k=0$ when $n>0$.
+
+\begin{theorem}[Coverage-window expansion]\label{thm:pc-pgf}
+Fix $S,R<\infty$.  Set
+\[
+ h=\frac nk,\qquad s=h-\log k,\qquad
+ \eta=k e^{-h}=e^{-s}.
+\]
+As $k\to\infty$, uniformly for integers $n$ satisfying $|s|\leq S$
+and complex $w$ satisfying $|w|\leq R$,
+\begin{equation}\label{eq:pc-pgf}
+ \mathbb E(1+w)^M
+ =e^{\eta w}\left\{
+ 1-\frac{(1+h)\eta^2w^2+(1-L)h\eta w}{2k}
+ +O_{S,R}\!\left(\frac{h^2}{k^2}\right)\right\}.
+\end{equation}
+In particular,
+\begin{equation}\label{eq:pc-zero}
+ \mathbb P(M=0)
+ =e^{-\eta}\left\{
+ 1+\frac{(1-L)h\eta-(1+h)\eta^2}{2k}
+ +O_S\!\left(\frac{(\log k)^2}{k^2}\right)\right\}.
+\end{equation}
+The definition $s=n/k-\log k$ includes the integer rounding of $n$;
+there is no unstated choice of rounding convention.
+\end{theorem}
+
+\begin{proof}
+We first obtain a bound valid for all inclusion--exclusion indices,
+not only fixed $j$.  The elementary inequalities
+\[
+ \frac mL\leq d_m\leq\frac mL+1
+\]
+follow respectively from $1-e^{-x}\leq x$ and
+$e^x\geq1+x$.  Also, $c_m$ is bounded above and bounded away from
+zero uniformly for $m\geq1$.  Equation~\eqref{eq:pc-pole} therefore
+gives, for all sufficiently large $k$ in the indicated window and
+$0\leq j\leq k-1$,
+\begin{align}
+ b_j
+ &\leq C(k)_j\left(\frac{d_{k-j}}{d_k}\right)^n\notag\\
+ &\leq Ck^j\left(1-\frac{j-L}{k}\right)^n\notag\\
+ &\leq C e^{Lh}(k e^{-h})^j
+ =C e^{Lh}\eta^j.
+ \label{eq:pc-global}
+\end{align}
+The same bound holds for $j=k$ since $b_k=0$.
+
+Let $J=\lceil4\log k\rceil$.  Since $\eta\leq e^S$ and
+$e^{Lh}\leq e^{LS}k^L$, the factorial tail bound gives
+\begin{equation}\label{eq:pc-tail}
+ \sum_{j>J}\frac{|w|^j b_j}{j!}
+ \leq C k^L\sum_{j>J}\frac{(R e^S)^j}{j!}
+ =O_{S,R,B}(k^{-B})
+\end{equation}
+for every fixed $B>0$.  Indeed the logarithm of the last factorial
+tail is at most $-J\log J+O_{S,R}(J)$.
+This bound directly justifies absolute truncation of the exact
+factorial-moment polynomial.
+
+For the remaining indices $1\leq j\leq J$, the needed expansion is
+uniform.  Define
+\[
+ g_0(x)=\log\frac{Lx/2}{\sinh(Lx/2)},\qquad g_0(0)=0.
+\]
+Near zero, $g_0$ is analytic, $g_0(x)=O(x^2)$ and $g_0'(x)=O(x)$. The exact
+identities
+\[
+ \log d_m=\log\frac mL+\frac{L}{2m}+g_0(1/m),\qquad
+ \log c_m=-\log(2L)-\frac{L}{2m}+g_0(1/m)
+\]
+yield
+\begin{align*}
+ \log\frac{d_{k-j}}{d_k}
+ &=-\frac jk-\frac{j^2}{2k^2}
+   +\frac{Lj}{2k^2}+O\!\left(\frac{j^3}{k^3}\right),\\
+ \log\frac{c_{k-j}}{c_k}
+ &=O\!\left(\frac j{k^2}\right),\\
+ \log(k)_j
+ &=j\log k-\frac{j(j-1)}{2k}
+   +O\!\left(\frac{j^3}{k^2}\right).
+\end{align*}
+All constants here are absolute, once $J\leq k/2$.  Consequently
+\begin{equation}\label{eq:pc-logmoment}
+ \log b_j
+ =j\log\eta+
+ \frac{-j(j-1)+h(Lj-j^2)}{2k}
+ +O\!\left(\frac{(1+h)j^3}{k^2}+\rho^{n-1}\right).
+\end{equation}
+Since $hJ^2/k\to0$, exponentiation is uniform and gives
+\begin{equation}\label{eq:pc-momentexpansion}
+ b_j=\eta^j\left\{
+ 1+\frac{-j(j-1)+h(Lj-j^2)}{2k}
+ +O\!\left(\frac{h^2j^4}{k^2}+\rho^{n-1}\right)
+ \right\}.
+\end{equation}
+The index $j=0$ is exact and is treated separately.
+
+Now use the exact identity
+\[
+ \mathbb E(1+w)^M=\sum_{j=0}^k\frac{b_jw^j}{j!}.
+\]
+The error in~\eqref{eq:pc-momentexpansion} sums to $O_{S,R}(h^2/k^2)$,
+because $\sum_{j\geq0}j^4(R e^S)^j/j!<\infty$ and
+$\rho^{n-1}$ is smaller than every fixed power of $k^{-1}$ in this
+window.  Equation~\eqref{eq:pc-tail} permits extension of all the
+main sums to infinity.  With $x=\eta w$,
+\[
+ \sum_{j\geq0}
+ \frac{[-j(j-1)+h(Lj-j^2)]x^j}{j!}
+ =-\bigl[(1+h)x^2+(1-L)hx\bigr]e^x.
+\]
+This proves~\eqref{eq:pc-pgf}; the additive and relative forms of its
+error are equivalent on each fixed disk because $|e^{\eta w}|$
+is bounded away from zero there.  Set $w=-1$, with the polynomial
+interpretation $0^0=1$, to obtain~\eqref{eq:pc-zero}.
+\end{proof}
+
+\subsection{A summable expansion of the entire missing-row law}
+
+For $\eta>0$ put $\pi_\eta(r)=e^{-\eta}\eta^r/r!$
+for $r\geq0$, and set $\pi_\eta(r)=0$ for negative integers $r$.
+Define
+\[
+ C_2(r;\eta)=r(r-1)-2\eta r+\eta^2
+ =(r-\eta)^2-r.
+\]
+
+\begin{corollary}[Probability-mass and total-variation expansion]
+Under the assumptions of Theorem~\ref{thm:pc-pgf}, uniformly for
+$r\geq0$,
+\begin{equation}\label{eq:pc-pmf}
+ \mathbb P(M=r)
+ =\pi_\eta(r)\left\{
+ 1+\frac{(1-L)h(\eta-r)-(1+h)C_2(r;\eta)}{2k}
+ \right\}+\mathcal R_{k,r},
+\end{equation}
+where
+\[
+ |\mathcal R_{k,r}|
+ \leq C_S 2^{-r}\frac{h^2}{k^2},\qquad
+ \sum_{r\geq0}|\mathcal R_{k,r}|
+ =O_S\!\left(\frac{h^2}{k^2}\right).
+\]
+In particular, if $X\sim\operatorname{Poisson}(\eta)$, then
+\begin{equation}\label{eq:pc-tvprecise}
+ d_{\mathrm{TV}}\bigl(\mathcal L(M),\operatorname{Poisson}(\eta)\bigr)
+ =\frac1{4k}\mathbb E\left|
+ (1-L)h(\eta-X)-(1+h)C_2(X;\eta)
+ \right|
+ +O_S\!\left(\frac{h^2}{k^2}\right).
+\end{equation}
+The total-variation distance is $\Theta_S((\log k)/k)$, uniformly
+for $|s|\leq S$.  If $s\to c$ and $\eta_0=e^{-c}$, its leading
+constant is given by
+\begin{equation}\label{eq:pc-tvlimit}
+ \frac{k}{\log k}
+ d_{\mathrm{TV}}\bigl(\mathcal L(M),\operatorname{Poisson}(k e^{-n/k})\bigr)
+ \longrightarrow
+ \frac14\mathbb E\left|
+ (1-L)(\eta_0-X_0)-C_2(X_0;\eta_0)
+ \right|>0,
+\end{equation}
+where $X_0\sim\operatorname{Poisson}(\eta_0)$.
+\end{corollary}
+
+\begin{proof}
+Substitute $w=z-1$ in~\eqref{eq:pc-pgf}.  Its error is uniformly
+$O_S(h^2/k^2)$ on $|z|\leq2$, using $R=3$.  Cauchy's coefficient
+bound gives $|\mathcal R_{k,r}|\leq C_S2^{-r}h^2/k^2$.
+The coefficients of $(z-1)e^{\eta(z-1)}$ and
+$(z-1)^2e^{\eta(z-1)}$ are respectively
+\[
+ \pi_\eta(r-1)-\pi_\eta(r),\qquad
+ \pi_\eta(r-2)-2\pi_\eta(r-1)+\pi_\eta(r).
+\]
+Writing these as multiples of $\pi_\eta(r)$ proves
+\eqref{eq:pc-pmf}.  The reverse triangle inequality and summability
+of $\mathcal R_{k,r}$ prove~\eqref{eq:pc-tvprecise}.
+
+The function
+\[
+ D(\eta)=\mathbb E\left|
+ (1-L)(\eta-X)-C_2(X;\eta)\right|,
+ \quad X\sim\operatorname{Poisson}(\eta),
+\]
+is continuous for $\eta>0$ and strictly positive: its integrand
+is the absolute value of a nonzero quadratic polynomial and a
+Poisson law with positive mean assigns positive mass to every
+nonnegative integer.  Therefore $D$ has a positive minimum and a
+finite maximum on $[e^{-S},e^S]$.  The difference between the
+expectation in~\eqref{eq:pc-tvprecise} and $hD(\eta)$ is bounded
+by $\mathbb E|C_2(X;\eta)|=O_S(1)$.  This proves the uniform
+two-sided rate and the claimed limit.
+\end{proof}
+
+\subsection{Mean and variance interpretation}
+
+The same expansion gives
+\[
+ \nu_k:=\mathbb E M
+ =\eta-\frac{(1-L)h\eta}{2k}
+ +O_S\!\left(\frac{h^2}{k^2}\right),
+\]
+and
+\[
+ \operatorname{Var}(M)-\mathbb E M
+ =-\frac{(1+h)\eta^2}{k}
+ +O_S\!\left(\frac{h^2}{k^2}\right).
+\]
+Thus the correction includes both a shift of the Poisson mean and
+a negative second factorial cumulant.  Adjusting only the mean
+does not remove the leading dependence correction.  More precisely,
+\[
+ d_{\mathrm{TV}}\bigl(\mathcal L(M),\operatorname{Poisson}(\nu_k)\bigr)
+ =\frac{1+h}{4k}\,
+ \mathbb E\bigl|C_2(X;\eta)\bigr|
+ +O_S\!\left(\frac{h^2}{k^2}\right),
+ \qquad X\sim\operatorname{Poisson}(\eta).
+\]
+To see this, replace the linear term in~\eqref{eq:pc-pgf} by
+$e^{(\nu_k-\eta)w}$, with uniform error $O_S(h^2/k^2)$,
+and apply the same coefficient argument.  Replacing $\eta$
+by $\nu_k$ in the expectation changes the displayed answer by
+only $O_S(h^2/k^2)$: the expectation is locally Lipschitz as a
+function of its positive Poisson parameter, by dominated summation
+of the polynomially weighted Poisson series on a compact parameter
+interval.
+
+\begin{corollary}[The coverage threshold]\label{cor:coverage}
+If $n/k-\log k\to s\in\mathbb R$, then
+\[
+ M\xrightarrow{\mathrm d}\Pois(e^{-s}),\qquad
+ \frac{T(n,k)}{A(n,k)}\longrightarrow\exp(-e^{-s}).
+\]
+For bounded $s_k=n/k-\log k$, with $\eta=k e^{-n/k}$ and $h=n/k$,
+\begin{equation}\label{eq:critical-count}
+ T(n,k)=c_kd_k^n e^{-\eta}
+ \left[1+\frac{(1-L)h\eta-(1+h)\eta^2}{2k}
+       +O\!\left(\frac{(\log k)^2}{k^2}\right)\right].
+\end{equation}
+\end{corollary}
+\begin{proof}
+The generating-function expansion implies the Poisson distributional
+limit; alternatively use the summable probability-mass expansion.
+The event $M=0$ is precisely membership in the class counted by $T$.
+Multiply its probability by Theorem~\ref{thm:uniform}; the exponential
+error is negligible at the displayed scale.
+\end{proof}
+
+\begin{remark}[Moving versus fixed Poisson mean]
+The sharp rate in~\eqref{eq:pc-tvlimit} compares the actual law with
+$\Pois(k e^{-n/k})$. If only $n/k-\log k\to s$ is assumed, replacing
+this moving mean by $e^{-s}$ incurs an additional error governed by the
+rate of that convergence. For $n=\operatorname{round}(k(\log k+s))$,
+the additional error is $O(1/k)$ and does not change the leading
+$(\log k)/k$ constant. No such rate is asserted for an arbitrary
+unspecified $o(1)$ perturbation.
+\end{remark}
+
+\section{Column counts and joint Gaussian--Poisson independence}\label{sec:joint}
+
+The row-coverage law survives a fixed positive weight on the number of
+columns. This permits a useful independence theorem by exponential tilting.
+Under the probability measure proportional to $u^{C(B)}$, denote
+expectation and probability by $\E_u$ and $\Pp_u$.
+
+\begin{lemma}[Uniformity under column weights]\label{lem:weighted-poisson}
+If $n/k-\log k\to s\in\mathbb R$, then, uniformly for $u$ in each
+fixed compact interval $I\subset(0,\infty)$,
+\[
+ M\xrightarrow{\mathrm d}\Pois(e^{-s}),\qquad
+ \Pp_u(M=m)\longrightarrow e^{-e^{-s}}\frac{e^{-ms}}{m!}
+ \quad(m\ge0\text{ fixed}).
+\]
+The same conclusion holds along any sequence of weights in $I$.
+\end{lemma}
+\begin{proof}
+Deleting designated zero rows gives the exact identity
+\[
+ \E_u[(M)_j]=(k)_j\frac{A(n,k-j;u)}{A(n,k;u)}.
+\]
+Use Theorem~\ref{thm:uniform}. Uniformly for $u\in I$, with
+$L_u=\log(1+1/u)$ and $q=1/(1+u)$,
+\[
+ \log d_k(u)=\log k-\log L_u+\frac{L_u}{2k}+O_I(k^{-2}),
+ \quad
+ \log\mu_k(u)=\log\frac{q}{L_u}-\frac{L_u}{2k}+O_I(k^{-2}).
+\]
+For each fixed $j$ this gives
+\[
+ \log\E_u[(M)_j]=-j(n/k-\log k)+O_{I,j}((\log k)/k).
+\]
+Thus all fixed factorial moments tend uniformly to $e^{-js}$.
+To make the distributional step explicit, expand $\E_u z^M$ at $z=1$
+for $0\le z\le1$. Taylor's remainder after $J-1$ terms is bounded
+by $\E_u[(M)_J]/J!$. First pass to the limit with $J$ fixed, then
+let $J\to\infty$; the limiting error $e^{-Js}/J!$ tends to zero.
+This identifies the Poisson probability generating function. The first
+moment bounds give tightness. Every subsequential limit is therefore
+Poisson, uniformly in the allowed weights. On the nonnegative integers,
+weak convergence gives convergence of each point probability by taking
+an interval with half-integer endpoints.
+\end{proof}
+
+Fix a baseline $u_0>0$. In the formulas below evaluate
+\[
+ b=\frac{u_0}{1+u_0},\quad q=\frac1{1+u_0},\quad
+ L_{u_0}=\log(1+1/u_0),\quad
+ a=e^{-L_{u_0}/k},\quad r=1-a
+\]
+at this baseline. Define
+\begin{equation}\label{eq:column-constants}
+ \mu_k(u_0)=\frac{qa}{kr},\qquad
+ \sigma_k^2(u_0)=\frac{\mu_k(u_0)^2}{a}-b\mu_k(u_0)
+ =\frac{qa}{k^2r^2}(q-bkr).
+\end{equation}
+These are the first two derivatives of
+$\ell_k(v)=\log d_k(u_0e^v)$ at $v=0$.
+Indeed logarithmic differentiation gives
+$q'=-bq$, $L_u'=-q$, $a'=aq/k$, and $r'=-aq/k$.
+The variance constant is strictly positive, since
+$q/b=e^{L_{u_0}}-1>L_{u_0}\ge kr$.
+
+\begin{theorem}[Joint limit and conditional Gaussian laws]\label{thm:joint}
+Suppose $n/k-\log k\to s\in\mathbb R$, and choose matrix
+compositions of mass $n$ and height $k$ with probabilities proportional
+to $u_0^C$, for fixed $u_0>0$. Then
+\begin{equation}\label{eq:joint}
+ \left(\frac{C-n\mu_k(u_0)}{\sqrt{n\sigma_k^2(u_0)}},M\right)
+ \xrightarrow{\mathrm d}(Z,P),
+\end{equation}
+where $Z$ is standard normal, $P$ has law $\Pois(e^{-s})$, and
+$Z,P$ are independent. For each fixed $m\ge0$, the same Gaussian
+limit holds conditional on $M=m$. In particular it holds for the
+A261781 class, which requires $M=0$.
+\end{theorem}
+\begin{proof}
+Put $s_k=\sqrt{n\sigma_k^2(u_0)}$, $X=(C-n\mu_k(u_0))/s_k$,
+and $u_v=u_0e^{v/s_k}$ for a fixed real $v$. The exact tilting identity is
+\[
+ \E_{u_0}e^{vX}
+ =e^{-vn\mu_k(u_0)/s_k}\frac{A(n,k;u_v)}{A(n,k;u_0)}.
+\]
+The two weights lie in a common compact interval. Applying
+\eqref{eq:weighted-uniform} and Taylor's theorem gives
+\begin{align*}
+ \log\E_{u_0}e^{vX}
+ &=n\left[\ell_k(v/s_k)-\ell_k(0)-\mu_k(u_0)v/s_k\right]
+   +\log\frac{\mu_k(u_v)}{\mu_k(u_0)}+O(\rho_I^{n-1})\\
+ &=\frac{v^2}{2}+O_v(n^{-1/2})+O(\rho_I^{n-1}).
+\end{align*}
+The derivatives used here are bounded uniformly in $k$: write
+\[
+ \log d_k(u)=\log k-\log L_u+
+ g(L_u/k),\qquad g(x)=\log\frac{x}{1-e^{-x}},
+\]
+where $g$ is smooth at zero. The variance constants have a positive
+limit and remain bounded away from zero and infinity. The logarithmic
+derivatives of $\mu_k$ are likewise uniformly bounded. Convergence
+of moment generating functions on a neighborhood of zero proves the
+marginal normal limit.
+
+For every fixed $m$, the conditional tilting identity is also exact:
+\[
+ \E_{u_0}[e^{vX}\mid M=m]
+ =\E_{u_0}e^{vX}\,
+   \frac{\Pp_{u_v}(M=m)}{\Pp_{u_0}(M=m)}.
+\]
+Both probabilities tend to the same strictly positive Poisson
+probability by Lemma~\ref{lem:weighted-poisson}. Their ratio tends to
+one, proving the conditional Gaussian limit. Summing the conditional
+limits over finitely many $m$ and controlling the remaining mass by
+tightness of $M$ proves the joint limit and independence.
+\end{proof}
+
+For the unweighted model these constants simplify to
+\begin{equation}\label{eq:unweighted-clt}
+ \mu_k=c_k,\qquad
+ \sigma_k^2=\frac{a_k(1-kr_k)}{4k^2r_k^2},\qquad
+ \mu_\infty=\frac1{2L},\quad
+ \sigma_\infty^2=\frac{1-L}{4L^2}.
+\end{equation}
+In the coverage window, using $n\mu_\infty$ instead of $n\mu_k$
+also gives the same limit: their difference is $O(n/k)=O(\log k)$,
+which is $o(\sqrt n)$. The finite-$k$ centering keeps this correction
+visible. Louchard's fixed-row Gaussian theorem is an antecedent
+\cite{louchard}; the new conclusion here is uniformity with growing
+rows and its joint and conditional form.
+
+\section{Uniform asymptotics on dense rays}\label{sec:dense}
+
+We now require every row to be nonzero and let $n/k$ stay bounded above
+and away from $1$. The Poisson-window expansion does not apply here.
+The positive transform~\eqref{eq:stirling} gives a different route.
+
+\subsection{The saddle and the first correction}
+Put $f(z)=e^z-1$. For $\lambda>1$, let $r=r(\lambda)>0$ solve
+\begin{equation}\label{eq:dense-saddle}
+ \frac{r}{1-e^{-r}}=\lambda.
+\end{equation}
+With $\mathcal D=r\,\mathrm d/\mathrm dr$, define
+\begin{equation}\label{eq:cumulants}
+ \kappa_j=\mathcal D^j\log f(r),\qquad
+ b=\kappa_2=\lambda(1+r-\lambda),\qquad v=\frac{Lr}{2}.
+\end{equation}
+In particular $\kappa_1=\lambda$ and $b>0$.
+
+\begin{theorem}[Uniform ray expansion]\label{thm:dense}
+Let $K$ be any fixed compact subset of $(1,\infty)$. Uniformly over
+integers $n,k\to\infty$ with $\lambda=n/k\in K$,
+\begin{equation}\label{eq:dense-main}
+ T(n,k)=\frac{n! f(r)^k e^v}
+   {2L^{n+1}r^n\sqrt{2\pi k b}}
+ \left[1+\frac{E_1(\lambda)}{k}+O_K(k^{-2})\right],
+\end{equation}
+where
+\begin{equation}\label{eq:dense-correction}
+ E_1(\lambda)=\frac{\kappa_4}{8b^2}
+ -\frac{5\kappa_3^2}{24b^3}
+ +\frac{v\kappa_3}{2b^2}
+ -\frac{v+v^2}{2b}
+ +\frac{v^2/3-v}{\lambda}.
+\end{equation}
+The expansion continues to every fixed order in integral powers of
+$1/k$, uniformly on $K$. Section~\ref{sec:allorders} gives an explicit
+finite coefficient-generation rule at each order.
+\end{theorem}
+
+The derivative definitions in~\eqref{eq:cumulants} are exact finite
+formulas, not additional implicitly determined constants. If expanded,
+\begin{align*}
+ \kappa_3&=\lambda\bigl(2\lambda^2-3\lambda r-3\lambda
+                  +r^2+3r+1\bigr),\\
+ \kappa_4&=\lambda\bigl(-6\lambda^3+12\lambda^2r+12\lambda^2
+                  -7\lambda r^2-18\lambda r-7\lambda\\
+ &\hspace{42mm}{}+r^3+6r^2+7r+1\bigr).
+\end{align*}
+
+\subsection{Reducing the positive sum to an analytic amplitude}
+The Fubini generating function is
+\[
+ \sum_{q\ge0}\mathsf F_q\frac{z^q}{q!}=\frac1{2-e^z}.
+\]
+Its poles are $L+2\pi i j$, $j\in\mathbb Z$, with residue $-1/2$.
+Subtracting the pole at $L$ and applying Cauchy's coefficient estimate
+on a circle between it and the next poles proves
+\begin{equation}\label{eq:fubini-estimate}
+ \mathsf F_q=\frac{q!}{2L^{q+1}}(1+O(\vartheta^q))
+\end{equation}
+for any fixed $\vartheta$ strictly between
+$L/\sqrt{L^2+4\pi^2}$ and $1$. Every term in
+\eqref{eq:stirling} is nonnegative and $q\ge k$, so this replacement
+incurs a relative error $O(\vartheta^k)$ in the entire sum.
+
+Define the polynomial
+\begin{equation}\label{eq:kernel}
+ H_{n,k}(z)=\sum_{d=0}^{n-k}
+ L^d\StirOne{n}{n-d}\left(\frac{(n-d)!}{n!}\right)^2 z^d.
+\end{equation}
+Using $[z^q]f(z)^k=k!\StirTwo{q}{k}/q!$, including both factorials
+from~\eqref{eq:stirling} and~\eqref{eq:fubini-estimate}, gives
+\begin{equation}\label{eq:dense-reduction}
+ T(n,k)=\frac{n!}{2L^{n+1}}
+  [z^n]f(z)^kH_{n,k}(z)\,(1+O(\vartheta^k)).
+\end{equation}
+Terms with $d>n-k$ would have zero coefficient contribution since
+$f(z)^k$ begins at degree $k$. Notice that the numerator in this
+formula is $n!$, not $1/n!$; the square of the factorial ratio in
+\eqref{eq:kernel} is essential.
+
+\begin{lemma}[Uniform analytic amplitude]\label{lem:kernel}
+Fix $R>0$ and $\delta>0$. If $k\ge\delta n$ and
+$n-k\ge\delta n$, then, uniformly on $|z|\le R$,
+\begin{equation}\label{eq:kernel-expansion}
+ H_{n,k}(z)=e^{Lz/2}
+ \left[1+\frac{L^2z^2/12-Lz/2}{n}+O_{R,\delta}(n^{-2})\right].
+\end{equation}
+The same expansion may be differentiated any fixed number of times,
+with the corresponding differentiated error bound.
+\end{lemma}
+\begin{proof}
+The unsigned Stirling coefficient is the elementary symmetric function
+$\StirOne{n}{n-d}=e_d(1,\ldots,n-1)$. Therefore
+\[
+ e_d(1,\ldots,n-1)\le\frac{(n(n-1)/2)^d}{d!}
+ \le\frac{n^{2d}}{2^d d!}.
+\]
+Because $n-d\ge k\ge\delta n$, the absolute value of the $d$th
+term in~\eqref{eq:kernel} is at most
+$(LR/(2\delta^2))^d/d!$. Its tail for $d>n^{1/10}$ is smaller
+than every fixed inverse power of $n$.
+
+For $d\le n^{1/10}$ we claim the uniform expansions
+\begin{align}
+ \StirOne{n}{n-d}
+ &=\frac{n^{2d}}{2^d d!}
+   \left[1-\frac{d(2d+1)}{3n}
+              +O\!\left(\frac{(1+d)^4}{n^2}\right)\right],
+ \label{eq:stir-neardiag}\\
+ \left(\frac{(n-d)!}{n!}\right)^2
+ &=n^{-2d}\left[1+\frac{d(d-1)}n
+              +O\!\left(\frac{(1+d)^4}{n^2}\right)\right].
+ \label{eq:factorial-neardiag}
+\end{align}
+For the first, set $S_1=n(n-1)/2$ and sample $d$ independent
+indices in $\{1,\ldots,n-1\}$ with probabilities $p_j=j/S_1$.
+The probability of no equal pair is $d!e_d/S_1^d$.
+The first two inclusion--exclusion bounds for pair coincidences give
+\[
+ \Pp(\text{no coincidences})
+ =1-\binom d2\sum_jp_j^2
+   +O\!\left(d^4\Bigl(\sum_jp_j^2\Bigr)^2+d^3\sum_jp_j^3\right).
+\]
+Here $\sum p_j^2=4/(3n)+O(n^{-2})$ and
+$\sum p_j^3=O(n^{-2})$. Expanding $S_1^d$ proves
+\eqref{eq:stir-neardiag}. For the second, expand
+$-2\sum_{j=0}^{d-1}\log(1-j/n)$ with its uniformly bounded
+Taylor remainder.
+
+Multiplication gives
+\[
+ L^d\StirOne{n}{n-d}\left(\frac{(n-d)!}{n!}\right)^2
+ =\frac{(L/2)^d}{d!}
+  \left[1+\frac{d(d-4)}{3n}
+           +O\!\left(\frac{(1+d)^8}{n^2}\right)\right].
+\]
+The factorial majorant permits summation of the errors and extension
+of the main terms to all $d\ge0$. Since
+$\sum d(d-4)x^d/d!=(x^2-3x)e^x$, this proves
+\eqref{eq:kernel-expansion}. Establishing the same uniform estimate
+on a slightly larger disk and using Cauchy's derivative estimate
+proves the differentiated versions.
+\end{proof}
+
+\subsection{The saddle calculation and its error}
+The function $r/(1-e^{-r})$ increases from $1$ to $\infty$, because
+its derivative is
+\[
+ \frac{1-(1+r)e^{-r}}{(1-e^{-r})^2}>0.
+\]
+Hence the positive saddle is unique. For $\lambda\in K$ it lies in
+a compact positive interval and $b=r\,\mathrm d\lambda/\mathrm dr$
+is bounded away from zero.
+
+On the circle $z=r e^{i\theta}$, the coefficient integral has phase
+\begin{equation}\label{eq:phase}
+ \log\frac{f(r e^{i\theta})}{f(r)}-i\lambda\theta
+ =-\frac b2\theta^2-\frac{i\kappa_3}{6}\theta^3
+                  +\frac{\kappa_4}{24}\theta^4+O_K(\theta^5).
+\end{equation}
+Every coefficient of $f$ in positive degree is strictly positive.
+Equality in $|f(r e^{i\theta})|\le f(r)$ can therefore occur only
+at $\theta=0$ modulo $2\pi$. Compactness gives a uniform strict
+gap on every fixed complementary arc. Near zero, the modulus is
+bounded by $f(r)e^{-c\theta^2}$ for some uniform $c>0$.
+
+For $g(z)=e^{Lz/2}$,
+\[
+ \frac{g(r e^{i\theta})}{g(r)}
+ =1+i v\theta-\frac{v+v^2}{2}\theta^2+O_K(\theta^3).
+\]
+Expanding~\eqref{eq:phase}, multiplying by this amplitude, and setting
+$\theta=x/\sqrt{k}$ gives the order-$1/k$ contribution
+\[
+ \frac{\kappa_4}{8b^2}-\frac{5\kappa_3^2}{24b^3}
+ +\frac{v\kappa_3}{2b^2}-\frac{v+v^2}{2b}.
+\]
+These constants follow from the Gaussian moments
+$\E X^2=b^{-1}$, $\E X^4=3b^{-2}$, and
+$\E X^6=15b^{-3}$ for $X\sim N(0,b^{-1})$.
+The order-$1/n$ term of Lemma~\ref{lem:kernel}, evaluated at the
+saddle, is $(v^2/3-v)/n$. Since $n=\lambda k$, this proves the
+coefficient in~\eqref{eq:dense-correction}.
+
+For completeness, the error is relative $O_K(k^{-2})$. Expand the
+analytic phase and amplitude through sufficiently many terms, for
+example through degree eight, on a shrinking central arc. Odd
+terms integrate to zero by symmetry, and the Gaussian modulus bound
+dominates the integrated remainders. The fixed complementary arc is
+exponentially small; the intervening arc is controlled by the same
+Gaussian bound. Finally, an analytic amplitude error uniformly
+$O(n^{-2})$ contributes at most
+\[
+ O(n^{-2})f(r)^k r^{-n}
+    \int_{-\pi}^{\pi}\left|\frac{f(r e^{i\theta})}{f(r)}\right|^k
+       \dd\theta
+ =O(n^{-2}k^{-1/2})f(r)^k r^{-n}.
+\]
+Retaining this Gaussian factor proves the required relative error;
+a bare maximum-modulus estimate would lose an unnecessary factor
+$\sqrt k$. Together with~\eqref{eq:dense-reduction}, this proves
+the first-order assertion of Theorem~\ref{thm:dense}.
+
+\subsection{A constructive expansion to every fixed order}\label{sec:allorders}
+Here is a precise algorithm for the higher coefficients, together with
+the uniform remainder argument. Put $w=Lz$ and $\epsilon=1/n$.
+The exact polynomial
+\[
+ E_n(w)=\prod_{j=1}^{n-1}\left(1+\frac{jw}{n^2}\right)
+\]
+has, on every fixed disk, an expansion
+$E_n(w)\sim e^{w/2}\sum_{p\ge0}R_p(w)n^{-p}$, with polynomial
+$R_p$. Compute them from
+\begin{equation}\label{eq:R-algorithm}
+ \log E_n(w)=\sum_{m\ge1}\frac{(-1)^{m-1}w^m}{mn^{2m}}
+                            \sum_{j=1}^{n-1}j^m.
+\end{equation}
+The inner power sum is a finite polynomial in $n$; at order $n^{-p}$
+only $m\le p+1$ is needed. For example,
+\[
+ R_0=1,\quad R_1=-\frac w2-\frac{w^2}{6},\quad
+ R_2=\frac{w^2}{4}+\frac{w^3}{12}
+                 +\frac12\left(\frac w2+\frac{w^2}{6}\right)^2.
+\]
+Define polynomials $Q_q(d)$ by the formal identity
+\begin{equation}\label{eq:Q-algorithm}
+ \exp\left(2\sum_{m\ge1}\frac{\epsilon^m}{m}
+                         \sum_{j=0}^{d-1}j^m\right)
+   =\sum_{q\ge0}Q_q(d)\epsilon^q.
+\end{equation}
+Thus $Q_0=1$, $Q_1=d(d-1)$, and
+\[
+ Q_2=\frac{d(d-1)(2d-1)}6+\frac{d^2(d-1)^2}{2}.
+\]
+With $D_w=w\,\mathrm d/\mathrm dw$, put
+\begin{equation}\label{eq:P-algorithm}
+ P_j(w)=e^{-w/2}\sum_{p+q=j}Q_q(D_w)\left[e^{w/2}R_p(w)\right].
+\end{equation}
+These are polynomials, and
+\begin{equation}\label{eq:kernel-allorders}
+ H_{n,k}(z)\sim e^{Lz/2}\sum_{j\ge0}\frac{P_j(Lz)}{n^j},
+ \quad
+ P_0=1,\quad P_1(w)=\frac{w^2}{12}-\frac w2,
+ \quad P_2(w)=\frac{w^4}{288}-\frac{w^2}{12}.
+\end{equation}
+
+To justify this algorithm to any fixed order $p$, set
+$F_d(x)=\prod_{j=0}^{d-1}(1-jx)^{-2}$. For
+$d\le n-k\le(1-\delta)n$ and $0\le x\le1/n$, every
+$1-jx\ge\delta$. The $m$th derivative of its logarithm is
+\[
+ 2(m-1)!\sum_{j<d}\frac{j^m}{(1-jx)^m}
+       =O_{m,\delta}((1+d)^{m+1}).
+\]
+The finite product rule for derivatives of an exponential then gives
+\[
+ |F_d^{(p+1)}(x)|
+ \le C_{p,\delta}\delta^{-2d}(1+d)^{2p+2}.
+\]
+Taylor's theorem bounds the remainder after the $p$th term by
+$C_{p,\delta}n^{-p-1}\delta^{-2d}(1+d)^{2p+2}$.
+Multiplication by the exact coefficient
+$e_d(1,\ldots,n-1)/n^{2d}\le1/(2^d d!)$ makes this error summable
+on every fixed $w$-disk. Multiplying its $d$th coefficient by
+$Q_q(d)$ is exactly the operation $Q_q(D_w)$. Extending the sum
+beyond $n-k\ge\delta n$ adds only a factorially small tail.
+Independently, expanding~\eqref{eq:R-algorithm} and its derivatives
+on a slightly larger disk has a uniform Taylor remainder.
+Combining the two steps proves~\eqref{eq:kernel-allorders}, with
+error $O(n^{-p-1})$ after any fixed order $p$.
+
+The remaining Gaussian integrations are also explicit. Define the
+linear functional on polynomials in $y$ by
+\[
+ \mathcal G_b(y^{2m})=(-1)^m(2m-1)!!\,b^{-m},\qquad
+ \mathcal G_b(y^{2m+1})=0,
+\]
+with $(-1)!!=1$. It is integration after the substitution $y=iX$,
+$X\sim N(0,b^{-1})$. Introduce a formal variable $\tau$ and set
+\begin{align}
+ E_j(\lambda)=\mathcal G_b\Bigg([\tau^{2j}]
+ &\exp\left\{\sum_{m\ge3}\frac{\kappa_m y^m\tau^{m-2}}{m!}
+                   +v(e^{\tau y}-1)\right\}\notag\\[-2pt]
+ &\times\sum_{p\ge0}\frac{\tau^{2p}}{\lambda^p}
+                          P_p(Lr e^{\tau y})\Bigg).
+ \label{eq:saddle-algorithm}
+\end{align}
+At each order this is a finite polynomial calculation: it uses
+$p\le j$ and $m\le2j+2$. Odd powers vanish after applying
+$\mathcal G_b$. It gives $E_0=1$ and the $E_1$ in
+\eqref{eq:dense-correction}. Therefore for every fixed $J\ge0$,
+\begin{equation}\label{eq:dense-allorders}
+ T(n,k)=\frac{n!f(r)^k e^v}{2L^{n+1}r^n\sqrt{2\pi k b}}
+ \left[\sum_{j=0}^J\frac{E_j(\lambda)}{k^j}
+                +O_{K,J}(k^{-J-1})\right].
+\end{equation}
+The same arc estimates as above justify termwise finite integration.
+This is an asymptotic expansion to each finite order; convergence of
+the infinite displayed series is not asserted.
+
+\subsection{The A261784 diagonal}\label{sec:784}
+Put $n=2N$, $k=N$, and
+\begin{equation}\label{eq:784-r}
+ r=2+W_0(-2e^{-2})=1.5936242600400400923230\ldots.
+\end{equation}
+The principal real Lambert branch is necessary; the other real branch
+gives the excluded boundary value $r=0$. Equation~\eqref{eq:dense-saddle}
+becomes $r/(1-e^{-r})=2$. Define
+\begin{align}
+ d_*&=\frac{4(e^r-1)}{L^2r^2}
+       =\frac4{L^2r(2-r)}
+       =12.8556891736661213193266\ldots,\label{eq:784-d}\\
+ c_*&=\frac{2^{r/2}}{4\pi L\sqrt{r-1}}
+       =0.2588649231114655502517752\ldots.\label{eq:784-c}
+\end{align}
+
+\begin{corollary}[Exact amplitude and correction for A261784]\label{cor:784}
+The sequence $a_N=T(2N,N)$ satisfies
+\begin{equation}\label{eq:784}
+ \boxed{\displaystyle
+ a_N=c_*d_*^N\frac{(N!)^2}{N}
+       \left(1+\frac{\beta}{N}+O(N^{-2})\right),}
+\end{equation}
+where, with $v=Lr/2$,
+\begin{gather*}
+ b=2(r-1),\quad
+ \kappa_3=2(r^2-3r+3),\quad
+ \kappa_4=2(r^3-8r^2+19r-13),\\
+ \beta=\frac{\kappa_4}{8b^2}-\frac{5\kappa_3^2}{24b^3}
+       +\frac{v\kappa_3}{2b^2}-\frac{v+v^2}{2b}
+       +\frac{v^2/3-v}{2}-\frac18\\
+ \hphantom{\beta}=-0.5218067015564826638891441\ldots.
+\end{gather*}
+\end{corollary}
+\begin{proof}
+Specialize Theorem~\ref{thm:dense} at $\lambda=2$ and use
+\[
+ \frac{(2N)!}{(N!)^2}=\frac{4^N}{\sqrt{\pi N}}
+                         \left(1-\frac1{8N}+O(N^{-2})\right).
+\]
+The saddle prefactor has $b=2(r-1)$. Collecting the two square roots
+gives~\eqref{eq:784-c}, and the central-binomial correction accounts
+for the final $-1/8$ in $\beta$.
+\end{proof}
+
+The OEIS entry already gives the leading equivalent in
+\eqref{eq:784}, with $d_*$ in Lambert-$W$ form and $c_*$ numerically
+\cite{oeis784}. The contribution here is its derivation from the
+positive transform, the exact expression~\eqref{eq:784-c}, the
+explicit correction, and its place in the uniform all-orders theorem.
+
+\subsection{Column counts under the dense row condition}\label{sec:dense-columns}
+There is a further consequence: enforcing every row to be nonzero in
+this regime still leaves a universal leading Gaussian column law.
+
+\begin{corollary}\label{cor:dense-columns}
+For a uniformly chosen matrix counted by $T(n,k)$, with
+$n/k\in K\Subset(1,\infty)$, its number of columns satisfies
+\begin{equation}\label{eq:dense-column-clt}
+ \frac{C-n/(2L)}{\sqrt{n(1-L)/(4L^2)}}
+       \xrightarrow{\mathrm d}N(0,1).
+\end{equation}
+Uniformly in this regime,
+\begin{align}
+ \E C&=\frac{n+1}{2L}-\frac12-\frac r4+O_K(k^{-1}),
+ \label{eq:dense-column-mean}\\
+ \Var(C)&=\frac{(n+1)(1-L)}{4L^2}-\frac14+\frac r8+O_K(k^{-1}).
+ \label{eq:dense-column-variance}
+\end{align}
+\end{corollary}
+\begin{proof}
+The weighted version of~\eqref{eq:stirling} replaces $\mathsf F_q$
+by $\mathsf F_q(u)=\sum_c c!\StirTwo{q}{c}u^c$, whose exponential
+generating function is $1/(1+u-u e^z)$. Its dominant pole is
+$L_u=\log(1+1/u)$ with residue $-1/(1+u)$; the other poles are
+$L_u+2\pi i j$. The same positive-sum and saddle proof works
+uniformly for real $u$ in a compact interval around $1$. It gives
+\begin{equation}\label{eq:weighted-dense}
+ T(n,k;u)=\frac{n! f(r)^k e^{L_ur/2}}
+ {(1+u)L_u^{n+1}r^n\sqrt{2\pi k b}}(1+O_K(k^{-1})).
+\end{equation}
+In the ratio of~\eqref{eq:weighted-dense} to its value at $u=1$,
+put $u=e^{t/\sqrt n}$. Direct Taylor expansion of the elementary
+function $\log(L/L_{e^v})$ has first derivative $1/(2L)$ and
+second derivative $(1-L)/(4L^2)$ at zero. Hence
+\[
+ \log\E\exp\left(\frac{t(C-n/(2L))}{\sqrt n}\right)
+       \longrightarrow\frac{t^2(1-L)}{8L^2}.
+\]
+This proves the Gaussian limit by real moment generating functions;
+no differentiation of an unspecified asymptotic error is used.
+
+For the sharper moment statements, use an exact auxiliary mixture.
+Let $Q$ have probabilities proportional to
+$\StirOne{n}{q}\StirTwo{q}{k}\mathsf F_q$, $k\le q\le n$, and
+put $D=n-Q$. Conditional on $Q=q$, the distribution of $C$ is the
+block-count distribution $J_q$ in a uniform ordered set partition of
+$q$ elements, because its probability generating polynomial is
+$\mathsf F_q(u)/\mathsf F_q$. This specifies an exact distributional
+mixture; no canonical matrix statistic is being claimed for $D$.
+
+Marking $D$ with a fresh variable $\xi$ replaces $H_{n,k}(z)$ by
+$H_{n,k}(\xi z)$. Applying the
+coefficient proof separately to $zH'_{n,k}(z)$ and
+$z^2H''_{n,k}(z)$ gives
+\[
+ \E D=\frac{Lr}{2}+O_K(k^{-1}),\qquad
+ \Var(D)=\frac{Lr}{2}+O_K(k^{-1}).
+\]
+Here the differentiated analytic kernel estimates follow from
+Lemma~\ref{lem:kernel}; the exponentially small Fubini replacement
+error is also valid for each of these nonnegative weighted sums.
+The exact identities
+\[
+ \mathsf F_q'(1)=\frac{\mathsf F_{q+1}-\mathsf F_q}{2},\qquad
+ \mathsf F_q''(1)=\frac{\mathsf F_{q+2}-5\mathsf F_{q+1}
+                                    +2\mathsf F_q}{4}
+\]
+follow from the Stirling recurrence or direct differentiation of the
+generating function. Using~\eqref{eq:fubini-estimate}, they yield
+\[
+ \E J_q=\frac{q+1}{2L}-\frac12+O(q\vartheta^q),\qquad
+ \Var(J_q)=\frac{(q+1)(1-L)}{4L^2}-\frac14+O(q^2\vartheta^q).
+\]
+Since $Q\ge k$, the exponential errors stay negligible after mixing.
+The laws of total expectation and total variance now give
+\eqref{eq:dense-column-mean}--\eqref{eq:dense-column-variance}.
+\end{proof}
+
+The compact restriction $K\Subset(1,\infty)$ is essential in all
+these statements. At $k=n$ the Stirling kernel collapses and
+$T(n,n)=\mathsf F_n$ exactly. At the coverage window $n/k\sim\log k$
+the saddle leaves compact sets. Neither boundary is covered by the
+uniformity asserted in Theorem~\ref{thm:dense}.
+
+\section{Prescribing the number of columns changes the threshold}\label{sec:fixedcolumns}
+
+The preceding models allow the column count to fluctuate. A different
+coverage scale appears when it is prescribed to be much smaller than
+the number of rows. The exact stars-and-bars identities underlying
+this model are classical \cite[Proposition~28]{mpr2009}; the following
+limit follows from direct uniform estimates on them.
+
+\begin{theorem}[Fixed-column coverage]\label{thm:fixedcolumns}
+Let $k\to\infty$, let $m=m(k)\ge1$ be integers with $m=o(k)$,
+and let $n=n(k)\ge1$. Choose uniformly a $k\times m$ matrix of
+nonnegative integers of total sum $n$, conditioned on no zero column.
+Let $M$ count its zero rows and put
+\begin{equation}\label{eq:theta}
+ h=\frac nk,\qquad \theta=m\log\left(1+\frac{n}{km}\right).
+\end{equation}
+If $\theta-\log k\to s\in\mathbb R$, then
+\[
+ M\xrightarrow{\mathrm d}\Pois(e^{-s}),\qquad
+ \Pp(M=0)\longrightarrow\exp(-e^{-s}).
+\]
+Thus an exact parametrization of the critical mass, up to integer
+rounding, is
+\begin{equation}\label{eq:fixedcritical}
+ n=km\left(\exp\left(\frac{\log k+s}{m}\right)-1\right).
+\end{equation}
+\end{theorem}
+\begin{proof}
+First allow zero columns, and call the zero-row count $M_0$.
+There are $\binom{n+km-1}{n}$ matrices. If $j$ designated rows
+are zero, deleting them and comparing these binomial coefficients
+gives, with $N=km$,
+\begin{equation}\label{eq:fixedmoments}
+ \E[(M_0)_j]=(k)_j\prod_{a=1}^{jm}\frac{N-a}{N+n-a}.
+\end{equation}
+Fix $j$ and take $k\ge2j$. For
+$f(a)=\log(N-a)-\log(N+n-a)$ one has
+$f(0)=-\log(1+n/N)$ and
+\[
+ f'(a)=-\frac{n}{(N-a)(N+n-a)}.
+\]
+The mean value theorem and summation imply
+\[
+ \sum_{a=1}^{jm}(f(a)-f(0))
+ =O_j\!\left(\frac{nm^2}{N(N+n)}\right)
+ =O_j\!\left(\frac{mh}{k(m+h)}\right).
+\]
+Also $\log(k)_j=j\log k+O_j(k^{-1})$. Therefore
+\[
+ \log\E[(M_0)_j]
+ =j(\log k-\theta)+O_j\!\left(\frac{1+\min(m,h)}{k}\right).
+\]
+For $x\ge0$, $\log(1+x)\ge(\log2)\min(1,x)$, so
+$\theta\ge(\log2)\min(m,h)$. At the assumed critical scale,
+the error is $O_j((\log k)/k)$. The factorial moments tend to
+$e^{-js}$; the finite Taylor/Bonferroni argument in
+Lemma~\ref{lem:weighted-poisson} proves the Poisson limit.
+
+It remains to justify conditioning. If $m=1$, the sole column
+cannot be zero because $n>0$. If $m\ge2$, the probability that
+one designated column is zero is at most
+\[
+ \prod_{a=1}^{k}\frac{N-a}{N+n-a}
+ \le\left(\frac{N}{N+n}\right)^k
+ =\exp(-k\theta/m).
+\]
+The union bound gives probability at most
+$m\exp(-k\theta/m)$ for any zero column. Its logarithm tends to
+$-\infty$, since $m=o(k)$ and $\theta=\log k+O(1)$.
+Conditioning on an event whose probability tends to one changes
+the law of any statistic in total variation by a quantity tending
+to zero. Thus $M$ and $M_0$ have the same limit. Rounding $n$ in
+\eqref{eq:fixedcritical} changes $\theta$ by at most $1/k$.
+\end{proof}
+
+\begin{corollary}[A shifted window]\label{cor:shifted-window}
+Suppose $m/(\log k)^2\to\gamma\in(0,\infty)$ and
+$n/k-\log k\to s$. In the preceding fixed-column model,
+\begin{equation}\label{eq:shifted-window}
+ M\xrightarrow{\mathrm d}\Pois\!\left(e^{-s+1/(2\gamma)}\right),
+ \qquad
+ \Pp(M=0)\longrightarrow\exp\!\left(-e^{-s+1/(2\gamma)}\right).
+\end{equation}
+\end{corollary}
+\begin{proof}
+Expanding~\eqref{eq:theta} gives
+\[
+ \theta=h-\frac{h^2}{2m}+O(h^3/m^2)
+ =\log k+s-\frac1{2\gamma}+o(1).
+\]
+Apply Theorem~\ref{thm:fixedcolumns} with this shifted constant.
+\end{proof}
+
+Other regimes follow from the exact parametrization. If
+$(\log k)^2=o(m)$ and $m=o(k)$, the usual critical mass
+$k(\log k+s)+o(k)$ returns. If $m\sim\gamma\log k$, the leading
+critical mass is
+$\gamma(e^{1/\gamma}-1)k\log k$; the smaller order-$k$ centering
+depends on the actual integer sequence $m(k)$, so the exact formula
+should be retained for that precision. For a fixed positive integer
+$m$, the critical mass is
+\[
+ n=m e^{s/m}k^{1+1/m}-mk+O(1).
+\]
+In particular, one column requires mass of order $k^2$ for coverage.
+
+This is a theorem about a prescribed column count. It is not a theorem
+about a column weight $u=u_k\to0$; relating those two ensembles is
+a separate research problem.
+
+\section{Exact checks and numerical diagnostics}\label{sec:numerics}
+
+The accompanying programs reproduce the integer checks and numerical
+tables independently of the typesetting. Integer recurrences, polynomial
+identities, and determinants are evaluated exactly. The subsequent
+asymptotic comparisons use 120 decimal digits of working precision.
+Their role is to detect implementation errors and illustrate the proved
+estimates; the numerical comparisons do not constitute proofs.
+
+\subsection{Independent exact calculations}
+The program \texttt{code/verify.py} constructs $A(n,k)$ from the
+nonzero-column composition recurrence~\eqref{eq:positive-rec} and obtains
+$T(n,k)$ by binomial inversion~\eqref{eq:ie}. Separately, it constructs
+both Stirling triangles and the Fubini numbers by their integer
+recurrences, and evaluates the positive transform~\eqref{eq:stirling}.
+These two routes agree for all $0\le n\le30$, $0\le k\le10$:
+341 comparisons for each of $A$ and $T$. All nine supplied rows
+$n=0,\ldots,8$ of A261781 also agree exactly \cite{oeis781}.
+
+The recurrence checks cover $k=1,\ldots,10$, with coefficient arrays
+computed through $n=85$. They verify coprimality of the exact numerator
+and denominator, the nonzero impulse at degree $D=k(k+1)/2$, and the
+homogeneous recurrence beginning at $D+1$, as in
+Theorem~\ref{thm:minimal}. The determinant checks verify
+Theorem~\ref{thm:hankel} for $k=1,\ldots,5$ and shifts $1,2,3$;
+the next-size tail determinants vanish for $k\le4$. They also check
+the initial size-$(D+1)$ identity~\eqref{eq:weighted-hankel-initial-determinant}
+at $u=1$ for $k\le4$. Five further cases are exact polynomial
+identities in the column weight $u$, including
+\[
+ H_{3,1}(u)=27u^{14}(1+u)^8(1+2u)^2.
+\]
+These finite checks agree with the general algebraic proofs; they do not
+replace the uniform arguments in those proofs.
+
+\subsection{The coverage window}
+Write $p_{n,k}=T(n,k)/A(n,k)$ and, using the actual integer value of $n$,
+set
+\[
+ h=\frac nk,\qquad \eta=ke^{-h},\qquad
+ p_0=e^{-\eta},\qquad
+ p_1=e^{-\eta}\left(1+
+ \frac{(1-L)h\eta-(1+h)\eta^2}{2k}\right).
+\]
+Thus $p_0$ is the moving-mean Poisson approximation and $p_1$ includes
+the first correction in Theorem~\ref{thm:pc-pgf}.
+Table~\ref{tab:numeric-coverage} gives the signed relative errors
+$\delta_0=p_{n,k}/p_0-1$ and $\delta_1=p_{n,k}/p_1-1$.
+Here $n$ is the nearest integer to $k\log k$, so the target window
+coordinate is zero but its actual value $s=n/k-\log k$ is retained.
+This avoids assigning integer-rounding effects to the asymptotic error.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$k$ & $n$ & Actual $s$ & $p_{n,k}$ & $\delta_0$ & $\delta_1$\\
+\midrule
+20 & 60 & $+0.004268$ & $0.339714114626$ & $-8.04855\!\times\!10^{-2}$ & $-4.60223\!\times\!10^{-3}$\\
+50 & 196 & $+0.007977$ & $0.356935471459$ & $-3.74272\!\times\!10^{-2}$ & $-9.74476\!\times\!10^{-4}$\\
+100 & 461 & $+0.004830$ & $0.361879493451$ & $-2.10377\!\times\!10^{-2}$ & $-3.02538\!\times\!10^{-4}$\\
+500 & 3107 & $-0.000608$ & $0.365694896898$ & $-5.33335\!\times\!10^{-3}$ & $-1.86151\!\times\!10^{-5}$\\
+1000 & 6908 & $+0.000245$ & $0.366903156844$ & $-2.89783\!\times\!10^{-3}$ & $-5.38847\!\times\!10^{-6}$\\
+\bottomrule
+\end{tabular}
+\caption{Coverage diagnostics at the rounded central window.
+The displayed probabilities and errors are rounded from 120-digit
+evaluations; both approximations use the actual $n$.}
+\label{tab:numeric-coverage}
+\end{table}
+
+The probability calculation uses explicit error accounting. Put
+$E_n=B\rho^{n-1}$, with the constants of
+Theorem~\ref{thm:uniform}. For $1\le j<k$ define
+\[
+ \widetilde m_j=\binom{k}{j}
+                 \frac{c_{k-j}d_{k-j}^{n}}{c_kd_k^n},
+ \qquad m_j=\E\binom Mj.
+\]
+Whenever $E_n<1$, the dominant-pole estimate gives
+\[
+ |m_j-\widetilde m_j|
+ \le \frac{2E_n}{1-E_n}\,\widetilde m_j.
+\]
+Odd and even Bonferroni sums, enlarged by the summed error on their
+terms, therefore give analytic lower and upper bounds. The computation
+stops when the last retained moment is below $10^{-70}$, or at $j=k$,
+where the finite inclusion--exclusion sum is complete. All 15 tabulated
+cases at target $s=-1,0,1$ are supplied in the data files. Five cases
+with $n\le200$ were also compared against independently computed exact
+integer ratios. Thirty additional evaluations check the uniform pole
+bound against exact unrestricted coefficients.
+
+The truncation and pole-replacement errors are thus bounded
+analytically. The decimal endpoints themselves use high-precision
+floating arithmetic and have \emph{not} been certified by directed
+rounding. The stated numerical precision is a diagnostic setting,
+not an interval-arithmetic certificate.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.92\textwidth]{figures/coupon_window.pdf}
+\caption{The empty-row transition. Finite-height curves connect
+evaluations at integer masses for $k=20,100,1000$; the dashed curve is
+$\exp(-e^{-s})$. The horizontal coordinate always uses the actual
+$s=n/k-\log k$. The probabilities are evaluated by the bounded
+Bonferroni calculation described above.}
+\label{fig:numeric-coverage}
+\end{figure}
+
+\subsection{The dense diagonal and two correction coefficients}
+For A261784 define the normalized exact count
+\[
+ \mathcal R_N=\frac{T(2N,N)}{c_*d_*^N(N!)^2/N},
+\]
+with $c_*,d_*$ from~\eqref{eq:784-c} and~\eqref{eq:784-d}.
+The all-orders expansion~\eqref{eq:dense-allorders}, specialized at
+$\lambda=2$, gives
+\[
+ \mathcal R_N=1+\frac{\beta_1}{N}+\frac{\beta_2}{N^2}
+                  +O(N^{-3}),\qquad \beta_1=\beta.
+\]
+There is an exact coefficient rule for the second constant:
+\begin{equation}\label{eq:numeric-beta2}
+ \beta_1=E_1(2)-\frac18,\qquad
+ \beta_2=E_2(2)-\frac{E_1(2)}8+\frac1{128}.
+\end{equation}
+Here $E_1,E_2$ are obtained from the finite Gaussian-moment rule
+\eqref{eq:saddle-algorithm}; the last two terms arise from the
+central-binomial expansion. Evaluating that rule, independently of
+the diagonal integer data, gives
+\begin{align*}
+ \beta_1&=-0.521806701556482663889144103069\ldots,\\
+ \beta_2&=\phantom{-}0.128288828088705778459796704234\ldots.
+\end{align*}
+Thus $\beta_2$ is a derived coefficient rather than a fitted constant.
+The finite arithmetic expression used for its evaluation is included
+in \texttt{code/verify.py}.
+
+To display the convergence, define
+\[
+ U_N=N(\mathcal R_N-1),\qquad
+ V_N=N^2\left(\mathcal R_N-1-\frac{\beta_1}{N}\right),
+\]
+\[
+ W_N=N^3\left(\mathcal R_N-1-\frac{\beta_1}{N}
+                                -\frac{\beta_2}{N^2}\right).
+\]
+Theorem~\ref{thm:dense} and its all-orders refinement imply
+$U_N\to\beta_1$, $V_N\to\beta_2$, and boundedness of $W_N$.
+The numerator $T(2N,N)$ in every row of
+Table~\ref{tab:numeric-diagonal} is computed as an exact integer from
+\eqref{eq:stirling}; only the normalization uses floating arithmetic.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$N$ & $U_N$ & $V_N$ & $W_N$\\
+\midrule
+5   & $-0.49620219$ & $0.12802256$ & $-0.00133133$\\
+10  & $-0.50899740$ & $0.12809304$ & $-0.00195793$\\
+20  & $-0.51539780$ & $0.12817802$ & $-0.00221621$\\
+30  & $-0.51753296$ & $0.12821232$ & $-0.00229519$\\
+50  & $-0.51924187$ & $0.12824171$ & $-0.00235602$\\
+75  & $-0.52009661$ & $0.12825702$ & $-0.00238568$\\
+100 & $-0.52052405$ & $0.12826482$ & $-0.00240032$\\
+\bottomrule
+\end{tabular}
+\caption{Dense-diagonal diagnostics from exact integer counts. The
+first two columns approach the independently derived correction
+coefficients; the final column records the next scaled remainder.}
+\label{tab:numeric-diagonal}
+\end{table}
+
+At $N=100$, the signed relative error after including $\beta_1/N$
+is $1.28938\times10^{-5}$; after also including $\beta_2/N^2$ it is
+$-2.41288\times10^{-9}$. These are finite numerical comparisons,
+not uniform error constants for the asymptotic theorem.
+
+\subsection{Reproduction and data}
+The package includes the complete \LaTeX{} source, compiled article,
+both Python programs, their pinned dependencies, the figure in PDF
+and PNG form, and CSV/JSON outputs. From the package root,
+\texttt{python3 code/verify.py} regenerates the checks and tables;
+\texttt{python3 code/make\_figures.py} regenerates the plot. The
+\texttt{README.txt} gives the dependency and \LaTeX{} build commands.
+The programs use no network access after their dependencies are
+installed. The supplied run records report Python 3.12.14,
+SymPy 1.14.0, mpmath 1.3.0, and matplotlib 3.10.8.
+
+\section{Further research: precise questions and useful next steps}\label{sec:questions}
+
+The following are proposed research problems motivated by the results
+above. They are not assertions that every formulation is open throughout
+the literature. The source audit was narrower than that. Each question
+identifies a statement not proved in this article and a concrete way in
+which its resolution would extend the present results.
+
+\begin{question}[A uniform approximation across the triangle]
+Can one obtain relative asymptotics for $T(n,k)$ that remain valid from
+the near-diagonal boundary $n-k=o(k)$ through the dense rays and into
+the coverage window $n/k=\log k+O(1)$?
+\end{question}
+
+There are two distinct boundaries to resolve. As $n/k\downarrow1$, the
+saddle $r$ tends to zero, the variance parameter $b$ tends to zero, and
+the compact-set saddle proof no longer applies. At the endpoint,
+$T(n,n)=\mathsf F_n$ exactly. As $n/k$ grows, the saddle escapes to
+infinity and the kernel estimates must hold on expanding disks.
+A useful first deliverable is a uniform formula for $n=k+\ell$ with
+$\ell$ growing through the range where a fixed-defect expansion ceases
+to be accurate. A second is a proved overlap region in which the
+positive-transform saddle estimate and the empty-row probability
+estimate agree, including their relative errors. Such a result would
+turn the separate formulas in this article into a controlled asymptotic
+description of a much larger part of A261781.
+
+\begin{question}[Wider windows and higher coverage corrections]
+For which explicit ranges of $s_k=n/k-\log k$ can the Poisson--Charlier
+expansion of Section~\ref{sec:poisson} be extended, and can all its
+correction polynomials be generated with a uniform summable remainder?
+\end{question}
+
+The theorem here keeps $\eta=k e^{-n/k}$ in a fixed compact subset of
+$(0,\infty)$. If $\eta$ grows, the factorial-moment sums are concentrated
+at growing indices, so the same fixed-disk argument does not directly
+give a useful relative estimate for the small probability $M=0$.
+If $\eta$ tends to zero, a different error scale is appropriate.
+Expanding the exact ratios $c_{k-j}d_{k-j}^n/(c_kd_k^n)$ suggests a
+constructive series in Poisson--Charlier polynomials, but the admissible
+joint growth of $j$, $\eta$, and $h$ must be proved. A satisfactory result
+would state both an explicit range and a remainder that remains smaller
+than the probabilities or distances being approximated.
+
+\begin{question}[Joint local limits and residual dependence]
+Can the Gaussian--Poisson convergence in Section~\ref{sec:joint} be
+strengthened to a joint local limit theorem with an explicit first
+correction?
+\end{question}
+
+For example, one can ask for a uniform approximation to
+$\Pp(C=c,M=m)$ for integer $c$ in a growing central range and $m$ in a
+specified range, and for the corresponding law conditioned on $M=0$.
+The present moment-generating-function proof establishes distributional
+independence after normalization, but it does not control the Fourier
+integral away from the origin. A local theorem requires both this
+off-axis control and a lattice analysis. The first mixed correction
+would quantify the small dependence that survives before taking the
+limit, and would refine the order-one column-moment formulas on dense
+rays. This is a natural setting in which to compare joint Edgeworth
+and Poisson--Charlier expansions.
+
+\begin{question}[Small column weights and equivalence of ensembles]
+How does the coverage transition change when the column weight
+$u=u_k$ tends to zero, and when does conditioning its weighted model on
+$C=m$ preserve the corresponding asymptotic laws?
+\end{question}
+
+For any fixed $m$, conditioning on $C=m$ removes the factor $u^m$, so
+the resulting distribution is exactly the prescribed-column model.
+The analytic difficulty is making that conditioning asymptotically
+uniform when its probability may be small. The weighted pole estimate
+in Section~\ref{sec:uniform} is uniform on compact positive weight
+intervals; it does not supply a uniform spectral gap as $u\downarrow0$.
+The explicit critical parameter
+$m\log(1+n/(km))$ and its shift at $m\asymp(\log k)^2$ provide testable
+targets for a joint saddle analysis in $z$ and $u$. Extending the
+prescribed-column theorem from $m=o(k)$ to comparable or larger column
+counts is another concrete part of this problem.
+
+\begin{question}[A combinatorial explanation of determinant positivity]
+Is there a direct combinatorial model for the coefficients of
+$H_{k,s}(u)$, or a sign-reversing involution proving the product in
+Theorem~\ref{thm:hankel}?
+\end{question}
+
+The entries of the determinant count matrices, but the determinant
+itself is a signed sum of products of such counts. Its coefficientwise
+positivity is presently explained by spectral factorization. A direct
+model would explain the factors $\binom{k}{j}^{j}$ and the powers of
+$(1+u)^m-u^m$, and might expose refinements that the one-variable
+spectrum does not reveal. The negative smaller minor exhibited in
+Section~\ref{sec:hankel} rules out a blanket appeal to total positivity.
+One should seek a model specific to these maximal minors, or a precise
+classification of which other minors have a definite sign.
+
+\begin{question}[Recurrences in finite characteristic]
+What is the minimal eventual recurrence of the column $T(n,k)$ over
+$\mathbb F_p$, and how does it depend on $k$ and the prime $p$?
+\end{question}
+
+Over characteristic zero every pole survives and all root sets are
+disjoint. Reduction modulo a prime can merge roots, make multiplicities
+inseparable, or cancel numerator and denominator factors. The determinant
+product isolates the possible exceptional primes through binomial
+coefficients, powers of $2$, and factors $2^m-1$. It therefore supplies
+an arithmetic guide, but does not by itself classify the remaining
+rank or the reduced rational function at each exceptional prime.
+An exact classification could yield new divisibility and periodicity
+statements for the triangle, with fast recurrence-based proofs suitable
+for individual OEIS entries.
+
+\begin{question}[The limiting distribution of determinant zeros]
+After removing the factors at $u=0$ and $u=-1$, what is the limiting
+zero-counting measure of $H_{k,s}(u)$ as $k\to\infty$?
+\end{question}
+
+Every remaining zero has real part $-1/2$ and is the image of a root
+of unity under $\zeta\mapsto1/(\zeta-1)$. Its multiplicity is controlled
+by the weighted gcd sum over pairs $1\le i<j\le k$. Determining the
+normalized measure therefore reduces to a specific arithmetic counting
+problem, rather than an unknown root-location problem. Useful targets
+include an explicit density along the vertical line, tail estimates
+for zeros with large imaginary part, and the contribution of roots
+of small order. The answer should specify whether the zero measure is
+normalized by the full degree or by the degree remaining after the
+two exceptional factors are removed.
+
+\begin{question}[Which column models have the same coverage law?]
+Which replacements for the unrestricted column generating function
+$(1-z)^{-k}-1$ retain the window $n=k(\log k+s)$, and which alter its
+first correction or its scale?
+\end{question}
+
+Natural examples impose bounded entries, bounded column sums, or a
+weight depending on column size. The row symmetry needed for exact
+factorial moments may survive even when the root-of-unity spectrum does
+not. One can aim for sufficient analytic conditions on the dominant
+pole and its row-deletion ratios that imply a Poisson law, then identify
+which derivatives determine the first correction. A theorem formulated
+this way would separate properties special to matrix compositions from
+properties shared by a wider class of symmetric occupancy models.
+
+\subsection{A practical order of attack}
+
+For a continuation in ProveIt, the most direct algebraic project is to
+formalize the reduced denominator and its no-cancellation proof, followed
+by the resultant and maximal Hankel determinant identities. These
+statements are finite algebra and have explicit base conventions. They
+provide a manageable route to a proof-assistant-checked contribution
+without first formalizing saddle-point analysis.
+
+For analytic work, the highest-value next targets are the near-diagonal
+boundary and a proved overlap with the coverage regime. The positive
+Stirling transform avoids cancellation and gives an explicit starting
+point in both cases. The small-weight problem is a second substantial
+direction, because the prescribed-column result already identifies a
+change of scale that a uniform two-variable theory must explain.
+The computation scripts in the accompanying package can supply
+regression examples for these projects, but every extension needs a
+new proof of its claimed uniformity and error bounds.
+
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{oeis780} The OEIS Foundation Inc., \emph{The On-Line Encyclopedia of
+Integer Sequences}, entry A261780, created by Alois P. Heinz.
+\url{https://oeis.org/A261780}. Accessed October 3--4, 2026.
+\bibitem{oeis781} The OEIS Foundation Inc., entry A261781, created by
+Alois P. Heinz; conjecture comments by V\'aclav Kot\v{e}\v{s}ovec,
+October 14, 2017. \url{https://oeis.org/A261781}.
+Accessed October 3--4, 2026.
+\bibitem{oeis784} The OEIS Foundation Inc., entry A261784, created by
+Alois P. Heinz; asymptotic formula by V\'aclav Kot\v{e}\v{s}ovec,
+February 18, 2017, updated April 20, 2024.
+\url{https://oeis.org/A261784}. Accessed October 3--4, 2026.
+\bibitem{mpr2009} E. Munarini, M. Poneti, and S. Rinaldi,
+\emph{Matrix Compositions}, Journal of Integer Sequences \textbf{12}
+(2009), Article 09.4.8, 28 pp.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL12/Rinaldi/rinaldi.pdf}.
+\bibitem{mpr2006} E. Munarini, M. Poneti, and S. Rinaldi,
+\emph{Matrix compositions}, Proceedings of FPSAC 2006, San Diego,
+pp.~445--456. \url{https://garsia.math.yorku.ca/fpsac06/papers/49.pdf}.
+\bibitem{louchard} G. Louchard, \emph{Matrix compositions: a probabilistic
+analysis}, Pure Mathematics and Applications \textbf{19} (2008),
+nos.~2--3, 127--146. Author's long version dated July 10, 2008:
+\url{https://guy.louchard.web.ulb.be/louchard.papers/compmat.ps}.
+Publication list: \url{https://guy.louchard.web.ulb.be/index_old.htm}.
+\bibitem{proveit} V. Reshetnikov, \emph{ProveIt}, public research and
+formalization repository. \url{https://github.com/VladimirReshetnikov/ProveIt}.
+Indexed snapshot observed in this audit:
+\texttt{ce37e13f4aa16819c87c3ccc611362d15758f2ac}.
+\end{thebibliography}
+\end{document}
