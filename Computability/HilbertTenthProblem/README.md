@@ -162,6 +162,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [three action/randomness intake reviews](Papers/research-wip/native-stream-queue/review_new_actions_26e036956.md)
+at **26e036956** authenticate all22 archive members and read4086 selected
+member lines. The complete1887-line commuting-injections proof receives a
+mathematical challenge, and fresh code independently reproduces its148 finite
+presentation, necklace, subgroup and permutation cases. Atom-actions and
+hat-randomness receive the precisely listed interface reads; their remaining
+proofs are not certified by this packet. No defect was found in that scope.
+Pure component codes are not finite integer loaders, and the hat threshold1
+charges inspections while computation and permitted randomness are free.
+Fresh normal/optimized receipts pass; no supplied program or builder ran.
+The reports supply no paid fixed-arity Diophantine compiler or arithmetic
+saving. External literature, PDFs and unread dependencies remain unaudited.
+
 The [Borel flows intake review](Papers/research-wip/native-stream-queue/review_new_borel_flows_fb9f5884b.md) reads the
 complete1724-line manuscript at **fb9f5884b**, authenticates all nine members
 and eight delivered checksums, and checks the cited143-line BCH interface.

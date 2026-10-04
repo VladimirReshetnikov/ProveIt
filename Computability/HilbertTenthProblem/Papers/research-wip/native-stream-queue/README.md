@@ -140,6 +140,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [three action/randomness intake reviews](review_new_actions_26e036956.md)
+at **26e036956** authenticate all22 archive members and read4086 selected
+member lines. The complete1887-line commuting-injections proof receives a
+mathematical challenge, and fresh code independently reproduces its148 finite
+presentation, necklace, subgroup and permutation cases. Atom-actions and
+hat-randomness receive the precisely listed interface reads; their remaining
+proofs are not certified by this packet. No defect was found in that scope.
+Pure component codes are not finite integer loaders, and the hat threshold1
+charges inspections while computation and permitted randomness are free.
+Fresh normal/optimized receipts pass; no supplied program or builder ran.
+The reports supply no paid fixed-arity Diophantine compiler or arithmetic
+saving. External literature, PDFs and unread dependencies remain unaudited.
+
 The [Borel flows intake review](review_new_borel_flows_fb9f5884b.md) reads the
 complete1724-line manuscript at **fb9f5884b**, authenticates all nine members
 and eight delivered checksums, and checks the cited143-line BCH interface.
@@ -5473,6 +5486,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Commuting injections, atom actions and hat randomness](review_new_actions_26e036956.md) | All22 members authenticated; complete commuting proof read and148 finite cases independently recomputed; exact selected atom/hat interfaces reviewed. | Other atom/hat proofs remain outside scope. Pure codes and free-computation query bounds do not supply paid integer compilers; no arithmetic saving. |
 | [Borel flows and finite-window criteria](review_new_borel_flows_fb9f5884b.md) | Full1724-line proof read; nine-member archive and cited BCH interface authenticated. Exact flow/time-one scope and infinite-rank nonclosure checked. | One malformed reference recorded; saved5372 checks not replayed. No effective certificate producer, paid compiler or arithmetic improvement; divisible-group scope retained. |
 | [Support complexity, certificates and effective boundaries](review_new_support_complexity_fb9f5884b.md) | Full1629-line manuscript and pinned Lean interface read; eight-member archive authenticated. Two new computability deductions distinguish infinite certificates from ordinary existential integer witnesses. | No paid finite compiler; supplied finite tests not rerun, external foundations accepted at stated scope, PDF and historical Library question unverified. |
 | [Aggregate positive input budget](complete83_aggregate_input_budget.md) | Exact CRT/slack criterion and capped factorization Hreq=A³/gcd(A³,C0); a polynomial-size combined carry factor suffices with half-radix slack. Independent proof/source and fresh checks pass. | Actual carry-factor occurrence and enlarged-z binary population remain unproved; local arithmetic example is not a positive source tuple. |
