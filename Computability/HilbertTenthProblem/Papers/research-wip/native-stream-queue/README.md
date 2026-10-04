@@ -90,6 +90,15 @@ saved regrouping is the identical 84-operation polynomial, with all
 producer costs retained. This local bound leaves extra registers,
 source-specific relations and changed producers open.
 
+The [actual-modulus scout](complete84_actual_modulus_scout.md) emits a
+complete **86=48M+38A** alternative using the actual H=4a+3 relation;
+it is the identical degree187 polynomial and gives no saving. Uniform
+rational specializations also prove that neither H nor Delta divides the
+actual main/input norm product. The [review](review_complete84_actual_modulus_scout.md)
+checks the full source and corrects the boundary scope: Delta=0 does give
+a complete signed rational zero, consistently with F84=Delta*F85.
+No positive counterexample or general circuit lower bound follows.
+
 The [joint root producer checks](complete84_joint_root_cut.md) emit two
 complete all-value rewrites: sharing the main/input quotient product stays
 at84 gates, while first/main product expansion costs87. The
