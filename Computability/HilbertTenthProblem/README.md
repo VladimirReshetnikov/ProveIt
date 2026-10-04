@@ -492,6 +492,18 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [marked-loader matrix packing](Papers/research-wip/native-stream-queue/matrix193_marked_loader_packing.md)
+gives a fixed-arity route for arbitrary-duration synchronized row histories.
+A private LOAD edge and one positive quotient enforce the ordinary input;
+the typed phase-switch state prevents count wraparound. The fully emitted
+**187=86M+101A** diagnostic has27 positive witnesses and exact degree1789.
+The actual matrix193 transfer is an effective finite compiler recipe with
+bound **9n+3log2(m)+210** and n+29 positive witnesses, after explicit shear
+expansion; its numerical controller is not emitted. The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_marked_loader_packing.md)
+checks the native63-row interface, full source, degree, positive count bridge
+and zero-input/empty-TILE boundaries. Normal/optimized receipts pass.
+The diagnostic is nonuniversal; the universal bound remains84.
+
 The [positive CRT duration refinement](Papers/research-wip/native-stream-queue/matrix193_positive_crt_duration.md)
 lowers the fixed-duration matrix bound further to **140h+7 operations**, with
 **31h+1 positive witnesses** and degree at most10. A fixed CRT choice of the
@@ -503,8 +515,8 @@ are preserved with newly compiled constants, independent of input or duration.
 The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_positive_crt_duration.md) checks the
 full147/287 sources for h=1,2, uniform positivity proof and coefficient recipe;
 frozen normal/optimized receipts pass. Constants are substantially larger.
-This remains an integer fixed-duration result; unbounded fixed-arity packing
-and the universal84 bound are unchanged.
+This remains an integer fixed-duration result. The marked-loader route above
+uses a separate packed construction; the universal bound remains84.
 
 The [centered CRT matrix selector](Papers/research-wip/native-stream-queue/matrix193_centered_crt_selector.md)
 lowers the complete integer countdown from154 to **133=64M+69A**, with26
@@ -517,7 +529,7 @@ the positive representation costs **165h+7**, with **31h+1 positive witnesses**
 and degree at most10; full h=1,2 arrays are saved. Installed normal/optimized
 receipts pass. The smaller arithmetic count uses larger fixed numerals;
 integer exactness does not extend to real witnesses. Arbitrary-duration
-fixed-arity packing remains unpaid, so the universal bound stays84.
+packing of this CRT grammar remains unpaid; the universal bound stays84.
 
 The [integer CRT matrix selector](Papers/research-wip/native-stream-queue/matrix193_crt_selector.md)
 lowers the full countdown from1179 to **154=73M+81A**, with35 auxiliary
