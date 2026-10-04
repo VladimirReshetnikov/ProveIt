@@ -96,6 +96,19 @@ and fresh normal/optimized replays pass. This excludes only the stated
 single-producer all-value grammar, leaving joint identities and sound
 coordinate changes open.
 
+The [first-index deletion collapse](Papers/research-wip/native-stream-queue/complete80_first_index_deletion_collapse.md)
+refutes the literal **80=45M+35A**,17-witness, exact-degree180 candidate
+obtained by deleting four current84 rows. Report41's full factorial/Pell
+family retains every other block and supplies positive zeros at every
+positive input on every authentic compiler slice. The [independent review](Papers/research-wip/native-stream-queue/review_complete80_first_index_deletion_collapse.md)
+checks the full source, identities `F80=Delta*F81` and
+`F84+Delta=(F80+Delta)*Nk`, all positive coordinates and uniform degree.
+Fresh normal/optimized receipts pass. The [five-report arithmetic intake](Papers/research-wip/native-stream-queue/review_incoming_arithmetic_reports_39_46.md)
+records exact provenance and read scope for Reports39/41/43/45/46, separates
+historical candidate names, and scopes the new height/minimality results.
+This is a rejected candidate; the established bound remains84 and the
+independent-gamma83 ordinary-input language remains unresolved.
+
 The [outer-slack 83 candidate](Papers/research-wip/native-stream-queue/complete83_outer_slack_collapse.md) saves
 one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
 source with 18 positive witnesses and exact degree 187. **Its inherited
@@ -2218,6 +2231,19 @@ left/right/stay heads: **188 certificate /244=100M+144A polynomial**,
 19 comparisons,35 witnesses and degree at most316. Its existential endpoint
 projection is exactly non-erasing tape inclusion with dyadic initial/final
 heads. That packet does not supply finite program control or TM-input coding.
+
+The [ant coefficient/fusion intake](Papers/research-wip/native-stream-queue/review_ant47_48_intake.md) reviews the
+later complete source grammars separately from their inherited simulation
+proofs. Two checked refinements share [the endpoint power](Papers/research-wip/native-stream-queue/periodic_ant_endpoint_reuse48.md)
+and [six rotated occurrence polynomials](Papers/research-wip/native-stream-queue/ant48_rotated_occurrence_sharing.md),
+saving **38,155 operations** together. The [independent joint review](Papers/research-wip/native-stream-queue/review_periodic_ant_sharing48.md)
+checks both all-value identities and their disjoint composition. The emitted
+33-row endpoint and7,886-row rotation component pass normal/optimized replay.
+Derived strict-literal complete counts become **14,620,779 /14,620,789** for
+two/one positive inputs, with inherited465/467 witnesses and degree2,304,000.
+The full multimillion-row successor stream was not regenerated or rehashed;
+its unchanged prefix and simulation theorem remain inherited. The established
+universal polynomial count remains84.
 
 The [chronological toggle-tape component](Papers/research-wip/native-stream-queue/langton_ant_packed_toggle_tape.md)
 costs **105 certificate /158=66M+92A polynomial**,18 comparisons,28 witnesses

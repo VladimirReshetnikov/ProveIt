@@ -77,6 +77,19 @@
 > single-producer all-value grammar, leaving joint identities and sound
 > coordinate changes open.
 >
+> The [first-index deletion collapse](complete80_first_index_deletion_collapse.md)
+> refutes the literal **80=45M+35A**,17-witness, exact-degree180 candidate
+> obtained by deleting four current84 rows. Report41's full factorial/Pell
+> family retains every other block and supplies positive zeros at every
+> positive input on every authentic compiler slice. The [independent review](review_complete80_first_index_deletion_collapse.md)
+> checks the full source, identities `F80=Delta*F81` and
+> `F84+Delta=(F80+Delta)*Nk`, all positive coordinates and uniform degree.
+> Fresh normal/optimized receipts pass. The [five-report arithmetic intake](review_incoming_arithmetic_reports_39_46.md)
+> records exact provenance and read scope for Reports39/41/43/45/46, separates
+> historical candidate names, and scopes the new height/minimality results.
+> This is a rejected candidate; the established bound remains84 and the
+> independent-gamma83 ordinary-input language remains unresolved.
+>
 > The [outer-slack 83 candidate](complete83_outer_slack_collapse.md) saves
 > one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
 > source with 18 positive witnesses and exact degree 187. **Its inherited
@@ -4103,6 +4116,19 @@ existential endpoint relation is dyadic H0,Hf and T0 AND Tf=T0.
 Program counter, conditional jumps, acceptance and the ordinary-input
 morphism remain unpaid. Independent review adds192 full identities
 (96 signed) and128 physical prefixes/1,616 steps, including355 left moves.
+
+The [ant coefficient/fusion intake](review_ant47_48_intake.md) reviews the
+later complete source grammars separately from their inherited simulation
+proofs. Two checked refinements share [the endpoint power](periodic_ant_endpoint_reuse48.md)
+and [six rotated occurrence polynomials](ant48_rotated_occurrence_sharing.md),
+saving **38,155 operations** together. The [independent joint review](review_periodic_ant_sharing48.md)
+checks both all-value identities and their disjoint composition. The emitted
+33-row endpoint and7,886-row rotation component pass normal/optimized replay.
+Derived strict-literal complete counts become **14,620,779 /14,620,789** for
+two/one positive inputs, with inherited465/467 witnesses and degree2,304,000.
+The full multimillion-row successor stream was not regenerated or rehashed;
+its unchanged prefix and simulation theorem remain inherited. The established
+universal polynomial count remains84.
 
 The [toggle-tape component](langton_ant_packed_toggle_tape.md) uses four
 lanes at Scale=B*P^4 with B=4D, shared high packing suffixes, and
