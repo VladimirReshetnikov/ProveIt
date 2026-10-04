@@ -70,6 +70,17 @@
 > and fresh normal/optimized receipts check the full source and criterion.
 > The established universal minimum remains **84 operations**.
 >
+> The [input-witness power gap](complete83_input_witness_power_gap.md)
+> sharpens the unresolved83 dichotomy: every noncanonical full positive zero
+> has both delta and rho greater than c^(L-1), where L=floor(A*u/R)>=55.
+> Canonical zeros instead have delta<c/Delta and rho<gamma<c. Thus either
+> witness bound at c^54 suffices for a positive parent84 inverse. The
+> [independent review](review_complete83_input_witness_power_gap.md) checks
+> full-zero premises, both strict inequalities and all twenty source cuts;
+> normal/optimized replays pass. These bounds are not imposed by the circuit,
+> and same-input noncanonical zeros already exceed them. The83 language
+> remains unresolved; variable powers here are mathematical estimates only.
+>
 > The [input-quotient dichotomy](complete83_input_quotient_dichotomy.md)
 > classifies every full positive independent-gamma83 zero: the literal
 > parent-restorable branch has rho<gamma<c, and every other completion has
