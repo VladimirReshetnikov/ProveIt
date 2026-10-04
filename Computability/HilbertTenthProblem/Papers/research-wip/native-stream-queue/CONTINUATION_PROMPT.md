@@ -116,6 +116,19 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [U15 repeated-block interface](u15_unary_block_interface.md) gives an
+> effective universal family `U_S W^x V_S` in the actual193-generator source,
+> with the fixed eight-bit input block W=01010111. Its matrix has trace -8942;
+> every nonempty concatenation of ordinary-symbol codes in this published
+> encoding is hyperbolic. The even block has an exact Pell-power formula
+> and a **12=8M+4A** target assembly from correctly indexed Pell coordinates.
+> Their exact index relation and the unbounded membership certificate remain
+> unpaid. The [independent review](review_u15_unary_block_interface.md) checks
+> the primary initialization passages, matrix identities and assembly;
+> fresh normal/optimized receipts pass. This resolves the repeated-block
+> input interface, while the separate raw-ones affine slice remains unproved.
+> The complete universal bound stays **84 operations**.
+>
 > The [matrix power-block analysis](matrix193_power_block_obstruction.md)
 > provides an exact **8=4M+4A unary target loader**, with zero witnesses, for
 > one valid input family of the actual 193-generator source. Universality of
