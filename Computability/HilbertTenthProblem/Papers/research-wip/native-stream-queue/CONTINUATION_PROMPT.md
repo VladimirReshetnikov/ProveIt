@@ -103,6 +103,17 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [mixed auxiliary-cut bound](complete84_auxiliary_mixed_cut.md)
+> proves that joint V and Delta*f² production needs at least seven gates with
+> arbitrary mixed arithmetic. Retaining the two actual quotient-coefficient
+> rows and final strong subtraction makes the ten-gate cut sharp. Unrestricted
+> joint V,Q,S production also needs at least three additions. The
+> [independent review](review_complete84_auxiliary_mixed_cut.md) and separate
+> mathematical challenge check the symbolic proofs and complete equivalent84
+> source; normal/optimized replays and64 fresh whole-source comparisons pass.
+> Fully changed coefficient/strong circuits remain open; this is no global84
+> lower bound.
+>
 > The [joint auxiliary rescaling bound](complete84_auxiliary_monomial_scaling.md)
 > charges f^2, the full quotient, auxiliary coefficient and strong factor
 > together. Every monomial rescaling of the strong factor needs at least
