@@ -63,3 +63,32 @@ The decision procedures are executable and neither development uses `sorry`,
 `Admitted`, or a custom arithmetic oracle. The Lean audit exposes only Lean's
 standard logical axioms used by mathlib; the Coq audit is closed under the
 global context.
+
+## Related research reports
+
+[`Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic`](../../Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/)
+(batch 86 of the incoming reports; two of its sources pin commits
+`a11efab09` and `3ad5f878c` and read this project's Lean and Rocq files)
+constructs Polish models of Presburger arithmetic with continuous addition
+on nonstandard Z-groups `D ×→ Z`, an affirmative answer to Glazer's
+Question 2 as printed. It notes that the periodicity lemmas here — Lean
+`periodic_interval`, `periodic_has_residue` and `cooper_finite_criterion` in
+`Cooper.lean`, Rocq `periodic_shift`, `periodic_has_residue` and
+`periodic_interval` in `Cooper.v` — are stated for the ordinary integers with
+one-step periodicity, where they are correct, and that a version uniform over
+models needs invariance under a whole subgroup `mG` (its
+`pma:pr:ex:falseperiod` and `pma:pr:lem:finite`). This is a porting
+requirement, not a defect. Its Parts III and IV (three more sources, pinned
+at `0f95145cb`, `fa2f3e419` and `883e0b3b2`) read this project again:
+`Formula.holds` in `Syntax.lean` and `holds_iff_quantifierEliminate` in
+`Decision.lean` are stated for `List Int` valuations, so the semantic
+theorem for an arbitrary Z-group would be a further formalization task, and
+the finite-witness lemma needs invariance on cosets of `mG`
+(`pma:lc:lem:cooper`). **Nothing in that report is formalized**, and
+nothing in this project depends on it.
+
+The research report
+[`SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/periodic-turmite-first-revisits`](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/periodic-turmite-first-revisits/)
+(batch 83) invokes Cooper's quantifier elimination, formalized here, for an
+unexecuted second proof of its exact first-hit theorem; its own theorems are
+not formalized.

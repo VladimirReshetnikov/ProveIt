@@ -1,6 +1,6 @@
 # The surreal and surcomplex reports
 
-This collection has **66 research reports in five families**. Start with the
+This collection has **68 research reports in five families**. Start with the
 reading routes below, use the [notation guide](NOTATION.md) when moving between
 reports, and consult the [typeset catalogue](manifest.pdf)
 ([source](manifest.tex)) for longer descriptions. The
@@ -15,6 +15,46 @@ formal verification of the collection is claimed. Each report records its
 hypotheses, limitations and provenance.
 
 ## Newest reports
+
+Batches 81 to 86 (3 October 2026) add two reports and extend three.
+Batch 84 (placed in `e1395c66c`, written in `a11efab09`, with reciprocal
+notes in `883e0b3b2`) adds
+[self-embeddings of the surreal numbers](surreal/surreal-self-embeddings/),
+merged from six manuscripts written independently on one prompt (a seventh
+archive is an earlier edition of one of them and is not printed): order
+embeddings with simplicity-initial image are onto, Hahn lifts and the
+weighted monomial classification, a proper cofinal field embedding and a
+nonidentity automorphism fixing any set together with all reals and
+ordinals, continuity equivalent to cofinality, and exponential rigidity with
+cofinality in place of surjectivity; conditional elementary, large-cardinal
+and omega-series results are marked. About half of each manuscript
+re-proves results of five existing reports, printed once with their labels
+credited. One manuscript showed a sentence of
+[omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/)
+false as stated; it was corrected in `f06e67d10` before the placement.
+Batch 86 (placed in `3d2177df4` and `0bd0e5527`, written in `ae7b9ab74`
+and `c3661c2ee`) adds [Polish models of omnific arithmetic](foundations-and-computation/polish-models-of-omnific-arithmetic/),
+merged from seven manuscripts in five Parts: an affirmative answer to
+Glazer's Question 2 as printed (the cone of `ℝ ×→ ℤ` is an uncountable
+Polish model of Presburger arithmetic with continuous addition, embedded
+additively in `Oz`); Borel presentations of Hahn fields with the support
+barrier on the omnific side; continuous Presburger arithmetic (Polish
+exactly for Borel cones, `2^ℵ₀` models on Baire space, a Polish semiring
+cone of `ℤ + tℝ[t]` failing open induction, `0` isolated in every Polish
+`PA⁻` cone); local compactness forcing discreteness of discretely ordered
+rings; and which Hahn, Puiseux and Levi-Civita fields carry Polish
+topologies. Its manuscript 10 became Sections 19–22 of
+[discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/)
+(written in `4eed8c460`): a bounded dyadic definition of `ℕ`, and no
+nonstandard model of `IΔ0` has an initially realizable additive group, which
+partly answers that report's question on arithmetic fragments.
+[Surreal well-orders](foundations-and-computation/surreal-well-orders/)
+grew from four to twenty-two manuscripts: six batch-81 continuations
+(placed in `f0cd7032d` and `c4720e1b2`) became Parts VI–IX and twelve of
+batch 83 (placed in `2e06337d5`, written in `07ee2b30c`) Parts X–XIV, with
+reciprocal notes in `d68b65ea0` and `da289d902`. None of the new material
+is formalized or indexed in the formalization ledger yet, and its proof
+review is pending.
 
 Batch 80 (placed in `ccc046989`, written in `d51fafea8` and `0be9b9134`,
 with reciprocal notes in `a13efdd51`) adds one report,
@@ -257,7 +297,7 @@ not extend their earlier proof-review scope.
 - **For a particular theorem:** use the report tables below. Read its local
   conventions before importing a definition from a companion report.
 
-## Surreal numbers: twenty-five reports
+## Surreal numbers: twenty-six reports
 
 | Report | Question or main subject |
 |---|---|
@@ -281,11 +321,12 @@ not extend their earlier proof-review scope.
 | [Finite surreal probability](surreal/finite-surreal-probability/) | Surreal-valued probability on finite algebras: conditioning on infinitesimal events, log-odds, entropy, scoring rules; compare the measures report for countable additivity |
 | [Omnific Diophantine geometry](surreal/omnific-diophantine-geometry/) | Diophantine equations over the omnific integers `Oz`: constant-term transfer, Pell and norm-form rigidity, quartic definitions of `ℤ`, a Diophantine constant term, fractions, and rigidity of smooth curves, abelian varieties and logarithmic complements; fifteen integrated manuscripts; Section 19.4 and its later question/status notes reviewed, including descent, critical-point and normal-matrix applications and an affine-conjugacy criterion; full source reconciliation awaits review; exact scope in its reconciliation |
 | [Set-sized quotients of omnific integers](surreal/set-sized-quotients-of-omnific-integers/) | Every ring map from `Oz` to a set-sized ring factors through the constant term; exact cardinal thresholds, homological dimensions, integer-valued polynomials, and the proper-class Boolean branching of the integral closure; twenty-four manuscripts; support thresholds, initial fixed-group bounds, all five set-sized models, their organizing theorem, the flat-ideal/Ext package, and finite-support cores through the lattice/dimension comparisons, tensor normal forms through common-scale matrices, and set-presentation obstructions through exact model relation counts, flat dimensions, coefficient-Tor ranks, rank-two moduli, endomorphism orders, tail-annihilated modules and face telescopes through nonvanishing and exact projective dimensions, and derived algebra through framed reconstruction and the constant-term shadow reviewed; all 30 standard polyhedral results and their ten question/status notes reviewed; with fixed coefficients and rational space, every strict enlargement of full-dimensional pointed rational polyhedral cones is nonflat, even when old ray-pair tests pass; the simplicial projective formula requires a proper face; the universal module assertion retains its lower-universe size bound; noncoherence and the stronger global-dimension bounds require a coefficient-field restriction; the coefficient-field rank-one core has weak global dimension one; a large quotient may still have small images; internal-field proofs reviewed through compression and transfer to residue fraction fields, including the proper field image with its exact support description and agreement on overlaps; binomial kernels and dyadic algebras reviewed, with an explicit idempotent outside every dyadic stage; class-residue foundations reviewed through maximal extensions and coefficient comparison, with the global-choice equivalence already for class domains of characteristic two; monomial cutoff, tail reduction and scale/branch families reviewed, with continuum many maximal extensions of each fixed dyadic branch; separation, field realization and support-prime classification pending |
-| [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Which strong automorphisms of a Hahn field preserve its omnific integers: the convex-support criterion, stabilizers, nondefinable monomials, and polynomial coefficient rigidity; fifteen integrated manuscripts; later parts claim automatic strongness, coefficient recovery, formal orbit fields, left-orderable symmetry groups and integration of derivations, pending independent review |
+| [Omnific-preserving automorphisms](surreal/omnific-preserving-automorphisms/) | Which strong automorphisms of a Hahn field preserve its omnific integers: the convex-support criterion, stabilizers, nondefinable monomials, and polynomial coefficient rigidity; fifteen integrated manuscripts; later parts claim automatic strongness, coefficient recovery, formal orbit fields, left-orderable symmetry groups and integration of derivations, pending independent review; a false reason in Section 27.2 corrected in `f06e67d10` |
 | [Omnific groups and lattices](surreal/omnific-groups-and-lattices/) | Algebraic groups with no new omnific points; `SL_n(ℤ)` as the universal set-sized quotient of `E_n(Oz)` for `n ≥ 3`, but none in rank two; shortest vectors and missing infima in omnific lattices; five manuscripts |
 | [Omnific continued fractions](surreal/omnific-continued-fractions/) | Exact digit fibers as translates of a valuation ideal, full Hahn realizations and periodic algebraic fibers; ordinary finite indices only; proof review pending |
-| [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | A proposed affirmative answer to Ehrlich–Kaplan's question (JSL Question 9.1): every discrete initial subgroup of `No` is isomorphic to an initial subgroup of `Oz`; convex subquotients of initial groups are initially realizable; two manuscripts |
+| [Discrete initial subgroups and omnific normalization](surreal/discrete-initial-subgroups-and-omnific-normalization/) | A proposed affirmative answer to Ehrlich–Kaplan's question (JSL Question 9.1): every discrete initial subgroup of `No` is isomorphic to an initial subgroup of `Oz`; convex subquotients of initial groups are initially realizable; three manuscripts; source 03 (batch 86): a bounded dyadic definition of `ℕ`, and nonstandard models of `IΔ0` have no initially realizable additive group (open induction does not suffice) |
 | [Independent surreal copies](surreal/independent-surreal-copies/) | Prescribed common Hahn cores, surreal self-embeddings, transcendence gaps and maximal transcendence of Hahn joins; three manuscripts; class assumptions and proof review pending |
+| [Self-embeddings of the surreal numbers](surreal/surreal-self-embeddings/) | Order, simplicity, field, valuation and exponential self-embeddings of `No`: simplicity-initial images are onto, Hahn lifts and weighted monomial classification, a proper cofinal embedding and a nonidentity automorphism fixing any set with all reals and ordinals, continuity iff cofinality, exponential rigidity under cofinality; conditional elementary, large-cardinal and omega-series results marked; six manuscripts; proof review pending |
 
 The two birthday reports have different domains. The first allows its specified
 ordinal supports but excludes positive powers of `ω`; the Laurent report allows
@@ -396,7 +437,7 @@ soft-mode Schur defects, optimal identification of an infinitesimal holonomy,
 and Hahn deformations of gauge fields. It claims no departure from ordinary
 quantum theory and no measurable infinitesimal.
 
-## Foundations and computation: ten reports
+## Foundations and computation: eleven reports
 
 | Report | Main subject |
 |---|---|
@@ -409,7 +450,8 @@ quantum theory and no measurable infinitesimal.
 | [Birthday cutoffs and hereditary sets](foundations-and-computation/birthday-cutoffs-and-hereditary-sets/) | Surreals born below an epsilon number, with birthday, interpret `H_κ`: bi-interpretation, elementary inclusions, axiom spectra, outer models, orientation |
 | [Critical-point defects](foundations-and-computation/large-cardinal-embeddings-and-normal-forms/) | Four manuscripts on the claimed exact support threshold for two transports, defect coefficients, and descent to the target model; proof review pending |
 | [Exponential relations over omnific integers](foundations-and-computation/exponential-relations-over-omnific-integers/) | Toric relations and a decidable additive language with algebraic exponential predicates; elementary cores and computability boundaries; proof review pending |
-| [Surreal well-orders](foundations-and-computation/surreal-well-orders/) | Lexicographic orders of the well-orders of `No`: set cutoffs with the singular `κ·κ` transition, set-length words, choiceless GB ⇔ global choice, direct comparison and adjacency of all class well-orders, a bounded-support core ≅ `No` interpolating set-indexed cuts, diagonal non-coding, inaccessible and KM models; four manuscripts; the set-sized layer re-proves the reals report; proof review pending |
+| [Surreal well-orders](foundations-and-computation/surreal-well-orders/) | Lexicographic orders of the well-orders of `No`: set cutoffs with the singular `κ·κ` transition, set-length words, choiceless GB ⇔ global choice, direct comparison and adjacency of all class well-orders, a bounded-support core ≅ `No` interpolating set-indexed cuts, diagonal non-coding, inaccessible and KM models; twenty-two manuscripts (Parts VI–XIV from batches 81 and 83: strata, gap spectra and topology, termination types, cuts of the core, block decompositions and condensation histories); the set-sized layer re-proves the reals report; proof review pending |
+| [Polish models of omnific arithmetic](foundations-and-computation/polish-models-of-omnific-arithmetic/) | Glazer's Question 2 answered affirmatively as printed: the cone of `ℝ ×→ ℤ` is an uncountable locally compact Polish model of Presburger arithmetic with continuous addition, embedded additively in `Oz`; Borel presentations of Hahn fields exist exactly for scattered supports, and no Polish recoding of the finite principal-part ring makes addition continuous; continuous Presburger arithmetic and a Polish semiring cone failing open induction (Part III), local compactness forcing countability (Part IV), Polish Hahn, Puiseux and Levi-Civita fields (Part V); seven manuscripts; proof review pending |
 
 A mathematical closure theorem need not supply a uniform algorithm on the
 chosen names. In particular, numerical coefficient access does not supply a

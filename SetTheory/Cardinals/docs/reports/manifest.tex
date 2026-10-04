@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 180 independent mathematical research packages}}
+  pdfsubject={Catalogue of 189 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,7 +53,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and eighty independent mathematical research packages,\\
+  {\large One hundred and eighty-nine independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 3 October 2026}
@@ -63,18 +63,22 @@
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and eighty research packages stored
+This document catalogues the one hundred and eighty-nine research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other seventy-eight came through ProveIt's incoming-reports procedure
+other eighty-seven came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
 batch~72, sixteen in batch~73, two in batch~74, three in batch~75, two in
-batch~76, thirty-four in batch~77, three in batch~78 and two in
-batch~79 --- whose archives remain in the repository's history.  Later batches
+batch~76, thirty-four in batch~77, three in batch~78, two in
+batch~79, two in batch~82, one in batch~83, five in batch~85 and one in
+batch~86 --- whose archives remain in the repository's history.  Later batches
 also extended existing reports; their entries name the batch.  Batch~80
 opened no report here: it extended one report and replaced the programs of
-three Parts by corrected code editions.
+three Parts by corrected code editions.  Batches~81 and~84 brought
+nothing here; their manuscripts, like part of batches~83 and~86, went to
+the surreal-number collection, and one batch-85 manuscript went to
+\dir{Analysis/Transseries}.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
 were unified, and the finite-height transfinite-word report was integrated
@@ -151,7 +155,7 @@ original archive names are recorded with every entry.
 \toprule
 \textbf{Category} & \textbf{Subcategory} & \textbf{Reports}\\
 \midrule
-\dir{enumerative-combinatorics} & --- & 25\\
+\dir{enumerative-combinatorics} & --- & 26\\
 \midrule
 \dir{ordinals-and-order-types} & \dir{ordinal-arithmetic} & 3\\
  & \dir{wqo-powersets-and-statures} & 4\\
@@ -160,7 +164,7 @@ original archive names are recorded with every entry.
  & \dir{transfinite-words} & 1\\
  & (top level) & 6\\
 \midrule
-\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 59\\
+\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 64\\
  & \dir{binary-product-coefficient-counts} & 3\\
  & (top level) & 5\\
 \midrule
@@ -187,9 +191,9 @@ original archive names are recorded with every entry.
 \midrule
 \dir{galois-theory-and-radicals} & --- & 2\\
 \midrule
-\dir{hilbert-tenth-problem} & --- & 9\\
+\dir{hilbert-tenth-problem} & --- & 12\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{180}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{189}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1109,7 +1113,7 @@ route.}
 
 \entry{Integrality of the Brent--Glasser--Guttmann asymptotic coefficients}
 {congruences-and-valuations/a321941-asymptotic-coefficient-integrality}
-{article.pdf}{batch~73: A321941\_Arithmetic\_Conjectures.zip}
+{article.pdf}{batch~73: A321941\_Arithmetic\_Conjectures.zip; batch~86: oeis\_research\_bundle.zip (its Part~I; its Part~II is Part~V of \dir{a088714-bell-scale-growth})}
 {Brent, Glasser and Guttmann introduced rational coefficients $d_k$ in the
 all-orders asymptotic expansion of a Hadamard product involving the
 exponential integral, conjectured that $r_k=64^kd_k$ (OEIS A321941) is always
@@ -1121,7 +1125,14 @@ a coefficientwise congruence modulo~32.  Consequences: the scale~64 is
 minimal, denominator bounds are sharp at infinitely many indices and exact
 when the index has at most four binary ones, and the inverse expansion has
 no denominator primes other than~3.  The analytic expansion itself is the
-published theorem; the negativity conjecture stays open.}
+published theorem.  Part~II, added in batch~86 from part of a two-subject
+manuscript, proves the negativity conjecture $r_k<0$ for every $k\ge3$
+through an exact radial-oscillator heat kernel, with a majorant bound for
+$k\ge32$ and an exact certificate below; shows that Part~I's constant edge
+$P_k(0)$ is the leading scale, $r_k\sim-16^k(k!)^2/(\pi^{3/2}k^{3/2})$, with
+a complete expansion in $1/k$; and finds a logarithmic singularity at~16 of
+the order-two Borel transform $\sum d_ks^k/(2k)!$, radially only, so its
+continuation stays open.}
 
 \entry{When the Secant Numbers Become Periodic}
 {congruences-and-valuations/secant-number-periodicity}
@@ -1975,6 +1986,25 @@ bottom-level valleys, a terminal-component law and the asymptotics of the
 pole accumulation.  Whether the real poles exhaust the spectrum is left
 open.}
 
+\entry{Bridgeless toroidal maps}
+{enumerative-combinatorics/a343093-bridgeless-toroidal-maps}
+{article.pdf}{batch~86: oeis\_advances.zip (its Section~2)}
+{Proves Peter Bala's posted conjecture for OEIS A343093, the rooted
+bridgeless maps on the torus with $n$ edges:
+$\sum_{n\ge2}b_nt^n=\bigl(\tfrac14\sum_{n\ge1}\binom{4n}{n}t^n\bigr)^2$,
+equivalently $U^2/(1-3U)^2$ with $U=t(1+U)^4$, from a bridge decomposition
+with the root accounted for (a re-proof of Courtiel--Yeats--Zeilberger's)
+and Bender--Canfield--Robinson's genus-zero and genus-one series.  Also two
+positive finite formulas (the numbers count ordered pairs of binary words;
+no bijection with maps is claimed), an algebraic equation of degree four,
+and $b_n=(256/27)^n[1/24-7\sqrt6/(216\sqrt{\pi n})+O(n^{-3/2})]$ with the
+$n^{-3/2}$ term.  The manuscript's other two subjects are Part~IV of
+\dir{a088714-bell-scale-growth} and Part~II of
+\dir{a301981-unitary-divisor-partitions}; its statement that the Bell
+normalization of A088714 remains open is contradicted by another manuscript
+of the same batch.  A bounded search is not a priority claim, and nothing
+was submitted to OEIS.}
+
 \section{Generating functions and asymptotics}
 
 \subsection{Coefficient counts of binary products}
@@ -2028,7 +2058,7 @@ Conjecture~6.2 and the asymptotic analysis.}}
 
 \subsection{Single-sequence OEIS studies}
 
-Fifty-nine reports on the growth or the closed form of a single OEIS sequence.  One
+Sixty-four reports on the growth or the closed form of a single OEIS sequence.  One
 article counts the terms in the derivatives of three power towers --- $x^{x^x}$,
 $x^{x^2}$ and $x^x$ --- whose three parts reach three different answers by three
 different recurrences, and two reports added in batch~72 sit beside it: one
@@ -2037,8 +2067,8 @@ for $x^x$ and $x^{x^2}$, and the other studies the $x^{x^2}$ coefficients at
 unbounded logarithmic deficit.  Two more reports share a Bell-scale
 saddle-point method on unrelated sequences.  Shared technique is not shared
 theorem, and none of these duplicates another.  Thirteen reports came in
-batch~73, one in batch~74, one in batch~75 and thirty-three in batch~77;
-they are the last forty-eight entries below, the batch-77 ones grouped by
+batch~73, one in batch~74, one in batch~75, thirty-three in batch~77 and
+five in batch~85; they are the last fifty-three entries below, the batch-77 ones grouped by
 the cluster that placed them (ascent sequences; iterated Bell numbers,
 cone walks and divisor weights; trees and networks; words, permutations,
 partitions and placements; moments, renewals and moving parameters).  Four
@@ -2057,7 +2087,11 @@ partition reports of batches~73--74 (A022629, A033552, A097356, A238016)
 study different products in different saddle regimes and share no
 proposition, nor do the batch-77 partition reports (A174065, A291698,
 A292507, A301746, A301981), which share at most a method with them; the
-A189281 and A330266 reports share a method but no theorem.
+A189281 and A330266 reports share a method but no theorem.  The two
+batch-85 manuscripts on matrix compositions proved the same core theorems
+independently and are one report, printed in one notation with a
+dictionary; batches~85 and~86 also added Parts to the A189281, A000571,
+A088714 and A301981 reports.
 Many of these manuscripts invert their asymptotics by Lambert~$W$ and
 rounding; those steps are instances of the inversion theorems of the
 transseries volume in \dir{Analysis/Transseries}, which the reports cite
@@ -2065,7 +2099,7 @@ rather than claim.
 
 \entry{Bell-scale growth of OEIS A088714}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth}
-{article.pdf}{A088714\_asymptotic\_growth.zip; batch~73: golden\_moment\_laws.zip; batch~76: A088714\_Bell\_Local\_Estimates.zip}
+{article.pdf}{A088714\_asymptotic\_growth.zip; batch~73: golden\_moment\_laws.zip; batch~76: A088714\_Bell\_Local\_Estimates.zip; batch~86: oeis\_advances.zip (its Sections 3--6), oeis\_research\_bundle.zip (its Part~II)}
 {For the unique formal series with $A(x)=1+xA(x)^2A(xA(x))$, proves
 $\log a_n=n\log n-n\log\log n-n+O(n\log\log n/\log n)$, so
 $(e\log n/n)\,a_n^{1/n}\to1$ and the ordinary generating function has radius of
@@ -2079,7 +2113,7 @@ companion A088713 as moment sequences: determinate moment measures, strict
 Hankel positivity, golden-ratio endpoint laws with exponents
 $(3-\sqrt5)/2$ and $(\sqrt5-1)/2$, the ratio law
 $a_{n+1}/a_n\sim n/\log n$ and the far tail.  Its re-proof of Part~I's
-theorem is replaced by a pointer; the finer Bell conjecture stays open.
+theorem is replaced by a pointer; the finer Bell conjecture stayed open there.
 Part~III, added in batch~76 from a continuation manuscript: Part~I's formal
 endpoint coefficient expansion, proved uniformly for $m\le C\log n$; the
 one-sided correction $\liminf(r_n-n/W(n))\ge3/2$ for $r_n=a_n/a_{n-1}$
@@ -2088,8 +2122,25 @@ one scalar defect estimate $E_n=O(W(n)^q/n^2)$, sufficient and in some form
 necessary, with a tilted-variance criterion, the complementary-endpoint
 bound $5/(r_nr_{n-1})$ and exact numerics to $n=1600$.  Its re-derivation
 of Part~I's summability step is a pointer; $W(n)$ enters only as the Bell
-saddle of the transseries volume, which it cites; the conjecture and its
-constant stay open.}
+saddle of the transseries volume, which it cites.  Parts~IV and~V, added in
+batch~86 from two manuscripts whose other subjects are the new report
+\dir{a343093-bridgeless-toroidal-maps} and Parts~II of the A301981 and
+A321941 reports.  Part~IV: both moment
+measures have strictly positive real-analytic densities on $(0,\infty)$
+with full support and exact density and derivative equivalents at zero;
+the correction to $F(s)\sim s^{-\alpha}$ is a nonzero real-analytic
+antiperiodic profile in $\log_\varphi\log s$, certified nonzero by an
+interval computation, with a convergent expansion in $1/\log s$; and every
+fixed-shift expansion $c_n=\sum_{j\le K}\gamma_ja_{n-1-j}+O(a_{n-K-2})$ of
+the companion A088713.  Part~V: the complementary endpoint to every fixed
+order, which proves Part~III's missing estimate; bounded factors and
+$r_n=n/W(n)+O(1)$; and the finer Bell conjecture (Conjecture~8.1),
+$a_n=C_*\mathcal N_n(1+O(W(n)^5/n))$ with $0<C_*<\infty$ unidentified, so
+$a_n\sim C_*B_ne^{W(n)^2+3W(n)}$ --- proved there, not yet independently
+reviewed (the other batch-86 manuscript still calls it open).  Its proof
+of the companion expansion is a second route to Part~IV's, and its
+normalization of $c_n$ by the same $C_*$ is new.  Part~I's pointwise ratio
+expansion (8.7) stays open.}
 
 \entry{The exponential growth constant of OEIS A158415}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a158415-growth-constant}
@@ -2501,20 +2552,29 @@ ratio and local derivations are kept as second proofs.}
 
 \entry{Unconditional all-orders asymptotics for two OEIS permutation sequences}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a189281-path-forest-expansions}
-{article.pdf}{batch~73: oeis\_path\_forests.zip; batch~74: ProveIt\_Fixed\_Gap\_Asymptotics.zip}
+{article.pdf}{batch~73: oeis\_path\_forests.zip; batch~74: ProveIt\_Fixed\_Gap\_Asymptotics.zip; batch~85: OEIS\_Rational\_Collapse\_and\_Integrality.zip}
 {OEIS A189281 and A110128 count permutations avoiding a prescribed signed
 or absolute difference between entries two positions apart.  Proves the
 displayed higher expansions without the conjectured recurrences, through a
 stabilization theorem for tilings of long path forests: for any fixed
 offsets the violation count has an all-orders expansion $e^{\theta u}$ times
 polynomials, with a finite exact formula for every coefficient, extended
-through order sixteen.  The recurrences and the integrality suggested by
-A189281 are not claimed; a rational-function conjecture is proposed.
+through order sixteen.  The conjectured recurrences are not claimed;
+Part~I proposes a rational-function conjecture, which Part~III proves.
 Part~II, added in batch~74 from a manuscript that re-derives Part~I's
 theorems independently (its coefficients through order twelve agree and are
 printed only as a check), adds shape-uniform remainders, comparison bounds
 with an $n=12$ example, a closed $c_3(r,s)$ and integrality for oriented
-one-path families.}
+one-path families.  Part~III, added in batch~85, proves that conjecture for
+every order as the case $(2,2)$ of a closed form, valid for every pair of
+directed offsets, of the stable moments (via a single-sum moment formula),
+and deduces that every oriented correction polynomial has integer
+coefficients, with an exact degree law; it adds an inverse-factorial
+${}_2F_0$ kernel, an entire Borel transform of the coefficients (no
+summability claim), A189282--A189284 through $n^{-6}$ and certificates at
+$n=64,128,256$.  Its special cases of Part~II's one-path results are
+credited to Part~II.  The absolute case and the guessed order-8 recurrence
+of A189281 are not covered.}
 
 \entry{Two Fourier peaks and a moving lattice maximum}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a039831-two-fourier-peaks}
@@ -2919,7 +2979,7 @@ Haigh--Kennedy--Quintas (1984) were not read in full.}
 
 \entry{Tournament score sequences and weighted component asymptotics}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a000571-tournament-score-sequences}
-{article.pdf}{batch~77: tournament-score-sequences-source.zip}
+{article.pdf}{batch~77: tournament-score-sequences-source.zip; batch~85: tournament\_coexistence\_research.zip (Part~II)}
 {Refines Kolesnik's leading asymptotics for the score sequences of
 tournaments (OEIS A000571) and of strong tournaments (A351822), from the
 generating function $\exp A(z)$ of
@@ -2932,10 +2992,22 @@ weights; at the critical weight an expansion in $n^{-1/2}$ with no $n^{-1}$
 term; uniformly on a logarithmic window above it a half-power expansion
 with Kummer-function coefficients; and at
 $\tau=\tfrac12\log n+2\log\log n+\log(\mu\sqrt\pi/2)+s$ a coexistence
-profile proportional to $1+e^{-s}$, which is not claimed to be a mixture
-law.  Inverses of specified models are instances of the transseries
-volume.  Nothing is claimed for $\tau<0$ or for growing orders, and the
-renewal mechanisms are credited to Blanchet and Glynn.}
+profile proportional to $1+e^{-s}$.  Inverses of specified models are
+instances of the transseries volume.  Nothing is claimed for $\tau<0$ or
+for growing orders, and the renewal mechanisms are credited to Blanchet
+and Glynn.  Part~II (batch~85) answers the report's first open question,
+uniformly for $s$ in compact sets: at that weight the score sequence is asymptotically a logistic mixture,
+with probability $1/(1+e^{-s})$ of one block of size $n-O_P(n/\log n)$
+(residual strings within total variation $O(1/\log n)$ of two geometric
+renewal strings, Gamma$(2,1)$ count and deficit, stable residual
+fluctuations, a mixed Fr\'echet second maximum, every fixed
+inverse-logarithmic correction) and otherwise $n/a_c+O_P(n^{2/3})$ blocks
+with a $3/2$-stable count and a Fr\'echet largest block; the giant
+probability converges at rate $O(1/\log n)$ around a Lambert-$W_{-1}$
+centre, an instance of the transseries volume.  Its coefficient input
+re-proves Part~I's coexistence theorem (printed as a note); the
+Gibbs-partition and big-jump mechanisms are credited to Stufler and
+others.}
 
 \entry{Fixed forbidden distances in involutions}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a239144-forbidden-distance-involutions}
@@ -3048,7 +3120,7 @@ concerns other objects and is not answered.}
 
 \entry{Unitary divisor sum colored partitions and their asymptotics}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301981-unitary-divisor-partitions}
-{article.pdf}{batch~77: unitary-partition-report.zip}
+{article.pdf}{batch~77: unitary-partition-report.zip; batch~86: oeis\_advances.zip (its Section~7)}
 {For the products $\prod(1-z^m)^{-\sigma^*(m)}$ (OEIS A301981) and
 $\prod(1+z^m)^{\sigma^*(m)}$ (A301982), $\sigma^*$ the unitary divisor sum,
 proves that the stretched-exponential equivalents conjectured in both OEIS
@@ -3064,9 +3136,17 @@ equivalent to the Riemann hypothesis, which is neither proved nor
 disproved.  Also a corrected equivalent at the explicit point
 $(2A/n)^{1/3}$ (without a rate), all-fixed-order exact-saddle and
 off-center Hermite expansions, and two-ceiling threshold brackets whose
-integer step is an instance of the transseries volume.  Which one-sided
-divergence occurs stays open.  The refutation concerns OEIS text, not a
-repository claim, and no OEIS submission is implied.}
+integer step is an instance of the transseries volume.  Part~I left open
+which one-sided divergence occurs; Part~II (batch~86, from one section of
+a three-subject manuscript) proves that both do: by Landau's positivity
+principle with the surviving pole's order $m$ and leading Laurent
+coefficient, the ratio to the refuted model has $\liminf a_n/m_n=0$ and $\limsup a_n/m_n=\infty$ for both
+products, with $\log(a_n/m_n)$ beyond $\pm K_\pm n^{\sigma_*/3}(\log n)^{m-1}$
+infinitely often, hence $\Omega_\pm(n^{1/4})$ (exact under the Riemann
+hypothesis, with Part~I), without the Riemann hypothesis or simple zeros;
+the inverse of the pure model errs by $\Omega_\pm((\log y)^{7/8})$.  The
+refutation concerns OEIS text, not a repository claim, and no OEIS
+submission is implied.}
 
 \entry{Log-periodic factors in radix-layer partition asymptotics}
 {generating-functions-and-asymptotics/oeis-sequence-asymptotics/a174065-radix-layer-partitions}
@@ -3279,6 +3359,114 @@ with no novelty claimed.  The onset is slow: at $n=20{,}000$ the principal
 term for $\alpha=2$ is still off by about $5.6\%$.  The sector count and
 depth are fixed; no growing-sector theorem, convergence or explicit
 constants are claimed, nor priority, and four questions stay open.}
+
+\entry{Gamma constants and scaling limits for rounding extinction}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a082528-rounding-extinction}
+{article.pdf}{batch~85: Rounding\_Extinction\_OEIS.zip}
+{Starting from $x_1=n$ and rounding down to a multiple of $k^m$ at stages
+$k=2,3,\ldots$, the first zero satisfies
+$\tau_m(n)\sim(c_mn)^{1/(m+1)}$ with $c_m=m\Gamma(m/(m+1))^{m+1}$ for every
+real $m>0$: Cloitre's conjecture in OEIS A082528, with the constants
+$2\Gamma(2/3)^3$ and $3\Gamma(3/4)^4$ conjectured numerically for A082527
+and A082528.  The case $m=1$ ($c_1=\pi$, the Tchoukaillon sieve A002491)
+is Erd\H{o}s and Jabotinsky's and is credited, not claimed.  Also the
+uniform limit of the whole extinction trajectory, the same law for weights
+with $k(w_k/w_{k-1}-1)\to m$, rational product certificates for $c_m$, the
+limiting distribution of rounding losses, the dependence on $m$, and a
+block construction showing that regular variation alone does not fix the
+constant.  No error term (the $O(1)$ recorded in A073047 is not proved), no
+rate, nothing uniform in a moving $m$; Appendix~B is an OEIS update draft
+that was not posted, and the OEIS terms the package uses are
+CC~BY-SA~4.0 data.}
+
+\entry{Matrix compositions: exact spectra, Hankel products and uniform asymptotics}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a261781-matrix-compositions}
+{article.pdf}{batch~85: Matrix\_Compositions\_Uniform\_Asymptotics.zip (base) + OEIS\_Matrix\_Compositions\_Research.zip}
+{For matrix compositions with $k$ rows (OEIS A261780, A261781) and the
+diagonal A261784, Part~I proves, for every column weight $u>0$, that the
+reduced denominator of column $k$ is $\prod_{j\le k}((1+u)(1-z)^j-u)$, so the
+minimal eventual constant-coefficient recurrence has order exactly
+$k(k+1)/2$; the recurrence itself, with that denominator, is Munarini,
+Poneti and Rinaldi's (2009), and only minimality is new, which narrows one
+manuscript's claim to prove both posted conjectures.  Also the maximal
+Hankel determinants as explicit products in $\mathbb Z[u]$ with their other
+zeros on $\Re u=-1/2$; a pole bound uniform in $n$ and $k$; the coverage
+window $n=k(\log k+s)$ with the sharp total-variation rate and a joint
+Gaussian--Poisson law of column and zero-row counts; uniform saddle
+expansions to every order on compact rays $n/k\in K\Subset(1,\infty)$, with
+the closed amplitude and two corrections for A261784; and a
+prescribed-column threshold.  Part~II, at $u=1$, adds strict monotonicity of
+the growth-constant increments, every fixed order of the coverage
+probability, the entire Stirling kernel, the Poisson law of a Stirling
+defect, a third diagonal correction and a Lambert-$W$ index inversion with
+integer brackets, an instance of the transseries volume.  The two
+manuscripts proved the same core theorems independently and permute their
+Greek letters, so the second is printed in the first's notation with a
+dictionary, its re-proofs tabulated.  The Fubini pole and the positive
+Stirling transform are those of \dir{a260700-parabolic-double-cosets}; the
+only formalized ingredient is the Fubini generating function in the Lean
+\dir{Analysis/FabiusFunction} tree.  No uniform statement for $T(n,k)$, no
+$n/k\to1$, no exponentially small sectors; OEIS fixtures are
+CC~BY-SA~4.0 and the OEIS draft is not submitted.}
+
+\entry{The source boundary of extensional acyclic digraphs}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a182220-source-boundary}
+{article.pdf}{batch~85: OEIS\_A182220\_Source\_Boundary\_Research.zip}
+{An extensional acyclic digraph on $n$ vertices has at most
+$n-\lceil\log_2n\rceil$ sources, and every smaller positive count occurs:
+the formula still labelled conjectural in OEIS A182220, whose upper half is
+Tomescu's (2011, credited).  The extremal classes are classified, so the
+boundary diagonals $b_n^{(d)}=u(n,n-\lceil\log_2n\rceil-d)$ of A182162 have
+$b_n^{(0)}=u_q\binom{2^q-q}{n-q}$ ($u_m=$ A001192$(m)$) and exact
+$(d+1)$-term formulas; a uniform covering bound gives a dyadic entropy law,
+the subsequential growth rates fill $[e^{\lambda_d},e^{\lambda_{d+1}}]$
+($[1,4]$ for $d=0$), and the jumps at powers of two make every $b^{(d)}$ and
+$n!\,b^{(d)}$ non-P-recursive, a counterpart of a lemma of
+\dir{a003407-dyadic-scaling-rigidity}.  Also an all-orders expansion with
+$u_m$ kept exact and a total-variation binomial law for arc deficits.  The
+source sieve and the collapse to transitive sets are known; no priority,
+no natural-boundary claim for the diagonal series, no formal proof; the
+OEIS-facing appendix is an unsubmitted draft, and the code's OEIS fixtures
+are CC~BY-SA~4.0 data.}
+
+\entry{Finite Fredholm truncation for long increasing subsequences}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a047874-long-increasing-subsequences}
+{article.pdf}{batch~85: LIS\_fixed\_sector\_research\_package.zip}
+{For the permutations of $N$ letters with longest increasing subsequence of
+length exactly $k$ (OEIS A047874) or at least $k$ (A214152), truncating a
+Bonferroni expansion over shifted rows of the Robinson--Schensted shape at
+$R$ terms gives globally holonomic arrays that agree with the true ones for
+$N<(R+1)(k+R)$, a cutoff shown sharp, so both arrays are D-finite in every
+fixed sector $N\le rk$: the sector question that Kauers and Wang
+(arXiv:2609.02220) raise informally, whose case $r=2$ is their theorem.
+Hence P-recursiveness along every rational ray; single sums when
+$N\le2k+1$; a uniform all-orders expansion of the tail on compact ranges
+of $(N-k)/k$, with polynomial coefficients; and five correction terms for
+A269021 (whose leading term is Kot\v{e}\v{s}ovec's) and three for A267433.
+The holonomic-closure step is flagged for independent review; the guessed
+operators of the one-third sector, minimal orders and global
+holonomicity are not claimed, and the discrete Bessel kernel and
+holonomic summation are imported.  Not formalized; OEIS fixtures are
+CC~BY-SA~4.0 data.}
+
+\entry{Fixed-height shifted rectangles}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a181199-shifted-rectangles}
+{article.pdf}{batch~85: Shifted\_Rectangle\_Asymptotics.zip}
+{For $T_m(n)$, the $m\times n$ arrays of $1,\ldots,mn$ increasing along
+rows, columns, diagonals and downward antidiagonals (OEIS A181196; $m=5$ is
+A181199), proves an all-orders expansion at every fixed height $m$ with
+rational coefficients from a finite moment formula, via a random-threshold
+cut and a Gaussian--Vandermonde ensemble; for $m=5$ this is Kot\v{e}\v{s}ovec's
+conjectured $T_5(n)\sim9\cdot5^{5n+1/2}/(2^{17}\pi^2n^{12})$, proved without
+the guessed recurrence, with five corrections.  The generating function is
+algebraic exactly for $m=1,2$.  Also the ratio to ordinary rectangular
+standard Young tableaux, $2^{-m(m-1)}(1+m(m^2-1)/(4n)+\cdots)$, whose
+normalizer is the transseries volume's rectangle-tableau asymptotic; GUE-type
+limit laws for the intermediate row lengths; eventual monotonicity and
+log-convexity; and a $W_{-1}$ inversion, an instance of the transseries
+volume.  Neither guessed recurrence (A181198, A181199) is proved;
+nonalgebraic is not non-D-finite; the shifted hook formula and Sun's
+order-polytope reading are credited; the OEIS draft is not submitted.}
 
 \subsection{Asymptotics, records and discrepancy}
 
@@ -3509,7 +3697,7 @@ the constant matching resolvent.}
 
 \section{Hilbert's tenth problem}
 
-Nine reports on Diophantine representations of computation that control
+Twelve reports on Diophantine representations of computation that control
 their witnesses, beside the formal project
 \dir{Computability/HilbertTenthProblem}, which proves MRDP in both
 directions in Lean, the universal pair $(58,4)$ and the single-fold unary
@@ -3524,13 +3712,20 @@ of the older reports.  Batch~80 added Parts~V and~VI to the signal-machine
 report and replaced the programs of three batch-79 Parts (canonical
 certificates Part~XIX, quadratic orthant certificates Part~VI, signal
 machines Part~IV) by their authors' corrected code editions, whose
-manuscripts are unchanged.  None of the
+manuscripts are unchanged.  Batch~82 opened
+\dir{five-particle-binary-automata} and \dir{fixed-universal-polynomials},
+the latter on the programme's own fixed universal polynomial, and extended
+the signal-machine report (Parts~VI--VIII) and the group-substrate report
+(Part~V); batch~83 opened \dir{periodic-turmite-first-revisits} and added
+Part~XX to the canonical certificates and Part~V to the fixed universal
+polynomials.  The last three entries below are batch~82's and~83's new
+reports.  None of the
 reports' own theorems is formalized; each README names the project
 declarations it builds on or relates to.
 
 \entry{Canonical Diophantine certificates}
 {hilbert-tenth-problem/canonical-diophantine-certificates}
-{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip; batch~62: Names\_to\_Numbers\_Diophantine\_Heaps.zip, order\_free\_diophantine.zip, ProveIt\_Priority\_Pumping\_Diophantine.zip, one\_shared\_fallback\_research.zip; batch~63: Diophantine\_Certificates\_Without\_Histories.zip; batch~78: Exact\_Wiring\_Diophantine\_Report.zip, Topology\_Is\_Not\_Free\_Interaction\_Nets.zip, no\_ghost\_wires.zip, sandpile\_diophantine\_research.zip; batch~79: Positive\_Spectrum\_Diophantine.zip, Spectral\_Guards\_Without\_Time\_Expansion.zip, no\_borrowed\_firings.zip, Compressed\_Queue\_Diophantine\_Research.zip, Eager\_Tree\_Calculus\_Research\_Package.zip; batch~80 (corrected code edition of the last): Eager\_Tree\_Calculus\_Research\_Package\_corrected.zip}
+{article.pdf}{Diophantine\_Causal\_Computation.zip, canonical\_diophantine\_certificates.zip, ProveIt\_Linear\_Size\_Diophantine\_Certificates.zip, Witness\_Faithful\_Diophantine\_Compilation.zip, canonical\_trace\_polytopes.zip, diophantine\_counter\_programs.zip (batch~60); batch~61: Causal\_Diophantine\_Queue\_Compilation.zip; batch~62: Names\_to\_Numbers\_Diophantine\_Heaps.zip, order\_free\_diophantine.zip, ProveIt\_Priority\_Pumping\_Diophantine.zip, one\_shared\_fallback\_research.zip; batch~63: Diophantine\_Certificates\_Without\_Histories.zip; batch~78: Exact\_Wiring\_Diophantine\_Report.zip, Topology\_Is\_Not\_Free\_Interaction\_Nets.zip, no\_ghost\_wires.zip, sandpile\_diophantine\_research.zip; batch~79: Positive\_Spectrum\_Diophantine.zip, Spectral\_Guards\_Without\_Time\_Expansion.zip, no\_borrowed\_firings.zip, Compressed\_Queue\_Diophantine\_Research.zip, Eager\_Tree\_Calculus\_Research\_Package.zip; batch~80 (corrected code edition of the last): Eager\_Tree\_Calculus\_Research\_Package\_corrected.zip; batch~83: Literal\_Periodic\_Sandpiles\_and\_Diophantine\_Certificates\_Package.zip, Real\_Exactness\_of\_Binary\_Sandpile\_Certificates\_Package.zip}
 {Diophantine representations that control their witnesses, not only their
 existence.  For Petri nets and interval-guarded translations, a convex
 quadratic integer polynomial whose natural zeros are in bijection with the
@@ -3625,7 +3820,19 @@ is charged by 175 quadratic equations and never materialized.  Since
 batch~80 Part~XIX ships its authors' corrected code edition, whose
 evaluator rejects non-exact or negative codes before any state change, the
 repair proposed by the Hilbert's-tenth research tree's review; its
-manuscript is unchanged.  Merged from twenty-one manuscripts; not a Lean
+manuscript is unchanged.  Part~XX (batch~83, from two manuscripts, the
+pipeline's Reports~35 and~36) delivers the universal periodic input loader
+that Part~XVI asks for: one explicit stable periodic background on
+$\mathbb Z^3$ and a finite loader for every finite two-sided binary tape of
+the Neary--Woods machine $U_{15,2}$, with finite total activity exactly when
+the machine halts, and finite binary prism certificates whose natural zeros
+are the canonical odometers (a re-derivation of Part~XVI's certificate,
+marked as such); replacing a product $fg$ by $f(g+k+c)$ makes every
+nonnegative real zero natural, with the same summand count, degree, support
+and coefficient height, by an argument different from the real gates of
+\dir{quadratic-orthant-certificates}, which it credits.  The research tree's
+review is printed with its findings, among them a real-algebraic limit on
+fixed-arity compression.  Merged from twenty-three manuscripts; not a Lean
 formalization.}
 
 \entry{Diophantine laws of probabilistic, quantum and continuous computation}
@@ -3711,7 +3918,7 @@ formalization.}
 
 \entry{Groups as Diophantine substrates}
 {hilbert-tenth-problem/group-theoretic-substrates}
-{article.pdf}{batch~76: arithmetic\_van\_kampen.zip + three\_commutative\_phases\_research.zip; batch~78: Order\_Is\_Not\_a\_Moment.zip + ProveIt\_Affine\_Matrix\_Diophantine\_Research.zip}
+{article.pdf}{batch~76: arithmetic\_van\_kampen.zip + three\_commutative\_phases\_research.zip; batch~78: Order\_Is\_Not\_a\_Moment.zip + ProveIt\_Affine\_Matrix\_Diophantine\_Research.zip; batch~82: Universal\_Matrix\_Semigroup\_and\_Diophantine\_Certificates\_Package.zip}
 {Low-degree certificates for computation in groups, all through the integral
 Heisenberg group $\mathsf H$.  Part~I: with Sanov's chart (the free group of
 rank two as the integral points of $x+t+4xt-yz=0$), quartics whose zeros
@@ -3738,14 +3945,23 @@ $\mathrm{SL}_d(\mathbb Z)$ is finite (at most $d-1$ points) or exactly
 periodic, with sharp periods and no uniform algorithm; input degree two,
 via the repository's quadratic loader (reconstructed and attributed), is
 the least that loads a noncomputable c.e.\ set; and an affine abelian
-compiler into $\mathrm{SL}_{6g+2}(\mathbb Z)$.  Built from four manuscripts
-that share no theorem, the Heisenberg setup printed once; one Mihailova
-step is a second route to the probabilistic-quantum report's.  Not a Lean
-formalization.}
+compiler into $\mathrm{SL}_{6g+2}(\mathbb Z)$.  Part~V (batch~82, the
+pipeline's Report~32): one fixed positive semigroup of 229 literal
+$\mathrm{SL}_4(\mathbb Z)$ matrices whose membership simulates the
+Neary--Woods machine $U_{15,2}$ on finite tapes, hence r.e.-complete
+conditionally on that simulation chain, with a family of bounded-length
+sum-of-squares certificates, a 94-tile certificate and an exact fibre
+generating function; it answers Part~IV's question on a complete universal
+matrix certificate in part (positive semigroup, bounded length), re-derives
+the research tree's $U_{15}$ construction (credited) and prints its machine
+table a third time in the collection.  Built from five manuscripts that
+share no theorem but a classical Sanov lemma, the Heisenberg setup printed
+once; one Mihailova step is a second route to the probabilistic-quantum
+report's.  Not a Lean formalization.}
 
 \entry{Collision geometry is linear: Diophantine certificates for rational signal machines and conservative particle dynamics}
 {hilbert-tenth-problem/signal-machine-collision-certificates}
-{article.pdf}{batch~78: Collision\_Geometry\_Diophantine\_Signal\_Machines.zip + Signal\_Machine\_Diophantine\_Certificates.zip; batch~79: Conservative\_Signal\_Frontend\_Corrected.zip, Sparse\_Lattice\_Diophantine\_Certificates.zip; batch~80: Sparse\_Lattice\_Diophantine\_Certificates\_corrected.zip (corrected code edition), Three\_Mass\_Reversible\_Computation.zip + Exact\_Targets\_Three\_Mass\_Units.zip, Single\_Unit\_Three\_Mass\_Decidability~(1).zip + Four\_Mass\_Decidability\_Package.zip; superseded, not printed: Conservative\_Signal\_Diophantine\_Frontend.zip (batch~79), Single\_Unit\_Three\_Mass\_Decidability.zip (batch~80)}
+{article.pdf}{batch~78: Collision\_Geometry\_Diophantine\_Signal\_Machines.zip + Signal\_Machine\_Diophantine\_Certificates.zip; batch~79: Conservative\_Signal\_Frontend\_Corrected.zip, Sparse\_Lattice\_Diophantine\_Certificates.zip; batch~80: Sparse\_Lattice\_Diophantine\_Certificates\_corrected.zip (corrected code edition), Three\_Mass\_Reversible\_Computation.zip + Exact\_Targets\_Three\_Mass\_Units.zip, Single\_Unit\_Three\_Mass\_Decidability~(1).zip + Four\_Mass\_Decidability\_Package.zip; batch~82: Timed\_Four\_Mass\_Quartic\_Certificates.zip (Part~VI), Dimension\_Independent\_Particle\_Thresholds\_Package.zip + Sparse\_Orbit\_Geometry\_and\_Exact\_Counting\_Package.zip + Binary\_Planar\_Four\_Particle\_Shuttle\_Package.zip (Part~VII), Unbounded\_Compact\_Clean\_Clocks\_Package.zip + Canonical\_Histories\_and\_Infinite\_Fibers\_Package.zip (Part~VIII); superseded, not printed: Conservative\_Signal\_Diophantine\_Frontend.zip (batch~79), Single\_Unit\_Three\_Mass\_Decidability.zip (batch~80)}
 {A rational signal machine computes by collisions of finitely many kinds of
 particles moving at fixed rational speeds on a line.  Once a complete finite
 collision history is fixed, its realizations are exactly the natural zeros
@@ -3797,16 +4013,42 @@ first-target clock and a compact certificate.  Part~VI: with at most one
 weight-one symbol the timed relation at mass at most three is effectively
 Presburger, and exact reachability stays decidable at mass four, where a
 binary radius-six shuttle with hit times $k^2+(2d-11)k$ is not Presburger;
-so integer-state number-conserving automata need at least five particles.
+so integer-state number-conserving automata need at least five particles,
+and since batch~82 the binary five-particle upper bound of
+\dir{five-particle-binary-automata} makes five exact for binary rules.
+Batch~82 added a third source to Part~VI: for a fixed input of mass at most
+four, disjoint half-open charts and a quartic with exactly one natural
+witness tuple for each complete timed configuration (four witnesses and
+seven squares for the binary shuttle, exact even over the nonnegative
+reals).  Part~VII (batch~82, three manuscripts): with at most one
+weight-one symbol, exact and translated reachability and pattern occurrence
+are decidable from every input of mass at most four on $\mathbb Z^d$, for
+every $d$ and without reversibility (at $d=1$ a second proof of Part~VI's
+theorem); semilinear visited sets, eventually quasipolynomial box counts of
+sharp degree, quadratic clocks, the effect of drift and canonical
+first-visit quartics; and a binary radius-six planar shuttle with exact
+wedge and drift counts and a one-step quartic.  Its sharp four-versus-five
+boundary in every dimension is conditional on two Reports of the
+five-particle report.  Part~VIII (batch~82, two manuscripts): for four fixed
+nonuniversal three-mass sources, emitted horizon-free polynomials (about 480
+to 610 operations, exact degrees 2344 and 1192) with a positive zero
+exactly when the cleaned automaton first reaches its exact target; every
+accepted fibre is infinite, and after the outer height is made canonical
+the outer history is unique and projects bijectively onto an infinite
+native fibre, a theorem implied by Part~III of
+\dir{fixed-universal-polynomials}; both rest on inherited research-tree
+results.
 The three-mass manuscript re-proves Part~IV's mass-two theorem by the same
 argument (printed as a pointer), and the single-unit manuscript reruns
 Part~IV's semilinearity architecture one mass higher (marked step by step).  Four large packet and fixture files of Parts~III
-and~IV and five rule and certificate exports of Part~V (20.8\,MB) are
-regenerated rather than stored.  \emph{Parts~I and~II are two independent
-manuscripts proving one theorem by two routes, both printed in full;
-Parts~III and~IV come from two further manuscripts, and Parts~V and~VI
-from four more, each Part a manuscript and a companion built on it (a
-fifth archive is superseded by its attribution revision and not printed);}
+and~IV, five rule and certificate exports of Part~V (20.8\,MB) and the 70
+emitted circuit files of Part~VIII are regenerated rather than stored.
+\emph{Parts~I and~II are two independent manuscripts proving one theorem by
+two routes, both printed in full; Parts~III and~IV come from two further
+manuscripts, and Parts~V and~VI from four more, each Part a manuscript and
+a companion built on it (a fifth archive is superseded by its attribution
+revision and not printed); batch~82 added six more, a third source of
+Part~VI, three for Part~VII and two for Part~VIII;}
 not a Lean formalization.}
 
 \entry{Stochastic and thermal exactness: exact events in uniformly convergent systems}
@@ -3965,5 +4207,87 @@ credited; no finite-fold or single-fold MRDP theorem is claimed.  A dated
 note in \dir{probabilistic-quantum-and-continuous-computation} applies the
 finalizer to that report's Boolean-circuit quartics.  From one manuscript;
 not a Lean formalization.}
+
+\entry{Five-particle binary automata: reversible universality, a literal universal source, clocks, lazy evaluation and quartic certificates}
+{hilbert-tenth-problem/five-particle-binary-automata}
+{article.pdf}{batch~82: Reversible\_Binary\_Five\_Particle\_Package.zip (base), five-particle-binary-portable.zip, Literal\_Universal\_Reversible\_Source\_Package.zip, Reversible\_Startup\_Optimization\_Package.zip, Cellular\_Clock\_Domination\_Package.zip, Exact\_Lazy\_Reversible\_CA\_Evaluator\_Package.zip, Event\_Budgeted\_Quartic\_Certificates\_Package.zip, Two\_Parallel\_Conservative\_Involutions\_Package.zip, Sparse\_Parallel\_Particle\_Evaluation\_Package.zip, Canonical\_Parallel\_Quartic\_Certificates\_Package.zip}
+{Ten ``Research Reports'' (14--20, 26--28) of one pipeline, on one object,
+that continue the signal-machine report above.  Part~I: every
+finite partial-injective guarded two-counter machine compiles to a globally
+reversible, number-conserving binary cellular automaton of explicit radius
+with five-particle encodings and an anchored halt word, and every
+deterministic two-counter program to a binary conservative one; with that
+report's mass-four decidability, five is the exact particle threshold for
+binary and for globally reversible binary number-conserving automata
+(answering its threshold question), with fixed-horizon certificates of
+degree at most four and a literal instance from the 8{,}408-row source of
+\dir{quadratic-orthant-certificates}, whose source lemmas are re-derived
+(second presentation).  Part~II prints the universal reversible two-counter
+source that Part~I left existential (122{,}622 controls, 141{,}561 rows),
+with positive return and periodicity r.e.-complete on its clean family and
+quartic certificates.  Part~III: history-tag swaps that give empty startup
+in 138 source steps and first-encounter optimality among static
+orientations, lifted to the cellular clock.  Part~IV: a lazy evaluator equal
+on every finite support to the frozen ordered product of about
+$2.7\cdot10^{11}$ involutions.  Part~V: event-budgeted quartics with exactly
+one natural witness for a fixed source, mass, horizon and budget.
+Part~VI: two full-shift number-conserving involutions that agree with the
+ordered rule on admissible states, a sparse evaluator and fixed-horizon
+quartics for the new rule; their arithmetic layer re-proves lemmas of
+\dir{canonical-diophantine-certificates} and of the signal-machine report,
+credited.  No intrinsic universality, minimal radius, unbounded or
+fixed-arity representation, executed universal startup or novelty is
+claimed; the threshold corollaries rest on the signal-machine report's
+lower bound.  Heavy regenerable tables, sources and traces (over
+200\,MB) are rebuilt by the shipped code rather than stored.  The Hilbert's-tenth research tree
+reviewed seven of the ten Reports without finding a defect; not a Lean
+formalization.}
+
+\entry{Fixed universal polynomials: a literal Grill instance, exact degree laws, native witness fibers and index restoration}
+{hilbert-tenth-problem/fixed-universal-polynomials}
+{article.pdf}{batch~82: Fixed\_Universal\_Grill\_Polynomial\_Package~(1).zip (base), Native\_Grill\_Exact\_Degree\_Laws\_Package.zip, Entire\_Native\_Witness\_Fiber\_Package.zip, Failure\_of\_Positive\_Index\_Restoration\_Package.zip, Counterexample\_Height\_Expansions\_and\_Rotation\_Discrepancy\_Package.zip; batch~83: Exact\_Negative\_Index\_Obstruction\_for\_Positive\_Diophantine\_Interfaces\_Package.zip; superseded, not printed: Fixed\_Universal\_Grill\_Polynomial\_Package.zip (batch~82)}
+{Six ``Research Reports'' (23 revision~1, 24, 25, 33, 34, 37) on the
+Hilbert's-tenth programme's own fixed universal polynomial and its native
+arithmetic block, built on its research artifacts at pinned commits.
+Part~I: one literal 397{,}488-phase Grill program and a complete circuit of
+3{,}600{,}546 operations with 797{,}135 positive witnesses, whose language
+theorem is conditional on pinned imports and whose exact total degree
+69{,}339{,}973 is unconditional algebra.  Part~II: exact degrees $63N-4$,
+$12N+10$ and $87N+16$ for every run table of the native Grill template.
+Part~III: the entire positive fiber of the native component at fixed ports
+and a two-term height law with a $\zeta(1/2)$ second term, conditional on
+pinned native soundness and completeness.  Part~IV: the programme's proposed
+positive index restoration fails for one compiler child, which has
+infinitely many positive zeros with negative restored index at every input;
+one canonical family of them is counted, $N(B)\sim\kappa\log\log B$, with a
+rotation discrepancy and a Kesten obstruction.  Part~V (batch~83): for the
+two interfaces left open there, an exact necessary-and-sufficient
+arithmetic predicate for a full positive zero with negative restored index,
+with positive reconstruction of every witness; whether the predicate ever
+passes stays open.  Results that re-derive research-tree constructions are
+credited there; Report~23's first edition is superseded by its
+revision; a 61\,MB circuit and a 1.6\,MB program are rebuilt by the shipped
+code; two third-party papers are not redistributed.  No new MRDP theorem,
+optimality or operation record is claimed; the programme reviewed every
+source but certifies only parts of some; not a Lean formalization.}
+
+\entry{Periodic turmite first revisits}
+{hilbert-tenth-problem/periodic-turmite-first-revisits}
+{article.pdf}{batch~83: Polynomial\_First\_Revisit\_and\_Exact\_Pattern\_Queries\_for\_Turmites\_Package.zip}
+{For an explicit cyclic L/R turmite on a periodic colour tile with finitely
+many binary-encoded defects and a binary start, the first repeated lattice
+position is decidable in polynomial bit time: the algorithm returns the
+exact first repeated arrival with a witness, or a no-revisit certificate
+with a periodic tail, through an affine lane calculus with an exact
+intersection primitive.  It also compiles finite unions of head-relative
+observation clauses into an exact first hit (no polynomial bound claimed
+for the Boolean expansion; a Presburger route through Cooper's algorithm,
+which is formalized in \dir{Logic/PresburgerArithmetic}, is a second,
+unexecuted proof), and proves that no undecidable language reduces to
+globally one-visit runs read by such observations.  This is the negative
+side of two research-tree notes on ant and toggle-router universality;
+turmite universality itself is third-party.  Nothing after the first
+revisit, no loader or universal atlas, no novelty.  From one manuscript,
+reviewed by the programme without a defect; not a Lean formalization.}
 
 \end{document}

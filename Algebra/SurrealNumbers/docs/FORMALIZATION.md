@@ -15,12 +15,14 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The document map identifies **66 main texts**; the canonical inventory below
+The document map identifies **68 main texts**; the canonical inventory below
 indexes 63 of them, with **4626** standard result environments. The other
-three, `surreal/polytopes-at-surreal-scales` (batches 58 and 59),
-`surreal/real-vector-space-structure` (batch 73) and
-`foundations-and-computation/surreal-well-orders` (batch 80), arrived after
-this inventory and are not yet indexed or mapped. Counts cover
+five, `surreal/polytopes-at-surreal-scales` (batches 58 and 59),
+`surreal/real-vector-space-structure` (batch 73),
+`foundations-and-computation/surreal-well-orders` (batch 80),
+`surreal/surreal-self-embeddings` (batch 84) and
+`foundations-and-computation/polish-models-of-omnific-arithmetic` (batch 86),
+arrived after this inventory and are not yet indexed or mapped. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
 claims. Counts are a navigation aid, **not a completeness certificate**.
@@ -991,9 +993,11 @@ cannot replace strong Hahn summability.
 custom environments are not included. A label inside a nested equation
 labels that equation, not the enclosing theorem or proposition; an
 environment without its own label is indexed by its source line.
-The inventory covers 63 of the 66 maintained main texts (all but
-`surreal/polytopes-at-surreal-scales`, `surreal/real-vector-space-structure`
-and `foundations-and-computation/surreal-well-orders`)
+The inventory covers 63 of the 68 maintained main texts (all but
+`surreal/polytopes-at-surreal-scales`, `surreal/real-vector-space-structure`,
+`foundations-and-computation/surreal-well-orders`,
+`surreal/surreal-self-embeddings` and
+`foundations-and-computation/polish-models-of-omnific-arithmetic`)
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in
