@@ -72,6 +72,19 @@ checks all83 rows by a formal rational substitution and expands the complete
 so this remains an arithmetic obstruction, not a compiler counterexample.
 Fresh installed normal/optimized receipts pass; the universal bound stays84.
 
+The [Report38 fixed-lane Boolean fixture](fixed_lane_boolean_occurrence38.md)
+compares three complete quartics for an occurrence query on an externally
+certified affine lane. The [independent affine rewrite](review_fixed_lane_boolean_occurrence38_affine.md)
+shares its affine producers and saves five additions in every form, giving
+complete counts116,125 and **109=42M+67A**. The best has23 natural witnesses
+and exact degree four. Each rewritten polynomial is identical to its own
+parent on every tuple; the different Boolean forms instead have canonical
+natural zero-set bijections. The check reconstructs all715 old/new gates
+and413 complete coefficients. Author and review pass installed normal and
+optimized replay, and a [separate mathematical cross-read](review_fixed_lane_boolean_occurrence38_affine_math.md)
+passes. Lane realization and first-hit minimality remain external, so this
+is an occurrence component and leaves the universal bound84 unchanged.
+
 The [complete Report30 first-hit fixture](original_frame_first_hit30_fixture.md)
 reduces one explicit original-frame mass-four orbit certificate to
 **35=11M+24A operations, three natural witnesses and exact degree four**.
