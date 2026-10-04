@@ -133,6 +133,18 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [signed auxiliary-quotient substitution theorem](Papers/research-wip/native-stream-queue/complete84_signed_quotient_absorption.md)
+rules out fixed polynomial replacements T=G(E) on the93-value interface
+independent of T and y_aux: every resulting positive zero satisfies
+**G!=0 and 2d*x+b<R<=3*deg(G)+ceil(log2 L)+3**. The proof permits either sign
+of T, directly recovers the Pell rank R and all exterior bounds, and proves
+|T|>f^(R-4). It does not assume positive restoration of old auxiliary coordinates,
+R=3 modulo4 or canonical input decoding. The [independent review](Papers/research-wip/native-stream-queue/review_complete84_signed_quotient_absorption.md)
+checks the quantified sign/rank argument, all84 source rows, all93 boundary
+values and the complete factorization. Fresh normal/optimized checks pass.
+This is a finite-input obstruction on the stated substitution interface;
+a full signed-T compiler theorem is not claimed, and universal84 is unchanged.
+
 The [auxiliary-ordinate substitution theorem](Papers/research-wip/native-stream-queue/complete84_auxiliary_ordinate_absorption.md)
 rules out every fixed polynomial replacement y_aux=G(E) with infinite input
 projection, where E contains all70 computed and23 supplied values independent

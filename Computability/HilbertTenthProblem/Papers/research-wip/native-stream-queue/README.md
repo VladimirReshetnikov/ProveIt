@@ -111,6 +111,18 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [signed auxiliary-quotient substitution theorem](complete84_signed_quotient_absorption.md)
+rules out fixed polynomial replacements T=G(E) on the93-value interface
+independent of T and y_aux: every resulting positive zero satisfies
+**G!=0 and 2d*x+b<R<=3*deg(G)+ceil(log2 L)+3**. The proof permits either sign
+of T, directly recovers the Pell rank R and all exterior bounds, and proves
+|T|>f^(R-4). It does not assume positive restoration of old auxiliary coordinates,
+R=3 modulo4 or canonical input decoding. The [independent review](review_complete84_signed_quotient_absorption.md)
+checks the quantified sign/rank argument, all84 source rows, all93 boundary
+values and the complete factorization. Fresh normal/optimized checks pass.
+This is a finite-input obstruction on the stated substitution interface;
+a full signed-T compiler theorem is not claimed, and universal84 is unchanged.
+
 The [auxiliary-ordinate substitution theorem](complete84_auxiliary_ordinate_absorption.md)
 rules out every fixed polynomial replacement y_aux=G(E) with infinite input
 projection, where E contains all70 computed and23 supplied values independent
@@ -5027,6 +5039,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Signed auxiliary-quotient absorption](complete84_signed_quotient_absorption.md) | Every fixed polynomial T=G on93 T/y-independent values has finite input projection; G=0 impossible | Direct signed-domain rank/bounds only; no full signed-T compiler transfer or operation reduction |
 | [Joint matrix-state factors](matrix193_joint_state_factor.md) | Complete1405/1402/1402/1399;540 coefficient rows; ten fewer multiplications by exact whole-polynomial identity | Same witnesses/degrees and inherited ordinary-input scope; universal84 unchanged |
 | [Recoded two-program U21](residue_affine_sparse_recoded467.md) | **447 certificate /467=171M+296A**,7 comparisons,67 witnesses,two fixed program parameters,degree at most5160. | Direct470 successor; code41 bound holds at B>=128,h=2, retaining fixed dyadic C>=64,C>E. Same supplied positive zeros on valid slices. |
 | [Auxiliary-ordinate polynomial obstruction](complete84_auxiliary_ordinate_absorption.md) | All93 quotient/ordinate-independent values give R<=3*deg(G)+ceil(log2 L) and finite ordinary-input projection after y_aux=G. | Both V signs and signed G covered; G=0 impossible before native recovery. No circuit saving or claim for quotient-dependent expressions. |
