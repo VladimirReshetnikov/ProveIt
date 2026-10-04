@@ -100,6 +100,20 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [matrix power-block analysis](matrix193_power_block_obstruction.md)
+> provides an exact **8=4M+4A unary target loader**, with zero witnesses, for
+> one valid input family of the actual 193-generator source. Universality of
+> that unary family and a complete unbounded membership certificate remain
+> unproved. Its separate decision theorem rules out replacing all accepted
+> finite-input histories by a computably bounded number of powered constant
+> blocks, even with shared exponents and Presburger constraints. For fixed
+> unary templates the accepted set is ultimately periodic. The
+> [independent review](review_matrix193_power_block_obstruction.md) checks
+> all 3,088 matrix entries, eight live gates and the ordered-language proof;
+> fresh installed normal/optimized receipts pass. Nonlinear exponent
+> constraints and witness-dependent bases remain outside this obstruction.
+> The established universal bound stays **84 operations**.
+>
 > The [matrix Report32 publication review](review_matrix32_publication_20261003.md)
 > also passes within its stated scope. It checks the original main-body
 > transcription, two displayed collisions, literal matrix statistics,
