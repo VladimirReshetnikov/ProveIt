@@ -160,6 +160,19 @@ source identity; normal/optimized replays pass. Mixed arithmetic circuits,
 additional paid relations and changes to the retained coefficient are outside
 this result; no global lower bound is claimed.
 
+The [polynomial-scaling obstruction](first_norm_polynomial_scaling_bound.md)
+extends the first-norm result to every nonzero polynomial multiplier G,
+including nonmonomials and multiples of the norm itself. At exactly the six
+paid ports T,X,Y,k,XY,kY, computing G times the first norm still requires
+**at least 3M and at least 2A**, with no degree or support restriction on G.
+Generic specialization preserves its relevant degree; the remaining quartic
+case and a support-width argument give the two independent lower bounds.
+The [independent proof review](review_first_norm_polynomial_scaling_bound.md)
+checks all quantifiers, the two-product normal form, binomial-factor exclusion
+and the literal current84 boundary. Fresh normal/optimized checks pass.
+Extra paid registers and joint computations remain open; no global minimum
+or new complete circuit is claimed. Universal84 is unchanged.
+
 The [monomial-rescaling bound](first_norm_monomial_scaling_bound.md)
 shows that every nonzero monomial multiple of the first norm still needs
 at least 3M and 2A at its six dependent paid inputs. Each bound permits
