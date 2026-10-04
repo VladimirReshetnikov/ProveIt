@@ -2,42 +2,66 @@
 
 **Set approximations, the singular birthday transition, set-length words, class orders, and higher-order structure**
 
-This is a research report merged from **ten** manuscripts. The first four
+This is a research report merged from **twenty-two** manuscripts. The first four
 were written independently on 2 October 2026 and delivered together in
 batch 80 (arrival `4e270aa46`, placement `ccc046989`, cluster K3) and form
 Parts I–V. Six more, written independently on 3 October 2026 as
 continuations of this report, were delivered in batch 81 (arrivals
 `9a4ce14e9` for sources 13–17 and `bd599ac06` for source 18; placements
 `f0cd7032d` (81L) and `c4720e1b2` (81L2)) and were merged by theme as Parts
-VI–IX in four writes (`a3cfa73ca`, `691454089`, `2a9292305` and the commit
-that adds this README text). Author lines: 08 and 09 "Research manuscript
+VI–IX in four writes (`a3cfa73ca`, `691454089`, `2a9292305`, `57d66a24b`).
+Twelve more, written independently on 3 October 2026 as continuations of this
+report, were delivered in batch 83 (arrivals `b63f0c852` for sources 19–24,
+`5ad44b1ed` for source 25, `0d7b2441d` for source 26, `79049d58c` for sources
+27–28 and `51b0a69d7` for sources 29–30; one placement `2e06337d5`, batch 83L)
+and were merged by theme as Parts X–XIV in one write (the commit that adds this
+README text). Author lines: 08 and 09 "Research manuscript
 prepared for Vladimir Reshetnikov", 11 "Research report", 12 "Research report
 prepared for Vladimir Reshetnikov"; 13, 14 and 17 "Research manuscript
 prepared for Vladimir Reshetnikov", 15, 16 and 18 "Research article prepared
 for Vladimir Reshetnikov". Sources 09, 12, 13, 15, 17 and 18 call themselves
 AI-assisted (source 18 also cites "independent AI-assisted proof review");
 source 14 calls itself unrefereed, and source 16 says that its "independent
-mathematical checks during preparation" are not external peer review. The report is
+mathematical checks during preparation" are not external peer review. Of
+batch 83, sources 19, 20, 21, 23, 24, 26, 27, 28 and 29 say "Research manuscript
+prepared for Vladimir Reshetnikov", 22 and 25 "Prepared for Vladimir
+Reshetnikov", 30 "Research article prepared for Vladimir Reshetnikov"; sources
+19–26, 28 and 29 call themselves AI-assisted (23–26 and 28 add "unrefereed",
+19 and 29 "not a refereed publication"/"paper"), source 27 makes "no claim of
+historical priority or external peer review", and source 30 reports
+"independent AI-assisted proof review". The report is
 AI-assisted, unrefereed and not formalized. Its review in the collection's
 [review record](../../REVIEW.md) is **pending**, and it is not yet indexed in
 the [formalization ledger](../../FORMALIZATION.md). The four batch-80
 archives have a written-proof review in the Hilbert's-tenth research tree,
 and the batch-80 merged text a scoped synthesis review and a preservation
-audit there, whose corrections are applied; no review of the batch-81
-sources exists yet (see "Reviews" below).
+audit there, whose corrections are applied; no review of the batch-81 or
+batch-83 sources exists yet (see "Reviews" below).
 
 | Source | Batch, manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
-| 11 (base) | 80, 11 | `surreal_well_orders (1).zip` (*Lexicographic Orders of Well-Orderings of the Surreal Numbers: Set Approximations, Class Orders, and Higher-Order Structure*; 2,807 lines, 35-page PDF; dated "3 October 2026", the UTC date of its pin) | `ae7c1e6aa` (2 October 2026, 18:03:53 PDT = 3 October, 01:03:53 UTC) | `ccc046989` | abstract and Status paragraph; Sections 2–3; 5.1, 5.3, 5.7; 6 (before 6.1); 7 (before 7.1); 9–12; 13 (before 13.1); 14 (before 14.1); 15; 16 (before 16.1); 19 (its own subsections 19.1, 19.2, 19.4, 19.5, 19.8, 19.11); 20; 61.1; 63 (before 63.1); Appendix A (before A.1) |
-| 12 | 80, 12 | `surreal_well_orders.zip` (*Well-Orders of the Surreal Numbers and Their Lexicographic Geometry*; 1,689 lines, 24-page PDF) | `63bb8b1d9` (18:01:32 PDT) | `ccc046989` | Sections 4.1, 5.4, 6.2 (route), 8 (new), 13.1, 14.1, 16.1 (routes), 18, 19.9, 19.10, 21, 24, 61.2, 62.1, 63.1, A.1, C; Lemmas 5.3, 5.14–5.15 and 19.5; Notes 19.11, 19.21, 19.28 |
-| 09 | 80, 09 | `Surreal_Well_Orders_Research.zip` (*Well-orders of the Surreal Numbers: Lexicographic universality, a surreal dense core, and the boundary between sets and classes*; 1,677 lines, 24-page PDF) | `63bb8b1d9` | `ccc046989` | Sections 4.2, 5.5, 5.8, 6.3, 7.1, 11.1, 13.2, 19.3, 19.6, 19.12, 22, 25, 61.3, 62.2, 63.2, A.2, A.3, C; Proposition 19.24; notes in Sections 6, 11 and 19 |
-| 08 | 80, 08 | `Surreal_Well_Orders_Research (1).zip` (*Lexicographic Orders of Surreal Well-Orderings: Set-sized spectra, global enumeration orders, and a surreal-sized dense skeleton*; 2,022 lines, 26-page PDF) | `ae7c1e6aa` | `ccc046989` | Sections 4.3, 4.4, 5.2, 5.6, 7.2, 17, 19.7, 23, 26, 61.4, 62.3, 63.3, A.4, A.5, C; notes and printed paragraphs in Sections 5, 6, 7, 11 and 19 |
-| 13 | 81, 01 | `Surreal_Well_Orders_Further_Study.zip` (*Lexicographic Orders of Surreal Well-Orderings: Further Structure*, title page "Cut reconstruction, asymmetric products, prefix non-rigidity, and size-safe foundations"; 2,215 lines, 33-page PDF) | `0ecd158fd` | `f0cd7032d` | Sections 4.6; 32 (Part VI); 34–36 (Part VII); 42, 46, 47 (Part VIII); 51, 55, 57, 59 (Part IX); 61.6, 62.4, A.6, A.7, C, D |
-| 14 | 81, 02 | `lexicographic_surreal_well_orders_II.zip` (*Lexicographic Well-Orders of the Surreals II: cut classification, support thresholds, and class-model absoluteness*; 2,114 lines, 33-page PDF) | `0ecd158fd` | `f0cd7032d` | Sections 4.7, 4.12; 32; 34, 35; 40, 41, 43–45, 47–49 (base of Part VIII); 54, 56, 57, 59; 61.7, 62.5, 63.4, A.8, A.9, C, D |
-| 15 | 81, 03 | `surreal_lexicographic_orders.zip` (*Lexicographic Orders of Surreal Well-Orders: interpretations, canonical blocks, represented cuts, and fixed-type spectra*; 2,596 lines, 37-page PDF) | `0ecd158fd` (also cites `491ed8411`) | `f0cd7032d` | Sections 4.8; 29–32 (block types: Section 31); 34, 38; 42, 46, 47; 51–53, 57, 59; 61.8, 63.5, A.10, C, D |
-| 16 | 81, 04 | `surreal_well_orders_further.zip` (*Lexicographic Orders of Surreal Well-Orders: Cuts, Canonical Blocks, and the Limits of Set-Sized Coding*; 2,279 lines, 33-page PDF) | `491ed8411` | `f0cd7032d` | Sections 4.9; 27, 28, 30, 32; 34–36; 42, 46; 51, 52, 56, 57, 59; 61.9, 63.6, C, D |
-| 17 | 81, 05 | `surreal_well_orders_further_study (1).zip` (*Lexicographic Well-Orders of the Surreal Numbers, II: exact cut spectra, branch recognition, optimal support reserves, and automorphism-extension obstructions*; 2,056 lines, 29-page PDF) | `0ecd158fd` | `f0cd7032d` | Sections 4.10, 4.13; 29, 30, 32; 34; 42, 46–49; 51, 54, 59; 61.10, 62.6, 63.7, A.11, C, D |
-| 18 | 81, 06 (81L2) | `surreal_lexicographic_orders_further_study.zip` (*Lexicographic Well-Orders of the Surreal Numbers: Cuts, canonical class blocks, and changes of interpretation*; 3,928 lines, 53-page PDF) | `83befe707` | `c4720e1b2` | Sections 4.11; 27, 29, 30, 32; 34–37; 42, 46; 51, 52, 57–59; 61.11, 63.8, C, D |
+| 11 (base) | 80, 11 | `surreal_well_orders (1).zip` (*Lexicographic Orders of Well-Orderings of the Surreal Numbers: Set Approximations, Class Orders, and Higher-Order Structure*; 2,807 lines, 35-page PDF; dated "3 October 2026", the UTC date of its pin) | `ae7c1e6aa` (2 October 2026, 18:03:53 PDT = 3 October, 01:03:53 UTC) | `ccc046989` | abstract and Status paragraph; Sections 2–3; 5.1, 5.3, 5.7; 6 (before 6.1); 7 (before 7.1); 9–12; 13 (before 13.1); 14 (before 14.1); 15; 16 (before 16.1); 19 (its own subsections 19.1, 19.2, 19.4, 19.5, 19.8, 19.11); 20; 113.1; 115 (before 115.1); Appendix A (before A.1) |
+| 12 | 80, 12 | `surreal_well_orders.zip` (*Well-Orders of the Surreal Numbers and Their Lexicographic Geometry*; 1,689 lines, 24-page PDF) | `115bb8b1d9` (18:01:32 PDT) | `ccc046989` | Sections 4.1, 5.4, 6.2 (route), 8 (new), 13.1, 14.1, 16.1 (routes), 18, 19.9, 19.10, 21, 24, 113.2, 114.1, 115.1, A.1, C; Lemmas 5.3, 5.14–5.15 and 19.5; Notes 19.11, 19.21, 19.28 |
+| 09 | 80, 09 | `Surreal_Well_Orders_Research.zip` (*Well-orders of the Surreal Numbers: Lexicographic universality, a surreal dense core, and the boundary between sets and classes*; 1,677 lines, 24-page PDF) | `115bb8b1d9` | `ccc046989` | Sections 4.2, 5.5, 5.8, 6.3, 7.1, 11.1, 13.2, 19.3, 19.6, 19.12, 22, 25, 113.3, 114.2, 115.2, A.2, A.3, C; Proposition 19.24; notes in Sections 6, 11 and 19 |
+| 08 | 80, 08 | `Surreal_Well_Orders_Research (1).zip` (*Lexicographic Orders of Surreal Well-Orderings: Set-sized spectra, global enumeration orders, and a surreal-sized dense skeleton*; 2,022 lines, 26-page PDF) | `ae7c1e6aa` | `ccc046989` | Sections 4.3, 4.4, 5.2, 5.6, 7.2, 17, 19.7, 23, 26, 113.4, 114.3, 115.3, A.4, A.5, C; notes and printed paragraphs in Sections 5, 6, 7, 11 and 19 |
+| 13 | 81, 01 | `Surreal_Well_Orders_Further_Study.zip` (*Lexicographic Orders of Surreal Well-Orderings: Further Structure*, title page "Cut reconstruction, asymmetric products, prefix non-rigidity, and size-safe foundations"; 2,215 lines, 33-page PDF) | `0ecd158fd` | `f0cd7032d` | Sections 4.6; 32 (Part VI); 34–36 (Part VII); 42, 46, 47 (Part VIII); 51, 55, 57, 59 (Part IX); 113.6, 114.4, A.6, A.7, C, D |
+| 14 | 81, 02 | `lexicographic_surreal_well_orders_II.zip` (*Lexicographic Well-Orders of the Surreals II: cut classification, support thresholds, and class-model absoluteness*; 2,114 lines, 33-page PDF) | `0ecd158fd` | `f0cd7032d` | Sections 4.7, 4.12; 32; 34, 35; 40, 41, 43–45, 47–49 (base of Part VIII); 54, 56, 57, 59; 113.7, 114.5, 115.4, A.8, A.9, C, D |
+| 15 | 81, 03 | `surreal_lexicographic_orders.zip` (*Lexicographic Orders of Surreal Well-Orders: interpretations, canonical blocks, represented cuts, and fixed-type spectra*; 2,596 lines, 37-page PDF) | `0ecd158fd` (also cites `491ed8411`) | `f0cd7032d` | Sections 4.8; 29–32 (block types: Section 31); 34, 38; 42, 46, 47; 51–53, 57, 59; 113.8, 115.5, A.10, C, D |
+| 16 | 81, 04 | `surreal_well_orders_further.zip` (*Lexicographic Orders of Surreal Well-Orders: Cuts, Canonical Blocks, and the Limits of Set-Sized Coding*; 2,279 lines, 33-page PDF) | `491ed8411` | `f0cd7032d` | Sections 4.9; 27, 28, 30, 32; 34–36; 42, 46; 51, 52, 56, 57, 59; 113.9, 115.6, C, D |
+| 17 | 81, 05 | `surreal_well_orders_further_study (1).zip` (*Lexicographic Well-Orders of the Surreal Numbers, II: exact cut spectra, branch recognition, optimal support reserves, and automorphism-extension obstructions*; 2,056 lines, 29-page PDF) | `0ecd158fd` | `f0cd7032d` | Sections 4.10, 4.13; 29, 30, 32; 34; 42, 46–49; 51, 54, 59; 113.10, 114.6, 115.7, A.11, C, D |
+| 18 | 81, 06 (81L2) | `surreal_lexicographic_orders_further_study.zip` (*Lexicographic Well-Orders of the Surreal Numbers: Cuts, canonical class blocks, and changes of interpretation*; 3,928 lines, 53-page PDF) | `83befe707` | `c4720e1b2` | Sections 4.11; 27, 29, 30, 32; 34–37; 42, 46; 51, 52, 57–59; 113.11, 115.8, C, D |
+| 19 | 83, 01 | `surreal_lexicographic_orders_continuation.zip` (*Lexicographic Orders of Surreal Well-Orders: Residual spectra, decorated completions, and model invariants*; 3,352 lines, 45-page PDF) | `d5bd4a67b` | `2e06337d5` | Sections 61.1–61.2 (scope); 62 (note), 64, 65, 67 (Part X); 73 (XI); 98–100 (XIII); 109 (XIV); 111.1–111.4; 113.13; C, D |
+| 20 | 83, 02 | `surreal_orders_limits_symmetries_models.zip` (*Lexicographic Orders of Surreal Well-Orders: Coherent Limits, Nonextendible Symmetries, and Countable Models*; 3,686 lines, 50-page PDF) | `d5bd4a67b` | `2e06337d5` | Sections 61.3–61.4; 67 (X); 74 (XI); 97 (XIII); 107–109 (XIV); 111.5–111.7; 113.14; C, D |
+| 21 | 83, 03 | `surreal_well_orders_further_structure.zip` (*Lexicographic Orders of Surreal Well-Orders: Further Structure, Automorphism Obstructions, and Model Dependence*; 3,329 lines, 44-page PDF) | `109aaca15` | `2e06337d5` | Sections 61.5–61.6; 62, 65, 67 (X); 75, 77 (XI); 86, 97, 102 (XIII); 109 (XIV); 111.8–111.9; 113.15; C, D |
+| 22 | 83, 04 | `Surreal_Lexicographic_Orders_Residual_Geometry.zip`, inner `Surreal_Lexicographic_Orders/` (*Lexicographic Orders of Surreal Well-Orderings: Residual geometry, the finite-tail transition, unranked cylinders, and reconstruction of class realizations*; 1,067 lines, 33-page PDF) | `d5bd4a67b` | `2e06337d5` | Sections 61.7–61.8; 62 (note), 63 (X); 86, 87, 102 (XIII); 111.10–111.15; 113.16; C, D |
+| 23 | 83, 05 | `Surreal_Lexicographic_Termination_Condensation.zip`, inner `surreal_lexicographic_further/` (*Lexicographic Surreal Well-Orders: Termination markers, increasing-word obstructions, and transfinite condensation*; 1,816 lines, 30-page PDF) | `109aaca15` | `2e06337d5` | Sections 61.9; 80–82 (XII); 106, 108 (XIV); 111.16–111.22; 113.17; C, D |
+| 24 | 83, 06 | `Surreal_Lexicographic_Orders_Prefix_Completions.zip`, inner `surreal_lex_prefix_completions/` (*Lexicographic Well-Orders of the Surreals: Prefix completions, generalized Baire models, and the set–class boundary*; 1,197 lines, 32-page PDF) | `109aaca15` | `2e06337d5` | Sections 61.10–61.11; 62, 65–67, 69, 71 (X, base); 111.23–111.27; 113.18; C, D |
+| 25 | 83, 11 | `Surreal_Well_Orders_Prefix_Symmetries.zip`, inner `surreal_prefix_symmetries/` (*Lexicographic Surreal Well-Orders: Prefix homogeneity, invisible exhaustiveness, and label rigidity*; 1,155 lines, 33-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.12–61.13; 86, 88–95, 103, 104 (XIII); 111.28–111.31; 113.19; C, D |
+| 26 | 83, 12 | `Surreal_Lexicographic_Boundaries.zip` (*Lexicographic Well-Orders of the Surreals: Non-Borel boundaries, closed universality, and safe foundations*; 1,214 lines, 34-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.14–61.15; 62, 69, 71 (X); 111.32–111.35; 113.20; C, D |
+| 27 | 83, 13 | `surreal_lexicographic_orders.zip` (*Lexicographic Orders of Surreal Well-Orders: Further Structure from Encodings, Prefix Trees, and Support Bounds*; 2,336 lines, 34-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.16; 80, 82, 84 (XII); 96, 101, 102 (XIII); 107, 110 (XIV); 111.36–111.38; 113.21; C, D |
+| 28 | 83, 14 | `Surreal_Lexicographic_Group_Envelope.zip` (*Lexicographic Well-Orders of the Surreals: Singular permutation geometry and the canonical group envelope*; 1,204 lines, 32-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.17–61.18; 62 (note), 70, 71 (X); 111.39–111.43; 113.22; C, D |
+| 29 | 83, 15 | `surreal_orders_new_structures.zip` (*Lexicographic Orders of Surreal Well-Orders: Exact Birthday Spectra, Word Products, Topological Transitions, and Class Comparability*; 4,470 lines, 57-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.19–61.20; 68 (X); 76, 78 (XI); 80, 82, 83 (XII); 86, 96 (XIII); 108 (XIV); 111.44–111.45; 113.23; C, D |
+| 30 | 83, 16 | `surreal_well_orders.zip`, inner `surreal_well_orders/` (*Lexicographic Well-Orders of the Surreals: Residual Codes, Topological Transitions, and Class Reconstruction*; 3,583 lines, 47-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.21; 63, 64, 68 (X); 80, 84 (XII); 102 (XIII); 109 (XIV); 111.46–111.48; 113.24; C, D |
 
 The two pairs of batch-80 archives sharing a name (08/09 and 11/12) are
 **not editions**: every pair of the four texts has word 8-gram overlap of
@@ -65,23 +89,64 @@ well-orders (base 15 for blocks and histories, 17 for finite components, 13
 for products, 16 for the Σ¹₁ bound, 18 for countable models). Their
 introductions are in Section 4.5–4.13, their foundations, universe sections
 and Lean plans at the end of Part IX (Sections 51, 57, 59; not in Part V, so
-that no existing section is renumbered), their questions in Section 61.5–61.11.
+that no existing section is renumbered), their questions in Section 113.5–113.11.
 
-Every result, proof, example, remark, question and limitation of the ten
-manuscripts is printed. A result proved again by the same argument is
+The twelve batch-83 sources are independent texts, not editions: every pair
+shares at most 3.3 % of word 8-grams (source 28 with 24; 22 with 25 2.4 %;
+every other pair, and each source against this report and sources 13–18, at
+most 2.2 %), no member file is shared, and the theorem sets differ. Three name
+coincidences are not editions: source 27's archive, inner directory and main
+file have the names of source 15's (`surreal_lexicographic_orders.zip`;
+different title, pin and theorems, 0.6 % overlap); source 30's archive has the
+name of source 12's and its inner directory and main file those of sources 11
+and 08 (`surreal_well_orders.zip`; at most 0.5 %); source 23's inner directory
+is source 13's (`surreal_lexicographic_further/`). They read this report at
+`d5bd4a67b` (19, 20, 22) and `109aaca15` (21, 23, 24), both with Parts I–V
+only, and at `7ff7736ec` (25–30), with Parts I–VIII. Several read unplaced
+manuscripts that are now sources here (19: 15, 16, 18; 20: 18; 22 and 23: 13,
+17; 24: 13, 14, 17; 25: 13, 17, 22, 23; 26: 24; 28: 13, 24; 29: 19, 20, 21);
+21, 27 and 30 cite none. They overlap heavily (the countable-cutoff theorem is
+proved by seven of them, the represented-cut theorem three more times, the
+faithful reconstruction of a class realization three times), so they are
+printed by theme after Part IX: X set-sized strata, topology and permutation
+groups (base 24; 19, 21, 22, 26, 28, 30); XI across birthday cutoffs (19, 20,
+21, 29); XII words, termination markers and comparison codes (23, 27, 29, 30);
+XIII the core and its cylinders (25, 22, 20, 21, 19, 27, 29, 30); XIV
+unrestricted class well-orders II (20, 19, 21, 23, 27, 29, 30). Their scope
+sections head Part X (Section 61; the maps of 23, 27, 29 and 30 are in Section
+80 of Part XII), their foundations, Lean plans, ledgers and verification
+records close Part XIV (Section 111, before Part XIV's status section, as Part
+IX's Lean plans precede its own; the foundations of 24, 26 and 28 are in
+Section 71, source 25's size audit in Section 104, source 27's foundations in
+Section 110), their questions are in Section 113.12–113.25 with an index and
+dated status notes, and their abstracts in Appendix C. Source 28's headline
+question (complete metrizability of the full singular permutation space) is
+answered negatively in ZFC by source 26, which 28 did not see; it is printed
+with that status (Note 70.13).
+
+Every result, proof, example, remark, question and limitation of the
+twenty-two manuscripts is printed. A result proved again by the same argument is
 recorded in a numbered **Note** that gives the source's statement, number and
 differences, or, where each source builds on its own proof, printed whole as
 a marked route under a credit note (the represented-cut theorem is proved six
-times, Note 46.1; the block decomposition three times, Note 52.1);
+times in batches 80–81, Note 46.1, and nine times with batch 83, Note 87.6; the
+block decomposition three times, Note 52.1; the countable-cutoff theorem by
+seven batch-83 sources, Note 67.1);
 source-specific results are printed in full where they belong. Each source's
 introduction, foundational section, model section, Lean plan, questions,
 conclusion, ledger and reproducibility record are printed whole. Text written
 for the merge is marked `[merge]`. Appendix D maps every numbered statement of
-the ten sources (311 of sources 13–18) to its place here.
+the twenty-two sources (311 of sources 13–18, 644 of sources 19–30) to its
+place here. For sources 19–30 the write also checked, line by line, that every
+non-blank line of each delivered `.tex` body is printed, or is a section heading
+replaced by a merge heading carrying the source's label, a bibliography line, a
+source part divider, or a duplicate recorded in a numbered note that quotes the
+statement (Part X's notes on sources 19, 21, 22, 24, 26, 28 and 30 and Part
+XI's on source 29 keep the statement and cite the printed proof).
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 349 pages (title page unnumbered)
+article.pdf                              the compiled report, 831 pages (title page unnumbered)
 README.md                                this guide
 09-core-RESEARCH_STATUS.md               source 09's research status and audit, as delivered
 11-raw-orders-repository_audit.md        source 11's targeted repository audit, as delivered
@@ -90,6 +155,23 @@ README.md                                this guide
 14-trichotomy-RESEARCH_STATUS.md         source 14's research status and audit, as delivered
 16-strata-SOURCE_STATUS.txt              source 16's source and proof status, as delivered
 17-gaps-research_status.md               source 17's research status, as delivered
+19-residual-source_status.txt            source 19's source and proof-status record, as delivered
+21-obstructions-LEAN_INTERFACE_AUDIT.txt source 21's audit of the Lean declarations it cites, as delivered
+21-obstructions-SOURCE_AUDIT.txt         source 21's repository and literature audit, as delivered
+22-unranked-RESEARCH_STATUS.md           source 22's research status, as delivered
+22-unranked-SOURCE_AUDIT.md              source 22's source audit, as delivered
+23-termination-RESEARCH_STATUS.md        source 23's research status, as delivered
+23-termination-SOURCE_AUDIT.md           source 23's source audit, as delivered
+24-completions-SOURCE_AUDIT.md           source 24's source audit, as delivered
+25-symmetries-RESEARCH_STATUS.md         source 25's research status, as delivered
+25-symmetries-SOURCE_AUDIT.md            source 25's source audit, as delivered
+26-nonborel-RESEARCH_STATUS.md           source 26's research status and audit, as delivered
+27-scans-SOURCE_AUDIT.txt                source 27's source audit, as delivered
+28-envelope-SOURCE_AUDIT.md              source 28's source audit, as delivered
+29-birthdays-PROOF_STATUS.txt            source 29's proof-status guide, as delivered
+29-birthdays-SOURCE_AUDIT.txt            source 29's source audit, as delivered
+30-tables-proof_review.txt               source 30's proof-review record, as delivered
+30-tables-source_audit.txt               source 30's source audit, as delivered
 code/08-skeleton-build.sh                source 08's build script (builds nothing here; see below)
 code/08-skeleton-verify_finite.py        source 08's finite checks
 code/09-core-build.sh                    source 09's build script (builds nothing here)
@@ -107,77 +189,64 @@ code/16-strata-finite_checks.py          source 16's finite checks
 code/17-gaps-build.sh                    source 17's build script (fails here)
 code/17-gaps-finite_checks.py            source 17's finite checks
 code/18-shuffle-build.sh                 source 18's build script (builds nothing here)
-data/08-skeleton-verification_results.json   source 08's recorded run
-data/09-core-finite_checks.json              source 09's recorded run
-data/11-raw-orders-finite_checks_results.txt source 11's recorded run
-data/12-singular-finite_checks.json          source 12's recorded run
-data/13-products-finite_results.json         source 13's recorded run
-data/13-products-pdf_inspection.json         source 13's record of the layout check of its (unshipped) PDF
-data/14-trichotomy-verification_results.json source 14's recorded run
-data/15-blocks-finite_examples.txt           source 15's recorded output
-data/16-strata-finite_check_results.json     source 16's recorded run
-data/17-gaps-finite_checks.json              source 17's recorded run
+code/19-residual-build.sh                source 19's build script (compiles an unshipped .tex; builds nothing here)
+code/19-residual-check_restrictions.py   source 19's finite check (writes restriction_checks.json beside itself)
+code/20-limits-finite_diagnostics.py     source 20's finite diagnostics (--output, else standard output)
+code/22-unranked-build.sh                source 22's build script (builds nothing here)
+code/22-unranked-finite_checks.py        source 22's finite checks
+code/23-termination-build.sh             source 23's build script (builds nothing here)
+code/23-termination-finite_checks.py     source 23's finite checks
+code/24-completions-build.sh             source 24's build script (builds nothing here)
+code/24-completions-finite_checks.py     source 24's finite checks (default output beside code/)
+code/25-symmetries-build.sh              source 25's build script (builds nothing here)
+code/25-symmetries-finite_checks.py      source 25's finite checks
+code/26-nonborel-build.sh                source 26's build script (builds nothing here)
+code/26-nonborel-finite_checks.py        source 26's finite checks
+code/27-scans-finite_checks.py           source 27's finite checks (--output, else standard output)
+code/28-envelope-build.sh                source 28's build script (builds nothing here)
+code/28-envelope-finite_checks.py        source 28's finite checks (--output, else standard output)
+code/30-tables-build.sh                  source 30's build script (compiles an unshipped .tex; builds nothing here)
+code/30-tables-verify_finite.py          source 30's finite checks (default output beside itself)
+data/08-skeleton-verification_results.json     source 08's recorded run
+data/09-core-finite_checks.json                source 09's recorded run
+data/11-raw-orders-finite_checks_results.txt   source 11's recorded run
+data/12-singular-finite_checks.json            source 12's recorded run
+data/13-products-finite_results.json           source 13's recorded run
+data/13-products-pdf_inspection.json           source 13's record of the layout check of its (unshipped) PDF
+data/14-trichotomy-verification_results.json   source 14's recorded run
+data/15-blocks-finite_examples.txt             source 15's recorded output
+data/16-strata-finite_check_results.json       source 16's recorded run
+data/17-gaps-finite_checks.json                source 17's recorded run
+data/19-residual-restriction_checks.json       source 19's recorded run
+data/20-limits-finite_diagnostics_results.json source 20's recorded run
+data/22-unranked-finite_checks.json            source 22's recorded run
+data/22-unranked-pdf_validation.json           source 22's record of the layout check of its (unshipped) PDF
+data/23-termination-finite_checks.json         source 23's recorded run
+data/24-completions-build_validation.json      source 24's build record (hashes of its unshipped .tex and PDF)
+data/24-completions-finite_checks.json         source 24's recorded run
+data/25-symmetries-finite_checks.json          source 25's recorded run
+data/26-nonborel-finite_checks.json            source 26's recorded run
+data/27-scans-finite_checks.json               source 27's recorded run
+data/28-envelope-finite_checks.json            source 28's recorded run
+data/29-birthdays-source_manifest.json         source 29's provenance manifest (see below)
+data/29-birthdays-verification.json            source 29's build and document metadata
+data/30-tables-verification_results.json       source 30's recorded run
 ```
 
-All code, data and the seven audit and status files are byte-identical to the
-delivery. Source 18 shipped no code or data; source 15 no status file.
+All code, data and the 24 audit and status files are byte-identical to the
+delivery. Source 18 shipped no code or data; source 15 no status file. Of batch
+83 (49 files, 211,105 bytes; no CR bytes, longest path 133 characters, none
+over 1 MB), sources 21 and 29 shipped no code, source 21 no data, and source 20
+no status file.
 
-Batch 83 files placed here (sources 19–30, placement `2e06337d5`, for the
-forthcoming Parts X–XIV). They are not yet merged into the report, and this
-README does not describe them; they are listed so that the listing matches
-the directory:
-
-```
-19-residual-source_status.txt
-21-obstructions-LEAN_INTERFACE_AUDIT.txt
-21-obstructions-SOURCE_AUDIT.txt
-22-unranked-RESEARCH_STATUS.md
-22-unranked-SOURCE_AUDIT.md
-23-termination-RESEARCH_STATUS.md
-23-termination-SOURCE_AUDIT.md
-24-completions-SOURCE_AUDIT.md
-25-symmetries-RESEARCH_STATUS.md
-25-symmetries-SOURCE_AUDIT.md
-26-nonborel-RESEARCH_STATUS.md
-27-scans-SOURCE_AUDIT.txt
-28-envelope-SOURCE_AUDIT.md
-29-birthdays-PROOF_STATUS.txt
-29-birthdays-SOURCE_AUDIT.txt
-30-tables-proof_review.txt
-30-tables-source_audit.txt
-code/19-residual-build.sh
-code/19-residual-check_restrictions.py
-code/20-limits-finite_diagnostics.py
-code/22-unranked-build.sh
-code/22-unranked-finite_checks.py
-code/23-termination-build.sh
-code/23-termination-finite_checks.py
-code/24-completions-build.sh
-code/24-completions-finite_checks.py
-code/25-symmetries-build.sh
-code/25-symmetries-finite_checks.py
-code/26-nonborel-build.sh
-code/26-nonborel-finite_checks.py
-code/27-scans-finite_checks.py
-code/28-envelope-build.sh
-code/28-envelope-finite_checks.py
-code/30-tables-build.sh
-code/30-tables-verify_finite.py
-data/19-residual-restriction_checks.json
-data/20-limits-finite_diagnostics_results.json
-data/22-unranked-finite_checks.json
-data/22-unranked-pdf_validation.json
-data/23-termination-finite_checks.json
-data/24-completions-build_validation.json
-data/24-completions-finite_checks.json
-data/25-symmetries-finite_checks.json
-data/26-nonborel-finite_checks.json
-data/27-scans-finite_checks.json
-data/28-envelope-finite_checks.json
-data/29-birthdays-source_manifest.json
-data/29-birthdays-verification.json
-data/30-tables-verification_results.json
-```
+**Disclosure for `data/29-birthdays-source_manifest.json`.** Source 29's
+provenance manifest mixes SHA-256 hashes (sixteen repository files at its pin,
+the delivered `.tex` of sources 19, 21 and 20, which the hashes match, and its
+six deliverables; all verified at placement) with provenance fields. Three of
+those fields, `persistent_file_identity`, hold opaque library-file identifiers
+(`libfile_…`) of the authoring tool for the three earlier manuscripts. They are
+identifiers, not credentials, are shipped as delivered because delivered bytes
+are not edited, and identify nothing in this repository.
 
 ## Delivery names
 
@@ -196,6 +265,18 @@ data/30-tables-verification_results.json
 | 16 | `SOURCE_STATUS.txt`, `finite_checks.py`, `finite_check_results.json` | `16-strata-SOURCE_STATUS.txt`, `code/16-strata-finite_checks.py`, `data/16-strata-finite_check_results.json` |
 | 17 | `research_status.md`, `build.sh`, `finite_checks.py`, `finite_checks.json` | `17-gaps-research_status.md`, `code/17-gaps-build.sh`, `code/17-gaps-finite_checks.py`, `data/17-gaps-finite_checks.json` |
 | 18 | `build.sh` | `code/18-shuffle-build.sh` |
+| 19 | `source_status.txt`, `build.sh`, `check_restrictions.py`, `restriction_checks.json` | `19-residual-source_status.txt`, `code/19-residual-build.sh`, `code/19-residual-check_restrictions.py`, `data/19-residual-restriction_checks.json` |
+| 20 | `finite_diagnostics.py`, `finite_diagnostics_results.json` | `code/20-limits-finite_diagnostics.py`, `data/20-limits-finite_diagnostics_results.json` |
+| 21 | `SOURCE_AUDIT.txt`, `LEAN_INTERFACE_AUDIT.txt` | `21-obstructions-SOURCE_AUDIT.txt`, `21-obstructions-LEAN_INTERFACE_AUDIT.txt` |
+| 22 | `RESEARCH_STATUS.md`, `SOURCE_AUDIT.md`, `build.sh`, `code/finite_checks.py`, `data/finite_checks.json`, `data/pdf_validation.json` | `22-unranked-RESEARCH_STATUS.md`, `22-unranked-SOURCE_AUDIT.md`, `code/22-unranked-build.sh`, `code/22-unranked-finite_checks.py`, `data/22-unranked-finite_checks.json`, `data/22-unranked-pdf_validation.json` |
+| 23 | `RESEARCH_STATUS.md`, `SOURCE_AUDIT.md`, `build.sh`, `code/finite_checks.py`, `data/finite_checks.json` | `23-termination-RESEARCH_STATUS.md`, `23-termination-SOURCE_AUDIT.md`, `code/23-termination-build.sh`, `code/23-termination-finite_checks.py`, `data/23-termination-finite_checks.json` |
+| 24 | `SOURCE_AUDIT.md`, `build.sh`, `code/finite_checks.py`, `data/finite_checks.json`, `data/build_validation.json` | `24-completions-SOURCE_AUDIT.md`, `code/24-completions-build.sh`, `code/24-completions-finite_checks.py`, `data/24-completions-finite_checks.json`, `data/24-completions-build_validation.json` |
+| 25 | `RESEARCH_STATUS.md`, `SOURCE_AUDIT.md`, `build.sh`, `code/finite_checks.py`, `data/finite_checks.json` | `25-symmetries-RESEARCH_STATUS.md`, `25-symmetries-SOURCE_AUDIT.md`, `code/25-symmetries-build.sh`, `code/25-symmetries-finite_checks.py`, `data/25-symmetries-finite_checks.json` |
+| 26 | `RESEARCH_STATUS.md`, `build.sh`, `code/finite_checks.py`, `data/finite_checks.json` | `26-nonborel-RESEARCH_STATUS.md`, `code/26-nonborel-build.sh`, `code/26-nonborel-finite_checks.py`, `data/26-nonborel-finite_checks.json` |
+| 27 | `SOURCE_AUDIT.txt`, `finite_checks.py`, `finite_checks.json` | `27-scans-SOURCE_AUDIT.txt`, `code/27-scans-finite_checks.py`, `data/27-scans-finite_checks.json` |
+| 28 | `SOURCE_AUDIT.md`, `build.sh`, `code/finite_checks.py`, `data/finite_checks.json` | `28-envelope-SOURCE_AUDIT.md`, `code/28-envelope-build.sh`, `code/28-envelope-finite_checks.py`, `data/28-envelope-finite_checks.json` |
+| 29 | `SOURCE_AUDIT.txt`, `PROOF_STATUS.txt`, `source_manifest.json`, `verification.json` | `29-birthdays-SOURCE_AUDIT.txt`, `29-birthdays-PROOF_STATUS.txt`, `data/29-birthdays-source_manifest.json`, `data/29-birthdays-verification.json` |
+| 30 | `source_audit.txt`, `proof_review.txt`, `build.sh`, `verify_finite.py`, `verification_results.json` | `30-tables-source_audit.txt`, `30-tables-proof_review.txt`, `code/30-tables-build.sh`, `code/30-tables-verify_finite.py`, `data/30-tables-verification_results.json` |
 
 Not shipped (recoverable with `git show 4e270aa46:"docs/incoming/<archive>.zip"`
 for batch 80, `git show 9a4ce14e9:"docs/incoming/<archive>.zip"` for sources
@@ -208,6 +289,16 @@ and seven checksum manifests (08 6/6, 09 7/7, 12 7/7, 13 8/8, 14 7/7, 16 6/6,
 excluded as regenerable (the largest delivered non-PDF file of batch 80 is
 126,780 bytes, of batch 81 185,939 bytes, both manuscripts; the largest shipped
 batch-81 file is 17,413 bytes), so there is no data to reconstruct.
+
+Not shipped from batch 83 (recoverable with
+`git show <arrival>:"docs/incoming/<archive>.zip"`, the arrival being
+`b63f0c852` for sources 19–24, `5ad44b1ed` for 25, `0d7b2441d` for 26,
+`79049d58c` for 27–28 and `51b0a69d7` for 29–30): the twelve manuscripts and
+their PDFs (19 45 pages, 20 50, 21 44, 22 33, 23 30, 24 32, 25 33, 26 34, 27
+34, 28 32, 29 57, 30 47); the delivery READMEs (`README.txt` of 19, 20, 21, 27,
+29 and 30, `README.md` of 22–26 and 28); and the checksum manifests
+`SHA256SUMS.txt` of 22 (9/9), 23 (8/8), 24 (8/8), 25 (8/8), 26 (7/7) and 28
+(7/7), all verified at placement. Nothing was excluded as regenerable.
 
 Shipped files whose text still uses delivery names or names unshipped files:
 `11-raw-orders-repository_audit.md` ("the accompanying article"; its audit
@@ -223,7 +314,17 @@ and its JSON); `data/13-products-pdf_inspection.json` (describes the unshipped
 `article.tex`, `surreal_lexicographic_orders.tex` or
 `surreal_lexicographic_orders_further_study.tex` beside themselves or in
 `code/`; and the reproducibility records printed in the report's Appendix A and
-Section 63, which name delivery files (annotated there and in Appendix B).
+Section 115, which name delivery files (annotated there and in Appendix B).
+Of batch 83, the shipped audit and status files and the build scripts name
+delivery files (`article.tex`, `article.pdf`, `SHA256SUMS.txt`,
+`code/finite_checks.py`, `data/finite_checks.json`, the manuscripts' own `.tex`
+and PDF names) and other manuscripts by library names: `surreal_well_orders_II.pdf`
+is source 17, `Surreal_Well_Orders_Further_Study.tex` source 13,
+`article(20261003-193743).tex` source 23 and
+`Surreal_Lexicographic_Orders_Prefix_Completions.tex` source 24. The table above
+maps the names; the unshipped files are in the arrival commits. The records
+printed in Section 111 (its subsections on checks, audits and the shipped checks,
+111.49) name delivery files and are annotated there.
 
 ## Labels
 
@@ -243,19 +344,35 @@ not source 11's question `swo:n16.7`); source 08's equation tags (1)–(13) are
 printed as (S08.1)–(S08.13), labelled `swo:sk:eq:t`*n*, and the batch-81
 equations as (S13.*n*), (S16.*n*), (S17.*n*), (S18.*n*) with their sources'
 numbers. Labels written for the merge begin `swo:vi:`, `swo:vii:`, `swo:viii:`
-and `swo:ix:` in Parts VI–IX.
+and `swo:ix:` in Parts VI–IX. The batch-83 sources' labels carry `swo:rs:` (19),
+`swo:lm:` (20), `swo:fu:` (21), `swo:rg:` (22), `swo:tm:` (23), `swo:pc:` (24),
+`swo:ph:` (25), `swo:nb:` (26), `swo:sc:` (27), `swo:ge:` (28), `swo:bw:` (29)
+and `swo:rt:` (30), each before the delivered label unchanged, internal prefixes
+included (21's and 29's `gl:` become `swo:fu:gl:` and `swo:bw:gl:`, unrelated to
+source 11's `swo:gl:`); their displayed equations keep their numbers as
+(S*NN*.*n*); merge labels begin `swo:x:`, `swo:xi:`, `swo:xii:`, `swo:xiii:`,
+`swo:xiv:` in Parts X–XIV and `swo:b83:` in the front and back matter.
 
-Totals: **794 labels.** `swo:` only 98 (60 of source 11, 11 for its
-unlabelled statements, 21 merge labels of batch 80, 6 of batch 81: four Part
-labels and two subsections), `swo:st:` 61, `swo:ec:` 52, `swo:sk:` 67 (as
-before), `swo:fs:` 62 (48 source labels + 14 for unlabelled statements),
-`swo:tc:` 62 (40 + 22), `swo:cb:` 69 (51 + 18), `swo:ds:` 74 (62 + 12),
-`swo:gs:` 85 (56 + 29), `swo:sh:` 98 (76 + 22), and merge labels `swo:vi:` 20,
-`swo:vii:` 12, `swo:viii:` 15, `swo:ix:` 19. Every one of the 531 labels of
-the ten sources is present exactly once. Cross-references are typed (lemma,
-note, …) through alias counters. No `swo:` label has a Lean mapping.
+Totals: **1,799 labels** (794 before batch 83, none renamed or lost). `swo:`
+only 103 (60 of source 11, 11 for its unlabelled statements, 21 merge labels
+of batch 80, 6 of batch 81: four Part labels and two subsections; 5 Part labels
+of batch 83), `swo:st:` 61, `swo:ec:` 52, `swo:sk:` 67 (as before), `swo:fs:`
+62 (48 source labels + 14 for unlabelled statements), `swo:tc:` 62 (40 + 22),
+`swo:cb:` 69 (51 + 18), `swo:ds:` 74 (62 + 12), `swo:gs:` 85 (56 + 29),
+`swo:sh:` 98 (76 + 22); `swo:rs:` 91 (74 + 17), `swo:lm:` 79 (68 + 11),
+`swo:fu:` 94 (91 + 3), `swo:rg:` 60 (39 + 21), `swo:tm:` 65 (48 + 16 + 1),
+`swo:pc:` 72 (53 + 19), `swo:ph:` 65 (51 + 14), `swo:nb:` 72 (54 + 18),
+`swo:sc:` 71 (56 + 15), `swo:ge:` 71 (52 + 19), `swo:bw:` 122 (109 + 11 + 2),
+`swo:rt:` 76 (65 + 11); and merge labels `swo:vi:` 20, `swo:vii:` 12,
+`swo:viii:` 15, `swo:ix:` 19, `swo:x:` 19, `swo:xi:` 2, `swo:xii:` 8,
+`swo:xiii:` 9, `swo:xiv:` 13, `swo:b83:` 11. Three batch-83 labels with a source
+sub-prefix were written for the merge (`swo:tm:sub:failures`,
+`swo:bw:sec:increasing`, `swo:bw:sub:scans`). Every one of the 531 labels of
+sources 08–18 and of the 760 delivered labels of sources 19–30 is present
+exactly once. Cross-references are typed (lemma, note, …) through alias
+counters. No `swo:` label has a Lean mapping.
 
-## Notation (Sections 1.3 and 1.3.1)
+## Notation (Sections 1.3, 1.3.1 and 1.3.2)
 
 `GB` includes **no** choice principle (as in `found:sub:gbconvention` and
 the [notation guide](../../NOTATION.md)); sources 09 and 12 work over GB with
@@ -291,6 +408,34 @@ printed (15's `b` there is not the baseline; 14's `J_R` is an initial branch,
 not 16's `J_R`); in its universe sections `κ` is an inaccessible. The
 notation guide's paragraph for these symbols belongs to the reciprocal-notes
 commit of batch 81L.
+
+For sources 19–30 (dated addendum, Section 1.3.2): source 26's alphabet size `κ`
+and cutoff `θ` are printed `μ` and `κ`, as are source 27's (in its scan and
+convex-copy sections) and source 23's `κ`, `λ` in its spectra section; at a
+noncardinal cutoff `θ` the sources' `κ = |θ|`, `μ = 2^κ` are kept, with the
+false reading printed. The core keeps its two codings by source: normalized
+permutations `𝒫_bd(b)` for 19, 20, 21, 24, 26, 28 and 29 (29's `𝒫_bd(e)`),
+support codes `𝒫_s(b)` for 22, 25, 27 and 30; source 25's two-sorted reduct
+(its script `𝒞_b`) is `𝐂_b`. Source 19's and 29's residual weights and
+weighted lengths `r(λ)`, `u_κ(λ)`, `R`, `U` are `wt(λ)`, `wt⁺_κ(λ)`, `ϱ_lo`,
+`ϱ_up` (30's `r(ν)` is `wt(ν)`); their `r_κ` is `ρ_κ`; source 21's `br` and
+29's `ℓ₂` are `ℓ₂`. The minimal slice and its injections are `𝒲_μ(X)`,
+`𝓘_μ(X)`, `𝓘_{<μ}(X)`, `𝓘^b_μ` (24, 26, 28's `𝒫_μ(X)`, `𝓘_μ(X)`; 24's
+`𝒯_μ(X)`; 26's `ℬ⁺`); source 28's bounded ideal `ℬ_μ` is `𝒥_b` and its loci
+`B^±_μ` are `H^±_μ`; `cf μ` is `q` (28's `δ`). Countable strata: the dense
+alphabet is `D`, `P_{ω+n}` (30's `P_n`), 30's nonisolated set `S_n` and
+relation tables `Tab_n`, 29's completion `Î`. Termination markers at a cut
+are `ε` (23's `𝖾`, 27's and 29's `†` at a cut), with `𝒯_ε`, `𝓘_ε`, `𝒯^inc_ε`;
+`†` stays the centered terminator; the shorter-first type of all words is
+`𝐓_min` (27's `ℬ`, 29's `𝐓`) and the centered increasing classes are
+`𝒯^inc_c`, `𝒯^inc_{†±}`, `𝒯^inc_pad` (27's `J`, `J_±`, `Q_0`; 29's `𝒞`, `𝒞_±`,
+`𝒞_pad`). Relation-table scans are `𝗌: ϑ → X×X` (27's `q`, `θ`); 30's
+inversion class is `Inv(W)`; the external order of an internally finite
+nonstandard interval is `I_∞` (19's `K`, 21's `H`); `ℱ = {n!}`; class
+well-order polynomials `P(Γ)` (23's `𝖯(Γ)`, 29's `𝒫(Γ)`); `CTH`, `CWO` as in
+source 29. Source 20's local ranks and minimum-type cutoffs are `lr_α(x)`,
+`Min_R`, and its restriction maps `π_{βα}` (19's `r_Y` is `π_Y`). Every
+renaming is listed in the table of Section 1.3.2 with its false reading.
 
 ## What the report claims
 
@@ -383,6 +528,60 @@ first.
     ω-standard model the full order is the factorial shuffle `σ({n!})` and
     set-likeness is not definable in it (Theorem 58.6, Corollary 58.10,
     source 18).
+11. **Set-sized strata, topology and permutation groups (Part X, sources 24,
+    19, 22, 26, 28, 21, 29, 30).** For every fixed type `α` of `No_{<κ}` with
+    finite tail `n`, `𝔹_{ϱ_lo} ×_lex n! ↪ 𝒲_α ↪ 𝔹_{ϱ_up} ×_lex n!` and the exact
+    embedded cube spectrum (Theorems 64.7, 64.11, source 19); every type at the
+    cutoff `ω₁` in ZFC (Corollary 64.20, source 30); weight and point characters
+    of every fixed-length stratum (Theorems 63.4, 63.9, source 22); the forward
+    prefix completion (Theorem 65.1), a homeomorphism `λ^μ ≅ 𝒲_μ(X)` with
+    `λ = μ^{<μ}` at regular `μ` (Theorem 66.2), and at the countable cutoff Baire
+    space with Dedekind completion `ℝ` (Theorem 67.2, source 24; homogeneity,
+    Theorem 67.8, source 21; seven proofs, Note 67.1); the strata `ω + n`
+    (Section 68, sources 29 and 30); at uncountable `μ` of countable cofinality
+    the minimal slice is not Borel in its injection completion (Theorem 69.17)
+    and it is completely metrizable exactly when `μ = ω` (Theorem 69.18,
+    source 26); the bounded subgroup is maximal and self-normalizing, and the
+    coarsest group topology above the bounded-prefix topology is `τ_{<μ}`
+    (Theorems 70.4, 70.6, 70.18, source 28); the global prefix completion
+    (Theorem 71.5, source 24).
+12. **Across birthday cutoffs (Part XI, sources 19, 20, 21, 29).** Exactly when
+    restriction preserves the native order (Theorem 73.1); coherent gluing of
+    cutoff profiles to class well-orders, set-likeness detected on a club, and
+    the append-tail direct system (Theorems 74.1, 74.7, 74.8, source 20);
+    fixed-slot coherence within a cardinality band (Theorem 75.1, source 21);
+    `𝔹_β ↪ No_{<θ}` iff `β < θ` for all ordinals (Theorem 76.5, source 29);
+    noncardinal cutoffs (Theorem 77.4, source 21; Section 78, source 29).
+13. **Words, markers and codes (Part XII, sources 23, 27, 29, 30).** No fixed
+    marker makes increasing words set-cut saturated (Theorem 82.1, source 23);
+    increasing words split at the terminator and the centered increasing order
+    is `𝐓_min^op ×_lex 𝐓_min` (Theorem 82.4, Corollary 82.5, source 27; source
+    29's route, Note 82.11); two scans of one countable carrier give orders with
+    the same spectrum and different topology (Theorems 84.2, 84.3, source 27);
+    the core is dense in relation-table orders of set-like scans (Theorems 84.5,
+    84.11, sources 27 and 30).
+14. **The core and its cylinders (Part XIII, sources 25, 22, 20, 21, 19, 27,
+    29, 30).** Branch configurations are classified up to core-and-cylinder
+    automorphisms (Theorem 90.1), exhaustiveness is invisible to the core with
+    all its unlabelled cylinders and set-many parameters (Theorems 91.1, 91.2),
+    and one cross-node label relation makes the structure rigid (Theorems
+    93.1, 93.3, source 25); the decorated completion and automorphism
+    extension of the raw order in an external set-sized model (Theorems 98.2,
+    98.5, source 19); the exact least ordinal support `max(δ_S, δ_T)`
+    (Theorems 101.1, 101.2, source 27); the admitted labelled enumerations
+    recover an available class realization (Theorem 102.3, source 22; sources
+    27 and 30 in notes).
+15. **Unrestricted class well-orders II (Part XIV, sources 20, 19, 21, 23, 27,
+    29, 30).** A local coding dichotomy for intervals of the unrestricted order
+    (Theorem 107.4, source 20); termination and normal forms of condensation
+    histories (Theorems 108.1, 108.16), and over GBC canonical terminating
+    histories exist iff class well-orders are strongly comparable,
+    `CTH ⇔ CWO` (Theorem 108.19, source 29); the external order of an externally
+    countable GBC model is `σ(ℱ)` or `σ(ℱ ∪ {I_∞})` as the model is ω-standard
+    or not (Theorem 109.1, source 19; sources 20 and 21 in notes), and every
+    set-sized GBC model's external order has the complete theory of `σ(ℱ)`
+    (Theorem 109.9, source 19; **the strongest unreviewed claim of batch 83**),
+    which is decidable (Corollary 109.22, source 20).
 
 ## What the report does not claim
 
@@ -399,7 +598,7 @@ Section 1.4 keeps every limitation of every source; none was dropped.
   Results proved independently by several batch-81 sources are credited to all
   of them, with no priority.
 - No machine verification, no Lean or Rocq build, no new Lean file. The Lean
-  module names in the ten formalization plans (Sections 20.7, 24, 25, 26 and
+  module names in the ten formalization plans of sources 08–18 (Sections 20.7, 24, 25, 26 and
   59) are proposals; no such module exists.
 - The finite checks verify finite instances only, never a transfinite,
   class-theoretic or cardinal statement.
@@ -419,6 +618,28 @@ Section 1.4 keeps every limitation of every source; none was dropped.
   theorem of bare GBC about a third sort of maps. Source 15's fixed-type
   classification covers `μ·γ + n` with finite `n` only. Source 16's Σ¹₁ bound
   is sufficient, not necessary.
+- Batch 83 (Section 1.4, addendum for sources 19–30; every source's limitation
+  is printed in its sections): no batch-83 source claims historical priority,
+  peer review or machine verification; none built the repository or compiled a
+  new Lean file; every Lean module name in their plans (Section 111) is a
+  proposal; their finite checks verify finite mechanisms only; their 139
+  research questions are proposals, not a census of open problems. Re-proofs
+  of Parts I–IX and of each other are notes or credited routes (the
+  countable-cutoff theorem by seven of them, the represented-cut theorem by
+  three more). Specific limits kept: source 19's coding length is exact only
+  when its two weighted bounds agree (open at singular non-strong-limit
+  residual cardinals at most `κ`); source 22's density and cellularity column
+  re-proves source 16 (only weights and characters are new); source 23's
+  termination criterion is a second route to source 16's theorem; source 24's
+  homeomorphisms are not order isomorphisms; source 26 treats minimal lengths
+  and ordinary Borel sets only; source 28's character bound concerns the
+  coarsest group refinement; source 29 does not establish `CWO ⇒ ETR`; source
+  30's classification under GCH is conditional; source 27's least support bound
+  optimizes ordinal height only, not birthdays; the countable-model theorems
+  describe external order types, not internal enumerations, and uncountable
+  class models are not classified. Sources 19, 20, 21 and 29 report internal
+  mathematical review and source 30 "independent AI-assisted proof review";
+  no such review is recorded in the repository.
 
 ## Formal status
 
@@ -436,15 +657,17 @@ inconsistency of unrestricted cuts (`noUnrestrictedCuts` in
 `SizeObstructions.lean`). Every other declaration the sources cite exists at
 the current revision, including `le_iff_options_lt` and
 `lt_iff_exists_option` in `SignSequenceComparison.lean` (cited by source 18);
-none states a result of this report. No batch-81 statement is formalized.
-Placement in the surreal collection beside the Lean foundations confers no
-formal status.
+none states a result of this report. No batch-81 or batch-83 statement is
+formalized; the batch-83 sources ship no Lean code, and the declarations their
+plans name as existing were checked against
+`Algebra/SurrealNumbers/Surreal/Foundations/` (Section 1.5). Placement in the
+surreal collection beside the Lean foundations confers no formal status.
 
-## Where one source answers another (Sections 1.7, 33, 39, 50, 60)
+## Where one source answers another (Sections 1.7, 33, 39, 50, 60, 72, 79, 85, 105, 112, 113.25)
 
 - Source 12's question on the weak-choice strength (its Remark 4.2 and
   Question 14.5): **answered** by source 11's Theorem 13.1; printed as
-  Remark 61.15, with Remark 13.4.
+  Remark 113.15, with Remark 13.4.
 - Source 08's question 11 (comparing non-set-like class well-orders):
   **answered** by Theorems 14.2 and 14.7.
 - Source 08's question 3 (coding lengths at singular cutoffs): answered in
@@ -457,17 +680,37 @@ formal status.
   open for strata that are not of this form, noncardinal cutoffs and other
   alphabets.
 - Batch 81 (dated notes of 3 October 2026, Sections 33, 39, 50 and 60, and the
-  status cells of the question index, Section 61): source 11's questions on
+  status cells of the question index, Section 113): source 11's questions on
   represented cuts and on the minimal slice's cut spectrum (`swo:n16.1`,
   `swo:n16.7`), source 09's directions 3 and 8 and source 08's questions 2 and
   7 are **answered**; source 11's `swo:n16.2`–`swo:n16.5` and `swo:n16.8`,
   source 12's `swo:st:n14.1`, `14.3`, `14.4`, `14.7`, `14.8`, source 09's
   directions 4–7 and source 08's questions 4, 6, 8, 9, 12, 13, 14 are answered
   in part. Among the batch-81 sources' own 74 questions (index in Section
-  61.5), source 13's on termination cuts is answered by source 16, source 14's
+  113.5), source 13's on termination cuts is answered by source 16, source 14's
   and source 16's on the minimal slice's local geometry by source 17, and
   source 16's on centered increasing words by source 18 (at the zero
   threshold).
+- Batch 83 (dated notes of 3 October 2026 in Section 113.25, items (a)–(q),
+  each Part's "What this Part answers", Sections 72, 79, 85, 105 and 112, dated
+  pointers at the end of Sections 33, 39, 50 and 60, and dated cells in both
+  question indexes): source 12's `swo:st:n14.1`, `14.2`, `14.3`, `14.7`, `14.8`
+  and `14.9` and source 11's `swo:n16.3`, `16.4`, `16.5` and `16.8` are answered
+  further, most in part; Part VIII's open items on extra predicates
+  (equality of labels across extension edges suffices, unlabelled cylinders do
+  not) and on ordinal support bounds (the ordinal half is **answered**);
+  source 09's fifth direction (a dense set-coded core exists for every
+  set-like scan) and source 08's question 9 (scan dependence, negatively at set
+  level); source 18's ω-nonstandard question `swo:sh:n19.8` (**answered**, three
+  times); source 17's `swo:gs:n15.4` (complete metrizability, **answered**) and
+  `swo:gs:n15.7` (recovering a class realization, **answered**); source 15's
+  `swo:cb:n13.5` and `swo:cb:n13.6` and source 14's `swo:tc:n14.7` (**answered**
+  in an external formulation by source 19). Within batch 83: source 24's
+  question 13.1 and source 28's question 1 are answered negatively by source
+  26; source 24's subgroup question by source 28; source 20's question 11.2 by
+  source 19 and 11.5 by source 29; source 22's label question by source 25;
+  source 23's question 16.1 had been answered by source 16. The 139 questions
+  of sources 19–30 are indexed in Section 113.12.
 
 ## Relation to the neighbouring reports
 
@@ -482,6 +725,13 @@ questions on other alphabets in part, and source 18's general permutation
 principle bears on its request for a cut-spine transfer theorem (Section 33).
 Part VI's minimal-slice results are the `No_{<κ}` analogues of that report's
 `lwo:prop:fixed-topology`, `lwo:rk:thm:Pgaps` and `lwo:sp:thm:gapcount`.
+Batch 83 answers its "Other ground orders" question further: source 19's cube
+spectrum and coding sandwich for every fixed type of `No_{<κ}` (Theorems 64.7,
+64.11), source 29's classification on the countable birthday band and its
+native birthday spectrum (Corollary 78.10, Theorem 76.5), and source 30's
+weight formula for the finite-tail strata of every alphabet (Corollary 63.12); the
+display remains open at singular non-strong-limit residual cardinals. A
+reciprocal note in that report belongs to a commit of its own.
 
 **[foundations](../foundations/)** supplies the conventions used throughout
 (`found:sub:gbconvention`, `found:prop:recursion`, `found:sub:km`,
@@ -512,22 +762,29 @@ cited, not extended: see "Formal status".
 
 TeX Live or MiKTeX with lmodern, amsmath/amssymb/amsthm, mathtools, mathrsfs,
 geometry, microtype, booktabs, longtable, array, tabularx, enumitem, xcolor,
-fancyhdr, listings, tcolorbox, aliascnt, hyperref, xurl and cleveref. No
-external figures or bibliography file.
+fancyhdr, listings, tcolorbox, aliascnt, etoolbox, hyperref, xurl and
+cleveref. No external figures or bibliography file.
 
 ```
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-Built with MiKTeX (pdfLaTeX): 349 pages; no errors, undefined references or
-citations, multiply defined labels, duplicate destinations, LaTeX or package
-warnings, or overfull boxes; 15 underfull-box warnings (10 in the build before
-Part IX). The four batch-81 writes added Parts VI–IX (116 → 151 → 188 → 236 →
-349 pages); the fourth added Part IX, the introductions, questions,
-conclusions, ledgers, reproducibility records, title pages and crosswalk of
-sources 13–18. Its `.aux`, compared with a build of the previous text, keeps
-every label; the only numbers that changed are those of the three sections of
-the questions part (51–53 became 61–63), as in the third write.
+Built with MiKTeX (pdfLaTeX): 831 pages; no errors, undefined references
+or citations, multiply defined labels, duplicate destinations, LaTeX or package
+warnings, or overfull boxes; 38 underfull-box warnings (15 in the
+build before batch 83, 10 before Part IX). The four batch-81 writes added Parts
+VI–IX (116 → 151 → 188 → 236 → 349 pages); the fourth added Part IX, the
+introductions, questions, conclusions, ledgers, reproducibility records, title
+pages and crosswalk of sources 13–18. The batch-83 write added Parts X–XIV and
+the front matter, questions, abstracts and crosswalk of sources 19–30 (349 →
+831 pages). Its `.aux`, compared with a build of the previous text, keeps
+every one of the 1,588 earlier `\newlabel` entries; the only numbers that changed
+are those of the three sections of the questions part (61–63 became 113–115),
+as in the batch-81 writes. With more than 99 sections, the contents' number box
+was widened (`\patchcmd` on `\l@section`, 1.5em → 2.3em), which removed 16
+overfull boxes in the table of contents. Tagged displays in the batch-83 Parts
+are printed as starred displays with `\tag`, as elsewhere in the report, since
+a tagged numbered `equation` repeats a hyperref destination.
 
 ## Rerunning the checks
 
@@ -581,6 +838,45 @@ scripts are kept as delivered and build nothing in this layout:
 `code/17-gaps-build.sh` first runs `python3 finite_checks.py`, absent under that
 name.
 
+**Batch 83.** Ten programs (sources 19, 20, 22–28 and 30) use only the Python
+standard library and check finite mechanisms only. Run them on copies, never in
+this directory: source 19's checker always writes `restriction_checks.json`
+beside itself, source 24's defaults to `data/finite_checks.json` beside `code/`,
+source 30's to `verification_results.json` beside itself, and sources 22, 23,
+25 and 26 to a relative `data/finite_checks.json`. With this directory as `$R`
+and an empty scratch directory `$S`:
+
+```
+cp "$R"/code/19-residual-check_restrictions.py "$R"/code/2[0-8]-*.py "$R"/code/30-tables-verify_finite.py "$S/"
+cd "$S"
+python 19-residual-check_restrictions.py               # writes restriction_checks.json here
+python 20-limits-finite_diagnostics.py  --output 20.json
+python 22-unranked-finite_checks.py     --output 22.json
+python 23-termination-finite_checks.py  --output 23.json
+python 24-completions-finite_checks.py  --output 24.json
+python 25-symmetries-finite_checks.py   --output 25.json
+python 26-nonborel-finite_checks.py     --output 26.json
+python 27-scans-finite_checks.py        --output 27.json
+python 28-envelope-finite_checks.py     --output 28.json
+python 30-tables-verify_finite.py       --output 30.json
+```
+
+and compare each output with its record in `"$R"/data/` using
+`diff --strip-trailing-cr`. Rerun on copies on 3 October 2026 with Python
+3.14.4 on Windows, each reproduced its record apart from line endings (CRLF on
+Windows). Recorded scope: 19 — 695,228 adjacent comparisons, carriers up to 7;
+20 — 58,255 + 609,862 restriction and witness checks, 28,920 dyadic word
+comparisons; 22 — 1,388,197 assertions; 23 — 547,480 checks (seed 20261003);
+24 — 5,913 permutations, 16,071 cylinders; 25 — 269,329 assertions (seed
+20261003); 26 — 5,645,785 assertions; 27 — 48 scans, 28,672 increasing-word
+pairs, 103,772 support-bound checks; 28 — 470,323 conjugation and 940,646
+group-uniformity identities; 30 — 59,810 partial orientation tables. The build
+scripts `code/{19,22,23,24,25,26,28,30}-*-build.sh` compile `.tex` files that
+are not shipped (some run their checker with a relative output first); they
+build nothing in this layout and are kept as delivered. Source 29 has no
+executable checks; its manifest hashes can be rechecked against the archive in
+its arrival commit. The records are summarized in Section 111.49.
+
 ## Other discrepancies
 
 - Source 11 is dated 3 October 2026, the UTC date of its pin; the other three
@@ -623,6 +919,32 @@ name.
   `small_cut_fillers` in `SignSequenceCut.lean` (Sections 1.4 and 59).
 - The status files of sources 13, 14 and 15's README describe this report as
   115 pages and four manuscripts, as it was at their pins.
+- The batch-83 placement message (`2e06337d5`) says that source 25's archive
+  `Surreal_Well_Orders_Prefix_Symmetries.zip` arrived in `0d7b2441d`; it
+  arrived in `5ad44b1ed` (`git log --diff-filter=A`), so batch 83's twelve
+  archives arrived in five commits, not four. The staged bytes are unaffected;
+  the report and this README give the correct commit.
+- Sources 19–30 read this report at pins with Parts I–V (`d5bd4a67b`,
+  `109aaca15`) or Parts I–VIII (`7ff7736ec`), and several describe it as it
+  was then (Parts I–V, a four-source or 116-page merge) or say that it lacks
+  what Parts VI–IX now hold. These sentences are kept as pinned provenance with
+  dated `[merge]` corrections: for example source 30's opening of its Section 4
+  (Note 64.14), source 23's "additions" and its
+  "settle the additional case asked there" (Part XII), the "answers negatively
+  the extension question" of sources 20 and 21 (second routes to Part VIII,
+  Section 97), and source 22's "We have not shown that this label information
+  can be discarded", answered by source 25 (Note 87.6).
+- Corrections to batch-83 source text, each marked where made: two typos of
+  source 29 (its lines 2123 and 2244, "sigma-compatp" and "distintp") and a
+  stray double comma in its Proposition 4.3 (`D_{λ,,2^n−1}`); citations of this
+  report and of sibling manuscripts replaced by cross-references; tagged
+  numbered displays printed as starred displays. A draft of Part XI printed
+  source 20's core as `𝒫_s(b)`; its codes are normalized permutations, so it
+  is printed `𝒫_bd(b)` (Section 1.9, "Where the batch-83 merge had to
+  choose").
+- Source 28's headline question (complete metrizability of the full singular
+  permutation space) was asked without knowledge of source 26, which answers it
+  negatively in ZFC; it is printed with that status (Note 70.13).
 - No retraction was made; no claim of another report or README is refuted.
 
 ## Reviews
@@ -677,4 +999,7 @@ Added 3 October 2026: the same tree has since reviewed the merged text
 The "Review status" item of the report's Section 1 records the first two in
 a dated note. None of these is an entry of the collection's review record,
 where this report's review stays pending. There is no review of the batch-81
-archives (sources 13–18) or of Parts VI–IX yet.
+archives (sources 13–18) or of Parts VI–IX yet, nor of the batch-83 archives
+(sources 19–30) or of Parts X–XIV. The claim most in need of one is source
+19's Theorem 109.9: every externally set-sized two-sorted model of GBC gives
+its pure external order `𝔚_all^𝓜` the complete theory of `σ(ℱ)`.
