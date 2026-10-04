@@ -1,0 +1,109 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype}
+\usepackage{booktabs,longtable,array}
+\usepackage{placeins}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black,
+ pdftitle={The Baker--Campbell--Hausdorff Formula: Complete Expansions, Proofs, and Analytic Qualifications},
+ pdfauthor={},pdfsubject={BCH, Dynkin formula, free Lie algebras, Zassenhaus, exponential coordinates, Weyl relations}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small The Baker--Campbell--Hausdorff formula}
+\fancyhead[R]{\small Complete expansions and proofs}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{3pt}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\BCH}{BCH}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\spanop}{span}
+\DeclareMathOperator{\Id}{Id}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\Lie}{Lie}
+\DeclareMathOperator{\rev}{rev}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\kk}{\mathbb K}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\CC}{\mathbb C}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\gfrak}{\mathfrak g}
+\newcommand{\hhh}{\mathfrak h}
+\newcommand{\LL}{\mathcal L}
+\newcommand{\Algebra}{\mathcal A}
+\newcommand{\TT}{\mathcal T}
+\newcommand{\Fock}{\mathcal F}
+\newcommand{\Rword}[1]{R(\mathrm{#1})}
+\newcommand{\Lword}[1]{L(\mathrm{#1})}
+\newcommand{\coeff}[1]{\bigl[#1\bigr]}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ot}{\widehat\otimes}
+\newcommand{\ord}{\mathcal O}
+\newcommand{\ket}[1]{\lvert #1\rangle}
+\newcommand{\bra}[1]{\langle #1\rvert}
+\newcommand{\braket}[2]{\langle #1\mid #2\rangle}
+\newcommand{\bplus}{b^{+}}
+\newcommand{\bminus}{b^{-}}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,
+ frame=single,framerule=0.3pt,rulecolor=\color{black!30}}
+\title{\textbf{The Baker--Campbell--Hausdorff Formula}\\[0.4em]
+\large Complete Expansions, Proofs, and Analytic Qualifications}
+\author{}
+\date{16 September 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a self-contained derivation of the mathematical formulas and explicitly stated results in the Wikipedia article on the Baker--Campbell--Hausdorff formula, with the hypotheses needed to make each assertion correct. The main algebraic proof establishes the primitive-element theorem and the Dynkin--Specht--Wever projection, and then derives a finite coefficient formula for every associative word and Dynkin's complete commutator expansion. A second, differential route gives the Poincar\'e integral, Bernoulli recurrences, a complete expansion in the number of occurrences of one variable, and an explicit bivariate generating function for its quadratic part. We prove local convergence with quantitative remainder bounds, classify the logarithms in the article's divergence example, derive global identities for central and eigenvector commutators, and construct every Zassenhaus exponent with a convergent-product majorant. Trotter, symmetric, and recursively higher-order product formulas follow. The infinitesimal formulas are developed into all-order expressions for coframes, pullback metrics, and volume densities. Finally, the Weyl and displacement identities are proved in concrete Hilbert-space representations, rather than inferred from an unjustified manipulation of unbounded operators. Exact rational code and coefficient tables through degree twelve accompany the paper.
+\end{abstract}
+\vspace{0.5em}
+\noindent\textbf{Keywords.} Free Lie algebra; noncommutative power series; BCH; Dynkin projection; Bernoulli numbers; Zassenhaus factorization; exponential coordinates; Weyl relations.
+\tableofcontents
+\newpage
+\input{tex/01_scope_formal}
+\input{tex/02_hopf}
+\input{tex/03_coefficients}
+\input{tex/04_differential}
+\input{tex/05_y_expansion}
+\input{tex/06_analysis_groups}
+\input{tex/07_special}
+\input{tex/08_zassenhaus}
+\input{tex/09_splitting}
+\input{tex/10_geometry}
+\input{tex/11_quantum}
+\input{tex/12_computation}
+\appendix
+\input{tex/appendix_pbw}
+\input{tex/appendix_tables}
+\FloatBarrier
+\input{tex/appendix_coverage}
+\input{tex/references}
+\end{document}

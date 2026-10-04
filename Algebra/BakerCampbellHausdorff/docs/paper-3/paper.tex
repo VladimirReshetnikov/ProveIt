@@ -1,0 +1,1561 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{microtype,booktabs,longtable,array}
+\usepackage{xcolor}
+\definecolor{linkblue}{RGB}{27,57,94}
+\usepackage[colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={The Baker--Campbell--Hausdorff Formula: Complete Expansions, Structural Proofs, and Applications},pdfsubject={A comprehensive proof-based treatment with all-orders expansions and exact symbolic verification},pdfkeywords={Baker--Campbell--Hausdorff, Dynkin, Zassenhaus, Lie algebra, Bernoulli numbers, Weyl relations}}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+\allowdisplaybreaks[2]
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\K}{\mathbb K}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\g}{\mathfrak g}
+\newcommand{\h}{\mathfrak h}
+\newcommand{\A}{\mathcal A}
+\newcommand{\Lie}{\mathcal L}
+\newcommand{\T}{\mathcal T}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\id}{\mathrm{id}}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\ad}{\operatorname{ad}}
+\newcommand{\Ad}{\operatorname{Ad}}
+\newcommand{\tr}{\operatorname{tr}}
+\newcommand{\BCH}{\operatorname{BCH}}
+\newcommand{\Spec}{\operatorname{Spec}}
+\newcommand{\End}{\operatorname{End}}
+\newcommand{\GL}{\operatorname{GL}}
+\newcommand{\SL}{\operatorname{SL}}
+\newcommand{\Rbr}{\mathcal R}
+\newcommand{\wt}{\operatorname{wt}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\coeff}[2]{[#1]#2}
+\newcommand{\smallO}{\mathcal O}
+\numberwithin{equation}{section}
+\title{The Baker--Campbell--Hausdorff Formula:\\Complete Expansions, Structural Proofs, and Applications}
+\author{}
+\date{September 16, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop a self-contained account of the Baker--Campbell--Hausdorff formula and of the mathematical claims appearing in the Wikipedia article of that name. The formal logarithm is first computed coefficient by coefficient in a free associative algebra. A proof of the Dynkin--Specht--Wever identity then establishes Friedrichs' characterization of primitive elements and yields Dynkin's complete commutator expansion. A second construction uses the differential of the exponential map and proves the Poincar\'e integral formula, Bernoulli recursions, and explicit expansions of every bidegree, including all terms hidden by the usual remainder quadratic in one variable. We give the entire degree-six polynomial, quantitative convergence and remainder estimates, and a full analysis of the article's nonconvergence example. Zassenhaus factorization is supplied with two recursions, a finite nonrecursive rooted-tree formula for every exponent, and a convergence proof. Further sections prove product formulas, the global central and affine special cases, the infinitesimal and metric identities with their necessary qualifications, and the Weyl and displacement-operator identities in concrete Hilbert-space realizations. An appendix maps the source article's claims to proofs. Exact rational-arithmetic software and coefficient files accompany the paper.
+\end{abstract}
+\tableofcontents
+
+\section{Scope, conventions, and a guide to the results}\label{sec:scope}
+The question that organizes this paper is elementary to state: given two quantities $X,Y$ whose products need not commute, can the product $e^Xe^Y$ be written as one exponential, and what exactly is its exponent? The central answer is
+\begin{equation}\label{eq:main}
+ e^Xe^Y=e^{Z(X,Y)},\qquad
+ Z(X,Y)=X+Y+\frac12[X,Y]+\frac1{12}[X,[X,Y]]
+                  +\frac1{12}[Y,[Y,X]]+\cdots.
+\end{equation}
+The substantive assertion is not the existence of a formal logarithm. It is that every homogeneous part of that logarithm is a \emph{Lie polynomial}: a linear combination of nested commutators.
+
+Our coverage target is the English Wikipedia article \cite{wiki}, revision 1368909113, retrieved September 16, 2026. The article is used as a list of questions, not as a substitute for proofs. Appendix~\ref{app:coverage} records the correspondence. Historical priority statements are bibliographical claims, rather than mathematical theorems. Links in ``See also'' do not assert the full statements of the linked theorems; in particular, proving the Stone--von Neumann uniqueness theorem or the Golden--Thompson inequality is not part of this coverage target.
+
+The algebraic proofs include the structural results they use, including the relevant Poincar\'e--Birkhoff--Witt argument. Standard foundations of analysis (the inverse function theorem, uniqueness of ordinary differential equations, and basic Hilbert-space spectral theory) are assumed. Several distinctions are essential throughout.
+\begin{itemize}
+\item \emph{Formal identities} hold coefficient by coefficient, with no assertion of numerical convergence. Our base field $\K$ has characteristic zero.
+\item \emph{Analytic identities} require a specified domain of convergence or a separately justified continuation. Unless otherwise stated, analytic norm estimates are in a unital real or complex Banach algebra with submultiplicative norm and $\norm{I}=1$.
+\item \emph{Global exponential identities} need not identify a principal logarithm. For unbounded operators, domains cannot be suppressed.
+\end{itemize}
+The convention is $[U,V]=UV-VU$ and $\ad_U(V)=[U,V]$. A word $w=a_1\cdots a_n$ has length $|w|=n$, and its \emph{right-nested bracketing} is
+\begin{equation}\label{eq:rightbracket}
+ \Rbr(w)=[a_1,[a_2,\ldots,[a_{n-1},a_n]\ldots]],
+ \qquad \Rbr(a)=a,\qquad \Rbr(1)=0.
+\end{equation}
+Thus $[X^rY^s]$ in Dynkin's formula means the bracketing of a string, not the commutator of two powers. Empty runs in such a string are omitted. The notation $\smallO_{\deg}(m)$ denotes terms of total degree at least $m$. The notation $\smallO(Y^m)$ means terms containing at least $m$ occurrences of $Y$; it is not a claim of uniformity as $X$ varies.
+
+For orientation, Sections~\ref{sec:formal}--\ref{sec:dynkin} establish the algebraic theorem. Sections~\ref{sec:differential}--\ref{sec:convergence} explain differential constructions and convergence. The remaining sections develop the special cases, factorizations, geometry, and operator applications. A reader interested chiefly in coefficients can use the nonrecursive formulas \eqref{eq:wordcoefficient}, \eqref{eq:dynkin}, \eqref{eq:bidegree}, and \eqref{eq:treeformula} directly.
+
+\section{Formal exponentials and the complete word expansion}\label{sec:formal}
+\subsection{The degree completion}
+Let $V$ be the vector space with basis $X,Y$, and put
+\[
+ T(V)=\bigoplus_{n\geq0}V^{\otimes n}=\K\langle X,Y\rangle,
+ \qquad
+ \widehat T(V)=\prod_{n\geq0}V^{\otimes n}
+              =\K\langle\!\langle X,Y\rangle\!\rangle.
+\]
+Multiplication concatenates words. The degree filtration is
+$F^m\widehat T=\prod_{n\geq m}V^{\otimes n}$. If $A\in F^1\widehat T$, then $A^k\in F^k\widehat T$; consequently
+\begin{equation}\label{eq:explog}
+ \exp A=\sum_{k\geq0}\frac{A^k}{k!},\qquad
+ \log(1+A)=\sum_{k\geq1}\frac{(-1)^{k-1}}{k}A^k
+\end{equation}
+are well-defined. At every fixed degree only finitely many summands contribute. This observation justifies all formal rearrangements below.
+
+\begin{lemma}[Formal inverse functions]\label{lem:explog}
+Exponential is a bijection from $F^1\widehat T$ to $1+F^1\widehat T$, with inverse logarithm. If $A$ and $B$ commute, then $e^{A+B}=e^Ae^B$. If $P,Q\in1+F^1\widehat T$ commute, then $\log(PQ)=\log P+\log Q$.
+\end{lemma}
+\begin{proof}
+The ordinary one-variable identities $\log(e^z)=z$ and $e^{\log(1+z)}=1+z$ hold in $\Q[[z]]$: differentiating each composition gives respectively $1$ and $1$, with the appropriate constant term. Substitution of $A$ is legitimate because its positive filtration degree makes each coefficient finite. Commuting $A,B$ satisfy the binomial theorem, so comparison of coefficients in \eqref{eq:explog} proves $e^{A+B}=e^Ae^B$. For commuting $P,Q$, their logarithms commute, being series in commuting elements; apply the exponential identity and its injectivity.
+\end{proof}
+
+Define
+\begin{equation}\label{eq:Zdefinition}
+ Z(X,Y)=\log(e^Xe^Y)=\sum_{N\geq1}Z_N(X,Y),
+ \qquad Z_N\in V^{\otimes N}.
+\end{equation}
+In particular, \eqref{eq:main} already holds as an associative formal identity. We have not yet proved that the $Z_N$ are Lie polynomials.
+
+\subsection{An explicit finite formula for every word}
+Define a weight on nonempty words by
+\[
+ a(w)=
+ \begin{cases}
+  1/(r!s!),& w=X^rY^s,\quad r,s\geq0,\quad r+s>0,\\
+  0,&\text{otherwise}.
+ \end{cases}
+\]
+The permitted words are exactly those containing no adjacent transition $YX$.
+\begin{theorem}[Complete associative coefficients]\label{thm:word}
+For every nonempty word $w$ of length $N$,
+\begin{equation}\label{eq:wordcoefficient}
+ c(w):=\coeff{w}{Z(X,Y)}
+ =\sum_{k=1}^{N}\frac{(-1)^{k-1}}{k}
+   \sum_{\substack{w=w_1\cdots w_k\\|w_i|>0}}
+       \prod_{i=1}^k a(w_i).
+\end{equation}
+The inner sum runs over cuts of $w$ into contiguous nonempty subwords. Equivalently,
+\begin{equation}\label{eq:wordblocks}
+ Z(X,Y)=\sum_{k\geq1}\frac{(-1)^{k-1}}{k}
+ \sum_{\substack{r_i,s_i\geq0\\r_i+s_i>0\;(1\leq i\leq k)}}
+ \frac{X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}}
+      {\prod_{i=1}^k r_i!s_i!}.
+\end{equation}
+Both formulas determine every term, not merely a truncation.
+\end{theorem}
+\begin{proof}
+The coefficient of $w$ in $e^Xe^Y-I$ is precisely $a(w)$. The coefficient of $w$ in $(e^Xe^Y-I)^k$ is the convolution over its $k$ contiguous factors. Insert this into the logarithm series. No product of more than $N$ nonempty words can have length $N$, which supplies the upper limit and proves finiteness. Expanding each permitted factor as $X^{r_i}Y^{s_i}$ gives \eqref{eq:wordblocks}.
+\end{proof}
+For example, $c(XY)=1-1/2=1/2$, whereas $c(YX)=0-1/2=-1/2$. For $XXY$, the contributions with one, two, and three blocks are $1/2$, $-3/4$, and $1/3$, respectively, yielding $1/12$.
+
+\begin{corollary}[Several exponentials]\label{cor:manyexp}
+For letters $A_1,\ldots,A_m$, let $\rho=(r_{ij})$ be a $k\times m$ array of nonnegative integers, with every row having positive sum. Set $|\rho|=\sum_{i,j}r_{ij}$ and let $w(\rho)$ be the word obtained by concatenating the rows $A_1^{r_{i1}}\cdots A_m^{r_{im}}$. Then
+\begin{equation}\label{eq:manyword}
+ \log(e^{A_1}\cdots e^{A_m})
+ =\sum_{k\geq1}\frac{(-1)^{k-1}}{k}
+   \sum_{\rho}\frac{w(\rho)}{\prod_{i,j}r_{ij}!}.
+\end{equation}
+After Section~\ref{sec:hopf}, each word on the right can also be replaced by $\Rbr(w(\rho))/|\rho|$.
+\end{corollary}
+\begin{proof}
+Repeat the proof of Theorem~\ref{thm:word} with $e^{A_1}\cdots e^{A_m}-I$. The later replacement follows because the logarithm is primitive and homogeneous primitive elements satisfy the projection identity proved below.
+\end{proof}
+
+\section{Hopf structure, primitive elements, and a structural proof}\label{sec:hopf}
+\subsection{The coproduct and its completion}
+The completed tensor product in this section is
+\[
+ \widehat T\,\widehat\otimes\,\widehat T
+ =\prod_{n\geq0}\bigoplus_{p+q=n}V^{\otimes p}\otimes V^{\otimes q}.
+\]
+An ordinary algebraic tensor product is generally too small for the infinite series at issue. For example, after restricting to the one-generator subalgebra, the proposed coproduct of $\sum_{n\geq0}X^n$ has coefficient of $X^p\otimes X^q$ equal to $\binom{p+q}{p}$. Its coefficients in the second variable, viewed as series in the first variable $x$, are $(1-x)^{-q-1}$, $q\geq0$. These are linearly independent: multiply a finite proposed relation by the largest power of $1-x$ and compare a polynomial in $1-x$. But the second-variable coefficients of an algebraic tensor $\sum_{j=1}^r f_j(x)g_j(y)$ span a space of dimension at most $r$. Thus this coproduct genuinely requires a completion. There is a unique continuous algebra homomorphism
+\begin{equation}\label{eq:coproduct}
+ \Delta:\widehat T\longrightarrow\widehat T\widehat\otimes\widehat T,
+ \quad \Delta(X)=X\otimes1+1\otimes X,
+ \quad \Delta(Y)=Y\otimes1+1\otimes Y.
+\end{equation}
+For a word $w=a_1\cdots a_n$ it is explicitly
+\begin{equation}\label{eq:unshuffle}
+ \Delta(w)=\sum_{S\subseteq\{1,\ldots,n\}}w_S\otimes w_{S^c},
+\end{equation}
+where both subwords retain their original order. Coassociativity follows by assigning each letter independently to one of three tensor factors. The counit $\eps$ extracts the constant term.
+
+The map
+\begin{equation}\label{eq:antipode}
+ \mathcal S(a_1\cdots a_n)=(-1)^na_n\cdots a_1
+\end{equation}
+is an anti-homomorphism and an antipode. Indeed, write
+$R(w)=\sum w_{(1)}\mathcal S(w_{(2)})$ using \eqref{eq:unshuffle}. Splitting the coproduct of $aw$ according to the factor containing $a$ gives $R(aw)=aR(w)-R(w)a$. The cases $R(1)=1$ and $R(a)=0$ prove $R(w)=0$ for nonempty words. The other antipode identity is proved in the same way, splitting off the last letter. This proves all the Hopf identities needed here without an external structure theorem.
+
+\begin{definition}
+An element $P$ is \emph{primitive} if $\Delta(P)=P\otimes1+1\otimes P$. An element $G\in1+F^1\widehat T$ is \emph{group-like} if $\Delta(G)=G\otimes G$.
+\end{definition}
+\begin{lemma}\label{lem:group-like}
+The group-like elements form a group. Exponential and logarithm restrict to mutually inverse bijections between primitive and group-like elements.
+\end{lemma}
+\begin{proof}
+Multiplicativity of $\Delta$ gives
+$\Delta(GH)=(G\otimes G)(H\otimes H)=GH\otimes GH$,
+and inversion gives the assertion for $G^{-1}$. If $P$ is primitive, then $P\otimes1$ and $1\otimes P$ commute, so
+\[
+ \Delta(e^P)=e^{\Delta(P)}=e^{P\otimes1}e^{1\otimes P}=e^P\otimes e^P.
+\]
+Conversely, if $G$ is group-like, factor $G\otimes G=(G\otimes1)(1\otimes G)$ into commuting factors. Lemma~\ref{lem:explog} gives
+$\Delta(\log G)=\log G\otimes1+1\otimes\log G$.
+\end{proof}
+
+\subsection{A proof of the Dynkin--Specht--Wever identity}
+Let $N$ denote the degree operator: $N(w)=|w|w$. It is a derivation because degrees add under concatenation. For linear maps on $T(V)$, convolution is $f*g=m(f\otimes g)\Delta$, where $m$ is multiplication. Consider
+\[
+ D=N*\mathcal S.
+\]
+\begin{lemma}[Right Dynkin operator]\label{lem:DSW}
+For every word $w$, $D(w)=\Rbr(w)$. If $P_n$ is homogeneous primitive of degree $n\geq1$, then
+\begin{equation}\label{eq:DSW}
+ \Rbr(P_n)=nP_n.
+\end{equation}
+\end{lemma}
+\begin{proof}
+We have $D(1)=0$ and $D(a)=a$ for a letter $a$. For a nonempty word $w$, split $\Delta(aw)$ into the two possible locations of $a$, use $N(aw_{(1)})=aw_{(1)}+aN(w_{(1)})$, and use $\mathcal S(aw_{(2)})=-\mathcal S(w_{(2)})a$. It follows that
+\begin{align*}
+ D(aw)
+ &=a\sum w_{(1)}\mathcal S(w_{(2)})
+   +a\sum N(w_{(1)})\mathcal S(w_{(2)})
+   -\sum N(w_{(1)})\mathcal S(w_{(2)})a\\
+ &=a\eps(w)+aD(w)-D(w)a=[a,D(w)].
+\end{align*}
+Induction proves the word formula. If $P_n$ is primitive, its coproduct has only the two primitive terms. Therefore
+\[
+ D(P_n)=N(P_n)\mathcal S(1)+N(1)\mathcal S(P_n)=nP_n,
+\]
+proving \eqref{eq:DSW}.
+\end{proof}
+The convolution approach is related to the more general Dynkin-operator constructions studied in \cite{menouspatras}; the elementary calculation above contains the entire argument required for the present setting.
+
+\begin{theorem}[Friedrichs' theorem in the degree completion]\label{thm:friedrichs}
+Let $\Lie(X,Y)$ be the Lie subalgebra of $T(V)$ generated by $X,Y$, and let $\Lie_n$ be its homogeneous part of degree $n$. Then
+\begin{equation}\label{eq:friedrichs}
+ \operatorname{Prim}(\widehat T)=\prod_{n\geq1}\Lie_n.
+\end{equation}
+In particular, every $Z_N$ in \eqref{eq:Zdefinition} is a Lie polynomial.
+\end{theorem}
+\begin{proof}
+The commutator of primitive elements is primitive: expand
+$[P\otimes1+1\otimes P,Q\otimes1+1\otimes Q]$ and cancel the cross terms. Hence all Lie polynomials and their degree-convergent sums are primitive.
+
+Conversely, the constant part of a primitive element vanishes, and comparison of total degree in its coproduct shows that each homogeneous part $P_n$ is primitive. Lemma~\ref{lem:DSW} gives $P_n=\Rbr(P_n)/n$, a linear combination of nested commutators. Division by $n$ is precisely where characteristic zero is used.
+
+Finally $X,Y$ are primitive; their exponentials and the product $e^Xe^Y$ are group-like; its logarithm is primitive by Lemma~\ref{lem:group-like}. Apply \eqref{eq:friedrichs}.
+\end{proof}
+
+\subsection{Universality and enveloping algebras}\label{subsec:universal}
+For a Lie algebra $\g$, its universal enveloping algebra is
+\[
+ U(\g)=T(\g)/\langle uv-vu-[u,v]_{\g}:u,v\in\g\rangle.
+\]
+The Poincar\'e--Birkhoff--Witt argument in Appendix~\ref{app:pbw} proves that $\g\to U(\g)$ is injective. Consequently the Lie subalgebra generated by $X,Y$ in the free associative algebra has the free Lie algebra's universal property: an assignment $X\mapsto x$, $Y\mapsto y$ can be evaluated in $U(\g)$, and every nested commutator lands back in its copy of $\g$. An associative polynomial relation in $X,Y$ therefore vanishes under every such evaluation.
+
+\begin{proposition}\label{prop:enveloping}
+The universal enveloping algebra of the free Lie algebra on $V$ is canonically $T(V)$. Every $U(\g)$ has the Hopf structure induced by
+\[
+ \Delta(u)=u\otimes1+1\otimes u,\qquad
+ \eps(u)=0,\qquad \mathcal S(u)=-u\quad(u\in\g).
+\]
+\end{proposition}
+\begin{proof}
+An algebra homomorphism from either $U(\Lie(V))$ or $T(V)$ into any associative algebra is specified freely by a linear map on $V$: for the first algebra use first the free Lie property and then the enveloping property. More concretely, the maps in both directions defined by the common generators compose to the identity since those generators generate both algebras. For the Hopf assertion, expanding the coproduct of $uv-vu-[u,v]$ gives that relation tensored with $1$, plus $1$ tensored with that relation; all mixed terms cancel. The counit and antipode preserve the defining ideal as well. The Hopf identities on the quotient follow from those on the tensor algebra.
+\end{proof}
+For an arbitrary characteristic-zero Lie algebra, the rigorous version of $\log(e^xe^y)$ is initially $\log(e^{tx}e^{ty})$ in $U(\g)[[t]]$. Its coefficients lie in $\g$. Substituting $t=1$ requires nilpotence, a suitable complete filtration, or analytic convergence; it is not automatic in an abstract untopologized vector space.
+
+\section{Dynkin's formula and the polynomial through degree six}\label{sec:dynkin}
+\begin{theorem}[Dynkin's all-terms formula]\label{thm:dynkin}
+Put $d=\sum_{i=1}^k(r_i+s_i)$. Then
+\begin{equation}\label{eq:dynkin}
+ \boxed{
+ Z(X,Y)=\sum_{k\geq1}\frac{(-1)^{k-1}}{k}
+ \sum_{\substack{r_i,s_i\geq0\\r_i+s_i>0}}
+ \frac{\Rbr(X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k})}
+      {d\prod_{i=1}^k r_i!s_i!}.}
+\end{equation}
+To obtain $Z_N$, impose $d=N$ and $1\leq k\leq N$. Thus each homogeneous term is a finite, explicit sum of rational multiples of Lie monomials.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:friedrichs} says $Z_N$ is primitive. Apply $\Rbr/N$ to its associative expression \eqref{eq:wordblocks}. Lemma~\ref{lem:DSW} says this leaves $Z_N$ unchanged. This proves the displayed formula in every degree.
+\end{proof}
+The classical coefficient formula is due to Dynkin \cite{dynkin}. Notice that one must project a \emph{whole homogeneous Lie polynomial}; replacing an arbitrary associative polynomial by its bracket projection generally changes it.
+
+If $s_k>1$, the last two letters in the bracketed word are both $Y$, and the term vanishes. If $s_k=0$ and $r_k>1$, they are both $X$, and again the term vanishes. Other terms can also vanish, because a run may continue across a block boundary. The two tests just stated are sufficient, not necessary, tests for vanishing.
+
+\subsection{Symmetries, associativity, and the commutator ideal}
+\begin{proposition}\label{prop:identities}
+The following identities hold formally:
+\begin{align}
+ Z(Y,X)&=-Z(-X,-Y), &
+ Z_N(Y,X)&=(-1)^{N+1}Z_N(X,Y),\label{eq:parity}\\
+ Z(Z(X,Y),T)&=Z(X,Z(Y,T)),\label{eq:assoc}\\
+ Z(X,0)&=Z(0,X)=X, & Z(X,-X)&=0.\label{eq:unitinverse}
+\end{align}
+For $N\geq2$, $Z_N$ belongs to the Lie ideal generated by $[X,Y]$.
+\end{proposition}
+\begin{proof}
+The inverse of $e^{-X}e^{-Y}$ is $e^Ye^X$. Since $\log(G^{-1})=-\log G$, this proves the first identity; homogeneous scaling gives the second. Associativity of the product of three exponentials and injectivity of the formal exponential give \eqref{eq:assoc}. The unit and inverse identities follow in the same fashion. Modulo the Lie ideal generated by $[X,Y]$, the two generators commute, so their generated Lie algebra is abelian and $Z$ becomes $X+Y$. Its higher homogeneous parts must therefore belong to that ideal.
+\end{proof}
+For an associative commutator, antisymmetry and Jacobi require no additional axiom: expanding
+$[A,[B,C]]+[B,[C,A]]+[C,[A,B]]$ produces each of the six ordered products twice with opposite signs. A useful consequence is
+\begin{equation}\label{eq:ad-hom}
+ [\ad_A,\ad_B]=\ad_{[A,B]}.
+\end{equation}
+For example, $[X,[Y,[X,Y]]]=[Y,[X,[X,Y]]]$, since the difference is $[[X,Y],[X,Y]]=0$.
+
+\subsection{The full displayed polynomial}
+To avoid ambiguity, the following formulas list the entire homogeneous pieces rather than putting all higher degrees under one ellipsis:
+\begin{align}
+ Z_1={}&X+Y,\label{eq:z1}\\
+ Z_2={}&\frac12[X,Y],\label{eq:z2}\\
+ Z_3={}&\frac1{12}\bigl([X,[X,Y]]+[Y,[Y,X]]\bigr),\label{eq:z3}\\
+ Z_4={}&-\frac1{24}[Y,[X,[X,Y]]],\label{eq:z4}\\
+ Z_5={}&-\frac1{720}\bigl(\Rbr(YYYYX)+\Rbr(XXXXY)\bigr)\notag\\
+ &+\frac1{360}\bigl(\Rbr(XYYYX)+\Rbr(YXXXY)\bigr)\notag\\
+ &+\frac1{120}\bigl(\Rbr(YXYXY)+\Rbr(XYXYX)\bigr),\label{eq:z5}\\
+ Z_6={}&\frac1{240}\Rbr(XYXYXY)\notag\\
+ &+\frac1{720}\bigl(\Rbr(XYXXXY)-\Rbr(XXYYXY)\bigr)\notag\\
+ &+\frac1{1440}\bigl(\Rbr(XYYYXY)-\Rbr(XXYXXY)\bigr).\label{eq:z6}
+\end{align}
+Here the compact notation has exactly the right-nesting meaning in \eqref{eq:rightbracket}; for example $\Rbr(XYXXXY)=[X,[Y,[X,[X,[X,Y]]]]]$.
+
+\begin{proposition}\label{prop:lowdegrees}
+Equations \eqref{eq:z1}--\eqref{eq:z6} are the degree-one through degree-six components of \eqref{eq:dynkin}. In associative form the first four are
+\begin{align}
+ Z_1={}&X+Y, & Z_2={}&\tfrac12(XY-YX),\notag\\
+ Z_3={}&\tfrac1{12}(X^2Y+XY^2-2XYX+Y^2X+YX^2-2YXY),\label{eq:assoc34}\\
+ Z_4={}&\tfrac1{24}(X^2Y^2-2XYXY-Y^2X^2+2YXYX).\notag
+\end{align}
+\end{proposition}
+\begin{proof}
+Here is an explicit coefficient-level method that verifies all degrees in the proposition, including the less familiar fifth and sixth. If $w=a_1\cdots a_n$, expand its right-nested bracket by
+\begin{equation}\label{eq:bracketexpand}
+ \Rbr(w)=\sum_{S\subseteq\{1,\ldots,n-1\}}
+ (-1)^{n-1-|S|}\,w_S\,a_n\,\operatorname{rev}(w_{S^c}),
+\end{equation}
+where $S^c$ here is taken inside $\{1,\ldots,n-1\}$. To prove this, build the bracket from the innermost letter outward. At each stage the new letter is placed either on the left with sign $+$ or on the right with sign $-$. This gives precisely the displayed subword expansion.
+
+For each word of length at most six, substitute \eqref{eq:bracketexpand} in \eqref{eq:z1}--\eqref{eq:z6} and compare with the finite cut sum \eqref{eq:wordcoefficient}. This is a finite rational identity. For completeness, Appendix~\ref{app:wordtable} prints the full list of nonzero associative coefficients through degree six. Both sides of the proposed formulas give exactly that table, with zero for every other word. Thus the comparison is exhaustive, rather than a selection of numerical substitutions. Expanding the brackets in degrees three and four yields \eqref{eq:assoc34} directly.
+\end{proof}
+The verification program repeats this coefficient comparison in exact arithmetic, and also independently recovers the coefficients from the differential and integral formulas derived next. These tests provide reproducibility; the all-degrees proof is Theorem~\ref{thm:dynkin}.
+
+\section{Conjugation, the exponential differential, and Bernoulli series}\label{sec:differential}
+\subsection{Campbell's conjugation identity}
+\begin{theorem}[Campbell identity]\label{thm:campbell}
+In the formal setting, and for all bounded $X,Y$ in a Banach algebra,
+\begin{equation}\label{eq:campbell}
+ \Ad_{e^X}Y=e^XYe^{-X}=e^{\ad_X}Y
+          =\sum_{n\geq0}\frac{\ad_X^nY}{n!}.
+\end{equation}
+The Banach-algebra series converges absolutely for every $X,Y$. More explicitly,
+\begin{equation}\label{eq:binomialad}
+ \ad_X^nY=\sum_{j=0}^n(-1)^j\binom nj X^{n-j}YX^j.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $F(t)=e^{tX}Ye^{-tX}$. Differentiation gives
+$F'(t)=XF(t)-F(t)X=\ad_XF(t)$ and $F(0)=Y$. Comparing powers of $t$ gives the unique formal solution $F(t)=\sum t^n\ad_X^nY/n!$. For bounded operators the same conclusion follows from uniqueness of the linear differential equation, or directly from the absolutely convergent series. Indeed $\norm{\ad_X^nY}\leq2^n\norm X^n\norm Y$. Finally left and right multiplication by $X$ commute, and $\ad_X=L_X-R_X$; their binomial theorem is \eqref{eq:binomialad}.
+\end{proof}
+Since conjugation is multiplicative, it preserves every power series for which substitution is justified. Consequently
+\begin{equation}\label{eq:braiding}
+ e^Xe^Ye^{-X}=\exp(e^{\ad_X}Y),\qquad
+ e^Xe^Y=\exp\left(\sum_{n\geq0}\frac{\ad_X^nY}{n!}\right)e^X.
+\end{equation}
+This proves the article's general braiding identity, including all its terms.
+
+\subsection{Differentiating a noncommutative exponential}
+\begin{theorem}[Duhamel differential]\label{thm:dexp}
+For a differentiable curve $A(t)$ in a Banach algebra,
+\begin{align}
+ \frac{\dd}{\dd t}e^{A(t)}
+ &=\int_0^1 e^{(1-s)A(t)}A'(t)e^{sA(t)}\,\dd s,\label{eq:duhamel-diff}\\
+ e^{-A}\frac{\dd}{\dd t}e^A
+ &=\phi(\ad_A)A',\qquad
+ \phi(z)=\frac{1-e^{-z}}{z}
+        =\sum_{n\geq0}\frac{(-1)^nz^n}{(n+1)!},\label{eq:leftdexp}\\
+ \left(\frac{\dd}{\dd t}e^A\right)e^{-A}
+ &=\frac{e^{\ad_A}-1}{\ad_A}A'.\label{eq:rightdexp}
+\end{align}
+Every quotient with denominator $z$ is its entire, continuously extended function at $z=0$. The same formulas hold formally when the variables have positive degree.
+\end{theorem}
+\begin{proof}
+The product rule, without moving any factors, gives
+\[
+ \frac{\dd}{\dd t}A^n=\sum_{j=0}^{n-1}A^jA'A^{n-1-j}.
+\]
+Expand the integrand in \eqref{eq:duhamel-diff}. The coefficient of $A^pA'A^q$ is
+\[
+ \frac1{p!q!}\int_0^1(1-s)^ps^q\,\dd s
+ =\frac1{(p+q+1)!}.
+\]
+The integral evaluation follows by $p$ integrations by parts starting with $\int_0^1s^q\dd s=1/(q+1)$. These are exactly the coefficients in the differentiated exponential. The series converge uniformly on compact parameter sets, so the operations are legitimate. Multiplication by $e^{-A}$ and Theorem~\ref{thm:campbell} turn the integrand into $e^{-s\ad_A}A'$ or $e^{(1-s)\ad_A}A'$, giving the remaining formulas.
+\end{proof}
+
+The inverse function that occurs is
+\begin{equation}\label{eq:beta}
+ \beta(z)=\frac{z}{1-e^{-z}}
+ =\sum_{n\geq0}h_nz^n
+ =1+\frac z2+\frac{z^2}{12}-\frac{z^4}{720}
+       +\frac{z^6}{30240}-\frac{z^8}{1209600}+\cdots.
+\end{equation}
+We use $B_n^+=n!h_n$, so that $B_1^+=+1/2$. This agrees with the Bernoulli convention in the article's note. The other common convention is generated by
+$\gamma(z)=z/(e^z-1)=\beta(-z)$ and has $B_1^-=-1/2$.
+
+\begin{proposition}[All Bernoulli coefficients]\label{prop:bernoulli}
+The coefficients in \eqref{eq:beta} have the nonrecursive expression
+\begin{equation}\label{eq:bernoulli-finite}
+ h_0=1,\qquad
+ h_n=\sum_{k=1}^n(-1)^{n+k}
+       \sum_{\substack{j_1+\cdots+j_k=n\\j_i\geq1}}
+         \frac1{\prod_{i=1}^k(j_i+1)!}\quad(n\geq1).
+\end{equation}
+Moreover,
+\begin{equation}\label{eq:coth}
+ \beta(z)=\frac z2\left(1+\coth\frac z2\right),
+ \qquad h_{2m+1}=0\quad(m\geq1).
+\end{equation}
+The Taylor series for $\beta$ has radius of convergence $2\pi$ in $\C$.
+\end{proposition}
+\begin{proof}
+Write $\phi(z)=1+A(z)$, where $A(z)=\sum_{j\geq1}(-1)^jz^j/(j+1)!$. Expand $(1+A)^{-1}=\sum_{k\geq0}(-A)^k$ and extract degree $n$; this proves \eqref{eq:bernoulli-finite}. The identity for $\coth$ follows by multiplying numerator and denominator by $e^{z/2}$. The function $(z/2)\coth(z/2)$ is even and regular at zero, proving the vanishing assertion. The singularities of $\beta$ are the nonzero points $2\pi i\ell$, $\ell\in\mathbb Z$, because $e^{-z}=1$ there and the numerator is nonzero. The singularity at zero is removable. Thus the nearest genuine poles are $\pm2\pi i$, proving the radius assertion.
+\end{proof}
+Functional notation such as $\beta(\ad_X)$ does not require $\ad_X$ to be invertible. It means the formal series, or an analytic functional calculus in a domain avoiding the poles. In a finite-dimensional space the latter function is defined whenever $\Spec(\ad_X)$ avoids the nonzero points $2\pi i\ell$.
+
+\section{The integral formula and every order in either variable}\label{sec:integral}
+\subsection{The Poincar\'e formula}
+\begin{theorem}[Poincar\'e integral formula]\label{thm:poincare}
+As a formal identity, and analytically for sufficiently small $X,Y$,
+\begin{equation}\label{eq:poincare}
+ \boxed{
+ Z(X,Y)=X+\int_0^1
+       \psi\bigl(e^{\ad_X}e^{t\ad_Y}\bigr)Y\,\dd t,\qquad
+ \psi(x)=\frac{x\log x}{x-1}.}
+\end{equation}
+Here $\psi$ is expanded at $x=1$, with $\psi(1)=1$, and
+\begin{equation}\label{eq:psi-series}
+ \psi(x)=1-\sum_{n\geq1}\frac{(1-x)^n}{n(n+1)},
+ \qquad
+ \psi(e^z)=\beta(z)=\sum_{n\geq0}B_n^+\frac{z^n}{n!}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $Z(t)=\log(e^Xe^{tY})$. Its left logarithmic derivative is especially simple:
+\[
+ (e^Xe^{tY})^{-1}\frac{\dd}{\dd t}(e^Xe^{tY})=Y.
+\]
+Theorem~\ref{thm:dexp} gives $\phi(\ad_{Z(t)})Z'(t)=Y$, and hence
+\begin{equation}\label{eq:odeY}
+ Z'(t)=\beta(\ad_{Z(t)})Y,\qquad Z(0)=X.
+\end{equation}
+Campbell's identity gives
+\[
+ e^{\ad_{Z(t)}}=\Ad_{e^{Z(t)}}
+ =\Ad_{e^Xe^{tY}}=e^{\ad_X}e^{t\ad_Y}.
+\]
+Because $\psi(e^z)=\beta(z)$ as power series, substitute this identity into \eqref{eq:odeY} and integrate.
+
+For the scalar series put $u=1-x$ and use $\log(1-u)=-\sum_{k\geq1}u^k/k$. Then
+\[
+ \psi(1-u)=-(1-u)\frac{\log(1-u)}u
+ =1+\sum_{n\geq1}\left(\frac1{n+1}-\frac1n\right)u^n.
+\]
+This proves \eqref{eq:psi-series}; the Bernoulli identity follows by substituting $x=e^z$.
+\end{proof}
+In the analytic proof one chooses the logarithm and all inverse differentials consistently near the identity. An unqualified replacement of these local functions by arbitrary logarithm branches is not valid.
+
+\subsection{An explicit all-bidegree commutator formula}
+The integral can itself be completely eliminated. Put $A=\ad_X$ and $B=\ad_Y$, and let $Z_{p,q}$ be the component with $p$ copies of $X$ and $q$ copies of $Y$.
+\begin{theorem}[All bidegrees without an unevaluated integral]\label{thm:bidegree}
+We have $Z_{1,0}=X$, $Z_{0,1}=Y$, and $Z_{p,0}=Z_{0,p}=0$ for $p>1$. For $p\geq0$, $q\geq1$, and $p+q\geq2$,
+\begin{equation}\label{eq:bidegree}
+ \boxed{
+ Z_{p,q}=\frac1q\sum_{k=1}^{p+q-1}\frac{(-1)^{k+1}}{k(k+1)}
+ \sum_{\substack{r_i,s_i\geq0,\ r_i+s_i>0\\
+                   \sum r_i=p,\ \sum s_i=q-1}}
+ \frac{A^{r_1}B^{s_1}\cdots A^{r_k}B^{s_k}Y}
+      {\prod_i r_i!s_i!}.}
+\end{equation}
+Thus $Z=\sum_{p,q\geq0}Z_{p,q}$ is a complete, nonrecursive expansion in both variables.
+\end{theorem}
+\begin{proof}
+Set $T(t)=e^Ae^{tB}-I$. Equation~\eqref{eq:psi-series} says
+\[
+ \psi(I+T)=I+\sum_{k\geq1}\frac{(-1)^{k+1}}{k(k+1)}T^k.
+\]
+In a block expansion of $T^k$, a tuple $(r_i,s_i)$ contributes
+\[
+ \frac{t^{\sum s_i}}{\prod_i r_i!s_i!}
+ A^{r_1}B^{s_1}\cdots A^{r_k}B^{s_k}Y.
+\]
+Its $Y$-degree is $q=1+\sum s_i$, so integration contributes $1/q$. Its $X$-degree is $\sum r_i=p$. Every block has positive degree, forcing $k\leq p+q-1$. This proves the formula. Terms with $s_k>0$ vanish because $BY=[Y,Y]=0$, and if $p=0$, every nontrivial term vanishes for the same reason. The $Y$-free assertions also follow directly from $Z(X,0)=X$.
+\end{proof}
+For example, $(p,q)=(1,2)$ only receives a nonzero contribution from the two operator blocks $B,A$; the coefficient is $(1/2)(-1/6)=-1/12$. Hence $Z_{1,2}=-[Y,[X,Y]]/12$, agreeing with \eqref{eq:z3}.
+
+\subsection{The one-\texorpdfstring{$Y$}{Y} part, the entire quadratic part, and a recursion}
+\begin{corollary}\label{cor:singleY}
+The complete part linear in $Y$ is
+\begin{equation}\label{eq:linearY}
+ Z(X,Y)=X+\beta(\ad_X)Y+\smallO(Y^2)
+       =X+\frac{\ad_X}{2}\left(1+\coth\frac{\ad_X}{2}\right)Y
+         +\smallO(Y^2).
+\end{equation}
+In particular its coefficient of $\ad_X^nY$ is $B_n^+/n!$.
+\end{corollary}
+\begin{proof}
+Replace $Y$ by $\eps Y$ in \eqref{eq:odeY}. The coefficient of $\eps$ is $\beta(\ad_X)Y$. The scalar identity \eqref{eq:coth} gives the alternative form.
+\end{proof}
+The remainder can be resolved at every order. Write
+\begin{equation}\label{eq:Qdef}
+ Z(X,\eps Y)=X+\sum_{m\geq1}\eps^mQ_m(X;Y),\qquad Q_0=X.
+\end{equation}
+The $Q_m$ are formal series in $X$ homogeneous of $Y$-degree $m$. Put $U=Q_1=\beta(A)Y$.
+\begin{proposition}[Every term quadratic in $Y$]\label{prop:quadratic}
+The exact quadratic part, to all orders in $X$, is
+\begin{equation}\label{eq:quadraticY}
+ Q_2=\frac12\sum_{n\geq1}h_n\sum_{j=0}^{n-1}
+        A^j\ad_U A^{n-1-j}Y.
+\end{equation}
+More generally,
+\begin{equation}\label{eq:Qrecursion}
+ mQ_m=\sum_{n\geq0}h_n
+ \sum_{\substack{k_1+\cdots+k_n=m-1\\k_i\geq0}}
+ \ad_{Q_{k_1}}\cdots\ad_{Q_{k_n}}Y.
+\end{equation}
+For $n=0$ the inner term is $Y$ if $m=1$ and zero otherwise. In every fixed total degree these expressions are finite.
+\end{proposition}
+\begin{proof}
+Differentiate \eqref{eq:Qdef} with respect to $\eps$ and use
+$\partial_\eps Z=\beta(\ad_Z)Y$. Expand each power of
+$\ad_Z=A+\sum_{k\geq1}\eps^k\ad_{Q_k}$ without changing factor order. To obtain the coefficient of $\eps^{m-1}$, choose indices with sum $m-1$; this gives \eqref{eq:Qrecursion}. For $m=2$ exactly one factor has index one and all others have index zero, giving \eqref{eq:quadraticY}. The right side only involves $Q_k$ with $k<m$. Although there are arbitrarily many zero indices, their factors $A$ raise total degree, which proves local finiteness.
+\end{proof}
+For each fixed $m$, the nonrecursive alternative is simply $Q_m=\sum_{p\geq0}Z_{p,m}$ with \eqref{eq:bidegree}. Thus the big-$O$ notation in \eqref{eq:linearY} hides no coefficients that are left unspecified by our formulas.
+
+\subsection{A second constructive proof of Lie-polynomiality}
+For $H(t)=e^{tX}e^{tY}$ its \emph{right} logarithmic derivative is
+\begin{equation}\label{eq:Rcoeff}
+ H'H^{-1}=X+e^{t\ad_X}Y=\sum_{j\geq0}t^jR_j,
+ \quad R_0=X+Y,\quad R_j=\frac{\ad_X^jY}{j!}\ (j\geq1).
+\end{equation}
+Set $\gamma(z)=\sum_{k\geq0}b_kz^k$; thus $b_k=(-1)^kh_k=B_k^-/k!$.
+\begin{theorem}[Total-degree Bernoulli recursion]\label{thm:BCHrec}
+For $n\geq1$ the homogeneous BCH terms satisfy
+\begin{equation}\label{eq:BCHrec}
+ nZ_n=\sum_{k=0}^{n-1}b_k
+ \sum_{\substack{i_1,\ldots,i_k\geq1,\ j\geq0\\
+                  i_1+\cdots+i_k+j=n-1}}
+ \ad_{Z_{i_1}}\cdots\ad_{Z_{i_k}}R_j.
+\end{equation}
+For $k=0$ the contribution is $R_{n-1}$. In particular, this recursion proves Lie-polynomiality without using Friedrichs' theorem.
+\end{theorem}
+\begin{proof}
+Write $Z(t)=\sum_{n\geq1}t^nZ_n$. Inverting \eqref{eq:rightdexp} gives
+$Z'(t)=\gamma(\ad_{Z(t)})(H'H^{-1})$. Expand the right side and compare the coefficient of $t^{n-1}$, obtaining \eqref{eq:BCHrec}. All $Z_i$ that occur there have $i\leq n-1$. Starting with $Z_1=R_0=X+Y$, induction shows every $Z_n$ is a Lie polynomial. Formal uniqueness of the original logarithm identifies this recursively obtained series with \eqref{eq:Zdefinition}.
+\end{proof}
+For instance $2Z_2=R_1+b_1[Z_1,R_0]=[X,Y]$. At the next degree,
+\[
+ 3Z_3=\frac12[X,[X,Y]]-\frac12[Z_1,[X,Y]]
+                        -\frac12[Z_2,Z_1]
+       =\frac14[X,[X,Y]]-\frac14[Y,[X,Y]].
+\]
+This supplies a quick hand calculation of \eqref{eq:z3}. Eichler's independent associativity-based argument \cite{eichler} proves the same structural theorem by a different route; no claim that his particular recursion equals \eqref{eq:BCHrec} is needed here.
+
+\section{Convergence, logarithm branches, and nonconvergence}\label{sec:convergence}
+\subsection{Three different convergence questions}
+A Mercator series $\sum_{k\geq1}(-1)^{k-1}(e^Xe^Y-I)^k/k$, its expansion into individual associative words, and the homogeneous Lie series $\sum_NZ_N$ are not identical \emph{summation procedures}. Moreover, existence of some logarithm of $e^Xe^Y$ is a fourth question. These distinctions matter outside a common absolute-convergence domain; examples and further discussion appear in \cite{biagi}.
+
+\begin{theorem}[Elementary quantitative bounds]\label{thm:conv}
+Put $s=\norm X+\norm Y$.
+\begin{enumerate}[label=(\roman*)]
+\item If $s<\log2$, then the associative block expansion \eqref{eq:wordblocks} is absolutely convergent and
+\begin{equation}\label{eq:wordmajorant}
+ \sum_{k\geq1}\frac1k
+ \sum_{\substack{r_i+s_i>0}}
+ \frac{\norm{X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}}}
+      {\prod_i r_i!s_i!}
+ \leq -\log(2-e^s).
+\end{equation}
+Its sum $Z$ satisfies $e^Z=e^Xe^Y$. The homogeneous BCH series also converges absolutely on this domain.
+\item If $s<\tfrac12\log2$, then the individual commutator summands of Dynkin's formula are absolutely summable. A convenient bound for their absolute sum is
+\begin{equation}\label{eq:dynkinmajorant}
+ M_D(s)=-\frac12\log(2-e^{2s}).
+\end{equation}
+\item If $R>1$ and $Rs<\log2$, then
+\begin{equation}\label{eq:tail}
+ \left\|Z-\sum_{n=1}^NZ_n\right\|
+ \leq R^{-(N+1)}[-\log(2-e^{Rs})].
+\end{equation}
+If $Rs<\tfrac12\log2$, the analogous bound using the absolute Dynkin summands is $R^{-(N+1)}M_D(Rs)$.
+\end{enumerate}
+The two smallness criteria remain valid for any submultiplicative matrix norm, without a normalization assumption on the norm of the identity.
+\end{theorem}
+\begin{proof}
+Every nonempty block contributes at most
+$\norm X^r\norm Y^s/(r!s!)$, interpreted with no identity factor when an exponent is zero. The sum of these scalar bounds is $e^{\norm X+\norm Y}-1=e^s-1$. Summing the geometric logarithm majorant proves \eqref{eq:wordmajorant}. In particular $\norm{e^Xe^Y-I}\leq e^s-1<1$, so its Mercator logarithm is defined. The scalar power-series inverse identities, applied in the commutative subalgebra generated by $e^Xe^Y-I$, prove that its exponential is $e^Xe^Y$. Absolute convergence permits regrouping by total degree; the algebraic theorem identifies each group with $Z_n$.
+
+For a bracket of length $d$,
+$\norm{\Rbr(a_1\cdots a_d)}\leq2^{d-1}\prod\norm{a_i}$.
+Its extra factor $1/d$ in Dynkin's formula can be bounded by $1$. Repeating the previous calculation at $2\norm X,2\norm Y$ gives one half of the logarithmic majorant, proving \eqref{eq:dynkinmajorant}. For the tails, apply the relevant majorant to $RX,RY$: every term of degree at least $N+1$ is enlarged by at least $R^{N+1}$.
+
+These estimates involve only products of positive-length words or commutators. They never need the estimate $\norm{I}\leq1$, which proves the final assertion.
+\end{proof}
+Thus the article's bound $s<\log2/2$ is valid. The stronger $s<\log2$ assertion above concerns homogeneous grouping and associative absolute convergence; it is not a claim that every unreduced Dynkin summand is absolutely summable on the larger domain.
+
+For a direct truncation of the Mercator series, put $q=e^s-1<1$. Its tail after $K$ powers satisfies
+\begin{equation}\label{eq:Mercatortail}
+ \left\|\log(e^Xe^Y)-\sum_{k=1}^K\frac{(-1)^{k-1}}k(e^Xe^Y-I)^k\right\|
+ \leq\frac{q^{K+1}}{(K+1)(1-q)}.
+\end{equation}
+This follows by bounding $1/k\leq1/(K+1)$ in the tail. The extra condition $\norm Z<\log2$ printed alongside the article's associative expansion is not needed when $Z$ is defined by that convergent logarithm. If one starts instead with an unspecified solution of $e^Z=e^Xe^Y$, a local uniqueness restriction is needed to exclude other logarithms. More precisely, if $e^{Z_0}=e^Xe^Y$ and $\norm{Z_0}<\log2$, the convergent Mercator logarithm of $e^{Z_0}$ equals $Z_0$: the scalar inverse identity holds near $t=0$ for $\log(e^{tZ_0})$ and extends, by its convergent power series, throughout $|t|\norm{Z_0}<\log2$. Setting $t=1$ proves that the article's two restrictions do suffice for its specified $Z_0$.
+
+The Hilbert--Schmidt norm mentioned in the article's note is submultiplicative. Indeed Cauchy--Schwarz gives
+\[
+ \sum_{i,j}\left|\sum_k A_{ik}B_{kj}\right|^2
+ \leq\sum_{i,j}\left(\sum_k|A_{ik}|^2\right)
+                      \left(\sum_k|B_{kj}|^2\right)
+ =\norm A_{\mathrm{HS}}^2\norm B_{\mathrm{HS}}^2.
+\]
+Taking square roots proves the assertion, so Theorem~\ref{thm:conv} applies to that norm despite $\norm I_{\mathrm{HS}}=\sqrt d$ in dimension $d$.
+
+\subsection{Trace and its branch restriction}
+\begin{theorem}[Trace identity]\label{thm:trace}
+For a convergent BCH logarithm of finite matrices,
+\begin{equation}\label{eq:trace}
+ \tr Z(X,Y)=\tr X+\tr Y.
+\end{equation}
+For an arbitrary matrix logarithm $L$ of $e^Xe^Y$, the unconditional conclusion over $\C$ is only
+\begin{equation}\label{eq:trace-mod}
+ \tr L-\tr X-\tr Y\in2\pi i\mathbb Z.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Cyclicity $\tr(UV)=\tr(VU)$ follows by interchanging the indices in
+$\sum_{i,j}U_{ij}V_{ji}$. Every nested commutator of length at least two therefore has trace zero. Apply continuity of trace to the convergent homogeneous series.
+
+Every complex matrix is triangularizable: choose an eigenvector, pass to the quotient, and induct on dimension. In an upper-triangular basis the diagonal of $e^A$ consists of the exponentials of the diagonal entries of $A$, so $\det(e^A)=e^{\tr A}$. Apply this to $L,X,Y$ and use multiplicativity of the determinant. The kernel of the scalar complex exponential is $2\pi i\mathbb Z$, giving \eqref{eq:trace-mod}.
+\end{proof}
+For example, in dimension one take $X=Y=3\pi i/4$. The BCH logarithm is $3\pi i/2$, whereas the principal logarithm of the product $-i$ is $-\pi i/2$. They differ by $2\pi i$. Thus \eqref{eq:trace} cannot be read as a formula for an arbitrary principal logarithm at arbitrary inputs.
+
+\subsection{The article's \texorpdfstring{$\mathfrak{sl}_2$}{sl2} example, completely resolved}
+\begin{theorem}\label{thm:divergence}
+Let
+\begin{equation}\label{eq:badmatrices}
+ X=\begin{pmatrix}0&i\pi\\i\pi&0\end{pmatrix},\qquad
+ Y=\begin{pmatrix}0&1\\0&0\end{pmatrix}=N.
+\end{equation}
+Then $e^Xe^Y=-I-N$. This matrix has no trace-zero logarithm. Its complete set of complex $2\times2$ logarithms is
+\begin{equation}\label{eq:allbadlogs}
+ L_k=(2k+1)\pi i\,I+N,\qquad k\in\mathbb Z.
+\end{equation}
+The homogeneous BCH series at $(X,Y)$ does not converge, even conditionally.
+\end{theorem}
+\begin{proof}
+Since $X^2=-\pi^2I$, its even and odd exponential terms sum to
+$e^X=\cos\pi\,I+(\sin\pi/\pi)X=-I$. Since $N^2=0$, $e^Y=I+N$.
+
+Any logarithm $L$ commutes with $e^L=-I-N$, hence with $N$. A direct multiplication shows that the centralizer of $N$ consists exactly of matrices $aI+bN$. Therefore
+\[
+ e^L=e^a(I+bN)=-I-N
+\]
+forces $e^a=-1$ and $b=1$. This proves \eqref{eq:allbadlogs}; their traces are $2(2k+1)\pi i$, never zero.
+
+Suppose nevertheless that $\sum_{n\geq1}Z_n(X,Y)$ converged to $S$. Every term is trace zero, so $\tr S=0$. For $0\leq t<1$, the associated power series $\sum t^nZ_n$ converges absolutely and is analytic on the unit disk; boundedness of its coefficients follows from convergence at $1$. Near zero its exponential equals $e^{tX}e^{tY}$ by the formal identity and Theorem~\ref{thm:conv}; the identity theorem extends that equality throughout the disk.
+
+Abel's limit theorem holds for a convergent series in a finite-dimensional normed space: if $S_n=\sum_{j=1}^na_j\to S$, then
+$\sum_{n\geq1}t^na_n=(1-t)\sum_{n\geq1}t^nS_n$, and splitting the last sum into a fixed finite part and a tail proves its limit is $S$ as $t\uparrow1$. Apply this to $a_n=Z_n(X,Y)$. Continuity of exponential gives $e^S=-I-N$, contradicting the classification of its logarithms.
+\end{proof}
+The example simultaneously shows why ``a logarithm exists'' does not mean ``a logarithm exists in the original Lie algebra'', and why neither assertion should be confused with convergence of the BCH series.
+
+\section{Lie groups and the local--global distinction}\label{sec:liegroups}
+The matrix exponential is the Lie group exponential because the curve $t\mapsto e^{tX}$ solves $g'=gX$, $g(0)=I$, and has initial tangent $X$. For a matrix Lie group, its left-invariant vector field corresponding to $X$ is $g\mapsto gX$. Computing the commutator of two such fields gives $g\mapsto g(XY-YX)$, so the tangent Lie bracket is precisely the matrix commutator.
+
+\begin{theorem}[Local exponential coordinates]\label{thm:local}
+Let $G$ be a finite-dimensional real Lie group, or a finite-dimensional complex Lie group, with Lie algebra $\g$. There is a neighborhood $U$ of $0$ in $\g$ on which exponential is a diffeomorphism onto a neighborhood of the identity. After shrinking $U$, the product in these coordinates is
+\begin{equation}\label{eq:localproduct}
+ \exp X\exp Y=\exp\bigl(Z(X,Y)\bigr).
+\end{equation}
+The convergent series $Z$ uses only the bracket and the universal rational coefficients already proved.
+\end{theorem}
+\begin{proof}
+The exponential is defined by the flow of the left-invariant field with value $X$ at the identity. Its differential at zero is the identity, since $\exp(tX)$ has initial tangent $X$. The inverse function theorem gives the first assertion.
+
+The differential formula \eqref{eq:leftdexp} is intrinsic. To see this without representing $G$ by matrices, put $u(s,t)=\exp(sA(t))$, and left-trivialize its partial derivatives as $\alpha=u^{-1}\partial_tu$ and $\eta=u^{-1}\partial_su=A(t)$. The standard differentiation rule for the left Maurer--Cartan form gives
+\[
+ \partial_s\alpha=\partial_t\eta+[\alpha,\eta]
+                  =A'-\ad_A\alpha,\qquad \alpha(0,t)=0.
+\]
+This rule follows by applying the definition of the Lie bracket to the commuting parameter vector fields $\partial_s,\partial_t$; in a matrix chart it is also the direct product-rule computation. Solving the constant-coefficient equation in $s$ gives
+$\alpha(1,t)=\int_0^1e^{-s\ad_A}A'\dd s$, exactly \eqref{eq:leftdexp}.
+
+Thus $L(t)=\log(\exp X\exp(tY))$, defined for small $X,Y$, solves \eqref{eq:odeY}. Its right side is analytic in $L$ near zero. For any norm on $\g$ there is $c>0$ with $\norm{[u,v]}\leq c\norm u\norm v$; rescale the norm so this constant is at most $2$. The same bracket majorants as in Theorem~\ref{thm:conv} prove local convergence of Dynkin's universal series in $\g$. That series solves the identical differential equation by its coefficient identities. Uniqueness for the finite-dimensional differential equation identifies it with $L(t)$.
+\end{proof}
+\begin{corollary}[Local integration of a Lie algebra map]\label{cor:localmap}
+If $f:\g\to\h$ preserves brackets, then $F(\exp X)=\exp(fX)$ defines a local group homomorphism near the identity. If $G$ is connected and simply connected, this local homomorphism extends uniquely to a homomorphism $G\to H$.
+\end{corollary}
+\begin{proof}
+Every Lie polynomial commutes with substitution by $f$, so
+$f(Z(X,Y))=Z(fX,fY)$. Applying \eqref{eq:localproduct} proves the local assertion.
+
+For the global assertion choose a path from the identity to $g\in G$ and subdivide it so that its successive increments lie in the local domain. Multiply their images under $F$. Refining the subdivision does not change the result, by the local multiplication rule. A homotopy between two paths can be subdivided into a sufficiently fine grid so that every increment and product around each small cell lies in that domain; replacing one pair of consecutive cell edges by the other pair preserves the product. The two boundary paths therefore give the same value. Simply connectedness makes all paths with the same endpoints homotopic, giving a well-defined map. Concatenating a path to $g$ with the left translate of a path to $h$ proves multiplicativity. Near the identity it agrees with the smooth map already constructed, hence it is smooth everywhere by translation. Any other extension agrees on all sufficiently small increments, proving uniqueness.
+\end{proof}
+Taking $\h=\mathfrak{gl}(E)$ in Corollary~\ref{cor:localmap} proves the corresponding integration statement for finite-dimensional Lie algebra representations; descent from a simply connected covering group to a specified quotient requires the covering kernel to act trivially. There is no contradiction between this extension theorem and the fact that a Lie algebra alone does not determine an arbitrary global Lie group: the additive group $\R$ and the circle $S^1$ have the same one-dimensional abelian Lie algebra but cannot be isomorphic, since one is noncompact and the other compact. They have different topology. For example, the identity map of their Lie algebras integrates from $\R$ to $S^1$ by $t\mapsto e^{it}$, but not in the reverse direction to a homomorphism whose differential is the identity: a nontrivial image of the compact circle cannot be the noncompact additive line.
+
+\section{Exact special cases: commuting, central, nilpotent, and affine}\label{sec:special}
+\subsection{Commuting elements and central commutators}
+\begin{proposition}[Commuting case]\label{prop:commuting}
+If $[X,Y]=0$, then $Z(X,Y)=X+Y$ formally and $e^Xe^Y=e^{X+Y}$ for all bounded $X,Y$, without a smallness hypothesis.
+\end{proposition}
+\begin{proof}
+The binomial theorem applies to commuting elements. Multiplying the two absolutely convergent exponential series and collecting total degree gives
+$\sum_{n\geq0}\sum_{r+s=n}X^rY^s/(r!s!)=\sum_{n\geq0}(X+Y)^n/n!$.
+The identical computation is coefficientwise valid formally.
+\end{proof}
+\begin{theorem}[Central-commutator identity]\label{thm:central}
+Suppose $K=[X,Y]$ commutes with both $X$ and $Y$. Then
+\begin{align}
+ e^{tX}Ye^{-tX}&=Y+tK,\label{eq:centralconj}\\
+ e^{tX}e^{tY}&=\exp\!\left(t(X+Y)+\frac{t^2}{2}K\right),\label{eq:central}\\
+ e^{X+Y}&=e^Xe^Ye^{-K/2}.\label{eq:centraldisentangle}
+\end{align}
+These are formal identities, global identities for bounded operators, and global identities in a finite-dimensional Lie group whenever the indicated Lie algebra relations hold.
+\end{theorem}
+\begin{proof}
+Campbell's formula gives \eqref{eq:centralconj}, since $\ad_X^2Y=0$. For $g(t)=e^{tX}e^{tY}$, differentiation gives
+\[
+ g'(t)=(X+e^{tX}Ye^{-tX})g(t)=(X+Y+tK)g(t),\qquad g(0)=I.
+\]
+Since $K$ commutes with $X+Y$, the expression on the right of \eqref{eq:central} solves this same initial-value problem. Uniqueness proves it. Taking $t=1$ and commuting $e^{K/2}$ proves \eqref{eq:centraldisentangle}. The proof uses only invariant differentiation and uniqueness, so it also works intrinsically in a Lie group. In the formal setting uniqueness follows by comparing coefficients of $t$.
+\end{proof}
+The higher commutators in BCH vanish here because every Lie monomial of degree at least three contains a bracket with $K$ after Jacobi expansion. The differential proof is stronger than a mere appeal to local BCH: it establishes global validity directly.
+
+\begin{corollary}[Several factors with central pairwise commutators]\label{cor:centralmany}
+If all $[X_i,X_j]$ commute with every $X_k$, then
+\begin{equation}\label{eq:centralmany}
+ \prod_{j=1}^{m}e^{X_j}
+ =\exp\left(\sum_{j=1}^{m}X_j+
+                 \frac12\sum_{1\leq i<j\leq m}[X_i,X_j]\right),
+\end{equation}
+where the product is ordered by increasing $j$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:central} inductively. At each step the previous central correction has zero bracket with the new $X_j$.
+\end{proof}
+For example, with $X=xE_{12}$ and $Y=yE_{23}$ in strictly upper triangular $3\times3$ matrices, $[X,Y]=xyE_{13}$ is central in the generated Lie algebra. Both sides of \eqref{eq:central} are finite matrix polynomials, giving a concrete noncommuting example.
+
+\subsection{Nilpotent Lie algebras}
+Write $\g^1=\g$ and $\g^{r+1}=[\g,\g^r]$. The algebra is nilpotent of class at most $c$ if $\g^{c+1}=0$.
+\begin{theorem}[Termination and the nilpotent group law]\label{thm:nilpotent}
+In a nilpotent Lie algebra of class at most $c$,
+\begin{equation}\label{eq:nilpotent}
+ Z(X,Y)=\sum_{n=1}^{c}Z_n(X,Y).
+\end{equation}
+This polynomial defines an associative group law on the vector space $\g$, with identity $0$ and inverse $-X$. For finite-dimensional real $\g$ this is a simply connected Lie group with Lie algebra $\g$ and exponential map $X\mapsto X$ in these coordinates. In any Lie group with Lie algebra $\g$, the identity $\exp X\exp Y=\exp Z(X,Y)$ holds for all $X,Y\in\g$.
+\end{theorem}
+\begin{proof}
+Jacobi gives $[\g^r,\g^s]\subseteq\g^{r+s}$ by induction; hence every Lie monomial of degree $n$ belongs to $\g^n$. This proves termination. The formal associativity identity \eqref{eq:assoc}, after evaluating in $\g$, becomes a polynomial identity: all Lie monomials of degree greater than $c$ vanish, including those created by substitution. Thus it holds at every $X,Y,T$, not merely near zero. The identity and inverse assertions follow from \eqref{eq:unitinverse}.
+
+Polynomial multiplication and negation make the vector space a Lie group, topologically $\R^{\dim\g}$. The quadratic term $\frac12[X,Y]$ shows that its tangent bracket is the given bracket: the coefficient of $st$ in the group commutator of $sX$ and $tY$ is $[X,Y]$. Since $Z(sX,tX)=(s+t)X$, its one-parameter subgroup with velocity $X$ is $tX$ and its exponential is the identity map. Finally, Corollary~\ref{cor:localmap} integrates the identity Lie algebra map from this simply connected group to any given Lie group with Lie algebra $\g$. The integrated homomorphism sends $X$ to $\exp X$, proving the last assertion.
+\end{proof}
+Termination is a statement about Lie brackets, not about ordinary matrix powers: a nilpotent Lie algebra may be represented by matrices that are not themselves nilpotent.
+
+\subsection{The affine relation \texorpdfstring{$[X,Y]=sY$}{[X,Y]=sY}}
+\begin{theorem}[A closed form and its resonances]\label{thm:affine}
+Suppose $[X,Y]=sY$, with scalar $s$. Put
+\[
+ \phi(s)=\frac{1-e^{-s}}s,\quad \phi(0)=1,
+ \qquad \beta(s)=\phi(s)^{-1}=\frac{s}{1-e^{-s}}.
+\]
+For every scalar $c$, globally for bounded operators,
+\begin{equation}\label{eq:affineglobal}
+ e^{X+cY}=e^Xe^{c\phi(s)Y}.
+\end{equation}
+Consequently, if $s\notin2\pi i(\mathbb Z\setminus\{0\})$,
+\begin{equation}\label{eq:affine}
+ e^Xe^Y=\exp\bigl(X+\beta(s)Y\bigr).
+\end{equation}
+The homogeneous BCH series itself is
+\begin{equation}\label{eq:affineseries}
+ Z(X,Y)=X+\sum_{n\geq0}h_ns^nY=X+\beta(s)Y,
+\end{equation}
+where $\beta(z)=\sum h_nz^n$; its scalar Taylor series converges for $|s|<2\pi$. Independently of these exclusions,
+\begin{equation}\label{eq:affinebraid}
+ e^Xe^Y=e^{e^sY}e^X.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Set $f(t)=e^{tX}e^{b(t)Y}$, with $b(0)=0$. Its right logarithmic derivative is
+\[
+ f'(t)f(t)^{-1}=X+b'(t)e^{t\ad_X}Y=X+b'(t)e^{st}Y.
+\]
+Choosing $b'(t)=ce^{-st}$ gives $f'(t)=(X+cY)f(t)$, so
+$f(t)=e^{t(X+cY)}$. Integrating $b'$ and setting $t=1$ proves \eqref{eq:affineglobal}, including $s=0$ by a removable singularity. When $\phi(s)\ne0$, set $c=\beta(s)$ to obtain \eqref{eq:affine}.
+
+Every Lie monomial involving $Y$ evaluates to a scalar multiple of $Y$. A monomial involving at least two copies of $Y$ is zero: at the first node of its bracket tree where branches containing $Y$ meet, the two branches are scalar multiples of $Y$. Thus only the terms linear in $Y$ in Corollary~\ref{cor:singleY} survive, and $\ad_X^nY=s^nY$. This gives \eqref{eq:affineseries}. The singularities of $\beta$ nearest zero are at $\pm2\pi i$, proving the stated Taylor convergence radius. Finally, Campbell's identity gives $e^{\ad_X}Y=e^sY$; substitute into \eqref{eq:braiding}.
+\end{proof}
+For real $s$, the closed exponential identity \eqref{eq:affine} holds for all $s$ although its Taylor series at zero is only a local expansion. Over $\C$ one must not erase the resonances. Take
+\[
+ X=\begin{pmatrix}2\pi i&0\\0&0\end{pmatrix},\qquad
+ Y=\begin{pmatrix}0&1\\0&0\end{pmatrix}.
+\]
+Then $[X,Y]=2\pi iY$, $e^X=I$, and \eqref{eq:affineglobal} says $e^{X+cY}=I$ for every $c$. Nevertheless $e^Xe^Y=I+Y\ne I$ and has logarithm $Y$. Thus no formula of the form $X+cY$ can represent that product at this resonance. The braiding identity remains valid.
+
+\section{Zassenhaus factorization: every exponent and convergence}\label{sec:zassenhaus}
+BCH combines exponentials into one; Zassenhaus factorization separates one exponential into an ordered product. The order of the factors is part of the statement. We use the ordering developed systematically in \cite{casas}.
+\begin{theorem}[Formal Zassenhaus factorization]\label{thm:zassenhaus}
+There are unique homogeneous Lie polynomials $C_n(X,Y)$ of degree $n\geq2$ such that
+\begin{equation}\label{eq:zassenhaus}
+ e^{t(X+Y)}=e^{tX}e^{tY}
+                e^{t^2C_2}e^{t^3C_3}e^{t^4C_4}\cdots.
+\end{equation}
+The infinite product is well-defined formally: modulo $t^{N+1}$ only the factors through $C_N$ matter. Define
+\begin{align}
+ R_1(t)&=e^{-tY}e^{-tX}e^{t(X+Y)},\label{eq:zresidual}\\
+ C_n&=[t^n]R_{n-1}(t),\qquad
+ R_n(t)=e^{-t^nC_n}R_{n-1}(t)\quad(n\geq2).\label{eq:zremove}
+\end{align}
+Then \eqref{eq:zremove} computes all the exponents. Equivalently,
+$C_n=R_{n-1}^{(n)}(0)/n!$.
+\end{theorem}
+\begin{proof}
+$R_1=I+\smallO(t^2)$. If $R_{n-1}=I+t^nC_n+\smallO(t^{n+1})$, left multiplication by $e^{-t^nC_n}$ gives $R_n=I+\smallO(t^{n+1})$. Hence the recursion removes one degree at a time, uniquely. Every residual is group-like. Comparing the coefficient of $t^n$ in
+$\Delta R_{n-1}=R_{n-1}\otimes R_{n-1}$ shows
+$\Delta C_n=C_n\otimes1+1\otimes C_n$, since no lower positive degree remains. Friedrichs' theorem makes $C_n$ a Lie polynomial. Reversing the successive removals gives
+$R_1=e^{t^2C_2}\cdots e^{t^NC_N}R_N$, which proves \eqref{eq:zassenhaus} degree by degree.
+\end{proof}
+When written as $e^{-tX}e^{t(X+Y)}=\prod_{n\geq1}e^{t^nC_n}$, the same convention has $C_1=Y$. This convention must be supplied to the source article's version of that product.
+
+\subsection{The first exponents and a differential recursion}
+Direct evaluation gives
+\begin{align}
+ C_2={}&-\frac12[X,Y],\label{eq:c2}\\
+ C_3={}&\frac16[X,[X,Y]]+\frac13[Y,[X,Y]],\label{eq:c3}\\
+ C_4={}&-\frac1{24}[X,[X,[X,Y]]]
+         -\frac18[Y,[X,[X,Y]]]
+         -\frac18[Y,[Y,[X,Y]]].\label{eq:c4}
+\end{align}
+Thus the second exponent can also be written
+$\frac16[X,[X,Y]]-\frac13[[X,Y],Y]$, and the third is
+\begin{equation}\label{eq:c4left}
+ -\frac1{24}\bigl([[[X,Y],X],X]
+            +3[[[X,Y],X],Y]+3[[[X,Y],Y],Y]\bigr),
+\end{equation}
+which is the left-nested form on the source page.
+
+For a complete efficient recursion, put $F_n=R_n'R_n^{-1}$. Campbell's identity and the product rule give
+\begin{align}
+ F_1(t)&=e^{-t\ad_Y}\bigl(e^{-t\ad_X}-I\bigr)Y\notag\\
+ &=\sum_{\substack{i\geq0\\j\geq1}}
+        \frac{(-1)^{i+j}t^{i+j}}{i!j!}\ad_Y^i\ad_X^jY,\label{eq:F1}\\
+ C_n&=\frac1n[t^{n-1}]F_{n-1}(t),\label{eq:CfromF}\\
+ F_n(t)&=e^{-t^n\ad_{C_n}}
+                     \bigl(F_{n-1}(t)-nt^{n-1}C_n\bigr).\label{eq:Frec}
+\end{align}
+These three formulas are a Lie-only algorithm at every degree.
+\begin{proof}
+Differentiate the three factors in $R_1$ and multiply on the right by $R_1^{-1}$. The terms $-Y$ and $e^{-t\ad_Y}Y$ cancel, as do the two copies of $e^{-t\ad_Y}X$, leaving the first line of \eqref{eq:F1}. Its expansion is Campbell's series twice. Since $R_{n-1}=I+t^nC_n+\smallO(t^{n+1})$, its right logarithmic derivative starts with $nt^{n-1}C_n$, giving \eqref{eq:CfromF}. Differentiating $R_n=e^{-t^nC_n}R_{n-1}$ gives
+$F_n=-nt^{n-1}C_n+e^{-t^n\ad_{C_n}}F_{n-1}$; the adjoint exponential fixes $C_n$, proving \eqref{eq:Frec}.
+
+In particular,
+\[
+ [t]F_1=-[X,Y],\quad
+ [t^2]F_1=\tfrac12\ad_X^2Y+\ad_Y\ad_XY,
+\]
+\[
+ [t^3]F_1=-\tfrac16\ad_X^3Y-\tfrac12\ad_Y\ad_X^2Y
+                         -\tfrac12\ad_Y^2\ad_XY.
+\]
+The relevant lower-degree corrections in \eqref{eq:Frec} vanish because $[C_2,C_2]=0$. Division by $2,3,4$ proves \eqref{eq:c2}--\eqref{eq:c4}. Antisymmetry converts these to \eqref{eq:c4left}.
+\end{proof}
+Writing $F_n=\sum_{k\geq0}f_{n,k}t^k$, with coefficients at negative indices defined as zero, yields the completely explicit coefficient update
+\begin{equation}\label{eq:frec}
+ f_{n,k}=\sum_{j=0}^{\lfloor k/n\rfloor}
+              \frac{(-1)^j}{j!}\ad_{C_n}^{\,j}f_{n-1,k-nj}
+              -\delta_{k,n-1}nC_n.
+\end{equation}
+Only already computed homogeneous Lie polynomials occur. This is a transparent version of the differential construction in \cite{casas}.
+
+\subsection{A finite nonrecursive formula for every \texorpdfstring{$C_n$}{Cn}}
+For an all-terms formula with no recursively defined $C_j$ on the right, first compute the explicit associative polynomials
+\begin{equation}\label{eq:rawRn}
+ A_n=[t^n]R_1(t)=
+ \sum_{a+b+c=n}\frac{(-1)^{a+b}}{a!b!c!}Y^aX^b(X+Y)^c
+ \qquad(n\geq2).
+\end{equation}
+Here $(X+Y)^c$ means the sum of all $2^c$ words of length $c$, each with coefficient one.
+
+Define a finite set $\mathcal T_n$ of weighted rooted trees as follows. The root has weight $n$. A vertex may be a leaf. Otherwise its ordered children have weights
+$2\leq j_1\leq\cdots\leq j_r<n_v$, where $n_v$ is the parent's weight and $\sum j_\ell=n_v$. In particular $r\geq2$. Vertices of equal weight are still distinct ordered slots, whose subtrees may differ. Let $I(T)$ be the number of internal vertices, and let $m_{v,j}$ count the children of weight $j$ at an internal vertex $v$. Read the leaves from left to right in planar order and write their weights as $\ell_1,\ldots,\ell_q$.
+\begin{theorem}[All-terms tree formula]\label{thm:tree}
+For every $n\geq2$,
+\begin{equation}\label{eq:treeformula}
+ C_n=\sum_{T\in\mathcal T_n}
+ \frac{(-1)^{I(T)}}{\displaystyle\prod_{v\text{ internal}}\prod_{j\geq2}m_{v,j}!}
+          A_{\ell_1}A_{\ell_2}\cdots A_{\ell_q}.
+\end{equation}
+Together with \eqref{eq:rawRn}, this is a finite, nonrecursive sum of ordinary words for every exponent. Applying $\Rbr$ to every word and dividing by $n$ gives an equally explicit nested-commutator formula.
+\end{theorem}
+\begin{proof}
+Extract degree $n$ in $R_1=\prod_{j\geq2}e^{t^jC_j}$. The unique term involving $C_n$ is $C_n$ itself, so
+\begin{equation}\label{eq:Cpartitions}
+ C_n=A_n-
+ \sum_{\substack{k_2,\ldots,k_{n-1}\geq0\\
+                  \sum_{j=2}^{n-1}jk_j=n}}
+       \frac{C_2^{k_2}\cdots C_{n-1}^{k_{n-1}}}
+            {k_2!\cdots k_{n-1}!}.
+\end{equation}
+Expand this identity by substitution until only $A_j$ remain. The leading $A_n$ corresponds to the tree consisting of one leaf. Every other term chooses the ordered children of the root, contributes a minus sign and the multiplicity factorials, and then independently chooses the subtree substituted in each child slot. All child weights are strictly smaller than the parent's, so the expansion terminates and yields exactly the finite set of trees defined above. This proves \eqref{eq:treeformula}; alternatively it proves the formula by induction on $n$. Finally $C_n$ is primitive and homogeneous, so the Dynkin--Specht--Wever identity says $C_n=\Rbr(C_n)/n$.
+\end{proof}
+For illustration the first such expressions are
+\begin{align*}
+ C_2&=A_2,& C_3&=A_3,& C_4&=A_4-\tfrac12A_2^2,\\
+ C_5&=A_5-A_2A_3,\qquad&&
+ C_6&=A_6-A_2A_4-\tfrac12A_3^2+\tfrac13A_2^3.
+\end{align*}
+No claim of an optimal number of summands is intended. The merit of this form is that it explicitly describes every summand and its coefficient, without an ellipsis or recurrence in the unknown exponents.
+
+\subsection{A globally convergent all-terms ordered-integral expansion}
+There is another useful full expansion, related to the explicit reorganizations considered in \cite{kimura}. It is a sum of products, rather than a product of exponentials; its convergence is therefore a separate question from Zassenhaus convergence.
+\begin{theorem}[Ordered-simplex expansion]\label{thm:duhamelseries}
+For bounded $X,Y$ in a unital Banach algebra and every scalar $t$,
+\begin{equation}\label{eq:duhamelseries}
+\begin{split}
+ e^{t(X+Y)}=e^{tX}\Biggl[I+
+ \sum_{k\geq1}\ \sum_{n_1,\ldots,n_k\geq0}
+ &\frac{(-1)^{n_1+\cdots+n_k}t^{k+n_1+\cdots+n_k}}
+ {\displaystyle\prod_{j=1}^{k}n_j!\,
+  \prod_{j=1}^{k}(n_j+\cdots+n_k+k-j+1)}\\[-2pt]
+ &\hspace{-18pt}\cdot(\ad_X^{n_1}Y)\cdots(\ad_X^{n_k}Y)\Biggr].
+\end{split}
+\end{equation}
+The indicated multiple series is absolutely convergent.
+\end{theorem}
+\begin{proof}
+Put $H(t)=e^{-tX}e^{t(X+Y)}$. Differentiation gives
+$H'(t)=B(t)H(t)$, where $B(t)=e^{-t\ad_X}Y$ and $H(0)=I$.
+Successive substitution in $H(t)=I+\int_0^tB(s)H(s)\dd s$ gives
+\[
+ H(t)=I+\sum_{k\geq1}
+ \int_{0<t_k<\cdots<t_1<t}
+           B(t_1)\cdots B(t_k)\dd t_k\cdots\dd t_1,
+\]
+initially for real $t>0$. Expand
+$B(s)=\sum_{n\geq0}(-s)^n\ad_X^nY/n!$. Repeated integration of monomials gives
+\[
+ \int_{0<t_k<\cdots<t_1<t}\prod_{j=1}^{k}t_j^{n_j}
+                      \dd t_k\cdots\dd t_1
+ =\frac{t^{k+\sum n_j}}
+        {\prod_{j=1}^{k}(n_j+\cdots+n_k+k-j+1)}.
+\]
+This proves the coefficients in \eqref{eq:duhamelseries}.
+
+For $|s|\leq|t|$, the sum of the norms of the terms in $B(s)$ is at most
+$\norm Y e^{2|t|\norm X}$. The sum of norms of all terms in the $k$th ordered integral is therefore at most
+$\bigl(|t|\norm Y e^{2|t|\norm X}\bigr)^k/k!$. Summing over $k$ bounds the bracketed series by
+$\exp(|t|\norm Y e^{2|t|\norm X})$ and justifies all interchanges. Parametrizing the integration segment by $s=t u$, $0\leq u\leq1$, proves the identical formula and bound for complex $t$.
+\end{proof}
+
+\subsection{An elementary sufficient convergence condition for the product}
+The following conservative estimate is supplied with its proof; it is not asserted to be an optimal Zassenhaus domain.
+\begin{theorem}[Convergence of the ordered Zassenhaus product]\label{thm:zconv}
+Let $s=\norm X+\norm Y$. If
+\begin{equation}\label{eq:zconv}
+ e^{2s}-1-2s<2\log2-1,
+\end{equation}
+then $\sum_{n\geq2}\norm{C_n}<\infty$, the product in \eqref{eq:zassenhaus} converges in norm at $t=1$, and equals $e^{X+Y}$.
+\end{theorem}
+\begin{proof}
+From \eqref{eq:rawRn}, $\norm{A_n}\leq(2s)^n/n!$; the coefficient of degree one of $R_1$ is zero. Put
+$r(t)=e^{2st}-1-2st$. Define a scalar formal series $c(t)=\sum_{n\geq2}c_nt^n$ by
+\begin{equation}\label{eq:zmajorant}
+ c=r+(e^c-1-c).
+\end{equation}
+Its coefficients are determined successively and are nonnegative. Indeed the rightmost expression starts quadratically in $c$, so its degree $n$ depends only on lower coefficients. In a commutative scalar algebra,
+$\prod_{j\geq2}e^{c_jt^j}=e^{c(t)}$.
+Thus the coefficient equation \eqref{eq:zmajorant} is precisely the positive version of the partition bound obtained from \eqref{eq:Cpartitions}. Induction proves $\norm{C_n}\leq c_n$.
+
+It remains to prove convergence of this majorant, rather than merely write it formally. The function $q(d)=2d-e^d+1$ increases from $0$ to $2\log2-1$ on $0\leq d<\log2$. By strictness in \eqref{eq:zconv}, choose $R>1$ with $r(R)<2\log2-1$, and choose $0\leq d<\log2$ with $q(d)=r(R)$. On the Banach space of holomorphic functions in $|t|<R$, continuous on its closure and of supremum norm at most $d$, the map
+\[
+ \mathcal F(f)(t)=r(t)+e^{f(t)}-1-f(t)
+\]
+maps that closed ball to itself: its norm is at most
+$r(R)+e^d-1-d=d$. Its Lipschitz constant there is at most $e^d-1<1$, by the scalar power series or the integral formula for its derivative. The contraction theorem gives a holomorphic fixed point with the formal coefficients above. Therefore $\sum c_n$ converges and so does $\sum\norm{C_n}$.
+
+The products of $e^{t^nC_n}$ converge uniformly on every closed disk $|t|\leq r_0<R$ because the sums of their exponent norms converge there. Their analytic limit has the formal coefficients of \eqref{eq:zassenhaus}, so it equals $e^{t(X+Y)}$ near zero and hence throughout $|t|<R$. In particular equality holds at $t=1$.
+\end{proof}
+
+\section{Lie--Trotter and higher symmetric product formulas}\label{sec:trotter}
+The source article mentions Suzuki--Trotter decomposition as a consequence of Zassenhaus. Here the precise bounded-operator statements and their errors follow directly from the same local expansions. The general unbounded semigroup theory of \cite{trotter} requires additional hypotheses and is not being inferred from formal algebra.
+\begin{theorem}[Lie--Trotter formula and its complete logarithmic error]\label{thm:trotter}
+For bounded $X,Y$ and fixed scalar $t$,
+\begin{equation}\label{eq:trotter}
+ \lim_{n\to\infty}(e^{tX/n}e^{tY/n})^n=e^{t(X+Y)}
+\end{equation}
+in norm, with error $\smallO(n^{-1})$. For all sufficiently large $n$, a specified logarithmic exponent for the left side has the convergent expansion
+\begin{equation}\label{eq:trotterall}
+ nZ(tX/n,tY/n)=t(X+Y)+
+                   \sum_{k\geq2}\frac{t^k}{n^{k-1}}Z_k(X,Y).
+\end{equation}
+Thus every term of its logarithmic error is explicitly available from Dynkin's formula.
+\end{theorem}
+\begin{proof}
+For large $n$, Theorem~\ref{thm:conv} applies to $tX/n,tY/n$ and identifies their product with the exponential of its convergent BCH series. The $n$th power is the exponential of $n$ times that same logarithm. Homogeneity proves \eqref{eq:trotterall}, whose remainder after the first term is $\smallO(n^{-1})$ by the tail estimate in that theorem.
+
+To pass from exponents to exponentials, differentiation of
+$e^{(1-u)A}e^{uB}$ gives
+\[
+ e^B-e^A=\int_0^1e^{(1-u)A}(B-A)e^{uB}\dd u,
+ \qquad
+ \norm{e^B-e^A}\leq e^{\max(\norm A,\norm B)}\norm{B-A}.
+\]
+This proves both the limit and its stated rate. It also shows that truncating \eqref{eq:trotterall} at any fixed degree gives an asymptotic expansion of the approximants, not merely of a formal symbol.
+\end{proof}
+
+\begin{proposition}[Symmetric splitting]\label{prop:symmetric}
+Let $S_2(t)=e^{tX/2}e^{tY}e^{tX/2}$. Its formal logarithm is odd in $t$, and
+\begin{equation}\label{eq:symmetric}
+ \log S_2(t)=t(X+Y)-\frac{t^3}{24}[X,[X,Y]]
+                        -\frac{t^3}{12}[Y,[X,Y]]+\smallO(t^5).
+\end{equation}
+Every coefficient, including all terms in the remainder, is given by the multi-exponential word formula \eqref{eq:manyword}, followed if desired by Dynkin projection. For fixed $t$,
+\begin{equation}\label{eq:symmetrictrotter}
+ S_2(t/n)^n=e^{t(X+Y)}+\smallO(n^{-2})
+\end{equation}
+in norm for bounded $X,Y$.
+\end{proposition}
+\begin{proof}
+$S_2(-t)=S_2(t)^{-1}$, so formal uniqueness of the logarithm gives $\log S_2(-t)=-\log S_2(t)$. The cubic term is obtained by two uses of the degree-three BCH polynomial. More explicitly, setting $A=tX$ and $B=tY$ gives
+\[
+ Z(A/2,B)=A/2+B+\tfrac14[A,B]
+       +\tfrac1{48}[A,[A,B]]+\tfrac1{24}[B,[B,A]]
+       +\smallO_{\deg}(4).
+\]
+Apply $Z(\,\cdot\,,A/2)$ to this expression. The quadratic terms cancel, while the two cubic coefficients become $-1/24$ and $-1/12$. Oddness removes degree four and proves \eqref{eq:symmetric}. Finally $n\log S_2(t/n)=t(X+Y)+\smallO(n^{-2})$, and the exponential estimate in the previous proof gives \eqref{eq:symmetrictrotter}.
+\end{proof}
+
+The same argument produces arbitrary even orders, not just first- and second-order decompositions. We give the usual five-block construction of Suzuki \cite{suzuki}.
+\begin{theorem}[Symmetric product formulas of every even order]\label{thm:suzuki}
+Starting with $S_2$ above, define for $k\geq2$
+\begin{align}
+ p_k&=\frac1{4-4^{1/(2k-1)}},\label{eq:suzukip}\\
+ S_{2k}(t)&=S_{2k-2}(p_kt)^2\,
+       S_{2k-2}((1-4p_k)t)\,S_{2k-2}(p_kt)^2.\label{eq:suzuki}
+\end{align}
+Then
+\begin{equation}\label{eq:suzukiorder}
+ \log S_{2k}(t)=t(X+Y)+\smallO(t^{2k+1}),\qquad
+ S_{2k}(t/n)^n=e^{t(X+Y)}+\smallO(n^{-2k}).
+\end{equation}
+The first identity is formal and locally analytic; the second is a norm statement for bounded operators and fixed $t,k$.
+\end{theorem}
+\begin{proof}
+Inductively suppose $\log S_{2k-2}(t)=tH+t^{2k-1}E+\smallO(t^{2k+1})$, where $H=X+Y$. In the BCH logarithm of the five factors, the linear terms are scalar multiples of the same $H$ and hence commute. The coefficient of $t^{2k-1}E$ is consequently just
+$4p_k^{2k-1}+(1-4p_k)^{2k-1}=0$. Their linear coefficients sum to one. Commutators involving $E$ have degree at least $2k$ and cannot affect this cancellation. The palindromic composition satisfies $S_{2k}(-t)=S_{2k}(t)^{-1}$, so its logarithm is odd; the possible degree-$2k$ term therefore vanishes too. This proves the first assertion and completes the induction. Scaling by $t/n$ and using the exponential estimate proves the second assertion.
+\end{proof}
+For these formulas $1-4p_k<0$. Negative substeps are harmless for bounded-operator exponentials or unitary groups but may not exist for a one-sided unbounded semigroup. The proof does not assert convergence as $k\to\infty$ at fixed $t$.
+
+\section{Infinitesimal coordinates, coframes, and pullback metrics}\label{sec:geometry}
+\subsection{The full infinitesimal expansion}
+Let $X$ be a differentiable Lie algebra-valued function on a manifold. The differential formula \eqref{eq:leftdexp}, applied to every tangent vector, gives
+\begin{equation}\label{eq:infinitesimal}
+ e^{-X}\dd e^X=\phi(\ad_X)\dd X
+       =\sum_{n\geq0}\frac{(-1)^n}{(n+1)!}\ad_X^n(\dd X),
+ \qquad \phi(z)=\frac{1-e^{-z}}z.
+\end{equation}
+This is an equality of Lie algebra-valued one-forms. The scalar function $\phi$ is entire, with $\phi(0)=1$, so the series is well-defined for every finite-dimensional endomorphism $\ad_X$.
+
+Choose a basis $e_1,\ldots,e_d$ of $\g$, write $X=x^ie_i$, and use repeated-index summation. If $[e_i,e_j]=f_{ij}^{\ k}e_k$, then
+\begin{equation}\label{eq:structureexpansion}
+ e^{-X}\dd e^X=\dd x^ie_i-\frac12x^i\dd x^jf_{ij}^{\ k}e_k
+    +\frac16x^ix^j\dd x^kf_{jk}^{\ \ell}f_{i\ell}^{\ m}e_m-\cdots.
+\end{equation}
+Define the matrix of $\ad_X$ by
+\begin{equation}\label{eq:Mdef}
+ M^a_{\ b}=x^if_{ib}^{\ a},\qquad
+ W=\phi(M)=\sum_{n\geq0}\frac{(-1)^nM^n}{(n+1)!}.
+\end{equation}
+Then the complete coordinate formula is
+\begin{equation}\label{eq:Wcoordinates}
+ e^{-X}\dd e^X=e_aW^a_{\ b}\dd x^b,
+\end{equation}
+with the all-index expansion
+\begin{equation}\label{eq:Wallindices}
+ W^a_{\ b}=\delta^a_b+
+ \sum_{n\geq1}\frac{(-1)^n}{(n+1)!}
+ \sum_{\substack{i_1,\ldots,i_n\\c_1,\ldots,c_{n-1}}}
+       x^{i_1}\cdots x^{i_n}
+       \prod_{r=1}^{n}f_{i_rc_{r-1}}^{\quad c_r},
+ \qquad c_0=b,\ c_n=a.
+\end{equation}
+Indeed repeated application of $\ad_X$ gives the product of structure constants in \eqref{eq:Wallindices}; for $n=1,2$ it yields exactly \eqref{eq:structureexpansion} after renaming dummy indices. This proves every term, not just the displayed initial ones.
+
+\subsection{Why a literal inverse of \texorpdfstring{$M$}{M} is incorrect}
+The shorthand $W=(I-e^{-M})M^{-1}$ is only an entire-function quotient, not generally a multiplication by an inverse matrix. In fact, in a positive-dimensional Lie algebra $M=\ad_X$ is \emph{always singular}: if $X\ne0$, then $MX=[X,X]=0$, and if $X=0$, then $M=0$. The power series in \eqref{eq:Mdef}, or equivalently
+\begin{equation}\label{eq:Wintegral}
+ W=\int_0^1e^{-uM}\dd u,
+\end{equation}
+defines the value without any inverse.
+
+\begin{proposition}[The actual coframe and its regularity]\label{prop:coframe}
+In exponential coordinates near the identity, the one-forms
+$\theta^a=W^a_{\ b}\dd x^b$ form a coframe. Its dual frame has coefficient matrix $W^{-1}$. The matrix $M$ is not this coframe. More generally,
+\begin{equation}\label{eq:Wregular}
+ W\text{ is invertible}\quad\Longleftrightarrow\quad
+ \Spec(M)\cap2\pi i(\mathbb Z\setminus\{0\})=\varnothing,
+\end{equation}
+where a real matrix is complexified to compute its spectrum.
+\end{proposition}
+\begin{proof}
+$W(0)=I$, so it is invertible near zero, and \eqref{eq:Wcoordinates} is precisely the left Maurer--Cartan form in those coordinates. The dual-frame statement is ordinary matrix inversion. Over $\C$ put $M$ in triangular form; its entire functional calculus is triangular with diagonal entries $\phi(\lambda_j)$. Hence $\det W=\prod_j\phi(\lambda_j)$, which is nonzero exactly when no $\lambda_j$ is a nonzero integral multiple of $2\pi i$. At a zero eigenvalue $\phi(0)=1$, not zero. This proves \eqref{eq:Wregular}.
+\end{proof}
+The inverse where it exists is $\beta(M)$ by holomorphic functional calculus. Its Taylor series around $M=0$ is the Bernoulli series already derived, subject to that series' convergence domain. In physics terminology $W$ supplies the vielbein/coframe components, depending on the index convention; the source article's identification of $M$ as the vielbein is incorrect.
+
+For completeness the defining differential relation of the coframe is
+\begin{equation}\label{eq:maurercartan}
+ \dd\theta+\frac12[\theta,\theta]=0,
+ \qquad
+ \dd\theta^a=-\frac12f_{bc}^{\ a}\theta^b\wedge\theta^c.
+\end{equation}
+For a matrix group, differentiation of $g^{-1}g=I$ gives
+$\dd(g^{-1})=-g^{-1}(\dd g)g^{-1}$ and thus
+$\dd(g^{-1}\dd g)=-(g^{-1}\dd g)\wedge(g^{-1}\dd g)$, which is \eqref{eq:maurercartan}. Intrinsically, evaluate it on left-invariant fields $U,V$: their Maurer--Cartan coordinates are constant, so $\dd\theta(U,V)=-\theta([U,V])=-[\theta(U),\theta(V)]$. Tensoriality proves the identity on arbitrary fields. This also supplies the intrinsic differentiation rule used in Theorem~\ref{thm:local}.
+
+\subsection{What the metric formula does and does not assert}
+Let $B$ be a nondegenerate symmetric bilinear form on the real Lie algebra $\g$. Left translation defines a left-invariant pseudo-Riemannian metric $g_G$ on $G$ by
+$g_G(U,V)=B(\theta(U),\theta(V))$. When $B$ is positive definite, this is Riemannian. No invariance of $B$ under the adjoint action is necessary for left invariance of this metric.
+
+\begin{theorem}[Pullback formula with its hypotheses]\label{thm:pullback}
+Let $F:N\to G$ be smooth, and in a local exponential chart write
+$F(u)=\exp(X(u))$, $X(u)=x^b(u)e_b$. Then
+\begin{align}
+ (F^*\theta)^a_i&=W^a_{\ b}(X(u))\,\partial_i x^b(u),\label{eq:pullcoframe}\\
+ (F^*g_G)_{ij}&=B_{ab}\,
+   W^a_{\ c}(X(u))W^b_{\ d}(X(u))
+   \partial_i x^c(u)\partial_j x^d(u).\label{eq:pullmetric}
+\end{align}
+In the particular coordinates $u^i=x^i$ this reduces to
+\begin{equation}\label{eq:metricW}
+ g_{ij}=W^a_{\ i}W^b_{\ j}B_{ab},\qquad g=W^{\mathsf T}BW.
+\end{equation}
+For positive definite $B$, the pullback is a metric precisely when $F$ is an immersion. For indefinite $B$, its restriction to $\dd F(TN)$ must additionally be nondegenerate.
+\end{theorem}
+\begin{proof}
+Equation \eqref{eq:pullcoframe} is the chain rule applied to \eqref{eq:Wcoordinates}. The definition of a pullback bilinear form then gives \eqref{eq:pullmetric} and \eqref{eq:metricW}. In the positive definite case, $F^*g_G(v,v)=0$ exactly when $\dd F(v)=0$, so positive definiteness is equivalent to injectivity of $\dd F$. For an indefinite form, injectivity alone does not exclude null or degenerate image subspaces; nondegeneracy is exactly the stated additional condition.
+\end{proof}
+An arbitrary smooth map does not automatically induce a metric: a constant map has zero pullback. Nor can an arbitrary previously specified metric on $N$ be asserted to be such a pullback without additional data. The Jacobian factors in \eqref{eq:pullmetric} are indispensable unless the coordinates on $N$ really are the $x^i$.
+
+\subsection{The Killing form and an all-orders invariant metric series}
+The Killing form is
+\begin{equation}\label{eq:killing}
+ B_{ab}=\tr(\ad_{e_a}\ad_{e_b})
+       =\sum_{c,d}f_{ac}^{\ d}f_{bd}^{\ c}.
+\end{equation}
+The second expression follows by multiplying the two adjoint matrices and taking their trace. It is symmetric because $\tr(AB)=\tr(BA)$. It is adjoint-invariant because
+\begin{align*}
+ B([x,u],v)+B(u,[x,v])
+ &=\tr\bigl([\ad_x,\ad_u]\ad_v+
+                      \ad_u[\ad_x,\ad_v]\bigr)\\
+ &=\tr[\ad_x,\ad_u\ad_v]=0.
+\end{align*}
+The Killing form need not be nondegenerate or positive definite. On every abelian Lie algebra it is identically zero. Therefore it is not a universal choice of Riemannian or pseudo-Riemannian metric. An arbitrary positive definite inner product at the identity always gives a left-invariant Riemannian metric instead. When the Killing form is nondegenerate, it may be used as the $B$ in Theorem~\ref{thm:pullback}; the signature must still be respected.
+
+\begin{proposition}[Full metric expansion for an invariant form]\label{prop:metricseries}
+For any symmetric adjoint-invariant $B$, whether or not nondegenerate,
+\begin{equation}\label{eq:metricseries}
+ W^{\mathsf T}BW
+ =B\,\phi(-M)\phi(M)
+ =B\sum_{n\geq0}\frac{2M^{2n}}{(2n+2)!}
+ =B\left(I+\frac{M^2}{12}+\frac{M^4}{360}+\cdots\right).
+\end{equation}
+Equivalently the middle entire function is $2(\cosh M-I)/M^2$, again interpreted without a matrix inverse.
+\end{proposition}
+\begin{proof}
+Invariance is $M^{\mathsf T}B=-BM$. Induction gives $(M^{\mathsf T})^nB=(-1)^nBM^n$, hence $W^{\mathsf T}B=B\phi(-M)$. Multiplying by $W$ and using scalar entire series reduces the remaining assertion to
+\[
+ \phi(-z)\phi(z)=\frac{(e^z-1)(1-e^{-z})}{z^2}
+       =\frac{2(\cosh z-1)}{z^2}
+       =\sum_{n\geq0}\frac{2z^{2n}}{(2n+2)!}.
+\]
+All apparent singularities at zero are removable, so substitution by any finite matrix is valid.
+\end{proof}
+
+\section{Quantum-mechanical identities with explicit operator domains}\label{sec:quantum}
+The formal central-commutator calculation predicts the formulas on the source page. To turn those predictions into theorems for unbounded operators, we now prove them directly in the Schr\"odinger and Bargmann--Fock realizations. These realizations and their relation to the canonical commutation relations are discussed in \cite{hallholomorphic}; the arguments below make the required domain distinctions explicit.
+
+\subsection{Position, momentum, and Weyl identities}
+On $L^2(\R,\dd x)$ put
+\begin{equation}\label{eq:QP}
+ (Qf)(x)=xf(x),\qquad (Pf)(x)=-i\hbar f'(x),\qquad \hbar>0.
+\end{equation}
+The initial common invariant domain is the Schwartz space $\mathcal S(\R)$. Direct differentiation gives
+\begin{equation}\label{eq:CCR}
+ (QP-PQ)f=i\hbar f,\qquad f\in\mathcal S(\R).
+\end{equation}
+Their self-adjoint realizations are, respectively, maximal multiplication by $x$ and the Fourier-conjugate of multiplication by the real momentum variable. These agree with the displayed differential expressions on $\mathcal S$. Truncation and smooth approximation in the corresponding weighted $L^2$ graph norms show that $\mathcal S$ is a core. Equivalently, one may first use compactly supported smooth functions as a core for real multiplication and then use the Fourier transform, which maps Schwartz space to itself.
+
+The bounded exponentials are concrete:
+\begin{equation}\label{eq:UV}
+ (e^{iaQ}f)(x)=e^{iax}f(x),\qquad
+ (e^{ibP}f)(x)=f(x+b\hbar),\qquad a,b\in\R.
+\end{equation}
+The second formula follows from the Fourier transform, or from the strongly continuous translation group and its generator. Both operators are unitary by a change of variables.
+
+\begin{theorem}[Weyl product and exact symmetric splitting]\label{thm:weyl}
+With the self-adjoint realizations just specified, $aQ+bP$ on $\mathcal S$ is essentially self-adjoint. Its closure satisfies
+\begin{align}
+ e^{i(aQ+bP)}f(x)&=e^{ia(x+b\hbar/2)}f(x+b\hbar),\label{eq:sumaction}\\
+ e^{iaQ}e^{ibP}&=e^{i(aQ+bP-ab\hbar I/2)},\label{eq:weyl}\\
+ e^{i(aQ+bP)}&=e^{iaQ/2}e^{ibP}e^{iaQ/2},\label{eq:weylsymmetric}\\
+ e^{iaQ}e^{ibP}&=e^{-iab\hbar}e^{ibP}e^{iaQ}.\label{eq:weylcommute}
+\end{align}
+All four are equalities of bounded operators on the entire Hilbert space.
+\end{theorem}
+\begin{proof}
+When $b\ne0$, let $U$ be multiplication by
+$\exp(-iax^2/(2b\hbar))$. It is unitary, preserves $\mathcal S$, and direct differentiation shows
+\[
+ bUPU^{-1}=aQ+bP\quad\hbox{on }\mathcal S.
+\]
+Thus this sum is essentially self-adjoint and its closure is the unitary conjugate $bUPU^{-1}$. When $b=0$ the assertion is the already established multiplication case. Functional calculus and \eqref{eq:UV} now give, for real $t$,
+\[
+ \bigl(e^{it(aQ+bP)}f\bigr)(x)
+  =e^{ita(x+tb\hbar/2)}f(x+tb\hbar).
+\]
+One can also verify its group law and derivative $i(aQ+bP)$ directly. At $t=1$ this proves \eqref{eq:sumaction}. Comparing this action with the product in \eqref{eq:UV} proves \eqref{eq:weyl}. Applying the three factors of \eqref{eq:weylsymmetric} from right to left gives the identical action. Finally swapping the two factors in \eqref{eq:UV} introduces the phase $e^{iab\hbar}$ and proves \eqref{eq:weylcommute}.
+\end{proof}
+The central-commutator check agrees with this proof:
+$[iaQ,ibP]=-iab\hbar I$, so the BCH correction is $-iab\hbar I/2$. Importantly, \eqref{eq:weyl} has not been justified by substituting unbounded operators into a norm-convergent matrix series.
+
+\begin{remark}[Why the domain qualification is essential]\label{rem:domaincounter}
+A commutator identity on a dense invariant domain alone does not imply its Weyl exponentiation. On $L^2(0,2\pi)$ let $Q$ be multiplication by $x$ and let $P=-i\hbar\dd/\dd x$ have periodic self-adjoint boundary conditions. The same identity $[Q,P]=i\hbar I$ holds on the dense invariant domain $C_c^\infty(0,2\pi)$. But $P$ has eigenfunctions $e^{inx}$ and eigenvalues $n\hbar$, so
+$e^{i(2\pi/\hbar)P}=I$. If \eqref{eq:weylcommute} followed from that domain identity for every $a,b$, setting $b=2\pi/\hbar$ would give
+$e^{iaQ}=e^{-2\pi ia}e^{iaQ}$ for all $a$, which is false. The periodic domain is not preserved by arbitrary multiplication $e^{iax}$, exactly where a naive exponentiation argument breaks down.
+\end{remark}
+There also cannot be bounded operators $A,B$ with $[A,B]=I$. Indeed induction gives $[A,B^n]=nB^{n-1}$, and hence
+$\norm{B^n}\geq n\norm{B^{n-1}}/(2\norm A)$.
+Iteration would imply $\norm{B^n}\geq n!/(2\norm A)^n$, contradicting $\norm{B^n}\leq\norm B^n$ for large $n$. Thus some unboundedness is intrinsic to the canonical relation.
+
+\subsection{Bargmann--Fock creation and annihilation operators}
+Let $\mathcal F$ be the Hilbert space of entire functions with norm
+\begin{equation}\label{eq:focknorm}
+ \norm f_{\mathcal F}^2=\frac1\pi\int_{\C}|f(z)|^2e^{-|z|^2}\dd^2z.
+\end{equation}
+Polar integration gives
+$\langle z^m,z^n\rangle=\delta_{mn}n!$, so
+$|n\rangle=e_n(z)=z^n/\sqrt{n!}$ is an orthonormal basis. To see completeness rather than only orthogonality, expand an entire function in its Taylor series on circles and use angular Parseval followed by radial integration; the result is
+$\norm{\sum c_nz^n}_{\mathcal F}^2=\sum n!|c_n|^2$. Conversely, this summability implies entire convergence by Cauchy--Schwarz and $\sum |z|^{2n}/n!=e^{|z|^2}$.
+
+On the dense polynomial domain set
+\begin{equation}\label{eq:creation}
+ af=f',\qquad a^\dagger f=zf.
+\end{equation}
+Then
+\begin{equation}\label{eq:ladder}
+ a|n\rangle=\sqrt n\,|n-1\rangle,\qquad
+ a^\dagger|n\rangle=\sqrt{n+1}\,|n+1\rangle,
+ \qquad[a^\dagger,a]=-I.
+\end{equation}
+The first two formulas follow by differentiation and multiplication; they also show the adjoint relation on the polynomial domain. The maximal closed lowering and raising operators, on the domains specified by square summability of their weighted coefficients, are Hilbert-space adjoints of one another. The commutator sign is obtained by $z f'-(zf)'=-f$.
+
+\begin{theorem}[Displacement operators and normal ordering]\label{thm:displacement}
+For $v\in\C$ the formula
+\begin{equation}\label{eq:Daction}
+ (D(v)f)(z)=e^{-|v|^2/2+vz}\,f(z-\overline v)
+\end{equation}
+defines a unitary operator on $\mathcal F$. It is the exponential of the closure of the skew-symmetric polynomial-domain operator $va^\dagger-\overline v a$. On that domain the normally ordered expression is
+\begin{equation}\label{eq:normalorder}
+ D(v)=e^{va^\dagger-\overline v a}
+     =e^{va^\dagger}e^{-\overline v a}e^{-|v|^2/2}.
+\end{equation}
+The rightmost product, initially defined on polynomials, extends to the unitary operator \eqref{eq:Daction}.
+\end{theorem}
+\begin{proof}
+Substitute $w=z-\overline v$ in the Gaussian integral. The identity
+\[
+ -|v|^2+2\operatorname{Re}(vz)-|z|^2=-|w|^2
+\]
+proves $\norm{D(v)f}=\norm f$. Direct substitution shows $D(-v)$ is its inverse, hence it is unitary.
+
+For fixed $v$, the operators $D(tv)$, $t\in\R$, form a one-parameter group: substitution in \eqref{eq:Daction} makes the two Gaussian and translation factors combine to the expression with parameter $t+s$. They are strongly continuous. On polynomials this follows from the explicit formula and Gaussian dominated convergence for $t$ in a bounded interval, and on all of $\mathcal F$ it follows by polynomial density and unitarity. Differentiation at $t=0$ gives $(vz-\overline v\,\partial_z)f$ on polynomials.
+
+Here is a direct core justification for the generator identification. Under the basis $|n\rangle$, on vectors supported in levels at most $m$ the norms of $a$ and $a^\dagger$ are at most $\sqrt m$ and $\sqrt{m+1}$. For $T=va^\dagger-\overline v a$ and a vector $f$ supported through level $m$,
+\begin{equation}\label{eq:analyticvectorbound}
+ \norm{T^kf}\leq (2|v|)^k\sqrt{\frac{(m+k)!}{m!}}\,\norm f.
+\end{equation}
+Thus $\sum_{k\geq0}|t|^k\norm{T^kf}/k!$ converges for every $t$. The exponential series on these vectors can be differentiated and equals $D(tv)f$ by its explicit Taylor series. To verify that the closure of $T$ is the generator, it suffices to show that the symmetric operator $A=-iT$ has no deficiency vectors. If $A^*h=\pm ih$, then differentiating $\langle h,D(tv)f\rangle$ on these entire analytic vectors, or expanding its entire series, gives a scalar multiple of $e^{\pm t}\langle h,f\rangle$ (the sign depends on the inner-product convention). Unitarity bounds its magnitude for all real $t$, so $\langle h,f\rangle=0$. Density gives $h=0$ in both cases. The elementary deficiency criterion for a densely defined symmetric operator now makes $A$ essentially self-adjoint. Consequently the skew-adjoint closure of $T$ is precisely the generator of this group.
+
+Finally, for a polynomial $f$, $e^{-\overline v a}f=f(z-\overline v)$ by its finite Taylor series, and $e^{va^\dagger}$ acts by multiplication by $e^{vz}$. Its series on each polynomial converges in $\mathcal F$, since the ratio of successive term norms is asymptotic to $|v|/\sqrt k$. This proves \eqref{eq:normalorder} on the dense domain and identifies its bounded extension with \eqref{eq:Daction}.
+\end{proof}
+Although the product in \eqref{eq:normalorder} has a unitary extension, its two nonscalar factors separately are generally unbounded. The identity is not a claim that each is an everywhere-defined bounded operator.
+
+\begin{theorem}[Composition law and all matrix elements]\label{thm:Dcomposition}
+For $u,v\in\C$,
+\begin{equation}\label{eq:Dcomposition}
+ D(v)D(u)=
+  \exp\!\left(\frac{v\overline u-u\overline v}{2}\right)D(v+u).
+\end{equation}
+More generally,
+\begin{equation}\label{eq:Dmany}
+ \prod_{j=1}^{r}D(v_j)=
+  \exp\!\left(\frac12\sum_{i<j}
+                (v_i\overline{v_j}-v_j\overline{v_i})\right)
+       D\!\left(\sum_{j=1}^{r}v_j\right).
+\end{equation}
+The full normally ordered expansion and its matrix elements are
+\begin{align}
+ D(v)&=e^{-|v|^2/2}
+       \sum_{r,s\geq0}\frac{v^r(-\overline v)^s}{r!s!}
+                              (a^\dagger)^ra^s,\label{eq:Dall}\\
+ \langle m|D(v)|n\rangle
+   &=e^{-|v|^2/2}\sqrt{m!n!}
+       \sum_{k=0}^{\min(m,n)}
+       \frac{v^{m-k}(-\overline v)^{n-k}}
+            {k!(m-k)!(n-k)!},\label{eq:Dmatrix}\\
+ D(v)|0\rangle&=e^{-|v|^2/2}
+                   \sum_{n\geq0}\frac{v^n}{\sqrt{n!}}|n\rangle.
+                   \label{eq:coherent}
+\end{align}
+Equation \eqref{eq:Dall} is interpreted on polynomial vectors; the sum over $s$ is then finite and the remaining series converges in Hilbert-space norm.
+\end{theorem}
+\begin{proof}
+Apply \eqref{eq:Daction} twice. The resulting multiplier is
+$\exp(-|v|^2/2-|u|^2/2+(v+u)z-u\overline v)$.
+Its quotient by the multiplier of $D(v+u)$ is exactly the scalar phase in \eqref{eq:Dcomposition}. The phase has modulus one because its exponent is purely imaginary. Induction proves \eqref{eq:Dmany}.
+
+Expand the two exponentials in \eqref{eq:normalorder}; the convergence and finite lowering sum proved above give \eqref{eq:Dall}. Acting on $|n\rangle$ first lowers it to $|k\rangle$ with $s=n-k$, then raises it to $|m\rangle$ with $r=m-k$. The ladder factors multiply to $\sqrt{m!n!}/k!$, yielding \eqref{eq:Dmatrix}. Setting $n=0$ gives \eqref{eq:coherent}. Its norm is one because $e^{-|v|^2}\sum |v|^{2n}/n!=1$.
+\end{proof}
+Algebraically, if $T_v=va^\dagger-\overline v a$, then
+$[T_v,T_u]=(v\overline u-u\overline v)I$ is central and all triple commutators vanish. This is the class-two nilpotent Heisenberg structure behind \eqref{eq:Dcomposition}. The operator proof above establishes the identity globally without an unjustified interchange of unbounded-operator series.
+
+\section{Reproducible exact computations and the scope of verification}\label{sec:verification}
+The accompanying program \texttt{code/verify\_bch.py} represents a noncommutative polynomial by a dictionary from words to rational numbers. Coefficients use Python's \texttt{fractions.Fraction}; no floating-point simplification, matrix sampling, or external computer-algebra package is used. Multiplication concatenates words and discards only words exceeding the requested degree. Consequently equality tests are equality tests in the truncated free associative algebra, not merely tests in a representation where independent commutators might collapse.
+
+The supplied run uses total degree ten. It checks the exponential of the word logarithm, its Dynkin projection, the independent Poincar\'e block formula, the Bernoulli differential recursion, the complete degree-six expression, exchange parity, and primitivity. For Zassenhaus it compares residual removal against the differential recursion, reconstructs the ordered exponential product, verifies that every exponent through $C_{10}$ is fixed by Dynkin projection, and checks the tree formula and the displayed $C_2,C_3,C_4$. It also tests the ordered-simplex expansion and the oddness and cubic coefficient of symmetric BCH. The run report lists 26 passing checks.
+
+The number of nonzero associative word coefficients in the output is:
+\begin{center}
+\begin{tabular}{lrrrrrrrrrr}
+\toprule
+Degree&1&2&3&4&5&6&7&8&9&10\\
+\midrule
+BCH&2&2&6&4&30&28&126&124&390&388\\
+Zassenhaus $C_n$&--&2&6&12&30&42&126&234&510&954\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are counts in the associative word basis, not dimensions of homogeneous free Lie algebras and not counts of terms in a minimal Lie basis. The data files store rational coefficients as strings such as \texttt{-1/720}, so no precision is lost in serialization. The tree-polynomial file uses a sequence of leaf weights to denote an ordered product of the $A_j$ in \eqref{eq:rawRn}.
+
+Run the checks from the archive's root by
+\begin{verbatim}
+python3 code/verify_bch.py --degree 10 --out data
+\end{verbatim}
+The program supports other finite degrees; complexity is exponential in the degree. The coproduct and ordered-simplex checks are capped at degree ten for larger requested degrees, and their labels state the cap. The paper's all-orders proofs do not depend on any such cap. In particular these computations are not proof-assistant certification, do not establish an optimal convergence radius, and do not numerically test unbounded-operator identities. Those identities were proved in Section~\ref{sec:quantum} using explicit actions and domains.
+
+\appendix
+\section{An enveloping-algebra proof of the needed PBW statement}\label{app:pbw}
+This appendix supplies the injectivity used to pass from free associative identities to arbitrary Lie algebras.
+\begin{theorem}[Poincar\'e--Birkhoff--Witt in ordered form]\label{thm:pbw}
+Let $(e_i)_{i\in I}$ be a totally ordered basis of a Lie algebra $\g$ over $\K$. In $U(\g)$, the monomials
+\[
+ 1,\qquad e_{i_1}\cdots e_{i_n}\quad(i_1\leq\cdots\leq i_n)
+\]
+form a vector-space basis. In particular the map $\g\to U(\g)$ is injective.
+\end{theorem}
+\begin{proof}
+For an adjacent inverted pair $j>i$, use the rewriting rule
+\begin{equation}\label{eq:pbwrule}
+ e_je_i\ \longmapsto\ e_ie_j+[e_j,e_i]_{\g},
+\end{equation}
+expanding the last bracket in the fixed basis. In the swapped term, word length stays constant and the number of inversions decreases by one. In the bracket term length decreases. Order these two nonnegative integers lexicographically, with length first. Each branch of reduction strictly decreases this measure, so reductions terminate. They express every word as a linear combination of ordered words.
+
+We prove uniqueness of the reduced expression by induction on this measure. If two choices of the first reduction are at disjoint pairs, performing both in either order gives the same polynomial, and the induction hypothesis handles any subsequent reductions. The only overlapping ambiguity is a word $e_ke_je_i$ with $k>j>i$, possibly inside a longer context. Ignoring that unchanged context, reducing the left inverted pair first and then moving the three original letters into order gives
+\[
+ e_ie_je_k+[e_j,e_i]e_k+e_j[e_k,e_i]+[e_k,e_j]e_i.
+\]
+Reducing the right inverted pair first gives
+\[
+ e_ie_je_k+e_i[e_k,e_j]+[e_k,e_i]e_j+e_k[e_j,e_i].
+\]
+Their difference has shorter words. By the induction hypothesis and \eqref{eq:pbwrule}, its unique reduction is the reduction of
+\[
+ [[e_j,e_i],e_k]+[e_j,[e_k,e_i]]+[[e_k,e_j],e_i]=0,
+\]
+where the equality is Jacobi and antisymmetry in $\g$. This also holds in an unchanged left and right context, since all differing terms have smaller total length than the original word. There are no further overlapping patterns, as every rule has length two. This proves uniqueness: two first-step choices have equal reduced results, and induction then compares any two complete reduction paths. Extending by linearity defines a well-defined normal-form map.
+
+Each rewriting step changes an element by a generator of the enveloping ideal multiplied on the left and right by words. Conversely, every such multiple has normal form zero, because the two sides of the corresponding local rule have the same normal form. Thus the kernel of the normal-form map is exactly the enveloping ideal. Ordered words are fixed by normal form and linearly independent in its target, proving that their residue classes form a basis of the quotient. Words of length one are among these basis vectors, giving the injection.
+\end{proof}
+This proof uses only the Lie bracket's bilinearity, antisymmetry, and Jacobi identity. It is independent of the BCH theorem, so its use in Section~\ref{subsec:universal} introduces no circularity.
+
+\section{All nonzero associative coefficients through degree six}\label{app:wordtable}
+For each listed word $w$, the table gives $c(w)$ in \eqref{eq:wordcoefficient}. Every unlisted word of degrees one through six has coefficient zero. Expanding the Lie expressions \eqref{eq:z1}--\eqref{eq:z6} by \eqref{eq:bracketexpand} gives the same table. Thus this appendix is a complete finite certificate for the degree-six display: there are $2+4+8+16+32+64=126$ possible words and 72 nonzero entries. Longer coefficient tables, through degree ten, are supplied as machine-readable data.
+
+\begingroup\small
+\begin{longtable}{@{}lrlrlr@{}}
+\toprule
+Word $w$&$c(w)$&Word $w$&$c(w)$&Word $w$&$c(w)$\\
+\midrule\endfirsthead
+\toprule
+Word $w$&$c(w)$&Word $w$&$c(w)$&Word $w$&$c(w)$\\
+\midrule\endhead
+\bottomrule\endfoot
+\multicolumn{6}{@{}l}{\textit{Degree 1}}\\[2pt]
+\texttt{X} & $1$ & \texttt{Y} & $1$ &  & \\[2pt]
+\addlinespace[3pt]
+\multicolumn{6}{@{}l}{\textit{Degree 2}}\\[2pt]
+\texttt{XY} & $\frac{1}{2}$ & \texttt{YX} & $-\frac{1}{2}$ &  & \\[2pt]
+\addlinespace[3pt]
+\multicolumn{6}{@{}l}{\textit{Degree 3}}\\[2pt]
+\texttt{XXY} & $\frac{1}{12}$ & \texttt{XYX} & $-\frac{1}{6}$ & \texttt{XYY} & $\frac{1}{12}$\\[2pt]
+\texttt{YXX} & $\frac{1}{12}$ & \texttt{YXY} & $-\frac{1}{6}$ & \texttt{YYX} & $\frac{1}{12}$\\[2pt]
+\addlinespace[3pt]
+\multicolumn{6}{@{}l}{\textit{Degree 4}}\\[2pt]
+\texttt{XXYY} & $\frac{1}{24}$ & \texttt{XYXY} & $-\frac{1}{12}$ & \texttt{YXYX} & $\frac{1}{12}$\\[2pt]
+\texttt{YYXX} & $-\frac{1}{24}$ &  &  &  & \\[2pt]
+\addlinespace[3pt]
+\multicolumn{6}{@{}l}{\textit{Degree 5}}\\[2pt]
+\texttt{XXXXY} & $-\frac{1}{720}$ & \texttt{XXXYX} & $\frac{1}{180}$ & \texttt{XXXYY} & $\frac{1}{180}$\\[2pt]
+\texttt{XXYXX} & $-\frac{1}{120}$ & \texttt{XXYXY} & $-\frac{1}{120}$ & \texttt{XXYYX} & $-\frac{1}{120}$\\[2pt]
+\texttt{XXYYY} & $\frac{1}{180}$ & \texttt{XYXXX} & $\frac{1}{180}$ & \texttt{XYXXY} & $-\frac{1}{120}$\\[2pt]
+\texttt{XYXYX} & $\frac{1}{30}$ & \texttt{XYXYY} & $-\frac{1}{120}$ & \texttt{XYYXX} & $-\frac{1}{120}$\\[2pt]
+\texttt{XYYXY} & $-\frac{1}{120}$ & \texttt{XYYYX} & $\frac{1}{180}$ & \texttt{XYYYY} & $-\frac{1}{720}$\\[2pt]
+\texttt{YXXXX} & $-\frac{1}{720}$ & \texttt{YXXXY} & $\frac{1}{180}$ & \texttt{YXXYX} & $-\frac{1}{120}$\\[2pt]
+\texttt{YXXYY} & $-\frac{1}{120}$ & \texttt{YXYXX} & $-\frac{1}{120}$ & \texttt{YXYXY} & $\frac{1}{30}$\\[2pt]
+\texttt{YXYYX} & $-\frac{1}{120}$ & \texttt{YXYYY} & $\frac{1}{180}$ & \texttt{YYXXX} & $\frac{1}{180}$\\[2pt]
+\texttt{YYXXY} & $-\frac{1}{120}$ & \texttt{YYXYX} & $-\frac{1}{120}$ & \texttt{YYXYY} & $-\frac{1}{120}$\\[2pt]
+\texttt{YYYXX} & $\frac{1}{180}$ & \texttt{YYYXY} & $\frac{1}{180}$ & \texttt{YYYYX} & $-\frac{1}{720}$\\[2pt]
+\addlinespace[3pt]
+\multicolumn{6}{@{}l}{\textit{Degree 6}}\\[2pt]
+\texttt{XXXXYY} & $-\frac{1}{1440}$ & \texttt{XXXYXY} & $\frac{1}{360}$ & \texttt{XXXYYY} & $\frac{1}{360}$\\[2pt]
+\texttt{XXYXXY} & $-\frac{1}{240}$ & \texttt{XXYXYY} & $-\frac{1}{240}$ & \texttt{XXYYXY} & $-\frac{1}{240}$\\[2pt]
+\texttt{XXYYYY} & $-\frac{1}{1440}$ & \texttt{XYXXXY} & $\frac{1}{360}$ & \texttt{XYXXYY} & $-\frac{1}{240}$\\[2pt]
+\texttt{XYXYXY} & $\frac{1}{60}$ & \texttt{XYXYYY} & $\frac{1}{360}$ & \texttt{XYYXXY} & $-\frac{1}{240}$\\[2pt]
+\texttt{XYYXYY} & $-\frac{1}{240}$ & \texttt{XYYYXY} & $\frac{1}{360}$ & \texttt{YXXXYX} & $-\frac{1}{360}$\\[2pt]
+\texttt{YXXYXX} & $\frac{1}{240}$ & \texttt{YXXYYX} & $\frac{1}{240}$ & \texttt{YXYXXX} & $-\frac{1}{360}$\\[2pt]
+\texttt{YXYXYX} & $-\frac{1}{60}$ & \texttt{YXYYXX} & $\frac{1}{240}$ & \texttt{YXYYYX} & $-\frac{1}{360}$\\[2pt]
+\texttt{YYXXXX} & $\frac{1}{1440}$ & \texttt{YYXXYX} & $\frac{1}{240}$ & \texttt{YYXYXX} & $\frac{1}{240}$\\[2pt]
+\texttt{YYXYYX} & $\frac{1}{240}$ & \texttt{YYYXXX} & $-\frac{1}{360}$ & \texttt{YYYXYX} & $-\frac{1}{360}$\\[2pt]
+\texttt{YYYYXX} & $\frac{1}{1440}$ &  &  &  & \\[2pt]
+\end{longtable}\endgroup
+
+\section{Claim-by-claim coverage of the source article}\label{app:coverage}
+The following map refers to revision 1368909113 of \cite{wiki}. Repeated displays of the same identity are grouped. ``Qualified'' means that a missing hypothesis or a misleading interpretation is identified and the correct mathematical statement is proved; it does not mean that a false unrestricted assertion has been proved.
+
+\begingroup\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.18}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}p{0.30\textwidth}@{}}
+\toprule
+Source location&Claim or formula&Proof and qualification\\
+\midrule\endfirsthead
+\toprule
+Source location&Claim or formula&Proof and qualification\\
+\midrule\endhead
+\bottomrule\endfoot
+Introduction&$e^Xe^Y=e^Z$ and $Z$ a formal series of iterated commutators&Theorems~\ref{thm:word}, \ref{thm:friedrichs}, \ref{thm:dynkin}.\\
+Introduction&Initial BCH terms&Equations~\eqref{eq:z1}--\eqref{eq:z3}; Proposition~\ref{prop:lowdegrees}.\\
+Introduction&Small elements have convergent BCH; exponential gives coordinates near the identity&Theorems~\ref{thm:conv}, \ref{thm:local}.\\
+Introduction; explicit forms&Local multiplication and Lie algebra homomorphisms; integration of representations&Theorem~\ref{thm:local}, Corollary~\ref{cor:localmap}; topology restrictions stated.\\
+Dynkin formula&Full block sum, factorials, degree divisor, and right-nested convention&Equation~\eqref{eq:dynkin}, proved using Lemma~\ref{lem:DSW}; notation \eqref{eq:rightbracket}.\\
+Dynkin formula&Tails ending in repeated identical letters vanish&Paragraph following Theorem~\ref{thm:dynkin}; $[a,a]=0$.\\
+Dynkin formula&All displayed terms of degrees four, five, and six&Equations~\eqref{eq:z4}--\eqref{eq:z6}; Proposition~\ref{prop:lowdegrees}; complete Appendix~\ref{app:wordtable}.\\
+Dynkin formula&Alternating exchange symmetry; all higher terms involve $[X,Y]$&Proposition~\ref{prop:identities}, equation~\eqref{eq:parity}, and the commutator-ideal argument.\\
+Integral formula&Poincar\'e's operator integral&Theorem~\ref{thm:poincare}, equation~\eqref{eq:poincare}.\\
+Integral formula; note 1&$\psi(x)=x\log x/(x-1)$, its expansion at $1$, and $\psi(e^z)$&Equation~\eqref{eq:psi-series}; Proposition~\ref{prop:bernoulli} supplies every Bernoulli coefficient.\\
+Matrix illustration&Tangent commutator and matrix exponential&Opening of Section~\ref{sec:liegroups}; the defining matrix flow.\\
+Matrix illustration&All-terms associative expansion of the logarithm&Theorem~\ref{thm:word}, equations~\eqref{eq:wordcoefficient}, \eqref{eq:wordblocks}.\\
+Matrix illustration&Associative $z_1,z_2,z_3,z_4$ and their expression by Lie brackets&Proposition~\ref{prop:lowdegrees}, equation~\eqref{eq:assoc34}.\\
+Matrix illustration; note 2&Norm bounds $\norm X+\norm Y<\log2$, $\norm Z<\log2$; Hilbert--Schmidt norm&Theorem~\ref{thm:conv}, plus the local-logarithm and Hilbert--Schmidt arguments following \eqref{eq:Mercatortail}.\\
+Matrix illustration&Trace of the BCH logarithm; zero traces of higher terms&Theorem~\ref{thm:trace}. Qualified for other logarithm branches by \eqref{eq:trace-mod}.\\
+Convergence&Explicit $\mathfrak{sl}_2$ matrices, their product, and absence of a trace-zero logarithm&Theorem~\ref{thm:divergence}; all logarithms classified in \eqref{eq:allbadlogs}.\\
+Convergence&Possible divergence of BCH&Theorem~\ref{thm:divergence} rules out even conditional convergence in that example.\\
+Convergence&Nonisomorphic global groups can share their Lie algebra&Section~\ref{sec:liegroups}: $\R$ and $S^1$, and the integration proof.\\
+Convergence&Bound $\norm X+\norm Y<\log2/2$ in any submultiplicative matrix norm&Theorem~\ref{thm:conv}(ii), with the stronger grouped bound and explicit tails distinguished.\\
+Special cases&Commuting exponential identity&Proposition~\ref{prop:commuting}.\\
+Special cases; Campbell application&Central-commutator theorem without smallness&Theorem~\ref{thm:central}; equations~\eqref{eq:central} and \eqref{eq:centraldisentangle}.\\
+Special cases&One-$Y$ expansion and its hyperbolic-cotangent form&Corollary~\ref{cor:singleY}; all higher $Y$-orders resolved in \eqref{eq:bidegree}, \eqref{eq:Qrecursion}.\\
+Special cases&Bernoulli coefficients of $\ad_X^nY$&Proposition~\ref{prop:bernoulli}, Corollary~\ref{cor:singleY}.\\
+Special cases&$[X,Y]=sY$ implies no quadratic or higher $Y$ terms&Theorem~\ref{thm:affine}, via the bracket-tree argument.\\
+Special cases&Affine closed form, resonance exclusion, and removable $s=0$&Equations~\eqref{eq:affineglobal}--\eqref{eq:affineseries}; an explicit resonance counterexample.\\
+Special cases&Affine braiding and adjoint dilation&Equation~\eqref{eq:affinebraid}, or multiply it on the right by $e^{-X}$.\\
+Existence results&Formal exp/log bijection and homogeneous grouping&Lemma~\ref{lem:explog}, Theorem~\ref{thm:word}.\\
+Existence results&The coproduct on noncommuting series&Equations~\eqref{eq:coproduct}, \eqref{eq:unshuffle}. Qualified: completed, not ordinary, tensor product.\\
+Existence results&Primitive $\leftrightarrow$ group-like under exponential; group-like elements form a group&Lemma~\ref{lem:group-like}.\\
+Existence results&Friedrichs' characterization of primitives&Theorem~\ref{thm:friedrichs}, with an explicit proof of the needed Dynkin identity.\\
+Existence results&BCH follows from those Hopf properties&Last paragraph of the proof of Theorem~\ref{thm:friedrichs}.\\
+Existence results&Validity over arbitrary characteristic-zero fields and arbitrary Lie algebras&Section~\ref{subsec:universal}; Appendix~\ref{app:pbw}; use $U(\g)[[t]]$ before convergence is supplied.\\
+Existence results&Free enveloping algebra is the free associative algebra; natural Hopf structure and completion&Proposition~\ref{prop:enveloping} and Section~\ref{sec:hopf}.\\
+Existence results&Existence of a recursive Lie-only construction&Theorem~\ref{thm:BCHrec}; independent of the Hopf proof.\\
+Zassenhaus&Displayed factors through degree four&Equations~\eqref{eq:zassenhaus}, \eqref{eq:c2}--\eqref{eq:c4left}.\\
+Zassenhaus&All later exponents are homogeneous Lie polynomials; recursive construction&Theorem~\ref{thm:zassenhaus}; equations~\eqref{eq:F1}--\eqref{eq:frec}.\\
+Zassenhaus&Every exponent hidden by the ellipsis&Finite nonrecursive formula \eqref{eq:treeformula} with \eqref{eq:rawRn}; convergence in Theorem~\ref{thm:zconv}.\\
+Zassenhaus&Convention in $e^{-tX}e^{t(X+Y)}=\prod_ne^{t^nC_n}$&The paragraph following Theorem~\ref{thm:zassenhaus}: $C_1=Y$, increasing order.\\
+Zassenhaus&Suzuki--Trotter consequence&Theorems~\ref{thm:trotter}, \ref{thm:suzuki}; all logarithmic errors in \eqref{eq:trotterall}.\\
+Campbell identity&$\Ad_{e^X}=e^{\ad_X}$ and all repeated-commutator terms&Theorem~\ref{thm:campbell}; the article's $[X,Y]_n$ is $\ad_X^nY$.\\
+Campbell proof&Conjugation differential equation and initial condition&Proof of Theorem~\ref{thm:campbell}.\\
+Campbell application&Central conjugation $Y+t[X,Y]$, the equation for $g'(t)$, and its solution&Equation~\eqref{eq:centralconj} and proof of Theorem~\ref{thm:central}.\\
+Campbell application&General braiding identity and conjugation of $e^Y$&Equation~\eqref{eq:braiding}; multiplicativity of conjugation.\\
+Infinitesimal case&$e^{-X}\dd e^X$ and every iterated commutator&Theorem~\ref{thm:dexp}, equation~\eqref{eq:infinitesimal}.\\
+Infinitesimal case&Structure-constant expansion and definition of $M$&Equations~\eqref{eq:structureexpansion}--\eqref{eq:Wallindices}.\\
+Infinitesimal case&$W$ series and the shorthand quotient&Equations~\eqref{eq:Mdef}, \eqref{eq:Wintegral}. Qualified: $M^{-1}$ is not a literal inverse.\\
+Infinitesimal case&Claim that $M$ is a vielbein&Corrected by Proposition~\ref{prop:coframe}: $W$ gives the coframe; $M$ is singular.\\
+Infinitesimal case&Pullback metric and its component formula&Theorem~\ref{thm:pullback}; Jacobians and nondegeneracy conditions supplied.\\
+Infinitesimal case&Killing form as the proposed metric&Equation~\eqref{eq:killing} and following proof. Qualified: it need not be a metric. Further all-orders expansion \eqref{eq:metricseries}.\\
+Quantum mechanics&$[Q,P]=i\hbar I$ and centrality&Equations~\eqref{eq:QP}, \eqref{eq:CCR}, on the stated invariant core.\\
+Quantum mechanics&Exponentiated canonical relation and exact three-factor symmetric form&Theorem~\ref{thm:weyl}; not inferred from a domain-free formal substitution.\\
+Quantum mechanics&$[a^\dagger,a]=-I$ and normal ordering&Equations~\eqref{eq:ladder}, \eqref{eq:normalorder}; Theorem~\ref{thm:displacement}.\\
+Quantum mechanics&Product of two displacements, scalar phase, and nilpotent structure&Theorem~\ref{thm:Dcomposition}; final paragraph of Section~\ref{sec:quantum}.\\
+Quantum mechanics&Expansions hidden in the displacement exponentials&Equations~\eqref{eq:Dall}--\eqref{eq:coherent}, with convergence interpretations.\\
+\end{longtable}
+\endgroup
+
+\subsection*{Summary of essential qualifications}
+The tensor product in the formal existence proof must be completed. The trace identity refers to the BCH logarithm, not an arbitrary branch. The affine closed form can continue beyond the Taylor series' disk, but not through its nonzero resonances in the asserted shape. In exponential coordinates $M=\ad_X$ is singular and is not the coframe; $W=\phi(M)$ is the relevant matrix. Neither an arbitrary pullback nor the Killing form is automatically a metric. Finally, an unbounded commutator identity requires domain and exponentiation hypotheses; concrete realizations, not formal substitution alone, justify the quantum formulas. These corrections preserve the valid mathematical content while excluding interpretations contradicted by the explicit examples above.
+
+\begin{thebibliography}{99}
+\bibitem{wiki}
+Wikipedia contributors, \emph{Baker--Campbell--Hausdorff formula}, English Wikipedia, revision 1368909113 (August 11, 2026), retrieved September 16, 2026. Scope reference only.
+\href{https://en.wikipedia.org/w/index.php?oldid=1368909113}{Permanent revision 1368909113}.
+
+\bibitem{dynkin}
+E.~B. Dynkin, Calculation of the coefficients in the Campbell--Hausdorff formula [in Russian], \emph{Doklady Akademii Nauk SSSR} \textbf{57} (1947), 323--326.
+
+\bibitem{eichler}
+M. Eichler, A new proof of the Baker--Campbell--Hausdorff formula, \emph{Journal of the Mathematical Society of Japan} \textbf{20} (1968), no.~1--2, 23--25.
+\href{https://doi.org/10.2969/jmsj/02010023}{doi:10.2969/jmsj/02010023}.
+
+\bibitem{menouspatras}
+F. Menous and F. Patras, Logarithmic derivatives and generalized Dynkin operators, \emph{Journal of Algebraic Combinatorics} \textbf{38} (2013), 901--913.
+\href{https://doi.org/10.1007/s10801-013-0431-3}{doi:10.1007/s10801-013-0431-3}.
+\href{https://arxiv.org/abs/1206.4990}{arXiv:1206.4990}.
+
+\bibitem{biagi}
+S. Biagi, A. Bonfiglioli, and M. Matone, On the Baker--Campbell--Hausdorff theorem: non-convergence and prolongation issues, \emph{Linear and Multilinear Algebra} \textbf{68} (2020), no.~7, 1310--1328; first published online 2018.
+\href{https://doi.org/10.1080/03081087.2018.1540534}{doi:10.1080/03081087.2018.1540534}.
+\href{https://arxiv.org/abs/1805.10089}{arXiv:1805.10089}.
+
+\bibitem{casas}
+F. Casas, A. Murua, and M. Nadinic, Efficient computation of the Zassenhaus formula, \emph{Computer Physics Communications} \textbf{183} (2012), no.~11, 2386--2391.
+\href{https://doi.org/10.1016/j.cpc.2012.06.006}{doi:10.1016/j.cpc.2012.06.006}.
+\href{https://arxiv.org/abs/1204.0389}{arXiv:1204.0389}.
+
+\bibitem{kimura}
+T. Kimura, Explicit description of the Zassenhaus formula, \emph{Progress of Theoretical and Experimental Physics} \textbf{2017} (2017), no.~4, 041A03.
+\href{https://doi.org/10.1093/ptep/ptx044}{doi:10.1093/ptep/ptx044}.
+\href{https://arxiv.org/abs/1702.04681}{arXiv:1702.04681}.
+
+\bibitem{trotter}
+H.~F. Trotter, On the product of semi-groups of operators, \emph{Proceedings of the American Mathematical Society} \textbf{10} (1959), no.~4, 545--551.
+\href{https://doi.org/10.1090/S0002-9939-1959-0108732-6}{doi:10.1090/S0002-9939-1959-0108732-6}.
+
+\bibitem{suzuki}
+M. Suzuki, General theory of fractal path integrals with applications to many-body theories and statistical physics, \emph{Journal of Mathematical Physics} \textbf{32} (1991), no.~2, 400--407.
+\href{https://doi.org/10.1063/1.529425}{doi:10.1063/1.529425}.
+
+\bibitem{hallholomorphic}
+B.~C. Hall, Holomorphic methods in analysis and mathematical physics, in \emph{First Summer School in Analysis and Mathematical Physics} (S. P\'erez-Esteva and C. Villegas-Blas, eds.), Contemporary Mathematics \textbf{260}, American Mathematical Society, 2000, 1--59.
+\href{https://arxiv.org/abs/quant-ph/9912054}{arXiv:quant-ph/9912054}.
+\end{thebibliography}
+\end{document}

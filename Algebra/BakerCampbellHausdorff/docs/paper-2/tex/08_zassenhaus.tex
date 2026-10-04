@@ -1,0 +1,151 @@
+\section{The Zassenhaus formula to every order}\label{sec:zassenhaus}
+BCH replaces a product of exponentials by one exponential. Zassenhaus factorization performs an ordered operation in the opposite direction. We derive both its existence and a finite all-order Lie recurrence, then prove a quantitative convergence condition. The logarithmic-derivative approach is closely related to the recursive constructions in \cite{CasasMuruaNadinic}; the derivation here includes all steps.
+
+\subsection{Existence, uniqueness, and an explicit coefficient recursion}
+\begin{theorem}[Formal Zassenhaus factorization]\label{thm:zassenhaus}
+There exist unique homogeneous Lie polynomials $C_n(X,Y)$ of degree $n$, $n\geq2$, such that
+\begin{equation}\label{eq:zassenhaus}
+ \boxed{\displaystyle
+ e^{t(X+Y)}=e^{tX}e^{tY}\prod_{n=2}^{\infty}e^{t^nC_n(X,Y)}.}
+\end{equation}
+The product is ordered by increasing $n$ from left to right and is well defined formally. If
+\begin{equation}\label{eq:R1}
+ R_1(t)=e^{-tY}e^{-tX}e^{t(X+Y)},
+\end{equation}
+then every exponent is determined by
+\begin{equation}\label{eq:zass-residual}
+ C_n=\coeff{t^n}R_{n-1}(t)
+     =\coeff{t^n}\log R_{n-1}(t),\qquad
+ R_n(t)=e^{-t^nC_n}R_{n-1}(t),\quad n\geq2.
+\end{equation}
+\end{theorem}
+\begin{proof}
+The linear term of $R_1$ is zero, so $R_1=1+O(t^2)$. Suppose inductively $R_{n-1}=1+t^nC_n+O(t^{n+1})$. The leading coefficient of its logarithm equals $C_n$, and multiplication on the left by $e^{-t^nC_n}$ removes this coefficient. Hence $R_n=1+O(t^{n+1})$.
+
+Each residual is group-like in the completed free associative Hopf algebra: this holds initially, and remains true after multiplication by the exponential of a Lie polynomial. Its logarithm is primitive, so the leading homogeneous coefficient $C_n$ is a Lie polynomial by \cref{thm:friedrichs}. This proves the induction as well as the factorization after any fixed truncation. Uniqueness follows because the first degree at which two ordered factorizations could differ is exactly the degree of the first differing exponent.
+\end{proof}
+For a direct finite formula, extracting $t^n$ in \cref{eq:zass-residual} gives
+\begin{equation}\label{eq:zass-finite-coeff}
+ C_n=\sum_{\substack{k_2,\ldots,k_{n-1},a,b,c\geq0\\
+                 \sum_{j=2}^{n-1}jk_j+a+b+c=n}}
+ \left(\prod_{j=n-1}^{2}\frac{(-C_j)^{k_j}}{k_j!}\right)
+ \frac{(-Y)^a}{a!}\frac{(-X)^b}{b!}\frac{(X+Y)^c}{c!}.
+\end{equation}
+The descending product order is essential. This is a finite recurrence in previously computed homogeneous polynomials. It involves associative products, but the result is a Lie polynomial by the theorem. Together with the projection \cref{eq:dsw}, it is a complete nested-commutator prescription.
+
+The compact variant on the source page is recovered by setting $C_1=Y$:
+\[
+ e^{-tX}e^{t(X+Y)}=\prod_{n\geq1}e^{t^nC_n}.
+\]
+There is no missing $e^{tY}$ when this indexing convention is used.
+
+\subsection{A recurrence consisting entirely of commutators}
+Define the right logarithmic derivatives
+\begin{equation}\label{eq:Fn}
+ F_n(t)=R_n'(t)R_n(t)^{-1}.
+\end{equation}
+Differentiating \cref{eq:R1}, and using conjugation, gives
+\begin{align}
+ F_1(t)
+ &=-Y-e^{-t\ad_Y}X+e^{-t\ad_Y}e^{-t\ad_X}(X+Y)\nonumber\\
+ &=e^{-t\ad_Y}(e^{-t\ad_X}-I)Y
+ =\sum_{k\geq1}t^k f_{1,k},\label{eq:F1}
+\end{align}
+where the complete initial coefficients are
+\begin{equation}\label{eq:f1k}
+ f_{1,k}=(-1)^k\sum_{j=1}^{k}
+ \frac{\ad_Y^{k-j}\ad_X^jY}{(k-j)!j!}.
+\end{equation}
+Since $R_{n-1}=1+t^nC_n+O(t^{n+1})$, one has
+$F_{n-1}=nt^{n-1}C_n+O(t^n)$. Differentiating the residual update yields
+\begin{equation}\label{eq:zass-Lie-update}
+ \boxed{\displaystyle
+ C_n=\frac1n\coeff{t^{n-1}}F_{n-1},\qquad
+ F_n=e^{-t^n\ad_{C_n}}\bigl(F_{n-1}-nt^{n-1}C_n\bigr).}
+\end{equation}
+Indeed, the derivative of the new left factor contributes $-nt^{n-1}C_n$, while conjugating the old logarithmic derivative contributes $e^{-t^n\ad_{C_n}}F_{n-1}$. The correction commutes with $C_n$, so it may be moved inside this operator exponential.
+
+Writing $F_n=\sum_{k\geq0}t^k f_{n,k}$, with nonexistent coefficients defined as zero, gives a fully finite coefficient recurrence:
+\begin{equation}\label{eq:zass-finite-Lie}
+ f_{n,k}=\sum_{j=0}^{\lfloor k/n\rfloor}\frac{(-1)^j}{j!}
+       \ad_{C_n}^j f_{n-1,k-nj}
+       -nC_n\delta_{k,n-1},\qquad
+ C_n=\frac{f_{n-1,n-1}}{n}.
+\end{equation}
+These identities prove and determine every Zassenhaus term directly in the Lie algebra. No arbitrary-order ellipsis remains to be guessed.
+
+\subsection{The exponents displayed on the source page}
+From \cref{eq:f1k,eq:zass-Lie-update},
+\begin{align}
+ C_2&=-\tfrac12[X,Y],\label{eq:C2}\\
+ C_3&=\tfrac16[X,[X,Y]]+\tfrac13[Y,[X,Y]],\label{eq:C3}\\
+ C_4&=-\tfrac1{24}[X,[X,[X,Y]]]
+       -\tfrac18[Y,[X,[X,Y]]]
+       -\tfrac18[Y,[Y,[X,Y]]].\label{eq:C4}
+\end{align}
+For $C_2$ and $C_3$ the result is immediate from $f_{1,1}/2$ and $f_{1,2}/3$. For $C_4$, the potential update at cubic order is proportional to $[C_2,f_{1,1}]=[C_2,2C_2]=0$, so $C_4=f_{1,3}/4$. This proves all three formulas, including their coefficients.
+
+Twice applying antisymmetry rewrites \cref{eq:C4} as
+\begin{equation}\label{eq:C4-left}
+ C_4=-\frac1{24}\left(
+ [[[X,Y],X],X]+3[[[X,Y],X],Y]+3[[[X,Y],Y],Y]\right),
+\end{equation}
+exactly the left-nested version in the source. Substituting \cref{eq:C2,eq:C3,eq:C4-left} into \cref{eq:zassenhaus} gives all of its displayed factors. Higher exponents are given by \cref{eq:zass-finite-Lie}; additional explicit fifth- and sixth-degree expressions are included in \cref{sec:tables}, and all coefficients through degree twelve accompany the paper.
+
+There is a left-oriented companion:
+\begin{equation}\label{eq:zass-left}
+ e^{t(X+Y)}=\cdots e^{t^4\widehat C_4}e^{t^3\widehat C_3}
+ e^{t^2\widehat C_2}e^{tY}e^{tX},
+ \qquad \widehat C_n=(-1)^{n+1}C_n.
+\end{equation}
+It follows by replacing $t$ with $-t$ in \cref{eq:zassenhaus} and taking inverses, which reverses the factor order.
+
+\subsection{A self-contained convergence majorant}
+Formal stabilization of a product does not automatically imply analytic convergence. The following bound supplies a concrete domain; it is deliberately elementary rather than optimal.
+
+\begin{theorem}[A convergent Zassenhaus product]\label{thm:zass-convergence}
+Let $s=\norm X+\norm Y$. If
+\begin{equation}\label{eq:zass-bound}
+ e^{2s|t|}-1-2s|t|<2\log2-1,
+\end{equation}
+then $\sum_{n\geq2}|t|^n\norm{C_n}<\infty$, the ordered product in \cref{eq:zassenhaus} converges, and the identity holds in the Banach algebra. In particular the condition is satisfied when
+\[
+ |t|s<0.3834990014\ldots,
+\]
+where twice this constant is the positive solution $u$ of $e^u-1-u=2\log2-1$.
+\end{theorem}
+\begin{proof}
+Write $R_1(t)=1+\sum_{n\geq2}t^nP_n$. Expanding its three factors gives
+\[
+ \norm{P_n}\leq\frac{(2s)^n}{n!},\qquad n\geq2.
+\]
+Thus $p(z)=e^{2sz}-1-2sz$ is a nonnegative coefficient majorant for $R_1-1$.
+
+Let $a(z)=\sum_{n\geq2}a_nz^n$ be the unique formal nonnegative-coefficient solution of
+\begin{equation}\label{eq:zass-majorant-eq}
+ a=p+(e^a-1-a),\quad\text{equivalently}\quad 2a-e^a+1=p.
+\end{equation}
+Its coefficients are determined successively because the nonlinear expression $e^a-1-a$ has at least two factors of $a$, each of order at least two. Comparing the coefficient of $t^n$ in
+$R_1=\prod_{j\geq2}e^{t^jC_j}$ gives $C_n$ equal to $P_n$ minus terms using only $C_j$ with $j<n$. The sum of norms of those terms is bounded by the corresponding coefficient of $e^a-1-a$. Induction proves $\norm{C_n}\leq a_n$.
+
+For a real $r\geq0$ satisfying \cref{eq:zass-bound}, there is a unique $a_*\in[0,\log2)$ with
+$2a_*-e^{a_*}+1=p(r)$, because the left side increases from $0$ to $2\log2-1$ on that interval. Iterate
+$a^{(0)}=0$ and $a^{(m+1)}=p+e^{a^{(m)}}-1-a^{(m)}$.
+The formal coefficients increase and stabilize degree by degree at those of $a$. Their numerical values at $r$ increase and remain bounded by $a_*$. Hence, by monotone convergence of nonnegative sums,
+$\sum a_nr^n\leq a_*<\infty$. It follows that $\sum r^n\norm{C_n}<\infty$.
+
+Products of $e^{t^nC_n}$ consequently converge: expanding the factors bounds all products of nonconstant terms by
+$\exp(\sum |t|^n\norm{C_n})$, and the tail tends to one. Absolute convergence permits collecting coefficients, which agree formally with $e^{t(X+Y)}$ by \cref{thm:zassenhaus}. This proves the analytic identity.
+\end{proof}
+
+\subsection{Entire resummation in the eigenvector case}
+When $[X,Y]=sY$, \cref{eq:eigen-factor} gives
+\[
+ R_1(t)=e^{-tY}e^{q_s(t)Y}=e^{(q_s(t)-t)Y}.
+\]
+All factors are multiples of the same $Y$ and commute. Uniqueness in \cref{thm:zassenhaus} therefore yields the all-order closed expression
+\begin{equation}\label{eq:eigen-zassenhaus}
+ \boxed{\displaystyle C_n=\frac{(-1)^{n-1}s^{n-1}}{n!}\,Y,
+ \qquad n\geq2.}
+\end{equation}
+Its sum and product converge for every finite $s,t$. This is a useful contrast with the Bernoulli BCH series \cref{eq:eigen-series}, whose radius in $s$ is only $2\pi$. If the commutator is central, \cref{eq:central-bch} instead gives $C_2=-[X,Y]/2$ and $C_n=0$ for every $n\geq3$.

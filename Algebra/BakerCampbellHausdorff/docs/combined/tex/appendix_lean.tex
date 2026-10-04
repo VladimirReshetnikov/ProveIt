@@ -1,0 +1,376 @@
+\section{Formalization in Lean}\label{app:lean}
+The repository directory \texttt{lean/} contains a Lean~4 library
+(\texttt{BCH}, built against Mathlib) that formalizes some of the theorems
+of this article. Each formal statement is designed to coincide with the
+statement printed here, with no additional hypotheses; where the article's
+wording needed to be made precise for this purpose, the article was
+adjusted rather than the formal statement weakened. This appendix records
+the correspondence and the conventions.
+
+\subsection*{Setting and conventions}
+A ``real or complex unital Banach algebra with a submultiplicative norm''
+is rendered by the Mathlib hypotheses
+\begin{center}
+\texttt{[RCLike $\mathbb K$] [NormedRing $\mathbb A$]
+[NormedAlgebra $\mathbb K$ $\mathbb A$] [CompleteSpace $\mathbb A$]},
+\end{center}
+where \texttt{RCLike $\mathbb K$} means $\kk=\R$ or $\kk=\C$,
+\texttt{NormedRing} is a unital ring with $\norm{ab}\leq\norm a\norm b$ (no
+normalization $\norm1=1$ is assumed, in agreement with
+\cref{sec:convergence}), and \texttt{CompleteSpace} is completeness. The
+Lean bracket $[\![X,Y]\!]$ is the ring commutator $XY-YX$ of
+\cref{sec:scope}, scalars act by $t\bullet X$, and \texttt{exp} is
+Mathlib's \texttt{NormedSpace.exp}, the sum of the series $\sum_nX^n/n!$.
+Mathlib defines this exponential through the unique $\Q$-algebra structure
+of $\mathcal A$; inside proofs that structure, and where needed an
+$\R$-algebra structure, is obtained by restriction of scalars from $\kk$,
+so that no extra instance hypothesis appears in any statement. When the
+scalar field does not occur in a statement (\cref{prop:commuting} and the
+group-commutator identity of \cref{thm:central}), it is an explicit
+argument of the Lean theorem. The adjoint action $\ad_X$ is the bounded
+operator \texttt{BCH.ad K X}, a continuous $\kk$-linear map
+$\mathcal A\to\mathcal A$, and $e^{s\ad_X}$ is the exponential in the
+Banach algebra of bounded operators.
+
+The free associative algebra $\kk\langle X,Y\rangle$ of \cref{thm:bch}(a) is
+modelled as \texttt{FreeTwo} $=$ \texttt{MonoidAlgebra $\kk$ (FreeMonoid
+(Fin 2))}, the $\kk$-span of the words in two letters. That this is the free
+algebra is not left to inspection: \texttt{exists\_freeAlgebra\_equiv}
+exhibits a $\kk$-algebra isomorphism from Mathlib's \texttt{FreeAlgebra
+$\kk$ (Fin 2)} onto it carrying the two generators to $X$ and $Y$.
+
+No proof in the development is left open: the sources contain no
+\texttt{sorry}, and for both parts of \cref{thm:bch} the command
+\texttt{\#print axioms} reports only Lean's three standard axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, so in
+particular neither statement depends on \texttt{sorryAx}.
+
+\subsection*{Correspondence}
+{\small
+\renewcommand{\arraystretch}{1.25}
+\begin{longtable}{@{}p{0.34\textwidth}p{0.6\textwidth}@{}}
+\toprule
+Article & Lean declaration (namespace \texttt{BCH}) \\
+\midrule
+\endfirsthead
+\toprule
+Article & Lean declaration (namespace \texttt{BCH}), continued \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\Cref{thm:bch}(a), \eqref{eq:formalbch} & \texttt{bch\_formula\_formal} \\
+\Cref{thm:bch}(b), \eqref{eq:main} & \texttt{bch\_formula} \\
+\Cref{prop:commuting} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_zero} \\
+\Cref{thm:central}, \eqref{eq:centralconj} & \texttt{central\_conj} \\
+\Cref{thm:central}, \eqref{eq:centralt} & \texttt{central\_exp\_mul\_exp} \\
+\Cref{thm:central}, \eqref{eq:centralbch}, four identities &
+ \texttt{exp\_mul\_exp\_of\_central}, \texttt{exp\_add\_eq\_of\_central},
+ \texttt{exp\_half\_mul\_exp\_mul\_exp\_half}, \texttt{exp\_group\_commutator} \\
+\Cref{cor:centralmany}, \eqref{eq:centralmany} &
+ \texttt{exp\_prod\_range\_of\_central} (the ordered product is
+ \texttt{(List.range m).map} followed by \texttt{List.prod}; the exponent is
+ \texttt{centralExponent}) \\
+\Cref{thm:campbell}, $\Ad_{e^X}=e^{\ad_X}$ & \texttt{exp\_mul\_mul\_exp\_neg\_eq\_exp\_ad} \\
+\Cref{thm:campbell}, \eqref{eq:campbell} & \texttt{campbell},
+ \texttt{exp\_smul\_ad\_apply\_eq\_tsum} (series form) \\
+\Cref{thm:campbell}, norm bound & \texttt{tsum\_norm\_ad\_pow\_le} \\
+\eqref{eq:adbinomial} & \texttt{ad\_pow\_apply} \\
+\Cref{thm:dexp}, $(\dd\exp)_A$ & \texttt{dexp} $=e^A\circ\phi(\ad_A)$ with
+ $\phi(\ad_A)=$ \texttt{phiAd}; Fr\'echet differentiability
+ \texttt{hasFDerivAt\_exp}; $\frac{\dd}{\dd t}e^{A(t)}=(\dd\exp)_{A(t)}(A'(t))$ is
+ \texttt{hasDerivAt\_exp\_comp} \\
+\Cref{thm:dexp}, \eqref{eq:duhamel} (series) & \texttt{dexp\_apply\_eq\_tsum} \\
+\Cref{thm:dexp}, \eqref{eq:leftdexp} (series) & \texttt{exp\_neg\_mul\_dexp} \\
+\Cref{thm:dexp}, \eqref{eq:rightdexp} (series) & \texttt{dexp\_mul\_exp\_neg} \\
+\Cref{prop:bernoulli}, recursion \eqref{eq:bernrec} & \texttt{bplus} (defined by the
+ recursion), \texttt{sum\_antidiagonal\_phiCoeffQ\_bplus} ($\beta\phi=1$),
+ \texttt{abs\_bplus\_le\_one}; the operator $\beta(\ad_A)$ is \texttt{betaAd}, with
+ \texttt{phiAd\_mul\_betaAd}, \texttt{betaAd\_mul\_phiAd} \\
+\eqref{eq:betadef}, $\bplus n=B_n^+/n!$ & \texttt{bplus\_eq\_bernoulli'} (Mathlib's
+ \texttt{bernoulli'}, the convention $B_1^+=+\tfrac12$) \\
+\Cref{thm:ode}, \eqref{eq:ode} (analytic) & \texttt{exists\_delta\_bch\_ode}:
+ for $\norm X+\norm Y<\delta$, $Z(t)=\log(e^Xe^{tY})$ has $Z(0)=X$ and
+ $Z'(t)=\beta(\ad_{Z(t)})Y$ for $|t|\leq1$; \texttt{bch\_ode\_unique}: a solution
+ of \eqref{eq:ode} with $\norm{Z(t)}<\tfrac12$ on a disc of radius $>1$ equals
+ $\log(e^Xe^{tY})$ when $\norm X+\norm Y<\log2$ \\
+\Cref{cor:linearY}, \eqref{eq:linearYderiv} &
+ \texttt{exists\_delta\_hasDerivAt\_bch\_linearY} (the derivative of
+ $t\mapsto Z(X,tY)$ at $t=0$ is $\sum_n(B_n^+/n!)\ad_X^nY$, with the
+ Bernoulli identification of \eqref{eq:betadef}) \\
+\Cref{thm:formalbch}, every $Z_n$ is a Lie polynomial &
+ \texttt{bchHom\_mem\_lieGen\_charZero} for any field of characteristic zero,
+ \texttt{bchHom\_mem\_lieGen} for $\kk=\R$ or $\C$ (in \texttt{FreeTwo}
+ $=\kk\langle X,Y\rangle$, with \texttt{lieGen} the Lie polynomials); grading
+ of the Lie polynomials \texttt{proj\_mem\_lieSpan} \\
+\Cref{lem:dsw}, \eqref{eq:dsw}, $R(P)=nP$ (in the Lie form of
+ \cref{thm:friedrichs}: $P\in\cL_n$) & \texttt{R\_of\_mem\_lieGen}
+ (the right Dynkin operator is \texttt{R}, with \texttt{R\_apply} $=$
+ $\sum_w\coeff wP\,R(w)$; the identity $R(ab)=\phi(a)R(b)+\eps(b)R(a)$ of
+ the proof is \texttt{R\_mul}) \\
+\Cref{thm:dynkin}, \eqref{eq:dynkinword} &
+ \texttt{bchHom\_eq\_dynkin\_charZero} for any field of characteristic zero,
+ \texttt{bchHom\_eq\_dynkin} for $\kk=\R$ or $\C$
+ ($Z_n=\frac1n\sum_w c(w)R(w)$ with $c(w)$ the coefficients of $Z_n$);
+ operator form $Z_n=\frac1nR(Z_n)$, \texttt{bchHom\_eq\_inv\_smul\_R\_charZero},
+ \texttt{bchHom\_eq\_inv\_smul\_R} \\
+\Cref{thm:dynkin}, \eqref{eq:dynkin} (degree-$n$ part) &
+ \texttt{bchHom\_eq\_dynkin\_blocks} \\
+\Cref{prop:closedlie} & \texttt{exists\_delta\_mlog\_mem} (closed Lie subalgebras are
+ \texttt{IsClosedLieSubalgebra}; the Lipschitz estimate is
+ \texttt{norm\_betaAd\_apply\_sub\_le}); homogeneous components:
+ \texttt{bchHom\_mem} (coefficient extraction \texttt{mem\_of\_tsum\_smul\_mem}) \\
+\Cref{prop:mercator} & \texttt{norm\_mlog\_le}, \texttt{exp\_mlog}
+ (series \texttt{mlog}, terms \texttt{mlogTerm}, summability \texttt{summable\_mlogTerm}) \\
+\Cref{cor:bchlog} & \texttt{exp\_mlog\_exp\_mul\_exp}; bounds
+ \texttt{norm\_exp\_sub\_one\_le}, \texttt{norm\_exp\_mul\_exp\_sub\_one\_le} \\
+$Z_n(X,Y)$, \eqref{eq:degreerec}, \cref{rem:evaluation} & \texttt{bchHom}
+ (with \texttt{expBlock} $=E_d$, \texttt{uBlock} $=U_d$, \texttt{powBlock} $=P_k(n)$) \\
+\Cref{thm:wordcut}, \eqref{eq:homblocks} & \texttt{bchHom\_eq\_sum\_blockTuples}
+ (in any algebra; the tuples $(r_i,s_i)$ are \texttt{blockTuples}, characterized by
+ \texttt{mem\_blockTuples}, the words $X^{r_1}Y^{s_1}\cdots$ are \texttt{blockWord},
+ the weights $\prod_i(r_i!s_i!)^{-1}$ are \texttt{blockWeight}) \\
+\Cref{thm:wordcut}, \eqref{eq:wordcut} in the form \eqref{eq:wordblocks} &
+ \texttt{coeff\_bchHom}, \texttt{wordCoeff\_eq} ($c(w)=$ \texttt{wordCoeff});
+ $Z_n=\sum_{|w|=n}c(w)w$ is \texttt{coeff\_bchHom\_eq\_wordCoeff} \\
+\Cref{thm:convergence}(i) & \texttt{bch\_convergence}, combining
+ \texttt{summable\_norm\_bchHom}, \texttt{tsum\_pow\_mul\_norm\_bchHom\_le}
+ (second line of \eqref{eq:majorant}), \texttt{tsum\_bchHom\_eq\_mlog}
+ ($Z=\log(e^Xe^Y)$), \texttt{exp\_tsum\_bchHom} ($e^Z=e^Xe^Y$) \\
+\Cref{thm:convergence}(ii), \eqref{eq:remainder} & \texttt{norm\_tsum\_bchHom\_sub\_sum\_le} \\
+\Cref{thm:convergence}(ii), \eqref{eq:expremainder} & \texttt{norm\_exp\_sum\_bchHom\_sub\_le};
+ the bounds $\norm{e^C}\leq\norm I e^{\norm C}$ and
+ $\norm{e^B-e^A}\leq\norm I^2e^{\max(\norm A,\norm B)}\norm{B-A}$ of the proof are
+ \texttt{norm\_exp\_le}, \texttt{norm\_exp\_sub\_exp\_le} \\
+\Cref{thm:convergence}(iii), \eqref{eq:dynkinradius} &
+ \texttt{tsum\_dynkinNormSum\_le\_of\_lt} (summability and the bound $M_D(s)$),
+ tail \texttt{tsum\_dynkinNormSum\_tail\_le\_of\_lt}; the evaluated Dynkin
+ summands are \texttt{dynkinTerm}, their norm sum \texttt{dynkinNormSum}, and
+ $Z_n=$ \texttt{dynkinTerm} is \texttt{bchHom\_eq\_dynkinTerm} \\
+\Cref{thm:convergence}(iv) & \texttt{summable\_dynkinNormSum},
+ \texttt{tsum\_dynkinNormSum\_le}, \texttt{tsum\_dynkinNormSum\_tail\_le},
+ \texttt{summable\_dynkinTerm} (any normed space with a bracket satisfying
+ $\norm{[u,v]}\leq\kappa\norm u\norm v$); the bracket estimate
+ $\norm{R(a_1\cdots a_n)}\leq\kappa^{n-1}\prod_j\norm{a_j}$ is
+ \texttt{norm\_rbEval\_le} \\
+\Cref{prop:uniquelog}(i) & \texttt{mlog\_exp\_sub\_one} \\
+\Cref{prop:uniquelog}(ii) & \texttt{exp\_eq\_iff\_eq\_tsum\_bchHom},
+ \texttt{eq\_tsum\_bchHom\_of\_exp\_eq} \\
+\Cref{prop:trace}, \eqref{eq:trace} & \texttt{tracial\_bchHom} ($\tau(Z_n)=0$
+ for $n\geq2$ and any tracial linear functional $\tau$ on any algebra, hence
+ also for the formal series), \texttt{tracial\_tsum\_bchHom} (continuous
+ tracial $\tau$, whenever $\sum_nZ_n$ converges), \texttt{trace\_tsum\_bchHom}
+ (matrices, $\ell^\infty$-operator norm); the evaluation homomorphism
+ $\kk\langle X,Y\rangle\to\cA$ is \texttt{evalHom} \\
+\Cref{lem:tail} (two factors) & \texttt{tsum\_norm\_bchHom\_tail\_two\_le},
+ \texttt{tsum\_norm\_bchHom\_tail\_three\_le} (constants \texttt{trotterC}$_0$, \texttt{trotterC}$_0'$) \\
+\Cref{prop:symmetric}, \eqref{eq:S2all} (exponent with $\norm{E_n}\leq
+ c_2|t|^3a^3/n^2$), \eqref{eq:S2error}, and the limit &
+ \texttt{symmetric\_expansion}, \texttt{symmetric\_error},
+ \texttt{symmetric\_limit} (constant $c_2=$ \texttt{symC}); the cancellation
+ of the degree-two terms is \texttt{symmetric\_log\_bound} \\
+\Cref{thm:trotter}, \eqref{eq:trotter} & \texttt{trotter\_limit} \\
+\Cref{thm:trotter}, \eqref{eq:trotterall} & \texttt{trotter\_expansion}; the $O(n^{-1})$
+ bound $e^{|t|a+c_0t^2a^2/n}\,c_0t^2a^2/n$ of the proof is \texttt{trotter\_error} \\
+\Cref{prop:lowdegree}, \eqref{eq:z1}--\eqref{eq:z6}, \eqref{eq:assoc2}--\eqref{eq:assoc4} &
+ \texttt{bchHom\_one}, \texttt{bchHom\_two}, \texttt{bchHom\_two\_lie},
+ \texttt{bchHom\_three}, \texttt{bchHom\_three\_lie}, \texttt{bchHom\_four},
+ \texttt{bchHom\_four\_lie}, \texttt{bchHom\_five\_lie}, \texttt{bchHom\_six\_lie} \\
+\eqref{eq:conjexp}, \eqref{eq:braiding} & \texttt{exp\_mul\_exp\_mul\_exp\_neg},\newline
+ \texttt{exp\_mul\_exp\_eq\_exp\_exp\_ad\_mul} \\
+\Cref{thm:eigen}, $e^{tX}Ye^{-tX}=e^{st}Y$ & \texttt{conj\_of\_lie\_eq\_smul} \\
+\Cref{thm:eigen}, \eqref{eq:eigenfactor} & \texttt{exp\_smul\_add\_smul\_eq} \\
+\Cref{thm:eigen}, \eqref{eq:eigenbch} & \texttt{exp\_mul\_exp\_of\_lie\_eq\_smul} \\
+\Cref{thm:eigen}, \eqref{eq:eigenbraid} & \texttt{exp\_mul\_exp\_mul\_exp\_neg\_of\_lie\_eq\_smul},
+ \texttt{exp\_mul\_exp\_eq\_of\_lie\_eq\_smul} \\
+\end{longtable}}
+The functions $q_s$, $\phi$, and $\beta$ of \cref{thm:eigen} are the Lean
+definitions \texttt{qs}, \texttt{phi}, \texttt{beta}, with the removable
+values $\phi(0)=\beta(0)=1$ built in. The hypothesis
+$s\notin2\pi\ii\Z\setminus\{0\}$ of \eqref{eq:eigenbch} is stated as
+``$s=0$ or $e^{-s}\neq1$'', which is equivalent over $\C$ and vacuous over
+$\R$; the article's statement carries this equivalent form.
+
+\subsection*{Proof method in the formalization}
+The article proves the exponential identities of \cref{sec:special} and
+\cref{thm:campbell} by uniqueness for linear differential equations. The
+formal proofs use an equivalent device that needs only the theorem that a
+differentiable function on $\R$ or $\C$ with zero derivative is constant
+(Mathlib's \texttt{is\_const\_of\_deriv\_eq\_zero}): an auxiliary
+function is exhibited whose derivative vanishes identically and whose
+values at $0$ and $1$ are the two sides of the identity. For instance,
+\eqref{eq:centralconj} follows from the constancy of
+$\sigma\mapsto e^{\sigma X}(Y+(s-\sigma)C)e^{-\sigma X}$,
+\eqref{eq:centralt} from that of
+$s\mapsto e^{-sY}e^{-sX}e^{s(X+Y)}e^{s^2D}$ with $D+D=C$,
+and \eqref{eq:campbell} from that of
+$\sigma\mapsto e^{-\sigma\ad_X}\bigl(e^{\sigma X}Ye^{-\sigma X}\bigr)$.
+Statements with a general scalar parameter $t$ are deduced from the case
+$t=1$ applied to $tX$ and $tY$. The proof of \cref{prop:mercator} in the
+article is the one used in the formalization (\texttt{exp\_mlog}); the
+chain rule along commuting curves it requires is
+\texttt{hasDerivAt\_exp\_comp\_of\_commute}. \Cref{thm:convergence}(i) is
+proved as in the article: the majorant of $\norm{Z_n}$ is obtained by running
+the recursion \eqref{eq:degreerec} on the real numbers $\norm X,\norm Y$
+(the Lean definitions are generic in the algebra, so the majorant is the same
+definition instantiated with $\mathcal A=\R$), the generic statement
+``the degree parts of $U^k$ sum absolutely to $U^k$'' gives
+$\sum_n P_k(n)(\norm X,\norm Y)=(e^{s}-1)^k$, the double series
+$\sum_k\sum_n\frac1kP_k(n)$ is summed in either order because its terms are
+nonnegative, and the same rearrangement, justified by absolute convergence,
+identifies $\sum_nZ_n$ with the Mercator logarithm of \cref{prop:mercator}.
+For \eqref{eq:expremainder} the integral \eqref{eq:expdifference} is replaced
+by the mean value inequality applied to $u\mapsto e^{(1-u)A}e^{uB}$ on
+$[0,1]$, which gives the same bound. The closed forms of $Z_1,\ldots,Z_4$
+are obtained by expanding the recursion \eqref{eq:degreerec} and normalizing
+the resulting linear combinations of words; the bracket forms
+\eqref{eq:z2}--\eqref{eq:z4} then follow by expanding the commutators.
+
+For \cref{thm:ode} the coefficients $\bplus n$ are defined in Lean by the
+recursion \eqref{eq:bernrec} (which is the identity $\beta\phi=1$), and
+$\beta(\ad_Z)$ is the resulting operator series, convergent for
+$\norm{\ad_Z}<1$ because $|\bplus n|\leq1$; the differentiability of
+$t\mapsto\log(e^Xe^{tY})$ is obtained from the inverse function theorem
+applied to $\exp$ (strictly differentiable, with the invertible differential
+of \cref{thm:dexp}) together with the uniqueness of the small logarithm
+(\cref{prop:uniquelog}), and the neighborhood of $(0,0)$ is not made
+explicit. The converse half of \cref{thm:ode} is proved as in the article:
+if $Z$ solves \eqref{eq:ode}, then $e^{Z(t)}e^{-tY}$ has zero derivative by
+\cref{thm:dexp} and $\phi(\ad_Z)\beta(\ad_Z)=\id$, so $e^{Z(t)}=e^Xe^{tY}$,
+and \cref{prop:uniquelog} identifies $Z(t)$. \Cref{cor:linearY} is
+formalized in the analytic form \eqref{eq:linearYderiv}: it is the
+differential equation at $t=0$, where $Z(X,0)=X$ gives
+$\beta(\ad_{Z(0)})=\beta(\ad_X)$, combined with
+\texttt{bplus\_eq\_bernoulli'}; the hyperbolic rewritings in
+\eqref{eq:linearY} and the formal reading ``the part of $Z$ linear in $Y$''
+are not formalized. \Cref{thm:poincare} is not formalized. The proof of \cref{prop:closedlie} follows the text: the
+differential inequality for $\operatorname{dist}(Z(t),\g)$ is fed into
+Mathlib's Gronwall inequality for upper right Dini derivatives, and no
+solution of the differential equation inside $\g$ has to be constructed.
+
+The hypothesis $\norm I=1$ of \cref{sec:splitting} is the Mathlib class
+\texttt{NormOneClass}; \cref{thm:trotter} is stated with a scalar $t\in\kk$
+and the product $(e^{tX/n}e^{tY/n})^n$ written with $n$-fold multiplication,
+and the uniformity in $t$ is expressed by the explicit bound. The
+second-order error of the symmetric splitting, \cref{prop:symmetric}, is
+formalized without the multifactor expansion: with $A=tX/(2n)$, $B=tY/n$,
+$W=\BCH(A,B)$ and $L=\BCH(W,A)$ one has $e^L=e^Ae^Be^A$, and the identity
+$L=2A+B+T+\tfrac12[V,A]+T'$, where $V$, $T$ are the parts of degree
+$\geq2$, $\geq3$ of $\BCH(A,B)$ and $T'$ the part of degree $\geq3$ of
+$\BCH(W,A)$, exhibits the cancellation $Z_2(A,B)+\tfrac12[A+B,A]=0$; the
+bounds of \cref{lem:tail} (with $\norm W\leq2(\norm A+\norm B)$, from
+$-\log(2-e^{\sigma})\leq2\sigma$ for $\sigma\leq\tfrac14$) give
+$\norm{L-(2A+B)}\leq c_2(\norm A+\norm B)^3$ with $c_2=c_0+28c_0'$
+(\texttt{symmetric\_log\_bound}), and the rest of the argument is that of
+\cref{thm:trotter}. The oddness of the formal logarithm and the formula for
+$E_3$ in \eqref{eq:S2log} are not formalized.
+
+\subsection*{The formal BCH theorem}
+The analytic statements are formalized over $\kk=\R$ or $\C$, which is their
+setting in the text. The formal statements \cref{thm:bch}(a),
+\cref{thm:formalbch} and \cref{thm:dynkin} are formalized over an arbitrary
+field of characteristic zero, as in the text, although the Lean proof of the
+Lie property passes through the analytic \cref{prop:closedlie} and therefore
+first gives only $\kk=\R$. The general case is obtained by base change, using
+that all the coefficients involved are rational. The bridge is the operator
+form $Z_n=\frac1nR(Z_n)$ of \cref{thm:dynkin}: since $R(a)$ is by definition a
+linear combination of right-nested brackets of the generators, $R(a)$ is a Lie
+polynomial for \emph{every} $a$ (\texttt{R\_mem\_lieGen}), so that identity
+alone yields the theorem. A homomorphism $f$ of coefficient fields induces a
+ring homomorphism $\kk_1\langle X,Y\rangle\to\kk_2\langle X,Y\rangle$ acting on
+coefficients (\texttt{mapCoeff}) that fixes the generators and commutes with
+$Z_n$ and with $R$ (\texttt{mapCoeff\_bchHom}, \texttt{mapCoeff\_R}); applying
+it to the injective $f\colon\Q\to\R$ brings the identity down to $\kk=\Q$, and
+applying it to the unique $\Q\to\kk$ pushes it up to any field of
+characteristic zero. Friedrichs' criterion itself (\cref{thm:friedrichs}) is
+not formalized.
+
+The Lie nature of the homogeneous components (\cref{thm:formalbch}) is
+formalized in the free algebra $\kk\langle X,Y\rangle$, modelled as the
+monoid algebra of the free monoid on two letters (\texttt{FreeTwo}, with
+generators \texttt{genX}, \texttt{genY}); the Lie polynomials are the Lie
+subalgebra \texttt{lieGen} generated by the two generators, and the formal
+component $Z_n$ is \texttt{bchHom} evaluated at the generators, homogeneous of
+degree $n$ (\texttt{bchHom\_isHomogeneous}). The theorem
+\texttt{bchHom\_mem\_lieGen} states that $Z_n\in\texttt{lieGen}$ for every
+$n$. Its proof does not follow \cref{sec:hopf}: instead of Friedrichs'
+criterion and the Poincar\'e--Birkhoff--Witt theorem it uses the analytic
+Lie-series property of \cref{prop:closedlie}, applied in the
+finite-dimensional Banach algebra of operators on the space of words of
+length at most $n$, on which $\kk\langle X,Y\rangle$ acts by truncated left
+multiplication (\texttt{rho}). The image of the Lie polynomials there is a
+closed Lie subalgebra containing the images of $X$ and $Y$, hence the image
+of $Z_n$; so $Z_n-L$ lies in the kernel of the truncated representation for
+some Lie polynomial $L$. The kernel has no components in degrees $\leq n$
+(\texttt{proj\_eq\_zero\_of\_rho\_eq\_zero}), $Z_n$ is homogeneous, and the
+Lie polynomials are graded (\texttt{proj\_mem\_lieSpan}), so $Z_n$ is the
+degree-$n$ component of $L$ and therefore a Lie polynomial. This route proves
+the formal theorem from the analytic one, the reverse of the order in the
+text.
+
+The Dynkin--Specht--Wever identity \eqref{eq:dsw} is formalized without the
+Hopf-algebraic convolution $D=N*S$: the right Dynkin operator \texttt{R} is
+defined directly as the linear extension of the right-nested bracketing of
+words, and the identity $R(P)=nP$ is proved for homogeneous Lie
+polynomials $P$ of degree $n$ (\texttt{R\_of\_mem\_lieGen}), which by
+\cref{thm:friedrichs} is the same class as the homogeneous primitives of
+\cref{lem:dsw} (the equivalence itself, Friedrichs' criterion, is not
+formalized). The proof is the classical one: the algebra
+homomorphism $\phi\colon\kk\langle X,Y\rangle\to\End\kk\langle X,Y\rangle$
+with $\phi(X)=\ad_X$, $\phi(Y)=\ad_Y$ (\texttt{adRep}) satisfies
+$R(ab)=\phi(a)R(b)+\eps(b)R(a)$ (\texttt{R\_mul}) and agrees with the
+adjoint representation on Lie polynomials (\texttt{adRep\_eq\_ad\_of\_mem}),
+so for homogeneous Lie polynomials $A,B$ of degrees $p,q\geq1$ with
+$R(A)=pA$, $R(B)=qB$ one gets $R([A,B])=q[A,B]-p[B,A]=(p+q)[A,B]$; the
+statement is propagated through the Lie span componentwise, using the
+grading of the Lie polynomials. Combined with \cref{thm:formalbch} this
+gives Dynkin's formula in the form \eqref{eq:dynkinword},
+$Z_n=\frac1n\sum_{|w|=n}c(w)R(w)$ (\texttt{bchHom\_eq\_dynkin}), where
+$c(w)$ are the coefficients of the formal $Z_n$. The explicit values of
+these coefficients, \cref{thm:wordcut}, are formalized in the block form
+\eqref{eq:wordblocks}: the $k$-tuples of blocks $(r_i,s_i)$ with
+$r_i+s_i>0$ and $\sum_i(r_i+s_i)=n$ form the finite set
+\texttt{blockTuples k n}, defined by recursion on $k$ and characterized by
+\texttt{mem\_blockTuples}; unfolding the recursion \eqref{eq:degreerec}
+gives $P_k(n)=\sum(\prod_ir_i!s_i!)^{-1}X^{r_1}Y^{s_1}\cdots X^{r_k}Y^{s_k}$
+over these tuples (\texttt{powBlock\_eq\_sum\_blockTuples}), hence
+\eqref{eq:homblocks} in any algebra (\texttt{bchHom\_eq\_sum\_blockTuples}),
+and reading off the coefficient of a word $w$ in the free algebra gives
+\eqref{eq:wordblocks} (\texttt{coeff\_bchHom}). Applying $R$ termwise then
+yields the degree-$n$ part of the all-terms form \eqref{eq:dynkin}
+(\texttt{bchHom\_eq\_dynkin\_blocks}). The version of \eqref{eq:wordcut}
+indexed by cuts $0=i_0<\dots<i_k=n$ with the weight $a$ of
+\eqref{eq:weight} is not separately formalized; it differs from
+\eqref{eq:wordblocks} only by the vanishing terms. The trace identity \eqref{eq:trace} follows from these
+two theorems exactly as in the proof of \cref{prop:trace}: $Z_n$ for
+$n\geq2$ is a homogeneous Lie polynomial, so $Z_n=\frac1n\sum_wc(w)R(w)$
+with every $R(w)$ a commutator, and a tracial functional kills commutators
+(\texttt{tracial\_bchHom}); the branch statement \eqref{eq:tracebranch},
+which needs $\det e^A=e^{\tr A}$, is not formalized.
+
+Parts (iii) and (iv) of \cref{thm:convergence} are formalized together, in
+a normed space with an arbitrary bracket satisfying
+$\norm{[u,v]}\leq\kappa\norm u\norm v$ with $\kappa>0$ (no Lie axioms are
+needed for the bound, and finite-dimensionality is used in the text only
+to guarantee the existence of $\kappa$). The right-nested brackets are
+evaluated directly on lists of letters (\texttt{rbEval}), the estimate
+$\norm{R(a_1\cdots a_n)}\leq\kappa^{n-1}\prod_j\norm{a_j}$ is
+\texttt{norm\_rbEval\_le}, and the sum of the norms of the degree-$n$
+summands of \eqref{eq:dynkin} is bounded by $\kappa^{-1}$ times the
+majorant of \cref{thm:convergence}(i) evaluated at $\kappa\norm X$,
+$\kappa\norm Y$ (\texttt{dynkinNormSum\_le}), exactly as in the proof of
+(iii); summing gives the bounds, and the tail estimate uses the scaling
+\texttt{bchMaj\_mul} of the majorant. In an associative algebra the
+evaluated summands coincide with those of \texttt{bchHom\_eq\_dynkin\_blocks}
+(\texttt{evalHom\_rbList}), which gives $Z_n=$ \texttt{dynkinTerm}
+(\texttt{bchHom\_eq\_dynkinTerm}) and the constant $\kappa=2$ of (iii).
+
+The remaining formal power-series parts of the article
+(\cref{sec:formal,sec:hopf,sec:dynkin}: the multifactor formula
+\eqref{eq:manyexp}, the Hopf structure, the bidegree form
+\eqref{eq:bidegreeproj} and the vanishing criterion for Dynkin summands),
+the word-level majorant in the first
+line of \eqref{eq:majorant},
+the multifactor case of \cref{lem:tail}, and the later sections are not yet
+formalized; the finite exact computations of \cref{sec:computation} remain
+the machine check of the coefficient tables.
