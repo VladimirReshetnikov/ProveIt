@@ -37,6 +37,21 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [outer-slack 83 candidate](Papers/research-wip/native-stream-queue/complete83_outer_slack_collapse.md) saves
+one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
+source with 18 positive witnesses and exact degree 187. **Its inherited
+compiler representation is refuted:** every positive input has full positive
+zeros on every valid compiler slice, including the explicit rejecting
+program. A rebuilt signed Pell/CRT family gives the seven actual factors
+(1,1,1,1,−1,−1,Delta), whose product equals the final target Delta.
+The witnesses are specified by an existence proof, not materialized as a
+full tuple. The [independent source review](Papers/research-wip/native-stream-queue/review_complete83_outer_slack_collapse_source.md)
+and [mathematical challenge](Papers/research-wip/native-stream-queue/review_complete83_outer_slack_collapse_math.md)
+check the complete source map, fixed compiler conditions and positive
+auxiliary reconstruction. Fresh normal/optimized receipts pass. This is a
+different candidate from the unproved free-coefficient 83 and square/product
+82 constructions below; the established universal bound remains **84**.
+
 The [auxiliary square/product chart](Papers/research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.md)
 has a fully paid **82=45M+37A** source, 18 positive witnesses and exact
 degree185, but **universality remains unproved**. Supplying f² and T*f
