@@ -465,6 +465,17 @@ Section 20.3 gives these with labels.
   added after Question 21.6 (batch 31) records that `H_j(No)` is the full
   Hahn field on the subgroup `J(No)`, while neither `J(No)` (Theorem 8.6) nor
   `C_j` is a full Hahn field. Question 21.6 stays open.
+- [`surreal-self-embeddings`](../../surreal/surreal-self-embeddings/)
+  (`sse:`, batch 84). Its Part II (source 02) re-proves Proposition 2.10
+  independently under the same hypothesis, writing `𝒥_j` for `J`
+  (`sse:pf:thm:large`, Theorem 24.2), with `κ` as an explicit omitted point;
+  its summation defect is Theorem 7.1, an instance of the defect
+  formula of Theorem 5.1 (`lce:thm:defect`). New there, at remark level: `J` preserves every
+  cut `{L | R}` with `|L|, |R| < κ` pointwise and fails at the canonical cut
+  of `κ`, so the least size of a pointwise cut failure is `κ`
+  (`sse:pf:rem:cutfailure`, Remark 24.3), the cut analogue of Corollary 8.3.
+  A dated note after Proposition 2.10 records this; no label or number
+  changed, and no result here uses that report.
 
 The sources' repository statements were checked at the placement and at the
 time of writing: the reports they cite are unchanged since the pin except the

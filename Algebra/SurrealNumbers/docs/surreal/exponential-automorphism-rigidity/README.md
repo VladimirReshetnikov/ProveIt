@@ -1,6 +1,6 @@
 # Cofinal displacement and the rigidity of exponential automorphisms
 
-`article.pdf` (29 pages) — source `article.tex`, checks in `code/`, recorded
+`article.pdf` (30 pages) — source `article.tex`, checks in `code/`, recorded
 output in `data/`, external-source audit in
 `05-exponential-valuation-SOURCE_AUDIT.md`.
 
@@ -240,6 +240,16 @@ R-linear ordered-field automorphisms of No permuting the monomial lines are
 exactly the maps `ω^γ ↦ χ(γ)ω^{φ(γ)}`, of which the canonical lift is the case
 `χ = 1`. A dated note after Proposition 8.3 records this; no result here uses it.
 
+[surreal-self-embeddings](../surreal-self-embeddings/) (`sse:`, batch 84)
+re-proves Lemma 3.1, Corollary 4.3 and Theorems 4.1 and 5.1 with credit (all
+six of its sources), and weakens the surjectivity in Corollary 6.3 to
+cofinality: two field embeddings with uniformly bounded difference, one with
+cofinal image, are equal (its Lemma 11.6, `sse:lem:twomap`), so two exponential
+field embeddings of No with the same value-group action, one cofinal, are equal
+(its Theorem 11.7, `sse:thm:expunique`; abstract form Theorem 35.3,
+`sse:at:thm:pair-rigidity`). A dated note after Corollary 6.3 records this; it
+is not formalized, and no result here uses it.
+
 ## What it does NOT claim
 
 - **Rigidity here means faithfulness, not triviality.** The article states
@@ -265,7 +275,8 @@ exactly the maps `ω^γ ↦ χ(γ)ω^{φ(γ)}`, of which the canonical lift is t
 - Profile rigidity does **not** say that `ν(x)` reconstructs `x`. The profile
   stays highly non-injective, and none of Section 6 is an approximation
   procedure for normal forms. Corollary 6.3 uses surjectivity of one of the
-  two maps; Theorem 6.1 uses none.
+  two maps (batch 84: cofinality of one map suffices; see
+  `surreal/surreal-self-embeddings`, not formalized); Theorem 6.1 uses none.
 - The `R((t))` examples in Section 11 are **not** counterexamples to any
   theorem here. In particular no total exponential preserved by the
   substitution automorphism is supplied — Theorem 5.1 proves that none exists.
@@ -322,7 +333,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 Without `latexmk`, run `pdflatex` until cross-references settle. Last verified
-build: exit 0, **29 pages**, no LaTeX warnings, no undefined references, zero
+build: exit 0, **30 pages**, no LaTeX warnings, no undefined references, zero
 overfull or underfull boxes.
 
 ## Rerun the checks

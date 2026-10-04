@@ -1955,6 +1955,17 @@ Appendix A.3 records these.
   ordered-field automorphism of `No` permuting the monomial lines is some
   `M_{χ,τ}`, the case of Theorem 5.1 in which `u` is the identity. A dated note
   after Theorem 5.1 records this; no result here uses it.
+- [`surreal-self-embeddings`](../surreal-self-embeddings/) (`sse:`; batch 84).
+  It re-proves Part III's inner and double lifts with their exact fixed
+  supports, the bounded copy `f_A` of Theorem 29.6 (the same compression of the
+  upper tail), and the closed-image and continuity theorems, with credit. It
+  extends Theorem 29.6 to fix all ordinals: for every set `A` a proper cofinal
+  strong exact-monomial embedding fixing `A ∪ R ∪ On`, and a nonidentity field
+  automorphism fixing the same class, both preserving and reflecting `Oz` (its
+  Theorem 7.4, `sse:thm:stabilizer`, with Proposition 8.1). Its source 07 found
+  the false reason in the sentence after Theorem 27.3 that `f06e67d10`
+  corrected. A dated note after Theorem 29.6 records this; no result here uses
+  it.
 
 ## What was run
 
@@ -2004,7 +2015,8 @@ directory; the auxiliary files are not kept here. The batch-35 note after
 Remark 23.3 took the build from 220 to 221 pages and changed no number (all
 729 labels and 27 citation numbers compared in the `.aux` files against a
 build of the committed text). The batch-73 note after Theorem 5.1 leaves 221
-pages and changes no number (same comparison).
+pages and changes no number (same comparison), and so does the batch-84 note
+after Theorem 29.6 (same comparison, citation numbers included).
 
 Fourteen of the shipped scripts can write files (thirteen check scripts and 16's build
 script; 19's `build.sh` creates two empty directories before failing, and 17's and 20's
