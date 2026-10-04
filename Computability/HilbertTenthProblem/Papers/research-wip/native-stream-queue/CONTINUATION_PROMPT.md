@@ -100,6 +100,14 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [matrix Report32 publication review](review_matrix32_publication_20261003.md)
+> also passes within its stated scope. It checks the original main-body
+> transcription, two displayed collisions, literal matrix statistics,
+> declared evaluator charges and initial fiber counts. The fixed semigroup's
+> inherited universality, external finite-tape encoder, growing certificate
+> arity and infinite fibers across lengths remain explicit. The prior
+> 197/193-generator reductions are not universal arithmetic bounds.
+>
 > The [Report38 fixed-lane Boolean fixture](fixed_lane_boolean_occurrence38.md)
 > compares three complete quartics for an occurrence query on an externally
 > certified affine lane. The [independent affine rewrite](review_fixed_lane_boolean_occurrence38_affine.md)
