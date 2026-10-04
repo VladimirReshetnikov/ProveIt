@@ -589,9 +589,23 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [shared selector blocks](Papers/research-wip/native-stream-queue/matrix193_selector_block_sharing.md) reduce the
+complete matrix sources to **1,418 / 1,415 / 1,415 / 1,412 operations**, with
+141 / 140 / 140 / 139 positive witnesses and unchanged exact degrees
+35,587 / 53,345 / 53,347 / 71,105. Nine identical interior runs in the X and Y
+selector words share their Horner evaluations. Every concatenation is paid;
+five existing powers suffice. The full saving is 46M + 46A per source.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_selector_block_sharing.md) expands
+both entire words through the actual grouped additions into raw edge hats,
+then proves the whole output identities and checks all 5,660 live rows.
+Fresh author and independent normal/optimized replays pass. Fixed coefficient,
+native and finalizer definitions are unchanged. Positive zero tuples match
+the immediate parents; earlier terminal/IDLE projection limits remain.
+This branch retains the 553-row coefficient component. Universal84 is unchanged.
+
 The [terminal-carry/power composition](Papers/research-wip/native-stream-queue/matrix193_terminal_power_composition.md)
 combines the24-gate, four-witness terminal-carry reduction with34 saved power
-and repunit operations. The complete current matrix sources are:
+and repunit operations. Its complete matrix sources are:
 
 | Controller chart | M | A | Operations | Positive witnesses | Exact degree |
 |---|---:|---:|---:|---:|---:|
