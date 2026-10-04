@@ -505,6 +505,18 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [packed selected-output construction](matrix193_packed_output_scout.md)
+> lowers the matrix route to **3,162=1,467M+1,695A** operations and **152 positive
+> witnesses**, saving 993 gates and 308 witnesses. Two whole output blocks,
+> paid carry-free products and bounded digit extractions retain the fixed
+> controller and ordinary input. Exact degree rises to **34,817**. The
+> [independent review](review_matrix193_packed_output_scout.md) checks every
+> source row, coefficient word, comparison and degree; a separate mathematical
+> challenge and root normal/optimized replays pass. All new power exponents
+> are fixed by the table. The actual zero-input example's packed fields and
+> four products are materialized; its full huge literal outer-DAG evaluation
+> and native Pell tuple are not claimed. The global universal bound remains 84.
+>
 > The [atomic matrix-context compiler](matrix193_atomic_context_packing.md)
 > reduces the matrix route from 176,586 to **4,155=1,529M+2,626A** operations,
 > with 460 positive witnesses and exact degree 34,045. Its 99-edge controller
