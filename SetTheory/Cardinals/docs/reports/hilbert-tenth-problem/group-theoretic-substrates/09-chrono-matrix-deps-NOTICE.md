@@ -1,0 +1,7 @@
+# Pinned inherited mathematical sources
+
+`pell-source.lean` is the exact source at mathlib4 commit `ac77769fabe23cb237559e7f56578dbead91499f`, path `Mathlib/NumberTheory/PellMatiyasevic.lean`, SHA256 `993760c797ad0ff66fa77064a616fce779550bc745cbf6c44e04f392fd0bed0a`. Its original copyright 2017 Mario Carneiro and Apache 2.0 header are retained. `LICENSE.mathlib-Apache-2.0.txt` is the accompanying license text. The file is inert evidence; no Lean compilation is claimed.
+
+The four Markdown notes are unchanged text fetched through the authorized read-only GitHub connector from `VladimirReshetnikov/ProveIt` at commit `750aeb4f7834332deb2bec5f32fb470ff8254431`, under `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`. Their Git blob hashes were recomputed from the returned exact UTF-8 bytes and their SHA256 values match the inherited pins in the already frozen context proof. `SOURCE_PINS.json` records the exact paths, hashes, and roles.
+
+These sources remain inherited mathematical dependencies. Including them does not mean their original helper programs, archived schedules, arbitrary-program initialization compiler, primary U15 simulation, or Lean import tree were run or newly re-audited. All original source headers and text remain intact. The release article distinguishes the actual fixed-context equivalence from the separate conditional program-family interpretation.

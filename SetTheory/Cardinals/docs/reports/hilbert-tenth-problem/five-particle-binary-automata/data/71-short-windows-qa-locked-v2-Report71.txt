@@ -1,0 +1,704 @@
+Report 71   Shorter exactness windows                                                              4 October 2026
+
+
+                                            RESEARCH REPORT 71
+
+
+                      Shorter exactness windows for the
+                        binary five particle compiler
+                                        A companion to Report 70
+
+                                                4 October 2026
+
+                                                    Abstract
+
+          The conservative binary five-particle compiler admits a further reduction in its sufficient radius.
+      Keep pair exactness L = 3D + 4, but shorten triple exactness from 3b + 1 to b = 4D + 5 in both its
+      edge and phase blocks. We define both new blocks on every bi-infinite binary input, prove that
+      each is a number-conserving involution, and prove all-anchor recognition equivalence and exact
+      forward and inverse agreement on the entire admissible doubled micrograph. The resulting rule has
+      sufficient radius 76D + 105 + 3J, where D = 2m + 4p and J is the source’s finite counter-class cut.
+      A changed-output-support argument improves this to 76D + 104 + 3J for the very same rule; the
+      boundary-read predicates are unchanged.
+          The inherited universal-source ledger gives 38 722 713, or 38 722 712 with the support refinement.
+      Its source table remains absent and universality remains an inherited premise. Explicit malformed
+      inputs distinguish each new block and the composition from both predecessors. Pair-padding
+      counterexamples concern only the unchanged templates and selector with an enabled nonzero
+      branch. There is no new-rule evaluator, arbitrary-input arithmetic certificate, minimum-radius or
+      priority claim.
+
+
+1    Result and comparison
+
+Write It (u) = [u−t, u+t]∩Z, with both endpoints included. A configuration is an arbitrary x ∈ {0, 1}Z .
+Number conservation means preservation of the ordinary number of ones on finite-support inputs; no
+divergent infinite sums are compared. Report 26 and Report 70 give full-shift extensions of a common
+five-particle simulation. This report changes both blocks of that extension. It does not correct either
+predecessor’s definition or claimed sufficient bound.
+
+Theorem 1.1. For every finite source satisfying Section 2, the maps defined below give a binary CA
+Fs = Ps ◦ Es . Both factors are full-shift, number-conserving involutions. On every natural-counter
+home, both signs of every strict intermediate of an enabled source-edge subdivision, and every translate,
+they equal the common predecessor edge matching and sign flip. Consequently both forward and inverse
+dynamics and exact clocks are unchanged. Moreover,
+
+                 R(Es ) ≤ 13b + 10 + 3J,                                           R(Ps ) ≤ 6b,
+                 R(Fs ) ≤ 19b + 10 + 3J = 76D + 105 + 3J.                                                       (1)
+
+For the same rule, R(Ps ) ≤ 6b − 1 and R(Fs ) ≤ 76D + 104 + 3J.
+
+Report 70 supplies broader architectural background, attribution, clean-target details and a separate
+radius-two classification. That classification is not repeated or used here. The complete definitions
+and proof obligations for the present theorem follow.
+
+
+
+                                                        1
+Report 71   Shorter exactness windows                                                              4 October 2026
+
+
+
+        Construction                      Triple exactness    Total sufficient bound      Inherited ledger
+        Report 26                              3b + 1           180D + 258 + 9J             91 711 698
+        Report 70                              3b + 1           108D + 149 + 3J             55 027 013
+        Report 71, main                           b              76D + 105 + 3J             38 722 713
+        Same rule, support refinement             b              76D + 104 + 3J             38 722 712
+
+Table 1: Bounds, not measured or minimum radii. Pair exactness remains L in every row. The final
+column substitutes D = 509 508, J = 0 and inherits the same universal-source premise.
+
+
+2     Source, geometry and complete endpoint families
+
+2.1   Source interface and admissibility
+
+The source is a finite deterministic partial injection on Q × Z2≥0 . A branch e : q → q ′ selects side
+v ∈ {−1, +1} and its corresponding counter index j (left for v = −1, right for v = +1), updates
+that counter by ∆ ∈ {−1, 0, +1}, and has domain predicate Ge . Enabled outputs are natural.
+Branch domains at each control and actual branch images at each target control are disjoint on all
+natural-counter IDs, including unreachable ones. The exact image predicate is
+
+                               Ie (c′ ) = Ge (c′ − ∆ej ) ∧ (c′ − ∆ej ∈ Z2≥0 ).
+
+Both Ge and Ie depend only on classes 0, 1, . . . , J, > J of the two counters. There is a designated halt
+control with no outgoing branch. Other controls may be stuck; such blocking is not designated halting.
+Let m ≥ 1 count controls, p nonzero-update branches, and α zero-update branches. The unsigned
+modes are homes Hq and outbound/inbound modes Oe , Ie for each nonzero branch. Give all signed
+modes distinct gaps in {1, . . . , D}, and set
+
+                       D = 2m + 4p,      S = 2D + 2,        B2 = D + 1,     L = 3D + 4,
+                                                                                                              (2)
+                       b = L + D + 1 = 4D + 5,       Z = 10b + 10 + 2J,       r = Z + J.
+
+Thus D ≥ 2, J ≥ 0 and r ≥ 3b. A head in signed mode uσ at x is the pair {x, x + d(uσ )}. Its anchor
+is always its leftmost particle, including during leftward motion. At origin zero a home is
+
+                          Enc(q, cℓ , cr )σ = {−(Z + cℓ ), 0, Z + cr , S, S + d(Hqσ )}.
+
+The three markers have separations at least Z. The encoding uses exactly five particles over a binary
+zero background.
+An enabled zero-update edge is one unsigned home-to-home microedge. For a nonzero edge, let o be
+the origin, m0 the selected old marker, and m1 = m0 + v∆. Dispatch changes the home head at o + S
+to Oe at o + vS. Its anchor travels by v to m0 − vS. The endpoint interaction moves the marker to
+m1 and changes the head to Ie at m1 − vS. The head travels by −v to o + vS, then commits to Hq′
+at o + S. Dispatch reads Ge on old counters; commit reads Ie on post counters.
+The admissible unsigned graph consists of every natural-counter home and only strict intermediates of
+enabled subdivisions. Guard-invalid moving geometry is excluded. Branch-specific modes distinguish
+intermediates, and exact image disjointness prevents mergers at homes, so this graph is a partial
+injection. Double it by signs: each unsigned edge c → c′ gives an edge c+ ↔ c′− ; phase pairs c+ ↔ c− .
+Include all translates.
+
+
+
+                                                        2
+Report 71    Shorter exactness windows                                                          4 October 2026
+
+
+2.2   Literal edge endpoints
+
+All displayed sets are offsets from the invariant template anchor zero. For a moving mode u, write
+d+ = d(u+ ), d− = d(u− ), and use direction w = v for Oe , w = −v for Ie . The free pair and near-travel
+triples are
+
+                            {0, d+ } ←→ {w, w + d− },                                                      (3)
+               {0, wt, wt + d+ } ←→ {0, w(t + 1), w(t + 1) + d− },                    S ≤ t ≤ L,           (4)
+            {0, −wt, −wt + d+ } ←→ {0, −w(t − 1), −w(t − 1) + d− },                   S + 1 ≤ t ≤ L.       (5)
+
+For each nonzero branch, the interaction templates are
+
+                              {0, S, S + d(Hq+ )} ←→ {0, vS, vS + d(Oe− )},                                (6)
+                         {0, −vS, −vS + d(Oe+ )} ←→ {v∆, v∆ − vS, v∆ − vS + d(Ie− )},                      (7)
+                             {0, vS, vS + d(Ie+ )} ←→ {0, S, S + d(Hq−′ )}.                                (8)
+
+Their guards are respectively Ge , none, and Ie . For a zero-update branch use
+
+                            {0, S, S + d(Hq+ )} ←→ {0, S, S + d(Hq−′ )},      Ge = Ie .                    (9)
+
+Each branch type remains distinct, even when several branches share a geometric home endpoint.
+There is no priority ordering.
+
+
+2.3   Literal phase endpoints and exactness
+
+The phase family contains, for each moving mode, the pair and both sides of the near triples
+
+                               {0, d+ } ←→ {0, d− },                                                      (10)
+                     {0, st, st + d+ } ←→ {0, st, st + d− },    s ∈ {−1, +1},      S ≤ t ≤ L,             (11)
+
+and for each control the home triple
+
+                                     {0, S, S + d(Hq+ )} ←→ {0, S, S + d(Hq− )}.                          (12)
+
+There is no free-home phase type and no contextual phase guard.
+For either family let Pg , Qg denote the displayed endpoints and put Bg = B2 for a pair, Bg = b for a
+triple. The local map τg,u exchanges their complete words on IBg (u), fixes every other word there,
+and fixes all sites outside that interval. The supports fit: free edges lie in [−1, D + 1]; behind edges in
+[−L − 1, L + D + 1]; ahead edges in [−L, L + D]; home interactions in [−S, S + D]; endpoint interactions
+in [−S − 1, S + D + 1]. Each lies in its declared window. Phase supports satisfy the sharper bounds in
+Section 5.1. Distinct signed gaps make the two words distinct; their weights are equal. Thus every
+τg,u is an everywhere-defined conservative involution.
+The new geometric predicate in both families is
+                     (
+                         L pair,
+              ℓg =                       ρg (x, u) ⇐⇒ {i ∈ Iℓg (u) : xi = 1} ∈ {u + Pg , u + Qg }.        (13)
+                         b triple,
+
+In particular, the pair writes only IB2 (u), not the common Ib (u). Arbitrary bits outside its small
+write window are preserved, including particles at distances between L and b. Zero-filling the common
+window would define a different, incorrect rule.
+
+                                                         3
+Report 71   Shorter exactness windows                                                    4 October 2026
+
+
+For edge types let cg be ρg conjoined with its contextual guard, when present. For each counter, the
+guard reads u ± (Z + k), 0 ≤ k ≤ J: exactly one occupied read selects that finite class, no occupied
+read selects > J, and multiple occupied reads reject the guard. These conventions are finite Boolean
+definitions on malformed inputs too. All class sites lie outside every rewrite. Hence cg is invariant
+under its own τg,u , and it reads radius at most r.
+
+                                        old triple exactness I3b+1 (u)
+                                                               extra bit
+                                                     u
+                               new triple exactness and write window Ib (u)
+
+Figure 1: Schematic window comparison, not a full configuration or a scale drawing. On admissible
+matches, remote markers lie beyond both windows. On malformed inputs an extra particle between
+the two boundaries can change recognition; Section 6 gives exact examples.
+
+
+
+3     Full-shift definition and safety of both new blocks
+
+3.1      Edge: mutual guarded uniqueness and raw-anchor selection
+
+At every integer anchor use the full guarded type set
+
+                              Cu (x) = {g in the edge family : cg (x, u)}.
+
+Define                                  (
+                                            τg,u x, Cu (x) = {g} = Cu (τg,u x),
+                             Tu (x) =                                                               (14)
+                                            x,      otherwise.
+Both uniqueness tests include all types. If the first case acts, the same unique type passes in the
+image and reverses it; otherwise the input is fixed. Thus Tu2 = id even with zero, multiple, conflicting
+or newly enabled types. It writes only Ib (u) and preserves weight there. Its replacement word is
+determined by Ir (u): hypothetical tests use already known replacement bits and otherwise unchanged
+input bits in that same window, adding no radius.
+Coalesce geometric types only at the raw-anchor level:
+
+                           R(x) = {u ∈ Z : ρg (x, u) for some edge type g}.
+
+Recognition reads radius a = b, since L ≤ b. Nonidentity Tu implies u ∈ R(x). Set
+
+                                  H = max{2(b + a), b + r} = b + r.                                 (15)
+
+Select u if u ∈ R(x), no other v ∈ R(x) has |v − u| ≤ H, and
+
+                                               R(Tu x) = R(x).                                      (16)
+
+Apply all selected Tu simultaneously to define Es . The equality compares raw integer anchors, not
+guarded types or already eligible anchors. Only anchors within b + a = 2b of u can change recognition.
+Their recognition words lie in Ib+2a (u) = I3b (u). Together with Tu ’s control word this makes the
+prospective test a finite radius-r test.
+
+
+                                                       4
+Report 71   Shorter exactness windows                                                     4 October 2026
+
+
+Lemma 3.1. The map Es is a number-conserving involution on {0, 1}Z , with radius at most 3b + r =
+13b + 10 + 3J.
+
+Proof. Distinct selected centers are farther apart than H and have disjoint write intervals. If a radius-b
+recognition window met writes at two selected centers u, w, then |u − w| ≤ 4b ≤ H, a contradiction.
+Every post-update recognition word therefore equals its old word or the word after exactly one selected
+Tu . That update passed (16); hence
+                                             R(Es x) = R(x)
+at every integer anchor on every bi-infinite input. This covers initially absent anchors, dense malformed
+configurations, and potential cooperative births or deaths.
+Now take any recognized isolated anchor u, whether selected or rejected. Every other selected w has
+|w − u| > H = b + r, so its write misses Ir (u), which contains all control and prospective data. The
+complete status analysis is:
+ 1. An isolated rejected anchor’s determining word is unchanged, so its failed prospective test remains
+    failed.
+ 2. A selected anchor sees precisely its own Tu image. The equality Tu2 = id interchanges the two
+    recognized sets in (16), preserving success.
+ 3. A nonisolated recognized anchor stays nonisolated by recognition-set invariance; it remains blocked
+    even if its guarded types change.
+ 4. An absent anchor remains absent by the same invariance.
+ 5. A recognized isolated identity control passes prospectivity harmlessly. Its protected radius-r word
+    prevents a new control from appearing there on the second application.
+Thus the entire selected-anchor set is invariant. Each selected control sees only its own prior image on
+reapplication and undoes its disjoint change. Therefore Es2 = id.
+Equal-weight changes on disjoint blocks conserve finite particle number. A finite-support input permits
+only finitely many nontrivial changes, since each uses an original occupied site in its disjoint block;
+finite support is preserved. No total on infinite inputs is needed.
+For locality, a changed output coordinate has a writing anchor within b. Isolation reads H + b about
+that anchor and dominates radius-r control/prospectivity. Thus R(Es ) ≤ b + (H + b) = 3b + r. Finite
+Boolean tests and translation covariance make this a binary CA. Closed intervals and exclusion at
+distances ≤ H are used throughout.
+
+
+3.2   Phase: typed keys and its own prospective filter
+
+This is a new phase block, not the former phase map with a relabelled radius. Keep the type-anchor
+keys
+                       CP (x) = {(g, u) : g in the phase family and ρg (x, u)}.
+Endpoint orientation is not part of a key, but type is. Put rP = b and HP = 2(b + rP ) = 4b. Select
+k = (g, u) if it is a candidate, no other candidate key has anchor within HP of u (including another
+type at u), and
+                                            CP (τk x) = CP (x).                                 (17)
+Apply the selected transpositions simultaneously to define Ps . The equality requires only all phase
+types at anchors within b + rP = 2b of u, so it reads Ib+2rP (u) = I3b (u).
+
+                                                    5
+Report 71   Shorter exactness windows                                                       4 October 2026
+
+
+Lemma 3.2. The map Ps is a number-conserving full-shift involution with radius at most 6b.
+
+Proof. Selected writes are disjoint. A radius-b candidate window cannot meet two of them, because
+then their centers would be at distance at most 4b. Each post-update candidate predicate consequently
+sees no rewrite or exactly one individually prospectively stable rewrite. Thus the complete typed
+candidate set is invariant, including initially absent keys and keys of other types.
+For every isolated candidate, any other selected write misses its radius-3b prospective-decision window:
+the center distance is greater than 4b, the write radius is b. An isolated rejected key therefore keeps
+its failed prospective test. A selected key’s own involution interchanges the sets in (17), preserving
+success. Nonisolated keys stay blocked and noncandidates stay absent. Hence the entire selected-key
+set is invariant and a second application reverses the same disjoint involutions. Equal weights give
+finite conservation and finite support as in Lemma 3.1.
+Isolation reads HP + rP = 5b about a candidate anchor; prospectivity reads 3b. A possibly writing
+anchor lies within b of an output site, so R(Ps ) ≤ 6b. No uniqueness theorem is assumed on malformed
+phase inputs: multiple same-anchor types are competing keys and are rejected by typed isolation.
+This differs deliberately from raw-anchor coalescing in the edge block.
+
+
+4     All-anchor admissible agreement
+
+Full-shift safety alone does not establish simulation preservation. We now show that shortening
+exactness creates no admissible match at any integer anchor, then classify every intended edge and
+phase case.
+
+
+4.1   The close pair and the only possible singleton
+
+Every admissible configuration has exactly one occupied pair at distance at most D, the head. Head-
+marker distances are at least S − D = D + 2 > D, and marker-marker distances are at least Z. Every
+literal endpoint likewise contains a unique close pair; every triple’s singleton has distance greater than
+D from both head sites. This includes the reverse behind endpoint at distance L + 1 and the shifted
+endpoint interaction.
+Thus any new raw match, at any anchor, must use the actual head pair. Its distinct signed gap fixes
+the signed mode and endpoint orientation; any displayed singleton must be an actual marker. Every
+triple singleton lies within L + 1 of the actual head anchor: near-travel distances lie in S, . . . , L + 1,
+and all interaction distances are S. Since
+
+                                              Z > 2(L + 1),
+
+at most one actual marker can support any triple using this head. This common head-to-marker
+bound excludes cross-template competition; bounding only one template’s diameter would not suffice.
+For a fixed endpoint and actual head pair, the offsets force the invariant anchor. Ordinary triples
+anchor at the singleton marker. Only the reverse endpoint uses an anchor one site from its current
+singleton, as detailed below. Other markers are therefore at least Z from an ordinary anchor, or Z − 1
+from the old endpoint anchor. Since
+
+                                           Z − 1 > 3b + 1 > b,
+
+
+
+                                                     6
+Report 71   Shorter exactness windows                                                       4 October 2026
+
+
+they lie outside both old and new triple exactness windows. All three displayed particles fit in Ib .
+Consequently a geometric triple match on an admissible state satisfies old exactness 3b + 1 if and
+only if it satisfies new exactness b. Pair predicates are literally unchanged. This proves all-anchor,
+all-type old/new geometric recognition equivalence; the following classification makes the boundaries
+and guards explicit.
+
+
+4.2   Homes and multiple raw branch types
+
+At Hq+ only outgoing dispatch/direct forward endpoints contain its gap, all at the origin. At Hq− only
+incoming commit/direct reverse endpoints contain its gap, again at the origin. No moving free or
+travel template uses a home gap. Hence raw edge anchors are empty or a singleton, although several
+raw types may occur there.
+At plus homes the full guarded set is empty or a singleton by source-domain disjointness; at minus
+homes it is empty or a singleton by exact actual-image disjointness. Class reads are faithful: counter
+markers encode the classes while the head lies inside b < Z. The reverse image guard includes existence
+of natural pre-counters and therefore enters only an enabled subdivision. Replacing it with the forward
+guard would not justify this conclusion. If there is no enabled incident edge, every control Tu is identity
+even when raw branch types occur at the origin. Direct zero-update edges retain Ge = Ie .
+
+
+4.3   Both signed corridors and every equality case
+
+Let w be a moving mode’s direction, A its departure marker and C its destination marker. With head
+anchor x, write
+                   N = w(C − A) ≥ Z,         t = w(x − A),     S ≤ t ≤ N − S.
+Outbound has w = v and N = Z + c; inbound has w = −v and N = Z + c + ∆ ≥ Z, since enabled
+post-counters are natural. The third marker is remote. Since N > 2(L + 1), the intervals below are
+disjoint and exhaustive.
+For a plus head the free key is x, so pair exactness requires L < t < N − L. For a minus head the free
+key is x − w, not x, so pair exactness requires L < t − 1 < N − L. Converting to integer ranges gives:
+
+                   Sign    Incidence             Range of t               Invariant key
+                   plus    behind travel         S≤t≤L                    A
+                   plus    free travel           L+1≤t≤N −L−1             x
+                   plus    ahead travel          N −L≤t≤N −S−1            C
+                   plus    forward interaction   t=N −S                   as below
+                   minus   reverse interaction   t=S                      as below
+                   minus   behind inverse        S+1≤t≤L+1                A
+                   minus   free inverse          L+2≤t≤N −L               x−w
+                   minus   ahead inverse         N −L+1≤t≤N −S            C
+
+Table 2: Complete raw edge partition. The head remains leftmost within its pair for w = −1 too; the
+two particles are not reflected in order.
+
+In particular, a behind triple takes plus departure distance L to minus distance L + 1. At the image,
+the free predecessor key still sees A at distance L, so inverse free recognition fails. At the ahead
+boundary, a free step takes plus arrival distance L + 1 to minus distance L. The same predecessor key
+
+
+                                                    7
+Report 71   Shorter exactness windows                                                     4 October 2026
+
+
+sees C at distance L + 1, so inverse free recognition succeeds; the inverse ahead-triple range ends at
+current arrival distance L − 1 and cannot compete.
+At plus arrival distance S, travel has already ended and only the forward interaction remains. At
+minus departure distance S, inverse travel has not begun and only the reverse interaction remains.
+The adjacent S + 1 and N − S − 1 positions are exactly the listed travel cases. These are signed
+algebraic statements valid for w = ±1. Within any triple range, the signed gap, unique possible
+marker, side and integer distance determine exactly one type. No extra match arises from shortening,
+by the all-anchor argument above.
+
+
+4.4   Every interaction and the old endpoint key
+
+There are four moving interaction incidences:
+ 1. Outbound minus at departure is reverse dispatch, at the origin, with its true domain guard
+    because the corridor is enabled.
+ 2. Outbound plus at arrival is forward endpoint, at the old selected marker m0 .
+ 3. Inbound minus at departure is reverse endpoint, at the old key m0 = m1 − v∆, not the current
+    marker m1 .
+ 4. Inbound plus at arrival is forward commit, at the origin, with its true exact image guard because
+    the post-counters came from the enabled branch.
+In the reverse endpoint word (7), the singleton offset is v∆ and the head-anchor offset is v∆ − vS.
+Both independently force u = m1 − v∆ = m0 . The actual marker-head distance is still S; only the
+invariant key is shifted. Other markers remain beyond Z − 1 > 3b + 1, so both exactness tests hold.
+This proves the old-key assertion for both physical sides v = ±1 and both update signs ∆ = ±1.
+Branch-specific outbound/inbound gaps exclude all other branches’ interactions. Within the same
+branch an actual singleton can fit the interaction only at its stated wall, where the corridor partition
+excludes travel. The third marker is outside the possible L + 1 singleton range. Hence every moving
+admissible state has exactly one raw type-anchor, with the required guard true.
+
+
+4.5   The desired edge and phase selections all pass
+
+For every intended doubled edge, its paired endpoint is again admissible. Both endpoints have the same
+guarded singleton {g} at the same invariant key: predecessor head anchor for free travel, contacted
+marker for near travel, origin for dispatch/commit/direct, and old marker for endpoint interaction.
+Their entire raw-anchor sets are the same singleton. Therefore Tu is the intended swap and
+
+                                        R(x) = {u} = R(Tu x).
+
+Mutual uniqueness, isolation and full prospectivity pass. At missing edges all controls are identities,
+so Es fixes the state. This covers all source branches and counter sizes, both signs, every translate and
+both reflection ends.
+At a home the sole phase candidate is its home type at the origin. At a moving state the free phase
+key is the unchanged head anchor x for both signs. It is a candidate exactly when every marker is
+farther than L from x. Otherwise a unique marker has distance in S, . . . , L, and its side and distance
+specify the sole near-phase triple. The close-pair and cross-template marker argument excludes every
+other candidate at every anchor; shortening introduces none.
+
+                                                   8
+Report 71   Shorter exactness windows                                                     4 October 2026
+
+
+A phase swap fixes every marker, the head anchor and the unsigned mode, changing only the signed
+gap. Its free/near/home case, type and key therefore do not change. Its full typed candidate set is the
+same singleton before and after, so typed isolation and prospectivity pass. Thus Ps is the exact sign
+flip on the entire admissible graph. This completes admissible agreement, including inverse agreement
+because the inverse composition is Es Ps .
+
+
+5     Radius, unchanged dynamics and exact scope
+
+Lemmas 3.1 and 3.2 give
+
+                     R(Fs ) ≤ R(Es ) + R(Ps ) ≤ 19b + 10 + 3J = 76D + 105 + 3J.
+
+Both factors preserve the admissible set and equal the predecessors’ restricted blocks, so every forward
+step and every inverse step is unchanged. Also
+
+                        Fs−1 = Es Ps ,     Es Fs Es = Fs−1 ,    Ps Fs Ps = Fs−1 .
+
+These are two individually conservative involutions and time reversers.
+
+
+5.1   A support refinement for the very same rule
+
+Every phase endpoint lies in IL+D = Ib−1 . For a positive near endpoint the extremum is t + d =
+L+D = b−1, including the equality t = L, d = D. The two negative-side head sites lie in [−L, −S +D],
+and their singleton is at zero, so the full negative near support lies in [−L, 0]. Home endpoints lie in
+[0, S + D] and free endpoints in [0, D]. Thus every complete phase endpoint word has zeros at both
+−b and b.
+On any non-endpoint word the transposition is identity; on either endpoint word the two boundary
+zeros remain zero. Therefore no phase transposition can change an output site at either boundary, on
+any input. The triple predicate nevertheless still reads those two zeros; the transposition still reads
+the complete Ib word. No predicate, transposition, isolation threshold HP = 4b or prospective test has
+changed.
+Eligibility still reads radius 5b about its anchor. Only the anchors that can actually change a specified
+output site now lie within b − 1 rather than b. The output is determined by its old bit and those
+possible changes, proving for the same map
+
+                    R(Ps ) ≤ 6b − 1,     R(Fs ) ≤ 19b + 9 + 3J = 76D + 104 + 3J.                     (18)
+
+This is an upper-bound refinement, not a smaller-window definition or a minimum-radius theorem.
+The simple common-support observation does not apply to edge endpoints: a positive reverse-behind
+endpoint at t = L, d− = D reaches L + 1 + D = b.
+
+
+5.2   Clocks, observers, targets and dependencies
+
+For a nonzero source edge at old selected counter c, the travel lengths remain Z + c − 2S and
+Z + c + ∆ − 2S. Its three interactions give the unchanged physical clock
+
+                                    τe (c) = 3 + 2(Z + c) + ∆ − 4S.
+
+
+                                                    9
+Report 71   Shorter exactness windows                                                         4 October 2026
+
+
+
+                   D    J   Edge bound     Phase, main      Total, main    Same-rule refinement
+                    8   0            491            222             713                     712
+                   18   1          1 014            462           1 476                   1 475
+              509 508   0     26 494 491     12 228 222      38 722 713              38 722 712
+
+Table 3: Exact substitutions into sufficient bounds. The last row is conditional on the inherited
+universal-source ledger.
+
+
+A zero-update edge still takes one step. The binary alphabet, five particles and anchored halt-observer
+length 3D + 3 are unchanged. A missing graph edge still causes a one-step sign reflection.
+Let Θ be the original forward computation’s total physical microedge time, the sum of its inherited
+clocks using the enlarged wrapper source’s constants. The clean-target first time 2Θ + 2 and reflected
+period 4Θ + 6 transport with their original hypotheses. In particular, the clean-target bridge requires
+a control-wide predecessor-free initial normalization, not just one predecessor-free input ID, and all
+constants must be recomputed for that enlarged source. Its target restores the input counters and is
+input-dependent. Equivalence of positive return or periodicity with designated halting additionally
+requires no nonfinal blocking on the claimed source-input family; a nonfinal stuck home otherwise
+reflects and cycles too. Report 70 gives the full wrapper construction.
+The endpoint-template count remains 8pD + 29p + m + α. Two mathematical involutions do not imply
+two cheap arithmetic factors or template-independent Boolean evaluation cost. Old source programs,
+malformed-input transition fibers, circuit counts, ordered-factor budgets, schedules, and arithmetic or
+Diophantine certificates do not become implementations or arbitrary-input certificates of this new
+full-shift map. Semantic admissible witnesses transfer through the proved agreement; malformed
+certificates do not transfer automatically.
+The inherited universal receipt records m = 122 622, p = 66 066, α = 75 495, J = 0, hence D = 509 508.
+Its source-table SHA-256 is
+
+                   fa61d06178d718511232a80a05e02192d940fde3c273f0c202f0623253b2ade3.
+
+
+That table is absent from the preserved Report 26 archive and this evidence packet. Its ledger,
+historical universality and required normalizations remain inherited premises. The source-uniform
+theorem does not require a universal table; the numerical substitution does not prove universality
+anew. No universal source, template array, new-rule evaluator or truth table was materialized or
+executed here.
+
+
+6    Actual malformed inequalities for both blocks
+
+Take ordered controls (q, h), one true-guard right increment q → h, and J = 0. Its exact image is
+right-counter positivity, expressible by classes 0, > 0. Use the inherited literal gap order
+
+                             Hq± : 1, 2;   Hh± : 3, 4;    O± : 5, 6;   I ± : 7, 8.
+
+Thus D = 8, S = 18, B2 = 9, L = 28, b = 37, old triple exactness K = 112, and Z = r = 380. Write
+E26 , E70 for the predecessor edge blocks and P26 = P70 for their shared phase block.
+
+
+
+
+                                                     10
+Report 71   Shorter exactness windows                                                      4 October 2026
+
+
+6.1   Triple shortening changes each block separately
+
+Let X = {0, 18, 23, 80}. Its sole close pair is {18, 23}, gap five, so every match must use this O+ head.
+Only singleton 0 is within L + 1 = 29 of head anchor 18; particle 80 is 62 away. The free pair fails
+exactness because its radius-28 window contains 0. The only geometric edge type is behind O at
+t = 18, key 0; the only geometric phase type is near O on the positive side at distance 18, key 0. Both
+old triple predicates see particle 80 in I112 (0) and fail. Thus all predecessor blocks fix X.
+New triple exactness sees precisely {0, 18, 23} in I37 (0). The edge endpoint is {0, 19, 25, 80}, with O−
+gap six. Its sole inverse-behind type has key 0 at current distance 19; the free inverse key 18 still
+sees marker 0. Particle 80 cannot support another triple. Both guarded uniqueness tests and raw
+prospectivity pass, so
+
+                           Es (X) = {0, 19, 25, 80} =
+                                                    ̸ E26 (X) = E70 (X) = X.                         (19)
+
+Directly on X, the sole near-phase key flips gap five to six, preserving the same singleton typed
+candidate set:
+                         Ps (X) = {0, 18, 24, 80} =
+                                                  ̸ P26 (X) = P70 (X) = X.                    (20)
+On Es (X) the sole near-phase key at distance 19 flips gap six back to five. Hence
+
+                          Fs (X) = {0, 19, 24, 80},        F26 (X) = F70 (X) = X.                    (21)
+
+These are direct endpoint-word deductions on a four-particle malformed input, not simulator outputs
+or mere differences between written definitions.
+
+
+6.2   The smaller phase exclusion also changes behavior
+
+Let Y = {0, 5, 200, 205}. There are exactly two free O phase keys, at 0 and 200. No triple can
+use a singleton within 29 of either head; the clusters each have two particles, separated by more
+than 2b. Each individual phase flip preserves both keys and creates no cross-cluster close pair. New
+HP = 4b = 148 permits both, whereas old HP = 2(b + 3b + 1) = 298 rejects both. Every edge version
+rejects its two raw anchors, since 200 ≤ 417 ≤ 834. Therefore
+
+                     Fs (Y ) = Ps (Y ) = {0, 6, 200, 206},      F26 (Y ) = F70 (Y ) = Y.
+
+
+7     Why the retained pair padding matters
+
+The following counterexamples concern failure of admissible simulation agreement with the unchanged
+literal families and stated selector. They require an enabled nonzero branch, hence an admissible
+moving corridor. They are not universal lower bounds over other encodings or rules, nor failures of
+full-shift involutivity.
+Suppose the pair exactness integer were B2 ≤ ℓ < L. In an enabled corridor take a plus head at
+departure distance t = L. The intended behind triple remains recognized at departure marker A.
+The free pair at head key x would now also pass exactness: A lies at distance L > ℓ, while the other
+markers are remote. These are distinct raw anchors only L apart, within H. They conflict, so selection
+rejects the intended travel edge. The corridor contains this position because N ≥ Z > 2(L + 1).
+Conversely, for any integer ℓ > L, a plus head at departure distance L + 1 loses its intended free pair
+because the departure marker is inside the enlarged window. No behind-plus template extends past
+
+                                                      11
+Report 71   Shorter exactness windows                                                     4 October 2026
+
+
+L, the other markers cannot provide a triple, and this is not an interaction wall. Thus no edge type
+performs the intended free step. This persists even if enlarged-read locality bookkeeping is adjusted;
+retaining the old read bound when ℓ > b would be an additional locality error, unnecessary to the
+counterexample.
+Exactly L is therefore the retained pair padding for this particular literal free/contact subdivision and
+selector. Redesigned contact ranges, recognition, encoding or selection are outside the claim.
+
+
+8     Evidence, provenance and reproducible presentation
+
+This companion article is based on the complete short-exactness proof and a fresh independent
+mathematical/static audit. The audit’s disposition is pass without mathematical correction. It
+checks the endpoint families, all-input status arguments, every signed boundary and old-marker
+case, malformed inequalities, affine substitutions and same-rule support refinement. It limits the
+pair-padding examples as in Section 7. These inputs are retained in full as inert evidence, with their
+source bytes, modes and nanosecond modification times preserved.
+The externally supplied source manifest and proof pins are respectively
+
+                   72f8024c49a364bfd26ccc9f0e89d128e4390c1bf045477aa3d584bba3eaea31
+                   d2229bcae33affd26eefb513e942891edf1d09c8b8d9e32ab1f8220fd2ea9962.
+
+The fresh independent audit manifest and audit-text pins are respectively
+
+                   befa9a29fd2c31a93bfecdda67794a830e5ebbedc71c4c76b85fd3fb4f161614
+                   09cca9ebcc31338b083a502f3345e7825869fcdf043350ce16421d4ef5f7b9bd.
+
+The sealed Report 70 predecessor has manifest and PDF pins
+
+                   0f96f8aa8bba3eb581070a3db48798ecba3ef0c49daa47a124e62b6754ee30e1
+                   d061fda50f26cad711e4f20d028d126d1ce232469425b0745728eed014895010.
+
+Report 70 is a separate, unchanged companion release. Its radius-two appendix is neither duplicated
+nor a premise of the present theorem. The inherited proof/audit dependencies and source archive
+provenance remain available in the evidence, including the Report 26 archive pin
+
+                   20a23b1ee22aed461942da4def6bade2bd55d777fce1fe49b6ff83248b7442e4.
+
+
+8.1   Historical preservation is qualified precisely
+
+The short-exactness source packet observed its frozen inputs at 15:24:54.675013 and 15:32:53.244416
+UTC on 4 October 2026. Its 49 frozen entries matched, but the separately observed live Report 70
+tree was not static: 49 new file/directory entries appeared and the existing qa directory’s modification
+time changed. The source packet identifies these as concurrent activity, not edits made by its worker.
+Its mathematical inputs were the pinned frozen sources, not the changing Report 70 QA tree.
+The later independent audit covered 117 frozen objects and 204 live Report 70 objects. Its observations
+at 15:39:29.924008 and 15:48:32.615844 UTC had no endpoint differences. That later equality does
+not erase the earlier live-tree qualification. The present release’s own source-origin and before/after
+records separately document its preservation interval. All such comparisons are endpoint observations,
+not atomic snapshots or proof that a tree remained continuously static between observations. Access
+times are outside this preservation scope and may change through reading.
+
+                                                   12
+Report 71   Shorter exactness windows                                                     4 October 2026
+
+
+8.2   What was executed and what authentication establishes
+
+The mathematical proof is not proof-assistant formalized. No author or upstream scientific program,
+source interpreter, CA/physical/trajectory simulator, saved schedule or Lean was run for this article.
+Scientific helper programs and receipts are retained as inert source evidence. The new executable
+work is limited to inspected presentation, file/JSON/hash authentication, archive operations and
+release-tool tests. Reproducible typesetting is evidence about presentation, not a theorem prover.
+The owned presentation tools adapt fully inspected Report 70 tools. The flattened Report71.tex
+matches the modular manuscript. Builds use an allowlisted environment, fresh local TeX format
+and font map, shell escape disabled, three TeX passes and the union of the format and every pass’s
+recorded inputs. Locked replay checks interpreter/executable hashes and all recorded system TeX/font
+inputs and selected maps. Its scope does not inventory shared libraries, Python’s standard library
+or the operating system. Every rendered page receives visual review in addition to automated PNG
+structural validation.
+The release manifest records the exact descendant inventory, bytes, modes and nanosecond modification
+times. Authentication uses an external manifest digest and rejects unsafe paths, extra entries, symlinks,
+special files and hardlinks. Deterministic ZIP creation is paired with an authenticated extractor that
+restores descendant modes and modification times. The manifest file’s metadata and newly created
+top-level root’s metadata lie outside that inventory boundary; access times and creation/change times
+are not transported as integrity claims. Digests authenticate identity relative to supplied pins; they
+are not digital signatures, proof of authorship or a proof of the missing source theorem.
+The README contains the final manuscript and dependency pins, authentication and locked-build
+commands, and deterministic archive/extraction instructions. The final release retains manuscript
+review, presentation-tool review and release-check receipts. No prior malformed evaluator, arithmetic
+certificate or universal-source execution is claimed as new evidence. No external-priority survey or
+radius minimality result is asserted.
+
+
+9     Conclusion
+
+Triple exactness can be shortened to its write radius in both newly defined conservative blocks,
+because the literal admissible geometry leaves every other marker beyond even the old window. Pair
+padding cannot be changed in the same way without disrupting the unchanged subdivision. The new
+full-shift extension preserves every admissible forward and inverse step, with main sufficient bound
+76D + 105 + 3J and same-rule support refinement 76D + 104 + 3J. The conditional universal numerical
+value is 38 722 712; its inherited-source qualifications remain essential.
+
+
+
+
+                                                   13
+

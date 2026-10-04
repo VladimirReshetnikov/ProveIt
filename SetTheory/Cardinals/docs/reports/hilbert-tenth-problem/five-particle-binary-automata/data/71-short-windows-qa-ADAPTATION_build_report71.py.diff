@@ -1,0 +1,106 @@
+--- Report70/tools/build_report70.py
++++ Report71/tools/build_report71.py
+@@ -1,5 +1,5 @@
+ #!/usr/bin/env python3
+-"""Build Report70 with an isolated fresh TeX format and all-pass dependency recording.
++"""Build Report71 with an isolated fresh TeX format and all-pass dependency recording.
+ Use python3 -I -S -B, an external manuscript pin, and either --bootstrap or an
+ external --dependency-lock-sha. Bootstrap records dependencies; it does not claim
+ preflight lock verification. No scientific constructor/checker is executed.
+@@ -18,14 +18,14 @@
+ import zlib
+ 
+ ROOT = Path(__file__).absolute().parent.parent
+-HELPER_SHA256 = '701d67bddd82ee531c9000981430729bfd47f595f1e980423bff10191583a589'
++HELPER_SHA256 = '283142424d8b0eeeaf289a0908a80896f76146efd64b3a54cfa004b28f1d167c'
+ SYSTEM_ROOTS = ('/usr/share/texlive/', '/usr/share/texmf/', '/etc/texmf/', '/var/lib/texmf/')
+ SCOPE = 'Interpreter and executable bytes plus union of every format/TeX-pass recorder input and selected font maps; shared libraries, Python standard library and operating system are not inventoried'
+ EPOCH = '1791072000'
+ 
+ 
+ def load_helper():
+-    p = ROOT / 'tools/release70.py'
++    p = ROOT / 'tools/release71.py'
+     for parent in [p, *p.parents]:
+         if stat.S_ISLNK(parent.lstat().st_mode):
+             raise ValueError('Symlink helper path')
+@@ -36,7 +36,7 @@
+         data = f.read()
+     if hashlib.sha256(data).hexdigest() != HELPER_SHA256:
+         raise ValueError('Release helper differs from inspected source')
+-    module = types.ModuleType('report70_release')
++    module = types.ModuleType('report71_release')
+     module.__file__ = str(p)
+     exec(compile(data, str(p), 'exec'), module.__dict__)
+     return module
+@@ -115,7 +115,7 @@
+         raw = h.read(ROOT / 'tools/BUILD_DEPENDENCIES_LOCK.json')
+         h.require(h.sha(raw) == h.digest(a.dependency_lock_sha), 'Dependency lock differs from external pin')
+         lock = h.parse(raw)
+-        h.require(set(lock) == {'format', 'executables', 'system_inputs', 'scope'} and lock['format'] == 'Report70 build dependencies v1' and lock['scope'] == SCOPE, 'Invalid toolchain lock schema')
++        h.require(set(lock) == {'format', 'executables', 'system_inputs', 'scope'} and lock['format'] == 'Report71 build dependencies v1' and lock['scope'] == SCOPE, 'Invalid toolchain lock schema')
+         h.require(lock['executables'] == expected_binaries, 'Executable preflight mismatch')
+         for filename, row in lock['system_inputs'].items():
+             p = Path(filename)
+@@ -126,11 +126,11 @@
+     h.write_new(out / 'PRESERVATION_BEFORE.json', h.encoded(before))
+     h.write_new(out / 'PREFLIGHT.json', h.encoded({'status': 'BOOTSTRAP' if a.bootstrap else 'PASS', 'dependency_lock_sha256': a.dependency_lock_sha, 'executable_preflight': expected_binaries, 'locked_system_inputs': len(lock['system_inputs']) if lock else None}))
+     try:
+-        with tempfile.TemporaryDirectory(prefix='report70-typeset-', dir=out) as temp:
++        with tempfile.TemporaryDirectory(prefix='report71-typeset-', dir=out) as temp:
+             work = Path(temp)
+             cache, home = work / 'cache', work / 'home'
+             cache.mkdir(); home.mkdir()
+-            h.write_new(work / 'Report70.tex', flat)
++            h.write_new(work / 'Report71.tex', flat)
+             env = {'PATH': '/usr/bin:/bin', 'LANG': 'C.UTF-8', 'LC_ALL': 'C.UTF-8', 'TZ': 'UTC', 'HOME': str(home),
+                    'SOURCE_DATE_EPOCH': EPOCH, 'FORCE_SOURCE_DATE': '1', 'TEXMF': '{/usr/share/texlive/texmf-dist,/usr/share/texmf}',
+                    'TEXMFVAR': str(cache), 'TEXMFCONFIG': str(cache), 'TEXMFHOME': str(home), 'TEXFORMATS': str(cache),
+@@ -181,9 +181,9 @@
+             env['TEXFONTMAPS'] = str(cache) + ':'
+             for number in range(1, 4):
+                 label = 'compile-' + str(number)
+-                final_stdout = run(['/usr/bin/pdflatex', '-no-shell-escape', '-recorder', '-halt-on-error', '-interaction=nonstopmode', '-file-line-error', 'Report70.tex'], work, label)
++                final_stdout = run(['/usr/bin/pdflatex', '-no-shell-escape', '-recorder', '-halt-on-error', '-interaction=nonstopmode', '-file-line-error', 'Report71.tex'], work, label)
+                 # Capture before the next pass can overwrite the recorder.
+-                record(work / 'Report70.fls', work, label)
++                record(work / 'Report71.fls', work, label)
+             warnings = (b'Overfull \\hbox', b'Overfull \\vbox', b'undefined references', b'undefined citations', b'Rerun to get cross-references right', b'Label(s) may have changed', b'rerunfilecheck Warning')
+             h.require(not any(w in final_stdout for w in warnings), 'Final layout or reference warning')
+             if lock is not None:
+@@ -191,19 +191,19 @@
+             for filename, row in system.items():
+                 data = h.read(Path(filename))
+                 h.require({'bytes': len(data), 'sha256': h.sha(data)} == row, 'System input changed during build')
+-            pdf = h.read(work / 'Report70.pdf')
++            pdf = h.read(work / 'Report71.pdf')
+             h.require(pdf.startswith(b'%PDF-'), 'Invalid PDF output')
+-            match = (ROOT / 'Report70.pdf').exists() and h.read(ROOT / 'Report70.pdf') == pdf
++            match = (ROOT / 'Report71.pdf').exists() and h.read(ROOT / 'Report71.pdf') == pdf
+             h.require(not a.require_packaged_match or match, 'Packaged PDF differs')
+-            h.write_new(out / 'Report70.pdf', pdf)
+-            h.write_new(out / 'Report70.log', h.read(work / 'Report70.log'))
+-            run(['/usr/bin/pdftotext', '-layout', str(out / 'Report70.pdf'), str(out / 'Report70.txt')], work, 'pdftotext')
+-            info = run(['/usr/bin/pdfinfo', str(out / 'Report70.pdf')], work, 'pdfinfo')
++            h.write_new(out / 'Report71.pdf', pdf)
++            h.write_new(out / 'Report71.log', h.read(work / 'Report71.log'))
++            run(['/usr/bin/pdftotext', '-layout', str(out / 'Report71.pdf'), str(out / 'Report71.txt')], work, 'pdftotext')
++            info = run(['/usr/bin/pdfinfo', str(out / 'Report71.pdf')], work, 'pdfinfo')
+             page_match = re.search(rb'^Pages:\s+([1-9][0-9]*)\s*$', info, re.M)
+             h.require(page_match is not None, 'PDF page count missing')
+             page_count = int(page_match.group(1))
+             pages = out / 'pages'; pages.mkdir()
+-            run(['/usr/bin/pdftoppm', '-r', str(a.render_dpi), '-png', str(out / 'Report70.pdf'), str(pages / 'page')], work, 'render')
++            run(['/usr/bin/pdftoppm', '-r', str(a.render_dpi), '-png', str(out / 'Report71.pdf'), str(pages / 'page')], work, 'render')
+             rendered = sorted(pages.iterdir())
+             names = [re.fullmatch(r'page-([0-9]+)\.png', p.name) for p in rendered]
+             h.require(all(names) and sorted(int(m.group(1)) for m in names) == list(range(1, page_count + 1)), 'Rendered-page inventory differs from PDF count')
+@@ -212,7 +212,7 @@
+                 data = h.read(p)
+                 raster_inventory[p.name] = {**validate_png(data, h.require), 'bytes': len(data), 'sha256': h.sha(data)}
+             h.require(binaries() == expected_binaries, 'Executable post-build mismatch')
+-            dependencies = {'format': 'Report70 build dependencies v1', 'executables': expected_binaries, 'system_inputs': system, 'scope': SCOPE}
++            dependencies = {'format': 'Report71 build dependencies v1', 'executables': expected_binaries, 'system_inputs': system, 'scope': SCOPE}
+             if lock is not None:
+                 h.require(dependencies == lock, 'Post-build dependency receipt differs from preflight lock')
+             h.write_new(out / 'BUILD_DEPENDENCIES.json', h.encoded(dependencies))

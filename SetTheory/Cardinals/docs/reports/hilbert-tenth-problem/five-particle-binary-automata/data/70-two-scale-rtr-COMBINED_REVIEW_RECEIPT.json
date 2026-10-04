@@ -1,0 +1,1658 @@
+{
+  "candidate_descendant_directories": 21,
+  "candidate_manifest_sha256": "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9",
+  "candidate_payload_files": 140,
+  "candidate_zip_sha256": "738bb61c4e18c5c4f55af0cda5e6398fdc4aea0a28170767516857a659e69bfa",
+  "direct_and_relocated_pngs_independently_decoded": 42,
+  "independent_check_count": 116,
+  "intended_rejections": 83,
+  "original_files_verified": 45,
+  "original_mapped_directories_verified": 6,
+  "owned_selftests_reproduced_separately": 39,
+  "pdf_sha256": "d061fda50f26cad711e4f20d028d126d1ce232469425b0745728eed014895010",
+  "required_corrections": [],
+  "reviewed_candidate_is_distinct_from_final_release": true,
+  "status": "ACCEPTED",
+  "system_inputs": 275,
+  "tests": [
+    {
+      "directories": 21,
+      "files": 140,
+      "name": "metadata-preserving-external-copy",
+      "status": "PASS"
+    },
+    {
+      "count": 45,
+      "fields": [
+        "bytes",
+        "sha256",
+        "mode",
+        "mtime_ns"
+      ],
+      "name": "independent-original-mapping-verification",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": null,
+      "log": "logs/candidate-fixed-input-authentication.txt",
+      "name": "candidate-fixed-input-authentication",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/prepared"
+      ],
+      "expected_reason": null,
+      "log": "logs/candidate-deterministic-flatten.txt",
+      "name": "candidate-deterministic-flatten",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "flattened-tex-and-manuscript-map-equality",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "manifest",
+        "--output",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/candidate-manifest.json"
+      ],
+      "expected_reason": null,
+      "log": "logs/candidate-manifest-generation.txt",
+      "name": "candidate-manifest-generation",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "directories": 21,
+      "files": 140,
+      "manifest_sha256": "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9",
+      "name": "exact-descendant-inventory",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": null,
+      "log": "logs/candidate-external-manifest-verification.txt",
+      "name": "candidate-external-manifest-verification",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/build_report70.py",
+        "--pins-sha",
+        "944b95cbd26caf7bca3967fc8be0c4395b9fd5df3e517fe953767c39cdaf0332",
+        "--dependency-lock-sha",
+        "a467e715df8470d46d66d94e64da543bf3aaf4a5e2192cc486ddaf98d913df9c",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/direct-build"
+      ],
+      "expected_reason": null,
+      "log": "logs/direct-locked-packaged-build.txt",
+      "name": "direct-locked-packaged-build",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "all_passes_and_selected_maps": true,
+      "all_pngs_equal_to": "/workspace/shared/report70-locked-replay-v5-20261004",
+      "name": "direct-pdf-png-recorder-and-preservation-equality",
+      "pdf_sha256": "d061fda50f26cad711e4f20d028d126d1ce232469425b0745728eed014895010",
+      "png_count": 21,
+      "recorder_union_count": 275,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Use python3 -I -S -B",
+      "log": "logs/reject-no-isolation.txt",
+      "name": "reject-no-isolation",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Use python3 -I -S -B",
+      "log": "logs/reject-missing-no-site.txt",
+      "name": "reject-missing-no-site",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Use python3 -I -S -B",
+      "log": "logs/reject-missing-no-bytecode.txt",
+      "name": "reject-missing-no-bytecode",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "-O",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "without optimization",
+      "log": "logs/reject-optimization.txt",
+      "name": "reject-optimization",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "relative-new"
+      ],
+      "expected_reason": "Canonical absolute output",
+      "log": "logs/reject-relative-output.txt",
+      "name": "reject-relative-output",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "//workspace/shared/report70-independent-release-tool-review-20261004/bad"
+      ],
+      "expected_reason": "Canonical absolute output",
+      "log": "logs/reject-double-slash-output.txt",
+      "name": "reject-double-slash-output",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/../bad"
+      ],
+      "expected_reason": "Output path alias",
+      "log": "logs/reject-dotdot-output.txt",
+      "name": "reject-dotdot-output",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/./bad"
+      ],
+      "expected_reason": "Canonical absolute output",
+      "log": "logs/reject-dot-output.txt",
+      "name": "reject-dot-output",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/prepared"
+      ],
+      "expected_reason": "Output must be fresh",
+      "log": "logs/reject-existing-output.txt",
+      "name": "reject-existing-output",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/bad"
+      ],
+      "expected_reason": "Output overlaps protected input",
+      "log": "logs/reject-source-overlap.txt",
+      "name": "reject-source-overlap",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/radius-frontier-20261004/bad-independent-review"
+      ],
+      "expected_reason": "Output overlaps protected input",
+      "log": "logs/reject-protected-original-overlap.txt",
+      "name": "reject-protected-original-overlap",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report68-gap-statistics-release-20261004/bad-independent-review"
+      ],
+      "expected_reason": "Output overlaps protected input",
+      "log": "logs/reject-protected-report68-overlap.txt",
+      "name": "reject-protected-report68-overlap",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report66-bounded-certificates-counting-release-20261004/bad-independent-review"
+      ],
+      "expected_reason": "Output overlaps protected input",
+      "log": "logs/reject-protected-report66-overlap.txt",
+      "name": "reject-protected-report66-overlap",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/alias/alias-output"
+      ],
+      "expected_reason": "Symlink path component",
+      "log": "logs/reject-output-symlink-parent.txt",
+      "name": "reject-output-symlink-parent",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/source-alias/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Symlink path component",
+      "log": "logs/reject-source-symlink-parent.txt",
+      "name": "reject-source-symlink-parent",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/broken-output"
+      ],
+      "expected_reason": "Output must be fresh",
+      "log": "logs/reject-dangling-output.txt",
+      "name": "reject-dangling-output",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "expected_reason": "Manifest digest mismatch",
+      "log": "logs/reject-wrong-manifest-pin.txt",
+      "name": "reject-wrong-manifest-pin",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "F19D84A61897D328876E5420CF763C95918C6636995086E20C993839163911C9"
+      ],
+      "expected_reason": "Expected lowercase SHA-256 pin",
+      "log": "logs/reject-uppercase-manifest-pin.txt",
+      "name": "reject-uppercase-manifest-pin",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "abc"
+      ],
+      "expected_reason": "Expected lowercase SHA-256 pin",
+      "log": "logs/reject-short-manifest-pin.txt",
+      "name": "reject-short-manifest-pin",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/build_report70.py",
+        "--pins-sha",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "--bootstrap",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/wrong-manuscript-pin"
+      ],
+      "expected_reason": "Manuscript pin map does not match external pin",
+      "log": "logs/reject-wrong-manuscript-pin.txt",
+      "name": "reject-wrong-manuscript-pin",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/build_report70.py",
+        "--pins-sha",
+        "944b95cbd26caf7bca3967fc8be0c4395b9fd5df3e517fe953767c39cdaf0332",
+        "--dependency-lock-sha",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/wrong-lock-pin"
+      ],
+      "expected_reason": "Dependency lock differs from external pin",
+      "log": "logs/reject-wrong-lock-pin.txt",
+      "name": "reject-wrong-lock-pin",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/build_report70.py",
+        "--pins-sha",
+        "944b95cbd26caf7bca3967fc8be0c4395b9fd5df3e517fe953767c39cdaf0332",
+        "--dependency-lock-sha",
+        "a467e715df8470d46d66d94e64da543bf3aaf4a5e2192cc486ddaf98d913df9c",
+        "--require-packaged-match",
+        "--render-dpi",
+        "71",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/low-render-dpi"
+      ],
+      "expected_reason": "Render DPI",
+      "log": "logs/reject-low-render-dpi.txt",
+      "name": "reject-low-render-dpi",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/build_report70.py",
+        "--pins-sha",
+        "944b95cbd26caf7bca3967fc8be0c4395b9fd5df3e517fe953767c39cdaf0332",
+        "--dependency-lock-sha",
+        "a467e715df8470d46d66d94e64da543bf3aaf4a5e2192cc486ddaf98d913df9c",
+        "--require-packaged-match",
+        "--render-dpi",
+        "201",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/high-render-dpi"
+      ],
+      "expected_reason": "Render DPI",
+      "log": "logs/reject-high-render-dpi.txt",
+      "name": "reject-high-render-dpi",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-fixed-pin-map-reformat/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen input-pin map differs",
+      "log": "logs/reject-fixed-pin-map-reformat.txt",
+      "name": "reject-fixed-pin-map-reformat",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-repinned-scientific-source/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen input-pin map differs",
+      "log": "logs/reject-repinned-scientific-source.txt",
+      "name": "reject-repinned-scientific-source",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-source-content/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen input inventory",
+      "log": "logs/reject-source-content.txt",
+      "name": "reject-source-content",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-frozen-mode/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen input inventory",
+      "log": "logs/reject-frozen-mode.txt",
+      "name": "reject-frozen-mode",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-frozen-nanosecond-mtime/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen input inventory",
+      "log": "logs/reject-frozen-nanosecond-mtime.txt",
+      "name": "reject-frozen-nanosecond-mtime",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-frozen-directory-mode/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen input inventory",
+      "log": "logs/reject-frozen-directory-mode.txt",
+      "name": "reject-frozen-directory-mode",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-frozen-root-mtime/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen scope root metadata differs",
+      "log": "logs/reject-frozen-root-mtime.txt",
+      "name": "reject-frozen-root-mtime",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-added-frozen-file/tools/release70.py",
+        "check-inputs"
+      ],
+      "expected_reason": "Frozen input inventory",
+      "log": "logs/reject-added-frozen-file.txt",
+      "name": "reject-added-frozen-file",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-unlisted-file/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Release inventory, bytes, mode or mtime mismatch",
+      "log": "logs/reject-unlisted-file.txt",
+      "name": "reject-unlisted-file",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-missing-file/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Release inventory, bytes, mode or mtime mismatch",
+      "log": "logs/reject-missing-file.txt",
+      "name": "reject-missing-file",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-unlisted-empty-directory/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Unexpected empty directory",
+      "log": "logs/reject-unlisted-empty-directory.txt",
+      "name": "reject-unlisted-empty-directory",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-descendant-directory-mtime/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Release inventory, bytes, mode or mtime mismatch",
+      "log": "logs/reject-descendant-directory-mtime.txt",
+      "name": "reject-descendant-directory-mtime",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-descendant-directory-mode/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Release inventory, bytes, mode or mtime mismatch",
+      "log": "logs/reject-descendant-directory-mode.txt",
+      "name": "reject-descendant-directory-mode",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-hardlink/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Expected single-link regular file",
+      "log": "logs/reject-hardlink.txt",
+      "name": "reject-hardlink",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-symlink/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Nonregular tree entry",
+      "log": "logs/reject-symlink.txt",
+      "name": "reject-symlink",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-fifo/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Nonregular tree entry",
+      "log": "logs/reject-fifo.txt",
+      "name": "reject-fifo",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/reject-manifest-byte-tamper/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Manifest digest mismatch",
+      "log": "logs/reject-manifest-byte-tamper.txt",
+      "name": "reject-manifest-byte-tamper",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/documented-root-manifest-metadata-boundary/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": null,
+      "log": "logs/accept-documented-root-manifest-metadata-boundary.txt",
+      "name": "accept-documented-root-manifest-metadata-boundary",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "accept-independent-valid-png",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-signature",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-truncation",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-trailing",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-zero-width",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-oversize",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-depth",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-color",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-interlace",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-short-raster",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-long-raster",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-row-filter",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-compressed-trailer",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-incomplete-zlib",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-unknown-chunk",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-zero-density",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-duplicate-ihdr",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-png-crc",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-path-traversal",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-absolute-path",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-self-reference",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-file-directory-overlap",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-empty-directory",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-special-mode",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-boolean-size",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-manifest-schema-negative-mtime",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-duplicate-json-keys",
+      "outcome": "rejected",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "archive",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9",
+        "--output",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/candidate-a.zip"
+      ],
+      "expected_reason": null,
+      "log": "logs/deterministic-candidate-archive-a.txt",
+      "name": "deterministic-candidate-archive-a",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "archive",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9",
+        "--output",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/candidate-b.zip"
+      ],
+      "expected_reason": null,
+      "log": "logs/deterministic-candidate-archive-b.txt",
+      "name": "deterministic-candidate-archive-b",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "archive_sha256": "738bb61c4e18c5c4f55af0cda5e6398fdc4aea0a28170767516857a659e69bfa",
+      "bytes": 7313652,
+      "name": "repeated-complete-zip-byte-equality",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/candidate-a.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/relocated",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": null,
+      "log": "logs/safe-authenticated-extraction.txt",
+      "name": "safe-authenticated-extraction",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "directories": 21,
+      "files": 140,
+      "name": "restored-every-descendant-byte-mode-nanosecond-mtime",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/relocated/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": null,
+      "log": "logs/relocated-external-manifest-verification.txt",
+      "name": "relocated-external-manifest-verification",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/relocated/tools/build_report70.py",
+        "--pins-sha",
+        "944b95cbd26caf7bca3967fc8be0c4395b9fd5df3e517fe953767c39cdaf0332",
+        "--dependency-lock-sha",
+        "a467e715df8470d46d66d94e64da543bf3aaf4a5e2192cc486ddaf98d913df9c",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/relocated-build"
+      ],
+      "expected_reason": null,
+      "log": "logs/relocated-locked-packaged-build.txt",
+      "name": "relocated-locked-packaged-build",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "all_passes_and_selected_maps": true,
+      "all_pngs_equal_to": "/workspace/shared/report70-independent-release-tool-review-20261004/direct-build",
+      "name": "relocated-pdf-and-every-png-equality",
+      "pdf_sha256": "d061fda50f26cad711e4f20d028d126d1ce232469425b0745728eed014895010",
+      "png_count": 21,
+      "recorder_union_count": 275,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/candidate-a.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-wrong-pin",
+        "--manifest-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "expected_reason": "Archived manifest pin mismatch",
+      "log": "logs/reject-archive-wrong-pin.txt",
+      "name": "reject-archive-wrong-pin",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/traversal.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-traversal",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Archive inventory mismatch",
+      "log": "logs/reject-archive-traversal.txt",
+      "name": "reject-archive-traversal",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/absolute.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-absolute",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Archive inventory mismatch",
+      "log": "logs/reject-archive-absolute.txt",
+      "name": "reject-archive-absolute",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/duplicate.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-duplicate",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Archive inventory mismatch",
+      "log": "logs/reject-archive-duplicate.txt",
+      "name": "reject-archive-duplicate",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/reordered.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-reordered",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Archive inventory mismatch",
+      "log": "logs/reject-archive-reordered.txt",
+      "name": "reject-archive-reordered",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/missing.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-missing-member",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Archive inventory mismatch",
+      "log": "logs/reject-archive-missing-member.txt",
+      "name": "reject-archive-missing-member",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/payload.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-payload-tamper",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Archived bytes differ",
+      "log": "logs/reject-archive-payload-tamper.txt",
+      "name": "reject-archive-payload-tamper",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/mode.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-mode-tamper",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Archived mode differs",
+      "log": "logs/reject-archive-mode-tamper.txt",
+      "name": "reject-archive-mode-tamper",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/symlink.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-symlink-entry",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Nonregular ZIP entry",
+      "log": "logs/reject-archive-symlink-entry.txt",
+      "name": "reject-archive-symlink-entry",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/nonunix.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-archive-nonunix-entry",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": "Nonregular ZIP entry",
+      "log": "logs/reject-archive-nonunix-entry.txt",
+      "name": "reject-archive-nonunix-entry",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/duplicate-json.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/reject-authenticated-duplicate-manifest-key",
+        "--manifest-sha256",
+        "ad0034ca65e799b2a7dbd52b5e02be490c1a345d469ee6c9f2edb6942785e7b3"
+      ],
+      "expected_reason": "Duplicate JSON key",
+      "log": "logs/reject-authenticated-duplicate-manifest-key.txt",
+      "name": "reject-authenticated-duplicate-manifest-key",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/reviewed-candidate/tools/release70.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/archives/documented-container-metadata-boundary.zip",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/container-boundary-copy",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": null,
+      "log": "logs/accept-documented-container-metadata-boundary.txt",
+      "name": "accept-documented-container-metadata-boundary",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/container-boundary-copy/tools/release70.py",
+        "verify",
+        "--manifest-sha256",
+        "f19d84a61897d328876e5420cf763c95918c6636995086e20c993839163911c9"
+      ],
+      "expected_reason": null,
+      "log": "logs/verify-container-boundary-copy.txt",
+      "name": "verify-container-boundary-copy",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/independent-synthetic/tools/release70.py",
+        "prepare",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/synthetic-prepared"
+      ],
+      "expected_reason": null,
+      "log": "logs/independent-synthetic-prepare.txt",
+      "name": "independent-synthetic-prepare",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/independent-synthetic/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--bootstrap",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/synthetic-bootstrap"
+      ],
+      "expected_reason": null,
+      "log": "logs/independent-synthetic-bootstrap.txt",
+      "name": "independent-synthetic-bootstrap",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "name": "bootstrap-explicitly-not-preflight-verified",
+      "status": "PASS"
+    },
+    {
+      "first_pass_only": [
+        "/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty"
+      ],
+      "format_only_count": 62,
+      "name": "independent-first-pass-and-format-only-dependencies-retained",
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/independent-synthetic/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "1687ad2af5aef75063b99812b5e2565eb25f90b075538ca65b0b189741899c5b",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/synthetic-hostile-tmpdir"
+      ],
+      "expected_reason": null,
+      "log": "logs/independent-hostile-tmpdir.txt",
+      "name": "independent-hostile-tmpdir",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/independent-synthetic/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "1687ad2af5aef75063b99812b5e2565eb25f90b075538ca65b0b189741899c5b",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/synthetic-hostile-temp"
+      ],
+      "expected_reason": null,
+      "log": "logs/independent-hostile-temp.txt",
+      "name": "independent-hostile-temp",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/independent-synthetic/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "1687ad2af5aef75063b99812b5e2565eb25f90b075538ca65b0b189741899c5b",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/synthetic-hostile-tmp"
+      ],
+      "expected_reason": null,
+      "log": "logs/independent-hostile-tmp.txt",
+      "name": "independent-hostile-tmp",
+      "outcome": "accepted",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/synthetic-omitted-first-pass/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "184a51336be8e17aab648f14cc5a1681d6198fef85610d15193b1a45ffb4ab87",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/synthetic-omitted-first-pass"
+      ],
+      "expected_reason": "Unpinned or changed executed TeX input",
+      "log": "logs/reject-independent-omitted-first-pass.txt",
+      "name": "reject-independent-omitted-first-pass",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/synthetic-omitted-format/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "b6f6ae835379b52f04579750da99c390256985248c8e3ddbe5559ce8666709f7",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/synthetic-omitted-format"
+      ],
+      "expected_reason": "Unpinned or changed executed TeX input",
+      "log": "logs/reject-independent-omitted-format.txt",
+      "name": "reject-independent-omitted-format",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/synthetic-stale-system/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "3d62e085a0153f88f7d6150ed04b00a70235368b305ca39890d44ef83b83cc21",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/synthetic-stale-system"
+      ],
+      "expected_reason": "System-input preflight mismatch",
+      "log": "logs/reject-independent-stale-system.txt",
+      "name": "reject-independent-stale-system",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/synthetic-stale-executable/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "d5a973c94d874ebfe5b6d957659d9a9626f74baf22ee049f0a28e3ed44f2f8c7",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/synthetic-stale-executable"
+      ],
+      "expected_reason": "Executable preflight mismatch",
+      "log": "logs/reject-independent-stale-executable.txt",
+      "name": "reject-independent-stale-executable",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/mutants/changed-helper/tools/build_report70.py",
+        "--pins-sha",
+        "9d0776aeba92e077beeaeb94b6cc394ede6f4ce5c77af1c149866856f57b06a9",
+        "--dependency-lock-sha",
+        "1687ad2af5aef75063b99812b5e2565eb25f90b075538ca65b0b189741899c5b",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report70-independent-release-tool-review-20261004/outputs/changed-helper"
+      ],
+      "expected_reason": "Release helper differs from inspected source",
+      "log": "logs/reject-changed-helper.txt",
+      "name": "reject-changed-helper",
+      "outcome": "rejected",
+      "returncode": 2,
+      "status": "PASS"
+    },
+    {
+      "name": "all-45-original-files-and-sealed-candidate-preserved",
+      "status": "PASS"
+    },
+    {
+      "name": "independent-reference-decode-all-42-pngs",
+      "png_count": 42,
+      "status": "PASS"
+    },
+    {
+      "name": "independently-confirm-predecessor-adaptation",
+      "retained_predecessor_sources_compared": 6,
+      "status": "PASS"
+    },
+    {
+      "directories": 6,
+      "name": "original-mapped-directory-metadata",
+      "status": "PASS"
+    },
+    {
+      "name": "reject-archive-raw-crc-before-writing",
+      "outcome": "rejected",
+      "status": "PASS"
+    }
+  ]
+}
