@@ -1050,7 +1050,7 @@ The batch-87 note's ``All twelve questions stay open as printed'' and the batch-
 
 \textbf{Q5 is answered} by Theorem~\ref{mbg:ext:thm:density}: the extensions to a finite team's success events correspond exactly to measurable densities on the success patterns supported on the feasible-pattern events, unique almost everywhere. Theorem~\ref{mbg:ext:thm:polytope} describes the joint laws as a weighted Minkowski sum of simplices cut out by Hall inequalities, and Theorem~\ref{mbg:ext:thm:kernel} extends the classification to countable teams by kernels.
 
-\textbf{Q9 is settled for a larger family} by Part~\ref{mbg:qry:part}'s source~04 (the note at the end of Section~\ref{mbg:insp:sec:fin}): for $(m,q,n)=(N,2,N)$ with $N=m(2^r-1)$ and $t=m2^{r-1}$, for every $m\ge1$, the optima over legal decision trees and over blind maps coincide and equal $1-2^{-r}$, also for every $n\ge N$ (the further boxes left unread; the write's observation, as in the batch-90 note). This contains the family of the batch-90 note (even~$m$) and Part~\ref{mbg:part:one}'s three-box benchmark ($m=1$, $r=2$). The batch-90 note's sentence ``Every other $(m,q,n,t)$ remains open'' was not correct when it was written; Remark~\ref{mbg:insp:rem:q9-open-claim} gives the counterexamples. Open are the remaining parameters, in particular $q=2$ outside these families and every $q\ge3$ with $\floor{m/q}<t\le m$, and the question's last request, the first parameters at which the legal and blind optima differ: in every settled case they coincide. Part~\ref{mbg:hat:part}'s Research question~\ref{mbg:hat:q:finiteteam} and Part~\ref{mbg:qry:part}'s Research question~\ref{mbg:insp:sec:questions}.5 continue it.
+\textbf{Q9 is settled for a larger family} by Part~\ref{mbg:qry:part}'s source~04 (the note at the end of Section~\ref{mbg:insp:sec:fin}): for $(m,q,n)=(N,2,N)$ with $N=m(2^r-1)$ and $t=m2^{r-1}$, for every $m\ge1$, the optima over legal decision trees and over blind maps coincide and equal $1-2^{-r}$, also for every $n\ge N$ (the further boxes left unread; the write's observation, as in the batch-90 note). This contains the family of the batch-90 note (even~$m$) and Part~\ref{mbg:part:one}'s three-box benchmark ($m=1$, $r=2$). The batch-90 note's sentence ``Every other $(m,q,n,t)$ remains open'' was not correct when it was written; Remark~\ref{mbg:insp:rem:q9-open-claim} gives the counterexamples. There is also the elementary divisor family of Remark~\ref{mbg:insp:rem:q9-divisor-cases}: for every $q\ge2$ and $n\ge1$, if $t\mid m$ and $\floor{m/q}<t\le m$, both optima equal $m/(qt)$. The general optimization problem outside the cases established here, and the first parameters separating the legal and blind optima, remain unclassified by this report. In every case established here the two optima coincide. Part~\ref{mbg:hat:part}'s Research question~\ref{mbg:hat:q:finiteteam} and Part~\ref{mbg:qry:part}'s Research question~\ref{mbg:insp:sec:questions}.5 continue it.
 
 Q4 is refined, not answered, by Part~\ref{mbg:ext:part}'s direction R2 (its Theorem~\ref{mbg:ext:thm:kernel} treats countable teams, as Theorem~\ref{mbg:thm:fresh} did for one fair extension), and Q3 is related to R7. Q11 is not addressed: Part~\ref{mbg:qry:part} measures the cost of adaptive inspection in a different game and does not refine Theorem~\ref{mbg:thm:information}.
 \end{writenote}
@@ -1063,6 +1063,29 @@ This remark is the write's (batch~92), recorded so that the superseded sentence 
 \item For $(m,q,n)=(3,2,3)$ and $t=2$ the optimum is $3/4$ over both classes. Each blind binary output map succeeds on exactly half of the configurations (Proposition~\ref{mbg:prop:matching}), so every team of three such maps has expected score $3/2$ and, by Markov's inequality, probability at most $(3/2)/2=3/4$ of at least two successes. The three-box team of Section~\ref{mbg:sec:checks} (player~$p$ targets box~$p$ and guesses $1-x_{p+1\bmod3}$, reading one other box) is a legal decision tree and attains~$3/4$.
 \end{enumerate}
 Both facts were in Part~\ref{mbg:part:one} when the batch-90 note was written; that note itself observes that the three-box team attains the first-moment bound. Since batch~92 the family of the preceding note is settled as well, and it contains~(b).
+\end{remark}
+
+\begin{remark}[A second overstatement of the open range]
+\label{mbg:insp:rem:q9-divisor-cases}
+The batch-92 update initially said that the remaining open parameters included
+``every $q\ge3$ with $\floor{m/q}<t\le m$''; its README made the same assertion.
+That sentence was false, and is retained here with a counterexample and the
+more general calculation.
+For finite $n\ge1$, each blind output map succeeds with probability $1/q$:
+for each target $i$ and predicted colour $a$, the fibre where the output is
+$(i,a)$ is invariant under changing coordinate $i$, and exactly one of its
+$q$ equally likely coordinate values is correct. Summing over the finitely
+many fibres gives this probability. Thus every $m$-player blind team has
+$\E S=m/q$, and $\Prb(S\ge t)\le m/(qt)$ for $t>0$.
+If $t\mid m$ and $\floor{m/q}<t\le m$, put $k=m/t<q$. Choose one fixed box
+and $k$ distinct colours; assign exactly $t$ players to each colour, all
+predicting that colour at that same box without inspecting anything. This
+legal team has score $t$ on those $k$ colours and zero otherwise, so
+$\Prb(S\ge t)=k/q=m/(qt)$. Hence the legal and blind optima coincide at
+that value for every $n\ge1$. In particular $(m,q,n,t)=(1,3,1,1)$ has
+optimum $1/3$, and more generally $t=m$ has optimum $1/q$.
+This argument concerns Q9's free-target box game. It does not change the
+own-hat, fixed-target minimum-depth classification of Section~\ref{mbg:insp:sec:fin}.
 \end{remark}
 
 \section{Conclusion}
@@ -7207,7 +7230,7 @@ includes the needed Fourier identities.
 \begin{theorem}[Geometry at the minimum depth]
 \label{mbg:insp:thm:fin-fourier}
 Suppose first-moment saturation holds and every player has decision-tree
-depth at most $s-1$.  For $f=\ind C$, every nonconstant nonzero Fourier
+depth at most $s-1$.  For $f=\indic{C}$, every nonconstant nonzero Fourier
 coefficient has degree exactly $s$.  Consequently:
 \begin{enumerate}
  \item $C$ has uniform projections onto every set of at most $s-1$
