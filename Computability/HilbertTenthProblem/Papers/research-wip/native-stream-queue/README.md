@@ -423,6 +423,20 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [integer CRT matrix selector](matrix193_crt_selector.md)
+lowers the full countdown from1179 to **154=73M+81A**, with35 auxiliary
+integer witnesses and exact degree10. Fixed CRT tables, seven interval
+certificates and computed remainders replace all six interpolants; a
+**172-operation, degree6** alternative is also saved. The
+[independent review](review_matrix193_crt_selector.md)
+reconstructs all600 local rows,34,881 coefficients and both positive-history
+sources. The integer restriction is essential and explicit rational false
+transitions are saved. For fixed h, the fully paid positive representation
+costs **195h+7**, with **40h+1 positive witnesses** and degree at most10.
+The inherited Gamma1 invariant supports the same local upper bound for
+arbitrary fixed contexts. Installed normal/optimized receipts pass.
+Unbounded fixed-arity packing remains unpaid; the universal bound stays84.
+
 The [six-column matrix selector](matrix193_unimodular_selector.md) lowers
 the complete countdown polynomial to **1179=591M+588A**, saving374 gates
 from the irregular-selector parent. The synchronized count is1153;
