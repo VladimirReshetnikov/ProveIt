@@ -140,6 +140,21 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [Borel flows intake review](review_new_borel_flows_fb9f5884b.md) reads the
+complete1724-line manuscript at **fb9f5884b**, authenticates all nine members
+and eight delivered checksums, and checks the cited143-line BCH interface.
+The finite-window flow and unique time-one embedding arguments survive the
+recorded proof challenge. Infinite-rank examples show that separately
+integrable derivations need not remain integrable under sums, brackets or
+products of time-one maps. One malformed literal cross-reference is retained
+as an editorial finding; the theorem itself is correctly labeled and proved.
+Fresh metadata checks pass, while the supplied5372 tests remain unreplayed
+claims. The divisible exponent-group hypothesis differs from the preceding
+conjugacy report, so its review-side nondivisible-group obstruction is not
+transferred. No paid integer compiler, Turing-universality construction or
+operation-count improvement is supplied; PDF and external-source checks
+remain outside this intake.
+
 The [support-complexity intake review](review_new_support_complexity_fb9f5884b.md)
 authenticates the eight-member archive arriving at **7be14aa84**, unchanged
 at fb9f5884b, and reads the complete1629-line manuscript plus the pinned
@@ -5458,6 +5473,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Borel flows and finite-window criteria](review_new_borel_flows_fb9f5884b.md) | Full1724-line proof read; nine-member archive and cited BCH interface authenticated. Exact flow/time-one scope and infinite-rank nonclosure checked. | One malformed reference recorded; saved5372 checks not replayed. No effective certificate producer, paid compiler or arithmetic improvement; divisible-group scope retained. |
 | [Support complexity, certificates and effective boundaries](review_new_support_complexity_fb9f5884b.md) | Full1629-line manuscript and pinned Lean interface read; eight-member archive authenticated. Two new computability deductions distinguish infinite certificates from ordinary existential integer witnesses. | No paid finite compiler; supplied finite tests not rerun, external foundations accepted at stated scope, PDF and historical Library question unverified. |
 | [Aggregate positive input budget](complete83_aggregate_input_budget.md) | Exact CRT/slack criterion and capped factorization Hreq=A³/gcd(A³,C0); a polynomial-size combined carry factor suffices with half-radix slack. Independent proof/source and fresh checks pass. | Actual carry-factor occurrence and enlarged-z binary population remain unproved; local arithmetic example is not a positive source tuple. |
 | [Borel conjugacy and effective-presentation boundary](review_new_borel_62846e17a.md) | Full manuscript/inert helper read; six-member archive and manifest authenticated. New review-side computable exponent group has co-c.e.-complete finite Euler-conjugacy slice. | No existential Diophantine certificate for that orientation; no paid compiler. Saved jets not replayed; PDF and external sources unverified. |

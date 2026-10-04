@@ -154,6 +154,22 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [Borel flows intake review](review_new_borel_flows_fb9f5884b.md) reads the
+> complete1724-line manuscript at **fb9f5884b**, authenticates all nine members
+> and eight delivered checksums, and checks the cited143-line BCH interface.
+> The finite-window flow and unique time-one embedding arguments survive the
+> recorded proof challenge. Infinite-rank examples show that separately
+> integrable derivations need not remain integrable under sums, brackets or
+> products of time-one maps. One malformed literal cross-reference is retained
+> as an editorial finding; the theorem itself is correctly labeled and proved.
+> Fresh metadata checks pass, while the supplied5372 tests remain unreplayed
+> claims. The divisible exponent-group hypothesis differs from the preceding
+> conjugacy report, so its review-side nondivisible-group obstruction is not
+> transferred. No paid integer compiler, Turing-universality construction or
+> operation-count improvement is supplied; PDF and external-source checks
+> remain outside this intake.
+>
+>
 > The [support-complexity intake review](review_new_support_complexity_fb9f5884b.md)
 > authenticates the eight-member archive arriving at **7be14aa84**, unchanged
 > at fb9f5884b, and reads the complete1629-line manuscript plus the pinned
