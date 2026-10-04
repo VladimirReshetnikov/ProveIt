@@ -497,6 +497,16 @@ Source 03 (Section 23.5, "Place in the collection") adds these relations:
   `t = X^(-1)` (`pma:ser:thm:commonip`, `pma:ser:prop:iopen`). A sentence in
   its Section 42 ("The same failed instance elsewhere") names source 03's
   `isg:sc:thm:nochar`, `isg:sc:cor:omnific` and `isg:sc:cor:fragment`.
+  Batch 87 added its Parts VI–IX (reciprocal notes, 3 October 2026). Its
+  source 13 presents `G_{ε₂}` of this report's factorial family, with `ε₂`
+  the profinite integer with 2-adic coordinate 1 and odd coordinates 0, as
+  `Z_(2) × Z[1/2]` and says so (`pma:nsp:prop:nonsplit-core`); its source 14
+  builds `G_{ζ*}` again, coordinates exchanged, without citing this report
+  (`pma:atr:lem:D`). Placed below `R` or `Q^N` such groups give nonsplit
+  Polish Presburger models (`pma:nsp:thm:countable-core-transfer`), which by
+  `isg:cf:cor:unit` admit no unit-preserving additive map to `Oz`, as both
+  sources prove again (`pma:atr:prop:surreal`). A dated note after the
+  paragraph following `isg:cf:cor:unit` records this.
 - **Formal projects.** The `Oz` ingredients of source 03 are formalized in
   `Algebra/SurrealNumbers/Surreal/Foundations/OmnificResidues.lean`
   (`omnific_int_dvd_iff`, `omnific_prime_pow_dvd_iff`,

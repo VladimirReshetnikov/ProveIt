@@ -235,6 +235,18 @@ Sources 10, 12, 13 and 15 state that they do not answer Question 1.
 record of Glazer's paper still had one version (v1) and no journal
 reference.
 
+**Two questions numbered 1 (batch 87, 3 October 2026).** Glazer's earlier
+paper *A choiceless box game paradox* (arXiv:2211.10474) ends its Section 5
+with a different question: does ZF prove that three players facing
+continuum many boxes of bits can guarantee that at most one of them guesses
+wrong? Batch 87's manuscript 02 studies it in
+`SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games`,
+answering it only for blind cylinder-measurable outputs. There it is
+Research question Q1, **not** the Question 1 of this report (is Glazer's
+Topological Tennenbaum Theorem 2 provable in ATR₀?); the two reports share
+no theorem and no notation. A dated note in Section 1.1, after Glazer's two
+questions, says so.
+
 ## What the report claims
 
 **Part I** (05, with 04). The cone `M_R = (R_{>0} × Z) ∪ ({0} × N)` of the

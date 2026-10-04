@@ -95,3 +95,15 @@ No checksum manifest is included: re-running the checks or rebuilding the
 PDF changes file hashes.
 No copies of third-party papers, font files, or LaTeX build intermediates are
 included in the archive.
+
+## Related report
+
+[Batch 87, 3 October 2026.]
+[`measurable-box-games`](../measurable-box-games/) studies prediction (box)
+games on continuum many coordinates and proves sharp bounds for strategies
+measurable for the cylinder σ-algebra; its Research question Q2 asks which
+versions of its minimax theorem (Theorem 3.1) remain true when that
+measurability is replaced by Borel measurability, the Baire property or
+universal measurability. It names this report as the nearest in spirit: a
+ZFC construction, from a free ultrafilter, of an object without the Baire
+property. No theorem is shared.

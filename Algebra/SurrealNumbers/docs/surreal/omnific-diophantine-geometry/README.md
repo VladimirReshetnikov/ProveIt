@@ -1534,6 +1534,13 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   `pma:ser:thm:floorregularity`), and its Part II restricts Theorem 2.7 to
   the Puiseux field (`pma:bor:lem:floor`). An unnumbered note after
   Proposition 15.43 records this. Nothing there is formalized.
+  Batch 87 added its Part VI: no uncountable set-sized unital subring of
+  `Oz`, such as `Z + tR[t]`, has a Polish additive-group topology with a
+  Baire-property cone (`pma:br:cor:omnific`), three topologies on
+  `Z + tR[t]` show the hypotheses are needed (`pma:br:sec:sharpness`), and
+  its coefficient completion `Z + tR[[t]]` has no discrete ring order
+  (`pma:br:prop:completion-no-order`). A second unnumbered note after
+  Proposition 15.43 records this.
 
 ## Build and reproduce
 
@@ -1563,7 +1570,9 @@ unchanged. The batch-73 note after Lemma 7.1 leaves the committed text's 229
 pages and all 553 label and 65 citation numbers unchanged. The batch-86 notes
 (after Remark 10.11 and after Proposition 15.43) take the build from 229 to
 230 pages and change no label number (all 553 compared in the `.aux` files
-against a build of the committed text). The text before
+against a build of the committed text). The second note after Proposition
+15.43 (batch 87) leaves 230 pages and every label number unchanged
+(compared the same way). The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
 its 942 `.aux` label entries has the same number in the present build. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16
