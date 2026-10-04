@@ -1,0 +1,12 @@
+.PHONY: all pdf check clean
+
+all: pdf check
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error glazer_atr0_topological_arithmetic.tex
+
+check:
+	python3 verify_finite_lemmas.py
+
+clean:
+	latexmk -c glazer_atr0_topological_arithmetic.tex

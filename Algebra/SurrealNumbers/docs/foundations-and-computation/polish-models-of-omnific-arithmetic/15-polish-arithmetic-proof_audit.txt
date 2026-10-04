@@ -1,0 +1,148 @@
+PROOF AND SCOPE AUDIT
+Polish Arithmetic: Multiplication Obstructions and Local Compactness
+4 October 2026 UTC
+
+This audit records the claims established in the manuscript and the reasoning
+checked in separate AI-assisted mathematical review passes. It is not an
+external referee report or a proof-assistant certificate.
+
+A. EXISTING BACKGROUND
+
+The real and Baire coefficient constructions, the basic affirmative answer to
+Glazer's Question 2, and the earlier special multiplication obstructions were
+already part of the project material. They are not presented as new results.
+Presburger quantifier elimination, automatic continuity, the LCA principal
+structure theorem, measurable-order obstructions to compact subgroups, and
+finite-support ordered-group techniques are classical dependencies.
+
+B. BOREL MULTIPLIER OBSTRUCTION (THEOREM 3.2)
+
+Checked points:
+- Positive absolute values of a nonzero null sequence still tend to zero;
+  continuity of the arithmetic order is never assumed.
+- Borel additive maps become continuous by the full category argument.
+- The complete metric is not assumed translation invariant. Each term is
+  chosen small at every one of finitely many existing partial sums.
+- Binary subseries converge uniformly and define a continuous Cantor map.
+- Finite changes yield an exact signed finite-sum identity after limits.
+- A finite-block counting argument gives a bound of 2^(-k) for small values.
+- Complementation yields probability one half for a Borel event.
+- Invariance under finite changes is pointwise, making the event a tail event.
+- The zero-one contradiction uses no arithmetic induction in the modeled
+  structure. It does use ordinary classical mathematical reasoning.
+
+The probabilistic mechanism is explicitly attributed to Glazer. The article's
+packaging in terms of positive endomorphisms is an extension of that mechanism,
+not a claim to have independently invented it.
+
+C. ALGEBRAIC CARDINALITY OBSTRUCTION (THEOREM 3.6)
+
+For an uncountable Archimedean subgroup H of a discretely ordered ring, every
+positive element of H exceeds every standard integer. Otherwise Archimedean
+cofinality would force H into the countable standard integer subgroup.
+For fixed h > 0 in H, multiplication gives the additive injection
+
+  a -> a h + H : H -> (R,+)/H.
+
+The proof checks that a h dominates all of H whenever a > 0 belongs to H.
+Negation handles a < 0. Convexity of H is not assumed.
+
+D. LOCAL COMPACTNESS CLASSIFICATION (THEOREMS 4.5 AND 5.1)
+
+Checked points:
+- A compact cone-neighborhood K reflects to the ambient compact neighborhood
+  K union (-K). Thus local compactness is deduced, not initially assumed.
+- Haar measure contradicts any nontrivial compact ordered subgroup.
+- The classical principal structure theorem supplies an open R^n component.
+- The rational-hull splitting works even when the whole group is not divisible.
+- Countably many open cosets give the countable discrete complementary group.
+- Local compactness of the cone forces a closed total cone in R^n, and the
+  connected-sphere argument forces n <= 1.
+- Borel orders on the real component are usual or reversed; each coset section
+  is a line, an open ray, a closed ray, or empty.
+- A least positive element supplies infinitely many distinct closed-ray and
+  open-ray components through its standard integer translates.
+
+The open real component need not be convex in the arithmetic order.
+Local compactness of a coefficient group alone is insufficient: Euclidean R^2
+with lexicographic order has a non-locally-compact cone at zero.
+The theorem covers inherited group topologies, not all Polish monoid topologies.
+
+E. COMPACT-OPEN ZERO OBSTRUCTION (THEOREM 5.4)
+
+A finite-intersection argument shows that a nonempty compact subsemigroup of
+a Hausdorff cancellative commutative positive monoid must be {0}. Uniformity
+over a compact open neighborhood then forces zero to be isolated. The conclusion
+does not rule out every zero-dimensional locally compact Presburger model.
+
+F. ELEMENTARY ARITHMETIC BOUNDARY (THEOREMS 6.1 AND 6.2)
+
+Let H be the open real identity component and let C consist of elements smaller
+in absolute value than every positive element of H. Checked points:
+- C is a convex subgroup; addition uses comparison with h/2.
+- C intersects H trivially, so it injects into the countable quotient G/H.
+- Its discrete topology follows from openness of H.
+- Closed-ray endpoints are exactly the nonnegative elements of C.
+- Division with standard remainder stays in C by convexity.
+- Purity preserves congruence predicates; Presburger quantifier elimination
+  makes C's positive cone an elementary initial submodel.
+- Conversely, R lex (N-N), with the second factor discrete, realizes every
+  countable Presburger model N as the entire manifold boundary.
+
+The manifold boundary is distinct from the boundary inside an ambient group.
+
+G. EXACT CONTINUUM FAMILY (THEOREM 7.1)
+
+The alternating finite-condensation classes of the countable order L_S recover
+every bit of S. Finite-support rational groups recover L_S through their ordered
+Archimedean classes. The appended real and integer classes are intrinsically
+the final two classes, so there is no absorption ambiguity. Monoid isomorphisms
+extend uniquely to ordered difference-group isomorphisms.
+
+The upper bound counts continuous binary operations through their restriction
+to a countable dense subset. The displayed continuum family has standard N as
+its boundary in every case.
+
+H. ABSOLUTE MULTIPLICATION BARRIER (THEOREM 8.1)
+
+The open real subgroup has countable index and is Archimedean. Any semiring
+multiplication extends algebraically to the difference group. Its positive
+products are strictly positive because a,b >= 1 implies a b >= 1.
+The cardinality theorem gives the contradiction. No measurability or
+commutativity of the multiplication is used.
+
+I. OMNIFIC EMBEDDING (THEOREM 8.3)
+
+An order-reversing embedding q:L -> Q intersect (1,2) yields finite normal forms
+
+  sum_l v(l) omega^(q(l)) + r omega + k.
+
+Largest-exponent comparison agrees with the ordered-group sign. Normal-form
+uniqueness gives injectivity. The construction is set-sized and additive.
+The coefficient topology is transported explicitly; it is not the native
+discrete order topology. The usual product omega squared leaves the image,
+and the absolute obstruction excludes every alternative semiring product.
+
+J. SHARPNESS AND LIMITS
+
+The degree-stratum topology on the positive cone of Z + t R[t] is locally
+compact and Polish, with continuous addition and multiplication and full
+Presburger additive theory. It fails open induction with multiplication via
+the formula x^2 < t. Its topology cannot extend to a Polish additive-group
+topology. This construction shows why the inherited-group hypothesis cannot
+be removed from the stated multiplication and carrier classifications.
+
+The usual integers with the 2-adic topology show why complete metrizability
+matters. The ordinary real field shows why a least positive element matters.
+
+K. IMPLEMENTATION AND NOVELTY STATUS
+
+The existing ProveIt declarations were inspected at the recorded commit. The
+integer decision procedure uses Int-valued semantics; generalized Z-group
+semantics remains a proposed formalization step. No Lean or Rocq build of the
+new results was performed.
+
+The exact combined results are proved in this unrefereed manuscript. Targeted
+source comparison did not establish publication priority. No claim of a
+historically certified breakthrough is made, and Glazer's ATR_0 question is
+not answered here.

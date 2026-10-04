@@ -1,0 +1,12 @@
+PDFLATEX ?= pdflatex
+PYTHON ?= python3
+
+.PHONY: pdf verify
+
+pdf:
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error article.tex
+
+verify:
+	$(PYTHON) verify.py

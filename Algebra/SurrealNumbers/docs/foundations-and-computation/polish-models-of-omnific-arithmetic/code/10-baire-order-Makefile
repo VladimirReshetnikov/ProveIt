@@ -1,0 +1,10 @@
+.PHONY: pdf test clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build article.tex
+
+test:
+	python3 verify_examples.py --output verification_results.json
+
+clean:
+	latexmk -C -outdir=build article.tex
