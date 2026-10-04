@@ -23,7 +23,7 @@ pullback preserves every parent positive zero, while an exact two-branch
 Pell/order criterion characterizes the remaining input fiber. Infinitely
 many full same-input zeros defeat the literal positive inverse without
 showing a falsely accepted input. Native rank and the original bound
-remain present, so the two refuted83 constructions below do not settle
+remain present, so the other refuted candidates below do not settle
 this candidate. The [independent review](review_complete83_independent_gamma_scout.md)
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
@@ -106,6 +106,19 @@ records exact provenance and read scope for Reports39/41/43/45/46, separates
 historical candidate names, and scopes the new height/minimality results.
 This is a rejected candidate; the established bound remains84 and the
 independent-gamma83 ordinary-input language remains unresolved.
+
+The [auxiliary-product-only83 collapse](complete83_auxiliary_product_collapse.md)
+refutes another literal one-multiplication deletion: **83=46M+37A**,
+18 positive witnesses and exact degree185. The square f*f stays paid;
+supplying only T*f independently still admits every positive input on
+every inherited valid compiler slice. A square-preserving Pell/CRT
+extension proves the exact auxiliary projection and completes the full
+outer counterfamily. The [source review](review_complete83_auxiliary_product_collapse_source.md)
+independently expands101078 factor monomials and the full uniform leader;
+the [mathematical review](review_complete83_auxiliary_product_collapse_math.md)
+checks all positive witnesses. Fresh author/reviewer normal and optimized
+replays pass. This isolates the lost f-divisibility, leaves independent-
+gamma83 unresolved, and does not lower the established84 bound.
 
 The [outer-slack 83 candidate](complete83_outer_slack_collapse.md) saves
 one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
