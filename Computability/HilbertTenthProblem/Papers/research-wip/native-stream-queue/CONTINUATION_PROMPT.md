@@ -131,13 +131,18 @@
 > The [Parts XI–XII publication review](review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
 >
 >
-> The CA publication4cabe3899, definable-operations archive de37a66d1,
-> catalogue cd514f61b and matrix publication b93c4a0b5 now have the bounded
-> reviews linked below; all four catalogue corrections have been applied.
-> The sandpile publication fb2287290 still needs its separate publication
-> review. The newer complex-transseries archives have guide-only intake,
-> and the two batch93 ancillary placements have byte-preservation reviews;
-> those scopes do not certify their unintegrated or unread manuscript bodies.
+> The CA publication 4cabe3899, definable-operations archive de37a66d1,
+> catalogue cd514f61b, matrix publication b93c4a0b5 and sandpile publication
+> fb2287290 now have the bounded reviews linked below. All four catalogue
+> corrections have been applied. The next publication review is 721cf8196,
+> the new adaptive-box/expected-query Parts III–IV, followed by signal-machine
+> publication 61c9e3eb2 (Parts IX–XIII). Only their commit summaries and diff
+> statistics have been inspected in this round. The newer complex-
+> transseries archives have guide-only intake, and the two batch 93 ancillary
+> placements have byte-preservation reviews. Those scopes do not certify
+> unintegrated or unread manuscript bodies. For arithmetic research, the
+> new carry-free Hadamard layout leaves synchronized variable-width loaders
+> as its explicit paid-graph bottleneck; the universal frontier is unchanged.
 >
 >
 > The [finite-word skew Hadamard scout](finite_word_hadamard_skew.md), with [independent exact-source review](review_finite_word_hadamard_skew.md), proves a carry-free binary packing: exponents n*i+(n−1)*(n−1−j) are all distinct, and the band starting at (n−1)^2 contains exactly x AND y. For each externally fixed n≥2, all four loaders and bit guards are paid: 14n producer operations, 2n+4 positive witnesses, and a complete degree-four SOS costing 18n+14 with fixed numerals. A second emitted family pays to construct all derived numerals from 1 and 2. The ten arrays receive full independent polynomial/loader/guard/ledger checks (994 rows, 7,080 expanded terms), 2,856 positive zeros and 22,848 perturbation rejections. Root's fresh author/reviewer normal and optimized checks pass before commitment. The conditional eleven-operation extraction still assumes synchronized powers, variable spacing and reversal; concrete omitted-condition aliases and the necessary positive output domain are retained. Direct per-bit multiplication is a simpler fixed-width baseline. This is a candidate algebraic ingredient, not a fixed-arity unbounded compiler or a change to the universal frontier.
@@ -155,13 +160,16 @@
 > The [Borel/Hilbert placement review](review_polish_borel_placement_5e4d8eed8.md) authenticates all nine added files (43,062 bytes) against seventeen regular archive members at 5e4d8eed8. Both retired archives equal their arrival bytes, and the host README, article and PDF are unchanged. Parts XVI–XVII are prospective publication destinations at that revision. The earlier five-guide intake remains the mathematical read boundary; ancillary placement adds no proof certification or paid integer compiler.
 >
 >
-> The [definability/commuting-action placement review](review_definability_placement_47a77daba.md) authenticates all twelve added files (201,068 bytes) against25 regular archive members at47a77daba. All four retired ZIPs equal their arrival bytes. Both hosts retain unchanged guides, articles and PDFs, so the proposed new parts are not yet integrated at that revision. Earlier guide-only and selected-operation-proof reviews retain their exact boundaries; this placement adds no arithmetic compiler claim.
+> The [definability/commuting-action placement review](review_definability_placement_47a77daba.md) authenticates all twelve added files (201,068 bytes) against 25 regular archive members at 47a77daba. All four retired ZIPs equal their arrival bytes. Both hosts retain unchanged guides, articles and PDFs, so the proposed new parts are not yet integrated at that revision. Earlier guide-only and selected-operation-proof reviews retain their exact boundaries; this placement adds no arithmetic compiler claim.
 >
 >
-> The [chronological matrix publication review](review_matrix_publication_b93c4a0b5.md) reads both complete text diffs at b93c4a0b5 and challenges the new Part VI proof relative to its declared Pell/group interfaces. It checks the normalized body, appendices and bibliography, 388-to-463 label preservation, 842 references, all44 placed files and eleven copied dependency pins. Fresh reconstruction of97 affine maps confirms the carry bounds, including the optional 2^103 threshold. Root independently authenticates68 archive members, all placements/dependencies and changed source/read-span hashes. The fixed fixture retains184,016 operations,41,309 positive witnesses and exact degree12; its arbitrary-program compiler remains unimplemented. The PDF is hashed only and the earlier full-DAG audit is inherited rather than rerun. No universal frontier changes.
+> The [chronological matrix publication review](review_matrix_publication_b93c4a0b5.md) reads both complete text diffs at b93c4a0b5 and challenges the new Part VI proof relative to its declared Pell/group interfaces. It checks the normalized body, appendices and bibliography, 388-to-463 label preservation, 842 references, all 44 placed files and eleven copied dependency pins. Fresh reconstruction of 97 affine maps confirms the carry bounds, including the optional 2^103 threshold. Root independently authenticates 68 archive members, all placements/dependencies and changed source/read-span hashes. The fixed fixture retains 184,016 operations, 41,309 positive witnesses and exact degree 12; its arbitrary-program compiler remains unimplemented. The PDF is hashed only and the earlier full-DAG audit is inherited rather than rerun. No universal frontier changes.
 >
 >
-> The [complex-transseries guide intake](review_complex_transseries_bd1de458b.md) authenticates37 members in three archives at bd1de458b and reads eleven complete guide/status/provenance files (626 lines). Root independently checks all archive/member bytes, three complete internal checksum ledgers and eleven read-span hashes. The stated selected-sheet radius, q-cusp inversion and phase-precision results retain their hypotheses and remain manuscript claims; the scientific bodies, numerical outcomes, PDFs and alleged prior-gap closures are not certified by this intake. The suggested transseries route supplies no paid fixed-arity integer compiler.
+> The [complex-transseries guide intake](review_complex_transseries_bd1de458b.md) authenticates 37 members in three archives at bd1de458b and reads eleven complete guide/status/provenance files (626 lines). Root independently checks all archive/member bytes, three complete internal checksum ledgers and eleven read-span hashes. The stated selected-sheet radius, q-cusp inversion and phase-precision results retain their hypotheses and remain manuscript claims; the scientific bodies, numerical outcomes, PDFs and alleged prior-gap closures are not certified by this intake. The suggested transseries route supplies no paid fixed-arity integer compiler.
+>
+>
+> The [sandpile Part XXI publication review](review_sandpile_publication_fb2287290.md) reads both complete publication diffs at fb2287290 and preserves all four event/domain distinctions. It authenticates 320 archive members and 185 placed files, retains all 1,672 old labels among 1,940, and checks 212 displayed mathematical blocks plus the exact duplicated-section changes. Root independently authenticates all source/placement/parent bytes and full raw-diff spans. The bounded proof challenge checks least action, chronological count-before-carry reasoning, shell faces and both capacity bounds. The scalar-code real-witness obstruction follows from infinitude and coinfinitude without a hardness assumption. The four degree-18 costs 11,469/14,778/17,275/14,571 remain inherited audited counts; old DAGs are not replayed. Physical simulations, Cairns-source corrections and the fully charged machine-to-physical compiler remain separately qualified. This is no construction below 84 operations or proof of global minimality.
 >
 >
 > The [Polish-report placement check](review_polish_placement_e24ce2ce0.md) authenticates all sixteen ancillary files at e24ce2ce0 against28 regular members of the three original archives. The retired ZIPs match their arrival bytes; the host README, article and PDF remain unchanged, with Parts I–XII still the full heading list. Parts XIII–XV are prospective at that revision. Root independently rechecks all placed/member/primary bytes. The earlier guide intake remains the mathematical read boundary, with no new proof certification or paid compiler bound.
@@ -3141,7 +3149,7 @@
 > with20 positive witnesses and nine equations.
 >
 > The current single-polynomial bound is **87=48M+39A**, with19 positive
-> witnesses and exact degree169; the88=47M+41A alternative has exact degree125.
+> witnesses and exact degree169; the88=47M+41A alternative has exact degree 125.
 > See the [asymmetric-scale proof](complete75_asymmetric_scale_tradeoffs.md).
 > It keeps Y=sq³ and lowers X=wq³ to X=wq. Main power recovery restores
 > w_old=w_new/q² as a positive integer, giving a full positive-zero bijection
@@ -3866,7 +3874,7 @@
 > auxiliary signs and the original positive quotient in a specific order;
 > do not assume intermediate computed coordinates are positive off the zero set.
 > The [positive-root partitions](complete75_positive_root_degree_tradeoffs.md)
-> give the earlier94/degree84 and92/degree122. The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
+> give the earlier94/degree84 and92/degree 122. The [coupled-unit partitions](complete75_coupled88_degree_tradeoffs.md)
 > add91/degree130 and93/degree90, superseding93/118. The new
 > [linear-modulus partitions](complete75_linear_input_degree_tradeoffs.md)
 > add90/132,92/114,94/80,95/72,96/62 and97/56. The
@@ -4162,7 +4170,7 @@ Other joint-bound switch choices give246/degree2928 with36 witnesses,
 comparison arrangement gives246/3502,247/2926,249/1773 and250/1485.
 The shifted parent without either unit merge has the smaller certificate
 cost223, with eight equations and246 polynomial operations at degree4298.
-Its unshifted six-field supplied-P choices retain252/degree1211 and253/degree995
+Its unshifted six-field supplied-P choices retain252/degree 1211 and253/degree995
 with38 witnesses; its four-field no-mask/supplied-P option gives
 259/degree802 with40 witnesses. These are operation/degree tradeoffs,
 not an optimality claim. Earlier alternatives remain reproducible.
@@ -6045,7 +6053,7 @@ puts the existing port gates before their history/AND consumers.
 
 The previous matrix-equality comparison count is
 C=3m+3h+p+222+f_flow-3min(h,3), with39 equations andm+59 witnesses.
-Its polynomial costsC+116 and has exact degree12m+112. This trades degree
+Its polynomial costsC+116 and has exact degree 12m+112. This trades degree
 against the original separate-kernel compiler. A fixed universal alphabet
 is supplied by the effective group theorem but has not been numerically
 materialized. Do not infer a numerical universal bound below75/87.
