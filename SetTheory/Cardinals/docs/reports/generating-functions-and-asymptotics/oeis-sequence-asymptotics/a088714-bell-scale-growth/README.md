@@ -3,33 +3,55 @@
 **Part I: a rigorous nth-root asymptotic, quantitative bounds, and a
 separately identified finer conjecture. Part II: golden-ratio moment laws
 for A088714 and A088713. Part III: local estimates for the finer Bell
-comparison.**
+comparison. Part IV: densities, the correction profile, and the companion
+sequence. Part V: the Bell normalization of A088714 and A088713.**
 
-A research report in three Parts on the series A(x) = sum a_n x^n defined
+A research report in five Parts on the series A(x) = sum a_n x^n defined
 formally by
 
     A(x) = 1 + x A(x)^2 A(x A(x)),    a_0 = 1,
 
-and, in Part II, its companion C(x) = 1/(1 - x A(x)) (OEIS A088713).
+and, from Part II on, its companion C(x) = 1/(1 - x A(x)) (OEIS A088713).
 Parts I and II are by OpenAI ChatGPT; Part III's author line ("Research
 continuation prepared for Vladimir Reshetnikov") names no person or
-model. Parts II and III were prepared for Vladimir Reshetnikov.
+model. Parts II and III were prepared for Vladimir Reshetnikov. Part IV
+was "Prepared with ChatGPT", building on this repository; Part V's author
+line is "ChatGPT".
 
 | Part | Source | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | I | report of September 20, 2026 (unnumbered, from the Cardinals repository) | — | — | merged into ProveIt with the Cardinals history in `dc54c3cb3` | Sections 1–10 |
 | II | batch 73, manuscript 35 (cluster O2): *Golden-ratio moment laws for OEIS A088714 and A088713* (October 1, 2026; 1,524-line source, 23-page PDF) | `golden_moment_laws.zip`, arrival commit `f8c3a392a` | `1f1981f68` (it cites Part I as blob `ccb50ef33`, the blob of `article.tex` at the placement commit) | `6e193dd4f` | Sections 11–24, Appendix A |
 | III | batch 76, manuscript 01: *The missing local estimate in the finer Bell comparison. An endpoint reduction, a rigorous one-sided correction, and numerical stress tests for OEIS A088714* (October 2, 2026; 372-line source, 10-page PDF) | `A088714_Bell_Local_Estimates.zip`, arrival commit `6914ccca6` | `82afb9559` (a descendant of Part II's write `0a5908ec0`; `article.tex` is the same there as at the placement commit) | `2a04b60f2` | Sections 25–34 (Section 25 is editorial) |
+| IV | batch 86, manuscript 01, its part on A088714/A088713 (Sections 3–6, with the matching passages of Sections 1, 8 and 9): *Three advances on OEIS conjectures and asymptotics. Bridgeless toroidal maps, golden-ratio moment laws, and unitary-divisor partitions* (4 October 2026 UTC; 2,894-line source, 40-page PDF) | `oeis_advances.zip`, arrival commit `ae9baa422` | `eaf08931c` (`article.tex` and `README.md` are the same there as at the placement commit) | `0f084afa9` | Sections 35–41 (Section 35 is editorial) |
+| V | batch 86, manuscript 02, its part on A088714/A088713 (Sections 8–12, with the matching passages of Sections 1, 13–15 and Appendix B): *Signs, Factorial Divergence, and Bell Normalization. New results for OEIS A321941, A088714, and A088713* (4 October 2026; 2,537-line source, 36-page PDF) | `oeis_research_bundle.zip`, arrival commit `ae9baa422` | `b7e4f25b6` (an ancestor of `eaf08931c`; it cites this report as blob `3a4ade894`, the blob of `article.tex` at the placement commit) | `0f084afa9` | Sections 42–49 (Section 42 is editorial) |
+
+The other parts of the two batch-86 manuscripts are printed elsewhere in
+the collection: manuscript 01's Section 2 (A343093) is the report
+`enumerative-combinatorics/a343093-bridgeless-toroidal-maps`, its Section
+7 (A301981/A301982) is Part II of
+`generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301981-unitary-divisor-partitions`,
+and manuscript 02's Sections 2–7 and Appendix A (A321941) are Part II of
+`congruences-and-valuations/a321941-asymptotic-coefficient-integrality`
+(paths relative to `SetTheory/Cardinals/docs/reports/`).
 
 Status: AI-assisted, unrefereed, **not formalized**. No Lean or Rocq
 development checks any statement of this report, and its place in the
 research-report collection confers no formal status.
 
+**Part V proves Part I's Conjecture 8.1** (Theorem 46.1). That proof comes
+from a single AI-generated manuscript and **has not yet been
+independently reviewed**: at placement its argument was followed step by
+step without finding a gap and its finite consequences were checked
+against the data of Parts I–III, which is not a review. Cite the
+conjecture as "proved in Part V (batch 86, manuscript 02), not yet
+independently reviewed", not as settled.
+
 ## Files
 
 ```
-article.tex                                   the report (all three Parts), standalone LaTeX, internal bibliography
-article.pdf                                   the compiled report, 51 pages
+article.tex                                   the report (all five Parts), standalone LaTeX, internal bibliography
+article.pdf                                   the compiled report, 101 pages
 README.md                                     this guide
 Makefile                                      Part I's build/verify/diagnostics targets
 requirements.txt                              Part I's optional dependency (mpmath, for code/analyze.py)
@@ -68,6 +90,21 @@ data/03-local-estimates-precision_check.json  Part III: recorded comparison of t
 data/03-local-estimates-run_80.txt            Part III: recorded stdout of diagnose.py at 80 digits
 data/03-local-estimates-run_120.txt           Part III: recorded stdout of diagnose.py at 120 digits
 data/03-local-estimates-build.txt             Part III: the delivered pdflatex log of the manuscript (TeX Live 2023, 10 pages)
+code/04-densities-profile-verify_dynamics.py  Part IV: exact Stieltjes seed and outward-rounded 100-digit interval certificate for P != 0 (standard library)
+code/04-densities-profile-verify_renewal.py   Part IV: independent formal coefficients, composition identity, renewal diagnostics (standard library)
+data/04-densities-profile-dynamics_certificate.json  Part IV: recorded certificate (moments a_0..a_31, seed, orbit and profile enclosures)
+data/04-densities-profile-renewal_checks.json Part IV: recorded renewal checks and diagnostics, n = 20..260
+code/05-bell-norm-verify_complement.py        Part V: exact endpoint and companion decompositions through n = 32 (prints JSON)
+code/05-bell-norm-normalization_diagnostics.py  Part V: exact a_n, c_n through 600 and Decimal normalization table
+code/05-bell-norm-run_checks.py               manuscript 02's driver for both of its parts (see Rerun; it overwrites its two records)
+data/05-bell-norm-endpoint_verification.json  Part V: recorded output of verify_complement.py
+data/05-bell-norm-coefficients_600.txt        Part V: "n a_n" for n = 0..600, exact integers (294,919 bytes)
+data/05-bell-norm-normalization_80.json       Part V: normalization diagnostics at 80 digits (Table 8)
+data/05-bell-norm-normalization_120.json      Part V: the same at 120 digits
+data/05-bell-norm-normalization_precision_check.json  Part V: recorded comparison of the two runs
+data/05-bell-norm-verification_run.txt        manuscript 02: recorded log of run_checks.py --symbolic (both parts)
+data/05-bell-norm-verification_summary.json   manuscript 02: recorded summary of that run
+data/05-bell-norm-SOURCE_AUDIT.json           manuscript 02's source audit (pins, blobs, inherited inputs, review scope; both parts)
 ```
 
 **`data/coefficients.txt` is not distributed** (1.3 MB). Part I's
@@ -93,6 +130,21 @@ manuscript, delivery README and 10-page PDF; its copy of the root
 `code/compute_gmp.cpp` and `data/diagnostics.csv` (delivered as
 `data/prior_diagnostics.csv`), which equal the shipped Part I files byte
 for byte.
+
+Not shipped from the batch-86 archives (both in arrival commit
+`ae9baa422`): manuscript 01's PDF (its `oeis_advances.tex` and
+`README.txt` were staged, unchanged, as the base of the A343093 report,
+and are rewritten there); manuscript 02's `oeis_research.tex`,
+`README.txt`, PDF and checksum manifest `MANIFEST.sha256` (24 of 24
+entries verified at placement). Manuscript 02's A321941 programs and data
+are shipped with the A321941 report under the prefix `02-sign-`
+(`code/02-sign-{finite_certificate,verify_sign,independent_check,large_order,asymptotic_check}.py`,
+`data/02-sign-{sign_verification.json,independent_check.json,large_order_coefficients.json,asymptotic_check.txt,requirements-symbolic.txt}`);
+the shared driver, its two records and the source audit are shipped
+once, here.
+
+    git show ae9baa422:docs/incoming/oeis_research_bundle.zip > orb.zip
+    git show ae9baa422:docs/incoming/oeis_advances.zip > adv.zip
 
 ## Labels and numbering
 
@@ -121,6 +173,34 @@ Section k + 25 here (its Lemma 3.1 is Lemma 28.1, Theorem 4.1 is Theorem
 29.1, Theorem 5.1 is Theorem 30.1, Proposition 6.1 is Proposition 31.1);
 its two tables are Tables 3 and 4.
 
+Part IV added **128** labels, all with the prefix `gdy:`: all 125 labels
+of manuscript 01's Sections 3–6 and of the passages of its Sections 8
+and 9 that are printed, unchanged after the prefix (`gdy:gold:…`,
+`gdy:reg:…`, `gdy:dyn:…`, `gdy:ren:…`, `gdy:verify:section`,
+`gdy:future:…`), and three new ones (`gdy:part`, `gdy:sec:source`,
+`gdy:tab:notation`). Part V added **56** labels, all with the prefix
+`bnc:`: 53 of the 61 labels of manuscript 02's Sections 8–15, unchanged
+after the prefix, and three new ones (`bnc:part`, `bnc:sec:source`,
+`bnc:tab:notation`). Not printed: `eq:inheritedgrowth`,
+`eq:inheritedmoment`, `eq:inheritedratio` (Part III's
+`ble:eq:growth`–`ble:eq:ratio`), `eq:bellrecurrence` (`ble:eq:rec`),
+`lem:localcoeff` and `eq:localcoeff` (`ble:lem:coef`, `ble:eq:b`),
+`eq:Bellsaddle` (`eq:bellsaddle`), and `sec:verification` (its Sections
+13 and 14 are merged into Section 48). That makes **376** labels. No
+earlier label was renamed or removed, and no earlier number moved (the
+`.aux` numbers of all 192 earlier labels, and of Part I's table label in
+`data/diagnostics_table.tex`, equal those of a build of the committed
+text). Manuscript 01's Sections 3–6 are Sections 36–39 here and the
+printed parts of its Sections 8 and 9 are Sections 40 and 41 (its
+Proposition 3.1 is Proposition 36.1, Theorem 4.1 is Theorem 37.1,
+Theorem 5.1 is Theorem 38.1, Theorem 6.1 is Theorem 39.1). Manuscript
+02's Sections 8–12 are Sections 43–47 and the printed parts of its
+Sections 13–15 are Sections 48 and 49 (its Theorem 9.1 is Theorem 44.1,
+Theorem 10.1 is Theorem 45.1, Theorem 11.1 is Theorem 46.1, Theorem 12.1
+is Theorem 47.1, Research questions 15.1–15.5 and 15.9 are 49.1–49.6);
+its Tables 1 and 2 are Tables 7 and 8, and the notation tables of Parts
+IV and V are Tables 5 and 6.
+
 ## Part I: what is proved
 
     log(a_n) = n log(n) - n log(log(n)) - n + O(n log(log(n))/log(n)),
@@ -132,12 +212,14 @@ assertion `a_n ~ (n/(e log(n)))^n`. The ordinary generating function has
 radius zero; the exponential generating function is entire.
 
 The finer formula a_n ~ C Bell_n exp(W(n)^2 + 3 W(n)) is labelled a
-CONJECTURE (Conjecture 8.1). Neither its constant nor the existence of its
-limit is proved; Proposition 8.2 identifies a ratio estimate sufficient
-to prove it. **It is still open after Part III; Part III proves
-liminf (r_n - n/W(n)) >= 3/2** (Theorem 29.1; the conjecture needs the
+CONJECTURE (Conjecture 8.1). Part I proves neither its constant nor the
+existence of its limit; Proposition 8.2 identifies a ratio estimate
+sufficient to prove it. It was still open after Part III, which proves
+liminf (r_n - n/W(n)) >= 3/2 (Theorem 29.1; the conjecture needs the
 correction 2 + W/(2(1+W)^2) -> 2) and reduces the conjecture to one
-scalar estimate (Section 30).
+scalar estimate (Section 30). **Part V proves it** (Theorem 46.1, below),
+in a proof not yet independently reviewed, and without proving Part I's
+ratio estimate (8.7), which remains open.
 
 ## Part II: what is proved
 
@@ -224,6 +306,80 @@ reaches 0.04785 at n = 1600); any interval certificate (the 80/120-digit
 comparison is a stability check); historical priority; any formal
 verification.
 
+## Part IV: what is proved
+
+Part IV answers Part II's Research questions 23.1, 23.3 and 23.6.
+
+- **Densities and support (Theorem 37.1).** mu and nu are absolutely
+  continuous, with strictly positive real-analytic densities p, q on
+  (0, inf), and supp mu = supp nu = [0, inf): no atoms, no singular
+  continuous part, no gaps. As x -> 0,
+  p(x) ~ sin(pi alpha) x^(-beta) / pi and q(x) ~ sin(pi beta) x^(-alpha) / pi;
+  every fixed derivative has the corresponding equivalent (Corollary
+  37.8). The proof imports Huang–Wang's global inversion theorem
+  (Advances in Math. 402 (2022), Propositions 3.1–3.2) and excludes every
+  density zero by a descent through the inverse identity H(K(z)) = z.
+- **The correction profile (Theorem 38.1, Corollary 38.3).** There is a
+  nonzero real-analytic P with P(t+1) = -P(t) such that
+  log(s^alpha F(s)) = sum_{n<=N} Q_n(log_phi log s)/(log s)^(2n-1)
+  + O((log s)^(-2N-1)) for every N, with Q_1 = P and the Q_n explicit;
+  the full series converges for large log s, with an O(s^(-beta))
+  remainder (O(s^(-1)) for G). An exact rational seed and an
+  outward-rounded 100-digit interval computation prove P != 0, with
+  0.00095032738531560 < P(log_phi Psi(x_*)) < 0.00095032738531562; hence
+  (log s)(s^alpha F(s) - 1) has limsup M and liminf -M, M > 0.00095.
+- **The companion sequence (Theorem 39.1).** For every log-convex
+  sequence with a_0 = 1 and a_n/a_(n-1) ~ n/log n, and every fixed K,
+  c_n = sum_{j<=K} gamma_j a_(n-1-j) + O_K(a_(n-K-2)), gamma_j = [z^j]C(z)^2;
+  for A088713, c_n/a_(n-1) = 1 + 2 log n/n + o(log n/n), and
+  c_(n+1)/c_n - a_n/a_(n-1) -> 0 (Corollary 39.3).
+
+**Not claimed by Part IV:** a multiplicative far-tail equivalent for the
+densities or a complete large-n moment asymptotic; global monotonicity of
+p or q (the derivative equivalents hold for each fixed order, not as
+complete monotonicity on one interval); the maximum of P, its zeros or
+its least period (the certificate encloses one value of P, at one true
+orbit point, not every point of the interval around it); any statement
+off the real Stieltjes axis or a second-order law for the distribution
+functions or densities; the fine Bell normalization or the finer
+expansion of the ratios; historical priority (the search was bounded);
+any formal verification. Finite diagnostics enter no proof.
+
+## Part V: what is proved
+
+- **Complementary endpoint (Theorem 44.1).** With T_n(L) the sum over
+  m > L in the exact recurrence (Part III's a_n J_n) and
+  D(z) = z^(-1)(1 - 1/(zA(z))') = sum delta_h z^h (delta_0..5 = 2, 5, 24,
+  148, 1052, 8226): for fixed P and C log 2 > P + 5,
+  T_n(ceil(C W(n))) = sum_{h<=P} delta_h a_(n-1-h) + O_P(a_(n-P-2)).
+  At Part III's window, J_n = 2/r_n + 5/(r_n r_(n-1)) + O(W^3/n^3): this
+  proves Part III's missing estimate (30.7) with q = 2 and turns its
+  one-sided bound (Section 32) into an asymptotic equality.
+- **Bounded factors (Theorem 45.1).** c N_n <= a_n <= C N_n.
+- **Bounded additive ratio error (Lemma 46.2).** R_n = n/W(n) + O(1),
+  unconditionally (Part III has only the liminf >= 3/2).
+- **Finer Bell normalization (Theorem 46.1).**
+  a_n = C_* N_n (1 + O(W(n)^5/n)), 0 < C_* < inf, so
+  a_n ~ C_* Bell_n exp(W(n)^2 + 3 W(n)): Conjecture 8.1. The proof sums a
+  linearized Poisson equation (Lemma 46.3) with a column-stability lemma
+  (Lemma 46.4); it uses neither Part III's curvature estimate (31.1) nor
+  its tilted-variance estimate (31.4). **Not yet independently reviewed.**
+- **Companion (Theorem 47.1).** c_n = sum_{h<=P} gamma_h a_(n-1-h) +
+  O_P(a_(n-P-2)) (the expansion of Theorem 39.1, proved independently: a
+  second route), c_n ~ a_(n-1), and, new,
+  c_n = C_* (W(n)/n) N_n (1 + O(W(n)^5/n)) with the same constant.
+
+**Not claimed by Part V:** the value of C_*, or any certified interval
+for it (the Table 8 decimals and their 80/120-digit agreement are a
+stability check, not interval arithmetic); the pointwise ratio expansion
+(8.7), R_n = n/W + 2 + W/(2(1+W)^2) + O(W^p/n) (only R_n = n/W + O(1)
+is proved; the approach of R_n - n/W(n) to 2 in the table is only
+consistent with it); that the rate O(W^5/n) is optimal; growing
+truncation orders P; external review, worldwide priority (its source
+audit records `external_peer_review`, `proof_assistant_formalized` and
+`worldwide_priority_exhaustively_verified` as false), or any formal
+verification. Finite checks prove no infinite statement.
+
 ## Notation across the Parts
 
 The Parts were written independently and reuse letters (c, C, F, G, B, T,
@@ -245,6 +401,27 @@ L = log n. Three symbols of the manuscript were renamed: its normalizer
 N_n is Part I's script N_n (the same function), its Bell number B_n is
 Part I's sans-serif B_n in the text (the shipped table fragments still
 print B_n), and the excess degree e in the proof of Lemma 28.1 is eta.
+
+Parts IV and V have their own notation tables (Tables 5 and 6), listing
+every letter they share with the other Parts. Part IV writes
+r_n = a_n/a_(n-1) like Part III; Part V writes Part I's R_n. Renamed from
+manuscript 01 (no normalization changed): its d_j = [z^j]C(z)^2 is
+**gamma_j** (as in Part V), its w_n = a_(n-1) is **omega_n** (w is W(n)
+elsewhere), the exponent gamma of its Abelian lemma is **theta**, its
+r(y) = log(1+e^(-y)) is **varrho(y)**, and its c_n in one proof is
+**chi_n**. Renamed from manuscript 02: its delta(w) = 2 + w/(2(1+w)^2) is
+**vartheta(w)** (it also writes delta_h for the endpoint coefficients, and
+Parts I and III write delta for R_n - n/w), its linearized Poisson defect
+script-E_n is **Xi_n** and its e_n is **bar-xi_n** (Part III's script-E_n
+(30.8) is a different scalar defect), its abbreviation S_n = A_N(z_n) is
+written out (S_n is also its model row sum), and its operator Q_n(u) is
+**script-Q_n(u)** (Q_n = R_n/R_(N+2) is also used). The tempting false
+readings: Part IV's P is an oscillation profile, Part V's P a truncation
+order; Part V's T_n(L) is Part III's a_n J_n, not a Touchard polynomial;
+Part V's s_n is the model ratio N_n/N_(n-1), not Part III's
+n/w + c(w). In manuscript 01's Section 7 (printed in the A301981 report)
+W(n) means n^(sigma*/3)(log n)^(m-1), not the Lambert function; in this
+report W(n) is always the solution of w e^w = n.
 
 ## Changes made when Part II was added
 
@@ -291,6 +468,52 @@ print B_n), and the excess degree e in the proof of Lemma 28.1 is eta.
   the hypothesis (31.1); an unused "Unproved estimate" theorem environment is
   dropped; file names are the shipped ones.
 
+## Changes made when Parts IV and V were added (batch 86, 4 October 2026)
+
+- Parts IV and V are appended after Part III's Section 34 and before
+  Appendix A, which still belongs to Part II (its one-line note now says
+  it follows Parts III–V). No existing number moved (see Labels).
+- Dated notes "[Batch 86, 4 October 2026.]": in Part I at the dated
+  remark of Section 7.2, after Conjecture 8.1, and after the batch-76 note
+  following Proposition 8.2 (the conjecture is proved in Part V, not yet
+  independently reviewed; (8.7) remains open); in Part II after Research
+  questions 23.1, 23.3 and 23.6 (answered in Part IV), after 23.2
+  (proved in Part V, not yet independently reviewed, and still called
+  open by manuscript 01) and after its Conclusion; in Part III after the
+  discussion of Theorem 30.1 ((30.7) proved with q = 2), at the end of
+  Section 32 (the uniform upper bound) and at the end of Section 34
+  (items (i) and (iv) carried out). Part I's and Part III's statements
+  that the conjecture is open "in this article" or "after Part III" are
+  true of those Parts and are unchanged.
+- The title, author and date lines and the abstract mention Parts IV and
+  V (Part III's abstract sentence now reads "Part III leaves the finer
+  conjecture open"); Table 2's caption points to Tables 5 and 6; the
+  preamble adds `\Rea`, `\Ima` and `\Poisson`, declared as in the two
+  manuscripts (Part IV uses the first two for its Re and Im; no existing
+  macro changed); the bibliography adds Huang–Wang and records the
+  batch-86 access dates of the OEIS, DLMF, Moser–Wyman and Python
+  `decimal` entries.
+- In Part IV: references to "the pinned report" point to Parts I–III,
+  with Part II's Research question numbers; Proposition 36.1, a package of
+  results of Parts I–II, names the theorems that prove them; file names
+  are the shipped ones; the passages of the manuscript's Sections 1, 8
+  and 9 about its other parts are printed with those parts. Five
+  symbols renamed (above). Two dated notes inside Part IV (Sections 38.6
+  and 41.1) record that manuscript 01 calls the normalization open and
+  Part V proves it.
+- In Part V: the displays of inherited results (Part III's (26.1)–(26.3)),
+  the restated Lemma 28.1 with its proof, and repeated displays of (1.1),
+  (28.1), (6.6) and the normalizer are replaced by references; labels
+  quoted as text are cross-references; "the source report" points to the
+  cited Parts. Its Theorem 12.1 is printed with a paragraph marking its
+  proof of the fixed-order expansion as a second route to Theorem 39.1.
+  Its Sections 13 and 14 are merged into Section 48, keeping the A088714
+  rows of its Table 1 and its Table 2; its Section 14.3 (how to compile
+  the delivered source) is replaced by this README; its A321941 questions
+  15.6–15.8 are printed with that part, and 15.9 in both. Four symbols
+  renamed (above). Dated notes in Section 48 relate its table to Parts
+  III and IV.
+
 ## Relation to other reports
 
 - `Analysis/Transseries/docs/series-and-transseries/Moment_Determinacy_Nonlinear_Transseries/`
@@ -304,10 +527,23 @@ print B_n), and the excess degree e in the proof of Lemma 28.1 is eta.
   `Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/`;
   Part III cites it and uses W(n) only as that saddle (no Lambert-W
   inversion).
+- Parts IV and V come from two manuscripts that also contain other work,
+  printed in three sibling reports: `enumerative-combinatorics/a343093-bridgeless-toroidal-maps`
+  (manuscript 01, Section 2), Part II of
+  `generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301981-unitary-divisor-partitions`
+  (manuscript 01, Section 7), and Part II of
+  `congruences-and-valuations/a321941-asymptotic-coefficient-integrality`
+  (manuscript 02, Sections 2–7). The last shares manuscript 02's driver,
+  run records and source audit, which are shipped here.
+- Part IV identifies mu as the rate-one free compound Poisson law with
+  jump distribution nu (Section 37.1); its global inversion input is
+  Huang–Wang's theorem on free Lévy processes, imported, not re-proved.
+- Part V's normalizer and Bell asymptotic are Part I's (8.4) and (6.6);
+  its Lambert W is the same Bell saddle as in Part III.
 - No other repository file mentions A088714 or A088713 apart from the
-  collection catalogue.
+  collection catalogue and the sibling reports above.
 - Placement in this collection confers no formal status: no Lean or Rocq
-  declaration states or proves any result of the three Parts.
+  declaration states or proves any result of the five Parts.
 
 ## Build
 
@@ -316,7 +552,7 @@ From this directory, with a TeX installation providing pdfLaTeX:
     latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 (or `make`). The table fragments in `data/` are input directly; no script
-needs to run first. The committed PDF was built this way with MiKTeX: 51
+needs to run first. The committed PDF was built this way with MiKTeX: 101
 pages, no errors, warnings, undefined references, multiply defined labels,
 duplicate destinations, or overfull/underfull boxes. Do not use
 `code/02-golden-moments-build.sh` (see Disclosures), and ignore Part III's
@@ -428,6 +664,68 @@ Windows the script writes CRLF text, and its CSV gets CR CR LF line ends.
 No shipped script writes `data/03-local-estimates-precision_check.json`;
 it is a recorded comparison of the two runs.
 
+**Part IV. Do not run its two programs in this directory.**
+`code/04-densities-profile-verify_dynamics.py` always writes
+`../data/dynamics_certificate.json` relative to itself (it has no output
+option), and `code/04-densities-profile-verify_renewal.py` writes
+`../data/renewal_checks.json` unless `--output` is given; in place they
+would add unprefixed files to `data/`. Run them on a copy with the
+delivered layout (Python 3.10 or later, standard library only; without
+`-O`, since assertions implement the checks):
+
+    mkdir -p /tmp/gdy/code /tmp/gdy/data
+    cp code/04-densities-profile-verify_dynamics.py /tmp/gdy/code/verify_dynamics.py
+    cp code/04-densities-profile-verify_renewal.py  /tmp/gdy/code/verify_renewal.py
+    cd /tmp/gdy
+    python3 code/verify_dynamics.py
+    python3 code/verify_renewal.py
+
+Rerun on 2026-10-04 (UTC) this way (Python 3.14.4, Windows, under 3 s):
+both outputs equal the shipped `04-densities-profile-` JSON files after
+removal of carriage returns (on Windows the scripts write CRLF). The
+delivered run used Python 3.12.14.
+
+**Part V. Do not run its programs in this directory.** The driver
+`code/05-bell-norm-run_checks.py` copies every `code/*.py` beside it to a
+temporary directory, runs the A321941 programs and the A088714 programs
+under their delivery names, compares their outputs with
+`data/<delivery name>`, and finally **overwrites
+`data/verification_run.txt` and `data/verification_summary.json`** (its
+two records, shipped here as `data/05-bell-norm-verification_run.txt`
+and `…_summary.json`). It needs files from two reports. Reconstruct the
+delivered layout on a copy (from this directory; `G` is the A321941
+report):
+
+    G=../../../congruences-and-valuations/a321941-asymptotic-coefficient-integrality
+    mkdir -p /tmp/bnc/code /tmp/bnc/data
+    for f in verify_complement normalization_diagnostics run_checks; do
+      cp code/05-bell-norm-$f.py /tmp/bnc/code/$f.py; done
+    for f in finite_certificate verify_sign independent_check large_order asymptotic_check; do
+      cp $G/code/02-sign-$f.py /tmp/bnc/code/$f.py; done
+    for f in endpoint_verification.json coefficients_600.txt normalization_80.json normalization_120.json; do
+      cp data/05-bell-norm-$f /tmp/bnc/data/$f; done
+    for f in sign_verification.json independent_check.json large_order_coefficients.json asymptotic_check.txt; do
+      cp $G/data/02-sign-$f /tmp/bnc/data/$f; done
+    cd /tmp/bnc
+    python3 code/run_checks.py              # standard library only
+    # optional SymPy cross-check (pinned in $G/data/02-sign-requirements-symbolic.txt):
+    #   python3 -m pip install sympy==1.14.0 && python3 code/run_checks.py --symbolic
+
+Rerun on 2026-10-04 (UTC) this way: without `--symbolic` (Python 3.14.4,
+Windows) every check passed in 3.5 s; with `--symbolic` (Python 3.13.5,
+SymPy 1.14.0, through `uv run --no-project --with sympy==1.14.0`) every
+check passed in 13 s. The rewritten records differ from the shipped ones
+only in the Python version, the per-check seconds and the temporary and
+working paths. At placement the coefficient table was also regenerated
+from scratch (`normalization_diagnostics.py` with a nonexistent
+`--coefficients` path, which makes it compute and write the table): 211 s
+on this machine, against "about 35 seconds" in the delivered README,
+and byte-identical after removal of carriage returns. The individual
+programs can also be run on such a copy, as the delivered README
+describes: `verify_complement.py` prints JSON, and
+`normalization_diagnostics.py` takes `--max-index`, `--precision`,
+`--coefficients` and `--output`.
+
 ## Disclosures
 
 - `code/02-golden-moments-build.sh` was delivered at the package root; it
@@ -475,3 +773,47 @@ it is a recorded comparison of the two runs.
   writes Part I's sans-serif B_n. Its diagnostics column
   `log_smooth_normalization` is log(a_n / script N_n), the manuscript's
   D_n^N.
+- Parts IV and V's shipped files are byte-identical to the delivery.
+  Their rename maps are `code/<name>` → `code/04-densities-profile-<name>`
+  and `data/<name>` → `data/04-densities-profile-<name>` for manuscript 01
+  (`verify_dynamics.py`, `verify_renewal.py`, `dynamics_certificate.json`,
+  `renewal_checks.json`), and `code/<name>` → `code/05-bell-norm-<name>`,
+  `data/<name>` → `data/05-bell-norm-<name>` for manuscript 02, whose
+  root-level `SOURCE_AUDIT.json` is `data/05-bell-norm-SOURCE_AUDIT.json`.
+  Inside them the delivery names remain: the scripts read and write the
+  names listed under Rerun, `run_checks.py` runs the A321941 programs by
+  their delivery names (shipped in the A321941 report), and
+  `verify_complement.py` names `oeis_research.tex`, which is not
+  shipped.
+- The JSON keys follow the manuscripts' notation, not the renamed one:
+  `d_coefficients` in `04-densities-profile-renewal_checks.json` are
+  Part IV's gamma_j; in `05-bell-norm-endpoint_verification.json`
+  `endpoint_coefficients_d_…` are Part V's delta_h and
+  `companion_endpoint_coefficients_e_…` its gamma_h; the normalization
+  files' `r_n_minus_n_over_W_n` is R_n - n/W(n).
+- `data/05-bell-norm-verification_run.txt` is the delivered log of the
+  author's run. It records the author machine's temporary and working
+  paths (`/tmp/oeis_verification_…`, `/workspace/scratch/…`); they are
+  harmless (no credentials) and are kept byte-identical. The run and
+  summary cover both parts of manuscript 02, including its A321941
+  checks.
+- No shipped script writes `data/05-bell-norm-normalization_precision_check.json`;
+  it is a recorded comparison of the 80- and 120-digit runs.
+- `data/05-bell-norm-SOURCE_AUDIT.json` describes manuscript 02 at its
+  pin `b7e4f25b6`: it lists both of the manuscript's source reports and
+  says that the deliverable changes no repository commit; that described
+  the delivery.
+- Manuscript 01's map program needs SymPy and mpmath; its two Part IV
+  programs need only the standard library. Manuscript 01 ships no
+  requirements file.
+- Third-party material: the scripts embed short prefixes of OEIS A088714
+  and A088713 for comparison (OEIS content is licensed CC BY-SA 4.0; the
+  entries are cited in the bibliography). No third-party code, figures or
+  text are reproduced; Huang–Wang, Moser–Wyman and the DLMF are cited,
+  not copied.
+- Manuscript 01, from which Part IV is taken, calls the finer Bell
+  normalization open in its text and delivery README. It pins `eaf08931c`,
+  six minutes after manuscript 02's pin `b7e4f25b6`; neither manuscript
+  was in the repository at either pin and neither cites the other, so
+  manuscript 01 did not know of manuscript 02's proof. Dated notes say so
+  where its text calls the normalization open.
