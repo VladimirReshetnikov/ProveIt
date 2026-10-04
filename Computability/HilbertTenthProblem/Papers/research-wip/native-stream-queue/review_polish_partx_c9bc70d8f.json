@@ -1,0 +1,811 @@
+{
+  "old_commit": "9fe62865dc30d71256183466b744b98ebf7e64d6",
+  "new_commit": "c9bc70d8f0aa4ec095dad2f13f5c43b0ce7fd82d",
+  "files": {
+    "Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/README.md": {
+      "old": {
+        "blob": "3c4153b2f7e29741b71a83be79eed232366367df",
+        "sha256": "bd563be861542e62008126aea900aa1da26850c26ddf1173f40859031e387797",
+        "bytes": 61406,
+        "lines": 875
+      },
+      "new": {
+        "blob": "bc5b8ac81ac69b2564b537663ad34da995d19b9a",
+        "sha256": "cda813d4a74a42865715142cfede455421dba33497170c5b5fd7af3d8254ce8c",
+        "bytes": 71563,
+        "lines": 1010
+      },
+      "hunks": [
+        "@@ -1,8 +1,8 @@",
+        "@@ -10,7 +10,9 @@ were placed in `3d2177df4` (Parts I and II); 06, 07, 08 and 09 arrived in",
+        "@@ -26,34 +28,42 @@ sources 10, 12, 13, 14 and 15, by their file prefixes.",
+        "@@ -65,6 +75,8 @@ README.md                                     this guide",
+        "@@ -85,6 +97,8 @@ code/",
+        "@@ -98,38 +112,50 @@ data/",
+        "@@ -194,6 +220,12 @@ is Corollary 78.4; its Theorems 3.4, 6.1, 6.3, 7.1 and 10.2 are 79.7, 79.11,",
+        "@@ -229,7 +261,8 @@ bound only. Dated notes at the report's earlier \"Question 1 stays open\"",
+        "@@ -471,11 +504,40 @@ The construction `R ×→ K` with a countable nonsplit core is printed once,",
+        "@@ -493,14 +555,16 @@ topologies only; 13's revision bounds are not running-time bounds and its",
+        "@@ -512,7 +576,14 @@ existence part for countable cores; 14.3, 14.5, 43.2 and 43.4 are settled by",
+        "@@ -559,6 +630,13 @@ All labels exist at HEAD.",
+        "@@ -609,10 +687,25 @@ All labels exist at HEAD.",
+        "@@ -631,7 +724,10 @@ All labels exist at HEAD.",
+        "@@ -673,6 +769,9 @@ All labels exist at HEAD.",
+        "@@ -683,7 +782,12 @@ All labels exist at HEAD.",
+        "@@ -715,7 +819,12 @@ monus macros are the report's. Parts VI–IX: 10's `Fin(A)` (roman; its macro",
+        "@@ -772,6 +881,20 @@ normalization changed.",
+        "@@ -786,21 +909,21 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex",
+        "@@ -811,6 +934,7 @@ cp $D/code/10-baire-order-verify_examples.py          $S/10/verify_examples.py",
+        "@@ -821,6 +945,7 @@ python 10/verify_examples.py --output 10/verification_results.json",
+        "@@ -830,8 +955,10 @@ Tested with Python 3.14.4 on Windows: 05 reports `\"status\": \"PASS\"` and",
+        "@@ -841,7 +968,9 @@ re-extract its archive from the arrival commit (for example",
+        "@@ -866,6 +995,12 @@ as marked second proofs; printed both versions where 10's statement differs"
+      ],
+      "coverage": {
+        "human_read": "full new README",
+        "new_lines": [
+          [
+            1,
+            1010
+          ]
+        ],
+        "old_readme": "not reread wholesale",
+        "diff_sha256": "182a0c48c334d6663a4ecd2fddb9b827b052fb4bfe895953aea20be5c4e16123"
+      }
+    },
+    "Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/article.tex": {
+      "old": {
+        "blob": "13e011ff7a290ac655f948d32ea258c19b2cca81",
+        "sha256": "f311e9063087ab93cd95915f455e242c5e55c790c1de321826178553b089bc05",
+        "bytes": 1140449,
+        "lines": 23809
+      },
+      "new": {
+        "blob": "06ea10e76026505b7736a2035cde3fd7e5b6b3eb",
+        "sha256": "747b3394ef03fdb882fcea8b7378c7a47eedc59bc35453840e78ea0cb689e2da",
+        "bytes": 1249616,
+        "lines": 26021
+      },
+      "hunks": [
+        "@@ -13,7 +13,7 @@",
+        "@@ -187,6 +187,8 @@",
+        "@@ -201,10 +203,10 @@",
+        "@@ -221,6 +223,8 @@ Manuscripts 07 (the base text of Part~III), 06 (Part~III, marked \\src{06}),",
+        "@@ -277,7 +281,7 @@ ordered ring with both operations continuous, $0$ is isolated, which is",
+        "@@ -285,20 +289,23 @@ $\\Gamma\\cong\\Z$; the Puiseux field over a countable field admits none, its",
+        "@@ -311,7 +318,7 @@ formalized.",
+        "@@ -345,6 +352,12 @@ exact continuity and optimal computation from streams. \\Cref{pma:part:atr}",
+        "@@ -469,7 +482,7 @@ journal reference (October 3, 2026). The answer is an elementary",
+        "@@ -619,6 +632,37 @@ sources~13, 14 and~15; it is printed once, in \\cref{pma:part:nsp}, and flagged",
+        "@@ -628,7 +672,8 @@ unmarked text is source~07's and text from source~06 is marked \\src{06}; in",
+        "@@ -672,14 +717,18 @@ Parts~I, III and~IV so that notes can cite them:",
+        "@@ -750,6 +799,18 @@ Components (15) & $H=G^0$ and its infinitesimal subgroup $C$ & source~08's $C$ a",
+        "@@ -845,9 +906,21 @@ uses. The notes of Parts~VII and~VIII cite \\replabel{isg:cf:prop:family},",
+        "@@ -961,13 +1034,28 @@ We give full mathematical proofs, an exact comparison with the inspected",
+        "@@ -3300,6 +3388,17 @@ is the shift $S$ of \\cref{pma:pr:ex:shifts} (source~04), with pivots",
+        "@@ -3613,6 +3712,16 @@ continuity; sources~13 and~15 settle \\cref{pma:pr:q:connected} and",
+        "@@ -3674,6 +3783,10 @@ and source~15's \\cref{pma:lcc:thm:general-inherited-cones} gives the locally",
+        "@@ -3726,7 +3839,7 @@ shows that $0$ is isolated in every zero-dimensional locally compact",
+        "@@ -3734,6 +3847,21 @@ ranks, and continuous order-preserving endomorphisms be classified under",
+        "@@ -3760,7 +3888,7 @@ is attained (\\cref{pma:nsp:thm:arity}); and no uniform algorithm computes the",
+        "@@ -3768,7 +3896,27 @@ model has infinitely many proper clopen elementary self-copies with",
+        "@@ -3777,6 +3925,11 @@ the resulting positive cone? Such a classification should keep ring",
+        "@@ -3804,6 +3957,12 @@ for which the retraction is automatically continuous. Its",
+        "@@ -3832,7 +3991,7 @@ equalities and residue conditions alone does not suffice, so the proposed",
+        "@@ -3840,6 +3999,24 @@ Which image topologies replace the finite-versus-infinite omitted-pivot",
+        "@@ -6431,6 +6608,12 @@ Theorem~\\ref{pma:cp:thm:baire} places each corresponding model on Baire space.",
+        "@@ -21016,6 +21199,1651 @@ zero-dimensional presentations should be pursued together with a",
+        "@@ -21652,6 +23480,113 @@ cites four repository files by unversioned addresses; the notes in its",
+        "@@ -22026,6 +23961,42 @@ computation is offered as a certificate, and none is shipped.",
+        "@@ -22064,6 +24035,18 @@ record what the batch-87 sources prove; those answers are unrefereed and",
+        "@@ -23170,6 +25153,170 @@ delivered as \\fn{source_manifest.json} and is not shipped (it contains a third",
+        "@@ -23805,5 +25952,70 @@ Vladimir Reshetnikov and ProveIt contributors."
+      ],
+      "coverage": {
+        "human_read": "entire 2512-line diff, including all new Part X text and appendices; old unchanged sections not reread wholesale",
+        "diff_sha256": "21ac5d2b094d533f5a5f46ff6d2ecba2d12821ed19456051f16abecbbba03cbd",
+        "diff_lines": 2512,
+        "part_x_lines": [
+          21202,
+          22846
+        ],
+        "source16_appendix_lines": [
+          25157,
+          25319
+        ]
+      }
+    },
+    "Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/article.pdf": {
+      "old": {
+        "blob": "8ea5824b4ad5428c2d85adf31fcc5d1359dddd00",
+        "sha256": "72e765bb416be97084eeaf187ac2514d6b25bcfa06e217903aa8ff6cbaf13893",
+        "bytes": 2744871
+      },
+      "new": {
+        "blob": "c4d4041e675248d45aaa6ee4cb7f0a546da28ef5",
+        "sha256": "c790301cdbe5b97d28d908e272aa3db0cdfe34accc397c42e4e5b71cff7a0972",
+        "bytes": 2995774
+      },
+      "coverage": {
+        "kind": "hash only; not rendered or rebuilt"
+      }
+    }
+  },
+  "labels": {
+    "old_count": 708,
+    "new_count": 784,
+    "added": [
+      "pma:emb:app:ledger",
+      "pma:emb:app:qe",
+      "pma:emb:cor:allhom",
+      "pma:emb:cor:hierarchy",
+      "pma:emb:cor:orbitcount",
+      "pma:emb:cor:types",
+      "pma:emb:eq:cone",
+      "pma:emb:eq:congruence",
+      "pma:emb:eq:denseself",
+      "pma:emb:eq:division",
+      "pma:emb:eq:family",
+      "pma:emb:eq:graphspace",
+      "pma:emb:eq:leftinverse",
+      "pma:emb:eq:map",
+      "pma:emb:eq:matrix",
+      "pma:emb:eq:omnific",
+      "pma:emb:eq:pivots",
+      "pma:emb:eq:pivotvaluation",
+      "pma:emb:eq:shear",
+      "pma:emb:eq:sign",
+      "pma:emb:eq:subnormal",
+      "pma:emb:eq:wildphi",
+      "pma:emb:ex:shifts",
+      "pma:emb:ex:stages",
+      "pma:emb:lem:ancestry",
+      "pma:emb:lem:annihilator",
+      "pma:emb:lem:countindex",
+      "pma:emb:lem:finite",
+      "pma:emb:prop:baire",
+      "pma:emb:prop:moveclopen",
+      "pma:emb:q:beyondordinals",
+      "pma:emb:q:birthday",
+      "pma:emb:q:complexity",
+      "pma:emb:q:computable",
+      "pma:emb:q:connected",
+      "pma:emb:q:denseimages",
+      "pma:emb:q:effective",
+      "pma:emb:q:endomorphisms",
+      "pma:emb:q:formal",
+      "pma:emb:q:othergroups",
+      "pma:emb:q:presentations",
+      "pma:emb:q:weakchoice",
+      "pma:emb:rem:choice",
+      "pma:emb:sec:core",
+      "pma:emb:sec:dictionary",
+      "pma:emb:sec:examples",
+      "pma:emb:sec:future",
+      "pma:emb:sec:lattice",
+      "pma:emb:sec:matrix",
+      "pma:emb:sec:models",
+      "pma:emb:sec:position",
+      "pma:emb:sec:second",
+      "pma:emb:sec:submodels",
+      "pma:emb:sec:surreal",
+      "pma:emb:sec:threshold",
+      "pma:emb:thm:approximation",
+      "pma:emb:thm:autocont",
+      "pma:emb:thm:belowtwo",
+      "pma:emb:thm:borel",
+      "pma:emb:thm:cardinality",
+      "pma:emb:thm:closedimage",
+      "pma:emb:thm:core",
+      "pma:emb:thm:densethreshold",
+      "pma:emb:thm:dictionary",
+      "pma:emb:thm:lattice",
+      "pma:emb:thm:main",
+      "pma:emb:thm:matrix",
+      "pma:emb:thm:normalform",
+      "pma:emb:thm:orbits",
+      "pma:emb:thm:shear",
+      "pma:emb:thm:subspaces",
+      "pma:part:emb",
+      "pma:pr:q:coefficientgroups",
+      "pma:pr:q:embeddingcategories",
+      "pma:pr:q:lattices",
+      "pma:pr:q:surrealcutoffs"
+    ],
+    "removed": [],
+    "duplicates": []
+  },
+  "source16_label_transfer": {
+    "archive_commit": "7c0f2d9f92c3d51ec85703bed1022924a4b7359b",
+    "archive_path": "docs/incoming/Glazer_ProveIt_Embeddings_and_Thresholds.zip",
+    "archive_blob": "ff6250559eabf81e636e109549d509b7a5ccae5b",
+    "archive_sha256": "1aa1de81477be1aa90b57eb67d4bb3cb391c035914be79b1937fd5f0252824ec",
+    "member": "glazer_presburger_embeddings/glazer_presburger_embeddings.tex",
+    "member_sha256": "d84f2ed25648e1481924d1f7b3f1ec9baa1be730ecdebed1e709fd7d08d62507",
+    "old_labels": [
+      "sec:position",
+      "eq:family",
+      "thm:main",
+      "sec:models",
+      "eq:division",
+      "eq:congruence",
+      "eq:sign",
+      "eq:cone",
+      "prop:baire",
+      "sec:dictionary",
+      "thm:dictionary",
+      "eq:map",
+      "cor:allhom",
+      "eq:pivotvaluation",
+      "cor:hierarchy",
+      "sec:matrix",
+      "lem:countindex",
+      "lem:finite",
+      "thm:borel",
+      "eq:pivots",
+      "thm:matrix",
+      "eq:matrix",
+      "lem:ancestry",
+      "thm:closedimage",
+      "eq:leftinverse",
+      "sec:submodels",
+      "thm:subspaces",
+      "lem:annihilator",
+      "thm:normalform",
+      "eq:subnormal",
+      "cor:types",
+      "sec:lattice",
+      "thm:orbits",
+      "thm:lattice",
+      "sec:threshold",
+      "thm:autocont",
+      "eq:wildphi",
+      "thm:shear",
+      "eq:shear",
+      "thm:cardinality",
+      "prop:moveclopen",
+      "eq:graphspace",
+      "sec:second",
+      "thm:belowtwo",
+      "thm:densethreshold",
+      "eq:denseself",
+      "sec:core",
+      "thm:core",
+      "thm:approximation",
+      "sec:examples",
+      "sec:surreal",
+      "eq:omnific",
+      "sec:future",
+      "app:qe",
+      "app:ledger"
+    ],
+    "old_label_count": 55,
+    "prefix": "pma:emb:",
+    "missing": [],
+    "coverage": "member hash and label scan only; full delivered manuscript not independently read in this review"
+  },
+  "prior_boundary": {
+    "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_batch89_topology_23adb85f9.md": {
+      "sha256": "e421519232d496a8ce4023f2fad9df28300157c8d9bdc89a2473cf78afbce1fc",
+      "blob": "d5aa0dad5d066ba8a8a90eda81ee234752b2798e",
+      "coverage": "selected prior coverage/provenance/remaining-gap paragraphs; not full reread"
+    },
+    "Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_batch89_remaining_writes_e3e58a882.md": {
+      "sha256": "0e29ad60ba51548269a4eaef9a3f5eb7a7d847f0406677aced357c4664915bf9",
+      "blob": "ebdefb8f3879ffa436bf81c2cf2c7f5e9cbfc05b",
+      "coverage": "full text read"
+    }
+  },
+  "instructions": {
+    "path": "Algebra/SurrealNumbers/AGENTS.md",
+    "sha256": "ecf44fe89f365a1b88d7d5e94e23bf3ab6a713d01a4ee8c44f72f234a4295039",
+    "coverage": "full text read"
+  },
+  "new_arrivals": {
+    "commit": "a162e4386fa8a1beaef58a565c2205ba5fb5c270",
+    "archives": [
+      {
+        "path": "docs/incoming/Named_Symmetries_and_Replacement.zip",
+        "commit": "a162e4386fa8a1beaef58a565c2205ba5fb5c270",
+        "blob": "89dbc0e3399defbe0f7e5f3d094d172ef7921c94",
+        "sha256": "7e74dc205154d4ff96514fe80ff387e228b6604555c346a92881e96accbff0f9",
+        "bytes": 335558,
+        "members": [
+          {
+            "path": "named_symmetries_replacement/article.tex",
+            "bytes": 69074,
+            "sha256": "bc2366660af968db87cbc459191b9cb0ee4224c189e982c3ae90cb601c58491b",
+            "coverage": "hash only"
+          },
+          {
+            "path": "named_symmetries_replacement/article.pdf",
+            "bytes": 309848,
+            "sha256": "5c4187bbdcf3912a8a28049c13559052f5b2e630f593f9a1715eb3da5081d6a2",
+            "coverage": "hash only"
+          },
+          {
+            "path": "named_symmetries_replacement/README.md",
+            "bytes": 3299,
+            "sha256": "784a15878156f8585b99bd40ae2431b489ea335299988aa034b18ebebf8ca659",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  71
+                ]
+              ]
+            },
+            "lines": 71
+          },
+          {
+            "path": "named_symmetries_replacement/Makefile",
+            "bytes": 227,
+            "sha256": "3e1755f5cd8c920f0c3cd29210f2d85dd558547b801394bb23a78da032096e5b",
+            "coverage": "hash only"
+          },
+          {
+            "path": "named_symmetries_replacement/source_audit.md",
+            "bytes": 5296,
+            "sha256": "efb6aa479d3836cf13a6f8f0cb24bdd55bd84f1f5c9119377900d17e43ae75a0",
+            "coverage": "hash only"
+          },
+          {
+            "path": "named_symmetries_replacement/verify_orbit_spectra.py",
+            "bytes": 9626,
+            "sha256": "0034db45714ea3e499486ca6fca891181eeb11da6b0f6c7e2fdf487147e70d57",
+            "coverage": "hash only"
+          },
+          {
+            "path": "named_symmetries_replacement/verification_results.json",
+            "bytes": 1795,
+            "sha256": "ad50321685295d63ecd26749b9b28b4b67c1f5b7a9fa3c6dc13479edc1ee27f4",
+            "coverage": "hash only"
+          },
+          {
+            "path": "named_symmetries_replacement/MANIFEST.sha256",
+            "bytes": 571,
+            "sha256": "3be6a180be8c509a9a098dc34117aa571321b008524e52f458eafa4e2cd1582b",
+            "coverage": "hash only"
+          }
+        ]
+      },
+      {
+        "path": "docs/incoming/Perfect_Transcendence_Gaps_Package.zip",
+        "commit": "a162e4386fa8a1beaef58a565c2205ba5fb5c270",
+        "blob": "8c9e246f44d8c4e1696dfdf3d29acd20daf08b3b",
+        "sha256": "c609ba5a42ffa6420a53a28e0af0742841d7066383827d1c736fbd12c8d3cfe9",
+        "bytes": 383169,
+        "members": [
+          {
+            "path": "perfect_transcendence_gap/article.tex",
+            "bytes": 80386,
+            "sha256": "455a6981514d095c736ca19b056139bb2d37cdcb5c7106fd119d2f5667904cc0",
+            "coverage": "hash only",
+            "lines": 1659
+          },
+          {
+            "path": "perfect_transcendence_gap/article.pdf",
+            "bytes": 347258,
+            "sha256": "be340dbfbb41893031d89e0da74df0ca403ffc73970e4dba4860eccc5f02d27f",
+            "coverage": "hash only"
+          },
+          {
+            "path": "perfect_transcendence_gap/README.md",
+            "bytes": 6246,
+            "sha256": "f8f94b2824f7b06c6f25784763fb4052faa079c89dc2fa47d9d4b6ae1fbe7b39",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  125
+                ]
+              ]
+            },
+            "lines": 125
+          },
+          {
+            "path": "perfect_transcendence_gap/verify.py",
+            "bytes": 12297,
+            "sha256": "bdd8453e8215865d1f230e79352418b97ed6b56a2a9c57fd310239c4e8117fe4",
+            "coverage": "hash only"
+          },
+          {
+            "path": "perfect_transcendence_gap/verification.json",
+            "bytes": 2403,
+            "sha256": "95be12ede0cada7f6ba495eed68ce82bf32d2d10a3aa762951ea05ca36ef4587",
+            "coverage": "hash only"
+          },
+          {
+            "path": "perfect_transcendence_gap/theorem_ledger.md",
+            "bytes": 5293,
+            "sha256": "ccc9d6d59002c0524da92f6a8bd17163d68e8b6d9b34683884dd03236718b286",
+            "coverage": "hash only",
+            "lines": 40
+          },
+          {
+            "path": "perfect_transcendence_gap/source_audit.md",
+            "bytes": 7496,
+            "sha256": "318020bedd66eab2ced1419a1d91be5301da3f289b7b5d02d87106a5c3327029",
+            "coverage": "hash only"
+          },
+          {
+            "path": "perfect_transcendence_gap/SHA256SUMS",
+            "bytes": 558,
+            "sha256": "5664b731f11ffa13df7533090a57f38859db792b3d41b886d798c665a02e6d03",
+            "coverage": "hash only"
+          }
+        ]
+      },
+      {
+        "path": "docs/incoming/Surreal_Subfield_Cantor_Research.zip",
+        "commit": "a162e4386fa8a1beaef58a565c2205ba5fb5c270",
+        "blob": "d194b7dc0885cfc604615a33d78ae9769c0e682c",
+        "sha256": "98e30d2665ba775c744f51d963b2809e6c18f2e198ca63f5562998e8c657344c",
+        "bytes": 544930,
+        "members": [
+          {
+            "path": "surreal_subfield_cantor/README.md",
+            "bytes": 4015,
+            "sha256": "bf33758d67dbf62e99846a374b5edfe91843adfe36544bd22568cb24762b48f6",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  86
+                ]
+              ]
+            },
+            "lines": 86
+          },
+          {
+            "path": "surreal_subfield_cantor/SHA256SUMS.txt",
+            "bytes": 665,
+            "sha256": "a3968e7bc79f73072818dbe25e8d8217c5522886f818bba8ff8ac8c7ccfe6c57",
+            "coverage": "hash only"
+          },
+          {
+            "path": "surreal_subfield_cantor/SOURCE_AND_CLAIM_AUDIT.md",
+            "bytes": 5918,
+            "sha256": "1b8ac06fe63d0b3ac8b482569e861c702f7ad93717a075f6023df4c2891fd019",
+            "coverage": "hash only"
+          },
+          {
+            "path": "surreal_subfield_cantor/article.pdf",
+            "bytes": 518033,
+            "sha256": "05be1b46cf2135eeaa8a21c40956ed3ab94c857bbf96377dd4662e23da4cedfb",
+            "coverage": "hash only"
+          },
+          {
+            "path": "surreal_subfield_cantor/article.tex",
+            "bytes": 81411,
+            "sha256": "a7505a4bb3717bccc9e64542f5b33d525c25296cdb0a54c44be70fe2599ace29",
+            "coverage": "hash only"
+          },
+          {
+            "path": "surreal_subfield_cantor/build.sh",
+            "bytes": 200,
+            "sha256": "2a1ca6912cf2db6338b12309882f4e49820b543c507b9fba697a3e4ea969ff83",
+            "coverage": "hash only"
+          },
+          {
+            "path": "surreal_subfield_cantor/code/finite_checks.py",
+            "bytes": 9477,
+            "sha256": "ce61a822900cb492c152eceec7fb29bbb762a2d8ee80e412333cc312683504d8",
+            "coverage": "hash only"
+          },
+          {
+            "path": "surreal_subfield_cantor/data/build_audit.json",
+            "bytes": 669,
+            "sha256": "9a47e45684b5b8e9bf6d7e1d4af4d7ed8835b36374ddcfc075d5ef89753b3492",
+            "coverage": "hash only"
+          },
+          {
+            "path": "surreal_subfield_cantor/data/finite_checks.json",
+            "bytes": 789,
+            "sha256": "5405157768d0244fc157a1821bc1df9eb85a03cb6d169011a53ccba66c5a7eb9",
+            "coverage": "hash only"
+          }
+        ]
+      },
+      {
+        "path": "docs/incoming/glazer_proveit_topology_research.zip",
+        "commit": "a162e4386fa8a1beaef58a565c2205ba5fb5c270",
+        "blob": "cf61232d5ca1601c4fbde9bc59042179972041d1",
+        "sha256": "09b1fa9917baa178e70164c5afe2e535a14a5f470c1373f54835459117798a69",
+        "bytes": 488874,
+        "members": [
+          {
+            "path": "glazer_proveit_topology/polish_completions_class_manifolds.tex",
+            "bytes": 88833,
+            "sha256": "bf062927941d9c274798d714a4e52e1ed7f5bc20b6e4b3be039d6f10b8415ba3",
+            "coverage": "hash only",
+            "lines": 2119
+          },
+          {
+            "path": "glazer_proveit_topology/polish_completions_class_manifolds.pdf",
+            "bytes": 460447,
+            "sha256": "ce597c611627054bb09ae832942f38786b0d6d658897042b7b8e455786d2c8ac",
+            "coverage": "hash only"
+          },
+          {
+            "path": "glazer_proveit_topology/README.txt",
+            "bytes": 2598,
+            "sha256": "2c7f9ee769954755027348b08dd13cdc885c93ba454226567e0749b7bbd90742",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  71
+                ]
+              ]
+            },
+            "lines": 71
+          },
+          {
+            "path": "glazer_proveit_topology/PROOF_AUDIT.txt",
+            "bytes": 6323,
+            "sha256": "316a5f05dd526ca66f2f538ed0407638c33c203135fe247b821c9ca2977b471f",
+            "coverage": "hash only"
+          },
+          {
+            "path": "glazer_proveit_topology/SOURCE_RECORD.txt",
+            "bytes": 6395,
+            "sha256": "a0293bf268ec2f83fac4627091ab345aa776805f224be08af9218156cb2a91b4",
+            "coverage": "hash only"
+          },
+          {
+            "path": "glazer_proveit_topology/build.sh",
+            "bytes": 391,
+            "sha256": "f1337f08e581b42f8381ee927afda8f42e19d87ea89c5c3201a49f37d9fdc61c",
+            "coverage": "hash only"
+          },
+          {
+            "path": "glazer_proveit_topology/SHA256SUMS.txt",
+            "bytes": 528,
+            "sha256": "796868bfe770cd7889a979f9ff90142e38f7be30d45b43e6c10151bc9c4d3972",
+            "coverage": "hash only"
+          }
+        ]
+      },
+      {
+        "path": "docs/incoming/hat_guessing_research.zip",
+        "commit": "a162e4386fa8a1beaef58a565c2205ba5fb5c270",
+        "blob": "ea9919e06ae8aa1bf519d5035eadba32ef877c9c",
+        "sha256": "f82db269d8c6b6138a55fc9b6effd4eccd194f115588b82ba06b92b0cedfde81",
+        "bytes": 550545,
+        "members": [
+          {
+            "path": "hat_guessing_research/Makefile",
+            "bytes": 355,
+            "sha256": "6bcfdb613155d42e0a1c932bf1fa81d73d63946be7464d04c41917323e2bef91",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/README.txt",
+            "bytes": 3673,
+            "sha256": "63303b78882c7ea94e7884885e5996d85b38e9ca387f21f9b0872d6fa6b3dc02",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  91
+                ]
+              ]
+            },
+            "lines": 91
+          },
+          {
+            "path": "hat_guessing_research/code/LICENSE.txt",
+            "bytes": 742,
+            "sha256": "3a9326193df9cfd1758f4fa680ddb7a3ef804d20027b25bec78f951f513a1609",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/code/README.txt",
+            "bytes": 3513,
+            "sha256": "1013796bb01e37fd468c5d7aa88ac0562a7899e2242080e3560c4523db579a82",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  85
+                ]
+              ]
+            },
+            "lines": 85
+          },
+          {
+            "path": "hat_guessing_research/code/make_figures.py",
+            "bytes": 2747,
+            "sha256": "63e094e9866560b606c195ef070779c4650658fa6aa4b06ecb59eea68f408f34",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/code/verify_hat_strategy.py",
+            "bytes": 21849,
+            "sha256": "43ae95558034cc4898b7176b7da307443000a9db19ebd97bdad844231a28327f",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/data/example_prefix.csv",
+            "bytes": 716,
+            "sha256": "b2eda81cd1750c3749f824002a72fbcc3eb4c1f4fafa57bfc31df1db9680f85e",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/data/examples.json",
+            "bytes": 20729,
+            "sha256": "1d96f7dbe6bfd6b6647410ce9e18c4bfb25c29dc415bf3a31c78ed5473efe9bd",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/data/verification.json",
+            "bytes": 25892,
+            "sha256": "83a075d40713ee9e52a2e2ca2460a665d9d8194d6846dd39b1e9241436a81aa5",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/figures/block_prefix.pdf",
+            "bytes": 27132,
+            "sha256": "f1cf450a647fbf0eddb2335d6ef56aed9ea284b4b181dd431895d73a74c7c603",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/figures/block_prefix.png",
+            "bytes": 86580,
+            "sha256": "90985c0f9d5a5930f0da0bf12faa52ec56ca595b9f7006c4fb3aae78405b3004",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/hat_guessing_growth.pdf",
+            "bytes": 423086,
+            "sha256": "e53d63371680037299eb0a518be714a8398f75e29dd3a0a313b365a762b1d703",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/hat_guessing_growth.tex",
+            "bytes": 60488,
+            "sha256": "facac0d1648fab8dd8c22ea8e897a4c52031a1da370fc706e0b8b6c4deb24318",
+            "coverage": "hash only"
+          },
+          {
+            "path": "hat_guessing_research/source_audit.txt",
+            "bytes": 4103,
+            "sha256": "e267033a700b80e6e734a5749c08bba3e1947a5ce86964d333f8e18046675786",
+            "coverage": "hash only"
+          }
+        ]
+      },
+      {
+        "path": "docs/incoming/local_geometric_codes_research.zip",
+        "commit": "a162e4386fa8a1beaef58a565c2205ba5fb5c270",
+        "blob": "0cdefda82a63bdda4b97cd441e12d66a258f56e0",
+        "sha256": "d81335937ec31ca59860ae1de8586f77a83062a89527f5d572dd962d4738a54e",
+        "bytes": 515343,
+        "members": [
+          {
+            "path": "local_geometric_codes/local_geometric_codes.tex",
+            "bytes": 80702,
+            "sha256": "87e059813e424d951f0dd96ad7669a7f5ca41b402e48dd18598ee6f47beffc5c",
+            "coverage": {
+              "kind": "selected human text read plus heading search",
+              "lines": [
+                [
+                  76,
+                  267
+                ],
+                [
+                  401,
+                  437
+                ],
+                [
+                  1287,
+                  1390
+                ],
+                [
+                  1573,
+                  1916
+                ],
+                [
+                  2103,
+                  2255
+                ]
+              ],
+              "not_read": "remaining proof sections; no full manuscript certification"
+            },
+            "lines": 2463
+          },
+          {
+            "path": "local_geometric_codes/local_geometric_codes.pdf",
+            "bytes": 485233,
+            "sha256": "39c416c12c87daaab1b2dbd4d484d37abf38630cd1089b53b17b680ffc4467ab",
+            "coverage": "hash only"
+          },
+          {
+            "path": "local_geometric_codes/README.txt",
+            "bytes": 4566,
+            "sha256": "4fd1bfbe656c91333e07c4613c1b0cc0261aed0555acc2a38ef2af35fcfbb957",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  105
+                ]
+              ]
+            },
+            "lines": 105
+          },
+          {
+            "path": "local_geometric_codes/SOURCE_AUDIT.txt",
+            "bytes": 6934,
+            "sha256": "cad074af58d61b202643cb7e6438ae0e4972aab4837ae3304af7f263cf2d2462",
+            "coverage": "hash only"
+          },
+          {
+            "path": "local_geometric_codes/PROOF_STATUS.txt",
+            "bytes": 6080,
+            "sha256": "f1ca41fe03d269168b7044c699d5812e57f9941fbcdc4edef8725c796f60ab89",
+            "coverage": {
+              "kind": "full human text read",
+              "lines": [
+                [
+                  1,
+                  126
+                ]
+              ]
+            },
+            "lines": 126
+          },
+          {
+            "path": "local_geometric_codes/verify_local_arithmetic.py",
+            "bytes": 9485,
+            "sha256": "3244dacf3ee021dc06f6178cf74e8644e3b4fb2b670e2ba3d115d0cd4d75cc69",
+            "coverage": "hash only"
+          },
+          {
+            "path": "local_geometric_codes/local_arithmetic_diagnostics.json",
+            "bytes": 1145,
+            "sha256": "580b30c03b1b029a8a586ec68bf039e00eb75f902f42802c0eefd102429c7d33",
+            "coverage": "hash only"
+          }
+        ]
+      }
+    ]
+  },
+  "web_primary_check": {
+    "url": "https://shelah.logic.at/files/95333/176.pdf",
+    "bibliographic_url": "https://shelah.logic.at/papers/176/",
+    "read_scope": "bibliographic page, introduction pp.1–2 and extracted Conclusion 7.17 on p.43; no forcing proof audit",
+    "finding": "Conclusion 7.17 states equiconsistency of ZFC and ZF+DC+all sets of reals have the Baire property; supports newly added remark dependency",
+    "date": "2026-10-04"
+  },
+  "execution": {
+    "supplied_scripts_executed": false,
+    "supplied_scripts_imported": false,
+    "archived_programs_executed": false,
+    "repository_mutations": false,
+    "builds_run": false,
+    "fresh_metadata_code_executed": true,
+    "fresh_code_scope": "read-only git show/rev-parse/diff, standard-library ZIP decoding, SHA256, regex label and hunk census; /tmp files only",
+    "theorem_test_or_proof_assistant_run": false
+  },
+  "conclusions": {
+    "actual_part_x_write_resolves_prior_gap": true,
+    "ancillary_placement_commit": "23adb85f9",
+    "actual_text_write_commit": "c9bc70d8f0aa4ec095dad2f13f5c43b0ce7fd82d",
+    "paid_finite_compiler_found_in_read_material": false,
+    "full_manuscript_correctness_certified": false,
+    "labels_numbering_or_pdf_layout_certified": false,
+    "actionable_mathematical_findings_in_scope": [],
+    "route_local_geometric_codes": "existing internal beta-code hypothesis, local topological obstruction, recoding/cost still unprovided",
+    "route_polish_completions": "new claimed answer under continuous partial subtraction; full proof unreviewed"
+  },
+  "schema": "scoped-publication-and-arrival-intake-v1"
+}

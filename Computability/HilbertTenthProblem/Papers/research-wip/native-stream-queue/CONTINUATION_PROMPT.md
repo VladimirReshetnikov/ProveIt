@@ -3,6 +3,26 @@
 > **Current established universal bounds:74 certificate operations /84 polynomial operations.**
 > **Current minimum polynomial:84=47M+37A,18 positive witnesses,exact degree187.**
 >
+> The [reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md)
+> gives a complete **85=47M+38A**, **18-witness** universal polynomial of
+> **uniform exact degree155**, improving the previous **85/175** choice.
+> One new subtraction replaces the auxiliary coefficient by `Delta*(f²-1)`;
+> all other83 parent definitions and the seven finalizer rows remain literal.
+> The actual full outputs satisfy
+> `Fnew-F84=P5*Ns*(Ns-Delta)*(V²-y²)`.
+> An integer-unit argument and the strong factor's modulo4 sign force
+> `Ns=Delta` at every integer zero with `Delta!=0`; at `Delta=0` both outputs
+> vanish. Thus the complete integer zero sets agree at identical supplied
+> coordinates, while universality uses the parent's unchanged positive
+> fixed-program slices. The [independent review](review_complete85_reduced_auxiliary_degree.md)
+> reconstructs all85 paid rows, proves the exact seven factor degrees
+> **22,18,32,28,7,2,46**, and checks the complete degree155 leading form with
+> uniformly nonzero coefficient `-32*Bm1^92`. The naive gate bound is165.
+> All25 supplied ports and18 witnesses remain live. General minimum-operation
+> **84/187**, the comparison count **74**, and lower-degree choices such as
+> **86/131** remain available; this is an improved operation/degree tradeoff.
+>
+>
 > The [scaled strong output](complete84_scaled_strong_output.md) lowers the
 > complete universal polynomial to **84=47M+37A operations**, with **18 positive
 > witnesses and uniform exact degree 187**. Reusing the paid main coefficient
@@ -14,9 +34,39 @@
 > all 84 gates, the complete output identity and the uniform degree argument;
 > a separate mathematical challenge and fresh normal/optimized replays pass.
 > The gate-propagated degree 197 is only an upper bound. The comparison-system
-> bound remains **74**; the lower-degree **85/175** and other reviewed choices
+> bound remains **74**; the lower-degree **85/155** and other reviewed choices
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
+>
+> The [seven-report reciprocal-note review](review_reciprocal_fc1ad4275.md)
+> covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
+> articles remain identical and all54 introduced label references resolve.
+> The notes preserve the expanded-Separation, inherited-topology,
+> set-versus-class and pure-set-versus-atom-model distinctions; the external
+> localized-choice interface remains explicitly unreviewed. Exact old/new
+> blobs, diff hashes and selected target-theorem read spans are recorded.
+> PDFs were authenticated only. No finite arithmetic compiler or operation
+> bound follows from these reciprocal notes.
+>
+>
+> The [PartX publication and six-archive intake review](review_polish_partx_c9bc70d8f.md)
+> confirms that the missing Presburger PartX is now written at **c9bc70d8f**.
+> The full new guide and entire article diff were read; all708 prior labels
+> survive among784 current labels, including all55 delivered source16 labels.
+> The rational-product, additive-language and inherited-topology hypotheses
+> remain explicit. Effective pivot computation and inverse-row cost remain
+> questions, with no finite paid Diophantine compiler in the text read.
+> Six new archives at **a162e4386** have53 authenticated members; all seven
+> delivery/code READMEs were read, with additional selected local-geometric-code
+> sections. That route assumes an existing beta code and its bounded universal
+> recurrence; conversion to ordinary exponentiation and general code construction
+> remain separate obligations. Root independently rechecked all publication
+> blobs, diff hashes, label transfers and archive member hashes. Unread proofs,
+> PDF layout and stored finite test results are not promoted to reviewed
+> evidence. The new topology archive's partial-subtraction completion criterion
+> is routed for later proof review. This resolves the older revision-specific
+> PartX gap without changing the arithmetic bounds.
+>
 >
 > The [batch89 follow-up review](review_batch89_remaining_writes_e3e58a882.md)
 > confirms that global-choice PartXV and cuts/choiceless PartsVI–VII are now
