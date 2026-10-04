@@ -1,0 +1,2256 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amsthm,mathtools}
+\usepackage{newtxtext,newtxmath}
+\usepackage{microtype,booktabs,array,longtable,enumitem}
+\usepackage{xcolor,fancyhdr,needspace}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!42!black,citecolor=blue!42!black,urlcolor=blue!42!black]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{problem}{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\e}{\mathrm e}
+\newcommand{\dd}{\,\mathrm d}
+\newcommand{\B}{\mathcal B}
+\newcommand{\cL}{\mathcal L}
+\newcommand{\cE}{\mathcal E}
+\newcommand{\PV}{\operatorname{PV}}
+\newcommand{\Res}{\operatorname*{Res}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\wt}{\widetilde}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\DeclareMathOperator{\Ei}{Ei}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{3.5pt}
+\setlength{\parindent}{15pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Exact $q$-product completion}
+\fancyhead[R]{\small Stokes-aware reversion}
+\fancyfoot[C]{\thepage}
+\hypersetup{pdftitle={Exact q-Product Completion and Stokes-Aware Transseries Reversion},pdfauthor={Research report prepared for Vladimir Reshetnikov},pdfsubject={Mellin-Borel completion, reflection kernels, nonlinear inversion, q-gamma critical points}}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\thispagestyle{empty}
+\vspace*{10mm}
+{\sffamily\small RESEARCH ARTICLE\hfill 4 OCTOBER 2026\par}
+\vspace{19mm}
+{\Huge\bfseries Exact $q$-Product Completion\par}
+\vspace{4mm}
+{\LARGE\bfseries and Stokes-Aware\par Transseries Reversion\par}
+\vspace{10mm}
+{\Large Reflection kernels, inverse exponential actions,\par
+and the critical fold of the $q$-gamma function\par}
+\vspace{15mm}
+{\large Prepared for Vladimir Reshetnikov\par}
+{\normalsize A continuation of the ProveIt transseries program\par}
+\vspace{14mm}
+\begin{tcolorbox}[colback=blue!3,colframe=blue!35!black,boxrule=.5pt,arc=1mm]
+\textbf{Main result.} A Mellin--Borel argument gives the exact exponentially small completion of a shifted infinite $q$-product, including its jump-free part. A reflection criterion characterizes precisely when the completion vanishes. Transporting this data through regular and critical inverse charts yields convergent exponential-sector expansions and a uniform, action-halving $q$-gamma fold.
+\end{tcolorbox}
+\vfill
+\noindent\textbf{Proof and novelty status.} This article contains conventional proofs and reproducible symbolic and high-precision checks, not a Lean formalization or an independent referee report. The scalar completion identity specializes to Conjecture~5 in Fantini--Rella, arXiv:2506.08265v2. General resurgent closure, Lagrange inversion, and the analytic quadratic normal form are credited as established tools. A first-publication priority claim is not made.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+Complex transseries reversion must transport more than the formal power--logarithmic expansion: it must also transport the selected exponentially small completion, the Stokes transition maps, and the inverse sheet. For
+\[
+ G_a(t)=\log(\e^{-at};\e^{-t})_\infty,\qquad 0<a<1,\quad \Re t>0,
+\]
+we prove the exact formula
+\[
+ G_a=P_a+L_0R_a+\tfrac12\log(\e^{2\pi\ii a}Q;Q)_\infty
+                    +\tfrac12\log(\e^{-2\pi\ii a}Q;Q)_\infty,
+ \qquad Q=\e^{-4\pi^2/t},
+\]
+where $P_a$ is elementary and $L_0$ is the symmetric lateral Borel sum of an explicit Bernoulli series. A Mellin contour shift and a cotangent-kernel identity prove the equality, not merely its asymptotic expansion. The corresponding lateral formulas give a direct proof of a scalar summability identity formulated as a conjecture in the recent literature.
+
+For arbitrary finite shift weights, exact reconstruction by the linear median is equivalent to antisymmetry under $a\mapsto1-a$, whereas absence of a Stokes jump is equivalent to symmetry. A finite-phase bound limits how many initial exponential actions can cancel. We then develop chart-level formal and analytic reversion, with explicit all-orders completion transport and an exact inverse Stokes cocycle. At a regular $q$-product cusp, the fundamental action becomes $24$ in the logarithmic target coordinate, with computable power--logarithmic dressing. At the minimum of $\log\Gamma_{\e^{-t}}(a)$, we locate the exponentially shifted critical point and value and prove a uniform two-scale inverse expansion. The forward action $4\pi^2/t$ becomes $2\pi^2/t$ in the critical layer. Convergent quadratic normal forms control the branch point itself, where ordinary inverse perturbation estimates are nonuniform. The results are accompanied by verification code, a source-status audit, and a research agenda.
+\end{abstract}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{Research objective, contribution, and provenance}
+\label{sec:introduction}
+
+\subsection{What is being reversed?}
+Throughout, \emph{reversion} means compositional inversion, not taking the multiplicative reciprocal of a series. There are three different inversion tasks. A formal equation may have a unique solution in a specified complete transseries algebra. A selected analytic realization may have an inverse on a sectorial chart. Finally, analytic continuation may move between inverse sheets. These tasks interact but are not equivalent.
+
+The central issue in this article is a concrete one. Suppose an exact $q$-function is the sum of a Borel-resummed carrier and an exponentially small completion. What does the completion do to the inverse, particularly when the carrier derivative is small? A Stokes jump alone does not determine the completion: a nonzero flat contribution can have no jump at all. Near a critical value, omitting that contribution can change the leading scale of the inverse.
+
+Our principal example is the shifted infinite product $G_a$. The shift variable $a$ is initially real and lies in $(0,1)$; the asymptotic variable $t$ is complex. A holomorphic parameter extension and an exact shift relation subsequently allow inversion in $a$ near the positive minimum of the $q$-gamma function.
+
+\subsection{Precisely stated contributions}
+The technical center is \cref{thm:completion}, proved by an explicit Mellin transform rather than inferred from residues. It includes a full description of the jump-free completion. \Cref{thm:reflection} turns that description into a necessary-and-sufficient reflection criterion for arbitrary finite weights. \Cref{prop:delay} bounds the first surviving action using only the number of distinct phases.
+
+The inversion framework in \cref{sec:inverse} is deliberately chart-level. Its formal fixed-point lemma and Lagrange--B\"urmann formula are established mechanisms, included with proofs to make their hypotheses and domains visible. The application in \cref{sec:cusp} supplies explicit one- and two-exponential inverse coefficients and identifies the logarithmic target action. The critical-point results in \cref{sec:fold} supply the $q$-specific data that a generic fold theorem does not provide: the exact completion, the displaced discriminant, and a uniform inverse expansion in the layer where regular inversion ceases to be valid.
+
+\subsection{Relation to the repository}
+The repository comparison is pinned to ProveIt commit
+\begin{center}
+\texttt{b484725c893a7a9bde856151988996aef6965cb0}.
+\end{center}
+The consolidated transseries source is in
+\begin{quote}\small
+\path{Analysis/Transseries/docs/series-and-transseries/Transseries_And_Inversion/}.
+\end{quote}
+The separate article \emph{Nonlinear Stokes Transport under Logarithmic Inversion} already proves an all-orders inverse-transport formula, treats exact logarithmic cores, distinguishes arithmetic averaging from nonlinear reconstruction, and analyzes a Lambert-type fold \cite{repo,repotransport}. The Gaussian-binomial crossover work also distinguishes exact exponential completion from a truncation-error threshold \cite{repocrossover}.
+
+Accordingly, neither the existence of nonlinear inverse sectors nor the generic square-root mechanism is claimed here as a new discovery. The extension is an exact shifted-product reconstruction theorem, a finite-weight classification, and their application to the actual $q$-gamma critical discriminant. The repository comparison is a focused statement-level comparison, not a line-by-line audit of its entire large corpus.
+
+\subsection{Literature and the boundary of a conjecture claim}
+Sauzin proves closure results for resurgent functions under nonlinear substitution, composition, functional inversion, and implicit equations \cite{sauzin}. Garoufalidis--Kashaev explicitly analyze Borel singularities and Stokes phenomena for Faddeev's quantum dilogarithm \cite{gk}. These are background, not claims of this article.
+
+Fantini--Rella's version dated 1 April 2026 computes the relevant $q$-product Borel transforms and states a scalar exact summability formula as Conjecture~5 \cite{fr}. \Cref{cor:fr} gives a direct proof of that identity, with all logarithmic constants and contour orientations specified. The finite-weight criterion gives its odd-character median-reconstruction consequence. More recent work includes vector-valued modular resurgence and character-twisted Lambert series \cite{vectors,bd}; we do not assert that the much broader conjectures or phase prescriptions in those settings are settled here.
+
+The source-status statement is version-specific. The proof below can be assessed independently of whether an equivalent modular identity has appeared in another normalization. An exhaustive priority assessment has not been completed. In particular, the standard eta transformation and Fourier-functional-equation machinery are not newly discovered identities.
+
+\section{Conventions for sectors, summation, and transseries}
+\label{sec:conventions}
+
+\subsection{Domains and logarithms}
+Put
+\begin{equation}
+ A=4\pi^2,\qquad A_0=\frac{\pi^2}{6},\qquad
+ \mathbb H_R=\{t\in\C:\Re t>0\},\qquad Q(t)=\e^{-A/t}.
+ \label{eq:constants}
+\end{equation}
+On $\mathbb H_R$ we take $-\pi/2<\arg t<\pi/2$. The function $Q$ satisfies $|Q|<1$. Uniform asymptotic assertions will be made on proper closed subsectors
+\begin{equation}
+ S_{\eps,T}=\{0<|t|<T:\ |\arg t|\leq\pi/2-\eps\},
+ \qquad 0<\eps<\pi/2.
+ \label{eq:sector}
+\end{equation}
+There $Q$ is uniformly exponentially small as $t\to0$.
+
+Logarithms of infinite products are defined by their convergent logarithmic series. In particular,
+\begin{equation}
+ G_a(t)=-\sum_{m\geq1}\frac{\e^{-amt}}{m(1-\e^{-mt})}
+ \label{eq:G}
+\end{equation}
+for real $a>0$ and $t\in\mathbb H_R$. This convention is not the instruction to take a principal logarithm of the already multiplied product; the two can differ by a multiple of $2\pi\ii$ after continuation. For complex $a$ we use a local continuation on a product neighborhood where the logarithmic series converges, and then the stated shift identities.
+
+\subsection{Borel and lateral conventions}
+For a series without constant term,
+\begin{equation}
+ \B\left[\sum_{n\geq1}c_nt^n\right](\xi)
+ =\sum_{n\geq1}\frac{c_n\xi^{n-1}}{(n-1)!}.
+ \label{eq:borel}
+\end{equation}
+Our Laplace integral has no extra factor $1/t$. The contours $L_+$ and $L_-$ go from zero to positive infinity, passing respectively above and below each positive real Borel pole. Upper small semicircles are traversed clockwise. Thus a pole with residue $r$ at $\omega>0$ contributes
+\begin{equation}
+ L_+-L_-=-2\pi\ii\,r\e^{-\omega/t}.
+ \label{eq:sign}
+\end{equation}
+All residue signs below use this convention. Write
+\begin{equation}
+ L_0=\frac{L_++L_-}{2}.
+ \label{eq:linear-median}
+\end{equation}
+For our meromorphic logarithmic tail this is the principal-value Laplace integral. We call it the \emph{linear median}. An arithmetic average is not, in general, an algebra homomorphism. In particular, inversion does not commute with \eqref{eq:linear-median}. No general nonlinear median-summation construction is being defined by this formula.
+
+\subsection{Three different loci}
+A Borel Stokes direction points toward a Borel singularity. A boundary of exponential decay is described by $\Re(A/t)=0$. A critical value of an analytic forward map is a branch point of its inverse. In this article these are, respectively, the positive Borel ray for the physical lateral ambiguity, the imaginary $t$-axis for $Q$, and the moving discriminant in the target variable. Calling all three a ``Stokes line'' would obscure the analysis.
+
+For logarithmic or multivalued leading terms, a complex transseries is interpreted on a chosen sheet and a sectorial asymptotic scale. There is no single dominance ordering of all complex exponentials on the whole punctured plane. Our explicit transseries are generated by powers and logarithms together with $Q$ or $Q^{1/2}$ on such charts. More general action sets require their own support and summability hypotheses.
+
+\section{The shifted product and its Borel transform}
+\label{sec:borel}
+
+\subsection{Elementary core and all-orders tail}
+Define
+\begin{align}
+ P_a(t)&=-\frac{A_0}{t}+\left(\frac12-a\right)\log t
+       +\frac12\log(2\pi)-\log\Gamma(a)+\frac{B_2(a)}4t,
+       \label{eq:core}\\
+ \wt R_a(t)&=\sum_{n\geq1}c_{2n}(a)t^{2n},
+ &c_{2n}(a)&=-\frac{B_{2n}B_{2n+1}(a)}{2n(2n+1)!}.
+ \label{eq:tail}
+\end{align}
+Here the Bernoulli convention is
+\begin{equation}
+ \frac{ze^{az}}{e^z-1}=\sum_{n\geq0}B_n(a)\frac{z^n}{n!},
+ \qquad B_n=B_n(0).
+ \label{eq:bernoulli}
+\end{equation}
+In particular, $c_2=-B_3(a)/72$ and $c_4=B_5(a)/14400$. The series contains no odd powers beyond the linear term in $P_a$.
+
+\begin{proposition}[Meromorphic Borel kernel]
+\label{prop:borel}
+For real $0<a<1$, the Borel transform of \eqref{eq:tail} is
+\begin{align}
+ \widehat R_a(\xi)
+ &=-\frac2\pi\sum_{k,m\geq1}\frac{\sin(2\pi ka)}k
+                  \frac{\xi}{(Akm)^2-\xi^2}\label{eq:fourier-kernel}\\
+ &=\frac1\pi\sum_{k,m\geq1}\frac{\sin(2\pi ka)}k
+      \left(\frac1{\xi-Akm}+\frac1{\xi+Akm}\right).
+ \nonumber
+\end{align}
+The paired series converges normally on compact subsets avoiding
+$A\Z\setminus\{0\}$. Its residues at both $An$ and $-An$ are
+\begin{equation}
+ r_a(n)=\frac1\pi\sum_{d\mid n}\frac{\sin(2\pi da)}d,
+ \qquad n\geq1.
+ \label{eq:residues}
+\end{equation}
+A residue can vanish; the corresponding apparent pole is then removable.
+\end{proposition}
+\begin{proof}
+Use the absolutely convergent Fourier expansions
+\begin{align*}
+ B_{2n}&=(-1)^{n+1}\frac{2(2n)!}{(2\pi)^{2n}}
+                \sum_{m\geq1}m^{-2n},\\
+ B_{2n+1}(a)&=(-1)^{n+1}\frac{2(2n+1)!}{(2\pi)^{2n+1}}
+                \sum_{k\geq1}\frac{\sin(2\pi ka)}{k^{2n+1}}
+\end{align*}
+for $n\geq1$. Substitution in \eqref{eq:tail}, followed by division by
+$(2n-1)!$, gives the Taylor coefficients of \eqref{eq:fourier-kernel} at
+zero. On a fixed compact set, all sufficiently large $km$ contribute
+$O(|\xi|/(k^3m^2))$. The remaining terms are finite in number. This proves
+normal convergence of the paired expression and permits continuation.
+At $\xi=An$, exactly the pairs $km=n$ have a pole, and their residues sum
+to \eqref{eq:residues}. The calculation at $-An$ is the same.
+\end{proof}
+
+The Fourier formulas are standard consequences of the Hurwitz-zeta
+functional equation; see \cite{dlmfzeta}. The pole data in rational-shift
+normalizations already appear in \cite{fr}. They are included here to fix
+normalizations for the completion and inverse calculations.
+
+\subsection{A kernel valid for holomorphic shift parameters}
+The Fourier series in \eqref{eq:fourier-kernel} must \emph{not} be used
+termwise for a nonreal $a$: its sine coefficients then grow exponentially
+with $k$. The correct holomorphic continuation is as follows.
+
+\begin{proposition}[Parameter-holomorphic kernel]
+\label{prop:holomorphic-kernel}
+For all complex $a$, the Borel germ of \eqref{eq:tail} continues to
+\begin{equation}
+ \widehat R_a(\xi)=\frac1\xi\sum_{m\geq1}
+ \left\{
+ \frac{\sin\big((a-\frac12)\xi/(2\pi m)\big)}
+      {\sin\big(\xi/(4\pi m)\big)}-(2a-1)
+ \right\}.
+ \label{eq:holomorphic-kernel}
+\end{equation}
+The value at zero is removable. The sum is locally normally convergent
+jointly in $a$ and $\xi$ off the same possible pole set. On a compact
+$a$-set it has finite exponential type along rays bounded away from the
+real pole directions. Consequently its lateral sums and their $a$
+derivatives exist for sufficiently small $t$ on the appropriate sectors.
+\end{proposition}
+\begin{proof}
+The odd Bernoulli generating function follows from
+\eqref{eq:bernoulli}; substituting the Fourier formula for $B_{2n}$ then
+summing the Bernoulli-polynomial generating function gives
+\eqref{eq:holomorphic-kernel} near zero. Alternatively its Taylor
+coefficients can be checked directly. The summand in braces is
+$O_K(|\xi|^2/m^2)$ uniformly for $a$ in a compact set $K$ and bounded
+$\xi$, so normal convergence follows after division by $\xi$.
+
+For a ray $\arg\xi=\theta$ with $|\sin\theta|>0$, split the sum at
+$m=1+\lfloor|\xi|\rfloor$. For larger $m$, Taylor's theorem bounds the
+tail by $O_K(|\xi|)$. For the finite initial portion, the sine quotient
+is bounded by a polynomial factor times $\exp(C_K|\xi|/m)$, hence by a
+polynomial factor times $\exp(C_K|\xi|)$. The estimates hold on a small
+angular neighborhood of the ray. Laplace convergence follows when
+$\Re(\e^{\ii\theta}/t)>C_K$, and Cauchy estimates on a slightly larger
+$a$-compact justify parameter differentiation. Contour deformation
+defines the corresponding small-$t$ lateral functions. This is a local
+statement in $a,t$, not a uniform claim for unbounded complex shifts.
+\end{proof}
+
+\begin{remark}[Growth for real shifts]
+For $0<a<1$, one can use the aggregated paired kernel
+$\sum_n r_a(n)((\xi-An)^{-1}+(\xi+An)^{-1})$ and
+$|r_a(n)|\leq(1+\log n)/\pi$. Away from fixed neighborhoods of the poles,
+it has at most polynomial growth, with logarithmic factors. Subtracting
+the local pole parts gives well-defined principal-value and lateral
+Laplace integrals for every $t\in\mathbb H_R$. The proof of the exact
+identity below provides a second, normally convergent representation of
+these integrals.
+\end{remark}
+
+\section{An exact Mellin--Borel completion theorem}
+\label{sec:completion}
+
+\subsection{Dual products}
+Define the holomorphic functions
+\begin{align}
+ D_a^\pm(t)&=\log(\e^{\pm2\pi\ii a}Q;Q)_\infty
+ =-\sum_{k\geq1}\frac{\e^{\pm2\pi\ii ka}Q^k}{k(1-Q^k)},
+ \label{eq:dual}\\
+ D_a^0(t)&=\frac{D_a^+(t)+D_a^-(t)}2
+ =-\sum_{k\geq1}\frac{\cos(2\pi ka)Q^k}{k(1-Q^k)}.
+ \label{eq:dualmedian}
+\end{align}
+For real $a$, these converge normally on $\mathbb H_R$. In a bounded
+complex $a$-neighborhood they converge for all sufficiently small $|Q|$.
+The initial factor of each product is $1-\e^{\pm2\pi\ii a}Q$, not
+$1-\e^{\pm2\pi\ii a}$; this distinction is responsible for the
+logarithmic constants in \cref{cor:fr}.
+
+\begin{theorem}[Exact completion of a shifted infinite product]
+\label{thm:completion}
+For real $0<a<1$ and every $t\in\mathbb H_R$,
+\begin{align}
+ G_a(t)&=P_a(t)+L_0\wt R_a(t)+D_a^0(t),
+ \label{eq:completion0}\\
+ &=P_a(t)+L_+\wt R_a(t)+D_a^-(t),
+ \label{eq:completionplus}\\
+ &=P_a(t)+L_-\wt R_a(t)+D_a^+(t).
+ \label{eq:completionminus}
+\end{align}
+In particular,
+\begin{equation}
+ L_+\wt R_a-L_-\wt R_a
+ =D_a^+-D_a^-=-2\pi\ii\sum_{n\geq1}r_a(n)Q^n.
+ \label{eq:jump}
+\end{equation}
+The functions $G_a$ themselves have no discontinuity between the two
+representations: the change in completion cancels the lateral change.
+\end{theorem}
+
+\subsection{The scalar principal-value kernel}
+\begin{lemma}[Cotangent Mellin kernel]
+\label{lem:kernel}
+For $\Re x>0$ put
+\begin{equation}
+ K(x)=-\frac2\pi\PV\int_0^\infty
+             \e^{-xs}\frac{s}{1-s^2}\dd s.
+ \label{eq:Kpv}
+\end{equation}
+For $0<c<2$,
+\begin{equation}
+ K(x)=\frac1{2\pi\ii}\int_{\Re u=c}
+       \Gamma(u)\cot\frac{\pi u}{2}\,x^{-u}\dd u.
+ \label{eq:Kmb}
+\end{equation}
+It also has the expression
+\begin{equation}
+ K(x)=-\frac1\pi\left(\e^{-x}\Ei(x)-\e^x E_1(x)\right),
+ \label{eq:Kei}
+\end{equation}
+with branches obtained from the positive real $x$-axis.
+\end{lemma}
+\begin{proof}
+For real $x>0$, the Mellin transform in $x$ of \eqref{eq:Kpv} is
+\[
+ -\frac{2\Gamma(u)}\pi\PV\int_0^\infty
+           \frac{s^{1-u}}{1-s^2}\dd s
+ =\Gamma(u)\cot\frac{\pi u}{2},\qquad 0<\Re u<2.
+\]
+Indeed, with $v=s^2$, the principal value is
+$-\frac\pi2\cot(\pi u/2)$. This follows, for example, by splitting at
+$v=1$, applying $v\mapsto1/v$ to the upper part, and using the partial
+fraction expansion of the cotangent.
+
+For completeness, the Mellin interchange is a principal-value
+interchange rather than Tonelli's theorem. Remove a symmetric interval
+$(1-\delta,1+\delta)$ and, on a fixed neighborhood of $1$, subtract the
+value at $1$ from the smooth numerator multiplying $(s-1)^{-1}$. The
+subtracted quotient is locally integrable uniformly as $\delta\to0$;
+the remaining elementary pole integral has its explicit principal
+value. At zero and infinity the powers are integrable precisely in the
+strip $0<\Re u<2$. The same subtraction works after integrating in
+$x$ on compact Mellin substrips. Mellin inversion yields
+\eqref{eq:Kmb}. The gamma factor gives exponential decay on vertical
+lines. Both sides extend holomorphically to $\Re x>0$, establishing the
+stated complex domain. Partial fractions in \eqref{eq:Kpv} give
+\eqref{eq:Kei}.
+\end{proof}
+
+\subsection{Mellin proof of the theorem}
+\begin{proof}[Proof of \cref{thm:completion}]
+Start with real $t>0$. Mellin inversion of the exponentials in
+\eqref{eq:G}, with $c_0>1$, gives
+\begin{equation}
+ G_a(t)=-\frac1{2\pi\ii}\int_{\Re s=c_0}
+          \Gamma(s)\zeta(s+1)\zeta(s,a)t^{-s}\dd s.
+ \label{eq:mellinG}
+\end{equation}
+Absolute convergence on that line follows from the original double
+sum. Shift to $\Re s=-c$, where $1<c<2$. The three crossed locations are
+$s=1,0,-1$. The residues of the full integrand with the preceding minus
+sign are
+\[
+ -\frac{A_0}{t},\qquad
+ \left(\frac12-a\right)\log t+\frac12\log(2\pi)-\log\Gamma(a),
+ \qquad \frac{B_2(a)}4t.
+\]
+For the middle expression, use $\zeta(0,a)=\frac12-a$,
+$\zeta'(0,a)=\log\Gamma(a)-\frac12\log(2\pi)$, and
+$\Gamma(s)\zeta(1+s)=s^{-2}+O(1)$. These standard special values and the
+Hurwitz functional equation are recorded in \cite{dlmfzeta}.
+
+The contour shift is justified by gamma decay and polynomial bounds
+for the zeta functions on fixed vertical strips. With $s=-u$ the
+remaining integral is
+\begin{equation}
+ G_a-P_a=-\frac1{2\pi\ii}\int_{\Re u=c}
+          \Gamma(-u)\zeta(1-u)\zeta(-u,a)t^u\dd u.
+ \label{eq:shiftedmellin}
+\end{equation}
+Introduce the absolutely convergent series
+\begin{equation}
+ C_z(a)=\sum_{k\geq1}\frac{\cos(2\pi ka)}{k^z},\qquad
+ S_z(a)=\sum_{k\geq1}\frac{\sin(2\pi ka)}{k^z},\qquad \Re z>1.
+ \label{eq:CS}
+\end{equation}
+The Riemann and Hurwitz functional equations, followed by gamma
+reflection, give the exact identity
+\begin{equation}
+ \Gamma(-u)\zeta(1-u)\zeta(-u,a)
+ =\Gamma(u)A^{-u}\zeta(u)
+   \left\{C_{u+1}(a)-\cot\frac{\pi u}{2}S_{u+1}(a)\right\}.
+ \label{eq:functionaleq}
+\end{equation}
+To make its sign transparent, the two zeta factors are
+\begin{align*}
+ \zeta(1-u)&=2(2\pi)^{-u}\Gamma(u)\cos(\pi u/2)\zeta(u),\\
+ \zeta(-u,a)&=\frac{2\Gamma(1+u)}{(2\pi)^{1+u}}
+  \{-\sin(\pi u/2)C_{u+1}(a)+\cos(\pi u/2)S_{u+1}(a)\},
+\end{align*}
+and $\Gamma(-u)\Gamma(1+u)=-\pi/\sin(\pi u)$.
+
+The cosine part of \eqref{eq:shiftedmellin} is now
+\[
+ -\sum_{k,m\geq1}\frac{\cos(2\pi ka)}k\e^{-Akm/t}=D_a^0(t),
+\]
+by inverse Mellin transformation of $\Gamma(u)$. The sine--cotangent
+part is, by \cref{lem:kernel},
+\begin{equation}
+ \sum_{k,m\geq1}\frac{\sin(2\pi ka)}k K(Akm/t).
+ \label{eq:sumK}
+\end{equation}
+All these Mellin interchanges are absolutely convergent on
+$1<c<2$: the double Dirichlet majorant is
+$\sum_{k,m}k^{-c-1}m^{-c}<\infty$, and the gamma factor is integrable
+on the vertical line. In particular, \eqref{eq:Kmb} bounds
+$|K(Akm/t)|$ on compact subsets of $\mathbb H_R$ by a constant times
+$(km)^{-c}$.
+
+Expression \eqref{eq:sumK} is exactly the principal-value Laplace
+transform of \eqref{eq:fourier-kernel}. Here is an explicit justification
+that avoids an unregularized principal-value interchange. For real
+$t>0$, first integrate along a fixed ray $\arg\xi=\theta$, with
+$0<|\theta|<\pi/2$. With $\omega=Akm$ and $\xi=r\e^{\ii\theta}$,
+\[
+ |\omega^2-r^2\e^{2\ii\theta}|
+ \geq |\sin\theta|(\omega^2+r^2).
+\]
+The absolute integral of the $(k,m)$-term is therefore at most a
+constant depending on $(t,\theta)$ times $k^{-3}m^{-2}$. Termwise
+integration is justified. Deforming each single-pole integral to the
+positive ray gives
+\[
+ L_\pm\wt R_a(t)=\sum_{k,m\geq1}\frac{\sin(2\pi ka)}k
+       \{K(Akm/t)\mp\ii\e^{-Akm/t}\}.
+\]
+Both resulting series converge absolutely: use the Mellin bound for
+$K$ and exponential decay for the residues. Their arithmetic average
+is \eqref{eq:sumK}. This proves \eqref{eq:completion0} on the positive
+real axis.
+The normally convergent Mellin representations show that both sides
+are holomorphic on $\mathbb H_R$, so the identity theorem proves it
+throughout that half-plane.
+
+Finally the residue bound in \eqref{eq:residues} makes
+$\sum_nr_a(n)Q^n$ normally convergent. Contour deformation gives the
+first equality in \eqref{eq:jump}. Expanding \eqref{eq:dual} as a
+geometric series gives the second equality. Since
+$L_+=L_0+(D_a^+-D_a^-)/2$, the upper-lateral representation pairs with
+$D_a^-$, and the lower-lateral one pairs with $D_a^+$. This proves
+\eqref{eq:completionplus} and \eqref{eq:completionminus}.
+\end{proof}
+
+\subsection{Asymptotic meaning and endpoints}
+The exact theorem implies, and is much stronger than, the fixed-order
+asymptotic expansion
+\begin{equation}
+ G_a(t)=P_a(t)+\sum_{n=1}^{N}c_{2n}(a)t^{2n}+O_{a,N,\eps}(t^{2N+2})
+ \quad(t\to0\text{ in }S_{\eps,T}).
+ \label{eq:fixedorder}
+\end{equation}
+This follows from the Taylor expansion of the Borel germ and Watson's
+Laplace argument; the pole contributions are flat. The same assertion
+also follows by moving the Mellin contour past a prescribed finite
+number of negative even integers. The coefficients are Gevrey--1 when
+indexed by the full power of $t$. Except at special symmetric shifts,
+ordinary convergence is not asserted.
+
+Continuity at $a=1$ and the value $a=1/2$ give
+\begin{align}
+ G_1(t)&=-\frac{A_0}{t}-\frac12\log t+\frac12\log(2\pi)+\frac t{24}
+         +\log(Q;Q)_\infty,
+ \label{eq:eta}\\
+ G_{1/2}(t)&=-\frac{A_0}{t}+\frac12\log2-\frac t{48}
+         +\log(-Q;Q)_\infty.
+ \label{eq:half}
+\end{align}
+Their Bernoulli tails and Stokes jumps vanish identically, but their
+flat completions do not. Formula \eqref{eq:eta} is the classical eta
+transformation in this normalization, not a new modular law.
+
+\subsection{The exact shift relation}
+For $a>0$ the product itself satisfies
+\begin{equation}
+ G_{a+1}(t)-G_a(t)=-\log(1-\e^{-at}).
+ \label{eq:Gshift}
+\end{equation}
+Moreover,
+\begin{align}
+ P_{a+1}-P_a&=-\log(at)+\frac{at}{2},\label{eq:Pshift}\\
+ \wt R_{a+1}-\wt R_a
+ &=-\log(1-\e^{-at})+\log(at)-\frac{at}{2}
+ =-\sum_{n\geq1}\frac{B_{2n}(at)^{2n}}{2n(2n)!}.
+ \label{eq:Rshift}
+\end{align}
+The last series is convergent for $|at|<2\pi$ with the specified local
+branches. Also $D_{a+1}^\pm=D_a^\pm$. These identities extend the
+completion formula to real positive shifts and, using
+\cref{prop:holomorphic-kernel}, to a complex neighborhood of any such
+shift for sufficiently small sectorial $t$. For the $q$-gamma fold,
+one only needs a neighborhood compactly contained in $1<\Re a<2$.
+The Fourier sine representation alone would incorrectly discard the
+convergent correction in \eqref{eq:Rshift} outside the basic interval.
+
+\subsection{Translation to the recent scalar summability conjecture}
+\begin{corollary}[Rational-shift summability identity]
+\label{cor:fr}
+Fix integers $N\geq2$ and $1\leq k<N$. With $q=\e^{2\pi\ii y}$,
+$\Im y>0$, define
+\[
+ f_{k,N}(y)=\log(\e^{2\pi\ii k/N};q)_\infty,\qquad
+ g_{k,N}(y)=\log(q^k;q^N)_\infty.
+\]
+Use the branches fixed by the logarithmic products. Then
+\begin{align}
+ s_0(\wt g_{k,N})(y)
+ &=g_{k,N}(y)-f_{k,N}\!\left(-\frac1{Ny}\right)
+       +\log(1-\e^{2\pi\ii k/N}),&&\Re y>0,\label{eq:fr0}\\
+ s_\pi(\wt g_{k,N})(y)
+ &=g_{k,N}(y)-f_{N-k,N}\!\left(-\frac1{Ny}\right)
+       +\log(1-\e^{-2\pi\ii k/N}),&&\Re y<0.\label{eq:frpi}
+\end{align}
+Here $s_0,s_\pi$ are Borel sums in the $y$-coordinate, including the
+elementary terms of the expansion. These are the formulas of
+Conjecture~5 in \cite[version 2, equations (60a)--(60b)]{fr}.
+\end{corollary}
+\begin{proof}
+Set $a=k/N$ and $t=-2\pi\ii Ny$. Then $G_a(t)=g_{k,N}(y)$ and
+$Q=\e^{-2\pi\ii/(Ny)}$. Removing the zero-th factor in $f$ gives
+\[
+ D_a^+(t)=f_{k,N}(-1/(Ny))-\log(1-\e^{2\pi\ii k/N}),
+\]
+and similarly for $D_a^-$. A positive real $y$-Borel ray becomes a
+negative imaginary $t$-Borel ray; deforming it toward the positive
+$t$-ray approaches the poles from below. Thus $s_0$ corresponds to
+$P_a+L_-\wt R_a$ in the overlap. The negative real $y$-Borel ray
+corresponds to the upper lateral $t$-sum. Equations
+\eqref{eq:completionminus} and \eqref{eq:completionplus} prove the
+identities in the overlap with $\Im y>0$, and analytic continuation
+within the stated quadrants completes the proof.
+\end{proof}
+
+The assertion concerns the nondegenerate shifts $1\leq k<N$. At
+$k=N$ the separate terms involving $\log(1-1)$ are not finite; the
+regularized combination is $D_1$, and \eqref{eq:eta} supplies the
+endpoint formula. One should not subtract two undefined logarithms.
+
+\section{Reflection kernels and cancellation of exponential actions}
+\label{sec:reflection}
+
+\subsection{A necessary-and-sufficient criterion}
+Let $S\subset(0,1)$ be a finite set of distinct real shifts. Enlarge it,
+if necessary, so that $a\in S$ implies $1-a\in S$, assigning weight zero
+to any added point. Let $w_a\in\C$ and put
+\begin{equation}
+ G_w=\sum_{a\in S}w_aG_a,
+ \qquad P_w=\sum_aw_aP_a,
+ \qquad \wt R_w=\sum_aw_a\wt R_a.
+ \label{eq:weighted}
+\end{equation}
+Weights need not be rational, multiplicative, or character values.
+
+\begin{theorem}[The two reflection kernels]
+\label{thm:reflection}
+With the preceding notation:
+\begin{equation}
+ G_w=P_w+L_0\wt R_w
+ \quad\Longleftrightarrow\quad
+ w_{1-a}=-w_a\quad\text{for every }a\in S;
+ \label{eq:oddcriterion}
+\end{equation}
+whereas
+\begin{equation}
+ L_+\wt R_w=L_-\wt R_w
+ \quad\Longleftrightarrow\quad
+ w_{1-a}=w_a\quad\text{for every }a\in S.
+ \label{eq:evencriterion}
+\end{equation}
+In particular, the coefficient at $a=1/2$ must be zero in
+\eqref{eq:oddcriterion}, but is unrestricted in \eqref{eq:evencriterion}.
+For nonzero weights the two properties cannot hold simultaneously.
+\end{theorem}
+\begin{proof}
+By \cref{thm:completion}, the error in median reconstruction is
+\begin{equation}
+ D_w^0=-\sum_{n\geq1}C_n(w)Q^n,
+ \qquad C_n(w)=\sum_{d\mid n}\frac{c_d(w)}d,
+ \quad c_d(w)=\sum_aw_a\cos(2\pi da).
+ \label{eq:cosdivisor}
+\end{equation}
+It vanishes identically if and only if all $C_n(w)$ vanish. M\"obius
+inversion, or induction over divisors, shows this is equivalent to
+$c_d(w)=0$ for every positive integer $d$.
+
+For each distinct nonzero phase $z$ among $\e^{2\pi\ii a}$ and its
+inverse, collect the coefficients in
+\[
+ c_d(w)=\frac12\sum_aw_a(z_a^d+z_a^{-d}).
+\]
+If $z_1,\ldots,z_p$ are the distinct phases, the equations for
+$d=1,\ldots,p$ form an invertible Vandermonde system, since every
+$z_j\ne0$. Hence the coefficient of each phase is zero. For a
+non-self-reflected pair this says $w_a+w_{1-a}=0$; at $a=1/2$ it says
+$w_{1/2}=0$. The converse follows immediately from the cosine symmetry.
+
+Similarly, the jump is
+\begin{equation}
+ L_+\wt R_w-L_-\wt R_w
+ =-2\ii\sum_{n\geq1}S_n(w)Q^n,
+ \qquad S_n(w)=\sum_{d\mid n}\frac{s_d(w)}d,
+ \quad s_d(w)=\sum_aw_a\sin(2\pi da).
+ \label{eq:sindivisor}
+\end{equation}
+The same divisor inversion and Vandermonde argument now gives
+$w_a-w_{1-a}=0$. The self-reflected sine is identically zero. Over
+$\C$, simultaneous symmetry and antisymmetry force every weight to
+vanish.
+\end{proof}
+
+\begin{corollary}[Character-weighted median reconstruction]
+\label{cor:characters}
+For a nonzero Dirichlet character $\chi$ modulo $N\geq2$, the sum
+$\sum_{k=1}^{N-1}\chi(k)G_{k/N}(t)$ is exactly reconstructed by the
+linear median of its full power--logarithmic expansion if and only if
+$\chi(-1)=-1$. Its perturbative Stokes jump vanishes if and only if
+$\chi(-1)=1$.
+\end{corollary}
+\begin{proof}
+Use $\chi(N-k)=\chi(-1)\chi(k)$ and
+\cref{thm:reflection}. A character is not identically zero on the
+reduced residue classes, so the two alternatives are distinct.
+\end{proof}
+This proves the corresponding $g$-family median-reconstruction
+assertion in \cite[Conjecture 1]{fr}, in its logarithmic-product
+normalization. Primitivity is not needed for this reconstruction
+criterion. This conclusion does not identify every number-theoretic
+property required by the separate definition of modular resurgence.
+
+\subsection{Finite-phase bounds for delayed actions}
+\begin{proposition}[How long can the first action be delayed?]
+\label{prop:delay}
+Let $p$ be the number of distinct phases in
+$\{\e^{2\pi\ii a},\e^{-2\pi\ii a}:a\in S\}$.
+If $D_w^0\not\equiv0$, its first nonzero coefficient is at $Q^r$ for
+some $r\leq p$. If the jump is nonzero, its first nonzero coefficient
+is at $Q^r$ for some $r\leq p-1$.
+\end{proposition}
+\begin{proof}
+The divisor transform is lower triangular with diagonal coefficient
+$1/n$: vanishing of its first $M$ outputs is equivalent to vanishing
+of the first $M$ input moments. If the first $p$ cosine moments vanish,
+the Vandermonde argument in \cref{thm:reflection} annihilates all phase
+coefficients, so the completion is zero. For the sine sequence its
+zeroth moment is already zero. Vanishing of moments $1$ through $p-1$
+therefore supplies the $p$ consecutive equations $0$ through $p-1$,
+again forcing all coefficients to vanish.
+\end{proof}
+
+The bound is a finite-data statement, not a bound for arbitrary
+infinite combinations. A single shift $a=1/4$ illustrates why even a
+one-orbit completion can lose its first action:
+\begin{equation}
+ C_1=0,\qquad C_2=-\frac12,
+ \qquad S_1=1.
+ \label{eq:quarter}
+\end{equation}
+Thus the median reconstruction error begins at $Q^2$ while the Stokes
+jump begins at $Q$. At $a=1/2$, the converse contrast is sharper: the
+jump is zero but $D_{1/2}^0=Q+O(Q^2)$ is nonzero.
+
+\subsection{What information is invisible?}
+Reflection gives a direct decomposition of weights into symmetric and
+antisymmetric parts. The tail $\wt R_w$ sees only the antisymmetric
+part, because $B_{2n+1}(1-a)=-B_{2n+1}(a)$. The median completion sees
+only the symmetric part. The finite elementary core $P_w$ can still
+contain information about both parts. Consequently it would be too
+strong to say that the entire asymptotic expansion never records any
+symmetric data.
+
+A separate example shows that a genuinely nonzero flat function can
+have an entirely zero asymptotic expansion. Let $E(t)=G_1(t)$ and
+\begin{equation}
+ (c_0,c_1,c_2,c_3,c_4)=(2,-9,14,-9,2),\qquad
+ Z(t)=\sum_{j=0}^4c_jE(2^jt).
+ \label{eq:eta-flat}
+\end{equation}
+The polynomial
+\[
+ \sum_{j=0}^4c_jz^j=(z-1)^2(z-2)(2z-1)
+\]
+implies $\sum c_j2^{-j}=\sum c_j2^j=\sum c_j=\sum jc_j=0$.
+All terms of the elementary core in \eqref{eq:eta} cancel. Therefore
+\begin{equation}
+ Z(t)=\sum_{j=0}^4c_j
+       \log(\e^{-A/(2^jt)};\e^{-A/(2^jt)})_\infty
+ \sim-2\e^{-A/(16t)}\qquad(t\to0^+).
+ \label{eq:eta-flat-asymptotic}
+\end{equation}
+There is no power-series Borel tail or associated jump from which this
+nonzero function could be recovered. This is a classical modular
+mechanism presented as an explicit warning for inverse reconstruction,
+not as a new eta transformation.
+
+\section{Reversion on formal and analytic charts}
+\label{sec:inverse}
+
+\subsection{A precise formal existence mechanism}
+A statement about ``general transseries'' needs a specified completion
+and a specified substitution operation. The following formulation
+isolates what a formal inverse calculation actually uses.
+
+\begin{lemma}[Filtered fixed-point reversion]
+\label{lem:filtered}
+Let $M=F^1M$ be a complete, separated filtered abelian group with
+$F^{n+1}M\subset F^nM$. Suppose a well-defined map $T:M\to M$ satisfies
+\begin{equation}
+ u-v\in F^nM\quad\Longrightarrow\quad
+ T(u)-T(v)\in F^{n+1}M\qquad(n\geq1).
+ \label{eq:filteredcontraction}
+\end{equation}
+Then $u=T(u)$ has exactly one solution in $M$. Iteration from any
+initial point determines the solution modulo $F^nM$ after finitely
+many steps. The statement applies to a normalized inverse equation
+whenever its transseries substitutions are defined and obey
+\eqref{eq:filteredcontraction}.
+\end{lemma}
+\begin{proof}
+Start with $u_0\in M$, $u_{n+1}=T(u_n)$. Since
+$u_1-u_0\in F^1M$, induction gives
+$u_{n+1}-u_n\in F^{n+1}M$. Thus $(u_n)$ is Cauchy and converges by
+completeness. Condition \eqref{eq:filteredcontraction} gives continuity
+of $T$, so the limit is a fixed point. If $u,v$ are fixed points, their
+difference belongs successively to every $F^nM$, and is zero by
+separatedness.
+\end{proof}
+
+For a chosen leading inverse $h(Y)$, one writes $x=h(Y)+u$ and solves
+for $u$. If the derivative of the normalized leading equation is a
+unit, Taylor expansion often yields exactly this contraction.
+A complete $Q$-adic algebra is an immediate example. For several
+exponential actions, a positive action filtration can be used only
+when its sums are locally finite and the required substitutions are
+continuous. Countably many actions accumulating at zero do not
+satisfy these hypotheses merely because each exponential is small.
+No unrestricted Hahn-field closure theorem is hidden in
+\cref{lem:filtered}.
+
+\subsection{Analytic inverse transport with a convergence certificate}
+\begin{theorem}[All-orders transport of an analytic completion]
+\label{thm:inverse}
+Let $F$ be univalent on a neighborhood $U$, let $h=F^{-1}$ on $V=F(U)$,
+and let $E$ be holomorphic on $U$. Fix a target $Y$ and a closed disk
+$\overline{D(Y,r)}\subset V$. Put $e(z)=E(h(z))$ and suppose
+\begin{equation}
+ |\lambda|\sup_{|z-Y|=r}|e(z)|<r.
+ \label{eq:rouche}
+\end{equation}
+There is a unique solution in $h(D(Y,r))$ of
+$F(x)+\lambda E(x)=Y$, counted with multiplicity. It is simple,
+analytic in $\lambda$ throughout the disk defined by
+\eqref{eq:rouche}, and has the convergent expansion
+\begin{equation}
+ x(Y,\lambda)=h(Y)+\sum_{n\geq1}\frac{(-\lambda)^n}{n!}
+ \partial_Y^{n-1}\!\left[h'(Y)\,E(h(Y))^n\right].
+ \label{eq:inverseall}
+\end{equation}
+If $|\lambda|\sup|e|<r$ holds uniformly over compact target sets, the
+convergence is locally uniform in the target as well.
+\end{theorem}
+\begin{proof}
+In the coordinate $z=F(x)$ the equation is $z+\lambda e(z)=Y$.
+Rouch\'e's theorem gives exactly one zero in $D(Y,r)$, counted with
+multiplicity. It must be simple, since a multiple zero would have
+multiplicity at least two. The implicit-function theorem then gives
+analytic dependence throughout the parameter disk.
+
+For small $\lambda$, the residue formula for $h$ evaluated at the
+unique zero is
+\[
+ x(Y,\lambda)=\frac1{2\pi\ii}\int_{|z-Y|=r}
+ h(z)\frac{1+\lambda e'(z)}{z+\lambda e(z)-Y}\dd z.
+\]
+Subtract its value at $\lambda=0$. Integrate the derivative of
+$\log(1+\lambda e(z)/(z-Y))$ by parts around the circle, and expand
+that logarithm by the absolutely convergent series guaranteed by
+\eqref{eq:rouche}. Cauchy's differentiation formula gives
+\eqref{eq:inverseall}. Analytic continuation in the parameter disk
+and compact uniformity complete the proof.
+\end{proof}
+
+This is Lagrange--B\"urmann inversion applied in a forward-value
+coordinate. It is included rather than claimed as new; the repository
+already develops its multi-parameter form \cite{repotransport}. A
+simple quantitative tail bound is also useful. Write
+$m_e=\sup_{|z-Y|=r}|e(z)|$ and
+$M_h=\sup_{|z-Y|=r}|h'(z)|$. Cauchy's estimate in
+\eqref{eq:inverseall} gives
+\begin{equation}
+ \left|[\lambda^n]x\right|\leq\frac{M_h r}{n}
+                       \left(\frac{m_e}{r}\right)^n.
+ \label{eq:coefbound}
+\end{equation}
+For $\chi=|\lambda|m_e/r<1$, the tail above degree $N$ is at most
+\begin{equation}
+ \frac{M_hr\,\chi^{N+1}}{(N+1)(1-\chi)}.
+ \label{eq:tailbound}
+\end{equation}
+A fixed target disk and derivative control are essential: a bare
+pointwise assertion $E(h(Y))\to0$ does not by itself justify a uniform
+inverse expansion.
+
+The first two terms are
+\begin{equation}
+ x=h-\lambda\frac{E(h)}{F'(h)}
+ +\lambda^2\left\{\frac{E(h)E'(h)}{F'(h)^2}
+                 -\frac{F''(h)E(h)^2}{2F'(h)^3}\right\}
+ +O(\lambda^3).
+ \label{eq:inverse2}
+\end{equation}
+The derivative in the second term is one reason why inversion creates
+mixed exponential sectors even from a simple additive jump.
+
+\subsection{Exact Stokes transport and its cocycle}
+Suppose two lateral forward charts satisfy $F_+=F_-+J$. Let
+$h_-=F_-^{-1}$ and set
+\begin{equation}
+ \Phi(Y)=Y+J(h_-(Y)).
+ \label{eq:Phi}
+\end{equation}
+Where the maps are defined and univalent,
+\begin{equation}
+ F_+=\Phi\circ F_-,\qquad
+ h_+=h_-\circ\Phi^{-1}.
+ \label{eq:cocycle}
+\end{equation}
+This is an exact relation, not just its linearized jump. Formula
+\eqref{eq:inverseall} with $E=J$ supplies every inverse jump sector.
+For three charts $F_i$, the maps
+$\Phi_{ji}=F_j\circ F_i^{-1}$ satisfy
+$\Phi_{ki}=\Phi_{kj}\circ\Phi_{ji}$ wherever all compositions make
+sense. The inverse charts consequently transform contravariantly.
+This elementary cocycle bookkeeping prevents inconsistent branch
+choices during analytic continuation.
+
+\subsection{Why arithmetic median and inversion do not commute}
+Let $F_\pm=F_0\pm\lambda J/2$, with inverses $h_\pm$ and $h_0=F_0^{-1}$.
+Averaging \eqref{eq:inverseall} eliminates odd powers of $\lambda$ but
+not the even powers:
+\begin{equation}
+ \frac{h_++h_-}{2}-h_0
+ =\frac{\lambda^2}{8}\partial_Y
+        \left[h_0'(Y)J(h_0(Y))^2\right]+O(\lambda^4).
+ \label{eq:medianbias}
+\end{equation}
+Equivalently the coefficient of $\lambda^2$ is
+\[
+ \frac{J(h_0)J'(h_0)}{4F_0'(h_0)^2}
+ -\frac{F_0''(h_0)J(h_0)^2}{8F_0'(h_0)^3}.
+\]
+The remainder is uniform on smaller target disks under the analytic
+bounds of \cref{thm:inverse}. Describing it merely as $O(J^4)$ without
+a norm and derivative domain can be misleading. If a nonlinear,
+algebra-compatible summation scheme is available, inverse
+compatibility follows from uniqueness within that scheme. It does
+not follow from arithmetic averaging.
+
+\subsection{Formal coefficients versus selected analytic functions}
+General resurgent closure under inversion is established under
+appropriate analytic-continuation and convolution bounds
+\cite{sauzin,sauzinintro}. In our applications it is important to
+separate three convergences: the Borel germ converges near zero; the
+exponential-amplitude expansion of \cref{thm:inverse} converges on its
+specified parameter disk; and the power-series expansion inside an
+exponential sector may be only Gevrey asymptotic. None of the first
+two facts implies convergence of the third.
+
+An exact completion can also contain a jump-free part not encoded in
+the ordinary formal series. The examples in \cref{sec:reflection}
+therefore rule out any unrestricted rule that reconstructs an exact
+inverse from the forward power series and the forward jump alone.
+Additional normalization, modular data, or a specified analytic
+function is needed.
+
+\section{Regular inverse transseries at the \texorpdfstring{$q=1$}{q=1} cusp}
+\label{sec:cusp}
+
+\subsection{The logarithmic target and its exact core}
+Let $0<a<1$ be fixed and set
+\begin{equation}
+ x=1/t,\qquad Y=-G_a(1/x).
+ \label{eq:target}
+\end{equation}
+For large positive $x$, $Y$ tends to positive infinity. Introduce the
+median carrier and its completion:
+\begin{align}
+ H_a(x)&=-P_a(1/x)-L_0\wt R_a(1/x),\label{eq:H}\\
+ E_a(x)&=-D_a^0(1/x)=\sum_{n\geq1}C_n(a)\e^{-Anx},
+ &C_n(a)&=\sum_{d\mid n}\frac{\cos(2\pi da)}d.
+ \label{eq:Ecusp}
+\end{align}
+Thus the exact forward map is $H_a+E_a$. Its algebraic expansion begins
+\begin{equation}
+ H_a(x)\sim A_0x+b\log x+c+\frac d{x}
+                       -\sum_{n\geq1}c_{2n}(a)x^{-2n},
+ \label{eq:Hasy}
+\end{equation}
+where
+\begin{equation}
+ b=\frac12-a,\qquad
+ c=\log\Gamma(a)-\frac12\log(2\pi),\qquad d=-\frac{B_2(a)}4.
+ \label{eq:bcd}
+\end{equation}
+On every sufficiently far-out proper closed subsector of $\Re x>0$,
+$H_a'=A_0+o(1)$ uniformly on fixed-radius disks. The inverse theorem therefore supplies a coherent
+large real inverse branch $h_a$ and sectorial continuations of that
+branch on smaller angular domains. Statements below always refer to
+these charts, not to all solutions of the transcendental equation.
+
+A convenient exact leading core $\ell(Y)$ solves
+\begin{equation}
+ A_0\ell+b\log\ell+c=Y.
+ \label{eq:lincore}
+\end{equation}
+For $b\ne0$, it can be written locally as
+\begin{equation}
+ \ell(Y)=\frac b{A_0}
+ W_j\!\left(\frac{A_0}{b}\exp\frac{Y-c}{b}\right),
+ \label{eq:Lambert}
+\end{equation}
+with the branch chosen to satisfy \eqref{eq:lincore}, not merely its
+exponentiated version. On the large positive real branch, $j=0$ for
+$b>0$ and $j=-1$ for $b<0$. If $b=0$, use $\ell=(Y-c)/A_0$.
+
+Writing $x=\ell+u$ and $\eps=1/\ell$ gives the normalized carrier
+inverse equation
+\begin{equation}
+ A_0u+b\log(1+\eps u)+\frac{d\eps}{1+\eps u}
+ -L_0\wt R_a\!\left(\frac{\eps}{1+\eps u}\right)=0.
+ \label{eq:exactcorenormalization}
+\end{equation}
+Its formal version has a unique ordinary formal power series
+$u(\eps)=O(\eps)$ by \cref{lem:filtered}, since $A_0\ne0$.
+With $L_+$ or $L_-$ in place of $L_0$, the summable implicit-function
+and composition results in \cite{sauzin} apply to the meromorphic,
+finite-exponential-type Borel kernel established above. They provide
+the lateral analytic realizations of this ordinary resurgent
+correction. The median-carrier inverse itself is not asserted to be
+the arithmetic average of those lateral inverses.
+
+This normalization is useful precisely because it does not treat
+$\log Y$ as a constant coefficient while performing a Borel transform.
+The logarithm is absorbed into the exact core first. Re-expanding
+$\ell(Y)$ afterward gives the usual power--logarithmic transseries.
+
+\subsection{Algebraic reversion and fixed-order error control}
+Put $L=\log(Y/A_0)$ and $s=bL+c$. Elementary substitution gives
+\begin{equation}
+ h_a(Y)=\frac{Y-s}{A_0}
+       +\frac{bs-A_0d}{A_0Y}
+       +O\!\left(\frac{(\log Y)^2}{Y^2}\right).
+ \label{eq:halgebraic}
+\end{equation}
+Every further fixed algebraic order can be obtained by substituting a
+power--logarithmic ansatz into \eqref{eq:Hasy} and cancelling the next
+residual. The coefficient of the new unknown is $A_0$, so the recursion
+is triangular. On the chosen chart, a residual $\rho_N(Y)$ yields an
+inverse error $O(\rho_N(Y))$, because $H_a'$ stays bounded away from
+zero. This proves the fixed-order expansion, rather than merely
+producing a formal list of coefficients. Derivative estimates follow
+on smaller complex disks by Cauchy's formula.
+
+\subsection{A convergent expansion in the inverse exponential scale}
+\begin{theorem}[One- and two-action inverse coefficients]
+\label{thm:cusp}
+Let $h=h_a(Y)$ and $z=\e^{-Ah}$. Write
+$f=H_a'(h)$ and $f_2=H_a''(h)$. For the large real inverse branch, and
+uniformly on its smaller sectorial charts, the inverse $x_*(Y)$ of the
+exact forward map $H_a+E_a$ has a locally convergent expansion
+\begin{equation}
+ x_*(Y)=h+\sum_{n\geq1}\Delta_n(h)z^n.
+ \label{eq:cuspsectors}
+\end{equation}
+The first two coefficients are
+\begin{align}
+ \Delta_1&=-\frac{C_1(a)}f,\label{eq:Delta1}\\
+ \Delta_2&=-\frac{C_2(a)}f-\frac{A C_1(a)^2}{f^2}
+                         -\frac{f_2C_1(a)^2}{2f^3},
+ \label{eq:Delta2}
+\end{align}
+where $C_1(a)=\cos(2\pi a)$ and
+$C_2(a)=\cos(2\pi a)+\frac12\cos(4\pi a)$.
+For $h$ sufficiently large in these charts, a common positive radius
+in the auxiliary variable $z$ can be chosen.
+\end{theorem}
+\begin{proof}
+Treat $z$ as independent and write $x=h+\delta$. The exact equation is
+\begin{equation}
+ H_a(h+\delta)-H_a(h)
+ +\sum_{n\geq1}C_n(a)z^n\e^{-An\delta}=0.
+ \label{eq:independentz}
+\end{equation}
+On a fixed small $\delta$-disk, the last series converges normally for
+$|z|$ sufficiently small, because $C_n(a)=O(\log n)$. The derivative
+with respect to $\delta$ at $(\delta,z)=(0,0)$ is $f$, bounded away
+from zero for large $h$. The analytic implicit-function theorem gives
+\eqref{eq:cuspsectors}. Uniform bounds on a slightly larger disk, or
+Rouch\'e's theorem as in \cref{thm:inverse}, give a common $z$-radius.
+Equating coefficients of $z$ and $z^2$ in
+\eqref{eq:independentz} gives
+\[
+ f\Delta_1+C_1=0,\qquad
+ f\Delta_2+\tfrac12 f_2\Delta_1^2-A C_1\Delta_1+C_2=0,
+\]
+which proves the formulas.
+\end{proof}
+
+The term $-AC_1^2/f^2$ records the change of the exponential argument
+under inversion. Keeping only $E_a(h)$ and never expanding
+$E_a(h+\delta)$ would miss it. If the first nonzero completion
+coefficient is $C_r$, then $\Delta_1=\cdots=\Delta_{r-1}=0$ and
+$\Delta_r=-C_r/f$. This observation applies to finite weighted products
+as well, provided their leading forward slope is nonzero; their action
+scale is then computed using that slope, not automatically $A_0$.
+
+\subsection{Action 24 and its power--logarithmic dressing}
+Since $A/A_0=24$, \eqref{eq:halgebraic} gives
+\begin{equation}
+ \e^{-Ah_a(Y)}=
+ \e^{-24Y}(Y/A_0)^{24b}\e^{24c}
+ \left\{1+O\!\left(\frac{\log Y}{Y}\right)\right\}.
+ \label{eq:action24}
+\end{equation}
+For $C_1(a)\ne0$, therefore,
+\begin{equation}
+ x_*(Y)-h_a(Y)
+ =-\frac{\cos(2\pi a)}{A_0}\,
+ \e^{-24Y}(Y/A_0)^{24b}\e^{24c}
+ \left\{1+O\!\left(\frac{\log Y}{Y}\right)\right\}.
+ \label{eq:inverseleading}
+\end{equation}
+The first action is $24r$ when the first surviving completion harmonic
+is $r$. In particular $a=1/4$ has first completion action $48$, whereas
+its lateral inverse Stokes transition has first action $24$. The
+action ratio itself is an elementary consequence of the chosen
+normalization; the completion coefficients determine which harmonics
+actually occur.
+
+For the original variable $t=1/x$, the first correction is
+\begin{equation}
+ t_*(Y)=\frac1h+\frac{C_1(a)}{f h^2}\e^{-Ah}
+              +O\!\left(\frac{\e^{-2Ah}}{h^2}\right).
+ \label{eq:tinverse}
+\end{equation}
+A final substitution $q=\e^{-t}$ gives the inverse in $q$. All
+remainders here refer to the exact median-carrier inverse $h$;
+replacing $h$ by a short algebraic truncation creates an additional,
+usually much larger, algebraic error.
+
+\subsection{The lateral inverse transition}
+Define $H_{a,\pm}=-P_a(1/x)-L_\pm\wt R_a(1/x)$. By
+\eqref{eq:jump},
+\begin{equation}
+ H_{a,+}(x)-H_{a,-}(x)
+ =2\ii\sum_{n\geq1}\left(\sum_{d\mid n}\frac{\sin(2\pi da)}d\right)
+          \e^{-Anx}.
+ \label{eq:Hjump}
+\end{equation}
+Let $h_{a,\pm}$ be the corresponding large inverse branches. The exact
+cocycle \eqref{eq:cocycle} gives their finite transition. Its leading
+term is
+\begin{equation}
+ h_{a,+}-h_{a,-}
+ =-\frac{2\ii\sin(2\pi a)}{H_a'(h_a)}\e^{-Ah_a}
+       +O(\e^{-2Ah_a}).
+ \label{eq:hjump}
+\end{equation}
+These are inverse branches of two \emph{carriers}, not two different
+values of the exact product inverse. Pairing $H_{a,+}$ with $-D_a^-$
+or $H_{a,-}$ with $-D_a^+$ reconstructs the same exact forward map and
+therefore the same chosen exact inverse. This is the operational
+meaning of Stokes consistency for the completed transseries.
+
+
+\subsection{An exact quadratic carrier with no Stokes jump}
+At $a=1/2$, both $\wt R_a$ and its Stokes jump vanish. Nevertheless the
+exact inverse differs from the inverse of its elementary core. Here
+\[
+ H_{1/2}(x)=A_0x-\tfrac12\log2+\frac1{48x},\qquad
+ E_{1/2}(x)=-\log(-\e^{-Ax};\e^{-Ax})_\infty.
+\]
+Writing $Z=Y+\frac12\log2$, the large carrier inverse is explicitly
+\begin{equation}
+ h_{1/2}(Y)=\frac{Z+\sqrt{Z^2-A_0/12}}{2A_0}.
+ \label{eq:quadraticcarrier}
+\end{equation}
+Its completed inverse begins
+\begin{equation}
+ x_*(Y)=h_{1/2}(Y)
+ +\frac{\e^{-Ah_{1/2}(Y)}}{A_0-1/(48h_{1/2}(Y)^2)}
+ +O(\e^{-2Ah_{1/2}(Y)}).
+ \label{eq:halfcompletedinverse}
+\end{equation}
+There is no perturbative Stokes jump whose removal could supply this
+term. The exact dual product supplies it. The square root in
+\eqref{eq:quadraticcarrier} is a separate algebraic branch choice,
+again not a Borel Stokes phenomenon.
+
+\subsection{Cancellation of the linear core raises the transseries height}
+The action $24$ is not universal even within shifted products. Fix
+$0<a<1/2$ and consider the antisymmetric quotient
+\begin{equation}
+ F^{\mathrm{odd}}_a(x)=-G_a(1/x)+G_{1-a}(1/x).
+ \label{eq:oddforward}
+\end{equation}
+Its median completion vanishes by \cref{thm:reflection}, but its
+$t^{-1}$ core also cancels. Put
+\[
+ B=1-2a>0,\qquad c_o=\log\Gamma(a)-\log\Gamma(1-a).
+\]
+Then the exact function is
+\begin{equation}
+ F^{\mathrm{odd}}_a(x)=B\log x+c_o-2L_0\wt R_a(1/x).
+ \label{eq:oddcore}
+\end{equation}
+For real $Y\to+\infty$, its inverse satisfies
+\begin{equation}
+ h_o(Y)=\ell_o(Y)+O(\ell_o(Y)^{-1}),\qquad
+ \ell_o(Y)=\exp\!\left(\frac{Y-c_o}{B}\right).
+ \label{eq:oddinverse}
+\end{equation}
+Indeed the carrier error is $O(x^{-2})$ and the leading derivative is
+$B/x$, so the required correction is $O(x^{-1})$. A normalized
+implicit equation in $x/\ell_o$ proves every further fixed order.
+Complex statements hold on horizontal target strips that map under
+$\ell_o$ into a proper right-half-plane sector, with the logarithmic
+sheet specified.
+
+The two lateral forward carriers differ by
+$4\ii\sin(2\pi a)\e^{-Ax}+O(\e^{-2Ax})$. Their inverse transition
+therefore has the leading form
+\begin{equation}
+ h_{o,+}-h_{o,-}
+ =-\frac{4\ii\sin(2\pi a)}B\,
+    \ell_o(Y)\exp(-A\ell_o(Y))\big\{1+O(\ell_o(Y)^{-1})\big\}.
+ \label{eq:doubleexponential}
+\end{equation}
+A single exponential in $1/t$ has become a doubly exponential scale
+in $Y$. This is a concrete reason to formulate general reversion by
+exact cores and sectorial charts rather than by one fixed set of
+exponentials in the original target variable. The exact inverse is
+still the inverse of the median forward function, not the arithmetic
+average of the two lateral inverses.
+
+\section{Exact completion of the \texorpdfstring{$q$}{q}-gamma function}
+\label{sec:qgamma}
+
+\subsection{The normalized function and its expansion}
+For $q=\e^{-t}$, define
+\begin{equation}
+ \Gamma_q(a)=\frac{(q;q)_\infty}{(q^a;q)_\infty}(1-q)^{1-a},
+ \qquad
+ \cL(a,t)=\log\Gamma_{\e^{-t}}(a).
+ \label{eq:qgamma}
+\end{equation}
+This is the standard $q$-gamma normalization \cite{dlmfqgamma}. On our
+local branches,
+\begin{equation}
+ \cL(a,t)=G_1(t)-G_a(t)+(1-a)\log(1-\e^{-t}).
+ \label{eq:qgammalog}
+\end{equation}
+The $t^{-1}$ and $\log t$ terms cancel. Its formal expansion is
+\begin{equation}
+ \wt\cL(a,t)=\log\Gamma(a)+\ell_1(a)t
+                         +\sum_{n\geq1}\ell_{2n}(a)t^{2n},
+ \label{eq:qgammaformal}
+\end{equation}
+where
+\begin{align}
+ \ell_1(a)&=-\frac{(a-1)(a-2)}4,\label{eq:ell1}\\
+ \ell_{2n}(a)&=\frac{B_{2n}}{2n(2n)!}
+          \left\{\frac{B_{2n+1}(a)}{2n+1}+1-a\right\}.
+ \label{eq:elln}
+\end{align}
+For example,
+\begin{equation}
+ \ell_2(a)=\frac{(a-1)(a-2)(2a+3)}{144}.
+ \label{eq:ell2}
+\end{equation}
+At $a=3$, the exact identity $\Gamma_q(3)=1+q$ checks the first terms:
+$\log(1+\e^{-t})=\log2-t/2+t^2/8+O(t^4)$. At $a=1$ and $a=2$ all
+corrections vanish, consistently with $\Gamma_q(1)=\Gamma_q(2)=1$.
+
+Let $\cL_0(a,t)$ be the linear-median carrier obtained by applying
+$L_0$ to the tail in \eqref{eq:qgammalog}, while retaining the convergent
+factor $\log(1-\e^{-t})$ with its specified branch. Equivalently it is
+the linear median of \eqref{eq:qgammaformal}. The shift relation in
+\cref{sec:completion} fixes this definition near $1<\Re a<2$.
+
+\begin{theorem}[Exact $q$-gamma completion]
+\label{thm:qgamma}
+In a complex neighborhood of any positive real $a$, for sufficiently
+small sectorial $t$,
+\begin{equation}
+ \cL(a,t)=\cL_0(a,t)+\cE(a,Q(t)),
+ \label{eq:qgammacompletion}
+\end{equation}
+where
+\begin{align}
+ \cE(a,z)&=\sum_{n\geq1}e_n(a)z^n
+ =\sum_{k\geq1}\frac{\big(\cos(2\pi ka)-1\big)z^k}{k(1-z^k)},
+ \label{eq:calE}\\
+ e_n(a)&=\sum_{d\mid n}\frac{\cos(2\pi da)-1}{d}.
+ \label{eq:en}
+\end{align}
+This is a convergent holomorphic function of $(a,z)$ for $a$ in a
+fixed compact neighborhood and $|z|$ sufficiently small. Its first
+coefficients are
+\begin{equation}
+ e(a):=e_1(a)=\cos(2\pi a)-1,\qquad
+ e_2(a)=e(a)+\tfrac12\big(\cos(4\pi a)-1\big).
+ \label{eq:e12}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Subtract \eqref{eq:completion0} for $G_a$ from the endpoint formula for
+$G_1$. The additional logarithm in \eqref{eq:qgammalog} is convergent
+at $t=0$ after removing $\log t$, so it introduces no lateral
+ambiguity. The completion is $D_1^0-D_a^0$, which is exactly
+\eqref{eq:calE}. Normal convergence follows from
+$|\cos(2\pi ka)|\leq\exp(2\pi k|\Im a|)$ and a choice
+$|z|\exp(2\pi\sup|\Im a|)<1$. Uniform differentiation in $a$ follows
+on smaller neighborhoods.
+\end{proof}
+
+\subsection{Uniformity in the parameter}
+Fix $\eps>0$ and a small closed disk $D$ around a positive real
+$a_*>1$ with $\overline D\subset\{1<\Re a<2\}$. Shrink $D$, if needed,
+so that the products are defined for $t\in S_{\eps,T}$. By the
+holomorphic Borel kernel and its shift relation, the expansion
+\eqref{eq:qgammaformal} holds uniformly on a slightly larger disk,
+with every fixed number of $a$ derivatives. In particular,
+\begin{equation}
+ \partial_a^j\cL_0(a,t)=\partial_a^j\log\Gamma(a)+O(t)
+ \quad (a\in D)
+ \label{eq:uniformgamma}
+\end{equation}
+for each fixed $j$. This can also be obtained from
+\eqref{eq:qgammacompletion}: the completion and its fixed derivatives
+are flat, and the finite-order expansion follows from the uniformly
+holomorphic Borel representation. Cauchy's estimate on a larger
+$a$-disk is what justifies differentiating the asymptotic expansion.
+
+\subsection{Real convexity and the actual critical point}
+For real $t>0$, termwise differentiation of
+\eqref{eq:qgammalog} gives
+\begin{align}
+ \partial_a\cL(a,t)
+  &=-t\sum_{n\geq0}\frac1{\e^{(a+n)t}-1}
+                   -\log(1-\e^{-t}),\label{eq:digammaq}\\
+ \partial_a^2\cL(a,t)
+  &=t^2\sum_{n\geq0}
+           \frac{\e^{(a+n)t}}{(\e^{(a+n)t}-1)^2}>0.
+ \label{eq:convexityq}
+\end{align}
+Thus $\cL(\cdot,t)$ is strictly convex on $a>0$. Its derivative tends
+to $-\infty$ at $a=0^+$ and to $-\log(1-\e^{-t})>0$ at infinity.
+There is exactly one real critical point. Since
+$\cL(1,t)=\cL(2,t)=0$, strict convexity places it in $(1,2)$ and makes
+it a simple minimum. These conclusions hold for every real $t>0$;
+the following asymptotic analysis identifies its exponentially small
+displacement from the median carrier as $t\to0$.
+
+\section{The exponentially shifted critical fold}
+\label{sec:fold}
+
+\subsection{The carrier critical point and its all-orders recursion}
+Let $a_*$ be the unique positive zero of the digamma function $\psi$.
+It lies in $(1,2)$ because $\psi(1)=-\gamma<0$,
+$\psi(2)=1-\gamma>0$, and
+$\psi_1(a)=\sum_{n\geq0}(n+a)^{-2}>0$ for $a>0$.
+Write $\kappa_*=\psi_1(a_*)$. Numerical values, used only for
+orientation, are
+\begin{equation}
+ a_*\approx1.4616321449683623,\qquad
+ \kappa_*\approx0.9676722454476212.
+ \label{eq:astar}
+\end{equation}
+
+For sufficiently small $t$ in a proper sector,
+\eqref{eq:uniformgamma} and the analytic implicit-function theorem
+give a unique carrier critical point $\alpha_0(t)$ near $a_*$.
+Define
+\begin{equation}
+ \partial_a\cL_0(\alpha_0,t)=0,\qquad
+ v_0(t)=\cL_0(\alpha_0,t),\qquad
+ \kappa(t)=\partial_a^2\cL_0(\alpha_0,t),\qquad
+ \kappa_3(t)=\partial_a^3\cL_0(\alpha_0,t).
+ \label{eq:carriercritical}
+\end{equation}
+The function $\kappa(t)$ stays bounded away from zero and tends to
+$\kappa_*$. The critical point and critical value have fixed-order
+asymptotic expansions obtained by implicit substitution in
+\eqref{eq:qgammaformal}. The first terms are
+\begin{align}
+ \alpha_0(t)&=a_*+a_1t+O(t^2),
+ &a_1&=\frac{2a_*-3}{4\kappa_*},\label{eq:alpha0asy}\\
+ v_0(t)&=\log\Gamma(a_*)+\ell_1(a_*)t
+ +\left\{\ell_2(a_*)-\frac{\ell_1'(a_*)^2}{2\kappa_*}\right\}t^2
+ +O(t^3).
+ \label{eq:v0asy}
+\end{align}
+For example, if $\alpha_0=a_*+a_1t+a_2t^2+\cdots$, then
+\begin{equation}
+ a_2=-\frac{\frac12\psi_2(a_*)a_1^2+
+                   \ell_1''(a_*)a_1+\ell_2'(a_*)}{\kappa_*}.
+ \label{eq:a2}
+\end{equation}
+At every subsequent order the new coefficient has multiplier
+$\kappa_*\ne0$, giving an all-orders triangular recursion. The
+uniform derivative bound transports each finite residual to an
+actual critical-point error, so this is a fixed-order asymptotic
+construction and not an assertion that the full $t$-series converges.
+
+\subsection{Promoting the flat scale to an independent variable}
+The decisive device is to regard $Q$ as independent before substituting
+its exponentially small value. Define
+\begin{equation}
+ \mathscr L(a,t,z)=\cL_0(a,t)+\cE(a,z).
+ \label{eq:auxfamily}
+\end{equation}
+It is holomorphic in $(a,z)$ on a common polydisk for all sufficiently
+small sectorial $t$. Its actual $q$-gamma specialization is
+$z=Q(t)$. Uniformity in $t$ follows from \eqref{eq:uniformgamma} and
+the normally convergent series \eqref{eq:calE}.
+
+\begin{theorem}[Completed critical point and discriminant]
+\label{thm:critical}
+There are functions $\alpha(t,z)$ and $v(t,z)$, holomorphic in $z$ on
+a disk of radius independent of small sectorial $t$, such that
+\begin{equation}
+ \partial_a\mathscr L(\alpha(t,z),t,z)=0,\qquad
+ v(t,z)=\mathscr L(\alpha(t,z),t,z),
+ \label{eq:completedcritical}
+\end{equation}
+with $\alpha(t,0)=\alpha_0(t)$ and $v(t,0)=v_0(t)$. Their expansions
+begin
+\begin{align}
+ \alpha(t,z)&=\alpha_0-\frac{e'(\alpha_0)}{\kappa}z+O(z^2),
+ \label{eq:alphashift}\\
+ v(t,z)&=v_0+e(\alpha_0)z
+ +\left\{e_2(\alpha_0)-\frac{e'(\alpha_0)^2}{2\kappa}\right\}z^2
+ +O(z^3).
+ \label{eq:vshift}
+\end{align}
+The remainders are uniform in $t$ on proper sectors. In particular,
+$\alpha(t,Q(t))$ and $v(t,Q(t))$ are the actual $q$-gamma critical
+point and value near $a_*$. For positive real $t$ the critical point
+is the unique minimum described in \eqref{eq:convexityq}.
+\end{theorem}
+\begin{proof}
+The derivative of $\partial_a\mathscr L$ with respect to $a$ at
+$(\alpha_0,0)$ is $\kappa$, bounded away from zero. Uniform bounds on
+a larger $a$-disk give a common implicit-function radius in $z$.
+Equivalently, Rouch\'e's theorem on a small $a$-circle gives a unique
+critical point, and the implicit-function theorem makes it
+holomorphic. Composition gives $v(t,z)$.
+
+Write $\alpha=\alpha_0+b_1z+O(z^2)$. The critical-point equation gives
+$\kappa b_1+e'(\alpha_0)=0$. In the value equation, the coefficient of
+$z^2$ is
+$\kappa b_1^2/2+e'(\alpha_0)b_1+e_2(\alpha_0)$, proving
+\eqref{eq:vshift}. Cauchy estimates in the common $z$-disk give the
+uniform remainder statements. Substitution $z=Q(t)$ and
+\cref{thm:qgamma} identify the exact critical point and value.
+\end{proof}
+
+Since $e'(a)=-2\pi\sin(2\pi a)$, the leading displacement is
+\begin{equation}
+ \alpha(t,Q)-\alpha_0(t)
+ =\frac{2\pi\sin(2\pi\alpha_0(t))}{\kappa(t)}Q+O(Q^2).
+ \label{eq:alphashifttrig}
+\end{equation}
+More importantly, $e(a_*)<0$. The true critical value is lower than
+the median critical value by a nonzero multiple of $Q$ for all
+sufficiently small positive $t$.
+
+\subsection{Uniform critical-layer inverse transseries}
+\begin{theorem}[The action-halving layer]
+\label{thm:layer}
+Let $\eta$ range over a compact subset of a simply connected domain
+avoiding $e(a_*)$, and choose the two local square-root sheets.
+For all sufficiently small sectorial $t$, solve
+\begin{equation}
+ \cL(a,t)=v_0(t)+Q(t)\eta.
+ \label{eq:layerlevel}
+\end{equation}
+The two solutions near $\alpha_0(t)$ satisfy
+\begin{align}
+ a_\pm(t,\eta)
+ ={}&\alpha_0(t)
+ \ \pm Q^{1/2}\sqrt{\frac{2(\eta-e(\alpha_0))}{\kappa}}\nonumber\\
+ &-Q\left\{\frac{e'(\alpha_0)}{\kappa}
+       +\frac{\kappa_3\big(\eta-e(\alpha_0)\big)}{3\kappa^2}\right\}
+ +O(Q^{3/2}).
+ \label{eq:layerformula}
+\end{align}
+Here $Q^{1/2}$ means the analytic exponential $\e^{-A/(2t)}$ on the
+chosen $t$-sector. The expansion is convergent as a power series in
+an auxiliary $s=\sqrt z$ for fixed $(t,\eta)$ in these compact sets,
+with a common small radius; substituting $z=Q(t)$ gives the stated
+transseries. The remainder is uniform on those compact sets.
+\end{theorem}
+\begin{proof}
+In the auxiliary family \eqref{eq:auxfamily}, put $z=s^2$ and
+$a=\alpha_0+su$. After subtracting $v_0+s^2\eta$ and dividing by
+$s^2$, the equation extends holomorphically to $s=0$ and becomes
+\begin{equation}
+ \frac\kappa2u^2+e(\alpha_0)-\eta
+ +s\left\{\frac{\kappa_3}{6}u^3+e'(\alpha_0)u\right\}
+ +O(s^2)=0.
+ \label{eq:scaledfold}
+\end{equation}
+The two $s=0$ roots
+$u_0=\pm\sqrt{2(\eta-e(\alpha_0))/\kappa}$ are uniformly separated
+from zero. The implicit-function theorem therefore gives a convergent
+series $u=u_0+s u_1+O(s^2)$ uniformly on the stated parameter sets.
+The coefficient of $s$ in \eqref{eq:scaledfold} is
+\[
+ \kappa u_0u_1+\frac{\kappa_3}{6}u_0^3+e'(\alpha_0)u_0=0.
+\]
+Since $u_0\ne0$,
+\[
+ u_1=-\frac{e'(\alpha_0)}\kappa
+      -\frac{\kappa_3(\eta-e(\alpha_0))}{3\kappa^2}.
+\]
+Multiplying by $s$ and substituting $s=\e^{-A/(2t)}$ proves
+\eqref{eq:layerformula}. Uniform analytic bounds supply the remainder
+and convergence assertions.
+\end{proof}
+
+The theorem explicitly excludes the moving scaled discriminant.
+It must not be described as uniform while $\eta\to e(\alpha_0)$.
+The next subsection gives the correct representation at that
+coalescence.
+
+\begin{corollary}[Two real inverse values at the carrier minimum]
+\label{cor:tworeal}
+For all sufficiently small real $t>0$, the equation
+$\cL(a,t)=v_0(t)$ has two distinct real solutions near $a_*$. Their
+separation is
+\begin{equation}
+ a_+(t,0)-a_-(t,0)
+ =2\sqrt{\frac{2(1-\cos(2\pi\alpha_0(t)))}{\kappa(t)}}
+         \e^{-2\pi^2/t}+O(\e^{-6\pi^2/t}).
+ \label{eq:realgap}
+\end{equation}
+Thus a jump-free part of the forward completion is already sufficient
+to produce a leading inverse effect at half the forward action.
+\end{corollary}
+\begin{proof}
+At $\eta=0$, the quantity under the square root in
+\eqref{eq:layerformula} is positive for small real $t$, because
+$\kappa(t)>0$ and $\alpha_0(t)\in(1,2)$. The common $Q$ term cancels
+in the difference. Reality follows from the real analytic equations
+and the real initial roots in \eqref{eq:scaledfold}. Strict convexity
+also identifies these as the two local sides of the unique minimum.
+\end{proof}
+
+\subsection{A convergent normal form at the actual branch point}
+\begin{theorem}[Uniform completed quadratic normal form]
+\label{thm:normalform}
+After shrinking the parameter neighborhoods, there is a function
+$\Psi(w,t,z)$, holomorphic in $(w,z)$ on common neighborhoods and with
+$\Psi(0,t,z)=0$, such that the inverse of the auxiliary family at a
+target $Y$ is represented by
+\begin{equation}
+ a=\alpha(t,z)+\Psi\!\left(\pm\sqrt{Y-v(t,z)},\,t,z\right).
+ \label{eq:normalinverse}
+\end{equation}
+The linear coefficient is
+\begin{equation}
+ \partial_w\Psi(0,t,z)
+ =\sqrt{\frac{2}{\partial_a^2\mathscr L(\alpha(t,z),t,z)}}.
+ \label{eq:normalderivative}
+\end{equation}
+Consequently the inverse admits a convergent expansion in the flat
+variable $z$ and the ramified target coordinate
+$\sqrt{Y-v(t,z)}$, including at the completed discriminant.
+\end{theorem}
+\begin{proof}
+Taylor's theorem with an analytic remainder gives
+\begin{equation}
+ \mathscr L(a,t,z)-v(t,z)
+ =(a-\alpha(t,z))^2 U(a,t,z),
+ \label{eq:factorfold}
+\end{equation}
+where
+\[
+ U(a,t,z)=\int_0^1(1-r)
+  \partial_a^2\mathscr L\big(\alpha+r(a-\alpha),t,z\big)\dd r.
+\]
+At the center, $U=\partial_a^2\mathscr L/2$, bounded away from zero.
+Choose an analytic square root of $U$ on a sufficiently small common
+neighborhood. The coordinate
+$w=(a-\alpha)\sqrt{U(a,t,z)}$ has nonzero derivative in $a$, so its
+local inverse has the form $a=\alpha+\Psi(w,t,z)$, holomorphic in
+$(w,z)$. Equation \eqref{eq:factorfold} becomes $Y-v=w^2$, giving
+\eqref{eq:normalinverse}. Uniform derivative and boundary bounds give
+common neighborhoods for small sectorial $t$. Differentiating at the
+center proves \eqref{eq:normalderivative}.
+\end{proof}
+
+This is the analytic quadratic normal form with parameter. Its
+classical mechanism is not the new ingredient. The information supplied
+by \cref{thm:critical} is the exact $q$-product completion of its center
+and discriminant. A normal form centered at $v_0$ rather than $v(t,Q)$
+would be incorrect in the critical layer.
+
+\subsection{How Stokes transport acts on the discriminant}
+Let $\cL_\pm$ denote the lateral $q$-gamma carriers. Their difference is
+\begin{equation}
+ \cL_+(a,t)-\cL_-(a,t)
+ =2\ii\sum_{n\geq1}
+       \left(\sum_{d\mid n}\frac{\sin(2\pi da)}d\right)Q^n.
+ \label{eq:qgammajump}
+\end{equation}
+The upper carrier is completed by $D_1-D_a^-$; the lower carrier is
+completed by $D_1-D_a^+$. Both completed families are exactly
+$\cL$. Thus the actual functions $\alpha(t,Q)$ and $v(t,Q)$ are
+independent of this choice of lateral representation.
+
+Before completion, the carrier critical values differ at leading
+order by $2\ii\sin(2\pi\alpha_0)Q$. Away from the discriminant the
+inverse jump is described by \cref{thm:inverse}. In the layer
+$Y-v_0=O(Q)$ the derivative is $O(Q^{1/2})$, so a division by that
+derivative is not a uniform approximation. The exact difference is
+instead governed by two square-root expressions with shifted centers.
+The elementary model
+\[
+ F_\pm(u)=u^2\pm\delta,\qquad
+ h_\pm(Y)=\pm\sqrt{Y\mp\delta}
+\]
+shows why expanding in $\delta/Y$ is invalid when $Y=O(\delta)$.
+The completed normal form \eqref{eq:normalinverse} is the replacement
+for that expansion.
+
+A loop around $Y=v(t,Q)$ exchanges the two inverse sheets. This is
+ramification monodromy, not a new Borel Stokes jump. Similarly,
+$\Re(1/t)=0$ is a loss-of-decay boundary for $Q$, not the critical
+value in the target. The three phenomena must be recorded separately
+in any complex inverse atlas.
+
+\section{Applications, extensions, and genuine boundaries}
+\label{sec:scope}
+
+\subsection{Finite products and arithmetic progressions}
+The theorem applies directly to
+$\log(q^k;q^N)_\infty$ near $q=1$ by using $a=k/N$ and replacing $t$
+with $Nt$. Finite linear combinations, ratios of infinite products,
+and normalized $q$-gamma products inherit the explicit completion by
+addition. Whenever their forward derivative is nonzero, the general
+inverse transport theorem then supplies their completed inverse. A
+zero derivative requires the actual local multiplicity and its
+parameter unfolding to be examined separately.
+
+Finite $q$-Pochhammer products and Gaussian polynomials are different.
+They are algebraic or analytic functions of the parameters on their
+local domains. Their inverse expansions at ordinary critical points
+are convergent Puiseux expansions; the mere presence of a branch point
+does not create a factorially divergent Borel tail. Stokes phenomena
+enter when an infinite product, a divergent asymptotic limit, or a
+nonuniform degree limit is involved. This distinguishes a finite
+polynomial ramification calculation from the $q$-gamma analysis above.
+
+\subsection{What is proved at roots of unity?}
+For $q=\zeta_m\e^{-t}$, the exact factorization
+\begin{equation}
+ (x;q)_\infty=\prod_{r=0}^{m-1}(xq^r;q^m)_\infty,
+ \qquad q^m=\e^{-mt},
+ \label{eq:cyclotomicfactor}
+\end{equation}
+reduces the product to finitely many factors with positive-radial base.
+However, their first arguments generally include nontrivial phases.
+They are not all of the form $\e^{-amt}$ with a fixed real $a$.
+Accordingly, \cref{thm:completion} alone is not a theorem for every
+cyclotomic cusp.
+
+There is a direct root-of-unity application when the factors depend
+only on $q^m$ and have specified radial shifts:
+\[
+ \log\big(\e^{-am t};\e^{-mt}\big)_\infty=G_a(mt).
+\]
+Its flat scale is $\exp(-4\pi^2/(mt))$, and all our completion and
+inverse formulas apply after that rescaling. For general phased
+factors in \eqref{eq:cyclotomicfactor}, one needs the corresponding
+fixed-argument Borel data, branch constants, and any moving-parameter
+uniformity. The rational-shift identities in \cref{cor:fr} supply a
+useful part of this structure but do not eliminate those hypotheses.
+
+\subsection{Endpoint and coalescing-action limitations}
+The constants in the basic uniform expansion are not uniform as
+$a\to0$, where the product develops a zero and $\log\Gamma(a)$ is
+singular. Joint limits such as $a\asymp t$ or $a\asymp Q$ require a
+new local core. Likewise the normal form proved here is a stable
+simple fold: the second derivative remains nonzero. An arbitrary
+perturbation of an $m$-fold point for $m>2$ generally splits it into
+several critical points, so replacing $1/2$ by $1/m$ without an
+unfolding analysis is not justified.
+
+All claims about exponential smallness are sectorial. We do not
+assert analytic continuation of the exact infinite product through
+an entire arc of $|q|=1$, nor a global inverse on the complex plane.
+The Borel transform can admit continuations that the original
+$q$-product does not admit on a corresponding global domain. An
+inverse atlas must preserve that distinction.
+
+\section{A general completion-sensitive ramification principle}
+\label{sec:ramified}
+
+The $q$-gamma fold suggests a useful general rule, but only after its
+nondegeneracy hypothesis is made explicit. The following is a local
+analytic statement underlying a class of ramified transseries.
+
+\begin{theorem}[Action selection at a finite-multiplicity inverse]
+\label{thm:ramified}
+Let $F_0$ be holomorphic near $\alpha$, with
+\[
+ F_0(\alpha)=v_0,\quad F_0^{(j)}(\alpha)=0\ (1\leq j<m),\quad
+ c_m=F_0^{(m)}(\alpha)/m!\ne0,
+\]
+where $m\geq2$. Let $\mathcal P(x,z)$ be holomorphic near $(\alpha,0)$
+and have the form
+\begin{equation}
+ \mathcal P(x,z)=F_0(x)+z^r p_r(x)+z^{r+1}p_{r+1}(x)+\cdots,
+ \qquad r\geq1,
+ \label{eq:generalperturbation}
+\end{equation}
+with a convergent series. For $\eta$ in a compact set avoiding
+$p_r(\alpha)$, the equation
+\begin{equation}
+ \mathcal P(x,z)=v_0+z^r\eta
+ \label{eq:generallevel}
+\end{equation}
+has $m$ local solutions of the form
+\begin{equation}
+ x_j=\alpha+z^{r/m}\left\{u_j+O(z^{1/m})\right\},\qquad
+ u_j^m=\frac{\eta-p_r(\alpha)}{c_m},
+ \label{eq:generalramified}
+\end{equation}
+with convergent series on the cover $z=s^m$. The result is uniform for
+families with uniform holomorphic bounds, $c_m$ bounded away from
+zero, and the stated separation of $\eta$. Substituting
+$z=\e^{-A/t}$ gives leading inverse action $rA/m$.
+\end{theorem}
+\begin{proof}
+Set $z=s^m$ and $x=\alpha+s^r u$. Divide
+\eqref{eq:generallevel} by $s^{mr}$. The quotient extends holomorphically
+to $s=0$, because every higher carrier term has an additional power
+$s^r$ and every later completion sector an additional power $s^m$.
+At $s=0$ it is $c_mu^m+p_r(\alpha)-\eta$. Its $m$ roots are nonzero
+and simple. The analytic implicit-function theorem gives the $m$
+convergent branches in $s$, uniformly on compact parameter sets.
+\end{proof}
+
+This proof is an elementary Newton--Puiseux rescaling. The useful
+information is the \emph{selected} exponent $r$, which must come from
+the exact completion, not be guessed from the first Borel pole. At a
+regular inverse ($m=1$), the same principle preserves the first
+surviving action. At the nondegenerate $q$-gamma critical layer,
+$m=2$ and $r=1$. Finite phase cancellation, as in
+\cref{prop:delay}, can change $r$ before ramification takes place.
+
+\begin{remark}[Why a constant-term test alone fails]
+The hypotheses require the full coefficient functions of orders
+below $r$ to vanish. If only their values at the critical center
+vanish, lower-order derivative terms can control the inverse. For
+example,
+\begin{equation}
+ x^2+zx+z^3=0
+ \label{eq:newtoncounter}
+\end{equation}
+has roots
+\[
+ x_1=-z^2+O(z^3),\qquad x_2=-z+z^2+O(z^3),
+\]
+not two roots of order $z^{3/2}$. Although the completion at $x=0$
+first appears as $z^3$, the term $zx$ changes the Newton polygon.
+The two balances are $2\beta=1+\beta$ and $1+\beta=3$, giving
+$\beta=1,2$. This counterexample is directly relevant to parameter
+cancellations in $q$-analogs: vanishing of a Stokes constant or a
+completion coefficient at one point is not enough to infer the
+ramification scale.
+\end{remark}
+
+A full multi-action theory would replace the single variable $z$ by
+an action-filtered algebra and analyze the initial equation in each
+valuation. The present theorem proves the rank-one analytic case,
+including uniformity and convergent ramification, without silently
+assuming a Newton polygon exists for every possible transseries
+support.
+
+\section{Constructive all-orders recursions and certification}
+\label{sec:algorithms}
+
+\subsection{Regular inverse sectors}
+The convergent implicit proof in \cref{thm:cusp} gives a direct
+coefficient algorithm. Let
+$\delta_{<n}=\sum_{j=1}^{n-1}\Delta_jz^j$. Then
+\begin{equation}
+ \Delta_n=-\frac1f[z^n]\left\{
+ \sum_{k=2}^{n}\frac{H_a^{(k)}(h)}{k!}\delta_{<n}^{\,k}
+ +\sum_{m=1}^{n}C_m(a)z^m\exp(-Am\delta_{<n})\right\}.
+ \label{eq:deltarecurrence}
+\end{equation}
+Only finite Taylor polynomials are needed to compute the displayed
+coefficient. The divisor sums $C_m$ can be generated by a sieve in
+$O(N\log N)$ elementary additions through order $N$. The remaining
+cost is truncated polynomial arithmetic with derivative-valued
+coefficients. Formula \eqref{eq:deltarecurrence} makes resonance
+combinations automatic: contributions with the same total action are
+added before the next coefficient is solved.
+
+\subsection{Critical point and value}
+Write
+$\alpha(t,z)=\alpha_0+\sum_{n\geq1}b_n(t)z^n$ and
+$\beta_{<n}=\sum_{j<n}b_jz^j$. Then
+\begin{equation}
+ b_n=-\frac1\kappa[z^n]\left\{
+ \sum_{k=2}^{n}\frac{\partial_a^{k+1}\cL_0(\alpha_0,t)}{k!}
+                      \beta_{<n}^{\,k}
+ +\sum_{m=1}^{n}z^m e_m'(\alpha_0+\beta_{<n})\right\}.
+ \label{eq:criticalrecurrence}
+\end{equation}
+Substitute the result into \eqref{eq:auxfamily} to compute the critical
+value. The denominator $\kappa$ is uniformly separated from zero;
+this is where the simple-fold hypothesis enters the algorithm.
+
+\subsection{Inverse coefficients at the completed branch point}
+For the factor $U$ in \eqref{eq:factorfold}, Lagrange inversion of
+$w=(a-\alpha)\sqrt{U}$ gives
+\begin{equation}
+ \Psi(w,t,z)=\sum_{r\geq1}\frac{w^r}{r!}
+ \left.
+ \partial_a^{r-1}\left[U(a,t,z)^{-r/2}\right]
+ \right|_{a=\alpha(t,z)}.
+ \label{eq:PsiLagrange}
+\end{equation}
+This is convergent on the normal-form neighborhood, not merely a
+formal Puiseux identity. Together with
+\eqref{eq:criticalrecurrence}, it supplies every mixed sector in the
+flat parameter and ramified target coordinate. Re-expanding the
+coefficient functions in $t$ gives a further, generally asymptotic,
+layer of the transseries.
+
+\subsection{What a numerical certificate must record}
+A reliable inverse calculation should retain the chosen logarithmic
+branch, the lateral contour, the exact completion, a target disk or
+ramified coordinate, a derivative lower bound, and the norm used for
+the truncation error. Near a simple fold the regular derivative lower
+bound must be replaced by the nonzero quadratic coefficient and the
+completed critical value.
+
+The formulas in this article separate three errors. Truncating a
+power--logarithmic carrier creates an algebraic or optimally truncated
+error. Truncating the convergent $z$-expansion creates an exponential
+sector error. Evaluating the coefficients numerically creates a
+floating-point error. In particular, a highly accurate formal carrier
+truncation is not an exact carrier unless a summation or exact
+remainder representation has been supplied.
+
+\section{Reproducible checks and numerical evidence}
+\label{sec:numerics}
+
+The accompanying \texttt{verify.py} performs exact symbolic checks and
+high-precision numerical experiments. It uses only \texttt{mpmath}
+and \texttt{sympy}. Numerical evidence is not used in place of the
+Mellin proof, the reflection proof, or the analytic implicit-function
+arguments. The output explicitly distinguishes independent evaluation
+of the completion identity from tests that use that identity to define
+a carrier.
+
+\subsection{An independent completion test}
+The original $G_a$ is evaluated by its absolutely convergent
+logarithmic series. The Borel median is evaluated independently by
+\eqref{eq:Kei} and \eqref{eq:sumK}; it is \emph{not} defined as
+$G_a-P_a-D_a^0$ in this test. To accelerate the double sum, write
+\begin{equation}
+ b_n(a)=\sum_{d\mid n}\frac{\sin(2\pi da)}d,
+ \qquad
+ K_J(x)=-\frac2\pi\sum_{j=1}^{J}\frac{(2j-1)!}{x^{2j}}.
+ \label{eq:Ktrunc}
+\end{equation}
+The approximation is
+\begin{equation}
+ B_{M,J}(a,t)=\sum_{j=1}^{J}c_{2j}(a)t^{2j}
+ +\sum_{n=1}^{M}b_n(a)
+       \left\{K(An/t)-K_J(An/t)\right\}.
+ \label{eq:acceleration}
+\end{equation}
+For fixed $J$ and a proper $t$-sector, the large-$n$ remainder of the
+kernel is $O(n^{-2J-2})$; the subtracted infinite sums give exactly the
+Bernoulli terms already inserted. This makes the remaining sum
+rapidly convergent. The code compares $(M,J)=(60,10)$ and $(80,12)$.
+The reported errors are observed discrepancies, not interval-arithmetic
+enclosures of the infinite tails.
+
+\begin{table}[htbp]
+\centering
+\caption{Independent check of $G_a-P_a-D_a^0-B_{60,10}$.
+The last column is the size of the explicit completion. Values are
+rounded; complete output is in \texttt{verification\_results.json}.}
+\label{tab:identity}
+\begin{tabular}{@{}llll@{}}
+\toprule
+$a$ & $t$ & Observed absolute discrepancy & $|D_a^0(t)|$\\
+\midrule
+$1/3$ & $0.7$ & $1.262\times10^{-58}$ & $1.606\times10^{-25}$\\
+$2/5$ & $1.2$ & $1.099\times10^{-53}$ & $4.171\times10^{-15}$\\
+$1/3$ & $2$ & $1.354\times10^{-48}$ & $1.338\times10^{-9}$\\
+$1/3$ & $0.8+0.3\ii$ & $1.012\times10^{-56}$ & $8.122\times10^{-20}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The discrepancy agrees with the change under the indicated refinement
+to the displayed precision. The half-shift test separately confirms
+that the Bernoulli median is zero while the dual product is nonzero.
+This is a useful check that the test is not accidentally comparing two
+copies of a perturbative expression.
+
+\subsection{Critical-point and inverse-layer checks}
+For this second group of tests, the exact $q$-gamma function is
+computed from its convergent product, and the carrier is evaluated as
+$\cL_0=\cL-\cE$ using the already independently tested completion
+identity. Exact convergent derivative sums are used for Newton
+iterations. Thus these are tests of the critical and inverse formulas,
+not a second independent derivation of the completion theorem.
+
+At the carrier level $Y=v_0$, the normalized inverse separation is
+compared to the coefficient in \eqref{eq:realgap}. The individual
+inverse approximations retain both the $Q^{1/2}$ and $Q$ terms.
+
+\begin{table}[htbp]
+\centering
+\caption{Critical-layer tests at 150 decimal working digits.
+The last column gives the error of each two-term inverse approximation, divided by $Q^{3/2}$.}
+\label{tab:fold}
+\begin{tabular}{@{}llll@{}}
+\toprule
+$t$ & $\alpha_0(t)$ & $(a_+-a_-)/\sqrt Q$ & $(R_-,R_+)$\\
+\midrule
+$1.5$ & $1.425089164991874$ & $5.99721345624$ & $(95.5583,-95.5635)$\\
+$1.0$ & $1.438674038433400$ & $5.21925419341$ & $(70.9293,-70.9293)$\\
+$0.75$ & $1.444978961972934$ & $4.88119865255$ & $(60.4933,-60.4933)$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The critical-point shift divided by $Q$ is, respectively,
+approximately $6.7733950033$, $4.1737023873$, and $3.2672115106$,
+matching $-e'(\alpha_0)/\kappa$ with the predicted next-order error.
+The critical-value formula is checked through order $Q^2$. These
+finite experiments are consistency checks of the asymptotic orders;
+they do not establish the uniform bounds, which come from the common
+analytic neighborhoods in the proofs.
+
+\subsection{Exact symbolic checks}
+The symbolic tests compare several Bernoulli coefficients with the
+Taylor coefficients of the holomorphic Borel kernel, verify the
+$q$-gamma shift relation coefficientwise, check the two-exponential
+inverse formula and the first critical-point/value formulas, and
+verify the eta-quotient cancellations in \eqref{eq:eta-flat}. They do
+not prove analytic continuation or convergence. No result in this
+article is labeled machine-formalized.
+
+\section{Further research questions and proposed approaches}
+\label{sec:research}
+
+The questions below are a proposed program, not a list of theorems
+implicitly claimed to have been solved.
+
+\begin{problem}[Independent audit of the scalar completion proof]
+Compare \cref{thm:completion} with existing modular transformation and
+Mellin-integral formulas for shifted products, then produce a precise
+priority and equivalence map. The concrete deliverable is a
+normalization table including the missing zero-th factors, the branch
+of $\log t$, and the orientation of each lateral contour. An
+independent expert check of \eqref{eq:functionaleq} and the
+Mellin--principal-value identification is the highest-value next
+verification step.
+\end{problem}
+
+\begin{problem}[All cyclotomic cusp factors]
+Extend the completion theorem from radial shifted factors to every
+phased factor in \eqref{eq:cyclotomicfactor}, uniformly in parameters
+away from zeros. The target is a complete residue-class formula for
+both the jump and the jump-free part, followed by an inverse theorem
+with explicit branch constants. A decomposition into finitely many
+fixed-argument and shifted-argument kernels is a natural starting
+point; simply applying the radial theorem to all factors is not valid.
+\end{problem}
+
+\begin{problem}[Joint endpoint scaling]
+Study $a\to0$ simultaneously with $t\to0$, especially $a/t$ bounded
+or $a/Q$ bounded. The endpoint zero and the ordinary gamma pole should
+be absorbed into a new exact core before inversion. A useful theorem
+would give one uniform representation covering the fixed-$a$ formula
+and the endpoint layer, with an explicit transition of Stokes and
+completion coefficients.
+\end{problem}
+
+\begin{problem}[Critical cancellation and Newton polygons]
+Classify parameter values of normalized $q$-products for which the
+first completion coefficient vanishes at a critical point while its
+parameter derivative does not. The model \eqref{eq:newtoncounter}
+shows that the inverse action can then split into several valuations.
+One goal is an algorithm that takes the first nonzero derivative jets
+of the completion and returns the valid ramified scales and their
+uniform domains.
+\end{problem}
+
+\begin{problem}[Higher-multiplicity unfoldings]
+For a family with a tuned $m$-fold critical point, determine the
+completed discriminant and all nearby simple critical points after
+exponentially small perturbation. The level theorem
+\cref{thm:ramified} is not a classification of that discriminant.
+Weierstrass preparation in the inverse variable, combined with the
+exact $Q$-series, should reduce the problem to a polynomial unfolding
+whose coefficients are sectorial transseries.
+\end{problem}
+
+\begin{problem}[Borel singularities of the critical coefficients]
+Determine the analytic continuation and alien derivatives of the
+formal $t$-expansions of $\alpha_0$, $v_0$, and the coefficients of
+$\Psi$. Resurgent implicit-function closure is a starting point, but
+it does not by itself provide a sharp list of singularities or their
+local types. A concrete first target is the leading singularity of
+the critical-point series, computed from the $a$-derivative of the
+explicit Borel kernel and the implicit critical equation.
+\end{problem}
+
+\begin{problem}[Sharp convergence radii in the exponential variable]
+The proofs give common positive radii in $z$, but not the exact
+nearest singularity of $\alpha(t,z)$ or the regular inverse series.
+Determine whether the first obstruction is a collision of critical
+points, a zero of a dual product factor, or escape from the chosen
+inverse chart. This is an analytic continuation problem, not a
+question answered by a finite list of coefficients.
+\end{problem}
+
+\begin{problem}[Infinite reflection weights]
+Replace the finite phase measure by a countable or continuous measure
+on the circle. Under what summability conditions do the two reflection
+kernels remain exactly the even and odd subspaces? Fourier uniqueness
+suggests a positive answer for finite measures, but interchange with
+the Borel and dual-product transforms must be justified. The
+finite-phase action-delay bound has no immediate infinite analogue.
+\end{problem}
+
+\begin{problem}[Several actions and resonance blocks]
+Develop a uniform version of \cref{thm:ramified} for several complex
+actions and for families in which their real parts exchange order.
+The correct input is an action filtration with locally finite sums,
+not an arbitrary list of exponentially small terms. The target is a
+branch-compatible inverse cocycle whose sector regrouping remains
+valid when actions resonate or coalesce.
+\end{problem}
+
+\begin{problem}[Character-twisted Lambert completions]
+Determine which parts of the Mellin proof extend to the broader
+character-twisted Lambert families of \cite{bd}. The decisive issue is
+whether the functional equation splits the Mellin kernel into a
+Laplace-summed perturbative part and an explicit convergent flat part
+with the proposed phases. The present scalar shifted-product theorem
+does not establish every such phase prescription.
+\end{problem}
+
+\begin{problem}[Nonlinear vector-valued modular transport]
+For vectors of weighted $q$-products, identify conditions under which
+an analytically defined inverse observable inherits a compatible
+modular or quantum-modular transition law. Linear antisymmetrization
+can eliminate a completion, but nonlinear inversion creates mixed
+sectors. An exact transition map such as \eqref{eq:cocycle}, rather
+than coordinatewise arithmetic averaging, should be the basic object.
+\end{problem}
+
+\begin{problem}[Formalization and verified numerics]
+Formalize first the finite-weight Vandermonde criterion, the filtered
+fixed-point lemma, and the algebraic coefficient recursions. In
+parallel, implement interval-enclosed evaluation of the scalar
+principal-value kernel and derivative bounds on the fold polydisk.
+A full formal proof of the Mellin contour deformation will require a
+substantial complex-analysis library; numerical agreement alone
+should never be presented as that formal proof.
+\end{problem}
+
+\section{Conclusions}
+The exact completion, rather than the formal tail alone, is the
+natural input for complex transseries reversion. In the shifted
+$q$-product family, a Mellin functional equation identifies both the
+Stokes-sensitive sine part and the jump-free cosine part. This proves
+a scalar completion identity appearing as a recent conjecture and
+leads to a finite-weight reflection classification.
+
+Regular inverse transport then converts the completed $q=1$ cusp into
+a power--logarithmic expansion dressed by convergent exponential
+sectors. At the $q$-gamma minimum, the critical value itself moves by
+order $Q$, and the inverse branches respond at order $Q^{1/2}$. The
+completed quadratic normal form remains valid where regular inverse
+estimates fail. Its location, not merely its existence, is determined
+by the exact completion theorem.
+
+The resulting theory is a concrete part of a broader complex
+transseries inverse atlas: formal support, sectorial summation,
+completion selection, and sheet monodromy remain separate data that
+must be made compatible. The article supplies that compatibility for
+the stated shifted-product and $q$-gamma charts, rather than claiming
+a single global inversion theory for every possible transseries.
+
+\appendix
+\section{Residue audit and finite-order coefficients}
+\label{app:residues}
+For reference, the residues in \eqref{eq:mellinG} can be checked
+without any Borel argument. At $s=-2n$, $n\geq1$,
+\[
+ \Res\Gamma(s)=\frac1{(2n)!},\qquad
+ \zeta(1-2n)=-\frac{B_{2n}}{2n},\qquad
+ \zeta(-2n,a)=-\frac{B_{2n+1}(a)}{2n+1}.
+\]
+The overall minus sign in \eqref{eq:mellinG} therefore gives exactly
+$c_{2n}(a)$ in \eqref{eq:tail}. At the negative odd integers below
+$-1$, the zero of $\zeta(s+1)$ cancels the gamma pole. At $s=-1$ the
+three factors give the linear coefficient $B_2(a)/4$.
+
+The Stokes residue sign is independent of this Mellin residue sign.
+For a contour going from left to right above a positive pole, the
+small upper arc is clockwise, and contributes $-\pi\ii$ times the
+residue. The lower arc contributes $+\pi\ii$ times the residue.
+Their difference is $-2\pi\ii$ times the residue, as used in
+\eqref{eq:sign}. The exact $G_a$ pairs its upper Borel sum with the
+\emph{negative-phase} dual product, as in
+\eqref{eq:completionplus}. Reversing that pairing would change the
+function by a nonzero exponential jump.
+
+The exact $q$-gamma shift identity is
+\begin{equation}
+ \cL(a+1,t)-\cL(a,t)
+ =\log(1-\e^{-at})-\log(1-\e^{-t}).
+ \label{eq:qgammashift}
+\end{equation}
+The linear coefficients in \eqref{eq:ell1} have difference $(1-a)/2$,
+and the even coefficients obey
+\begin{equation}
+ \ell_{2n}(a+1)-\ell_{2n}(a)
+ =\frac{B_{2n}(a^{2n}-1)}{2n(2n)!}.
+ \label{eq:ellshift}
+\end{equation}
+The completion is periodic in $a$, so it cancels in
+\eqref{eq:qgammashift}. These identities provide independent
+coefficient checks with exact rational arithmetic.
+
+\section{Internal proof review and statement boundaries}
+\label{app:audit}
+This is an internal review checklist, not an independent referee
+report. The main points audited are the following.
+
+\paragraph{Mellin strip.}
+The shifted line is $1<c<2$ in the $u$-variable. The lower bound makes
+$\zeta(u)$ and the double Dirichlet sums absolutely convergent; the
+upper bound places the scalar principal-value kernel in its Mellin
+strip. Choosing an arbitrary positive line would miss one of these
+requirements.
+
+\paragraph{Principal values.}
+The infinite Borel-kernel integral is not handled by an unqualified
+Tonelli argument. The proof integrates on a nonreal ray, obtains an
+absolute $k^{-3}m^{-2}$ majorant, deforms each term, and uses the
+Mellin bound to sum the resulting principal-value kernels. The scalar
+Mellin transform itself uses subtraction at its one pole.
+
+\paragraph{Shift analyticity.}
+The real Fourier representation is not used for nonreal $a$. The
+sine-quotient kernel supplies holomorphic continuation, and the
+$a\mapsto a+1$ relation supplies the convergent tail correction needed
+near the gamma minimum.
+
+\paragraph{Finite versus infinite weights.}
+The two reflection equivalences and the delay bound use a finite
+Vandermonde system. No result for unbounded or arbitrary distributional
+weights is inferred from that proof.
+
+\paragraph{Completion and median.}
+The term $D_a^0$ is not equated with half a Stokes jump. Its cosine
+coefficients are independent of the sine coefficients that govern
+the jump. The arithmetic median is used only in the additive
+logarithmic equation. Nonlinear inverse reconstruction is performed
+with an analytic inverse theorem.
+
+\paragraph{Uniformity and ramification.}
+The regular inverse formulas use disks with derivative control. The
+critical formulas promote $Q$ to an independent $z$ and use common
+polydisks. The layer formula excludes its scaled branch point; the
+completed normal form covers that point. The general action-selection
+principle excludes a degenerate initial polynomial, and
+\eqref{eq:newtoncounter} records a case where a naive scale rule fails.
+
+\paragraph{What has not been claimed.}
+The article does not prove a global inverse for all complex
+transseries, a full cyclotomic-cusp classification, an arbitrary
+higher-critical-point unfolding theorem, or the general conjectural
+phase formulas for character-twisted Lambert series. It does prove
+the explicit scalar completion identity and the stated inverse
+consequences. Its numerical checks are neither interval proofs nor
+Lean proofs, and its source audit does not certify first-publication
+priority.
+
+\section{Source snapshot and reproducibility}
+\label{app:source}
+The repository snapshot used for comparison is the commit printed in
+\cref{sec:introduction}; the fetched nonlinear-transport article was
+read at that commit, rather than inferred solely from a search
+snippet. The principal external status comparison uses
+Fantini--Rella, arXiv:2506.08265v2, dated 1 April 2026, where the scalar
+identity is explicitly labeled Conjecture~5. The later works listed
+in the bibliography were considered to avoid relying only on a 2025
+literature snapshot. The comparison does not establish that no
+equivalent identity exists in older transformation-formula literature.
+
+The distributed package contains the standalone \LaTeX{} source,
+its compiled PDF, \texttt{verify.py}, a captured numerical-results
+JSON file, \texttt{requirements.txt}, \texttt{README.md}, and a compact
+proof-review note. Compilation requires a standard \TeX{} installation
+with the packages listed in the source. Two or more \texttt{pdflatex}
+passes resolve cross-references. The bibliography is embedded, so
+Bib\TeX{} is not required.
+
+Run the numerical verification with
+\begin{quote}\small\ttfamily
+python verify.py --dps 150 --output verification\_results.json
+\end{quote}
+The tests use decimal strings or exact rationals for their inputs.
+No binary machine-precision approximation of $\pi$ is reused in a
+high-precision calculation. Changing the precision can alter the
+last displayed digits and the noise floor in identically vanishing
+tests without changing the mathematical assertions.
+
+\begin{thebibliography}{99}
+
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt}, repository snapshot
+\texttt{b484725c893a7a9bde856151988996aef6965cb0}, inspected
+4 October 2026.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/b484725c893a7a9bde856151988996aef6965cb0}.
+The consolidated transseries group is under
+\path{Analysis/Transseries/docs/series-and-transseries/}.
+
+\bibitem{repotransport}
+ProveIt research report, \emph{Nonlinear Stokes Transport under
+Logarithmic Inversion}, 29 September 2026, source inspected at the
+snapshot in \cite{repo}.\newline
+\path{Analysis/Transseries/docs/series-and-transseries/Nonlinear_Stokes_Transport_Logarithmic_Inversion/article.tex}.
+
+\bibitem{repocrossover}
+ProveIt research report, \emph{Uniform Resurgent Crossover for Gaussian
+Binomials}, source group inspected in \cite{repo}.\newline
+\path{Analysis/Transseries/docs/series-and-transseries/Uniform_Resurgent_Crossover_Gaussian_Binomials/}.
+
+\bibitem{fr}
+V. Fantini and C. Rella,
+\emph{Modular resurgence, $q$-Pochhammer symbols, and quantum operators
+from mirror curves}, arXiv:2506.08265v2, 1 April 2026.
+In particular, Section 3.1.3, Conjecture 5, and equations (60)--(62).\newline
+\url{https://arxiv.org/abs/2506.08265v2}.
+
+\bibitem{vectors}
+M. C. N. Cheng, I. Coman, V. Fantini, and C. Rella,
+\emph{Modular resurgent structures for vectors},
+arXiv:2608.08902v1, 9 August 2026.\newline
+\url{https://arxiv.org/abs/2608.08902v1}.
+
+\bibitem{bd}
+D. Broadhurst and D. Dorigoni,
+\emph{Resurgent Lambert series with characters},
+arXiv:2507.21352v2, 30 July 2026.\newline
+\url{https://arxiv.org/abs/2507.21352v2}.
+
+\bibitem{sauzin}
+D. Sauzin, \emph{Nonlinear analysis with resurgent functions},
+arXiv:1212.4477.\newline
+\url{https://arxiv.org/abs/1212.4477}.
+
+\bibitem{sauzinintro}
+D. Sauzin, \emph{Introduction to 1-summability and resurgence},
+arXiv:1405.0356.\newline
+\url{https://arxiv.org/abs/1405.0356}.
+
+\bibitem{gk}
+S. Garoufalidis and R. Kashaev,
+\emph{Resurgence of Faddeev's quantum dilogarithm},
+IRMA Lectures in Mathematics and Theoretical Physics \textbf{33}
+(2021), 257--272; arXiv:2008.12465.\newline
+\url{https://arxiv.org/abs/2008.12465}.
+
+\bibitem{dlmfzeta}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 25.11: Hurwitz Zeta Function}, including the functional
+equation, Bernoulli-polynomial values, and the derivative at zero;
+consulted 4 October 2026.\newline
+\url{https://dlmf.nist.gov/25.11}.
+
+\bibitem{dlmfqgamma}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 5.18: $q$-Gamma and $q$-Beta Functions},
+consulted 4 October 2026.\newline
+\url{https://dlmf.nist.gov/5.18}.
+
+\end{thebibliography}
+\end{document}
