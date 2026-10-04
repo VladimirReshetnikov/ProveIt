@@ -94,6 +94,9 @@
 > The [Parts XI–XII publication review](review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
 >
 >
+> The [batch91 ancillary placement review](review_batch91_placements_22a8ca89e.md) authenticates2030 added files and42954437 bytes atb0a536b63/d750d98dd/22a8ca89e against the original24 archives. The22 retired ZIPs supply sandpile, signal/gap, matrix and CA evidence; all eight host article/guide blobs remain unchanged, so these commits do not integrate the new main manuscripts. Fresh normal/optimized receipts are identical. The earlier mathematical reviews retain their exact scopes; byte placement adds no proof certification or arithmetic bound. The subsequent OEIS publication is reviewed separately.
+>
+>
 > The [batch90 placement review](review_batch90_placement_12076b2e8.md)
 > authenticates all32 added files against the53 pinned archive members at
 > **12076b2e8**. Only the new Cantor-subfields report receives its article and
