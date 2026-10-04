@@ -732,3 +732,35 @@ The retained 398-page PDF is likewise a historical 2026-09-04 receipt. The
 405-page PDF and its named source remain synchronized historical evidence for
 the `b899` checkpoint above; the current merged source has advanced beyond
 that checkpoint, so the changed canonical root is PDF-regeneration-deferred by user approval.
+
+## Correction of 4 October 2026
+
+The directional clause of `conj:cyclotomic-resurgent-inverse`
+(`chapters/07_certification_and_frontiers.tex`) is false. It said that every
+Borel direction avoiding the pole set, with a convergent Laplace integral,
+sums to the exact `R_a(t)`. For `m = 1` and `a = e^{-1}`, the positive ray and
+the ray at angle `π/4` are both pole-free with convergent integrals, but their
+sums differ by `-log(e^{-2πi/t}Q;Q)_∞`, where `Q = e^{-4π²/t}`. The refuted
+sentence stays on record, in a dated historical note.
+`rem:cyclotomic-direction-counterexample` proves the counterexample in full.
+The corrected conjecture keeps the clause only for the positive real ray. In
+any other direction `|θ| < π/2` it adds the explicit residue (Stokes)
+correction.
+
+The counterexample is Proposition 4.4 of *Complex transseries reversion at
+modular cusps* (arrival `516049bf9`, being filed at
+`Analysis/Transseries/docs/series-and-transseries/Modular_Cusp_Reversion_Stokes_Corrections_q_Gamma/`).
+Its Theorems 4.1–4.3 prove the rest of the first paragraph for every fixed
+compact `K`: uniform Gevrey one, meromorphic continuation with an explicit
+pole set, and the positive-ray identity. These proofs are human proofs, not
+formalized. The residue formula for general directions and the inverse
+paragraph stay open, so the row stays a conjecture. All canonical counts are
+unchanged, the concordances are untouched, and the validators pass.
+
+The PDF was rebuilt with three serial `pdflatex -interaction=nonstopmode
+-halt-on-error` passes from absent sidecars: 404 → 413 → 413 pages.
+`makeindex` accepted 164 entries, rejected none, and wrote 254 lines. The
+final log has no warning, undefined reference, overfull box or underfull box.
+All 43 font rows are embedded and none is Type 3. The rebuilt pages 318–321
+and 410 were inspected. The unchanged source had already built to 411 pages
+on this toolchain, against 408 in the previously committed PDF.
