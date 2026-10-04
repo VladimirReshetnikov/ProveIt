@@ -599,6 +599,24 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [IDLE-free matrix sources](Papers/research-wip/native-stream-queue/matrix193_idle_free_scout.md) remove one positive
+witness and four paid gates from each controller variant. Exact edge-sum and
+controller-word cancellations give these complete arrays:
+
+| Computed controller hats | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None | 1,618 | 145 | 35,587 |
+| LOAD or SWITCH | 1,615 | 144 | 53,347 |
+| LOAD and SWITCH | 1,612 | 143 | 71,107 |
+
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_idle_free_scout.md) reconstructs all6,460 rows,
+proves the complete IDLE=1 polynomial pullbacks and checks surviving uniform
+degree leaders. Reverse ordinary-input completeness uses fresh histories and
+native witnesses with no optional IDLE steps; it does not preserve arbitrary
+common witness tuples. Fresh author/review normal and optimized receipts pass.
+The separate577-row affine coefficient saving is not included in these arrays,
+and the established universal84 bound remains unchanged.
+
 The [paid affine reuse](Papers/research-wip/native-stream-queue/matrix193_affine_reuse_scout.md) lowers the complete
 matrix polynomial to **1,621=791M+830A**, with146 positive witnesses and
 unchanged exact degree35,587. Reusing the already paid sum r181=r144+1
@@ -615,7 +633,7 @@ the joint chart uses **1,616=789M+827A** with144. The
 [independent review](Papers/research-wip/native-stream-queue/review_matrix193_entry_controller_charts.md) checks all4,854 new rows,
 complete polynomial pullbacks, positive integer inverses and exact degree
 transfer. Author and review normal/optimized receipts pass. The current
-matrix alternatives preserve ordinary input and have these explicit tradeoffs:
+preceding matrix alternatives preserve ordinary input and have these explicit tradeoffs:
 
 | Controller hats computed from retained coordinates | Operations | Positive witnesses | Exact degree |
 |---|---:|---:|---:|

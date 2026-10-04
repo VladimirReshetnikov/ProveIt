@@ -580,6 +580,24 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [IDLE-free matrix sources](matrix193_idle_free_scout.md) remove one positive
+> witness and four paid gates from each controller variant. Exact edge-sum and
+> controller-word cancellations give these complete arrays:
+>
+> | Computed controller hats | Operations | Positive witnesses | Exact degree |
+> |---|---:|---:|---:|
+> | None | 1,618 | 145 | 35,587 |
+> | LOAD or SWITCH | 1,615 | 144 | 53,347 |
+> | LOAD and SWITCH | 1,612 | 143 | 71,107 |
+>
+> The [independent review](review_matrix193_idle_free_scout.md) reconstructs all6,460 rows,
+> proves the complete IDLE=1 polynomial pullbacks and checks surviving uniform
+> degree leaders. Reverse ordinary-input completeness uses fresh histories and
+> native witnesses with no optional IDLE steps; it does not preserve arbitrary
+> common witness tuples. Fresh author/review normal and optimized receipts pass.
+> The separate577-row affine coefficient saving is not included in these arrays,
+> and the established universal84 bound remains unchanged.
+>
 > The [paid affine reuse](matrix193_affine_reuse_scout.md) lowers the complete
 > matrix polynomial to **1,621=791M+830A**, with146 positive witnesses and
 > unchanged exact degree35,587. Reusing the already paid sum r181=r144+1
@@ -596,7 +614,7 @@
 > [independent review](review_matrix193_entry_controller_charts.md) checks all4,854 new rows,
 > complete polynomial pullbacks, positive integer inverses and exact degree
 > transfer. Author and review normal/optimized receipts pass. The current
-> matrix alternatives preserve ordinary input and have these explicit tradeoffs:
+> preceding matrix alternatives preserve ordinary input and have these explicit tradeoffs:
 >
 > | Controller hats computed from retained coordinates | Operations | Positive witnesses | Exact degree |
 > |---|---:|---:|---:|
@@ -708,13 +726,11 @@
 > coefficient component and controller/packing interfaces are the current
 > arithmetic targets; the four high-pair witness removals are already included.
 >
-> A next bounded controller target is the optional IDLE edge: fixing its hat
-> to1 remains unimplemented. It needs a complete emitted source and an
-> ordinary-input completeness proof using an IDLE-free accepting trajectory
-> and fresh native witnesses. The atomic completeness proof already allows
-> zero optional IDLEs, but no arithmetic saving or common-witness bijection
-> is credited to this proposal. The reviewed LOAD/SWITCH charts above are
-> already implemented and should not be counted again.
+> Optional IDLE elimination is now implemented and independently reviewed
+> above, with four complete sources and unchanged degrees. Its reverse proof
+> preserves only ordinary input through fresh histories/native witnesses.
+> The LOAD/SWITCH charts and IDLE savings must not be counted again. The
+> separate affine coefficient saving is not yet in the IDLE packet itself.
 >
 > The [packed selected-output construction](matrix193_packed_output_scout.md)
 > lowers the matrix route to **3,162=1,467M+1,695A** operations and **152 positive
