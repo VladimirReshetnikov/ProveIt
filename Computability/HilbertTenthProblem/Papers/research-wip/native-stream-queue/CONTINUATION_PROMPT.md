@@ -26,7 +26,7 @@
 > Pell/order criterion characterizes the remaining input fiber. Infinitely
 > many full same-input zeros defeat the literal positive inverse without
 > showing a falsely accepted input. Native rank and the original bound
-> remain present, so the two refuted83 constructions below do not settle
+> remain present, so the other refuted candidates below do not settle
 > this candidate. The [independent review](review_complete83_independent_gamma_scout.md)
 > and fresh normal/optimized receipts check the full source and criterion.
 > The established universal minimum remains **84 operations**.
@@ -50,6 +50,17 @@
 > scoped valuation counterexamples; normal/optimized replays pass. These are
 > native residue filters, with no prescribed-history realization or bound on
 > the full order gcd. The 83-operation language remains unresolved.
+>
+> The [genuine-history ternary control](complete83_gamma_native_ternary_escape.md)
+> constructs, for every accepted input, actual positive compiler witnesses
+> with **a=0 mod9 and v3(m)<=1**. Moving permitted upper dummy bits
+> preserves the computation and five-adic temporal alignment; a new q/2
+> margin proves the original slack remains positive before fresh Pell
+> witnesses are rebuilt. The [independent review](review_complete83_gamma_native_ternary_escape.md)
+> checks masks, population, congruences and the native converse; normal and
+> optimized replays pass. Thus the earlier v3(m)=2 exclusion is avoidable
+> on accepting histories. Other order factors remain uncontrolled: neither
+> a false-input alias nor a universal83 bound has been proved.
 >
 > The [native ternary exclusion](complete83_gamma_native_ternary_exclusion.md)
 > gives an explicit digit class with **v3(m)=2 exactly**, so both gamma83
@@ -98,6 +109,19 @@
 > historical candidate names, and scopes the new height/minimality results.
 > This is a rejected candidate; the established bound remains84 and the
 > independent-gamma83 ordinary-input language remains unresolved.
+>
+> The [auxiliary-product-only83 collapse](complete83_auxiliary_product_collapse.md)
+> refutes another literal one-multiplication deletion: **83=46M+37A**,
+> 18 positive witnesses and exact degree185. The square f*f stays paid;
+> supplying only T*f independently still admits every positive input on
+> every inherited valid compiler slice. A square-preserving Pell/CRT
+> extension proves the exact auxiliary projection and completes the full
+> outer counterfamily. The [source review](review_complete83_auxiliary_product_collapse_source.md)
+> independently expands101078 factor monomials and the full uniform leader;
+> the [mathematical review](review_complete83_auxiliary_product_collapse_math.md)
+> checks all positive witnesses. Fresh author/reviewer normal and optimized
+> replays pass. This isolates the lost f-divisibility, leaves independent-
+> gamma83 unresolved, and does not lower the established84 bound.
 >
 > The [outer-slack 83 candidate](complete83_outer_slack_collapse.md) saves
 > one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
