@@ -1,16 +1,28 @@
 # Definable Surreal Numbers and Omnific Integers
 
-**Ambient definability, reversible and bounded omnific coding, hereditary ordinal definability, a transcendence dichotomy, and the maximal initial core**
-Merged research report from two manuscripts written independently and dated
-23 September 2026 (items 04 and 07 of batch 27, placed in `a4dcb91`; they keep
-those numbers here). Prepared for Vladimir Reshetnikov.
+**Ambient definability, reversible and bounded omnific coding, hereditary ordinal definability, a transcendence dichotomy, and the maximal initial core; real parameters, countable assembly and strong symmetries; definable operations and an interpretation of set theory**
+
+A research report in three Parts, prepared for Vladimir Reshetnikov.
+AI-assisted, unrefereed and not formalized.
+
+- **Part I** (Sections 1–18, Appendices A–D): merged from two manuscripts
+  written independently and dated 23 September 2026 (items 04 and 07 of batch
+  27, placed in `a4dcb91`; they keep those numbers here).
+- **Part II** (Sections 19–29): merged from manuscripts 02 (base) and 05 of
+  batch 93, dated 4 October 2026.
+- **Part III** (Sections 30–43): manuscript 06 of batch 93, dated 4 October
+  2026, printed in full.
+
+Part I's numbering and labels did not change when Parts II and III were added.
 
 ```
 article.tex                                  the report, standalone LaTeX with an internal bibliography
-article.pdf                                  the compiled report, 56 pages
+article.pdf                                  the compiled report, 160 pages
 README.md                                    this guide
 04-hod-transcendence-AUDIT.md                source 04's research and verification audit, as delivered
 07-initial-core-SOURCE_AND_PROOF_AUDIT.md    source 07's source and proof audit, as delivered
+09-countable-assembly-PROOF_AUDIT.md         source 05's proof, source and verification audit, as delivered
+10-definable-operations-PROOF_STATUS.txt     source 06's proof-status and contribution summary, as delivered
 code/
   04-hod-transcendence-verify_finite.py      source 04 checks (standard library; prints JSON,
                                              writes a file only with --output)
@@ -18,19 +30,32 @@ code/
                                              verification.json in the current directory by default)
   07-initial-core-Makefile                   source 07's build/check targets (delivered file names;
                                              they do not build this report)
+  08-real-parameters-finite_code_check.py    source 02 checks of the slot code Z_f (standard library;
+                                             prints only; no recorded output was delivered)
+  08-real-parameters-build.sh                source 02's build script (builds the unshipped
+                                             definable_surreals.tex; do not run)
+  09-countable-assembly-verify_code.py       source 05 checks of the multiplexer (standard library;
+                                             writes a file only with --output)
+  09-countable-assembly-Makefile             source 05's build/check targets (delivered file names;
+                                             they do not build this report)
 data/
   04-hod-transcendence-verification_results.json   source 04's recorded run
   07-initial-core-verification.json                source 07's recorded run
+  09-countable-assembly-verification.json          source 05's recorded run
 ```
 
-Every label in `article.tex` carries the prefix `dsn:` (139 labels: 138 from
-the merge, and `dsn:rem:largecardinal`, added when the large-cardinal report
-was written). The
-[formalization ledger](../../FORMALIZATION.md) now indexes the assembled
-report under these labels, with all claims **Pending**. It supplies no
-checked implementation mapping for this report.
+Every label in `article.tex` carries the prefix `dsn:` (346 labels). Part I
+has 139: 138 from the merge, and `dsn:rem:largecardinal`, added when the
+large-cardinal report was written. Batch 93 added 207: the three Part labels
+`dsn:part:one`, `dsn:part:rp`, `dsn:part:op`; 69 `dsn:rp:` (source 02 and the
+write's notes in Part II); 53 `dsn:ca:` (source 05); 82 `dsn:op:` (source 06
+and the write's notes in Part III). The
+[formalization ledger](../../FORMALIZATION.md) indexes Part I under its
+labels, with all claims **Pending**; it does not index Parts II and III, and it
+supplies no checked implementation mapping for this report. Its line numbers
+for this report were taken before Parts II and III were added.
 
-## Two sources, one report
+## Part I: two sources, one report
 
 | | Manuscript | Repository pin | Contributes |
 |---|---|---|---|
@@ -117,7 +142,7 @@ Section 1.5 lists every renaming. The main ones:
   invariants.
 - `ω^x` is always the Conway map `Ω(x)`, never `exp(x log ω)`.
 
-## What the report claims
+## What Part I claims
 
 Numbers are those of `article.pdf`.
 
@@ -185,7 +210,7 @@ Numbers are those of `article.pdf`.
   `Z`. All are restrictions of `odg:`/`osq:` results; the size-boundary
   observation (Proposition 16.3) is already in `osq:sub:foundations`.
 
-## What the report does not claim
+## What Part I does not claim
 
 Appendix B lists every source's non-claims: 24 from 04, 25 from 07, and 4
 added by the merge. In brief:
@@ -222,11 +247,17 @@ added by the merge. In brief:
   `odg:def:cor:arithmetic`): only reals can become definable, all reals
   definable in `(R, +, ·, <, Z)` do, and the monomials are not definable with
   set parameters. The exact real closure and the omega-map expansion stay
-  open.
+  open. **Batch 93:** the omega-map half is answered at the level of an
+  interpretation: with `Oz` and `Ω` named, every coefficient is definable and
+  `(V, ∈)` is interpreted parameter-free (Theorems 36.3, 37.1); the definable
+  closures and a bi-interpretation stay open (Questions 42.1, 42.2).
 - **Questions 17.2–17.5**: birthday cost of the sign code (04), intermediate
   support fields (04; the universes-report inner models are recorded as an
   unproved instance), possible first omitted ordinals (07), syntactic costs
-  (07). All open.
+  (07). All open. **Batch 93:** Question 17.5 is answered in part (`Δ_1`
+  graphs of the canonical operations and level preservation by the monomial
+  code, Theorem 34.7, Corollary 40.3); Questions 17.2 and 17.4 are refined by
+  Questions 42.7, 42.11 and the birthday-cost questions of Section 28.
 - **Remark 17.6** (added with the
   [large-cardinal report](../large-cardinal-embeddings-and-normal-forms/)):
   that report's absoluteness lemma `lce:lem:absolute` gives omega-map and
@@ -236,7 +267,12 @@ added by the merge. In brief:
   same-reals instance that Question 17.3 recorded as unproved, including the
   targets of elementary embeddings with a critical point. Inner models lacking
   a real (`L` when not every real is constructible, `HOD` when it lacks a real)
-  are not covered, and Question 17.3 itself stays open.
+  were not covered. **Batch 93:** they are now: Part III proves normal-form
+  absoluteness without the same-reals hypothesis (Theorem 34.1), so every
+  transitive inner model `M ≠ V` of ZFC gives a support field (Corollary 34.4)
+  and the independent family (Corollary 40.2); `K_R` is a further instance
+  (Remark 22.10). A dated note after Remark 17.6 records this. The
+  classification asked in Question 17.3 stays open (Question 42.11).
 - **`odg:q:size`** (omnific Diophantine report): the definable fragments give
   one instance (Remark 16.6). This is partial information; the question stays
   open. The other report was not edited.
@@ -268,15 +304,159 @@ Appendix A.3 records these.
 - Neither source knew the automorphisms report or the reconstruction section
   of the omnific Diophantine report; their language questions are re-scoped.
 
+## Part II: real parameters, countable assembly and strong symmetries (batch 93, sources 02 and 05)
+
+Sections 19–29 of `article.pdf`, labels `dsn:rp:` (source 02) and `dsn:ca:`
+(source 05). Written 4 October 2026.
+
+| | Manuscript | Batch-93 no. | Archive | Pin | Printed |
+|---|---|---|---|---|---|
+| **02** | *Definable Surreal Numbers and Omnific Integers: Real Parameters, Countable Closure, and Strong Symmetries* | 02 | `definable_surreals.zip` | `3c25fbb55` | Sections 19–29 in full (base): its Section k is Section k+18, its statement k.m is (k+18).m. Files prefixed `08-real-parameters-`. |
+| **05** | *Definable Surreal Numbers and Omnific Integers: Real parameters, ordinal information, and countable assembly* | 05 | `definable_surreals_real_parameters.zip` | `a9ab9a698` | Inserted by subject after source 02's material in each section, marked [05]; Table 5 (Section 19.7) locates every numbered item. Files prefixed `09-countable-assembly-`. |
+
+Both archives arrived in `2faa3b37a`; placement `47a77daba`. The two are not
+editions of one text (different pins, under 1% shared 8-grams, neither cites
+the other) but prove the same central theorems. **Base 02**: its negative
+result needs only Con(ZFC) (Namba forcing over `L`, Theorem 25.6) where 05
+needs a measurable cardinal.
+
+**Printed once**, both sources named: the countable-assembly equivalence
+(02's Theorem 5.1 = 05's Theorem 7.2: Theorem 23.1, with 05's further clauses
+`ROD = COD`, `K_R = K_co`, whole sequences of ROD sets, as Theorem 23.9 and 05's
+proof as a second route); the Cohen classification (02's 6.1 = 05's 9.3:
+Theorem 24.1, with 05's ring form and proof as a second route); the global
+test (05's Proposition 5.4: Proposition 22.9, printed for its invariant
+`λ_R`). 05's re-proofs of Part I background are pointers with 05's proofs as
+second routes (Section 21.6). **Two codes kept**: 02's slot code `Z_f` and 05's
+multiplexer `𝒵(f)` (Theorem 23.5), the same construction with different band
+constants. **Prikry**: 02's Theorem 25.4 and 05's Theorem 10.2 (Theorem 25.7,
+with its graph-coding proof as a second route).
+
+**What Part II claims** (numbers of `article.pdf`):
+
+- **Theorems 22.2–22.3, Corollary 22.5** (02). `K_r ⊆ K_s` iff `r` is
+  `OD(s)`; the varying-real field `K_R = ⋃_r No^{HOD(r)}` is captured by one
+  real iff `HOD_R ⊨ AC`; `K_R = No` iff `V = HOD(r)` for one real `r`.
+  Source 06 proves Corollary 22.5 independently (Remark 22.7, with its
+  monomial clause). Answers 05's Question 13.7 negatively.
+- **Theorem 23.1** (02, 05). Every `f : ω → Ord` is ROD iff `HOD_R` is closed
+  under ω-sequences iff `K_R` is closed under countable Hahn sums iff sums of
+  OD purely infinite omnific integers stay in `I_R` iff `K_R` is `η_1`
+  (ambient countable cuts filled). **Theorem 23.9** (05): also iff
+  `ROD = COD` iff `K_R = K_co`. **Theorem 23.15** (05): `K_co` is the least
+  ambiently stable, countably Hahn-closed subclass containing `K_R`;
+  **Remark 23.18** (write): containing `Ord` suffices.
+- **Theorems 24.1, 24.4, Corollary 24.2, Proposition 24.3** (02, 05). Cohen
+  `Fn(λ×ω, 2)` over `L`: `K_R = ⋃_S No^{W_S}`, an exactly `ω_1`-long chain,
+  first omitted birthday `ω_1`, `η_1` but not `η_2`; **Theorem 24.9** (05) adds
+  `K_HOD = No^W` and a non-ROD omnific integer below `ω`.
+- **Theorems 25.4, 25.6** (02). Prikry over a measurable: a countable sum of
+  OD omnific monomials in `(ω, ω+ω^{1/2})` that is not ROD. Namba over `L`:
+  `HOD_R = HOD = L = W` yet a countable set of ordinals is not ROD, so
+  countable assembly is independent of ZFC (from Con(ZFC)). The no-new-reals
+  input is imported (see below).
+- **Theorems 26.4–26.5** (02). The common fixed field of the strong
+  automorphisms fixing `R ∪ Ord` (also with `Oz` preserved) is
+  `Ser(span_Q Ord)`; answers the strong form of `sse:sr:q:stabilizers`.
+  Corollary 26.6, Propositions 26.7–26.9, 26.12, Theorem 26.10 (02):
+  definable-closure bounds, value groups, the witness `𝓔 = Σ ω^{-n}/n!`, an
+  OD independent family not definable from real and ordinal parameters with
+  `Oz`, `R`, `Ord` named.
+- **Remark 22.10** (write): `K_R` satisfies the hypothesis of Theorem 8.2, so
+  the independent family exists over `K_R` when `V ≠ HOD_R`.
+
+## Part III: definable operations (batch 93, source 06)
+
+Sections 30–43, labels `dsn:op:`. Source 06, *Definable Surreals and
+Omnific Arithmetic: Parameter hierarchies, absolute normal forms, uniform
+coding, and an interpretation of set theory* (archive
+`definable_surreal_operations.zip`, arrival `de37a66d1`, pin `1404038df`,
+placement `47a77daba`, prefix `10-definable-operations-`), printed in full:
+its Section k is Section k+29, its statement k.m is (k+29).m. Its Theorem 4.2
+(= 02's Corollary 4.5) and Corollary 4.3 (= 05's Theorem 5.2) are printed once,
+in Part II; Remarks 33.2–33.3 keep their numbers as pointers.
+
+**What Part III claims:** the decoder of real codes for countable sign
+sequences has an `OD(p)` right inverse iff `ω_1^{HOD(p)} = ω_1`, and the
+`κ`-analogue (Theorems 33.4, 33.6, Corollary 33.7); canonical arithmetic,
+`Ω`, complete normal forms and set-indexed sums are absolute between nested
+transitive ZFC models **without a same-reals hypothesis** (Theorem 34.1), so
+every transitive inner model gives a support field (Corollary 34.4) and an
+independent family (Corollary 40.2); `Δ_1` graphs of the canonical
+operations (Theorem 34.7); every coefficient and truncation is definable in
+`(No, +, ·, <, Oz, Ω)` (Theorem 36.3); a parameter-free quotient
+interpretation of `(V, ∈)` there, with representatives in `{ω^a : 0 < a < 1}`
+(Theorem 37.1); definable Hahn summation of coded families (Theorem 38.3);
+coefficient-indexed derivations (Theorem 39.1); elementary-theory transfer
+(Theorem 40.4).
+
+**Notes added at the write:** after Theorem 40.4, a proved observation: for
+nested models of the same height, both sides of its elementary-inclusion
+clause hold only when `M = W` (the argument of `hset:thm:outer`). After the
+sign-limit normal-form fact used for Theorem 34.1(3)–(4), a check: it follows
+from Gonshor's Theorems 5.11–5.12 as formulated by Bournez–Guilmant
+(Definition 2.20, Theorem 2.21; the write did not consult Gonshor's book).
+
+## Unproved claims recorded as questions (Vladimir's rule of 4 October 2026)
+
+- **Question 28.17**: 02 imports "Namba forcing in the Laver-style
+  presentation adds no reals under CH" from Lietz's exposition and Miller's
+  notes. Jech (Ch. 28) and Shelah (*Proper and Improper Forcing*, Ch. XI) are
+  added as the standard references, but the write did not consult them or
+  confirm which presentation they treat; `univ` imports the theorem for the
+  classical presentation from FKW §7.6.
+- **Questions 42.13–42.14**: 06's Remark 4.5 (Remark 33.5; `Δ_1` decoder,
+  `Σ_2(p)`/`Δ_2(p)` sections) and its description-length bound (40.2) are
+  argued as sketches and upper bounds.
+- **Superseded, not wrong**: 05's Section 10.3 and Question 13.1 (a
+  measurable as the known upper bound for failure of assembly) carry a dated
+  note: Theorem 25.6 needs only Con(ZFC). 05's Question 13.7 is answered
+  negatively. No claim of 02, 05 or 06 was found to be wrong.
+
+## What Parts II and III do not claim
+
+Each source's non-claims are kept in its text (Sections 19, 23–25, 28–29 and
+30, 42–43): no refereeing, no Lean or Rocq verification, no priority
+certification (selective searches; Solovay's COD assembly and the
+Kanovei–Lyubetsky formulation are prior); the Prikry construction is a
+relative-consistency example, not failure in every universe, and the
+measurable is an upper bound only; no uniform truth predicate for `V`;
+`HOD_R` is not assumed to satisfy Choice; Theorem 22.2's least upper bound is
+within the family; Dependent Choice has no converse; ordinal-indexed
+independence is finite-subfamily independence; the strong stabilizer theorem
+does not compute the nonstrong fixed field (Question 28.1) and Proposition
+26.11 does not classify the omega-map expansion; 05's completion is a
+minimality statement for a closure scheme, not a Dedekind or topological
+completion, and needs ambient stability; Part III proves no bi-interpretation
+of `(No, +, ·, <, Oz, Ω)` with set theory and does not determine its definable
+closures; over ZF its quotient presents the hereditarily well-orderable sets;
+its `D_b` are diagonal Euler derivations, not the Berarducci–Mantova
+derivation; sums need whole family codes; the finite scripts check rational
+specializations only.
+
 ## Relation to the neighbouring reports
 
 - [`surreal-fields-across-universes`](../surreal-fields-across-universes/)
   (`univ:`). Theorem 11.2 is its `univ:prop:beta` at `M = HOD`, printed by
   citation; Proposition 7.6 is its `univ:thm:nowheredense` at `M = HOD`; its
   `univ:prop:absolute` gives the arithmetic part of Theorem 5.1. None of its
-  named questions is answered here.
+  named questions is answered here. Batch 93: Part II's Prikry gap
+  (Corollary 25.5) relates to `univ:cor:prikry`; its Namba theorem (25.6) uses
+  the Laver-style presentation, `univ:gs:thm:nambainput` the classical one;
+  Part III's Section 41 re-proves `univ:prop:beta` for inner models and
+  Theorem 34.1(1)–(2) `univ:prop:absolute`.
+- [`surreal-self-embeddings`](../../surreal/surreal-self-embeddings/)
+  (`sse:`). Part II's Theorem 26.5 answers the strong form of
+  `sse:sr:q:stabilizers` (the nonstrong form is Question 28.1); Part III's
+  Theorem 34.1(1)–(2) is its `sse:pf:lem:absolute`. That report was not
+  edited.
 - [`birthday-cutoffs-and-hereditary-sets`](../birthday-cutoffs-and-hereditary-sets/)
-  (`hset:`). It credits the Chen–Hamkins–Yang announcement (`hset:thm:chy`),
+  (`hset:`). Batch 93: Part III's interpretation (Theorem 37.1) is for
+  `(No, +, ·, <, Oz, Ω)`, not the birthday-enriched structures of
+  `hset:thm:biinterpretation`; its Theorem 40.4 is the analogue of
+  `hset:rem:internal` and `hset:thm:outer` (a dated note proves that its nested
+  clause is trivial for models of the same height). It credits the
+  Chen–Hamkins–Yang announcement (`hset:thm:chy`),
   proves the first new birthday (`hset:thm:firstbirthday`), and uses the
   `OrdSign` formula (`hset:prop:nondef`). Its cutoff inputs (erratum,
   Bournez–Guilmant) are the ones Theorem 10.3 uses. Its batch-89 Part VII
@@ -296,18 +476,30 @@ Appendix A.3 records these.
 - [`omnific-diophantine-geometry`](../../surreal/omnific-diophantine-geometry/)
   (`odg:`). Full-class antecedents of Theorem 4.1 (`odg:thm:fractions`) and of
   Section 16; its reconstruction section enters Proposition 15.3; its
-  `odg:q:size` receives one instance (Remark 16.6).
+  `odg:q:size` receives one instance (Remark 16.6). Part III's Proposition
+  35.1 and Section 36.1 largely re-prove `odg:def:thm:realrecovery`,
+  `odg:def:cor:arithmetic` and `odg:def:cor:internal`.
+- [`real-vector-space-structure`](../../surreal/real-vector-space-structure/)
+  (`rvs:`). Part III's derivations `D_b` (Theorem 39.1) are instances of
+  `rvs:thm:diagonal-derivation`, credited by source 06.
 - [`set-sized-quotients-of-omnific-integers`](../../surreal/set-sized-quotients-of-omnific-integers/)
   (`osq:`). Its universal theorem `osq:thm:universal` and its universe-relative
   reading (`osq:sub:foundations`) are the full-class side of Section 16.
 - [`omnific-preserving-automorphisms`](../../surreal/omnific-preserving-automorphisms/)
   (`opa:`). Its `opa:thm:fixed` and `opa:thm:parameters` answer most of both
-  sources' language questions (Proposition 15.3).
+  sources' language questions (Proposition 15.3). Batch 93: without a
+  predicate for `Ord`, Part II's Corollary 26.6 and the nondefinability
+  statements after Theorem 26.10 follow from `opa:sc:cor:innerbound`,
+  `opa:thm:parameters` and `opa:sc:thm:undef` (not cited by source 02; dated
+  notes there); Theorem 26.5 is the proper-class analogue of `opa:thm:hull`.
 - [`computable-surreals`](../computable-surreals/). Definability is kept
   distinct from its computable representations (Section 3.4, Question 17.5).
 - [`large-cardinal-embeddings-and-normal-forms`](../large-cardinal-embeddings-and-normal-forms/)
   (`lce:`). Its absoluteness lemma supplies the same-reals instance of
-  Question 17.3 (Remark 17.6). The rest of this report is unchanged by it.
+  Question 17.3 (Remark 17.6). The rest of Part I is unchanged by it.
+  Batch 93: Part III removes the same-reals hypothesis of `lce:lem:absolute`
+  for normal forms and sums (Theorem 34.1(3)–(5)), which settles the case
+  `lce:rem:dsnsupport` leaves open. That report was not edited.
 - [`surcomplex-field-automorphisms`](../../surcomplex/surcomplex-field-automorphisms/)
   (`saut:`). Its batch-34 `saut:gr:prop:finite` and `saut:gr:prop:dio` prove
   the finite-quotient statement of Theorem 16.2, and the transfer of integer
@@ -342,6 +534,11 @@ endings):
 |---|---|
 | 04 | `passed`: 8,191 code round trips (lengths ≤ 12), 11 malformed codes rejected, 3,121 rational normalizations, 3,120 order comparisons, 2 endpoints rejected, 2,157 floor cases, 500 coset polynomials with 55,105 noncancelled terms, 1 negative control |
 | 07 | `PASS`: 8,191 bit codes (lengths 0–12), 4 malformed codes rejected, 555 compression/inverse pairs, 554 monotonicity pairs, 1,161 floor cases, 24 support-shift cases |
+| 02 (batch 93) | `PASS`: 1,104 exact slot-bound and inverse checks, 76,176 adjacent-slot order checks (no recorded output delivered) |
+| 05 (batch 93) | `all checks passed`: 20,508 inverse checks, 206 sequence checks, 1,000 band checks, 4 invalid-input rejections; JSON identical to the shipped record up to line endings |
+
+Source 06 ships no code. Source 05's checksum manifest (7 entries) verified
+7/7 at placement and is not shipped.
 
 Both suites use exact arithmetic on finite formal normal forms and never
 replace `ω` by a real. The floor tests re-implement the floor formula they
@@ -355,8 +552,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
 The build uses standard packages only and gives no errors, warnings, overfull
-or underfull boxes, or undefined references. Build in a scratch directory; the
-auxiliary files are not kept here.
+or underfull boxes, undefined references, multiply defined labels or duplicate
+destinations (160 pages). Build in a scratch directory; the auxiliary files
+are not kept here.
 
 07's script writes `verification.json` into the current directory unless
 `--output` is given, and `make verify` in 07's Makefile does the same; 04's
@@ -372,3 +570,37 @@ python 07-initial-core-verify_finite.py --output rerun-07.json
 `code/07-initial-core-Makefile` is shipped as delivered. It names 07's own
 files (`definable_surreals.tex`, `verify_finite.py`, `verification.json`),
 which are not present here under those names, so it does not run as-is.
+
+For Parts II and III (batch 93), likewise on a copy:
+
+```
+mkdir dsn-checks-93 && cp code/08-*.py code/09-*.py dsn-checks-93/ && cd dsn-checks-93
+python 08-real-parameters-finite_code_check.py
+python 09-countable-assembly-verify_code.py --output rerun-09.json
+```
+
+and compare `rerun-09.json` with `data/09-countable-assembly-verification.json`
+(equal up to line endings). The delivered files keep their delivery names and
+are not edited:
+
+- `code/09-countable-assembly-Makefile` and the usage line of
+  `09-countable-assembly-verify_code.py` name `article.tex`,
+  `code/verify_code.py` and `data/verification.json` (05's delivery layout);
+  `make check` would write over a recorded output, and `make pdf`/`make clean`
+  act on an `article.tex`, so do not run them here.
+- `code/08-real-parameters-build.sh` changes to its own directory and builds
+  `definable_surreals.tex`, which is not shipped; it would create `build/`
+  there. Do not run it in the repository.
+- `09-countable-assembly-PROOF_AUDIT.md` writes source 05's band exponents
+  `e_n(a)` (here `b_n(a)`) and names 05's files; its theorem numbers are 05's
+  (Table 5 maps them). `10-definable-operations-PROOF_STATUS.txt` uses
+  manuscript 06's numbers (add 29 to the section number) and names its
+  unshipped source and PDF.
+- `08-real-parameters-finite_code_check.py` says it checks "Section 5" of
+  manuscript 02, which is Section 23 here.
+
+To rebuild a manuscript as delivered, extract it from the arrival commit
+(`git show 2faa3b37a:docs/incoming/definable_surreals.zip`,
+`…/definable_surreals_real_parameters.zip`;
+`git show de37a66d1:docs/incoming/definable_surreal_operations.zip`) into a
+scratch directory on a POSIX host.
