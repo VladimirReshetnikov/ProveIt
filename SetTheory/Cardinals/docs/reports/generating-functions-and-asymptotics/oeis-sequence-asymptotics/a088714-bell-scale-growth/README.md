@@ -534,7 +534,17 @@ report W(n) is always the solution of w e^w = n.
   (manuscript 01, Section 7), and Part II of
   `congruences-and-valuations/a321941-asymptotic-coefficient-integrality`
   (manuscript 02, Sections 2–7). The last shares manuscript 02's driver,
-  run records and source audit, which are shipped here.
+  run records and source audit, which are shipped here. All four were
+  written in batch 86; the batch-86 reciprocal notes added the cross-report
+  numbers: the A301981 Part is Sections 12–13 there (Theorem 12.5,
+  `udp:tw:thm:main`), the A321941 Part is Sections 13–21 and Appendices C–D
+  there (Theorem 13.1, `bgg:sg:thm:sign`; Theorem 13.2,
+  `bgg:sg:thm:largeorder`), and the A343093 report, which also keeps
+  manuscript 01's introduction and manuscript-wide non-claims (internal
+  reviews are not refereeing; a bounded search is not a priority claim; no
+  OEIS update or submission), points to Sections 35–41 and 42–49 and to
+  Theorems 37.1, 38.1, 39.1 and 46.1 here (its Section 3). Notes in Part IV's
+  and Part V's provenance (Sections 35 and 42) record the same.
 - Part IV identifies mu as the rate-one free compound Poisson law with
   jump distribution nu (Section 37.1); its global inversion input is
   Huang–Wang's theorem on free Lévy processes, imported, not re-proved.

@@ -120,23 +120,33 @@ answers no question of another report.
 - Sections 3–6 (its Part II: A088714/A088713 moment densities, the
   golden-ratio correction profile and its interval certificate, the
   fixed-shift renewal expansion), answering Research questions 23.1, 23.3
-  and 23.6: planned **Part IV** of `a088714-bell-scale-growth`, with
+  and 23.6: **Part IV** of
+  [`a088714-bell-scale-growth`](../../generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth/)
+  (Sections 35–41, prefix `gdy:`; Theorem 37.1 `gdy:reg:thm:main`,
+  Theorem 38.1 `gdy:dyn:thm:allorders`, Theorem 39.1 `gdy:ren:theorem`), with
   `code/04-densities-profile-verify_dynamics.py`,
   `code/04-densities-profile-verify_renewal.py` and their two `data/` files;
 - Section 7 (its Part III: two-sided oscillation of A301981/A301982),
-  answering question 3 of Section 11: planned **Part II** of
-  `a301981-unitary-divisor-partitions`, with
+  answering question 3 of Section 11: **Part II** of
+  [`a301981-unitary-divisor-partitions`](../../generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301981-unitary-divisor-partitions/)
+  (Sections 12–13, prefix `udp:tw:`; Theorem 12.5 `udp:tw:thm:main`), with
   `code/02-two-sided-verify_partitions.py` and
   `data/02-two-sided-partition_verification.json`.
 
-Those Parts were written at the same time as this report; their labels are
-not cited here. The manuscript's statement that the finer Bell
+Those Parts were written in the same batch as this report; the section,
+theorem and label numbers above (also in Section 3 of the article) were
+added in the batch-86 reciprocal notes, once all of them existed. The
+manuscript's statement that the finer Bell
 normalization of A088714 "remains open" (its Section 9.1 and delivery
 README) was stale on arrival: manuscript 02 of the same batch
 (`oeis_research_bundle.zip`, same arrival, pin `b7e4f25b6`) proves it, as
-the planned Part V of `a088714-bell-scale-growth` (AI-assisted, unrefereed;
-the intake asks for an independent review before calling it settled). No
-statement of this report depends on it.
+Part V of `a088714-bell-scale-growth` (Sections 42–49, Theorem 46.1,
+`bnc:thm:bell`; AI-assisted, unrefereed; the intake asks for an independent
+review before calling it settled). No statement of this report depends on
+it. Both of those reports point back here: the A088714 report's Part IV
+provenance (its Section 35) and README, and the A301981 report's README, name
+this report as the home of the manuscript's Section 2 and of its
+manuscript-wide non-claims.
 
 **Neighbouring reports.** Other OEIS-numbered reports in
 `enumerative-combinatorics/` (for example `a181280-binary-matrix-formula`,

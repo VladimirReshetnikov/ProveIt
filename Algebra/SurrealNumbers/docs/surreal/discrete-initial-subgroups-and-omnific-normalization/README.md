@@ -477,8 +477,8 @@ Source 03 (Section 23.5, "Place in the collection") adds these relations:
   Theorem 19.7: these rings fail the bounded instance `Ind(Std^dy)`.
 - **[polish-models-of-omnific-arithmetic](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)**
   was placed from the same delivery (batch 86, arrival `fb8414869`; its
-  Parts III–V are being written from manuscripts 06–09 alongside this
-  write). It is motivated by the same paper of Elliot Glazer and proposes an
+  Parts III–V were written from manuscripts 06–09 alongside this write, in
+  `c3661c2ee`). It is motivated by the same paper of Elliot Glazer and proposes an
   affirmative construction for his Question 2; source 03 is not topological,
   answers neither of Glazer's questions, does not discuss his speculation
   after Question 2, and its obstruction precedes any topology (Remark 20.8).
@@ -486,7 +486,17 @@ Source 03 (Section 23.5, "Place in the collection") adds these relations:
   `x² < t` in `Z + tR[t]` that source 03 gives for `Z + XQ[X]` (Section
   21.2). Placing source 03 there, as a further part, was the alternative
   considered at placement; it was placed here because it answers part of a
-  question this report names.
+  question this report names. Now that it is written (batch-86 reciprocal
+  notes): its Part I models `D ×_lex Z` are split `Z`-groups, so Main
+  Theorem E (`isg:cf:main:presburger`) applies to them, as its Section 1.4
+  says without checking whether its embeddings into `Oz` are initial
+  realizations; its Part III sources cite `isg:thm:suspension`,
+  `isg:cf:main:presburger` and `isg:cf:thm:PA`; the failed instance `x² < t`
+  in `Z + tR[t]` is its `pma:cp:thm:openfailure`; and the Shepherdson ring
+  `A_Sh` used here is its Part V integer part `I_k` for `k = R_alg`, with
+  `t = X^(-1)` (`pma:ser:thm:commonip`, `pma:ser:prop:iopen`). A sentence in
+  its Section 42 ("The same failed instance elsewhere") names source 03's
+  `isg:sc:thm:nochar`, `isg:sc:cor:omnific` and `isg:sc:cor:fragment`.
 - **Formal projects.** The `Oz` ingredients of source 03 are formalized in
   `Algebra/SurrealNumbers/Surreal/Foundations/OmnificResidues.lean`
   (`omnific_int_dvd_iff`, `omnific_prime_pow_dvd_iff`,

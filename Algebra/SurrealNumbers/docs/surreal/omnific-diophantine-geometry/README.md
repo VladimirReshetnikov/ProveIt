@@ -16,7 +16,7 @@ prefix `16-`), and one more dated 23 September 2026 (batch-33 manuscript 07, pla
 
 ```
 article.tex                        the report, standalone LaTeX with an internal bibliography
-article.pdf                        the compiled report, 229 pages
+article.pdf                        the compiled report, 230 pages
 README.md                          this guide
 RECONCILIATION.md                  the source comparisons and precise proof-review scope
 02-diophantine-PROVENANCE.md       source 02's provenance and verification-boundary note, as delivered
@@ -1510,6 +1510,30 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   the `D_d`, `ω^γ ↦ d(γ)ω^γ` with `d` additive, the class form of (7.1); the
   converse is new there (note after Lemma 7.1). Its Euler operator `𝔇` is
   `∂_λ` of (16.1) with `λ = −id`.
+- [`discrete-initial-subgroups-and-omnific-normalization`](../discrete-initial-subgroups-and-omnific-normalization/)
+  (`isg:sc:`; batch 86, its source 03, Sections 19–22) gives a *bounded*
+  dyadic definition of `N` in `Oz_≥0` (`isg:sc:thm:dyadic`,
+  `isg:sc:cor:omnific`) and a failed bounded induction instance
+  (`isg:sc:thm:boundary`); Enayat–Łełyk–Visser's Theorem 2.9
+  (arXiv:2508.14758v2) already gives a bounded four-square one. Neither is
+  existential, so neither bears on `odg:q:guard`; `isg:sc:prop:repair`
+  extends the uniqueness of `ct` (Proposition 3.5) to normalized additive
+  maps on rings with division by 2. An unnumbered note after Remark 10.11
+  records this.
+- [`polish-models-of-omnific-arithmetic`](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)
+  (`pma:`; batch 86): its Part III gives the cone of `Z + tR[t]`
+  (Proposition 15.43) a locally compact Polish topology with continuous
+  addition and multiplication, failing open induction at `x² < t`
+  (`pma:cp:thm:polynomial`, `pma:cp:thm:openfailure`); its Part IV shows that
+  no uncountable set-sized unital subring of `Oz` has a locally compact
+  second-countable additive-group topology with Borel order
+  (`pma:lc:cor:omnific`); its Part V proves the floor of Theorem 2.7 again
+  for the countable integer part `Z ⊕ ⊕_{q<0} R_alg t^q` of the Puiseux and
+  Levi-Civita fields and shows it is Baire class one with discontinuity set
+  exactly that integer part (`pma:ser:thm:commonip`,
+  `pma:ser:thm:floorregularity`), and its Part II restricts Theorem 2.7 to
+  the Puiseux field (`pma:bor:lem:floor`). An unnumbered note after
+  Proposition 15.43 records this. Nothing there is formalized.
 
 ## Build and reproduce
 
@@ -1522,7 +1546,7 @@ processor is needed:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The current build gives 229 pages with no errors, warnings, undefined
+The current build gives 230 pages with no errors, warnings, undefined
 references, multiply defined labels or overfull boxes. The batch-32
 cross-report notes (after Theorem 2.7 and (3.3), after Question 21.10 and in the
 non-claim on polynomial lifting) are unnumbered and changed no label number
@@ -1536,7 +1560,10 @@ and change no label number (all 553 compared against a build of the
 committed text). The batch-35 note on the independent-copies report (after
 Proposition 4.5) likewise leaves 227 pages and all 553 label numbers
 unchanged. The batch-73 note after Lemma 7.1 leaves the committed text's 229
-pages and all 553 label and 65 citation numbers unchanged. The text before
+pages and all 553 label and 65 citation numbers unchanged. The batch-86 notes
+(after Remark 10.11 and after Proposition 15.43) take the build from 229 to
+230 pages and change no label number (all 553 compared in the `.aux` files
+against a build of the committed text). The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
 its 942 `.aux` label entries has the same number in the present build. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16

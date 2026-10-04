@@ -26,7 +26,12 @@ report
 [`enumerative-combinatorics/a343093-bridgeless-toroidal-maps`](../../../enumerative-combinatorics/a343093-bridgeless-toroidal-maps/),
 whose starting `article.tex` and `README.md` are that manuscript's source and
 README; its Sections 3-6 (A088714 and A088713) are Part IV of
-[`a088714-bell-scale-growth`](../a088714-bell-scale-growth/).
+[`a088714-bell-scale-growth`](../a088714-bell-scale-growth/) (Sections 35-41
+there; Theorems 37.1, 38.1 and 39.1 are its density, golden-ratio and
+fixed-shift theorems). The A343093 report also keeps the manuscript's
+introduction and its manuscript-wide non-claims: the internal reviews are
+not refereeing, the bounded literature search is not a priority claim, and
+no OEIS update or submission was made.
 
 **Status:** both Parts are AI-assisted (Part I presumed so: its delivery
 names neither an author nor a tool; Part II says "Prepared with ChatGPT"),
@@ -199,7 +204,15 @@ unitary-divisor weights, a zeta-zero denominator or an RH criterion, and no
 result is shared. Part II's sibling subjects went to
 `enumerative-combinatorics/a343093-bridgeless-toroidal-maps` and to Part IV
 of `a088714-bell-scale-growth`; they share no result with this report.
-(Pointers made here only; those reports are not edited.)
+The batch-86 reciprocal notes added pointers back here: in
+`a343093-bridgeless-toroidal-maps` (its Section 3 and README, naming
+Sections 12–13 and Theorem 12.5, `udp:tw:thm:main`), in
+`a088714-bell-scale-growth` (Part IV's provenance in its Section 35), in
+`a174065-radix-layer-partitions` (a dated sentence in its batch-77 note in
+Section 1, contrasting its bounded log-periodic factor with the two-sided
+oscillation here), and in `a301746-divisor-weighted-asymptotics`, whose
+batch-77 note in Part I, Section 7, uses this report's zero-pole as a sharp
+instance of a warning, and now gains a dated note on Part II.
 
 ## Notation
 

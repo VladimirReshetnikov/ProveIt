@@ -22,7 +22,12 @@ Part II 4 October 2026. Both author lines read "ChatGPT".
   A088714 and A088713) is printed as **Part V of
   [`a088714-bell-scale-growth`](../../generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth/)**,
   which also holds the manuscript's shared driver, run records and
-  source audit (see "Files"). No other manuscript of either batch treats
+  source audit (see "Files"). There it is Sections 42–49 (prefix `bnc:`);
+  the normalization of Conjecture 8.1 is Theorem 46.1, `bnc:thm:bell`, not
+  yet independently reviewed. That report's Part V provenance (its
+  Section 42) points back here, naming Sections 13–21 and Appendices C–D
+  and Theorems 13.1 and 13.2 (added in the batch-86 reciprocal notes).
+  No other manuscript of either batch treats
   A321941, so nothing was merged.
 
 The delivered READMEs, PDFs and Part II's manuscript source are not
