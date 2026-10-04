@@ -38,6 +38,17 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [seven-report reciprocal-note review](review_reciprocal_fc1ad4275.md)
+> covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
+> articles remain identical and all54 introduced label references resolve.
+> The notes preserve the expanded-Separation, inherited-topology,
+> set-versus-class and pure-set-versus-atom-model distinctions; the external
+> localized-choice interface remains explicitly unreviewed. Exact old/new
+> blobs, diff hashes and selected target-theorem read spans are recorded.
+> PDFs were authenticated only. No finite arithmetic compiler or operation
+> bound follows from these reciprocal notes.
+>
+>
 > The [PartX publication and six-archive intake review](review_polish_partx_c9bc70d8f.md)
 > confirms that the missing Presburger PartX is now written at **c9bc70d8f**.
 > The full new guide and entire article diff were read; all708 prior labels

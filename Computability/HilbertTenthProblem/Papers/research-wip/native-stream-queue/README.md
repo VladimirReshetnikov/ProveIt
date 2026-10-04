@@ -34,6 +34,16 @@ bound remains **74**; the lower-degree **85/155** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [seven-report reciprocal-note review](review_reciprocal_fc1ad4275.md)
+covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
+articles remain identical and all54 introduced label references resolve.
+The notes preserve the expanded-Separation, inherited-topology,
+set-versus-class and pure-set-versus-atom-model distinctions; the external
+localized-choice interface remains explicitly unreviewed. Exact old/new
+blobs, diff hashes and selected target-theorem read spans are recorded.
+PDFs were authenticated only. No finite arithmetic compiler or operation
+bound follows from these reciprocal notes.
+
 The [PartX publication and six-archive intake review](review_polish_partx_c9bc70d8f.md)
 confirms that the missing Presburger PartX is now written at **c9bc70d8f**.
 The full new guide and entire article diff were read; all708 prior labels
@@ -5137,6 +5147,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Seven-report reciprocal notes](review_reciprocal_fc1ad4275.md) | Fourteen text diffs read;3359 unchanged labels;54 introduced references resolve atfc1ad4275 | Scoped transfer/hypothesis review; external theorem interfaces and PDF builds unreviewed; arithmetic bounds unchanged |
 | [Reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md) | Complete85=47M+38A,18 witnesses, uniform exact degree155; identical integer zero tuples to84/187 | Improves85/175; universality on inherited positive fixed slices, minimum count84 and86/131 unchanged |
 | [PartX publication and six arrivals](review_polish_partx_c9bc70d8f.md) | Actual Presburger PartX present atc9bc70d8f;708→784 labels,55 delivered labels retained; six ZIPs/53 members authenticated | Bounded text scope; no paid compiler found; local beta-code recurrence/recoding obligations remain |
 | [Shared fixed-matrix action](matrix193_shared_action_fusion.md) | Complete1399/1396/1396/1393;534 coefficient rows; saves4M+2A per chart by full-polynomial identity | Same supplied tuples, witnesses and exact degrees; inherited ordinary-input scope, universal84 unchanged |
