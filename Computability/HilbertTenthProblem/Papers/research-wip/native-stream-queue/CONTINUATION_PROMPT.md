@@ -548,6 +548,15 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [controller-flow simplification](matrix193_controller_flow_scout.md)
+> removes two additions from the complete matrix source, giving
+> **1,677=801M+876A operations**,146 positive witnesses and exact degree35,587.
+> Using the already paid P=(B-1)J+1 makes the old flow residual exactly
+> 1+(B-1)EL-ES. The [independent review](review_matrix193_controller_flow_scout.md)
+> checks every changed and retained row, full liveness and the complete
+> polynomial identity; normal/optimized replays and64 modular comparisons pass.
+> All supplied coordinates and the ordinary-input language are unchanged.
+>
 > The [combined matrix construction](matrix193_composed_output_scout.md)
 > uses **1,679=801M+878A operations**, **146 positive witnesses** and exact
 > degree **35,587**. It combines direct edge-hat packing, structured coefficient
@@ -604,13 +613,10 @@
 > high quotients; its huge literal outer DAG and native Pell tuple are not
 > materialized. The overall universal frontier remains 84.
 >
-> Next matrix work: the four fixed coefficient words alone still cost
-> 1,344 emitted gates (286,286,386,386); a smaller explicit shared evaluation
-> would directly reduce the 2,462 total. A separate unimplemented witness
-> chart can exploit |high|<Q^(l-1)/2 to use high_hat-T_half instead of two
-> positive high ports, potentially removing four witnesses at the same count.
-> Its new highest-degree term ties the product degree and needs a fresh
-> noncancellation audit. Neither proposal is included in the frozen packet.
+> The former coefficient-evaluation and bounded-high proposals are now
+> implemented and reviewed in the combined source above. Its633-gate shared
+> coefficient component and controller/packing interfaces are the current
+> arithmetic targets; the four high-pair witness removals are already included.
 >
 > The [packed selected-output construction](matrix193_packed_output_scout.md)
 > lowers the matrix route to **3,162=1,467M+1,695A** operations and **152 positive

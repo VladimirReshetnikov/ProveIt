@@ -545,6 +545,15 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [controller-flow simplification](matrix193_controller_flow_scout.md)
+removes two additions from the complete matrix source, giving
+**1,677=801M+876A operations**,146 positive witnesses and exact degree35,587.
+Using the already paid P=(B-1)J+1 makes the old flow residual exactly
+1+(B-1)EL-ES. The [independent review](review_matrix193_controller_flow_scout.md)
+checks every changed and retained row, full liveness and the complete
+polynomial identity; normal/optimized replays and64 modular comparisons pass.
+All supplied coordinates and the ordinary-input language are unchanged.
+
 The [combined matrix construction](matrix193_composed_output_scout.md)
 uses **1,679=801M+878A operations**, **146 positive witnesses** and exact
 degree **35,587**. It combines direct edge-hat packing, structured coefficient
