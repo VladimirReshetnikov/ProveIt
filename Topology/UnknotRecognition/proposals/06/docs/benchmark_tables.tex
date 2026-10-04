@@ -1,0 +1,53 @@
+\begin{table}[H]\centering\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Case & Baseline (ms) & Optimized (ms) & Ratio \\\midrule
+Conway & 33.939 & 1.946 & 17.44$\times$ \\
+Kinoshita--Terasaka & 42.435 & 2.158 & 19.67$\times$ \\
+Hard 8-crossing unknot & 1.649 & 2.439 & 0.68$\times$ \\
+Figure-eight & 0.109 & 0.120 & 0.91$\times$ \\
+Grid determinant-one knot & 0.732 & 0.714 & 1.03$\times$ \\
+Scrambled grid unknot & 0.251 & 0.275 & 0.91$\times$ \\
+$T(3,5)$ & 0.559 & 0.579 & 0.97$\times$ \\
+Trefoil & 0.109 & 0.095 & 1.14$\times$ \\
+Crossing-free unknot & 0.007 & 0.011 & 0.68$\times$ \\
+40-crossing braid unknot & 6.662 & 6.150 & 1.08$\times$ \\
+\bottomrule\end{tabular}
+\caption{Full recognition pipeline on every supplied example. Ratios below one are regressions. Medians of three fresh-process API timings; milliseconds exclude Python startup.}\label{tab:pipeline}
+\end{table}
+
+\begin{table}[H]\centering\small
+\begin{tabular}{@{}lrrr@{}}\toprule
+Case & Baseline (s) & Optimized (s) & Ratio \\\midrule
+Conway, $n=11$ & 0.034976 & 0.010611 & 3.30$\times$ \\
+Kinoshita--Terasaka, $n=11$ & 0.036908 & 0.013587 & 2.72$\times$ \\
+Hard unknot, $n=8$ & 0.002146 & 0.002484 & 0.86$\times$ \\
+$T(3,5)$, $n=10$ & 0.009408 & 0.009157 & 1.03$\times$ \\
+$T(3,11)$, $n=22$ & 0.048958 & 0.031593 & 1.55$\times$ \\
+Braid unknot, $n=40$ & 0.008593 & 0.007246 & 1.19$\times$ \\
+Random 3-braid, $n=40$ & 0.620738 & 0.166974 & 3.72$\times$ \\
+Random 4-braid, $n=41$ & 0.950309 & 0.280528 & 3.39$\times$ \\
+Random 5-braid, $n=36$ & $>60$ (limited) & 7.884998 & $>60/7.885$ \\
+\bottomrule\end{tabular}
+\caption{Exact rank backend without Reidemeister preprocessing or invariant filters. Medians of three runs, except the one censored baseline stress run. A limited run is not a completed timing.}\label{tab:rank}
+\end{table}
+
+\begin{table}[H]\centering\small
+\begin{tabular}{@{}rrrrr@{}}\toprule
+Trefoil factors & Crossings & Reduced rank & Baseline (s) & Optimized (s) \\\midrule
+2 & 6 & 9 & 0.002145 & 0.001058\\
+4 & 12 & 81 & 0.015667 & 0.001416\\
+6 & 18 & 729 & 0.194700 & 0.002015\\
+8 & 24 & 6,561 & 1.347997 & 0.002148\\
+16 & 48 & 43,046,721 & not run & 0.004677\\
+32 & 96 & 1,853,020,188,851,841 & not run & 0.015000\\
+\bottomrule\end{tabular}
+\caption{Visible connected sums, rank backend only. The optimized computation scans one normalized trefoil factor and reuses it; all other work, including decomposition and degree convolution, is timed.}\label{tab:factors}\end{table}
+
+\begin{table}[H]\centering\small
+\begin{tabular}{@{}rrrrr@{}}\toprule
+Tail $t$ & Runs & Time (s) & Peak generators & Peak RSS (MiB) \\\midrule
+2 & 3 & 7.884998 & 74,046 & 239.5\\
+3 & 3 & 5.527760 & 117,318 & 304.1\\
+4 & 1 & 8.225715 & 229,818 & 519.4\\
+\bottomrule\end{tabular}
+\caption{Tail trade-off on the 36-crossing stress case. Times are medians (one run for $t=4$); RSS is the maximum process high-water mark across the runs and includes runtime overhead. Every run returns reduced rank 2,949 and the same degree dimensions.}\label{tab:tails}\end{table}

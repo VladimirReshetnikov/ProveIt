@@ -1,0 +1,932 @@
+$ python -m unittest discover -s tests -v
+Exit code: 0
+
+test_bareiss_big_integer (test_algebra.AlgebraTests.test_bareiss_big_integer) ... ok
+test_bareiss_exhaustive_small (test_algebra.AlgebraTests.test_bareiss_exhaustive_small) ... ok
+test_bareiss_invalid (test_algebra.AlgebraTests.test_bareiss_invalid) ... ok
+test_bareiss_random (test_algebra.AlgebraTests.test_bareiss_random) ... ok
+test_bit_rank_against_dense (test_algebra.AlgebraTests.test_bit_rank_against_dense) ... ok
+test_empty_nullspace (test_algebra.AlgebraTests.test_empty_nullspace) ... ok
+test_nullspace_integrality (test_algebra.AlgebraTests.test_nullspace_integrality) ... ok
+test_invalid_exit (test_cli.CLITests.test_invalid_exit) ... ok
+test_nontrivial_exit (test_cli.CLITests.test_nontrivial_exit) ... ok
+test_normal (test_cli.CLITests.test_normal) ... ok
+test_output_file (test_cli.CLITests.test_output_file) ... ok
+test_pattern (test_cli.CLITests.test_pattern) ... ok
+test_trace_replay (test_cli.CLITests.test_trace_replay) ... ok
+test_unknot_exit (test_cli.CLITests.test_unknot_exit) ... ok
+test_unknown_exit (test_cli.CLITests.test_unknown_exit) ... ok
+test_base_g_plus_one (test_hierarchy_kernels.AccountingTests.test_base_g_plus_one) ... ok
+test_cheeger_numeric_only (test_hierarchy_kernels.AccountingTests.test_cheeger_numeric_only) ... ok
+test_invalid_progress (test_hierarchy_kernels.AccountingTests.test_invalid_progress) ... ok
+test_pattern_complexity (test_hierarchy_kernels.AccountingTests.test_pattern_complexity) ... ok
+test_zero_padding (test_hierarchy_kernels.AccountingTests.test_zero_padding) ... ok
+test_ball (test_hierarchy_kernels.NormalTests.test_ball) ... ok
+test_coboundary_triangle_level (test_hierarchy_kernels.NormalTests.test_coboundary_triangle_level) ... ok
+test_huge_compressed_coordinates (test_hierarchy_kernels.NormalTests.test_huge_compressed_coordinates) ... ok
+test_matching_rejects_mutation (test_hierarchy_kernels.NormalTests.test_matching_rejects_mutation) ... ok
+test_quadrilateral_constraint (test_hierarchy_kernels.NormalTests.test_quadrilateral_constraint) ... ok
+test_reject_non_cocycle (test_hierarchy_kernels.NormalTests.test_reject_non_cocycle) ... ok
+test_reject_non_manifolds (test_hierarchy_kernels.NormalTests.test_reject_non_manifolds) ... ok
+test_sign_reversal (test_hierarchy_kernels.NormalTests.test_sign_reversal) ... ok
+test_solid_torus (test_hierarchy_kernels.NormalTests.test_solid_torus) ... ok
+test_bridge (test_hierarchy_kernels.PatternTests.test_bridge) ... ok
+test_disconnected (test_hierarchy_kernels.PatternTests.test_disconnected) ... ok
+test_empty_and_circle (test_hierarchy_kernels.PatternTests.test_empty_and_circle) ... ok
+test_forged_witness (test_hierarchy_kernels.PatternTests.test_forged_witness) ... ok
+test_invalid_rotation (test_hierarchy_kernels.PatternTests.test_invalid_rotation) ... ok
+test_nontrivial_three_bond (test_hierarchy_kernels.PatternTests.test_nontrivial_three_bond) ... ok
+test_theta_k4_cube (test_hierarchy_kernels.PatternTests.test_theta_k4_cube) ... ok
+test_braid_input_validation (test_knots.DiagramTests.test_braid_input_validation) ... ok
+test_empty_is_one_circle (test_knots.DiagramTests.test_empty_is_one_circle) ... ok
+test_label_normalization (test_knots.DiagramTests.test_label_normalization) ... ok
+test_mirror_involution (test_knots.DiagramTests.test_mirror_involution) ... ok
+test_non_spherical_rotation_is_rejected (test_knots.DiagramTests.test_non_spherical_rotation_is_rejected) ... ok
+test_pd_input_validation (test_knots.DiagramTests.test_pd_input_validation) ... ok
+test_sphere_euler (test_knots.DiagramTests.test_sphere_euler) ... ok
+test_basepoint_independence (test_knots.KhovanovTests.test_basepoint_independence) ... ok
+test_determinants (test_knots.KhovanovTests.test_determinants) ... ok
+test_known_ranks_and_d_squared (test_knots.KhovanovTests.test_known_ranks_and_d_squared) ... ok
+test_markov_stabilization (test_knots.KhovanovTests.test_markov_stabilization) ... ok
+test_mirror_ranks (test_knots.KhovanovTests.test_mirror_ranks) ... ok
+test_nontrivial_determinant_one (test_knots.KhovanovTests.test_nontrivial_determinant_one) ... ok
+test_positive_fallback_without_reductions (test_knots.KhovanovTests.test_positive_fallback_without_reductions) ... ok
+test_random_reduction_invariance (test_knots.KhovanovTests.test_random_reduction_invariance) ... ok
+test_reidemeister_iii_braid_relation (test_knots.KhovanovTests.test_reidemeister_iii_braid_relation) ... ok
+test_resource_caps_are_unknown (test_knots.KhovanovTests.test_resource_caps_are_unknown) ... ok
+test_bigons (test_knots.ReductionTests.test_bigons) ... ok
+test_clasp_is_not_r2 (test_knots.ReductionTests.test_clasp_is_not_r2) ... ok
+test_curls (test_knots.ReductionTests.test_curls) ... ok
+test_hard_unknot_remains (test_knots.ReductionTests.test_hard_unknot_remains) ... ok
+test_reject_forged_trace (test_knots.ReductionTests.test_reject_forged_trace) ... ok
+
+----------------------------------------------------------------------
+Ran 58 tests in 0.496s
+
+OK
+
+
+$ python -m unknot_recognition recognize examples/torus_3_5.json --check-d2
+Exit code: 0
+{
+  "determinant": 1,
+  "explanation": "A classical knot is trivial iff its total reduced F2 rank is one.",
+  "general_worst_case": "2^{O(n)} bit operations; exponential memory",
+  "implementation": "exact reduced-Khovanov baseline",
+  "input_crossings": 10,
+  "is_unknot": false,
+  "khovanov": {
+    "chain_dimensions": [
+      1,
+      20,
+      150,
+      540,
+      1035,
+      1164,
+      810,
+      360,
+      105,
+      20,
+      4
+    ],
+    "d_squared_checked": true,
+    "differential_ranks": [
+      1,
+      19,
+      131,
+      408,
+      626,
+      537,
+      272,
+      87,
+      17,
+      3,
+      0
+    ],
+    "field": "F2",
+    "grading": "unnormalized cube degree; total rank is normalized-invariant",
+    "homology_dimensions": [
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      1
+    ],
+    "reduced": true,
+    "resolutions": 1024,
+    "total_basis": 4209,
+    "total_rank": 7
+  },
+  "method": "reduced Khovanov homology over F2",
+  "normalized_input": {
+    "pd": [
+      [
+        1,
+        0,
+        3,
+        4
+      ],
+      [
+        2,
+        4,
+        5,
+        6
+      ],
+      [
+        5,
+        3,
+        7,
+        8
+      ],
+      [
+        6,
+        8,
+        9,
+        10
+      ],
+      [
+        9,
+        7,
+        11,
+        12
+      ],
+      [
+        10,
+        12,
+        13,
+        14
+      ],
+      [
+        13,
+        11,
+        15,
+        16
+      ],
+      [
+        14,
+        16,
+        17,
+        18
+      ],
+      [
+        17,
+        15,
+        0,
+        19
+      ],
+      [
+        18,
+        19,
+        1,
+        2
+      ]
+    ]
+  },
+  "quasipolynomial_guarantee": false,
+  "reduced_diagram": {
+    "pd": [
+      [
+        1,
+        0,
+        3,
+        4
+      ],
+      [
+        2,
+        4,
+        5,
+        6
+      ],
+      [
+        5,
+        3,
+        7,
+        8
+      ],
+      [
+        6,
+        8,
+        9,
+        10
+      ],
+      [
+        9,
+        7,
+        11,
+        12
+      ],
+      [
+        10,
+        12,
+        13,
+        14
+      ],
+      [
+        13,
+        11,
+        15,
+        16
+      ],
+      [
+        14,
+        16,
+        17,
+        18
+      ],
+      [
+        17,
+        15,
+        0,
+        19
+      ],
+      [
+        18,
+        19,
+        1,
+        2
+      ]
+    ]
+  },
+  "reduction_trace": [],
+  "remaining_crossings": 10,
+  "status": "NONTRIVIAL"
+}
+
+
+
+$ python -m unknot_recognition recognize examples/hard_unknot.json
+Exit code: 0
+{
+  "determinant": 1,
+  "explanation": "A classical knot is trivial iff its total reduced F2 rank is one.",
+  "general_worst_case": "2^{O(n)} bit operations; exponential memory",
+  "implementation": "exact reduced-Khovanov baseline",
+  "input_crossings": 8,
+  "is_unknot": true,
+  "khovanov": {
+    "chain_dimensions": [
+      4,
+      18,
+      39,
+      52,
+      42,
+      18,
+      4
+    ],
+    "d_squared_checked": false,
+    "differential_ranks": [
+      4,
+      14,
+      25,
+      27,
+      14,
+      4,
+      0
+    ],
+    "field": "F2",
+    "grading": "unnormalized cube degree; total rank is normalized-invariant",
+    "homology_dimensions": [
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "reduced": true,
+    "resolutions": 64,
+    "total_basis": 177,
+    "total_rank": 1
+  },
+  "method": "reduced Khovanov homology over F2",
+  "normalized_input": {
+    "pd": [
+      [
+        1,
+        3,
+        4,
+        2
+      ],
+      [
+        3,
+        5,
+        6,
+        4
+      ],
+      [
+        5,
+        7,
+        8,
+        6
+      ],
+      [
+        8,
+        7,
+        9,
+        10
+      ],
+      [
+        9,
+        0,
+        11,
+        12
+      ],
+      [
+        12,
+        11,
+        13,
+        14
+      ],
+      [
+        10,
+        14,
+        15,
+        2
+      ],
+      [
+        15,
+        13,
+        0,
+        1
+      ]
+    ]
+  },
+  "quasipolynomial_guarantee": false,
+  "reduced_diagram": {
+    "pd": [
+      [
+        1,
+        3,
+        4,
+        2
+      ],
+      [
+        3,
+        5,
+        6,
+        4
+      ],
+      [
+        5,
+        0,
+        7,
+        8
+      ],
+      [
+        8,
+        7,
+        9,
+        10
+      ],
+      [
+        6,
+        10,
+        11,
+        2
+      ],
+      [
+        11,
+        9,
+        0,
+        1
+      ]
+    ]
+  },
+  "reduction_trace": [
+    {
+      "face_darts": [
+        10,
+        13
+      ],
+      "kind": "R2",
+      "vertices": [
+        2,
+        3
+      ]
+    }
+  ],
+  "remaining_crossings": 6,
+  "status": "UNKNOT"
+}
+
+
+
+$ python -m unknot_recognition pattern examples/pattern_prism.json
+Exit code: 0
+{
+  "checked_cuts": 85,
+  "cut_edges": [
+    1,
+    5,
+    4
+  ],
+  "dual_faces": [
+    1,
+    2,
+    3,
+    1
+  ],
+  "essential": false,
+  "negative_witness_verified": true,
+  "reason": "nontrivial bond of size at most three",
+  "scope": "boundary pattern on a known 3-ball only",
+  "side_vertices": [
+    0,
+    1,
+    2
+  ]
+}
+
+
+
+$ python -m unknot_recognition normal examples/solid_torus.json
+Exit code: 0
+{
+  "basis_kind": "Q-basis represented by integral cocycles; not a Z-lattice basis",
+  "edges": [
+    [
+      0,
+      1
+    ],
+    [
+      0,
+      2
+    ],
+    [
+      0,
+      3
+    ],
+    [
+      0,
+      4
+    ],
+    [
+      0,
+      5
+    ],
+    [
+      0,
+      6
+    ],
+    [
+      0,
+      7
+    ],
+    [
+      0,
+      8
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      1,
+      4
+    ],
+    [
+      1,
+      5
+    ],
+    [
+      1,
+      7
+    ],
+    [
+      1,
+      8
+    ],
+    [
+      2,
+      5
+    ],
+    [
+      2,
+      8
+    ],
+    [
+      3,
+      4
+    ],
+    [
+      3,
+      5
+    ],
+    [
+      3,
+      6
+    ],
+    [
+      3,
+      7
+    ],
+    [
+      3,
+      8
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      4,
+      7
+    ],
+    [
+      4,
+      8
+    ],
+    [
+      5,
+      8
+    ],
+    [
+      6,
+      7
+    ],
+    [
+      6,
+      8
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "first_betti_number": 1,
+  "scope": "ordinary simplicial 3-manifold; no hierarchy construction",
+  "surfaces": [
+    {
+      "cocycle": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "normal_coordinates": [
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      ],
+      "summary": {
+        "boundary_normal_arcs": 6,
+        "connectedness": "not computed",
+        "coordinate_bits": 63,
+        "disks": 3,
+        "edge_intersections": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "euler_characteristic": 1,
+        "surface_cell_edges": 8,
+        "surface_cell_vertices": 6
+      }
+    }
+  ],
+  "tetrahedra": [
+    [
+      0,
+      1,
+      2,
+      5
+    ],
+    [
+      0,
+      1,
+      2,
+      8
+    ],
+    [
+      0,
+      1,
+      4,
+      5
+    ],
+    [
+      0,
+      1,
+      7,
+      8
+    ],
+    [
+      0,
+      3,
+      4,
+      5
+    ],
+    [
+      0,
+      6,
+      7,
+      8
+    ],
+    [
+      3,
+      4,
+      5,
+      8
+    ],
+    [
+      3,
+      4,
+      7,
+      8
+    ],
+    [
+      3,
+      6,
+      7,
+      8
+    ]
+  ]
+}
+
+
+
+$ python -m unknot_recognition recognize examples/torus_3_5.json --max-resolutions 4
+Exit code: 3
+{
+  "determinant": 1,
+  "explanation": "Need 2^10 resolutions; cap is 4.",
+  "general_worst_case": "2^{O(n)} bit operations; exponential memory",
+  "implementation": "exact reduced-Khovanov baseline",
+  "input_crossings": 10,
+  "is_unknot": null,
+  "method": "resource cap",
+  "normalized_input": {
+    "pd": [
+      [
+        1,
+        0,
+        3,
+        4
+      ],
+      [
+        2,
+        4,
+        5,
+        6
+      ],
+      [
+        5,
+        3,
+        7,
+        8
+      ],
+      [
+        6,
+        8,
+        9,
+        10
+      ],
+      [
+        9,
+        7,
+        11,
+        12
+      ],
+      [
+        10,
+        12,
+        13,
+        14
+      ],
+      [
+        13,
+        11,
+        15,
+        16
+      ],
+      [
+        14,
+        16,
+        17,
+        18
+      ],
+      [
+        17,
+        15,
+        0,
+        19
+      ],
+      [
+        18,
+        19,
+        1,
+        2
+      ]
+    ]
+  },
+  "quasipolynomial_guarantee": false,
+  "reduced_diagram": {
+    "pd": [
+      [
+        1,
+        0,
+        3,
+        4
+      ],
+      [
+        2,
+        4,
+        5,
+        6
+      ],
+      [
+        5,
+        3,
+        7,
+        8
+      ],
+      [
+        6,
+        8,
+        9,
+        10
+      ],
+      [
+        9,
+        7,
+        11,
+        12
+      ],
+      [
+        10,
+        12,
+        13,
+        14
+      ],
+      [
+        13,
+        11,
+        15,
+        16
+      ],
+      [
+        14,
+        16,
+        17,
+        18
+      ],
+      [
+        17,
+        15,
+        0,
+        19
+      ],
+      [
+        18,
+        19,
+        1,
+        2
+      ]
+    ]
+  },
+  "reduction_trace": [],
+  "remaining_crossings": 10,
+  "status": "UNKNOWN"
+}
+
+
+
+$ python -m unknot_recognition recognize examples/invalid_hopf_link.json
+Exit code: 2
+{
+  "error": "invalid input or I/O failure",
+  "message": "The braid closure has more than one component."
+}
+
+

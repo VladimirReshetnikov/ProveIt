@@ -1,0 +1,2958 @@
+--- a/fastunknot/__init__.py
++++ b/fastunknot/__init__.py
+@@ -7,4 +7,4 @@
+ 
+ __all__ = ["Diagram", "DiagramError", "Result", "ScanLimit", "alexander_polynomial",
+            "khovanov_rank", "recognize"]
+-__version__ = "0.1.0"
++__version__ = "0.2.0"
+--- a/fastunknot/__main__.py
++++ b/fastunknot/__main__.py
+@@ -1,65 +1,102 @@
+ """Command line: python -m fastunknot recognize FILE [options]."""
+ from __future__ import annotations
+-
+ import argparse
+ import json
+ import sys
+-
+ from .alexander import alexander_polynomial, format_polynomial
+ from .diagram import Diagram, DiagramError
++from .jones import jones_obstruction, verify_obstruction, FilterLimit
+ from .recognize import recognize
+-from .scan import khovanov_rank
++from .scan import ScanLimit, khovanov_rank
+ 
+-EXIT = {"UNKNOT": 0, "KNOTTED": 0, "UNKNOWN": 3}
++EXIT = {'UNKNOT': 0, 'KNOTTED': 0, 'UNKNOWN': 3}
+ 
+ 
+-def load(path: str) -> Diagram:
+-    data = json.load(sys.stdin if path == "-" else open(path, encoding="utf-8"))
+-    return Diagram.from_json(data)
++def load(path):
++    if path == '-':
++        return Diagram.from_json(json.load(sys.stdin))
++    with open(path, encoding='utf-8') as handle:
++        return Diagram.from_json(json.load(handle))
+ 
+ 
+-def main(argv: list[str] | None = None) -> int:
+-    parser = argparse.ArgumentParser(prog="fastunknot", description=__doc__)
+-    sub = parser.add_subparsers(dest="command", required=True)
+-    rec = sub.add_parser("recognize", help="decide whether a knot diagram is the unknot")
+-    rec.add_argument("file")
+-    rec.add_argument("--max-objects", type=int, default=None,
+-                     help="ceiling on objects of the scanning complex (UNKNOWN when exceeded)")
+-    rec.add_argument("--seconds", type=float, default=None, help="cooperative time budget")
+-    rec.add_argument("--no-reduction", action="store_true")
+-    rec.add_argument("--no-descending", action="store_true")
+-    rec.add_argument("--no-alexander", action="store_true")
+-    rec.add_argument("--check-d2", action="store_true", help="verify d^2=0 after every crossing")
+-    rec.add_argument("--output", help="write the JSON result to this file")
+-    kh = sub.add_parser("khovanov", help="total F2 Khovanov rank by scanning")
+-    kh.add_argument("file")
+-    kh.add_argument("--check-d2", action="store_true")
+-    al = sub.add_parser("alexander", help="Alexander polynomial")
+-    al.add_argument("file")
++def main(argv=None):
++    parser = argparse.ArgumentParser(prog='fastunknot', description=__doc__)
++    sub = parser.add_subparsers(dest='command', required=True)
++    rec = sub.add_parser('recognize', help='exact unknot recognition')
++    rec.add_argument('file')
++    for flag in ('reduction', 'descending', 'alexander', 'jones', 'modular', 'factor'):
++        rec.add_argument('--no-' + flag, action='store_true')
++    rec.add_argument('--jones-states', type=int, default=2048)
++    rec.add_argument('--output')
++    kh = sub.add_parser('khovanov', help='exact total F2 Khovanov ranks')
++    kh.add_argument('file')
++    kh.add_argument('--no-factor', action='store_true')
++    kh.add_argument('--order', help='JSON array of crossing indices, for exact replay')
++    for cmd in (rec, kh):
++        cmd.add_argument('--max-objects', type=int)
++        cmd.add_argument('--seconds', type=float, help='cooperative time budget')
++        cmd.add_argument('--check-d2', action='store_true')
++        cmd.add_argument('--pivot', choices=['markowitz', 'lifo'], default='markowitz')
++    al = sub.add_parser('alexander', help='full Alexander polynomial')
++    al.add_argument('file')
++    jo = sub.add_parser('jones', help='exact finite-field Jones evaluation (not a complete test)')
++    jo.add_argument('file')
++    jo.add_argument('--max-states', type=int, default=2048)
++    ve = sub.add_parser('verify-jones', help='recompute a Jones obstruction witness')
++    ve.add_argument('file')
++    ve.add_argument('witness')
+     args = parser.parse_args(argv)
+     try:
+         diagram = load(args.file)
+-    except (DiagramError, ValueError, OSError) as exc:
+-        print(f"invalid input: {exc}", file=sys.stderr)
++        if args.command == 'recognize':
++            result = recognize(diagram, use_reduction=not args.no_reduction,
++                use_descending=not args.no_descending, use_alexander=not args.no_alexander,
++                use_jones=not args.no_jones, use_modular=not args.no_modular,
++                use_factorization=not args.no_factor, jones_max_states=args.jones_states,
++                max_objects=args.max_objects, seconds=args.seconds,
++                check_d_squared=args.check_d2, pivot=args.pivot).to_json()
++            text = json.dumps(result, indent=2)
++            if args.output:
++                with open(args.output, 'w', encoding='utf-8') as handle:
++                    handle.write(text + '\n')
++            print(text)
++            return EXIT[result['status']]
++        if args.command == 'khovanov':
++            order = None if args.order is None else json.loads(args.order)
++            result = khovanov_rank(diagram.pd, order=order, max_objects=args.max_objects,
++                seconds=args.seconds, check_d_squared=args.check_d2,
++                pivot=args.pivot, factor=not args.no_factor)
++        elif args.command == 'jones':
++            result = jones_obstruction(diagram, max_states=args.max_states)
++        elif args.command == 'verify-jones':
++            with open(args.witness, encoding='utf-8') as handle:
++                witness = json.load(handle)
++            # Accept a standalone witness, or the whole recognizer output.
++            if 'evidence' in witness:
++                evidence = witness['evidence']
++                if ('jones_diagram' in evidence
++                        and diagram.to_json() != evidence['jones_diagram']):
++                    from .simplify import simplify
++                    reduced, _ = simplify(diagram)
++                    if reduced.to_json() != evidence['jones_diagram']:
++                        raise ValueError('reduced witness diagram does not match the input')
++                    diagram = reduced
++                witness = evidence.get('jones', {})
++            verified = verify_obstruction(diagram, witness)
++            print(json.dumps({'verified': verified, 'status': 'KNOTTED' if verified else 'UNVERIFIED'}))
++            return 0 if verified else 2
++        else:
++            poly = alexander_polynomial(diagram)
++            result = {'alexander_polynomial': format_polynomial(poly), 'coefficients': poly}
++        print(json.dumps(result, indent=2))
++        return 0
++    except (ScanLimit, FilterLimit, MemoryError) as exc:
++        print(json.dumps({'status': 'UNKNOWN', 'reason': str(exc) or 'memory allocation failed'}))
++        return 3
++    except (DiagramError, ValueError, TypeError, KeyError, OSError) as exc:
++        print(f'invalid input: {exc}', file=sys.stderr)
+         return 2
+-    if args.command == "recognize":
+-        result = recognize(diagram, use_reduction=not args.no_reduction,
+-                           use_descending=not args.no_descending,
+-                           use_alexander=not args.no_alexander, max_objects=args.max_objects,
+-                           seconds=args.seconds, check_d_squared=args.check_d2).to_json()
+-        text = json.dumps(result, indent=1)
+-        if args.output:
+-            with open(args.output, "w", encoding="utf-8") as handle:
+-                handle.write(text + "\n")
+-        print(text)
+-        return EXIT[result["status"]]
+-    if args.command == "khovanov":
+-        print(json.dumps(khovanov_rank(diagram.pd, check_d_squared=args.check_d2), indent=1))
+-        return 0
+-    poly = alexander_polynomial(diagram)
+-    print(json.dumps({"alexander_polynomial": format_polynomial(poly), "coefficients": poly}))
+-    return 0
+ 
+ 
+-if __name__ == "__main__":
++if __name__ == '__main__':
+     sys.exit(main())
+--- a/fastunknot/alexander.py
++++ b/fastunknot/alexander.py
+@@ -65,7 +65,7 @@
+     return trim(result)
+ 
+ 
+-def determinant(matrix: list[list[Poly]]) -> Poly:
++def determinant(matrix: list[list[Poly]], *, check=lambda: None) -> Poly:
+     """Fraction-free Bareiss elimination over Z[t]."""
+     n = len(matrix)
+     if n == 0:
+@@ -73,6 +73,7 @@
+     a = [[trim(list(x)) for x in row] for row in matrix]
+     sign, previous = 1, [1]
+     for k in range(n - 1):
++        check()
+         pivot_row = next((i for i in range(k, n) if a[i][k]), None)
+         if pivot_row is None:
+             return []
+@@ -81,6 +82,7 @@
+             sign = -sign
+         pivot = a[k][k]
+         for i in range(k + 1, n):
++            check()
+             for j in range(k + 1, n):
+                 a[i][j] = exact_div(sub(mul(pivot, a[i][j]), mul(a[i][k], a[k][j])), previous)
+             a[i][k] = []
+@@ -111,10 +113,13 @@
+         raise ArithmeticError("unexpected number of Wirtinger arcs")
+     column = {root: i for i, root in enumerate(roots)}
+     signs = diagram.signs()
++    incoming_under = {d // 4: d % 4 for d in diagram.traversal() if d % 2 == 0}
+     one_minus_t, t, minus_one = [1, -1], [0, 1], [-1]
+     matrix = [[[] for _ in range(n)] for _ in range(n)]
+     for i, (a, b, c, _) in enumerate(diagram.pd):
+-        o, u, v = column[arcs.find(b)], column[arcs.find(a)], column[arcs.find(c)]
++        under_in, under_out = (a, c) if incoming_under[i] == 0 else (c, a)
++        o, u, v = (column[arcs.find(b)], column[arcs.find(under_in)],
++                   column[arcs.find(under_out)])
+         entries = ((o, one_minus_t), (u, t), (v, minus_one)) if signs[i] > 0 else \
+                   ((o, one_minus_t), (u, minus_one), (v, t))
+         for col, value in entries:
+@@ -122,12 +127,12 @@
+     return matrix
+ 
+ 
+-def alexander_polynomial(diagram: Diagram) -> Poly:
++def alexander_polynomial(diagram: Diagram, *, check=lambda: None) -> Poly:
+     if diagram.crossings == 0:
+         return [1]
+     matrix = alexander_matrix(diagram)
+     minor = [row[:-1] for row in matrix[:-1]]
+-    return normalize(determinant(minor))
++    return normalize(determinant(minor, check=check))
+ 
+ 
+ def evaluate(p: Poly, value: int) -> int:
+--- /dev/null
++++ b/fastunknot/algebra.py
+@@ -0,0 +1,292 @@
++"""Compiled F2 dotted-cobordism maps with bit-packed coefficients.
++
++A monomial is a bit mask of dotted boundary circles. A morphism is an integer
++whose bit at position `monomial` is that monomial's coefficient. In particular,
++zero is 0 and an undotted disc on every circle is 1. Basis orders are local to
++Hom(a,b), not global dot names. Geometry is compiled once, then reused.
++"""
++from __future__ import annotations
++
++from collections import defaultdict
++from dataclasses import dataclass
++from itertools import product
++from typing import Callable
++
++from .geometry import Matching, SMOOTHINGS, Glued, glue, _dsu_find
++
++
++def bits(value: int):
++    """Yield set-bit indices, without expanding the surrounding zero bits."""
++    while value:
++        bit = value & -value
++        yield bit.bit_length() - 1
++        value ^= bit
++
++
++@dataclass(frozen=True)
++class Basis:
++    keys: tuple[frozenset, ...]
++    owner: dict[int, int]
++
++
++# Each component is (left input mask, right input mask, output mask, extra dots).
++# Genus-positive components make an entire plan zero at compile time.
++Component = tuple[int, int, int, int]
++
++
++def evaluate_surface(components: tuple[Component, ...] | None, f: int, g: int = 0) -> int:
++    """Evaluate one pair of monomials in a compiled genus-zero surface."""
++    if components is None:
++        return 0
++    result = 1
++    for left, right, boundary, extra in components:
++        dots = (f & left).bit_count() + (g & right).bit_count() + extra
++        if dots >= 2:
++            return 0
++        if not boundary:
++            if dots != 1:
++                return 0
++            continue
++        if dots:
++            choices = (boundary,)
++        else:
++            choices = tuple(boundary ^ (1 << k) for k in bits(boundary))
++        # Different connected components have disjoint output masks.
++        nxt = 0
++        for monomial in bits(result):
++            for choice in choices:
++                nxt ^= 1 << (monomial | choice)
++        result = nxt
++    return result
++
++
++class Algebra:
++    """Run-local, stage-local caches. No scan is retained by a global cache.
++
++    Memoized scalar results are bounded in number and discarded on overflow.
++    Geometry dictionaries are stage-local and reset after each crossing.
++    Limits count cache entries, not bytes; an entry can itself be large.
++    """
++    def __init__(self, check: Callable[[], None] = lambda: None, cache_entries: int = 32768):
++        self.check = check
++        self.cache_entries = cache_entries
++        self.stats = {"compose_calls": 0, "compose_cache_hits": 0,
++                      "composition_plans": 0, "transfer_plans": 0,
++                      "transfer_cache_hits": 0}
++        self.clear()
++
++    def clear(self):
++        self.bases: dict[tuple, Basis] = {}
++        self.composition: dict[tuple, tuple[Component, ...] | None] = {}
++        self.composed: dict[tuple, int] = {}
++        self.glued: dict[tuple, Glued] = {}
++        self.transfers: dict[tuple, tuple] = {}
++        self.transferred: dict[tuple, tuple] = {}
++
++    def basis(self, a: Matching, b: Matching) -> Basis:
++        key = (a, b)
++        if key in self.bases:
++            return self.bases[key]
++        parent = {p: p for pair in a | b for p in pair}
++        for pair in a | b:
++            p, q = pair
++            rp, rq = _dsu_find(parent, p), _dsu_find(parent, q)
++            parent[rp] = rq
++        groups = defaultdict(list)
++        for p in parent:
++            groups[_dsu_find(parent, p)].append(p)
++        keys = tuple(sorted((frozenset(g) for g in groups.values()), key=min))
++        result = Basis(keys, {p: i for i, circle in enumerate(keys) for p in circle})
++        self.bases[key] = self.bases[b, a] = result
++        return result
++
++    def encode(self, morphism: set, a: Matching, b: Matching) -> int:
++        basis = self.basis(a, b)
++        index = {key: i for i, key in enumerate(basis.keys)}
++        result = 0
++        for term in morphism:
++            mask = sum(1 << index[key] for key in term)
++            result ^= 1 << mask
++        return result
++
++    def decode(self, value: int, a: Matching, b: Matching) -> set:
++        keys = self.basis(a, b).keys
++        return {frozenset(keys[i] for i in bits(mask)) for mask in bits(value)}
++
++    def gluing(self, m: Matching, i: int, points: frozenset, slots: tuple) -> Glued:
++        key = (m, i, points, slots)
++        if key not in self.glued:
++            # Bypass the compatibility module's global LRU; lifetime is one stage.
++            self.glued[key] = glue.__wrapped__(m, i, points, slots)
++        return self.glued[key]
++
++    def composition_plan(self, a: Matching, b: Matching, c: Matching):
++        key = (a, b, c)
++        if key in self.composition:
++            return self.composition[key]
++        self.check()
++        self.stats["composition_plans"] += 1
++        ab, bc, ac = self.basis(a, b), self.basis(b, c), self.basis(a, c)
++        parent = {(0, i): (0, i) for i in range(len(ab.keys))}
++        parent.update({(1, i): (1, i) for i in range(len(bc.keys))})
++        for pair in b:
++            p = next(iter(pair))
++            x, y = _dsu_find(parent, (0, ab.owner[p])), _dsu_find(parent, (1, bc.owner[p]))
++            parent[x] = y
++        members = defaultdict(list)
++        for disk in parent:
++            members[_dsu_find(parent, disk)].append(disk)
++        counts, boundaries = defaultdict(int), defaultdict(int)
++        for pair in b:
++            p = next(iter(pair))
++            counts[_dsu_find(parent, (0, ab.owner[p]))] += 1
++        for side, matching, basis in ((0, a, ab), (1, c, bc)):
++            for pair in matching:
++                p = next(iter(pair))
++                root = _dsu_find(parent, (side, basis.owner[p]))
++                boundaries[root] |= 1 << ac.owner[p]
++        components = []
++        for root, disks in members.items():
++            boundary = boundaries[root]
++            chi = len(disks) - counts[root]
++            genus2 = 2 - chi - boundary.bit_count()
++            if genus2 < 0 or genus2 % 2:
++                raise ArithmeticError("invalid surface Euler characteristic")
++            if genus2:
++                self.composition[key] = None
++                return None
++            left = sum(1 << i for side, i in disks if side == 0)
++            right = sum(1 << i for side, i in disks if side == 1)
++            components.append((left, right, boundary, 0))
++        result = tuple(components)
++        self.composition[key] = result
++        return result
++
++    def compose(self, f: int, g: int, a: Matching, b: Matching, c: Matching) -> int:
++        """Return g o f. No caller may confuse a coefficient bitset with a dot mask."""
++        self.stats["compose_calls"] += 1
++        if not f or not g:
++            return 0
++        if a == b and f == 1:
++            return g
++        if b == c and g == 1:
++            return f
++        if a == b == c and f == g:
++            return f & 1   # (constant + nilpotent)^2 = constant in characteristic two.
++        key = (a, b, c, f, g)
++        if key in self.composed:
++            self.stats["compose_cache_hits"] += 1
++            return self.composed[key]
++        plan = self.composition_plan(a, b, c)
++        result = 0
++        if plan is not None:
++            for tf in bits(f):
++                self.check()
++                for tg in bits(g):
++                    result ^= evaluate_surface(plan, tf, tg)
++        if len(self.composed) >= self.cache_entries:
++            self.composed.clear()
++        self.composed[key] = result
++        return result
++
++    def transfer_plan(self, a: Matching, b: Matching, i_src: int, i_tgt: int,
++                      points: frozenset, slots: tuple):
++        key = (a, b, i_src, i_tgt, points, slots)
++        if key in self.transfers:
++            return self.transfers[key]
++        self.check()
++        self.stats["transfer_plans"] += 1
++        gs, gt = self.gluing(a, i_src, points, slots), self.gluing(b, i_tgt, points, slots)
++        mm, nn = self.basis(a, b), self.basis(gs.matching, gt.matching)
++        saddle = i_src != i_tgt
++        disks = [('F', i) for i in range(len(mm.keys))]
++        disks += [('I', 0)] if saddle else [('I', 0), ('I', 1)]
++        def idisk(j):
++            return ('I', 0 if saddle else j)
++        parent = {d: d for d in disks}
++        smoothing_of_slot = [{s: j for j, arc in enumerate(SMOOTHINGS[i]) for s in arc}
++                             for i in (i_src, i_tgt)]
++        unions, seen = [], {}
++        for j, label in enumerate(slots):
++            if label in points:
++                unions.append((('F', mm.owner[label]), idisk(smoothing_of_slot[0][j])))
++            elif label in seen:
++                unions.append((idisk(smoothing_of_slot[0][seen[label]]),
++                               idisk(smoothing_of_slot[0][j])))
++            else:
++                seen[label] = j
++        for x, y in unions:
++            rx, ry = _dsu_find(parent, x), _dsu_find(parent, y)
++            parent[rx] = ry
++        members = defaultdict(list)
++        for d in disks:
++            members[_dsu_find(parent, d)].append(d)
++        roots = list(members)
++        ri = {r: i for i, r in enumerate(roots)}
++        disk_index = {d: ri[_dsu_find(parent, d)] for d in disks}
++        glue_count = defaultdict(int)
++        for x, _ in unions:
++            glue_count[_dsu_find(parent, x)] += 1
++        boundary = [0] * len(roots)
++        closed_src, closed_tgt = [None] * gs.closed, [None] * gt.closed
++        def record(disk, ref, closed):
++            comp = disk_index[disk]
++            kind, value = ref
++            if kind == 'new':
++                boundary[comp] |= 1 << nn.owner[next(iter(value))]
++            else:
++                closed[value] = comp
++        for side, matching, glued, closed in ((0, a, gs, closed_src), (1, b, gt, closed_tgt)):
++            for pair in matching:
++                record(('F', mm.owner[next(iter(pair))]), glued.arc_of['m', pair], closed)
++            for j in range(2):
++                record(idisk(j), glued.arc_of['s', j], closed)
++        if None in closed_src or None in closed_tgt:
++            raise ArithmeticError("unattached closed circle")
++        base_chi = [len(members[r]) - glue_count[r] for r in roots]
++        input_masks = [0] * len(roots)
++        for i in range(len(mm.keys)):
++            input_masks[disk_index['F', i]] |= 1 << i
++        plans = []
++        for ls in product((0, 1), repeat=gs.closed):
++            for lt in product((0, 1), repeat=gt.closed):
++                chi, extra = base_chi[:], [0] * len(roots)
++                for comp, lab in zip(closed_src, ls):
++                    chi[comp] += 1
++                    extra[comp] += lab
++                for comp, lab in zip(closed_tgt, lt):
++                    chi[comp] += 1
++                    extra[comp] += 1 - lab
++                components = []
++                for k in range(len(roots)):
++                    genus2 = 2 - chi[k] - boundary[k].bit_count()
++                    if genus2 < 0 or genus2 % 2:
++                        raise ArithmeticError("invalid crossing surface")
++                    if genus2 or extra[k] >= 2:
++                        break
++                    components.append((input_masks[k], 0, boundary[k], extra[k]))
++                else:
++                    plans.append((ls, lt, tuple(components)))
++        result = (gs, gt, tuple(plans))
++        self.transfers[key] = result
++        return result
++
++    def crossing_entries(self, a: Matching, b: Matching, f: int, i_src: int, i_tgt: int,
++                         points: frozenset, slots: tuple):
++        key = (a, b, f, i_src, i_tgt, points, slots)
++        if key in self.transferred:
++            self.stats["transfer_cache_hits"] += 1
++            return self.transferred[key]
++        gs, gt, plans = self.transfer_plan(a, b, i_src, i_tgt, points, slots)
++        entries = []
++        for ls, lt, components in plans:
++            value = 0
++            for monomial in bits(f):
++                value ^= evaluate_surface(components, monomial)
++            if value:
++                entries.append((ls, lt, value))
++        result = (gs, gt, tuple(entries))
++        if len(self.transferred) >= self.cache_entries:
++            self.transferred.clear()
++        self.transferred[key] = result
++        return result
+--- /dev/null
++++ b/fastunknot/decompose.py
+@@ -0,0 +1,113 @@
++"""Visible connected sums: split only certified two-edge bonds of the projection.
++
++This is not topological prime decomposition. A composite knot whose particular
++projection hides all such cuts is simply left intact.
++"""
++from __future__ import annotations
++from collections import Counter
++from time import monotonic
++from typing import Callable
++from .diagram import Diagram
++from .geometry import ScanLimit
++
++
++def split_once(diagram: Diagram, check: Callable[[], None] = lambda: None):
++    n = diagram.crossings
++    if n < 2:
++        return None
++    walk = [dart // 4 for dart in diagram.traversal()]
++    best = None
++    balance = 0
++    for start in range(2 * n):
++        check()
++        parity = [False] * n
++        open_count = 0
++        for length in range(1, 2 * n - 1):
++            cid = walk[(start + length - 1) % (2 * n)]
++            parity[cid] = not parity[cid]
++            open_count += 1 if parity[cid] else -1
++            if open_count == 0:
++                small = min(length // 2, n - length // 2)
++                if small > balance:
++                    balance, best = small, (start, length)
++                    if balance == n // 2:
++                        break
++        if balance == n // 2:
++            break
++    if best is None:
++        return None
++    start, length = best
++    selected = {walk[(start + j) % (2 * n)] for j in range(length)}
++    counts = Counter(e for i in selected for e in diagram.pd[i])
++    cut = sorted(e for e, count in counts.items() if count == 1)
++    if len(cut) != 2:
++        raise ArithmeticError("closed Gauss interval is not a two-edge cut")
++    edge, other = cut
++    pieces = []
++    for side in (True, False):
++        rows = [[edge if e == other else e for e in row]
++                for i, row in enumerate(diagram.pd) if (i in selected) == side]
++        # Independently revalidate the capped spherical rotation system.
++        pieces.append(Diagram.from_pd(rows))
++    evidence = {"cut_edges": cut, "left_crossings": sorted(selected),
++                "gauss_interval": [start, length], "input_crossings": n}
++    return pieces[0], pieces[1], evidence
++
++
++def visible_factors(diagram: Diagram, check: Callable[[], None] = lambda: None):
++    pending = [diagram]
++    factors, trace = [], []
++    while pending:
++        check()
++        current = pending.pop()
++        split = split_once(current, check)
++        if split is None:
++            factors.append(current)
++        else:
++            a, b, cut = split
++            trace.append({**cut, "pd": current.to_json()['pd']})
++            pending.extend((b, a))
++    return factors, trace
++
++
++def factor_rank(pd, *, max_objects, deadline, check_d_squared, pivot):
++    from .scan import khovanov_rank
++    def check():
++        if deadline is not None and monotonic() >= deadline:
++            raise ScanLimit("time budget exhausted")
++    factors, trace = visible_factors(Diagram.from_pd(pd), check)
++    if len(factors) == 1:
++        return None
++    by_degree = {0: 1}  # Reduced ranks multiply under connected sum over F2.
++    memo, summaries, stats = {}, [], {}
++    for diagram in factors:
++        check()
++        key = diagram.pd
++        reused = key in memo
++        if not reused:
++            seconds = None if deadline is None else max(0., deadline - monotonic())
++            memo[key] = khovanov_rank(diagram.pd, max_objects=max_objects, seconds=seconds,
++                                      check_d_squared=check_d_squared, pivot=pivot, factor=False)
++        result = memo[key]
++        if any(v % 2 for v in result['by_degree'].values()):
++            raise ArithmeticError("F2 splitting must hold in every homological degree")
++        new = {}
++        for h, v in by_degree.items():
++            for j, w in result['by_degree'].items():
++                new[h + j] = new.get(h + j, 0) + v * (w // 2)
++        by_degree = new
++        summaries.append({"pd": diagram.to_json()['pd'], "crossings": diagram.crossings,
++                          "reduced_rank": result['reduced_rank'], "memoized": reused})
++        if not reused:
++            for key, value in result['stats'].items():
++                if key.startswith('max_'):
++                    stats[key] = max(stats.get(key, 0), value)
++                else:
++                    stats[key] = stats.get(key, 0) + value
++    reduced = sum(by_degree.values())
++    stats.update(factors=len(factors), distinct_factors=len(memo))
++    return {"rank": 2 * reduced, "reduced_rank": reduced,
++            "by_degree": {h: 2 * v for h, v in sorted(by_degree.items())},
++            "stats": stats, "order": [], "factorized": True,
++            "factor_results": summaries, "decomposition": trace,
++            "backend": "connected-sum-product", "pivot": pivot}
+--- a/fastunknot/diagram.py
++++ b/fastunknot/diagram.py
+@@ -248,12 +248,14 @@
+ 
+     def signs(self) -> list[int]:
+         """Crossing signs for the traversal orientation (+1 right-handed)."""
+-        incoming_over = {}
++        incoming_under, incoming_over = {}, {}
+         for dart in self.traversal():
+-            if dart % 2 == 1:
+-                incoming_over[dart // 4] = dart % 4
+-        # over-strand entering at d (slot 3) and leaving at b: positive
+-        return [1 if incoming_over[i] == 3 else -1 for i in range(self.crossings)]
++            table = incoming_over if dart % 2 else incoming_under
++            table[dart // 4] = dart % 4
++        # Both incoming ports matter. Rotating a PD row by two slots preserves
++        # the crossing, and reversing the traversal reverses both strands.
++        return [1 if (incoming_over[i] - incoming_under[i]) % 4 == 3 else -1
++                for i in range(self.crossings)]
+ 
+     def writhe(self) -> int:
+         return sum(self.signs())
+--- /dev/null
++++ b/fastunknot/geometry.py
+@@ -0,0 +1,338 @@
++"""Khovanov homology over F2 by scanning (Bar-Natan's local algorithm).
++
++The diagram is processed one crossing at a time.  After each step the partial
++complex lives in the F2-linear dotted-cobordism category of the processed
++region: objects are perfect matchings of the boundary edges (closed circles are
++"delooped" into two objects), and a morphism between matchings a and b is an
++F2-combination of dot-subsets of the circles of a u b~.  Composition is the
++two-dimensional TQFT of the glued surface for the Frobenius algebra
++F2[x]/(x^2): a component of genus >= 1 or with >= 2 dots is zero, a closed
++component is 1 exactly when it carries one dot, and a planar component with
++k boundary circles and d dots is Delta^(k-1)(x^d).  Invertible entries are
++cancelled by Gaussian elimination after every crossing, so the complex stays
++small when the scan has a small boundary.  The final complex is a complex of
++F2-vector spaces with zero differential; its size is the total unreduced
++Khovanov rank.  For a knot this rank is 2 exactly for the unknot.
++
++Nothing here is quasi-polynomial: the worst case is still exponential.
++"""
++from __future__ import annotations
++
++from collections import defaultdict
++from dataclasses import dataclass, field
++from functools import lru_cache
++from itertools import product
++from time import monotonic
++from typing import Any, Iterable
++
++SMOOTHINGS = (((0, 1), (2, 3)), ((0, 3), (1, 2)))  # 0: (a,b),(c,d)   1: (a,d),(b,c)
++
++Matching = frozenset  # frozenset of frozenset({p, q}) pairs of boundary labels
++Morphism = set        # set of frozenset(circle keys); F2 coefficients
++
++
++class ScanLimit(RuntimeError):
++    """A user-selected ceiling was reached; this is never a knot verdict."""
++
++
++def _dsu_find(parent: dict, x):
++    root = x
++    while parent[root] != root:
++        root = parent[root]
++    while parent[x] != root:
++        parent[x], x = root, parent[x]
++    return root
++
++
++@lru_cache(maxsize=4096)
++def circles(a: Matching, b: Matching) -> dict:
++    """Map each boundary label to the key (frozenset of labels) of its circle in a u b~."""
++    parent: dict = {}
++    for pair in a | b:
++        for p in pair:
++            parent.setdefault(p, p)
++    for pair in a | b:
++        p, q = tuple(pair)
++        rp, rq = _dsu_find(parent, p), _dsu_find(parent, q)
++        if rp != rq:
++            parent[rp] = rq
++    groups: dict = defaultdict(list)
++    for p in parent:
++        groups[_dsu_find(parent, p)].append(p)
++    keys = {root: frozenset(members) for root, members in groups.items()}
++    return {p: keys[_dsu_find(parent, p)] for p in parent}
++
++
++@dataclass
++class Glued:
++    """Result of attaching one smoothing of a crossing to a matching."""
++    points: frozenset
++    matching: Matching
++    closed: int                                  # number of closed circles created
++    arc_of: dict = field(default_factory=dict)   # arc id -> ('new', pair) | ('closed', index)
++
++
++@lru_cache(maxsize=4096)
++def glue(m: Matching, smoothing_index: int, points: frozenset, slots: tuple) -> Glued:
++    """Attach the crossing with edge labels `slots` (counterclockwise) to the region.
++
++    Arc ids are ('m', pair) for arcs of m and ('s', j) for the two smoothing arcs.
++    """
++    adjacency: dict = defaultdict(list)
++    for pair in m:
++        p, q = tuple(pair)
++        adjacency[('P', p)].append((('P', q), ('m', pair)))
++        adjacency[('P', q)].append((('P', p), ('m', pair)))
++    for j, (s, t) in enumerate(SMOOTHINGS[smoothing_index]):
++        adjacency[('S', s)].append((('S', t), ('s', j)))
++        adjacency[('S', t)].append((('S', s), ('s', j)))
++    first_slot: dict = {}
++    for j, label in enumerate(slots):
++        if label in points:
++            adjacency[('S', j)].append((('P', label), None))
++            adjacency[('P', label)].append((('S', j), None))
++        elif label in first_slot:
++            j0 = first_slot[label]
++            adjacency[('S', j)].append((('S', j0), None))
++            adjacency[('S', j0)].append((('S', j), None))
++        else:
++            first_slot[label] = j
++
++    def label_of(node):
++        return node[1] if node[0] == 'P' else slots[node[1]]
++
++    visited: set = set()
++    new_pairs, arc_of, closed = [], {}, 0
++    ends = [node for node, nbrs in adjacency.items() if len(nbrs) == 1]
++    for start in ends:
++        if start in visited:
++            continue
++        node, prev, arcs = start, None, []
++        visited.add(node)
++        while True:
++            step = next(((nbr, arc) for nbr, arc in adjacency[node] if nbr != prev), None)
++            if step is None:
++                break
++            nbr, arc = step
++            if arc is not None:
++                arcs.append(arc)
++            prev, node = node, nbr
++            visited.add(node)
++            if len(adjacency[node]) == 1:
++                break
++        pair = frozenset((label_of(start), label_of(node)))
++        if len(pair) != 2:
++            raise ArithmeticError("degenerate boundary arc")
++        new_pairs.append(pair)
++        for arc in arcs:
++            arc_of[arc] = ('new', pair)
++    for start in adjacency:
++        if start in visited:
++            continue
++        node, prev, arcs = start, None, []
++        visited.add(node)
++        while True:
++            options = [(nbr, arc) for nbr, arc in adjacency[node] if nbr != prev]
++            if not options:
++                break
++            nbr, arc = options[0]
++            if arc is not None:
++                arcs.append(arc)
++            prev, node = node, nbr
++            if node == start:
++                break
++            visited.add(node)
++        for arc in arcs:
++            arc_of[arc] = ('closed', closed)
++        closed += 1
++    new_points = frozenset(p for pair in new_pairs for p in pair)
++    return Glued(new_points, frozenset(new_pairs), closed, arc_of)
++
++
++def _expand(components: list, dots: list) -> set:
++    """Normal form of a surface: set of dot-subsets (product over components)."""
++    result = {frozenset()}
++    for (boundary, chi), d in zip(components, dots):
++        twice_genus = 2 - chi - len(boundary)
++        if twice_genus < 0 or twice_genus % 2:
++            raise ArithmeticError(f"impossible surface component: chi={chi}, boundary={len(boundary)}")
++        if twice_genus or d >= 2:
++            return set()
++        if not boundary:
++            if d == 1:
++                continue
++            return set()
++        if d == 1:
++            options = [frozenset(boundary)]
++        else:
++            options = [frozenset(boundary - {undotted}) for undotted in boundary]
++        result = {x | y for x in result for y in options}
++    return result
++
++
++def compose(f: Morphism, g: Morphism, a: Matching, b: Matching, c: Matching) -> Morphism:
++    """g o f for f: a -> b and g: b -> c, as an element of Hom(a, c)."""
++    if not f or not g:
++        return set()
++    ab, bc, ac = circles(a, b), circles(b, c), circles(a, c)
++    parent: dict = {}
++    for key in set(ab.values()):
++        parent[('L', key)] = ('L', key)
++    for key in set(bc.values()):
++        parent[('R', key)] = ('R', key)
++    for pair in b:
++        p = next(iter(pair))
++        x, y = _dsu_find(parent, ('L', ab[p])), _dsu_find(parent, ('R', bc[p]))
++        if x != y:
++            parent[x] = y
++    members: dict = defaultdict(set)
++    for disk in parent:
++        members[_dsu_find(parent, disk)].add(disk)
++    glue_count: dict = defaultdict(int)
++    for pair in b:
++        glue_count[_dsu_find(parent, ('L', ab[next(iter(pair))]))] += 1
++    boundary: dict = defaultdict(set)
++    for pair in a:
++        p = next(iter(pair))
++        boundary[_dsu_find(parent, ('L', ab[p]))].add(ac[p])
++    for pair in c:
++        p = next(iter(pair))
++        boundary[_dsu_find(parent, ('R', bc[p]))].add(ac[p])
++    roots = list(members)
++    components = [(boundary[r], len(members[r]) - glue_count[r]) for r in roots]
++    index = {disk: i for i, r in enumerate(roots) for disk in members[r]}
++    result: set = set()
++    for tf in f:
++        dots_f = [0] * len(roots)
++        for key in tf:
++            dots_f[index[('L', key)]] += 1
++        for tg in g:
++            dots = dots_f[:]
++            for key in tg:
++                dots[index[('R', key)]] += 1
++            result ^= _expand(components, dots)
++    return result
++
++
++def identity(m: Matching) -> Morphism:
++    return {frozenset()}
++
++
++def is_unit(f: Morphism) -> bool:
++    return frozenset() in f
++
++
++def inverse(f: Morphism, m: Matching) -> Morphism:
++    """Inverse of a unit 1 + nu in the local ring End(m)."""
++    if not is_unit(f):
++        raise ValueError("not a unit")
++    nu = set(f)
++    nu.discard(frozenset())
++    result, power = {frozenset()}, {frozenset()}
++    while True:
++        power = compose(power, nu, m, m, m)
++        if not power:
++            return result
++        result ^= power
++
++
++def crossing_entries(m_src: Matching, m_tgt: Matching, f: Morphism, i_src: int, i_tgt: int,
++                     points: frozenset, slots: tuple) -> tuple[Glued, Glued, dict]:
++    """Entries of the tensor product with a crossing complex, after delooping.
++
++    Returns the two glued objects and a map (labels_src, labels_tgt) -> morphism,
++    where labels are tuples over the closed circles (0 = label 1, 1 = label x).
++    """
++    gs, gt = glue(m_src, i_src, points, slots), glue(m_tgt, i_tgt, points, slots)
++    mm = circles(m_src, m_tgt)
++    f_keys = sorted(set(mm.values()), key=sorted)
++    disks = [('F', key) for key in f_keys]
++    saddle = i_src != i_tgt
++    if saddle:
++        disks.append(('I', 's'))
++
++        def idisk(side, j):
++            return ('I', 's')
++    else:
++        disks.extend([('I', 0), ('I', 1)])
++
++        def idisk(side, j):
++            return ('I', j)
++    parent = {d: d for d in disks}
++    smoothing_of_slot = []
++    for i in (i_src, i_tgt):
++        table = {}
++        for j, arc in enumerate(SMOOTHINGS[i]):
++            for s in arc:
++                table[s] = j
++        smoothing_of_slot.append(table)
++    unions: list = []
++    seen_slots: dict = {}
++    for j, label in enumerate(slots):
++        if label in points:
++            unions.append((('F', mm[label]), idisk(0, smoothing_of_slot[0][j])))
++        elif label in seen_slots:
++            j0 = seen_slots[label]
++            unions.append((idisk(0, smoothing_of_slot[0][j0]), idisk(0, smoothing_of_slot[0][j])))
++        else:
++            seen_slots[label] = j
++    for x, y in unions:
++        rx, ry = _dsu_find(parent, x), _dsu_find(parent, y)
++        if rx != ry:
++            parent[rx] = ry
++    members: dict = defaultdict(set)
++    for d in disks:
++        members[_dsu_find(parent, d)].add(d)
++    glue_count: dict = defaultdict(int)
++    for x, _ in unions:
++        glue_count[_dsu_find(parent, x)] += 1
++    nn = circles(gs.matching, gt.matching)
++    roots = list(members)
++    root_index = {r: i for i, r in enumerate(roots)}
++    boundary = [set() for _ in roots]
++    closed_src: list = [None] * gs.closed
++    closed_tgt: list = [None] * gt.closed
++
++    def record(disk, ref, closed_list):
++        comp = root_index[_dsu_find(parent, disk)]
++        kind, value = ref
++        if kind == 'new':
++            boundary[comp].add(nn[next(iter(value))])
++        else:
++            closed_list[value] = comp
++
++    for pair in m_src:
++        record(('F', mm[next(iter(pair))]), gs.arc_of[('m', pair)], closed_src)
++    for j in range(2):
++        record(idisk(0, j), gs.arc_of[('s', j)], closed_src)
++    for pair in m_tgt:
++        record(('F', mm[next(iter(pair))]), gt.arc_of[('m', pair)], closed_tgt)
++    for j in range(2):
++        record(idisk(1, j), gt.arc_of[('s', j)], closed_tgt)
++    if any(c is None for c in closed_src) or any(c is None for c in closed_tgt):
++        raise ArithmeticError("closed circle without a bounding component")
++    base_chi = [len(members[r]) - glue_count[r] for r in roots]
++    disk_index = {d: root_index[_dsu_find(parent, d)] for d in disks}
++    result: dict = {}
++    for labels_src in product((0, 1), repeat=gs.closed):
++        for labels_tgt in product((0, 1), repeat=gt.closed):
++            chi = base_chi[:]
++            extra = [0] * len(roots)
++            for comp, lab in zip(closed_src, labels_src):
++                chi[comp] += 1
++                extra[comp] += lab            # x on the source circle: dotted cup
++            for comp, lab in zip(closed_tgt, labels_tgt):
++                chi[comp] += 1
++                extra[comp] += 1 - lab        # coefficient of 1 on the target: dotted cap
++            components = [(boundary[i], chi[i]) for i in range(len(roots))]
++            morphism: set = set()
++            for term in f:
++                dots = extra[:]
++                for key in term:
++                    dots[disk_index[('F', key)]] += 1
++                morphism ^= _expand(components, dots)
++            if morphism:
++                result[labels_src, labels_tgt] = morphism
++    return gs, gt, result
++
++
+--- /dev/null
++++ b/fastunknot/jones.py
+@@ -0,0 +1,123 @@
++"""A one-sided Jones obstruction computed by scalar frontier contraction.
++
++Only a mismatch proves KNOTTED. Equality never proves UNKNOT. Arithmetic is
++exact in F_p; modular collisions and budget exhaustion merely skip this filter.
++The complete Khovanov fallback is retained.
++"""
++from __future__ import annotations
++from collections import defaultdict
++from hashlib import sha256
++import json
++from typing import Callable
++
++from .diagram import Diagram
++from .ordering import best_scan_order, validate_order
++
++PRIME = 2147483647  # 2^31 - 1, a prime.
++A_VALUE = 2
++SMOOTHINGS = (((0, 1), (2, 3)), ((0, 3), (1, 2)))
++
++
++class FilterLimit(RuntimeError):
++    """A bounded optional obstruction stage was abandoned; this proves nothing."""
++
++
++def _glue(matching, slots, smoothing, boundary):
++    parent = {p: p for pair in matching for p in pair}
++    parent.update({p: p for p in slots if p not in parent})
++    def find(p):
++        while parent[p] != p:
++            parent[p] = parent[parent[p]]
++            p = parent[p]
++        return p
++    for p, q in matching:
++        parent[find(p)] = find(q)
++    for a, b in SMOOTHINGS[smoothing]:
++        parent[find(slots[a])] = find(slots[b])
++    groups = {find(p): [] for p in parent}
++    for p in boundary:
++        groups[find(p)].append(p)
++    closed, pairs = 0, []
++    for ends in groups.values():
++        if not ends:
++            closed += 1
++        elif len(ends) == 2:
++            pairs.append(tuple(sorted(ends)))
++        else:
++            raise ArithmeticError("a bracket smoothing has neither zero nor two ends")
++    return tuple(sorted(pairs)), closed
++
++
++def pd_digest(diagram: Diagram) -> str:
++    return sha256(json.dumps(diagram.to_json()['pd'], separators=(',', ':')).encode()).hexdigest()
++
++
++def jones_obstruction(diagram: Diagram, *, order=None, max_states: int | None = 2048,
++                      max_transitions: int | None = 50000,
++                      check: Callable[[], None] = lambda: None) -> dict:
++    """Return an exact finite-field evaluation and whether it differs from the unknot.
++
++    Stored bracket B assigns delta to every closed circle (including the first).
++    Our PD convention has B(D_unknot) = delta * (-A^3)^w for an unknot diagram.
++    An explicit scan order must contain every crossing exactly once.
++    """
++    for name, limit in (("max_states", max_states), ("max_transitions", max_transitions)):
++        if limit is not None and (type(limit) is not int or limit < 0):
++            raise ValueError(name + " must be a nonnegative integer")
++    check()
++    pd = diagram.pd
++    order = (best_scan_order(pd, tries=min(len(pd), 12), check=check) if order is None
++             else validate_order(len(pd), order))
++    p, a = PRIME, A_VALUE
++    inv_a = pow(a, -1, p)
++    delta = (-a * a - inv_a * inv_a) % p
++    states = {(): 1}
++    boundary = set()
++    peak, transitions = 1, 0
++    for cid in order:
++        check()
++        slots = pd[cid]
++        for edge in slots:
++            boundary.symmetric_difference_update((edge,))
++        new = {}
++        for matching, coefficient in states.items():
++            check()
++            for smoothing, weight in ((0, a), (1, inv_a)):
++                transitions += 1
++                if max_transitions is not None and transitions > max_transitions:
++                    raise FilterLimit("Jones transition budget exhausted")
++                target, closed = _glue(matching, slots, smoothing, boundary)
++                value = (new.get(target, 0) + coefficient * weight * pow(delta, closed, p)) % p
++                if value:
++                    new[target] = value
++                else:
++                    new.pop(target, None)
++                if max_states is not None and len(new) > max_states:
++                    raise FilterLimit("Jones frontier-state budget exhausted")
++        states = new
++        peak = max(peak, len(states))
++    if boundary or any(m for m in states):
++        raise ArithmeticError("Jones evaluation ended with an open boundary")
++    writhe = diagram.writhe()
++    bracket = states.get((), 0) if pd else delta
++    expected = delta * pow((-a ** 3) % p, writhe, p) % p
++    return {"obstruction": bracket != expected, "prime": p, "A": a,
++            "writhe": writhe, "bracket": bracket, "unknot_bracket": expected,
++            "normalized_jones": bracket * pow(expected, -1, p) % p,
++            "pd_sha256": pd_digest(diagram), "order": order,
++            "max_states": peak, "transitions": transitions}
++
++
++def verify_obstruction(diagram: Diagram, witness: dict) -> bool:
++    """Replay a finite-field witness. This recomputes the contraction, not an NP proof."""
++    if not isinstance(witness, dict) or witness.get('prime') != PRIME or witness.get('A') != A_VALUE:
++        return False
++    if witness.get('pd_sha256') != pd_digest(diagram):
++        return False
++    try:
++        result = jones_obstruction(diagram, order=witness['order'],
++                                   max_states=None, max_transitions=None)
++    except (ValueError, KeyError, TypeError):
++        return False
++    fields = ('writhe', 'bracket', 'unknot_bracket', 'pd_sha256')
++    return result['obstruction'] and all(result[k] == witness.get(k) for k in fields)
+--- /dev/null
++++ b/fastunknot/modular.py
+@@ -0,0 +1,75 @@
++"""Polynomial-time one-sided Alexander tests without Z[t] arithmetic."""
++from __future__ import annotations
++from typing import Callable
++from .diagram import Diagram, DisjointSet
++
++PRIME = 2147483647
++
++
++def numeric_minor(diagram: Diagram, t: int, prime: int = PRIME):
++    n = diagram.crossings
++    if not n:
++        return []
++    arcs = DisjointSet(2 * n)
++    for _, b, _, d in diagram.pd:
++        arcs.union(b, d)
++    roots = sorted({arcs.find(e) for e in range(2 * n)})
++    if len(roots) != n:
++        raise ArithmeticError("unexpected number of Wirtinger arcs")
++    col = {root: i for i, root in enumerate(roots)}
++    signs = diagram.signs()
++    incoming = {d // 4: d % 4 for d in diagram.traversal() if not d % 2}
++    matrix = [[0] * (n - 1) for _ in range(n - 1)]
++    for i, (a, b, c, _) in enumerate(diagram.pd[:-1]):
++        u, v = (a, c) if incoming[i] == 0 else (c, a)
++        entries = ((b, 1 - t), (u, t), (v, -1)) if signs[i] > 0 else \
++                  ((b, 1 - t), (u, -1), (v, t))
++        for edge, coefficient in entries:
++            j = col[arcs.find(edge)]
++            if j < n - 1:
++                matrix[i][j] = (matrix[i][j] + coefficient) % prime
++    return matrix
++
++
++def determinant_mod(matrix, prime=PRIME, check: Callable[[], None] = lambda: None):
++    a = [row[:] for row in matrix]
++    n, result = len(a), 1
++    for k in range(n):
++        check()
++        pivot = next((i for i in range(k, n) if a[i][k] % prime), None)
++        if pivot is None:
++            return 0
++        if pivot != k:
++            a[k], a[pivot] = a[pivot], a[k]
++            result = -result
++        value = a[k][k] % prime
++        result = result * value % prime
++        inv = pow(value, -1, prime)
++        row = a[k]
++        # Sparse tails avoid touching zero entries of this pivot row.
++        tail = [(j, row[j]) for j in range(k + 1, n) if row[j]]
++        for i in range(k + 1, n):
++            if a[i][k]:
++                coefficient = a[i][k] * inv % prime
++                for j, v in tail:
++                    a[i][j] = (a[i][j] - coefficient * v) % prime
++                a[i][k] = 0
++    return result % prime
++
++
++def alexander_obstruction(diagram: Diagram, check: Callable[[], None] = lambda: None):
++    """For an unknot this minor is +-t^k, 0 <= k <= n-1. A mismatch is decisive."""
++    attempts = []
++    for value in (-1, 2):
++        check()
++        det = determinant_mod(numeric_minor(diagram, value), check=check)
++        possible, power = set(), 1
++        for _ in range(max(1, diagram.crossings)):
++            possible.update((power, (-power) % PRIME))
++            power = power * value % PRIME
++        obstruction = det not in possible
++        attempts.append({"t": value, "determinant_mod_p": det,
++                         "max_unit_exponent": max(0, diagram.crossings - 1)})
++        if obstruction:
++            return {"obstruction": True, "prime": PRIME, "attempts": attempts}
++    return {"obstruction": False, "prime": PRIME, "attempts": attempts}
+--- /dev/null
++++ b/fastunknot/ordering.py
+@@ -0,0 +1,83 @@
++"""Heap-maintained versions of the upstream greedy frontier orders."""
++from __future__ import annotations
++from collections import defaultdict
++from heapq import heappop, heappush
++from typing import Callable
++
++
++def validate_order(n: int, order) -> list[int]:
++    order = list(order)
++    if len(order) != n or any(type(i) is not int for i in order) or set(order) != set(range(n)):
++        raise ValueError("scan order must be a permutation of all crossing indices")
++    return order
++
++
++def scan_order(pd, start: int | None = None, *, check: Callable[[], None] = lambda: None):
++    n = len(pd)
++    if not n:
++        return []
++    start = 0 if start is None else start
++    if type(start) is not int or not 0 <= start < n:
++        raise ValueError("invalid starting crossing")
++    where = defaultdict(set)
++    for i, row in enumerate(pd):
++        for edge in row:
++            where[edge].add(i)
++    loops = [4 - len(set(row)) for row in pd]
++    alive = [True] * n
++    versions = [0] * n
++    boundary = set()
++    heap = [(0, -loops[i], i, 0) for i in range(n)]
++    # Initial heap is not sorted by loops, so heapify explicitly.
++    from heapq import heapify
++    heapify(heap)
++    result = []
++    current = start
++    for step in range(n):
++        check()
++        if step:
++            while heap:
++                _, _, current, version = heappop(heap)
++                if alive[current] and versions[current] == version:
++                    break
++        result.append(current)
++        alive[current] = False
++        changed = set()
++        for edge in pd[current]:
++            boundary.symmetric_difference_update((edge,))
++            changed.update(where[edge])
++        for i in changed:
++            if alive[i]:
++                versions[i] += 1
++                shared = sum(edge in boundary for edge in pd[i])
++                heappush(heap, (-shared, -loops[i], i, versions[i]))
++    return result
++
++
++def order_profile(pd, order):
++    boundary = set()
++    worst = total = 0
++    for i in order:
++        for edge in pd[i]:
++            boundary.symmetric_difference_update((edge,))
++        worst = max(worst, len(boundary))
++        total += len(boundary)
++    return worst, total
++
++
++def best_scan_order(pd, tries: int | None = None, *, check: Callable[[], None] = lambda: None):
++    n = len(pd)
++    if not n:
++        return []
++    if tries is not None and (type(tries) is not int or tries < 1):
++        raise ValueError("tries must be positive")
++    # Preserve the baseline's exact start set, including rounding behavior.
++    starts = range(n) if tries is None or tries >= n else range(0, n, max(1, n // tries))
++    best, score = None, None
++    for start in starts:
++        check()
++        order = scan_order(pd, start, check=check)
++        candidate = order_profile(pd, order)
++        if score is None or candidate < score:
++            best, score = order, candidate
++    return best
+--- a/fastunknot/recognize.py
++++ b/fastunknot/recognize.py
+@@ -1,30 +1,19 @@
+-"""The recognition pipeline.
+-
+-1. validate the diagram (one component, spherical rotation system);
+-2. crossing-decreasing Reidemeister I/II moves (polynomial);
+-3. descending-diagram test (polynomial, sufficient for UNKNOT);
+-4. Alexander polynomial (polynomial; a value other than 1 certifies KNOTTED);
+-5. reduced Khovanov rank over F2 by scanning (exact; UNKNOT iff rank 1).
+-
+-Every verdict is exact.  Optional ceilings turn a too-expensive step 5 into
+-UNKNOWN, never into a knot verdict.  Worst-case running time is exponential
+-in the crossing number; it is not quasi-polynomial.
+-"""
++"""Exact recognition with bounded one-sided obstructions and a complete fallback."""
+ from __future__ import annotations
+-
+ from dataclasses import dataclass, field
+ from time import monotonic
+ from typing import Any
+-
+ from .alexander import alexander_polynomial, evaluate, format_polynomial
+ from .diagram import Diagram
++from .jones import FilterLimit, jones_obstruction
++from .modular import alexander_obstruction
+ from .scan import ScanLimit, khovanov_rank
+ from .simplify import descending_start, simplify
+ 
+ 
+ @dataclass
+ class Result:
+-    status: str                  # UNKNOT, KNOTTED, UNKNOWN
++    status: str
+     method: str
+     input_crossings: int
+     reduced_crossings: int
+@@ -33,56 +22,88 @@
+ 
+     @property
+     def is_unknot(self) -> bool | None:
+-        return {"UNKNOT": True, "KNOTTED": False}.get(self.status)
++        return {'UNKNOT': True, 'KNOTTED': False}.get(self.status)
+ 
+-    def to_json(self) -> dict[str, Any]:
+-        return {
+-            "status": self.status, "is_unknot": self.is_unknot, "method": self.method,
+-            "input_crossings": self.input_crossings, "reduced_crossings": self.reduced_crossings,
+-            "seconds": round(self.seconds, 6), "evidence": self.evidence,
+-            "quasipolynomial_guarantee": False,
+-            "worst_case": "2^O(n); the scan is exponential in its boundary size, not in n",
+-        }
++    def to_json(self):
++        return {'status': self.status, 'is_unknot': self.is_unknot, 'method': self.method,
++                'input_crossings': self.input_crossings, 'reduced_crossings': self.reduced_crossings,
++                'seconds': round(self.seconds, 6), 'evidence': self.evidence,
++                'quasipolynomial_guarantee': False,
++                'worst_case': '2^O(n); no width-only bound on Khovanov multiplicity is claimed'}
+ 
+ 
+-def recognize(diagram: Diagram, *, use_reduction: bool = True, use_descending: bool = True,
+-              use_alexander: bool = True, max_objects: int | None = None,
+-              seconds: float | None = None, check_d_squared: bool = False) -> Result:
++def recognize(diagram: Diagram, *, use_reduction=True, use_descending=True,
++              use_alexander=True, use_jones=True, use_modular=True,
++              use_factorization=True, jones_max_states=2048,
++              jones_max_transitions=50000, max_objects=None,
++              seconds=None, check_d_squared=False, pivot='markowitz') -> Result:
++    """Decide a validated knot. Resource exhaustion returns UNKNOWN, never KNOTTED.
++
++    A Jones-only budget exhaustion skips that filter; global time/memory exhaustion
++    returns UNKNOWN. With all ceilings removed, the Khovanov fallback is complete.
++    """
++    if seconds is not None and seconds < 0:
++        raise ValueError('seconds must be nonnegative')
++    if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
++        raise ValueError('max_objects must be a nonnegative integer')
++    if pivot not in ('markowitz', 'lifo'):
++        raise ValueError('invalid pivot policy')
+     start = monotonic()
+-    original = diagram
+-    evidence: dict[str, Any] = {}
+-    trace = []
+-    if use_reduction:
+-        diagram, trace = simplify(diagram)
+-        evidence["reidemeister_trace"] = [m.to_json() for m in trace]
+-    if diagram.crossings == 0:
+-        return Result("UNKNOT", "reidemeister-reduction", original.crossings, 0,
++    deadline = None if seconds is None else start + seconds
++    original, evidence = diagram, {}
++    def check():
++        if deadline is not None and monotonic() >= deadline:
++            raise ScanLimit('time budget exhausted')
++    def done(status, method):
++        return Result(status, method, original.crossings, diagram.crossings,
+                       monotonic() - start, evidence)
+-    if use_descending:
+-        dart = descending_start(diagram)
+-        if dart is not None:
+-            evidence["descending_start_dart"] = dart
+-            return Result("UNKNOT", "descending-diagram", original.crossings, diagram.crossings,
+-                          monotonic() - start, evidence)
+-    if use_alexander:
+-        poly = alexander_polynomial(diagram)
+-        evidence["alexander_polynomial"] = format_polynomial(poly)
+-        evidence["determinant"] = abs(evaluate(poly, -1))
+-        if poly != [1]:
+-            return Result("KNOTTED", "alexander-polynomial", original.crossings,
+-                          diagram.crossings, monotonic() - start, evidence)
+-    remaining = None if seconds is None else max(0.0, seconds - (monotonic() - start))
+     try:
++        check()
++        if use_reduction:
++            diagram, trace = simplify(diagram, check=check)
++            evidence['reidemeister_trace'] = [move.to_json() for move in trace]
++        if not diagram.crossings:
++            return done('UNKNOT', 'reidemeister-reduction')
++        if use_descending:
++            dart = descending_start(diagram, check=check)
++            if dart is not None:
++                evidence['descending_start_dart'] = dart
++                return done('UNKNOT', 'descending-diagram')
++        if use_alexander and use_modular:
++            evidence['alexander_modular'] = alexander_obstruction(diagram, check=check)
++            if evidence['alexander_modular']['obstruction']:
++                return done('KNOTTED', 'alexander-mod-prime')
++        if use_jones:
++            try:
++                witness = jones_obstruction(diagram, max_states=jones_max_states,
++                                             max_transitions=jones_max_transitions, check=check)
++                evidence['jones'] = witness
++                if witness['obstruction']:
++                    # Witness pertains to this reduced diagram, not the input PD.
++                    evidence['jones_diagram'] = diagram.to_json()
++                    return done('KNOTTED', 'jones-mod-prime')
++            except FilterLimit as exc:
++                evidence['jones_skipped'] = str(exc)
++        if use_alexander:
++            check()
++            poly = alexander_polynomial(diagram, check=check)
++            evidence['alexander_polynomial'] = format_polynomial(poly)
++            evidence['determinant'] = abs(evaluate(poly, -1))
++            if poly != [1]:
++                return done('KNOTTED', 'alexander-polynomial')
++        check()
++        remaining = None if deadline is None else max(0., deadline - monotonic())
+         kh = khovanov_rank(diagram.pd, max_objects=max_objects, seconds=remaining,
+-                           check_d_squared=check_d_squared)
++                           check_d_squared=check_d_squared, pivot=pivot, factor=use_factorization)
++        evidence['khovanov'] = {'field': 'F2', 'unreduced_rank': kh['rank'],
++            'reduced_rank': kh['reduced_rank'], 'unreduced_rank_by_cube_degree': kh['by_degree'],
++            'scan_stats': kh['stats'], 'scan_order': kh['order'],
++            'factorized': kh.get('factorized', False)}
++        if kh.get('factorized'):
++            evidence['khovanov']['factor_results'] = kh['factor_results']
++            evidence['khovanov']['decomposition'] = kh['decomposition']
++        return done('UNKNOT' if kh['reduced_rank'] == 1 else 'KNOTTED',
++                    'reduced-khovanov-F2-scan')
+     except (ScanLimit, MemoryError) as exc:
+-        evidence["reason"] = str(exc) or "memory allocation failed"
+-        return Result("UNKNOWN", "resource-limit", original.crossings, diagram.crossings,
+-                      monotonic() - start, evidence)
+-    evidence["khovanov"] = {"field": "F2", "unreduced_rank": kh["rank"],
+-                            "reduced_rank": kh["reduced_rank"],
+-                            "unreduced_rank_by_cube_degree": kh["by_degree"],
+-                            "scan_stats": kh["stats"], "scan_order": kh["order"]}
+-    status = "UNKNOT" if kh["reduced_rank"] == 1 else "KNOTTED"
+-    return Result(status, "reduced-khovanov-F2-scan", original.crossings, diagram.crossings,
+-                  monotonic() - start, evidence)
++        evidence['reason'] = str(exc) or 'memory allocation failed'
++        return done('UNKNOWN', 'resource-limit')
+--- a/fastunknot/scan.py
++++ b/fastunknot/scan.py
+@@ -1,553 +1,241 @@
+-"""Khovanov homology over F2 by scanning (Bar-Natan's local algorithm).
+-
+-The diagram is processed one crossing at a time.  After each step the partial
+-complex lives in the F2-linear dotted-cobordism category of the processed
+-region: objects are perfect matchings of the boundary edges (closed circles are
+-"delooped" into two objects), and a morphism between matchings a and b is an
+-F2-combination of dot-subsets of the circles of a u b~.  Composition is the
+-two-dimensional TQFT of the glued surface for the Frobenius algebra
+-F2[x]/(x^2): a component of genus >= 1 or with >= 2 dots is zero, a closed
+-component is 1 exactly when it carries one dot, and a planar component with
+-k boundary circles and d dots is Delta^(k-1)(x^d).  Invertible entries are
+-cancelled by Gaussian elimination after every crossing, so the complex stays
+-small when the scan has a small boundary.  The final complex is a complex of
+-F2-vector spaces with zero differential; its size is the total unreduced
+-Khovanov rank.  For a knot this rank is 2 exactly for the unknot.
+-
+-Nothing here is quasi-polynomial: the worst case is still exponential.
+-"""
+-from __future__ import annotations
+-
+-from collections import defaultdict
+-from dataclasses import dataclass, field
+-from functools import lru_cache
+-from itertools import product
+-from time import monotonic
+-from typing import Any, Iterable
+-
+-SMOOTHINGS = (((0, 1), (2, 3)), ((0, 3), (1, 2)))  # 0: (a,b),(c,d)   1: (a,d),(b,c)
+-
+-Matching = frozenset  # frozenset of frozenset({p, q}) pairs of boundary labels
+-Morphism = set        # set of frozenset(circle keys); F2 coefficients
+-
+-
+-class ScanLimit(RuntimeError):
+-    """A user-selected ceiling was reached; this is never a knot verdict."""
+-
+-
+-def _dsu_find(parent: dict, x):
+-    root = x
+-    while parent[root] != root:
+-        root = parent[root]
+-    while parent[x] != root:
+-        parent[x], x = root, parent[x]
+-    return root
+-
+-
+-@lru_cache(maxsize=None)
+-def circles(a: Matching, b: Matching) -> dict:
+-    """Map each boundary label to the key (frozenset of labels) of its circle in a u b~."""
+-    parent: dict = {}
+-    for pair in a | b:
+-        for p in pair:
+-            parent.setdefault(p, p)
+-    for pair in a | b:
+-        p, q = tuple(pair)
+-        rp, rq = _dsu_find(parent, p), _dsu_find(parent, q)
+-        if rp != rq:
+-            parent[rp] = rq
+-    groups: dict = defaultdict(list)
+-    for p in parent:
+-        groups[_dsu_find(parent, p)].append(p)
+-    keys = {root: frozenset(members) for root, members in groups.items()}
+-    return {p: keys[_dsu_find(parent, p)] for p in parent}
+-
+-
+-@dataclass
+-class Glued:
+-    """Result of attaching one smoothing of a crossing to a matching."""
+-    points: frozenset
+-    matching: Matching
+-    closed: int                                  # number of closed circles created
+-    arc_of: dict = field(default_factory=dict)   # arc id -> ('new', pair) | ('closed', index)
+-
+-
+-@lru_cache(maxsize=None)
+-def glue(m: Matching, smoothing_index: int, points: frozenset, slots: tuple) -> Glued:
+-    """Attach the crossing with edge labels `slots` (counterclockwise) to the region.
+-
+-    Arc ids are ('m', pair) for arcs of m and ('s', j) for the two smoothing arcs.
+-    """
+-    adjacency: dict = defaultdict(list)
+-    for pair in m:
+-        p, q = tuple(pair)
+-        adjacency[('P', p)].append((('P', q), ('m', pair)))
+-        adjacency[('P', q)].append((('P', p), ('m', pair)))
+-    for j, (s, t) in enumerate(SMOOTHINGS[smoothing_index]):
+-        adjacency[('S', s)].append((('S', t), ('s', j)))
+-        adjacency[('S', t)].append((('S', s), ('s', j)))
+-    first_slot: dict = {}
+-    for j, label in enumerate(slots):
+-        if label in points:
+-            adjacency[('S', j)].append((('P', label), None))
+-            adjacency[('P', label)].append((('S', j), None))
+-        elif label in first_slot:
+-            j0 = first_slot[label]
+-            adjacency[('S', j)].append((('S', j0), None))
+-            adjacency[('S', j0)].append((('S', j), None))
+-        else:
+-            first_slot[label] = j
+-
+-    def label_of(node):
+-        return node[1] if node[0] == 'P' else slots[node[1]]
+-
+-    visited: set = set()
+-    new_pairs, arc_of, closed = [], {}, 0
+-    ends = [node for node, nbrs in adjacency.items() if len(nbrs) == 1]
+-    for start in ends:
+-        if start in visited:
+-            continue
+-        node, prev, arcs = start, None, []
+-        visited.add(node)
+-        while True:
+-            step = next(((nbr, arc) for nbr, arc in adjacency[node] if nbr != prev), None)
+-            if step is None:
+-                break
+-            nbr, arc = step
+-            if arc is not None:
+-                arcs.append(arc)
+-            prev, node = node, nbr
+-            visited.add(node)
+-            if len(adjacency[node]) == 1:
+-                break
+-        pair = frozenset((label_of(start), label_of(node)))
+-        if len(pair) != 2:
+-            raise ArithmeticError("degenerate boundary arc")
+-        new_pairs.append(pair)
+-        for arc in arcs:
+-            arc_of[arc] = ('new', pair)
+-    for start in adjacency:
+-        if start in visited:
+-            continue
+-        node, prev, arcs = start, None, []
+-        visited.add(node)
+-        while True:
+-            options = [(nbr, arc) for nbr, arc in adjacency[node] if nbr != prev]
+-            if not options:
+-                break
+-            nbr, arc = options[0]
+-            if arc is not None:
+-                arcs.append(arc)
+-            prev, node = node, nbr
+-            if node == start:
+-                break
+-            visited.add(node)
+-        for arc in arcs:
+-            arc_of[arc] = ('closed', closed)
+-        closed += 1
+-    new_points = frozenset(p for pair in new_pairs for p in pair)
+-    return Glued(new_points, frozenset(new_pairs), closed, arc_of)
+-
+-
+-def _expand(components: list, dots: list) -> set:
+-    """Normal form of a surface: set of dot-subsets (product over components)."""
+-    result = {frozenset()}
+-    for (boundary, chi), d in zip(components, dots):
+-        twice_genus = 2 - chi - len(boundary)
+-        if twice_genus < 0 or twice_genus % 2:
+-            raise ArithmeticError(f"impossible surface component: chi={chi}, boundary={len(boundary)}")
+-        if twice_genus or d >= 2:
+-            return set()
+-        if not boundary:
+-            if d == 1:
+-                continue
+-            return set()
+-        if d == 1:
+-            options = [frozenset(boundary)]
+-        else:
+-            options = [frozenset(boundary - {undotted}) for undotted in boundary]
+-        result = {x | y for x in result for y in options}
+-    return result
+-
+-
+-def compose(f: Morphism, g: Morphism, a: Matching, b: Matching, c: Matching) -> Morphism:
+-    """g o f for f: a -> b and g: b -> c, as an element of Hom(a, c)."""
+-    if not f or not g:
+-        return set()
+-    ab, bc, ac = circles(a, b), circles(b, c), circles(a, c)
+-    parent: dict = {}
+-    for key in set(ab.values()):
+-        parent[('L', key)] = ('L', key)
+-    for key in set(bc.values()):
+-        parent[('R', key)] = ('R', key)
+-    for pair in b:
+-        p = next(iter(pair))
+-        x, y = _dsu_find(parent, ('L', ab[p])), _dsu_find(parent, ('R', bc[p]))
+-        if x != y:
+-            parent[x] = y
+-    members: dict = defaultdict(set)
+-    for disk in parent:
+-        members[_dsu_find(parent, disk)].add(disk)
+-    glue_count: dict = defaultdict(int)
+-    for pair in b:
+-        glue_count[_dsu_find(parent, ('L', ab[next(iter(pair))]))] += 1
+-    boundary: dict = defaultdict(set)
+-    for pair in a:
+-        p = next(iter(pair))
+-        boundary[_dsu_find(parent, ('L', ab[p]))].add(ac[p])
+-    for pair in c:
+-        p = next(iter(pair))
+-        boundary[_dsu_find(parent, ('R', bc[p]))].add(ac[p])
+-    roots = list(members)
+-    components = [(boundary[r], len(members[r]) - glue_count[r]) for r in roots]
+-    index = {disk: i for i, r in enumerate(roots) for disk in members[r]}
+-    result: set = set()
+-    for tf in f:
+-        dots_f = [0] * len(roots)
+-        for key in tf:
+-            dots_f[index[('L', key)]] += 1
+-        for tg in g:
+-            dots = dots_f[:]
+-            for key in tg:
+-                dots[index[('R', key)]] += 1
+-            result ^= _expand(components, dots)
+-    return result
+-
+-
+-def identity(m: Matching) -> Morphism:
+-    return {frozenset()}
+-
+-
+-def is_unit(f: Morphism) -> bool:
+-    return frozenset() in f
+-
+-
+-def inverse(f: Morphism, m: Matching) -> Morphism:
+-    """Inverse of a unit 1 + nu in the local ring End(m)."""
+-    if not is_unit(f):
+-        raise ValueError("not a unit")
+-    nu = set(f)
+-    nu.discard(frozenset())
+-    result, power = {frozenset()}, {frozenset()}
+-    while True:
+-        power = compose(power, nu, m, m, m)
+-        if not power:
+-            return result
+-        result ^= power
+-
+-
+-def crossing_entries(m_src: Matching, m_tgt: Matching, f: Morphism, i_src: int, i_tgt: int,
+-                     points: frozenset, slots: tuple) -> tuple[Glued, Glued, dict]:
+-    """Entries of the tensor product with a crossing complex, after delooping.
+-
+-    Returns the two glued objects and a map (labels_src, labels_tgt) -> morphism,
+-    where labels are tuples over the closed circles (0 = label 1, 1 = label x).
+-    """
+-    gs, gt = glue(m_src, i_src, points, slots), glue(m_tgt, i_tgt, points, slots)
+-    mm = circles(m_src, m_tgt)
+-    f_keys = sorted(set(mm.values()), key=sorted)
+-    disks = [('F', key) for key in f_keys]
+-    saddle = i_src != i_tgt
+-    if saddle:
+-        disks.append(('I', 's'))
+-
+-        def idisk(side, j):
+-            return ('I', 's')
+-    else:
+-        disks.extend([('I', 0), ('I', 1)])
+-
+-        def idisk(side, j):
+-            return ('I', j)
+-    parent = {d: d for d in disks}
+-    smoothing_of_slot = []
+-    for i in (i_src, i_tgt):
+-        table = {}
+-        for j, arc in enumerate(SMOOTHINGS[i]):
+-            for s in arc:
+-                table[s] = j
+-        smoothing_of_slot.append(table)
+-    unions: list = []
+-    seen_slots: dict = {}
+-    for j, label in enumerate(slots):
+-        if label in points:
+-            unions.append((('F', mm[label]), idisk(0, smoothing_of_slot[0][j])))
+-        elif label in seen_slots:
+-            j0 = seen_slots[label]
+-            unions.append((idisk(0, smoothing_of_slot[0][j0]), idisk(0, smoothing_of_slot[0][j])))
+-        else:
+-            seen_slots[label] = j
+-    for x, y in unions:
+-        rx, ry = _dsu_find(parent, x), _dsu_find(parent, y)
+-        if rx != ry:
+-            parent[rx] = ry
+-    members: dict = defaultdict(set)
+-    for d in disks:
+-        members[_dsu_find(parent, d)].add(d)
+-    glue_count: dict = defaultdict(int)
+-    for x, _ in unions:
+-        glue_count[_dsu_find(parent, x)] += 1
+-    nn = circles(gs.matching, gt.matching)
+-    roots = list(members)
+-    root_index = {r: i for i, r in enumerate(roots)}
+-    boundary = [set() for _ in roots]
+-    closed_src: list = [None] * gs.closed
+-    closed_tgt: list = [None] * gt.closed
+-
+-    def record(disk, ref, closed_list):
+-        comp = root_index[_dsu_find(parent, disk)]
+-        kind, value = ref
+-        if kind == 'new':
+-            boundary[comp].add(nn[next(iter(value))])
+-        else:
+-            closed_list[value] = comp
+-
+-    for pair in m_src:
+-        record(('F', mm[next(iter(pair))]), gs.arc_of[('m', pair)], closed_src)
+-    for j in range(2):
+-        record(idisk(0, j), gs.arc_of[('s', j)], closed_src)
+-    for pair in m_tgt:
+-        record(('F', mm[next(iter(pair))]), gt.arc_of[('m', pair)], closed_tgt)
+-    for j in range(2):
+-        record(idisk(1, j), gt.arc_of[('s', j)], closed_tgt)
+-    if any(c is None for c in closed_src) or any(c is None for c in closed_tgt):
+-        raise ArithmeticError("closed circle without a bounding component")
+-    base_chi = [len(members[r]) - glue_count[r] for r in roots]
+-    disk_index = {d: root_index[_dsu_find(parent, d)] for d in disks}
+-    result: dict = {}
+-    for labels_src in product((0, 1), repeat=gs.closed):
+-        for labels_tgt in product((0, 1), repeat=gt.closed):
+-            chi = base_chi[:]
+-            extra = [0] * len(roots)
+-            for comp, lab in zip(closed_src, labels_src):
+-                chi[comp] += 1
+-                extra[comp] += lab            # x on the source circle: dotted cup
+-            for comp, lab in zip(closed_tgt, labels_tgt):
+-                chi[comp] += 1
+-                extra[comp] += 1 - lab        # coefficient of 1 on the target: dotted cap
+-            components = [(boundary[i], chi[i]) for i in range(len(roots))]
+-            morphism: set = set()
+-            for term in f:
+-                dots = extra[:]
+-                for key in term:
+-                    dots[disk_index[('F', key)]] += 1
+-                morphism ^= _expand(components, dots)
+-            if morphism:
+-                result[labels_src, labels_tgt] = morphism
+-    return gs, gt, result
+-
+-
+-@dataclass
+-class Object:
+-    matching: Matching
+-    h: int
+-
+-
+-class ScanComplex:
+-    """The partial Khovanov complex of the processed part of a diagram."""
+-
+-    def __init__(self, max_objects: int | None = None, deadline: float | None = None):
+-        self.objects: dict[int, Object] = {}
+-        self.out: dict[int, dict[int, Morphism]] = defaultdict(dict)
+-        self.inc: dict[int, set[int]] = defaultdict(set)
+-        self.points: frozenset = frozenset()
+-        self.next_id = 0
+-        self.max_objects = max_objects
+-        self.deadline = deadline
+-        self.stats = {'max_objects_before_elimination': 0, 'max_objects_after_elimination': 0,
+-                      'eliminations': 0, 'max_boundary': 0, 'compositions': 0}
+-        self._new_object(frozenset(), 0)
+-
+-    def _new_object(self, matching: Matching, h: int) -> int:
+-        i = self.next_id
+-        self.next_id += 1
+-        self.objects[i] = Object(matching, h)
+-        return i
+-
+-    def _check(self) -> None:
+-        if self.deadline is not None and monotonic() > self.deadline:
+-            raise ScanLimit("time budget exhausted")
+-
+-    def _set(self, a: int, b: int, morphism: Morphism) -> None:
+-        if morphism:
+-            self.out[a][b] = morphism
+-            self.inc[b].add(a)
+-        else:
+-            self.out[a].pop(b, None)
+-            self.inc[b].discard(a)
+-
+-    def add_crossing(self, slots: tuple) -> None:
+-        self._check()
+-        points, old_objects = self.points, self.objects
+-        new_id: dict = {}
+-        glued: dict = {}
+-        for o, obj in old_objects.items():
+-            for i in (0, 1):
+-                g = glue(obj.matching, i, points, slots)
+-                glued[o, i] = g
+-                for labels in product((0, 1), repeat=g.closed):
+-                    new_id[o, i, labels] = None
+-        if self.max_objects is not None and len(new_id) > self.max_objects:
+-            raise ScanLimit(f"{len(new_id)} objects would exceed the ceiling {self.max_objects}")
+-        objects: dict[int, Object] = {}
+-        self.objects = objects
+-        for (o, i, labels) in list(new_id):
+-            new_id[o, i, labels] = self._new_object(glued[o, i].matching, old_objects[o].h + i)
+-        old_out = self.out
+-        self.out, self.inc = defaultdict(dict), defaultdict(set)
+-        for o, obj in old_objects.items():
+-            _, _, entries = crossing_entries(obj.matching, obj.matching, identity(obj.matching),
+-                                             0, 1, points, slots)
+-            for (ls, lt), morphism in entries.items():
+-                self._set(new_id[o, 0, ls], new_id[o, 1, lt], morphism)
+-            for o2, f in old_out[o].items():
+-                m2 = old_objects[o2].matching
+-                for i in (0, 1):
+-                    _, _, entries = crossing_entries(obj.matching, m2, f, i, i, points, slots)
+-                    for (ls, lt), morphism in entries.items():
+-                        self._set(new_id[o, i, ls], new_id[o2, i, lt], morphism)
+-        self.points = next(iter(glued.values())).points if glued else frozenset()
+-        self.stats['max_objects_before_elimination'] = max(
+-            self.stats['max_objects_before_elimination'], len(objects))
+-        self.stats['max_boundary'] = max(self.stats['max_boundary'], len(self.points))
+-        self.eliminate()
+-        self.stats['max_objects_after_elimination'] = max(
+-            self.stats['max_objects_after_elimination'], len(self.objects))
+-
+-    def _invertible(self, a: int, b: int) -> bool:
+-        f = self.out[a].get(b)
+-        return (f is not None and is_unit(f)
+-                and self.objects[a].matching == self.objects[b].matching)
+-
+-    def eliminate(self) -> None:
+-        """Cancel invertible entries until the complex is minimal (Bar-Natan's lemma)."""
+-        queue = [(a, b) for a in list(self.out) for b in list(self.out[a]) if self._invertible(a, b)]
+-        while queue:
+-            self._check()
+-            b, c = queue.pop()
+-            if b not in self.objects or c not in self.objects or not self._invertible(b, c):
+-                continue
+-            phi = self.out[b][c]
+-            m = self.objects[b].matching
+-            phi_inv = inverse(phi, m)
+-            ins = [(a, self.out[a][c]) for a in self.inc[c] if a != b]
+-            outs = [(f, self.out[b][f]) for f in self.out[b] if f != c]
+-            for a, delta in ins:
+-                ma = self.objects[a].matching
+-                half = compose(delta, phi_inv, ma, m, m)
+-                for f, gamma in outs:
+-                    mf = self.objects[f].matching
+-                    term = compose(half, gamma, ma, m, mf)
+-                    self.stats['compositions'] += 2
+-                    if term:
+-                        current = set(self.out[a].get(f, set()))
+-                        current ^= term
+-                        self._set(a, f, current)
+-                        if current and self._invertible(a, f):
+-                            queue.append((a, f))
+-            for x in (b, c):
+-                for y in list(self.out[x]):
+-                    self._set(x, y, set())
+-                for y in list(self.inc[x]):
+-                    self._set(y, x, set())
+-                del self.objects[x]
+-                self.out.pop(x, None)
+-                self.inc.pop(x, None)
+-            self.stats['eliminations'] += 1
+-
+-    def total_rank(self) -> int:
+-        if self.points:
+-            raise ValueError("the diagram is not closed yet")
+-        if any(self.out[a] for a in list(self.out)):
+-            raise ArithmeticError("minimal closed complex still has a nonzero differential")
+-        return len(self.objects)
+-
+-    def ranks_by_degree(self) -> dict[int, int]:
+-        counts: dict[int, int] = defaultdict(int)
+-        for obj in self.objects.values():
+-            counts[obj.h] += 1
+-        return dict(sorted(counts.items()))
+-
+-    def check_d_squared(self) -> None:
+-        """Debug check: compose consecutive differentials and require zero."""
+-        for a in list(self.out):
+-            acc: dict = defaultdict(set)
+-            ma = self.objects[a].matching
+-            for b, f in self.out[a].items():
+-                mb = self.objects[b].matching
+-                for c, g in self.out[b].items():
+-                    acc[c] ^= compose(f, g, ma, mb, self.objects[c].matching)
+-            for c, value in acc.items():
+-                if value:
+-                    raise ArithmeticError(f"d^2 != 0 between objects {a} and {c}")
+-
+-
+-def scan_order(pd: list, start: int | None = None) -> list[int]:
+-    """Greedy order: prefer crossings sharing many edges with the current boundary."""
+-    n = len(pd)
+-    if n == 0:
+-        return []
+-    remaining = set(range(n))
+-    boundary: dict[int, int] = defaultdict(int)
+-    order: list[int] = []
+-    current = 0 if start is None else start
+-    while remaining:
+-        if order:
+-            def score(i):
+-                shared = sum(1 for e in pd[i] if boundary.get(e))
+-                loops = 4 - len(set(pd[i]))
+-                return (shared, -(len(boundary) + 4 - 2 * shared - 2 * loops), -i)
+-            current = max(remaining, key=score)
+-        order.append(current)
+-        remaining.discard(current)
+-        for e in pd[current]:
+-            if boundary.get(e):
+-                del boundary[e]
+-            else:
+-                boundary[e] = 1
+-    return order
+-
+-
+-def order_profile(pd: list, order: list[int]) -> tuple[int, int]:
+-    """(maximal boundary size, total boundary size) along an order."""
+-    boundary: set = set()
+-    worst = total = 0
+-    for i in order:
+-        for e in pd[i]:
+-            boundary.symmetric_difference_update({e})
+-        worst = max(worst, len(boundary))
+-        total += len(boundary)
+-    return worst, total
+-
+-
+-def best_scan_order(pd: list, tries: int | None = None) -> list[int]:
+-    """Greedy orders from several starting crossings; keep the smallest boundary profile."""
+-    n = len(pd)
+-    if n == 0:
+-        return []
+-    starts = range(n) if tries is None or tries >= n else range(0, n, max(1, n // tries))
+-    best, best_profile = None, None
+-    for start in starts:
+-        order = scan_order(pd, start)
+-        profile = order_profile(pd, order)
+-        if best_profile is None or profile < best_profile:
+-            best, best_profile = order, profile
+-    return best
+-
+-
+-def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None,
+-                  max_objects: int | None = None, seconds: float | None = None,
+-                  check_d_squared: bool = False) -> dict[str, Any]:
+-    """Total unreduced F2 Khovanov rank of a (validated) PD code by scanning."""
+-    pd = [tuple(c) for c in pd]
+-    if not pd:
+-        return {'rank': 2, 'reduced_rank': 1, 'by_degree': {0: 2}, 'stats': {}, 'order': []}
+-    order = best_scan_order(pd, tries=min(len(pd), 12)) if order is None else list(order)
+-    deadline = None if seconds is None else monotonic() + seconds
+-    complex_ = ScanComplex(max_objects=max_objects, deadline=deadline)
+-    for index in order:
+-        complex_.add_crossing(pd[index])
+-        if check_d_squared:
+-            complex_.check_d_squared()
+-    rank = complex_.total_rank()
+-    return {'rank': rank, 'reduced_rank': rank // 2, 'by_degree': complex_.ranks_by_degree(),
+-            'stats': complex_.stats, 'order': order}
++"""Exact Khovanov scanning over F2, with compiled bitset morphisms.
++
++The algorithm remains exponential in general. It is not a reconstruction of
++Lackenby's announced quasi-polynomial hierarchy algorithm. Public set-based
++algebra helpers remain available for compatibility; the scanner uses integers.
++"""
++from __future__ import annotations
++from collections import defaultdict
++from dataclasses import dataclass
++from heapq import heappop, heappush
++from itertools import product
++from time import monotonic
++from typing import Any, Iterable
++
++from .algebra import Algebra
++from .geometry import (Matching, Morphism, ScanLimit, compose, circles, glue,
++                       identity, is_unit, crossing_entries)
++from .ordering import best_scan_order, order_profile, scan_order, validate_order
++
++
++def inverse(f: Morphism, m: Matching) -> Morphism:
++    """In End(m) over F2, every unit is its own inverse: (1 + nu)^2 = 1."""
++    if not is_unit(f):
++        raise ValueError("not a unit")
++    return set(f)
++
++
++@dataclass(frozen=True)
++class Object:
++    matching: Matching
++    h: int
++
++
++class ScanComplex:
++    """Partial complex with bounded-lifetime topology caches and sparse elimination."""
++    def __init__(self, max_objects: int | None = None, deadline: float | None = None,
++                 pivot: str = "markowitz", cache_entries: int = 32768):
++        if pivot not in ("markowitz", "lifo"):
++            raise ValueError("pivot must be markowitz or lifo")
++        if max_objects is not None and (type(max_objects) is not int or max_objects < 0):
++            raise ValueError("max_objects must be a nonnegative integer")
++        self.objects = {}
++        self.out, self.inc = defaultdict(dict), defaultdict(set)
++        self.points = frozenset()
++        self.next_id = 0
++        self.deadline, self.max_objects, self.pivot = deadline, max_objects, pivot
++        self.stats = {'max_objects_before_elimination': 0, 'max_objects_after_elimination': 0,
++                      'eliminations': 0, 'max_boundary': 0, 'compositions': 0,
++                      'max_morphism_bits': 0, 'max_differential_entries': 0}
++        self.algebra = Algebra(self._check, cache_entries)
++        self._new_object(frozenset(), 0)
++
++    def _new_object(self, matching, h):
++        i = self.next_id
++        self.next_id += 1
++        self.objects[i] = Object(matching, h)
++        return i
++
++    def _check(self):
++        if self.deadline is not None and monotonic() >= self.deadline:
++            raise ScanLimit("time budget exhausted")
++
++    def _set(self, a, b, value):
++        if value:
++            self.out[a][b] = value
++            self.inc[b].add(a)
++            self.stats['max_morphism_bits'] = max(self.stats['max_morphism_bits'], value.bit_length())
++        else:
++            self.out[a].pop(b, None)
++            self.inc[b].discard(a)
++
++    def add_crossing(self, slots):
++        self._check()
++        self.algebra.clear()
++        points, old_objects, old_out = self.points, self.objects, self.out
++        new_id, glued = {}, {}
++        for o, obj in old_objects.items():
++            self._check()
++            for i in (0, 1):
++                g = self.algebra.gluing(obj.matching, i, points, slots)
++                glued[o, i] = g
++                for labels in product((0, 1), repeat=g.closed):
++                    new_id[o, i, labels] = None
++                    if self.max_objects is not None and len(new_id) > self.max_objects:
++                        raise ScanLimit(f"object ceiling {self.max_objects} would be exceeded")
++        self.objects = {}
++        for o, i, labels in new_id:
++            new_id[o, i, labels] = self._new_object(glued[o, i].matching, old_objects[o].h + i)
++        self.out, self.inc = defaultdict(dict), defaultdict(set)
++        for o, obj in old_objects.items():
++            self._check()
++            _, _, entries = self.algebra.crossing_entries(obj.matching, obj.matching, 1,
++                                                         0, 1, points, slots)
++            for ls, lt, value in entries:
++                self._set(new_id[o, 0, ls], new_id[o, 1, lt], value)
++            for o2, f in old_out.get(o, {}).items():
++                self._check()
++                for i in (0, 1):
++                    _, _, entries = self.algebra.crossing_entries(
++                        obj.matching, old_objects[o2].matching, f, i, i, points, slots)
++                    for ls, lt, value in entries:
++                        self._set(new_id[o, i, ls], new_id[o2, i, lt], value)
++        self.points = next(iter(glued.values())).points if glued else frozenset()
++        self.stats['max_objects_before_elimination'] = max(
++            self.stats['max_objects_before_elimination'], len(self.objects))
++        self.stats['max_boundary'] = max(self.stats['max_boundary'], len(self.points))
++        self.stats['max_differential_entries'] = max(
++            self.stats['max_differential_entries'], sum(map(len, self.out.values())))
++        self.eliminate()
++        self.stats['max_objects_after_elimination'] = max(
++            self.stats['max_objects_after_elimination'], len(self.objects))
++
++    def _invertible(self, a, b):
++        return bool(self.out.get(a, {}).get(b, 0) & 1) and \
++            self.objects[a].matching == self.objects[b].matching
++
++    def _cost(self, a, b):
++        return (len(self.out[a]) - 1) * (len(self.inc[b]) - 1)
++
++    def eliminate(self):
++        """Sparse Schur complements; lazy Markowitz-style priorities reduce fill-in.
++
++        Priorities may be stale after unrelated degree changes. They affect only
++        performance; every unit is reconsidered, including newly created units.
++        """
++        queue = []
++        def push(a, b):
++            if self.pivot == "lifo":
++                queue.append((a, b))
++            else:
++                heappush(queue, (self._cost(a, b), a, b))
++        for a in list(self.out):
++            for b in self.out[a]:
++                if self._invertible(a, b):
++                    push(a, b)
++        while queue:
++            self._check()
++            if self.pivot == "lifo":
++                b, c = queue.pop()
++            else:
++                cost, b, c = heappop(queue)
++            if b not in self.objects or c not in self.objects or not self._invertible(b, c):
++                continue
++            if self.pivot != "lifo" and cost != self._cost(b, c):
++                push(b, c)
++                continue
++            phi_inv = self.out[b][c]  # All units are involutions over F2.
++            m = self.objects[b].matching
++            ins = [(a, self.out[a][c]) for a in sorted(self.inc[c]) if a != b]
++            outs = [(f, value) for f, value in self.out[b].items() if f != c]
++            for a, delta in ins:
++                self._check()
++                ma = self.objects[a].matching
++                half = self.algebra.compose(delta, phi_inv, ma, m, m)
++                self.stats['compositions'] += 1
++                if not half:
++                    continue
++                for f, gamma in outs:
++                    self._check()
++                    term = self.algebra.compose(half, gamma, ma, m, self.objects[f].matching)
++                    self.stats['compositions'] += 1
++                    if term:
++                        current = self.out[a].get(f, 0) ^ term
++                        self._set(a, f, current)
++                        if current and self._invertible(a, f):
++                            push(a, f)
++            for x in (b, c):
++                for y in list(self.out[x]):
++                    self._set(x, y, 0)
++                for y in list(self.inc[x]):
++                    self._set(y, x, 0)
++                del self.objects[x]
++                self.out.pop(x, None)
++                self.inc.pop(x, None)
++            self.stats['eliminations'] += 1
++
++    def total_rank(self):
++        if self.points:
++            raise ValueError("diagram is not closed")
++        if any(self.out.values()):
++            raise ArithmeticError("nonzero differential in minimal closed complex")
++        return len(self.objects)
++
++    def ranks_by_degree(self):
++        result = defaultdict(int)
++        for obj in self.objects.values():
++            result[obj.h] += 1
++        return dict(sorted(result.items()))
++
++    def check_d_squared(self):
++        for a in list(self.out):
++            self._check()
++            acc = defaultdict(int)
++            for b, f in self.out[a].items():
++                for c, g in self.out[b].items():
++                    acc[c] ^= self.algebra.compose(f, g, self.objects[a].matching,
++                                                  self.objects[b].matching, self.objects[c].matching)
++            if any(acc.values()):
++                raise ArithmeticError(f"d^2 != 0 from object {a}")
++
++
++def khovanov_rank(pd: Iterable[Iterable[int]], *, order: list[int] | None = None,
++                  max_objects: int | None = None, seconds: float | None = None,
++                  check_d_squared: bool = False, pivot: str = "markowitz",
++                  factor: bool = True) -> dict[str, Any]:
++    """F2 ranks of a validated one-component PD code; no grading normalization.
++
++    Explicit orders disable connected-sum factorization, for controlled replay.
++    Resource ceilings never turn an unfinished computation into a knot verdict.
++    """
++    if seconds is not None and seconds < 0:
++        raise ValueError("seconds must be nonnegative")
++    deadline = None if seconds is None else monotonic() + seconds
++    def check():
++        if deadline is not None and monotonic() >= deadline:
++            raise ScanLimit("time budget exhausted")
++    check()
++    pd = [tuple(row) for row in pd]
++    if order is not None:
++        order = validate_order(len(pd), order)
++    if not pd:
++        return {'rank': 2, 'reduced_rank': 1, 'by_degree': {0: 2}, 'stats': {}, 'order': []}
++    if factor and order is None:
++        from .decompose import factor_rank
++        value = factor_rank(pd, max_objects=max_objects, deadline=deadline,
++                            check_d_squared=check_d_squared, pivot=pivot)
++        if value is not None:
++            return value
++    order = best_scan_order(pd, tries=min(len(pd), 12), check=check) if order is None else order
++    complex_ = ScanComplex(max_objects, deadline, pivot)
++    for index in order:
++        complex_.add_crossing(pd[index])
++        if check_d_squared:
++            complex_.check_d_squared()
++    rank = complex_.total_rank()
++    if rank % 2:
++        raise ArithmeticError("unexpected odd unreduced knot rank over F2")
++    complex_.stats.update(complex_.algebra.stats)
++    return {'rank': rank, 'reduced_rank': rank // 2, 'by_degree': complex_.ranks_by_degree(),
++            'stats': complex_.stats, 'order': order, 'backend': 'compiled-bitset-scan',
++            'pivot': pivot, 'factorized': False}
+--- a/fastunknot/simplify.py
++++ b/fastunknot/simplify.py
+@@ -49,9 +49,10 @@
+     return Diagram.from_pd(remaining)
+ 
+ 
+-def simplify(diagram: Diagram) -> tuple[Diagram, list[Move]]:
++def simplify(diagram: Diagram, *, check=lambda: None) -> tuple[Diagram, list[Move]]:
+     trace: list[Move] = []
+     while diagram.crossings:
++        check()
+         moves = legal_moves(diagram)
+         if not moves:
+             break
+@@ -60,7 +61,7 @@
+     return diagram, trace
+ 
+ 
+-def descending_start(diagram: Diagram) -> int | None:
++def descending_start(diagram: Diagram, *, check=lambda: None) -> int | None:
+     """A start dart from which every crossing is first met on its over-strand.
+ 
+     Such a diagram is descending, hence an unknot.  Failure proves nothing.
+@@ -70,6 +71,7 @@
+     alpha = diagram.alpha()
+     n = diagram.crossings
+     for start in range(4 * n):
++        check()
+         seen: set[int] = set()
+         current = start
+         ok = True
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -4,10 +4,10 @@
+ 
+ [project]
+ name = "fastunknot"
+-version = "0.1.0"
++version = "0.2.0"
+ description = "Exact unknot recognition: polynomial filters plus a scanning Khovanov backend (exponential worst case, no quasi-polynomial claim)"
+ requires-python = ">=3.10"
+-license = {text = "MIT"}
++license = {text = "MIT-0"}
+ dependencies = []
+ 
+ [project.scripts]
+--- a/tests/test_fastunknot.py
++++ b/tests/test_fastunknot.py
+@@ -1,331 +1,331 @@
+-"""Tests for fastunknot.  Run from the project root: python -m unittest discover -s tests -v"""
+-from __future__ import annotations
+-
+-import json
+-import os
+-import random
+-import subprocess
+-import sys
+-import unittest
+-
+-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+-sys.path.insert(0, ROOT)
+-
+-from fastunknot import Diagram, DiagramError, alexander_polynomial, khovanov_rank, recognize  # noqa: E402
+-from fastunknot.alexander import determinant, evaluate, exact_div, mul  # noqa: E402
+-from fastunknot.scan import ScanComplex, compose, inverse, is_unit, order_profile, scan_order  # noqa: E402
+-from fastunknot.simplify import apply_move, descending_start, legal_moves, simplify  # noqa: E402
+-
+-EXAMPLES = os.path.join(ROOT, "examples")
+-
+-
+-def load(name):
+-    with open(os.path.join(EXAMPLES, name), encoding="utf-8") as handle:
+-        return Diagram.from_json(json.load(handle))
+-
+-
+-def one_component(strands, word):
+-    p = list(range(strands))
+-    for g in word:
+-        i = abs(g) - 1
+-        p[i], p[i + 1] = p[i + 1], p[i]
+-    seen, count = set(), 0
+-    for s in range(strands):
+-        if s in seen:
+-            continue
+-        count += 1
+-        x = s
+-        while x not in seen:
+-            seen.add(x)
+-            x = p[x]
+-    return count == 1
+-
+-
+-def reference_reduced_rank(diagram: Diagram) -> int:
+-    """Independent dense cube-of-resolutions computation (reduced, F2)."""
+-    n = diagram.crossings
+-    if n == 0:
+-        return 1
+-    pd = diagram.pd
+-
+-    def circles(state):
+-        parent = list(range(2 * n))
+-
+-        def find(x):
+-            while parent[x] != x:
+-                parent[x] = parent[parent[x]]
+-                x = parent[x]
+-            return x
+-
+-        for i, (a, b, c, d) in enumerate(pd):
+-            pairs = ((a, d), (b, c)) if state >> i & 1 else ((a, b), (c, d))
+-            for x, y in pairs:
+-                parent[find(x)] = find(y)
+-        groups = {}
+-        for e in range(2 * n):
+-            groups.setdefault(find(e), []).append(e)
+-        comps = sorted(groups.values())
+-        owner = {}
+-        for k, comp in enumerate(comps):
+-            for e in comp:
+-                owner[e] = k
+-        return comps, owner
+-
+-    data = [circles(s) for s in range(1 << n)]
+-    # generators: (state, labels tuple with labels[owner[0]] == 1 (x))
+-    generators = {}
+-    by_degree = {}
+-    for s in range(1 << n):
+-        comps, owner = data[s]
+-        k = len(comps)
+-        marked = owner[0]
+-        for bits in range(1 << k):
+-            labels = tuple((bits >> j) & 1 for j in range(k))
+-            if labels[marked] != 1:
+-                continue
+-            index = len(generators)
+-            generators[s, labels] = index
+-            by_degree.setdefault(bin(s).count("1"), []).append((s, labels))
+-    columns = {}
+-    for (s, labels), index in generators.items():
+-        comps, owner = data[s]
+-        image = set()
+-        for i in range(n):
+-            if s >> i & 1:
+-                continue
+-            t = s | (1 << i)
+-            comps_t, owner_t = data[t]
+-            out = [None] * len(comps_t)
+-            src_changed = [j for j, comp in enumerate(comps) if comp not in comps_t]
+-            tgt_changed = [j for j, comp in enumerate(comps_t) if comp not in comps]
+-            for j, comp in enumerate(comps):
+-                if comp in comps_t:
+-                    out[comps_t.index(comp)] = labels[j]
+-            if len(src_changed) == 2:
+-                a, b = (labels[j] for j in src_changed)
+-                if a and b:
+-                    continue
+-                out[tgt_changed[0]] = a | b
+-                candidates = [tuple(out)]
+-            else:
+-                a = labels[src_changed[0]]
+-                j, k = tgt_changed
+-                candidates = []
+-                if a:
+-                    o = list(out)
+-                    o[j] = o[k] = 1
+-                    candidates.append(tuple(o))
+-                else:
+-                    for j1, k1 in ((0, 1), (1, 0)):
+-                        o = list(out)
+-                        o[j], o[k] = j1, k1
+-                        candidates.append(tuple(o))
+-            for cand in candidates:
+-                key = (t, cand)
+-                if key in generators:
+-                    image ^= {generators[key]}
+-        columns[index] = image
+-    # rank of d over F2 by elimination on sets
+-    total_rank = 0
+-    for h, gens in by_degree.items():
+-        pivots = {}
+-        for s, labels in gens:
+-            col = set(columns[generators[s, labels]])
+-            while col:
+-                p = max(col)
+-                if p in pivots:
+-                    col ^= pivots[p]
+-                else:
+-                    pivots[p] = col
+-                    break
+-        total_rank += len(pivots)
+-    return len(generators) - 2 * total_rank
+-
+-
+-class DiagramTests(unittest.TestCase):
+-    def test_invalid_inputs(self):
+-        for bad in ([[1, 2, 3]], [[1, 2, 3, 4]], [[1, 2, 1, 3], [3, 2, 4, 4]]):
+-            with self.assertRaises(DiagramError):
+-                Diagram.from_pd(bad)
+-        with self.assertRaises(DiagramError):
+-            Diagram.from_braid(3, [1])          # two components
+-        with self.assertRaises(DiagramError):
+-            Diagram.from_braid(2, [2])
+-        with self.assertRaises(DiagramError):
+-            Diagram.from_pd([[0, 1, 2, 3], [1, 0, 3, 2]])  # link with two components
+-
+-    def test_virtual_rejected(self):
+-        # a rotation system on the torus: the abstract graph is planar but this embedding is not
+-        with self.assertRaises(DiagramError):
+-            Diagram.from_pd([[0, 1, 2, 3], [2, 1, 0, 3]])
+-
+-    def test_grid_conversion(self):
+-        grid = load("grid_determinant_one_knot.json")
+-        self.assertEqual(grid.crossings, 10)
+-        self.assertEqual(alexander_polynomial(grid), alexander_polynomial(load("torus_3_5.json")))
+-        self.assertEqual(recognize(load("grid_scrambled_unknot.json")).status, "UNKNOT")
+-
+-    def test_signs_and_writhe(self):
+-        self.assertEqual(abs(Diagram.from_braid(2, [1, 1, 1]).writhe()), 3)
+-        self.assertEqual(Diagram.from_braid(3, [1, -2, 1, -2]).writhe(), 0)
+-        self.assertEqual(Diagram.from_braid(2, [1, 1, 1]).mirror().writhe(),
+-                         -Diagram.from_braid(2, [1, 1, 1]).writhe())
+-
+-
+-class AlexanderTests(unittest.TestCase):
+-    def test_polynomial_arithmetic(self):
+-        self.assertEqual(mul([1, 1], [1, -1]), [1, 0, -1])
+-        self.assertEqual(exact_div([1, 0, -1], [1, 1]), [1, -1])
+-        with self.assertRaises(ArithmeticError):
+-            exact_div([1, 1, 1], [1, 1])
+-        self.assertEqual(determinant([[[2], [1]], [[1], [3]]]), [5])
+-        self.assertEqual(determinant([[[0, 1], [1]], [[1], [0, 1]]]), [-1, 0, 1])
+-
+-    def test_known_polynomials(self):
+-        self.assertEqual(alexander_polynomial(Diagram.from_braid(2, [1, 1, 1])), [1, -1, 1])
+-        self.assertEqual(alexander_polynomial(Diagram.from_braid(3, [1, -2, 1, -2])), [1, -3, 1])
+-        self.assertEqual(alexander_polynomial(Diagram.from_braid(3, [1, 1, 1, 2, -1, 2])), [2, -3, 2])
+-        self.assertEqual(alexander_polynomial(Diagram.from_braid(3, [1, 2] * 5)),
+-                         [1, -1, 0, 1, -1, 1, 0, -1, 1])
+-        for name in ("kinoshita_terasaka.json", "conway.json", "hard_unknot_8.json", "unknot.json"):
+-            self.assertEqual(alexander_polynomial(load(name)), [1], name)
+-
+-    def test_symmetry_and_determinant(self):
+-        rng = random.Random(5)
+-        for _ in range(40):
+-            strands = rng.choice([3, 4])
+-            word = [rng.choice([-1, 1]) * rng.randint(1, strands - 1) for _ in range(rng.randint(4, 10))]
+-            if not one_component(strands, word):
+-                continue
+-            d = Diagram.from_braid(strands, word)
+-            p = alexander_polynomial(d)
+-            self.assertEqual(p, p[::-1])
+-            self.assertEqual(abs(evaluate(p, 1)), 1)
+-            self.assertEqual(p, alexander_polynomial(d.mirror()))
+-            self.assertEqual(evaluate(p, -1) % 2, 1)
+-
+-
+-class SimplifyTests(unittest.TestCase):
+-    def test_reidemeister_moves(self):
+-        curl = Diagram.from_braid(2, [1])
+-        reduced, trace = simplify(curl)
+-        self.assertEqual(reduced.crossings, 0)
+-        self.assertEqual([m.kind for m in trace], ["R1"])
+-        pair = Diagram.from_braid(3, [1, -1, 2, 1])
+-        self.assertTrue(any(m.kind == "R2" for m in legal_moves(pair)))
+-        reduced, trace = simplify(pair)
+-        self.assertEqual(reduced.crossings, 0)
+-        clasp = Diagram.from_braid(2, [1, 1, 1])
+-        self.assertEqual(legal_moves(clasp), [])
+-        with self.assertRaises(ValueError):
+-            apply_move(clasp, trace[0])
+-        # bigons of the trefoil closure are clasps (over then under): no Reidemeister II
+-        self.assertEqual([m.kind for m in legal_moves(clasp)], [])
+-
+-    def test_descending(self):
+-        self.assertIsNotNone(descending_start(Diagram.from_braid(3, [1, 2])))
+-        self.assertIsNone(descending_start(Diagram.from_braid(2, [1, 1, 1])))
+-
+-
+-class ScanAlgebraTests(unittest.TestCase):
+-    def test_end_ring_is_local(self):
+-        m = frozenset({frozenset({0, 1}), frozenset({2, 3})})
+-        one = {frozenset()}
+-        x0 = {frozenset({frozenset({0, 1})})}
+-        self.assertEqual(compose(x0, x0, m, m, m), set())          # x^2 = 0
+-        self.assertEqual(compose(one, x0, m, m, m), x0)
+-        unit = one | x0
+-        self.assertTrue(is_unit(unit))
+-        self.assertEqual(compose(unit, inverse(unit, m), m, m, m), one)
+-        self.assertFalse(is_unit(x0))
+-
+-    def test_d_squared_during_scan(self):
+-        for strands, word in ((3, [1, 2] * 4), (4, [1, -2, 3, -2, 1, 3, 2]), (3, [-2, -2, -2, 2, 1, 1, 2, 1])):
+-            d = Diagram.from_braid(strands, word)
+-            khovanov_rank(d.pd, check_d_squared=True)
+-
+-    def test_order_independence(self):
+-        rng = random.Random(11)
+-        d = Diagram.from_braid(4, [1, 2, -3, 2, 1, -3, 2, 2, 1])
+-        reference = khovanov_rank(d.pd)["rank"]
+-        for _ in range(5):
+-            order = list(range(d.crossings))
+-            rng.shuffle(order)
+-            self.assertEqual(khovanov_rank(d.pd, order=order)["rank"], reference)
+-
+-    def test_scan_order_profile(self):
+-        d = Diagram.from_braid(41, list(range(1, 41)))
+-        order = scan_order(d.pd)
+-        self.assertEqual(sorted(order), list(range(40)))
+-        self.assertLessEqual(order_profile(d.pd, order)[0], 4)
+-
+-    def test_limits_give_no_verdict(self):
+-        d = Diagram.from_braid(3, [1, 2] * 5)
+-        with self.assertRaises(Exception):
+-            khovanov_rank(d.pd, max_objects=3)
+-        result = recognize(d, max_objects=3, use_alexander=False)
+-        self.assertEqual(result.status, "UNKNOWN")
+-        self.assertIsNone(result.is_unknot)
+-        self.assertEqual(recognize(d, seconds=0.0, use_alexander=False).status, "UNKNOWN")
+-
+-
+-class RankTests(unittest.TestCase):
+-    def test_named_ranks(self):
+-        expected = {"unknot.json": 1, "trefoil.json": 3, "figure_eight.json": 5, "torus_3_5.json": 7,
+-                    "hard_unknot_8.json": 1, "kinoshita_terasaka.json": 33, "conway.json": 33,
+-                    "unknot_braid40.json": 1, "grid_determinant_one_knot.json": 7}
+-        for name, rank in expected.items():
+-            self.assertEqual(khovanov_rank(load(name).pd)["reduced_rank"], rank, name)
+-
+-    def test_against_independent_cube(self):
+-        rng = random.Random(3)
+-        checked = 0
+-        while checked < 25:
+-            strands = rng.choice([3, 4])
+-            word = [rng.choice([-1, 1]) * rng.randint(1, strands - 1) for _ in range(rng.randint(3, 8))]
+-            if not one_component(strands, word):
+-                continue
+-            d = Diagram.from_braid(strands, word)
+-            self.assertEqual(khovanov_rank(d.pd)["reduced_rank"], reference_reduced_rank(d), word)
+-            checked += 1
+-
+-    def test_two_strand_family(self):
+-        for e in range(1, 12, 2):
+-            d = Diagram.from_braid(2, [1] * e)
+-            self.assertEqual(khovanov_rank(d.pd)["reduced_rank"], e)
+-            self.assertEqual(recognize(d).status, "UNKNOT" if e == 1 else "KNOTTED")
+-
+-
+-class PipelineTests(unittest.TestCase):
+-    def test_methods(self):
+-        self.assertEqual(recognize(Diagram.from_braid(2, [1])).method, "reidemeister-reduction")
+-        self.assertEqual(recognize(Diagram.from_braid(3, [1, 2]), use_reduction=False).method,
+-                         "descending-diagram")
+-        # (sigma_1 sigma_2)^2 closes to a trefoil, not an unknot
+-        self.assertEqual(recognize(Diagram.from_braid(3, [1, 2, 1, 2])).status, "KNOTTED")
+-        self.assertEqual(recognize(Diagram.from_braid(2, [1, 1, 1])).method, "alexander-polynomial")
+-        r = recognize(load("torus_3_5.json"))
+-        self.assertEqual((r.status, r.method), ("KNOTTED", "alexander-polynomial"))
+-        r = recognize(load("conway.json"))
+-        self.assertEqual((r.status, r.method), ("KNOTTED", "reduced-khovanov-F2-scan"))
+-        r = recognize(load("hard_unknot_8.json"), use_reduction=False, use_descending=False)
+-        self.assertEqual((r.status, r.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
+-        self.assertFalse(r.to_json()["quasipolynomial_guarantee"])
+-
+-    def test_cli(self):
+-        env = dict(os.environ, PYTHONPATH=ROOT)
+-        run = lambda *args: subprocess.run([sys.executable, "-m", "fastunknot", *args], cwd=ROOT,
+-                                           capture_output=True, text=True, env=env)
+-        out = run("recognize", os.path.join(EXAMPLES, "trefoil.json"))
+-        self.assertEqual(out.returncode, 0)
+-        self.assertEqual(json.loads(out.stdout)["status"], "KNOTTED")
+-        out = run("recognize", os.path.join(EXAMPLES, "conway.json"), "--no-alexander", "--max-objects", "2")
+-        self.assertEqual(out.returncode, 3)
+-        self.assertEqual(json.loads(out.stdout)["status"], "UNKNOWN")
+-        self.assertEqual(run("recognize", os.path.join(EXAMPLES, "missing.json")).returncode, 2)
+-        out = run("alexander", os.path.join(EXAMPLES, "figure_eight.json"))
+-        self.assertEqual(json.loads(out.stdout)["coefficients"], [1, -3, 1])
+-
+-
+-if __name__ == "__main__":
+-    unittest.main()
++"""Tests for fastunknot.  Run from the project root: python -m unittest discover -s tests -v"""
++from __future__ import annotations
++
++import json
++import os
++import random
++import subprocess
++import sys
++import unittest
++
++ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++sys.path.insert(0, ROOT)
++
++from fastunknot import Diagram, DiagramError, alexander_polynomial, khovanov_rank, recognize  # noqa: E402
++from fastunknot.alexander import determinant, evaluate, exact_div, mul  # noqa: E402
++from fastunknot.scan import ScanComplex, compose, inverse, is_unit, order_profile, scan_order  # noqa: E402
++from fastunknot.simplify import apply_move, descending_start, legal_moves, simplify  # noqa: E402
++
++EXAMPLES = os.path.join(ROOT, "examples")
++
++
++def load(name):
++    with open(os.path.join(EXAMPLES, name), encoding="utf-8") as handle:
++        return Diagram.from_json(json.load(handle))
++
++
++def one_component(strands, word):
++    p = list(range(strands))
++    for g in word:
++        i = abs(g) - 1
++        p[i], p[i + 1] = p[i + 1], p[i]
++    seen, count = set(), 0
++    for s in range(strands):
++        if s in seen:
++            continue
++        count += 1
++        x = s
++        while x not in seen:
++            seen.add(x)
++            x = p[x]
++    return count == 1
++
++
++def reference_reduced_rank(diagram: Diagram) -> int:
++    """Independent dense cube-of-resolutions computation (reduced, F2)."""
++    n = diagram.crossings
++    if n == 0:
++        return 1
++    pd = diagram.pd
++
++    def circles(state):
++        parent = list(range(2 * n))
++
++        def find(x):
++            while parent[x] != x:
++                parent[x] = parent[parent[x]]
++                x = parent[x]
++            return x
++
++        for i, (a, b, c, d) in enumerate(pd):
++            pairs = ((a, d), (b, c)) if state >> i & 1 else ((a, b), (c, d))
++            for x, y in pairs:
++                parent[find(x)] = find(y)
++        groups = {}
++        for e in range(2 * n):
++            groups.setdefault(find(e), []).append(e)
++        comps = sorted(groups.values())
++        owner = {}
++        for k, comp in enumerate(comps):
++            for e in comp:
++                owner[e] = k
++        return comps, owner
++
++    data = [circles(s) for s in range(1 << n)]
++    # generators: (state, labels tuple with labels[owner[0]] == 1 (x))
++    generators = {}
++    by_degree = {}
++    for s in range(1 << n):
++        comps, owner = data[s]
++        k = len(comps)
++        marked = owner[0]
++        for bits in range(1 << k):
++            labels = tuple((bits >> j) & 1 for j in range(k))
++            if labels[marked] != 1:
++                continue
++            index = len(generators)
++            generators[s, labels] = index
++            by_degree.setdefault(bin(s).count("1"), []).append((s, labels))
++    columns = {}
++    for (s, labels), index in generators.items():
++        comps, owner = data[s]
++        image = set()
++        for i in range(n):
++            if s >> i & 1:
++                continue
++            t = s | (1 << i)
++            comps_t, owner_t = data[t]
++            out = [None] * len(comps_t)
++            src_changed = [j for j, comp in enumerate(comps) if comp not in comps_t]
++            tgt_changed = [j for j, comp in enumerate(comps_t) if comp not in comps]
++            for j, comp in enumerate(comps):
++                if comp in comps_t:
++                    out[comps_t.index(comp)] = labels[j]
++            if len(src_changed) == 2:
++                a, b = (labels[j] for j in src_changed)
++                if a and b:
++                    continue
++                out[tgt_changed[0]] = a | b
++                candidates = [tuple(out)]
++            else:
++                a = labels[src_changed[0]]
++                j, k = tgt_changed
++                candidates = []
++                if a:
++                    o = list(out)
++                    o[j] = o[k] = 1
++                    candidates.append(tuple(o))
++                else:
++                    for j1, k1 in ((0, 1), (1, 0)):
++                        o = list(out)
++                        o[j], o[k] = j1, k1
++                        candidates.append(tuple(o))
++            for cand in candidates:
++                key = (t, cand)
++                if key in generators:
++                    image ^= {generators[key]}
++        columns[index] = image
++    # rank of d over F2 by elimination on sets
++    total_rank = 0
++    for h, gens in by_degree.items():
++        pivots = {}
++        for s, labels in gens:
++            col = set(columns[generators[s, labels]])
++            while col:
++                p = max(col)
++                if p in pivots:
++                    col ^= pivots[p]
++                else:
++                    pivots[p] = col
++                    break
++        total_rank += len(pivots)
++    return len(generators) - 2 * total_rank
++
++
++class DiagramTests(unittest.TestCase):
++    def test_invalid_inputs(self):
++        for bad in ([[1, 2, 3]], [[1, 2, 3, 4]], [[1, 2, 1, 3], [3, 2, 4, 4]]):
++            with self.assertRaises(DiagramError):
++                Diagram.from_pd(bad)
++        with self.assertRaises(DiagramError):
++            Diagram.from_braid(3, [1])          # two components
++        with self.assertRaises(DiagramError):
++            Diagram.from_braid(2, [2])
++        with self.assertRaises(DiagramError):
++            Diagram.from_pd([[0, 1, 2, 3], [1, 0, 3, 2]])  # link with two components
++
++    def test_virtual_rejected(self):
++        # a rotation system on the torus: the abstract graph is planar but this embedding is not
++        with self.assertRaises(DiagramError):
++            Diagram.from_pd([[0, 1, 2, 3], [2, 1, 0, 3]])
++
++    def test_grid_conversion(self):
++        grid = load("grid_determinant_one_knot.json")
++        self.assertEqual(grid.crossings, 10)
++        self.assertEqual(alexander_polynomial(grid), alexander_polynomial(load("torus_3_5.json")))
++        self.assertEqual(recognize(load("grid_scrambled_unknot.json")).status, "UNKNOT")
++
++    def test_signs_and_writhe(self):
++        self.assertEqual(abs(Diagram.from_braid(2, [1, 1, 1]).writhe()), 3)
++        self.assertEqual(Diagram.from_braid(3, [1, -2, 1, -2]).writhe(), 0)
++        self.assertEqual(Diagram.from_braid(2, [1, 1, 1]).mirror().writhe(),
++                         -Diagram.from_braid(2, [1, 1, 1]).writhe())
++
++
++class AlexanderTests(unittest.TestCase):
++    def test_polynomial_arithmetic(self):
++        self.assertEqual(mul([1, 1], [1, -1]), [1, 0, -1])
++        self.assertEqual(exact_div([1, 0, -1], [1, 1]), [1, -1])
++        with self.assertRaises(ArithmeticError):
++            exact_div([1, 1, 1], [1, 1])
++        self.assertEqual(determinant([[[2], [1]], [[1], [3]]]), [5])
++        self.assertEqual(determinant([[[0, 1], [1]], [[1], [0, 1]]]), [-1, 0, 1])
++
++    def test_known_polynomials(self):
++        self.assertEqual(alexander_polynomial(Diagram.from_braid(2, [1, 1, 1])), [1, -1, 1])
++        self.assertEqual(alexander_polynomial(Diagram.from_braid(3, [1, -2, 1, -2])), [1, -3, 1])
++        self.assertEqual(alexander_polynomial(Diagram.from_braid(3, [1, 1, 1, 2, -1, 2])), [2, -3, 2])
++        self.assertEqual(alexander_polynomial(Diagram.from_braid(3, [1, 2] * 5)),
++                         [1, -1, 0, 1, -1, 1, 0, -1, 1])
++        for name in ("kinoshita_terasaka.json", "conway.json", "hard_unknot_8.json", "unknot.json"):
++            self.assertEqual(alexander_polynomial(load(name)), [1], name)
++
++    def test_symmetry_and_determinant(self):
++        rng = random.Random(5)
++        for _ in range(40):
++            strands = rng.choice([3, 4])
++            word = [rng.choice([-1, 1]) * rng.randint(1, strands - 1) for _ in range(rng.randint(4, 10))]
++            if not one_component(strands, word):
++                continue
++            d = Diagram.from_braid(strands, word)
++            p = alexander_polynomial(d)
++            self.assertEqual(p, p[::-1])
++            self.assertEqual(abs(evaluate(p, 1)), 1)
++            self.assertEqual(p, alexander_polynomial(d.mirror()))
++            self.assertEqual(evaluate(p, -1) % 2, 1)
++
++
++class SimplifyTests(unittest.TestCase):
++    def test_reidemeister_moves(self):
++        curl = Diagram.from_braid(2, [1])
++        reduced, trace = simplify(curl)
++        self.assertEqual(reduced.crossings, 0)
++        self.assertEqual([m.kind for m in trace], ["R1"])
++        pair = Diagram.from_braid(3, [1, -1, 2, 1])
++        self.assertTrue(any(m.kind == "R2" for m in legal_moves(pair)))
++        reduced, trace = simplify(pair)
++        self.assertEqual(reduced.crossings, 0)
++        clasp = Diagram.from_braid(2, [1, 1, 1])
++        self.assertEqual(legal_moves(clasp), [])
++        with self.assertRaises(ValueError):
++            apply_move(clasp, trace[0])
++        # bigons of the trefoil closure are clasps (over then under): no Reidemeister II
++        self.assertEqual([m.kind for m in legal_moves(clasp)], [])
++
++    def test_descending(self):
++        self.assertIsNotNone(descending_start(Diagram.from_braid(3, [1, 2])))
++        self.assertIsNone(descending_start(Diagram.from_braid(2, [1, 1, 1])))
++
++
++class ScanAlgebraTests(unittest.TestCase):
++    def test_end_ring_is_local(self):
++        m = frozenset({frozenset({0, 1}), frozenset({2, 3})})
++        one = {frozenset()}
++        x0 = {frozenset({frozenset({0, 1})})}
++        self.assertEqual(compose(x0, x0, m, m, m), set())          # x^2 = 0
++        self.assertEqual(compose(one, x0, m, m, m), x0)
++        unit = one | x0
++        self.assertTrue(is_unit(unit))
++        self.assertEqual(compose(unit, inverse(unit, m), m, m, m), one)
++        self.assertFalse(is_unit(x0))
++
++    def test_d_squared_during_scan(self):
++        for strands, word in ((3, [1, 2] * 4), (4, [1, -2, 3, -2, 1, 3, 2]), (3, [-2, -2, -2, 2, 1, 1, 2, 1])):
++            d = Diagram.from_braid(strands, word)
++            khovanov_rank(d.pd, check_d_squared=True)
++
++    def test_order_independence(self):
++        rng = random.Random(11)
++        d = Diagram.from_braid(4, [1, 2, -3, 2, 1, -3, 2, 2, 1])
++        reference = khovanov_rank(d.pd)["rank"]
++        for _ in range(5):
++            order = list(range(d.crossings))
++            rng.shuffle(order)
++            self.assertEqual(khovanov_rank(d.pd, order=order)["rank"], reference)
++
++    def test_scan_order_profile(self):
++        d = Diagram.from_braid(41, list(range(1, 41)))
++        order = scan_order(d.pd)
++        self.assertEqual(sorted(order), list(range(40)))
++        self.assertLessEqual(order_profile(d.pd, order)[0], 4)
++
++    def test_limits_give_no_verdict(self):
++        d = Diagram.from_braid(3, [1, 2] * 5)
++        with self.assertRaises(Exception):
++            khovanov_rank(d.pd, max_objects=3)
++        result = recognize(d, max_objects=3, use_alexander=False, use_jones=False)
++        self.assertEqual(result.status, "UNKNOWN")
++        self.assertIsNone(result.is_unknot)
++        self.assertEqual(recognize(d, seconds=0.0, use_alexander=False).status, "UNKNOWN")
++
++
++class RankTests(unittest.TestCase):
++    def test_named_ranks(self):
++        expected = {"unknot.json": 1, "trefoil.json": 3, "figure_eight.json": 5, "torus_3_5.json": 7,
++                    "hard_unknot_8.json": 1, "kinoshita_terasaka.json": 33, "conway.json": 33,
++                    "unknot_braid40.json": 1, "grid_determinant_one_knot.json": 7}
++        for name, rank in expected.items():
++            self.assertEqual(khovanov_rank(load(name).pd)["reduced_rank"], rank, name)
++
++    def test_against_independent_cube(self):
++        rng = random.Random(3)
++        checked = 0
++        while checked < 25:
++            strands = rng.choice([3, 4])
++            word = [rng.choice([-1, 1]) * rng.randint(1, strands - 1) for _ in range(rng.randint(3, 8))]
++            if not one_component(strands, word):
++                continue
++            d = Diagram.from_braid(strands, word)
++            self.assertEqual(khovanov_rank(d.pd)["reduced_rank"], reference_reduced_rank(d), word)
++            checked += 1
++
++    def test_two_strand_family(self):
++        for e in range(1, 12, 2):
++            d = Diagram.from_braid(2, [1] * e)
++            self.assertEqual(khovanov_rank(d.pd)["reduced_rank"], e)
++            self.assertEqual(recognize(d).status, "UNKNOT" if e == 1 else "KNOTTED")
++
++
++class PipelineTests(unittest.TestCase):
++    def test_methods(self):
++        self.assertEqual(recognize(Diagram.from_braid(2, [1])).method, "reidemeister-reduction")
++        self.assertEqual(recognize(Diagram.from_braid(3, [1, 2]), use_reduction=False).method,
++                         "descending-diagram")
++        # (sigma_1 sigma_2)^2 closes to a trefoil, not an unknot
++        self.assertEqual(recognize(Diagram.from_braid(3, [1, 2, 1, 2])).status, "KNOTTED")
++        self.assertEqual(recognize(Diagram.from_braid(2, [1, 1, 1])).method, "alexander-mod-prime")
++        r = recognize(load("torus_3_5.json"))
++        self.assertEqual((r.status, r.method), ("KNOTTED", "alexander-mod-prime"))
++        r = recognize(load("conway.json"))
++        self.assertEqual((r.status, r.method), ("KNOTTED", "jones-mod-prime"))
++        r = recognize(load("hard_unknot_8.json"), use_reduction=False, use_descending=False)
++        self.assertEqual((r.status, r.method), ("UNKNOT", "reduced-khovanov-F2-scan"))
++        self.assertFalse(r.to_json()["quasipolynomial_guarantee"])
++
++    def test_cli(self):
++        env = dict(os.environ, PYTHONPATH=ROOT)
++        run = lambda *args: subprocess.run([sys.executable, "-m", "fastunknot", *args], cwd=ROOT,
++                                           capture_output=True, text=True, env=env)
++        out = run("recognize", os.path.join(EXAMPLES, "trefoil.json"))
++        self.assertEqual(out.returncode, 0)
++        self.assertEqual(json.loads(out.stdout)["status"], "KNOTTED")
++        out = run("recognize", os.path.join(EXAMPLES, "conway.json"), "--no-alexander", "--no-jones", "--max-objects", "2")
++        self.assertEqual(out.returncode, 3)
++        self.assertEqual(json.loads(out.stdout)["status"], "UNKNOWN")
++        self.assertEqual(run("recognize", os.path.join(EXAMPLES, "missing.json")).returncode, 2)
++        out = run("alexander", os.path.join(EXAMPLES, "figure_eight.json"))
++        self.assertEqual(json.loads(out.stdout)["coefficients"], [1, -3, 1])
++
++
++if __name__ == "__main__":
++    unittest.main()

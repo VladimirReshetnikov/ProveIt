@@ -1,0 +1,2625 @@
+INCOMPRESSIBLE SURFACES, HIERARCHIES
+AND UNKNOT RECOGNITION
+MARC LACKENBY
+Abstract. We present a new algorithm to determine whether a compact
+orientable surface properly embedded in a compact orientable 3-manifold is
+incompressible. As a special case, this provides a new algorithm to detect the
+unknot. The central technique is the use of hierarchies. Unlike previous algo-
+rithms, no challenging invariants need to be computed and no lengthy search
+procedures are required. This algorithm leads to a new proof that determin-
+ing whether a compact orientable 3-manifold has incompressible boundary is
+in NP.
+Contents
+1. Introduction 1
+2. Hierarchies and boundary patterns 4
+3. Essential hierarchies 8
+4. Handle structures and normal surfaces 12
+5. Decomposing a handle structure along a normal surface 16
+6. The algorithm to decide whether a pattern is essential 23
+7. An example 30
+8. The algorithm to determine incompressibility 31
+9. The number of steps 34
+10. A reﬁned algorithm using interior parallelity bundles 35
+11. Handle structures of uniform type 38
+12. Fundamental decomposing surfaces 43
+13. Certifying an inessential pattern 45
+14. Certifying an essential hierarchy 49
+References 54
+1. Introduction
+Incompressible orientable surfaces occupy a central position in 3-manifold the-
+ory. It is therefore very natural to ask whether a given orientable surface properly
+embedded in a 3-manifold is incompressible. The following result provides an algo-
+rithm to determine this.
+Theorem 1.1. LetT be a triangulation of a compact orientable irreducible 3-
+manifold M, possibly with boundary. Let S be a compact orientable normal surface
+properly embedded in M. Then there is an algorithm to determine whether S is
+incompressible.
+1
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 2
+This theorem is not new, but the algorithm is. The ﬁrst algorithmic solution
+to the problem in Theorem 1.1 was given by Haken [3]. His procedure was to cut
+the manifold M alongS and then triangulate the new 3-manifold M\\S. Then he
+searched for possible normal compression discs for the two copies of S in M\\S.
+In order to make this a ﬁnite procedure, he showed that it was possible to restrict
+to ‘fundamental’ normal discs. A more recent algorithm, due to the author [16],
+is more complicated, and uses sutured manifold hierarchies. Both these algorithms
+are useful and have interesting theoretical consequences. But they both have the
+downside that they require a search through a possibly very extensive search space,
+for example, the set of all fundamental normal surfaces. The algorithm presented
+here has the signiﬁcant advantage that it does not require examination of a large
+search space. An interesting application of Theorem 1.1 is the following.
+Corollary 1.2. There is an algorithm to determine whether a given knot in the
+3-sphere is trivial.
+This follows from Theorem 1.1 because the exterior of a knot in the 3-sphere has
+incompressible boundary if and only if the knot is non-trivial. Again, this result is
+not new. There are now many known algorithms to detect the unknot, the ﬁrst of
+which was due to Haken [3]. Some require the computation of knot invariants, such
+as Khovanov homology [10] or Heegaard Floer homology [19, 20]. Others require a
+possibly extensive search: a search for a spanning disc [5, 16], a homomorphism from
+the fundamental group of the knot complement to a ﬁnite group with non-abelian
+image [11], sequences of Reidemeister moves [15] or sequences of grid diagrams [2].
+As a result, none of these algorithms are likely to run in polynomial time. Indeed,
+in the case of Khovanov homology, there is an exponential lower bound on its worst-
+case running time [7], subject to some standard conjectures in complexity theory.
+The algorithm that we give seems amenable to possible speed-up, which we will
+explore in future work. Furthermore, in a companion paper [17], we will show how
+this algorithm can be extended to determine whether a given link in the 3-sphere
+is hyperbolic.
+The algorithm generalises to 3-manifolds with a boundary pattern. Recall that
+a boundary pattern for a compact orientable 3-manifold M is a collection P of
+disjoint simple closed curves and trivalent graphs embedded in ∂M . A boundary
+pattern P is essential if, for every disc D properly embedded in M that intersects
+P transversely in at most three points away from the vertices of P , there is a
+disc D′ in ∂M that intersects P in the empty set, a single arc, or a graph with a
+single 3-valent vertex in the interior of D′ and three 1-valent vertices on ∂D′. (See
+Figure 1.) If there is a disc D properly embedded in M intersectingP transversely
+at most three times away from the vertices, but there is no corresponding disc D′,
+thenD is termed a violating disc. In the ﬁnal case, when D′ intersectsP in a graph
+with a single 3-valent vertex in the interior ofD′ and three 1-valent vertices on∂D′,
+this graph is known as a tripod. Boundary patterns will be the focus of this paper.
+At this stage, we observe that when P is the empty pattern, then P is essential if
+and only if ∂M is incompressible.
+Theorem 1.3. Let (M,P ) be a compact orientable irreducible 3-manifold with
+boundary pattern. Let T be a triangulation of M in which P is simplicial. Then
+there is an algorithm to determine whether P is essential. Moreover, if P is not
+essential, the algorithm provides a violating disc.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 3
+Forbidden
+Figure 1. Essential boundary pattern
+When P is essential and M irreducible, the algorithm outputs an essential hi-
+erarchy for (M,P ). Such hierarchies, which are deﬁned in Section 2, will play a
+central role in this paper. They are a ﬁnite sequence of decompositions along prop-
+erly embedded orientable surfaces where the ﬁnal manifold is a collection of 3-balls
+with an essential boundary pattern.
+In the later parts of the paper, we will establish that the algorithms given above
+can be used to show that the decision problems are in NP. Moreover, we will drop
+the hypothesis that the 3-manifold is irreducible. Speciﬁcally, we will consider the
+following problems.
+The decision problem Incompressible boundary takes, as its input a trian-
+gulation of a compact orientable 3-manifold M and it asks whether ∂M is incom-
+pressible.
+Theorem 1.4. The decision problem Incompressible boundary is in NP.
+This theorem was proved by the author in [16], using sutured manifold hierar-
+chies, based on argument of Agol. The problem was also shown to be in co-NP by
+Ivanov [6].
+This has applications for the famous problem Knottedness. This takes, as its
+input, either a diagram of a knot K or a triangulation of its exterior, and it asks
+whether K is a non-trivial knot.
+Corollary 1.5. The decision problem Knottedness is in NP.
+This was one of the main theorems in [16]. Previously, Kuperberg [11] showed
+that Knottedness is in NP, conditionally on the Generalised Riemann Hypothesis.
+The decision problem Essential boundary pattern takes, as its input, a
+triangulation of compact orientable 3-manifold M with boundary pattern P that
+is simplicial, and it asks whether P is essential. The following is a new result.
+Theorem 1.6. The decision problem Essential boundary pattern is in NP
+and co-NP.
+WhenP is inessential, the certiﬁcate is a violating disc in normal form. When P
+is essential andM is irreducible, the certiﬁcate is an essential hierarchy for (M,P ).
+The fact that essential hierarchies can be encoded eﬃciently and can be certiﬁed
+as essential will be extremely useful in future work [17].
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 4
+Much of the theory of hierarchies as explained in Section 2 is due to Johannson
+[8]. The presentation here follows that of a graduate course [12] given by the
+author in 1999. One of the goals of that course was to provide a new proof of
+the loop theorem using hierarchies. The fact that the theory also has algorithmic
+applications was observed in a conversation with Ian Agol in 2013. The author
+developed and expanded the theory over the intervening years, resulting in this
+paper and its sequel [17].
+The structure of the paper is as follows. In Section 2, we recall some basic
+material on hierarchies and boundary patterns. In Section 3, we explore essential
+hierarchies and prove one direction of Theorem 2.5, which asserts that when a
+3-manifold admits an essential hierarchy, then it is irreducible and has essential
+boundary pattern. In Section 4, we introduce normal surfaces, in the context of
+handle structures with a boundary pattern. In Section 5, we examine how handle
+structures behave when decomposed along a normal surface. The goal here is to
+establish an upper bound on the number of decompositions in a hierarchy. This
+gives the other direction of Theorem 2.5, which gives a suﬃcient condition for a
+3-manifold with boundary pattern to admits an essential hierarchy. In Section 6, we
+present the algorithm required by Theorem 1.3, and in Section 7, an implementation
+of the algorithm in a speciﬁc example is given. The algorithm to determine whether
+a surface is incompressible, as required by Theorem 1.1, is given in Section 8.
+A crude analysis of the number of steps in the algorithm is given in Section 9.
+The crucial quantity that controls an upper bound on the running time is the
+number of decompositions in the hierarchy. Therefore, in Section 10, we give a
+more complicated algorithm for constructing a hierarchy, that has the advantage
+that the number of decompositions is explicitly controlled. In Section 11, we show
+that the handle structures created in the hierarchy have uniform type, which means
+that each handle meets the pattern and its neighbouring handles in one of ﬁnitely
+many types, independent of the manifold. This is important for the later parts of
+the paper, in Sections 12, 13 and 14, where we show that the decision problem in
+Theorem 1.6, deciding whether a pattern is essential, is in NP and co-NP.
+Remark 1.7. The author was partially supported by EPSRC grant EP/Y004256/1.
+For the purpose of open access, the author has applied a CC BY public copyright
+licence to any author accepted manuscript arising from this submission.
+2. Hierarchies and boundary patterns
+We will use the following terminology, which has become standard.
+Deﬁnition 2.1. Let M be a manifold and let S be either a codimension one
+submanifold properly embedded in M or a compact codimension zero submanifold.
+Then the manifold M\\S obtained by cutting M alongS is deﬁned as follows. Pick
+a Riemannian metric on M. Then M−S inherits a Riemannian metric and M\\S
+is the deﬁned to be metric completion of M−S. We also permit S not to be a
+subset of M as long as S and M are both subsets of some larger space and S∩M
+satisﬁes the above conditions, in which case M\\S is deﬁned to be M\\(S∩M).
+When M is compact and S is a codimension one submanifold, then the inclusion
+M−S→M induces a quotient map M\\S→M.
+Our algorithm makes use of hierarchies. Here, one starts with a compact ori-
+entable 3-manifold, and then one cuts along a properly embedded orientable surface,
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 5
+forming a new 3-manifold. In this manifold, one ﬁnds another properly embedded
+orientable surface, and one cuts along this. The process continues until the ﬁnal
+manifold is a collection of 3-balls. The manifolds in the hierarchy will inherit a
+boundary pattern, as follows.
+Deﬁnition 2.2. Let (M,P ) be a compact orientable 3-manifold with boundary
+pattern. Then a compact orientable surfaceS properly embedded inM is transverse
+to P if it is disjoint from the vertices and intersects the edges transversely. We
+then say thatS is a decomposing surface. The manifold M\\S inherits a boundary
+patternP′, whereP′ is the union of P∩(M\\S) and the copies of ∂S in∂(M\\S).
+We write
+(M,P )
+S
+− →(M\\S,P′)
+for this decomposition. We also denote ( M\\S,P′) by (M,P )\\S. (See Figure 2.)
+ M M \\ S
+S
+P P'
+Figure 2. Decomposing (M,P ) along a surface S
+Deﬁnition 2.3. Let (M,P ) be a compact orientable 3-manifold with boundary
+pattern. Then a partial hierarchy for (M,P ) is a sequence of decompositions
+(M,P ) = (M1,P 1)
+S1
+−→(M2,P 2)
+S2
+−→...
+Sℓ
+−→(Mℓ+1,P ℓ+1).
+It is a hierarchy if Mℓ+1 is a disjoint union of 3-balls.
+This is a modiﬁcation of the standard terminology, since we do not require the
+surfaces to be incompressible (although they will end up being so in the cases of
+interest to us).
+Recall, from Section 1, the deﬁnition of an essential boundary pattern. At ﬁrst
+sight, this is a strange deﬁnition, because it is not at all clear why one should be
+interested only in simple closed curves that intersect the pattern in at most three
+points. We will give more motivation for it in the results that follow.
+Deﬁnition 2.4. An essential hierarchy for a compact orientable 3-manifold M
+with boundary pattern P is a sequence of decompositions
+(M,P ) = (M1,P 1)
+S1
+−→(M2,P 2)
+S2
+−→...
+Sℓ
+−→(Mℓ+1,P ℓ+1).
+where (Mℓ+1,P ℓ+1) is a collection of balls with essential boundary pattern.
+Again, it is not immediately clear why one should only be concerned with whether
+the ﬁnal pattern is essential. But this is explained by the following result.
+Theorem 2.5 (Essential hierarchy iﬀ essential pattern and irreducible). LetM be
+a compact orientable 3-manifold with a boundary pattern P . Then (M,P ) admits
+an essential hierarchy if and only if the following all hold:
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 6
+(1) either M contains a properly embedded orientable incompressible surface
+with no 2-sphere components, or ∂M is non-empty;
+(2) P is essential;
+(3) M is irreducible.
+It is relatively straightforward to determine quickly whether a boundary pattern
+for a 3-ball is essential. This can be rephrased in standard graph-theoretic terms
+as follows. Recall that a graph is simple if it has no edge loops and does not have
+multiple edges between pairs of vertices. A simple graph is n-connected for some
+positive integern if it has at least n + 1 vertices and there is no set ofn− 1 vertices
+whose removal disconnects the graph.
+Proposition 2.6 (Essential pattern for a ball) . LetM be a 3-ball, and let P be a
+boundary pattern for M. Then P is essential if and only if P is empty, a simple
+closed curve or a connected graph, and in the latter case, the planar graph dual to
+P is either a simple 4-connected graph or the complete graph on 3 or 4 vertices.
+Proof. We ﬁrst show that the given conditions on P imply that P is essential. If
+P is empty or a simple closed curve, then clearly P is essential. So suppose that
+P is a connected graph and that the graph G dual to P is simple and 4-connected
+or the complete graph on 4 vertices. Consider a simple closed curve C in ∂M that
+intersectsP transversely in at most 3 points. If C is disjoint from P , then it must
+bound a disc in ∂M disjoint from P , since P is connected and ∂M is a sphere.
+If C intersects P at one point, this speciﬁes an edge loop in G, contrary to our
+assumption thatG is simple. If C intersectsP at two points, then these two points
+must lie on the same edge ofP , as otherwise we obtain two edges between the same
+pair of vertices of G. Hence, C bounds a disc in ∂M intersecting P in an arc. If
+C intersects P at three points, then this speciﬁes a closed walk of length 3 in G.
+This is a cycle because otherwise G is not simple. Removing the vertices in this
+cycle does not separate G, because G is 4-connected or the complete graph on 3 or
+4 vertices. Hence, C must bound a disc intersecting no regions of ∂M−P other
+than the three that C visits. This implies that P intersects this disc in a tripod.
+Thus we have shown that P is essential.
+Conversely, suppose that P is essential. We may suppose that P is non-empty
+and not a simple closed curve, as the implication is immediate in those cases. Then
+P is clearly connected as otherwise there is a simple closed curve in ∂M−P that
+does not bound a disc in ∂M disjoint from P . Let G be its dual planar graph.
+An edge loop in G would give a simple closed curve intersecting the pattern once,
+contradicting the assumption that P is essential. More than one edge between a
+pair of vertices would give a simple closed curve in ∂M intersecting P in exactly
+two points that lie in diﬀerent edges of P . Again this contradicts the assumption
+that P is essential. Consider a collection of at most three vertices in G. We will
+show that these do not separateG. Each vertex corresponds to a region of ∂M−P ,
+and for these vertices to disconnect G, the union of these regions must disconnect
+∂M . If they do then there must be a simple closed curve lying in the union of these
+regions that separates at least two other regions of ∂M−P . Since P is essential,
+this curve bounds a disc in ∂M intersecting P in an arc or a tripod. This implies
+that these three vertices did not in fact separateG. Note that removing these three
+vertices ofG may create the empty graph, but in this case,G is the complete graph
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 7
+on 3 vertices. Hence, we have shown that G is 4-connected or the complete graph
+on 3 or 4 vertices. □
+Note that it can be determined in polynomial time (as a function of the number
+of vertices and edges) whether a graph is simple and 4-connected or the complete
+graph on 4 vertices.
+Theorem 2.5 is an extremely powerful tool for showing that a pattern is essential,
+as the following example demonstrates.
+Example 2.7. The knot 5 2 is shown in Figure 3. Let M be its exterior and let P
+be the empty pattern. A hierarchy for ( M,P ) is given. The ﬁnal manifold consists
+of two 3-balls, and the boundary pattern of one of them is shown. It is easy to
+check that this pattern is essential, and hence by Theorem 2.5, ( M,P ) is essential
+and so the knot 5 2 is not the unknot.
+(i) The knot 5 (ii) The first surface in the hierarchy
+(iii) The exterior of this surface (iv) The second surface in the hierarchy
+2
+(v) The pattern of one of the balls (vi) A simplified copy of the pattern
+Figure 3. An essential hierarchy
+Theorem 2.5 is not new. It is implicit in work of Johannson [8] and a version
+of it was used by author in lecture notes in 1999 [12]. However, because it is so
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 8
+central to our work and because we will need details of the argument later in the
+paper, we give a full proof.
+3. Essential hierarchies
+Our aim is to prove Theorem 2.5. We ﬁrst show that if (M,P ) admits an essential
+hierarchy, thenP is essential and M is irreducible. We will also establish that the
+decomposing surfaces have the following important property.
+Deﬁnition 3.1. LetM be a compact orientable 3-manifold and letP be a boundary
+pattern. Let S be a compact surface properly embedded in M. Then a pattern-
+compression disc for S is a disc D embedded in M such that
+(1) D∩S is an arc α in ∂D;
+(2) ∂D\\α =D∩∂M intersectsP at most once; and
+(3) α does not separate oﬀ a disc from S intersectingP at most once.
+If no such pattern-compression disc exists, then S is pattern-incompressible. (See
+Figure 4.) If D is a pattern-compression disc for S, then the surface obtained from
+S by cutting along S∩D and then attaching two parallel copies of D is the surface
+obtained by pattern-compressing along D.
+S S
+�M
+D
+P
+S S
+�M
+D
+Figure 4. A pattern-incompressible surface. (For the sake of clar-
+ity, we have assumed here thatM is irreducible andP is essential.)
+A key step in the proof of Theorem 2.5 is the following.
+Lemma 3.2 (Essential pattern pulls back). Let
+(M,P )
+S
+− →(M′,P′)
+be a decomposition and suppose that P′ is essential. Then P is essential and S is
+incompressible and pattern-incompressible.
+Proof. We ﬁrst show that P is essential. Let D be a disc properly embedded in M
+that is transverse to P and that intersectsP at most three times. We wish to show
+that D is not a violating disc.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 9
+Perform a small isotopy to S, leaving P invariant, so that afterwards S∩D is a
+collection of simple closed curves and arcs properly embedded in D.
+If there is a simple closed curve of S∩D, there is one that is innermost in D.
+It bounds a disc D′ in M′ that is disjoint from P′. Since we are assuming that P′
+is essential, ∂D′ bounds a disc D′′ in ∂M′ that is disjoint from the pattern. This
+disc is a subset of S. We can remove D′ from D and replace it by a parallel copy
+of D′′. The result is violating for P if and only if D was violating. However, its
+intersection with S contains fewer simple closed curves.
+So, we may assume that D∩S is a collection of arcs properly embedded in D.
+Say there are n> 0 of them. Then at the endpoints of these arcs, we see 4 n points
+of intersection with P′. We also have at most 3 points of intersection between
+∂D and P . So, in the n + 1 discs D\\(D∩S), there are at most 4 n + 3 points
+of intersection with P′. Hence, one these discs, D1 say, has at most three points
+of intersection with P′ in its boundary. Necessarily, it has at least two points of
+intersection with P′. We are assuming that P′ is essential. Hence, ∂D1 bounds
+a disc D2 in ∂M′. This disc D2 intersects P′ either in a single arc or a tripod.
+Therefore, D2∩S is a disc. We may remove D1 from D and replace it by D2∩S,
+and then perform a further small isotopy to give a disc D3 properly embedded in
+M that is transverse to P and that has fewer components of intersection with S.
+This is a violating disc for M if and only if D was.
+So we may assume that D is disjoint from S and hence lies in M′. Since P′ is
+essential,∂D bounds a disc D′ in∂M′ intersectingP′ in the empty set, an arc or a
+tripod. Since ∂D′ is disjoint from S, all of D′ must be disjoint from S. So, D′ lies
+in ∂M . So, D was not a violating disc, and so we have proved that P is essential.
+We now show that S is incompressible. Consider a disc D embedded in the
+interior of M such that D∩S = ∂D. Then D is properly embedded in M′ and
+is disjoint from the pattern P′. Since P′ is essential, ∂D bounds a disc in ∂M′
+disjoint from P′. This is a disc in S. So D is not a compression disc for S.
+We now show that S is pattern-incompressible. Let D be a disc embedded in
+M such that D∩S is an arc in ∂D, and the remainder of ∂D is an arc in ∂M
+intersectingP at most once. Then D lies inM′ and intersectsP′ at least twice and
+at most three times. Since P′ is essential,∂D bounds a disc D′ in∂M′ intersecting
+P′ in an arc or a tripod. The intersection between D′ and S is a disc separated
+oﬀ by D∩S that intersects P at most once. So D is not a pattern-compression
+disc. □
+Lemma 3.3 (Irreducible and essential pattern pulls back) . Let
+(M,P )
+S
+− →(M′,P′)
+be a decomposition and suppose that M′ is irreducible and P′ is essential. Then M
+is irreducible and P is essential.
+Proof. The fact that P is essential is a result of Lemma 3.2. We need to show that
+M is irreducible. Consider a 2-sphere S2 properly embedded in M. This intersects
+S in a collection of simple closed curves. An innermost one bounds a disc D′ in
+M′ that is disjoint from P′. Since P′ is essential, ∂D′ bounds a disc D′′ in S and
+becauseM′ is irreducible, we may isotopeD′′ across toD′ and then a little further,
+to remove this curve of S2∩S. So we may assume that S is disjoint from S2, and
+hence S2 lies in M′. As M′ is irreducible, S2 bounds a ball in M′ and this is also
+a ball in M. □
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 10
+In many circumstances, it is also the case that when P is essential and M is
+irreducible, then P′ is also essential and M′ is also irreducible. However, in order
+to guarantee this, we require that the decomposing surface S is incompressible and
+pattern-incompressible. We now investigate how to arrange this.
+When we pattern-compress a surface, we would like to say that the new surface
+is, in some sense, simpler than the original one. We formalise this as follows, using
+the following measure of complexity.
+Deﬁnition 3.4. The pattern-complexity χp(S) of a properly embedded surface S
+is deﬁned to be −4χ(S) +|S∩P|.
+A useful feature of pattern-complexity is the following immediate result.
+Lemma 3.5. If S is a compact connected orientable surface satisfying χp(S)< 0,
+then S is a sphere or disc intersecting the pattern in at most three points.
+Lemma 3.6 (Pattern-compression simpliﬁes). Let S be a properly embedded con-
+nected orientable surface that is non-separating. Let S′ be obtained from S by
+pattern-compressing or compressing. Then at least one component of S′ is also
+non-separating and has smaller pattern-complexity than S.
+Proof. The lemma is straightforward and well known in the case of a compression.
+So suppose that we pattern-compress S. We decrease −4χ(S) by 4 and increase
+|S∩P| by at most 2. So χp certainly goes down by at least 2. Note that at
+least one component of S′ is non-separating. Thus, the lemma is proved in the
+case where S′ is connected. However, we need to consider the possibility that we
+have created a separating componentS′
+1 with negative pattern-complexity. Suppose
+that this occurs. Let S′
+2 be the other component of S′ which is necessarily non-
+separating. Note that S′
+1 is a disc and it must intersect P at least twice by the
+deﬁnition of a pattern-compression. If S′
+1 has three points of intersection with
+P , then |S′
+2∩P| <|S∩P| and hence χp(S′
+2) < χp(S). If S′
+1 has two points of
+intersection withP , then both of these must lie in S by the deﬁnition of a pattern-
+compression. Hence, again χp(S′
+2)<χ p(S). □
+Corollary 3.7 (Simplest surface pattern-incompressible) . Let (M,P ) be a com-
+pact orientable 3-manifold with a boundary pattern. Let S be a properly embedded
+connected orientable surface that is non-separating and that has smallest pattern-
+complexity among all such surfaces. Then S is pattern-incompressible and incom-
+pressible.
+Lemma 3.8 (Essential pushes forward). LetM be a compact orientable 3-manifold
+with essential boundary pattern P . Let S be a connected pattern-incompressible
+incompressible surface properly embedded in M, which is not a disc intersecting P
+in at most 3 points. Then M\\S inherits an essential boundary pattern P′.
+Proof. Let D be a disc properly embedded in M\\S with ∂D∩P′ at most three
+points. The curve ∂D may run through parts of ∂(M\\S) coming from ∂M and
+parts coming from S. Note however the points where it swaps must be points of
+∂D∩P′, and that at most one side of any point of ∂D∩P′ lies in S. Hence, at
+most one arc or simple closed curve of ∂D\\P′ lies in S.
+Case 1. ∂D is disjoint from S.
+Then ∂D⊂∂M . Since P is essential, ∂D bounds a disc D′ in ∂M intersecting
+P in the empty set, an arc or a tripod. If S intersectsD′, then pick a simple closed
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 11
+curve of S∩D′ innermost in D′. The disc this bounds cannot be a compression
+disc for S. Hence, S must be a disc. By assumption, S intersects P in at least 4
+points. Hence, it intersects some edge of P∩D′ more than once. We can therefore
+ﬁnd a pattern-compression disc for S, which is contrary to assumption. Hence, D′
+is disjoint from S, and therefore lies in ∂(M\\S). This veriﬁes that D is not a
+violating disc for P′.
+Case 2. ∂D lies in S.
+By the incompressibility of S, ∂D bounds a disc D′ in S. This is a disc in
+∂(M\\S) disjoint from P′. So D is not violating.
+Case 3. ∂D intersectsS in an arc.
+Then ∂D\\S intersects P at most once. Since D is not a pattern-compression
+disc for S, D∩S separates oﬀ a disc D1 of S intersectingP in at most one point.
+Then, D∪D1 is a disc properly embedded in M, intersecting P in at most two
+points. Since P is essential, there is therefore a discD2 in∂M with∂D2 =∂(D∪D1)
+and with D2∩P either empty or an arc. Therefore, D1∪D2 is a disc in ∂(M\\S)
+intersectingP′ in an arc or a tripod.
+This gives that P′ is essential. □
+We also have following well known result.
+Lemma 3.9 (Irreducible pushes forward) . Let M be a compact orientable irre-
+ducible 3-manifold. Let S be a properly embedded incompressible surface with no
+2-sphere components. Then M\\S is irreducible.
+We will occasionally want to cut along surfaces in the expectation that they are
+pattern-incompressible. An example of this is as follows.
+Lemma 3.10 (Decomposition along square) . Let (M,P ) be a compact orientable
+3-manifold with an essential boundary pattern. Let S be a properly embedded disc
+that intersects P four times. Then S is pattern-incompressible unless ∂S bounds a
+disc D in ∂M that has one of the following forms:
+(1) D∩P consists of two arcs; or
+(2) D∩P is a graph with two vertices joined by an edge, along with four edges
+running to the boundary of D.
+Proof. Suppose that, on the contrary, S has a pattern-compression disc D′. Then
+S\\D′ has two componentsS1 andS2, each of which is a disc intersecting P twice.
+Fori = 1 and 2, let D′
+i be Si∪D′ isotoped a little so that it is disjoint from S.
+Then D′
+i is properly embedded in M and intersects P either two or three times.
+If each of these discs intersects P twice, then using the fact that P is essential,
+we deduce that ∂S bounds a disc D in ∂M as in (1) above. If both D′
+1 and D′
+2
+intersectP three times, then we deduce that ∂S bounds a disc D in ∂M as in (1)
+or (2) above. □
+Deﬁnition 3.11. We say that a disc S properly embedded in M intersecting the
+pattern four times is a square. It is trivial if ∂S bounds a disc D in ∂M satisfying
+(1) or (2) of Lemma 3.10. (See Figure 5.) Otherwise it is non-trivial.
+We rephrase and extend Lemma 3.10 as follows.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 12
+P P
+∂M ∂MD D
+Figure 5. Trivial squares
+Lemma 3.12. Let (M,P ) be a compact orientable 3-manifold with a boundary
+pattern. Let S be a non-trivial square. Then a pattern-compression disc for S
+yields a violating disc for (M,P ). This violating disc is one of the components of
+the surface obtained by pattern-compressing S.
+We now have many of the elements required for the proof of Theorem 2.5. Let
+(M,P ) be a compact orientable irreducible 3-manifold with an essential boundary
+pattern. Our aim is to build an essential hierarchy for ( M,P ). If M is closed, then
+by assumption, it contains a properly embedded incompressible orientable surface
+with no 2-sphere components. Decomposing along this surface gives an irreducible
+3-manifold with non-empty boundary and essential (empty) boundary pattern. So,
+we may assume that ∂M is non-empty. If ∂M is a union of spheres, then these
+bound 3-balls by the irreducibility ofM, and so in this case there is nothing to prove.
+Hence, we may assume thatb1(∂M )> 0. Since b1(M)≥b1(∂M )/2, we deduce that
+b1(M)> 0. Therefore, M contains a properly embedded connected orientable non-
+separating surface S. By picking S to have smallest pattern-complexity, we may
+assume thatS is incompressible and pattern-incompressible by Corollary 3.7. When
+we decompose along such a surface, Lemmas 3.8 and 3.9 imply that the resulting
+manifold is irreducible and has essential boundary pattern. We may therefore repeat
+with this manifold. However, we must show that this process can be arranged to
+terminate. In [12], a proof was given using Kneser’s theorem bounding the number
+of disjoint non-parallel properly embedded incompressible boundary-incompressible
+surfaces in a compact 3-manifold. In the following section, we give an alternative
+proof. Although longer than the proof in [12], it will be more useful because it will
+lead to a good bound on the length of the resulting hierarchy.
+4. Handle structures and normal surfaces
+Our algorithm deals with partial hierarchies. The way that the surfaces in these
+partial hierarchies are encoded is as normal surfaces. Normal surface theory takes
+place in a 3-manifold equipped either with a triangulation or with a handle struc-
+ture. We mostly use handle structures, as they behave better than triangulations
+when the 3-manifold is decomposed along a normal surface. Normal surfaces in
+handle structures have been used in the theory of hierarchies since the work of
+Haken [4] and Waldhausen [22]. One of their particular uses is as a method for
+controlling the length of hierarchies, in other words the number of decompositions
+until the manifold has been cut up into balls.
+Deﬁnition 4.1. In this paper, a handle structure on a 3-manifold or a 2-manifold
+will satisfy the following conditions:
+(1) each i-handle Di×Dk−i (k = 2 or 3) intersects the handles of lower index
+in ∂D i×Dk−i;
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 13
+(2) any two i-handles are disjoint;
+(3) in the case of a 3-manifold, the intersection of any 1-handle D1×D2 with
+any 2-handle D2×D1 is of the form D1×α in D1×D2 where α is a
+collection of arcs in ∂D 2, and of the form β×D1 in D2×D1 where β is a
+collection of arcs in ∂D 2;
+(4) any 2-handle runs over at least one 1-handle.
+Deﬁnition 4.2. LetH be a handle structure for a 3-manifold and fori∈{ 0, 1, 2, 3},
+letHi denote the union of the i-handles. The characteristic surface forH isH0∩
+(H1∪H 2). We denote it byF(H), or simply byF when the context is clear. It has
+a handle structure consisting of just 0-handles and 1-handles, where the 0-handles
+areF 0(H) =H0∩H 1 and the 1-handles are F 1(H) =H0∩H 2. We will view the
+characteristic surface as a subsurface of ∂H0.
+We denote the number of 0-handles in the handle structure H by|H|.
+Deﬁnition 4.3. A handle structure for a 3-manifold M with boundary pattern P
+is a handle structure forM satisfying Deﬁnition 4.1 such thatP is disjoint from the
+2-handles and, for each 1-handle H1 =D1×D2, the intersection H1∩P isD1×X
+where X is a ﬁnite set of points in ∂D 2.
+We will be decomposing handle structures along normal surfaces. But ﬁrst we
+deal with the following weaker notion.
+Deﬁnition 4.4. LetH be a handle structure of a 3-manifold M with boundary
+pattern P . We say that a surface S properly embedded in M is standard with
+respect toH if the following hold:
+(1) it intersects each 0-handle in a collection of disjoint properly embedded
+discs;
+(2) it intersects each 1-handle D1×D2 in a surface of the form D1×C for
+some arcs C properly embedded in D2;
+(3) it intersects each 2-handle D2×D1 in a surface of the form D2×X for
+some ﬁnite collection of points X in the interior of D1;
+(4) it is disjoint from the 3-handles;
+(5) it intersects P transversely.
+We have analogous deﬁnitions for 1-manifolds in surfaces.
+Deﬁnition 4.5. LetH be a handle structure of a surface F . We say that a 1-
+manifold C properly embedded in F is standard with respect toH if the following
+hold:
+(1) it intersects each 0-handle in a union of disjoint properly embedded arcs;
+(2) it intersects each 1-handle D1×D1 in a union of arcs parallel to the core
+of the handle, that is, arcs of the form D1×X for some ﬁnite collection of
+points X in the interior of D1;
+(3) it is disjoint from the 2-handles.
+Deﬁnition 4.6. LetH be a handle structure for a 3-manifold M with boundary
+pattern P . A curve C in ∂H0 is normal if it intersects P and ∂F transversely, its
+intersection withF is standard and the following all hold:
+(1) C does not lie entirely in ∂M−P ;
+(2) C does not bound a disc in ∂H0−F that intersects P in a single arc or a
+tripod;
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 14
+(3) C intersects each 1-handle ofF in at most one arc;
+(4) C intersects each component of ∂H0− (F∪ P ) in at most one arc;
+(5) C does not intersect components ofF 1 and∂H0−(F∪P ) that are adjacent;
+(6) if C intersects two components of ∂H0− (F∪ P ) that are incident along
+an arc of P∩H 0, then C also intersects this arc;
+(7) there is no disc in ∂H0 that has boundary equal to the union of a sub-arc
+of C and a sub-arc of ∂F 0 is otherwise disjoint from C andF, and that
+intersectsP in at most two arcs, each of which runs from ∂F 0 to C.
+See Figure 6.
+P
+C
+C
+C
+C
+C
+C
+C
+C
+C
+C
+C
+C
+PP
+P
+P
+P P
+(1) (2) (3)
+(4) (5) (6)
+(7)
+F 1F 1 F 0 β
+β
+β
+β
+β
+α
+γ
+Figure 6. Conﬁgurations of the curve C in∂H0 that violate nor-
+mality. In cases (3)-(7), arcs α, β or γ are shown that are part of
+the boundary of a simplifying disc.
+Deﬁnition 4.7. LetH be a handle structure for a 3-manifold M with boundary
+pattern P . A surface S properly embedded in M is normal with respect toH if it
+is standard and each component of S∩∂H0 is normal.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 15
+In the case where the pattern P is empty, Deﬁnition 4.6 becomes the usual
+deﬁnition of a normal surface in a handle structure, for example as in [18, Deﬁnition
+3.4.1]. Most of the conditions in Deﬁnition 4.6 are natural generalisations to the
+case of general pattern. The possible exception is (7), which seems somewhat ad
+hoc. However, it will be used to establish that manifolds appearing in a hierarchy
+embed in the original manifold in a ‘simple’ way. (See Theorem 11.3.)
+There is a way of understanding the deﬁnition of normality in terms of simplifying
+discs, as follows.
+Deﬁnition 4.8. LetH be a handle structure for a 3-manifold M with boundary
+pattern P . Let S be a standard surface properly embedded in M. Then a sim-
+plifying disc for S is a disc D lying in a 0-handle H0 ofH satisfying one of the
+following:
+(1) ∂D is the concatenation of two arcs α⊂S andβ⊂∂H0, whereα =D∩S,
+and β = D∩∂H0 is an arc on the boundary of a 2-handle of H that is
+vertical in its product structure (see Figure 7 and Figure 6 (3));
+(2) ∂D is disjoint from P and is the concatenation of three arcs α⊂ S, β⊂
+∂H0∩∂M and γ⊂ ∂H0∩H 2, where α = D∩S, β = D∩∂M and γ is
+an arc on the boundary of a 2-handle of H that is vertical in its product
+structure (see Figure 6 (5));
+(3) ∂D intersects P at most once and is the concatenation of two arcs α⊂S
+and β⊂∂H0, where α =D∩S, and β =D∩∂H0 is an arc in ∂M that is
+not parallel to an arc of S∩∂H0∩∂M intersectingP at most once (Figure
+6 (4) and (6));
+(4) D is a subset of ∂H0 and ∂D is the concatenation of two arcs α =D∩S
+andβ =D∩F 0, and with the properties that D is otherwise disjoint from
+F and that D intersects P in at most two arcs, each of which runs from
+∂F 0 to C (see Figure 6 (7)).
+part of 2-handle part of 0-handle H0
+part of S∩H 0
+β
+α
+D
+S
+S
+Figure 7. A simplifying disc D
+The following is immediate from the deﬁnition of normality.
+Lemma 4.9. LetH be a handle structure for a 3-manifoldM with boundary pattern
+P . Then a surface S properly embedded inM is normal if and only if the following
+all hold:
+(1) S is standard;
+(2) S has no simplifying disc;
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 16
+(3) no component of S is a disc lying in a 0-handle that is parallel to a disc in
+∂M∩∂H0 intersectingP in the empty set, an arc or tripod.
+We will want to place properly embedded surfaces into normal form. In general,
+we may need to make modiﬁcations to the surface in order to do this. These
+modiﬁcations will not increase the following quantities.
+Deﬁnition 4.10. LetH be a handle structure of a compact orientable 3-manifold
+M, and letS be a standard surface properly embedded inM. The weight ofS is the
+number of components of S∩H 2. The extended weight ofS is|S∩H 2| +|S∩H 1|.
+Lemma 4.11 (Normalising a surface). LetM be a compact orientable 3-manifold
+with boundary pattern P . Let S be a compact orientable surface properly embedded
+in M transverse to P that is non-trivial in H2(M,∂M ). Then, after applying a
+sequence of isotopies preserving P , compressions and pattern-compressions, some
+component of the resulting surface is normal and either non-separating or a violating
+disc. Moreover, if S is standard in H, then the weight and extended weight of the
+resulting normal surface are at most the weight and extended weight of S.
+Proof. We may readily ensure thatS is standard. In particular, if S intersects some
+0-handleH0 in anything other than discs, then we may modify it, keeping S∩∂H0
+unchanged but ensuring that each of these curves bounds a disc inH0. This process
+is achieved by a sequence of isotopies and compressions.
+We may further assume thatS has no component that is a boundary-parallel disc,
+as we could remove this component and the surface would still be homologically
+non-trivial.
+Suppose that S is not normal. Then by Lemma 4.9, S has a simplifying disc.
+The ﬁrst and second types of simplifying disc can be used to pattern-isotope S to
+reduce its weight without increasing|S∩H 1|. The third type of simplifying disc is
+a potential pattern-compression disc for S. It satisﬁes (1) and (2) in Deﬁnition 3.1,
+but possibly not (3). We can pattern-compressS along this disc. IfS was a violating
+disc, then some component of the resulting surface is again a violating disc, and
+we work with this instead. If S was non-separating, but the pattern-compression
+produces a violating disc, then we work with this violating disc instead. However,
+if the pattern-compression creates a component that is a boundary parallel disc,
+but not a violating disc, then discard it. The resulting surface has smaller extended
+weight and no greater weight thanS. On the other hand, if the pattern-compression
+does not create a violating disc or a boundary-parallel disc, then some component
+of the resulting surface is non-separating, has smaller χp and no greater weight
+or extended weight. The fourth type of simplifying disc speciﬁes an isotopy of S,
+which reduces the number of components of S∩H 1 and that leaves the weight of
+S unchanged. At each stage, we are either reducing χp or leaving it unchanged
+and reducing extended weight. So this process terminates. The resulting surface
+is normal, connected, and orientable. Moreover, it is either non-separating or a
+violating disc. □
+5. Decomposing a handle structure along a normal surface
+We now wish to show that when (M,P ) is decomposed along a normal surface,
+the resulting manifold is, in some sense, simpler than the original one. The notion
+of complexity that goes down is deﬁned in terms of handle structures. Its deﬁnition
+needs to take account of the boundary pattern, as follows.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 17
+Deﬁnition 5.1. LetH be a handle structure for ( M,P ), and let F(H) be its
+characteristic surface. For a 0-handle H ofH, its index I(H) is deﬁned to be the
+sum of χp(F ), over all components F of H∩F (H).
+Note thatχp(F ) can be computed from the 0-handles D ofF , as follows. Deﬁne
+the index of D to be
+I(D) =
+∑
+D
+(
+−4 + 2|D∩F 1| +|D∩P|
+)
+.
+Then χp(F ) is∑
+DI(D), as D ranges over each 0-handle of F .
+Lemma 5.2 (Behaviour of index under decomposition) . LetH′ be obtained from
+H by decomposing along a standard surface S. Let D be a 0-handle of F. Then
+the sum, over all components D′ of D∩H′, of I(D′) is equal to I(D). Hence, for
+any component F ofF(H), the sum, over all components F′ of F∩H′, of χp(F′)
+is equal to χp(F ).
+Proof. Let D be 0-handle of F. Its intersection with S is a collection of properly
+embedded arcs. Say that there are n of them. (See Figure 8.) Then decomposing D
+along these arcs givesn+1 discs and so this changes the index by−4n. The endpoint
+of each arc either lies in F 1(H) or in ∂M . In the former case, this component of
+F 1(H) is decomposed along the extension of the arc into F 1(H). Hence this gives
+an increase of 2 to the index. If the endpoint of the arc lies in ∂M , then we get
+two new points of intersection between D∩H′ and the boundary pattern. Hence,
+again this increases the index by 2. So each arc leads to an increase in index by 4.
+Therefore, in total, the index is unchanged. □
+P P' P' P'
+P'
+P'
+P'
+P'
+S S
+decompose
+F(H) F(H')
+Figure 8. Decomposition ofF(H) along S
+We will mostly want to deal with handle structures with the following property.
+Deﬁnition 5.3. A handle structure H for (M,P ) is admissible if the following
+both hold:
+(1) each 0-handle ofF either has positive index or has zero index and is disjoint
+from P ;
+(2) for any simple closed curve C lying in a 0-handle of H, that is disjoint
+fromF, and that intersects P at most 3 times, C bounds a disc in ∂H0
+intersectingP in the empty set, an arc or a tripod.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 18
+P PP P
+P
+P P
+F 1F 1
+Figure 9. The possible 0-handles of F with negative index
+P
+P
+P
+P
+P
+P
+F 1F 1 F 1
+not admissible
+Figure 10. The possible 0-handles of F with zero index
+Proposition 5.4 (Create admissible handle structure) . Let (M,P ) be a
+compact orientable irreducible 3-manifold with a boundary pattern, and let H be
+a handle structure for (M,P ). Then there is an algorithm that either creates an
+admissible handle structure for a manifold (M′,P′) that is obtained from (M,P )
+by decomposing along disjoint non-trivial squares or provides a violating disc for
+(M,P ).
+Proof. The procedure that we will follow will not increase the index of any 0-handle
+ofF. It will strictly decrease the number of 1-handles of H at each stage, and so
+it is guaranteed to terminate. Suppose that there is a 0-handle D ofF that either
+has negative index or has zero index and intersects P . Then D has at most one arc
+of intersection withF 1. (See Figures 9 and 10.)
+Suppose that it has exactly one such arc. Then D lies in a 1-handleH1 ofH and
+the arc lies in a 2-handle H2 ofH, and we may remove H1∪H2 from the handle
+structure. There may be one or two arcs of P running along H1. If so, then we
+need to replace each component of F 1∩H2 with one or two arcs of P .
+Suppose now that D is disjoint fromF 1. Then it is properly embedded in M. If
+D has negative index, it intersects P in at most 3 points. We can then determine
+whether ∂D bounds a disc D′ in ∂M intersecting P in either the empty set, an
+arc or a tripod. If so, D∪D′ bounds a 3-ball in M, by irreducibility. We remove
+this submanifold bounded by D∪D′, and we insert into D the boundary pattern
+that was in D′. On the other hand, if ∂D does not bound such a disc D′, then D
+is a violating disc. It might not be normal, but in this case, we can ﬁnd another
+properly embedded disc in H0, disjoint from F, that also forms a violating disc
+and intersecting P fewer times. Hence, we may assume that D is normal, and the
+algorithm terminates with this disc. Suppose now that D has zero index, and hence
+is a square. If it is a trivial square, it bounds a disc D′ in ∂M intersectingP as in
+(1) or (2) of Lemma 3.10. We can then remove the submanifold bounded byD∪D′,
+and insert intoD the boundary pattern that was inD′. If D is a non-trivial square,
+then we decompose along it.
+Now suppose that there is a simple closed curve C lying in a 0-handle of H,
+that is disjoint fromF, and that intersects P at most 3 times, but that C does not
+bound a disc in ∂H0 intersecting P in the empty set, an arc or a tripod. There is
+always such a curveC when∂H0\\(F∪ P ) is not a union of discs. In that case, we
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 19
+pickC to be boundary parallel in a component of ∂H0\\(F∪ P ) that is not a disc.
+We can determine whether C bounds a disc D′ in∂M intersectingP in the empty
+set, an arc or a tripod. If there is no such disc D′ in ∂M , then a disc properly
+embedded inH0 bounded by C is a violating disc. On the other hand, if there is
+such a disc D′, then we can remove the submanifold bounded by D∪D′ and insert
+intoD the boundary pattern that was in D′.
+We have performed a sequence of decompositions along squares. We need to
+explain why we can take these squares all to be disjoint. We also need to explain
+why a violating disc that is produced in the above process actually forms a violating
+disc for (M,P ). We note that when we decompose along a square, the copies of
+this disc in the resulting 3-manifold lie in 0-handles and are disjoint from handles of
+higher index. In particular, they are disjoint from the later decomposing squares.
+Moreover, they are disjoint from any later violating discs that are produced. Thus,
+the squares are all disjoint from each other, and any violating disc that is produced
+is actually a violating disc for ( M,P ).
+□
+One of the reasons why we work with admissible handle structures is that they
+behave well when they are decomposed along a normal surface, as follows.
+Lemma 5.5 (Decomposing an admissible handle structure). Let (M,P ) be a com-
+pact orientable 3-manifold with a boundary pattern, and let H be an admissible
+handle structure for (M,P ). Let S be a normal surface properly embedded in M,
+and letH′ be the handle structure obtained by cutting along S. Then each 0-handle
+ofF(H′) has non-negative index.
+Proof. Suppose thatD′ is a 0-handle ofF(H′) with negative index. The possibilities
+for D′ are shown in Figure 9.
+Suppose ﬁrst that D′ intersectsF 1(H′) in a single arc and is disjoint from P′. If
+∂D′ is disjoint fromS, thenD′ forms a 0-handle ofF(H) that violates the assump-
+tion that H is admissible. Therefore, ∂D′ must intersect S and this intersection
+must be an arc, because ∂D′ is disjoint from P′. But this implies that S violated
+(3) in the deﬁnition of normality.
+Suppose now that D′ intersectsF 1(H′) in a single arc and intersects P′ in a
+point. Again, ∂D′ cannot be disjoint from S. It must therefore intersect S in an
+arc. But this implies that S violated (5) in the deﬁnition of normality.
+Suppose that D′ missesF 1(H′). Now D′ is a subset of a 0-handle D ofF 0(H),
+and its boundary alternates between arcs of S∩D and arcs lying in ∂D. Since D′
+intersects the pattern at most three times, there can be at most three such arcs.
+But in fact, there must be an even number of them. There must be at least one arc
+of S∩D lying in ∂D′, as otherwise D′ =D, contradicting the assumption that H
+is admissible. Hence, D′∩S is an outermost arc in D. The remainder of ∂D′ is an
+arcA in∂D intersectingP at most once. The arcs of S∩ (∂H0\\(F∪ P )) incident
+to ∂D′ lie in the same component of ∂H0\\(F∪ P ) or in adjacent components of
+∂H0\\(F∪ P ). Hence, by (4) and (6) in the deﬁnition of normality, they are either
+equal or they meet at a point of P . So the endpoints of D′∩S are joined by an
+arc of S∩ (∂H0\\F). The union of this latter arc and A is a simple closed curve
+C that intersects P in at most two points. So by admissibility, C bounds a disc in
+∂H0 intersecting P in an arc or the empty set. But then (7) in the deﬁnition of
+normality is contradicted. □
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 20
+In an admissible handle structure, we permit some 0-handles of F to have zero
+index. These give rise to the following types of handle of H.
+Deﬁnition 5.6. LetH be a handle structure for ( M,P ). A handle H ofH is an
+interior parallelity handle if one of the following holds:
+(1) it is a 0-handle disjoint from P , each 0-handle ofF∩ H has index zero and
+F∩ H is connected;
+(2) it is a 1-handle disjoint from P and each 0-handle ofF∩ H has index zero;
+(3) it is a 2-handle.
+Each interior parallelity handle can be given a product structure D2×I so that the
+intersection with any other 0-handle, 1-handle or 2-handle is of the formα×I where
+α is a union of arcs in ∂D 2. These product structures are viewed as forming an I-
+bundle structure and this I-bundle structure can be chosen compatibly over all the
+parallelity handles. The union of the parallelity handles is the interior parallelity
+bundle forH.
+We will deﬁne more general versions of this structure in Section 14, which will
+give rise to ‘parallelity bundles’. These important subsets of a handle structure have
+had numerous applications, for example [14]. We recall the following terminology.
+Deﬁnition 5.7. LetB be anI-bundle over a surfaceF . Then its vertical boundary
+∂vB is the I-bundle over ∂F , and its horizontal boundary ∂hB is the (∂I)-bundle
+overF .
+When we decompose a handle structure H along a normal surface, we would
+like the resulting handle structure H′ to be simpler than H, in some sense. The
+measure of complexity that we will use is as follows.
+Deﬁnition 5.8. Deﬁne the q-complexity cq(H) to be
+∑
+H
+(max{I(H), 0})2,
+where the sum is taken over 0-handles H ofH. Here, ‘q’ stands for ‘quadratic’.
+Proposition 5.9 (Decomposition and q-complexity). LetH be an admissible han-
+dle structure for (M,P ). Let S be a compact orientable connected non-separating
+properly embedded normal surface. LetH′ be the handle structure obtained from H
+by cutting along S. Then cq(H′)≤cq(H). Moreover, if this is an equality, then S
+is homologous in H2(M,∂M ) to a vertical surface in the interior parallelity bundle
+forH.
+Proof. Consider any 0-handle H ofH. By Lemma 5.2, the sum, over all 0-handles
+H′ of H∩H′, of I(H′) is equal to I(H). By Lemma 5.5, each 0-handle H′ has
+non-negative index. Hence,
+∑
+H ′
+I(H′)2≤I(H)2,
+with equality if and only at most one 0-handle of H∩H′ has positive index and
+the remaining components have zero index. We deduce that cq(H′)≤cq(H).
+Suppose that this is an equality. We will show that S is homologous to a surface
+inB. Consider a component S′ of S\\B. We will deﬁne a transverse orientation
+on S′ and will show that S′ with this transverse orientation is homologous to a
+2-chain in ∂M∪B . Since S′ is connected, this transverse orientation is either the
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 21
+same as or opposite to the one it inherits from S. Hence, S′ is homologous in
+H2(M\\B,∂ (M\\B)) to a 2-chain in B. Since this is true for each component of
+S\\B, we deduce that S is homologous to a 2-chain in B.
+We ﬁrst deﬁne the transverse orientation on the components of S′∩H 0. Each
+such component lies within a 0-handleH ofH not lying inB. This 0-handle cannot
+be disjoint from the 1-handles, since it would then form a 3-ball component of M,
+which cannot contain a properly embedded non-separating surface. It therefore
+has at least one 0-handle of F(H). It cannot be the case that all 0-handles of
+H∩F (H) have zero index since H would then be part of the interior parallelity
+bundle, contrary to assumption. So H∩F (H) has positive index. This is the same
+index as a unique 0-handle H′ ofH∩H′. The remaining 0-handles of H∩H′ have
+zero index. We orient this component of S′∩H 0 away from H′. This transverse
+orientation extends over the components ofS′∩H1 as follows. Each such component
+lies within a 1-handle H1 that has two components of intersection with F 0(H).
+SinceH is admissible and H1 does not lie in the interior parallelity bundle, these
+two components of F 0(H) have positive index. They are divided up by S′ into
+components ofF 0(H′). In each of these two components of F 0(H), exactly one of
+these components ofF 0(H′) has positive index. The adjacent discs of S′∩H 0 point
+away from this. Hence, we may extend the transverse orientation consistently over
+the components of S′∩H 1. Note that S′ is actually disjoint from the 2-handles,
+since these are part of the interior parallelity bundle.
+We now show thatS′ with this transverse orientation is homologous to a 2-chain
+inB. Each component of S′∩H i is a disc. It lies within a handle H ofH. If we
+were to cut H along this component of S′∩H i, we would obtain two 3-balls. We
+say that the 3-ball component into which this component points is associated with
+it. The union of these balls forms a 3-chain, the boundary of which is the union of
+S′ and a 2-chain in∂M∪B . Thus, S′ is equal inH2(M\\B,∂ (M\\B)) to a 2-chain
+inB, and so S is equal in H2(M,∂M ) to a 2-chain inB with boundary in ∂M . By
+replacing this 2-chain with a 2-chain that is equal in H2(M,∂M ), we may assume
+that it is a surface properly embedded inB disjoint from∂vB. Furthermore, we may
+assume that it is incompressible and also admits no boundary compression discs
+disjoint from∂vB. Each component of such a surface is either vertical or horizontal
+inB. But an orientable horizontal surface is homologically trivial. Hence, we have
+shown that S is homologous to a vertical surface in B. □
+Lemma 5.10 (Cutting along a vertical surface). Let (M,P ) be a compact orientable
+3-manifold with a boundary pattern. Let H be an admissible handle structure for
+(M,P ) and let B be its interior parallelity bundle. Let S be a vertical surface in
+B that is properly embedded and non-separating in M. Then S may be placed in
+normal form and when H is cut along S, the resulting handle structure H′ satisﬁes
+cq(H′) =cq(H). Moreover, the following quantities do not increase and at least one
+strictly decreases: the total number of components of F 1 in the 0-handles of H with
+positive index, and the number of interior parallelity 0-handles.
+Proof. The interior parallelity bundle is an I-bundle over a surfaceF . We give F a
+handle structure as follows. Each i-handle ofB vertically projects onto an i-handle
+ofF . In addition, we create a 0-handle of F for each component of ∂vB∩F 0 and a
+1-handle ofF for each component of∂vB∩F 1. We call the latter handles boundary
+handles, since they form a regular neighbourhood of ∂F . They are added to ensure
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 22
+that we really do have a handle structure for F . Without them, we would have
+1-handles or 2-handles not completely attached to lower index handles.
+The vertical surface S projects to a simple closed curve C in F . We isotope
+C so that it is normal in the handle structure of F . A corresponding isotopy of
+S makes it normal. When C runs over any boundary 0-handles of F , then the
+corresponding normal discs of S lie in 0-handles of H that are not parallelity 0-
+handles and hence that have positive index. When we decompose along these discs,
+then this reduces the number of components of F 1 in these handles. When C
+runs through 0-handles in the interior of F , the corresponding normal discs of S
+decompose interior parallelity 0-handles of H. This reduces the number of such
+0-handles.
+By Proposition 5.9, cq(H′)≤ cq(H). In fact, this is an equality because the
+eﬀect on F of the decomposition is to remove some lines of index zero 0-handles
+and 1-handles and replace them by two parallel arcs of pattern. Hence for any
+0-handle H ofH, its index is unchanged by the decomposition. □
+The following is easily veriﬁed.
+Lemma 5.11. The algorithm Create admissible handle structure in Propo-
+sition 5.4 does not increase any of the following quantities: the q-complexity of H,
+the total number of components of F 1 in the 0-handles of H with positive index,
+and the number of interior parallelity 0-handles.
+We are now in a position to complete the proof of Theorem 2.5.
+Proof. We have proved one direction of the theorem in Lemma 3.3. Therefore, let
+(M,P ) be a compact orientable irreducible 3-manifold with an essential boundary
+pattern. If M is closed, then we are assuming that it contains a properly embedded
+orientable incompressible surface with no 2-sphere components. We must show that
+(M,P ) admits an essential hierarchy.
+If M is closed, we can decompose along the hypothesised surface, and the re-
+sulting manifold is irreducible by Lemma 3.9 and has non-empty boundary and
+essential (empty) pattern. So we may assume that ∂M is non-empty.
+LetH be a handle structure for ( M,P ). By Proposition 5.4, there is a decom-
+position along non-trivial squares, after which the manifold (which we continue
+to denote by (M,P )) has an admissible handle structure. By Lemma 3.12, these
+squares are pattern-incompressible and they are automatically incompressible be-
+cause they are discs. Hence, by Lemma 3.8, the resulting pattern is essential and
+by Lemma 3.9, the manifold is irreducible.
+If ∂M has any sphere components, these bound 3-balls. Thus, we may assume
+that∂M is not a union of spheres. Therefore, b1(M)> 0, and soM contains a con-
+nected properly embedded non-separating orientable surface. Let S be such a sur-
+face with smallest pattern-complexity. By Corollary 3.7,S is pattern-incompressible
+and incompressible. By Lemma 4.11, it may be placed into normal form.
+By Lemma 3.8, the manifold M′ obtained by decomposing along S inherits an
+essential boundary pattern and by Lemma 3.9, it is irreducible. By Proposition
+5.9, the handle structure H′ that it inherits has q-complexity at most that of H.
+Moreover, its q-complexity is strictly less unlessS is homologous to a vertical surface
+in the interior parallelity bundle.
+In the case where S is homologous to a vertical surface in the interior parallelity
+bundle, we instead use Lemma 5.10 to decompose along such a surface. This leaves
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 23
+cq(H) unchanged. But it decreases the quantity m(H) which is the sum of the total
+number of components ofF 1 in the 0-handles with positive index, and the number
+of interior parallelity 0-handles.
+Thus, if we consider the ordered pair (cq(H),m (H)) and we compare such pairs
+using lexicographical ordering, then we have reduced this pair. We now apply
+Proposition 5.4 to turn H′ into an admissible handle structure. By Lemma 5.11,
+this does not increase cq(H′) or m(H′). Thus, we can repeat with this new handle
+structure. Since the complexity pairs are being reduced at each stage, this process
+must terminate, and so creates an essential hierarchy for ( M,P ). □
+6. The algorithm to decide whether a pattern is essential
+In this section, we present our algorithm required by Theorem 1.3. Thus, we are
+given a triangulation for a compact orientable irreducible 3-manifold M in which
+P is simplicial, and we must decide whether P is essential. We may assume that
+∂M is non-empty, as otherwise, the pattern is trivially essential. The ﬁrst step is
+to build a handle structure H for (M,P ). In our algorithm, we will store several
+lists:
+(1) handle structures H1,..., Hℓ for 3-manifolds M1,...,M ℓ with boundary
+patterns P1,...,P ℓ;
+(2) normal surfaces S1,...,S ℓ−1, where each Si is a normal surface in Hi and
+where (Mi+1,P i+1) = (Mi,P i)\\Si withHi+1 its induced handle structure.
+The algorithm is as follows:
+(1) Set H1 to be the initial handle structure H and set ℓ to be 0.
+(2) Apply the algorithm Create admissible handle structure in Propo-
+sition 5.4 toHℓ+1. If this produces a violating disc D, go to Step (12).
+(3) If Proposition 5.4 creates an admissible handle structure, then add any
+decomposing squares that have been used to the hierarchy. Increase ℓ by 1
+(if no squares were used) or 2 (if squares were used).
+(4) Using linear algebra compute b1(Mℓ).
+(5) If b1(Mℓ) = 0, then go to Step (9).
+(6) By reaching this step, b1(Mℓ) must be positive. If there is a vertical
+connected surface in the interior parallelity bundle for Mℓ that is non-
+separating in Mℓ, let Sℓ be such a surface, isotoped so that is normal as in
+Lemma 5.10. Otherwise, let Sℓ be any connected, non-separating, properly
+embedded, oriented normal surface Sℓ in Mℓ. (See Theorem 6.2 below for
+a simple and fast construction of such a surface.)
+(7) Is some component of Sℓ a violating disc for ( Mℓ,P ℓ)? If yes, then set D
+to be this component and go to Step (12).
+(8) Set (Mℓ+1,P ℓ+1) to be (Mℓ,P ℓ)\\Sℓ and setHℓ+1 to be its induced handle
+structure. Go to Step (2).
+(9) By reaching this step, b1(Mℓ) must be 0, and so ∂Mℓ must be a union of
+spheres. Examine whether the intersection of Pℓ with each such sphere is
+connected. If not, then we obtain a violating disc. Then examine all isotopy
+classes of simple closed loops in ∂Mℓ that intersect Pℓ transversely in at
+most 3 points. (Equivalently, consider whether the intersection between Pℓ
+and each component of ∂Mℓ is connected. If it is, examine all closed loops
+of length at most 3 in the dual graph.) For each such simple closed curve,
+determine whether it bounds a violating disc.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 24
+(10) If no violating disc is found, then ( Mℓ,P ℓ) is essential, and therefore by
+Theorem 2.5, so is (M,P ). In this situation, the algorithm terminates with
+a declaration that P is essential and it outputs the hierarchy that has been
+constructed.
+(11) By reaching this step, ∂Mℓ is a union of spheres and the algorithm has
+found a closed loop in ∂Mℓ that bounds a violating disc D.
+(12) Is D a violating disc for the initial manifold ( M,P )? If so, then the al-
+gorithm terminates by declaring that P is inessential and it outputs the
+violating disc D.
+(13) By reaching this step, D must run over at least one surface in the hierarchy.
+Let Sj be the last surface in the hierarchy that intersects D.
+(14) Is D a compression disc or pattern-compression disc for Sj? If not, then
+∂D∩Sj must in fact be a boundary-parallel arc in Sj, separating oﬀ a disc
+D′ that intersects the pattern Pj at most once. Moreover, D∪D′ must be
+a violating disc for ( Mj,P j). In this case, replace D by D∪D′ and go to
+Step (12).
+(15) By reaching this step, D forms a compression disc or pattern-compression
+disc forSj inMj. Compress or pattern-compress Sj along this disc to form
+a properly embedded surface. Perform isotopies and possibly compressions
+and pattern-compressions to this surface, and possibly discard components,
+to obtain a compact orientable connected properly embedded normal sur-
+face Sj that is non-separating in Mj or that is a violating disc for Pj.
+Replace Sj by Sj. Discard all later surfaces in the hierarchy. Set ℓ to be
+equal to j. Go to Step (7).
+Start here.
+Set H  = H.
+Set l = 0.
+Compute
+b (M ) Is b (M ) > 0?
+Then ∂M  is spheres. Is 
+there a curve in ∂M  
+bounding a violating disc?
+P is essential
+No
+No No
+No
+No
+Yes
+Yes
+Yes
+Yes
+Yes
+Yes
+Pick a  
+violating 
+disc D 
+1
+1 l
+l l
+1 l
+l
+l
+l
+l
+l Find a connected orientable 
+non-separating properly 
+embedded normal surface S
+Set M    = M \\ S and 
+let H     be the induced 
+handle structure
+l+1
+l+1
+l+1Increase l by 1 (if no
+squares were used) 
+or 2 (otherwise)
+j
+Is some component
+of S  a violating
+disc for (M , P )?
+P is inessential
+No
+The hierarchy construction loop
+The surface 
+simplification 
+process
+Either convert H      into an admissible 
+handle structure using decompositions
+along non-trivial squares or provide 
+a violating disc
+Does this create a
+violating disc?
+Use D to simplify
+S . Set l = j and
+discard later surfaces. 
+Is this a 
+violating disc 
+for (M,P)?
+Is there a non-separating
+vertical surface in the interior
+parallelity bundle for H ?
+Set S   to be this surface
+9
+223
+4
+1
+5
+10
+11 12
+13
+15
+12
+6
+6
+6
+7
+8
+Let S  be the 
+last surface that 
+D runs over
+j Is D a compression or 
+pattern-compression
+disc for S  ?
+14
+Yes
+∂D ∩ S  must be an arc separating
+off a disc D′ in S  that intersects
+the pattern at most once.
+j
+j
+Replace D by
+D ∪ D′
+j
+14
+14
+No
+l
+l l
+Set D to be
+this component
+7
+Figure 11. The algorithm to determine whether a pattern is essential
+Theorem 6.1 (The algorithm works). This algorithm terminates with the correct
+declaration either that P is essential or that P is inessential. Moreover when P
+is essential, the algorithm outputs an essential hierarchy for (M,P ). When P is
+inessential, it outputs a violating disc.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 25
+Proof. It is clear that if the algorithm terminates, then its output is correct. For if
+it terminates by declaring thatP is inessential, then it does so because it has found
+a violating disc. If it terminates by declaring that P is essential, then it does so
+because it has found an essential hierarchy for ( M,P ).
+We must show that the algorithm terminates. We ﬁrst note that it cannot
+remain in the hierarchy construction loop (Steps (2) to (8)) forever. Suppose that,
+on the contrary, it does. Each time we go through Step (6), we have an admissible
+handle structure Hℓ. If there is no non-separating vertical surface in the interior
+parallelity bundle, then any connected normal orientable non-separating surface
+is chosen or a violating disc is found. If a violating disc is found, then we leave
+the hierarchy construction loop. If a connected normal orientable non-separating
+surface is chosen, then by Proposition 5.9, cutting along this surface strictly reduces
+the q-complexity cq(Hℓ). When there is a vertical surface, then by Lemma 5.10,
+cutting along it leaves cq(Hℓ) unchanged, but it reduces m(Hℓ). Then when the
+handle structure is made admissible in Step (2) using Proposition 5.4, none of
+these quantities increases. Hence, the ordered pair ( cq(Hℓ),m (Hℓ)) decreases at
+each stage. But this contradicts the fact that these pairs are well-ordered.
+So, if the algorithm does not terminate, it must leave the hierarchy construction
+loop inﬁnitely often. Index these occurrences by the natural numbers i. At the ith
+stage, let
+(Si
+1,...,S i
+ℓ(i))
+be the partial hierarchy that is currently stored. When the algorithm leaves the
+hierarchy construction loop and does not immediately then terminate, a violating
+disc D is found. Furthermore, D runs over at least one surface in the partial hier-
+archy, unless the algorithm immediately terminates. Let Si
+j be the last surface that
+it runs over. Suppose ﬁrst that D is not a compression disc or pattern-compression
+disc for Si
+j. Then D∩Si
+j is either a simple closed curve that bounds a disc in Si
+j or
+an arc inSi
+j that separates oﬀ a disc in Si
+j intersectingPj at most once. If D∩Si
+j is
+a simple closed curve bounding a discD′ inSj, thenD∪D′ is a sphere. By the irre-
+ducibility ofM, this bounds a ball in M. The boundary of this ball is disjoint from
+the surfaces Si
+1,...,S i
+j−1. Hence, each of these surfaces must be disjoint from the
+ball, by our assumption that each surface is either connected and non-separating or
+a disjoint union of non-trivial squares. Thus, D∪D′ bounds a ball in Mj. None of
+the later surfaces Si
+j+1,...,S i
+ℓ(i) can enter this ball, again by our assumption that
+each is either connected and non-separating or a disjoint union non-trivial squares.
+Therefore, D′ lies in Mℓ(i) and its interior is disjoint from Pℓ(i). This contradicts
+the assumption thatD is a violating disc for (Mℓ(i),P ℓ(i)). Suppose now that D∩Si
+j
+is an arc in Si
+j that separates oﬀ a disc D′ inSi
+j intersectingPj at most once. Then
+D∪D′ is a disc properly embedded in Mj intersecting the pattern at most twice.
+Suppose that this is not a violating disc for ( Mj,P j). Then ∂(D∪D′) bounds a
+discD′′ in∂Mj that intersectsPj either in a single arc of the empty set. The union
+of these three discs bounds a ball that none of the earlier surfaces or later surfaces
+can enter. Hence, D′∪D′′ contains an arc or tripod of Pℓ(i). This contradicts the
+fact that D is a violating disc for (Mℓ(i),P ℓ(i)). Hence, the algorithm does produce
+a violating disc for (Mj,P j), as claimed in Step (14).
+Hence, the algorithm eventually produces a compression or pattern-compression
+disc for some Si
+j and the later surfaces are discarded. This reduces χp(Si
+j). Now,
+χp(Si
+1) can decrease only ﬁnitely many times. Hence, there is some point after
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 26
+which Si
+1 remains unchanged. Let S1 be this ﬁnal surface. After this point, the
+manifold obtained by cutting along S1 remains unchanged. We therefore consider
+the surfaces Si
+2 after this point. Again, these can change only ﬁnitely many times,
+and so there is some ﬁnal surface S2. Repeating this process, we obtain an inﬁnite
+sequence of surfaces S1,S 2,... . We must show that this cannot occur. Let Hj be
+the handle structure obtained from H by cutting along S1,...S j.
+Now we note that if some surface in one of these hierarchies is a disc that inter-
+sects the pattern four times, and at some stage we decrease its pattern-complexity,
+then this creates a violating disc. This is then used to simplify an earlier surface in
+the hierarchy. Thus, none of the surfaces Sj in our inﬁnite list is obtained from a
+square by pattern-compressing.
+Thus, the surfaces S1,S 2,... and handle structuresH1,H2,... have the follow-
+ing property. Suppose that some Hj is admissible. If there is no non-separating
+vertical surface in the interior parallelity bundle, then Sj is some connected normal
+orientable non-separating surface. On the other hand, if there is such a vertical
+surface, then Sj is as in Lemma 5.10. Then the next surfaces after Sj are possible
+squares. The result is an admissible handle structure, and so on. As argued in the
+proof of Theorem 2.5, this is impossible, because the ordered pair ( cq(Hj),m (Hj))
+decreases as we pass from one admissible handle structure to the next one. □
+One reason why the above algorithm works so well is that, in a compact ori-
+entable 3-manifold M with b1(M)> 0, it is a very easy to construct a connected,
+non-separating, properly embedded, oriented surface. We make this precise in the
+following theorem. This seems to be well known, but it is so central to the eﬃciency
+of our algorithm that we give a proof.
+Theorem 6.2 (Build non-separating surface) . There is an algorithm that
+takes, as its input, a triangulationT or handle structureH for a compact orientable
+3-manifold M with boundary pattern P , and with b1(M) > 0. In the case where
+∂M is non-empty, we also assume that H has no 3-handles. The algorithm builds
+a connected, non-separating, properly embedded, oriented, normal surface S with
+weight at most c|T| or extended weight at most c|H|. Here, c is a constant that is
+universal in the case of a triangulation. In the case of a handle structure, c depends
+on the number N, which is the maximum, over each 0-handle of H, of the number
+of components of intersection between the 0-handle and each of the following: the
+1-handles, the 2-handles, the vertices of P and the edges of P . The running time
+is bounded above by a polynomial function of |T| or|H|, where the polynomial is
+universal for triangulations and depends on N in the case of handle structures.
+Proof. Let us initially assume that M is given via a triangulationT , since this case
+is more straightforward.
+We are assuming that H 1(M) is non-zero. Any non-zero element of this group
+can be represented by a simplicial 1-cocycle, and indeed such a 1-cocycle is unique
+if we require that its evaluation on each edge in some given maximal tree in the
+1-skeleton is zero. So, one can set up a system of linear equations, with a vari-
+able for each oriented edge not in this tree, and an equation specifying that the
+total evaluation around each face is zero. Then any non-zero real solution to these
+equations represents a non-trivial element of H 1(M; R). In fact, one can ensure
+that the coeﬃcients of this element are rational, by imposing enough extra con-
+straints specifying that some edges have zero evaluation, until the solution space is
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 27
+1-dimensional, and then requiring that the sum of the coeﬃcients is 1. Then we can
+multiply through by a suitable integer to obtain a non-zero solution with integer
+coeﬃcients, which is a 1-cocycle representing a non-trivial element of H 1(M).
+The size of the co-ordinates of this solution are bounded above by 2 12|T| for the
+following reason. The system of equations has at most n = E−V + 1 variables,
+where E and V are the number of edges of T . This is because a maximal tree has
+V − 1 edges in it. Note that E−V + 1≤ E≤ 6|T| . There is an equation for
+each face, as well as an equation that requires that the sum of the coeﬃcients is 1.
+We also have extra conditions that require that some edges evaluate to zero. These
+equations are combined into a single matrix equation Av =w, where A represents
+the above equations,v is the solution, andw is the vector with all zeroes except the
+ﬁnal entry, which is 1. We are assuming that the kernel of A is zero, and hence the
+rank of A is equal to the number of variables. There is a square submatrix B of A
+with the same number of columns of A having the same rank. Thus B is invertible.
+We haveBv =w′, where w′ consists of some of the entries of w, and so all entries
+are zero apart from one. Then v = B−1w′. Note that B−1 = (det(B))−1adj(B),
+where det(B) is the determinant of B and adj(B) is the adjugate matrix. We can
+obtain an integral solution by multiplying through by det( B). Each co-ordinate of
+this integral solution is an entry of the adjugate matrix, which is the determinant
+of a minor of B. The size of this is at most the product of the l2 norms of the
+rows, which is at most 3 n√n≤ 22n≤ 212|T| , as required. Note that the procedure
+used to produce this solution runs in polynomial time, since it involves computing
+(n− 1)2 determinants.
+From this, one can build a properly embedded surface representing an element
+of H2(M,∂M ) dual to this 1-cocycle c, as follows. First, for each edge e of the
+triangulation, place a collection of|c(e)| points along the interior of the edge. These
+will be the intersection points between e and the surface. Pick a circular ordering
+on the edges of each face. Since the evaluation of c around the face is zero, we may
+join the points in the edges in pairs by a collection of disjoint normal arcs, so that
+for each arc, one endpoint lies on an edge with positive evaluation and one endpoint
+lies on an edge with negative evaluation. These arcs form the intersection between
+the surface and the face. In the boundary of each tetrahedron, these arcs combine
+to form a collection of normal curves, each with length three or four, and we may
+ﬁll these in with normal triangles and squares. The result is a compact oriented
+properly embedded surface dual to c. Any component of this surface can be used
+as the required surface S. Such a component can be found using the algorithm of
+Agol, Hass and Thurston [1, Corollary 17].
+We now consider the case where M comes equipped with a handle structure
+H. When ∂M is non-empty, we are assuming that H has no 3-handles. This
+determines a cell structure on M, as follows. Each handle becomes a 3-cell. The
+2-cells arise from the components of intersection between handles, as well as the
+components of intersection between a handle and ∂M\\P . Some of these surfaces
+might not be discs, in which case we decompose them along arcs forming 1-cells,
+until they become discs. We will explain how to do this below. The remaining
+1-cells arise from the components of intersection between any three handles, as well
+as the components of intersection between pairs of handles and ∂M\\P , and also
+the components of intersection between a handle and an edge of P . Finally, the
+0-cells arise as follows: the components of intersection between four handles; the
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 28
+components of intersection between any three handles and∂M\\P ; the components
+of intersection between any two handles andP ; the vertices ofP . One arrangement
+when non-disc components of intersection between handles arises is when a 1-handle
+ofH is disjoint fromH2 andP . In that case, we insert a single vertical 1-cell running
+along the 1-handle. The other scenario where non-disc components arise is in the
+boundary of a 0-handle, since the intersection between the 0-handle and ∂M\\P
+orH3 may have components other than discs. In that case, we insert properly
+embedded 1-cells into the planar surface, but without adding any new 0-cells.
+We now pick a maximal tree in the 1-skeleton of this cell structure. Our approach
+will depend on whetherM is closed or has non-empty boundary. WhenM is closed,
+we pick a maximal tree in the 1-skeleton of each 3-handle. The union of these trees
+forms a forest in M. In each 1-handle disjoint from the 2-handles, we also add
+the new vertical 1-cell to this forest. We then extend this to a maximal tree in
+all of M. The eﬀect of this is that, for each 1-cocycle c that is zero on the edges
+in the maximal tree, the evaluation of each 1-cell in each 3-handle is zero. This is
+automatic for 1-cells in the maximal tree. But for any other 1-cell in a 3-handle, the
+evaluation of c on that edge is equal to the evaluation of the loop that runs along
+the edge, then through the maximal tree back to the start of the edge. This loop lies
+entirely in the 3-handle, and so is homotopically trivial, and hence its evaluation
+is zero, as claimed. When M has non-empty boundary, we pick a maximal tree
+in the 1-skeleton of each 2-handle and again any new vertical edges in a 1-handle
+are included in this forest. We also add each component of P∩H 1 to this forest.
+Furthermore, for each disc component of H1∩ ∂M , we pick one of its arcs of
+intersection withH0 and we declare that all but one of the 1-cells in that arc lies
+in the forest. We again extend this to a maximal tree in M. This has the eﬀect
+that the evaluation of each 1-cell in each 2-handle is actually zero.
+As above, such cocycles c are solutions to a system of linear equations. The
+variables correspond to the oriented 1-cells not in the maximal tree, and there is
+an equation for each 2-cell. The argument above also gives that there is a non-zero
+integral cocycle with the property that its value on each 1-cell has modulus that is
+bounded above by an exponential function of|H|, where the exponent only depends
+on the uniform type of H.
+We now construct a surfaceS that is dual to this 1-cocyclec. For each 1-celle, we
+insert|c(e)| points into its interior. These will be the points of intersection between
+S ande. Each 2-cell is a polygon, and we have speciﬁed the intersection between S
+and the boundary of this polygon. Since the total evaluation of the oriented edges
+in this boundary is zero, we can insert transversely oriented arcs into the interior
+of the polygon joining these points. Note that the 1-cells that are vertical in the
+1-handles have zero evaluation, for the following reason. Each such 1-cell is either in
+the boundary of a 3-handle, or in the intersection between a 2-handle and∂M , or is
+an inserted 1-cell in a 1-handle disjoint from the 2-handles. For each such 1-cell, its
+evaluation is zero. Each 2-cell in the vertical boundary of a 1-handle has four sides,
+and we have just shown that the two vertical sides have zero evaluation. Hence, the
+remaining two sides have the same evaluation. So the arcs that we insert into such
+a 2-cell can be isotoped to be vertical. We can also ensure that the arcs in the two
+polygons at the ends of this 1-handle correspond via the product structure. In the
+boundary of each handle, these arcs patch together to form closed curves. We can
+insert discs into the handle bounded by these curves. The result is a transversely
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 29
+oriented, properly embedded surface dual to c. It is standard because it is disjoint
+from the 3-handles and respects the product structure of the other handles of H.
+For 1-handles, we have already arranged this. For 2-handles in a closed 3-manifold
+M, this follows from the fact that the surface misses the 3-handles and intersects
+each 1-cell in points of the same sign. When M has non-empty boundary, the
+surface misses the 2-handles. Note also that all the points of intersection between
+the surface and any arc component of H0∩H 1∩∂M have the same sign.
+We need to arrange that this surface is in fact normal. We observe that when
+M is closed, we have in fact already arranged this. When M is closed, the only
+normality condition that is not automatic is (3) of Deﬁnition 4.6. However, for
+each disc that we have inserted into a 0-handle, it runs over each component of F 1
+at most once. For if it ran over a component of F 1 more than once, then there
+would be two arcs of intersection in that component ofF 1 with opposite transverse
+orientations. However, all the arcs of intersection between S and any component
+ofF 1 are compatibly oriented.
+We now deal with the case where M has non-empty boundary. Each component
+of S∩H 0 intersects each component of ∂F 0\\(P∪F 1) and each component of
+intersection between the edges of P andH0 at most once, since S intersects each
+such component in points of the same sign. (This latter property is convenient at
+this stage, but we will not maintain it in the modiﬁcations that we make below.)
+So this results in ﬁnitely many types of disc in S∩H 0. For each such disc type D,
+we deﬁne its complexity to be|D∩P|2 +|D∩F 1|2. This quantity is bounded above
+by a constant depending only on the type ofH. The complexity ofS is equal to the
+sum of the complexities of its disc types. Note that in this sum, we only consider
+one disc of S∩H 0 of each type in each 0-handle. Hence, the complexity is bounded
+above by a constant times |H0|, where the constant only depends on the uniform
+type ofH.
+We now examine the normality conditions (1)-(7) from Deﬁnition 4.6. Conditions
+(1) and (2) are automatically satisﬁed. In our setting, S is disjoint from the 2-
+handles, and so (3) and (5) are satisﬁed. If a curve ofS∩∂H0 intersects a component
+of ∂H0− (F∪ P ) in more than one arc, contradicting (4), then we can pattern
+compress such a disc. We can pattern compress all discs of this type. For each such
+disc, this creates two discs D1 andD2. Discs of these types may already exist in S,
+but this does not aﬀect our argument. The points of intersection between D andP
+are shared out between D1 andD2. The same is true for D∩F 1. Hence, the total
+complexity of S decreases. Note that when a pattern-compression is performed,
+then the class that S represents in H2(M,∂M ) is unchanged. A similar argument
+works when (6) in the deﬁnition of normality is violated. We pattern compress the
+disc D to discs D1 and D2. This introduces two points of intersection with P , but
+the complexity of these discs still decreases. Finally note that condition (7) must
+be satisﬁed, since if it were not, then we obtain two points of intersection between
+S and a component ofH1∩H 0∩∂M that are oriented towards or away from each
+other, contrary to our construction. Thus we have constructed a normal surface.
+Any component of this is our required normal surface. □
+Remark 6.3. While this gives a simple construction of some surface S, mostly
+using only elementary linear algebra, it is not necessary to follow this construction
+in step (6) of the above algorithm to determine whether a boundary pattern is
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 30
+essential. Indeed, any connected, non-separating, properly embedded, oriented,
+normal surface can be used.
+Remark 6.4. When Theorem 6.2 is applied to a handle structure H, both the
+upper bound on the extended weight of the surface and the running time of the
+algorithm depend on the quantityN. In most applications, N is bounded above by
+a universal constant. For example, this is true when H is dual to a triangulation of
+M in whichP is simplicial. More generally, we will see in Section 11 that typically
+H can be arranged to be of ‘uniform type’ as one proceeds down a hierarchy. This
+term is deﬁned in Deﬁnition 11.2, but it implies that N is bounded above by a
+universal constant.
+7. An example
+We give an example of this algorithm in practice. We use it to show that the
+tripus 3-manifold has incompressible boundary. This manifold is shown in (i) of
+Figure 12. There, a 3-ball (represented by the outer circle) is shown, containing
+a properly embedded graph. The tripus manifold is the exterior of this graph.
+It is a famous example of a 3-manifold admitting a hyperbolic structure with to-
+tally geodesic boundary. Totally geodesic boundary components of a hyperbolic
+3-manifold are always incompressible. However, the application of our algorithm
+gives a straightforward alternative proof of this.
+The ﬁrst decomposing surface is a thrice-punctured sphere as shown in (ii) of
+Figure 12. The exterior of this surface, with its boundary pattern, is shown in
+(iii). The next surface is the four discs shown in red in (iv). The exterior of these
+discs is two 3-balls. Their boundary patterns are shown in (v) and (vi). It is easily
+checked that they are essential. Hence, the empty boundary pattern for the tripus
+manifold is essential. In other words, the boundary is incompressible. Furthermore,
+the manifold is irreducible.
+A skeptical reader may object that we have not quite followed the algorithm
+from Section 6, in several ways. We have not speciﬁed an initial handle structureH
+for the manifold. Of course we could have done so, and we could have realised the
+ﬁrst surface as normal, and we could have decomposedH along it, thereby forming
+a new handle structureH2, and so on. Although a computer implementation would
+have used handle structures, we have chosen to avoid them in this example, for ease
+of exposition.
+We deviated from the algorithm in another way, because the second surface is a
+union of discs which is separating, whereas the surfaces in Step (6) are required to
+be connected and non-separating. However, we could instead have chosen three of
+the four discs, and decomposed along of each of these in turn. These are connected
+and non-separating. The resulting manifold would have been a single 3-ball. Its
+boundary pattern would have been essential, by an application of Lemma 3.2 and
+because decomposition along the fourth disc gives an essential pattern. We chose
+to decompose along four discs rather than three, again for ease of visualisation and
+exposition.
+A reader may also object that we have been very fortuitous that we did not need
+to leave the hierarchy construction loop. So suppose instead that we had initially
+used a slightly diﬀerent set of decomposing surfaces. Suppose that we used the
+same ﬁrst surface, but that the second surface was a slightly diﬀerent collection
+of discs S2, as shown in (i) of Figure 13. Then when we decompose along these
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 31
+(i) The tripus manifold (ii) The first surface in the hierarchy
+(iii) The exterior of this surface (iv) Four discs forming the next surface
+(v) The top 3-ball (vi) The bottom 3-ball
+Figure 12. An essential hierarchy for the tripus manifold
+discs, we get two three balls, with boundary patterns as shown in (ii) and (iii). The
+pattern in (ii) is inessential; a curve bounding a violating disc D is shown. This
+would have been discovered in step (9) of the algorithm. It runs over one of the
+discs in S2. When we pattern-compress S2 along D, the result is ﬁve discs, one of
+which is boundary-parallel. Removing this from the collection, we obtain the four
+discs described in Figure 12 (iv). Hence, the algorithm would again terminate with
+the correct declaration that the boundary of the tripus manifold is incompressible.
+8. The algorithm to determine incompressibility
+In this section, we complete the proof of Theorem 1.1.
+Lemma 8.1. LetS be a compact orientable surface properly embedded in a compact
+orientable 3-manifold M. Let D be a compression disc for ∂M that is disjoint from
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 32
+(i) An alternative collection of four discs
+(ii) The top 3-ball (iii) The bottom 3-ball
+violating disc
+forming the second surface of a
+hierarchy for the tripus manifold
+Note that the top 
+left disc is different 
+from the one in the 
+previous hierarchy
+boundary of a
+Figure 13. An alternative decomposing surface. A curve bound-
+ing a violating disc is shown.
+S. Then S is incompressible inM if and only if it is incompressible inM\\D. Also,
+S is boundary-incompressible in M if and only if it is boundary-incompressible in
+M\\D.
+Proof. One direction is clear. A compression or boundary-compression disc for S in
+M\\D can be slid oﬀ the copies of D in∂(M\\D). It then becomes a compression
+or boundary-compression disc for S in M.
+Suppose thatD′ is a compression or boundary-compression disc forS inM. The
+intersection between this andD is a collection of simple closed curves and properly
+embedded arcs. Consider a simple closed curve that is innermost in D. It bounds
+a disc in D. We may surger D′ along this disc, and remove the resulting 2-sphere
+component. The result is a new compression or boundary-compression disc for S
+that intersects D a fewer number of times. Hence, we may assume that D∩D′
+contains no simple closed curves. When D′ is a compression disc, this implies that
+D∩D′ =∅, since if there were an arc of intersection, its boundary would lie in S,
+whereas D is assumed to be disjoint from S. So suppose that D′ is a boundary-
+compression disc for S. Now consider an arc of D′∩D that is outermost in D. It
+separates oﬀ a sub-disc inD with interior disjoint fromD′. We may surgerD′ along
+this disc, giving two discs D′
+1 andD′
+2. One of these is a boundary-compression disc
+forS. Hence, again by minimising |D∩D′|, we may assume that D∩D′ =∅. But
+then D′ lies in M\\D, and it forms a compression or boundary-compression disc
+for S in M\\D. □
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 33
+Theorem 8.2 (Determining incompressibility and boundary-incompress-
+ibility). There is an algorithm that takes, as its input a compact orientable irre-
+ducible 3-manifold M and a compact orientable properly embedded surface S, and
+determines whetherS is incompressible and boundary-incompressible. Furthermore,
+whenS is compressible or boundary-compressible, the algorithm outputs a compres-
+sion disc or a boundary-compression disc.
+Proof. We may remove the disc components of S without aﬀecting whether S is
+compressible or boundary-compressible. So suppose that S has no disc components.
+GiveM the empty boundary pattern, and letP be the pattern thatM\\S inherits.
+Running the algorithm provided by Theorem 1.3 on (M\\S,P ) establishes whether
+P is essential. Furthermore, when it is inessential, the algorithm provides a violating
+disc.
+First suppose that P is essential. Then S is incompressible and boundary-
+incompressible, by Lemma 3.2. Hence, in this case, our algorithm terminates with
+the declaration that S is incompressible and boundary-incompressible.
+Now suppose that P has a violating disc D. Then ∂D intersects P an even
+number of times, since P is where the copies of S in ∂(M\\S) meet the parts of
+the boundary coming from ∂M . So, ∂D intersects P zero times or twice. If ∂D
+intersects P twice, then D forms a potential boundary-compression disc for S. If
+this is an actual boundary-compression disc, then the algorithm terminates and
+provides this disc. On the other hand, if D∩S separates oﬀ a subdisc D′ from
+S, then D∪D′ yields a violating disc for P that is disjoint from P . So we may
+suppose that ∂D is disjoint fromP . It then lies in a copy of S or in∂M\\S. In the
+former case, D is a compression disc for S. Suppose that D lies in ∂M\\S. If it
+forms a compression disc for ∂M , then we cut M alongD and by Lemma 8.1, S is
+compressible or boundary-compressible in M\\D if and only if it was beforehand.
+Thus, we can work with this new manifold, which has boundary with higher Euler
+characteristic. Suppose that D is not a compression disc for ∂M . Then ∂D bounds
+a discD′ in∂M . The boundary of S must intersect this disc, since D is a violating
+disc. Pick an innermost curve of ∂S∩D′ inD′. This bounds a disc in D′ that forms
+a compression disc forS, since we are assuming thatS has no disc components. □
+Theorem 8.3 (Determining incompressibility) . There is an algorithm that
+takes, as its input, a compact orientable irreducible 3-manifold M and a compact
+orientable properly embedded surface S, and determines whether S is incompress-
+ible. Furthermore, when S is compressible, the algorithm outputs a compression
+disc.
+Proof. Again we may assume that S has no disc components. Give M the empty
+boundary pattern, and let P be the pattern that M\\S inherits. Now replace
+each curve of P by two parallel curves, forming a new pattern P′. The algorithm
+given in Theorem 1.3 is then applied to ( M\\S,P′). If P′ is essential, then S is
+incompressible and the algorithm terminates with this declaration. So suppose that
+P′ has a violating disc D. The boundary of M\\S consists of parts coming from
+S and parts coming from ∂M , and between these lie annuli lying between parallel
+curves of P′. Hence, ∂D intersects P′ an even number of times. Moreover, if it
+intersects P′ twice, then one arc of ∂D\\P′ is boundary parallel in an annular
+component of ∂(M\\S)\\P′. In that case, we may isotope ∂D to form a violating
+disc disjoint from P′. So we may assume that D is disjoint from P′. It either
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 34
+forms a compression disc for S or it is disjoint from S. In the former case, the
+algorithm terminates and provides this disc D. In the latter case, it either forms
+a compression disc for ∂M , in which case we compress along it and continue, or it
+can be used to ﬁnd a compression disc for S lying in ∂M . □
+9. The number of steps
+There are various steps in the algorithm from Theorem 1.3 that are not described
+with enough precision to be able to estimate their running time. So, we will initially
+content ourselves with an analysis of the number of times that the algorithm goes
+through any of the steps in Section 6. We do this in terms of two quantities:
+(1) the maximal length L of any of the hierarchies; thus the variable ℓ will be
+at most L throughout;
+(2) the maximal pattern-complexity g of any decomposing surface.
+At present, we will not attempt to bound these two quantities. But we can bound
+the number of steps in the algorithm in terms of L and g.
+When the algorithm is in the hierarchy construction loop, namely Steps (2)-(8),
+it continues until a violating disc is found or until it reaches a manifold Mℓ+1 with
+b1(Mℓ+1) = 0. The number of times it can iterate this loop is at most L. By
+this stage, we have produced a list of surfaces S1,...,S ℓ with pattern-complexity
+χp(S1),...,χ p(Sℓ). It may be the case that the ﬁnal surfaceSℓ has negative pattern-
+complexity, in which case it is a violating disc (because it is assumed to be connected
+and non-separating), and we do not include it in this list. The algorithm then
+proceeds through the surface simpliﬁcation process, namely Steps (9)-(15). If it
+does not terminate here, then we pattern-compress or compress someSj and thereby
+reduce its pattern-complexity by at least one. We discard the later surfaces and
+return to Step (7) to create new ones.
+In order to ﬁnd an upper bound on the number of times we can leave the hierarchy
+construction loop, we deﬁne the (g,L )-complexity of the hierarchy S1,...,S ℓ to be
+ℓ∑
+i=1
+χp(Si)(g + 1)L−i.
+In other words, we extend the list χp(S1),...,χ p(Sℓ) to one of length L by adding
+zeroes, and then we view this L-tuple of integers as the digits of a number in base
+g + 1. This number is the ( g,L )-complexity. Importantly, it goes down by at
+least one between successive occasions where we leave the hierarchy construction
+loop. This is where we compress or pattern-compress a surface Sj and we discard
+the later surfaces beyond Sj. When new ones are created to replace them, all we
+have is an upper bound of g on their pattern-complexity. Thus, the L-tuple of
+pattern-complexities might change as follows:
+(χp(S1),...,χ p(Sj),χ p(Sj+1),...,χ p(SL))−→(χp(S1),...,χ p(Sj)− 1,g,...,g ).
+But if we view theseL-tuples as the digits of a number in baseg+1, we see that this
+number has gone down by at least 1. Since the (g,L )-complexity is never more than
+(g + 1)L, we deduce that the number of times we leave the hierarchy construction
+loop is at most (g + 1)L. Hence, the number of times that we perform any step of
+the algorithm is at most L(g + 1)L. The extra factor L is because we may go round
+the hierarchy construction loop at most L times before leaving it. We summarise
+this as follows.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 35
+Proposition 9.1 (Number of iterations) . The number of times that the above
+algorithm can iterate through any step is at most L(g +1) L, whereL is the maximal
+length of any of the hierarchies and g is the maximum pattern-complexity of any of
+the surfaces.
+10. A refined algorithm using interior parallelity bundles
+We saw in Proposition 9.1 that the quantity L, which provides an upper bound
+to the length of any of the partial hierarchies that we construct, is key to control-
+ling the running time of the algorithm. With our current algorithm, it is not so
+straightforward to give good estimates onL. This is because the proof at the end of
+Section 5 that the hierarchies terminate uses the ordered pairs ( cq(H),m (H)). Al-
+though lexicographical ordering on these pairs is enough to establish termination,
+it does not establish how quickly this happens. Now under many circumstances
+cq(H) strictly decreases. The quantity m(H) only becomes relevant when H has a
+non-separating vertical surface in its interior parallelity bundle. Therefore, in this
+section, we show how we may remove every component of the interior parallelity
+bundle that is not an I-bundle over a disc. This will lead to a somewhat more
+complicated algorithm. But it will mean that we can provide a linear bound on
+L in terms of the initial q-complexity of H. The ﬁrst change that we make to the
+algorithm is as follows.
+First modiﬁcation to the algorithm : After Step (2), once the handle structure has
+been made admissible, we then do the following:
+(2′) Replace each component of the interior parallelity bundle that is an I-
+bundle over a disc by a single 2-handle.
+(2′′) Cut along the vertical boundary components of the remainingI-bundles and
+further decompose these using squares into 3-balls with essential boundary
+patterns.
+This ensures that the resulting 3-manifold has interior parallelity bundle that
+consists solely of 2-handles and hence cannot contain a non-separating vertical sur-
+face. Therefore, by Proposition 5.9, the q-complexity cq(Hi) of the handle structure
+Hi strictly decreases when we decompose along a connected non-separating normal
+surface Si.
+However, this algorithm has an extra complication. In the previous algorithm
+described in Section 6, if a non-trivial square was found to be pattern-compressible,
+this led to a violating disc. This is in turn was used to simplify an earlier surface
+in the hierarchy. Hence, pattern-compressed squares never survive in the hierarchy.
+But what about the annuli that are used in step (2′′)? What if these are compressed
+or pattern-compressed? We now explain how to deal with this situation.
+Proposition 10.1 ((Pattern-)compressible vertical boundary). LetM be
+a compact orientable irreducible 3-manifold other than a 3-ball, and let P be a
+boundary pattern for M. Let H be an admissible handle structure for (M,P ). Let
+B be a component of the interior parallelity bundle B that is not an I-bundle over
+a disc, and let A be a vertical boundary component of B. Suppose that A has a
+pattern-compression or compression discE. Then there is an algorithm that, given
+H,A andE, either creates a handle structure for (M,P ) with smaller q-complexity
+or produces a violating disc for (M,P ).
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 36
+Proof. Suppose ﬁrst that E is a pattern-compression disc. Pattern-compress A
+along E to form a properly embedded disc D. If this is a violating disc, then the
+algorithm produces this disc and stops. So, suppose that D is not violating. Its
+boundary therefore bounds a disc D′ in ∂M that intersects P either in the empty
+set or a single arc. Since M is irreducible, D∪D′ bounds a 3-ball in M. If the arc
+D∩∂M is disjoint from D′, then we deduce that A is parallel to an annulus A′ in
+∂M that intersects P either in the empty set or a single core curve. On the other
+hand, if D∩∂M lies in D′, then we deduce that A is compressible. Indeed one of
+the discs of D′\\∂A forms a compression disc for A when pushed a little into the
+interior of M. We will later examine the case where A is compressible, and so we
+now suppose that A is parallel to the annulus A′.
+Consider ﬁrst the case where the solid torus between A and A′ contains B.
+Then we remove this solid torus from the handle structure, thereby removing this
+component of B and possibly others. If A′ contained a core curve of P , then we
+transfer this across to A. This has the eﬀect of replacing some components of
+F 0(H) and F 1(H) by an arc of P , which does not increase the q-complexity of
+H. Moreover, the solid torus cannot be an entire component of B, and so it must
+contain a 0-handle of H of positive index. So removing this solid torus strictly
+reduced cq(H).
+So, suppose that the interior of B is disjoint from this solid torus. If B is an
+I-bundle over a disc, then this implies that M is a 3-ball which is contrary to one
+of the hypotheses of the proposition. Suppose that B is an I-bundle over a surface
+F with a single boundary component other than a disc. This then contains a non-
+separating essential arc. The I-bundle over this arc, together with two meridian
+discs for the solid torus, forms a violating disc for ( M,P ). Suppose now that B is
+an I-bundle over a surface with more than one boundary component. Pick an arc
+in the base surface with exactly one endpoint on the boundary component that this
+the image of A. Let A′′ be the vertical boundary component incident to the other
+endpoint of this arc. The I-bundle over this arc, together with a meridian disc for
+the solid torus, gives a pattern-compression disc for A′′. If we pattern-compress
+along this disc and we create a violating disc, then the algorithm outputs this. If it
+does not create a violating disc, then again there are two cases. It might lead to a
+compression disc for A′′, which we will consider later. If not, then A′′ is parallel to
+an annulus in∂M intersectingP either in the empty set or a single core curve. But
+now the region between A′′ and this annulus contains B. Hence, we may remove
+this solid torus, thereby removing B from the handle structure.
+We now consider the case where A has a compression disc E. This compresses
+D to two discs D1 and D2. If one of ∂D1 or ∂D2 does not bound a disc in ∂M ,
+thenD1 orD2 is violating, and the algorithm outputs this disc. So we may suppose
+that D1 and D2 are parallel to discs D′
+1 and D′
+2 in ∂M . It may be that D′
+1 and
+D′
+2 are nested, in which case suppose that D′
+1⊂D′
+2. It may also be the case that
+D′
+1 contains boundary components of ∂hB other than ∂D′
+1. But by changing our
+choice ofA if necessary, we may assume that this is not the case. If one ofD′
+1 orD′
+2
+has non-empty intersection with the pattern, it forms a violating disc. So, suppose
+that D′
+1 and D′
+2 are disjoint from the pattern.
+The ﬁrst case we consider is where D′
+1 and D′
+2 are disjoint. Then D′
+1∪A∪
+D′
+2 bounds a ball. This ball does not contain B because ∂hB has no boundary
+components in D′
+1, and B is not an I-bundle over a disc. We may modify the
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 37
+handle structure in the ball by declaring that it is a single interior parallelity 0-
+handle. This reduces the q-complexity of the handle structure.
+Suppose now that D′
+1 andD′
+2 are nested. Then D′
+1 lies withinD′
+2, by our earlier
+assumption. The fact that B is not an I-bundle over a disc imply that the interior
+of∂D′
+1 is disjoint from B. Hence, B lies in the region between A andD′
+2\\D′
+1. We
+remove this region from the handle structure. This reduces the q-complexity of the
+handle structure. □
+Thus, the algorithm in Section 6 is also modiﬁed as follows.
+Further modiﬁcation to the algorithm : In Step (13), we again consider a violating
+discD. This forms a pattern-compression disc for some surface Sj in the hierarchy.
+IfSj is a square, then this creates a new violating disc. IfSj is the vertical boundary
+of the interior parallelity bundle forHj, we apply the algorithm in Proposition 10.1.
+This either produces a violating disc or it simpliﬁesHj. In all other cases, we apply
+Lemma 3.6 to create a non-separating connected orientable surface Sj with smaller
+pattern complexity. We discard the rest of the hierarchy, and then proceed to Step
+(14).
+Proposition 10.2 (The reﬁned algorithm works). LetM be a compact orientable
+irreducible 3-manifold, and letP be a boundary pattern. The above algorithm termi-
+nates with the correct declaration either that P is essential or that P is inessential.
+Moreover, the length of any of the partial hierarchies produced by the above algo-
+rithm is at most 4cq(H).
+Proof. As in the proof of Theorem 6.1, it is clear that if the algorithm terminates,
+then its output is correct.
+We start by bounding the length of the partial hierarchies that the algorithm
+produces. Therefore consider one such partial hierarchy S1,...,S ℓ, and let Hi be
+the handle structure on for the manifold (Mi,P i) containingSi. We will show that
+cq(Hi+4)<c q(Hi) for each i. This will establish that ℓ≤ 4cq(H).
+Certainly, cq(Hi+1)≤ cq(Hi) by Proposition 5.9 and Lemma 5.11. We must
+show that at least every 4 steps, this quantity strictly decreases. To establish this,
+we examine carefully how the algorithm works.
+The ﬁrst thing that the algorithm does is to make the initial handle structure
+admissible, using Create admissible handle structure in Proposition 5.4. It
+then modiﬁes the handle structure to ensure that the interior parallelity bundle is
+just I-bundles over discs, or it ﬁnds a violating disc.
+The algorithm then proceeds by iterating the hierarchy construction loop. At
+each stage through the loop, it cuts along a connected non-separating normal sur-
+face, then possibly cuts along non-trivial squares to make the handle structure
+admissible, then cuts along vertical boundary components of the interior parallelity
+bundle and then vertical squares. After this stage, the interior parallelity bundle
+again consists of I-bundles over discs.
+If at any stage, the algorithm leaves the hierarchy construction loop and does not
+immediately terminate, it ﬁnds a compression disc or pattern-compression disc for
+someSj. When this Sj is a connected non-separating normal surface, a component
+of the resulting surface is non-separating and it is normalised, and we work instead
+with that surface. On the other hand, when Sj is a square or the vertical boundary
+components of the interior parallelity bundle, then Sj is either used to produce a
+further violating disc or it is used to simplify the handle structure; in both cases,
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 38
+it is discarded. Hence, in the list of surfaces S1,...,S ℓ, either our given Si is
+connected, normal and non-separating, or this is true for some Sj with j≤ i + 3.
+Therefore, cq(Hi+4)<c q(Hi), as claimed.
+We now show that the algorithm terminates. At the ith stage, let (Si
+1,...,S i
+ℓ(i))
+be the partial hierarchy that is currently stored. As in the proof of Theorem 6.1, the
+surface Si
+1 must eventually stabilise at some surface S1. This is because each time
+thatSi
+1 is modiﬁed, eitherχp(Si
+1) decreases (when a pattern-compression or pattern
+compression is performed) or the q-complexity of the handle structure containing
+Si
+1 is reduced (as in (Pattern-)compressible vertical boundary ). We then
+consider the next surfaces Si
+2. Again they eventually stabilise at some surface S2.
+This is for the same reason as above, plus the observation that when Si
+2 is used
+to create a violating disc, then either this leads to the algorithm terminating or
+it is used to reduce the pattern-complexity of a previous surface. However, the
+latter case does not arise because we are assuming that Si
+1 does not change any
+further. Repeating in this way, we create an inﬁnite sequence of surfacesS1,S 2,... .
+However, this is impossible because we have just established an upper bound on
+the length of any partial hierarchy created by the algorithm. □
+11. Handle structures of uniform type
+Our algorithm starts with a handle structureH. We then decompose this handle
+structure along a sequence of surfaces. Suppose that each of the 0-handles of the
+initial handle structureH falls into one of ﬁnitely many ‘types’. For example, if H
+had been dual to an ideal triangulation, then for each 0-handle H, its intersection
+withF is a thickened version of the complete graph on 4 vertices. If H had been
+dual to a triangulation, then for each 0-handle H, H∩F is a thickened version of
+a subgraph of the complete graph on 4 vertices. We want to maintain this local
+ﬁniteness as we proceed down the hierarchy. In this section, we show how to achieve
+this.
+Deﬁnition 11.1. Let H and H′ be 0-handles in handle structures H andH′ for
+(M,P ) and (M′,P′). We say that they have the same type if there is a homeo-
+morphismH→H′ sendingH∩F 0(H) homeomorphically to H′∩F 0(H′), sending
+homeomorphicallyH∩F 1(H) toH′∩F 1(H′), and sendingH∩P homeomorphically
+to H′∩P′.
+Deﬁnition 11.2. We say that a handle structureH has uniform type if there is a
+ﬁnite list of handle types such that any 0-handle of H is one of these types.
+Of course, this deﬁnition only really makes sense if the list of handle types is
+given in advance, and then the requirement that H is of uniform type forces its
+0-handles to conform to this list of types. But this slightly imprecise wording is
+useful, because it will be convenient occasionally to enlarge our ﬁnite list of types.
+An example is given below in Theorem 11.3.
+It will be important that we only use handle structures of uniform type. This is
+for many reasons. For example, if we wish to write down a normal surface, we will
+typically do so using its normal vector, and it is therefore important that we can
+list the diﬀerent types of normal disc that can arise within a handle.
+The following result ensures that the handle structures in our partial hierarchies
+have uniform type.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 39
+Theorem 11.3 (Maintaining uniform type) . LetH be a handle structure of uni-
+form type for a compact orientable irreducible 3-manifold M with boundary pattern
+P . Let H′ be the handle structure of a 3-manifold M′ with boundary pattern P′
+obtained fromH by a ﬁnite sequence of the following moves:
+(1) decomposition along a normal surface that is disjoint from the interior par-
+allelity bundle, no component of which is a boundary-parallel disc, and ap-
+plied to an admissible handle structure;
+(2) application of Create admissible handle structure in Proposition
+5.4;
+(3) decomposition along vertical boundary components of the interior parallelity
+bundle;
+(4) application of (Pattern-)compressible vertical boundary in Propo-
+sition 10.1.
+ThenH′ is of uniform type, although possibly with a larger set of handle types.
+Moreover, when H′ is admissible and its interior parallelity bundle consists of I-
+bundles over discs, then for each 0-handle H ofH, there are only ﬁnitely many
+possibilities for the following subsets:
+(1) the intersection between H and the 0-handles of H′;
+(2) H∩F 0(H′);
+(3) H∩F 1(H′);
+(4) H∩P′,
+up to the following operations:
+(1) isotopy of H preservingH∩H 1, H∩H 2 and H∩P ;
+(2) removing a small collar neighbourhod of a subset of ∂M′;
+(3) re-embeddingH′∩H in H in a way that leaves F 0(H′),F 1(H′) and P′∩
+∂F(H′) unchanged.
+Remark 11.4. Note that we are only claiming fairly limited control over the
+location of the 2-handles of H′. We are specifying their attaching locus via H∩
+F 0(H′) andH∩F 1(H′), but we do not specify where the remainder of the 2-handles
+lie.
+The re-embedding of H′∩H might require some further explanation. Suppose
+that we had applied a sequence of modiﬁcations to H, giving the handle structure
+H′, and then suppose that we made some further modiﬁcations to give another
+handle structure H′′. Suppose that H′∩H andH′′∩H diﬀer solely by a Dehn
+twist about a disc properly embedded in M′ and lying in H′∩H. Then H′∩H
+andH′′∩H would diﬀer by operation (3) above, and so, for the purposes of this
+proposition, would be viewed as equivalent.
+Proof. We deﬁne a temporary notion of complexity for a 0-handle H of a handle
+structure, called t-complexity. It will be a list of three integers. The ﬁrst element of
+the triple is the sum of the indices of the components of H∩F with positive index.
+The second element is |H∩F 1|. The third element is |H∩F 0|. We compare two
+such triples in the usual way, using lexicographical ordering. The set of triples is
+then well-ordered.
+We will prove by induction on t-complexity that a 0-handle type H gives rise to
+only ﬁnitely many handle types ofH′∩H under a sequence of the operations in (1)-
+(4) above. Moreover, we will show that the union of the 0-handles of H′∩H with
+positive index embed in H in one of only ﬁnitely many ways, up to the equivalence
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 40
+described in (1)-(3) at the end of the proposition. This will also establish the second
+part of the proposition, because when H′ is admissible and its interior parallelity
+bundle consists of I-bundles over discs, then all its 0-handles have positive index.
+The induction starts with H having t-complexity (0, 0, 0). Then H is an isolated
+0-handle and none of the procedures in (1)-(4) aﬀect it.
+We now prove the inductive step. We consider when one of procedures (1)-(4) is
+applied to a 0-handle H. We may assume that the result is not a single 0-handle
+H′ that is the same type as H and where H′ is obtained from H by removing a
+small collar on a subset of ∂H, as in this case there is nothing to prove.
+In the procedure Create admissible handle structure , there are three
+types of operation that are performed. One type is where we collapse a 1-handle
+and 2-handle pair, where the 1-handle has at most two arcs of P running along
+it. The eﬀect on H∩F 0 is possibly to remove some components of H∩F 0 with
+non-positive index. The eﬀect on H∩F 1 is to remove some components and replace
+them by at most two parallel arcs of P∩H. This does not increase the index of
+any component of H∩F . If H is modiﬁed, then it reduces at least one of |H∩F 1|
+and|H∩F 0|, and it does not increase either of them. There are only ﬁnitely such
+modiﬁcations that can be applied to H. Hence, the induction is proved in this case.
+The second type of operation in Create admissible handle structure is
+the removal of isolated 0-handles ofF with non-positive index. Each such operation
+does not aﬀect the index of the other components of F∩ H. It leaves |H∩F 1|
+unchanged and it reduces|H∩F 0|. Hence, again the inductive step is proved.
+The third type of operation inCreate admissible handle structure is when
+there is a simple closed curveC in∂H\\F that intersects the pattern at most three
+times. It is assumed that C does not bound a disc in ∂H but that it does bound a
+disc in∂M intersectingP in the empty set, an arc or a tripod. When ∂H\\(F∪ P )
+is not a union of discs, then C is chosen to be boundary parallel in a component of
+∂H\\(F∪ P ) that is not a disc. Hence, in that case, there are only ﬁnitely many
+possibilities for C. On the other hand, when ∂H\\(F∪ P ) is a union of discs, then
+again there are only ﬁnitely many possibilities for C. Now C bounds a properly
+embedded disc D inH, and the operation that is performed is to remove the 3-ball
+separated oﬀ byD, and possibly to insert intoD an arc or tripod. The eﬀect of this
+onH is to remove some components ofF and to possibly insert some new pattern.
+This does not increase the index of the components of H∩F , it does not increase
+|H∩F 1|, and it strictly reduces|H∩F 0|. Hence again the inductive step is proved.
+The eﬀect when we decompose along vertical boundary components of the in-
+terior parallelity bundle is similar to the case of Create admissible handle
+structure. The eﬀect is to replace some components of H∩F 1 by two parallel
+arcs of H∩P . This leaves index unchanged, but reduces |H∩F 1|. It also removes
+some components of H∩F 0 that are disjoint from P and that intersectF 1 in two
+arcs, and replaces them by two arcs of P . Again, this leaves index unchanged, and
+reduces|H∩F 0|.
+In (Pattern-)compressible vertical boundary, submanifolds of the man-
+ifold are removed. The eﬀect on H is either to remove it entirely (in which case
+there is nothing to prove) or possibly to remove some components of F 1 and re-
+place them with an arc of P , and possibly to remove some components of F 0 that
+intersectF 1 in two arcs and are disjoint from P , and replace them with an arc of
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 41
+P . As argued above, this does not increase the index of any component of F or
+|H∩F 0|, and it strictly reduces |H∩F 1|.
+We now examine what happens when H is decomposed along a normal surface.
+We are assuming that the handle structure is admissible in this case. Hence, every
+0-handle of H∩F 0 has non-negative index. So, H has non-negative index. Fur-
+thermore, if it has zero index, then it is an interior parallelity handle, and we are
+assuming that the normal surface is disjoint from the interior parallelity bundle.
+So, we may assume that the index of H is positive.
+The normal surface intersects H in discs. We can decompose along these one at
+a time. So we focus on one such disc D. Note that there are only ﬁnitely normal
+disc types in H. This disc D divides H into two 0-handles H0 and H1, both of
+which have non-negative index, by Proposition 5.5. The sum of these indices is
+I(H). Hence, if they are both positive, then H0 and H1 have smaller index, and
+so we are done by induction in this case. So suppose that one 0-handle H0 has
+zero index and the other handle H1 has positive index. Since D is normal, each
+component ofF 1∩H is either divided into two by D or lies wholly in one of the
+handlesH0 orH1. If one component of F 1∩H ends up wholly in H0, then H1 has
+smaller t-complexity than H, and we are again done by induction.
+If ∂D lies wholly in F∩ H, then the component of H0∩F incident to ∂D has
+zero index and so must be an annulus disjoint from the pattern. Hence, in this
+case, H1 is a copy of H and, given H, there are only ﬁnitely many possible types
+for H0.
+Suppose that ∂D is disjoint from F∩ H. It is therefore properly embedded in
+M. Since we are assuming that the decomposing surface has no component that
+is a boundary-parallel disc, D must separate components ofF∩ H. Hence, in this
+case, H1 has smaller index than H, which is contrary to assumption.
+So suppose that ∂D intersectsF∩ H in arcs. These must be boundary-parallel
+inF.
+Let D′ be the component of ∂H\\∂D lying in H0. This intersects F in n
+components, say, each of which is a disc intersecting P twice. Let Γ be the graph
+H0∩P . This is a graph where each vertex has degree 1 or 3. The vertices with
+degree 1 occur at the points of P∩F inH0, and also at the points ∂D∩P . Let v1
+and v3 be the number of vertices with degree 1 and 3 respectively.
+α
+α
+P
+D'
+β
+1
+10 α α2
+F F
+Figure 14. Left: the disc D′ and its intersection with P andF.
+Middle: a tree component of Γ disjoint from F. Right: A tree
+component of Γ intersectingF at a single point
+We claim that no component Γ ′ of Γ is a tree disjoint from F (see Figure 14
+middle). A regular neighbourhood of Γ′ inD′ is a disc, and the part of the boundary
+of this disc not lying in ∂D′ is a collection of arcs. There must be at least one such
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 42
+arc α that is not outermost in D′, in the sense that it does not separate oﬀ a sub-
+disc of D′ disjoint from the other arcs and from F. At its endpoints are two arcs
+of ∂D\\(P∪F ) lying in the same component of ∂H\\(P∪F ). By the normality
+of D, these are therefore the same arc of ∂D\\(P∪F ). Hence, α was outermost
+which is a contradiction.
+We now show that no component of Γ is a tree intersecting F in a single point
+(see Figure 14 right). Suppose that Γ ′ is such a component. Let β be the arc of
+∂F\\P incident to Γ′ and that is disjoint from ∂D. Let α be an arc in D′ disjoint
+from Γ running from β to ∂D that runs close to Γ ′. We may extend α along ∂F
+in two ways to form arcs α1 and α2 properly embedded in D′, each intersecting P
+once. Let α1 be the arc that intersects Γ′. The endpoints of α1 lie in components of
+∂H\\(F∪ P ) that are incident along an arc of ∂H∩P . So, by (6) in the deﬁnition
+of normality, ∂D intersects this arc. By (4), ∂D must run straight between these
+two endpoints ofα1, intersectingP and nothing else. We deduce that Γ′ is a single
+edge. A similar argument applied to α2 gives that it is also parallel to a sub-arc of
+∂D. So, D′∩P consists of two arcs. These must emanate from the same 0-handle
+ofF, as otherwise ∂D violates (5) in the deﬁnition of normality. So, we deduce
+that D contradicts (7) in the deﬁnition of normality.
+We deduce that each component Γ ′ of Γ satisﬁes 2 χ(Γ′)−|F∩ Γ′|≤ 0. So,
+v1−v3−|F∩ Γ| = 2χ(Γ)−|F∩ Γ|≤ 0. Now the number of vertices of P∩H1 is
+equal to the number of vertices of P∩H, plus|Γ∩∂D|, minus v3. But|Γ∩∂D| =
+v1−|F∩ Γ|. We deduce that the number of vertices of the graph P∩H1 is at most
+the number of vertices of P∩H.
+To summarise, we have shown that in each of the operations (1)-(4), the t-
+complexity of H strictly goes down, except possibly in the case of (1). When the
+t-complexity does not go down,H is decomposed along the normal disc D, the new
+handle H1 has H1∩F an exact copy of H∩F , and the new pattern P′ intersects
+H1∩F in the same location that P intersected H∩F . More precisely, there is
+a homeomorphism H → H1 takingF 0(H) homeomorphically to F 0(H1), taking
+F 1(H) homeomorphically to F 1(H1), and taking P∩F (H) homeomorphically to
+P′∩F (H1). This homeomorphism need not take P∩H homeomorphically to
+P′∩H1, but we have shown that these graphs have the same number of vertices.
+Hence, after a sequence of steps (1)-(4), the t-complexity must go down at some
+stage, or the handles run through only ﬁnitely many types. In either case, the
+argument is complete. □
+Remark 11.5. The above proposition is crucial to the eﬃcient certiﬁcation that a
+boundary patternP for a compact orientable 3-manifoldM is essential, as required
+by Theorem 1.6. When M is irreducible, this is achieved by giving an essential
+hierarchy for (M,P ). Now ( M,P ) is given to us by means of a triangulation T ,
+and so Theorem 11.3 guarantees that the resulting handle structures for all the
+manifolds in the hierarchy are of uniform type. This is important at many points.
+For example, in Proposition 12.1 below, a constant k depends on the type of the
+handles. Hence, for all the handle structures that we consider, k is in fact bounded
+above by a universal constant independent of M and the hierarchy.
+Another crucial conclusion from Theorem 11.3 is that when the handle structure
+H′ for a manifold in our hierarchy is admissible and its interior parallelity bundle
+consists of I-bundles over discs, then the intersection between the 0-handles of H′
+and any tetrahedron ofT is one of only ﬁnitely many types, where again this list of
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 43
+types is universal. In particular, the number of 0-handles of H′ is bounded above
+by a universal constant times the number of tetrahedra of T . This is important
+because many quantities depend on |H′|, for example again in Proposition 12.1. It
+is also central to the eﬃciency of our algorithm. For example, when a manifold in
+the hierarchy is created and all its boundary components are 2-spheres, then we
+need to examine whether the boundary pattern in these 2-sphere is essential. We
+can do so eﬃciently, since the handle structure on this manifold has uniform type
+and its number of handles is bounded above by a universal constant times |T| .
+Theorem 11.3 is an analogue of results known for sutured manifold hierarchies
+(see [13, Proposition 6.3] and [16, Theorem 6.1]).
+12. Fundamental decomposing surfaces
+Our goal in this section is to control the extended weight of our decomposing
+surfaces.
+Proposition 12.1 (Extended weight bound). LetM be a compact orientable irre-
+ducible 3-manifold, other than a 3-ball, with non-empty boundary and an essential
+boundary pattern P . Let H be a handle structure of (M,P ) of uniform type. Then
+there is a constant k (depending only on the handle types of H) with the following
+property. There is a compact orientable connected non-separating normal surface S
+properly embedded in M with smallest pattern complexity among all such surfaces
+and with extended weight at most k|H|.
+Our proof of this fact relies heavily on work of Tollefson and Wang [21]. A fairly
+minor complication is that they worked with triangulations rather than handle
+structures. Starting from H, it is straightforward to build a triangulation T of M
+in which P is simplicial, satisfying the following conditions:
+(i) the number|T| of tetrahedra is at mostc1|H|, wherec1 is a constant depending
+only on the handle types of H;
+(ii) any incompressible, pattern-incompressible normal surface S inT can be iso-
+toped, leaving P invariant, to form a standard surface in H with extended
+weight at most c2w(S), where w(S) is the weight of S inT and c2 is a con-
+stant depending only on the handle types of H.
+Hence, we now work with a triangulation T satisfying these conditions.
+We now recall the projective normal solution space associated withT . There are
+7|T| types of normal triangles and squares in T . We assign a variable xi to each
+type. When S is a normal surface, these variables count the number of triangles
+and squares of each type in S, giving a list of 7 |T| non-negative integers for S
+called its normal surface vector and denoted (S). Such vectors satisfy a system of
+linear constraints called the matching equations. There are three such equations for
+each face ofT with tetrahedra on both sides. For each such face, the triangles and
+squares in the tetrahedron on one side of the face must patch together correctly
+with the triangles and squares in the tetrahedron on the other side. The triangles
+and squares on one side intersect the face in normal arcs, which come in three
+diﬀerent types. The matching equations assert that for each such normal arc type,
+the number of triangles and squares on one side intersecting the face in arcs of
+that form is equal to the number of triangles and squares on the other side also
+intersecting that face in arcs of that form. The projective normal solution space is
+the subset of R7|T| subject to the matching equations, the conditionsxi≥ 0 for each
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 44
+i, and the equation ∑xi = 1. It is a convex compact polyhedron. Each normal
+surface S determines a point in the projective normal solution space by scaling all
+its co-ordinates xi so that∑xi = 1. The unique closed face of minimal dimension
+in the projective normal solution space containing this point is called the face that
+carries S and is denoted CS.
+A normal surface is said to be the normal sum of two properly embedded normal
+surfacesG andH if its normal vector is (G)+(H). We denote the surface byG+H.
+One cannot always form the normal sum of two normal surfaces, but this is possible
+if they are both carried by the same face of the projective normal solution space.
+A normal surface is said to be fundamental if it cannot be written as the normal
+sum of two non-empty normal surfaces.
+Deﬁnition 12.2. A compact oriented incompressible pattern-incompressible sur-
+face S properly embedded in (M,P ) is said to be p-taut if the following all hold:
+(1) [S,∂S ] is non-trivial in H2(M,∂M );
+(2) S minimises pattern-complexity in its homology class;
+(3) there is no homologically trivial union of components of S.
+We say thatS is lw-p-taut if it is p-taut and it has minimal weight among all p-taut
+surfaces representing [S,∂S ].
+This is an analogue of a deﬁnition of Tollefson and Wang [21, Section 1]. Instead
+of pattern-complexity, their surfaces minimisedχ−, which is deﬁned to be the sum,
+over all components S′ of S, of max{0,−χ(S′)}. Their surfaces were known as
+lw-taut.
+The following is an analogue of Theorem 3.3 of [21], but with their lw-taut
+surfaces replaced by lw-p-taut surfaces. The proof is essentially the same, and is
+omitted.
+Theorem 12.3. LetM be a compact orientable irreducible 3-manifold withb1(M)>
+0 and letP be an essential boundary pattern. LetT be a triangulation ofM in which
+P is simplicial. Let S be a compact oriented incompressible pattern-incompressible
+properly embedded surface that is lw-p-taut. Let CS be the face of the projective
+normal solution space that carries S. Then every surface G carried by CS inherits
+an orientation and so represents an element [G]∈H2(M,∂M ). With this orienta-
+tion, G is lw-p-taut. Moreover, for any two surfaces G and H carried by CS, the
+normal sum G +H satisﬁes [G +H] = [G] + [H].
+Hence, we have the following result.
+Theorem 12.4 (Fundamental surface). LetM be a compact orientable irreducible
+3-manifold with b1(M)> 0 and let P be an essential boundary pattern. Let T be a
+triangulation of M in which P is simplicial. Then there is a fundamental normal
+surfaceS properly embedded inM satisfying the following:
+(1) S is a compact connected orientable surface that is non-separating in M;
+(2) S has smallest pattern-complexity among all surfaces satisfying (1).
+Proof. Pick a compact orientable surface S satisfying (1) and (2) above. Such a
+surface exists because b1(M) > 0. We may assume that it is incompressible and
+pattern-incompressible, by Corollary 3.7. Hence it can be isotoped, via an isotopy
+preserving the pattern, to a normal surface, also called S. We may further assume
+that S has least weight among all such surfaces. So it is lw-p-taut. Let CS be the
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 45
+face that carries S. Suppose that S is not fundamental. Then S can be written as
+a non-trivial normal sum G +H of normal surfaces G andH. We may assume that
+G is connected, since if G1 is any component of G, then S =G1 + ((G−G1) +H).
+Both G and H lie in CS. By Theorem 12.3, G and H inherit orientations which
+make them lw-p-taut. In particular, G is non-separating in M. Neither G nor H
+has negative pattern-complexity, since we are assuming that P is essential. Note
+that pattern-complexity and weight are both additive under normal summation.
+Hence, the pattern-complexity of G is at most that of S. But it has smaller weight,
+contrary to our assumption. □
+Proof of Proposition 12.1. We are given a handle structureH of (M,P ) of uniform
+type. From this, construct a triangulation T of M in which P is simplicial and
+satisfying (i) and (ii) above. By Theorem 12.4, there is a fundamental normal
+surface S properly embedded in M satisfying (1) and (2) in the theorem. By a
+result of Hass, Lagarias and Pippenger [5, Lemma 6.1], the weight of S inT is at
+most|T| 227|T| +7. Hence, S is isotopic, leaving P invariant, to a standard surface
+S inH with extended weight at most c2|T| 227|T| +7. Then by Lemma 4.11, S
+can be isotoped, leaving P invariant, to be normal in H and without increasing
+its extended weight. Since, |T|≤ c1|H|, we obtain our required constant k and
+exponential bound on the extended weight of S. □
+13. Certifying an inessential pattern
+In this section, we establish one part of Theorem 1.6, by showing that Essen-
+tial boundary pattern is in co-NP. In the case where the given 3-manifold is
+irreducible, this is a consequence of the following result, which we will prove in this
+section.
+Theorem 13.1 (Fundamental violating disc). Let M be a compact orientable ir-
+reducible 3-manifold with a boundary pattern P . LetT be a triangulation for M in
+whichP is simplicial. If P is inessential, then it has a violating disc that is normal
+and fundamental.
+The following result provides a violating disc in an important special case.
+Theorem 13.2 (Fundamental compression disc). Let M be a compact orientable
+irreducible 3-manifold with pattern P . Let T be a triangulation for M in which
+P is simplicial. If ∂M\\P is compressible, then it has a compression disc that is
+normal and fundamental.
+This result was proved in [18, Theorem 4.1.13]. Although that theorem does
+not explicitly assert that the compression disc is fundamental, this is established
+in the proof. So, in our proof of Theorem 13.1, we may assume that ∂M\\P is
+incompressible. In the terminology of Matveev [18], this means that ( M,P ) is
+boundary-irreducible.
+We recall some of the standard terminology from normal surface theory. Let S
+be a normal surface that is the normal sum of two surfaces S1 and S2. We may
+pattern-isotope one of the surfaces, preserving its normality throughout, so that
+afterwards S1 and S2 intersect transversely in a collection of simple closed curves
+and properly embedded arcs. Then each component of S1\\S2 and S2\\S1 is a
+patch. It is a clean disc patch if it is a disc that is disjoint from the pattern and is
+either disjoint from ∂M or intersects ∂M in a single arc.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 46
+A summation S = S1 + S2 is in reduced form if there do not exist normal
+surfaces S′
+1 and S′
+2 where each S′
+i is pattern-isotopic to Si, and S =S′
+1 +S′
+2, with
+|S′
+1∩S′
+2|<|S1∩S2|.
+Let S be a compact surface properly embedded in M. A clean boundary-
+compression disc forS is a disc embedded in M such that∂D is the concatenation
+of two arcs α and β, where
+(1) α =D∩S does not separate oﬀ a disc from S that is disjoint from P ;
+(2) β =D∩∂M is disjoint from P .
+WhenS has no clean boundary-compression disc, it is said to be cleanly boundary-
+incompressible.
+Note that a violating disc that intersects P as few times as possible is cleanly
+boundary-incompressible.
+WhenS is a normal sum of two normal surfacesS1 andS2 in general position, it
+is well known (see for example [18, Section 3.2.2]) thatS is obtained fromS1∪S2 by
+resolving the intersectionsS1∩S2 as follows. A regular neighbourhood of S1∩S2 is
+removed fromS1 andS2. This regular neighbourhood is a collection of discs, annuli
+and M¨ obius bands. At each component of S1∩S2, a pair of discs or annuli are
+inserted, lying in a regular neighbourhood of that component of S1∩S2. These are
+known as trace discs and annuli. This procedure is called a switch. There are two
+possible ways to perform a switch. Only one choice of switch at each component
+of S1∩S2 leads to the normal surface S. These are called regular switches. The
+other type of switch is an irregular switch. If a switch is made at each component
+ofS1∩S2 and at least one of these switches is irregular, then the resulting surface
+S′ admits a disc D in some face of T , such that D∩S′ is an arc in ∂D, and the
+remainder of ∂D lies in an edge of T . When D is disjoint from ∂M , this leads
+to an isotopy that reduces the weight of S′. When D intersects ∂M but not P ,
+then it is a potential clean boundary-compression disc for S′. If it is not a clean
+boundary-compression disc then, assuming ∂M\\P is incompressible, there is an
+isotopy of S′ leavingP ﬁxed, that reduces its weight. On the other hand, when D
+intersectsP , then a small isotopy of D pushing it oﬀ the face makes it a potential
+clean boundary-compression disc. There are two possible directions in which to
+push D oﬀ the face and if neither direction gives a clean boundary-compression
+disc, then, again assuming ∂M\\P is incompressible, S′ must have been a disc
+parallel to a disc in ∂M intersecting P in a single arc. This observation leads to
+the following result.
+Proposition 13.3. Let M be a compact orientable irreducible 3-manifold with
+pattern P . Let T be a triangulation for M in which P is simplicial. Suppose that
+∂M\\P is incompressible. Let S be a compact connected orientable surface that is
+incompressible and cleanly boundary-incompressible and that is not a disc parallel
+to a disc in ∂M intersecting P in a single arc or the empty set. Suppose that S
+is the sum of two normal surfaces S1 and S2 in general position, and that this
+summation is in reduced form. Assume also that S has least weight, up to isotopy
+that preserves the pattern. Then no component X of M\\(S1∪S2) is a product
+region, in the following sense: there is a homeomorphism from X to the product
+of a surface and an interval, the homeomorphism taking P∩X, N(S1∩S2) and
+∂M∩X to unions of interval ﬁbres.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 47
+Proof. Note that ∂X contains at least one component of S1∩S2, since otherwise S
+is not connected. Resolve the intersections betweenS1 andS2 that lie in∂X in such
+a way that none of the trace discs and annuli that are inserted are vertical in X.
+If all of these switches are regular switches, then the summation was not reduced,
+for the following reason. We can remove S1∩X from S1, and then insert S2∩X,
+forming a surface S′
+1. We can also form S′
+2 by removing S2∩X from S2, and then
+insertingS1∩X. Then S =S′
+1 +S′
+2, but|S′
+1∩S′
+2|<|S1∩S2|. On the other hand,
+if not all the switches are regular switches, then we can perform these switches
+and then perform regular switches at the remaining components of S1∩S2. The
+resulting surface S′ is isotopic to S, via an isotopy preserving the pattern. Since
+we are assuming thatS is incompressible and cleanly boundary-incompressible and
+not a disc parallel to a disc in the boundary intersectingP in arc, we deduce thatS′
+admits an isotopy preserving the pattern that reduces its weight. This contradicts
+our minimality assumption. □
+The following is [18, Lemma 4.1.8].
+Theorem 13.4. LetM be a compact orientable irreducible 3-manifold with pattern
+P . Let T be a triangulation for M in which P is simplicial. Suppose that ∂M\\P
+is incompressible. Let S be a compact orientable normal surface properly embedded
+in M, that is incompressible and cleanly boundary-incompressible and that has no
+component that is a disc parallel to a disc in ∂M intersectingP in arc or the empty
+set. Suppose that S is a sum of two normal surfaces S1 and S2 in general position
+and that this summation is reduced. Suppose also that S has minimal weight up
+to isotopy preserving the pattern. Then no patch of the summation is a clean disc
+patch.
+Proof of Theorem 13.1. In the case where ∂M\\P is compressible, then Theorem
+13.2 provides a fundamental compression disc. So we may assume that ∂M\\P is
+incompressible.
+Let D be a violating disc that intersects the pattern as few times as possible.
+ThenD is cleanly boundary-incompressible and it is automatically incompressible.
+So, by [18, Corollary 3.3.25],D can be isotoped, preserving the pattern, into normal
+form without increasing its weight. We may assume that D has least weight among
+all normal violating discs that intersect the pattern as few times as possible.
+Suppose that D is a normal sum S1 +S2. We may assume that this summation
+is in reduced form. By [18, Theorem 4.1.36], neither Si has a component that is
+a sphere, projective plane, or a disc intersecting the pattern at most once. Hence,
+each Si satisﬁes−χ(Si) +|Si∩P|≥ 0. Note that Euler characteristic and the
+number of intersection points with the pattern are both additive under normal
+summation. Since χ(D)> 0, then one of S1 orS2 has positive Euler characteristic,
+sayS1. Then S1 has a disc component. It must intersect the pattern at least twice.
+We may assume thatS1 is connected, by adding any other components ofS1 toS2 if
+necessary. Now, S2 must therefore have zero Euler characteristic and intersect the
+pattern at most once. Since no component of S2 is a disc intersecting the pattern
+at most once, we deduce that every component of S2 has zero Euler characteristic.
+Our goal is to show that S1 is a violating disc. Since S1 has smaller weight
+than D, this will contradict our earlier minimality assumption. Suppose that, on
+the contrary,S1 is a parallel to a disc in ∂M that intersects P in a single arc or a
+tripod.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 48
+NowS2 cannot have any closed components, since the intersection between such a
+component andS1 would lead to a simple closed curve of S1∩S2 and an innermost
+such curve in S1 would create a clean disc patch. So, S2 consists of annuli and
+M¨ obius bands.
+We claim that each arc ofS1∩S2 is essential inS2. If not, there is an inessential
+arc that is outermost in S2. It therefore separates oﬀ a disc D2 in S2. This disc
+intersectsP at most once, sinceS2 intersectsP at most once. AlsoD2∩S1 separates
+oﬀ a sub-discD1 ofS1 intersectingP at most once. The union of these discs creates
+a properly embedded disc in M intersectingP fewer times that D did. Hence, this
+disc is parallel to a disc in ∂M intersectingP in the empty set or an arc. But then
+D2∪ (S1\\D1) is a violating disc that intersects P at most as many times as D
+does and that has smaller weight than D, contradicting our minimality assumption
+about D.
+We claim that each arc ofS1∩S2 is essential inS2. If not, there is an inessential
+arc that is outermost in S2. It therefore separates oﬀ a disc D2 in S2. This disc
+intersectsP at most once, sinceS2 intersectsP at most once. AlsoD2∩S1 separates
+oﬀ a sub-discD1 ofS1 intersectingP at most once. The union of these discs creates
+a properly embedded disc in M intersectingP fewer times that D did. Hence, this
+disc is parallel to a disc in ∂M intersectingP in the empty set or an arc. But then
+D1 and D2 cobound a product region as in Proposition 13.3, contradicting that
+proposition.
+Hence, S2\\S1 consists of squares. Each square has boundary consisting of two
+arcs in S1 and two arcs in ∂M . At least one square is in the ball bounded by S1
+and every such square is boundary-parallel in the ball. Consider an outermost such
+square. It is parallel to a square in S1. But the resulting product region contradicts
+Proposition 13.3.
+Thus, we have shown that S1 and S2 cannot intersect, which is impossible,
+because S is connected. So S must have been fundamental. □
+We now complete the proof of Theorem 1.6. We are given a triangulation T of
+a compact orientable 3-manifold M, with boundary pattern P that is simplicial.
+When P is inessential, we need to provide a certiﬁcate that conﬁrms this and that
+can be veriﬁed in polynomial time as function of t =|T| , the number of tetrahedra.
+When M is irreducible, Theorem 13.1 shows that there is a violating disc D that
+is fundamental. This is the required certiﬁcate. The algorithm of Agol, Hass and
+Thurston [1] can be used to verify that D is indeed a disc intersecting the pattern
+at most 3 times. Also, by [16, Theorem 9.4], one can check whether ∂D bounds a
+disc in ∂M . If there is no such disc, then D is violating. So suppose that ∂D does
+bound a disc D′ in∂M . It may be the case ∂D bounds two discs, in which case we
+consider them both in turn. Again using [16, Theorem 9.4], one can check whether
+each component of D′\\P is a disc intersecting ∂D′ in one arc and with at most
+one vertex of P in its boundary. Since D is violating, at least one component of
+D′\\P is not of this form, and the algorithm provided by [16, Theorem 9.4] will
+conﬁrm this.
+We need to deal with the general case where M is reducible. Our certiﬁcate for
+establishing that P is essential is:
+(1) a vector ( S) of a (possibly empty) normal surface S inT with weight at
+most 2740t2
+; this will in fact be a collection of disjoint embedded spheres;
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 49
+(2) a triangulation T′ for a 3-manifold M′ with at most 1000t tetrahedra; this
+will beM\\S with a 3-ball attached to each spherical boundary component;
+(3) a certicate that M′ has inessential boundary pattern.
+We now explain why this certiﬁcate exists. It is proved in [9, Lemma 4] that
+there is a maximal collection of disjoint non-parallel normal 2-spheres S inT , none
+of which bounds a ball inM, with weight at most 2740t2
+. A triangulation for M\\S
+with at most 1000t tetrahedra is produced using [16, Theorem 11.4]. Then a coned
+3-ball is attached to each spherical boundary component, forming the triangulation
+T′ for M′. The copy of P in M′ is essential if and only if P was essential in M,
+because any violating disc for P inM′ can be chosen to avoid the attached 3-balls,
+and so forms a violating disc in M, and conversely, any violating disc in M can be
+chosen to avoid S and so becomes a violating disc in M′. Since we are assuming
+that P is inessential, there is a certiﬁcate for ( M′,P ) that establishes this.
+The veriﬁcation of the certiﬁcate is straightforward. One checks that S is a col-
+lection of 2-spheres, using the Agol-Hass-Thurston algorithm. ThenT′ is produced
+using the algorithm in [16, Theorem 11.4]. Finally the certiﬁcate showing that P
+is inessential in M′ is checked in the way described above.
+14. Certifying an essential hierarchy
+In this section, we complete the proof of Theorem 1.6, by showing that Essen-
+tial boundary pattern is in NP. Thus, we are given a triangulation T of a
+compact orientable 3-manifold M with essential pattern P that is simplicial, and
+we must provide a certiﬁcate, veriﬁable in polynomial time, that establishes that
+P is indeed essential. We may assume that ∂M is non-empty, as otherwise there
+is nothing to prove. Using the techniques at the end of the previous section, it
+is not hard to reduce to the case where M is irreducible. We will describe this
+reduction in more detail at the end of this section, but for the moment, suppose
+that M is irreducible. Then, by Theorem 2.5, we know that ( M,P ) admits an
+essential hierarchy. Moreover, the existence of such a hierarchy guarantees that P
+is essential. So, our goal is to write down such a hierarchy and prove that it is
+essential. We know by Proposition 10.2 that there is such a hierarchy with length
+that is linearly bounded in terms of the number of tetrahedra in T . Furthermore,
+by Theorem 11.3, the intermediate 3-manifolds have handle structures of uniform
+type. However, this only controls the local complexity of each handle, not the total
+number of handles. Thus, it is not immediately clear how to encode the handle
+structures of these manifolds. Nevertheless, we will establish the following result.
+Theorem 14.1 (Eﬃcient encoding of a hierarchy). LetM be a compact orientable
+irreducible 3-manifold with a boundary pattern P . Let H be a handle structure for
+(M,P ) of uniform type. If (M,P ) admits an essential hierarchy, then there is a
+hierarchy for (M,P ) that may be described by an amount of data that is at most
+a polynomial function of |H| and this hierarchy can be veriﬁed as essential by a
+polynomial-time algorithm. Furthermore, for each decomposition
+(Mi,P i)
+Si
+−→(Mi+1,P i+1)
+in this hierarchy, one of the following holds:
+(1) Si is connected, orientable and non-separating and has smallest pattern-
+complexity among all such surfaces, apart from when M is closed andi = 1,
+when S1 may be separating;
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 50
+(2) Si is a union of non-trivial squares;
+(3) Si is a union of properly embedded incompressible pattern-incompressible
+annuli disjoint from the pattern.
+Recall that the hierarchy construction loop given in Sections 6 and 10 used the
+following steps iteratively (where the numbering is as given there):
+(2) Apply Create admissible handle structure .
+(2′) Replace each component of the interior parallelity bundle that is an I-
+bundle over a disc by a single 2-handle.
+(2′′) Cut along the vertical boundary components of the remainingI-bundles and
+further decompose these using squares into 3-balls with essential boundary
+patterns.
+(6) Let S be any connected, non-separating, properly embedded, oriented nor-
+mal surface in the resulting 3-manifold.
+(8) Assuming that S is not a violating disc, then cut the handle structure along
+S.
+We can view the iterations of this loop as running in the order (6), (8), (2), (2 ′),
+(2′′), after an initial application of (2), (2 ′), and (2′′). The handle structures that
+are obtained by repeating this loop can be constructed using the following result.
+Proposition 14.2. LetH be a handle structure of uniform type for the compact
+orientable irreducible 3-manifold M with essential boundary pattern P . Let S be a
+connected properly embedded normal surface inM. Then there is an algorithm that
+produces an admissible handle structure that is obtained by applying steps (8), (2),
+(2′), (2′′). This runs in polynomial time as a function of the number of handles of
+H and the logarithm of the extended weight of S.
+It is a consequence of Theorem 11.3 that the handle structure obtained by de-
+composingH alongS has uniform type. However, it might have a large number of
+handles, when S has very high extended weight. But most handles will be of the
+following form.
+Deﬁnition 14.3. LetH be a handle structure for the compact 3-manifold M with
+boundary pattern P . Let S be a normal surface properly embedded in M. Let
+H′ be the induced handle structure on M\\S. Then a handle of H′ is a parallelity
+handle for S if it lies between parallel normal discs of S.
+Each parallelity handle forS is a copy ofD2×I where (D2×I)∩S =∂D 2×I. We
+view this product structure as an I-bundle over D2. The I-bundle structures can
+be chosen so they agree on the intersection of any collection of parallelity handles.
+Hence, the union of the parallelity handles is an I-bundle, called the parallelity
+bundleB for S.
+The vertical boundary ∂vB of the parallelity bundle B is a union of annuli.
+However, these annuli need not be properly embedded. Instead the intersection
+with ∂M is a union of ﬁbres in the bundle. We say that ∂vB\\∂M is the inner
+vertical boundary. It is a disjoint union of properly embedded annuli disjoint from
+the pattern, and squares in M\\S.
+The following result is analogous to [16, Theorems 9.2 and 9.3]. It has essentially
+the same proof, which is omitted. The proof relies heavily on the algorithm of Agol,
+Hass and Thurston [1].
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 51
+Theorem 14.4 (Cutting along a surface) . There is an algorithm that takes,
+as its input,
+(1) a handle structure H of uniform type, with h handles, for a compact ori-
+entable 3-manifold M with boundary pattern P ;
+(2) a compact orientable properly embedded normal surface S;
+and provides as its output, the following data. If (M′,P′) is the manifold with
+pattern obtained by decomposing along S, and B is its parallelity bundle for S,
+then the algorithm produces the handle structure that M′\\B inherits, and for each
+componentB ofB, it determines:
+(1) the genus and number of boundary components of its base surface;
+(2) whether B is a product or twisted I-bundle;
+(3) the way that ∂vB and M′\\B intersect.
+The algorithm runs in time that is bounded by a polynomial in h and the logarithm
+of the extended weight of S.
+Proof of Proposition 14.2. LetH′ be the handle structure thatM\\S inherits. This
+might have too many handles to be written down eﬃciently. Suppose instead that
+we are provided by the output of Theorem 14.4. In Proposition 14.2, the next
+operation that is applied to H′ is Create admissible handle structure . If B
+has any components that are incident to ∂M , then an implementation of Create
+admissible handle structure will remove them, for the following reason. Let
+B be such a component ofB that is incident to∂M . There must be a 0-handle H of
+H′ inB that is incident to∂M . Since H is a parallelity handle forS that is incident
+to ∂M , its intersection with F(H′) is a line of 0-handles and 1-handles. Suppose
+ﬁrst that there is more than one 0-handle ofF(H′)∩H. Then one such 0-handle D
+intersectsP′ in two points and intersectsF 1(H′) in a single arc. Hence, H′ fails to
+be admissible. We could perform the operation described in Create admissible
+handle structure , which removes from H′ the 1-handle and 2-handle that are
+incident to D and transfers arcs of P′ incident to these handle across them. This
+1-handle and 2-handle were in B, and we view the new parallelity bundle for S as
+obtained fromB by removing these two handles. In this way, we could continue to
+shrinkB until it contained no 2-handles. Then B∩F (H′) would consist of squares.
+For each such square that is non-trivial, we could decompose along it. For each
+square D that is trivial, it is parallel to a disc D′ in ∂M′ that intersects P′ as
+shown in Figure 5. We can remove the 3-ball bounded by D∪D′ and transfer the
+boundary pattern in D′ across to D. However, there is an alternative approach
+which is considerably faster to implement, and which has the same end result. Let
+A be a component of ∂vB that is incident to ∂M . Pick a maximal collection of
+vertical squares inB with vertical boundary lying in A, none of which is parallel to
+subset ofA∩∂M , and no two of which are parallel. If any such square is non-trivial,
+we decompose along it. If any component D is a trivial square, then we identify
+the disc D′ as in Figure 5 with the same boundary, remove the ball between these
+discs and then transfer the boundary pattern in D′ across to D. These operations
+decompose B either to a 3-ball or to a collar on ∂vB−A. In the latter case,
+we can remove this collar and transfer its boundary pattern to ∂vB−A. This
+process can all be completed without knowing the precise handle structure on B,
+but instead just the information provided by Theorem 14.4. We repeat this for each
+component ofB that is incident to ∂M . The resulting handle structure need not
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 52
+be admissible, in which case we perform further operations in Create admissible
+handle structure . Initially, this does not aﬀect the interior parallelity bundle.
+However, at some point, it may do so. This happens when the vertical boundary
+of a remaining component ofB fails to be properly embedded. In that case, we can
+again remove this component by decomposing along its interior vertical boundary.
+Each of these operations either removes a component of the parallelity bundle for
+S, or removes a handle of M′\\B. Hence, it can be completed in polynomial
+time, as a function of the number of handles of H. The resulting object is a handle
+structureH′′ to which variousI-bundles are attached along their vertical boundary.
+The actual result of running Create admissible handle structure is obtained
+from this by replacing the I-bundles by a union of parallelity handles in some way
+that we do not specify. The interior parallelity bundle for this handle structure
+includes these I-bundles but it may also include various other handles of H′′. We
+can compute this interior parallelity bundle, and then the steps in (2 ′) and (2′′)
+can be completed in polynomial time. Thus we have the algorithm required by
+Proposition 14.2. □
+The certiﬁcate required by Theorem 1.6 is as follows:
+(1) a sequence of handle structures H1,..., Hℓ+1, whereHi is a handle struc-
+ture for a 3-manifold Mi with boundary pattern Pi;
+(2) for some of the i≤ℓ, a surface Si or Di properly embedded in Mi that is
+normal inHi.
+These handle structures and surfaces are required to have the following properties:
+(1) the initial handle structure H1 is dual to the given triangulation T ;
+(2) for each 0-handle H ofH1, the intersection betweenH and the 0-handles of
+Hi,F 0(Hi),F 1(Hi) and Pi is one of the possibilities from Theorem 11.3;
+(3) each Si and eachDi is normal inHi and has extended weight at mostk|Hi|,
+where k is the constant from Proposition 12.1;
+(4) when Si is provided, thenHi+1 is obtained fromHi using Proposition 14.2;
+(5) when Di is provided, then it is a compression disc or pattern-compression
+disc for the vertical boundary of the interior parallelity bundle for Hi, and
+thenHi+1 is obtained fromHi by simplifying the handle structure according
+to the procedure in (Pattern-)compressible vertical boundary;
+(6) when no Di or Si is provided, thenHi+1 is obtained fromHi by applying
+Create admissible handle structure , and furthermore the interior
+parallelity bundle forHi+1 consists of 2-handles;
+(7) the length ℓ of this hierarchy is at most 4cq(H1);
+(8) the ﬁnal manifold is a collection of 3-balls with essential pattern and its
+handle structure is admissible with interior parallelity bundle consisting of
+2-handles.
+The existence of the certiﬁcate when M is irreducible and P is essential is es-
+tablished as follows. We run the algorithm given in Section 6 with the reﬁnements
+from Section 10. In Step (6) of the algorithm in Section 6, we are free to pick
+any connected non-separating properly embedded orientable normal surface in the
+manifold. We pick one with smallest pattern complexity. Then Proposition 12.1
+guarantees that there is such a surface with extended weight at most k|Hi|. Fur-
+thermore, since the surface has smallest pattern complexity, Corollary 3.7 ensures
+that it is incompressible and pattern-incompressible. Hence, if the algorithm leaves
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 53
+the hierarchy construction loop and produces a violating disc, then this must form
+a compression or pattern-compression disc for some vertical boundary annulus for
+the interior parallelity bundle. This is provided in (5). Note that such a violating
+disc can be chosen to be fundamental in a triangulation reﬁning Hi by Theorem
+13.1, and hence have extended weight at most k|Hi| inHi. Since M is assumed
+to be irreducible and P is essential, the algorithm terminates with an essential hi-
+erarchy, giving (8). Furthermore, the length of this hierarchy is at most 4 cq(H1)
+by Proposition 10.2, which gives (7). Finally, condition (2) is a consequence of
+Theorem 11.3.
+We now explain how to verify the certiﬁcate. There are two main aspects to
+this. Firstly, we must check that each Hi+1 really is obtained fromHi in the ways
+described above. This guarantees that we really do have a partial hierarchy. Sec-
+ondly, we must check that the ﬁnal manifold Mℓ+1 is balls with essential boundary
+patternPℓ+1. Since the ﬁnal handle structure is admissible with interior parallelity
+bundle consisting of 2-handles, Theorem 11.3 implies that its number of handles is
+at most a uniform constant times|H1|. Furthermore each of its 0-handles is of uni-
+form type. Hence, it is straightforward to verify, in polynomial time, that ∂Mℓ+1
+is a collection of spheres and that its pattern Pℓ+1 is essential. This implies that
+each decomposing surface is incompressible by Lemma 3.2, and Mℓ+1 is irreducible
+by Lemma 3.9. So Mℓ+1 is a collection of balls.
+So we now focus on verifying that each Hi+1 is obtained from Hi as above.
+Suppose ﬁrst that the normal surfaceSi is given. We simply apply Proposition 14.2
+and check that the resulting handle structure is Hi+1. Note that Si has extended
+weight at most k|Hi|. Since |Hi| is bounded above by a universal constant times
+|H1| by (2) above, we deduce that the algorithm in Proposition 14.2 completes in
+polynomial time.
+Suppose now that the disc Di is given in Hi. This is a compression disc or
+pattern-compression disc for a vertical boundary component Ai of the interior par-
+allelity bundle Bi forHi. We may remove Bi fromHi, forming a new handle
+structureH′
+i containing Di. It is of uniform type and its number of 0-handles
+satisﬁes|H′
+i|≤|H i|. So we may conﬁrm that Di is a compression disc or pattern-
+compression disc for Ai. Then the procedure in (Pattern-)compressible ver-
+tical boundary may be implemented in polynomial time and the veriﬁer may
+check that the resulting handle structure is Hi+1.
+Finally, when neither Di nor Si is given, then the procedure Create admissi-
+ble handle structure may be implemented and the veriﬁer can check that the
+resulting handle structure is Hi+1.
+Thus, the veriﬁer can check that this does give an essential hierarchy for (M,P ).
+This completes the proof of Theorem 1.6 in the case where M is irreducible and P
+is essential.
+We now complete the proof of Theorem 1.6. We need to deal with the general
+case where M is reducible. Our certiﬁcate for establishing that P is essential is:
+(1) a vector ( S) of a normal surface S inT with weight at most 2 740t2
+; this
+will in fact be a collection of disjoint embedded spheres;
+(2) a triangulation T′ for a 3-manifold M′ with at most 1000t tetrahedra; this
+will beM\\S with a 3-ball attached to each spherical boundary component;
+(3) a certicate that M′ has essential boundary pattern.
+INCOMPRESSIBLE SURF ACES, HIERARCHIES AND UNKNOT RECOGNITION 54
+Parts (1) and (2) of the certiﬁcate are veriﬁed in the same way as in Section
+13. One checks that S is a collection of 2-spheres, using the Agol-Hass-Thurston
+algorithm. A triangulation for M\\S is produced using [16, Theorem 11.4], and
+then a coned 3-ball is attached to each spherical boundary component, forming T′.
+The copy of P in M′ is essential if and only if P was essential in M, because any
+violating disc forP inM′ can be chosen to avoid the attached 3-balls, and so forms
+a violating disc in M, and conversely, any violating disc in M can be chosen to
+avoidS and so becomes a violating disc in M′. Now M′ is irreducible. So we have
+a certiﬁcate, veriﬁable in polynomial time, that ( M′,P ) is essential.
+References
+[1] I. Agol, J. Hass, and W. Thurston. The computational complexity of knot genus and spanning
+area. Trans. Amer. Math. Soc., 358(9):3821–3850, 2006.
+[2] I. A. Dynnikov. Arc-presentations of links: monotonic simpliﬁcation. Fund. Math., 190:29–76,
+2006.
+[3] W. Haken. Theorie der Normalﬂ¨ achen.Acta Math., 105:245–375, 1961.
+[4] W. Haken. ¨Uber das Hom¨ oomorphieproblem der 3-Mannigfaltigkeiten. I.Math. Z., 80:89–120,
+1962.
+[5] J. Hass, J. C. Lagarias, and N. Pippenger. The computational complexity of knot and link
+problems. J. ACM, 46(2):185–211, 1999.
+[6] S. V. Ivanov. The computational complexity of basic decision problems in 3–dimensional
+topology. Geom. Dedicata, 131:1–26, 2008.
+[7] F. Jaeger, D. L. Vertigan, and D. J. A. Welsh. On the computational complexity of the Jones
+and Tutte polynomials. Math. Proc. Cambridge Philos. Soc. , 108(1):35–53, 1990.
+[8] Klaus Johannson. Homotopy equivalences of 3-manifolds with boundaries , volume 761 of
+Lecture Notes in Mathematics . Springer, Berlin, 1979.
+[9] Simon A. King. The size of triangulations supporting a given link. Geom. Topol., 5:369–398,
+2001.
+[10] P. B. Kronheimer and T. S. Mrowka. Khovanov homology is an unknot-detector. Publ. Math.
+Inst. Hautes ´Etudes Sci., 113:97–208, 2011.
+[11] Greg Kuperberg. Knottedness is in NP, modulo GRH. Adv. Math., 256:493–506, 2014.
+[12] Marc Lackenby. Three-dimensional manifolds, lecture notes. Available at
+https://people.maths.ox.ac.uk/lackenby/, 1999.
+[13] Marc Lackenby. Exceptional surgery curves in triangulated 3-manifolds. Paciﬁc J. Math. ,
+210(1):101–163, 2003.
+[14] Marc Lackenby. The crossing number of composite knots. J. Topol., 2(4):747–768, 2009.
+[15] Marc Lackenby. A polynomial upper bound on Reidemeister moves. Ann. of Math. (2) ,
+182(2):491–564, 2015.
+[16] Marc Lackenby. The eﬃcient certiﬁcation of knottedness and Thurston norm. Adv. Math.,
+387:Paper No. 107796, 142, 2021.
+[17] Marc Lackenby. Link hyperbolicity is in NP. In preparation, 2026.
+[18] Sergei Matveev. Algorithmic topology and classiﬁcation of 3-manifolds , volume 9 of Algo-
+rithms and Computation in Mathematics . Springer, Berlin, second edition, 2007.
+[19] Peter Ozsv´ ath and Zolt´ an Szab´ o. Holomorphic disks and genus bounds.Geom. Topol., 8:311–
+334, 2004.
+[20] Sucharit Sarkar and Jiajun Wang. An algorithm for computing some Heegaard Floer homolo-
+gies. Ann. of Math. (2) , 171(2):1213–1236, 2010.
+[21] Jeﬀrey L. Tollefson and Ningyi Wang. Taut normal surfaces. Topology, 35(1):55–75, 1996.
+[22] Friedhelm Waldhausen. On irreducible 3-manifolds which are suﬃciently large.Ann. of Math.
+(2), 87:56–88, 1968.
+Mathematical Institute, University of Oxford,
+Woodstock Road, Oxford OX2 6GG, United Kingdom

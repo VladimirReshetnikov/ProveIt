@@ -1,0 +1,770 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{Unknot recognition: implementation report}
+\rhead{September 2026}
+\cfoot{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Kh}{\widetilde{\operatorname{Kh}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\title{Unknot recognition:\\an exact baseline and partial hierarchy kernels}
+\author{Implementation and mathematical audit}
+\date{17 September 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This archive contains an executable exact unknot recognizer, polynomial-time
+kernels relevant to the supplied hierarchy notes, tests, and a complexity audit.
+\textbf{It does not establish the requested $n^{O(\log n)}$ guarantee.}
+The complete recognizer uses reduced Khovanov homology over $\F$ and has an
+exponential worst-case bound. The hierarchy kernels test essential boundary
+patterns on known balls, compute integral representatives of a rational
+cohomology basis, construct compressed cocycle-dual normal surfaces, and check
+numerical progress measures. The missing geometric constructions are identified
+explicitly rather than represented by unexplained oracle calls. We give
+correctness arguments for the implemented parts and a conditional quantitative
+lemma describing what a completed quasipolynomial implementation would have to
+prove.
+\end{abstract}
+
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Outcome, sources, and the boundary of the claim}
+
+The requested algorithm is a total decision procedure for classical knots whose
+worst-case running time, measured in the number $n$ of crossings in a supplied
+diagram, is $n^{O(\log n)}$. The supplied talk announces this theorem and develops
+a hierarchy-based route to it \cite{slides}. Its final flowchart, on PDF page
+109, is not reproduced here as though each named box were an implemented
+subroutine.
+
+The delivered software has two distinct parts. The \emph{complete recognition
+path} is an independently implemented cube-of-resolutions algorithm. The
+\emph{hierarchy path} consists of genuinely implemented but partial kernels.
+There is no complete hierarchy constructor, compressed hierarchy-cutting
+engine, or geometric Cheeger-region processor in this archive. In particular,
+no claimed depth bound is passed as a numerical parameter and then treated as a
+proved topological fact.
+
+Additional research located Lackenby's July 2026 paper \cite{hierarchies}.
+Section 9 explicitly leaves some individual step costs unspecified and proves
+an iteration bound $L(g+1)^L$ in terms of two parameters. This report does not
+interpret that result as a complete bit-complexity specification, and does not
+claim that the announced quasipolynomial theorem is false.
+
+Every recognition result contains
+\begin{verbatim}
+"quasipolynomial_guarantee": false
+\end{verbatim}
+This is an essential qualification of the deliverable, not a configurable
+warning that can be removed by setting a timeout.
+
+\section{Running the implementation}
+
+The source package needs Python 3.10 or later and only its standard library.
+The recorded tests used Python 3.13.5 on Linux. From the archive root:
+\begin{verbatim}
+python -m unknot_recognition recognize examples/torus_3_5.json --check-d2
+python -m unknot_recognition recognize examples/hard_unknot.json
+python -m unittest discover -s tests -v
+python scripts/experiments.py
+\end{verbatim}
+The first command returns \code{NONTRIVIAL}; the second returns \code{UNKNOT}.
+The experiment script regenerates the recorded measurements, including a
+separate exhaustive family check.
+
+The public Python entry point is:
+\begin{verbatim}
+from unknot_recognition import braid_closure, recognize
+knot = braid_closure(3, [1, 2] * 5)
+result = recognize(knot, check_d_squared=True)
+\end{verbatim}
+The default pipeline performs local simplifications and a determinant rejection
+before using the complete fallback. Both preprocessors can be disabled. Thus
+the fallback can be tested independently of the shortcuts.
+
+\subsection{Decisions, limits, and invalid data}
+
+A valid completed answer has status \code{UNKNOT} or \code{NONTRIVIAL} and a
+Boolean \code{is\_unknot}. Optional \code{max\_resolutions} and
+\code{max\_basis} limits instead produce \code{UNKNOWN} with
+\code{is\_unknot: null} when the fallback cannot proceed within them. With both
+limits absent, the mathematical algorithm is total; finite hardware still
+imposes ordinary memory and execution limits.
+
+The command-line exit code is zero for either completed verdict, two for invalid
+input or an I/O failure, three for a resource-limited unknown result, and four
+for a failed internal consistency check. A multi-component link is rejected; it
+is not converted into a knot by silently dropping components. A non-spherical
+rotation system is rejected; it is not fed to a theorem about classical knots.
+
+The interface reads JSON diagrams or braid closures, not drawings, DT codes,
+or Gauss words. Normal-surface input is a separate, explicitly triangulated
+manifold. No diagram-to-exterior conversion is supplied in the hierarchy path.
+
+\section{Diagram representation and safe preprocessing}
+
+\subsection{A combinatorial sphere diagram}
+
+A crossing is a four-tuple $(a,b,c,d)$ of edge labels in counterclockwise order.
+The opposite pair $(a,c)$ is the under-strand; $(b,d)$ is the over-strand. Every
+edge occurs twice in the entire collection. The empty collection denotes one
+crossing-free circle.
+
+There are $4n$ half-edges, also called darts. Let $\alpha$ pair the two darts of
+each edge, and let $\sigma$ rotate darts around each crossing. Following
+$\sigma\alpha$ gives the face cycles. Following $\alpha$ and the opposite-dart
+pairing gives the link components. The implementation requires one such
+component and
+\[
+ V-E+F=n-2n+F=2.
+\]
+The rotation system defines an orientable ribbon surface; capping its faces
+and applying this Euler test validates the specified spherical embedding. It
+is insufficient merely to test whether the abstract graph has some planar
+embedding: that embedding need not be the input diagram.
+
+Arbitrary integer edge labels are normalized. The complexity bounds below use
+canonical labels of $O(\log n)$ bits. For unusually long literal labels, the
+cost of reading and normalizing their actual bit length must be added.
+
+The braid converter tracks strand endpoints with a disjoint-set structure and
+checks that the closure permutation has one cycle. A positive Artin generator
+makes the left strand the over-strand. A one-component closure on $m$ strands
+requires at least $m-1$ crossings, allowing impossible oversized strand counts
+to be rejected before allocating an endpoint array.
+
+\subsection{Reidemeister reductions}
+
+An empty one-edge face gives a Reidemeister I deletion. A two-edge face at two
+distinct crossings gives a Reidemeister II deletion only when each side of the
+bigon has the same over/under status at its two endpoints. Thus one strand is
+over twice and the other is under twice. A clasp with the opposite status
+pattern is not deleted.
+
+For a valid deletion, opposite edge labels at each removed crossing are joined.
+The remaining diagram is reconstructed and revalidated. Every move strictly
+lowers the crossing number, so this preprocessing terminates in at most $n$
+moves. Repeated scans and reconstruction take polynomial time. No Reidemeister
+III move, crossing-increasing search, or completeness claim is attached to this
+simplifier.
+
+The saved trace names the face darts and deleted vertices in each current
+normalized diagram. The verifier recomputes legal moves before replaying a
+step. A valid trace ending in the empty diagram is an explicit unknot proof;
+a trace ending earlier proves only equivalence to the remaining diagram.
+
+\subsection{The determinant filter}
+
+Joining opposite over-half-edges produces Wirtinger arcs. At a crossing, with
+over-arc $o$ and under-arcs $u,v$, the Fox coloring equation is
+\[
+ 2x_o-x_u-x_v=0.
+\]
+These equations form an $n\times n$ integer matrix. The absolute value of a
+first minor is the knot determinant \cite{coloring}. The code evaluates a minor
+by fraction-free Bareiss elimination, including row pivoting and exact-division
+checks. The zero-crossing determinant is defined as one.
+
+The only inference made is
+\[
+ \det K\ne1\quad\Longrightarrow\quad K\text{ is nontrivial}.
+\]
+Determinant one never causes an unknot answer. In particular, the $T(3,5)$ test
+has determinant one and must pass to the complete fallback. Matrix dimensions
+and coefficient bit growth give a polynomial-time rejection filter; it does
+not settle the difficult determinant-one cases.
+
+\section{The complete reduced Khovanov computation}
+
+We use the usual cube/Frobenius construction \cite{khovanov,barnatan}; the code
+is independently written. Only total homology dimension is needed, so the
+orientation-dependent shifts of the homological and quantum gradings are not
+computed. The reported degree is explicitly the \emph{unnormalized cube degree},
+not a normalized bigraded knot invariant.
+
+\subsection{Resolutions and basis indices}
+
+Choose one marked edge. A state $s\in\{0,1\}^n$ resolves every crossing. At a
+crossing $(a,b,c,d)$, the zero smoothing joins $(a,b),(c,d)$ and the one smoothing
+joins $(a,d),(b,c)$. A disjoint-set calculation obtains the resulting circles,
+each stored as a bitset of original edge labels. The marked circle is placed
+first in a deterministic ordering.
+
+Let $c(s)$ be the number of circles. Put $A=\F[x]/(x^2)$ and let the marked
+circle carry the one-dimensional subspace $\F x$. The state space is
+\[
+ C_s=\F x\otimes A^{\otimes(c(s)-1)},\qquad
+ \dim C_s=2^{c(s)-1}.
+\]
+We set $C^k=\bigoplus_{|s|=k}C_s$. A tensor basis is an integer bit mask:
+zero means the label $1$, one means $x$, and the marked factor is fixed to $x$.
+Offsets locate each state basis inside its chain group.
+
+\subsection{Saddles and the differential}
+
+For every state coordinate changing from zero to one, the local saddle merges
+two circles or splits one. Comparing circle-support bitsets identifies the
+unchanged factors and the active factors. The classical-planarity validation is
+important here: an unexpected one-circle-to-one-circle local change is rejected
+as an internal inconsistency.
+
+A merge uses
+\[
+ m(1\otimes1)=1,\quad m(1\otimes x)=m(x\otimes1)=x,
+ \quad m(x\otimes x)=0,
+\]
+and a split uses
+\[
+ \Delta(1)=1\otimes x+x\otimes1,\qquad \Delta(x)=x\otimes x.
+\]
+The other tensor factors are copied with their reindexed circle positions.
+These formulas preserve the marked-$x$ subspace. If the marked circle merges,
+the product is either $x$ or zero; if it splits, both resulting circles carry
+$x$. An unmarked split cannot alter the marked factor.
+
+The differential is the sum of all these increasing cube-edge maps. Over $\F$
+there is no sign bookkeeping: the two contributions around every cube face
+cancel. More explicitly, associativity, coassociativity, commutativity,
+cocommutativity, and the Frobenius compatibility
+\[
+ (m\otimes1)(1\otimes\Delta)=\Delta m
+ =(1\otimes m)(\Delta\otimes1)
+\]
+identify the two composites. These identities can be checked directly on the
+basis $1,x$. Consequently $d^{k+1}d^k=0$.
+
+Each differential column is a Python integer. Bit position $j$ stores its
+coefficient in target basis vector $j$. Addition is exclusive-or. The
+implementation constructs columns on demand, avoiding an additional full
+unreduced tensor complex. An optional diagnostic explicitly evaluates $d^2$ on
+every source basis vector; all reported small-example runs used this check.
+
+\subsection{Exact homology ranks}
+
+For a stream of column bitsets, Gaussian elimination stores at most one pivot
+column for each highest set bit. If a pivot already exists, it is exclusive-ored
+away. Each elimination lowers the highest set bit, so the procedure terminates
+and counts an exact basis for the column space. Let $r_k=\operatorname{rank}d^k$,
+with $r_{-1}=r_n=0$. Then
+\[
+ h_k=\dim C^k-r_{k-1}-r_k,
+ \qquad h=\sum_k h_k.
+\]
+Negative dimensions are rejected as an internal error. The code also checks
+that the unnormalized reduced complex has Euler characteristic $\pm1$, as it
+must for a knot. None of these arithmetic checks alone is claimed to replace
+the mathematical construction or its invariance theorem.
+
+\section{Correctness and the actual exponential bound}
+
+\begin{theorem}[Detection criterion used by the implementation]
+For a classical knot $K$,
+\[
+ K\text{ is the unknot}\quad\Longleftrightarrow\quad
+ \dim_{\F}\Kh(K;\F)=1.
+\]
+\end{theorem}
+\begin{proof}
+The deep external input is the Kronheimer--Mrowka theorem: a knot is the unknot
+exactly when its reduced rational Khovanov homology has rank one
+\cite{detector}. For a finite free integral chain complex, the universal
+coefficient exact sequence implies
+\[
+ \dim_{\F}H(C\otimes\F)\ \ge\ \dim_{\Q}H(C\otimes\Q).
+\]
+The reduced rational rank of a knot is nonzero: its Euler characteristic after
+evaluating the quantum variable at one is $\pm1$. Therefore an $\F$ rank of one
+forces a rational rank of one. Conversely, the unknot's reduced integral
+homology consists of a single free generator, so its reduced $\F$ rank is one.
+The marked-subcomplex convention differs at most by conventional grading
+shifts, irrelevant to total dimension.
+\end{proof}
+
+\begin{corollary}
+On a valid finite one-component classical diagram, with resource caps absent,
+\code{recognize} terminates and returns the correct Boolean answer.
+\end{corollary}
+\begin{proof}
+The local reductions preserve the knot. The determinant filter has only the
+sound rejection rule given above. Otherwise the finite resolution complex is
+constructed and its homology ranks are computed exactly. The detection theorem
+then gives both implications of the final decision. With caps present, an
+interrupted construction gives no Boolean answer and is reported as unknown.
+\end{proof}
+
+\begin{proposition}[Conservative bit-complexity bound]
+For normalized $n$-crossing knot diagrams, the complete implementation has
+running time $2^{O(n)}$ and memory $2^{O(n)}$. These are exponential upper bounds,
+not quasipolynomial bounds.
+\end{proposition}
+\begin{proof}
+Smoothing one crossing changes the number of components by at most one.
+Starting with a single knot component and smoothing all $n$ crossings gives
+$c(s)\le n+1$ for every complete state. Hence the total chain dimension $D$
+satisfies
+\[
+ D=\sum_{s\in\{0,1\}^n}2^{c(s)-1}\le 2^n2^n=4^n.
+\]
+There are $2^n$ states. Circle and saddle data take polynomial work and storage
+per state or cube edge. A column has at most $D$ bits. Constructing it and
+performing at most $D$ pivot eliminations has a conservative polynomial cost in
+$n$ and $D$; ordinary bitset elimination is bounded by $O(D^3)$ bit operations
+for a matrix with at most $D$ rows and columns. Storing pivots takes at most
+$O(D^2)$ bits, plus the state and saddle data. The optional exhaustive $d^2$
+check also has cost polynomial in $n,D$. Substituting $D\le4^n$ gives the result.
+The polynomial preprocessing does not change this bound.
+\end{proof}
+
+This proof is deliberately a loose upper bound for the actual implementation.
+Small timings, compressed integer columns, or a quick determinant rejection on
+many inputs do not establish a better worst-case exponent. In particular,
+$2^{O(n)}$ is not another notation for $n^{O(\log n)}$.
+
+\section{Polynomial kernel: essential patterns on a known ball}
+
+\subsection{Precise scope and input}
+
+The talk defines an essential boundary pattern using disks meeting the pattern
+at most three times: the boundary curve must cut off an empty disk, a disk
+containing a single arc, or a disk containing a tripod \cite[pp.~24--25]{slides}.
+Our kernel assumes the three-manifold is \emph{already known to be a 3-ball}.
+On its boundary sphere, every simple closed curve bounds a disk that can be
+pushed slightly into the ball. This makes the essentiality question a finite
+embedded-graph problem.
+
+Input consists of cyclic edge orders at cubic vertices and a count of
+vertex-free circle components. Loops occur twice in a vertex rotation and
+parallel edges are allowed. The rotation surface of every connected graph
+component is checked to be spherical. A disconnected pattern does not require
+nesting data merely to decide essentiality: a separating curve disjoint from
+the pattern already gives a violation.
+
+This routine is neither a ball recognizer nor a certificate that a supplied
+pattern really came from a particular knot exterior. In particular, $b_1=0$
+by itself is not used as a ball-recognition rule.
+
+\begin{definition}
+A \emph{bond} of a connected graph is a nonempty minimal edge cut. Equivalently,
+its removal leaves exactly two connected components and every removed edge
+joins those components.
+\end{definition}
+
+\begin{proposition}[Finite criterion]
+The empty pattern and a single vertex-free circle are essential. Any pattern
+with at least two connected components is inessential. A connected cubic
+spherical graph is essential exactly when it has no bond of size one or two
+and every bond of size three isolates a single vertex.
+\end{proposition}
+\begin{proof}
+The empty case is immediate. A simple closed curve meets a single embedded
+circle an even number of times; with at most three intersections it either
+misses it or meets it twice. At least one complementary disk contains the
+empty pattern or one arc. For a disconnected pattern, a suitable boundary
+component of a small regular neighborhood separates nonempty parts of the
+pattern without intersecting it, giving a violating disk.
+
+Now suppose the pattern graph is connected. In a cellular spherical embedding,
+a primal bond is dual to a simple cycle, including a loop for a bridge and a
+digon for a two-edge bond. Realize this dual cycle transversely to the primal
+edges. A one- or two-edge bond has pattern vertices on both sides, so neither
+side is an allowed empty disk, arc, or tripod. A three-edge bond is likewise
+violating unless one side is a single cubic vertex with its three outgoing
+edges, which is exactly a tripod.
+
+For the converse, let a curve with at most three intersections violate the
+condition. If one side contains no pattern vertices, its intersection with
+the connected pattern consists of at most one properly embedded arc, or is
+empty, which is allowed. Thus both sides contain vertices. The graph edges
+whose endpoints lie on opposite sides form an edge cut of size at most three;
+repeated crossings of an edge only reduce this number. Every nonempty edge
+cut contains a bond. If there are no bonds of size one or two, this forces
+exactly three distinct crossing edges. The inside and outside induced
+subgraphs must each be connected: otherwise a component would have a smaller
+edge cut. Hence these three edges form a bond. If every such bond isolates a
+vertex, the corresponding side of the original curve is precisely a tripod,
+again contradicting violation. This proves the criterion.
+\end{proof}
+
+\subsection{Algorithm, witnesses, and cost}
+
+The implementation enumerates every edge subset of size one, two, or three,
+runs graph search after deleting it, and checks the bond condition. A
+three-edge bond isolating a vertex is discarded. A remaining bond supplies a
+dual cycle: the face IDs on the two sides of each edge are linked in cyclic
+order. A separate verifier checks the cut, its vertex side, the nontriviality
+condition, and every successive dual-face incidence.
+
+For $E$ edges and $V$ vertices the time bound is
+\[
+ O\bigl((E+E^2+E^3)(V+E)\bigr)=O(E^4)
+\]
+for cubic graphs. Auxiliary space is linear in graph size. A disconnected
+negative result is justified by the component count, not by a fabricated
+geometric disk coordinate list. Positive results use the complete finite search.
+The tetrahedral and cubical patterns pass; a triangular prism yields a
+nontrivial three-edge cut; a dumbbell yields a bridge witness.
+
+\section{Polynomial kernel: cocycles and compressed normal surfaces}
+
+\subsection{Manifold validation and cohomology}
+
+This kernel accepts an ordinary finite simplicial complex specified by
+four-distinct-vertex tetrahedra, not generalized or ideal face-pairing data.
+It rejects duplicate tetrahedra, faces with more than two incident tetrahedra,
+and disconnected complexes. Coherent tetrahedron orientations are solved by
+sign propagation across interior faces.
+
+Each vertex link is checked to be a connected triangulated surface: its edge
+incidences are at most two, and each vertex fan is a circle or an interval.
+A closed link must have Euler characteristic two. A link with boundary must
+have Euler characteristic one and a single boundary cycle. Together with the
+surface checks, the classification of compact surfaces identifies these as
+spheres and disks. This rejects non-manifold vertex gluings rather than merely
+checking face incidences.
+
+Orient every edge from its smaller vertex label to its larger label. A
+cochain $c$ is a cocycle precisely when
+\[
+ c_{ab}+c_{bc}-c_{ac}=0\qquad(a<b<c)
+\]
+on every triangular face. Choose a spanning tree and require its edge values
+to be zero. Every cohomology class has a unique representative in this gauge:
+a vertex potential kills arbitrary tree values, and a potential constant along
+a connected spanning tree is constant everywhere.
+
+Exact rational row reduction on the remaining variables computes a basis.
+Clearing denominators and dividing coordinate gcds gives integral cocycles
+representing a $\Q$-basis of $H^1$. This is not advertised as a unimodular
+$\Z$-basis. The nullity is $b_1$. Rational row-reduction bit growth is polynomial
+in the finite incidence matrix's size; all arithmetic uses exact integers or
+fractions.
+
+\subsection{The dual normal vector without disk expansion}
+
+An integral cocycle defines a map to $\mathbb R/\Z$. In a tetrahedron with
+vertices $v_0<\cdots<v_3$, choose local vertex heights
+\[
+ h_0=0,\qquad h_i=c_{v_0v_i}\quad(1\le i\le3)
+\]
+and extend affinely. The cocycle equations make these local maps agree modulo
+integer translation on shared faces. The inverse image of $1/2\pmod\Z$ is a
+properly embedded, cooriented normal surface.
+
+Sort the four heights as
+$h_{i_0}\le h_{i_1}\le h_{i_2}\le h_{i_3}$.
+Between successive heights there are exactly
+$h_{i_j}-h_{i_{j-1}}$ half-integer levels. The lowest interval gives triangles
+at vertex $i_0$, the middle interval gives quadrilaterals separating the two
+lowest vertices from the two highest, and the highest interval gives triangles
+at vertex $i_3$. Zero gaps give zero disks. Thus seven binary-encoded counts per
+tetrahedron describe the entire surface, regardless of their numerical sizes.
+
+\begin{proposition}
+The constructed vector satisfies the normal matching equations and the
+quadrilateral constraint. Its number of intersections with a global oriented
+edge $e$ is $|c_e|$. Its relative homology class is dual to the cocycle class.
+\end{proposition}
+\begin{proof}
+Only one middle partition occurs in a tetrahedron, proving the quadrilateral
+constraint. The face restrictions differ only by integer translation, so their
+half-integer level arcs coincide; this proves matching. A linear lift changing
+by the integer $c_e$ crosses exactly $|c_e|$ half-integer levels along an edge.
+Counting signed crossings of a transverse curve computes evaluation of $c$,
+which identifies the Poincare-dual relative class.
+\end{proof}
+
+Nonzero dual class ensures that some connected component is nonseparating, but
+the program does not find that component. A primitive cohomology class is not
+used as a substitute for a connectedness test. Nor does a polynomial bit length
+of a normal vector imply a polynomial genus or polynomially many disks.
+
+\subsection{Euler characteristic and a compression test}
+
+The validator computes normal arc counts of each type on each face and
+requires equality across interior faces. It also checks common global-edge
+intersection counts. If $F$ is the total disk count, $A$ is the total disk-side
+arc count, and $A_{\partial}$ counts unpaired boundary arcs, the surface has
+\[
+ E_S=\frac{A+A_{\partial}}2,
+ \qquad V_S=\sum_{\text{global edges }e}|S\cap e|,
+ \qquad \chi(S)=V_S-E_S+F.
+\]
+These are integer linear calculations; no disk is enumerated.
+
+A supplied nine-tetrahedron triangulation of triangle $\times$ circle is a
+solid torus. Its computed cocycle basis has one element. Scaling this element
+by $2^{400}$ produces coordinates representing $3\cdot2^{400}$ disks with
+Euler characteristic $2^{400}$. The coordinate payload uses 1263 bits in the
+recorded run. This demonstrates only the compressed construction and Euler
+calculation, not compressed cutting, normalization, connected-component
+extraction, or the Agol--Hass--Thurston orbit-counting algorithm.
+
+\section{What a quasipolynomial proof would need}
+
+\subsection{A precise numerical lemma}
+
+The talk uses an informal genus-like digit complexity, with a warning that a
+pattern-sensitive variant may be intended \cite[pp.~54--65]{slides}. The
+numerical helper accepts actual nonnegative integer digits $q_i\le g$ and pads
+them to length $L$. Define
+\[
+ \Phi(q_1,\ldots,q_L)=\sum_{i=1}^L q_i(g+1)^{L-i}.
+\]
+Base $g+1$ is necessary when the digit $g$ is allowed. With base $g$, for
+example, $(1,0)$ and $(0,g)$ have equal value. We make this convention explicit
+rather than silently interpreting the slide notation differently.
+
+\begin{lemma}[Rebuild bound]
+Suppose a rebuild preserves all digits before position $j$, lowers $q_j$ by at
+least one, and replaces later digits by arbitrary values in $[0,g]$. Then
+$\Phi$ drops by at least one. There are at most $(g+1)^L$ such rebuild epochs;
+if at most $L$ construction steps occur per epoch, the step count is at most
+$L(g+1)^L$.
+\end{lemma}
+\begin{proof}
+The leading decrease contributes at least $(g+1)^{L-j}$. The largest possible
+tail increase is
+\[
+ g\sum_{k=0}^{L-j-1}(g+1)^k=(g+1)^{L-j}-1.
+\]
+Their difference is at least one. Finally $0\le\Phi<(g+1)^L$. Counting at most
+$L$ construction steps between decreases gives the result.
+\end{proof}
+
+The helper also computes the expression
+$-4\chi(S)+|S\cap P|$, the pattern complexity used in
+\cite[Definition 3.4]{hierarchies}. It does not claim that this expression is
+nonnegative for arbitrary surfaces; exceptional negative-complexity disks
+must be handled before a nonnegative-digit argument applies.
+
+\subsection{An explicit conditional complexity statement}
+
+\begin{theorem}[Implementation obligations, not a theorem about this software]
+Put $N=\max(2,n)$. Suppose a correctly specified geometric recognizer maintains
+hierarchies with digits $q_i\le N^a$, length $L\le b\log_2N+c$, and at most
+$N^r$ global restart epochs. Suppose also that every elementary operation,
+including updates, normalization, certificate checks, and construction of the
+next state, has bit cost at most $N^{d\log_2N+e}$, uniformly over every reachable
+state. If the preceding rebuild lemma applies within each restart epoch, then
+the recognizer runs in $N^{O(\log N)}$ time.
+\end{theorem}
+\begin{proof}
+The total is bounded by an initialization cost plus
+\[
+ N^r L(N^a+1)^L N^{d\log_2N+e}.
+\]
+Taking base-two logarithms gives at most
+$(ab+d)(\log_2N)^2+O(\log N+\log\log N)$.
+This is the required quasipolynomial form.
+\end{proof}
+
+The quantified uniformity over reachable states matters. Polynomial cost in
+a compressed state's current size is insufficient unless the size and all
+integer bit lengths are themselves bounded throughout the complete run.
+Similarly, a hierarchy potential may restart at its maximum every time a
+Heegaard structure changes; those global restarts need a separate quantitative
+bound. A possible combined proof would place a bounded global rank ahead of
+$\Phi$ lexicographically, with explicit bounds on both. No such geometric rank
+is constructed here.
+
+\subsection{The geometric gap is not a missing loop counter}
+
+The four speedups on pages 66--74 of the talk are bounded surface complexity,
+efficient compressed encoding, multi-surfaces, and generalized Heegaard
+splittings with Cheeger regions. None can be replaced just by entering
+$L=\lceil\log n\rceil$ into a function. The terminal flowchart requires concrete
+implementations of \emph{Build Hierarchical Multi-Surface}, \emph{Cut Along
+Surface}, \emph{Simplify Multi-Surface}, \emph{Use Cheeger Region},
+\emph{Haken's Lemma}, and \emph{Weakly Reduce} \cite[p.~109]{slides}.
+
+For example, the displayed inequality
+\[
+ 3g(\partial M_i)\le
+ \min\{g(H_i),\ g(H)-g(H_i)\}
+\]
+is only part of the Cheeger-region condition. The restricted Morse function
+must have the specified Heegaard form. The integer comparison routine in this
+archive says nothing about those geometric hypotheses, and produces no
+modified handle structure.
+
+An arbitrary integral cocycle construction also does not establish the talk's
+quadratic surface-complexity bound: that construction uses the ambient
+embedding in $S^3$, which must be preserved through the hierarchy. Binary
+coordinates alone provide neither the embedding nor a compressed normalization
+algorithm after a disk compression.
+
+\section{Validation and reproducible observations}
+
+The delivered log records \textbf{58 passing test methods}. These test exact
+Bareiss elimination against the permutation formula, bitset rank against
+independent dense elimination, input rejection, local-move traces, the homology
+complex, mirrors, basepoints, Markov stabilization, and the three-strand braid
+relation. Fifty seeded random one-component braid closures test invariance
+under the implemented reductions, including exhaustive $d^2$ checks before
+reduction. Separate tests cover graph witnesses, invalid manifold links,
+normal matching, huge normal coordinates, numerical potentials, and CLI exit
+semantics.
+
+An additional experiment checks \textbf{682 two-strand braid words}: every word
+of odd length at most nine. In $B_2$, the exponent sum determines the braid, so
+these closures reduce independently to $T(2,e)$, with $e$ odd. They are unknots
+exactly when $|e|=1$. All computed ranks equal $|e|$, and all verdicts agree
+with this independent family classification.
+
+\begin{center}
+\small
+\begin{tabular}{lrrrrl}
+\toprule
+Input & $n$ & determinant & reduced rank & raw basis & verdict\\
+\midrule
+Circle & 0 & 1 & 1 & 1 & unknot\\
+Curl & 1 & 1 & 1 & 3 & unknot\\
+Trefoil & 3 & 3 & 3 & 15 & nontrivial\\
+Figure-eight & 4 & 5 & 5 & 33 & nontrivial\\
+$T(2,7)$ & 7 & 7 & 7 & 1095 & nontrivial\\
+$T(3,5)$ & 10 & 1 & 7 & 4209 & nontrivial\\
+R1/R2-resistant unknot & 8 & 1 & 1 & 1365 & unknot\\
+\bottomrule
+\end{tabular}
+\end{center}
+The table gives unreduced-by-preprocessing input sizes and chain basis sizes
+for the \emph{reduced homology complex}. Thus ``raw basis'' does not mean the
+unreduced Khovanov theory. Complete $d^2$ checks were performed on these raw
+complexes. The eight-crossing unknot simplifies to six crossings before the
+pipeline invokes homology.
+
+\subsection{Independent proof of the resistant unknot example}
+
+Write $a=\sigma_1$ and $b=\sigma_2$ in $B_3$. The input word is
+\[
+ \beta=b^{-3}b\,a^2ba=b^{-2}a^2ba.
+\]
+Using $aba=bab$ gives $a^2ba=abab$. Cyclically moving the final $b$ to the
+beginning preserves the closure, so
+\[
+ \widehat\beta=\widehat{b^{-2}abab}
+ =\widehat{b^{-1}aba}=\widehat{ab}.
+\]
+For the last equality, $b^{-1}ab=aba^{-1}$, another form of the same braid
+relation. The closure of $ab$ destabilizes to the closure of $a$ in $B_2$,
+then to the one-strand unknot. This proves the expected positive answer
+without relying on the computed homology rank or the incomplete R1/R2 trace.
+
+The nontriviality of $T(3,5)$ likewise does not depend on its determinant. The
+usual torus decomposition gives its group
+$\langle u,v\mid u^3=v^5\rangle$, which surjects onto the nonabelian group
+$C_3*C_5$. Hence it cannot be the unknot group $\Z$. These two examples check
+both directions of the determinant-one fallback.
+
+\subsection{Limits of the validation}
+
+No external knot package was used to cross-check the implementation, and no
+Lean or other machine-checked proof was produced. Tests and arithmetic
+consistency checks do not by themselves constitute a formal verification of
+all code. The report's mathematical arguments and the cited detection theorem
+explain why the specified algorithm is correct; the executable remains ordinary
+tested research software. Recorded timing measurements describe one environment
+and do not prove asymptotic complexity.
+
+\section{Concrete remaining implementation contracts}
+
+A completed geometric path would need at least the following developments.
+
+\textbf{Representation and initialization.}
+Construct a marked knot exterior and a layered handle structure from the input
+diagram. Retain the ambient embedding, peripheral information, boundary-pattern
+labels, and provenance of later cuts. Give an explicit finite encoding of
+parallel families and prove global bit-length bounds.
+
+\textbf{Compressed topology.}
+Implement cutting, component extraction with orientation and relative homology,
+normalization, and pattern updates in that encoding. A small normal vector is
+not an implementation of any of these operations. In particular, connectedness
+must not be inferred from Euler characteristic.
+
+\textbf{Bounded multi-surfaces and simplification.}
+Construct the correct independent geometric surfaces with the required
+complexity bounds. Track their intersections and induced sequential cuts. Lift
+violating disks to earlier surfaces, distinguish ordinary compression from
+boundary/pattern compression, and preserve later work only in the cases where
+that preservation is justified.
+
+\textbf{Heegaard and Cheeger operations.}
+Check the full geometric region conditions, construct the required weak
+reductions or replacement handle structures, and identify a quantitatively
+bounded global progress measure. The logarithmic depth estimate and restart
+count must apply to the actual chosen implementation, including exceptional
+cases.
+
+\textbf{End-to-end proof.}
+Verify the terminal disk/essential-hierarchy criterion with all its manifold
+hypotheses and combine operation costs, state sizes, hierarchy rebuilding, and
+global restarts. Only then would the conditional theorem in Section 8 yield
+the requested running-time claim for executable code.
+
+The included baseline can serve as a small-instance oracle for testing such
+future constructions. It cannot supply their missing complexity proof.
+
+\begin{thebibliography}{9}
+\bibitem{slides}
+Marc Lackenby.
+\emph{Unknot recognition in quasi-polynomial time}.
+February 2021. User-supplied 109-page slide deck,
+\code{quasipolynomial-talk.pdf}.
+
+\bibitem{hierarchies}
+Marc Lackenby.
+\emph{Incompressible surfaces, hierarchies and unknot recognition}.
+arXiv:2607.23350v1, 25 July 2026.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{detector}
+P. B. Kronheimer and T. S. Mrowka.
+Khovanov homology is an unknot-detector.
+\emph{Publications Math\'ematiques de l'IH\'ES} 113 (2011), 97--208.
+\url{https://arxiv.org/abs/1005.4346}.
+
+\bibitem{khovanov}
+Mikhail Khovanov.
+A categorification of the Jones polynomial.
+\emph{Duke Mathematical Journal} 101 (2000), 359--426.
+\url{https://arxiv.org/abs/math/9908171}.
+
+\bibitem{barnatan}
+Dror Bar-Natan.
+On Khovanov's categorification of the Jones polynomial.
+\emph{Algebraic \& Geometric Topology} 2 (2002), 337--370.
+\url{https://arxiv.org/abs/math/0201043}.
+
+\bibitem{coloring}
+Sudipta Kolay.
+\emph{Knot Colorings: Coloring and Goeritz matrices}.
+arXiv:1910.08044, 2019.
+\url{https://arxiv.org/abs/1910.08044}.
+\end{thebibliography}
+\end{document}

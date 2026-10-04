@@ -1,0 +1,46 @@
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule Case & $n$ & Original (ms) & New (ms) & Ratio \\
+\midrule
+Crossing-free unknot & 0 & 0.020 & 0.026 & 0.75 \\
+Trefoil & 3 & 0.092 & 0.123 & 0.75 \\
+Figure-eight & 4 & 0.134 & 0.128 & 1.05 \\
+Hard unknot (8 crossings) & 8 & 1.629 & 2.242 & 0.73 \\
+Kinoshita--Terasaka & 11 & 39.313 & 1.018 & 38.61 \\
+Conway & 11 & 39.304 & 0.822 & 47.79 \\
+$T(3,5)$ & 10 & 0.591 & 0.912 & 0.65 \\
+Unknot braid (40 crossings) & 40 & 6.681 & 7.999 & 0.84 \\
+Determinant-one grid knot & 10 & 0.721 & 0.957 & 0.75 \\
+Scrambled grid unknot & 6 & 0.259 & 0.288 & 0.90 \\
+Conway $\#\,$ Conway & 22 & 1399.518 & 2.462 & 568.54 \\
+Three Conway summands & 33 & \textsc{limit} & 3.379 & -- \\
+Four Conway summands & 44 & \textsc{limit} & 4.112 & -- \\
+\bottomrule\end{tabular}
+\caption{Full recognition, defaults in both versions. Ratio is original/new; values below one are regressions. Each time is the median of three completed cold-process calls. Limit means all three calls returned UNKNOWN.}\label{tab:recognition}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule Case & $n$ & Original (ms) & New (ms) & Ratio \\
+\midrule
+Conway & 11 & 35.973 & 13.269 & 2.71 \\
+Kinoshita--Terasaka & 11 & 39.206 & 15.090 & 2.60 \\
+Hard unknot (8 crossings) & 8 & 2.476 & 2.165 & 1.14 \\
+$T(3,5)$ & 10 & 10.206 & 9.958 & 1.02 \\
+Unknot chain (256 crossings) & 256 & 231.987 & 20.751 & 11.18 \\
+Unknot chain (1024 crossings) & 1024 & 3601.461 & 84.039 & 42.85 \\
+Random 5-braid (36 crossings) & 36 & \textsc{limit} & \textsc{limit} & -- \\
+\bottomrule\end{tabular}
+\caption{Raw Khovanov backend, without recognition preprocessing or invariant filters. Both engines use the same deterministic scan-order policy.}\label{tab:raw}
+\end{table}
+
+\begin{table}[htbp]\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule Case & $n$ & Original (ms) & New (ms) & Ratio \\
+\midrule
+Order only: 256-crossing chain & 256 & 217.852 & 5.844 & 37.28 \\
+Order only: 1024-crossing chain & 1024 & 3550.885 & 27.065 & 131.20 \\
+No R1/R2/descending: hard unknot & 8 & 2.907 & 3.203 & 0.91 \\
+\bottomrule\end{tabular}
+\caption{Planning and forced-fallback diagnostics. In the last row only Reidemeister reduction and descending recognition are disabled; invariant filters are still enabled.}\label{tab:aux}
+\end{table}

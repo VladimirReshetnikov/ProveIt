@@ -1,0 +1,13 @@
+\begin{tabular}{@{}p{0.36\linewidth}p{0.23\linewidth}p{0.27\linewidth}r@{}}
+\toprule
+Task & new (ms) & old (ms) & ratio \\
+\midrule
+greedy order, 2048 crossings & heap O(n log n): 32.6 & 0.1 rescoring O(n$^2$): 26685 & 818$\times$ \\
+descending test, 2048 crossings & linear sweep: 3.72 & 0.1 quadratic: 314 & 84$\times$ \\
+R1/R2 reduction, 2048 crossings & incremental: 3.77 & 0.1 rebuild per move: 28089 & 7458$\times$ \\
+T(3,61) rejection, 122 crossings & modular minor: 8.07 & 0.1 exact Z[t]: 5829 & 722$\times$ \\
+recognize Conway & with Jones filter: 0.81 & without Jones filter: 10.0 & 12$\times$ \\
+recognize Conway\#Conway\#Conway, no Jones & with factorization: 12.6 & without factorization: 6781 & 539$\times$ \\
+rank of Conway\#Conway\#Conway & factored: 20.7 & one scan: 6972 & 337$\times$ \\
+\bottomrule
+\end{tabular}
