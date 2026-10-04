@@ -107,3 +107,9 @@ measurability is replaced by Borel measurability, the Baire property or
 universal measurability. It names this report as the nearest in spirit: a
 ZFC construction, from a free ultrafilter, of an object without the Baire
 property. No theorem is shared.
+
+[Batch 90, 4 October 2026.] Part II of `measurable-box-games` (its Theorems
+26.1–26.2) gives continuous hat-guessing strategies, each guess depending on
+finitely many hats, whose success set is conull but meager and
+Σ⁰₂-complete: a measure-versus-category contrast in ZFC, built without any
+choice-built irregular object. No theorem is shared.

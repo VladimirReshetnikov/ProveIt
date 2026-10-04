@@ -1118,6 +1118,9 @@ trees are characterized by recursively sliceable cube matchings (its
 Theorem 7.3). Both reports work with adaptive query strategies and finite
 certificates, but nobody there asks open-set queries about a hidden point,
 and nobody here guesses an unread coordinate. No theorem is shared.
+[Batch 90, 4 October 2026.] Its Part II adds the infinite hat game, where
+each player's target is its own hat and its constructed strategies read
+finitely many other hats; still no theorem is shared with this report.
 
 ## Sources and attribution
 

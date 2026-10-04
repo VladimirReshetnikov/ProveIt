@@ -904,6 +904,17 @@ elementary embeddings; with source 31's Proposition XV.5.5 (a selector is
 conservative unless Separation mentions it) it shares the theme of schemes in
 an expanded language, with different theorems and models.
 
+**[polish-models-of-omnific-arithmetic](../polish-models-of-omnific-arithmetic/)**
+(batch 90): Glazer's class-manifold question (does `ZFC − Fnd + GC` prove that
+every topological manifold is a set? from his Oberwolfach abstract *A
+hypertalk*, Oberwolfach Reports 22 (2025), Report No. 2/2025, pp. 106–107,
+which reports that Global Choice proves, over `ZFC` without Foundation, a
+classification of one-dimensional manifolds that `ZFC − Fnd` does not) is
+printed, with partial results proved without Global Choice, in its Part XII
+(`pma:gcm:q:glazer`); the question stays open. A dated `[merge]` note after
+Remark XV.5.2 (`swo:gcz:n5.2`, following Theorem XV.5.1) records this; no
+theorem is shared with source 31.
+
 **[real-vector-space-structure](../../surreal/real-vector-space-structure/)**
 uses a set-like global well-order; by Theorem 13.1 that hypothesis is
 equivalent to global choice over GB. Its question on the weaker class-choice

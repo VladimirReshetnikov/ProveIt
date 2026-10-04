@@ -1519,7 +1519,18 @@ to 06 and 07, to 08 and 09, and to C10–C14). The main ones:
   existential, so neither bears on `odg:q:guard`; `isg:sc:prop:repair`
   extends the uniqueness of `ct` (Proposition 3.5) to normalized additive
   maps on rings with division by 2. An unnumbered note after Remark 10.11
-  records this.
+  records this. Batch 90 added its source 04 (batch-90 manuscript 06,
+  Sections 23–26, `isg:ptg:`): the difference ring of a nonstandard model of
+  Peano arithmetic has the same finite quotients and the same p-adic and
+  profinite completions as (3.3), `odg:eq:profinite`, but a different
+  canonical image, the p-adic or profinite integers computable from one
+  member of the model's standard system (`isg:ptg:thm:residue`,
+  `isg:ptg:thm:profinite`, `isg:ptg:thm:completions`); its set-sized rings
+  `Z + Π_k ⊆ Oz` satisfy Theorem 3.1's quotient description with image `Z`
+  (`isg:ptg:prop:tail`), and its omnific integers `rω`, which vanish in every
+  finite quotient, are algebraically independent over a large restricted Hahn
+  field (`isg:ptg:thm:omnific`). An unnumbered note after the paragraph on the
+  two inverse systems following (3.3) records this.
 - [`polish-models-of-omnific-arithmetic`](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)
   (`pma:`; batch 86): its Part III gives the cone of `Z + tR[t]`
   (Proposition 15.43) a locally compact Polish topology with continuous
@@ -1572,7 +1583,9 @@ pages and all 553 label and 65 citation numbers unchanged. The batch-86 notes
 230 pages and change no label number (all 553 compared in the `.aux` files
 against a build of the committed text). The second note after Proposition
 15.43 (batch 87) leaves 230 pages and every label number unchanged
-(compared the same way). The text before
+(compared the same way). The batch-90 note after the paragraph on the two
+inverse systems following (3.3) also leaves 230 pages and every label number
+unchanged (compared the same way). The text before
 source C17 was integrated built to 202 pages with the same zero counts, and every one of
 its 942 `.aux` label entries has the same number in the present build. The earlier combined
 C16/projective review built to 198 pages. (The text at `4253328`, before source C16

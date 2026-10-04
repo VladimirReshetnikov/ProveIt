@@ -323,6 +323,14 @@ formalization program and 18 questions.
   on a universe with atoms, not on `No`. A dated `[write]` note after Remark
   `sse:pf:rem:kunen` (4 October 2026, batch 89) records this; nothing in this
   report changes.
+- [cantor-families-of-surreal-subfields](../../foundations-and-computation/cantor-families-of-surreal-subfields/README.md)
+  (batch 90, `csf:`) cites this report as research background. It moves from
+  self-embeddings of `No` to embeddings among countable real closed subfields
+  of one countable surreal field; its Lemma 3.4 (`csf:lem:valuation-functor`)
+  is the subfield form of Proposition 10.1 (`sse:prop:valueaction`), with the
+  induced maps of rank chains and components added. A dated `[write]` note
+  after Proposition 10.1 (4 October 2026, batch 90) records this. No theorem
+  of this report is re-proved or answered there.
 
 Reciprocal dated notes pointing here were added to
 omnific-preserving-automorphisms, independent-surreal-copies,

@@ -899,7 +899,16 @@ All labels exist at HEAD.
   same failed instance elsewhere" of Section 42). Its factorial family
   (`isg:cf:prop:family`) contains 13's core and 14's group: Parts VII and
   VIII place countable members of it below `R` to get nonsplit Polish
-  Presburger models.
+  Presburger models. Its source 04 (batch 90, manuscript 06; an alternative
+  considered at placement was a part of this report) treats nonstandard Borel
+  models of PA through a different result of Glazer's (Borel models do not
+  have full standard system; seminar slides, MOPA, 27 February 2024), assumes
+  no topology on the model, and proves that the real and p-adic points
+  computable from the standard system form proper analytic fields with a
+  perfect transcendence gap, and that the canonical residue image of the
+  model in `Ẑ` is exactly the ring of profinite integers computable from one
+  member of its standard system (`isg:ptg:thm:profinite`). It answers none of
+  this report's questions.
 - The batch-86 reciprocal notes added pointers to this report in
   `omnific-notations` (after its Remark 23.4: Parts II and V),
   `exponential-relations-over-omnific-integers` (after its Proposition 2.2:
@@ -917,7 +926,19 @@ All labels exist at HEAD.
   arrived with source 16 but share no theorem with Part X.
 - `SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games`:
   batch 87's manuscript 02, on Glazer's other paper (the choiceless box game);
-  not Presburger work, filed separately.
+  not Presburger work, filed separately. Its Part II (batch 90, manuscript 02,
+  a sibling of Parts XI–XII here) answers Eldredge's questions on the surplus
+  of correct guesses in the infinite hat game, a topic Eldredge credits to
+  Glazer and Wang; no shared theorem.
+- [`cantor-families-of-surreal-subfields`](../cantor-families-of-surreal-subfields/)
+  (`csf:`, batch 90, manuscript 04): it uses the Kleene–Brouwer coding of
+  `pma:bor:lem:KB` (its Lemma 6.2) to show that a fixed field of `ω*` rank has
+  an analytic-complete embedding locus among countable surreal subfields (its
+  Theorem 6.3, the complement of `WO(Q)`); with Theorem 18.4
+  (`pma:bor:thm:dichotomy`) its locus on subsets of a fixed countable `L` is
+  Borel iff `L` is scattered, which bears on its Question 13.1 without
+  answering it. A dated `[write]` note after the remark following Theorem
+  18.4 records this.
 - The Hilbert's-tenth programme triaged the batch-86 arrivals for its own
   search
   (`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_recent_incoming_glazer_scope.md`,

@@ -540,6 +540,21 @@ source 11's double-monomial independence (Theorem 43.1) is the case `K = R`,
 Remark 40.4 records this. New beside it are the omnific-integer conclusion,
 the free-algebra calibration and the ZF framing.
 
+**[cantor-families-of-surreal-subfields](../cantor-families-of-surreal-subfields/)**
+(batch 90, `csf:`): its Lemma 3.2 (`csf:lem:independence`) is the analogue of
+Theorem 43.1 with exponents `b ω^q`, `q ∈ Q`, `b ∈ {1, √2, √3, √5, …}`, over
+the real algebraic numbers, by the same leading-term argument, and is also a
+case of `dsn:lem:cosets`; that report works in ZFC and uses the family as a
+transcendence basis of a countable real closed field, not for free-algebra
+universality. **[polish-models-of-omnific-arithmetic](../polish-models-of-omnific-arithmetic/)**
+(batch 90): its Part XII (source 18), in a class theory with Foundation
+omitted and without Global Choice, uses the birthday stages as an ordinal
+exhaustion to prove that connected real class manifolds coded into or from
+`No^m` are sets (`pma:gcm:thm:surreal`), and bounds the birthdays of their
+points by the Replacement step that opens the proof of Theorem 42.1
+(`pma:gcm:cor:birthdaybound`); no uniform cutoff is claimed and no theorem is
+shared. One dated note after Remark 40.4 records both.
+
 **[gonshor-product-birthdays](../../surreal/gonshor-product-birthdays/)**: see
 above; no argument here depends on it.
 
@@ -574,7 +589,8 @@ atom predicate).
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):
-  143 pages (116 before the batch-90 Part VIII;
+  143 pages (unchanged by the batch-90 reciprocal note after Remark 40.4,
+  which changed no label number; 116 before the batch-90 Part VIII;
   115 after the batch-89 write, before its two reciprocal notes;
   62 before batch 89; 61 before the batch-37 Remark 15.9; still 62 after the
   two batch-80 notes and the batch-81 note); no errors, undefined
