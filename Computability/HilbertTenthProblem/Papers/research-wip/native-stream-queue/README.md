@@ -124,12 +124,16 @@ now have the bounded reviews linked below. All reported catalogue/box/signal/
 reciprocal corrections are applied, with edited PDFs rebuilt. The six new
 foundations/reversion archives have the bounded intake linked below; the
 complex-transseries placementec91f8c7c itself retains only commit-summary/
-diff-statistic intake. Earlier guide-only and ancillary-placement reviews
-keep their exact boundaries. Padded
+diff-statistic intake. The newer foundations placement350b9a954, Polish
+PartsXVI–XVII publication9a8894d0a and cyclotomic correction7389d7de4 have
+only commit-summary/diff-statistic intake here. Earlier guide-only and
+ancillary-placement reviews keep their exact boundaries. Padded
 reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
 or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
+
+The [affine input-coupling theorem](complete83_affine_input_coupling.md), with [independent source and proof review](review_complete83_affine_input_coupling.md), controls joint cancellation between delta and rho in independent-gamma83. For fixed integer coefficient polynomials P,Q,S on exactly71 bounded exterior values, a full positive zero satisfying P delta+Q rho=S with (P,Q) nonzero is canonical or has R²<8t+4+ceil(log2(23L²)). Thus the noncanonical ordinary inputs are explicitly bounded; if this cutoff is at most49², every such zero is canonical. The nonsquare Pell-conic eliminant proves the height bound without separately bounding the two input witnesses. The simultaneous-zero coefficient sector remains unrestricted. Fresh author/reviewer checks authenticate the unchanged83 rows, all71 exterior values and ten literal input rows, with exact coefficient identities and normal/optimized receipt equality. No relation is added for free, no completeness result or new circuit is claimed, and no universal bound changes.
 
 The [batch92 reciprocal-note review](review_reciprocal_9bffd43d5.md) reads all16 changed text diffs (390 raw lines) across ten reports at9bffd43d5, plus37 selected source spans (1,619 lines counting overlap). It authenticates48 before/after blobs, unchanged label/bibliography sequences in eight articles,47 explicit label references and three links; root independently rechecks these and both publication snapshots. The CSF note now retains nonzero rational-vector-space exponents; new Remark3.5 preserves the broader subgroup wording and refutes its positive-character classification by t→−t on the Laurent-series field. Both guides state the exponent hypotheses, and the SSE guide restores countability while retaining its original summary as an omitted cited-theorem hypothesis, without asserting the uncountable extension false. The edited CSF PDF rebuilds directly in three no-shell-escape passes to32 pages, with71 unique labels,129 resolved references,29 citations and no warnings or bad boxes; PDF page13 was visually checked. Forward summability remains distinct from invertibility; the selected game and integer-part interfaces give no paid compiler saving. External references, full manuscript proofs and historical program execution remain unreviewed.
 
@@ -5318,6 +5322,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Affine coupling on independent-gamma83](complete83_affine_input_coupling.md) | Exact71-value exterior; nondegenerate Pell-line relation gives R²<8t+4+ceil(log2(23L²)); independent full-source audit | Conditional constraint only; simultaneous coefficient zeros unrestricted; paid relation/completeness still required |
 | [Batch92 reciprocal notes](review_reciprocal_9bffd43d5.md) | All16 text diffs;37 selected source spans; rational-space/countability hypotheses restored; retained Laurent-series counterexample;32-page CSF PDF rebuilt | Scoped interfaces only; no external/full-proof or archived execution certification; no universal bound change |
 | [Foundations/reversion six-archive intake](review_new_foundations_f300069cf.md) | 75 member pins; five complete checksum ledgers; 2,548 exact guide/abstract/interface lines | Full interpretation/completion proofs unread; birthday and finite-action interfaces supply no paid ordinary-integer compiler |
 | [Reciprocal notes1fdcaf5a6](review_reciprocal_1fdcaf5a6.md) | Complete13-text-diff review; shared POWER and containment verified; false exclusivity/tally retained and refuted;742/186-page corrected PDFs rebuilt | Source equation/interface comparison only; imported theorems, physical reductions and old DAG execution not recertified |
