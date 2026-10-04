@@ -34,6 +34,20 @@ bound remains **74**; the lower-degree **85/155** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [twelve signal/particle reports](review_new_signals_0d7f51c44.md)
+at **0d7f51c44** have2035 authenticated archive members and57 recorded
+text-read spans. Reports64–65 supply the strongest future interface:
+one guarded five-live-signal machine per fixed counter program, followed
+by an exact `30D` instruction clock. Their integer formulas still have
+arity growing with the chosen horizon `T`; the fixed-arity unbounded
+history representation is missing. The reported **344/367**-operation
+rotation certificates and **48/57**-operation local-realization certificates
+represent decidable predicates, not universal halting. The real-input
+nonexistence result does not prohibit integer-input Diophantine certificates.
+Root independently authenticated all archive/member/read-span hashes.
+Chronology proofs and reported arithmetic source counts were not rebuilt
+in this scoped intake; no new universal bound is entered.
+
 The [seven-report reciprocal-note review](review_reciprocal_fc1ad4275.md)
 covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
 articles remain identical and all54 introduced label references resolve.
@@ -5147,6 +5161,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Twelve signal and particle arrivals](review_new_signals_0d7f51c44.md) |2035 member hashes,12 full READMEs and57 exact read spans; guarded five-signal counter/clock interface identified | Horizon-dependent arity still unbounded;344/367 rotation and48/57 local-realization counts concern decidable predicates; no universal reduction |
 | [Seven-report reciprocal notes](review_reciprocal_fc1ad4275.md) | Fourteen text diffs read;3359 unchanged labels;54 introduced references resolve atfc1ad4275 | Scoped transfer/hypothesis review; external theorem interfaces and PDF builds unreviewed; arithmetic bounds unchanged |
 | [Reduced auxiliary coefficient](complete85_reduced_auxiliary_degree.md) | Complete85=47M+38A,18 witnesses, uniform exact degree155; identical integer zero tuples to84/187 | Improves85/175; universality on inherited positive fixed slices, minimum count84 and86/131 unchanged |
 | [PartX publication and six arrivals](review_polish_partx_c9bc70d8f.md) | Actual Presburger PartX present atc9bc70d8f;708→784 labels,55 delivered labels retained; six ZIPs/53 members authenticated | Bounded text scope; no paid compiler found; local beta-code recurrence/recoding obligations remain |

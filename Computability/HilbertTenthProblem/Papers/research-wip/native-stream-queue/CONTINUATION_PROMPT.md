@@ -38,6 +38,21 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [twelve signal/particle reports](review_new_signals_0d7f51c44.md)
+> at **0d7f51c44** have2035 authenticated archive members and57 recorded
+> text-read spans. Reports64–65 supply the strongest future interface:
+> one guarded five-live-signal machine per fixed counter program, followed
+> by an exact `30D` instruction clock. Their integer formulas still have
+> arity growing with the chosen horizon `T`; the fixed-arity unbounded
+> history representation is missing. The reported **344/367**-operation
+> rotation certificates and **48/57**-operation local-realization certificates
+> represent decidable predicates, not universal halting. The real-input
+> nonexistence result does not prohibit integer-input Diophantine certificates.
+> Root independently authenticated all archive/member/read-span hashes.
+> Chronology proofs and reported arithmetic source counts were not rebuilt
+> in this scoped intake; no new universal bound is entered.
+>
+>
 > The [seven-report reciprocal-note review](review_reciprocal_fc1ad4275.md)
 > covers all fourteen text diffs at **fc1ad4275**. All3359 labels in the seven
 > articles remain identical and all54 introduced label references resolve.
