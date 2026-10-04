@@ -12,7 +12,7 @@
 \usetikzlibrary{arrows.meta,positioning}
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
-\hypersetup{pdftitle={Groups as Diophantine Substrates},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={Arithmetic van Kampen certificates, three commutative phases, pair order and affine matrix inputs: low-degree Diophantine certificates through the integral Heisenberg group}}
+\hypersetup{pdftitle={Groups as Diophantine Substrates},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={Arithmetic van Kampen certificates, three commutative phases, pair order, affine matrix inputs and a fixed universal matrix semigroup: low-degree Diophantine certificates through the integral Heisenberg group and free matrix groups}}
 \urlstyle{same}
 \pagestyle{fancy}
 \fancyhf{}
@@ -87,33 +87,43 @@
 \newcommand{\lcm}{\operatorname{lcm}}
 \newcommand{\repo}{\texttt{ProveIt}}
 \newcommand{\binompoly}[2]{\binom{#1}{#2}}
+% Source 08 (Part V) macros; its \norm is \umnorm and its \mat is \smallmat
+\newcommand{\rev}{\operatorname{rev}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\umnorm}[1]{\left\lVert #1\right\rVert_\infty}
+\newcommand{\hto}{\mathrel{\longrightarrow}}
+\newcommand{\st}{\mathrel{\longrightarrow^{*}}}
+\newcounter{umsaveeq}
 % Merge
 \newcommand{\wtag}{\textup{[write]}}
 \newcommand{\wtagb}{\textup{[write 78]}}
+\newcommand{\wtagc}{\textup{[write 82]}}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!20},xleftmargin=0.3em,xrightmargin=0.3em}
 \setcounter{tocdepth}{2}
 
 \begin{document}
 \hypersetup{pageanchor=false}
 \begin{titlepage}
-\vspace*{0.1in}
+\vspace*{0in}
 \noindent{\color{MidnightBlue}\large PROVEIT RESEARCH REPORT}\par
 \vspace{0.25in}
 \noindent{\Huge\bfseries Groups as Diophantine\\[0.12em] Substrates}\par
-\vspace{0.25in}
-\noindent{\LARGE Arithmetic van Kampen certificates, three\\[0.15em] commutative phases, pair order\\[0.15em] and affine matrix inputs}\par
-\vspace{0.2in}
-\noindent{\large Quartic certificates through the integral Heisenberg group}\par
-\vspace{0.3in}
-\noindent AI-assisted research report prepared for Vladimir Reshetnikov from four manuscripts\par
-\noindent(batches~76 and~78 of ProveIt's incoming reports), October 2, 2026\par
-\vspace{0.2in}
+\vspace{0.15in}
+\noindent{\LARGE Arithmetic van Kampen certificates, three\\[0.15em] commutative phases, pair order, affine\\[0.15em] matrix inputs and a universal matrix semigroup}\par
+\vspace{0.12in}
+\noindent{\large Quartic certificates through the integral Heisenberg group and free matrix groups}\par
+\vspace{0.18in}
+\noindent AI-assisted research report prepared for Vladimir Reshetnikov from five manuscripts\par
+\noindent(batches~76, 78 and~82 of ProveIt's incoming reports), October 2--3, 2026\par
+\vspace{0.1in}
 \begin{abstract}\small
 Part~I (source~03) treats a fixed two-generator finite presentation as a proof-producing substrate. Through Sanov's arithmetic chart of a free subgroup of $\SL_2(\Z)$, it builds explicit integer polynomials of degree at most four whose solvability is equivalent to filling a word with at most $m$ conjugates of relators, with exactly $(2s+13)m-4$ witnesses for $s$ relators, so that the compiler's minimal allocated arity recovers filling area and the Dehn function exactly. Shared proof DAGs compile without expanding relator occurrences: for $[a^{2^k},b^{2^\ell}]$ in $\langle a,b\mid[a,b]\rangle$ the area is $2^{k+\ell}$ but exactly $k+\ell$ product gates suffice and are necessary, and the quartic has $8(k+\ell)-4$ witnesses.
 
 Part~II (source~05) compiles every finite system of integral quadratic equations into membership in an ordered product of three free abelian subgroups of a power of the discrete Heisenberg group, with an exact bijection between solutions and factorizations. With MRDP this gives three fixed subgroups whose product has computably enumerable complete membership, proposed as a negative answer to the three-subgroup question of K\"onig, Lohrey and Zetzsche and of Roman'kov. Two commuting phases are decidable; for integer exponents this is a special case of known two-subgroup results, which the report credits.
 
 Part~III (source~06) proves that the pair counts of three-letter words leave no holes, and compiles exact quadratic and canonical quartic certificates of word realizability in three-generator Heisenberg submonoids. Part~IV (source~07) proves that an affine unimodular input curve meets every fixed subgroup of $\SL_d(\Z)$ in a finite or exactly periodic set, so that input degree two is sharp in every dimension, and compiles polynomial circuits into a fixed free-abelian unipotent subgroup when affine coordinates are existentially quantified.
+
+Part~V (source~08) gives 229 literal matrices in $\SL_4(\Z)$ whose positive semigroup has the finite-tape halting problem of the Neary--Woods universal machine as its membership problem (r.e.-complete conditionally on the cited Neary--Woods chain), quartic certificates with $130r$ witnesses for each length~$r$, and an exact generating function for the fibre of an accepted input.
 
 The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or Rocq, and priority is not certified for any Part.
 \end{abstract}
@@ -127,20 +137,21 @@ The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or
 
 \section{Scope, common setup and conventions}\label{gts:sec:front}
 
-\wtag\ This section was written when the two manuscripts were merged. Part~\ref{gts:part:vk} and Part~\ref{gts:part:tp} print the two sources; text there without a \wtag\ marker is the source's own. \wtagb\ Parts~\ref{gts:part:po} and~\ref{gts:part:ai} were added on 2~October 2026 from two manuscripts of batch~78. Text written then is marked \wtagb; the sentences of this section that the new Parts made incomplete were extended in place, and Appendix~\ref{gts:app:provenance} lists them.
+\wtag\ This section was written when the two manuscripts were merged. Part~\ref{gts:part:vk} and Part~\ref{gts:part:tp} print the two sources; text there without a \wtag\ marker is the source's own. \wtagb\ Parts~\ref{gts:part:po} and~\ref{gts:part:ai} were added on 2~October 2026 from two manuscripts of batch~78. Text written then is marked \wtagb; the sentences of this section that the new Parts made incomplete were extended in place, and Appendix~\ref{gts:app:provenance} lists them. \wtagc\ Part~\ref{gts:part:um} was added on 3~October 2026 from one manuscript of batch~82; text written then is marked \wtagc, and the sentences of this section that it made incomplete were extended in place.
 
-\subsection{The four Parts}\label{gts:sec:parts}
+\subsection{The Parts}\label{gts:sec:parts}
 
-This report is built from four AI-assisted research manuscripts (Appendix~\ref{gts:app:provenance} gives the full provenance). Two were delivered together as batch~76 of ProveIt's incoming reports (manuscripts~03 and~05) and are printed as Parts~I and~II. They are called \emph{source~03} and \emph{source~05} after the file prefixes of their shipped programs and data. Neither cites the other; they were written from different snapshots of the repository on the same day, and they share no theorem. \wtagb\ Two more, batch-78 manuscripts~09 and~13, are printed as Parts~III and~IV. They are called \emph{source~06} and \emph{source~07}, again after their file prefixes, which continue this report's own sequence and are not batch-78 manuscript numbers. Both were written on 2~October 2026 from one later snapshot of the repository, before Parts~I and~II were written into this report; neither cites the other or an earlier source, and no two of the four share a theorem. All four are complementary work on one subject: \emph{groups as Diophantine substrates}, with low-degree arithmetic certificates; the first three work through the integral Heisenberg group, and the fourth through unipotent matrix groups that contain it.
+This report is built from five AI-assisted research manuscripts (Appendix~\ref{gts:app:provenance} gives the full provenance). Two were delivered together as batch~76 of ProveIt's incoming reports (manuscripts~03 and~05) and are printed as Parts~I and~II. They are called \emph{source~03} and \emph{source~05} after the file prefixes of their shipped programs and data. Neither cites the other; they were written from different snapshots of the repository on the same day, and they share no theorem. \wtagb\ Two more, batch-78 manuscripts~09 and~13, are printed as Parts~III and~IV. They are called \emph{source~06} and \emph{source~07}, again after their file prefixes, which continue this report's own sequence and are not batch-78 manuscript numbers. Both were written on 2~October 2026 from one later snapshot of the repository, before Parts~I and~II were written into this report; neither cites the other or an earlier source, and no two of the four share a theorem. All four are complementary work on one subject: \emph{groups as Diophantine substrates}, with low-degree arithmetic certificates; the first three work through the integral Heisenberg group, and the fourth through unipotent matrix groups that contain it. \wtagc\ A fifth, batch-82 manuscript~22 (``Research Report~32'' of the pipeline that delivered it), is printed as Part~V and called \emph{source~08}, again after its file prefix. It was written on 3~October 2026, cites no earlier source and no repository file, and works through free subgroups of $\SL_2(\Z)$ placed in the two diagonal blocks of $\SL_4(\Z)$. It shares no theorem with Parts~I--IV, except that the first half of one lemma is the injectivity half of Part~I's Sanov theorem, proved differently.
 
 \begin{itemize}
 \item \textbf{Part~\ref{gts:part:vk} (source~03), \emph{Arithmetic van Kampen certificates}.} The substrate is a finitely presented two-generator group; a word is an instance, and a product of conjugates of relators is an accepting proof. Sanov's arithmetic chart of a free subgroup of $\SL_2(\Z)$ turns each conjugator into four integers on one quadric, and the compilers are sums of squares of quadratic residuals (degree at most four) whose allocated arity records the filling area exactly (Theorems~\ref{gts:vk:thm:itinerary}, \ref{gts:vk:thm:budget} and~\ref{gts:vk:thm:arity}). Shared proof DAGs compress the area exponentially, sharply for dyadic rectangular commutators (Theorem~\ref{gts:vk:thm:grid}). Here the Heisenberg group is an \emph{area detector}: a homomorphism from the free group whose central coordinate counts relator occurrences with sign (Section~\ref{gts:vk:sec:grid}).
 \item \textbf{Part~\ref{gts:part:tp} (source~05), \emph{Three commutative phases are Diophantine-universal}.} The substrate is the ordered product $\calA\calB\calT$ of three free abelian subgroups of a power $\HH^d$ of the Heisenberg group. Every integral quadratic system is compiled into such a product with an exact bijection between solutions and factorizations (Theorem~\ref{gts:tp:thm:fibres}); with MRDP this gives three fixed subgroups with computably enumerable complete product membership (Theorem~\ref{gts:tp:thm:main}), proposed as a negative answer to the three-subgroup question of K\"onig, Lohrey and Zetzsche~\cite{KLZ} and Roman'kov~\cite{Romankov}. Here the Heisenberg group is the \emph{ambient group} of a membership problem.
 \item \wtagb\ \textbf{Part~\ref{gts:part:po} (source~06), \emph{Order is not a moment}.} The substrate is a submonoid of $\HH^r$ generated by three labelled elements, so a certificate must show that proposed letter and pair counts come from one common word. For three letters, fixing the multiplicities and two of the three scattered pair counts leaves a gapless interval of the third (Theorem~\ref{gts:po:thm:interval}). This gives a six-equation quadratic certificate with $2c+4$ natural witnesses (Theorem~\ref{gts:po:thm:gapcompiler}), a four-corner formula for $c=2$ (Theorem~\ref{gts:po:thm:fourcorners}) and a canonical 24-witness quartic with exactly one witness tuple per accepted profile (Theorem~\ref{gts:po:thm:canonical}). Four letters can leave arbitrarily large holes (Theorem~\ref{gts:po:thm:fourletter}). The profile certificates lift to three generators of $\HH^r$ (Theorem~\ref{gts:po:thm:lift}), and membership is decidable when the multiplicity of one generator is supplied (Theorem~\ref{gts:po:thm:decidable}). Here the Heisenberg group \emph{records order}: its central coordinates are pair counts.
 \item \wtagb\ \textbf{Part~\ref{gts:part:ai} (source~07), \emph{Affine matrix inputs}.} The substrate is membership of a matrix in a fixed subgroup of $\SL_d(\Z)$, and the question is how an ordinary integer input may be loaded. An entrywise affine unimodular curve meets every subgroup in a finite or exactly periodic set of inputs, in every dimension (Theorem~\ref{gts:ai:thm:rigidity}), with an exact free basis (Theorem~\ref{gts:ai:thm:freebasis}) and a sharp period (Theorem~\ref{gts:ai:thm:period}); with the repository's quadratic loader (Theorem~\ref{gts:ai:thm:quadratic}) this makes input degree two sharp in every dimension (Corollary~\ref{gts:ai:cor:degree}). With existentially quantified affine coordinates the obstruction disappears: a $6\times6$ multiplication gadget (Theorem~\ref{gts:ai:thm:mul}) compiles every polynomial circuit into membership in a fixed free-abelian unipotent subgroup (Theorem~\ref{gts:ai:thm:compiler}). Here the Heisenberg group appears as the cyclic test subgroup $\langle h(1,1,0)\rangle$ (Section~\ref{gts:sec:heis}).
+\item \wtagc\ \textbf{Part~\ref{gts:part:um} (source~08), \emph{A fixed universal matrix semigroup}.} The substrate is one fixed list of 229 literal matrices in $\SL_4(\Z)$ and the positive semigroup $S$ they generate. A finite tape of the Neary--Woods machine $U_{15,2}$ is compiled into a target matrix, and the machine halts exactly when the target lies in $S$ (Theorem~\ref{gts:um:thm:semigroup}); with the cited Neary--Woods chain this makes the membership problem of $S$ many-one r.e.-complete. The proof passes through a directed rewriting system with 93 rules (Lemma~\ref{gts:um:lem:rewrite}), 114 correspondence tiles with a fresh separator (Lemma~\ref{gts:um:lem:tiles}), a faithful encoding by conjugates of a Sanov shear (Lemma~\ref{gts:um:lem:free}) and a free-group marker in the lower block that forces every positive word with the right lower block into paired form (Lemma~\ref{gts:um:lem:marker}). For each certificate length $r$ a quartic sum of $17r+4$ squares with $130r$ natural witnesses has roots in bijection with tile sequences (Theorem~\ref{gts:um:thm:sos}), and the factorization fibre of an accepted input has an exact rational generating function (Theorem~\ref{gts:um:thm:GF}). Here the matrices form a \emph{semigroup}, not a group, and the free group is a \emph{marker}.
 \end{itemize}
 
-Both sources use MRDP only as an imported classical theorem, at the last step, and both state explicitly that their constructions do not give finite-fold or single-fold Diophantine representations. \wtagb\ So does source~07 (Corollary~\ref{gts:ai:cor:abuniversality}); source~06 does not use MRDP. Both new sources state single-fold certificates only for restricted relations: source~06 over complete pair profiles, not over projected targets, and source~07 for languages already forced to be finite or periodic. Each Part keeps its own definitions, letters and numbering of statements; only the Heisenberg group itself is set up once, in Section~\ref{gts:sec:heis}.
+Both sources use MRDP only as an imported classical theorem, at the last step, and both state explicitly that their constructions do not give finite-fold or single-fold Diophantine representations. \wtagb\ So does source~07 (Corollary~\ref{gts:ai:cor:abuniversality}); source~06 does not use MRDP. Both new sources state single-fold certificates only for restricted relations: source~06 over complete pair profiles, not over projected targets, and source~07 for languages already forced to be finite or periodic. Each Part keeps its own definitions, letters and numbering of statements; only the Heisenberg group itself is set up once, in Section~\ref{gts:sec:heis}. \wtagc\ Source~08 does not use MRDP: its universality comes from the Neary--Woods universal machine, and its Diophantine certificates form a family of polynomials, one for each certificate length, whose union over all lengths recovers membership. It states no fixed-arity, finite-fold or single-fold representation, and it proves that the family has infinitely many roots, over all lengths, on every accepted target.
 
 \subsection{The integral Heisenberg group}\label{gts:sec:heis}
 
@@ -170,11 +181,11 @@ so every commutator is central, and the centre of $\HH$ is $\{h(0,0,c):c\in\Z\}$
 
 \wtagb\ Parts~\ref{gts:part:po} and~\ref{gts:part:ai} use the same group with the same convention. Source~06 writes the matrix $h(\alpha,\beta,\gamma)$ as $H(\alpha,\beta,\gamma)$ and the group as $\mathbb H$; this report writes $h(\alpha,\beta,\gamma)$ and $\HH$ (Section~\ref{gts:sec:notation}). Source~07 works in $\SL_d(\Z)$ and does not name the group, but its pencil $T(t,s)=I+tJ+sJ^2$ with $J=E_{12}+E_{23}$ is $h(t,t,s)$ and its generator $P=I+J$ is $h(1,1,0)$; by~\eqref{gts:tp:eq:Hpower}, $P^m=h(m,m,\bn(m))$, which is its equation~\eqref{gts:ai:eq:Ppowers}. Part~\ref{gts:part:tp}'s third phase uses the same binomial device in another cyclic subgroup: $h(-r,-r,\bn(r))=h(-1,-1,0)^r$ in each coordinate of~\eqref{gts:tp:eq:T}, whereas $h(1,1,0)^{-1}=h(-1,-1,1)$, so $\langle h(1,1,0)\rangle\neq\langle h(-1,-1,0)\rangle$ (Remark~\ref{gts:ai:rem:binomial}).
 
-The two Parts use the group differently. Part~\ref{gts:part:vk} uses only the homomorphism $a\mapsto h(1,0,0)$, $b\mapsto h(0,1,0)$ from the free group and reads off the central coordinate (equation~\eqref{gts:vk:eq:heisenberg}). Part~\ref{gts:part:tp} uses the whole group: the three phase homomorphisms \eqref{gts:tp:eq:A}--\eqref{gts:tp:eq:T}, and, for the two-phase theorem, the integral logarithmic coordinate $\lambda(h(a,b,c))=2c-ab$ of Section~\ref{gts:tp:sec:two}. \wtagb\ Part~\ref{gts:part:po} uses three labelled elements of $\HH^r$ and their words; its recording map~\eqref{gts:po:eq:recording} is Part~I's homomorphism applied to one pair of letters at a time, and its logarithmic map~\eqref{gts:po:eq:logcoords} has Part~II's coordinate $\lambda$ as its third entry. Part~\ref{gts:part:ai} uses only the cyclic subgroup $\langle h(1,1,0)\rangle$ of $\SL_3(\Z)$.
+The two Parts use the group differently. Part~\ref{gts:part:vk} uses only the homomorphism $a\mapsto h(1,0,0)$, $b\mapsto h(0,1,0)$ from the free group and reads off the central coordinate (equation~\eqref{gts:vk:eq:heisenberg}). Part~\ref{gts:part:tp} uses the whole group: the three phase homomorphisms \eqref{gts:tp:eq:A}--\eqref{gts:tp:eq:T}, and, for the two-phase theorem, the integral logarithmic coordinate $\lambda(h(a,b,c))=2c-ab$ of Section~\ref{gts:tp:sec:two}. \wtagb\ Part~\ref{gts:part:po} uses three labelled elements of $\HH^r$ and their words; its recording map~\eqref{gts:po:eq:recording} is Part~I's homomorphism applied to one pair of letters at a time, and its logarithmic map~\eqref{gts:po:eq:logcoords} has Part~II's coordinate $\lambda$ as its third entry. Part~\ref{gts:part:ai} uses only the cyclic subgroup $\langle h(1,1,0)\rangle$ of $\SL_3(\Z)$. \wtagc\ Part~\ref{gts:part:um} does not use $\HH$; its free pair $P,Q$ is Part~I's Sanov pair $A,B$ of~\eqref{gts:vk:eq:shears}.
 
 \subsection{Notions and letters}\label{gts:sec:notation}
 
-Each Part keeps its source's letters. Many letters carry different meanings in the two Parts; Table~\ref{gts:tab:notation} lists every letter used in both, so that a statement of one Part is never read with the other Part's meaning. Inside a Part, the meaning is always the one in that Part's column. In Parts~I and~II the only renamed symbol is source~03's $H$ (the Heisenberg group), written $\HH$; no normalization was changed. \wtagb\ Table~\ref{gts:tab:letters78} does the same for Parts~III and~IV, against each other and against Parts~I and~II. Two symbols of those sources are renamed, with no change of normalization: source~06's Heisenberg element $H(\alpha,\beta,\gamma)$ and group $\mathbb H$ are written $h(\alpha,\beta,\gamma)$ and $\HH$, because $H$ is a height bound in Parts~I and~II; and source~07's interpolation coordinates $\lambda_i(t)$ and vector $\boldsymbol\lambda(t)$ are written $\theta_i(t)$ and $\vv(t)$, because $\lambda$ is Part~II's logarithmic coordinate $2c-ab$.
+Each Part keeps its source's letters. Many letters carry different meanings in the two Parts; Table~\ref{gts:tab:notation} lists every letter used in both, so that a statement of one Part is never read with the other Part's meaning. Inside a Part, the meaning is always the one in that Part's column. In Parts~I and~II the only renamed symbol is source~03's $H$ (the Heisenberg group), written $\HH$; no normalization was changed. \wtagb\ Table~\ref{gts:tab:letters78} does the same for Parts~III and~IV, against each other and against Parts~I and~II. Two symbols of those sources are renamed, with no change of normalization: source~06's Heisenberg element $H(\alpha,\beta,\gamma)$ and group $\mathbb H$ are written $h(\alpha,\beta,\gamma)$ and $\HH$, because $H$ is a height bound in Parts~I and~II; and source~07's interpolation coordinates $\lambda_i(t)$ and vector $\boldsymbol\lambda(t)$ are written $\theta_i(t)$ and $\vv(t)$, because $\lambda$ is Part~II's logarithmic coordinate $2c-ab$. \wtagc\ Table~\ref{gts:um:tab:letters} does the same for Part~V. No symbol of source~08 is renamed and no normalization changed; only its matrix shorthand $\mathrm{mat}$ and its norm are printed with this report's macros $\smallmat{\cdot}{\cdot}{\cdot}{\cdot}$ and $\umnorm{\cdot}$, the latter still the maximum absolute row sum.
 
 \begin{center}
 \small
@@ -242,6 +253,35 @@ $S$ & gap-index sum $ac-p$ & a c.e.\ set & II: a c.e.\ set\\
 \end{longtable}
 \end{center}
 
+\begin{center}
+\small
+\begin{longtable}{@{}L{.13\textwidth}L{.45\textwidth}L{.34\textwidth}@{}}
+\caption{\wtagc\ Letters of Part~V that are used differently elsewhere in the report.}\label{gts:um:tab:letters}\\
+\toprule
+Letter & Part~V (source 08) & Parts~I--IV\\
+\midrule
+\endfirsthead
+\toprule
+Letter & Part~V (source 08) & Parts~I--IV\\
+\midrule
+\endhead
+$A_i$, $B_i$, $C$ & the $4\times4$ generators~\eqref{gts:um:eq:A}--\eqref{gts:um:eq:C}; $A,\ldots,O$ are also the machine states & I: the Sanov shears $A,B$ (Part~V's $P,Q$); II: phases; III: letters; IV: the curve $C+nD$, $A=VBV^{-1}$\\
+$P$, $Q$ & the Sanov shears $\smallmat1201$, $\smallmat1021$; $P$ is also the lower block of $C$ and of every target & I: these are $A$, $B$; III: the quartic $P$; IV: $P=h(1,1,0)$, the period $P_k(e)$\\
+$E_j$, $E$ & conjugates $E_j=Q^{-j}PQ^j$; the target map $E(\ell,\rho)$ & I: the chart equation $E$; II: $E_t$; IV: the shear $E(t)$, matrix units $E_{ij}$\\
+$D$ & the upper block $\smallmat{157}{4}{-6712}{-171}$ of $C$ & I: a proof DAG; II: a linear part; IV: the curve $C+nD$\\
+$T$, $T_w$, $\mathcal T$ & a target upper block; $\mathcal T(w)$ the target of a word & II: the third phase $T(r)$; IV: the pencil $T(t,s)$, a hit set\\
+$U$, $U_i$, $V_i$ & the machine $U=U_{15,2}$; the upper blocks $U_i=\Phi(h_i)$, $V_i=\Phi(g_i)$ & I: the chart matrix $U(x,y,z,t)$; III: corner values $U_i$; IV: $U(n)=I+nN$\\
+$H$, $H_r$, $G_r$ & $H$ machine moves before halting; $H_U$ the halting set; prefix products $H_r$, $G_r$ & I, II: height bounds $H$; IV: finitely presented groups $H$\\
+$S$ & the semigroup; $S_s$ selection residuals & III: a gap-index sum; IV: a c.e.\ set\\
+$K$ & the kernel word $K$; norm bounds $K_H$, $K_G$; canonicality residuals $K^H$, $K^G$ & III: pair counts; IV: a subgroup\\
+$r$, $\rho$ & $r$ the certificate (inner) length; $\rho$ the right tape half & II: phase parameters $r$; III: the number of Heisenberg factors\\
+$t$, $x_i$, $h_i$, $g_i$ & lower free generators $t=E_0=P$, $x_i=E_i$; target entries $t_{ab}$; tile sides $(h_i,g_i)$ & I: a chart coordinate $t$; II: the target $t$; $h$ the Heisenberg element\\
+$\Phi$ & the word encoding $\Phi$ & III: a potential; IV: $\Phi:\Z^k\to A_N$\\
+$B$, $d$, $L$, $A$ & in Section~\ref{gts:um:sec:fibers}: the number $B$ of erasure schedules, $d$ genuine rewrites, $L$ an lcm, $A$ a weight product & see the rows above and Tables~\ref{gts:tab:notation}--\ref{gts:tab:letters78}\\
+\bottomrule
+\end{longtable}
+\end{center}
+
 Five words need the same care.
 \begin{itemize}
 \item \textbf{Phase} (Part~\ref{gts:part:tp}) means one factor of an ordered product of commuting subgroups or submonoids: a \emph{commutative phase} is a family of pairwise commuting matrices that may be used in any order and number before the product moves to the next phase. It is not a complex phase, not a phase of the Fabius or Rvachev functions, and not a stage of the ``four-phase zero test'' in Part~XIII of the report \emph{canonical-diophantine-certificates}.
@@ -258,6 +298,12 @@ Five words need the same care.
 \item \textbf{Single-fold}: Part~\ref{gts:part:po}'s canonical quartic has exactly one witness tuple over each complete pair profile, not over each projected target (Section~\ref{gts:po:sec:projection}); Part~\ref{gts:part:ai}'s certificates are single-fold over each accepted input of a language already forced to be finite or periodic (Theorem~\ref{gts:ai:thm:certificate}). Neither is a single-fold representation of c.e.\ sets.
 \item \textbf{Ordinary input} and \textbf{loader} (Part~\ref{gts:part:ai}) are used as in the Hilbert-tenth-problem research notes: one integer $n$ enters a fixed matrix curve $L(n)$, with no further quantified coordinates; an \emph{existential} coordinate is a different interface~\eqref{gts:ai:eq:quantified-interface}.
 \item \textbf{Exactly periodic} (Part~\ref{gts:part:ai}) means a union of residue classes on all of $\Z$, not eventually periodic; $\Spec_c$ (Part~\ref{gts:part:po}) is a set of pair counts, not a spectrum of a ring or an operator.
+\end{itemize}
+\wtagc\ Part~V adds three more.
+\begin{itemize}
+\item \wtagc\ \textbf{Universal} (Part~V's title) means one fixed list of matrices whose membership problem simulates a universal Turing machine; it is not a universal polynomial and carries no arithmetic-operation count, and the r.e.-completeness it names is conditional on the cited Neary--Woods chain.
+\item \wtagc\ \textbf{Certificate length} $r$ (Part~V) is the number of tiles; the polynomial $F_r$ has $130r$ witnesses, so the family has no fixed arity.
+\item \wtagc\ \textbf{Fibre} (Part~V) counts factorization words, equivalently tile sequences or canonical roots, of one fixed target, not distinct matrices; it is finite at each $r$ and infinite over all $r$.
 \end{itemize}
 
 \subsection{Relation to the repository and to the literature}\label{gts:sec:relation}
@@ -288,7 +334,19 @@ Neither source cites the related material below, which was identified at placeme
 \item \textbf{The programme's reviews of both archives}, written on the day of their arrival and before this placement: \cite{repo-rev808} for source~06 and~\cite{repo-revaffine} for source~07. They found no mathematical defect, replayed both programs, and prove two reductions printed as dated notes, a cheaper finalizer for Part~\ref{gts:part:po}'s quartic (after Theorem~\ref{gts:po:thm:canonical}) and one block fewer for each square gate of Part~\ref{gts:part:ai}'s compiler (after Theorem~\ref{gts:ai:thm:compiler}).
 \end{itemize}
 
-No result of the three neighbouring reports of this category (\emph{canonical-diophantine-certificates}, \emph{probabilistic-quantum-and-continuous-computation}, \emph{liveness-beyond-halting}) is re-proved in this report, so no proof was replaced by a pointer. \wtagb\ This remains true of Parts~III and~IV with one exception: Step~3 of Theorem~\ref{gts:ai:thm:quadratic} re-proves the finite generation of Mihailova's fibre product, which is \texttt{pqc:dr:prop:mihailova} of~\cite{pqc}; it is printed as a marked second route with that pointer.
+\wtagc\ Part~V relates to the following material, none of which source~08 cites.
+\begin{itemize}
+\item \textbf{Report \emph{quadratic-orthant-certificates}}~\cite{qoc}. Its Parts~III and~V print the same $U_{15,2}$ table and the same erratum; Table~\ref{gts:um:tab:machine} is the collection's third printing (note after it), and source~08's serialized table is that report's data file, shipped there and not here. That report uses the machine for clocks, membranes and reset Petri nets and shares no theorem with Part~V.
+\item \textbf{The research note \path{neary_woods_explicit_universal_tm.md}}~\cite{repo-nw15} and \textbf{the notes \path{gpcp_complete_fixed_program.md} and \path{gpcp_fixed_program_input_bridge.md}}~\cite{repo-gpcp}. Lemmas~\ref{gts:um:lem:rewrite} and~\ref{gts:um:lem:tiles} re-derive their rewriting and fresh-delimiter tile construction for the same machine (credit after Lemma~\ref{gts:um:lem:tiles}). The note continues to a fixed-arity universal polynomial; Part~V continues to a matrix semigroup.
+\item \textbf{Part~I.} Part~V's free pair $P,Q$ is Part~I's Sanov pair, and the first half of Lemma~\ref{gts:um:lem:free} is the injectivity half of Theorem~\ref{gts:vk:thm:sanov}, printed as a second proof (note after the lemma).
+\item \textbf{Part~IV, Part~VI of~\cite{pqc} and the commutator note~\cite{repo-comm}} construct fixed finitely generated \emph{subgroups} of $\SL_4(\Z)$ or of $\mathrm{SO}(4,\Z[1/5])$ with c.e.-complete membership; Part~V's object is a fixed positive \emph{semigroup}. Neither kind of result implies the other. Part~V answers Part~IV's question~10 only in part (note there).
+\item \textbf{The complete matrix-membership compiler}~\cite{repo-cmc}, whose numerical universal alphabet the programme's README calls uninstantiated. Part~V's 229 matrices are a literal universal alphabet, but for a positive semigroup in the block form $\diag(\SL_2(\Z),\text{free group})$, not for that compiler's inverse-closed interface $\diag(L_r,L_r)$, and with bounded-length certificates rather than a fixed-arity polynomial; the programme's review~\cite{repo-revmg} says the same.
+\item \textbf{Report \emph{stochastic-and-thermal-exactness}}, Part~I (its Theorem \texttt{ste:ee:thm:pcp}), reduces Post correspondence to integer matrix \emph{mortality}, with the instance as input; Part~V has one fixed semigroup and the target as input. They share the classical correspondence-to-matrices idea, not a theorem.
+\item \textbf{The programme's review of the archive}~\cite{repo-revmg} (commit \texttt{32da04296}) and \textbf{its successor note}~\cite{repo-ds193} (commit \texttt{0f7d618f4}), both of 3~October 2026 and earlier than this write. The review read the archive as data, executed none of its programs, reconstructed the 93 rules, 114 tiles and 229 matrices, the coefficient census and the 189-factor accepting product, recounted the six exported polynomials and their evaluator charges, reported no discrepancy, and derived a 197-generator subset; the successor reduces the count to 193. Both are summarized after question~4 of Section~\ref{gts:um:sec:future}. The shipped programs are the delivered ones; neither note patches them.
+\item \textbf{Reports \emph{fixed-universal-polynomials}}, Part~I, and \textbf{\emph{five-particle-binary-automata}}, Part~II (Reports~23 and~16 of the same pipeline, placed in the same batch): source~08's dependency audit cites them for the same finite $U_{15,2}$ input convention, Report~16 for its loader and machine table and Report~23 for an explicit ordinary-input frame. Part~V uses nothing else from them, and the audit calls Report~23's conditional theorem unnecessary for the input hardness used here.
+\end{itemize}
+
+No result of the three neighbouring reports of this category (\emph{canonical-diophantine-certificates}, \emph{probabilistic-quantum-and-continuous-computation}, \emph{liveness-beyond-halting}) is re-proved in this report, so no proof was replaced by a pointer. \wtagb\ This remains true of Parts~III and~IV with one exception: Step~3 of Theorem~\ref{gts:ai:thm:quadratic} re-proves the finite generation of Mihailova's fibre product, which is \texttt{pqc:dr:prop:mihailova} of~\cite{pqc}; it is printed as a marked second route with that pointer. \wtagc\ Part~V re-proves no result of a neighbouring report. Its machine table is the third printing of a table of \emph{quadratic-orthant-certificates}, and its rewriting and tile lemmas re-derive research-programme constructions; both are credited where they occur.
 
 \textbf{Literature credit for the two-phase theorem.} For \emph{integer} exponents, Theorem~\ref{gts:tp:thm:two} is a special case of known results: a product of two subgroups of a polycyclic group is closed in the profinite topology and therefore has decidable membership~\cite[Remark~6.7]{KLZ}, and Roman'kov proves that the product of two subgroups membership problem is decidable in every finitely generated nilpotent group of class two~\cite{Romankov}. The group $\HH^d\times\Z^e$ is both. Source~05 does not cite these results for its two-phase theorem; the credit and a precise statement of what source~05 adds are in Remark~\ref{gts:tp:rem:credit} after the theorem. The three-subgroup statement, Theorem~\ref{gts:tp:thm:main}, is different: both sources~\cite{KLZ,Romankov} state that case as open, and no earlier resolution was found at placement (a check of the arXiv text of~\cite{KLZ} and of the abstract of~\cite{Romankov}); its priority is not certified.
 
@@ -312,12 +370,24 @@ The report is AI-assisted and unrefereed, and \textbf{nothing in it is formalize
 \item a uniform algorithm computing Part~IV's finite or periodic description from subgroup generators: Proposition~\ref{gts:ai:prop:uniform} shows that there is none;
 \item that Part~IV's degree threshold bounds anything but the input degree in its stated interface; its degree-two half rests on the external effective Higman embedding~\cite{ai-mikaelian}, through the repository construction it reconstructs.
 \end{itemize}
+\wtagc\ Part~\ref{gts:part:um} has the same status: proofs and finite exact checks, AI-assisted, unrefereed, not formalized; source~08 makes no novelty or optimality claim. Its many-one r.e.-completeness is conditional on the cited Neary--Woods simulation chain, which it neither reproves nor implements; the local equivalence, the polynomial family and the fibre formulas are proved. Every limitation of source~08 is kept in its Part; collected here, it does not claim
+\begin{itemize}
+\item inverse closure, subgroup membership, or an instantiated universal subgroup, presentation or Higman alphabet: its semigroup is positive;
+\item an implemented loader from arbitrary programs to finite $U_{15,2}$ tapes: its target encoder starts from a finite tape;
+\item one fixed-arity polynomial for all certificate lengths, or a finite-fold representation: its certificates are a family $F_r$ with $130r$ witnesses whose union over $r$ recovers membership, and every accepted target has infinitely many roots over all $r$ (Section~\ref{gts:um:sec:fibers});
+\item unique targets: canonical signed parts make the roots correspond to tile sequences, not to targets (Section~\ref{gts:um:sec:examples});
+\item an optimal generator count, dimension or certificate size, or an improvement on the matrix-undecidability literature; the research programme has since lowered the generator count to 193 (Section~\ref{gts:um:sec:future});
+\item an arithmetic-operation bound: the evaluator charges of Section~\ref{gts:um:sec:resources} belong to one unoptimized evaluator;
+\item a decision procedure: its fibre formulas presuppose an accepted input.
+\end{itemize}
 
 \subsection{Research questions}\label{gts:sec:questions}
 
 Both agendas are printed in full: the twelve questions of Part~I (Section~\ref{gts:vk:sec:questions}) and the nine research directions of Part~II (Section~\ref{gts:tp:sec:future}). Neither Part answers a question of the other, and the placement survey of the repository found none of them answered there. Three pairs are related and should be read together: higher nilpotent invariants as lower-bound detectors for proof DAGs (Question~\ref{gts:vk:q:detectors}) and higher unitriangular groups as substrates for higher-degree compilers (Section~\ref{gts:tp:q:nilpotent}); the first formal milestones, the Sanov chart and fixed-itinerary compiler (Question~\ref{gts:vk:q:chart}) and the exact fibre theorem (Section~\ref{gts:tp:q:formal}), each independent of MRDP; and passing the repository's existing certificate compilers through the new constructions with fair metrics or intact fibres (Question~\ref{gts:vk:q:interop} and Section~\ref{gts:tp:q:counting}).
 
 \wtagb\ Part~III adds twelve research questions (Section~\ref{gts:po:sec:questions}) and Part~IV ten (Section~\ref{gts:ai:sec:questions}). Two of Part~IV's are partly answered elsewhere in the repository: Part~II answers the negative half of question~9 (subgroups replaced by rational subsets) for products of three subgroups or of three free commutative submonoids (Remark~\ref{gts:ai:rem:subgroup}), and question~10 (a fully charged universal matrix certificate) is partly done by the research note~\cite{repo-cmc}; both are re-scoped at the questions. Part~III's question~11 (higher-step nilpotent groups) belongs with Question~\ref{gts:vk:q:detectors} and Section~\ref{gts:tp:q:nilpotent}, and its question~9 (three generators without a supplied multiplicity) is what remains open of the research note's question (Section~\ref{gts:sec:relation}). The placement survey found no other question of Parts~III and~IV answered in the repository.
+
+\wtagc\ Part~V adds seven questions (Section~\ref{gts:um:sec:future}). Its question~4 (generator and dimension counts) is answered in part by the research programme, which lowered the count from 229 to 197 and then to 193 on the day the archive arrived; the note there re-scopes it. Its question~7 (a uniform unbounded polynomial) is what remains open of Part~IV's question~10, which Part~V answers only in part: it instantiates a universal alphabet, but for a positive semigroup and with bounded-length certificates (note at that question). It does not answer Part~IV's question~9 for positive-word semigroups, because its target map is not an affine curve. Its question~6 (formalization) belongs with Question~\ref{gts:vk:q:chart} and Section~\ref{gts:tp:q:formal}. No other question of Part~V is answered in the repository.
 
 \part{Arithmetic van Kampen certificates (source 03)}\label{gts:part:vk}
 
@@ -4176,10 +4246,12 @@ Proposition~\ref{gts:ai:prop:onewitness} rules out one quantified coordinate; MR
 \item \textbf{Replace subgroups by semigroups or constrained word languages.}
 The rigidity proof uses inverses in the step from $L(n)$ to $L(n_0)^{-1}L(n)$ and in the lattice structure of $K\cap A_N$. It therefore does not automatically apply to positive-word semigroups or rational subsets. Determine which affine-input classifications survive with these different acceptance semantics, and which counterexamples can be constructed without importing a hidden arbitrary computation into the input map.
 \wtagb\ For rational subsets the negative half is answered by Part~\ref{gts:part:tp}: by Remark~\ref{gts:ai:rem:subgroup}, products of three subgroups, or of three free commutative submonoids, of $\HH^d$ can have nonrecursive hit sets along an affine line. Products of two factors, positive-word semigroups and other constrained word languages remain open.
+\wtagc\ (3~October 2026.) Part~\ref{gts:part:um} does not answer the semigroup case: its fixed positive semigroup is universal, but its target map $E(\ell,\rho)$ is not an affine curve (its entries grow exponentially with the tape length, Section~\ref{gts:um:sec:resources}), so it gives no affine-input classification and no counterexample to one.
 
 \item \textbf{Charge a complete universal matrix certificate.}
 Instantiate a concrete finite presentation and its fixed matrix generators from the quadratic construction, then give a fully charged unbounded Diophantine word checker. Only after these steps is a numerical comparison with the repository's fixed universal-polynomial benchmark meaningful. The present lower bound can guide loader choice, but it does not pay the cost of certifying an arbitrarily long product.
 \wtagb\ Part of this is done in the repository: the research note~\cite{repo-cmc} gives a fully charged positive Diophantine certificate, with literal operation counts, for membership of $\diag(L_r,L_r)$ in a fixed subgroup of $\SL_2(\Z)\times\SL_2(\Z)$ given by a supplied finite macro table. What remains is the numerically instantiated universal alphabet.
+\wtagc\ (3~October 2026.) Answered in part, for a different membership problem, by Part~\ref{gts:part:um}: it instantiates a universal alphabet numerically, 229 literal matrices of $\SL_4(\Z)$ generating a positive semigroup whose membership is many-one r.e.-complete, conditionally on the Neary--Woods simulation chain (Theorem~\ref{gts:um:thm:semigroup}); the research programme has reduced it to 193 generators (Section~\ref{gts:um:sec:future}). Two parts of the question remain open. The semigroup is positive, so neither the subgroup of Theorem~\ref{gts:ai:thm:quadratic} nor the interface of~\cite{repo-cmc} is instantiated; and its Diophantine certificates (Theorem~\ref{gts:um:thm:sos}) are bounded-length certificates bought with $130r$ witnesses for length $r$, not a fully charged unbounded word checker of fixed arity. The numerical comparison with the repository's fixed universal-polynomial benchmark is therefore still not meaningful.
 \end{enumerate}
 
 \section{Conclusion}
@@ -4188,6 +4260,805 @@ The obstruction left implicit by the higher-dimensional counterexample has a cle
 Together with the existing quadratic group construction, this gives an exact degree threshold for the specified ordinary-input interface. At the same time, the affine multiplication gadget shows why existentially quantified coordinates must not be folded into that theorem. A fixed abelian unipotent subgroup with easy direct membership can support arbitrary Diophantine computation through a jointly affine pencil once enough coordinates are projected away.
 
 The resulting contribution is structural and quantitative at the input and witness interfaces. It does not lower a universal polynomial's arithmetic-operation count, instantiate the large universal subgroup, settle finite-fold MRDP, or carry a new proof-assistant certificate. Those boundaries are part of the result: they distinguish a proved extension from an uncharged claim of universality.
+
+\part{A fixed universal matrix semigroup (source 08)}\label{gts:part:um}
+\setcounter{umsaveeq}{\value{equation}}\setcounter{equation}{0}%
+\let\umoldtheequation\theequation\let\umoldtheHequation\theHequation
+\renewcommand{\theequation}{V.\arabic{equation}}\renewcommand{\theHequation}{um.\arabic{equation}}%
+
+\noindent\wtagc\ Part~V prints batch-82 manuscript~22, ``Research Report~32'' of the pipeline that delivered it, \emph{A fixed universal matrix semigroup and bounded length Diophantine certificates}, dated 3~October 2026. Its author line reads ``Research construction and reproducibility report''; it names no author and is AI-assisted. It is called \emph{source~08} after the file prefix of its shipped programs and data, which continues this report's own sequence and is not a batch-82 manuscript number. Its labels carry the prefix \texttt{gts:um:}. Its Section~$n$ is Section~$n+60$ here and its Theorem~$n.m$ is Theorem~$(n+60).m$; its Appendices~A and~B are Appendices~\ref{gts:um:app:literal} and~\ref{gts:um:app:sequence}, placed after the existing appendices so that those keep their letters. Its equations are numbered (V.$n$), where $n$ is the source's own equation number, so that the equation numbers of the appendices do not move. Its matrix shorthand and its norm are printed with this report's macros, its bibliography keys carry the prefix \texttt{um-}, and its two appendix titles begin with ``Part~V''; nothing else in its text was changed, apart from the \wtagc\ notes. Its title page and table of contents are replaced by this opening. It names no ProveIt commit as a snapshot and cites no repository file and no other report; only its shipped dependency audit (\path{08-matrix-semigroup-core-loader-audit-U15_DEPENDENCY_AUDIT.md}) mentions two other reports of its pipeline, as evidence for the finite-tape input convention: Report~16 (Part~II of the collection report \emph{five-particle-binary-automata}, placed in the same batch; the audit pins its loader and its machine table, which is the table file of \emph{quadratic-orthant-certificates} named below) and Report~23 (Part~I of the collection report \emph{fixed-universal-polynomials}, placed in the same batch). Its abstract and scope statement follow.
+
+\begin{quote}\small
+\textbf{Abstract (source 08).} One fixed list of 229 explicitly expanded matrices in $\SL_4(\Z)$ has a many-one recursively enumerable complete membership problem. The local reduction is implemented from every finite binary initialization of the Neary--Woods 15-state machine: a directed rewriting system with 93 rules becomes 114 correspondence tiles, then an unrestricted positive matrix semigroup. A free-group marker in the lower block enforces the required paired word form. The arbitrary-machine-to-finite-tape stage remains a precisely identified published effective construction.
+
+For each numerical inner length $r\geq0$, a second compiler gives a literal sum-of-squares integer polynomial with four signed external target entries, exactly $130r$ natural auxiliary variables, and $17r+4$ residual squares. Its roots correspond bijectively to matching length-$r$ tile sequences. Its joint degree is four for $r\geq1$ and two for $r=0$. Canonical signed parts remove representation multiplicity, but distinct factor sequences can share a target. A checked length-two collision and an actual 94-tile accepting certificate make this distinction concrete. For accepted encoded inputs, an exact rational generating function proves infinite unbounded fibers and polynomial factorization growth. Complete local proofs, scalar arithmetic and bit-size ledgers, executable scope boundaries, and portable replay instructions accompany the numerical data.
+
+\medskip
+\textbf{Scope.} This report makes no novelty or optimality claim. It proves a fixed semigroup theorem and a bounded-length polynomial-family theorem. It does not assert inverse closure, an implemented arbitrary-program loader, a fixed-arity encoding of unbounded length, or an unbounded finite-fold representation. Accepted encoded targets are proved to have infinite fibers across lengths in Section~\ref{gts:um:sec:fibers}.
+\end{quote}
+
+\wtagc\ \textbf{What is proved, and what is conditional.} The abstract states many-one r.e.-completeness before its qualifier. The local equivalence of Theorem~\ref{gts:um:thm:semigroup}, that $U$ halts on $(\ell,\rho)$ if and only if $E(\ell,\rho)\in S$, is proved in full (Lemmas~\ref{gts:um:lem:rewrite}, \ref{gts:um:lem:tiles}, \ref{gts:um:lem:free} and~\ref{gts:um:lem:marker} and Section~\ref{gts:um:sec:reduction}) and implemented. The many-one r.e.-completeness of the one fixed semigroup is \emph{conditional} on the published Neary--Woods simulation chain of Section~\ref{gts:um:sec:machine}, which source~08 cites, does not reprove and does not implement, as Theorem~\ref{gts:um:thm:semigroup}, Section~\ref{gts:um:sec:machine} and the conclusion say. The 229 matrices, Theorem~\ref{gts:um:thm:sos} and the fibre formula do not depend on that chain. The abstract's sentence that a generating function ``proves infinite unbounded fibers'' joins two results: the infinite unbounded fibre of every accepted encoded target is proved by the stutter argument at the start of Section~\ref{gts:um:sec:fibers}, which needs no generating function, and Theorem~\ref{gts:um:thm:GF} counts the fibre of a halting \emph{live} input exactly.
+
+\wtagc\ The rewriting and tile stages re-derive a construction of the research programme for the same machine, and the machine table is the collection's third printing of it (notes after Table~\ref{gts:um:tab:machine} and Lemma~\ref{gts:um:lem:tiles}); the first half of Lemma~\ref{gts:um:lem:free} is part of Part~I's Sanov theorem. The programme reviewed the archive on the day it arrived and reduced the generator count to 197 and then 193 (note after question~4 of Section~\ref{gts:um:sec:future}). Section~\ref{gts:sec:relation} collects these relations; Table~\ref{gts:um:tab:letters} lists the letters of this Part that mean something else in Parts~I--IV.
+
+\section{The two results and their exact interfaces}
+\label{gts:um:sec:main}
+Throughout, $\N=\{0,1,2,\ldots\}$, all matrix products are ordered left to right as written, and semigroup membership permits nonempty positive words in the listed generators. An inverse occurring inside the formula for a fixed numerical generator does not authorize adjoining that generator's inverse to the semigroup.
+
+Let $\mathcal G=(A_1,\ldots,A_{114},B_1,\ldots,B_{114},C)$ be the literal ordered list in the accompanying \code{core/data/semigroup.json}. Section~\ref{gts:um:sec:matrices} gives its full finite mathematical specification. Every matrix entry is expanded as an integer in that file and in \code{core/data/matrices.txt}. Write
+\[
+ S=\{G_1\cdots G_m:m\geq1,\ G_j\in\mathcal G\}\subseteq\SL_4(\Z).
+\]
+For finite words $\ell,\rho\in\{0,1\}^{*}$, initialize the fixed machine $U$ in state $A$ scanning $0$ at coordinate zero, with cell $-i-1$ containing $\ell_i$ and cell $i+1$ containing $\rho_i$. All unlisted cells are zero. Thus both halves are nearest-head-first; neither includes the scanned cell. We reserve $r$ for a numerical certificate length and use $\rho$ for the right tape half.
+
+\begin{theorem}[Fixed semigroup and executable tape interface]
+\label{gts:um:thm:semigroup}
+There are 229 distinct literal matrices $\mathcal G\subset\SL_4(\Z)$ and an explicitly implemented computable map $E$ on finite binary tape pairs such that
+\[
+ U\text{ halts on }(\ell,\rho)\quad\Longleftrightarrow\quad E(\ell,\rho)\in S.
+\]
+The membership problem of this one fixed $S$ is many-one r.e.-complete. The latter conclusion uses the published effective finite-tape universality construction of Neary and Woods in addition to the local, implemented equivalence.
+\end{theorem}
+
+Set
+\begin{equation}\label{gts:um:eq:DP}
+ D=\smallmat{157}{4}{-6712}{-171},\qquad P=\smallmat{1}{2}{0}{1}.
+\end{equation}
+These are the upper and lower blocks of $C$. A query to the polynomial interface consists of a numerical $r\geq0$ and an arbitrary signed integer $2\times2$ matrix $T=(t_{ab})$.
+
+\begin{theorem}[Fully counted bounded-length certificate]
+\label{gts:um:thm:sos}
+For every numerical $r\geq0$, the companion compiler emits an integer polynomial
+\[
+ F_r(T;x),\qquad T\in\Z^{2\times2},\quad x\in\N^{130r},
+\]
+as a literal sum of $17r+4$ squares of explicit sparse residual polynomials. For each fixed $T$, its natural roots are in bijection with sequences $(i_1,\ldots,i_r)\in\{1,\ldots,114\}^r$ satisfying
+\begin{equation}\label{gts:um:eq:paired}
+ A_{i_1}\cdots A_{i_r}\,C\,B_{i_r}\cdots B_{i_1}=\diag(T,P).
+\end{equation}
+The joint total degree before external specialization is $2$ for $r=0$ and exactly $4$ for $r\geq1$. Hence the number of roots is at most $114^r$. The generator length in \eqref{gts:um:eq:paired} is exactly $2r+1$.
+\end{theorem}
+
+The word ``joint'' counts external and auxiliary variables together. At $r=0$, specializing the four external entries leaves a constant and zero auxiliary slots. One sequence has exactly one certificate, but one target need not have only one sequence.
+
+The lower-marker theorem proved below implies
+\begin{equation}\label{gts:um:eq:union}
+ \diag(T,P)\in S
+ \quad\Longleftrightarrow\quad
+ \exists r\geq0\ \exists x\in\N^{130r}:F_r(T;x)=0.
+\end{equation}
+This is a countable union of growing-arity polynomial families. An existential statement about a variable $r$ in prose is not a polynomial encoding of that variable at fixed arity. For a bound $L\geq1$ on generator length, membership within that bound is the finite disjunction of the separate instances with $0\leq r\leq\lfloor(L-1)/2\rfloor$. No uncharged selector for that disjunction is being used.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[node distance=9mm, every node/.style={align=center,font=\small},arr/.style={-{Latex[length=2mm]},thick}]
+\node (tm) {arbitrary machine and input};
+\node[below=of tm] (tape) {finite blank-tailed $U$ input $(\ell,\rho)$};
+\node[below=of tape] (word) {directed word $w=[\rev(\ell)A0\rho]$};
+\node[below=of word] (matrix) {target $E(\ell,\rho)=\diag(\Phi(w\#)^{-1},P)$};
+\node[below=of matrix] (sos) {for each numerical $r$: the polynomial $F_r(T;x)$};
+\draw[arr,dashed] (tm)--node[right,xshift=4mm]{published effective simulation}(tape);
+\draw[arr] (tape)--node[right,xshift=4mm]{explicit local construction}(word);
+\draw[arr] (word)--node[right,xshift=4mm]{literal matrix compiler}(matrix);
+\draw[arr] (matrix)--node[right,xshift=4mm]{bounded-length certificate compiler}(sos);
+\end{tikzpicture}
+\caption{Dependency and implementation boundaries. The dashed stage is a mathematical source dependency; the solid stages are delivered algorithms. The bottom family has arity depending on $r$.}
+\label{gts:um:fig:chain}
+\end{figure}
+
+\section{The fixed machine and the published dependency}
+\label{gts:um:sec:machine}
+\subsection{The complete transition table}
+Table~\ref{gts:um:tab:machine} is the 30-cell finite source data. The ordered states $A,\ldots,O$ correspond to $u_1,\ldots,u_{15}$ of Neary--Woods, and $0=c$, $1=b$. A defined entry lists the written symbol, movement, and next state. The only undefined cell is $J1=(u_{10},b)$, which is the halting event.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ccc@{\qquad}ccc}
+\toprule
+State & Read 0 & Read 1 & State & Read 0 & Read 1\\\midrule
+$A$ & $0,R,B$ & $1,R,A$ & $I$ & $0,R,A$ & $1,L,J$\\
+$B$ & $1,R,C$ & $1,R,A$ & $J$ & $1,L,K$ & halt\\
+$C$ & $0,L,G$ & $0,L,E$ & $K$ & $0,R,L$ & $1,R,N$\\
+$D$ & $0,L,F$ & $1,L,E$ & $L$ & $0,R,M$ & $1,R,L$\\
+$E$ & $1,R,A$ & $1,L,D$ & $M$ & $0,L,B$ & $1,R,L$\\
+$F$ & $1,L,D$ & $1,L,D$ & $N$ & $0,L,C$ & $0,R,O$\\
+$G$ & $0,L,H$ & $1,L,G$ & $O$ & $0,R,N$ & $1,R,N$\\
+$H$ & $1,L,I$ & $1,L,G$ & & &\\\bottomrule
+\end{tabular}
+\caption{The fixed $U_{15,2}$ table. Source: Neary--Woods, Table 16 \cite{um-NW}; factual transcription and relabeling.}
+\label{gts:um:tab:machine}
+\end{table}
+
+The source prose elsewhere names $(u_{10},c)$ as the halting cell, whereas Table 16 defines that cell as $b,L,u_{11}$. This release follows the unambiguous table: $J1$ is undefined and $J0$ is defined. The issue is recorded rather than silently changing a transition.
+
+\wtagc\ Table~\ref{gts:um:tab:machine} is the third printing of this table in the collection. It agrees entry by entry (states $A,\ldots,O$ for $u_1,\ldots,u_{15}$, $0=c$, $1=b$, $J1$ undefined) with Tables \texttt{qoc:wf:tab:tm} and \texttt{qoc:um:tab:tm} of the report \emph{quadratic-orthant-certificates}~\cite{qoc} (its Parts~III and~V) and with the transcription in the research programme's note~\cite{repo-nw15}, added on 1~October 2026. The inconsistency between Table~16 and the prose of Neary and Woods recorded in the preceding paragraph is also recorded in that note; \emph{quadratic-orthant-certificates} prints it in full after its Table \texttt{qoc:wf:tab:tm}. Source~08 cites neither, found the inconsistency independently and resolves it in the same way. Its serialized table \path{core/data/u15_table.json} is byte-identical to \path{data/16-universal-membrane-tm_table.json} of \emph{quadratic-orthant-certificates} and is not shipped here (the README restores it for reruns); all 30 cells of that file were compared with Table~\ref{gts:um:tab:machine} at this write.
+
+\subsection{Exactly what universality supplies}
+Let $H_U$ be the set of finite tape pairs from Section~\ref{gts:um:sec:main} on which this fixed table reaches $J1$. All such pairs are legitimate inputs, even when they do not encode a meaningful simulated program. Hardness requires only a well-formed subfamily.
+
+The published reference is \emph{Fundamenta Informaticae} 91(1) (2009), pages 123--144, DOI \href{https://doi.org/10.3233/FI-2009-0036}{10.3233/FI-2009-0036} \cite{um-NW}. The author-hosted PDF used for detailed inspection has draft pagination 105--126 and different draft DOI metadata. Therefore a locator such as ``Table 16, printed page 121'' below refers to that draft PDF, not to page 121 of the published article.
+
+The effective source chain is as follows.
+\begin{enumerate}
+\item Lemma 2.1, draft pages 108--109, constructs a clockwise machine from an ordinary deterministic one-tape machine. Input conversion is a finite-state transduction; finite boundary markers represent the two infinite blank tails.
+\item Lemma 2.2, draft pages 110--111, converts the clockwise machine to a bi-tag system while preserving the simulated halting event. Theorem 2.1 composes these stages.
+\item Definition 3.1, equations (3)--(4), and Tables 1--3, draft pages 112--113, specify finite program/data encodings for the universal machines.
+\item Theorem 3.1 proves the simulation for $U_{9,3}$; the paragraph after that proof extends the correctness argument to the other machines. Section 3.5 and Table 16 give the $U_{15,2}$ implementation and halting mechanism, draft pages 120--123.
+\end{enumerate}
+Theorem 3.1 alone is not a separately stated $U_{15,2}$ r.e.-completeness theorem. The cited chain yields that conclusion by effective composition.
+
+For the properly encoded bi-tag configurations produced by these constructions, the finite physical tape has the form $P_{\rm prog}\,b\,[c]\,D_{\rm data}$, where brackets here designate the scanned cell, not tape characters. Taking no optional padding, our two halves are
+\[
+ \ell=\rev(\operatorname{binary}(P_{\rm prog}b)),\qquad
+ \rho=\operatorname{binary}(D_{\rm data}),
+\]
+with $b\mapsto1$ and $c\mapsto0$. Both tails are blank. The construction supplies a total effective halting-preserving map from valid machine/input codes into this family. Standard effective coding can assign malformed codes to a fixed nonhalting computation. Consequently the ordinary halting set reduces many-one to $H_U$. Direct simulation makes $H_U$ r.e., hence it is many-one r.e.-complete.
+
+This report proves the downstream local construction in full. It does not reprove every step of the published universal simulation, does not materialize its complete arbitrary-TM-to-bi-tag compiler, and does not infer a source-program complexity bound from the finite-tape bound below. An executable finite-tape encoder is a narrower deliverable than an executable arbitrary-program encoder.
+
+\section{A directed rewriting system with 93 rules}
+\label{gts:um:sec:rewriting}
+Use the ordered alphabet
+\[
+ \Sigma=(0,1,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,[,],X).
+\]
+The brackets are actual letters in this alphabet. The fresh letter $X$ is a cleanup marker and the one-letter terminal word. A live finite configuration is $[\,l\,q\,a\,v\,]$, with $l,v$ binary words, $q$ a state, and $a$ the scanned bit. Unrepresented cells beyond the endpoints are zero. The initial word is
+\begin{equation}\label{gts:um:eq:initial}
+ w(\ell,\rho)=[\,\rev(\ell)\,A\,0\,\rho\,].
+\end{equation}
+
+For each defined transition $(q,a)\mapsto(b,R,p)$, include
+\begin{equation}\label{gts:um:eq:Rrules}
+ qa0\hto bp0,\qquad qa1\hto bp1,\qquad qa]\hto bp0].
+\end{equation}
+For each defined transition $(q,a)\mapsto(b,L,p)$, include
+\begin{equation}\label{gts:um:eq:Lrules}
+ 0qa\hto p0b,\qquad 1qa\hto p1b,\qquad [qa\hto[p0b.
+\end{equation}
+The boundary cases insert one newly visited blank. Finally include
+\begin{equation}\label{gts:um:eq:clean}
+ J1\hto X,\quad 0X\hto X,\quad X0\hto X,\quad
+ 1X\hto X,\quad X1\hto X,\quad [X]\hto X.
+\end{equation}
+There are $29\cdot3+1+4+1=93$ rules, all with nonempty sides. Their deterministic enumeration scans transition cells $A0,A1,B0,B1,\ldots,O1$, skips $J1$, and lists the two bit contexts then the boundary context for each cell. It then appends the six rules in \eqref{gts:um:eq:clean}. This convention and Table~\ref{gts:um:tab:machine} specify every rule without an implicit choice.
+
+\begin{lemma}[Exact simulation and cleanup]\label{gts:um:lem:rewrite}
+For every finite binary pair $(\ell,\rho)$,
+\[
+ U\text{ halts on }(\ell,\rho)\quad\Longleftrightarrow\quad
+ w(\ell,\rho)\st X.
+\]
+\end{lemma}
+\begin{proof}
+A live configuration contains one state letter. If the cell is defined, its state and scanned bit select one transition, and the symbol on the movement side selects exactly one of its three context rules. No rule of another cell can match. No cleanup rule can match because $X$ is absent. The resulting word is the next live configuration, with exactly the prescribed tape write and head move. At an endpoint the matching boundary rule adds precisely the blank cell the infinite-tape machine next visits.
+
+At the undefined cell $J1$, the only applicable rule involving a state is $J1\hto X$. The result has the form $[lXv]$. The four erasures can delete all binary letters on either side, after which $[X]\hto X$ finishes. Each cleanup step shortens the word. Conversely, the only way to create $X$ is to apply $J1\hto X$, so any derivation to $X$ must first reach the machine's halting cell. Before this event every rewrite was the unique correct simulation step. There is no reverse rewrite, extra rejecting halt, or boundary erasure that could bypass it.
+\end{proof}
+
+\section{From rewriting to 114 fixed tiles}
+\label{gts:um:sec:tiles}
+Introduce a fresh separator $\#$. The ordered tile list $(h_i,g_i)$ consists of 20 copy tiles $(a,a)$ in alphabet order, 93 tiles $(v,u)$ corresponding in order to the directed rules $u\hto v$, and the final separator tile $(\#,\#)$ at index 114. Every side is nonempty; only tile 114 contains $\#$.
+
+For a sequence $s=i_1\cdots i_m$, let $h(s)=h_{i_1}\cdots h_{i_m}$ and $g(s)=g_{i_1}\cdots g_{i_m}$. Empty sequences give empty words.
+
+\begin{lemma}[Exact correspondence equation]\label{gts:um:lem:tiles}
+For every word $w\in\Sigma^*$, including malformed configuration words,
+\begin{equation}\label{gts:um:eq:correspondence}
+ w\st X\quad\Longleftrightarrow\quad
+ \exists s:\quad w\#h(s)=g(s)X\#.
+\end{equation}
+\end{lemma}
+\begin{proof}
+Suppose $w=w_0\hto w_1\hto\cdots\hto w_d=X$. A step $\alpha u\beta\hto\alpha v\beta$ gives a tile block: the copies of $\alpha$, the tile $(v,u)$, the copies of $\beta$, and the separator. Concatenating these blocks yields
+\[
+ h(s)=w_1\#\cdots w_d\#,\qquad
+ g(s)=w_0\#\cdots w_{d-1}\#,
+\]
+so \eqref{gts:um:eq:correspondence} holds. For the zero-step derivation $w=X$, choose $s=\eps$.
+
+Conversely split the sequence at its $k$ occurrences of tile 114:
+$s=s_0\,114\,s_1\,114\cdots114\,s_k$, where no $s_j$ contains that tile. Comparing the final $\#$-separated segments of the equation forces $h(s_k)=\eps$. Nonempty tile sides imply $s_k=\eps$, and hence $g(s_k)=\eps$. If $k=0$, the entire sequence is empty and $w=X$. If $k>0$, the remaining segment equalities are
+\[
+ w=g(s_0),\quad h(s_0)=g(s_1),\quad\ldots,\quad
+ h(s_{k-2})=g(s_{k-1}),\quad h(s_{k-1})=X.
+\]
+For each $j$, the tiles of $s_j$ partition $g(s_j)$ into disjoint, successive nonempty pieces. Copy tiles preserve their pieces; every other tile replaces one rule's left side by its right side. These disjoint replacements can be performed from right to left, preserving the original positions of all remaining pieces, and give $g(s_j)\st h(s_j)$. Concatenation gives $w\st X$.
+
+This direction allows several rule tiles in one segment and copy-only segments. It does not assume that segment words are machine configurations. For well-formed initial words, Lemma~\ref{gts:um:lem:rewrite} supplies that additional invariant.
+\end{proof}
+
+\wtagc\ \textbf{Credit.} Lemmas~\ref{gts:um:lem:rewrite} and~\ref{gts:um:lem:tiles} re-derive, for the same machine, a construction already in the research programme, which source~08 does not cite. The note~\cite{repo-nw15} (its Section~1) compiles $U_{15,2}$ into a bounded-tape rewriting system with $29(2+1)+1+2\cdot2=92$ rules and 113 full-copy tiles (97 after deleting the copies of state letters), and the notes~\cite{repo-gpcp} prove the fresh-delimiter equivalence $\exists w:\ \sigma(w)\#v=u\#\tau(w)\iff u\Rightarrow^*v$, the mirror image of~\eqref{gts:um:eq:correspondence} (tile sides interchanged, delimiter at the other end). The two constructions differ only at the end of a run: the note keeps a halting state and erases the tape on both sides down to the word $[\,\mathit{halt}\,]$, whereas source~08 turns $J1$ into a fresh letter $X$ and also erases the brackets, by $[X]\hto X$, which accounts for its 93 rules and 114 tiles. No novelty is claimed here for the two lemmas; they are printed as source~08's own route. The matrix stage of Sections~\ref{gts:um:sec:matrices}--\ref{gts:um:sec:reduction} has no counterpart in those notes.
+
+\section{The numerical matrices and free embeddings}
+\label{gts:um:sec:matrices}
+\subsection{A faithful integer encoding}
+Define
+\begin{equation}\label{gts:um:eq:Ej}
+ P=\smallmat{1}{2}{0}{1},\qquad Q=\smallmat{1}{0}{2}{1},\qquad
+ E_j=Q^{-j}PQ^j=\smallmat{1+4j}{2}{-8j^2}{1-4j}.
+\end{equation}
+Every determinant is one.
+
+\begin{lemma}\label{gts:um:lem:free}
+The matrices $P,Q$ freely generate a rank-two free group. Any finite set of distinct $E_j$, including $E_0=P$ if desired, is freely independent.
+\end{lemma}
+\begin{proof}
+Use the real projective line with the disjoint sets $\mathcal A=\{|z|>1\}$ (including infinity) and $\mathcal B=\{|z|<1\}$. For every nonzero integer $n$,
+\[
+ P^nz=z+2n\in\mathcal A\quad(z\in\mathcal B),\qquad
+ Q^nz=\frac{z}{2nz+1}\in\mathcal B\quad(z\in\mathcal A).
+\]
+The inequalities are strict. In the second case $|2nz+1|>|z|$ for $|z|>1$, and infinity maps to $1/(2n)$. Each nonidentity power is nonidentity, so both cyclic subgroups are infinite.
+
+For clarity, the ping-pong conclusion can be seen directly. A reduced alternating word with the same factor type at both ends sends the opposite set into a disjoint set, so is nonidentity. For an alternating word with different end types, conjugate by a suitable nonzero power of its final factor type. Because that cyclic group is infinite, the conjugating exponent can avoid cancellation at that end. The conjugated reduced word then has the same type at both ends and is nonidentity. Pure powers are already nonidentity. Thus no nonempty reduced $P,Q$ word acts trivially; in particular it cannot be the identity matrix.
+
+Now collect any nonempty reduced word in distinct $E_j$ as
+$E_{j_1}^{n_1}\cdots E_{j_k}^{n_k}$, with nonzero $n_i$ and adjacent indices unequal. Its expansion is
+\[
+ Q^{-j_1}P^{n_1}Q^{j_1-j_2}P^{n_2}\cdots
+ Q^{j_{k-1}-j_k}P^{n_k}Q^{j_k}.
+\]
+Every interior $Q$ exponent and every $P$ exponent is nonzero. Deleting any empty endpoint powers leaves a nonempty reduced word in the free generators $P,Q$. This proves the second assertion, not merely abstract freeness of their generated subgroup.
+\end{proof}
+
+\wtagc\ $P$ and $Q$ are the Sanov shears $A$ and $B$ of Part~I~\eqref{gts:vk:eq:shears}. The first assertion of Lemma~\ref{gts:um:lem:free} is therefore the injectivity half of Theorem~\ref{gts:vk:thm:sanov}, a classical theorem of Sanov~\cite{sanov}; source~08 plays ping-pong on the real projective line and Part~I on vectors of $\R^2$, so the proof above is a second proof (source~08). The second assertion, the free independence of distinct conjugates $E_j=Q^{-j}PQ^j$, is not in Part~I. Each $E_j$ has the congruence form of Part~I's image~\eqref{gts:vk:eq:San}, with chart coordinates $(j,1,-4j^2,-j)$. In this Part the letters $A_i$, $B_i$, $C$ name $4\times4$ generators, never Part~I's shears (Table~\ref{gts:um:tab:letters}).
+
+Assign the letters of $\Sigma$ in their displayed order to $E_1,\ldots,E_{20}$, and $\#$ to $E_{21}$. Let $\Phi$ multiply these matrices in word order. Lemma~\ref{gts:um:lem:free} makes $\Phi$ injective even on the free group, hence on positive words. In a separate block put $t=E_0=P$ and $x_i=E_i$ for $1\leq i\leq114$.
+
+\subsection{All generators and all target entries are numerical}
+For the already fixed 114 tiles define
+\begin{align}
+ A_i&=\diag\bigl(\Phi(h_i),x_i\bigr),\label{gts:um:eq:A}\\
+ B_i&=\diag\bigl(\Phi(g_i)^{-1},t^{-1}x_i^{-1}t\bigr),\label{gts:um:eq:B}\\
+ C&=\diag\bigl(\Phi(X\#)^{-1},t\bigr).\label{gts:um:eq:C}
+\end{align}
+The inverse in \eqref{gts:um:eq:B} is the inverse of the whole product. For any determinant-one block,
+\[
+ \smallmat{a}{b}{c}{d}^{-1}=\smallmat{d}{-b}{-c}{a}.
+\]
+Thus the generator list contains only explicit integers, with no unspecified presentations, existentially chosen matrices, or input-dependent entries. For example,
+\[
+ A_1=\begin{pmatrix}5&2&0&0\\-8&-3&0&0\\0&0&5&2\\0&0&-8&-3\end{pmatrix},\qquad
+ C=\begin{pmatrix}157&4&0&0\\-6712&-171&0&0\\0&0&1&2\\0&0&0&1\end{pmatrix}.
+\]
+The lower free-group words $x_i$, $t^{-1}x_j^{-1}t$, and $t$ are pairwise distinct. Hence all $2\cdot114+1=229$ generators are distinct even if some upper blocks coincide. They lie in $\SL_4(\Z)$ because both blocks have determinant one.
+
+For any query word $w\in\Sigma^*$ define
+\begin{equation}\label{gts:um:eq:target}
+ \mathcal T(w)=\diag\bigl(\Phi(w\#)^{-1},t\bigr),\qquad
+ E(\ell,\rho)=\mathcal T(w(\ell,\rho)).
+\end{equation}
+This computes the target without simulating $U$ or deciding membership.
+
+\section[The exact paired form of unrestricted semigroup words]{Why unrestricted semigroup words have the exact paired form}
+\label{gts:um:sec:marker}
+The correspondence equation is constrained, whereas membership in $S$ quantifies over arbitrary positive generator words. The next lemma is the bridge. It rules out spurious orders at every length, rather than checking a bounded sample.
+
+\begin{lemma}[Marker normal form]\label{gts:um:lem:marker}
+A positive word in $\mathcal G$ has lower block $t$ if and only if it is
+\begin{equation}\label{gts:um:eq:normal}
+ A_{i_1}\cdots A_{i_r}\,C\,B_{i_r}\cdots B_{i_1}
+\end{equation}
+for some $r\geq0$ and indices $i_s\in\{1,\ldots,114\}$.
+\end{lemma}
+\begin{proof}
+Work in the free group on $t,x_1,\ldots,x_{114}$, faithfully represented by the lower blocks. The exponent homomorphism $\eta$ defined by $\eta(t)=1$, $\eta(x_i)=0$ sends each $A_i,B_i$ lower block to zero and $C$ to one. Since the word is positive, a value equal to $t$ forces exactly one occurrence of $C$.
+
+The kernel of $\eta$ has free basis
+\[
+ y_{i,h}=t^h x_i t^{-h},\qquad 1\leq i\leq114,\quad h\in\Z.
+\]
+Here is a direct justification. In a reduced word in these symbols, group consecutive letters of equal height $h$ into maximal runs. The $x$ word within a run remains nonempty and reduced; consecutive runs are separated on expansion by a nonzero power of $t$. The expansion is therefore nontrivial in the free $t,x$ group. Conversely, moving every $t$ letter rightward and recording the height at each $x$ letter expresses every total-height-zero word in the displayed generators.
+
+Write the lower product as $Kt$, pushing the final $t$ to the right. Before the unique $C$, the height is zero; after it, the height is one. The contributions to $K$ are
+\begin{center}
+\begin{tabular}{lll}\toprule
+Position & Generator & Contribution\\\midrule
+before $C$ & $A_i$ & $y_{i,0}$\\
+before $C$ & $B_i$ & $y_{i,-1}^{-1}$\\
+after $C$ & $A_i$ & $y_{i,1}$\\
+after $C$ & $B_i$ & $y_{i,0}^{-1}$\\\bottomrule
+\end{tabular}
+\end{center}
+Equality with $t$ means $K=1$. Every height $-1$ letter occurs only negatively, so no inverse occurrence can cancel it; every height $+1$ letter occurs only positively. No such letter can disappear in free reduction. Thus no $B$ precedes $C$, and no $A$ follows $C$. The remaining kernel word is a positive word in the $y_{i,0}$ followed by a negative word. It cancels exactly when the latter indices reverse the former. This gives \eqref{gts:um:eq:normal}. Conversely, a word of that form cancels directly to lower block $t$.
+\end{proof}
+
+The exponent used here is the $t$ exponent in the free basis $t,x_1,\ldots,x_{114}$, not the $P$ exponent in the ambient $P,Q$ group. No cyclic rotation, chosen start marker, inverse-generator closure, or external regular-language restriction is part of the argument.
+
+\section{The complete membership reduction}
+\label{gts:um:sec:reduction}
+For a normal-form word with sequence $s=i_1\cdots i_r$, its upper block is
+\[
+ \Phi(h(s))\,\Phi(X\#)^{-1}\,\Phi(g(s))^{-1}.
+\]
+Indeed the reversed $B$ order is
+$\Phi(g_{i_r})^{-1}\cdots\Phi(g_{i_1})^{-1}
+=\Phi(g(s))^{-1}$. Equality with the upper block of $\mathcal T(w)$ is equivalent, multiplying on the left by $\Phi(w\#)$ and on the right by $\Phi(g(s))\Phi(X\#)$, to
+\[
+ \Phi(w\#h(s))=\Phi(g(s)X\#).
+\]
+Both arguments are positive words, so injectivity gives precisely the literal equation of Lemma~\ref{gts:um:lem:tiles}. Combining that lemma with the marker normal form proves
+\[
+ \mathcal T(w)\in S\quad\Longleftrightarrow\quad w\st X.
+\]
+For $w=X$, the empty inner sequence is realized by the nonempty generator product $C$. No missing identity convention is required. Main-interface inputs in \eqref{gts:um:eq:initial} contain state $A$ and are never the word $X$.
+
+Applying Lemma~\ref{gts:um:lem:rewrite} proves the executable equivalence in Theorem~\ref{gts:um:thm:semigroup}. Section~\ref{gts:um:sec:machine} supplies a computable many-one reduction from ordinary halting to the finite-tape source language, and the implemented target map composes with it. Finally enumerate all nonempty words in the 229 generators, compute their exact integer products, and compare them with the query. This semidecides membership. Hence the fixed semigroup membership language is r.e. and many-one hard for every r.e. language, proving its many-one r.e.-completeness.
+
+This mechanism is situated within the matrix undecidability literature, including Halava--Harju--Hirvensalo's correspondence-based constructions \cite{um-HHH}. The present proof does not import an optimized Claus-instance generator count. Its 229-generator figure is a verified count of this specified construction, not a bound claimed to improve the literature.
+
+\wtagc\ The problem is positive-semigroup membership: no inverse generator is adjoined, and Lemma~\ref{gts:um:lem:marker} uses positivity (a lower block $t$ forces exactly one occurrence of $C$). It differs from the subgroup membership of Part~IV's fixed subgroups of $\SL_4(\Z)$ (Theorem~\ref{gts:ai:thm:quadratic}, Proposition~\ref{gts:ai:prop:uniform}) and of Part~VI of~\cite{pqc}; neither kind of result implies the other. This write did not survey the matrix-semigroup literature, and no priority is certified.
+
+\section{A literal quartic certificate for each numerical length}
+\label{gts:um:sec:polynomial}
+Let $U_i$ be the upper block of $A_i$, and let $V_i$ be the inverse of the entire upper block of $B_i$. Then $U_i=\Phi(h_i)$ and $V_i=\Phi(g_i)$, all fixed integral determinant-one matrices. Keep $D$ from \eqref{gts:um:eq:DP}. A normal-form product has upper block
+\[
+ H_r D G_r^{-1},\qquad H_r=U_{i_1}\cdots U_{i_r},\quad
+ G_r=V_{i_1}\cdots V_{i_r}.
+\]
+Its equality to $T$ can therefore be tested without auxiliary inverse entries by $H_rD=TG_r$.
+
+\subsection{Every variable is allocated}
+For every $s=1,\ldots,r$, allocate the following natural variables:
+\begin{itemize}
+\item 114 selectors $e_{s,i}$, $1\leq i\leq114$
+\item 16 signed-part variables $h^+_{s,a,b},h^-_{s,a,b},g^+_{s,a,b},g^-_{s,a,b}$, $a,b\in\{0,1\}$
+\end{itemize}
+There are exactly $130r$ natural auxiliary slots. Define the linear expressions
+\[
+ H_{s,a,b}=h^+_{s,a,b}-h^-_{s,a,b},\qquad
+ G_{s,a,b}=g^+_{s,a,b}-g^-_{s,a,b}.
+\]
+These expressions are abbreviations, not additional variables. Set $H_0=G_0=I_2$ as literal constants. The four $t_{ab}$ are signed external parameters, not quantified auxiliaries.
+
+\subsection{Every residual is specified}
+There is one selection residual per step:
+\begin{equation}\label{gts:um:eq:select}
+ S_s=\sum_{i=1}^{114}e_{s,i}-1.
+\end{equation}
+There are eight update residuals per step:
+\begin{align}
+ U^H_{s,a,b}&=H_{s,a,b}-\sum_{i=1}^{114}e_{s,i}
+                  \sum_{k=0}^1 H_{s-1,a,k}(U_i)_{k,b},\label{gts:um:eq:updateH}\\
+ U^G_{s,a,b}&=G_{s,a,b}-\sum_{i=1}^{114}e_{s,i}
+                  \sum_{k=0}^1 G_{s-1,a,k}(V_i)_{k,b}.\label{gts:um:eq:updateG}
+\end{align}
+There are eight canonicality residuals per step:
+\begin{equation}\label{gts:um:eq:complement}
+ K^H_{s,a,b}=h^+_{s,a,b}h^-_{s,a,b},\qquad
+ K^G_{s,a,b}=g^+_{s,a,b}g^-_{s,a,b}.
+\end{equation}
+Finally there are four terminal residuals:
+\begin{equation}\label{gts:um:eq:terminal}
+ L_{a,b}=\sum_{k=0}^1H_{r,a,k}D_{k,b}
+                 -\sum_{k=0}^1t_{a,k}G_{r,k,b}.
+\end{equation}
+The literal polynomial is
+\begin{align}\label{gts:um:eq:SOS}
+ F_r(T;x)={}&\sum_{s=1}^r\left[S_s^2+
+ \sum_{a,b=0}^1\left((U^H_{s,a,b})^2+(U^G_{s,a,b})^2
+ +(K^H_{s,a,b})^2+(K^G_{s,a,b})^2\right)\right]\notag\\
+ &+\sum_{a,b=0}^1L_{a,b}^2.
+\end{align}
+There are $(1+8+8)r+4=17r+4$ squared residuals. The natural domain alone makes the selectors one-hot; separate Booleanity equations would be redundant and are not counted. There are no hidden arithmetic-gate, determinant, quotient, inverse, or exponentiation witnesses.
+
+\section{Soundness completeness and the precise multiplicity theorem}
+\label{gts:um:sec:bijection}
+\begin{lemma}[Unique canonical signed parts]\label{gts:um:lem:canonical}
+For each $z\in\Z$ there is exactly one $(p,n)\in\N^2$ with $p-n=z$ and $pn=0$, namely $(\max(z,0),\max(-z,0))$.
+\end{lemma}
+\begin{proof}
+If $z>0$, then $p=n+z>0$, so $pn=0$ forces $n=0$, $p=z$. If $z<0$, interchange the roles. If $z=0$, then $p=n$ and $p^2=0$, so both are zero. Each resulting pair satisfies the two equations.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{gts:um:thm:sos} apart from degree]
+Since all values are integers, a sum of squares vanishes if and only if every residual vanishes. For a natural root, \eqref{gts:um:eq:select} says nonnegative integers sum to one, so exactly one selector $e_{s,i_s}$ equals one at each step and the others equal zero. The updates reduce to
+\[
+ H_s=H_{s-1}U_{i_s},\qquad G_s=G_{s-1}V_{i_s}.
+\]
+Starting at the constant identities, induction forces all signed prefix entries. The complement residuals and Lemma~\ref{gts:um:lem:canonical} then force their natural parts uniquely. The terminal residuals give $H_rD=TG_r$. Every $G_r$ is unimodular, so multiplication by $G_r^{-1}$ gives $T=H_rDG_r^{-1}$, exactly the upper block of \eqref{gts:um:eq:paired}. The lower block is $P$ by the marker lemma. This proves soundness.
+
+Conversely, for any sequence satisfying \eqref{gts:um:eq:paired}, set its one-hot selectors, multiply the two prefix sequences, and use each entry's unique canonical signed parts. Selection, update, and complement residuals all vanish. Its target equality is $H_rD=TG_r$, so the terminal residuals vanish too. This proves completeness. The preceding forced induction proves that this is the only full auxiliary tuple for that specified sequence. Reading the unique selected index at each step is the inverse map. Therefore
+\begin{equation}\label{gts:um:eq:count}
+ \#\{x\in\N^{130r}:F_r(T;x)=0\}
+ =\#\{(i_1,\ldots,i_r):\eqref{gts:um:eq:paired}\}\leq114^r.
+\end{equation}
+\end{proof}
+
+The assumption $x\in\N^{130r}$ is essential. Signed or real selectors summing to one are not automatically one-hot. The theorem does not silently replace this domain by $\Z$ or $\mathbb R$.
+
+\subsection{Zero length and automatically excluded targets}
+At $r=0$ the unique possible auxiliary tuple is empty. The formula becomes
+\begin{equation}\label{gts:um:eq:r0}
+ F_0(T)=(157-t_{00})^2+(4-t_{01})^2
+              +(-6712-t_{10})^2+(-171-t_{11})^2.
+\end{equation}
+It has that single empty root precisely at $T=D$. Its positive generator witness is $C$, of length one, not the empty product.
+
+Every satisfying $T$ has determinant one, since $T=H_rDG_r^{-1}$ is a product of determinant-one matrices. No determinant residual is needed. The mathematical external domain is nevertheless all of $\Z^4$, including zero and negative entries; determinant-invalid targets simply have empty fibers. For a fixed sequence, changing $T$ cannot preserve the terminal equations because $G_r$ is invertible. A changed target might of course be realized by another sequence.
+
+The implementation rejects floats, booleans, malformed matrix shapes, negative auxiliary values, and missing or extra variable names. Its full-$4\times4$ helper accepts only inputs of the form $\diag(T,P)$. A rejection for wrong off-diagonal or lower blocks means the input lies outside this helper's interface; it is not a theorem of nonmembership in the original semigroup.
+
+\subsection{Optional all-natural external inputs}
+An independently charged variant uses eight external natural parameters $t^+_{ab},t^-_{ab}$, replaces $t_{ab}$ by their difference, and adds the four squared residuals $(t^+_{ab}t^-_{ab})^2$. It still uses exactly $130r$ quantified auxiliaries and now has $17r+8$ residuals. Canonical external pairs represent signed targets uniquely. Noncanonical pairs have a positive added square and no roots even if their differences are otherwise valid. External slots remain parameters; they do not increase the quantified auxiliary count.
+
+\section{Degrees coefficients and literal sparse size}
+\label{gts:um:sec:size}
+The polynomial exporter lists every residual as integer-coefficient monomials and declares their sum of squares. This is an explicit polynomial representation: no numerical oracle or unevaluated matrix-word coefficient remains. Fully expanding the outer squares is unnecessary. The release includes both external modes at $r=0,1,2$ with all names and coefficients materialized.
+
+\subsection{Exact degree and fixed coefficient data}
+At $s=1$ the update equations are linear because $H_0=G_0=I_2$. Later updates are bilinear in selectors and previous state parts. Complements are quadratic; terminal residuals are bilinear for $r\geq1$ and linear at $r=0$. Thus $\deg F_r\leq4$. For $r\geq1$, a state complement has a nonzero quadratic homogeneous part. The degree-four component of a sum of real polynomial squares is a sum of squares of the quadratic leading parts; it cannot vanish identically when one of those parts is nonzero. Therefore $\deg F_r=4$. Equation~\eqref{gts:um:eq:r0} gives degree two at $r=0$. In the all-natural external variant, the external complements supply degree four even at $r=0$.
+
+The independently audited literal source has 456 nonzero entries among the $U_i$ and 456 among the $V_i$. Their maximum absolute values are respectively
+\[
+ 63{,}038{,}000\quad\text{and}\quad11{,}924{,}776.
+\]
+The maximum absolute $D$ entry is $6{,}712$. Hence the largest residual coefficient for $r\geq1$ is exactly $63{,}038{,}000$, with 26 magnitude bits; at $r=0$ it is $6{,}712$, with 13 magnitude bits. No coefficient-size contribution is concealed by the shorthand $U_i,V_i$.
+
+\subsection{Monomial census with a declared convention}
+Let $N_d$ count degree-$d$ monomial occurrences across the residuals, combining equal monomials within each residual but not across different residual squares. Let $R$ be the number of residuals. For signed external targets,
+\begin{align}
+ r=0:&\qquad (N_0,N_1,N_2)=(4,4,0),\quad R=4,\label{gts:um:eq:mono0}\\
+ r\geq1:&\qquad (N_0,N_1,N_2)
+     =(r,130r+928,3656r-3632),\quad R=17r+4.\label{gts:um:eq:monor}
+\end{align}
+Here is the complete accounting. Each of the $r$ selector residuals contributes one constant and 114 linear terms. Each of the eight first-step updates has 116 linear terms: two signed parts and 114 selected fixed coefficients. Each of the $8(r-1)$ later updates has two linear and 456 quadratic terms, because each of 114 selectors multiplies two matrix entries, each represented by two signed parts. The $8r$ complements each contribute one quadratic monomial. Each of four terminal residuals contributes four linear and four quadratic terms. Consequently
+\[
+ N_1=114r+8\cdot116+16(r-1)+16=130r+928,
+\]
+\[
+ N_2=8\cdot456(r-1)+8r+16=3656r-3632.
+\]
+All stated coefficients are nonzero, and distinct indices separate the counted monomials. Total residual size is therefore $3787r-2704$ monomials for $r\geq1$.
+
+For natural external targets the triples are $(4,8,4)$ at $r=0$, and
+\[
+ (N_0,N_1,N_2)=(r,130r+928,3656r-3612)\quad(r\geq1).
+\]
+The increase is 16 quadratic terms from splitting the signed terminal inputs and four external complement terms. Here $R=17r+8$, and the total for $r\geq1$ is $3787r-2684$.
+
+No residual has more than 458 monomials. If the SOS is fully expanded, a safe coefficient bound for either mode and every $r$ is
+\begin{equation}\label{gts:um:eq:coefficient}
+ R\bigl(458\cdot63{,}038{,}000\bigr)^2.
+\end{equation}
+Indeed each residual's coefficient $\ell^1$ norm is at most the quantity in parentheses, the norm is submultiplicative under squaring, and the $R$ squares add. This conservative bound has bit length $O(\log(r+1))$. It is not a claim that the expanded polynomial is an efficient storage format.
+
+\section{Resource ledgers with arithmetic and bit costs separated}
+\label{gts:um:sec:resources}
+\subsection{Fixed matrices and finite-tape target encoding}
+The numerical source census is
+\begin{center}
+\begin{tabular}{lr}\toprule
+Object & Exact count\\\midrule
+Machine states and tape symbols & $15$ and $2$\\
+Defined transitions & $29$\\
+Rewrite alphabet letters and directed rules & $20$ and $93$\\
+Copy tiles, rewrite tiles, separator tiles & $20$, $93$, $1$\\
+Inner tiles and distinct $4\times4$ generators & $114$ and $229$\\
+All matrix-entry slots & $3664$\\
+Nonzero matrix entries & $1831$\\
+Sum of matrix-entry magnitude bit lengths & $21372$\\
+Largest absolute generator entry & $63038000$\\\bottomrule
+\end{tabular}
+\end{center}
+Magnitude bit length means $\operatorname{bit\_length}(|z|)$, with zero counted as zero. The 21,372 total is a census of mathematical values, not a file-size or compression theorem.
+
+Let $n=|\ell|+|\rho|$. Then $w$ has $n+4$ letters, and $w\#$ has $n+5$. The target encoder makes $n+5$ exact $2\times2$ multiplications by fixed matrices. Since
+\[
+ \max_{1\leq j\leq21}\umnorm{E_j}=3611<2^{12},
+\]
+every target entry has at most $12(n+5)+1$ magnitude bits, a deliberately conservative bound also covering the fixed lower block. The inverse formula changes two signs and swaps the diagonal entries once. The implementation additionally verifies determinant one with two variable-integer multiplications and one subtraction.
+
+Each fixed-matrix multiplication uses eight scalar fixed-integer multiplications and four additions. The $k$th prefix contains $O(k)$ bits, so elementary fixed-integer arithmetic costs $O(k)$; summing gives $O(n^2)$ bit operations. The final determinant check also costs at most $O(n^2)$ with schoolbook multiplication. Working values use $O(n)$ bits, apart from stored input/output. This is complexity in the supplied finite tape length, not arbitrary source-program length or halting time. Far-end zero padding can change the finite word and target while describing the same infinite tape; the reduction holds for either spelling and needs no semantic-tape injectivity.
+
+\subsection{Exact generic sparse evaluation charges}
+The companion evaluator deliberately uses an unoptimized convention. For each monomial it starts at 1, multiplies once for every variable occurrence, multiplies by its coefficient even when that coefficient is $1$ or $-1$, and adds the result into an initially zero residual accumulator. It then squares every residual and adds the square into an initially zero SOS accumulator. Substituting \eqref{gts:um:eq:mono0}--\eqref{gts:um:eq:monor} gives
+\[
+ M=N_1+2N_2+(N_0+N_1+N_2)+R,\qquad
+ A=N_0+N_1+N_2+R.
+\]
+Thus the exact signed-interface census is
+\begin{center}
+\begin{tabular}{lrr}\toprule
+Numerical length & Scalar multiplications $M$ & Scalar additions $A$\\\midrule
+$r=0$ & $16$ & $12$\\
+$r\geq1$ & $11246r-9036$ & $3804r-2700$\\\bottomrule
+\end{tabular}
+\end{center}
+Natural external inputs cost 40 multiplications and 24 additions at $r=0$; for $r\geq1$, add 64 multiplications and 24 additions to the signed figures. These counts belong to this precise evaluator, not to an optimal arithmetic circuit. They exclude parsing, comparisons, variable lookup, hashing, validation, loop control, source loading, and polynomial construction. Those operations remain finite implementation work and are separately bounded or documented; they are not free witnesses hidden in the polynomial.
+
+The fixed loader calls its determinant-one $2\times2$ inverse routine 572 times: 229 upper blocks, 229 lower blocks, and 114 extracted $V_i$ blocks. Its arithmetic is 1,144 multiplications, 572 subtractions, and 1,144 negations, apart from parsing, hashing, shape/domain checks, swaps, and control. The literal coefficient JSON has 117,288 bytes. None of these arithmetic counts is the matrix-generator count, and no earlier constant-operation claim is inherited.
+
+\subsection{Certificate construction and value growth}
+Direct auditing gives
+\[
+ K_H=\max_i\umnorm{U_i}=64{,}675{,}047<2^{26},\qquad
+ K_G=\max_i\umnorm{V_i}=12{,}234{,}453<2^{24}.
+\]
+The maximum absolute row-sum norm is submultiplicative, so at prefix $s\geq1$,
+\[
+ \umnorm{H_s}\leq K_H^s<2^{26s},\qquad
+ \umnorm{G_s}\leq K_G^s<2^{24s}.
+\]
+Each canonical $H$ part needs at most $26s$ magnitude bits and each $G$ part at most $24s$. Only one part of each pair is nonzero. Four entries of each kind plus the one selected bit per step give the total bound
+\begin{equation}\label{gts:um:eq:certbits}
+ \sum_{s=1}^r(4\cdot26s+4\cdot24s+1)
+ =100r(r+1)+r
+\end{equation}
+on auxiliary magnitude bits, counting zero as zero. A storage convention assigning at least one bit to every slot adds $O(130r)$; names and explicit zero slots further affect text size.
+
+Since $\umnorm D=6883<2^{13}$ and for determinant-one $2\times2$ matrices
+$\umnorm{G^{-1}}\leq2\umnorm G$, any realized target entry has at most $50r+14$ magnitude bits. This upper bound is not a claim that every sequence achieves exponential growth.
+
+Constructing the two prefixes takes two fixed-factor $2\times2$ multiplications per step, hence $16r$ scalar multiplications and $8r$ additions, plus comparisons, canonical splitting, and selector output. Streaming prefixes uses $O(r)$ working bits and $O(r^2)$ elementary bit operations. Retaining the entire certificate uses $O(r^2)$ value bits; explicit indexed names add $O(r\log(r+1))$ textual overhead. A supplied target adds its encoded length to reading/checking cost. If the target is computed from the sequence, two terminal $2\times2$ products add 16 multiplications and eight additions, and the determinant-one inverse check adds two multiplications, one subtraction, two negations, and entry swaps. The final nonconstant product costs $O(r^2)$ schoolbook bit operations. This work is not included in the polynomial's auxiliary count.
+
+\subsection{Evaluating arbitrary assignments and constructing the family}
+Suppose every signed external entry and natural auxiliary entry has absolute value less than $2^B$, $B\geq1$. Each residual has at most 458 monomials, degree at most two, and coefficient magnitude less than $2^{26}$. Therefore each residual has magnitude less than $2^{2B+35}$. The SOS has magnitude-bit length at most
+\[
+ 4B+70+\lceil\log_2R\rceil.
+\]
+The evaluator has $O(r+1)$ counted arithmetic operations, on integers of $O(B+\log(r+1))$ bits, and hence the conservative schoolbook upper bound
+\[
+ O\bigl((r+1)(B+\log(r+1))^2\bigr)
+\]
+bit operations. Variable/domain validation and parsing add their ordinary finite costs.
+
+A streaming residual generator need not store the expanded SOS. The compiler emits $O(r+1)$ residual monomials with the explicit constants of Section~\ref{gts:um:sec:size}, and $O((r+1)\log(r+2))$ name characters. Its work is linear in the numerical value of $r$ at the symbolic output level, not polynomial in the binary encoding length of $r$. This output-sensitive accounting is essential when a family index is passed as an integer.
+
+\section{Two concrete examples and what their certificates mean}
+\label{gts:um:sec:examples}
+\subsection{An actual accepting finite tape}
+The accepted input $\ell=011$, $\rho=\eps$ has initial word $[110A0]$ and target
+\[
+ E(011,\eps)=
+ \begin{pmatrix}
+ 1347733333&37956152&0&0\\
+ -57391245432&-1616307011&0&0\\
+ 0&0&1&2\\0&0&0&1
+ \end{pmatrix}.
+\]
+Its full derivation is
+\begin{align*}
+ [110A0]&\hto[1100B0]\hto[11001C0]\hto[1100G10]\\
+ &\hto[110G010]\hto[11H0010]\hto[1I11010]\hto[J111010]\\
+ &\hto[X11010]\hto[X1010]\hto[X010]\hto[X10]\\
+ &\hto[X0]\hto[X]\hto X.
+\end{align*}
+The first seven steps are machine transitions, the eighth is the halting rewrite, and the remaining six erase the finite tape and finish. The tile compiler encodes these 14 rewrites using 94 tiles. The corresponding $A$--$C$--$B$ word has $2\cdot94+1=189$ generator factors, whose generic integer $4\times4$ product equals the displayed target in all sixteen entries.
+
+The signed-target certificate at $r=94$ has
+\[
+ 130r=12{,}220\quad\text{natural auxiliaries},\qquad
+ 17r+4=1{,}602\quad\text{residuals}.
+\]
+The saved assignment has SOS value exactly zero, largest auxiliary magnitude 409 bits, and total auxiliary magnitude-bit census 154,084. The generic evaluator charges are exactly 1,048,088 multiplications and 354,876 additions. The complete assignment is included as \code{paired/examples/accepting-94-certificate.json}; no huge expanded quartic is needed to verify it.
+
+\subsection{A length two target with two distinct roots}
+The distinct sequences $(20,109)$ and $(110,20)$ both give
+\begin{equation}\label{gts:um:eq:collision}
+ T_*=
+ \smallmat{22474169}{568874}{-892774960}{-22598231}.
+\end{equation}
+The mechanism is visible at the word level. Tile 20 is $(X,X)$, tile 109 is $(X,0X)$, and tile 110 is $(X,X0)$. Both sequences therefore have
+\[
+ h(s)=XX,\qquad g(s)=X0X.
+\]
+They give identical $H_2,G_2$ and thus the same target $H_2DG_2^{-1}$, but their selector choices, first prefixes, and complete auxiliary tuples differ. Each tuple has 260 natural slots and makes all 38 residuals vanish. The saved \code{paired/examples/target-collision.json} binds these sequences to the literal numerical target.
+
+An exhaustive enumeration of the $114^2=12{,}996$ length-two sequences found 12,994 distinct targets and two excess sequence collisions. This is a finite diagnostic, not a classification of all multiplicities at greater lengths. Equation~\eqref{gts:um:eq:count} concerns the number of sequence witnesses at one fixed $r$; it does not imply a unique target root or a finite number of roots after allowing all lengths.
+
+\wtagc\ The second excess collision is $(20,111)$ and $(112,20)$, by the same mechanism with the bit~$1$: tile~111 is $(X,1X)$ and tile~112 is $(X,X1)$, so both sequences have $h(s)=XX$ and $g(s)=X1X$. Source~08 names only the first. Both were found by an independent enumeration of the 12,996 products from the literal generators at placement, and again at this write from the shipped \path{data/08-matrix-semigroup-core-data-semigroup.json}.
+
+\section{Exact factorization fibers and their asymptotic growth}
+\label{gts:um:sec:fibers}
+The bounded-family theorem can be sharpened substantially for targets that encode actual accepted configurations. This section counts \emph{factorization words}, equivalently tile sequences or canonical polynomial roots, not distinct matrices. All the words counted in a fiber have the same resulting matrix.
+
+For $w\in\Sigma^*$, set $T_w=\Phi(w\#)^{-1}$ and define
+\[
+ N_w(r)=\#\{s:|s|=r,\ w\#h(s)=g(s)X\#\}.
+\]
+By the marker lemma and the certificate bijection, this is simultaneously the number of generator words for $\diag(T_w,P)$ of length $2r+1$ and the number of roots of $F_r(T_w;x)$.
+
+\subsection{Every accepted encoded word has an infinite unbounded fiber}
+Write $c(v\#)$ for the copy tiles of $v$ followed by tile 114. Both its tile-side words equal $v\#$. If $s$ is a witness for $w$, then
+\[
+ s_k=c(w\#)^k s\qquad(k\geq0)
+\]
+is another witness: both sides of the original word equality acquire the same prefix $(w\#)^k$. Its length is $|s|+k(|w|+1)$. Thus every represented encoded word target has infinitely many distinct factorization words at unbounded lengths, and infinitely many canonical roots in the disjoint union over $r$. Every fixed-$r$ fiber remains finite. This is a proved obstruction to unbounded finite-foldness of this particular family, rather than merely a missing finite-fold proof.
+
+One may also append any number of $c(X\#)$ blocks. For the special terminal input $w=X$, these are exactly all witnesses, so
+\[
+ \sum_{r\geq0}N_X(r)z^r=\frac1{1-z^2}.
+\]
+The empty inner word at $r=0$ represents the one-generator word $C$.
+
+\subsection{An exact rational generating function for every halting live input}
+Suppose $w$ is a live configuration that halts. Let its deterministic machine run make $H$ moves before reaching the undefined cell. Write its live words as
+\[
+ v_0=w,\ v_1,\ldots,v_H=[\,l\,J\,1\,v\,],\qquad
+ n_j=|v_j|,\qquad m=|l|+|v|,\qquad B=\binom{m}{|l|}.
+\]
+Here $H$ excludes the halting rewrite and all cleanup. Define
+\begin{align}
+ r_*&=\sum_{j=0}^{H-1}(n_j-1)+(m+4)
+              +\sum_{a=1}^{m}(a+3)+2,\label{gts:um:eq:rstar}\\
+ d&=H+m+2.\label{gts:um:eq:d}
+\end{align}
+Empty sums are zero. There are $d$ genuine rewrites from $w$ through cleanup to $X$.
+
+\begin{theorem}[Exact accepted-input fiber]\label{gts:um:thm:GF}
+For a halting live input as above,
+\begin{equation}\label{gts:um:eq:GF}
+ \sum_{r\geq0}N_w(r)z^r
+ =\frac{Bz^{r_*}}
+ {\displaystyle\left(\prod_{j=0}^{H}(1-z^{n_j+1})\right)
+  \left(\prod_{q=4}^{m+4}(1-z^q)\right)(1-z^2)}.
+\end{equation}
+Repeated weights are retained. There are $d+1$ denominator factors.
+\end{theorem}
+\begin{proof}
+Separator parsing from Lemma~\ref{gts:um:lem:tiles} uniquely splits every witness into complete separator-terminated blocks, without a trailing nonseparator suffix. Each rule left side contains exactly one state or $X$. Every reachable word contains exactly one such marker. Since a block partitions its bottom word into disjoint tile sides, it can contain at most one rule tile.
+
+A block with no rule tile is exactly the unique all-copy block $c(v\#)$ for its current word. A block with one rule tile is exactly the copies of its left context, that rule tile, its right context copies, and a separator. Thus every witness has a uniquely determined genuine rewrite history interspersed with uniquely counted copy loops.
+
+Before the halting rewrite, the history is the deterministic machine run. It has no repeated live word, since such a repetition would force a deterministic cycle and prevent halting. After $J1\hto X$, the word is $[lXv]$. Cleanup removes the rightmost remaining left symbol or the leftmost remaining right symbol, then performs $[X]\hto X$. The $m$ erasure schedules are exactly the $B$ choices of the $|l|$ left deletions among $m$ positions. They yield distinct sequences of rule blocks even when some tape bits coincide, because left and right erasure rules are distinct. Later merging of intermediate words does not identify those block sequences.
+
+For a rule $u\hto u'$ in a source word of length $n$, its block uses $n-|u|$ context-copy tiles, one rule tile, and one separator, hence $n-|u|+2$ tiles. Machine rules have $|u|=3$, giving costs $n_j-1$. The halt rule has $|u|=2$ in a word of length $m+4$, giving cost $m+4$. The tape erasures have source lengths $m+3,m+2,\ldots,4$ and $|u|=2$, hence those same costs. The final three-letter rule costs two. Summing gives the common genuine-history cost $r_*$ in \eqref{gts:um:eq:rstar}.
+
+At any visited word of length $n$, one copy loop costs $n+1$, and any number of such loops is possible. The live words give weights $n_0+1,\ldots,n_H+1$. The cleanup words after the halt have lengths $m+3,m+2,\ldots,3,1$, giving weights $m+4,m+3,\ldots,4,2$. Every one of the $B$ genuine histories has exactly this same multiset of weights.
+
+Copy-loop multiplicities at each history position are independent. Separator parsing recovers the rule blocks and all intervening loop counts, so different choices never collide. Multiplying the geometric series for the loop counts and summing over the $B$ disjoint histories yields \eqref{gts:um:eq:GF}.
+\end{proof}
+
+\subsection{Support quasipolynomials and inversion}
+Let $a_1,\ldots,a_{d+1}$ be the denominator weights of \eqref{gts:um:eq:GF}, and put
+\[
+ A=\prod_{i=1}^{d+1}a_i,\qquad L=\operatorname{lcm}(a_1,\ldots,a_{d+1}).
+\]
+Every such weight list contains 2, 4, and 5. Weight 2 occurs at $X$, weight 4 at $[X]$, and weight 5 occurs at a length-four cleanup word if $m\geq1$, or at the halt word if $m=0$. No reachable word has length zero or two, so there are no loop weights 1 or 3. Nonnegative combinations of 2 and 5 are exactly $\{0,2\}\cup\{n:n\geq4\}$, and every other weight belongs to that same set. Therefore
+\begin{equation}\label{gts:um:eq:support}
+ N_w(r)>0\quad\Longleftrightarrow\quad
+ r\in\{r_*,r_*+2\}\ \text{or}\ r\geq r_*+4.
+\end{equation}
+In particular $r_*$ is the minimum inner length and $N_w(r_*)=B$.
+
+All poles of \eqref{gts:um:eq:GF} are roots of unity with orders dividing $L$. Moreover direct subtraction of \eqref{gts:um:eq:rstar} from the sum of the loop weights gives
+\[
+ \sum_i a_i-r_*=2H+m+5>0.
+\]
+Thus the rational function is proper. Partial fractions express its coefficients for every $r\geq0$ as sums of polynomials in $r$ times $L$th roots of unity to the $r$th power. Hence $N_w(r)$ is an exact quasipolynomial of period dividing $L$: on each residue class modulo $L$ it agrees with a polynomial. Properness means no extra polynomial-in-$z$ part is needed to correct the initial coefficient range.
+
+Only $z=1$ has pole order $d+1$, since a root common to every denominator factor must have order dividing both 4 and 5. At $z=1$, the leading pole coefficient is $B/A$, using $(1-z^a)/(1-z)\to a$. All other poles have order at most $d$. Coefficient extraction gives
+\begin{equation}\label{gts:um:eq:asymptotic}
+ N_w(r)=\frac{B}{d!A}r^d+O(r^{d-1}).
+\end{equation}
+Every residue class has the same positive leading coefficient. The fixed accepted target therefore has polynomial, rather than exponential, factorization growth, with exponent depending on its halting history.
+
+For the cumulative count and its generalized inverse,
+\[
+ C_w(R)=\sum_{0\leq r\leq R}N_w(r),\qquad
+ R_w(M)=\min\{R\in\N:C_w(R)\geq M\},
+\]
+summation and monotone inversion give
+\begin{align}
+ C_w(R)&=\frac{B}{(d+1)!A}R^{d+1}+O(R^d),\label{gts:um:eq:cumulative}\\
+ R_w(M)&=\left(\frac{(d+1)!A}{B}M\right)^{1/(d+1)}+O(1).
+ \label{gts:um:eq:inverse}
+\end{align}
+For the inverse error, shifting the leading-order root by a sufficiently large constant changes the main cumulative term by a constant multiple of $R^d$, which bounds the remainder on both sides. Monotonicity then brackets the least admissible integer $R$. The generator-length threshold is $2R_w(M)+1$.
+
+These are conditional formulas for an already accepted input. Obtaining $H$ and the live history requires reaching its halt; the formulas give no total decision procedure for whether an arbitrary finite input halts.
+
+\subsection{Exact growth for the released 94 tile example}
+For $w=[110A0]$, one has $H=7$, $m=5$, $|l|=0$, $B=1$, $d=14$, and $r_*=94$. Therefore
+\begin{equation}\label{gts:um:eq:exampleGF}
+ \sum_{r\geq0}N_w(r)z^r
+ =\frac{z^{94}}
+ {(1-z^2)(1-z^4)(1-z^5)(1-z^6)(1-z^7)
+ (1-z^8)^2(1-z^9)^2(1-z^{10})^6}.
+\end{equation}
+Its weight product is $8{,}709{,}120{,}000{,}000$ and its period divides 2520. In particular
+\[
+ N_w(r)=\frac{r^{14}}{759{,}246{,}199{,}455{,}744{,}000{,}000{,}000}
+                +O(r^{13}).
+\]
+The counts at $r=94,95,\ldots,106$ are
+\[
+ 1,0,1,0,2,1,3,2,6,5,14,7,19.
+\]
+At $z=-1$ the pole order is 11, and every other nontrivial root of unity has pole order at most 7. Thus all periodic coefficient terms have degree at most ten: coefficients of degrees 14 through 11 in the quasipolynomial are independent of residue class. No complete list of its 2520 residue polynomials is claimed to have been tabulated.
+
+The focused \code{fiber/} packet \cite{um-Fiber} contains the independent literal-tile graph checks and proof. Its checker reads numerical JSON and the saved witness without importing either compiler; finite stutter and coefficient tests support, but do not substitute for, the all-length arguments above.
+
+\section{Evidence architecture and portable reproduction}
+\label{gts:um:sec:reproduce}
+\subsection{What has been checked and what each check establishes}
+The local construction is proved above. Testing checks the implementation against independent arithmetic and bounded semantics; it is not a replacement for universality or an unbounded nonhalting argument. Normal Python and optimized \texttt{python -O} runs are both supplied, so correctness does not depend on removable assertions.
+
+The core suite checks all 229 determinants and distinct generators, 6,750 local configuration contexts, all cleanup cases from 225 short binary contexts, and 64,036 matched machine/rewrite transitions over 225 bounded runs. Its exhaustive marker sample covers all 488,281 words of length at most eight over $A_1,A_2,B_1,B_2,C$; exactly 15 have lower block $P$, all in the proved form. It also verifies the actual 189-factor accepting word, 100 randomized target encodings, malformed inputs, the zero-step word $X$, and an 8,192-bit command-line input beyond Python's usual decimal conversion limit.
+
+The companion suite checks six literal small-$r$ polynomial/count/degree cases, 162 zero-length target-cube cases, 228 length-one certificate evaluations, all 12,996 length-two products, 1,544 length-two certificate evaluations, 860 selector/state/target mutations, 18 invalid-input rejections, and determinant-invalid targets. It checks the complete long accepting certificate and its measured arithmetic charges. Separate audits read only the pinned literal numerical JSON rather than importing the upstream compiler, reconstruct the matrix formulas, inspect the interfaces, and instrument the arithmetic census.
+
+The core mathematical review separately inspected the arbitrary-length marker proof, separator edge cases, upper-block order, finite-tape simulation, and published dependency. The companion mathematical review separately inspected domain restrictions, canonicality, bijection, degree, exact count formulas, invalid targets, and multiplicity. These are independent human-readable mathematical and programmatic reviews, not proof-assistant certificates.
+
+The fiber checker enumerates 33,544 distinct bounded stutter witnesses and independently checks 12 full matrix/SOS samples. A separate literal-tile graph dynamic program compares 31,366 coefficients over 226 fixtures, with identical normal and optimized receipts. At the release level, an additional JSON-only audit reconstructs all six exported polynomials (11,970 residual monomials), 14 small roots, the full 94-step auxiliary assignment, and both collision roots without importing either compiler.
+
+\paragraph{Evidence map.}
+The following relative paths identify the principal review and receipt artifacts in the portable package. The release inventory binds their bytes; each review also states its mathematical scope.
+\begin{itemize}
+\item \code{core/audit/REVIEW.md} and \code{core/loader-audit/U15_DEPENDENCY_AUDIT.md}: local proof review and precise published input dependency
+\item \code{core/evidence/tests.json}, \code{core/evidence/tests-optimized.json}, and \code{core/audit/independent-results.json}: machine, matrix, marker, and witness checks
+\item \code{paired/audit/REVIEW.md} and \code{paired/audit/REVIEW_BINDING.json}: companion proof review and exact reviewed-file identities
+\item \code{paired/evidence/tests.json}, \code{paired/evidence/tests-optimized.json}, and the JSON receipts in \code{paired/audit/}: authored and independent polynomial/interface checks
+\item \code{fiber/PROOF.md}, \code{fiber/CHECKS.json}, and \code{fiber/audit/}: exact-fiber proof, stutter/sample checks, and independent graph-coefficient review
+\item \code{verification/literal-polynomials.json} and \code{verification/expected-receipts.json}: independent release-level reconstruction and the strictly typed replay expectations
+\end{itemize}
+
+\subsection{Release contents and identity boundaries}
+The portable release keeps the two source packets under \code{core/} and \code{paired/}, and the focused multiplicity analysis under \code{fiber/}, with authored code and numerical data retained byte-for-byte. Documentation whose original provenance contained machine-specific paths is accompanied by explicit sanitized provenance and fresh release identities. Earlier releases are unchanged. Third-party primary-PDF caches, interpreter caches, private machine paths, and transient compilation files are not part of this distribution. The bibliography links the primary sources instead.
+
+The central numerical source is identical in both packets and has SHA-256
+\begin{center}\small\ttfamily
+506144b361b2bea634d468a94921644d91868\\
+ dc089a257fe289a0bf51b74cec9
+\end{center}
+(the line break is typographical only). Its source accepting-witness JSON has SHA-256
+\begin{center}\small\ttfamily
+13a3857d28b0207d9baa83facac5b2e67bb\\
+ aeb858d00b82ef9a91c4ab38df890
+\end{center}
+These content identities distinguish a replay of this numerical construction from a successful test of some edited construction. Checksums are integrity bindings, not mathematical proofs or digital signatures.
+
+The release-level verifier first checks the complete expected path inventory and file identities before executing copied code. Scientific replay runs in fresh isolated copies, so build/test commands cannot overwrite the distributed evidence or original packets. Receipt comparisons validate exact key sets, values, and types; a boolean is not accepted in place of an integer merely because Python equates \code{True} and \code{1}. The normal and optimized modes have explicit mode fields. Release tests include tampered contents, inventory changes, unexpected paths, and receipt type mutations.
+
+The executable instructions and exact current entry points are in \code{RELEASE_README.md}. From the release directory, the commands below check identity and then perform numerical replay:
+\begin{quote}\small\ttfamily
+python3 -I -B verify\_release.py --verify-only\\
+python3 -I -B verify\_release.py --replay
+\end{quote}
+ Save its redirected receipt outside the sealed release tree. \code{build_report.sh} rebuilds the PDF in an external output directory. The ordinary workflow is an integrity check, a complete replay, and optionally a PDF rebuild. The release records expected semantics as well as byte hashes: rebuilt matrix JSON, ledger, and literal list must match the pinned outputs; shared source JSON and witness identities must agree; saved normal/optimized and independent receipts must have the expected typed content. Relocation and extracted-archive replay exercise the same procedures without the original workspace.
+
+\subsection{Rebuilding and reading the artifacts}
+Only Python 3.10 or later and the standard library are required for numerical replay. A standard LaTeX installation with the packages listed at the start of \code{report32.tex} is needed to rebuild the PDF. The report source is an ordinary self-contained LaTeX file. The release README describes an isolated rebuild rather than overwriting the sealed report.
+
+Useful direct scientific commands from the appropriate packet directory include
+\begin{quote}\small\ttfamily
+python compiler.py target --left 011 --right ''\\
+python paired\_compiler.py ledger 94\\
+python paired\_compiler.py export 1\\
+python paired\_compiler.py verify examples/accepting-94-certificate.json
+\end{quote}
+The first command belongs to \code{core/}; the other three to \code{paired/}. A target command computes a matrix and is not a membership solver. Certificate verification checks a proposed bounded witness, not absence of witnesses. The polynomial exporter is explicit for any resource-feasible numerical $r$; actual execution remains subject to ordinary time and memory limits.
+
+\wtagc\ \textbf{Shipped names and the Windows replay.} In this report the release is shipped flattened under the prefix \path{08-matrix-semigroup-}: programs in \path{code/}, numerical data and receipts in \path{data/}, and the proofs, reviews, packet READMEs, dependency audit and sanitized provenance at the report root; for example \path{core/compiler.py} is \path{code/08-matrix-semigroup-core-compiler.py} and \path{core/data/semigroup.json} is \path{data/08-matrix-semigroup-core-data-semigroup.json}. The README maps every name. Not shipped: \path{report32.tex} and \path{report32.pdf} (this Part is the article), \path{RELEASE_README.md}, the seals \path{MANIFEST.json}, \path{SHA256SUMS} and \path{fiber/SHA256SUMS}, the two $r=2$ exports (1.27~MB, which the shipped compiler regenerates byte for byte in under a second), twelve byte copies inside the release (among them the second and third copies of \path{semigroup.json} and of \path{accepting-witness.json}), and \path{core/data/u15_table.json}. The verifier's identity gate requires the complete delivered inventory, so \path{verify_release.py} cannot pass on the shipped files alone; the README gives a rerun from the arrival archive and a reconstruction of the delivered layout. As delivered, \texttt{verify\_release.py --replay} fails on Windows: \path{core/compiler.py}, \path{core/audit/independent_check.py}, \path{fiber/check_fibers.py}, \path{paired/tests/check_all.py} and \path{tamper_regression.py} write text with the platform newline, so the rebuilt \path{semigroup.json}, \path{ledger.json} and \path{matrices.txt} are CRLF files and the byte comparison stops the replay after about four seconds; after CRLF$\to$LF conversion they equal the delivered bytes. At placement every replay component was rerun on copies with LF output forced, in ordinary mode, and all but the deterministic export and certificate commands also in optimized mode; every receipt and rebuilt file matched; \path{tamper_regression.py} passed its 18 cases unmodified; the end-to-end replay was not rerun. The ``portable replay'' of this section is portable to POSIX systems. Several of these programs also overwrite recorded outputs next to themselves; run them only on copies.
+
+\section{Consequences limitations and further questions}
+\label{gts:um:sec:future}
+The report separates three notions of finiteness. The generator list is fixed once and for all. A bounded certificate at numerical $r$ is a finite polynomial with a finite root set. The unbounded membership problem ranges over all $r$, and that union recovers r.e.-complete behavior. Confusing these levels would turn a correct bounded theorem into an unsupported uniform one.
+
+The following questions are substantive next steps, not conclusions already obtained.
+\begin{enumerate}
+\item \textbf{Materialize the upstream compiler.} Implement the published ordinary-machine to clockwise-machine to bi-tag to finite-$U$-tape transformation with explicit input conventions, proper finite boundary symbols, and checked halting correspondence. This would strengthen the executable endpoint without changing the mathematical dependency already sufficient for Theorem~\ref{gts:um:thm:semigroup}.
+\item \textbf{Study target multiplicity.} Beyond the accepted-input fibers classified in Section~\ref{gts:um:sec:fibers}, characterize when different tile sequences have the same $(h(s),g(s))$, and when distinct such pairs still have the same $H_rDG_r^{-1}$. The explicit collision shows that canonical signed states alone cannot make target factorization unique. Any proposed canonical factorization selector needs its own soundness, completeness, and resource accounting.
+\item \textbf{Reduce paid certificate size.} The one-hot selectors are transparent but account for 114 of 130 variables per step. Binary encodings or interpolation may trade variables against degree, coefficient height, and gate witnesses. A genuine improvement should give a full ledger in the same natural domain and preserve the exact root-sequence correspondence or state explicitly how it changes.
+\item \textbf{Improve generator or dimension counts.} The local construction prioritizes a clean positive-word marker proof. The broader literature has other correspondence encodings. Any comparison should use the same fixed-versus-variable semigroup convention, coefficient domain, dimension, inverse policy, and input interface; the present count is not an optimality claim.
+
+\wtagc\ (3~October 2026.) Question~4 is answered in part in the repository, on the day the archive arrived. The research programme's review~\cite{repo-revmg} reconstructed all 229 matrices and derived a subset of 197: delete the copy tiles of the fifteen state letters and of $X$, with their paired generators $A_i,B_i$. On a valid input every copied context consists of $0,1,[,]$, so the forward direction of Lemma~\ref{gts:um:lem:tiles} survives, and the subset semigroup has the same target map and the same halting equivalence on valid inputs, hence the same conditional r.e.-completeness; the all-word equivalence of Lemma~\ref{gts:um:lem:tiles} is not preserved. The successor note~\cite{repo-ds193} uses the terminal word $[J1]$ in place of $X$, with the four cleanup rules $0J1\hto J1$, $J10\hto J1$, $1J1\hto J1$, $J11\hto J1$ and the 87 machine rules (91 rewrites and 96 tiles), and obtains 193 literal generators in $\SL_4(\Z)$; the accepting example of Section~\ref{gts:um:sec:examples} then needs 12 rewrites, 83 tiles and 167 generator factors. Its largest entry grows from 26 to 31 magnitude bits, while the total of entry bit lengths falls from 21,372 to 19,321. Neither note claims minimality, an inverse-closed alphabet or a Diophantine gate bound, and both keep the Neary--Woods dependency. They are not printed here, and the shipped files are source~08's.
+\item \textbf{Relate bounded search to source computation.} A particular machine derivation produces a tile witness by copying contexts. Section~\ref{gts:um:sec:fibers} gives the exact minimal tile length and growth for an accepted live input. Further bounds could express its formula in terms of source-machine time and space through the published upstream simulation, while charging any implemented input compiler separately.
+\item \textbf{Formalize the proof interfaces.} A proof assistant could check the rewriting simulation, separator lemma, free-group marker lemma, and signed-part bijection, with data extraction tied to the source table. Existing exact arithmetic checks do not supply this formal derivation.
+\wtagc\ The repository has no Lean or Rocq module for any statement of this Part.
+\item \textbf{Investigate a uniform unbounded polynomial.} Any encoding of all lengths into one fixed-arity equation must explicitly pay for sequences, arithmetic, and canonicality. The present family is not such a construction. The explicit stuttering theorem proves that this family has infinite unbounded fibers for every accepted encoded target. A different uniform representation would need a separate multiplicity analysis.
+\wtagc\ This is the part of Part~IV's question~10 (Section~\ref{gts:ai:sec:questions}) that this Part leaves open; the note there records what Part~V supplies.
+\end{enumerate}
+
+\section{Conclusion}
+One literal positive semigroup in $\SL_4(\Z)$ supports an exact finite-tape halting reduction. Its lower free-group block enforces the required paired factors inside ordinary unrestricted semigroup membership, while its upper block faithfully encodes a directed correspondence equation. The published effective universal-machine construction supplies the only nonmaterialized reduction stage needed for the many-one r.e.-completeness conclusion.
+
+At every numerical inner length, the companion polynomial gives a fully charged quartic natural-witness interface with $130r$ auxiliaries and $17r+4$ residuals. Its roots encode sequences canonically, not targets uniquely. For accepted inputs the exact rational fiber formula also determines minimal length, all supported lengths, quasipolynomial multiplicities, and polynomial asymptotic growth. The numerical examples, arithmetic ledgers, and identity-gated replay make these results and their limits inspectable.
+
+\setcounter{equation}{\value{umsaveeq}}%
+\let\theequation\umoldtheequation\let\theHequation\umoldtheHequation
+
 
 \appendix
 \section{Part I: Scalar templates and an independent specification}\label{gts:vk:app:scalar}
@@ -4339,7 +5210,7 @@ scope of the search, not an assertion that none exists.
 
 \section{Provenance of this report}\label{gts:app:provenance}
 
-\wtag\ The report was built from two manuscripts that arrived together in the archives of commit \texttt{6914ccca6} and were placed by commit \texttt{2a04b60f2}, which staged their programs and data byte-identical to the delivery. \wtagb\ Two of those programs, \path{code/03-van-kampen-van_kampen.py} and \path{code/05-three-phases-heisenberg_compiler.py}, were then patched in place by commit \texttt{db3b377f0} (input-guard repairs reviewed in the research programme), before Parts~I and~II were written; the README records this. Parts~III and~IV were added from two manuscripts of batch~78 that arrived in the archives of commits \texttt{808b53ed8} (manuscript~09) and \texttt{48ee077c7} (manuscript~13) and were placed by commit \texttt{41e7f1189}, which staged their programs, data and source audit byte-identical to the delivery.
+\wtag\ The report was built from two manuscripts that arrived together in the archives of commit \texttt{6914ccca6} and were placed by commit \texttt{2a04b60f2}, which staged their programs and data byte-identical to the delivery. \wtagb\ Two of those programs, \path{code/03-van-kampen-van_kampen.py} and \path{code/05-three-phases-heisenberg_compiler.py}, were then patched in place by commit \texttt{db3b377f0} (input-guard repairs reviewed in the research programme), before Parts~I and~II were written; the README records this. Parts~III and~IV were added from two manuscripts of batch~78 that arrived in the archives of commits \texttt{808b53ed8} (manuscript~09) and \texttt{48ee077c7} (manuscript~13) and were placed by commit \texttt{41e7f1189}, which staged their programs, data and source audit byte-identical to the delivery. \wtagc\ Part~V was added from batch-82 manuscript~22, which arrived in the archive of commit \texttt{db37d18c8} (3~October 2026) and was placed by commit \texttt{2f58ab4e9}, which staged 59 of its 80 files byte-identical to the delivery: 16 programs, 32 data files and receipts, and 11 proofs, reviews, packet READMEs and provenance texts.
 
 \begin{center}
 \small
@@ -4351,6 +5222,7 @@ Source & Archive & Pin & Contributed & Printed as\\
 05 & \path{three_commutative_phases_research.zip}, batch~76 manuscript~05; main file \path{article.tex}, 22-page PDF & \texttt{433df1be3} & the three-phase compiler, the three-subgroup theorem, two-phase decidability, the monoid and quartic versions, the nonclosed product, 9 research directions, its audits & Part~II with Appendices~\ref{gts:tp:app:capsule}--\ref{gts:tp:app:sources}\\
 06 & \path{Order_Is_Not_a_Moment.zip}, batch~78 manuscript~09 (arrival \texttt{808b53ed8}); main file \path{article.tex}, 26-page PDF & \texttt{4cccfa068} & ternary pair-count intervals, the gap and canonical quartic certificates, four-letter holes, the Heisenberg lift, supplied-multiplicity decidability, 12 research questions, its provenance audit & Part~III with Appendices~\ref{gts:po:app:names}--\ref{gts:po:app:provenance}\\
 07 & \path{ProveIt_Affine_Matrix_Diophantine_Research.zip}, batch~78 manuscript~13 (arrival \texttt{48ee077c7}); main file \path{article.tex}, 25-page PDF & \texttt{4cccfa068} & affine rigidity in every dimension, the free basis and sharp period, the reconstructed quadratic loader and degree threshold, the multiplication gadget and affine abelian compiler, 10 research questions, its source audit & Part~IV\\
+08 & \path{Universal_Matrix_Semigroup_and_Diophantine_Certificates_Package.zip}, batch~82 manuscript~22 (``Research Report~32''; arrival \texttt{db37d18c8}); main file \path{report32.tex}, 26-page PDF & none named & the fixed 229-matrix semigroup and its marker lemma, the bounded-length quartic family with exact ledgers, the collision and the 94-tile certificate, the exact fibre generating function, 7 research questions, its proofs, reviews and audits & Part~V with Appendices~\ref{gts:um:app:literal}--\ref{gts:um:app:sequence}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -4361,7 +5233,7 @@ The full pins are
 \texttt{433df1be37188224dd00d0561bfb157949cd6320} (source~05),\\
 \texttt{4cccfa06866b6b81b2467e1cf7514ea85ed0216d} (sources~06 and~07).
 \end{center}
-Each pin is the commit that its source names as its repository snapshot: source~03 on its title page and in its bibliography, source~05 in Section~\ref{gts:tp:sec:implementation} and its bibliography. Both are ancestors of the placement commit. The repository files the sources cite (\path{Computability/HilbertTenthProblem/Lean/MRDP.md}, \path{Lean/Diophantine/Common/MRDPCore.lean} and the note \path{group_projective_label_aligned_lanes.md}) are unchanged from the pins to the write, so the sources' descriptions of them remain accurate. \wtagb\ Sources~06 and~07 name commit \texttt{4cccfa068} as their snapshot: source~06 in its provenance appendix (Appendix~\ref{gts:po:app:provenance}) and bibliography, source~07 in Section~\ref{gts:ai:sec:scope}, its bibliography and its source audit. It is an ancestor of the placement commit. The repository files they cite (the research notes \path{heisenberg_two_generator_membership.md}, \path{group_affine_input_obstruction.md}, \path{group_commutator_universal_substrate.md} and \path{imported_substrate_review_20261002.md}, and \path{Lean/Diophantine/Common/MRDPCore.lean}) have the same blobs at the pin and at this write.
+Each pin is the commit that its source names as its repository snapshot: source~03 on its title page and in its bibliography, source~05 in Section~\ref{gts:tp:sec:implementation} and its bibliography. Both are ancestors of the placement commit. The repository files the sources cite (\path{Computability/HilbertTenthProblem/Lean/MRDP.md}, \path{Lean/Diophantine/Common/MRDPCore.lean} and the note \path{group_projective_label_aligned_lanes.md}) are unchanged from the pins to the write, so the sources' descriptions of them remain accurate. \wtagb\ Sources~06 and~07 name commit \texttt{4cccfa068} as their snapshot: source~06 in its provenance appendix (Appendix~\ref{gts:po:app:provenance}) and bibliography, source~07 in Section~\ref{gts:ai:sec:scope}, its bibliography and its source audit. It is an ancestor of the placement commit. The repository files they cite (the research notes \path{heisenberg_two_generator_membership.md}, \path{group_affine_input_obstruction.md}, \path{group_commutator_universal_substrate.md} and \path{imported_substrate_review_20261002.md}, and \path{Lean/Diophantine/Common/MRDPCore.lean}) have the same blobs at the pin and at this write. \wtagc\ Source~08 names no repository commit and cites no repository file. It identifies its numerical data by the digest of its literal coefficient file, printed in Section~\ref{gts:um:sec:reproduce}; the shipped \path{data/08-matrix-semigroup-core-data-semigroup.json} is that file, byte for byte.
 
 \paragraph{Where the merge had to choose.}
 \begin{itemize}
@@ -4374,9 +5246,10 @@ Each pin is the commit that its source names as its repository snapshot: source~
 \item \wtagb\ \emph{Renaming and conversion.} Source~06's $H(\alpha,\beta,\gamma)$ and $\mathbb H$ are written $h(\alpha,\beta,\gamma)$ and $\HH$; source~07's $\lambda_i$ and $\boldsymbol\lambda$ are written $\theta_i$ and $\vv$; one proof step of source~06 called ``the second phase'' is ``the second stage''. Source~07's \texttt{cleveref} references are printed as ``Lemma~\ldots'', ``Section~\ldots'' and so on. The labels of source~06 (55) carry the prefix \texttt{gts:po:} and those of source~07 (69) \texttt{gts:ai:}; their bibliography keys carry \texttt{po-} and \texttt{ai-}, with the entries unchanged. Nothing else in the two sources was changed, apart from the \wtagb\ notes.
 \item \wtagb\ \emph{Duplicates.} The Heisenberg multiplication law is printed both in Section~\ref{gts:sec:heis} and, in Greek coordinates, in Part~III~\eqref{gts:po:eq:heisenberg}, which the Part refers to. Theorem~\ref{gts:ai:thm:quadratic} is an attributed reconstruction of the research note~\cite{repo-comm}; its Step~3 is printed as a second route to \texttt{pqc:dr:prop:mihailova} of~\cite{pqc}. No theorem of Parts~I and~II is re-proved in Parts~III and~IV.
 \item \wtagb\ \emph{Added text.} Section~\ref{gts:sec:front} was extended (Sections~\ref{gts:sec:parts}--\ref{gts:sec:questions}, Table~\ref{gts:tab:letters78}); one note in Part~II (end of the section on the three-subgroup question); the two Part openings; in Part~III, notes on Parikh matrices, the review's finalizer, the multiplication law, the recording map, the logarithmic map, the research note's open point, the shipped files, two questions and Appendix~\ref{gts:po:app:provenance}; in Part~IV, notes on the repository material, Remarks~\ref{gts:ai:rem:subgroup} and~\ref{gts:ai:rem:binomial}, the Mihailova pointer, the reconstruction, the curve $Q(n)$, the review's square-gate reduction, the shipped files and questions~9 and~10; this appendix and the bibliography entries \cite{mssy,repo-cmc,repo-rev808,repo-revaffine}. New labels: \path{gts:part:po}, \path{gts:part:ai}, \path{gts:tab:letters78}, \path{gts:po:sec:literature}, \path{gts:po:sec:projection}, \path{gts:po:sec:software}, \path{gts:po:sec:questions}, \path{gts:po:app:names}, \path{gts:po:app:provenance}, \path{gts:ai:rem:subgroup} and \path{gts:ai:rem:binomial}.
+\item \wtagc\ \emph{Part~V (batch~82).} Source~08 follows Part~IV as an addition rather than a new report: fixed matrix groups and semigroups as Diophantine substrates are this report's subject, and Part~IV's question~10 asks for the universal alphabet that source~08 supplies in part. Its file prefix \path{08-} continues the report's sequence. Every result, proof, example, remark, question and limitation of source~08 is printed, in its order and with its numbering; its title page is replaced by a Part opening that quotes its abstract and scope statement, and its two appendices are Appendices~\ref{gts:um:app:literal} and~\ref{gts:um:app:sequence}, after all existing ones. Its 61 labels carry the prefix \texttt{gts:um:} and its bibliography keys \texttt{um-}, with the entries unchanged. Its machine table is kept although it is the collection's third printing, because its rewriting rules and Appendix~\ref{gts:um:app:literal} are defined from it; the note after it points to the earlier printings and to the repository's other records of the erratum. Its rewriting and tile lemmas re-derive research-programme constructions and are kept as its own route with a credit note; the first half of Lemma~\ref{gts:um:lem:free} is kept as a second proof of part of Part~I's Sanov theorem. The research programme's 197- and 193-generator reductions are summarized, not printed. Added text: Section~\ref{gts:sec:front} was extended (Sections~\ref{gts:sec:parts}--\ref{gts:sec:questions}, Table~\ref{gts:um:tab:letters}); the title page and abstract; notes at Part~IV's questions~9 and~10; the Part opening and notes after Table~\ref{gts:um:tab:machine}, Lemmas~\ref{gts:um:lem:tiles} and~\ref{gts:um:lem:free}, Section~\ref{gts:um:sec:reduction}, the collision, Section~\ref{gts:um:sec:reproduce}, questions~4, 6 and~7 and Appendix~\ref{gts:um:app:sequence}; this appendix; and the bibliography entries \cite{qoc,repo-nw15,repo-gpcp,repo-revmg,repo-ds193}. New labels besides the 61: \path{gts:part:um}, \path{gts:um:tab:letters} and \path{gts:um:app:sequence}.
 \end{itemize}
 
-\paragraph{Files.} The report directory holds this text (\path{article.tex}, \texttt{article.pdf}), a README, source~03's \path{SOURCES.md} (as \path{03-van-kampen-SOURCES.md}), and the two sources' programs in \path{code/} and recorded outputs in \path{data/}, under the prefixes \path{03-van-kampen-} and \path{05-three-phases-}. The README maps each delivered name to its shipped name and gives rerun instructions that do not overwrite the shipped files. The manuscripts, their PDFs, the delivered READMEs and source~03's checksum ledger (verified, 13 of 13 files, at placement) are not shipped; they survive in the archives of commit \texttt{6914ccca6}. \wtagb\ Parts~III and~IV add source~07's \path{SOURCE_AUDIT.md} (as \path{07-affine-inputs-SOURCE_AUDIT.md}) and the two sources' programs and data under the prefixes \path{06-pair-order-} and \path{07-affine-inputs-}; source~06's \path{Makefile} is shipped as \path{code/06-pair-order-Makefile}. Not shipped: both manuscripts and PDFs, both delivered READMEs, and source~06's checksum ledger \path{SHA256SUMS} (verified, 9 of 9 files, at placement); source~07 shipped none. They survive in the archives of commits \texttt{808b53ed8} and \texttt{48ee077c7}.
+\paragraph{Files.} The report directory holds this text (\path{article.tex}, \texttt{article.pdf}), a README, source~03's \path{SOURCES.md} (as \path{03-van-kampen-SOURCES.md}), and the two sources' programs in \path{code/} and recorded outputs in \path{data/}, under the prefixes \path{03-van-kampen-} and \path{05-three-phases-}. The README maps each delivered name to its shipped name and gives rerun instructions that do not overwrite the shipped files. The manuscripts, their PDFs, the delivered READMEs and source~03's checksum ledger (verified, 13 of 13 files, at placement) are not shipped; they survive in the archives of commit \texttt{6914ccca6}. \wtagb\ Parts~III and~IV add source~07's \path{SOURCE_AUDIT.md} (as \path{07-affine-inputs-SOURCE_AUDIT.md}) and the two sources' programs and data under the prefixes \path{06-pair-order-} and \path{07-affine-inputs-}; source~06's \path{Makefile} is shipped as \path{code/06-pair-order-Makefile}. Not shipped: both manuscripts and PDFs, both delivered READMEs, and source~06's checksum ledger \path{SHA256SUMS} (verified, 9 of 9 files, at placement); source~07 shipped none. They survive in the archives of commits \texttt{808b53ed8} and \texttt{48ee077c7}. \wtagc\ Part~V adds source~08's programs and data under the prefix \path{08-matrix-semigroup-} and its proofs, reviews, packet READMEs, dependency audit and sanitized provenance at the root. Not shipped: its manuscript, PDF and release README, its seals (\path{MANIFEST.json}, \path{SHA256SUMS}, \path{fiber/SHA256SUMS}, verified at placement), the two $r=2$ polynomial exports (regenerable; the README gives the command), twelve byte copies inside the release, and its copy of the $U_{15,2}$ table, a byte copy of a data file of \emph{quadratic-orthant-certificates}. They survive in the archive of commit \texttt{db37d18c8}.
 
 \section{Part III: Canonical witness names and a complete sample}\label{gts:po:app:names}
 The machine-readable export uses the following witness names. Their order fixes the literal residual ordering and makes the polynomial reproducible.
@@ -4457,6 +5330,34 @@ The logical dependencies of the principal results are
 The four-letter obstruction is proved independently by a forced separator skeleton. The supplied-multiplicity decision theorem uses the collection identity, moment-fibre nonemptiness, and the elementary linear-feasibility lemma; it does not depend on numerical tests or on the canonical quartic.
 
 \wtagb\ The note is unchanged from that commit to this report's write (same blob). The repository has no Lean module for any statement of Part~III; the module names of Section~\ref{gts:po:sec:questions}'s formalization route are suggestions.
+
+\section[Part V: Deterministic specification of the literal matrix list]{Part V: A compact deterministic specification of the entire literal list}
+\label{gts:um:app:literal}
+The following prescription is finite and fixes all 229 numerical generators without a symbolic parameter depending on the query. It is repeated here so that the literal data can be regenerated without interpreting prose about a universal compiler.
+\begin{enumerate}
+\item Use Table~\ref{gts:um:tab:machine} exactly. Number the 20 alphabet letters in Section~\ref{gts:um:sec:rewriting} from 1 to 20 and $\#$ as 21.
+\item Scan the 29 defined transition cells in state/read order. For each right move, list the three rules in \eqref{gts:um:eq:Rrules}; for each left move, list those in \eqref{gts:um:eq:Lrules}. Append \eqref{gts:um:eq:clean} in its displayed order. This numbers rules 1 through 93.
+\item Number copy tiles 1 through 20 in alphabet order. For rule $j:u\hto v$, let tile $20+j$ be $(v,u)$. Tile 114 is $(\#,\#)$.
+\item For a tile side $a_1\cdots a_k$, multiply the explicit matrices $E_{\operatorname{code}(a_1)}\cdots E_{\operatorname{code}(a_k)}$ using \eqref{gts:um:eq:Ej}. Substitute into \eqref{gts:um:eq:A}--\eqref{gts:um:eq:C}, evaluating inverses by the determinant-one two-by-two formula.
+\item Output the 114 $A$ matrices, the 114 $B$ matrices, and $C$, in that order. Query words never enter this process.
+\end{enumerate}
+The numerical data file is the expanded result, rather than code that defers the above products to a future user. The independent literal audit repeats these formula checks from JSON without importing the source compiler. The plain-text matrix file supplies a directly readable full 229-matrix listing; its exact equality with the JSON is part of rebuild verification.
+
+\Needspace{18\baselineskip}
+\section{Part V: The 94 tile accepting sequence}\label{gts:um:app:sequence}
+The sequence below is the entire inner witness in order. The full generator word is its $A$ version, followed by $C$, followed by its reversed $B$ version. Line breaks do not indicate separators; index 114 does.
+\begin{quote}\small\ttfamily
+18, 2, 2, 1, 23, 114, 18, 2, 2, 1, 1, 29, 114,\\
+18, 2, 2, 1, 1, 34, 19, 114, 18, 2, 2, 1, 60, 1, 19, 114,\\
+18, 2, 2, 57, 2, 1, 19, 114, 18, 2, 64, 1, 2, 1, 19, 114,\\
+18, 73, 2, 1, 2, 1, 19, 114, 18, 108, 2, 2, 1, 2, 1, 19, 114,\\
+18, 112, 2, 1, 2, 1, 19, 114, 18, 112, 1, 2, 1, 19, 114,\\
+18, 110, 2, 1, 19, 114, 18, 112, 1, 19, 114,\\
+18, 110, 19, 114, 113, 114
+\end{quote}
+The exact rule/position trace and all intermediate configuration words are stored in \code{core/evidence/accepting-witness.json}; the copy in \code{paired/data/accepting-witness.json} is byte-identical. Positions in that JSON are zero-based, while rule and tile identifiers are one-based. The certificate compiler uses the same one-based tile identifiers and zero-based $2\times2$ row and column indices.
+
+\wtagc\ In this report these two files are one shipped file, \path{data/08-matrix-semigroup-core-evidence-accepting-witness.json}; the copies in \path{paired/data/} and \path{fiber/data/} are not shipped.
 
 \clearpage
 \addcontentsline{toc}{section}{References}
@@ -4569,6 +5470,21 @@ October 2, 2026.
 \bibitem{repo-revaffine}
 \wtagb\ ProveIt research programme, \emph{Affine-matrix report review}, \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/affine_matrix_square_projection_review808b.md}; commit \texttt{a1264b55c}, 2~October 2026. It reviews the delivered archive of source~07, not this report.
 
+\bibitem{qoc}
+\wtagc\ ProveIt research report \emph{Quadratic orthant certificates}, collection \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates/}; Tables \texttt{qoc:wf:tab:tm} (Part~III) and \texttt{qoc:um:tab:tm} (Part~V), and its data file \path{data/16-universal-membrane-tm_table.json}. Cited by label names, not by page.
+
+\bibitem{repo-nw15}
+\wtagc\ ProveIt research programme, \emph{An explicit universal TM table with a paid ordinary-input bridge}, research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/neary_woods_explicit_universal_tm.md}; commit \texttt{f2622a68c}, 1~October 2026.
+
+\bibitem{repo-gpcp}
+\wtagc\ ProveIt research programme, research notes \path{gpcp_complete_fixed_program.md} and \path{gpcp_fixed_program_input_bridge.md}, in \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/}, as at the write of Part~V.
+
+\bibitem{repo-revmg}
+\wtagc\ ProveIt research programme, \emph{Bounded intake: literal universal matrices and a complete Grill polynomial}, review \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_incoming_matrix_grill.md}, with its helper and receipt; commit \texttt{32da04296}, 3~October 2026. It reviews the delivered archive of source~08 (and three other archives), not this report.
+
+\bibitem{repo-ds193}
+\wtagc\ ProveIt research programme, \emph{A fixed directed semigroup with 193 literal SL4(Z) generators}, research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/group_directed_semigroup193.md}, with its helper and receipt; commit \texttt{0f7d618f4}, 3~October 2026.
+
 % Source 06 (Part III) bibliography, keys prefixed po-
 \bibitem{po-repo}
 Vladimir Reshetnikov, \emph{ProveIt repository}, working note
@@ -4637,6 +5553,30 @@ B. Chang, S. A. Jennings, and R. Ree, On certain pairs of matrices which generat
 
 \bibitem{ai-matiyasevich}
 Yu. V. Matiyasevich, Enumerable sets are Diophantine, \emph{Doklady Akademii Nauk SSSR} \textbf{191} (1970), 279--282; English translation, \emph{Soviet Mathematics Doklady} \textbf{11} (1970), 354--358. Reprint publisher record: \url{https://www.worldscientific.com/doi/abs/10.1142/9789812564894_0013}.
+
+
+% Source 08 (Part V) bibliography, keys prefixed um-
+\bibitem{um-NW} Turlough Neary and Damien Woods.
+\emph{Four Small Universal Turing Machines}.
+Fundamenta Informaticae \textbf{91}(1) (2009), 123--144.
+\href{https://doi.org/10.3233/FI-2009-0036}{doi:10.3233/FI-2009-0036}.
+Publisher record: \url{https://journals.sagepub.com/doi/10.3233/FI-2009-0036}.
+Author-hosted reading PDF: \url{https://dna.hamilton.ie/assets/dw/NearyWoods-FI09.pdf}.
+The latter uses draft pagination 105--126; detailed locators in this report use that draft pagination and not the published pagination.
+\bibitem{um-HHH} Vesa Halava, Tero Harju, and Mika Hirvensalo.
+\emph{Undecidability Bounds for Integer Matrices using Claus Instances}.
+International Journal of Foundations of Computer Science \textbf{18}(5) (2007), 931--948.
+See Section 2 and Section 7, especially Lemma 3 and Theorems 15--16.
+\url{https://users.utu.fi/harju/articles/HHH_ClausInst.pdf}.
+\bibitem{um-Core} \emph{Fixed numerical universal matrix semigroup}.
+Authored source packet and independent audit, 3 October 2026.
+Released here under \code{core/}; numerical source identity specified in Section~\ref{gts:um:sec:reproduce}.
+\bibitem{um-Paired} \emph{Bounded-word matrix Diophantine compiler}.
+Authored companion source packet and independent audit, 3 October 2026.
+Released here under \code{paired/}; exact common coefficient source as in \cite{um-Core}.
+\bibitem{um-Fiber} \emph{Exact fibers of the fixed matrix construction}.
+Authored focused proof and independent literal-data audits, 3 October 2026.
+Released here under \code{fiber/}; both matrix and polynomial constructions are unchanged.
 
 \end{thebibliography}
 \end{document}
