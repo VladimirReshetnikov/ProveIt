@@ -215,7 +215,7 @@ a uniform single-fold quartic) and shows that original-frame untimed
 reachability need not be Presburger. Part X (sources 26–29) returns to signal
 machines: for a supplied ultimately periodic complete macro with at most four
 live signals, infinite validity is a finite formula of quadratic sign tests
-compiled into a quartic with one natural witness, Zeno behaviour and rational
+compiled into a quartic with one natural witness tuple, Zeno behaviour and rational
 deadlines are decided, and every valid ultimately periodic macro on rational
 data has a rational accumulation time (answering Part I's accumulation
 direction in part); with five live signals a half-contracted irrational
@@ -3990,7 +3990,7 @@ and records the distinctions the article keeps (local versus invariant
 realization, fixed-word invertibility versus reversibility, real versus
 integer inputs, horizon-indexed arity, "≤2 evolution parameters is not ≤2
 total Diophantine witnesses"). `review_new_arithmetic_0d7f51c44.md` (commit
-`a9ab9a698`) is a scoped intake of sources 36–38 (and three other archives):
+`a9ab9a698`) is a scoped intake of sources 36–38 (and five other archives):
 no defect; "twelve leaves, not twelve gates"; "these are finite-horizon
 predicates". `review_timed_four_mass_source18_intake.md` (commit
 `39f398985`) is a scoped intake of source 18, made after the batch-82 write;
@@ -4115,6 +4115,19 @@ destinations or overfull boxes; its box messages are underfull lines in the
 bibliography and in narrow table cells. The title page, too full for one page
 at the standard margins, is set with 0.6-inch margins
 (`\newgeometry`…`\restoregeometry`) and stays a single unnumbered page.
+
+The subsequent [scoped publication review](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_signal_publication_61c9e3eb2.md) and
+[mathematical-interface review](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_signal_math_61c9e3eb2.md) retain the original findings:
+source 26 has one unique natural witness **tuple** with `4A+Γ` coordinates,
+and the cited arithmetic intake covers five other archives, not three.
+The summaries and section heading above are corrected accordingly. A direct
+three-pass `pdflatex -no-shell-escape` rebuild of the edited article still
+produces 673 pages, with no errors, warnings, unresolved references/citations
+or overfull boxes. Eight underfull-box messages concern untouched provenance
+table cells and bibliography text. PDF page 362 was visually inspected: the
+corrected tuple heading, sign-fibre proof and `4A+Γ` ledger render correctly.
+All 1,663 labels and 112 bibliography keys remain unchanged. No supplied
+program or frozen arithmetic checker was executed for this review.
 
 ## Rerunning the programs
 
