@@ -114,6 +114,22 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [exterior auxiliary-substitution theorem](complete84_exterior_auxiliary_absorption.md)
+> rules out every fixed polynomial replacement i=G(E) with an infinite input
+> projection in its nonzero sector. E consists of all 64 computed values and
+> 21 free values independent of i, f, the auxiliary quotient and y_aux.
+> At a positive parent zero, each exterior value is below c^4 while
+> **i > c^(c-2)**. For polynomial degree t and coefficient norm L, every
+> substituted zero with G nonzero therefore has c <= 4t+2+ceil(log2(max(1,L))).
+> Evenness in i allows signed G via i=|G|. The exact G=0 sector is separately
+> G=0, f=y_aux=1 and P5=1, with no native-rank conclusion.
+> The [root source/proof review](review_complete84_exterior_auxiliary_absorption.md)
+> and [independent mathematical challenge](review_complete84_exterior_auxiliary_absorption_math.md)
+> pass, including all 85 exterior bounds, the actual shifted compiler numerals,
+> full-source evenness and zero-i contraction. Fresh normal/optimized checks pass.
+> This excludes a broad substitution class; auxiliary-dependent expressions,
+> changed constraints and the zero sector remain open. Universal84 is unchanged.
+>
 > The [unprotected auxiliary ten-gate theorem](complete84_auxiliary_direct_q_exclusion.md)
 > closes the remaining direct-Q cancellation case. Simultaneous production of
 > V=cTf-c-Rf², Q=Delta²*i²*c⁴ and S=Delta*f²-Q needs **exactly ten gates**
