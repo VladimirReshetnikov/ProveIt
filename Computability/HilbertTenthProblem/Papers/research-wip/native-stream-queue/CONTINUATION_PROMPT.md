@@ -77,6 +77,19 @@
 > single-producer all-value grammar, leaving joint identities and sound
 > coordinate changes open.
 >
+> The [first-index deletion collapse](complete80_first_index_deletion_collapse.md)
+> refutes the literal **80=45M+35A**,17-witness, exact-degree180 candidate
+> obtained by deleting four current84 rows. Report41's full factorial/Pell
+> family retains every other block and supplies positive zeros at every
+> positive input on every authentic compiler slice. The [independent review](review_complete80_first_index_deletion_collapse.md)
+> checks the full source, identities `F80=Delta*F81` and
+> `F84+Delta=(F80+Delta)*Nk`, all positive coordinates and uniform degree.
+> Fresh normal/optimized receipts pass. The [five-report arithmetic intake](review_incoming_arithmetic_reports_39_46.md)
+> records exact provenance and read scope for Reports39/41/43/45/46, separates
+> historical candidate names, and scopes the new height/minimality results.
+> This is a rejected candidate; the established bound remains84 and the
+> independent-gamma83 ordinary-input language remains unresolved.
+>
 > The [outer-slack 83 candidate](complete83_outer_slack_collapse.md) saves
 > one addition by supplying alpha+Z, giving a fully paid **83=47M+36A**
 > source with 18 positive witnesses and exact degree 187. **Its inherited
