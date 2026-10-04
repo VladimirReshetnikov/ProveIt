@@ -140,6 +140,19 @@ or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
 cheaper loading/accepting-history compiler is still needed for a universal
 improvement. The universal84/187 and85/155 points remain unchanged.
 
+The [Borel conjugacy intake review](review_new_borel_62846e17a.md) covers the
+complete1874-line manuscript at **62846e17a**, all six archive members and
+all five delivered checksum entries. Its rank-one classification, centralizers
+and time-regularity arguments survive the recorded mathematical challenge;
+the supplied143 jet checks remain saved claims, with no report code replayed.
+A new review-side construction gives a fixed exponent group with decidable
+rational membership whose finite rational Euler-conjugacy slice is
+**co-c.e.-complete**. Thus that orientation cannot have a uniform ordinary
+existential Diophantine certificate. The source itself leaves effectivity open.
+Fresh metadata/finite-height checks pass before freezing; the PDF and external
+bibliography were not independently verified. No paid integer compiler or
+operation saving is supplied, and the established universal84 bound remains.
+
 The [source-coupled input-lifting theorem](complete83_source_coupled_input_lifting.md)
 constructs exact linear resonances at every odd radix prime while preserving
 the actual fixed compiler and, for sufficiently large family parameters,
@@ -5416,6 +5429,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Borel conjugacy and effective-presentation boundary](review_new_borel_62846e17a.md) | Full manuscript/inert helper read; six-member archive and manifest authenticated. New review-side computable exponent group has co-c.e.-complete finite Euler-conjugacy slice. | No existential Diophantine certificate for that orientation; no paid compiler. Saved jets not replayed; PDF and external sources unverified. |
 | [Source-coupled odd-prime input lifting](complete83_source_coupled_input_lifting.md) | Exact linear resonance representatives fit positive outer slack eventually; normalized input bijections and CRT give conditional simultaneous odd-prime completion. Independently reviewed. | Requires odd central valuations at least2a and a separate binary population condition; no actual full source zero or universal83 result. |
 | [Odd-primary carry budget and source obstruction](complete83_odd_primary_carry_budget.md) | Exact quotient-carry identities; actual positive F=Kz family forbids A² dividing R+1 or R+3 for n>=5. Independent proof/source challenge and fresh receipts pass. | Excludes simultaneous deep-resonance strategies only; mixed branches, sufficient quotient carries and odd-primary completion remain open. |
 | [Sparse compiler coefficients: n>=5 binary cutoff](complete83_outer_family_sparse_two_primary.md) | Actual clause sparsity bounds the three high-digit population losses by less than d/2; every permitted n>=5 passes the full two-primary condition. Independent proof/source review and fresh finite checks pass. | n=1, odd-primary completion, full positive source zero and universal83 remain unproved. |

@@ -154,6 +154,20 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [Borel conjugacy intake review](review_new_borel_62846e17a.md) covers the
+> complete1874-line manuscript at **62846e17a**, all six archive members and
+> all five delivered checksum entries. Its rank-one classification, centralizers
+> and time-regularity arguments survive the recorded mathematical challenge;
+> the supplied143 jet checks remain saved claims, with no report code replayed.
+> A new review-side construction gives a fixed exponent group with decidable
+> rational membership whose finite rational Euler-conjugacy slice is
+> **co-c.e.-complete**. Thus that orientation cannot have a uniform ordinary
+> existential Diophantine certificate. The source itself leaves effectivity open.
+> Fresh metadata/finite-height checks pass before freezing; the PDF and external
+> bibliography were not independently verified. No paid integer compiler or
+> operation saving is supplied, and the established universal84 bound remains.
+>
+>
 > The [source-coupled input-lifting theorem](complete83_source_coupled_input_lifting.md)
 > constructs exact linear resonances at every odd radix prime while preserving
 > the actual fixed compiler and, for sufficiently large family parameters,
