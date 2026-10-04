@@ -2,7 +2,7 @@
 
 **Set approximations, the singular birthday transition, set-length words, class orders, and higher-order structure**
 
-This is a research report merged from **twenty-two** manuscripts. The first four
+This is a research report merged from **twenty-three** manuscripts. The first four
 were written independently on 2 October 2026 and delivered together in
 batch 80 (arrival `4e270aa46`, placement `ccc046989`, cluster K3) and form
 Parts I–V. Six more, written independently on 3 October 2026 as
@@ -14,8 +14,11 @@ Twelve more, written independently on 3 October 2026 as continuations of this
 report, were delivered in batch 83 (arrivals `b63f0c852` for sources 19–24,
 `5ad44b1ed` for source 25, `0d7b2441d` for source 26, `79049d58c` for sources
 27–28 and `51b0a69d7` for sources 29–30; one placement `2e06337d5`, batch 83L)
-and were merged by theme as Parts X–XIV in one write (the commit that adds this
-README text). Author lines: 08 and 09 "Research manuscript
+and were merged by theme as Parts X–XIV in one write (`07ee2b30c`). One more,
+source 31, a continuation of this report dated 4 October 2026 (the UTC date of
+its arrival on 3 October 2026, PDT), was delivered in batch 89 (arrival
+`7c0f2d9f9`, placement `23adb85f9`, which staged nothing for it) and is printed
+whole as Part XV (the commit that adds this README text). Author lines: 08 and 09 "Research manuscript
 prepared for Vladimir Reshetnikov", 11 "Research report", 12 "Research report
 prepared for Vladimir Reshetnikov"; 13, 14 and 17 "Research manuscript
 prepared for Vladimir Reshetnikov", 15, 16 and 18 "Research article prepared
@@ -29,14 +32,17 @@ Reshetnikov", 30 "Research article prepared for Vladimir Reshetnikov"; sources
 19–26, 28 and 29 call themselves AI-assisted (23–26 and 28 add "unrefereed",
 19 and 29 "not a refereed publication"/"paper"), source 27 makes "no claim of
 historical priority or external peer review", and source 30 reports
-"independent AI-assisted proof review". The report is
+"independent AI-assisted proof review". Source 31 says "Research article
+prepared for Vladimir Reshetnikov", does not use the word AI-assisted, claims
+no machine-checked proof or established priority, and names expert review of
+its localized theorem as "the next scholarly step". The report is
 AI-assisted, unrefereed and not formalized. Its review in the collection's
 [review record](../../REVIEW.md) is **pending**, and it is not yet indexed in
 the [formalization ledger](../../FORMALIZATION.md). The four batch-80
 archives have a written-proof review in the Hilbert's-tenth research tree,
 and the batch-80 merged text a scoped synthesis review and a preservation
-audit there, whose corrections are applied; no review of the batch-81 or
-batch-83 sources exists yet (see "Reviews" below).
+audit there, whose corrections are applied; no review of the batch-81,
+batch-83 or batch-89 sources exists yet (see "Reviews" below).
 
 | Source | Batch, manuscript | Archive | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -62,6 +68,7 @@ batch-83 sources exists yet (see "Reviews" below).
 | 28 | 83, 14 | `Surreal_Lexicographic_Group_Envelope.zip` (*Lexicographic Well-Orders of the Surreals: Singular permutation geometry and the canonical group envelope*; 1,204 lines, 32-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.17–61.18; 62 (note), 70, 71 (X); 111.39–111.43; 113.22; C, D |
 | 29 | 83, 15 | `surreal_orders_new_structures.zip` (*Lexicographic Orders of Surreal Well-Orders: Exact Birthday Spectra, Word Products, Topological Transitions, and Class Comparability*; 4,470 lines, 57-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.19–61.20; 68 (X); 76, 78 (XI); 80, 82, 83 (XII); 86, 96 (XIII); 108 (XIV); 111.44–111.45; 113.23; C, D |
 | 30 | 83, 16 | `surreal_well_orders.zip`, inner `surreal_well_orders/` (*Lexicographic Well-Orders of the Surreals: Residual Codes, Topological Transitions, and Class Reconstruction*; 3,583 lines, 47-page PDF) | `7ff7736ec` | `2e06337d5` | Sections 61.21; 63, 64, 68 (X); 80, 84 (XII); 102 (XIII); 109 (XIV); 111.46–111.48; 113.24; C, D |
+| 31 | 89, 01 | `global_choice_surreal_coding.zip`, same inner directory (*Countable Global Choice and Surreal Coding over Zermelo Set Theory: A localized nonconservativity theorem and exact rank-model spectra*; 1,547 lines, 21-page PDF) | `2b7b388ba` | `23adb85f9` (nothing staged) | Part XV whole (Sections XV.1–XV.12 its Sections 1–12, XV.13–XV.14 its Appendices A–B, XV.15 status); 1.3.3, 1.10; 113.26–113.27; A.12; C, D |
 
 The two pairs of batch-80 archives sharing a name (08/09 and 11/12) are
 **not editions**: every pair of the four texts has word 8-gram overlap of
@@ -124,8 +131,26 @@ question (complete metrizability of the full singular permutation space) is
 answered negatively in ZFC by source 26, which 28 did not see; it is printed
 with that status (Note 70.13).
 
+The batch-89 source 31 is an independent text, not an edition: it shares no
+file with any earlier source, 0.6 % of its word 8-grams occur in this report
+(bibliography and standard phrasing), and it shares at most 0.33 % with the
+other four batch-89 manuscripts, which are placed in other reports. It read
+this report at `2b7b388ba`, whose `article.tex` (blob `05807d292`) is the text
+of the batch-83 write with Parts I–XIV, and it starts from three of its labels:
+the global-choice equivalence `swo:cf:choice` (Theorem 13.1), source 12's
+inaccessible full-class model `swo:st:thm:model` (Theorem 21.1) and source 28's
+question `swo:ge:n10` (Research question 113.209). Being a single source with
+material of its own, it is printed whole and in its own order as Part XV:
+Sections XV.1–XV.12 are its Sections 1–12 (its statement *k.m* is XV.*k.m*),
+XV.13 and XV.14 its Appendices A (axiom ledger) and B (source audit), and XV.15
+the status section; its twelve questions are Section 113.26, with dated status
+notes in 113.27, its abstract closes Appendix C, and its 43 numbered statements
+are mapped in Appendix D. The Part numbers its sections XV.1–XV.15 so that the
+questions part keeps Sections 113–115 and no number printed before this write
+changes (the batch-81 and batch-83 writes had moved the closing sections).
+
 Every result, proof, example, remark, question and limitation of the
-twenty-two manuscripts is printed. A result proved again by the same argument is
+twenty-three manuscripts is printed. A result proved again by the same argument is
 recorded in a numbered **Note** that gives the source's statement, number and
 differences, or, where each source builds on its own proof, printed whole as
 a marked route under a credit note (the represented-cut theorem is proved six
@@ -136,9 +161,18 @@ source-specific results are printed in full where they belong. Each source's
 introduction, foundational section, model section, Lean plan, questions,
 conclusion, ledger and reproducibility record are printed whole. Text written
 for the merge is marked `[merge]`. Appendix D maps every numbered statement of
-the twenty-two sources (311 of sources 13–18, 644 of sources 19–30) to its
-place here. For sources 19–30 the write also checked, line by line, that every
-non-blank line of each delivered `.tex` body is printed, or is a section heading
+the twenty-three sources (311 of sources 13–18, 644 of sources 19–30, 43 of
+source 31) to its place here. A line-by-line check confirms that every
+non-blank line of source 31's abstract, scope statement and body (its lines
+75–106 and 116–1475) is printed, verbatim up to the renamings and label
+prefixes of Section 1.3.3, except its `\vfill`, `\clearpage` and `\appendix`
+lines; its Section 13 heading, replaced by the heading of Section 113.26; the
+first line of its scope statement, printed in a quotation without
+`\noindent\small`; and seven lines that gained a cross-reference, a label, a
+`[merge]` annotation or ragged-right table columns. Its title, byline and date
+are printed in Appendix C, and its bibliography as entries with the key prefix
+`gcz` or as the existing `HamkinsGC` and `HamkinsRecursionPrinciple`. For
+sources 19–30 the write also checked, line by line, that every non-blank line of each delivered `.tex` body is printed, or is a section heading
 replaced by a merge heading carrying the source's label, a bibliography line, a
 source part divider, or a duplicate recorded in a numbered note that quotes the
 statement (Part X's notes on sources 19, 21, 22, 24, 26, 28 and 30 and Part
@@ -146,7 +180,7 @@ XI's on source 29 keep the statement and cite the printed proof).
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 831 pages (title page unnumbered)
+article.pdf                              the compiled report, 860 pages (title page unnumbered)
 README.md                                this guide
 09-core-RESEARCH_STATUS.md               source 09's research status and audit, as delivered
 11-raw-orders-repository_audit.md        source 11's targeted repository audit, as delivered
@@ -237,7 +271,10 @@ All code, data and the 24 audit and status files are byte-identical to the
 delivery. Source 18 shipped no code or data; source 15 no status file. Of batch
 83 (49 files, 211,105 bytes; no CR bytes, longest path 133 characters, none
 over 1 MB), sources 21 and 29 shipped no code, source 21 no data, and source 20
-no status file.
+no status file. Source 31 (batch 89) shipped no code, data, audit or status
+file: its archive holds only its manuscript, its PDF and a delivery
+`README.txt`, so nothing of it is in this directory except the text of Part XV
+and its related sections.
 
 **Disclosure for `data/29-birthdays-source_manifest.json`.** Source 29's
 provenance manifest mixes SHA-256 hashes (sixteen repository files at its pin,
@@ -300,6 +337,15 @@ their PDFs (19 45 pages, 20 50, 21 44, 22 33, 23 30, 24 32, 25 33, 26 34, 27
 `SHA256SUMS.txt` of 22 (9/9), 23 (8/8), 24 (8/8), 25 (8/8), 26 (7/7) and 28
 (7/7), all verified at placement. Nothing was excluded as regenerable.
 
+Not shipped from batch 89 (recoverable with
+`git show 7c0f2d9f9:docs/incoming/global_choice_surreal_coding.zip`): source
+31's manuscript `global_choice_surreal_coding.tex` (1,547 lines, 70,676 bytes),
+its 21-page PDF (400,246 bytes) and its `README.txt` (2,590 bytes), all inside
+the inner directory `global_choice_surreal_coding/`. It shipped no checksum
+manifest, and nothing was excluded as regenerable. Its README's build command
+compiles the unshipped `.tex`; rebuilt from a fresh extraction with MiKTeX on 3
+October 2026, it gives 21 pages without warnings.
+
 Shipped files whose text still uses delivery names or names unshipped files:
 `11-raw-orders-repository_audit.md` ("the accompanying article"; its audit
 inputs are named by their delivery copies, which are not shipped);
@@ -352,8 +398,19 @@ included (21's and 29's `gl:` become `swo:fu:gl:` and `swo:bw:gl:`, unrelated to
 source 11's `swo:gl:`); their displayed equations keep their numbers as
 (S*NN*.*n*); merge labels begin `swo:x:`, `swo:xi:`, `swo:xii:`, `swo:xiii:`,
 `swo:xiv:` in Parts X–XIV and `swo:b83:` in the front and back matter.
+The batch-89 source 31's labels carry `swo:gcz:` before the delivered label;
+its unlabelled numbered statements are `swo:gcz:n`*number* (`swo:gcz:n3.4`)
+and its research questions, numbered 1–12 in its PDF, `swo:gcz:n1`–`swo:gcz:n12`
+(as source 28's consecutive `swo:ge:n`*k*); its equations (1)–(10) are tagged
+(S31.1)–(S31.10); the labels written for the merge also begin `swo:gcz:`.
 
-Totals: **1,799 labels** (794 before batch 83, none renamed or lost). `swo:`
+Totals: **1,876 labels** (1,799 before batch 89, 794 before batch 83; none
+renamed or lost). `swo:gcz:` 77: 47 delivered labels of source 31, 9 for its
+unlabelled numbered statements, 12 for its questions, and 9 written for the
+merge (`swo:gcz:part`, `swo:gcz:sub:notation89`, `swo:gcz:sub:batch89`,
+`swo:gcz:sub:glazerinput`, `swo:gcz:sub:noexperiment`, `swo:gcz:sec:status`,
+`swo:gcz:sec:qstatus`, `swo:gcz:app:delivery`, `swo:gcz:app:abstract`). Before
+batch 89: `swo:`
 only 103 (60 of source 11, 11 for its unlabelled statements, 21 merge labels
 of batch 80, 6 of batch 81: four Part labels and two subsections; 5 Part labels
 of batch 83), `swo:st:` 61, `swo:ec:` 52, `swo:sk:` 67 (as before), `swo:fs:`
@@ -368,11 +425,11 @@ of batch 83), `swo:st:` 61, `swo:ec:` 52, `swo:sk:` 67 (as before), `swo:fs:`
 `swo:xiii:` 9, `swo:xiv:` 13, `swo:b83:` 11. Three batch-83 labels with a source
 sub-prefix were written for the merge (`swo:tm:sub:failures`,
 `swo:bw:sec:increasing`, `swo:bw:sub:scans`). Every one of the 531 labels of
-sources 08–18 and of the 760 delivered labels of sources 19–30 is present
-exactly once. Cross-references are typed (lemma, note, …) through alias
-counters. No `swo:` label has a Lean mapping.
+sources 08–18, of the 760 delivered labels of sources 19–30 and of the 47 of
+source 31 is present exactly once. Cross-references are typed (lemma, note, …)
+through alias counters. No `swo:` label has a Lean mapping.
 
-## Notation (Sections 1.3, 1.3.1 and 1.3.2)
+## Notation (Sections 1.3, 1.3.1, 1.3.2 and 1.3.3)
 
 `GB` includes **no** choice principle (as in `found:sub:gbconvention` and
 the [notation guide](../../NOTATION.md)); sources 09 and 12 work over GB with
@@ -436,6 +493,22 @@ well-order polynomials `P(Γ)` (23's `𝖯(Γ)`, 29's `𝒫(Γ)`); `CTH`, `CWO` 
 source 29. Source 20's local ranks and minimum-type cutoffs are `lr_α(x)`,
 `Min_R`, and its restriction maps `π_{βα}` (19's `r_Y` is `π_Y`). Every
 renaming is listed in the table of Section 1.3.2 with its false reading.
+
+For source 31 (dated addendum, Section 1.3.3): `𝖹` is Zermelo set theory
+(Extensionality, Empty Set, Pairing, Union, Power Set, Infinity, Separation; no
+Replacement, Foundation or Choice), `𝖹𝖢` adds Choice and `𝖹𝖢_F` Foundation;
+`GC_{≤ω}` is a selector on nonempty countable sets with Separation `Sep(c)` for
+formulas mentioning it, never this report's global choice `GC`;
+`𝓜_λ = (V_λ, 𝒫(V_λ))` is the full-class rank model at a limit `λ > ω`, with
+`κ = |λ|` (the cutoff only when `λ` is a cardinal); the sign carrier
+`S_λ = ⋃_{α<λ} 2^α` is kept, being `No_{<λ}` as a set of sign sequences
+without its field structure (false reading: not source 28's `S_μ = Sym(μ)` or
+Part X's `S_n`); `CR(a)`, `CR(Ord)`, `CR`, `OA` are Class Replacement on a
+domain, on ordinals, in full, and ordinal abstraction. Renamed: source 31's
+injections `X ↪ D` are printed `X ↣ D`, since `↪` is an order embedding in this
+report, and its threads `𝒯_X` are `Thr_X`, since `𝒯` is the class of all
+words. The trace `H_a` is not a fibre, history slice or group, and the theory
+`𝖳` is not the type `𝐓_min`.
 
 ## What the report claims
 
@@ -582,6 +655,32 @@ first.
     set-sized GBC model's external order has the complete theory of `σ(ℱ)`
     (Theorem 109.9, source 19; **the strongest unreviewed claim of batch 83**),
     which is decidable (Corollary 109.22, source 20).
+16. **Countable global choice and surreal coding over Zermelo set theory
+    (Part XV, source 31).** Over Zermelo set theory, a selector on `D`-small
+    sets and a uniform assignment of injections into `D` are interconvertible
+    by uniform definitions, without Replacement or ordinal collapse (Theorem
+    XV.3.3); bounded trace compression needs no Collection (Theorem XV.4.1);
+    `ZC + GC_{≤ω} + Sep(c)`, and the same with Foundation, is not conservative
+    over `ZC` (`ZC_F`), even with selection only from countably infinite sets
+    (Theorem XV.5.1, Corollaries XV.5.3–XV.5.4), **conditional on source 31's
+    interface to Glazer's published countermodels (arXiv:2312.11902,
+    Propositions 3.8 and 4.11), whose exact match with them is unreviewed**;
+    without expanded Separation the selector is conservative (Proposition
+    XV.5.5). In the full-class rank models `(V_λ, 𝒫(V_λ))` at every limit
+    `λ > ω`, global choice and birthday-monotone set-like well-orders of the
+    sign carrier exist (Propositions XV.6.1–XV.6.2); a class bijection
+    `Ord ↔ S_λ` exists iff `λ = κ` is a cardinal with `2^{<κ} = κ` (Theorem
+    XV.7.2), a birthday-monotone one iff `λ` is a strong-limit cardinal
+    (Theorem XV.7.4), universal set coding and ordinal abstraction iff
+    `λ = κ = ℶ_κ` (Theorems XV.8.2, XV.8.4); Class Replacement on a set `a`
+    holds iff `|a| < cf λ`, on all ordinals iff `λ` is an uncountable regular
+    cardinal, and in full iff `λ` is strongly inaccessible (Lemma XV.9.2,
+    Theorem XV.9.3, Corollary XV.9.4); the external cardinalities of internal
+    proper classes are exactly the cardinals from `cf λ` to `|V_λ|` (Theorem
+    XV.10.1); separating heights `ω+ω`, `ω₁` under CH, `ℶ_ω`, the first beth
+    fixed point above `ω` and an inaccessible (Section XV.11). This extends
+    source 12's inaccessible model (Theorem 21.1) to every limit height and
+    answers source 28's Research question 113.209 (`swo:ge:n10`) in part.
 
 ## What the report does not claim
 
@@ -640,6 +739,27 @@ Section 1.4 keeps every limitation of every source; none was dropped.
   class models are not classified. Sources 19, 20, 21 and 29 report internal
   mathematical review and source 30 "independent AI-assisted proof review";
   no such review is recorded in the repository.
+- Batch 89 (Section 1.4, addendum for source 31): conventional proofs, no Lean
+  or Rocq verification, no machine-checked formalization; its formalization
+  architecture is a proposal. Its nonconservativity theorem uses Glazer's
+  countermodel theorem (Propositions 3.8 and 4.11) as an explicitly cited
+  input, stated as an abstract interface that has **not** been checked against
+  Glazer's paper here; source 31 itself says that expert review of the
+  localized statement "would be the next scholarly step", and Part XV prints
+  the theorem as claimed, conditional on that interface (Section XV.5.1). The
+  rank-model classification is proved in an external ZFC metatheory for full
+  classes; the equivalence of universal set coding with ordinal abstraction
+  holds within this family of models, not over every weak class theory; no
+  field operations on `S_λ` are asserted at arbitrary cutoffs; nothing is
+  asserted about first-order Replacement at singular heights. It does not
+  claim that the three schemes of `swo:ge:n10` are equivalent to rows of its
+  table, a solution of the surreal transfer problem, a classification for
+  definable-class realizations or the finite-input conservativity boundary.
+  Its searches were targeted and are "not a proof of priority"; restricted
+  global choice (Enayat), ordinal abstraction and `V_{ω₁}` (Hamkins, Rin),
+  set-like orders without Replacement (Carneiro), well-ordered Replacement
+  (Freire and Hamkins), the global-choice equivalences (Hamkins) and beth fixed
+  points (MathOverflow) are credited.
 
 ## Formal status
 
@@ -660,10 +780,14 @@ the current revision, including `le_iff_options_lt` and
 none states a result of this report. No batch-81 or batch-83 statement is
 formalized; the batch-83 sources ship no Lean code, and the declarations their
 plans name as existing were checked against
-`Algebra/SurrealNumbers/Surreal/Foundations/` (Section 1.5). Placement in the
-surreal collection beside the Lean foundations confers no formal status.
+`Algebra/SurrealNumbers/Surreal/Foundations/` (Section 1.5). Source 31 ships
+no Lean or Rocq code and cites no Lean declaration; none of its statements is
+formalized, and the milestones its formalization architecture proposes (the
+domain-size criterion, a verified bounded uniformization theorem) do not
+exist. Placement in the surreal collection beside the Lean foundations confers
+no formal status.
 
-## Where one source answers another (Sections 1.7, 33, 39, 50, 60, 72, 79, 85, 105, 112, 113.25)
+## Where one source answers another (Sections 1.7, 33, 39, 50, 60, 72, 79, 85, 105, 112, 113.25, XV.15, 113.27)
 
 - Source 12's question on the weak-choice strength (its Remark 4.2 and
   Question 14.5): **answered** by source 11's Theorem 13.1; printed as
@@ -711,6 +835,18 @@ surreal collection beside the Lean foundations confers no formal status.
   source 19 and 11.5 by source 29; source 22's label question by source 25;
   source 23's question 16.1 had been answered by source 16. The 139 questions
   of sources 19–30 are indexed in Section 113.12.
+- Batch 89 (dated notes of 3 October 2026 in Section XV.15 and Section 113.27,
+  after `swo:ge:n10`, in source 28's status note and in the batch-83 question
+  index): source 28's `swo:ge:n10` (Research question 113.209) is **answered
+  in part** by source 31, for the mechanisms (selection, collapse and coding,
+  image bounding) rather than for the three named schemes, whose weakest
+  assumptions stay open (source 31's Research question 113.242); the sibling
+  questions `swo:pc:n13.9` and `swo:nb:n14.10` stay open. Source 31's Research
+  question 113.241 (external types of set-like well-orders of `S_λ`) is
+  answered at inaccessible heights by source 12's Theorem 21.1(ii). Dated
+  notes after Theorem 13.1 (`swo:cf:choice`) and in Section 21
+  (`swo:st:thm:model`) record that its equivalence uses GB's class
+  Replacement and that the inaccessible model extends to every limit height.
 
 ## Relation to the neighbouring reports
 
@@ -743,12 +879,26 @@ the saturation of `No_{<κ}` at regular `κ` (`hset:rem:saturation`, through
 Note 7.4; its ordinal-graph coding (`hset:thm:choice`) is the set-level form of
 the mechanism in Theorem 13.1 (Remark 13.4) and is unchanged. Its remark on
 the gap pairs of `No_{<κ}` (`hset:rem:cutoffgaps`) is re-proved, and extended
-to singular `κ` and `κ = ω`, by source 17's Theorem 29.4.
+to singular `κ` and `κ = ω`, by source 17's Theorem 29.4. Its batch-89 Part VI
+(manuscript 03 of batch 89, written separately) shows that `V_{ω+ω}` fails
+Replacement for definable families; that is the definable special case, at a
+height of cofinality `ω`, of source 31's domain-size criterion for full-class
+Replacement (Lemma XV.9.2). Neither is claimed as the other's.
+
+**[naming-elementary-embeddings](../../../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/)**
+(research-report collection, batch-89 manuscript 05) studies Replacement,
+Collection and reflection schemes in urelement models expanded by named
+elementary embeddings; with source 31's Proposition XV.5.5 (a selector is
+conservative unless Separation mentions it) it shares the theme of schemes in
+an expanded language, with different theorems and models.
 
 **[real-vector-space-structure](../../surreal/real-vector-space-structure/)**
 uses a set-like global well-order; by Theorem 13.1 that hypothesis is
 equivalent to global choice over GB. Its question on the weaker class-choice
-principles (`rvs:w:q:foundations`) is unaffected.
+principles (`rvs:w:q:foundations`) is unaffected; source 31 shows that the
+equivalence uses GB's class Replacement (in the rank models `(V_λ, 𝒫(V_λ))`
+set-like well-orders of the sign carrier exist at every limit height, an
+`Ord`-enumeration only when `2^{<κ} = κ` at a cardinal height).
 
 **[surreal-fields-across-universes](../surreal-fields-across-universes/)**
 studies the saturation of `No_{<κ}` across universes; nothing here depends on
@@ -769,10 +919,21 @@ cleveref. No external figures or bibliography file.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-Built with MiKTeX (pdfLaTeX): 831 pages; no errors, undefined references
+Built with MiKTeX (pdfLaTeX): 860 pages; no errors, undefined references
 or citations, multiply defined labels, duplicate destinations, LaTeX or package
-warnings, or overfull boxes; 38 underfull-box warnings (15 in the
-build before batch 83, 10 before Part IX). The four batch-81 writes added Parts
+warnings, or overfull boxes; 38 underfull-box warnings, the same 38 as the
+831-page build before batch 89 (15 in the build before batch 83, 10 before
+Part IX). The batch-89 write added Part XV and source 31's front matter,
+questions, delivery record, abstract and crosswalk (831 → 860 pages). Its
+`.aux`, compared with a build of the previous text, keeps every one of the
+1,799 earlier `\newlabel` entries with an unchanged number: Part XV numbers its
+sections XV.1–XV.15 (`\thesection` and hyperref's `\theHsection` are switched
+for the Part and restored after it, and the section counter is reset to 112),
+so the questions part stays Sections 113–115. The contents' number box is
+widened to 4.1em for Part XV only, through `\swosecnumwidth`, which the
+`\l@section` patch now uses (2.3em elsewhere). Source 31's ledger table was
+given ragged-right columns, which removed two underfull boxes of its justified
+columns at this page width. The four batch-81 writes added Parts
 VI–IX (116 → 151 → 188 → 236 → 349 pages); the fourth added Part IX, the
 introductions, questions, conclusions, ledgers, reproducibility records, title
 pages and crosswalk of sources 13–18. The batch-83 write added Parts X–XIV and
@@ -877,6 +1038,14 @@ build nothing in this layout and are kept as delivered. Source 29 has no
 executable checks; its manifest hashes can be rechecked against the archive in
 its arrival commit. The records are summarized in Section 111.49.
 
+**Batch 89.** Source 31 ships no program and no data; its Section XV.12.3
+explains why "no experimental computation is offered as proof". There is
+nothing to rerun. Its manuscript can be rebuilt on a copy, never here, with
+`git show 7c0f2d9f9:docs/incoming/global_choice_surreal_coding.zip`, unzipping
+into an empty scratch directory and running `latexmk -pdf
+-interaction=nonstopmode -halt-on-error global_choice_surreal_coding.tex` in
+its inner directory (21 pages, as delivered).
+
 ## Other discrepancies
 
 - Source 11 is dated 3 October 2026, the UTC date of its pin; the other three
@@ -945,6 +1114,20 @@ its arrival commit. The records are summarized in Section 111.49.
 - Source 28's headline question (complete metrizability of the full singular
   permutation space) was asked without knowledge of source 26, which answers it
   negatively in ZFC; it is printed with that status (Note 70.13).
+- Source 31 is dated 4 October 2026, the UTC date of its arrival
+  (`7c0f2d9f9`, 3 October 2026, 21:36 PDT). It cites this report by its pin
+  `2b7b388ba` and blob `05807d292`, which is the text of the batch-83 write
+  `07ee2b30c`, so the numbers it cites (Theorem 13.1, Theorem 21.1, Research
+  question 113.209) are the current ones; its bibliography's key for this
+  report is printed as `gczAtPin`, its key `HamkinsRecursion` (Hamkins's 2014
+  post) as this report's `HamkinsRecursionPrinciple`, since this report's
+  `HamkinsRecursion` is a different, 2017 post. Source 31's README says "No
+  repository files were modified", which is true of its delivery.
+- Source 31's main theorem depends on an abstract interface to Glazer's
+  published countermodels whose exact match with Glazer's Propositions 3.8 and
+  4.11 has not been reviewed; it is printed as claimed, with that dependency
+  flagged in the Part's introduction, in Section XV.5.1, in Section 1.4 and in
+  the abstract.
 - No retraction was made; no claim of another report or README is refuted.
 
 ## Reviews
@@ -1003,3 +1186,14 @@ archives (sources 13–18) or of Parts VI–IX yet, nor of the batch-83 archives
 (sources 19–30) or of Parts X–XIV. The claim most in need of one is source
 19's Theorem 109.9: every externally set-sized two-sorted model of GBC gives
 its pure external order `𝔚_all^𝓜` the complete theory of `σ(ℱ)`.
+
+Batch 89: the Hilbert's-tenth research tree routed source 31's archive with
+four other arrivals of the day
+(`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_topology_surreal_arrivals_20261003.md`,
+commit `6aadaa4f2`). It hashed the archive's three members, read bounded line
+ranges of the manuscript (its lines 146–225, 359–376, 526–567, 678–703,
+860–889, 1199–1263 and 1457–1473), ran nothing, and found that it yields no
+Diophantine construction; that note records scope, not a proof review, and
+has no correctness finding. There is no review of source 31 or of Part XV;
+its Theorem XV.5.1, through its interface to Glazer's countermodels, is the
+claim most in need of one, as source 31 itself says.
