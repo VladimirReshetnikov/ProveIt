@@ -764,3 +764,26 @@ final log has no warning, undefined reference, overfull box or underfull box.
 All 43 font rows are embedded and none is Type 3. The rebuilt pages 318–321
 and 410 were inspected. The unchanged source had already built to 411 pages
 on this toolchain, against 408 in the previously committed PDF.
+
+## Review correction and current build (4 October 2026)
+
+A bounded review of `7389d7de4` checks the complete new directional
+counterexample argument and its source provenance. The positive-ray majorant
+had one missing exponent on `a`; the next double series already included it.
+Remark 36.17 (`rem:cyclotomic-majorant-factor`) retains the original identity
+and its explicit failure at the stated parameter. The substantive directional
+counterexample is unaffected; the general contour and inverse assertions
+remain conjectural. No delivered numerical program or validator was rerun.
+
+The edited current source was built directly in three serial
+`pdflatex -no-shell-escape` passes, with the installed `makeindex` run between
+passes. A final independent index run gives identical output. The PDF now has
+412 pages, with 43 embedded font rows including five Libertinus rows and no
+Type 3 fonts. The expanded source has 1,129 unique labels, 2,043 resolved
+literal references and 32 citation occurrences resolving to the 48-key
+bibliography. No undefined references or bad boxes remain. The final log
+retains only imakeidx's generic manual-run reminder under disabled shell
+escape. Physical page 320, containing the correction and retained remark,
+was visually checked. Earlier page counts and validator claims above are
+historical build records, not claims about this fresh check. No Lean build
+was needed for this documentation correction.
