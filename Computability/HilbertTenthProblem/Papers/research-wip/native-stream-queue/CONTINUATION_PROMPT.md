@@ -131,17 +131,21 @@
 > The [Parts XI–XII publication review](review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
 >
 >
-> The CA, definable-operations, catalogue, matrix, sandpile, box and signal
-> publications now have the bounded reviews linked below. All reported
-> catalogue/box/signal corrections are applied, with edited PDFs rebuilt.
-> The newer upstream publications8a7f289b8 (commuting actions),4af6f191d
-> (Polish-model Parts XIII–XV) and reciprocal notes1fdcaf5a6 are under scoped
-> review. Archives516049bf9/f300069cf and complex-transseries placement
-> ec91f8c7c have only commit-summary/diff-statistic intake here. Earlier
-> transseries guide-only and ancillary-placement reviews retain their exact
-> boundaries. The complete padded reversal130 now supplies a fixed-arity
-> word component, while a cheaper loader and a paid accepting-history
-> compiler remain open. The universal frontier is unchanged.
+> The CA, definable-operations, catalogue, matrix, sandpile, box, signal,
+> commuting-action, Polish-threshold and batch91 reciprocal publications now
+> have the bounded reviews linked below. All reported catalogue/box/signal/
+> reciprocal corrections are applied, with edited PDFs rebuilt. The next
+> unreviewed update is batch92 reciprocal notes9bffd43d5; the newer archives
+> 516049bf9/f300069cf and complex-transseries placementec91f8c7c retain only
+> commit-summary/diff-statistic intake here. Earlier transseries guide-only
+> and ancillary-placement reviews keep their exact boundaries. Padded
+> reversal now has complete129-operation sources:47 witnesses/SOS227/degree40
+> or46 witnesses/SOS224/degree52. Native AND remains in the loader, so a
+> cheaper loading/accepting-history compiler is still needed for a universal
+> improvement. The universal84/187 and85/155 points remain unchanged.
+>
+>
+> The [batch91 reciprocal-note review](review_reciprocal_1fdcaf5a6.md) reads all13 changed text diffs at1fdcaf5a6 and27 exact interface/instruction spans. It verifies the same15-equation POWER system and the separate containment lemma across the CDC and group reports, exposing their incorrect exhaustive shared-result summaries and stale one-result tally. The current articles and guides name both results without claiming an exhaustive count; GTS Remark1.1 retains and refutes all former phrases, and CDC retains its sentence with the same refutation/pointer. Root independently authenticates all38 before/after blobs,19 diffs,27 spans and24 named targets. Edited CDC/GTS sources rebuild directly in three no-shell-escape passes to742/186 pages; PDF pages646/24 were visually checked. All current1,940/464 labels (including optional-type labels) and local references/citations resolve, with no overfull boxes; one/three underfull messages remain in untouched text, and CDC reports disabled shell escape. The review's earlier1,924 CDC count explicitly counts literal untyped labels only. Imported Pell/physical simulations, full DAGs and historical execution remain qualified. No paid universal arithmetic bound changes.
 >
 >
 > The [Polish arithmetic Parts XIII–XV review](review_polish_thresholds_4af6f191d.md) reads the full637-line guide diff and3,776 selected article lines at4af6f191d. The inspected one-real-dimensional normal form, exponent-group obstruction, division-plus-one-root argument and finite/infinite rational-rank Levi-Civita inverse chains pass with their hypotheses. Root independently authenticates changed/parent bytes, both diffs,13 article spans,28 archive members and16 unchanged placements;175 source labels are retained among1,156 total, with3,235 references resolved. Continuous partial subtraction, uncountability, algebraic-real coefficients and left-finite supports are substantive conditions. Earlier group completion/classification and external descriptive-set/defectless/QE results remain imported; the complete body mapping, unread refinements, PDF and packaged diagnostics are not certified. Fixed-modulus additive QE and topological dimension do not supply variable multiplication or a paid finite integer evaluator. The effective inverse input model remains an open question, and no universal arithmetic bound changes.

@@ -1034,11 +1034,14 @@ semigroup, form this one.
   binary-containment masks. Source 09's packing review read the source notes
   of a packet named `sandpile-repeated-target-20261004` (by that name Report
   53's; shipped there as `26-repeated-target-science-SOURCE_NOTES.md`; the
-  review records no digest, so byte identity is not established). No theorem
-  is shared except the containment lemma: `gts:cm:lem:sub` and that Part's
-  `cdc:fx:lem:subset` are the same statement for the same equation system,
-  proved independently (reciprocal notes of 4 October 2026, batch 91, in
-  both relation texts).
+  review records no digest, so byte identity is not established). The shared
+  results identified here include the POWER macro (`gts:cm:sec:power`,
+  `cdc:fx:sec:power`) and the containment lemma: `gts:cm:lem:sub` and that
+  Part's `cdc:fx:lem:subset` are the same statement for the same equation
+  system, presented with separate proofs (reciprocal notes of 4 October
+  2026, batch 91, in both relation texts).
+  The former exclusivity claims and one-result tally are retained and refuted
+  in numbered Remark `gts:rem:shared-power-containment-correction`.
 - **Reciprocal notes (batch 91, 4 October 2026).** Two dated `[write]`
   sentences in Section 1's relation list: in the
   `signal-machine-collision-certificates` item (that Part is now written,
@@ -1479,3 +1482,20 @@ Source 09 (batch 91):
 - The research-note bibliography entries of source 09 credit "Vladimir
   Reshetnikov, ProveIt research sources" for the first note and "ProveIt
   research sources" for the rest, as delivered.
+
+## Reciprocal-note review correction
+
+The [scoped review of `1fdcaf5a6`](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_reciprocal_1fdcaf5a6.md) found that the exhaustive
+shared-result summaries omitted the common fifteen-equation POWER theorem.
+The current comparison names both POWER and binary containment, without
+claiming an exhaustive count. Remark 1.1
+(`gts:rem:shared-power-containment-correction`) retains and refutes the former
+“No other theorem is shared”, containment-only and one-result claims; the
+CDC note retains its original sentence and points to that numbered remark.
+
+Three direct `pdflatex -no-shell-escape` passes rebuilt this edited article
+to 186 pages. All 464 labels are unique, 847 local references and 202 citations
+to 63 keys resolve, with no warnings or overfull boxes. The final log has
+three underfull-box messages in untouched text. PDF page 24 was visually
+checked for the numbered correction. The immutable review records its exact
+source-read limits; no packaged or frozen program ran.
