@@ -40,6 +40,8 @@
 \newcommand{\Atwo}{\textnormal{A110128}}
 \newcommand{\bigO}{\mathrm O}
 \newcommand{\smallo}{\mathrm o}
+\newcommand{\rcw}{\mathsf w}
+\newcommand{\Stir}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
 \setlist{itemsep=3pt,topsep=5pt}
 \setlength{\emergencystretch}{2em}
 \pagestyle{fancy}
@@ -102,6 +104,25 @@ batch~74, an independent second derivation of Part~I's main theorems, and
 prints only what it adds: uniformity over forest shapes, comparison bounds,
 closed forms of $c_3(r,s)$, and proved integrality for the oriented one-path
 family. Its labels carry the prefix \texttt{fga:}.
+
+\paragraph{Editorial note (3 October 2026, batch 85).}
+Since batch~85 the report has three Parts. Part~III
+(\cref{spf:rc:sec:front}) adds manuscript~03 of batch~85, which proves
+the rational collapse, Conjecture~\ref{spf:conj:collapse}, for every $h$
+(\cref{spf:rc:thm:A-collapse}), extends it to every pair of directed
+offsets, and proves that every oriented correction polynomial
+$B_J^{(1)}(u;r,s)$ has integer coefficients, with an exact degree law
+(\cref{spf:rc:thm:integrality}). Its labels carry the prefix
+\texttt{spf:rc:}. The abstract, the batch-73O2 note above,
+\cref{spf:sec:collapse} and the conclusion of Part~I describe
+manuscript~60 as delivered, in which the collapse is a conjecture and
+integrality is not claimed; dated notes at
+Conjecture~\ref{spf:conj:collapse},
+Proposition~\ref{spf:prop:collapse-implication}, questions~1 and~4 of
+\cref{spf:sec:questions}, in Part~II and in \cref{spf:app:provenance}
+record what has changed. The conjectured recurrences of A189281 and
+A110128 are still not proved, and the absolute case is not covered by
+Part~III.
 
 \newpage
 \tableofcontents
@@ -1347,6 +1368,14 @@ $h=4,\ldots,16$. The check clears the common denominator $\fall n{2h}$ and
 compares polynomials; it is stronger than testing finitely many numerical
 values of $n$, but it is still only a finite check in $h$. No induction or
 creative-telescoping certificate for all $h$ has been obtained here.
+[Added 3 October 2026, batch 85: the conjecture is now proved for every
+$h\ge4$, together with the ratio recurrence \eqref{spf:eq:R-ratio}, in
+Part~III (\cref{spf:rc:thm:A-collapse}). It is the case $r=s=2$ of a closed
+form of $R_h$ for every pair of directed offsets
+(\cref{spf:rc:thm:collapse}), proved by a single-sum formula for the stable
+moments and an alternating Vandermonde identity rather than by
+telescoping. The heading ``Conjecture'' and the label are kept so that
+references to this statement stay valid.]
 
 The proposed formula would imply the recurrence
 \begin{equation}
@@ -1385,6 +1414,15 @@ This conditional proposition must not be confused with the unconditional
 factorial denominator theorem. The conjecture packages the observed
 integrality into a more structured rational-function identity, making it
 more approachable than a bare statement about an infinite list of integers.
+[Added 3 October 2026, batch 85: since \cref{spf:rc:thm:A-collapse} proves
+the hypothesis, the proposition now holds unconditionally
+(\cref{spf:rc:cor:unconditional}). Part~III also proves, by a second route,
+that $B_J^{(1)}(u;r,s)\in\Z[u]$ for every pair of directed offsets, and
+that the degree bound is attained: $\deg B_J^{(1)}(u;2,2)=J-4$, with
+leading coefficient $24$, for every $J\ge8$
+(\cref{spf:rc:thm:integrality}). For the absolute case $\theta=2$, which
+Part~III does not cover, Proposition~\ref{spf:prop:arithmetic} remains the
+denominator statement.]
 
 \section{Further research questions and proposed next steps}
 \label{spf:sec:questions}
@@ -1402,6 +1440,16 @@ separate until such a proof exists.
 [Added 1 October 2026, batch 74: for the oriented one-path subfamily,
 $r=1$ or $s=1$, all-orders integrality is proved in Part~II
 (\cref{fga:cor:integrality}); the case $(2,2)$ of A189281 remains open.]
+[Added 3 October 2026, batch 85: the rational collapse is proved in
+Part~III (\cref{spf:rc:thm:A-collapse}), by a single-sum formula for the
+stable moments (\cref{spf:rc:thm:single-sum}) and Vandermonde
+convolutions, not by telescoping. The factor $24$ is $4!$, from a
+component-index shift of four, and the four lost powers of $n$ are the
+vanishing binomial coefficients with $j<r+s$
+(\cref{spf:rc:sec:collapse}). All-orders integrality now holds for every
+oriented pair $(r,s)$, A189281 included (\cref{spf:rc:thm:integrality}).
+A combinatorial cancellation proof, also asked for here, is still open
+(\cref{spf:rc:sec:questions}, question~9).]
 
 \paragraph{2. Connect the asymptotic theorem to the specific guessed operators.}
 A proved asymptotic expansion does not establish the A189281 or A110128
@@ -1428,6 +1476,11 @@ It would be useful to prove explicit growth bounds in $M$, decide whether a
 Gevrey-type estimate is sharp, and derive a valid truncation rule for a given
 $n$. The rational-collapse conjecture, if proved, would make the oriented
 case a tractable testing ground, but the absolute case needs its own analysis.
+[Added 3 October 2026, batch 85: for the oriented case Part~III proves that
+the Borel transform of the coefficients is entire
+(\cref{spf:rc:thm:Borel}), so that $|c_J|\le\gamma_AA^{J-1}(J-1)!$ for every
+$A>0$. Sharp growth, a summation method and an optimal truncation rule
+remain open (\cref{spf:rc:sec:questions}, questions~3 and~4).]
 
 \paragraph{5. Allow offsets or path counts to grow with $n$.}
 The current proof uses fixed $r,s$, both in the shortest-path condition and in
@@ -2031,6 +2084,14 @@ the subfamily does not justify extrapolating convergence, termination or
 integrality to two paths on both sides. At $(r,s)=(1,1)$ the factor
 $1-u/n$ gives $c_J^{(1)}(1,1)=1,1,0,0,\ldots$, the values found in
 Remark~\ref{spf:rem:offsets-one-one}.
+[Added 3 October 2026, batch 85: the case $(2,2)$, and every other pair of
+directed offsets, is now proved in Part~III (\cref{spf:rc:thm:integrality}),
+of which \cref{fga:cor:integrality} is the case $r=1$ or $s=1$; the
+conditional proposition cited above holds unconditionally
+(\cref{spf:rc:cor:unconditional}). \Cref{fga:prop:onepath} is likewise the
+case $r=1$ of \cref{spf:rc:thm:single-sum,spf:rc:thm:collapse}, which
+manuscript~03 of batch~85 derives without citing it
+(\cref{spf:rc:rem:onepath}).]
 
 \section{Fixed local probabilities}
 \label{fga:sec:local}
@@ -2207,7 +2268,8 @@ overlap \cref{spf:sec:questions}: a certificate for the particular
 recurrence (Part~I's question~2); integrality beyond the one-path case,
 which asks whether $B_J^{(1)}(u;r,s)\in\Z[u]$ for all $r,s$ and so whether
 all $c_J^{(1)}(2,2)$ are integers (question~1, and \cref{fga:cor:integrality}
-for what is proved); large-order growth (question~4); growing gaps and
+for what is proved; [added 3 October 2026, batch 85:] both now hold, by
+\cref{spf:rc:thm:integrality}); large-order growth (question~4); growing gaps and
 component counts (question~5); cycles and other sparse constraint graphs
 (question~6); and a small formal package, starting from the profile
 identity, the stable polynomial, a verified coefficient checker and the
@@ -2217,6 +2279,10 @@ universality bound (question~7). The other six are new here.
 $\deg_uB_J^{(1)}(u;r,s)\le J$ hold at every order, sharpening $2J$? The
 explicit polynomials through order three show the cancellation; such a
 bound would constrain the factorial cumulants of $X$.
+[Added 3 October 2026, batch 85: yes, for every $r,s$. Part~III proves
+$\deg_uB_J^{(1)}(u;r,s)\le\min\{J,\max(r+s-1,J-r-s)\}$, with equality
+$J-r-s$ for $J\ge2(r+s)$ when $r,s\ge2$
+(\cref{spf:rc:thm:integrality}).]
 \item \emph{Sharp short-path thresholds.} Condition
 \eqref{fga:eq:weaklength} is sufficient, not shown optimal. What is the
 first shape-dependent term when a shortest path has fixed length, or grows
@@ -2257,6 +2323,1321 @@ imports its sibling by the delivered name (\texttt{from fixed\_gap import
 directory; run from \texttt{code/} it would fail to import, and if made to
 run it would write beside Part~I's files under unprefixed names. The report
 README gives a copy-based recipe.
+
+\part{Rational collapse and universal integrality for directed offsets}
+\label{spf:rc:part}
+
+\section{Provenance, scope and notation of Part III}
+\label{spf:rc:sec:front}
+
+[Added 3 October 2026, batch 85.] Part~III was added in the write of
+batch~85. It is built from manuscript~03 of that batch, which proves
+Conjecture~\ref{spf:conj:collapse} of Part~I for every $h$, extends the
+identity behind it to every pair of directed offsets $(r,s)$, and derives
+from it that every oriented correction polynomial $B_J^{(1)}(u;r,s)$ has
+integer coefficients, with an exact degree law. Where manuscript~03 proves
+a statement already printed in Part~I or Part~II, the statement is not
+reprinted: its route is recorded in \cref{spf:rc:tab:routes}, and its
+special cases that repeat Part~II's \cref{fga:prop:onepath,fga:prop:c3} are
+printed as notes crediting Part~II (\cref{spf:rc:rem:onepath,spf:rc:rem:c3}).
+Everything in Part~III is written in Part~I's notation
+(\cref{spf:rc:tab:dictionary}).
+
+\subsection{Provenance}
+\label{spf:rc:sec:provenance}
+
+Manuscript~03 of batch~85 is the archive
+\nolinkurl{OEIS_Rational_Collapse_and_Integrality.zip} (16~files, one of
+them the checksum ledger \texttt{MANIFEST.sha256}, which lists the other
+15), which arrived in commit \texttt{317c1ce2e} and was placed in this
+report by commit \texttt{713149ded}. Its article is titled
+\emph{Rational collapse and universal integrality for directed permutation
+avoidance: Resolving the A189281 path-forest conjecture and extending it to
+every fixed pair of offsets} (23~pages, dated 3~October 2026); its title
+page reads ``Prepared for Vladimir Reshetnikov, AI-assisted mathematical
+research report'', and its PDF metadata names ``AI-assisted research report
+prepared for Vladimir Reshetnikov'' as author. Its pinned repository commit
+is \texttt{d68b65ea064084fb121df9bb431b21d086f7be81} (2026-10-03,
+17:08;~\cite{rcProveIt}). It read this report's \texttt{article.tex} as the
+Git blob \texttt{5b60a1ad447afe7dce58534fba447b05e401f172}, which is also
+the blob of this file before the batch-85 write: manuscript~03 saw Parts~I
+and~II exactly as they stood.
+
+Two different manuscripts numbered~03 have contributed to this report. In
+Part~III, ``manuscript~03'' means manuscript~03 of batch~85; in Part~II it
+means manuscript~03 of batch~74, the source of Part~II, and Part~III always
+names that one with its batch.
+
+Manuscript~03 states correctly what Parts~I and~II contain: the stable
+tiling theorem and the all-orders expansion, Conjecture~\ref{spf:conj:collapse}
+checked for $h=4,\ldots,16$, its conditional integrality consequence
+(Proposition~\ref{spf:prop:collapse-implication}), and Part~II's integrality
+for the oriented one-path family. It does not cite Part~II's
+\cref{fga:prop:onepath} or \cref{fga:prop:c3}, which it re-derives as special
+cases; this write credits them.
+
+\paragraph{Scope and non-claims of manuscript~03, kept.}
+It is an unrefereed, proof-focused, AI-assisted research draft, not a
+Lean-checked formalization, and it makes no claim of exhaustive historical
+priority; its firm novelty comparison is with the explicitly open
+conjecture of this report. It does \emph{not} prove, or assume, the
+order-eight, degree-eleven recurrence listed in the OEIS for the finite
+sequence A189281: the recurrences it proves are in the moment order $h$,
+\eqref{spf:eq:R-ratio}, and for auxiliary inverse-factorial coefficients,
+\eqref{spf:rc:eq:psi-recurrence}, not in $n$. Its integrality theorem is
+for directed (oriented) differences only; the absolute model ($\theta=2$,
+A110128) is not covered, and integrality must not be transplanted to it.
+Stable rational moments equal actual moments only in the stability range
+\eqref{spf:eq:stable-range}. Its hypergeometric and inverse-factorial series
+are formal and are not asserted to converge; its entire Borel transform does
+not establish Laplace summability or convergence of $\sum_Jc_Jn^{-J}$, and no
+beyond-all-orders term is identified, since forests with equal stable
+moments can differ. No sign rule for the $c_J$ is claimed. Its index
+reconstruction numerics are uncertified, and no explicit onset for rounding
+is given. Its certificate limits follow from the theorem, not from
+extrapolation. Missing proofs on an OEIS page are not evidence that no proof
+exists, and its OEIS note is an unsubmitted draft, not an accepted
+contribution. Finite computations support its proofs but are not their
+logical basis, and no Lean kernel run is asserted.
+
+\subsection{What Part III adds}
+\label{spf:rc:sec:claims}
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.17\textwidth}>{\raggedright\arraybackslash}p{.37\textwidth}>{\raggedright\arraybackslash}p{.38\textwidth}@{}}
+\toprule
+Topic & Parts I and II & Part III (manuscript 03 of batch 85)\\
+\midrule
+Rational collapse at $(2,2)$ &
+Conjecture~\ref{spf:conj:collapse}, checked for $h=4,\ldots,16$ &
+\emph{proved} for every $h\ge4$, with \eqref{spf:eq:R-ratio}
+(\cref{spf:rc:thm:A-collapse})\\
+Stable moments &
+a sum over all profiles of edge degree $k$ \eqref{spf:eq:stable-moment} &
+a single sum of $k+1$ terms, every $(r,s)$ (\cref{spf:rc:thm:single-sum})\\
+Normalized moments $R_h$ &
+$(2,2)$ only, explicit for $h\le3$ (\cref{spf:sec:collapse}) &
+a closed form for every $(r,s)$ and $h$ (\cref{spf:rc:thm:collapse})\\
+Integrality, $\theta=1$ &
+$(2J)!B_J\in\Z[u]$ (Proposition~\ref{spf:prop:arithmetic}); $B_J\in\Z[u]$ if
+$r=1$ or $s=1$ (\cref{fga:cor:integrality}); $(2,2)$ conditional
+(Proposition~\ref{spf:prop:collapse-implication}) &
+$B_J\in\Z[u]$ for every $(r,s)$, by an explicit Stirling-number formula
+(\cref{spf:rc:thm:integrality}); Proposition~\ref{spf:prop:collapse-implication}
+unconditional (\cref{spf:rc:cor:unconditional})\\
+Degree in $u$, $\theta=1$ &
+$\le2J$; $\le\max(3,J-4)$ at $(2,2)$ under the conjecture; Part~II asks
+whether $\le J$ (\cref{fga:sec:questions}, question~1) &
+$\le\min\{J,\max(\sigma-1,J-\sigma)\}$, $\sigma=r+s$; equal to $J-\sigma$,
+with leading coefficient $\rcw_\sigma$, for $J\ge2\sigma$ when $r,s\ge2$\\
+Coefficient growth &
+none proved (Part~I, question~4) &
+entire Borel transform; $|c_J|\le\gamma_AA^{J-1}(J-1)!$ for every $A>0$
+(\cref{spf:rc:thm:Borel})\\
+Coefficients &
+$c_J(2,2)$ for $J\le16$ (\cref{spf:tab:extra}); $c_3^{(\theta)}(r,s)$
+(\cref{fga:prop:c3}) &
+$c_J(2,2)$ for $J\le100$ (data), printed to $J=24$; A189282--A189284 through
+$c_6$ (\cref{spf:rc:tab:diagonal})\\
+Inverse &
+all orders (\cref{spf:thm:inverse-all}); two terms in Part~II's coordinates
+(\cref{fga:prop:inverse}) &
+the same two terms, the second in closed form $(r-1)(s-1)$ for every pair
+(\cref{spf:rc:prop:inverse})\\
+Certificates &
+$n=80,160,320$, $\theta=1,2$ (\cref{spf:tab:certificates}) &
+$n=64,128,256$, $\theta=1$, from single-sum moments
+(\cref{spf:rc:tab:certificates})\\
+\bottomrule
+\end{tabular}
+\caption{Part III against Parts I and II. Part~III treats the oriented case
+$\theta=1$ only.}
+\label{spf:rc:tab:claims}
+\end{table}
+
+\paragraph{Source and novelty ledger of manuscript~03, restated.} The OEIS
+sequence definitions and their displayed initial asymptotics are external,
+and no authorship is claimed for them; the A189281 entry, inspected on
+3~October 2026, displays coefficients through $n^{-10}$ and notes their
+integrality, an observation that is not by itself a theorem about every
+order. The paired path tilings are
+credited to Spahn and Zeilberger~\cite{spahn}. The stable tiling polynomial
+and the earlier all-orders expansion are credited to Part~I; manuscript~03
+reconstructs the stable identity with proof and gives a new proof of the
+analytic transfer through the collapse. Manuscript~03 claims as its own:
+the single-sum moment formula, the universal normalized identity and the
+A189281 product, integrality at every order with the sharp degree law, the
+inverse-factorial kernel and its auxiliary recurrence, the entire Borel
+transform, and a simplified parameter-dependent index reconstruction. Two of
+these overlap Part~II as special cases, and the reconstruction is an
+instance of the inversion apparatus Part~I already cites
+(Remark~\ref{spf:rem:inverse-apparatus}); \cref{spf:rc:tab:routes} says where.
+
+\subsection{Notation}
+\label{spf:rc:sec:notation}
+
+Throughout Part~III the orientation weight is $\theta=1$, and we drop the
+superscript: $X=X^{(1)}_{r,s,n}$, $G_n(u)=G^{(1)}_{r,s,n}(u)=\E(1+u)^X$,
+$A(n)=A^{(1)}_{r,s}(n)$, $B_J=B_J^{(1)}(u;r,s)$, $c_J=c_J^{(1)}(r,s)$. The
+moments $\mu_k=\E\binom Xk$ are Part~I's. The stable rational moments
+$\mu_k^*(n)=\mu_k^*(n;r,s)$ are the right side of \eqref{spf:eq:stable-moment}
+at $\theta=1$, read as rational functions of an indeterminate $n$; for
+$r=s=2$ they are the $\mu_k^*$ of \cref{spf:sec:collapse}. Likewise
+$R_h^{r,s}(n)$ is defined by \eqref{spf:eq:R} from $\mu_k^*(n;r,s)$, and
+$R_h^{2,2}=R_h$. Manuscript~03 overloads several letters that Parts~I and~II
+already use; \cref{spf:rc:tab:dictionary} fixes the convention. No
+normalization is changed.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.36\textwidth}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.32\textwidth}@{}}
+\toprule
+Notion & Part III & Manuscript 03\\
+\midrule
+count, statistic, generating function & $A(n)$, $X$, $G_n(u)$ & $a_{r,s}(n)$, $X_{r,s,n}$, $G_n(u)$\\
+offsets less one & $r-1$, $s-1$ (written out) & $p$, $q$ (Part~II's $p_n$ is a polynomial)\\
+sum of the offsets & $\sigma=r+s$ & $D$ (Part~I's $\mathcal D$, $D_v$, $D$; Part~II's $D_{n,k}$)\\
+weights $\rise{(r-1)}j\rise{(s-1)}j/j!$ & $\rcw_j$ & $w_j$ (Part~I's $w$ is $\log z$)\\
+profile; component of $\ell$ vertices & $\mathbf b=(b_\ell)_{\ell\ge2}$ & $(b_d)_{d\ge1}$, $d=\ell-1$ edges (Part~I's $d$ is the defect)\\
+reciprocal-factorial functional & $\mathfrak L_{\bar n}^{(a)}$, $\bar n=n-k$ & $\mathcal L_m^{(p)}$, $m=n-k$ (Part~I's $\mathcal L$ is a law, $m$ a dimer count)\\
+profile series & $\mathcal T(z;y_1,y_2)=\tau_0+\tau_1y_1$ & $T(z;y,w)=A+By$\\
+auxiliary variables & $\zeta=z/(1-z)$; $t$, $\xi$ & $\omega$ (Part~II's $\omega_j$); $t$, $v$\\
+moment cutoff; constants & $h_n=\lfloor\log n\rfloor$; $\gamma_{r,s}$, $\gamma_A$ & $K$; $C_{p,q}$, $C_{r,s}$, $K_A$\\
+inverse-factorial polynomials & $\Phi_i(u)$, $\Phi(z,u)$ & $P_m(u)$, $\mathcal P(z,u)$ (Part~I's $P_{\boldsymbol\beta,j}$, forest $\mathcal P$)\\
+their values at $u=-1$ & $\psi_i$, $\Psi(z)$ & $d_m$, $\mathcal H(z)$ (Part~I's $d_j(w)$, $\mathcal H(t,D)$)\\
+exponential generating function & $\mathcal E(\xi)=\sum\psi_i\xi^i/i!$ & $\mathcal E(y)$\\
+Borel transform of $C(x)$ & $\widehat C(t)$ & $\widehat C(t)$ (same)\\
+inverse coordinates & $\Lambda$, $N$, $\Delta=\log N$ (Part~II, $\theta=1$) & $T$, $z$, $\ell$\\
+logarithmic coefficients & $a_1$, $a_2$ & $\alpha$, $\beta$\\
+inverse corrections & $\omega_1$, $\omega_2$ (Part~II) & $A$, $B$\\
+\bottomrule
+\end{tabular}
+\caption{Notation of manuscript~03 against Part~III. Other symbols ($R_h$,
+$\mu_k^*$, $B_J$, $c_J$, $F_r(n;\mathbf b)$, $E_a(\mathbf b)$, $\bfac$,
+$E_M(n)$, $S_j$) mean the same in both. In Part~III, $z$ is a formal
+variable, not Part~I's Lambert backbone, which Part~III calls $N$ as
+Part~II does.}
+\label{spf:rc:tab:dictionary}
+\end{table}
+
+Two of these renamings carry a tempting false reading. The weight $\rcw_j$
+is not the logarithm $w=\log z$ of \cref{spf:sec:inverse}, and
+$\psi_i=\Phi_i(-1)$ are not Part~I's inverse coefficients $d_j(w)$: they are
+the coefficients of an inverse-factorial re-expansion of the avoidance
+probability (\cref{spf:rc:sec:kernel}).
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{.30\textwidth}>{\raggedright\arraybackslash}p{.63\textwidth}@{}}
+\toprule
+Parts I and II & Manuscript 03's route\\
+\midrule
+\cref{spf:thm:stable}, Corollary~\ref{spf:cor:stable-moments} &
+the same proof (the identity \eqref{spf:eq:lagrange-id} and the expansion of
+$\mathcal D^{-(r-1)}$ over subprofiles), credited to Part~I and to
+Spahn--Zeilberger, with components indexed by their edge counts\\
+\eqref{spf:eq:exact-mean} &
+the case $k=1$ of the single-sum formula (\cref{spf:rc:rem:k1})\\
+Lemma~\ref{spf:lem:moment-bound}, $\theta=1$ &
+the same argument; adds a bound on the normalized moments
+(\cref{spf:rc:lem:bound})\\
+\cref{spf:thm:main}, $\theta=1$ &
+a second proof through the collapse (\cref{spf:rc:thm:asymptotic}); its
+shape clause is Part~I's, weaker than Part~II's \cref{fga:cor:shortest}\\
+Corollary~\ref{spf:cor:distribution}, $\theta=1$ &
+the same Cauchy argument on $|t|=R$\\
+\eqref{spf:eq:B1}, \eqref{spf:eq:B2-oriented}; \cref{fga:prop:c3}, $\theta=1$ &
+$B_1$, $B_2$, $c_1$, $c_2$ and $c_3$ for general $(r,s)$ from the Stirling
+formula (\cref{spf:rc:rem:c3})\\
+\cref{fga:prop:onepath}, \cref{fga:cor:integrality} &
+the cases $r=1$ or $s=1$ of \cref{spf:rc:thm:single-sum,spf:rc:thm:collapse,spf:rc:thm:integrality}
+(\cref{spf:rc:rem:onepath})\\
+\eqref{spf:eq:A189281}, \cref{spf:sec:OEIS-results}, \cref{spf:tab:extra} &
+the polynomials $B_0,\ldots,B_8$ and the coefficients through order~16 at
+$(2,2)$, equal to Part~I's (\cref{spf:rc:sec:OEIS})\\
+\cref{spf:thm:inverse-first}, \cref{fga:prop:inverse}, $\theta=1$ &
+the first two corrections in Part~II's coordinates
+(\cref{spf:rc:prop:inverse})\\
+\cref{spf:tab:certificates} &
+the same Bonferroni method at new sizes (\cref{spf:rc:tab:certificates})\\
+\bottomrule
+\end{tabular}
+\caption{Results of Parts~I and~II proved again by manuscript~03, and where
+Part~III records each route.}
+\label{spf:rc:tab:routes}
+\end{table}
+
+\section{A single sum for the stable moments}
+\label{spf:rc:sec:single-sum}
+
+Put
+\begin{equation}
+ \sigma=r+s,\qquad
+ \rcw_j=\frac{\rise{(r-1)}j\rise{(s-1)}j}{j!}\quad(j\ge0).
+ \label{spf:rc:eq:weights}
+\end{equation}
+Generalized binomial coefficients mean $\binom ab=\fall ab/b!$ for $b\ge0$,
+also for negative integers $a$, and $\binom ab=0$ for $b<0$. The weights are
+nonnegative integers: if $r,s\ge2$, then
+\begin{equation}
+ \rcw_j=j!\binom{r+j-2}j\binom{s+j-2}j,
+ \label{spf:rc:eq:integer-weights}
+\end{equation}
+and if $r=1$ or $s=1$, then $\rcw_0=1$ and $\rcw_j=0$ for $j>0$. For
+$r=s=2$, $\rcw_j=j!$.
+
+\begin{theorem}[Single-sum stable moments; manuscript~03]
+\label{spf:rc:thm:single-sum}
+For all $r,s\ge1$ and $k\ge0$, as an identity in $\Q(n)$,
+\begin{equation}
+ \boxed{\displaystyle
+ \mu_k^*(n)=\sum_{j=0}^k
+  \frac{\rcw_j\binom{n-\sigma+1-j}{k-j}}{\fall n{k+j}}.}
+ \label{spf:rc:eq:single-sum}
+\end{equation}
+Equivalently, for integers $n\ge2k$,
+\begin{equation}
+ \mu_k^*(n)=\frac1{n!}\sum_{j=0}^k
+          \rcw_j\,(n-k-j)!\binom{n-\sigma+1-j}{k-j}.
+ \label{spf:rc:eq:single-sum-factorials}
+\end{equation}
+Equality with the actual moments $\mu_k$ additionally requires the
+stability conditions of Corollary~\ref{spf:cor:stable-moments}.
+\end{theorem}
+
+The profile formula \eqref{spf:eq:stable-moment} has one term for each
+partition of $k$; \eqref{spf:rc:eq:single-sum} has $k+1$.
+
+\subsection{A reciprocal-factorial linear functional}
+
+Put $\bar n=n-k$ and take $n$ so large that $\bar n\ge k$. For an integer
+$a\ge0$ and polynomials of degree at most $\bar n$ in a variable $y$, define
+\begin{equation}
+ \mathfrak L_{\bar n}^{(a)}(y^i)=
+       \frac{(-1)^i\rise ai}{\fall{\bar n}i}\qquad(0\le i\le\bar n).
+ \label{spf:rc:eq:functional}
+\end{equation}
+For $a=0$ this is evaluation at $y=0$. Since
+$\fall{(n-k-i)}{c-i}=\fall{\bar n}c/\fall{\bar n}i$, the stable polynomial
+\eqref{spf:eq:F} becomes
+\begin{equation}
+ F_r(n;\mathbf b)=\fall{\bar n}c\,
+       \mathfrak L_{\bar n}^{(r-1)}\prod_{\ell\ge2}(1+(\ell-1)y)^{b_\ell}.
+ \label{spf:rc:eq:F-functional}
+\end{equation}
+Introduce the profile series
+\begin{equation}
+ \begin{split}
+ \mathcal T(z;y_1,y_2)
+ &=1+\sum_{\ell\ge2}z^{\ell-1}(1+(\ell-1)y_1)(1+(\ell-1)y_2)\\
+ &=\frac1{1-z}+\frac{z(y_1+y_2)}{(1-z)^2}
+                     +\frac{z(1+z)y_1y_2}{(1-z)^3}.
+ \end{split}
+ \label{spf:rc:eq:T}
+\end{equation}
+In the multinomial expansion of $\mathcal T^{\bar n}$, a profile $\mathbf b$
+of edge degree $k$ has coefficient $\fall{\bar n}c/\bfac$, and
+$(\fall{\bar n}c)^2/\fall n{k+c}=\bar n!\,\fall{\bar n}c/n!$. With
+\eqref{spf:rc:eq:F-functional} for both forests, \eqref{spf:eq:stable-moment}
+at $\theta=1$ becomes
+\begin{equation}
+ \mu_k^*(n)=\frac{\bar n!}{n!}[z^k]
+       \mathfrak L_{\bar n,y_1}^{(r-1)}\mathfrak L_{\bar n,y_2}^{(s-1)}
+       \mathcal T(z;y_1,y_2)^{\bar n}.
+ \label{spf:rc:eq:master}
+\end{equation}
+
+\subsection{The first functional}
+
+Write $\mathcal T=\tau_0+\tau_1y_1$. Since $\tau_1$ has the factor $z$, the
+finite binomial theorem and \eqref{spf:rc:eq:functional} give, through
+degree $\bar n$ in $z$,
+\begin{equation}
+ \mathfrak L_{\bar n}^{(r-1)}(\tau_0+\tau_1y_1)^{\bar n}
+ \equiv\tau_0^{\bar n}\sum_{i=0}^{\bar n}\frac{(-1)^i\rise{(r-1)}i}{i!}
+   \Bigl(\frac{\tau_1}{\tau_0}\Bigr)^i
+ \equiv\frac{\tau_0^{\bar n+r-1}}{(\tau_0+\tau_1)^{r-1}}.
+ \label{spf:rc:eq:first-functional}
+\end{equation}
+The omitted terms start at $z^{\bar n+1}$, so they cannot affect $[z^k]$.
+With $\zeta=z/(1-z)$ one has $\tau_0=(1+\zeta y_2)/(1-z)$ and
+$\tau_0+\tau_1=(1+2\zeta y_2)/(1-z)^2$, so the last expression is
+\begin{equation}
+ (1-z)^{r-1-\bar n}\frac{(1+\zeta y_2)^{\bar n+r-1}}{(1+2\zeta y_2)^{r-1}}.
+ \label{spf:rc:eq:first-simplified}
+\end{equation}
+All its $z$-coefficients through degree $\bar n$ are polynomials in $y_2$ of
+degree at most $\bar n$, so the second functional is defined on them.
+
+\subsection{The second functional and the endpoint}
+
+For $s\ge2$, a beta integral represents the second functional exactly:
+\begin{equation}
+ \mathfrak L_{\bar n}^{(s-1)}f(y)=
+ \frac{(\bar n+s-1)!}{\bar n!\,(s-2)!}
+ \int_0^1 t^{s-2}(1-t)^{\bar n} f\Bigl(-\frac{t}{1-t}\Bigr)dt;
+ \label{spf:rc:eq:beta}
+\end{equation}
+on $y^i$ this follows from
+$\int_0^1t^{s-2+i}(1-t)^{\bar n-i}dt=(s-2+i)!(\bar n-i)!/(\bar n+s-1)!$.
+
+Assume first $r,s\ge2$. Substitute \eqref{spf:rc:eq:first-simplified} into
+\eqref{spf:rc:eq:beta} coefficientwise and then put $t=(1-z)\xi$. For real
+$z<0$ close to zero the result is
+\begin{equation}
+ \frac{(\bar n+s-1)!}{\bar n!\,(s-2)!}(1-z)^{\sigma-2-\bar n}
+ \int_0^{1/(1-z)}
+       \frac{\xi^{s-2}(1-\xi)^{\bar n+r-1}}{[1-(1+z)\xi]^{r-1}}\,d\xi.
+ \label{spf:rc:eq:beta-transformed}
+\end{equation}
+Only its Taylor coefficients through degree $\bar n$ are needed, not an
+equality of convergent series, and replacing the upper limit by $1$ does
+not change them. To see the size of the change, put $a=-z>0$: on the added
+interval $1-\xi=\bigO(a)$ and $1-(1-a)\xi\ge a/(1+a)$, so the integral over
+it is $\bigO(a^{\bar n+1})$. There is also a differentiation argument, not
+only a size estimate. For the integral with upper limit $1$, differentiating
+$\ell'\le\bar n$ times in $z$ leaves an integrand bounded near $\xi=1$ by a
+constant times $(1-\xi)^{\bar n-\ell'}$, so dominated convergence computes
+its Taylor coefficients through degree $\bar n$. The integral before the
+substitution has the same property: with $a=-z$ and $\upsilon=1-t$, its
+nonregular factor is $(\upsilon+a)^{\bar n+r-1}/(\upsilon+a(1+t))^{r-1}$, whose
+derivatives of order at most $\bar n$ are bounded by constant multiples of
+$(\upsilon+a)^{\bar n-\ell'}$. Its Taylor coefficients are therefore exactly the
+coefficientwise values of \eqref{spf:rc:eq:beta}, and the change of endpoint
+is legitimate at every degree used.
+
+Expand the denominator of the integrand at each fixed $0\le\xi<1$:
+\begin{equation}
+ \frac{(1-\xi)^{\bar n+r-1}}{[1-(1+z)\xi]^{r-1}}
+ =\sum_{j\ge0}\frac{\rise{(r-1)}j}{j!}z^j\xi^j(1-\xi)^{\bar n-j}.
+\end{equation}
+Only the terms with $j\le\bar n$ are integrated, by the differentiation
+argument; they give
+$\mathrm B(s-1+j,\bar n-j+1)=(s-2+j)!(\bar n-j)!/(\bar n+s-1)!$. Hence, as an
+equality of Taylor coefficients through degree $\bar n$,
+\begin{equation}
+ \mathfrak L_{\bar n,y_1}^{(r-1)}\mathfrak L_{\bar n,y_2}^{(s-1)}\mathcal T^{\bar n}
+ \equiv\frac{(1-z)^{\sigma-2-\bar n}}{\bar n!}
+                 \sum_{j=0}^{\bar n}\rcw_j(\bar n-j)!z^j.
+ \label{spf:rc:eq:double-functional}
+\end{equation}
+Nothing is claimed about coefficients beyond that degree.
+
+If $r=1$, evaluate at $y_1=0$ first. The remaining functional acts on
+$(1-z)^{-\bar n}(1+\zeta y_2)^{\bar n}$, and the same finite binomial
+calculation gives $(1-z)^{s-1-\bar n}$ through degree $\bar n$, which is
+\eqref{spf:rc:eq:double-functional} with $\rcw_j=0$ for $j>0$. The case
+$s=1$ follows by symmetry.
+
+\subsection{Completion of the proof}
+
+\begin{proof}[Proof of \cref{spf:rc:thm:single-sum} (manuscript~03)]
+Insert \eqref{spf:rc:eq:double-functional} into \eqref{spf:rc:eq:master}
+and use $\bar n=n-k$. The coefficient of $z^{k-j}$ in
+$(1-z)^{\sigma-2-\bar n}$ is
+$\binom{\bar n-\sigma+2+k-j-1}{k-j}=\binom{n-\sigma+1-j}{k-j}$. This proves
+\eqref{spf:rc:eq:single-sum-factorials} for all large integers $n$. Both
+sides are rational functions of $n$, so the identity holds in $\Q(n)$ and
+gives \eqref{spf:rc:eq:single-sum}.
+\end{proof}
+
+\begin{remark}[A first check; manuscript~03]
+\label[remark]{spf:rc:rem:k1}
+For $k=1$,
+\[
+ \mu_1^*(n)=\frac{n-\sigma+1}{n}+\frac{(r-1)(s-1)}{n(n-1)}
+           =\frac{(n-r)(n-s)}{n(n-1)},
+\]
+which is Part~I's exact mean \eqref{spf:eq:exact-mean} at $\theta=1$. It
+confirms both the direction convention and the normalization.
+\end{remark}
+
+\section{Universal rational collapse}
+\label{spf:rc:sec:collapse}
+
+\begin{theorem}[Universal rational-collapse identity; manuscript~03]
+\label{spf:rc:thm:collapse}
+For all $r,s\ge1$ and $h\ge0$,
+\begin{equation}
+ \boxed{\displaystyle
+ R_h^{r,s}(n)=\sum_{j=0}^h
+       \frac{\rcw_j\binom{h-\sigma}{h-j}}{\fall n{h+j}}.}
+ \label{spf:rc:eq:collapse}
+\end{equation}
+In particular $R_0^{r,s}=1$. For $h\ge\sigma$ the formula reduces to
+\begin{equation}
+ R_h^{r,s}(n)=\sum_{j=\sigma}^h
+       \frac{\rcw_j\binom{h-\sigma}{j-\sigma}}{\fall n{h+j}},
+ \label{spf:rc:eq:positive-collapse}
+\end{equation}
+and, when $r,s\ge2$, its first term at infinity is
+\begin{equation}
+ R_h^{r,s}(n)=\rcw_\sigma n^{-h-\sigma}+\bigO(n^{-h-\sigma-1})
+ \qquad(h\ge\sigma).
+ \label{spf:rc:eq:valuation}
+\end{equation}
+When $r=1$ or $s=1$ it terminates:
+\begin{equation}
+ R_h^{r,s}(n)=
+ \begin{cases}
+  (-1)^h\binom{\sigma-1}{h}/\fall nh,&0\le h\le\sigma-1,\\
+  0,&h\ge\sigma.
+ \end{cases}
+ \label{spf:rc:eq:one-path-R}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof (manuscript~03)]
+Substitute \eqref{spf:rc:eq:single-sum-factorials} into \eqref{spf:eq:R},
+put $k=j+i$ and $H=h-j$, and interchange the two finite sums. For fixed
+$j$ write $N'=n-2j$ and $A'=n-\sigma+1-j$. The inner sum, before division
+by $n!$, is
+\begin{equation}
+ \sum_{i=0}^H\frac{(-1)^{H-i}}{(H-i)!}(N'-i)!\binom{A'}i
+ =(N'-H)!\sum_{i=0}^H(-1)^{H-i}\binom{A'}i\binom{N'-i}{H-i}.
+ \label{spf:rc:eq:inner-sum}
+\end{equation}
+The alternating Vandermonde identity
+\begin{equation}
+ \sum_{i=0}^H(-1)^{H-i}\binom{A'}i\binom{N'-i}{H-i}
+       =\binom{A'-N'+H-1}{H}
+ \label{spf:rc:eq:alt-vandermonde}
+\end{equation}
+holds because its left side is the coefficient of $t^H$ in
+$\sum_i\binom{A'}it^i(1-t)^{N'-i}=(1-t)^{N'}(1+t/(1-t))^{A'}=(1-t)^{N'-A'}$;
+generalized binomial series justify it coefficientwise. Here
+$A'-N'+H-1=h-\sigma$ and $N'-H=n-h-j$, so \eqref{spf:rc:eq:inner-sum}
+equals $(n-h-j)!\binom{h-\sigma}{h-j}$. This proves
+\eqref{spf:rc:eq:collapse} for large $n$, and then as an identity of
+rational functions.
+
+For $h\ge\sigma$ the binomial coefficient has a nonnegative upper argument,
+so it vanishes unless $j\ge\sigma$; the $j=\sigma$ term has coefficient
+$\rcw_\sigma$ and denominator $\fall n{h+\sigma}$, and later terms are of
+higher order at infinity. If $r=1$ or $s=1$, only $j=0$ survives, and
+$\binom{h-\sigma}h=(-1)^h\binom{\sigma-1}h$, which is zero for $h\ge\sigma$.
+\end{proof}
+
+\paragraph{What the cancellation explains.} Before normalization each fixed
+moment has the nonzero Poisson limit $1/k!$. After multiplication by
+$e^{-u}$, low powers of $1/n$ still occur for $h<\sigma$, but every
+normalized coefficient with $h\ge\sigma$ loses the first $\sigma$ possible
+powers of $1/n$. The loss is exact and uniform in $h$: it is encoded by the
+vanishing binomial coefficients with $j<\sigma$. This explains the late
+appearance of high powers of $u$ in the correction polynomials. The formula
+is symmetric in $r,s$, which also follows combinatorially: $\pi\mapsto\pi^{-1}$
+exchanges a directed position gap $r$ and a directed value gap $s$
+(\cref{fga:tab:routes} records the same observation from Part~II's source).
+
+\begin{remark}[The one-path case is Part~II's Proposition~\ref{fga:prop:onepath}]
+\label[remark]{spf:rc:rem:onepath}
+[Note of the batch-85 write.] For $r=1$, \eqref{spf:rc:eq:single-sum}
+reduces to $\mu_k^*(n)=\binom{n-s}k/\fall nk$, which is
+\eqref{fga:eq:onepathmoment}, and \eqref{spf:rc:eq:one-path-R} gives the
+finite inverse-factorial sector
+\begin{equation}
+ e^{-u}G_n(u)\ \sim\ \sum_{h=0}^s\frac{(-1)^h\binom shu^h}{\fall nh},
+ \label{spf:rc:eq:onepath-sector}
+\end{equation}
+which is the rational factor of \eqref{fga:eq:onepathrational} (for $s=2$,
+$1-2u/n+u^2/(n(n-1))$). Manuscript~03 derives both as special cases of its
+general theorems and credits the one-path inclusion--exclusion to Spahn and
+Zeilberger~\cite{spahn}, but does not cite Part~II's proposition, which
+proves the same statements directly; the credit belongs to Part~II
+(manuscript~03 of batch~74). At $u=-1$ the sector is
+$\sum_{h=0}^s\binom sh/\fall nh$; for $r=s=1$ it is $1+1/n$, the values of
+Remark~\ref{spf:rem:offsets-one-one}. For $(r,s)=(1,3)$ the ordinary
+inverse-power expansion is infinite, $c_J=1,3,3,4,6,10,18,34,\ldots$, although
+the inverse-factorial representation has four terms.
+\end{remark}
+
+\section{The A189281 conjecture is a special case}
+\label{spf:rc:sec:A189281}
+
+For $r=s=2$, $\sigma=4$ and $\rcw_j=j!$. At $h\le3$,
+\eqref{spf:rc:eq:collapse} gives the four rational functions $R_0,\ldots,R_3$
+displayed before Conjecture~\ref{spf:conj:collapse}, and every later order
+collapses further.
+
+\begin{theorem}[Resolution of the rational-collapse conjecture; manuscript~03]
+\label{spf:rc:thm:A-collapse}
+For every integer $h\ge4$,
+\begin{equation}
+ \boxed{\displaystyle
+ R_h(n)=\frac{24\fall{(n-h+1)}{h-4}}{\fall n{2h}}
+ =\frac{24}{\fall n{h-1}\fall{(n-2h+5)}5}.}
+ \label{spf:rc:eq:A-collapse}
+\end{equation}
+That is, Conjecture~\ref{spf:conj:collapse} holds, and so does the ratio
+recurrence \eqref{spf:eq:R-ratio}.
+\end{theorem}
+
+\begin{proof}[Proof (manuscript~03)]
+For large integers $n$, \eqref{spf:rc:eq:positive-collapse} gives
+$n!R_h(n)=\sum_{j=4}^hj!\binom{h-4}{j-4}(n-h-j)!$. Put $H=h-4$, $N'=n-h-4$
+and $j=i+4$, so that the sum is $\sum_{i=0}^H\binom Hi(i+4)!(N'-i)!$. With
+$M'=N'-H\ge0$ this is
+\[
+ 24H!M'!\sum_{i=0}^H\binom{i+4}4\binom{M'+H-i}{M'},
+\]
+and the convolution equals $\binom{M'+H+5}H$, the coefficient of $x^H$ in
+$(1-x)^{-5}(1-x)^{-M'-1}$. Hence
+\[
+ n!R_h(n)=\frac{24(N'-H)!(N'+5)!}{(N'-H+5)!}
+       =\frac{24(n-2h)!(n-h+1)!}{(n-2h+5)!}.
+\]
+Dividing by $n!$ gives \eqref{spf:rc:eq:A-collapse}; rational continuation
+removes the restriction to large $n$, and dividing consecutive instances
+gives \eqref{spf:eq:R-ratio}.
+\end{proof}
+
+This proves the conjecture for every $h$; it does not merely extend the
+finite range $h=4,\ldots,16$ checked in Part~I. It also explains the
+constant: the Vandermonde convolution starts with a component-index shift
+of four, which produces $4!=24$. Part~I's question~1 asked for both a proof
+and an explanation of the factor~$24$ and of the loss of four powers of
+$n$; the loss is the case $\sigma=4$ of the cancellation above. It asked
+for a telescoping or combinatorial proof; the proof given is a single-sum
+identity followed by Vandermonde convolutions, and a bijective explanation
+is still open (\cref{spf:rc:sec:questions}, question~9).
+
+\begin{remark}[A recurrence that is not proved here; manuscript~03]
+\label[remark]{spf:rc:rem:not-recurrence}
+\Cref{spf:eq:R-ratio} is a recurrence in the moment order $h$ for rational
+functions of $n$. It is not the OEIS recurrence in the permutation size $n$
+for $\Aone(n)$. Confusing the two would turn a correct identity into an
+unsupported claim about the sequence. The order-eight, degree-eleven
+recurrence of A189281 remains unproved.
+\end{remark}
+
+\begin{corollary}[Proposition~\ref{spf:prop:collapse-implication} is unconditional]
+\label[corollary]{spf:rc:cor:unconditional}
+$B_J^{(1)}(u;2,2)\in\Z[u]$ for every $J$, every $c_J^{(1)}(2,2)$ is an
+integer, and $\deg B_J^{(1)}(u;2,2)\le\max(3,J-4)$ for $J\ge4$.
+\end{corollary}
+\begin{proof}
+[The write's statement.] The proof of
+Proposition~\ref{spf:prop:collapse-implication} used only
+Conjecture~\ref{spf:conj:collapse}, which \cref{spf:rc:thm:A-collapse}
+proves. Manuscript~03 proves more, by a second route:
+\cref{spf:rc:thm:integrality} at $(r,s)=(2,2)$, which also shows that the
+degree bound is attained for $J\ge8$.
+\end{proof}
+
+\section{From the collapse to the asymptotic expansion}
+\label{spf:rc:sec:analysis}
+
+Manuscript~03 proves the all-orders theorem again, directly from the
+collapse and without assuming Part~I's theorem. The route is printed here
+because it is genuinely different from Part~I's: instead of the defect
+filtration and finite differences in the number of dimers, it bounds the
+normalized moments $R_h$ uniformly and expands finitely many rational
+functions.
+
+\begin{lemma}[Moment bounds; manuscript~03]
+\label[lemma]{spf:rc:lem:bound}
+For arbitrary directed position and value path forests on $n$ vertices,
+$0\le\mu_k\le e^{2k}/k!$, and the actual normalized moments
+$\widetilde R_h(n)=[u^h]e^{-u}G_n(u)$ satisfy
+\begin{equation}
+ |\widetilde R_h(n)|\le\frac{(1+e^2)^h}{h!}.
+ \label{spf:rc:eq:R-bound}
+\end{equation}
+\end{lemma}
+\begin{proof}[Proof (manuscript~03)]
+The first bound is Lemma~\ref{spf:lem:moment-bound} at $\theta=1$, with the
+same proof. Then
+$|\widetilde R_h|\le\sum_{k=0}^he^{2k}/(k!(h-k)!)=(1+e^2)^h/h!$.
+\end{proof}
+
+\begin{theorem}[Uniform expansion through the collapse; manuscript~03]
+\label{spf:rc:thm:asymptotic}
+For fixed $r,s\ge1$, every $M\ge0$ and every finite $U$, uniformly on
+$|u|\le U$,
+\begin{equation}
+ G_n(u)=e^u\Bigl(\sum_{J=0}^M\frac{B_J(u)}{n^J}+\bigO_{M,r,s,U}(n^{-M-1})\Bigr),
+ \label{spf:rc:eq:allorders}
+\end{equation}
+where
+\begin{equation}
+ B_0=1,\qquad
+ B_J(u)=\sum_{h\ge1}[x^J]R_h^{r,s}(1/x)\,u^h\quad(J\ge1),
+ \label{spf:rc:eq:B-definition}
+\end{equation}
+each sum being finite. These are Part~I's $B_J^{(1)}(u;r,s)$, by uniqueness
+of asymptotic coefficients; in particular $B_J(0)=0$ for $J>0$. The same
+polynomials apply to forests whose shortest path is at least a fixed
+positive fraction of $n$.
+\end{theorem}
+
+\begin{proof}[Second proof of \cref{spf:thm:main} at $\theta=1$ (manuscript~03)]
+Let $h_n=\lfloor\log n\rfloor$. For large $n$ the stable range contains
+every $h\le h_n$, so by \eqref{spf:rc:eq:R-bound}, with $\tilde a=(1+e^2)U$,
+\begin{equation}
+ e^{-u}G_n(u)=\sum_{h=0}^{h_n}R_h^{r,s}(n)u^h
+        +\bigO\Bigl(e^{\tilde a}\frac{\tilde a^{h_n+1}}{(h_n+1)!}\Bigr),
+ \label{spf:rc:eq:cutoff}
+\end{equation}
+and the error is smaller than every power of $1/n$, its logarithm being
+$-\log n\log\log n+\bigO(\log n)$.
+
+Suppose $r,s\ge2$. For $\sigma\le h\le h_n$ and $n>2h_n$ all terms of
+\eqref{spf:rc:eq:positive-collapse} are nonnegative. Uniformly in
+$j\le h\le h_n$, $1/\fall n{h+j}\le2n^{-h-j}$ for large $n$, because the
+product of the factors $1-i/n$ with $i<2h_n$ is $1+\bigO(h_n^2/n)$.
+Moreover $\rcw_{j+1}/\rcw_j=(r-1+j)(s-1+j)/(j+1)\le\gamma_{r,s}(h_n+1)$
+for $\sigma\le j<h_n$, so that
+$\sum_{j=\sigma}^{h_n}\rcw_jn^{-j}\le2\rcw_\sigma n^{-\sigma}$ for large $n$.
+Bounding the binomial coefficients by $2^h$ gives
+\begin{equation}
+ |R_h^{r,s}(n)|\le\gamma_{r,s}2^hn^{-h-\sigma}\qquad(\sigma\le h\le h_n).
+ \label{spf:rc:eq:uniform-R}
+\end{equation}
+Put $h_*=\max(\sigma-1,M-\sigma)$. Summing \eqref{spf:rc:eq:uniform-R}
+against $|u|^h$ over $h_*<h\le h_n$ gives $\bigO(n^{-M-1})$. Only the finite
+family $R_0,\ldots,R_{h_*}$ remains; each is rational in $n$, regular at
+$n=\infty$, with an ordinary Taylor remainder there. Expanding them proves
+\eqref{spf:rc:eq:allorders} and \eqref{spf:rc:eq:B-definition}. If $r=1$ or
+$s=1$, \eqref{spf:rc:eq:one-path-R} makes the sum in \eqref{spf:rc:eq:cutoff}
+terminate at $h=\sigma-1$, and the conclusion is immediate. For other
+sufficiently long forests the stability theorem and the moment bound are
+unchanged. Uniqueness follows by multiplying the difference of two
+expansions by successive powers of $n$ and taking limits.
+\end{proof}
+
+The identity \eqref{spf:rc:eq:B-definition} is the one Part~I's proof of
+Proposition~\ref{spf:prop:collapse-implication} uses at $(2,2)$. The shape
+clause of \cref{spf:rc:thm:asymptotic} is the one stated after Part~I's proof
+of \cref{spf:thm:main}; it is weaker than Part~II's
+\cref{fga:thm:allorders,fga:cor:shortest} and Remark~\ref{fga:rem:partI-shapes},
+which need only $L_{\min}(n)\log\log n/\log n\to\infty$, and it is not an
+improvement on them. Evaluating at $u=-1$ gives
+\eqref{spf:eq:avoidance-expansion} with $c_J=B_J(-1)$, and the Cauchy
+argument on $|t|=R>1$ gives the whole-law statement of
+Corollary~\ref{spf:cor:distribution} at $\theta=1$; manuscript~03 says that
+this mechanism was already in Part~I and that what the collapse adds is the
+arithmetic structure of the polynomials.
+
+\section{Integer coefficients and an exact degree law}
+\label{spf:rc:sec:integrality}
+
+The inverse falling factorial has the expansion
+\begin{equation}
+ \frac1{\fall{(1/x)}m}
+ =\frac{x^m}{\prod_{i=1}^{m-1}(1-ix)}
+ =\sum_{J\ge m}\Stir{J-1}{m-1}x^J\qquad(m\ge1),
+ \label{spf:rc:eq:Stirling-series}
+\end{equation}
+where $\Stir ab$ is the Stirling number of the second kind, zero outside
+$0\le b\le a$, with $\Stir00=1$. It follows by induction from
+$\Stir ab=\Stir{a-1}{b-1}+b\Stir{a-1}b$, or by multiplying the generating
+functions of the columns.
+
+\begin{theorem}[Universal integrality and exact degrees; manuscript~03]
+\label{spf:rc:thm:integrality}
+For all $r,s\ge1$ and $J\ge1$,
+\begin{equation}
+ \boxed{\displaystyle
+ B_J(u)=\sum_{h=1}^Ju^h\sum_{j=0}^h
+       \rcw_j\binom{h-\sigma}{h-j}\Stir{J-1}{h+j-1}.}
+ \label{spf:rc:eq:B-Stirling}
+\end{equation}
+In particular,
+\begin{equation}
+ B_J^{(1)}(u;r,s)\in\Z[u],\qquad c_J^{(1)}(r,s)\in\Z
+                     \qquad\text{for every }J\ge0.
+ \label{spf:rc:eq:integrality}
+\end{equation}
+The degree satisfies
+\begin{equation}
+ \deg_uB_J\le\min\{J,\max(\sigma-1,J-\sigma)\},
+ \label{spf:rc:eq:degree-bound}
+\end{equation}
+and if $r,s\ge2$ and $J\ge2\sigma$ it is exact:
+\begin{equation}
+ \boxed{\deg_uB_J=J-\sigma,\qquad [u^{J-\sigma}]B_J=\rcw_\sigma.}
+ \label{spf:rc:eq:sharp-degree}
+\end{equation}
+All coefficients of $u^h$ with $h\ge\sigma$ are nonnegative. When $r=1$ or
+$s=1$, $\deg B_J\le\sigma-1$ for all $J$.
+\end{theorem}
+
+\begin{proof}[Proof (manuscript~03)]
+Substitute \eqref{spf:rc:eq:collapse} and \eqref{spf:rc:eq:Stirling-series}
+into \eqref{spf:rc:eq:B-definition}; this is \eqref{spf:rc:eq:B-Stirling}.
+Every factor of every summand is an integer, the generalized binomial
+coefficient with a possibly negative upper argument included, so
+integrality follows without a denominator-clearing bound. For $h<\sigma$,
+$R_h(1/x)$ begins no earlier than $x^h$; for $h\ge\sigma$,
+\eqref{spf:rc:eq:positive-collapse} begins no earlier than $x^{h+\sigma}$.
+This proves \eqref{spf:rc:eq:degree-bound}. If $J\ge2\sigma$, the largest
+possible $h$ is $J-\sigma\ge\sigma$, where only $j=\sigma$ contributes, with
+coefficient $\rcw_\sigma\binom{J-2\sigma}{J-2\sigma}\Stir{J-1}{J-1}=\rcw_\sigma>0$.
+For $h\ge\sigma$ every summand of \eqref{spf:rc:eq:B-Stirling} is
+nonnegative. The one-offset assertion follows from \eqref{spf:rc:eq:one-path-R}.
+\end{proof}
+
+Only the summation over $j\le\min(h,J-h)$ contributes, because
+$\Stir{J-1}{h+j-1}=0$ for $h+j>J$. For A189281, \eqref{spf:rc:eq:sharp-degree}
+says that for every $J\ge8$
+\begin{equation}
+ \deg B_J^{(1)}(u;2,2)=J-4,\qquad[u^{J-4}]B_J^{(1)}(u;2,2)=24,
+ \label{spf:rc:eq:A-degree}
+\end{equation}
+so Part~I's conditional bound $\max(3,J-4)$ is attained. Moreover every
+coefficient of $u^h$ with $h\ge4$ is divisible by $24$, because only the
+weights $j!$ with $j\ge4$ contribute. No sign rule for $c_J=B_J(-1)$ is
+inferred: evaluation at $u=-1$ reintroduces cancellation.
+
+Two earlier questions are answered here. Part~I's question~1 and Part~II's
+overlapping question asked whether all $c_J^{(1)}(2,2)$ are integers, and
+whether $B_J^{(1)}(u;r,s)\in\Z[u]$ for all $r,s$: both hold. Part~II's
+question~1 asked whether $\deg_uB_J^{(1)}(u;r,s)\le J$ at every order: it
+holds, by \eqref{spf:rc:eq:degree-bound}. The absolute case $\theta=2$, whose
+coefficients are not integers by \eqref{spf:eq:A110128}, is not covered, and
+Proposition~\ref{spf:prop:arithmetic} remains its denominator statement.
+
+\subsection{The first corrections for arbitrary offsets}
+
+Formula \eqref{spf:rc:eq:B-Stirling} gives
+\begin{equation}
+ \begin{gathered}
+ B_1=-(\sigma-1)u,\qquad
+ B_2=(r-1)(s-1)u+\binom{\sigma-1}2u^2,\\
+ B_3=(r-1)(s-1)u
+   +\Bigl(\binom{\sigma-1}2-(\sigma-2)(r-1)(s-1)\Bigr)u^2
+   -\binom{\sigma-1}3u^3,
+ \end{gathered}
+ \label{spf:rc:eq:first-B}
+\end{equation}
+and consequently
+\begin{equation}
+ c_0=1,\quad c_1=\sigma-1,\quad
+ c_2=\binom{\sigma-1}2-(r-1)(s-1),\quad
+ c_3=\binom\sigma3-(\sigma-1)(r-1)(s-1).
+ \label{spf:rc:eq:first-c}
+\end{equation}
+For example $c_3=0$ at $(3,3)$, but $c_3=-7$ and $-24$ at $(4,4)$ and
+$(5,5)$; such cancellations are outputs of the formula, not extrapolations
+from data.
+
+\begin{remark}[These are Parts~I and~II's first corrections]
+\label[remark]{spf:rc:rem:c3}
+[Note of the batch-85 write.] $B_1$ and $B_2$ are Part~I's \eqref{spf:eq:B1}
+and \eqref{spf:eq:B2-oriented} at $\theta=1$. The values $c_1$, $c_2$, $c_3$
+are those of Part~II's \cref{fga:prop:c3} at $\theta=1$, which manuscript~03
+does not cite: $\binom{\sigma-1}2-(r-1)(s-1)=\frac12(r^2-r+s^2-s)$, and
+\[
+ \binom\sigma3-(\sigma-1)(r-1)(s-1)
+ =\tfrac16(r+s-1)(r^2-4rs+4r+s^2+4s-6),
+\]
+which is \eqref{fga:eq:c3}; the intake checked the identity algebraically
+and the write checked both values for $1\le r,s\le5$ against
+\eqref{spf:rc:eq:B-Stirling}. The closed form of $c_3^{(1)}(r,s)$ is
+therefore Part~II's result (manuscript~03 of batch~74), here re-derived as a
+special case; the absolute $c_3^{(2)}$ of \cref{fga:prop:c3} has no
+counterpart in Part~III.
+\end{remark}
+
+\section{An inverse-factorial kernel and an auxiliary recurrence}
+\label{spf:rc:sec:kernel}
+
+Define integer polynomials
+\begin{equation}
+ \Phi_i(u)=\sum_{j=0}^{\lfloor i/2\rfloor}
+       \rcw_j\binom{i-j-\sigma}{i-2j}u^{i-j}\quad(i\ge1),\qquad\Phi_0(u)=1.
+ \label{spf:rc:eq:Phi}
+\end{equation}
+Then the algebraic asymptotic sector of $e^{-u}G_n(u)$ is
+\begin{equation}
+ \sum_{i\ge0}\frac{\Phi_i(u)}{\fall ni},
+ \label{spf:rc:eq:factorial-sector}
+\end{equation}
+in the sense of equality after re-expansion in $1/n$, coefficient by
+coefficient. The displayed sum is not an ordinary convergent series at an
+integer $n$; its denominators vanish for $i>n$.
+
+\begin{proposition}[Formal hypergeometric kernel; manuscript~03]
+\label[proposition]{spf:rc:prop:kernel}
+As a formal power series in $z$ with polynomial coefficients in $u$,
+\begin{equation}
+ \Phi(z,u):=\sum_{i\ge0}\Phi_i(u)z^i
+  =(1-uz)^{\sigma-1}\sum_{j\ge0}\rcw_j\Bigl(\frac{uz^2}{1-uz}\Bigr)^j
+  =(1-uz)^{\sigma-1}\,{}_2F_0\Bigl(r-1,s-1;\,;\frac{uz^2}{1-uz}\Bigr),
+ \label{spf:rc:eq:kernel}
+\end{equation}
+where ${}_2F_0(a,b;;v)=\sum_{j\ge0}\rise aj\rise bj\,v^j/j!$ is a formal
+series.
+\end{proposition}
+\begin{proof}[Proof (manuscript~03)]
+In \eqref{spf:rc:eq:collapse} write $h=j+i'$ and $i=h+j$. For fixed $j$ the
+remaining sum is
+$\sum_{i'\ge0}\binom{j+i'-\sigma}{i'}(uz)^{i'}=(1-uz)^{\sigma-j-1}$.
+Multiply by $\rcw_ju^jz^{2j}$ and sum over $j$. Each coefficient of $z$ uses
+finitely many terms, so the rearrangements are formal and well defined.
+\end{proof}
+
+\paragraph{Avoidance coefficients as a Stirling transform.} Put
+$\psi_i=\Phi_i(-1)$ and
+\begin{equation}
+ \Psi(z)=\sum_{i\ge0}\psi_iz^i
+   =(1+z)^{\sigma-1}\sum_{j\ge0}\rcw_j\Bigl(-\frac{z^2}{1+z}\Bigr)^j.
+ \label{spf:rc:eq:Psi}
+\end{equation}
+Then
+\begin{equation}
+ c_0=\psi_0=1,\qquad c_J=\sum_{i=1}^J\psi_i\Stir{J-1}{i-1}\quad(J\ge1).
+ \label{spf:rc:eq:c-Stirling}
+\end{equation}
+The inverse-power coefficients are thus a shifted Stirling transform of an
+integer sequence with a compact formal generating function, an alternative
+to constructing every $B_J$. For $r,s\ge2$ the ${}_2F_0$ series has radius
+of convergence zero in its argument, because $\rcw_{j+1}/\rcw_j\sim j$. That
+does not invalidate \eqref{spf:rc:eq:kernel}, since formal substitution into
+a series of positive valuation is legitimate; it does forbid treating the
+formula as an analytic generating function without a stated summation
+procedure.
+
+\paragraph{A short recurrence at $(2,2)$.} For $r=s=2$ write
+$\mathcal F(t)=\sum_{j\ge0}j!\,t^j$ (a formal series in a local variable
+$t$). Comparing coefficients proves
+\begin{equation}
+ t^2\mathcal F'(t)+(t-1)\mathcal F(t)=-1.
+ \label{spf:rc:eq:Euler-series}
+\end{equation}
+Substituting $t=-z^2/(1+z)$ into $\Psi(z)=(1+z)^3\mathcal F(t)$ and using the
+chain rule gives
+\begin{equation}
+ z^3(1+z)\Psi'(z)+(2+3z+3z^2-2z^3)\Psi(z)=(z+2)(z+1)^4,
+ \label{spf:rc:eq:Psi-ode}
+\end{equation}
+and hence
+\begin{equation}
+ \boxed{2\psi_i+3\psi_{i-1}+(i+1)\psi_{i-2}+(i-5)\psi_{i-3}=0
+              \qquad(i\ge6),}
+ \label{spf:rc:eq:psi-recurrence}
+\end{equation}
+with $(\psi_0,\ldots,\psi_5)=(1,3,2,-1,1,2)$; the next values are
+$-6$, $0$, $24$, $-24$, $-96$, $216$, $384$, $-1704$, $-1296$, $13656$. This is an exact recurrence for
+the \emph{auxiliary} inverse-factorial coefficients $\psi_i$, not for
+$\Aone(n)$. It generates $\psi_0,\ldots,\psi_M$ in $\bigO(M)$ integer
+operations, and the Stirling transform then takes $\bigO(M^2)$; these are
+counts of arithmetic operations, not bit-complexity bounds. For general
+fixed offsets, \eqref{spf:rc:eq:Phi} gives $\psi_0,\ldots,\psi_M$ in
+$\bigO(M^2)$ operations, and \eqref{spf:rc:eq:B-Stirling} gives the whole
+array $B_J$ in $\bigO(M^3)$, with no enumeration of partitions and no
+recurrence guessing. [Added in the batch-85 write: the write recomputed
+$\Psi$ from \eqref{spf:rc:eq:Psi} to order $39$ in exact arithmetic and found
+\eqref{spf:rc:eq:psi-recurrence} satisfied for $6\le i\le39$, with the
+values above.]
+
+\section{An entire Borel transform of the algebraic sector}
+\label{spf:rc:sec:Borel}
+
+Define the exponential generating function
+\begin{equation}
+ \mathcal E(\xi)=\sum_{i\ge0}\frac{\psi_i}{i!}\xi^i.
+ \label{spf:rc:eq:E}
+\end{equation}
+Unlike $\Psi$, it is a genuine entire function. Recall Part~I's formal series
+$C(x)=1+\sum_{j\ge1}c_jx^j$ (\cref{spf:sec:inverse}).
+
+\begin{theorem}[Entire Borel transform; manuscript~03]
+\label{spf:rc:thm:Borel}
+For all fixed $r,s\ge1$ the series \eqref{spf:rc:eq:E} is entire, and the
+order-one Borel transform of the nonconstant part of $C$ is the entire
+function
+\begin{equation}
+ \boxed{\displaystyle
+ \widehat C(t):=\sum_{J\ge1}\frac{c_J}{(J-1)!}t^{J-1}
+             =\mathcal E'(e^t-1).}
+ \label{spf:rc:eq:Borel}
+\end{equation}
+In particular, for every $A>0$ there is a constant $\gamma_A$ such that
+\begin{equation}
+ |c_J|\le\gamma_AA^{J-1}(J-1)!\qquad(J\ge1).
+ \label{spf:rc:eq:subfactorial}
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Proof (manuscript~03)]
+Suppose $r,s\ge2$. By \eqref{spf:rc:eq:integer-weights},
+$\rcw_j\le\gamma_{r,s}(j+1)^{\sigma-4}j!$. For large $i$ and $j\le i/2$, the
+binomial coefficient in \eqref{spf:rc:eq:Phi} has a nonnegative upper
+argument and modulus at most $2^i$; the finitely many remaining $i$ are
+absorbed in the constant. Hence
+\begin{equation}
+ |\psi_i|\le\gamma_{r,s}2^i(i+1)^{\sigma-3}\lfloor i/2\rfloor!.
+ \label{spf:rc:eq:psi-growth}
+\end{equation}
+The $i$th root of $\lfloor i/2\rfloor!/i!$ tends to zero, so
+\eqref{spf:rc:eq:E} converges for every complex $\xi$. If $r=1$ or $s=1$,
+$\Psi(z)=(1+z)^{\sigma-1}$ is a polynomial and the conclusion is immediate.
+The exponential generating function of the Stirling numbers,
+$\sum_{J\ge i}\Stir{J-1}{i-1}t^{J-1}/(J-1)!=(e^t-1)^{i-1}/(i-1)!$, combined
+with \eqref{spf:rc:eq:c-Stirling}, gives \eqref{spf:rc:eq:Borel}. The
+interchange is justified locally by the absolute convergence of the entire
+series for $\mathcal E'$, and the composition is entire. Cauchy's estimate
+on $|t|=1/A$ gives \eqref{spf:rc:eq:subfactorial}.
+\end{proof}
+
+\paragraph{What this does not imply.} An entire Borel transform need not
+grow slowly enough for a Laplace integral along the positive axis, and
+composition with $e^t-1$ can create very rapid growth. \Cref{spf:rc:thm:Borel}
+is therefore neither a proof of Borel--Laplace summability nor a proof that
+$\sum c_Jn^{-J}$ converges. Nor can the algebraic sector determine
+contributions smaller than every power of $1/n$: different long path forests
+can share their stable moments to increasing order, hence the whole array
+$B_J$, while their exact counts differ (Remark~\ref{fga:rem:n12}). The theorem
+describes the algebraic sector and its Borel transform, not the
+beyond-all-orders corrections; this is the boundary between the results
+proved here and a full transseries theory. It bears on Part~I's question~4,
+which asks for growth bounds in $M$ and a justified truncation rule; those
+remain open (\cref{spf:rc:sec:questions}, questions~3 and~4).
+
+\section{Explicit OEIS consequences}
+\label{spf:rc:sec:OEIS}
+
+\paragraph{A189281.} The polynomials $B_0,\ldots,B_8$ that
+\eqref{spf:rc:eq:B-Stirling} gives at $(2,2)$ are Part~I's
+(\cref{spf:sec:OEIS-results}); the term $u^4$ first appears at order eight,
+in $B_8=u+479u^2+378u^3+24u^4$, with coefficient $24$, as
+\eqref{spf:rc:eq:A-degree} requires. The avoidance expansion through
+$n^{-10}$ is Part~I's \eqref{spf:eq:A189281}, with $c_4=0$; manuscript~03
+says expressly that these displayed terms were already proved in Part~I and
+that its new content is the all-orders identity and the integrality theorem,
+not these finite terms. Its coefficients through order~16 equal
+\cref{spf:tab:extra}. Beyond them, \eqref{spf:rc:eq:B-Stirling} gives
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.14}
+\begin{tabular}{rr@{\qquad}rr}
+\toprule
+$J$ & $c_J^{(1)}(2,2)$ & $J$ & $c_J^{(1)}(2,2)$\\
+\midrule
+17 & $-9526718817$ & 21 & $57992423942395$\\
+18 & $-136484458282$ & 22 & $1360005443948778$\\
+19 & $-1110549722719$ & 23 & $16301210950936317$\\
+20 & $-3629525434664$ & 24 & $113926603325586836$\\
+\bottomrule
+\end{tabular}
+\end{center}
+and \path{data/03-rational-collapse-coefficients.json} holds every $B_J$,
+$c_J$ and $\psi_J$ through order $100$. The runs of alternating signs neither
+undermine integrality nor indicate a proved periodic sign pattern; large-order
+sign and growth behaviour is a separate problem.
+
+\paragraph{Three further diagonal sequences.} The theorem applies directly
+to the OEIS entries for the directed gaps $(3,3)$, $(4,4)$ and $(5,5)$,
+A189282, A189283 and A189284~\cite{rcOeis282,rcOeis283,rcOeis284}, whose
+pages display expansions through $n^{-2}$. For every fixed truncation order
+the rows of \cref{spf:rc:tab:diagonal} continue by the same finite formula,
+with a rigorous next-order remainder.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.16}
+\begin{tabular}{lrrrrrrrr}
+\toprule
+OEIS & $r$ & $s$ & $c_1$ & $c_2$ & $c_3$ & $c_4$ & $c_5$ & $c_6$\\
+\midrule
+A189281 & 2&2&3&2&1&0&3&26\\
+A189282 & 3&3&5&6&0&$-13$&$-3$&235\\
+A189283 & 4&4&7&12&$-7$&$-73$&$-88$&1029\\
+A189284 & 5&5&9&20&$-24$&$-234$&$-390$&3374\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~03: $A^{(1)}_{r,r}(n)/n!=e^{-1}(1+\sum_{J\ge1}c_Jn^{-J})$
+in the Poincar\'e sense; not a claim that the series converges. The first
+row is Part~I's \eqref{spf:eq:A189281}.}
+\label{spf:rc:tab:diagonal}
+\end{table}
+
+For the nondiagonal pair $(r,s)=(2,3)$ the coefficients through order eight
+are $1,4,4,2,-1,6,81,388,775$, so the result does not depend on equal
+offsets. The data file also holds examples with one offset equal to one, as
+degenerate checks (\cref{spf:rc:rem:onepath}).
+
+\section{Index reconstruction with Lambert \texorpdfstring{$W$}{W}}
+\label{spf:rc:sec:inverse}
+
+Manuscript~03 specializes the repository's inversion apparatus, which it
+cites through this report, to a simple parameter-dependent formula along
+exact sequence values, so that no interpolation of the integer sequence is
+chosen. In Part~II's coordinates \eqref{fga:eq:coords} at $\theta=1$, for
+large $y$ put
+\begin{equation}
+ \Lambda=\log y-\kappa_1=\log y+1-\tfrac12\log(2\pi),\qquad
+ N=\frac\Lambda{W_0(\Lambda/e)},\qquad\Delta=\log N,
+ \label{spf:rc:eq:coords}
+\end{equation}
+so that $N(\log N-1)=\Lambda$.
+
+\begin{proposition}[Index reconstruction; manuscript~03]
+\label[proposition]{spf:rc:prop:inverse}
+For $y=A^{(1)}_{r,s}(n)$ and fixed offsets, as $n\to\infty$,
+\begin{equation}
+ \boxed{\displaystyle
+ n=N-\frac12+\frac{1/24-(\sigma-1)}{N\Delta}
+       +\frac{(r-1)(s-1)}{N^2\Delta}
+       +\bigO_{r,s}\Bigl(\frac1{N^3\Delta}\Bigr).}
+ \label{spf:rc:eq:inverse}
+\end{equation}
+Every further fixed-order correction is computable from
+\eqref{spf:rc:eq:B-Stirling} and the Stirling expansion of $\log\Gamma$.
+\end{proposition}
+
+\begin{proof}[Proof (manuscript~03)]
+The expansion \eqref{spf:eq:avoidance-expansion} and Stirling's
+expansion~\cite{dlmfGamma} give, as in \eqref{spf:eq:logA},
+$\Lambda=n(\log n-1)+\frac12\log n+a_1/n+a_2/n^2+\bigO(n^{-3})$ with
+$a_1=c_1+\frac1{12}$ and $a_2=c_2-\frac12c_1^2$. Write $n=N+\delta$ and
+expand about $N$. The constant order gives $\delta=-\frac12$; with
+$\delta=-\frac12+\omega_1/N+\omega_2/N^2$ the next two coefficients are
+$\omega_1\Delta+a_1-\frac18$ and $\omega_2\Delta+a_2+\frac12a_1-\frac1{24}$.
+They vanish for $\omega_1=(1/24-c_1)/\Delta$ and
+$\omega_2=(c_1(c_1-1)/2-c_2)/\Delta=(r-1)(s-1)/\Delta$, by
+\eqref{spf:rc:eq:first-c}. The residual is $\bigO(N^{-3})$ and the smooth
+main part has derivative $\log N+\bigO(1/N)$, so the mean value theorem turns
+it into an index error $\bigO(N^{-3}/\log N)$. The initial bound
+$n-N=\bigO(1)$ follows from the same equation and the monotonicity of
+$x(\log x-1)$ for large $x$.
+\end{proof}
+
+[Note of the batch-85 write.] This is Part~II's \cref{fga:prop:inverse} at
+$\theta=1$, with the same coordinates and the same two coefficients
+($1/8-a_1=1/24-c_1$, and $1/24-a_1/2-a_2=(r-1)(s-1)$); what is new is that
+the second coefficient is written in closed form for every pair of offsets.
+At $(2,2)$ it is the $1/(N^2\Delta)$ of \eqref{fga:eq:inverse-ab}. In Part~I's
+coordinates it is \cref{spf:thm:inverse-first}, and the method is the
+inversion apparatus of Remark~\ref{spf:rem:inverse-apparatus}, an instance of
+\texttt{p0:thm:perturbed-inversion} of~\cite{tai}; no novelty is claimed for
+the method.
+
+For the exact A189281 values at $n=20$ and $n=30$ the displayed
+approximation misses $n$ by about $2.05663\cdot10^{-4}$ and
+$5.16805\cdot10^{-5}$ (the first agrees with Part~II's
+\cref{fga:sec:numerics}, which evaluates the same formula). These are
+numerical diagnostics, not certified rounding thresholds. The proposition
+implies eventual nearest-integer recovery along exact sequence values, but
+gives no explicit onset without an additional effective remainder estimate.
+
+\section{Manuscript 03's exact checks and certificates}
+\label{spf:rc:sec:verification}
+
+Manuscript~03 separates proof, exact finite algebra and numerical
+diagnostics; its proofs of arbitrary order are those of
+\cref{spf:rc:sec:single-sum,spf:rc:sec:collapse}, and its checks exercise
+independent implementations to detect transcription or indexing errors.
+Its \texttt{verify.py} (shipped as
+\path{code/03-rational-collapse-verify.py}, standard library only) builds
+$F_r$ directly from \eqref{spf:eq:F} and sums over integer partitions, and
+separately implements \eqref{spf:rc:eq:collapse}; each comparison clears the
+denominator by multiplying by $h!\fall n{2h}$ and compares integer
+polynomials in $n$. A separate finite tiling routine enumerates ordered
+tile-size multisets on each actual path, without the stable polynomial or
+the single-sum theorem, and a third routine enumerates permutations and
+records the whole violation histogram. The recorded run passed:
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{p{0.72\linewidth}r}
+\toprule
+Exact check & Number\\
+\midrule
+Polynomial identities between profile sums and \eqref{spf:rc:eq:collapse},
+$h=0,\ldots,16$, nine offset pairs & 153\\
+Complete violation histograms against brute permutations, $n=0,\ldots,8$,
+$r,s\in\{1,2,3\}$ & 81\\
+Single-sum moments against brute histograms in the stable range & 190\\
+A189281 values, $n=0,\ldots,30$, from independent finite tilings & 31\\
+The recurrence \eqref{spf:rc:eq:psi-recurrence}, $i=6,\ldots,100$ & 95\\
+\eqref{spf:rc:eq:c-Stirling} against the polynomials $B_J$, $J=1,\ldots,100$ & 100\\
+Sharp-degree and leading-coefficient checks across offset pairs & 178\\
+\bottomrule
+\end{tabular}
+\end{center}
+The nine offset pairs were $(1,1),(1,2),(1,4),(2,2),(2,3),(2,4),(3,2),(3,3),(4,4)$.
+It also compared \eqref{spf:rc:eq:A-collapse} with the general expression for
+$h=4,\ldots,16$, and the first seventeen $c_J(2,2)$ with Part~I's values. The
+A189281 values come from a supplied excerpt of the OEIS
+b-file~\cite{rcBfile}; they are validation targets only, never inputs to
+coefficient generation or to any proof. The program computes all $B_J$,
+$c_J$ and $\psi_J$ at $(2,2)$ through order $100$ in exact integers.
+[Added in the batch-85 write: if the b-file excerpt is missing under its
+delivered name, the program skips those 31 checks without failing and prints
+no line for them; the report README gives a rerun recipe that restores the
+delivered names.]
+
+\paragraph{Rational Bonferroni certificates.} The single-sum formula gives
+exact low moments without computing the full count. With the inequalities
+\eqref{spf:eq:bonferroni} and the scaled residual \eqref{spf:eq:scaled-error}
+at $\theta=1$, manuscript~03's \texttt{certify.py} uses $S_{31}$ and $S_{30}$
+at $n=64,128,256$, where these moments are in the stable range, and brackets
+$e^{-1}$ by its alternating Taylor sums through degrees $101$ and $102$.
+Dividing the probability bounds by that positive rational interval gives
+exact rational intervals, rounded outward in \cref{spf:rc:tab:certificates};
+the unrounded fractions are in \path{data/03-rational-collapse-bonferroni.json}.
+
+\begin{table}[htbp]
+\centering\small
+\renewcommand{\arraystretch}{1.18}
+\begin{tabular}{rll}
+\toprule
+$n$ & Certified interval for $E_4(n)$ & Certified interval for $E_8(n)$\\
+\midrule
+64 & $[3.43128403,\ 3.43128404]$ & $[-1630.56920464,\ -1630.56920463]$\\
+128& $[3.20934303,\ 3.20934304]$ & $[-1516.24227317,\ -1516.24227316]$\\
+256& $[3.10311068,\ 3.10311069]$ & $[-1461.72210309,\ -1461.72210308]$\\
+\bottomrule
+\end{tabular}
+\caption{Manuscript~03: exact finite certificates for A189281
+($\theta=1$), generated without a recurrence for $\Aone(n)$. The limits $3$
+and $-1409$ follow from the asymptotic theorem, not from extrapolating
+three rows. They interleave with Part~I's intervals at $n=80,160,320$
+(\cref{spf:tab:certificates}).}
+\label{spf:rc:tab:certificates}
+\end{table}
+
+Manuscript~03's optional inverse diagnostic, \texttt{inverse\_demo.py},
+needs \texttt{mpmath}; neither the verifier nor the mathematical results depend on
+it. Repeating the finite tests to a larger order adds implementation checks,
+not a substitute for the proofs, and no Lean kernel run is asserted. Its
+delivered rerun commands use the delivered layout; the report README gives
+the commands for the shipped names.
+
+\section{Further questions raised by manuscript 03}
+\label{spf:rc:sec:questions}
+
+Manuscript~03 poses ten research projects, as proposals only, ordered to
+separate exact finite enumeration, the algebraic sector and
+beyond-all-orders information. Several continue questions of Parts~I
+and~II, as noted.
+\begin{enumerate}
+\item \emph{Prove the original A189281 recurrence} (Part~I's question~2).
+The order-eight, degree-eleven recurrence remains a separate target. One
+route writes the exact finite tiling sum as its stable contribution plus
+explicit boundary corrections and seeks a telescoping certificate for the
+whole; agreement of its formal asymptotic solution with
+\eqref{spf:rc:eq:A-collapse} is a consistency check, not a proof. The first
+deliverable should be a finite identity whose boundary terms are fully
+specified.
+\item \emph{The first beyond-all-orders term} (Part~I's question~3, Part~II's
+question~2). Find the leading difference between two forest shapes with the
+same $r,s,n$ and long paths, whose low moments agree until a component can
+meet a whole short path: is it a single spanning component or a family of
+competing profiles? A first case changes two path lengths by $+1$ and $-1$.
+\item \emph{Large-order growth of $c_J$} (Part~I's question~4). Use
+\eqref{spf:rc:eq:subfactorial} and the composition $\mathcal E'(e^t-1)$ to
+find sharp asymptotics, oscillation and signs, first at $(2,2)$ and then for
+all fixed offsets; \eqref{spf:rc:eq:psi-recurrence} may be a first step.
+\item \emph{Summation and optimal truncation} (Part~I's question~4). Determine
+the growth of $\widehat C$ in sectors and whether an accelerated or
+nonstandard Laplace transform recovers a natural analytic object; a complete
+answer names the function reconstructed, the directions, the optimal
+truncation order in $n$, and the relation to the finite counts.
+\item \emph{A finite-algebraic proof of the single-sum lemma.} The beta
+integral is used only to evaluate a finite Taylor jet; a telescoping proof
+of \eqref{spf:rc:eq:double-functional}, a polynomial identity for the
+reciprocal-factorial functionals, would simplify formalization and may show
+a direct combinatorial cancellation.
+\item \emph{Formalize the finite core} (Part~I's question~7, Part~II's formal
+package). A Lean development can first define falling products, generalized
+integer binomials and \eqref{spf:rc:eq:single-sum},
+\eqref{spf:rc:eq:collapse}; after clearing denominators the collapse is a
+finite rearrangement and a Vandermonde convolution. Stable tilings and the
+analytic remainder are further layers, and a formal proof of the algebraic
+identity alone must not be labelled a formal proof of the asymptotic
+statement.
+\item \emph{Absolute differences.} For $|\pi(i+r)-\pi(i)|\ne s$ each
+component has two orientations (weight $2^c$, not $2^k$), and the
+cancellation behind \eqref{spf:rc:eq:collapse} changes. Find an equally
+explicit kernel, optimal denominator bounds, and which arithmetic survives;
+the directed integrality theorem must not be transplanted without proof.
+\item \emph{Growing offsets} (Part~I's question~5). If $\sigma$ grows, the
+sharp-degree threshold, the weight $\rcw_\sigma$ and the stability range
+move. Find ranges such as $r+s=\smallo(\log n)$ with a uniform theorem, and
+the crossovers where Poisson$(1)$ normalization fails; the exact mean
+$(n-r)(n-s)/(n(n-1))$ constrains any scaling limit.
+\item \emph{Positivity and divisibility, combinatorially.} For $h\ge\sigma$
+the coefficients of $u^h$ in $B_J$ are nonnegative sums of integer weights
+and Stirling numbers; find a labelled-object interpretation. At $(2,2)$ the
+factor $24$ suggests a four-element ordering or symmetry, but the proof
+gives a convolution identity, not a bijection (compare Part~I's
+question~1).
+\item \emph{Several forbidden gaps} (Part~I's question~6, Part~II's
+question~4). The graphs are then not unions of paths, and components may
+branch or cycle. Determine which sparse families still admit stable
+component polynomials and a finite hypergeometric normalization; a first
+project is a two-gap directed model of bounded component width.
+\end{enumerate}
+Manuscript~03 suggests starting with questions~5 and~6 and the asymptotics of
+\eqref{spf:rc:eq:psi-recurrence}; questions~1 and~2 are the closest to the
+outstanding OEIS problem, and the Borel-growth questions~3 and~4 and the
+growing offsets of question~8 are broader analytic projects.
+
+\paragraph{Conclusion of manuscript~03, restated.} The conjecture of Part~I
+is resolved by \cref{spf:rc:thm:A-collapse}, one specialization of
+\cref{spf:rc:thm:collapse}, valid for every pair of directed offsets. The
+integer formula \eqref{spf:rc:eq:B-Stirling} proves the arithmetic
+phenomenon at every order, explains the delayed high-degree terms and gives
+efficient coefficient generation; the Borel transform and the index
+reconstruction are further consequences. The remaining distinction is
+between the stable asymptotic information, proved here with controlled
+remainders, and exact finite enumeration: the original guessed recurrence
+and a complete beyond-all-orders expansion are not claimed.
+
+\paragraph{OEIS note, as manuscript~03 proposes it.} Its
+\path{data/03-rational-collapse-OEIS_proposed_note.md} drafts an OEIS
+remark that every $c_J$ of A189281 is an integer, with the finite formula
+\eqref{spf:rc:eq:B-Stirling} at $u=-1$, that the rational-collapse conjecture
+is proved, that the A189281 recurrence is not, and that the same holds for
+every directed pair including A189282--A189284. It is marked ``not
+submitted''; it asks for a stable public citation and independent review
+first. Nothing was submitted.
+
+\section{Formula sheet}
+\label{spf:rc:sec:formulas}
+
+With $\sigma=r+s$ and $\rcw_j=\rise{(r-1)}j\rise{(s-1)}j/j!$ (manuscript~03,
+Appendix~A):
+\begin{align}
+ \mu_k^*(n)&=\sum_{j=0}^k
+  \frac{\rcw_j\binom{n-\sigma+1-j}{k-j}}{\fall n{k+j}},\notag\\
+ R_h^{r,s}(n)&=\sum_{j=0}^h
+  \frac{\rcw_j\binom{h-\sigma}{h-j}}{\fall n{h+j}},\notag\\
+ B_J(u)&=\sum_{h=1}^Ju^h\sum_{j=0}^{\min(h,J-h)}
+  \rcw_j\binom{h-\sigma}{h-j}\Stir{J-1}{h+j-1}\quad(J\ge1),\notag\\
+ \psi_i&=\sum_{j=0}^{\lfloor i/2\rfloor}
+  (-1)^{i-j}\rcw_j\binom{i-j-\sigma}{i-2j},\label{spf:rc:eq:psi}\\
+ c_J&=\sum_{i=1}^J\psi_i\Stir{J-1}{i-1}\quad(J\ge1),\notag\\
+ \Psi(z)&=(1+z)^{\sigma-1}\,{}_2F_0\Bigl(r-1,s-1;\,;-\frac{z^2}{1+z}\Bigr),\notag\\
+ \widehat C(t)&=\mathcal E'(e^t-1),\qquad
+ \mathcal E(\xi)=\sum_{i\ge0}\psi_i\xi^i/i!.\notag
+\end{align}
+The conventions for $J=0$ are $B_0=c_0=\psi_0=1$. The formulas for
+$\mu_k^*$ and $R_h$ are rational identities; actual moments require
+\eqref{spf:eq:stable-range}. $\Psi$ is formal, while $\mathcal E$ and
+$\widehat C$ are entire.
+
+\paragraph{The shipped files of manuscript~03.} The prefix
+\path{03-rational-collapse-} marks its twelve shipped files. Its three scripts and its
+\texttt{Makefile} are in \texttt{code/}; its five recorded outputs, the
+b-file excerpt and its OEIS note are in \texttt{data/}; its
+\texttt{SOURCES.md} is at the report root. All are byte-identical to the
+delivery. \texttt{certify.py} imports its sibling by the delivered name
+(\texttt{from verify import \ldots}); \texttt{verify.py} and
+\texttt{inverse\_demo.py} read the excerpt by its delivered name,
+\texttt{b189281\_0\_30.txt}; all three write unprefixed files into the
+\texttt{data/} directory beside their own; and the \texttt{Makefile} calls
+the scripts by their delivered names. In the shipped layout the scripts
+would fail to import, skip the OEIS-value checks or fail to find their
+input, and write beside the files of Parts~I and~II. The report README
+gives a copy-based recipe.
 
 \addcontentsline{toc}{part}{Appendices}
 
@@ -2333,6 +3714,11 @@ Conjecture~\ref{spf:conj:collapse} (rational collapse) is a conjecture. It has b
 checked as an identity of rational functions for $h=4,\ldots,16$ only, and the
 integrality of every $c_J^{(1)}(2,2)$ is conditional on it
 (Proposition~\ref{spf:prop:collapse-implication}).
+[Added 3 October 2026, batch 85: this paragraph describes the report before
+batch~85. The conjecture is proved in Part~III
+(\cref{spf:rc:thm:A-collapse}), and the integrality is unconditional
+(\cref{spf:rc:cor:unconditional,spf:rc:thm:integrality}); see the
+paragraph ``Part~III (batch 85)'' below.]
 
 \paragraph{Overloaded letters.}
 The manuscript reuses a few letters; none is renamed here. $C$ is a tiling
@@ -2391,6 +3777,57 @@ carry the prefix \texttt{fga:}. No existing label was renamed or removed,
 no existing number changed, and no delivered sentence of manuscript~60 was
 changed or removed. Manuscript~03's text is restated in Part~I's notation,
 with some proofs condensed; none of its statements was strengthened.
+
+\paragraph{Part~III (batch 85).}
+[Added 3 October 2026, batch 85.] Part~III is built from manuscript~03 of
+batch~85 (a different manuscript from manuscript~03 of batch~74), the
+archive \nolinkurl{OEIS_Rational_Collapse_and_Integrality.zip} (16~files,
+a 23-page PDF), which arrived in commit \texttt{317c1ce2e} and was placed
+in commit \texttt{713149ded}. Its pinned commit is
+\texttt{d68b65ea0}~\cite{rcProveIt}. Its article, README, PDF and checksum
+ledger \texttt{MANIFEST.sha256} (15/15 verified at placement) are not
+shipped; its other twelve files are, byte-identical, with the prefix
+\texttt{03-rational-collapse-}: \texttt{code/verify.py},
+\texttt{code/certify.py}, \texttt{code/inverse\_demo.py} and the
+\texttt{Makefile} in \texttt{code/}; the six files of its \texttt{data/} and
+its \texttt{OEIS\_proposed\_note.md} in \texttt{data/}; and
+\texttt{SOURCES.md} at the report root. Those files use the delivery names.
+
+\paragraph{Where the batch-85 merge had to choose.} Manuscript~03 answers
+this report's open conjecture, so it is an addition, printed as Part~III
+after Part~II so that no existing number changes. Its theorems that Parts~I
+and~II do not contain are printed in full with their proofs: the single-sum
+formula, the universal collapse, the A189281 product, integrality with the
+degree law, the kernel and auxiliary recurrence, the Borel transform, the
+coefficient tables beyond order~16 and for A189282--A189284, and its
+certificates. Its second proof of \cref{spf:thm:main} at $\theta=1$ is
+printed, because it runs through the new identity; its other
+re-derivations are recorded in \cref{spf:rc:tab:routes}. Its special cases
+that repeat Part~II's \cref{fga:prop:onepath,fga:prop:c3}, which it does
+not cite, are printed as notes crediting Part~II
+(\cref{spf:rc:rem:onepath,spf:rc:rem:c3}); its index reconstruction is
+printed as an instance of Part~II's \cref{fga:prop:inverse}. Its symbols are
+renamed into Part~I's notation (\cref{spf:rc:tab:dictionary}), its
+components are indexed by vertices rather than edges, and $p=r-1$, $q=s-1$
+are written out. Its coefficient table is printed only from order~17,
+orders 11 to~16 being in \cref{spf:tab:extra}.
+
+\paragraph{What the batch-85 write changed.} It added two macros to the
+preamble, the batch-85 editorial note, bracketed notes marked ``[Added 3
+October 2026, batch 85]'' after Conjecture~\ref{spf:conj:collapse}, after
+Proposition~\ref{spf:prop:collapse-implication}, in questions~1 and~4 of
+\cref{spf:sec:questions}, after \cref{fga:cor:integrality}, in the overlap
+paragraph and question~1 of \cref{fga:sec:questions}, and in the paragraph
+``Status of the conjecture'' of this appendix; Part~III
+(\cref{spf:rc:sec:front} to \cref{spf:rc:sec:formulas}); these three
+paragraphs; and five bibliography entries. All its labels carry the prefix
+\texttt{spf:rc:}. No existing label was renamed or removed, no existing
+number changed, and no delivered sentence of either earlier manuscript was
+changed or removed: the conjecture keeps its heading and label, and the
+conditional proposition its statement. Manuscript~03's text is restated in
+Part~I's notation, with some proofs condensed; none of its statements was
+strengthened, and every one of its non-claims is kept in
+\cref{spf:rc:sec:front}.
 
 \begin{thebibliography}{99}
 \bibitem{oeis189281}
@@ -2478,6 +3915,38 @@ authorship of ranges given in the OEIS entry.
 [Added in the batch-74 write, from manuscript 03.] V. Reshetnikov,
 \emph{ProveIt}, repository and README, inspected 1 October 2026 at commit
 \nolinkurl{291fbe6bb4477e0cb2131f1e041b12a9abe363fd}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.\par\endgroup
+
+\bibitem{rcOeis282}
+[Added in the batch-85 write, from manuscript 03 of batch 85.] OEIS
+Foundation Inc., \emph{A189282: directed gap $(3,3)$ avoidance}.
+\url{https://oeis.org/A189282}. Inspected by manuscript~03 on 3 October 2026.
+
+\bibitem{rcOeis283}
+[Added in the batch-85 write, from manuscript 03 of batch 85.] OEIS
+Foundation Inc., \emph{A189283: directed gap $(4,4)$ avoidance}.
+\url{https://oeis.org/A189283}. Inspected by manuscript~03 on 3 October 2026.
+
+\bibitem{rcOeis284}
+[Added in the batch-85 write, from manuscript 03 of batch 85.] OEIS
+Foundation Inc., \emph{A189284: directed gap $(5,5)$ avoidance}.
+\url{https://oeis.org/A189284}. Inspected by manuscript~03 on 3 October 2026.
+
+\bibitem{rcBfile}\begingroup\raggedright
+[Added in the batch-85 write, from manuscript 03 of batch 85.] R. Matsuo et
+al., \emph{Table of A189281 for $n=0,\ldots,300$}; the entry credits terms
+0--35 to V. Kotesovec and 36--39 to C. Koutschan.
+\url{https://oeis.org/A189281/b189281.txt}. Inspected by manuscript~03 on
+3 October 2026; it ships the excerpt $n=0,\ldots,30$ as
+\path{data/03-rational-collapse-b189281_0_30.txt} (OEIS content, CC
+BY-SA~4.0).\par\endgroup
+
+\bibitem{rcProveIt}\begingroup\raggedright
+[Added in the batch-85 write, from manuscript 03 of batch 85.]
+V. Reshetnikov, \emph{ProveIt}, this report's \texttt{article.tex}
+(Parts~I and~II), inspected 3 October 2026 as blob
+\nolinkurl{5b60a1ad447afe7dce58534fba447b05e401f172} at commit
+\nolinkurl{d68b65ea064084fb121df9bb431b21d086f7be81}.
 \url{https://github.com/VladimirReshetnikov/ProveIt}.\par\endgroup
 \end{thebibliography}
 \end{document}
