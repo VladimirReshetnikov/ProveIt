@@ -67,6 +67,18 @@ this candidate. The [independent review](review_complete83_independent_gamma_sco
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
 
+The [direct-witness census](complete83_direct_gamma_witness_obstruction.md)
+rejects all seventeen ways to replace the main quotient by another supplied
+positive witness. Each complete source costs **83=47M+36A**, has17 positive
+witnesses and exact degree187, but has **no positive zero on a valid compiler
+slice**. Size, parity and consecutive-Pell-coefficient gaps cover every
+literal port; the equal-rho boundary is also excluded. The
+[independent review](review_complete83_direct_gamma_witness_obstruction.md)
+checks the complete arrays, all positive proof interfaces and the uniform
+degree. Installed normal/optimized receipts and408 additional full-source
+assignments pass. This finite grammar does not resolve independent-gamma83
+or exclude nonlinear reuse; the universal bound remains84.
+
 The [multiplicative-gamma83 chart](complete83_multiplicative_gamma_obstruction.md)
 transfers the historical quotient-divisibility obstruction to the current
 source: **83=47M+36A**,18 positive witnesses, exact degree188, but **no
