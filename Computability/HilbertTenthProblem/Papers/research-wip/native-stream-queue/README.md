@@ -334,6 +334,18 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [irregular matrix selector](matrix193_irregular_selector.md) lowers the
+complete countdown predicate to **1553=778M+775A** over both reals and
+signed integers, at exact degree194. Its synchronized source costs1527
+at exact degree192. One affine lookup column saves188 gates against the
+previous real source; the full squared selector and26-gate wrapper remain.
+The [independent review](review_matrix193_irregular_selector.md) reconstructs
+all768 coefficients by a separate closed formula and checks all3080 rows;
+fresh normal/optimized author and review receipts pass. Fixed h gives
+**1554h+7 gates and6h signed witnesses**. The211075-bit common scale uses
+the established arbitrary fixed-numeral convention. Unbounded packing and
+positive-witness conversion remain unpaid; the universal bound stays84.
+
 The [paid matrix selector](matrix193_newton_selector.md) lowers the
 complete countdown predicate to **1740=871M+869A** over signed integers,
 or1741 over reals, with exact degree194 and one extra selector per step.
@@ -349,8 +361,8 @@ The [lookup schedule scout](matrix193_lookup_schedule_scout.md) verifies
 78 repeated-prefix permutations and a rank-nine affine-independence
 certificate. Its [review](review_matrix193_lookup_schedule_scout.md) confirms
 the24-gate cleanup-prefix saving. Irregular nodes make one column affine
-but require a211075-bit scale and a squared selector; their full local
-predicate with compact fixed-numeral recipes is still unbuilt.
+but require a211075-bit scale and a squared selector; the later complete
+irregular-selector packet above now pays and verifies that construction.
 
 The [grouped matrix choices](matrix193_grouped_row_choices.md) save
 **24 additions** in each complete local source: **2015=1103M+912A** for
