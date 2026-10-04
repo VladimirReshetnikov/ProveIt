@@ -2,10 +2,10 @@
 
 This group holds two documents: the canonical volume, and the companion
 volume on combinatorial transseries consolidated from the three arrivals of
-2026-09-04 (see the end of this file). Beside them are sixty-one unmerged
+2026-09-04 (see the end of this file). Beside them are sixty-three unmerged
 arrivals, fifty of 2026-09-29, one of 2026-09-30, one of 2026-10-01,
-three of 2026-10-02, one of 2026-10-03 and five of 2026-10-04, each filed
-whole with its PDF; all but the last six were then amended editorially
+three of 2026-10-02, one of 2026-10-03 and seven of 2026-10-04, each filed
+whole with its PDF; all but the last eight were then amended editorially
 (see "Arrivals of 2026-09-29 to 2026-10-04" below).
 
 The transseries Lean inventory and zero-gap result are computed by
@@ -430,6 +430,29 @@ name: the exact-core Lagrange formula (`eq:core-lagrange` in both), a
 Rouché disk root and the gluing identity (`eq:finite-transition` there);
 every main theorem differs. None of the five has yet had the editorial
 pass.
+
+The fifteenth delivery (2026-10-04, the drop zone's batch 95) brought two
+transseries packages among four archives, the Mellin–Borel and
+q-product-completion articles below, both in drop-zone commit `f300069cf`.
+The other two archives, two independent articles on surreal-only
+foundations and the boundary at NBG, became Part IX of the surreal
+collection's *birthday-cutoffs-and-hereditary-sets*, under
+`Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets/`.
+Both transseries articles pin the repository revision `b484725c8`, from
+before the fourteenth delivery was filed, so neither saw a
+fourteenth-delivery package in the repository. The Mellin–Borel article
+cites this README and, from Vladimir's library, the q-cusp article of the
+fourteenth delivery, which it calls "the preceding report"; the
+q-product-completion article cites the canonical volume and the
+Stokes-transport and Gaussian-binomial crossover packages. Neither cites
+the other. They are independent answers to the same assignment, not
+editions of each other: they share under 1% of their 8-word sequences,
+mostly preamble macros and formula fragments, and differ in variables
+(`h` against `t`), the sign of the formal tail and their section plans.
+Both prove, by the same Mellin route, the exact lateral completion of
+`log(e^{−ah};e^{−h})_∞`, and with it Fantini–Rella's Conjectures 5 and 1;
+each has results of its own, listed in its entry. Neither has yet had the
+editorial pass.
 
 All fifty-two packages of the nine deliveries, the Fekete and
 small-deviation ones included, were then amended in place by an editorial
@@ -1466,6 +1489,12 @@ is at most `(24π² + o(1)) e^{−4π²/h}`, including the degenerate endpoint.
 At a fixed index the `h`-series converges exactly when `2x` is an
 integer; on every nonintegral half-integer sheet its sum misses the same
 flat term `4M(h) − 2M(h/2)`, a combination of modular Euler products.
+Its question "A complete Borel description at fixed index"
+(`Gamma_Core_Transseries.tex:1327`) is answered, by linearity, by the exact
+completion that the two fifteenth-delivery articles
+`Mellin_Borel_Completion_q_Gamma_Critical_Reversion/` and
+`Exact_q_Product_Completion_Stokes_Aware_Reversion/` below prove
+independently; neither cites this article.
 
 These three articles and the two above them answer the companion's
 `q → 1` gap together and form one unit for the deferred merge into its
@@ -2178,10 +2207,14 @@ and the inverse
 paragraph stays open. For fixed `a` this also separates the sectors of
 `(a;ζe^{−t})_∞` itself, beyond the Euler quotients of the q-cusp article,
 in the monograph's open problem `qg:prob-root-of-unity-asymptotics`, which
-stays open for Bailey sums and inverse branches. Its cusp normal form,
-four-regime table, flat inverse with certified tail and four-factor minimum
-(`thm:cusp-normal-form`, `thm:flat-inverse`, `thm:flat-tail`,
-`thm:four-factors`) independently re-prove `thm:cusp`,
+stays open for Bailey sums and inverse branches. Its question on
+coalescing fixed-argument and modular limits
+(`sections/08_verification_future.tex:222`) is answered at `ζ = 1`, for
+the Borel and completion part and every real `α ∈ (0,1)`, by the two
+fifteenth-delivery articles below; the uniform inverse theory stays open.
+Its cusp normal form, four-regime table, flat inverse with certified tail
+and four-factor minimum (`thm:cusp-normal-form`, `thm:flat-inverse`,
+`thm:flat-tail`, `thm:four-factors`) independently re-prove `thm:cusp`,
 `thm:classification`, `thm:flat`, `cor:flat-tail`, `thm:four` and
 `thm:ramification` of `Euler_Quotient_Inversion_Rational_q_Cusps/` above,
 with its `(1,2,3,6)` example (`eq:example6`). New here: three eta factors
@@ -2238,6 +2271,124 @@ heading of the resonance-block question 10 and counts the canonical
 source's lines one too many. Not formalized; its numerics are not interval
 certificates.
 
+[`Mellin_Borel_Completion_q_Gamma_Critical_Reversion/`](Mellin_Borel_Completion_q_Gamma_Critical_Reversion/)
+holds *Critical Stokes Reversion and q-Gamma Cores: Exact Mellin–Borel
+completion, q-Pochhammer summability, and ramified inverse transseries*
+(32-page A4 PDF, 2,013-line source, a 144-assertion exact SymPy and
+110-digit mpmath check program with its recorded output and log). For the
+moving factorial `p(a,h) = log(e^{−ah};e^{−h})_∞`, `0 < a < 1`, `ℜh > 0`,
+it writes the Borel transform of the Bernoulli tail as a kernel entire in
+`a`, with simple poles only at `±4π²N` and divisor-sine residues
+(`thm:borel`), and proves by a Mellin contour shift the exact lateral
+reconstruction `S_±p̂ = p − log(e^{∓2πia}Q;Q)_∞`, `Q = e^{−4π²/h}`
+(`thm:completion`): every direction in the open upper (lower) half-plane
+gives the same sum, neither sum is the function, and even the median
+misses a jump-free dual part. The rotation `a = k/N` turns this into the
+formulas stated as Conjecture 5 of Fantini–Rella (arXiv:2506.08265v2,
+`eq:FR60a`, `eq:FR60b`), and a Fourier–Möbius argument shows that the
+median reconstructs a weighted sum over the shifts `k/N` exactly when the
+weights are antisymmetric (`thm:weights`), which for Dirichlet characters
+is their Conjecture 1. It completes `log Γ_{e^{−h}}(a)` exactly
+(`thm:gamma-completion`), lifts the `h`-inverse of the factorial to an
+action-24 sector (`prop:24`), and at the q-gamma minimum proves two real
+inverse roots separated on the scale `e^{−2π²/h}`, with limiting
+coefficient `C_* = 2.0183815…` (`thm:qfold`). Only this article has the
+normally summable perturbations (`prop:countable`), the jet-cancellation
+rule (`prop:jet`), the inverse in the gamma parameter with its flat and
+Stokes terms (`eq:a-inverse`), the lateral comparison at the fold
+(`eq:actual-stokes-fold`), and the reflection product `Γ_q(a)Γ_q(1−a)`,
+which has neither tail nor jump but keeps a flat term, inverted as a
+convergent lift `a_± = ½ ± Q^{1/2}U(h,Q)` (`thm:reflection`). By linearity
+it answers the gamma-core article's question "A complete Borel description
+at fixed index" (`Gamma_Core_q_to_1_Crossover/Gamma_Core_Transseries.tex:1327`),
+and its q-gamma completion at `a = ½` gives the flat term of that
+article's `thm:half` (`:1043`); it partly answers the q-cusp article's
+further question on moving shifted parameters
+(`Euler_Quotient_Inversion_Rational_q_Cusps/article.tex:1551`),
+for real exponents at `q → 1`, and, at `ζ = 1`, the Borel and completion
+part of the modular-cusp article's coalescing question
+(`Modular_Cusp_Reversion_Stokes_Corrections_q_Gamma/sections/08_verification_future.tex:222`).
+Since `a = q^α` leaves every compact `K` of the q-Pochhammer monograph's
+`conj:cyclotomic-resurgent-inverse`, it neither proves nor refutes a
+clause of that conjecture as stated; it refines the correction of
+`7389d7de4`, whose Status paragraph cites it
+(`Analysis/FabiusFunction/docs/semi-formalized-research-frontiers/drafts/exponents-and-q-series/q_pochhammer_q_binomial_monograph/chapters/07_certification_and_frontiers.tex:872`):
+in this limit the missing term is a convergent dual product, not a
+residue sum. Its regular inverse response (`thm:response`) and median
+defect (`prop:median`) re-prove `p0:thm:perturbed-inversion`, the
+Stokes-transport article's `thm:transport` and the mechanism of its
+`thm:average`; its
+`h`-expansion of `log Γ_q` is the monograph's `thm:qs-qgamma-one`
+(`chapters/05_q_special_functions.tex:312`), and the existence and
+uniqueness of the minimum are `thm:qs-qgamma-minimum` (`:280`), with
+convexity machine-checked as `Fabius.strictConvexOn_log_qGamma`
+(`Analysis/FabiusFunction/Lean/FabiusFunction/QGammaLogConvex.lean`); none
+of these, nor the gamma-core article, is cited. The completion, the
+Fantini–Rella corollaries, the q-gamma completion and the fold are proved
+independently by the q-product-completion article below, whose reflection
+criterion is more general and whose delay bound is sharper than the `n ≤ N`
+of `thm:weights`. By default its `verify.py` writes the recorded
+`results.json` (its README's command writes `results-new.json`). Its
+checksum ledger is not shipped. No claim was found wrong; the abstract's
+Conjecture-5 claim needs `1 ≤ k < N`, as the body says. Not formalized;
+its numerics are not interval certificates.
+
+[`Exact_q_Product_Completion_Stokes_Aware_Reversion/`](Exact_q_Product_Completion_Stokes_Aware_Reversion/)
+holds *Exact q-Product Completion and Stokes-Aware Transseries Reversion:
+reflection kernels, inverse exponential actions, and the critical fold of
+the q-gamma function* (32-page A4 PDF, 2,256-line source, a SymPy and
+150-digit mpmath check program with its recorded output). For
+`G_a(t) = log(e^{−at};e^{−t})_∞`, `0 < a < 1`, it gives the Borel kernel of
+the Bernoulli tail `R̃_a` in Fourier form and in a form holomorphic in
+every complex `a` (`prop:borel`, `prop:holomorphic-kernel`), and proves by
+a Mellin contour shift and a cotangent-kernel identity
+`G_a = P_a + L_±R̃_a + log(e^{∓2πia}Q;Q)_∞`, `Q = e^{−4π²/t}`, with the
+median form `G_a = P_a + L_0R̃_a + D_a^0` (`thm:completion`). This is the
+exact form of the q-Pochhammer monograph's asymptotic
+`thm:ip-qx-expansion` (`chapters/03_infinite_q_pochhammer.tex:620`),
+uncited. Its `cor:fr` is Fantini–Rella's Conjecture 5 and `cor:characters`
+their Conjecture 1. For any finite set of real shifts, the median
+reconstructs a weighted sum exactly when the weights are antisymmetric
+under `a ↦ 1 − a`, and the Stokes jump vanishes exactly when they are
+symmetric (`thm:reflection`); with `p` distinct phases, the first surviving
+completion action is at most `p` and the first jump action at most `p − 1`
+(`prop:delay`). Only this article has the five-scale eta combination with
+weights `(2,−9,14,−9,2)`, which has zero power–logarithmic expansion and
+is `∼ −2e^{−A/(16t)}` (`eq:eta-flat`), the second exponential coefficient
+`Δ₂` of the regular cusp inverse at action 24 (`thm:cusp`), the completed
+inverse at `a = ½` (`eq:halfcompletedinverse`), the doubly exponential
+inverse Stokes scale of the odd quotient `G_{1−a} − G_a`
+(`eq:doubleexponential`), the `O(Q^{3/2})` remainder of the gap between
+the two real roots at the q-gamma minimum (`cor:tworeal`), and action
+selection from a first completion order `r ≥ 1`, with the counterexample
+`x² + zx + z³` (`thm:ramified`). Its q-gamma completion (`thm:qgamma`),
+completed critical point (`thm:critical`), action-halving layer
+(`thm:layer`) and quadratic normal form (`thm:normalform`) are proved
+independently by the Mellin–Borel article above, which has the reflection
+product and the gamma-parameter inverse that this one lacks. By linearity
+it answers the gamma-core article's question "A complete Borel description
+at fixed index" (`Gamma_Core_q_to_1_Crossover/Gamma_Core_Transseries.tex:1327`),
+and its reflection criterion and delay bound bear on that article's
+arithmetic classification of balanced products (`:1330`) at fixed index;
+it does not cite that article. Its relation to
+`conj:cyclotomic-resurgent-inverse` is that of the Mellin–Borel article:
+`a = q^α` lies outside the conjecture's compact set, and the missing term
+is the dual product, which no residue sum supplies, since at `a = ½` the
+jump vanishes and `log(−Q;Q)_∞` does not. It credits the Stokes-transport
+article with the multi-parameter form of its Lagrange–Bürmann inversion
+(`thm:inverse`; there `thm:transport`) and with the distinction between
+averaging and nonlinear reconstruction behind its median defect (there
+`thm:average`); uncited are `p0:thm:perturbed-inversion`, the monograph's
+`eq:ip-qx-lambert`, `thm:qs-qgamma-one` and `thm:qs-qgamma-minimum`,
+`Fabius.strictConvexOn_log_qGamma`, and the q-cusp article's `thm:four`,
+the mechanism of its eta-flat example. Its README's rerun command, and
+`verify.py` by default, overwrite the recorded `verification_results.json`.
+Its checksum ledger is not shipped. No claim was found wrong; the abstract
+writes `R_a` for the body's `R̃_a`, Fantini–Rella is cited only as
+arXiv v2, though now published (Lett. Math. Phys. 116 (2026), art. 39),
+and its fold table converges slowly to the `t → 0` limit of its column.
+Not formalized; its numerics are not interval certificates.
+
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the
 three direct-truncation articles) are sharp instances of
@@ -2259,7 +2410,7 @@ moment-determinacy article's least moment bound is compared with its flat
 defect, not with the actual truncation error; none of these is a sharp
 instance.
 
-Thirty-nine checksum ledgers were verified in full on filing and not filed.
+Forty-one checksum ledgers were verified in full on filing and not filed.
 From the first delivery, these are the two `SHA256SUMS.txt` of the
 regularity and inverse-harmonic packages and the `SHA256SUMS` of the
 moving-fold package. From the second, they are the `SHA256SUMS` of the
@@ -2288,7 +2439,9 @@ of the factorial-transseries package. From the twelfth, they are the
 `SHA256SUMS.txt` of the A306631 package. From the fourteenth, they are the
 `SHA256SUMS` of the exact-radius package, the `SHA256SUMS.txt` of the
 phase-accurate and q-cusp packages and the two `MANIFEST.sha256` of the
-modular-cusp and action-cone packages. The READMEs of the
+modular-cusp and action-cone packages. From the fifteenth, they are the
+two `SHA256SUMS.txt` of the Mellin–Borel and q-product-completion
+packages. The READMEs of the
 inverse-harmonic, moving-fold, certified-inversion, Stokes-transport,
 action-accumulation, near-linear and critical Hahn packages, and of the five
 fourth-delivery and five fifth-delivery packages that had one, now record
