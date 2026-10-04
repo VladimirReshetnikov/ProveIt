@@ -140,6 +140,15 @@ The [three surreal publication reviews](Papers/research-wip/native-stream-queue/
 
 The [Parts XI–XII publication review](Papers/research-wip/native-stream-queue/review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
 
+The next review queue contains the cellular-automaton publication at
+`4cabe3899`, the catalogue changes at `cd514f61b`, and
+`definable_surreal_operations.zip` arriving at `de37a66d1`. These commits were
+synchronized and identified from commit summaries and diff statistics only in
+this round. Their new manuscript text, catalogue claims and archive contents
+remain unreviewed; prior report reviews do not implicitly cover these changes.
+Prioritize the CA publication and its exact input/radius interface before
+promoting any new arithmetic or universality claim.
+
 The [Polish-report placement check](Papers/research-wip/native-stream-queue/review_polish_placement_e24ce2ce0.md) authenticates all sixteen ancillary files at e24ce2ce0 against28 regular members of the three original archives. The retired ZIPs match their arrival bytes; the host README, article and PDF remain unchanged, with Parts I–XII still the full heading list. Parts XIII–XV are prospective at that revision. Root independently rechecks all placed/member/primary bytes. The earlier guide intake remains the mathematical read boundary, with no new proof certification or paid compiler bound.
 
 The [OEIS publication review](Papers/research-wip/native-stream-queue/review_oeis_publication_9f924ac47.md) confirms that9f924ac47 integrates both main manuscripts, resolving the earlier placement gap. All65+61 original labels survive among135 unique labels;242 internal references,285 delivery-map rows and286 listed paths check. The full928-line guide and2169-line article diff were read. Exact finite-sector bounds remain distinct from fixed-order logarithmic/inverse expansions, and the clipping-table polynomial still depends on its entire fixed table. Root rechecks immutable bytes,101 read spans, label maps, unchanged ancillary files and embedded predecessor copies. One Git-ignore guidance error was corrected separately atf0c56034c; the immutable review retains the original finding. Analytic proofs, builds and external attribution are not newly certified.
