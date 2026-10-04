@@ -2,14 +2,14 @@
 
 # Research reports
 
-One hundred and ninety-one independent mathematical research packages, unpacked
+One hundred and ninety-two independent mathematical research packages, unpacked
 from the
 archives in which they were delivered and grouped by subject.  Each directory
 holds a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all one hundred and ninety-one reports, names the problem each one attacks
+numbers all one hundred and ninety-two reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -23,14 +23,14 @@ records what each report claims rather than verifying it.
 | [`log-concavity-and-unimodality/`](log-concavity-and-unimodality) — cluster variables, chromatic coefficients, Stirling rows, independence systems, MDS codes, binomial decompositions, Bernoulli entropy, matching-rank normalization, preorder gamma polynomials | 14 |
 | [`congruences-and-valuations/`](congruences-and-valuations) — supercongruences, Apéry and Motzkin congruences, iterated series, integrality of asymptotic coefficients, valuations and periodicity | 11 |
 | [`tetration-and-digit-stabilization/`](tetration-and-digit-stabilization) — congruence speed, frozen digits, `q`-Newton series | 6 |
-| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes, pattern-avoiding ascent sequences, iterated Bell diagonals, corner polyhedra, powered Catalan and Mahonian numbers, divisor-weighted products, phylogenetic trees and networks, Airy amplitudes of trees and automata, historic and identity trees, Takeuchi numbers, tournament scores, involutions, parabolic cosets and signed permutations, rook paths, cyclic word covers, colored and radix-layer partitions, acyclic orientations, chess placements, football seasons, vincular avoiders, Beta renewals, signed moments, moving zeros and fugacities, rounding extinction, matrix compositions, extensional acyclic digraphs, long increasing subsequences, shifted rectangles), Apéry arrays | 72 |
+| [`generating-functions-and-asymptotics/`](generating-functions-and-asymptotics) — Stanley's rationality question, Gregory thresholds, records, discrepancy, single-sequence OEIS studies (power-tower derivative supports, restricted and weighted partitions, excursions and restricted permutations, Fourier peaks, gamma constants, L-convex polyominoes, pattern-avoiding ascent sequences, iterated Bell diagonals, corner polyhedra, powered Catalan and Mahonian numbers, divisor-weighted products, phylogenetic trees and networks, Airy amplitudes of trees and automata, historic and identity trees, Takeuchi numbers, tournament scores, involutions, parabolic cosets and signed permutations, rook paths, cyclic word covers, colored and radix-layer partitions, acyclic orientations, chess placements, football seasons, vincular avoiders, Beta renewals, signed moments, moving zeros and fugacities, rounding extinction, matrix compositions, extensional acyclic digraphs, long increasing subsequences, shifted rectangles, clipping tables), Apéry arrays | 73 |
 | [`automata-and-formal-languages/`](automata-and-formal-languages) — shuffle state complexity, DFAO reversal, synchronization, language hierarchies, additive complexity, counting accessible and strongly connected automata | 8 |
 | [`quaternionic-analysis/`](quaternionic-analysis) — slice regularity, Cauchy–Fueter analysis, the global inverse Fueter problem | 1 |
 | [`graph-theory/`](graph-theory) — mutual visibility, domination roots, minimal dominating sets | 3 |
 | [`jacobian-conjecture/`](jacobian-conjecture) — fibers and dynamics of Keller maps: Gao's five-dimensional map, arithmetic fibers, weighted rigidity and dynamical degrees of the three-variable counterexample | 4 |
 | [`galois-theory-and-radicals/`](galois-theory-and-radicals) — bad characteristics of radical solvers, Fourier–Kummer charts, finite separating ranges for sextic resolvents | 2 |
 | [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant | 12 |
-| **Total** | **191** |
+| **Total** | **192** |
 
 ## Later deliveries
 
@@ -791,9 +791,11 @@ refutes a repository claim.
 Batch 89, five archives in two arrival commits, opened
 [`naming-elementary-embeddings`](ordinals-and-order-types/naming-elementary-embeddings)
 (Yao's urelement kernel models after finitely many canonical elementary
-atom lifts are named: Replacement holds exactly when the small component
-types are few, one name is harmless iff `cf κ > ω` and two or more iff
-`cf κ > 2^ℵ₀`, a CH characterization at `ℵ₂`, and exact Collection and
+atom lifts are named: for `κ > ω`, Replacement holds exactly when the union
+of small component-type blocks has fewer than `κ` atoms; for `κ = ω`,
+every component and that union must be finite. Every one-name expansion preserves
+Replacement iff `cf κ > ω`, and every expansion by two or more names iff
+`cf κ > 2^ℵ₀`; a CH characterization at `ℵ₂`, and exact Collection and
 reflection criteria). It contains no surreal mathematics and continues the
 formal projects `SetTheory/ZF` and `SetTheory/BoundedConsistency`
 semantically, without formalizing anything. Its Collection spectrum is
@@ -807,10 +809,11 @@ superseded, and no manuscript refutes a repository claim.
 Batch 90, six archives in one arrival commit, added Part II to
 [`measurable-box-games`](ordinals-and-order-types/measurable-box-games)
 (Eldredge's infinite binary hat game: a computable strategy with surplus
-`log₂ n + O(1)` and, for every positive `g = o(n)`, one with surplus
-eventually above any multiple of `g`, answering both questions of his
-Remark 6.8; its finite corollary settles Part I's question Q9 for one
-family). Part VIII of the surreal report `birthday-cutoffs-and-hereditary-sets`
+`log₂ n + O(1)` almost surely and, for each positive `g = o(n)`, a continuous
+finite-information strategy with surplus divided by `g` tending to infinity
+almost surely, answering both questions of his Remark 6.8; the arbitrary-`g`
+strategy need not be computable. Its finite corollary settles Part I's
+question Q9 for one family). Part VIII of the surreal report `birthday-cutoffs-and-hereditary-sets`
 (named symmetries) has, for finitely many named permutations, the `κ = ω`
 case of `naming-elementary-embeddings`' component criterion as a case of
 its orbit criterion for named group actions, proved independently; both
@@ -826,6 +829,18 @@ and 90 are in `8d7d03c3e`, `fc1ad4275` and `e50dde15b`.
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.
+
+The already written batch91 report
+[`a196460-clipping-tables`](generating-functions-and-asymptotics/oeis-sequence-asymptotics/a196460-clipping-tables/)
+combines two manuscripts: the exact zero-versus-one positive-auxiliary
+classification for each fixed finite two-coordinate clipping table and fixed-order
+asymptotic, logarithmic and inverse expansions for A196460; then uniform
+bounds for every truncation of its exact finite sector expansion. The latter
+do not make the logarithmic or inverse expansions uniform in growing order.
+Coefficients and degree may depend on the whole table; no uniform paid
+integer compiler is supplied. The publication review at `9f924ac47` checked
+integration and these scope distinctions, not every analytic proof. It is
+unrefereed and not formalized.
 
 ## Rebuilding the manifest
 

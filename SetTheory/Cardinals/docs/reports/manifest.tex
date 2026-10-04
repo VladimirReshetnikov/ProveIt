@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 191 independent mathematical research packages}}
+  pdfsubject={Catalogue of 192 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,7 +53,7 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large One hundred and ninety-one independent mathematical research packages,\\
+  {\large One hundred and ninety-two independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
   {\normalsize 4 October 2026}
@@ -63,16 +63,16 @@
 
 \section{Scope and conventions}
 
-This document catalogues the one hundred and ninety-one research packages stored
+This document catalogues the one hundred and ninety-two research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other eighty-nine came through ProveIt's incoming-reports procedure
+other ninety came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
 batch~72, sixteen in batch~73, two in batch~74, three in batch~75, two in
 batch~76, thirty-four in batch~77, three in batch~78, two in
 batch~79, two in batch~82, one in batch~83, five in batch~85 and one each
-in batches~86, 87 and~89 --- whose archives remain in the repository's
+in batches~86, 87, 89 and~91 --- whose archives remain in the repository's
 history.  Later batches
 also extended existing reports; their entries name the batch.  Batch~80
 opened no report here: it extended one report and replaced the programs of
@@ -167,7 +167,7 @@ original archive names are recorded with every entry.
  & \dir{transfinite-words} & 1\\
  & (top level) & 8\\
 \midrule
-\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 64\\
+\dir{generating-functions-and-asymptotics} & \dir{oeis-sequence-asymptotics} & 65\\
  & \dir{binary-product-coefficient-counts} & 3\\
  & (top level) & 5\\
 \midrule
@@ -196,7 +196,7 @@ original archive names are recorded with every entry.
 \midrule
 \dir{hilbert-tenth-problem} & --- & 12\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{191}\\
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{192}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -615,7 +615,7 @@ score function.  Neither counting sequence was in the OEIS on 3~October
 (arXiv:2508.02828) on the surplus $D_n=S_n-n/2$ of correct guesses in the
 infinite binary hat game: Hamming-syndrome blocks give a computable
 strategy with $D_n=\log_2n+O(1)$ almost surely, and for every positive
-$g=o(n)$ a continuous strategy with $D_n/g(n)\to\infty$, so no sublinear
+$g=o(n)$ a continuous strategy with $D_n/g(n)\to\infty$ almost surely, so no sublinear
 envelope is universal; the coding mechanism is credited to
 Ebert--Merkle--Vollmer.  Its finite corollary settles Part~I's
 question~Q9 for $N=2a(2^r-1)$ binary players and threshold $a2^r$: the
@@ -2135,7 +2135,7 @@ Conjecture~6.2 and the asymptotic analysis.}}
 
 \subsection{Single-sequence OEIS studies}
 
-Sixty-four reports on the growth or the closed form of a single OEIS sequence.  One
+Sixty-five reports on the growth or the closed form of a single OEIS sequence.  One
 article counts the terms in the derivatives of three power towers --- $x^{x^x}$,
 $x^{x^2}$ and $x^x$ --- whose three parts reach three different answers by three
 different recurrences, and two reports added in batch~72 sit beside it: one
@@ -3545,6 +3545,25 @@ volume.  Neither guessed recurrence (A181198, A181199) is proved;
 nonalgebraic is not non-D-finite; the shifted hook formula and Sun's
 order-polytope reading are credited; the OEIS draft is not submitted.}
 
+\entry{Zero auxiliary clipping tables and A196460}
+{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a196460-clipping-tables}
+{article.pdf}{batch~91: A196460\_asymptotics\_and\_inversion\_sources.zip,
+A196460\_sharp\_uniform\_truncations\_sources.zip}
+{For each fixed Boolean table $S\subseteq\{1,\ldots,K\}^2$ read on positive
+integers by clipping its two coordinates, one integer polynomial equation needs no auxiliary exactly
+when the table is closed under coordinate-flat replacement, and one strictly
+positive auxiliary otherwise.  The closed tables of side $n+1$ number
+$C_n=1+a_n$, where $a_n$ is A196460.  Part~I gives exact counts and
+fixed-order forward, logarithmic and inverse expansions.  Part~II bounds
+all truncations of the exact finite sector expansion for $n\ge32$, keeping
+the distinct terminal-sector convention for $C_n$.  This is not a uniform
+growing-order logarithmic or inverse theorem: an exact integer threshold
+still needs an exact comparison.  Coefficients and degree may depend on
+the whole finite table; no uniform paid integer compiler or universal
+operation bound follows.  Two manuscripts, integrated and reviewed within
+the publication review's stated scope at \texttt{9f924ac47}; that review did
+not certify every analytic proof.  Unrefereed; not formalized.}
+
 \subsection{Asymptotics, records and discrepancy}
 
 \entry{The Exponential Scale of Gregory Sign Thresholds}
@@ -4405,10 +4424,11 @@ Part~I this gives a sharp one-versus-two-visit boundary.  A fixed
 polynomial system initializes the board from two positive sentinel
 integers, and one fixed polynomial $F_2$ with 465 positive witnesses and
 exact degree 2{,}304{,}000 recognizes halting of $U_{15}$ on the two
-sentinel-decoded side words (Report~44, a recovered edition); its literal
-source shrinks from 2{,}307{,}457 operations with prescribed coefficients
-to 14{,}658{,}934 from the literals 1 and~3 (Reports 47 and~48), and
-further in later programme packets.  $F_2$ recognizes a fixed
+sentinel-decoded side words (Report~44, a recovered edition).  Its source
+uses 2{,}307{,}457 operations with prescribed coefficients.  When all
+coefficients are built from the literals 1 and~3, Reports~47 and~48 reduce
+the dense-prefix construction to 14{,}658{,}934 operations; later programme
+packets reduce that count further.  $F_2$ recognizes a fixed
 r.e.-complete language only through the published $U_{15}$ encoding: it is
 not an ordinary-input loader for the programme's input convention and does
 not bear on its 84-operation record.  Seven primitive cell maps are
