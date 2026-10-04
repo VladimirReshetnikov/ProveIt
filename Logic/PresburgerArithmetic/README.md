@@ -84,8 +84,22 @@ at `0f95145cb`, `fa2f3e419` and `883e0b3b2`) read this project again:
 `Decision.lean` are stated for `List Int` valuations, so the semantic
 theorem for an arbitrary Z-group would be a further formalization task, and
 the finite-witness lemma needs invariance on cosets of `mG`
-(`pma:lc:lem:cooper`). **Nothing in that report is formalized**, and
-nothing in this project depends on it.
+(`pma:lc:lem:cooper`). Its Parts VI–XII (batches 87, 89 and 90) cite this
+project again, always as a route to a further formalization: Part VI's
+formalization plan names its affine syntax, normalized Cooper step and
+Lean decision procedure and says that transfer to abstract Z-group
+semantics is a separate theorem; Part VII (`pma:nsp:`, stream evaluation,
+exact continuity and truth-revision bounds for Presburger formulas over
+nonstandard Z-groups) and Part IX (`pma:lcc:`, locally compact cones) read
+`Syntax.lean` and `Decision.lean` and note again that `Formula.holds` and
+`holds_iff_quantifierEliminate` are stated over `List Int`; Part X
+(`pma:emb:`, elementary embeddings of lexicographic models) read only this
+README and begins its proposed modules with the same coset-invariance
+requirement; Part XII (`pma:gcm:`) gives a criterion for a Polish
+Presburger cone to extend to a Polish group (continuous partial
+subtraction), which does not touch this project's integer semantics.
+**Nothing in that report is formalized**, and nothing in this project
+depends on it.
 
 The research report
 [`SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/periodic-turmite-first-revisits`](../../SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/periodic-turmite-first-revisits/)

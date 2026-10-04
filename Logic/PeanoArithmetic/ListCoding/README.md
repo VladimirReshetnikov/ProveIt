@@ -559,3 +559,26 @@ theorems.  No
 generated enumeration is part of the trusted theorem boundary: the
 all-permutations result is checked against its soundness, completeness,
 exact-once, and lexicographic specification.
+
+## Related research reports
+
+Two reports of the surreal collection cite this project as a route to a
+further formalization. Neither is formalized, and nothing in this project
+depends on them.
+
+- [`polish-models-of-omnific-arithmetic`](../../../Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic/):
+  its Part VIII (batch 87, labels `pma:atr:`) **claims**, unrefereed and not
+  independently reviewed, an `ATR₀` proof of Glazer's Topological
+  Tennenbaum Theorem 2, using an internal MRDP theorem over
+  `Q + IΔ₀ + Exp`. It contrasts that with `ExponentiationDiophantine.lean`
+  here, which proves the Diophantine graph of exponentiation for the
+  standard natural numbers only, and proposes one explicit `IΔ₀ + Exp`
+  proof of the correctness of its Diophantine equation as a
+  proof-assistant milestone. Its Part XI (batch 90, `pma:lgc:`) names this
+  project for a staged formalization of its local geometric-code theorem;
+  a dated note there says that the project's standard-model theorems are
+  not the internal statements it needs.
+- [`discrete-initial-subgroups-and-omnific-normalization`](../../../Algebra/SurrealNumbers/docs/surreal/discrete-initial-subgroups-and-omnific-normalization/):
+  its source 04 (batch 90, `isg:ptg:`, residue images of nonstandard models
+  of PA) read this README for its distinction between the standard-natural
+  interpretation of the formulas and internally derived theorems.

@@ -15,14 +15,15 @@ that the current Lean target compiles or imports them.
 
 ## Scope and how to read this ledger
 
-The document map identifies **68 main texts**; the canonical inventory below
+The document map identifies **69 main texts**; the canonical inventory below
 indexes 63 of them, with **4626** standard result environments. The other
-five, `surreal/polytopes-at-surreal-scales` (batches 58 and 59),
+six, `surreal/polytopes-at-surreal-scales` (batches 58 and 59),
 `surreal/real-vector-space-structure` (batch 73),
 `foundations-and-computation/surreal-well-orders` (batch 80),
-`surreal/surreal-self-embeddings` (batch 84) and
-`foundations-and-computation/polish-models-of-omnific-arithmetic` (batch 86),
-arrived after this inventory and are not yet indexed or mapped. Counts cover
+`surreal/surreal-self-embeddings` (batch 84),
+`foundations-and-computation/polish-models-of-omnific-arithmetic` (batch 86)
+and `foundations-and-computation/cantor-families-of-surreal-subfields`
+(batch 90), arrived after this inventory and are not yet indexed or mapped. Counts cover
 literal `theorem`, `lemma`, `proposition`, and `corollary` environments;
 examples, equations, prose assertions and companion proofs contain further
 claims. Counts are a navigation aid, **not a completeness certificate**.
@@ -993,11 +994,12 @@ cannot replace strong Hahn summability.
 custom environments are not included. A label inside a nested equation
 labels that equation, not the enclosing theorem or proposition; an
 environment without its own label is indexed by its source line.
-The inventory covers 63 of the 68 maintained main texts (all but
+The inventory covers 63 of the 69 maintained main texts (all but
 `surreal/polytopes-at-surreal-scales`, `surreal/real-vector-space-structure`,
 `foundations-and-computation/surreal-well-orders`,
-`surreal/surreal-self-embeddings` and
-`foundations-and-computation/polish-models-of-omnific-arithmetic`)
+`surreal/surreal-self-embeddings`,
+`foundations-and-computation/polish-models-of-omnific-arithmetic` and
+`foundations-and-computation/cantor-families-of-surreal-subfields`)
 present in the repository; two are not named `article.tex`. Incoming archives
 and separately placed companions require reconciliation beyond this index. The two reports placed in
 `f4c9504` are indexed from their assembled texts; the three placed in

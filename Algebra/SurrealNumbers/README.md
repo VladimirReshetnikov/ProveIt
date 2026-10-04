@@ -7,12 +7,12 @@ dependent results, reusing mathlib constructions.
 
 ## Contents
 
-- **Research reports.** [`docs/`](docs/README.md) holds 68 reports in five
+- **Research reports.** [`docs/`](docs/README.md) holds 69 reports in five
   families: the surreal field `No` (26, including six on Conway's omnific
   integers `Oz`), the surcomplex numbers `No[i]` (28), surquaternions (1),
-  physics (2), and foundations and computation (11). Each has a LaTeX source,
+  physics (2), and foundations and computation (12). Each has a LaTeX source,
   a README stating what it claims and what it does not, and usually finite
-  verification code. All 68 reports now have typeset PDFs.
+  verification code. All 69 reports now have typeset PDFs.
   Start with the [reader's guide](docs/README.md) and the
   [typeset catalogue](docs/manifest.pdf); the [notation guide](docs/NOTATION.md)
   reconciles local conventions, and the [formalization ledger](docs/FORMALIZATION.md)

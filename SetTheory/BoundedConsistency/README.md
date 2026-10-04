@@ -595,3 +595,20 @@ out-of-scope identifier was silently absorbed as an implicit variable, turning
 the headline statement into a vacuous one whose assumption listing looked
 clean.  That is a failure mode worth guarding against in any module whose only
 job is to state a result.
+
+## Related research report
+
+[`SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings`](../Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/)
+(batch 89, unrefereed, not formalized) studies urelement set theory with
+Replacement after elementary self-embeddings are named. It cites this
+README's distinction between the externally indexed scheme and its universal
+closure, and between the quantifier-group rank used here and the Levy
+hierarchy. Its Proposition 8.1, with its limit-cutoff lemma, gives semantic
+models in which every true `∃y δ` with `δ` in `Δ0` reflects to a transitive
+set but some true `∀x∈w ∃y δ` does not, because `Δ0` Collection fails: a
+concrete test of identifying a bounded-universal prefix with a strict
+existential one. Its question "Bounded consistency with atoms and named
+maps" asks whether this project's partial-satisfaction construction adapts
+to a Replacement-based urelement theory without adding Collection. Nothing
+in this project changes; `BoundedZFCConsistency.Endpoint.zfc_proves_conZFC`
+concerns pure ZFC.
