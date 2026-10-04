@@ -235,6 +235,9 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [signed-quotient domain theorem](complete84_signed_quotient_soundness_scout.md) and [independent review](review_complete84_signed_quotient_soundness.md) close the signed-T compiler gap on the **entire valid inherited numeral recipe**: every zero with only T allowed signed already has T>0 at the same tuple. Odd-R ratio bounds recover the power and half-binomial values without auxiliary positivity; their population threshold recovers the actual masks, which force R≡3 mod4. Both unsquared auxiliary congruences then remove the possible parity twist and force V,T>0. Simultaneous f/T sign symmetry likewise forces f>0 when only f was allowed signed. This strengthens domain control without changing the84-row source. It does not apply to arbitrary masks or merely local Pell-component tuples; the earlier rational scout's local negative-root example remains outside the full source.
+>
+>
 > The [rational-root boundary scout](complete84_rational_root_scout.md) and [independent challenge](review_complete84_rational_root_scout.md) show why the all91 obstruction is specifically polynomial: one fixed quotient of integer polynomials in those values reconstructs f at every original positive zero. Its denominator has no pole on the full positive supplied-port domain. Squaring gives an integral reconstructed root whenever the denominator is nonzero, but does not settle its positive sign under all native constraints. An explicit negative-root local example is not a full native tuple. A fully paid21=13M+8A local elimination schedule and the distinct whole-output resultant are recorded, with no complete compiler, witness reduction or gate-saving claim. Fresh exact source/algebra receipts agree in normal and optimized modes.
 >
 >
