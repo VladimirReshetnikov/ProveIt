@@ -70,6 +70,17 @@
 > and fresh normal/optimized receipts check the full source and criterion.
 > The established universal minimum remains **84 operations**.
 >
+> The [input-quotient dichotomy](complete83_input_quotient_dichotomy.md)
+> classifies every full positive independent-gamma83 zero: the literal
+> parent-restorable branch has rho<gamma<c, and every other completion has
+> rho>c>gamma. Only the first branch has the intended input Pell index u;
+> noncanonical even/odd indices are at least A*u / u+2Delta. The
+> [independent review](review_complete83_input_quotient_dichotomy.md)
+> checks the complete source mapping and noncircular native proof. Normal and
+> optimized replays, 2,300 additional threshold cases and 608,850 fresh residue
+> checks pass. The upper branch includes accepted same-input completions,
+> so neither a false input nor a new universal bound is established.
+>
 > The [sparse-marker obstruction](complete83_sparse_marker_obstruction.md)
 > excludes the root-gap80 outer family from independent-gamma83: no positive
 > zero on authentic compiler numerals has Z=1, F=4 and W=2^(2d*x+b), even
