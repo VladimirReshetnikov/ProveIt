@@ -167,10 +167,14 @@ made no correctness finding; no scope correction was needed.
 same pin and placed in the same commit, became Part VI of
 `Algebra/SurrealNumbers/docs/foundations-and-computation/birthday-cutoffs-and-hereditary-sets`
 (labels `hset:zr:`, written concurrently with this report). For the same
-kernel models (its `M_κ`) it proves, in its delivered numbering, kernel
-confinement (Lemma 9.1 = Lemma 2.3 here), the base model theorem
-(Theorem 9.2 = Theorem 2.4) and the Collection spectrum (Lemma 10.1,
-Theorems 10.2–10.3, Corollary 10.4): the unexpanded case (`f = id_A`) of
+kernel models (written `M^ker_κ` there, manuscript 03's `M_κ`) it proves, in
+its delivered numbering (Part VI numbering in brackets), kernel confinement
+(Lemma 9.1 [32.1, `hset:zr:lem:confinement`] = Lemma 2.3 here), the base
+model theorem (Theorem 9.2 [32.2, `hset:zr:thm:supportbase`] = Theorem 2.4)
+and the Collection spectrum (Lemma 10.1, Theorems 10.2–10.3, Corollary 10.4
+[Lemma 33.1, Theorems 33.2–33.3, Corollary 33.4,
+`hset:zr:cor:classification`]; that report's Remark 24.6, `hset:zr:rem:nee`,
+records the overlap): the unexpanded case (`f = id_A`) of
 Lemmas 7.1–7.2, Corollary 7.3 and Theorem 7.5 here. The two proofs are
 independent and **both stand**; neither manuscript cites the other or
 claims priority for the unexpanded spectrum. They differ in the failing
@@ -178,7 +182,7 @@ instance (manuscript 03 collects atom sets of prescribed cardinalities;
 this report a `Δ0` injection graph, Appendix A, so its failure is one of
 `Δ0` Collection) and in the successor case (this report's reservoir must
 consist of whole components so that the permutations commute with the named
-maps). Manuscript 03's Theorem 11.2, naming an enumeration `e : κ → A_0` of
+maps). Manuscript 03's Theorem 11.2 (Theorem 34.2 there), naming an enumeration `e : κ → A_0` of
 `κ` atoms, makes Replacement fail at `cf κ`, even at `ℵ1`, where every
 one-lift expansion here keeps full Collection; no conflict, since `e` is not
 an elementary lift. The dated note after Corollary 7.6 of the article gives
@@ -196,13 +200,21 @@ no shared proof.
   under Kunen hypotheses that admit the embedding as a class parameter in
   Separation and Replacement. Here nontrivial amenable elementary lifts exist
   and naming them may or may not keep Replacement (Theorem 5.1); no conflict,
-  since every `j_f` fixes the whole pure universe. Part VII of the same
+  since every `j_f` fixes the whole pure universe. A dated note at the end of
+  that subsection (4 October 2026, batch 89) records this report's lifts
+  (Theorems 3.2, 3.4, 5.1) there. Part VII of the same
   report (batch-89 manuscript 04) works in choiceless permutation models with
   atoms, on surreal coding and universality; it shares no theorem with this
   report.
 - `Algebra/SurrealNumbers/docs/surreal/surreal-self-embeddings` (cited as a
   "control example", Section 1.1; its Remark `sse:pf:rem:kunen` makes the
-  analogous point for field self-embeddings).
+  analogous point for field self-embeddings; a dated note after that remark,
+  4 October 2026, records this report).
+- Not to be confused with Part X of
+  `Algebra/SurrealNumbers/docs/foundations-and-computation/polish-models-of-omnific-arithmetic`
+  (batch 89, the same batch), whose "elementary embeddings" are embeddings of
+  models of Presburger arithmetic, not of set-theoretic universes; the two
+  share no theorem.
 - In this category, `../measurable-box-games/` also answers a Glazer paper
   and cites arXiv:2312.11902 but shares no theorem or notation;
   `../lexicographic-well-orderings-of-reals/` concerns pure ZFC. No other
@@ -213,8 +225,8 @@ the pin and at the write.
 
 ## Notation
 
-`M_κ(A)` (Part VI of `birthday-cutoffs-and-hereditary-sets` writes `M_κ` for
-the same class; not the rank models `M_λ` of `surreal-well-orders` Part XV
+`M_κ(A)` (Part VI of `birthday-cutoffs-and-hereditary-sets` writes `M^ker_κ`,
+manuscript 03's `M_κ`, for the same class; not the rank models `M_λ` of `surreal-well-orders` Part XV
 nor the Presburger models `M_α` of `polish-models-of-omnific-arithmetic`),
 `N_{κ,f}`, `ker`, `mov`, `ZFCU_R`/`ZFU_R` (R = Replacement), `B_t`,
 `D_κ(f)`, `I(f)`, `H` (a protected set of atoms, not `H_κ`), `V`,
