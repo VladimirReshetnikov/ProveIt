@@ -3603,6 +3603,8 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
+The [U21 paid target fusion](residue_affine_sparse_target_fusion.md) and [independent review](review_residue_affine_sparse_target_fusion.md) reduce the complete one-program source to **465=170M+295A** and two-program source to **464=170M+294A**, retaining67 positive witnesses and degree bounds5091/5160. The existing paid relation `J=J7+E29` rewrites `6E29+7A+J` as `7(A+E29)+J7`, saving one multiplication at unchanged state codes. Both whole polynomials equal their own immediate parents over every commutative ring. All929 rows are live; the retained389/388-row bases,72 native rows and20 comparison/finalizer rows remain literal. Fresh author and independent checks reconstruct the full sources, all36-hat coefficient vectors, ten intermediate discrepancies and the output identities; normal/optimized replays pass. This improves the U21 route without changing the general84-operation frontier or asserting a minimum.
+
 The [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md)
 reduces the complete one-program source to **466=171M+295A** and the
 two-program source to **465=171M+294A**, with67 positive witnesses each.
@@ -5208,6 +5210,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [U21 target fusion](residue_affine_sparse_target_fusion.md) and [review](review_residue_affine_sparse_target_fusion.md) | Complete465/464=170M+295/294A;67w; degree bounds5091/5160; exact own-parent full-polynomial identities with all929 rows live | General84 bound unchanged; no minimum claim or cross-interface positive-coordinate equivalence |
 | [Hat-surplus Part II publication](review_hat_publication_95527cf73.md) | Integration at95527cf73;65+55+6 labels,250 resolved references; finite syndrome optimum and effective interface checked in821 read lines | General schedules need an effective modulus; per-player computation grows with block size; infinite claims and external attribution unreviewed |
 | [Full91 strong-root obstruction](complete84_full_independent_root_absorption.md) and [review](review_complete84_full_independent_root_absorption.md) | Any fixed integer-polynomial f=G on all67+24 literal independent values has finite whole input projection; actual conic/resultant and rational88 fallback | No new circuit or global lower bound; retained witnesses positive, signed-T domain handled explicitly;84/187 unchanged |
 | [New hat-query threshold review](review_hat_threshold_afd7ffabb.md) | Main expected-cost threshold2 proof checked;1147 TeX lines and9-member manifest; deterministic/coin/count/distance scopes retained | No Turing-complete substrate or fixed-arity paid integer compiler in inspected sections; variable tree lookup and termination unpaid |

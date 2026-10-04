@@ -3808,6 +3808,9 @@ historical87/degree203 theorem, weakened86 and independent-gamma87.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
 >
+> The [U21 paid target fusion](residue_affine_sparse_target_fusion.md) and [independent review](review_residue_affine_sparse_target_fusion.md) reduce the complete one-program source to **465=170M+295A** and two-program source to **464=170M+294A**, retaining67 positive witnesses and degree bounds5091/5160. The existing paid relation `J=J7+E29` rewrites `6E29+7A+J` as `7(A+E29)+J7`, saving one multiplication at unchanged state codes. Both whole polynomials equal their own immediate parents over every commutative ring. All929 rows are live; the retained389/388-row bases,72 native rows and20 comparison/finalizer rows remain literal. Fresh author and independent checks reconstruct the full sources, all36-hat coefficient vectors, ten intermediate discrepancies and the output identities; normal/optimized replays pass. This improves the U21 route without changing the general84-operation frontier or asserting a minimum.
+>
+>
 > The [U21 prime-selector recentering](residue_affine_sparse_prime_recenter.md)
 > reduces the complete one-program source to **466=171M+295A** and the
 > two-program source to **465=171M+294A**, with67 positive witnesses each.
