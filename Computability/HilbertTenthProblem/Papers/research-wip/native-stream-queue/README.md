@@ -122,6 +122,19 @@ finite range at fixed t. This proves a limitation of the extracted
 filters, not an unbounded native modulus or a false-input zero. The
 83-operation language remains unresolved and the universal bound is84.
 
+The [native repunit filter](complete83_gamma_native_repunit_filter.md)
+uses the actual source identity **Jrep dividing R** to extend the finite
+prime exclusions. Fix a reference five-power N0 and any divisor D0 of
+(B^N0-1)/(B-1) before time padding; every sufficiently large later length
+preserves D0 dividing R. For n=3^u*dh*D0, the genuine-history construction
+achieves **gcd(Delta,2^(2n)-1)=3** and the coprime quotient after removing
+3^(u+1). The [independent review](review_complete83_gamma_native_repunit_filter.md)
+checks the full packing cone, physical switches and noncircular padding.
+An elementary prime-divisor argument proves a strict extension beyond
+orders dividing2*3^u*5^j for every actual compiler. Installed normal and
+optimized receipts pass. The order8 case at17 and the full alias modulus
+remain unresolved; the source and universal84 bound are unchanged.
+
 The [native three-power construction](complete83_gamma_native_three_power_control.md)
 controls every fixed finite u>=2 on genuine accepting histories of the
 parity-normalized compiler. It arranges **3^u*dh dividing R** and
