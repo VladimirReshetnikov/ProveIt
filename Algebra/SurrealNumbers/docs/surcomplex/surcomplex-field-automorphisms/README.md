@@ -745,7 +745,11 @@ Definition 17.1 is needed. This report does not use that lemma. On
 left-finite Levi-Civita fields the principal-unit substitutions are all onto
 exactly in finite rational rank (`pma:rk:prop:monoid`), which bears on,
 without answering, Question 29.2 (`saut:fs:q:nonfull`). A dated note after
-Definition 17.1 records this.
+Definition 17.1 records this. Its Part XVII (batch 93) uses the flow
+`T_s(t) = t/(1−st)` of Theorem 5.2 as its example (`pma:bsd:eq:mobius-flow`),
+for `𝒟` restricted to the real left-finite field `L^Q_R`, and shows that the
+positive-gain Borel derivations of the fields `L^Γ_R` integrate to such flows
+(`pma:bsd:thm:explog`); a dated note after Theorem 5.2 records this.
 
 ## Stale statements corrected
 

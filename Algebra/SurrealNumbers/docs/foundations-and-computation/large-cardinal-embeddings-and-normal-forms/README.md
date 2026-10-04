@@ -371,8 +371,9 @@ Appendix C. In brief:
   Question 21.6.
 - The finite checks test finite identities only.
 - Merge: Remark 2.9 covers inner models with the same reals only and leaves
-  `dsn:q:support` open; Remark 11.6 is conditional on a measurable cardinal and
-  leaves open whether a counterexample exists without large cardinals (batch
+  `dsn:q:support` open (batch 93: the definable-surreals report's Part III
+  covers the others, `dsn:op:cor:inner-support-fields`); Remark 11.6 is
+  conditional on a measurable cardinal and leaves open whether a counterexample exists without large cardinals (batch
   32: one fixing `ℝ` would have to fail a countable sum), and the clauses on
   dense images.
 - Source 10: the countable hypothesis is essential; nothing is claimed for
@@ -410,7 +411,13 @@ Section 20.3 gives these with labels.
   reals, so a proper such `No^M` satisfies `dsn:eq:Khyp` and
   `dsn:thm:amplify` applies (Remark 2.9). That report now carries the
   reciprocal `dsn:rem:largecardinal` (its Remark 17.6). Inner models lacking a
-  real are not covered, and the classification question stays open.
+  real are not covered here. Since batch 93 they are covered there: Part III
+  of that report proves the absoluteness without the same-reals hypothesis
+  (Theorem 34.1, `dsn:op:thm:all-reals-free-absoluteness`) and draws the
+  inner-model instance (`dsn:op:cor:inner-support-fields`,
+  `dsn:op:cor:inner-independent`), for `L` and `HOD` too when they lack reals.
+  The classification question stays open (`dsn:op:q:support`). A dated note
+  after Remark 2.9 (4 October 2026, batch 93) records this.
 - [`omnific-preserving-automorphisms`](../../surreal/omnific-preserving-automorphisms/)
   (`opa:`). Written concurrently in batch 30, it cites this report by directory
   (writing `J` as `ĵ`) for a negative answer, given a measurable cardinal, to

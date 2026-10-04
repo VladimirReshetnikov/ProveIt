@@ -32,8 +32,8 @@ or the solution of a named published problem.
 ```
 README.md                                  this guide
 article.tex                                the report: standalone LaTeX (pdfLaTeX), internal bibliography
-article.pdf                                the compiled report, 88 pages (unnumbered title page,
-                                           contents pages i–iii, then pages 1–84)
+article.pdf                                the compiled report, 89 pages (unnumbered title page,
+                                           contents pages i–iii, then pages 1–85)
 52-euler-quotient-PROOF_AUDIT.md           source 52's author-side proof and verification audit, as delivered
 code/52-euler-quotient-verify.py           source 52's exact finite checks (Python 3.10+, standard library only)
 data/52-euler-quotient-verification.json   source 52's recorded run: 39 checks, all passed
@@ -255,6 +255,11 @@ re-prove collection results and are printed as pointers with second routes
   dimension `𝔠`) and of the product-versus-valuation
   topology contrast (`pma:emb:thm:shear`, `pma:emb:thm:matrix`); a dated note,
   "[Added 4 October 2026, batch 89: …]", after that corollary records it.
+  Its Part XVII (batch 93) classifies the Borel derivations of the left-finite
+  subfield `Lf_Γ = L^Γ_R` for countable `Γ`, on which `𝔇` is an Euler
+  derivation: `aE` in rational rank one, with image `{g : ct(g/a) = 0}`
+  (`pma:bsd:cor:integration`), and `Σ a_i E_i` in finite rational rank
+  (`pma:bsd:thm:rank`); a dated note after Definition 13.1 records this.
 
 Placement in `Algebra/SurrealNumbers`, beside its Lean development, confers
 no formal status, and `FORMALIZATION.md` maps no `rvs:` label. The Lean
@@ -283,6 +288,8 @@ The committed build has no errors, no undefined references or citations,
 no multiply-defined labels, no duplicate destinations and no overfull boxes;
 one font-substitution warning remains (`T1/lmr/bx/sc`, the small-capital
 "ProveIt" in the bold heading of Section 20.4). Every font is embedded Type 1.
+The batch-93 note after Definition 13.1 took the build from 88 to 89 pages and
+changed no label or citation number.
 Build in a scratch copy: commit `article.pdf`, not the auxiliary files.
 
 ## Rerunning source 52's checks

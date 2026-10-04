@@ -2046,6 +2046,23 @@ these coefficients again form a Laurent series with finite negative part.
 The only omitted term is $a_{-1}\dd X/X$.
 \end{proof}
 
+Related (batch 93, added 4 October 2026).  With $\mathbb R$ in place of $\K$,
+this proposition is the case $\Gamma=\mathbb Z$, $D=d/dt$ of Corollary~231.3
+(\texttt{pma:bsd:cor:integration}) of Part~XVII of
+\path{docs/foundations-and-computation/polish-models-of-omnific-arithmetic}
+(AI-assisted, unrefereed).  For every countable $\Gamma\le\mathbb R$ of
+rational rank one, that corollary shows that every derivation of the field of
+real series with left-finite support in $\Gamma$ that is Borel in the
+coefficients is $aE$ for an Euler derivation $E$, and that for $a\ne0$ its
+image consists of the $g$ for which $g/a$ has constant term zero.  For
+$\Gamma=\mathbb Z$ that field is $\mathbb R((t))$ and $d/dt=t^{-1}E$, so the
+condition is the vanishing of the coefficient of $t^{-1}$.  Its Remark~239.5
+(\texttt{pma:bsd:rem:lean}) notes that the Lean theorems
+\texttt{exists\_derivative\_eq\_iff} and
+\texttt{range\_derivative\_eq\_ker\_residue}, which prove this proposition
+over every field of characteristic zero, formalize that case; the Borel
+classification and the other groups $\Gamma$ are not formalized.
+
 \begin{theorem}[Change of variable, with the ramification factor]
 \label{b:reschange}
 Let $g(X)=cX^{m}(1+O(X))$ with $c\ne0$ and $m\ge1$. For every

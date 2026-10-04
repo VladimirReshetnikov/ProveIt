@@ -389,6 +389,12 @@ notes; no question was deleted.
 - [`hidden-negative-hermitian-directions`](../hidden-negative-hermitian-directions/):
   two-scale positivity, related in spirit to the metric rigidity theorem;
   neither answers a question of the other.
+- [`polish-models-of-omnific-arithmetic`](../../foundations-and-computation/polish-models-of-omnific-arithmetic/):
+  its Part XVI (batch 93) classifies the translation-invariant total orders
+  with Borel positive cone on separable *real* Hilbert spaces: each is
+  lexicographic in a unique ordered orthonormal basis indexed by a countable
+  ordinal (Theorem 210.1, `pma:hbo:thm:main`; AI-assisted, unrefereed, not
+  formalized). It cites this report as context and shares no theorem with it.
 
 ## Build
 
