@@ -589,6 +589,21 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [positive terminal-carry chart](Papers/research-wip/native-stream-queue/matrix193_terminal_carry_chart.md)
+removes four dot bounds and eight centering subtractions, saving4M+20A and
+four positive witnesses per grouped-power parent. Complete totals are
+**1,544 /1,541 /1,541 /1,538**, with141 /140 /140 /139 witnesses and exact
+degrees35,587 /53,345 /53,347 /71,105. The middle-coefficient ambiguity moves
+into terminal fields; typed terminal bounds and shared fields force paired
+carries to agree. Positive completeness uses a common carryQ^193. The reverse
+proof preserves ordinary input and may reconstruct height/history/native
+coordinates. The [source review](Papers/research-wip/native-stream-queue/review_matrix193_terminal_carry_chart.md)
+and separate [mathematical review](Papers/research-wip/native-stream-queue/review_matrix193_terminal_carry_chart_math.md)
+pass: all6,164 rows, full polynomial contracts, all16 coefficient words,
+interleaved finalizers and new degree leaders are checked. Fresh author and
+independent normal/optimized replays pass. This branch does not yet include
+the cross-stage34-gate saving below; universal84 remains unchanged.
+
 The [cross-stage power/repunit reuse](Papers/research-wip/native-stream-queue/matrix193_cross_stage_power_reuse.md)
 saves another30M+4A per complete matrix source. Eleven powers and two repunits
 reuse retained paid values across stages, with dependencies explicitly
