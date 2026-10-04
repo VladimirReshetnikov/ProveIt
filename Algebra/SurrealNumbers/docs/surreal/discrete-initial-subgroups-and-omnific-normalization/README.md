@@ -1,40 +1,58 @@
 # Discrete Initial Groups and Omnific Normalization
 
 **Sign-tree surgery, a sharp image classification, an Ehrlich–Kaplan
-question, and convex factors**
-Two-source research report, 23 September 2026: source 01, *Discrete Initial
-Groups and Omnific Normalization* (batch 28, manuscript 09, placed in
-`c6359e4`), and source 02, *Convex Factors and Profinite Obstructions for
-Initial Surreal Groups* (batch 29, manuscript 09, placed in `66d7e55` as an
-addition). AI-assisted draft prepared for Vladimir Reshetnikov.
+question, convex factors, and the standard cut in bounded arithmetic**
+Three-source research report. AI-assisted drafts prepared for Vladimir
+Reshetnikov; unrefereed; nothing in it is formalized in Lean or Rocq.
+
+| Source | Title | Batch, manuscript | Archive | Pin | Placed | Printed in |
+|---|---|---|---|---|---|---|
+| 01 | *Discrete Initial Groups and Omnific Normalization* (24 pp., 23 Sep 2026) | batch 28, ms 09 | (Surreal-era `docs/new`) | none (read `173eb52`) | `c6359e4`, written `3d9dbe9` | Sections 1–10, Appendix A |
+| 02 | *Convex Factors and Profinite Obstructions for Initial Surreal Groups* (23 pp., 23 Sep 2026) | batch 29, ms 09 | (Surreal-era `docs/new`) | `9693b28` | `66d7e55` (addition) | Section 1.5, Sections 11–18, Appendix C |
+| 03 | *Standard Integers in a Single Infinite Interval: Residue Characters, Bounded Induction, and Omnific Arithmetic* (20 pp., 3 Oct 2026) | batch 86, ms 10 | `Glazer_ProveIt_Arithmetic_Research.zip`, arrival `fb8414869` | `883e0b3b2` | `0bd0e5527` (addition, prefix `03-standard-cut-`) | Section 1.6, Sections 19–22 |
 
 ```
 article.tex                     the report, standalone LaTeX with an internal bibliography
-article.pdf                     the compiled report, 53 pages
+article.pdf                     the compiled report, 79 pages
 README.md                       this guide
 source_audit.md                 source 01: source and verification audit, as delivered
 02-convex-factors-PROVENANCE.md source 02: provenance and proof-status record, as delivered
+03-standard-cut-SOURCE_AUDIT.md source 03: source, correction and novelty audit, as delivered
 code/
   verify.py                     source 01 checks (Python 3.10+, standard library only)
   build.sh                      source 01's delivered build script (see "Rerunning the checks": copy only)
   02-convex-factors-verify.py   source 02 checks (Python 3.10+, standard library only)
+  03-standard-cut-verify.py     source 03 certificate checks (Python 3.10+, standard library only)
+  03-standard-cut-compile_interval.py  source 03 single-bound compiler and its audit (standard library only)
+  03-standard-cut-build.sh      source 03's delivered build script (delivery layout only; see below)
 data/
   verification_report.json               recorded run of verify.py: PASS, 450,862 assertions
   02-convex-factors-verification.json    recorded run of 02-convex-factors-verify.py: PASS
+  03-standard-cut-verification.json      recorded run of 03-standard-cut-verify.py: PASS, 20,322 checks
+  03-standard-cut-compiler_report.json   recorded run of 03-standard-cut-compile_interval.py: PASS, 5 sentences, 768 gate checks
+  03-standard-cut-BUILD_AUDIT.json       source 03's build record of its delivered (unshipped) 20-page PDF
 ```
 
 Every label in `article.tex` carries the prefix `isg:`; source 02's material
-uses the sub-prefix `isg:cf:`. The report had 84 labels after source 01 was
-written and has 166 now: the merge of source 02 renamed, removed or moved no
-label and added 82, all `isg:cf:`. Every theorem-like number of Sections 1–10
-and Appendices A–B is unchanged; the old Sections 11, 12 and 13 (audit,
-questions, conclusion) are now Sections 19, 20 and 21. The source
-manuscripts themselves, their PDFs and their delivery READMEs are not
-shipped. `code/`, `data/`, `source_audit.md` and
-`02-convex-factors-PROVENANCE.md` are byte-identical to the deliveries (the
-source 02 files carry the placement prefix; the provenance record still
-names them `code/verify.py` and `data/verification.json`, their delivered
-names).
+uses the sub-prefix `isg:cf:`, source 03's the sub-prefix `isg:sc:`. The
+report had 84 labels after source 01 was written, 166 after the merge of
+source 02 (82 `isg:cf:` added), and has 236 now: the write of source 03
+renamed, removed or moved no label and added 70, all `isg:sc:`. Every
+theorem-like number of Sections 1–18 and of Appendices A–C is unchanged.
+Source 03 occupies four new Sections 19–22 inserted after Section 18, so
+the audit, questions and conclusion (Sections 11–13 in source 01, 19–21
+after the merge of source 02) are now Sections 23, 24 and 25; their
+questions are now numbered 24.x. The source manuscripts themselves, their
+PDFs and their delivery READMEs are not shipped. `code/`, `data/`,
+`source_audit.md`, `02-convex-factors-PROVENANCE.md` and
+`03-standard-cut-SOURCE_AUDIT.md` are byte-identical to the deliveries (the
+source 02 and 03 files carry the placement prefixes; the source 02
+provenance record still names its files `code/verify.py` and
+`data/verification.json`, and source 03's `build.sh` names `code/verify.py`,
+`code/compile_interval.py`, `verification.json`, `compiler_report.json`
+and `article.tex`, their delivered names; source 03's `SOURCE_AUDIT.md`
+names no file, and its `BUILD_AUDIT.json` describes the delivered PDF,
+which is not shipped).
 
 ## Status
 
@@ -45,7 +63,7 @@ printed page 18) and Question 9.1 of the journal version, *J. Symbolic Logic* 83
 (2018), 617–633.
 
 Source 02 answers, completely, the two questions that source 01 left open
-about quotients (Questions 20.1 and 20.2 here, `isg:q:convex` and
+about quotients (Questions 24.1 and 24.2 here, `isg:q:convex` and
 `isg:q:limit`): every convex quotient of an initial group has an explicit
 initial realization, and limit stages of iterated bottom-layer removal need
 no extra hypothesis. **Source 02 answers none of Ehrlich and Kaplan's
@@ -54,13 +72,31 @@ Question 8.1), the set-model version of their optimality theorem, which
 concerns theories between ordered and divisible ordered abelian groups;
 source 02 says so itself (Section 18.2).
 
-Both are **proposed results in an unrefereed AI-assisted draft**. When each
-manuscript was placed, its proofs were checked by hand and no gap or error
-was found (Section 19.5); those checks are not a refereeing, and each covers
-only its own source (plus, for source 02, the consistency statements of
-Sections 13.2–13.3). The literature searches were **targeted, not
-exhaustive**; no prior resolution or matching formulation was found, which
-is limited evidence. No priority is claimed and nothing is verified in Lean.
+Source 03 is weak arithmetic of discretely ordered rings with an additive
+map to `Z`; it never mentions initial subgroups. Combined with source 02's
+Presburger criterion (Theorem E) it **partly answers** source 02's question
+on arithmetic fragments (Question 24.7, `isg:cf:q:fragment`): the additive
+group of every nonstandard model of `IΔ0` is not initially realizable,
+while open induction does not suffice (Corollary 20.11 and Proposition
+20.12, marked [write]: stated and proved at the write, not in any source).
+The question is re-scoped in a dated note after its statement; the exact
+weakest fragment, and exclusion by the factorial type itself, stay open.
+Source 03 also **corrects an external preprint**: Lemma 2.7 of
+Enayat–Łełyk–Visser, arXiv:2508.14758v2 (pages 11–12), asserts that the
+ideal `J` with `R/J ≅ Z` of a Dorroh ring is unique; `(X)` and `(X − 1)` in
+`Z[X]` are two such ideals, also under their ordered condition
+(Proposition 21.1). Its repair, uniqueness under division by 2
+(Proposition 21.2), is correct. The correction is local: it does not claim
+that the preprint's main theorems fail.
+
+All three are **proposed results in an unrefereed AI-assisted draft**. When
+each manuscript was placed or written, its proofs were checked by hand and
+no gap or error was found (Section 23.5); those checks are not a
+refereeing, and each covers only its own source (plus, for source 02, the
+consistency statements of Sections 13.2–13.3). The literature searches were
+**targeted, not exhaustive**; no prior resolution or matching formulation
+was found, which is limited evidence. No priority is claimed and nothing is
+verified in Lean.
 
 Both sources rest on one imported result, the Ehrlich–Kaplan criterion for
 initial subgroups (arXiv v1 Theorem 1, journal Theorem 5.1; Imported fact
@@ -181,7 +217,7 @@ Theorems D–F.
   convex quotients, and unions and intersections of chains of convex
   subgroups; every convex subgroup sequence of an initial group splits, and
   the compressed factor realizations are coherent under nested restrictions.
-  This answers Question 20.1 (`isg:q:convex`).
+  This answers Question 24.1 (`isg:q:convex`).
 - **Consistency with source 01** (Proposition 13.5, [merge]). For
   `C = Zε`, compressing away the bottom exponent gives exactly source 01's
   `ρ ∘ Θ_α` (root relocation followed by root deletion), with the same
@@ -192,7 +228,7 @@ Theorems D–F.
   continues through all ordinals; at every stage, limit stages included, the
   quotient has the explicit realization of Theorem D, which is source 01's
   at finite stages and is related to every earlier stage by compression. No
-  hypothesis is needed. This answers Question 20.2 (`isg:q:limit`).
+  hypothesis is needed. This answers Question 24.2 (`isg:q:limit`).
 - **Theorem E (Presburger criterion)** with Proposition 14.3 and Corollary
   14.4. For a set-sized `Z`-group `G` (a model of additive Presburger
   arithmetic) with least positive `e`: `G ∈ Init` ⇔ `G` has an initial
@@ -228,11 +264,77 @@ Theorems D–F.
   initial (`Zω^(−1) ⊆ D + Zω^(−1)`, realized as `Z`); the extension converse
   fails (`G_ζ`).
 
+### Source 03 (Section 1.6, Sections 19–22)
+
+`R` is a discretely ordered commutative ring (1 least positive), `ED_n` is
+Euclidean division by the ordinary integer `n`, *standard division* is
+`ED_n` for every `n`, and a *normalized integer character* is an additive
+map `χ : R → Z` with `χ(1) = 1`, **not** assumed order-preserving. Symbols
+renamed from source 03 (table in Section 19.2): its character `ρ` is `χ`
+(`ρ` is root deletion here), its `κ_R` is `res_R` (source 02's `res_G`), its
+`D` is `R^div`, its formulas `P`, `S` are `Pow^dy`, `Std^dy` (the Diophantine
+report's `Std` is a different, existential formula), its bound `H` is `Ω`,
+its rings `A, A_0, A_Sh, A(k,Γ)` are `𝒜, 𝒜_0, 𝒜_Sh, 𝒜(k,Γ)`, its retraction
+`ε` is `χ_𝒜`, and its ideals `J_a` are `𝔧_c`.
+
+- **Dyadic detector** (Theorem 19.4). With `ED_2`, `ED_3` and a normalized
+  character, the parameter-free bounded formula `Pow^dy(y)` ("no odd divisor
+  `≥ 3`") defines exactly the ordinary powers of 2 in `R_+`, and `Std^dy(x)`
+  (`x = 0` or a `Pow^dy` element in `(x/2, x]`) defines exactly `N`; the
+  nonstandard case is a finite odd-factor certificate.
+- **Inductiveness and one induction sentence** (Lemma 19.6, Theorem 19.7).
+  `Std^dy` contains 0 and is closed under successor in every ring with `ED_2`
+  alone, character or not; in the detector's class, `R = Z` ⇔ `R_+ ⊨ ∀x
+  Std^dy(x)` ⇔ the single instance `Ind(Std^dy)` ⇔ `R_+ ⊨ IΔ0`. Sharpness
+  (Proposition 19.8): in `Z + XZ[1/2][X]` and `Z + XZ[1/3][X]` the detector
+  fails (division by 2 alone or 3 alone is not enough for this formula).
+- **Integer characters** (Theorem 20.1, Proposition 20.2). With standard
+  division, `Hom(R, Z)` is `0` or `Zχ` with `χ` a unital ring map, and then
+  `R = Z ⊕ R^div` with `R^div = ⋂ nR` a divisible ideal; a character exists
+  iff `res_R(R) ⊆ Z ⊆ Ẑ`. (The additive content is source 02's Proposition
+  14.3.)
+- **No unit-preserving additive map from bounded arithmetic** (Lemma 20.3,
+  Theorem 20.4, Corollaries 20.6–20.7, 21.4). For nonstandard `M ⊨ IΔ0`,
+  `Hom((R_M)_add, Z) = 0`; hence no additive map `M → 𝒜` with `1 ↦ 1` into
+  any ring with a unital retraction onto `Z`, in particular into `Oz`, and
+  every ring map into a domain is zero. No regularity of the maps is
+  assumed. Corollary 20.9: every positive infinite `Pow^dy` element has a
+  non-diagonal residue profile.
+- **[write] Initial realizability** (Definition 20.10, Corollary 20.11,
+  Proposition 20.12, Remark 20.13). `T^dy` = `PA^-` + all `ED_n^+` + the one
+  sentence `Ind(Std^dy)`, provable in `IΔ0`. For every nonstandard
+  `M ⊨ T^dy` (so every nonstandard model of `IΔ0` or of PA), `G(M)` is a
+  `Z`-group with `Hom(G(M), Z) = 0`, `res ≠ Z`, not initially realizable, with
+  no additive map to `Oz` sending 1 to 1: source 02's Theorem 16.6 holds with
+  `IΔ0`, even `T^dy`, in place of PA. Shepherdson's countable ring `𝒜_Sh`
+  satisfies `IOpen` and every `ED_n^+`, and its additive group `V_Sh ×_lex Z`
+  is initially realizable; so the threshold is strictly above `IOpen`.
+  Remark 20.5 ([write]) gives a second route to Theorem 20.4 through the
+  four-square formula of Enayat–Łełyk–Visser's Theorem 2.9.
+- **Correction and repair** (Propositions 21.1–21.2), as in "Status".
+  For `Oz`, the ring-homomorphism case of the repair is
+  `odg:prop:canonicalct` and the Lean theorem
+  `Surreal.Foundations.SignSequence.omnific_int_hom_eq_constant`.
+- **Examples** (Section 21). `𝒜_0 = Z + XQ[X]` (computable, not `IOpen`:
+  `x² < X` defines the standard cut), with explicit certificates;
+  `𝒜_Sh` (imported `IOpen`); principal-part rings `𝒜(k, Γ)`; `Oz`, where
+  `Pow^dy`, `Std^dy` define `2^N` and `N` (Corollary 21.4); the
+  set-sized/class reading (Section 21.6).
+- **Compiler and complexity** (Section 22). Every arithmetic sentence
+  compiles effectively to a formula all of whose quantifiers are bounded by
+  one positive infinite `Ω`, with atoms of degree at most 2, true in `R_+`
+  iff the sentence is true in `N` (Theorem 22.2); for the computable `𝒜_0`
+  (and `𝒜_Sh`) this bounded truth set, and parameter-free `Σ_1` and `Π_1`
+  truth, are many-one equivalent to true arithmetic (Theorem 22.4,
+  Corollary 22.5). It is not a single truth predicate; no conflict with
+  Tarski. Diophantine retractions do not bound it (Section 22.6).
+
 ## What the report does not claim
 
-Section 20.1 collects every limitation as N1–N15 (source 01, with its audit)
-and N16–N29 (source 02, with its provenance record); each also stands at its
-place in the text. In brief:
+Section 24.1 collects every limitation as N1–N15 (source 01, with its audit),
+N16–N29 (source 02, with its provenance record) and N30–N41 (source 03,
+with its source audit; N41 limits the [write] statements); each also stands
+at its place in the text. In brief:
 
 - Source 01's solution is **proposed, unrefereed**, with no certified
   correctness, novelty or priority (N1). The literature and repository
@@ -261,7 +363,7 @@ place in the text. In brief:
   Peano argument; building a PDF establishes its integrity, not its
   correctness (N12, N25). No Lean formalization or Lean build (N13, N16).
   Both repository reviews were targeted (N14, N27); the questions of Section
-  20 are not claimed to be published open problems (N15).
+  24 are not claimed to be published open problems (N15).
 - Source 02: its results are proposed, with no certified priority (N16); the
   Ehrlich–Kaplan and Ehrlich theorems, Jeřábek's residue theory, `Ext(Q,Z) ≅
   Ẑ/Z` and the existence of rigid Presburger models are classical and
@@ -272,16 +374,42 @@ place in the text. In brief:
   initiality (N21); no identification with a Hahn product and no strong-sum
   closure (N22); additive only, the compression need not respect exponent
   addition (N23); the arithmetic fragment for the Peano obstruction is not
-  optimized (N26); its predecessor was cited without an invented path (N28);
-  finite solvability of the retraction systems is not a global splitting
-  (N29).
+  optimized (N26; source 03 reaches `IΔ0` by another argument, and the
+  fragment for the factorial type itself is still not optimized); its
+  predecessor was cited without an invented path (N28); finite solvability
+  of the retraction systems is not a global splitting (N29).
+- Source 03: AI-assisted and unrefereed, no Lean or Rocq (N30).
+  Standard-cut definability and the failure of induction beyond open
+  induction in `Oz` were already known (Jeřábek 2011; Enayat–Łełyk–Visser,
+  whose Theorem 2.9 already gives a parameter-free bounded definition of `N`
+  in every ordered Dorroh ring, including `Oz` with ideal `Π`); its
+  contribution is the dyadic formula, its inductiveness, the character
+  results and the compiler, with no established priority (N31). The
+  correction of the preprint is local, with no dependency audit of the
+  preprint and no claim that the error was unnoticed (N32). Characters are
+  not order-preserving (N33); only unit-preserving additive maps are
+  excluded (N34); existence, not regularity, so no strengthening of
+  Glazer's theorem and no answer to his questions (N35); the sharpness
+  examples concern this detector only, with no minimality claim (N36); the
+  compiler is per sentence, not a truth predicate, and needs a genuinely
+  infinite bound (N37); `IOpen` of `𝒜_Sh` is imported, and Phillips is
+  context only (N38); finite checks are not proofs (N39); the repository
+  review was targeted, and Elliot Glazer is not an author or endorser
+  (N40). The [write] statements do not determine the weakest fragment,
+  do not separate `T^dy` from `IΔ0`, and do not address the factorial type
+  in `IΔ0` models (N41).
 
-The open questions are Questions 20.3–20.8: multiplicative compatibility of
-the normalization, formal certification and uniqueness (source 01), and an
+The open questions are Questions 24.3–24.16: multiplicative compatibility of
+the normalization, formal certification and uniqueness (source 01); an
 intrinsic characterization of `Init`, the obstruction in every intermediate
-theory of the optimality question, the weakest arithmetic fragment, and
-multiplicative compatibility of compression (source 02). Questions 20.1
-(other convex quotients) and 20.2 (limit iteration) are answered.
+theory of the optimality question, the weakest arithmetic fragment (24.7,
+partly answered and re-scoped with source 03), and multiplicative
+compatibility of compression (source 02); and source 03's eight (24.9–24.16):
+minimal detector complexity, the induction threshold, residue images of
+`IΔ0` models, fixed syntactic resources, weaker division hypotheses, integer
+parts inside surreal fields, regularity of residue maps, and a focused
+proof-assistant milestone. Questions 24.1 (other convex quotients) and 24.2
+(limit iteration) are answered.
 
 ## Relation to neighbouring reports
 
@@ -330,14 +458,59 @@ ordered initial" found nothing outside this directory.
   collection section records this; it changed no number and no page count.
 - The symbols `Θ_α`, `Ψ_α`, `q_β`, `N_{α,n}` are local (Section 1.4) and
   unrelated to theta series or the nome `q` of the surcomplex reports; `♭_E`
-  and `res_G` are local to Sections 11–18.
+  and `res_G` are local to Sections 11–18, and source 03's renamed symbols
+  (Section 19.2) to Sections 19–22.
+
+Source 03 (Section 23.5, "Place in the collection") adds these relations:
+
+- **omnific-diophantine-geometry** defines `Z` in `Oz` by an *existential*
+  quartic (`odg:thm:standarddef`, macro `Std`) and has failed *existential*
+  induction instances (`odg:thm:induction`, `odg:rem:ringinduction`).
+  Source 03's `Std^dy` is bounded, not existential, and is printed with a
+  different symbol for that reason; it bears neither on the guard question
+  `odg:q:guard` nor on those definitions. The uniqueness of `ct`
+  (`odg:prop:canonicalct`) is the `Oz` case of Proposition 21.2, and the
+  existence transfer behind Hilbert's tenth problem over `Oz`
+  (`odg:cor:H10`) is the Diophantine retraction of Section 22.6. The open
+  induction of `Oz` (after `odg:thm:induction`) and of the definable integer
+  part `I_A` (`dsn:cor:openinduction`, with `dsn:prop:ct`) is consistent with
+  Theorem 19.7: these rings fail the bounded instance `Ind(Std^dy)`.
+- **[polish-models-of-omnific-arithmetic](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)**
+  was placed from the same delivery (batch 86, arrival `fb8414869`; its
+  Parts III–V are being written from manuscripts 06–09 alongside this
+  write). It is motivated by the same paper of Elliot Glazer and proposes an
+  affirmative construction for his Question 2; source 03 is not topological,
+  answers neither of Glazer's questions, does not discuss his speculation
+  after Question 2, and its obstruction precedes any topology (Remark 20.8).
+  Manuscript 06 there proves the same failed open-induction instance
+  `x² < t` in `Z + tR[t]` that source 03 gives for `Z + XQ[X]` (Section
+  21.2). Placing source 03 there, as a further part, was the alternative
+  considered at placement; it was placed here because it answers part of a
+  question this report names.
+- **Formal projects.** The `Oz` ingredients of source 03 are formalized in
+  `Algebra/SurrealNumbers/Surreal/Foundations/OmnificResidues.lean`
+  (`omnific_int_dvd_iff`, `omnific_prime_pow_dvd_iff`,
+  `omnific_dvd_all_pos_int_iff`, `iInf_omnific_int_multiples`, namespace
+  `Surreal.Foundations.SignSequence`; blob `aacd3cac`, the one source 03
+  read, unchanged at this write), with the constant term
+  `omnificConstantCoeff` (`OmnificIntegers.lean`) and its uniqueness
+  `omnific_int_hom_eq_constant` (`OmnificConstantRigidity.lean`). No
+  statement of source 03 and no [write] statement is formalized; placing
+  the report in this collection confers no formal status. The arithmetic
+  syntax `Logic/Interpretability/PAHF/Lean/PAHF/PASyntax.lean` has
+  `SetTheory.PA.PreModel` (no axioms) and `SetTheory.PA.Model`, whose
+  induction for every Lean predicate makes it standard, so a nonstandard
+  `IΔ0` model would be a `PreModel`; `Logic/PresburgerArithmetic` decides
+  additive arithmetic over the ordinary integers. Neither formalizes
+  anything here.
 
 No `isg:` statement has a Lean implementation mapping in the
 [formalization ledger](../../FORMALIZATION.md).
 
 ## Provenance
 
-Two manuscripts (Section 19.5 gives the details and the merge choices).
+Three manuscripts (Section 23.5 gives the details and the merge choices; the
+source table is at the top of this README).
 
 - **Source 01**, *Discrete Initial Groups and Omnific Normalization* (24
   pages, 23 September 2026), delivered with a README, `source_audit.md`,
@@ -349,8 +522,8 @@ Two manuscripts (Section 19.5 gives the details and the merge choices).
   without changing any mathematical statement, proof or example: the `isg:`
   prefix; the journal numbering and the wording of journal Theorem 5.1
   (Sections 1.1 and 2.2); the shared conventions (Section 1.4); the
-  provenance and placement review (Section 19.5); the collected non-claims
-  (Section 20.1); a definition of `ct`; the shipped file names; labels on
+  provenance and placement review (now Section 23.5); the collected
+  non-claims (now Section 24.1); a definition of `ct`; the shipped file names; labels on
   unlabelled statements; correct cross-reference names; a one-page title
   page. The citations of Kaplan's thesis (Sections 6.2, 7.1) and of the
   Oberwolfach Report 60/2016 (pp. 3355–3356) are the manuscript's and were
@@ -373,8 +546,46 @@ Two manuscripts (Section 19.5 gives the details and the merge choices).
   marked [merge]: Proposition 13.5, Corollary 13.6 and Corollary 17.3; Remark
   18.1 compares the two versions of the optimality theorem. Source 01's
   passages saying that convex quotients and limit stages were not covered
-  (after Corollaries 8.4 and 8.6, Questions 20.1–20.2, N10) now say which
+  (after Corollaries 8.4 and 8.6, Questions 24.1–24.2, N10) now say which
   source proves what; no mathematical statement of source 01 changed.
+- **Source 03**, *Standard Integers in a Single Infinite Interval: Residue
+  Characters, Bounded Induction, and Omnific Arithmetic* (20 pages, 3
+  October 2026), batch-86 manuscript 10, archive
+  `Glazer_ProveIt_Arithmetic_Research.zip` (inner directory
+  `standard_integers_in_infinite_interval/`) in the arrival commit
+  `fb8414869`, placed in `0bd0e5527` as an addition. Repository pin
+  `883e0b3b2` (an ancestor of the placement). Delivered with a README, the
+  source audit, two programs, two run records, a build audit, a build script
+  and a checksum manifest `SHA256SUMS`; the seven staged files are listed at
+  the top, the manifest was verified (10/10) and dropped, and the LaTeX
+  source, PDF and README are not shipped (they survive in `fb8414869`:
+  `git show fb8414869:docs/incoming/Glazer_ProveIt_Arithmetic_Research.zip`).
+  Its claim about the repository (the Diophantine-retraction observation
+  underlies related claims) is true (`odg:cor:H10`), and the
+  `OmnificResidues.lean` blob it read is unchanged. Its bibliography was
+  checked as far as Section 23.5 records (arXiv records of
+  Enayat–Łełyk–Visser and Raffer; the cited pages 11–12 of the
+  Enayat–Łełyk–Visser v2 PDF; Glazer's v1 text); Jeřábek's MathOverflow
+  answer, Phillips and Shepherdson were not re-checked.
+- **How source 03 was written in.** Its material is printed as it stands in
+  Sections 19–22 (plus a summary as Section 1.6), with the symbols renamed
+  in Section 19.2; its verification, Lean plan, "hypotheses that must not be
+  weakened" and novelty material are source-03 paragraphs of Section 23, its
+  eight questions are 24.9–24.16, its limitations N30–N40, its conclusion a
+  paragraph of Section 25. Added at the write, each marked: Definition
+  20.10, Corollary 20.11, Proposition 20.12 and Remark 20.13 ([write], the
+  combination with source 02's criterion); Remark 20.5 ([write], the second
+  route through Enayat–Łełyk–Visser's Theorem 2.9, checked in their v2 text);
+  bracketed comparisons with source 02's Proposition 14.3, with the Lean
+  theorem `omnific_int_hom_eq_constant`, and with the four-square formula
+  for the sharpness rings; the narrowed novelty statement (bounded
+  definability of `N` in `Oz` is Enayat–Łełyk–Visser's Theorem 2.9, so source
+  03's novelty is the dyadic formula, its inductiveness, the character
+  results, the compiler and the correction); the pointer to batch-86
+  manuscript 06; a dated note re-scoping Question 24.7; three bracketed
+  pointers in source 02's text (after Theorem 16.6, after Corollary 17.2,
+  in N26); N41; six checklist rows in Appendix B. No mathematical statement,
+  proof or example of sources 01 or 02 changed.
 
 ## Build
 
@@ -385,14 +596,14 @@ From this directory, with a TeX distribution providing pdfLaTeX, `newtx`,
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 53 pages with no errors, warnings, overfull or underfull
+The build gives 79 pages with no errors, warnings, overfull or underfull
 boxes, undefined references, multiply defined labels or duplicate
 destinations; the title page is one page. Remove the auxiliary files
 afterwards (`latexmk -c`).
 
 ## Rerunning the checks
 
-**Run both suites only on a copy.** Source 01's `code/verify.py` writes its
+**Run every suite only on a copy.** Source 01's `code/verify.py` writes its
 report to `--output`, whose default is `verification_report.json` *in the
 current directory*; the delivered `build.sh` calls it with exactly that name,
 and in the delivered flat layout both overwrote the shipped record (and
@@ -403,7 +614,13 @@ name of `article.tex`. Source 02's program prints its report and writes a
 file only with `--output`; its delivered README's rerun command,
 `python3 code/verify.py --output data/verification.json`, names the delivered
 record and would overwrite it (here: `data/02-convex-factors-verification.json`).
-Use scratch output names:
+Source 03's two programs write `verification.json` and
+`compiler_report.json` in the current directory unless `--output` is given,
+and its delivered `build.sh` (here `code/03-standard-cut-build.sh`) changes
+into its own directory, runs `code/verify.py` and `code/compile_interval.py`
+with those default names, and rebuilds `article.tex` in place; in this
+directory it changes into `code/` and stops at once, because
+`code/code/verify.py` does not exist. Use scratch output names:
 
 ```sh
 cp -r . /path/to/scratch/isg && cd /path/to/scratch/isg
@@ -411,7 +628,21 @@ python code/verify.py --output rerun01.json
 python -c "import json; print(json.load(open('rerun01.json')) == json.load(open('data/verification_report.json')))"
 python code/02-convex-factors-verify.py --output rerun02.json
 python -c "import json; print(json.load(open('rerun02.json')) == json.load(open('data/02-convex-factors-verification.json')))"
+python code/03-standard-cut-verify.py --output rerun03v.json
+python -c "import json; print(json.load(open('rerun03v.json')) == json.load(open('data/03-standard-cut-verification.json')))"
+python code/03-standard-cut-compile_interval.py --output rerun03c.json
+python -c "import json; print(json.load(open('rerun03c.json')) == json.load(open('data/03-standard-cut-compiler_report.json')))"
 ```
+
+On Windows use `py` for `python`. At the write of source 03 its two programs
+were rerun this way on a copy (Python 3.14.4): they printed `PASS` in about
+two seconds and under one second, and both comparisons printed `True`. Like
+source 02's, they check with `assert` statements, so do not run them with
+`-O`. To use source 03's `build.sh`, restore its delivery layout in a
+scratch directory (`code/verify.py`, `code/compile_interval.py`, `build.sh`
+and `article.tex` side by side as in the archive, or simply re-extract the
+archive from the arrival commit with
+`git show fb8414869:docs/incoming/Glazer_ProveIt_Arithmetic_Research.zip`).
 
 At this write both suites were rerun on a copy: source 01 passed with
 450,862 assertions in about 6 seconds, source 02 printed `PASS` in about 10
@@ -433,4 +664,13 @@ checks), 46,376 nested interval pairs of lengths at most four (324,632
 coherence points), the factorial transitions and residues, integer-parameter
 splittings, finite retraction systems through sixty stages, and 24,300
 projection composition identities. Both are regression tests of the
-formulas, not verifications of the transfinite arguments.
+formulas, not verifications of the transfinite arguments. Source 03's
+suite (seed 20261003) checks 2,000 odd-factor certificates for positive
+infinite polynomials of `Z + XQ[X]` (zero and negative constant terms
+included), 12,000 division certificates, 4,000 character identities, 1,025
+finite cases each of `Pow^dy` and `Std^dy`, and 272 pairs of distinct
+evaluation kernels; its compiler audit checks five compiled sentences (all
+quantifiers bounded by `H`, the report's `Ω`; atoms of degree at most 2; no
+other free variable) and 768 local gate evaluations. These are finite exact
+checks, not proofs of the universal theorems, and nothing evaluates a
+quantifier at an infinite bound.
