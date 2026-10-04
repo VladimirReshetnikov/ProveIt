@@ -23,11 +23,12 @@
 \definecolor{Gray}{HTML}{52616B}
 \hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,bookmarksdepth=2,
   pdftitle={Lexicographic Orders of Well-Orderings of the Surreal Numbers},
-  pdfauthor={Research report merged from twenty-two manuscripts prepared for Vladimir Reshetnikov (sources 08, 09, 11 and 12 of batch 80; sources 13-18 of batch 81; sources 19-30 of batch 83)},
+  pdfauthor={Research report merged from twenty-three manuscripts prepared for Vladimir Reshetnikov (sources 08, 09, 11 and 12 of batch 80; sources 13-18 of batch 81; sources 19-30 of batch 83; source 31 of batch 89)},
   pdfsubject={Surreal collection, foundations and computation: surreal-well-orders}}
 \setcounter{tocdepth}{1}
 \makeatletter% batch 83: room for three-digit section numbers in the contents
-\patchcmd{\l@section}{1.5em}{2.3em}{}{\errmessage{l@section patch failed}}
+\newcommand*{\swosecnumwidth}{2.3em}% batch 89: Part XV widens it in the contents
+\patchcmd{\l@section}{1.5em}{\swosecnumwidth}{}{\errmessage{l@section patch failed}}
 \makeatother
 \urlstyle{same}
 \setlength{\emergencystretch}{3em}
@@ -163,6 +164,18 @@
 \newcommand{\xiwt}{\operatorname{wt}}
 \newcommand{\xilr}{\operatorname{lr}}
 \newcommand{\ximin}{\operatorname{Min}}
+% ---- batch-89 macros (source 31; Section 1.3.3 lists the renamings)
+\newcommand{\Zer}{\mathsf Z}
+\newcommand{\ZC}{\mathsf{ZC}}
+\newcommand{\AC}{\mathsf{AC}}
+\newcommand{\Sep}{\mathsf{Sep}}
+\newcommand{\CR}{\mathsf{CR}}
+\newcommand{\OA}{\mathsf{OA}}
+\newcommand{\Pow}{\mathcal P}
+\newcommand{\Small}{\operatorname{Small}}
+\newcommand{\RM}{\mathcal M}
+\newcommand{\Thr}{\mathrm{Thr}}
+\newcommand{\injto}{\rightarrowtail}
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \lstset{basicstyle=\small\ttfamily,columns=fullflexible,keepspaces=true,
   breaklines=true,frame=single,rulecolor=\color{black!20},
@@ -172,11 +185,12 @@
 of the Surreal Numbers\\[5pt]
 \large Set approximations, the singular birthday transition, set-length words,\\
 class orders, and higher-order structure}
-\author{Research report merged from twenty-two independent manuscripts\\
+\author{Research report merged from twenty-three independent manuscripts\\
 prepared for Vladimir Reshetnikov (sources 08, 09, 11 and 12 of batch 80;\\
-sources 13--18 of batch 81; sources 19--30 of batch 83)}
-\date{Sources dated 2 October 2026 (source 11: 3 October 2026, UTC) and
-3 October 2026 (sources 13--30); merged 2--3 October 2026}
+sources 13--18 of batch 81; sources 19--30 of batch 83; source 31 of batch 89)}
+\date{Sources dated 2 October 2026 (source 11: 3 October 2026, UTC),
+3 October 2026 (sources 13--30) and 4 October 2026 (source 31, UTC);
+merged 2--3 October 2026}
 
 \begin{document}
 \maketitle
@@ -288,6 +302,25 @@ complete theory, and show over $\GBC$ that canonical terminating condensation
 histories are equivalent to strong comparability of class well-orders. Many
 of these results are proved by several of the twelve independently; each is
 printed once with every source credited.
+
+% ---- hand chunk abstract_b89 (batch 89)
+
+\merge\ One manuscript of batch~89 (source~31, dated 4~October 2026) is
+printed as Part~XV. Over Zermelo set theory with Choice, a selector required
+to choose only from nonempty countable sets, with Separation extended to it,
+is not conservative; the proof combines a bounded uniformization theorem with
+Glazer's published countermodels, used through an interface whose exact match
+with them has not been reviewed. In the full-class rank models
+$(V_\lambda,\mathcal P(V_\lambda))$ at every limit height $\lambda>\omega$,
+global choice and birthday-monotone set-like well-orders of the sign carrier
+always exist, while ordinal enumeration of the sign carrier, birthday-monotone
+enumeration, universal set coding (equivalently, ordinal abstraction) and full
+Class Replacement have the distinct exact thresholds: a cardinal height
+$\kappa$ with $2^{<\kappa}=\kappa$, a strong-limit cardinal height, a beth fixed
+point $\kappa=\beth_\kappa$, and a strongly inaccessible height; Class Replacement on one set holds exactly when its size
+is below the cofinality of the height. This answers in part source~28's
+question on separating Class Replacement from uniform set choice, and extends
+source~12's inaccessible full-class model to every limit height.
 \end{abstract}
 
 % ---- hand chunk status_box
@@ -331,6 +364,15 @@ AI-assisted, source~30 reports AI-assisted proof review, and source~27 claims
 no priority or external peer review. None claims historical priority, peer
 review or a machine-checked formalization, and none is formalized here
 (\cref{swo:b83:sub:batch83}).
+% ---- hand chunk status_box_b89 (batch 89)
+
+\smallskip
+\merge\ \textbf{Batch~89 (3 October 2026).} Source~31 is a research article
+with written proofs (``Research article prepared for Vladimir Reshetnikov'').
+It claims no machine verification and no historical priority, uses Glazer's
+countermodel theorem as an explicitly cited input, and names expert review of
+its localized theorem as the next step; it is not formalized here
+(\cref{swo:gcz:sub:batch89}).
 \end{resultbox}
 
 \clearpage
@@ -967,6 +1009,104 @@ matter.\\
 \end{longtable}
 \endgroup
 
+% ---- hand chunk notation89 (batch 89: the last subsubsection of Section 1.3)
+\subsubsection{Addendum of 3 October 2026: notation for source 31}\label{swo:gcz:sub:notation89}
+
+\merge\ Source~31 (\cref{swo:gcz:sub:batch89}) works in first-order Zermelo set
+theory and in full-class rank models, and uses symbols that this report uses
+otherwise. The convention below applies to Part~XV, to source~31's questions
+(\cref{swo:gcz:sec:questions}) and to its abstract (\hyperref[swo:gcz:app:abstract]{Appendix~C});
+it changes nothing earlier, and the conventions of
+\cref{swo:sub:notation81,swo:b83:sub:notation83} continue to hold. Every
+renaming is listed; the tempting false reading is printed where confusion is
+likely.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+Here & Meaning, and source~31's symbols\\
+\midrule\endhead
+$\Zer$, $\ZC$, $\ZC_{\mathrm F}$ &
+Zermelo set theory in Glazer's convention, as source~31 fixes it:
+Extensionality, Empty Set, Pairing, Union, Power Set, Infinity and the
+Separation schema, with no Replacement, Collection, Foundation or Choice;
+$\ZC=\Zer+$Choice, and $\ZC_{\mathrm F}$ adds Foundation. Source~31's macro
+\verb|\Z| is printed with \verb|\Zer| (same symbol). \emph{False reading:}
+$\Zer$ is a theory, not the integers; $\ZC$ has neither classes nor
+Replacement, unlike $\GB$ (\cref{swo:sec:notation}).\\[3pt]
+$c$, $\Sep(c)$, $\GC_{\le\omega}$, $\GC_{\le D}$ &
+A total unary operation symbol $c$; $\Sep(c)$ is Separation for every formula
+that mentions $c$; $\GC_{\le\omega}$ requires $c(X)\in X$ only for nonempty
+$X\injto\omega$, and $\GC_{\le D}$ only for nonempty $D$-small $X$.
+\emph{False reading:} $\GC_{\le\omega}$ is a restricted selector over $\ZC$,
+not this report's global choice $\GC$ over $\GB$; in the column ``$\GC$'' of
+the table in \cref{swo:gcz:sec:examples}, $\GC$ is full global choice.\\[3pt]
+$X\injto D$ &
+There is an injection of $X$ into $D$, given by a set graph (by a class, where
+the text says ``class injection''); source~31's $\hookrightarrow$ (macro
+\verb|\inj|), renamed. \emph{False reading:} $\emb$ remains an order embedding
+throughout this report; $\injto$ is no order embedding.\\[3pt]
+$D$, $\Small_D$, $\mathcal C_D$, $\prec_D$ &
+A fixed well-ordered set $(D,<_D)$; $\Small_D(X)$ iff $X\injto D$; the code
+set $\mathcal C_D=\Pow(D)\times\Pow(D\times D)$ and a fixed well-order
+$\prec_D$ of it. \emph{False reading:} $D$ is not Part~X's countable dense
+alphabet, and $\mathcal C_D$ is not a core (sources~20, 24 and~26 wrote
+$\mathcal C_b$ for the core, printed $\Pbd(b)$).\\[3pt]
+$\Thr_X$, $W_X$, $i_X$, $e_X$ &
+The set of threads on $X$ (source~31's $\mathcal T_X$, renamed because
+$\WordsAll=\mathcal T$ is the class of all set-length words here); the
+selector-compatible well-order of \cref{swo:gcz:lem:thread}; the uniform
+injections into $D$ and the countable enumerations of
+\cref{swo:gcz:thm:uniform,swo:gcz:cor:enumeration}.\\[3pt]
+$H_a$, $Q$, $\Theta$, $T$, $\mathsf T$ &
+In \cref{swo:gcz:sec:coding,swo:gcz:sec:nonconservative}: the incidence trace
+$H_a\subseteq I\times D$, the partial surjection $Q$, Glazer's obstruction
+sentence $\Theta$ and its target set $T$, and the base theory $\mathsf T$
+($\ZC$ or $\ZC_{\mathrm F}$). \emph{False reading:} $H_a$ is not a fibre
+$H_q$, a history slice $H_i$ or the group $H_\mu$; the sans-serif theory
+$\mathsf T$ is not the order type $\mathbf T_{\min}$.\\[3pt]
+$\RM_\lambda$, $\lambda$, $\kappa$ &
+$\RM_\lambda=(V_\lambda,\Pow(V_\lambda))$ for a limit ordinal $\lambda>\omega$,
+with every external subset of $V_\lambda$ as a class (source~31's macro
+\verb|\M|, printed with \verb|\RM|, same symbol); at a strongly inaccessible
+$\kappa$ it is source~12's $\mathcal M$ of \cref{swo:st:sec:model}. The height
+$\lambda$ is also the birthday cutoff of $S_\lambda$, and $\kappa=\card\lambda$, as
+in the noncardinal convention of \cref{swo:b83:sub:notation83} with $\lambda$
+for $\theta$. \emph{False reading:} $\kappa$ is the cutoff only when $\lambda$
+is a cardinal; $\RM_\lambda$ is not one of the arbitrary set-sized $\GBC$
+models $\mathcal M$ of Parts~IX and~XIV, and it satisfies Class Replacement
+only at strongly inaccessible heights (\cref{swo:gcz:thm:replacement}).\\[3pt]
+$S_\lambda$, $\bd$ &
+The sign carrier $S_\lambda=\bigcup_{\alpha<\lambda}{}^\alpha2$ and
+$\bd(s)=\dom(s)$. Reading $0,1$ as $-,+$, $S_\kappa=\No_{<\kappa}$ as a set of
+sign sequences, and $\card{S_\kappa}=2^{<\kappa}=\mu$
+(\cref{swo:gcz:lem:signcard}). Kept, not renamed $\No_{<\lambda}$, because
+source~31 asserts no field operations on $S_\lambda$ at arbitrary cutoffs
+(Part~XI's $\No_{<\theta}$ is the same set, used as an ordered alphabet).
+\emph{False reading:} $S_\lambda$ is neither source~28's $S_\mu=\Sym(\mu)$ nor
+Part~X's set $S_n$. Source~12's $S_\kappa$, printed $\No_{<\kappa}$ in
+Parts~I--V, is the same set as source~31's $S_\kappa$.\\[3pt]
+$\CR(a)$, $\CR(\Ord)$, $\CR$, $\OA$ &
+Class Replacement for the admitted class functions on the internal set $a$, on
+every internal ordinal, and on every internal set; ordinal abstraction (every
+internal set well-order is isomorphic to an internal von Neumann ordinal by an
+internal set graph).\\[3pt]
+Numbers, labels &
+The sections of Part~XV are numbered XV.1--XV.15, and source~31's statement
+$k.m$ is printed as XV.$k.m$; its equations (1)--(10) are tagged
+(S31.1)--(S31.10); its research questions~1--12 are printed in
+\cref{swo:gcz:sec:questions}. Labels: \code{swo:gcz:} before each delivered
+label; unlabelled numbered statements \code{swo:gcz:n}\emph{number}
+(\code{swo:gcz:n3.4}); its questions \code{swo:gcz:n1}--\code{swo:gcz:n12},
+numbered consecutively as source~28's \code{swo:ge:n}$k$; labels written for
+the merge \code{swo:gcz:part}, \code{swo:gcz:sub:}\ldots,
+\code{swo:gcz:sec:status}, \code{swo:gcz:sec:qstatus} and
+\code{swo:gcz:app:}\ldots. Source~31 defines a macro \verb|\rk| that it never
+uses; its \verb|\restr| and \verb|\code| are this report's.\\
+\bottomrule
+\end{longtable}
+\endgroup
+
 % ---- hand chunk claims
 \subsection{What the report claims, and what it does not}\label{swo:sec:claims}
 
@@ -1214,6 +1354,55 @@ classification under GCH is conditional.
 No review of sources~19--30 or of Parts~X--XIV exists in the repository at the
 time of this write.
 
+% ---- hand chunk claims89 (batch 89)
+\smallskip
+\merge\ \emph{Addendum of 3 October 2026: source~31.} The batch-89 addition
+claims the written proofs printed in Part~XV, in the settings its statements
+name: first-order $\ZC$ or $\ZC_{\mathrm F}$ with a selector and expanded
+Separation (\crefrange{swo:gcz:sec:axioms}{swo:gcz:sec:nonconservative}), and
+an external $\ZFC$ metatheory for the full-class rank models
+(\crefrange{swo:gcz:sec:ranksetup}{swo:gcz:sec:examples}). Its results that are
+new against the repository are listed in \cref{swo:gcz:sec:status}; none is
+claimed to be historically first. Every limitation it states is kept where it
+is printed; the principal ones (its Scope paragraph, \hyperref[swo:gcz:app:abstract]{Appendix~C};
+\cref{swo:gcz:sec:formal,swo:gcz:app:sources}; its delivery README, not
+shipped):
+\begin{itemize}
+\item Conventional mathematical proofs; no Lean or Rocq verification and no
+machine-checked formalization; its formalization architecture
+(\cref{swo:gcz:sec:formal}) is a proposal.
+\item The nonconservativity theorem (\cref{swo:gcz:thm:main}) uses Glazer's
+countermodel theorem \cite[Propositions~3.8 and~4.11]{gczGlazer} as an
+explicitly cited input; the countermodels are not reconstructed. Source~31
+states that input as an abstract interface (\cref{swo:gcz:sub:glazerinput});
+whether Glazer's obstruction has exactly that shape has not been checked in
+this repository, and source~31 says that expert review of the localized
+statement ``would be the next scholarly step''. The theorem and its
+corollaries are printed as claimed, with that dependency.
+\item The rank-model classification is proved in an external $\ZFC$
+metatheory and concerns full classes; the ``fourth row'' (universal set coding,
+equivalently ordinal abstraction) is an equivalence within this family of
+full-class rank models, not over every weak class theory; no closure of
+$S_\lambda$ under the surreal field operations is asserted at arbitrary cutoffs;
+nothing is asserted about first-order Replacement at singular heights.
+\item No claim that the repository's supported-prefix extension, small-net
+rigidity or inverse-reconstruction schemes are each equivalent to a row of its
+table; no solution of the surreal transfer problem; no classification for
+definable-class realizations; no proof of the finite-input conservativity
+boundary.
+\item Targeted literature and repository searches only: ``this is not a proof
+of priority''. Restricted global-choice principles have prior literature
+(Enayat's global finite choice \cite{gczEnayat}); the bounded proof of the
+well-ordering theorem is classical in method; ordinal abstraction and the
+example $V_{\omega_1}$ (Hamkins, Rin), set-like class orders without
+Replacement (Carneiro), the global-choice equivalences over $\GB$ (Hamkins),
+well-ordered Replacement (Freire and Hamkins) and beth fixed points
+(MathOverflow) are credited.
+\end{itemize}
+No review of source~31 or of Part~XV exists in the repository at the time of
+this write; the Hilbert's-tenth research tree has routed its archive without a
+correctness finding (\cref{swo:gcz:sub:batch89}).
+
 % ---- hand chunk formal
 \subsection{Formal status}\label{swo:sec:formal}
 
@@ -1270,6 +1459,14 @@ exists. The declarations those plans name as existing were checked against
 \path{Algebra/SurrealNumbers/Surreal/Foundations/} when the plans were printed;
 none of them states a result of this report. Source~21's audit of the declarations it uses
 is shipped as \path{21-obstructions-LEAN_INTERFACE_AUDIT.txt}.
+
+% ---- hand chunk formal89 (batch 89)
+\merge\ (3 October 2026, batch~89.) Source~31 ships no Lean or Rocq code and
+cites no Lean declaration; no statement of Part~XV is formalized. Its
+formalization architecture (\cref{swo:gcz:sec:formal}) proposes the
+domain-size criterion \cref{swo:gcz:lem:domain} as a first machine-checked
+milestone, and its \cref{swo:gcz:n11} a verified bounded uniformization
+theorem; no such development exists.
 
 % ---- hand chunk choices
 \subsection{Where the merge had to choose}\label{swo:sub:choices}
@@ -1375,6 +1572,15 @@ in part, source~12's \cref{swo:st:n14.1,swo:st:n14.2,swo:st:n14.8,swo:st:n14.9},
 source~11's \cref{swo:n16.3}, source~08's question~9 and source~09's fifth
 direction, open items of Parts~VII and~VIII, and questions of sources~13--18
 and of each other; the dated status notes are in \cref{swo:b83:sec:qstatus}.
+
+% ---- hand chunk answers_b89 (batch 89)
+
+\smallskip
+\merge\ Dated note, 3 October 2026 (batch~89). Source~31 answers source~28's
+\cref{swo:ge:n10} in part and extends source~12's full-class model
+\cref{swo:st:thm:model} from inaccessible heights to every limit height
+(\cref{swo:gcz:sec:status,swo:gcz:sec:qstatus}). Hamkins's question in
+item~(f) is not settled by it.
 
 % ---- hand chunk batch81 (batch 81, write 1 of 4; later writes extend this subsection)
 \subsection{The batch-81 addition: six further manuscripts}\label{swo:sub:batch81}
@@ -1701,6 +1907,103 @@ number of new sections.
 records source~25's archive \path{Surreal_Well_Orders_Prefix_Symmetries.zip} as
 arriving in \code{0d7b2441d}; it arrived in \code{5ad44b1ed}, as the table
 above says. The staged bytes are unaffected.
+\end{itemize}
+
+% ---- hand chunk batch89 (batch 89: the last subsection of Section 1)
+\subsection{The batch-89 addition: source 31}\label{swo:gcz:sub:batch89}
+
+\merge\ (3 October 2026.) One manuscript of batch~89, its manuscript~01,
+continues this report and is printed as Part~XV (\cref{swo:gcz:part}),
+source~31. It arrived in commit \code{7c0f2d9f9} and was placed in
+\code{23adb85f9}. It shipped only its manuscript, its PDF and a delivery README,
+so the placement staged no file here; 31 is its number in this report's local
+sequence (the highest prefix in this directory is \code{30-}). Batch-89
+manuscripts~02--05 are placed in other reports.
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.045\textwidth}>{\raggedright\arraybackslash}p{0.04\textwidth}>{\raggedright\arraybackslash}p{0.41\textwidth}>{\raggedright\arraybackslash}p{0.125\textwidth}>{\raggedright\arraybackslash}p{0.145\textwidth}>{\raggedright\arraybackslash}p{0.10\textwidth}@{}}
+\toprule
+Src. & B89 & Manuscript; archive and inner directory; pages & Pin; arrival & Labels; files & Parts\\
+\midrule\endhead
+31 & 01 & \emph{Countable Global Choice and Surreal Coding over Zermelo Set
+Theory: A localized nonconservativity theorem and exact rank-model spectra};
+\path{global_choice_surreal_coding.zip}, same inner directory; 1,547 lines,
+21~pp. & \code{2b7b388ba}; \code{7c0f2d9f9} & \code{swo:gcz:}; none & XV\\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The pin \code{2b7b388ba} (``Catalogue batches 81 to 86'') holds this article
+as blob \code{05807d292}, the text written by the batch-83 write
+\code{07ee2b30c}, with Parts~I--XIV, unchanged until this write; source~31
+names that blob, so the numbers it cites (for example Theorem~13.1,
+\code{swo:cf:choice}) are the current ones. Its title page reads ``Research article prepared for
+Vladimir Reshetnikov'' and is dated 4~October 2026, the UTC date of its arrival
+(3~October 2026, 21:36 PDT). It is not an edition of any earlier source: it
+shares no file with them, its subject (Zermelo set theory with a selector;
+full-class rank models at every limit height) is new to this report, 0.6\,\%
+of its word 8-grams occur in this report (bibliography and standard phrasing),
+and it shares at most 0.33\,\% with any other batch-89 manuscript.
+Two of those bear on it: manuscript~03, printed as Part~VI of
+\path{birthday-cutoffs-and-hereditary-sets}, shows that $V_{\omega+\omega}$
+fails Replacement for definable families, the definable special case of
+\cref{swo:gcz:lem:domain} at a height of cofinality $\omega$; and
+manuscript~05, the report \path{naming-elementary-embeddings} of the
+research-report collection, studies Replacement and Collection schemes in a
+language expanded by named maps, a theme related to the expanded Separation of
+\cref{swo:gcz:prop:nosep}, with different theorems.
+
+\emph{How Part~XV is printed.} Source~31 is the only source of its material,
+so nothing is merged across sources: Part~XV prints its Sections~1--12 whole
+and in order as Sections~XV.1--XV.12, then its Appendices~A and~B (axiom ledger
+and source audit) as Sections~XV.13 and~XV.14, and a status section XV.15. Its
+research questions are printed in the questions part
+(\cref{swo:gcz:sec:questions}), its title page, abstract and scope statement in
+\hyperref[swo:gcz:app:abstract]{Appendix~C}, its delivery record in \cref{swo:gcz:app:delivery},
+and its numbered statements are mapped in \cref{swo:app:crosswalk}. Where it
+re-proves or extends a result of Parts~I--XIV, a \merge\ paragraph after the
+statement says so; there are two re-proofs (the count of
+\cref{swo:gcz:lem:signcard} at a cardinal cutoff, and the inaccessible case of
+\cref{swo:gcz:thm:replacement}).
+
+\emph{Status.} A research article with written proofs; it claims no machine
+verification and no historical priority, uses Glazer's countermodel theorem as
+an explicitly cited input, and names expert review of its localized theorem as
+the next step (\cref{swo:gcz:app:sources}). It is not formalized here. The
+Hilbert's-tenth research tree routed its archive with the other topology and
+surreal arrivals of that day
+(\path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_topology_surreal_arrivals_20261003.md},
+commit \code{6aadaa4f2}): it hashed the archive, read bounded line ranges and
+ran nothing, and found that source~31 yields no Diophantine construction; that
+note records scope, not a proof review, and has no correctness finding.
+
+\emph{Where the batch-89 write had to choose.}
+\begin{itemize}
+\item \emph{Numbering.} The sections of Part~XV are numbered XV.1--XV.15
+instead of continuing from 112, so that the questions part keeps its Sections
+113--115 and every statement, question and appendix keeps the number it had
+before this write (the batch-81 and batch-83 writes moved the closing
+sections; this one does not). Source~31's statement $k.m$ is XV.$k.m$, and the
+\merge\ paragraphs inside its sections add no numbered statement.
+\item \emph{Placement.} Source~31's questions follow those of sources~19--30
+(\cref{swo:gcz:sec:questions}), with the dated notes of
+\cref{swo:gcz:sec:qstatus}; its abstract closes \cref{swo:app:abstracts}; its
+ledger and source audit close Part~XV, as the batch-83 ledgers close Part~XIV.
+\item \emph{Citations of this report.} Source~31's references to
+\code{swo:cf:choice} and \code{swo:ge:n10} keep its words and gain
+cross-references; ``the inspected ProveIt report'' is annotated; its
+bibliography entry for this report is \cite{gczAtPin}.
+\item \emph{Renamings} (\cref{swo:gcz:sub:notation89}): threads $\Thr_X$ for
+source~31's $\mathcal T_X$; injections $X\injto D$ for its
+$X\hookrightarrow D$. No other symbol changes.
+\item \emph{Bibliography.} Its entry for Hamkins's 2014 post on transfinite
+recursion is this report's \cite{HamkinsRecursionPrinciple}, not
+\cite{HamkinsRecursion} (2017), which source~31's key names; its entry for
+Hamkins's post on global choice is \cite{HamkinsGC}; its other entries carry
+the prefix \code{gcz}.
+\item \emph{The Glazer interface} is printed as source~31 states it, with a
+\merge\ paragraph (\cref{swo:gcz:sub:glazerinput}) saying that it is
+unreviewed. No source text was corrected and no statement strengthened.
 \end{itemize}
 
 % ---- source 11, lines 127-189
@@ -5159,6 +5462,25 @@ the assertion over the stated choiceless GB base.  It does not assert that a
 global choice class is definable without parameters in the first-order
 language of set theory.  Definability is an additional requirement.
 
+% ---- hand chunk choice_b89 (batch 89)
+\merge\ (3 October 2026, batch~89.) Source~31 (Part~XV) shows where the base
+theory enters. The full-class rank models
+$\RM_\lambda=(V_\lambda,\Pow(V_\lambda))$, for limit $\lambda>\omega$, satisfy
+$\ZC$ with Foundation, elementary class comprehension and global choice, but
+Class Replacement only at strongly inaccessible $\lambda$
+(\cref{swo:gcz:prop:rankbase,swo:gcz:thm:replacement}). In every one of them the
+sign carrier $S_\lambda$ has a set-like, even birthday-monotone, class
+well-order (\cref{swo:gcz:prop:allwo}), while a class bijection between $\Ord$
+and $S_\lambda$ exists exactly when $\lambda$ is a cardinal $\kappa$ with
+$2^{<\kappa}=\kappa$ (\cref{swo:gcz:thm:bare}). At $\lambda=\omega+\omega$, for
+example, clauses~1--3 above hold for $S_\lambda$ and clause~4 fails
+(\cref{swo:gcz:sec:examples}): the equivalence uses the class Replacement of
+$\GB$. Source~31's \cref{swo:gcz:thm:main} localizes global choice over
+Zermelo set theory instead: selection from countable sets alone, with
+Separation for the selector, is not conservative over $\ZC$, by Glazer's
+countermodels through an interface not reviewed here
+(\cref{swo:gcz:sub:glazerinput}).
+
 % ---- hand chunk choice12_head
 
 \merge\ \emph{Second proof over $\GB+\mathrm{AC}$ (source~12).} Source~12
@@ -7971,6 +8293,31 @@ the singular cutoff $\beth_\omega$ must not be used as though
 $V_{\beth_\omega}$ were such a model is the counterpart of source~11's remark
 that inaccessibility is needed for the full universe example but not for an
 individual birthday fragment.
+
+% ---- hand chunk model12_b89 (batch 89)
+\merge\ (3 October 2026, batch~89.) Source~31 (Part~XV) extends this model from
+inaccessible $\kappa$ to the full-class rank structures
+$\RM_\lambda=(V_\lambda,\Pow(V_\lambda))$ at every limit height
+$\lambda>\omega$, with the sign carrier $S_\lambda=\bigcup_{\alpha<\lambda}{}^\alpha2$
+(so $S_\kappa=\No_{<\kappa}$ as a set of sign sequences; no field operations are
+asserted at other cutoffs). Global choice and birthday-monotone set-like class
+well-orders of $S_\lambda$ exist at every such height
+(\cref{swo:gcz:prop:rankbase,swo:gcz:prop:allwo}); an $\Ord$-enumeration of
+$S_\lambda$ exists exactly when $\lambda=\kappa$ is a cardinal with
+$2^{<\kappa}=\kappa$ (\cref{swo:gcz:thm:bare}), a birthday-monotone one exactly
+when $\lambda$ is a strong-limit cardinal (\cref{swo:gcz:thm:birthday}),
+universal set coding and ordinal abstraction exactly when
+$\lambda=\kappa=\beth_\kappa$ (\cref{swo:gcz:thm:universal,swo:gcz:thm:OA}); Class
+Replacement on a set $a$ holds exactly when $\card a<\cf\lambda$, so full Class
+Replacement exactly when $\lambda$ is strongly inaccessible
+(\cref{swo:gcz:lem:domain,swo:gcz:thm:replacement}). The inaccessibility assumed
+above is therefore exactly what full Class Replacement needs in this family,
+and the warning that $V_{\beth_\omega}$ is not such a model is made exact: there
+Class Replacement fails already on the domain $\omega$, although
+$S_{\beth_\omega}$ has an ordinal birthday enumeration
+(\cref{swo:gcz:sec:examples}). Source~31 does not identify the external orders of
+clauses~(ii)--(iv) at other heights; the external types of the set-like
+well-orders of $S_\lambda$ are its \cref{swo:gcz:n9}.
 
 % ---- hand chunk universe09_head
 
@@ -48593,6 +48940,1444 @@ no uniform class-indexed family is dense in the raw comparison
 (\cref{swo:sc:thm:omittedcopy}).
 \end{enumerate}
 
+% ---- hand chunk part15 (batch 89: source 31, batch-89 manuscript 01)
+\part{Countable global choice and surreal coding over Zermelo set theory}\label{swo:gcz:part}
+% Part XV numbers its sections XV.1--XV.15, so that the questions part keeps
+% Sections 113--115 and the appendices keep A--D (Section 1.10).
+\let\swoSavedThesection\thesection
+\let\swoSavedTheHsection\theHsection
+\setcounter{section}{0}
+\renewcommand{\thesection}{XV.\arabic{section}}
+\renewcommand{\theHsection}{gcz.\arabic{section}}
+\addtocontents{toc}{\protect\renewcommand*{\protect\swosecnumwidth}{4.1em}}
+
+\merge\ (3 October 2026, batch~89.) This Part prints source~31, batch-89
+manuscript~01 (\cref{swo:gcz:sub:batch89}), whole and in its own order. It
+read this report at \code{2b7b388ba}, with Parts~I--XIV, and starts from three
+of its labels: the equivalence of global choice with well-orders of $\No$ over
+$\GB$ (\cref{swo:cf:choice}), source~12's full-class model at an inaccessible
+cardinal (\cref{swo:st:thm:model}), and source~28's question on separating
+Class Replacement from uniform set choice (\cref{swo:ge:n10}). Its two halves
+have different logical settings, as its introduction says.
+\begin{itemize}
+\item \Crefrange{swo:gcz:sec:axioms}{swo:gcz:sec:nonconservative}:
+first-order Zermelo set theory with Choice, $\ZC$ (and $\ZC_{\mathrm F}$ with
+Foundation), with a selector $c$ and Separation for formulas that mention it. A
+selector on $D$-small sets and uniform injections into $D$ are interconvertible
+by uniform definitions (\cref{swo:gcz:thm:uniform}); bounded trace compression
+needs no Collection (\cref{swo:gcz:thm:compression}); selection from nonempty
+countable sets is not conservative over $\ZC$ or $\ZC_{\mathrm F}$
+(\cref{swo:gcz:thm:main}), while without expanded Separation it is
+(\cref{swo:gcz:prop:nosep}).
+\item \Crefrange{swo:gcz:sec:ranksetup}{swo:gcz:sec:examples}: in an external
+$\ZFC$ universe, the full-class rank models $\RM_\lambda=(V_\lambda,\Pow(V_\lambda))$
+at every limit $\lambda>\omega$: exact thresholds for ordinal and birthday
+enumeration of the sign carrier, for universal set coding and ordinal
+abstraction, and for Class Replacement on each set domain; the cardinalities of
+internal proper classes; separating heights. This extends Part~V's inaccessible
+model (\cref{swo:st:sec:model}) to every limit height.
+\item \Cref{swo:gcz:sec:formal}: consequences for this report's questions and a
+formalization architecture; \cref{swo:gcz:app:ledger,swo:gcz:app:sources}: the
+axiom ledger and source audit (source~31's Appendices~A and~B);
+\cref{swo:gcz:sec:status}: what the Part answers.
+\end{itemize}
+Its twelve research questions are printed with the other sources' in the
+questions part (\cref{swo:gcz:sec:questions}), its title page and abstract in
+\hyperref[swo:gcz:app:abstract]{Appendix~C}; \cref{swo:app:crosswalk} maps its numbered
+statements.
+
+\emph{The dependency on Glazer's countermodels.} \Cref{swo:gcz:thm:main}
+derives a contradiction from Glazer's obstruction sentence through an abstract
+interface (\cref{swo:gcz:sub:glazerinput}) and takes from Glazer's paper that
+the base theory does not refute that sentence. That the interface matches the
+obstruction of Glazer's Propositions~3.8 and~4.11 exactly has not been reviewed
+here; source~31 itself asks for expert review (\cref{swo:gcz:app:sources}). The
+theorem is printed as claimed, conditional on that interface.
+
+\emph{Numbering.} The sections of this Part are numbered XV.1--XV.15, so that
+the questions part and the appendices keep their numbers (Sections~113--115,
+Appendices~A--D). Sections~XV.1--XV.12 are source~31's Sections~1--12, and its
+statement $k.m$ is printed as XV.$k.m$; the \merge\ paragraphs inside them add
+no numbered statement. Its equations (1)--(10) are tagged (S31.1)--(S31.10).
+
+\emph{Notation} (\cref{swo:gcz:sub:notation89} lists every renaming). $\Zer$ is
+Zermelo set theory and $\ZC$ adds Choice; neither has classes or Replacement.
+$\GC_{\le\omega}$ is a selector on nonempty countable sets, not this report's
+$\GC$. $X\injto D$ means that an injection exists (source~31's
+$X\hookrightarrow D$; $\emb$ keeps its meaning of order embedding).
+$\RM_\lambda=(V_\lambda,\Pow(V_\lambda))$ has all external subclasses as classes;
+$\kappa=\card\lambda$, which is the cutoff only when $\lambda$ is a cardinal;
+$S_\lambda=\bigcup_{\alpha<\lambda}{}^\alpha2$ is the sign carrier, the set
+$\No_{<\lambda}$ without its field structure. The threads of
+\cref{swo:gcz:lem:thread} form the set $\Thr_X$ (source~31's $\mathcal T_X$).
+
+% ---- source 31 (batch-89 manuscript 01), lines 116-1263
+\section{The problem and the contributions}\label{swo:gcz:sec:intro}
+
+Global choice makes a single selection simultaneously throughout the universe.
+Ordinary Choice supplies selections for each set-sized family. With Replacement
+available, these principles often have the same consequences about sets. Removing
+Replacement changes the problem: a family described by a formula and indexed by
+\(\omega\) need not itself be a set. A uniform selection from that family can
+then produce information that ordinary Choice cannot assemble.
+
+Glazer proved that global choice with expanded Separation is not conservative
+over \(\ZC\), both with and without Foundation \cite{gczGlazer}. We use the
+countable-family incidence obstruction in his Propositions 3.8 and 4.11; we do
+not reconstruct his symmetric-extension countermodels. Our contribution to that
+argument is to show that a selector on countable inputs already supplies the
+uniform presentations needed for its contradiction.
+
+The relevant ProveIt source is the report on surreal well-orders
+\cite{gczAtPin}. Its Theorem 13.1, label \code{swo:cf:choice}
+(\cref{swo:cf:choice}), gives over
+\(\GB\) the equivalence between global choice, class well-orders of \(\No\),
+set-like such well-orders, and an \(\Ord\)-enumeration of \(\No\). Its
+Question \code{swo:ge:n10} (\cref{swo:ge:n10}) asks how image bounding and uniform choice separate
+over weaker class theories. We analyze particular mechanisms in that question;
+the question's other reconstruction and extension schemes remain open.
+
+The two parts of the article are related, but their logical settings differ.
+The countable-selection theorem is a theorem about a first-order theory with an
+additional operation symbol. The rank-model results are semantic classifications
+of specific two-sorted structures with all external subclasses admitted. No
+identification of these two settings is assumed.
+
+\subsection{The localized theorem}
+
+Write \(\GC_{\le\omega}\) for a total operation \(c\) satisfying
+\[
+ X\ne\varnothing\ \wedge\ X\injto\omega\quad\Longrightarrow\quad c(X)\in X.
+\]
+Separation must be allowed to mention \(c\). The main refinement is
+\[
+ \boxed{\ZC+\GC_{\le\omega}+\Sep(c)
+       \text{ is not conservative over }\ZC.}
+\]
+The corresponding statement with Foundation also holds. Moreover, replacing
+``at most countable'' by ``countably infinite'' does not restore conservativity.
+The proof is in \cref{swo:gcz:sec:nonconservative}.
+
+There is a genuine obstacle to the naive proof. Repeatedly deleting the selected
+element for \(\omega\) steps need not exhaust a countable set. A selector can
+list one infinite part first and leave another part untouched. Nor may we simply
+continue through all countable ordinals: the relevant ordinal types need not
+exist in Zermelo set theory. We instead collect all compatible partial
+well-orders inside a fixed power set and then normalize the resulting order
+against a single set of order codes.
+
+\subsection{The exact classification}
+
+For a limit ordinal \(\lambda>\omega\), put
+\[
+ S_\lambda=\bigcup_{\alpha<\lambda}{}^\alpha 2,
+ \qquad \bd(s)=\dom(s).
+\]
+Here \(\bd(s)\) is the ordinal length, or birthday, of a binary sign sequence.
+The following table previews the classification. Every cardinal condition is
+evaluated in the external \(\ZFC\) universe.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}X p{0.39\textwidth}@{}}
+\toprule
+Principle in \(\RM_\lambda\) & Exact condition on the height\\
+\midrule
+Global choice; a birthday-monotone set-like well-order of \(S_\lambda\)
+& Every limit \(\lambda>\omega\)\\[4pt]
+A class bijection \(\Ord\longleftrightarrow S_\lambda\)
+& \(\lambda=\kappa\) is a cardinal and \(2^{<\kappa}=\kappa\)\\[4pt]
+Such a bijection with nondecreasing birthdays
+& \(\lambda=\kappa\) is a strong-limit cardinal\\[4pt]
+A class injection \(V_\lambda\injto S_\lambda\); equivalently,
+every set well-order has an ordinal order type
+& \(\lambda=\kappa=\beth_\kappa\)\\[4pt]
+Class Replacement on every ordinal domain
+& \(\lambda\) is an uncountable regular cardinal\\[4pt]
+Full Class Replacement
+& \(\lambda\) is strongly inaccessible\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The fourth row is an equivalence \emph{within this family of full-class rank
+models}. It is not asserted over every weak class theory. The table also concerns
+the sign-sequence carrier; at arbitrary cutoffs we do not assert closure under
+the surreal field operations.
+
+\subsection{What is new, what is inherited, and what remains open}
+
+The bounded proof of the well-ordering theorem used below is classical in
+method. Its application to a uniform presentation theorem, and thence to the
+countable-input refinement, is the main additional deduction. Targeted searches
+did not find that refinement explicitly stated; this is not a proof of priority.
+Restricted global-choice principles have an established literature, including
+Enayat's treatment of global finite choice \cite{gczEnayat}.
+
+The distinction between well-orders and ordinal order types without Replacement
+is also established. Hamkins discusses ordinal abstraction and the example
+\(V_{\omega_1}\) in his account of Rin's work \cite{HamkinsRecursionPrinciple,gczRin}.
+Carneiro's discussion addresses set-like class orders without Replacement
+\cite{gczCarneiro}. The contribution of our second part is the simultaneous exact
+classification of the displayed coding and replacement properties, including
+their different thresholds and explicit separating heights.
+The usual global-choice equivalences over \(\GB\) are collected in
+\cite{HamkinsGC}; the beth-fixed-point background also has prior discussion
+\cite{gczBethDiscussion}.
+
+\section{Axioms, classes, and bounded constructions}\label{swo:gcz:sec:axioms}
+
+\subsection{The first-order base theory}
+
+Following Glazer's convention, \(\Zer\) comprises Extensionality, Empty Set,
+Pairing, Union, Power Set, Infinity, and the Separation schema. Including Empty
+Set explicitly is harmless; the other usual formulations derive it. Set Choice
+is added to obtain \(\ZC\). We write \(\ZC_{\mathrm F}\) when Foundation,
+in the form that every nonempty set has an \(\in\)-minimal member, is added.
+No form of Replacement or Collection is part of these base theories.
+
+All occurrences of \(X\injto D\) mean that there exists a \emph{set graph}
+of an injection. A set well-order is a strict linear order on a set such that
+every nonempty subset has a least member. We do not replace its underlying set
+by an ordinal unless that replacement has been justified.
+
+When a class operation \(c\) is named, \(\Sep(c)\) means Separation for every
+formula of the language containing \(c\), with set parameters allowed. A formula
+defining a unique set-valued operation gives a definitional expansion: formulas
+using the new operation can be translated into the original expanded language.
+Consequently, such a definition transports Separation, but does not introduce
+Replacement.
+
+\subsection{Fixed bounds}
+
+Fix a well-ordered set \((D,<_{D})\), and define
+\[
+ \Small_D(X)\quad\Longleftrightarrow\quad X\injto D.
+\]
+A \(D\)-restricted selector chooses from every nonempty \(D\)-small set.
+For definiteness it returns \(\varnothing\) elsewhere. Its restriction to the
+subsets of a fixed \(D\)-small set \(X\) can be represented by a set:
+\[
+ \{(A,x)\in\Pow(X)\times X:
+             A\ne\varnothing\text{ and }c(A)=x\}.
+\]
+This follows by Separation. The restriction's being a set does not imply that
+the family of all such restrictions, as \(X\) varies, is a set.
+
+We shall also use the set of codes
+\[\tag{S31.1}\label{swo:gcz:eq:codes}
+ \mathcal C_D=\Pow(D)\times\Pow(D\times D).
+\]
+A code records both a carrier and a relation. Recording the carrier is essential:
+the empty relation alone cannot distinguish different singleton orders. Ordinary
+Choice supplies one fixed well-order \(\prec_D\) of \(\mathcal C_D\).
+No choice of a code for each \(X\) has yet been made.
+
+\subsection{A bounded-existence convention}
+
+Every set introduced in the first part will have an explicit containing set.
+For example, a proposed graph from \(X\) to \(D\) is separated from
+\(X\times D\); a family of relations on \(X\) is separated from
+\(\Pow(X\times X)\). Cartesian products themselves exist by the ordinary
+Pairing, Union, Power Set, and Separation construction.
+
+These bounds are more than presentation details. A statement of the form
+\(\forall n\in\omega\,\exists!X\,\varphi(n,X)\) need not provide a set
+containing all the values \(X\). On the other hand, if a containing set \(B\)
+is already known, then its graph is a subset of \(\omega\times B\), and
+Separation suffices. Our argument repeatedly uses the second situation while
+avoiding the first.
+
+\section{Uniform presentations from restricted selection}\label{swo:gcz:sec:uniform}
+
+\subsection{A selector-compatible well-order}
+
+\begin{lemma}[Bounded well-order construction]\label{swo:gcz:lem:thread}
+Let \(X\) be a set and suppose \(c(A)\in A\) for every nonempty
+\(A\subseteq X\). In \(\Zer+\Sep(c)\) there is a unique well-order \(W_X\)
+of \(X\) satisfying
+\[\tag{S31.2}\label{swo:gcz:eq:choiceorder}
+ a=c\bigl(X\setminus\pred_{W_X}(a)\bigr)
+ \qquad(a\in X).
+\]
+The relation \(W_X\) is uniformly definable from \(X\) and \(c\).
+No ordinal collapse, Replacement, or Foundation is used.
+\end{lemma}
+
+\begin{proof}
+Call \((A,R)\) a \emph{thread on \(X\)} if \(A\subseteq X\),
+\(R\) well-orders \(A\), and
+\[
+ a=c\bigl(X\setminus\pred_R(a)\bigr)\quad(a\in A).
+\]
+The ambient set in this equation is always \(X\), even for a proper partial
+domain \(A\). The set \(\Thr_X\) of threads is separated from
+\(\Pow(X)\times\Pow(X\times X)\).
+
+We first prove that any two threads \((A,R)\), \((B,T)\) are comparable by
+initial segment. Let \(C\subseteq A\cap B\) consist of those \(x\) whose
+predecessor sets in the two orders are equal and on whose predecessor set the
+two orders agree. If \(x\in C\) and \(yRx\), then \(yTx\), and agreement
+below \(x\) implies agreement of the predecessor sets and orders below \(y\).
+Thus \(y\in C\). The symmetric statement holds, so \(C\) is an initial
+segment of both orders, with the same order on it.
+
+If both threads continue beyond \(C\), let \(a\) and \(b\) be the respective
+first points beyond it. Their predecessor sets are exactly \(C\), whence
+\[
+ a=c(X\setminus C)=b.
+\]
+The predecessor orders agree, so this common point belongs to \(C\), a
+contradiction. One thread is therefore an initial segment of the other.
+
+Separate from \(X\) the union \(A_*\) of all thread domains, and from
+\(X\times X\) the union \(R_*\) of their relations. Comparability makes
+\(R_*\) a linear order on \(A_*\). To verify well-ordering, let
+\(Y\subseteq A_*\) be nonempty. Choose \(y\in Y\) and a thread containing
+\(y\). Let \(z\) be the least element of the nonempty intersection of its
+domain with \(Y\). Any other thread is an initial segment or an extension of
+this one; its new points cannot lie below \(z\). Thus \(z\) is least in
+\(Y\) for \(R_*\).
+
+Every thread containing a point \(a\) has the same predecessors of \(a\)
+as the union. Consequently \((A_*,R_*)\) is itself a thread. If
+\(A_*\ne X\), append \(c(X\setminus A_*)\) to its end. The resulting
+well-order is a thread with a larger domain, contradicting the definition of
+\(A_*\). Hence \(A_*=X\), proving existence. Two full-domain threads must
+coincide by initial-segment comparability, proving uniqueness.
+\end{proof}
+
+\begin{remark}[Why ordinary iteration is insufficient]\label{swo:gcz:rem:iteration}
+Let \(X=\omega\times\{0,1\}\). A selector on subsets of \(X\) can select
+the least available \((n,0)\) whenever any such point remains. Successive
+finite deletions then visit only \(\omega\times\{0\}\). The compatible
+well-order can have type \(\omega+\omega\), so its first \(\omega\)
+positions need not enumerate \(X\). The next theorem produces an injection
+into \(\omega\) without asserting that this particular well-order has a
+countable ordinal representative in the weak theory.
+\end{remark}
+
+\subsection{Normalizing against one set of order codes}
+
+\begin{theorem}[Uniform presentation theorem]\label{swo:gcz:thm:uniform}
+Fix \((D,<_{D})\) and a well-order \(\prec_D\) of \(\mathcal C_D\).
+Over \(\Zer\) with Separation in the relevant expanded language, the following
+existence principles are interconvertible by uniform definitions:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item a selector \(c\) for every nonempty \(D\)-small set;
+\item a class assignment \(X\mapsto i_X\) which supplies a set injection
+      \(i_X:X\injto D\) for every \(D\)-small set \(X\).
+\end{enumerate}
+In \(\ZC\), the needed order \(\prec_D\) exists by ordinary Choice.
+\end{theorem}
+
+\begin{proof}
+Assume (i). Every subset of a \(D\)-small \(X\) is \(D\)-small, so
+\cref{swo:gcz:lem:thread} constructs \(W_X\). Form by Separation
+\[
+ \mathcal A_X=\{(A,R)\in\mathcal C_D:
+                 R\text{ well-orders }A\text{ and }(X,W_X)\cong(A,R)\}.
+\]
+This set is nonempty. Indeed, an existing injection \(u:X\injto D\) transports
+\(W_X\) to its image; both the image and the transported relation are separated
+from \(D\) and \(D\times D\). This argument uses the existence of a
+particular \(u\) only to prove nonemptiness. It does not choose such a \(u\)
+uniformly.
+
+Let \((A_X,R_X)\) be the \(\prec_D\)-least code in \(\mathcal A_X\).
+There is a unique order isomorphism
+\[
+ i_X:(X,W_X)\longrightarrow(A_X,R_X),
+\]
+because a well-order has no nonidentity order automorphism. For completeness,
+two isomorphisms would have a least point of disagreement; their values there
+have the same predecessor set and therefore are equal, a contradiction.
+The isomorphism graph is a subset of \(X\times D\). The assertions defining
+the least code and its unique isomorphism constitute a uniform definition of
+\(i_X\). Set its value to \(\varnothing\) on nonsmall inputs.
+
+Conversely, assume (ii). For nonempty \(D\)-small \(X\), the image
+\(i_X[X]\) is a nonempty subset of \(D\). Choose the unique element of
+\(X\) mapped to its \(<_{D}\)-least member. This uniformly defines a
+selector. All image and inverse graphs here have displayed set bounds.
+
+In either direction, the new operation has a unique set value specified by a
+formula in the old expanded language. Substitution of this definition translates
+each instance of Separation involving the new operation into an available
+instance of Separation. This verifies the assertion about the whole expanded
+theories, not just about an isolated operation.
+\end{proof}
+
+\begin{remark}[Uniformity is not compatibility under restriction]\label{swo:gcz:n3.4}
+The theorem does not say that \(i_Y=i_X\restr Y\) when \(Y\subseteq X\).
+Nor does it assert a definitional equivalence that recovers an original selector
+after a round trip. It gives uniform constructions establishing equivalence of
+the two existence principles, with a fixed set of code-ordering parameters.
+\end{remark}
+
+\begin{corollary}[Uniform countable enumeration]\label{swo:gcz:cor:enumeration}
+Under \(\ZC+\GC_{\le\omega}+\Sep(c)\), a single class definition assigns
+to every nonempty countable set \(X\) a set surjection \(e_X:\omega\to X\).
+\end{corollary}
+
+\begin{proof}
+Apply \cref{swo:gcz:thm:uniform} with \(D=\omega\). Let
+\(m_X=\min i_X[X]\), and define
+\[
+ e_X(n)=
+ \begin{cases}
+  i_X^{-1}(n),&n\in i_X[X],\\
+  i_X^{-1}(m_X),&n\notin i_X[X].
+ \end{cases}
+\]
+The graph is a subset of \(\omega\times X\), and its range is \(X\).
+\end{proof}
+
+\section{Incidence coding without Collection}\label{swo:gcz:sec:coding}
+
+The next theorem captures what a uniform presentation makes possible. Its
+hypothesis is weaker than requiring a different incidence trace for every
+label: equal traces need only determine the same target value.
+
+\begin{theorem}[Bounded trace compression]\label{swo:gcz:thm:compression}
+Work in \(\Zer\) with Separation for all the named class parameters. Let
+\(I,D,T\) be sets. Suppose:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \(i\mapsto X_i\), for \(i\in I\), is a class assignment of sets,
+      and a uniform class definition gives set injections \(u_i:X_i\injto D\);
+\item \(A\) is a class, \(E(x,a)\) a class relation, and \(F:A\to T\)
+      a class surjection;
+\item whenever \(a,b\in A\) satisfy
+      \[
+       \forall i\in I\,\forall x\in X_i\,
+           \bigl(E(x,a)\leftrightarrow E(x,b)\bigr),
+      \]
+      one has \(F(a)=F(b)\).
+\end{enumerate}
+Then there is a set partial surjection
+\[\tag{S31.3}\label{swo:gcz:eq:partial}
+ Q:\Pow(I\times D)\rightharpoonup T.
+\]
+If \(\Pow(I\times D)\) is well-orderable, then
+\(T\injto\Pow(I\times D)\). In particular this last conclusion holds in
+\(\ZC\).
+\end{theorem}
+
+\begin{proof}
+For \(a\in A\), define its trace by Separation from \(I\times D\):
+\[\tag{S31.4}\label{swo:gcz:eq:trace}
+ H_a=\{(i,d)\in I\times D:
+           \exists x\in X_i\,[u_i(x)=d\ \wedge\ E(x,a)]\}.
+\]
+For each \(i\) and \(x\in X_i\), injectivity gives
+\[
+ E(x,a)\quad\Longleftrightarrow\quad (i,u_i(x))\in H_a.
+\]
+Thus \(H_a=H_b\) implies the hypothesis in (c) and hence \(F(a)=F(b)\).
+Now separate from \(\Pow(I\times D)\times T\) the relation
+\[\tag{S31.5}\label{swo:gcz:eq:tracegraph}
+ Q=\{(H,t):\exists a\in A\,[H=H_a\ \wedge\ F(a)=t]\}.
+\]
+It is single-valued by the preceding observation and surjective onto \(T\)
+because \(F\) is. To get an injection in the other direction, well-order
+\(\Pow(I\times D)\), and assign to each \(t\) its least \(Q\)-preimage.
+The resulting graph is again a subset of a fixed set product.
+\end{proof}
+
+\begin{corollary}[Compression from a restricted selector]\label{swo:gcz:cor:smallcompression}
+In \(\ZC+\GC_{\le D}+\Sep(c)\), the same conclusion holds when (a) is
+replaced by the assumption that every \(X_i\) injects into \(D\).
+\end{corollary}
+
+\begin{proof}
+Use \cref{swo:gcz:thm:uniform} to define \(u_i=i_{X_i}\).
+\end{proof}
+
+\subsection{The logical point of the compression theorem}
+
+Neither \(\{X_i:i\in I\}\), nor \(\bigcup_{i\in I}X_i\), nor the
+collection of traces \(\{H_a:a\in A\}\) was obtained by Replacement. The
+first two may fail to be sets. The third can, when needed, be separated from
+\(\Pow(I\times D)\). The proof does not first collect the class of labels
+and then take its image. It directly defines a bounded relation whose fibres
+are determined by the trace.
+
+Empty rows \(X_i=\varnothing\) cause no problem: their injection has empty
+graph and contributes no coordinate. This is a small advantage of formulating
+the theorem using injections instead of surjections onto the rows.
+
+The target-separation condition also permits quotient labels. A class may have
+many labels describing the same trace, provided their target values agree. Thus
+the method applies to incidence presentations with redundant codes, not just
+to extensional representations of individual objects.
+
+\subsection{What ordinary set Choice already provides}
+
+If the family of rows is an actual set, ordinary Choice supplies simultaneous
+injections. To see the bounded reason, let \(U\) be the union of that family.
+Every candidate injection into \(D\) is a subset of \(U\times D\). The
+sets of candidate injections therefore form a subfamily of
+\(\Pow(\Pow(U\times D))\). Choice on this set-sized family provides a
+selection. Consequently, the new phenomenon concerns class assignments whose
+values have no common set bound. It is not a failure of ordinary countable
+choice inside \(\ZC\).
+
+\section{Countable global selection is nonconservative}\label{swo:gcz:sec:nonconservative}
+
+\subsection{The external input from Glazer}\label{swo:gcz:sub:glazerinput}
+
+We use the following precise interface to Glazer's countermodel theorem
+\cite[Propositions 3.8 and 4.11]{gczGlazer}. There is a pure set-theoretic
+obstruction sentence \(\Theta\), with separate versions for \(\ZC\) and
+\(\ZC_{\mathrm F}\), realized in his respective models. Its definable data
+include countable sets \(X_n\), an extensional incidence class on their
+class union, and a class surjection onto a set carrier \(T\) satisfying
+\[
+ T\not\injto\Pow(\omega).
+\]
+Extensionality of incidence means that equal traces imply equal labels and
+hence equal target values. The inequality is the part of his cardinal
+obstruction used here.
+
+This formulation suppresses unnecessary ordinal representatives. If a target
+is given by a prewell-order on a set \(B\), its quotient can be represented
+as a subset of \(\Pow(B)\): separate the equivalence classes from that power
+set. The argument therefore does not assume that a von Neumann
+\(\omega_2\) exists internally. The published construction, rather than any
+new forcing assertion in this article, supplies the countermodels.
+
+\merge\ \emph{Status of the interface.} The two paragraphs above are
+source~31's statement of what it uses from \cite[Propositions~3.8
+and~4.11]{gczGlazer}. This write has not checked them against Glazer's paper:
+whether his obstruction supplies countable rows $X_n$, an extensional incidence
+class and a class surjection onto a set $T$ with $T\not\injto\Pow(\omega)$ in
+exactly this form is unreviewed, and source~31 names expert review of the
+localized theorem as the next step (\cref{swo:gcz:app:sources}).
+\Cref{swo:gcz:thm:main} and its corollaries are printed as claimed, conditional
+on this interface.
+
+\subsection{The refinement}
+
+\begin{theorem}[Countable-input nonconservativity]\label{swo:gcz:thm:main}
+Let \(\mathsf T\) be either \(\ZC\) or \(\ZC_{\mathrm F}\). Add a
+total unary operation \(c\), allow Separation to mention it, and require only
+\[
+ \forall X\,[X\ne\varnothing\ \wedge\ X\injto\omega
+                       \ \longrightarrow\ c(X)\in X].
+\]
+This extension is not conservative over \(\mathsf T\) for sentences of the
+original language \(\{\in\}\). In particular, it proves the negation of the
+appropriate Glazer obstruction sentence \(\Theta\), while
+\(\mathsf T\) does not.
+\end{theorem}
+
+\begin{proof}
+Assume \(\Theta\) in the expanded theory. Apply \cref{swo:gcz:thm:uniform} with
+\(D=\omega\) to obtain, uniformly in \(n\), injections
+\(u_n:X_n\injto\omega\). The countable rows and incidence data supplied by
+\(\Theta\) satisfy \cref{swo:gcz:thm:compression}. Thus
+\[
+ T\injto\Pow(\omega\times\omega).
+\]
+The standard pairing bijection \(\omega\times\omega\longleftrightarrow\omega\)
+induces a bijection of their power sets. We obtain
+\(T\injto\Pow(\omega)\), contradicting \(\Theta\).
+
+The base theory has a model satisfying \(\Theta\) by the cited countermodel
+theorem, so it cannot prove \(\neg\Theta\). No step of the additional
+uniformization or compression argument used Foundation; applying the relevant
+version of the input proves both cases.
+\end{proof}
+
+\begin{remark}[Metatheory]\label{swo:gcz:n5.2}
+The positive implication \(\Theta\to\bot\) is a derivation in the
+specified expanded weak theory. The nonderivability statement uses the
+published countermodel result. Glazer states that his model-construction
+theorems are established in \(\ZF\); our refinement inherits that input.
+This is not an assertion that \(\ZC\) proves its own consistency.
+Readers preferring conditional consistency language may assume
+\(\operatorname{Con}(\ZF)\); no claim of an optimal metatheoretic bound is
+needed here.
+\end{remark}
+
+\begin{corollary}[A single infinite input cardinality suffices]\label{swo:gcz:cor:exactomega}
+The nonconservativity conclusion remains true if the selector is required to
+choose only from sets in bijection with \(\omega\).
+\end{corollary}
+
+\begin{proof}
+Let \(c_\infty\) select from countably infinite sets. If
+\(\varnothing\ne X\injto\omega\), then \(X\times\omega\) is countably
+infinite. Indeed, it injects into \(\omega\times\omega\), and after fixing
+one element of \(X\), it contains a copy of \(\omega\). The ordinary
+set Cantor--Bernstein theorem, provable by the bounded finite-path construction,
+gives the bijection. Define
+\[
+ c(X)=\pi_1\bigl(c_\infty(X\times\omega)\bigr)
+\]
+for these inputs, and \(c(X)=\varnothing\) otherwise. This is a countable-set
+selector. Separation for it translates into Separation for \(c_\infty\), so
+\cref{swo:gcz:thm:main} applies.
+\end{proof}
+
+\begin{corollary}[Any fixed infinite bound]\label{swo:gcz:n5.4}
+Suppose a fixed well-ordered \(D\) contains a set copy of \(\omega\). A
+selector on all nonempty sets embeddable into \(D\), with expanded Separation,
+already implies the countable-input conclusion.
+\end{corollary}
+
+\begin{proof}
+Every countable set embeds into \(D\). Restrict the selector's specified
+behavior to those inputs and apply \cref{swo:gcz:thm:main}.
+\end{proof}
+
+\subsection{The exact role of expanded Separation}
+
+\begin{proposition}[An uninteracting selector is conservative]\label{swo:gcz:prop:nosep}
+If the Separation schema is \emph{not} extended to the new symbol, adjoining
+the selector requirement alone is conservative over \(\ZC\), and likewise
+over \(\ZC_{\mathrm F}\).
+\end{proposition}
+
+\begin{proof}
+Use the ordinary external \(\ZFC\) metatheory for this model-theoretic
+argument. Every set-sized model \(M\) of the base theory can be expanded by
+selecting an \(\in^M\)-member of each internally nonempty set. External
+Choice makes these selections on the external set \(M\). The resulting
+operation satisfies even unrestricted global selection in the expanded
+structure. All original axioms still hold because their schemas do not mention
+the new operation. Thus every base model has an expansion, and completeness
+gives conservativity for original-language sentences.
+\end{proof}
+
+Expanded Separation is therefore part of the mathematical content of
+\cref{swo:gcz:thm:main}. Merely writing a choice operation into a formal language is
+not the same assertion.
+
+\section{Full-class rank models and the sign carrier}\label{swo:gcz:sec:ranksetup}
+
+From this section onward, work in an external universe satisfying \(\ZFC\).
+Fix a limit ordinal \(\lambda>\omega\). The set sort of \(\RM_\lambda\)
+is \(V_\lambda\), and its class sort consists of every external subset of
+\(V_\lambda\). Ordered pairs and finite tuples are encoded in the usual way.
+Since \(\lambda\) is a limit, any finite rank increase remains below
+\(\lambda\); hence every relation or function on this domain can be
+represented by a class of coded tuples.
+
+\begin{proposition}[Available axioms]\label{swo:gcz:prop:rankbase}
+\(\RM_\lambda\) satisfies \(\ZC_{\mathrm F}\) on its set sort, elementary
+class comprehension, Separation with arbitrary class parameters, and global
+choice. Its internal ordinals are precisely the ordinals below \(\lambda\).
+\end{proposition}
+
+\begin{proof}
+Transitivity and limit height give Extensionality, Pairing, Union, Power Set,
+Infinity, and Foundation. Every external subset of a set \(a\in V_\lambda\)
+again belongs to \(V_\lambda\), proving Separation even with arbitrary class
+parameters. External Choice gives a choice function on a set-sized family
+\(a\); its graph has rank bounded by the ranks of \(a\) and its union,
+plus a finite amount, so belongs to \(V_\lambda\). Thus internal set Choice
+holds.
+
+Every extension of a formula on the domain is an admitted class, giving class
+comprehension. External Choice also selects one member of every nonempty
+element of the external set \(V_\lambda\); its graph is an admitted class
+and witnesses global choice. Transitivity and the actual well-foundedness of
+membership identify the internal ordinals with \(\lambda\).
+\end{proof}
+
+\subsection{Sign sequences and bounded birthdays}
+
+Each binary function on an ordinal \(\alpha<\lambda\) has rank between
+\(\alpha\) and \(\max(\omega,\alpha)+m\) for an absolute finite coding
+constant \(m\), after harmless adjustment for finite \(\alpha\). It therefore
+belongs to \(V_\lambda\). Conversely, the domain of any internally represented
+ordinal-length binary function is an ordinal below \(\lambda\). The internal
+sign-sequence class is exactly \(S_\lambda\).
+
+The following boundedness criterion will be used repeatedly:
+\[\tag{S31.6}\label{swo:gcz:eq:boundedbirthday}
+ B\subseteq S_\lambda\text{ is an internal set}
+ \quad\Longleftrightarrow\quad
+ \sup\{\bd(s):s\in B\}<\lambda.
+\]
+For the reverse implication, uniformly bounded lengths give a fixed rank bound
+on all the coded functions and on their collection. For the forward implication,
+the rank of the internal set bounds the ranks, and therefore the lengths, of its
+members. In particular, \(S_\lambda\) is an internal proper class.
+
+This identification is about the sign presentation and its birthday filtration.
+For example, at a noncardinal cutoff, operations on two sign sequences may
+produce a sequence whose length reaches the cutoff. Accordingly, no theorem
+below treats every \(S_\lambda\) as a real-closed field or as a model of all
+surreal arithmetic.
+
+\subsection{Set-like well-orders at every height}
+
+\begin{proposition}[Choice orders without ordinal enumeration]\label{swo:gcz:prop:allwo}
+For every limit \(\lambda>\omega\), \(V_\lambda\) has a rank-monotone
+set-like class well-order, and \(S_\lambda\) has a birthday-monotone set-like
+class well-order. These orders give a least element to every nonempty admitted
+class, not only to every internal nonempty set.
+\end{proposition}
+
+\begin{proof}
+Externally choose a well-order of each rank layer of \(V_\lambda\), and
+order first by rank, then by the selected layer order. Every nonempty subclass
+has a least occurring rank and then a least element on that layer. The
+predecessors of a given point are contained in a fixed rank segment, so form
+an internal set. The construction for \(S_\lambda\) is identical, with
+birthday layers \({}^\alpha2\). Its predecessors have bounded birthday,
+and equation~\eqref{swo:gcz:eq:boundedbirthday} applies.
+\end{proof}
+
+One must not infer that either of these orders has type \(\Ord^{\RM_\lambda}\).
+Such an inference requires both the availability of ordinal representatives for
+predecessor orders and a justification that the resulting enumeration has the
+appropriate range. We determine exactly when the corresponding statements hold.
+
+\merge\ At a strongly inaccessible $\kappa$, $\RM_\kappa$ is source~12's model
+$\mathcal M$ of \cref{swo:st:sec:model}, and the identification of the internal
+sign-sequence class with $S_\kappa=\No_{<\kappa}$ is clause~(i) of
+\cref{swo:st:thm:model}; source~09's universe enlargement
+(\cref{swo:ec:sec:universe}) and the universe sections of Part~IX
+(\cref{swo:ix:sec:universes}) also work at an inaccessible height. This section
+and the next five drop inaccessibility. \Cref{swo:gcz:prop:allwo} gives a
+set-like class well-order of $S_\lambda$ at every height, which by
+\cref{swo:gcz:thm:bare} need not have type $\Ord$; over $\GB$, which has class
+Replacement, the two are equivalent (\cref{swo:cf:choice} and the dated note
+after it).
+
+\section{Ordinal enumeration and birthday order}\label{swo:gcz:sec:signspectra}
+
+For an infinite cardinal \(\kappa\), write
+\[
+ 2^{<\kappa}=\sup_{\mu<\kappa,\,\mu\text{ a cardinal}}2^\mu.
+\]
+Our use of cardinal equalities in this and the following sections is entirely
+external.
+
+\begin{lemma}[Size of the sign carrier]\label{swo:gcz:lem:signcard}
+Let \(\lambda>\omega\) be a limit ordinal and \(\kappa=|\lambda|\).
+Then
+\[\tag{S31.7}\label{swo:gcz:eq:signcard}
+ |S_\lambda|=
+ \begin{cases}
+  2^{<\kappa},&\lambda=\kappa,\\
+  2^\kappa,&\kappa<\lambda.
+ \end{cases}
+\]
+\end{lemma}
+
+\begin{proof}
+The layers have size \(2^{|\alpha|}\), and distinct layers are disjoint.
+For \(\lambda=\kappa\), their cardinal sum is
+\(\kappa\cdot 2^{<\kappa}=2^{<\kappa}\). Here
+\(2^{<\kappa}\ge\kappa\): at a successor cardinal this follows from
+Cantor's theorem at the predecessor cardinal; at a limit cardinal it follows
+by taking the supremum of the successor cardinals below it.
+
+If \(\kappa<\lambda\), the birthday \(\kappa\) layer is present and has
+size \(2^\kappa\). Every layer has at most this size, and there are
+\(\kappa\) layers, giving the matching upper bound.
+\end{proof}
+
+\merge\ The case $\lambda=\kappa$ is the count
+$\card{\No_{<\kappa}}=2^{<\kappa}$ of \cref{swo:sw:cutoffs} (before
+\cref{swo:sw:cutoffspectrum}), proved there by the same sum.
+
+\begin{theorem}[Bare ordinal enumeration]\label{swo:gcz:thm:bare}
+There is an admitted class bijection
+\(\Ord^{\RM_\lambda}\longleftrightarrow S_\lambda\) if and only if
+\(\lambda\) is a cardinal \(\kappa\) satisfying \(2^{<\kappa}=\kappa\).
+The same condition characterizes a class injection
+\(S_\lambda\injto\Ord^{\RM_\lambda}\).
+\end{theorem}
+
+\begin{proof}
+All external functions on the relevant carriers are admitted class functions.
+The assertion is therefore cardinal equality with \(|\lambda|\), or the
+corresponding cardinal inequality. At a noninitial \(\lambda\),
+\cref{swo:gcz:lem:signcard} and Cantor's theorem rule it out. At an initial
+\(\kappa\), the same lemma gives exactly the displayed condition. An
+injection of \(\lambda\) into \(S_\lambda\) is always available by taking
+the all-zero sequence at each birthday, so injection and bijection have the
+same threshold.
+\end{proof}
+
+\begin{definition}\label{swo:gcz:n7.3}
+An \emph{ordinal birthday enumeration} is a class bijection
+\(e:\lambda\to S_\lambda\) satisfying
+\(\xi<\eta\Rightarrow\bd(e(\xi))\le\bd(e(\eta))\).
+\end{definition}
+
+\begin{theorem}[Birthday enumeration threshold]\label{swo:gcz:thm:birthday}
+An ordinal birthday enumeration exists if and only if \(\lambda\) is a
+strong-limit cardinal.
+\end{theorem}
+
+\begin{proof}
+Such an enumeration is in particular a bare enumeration, so
+\cref{swo:gcz:thm:bare} implies \(\lambda=\kappa\) is a cardinal. Fix
+\(\alpha<\kappa\) and choose a sign sequence of birthday \(\alpha+1\).
+It occurs at some position \(\xi<\kappa\). Monotonicity places every
+sequence of birthday \(\alpha\) before that position. Hence
+\[
+ 2^{|\alpha|}\le |\xi|<\kappa.
+\]
+Thus \(\kappa\) is strong limit.
+
+Conversely, suppose \(\kappa\) is strong limit. For each
+\(\alpha<\kappa\), externally well-order \({}^\alpha2\) in its initial
+cardinal order type \(\theta_\alpha=2^{|\alpha|}<\kappa\). Concatenate
+these orders in increasing birthday. For every \(\beta<\kappa\), the
+ordinal sum of the layers up through \(\beta\) has cardinal at most
+\[
+ \max\bigl(\aleph_0,|\beta|,2^{|\beta|}\bigr)<\kappa.
+\]
+As \(\kappa\) is an initial ordinal, each such partial sum is below
+\(\kappa\). Their supremum is therefore at most \(\kappa\). It is at
+least \(\kappa\), since there is a nonempty layer for every birthday.
+The concatenated order has type exactly \(\kappa\), giving the required
+enumeration. No regularity of \(\kappa\) was used.
+\end{proof}
+
+\begin{remark}\label{swo:gcz:n7.5}
+A birthday-monotone \emph{set-like well-order} exists at every limit height by
+\cref{swo:gcz:prop:allwo}; the extra demand in \cref{swo:gcz:thm:birthday} is that its order
+type be the internal \(\Ord\). The difference is visible even at
+\(\omega_1\) under CH, as shown in \cref{swo:gcz:sec:examples}.
+\end{remark}
+
+\section{Universal set coding and ordinal abstraction}\label{swo:gcz:sec:beth}
+
+Recall the external beth hierarchy:
+\[
+ \beth_0=\aleph_0,\qquad
+ \beth_{\alpha+1}=2^{\beth_\alpha},\qquad
+ \beth_\delta=\sup_{\alpha<\delta}\beth_\alpha\quad(\delta\text{ limit}).
+\]
+For an uncountable initial cardinal \(\kappa\),
+\[\tag{S31.8}\label{swo:gcz:eq:Vbeth}
+ |V_\kappa|=\beth_\kappa.
+\]
+Indeed, \(|V_{\omega+\alpha}|=\beth_\alpha\) by induction, and
+\(\omega+\kappa=\kappa\). In particular, one must not substitute this
+formula without adjustment at \(\lambda=\omega+\omega\), where the
+cardinality is \(\beth_\omega\).
+
+\begin{lemma}[Growth facts]\label{swo:gcz:lem:growth}
+For an uncountable cardinal \(\kappa\), \(\beth_\kappa\ge\kappa\),
+and \(\beth_\kappa\) is a strong-limit cardinal. If
+\(\beth_\kappa=\kappa\), then
+\(|V_\alpha|<\kappa\) for every \(\alpha<\kappa\).
+\end{lemma}
+
+\begin{proof}
+The beth sequence is strictly increasing and continuous. At the limit index
+\(\kappa\) its supremum has cardinal at least \(\kappa\). If
+\(\mu<\beth_\kappa\), some \(\beth_\beta\) exceeds \(\mu\), with
+\(\beta+1<\kappa\); hence
+\(2^\mu\le\beth_{\beta+1}<\beth_\kappa\). This proves the strong-limit
+assertion. In the fixed-point case, the rank-cardinality formula, or its
+monotone upper bounds for small ranks, puts every \(|V_\alpha|\) below
+\(\beth_\kappa=\kappa\).
+\end{proof}
+
+\begin{theorem}[Universal coding threshold]\label{swo:gcz:thm:universal}
+For a limit ordinal \(\lambda>\omega\), the following are equivalent:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item there is a class injection \(V_\lambda\injto S_\lambda\);
+\item there is a class bijection \(V_\lambda\longleftrightarrow S_\lambda\);
+\item there is a class bijection \(V_\lambda\longleftrightarrow\lambda\);
+\item \(\lambda=\kappa=\beth_\kappa\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+All the functions in question are external functions between sets, represented
+internally as classes. Because \(S_\lambda\subseteq V_\lambda\), (i)
+and (ii) are equivalent by external Cantor--Bernstein.
+
+First suppose \(\lambda\) is not an initial ordinal, and put
+\(\kappa=|\lambda|<\lambda\). If \(\kappa=\omega\), then
+\(\lambda\ge\omega+\omega\), so
+\[
+ |V_\lambda|\ge\beth_\omega>2^\omega=|S_\lambda|.
+\]
+If \(\kappa>\omega\), then \(\kappa+2<\lambda\), because
+\(\lambda\) is a limit. By equation~\eqref{swo:gcz:eq:Vbeth},
+\[
+ |V_\lambda|\ge|V_{\kappa+2}|
+       =2^{\,2^{\beth_\kappa}}>2^\kappa=|S_\lambda|.
+\]
+Thus neither (i) nor (iii) can hold at a noninitial height.
+
+Now let \(\lambda=\kappa\). If \(\beth_\kappa>\kappa\), the
+strong-limit property in \cref{swo:gcz:lem:growth} gives
+\[
+ |S_\kappa|=2^{<\kappa}\le2^\kappa<\beth_\kappa=|V_\kappa|.
+\]
+Both (i) and (iii) fail. If \(\beth_\kappa=\kappa\), then \(\kappa\)
+is strong limit, so \(|S_\kappa|=\kappa=|V_\kappa|\). All three
+coding statements hold.
+\end{proof}
+
+\begin{definition}[Ordinal abstraction]\label{swo:gcz:n8.3}
+\(\OA\) asserts that every internal set well-order is isomorphic, by an
+internal set graph, to an internal von Neumann ordinal.
+\end{definition}
+
+\begin{theorem}[Ordinal abstraction threshold]\label{swo:gcz:thm:OA}
+\(\RM_\lambda\models\OA\) if and only if
+\(\lambda=\kappa=\beth_\kappa\).
+\end{theorem}
+
+\begin{proof}
+Assume first that \(\lambda=\kappa=\beth_\kappa\). Every internal set
+\(a\) has size below \(\kappa\), by \cref{swo:gcz:lem:growth}. An internal
+well-order on \(a\) is externally a genuine well-order: every external
+subset of \(a\) is internal. Let its external order type be \(\alpha\).
+Since \(|\alpha|=|a|<\kappa\) and \(\kappa\) is initial,
+\(\alpha<\kappa\). Its isomorphism graph has bounded rank and belongs
+to \(V_\kappa\). Thus the collapse is internal.
+
+Conversely, suppose first that \(\lambda\) is not initial. The ordinal
+\(\kappa=|\lambda|\) belongs to \(V_\lambda\). Transport the order
+\(\lambda\) to the carrier \(\kappa\) by an external bijection. The
+resulting relation is a subset of \(\kappa\times\kappa\), so has rank
+below \(\lambda\). It is an internal well-order of external type
+\(\lambda\), which has no internal ordinal representative. This refutes
+\(\OA\).
+
+Finally, let \(\lambda=\kappa\) and suppose
+\(\beth_\kappa>\kappa\). Continuity of the beth hierarchy gives some
+\(\beta<\kappa\) with \(\beth_\beta>\kappa\); otherwise its supremum
+would be at most \(\kappa\). A rank segment below \(\kappa\) therefore
+contains an internal set of size at least \(\kappa\). Choose an external
+subset \(a\) of that set of size \(\kappa\), and transport the order
+\(\kappa\) to \(a\). Both \(a\) and the relation are internal by rank
+boundedness. This well-order has type \(\kappa\), again with no internal
+ordinal representative.
+\end{proof}
+
+\subsection{Why this does not prove Replacement}
+
+At a singular beth fixed point, every internal set well-order has an ordinal
+type and the entire set universe has a class bijection with \(\Ord\).
+Nevertheless, a class function on a small ordinal can have unbounded-rank
+values. An external class bijection does not imply that the images of all of
+its set-sized domain restrictions are internal sets. The next section makes
+this obstruction exact.
+
+\section{The exact domain size for Class Replacement}\label{swo:gcz:sec:replacement}
+
+\begin{definition}\label{swo:gcz:n9.1}
+For an internal set \(a\), let \(\CR(a)\) assert that the range of every
+admitted class function \(F:a\to V_\lambda\) is an internal set. Let
+\(\CR(\Ord)\) assert \(\CR(\alpha)\) for every internal ordinal
+\(\alpha\). Full \(\CR\) asserts \(\CR(a)\) for every internal set.
+\end{definition}
+
+\begin{lemma}[The domain-size criterion]\label{swo:gcz:lem:domain}
+For every \(a\in V_\lambda\),
+\[\tag{S31.9}\label{swo:gcz:eq:domain}
+ \RM_\lambda\models\CR(a)
+ \quad\Longleftrightarrow\quad |a|<\cf(\lambda).
+\]
+The same condition characterizes full-class Collection on the domain \(a\).
+\end{lemma}
+
+\begin{proof}
+If \(|a|<\cf(\lambda)\), the ranks of the values of any function
+\(F:a\to V_\lambda\) form an externally bounded subset of \(\lambda\).
+Its range therefore has rank below \(\lambda\), so is internal.
+
+If \(|a|\ge\cf(\lambda)\), choose externally a surjection
+\(p:a\to\cf(\lambda)\) and a cofinal map
+\(g:\cf(\lambda)\to\lambda\). The admitted class function
+\(g\circ p\) has an unbounded set of ordinal values. That range is not
+an internal set, refuting \(\CR(a)\).
+
+For Collection, a total class relation on \(a\) has an external witness
+selection by ambient Choice. When \(|a|<\cf(\lambda)\), these selected
+witnesses have bounded rank and give a collecting set. In the other direction,
+the functional relation just constructed has unique witnesses and no internal
+collecting set.
+\end{proof}
+
+\begin{theorem}[Replacement thresholds]\label{swo:gcz:thm:replacement}
+For every limit ordinal \(\lambda>\omega\),
+\begin{align*}
+ \RM_\lambda\models\CR(\omega)
+ &\quad\Longleftrightarrow\quad\cf(\lambda)>\omega,\\
+ \RM_\lambda\models\CR(\Ord)
+ &\quad\Longleftrightarrow\quad
+        \lambda\text{ is an uncountable regular cardinal},\\
+ \RM_\lambda\models\CR
+ &\quad\Longleftrightarrow\quad
+        \lambda\text{ is strongly inaccessible}.
+\end{align*}
+\end{theorem}
+
+\begin{proof}
+The first assertion is \cref{swo:gcz:lem:domain} with \(a=\omega\).
+
+For the second, if \(\lambda\) is regular initial, every
+\(\alpha<\lambda\) has size below \(\cf(\lambda)=\lambda\).
+Conversely, if \(\cf(\lambda)<\lambda\), then
+\(\cf(\lambda)\) is itself an internal ordinal and its domain violates
+\cref{swo:gcz:lem:domain}. The only remaining possibility is
+\(\cf(\lambda)=\lambda\), which says that \(\lambda\) is an initial
+regular cardinal.
+
+For full Replacement, the second assertion first forces regular cardinal
+height. If that regular cardinal \(\kappa\) is not strong limit, choose
+an infinite cardinal \(\mu<\kappa\) with \(2^\mu\ge\kappa\).
+The internal set \(\Pow(\mu)\) has size at least
+\(\cf(\kappa)=\kappa\), so violates \cref{swo:gcz:lem:domain}. Conversely,
+at a strongly inaccessible \(\kappa\), induction on
+\(\alpha<\kappa\) gives \(|V_\alpha|<\kappa\): the successor step
+uses strong limit and the limit step uses regularity. Every internal set has
+size below \(\cf(\kappa)\), and \cref{swo:gcz:lem:domain} proves full Class
+Replacement.
+\end{proof}
+
+\merge\ The inaccessible case of the third equivalence is the classical fact
+that source~12's model uses (``regularity and the strong-limit property ensure
+the required closure of set operations and class Replacement'',
+\cref{swo:st:sec:model}). The first equivalence makes exact that section's
+warning that $V_{\beth_\omega}$ ``lacks the regularity used in Replacement'':
+there $\cf\lambda=\omega$, so Class Replacement fails already on the domain
+$\omega$ (\cref{swo:gcz:sec:examples}).
+
+\begin{corollary}[Separating the two requirements]\label{swo:gcz:cor:decompose}
+Within the structures \(\RM_\lambda\), the conjunction of ordinal-domain
+Class Replacement and ordinal birthday enumeration is equivalent to full
+Class Replacement. The same is true with ordinal birthday enumeration replaced
+by ordinal abstraction or universal set coding.
+\end{corollary}
+
+\begin{proof}
+The first conjunction says exactly that the height is regular and strong limit.
+For the second, a beth fixed point is strong limit, and regularity again gives
+strong inaccessibility. Every inaccessible cardinal is a beth fixed point:
+induction gives \(\beth_\alpha<\kappa\) for \(\alpha<\kappa\), and
+continuity gives \(\beth_\kappa=\kappa\).
+\end{proof}
+
+\begin{remark}[Ordinal domains are not all well-orderable domains]\label{swo:gcz:n9.5}
+The distinction in \cref{swo:gcz:thm:replacement} concerns \emph{ordinal domains}.
+It must not be confused with Replacement on every well-orderable set.
+Freire and Hamkins prove that the latter implies full Replacement over
+Zermelo set theory with Foundation, without assuming Choice
+\cite{gczFreireHamkins}. An internal well-ordered carrier may have no internal
+ordinal representative, precisely as \cref{swo:gcz:thm:OA} shows.
+\end{remark}
+
+\begin{remark}[Full classes versus definable classes]\label{swo:gcz:n9.6}
+The inaccessible threshold characterizes Replacement for \emph{all external
+class functions} admitted in \(\RM_\lambda\). It is not a classification
+of heights satisfying the first-order Replacement schema for formulas of the
+pure membership language. Such heights are usually discussed through worldly
+rank segments; the class parameter restriction changes the problem. No result
+about first-order Replacement at all singular heights is asserted here.
+\end{remark}
+
+\section{The sizes of internal proper classes}\label{swo:gcz:sec:classsizes}
+
+The available classes form an external set, but many are proper classes relative
+to the internal set sort. This distinction is useful rather than paradoxical.
+
+\begin{theorem}[Proper-class cardinal spectrum]\label{swo:gcz:thm:classsizes}
+A class \(C\subseteq V_\lambda\) is an internal proper class exactly when
+it is unbounded in rank. Its possible external cardinalities are precisely
+\[\tag{S31.10}\label{swo:gcz:eq:classsizes}
+\{\theta:\theta\text{ is a cardinal and }
+              \cf(\lambda)\le\theta\le|V_\lambda|\}.
+\]
+\end{theorem}
+
+\begin{proof}
+A rank-bounded subclass is an external subset of some \(V_\alpha\) and
+therefore belongs to \(V_\lambda\). Conversely, an element of
+\(V_\lambda\) bounds the ranks of all of its members. An unbounded subclass
+must have at least \(\cf(\lambda)\) elements. A cofinal sequence of
+ordinals below \(\lambda\) realizes that lower bound.
+
+For any cardinal \(\theta\) in the displayed interval, choose an external
+subset \(B\subseteq V_\lambda\) of size \(\theta\), and adjoin a fixed
+cofinal set of ordinals of size \(\cf(\lambda)\). The union is
+rank-unbounded and still has size \(\theta\). It is an admitted proper
+class of the required cardinality.
+\end{proof}
+
+\begin{corollary}[Two different limitation-of-size conditions]\label{swo:gcz:cor:limitation}
+In \(\RM_\lambda\):
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item every proper class admits an injection from \(\Ord\) if and only if
+      \(\cf(\lambda)=|\lambda|\);
+\item every proper class is class-bijective with \(\Ord\) if and only if
+      \(\lambda\) is strongly inaccessible.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+For (i), compare the least possible size \(\cf(\lambda)\) with
+\(|\Ord^{\RM_\lambda}|=|\lambda|\). For (ii), the universal class
+itself first forces \(|V_\lambda|=|\lambda|\), which by
+\cref{swo:gcz:thm:universal} forces a beth-fixed-point cardinal height
+\(\kappa\). The minimum proper-class size then forces
+\(\cf(\kappa)=\kappa\), hence strong inaccessibility. At an inaccessible
+height both the minimum and maximum sizes equal \(\kappa\), so all
+proper classes have the required bijections.
+\end{proof}
+
+At a noninitial height, condition (i) is not the same as regular cardinal
+height. For example \(\lambda=\omega_1\cdot2\) has
+\(\cf(\lambda)=|\lambda|=\omega_1\), but fails ordinal-domain Class
+Replacement since \(\omega_1\) is an internal ordinal domain. This example
+separates cardinal comparability from internal image bounding.
+
+\section{Explicit separating models}\label{swo:gcz:sec:examples}
+
+\subsection{Global choice without any ordinal sign enumeration}
+
+Take \(\lambda=\omega+\omega\). Then
+\[
+ |\Ord^{\RM_\lambda}|=\aleph_0,
+ \qquad |S_\lambda|=2^{\aleph_0},
+ \qquad |V_\lambda|=\beth_\omega.
+\]
+Global choice and birthday-monotone set-like well-orders exist, but even a
+class injection \(S_\lambda\injto\Ord\) is impossible. Class Replacement
+on \(\omega\) fails, witnessed by the class function
+\(n\mapsto\omega+n\), whose range is unbounded in \(\lambda\).
+Thus a global selector, including its countable restriction, need not supply
+any countable image-bounding principle.
+
+\subsection{Ordinal sign enumeration without birthday enumeration}
+
+Assume CH and take \(\lambda=\omega_1\). Then
+\(2^{<\omega_1}=2^{\aleph_0}=\omega_1\), so a class bijection
+\(\omega_1\longleftrightarrow S_{\omega_1}\) exists. But there are
+\(\omega_1\) sequences of birthday \(\omega\). A birthday-monotone
+enumeration would have to place all of them before any sequence of birthday
+\(\omega+1\). No position below \(\omega_1\) has that many predecessors.
+
+Ordinal-domain Class Replacement holds by regularity, but full Class Replacement
+and ordinal abstraction fail. This refines the role of the established
+\(V_{\omega_1}\) example by separating arbitrary sign enumeration from
+enumeration that respects the birthday filtration.
+
+\subsection{Birthday enumeration without universal set coding}
+
+Take \(\kappa=\beth_\omega\). This is a singular strong-limit cardinal
+of cofinality \(\omega\). Hence ordinal birthday enumeration of
+\(S_\kappa\) exists. But
+\[
+ |V_\kappa|=\beth_\kappa>\beth_\omega=\kappa=|S_\kappa|.
+\]
+Universal set coding and ordinal abstraction fail. This example requires no
+continuum hypothesis and no inaccessible cardinal.
+
+\subsection{Universal coding and ordinal abstraction without Replacement}
+
+Define externally
+\[
+ \kappa_0=\omega,\qquad
+ \kappa_{n+1}=\beth_{\kappa_n},\qquad
+ \kappa=\sup_{n<\omega}\kappa_n.
+\]
+The sequence is strictly increasing, so \(\cf(\kappa)=\omega\).
+Continuity gives
+\(\beth_\kappa=\sup_n\beth_{\kappa_n}
+ =\sup_n\kappa_{n+1}=\kappa\).
+This is the first beth fixed point reached above the starting value.
+Consequently
+\[
+ V_\kappa\longleftrightarrow S_\kappa\longleftrightarrow\kappa
+\]
+by class bijections, and every internal set well-order has an internal ordinal
+type. Nevertheless the admitted class function \(n\mapsto\kappa_n\)
+has unbounded range. Even \(\CR(\omega)\) fails.
+
+No first-order definability assertion about this particular sequence is needed
+for the example: every external class function is admitted in the structure.
+This makes its failure of \emph{Class} Replacement immediate and avoids
+confusing the two replacement schemas.
+
+\subsection{The inaccessible case}
+
+If a strongly inaccessible \(\kappa\) exists, all properties in the main
+classification table hold in \(\RM_\kappa\). In particular, every internal
+proper class has external cardinality \(\kappa\), and its class functions
+on internal sets have internally bounded images. This is the setting in which
+the rank-model examples in the inspected ProveIt report are placed.
+(\merge\ This report: \cref{swo:st:sec:model,swo:ec:sec:universe,swo:ix:sec:universes}.)
+
+\begin{center}
+\small
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+Height & \(\GC\) & bare sign & birthday & universal & full \(\CR\)\\
+ & & enumeration & enumeration & set coding & \\
+\midrule
+\(\omega+\omega\) & yes & no & no & no & no\\
+\(\omega_1\), assuming CH & yes & yes & no & no & no\\
+\(\beth_\omega\) & yes & yes & yes & no & no\\
+First beth fixed point & yes & yes & yes & yes & no\\
+Strongly inaccessible \(\kappa\) & yes & yes & yes & yes & yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Consequences for surreal foundations and formalization}\label{swo:gcz:sec:formal}
+
+\subsection{A precise extension of the ProveIt questions}
+
+The classification explains why a proof formulated over \(\GB\) cannot simply
+be read over \(\ZC\) with class comprehension. Three jobs must be separated:
+\begin{enumerate}
+\item \emph{Selection:} choose a local presentation or local order.
+\item \emph{Collapse and coding:} represent that presentation by an available
+      ordinal or sign sequence.
+\item \emph{Image bounding:} ensure that the values obtained over a set domain
+      still form an internal set.
+\end{enumerate}
+The first part of this article shows that selection restricted to countable
+inputs already has nonconservative consequences when combined with expanded
+Separation. The second shows that even unrestricted selection leaves collapse
+and image bounding at distinct thresholds in full-class rank models.
+
+These are concrete answers about the mechanisms named in the repository's weak
+foundations agenda (\merge\ \cref{swo:ge:n10}; the questions
+\cref{swo:pc:n13.9,swo:nb:n14.10} of sources~24 and~26 ask about the same
+resources). They do not prove that its supported-prefix extension,
+small-net rigidity, or inverse-reconstruction schemes are each equivalent to a
+particular row of our table. Establishing those equivalences would require
+encoding the exact input and output types of each scheme in a common weak base.
+
+\subsection{A formalization architecture with an explicit trust boundary}
+
+A proof assistant development can formalize the first part without implementing
+all the symmetric-extension machinery. The natural target is a theorem about
+models of a specified first-order theory, with Glazer's obstruction isolated as
+an input interface. Its parameters would be formulas defining the class family,
+incidence relation, label domain, and target map, together with their required
+properties. The formal theorem would show that no expanded model can satisfy
+both that interface and countable selection with the relevant Separation
+instances.
+
+The thread construction should be represented by a bounded object:
+\(\Thr_X\subseteq\Pow(X)\times\Pow(X^2)\).
+The main lemmas are initial-segment comparability, well-foundedness of its union,
+maximality, rigidity of well-orders, and correctness of least-code normalization.
+The compression theorem then needs only injectivity of each row presentation
+and target separation by traces. This organization makes accidental appeals to
+Replacement visible.
+
+For the second part, use a universe separation: the metatheory has an actual set
+\(V_\lambda\), and its class sort is another set \(\Pow(V_\lambda)\)
+in the larger universe. Internal ``set'' and external ``set'' are distinct
+predicates. No term denoting a set of all sets or a set of all actual surreal
+numbers is required. The sign carrier is explicitly the set
+\(\bigcup_{\alpha<\lambda}{}^\alpha2\) in the metatheory.
+
+A first machine-checked milestone should be the domain-size criterion
+\cref{swo:gcz:lem:domain}, followed by the sign-cardinality formula and the two
+enumeration thresholds. These use ordinary external cardinal arithmetic and
+rank bounds. The ordinal-abstraction theorem adds the distinction between an
+internal well-order relation and its external order type.
+
+\subsection{Why no experimental computation is offered as proof}\label{swo:gcz:sub:noexperiment}
+
+Finite experiments with selectors can illustrate the thread construction, but
+cannot verify nonconservativity, lack of ordinal collapse, or Class Replacement.
+The mathematical verification here consists of displayed set bounds and
+independent checks of the proofs. The supplied source is an ordinary LaTeX
+article, not a proof-assistant certificate. A later formal development should
+report separately the checked uniformization theorem and any assumed
+countermodel construction.
+
+% ---- source 31, lines 1385-1434 (its Appendix A)
+\section{Axiom ledger and proof dependencies}\label{swo:gcz:app:ledger}
+
+\merge\ Source~31's Appendix~A.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.28\textwidth}>{\raggedright\arraybackslash}p{0.38\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}@{}}
+\toprule
+Construction or result & Existence bound or main argument & Logical setting\\
+\midrule
+\endfirsthead
+\toprule
+Construction or result & Existence bound or main argument & Logical setting\\
+\midrule
+\endhead
+Thread collection \(\Thr_X\)
+& Subset of \(\Pow(X)\times\Pow(X^2)\)
+& \(\Zer+\Sep(c)\)\\[5pt]
+Union thread \(W_X\)
+& Domain subset of \(X\), relation subset of \(X^2\)
+& Initial-segment comparison; no collapse\\[5pt]
+Uniform injection \(i_X\)
+& Least code in \(\mathcal C_D\); graph subset of \(X\times D\)
+& One fixed code well-order\\[5pt]
+Trace \(H_a\)
+& Subset of \(I\times D\)
+& Expanded Separation\\[5pt]
+Partial surjection \(Q\)
+& Subset of \(\Pow(I\times D)\times T\)
+& Target determined by trace\\[5pt]
+Countable nonconservativity
+& Uniformization and compression contradict the published obstruction
+& Glazer countermodel input\\[5pt]
+Sign enumeration thresholds
+& Cardinal count and ordinal sums of birthday layers
+& External \(\ZFC\), full classes\\[5pt]
+Universal set coding and \(\OA\)
+& \(|V_\kappa|=\beth_\kappa\), bounded rank of internal relations
+& External \(\ZFC\), full classes\\[5pt]
+Replacement on \(a\)
+& All \(|a|\)-sized rank sets bounded iff \(|a|<\cf(\lambda)\)
+& External \(\ZFC\), full classes\\[5pt]
+Proper-class size spectrum
+& Rank-unbounded subsets and cofinal sets
+& External \(\ZFC\), full classes\\
+\bottomrule
+\end{longtable}
+
+The main derivation has the following dependency order. First prove the bounded
+thread lemma. Then prove least-code uniformization. Use the uniform injections
+to form bounded traces and the partial surjection. Finally instantiate the
+published obstruction. The rank-model part is independent of that
+nonconservativity argument; its common inputs are the rank-boundedness criterion
+and external cardinal arithmetic.
+
+% ---- source 31, lines 1437-1475 (its Appendix B)
+\section{Source audit and research status}\label{swo:gcz:app:sources}
+
+\merge\ Source~31's Appendix~B.
+
+\subsection{The inspected repository snapshot}
+
+The report was inspected at commit
+\begin{center}
+\code{2b7b388ba81a3355b19a7c2d2fe797e92f572355}.
+\end{center}
+Its path is
+\begin{quote}\small
+\path{Algebra/SurrealNumbers/docs/foundations-and-computation/}\allowbreak
+\path{surreal-well-orders/article.tex}.
+\end{quote}
+The corresponding Git blob is
+\code{05807d292fbed8b68aa5744b502fece703057c74}.
+The source is a merged research report. We inspected its relevant foundations
+statements and proof passages; no repository-wide correctness audit is claimed.
+No repository files were modified. The exact replacement-free classification
+developed here was not found in the inspected passages and targeted searches.
+
+\merge\ The commit \code{2b7b388ba} is ``Catalogue batches 81 to 86''; the blob
+\code{05807d292} is this article as written by \code{07ee2b30c} (batch~83),
+with Parts~I--XIV, unchanged until this write.
+
+\subsection{Status of the principal assertions}
+
+\paragraph{Proved refinement.}
+The countable-input and exactly-countably-infinite-input nonconservativity
+statements follow from the fully displayed uniformization argument and Glazer's
+published countermodels.
+\paragraph{Proved structural results.}
+The full-class rank-model spectra, domain-size criterion, and separation examples
+are proved here in external \(\ZFC\). Several ingredients and motivating
+examples are classical or already discussed in the cited literature.
+\paragraph{Not claimed.}
+There is no claimed new solution of the entire surreal transfer problem, no
+classification for arbitrary definable-class realizations, no proof of the
+finite-input conservativity boundary, and no machine-checked formalization.
+\paragraph{Novelty qualification.}
+The article provides a concrete additional theorem and an exact synthesis.
+Targeted literature and repository checks support its relevance but do not
+establish that every formulation is historically new. Expert review of the
+localized nonconservativity statement would be the next scholarly step.
+
+% ---- hand chunk gcz_status (batch 89)
+\section{What this Part answers}\label{swo:gcz:sec:status}
+
+\merge\ Dated notes, 3 October 2026, in the form of \cref{swo:viii:sec:status}.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Source~28's \cref{swo:ge:n10}, the weakest class-theoretic
+assumptions for the supported-prefix extension, small-net rigidity and
+inverse-reconstruction schemes, and whether their uses of Class Replacement and
+uniform set choice separate sharply}: answered in part. Source~31 separates
+three mechanisms: selection, collapse and coding, and image bounding
+(\cref{swo:gcz:sec:formal}). Selection restricted to countable inputs, with
+Separation for the selector, is already nonconservative over $\ZC$ and
+$\ZC_{\mathrm F}$ (\cref{swo:gcz:thm:main}, through the Glazer interface;
+countably infinite inputs suffice, \cref{swo:gcz:cor:exactomega}), and
+conservative without expanded Separation (\cref{swo:gcz:prop:nosep}). In the
+full-class rank models global choice holds at every height, while ordinal
+coding and image bounding have different exact thresholds
+(\cref{swo:gcz:thm:bare,swo:gcz:thm:birthday,swo:gcz:thm:universal,swo:gcz:thm:OA,swo:gcz:thm:replacement}),
+Class Replacement on a set holds exactly below the cofinality of the height
+(\cref{swo:gcz:lem:domain}), and ordinal-domain Class Replacement together with
+birthday enumeration, ordinal abstraction or universal coding is full Class
+Replacement (\cref{swo:gcz:cor:decompose}). Open: the minimal assumptions of
+each of the three schemes, which source~31 restates as \cref{swo:gcz:n10}; it
+proves no equivalence of a scheme with a row of its table. The sibling
+questions \cref{swo:pc:n13.9,swo:nb:n14.10} of sources~24 and~26 ask about the
+same resources and stay open.
+\item \emph{Source~12's full-class model} (\cref{swo:st:thm:model}, a theorem,
+not a question): extended from inaccessible $\kappa$ to every limit height for
+global choice, ordinal and birthday enumeration of the sign carrier, universal
+set coding, ordinal abstraction, Class Replacement on each set domain and the
+sizes of proper classes (\cref{swo:gcz:thm:classsizes,swo:gcz:cor:limitation});
+the warning about $V_{\beth_\omega}$ in \cref{swo:st:sec:model} is made exact.
+The external identification of the set-like and unrestricted orders in
+clauses~(ii)--(iv) of \cref{swo:st:thm:model} is not extended
+(\cref{swo:gcz:n9}).
+\item \emph{The base theory of \cref{swo:cf:choice}}: in $\RM_\lambda$, global
+choice and set-like class well-orders of the sign carrier exist at every
+height, but an $\Ord$-enumeration exists only when $\lambda=\kappa$ with
+$2^{<\kappa}=\kappa$ (\cref{swo:gcz:prop:allwo,swo:gcz:thm:bare}); the
+equivalence of \cref{swo:cf:choice} uses the class Replacement of $\GB$ (the
+dated note after it). No earlier question asked this.
+\item \emph{Not settled}: Hamkins's question whether universality of the
+surreal line is a weak global choice principle (\cref{swo:sec:answers}~(f));
+Hamkins's surreal transfer question \cite{gczSurrealTransfer}, on which
+source~31 asks \cref{swo:gcz:n12}; the questions listed as not affected in
+\cref{swo:b83:sec:qstatus}~(q).
+\end{enumerate}
+
+\merge\ \emph{New against the repository} (source~31 claims no priority for
+any formulation): the uniform presentation theorem and uniform countable
+enumeration (\cref{swo:gcz:thm:uniform,swo:gcz:cor:enumeration}), bounded trace
+compression (\cref{swo:gcz:thm:compression,swo:gcz:cor:smallcompression}), the
+countable-input nonconservativity theorem and its corollaries
+(\cref{swo:gcz:thm:main,swo:gcz:cor:exactomega,swo:gcz:n5.4}, conditional on the
+Glazer interface), the conservativity of an uninteracting selector
+(\cref{swo:gcz:prop:nosep}), choice orders without ordinal enumeration at every
+height (\cref{swo:gcz:prop:allwo}), the bare, birthday, universal-coding and
+ordinal-abstraction thresholds
+(\cref{swo:gcz:thm:bare,swo:gcz:thm:birthday,swo:gcz:thm:universal,swo:gcz:thm:OA}),
+the domain-size criterion and the Replacement thresholds
+(\cref{swo:gcz:lem:domain,swo:gcz:thm:replacement,swo:gcz:cor:decompose}), the
+proper-class spectrum (\cref{swo:gcz:thm:classsizes,swo:gcz:cor:limitation}) and
+the separating heights of \cref{swo:gcz:sec:examples}. \emph{Inherited or
+re-proved:} the method of \cref{swo:gcz:lem:thread} (a bounded proof of the
+well-ordering theorem), the available axioms (\cref{swo:gcz:prop:rankbase}), the
+case $\lambda=\kappa$ of \cref{swo:gcz:lem:signcard} (\cref{swo:sw:cutoffs}),
+the beth facts (\cref{swo:gcz:lem:growth}), the inaccessible case of
+\cref{swo:gcz:thm:replacement} (\cref{swo:st:sec:model}), ordinal abstraction
+and the example $V_{\omega_1}$ (Hamkins, Rin), set-like orders without
+Replacement (Carneiro) and well-ordered Replacement (Freire and Hamkins,
+\cref{swo:gcz:n9.5}).
+
+% ---- end of Part XV: restore the report's section numbering
+\setcounter{section}{112}
+\let\thesection\swoSavedThesection
+\let\theHsection\swoSavedTheHsection
+\addtocontents{toc}{\protect\renewcommand*{\protect\swosecnumwidth}{2.3em}}
+
 % ---- hand chunk questions_head
 \cleardoublepage\phantomsection
 \addcontentsline{toc}{part}{Questions, conclusions and status}
@@ -50474,7 +52259,8 @@ Condensation histories and their strength &
 Residual class alphabets and the first-block trace & 19: \cref{swo:rs:n14.5} & open\\[2pt]
 Unrestricted tails and their completions &
 24: \cref{swo:pc:n13.9,swo:pc:n13.11}; 26: \cref{swo:nb:n14.9,swo:nb:n14.10};
-28: \cref{swo:ge:n10,swo:ge:n11} & open\\[2pt]
+28: \cref{swo:ge:n10,swo:ge:n11} & open; \emph{batch~89:} \cref{swo:ge:n10} in part
+(\cref{swo:gcz:sec:qstatus})\\[2pt]
 Bounds and choice strength &
 23: \cref{swo:tm:n16.4,swo:tm:n16.9}; 27: \cref{swo:sc:n12.10} & open\\[2pt]
 First formal milestones &
@@ -51744,6 +53530,20 @@ What are the weakest class-theoretic assumptions sufficient for the supported-pr
 \end{question}
 These proofs have different logical mechanisms: image bounding, choosing residual set bijections, and elementary eventual-value comprehension. A reverse-mathematical analysis should examine those mechanisms individually rather than assign the same strength to every global completion assertion.
 
+\merge\ (3 October 2026, batch~89.) Answered in part by source~31 (Part~XV),
+which names this question. It separates three mechanisms, selection, collapse
+and coding, and image bounding (\cref{swo:gcz:sec:formal}). Over Zermelo set
+theory with Choice, selection restricted to countable inputs, with Separation
+for the selector, is already nonconservative (\cref{swo:gcz:thm:main}, through
+an unreviewed interface to Glazer's countermodels); in the full-class rank
+models global choice holds at every height, while ordinal coding and image
+bounding have different exact thresholds, and Class Replacement on a set holds
+exactly when its size is below the cofinality of the height
+(\cref{swo:gcz:lem:domain,swo:gcz:thm:replacement,swo:gcz:cor:decompose}). The
+weakest assumptions for each of the three named schemes are not determined;
+source~31 restates that remainder as its \cref{swo:gcz:n10}
+(\cref{swo:gcz:sec:qstatus}).
+
 \begin{question}[Non-set-like tails and class completion]\label{swo:ge:n11}
 Construct a completion theory for arbitrary class well-orders that uses the direct common-prefix relation and continues through proper-class initial segments. Which kinds of index orders, or external universe levels, are necessary to retain the tails?
 \end{question}
@@ -51773,6 +53573,9 @@ $\omega+n$, \cref{swo:bw:tp:thm:finite-topology}).
 \Cref{swo:ge:n9} is answered in part at $\mu=\omega$
 (\cref{swo:fu:ct:homogeneity,swo:pc:thm:completecountable}).
 \Cref{swo:ge:n12} is a proposal.
+\merge\ (3 October 2026, batch~89.) \Cref{swo:ge:n10} is now answered in part by
+source~31 (\cref{swo:gcz:sec:qstatus}~(a)); the other questions listed above as
+open are not affected by it.
 
 % ---- source 29 (batch-83 manuscript 15), lines 4139-4319
 \subsection{Source 29: further research questions after these results}\label{swo:bw:sec:agenda}
@@ -52298,6 +54101,167 @@ does not answer it), \cref{swo:n16.9,swo:n16.10}, and Hamkins's question on
 universality and choice.
 \end{enumerate}
 
+% ---- hand chunk q31 (batch 89)
+\subsection{Source 31's research questions (batch 89)}\label{swo:gcz:sec:questions}
+
+\merge\ (3 October 2026.) Source~31's Section~13, ``Further research
+questions'', printed whole; its questions~1--12 are numbered here in this
+section's sequence and labelled \code{swo:gcz:n1}--\code{swo:gcz:n12}.
+
+% ---- source 31 (batch-89 manuscript 01), lines 1265-1381
+
+The following questions are proposed directions. Except where explicitly
+identified as repository questions, they are formulated here and are not being
+advertised as a catalog of established open problems. Each distinguishes a
+specific missing step from results proved above.
+
+\begin{question}[Global selection from finite sets]\label{swo:gcz:n1}
+Is \(\ZC\) with a selector on all nonempty finite sets and expanded Separation
+nonconservative over \(\ZC\)? What changes with Foundation?
+\end{question}
+The present proof uses selection on every nonempty subset of a countable carrier.
+Finite-input selection does not supply that operation. Enayat's global finite
+choice principles provide relevant background, but do not by themselves settle
+this Zermelo conservativity question.
+
+\begin{question}[Pairs and bounded finite cardinalities]\label{swo:gcz:n2}
+For a fixed integer \(m\ge2\), what pure set-theoretic consequences follow from
+a class selector on \(m\)-element sets, with expanded Separation? Can these
+consequences distinguish different \(m\)?
+\end{question}
+A proof would require either a different obstruction model or a new reduction
+from finite-input choices to a useful uniform presentation. Arbitrary
+countable-set enumeration cannot simply be assumed.
+
+\begin{question}[The Separation complexity needed by the refinement]\label{swo:gcz:n3}
+Which finite collection, or syntactic fragment, of Separation instances involving
+the selector suffices for \cref{swo:gcz:thm:main}?
+\end{question}
+The proof gives explicit containing sets, but its defining formulas include
+well-order tests and unbounded quantification over class labels. Boundedness of
+the output is not a claim that every defining formula is \(\Delta_0\).
+Tracking the actual formulas is a feasible formalization project.
+
+\begin{question}[Reducing ordinary Choice]\label{swo:gcz:n4}
+How much of ordinary \(\AC\) can be removed from the localized
+nonconservativity theorem?
+\end{question}
+The positive uniformization proof only asks for well-orders of \(D\) and
+\(\mathcal C_D\); for \(D=\omega\), the latter can be coded by a fixed
+set of reals. A complete weakening must also recheck the base countermodel and
+the final cardinal obstruction, rather than dropping Choice from the proof
+statement alone.
+
+\begin{question}[Fragments that restore conservativity]\label{swo:gcz:n5}
+Which Replacement or Collection fragments suffice to restore conservativity for
+countable-input global selection with expanded Separation?
+\end{question}
+Collecting every definable \(\omega\)-family destroys the particular
+class-family obstruction used here. That observation does not establish a
+general conservativity theorem, which would require an expansion or forcing
+argument for arbitrary models of the chosen base.
+
+\begin{question}[Selectors beyond the countable threshold]\label{swo:gcz:n6}
+For well-ordered sets \(D\) and \(E\), when do restricted global selection
+on \(D\)-small and on \(E\)-small sets have the same original-language
+consequences over a fixed weak base?
+\end{question}
+Every bound containing \(\omega\) already gives our nonconservativity witness.
+The uniform presentation theorem supplies a common method of comparison but
+does not collapse the full hierarchy of consequences.
+
+\begin{question}[Definable-class versions of the spectra]\label{swo:gcz:n7}
+What replaces the rank-model classification when the admitted classes are
+\(\operatorname{Def}(V_\lambda,p)\), rather than all external subclasses?
+\end{question}
+External cardinal equality then need not produce an admitted bijection, and a
+cofinal witness to Replacement failure need not be definable from the permitted
+parameter. The full-class answers provide bounds and test cases, not an answer
+to this definability problem.
+
+\begin{question}[Abstract weak-theory equivalences]\label{swo:gcz:n8}
+Find a natural two-sorted extension of \(\ZC\) over which particular
+surreal coding principles characterize ordinal abstraction, an image-bounding
+scheme, or a restricted class-choice principle.
+\end{question}
+Our exact equivalences are semantic statements about \(\RM_\lambda\).
+Turning one into an abstract equivalence requires a proof for arbitrary models,
+including models without the full external rank hierarchy or all subclasses.
+
+\begin{question}[All set-like order types at a cutoff]\label{swo:gcz:n9}
+Classify the external order types of every internally set-like well-order of
+\(S_\lambda\), especially at singular and non-strong-limit heights.
+\end{question}
+We classify whether some such order has type \(\lambda\), and whether it
+can respect birthdays. A classification of all possible types requires control
+of the birthday bounds on every proper initial segment and may contain more
+information than cardinality alone.
+
+\begin{question}[The repository's global control schemes]\label{swo:gcz:n10}
+For each precise supported-prefix extension, small-net rigidity, and
+inverse-reconstruction scheme in ProveIt, identify the minimum selection,
+collapse, and image-bounding assumptions.
+\end{question}
+This is the remaining program behind \code{swo:ge:n10} (\cref{swo:ge:n10}). The domain-size
+criterion can test candidate image-bounding claims, while bounded trace
+compression may test claims that a uniform presentation is available. No
+equivalence for all three schemes has been proved here.
+
+\begin{question}[A verified bounded uniformization theorem]\label{swo:gcz:n11}
+Can a proof assistant verify \cref{swo:gcz:thm:uniform,swo:gcz:thm:compression} over an explicit
+Zermelo axiom interface, with no imported theorem using Replacement?
+\end{question}
+This is a concrete near-term target. Every newly formed set can carry its
+containing-set witness as part of the formal construction. A separate module
+can then instantiate the theorem with the Glazer obstruction interface.
+
+\begin{question}[Surreal transfer and parameter-sensitive choice]\label{swo:gcz:n12}
+Can the distinctions between uniform choice, ordinal coding, and admitted
+definability be used to sharpen the obstruction to definable transfer expansions
+of \(\No\)?
+\end{question}
+Hamkins's surreal transfer question and Glazer's contribution to its discussion
+are a direct further intersection \cite{gczSurrealTransfer}. Our results concern
+weak foundations and full-class rank models. They do not settle transfer in
+\(\ZFC\) with arbitrary set parameters; a solution would require a separate
+definability or forcing argument.
+
+\merge\ Status of source~31's questions, 3 October 2026. All twelve are
+proposed continuations. \Cref{swo:gcz:n9} is answered at strongly inaccessible
+heights by source~12's \cref{swo:st:thm:model}~(ii): there every internally
+set-like global well-order of $\No_{<\kappa}=S_\kappa$ has external type $\kappa$;
+elsewhere it is open. \Cref{swo:gcz:n10} restates the open remainder of
+source~28's \cref{swo:ge:n10}, item~(a) below. \Cref{swo:gcz:n11} is a
+formalization proposal. \Cref{swo:gcz:n12} concerns Hamkins's surreal transfer
+question \cite{gczSurrealTransfer}, not the universality question of
+\cref{swo:sec:answers}~(f). The others are open; this write found no answer to
+them elsewhere in this report.
+
+% ---- hand chunk q31_status (batch 89)
+\subsection{Earlier questions answered by source 31 (dated notes, 3 October 2026)}\label{swo:gcz:sec:qstatus}
+
+\merge\ Dated notes in the form of \cref{swo:b83:sec:qstatus}; where the
+question indexes of \cref{swo:sec:questions,swo:b83:sec:questions} say otherwise,
+these notes supersede them. \Cref{swo:gcz:sec:status} gives the same status with
+the theorems in context.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Source~28's \cref{swo:ge:n10}, separating Class Replacement from
+uniform set choice}: answered in part, for the mechanisms rather than for the
+three named schemes. Countable selection with expanded Separation is
+nonconservative over $\ZC$ and $\ZC_{\mathrm F}$, conditional on the Glazer
+interface (\cref{swo:gcz:thm:main,swo:gcz:sub:glazerinput}), and conservative
+without expanded Separation (\cref{swo:gcz:prop:nosep}); in the full-class rank
+models, global choice, ordinal coding and image bounding have different exact
+thresholds (\cref{swo:gcz:thm:bare,swo:gcz:thm:birthday,swo:gcz:thm:universal,swo:gcz:thm:OA,swo:gcz:lem:domain,swo:gcz:thm:replacement,swo:gcz:cor:decompose}).
+Open: the weakest assumptions for the supported-prefix extension, small-net
+rigidity and inverse-reconstruction schemes themselves (\cref{swo:gcz:n10}). The
+sibling questions of sources~24 and~26 on the same resources,
+\cref{swo:pc:n13.9,swo:nb:n14.10}, stay open.
+\item \emph{Questions not affected}: those listed in
+\cref{swo:b83:sec:qstatus}~(q), including Hamkins's question on universality
+and choice.
+\end{enumerate}
+
 % ---- hand chunk conclusions_head
 \section{The sources' conclusions}\label{swo:sec:conclusions}
 
@@ -52502,6 +54466,11 @@ exactly the factorial blocks of a finite final segment; their condensation
 is dense without becoming an ordinary class of all class orders. Across
 all these conclusions, typing the objects and bounding the recursion
 histories are part of the mathematics, not merely notational cautions.
+
+% ---- hand chunk conclusions89 (batch 89)
+\merge\ (3 October 2026, batch~89.) Source~31 has no conclusion section; its
+closing section, on the consequences for this report's questions and for
+formalization, is printed in Part~XV (\cref{swo:gcz:sec:formal}).
 
 % ---- source 11, lines 2598-2658
 \section{Results, assumptions, and verification status}
@@ -52886,6 +54855,11 @@ pages inspected. Those checks establish document consistency and
 layout; the mathematical validation remains the conventional proofs
 and their independent review. The attached package makes no claim of
 a formal kernel certificate or a literature-priority result.
+
+% ---- hand chunk ledgers89 (batch 89)
+\merge\ (3 October 2026, batch~89.) Source~31's axiom ledger and its status of
+the principal assertions close Part~XV
+(\cref{swo:gcz:app:ledger,swo:gcz:app:sources}).
 
 % ---- hand chunk appendix_head
 \appendix
@@ -53340,6 +55314,27 @@ includes a README and a research-status note, with SHA-256 checksums of
 its payload. It does not bundle fonts or claim to reproduce the separate
 source report.
 
+% ---- hand chunk appA89 (batch 89)
+\subsection{Source 31: delivery and reproducibility}\label{swo:gcz:app:delivery}
+
+\merge\ (3 October 2026.) Source~31 was delivered as
+\path{global_choice_surreal_coding.zip} (arrival \code{7c0f2d9f9}) with three
+files: the manuscript \path{global_choice_surreal_coding.tex} (1,547 lines,
+70,676 bytes), its 21-page PDF (400,246 bytes) and \path{README.txt} (2,590
+bytes). None is shipped; the placement \code{23adb85f9} staged nothing, and all
+three are recoverable with
+\code{git show 7c0f2d9f9:docs/incoming/global\_choice\_surreal\_coding.zip}.
+Source~31 ships no program and no data, by design
+(\cref{swo:gcz:sub:noexperiment}). Its README lists the main results, builds the article with
+\code{latexmk -pdf -interaction=nonstopmode -halt-on-error
+global\_choice\_surreal\_coding.tex} (no images, bibliography database, download
+or shell escape), says that the supplied PDF was built with pdf\TeX, checked for
+unresolved references and layout warnings and visually reviewed, records the
+inspected commit and path of this report, and states that ``No repository files
+were modified''. Rebuilt from a fresh extraction with MiKTeX on 3~October 2026,
+the delivered manuscript gives 21 pages with no warning. Part~XV is that
+manuscript with the changes listed in \cref{swo:gcz:sub:batch89}.
+
 % ---- hand chunk app_checks
 \section{The finite checks as shipped}\label{swo:app:checks}
 
@@ -53490,6 +55485,10 @@ and \path{code/15-blocks-build.sh}; source~16's \code{finite\_checks.py},
 PDFs, their delivery READMEs and the checksum manifests are not shipped; they
 remain in the arrival commits (\cref{swo:sub:batch81}).
 \end{sloppypar}
+
+% ---- hand chunk checks89 (batch 89)
+\merge\ (3 October 2026, batch~89.) Source~31 ships no program
+(\cref{swo:gcz:app:delivery}).
 
 % ---- hand chunk app_abstracts_head
 \section{The other sources' title pages and abstracts}\label{swo:app:abstracts}
@@ -54284,6 +56283,55 @@ and a prioritized research agenda.
 AI-assisted proof review. This is not a machine-checked formalization or an
 assertion of historical priority. Inherited results are identified separately
 from the continuations proved here.
+\end{quote}
+
+% ---- hand chunk abs_b89 (batch 89)
+\subsection*{Source 31}\phantomsection\label{swo:gcz:app:abstract}
+
+\merge\ The title page, abstract and scope statement of source~31 (batch-89
+manuscript~01). The results it announces are printed in Part~XV; the summary
+is kept for the record, with this report's notation
+(\cref{swo:gcz:sub:notation89}). The title page reads ``Research article
+prepared for Vladimir Reshetnikov'' and is dated 4~October 2026.
+
+\paragraph{Source 31.} \emph{Countable Global Choice and Surreal Coding over
+Zermelo Set Theory: A localized nonconservativity theorem and exact rank-model
+spectra}.
+
+% ---- source 31 (batch-89 manuscript 01), lines 75-100
+We investigate an intersection of Elliot Glazer's work on weak choice principles
+and ProveIt's research on surreal numbers and class well-orders. The first result
+is a refinement of Glazer's nonconservativity theorem: a global selector required
+to choose only from nonempty countable sets already produces new set-theoretic
+consequences over Zermelo set theory with Choice, provided Separation is extended
+to the selector. Selection on exactly countably infinite sets suffices as well.
+The additional argument is a bounded uniformization theorem. It converts a
+selector on sets embeddable into a fixed well-ordered set into a uniform assignment
+of injections into that set, without Replacement or ordinal collapse. A general
+incidence-coding theorem then connects this uniformization to Glazer's published
+countermodel.
+
+The second part studies the full-class structures
+\(\RM_\lambda=(V_\lambda,\Pow(V_\lambda))\), for limit ordinals
+\(\lambda>\omega\). Global choice and set-like well-orders exist at every such
+height. Nevertheless, ordinal enumeration of binary sign sequences, enumeration
+in birthday order, universal coding of sets by sign sequences, and full Class
+Replacement have different exact thresholds: respectively
+\(2^{<\kappa}=\kappa\), strong-limit cardinality, a beth fixed point, and strong
+inaccessibility. We also determine replacement on each individual set domain
+and the external cardinalities of internal proper classes. These results isolate
+several mechanisms behind the usual global-choice equivalences. Full proofs,
+strict separation examples, an axiom audit, and twelve further research questions
+are included. The article claims a proved refinement and a structural synthesis;
+it makes no claim of resolving unrestricted surreal transfer or of establishing
+historical priority for every result.
+
+% ---- source 31, lines 103-106
+\begin{quote}\small
+\textbf{Scope.} Conventional mathematical proofs. No Lean or Rocq
+verification is claimed. The nonconservativity conclusion uses Glazer's
+countermodel theorem as an explicitly cited input. The rank-model classification
+is proved in an external \(\ZFC\) metatheory.
 \end{quote}
 
 % ---- hand chunk crosswalk_head
@@ -55642,6 +57690,65 @@ No. & Statement in source 30 & Printed here as\\
 \endgroup
 
 
+% ---- hand chunk crosswalk89 (batch 89; rows generated from source 31's statements)
+\merge\ (3 October 2026, batch~89.) Source~31 follows, with the same conventions.
+Its statement $k.m$ is printed as XV.$k.m$ (\cref{swo:gcz:part}); its research
+questions, numbered 1--12 in its own PDF, are printed in
+\cref{swo:gcz:sec:questions}.
+
+\subsection{Source 31}
+\begingroup\small
+\begin{longtable}{@{}p{0.11\textwidth}p{0.47\textwidth}p{0.34\textwidth}@{}}
+\toprule
+No. & Statement in source 31 & Printed here as\\
+\midrule\endhead
+3.1 & Lemma (Bounded well-order construction) & \Cref{swo:gcz:lem:thread}, p.~\pageref{swo:gcz:lem:thread}\\
+3.2 & Remark (Why ordinary iteration is insufficient) & \Cref{swo:gcz:rem:iteration}, p.~\pageref{swo:gcz:rem:iteration}\\
+3.3 & Theorem (Uniform presentation theorem) & \Cref{swo:gcz:thm:uniform}, p.~\pageref{swo:gcz:thm:uniform}\\
+3.4 & Remark (Uniformity is not compatibility under restriction) & \Cref{swo:gcz:n3.4}, p.~\pageref{swo:gcz:n3.4}\\
+3.5 & Corollary (Uniform countable enumeration) & \Cref{swo:gcz:cor:enumeration}, p.~\pageref{swo:gcz:cor:enumeration}\\
+4.1 & Theorem (Bounded trace compression) & \Cref{swo:gcz:thm:compression}, p.~\pageref{swo:gcz:thm:compression}\\
+4.2 & Corollary (Compression from a restricted selector) & \Cref{swo:gcz:cor:smallcompression}, p.~\pageref{swo:gcz:cor:smallcompression}\\
+5.1 & Theorem (Countable-input nonconservativity) & \Cref{swo:gcz:thm:main}, p.~\pageref{swo:gcz:thm:main}\\
+5.2 & Remark (Metatheory) & \Cref{swo:gcz:n5.2}, p.~\pageref{swo:gcz:n5.2}\\
+5.3 & Corollary (A single infinite input cardinality suffices) & \Cref{swo:gcz:cor:exactomega}, p.~\pageref{swo:gcz:cor:exactomega}\\
+5.4 & Corollary (Any fixed infinite bound) & \Cref{swo:gcz:n5.4}, p.~\pageref{swo:gcz:n5.4}\\
+5.5 & Proposition (An uninteracting selector is conservative) & \Cref{swo:gcz:prop:nosep}, p.~\pageref{swo:gcz:prop:nosep}\\
+6.1 & Proposition (Available axioms) & \Cref{swo:gcz:prop:rankbase}, p.~\pageref{swo:gcz:prop:rankbase}\\
+6.2 & Proposition (Choice orders without ordinal enumeration) & \Cref{swo:gcz:prop:allwo}, p.~\pageref{swo:gcz:prop:allwo}\\
+7.1 & Lemma (Size of the sign carrier) & \Cref{swo:gcz:lem:signcard}, p.~\pageref{swo:gcz:lem:signcard}\\
+7.2 & Theorem (Bare ordinal enumeration) & \Cref{swo:gcz:thm:bare}, p.~\pageref{swo:gcz:thm:bare}\\
+7.3 & Definition & \Cref{swo:gcz:n7.3}, p.~\pageref{swo:gcz:n7.3}\\
+7.4 & Theorem (Birthday enumeration threshold) & \Cref{swo:gcz:thm:birthday}, p.~\pageref{swo:gcz:thm:birthday}\\
+7.5 & Remark & \Cref{swo:gcz:n7.5}, p.~\pageref{swo:gcz:n7.5}\\
+8.1 & Lemma (Growth facts) & \Cref{swo:gcz:lem:growth}, p.~\pageref{swo:gcz:lem:growth}\\
+8.2 & Theorem (Universal coding threshold) & \Cref{swo:gcz:thm:universal}, p.~\pageref{swo:gcz:thm:universal}\\
+8.3 & Definition (Ordinal abstraction) & \Cref{swo:gcz:n8.3}, p.~\pageref{swo:gcz:n8.3}\\
+8.4 & Theorem (Ordinal abstraction threshold) & \Cref{swo:gcz:thm:OA}, p.~\pageref{swo:gcz:thm:OA}\\
+9.1 & Definition & \Cref{swo:gcz:n9.1}, p.~\pageref{swo:gcz:n9.1}\\
+9.2 & Lemma (The domain-size criterion) & \Cref{swo:gcz:lem:domain}, p.~\pageref{swo:gcz:lem:domain}\\
+9.3 & Theorem (Replacement thresholds) & \Cref{swo:gcz:thm:replacement}, p.~\pageref{swo:gcz:thm:replacement}\\
+9.4 & Corollary (Separating the two requirements) & \Cref{swo:gcz:cor:decompose}, p.~\pageref{swo:gcz:cor:decompose}\\
+9.5 & Remark (Ordinal domains are not all well-orderable domains) & \Cref{swo:gcz:n9.5}, p.~\pageref{swo:gcz:n9.5}\\
+9.6 & Remark (Full classes versus definable classes) & \Cref{swo:gcz:n9.6}, p.~\pageref{swo:gcz:n9.6}\\
+10.1 & Theorem (Proper-class cardinal spectrum) & \Cref{swo:gcz:thm:classsizes}, p.~\pageref{swo:gcz:thm:classsizes}\\
+10.2 & Corollary (Two different limitation-of-size conditions) & \Cref{swo:gcz:cor:limitation}, p.~\pageref{swo:gcz:cor:limitation}\\
+1 & Question (Global selection from finite sets) & \Cref{swo:gcz:n1}, p.~\pageref{swo:gcz:n1}\\
+2 & Question (Pairs and bounded finite cardinalities) & \Cref{swo:gcz:n2}, p.~\pageref{swo:gcz:n2}\\
+3 & Question (The Separation complexity needed by the refinement) & \Cref{swo:gcz:n3}, p.~\pageref{swo:gcz:n3}\\
+4 & Question (Reducing ordinary Choice) & \Cref{swo:gcz:n4}, p.~\pageref{swo:gcz:n4}\\
+5 & Question (Fragments that restore conservativity) & \Cref{swo:gcz:n5}, p.~\pageref{swo:gcz:n5}\\
+6 & Question (Selectors beyond the countable threshold) & \Cref{swo:gcz:n6}, p.~\pageref{swo:gcz:n6}\\
+7 & Question (Definable-class versions of the spectra) & \Cref{swo:gcz:n7}, p.~\pageref{swo:gcz:n7}\\
+8 & Question (Abstract weak-theory equivalences) & \Cref{swo:gcz:n8}, p.~\pageref{swo:gcz:n8}\\
+9 & Question (All set-like order types at a cutoff) & \Cref{swo:gcz:n9}, p.~\pageref{swo:gcz:n9}\\
+10 & Question (The repository's global control schemes) & \Cref{swo:gcz:n10}, p.~\pageref{swo:gcz:n10}\\
+11 & Question (A verified bounded uniformization theorem) & \Cref{swo:gcz:n11}, p.~\pageref{swo:gcz:n11}\\
+12 & Question (Surreal transfer and parameter-sensitive choice) & \Cref{swo:gcz:n12}, p.~\pageref{swo:gcz:n12}\\
+\bottomrule
+\end{longtable}
+\endgroup
+
 % ---- hand chunk bibliography
 
 \begin{thebibliography}{99}
@@ -56041,7 +58148,7 @@ Cited by source~27 (its Section~4).
 \bibitem{HamkinsRecursionPrinciple}
 J.~D. Hamkins,
 ``Transfinite recursion as a fundamental principle in set theory,''
-author's expository article, 2014; cited by source~25. Not the 2017
+author's expository article, 2014; cited by sources~25 and~31. Not the 2017
 exposition \cite{HamkinsRecursion}.
 \url{https://jdh.hamkins.org/transfinite-recursion-as-a-fundamental-principle-in-set-theory/}.
 
@@ -56078,6 +58185,61 @@ the finite condensation on linear orders}, arXiv:2505.01936, version~4,
 16 September 2025. \url{https://arxiv.org/abs/2505.01936}.
 Cited by source~23 as context for finite condensation only; a different paper
 from \cite{BrownSuarez}.
+
+% ---- hand chunk bib89 (batch 89: entries cited by Part XV and the batch-89 front and back matter)
+\bibitem{gczAtPin}
+This report, \path{Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/article.tex},
+at the revision read by source~31: commit \texttt{2b7b388ba}, blob
+\texttt{05807d292} (the text of the batch-83 write, Parts~I--XIV). Source~31
+cites its labels \texttt{swo:cf:choice}, \texttt{swo:st:thm:model} and
+\texttt{swo:ge:n10}, and links the file at that commit on GitHub,
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/2b7b388ba81a3355b19a7c2d2fe797e92f572355/Algebra/SurrealNumbers/docs/foundations-and-computation/surreal-well-orders/article.tex}.
+
+\bibitem{gczGlazer}
+Elliot Glazer.
+\emph{Global choice is not conservative over local choice for Zermelo set theory}.
+arXiv:2312.11902, version 3, 7 January 2024.
+\url{https://arxiv.org/abs/2312.11902}.
+The input used by source~31 is the obstruction in Propositions 3.8 and 4.11.
+
+\bibitem{gczEnayat}
+Ali Enayat.
+\emph{On the Leibniz--Mycielski axiom in set theory}.
+Fundamenta Mathematicae \textbf{181} (2004), 215--231.
+\url{https://www.impan.pl/shop/publication/transaction/download/product/88387}.
+Cited by source~31 for global choice on finite sets (Corollary 2.6).
+
+\bibitem{gczRin}
+Benjamin Rin.
+\emph{Transfinite recursion and computation in the iterative conception of set}.
+Synthese \textbf{192} (2015), 2437--2462; published online 17 October 2014.
+\url{https://doi.org/10.1007/s11229-014-0560-9}.
+
+\bibitem{gczFreireHamkins}
+Alfredo Roque Freire and Joel David Hamkins.
+Result described by Hamkins in
+\emph{The axiom of well-ordered replacement is equivalent to full replacement
+over Zermelo + foundation}, 17 August 2018.
+\url{https://jdh.hamkins.org/replacement-for-well-ordered-sets-is-equivalent-to-full-replacement/}.
+
+\bibitem{gczCarneiro}
+Mario Carneiro and contributors.
+\emph{The order isomorphism theorem without Replacement}.
+Mathematics Stack Exchange, question and discussion, 2015.
+\url{https://math.stackexchange.com/questions/1338126/the-order-isomorphism-theorem-without-replacement}.
+
+\bibitem{gczBethDiscussion}
+B2C, Asaf Karagila, and contributors.
+\emph{How much Replacement does this axiom provide?}
+MathOverflow, 2019.
+\url{https://mathoverflow.net/questions/331392/how-much-replacement-does-this-axiom-provide}.
+Background on beth fixed points and weak set-existence principles.
+
+\bibitem{gczSurrealTransfer}
+Joel David Hamkins; answers and discussion by James E. Hanson and Elliot Glazer.
+\emph{Do the surreal numbers enjoy the transfer principle in ZFC?}
+MathOverflow, 2024.
+\url{https://mathoverflow.net/questions/483108/do-the-surreal-numbers-enjoy-the-transfer-principle-in-zfc}.
 
 \end{thebibliography}
 \end{document}
