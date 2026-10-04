@@ -3408,6 +3408,18 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
+The [recoded one-program U21 source](residue_affine_sparse_recoded468.md)
+reaches **448 certificate /468=171M+297A polynomial operations**, retaining
+67 positive witnesses, seven comparisons and degree at most5091.
+New injective state codes have maximum41 and halt code14. Their paid
+expressions reuse the unchanged389-row base and save4M at the cost of1A
+relative to471. The [independent review](review_residue_affine_sparse_recoded468.md)
+checks the actual36-edge table, all control coefficients, five paid basis
+vectors and complete finalizer correction. Native typing precedes the code
+comparison, proving identical supplied positive zeros on the same one-program
+interface E=3^e, ordinary x and B=64(E+x+eta). The full polynomials differ
+off zero. Fresh author/review normal/optimized checks pass; universal84 is unchanged.
+
 The [U21 control-pair successor](residue_affine_sparse_shared471.md)
 reaches **451 certificate / 471=175M+296A polynomial operations**, with
 seven comparisons, 67 positive witnesses, one fixed program parameter and
@@ -4963,6 +4975,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Recoded one-program U21](residue_affine_sparse_recoded468.md) | **448 certificate /468=171M+297A**,7 comparisons,67 witnesses,one fixed program,degree at most5091. | Bounded injective codes and paid selector bases save3 operations from471; same supplied positive zeros, explicit full-output correction. |
 | [Actual positive-complement86 collapse](complete75_positive_complement86_all_input_collapse.md) | The specific86-operation candidate accepts every positive input on every actual modified compiler slice. | Full19-positive-coordinate existence proof and exact rejecting-program corollary; Dirichlet/CRT/rotation plus complete normalized lift. No giant zero materialized;75/87 unchanged. |
 | [Two more paid U21 selector pairs](korec_packed_selector_sharing378.md) | **378=141M+237A**,50w,one program,degree at most21549; two-program377/40706. | Two exact1A prefix replacements retain complete integer polynomials, supplied coordinates and degree dictionaries. |
 | [Shifted U21 factor frontier](korec_packed_selector_reuse_partitions.md) | **386/7704 with50w or389/3896 with51w**; two-program385/14552 or388/7352. | All68 parent group-count winners lose2A; unchanged weights transport exact finite optima and attained floors. |

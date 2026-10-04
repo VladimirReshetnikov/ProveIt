@@ -3590,6 +3590,19 @@ historical87/degree203 theorem, weakened86 and independent-gamma87.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
 >
+> The [recoded one-program U21 source](residue_affine_sparse_recoded468.md)
+> reaches **448 certificate /468=171M+297A polynomial operations**, retaining
+> 67 positive witnesses, seven comparisons and degree at most5091.
+> New injective state codes have maximum41 and halt code14. Their paid
+> expressions reuse the unchanged389-row base and save4M at the cost of1A
+> relative to471. The [independent review](review_residue_affine_sparse_recoded468.md)
+> checks the actual36-edge table, all control coefficients, five paid basis
+> vectors and complete finalizer correction. Native typing precedes the code
+> comparison, proving identical supplied positive zeros on the same one-program
+> interface E=3^e, ordinary x and B=64(E+x+eta). The full polynomials differ
+> off zero. Fresh author/review normal/optimized checks pass; universal84 is unchanged.
+>
+>
 > The [U21 control-pair successor](residue_affine_sparse_shared471.md)
 > reaches **451 certificate / 471=175M+296A polynomial operations**, with
 > seven comparisons, 67 positive witnesses, one fixed program parameter and
