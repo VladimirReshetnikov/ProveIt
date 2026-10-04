@@ -4104,6 +4104,19 @@ Program counter, conditional jumps, acceptance and the ordinary-input
 morphism remain unpaid. Independent review adds192 full identities
 (96 signed) and128 physical prefixes/1,616 steps, including355 left moves.
 
+The [ant coefficient/fusion intake](review_ant47_48_intake.md) reviews the
+later complete source grammars separately from their inherited simulation
+proofs. Two checked refinements share [the endpoint power](periodic_ant_endpoint_reuse48.md)
+and [six rotated occurrence polynomials](ant48_rotated_occurrence_sharing.md),
+saving **38,155 operations** together. The [independent joint review](review_periodic_ant_sharing48.md)
+checks both all-value identities and their disjoint composition. The emitted
+33-row endpoint and7,886-row rotation component pass normal/optimized replay.
+Derived strict-literal complete counts become **14,620,779 /14,620,789** for
+two/one positive inputs, with inherited465/467 witnesses and degree2,304,000.
+The full multimillion-row successor stream was not regenerated or rehashed;
+its unchanged prefix and simulation theorem remain inherited. The established
+universal polynomial count remains84.
+
 The [toggle-tape component](langton_ant_packed_toggle_tape.md) uses four
 lanes at Scale=B*P^4 with B=4D, shared high packing suffixes, and
 B(T+H-2C)+T0=T+P*Tt. It costs105=48M+57A certificate,18eq28w and
