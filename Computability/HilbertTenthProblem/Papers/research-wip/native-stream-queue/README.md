@@ -67,6 +67,18 @@ this candidate. The [independent review](review_complete83_independent_gamma_sco
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
 
+The [main-root-gap80 chart](complete80_main_root_gap_collapse.md)
+replaces five main-root producers by one positive root-gap addition, giving
+**80=45M+35A**,18 positive witnesses and exact degree207. It is refuted:
+**every positive input** has a full positive zero on each authentic fixed
+compiler slice. An arbitrary-large-X half-binomial construction solves
+transport while retaining both ratio bounds and the first-index/input/
+auxiliary factors. The [independent review](review_complete80_main_root_gap_collapse.md)
+checks the all-input construction, all80 rows,80 additional whole-source
+maps and four complete degree expansions; normal/optimized receipts pass.
+This chart drops the main exponent congruence and is distinct from the
+unresolved independent-gamma83. The universal bound remains84.
+
 The [computed-wire census](complete83_computed_gamma_obstruction.md)
 rejects **all72 acyclic existing-wire replacements** for the main quotient,
 including later producers that can be rescheduled. Every full source costs
