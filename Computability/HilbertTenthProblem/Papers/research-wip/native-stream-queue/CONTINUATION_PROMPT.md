@@ -18,6 +18,19 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [independent-gamma83 scout](complete83_independent_gamma_scout.md)
+> removes the private main/input quotient sum from the actual84 source,
+> giving **83=47M+36A,18 positive witnesses, exact degree187**. Its
+> **ordinary-input language remains unresolved**. The complete signed
+> pullback preserves every parent positive zero, while an exact two-branch
+> Pell/order criterion characterizes the remaining input fiber. Infinitely
+> many full same-input zeros defeat the literal positive inverse without
+> showing a falsely accepted input. Native rank and the original bound
+> remain present, so the two refuted83 constructions below do not settle
+> this candidate. The [independent review](review_complete83_independent_gamma_scout.md)
+> and fresh normal/optimized receipts check the full source and criterion.
+> The established universal minimum remains **84 operations**.
+>
 > The [local producer scout](complete84_local_producer_scout.md) finds no
 > saving among zero-, one- or two-operation replacements at70 actual84
 > producer rows. It enumerates4741 aliases and719027 inner expressions;
