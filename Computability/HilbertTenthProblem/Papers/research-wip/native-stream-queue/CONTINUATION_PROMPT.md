@@ -51,6 +51,17 @@
 > native residue filters, with no prescribed-history realization or bound on
 > the full order gcd. The 83-operation language remains unresolved.
 >
+> The [genuine-history ternary control](complete83_gamma_native_ternary_escape.md)
+> constructs, for every accepted input, actual positive compiler witnesses
+> with **a=0 mod9 and v3(m)<=1**. Moving permitted upper dummy bits
+> preserves the computation and five-adic temporal alignment; a new q/2
+> margin proves the original slack remains positive before fresh Pell
+> witnesses are rebuilt. The [independent review](review_complete83_gamma_native_ternary_escape.md)
+> checks masks, population, congruences and the native converse; normal and
+> optimized replays pass. Thus the earlier v3(m)=2 exclusion is avoidable
+> on accepting histories. Other order factors remain uncontrolled: neither
+> a false-input alias nor a universal83 bound has been proved.
+>
 > The [native ternary exclusion](complete83_gamma_native_ternary_exclusion.md)
 > gives an explicit digit class with **v3(m)=2 exactly**, so both gamma83
 > power tests fail there for every number of squarings. The [independent review](review_complete83_gamma_native_ternary_exclusion.md)
