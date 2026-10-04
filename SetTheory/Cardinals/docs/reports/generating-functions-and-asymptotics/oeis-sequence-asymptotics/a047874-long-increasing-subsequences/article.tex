@@ -44,8 +44,13 @@
 \newcommand{\eps}{\varepsilon}
 \lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
  frame=single,rulecolor=\color{ink!30},showstringspaces=false}
+% Dated notes added when the manuscript was written into ProveIt (batch 85).
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small
+ \noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 
 \begin{document}
+\hypersetup{pageanchor=false}% [write] title page resets the page counter
 \begin{titlepage}
 \thispagestyle{empty}
 \noindent{\color{accent}\large\textsc{Enumerative combinatorics \quad / \quad OEIS research}}
@@ -94,6 +99,7 @@ specific previously guessed recurrences in the one-third sector are not
 certified here; the theorem proved is their underlying existence statement.
 Priority beyond the sources checked is not asserted.}}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \begingroup
 \small
@@ -106,9 +112,9 @@ Priority beyond the sources checked is not asserted.}}
 \subsection{The arrays and the question}
 For $N\ge0$ and $k\ge1$, set
 \begin{align}
- A(N,k)&=\#\{\pi\in S_N:\LIS(\pi)=k\},\label{eq:Adef}\\
+ A(N,k)&=\#\{\pi\in S_N:\LIS(\pi)=k\},\label{lis:eq:Adef}\\
  T(N,k)&=\#\{\pi\in S_N:\LIS(\pi)\ge k\}.
- \label{eq:Tdef}
+ \label{lis:eq:Tdef}
 \end{align}
 Here an increasing subsequence need not occupy adjacent positions. These
 are the exact-length array \oeis{A047874} and the upper-tail array
@@ -116,7 +122,7 @@ are the exact-length array \oeis{A047874} and the upper-tail array
 $A(0,k)=T(0,k)=0$ for $k\ge1$, and both arrays vanish for $k>N$.
 They satisfy
 \begin{equation}
- A(N,k)=T(N,k)-T(N,k+1).\label{eq:difference}
+ A(N,k)=T(N,k)-T(N,k+1).\label{lis:eq:difference}
 \end{equation}
 The diagonal $T(2n,n)$, with its separately defined empty-permutation value
 $a_0=1$, is \oeis{A269021}; $A(2n,n)$, with the same convention at zero,
@@ -129,7 +135,7 @@ directions. In particular, there are nonzero operators of the forms
 \begin{equation}
  \sum_{i=0}^{d}p_i(N,k)E_N^i,
  \qquad \sum_{i=0}^{e}q_i(N,k)E_k^i,
- \qquad p_i,q_i\in\Q[N,k],\label{eq:pure}
+ \qquad p_i,q_i\in\Q[N,k],\label{lis:eq:pure}
 \end{equation}
 where $E_NF(N,k)=F(N+1,k)$ and $E_kF(N,k)=F(N,k+1)$.
 Orders and degrees do not grow when $N$ and $k$ vary.
@@ -159,21 +165,21 @@ parts by zeros and define
  Y_k(\lambda)=\#\{i\ge1:\lambda_i-i\ge k-1\},
  \qquad
  C_j(N,k)=\sum_{\lambda\vdash N}(f^\lambda)^2
-                   \binom{Y_k(\lambda)}{j}.\label{eq:moments}
+                   \binom{Y_k(\lambda)}{j}.\label{lis:eq:moments}
 \end{equation}
 The sum defining $Y_k$ is finite because $k\ge1$.
 
-\begin{theorem}[Finite-moment holonomic extensions]\label{thm:main}
+\begin{theorem}[Finite-moment holonomic extensions]\label{lis:thm:main}
 For every fixed $j\ge1$, $C_j(N,k)$ is a holonomic bivariate array.
 For fixed $R\ge1$, define
 \begin{align}
- T_R(N,k)&=\sum_{j=1}^{R}(-1)^{j+1}C_j(N,k),\label{eq:TR}\\
- A_R(N,k)&=T_R(N,k)-T_R(N,k+1).\label{eq:AR}
+ T_R(N,k)&=\sum_{j=1}^{R}(-1)^{j+1}C_j(N,k),\label{lis:eq:TR}\\
+ A_R(N,k)&=T_R(N,k)-T_R(N,k+1).\label{lis:eq:AR}
 \end{align}
 Both arrays are globally holonomic and
 \begin{equation}
  T_R(N,k)=T(N,k),\qquad A_R(N,k)=A(N,k)
- \quad\text{if}\quad N<(R+1)(k+R).\label{eq:sharpregion}
+ \quad\text{if}\quad N<(R+1)(k+R).\label{lis:eq:sharpregion}
 \end{equation}
 Consequently, for every fixed $r\ge2$, the arrays $A$ and $T$ are
 D-finite throughout $N\le rk$, $k\ge1$: take $R=r-1$.
@@ -191,33 +197,33 @@ $r$, not on $N$. At the same time, it does \emph{not} prove global
 holonomicity of the original array $A$: the required $R$ is unbounded
 as $k/N$ tends to zero.
 
-\begin{theorem}[Uniform tail expansion]\label{thm:asymptotic}
+\begin{theorem}[Uniform tail expansion]\label{lis:thm:asymptotic}
 Put $m=N-k$, $\rho=m/k$, and
 \begin{equation}
  B(N,k)=\frac{(N!)^2}{(k!)^2(N-k)!}.
- \label{eq:base}
+ \label{lis:eq:base}
 \end{equation}
 For every compact interval $I\subset(0,\infty)$ and integer $M\ge0$,
 uniformly over integer pairs with $k\to\infty$ and $\rho\in I$,
 \begin{equation}
  \frac{T(N,k)}{B(N,k)}
  =e^{-2\rho}\left(\sum_{d=0}^{M}\frac{c_d(\rho)}{k^d}
-                    +O_{I,M}(k^{-M-1})\right).\label{eq:allorders}
+                    +O_{I,M}(k^{-M-1})\right).\label{lis:eq:allorders}
 \end{equation}
 The coefficients are explicitly computable polynomials, $c_0=1$,
 $\deg c_d\le2d$, and
 \begin{align}
- c_1(\rho)&=2\rho-\rho^2,\label{eq:c1}\\
- c_2(\rho)&=\frac{\rho(3\rho^3-20\rho^2+42\rho+2)}6,\label{eq:c2}\\
+ c_1(\rho)&=2\rho-\rho^2,\label{lis:eq:c1}\\
+ c_2(\rho)&=\frac{\rho(3\rho^3-20\rho^2+42\rho+2)}6,\label{lis:eq:c2}\\
  c_3(\rho)&=-\frac{\rho(\rho^5-14\rho^4+73\rho^3-158\rho^2
-                                  +26\rho+30)}6.\label{eq:c3}
+                                  +26\rho+30)}6.\label{lis:eq:c3}
 \end{align}
-An all-orders coefficient rule is given in Section~\ref{sec:coefficients}.
+An all-orders coefficient rule is given in Section~\ref{lis:sec:coefficients}.
 \end{theorem}
 
 These are Poincar\'e asymptotic expansions with a remainder for every
 fixed truncation order, not a claim of convergence of the infinite
-series. Section~\ref{sec:firsterror} identifies a distinct,
+series. Section~\ref{lis:sec:firsterror} identifies a distinct,
 beyond-all-algebraic-orders contribution from diagrams with a second
 long shifted row. We do not claim a full expansion of that exponentially
 small contribution.
@@ -245,6 +251,101 @@ formula, and holonomic summation. The remaining reductions, cutoff
 analysis, finite-sum formulas, and asymptotic error estimates are proved
 in the article. The package includes no claim of minimal recurrence order.
 
+\begin{writenote}[Added 3 October 2026, batch~85]
+\emph{Provenance.} This report is a single manuscript, printed in full:
+manuscript~08 of batch~85 of ProveIt's incoming-reports intake, delivered
+as the archive \texttt{LIS\_\allowbreak fixed\_\allowbreak
+sector\_\allowbreak research\_\allowbreak package.zip} (wrapper directory
+\texttt{LIS\_\allowbreak fixed\_\allowbreak sector\_\allowbreak
+research/}) in commit \texttt{9d6968c8a}, and placed in commit
+\texttt{ddf8df5d5} in the research-report collection, among the
+OEIS-sequence asymptotics reports, as the report
+\texttt{a047874-\allowbreak long-\allowbreak increasing-\allowbreak
+subsequences}, named after the array whose sector question it answers.
+Its pin is the revision \texttt{6bf7f30d0} quoted above. The title page
+and the PDF author field read ``ChatGPT'': the package names ChatGPT as
+the tool that wrote it and names no human author. Every label now carries
+the prefix \texttt{lis:}; no statement, proof or number of the manuscript
+was changed.
+
+\emph{What Kauers and Wang state.} The arXiv abstract of \cite{KW} does
+not mention the sector question, so on 3~October 2026 the intake read the
+HTML text of arXiv:2609.02220v1 (licensed CC~BY~4.0). Its Section~1
+defines ``D-finite inside a region'' as the existence of a D-finite array
+coinciding with the original one there (the convention used above),
+proves two bivariate recurrences valid for $n/2\le k$ (their Theorem~1,
+for their $a_{n,k}$, which is $A(N,k)$ here) and derives
+Conjecture~17 of \cite{KK} from them. At the end of their Section~2,
+after displaying guessed recurrences of higher order and degree for
+$n/3<k<n/2$, they write: ``We suspect that for every $r=2,3,\dots$, the
+sequence $a_{n,k}$ is D-finite in the range $k\geq n/r$''; they add that
+this would not give D-finiteness for all $k\ge0$, and hope for a uniform
+approach to all such slices. So the statement is an informal conjecture,
+not a numbered one; ``the fixed-sector existence conjecture'' is this
+manuscript's name for it. Its content is exactly the sector assertion of
+Theorem~\ref{lis:thm:main} ($k\ge n/r$ is $N\le rk$). For $r=2$ the
+D-finiteness is already Kauers and Wang's Theorem~1, with explicit
+recurrences; there Theorem~\ref{lis:thm:main} is only a second route to
+existence. The new content is every $r\ge3$ and the affine cutoff
+\eqref{lis:eq:sharpregion}. Kauers and Wang's guessed $r=3$ operators and
+all minimal orders remain uncertified (Section~4.3).
+
+\emph{Review status.} Nothing here is refereed or formalized. The
+holonomic-closure step of Section~3.4 is the step most in need of
+independent review; see the note there. The intake checked the finite
+identities independently: a separate hook-length program reproduced
+\eqref{lis:eq:C1sum} for all $N\le14$, $1\le k\le N+1$, the truncation
+identity \eqref{lis:eq:sharpregion} and the first failure
+\eqref{lis:eq:firstfailure} for $R=1,2,3$ in that range, and the
+diagonal values of the table in Section~9.2 for $n\le6$.
+
+\emph{Repository.} The statement above that a targeted search ``did not
+surface an A269021 report'' is true at the pin and was confirmed at
+placement: no other file of ProveIt treats A047874, A214152, A269021 or
+A267433, and no Lean or Rocq development treats Young tableaux or
+longest increasing subsequences. Other conjectures of \cite{KK} are
+treated in the collection reports
+\texttt{enumerative-\allowbreak combinatorics/\allowbreak
+a181280-\allowbreak binary-\allowbreak matrix-\allowbreak formula}
+(Conjecture~20), \texttt{enumerative-\allowbreak combinatorics/\allowbreak
+a195806-\allowbreak hexagonal-\allowbreak lattice} (Conjecture~11) and
+Part~IV of \texttt{a215561-\allowbreak fixed-\allowbreak
+composition-\allowbreak excursions} (Conjecture~15); Conjecture~17 is
+Kauers and Wang's, not this report's. The batch-85 sibling
+\texttt{a181199-\allowbreak shifted-\allowbreak rectangles} treats
+fixed-height shifted rectangles. The rectangle formula
+\eqref{lis:eq:rectanglehook} is the classical hook-length count, printed
+also as \texttt{t2:eq:tableaux} in the Transseries volume
+\texttt{Combinatorial\_\allowbreak Transseries\_\allowbreak Inverses}.
+
+\emph{Notation.} No symbol was renamed. Some letters carry two meanings:
+\begin{center}\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.39\textwidth}@{}}
+\toprule
+Symbol & Meaning here & Other meaning, or tempting false reading\\
+\midrule
+$A(N,k)$, $T(N,k)$ & exact-length and tail arrays (A047874, A214152) &
+Kauers and Wang write $a_{n,k}$ and $b_{n,k}$\\
+$a_n$, $b_n$ (Section~9) & $a_n=T(2n,n)$ (A269021), $b_n=A(2n,n)$
+(A267433) & not Kauers and Wang's arrays: their $b_{2n,n}$ is $a_n$ here\\
+$R$ & truncation rank & Kauers and Wang's name for a region\\
+$j$ & moment order of $C_j$ & summation index in
+\eqref{lis:eq:A269single}--\eqref{lis:eq:A267single} and Section~\ref{lis:sec:coefficients}\\
+$m$ & summation index in Lemma~\ref{lis:lem:collapse} and
+Theorem~\ref{lis:thm:single} & the deficit $N-k$ in
+Theorem~\ref{lis:thm:asymptotic} and Section~\ref{lis:sec:coefficients}\\
+$q$ & $N/(k+2)^2$ in Proposition~\ref{lis:prop:errorbound} & the
+summation variables $q_a$ of Theorem~\ref{lis:thm:multisum}; the
+denominator in Corollary~\ref{lis:cor:rays}\\
+$C_1$ & first shifted-row moment & not the mean witness count
+(Section~5.2); not the constants $C_I$\\
+$L_\ell$, $L_n$ & logarithmic coefficients \eqref{lis:eq:Lell} &
+$L_n$ is the leading term of $a_n$ in Section~9.3\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
 \section{Shifted rows and exact inclusion--exclusion}
 \subsection{From permutations to tableaux}
 The Robinson--Schensted correspondence gives a bijection between
@@ -255,22 +356,22 @@ with the longest increasing subsequence equal to the first row length
  T(N,k)=\sum_{\substack{\lambda\vdash N\\\lambda_1\ge k}}
                     (f^\lambda)^2,
  \qquad \sum_{\lambda\vdash N}(f^\lambda)^2=N!.
- \label{eq:RSK}
+ \label{lis:eq:RSK}
 \end{equation}
 We use the hook-length formula to compute $f^\lambda$ in the verifier;
-the structural proof only needs \eqref{eq:RSK} and the standard rectangle
+the structural proof only needs \eqref{lis:eq:RSK} and the standard rectangle
 dimension formula when describing the first discrepancy.
 
 The shifted row coordinates $\lambda_i-i$ are strictly decreasing.
 Therefore $Y_k\ge1$ is precisely $\lambda_1\ge k$. More generally:
 
-\begin{lemma}[Rectangle obstruction]\label{lem:rectangle}
+\begin{lemma}[Rectangle obstruction]\label{lis:lem:rectangle}
 For $j,k\ge1$,
 \begin{equation}
  Y_k(\lambda)\ge j
  \quad\Longleftrightarrow\quad
  \lambda_j\ge k+j-1.
- \label{eq:rectangleequiv}
+ \label{lis:eq:rectangleequiv}
 \end{equation}
 Thus $Y_k\ge j$ forces $|\lambda|\ge j(k+j-1)$. At equality, the only
 possible partition is the rectangle $(k+j-1)^j$.
@@ -292,30 +393,30 @@ For integers $y\ge1$ and $R\ge1$, Pascal's identity gives
 \begin{equation}
  \sum_{j=1}^{R}(-1)^{j+1}\binom yj
  =1-(-1)^R\binom{y-1}{R}.
- \label{eq:binomialresidual}
+ \label{lis:eq:binomialresidual}
 \end{equation}
 The identity remains useful when $R\ge y$, using zero for an
 out-of-range binomial coefficient. For $y=0$, the sum is zero.
-Weighting \eqref{eq:binomialresidual} by $(f^\lambda)^2$ proves the
+Weighting \eqref{lis:eq:binomialresidual} by $(f^\lambda)^2$ proves the
 following exact formula.
 
-\begin{proposition}[Bonferroni residual]\label{prop:residual}
+\begin{proposition}[Bonferroni residual]\label{lis:prop:residual}
 For all $N\ge0$, $k,R\ge1$,
 \begin{equation}
  T_R(N,k)-T(N,k)
  =(-1)^{R+1}
    \sum_{\substack{\lambda\vdash N\\Y_k(\lambda)\ge1}}
        (f^\lambda)^2\binom{Y_k(\lambda)-1}{R}.
- \label{eq:residual}
+ \label{lis:eq:residual}
 \end{equation}
 In particular, odd truncations are upper bounds and even truncations
 are lower bounds for $T$. The residual vanishes if
 $N<(R+1)(k+R)$.
 \end{proposition}
 \begin{proof}
-Equation~\eqref{eq:RSK} identifies the contribution of the constant $1$
-on the right side of \eqref{eq:binomialresidual} with $T$. A nonzero
-residual requires $Y_k\ge R+1$, and Lemma~\ref{lem:rectangle} excludes
+Equation~\eqref{lis:eq:RSK} identifies the contribution of the constant $1$
+on the right side of \eqref{lis:eq:binomialresidual} with $T$. A nonzero
+residual requires $Y_k\ge R+1$, and Lemma~\ref{lis:lem:rectangle} excludes
 this below the stated size. Every weight in the residual sum is
 nonnegative, proving its sign.
 \end{proof}
@@ -324,28 +425,28 @@ The sign statement belongs to the tail truncations. A difference of two
 Bonferroni bounds need not give a bound of the same sign for the
 exact-length array away from the special first-discrepancy point.
 
-\begin{proposition}[The first failure is exact and nonzero]\label{prop:firstfailure}
+\begin{proposition}[The first failure is exact and nonzero]\label{lis:prop:firstfailure}
 Let $N_0=(R+1)(k+R)$ and $\mu=(k+R)^{R+1}$. Then
 \begin{equation}
  T_R(N_0,k)-T(N_0,k)
  =A_R(N_0,k)-A(N_0,k)
- =(-1)^{R+1}(f^\mu)^2.\label{eq:firstfailure}
+ =(-1)^{R+1}(f^\mu)^2.\label{lis:eq:firstfailure}
 \end{equation}
 For a rectangle $b^a$,
 \begin{equation}
  f^{b^a}=(ab)!\,\frac{\prod_{i=0}^{a-1}i!}
                            {\prod_{i=0}^{a-1}(b+i)!}.
- \label{eq:rectanglehook}
+ \label{lis:eq:rectanglehook}
 \end{equation}
-Thus \eqref{eq:sharpregion} is the sharp universal cutoff for this
+Thus \eqref{lis:eq:sharpregion} is the sharp universal cutoff for this
 particular truncation.
 \end{proposition}
 \begin{proof}
-At $N_0$, the rectangle in Lemma~\ref{lem:rectangle} is the only shape
+At $N_0$, the rectangle in Lemma~\ref{lis:lem:rectangle} is the only shape
 with $Y_k\ge R+1$. It has $Y_k=R+1$, so the residual binomial coefficient
 is one. At threshold $k+1$ the first possible omitted rectangle is
 larger by $R+1$, so $T_R(N_0,k+1)=T(N_0,k+1)$. Taking differences
-proves the assertion for $A_R$. Formula~\eqref{eq:rectanglehook}
+proves the assertion for $A_R$. Formula~\eqref{lis:eq:rectanglehook}
 is the hook-length formula specialized to a rectangle.
 \end{proof}
 
@@ -372,29 +473,29 @@ For $t>0$, poissonized Plancherel measure is
 \begin{equation}
  \Prob_t(\lambda)=e^{-t}t^{|\lambda|}
                  \frac{(f^\lambda)^2}{(|\lambda|!)^2}.
- \label{eq:poisson}
+ \label{lis:eq:poisson}
 \end{equation}
-It is a probability measure by \eqref{eq:RSK}. Let
+It is a probability measure by \eqref{lis:eq:RSK}. Let
 $D(\lambda)=\{\lambda_i-i:i\ge1\}\subset\Z$.
 The correlation theorem of Borodin, Okounkov, and Olshanski
 \cite[Theorem 2 and Proposition 2.9]{BOO} states that
 \begin{equation}
  \Prob_t(\{x_1,\ldots,x_j\}\subset D(\lambda))
-       =\det[K_t(x_a,x_b)]_{a,b=1}^{j},\label{eq:kernelcorr}
+       =\det[K_t(x_a,x_b)]_{a,b=1}^{j},\label{lis:eq:kernelcorr}
 \end{equation}
 for distinct $x_a$, where
 \begin{equation}
  K_t(x,y)=\sum_{\ell=1}^{\infty}
        J_{x+\ell}(2\sqrt t)J_{y+\ell}(2\sqrt t).
- \label{eq:kernel}
+ \label{lis:eq:kernel}
 \end{equation}
 Only nonnegative $x,y$ are used here. The Bessel series needed below is
 \begin{equation}
  J_d(2\sqrt t)=t^{d/2}\sum_{s\ge0}
                   \frac{(-1)^st^s}{s!(d+s)!},\qquad d\ge0.
- \label{eq:Bessel}
+ \label{lis:eq:Bessel}
 \end{equation}
-The normalization in \eqref{eq:poisson} contains $(N!)^2$, not $N!$.
+The normalization in \eqref{lis:eq:poisson} contains $(N!)^2$, not $N!$.
 This factor must be restored after coefficient extraction.
 
 Summing correlations over increasing $j$-tuples in the threshold set
@@ -402,31 +503,31 @@ $\{k-1,k,\ldots\}$ gives its factorial moment:
 \begin{equation}
  e^{-t}\sum_{N\ge0}\frac{C_j(N,k)}{(N!)^2}t^N
  =\sum_{k-1\le x_1<\cdots<x_j}
-                     \det[K_t(x_a,x_b)].\label{eq:momentgf}
+                     \det[K_t(x_a,x_b)].\label{lis:eq:momentgf}
 \end{equation}
 There is no $1/j!$ here: the $x$-tuples are strictly ordered and hence
 already represent unordered subsets once each.
 
 \subsection{Cauchy--Binet removes the kernel summation}
 Write $x_a=k-1+u_a$ and $\ell_b=1+v_b$. Applying Cauchy--Binet to
-\eqref{eq:kernel} yields
+\eqref{lis:eq:kernel} yields
 \begin{equation}
  e^{-t}\sum_{N\ge0}\frac{C_j(N,k)}{(N!)^2}t^N
  =\sum_{\substack{0\le u_1<\cdots<u_j\\0\le v_1<\cdots<v_j}}
        \left(\det[J_{k+u_a+v_b}(2\sqrt t)]_{a,b=1}^{j}\right)^2.
- \label{eq:squaredminors}
+ \label{lis:eq:squaredminors}
 \end{equation}
 This also explains the Fredholm terminology: these are the elementary
 symmetric, or Fredholm-expansion, coefficients of the threshold kernel.
 We truncate the expansion after a fixed number of these coefficients;
 we do \emph{not} assert that the infinite kernel has finite operator rank.
 
-All operations in \eqref{eq:squaredminors} are coefficientwise finite.
+All operations in \eqref{lis:eq:squaredminors} are coefficientwise finite.
 Indeed, factoring the powers of $t^{1/2}$ from rows and columns shows
 that a squared minor has lowest possible degree
 \begin{equation}
  b=jk+\sum_a u_a+\sum_b v_b.
- \label{eq:basedegree}
+ \label{lis:eq:basedegree}
 \end{equation}
 Since $u_a,v_a\ge a-1$, this is at least $j(k+j-1)$.
 For a fixed degree $N$, only finitely many $u,v$ have $b\le N$.
@@ -447,10 +548,10 @@ For permutations $\sigma,\tau\in S_j$ and nonnegative integer vectors
 $s=(s_1,\ldots,s_j)$ and $q=(q_1,\ldots,q_j)$, put
 \begin{equation}
  h=N-jk-\sum_a u_a-\sum_b v_b-\sum_a(s_a+q_a).
- \label{eq:h}
+ \label{lis:eq:h}
 \end{equation}
 
-\begin{theorem}[Proper-hypergeometric formula]\label{thm:multisum}
+\begin{theorem}[Proper-hypergeometric formula]\label{lis:thm:multisum}
 For fixed $j\ge1$, the following finite sum holds for all $N\ge0$, $k\ge1$:
 \begin{align}
  \frac{C_j(N,k)}{(N!)^2}
@@ -462,20 +563,20 @@ For fixed $j\ge1$, the following finite sum holds for all $N\ge0$, $k\ge1$:
    \prod_{a=1}^{j}\frac{1}{s_a!q_a!
           (k+u_a+v_{\sigma(a)}+s_a)!
           (k+u_a+v_{\tau(a)}+q_a)!}.
- \label{eq:multisum}
+ \label{lis:eq:multisum}
 \end{align}
 For each pair $(\sigma,\tau)$ there are $4j$ summation variables,
 independently of $N$ and $k$.
 \end{theorem}
 \begin{proof}
-Expand the two determinants in \eqref{eq:squaredminors}, and then use
-\eqref{eq:Bessel} in each of their $2j$ factors. The total initial
-power is \eqref{eq:basedegree}, because
+Expand the two determinants in \eqref{lis:eq:squaredminors}, and then use
+\eqref{lis:eq:Bessel} in each of their $2j$ factors. The total initial
+power is \eqref{lis:eq:basedegree}, because
 $\sum_a v_{\sigma(a)}=\sum_a v_{\tau(a)}=\sum_bv_b$.
-Multiplication by $e^t$ inverts the $e^{-t}$ in \eqref{eq:squaredminors}.
+Multiplication by $e^t$ inverts the $e^{-t}$ in \eqref{lis:eq:squaredminors}.
 Its coefficient supplying the remaining degree is $1/h!$. This gives
-\eqref{eq:multisum}. Every summation index is bounded once $h\ge0$
-and \eqref{eq:h} are imposed, so the calculation is an identity of
+\eqref{lis:eq:multisum}. Every summation index is bounded once $h\ge0$
+and \eqref{lis:eq:h} are imposed, so the calculation is an identity of
 finite coefficient sums.
 \end{proof}
 
@@ -500,15 +601,15 @@ gap coordinates
  u_a=a-1+\sum_{b=1}^{a}\alpha_b,
  \qquad v_a=a-1+\sum_{b=1}^{a}\beta_b,
  \qquad \alpha_b,\beta_b\ge0.
- \label{eq:gaps}
+ \label{lis:eq:gaps}
 \end{equation}
 Then
 \begin{equation}
  h=N-jk-j(j-1)-\sum_{b=1}^{j}(j-b+1)(\alpha_b+\beta_b)
                         -\sum_a(s_a+q_a).
- \label{eq:hgap}
+ \label{lis:eq:hgap}
 \end{equation}
-For fixed $j$, every factorial argument in \eqref{eq:multisum} is an
+For fixed $j$, every factorial argument in \eqref{lis:eq:multisum} is an
 integer-affine expression in
 \[
  N,\ k,\ \alpha_1,\ldots,\alpha_j,\beta_1,\ldots,\beta_j,
@@ -518,7 +619,7 @@ In particular, $jk$ is linear because $j$ is fixed.
 
 One can regard the inner sum as a sum over the cube $\{0,\ldots,N\}^{4j}$,
 setting $1/h!=0$ for negative integer $h$. No nonzero term is lost,
-since every coefficient in the budget \eqref{eq:hgap} is positive.
+since every coefficient in the budget \eqref{lis:eq:hgap} is positive.
 This reciprocal-factorial zero convention is the usual terminating
 hypergeometric convention. The reciprocal-gamma recurrence extends
 across its integer zeros. Restriction to the nonnegative cube gives
@@ -530,14 +631,39 @@ homogenized. We do not simply discard such boundary terms.
 Thus the closure theorem applies simultaneously with $N,k$ left as
 parameters. Multiplying by $(N!)^2$ preserves holonomicity, as do the
 finitely many $\sigma,\tau$ terms. This proves the first assertion of
-Theorem~\ref{thm:main}. It is stronger than proving P-recursiveness
+Theorem~\ref{lis:thm:main}. It is stronger than proving P-recursiveness
 separately after specializing $k$.
 
-\begin{proof}[Completion of Theorem~\ref{thm:main}]
+\begin{writenote}[Added 3 October 2026, batch~85: needs independent review]
+This subsection carries the whole existence claim, and the intake did not
+verify it; it should be reviewed independently before the sector theorem
+is relied on (the package's own audit also says that independent review
+``remains appropriate''). A reviewer should check at least: that the
+summand of \eqref{lis:eq:multisum}, in the gap coordinates
+\eqref{lis:eq:gaps}, is holonomic as a function of all $4j+2$ integer
+variables, $N$ and $k$ included, under the stated conventions (the
+reciprocal factorial $1/h!$ vanishing for $h<0$, and the restriction to
+$\alpha_b,\beta_b,s_a,q_a\ge0$, which is imposed by a cube rather than by
+reciprocal factorials for $\alpha_b,\beta_b$); that the closure theorem
+cited from \cite{WZ,Koutschan} applies with the $N$-dependent support
+cut out by $h\ge0$; and that the boundary terms of creative telescoping,
+said above to be ``included by definite-summation closure and [able to]
+be homogenized'', are in fact accounted for. The executable checks test
+the identity of Theorem~\ref{lis:thm:multisum} (through the 140
+Bessel-minor comparisons) and the finite truncation identities on
+recorded ranges; they test no holonomicity. Sections~5--9 do not depend
+on this step: the single sums, the uniform expansion and the A269021 and
+A267433 corrections use Theorem~\ref{lis:thm:single},
+Proposition~\ref{lis:prop:residual} and
+Proposition~\ref{lis:prop:errorbound}, not holonomic closure. The
+rational-ray Corollary~\ref{lis:cor:rays} of Section~4 does depend on it.
+\end{writenote}
+
+\begin{proof}[Completion of Theorem~\ref{lis:thm:main}]
 Finite linear combinations and shifts give holonomicity of $T_R$ and
-$A_R$. Proposition~\ref{prop:residual} gives agreement of $T_R$ with $T$
+$A_R$. Proposition~\ref{lis:prop:residual} gives agreement of $T_R$ with $T$
 below $(R+1)(k+R)$. The same inequality also implies agreement at $k+1$,
-so \eqref{eq:difference} gives agreement for $A_R$.
+so \eqref{lis:eq:difference} gives agreement for $A_R$.
 For $R=r-1$ and $N\le rk$,
 \[
  N\le rk<r(k+r-1)=(R+1)(k+R),
@@ -547,7 +673,7 @@ which proves the sector assertion.
 
 \section{Consequences for recurrence theory}
 \subsection{Rational rays and periodic rounding}
-\begin{corollary}[Every positive rational ray]\label{cor:rays}
+\begin{corollary}[Every positive rational ray]\label{lis:cor:rays}
 Fix integers $a\ge b\ge1$ and offsets $a_0,b_0$.
 The sequences
 \[
@@ -560,7 +686,7 @@ where $0<p\le q$ and $c$ are fixed integers.
 \end{corollary}
 \begin{proof}
 Choose fixed $R$ with $a<(R+1)b$. The ray lies in the exactness region
-for all sufficiently large $n$. Substitution in \eqref{eq:multisum}
+for all sufficiently large $n$. Substitution in \eqref{lis:eq:multisum}
 leaves a fixed-dimensional proper-hypergeometric sum with integer-affine
 factorial arguments in $n$ and the summation indices. Hence its sequence
 is P-recursive by the same summation theorem. A finite modification
@@ -580,7 +706,7 @@ statistic $Y$ has weighted factorial moments $C_j(N,k)$ that are
 holonomic for every fixed $j$, and suppose $Y\ge j$ is impossible
 below a known size $w_j(k)$. Then the weighted event count for $Y\ge1$
 is represented by a holonomic array on $N<w_{R+1}(k)$, for each fixed
-$R$. The proof is exactly \eqref{eq:binomialresidual}.
+$R$. The proof is exactly \eqref{lis:eq:binomialresidual}.
 
 The nontrivial application here is that the determinantal correlations
 make the moments fixed-dimensional even while $k$ grows, and that the
@@ -605,36 +731,36 @@ The present existence proof does not depend on successfully performing
 that large elimination.
 
 \section{A single sum for the first moment}
-\label{sec:single}
+\label{lis:sec:single}
 \subsection{Collapsing the trace}
-At $j=1$, \eqref{eq:squaredminors} simplifies to
+At $j=1$, \eqref{lis:eq:squaredminors} simplifies to
 \begin{equation}
  e^{-t}\sum_{N\ge0}\frac{C_1(N,k)}{(N!)^2}t^N
  =\sum_{d\ge k}(d-k+1)J_d(2\sqrt t)^2.
- \label{eq:trace}
+ \label{lis:eq:trace}
 \end{equation}
 Indeed, exactly $d-k+1$ pairs $(u,v)\in\Z_{\ge0}^2$ satisfy
 $u+v=d-k$.
 
-\begin{lemma}[Two elementary coefficient identities]\label{lem:collapse}
+\begin{lemma}[Two elementary coefficient identities]\label{lis:lem:collapse}
 For integers $m\ge d\ge0$,
 \begin{equation}
  \coef{t}{m}J_d(2\sqrt t)^2
  =\frac{(-1)^{m-d}}{(m!)^2}\binom{2m}{m-d}.
- \label{eq:besselsquare}
+ \label{lis:eq:besselsquare}
 \end{equation}
 For $m\ge k\ge1$,
 \begin{equation}
  \sum_{d=k}^{m}(d-k+1)(-1)^{m-d}\binom{2m}{m-d}
  =(-1)^{m-k}\binom{2m-2}{m-k}.
- \label{eq:alternatingbinom}
+ \label{lis:eq:alternatingbinom}
 \end{equation}
 \end{lemma}
 \begin{proof}
-Squaring \eqref{eq:Bessel} gives a sum over $s+q=m-d$.
+Squaring \eqref{lis:eq:Bessel} gives a sum over $s+q=m-d$.
 After multiplication by $(m!)^2$, its unsigned summand is
 $\binom ms\binom m{m-d-s}$. Vandermonde's convolution gives
-\eqref{eq:besselsquare}. For \eqref{eq:alternatingbinom}, set
+\eqref{lis:eq:besselsquare}. For \eqref{lis:eq:alternatingbinom}, set
 $L=m-k$ and $a=m-d$. The left side is
 \[
  \sum_{a=0}^{L}(L-a+1)(-1)^a\binom{2m}{a}
@@ -643,46 +769,46 @@ $L=m-k$ and $a=m-d$. The left side is
 which is the right side.
 \end{proof}
 
-\begin{theorem}[First-moment single sum]\label{thm:single}
+\begin{theorem}[First-moment single sum]\label{lis:thm:single}
 For every $N\ge0$ and $k\ge1$,
 \begin{equation}
  C_1(N,k)=(N!)^2\sum_{m=k}^{N}
        \frac{(-1)^{m-k}\binom{2m-2}{m-k}}{(m!)^2(N-m)!}.
- \label{eq:C1sum}
+ \label{lis:eq:C1sum}
 \end{equation}
 It equals $T(N,k)$ whenever $N\le2k+1$. In the same region,
 \begin{equation}
  A(N,k)=(N!)^2\sum_{m=k}^{N}
        \frac{(-1)^{m-k}\binom{2m-1}{m-k}}{(m!)^2(N-m)!}.
- \label{eq:Asum}
+ \label{lis:eq:Asum}
 \end{equation}
 \end{theorem}
 \begin{proof}
-Insert Lemma~\ref{lem:collapse} in \eqref{eq:trace} and multiply by
-$e^t$. Coefficient extraction gives \eqref{eq:C1sum}.
-Proposition~\ref{prop:residual} gives the agreement region.
+Insert Lemma~\ref{lis:lem:collapse} in \eqref{lis:eq:trace} and multiply by
+$e^t$. Coefficient extraction gives \eqref{lis:eq:C1sum}.
+Proposition~\ref{lis:prop:residual} gives the agreement region.
 Subtract the $k+1$ sum from the $k$ sum; their opposite signs and
-Pascal's identity give \eqref{eq:Asum}.
+Pascal's identity give \eqref{lis:eq:Asum}.
 \end{proof}
 
 In particular, for $n\ge1$,
 \begin{align}
  T(2n,n)&=((2n)!)^2\sum_{j=0}^{n}
   \frac{(-1)^j\binom{2n+2j-2}{j}}{((n+j)!)^2(n-j)!},
-  \label{eq:A269single}\\
+  \label{lis:eq:A269single}\\
  A(2n,n)&=((2n)!)^2\sum_{j=0}^{n}
   \frac{(-1)^j\binom{2n+2j-1}{j}}{((n+j)!)^2(n-j)!}.
-  \label{eq:A267single}
+  \label{lis:eq:A267single}
 \end{align}
 These formulas are suitable for exact rational arithmetic, with an
 integer result. They provide an independent computational route to the
 two OEIS diagonals without enumerating all partitions of $2n$.
 
 \subsection{A normalization with a combinatorial meaning}
-The quantity $B(N,k)$ in \eqref{eq:base} can also be written
+The quantity $B(N,k)$ in \eqref{lis:eq:base} can also be written
 \begin{equation}
  B(N,k)=\binom Nk^2(N-k)!.
- \label{eq:Bwitness}
+ \label{lis:eq:Bwitness}
 \end{equation}
 It counts pairs consisting of a permutation and a distinguished
 increasing subsequence of length $k$: choose its positions and its
@@ -695,36 +821,36 @@ counts shifted rows, not witnesses. Confusing these two first moments
 would remove the factor $e^{-2\rho}$ from the asymptotic answer.
 
 \section{Why higher shifted-row moments are beyond all orders}
-\label{sec:firsterror}
+\label{lis:sec:firsterror}
 The exact first-moment formula remains useful beyond its exact tail
 region. The next estimate controls the discrepancy without a contour
 integral or a saddle-point argument.
 
-\begin{proposition}[Explicit first-moment error bound]\label{prop:errorbound}
+\begin{proposition}[Explicit first-moment error bound]\label{lis:prop:errorbound}
 If $N<2k+2$, then $C_1(N,k)=T(N,k)$.
 If $N\ge2k+2$ and $q=N/(k+2)^2<1$, then
 \begin{equation}
  0\le\frac{C_1(N,k)-T(N,k)}{B(N,k)}
  \le \frac{N}{k}(1-q)^{-2}
        \frac{(k!)^2(N-k)!}{((k+1)!)^4(N-2k-2)!}.
- \label{eq:errorbound}
+ \label{lis:eq:errorbound}
 \end{equation}
 For $\rho=(N-k)/k$ in any fixed compact $I\subset(0,\infty)$,
 there are constants $C_I,c_I>0$ such that, for sufficiently large $N$,
 \begin{equation}
  0\le\frac{C_1(N,k)-T(N,k)}{B(N,k)}
  \le C_I\exp(-c_I N\log N).
- \label{eq:superalgebraic}
+ \label{lis:eq:superalgebraic}
 \end{equation}
 \end{proposition}
 \begin{proof}
 The $R=1$ residual is a sum of $(f^\lambda)^2(Y_k-1)$ over $Y_k\ge1$.
 It is nonzero only if $Y_k\ge2$, equivalently $\lambda_2\ge k+1$.
-Also $Y_k\le N/k$, by Lemma~\ref{lem:rectangle}. Therefore
+Also $Y_k\le N/k$, by Lemma~\ref{lis:lem:rectangle}. Therefore
 \begin{equation}
  0\le C_1-T\le\frac Nk
        \sum_{\substack{\lambda\vdash N\\\lambda_2\ge k+1}}
-                      (f^\lambda)^2.\label{eq:tworowbound}
+                      (f^\lambda)^2.\label{lis:eq:tworowbound}
 \end{equation}
 Write $\lambda=(\ell_1,\ell_2,\nu)$ and $v=N-\ell_1-\ell_2$.
 Choose the labels for the first two rows and for the remaining diagram,
@@ -741,14 +867,14 @@ $\nu$ gives
  \sum_{\lambda_2\ge k+1}(f^\lambda)^2
  \le (N!)^2\sum_{\substack{\ell_1,\ell_2\ge k+1\\\ell_1+\ell_2\le N}}
         \frac{1}{(\ell_1!)^2(\ell_2!)^2(N-\ell_1-\ell_2)!}.
- \label{eq:doublemajorant}
+ \label{lis:eq:doublemajorant}
 \end{equation}
 We even dropped $\ell_1\ge\ell_2$, which can only enlarge the sum.
 Increasing either $\ell_i$ by one multiplies its summand by at most
 $N/(k+2)^2=q$. The double sum is consequently bounded by its
 $\ell_1=\ell_2=k+1$ term times $(1-q)^{-2}$. Substituting this bound
-in \eqref{eq:tworowbound} and dividing by $B$ proves
-\eqref{eq:errorbound}.
+in \eqref{lis:eq:tworowbound} and dividing by $B$ proves
+\eqref{lis:eq:errorbound}.
 
 For the uniform conclusion, write $k\ge\alpha_0N$ with
 $\alpha_0>0$ depending only on $I$. Then $q=O_I(N^{-1})$, and
@@ -757,13 +883,13 @@ $\alpha_0>0$ depending only on $I$. Then $q=O_I(N^{-1})$, and
  \le \frac{N^{k+2}}{(k!)^2(k+1)^4}
  \le \frac{N^2}{(k+1)^4}
                  \left(\frac{e^2N}{k^2}\right)^k.
- \label{eq:factorialmajorant}
+ \label{lis:eq:factorialmajorant}
 \end{equation}
 Here $k!\ge(k/e)^k$ follows by comparing $\sum_{i=1}^k\log i$
 with the integral of $\log x$. The logarithm of the right side of
-\eqref{eq:factorialmajorant} is at most
+\eqref{lis:eq:factorialmajorant} is at most
 $-\alpha_0N\log N+O_I(N)$. This implies
-\eqref{eq:superalgebraic}; in the other region the error is exactly zero.
+\eqref{lis:eq:superalgebraic}; in the other region the error is exactly zero.
 \end{proof}
 
 The estimate separates two logically different issues. The holonomic
@@ -774,20 +900,20 @@ with every power of $k^{-1}$. This explains why the same asymptotic
 coefficient family works on both sides of $N=2k$.
 
 \section{Uniform all-orders expansion and its coefficient calculus}
-\label{sec:coefficients}
+\label{lis:sec:coefficients}
 \subsection{The normalized finite product}
 Use $m=N-k$ for the deficit and replace the summation index in
-\eqref{eq:C1sum} by $k+j$. Division by $B$ gives
+\eqref{lis:eq:C1sum} by $k+j$. Division by $B$ gives
 \begin{equation}
  \frac{C_1(N,k)}{B(N,k)}
  =\sum_{j=0}^{m}(-1)^j\binom{2k+2j-2}{j}
                          \frac{\fall{m}{j}}{\bigl(\rise{k+1}{j}\bigr)^2}.
- \label{eq:normalizedsum}
+ \label{lis:eq:normalizedsum}
 \end{equation}
 Writing $m=\rho k$, this is
 \begin{equation}
  \frac{C_1}{B}=\sum_{j=0}^{m}\frac{(-2\rho)^j}{j!}
-                       Q_{k,j}(\rho),\label{eq:Qsum}
+                       Q_{k,j}(\rho),\label{lis:eq:Qsum}
 \end{equation}
 where
 \begin{equation}
@@ -796,10 +922,10 @@ where
     \left(1+\frac{2j-2-a}{2k}\right)
     \left(1-\frac{a}{\rho k}\right)}
       {\displaystyle\prod_{a=1}^{j}\left(1+\frac ak\right)^2}.
- \label{eq:Qproduct}
+ \label{lis:eq:Qproduct}
 \end{equation}
 Empty products are one. For each fixed $j$, $Q_{k,j}\to1$.
-The alternating exponential series in \eqref{eq:Qsum} therefore
+The alternating exponential series in \eqref{lis:eq:Qsum} therefore
 suggests $e^{-2\rho}$, but uniform summation and all-order error
 control must still be justified.
 
@@ -811,7 +937,7 @@ $\Q[\rho^{-1}]$:
  \left\{\sum_{a=0}^{j-1}\left(\frac{2j-2-a}{2}\right)^\ell
        +\sum_{a=0}^{j-1}\left(-\frac a\rho\right)^\ell
        -2\sum_{a=1}^{j}a^\ell\right\}.
- \label{eq:Lell}
+ \label{lis:eq:Lell}
 \end{equation}
 Faulhaber's formulas interpret each finite power sum polynomially.
 Set
@@ -819,7 +945,7 @@ Set
  P_0(j;\rho)=1,\qquad
  P_d(j;\rho)=\frac1d\sum_{\ell=1}^{d}
                     \ell L_\ell(j;\rho)P_{d-\ell}(j;\rho).
- \label{eq:Pell}
+ \label{lis:eq:Pell}
 \end{equation}
 This is the coefficient recurrence for exponentiating
 $\sum_{\ell\ge1}L_\ell u^\ell$.
@@ -827,7 +953,7 @@ Finally, define
 \begin{equation}
  c_d(\rho)=e^{2\rho}\sum_{j=0}^{\infty}
                   \frac{(-2\rho)^j}{j!}P_d(j;\rho).
- \label{eq:cdsum}
+ \label{lis:eq:cdsum}
 \end{equation}
 The last expression is elementary, not an unevaluated infinite-sum
 obstruction. If $P_d(j;\rho)=\sum_b p_{d,b}(\rho)j^b$, then
@@ -836,7 +962,7 @@ obstruction. If $P_d(j;\rho)=\sum_b p_{d,b}(\rho)j^b$, then
  \qquad
  \mathcal T_b(x)=\sum_{a=0}^{b}
        \left\{\begin{matrix}b\\a\end{matrix}\right\}x^a.
- \label{eq:Touchard}
+ \label{lis:eq:Touchard}
 \end{equation}
 Here the braces denote Stirling numbers of the second kind.
 The identity follows by expanding $j^b$ in falling factorials and
@@ -847,33 +973,33 @@ argument $-2\rho$.
 For example,
 \begin{equation}
  L_1(j;\rho)=-\frac{j^2+7j}{4}
-                     -\frac{j(j-1)}{2\rho},\label{eq:L1}
+                     -\frac{j(j-1)}{2\rho},\label{lis:eq:L1}
 \end{equation}
-and $P_1=L_1$. Substitution in \eqref{eq:Touchard} gives
-$c_1=2\rho-\rho^2$. Equations~\eqref{eq:Lell}--\eqref{eq:Touchard}
+and $P_1=L_1$. Substitution in \eqref{lis:eq:Touchard} gives
+$c_1=2\rho-\rho^2$. Equations~\eqref{lis:eq:Lell}--\eqref{lis:eq:Touchard}
 produce all the subsequent coefficients by exact rational arithmetic.
 
-\begin{proposition}[Polynomial structure]\label{prop:polynomial}
+\begin{proposition}[Polynomial structure]\label{lis:prop:polynomial}
 For every $d\ge1$, $c_d\in\Q[\rho]$, $c_d(0)=0$, and
 \begin{equation}
  \deg c_d=2d,\qquad
  [\rho^{2d}]c_d=\frac{(-1)^d}{d!}.
- \label{eq:degree}
+ \label{lis:eq:degree}
 \end{equation}
 The continuous value at $\rho=0$ is a polynomial fact; it does not
 by itself establish uniformity of the asymptotic expansion there.
 \end{proposition}
 \begin{proof}
-Since $\deg_j L_\ell\le\ell+1$, \eqref{eq:Pell} gives
+Since $\deg_j L_\ell\le\ell+1$, \eqref{lis:eq:Pell} gives
 $\deg_j P_d\le2d$. The only negative powers of $\rho$ in
-\eqref{eq:Qproduct} come from $\prod_{a=0}^{j-1}(1-a u/\rho)$,
+\eqref{lis:eq:Qproduct} come from $\prod_{a=0}^{j-1}(1-a u/\rho)$,
 where $u=1/k$. The coefficient of $\rho^{-b}$ for $b\ge1$ vanishes
 at each integer $j=0,1,\ldots,b$: there are fewer than $b$ nonzero
 factors $a$ to select. Thus, as a polynomial in $j$, that coefficient
 has a falling-factorial expansion involving only $\fall{j}{a}$ with
 $a\ge b+1$.
 
-In \eqref{eq:cdsum}, $\rho^{-b}\fall{j}{a}$ becomes
+In \eqref{lis:eq:cdsum}, $\rho^{-b}\fall{j}{a}$ becomes
 $\rho^{-b}(-2\rho)^a$, which is polynomial and divisible by $\rho$.
 For $b=0$ and $d\ge1$, the coefficient vanishes at $j=0$ because the
 empty product is identically one, and the same divisibility follows.
@@ -887,23 +1013,23 @@ term $(-2\rho)^{2d}$. The claimed leading coefficient follows.
 \end{proof}
 
 \subsection{Uniform remainder estimates}
-\begin{proof}[Proof of Theorem~\ref{thm:asymptotic}]
+\begin{proof}[Proof of Theorem~\ref{lis:thm:asymptotic}]
 Fix $0<\rho_0\le\rho\le\rho_1<\infty$.
 First, the absolute value of the $j$th summand of
-\eqref{eq:normalizedsum} is bounded by
+\eqref{lis:eq:normalizedsum} is bounded by
 \begin{equation}
  \binom{2k+2j-2}{j}\frac{\fall{m}{j}}{\bigl(\rise{k+1}{j}\bigr)^2}
  \le\frac{[2\rho_1(1+\rho_1)]^j}{j!},\qquad 0\le j\le m.
- \label{eq:domination}
+ \label{lis:eq:domination}
 \end{equation}
 Indeed, $j\le m\le\rho_1k$, the top of the binomial is at most
 $2(1+\rho_1)k$, $\fall{m}{j}\le(\rho_1k)^j$, and
 $\rise{k+1}{j}\ge k^j$. This is a summable bound independent of $k$.
 
 For a quantitative expansion, split the sum at $J_k=\lfloor k^{1/4}\rfloor$.
-For $j\le J_k$, regard \eqref{eq:Qproduct} as a function $Q_j(u;\rho)$
+For $j\le J_k$, regard \eqref{lis:eq:Qproduct} as a function $Q_j(u;\rho)$
 of $u$ on $0\le u\le1/k$. All logarithmic factors stay away from zero
-uniformly. Its logarithm has Taylor coefficients \eqref{eq:Lell};
+uniformly. Its logarithm has Taylor coefficients \eqref{lis:eq:Lell};
 its $\ell$th derivative is bounded by $C_{I,\ell}(1+j)^{\ell+1}$.
 Also $|\log Q_j(u;\rho)|\le C_Ij^2/k$, so $Q_j$ itself is bounded
 uniformly on this interval.
@@ -915,13 +1041,13 @@ $C_{I,M}(1+j)^{2M+2}$. Taylor's theorem gives
 \begin{equation}
  Q_{k,j}(\rho)=\sum_{d=0}^{M}\frac{P_d(j;\rho)}{k^d}
     +O_{I,M}\left(\frac{(1+j)^{2M+2}}{k^{M+1}}\right),
- \quad j\le J_k.\label{eq:Qremainder}
+ \quad j\le J_k.\label{lis:eq:Qremainder}
 \end{equation}
 After multiplication by $(2\rho)^j/j!$, the remainders sum to
 $O_{I,M}(k^{-M-1})$ because factorial denominators dominate every
 fixed power of $j$.
 
-For $j>J_k$, \eqref{eq:domination} bounds the original summands.
+For $j>J_k$, \eqref{lis:eq:domination} bounds the original summands.
 The polynomial approximants have the same type of bound with an extra
 fixed power of $j$. For any fixed $C,D,L$, the tail
 $\sum_{j>k^{1/4}}C^j(1+j)^D/j!$ is $o(k^{-L})$.
@@ -930,9 +1056,9 @@ tail bound once $j$ is sufficiently large. Thus one can extend each
 coefficient sum to infinity with an error smaller than every algebraic
 order.
 
-Equations~\eqref{eq:Qsum}, \eqref{eq:Qremainder}, and
-\eqref{eq:cdsum} now give \eqref{eq:allorders} with $C_1$ in place of
-$T$. Proposition~\ref{prop:errorbound} shows that replacing $C_1$ by
+Equations~\eqref{lis:eq:Qsum}, \eqref{lis:eq:Qremainder}, and
+\eqref{lis:eq:cdsum} now give \eqref{lis:eq:allorders} with $C_1$ in place of
+$T$. Proposition~\ref{lis:prop:errorbound} shows that replacing $C_1$ by
 $T$ does not change any coefficient or the stated remainder.
 \end{proof}
 
@@ -942,37 +1068,37 @@ For fixed $N$ and $k$, replacing $k$ by $k+1$ changes the parameters to
 \begin{equation}
  \rho' = \frac{\rho k-1}{k+1},\qquad
  \frac{B(N,k+1)}{B(N,k)}=\frac{\rho k}{(k+1)^2}.
- \label{eq:shiftparameters}
+ \label{lis:eq:shiftparameters}
 \end{equation}
 Both ratios admit expansions to arbitrary order in $1/k$ on the same
-compact $\rho$ intervals. Subtraction via \eqref{eq:difference} yields:
+compact $\rho$ intervals. Subtraction via \eqref{lis:eq:difference} yields:
 
-\begin{corollary}[Exact-length expansion]\label{cor:point}
-Uniformly in the regime of Theorem~\ref{thm:asymptotic},
+\begin{corollary}[Exact-length expansion]\label{lis:cor:point}
+Uniformly in the regime of Theorem~\ref{lis:thm:asymptotic},
 \begin{align}
  \frac{A(N,k)}{B(N,k)}=e^{-2\rho}\bigg[1
  &+\frac{\rho-\rho^2}{k}
  +\frac{\rho^4/2-7\rho^3/3+3\rho^2+\rho/3}{k^2}\notag\\
  &+\frac{-\rho^6/6+11\rho^5/6-41\rho^4/6
             +31\rho^3/3-2\rho^2/3-2\rho}{k^3}
- +O_I(k^{-4})\bigg].\label{eq:pointasymptotic}
+ +O_I(k^{-4})\bigg].\label{lis:eq:pointasymptotic}
 \end{align}
 All higher coefficients follow by the same substitution and subtraction.
 \end{corollary}
 \begin{proof}
-Apply \eqref{eq:allorders} to $(N,k)$ and $(N,k+1)$, use
-\eqref{eq:shiftparameters}, and expand in $1/k$. The remainders stay
+Apply \eqref{lis:eq:allorders} to $(N,k)$ and $(N,k+1)$, use
+\eqref{lis:eq:shiftparameters}, and expand in $1/k$. The remainders stay
 uniform because $\rho'$ remains in a slightly enlarged compact interval
 inside $(0,\infty)$. Collecting terms gives the displayed polynomials.
 \end{proof}
 
-\begin{corollary}[Conditional overshoot]\label{cor:overshoot}
+\begin{corollary}[Conditional overshoot]\label{lis:cor:overshoot}
 For every fixed integer $d\ge1$, under a uniformly random permutation
 of $N$ letters,
 \begin{equation}
  \Prob\bigl(\LIS\ge k+d\mid\LIS\ge k\bigr)
  =\left(\frac{\rho}{k}\right)^d\left(1+O_{I,d}(k^{-1})\right).
- \label{eq:overshoot}
+ \label{lis:eq:overshoot}
 \end{equation}
 In particular, the conditional probability that $\LIS=k$ is
 $1-\rho/k+O_I(k^{-2})$.
@@ -985,19 +1111,19 @@ $(\rho/k)^d(1+O_{I,d}(k^{-1}))$. The exponential factors and the
 relative correction series have ratio $1+O_{I,d}(k^{-1})$.
 \end{proof}
 
-\begin{corollary}[Mean number of witnesses]\label{cor:witnesses}
+\begin{corollary}[Mean number of witnesses]\label{lis:cor:witnesses}
 Let $Z_k(\pi)$ be the number of increasing subsequences of length $k$.
 Then
 \begin{equation}
  \E[Z_k\mid\LIS\ge k]
  =e^{2\rho}\left(1-\frac{2\rho-\rho^2}{k}
                          +O_I(k^{-2})\right).
- \label{eq:witnessmean}
+ \label{lis:eq:witnessmean}
 \end{equation}
 \end{corollary}
 \begin{proof}
-Equation~\eqref{eq:Bwitness} gives
-$\E[Z_k\mid\LIS\ge k]=B/T$. Invert \eqref{eq:allorders}.
+Equation~\eqref{lis:eq:Bwitness} gives
+$\E[Z_k\mid\LIS\ge k]=B/T$. Invert \eqref{lis:eq:allorders}.
 \end{proof}
 
 This conclusion concerns the mean only. It does not imply a Poisson
@@ -1011,42 +1137,42 @@ Set $N=2n$, $k=n$, so $\rho=1$. The coefficient rule gives
 \begin{equation}
  (c_0(1),\ldots,c_5(1))
  =\left(1,1,\frac92,7,-\frac{149}{8},-\frac{3911}{40}\right).
- \label{eq:cone}
+ \label{lis:eq:cone}
 \end{equation}
 Stirling's expansion gives
 \begin{equation}
  \frac{B(2n,n)}{16^n(n-1)!/\pi}
  =1-\frac1{4n}+\frac1{32n^2}+\frac1{128n^3}
        -\frac5{2048n^4}-\frac{23}{8192n^5}+O(n^{-6}).
- \label{eq:central}
+ \label{lis:eq:central}
 \end{equation}
 One way to check it is to exponentiate
 $-1/(4n)+1/(96n^3)-1/(320n^5)+O(n^{-7})$.
 
-\begin{corollary}[A269021]\label{cor:269}
+\begin{corollary}[A269021]\label{lis:cor:269}
 For $a_n=T(2n,n)$,
 \begin{align}
  a_n=\frac{16^n(n-1)!}{\pi e^2}\bigg[1
  &+\frac{3}{4n}+\frac{137}{32n^2}+\frac{757}{128n^3}\notag\\
  &-\frac{41429}{2048n^4}
        -\frac{3803959}{40960n^5}+O(n^{-6})\bigg].
- \label{eq:269asymptotic}
+ \label{lis:eq:269asymptotic}
 \end{align}
 The expansion continues to every fixed order by
-\eqref{eq:Lell}--\eqref{eq:Touchard} and Stirling's series.
+\eqref{lis:eq:Lell}--\eqref{lis:eq:Touchard} and Stirling's series.
 \end{corollary}
 \begin{proof}
-Multiply \eqref{eq:cone}, interpreted as its $1/n$ expansion from
-Theorem~\ref{thm:asymptotic}, by \eqref{eq:central}.
+Multiply \eqref{lis:eq:cone}, interpreted as its $1/n$ expansion from
+Theorem~\ref{lis:thm:asymptotic}, by \eqref{lis:eq:central}.
 \end{proof}
 
 For the exact-length diagonal $b_n=A(2n,n)$, the same calculation using
-\eqref{eq:pointasymptotic} gives
+\eqref{lis:eq:pointasymptotic} gives
 \begin{equation}
  b_n=\frac{16^n(n-1)!}{\pi e^2}
        \left(1-\frac1{4n}+\frac{49}{32n^2}
                               +\frac{273}{128n^3}+O(n^{-4})\right).
- \label{eq:267asymptotic}
+ \label{lis:eq:267asymptotic}
 \end{equation}
 The different $1/n$ coefficients distinguish ``at least $n$'' from
 ``exactly $n$'', despite their common leading equivalent.
@@ -1056,7 +1182,7 @@ The latter leading equivalent is already proved in \cite{Moews}.
 The supplied verifier uses the hook-length formula and integer
 partitions to compute $A$, $T$, and $C_1,\ldots,C_4$ directly. A separate
 calculation uses truncated rational power series in the squared-minor
-formula \eqref{eq:squaredminors}. It checks genuinely nonzero $j=2$
+formula \eqref{lis:eq:squaredminors}. It checks genuinely nonzero $j=2$
 and $j=3$ cases, not just empty supports.
 
 \begin{center}
@@ -1092,7 +1218,7 @@ produces the coefficient polynomials through order five and checks
 
 \subsection{Accuracy of the asymptotic expansion}
 Let $L_n=16^n(n-1)!/(\pi e^2)$, and let $S_M(n)$ retain terms through
-$n^{-M}$ in the square brackets of \eqref{eq:269asymptotic}.
+$n^{-M}$ in the square brackets of \eqref{lis:eq:269asymptotic}.
 The next table reports $|L_nS_M(n)/a_n-1|$.
 The integer $a_n$ is evaluated exactly; the rescaling uses 100 decimal
 digits of floating-point precision.
@@ -1116,7 +1242,7 @@ asymptotic expansion: adding terms need not improve an approximation
 at every small $n$ or at arbitrarily high truncation order.
 
 \section{Further research questions and topics}
-\label{sec:further}
+\label{lis:sec:further}
 The following questions are separate from the theorems proved above.
 They are ordered roughly by proximity to the present construction,
 not by a claim of difficulty or priority.
@@ -1145,13 +1271,13 @@ tableau counts.
 \item \textbf{Resolve the exponentially small sectors.}
 Find the first asymptotic equivalent of $C_1-T$ in a region with
 $N>2k+2$, and then of the residual after $R$ moments. The bound
-\eqref{eq:superalgebraic} does not determine the exponential action,
+\eqref{lis:eq:superalgebraic} does not determine the exponential action,
 prefactor, or all-order corrections. Near a rectangle boundary, a
 fixed excess number of boxes may offer a tractable starting regime.
 
 \item \textbf{Extend uniformity beyond compact linear regimes.}
 Investigate $\rho\to0$ with growing deficit, and $\rho\to\infty$ with
-$k=o(N)$. These are not covered by Theorem~\ref{thm:asymptotic}.
+$k=o(N)$. These are not covered by Theorem~\ref{lis:thm:asymptotic}.
 The polynomial coefficients alone do not justify substitution of a
 growing $\rho$; one needs new remainder estimates and, eventually,
 a different balance of moment contributions.
@@ -1251,12 +1377,31 @@ File under \texttt{results/} & Contents\\
 The Bessel verifier factors
 $J_d(2\sqrt t)=t^{d/2}F_d(t)$, where
 $F_d(t)=\sum_s(-1)^st^s/(s!(d+s)!)$. For each increasing pair $u,v$
-with budget \eqref{eq:basedegree}, it forms $\det F$, squares it,
+with budget \eqref{lis:eq:basedegree}, it forms $\det F$, squares it,
 and convolves with $e^t$. All of this is done with exact rational
 coefficients. The independent tableau computation uses no Bessel
 functions. This separation detects normalization, shift, missing
 factorial, and determinant-sign errors that would be difficult to
 spot from a single formula alone.
+
+\begin{writenote}[Added 3 October 2026, batch~85]
+This appendix describes the delivered package. In ProveIt the verifier
+is \texttt{code/verify.py}, the files listed under \texttt{results/} are
+shipped in \texttt{data/}, beside \texttt{data/requirements.txt}, and
+\texttt{build.sh} is \texttt{code/build.sh} (it runs three
+\texttt{pdflatex} passes, not the two shown above); the source-audit note
+is \texttt{SOURCE\_AUDIT.md}. The delivered PDF is not shipped; the
+committed \texttt{article.pdf} is a rebuild including these notes. Run
+from \texttt{code/} without \texttt{-{}-output}, the verifier would write
+a new \texttt{code/results/} directory; the report's README gives a rerun
+on a scratch copy that never writes into the report. The sixteen terms
+each of A269021 and A267433 embedded in the verifier are OEIS data, under
+CC~BY-SA~4.0. At intake (3 October 2026) the full run passed on such a
+copy in 71~s (the delivered summary records 4.6~s on the producer's
+machine); every regenerated data file matched the shipped one, the two
+text-mode outputs up to line endings, and the summary differed only in
+its elapsed time.
+\end{writenote}
 
 \section{Additional coefficient polynomials}
 The fourth and fifth uniform tail coefficients, generated by the
@@ -1264,16 +1409,16 @@ all-orders rule and checked by the supplied symbolic code, are
 \begin{align}
  c_4(\rho)=\frac{\rho}{360}\big(&15\rho^7-360\rho^6+3440\rho^5
  -16716\rho^4+38960\rho^3\notag\\
- &-19080\rho^2-15100\rho+2136\big),\label{eq:c4}\\
+ &-19080\rho^2-15100\rho+2136\big),\label{lis:eq:c4}\\
  c_5(\rho)=-\frac{\rho}{360}\big(&3\rho^9-110\rho^8+1670\rho^7
  -13796\rho^6+66352\rho^5\notag\\
  &-170464\rho^4+145380\rho^3+67016\rho^2
- -54612\rho-6240\big).\label{eq:c5}
+ -54612\rho-6240\big).\label{lis:eq:c5}
 \end{align}
 These expressions concern the normalization $B(N,k)e^{-2\rho}$.
 They should not be substituted directly into the A269021 normalization
 $16^n(n-1)!/(\pi e^2)$ without also applying the central-binomial
-correction \eqref{eq:central}.
+correction \eqref{lis:eq:central}.
 
 \begin{thebibliography}{99}
 \addcontentsline{toc}{section}{References}
