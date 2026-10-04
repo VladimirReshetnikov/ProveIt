@@ -134,16 +134,19 @@ axioms, for both statements.
 
 ## Building
 
-The package depends on Mathlib (rev `v4.32.0`, toolchain `leanprover/lean4:v4.32.0`).
-On the development machine the package cache is not vendored:
-`lean/.lake/packages` is a directory junction to an already built cache
-(`C:\ProveIt\.lake\packages`), which `.gitignore` excludes. Elsewhere, run
-`lake exe cache get` (or `lake update`) once to obtain Mathlib.
+The package depends on Mathlib (rev `v4.32.0`, toolchain `leanprover/lean4:v4.32.0`),
+the same revision as the ProveIt root workspace, which registers this directory
+as its `lean_lib` `BCH` (`srcDir = "Algebra/BakerCampbellHausdorff/Lean"`).
+Build it from the repository root, one target at a time:
 
 ```sh
-cd lean
+lake exe cache get   # once, for Mathlib
 LAKE_JOBS=1 lake build BCH
 ```
+
+The nested `lakefile.toml` and `lake-manifest.json` are kept, so the directory
+also builds as a standalone package (`cd Lean && lake build BCH`), as it did
+in the former `BCH` repository.
 
 ## Conventions
 
