@@ -1,13 +1,14 @@
 # Collision Geometry Is Linear
 
-**Diophantine Certificates for Rational Signal Machines and Conservative Particle Dynamics: event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal frontend, sparse lattice certificates, conserved-mass thresholds, mass four in every dimension, and unbounded-time certificates for exact three-mass targets**
+**Diophantine Certificates for Rational Signal Machines and Conservative Particle Dynamics: event-sparse chambers, canonical quadratic and quartic certificates, two routes to complete chronology, a conservative universal frontend, sparse lattice certificates, conserved-mass thresholds, mass four in every dimension, unbounded-time certificates for exact three-mass targets, a reversible timing threshold, periodic and five-signal returns, planar and projective realizations, branching clocks and native-gap compilers**
 
-This is a research report dated 2 October 2026 and extended on 3 October
-2026, built from fourteen AI-assisted research manuscripts of ProveIt's incoming
+This is a research report dated 2 October 2026 and extended on 3 and 4
+October 2026, built from twenty-nine AI-assisted research manuscripts of ProveIt's incoming
 reports: manuscripts 07 and 11 of batch 78 (Parts I and II), manuscripts 16
 and 19 of batch 79 (Parts III and IV), manuscripts 10, 02, 05 and 03 of batch
-80 (Parts V and VI), and manuscripts 19, 06, 17, 01, 21 and 02 of batch 82 (a
-third source of Part VI, Part VII and Part VIII). The
+80 (Parts V and VI), manuscripts 19, 06, 17, 01, 21 and 02 of batch 82 (a
+third source of Part VI, Part VII and Part VIII), and manuscripts 01, 03
+and 08–20 of batch 91 (Parts IX–XIII). The
 report calls them *source 07*, *source 11* and *source 12* to *source 23*
 after the file prefixes of their shipped programs and data. For the first two
 the prefix is also the batch-78 manuscript number; for the others it is not:
@@ -38,6 +39,21 @@ assistant, and both pin the ProveIt commit `ad634b2d1` of the research files
 they build on. Source, manuscript and pipeline numbers all differ; the article
 translates the pipeline's numbers in brackets.
 
+Sources 24–38 (batch 91, added 4 October 2026) are fifteen further numbered
+reports of the same pipeline: **source 24 is batch-91 manuscript 01 (Report
+49), source 25 is manuscript 03 (Report 51), sources 26–29 are manuscripts
+08–11 (Reports 56–59), sources 30–33 are manuscripts 12–15 (Reports 60–63),
+sources 34 and 35 are manuscripts 16 and 17 (Reports 64 and 65), and sources
+36, 37 and 38 are manuscripts 18, 19 and 20 (Reports 66, 67 and 69)**. Their
+author lines are "Report49"-style report numbers or "Research report"; they
+name no assistant, and their run logs show the runtime of an AI pipeline.
+Sources 24 and 25 pin this report's own text at `0f95145cb` (blob
+`ec10c7a5`), source 26 read this README at `e3e58a882`, source 27 pinned its
+repository searches at `7ba8f64e6`, and source 29 pins `b64f24e59`; all
+others pin their predecessors by SHA-256 only. Report 68, which source 38
+names as a predecessor, was never delivered: only its delivery README
+survives, shipped as `38-low-arity-qa-pred-tools-README68.md`.
+
 | Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
 | 07 (base) | batch 78, manuscript 07 | `Collision_Geometry_Diophantine_Signal_Machines.zip` (`808b53ed8`); *Collision Geometry Is Linear: Event-Sparse Quadratic Diophantine Certificates for Rational Signal Machines*, main file `collision_geometry/article.tex`, 29-page PDF | `f1edb38f9` (audit blob `cb31d0a10`) | `798b0c5d4` | Part I (Sections 2–16) and Appendices A–B |
@@ -54,6 +70,21 @@ translates the pipeline's numbers in brackets.
 | 21 | batch 82, manuscript 01 | `Binary_Planar_Four_Particle_Shuttle_Package.zip` (`db37d18c8`); *A binary planar four particle shuttle: Exact orbit geometry and a one step quartic certificate* (Report 31), main file `binary-planar-shuttle-release-20261003/report31.tex`, 14-page PDF | no repository commit; SHA-256 of the TeX of sources 17, 18 and 20 (`0723338c…` for source 20) | `49dfa8fd6` | Part VII (Sections 129–140) |
 | 22 | batch 82, manuscript 21 | `Unbounded_Compact_Clean_Clocks_Package.zip` (`db37d18c8`); *Unbounded compact clean clocks for exact three mass targets: Fully emitted fixed source Diophantine certificates* (Report 21), main file `unbounded-clean-clock-release-20261003/report21.tex`, 14-page PDF | ProveIt `ad634b2d1` (the research tree's interface, receipt, review and residue-history proof); source 15's theorem by SHA-256 | `7d2b1b245` | Part VIII (Sections 141–149) |
 | 23 | batch 82, manuscript 02 | `Canonical_Histories_and_Infinite_Fibers_Package.zip` (`db37d18c8`); *Canonical histories and infinite native fibers: Exact fixed source Diophantine certificates for three mass computation* (Report 22), main file `canonical-fiber-release-20261003/report22.tex`, 14-page PDF; a declared sequel of source 22 | ProveIt `ad634b2d1`; source 22's base and folded manifests by SHA-256 | `7d2b1b245` | Part VIII (Sections 150–158) |
+| 24 | batch 91, manuscript 01 | `A_Sharp_Reversible_Four_Particle_Timing_Threshold_Package.zip` (`0d7f51c44`); *A sharp reversible four particle timing threshold* (Report 49), main file `Research_Report49/manuscript/report49.tex`, 14-page PDF | this article, blob `ec10c7a5` (the text of `0f95145cb`); `review_parallel_particle_reports.md` (blob `30c7366b`) and `17-four-mass-BINARY-INDEPENDENT-AUDIT.md` (blob `0aa7b970`) | `d750d98dd` | Part IX (Sections 159–168) |
+| 25 | batch 91, manuscript 03 | `Uniform_Timed_Charts_for_Four_Mass_Units_Package.zip` (`0d7f51c44`); *Uniform timed charts for four mass units* (Report 51), main file `Research_Report51/manuscript/report51.tex`, 21-page PDF | this article, blob `ec10c7a5`; source 24's TeX (SHA-256 `c7813317…`) | `d750d98dd` | Part IX (Sections 169–180) |
+| 26 | batch 91, manuscript 08 | `Periodic_Signal_Machine_Collision_Certificates_Package.zip` (`0d7f51c44`); *Periodic signal machine collision certificates: Exact infinite validity and observable clock arithmetic* (Report 56), main file `article/Report56.tex`, 15-page PDF | ProveIt `e3e58a882` (this README and the programme's finite-schema signal review) | `d750d98dd` | Part X (Sections 182–195) |
+| 27 | batch 91, manuscript 09 | `Five_Signal_Nonsemialgebraic_Periodic_Validity_Package.zip` (`0d7f51c44`); *Five signal nonsemialgebraic periodic validity* (Report 57), main file `Report57.tex` with two table files, 20-page PDF | searches pinned at `7ba8f64e6`; source 26's proof and audit by SHA-256 | `d750d98dd` | Part X (Sections 196–210) |
+| 28 | batch 91, manuscript 10 | `Five_Signal_Diophantine_Certificate_Source.zip` (`0d7f51c44`); *Explicit Diophantine certificate for five signal infinite validity* (Report 58), main file `Report58.tex`, 19-page PDF | source 27's proof and audit by SHA-256; mathlib4 `ac77769f` (`PellMatiyasevic.lean`, SHA-256 `993760c7…`) | `d750d98dd` | Part X (Sections 211–224) |
+| 29 | batch 91, manuscript 11 | `Five_Signal_Rational_Rotation_Family_Source.zip` (`0d7f51c44`); *Five signal rational rotation family* (Report 59), main file `manuscript/report59.tex` (the final reviewed edition), 22-page PDF | ProveIt `b64f24e59`; source 28's proof; mathlib4 `ac77769f` | `d750d98dd` | Part X (Sections 225–237) |
+| 30 | batch 91, manuscript 12 | `Planar_Signal_Realization_Source.zip` (`0d7f51c44`); *Planar signal realization and strict validity kernels* (Report 60), main file `Report60/Report60.tex` (also five modular files), 28-page PDF | source 29's proof (`14c3d694…`) and mathlib `PellMatiyasevic.lean` (`993760c7…`) by SHA-256 | `d750d98dd` | Part XI (Sections 240–256) |
+| 31 | batch 91, manuscript 13 | `Invertible_Signal_Returns_Source.zip` (`0d7f51c44`); *Fixed word invertibility and rational planar returns* (Report 61), main file `Report61/Report61.tex`, 19-page PDF | source 30's physical proof (`e0ddd64c…`) | `d750d98dd` | Part XI (Sections 257–266) |
+| 32 | batch 91, manuscript 14 | `Projective_signal_returns_source_and_evidence.zip` (`0d7f51c44`); *Five signal projective returns and mixed Zeno clocks* (Report 62), main file `Report62/Report62.tex`, 22-page PDF | the proofs of sources 30 and 31 | `d750d98dd` | Part XI (Sections 267–280) |
+| 33 | batch 91, manuscript 15 | `Five_signal_homogeneous_realization_source_and_evidence.zip` (`0d7f51c44`); *Exact local homogeneous realization with five live signals* (Report 63), main file `Report63/Report63.tex`, 18-page PDF | the proofs of sources 30, 31 and 32 and source 32's review | `d750d98dd` | Part XI (Sections 281–292) |
+| 34 | batch 91, manuscript 16 | `Five_signal_branching_source_and_evidence.zip` (`0d7f51c44`); *Nondestructive branching with five live signals* (Report 64), main file `Report64/Report64.tex` (a flattening of eleven modules), 21-page PDF | source 33's proof (`31f0db77…`); its own packets | `d750d98dd` | Part XII (Sections 294–303) |
+| 35 | batch 91, manuscript 17 | `Clocked_signals_source_and_evidence.zip` (`0d7f51c44`); *Exact instruction clocks and native gap halting certificates* (Report 65), main file `Report65/Report65.tex`, 20-page PDF | source 34's proofs, the POWER proofs of sources 28 and 30, mathlib4 `ac77769f` | `d750d98dd` | Part XII (Sections 304–316) |
+| 36 | batch 91, manuscript 18 | `Bounded_certificates_and_encoded_gap_counts_source.zip` (`0d7f51c44`); *Bounded halting certificates and exact encoded gap counts* (Report 66), main file `Report66/Report66.tex`, 21-page PDF | its input packets by SHA-256 (`INPUT_PINS.json`); mathlib4 `ac77769f` | `d750d98dd` | Part XIII (Sections 318–331) |
+| 37 | batch 91, manuscript 19 | `Positive_POWER_reductions_and_exact_compiler_costs_source.zip` (`0d7f51c44`); *Positive POWER reductions and exact bounded compiler costs* (Report 67), main file `Report67/Report67.tex`, 24-page PDF | the same; carries source 36's packet | `d750d98dd` | Part XIII (Sections 332–347) |
+| 38 | batch 91, manuscript 20 | `Low_arity_Diophantine_compilers_sources.zip` (`0d7f51c44`); *Low-arity finite-clipping Diophantine compilers* (Report 69), main file `Report69/Report69.tex`, 17-page PDF | the same; carries the packets of sources 36 and 37 and Report 68's README | `d750d98dd` | Part XIII (Sections 348–354) |
 
 **Parts I and II prove one theorem by two routes.** Once a complete finite
 collision history of a rational signal machine is fixed, its realizations are
@@ -170,6 +201,41 @@ composition. Report 25, the sequel of source 23, classifies the whole native
 fibre in `fixed-universal-polynomials` Part III, which implies Theorem 155.1.
 Sections 1.22–1.26 introduce them.
 
+**Parts IX–XIII (batch 91, cluster S).** Fifteen manuscripts of batch 91,
+placed together by `d750d98dd`, add five Parts. Part IX (sources 24 and 25)
+continues Part VI: source 24 builds a binary number-conserving rule,
+globally reversible on the full shift with radius at most 90, whose
+four-particle orbit hits an anchored word exactly at the times
+`k² + (2d − 23)k`, so four particles are the least count for a
+non-eventually-periodic anchored occurrence set also under reversibility (its
+quartic is source 17's, printed once); source 25, conditional on sources 17
+and 18, covers every ordered input of mass at most four by one finite family
+of timed charts (uniform untimed stationary-frame Presburger reachability and
+a uniform single-fold quartic) and shows that original-frame untimed
+reachability need not be Presburger. Part X (sources 26–29) returns to signal
+machines: for a supplied ultimately periodic complete macro with at most four
+live signals, infinite validity is a finite formula of quadratic sign tests
+compiled into a quartic with one natural witness, Zeno behaviour and rational
+deadlines are decided, and every valid ultimately periodic macro on rational
+data has a rational accumulation time (answering Part I's accumulation
+direction in part); with five live signals a half-contracted irrational
+rotation has a valid set that no finite sign formula describes, yet explicit
+degree-twelve positive-integer certificates exist (81 witnesses and 44
+equations for one machine; `1 + 80J` and `1 + 43J` for a rotation family).
+Part XI (sources 30–33) realizes every invertible rational planar return, every
+fixed-centre projective lift and, locally, every compatible invertible 3×3
+homogeneous return with five live signals, and classifies and certifies the
+strict iteration kernels. Part XII (sources 34 and 35) compiles every fixed
+two-counter program into one number-preserving table with exactly five live
+signals and an exact nondestructive branch test (Durand-Lose's five-signal
+counters are credited; no universality claim), pads every instruction to
+exactly `30D`, and pays for native positive gap initialization inside two
+degree-twelve POWER modules. Part XIII (sources 36–38) compresses the
+certificate of each fixed horizon to three, two or one positive witnesses,
+shrinks the POWER module from 26 to 12 leaves, classifies when no witness is
+needed and counts all encoded gap triples exactly. Sections 1.27–1.36
+introduce them.
+
 **Status: AI-assisted, unrefereed, not formalized.** Conventional proofs and
 finite exact-arithmetic checks. Nothing in the report is formalized in Lean or
 Rocq, and no priority is certified.
@@ -250,7 +316,7 @@ Appendix I) was read in full and is sound as a conditional statement, and
 for one drifted orbit of source 20's weighted planar automaton a complete
 first-hit quartic with 35 paid operations, three natural witnesses and
 degree four was emitted (one fixed input, not a compiler). Source 18 has no review; the programme's archive inventory
-`reviewed_report_archive_replay.md` lists it as relocation only. The reviews
+`reviewed_report_archive_replay.md` lists it as relocation only. (Dated 4 October 2026: it has since had a scoped intake, `review_timed_four_mass_source18_intake.md`, commit `39f398985`: "PASS on the conditional chart/compiler argument".) The reviews
 of batch-82 Reports 16 (`review_literal_universal_reversible_source16.md`,
 `69730d3e8`) and 26–28 (`review_parallel_particle_reports.md`, `fb7e3cb47`)
 bear on source 19's corollary. None of these reviews the batch-82 write of
@@ -270,9 +336,22 @@ six operations and one witness fewer than source 22's folded circuits,
 explicitly not attributed to source 22. "Reviews and patches" gives the
 details. None of these reviews the batch-82 M2 write.
 
+**Batch 91 (Parts IX–XIII): intakes.** The research tree took all fifteen
+archives in before this write, without a full proof review: sources 24–35 in
+the bounded routing intake `review_new_signals_0d7f51c44.md` (commit
+`49b100cfd`; full delivery READMEs and selected spans, "a routing and scope
+review, not a full proof", no statement needing an author correction), and
+sources 36–38 in the scoped arithmetic intake
+`review_new_arithmetic_0d7f51c44.md` (commit `a9ab9a698`; no defect, "no new
+paid circuit below the current 84-operation unbounded ordinary-input
+construction"). Source 18, which source 25 imports, has since had a scoped
+intake too (`review_timed_four_mass_source18_intake.md`, commit `39f398985`,
+after the batch-82 write: "PASS on the conditional chart/compiler argument").
+None of these reviews this write.
+
 ```
 article.tex                                                     the report, standalone LaTeX with an internal bibliography
-article.pdf                                                     the compiled report, 320 pages (unnumbered title page, then pages 1–319)
+article.pdf                                                     the compiled report, 673 pages (unnumbered title page, then pages 1–672)
 README.md                                                       this guide
 07-collision-geometry-PROVENANCE.md                             source 07's repository and literature provenance, as delivered
 11-signal-certificates-REPRODUCIBILITY.md                       source 11's reproducibility record, as delivered
@@ -334,6 +413,205 @@ README.md                                                       this guide
 23-canonical-fibers-NATIVE-FIBERS-README.md                     the native-fibers packet's README, as delivered
 23-canonical-fibers-NATIVE-FIBERS-REVIEW.md                     source 23's independent review of the fixed-scale infinitude
 23-canonical-fibers-NATIVE-FIBERS-THEOREM.md                    source 23's fixed-scale native infinitude theorem and proof
+24-reversible-frozen-audit-AUDIT.md                             source 24 (Report 49): Research_Report49/frozen/audit/AUDIT.md
+24-reversible-frozen-audit-audited-candidate-specification.md   source 24 (Report 49): Research_Report49/frozen/audit/audited-candidate-specification.md
+24-reversible-frozen-manuscript-audit-AUDIT.md                  source 24 (Report 49): Research_Report49/frozen/manuscript-audit/AUDIT.md
+25-uniform-frozen-audit-AUDIT.md                                source 25 (Report 51): Research_Report51/frozen/audit/AUDIT.md
+25-uniform-frozen-audit-README.md                               source 25 (Report 51): Research_Report51/frozen/audit/README.md
+25-uniform-frozen-frame-obstruction-proof.md                    source 25 (Report 51): Research_Report51/frozen/frame-obstruction/proof.md
+25-uniform-frozen-manuscript-audit-corollary-AUDIT-ADDENDUM.md  source 25 (Report 51): Research_Report51/frozen/manuscript-audit-corollary/AUDIT-ADDENDUM.md
+25-uniform-frozen-manuscript-audit-corollary-README.md          source 25 (Report 51): Research_Report51/frozen/manuscript-audit-corollary/README.md
+25-uniform-frozen-manuscript-audit-AUDIT.md                     source 25 (Report 51): Research_Report51/frozen/manuscript-audit/AUDIT.md
+25-uniform-frozen-manuscript-audit-README.md                    source 25 (Report 51): Research_Report51/frozen/manuscript-audit/README.md
+25-uniform-frozen-science-PROOF-NOTE.md                         source 25 (Report 51): Research_Report51/frozen/science/PROOF-NOTE.md
+25-uniform-frozen-science-README.md                             source 25 (Report 51): Research_Report51/frozen/science/README.md
+25-uniform-frozen-science-REVIEW.md                             source 25 (Report 51): Research_Report51/frozen/science/REVIEW.md
+25-uniform-frozen-science-pinned-frontier-scope-check.md        source 25 (Report 51): Research_Report51/frozen/science/pinned/frontier-scope-check.md
+26-periodic-audit_replay-README.md                              source 26 (Report 56): audit_replay/README.md
+26-periodic-independent_audit-AUDIT.md                          source 26 (Report 56): independent_audit/AUDIT.md
+26-periodic-independent_audit-README.md                         source 26 (Report 56): independent_audit/README.md
+26-periodic-independent_audit-emitted-artifact-audit-AUDIT-ADDENDUM.md  source 26 (Report 56): independent_audit/emitted-artifact-audit/AUDIT-ADDENDUM.md
+26-periodic-independent_audit-emitted-artifact-audit-README.md  source 26 (Report 56): independent_audit/emitted-artifact-audit/README.md
+26-periodic-manuscript_review-README.md                         source 26 (Report 56): manuscript_review/README.md
+26-periodic-manuscript_review-REVIEW.md                         source 26 (Report 56): manuscript_review/REVIEW.md
+26-periodic-science-PROOF.md                                    source 26 (Report 56): science/PROOF.md
+26-periodic-science-README.md                                   source 26 (Report 56): science/README.md
+26-periodic-science-SOURCE_NOTES.md                             source 26 (Report 56): science/SOURCE_NOTES.md
+27-fivesignal-audit_replay-README.md                            source 27 (Report 57): audit_replay/README.md
+27-fivesignal-independent_audit-INDEPENDENT_AUDIT.md            source 27 (Report 57): independent_audit/INDEPENDENT_AUDIT.md
+27-fivesignal-manuscript_review-MANUSCRIPT_REVIEW.md            source 27 (Report 57): manuscript_review/MANUSCRIPT_REVIEW.md
+27-fivesignal-science-companion-BOUNDARY_AND_ARITHMETIC.md      source 27 (Report 57): science/companion/BOUNDARY_AND_ARITHMETIC.md
+27-fivesignal-science-companion-README.md                       source 27 (Report 57): science/companion/README.md
+27-fivesignal-science-companion-VARIANT_CLARIFICATION.md        source 27 (Report 57): science/companion/VARIANT_CLARIFICATION.md
+27-fivesignal-science-construction-CLOCK.md                     source 27 (Report 57): science/construction/CLOCK.md
+27-fivesignal-science-construction-PROOF.md                     source 27 (Report 57): science/construction/PROOF.md
+27-fivesignal-tools-README.md                                   source 27 (Report 57): tools/README.md
+27-fivesignal-verification-primary-source-recheck.md            source 27 (Report 57): verification/primary-source-recheck.md
+28-diophantine-independent_audit-INDEPENDENT_AUDIT.md           source 28 (Report 58): independent_audit/INDEPENDENT_AUDIT.md
+28-diophantine-independent_audit-POWER_AUDIT.md                 source 28 (Report 58): independent_audit/POWER_AUDIT.md
+28-diophantine-manuscript_review-MANUSCRIPT_REVIEW.md           source 28 (Report 58): manuscript_review/MANUSCRIPT_REVIEW.md
+28-diophantine-portable_replay-PORTABILITY_REVIEW.md            source 28 (Report 58): portable_replay/PORTABILITY_REVIEW.md
+28-diophantine-portable_replay-REPLAY_README.md                 source 28 (Report 58): portable_replay/REPLAY_README.md
+28-diophantine-science-PROOF.md                                 source 28 (Report 58): science/PROOF.md
+28-diophantine-science-README.md                                source 28 (Report 58): science/README.md
+28-diophantine-science-independent_audit-EXPANDED_SOURCE_REVIEW.md  source 28 (Report 58): science/independent_audit/EXPANDED_SOURCE_REVIEW.md
+28-diophantine-science-review-ALGEBRA_REVIEW.md                 source 28 (Report 58): science/review/ALGEBRA_REVIEW.md
+28-diophantine-science-sources-NOTICE.md                        source 28 (Report 58): science/sources/NOTICE.md
+28-diophantine-verification-RELEASE_TOOLS_REVIEW.md             source 28 (Report 58): verification/RELEASE_TOOLS_REVIEW.md
+29-rotations-independent-audit-ARITHMETIC_AUDIT.md              source 29 (Report 59): independent-audit/ARITHMETIC_AUDIT.md
+29-rotations-independent-audit-AUDIT.md                         source 29 (Report 59): independent-audit/AUDIT.md
+29-rotations-manuscript-review-MANUSCRIPT_REVIEW.md             source 29 (Report 59): manuscript-review/MANUSCRIPT_REVIEW.md
+29-rotations-manuscript-review-SOURCE_CHECK.md                  source 29 (Report 59): manuscript-review/SOURCE_CHECK.md
+29-rotations-qa-CLAIM_MAP.md                                    source 29 (Report 59): qa/CLAIM_MAP.md
+29-rotations-real-input-audit-AUDIT.md                          source 29 (Report 59): real-input-audit/AUDIT.md
+29-rotations-real-input-audit-SOURCE_VERIFICATION.md            source 29 (Report 59): real-input-audit/SOURCE_VERIFICATION.md
+29-rotations-real-input-PROOF.md                                source 29 (Report 59): real-input/PROOF.md
+29-rotations-real-input-SOURCE_NOTES.md                         source 29 (Report 59): real-input/SOURCE_NOTES.md
+29-rotations-release-tool-review-EVIDENCE_INDEX.md              source 29 (Report 59): release-tool-review/EVIDENCE_INDEX.md
+29-rotations-release-tool-review-RELEASE_TOOLS_REVIEW.md        source 29 (Report 59): release-tool-review/RELEASE_TOOLS_REVIEW.md
+29-rotations-release-tool-review-baseline-README.md             source 29 (Report 59): release-tool-review/baseline/README.md
+29-rotations-science-PRIOR_WORK.md                              source 29 (Report 59): science/PRIOR_WORK.md
+29-rotations-science-PROOF.md                                   source 29 (Report 59): science/PROOF.md
+29-rotations-science-README.md                                  source 29 (Report 59): science/README.md
+29-rotations-science-arithmetic_review-ARITHMETIC_REVIEW.md     source 29 (Report 59): science/arithmetic_review/ARITHMETIC_REVIEW.md
+29-rotations-tools-portable_tools-ADAPTER_REVIEW.md             source 29 (Report 59): tools/portable_tools/ADAPTER_REVIEW.md
+29-rotations-tools-portable_tools-README.md                     source 29 (Report 59): tools/portable_tools/README.md
+35-clocked-audits-clock-AUDIT.md                                source 35 (Report 65): Report65/audits/clock/AUDIT.md
+35-clocked-audits-manuscript-CHECKS.md                          source 35 (Report 65): Report65/audits/manuscript/CHECKS.md
+35-clocked-audits-manuscript-README.md                          source 35 (Report 65): Report65/audits/manuscript/README.md
+35-clocked-audits-manuscript-VISUAL_REVIEW.md                   source 35 (Report 65): Report65/audits/manuscript/VISUAL_REVIEW.md
+35-clocked-audits-manuscript-inputs-qa-LITERATURE_VERIFICATION.md  source 35 (Report 65): Report65/audits/manuscript/inputs/qa/LITERATURE_VERIFICATION.md
+35-clocked-audits-native-gaps-INDEPENDENT_AUDIT.md              source 35 (Report 65): Report65/audits/native-gaps/INDEPENDENT_AUDIT.md
+35-clocked-audits-native-gaps-README.md                         source 35 (Report 65): Report65/audits/native-gaps/README.md
+35-clocked-audits-release-tools-ACCEPTED_REVIEW.md              source 35 (Report 65): Report65/audits/release-tools/ACCEPTED_REVIEW.md
+35-clocked-audits-release-tools-ORIGINAL_REVIEW.md              source 35 (Report 65): Report65/audits/release-tools/ORIGINAL_REVIEW.md
+35-clocked-qa-VISUAL_REVIEW.md                                  source 35 (Report 65): Report65/qa/VISUAL_REVIEW.md
+35-clocked-science-clock-PROOF.md                               source 35 (Report 65): Report65/science/clock/PROOF.md
+35-clocked-science-native-gaps-HANDOFF.md                       source 35 (Report 65): Report65/science/native-gaps/HANDOFF.md
+35-clocked-science-native-gaps-PROOF.md                         source 35 (Report 65): Report65/science/native-gaps/PROOF.md
+35-clocked-science-native-gaps-README.md                        source 35 (Report 65): Report65/science/native-gaps/README.md
+34-branching-audits-arithmetic-AUDIT.md                         source 34 (Report 64): Report64/audits/arithmetic/AUDIT.md
+34-branching-audits-physical-AUDIT.md                           source 34 (Report 64): Report64/audits/physical/AUDIT.md
+34-branching-audits-physical-README.md                          source 34 (Report 64): Report64/audits/physical/README.md
+34-branching-manuscript-review-AUDIT.md                         source 34 (Report 64): Report64/manuscript-review/AUDIT.md
+34-branching-manuscript-review-README.md                        source 34 (Report 64): Report64/manuscript-review/README.md
+34-branching-qa-AUTHOR_VISUAL_REVIEW.md                         source 34 (Report 64): Report64/qa/AUTHOR_VISUAL_REVIEW.md
+34-branching-qa-LITERATURE_VERIFICATION.md                      source 34 (Report 64): Report64/qa/LITERATURE_VERIFICATION.md
+34-branching-qa-TOOL_ADAPTATION.md                              source 34 (Report 64): Report64/qa/TOOL_ADAPTATION.md
+34-branching-qa-independent-tools-REVIEW.md                     source 34 (Report 64): Report64/qa/independent-tools/REVIEW.md
+34-branching-qa-visual-revision-README.md                       source 34 (Report 64): Report64/qa/visual-revision/README.md
+34-branching-science-arithmetic-PROOF.md                        source 34 (Report 64): Report64/science/arithmetic/PROOF.md
+34-branching-science-arithmetic-README.md                       source 34 (Report 64): Report64/science/arithmetic/README.md
+34-branching-science-frozen-proof-PROOF.md                      source 34 (Report 64): Report64/science/frozen-proof/PROOF.md
+34-branching-science-frozen-proof-README.md                     source 34 (Report 64): Report64/science/frozen-proof/README.md
+33-homogeneous-audits-scientific-README.md                      source 33 (Report 63): Report63/audits/scientific/README.md
+33-homogeneous-audits-scientific-REVIEW.md                      source 33 (Report 63): Report63/audits/scientific/REVIEW.md
+33-homogeneous-audits-scientific-certificate_audit-REVIEW.md    source 33 (Report 63): Report63/audits/scientific/certificate_audit/REVIEW.md
+33-homogeneous-audits-scientific-certificate_audit-initial-run-REVIEW.md  source 33 (Report 63): Report63/audits/scientific/certificate_audit/initial-run/REVIEW.md
+33-homogeneous-manuscript-review-REVIEW.md                      source 33 (Report 63): Report63/manuscript-review/REVIEW.md
+33-homogeneous-qa-AUTHOR_VISUAL_REVIEW.md                       source 33 (Report 63): Report63/qa/AUTHOR_VISUAL_REVIEW.md
+33-homogeneous-qa-LITERATURE_VERIFICATION.md                    source 33 (Report 63): Report63/qa/LITERATURE_VERIFICATION.md
+33-homogeneous-qa-TOOL_ADAPTATION.md                            source 33 (Report 63): Report63/qa/TOOL_ADAPTATION.md
+33-homogeneous-qa-independent-tools-REVIEW.md                   source 33 (Report 63): Report63/qa/independent-tools/REVIEW.md
+33-homogeneous-science-frozen-proof-PROOF.md                    source 33 (Report 63): Report63/science/frozen-proof/PROOF.md
+33-homogeneous-science-frozen-proof-README.md                   source 33 (Report 63): Report63/science/frozen-proof/README.md
+31-invertible-audits-manuscript-REVIEW.md                       source 31 (Report 61): Report61/audits/manuscript/REVIEW.md
+31-invertible-audits-portable-replay-REVIEW.md                  source 31 (Report 61): Report61/audits/portable-replay/REVIEW.md
+31-invertible-audits-release-tools-REVIEW.md                    source 31 (Report 61): Report61/audits/release-tools/REVIEW.md
+31-invertible-audits-scientific-REVIEW.md                       source 31 (Report 61): Report61/audits/scientific/REVIEW.md
+31-invertible-qa-VISUAL_REVIEW.md                               source 31 (Report 61): Report61/qa/VISUAL_REVIEW.md
+31-invertible-science-frozen-proof-PROOF.md                     source 31 (Report 61): Report61/science/frozen-proof/PROOF.md
+31-invertible-science-frozen-proof-README.md                    source 31 (Report 61): Report61/science/frozen-proof/README.md
+31-invertible-science-frozen-proof-REVIEW_GUIDE.md              source 31 (Report 61): Report61/science/frozen-proof/REVIEW_GUIDE.md
+31-invertible-tools-portable-replay-README.md                   source 31 (Report 61): Report61/tools/portable-replay/README.md
+31-invertible-tools-portable-replay-RELEASE_NOTES.md            source 31 (Report 61): Report61/tools/portable-replay/RELEASE_NOTES.md
+30-planar-audits-arithmetic-AUDIT.md                            source 30 (Report 60): Report60/audits/arithmetic/AUDIT.md
+30-planar-audits-arithmetic-README.md                           source 30 (Report 60): Report60/audits/arithmetic/README.md
+30-planar-audits-geometry-LITERATURE.md                         source 30 (Report 60): Report60/audits/geometry/LITERATURE.md
+30-planar-audits-geometry-README.md                             source 30 (Report 60): Report60/audits/geometry/README.md
+30-planar-audits-geometry-REVIEW.md                             source 30 (Report 60): Report60/audits/geometry/REVIEW.md
+30-planar-audits-physical-REVIEW.md                             source 30 (Report 60): Report60/audits/physical/REVIEW.md
+30-planar-audits-quadratic-REVIEW.md                            source 30 (Report 60): Report60/audits/quadratic/REVIEW.md
+30-planar-manuscript-review-FINAL_REVIEW.md                     source 30 (Report 60): Report60/manuscript-review/FINAL_REVIEW.md
+30-planar-manuscript-review-MATHEMATICAL_REVIEW.md              source 30 (Report 60): Report60/manuscript-review/MATHEMATICAL_REVIEW.md
+30-planar-qa-CLAIM_MAP.md                                       source 30 (Report 60): Report60/qa/CLAIM_MAP.md
+30-planar-qa-README.md                                          source 30 (Report 60): Report60/qa/README.md
+30-planar-qa-VISUAL_REVIEW.md                                   source 30 (Report 60): Report60/qa/VISUAL_REVIEW.md
+30-planar-qa-release-tools-review-REVIEW.md                     source 30 (Report 60): Report60/qa/release-tools-review/REVIEW.md
+30-planar-science-arithmetic-PROOF.md                           source 30 (Report 60): Report60/science/arithmetic/PROOF.md
+30-planar-science-arithmetic-README.md                          source 30 (Report 60): Report60/science/arithmetic/README.md
+30-planar-science-geometry-PRIOR_WORK.md                        source 30 (Report 60): Report60/science/geometry/PRIOR_WORK.md
+30-planar-science-geometry-PROOF.md                             source 30 (Report 60): Report60/science/geometry/PROOF.md
+30-planar-science-geometry-README.md                            source 30 (Report 60): Report60/science/geometry/README.md
+30-planar-science-physical-PROOF.md                             source 30 (Report 60): Report60/science/physical/PROOF.md
+30-planar-science-physical-README.md                            source 30 (Report 60): Report60/science/physical/README.md
+30-planar-science-quadratic-PROOF.md                            source 30 (Report 60): Report60/science/quadratic/PROOF.md
+30-planar-science-quadratic-README.md                           source 30 (Report 60): Report60/science/quadratic/README.md
+30-planar-tools-portable-replay-README.md                       source 30 (Report 60): Report60/tools/portable-replay/README.md
+30-planar-tools-portable-replay-RELEASE_VALIDATION.md           source 30 (Report 60): Report60/tools/portable-replay/RELEASE_VALIDATION.md
+30-planar-tools-portable-replay-independent-review-REVIEW.md    source 30 (Report 60): Report60/tools/portable-replay/independent-review/REVIEW.md
+32-projective-audits-scientific-REVIEW.md                       source 32 (Report 62): Report62/audits/scientific/REVIEW.md
+32-projective-manuscript-review-REVIEW.md                       source 32 (Report 62): Report62/manuscript-review/REVIEW.md
+32-projective-qa-AUTHOR_VISUAL_REVIEW.md                        source 32 (Report 62): Report62/qa/AUTHOR_VISUAL_REVIEW.md
+32-projective-qa-LITERATURE_VERIFICATION.md                     source 32 (Report 62): Report62/qa/LITERATURE_VERIFICATION.md
+32-projective-qa-release-tools-review-REVIEW.md                 source 32 (Report 62): Report62/qa/release-tools-review/REVIEW.md
+32-projective-science-frozen-proof-INDEPENDENT_AUDIT.md         source 32 (Report 62): Report62/science/frozen-proof/INDEPENDENT_AUDIT.md
+32-projective-science-frozen-proof-LITERATURE_AND_SCOPE.md      source 32 (Report 62): Report62/science/frozen-proof/LITERATURE_AND_SCOPE.md
+32-projective-science-frozen-proof-PROOF.md                     source 32 (Report 62): Report62/science/frozen-proof/PROOF.md
+32-projective-science-frozen-proof-README.md                    source 32 (Report 62): Report62/science/frozen-proof/README.md
+32-projective-science-frozen-proof-REVIEW_GUIDE.md              source 32 (Report 62): Report62/science/frozen-proof/REVIEW_GUIDE.md
+32-projective-tools-portable-replay-README.md                   source 32 (Report 62): Report62/tools/portable-replay/README.md
+32-projective-tools-portable-replay-RELEASE_NOTES.md            source 32 (Report 62): Report62/tools/portable-replay/RELEASE_NOTES.md
+32-projective-tools-portable-replay-independent_review-REVIEW.md  source 32 (Report 62): Report62/tools/portable-replay/independent_review/REVIEW.md
+32-projective-tools-portable-replay-independent_review-REVIEW_PLAN.md  source 32 (Report 62): Report62/tools/portable-replay/independent_review/REVIEW_PLAN.md
+36-bounded-cert-audit-bc-AUDIT.md                               source 36 (Report 66): Report66/audits/bounded-certificates/AUDIT.md
+36-bounded-cert-audit-bc-README.md                              source 36 (Report 66): Report66/audits/bounded-certificates/README.md
+36-bounded-cert-audit-cnt-README.md                             source 36 (Report 66): Report66/audits/counting/README.md
+36-bounded-cert-audit-cnt-REVIEW.md                             source 36 (Report 66): Report66/audits/counting/REVIEW.md
+36-bounded-cert-msr-REVIEW.md                                   source 36 (Report 66): Report66/qa/manuscript-review/REVIEW.md
+36-bounded-cert-rtr-REVIEW.md                                   source 36 (Report 66): Report66/qa/release-tool-review/REVIEW.md
+36-bounded-cert-bc-HANDOFF.md                                   source 36 (Report 66): Report66/science/bounded-certificates/HANDOFF.md
+36-bounded-cert-bc-PROOF.md                                     source 36 (Report 66): Report66/science/bounded-certificates/PROOF.md
+36-bounded-cert-bc-README.md                                    source 36 (Report 66): Report66/science/bounded-certificates/README.md
+36-bounded-cert-cnt-HANDOFF.md                                  source 36 (Report 66): Report66/science/counting/HANDOFF.md
+36-bounded-cert-cnt-PROOF.md                                    source 36 (Report 66): Report66/science/counting/PROOF.md
+36-bounded-cert-cnt-README.md                                   source 36 (Report 66): Report66/science/counting/README.md
+37-pos-power-audit-ed-AUDIT.md                                  source 37 (Report 67): Report67/audits/exact-degree/AUDIT.md
+37-pos-power-audit-ed-README.md                                 source 37 (Report 67): Report67/audits/exact-degree/README.md
+37-pos-power-audit-pb-AUDIT.md                                  source 37 (Report 67): Report67/audits/power-baseline/AUDIT.md
+37-pos-power-audit-pb-HANDOFF.md                                source 37 (Report 67): Report67/audits/power-baseline/HANDOFF.md
+37-pos-power-audit-pb-README.md                                 source 37 (Report 67): Report67/audits/power-baseline/README.md
+37-pos-power-audit-p12-AUDIT.md                                 source 37 (Report 67): Report67/audits/power-twelve/AUDIT.md
+37-pos-power-audit-p12-README.md                                source 37 (Report 67): Report67/audits/power-twelve/README.md
+37-pos-power-qa-LITERATURE_CHECK.md                             source 37 (Report 67): Report67/qa/LITERATURE_CHECK.md
+37-pos-power-qa-ROOT_REVIEW_GATE.md                             source 37 (Report 67): Report67/qa/ROOT_REVIEW_GATE.md
+37-pos-power-msr-PAGE_REVIEW.md                                 source 37 (Report 67): Report67/qa/manuscript-review/PAGE_REVIEW.md
+37-pos-power-msr-REVIEW.md                                      source 37 (Report 67): Report67/qa/manuscript-review/REVIEW.md
+37-pos-power-rtr-REVIEW.md                                      source 37 (Report 67): Report67/qa/release-tool-review/REVIEW.md
+37-pos-power-rtr-rreadmes-corrected-candidate.md                source 37 (Report 67): Report67/qa/release-tool-review/reviewed-readmes/corrected-candidate.md
+37-pos-power-rtr-rreadmes-original-candidate.md                 source 37 (Report 67): Report67/qa/release-tool-review/reviewed-readmes/original-candidate.md
+37-pos-power-ed-HANDOFF.md                                      source 37 (Report 67): Report67/science/exact-degree/HANDOFF.md
+37-pos-power-ed-PROOF.md                                        source 37 (Report 67): Report67/science/exact-degree/PROOF.md
+37-pos-power-ed-README.md                                       source 37 (Report 67): Report67/science/exact-degree/README.md
+37-pos-power-pb-ELIMINATION_VARIANTS.md                         source 37 (Report 67): Report67/science/power-baseline/ELIMINATION_VARIANTS.md
+37-pos-power-pb-HANDOFF.md                                      source 37 (Report 67): Report67/science/power-baseline/HANDOFF.md
+37-pos-power-pb-PROOF.md                                        source 37 (Report 67): Report67/science/power-baseline/PROOF.md
+37-pos-power-pb-README.md                                       source 37 (Report 67): Report67/science/power-baseline/README.md
+37-pos-power-p12-PROOF.md                                       source 37 (Report 67): Report67/science/power-twelve/PROOF.md
+37-pos-power-p12-README.md                                      source 37 (Report 67): Report67/science/power-twelve/README.md
+37-pos-power-p12-REVIEW.md                                      source 37 (Report 67): Report67/science/power-twelve/REVIEW.md
+38-low-arity-audit-la-AUDIT.md                                  source 38 (Report 69): Report69/audits/low-arity-independent/AUDIT.md
+38-low-arity-audit-la-README.md                                 source 38 (Report 69): Report69/audits/low-arity-independent/README.md
+38-low-arity-qa-LITERATURE_CHECK.md                             source 38 (Report 69): Report69/qa/LITERATURE_CHECK.md
+38-low-arity-msr-REVIEW.md                                      source 38 (Report 69): Report69/qa/manuscript-review/REVIEW.md
+38-low-arity-qa-pred-tools-README68.md                          source 38 (Report 69): Report69/qa/predecessor-tools/README68.md
+38-low-arity-rtr-REVIEW.md                                      source 38 (Report 69): Report69/qa/release-tool-review/REVIEW.md
+38-low-arity-rtr-insp-cand-README.md                            source 38 (Report 69): Report69/qa/release-tool-review/inspected-candidate/README.md
+38-low-arity-la-ONE_WITNESS.md                                  source 38 (Report 69): Report69/science/low-arity/ONE_WITNESS.md
+38-low-arity-la-PRESERVATION.md                                 source 38 (Report 69): Report69/science/low-arity/PRESERVATION.md
+38-low-arity-la-PROOF.md                                        source 38 (Report 69): Report69/science/low-arity/PROOF.md
+38-low-arity-la-README.md                                       source 38 (Report 69): Report69/science/low-arity/README.md
+38-low-arity-la-REVIEW_TWO_WITNESS.md                           source 38 (Report 69): Report69/science/low-arity/REVIEW_TWO_WITNESS.md
 code/07-collision-geometry-Makefile                             source 07's make targets: test (run_checks.py) and pdf (latexmk)
 code/07-collision-geometry-run_checks.py                        source 07's 34,560-assertion regression suite (imports signal_certificates; rewrites data/)
 code/07-collision-geometry-signal_certificates.py               source 07's exact simulator, chamber compiler, quartic union (standard library)
@@ -473,6 +751,218 @@ code/23-canonical-fibers-check_privacy.py                       source 23's rele
 code/23-canonical-fibers-check_provenance.py                    source 23's provenance checker (delivered layout)
 code/23-canonical-fibers-emit_canonical_clocks.py               source 23's emitter of the canonical circuits (regenerates the excluded ones)
 code/23-canonical-fibers-native-check_native_fibers.py          source 23's checker of the fixed-scale native-fibre argument
+code/24-reversible-code-build_pdf.py                            source 24 (Report 49): Research_Report49/code/build_pdf.py
+code/24-reversible-code-make_figure.py                          source 24 (Report 49): Research_Report49/code/make_figure.py
+code/24-reversible-code-replay.py                               source 24 (Report 49): Research_Report49/code/replay.py
+code/24-reversible-frozen-audit-check_corollaries.py            source 24 (Report 49): Research_Report49/frozen/audit/check_corollaries.py
+code/24-reversible-frozen-audit-exhaustive_periodic.cpp         source 24 (Report 49): Research_Report49/frozen/audit/exhaustive_periodic.cpp
+code/24-reversible-frozen-audit-independent_checker.py          source 24 (Report 49): Research_Report49/frozen/audit/independent_checker.py
+code/24-reversible-frozen-candidate-check_reversible_clock.py   source 24 (Report 49): Research_Report49/frozen/candidate/check_reversible_clock.py
+code/24-reversible-frozen-manuscript-audit-manuscript_checker.py  source 24 (Report 49): Research_Report49/frozen/manuscript-audit/manuscript_checker.py
+code/25-uniform-code-archive_release.py                         source 25 (Report 51): Research_Report51/code/archive_release.py
+code/25-uniform-code-build_pdf.py                               source 25 (Report 51): Research_Report51/code/build_pdf.py
+code/25-uniform-code-replay.py                                  source 25 (Report 51): Research_Report51/code/replay.py
+code/25-uniform-code-verify_release.py                          source 25 (Report 51): Research_Report51/code/verify_release.py
+code/25-uniform-frozen-audit-check_adversarial.py               source 25 (Report 51): Research_Report51/frozen/audit/check_adversarial.py
+code/25-uniform-frozen-frame-obstruction-independent_check.py   source 25 (Report 51): Research_Report51/frozen/frame-obstruction/independent_check.py
+code/25-uniform-frozen-manuscript-audit-corollary-check_frame_obstruction.py  source 25 (Report 51): Research_Report51/frozen/manuscript-audit-corollary/check_frame_obstruction.py
+code/25-uniform-frozen-manuscript-audit-corollary-manuscript-diff.patch  source 25 (Report 51): Research_Report51/frozen/manuscript-audit-corollary/manuscript-diff.patch
+code/25-uniform-frozen-manuscript-audit-check_manuscript_algebra.py  source 25 (Report 51): Research_Report51/frozen/manuscript-audit/check_manuscript_algebra.py
+code/25-uniform-frozen-science-check_arithmetic.py              source 25 (Report 51): Research_Report51/frozen/science/check_arithmetic.py
+code/26-periodic-audit_replay-replay_audit.py                   source 26 (Report 56): audit_replay/replay_audit.py
+code/26-periodic-audit_replay-test_tools.py                     source 26 (Report 56): audit_replay/test_tools.py
+code/26-periodic-independent_audit-check_exact_algebra.py       source 26 (Report 56): independent_audit/check_exact_algebra.py
+code/26-periodic-independent_audit-emitted-artifact-audit-check_exported_quartics.py  source 26 (Report 56): independent_audit/emitted-artifact-audit/check_exported_quartics.py
+code/26-periodic-manuscript_review-check_manuscript_artifacts.py  source 26 (Report 56): manuscript_review/check_manuscript_artifacts.py
+code/26-periodic-manuscript_review-check_visual_binding.py      source 26 (Report 56): manuscript_review/check_visual_binding.py
+code/26-periodic-release.py                                     source 26 (Report 56): release.py
+code/26-periodic-science-check_arithmetic.py                    source 26 (Report 56): science/check_arithmetic.py
+code/26-periodic-science-emit_sign_certificate.py               source 26 (Report 56): science/emit_sign_certificate.py
+code/26-periodic-verification-check_layout.py                   source 26 (Report 56): verification/check_layout.py
+code/27-fivesignal-audit_replay-portable_audit_replay.py        source 27 (Report 57): audit_replay/portable_audit_replay.py
+code/27-fivesignal-independent_audit-audit_exact_algebra.py     source 27 (Report 57): independent_audit/audit_exact_algebra.py
+code/27-fivesignal-independent_audit-audit_inert_rules.py       source 27 (Report 57): independent_audit/audit_inert_rules.py
+code/27-fivesignal-manuscript_review-check_manuscript_data.py   source 27 (Report 57): manuscript_review/check_manuscript_data.py
+code/27-fivesignal-science-companion-independent_algebra.py     source 27 (Report 57): science/companion/independent_algebra.py
+code/27-fivesignal-science-companion-rational_membership.py     source 27 (Report 57): science/companion/rational_membership.py
+code/27-fivesignal-science-construction-check_algebra.py        source 27 (Report 57): science/construction/check_algebra.py
+code/27-fivesignal-science-construction-emit_static_rules.py    source 27 (Report 57): science/construction/emit_static_rules.py
+code/27-fivesignal-tools-make_tables.py                         source 27 (Report 57): tools/make_tables.py
+code/27-fivesignal-tools-release.py                             source 27 (Report 57): tools/release.py
+code/27-fivesignal-tools-test_release.py                        source 27 (Report 57): tools/test_release.py
+code/28-diophantine-independent_audit-audit_arithmetic.py       source 28 (Report 58): independent_audit/audit_arithmetic.py
+code/28-diophantine-independent_audit-audit_exact_source.py     source 28 (Report 58): independent_audit/audit_exact_source.py
+code/28-diophantine-independent_audit-check_power_dag_independent.py  source 28 (Report 58): independent_audit/check_power_dag_independent.py
+code/28-diophantine-manuscript_review-check_manuscript_algebra.py  source 28 (Report 58): manuscript_review/check_manuscript_algebra.py
+code/28-diophantine-portable_replay-replay_report58.py          source 28 (Report 58): portable_replay/replay_report58.py
+code/28-diophantine-portable_replay-test_replay_report58.py     source 28 (Report 58): portable_replay/test_replay_report58.py
+code/28-diophantine-science-check_semantics.py                  source 28 (Report 58): science/check_semantics.py
+code/28-diophantine-science-emit_certificate.py                 source 28 (Report 58): science/emit_certificate.py
+code/28-diophantine-science-freeze_manifest.py                  source 28 (Report 58): science/freeze_manifest.py
+code/28-diophantine-science-independent_audit-check_dags.py     source 28 (Report 58): science/independent_audit/check_dags.py
+code/28-diophantine-tools-build_report.py                       source 28 (Report 58): tools/build_report.py
+code/28-diophantine-tools-release.py                            source 28 (Report 58): tools/release.py
+code/28-diophantine-tools-test_release.py                       source 28 (Report 58): tools/test_release.py
+code/29-rotations-independent-audit-audit_geometry.py           source 29 (Report 59): independent-audit/audit_geometry.py
+code/29-rotations-independent-audit-audit_static.py             source 29 (Report 59): independent-audit/audit_static.py
+code/29-rotations-manuscript-review-SOURCE_CHANGES.diff         source 29 (Report 59): manuscript-review/SOURCE_CHANGES.diff
+code/29-rotations-manuscript-review-check_manuscript_algebra.py  source 29 (Report 59): manuscript-review/check_manuscript_algebra.py
+code/29-rotations-manuscript-review-check_presentation_data.py  source 29 (Report 59): manuscript-review/check_presentation_data.py
+code/29-rotations-release-tool-review-APPLIED_HARDENING.patch   source 29 (Report 59): release-tool-review/APPLIED_HARDENING.patch
+code/29-rotations-release-tool-review-audit_release_tools.py    source 29 (Report 59): release-tool-review/audit_release_tools.py
+code/29-rotations-release-tool-review-baseline-tools-build_report59.py  source 29 (Report 59): release-tool-review/baseline/tools/build_report59.py
+code/29-rotations-release-tool-review-baseline-tools-release59.py  source 29 (Report 59): release-tool-review/baseline/tools/release59.py
+code/29-rotations-release-tool-review-probe_build_snapshot.py   source 29 (Report 59): release-tool-review/probe_build_snapshot.py
+code/29-rotations-release-tool-review-probe_release_races.py    source 29 (Report 59): release-tool-review/probe_release_races.py
+code/29-rotations-release-tool-review-regress_hardening.py      source 29 (Report 59): release-tool-review/regress_hardening.py
+code/29-rotations-science-arithmetic_review-check_arithmetic.py  source 29 (Report 59): science/arithmetic_review/check_arithmetic.py
+code/29-rotations-science-arithmetic_review-check_symbolic_template.py  source 29 (Report 59): science/arithmetic_review/check_symbolic_template.py
+code/29-rotations-science-static_family.py                      source 29 (Report 59): science/static_family.py
+code/29-rotations-tools-build_report59.py                       source 29 (Report 59): tools/build_report59.py
+code/29-rotations-tools-derive_presentation.py                  source 29 (Report 59): tools/derive_presentation.py
+code/29-rotations-tools-portable_tools-replay_family59.py       source 29 (Report 59): tools/portable_tools/replay_family59.py
+code/29-rotations-tools-portable_tools-test_replay_family59.py  source 29 (Report 59): tools/portable_tools/test_replay_family59.py
+code/29-rotations-tools-release59.py                            source 29 (Report 59): tools/release59.py
+code/35-clocked-audits-clock-check_constant_clock.py            source 35 (Report 65): Report65/audits/clock/check_constant_clock.py
+code/35-clocked-audits-manuscript-final-inputs-FINAL_LAYOUT.patch  source 35 (Report 65): Report65/audits/manuscript/final-inputs/FINAL_LAYOUT.patch
+code/35-clocked-audits-manuscript-inputs-tools-build_report65.py  source 35 (Report 65): Report65/audits/manuscript/inputs/tools/build_report65.py
+code/35-clocked-audits-manuscript-inputs-tools-release65.py     source 35 (Report 65): Report65/audits/manuscript/inputs/tools/release65.py
+code/35-clocked-audits-manuscript-review-check_manuscript_static.py  source 35 (Report 65): Report65/audits/manuscript/review/check_manuscript_static.py
+code/35-clocked-audits-manuscript-review-copy_final.py          source 35 (Report 65): Report65/audits/manuscript/review/copy_final.py
+code/35-clocked-audits-manuscript-review-copy_inputs.py         source 35 (Report 65): Report65/audits/manuscript/review/copy_inputs.py
+code/35-clocked-audits-manuscript-review-freeze_dossier.py      source 35 (Report 65): Report65/audits/manuscript/review/freeze_dossier.py
+code/35-clocked-audits-manuscript-review-independent_final_delta.patch  source 35 (Report 65): Report65/audits/manuscript/review/independent_final_delta.patch
+code/35-clocked-audits-manuscript-review-verify_preservation.py  source 35 (Report 65): Report65/audits/manuscript/review/verify_preservation.py
+code/35-clocked-audits-native-gaps-check_native_gap.py          source 35 (Report 65): Report65/audits/native-gaps/check_native_gap.py
+code/35-clocked-audits-release-tools-FINAL_REVIEW_DRIVER.py     source 35 (Report 65): Report65/audits/release-tools/FINAL_REVIEW_DRIVER.py
+code/35-clocked-audits-release-tools-INITIAL_REVIEW_DRIVER.py   source 35 (Report 65): Report65/audits/release-tools/INITIAL_REVIEW_DRIVER.py
+code/35-clocked-audits-release-tools-LOCAL_HEADER_REVIEW_DRIVER.py  source 35 (Report 65): Report65/audits/release-tools/LOCAL_HEADER_REVIEW_DRIVER.py
+code/35-clocked-science-clock-static_clock_algebra.py           source 35 (Report 65): Report65/science/clock/static_clock_algebra.py
+code/35-clocked-science-native-gaps-static_check.py             source 35 (Report 65): Report65/science/native-gaps/static_check.py
+code/35-clocked-tools-build_report65.py                         source 35 (Report 65): Report65/tools/build_report65.py
+code/35-clocked-tools-release65.py                              source 35 (Report 65): Report65/tools/release65.py
+code/34-branching-audits-arithmetic-independent_certificate_audit.py  source 34 (Report 64): Report64/audits/arithmetic/independent_certificate_audit.py
+code/34-branching-audits-physical-audit_static.py               source 34 (Report 64): Report64/audits/physical/audit_static.py
+code/34-branching-manuscript-review-transcription_check.py      source 34 (Report 64): Report64/manuscript-review/transcription_check.py
+code/34-branching-qa-independent-tools-independent_review64.py  source 34 (Report 64): Report64/qa/independent-tools/independent_review64.py
+code/34-branching-qa-independent-tools-supplemental_boundaries64.py  source 34 (Report 64): Report64/qa/independent-tools/supplemental_boundaries64.py
+code/34-branching-qa-visual-revision-b-to-d.patch               source 34 (Report 64): Report64/qa/visual-revision/b-to-d.patch
+code/34-branching-science-arithmetic-static_algebra.py          source 34 (Report 64): Report64/science/arithmetic/static_algebra.py
+code/34-branching-science-frozen-proof-static_algebra.py        source 34 (Report 64): Report64/science/frozen-proof/static_algebra.py
+code/34-branching-tools-build_report64.py                       source 34 (Report 64): Report64/tools/build_report64.py
+code/34-branching-tools-release64.py                            source 34 (Report 64): Report64/tools/release64.py
+code/34-branching-tools-selftest64.py                           source 34 (Report 64): Report64/tools/selftest64.py
+code/33-homogeneous-audits-scientific-certificate_audit-check_certificate.py  source 33 (Report 63): Report63/audits/scientific/certificate_audit/check_certificate.py
+code/33-homogeneous-audits-scientific-certificate_audit-initial-run-check_certificate.py  source 33 (Report 63): Report63/audits/scientific/certificate_audit/initial-run/check_certificate.py
+code/33-homogeneous-audits-scientific-independent_static_audit.py  source 33 (Report 63): Report63/audits/scientific/independent_static_audit.py
+code/33-homogeneous-audits-scientific-initial-run-independent_static_audit.py  source 33 (Report 63): Report63/audits/scientific/initial-run/independent_static_audit.py
+code/33-homogeneous-manuscript-review-check_manuscript.py       source 33 (Report 63): Report63/manuscript-review/check_manuscript.py
+code/33-homogeneous-qa-independent-tools-independent_release_review.py  source 33 (Report 63): Report63/qa/independent-tools/independent_release_review.py
+code/33-homogeneous-qa-independent-tools-verify_actual_release.py  source 33 (Report 63): Report63/qa/independent-tools/verify_actual_release.py
+code/33-homogeneous-science-frozen-proof-static_algebra.py      source 33 (Report 63): Report63/science/frozen-proof/static_algebra.py
+code/33-homogeneous-tools-build_report63.py                     source 33 (Report 63): Report63/tools/build_report63.py
+code/33-homogeneous-tools-release63.py                          source 33 (Report 63): Report63/tools/release63.py
+code/33-homogeneous-tools-selftest63.py                         source 33 (Report 63): Report63/tools/selftest63.py
+code/31-invertible-audits-manuscript-review_static_identities.py  source 31 (Report 61): Report61/audits/manuscript/review_static_identities.py
+code/31-invertible-audits-manuscript-seal_review.py             source 31 (Report 61): Report61/audits/manuscript/seal_review.py
+code/31-invertible-audits-portable-replay-review_probes.py      source 31 (Report 61): Report61/audits/portable-replay/review_probes.py
+code/31-invertible-audits-release-tools-probe_build_guards.py   source 31 (Report 61): Report61/audits/release-tools/probe_build_guards.py
+code/31-invertible-audits-release-tools-test_integration_guards.py  source 31 (Report 61): Report61/audits/release-tools/test_integration_guards.py
+code/31-invertible-audits-release-tools-test_tools_final.py     source 31 (Report 61): Report61/audits/release-tools/test_tools_final.py
+code/31-invertible-audits-scientific-independent_affine_checks.py  source 31 (Report 61): Report61/audits/scientific/independent_affine_checks.py
+code/31-invertible-science-frozen-proof-static_algebra.py       source 31 (Report 61): Report61/science/frozen-proof/static_algebra.py
+code/31-invertible-tools-build_report61.py                      source 31 (Report 61): Report61/tools/build_report61.py
+code/31-invertible-tools-portable-replay-replay.py              source 31 (Report 61): Report61/tools/portable-replay/replay.py
+code/31-invertible-tools-portable-replay-test_replay.py         source 31 (Report 61): Report61/tools/portable-replay/test_replay.py
+code/31-invertible-tools-release61.py                           source 31 (Report 61): Report61/tools/release61.py
+code/30-planar-audits-arithmetic-audit_exact.py                 source 30 (Report 60): Report60/audits/arithmetic/audit_exact.py
+code/30-planar-audits-geometry-independent_exact_checks.py      source 30 (Report 60): Report60/audits/geometry/independent_exact_checks.py
+code/30-planar-audits-physical-independent_static_audit.py      source 30 (Report 60): Report60/audits/physical/independent_static_audit.py
+code/30-planar-manuscript-review-capture_final_evidence.py      source 30 (Report 60): Report60/manuscript-review/capture_final_evidence.py
+code/30-planar-manuscript-review-capture_snapshot.py            source 30 (Report 60): Report60/manuscript-review/capture_snapshot.py
+code/30-planar-manuscript-review-independent_manuscript_algebra.py  source 30 (Report 60): Report60/manuscript-review/independent_manuscript_algebra.py
+code/30-planar-qa-release-tools-review-audit_builds.py          source 30 (Report 60): Report60/qa/release-tools-review/audit_builds.py
+code/30-planar-qa-release-tools-review-audit_release_tools.py   source 30 (Report 60): Report60/qa/release-tools-review/audit_release_tools.py
+code/30-planar-science-arithmetic-check_certificate.py          source 30 (Report 60): Report60/science/arithmetic/check_certificate.py
+code/30-planar-science-geometry-verify_exact.py                 source 30 (Report 60): Report60/science/geometry/verify_exact.py
+code/30-planar-science-physical-static_planar.py                source 30 (Report 60): Report60/science/physical/static_planar.py
+code/30-planar-science-quadratic-verify_exact.py                source 30 (Report 60): Report60/science/quadratic/verify_exact.py
+code/30-planar-tools-build_report60.py                          source 30 (Report 60): Report60/tools/build_report60.py
+code/30-planar-tools-portable-replay-independent-review-guard_probes.py  source 30 (Report 60): Report60/tools/portable-replay/independent-review/guard_probes.py
+code/30-planar-tools-portable-replay-replay.py                  source 30 (Report 60): Report60/tools/portable-replay/replay.py
+code/30-planar-tools-portable-replay-selftest.py                source 30 (Report 60): Report60/tools/portable-replay/selftest.py
+code/30-planar-tools-release60.py                               source 30 (Report 60): Report60/tools/release60.py
+code/32-projective-audits-scientific-independent_static_audit.py  source 32 (Report 62): Report62/audits/scientific/independent_static_audit.py
+code/32-projective-manuscript-review-manuscript-a-to-b.patch    source 32 (Report 62): Report62/manuscript-review/manuscript-a-to-b.patch
+code/32-projective-manuscript-review-review_static.py           source 32 (Report 62): Report62/manuscript-review/review_static.py
+code/32-projective-qa-release-tools-review-build_roundtrip_tests.py  source 32 (Report 62): Report62/qa/release-tools-review/build_roundtrip_tests.py
+code/32-projective-qa-release-tools-review-shell_escape_test.py  source 32 (Report 62): Report62/qa/release-tools-review/shell_escape_test.py
+code/32-projective-qa-release-tools-review-supplemental_tests.py  source 32 (Report 62): Report62/qa/release-tools-review/supplemental_tests.py
+code/32-projective-science-frozen-proof-static_algebra.py       source 32 (Report 62): Report62/science/frozen-proof/static_algebra.py
+code/32-projective-tools-build_report62.py                      source 32 (Report 62): Report62/tools/build_report62.py
+code/32-projective-tools-portable-replay-independent_review-capture_inputs.py  source 32 (Report 62): Report62/tools/portable-replay/independent_review/capture_inputs.py
+code/32-projective-tools-portable-replay-independent_review-facade_edge_test.py  source 32 (Report 62): Report62/tools/portable-replay/independent_review/facade_edge_test.py
+code/32-projective-tools-portable-replay-independent_review-supplemental_tests.py  source 32 (Report 62): Report62/tools/portable-replay/independent_review/supplemental_tests.py
+code/32-projective-tools-portable-replay-replay.py              source 32 (Report 62): Report62/tools/portable-replay/replay.py
+code/32-projective-tools-portable-replay-test_replay.py         source 32 (Report 62): Report62/tools/portable-replay/test_replay.py
+code/32-projective-tools-release62.py                           source 32 (Report 62): Report62/tools/release62.py
+code/32-projective-tools-selftest62.py                          source 32 (Report 62): Report62/tools/selftest62.py
+code/36-bounded-cert-audit-bc-check_external.py                 source 36 (Report 66): Report66/audits/bounded-certificates/check_external.py
+code/36-bounded-cert-audit-cnt-check_independent.py             source 36 (Report 66): Report66/audits/counting/check_independent.py
+code/36-bounded-cert-rtr-independent_article_replay66.py        source 36 (Report 66): Report66/qa/release-tool-review/independent_article_replay66.py
+code/36-bounded-cert-rtr-independent_negative66.py              source 36 (Report 66): Report66/qa/release-tool-review/independent_negative66.py
+code/36-bounded-cert-rtr-independent_page_check66.py            source 36 (Report 66): Report66/qa/release-tool-review/independent_page_check66.py
+code/36-bounded-cert-rtr-independent_test66.py                  source 36 (Report 66): Report66/qa/release-tool-review/independent_test66.py
+code/36-bounded-cert-bc-static_algebra.py                       source 36 (Report 66): Report66/science/bounded-certificates/static_algebra.py
+code/36-bounded-cert-cnt-check_counting.py                      source 36 (Report 66): Report66/science/counting/check_counting.py
+code/36-bounded-cert-tools-build_report66.py                    source 36 (Report 66): Report66/tools/build_report66.py
+code/36-bounded-cert-tools-release66.py                         source 36 (Report 66): Report66/tools/release66.py
+code/36-bounded-cert-tools-selftest66.py                        source 36 (Report 66): Report66/tools/selftest66.py
+code/37-pos-power-audit-ed-independent_check.py                 source 37 (Report 67): Report67/audits/exact-degree/independent_check.py
+code/37-pos-power-audit-ed-inventory.py                         source 37 (Report 67): Report67/audits/exact-degree/inventory.py
+code/37-pos-power-audit-ed-verify_sources.py                    source 37 (Report 67): Report67/audits/exact-degree/verify_sources.py
+code/37-pos-power-audit-pb-check_independent.py                 source 37 (Report 67): Report67/audits/power-baseline/check_independent.py
+code/37-pos-power-audit-pb-verify_manifest.py                   source 37 (Report 67): Report67/audits/power-baseline/verify_manifest.py
+code/37-pos-power-audit-p12-check_independent.py                source 37 (Report 67): Report67/audits/power-twelve/check_independent.py
+code/37-pos-power-qa-prepare_presentation.py                    source 37 (Report 67): Report67/qa/prepare_presentation.py
+code/37-pos-power-rtr-rscripts-archive_boundary_review.py       source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/archive_boundary_review.py
+code/37-pos-power-rtr-rscripts-auth_final_snapshot.py           source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/auth_final_snapshot.py
+code/37-pos-power-rtr-rscripts-auth_snapshot.py                 source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/auth_snapshot.py
+code/37-pos-power-rtr-rscripts-final_raster_contact_sheets.py   source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/final_raster_contact_sheets.py
+code/37-pos-power-rtr-rscripts-final_replay.py                  source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/final_replay.py
+code/37-pos-power-rtr-rscripts-firstpass_review.py              source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/firstpass_review.py
+code/37-pos-power-rtr-rscripts-independent_review.py            source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/independent_review.py
+code/37-pos-power-rtr-rscripts-package_dossier.py               source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/package_dossier.py
+code/37-pos-power-rtr-rscripts-raster_contact_sheets.py         source 37 (Report 67): Report67/qa/release-tool-review/review-scripts/raster_contact_sheets.py
+code/37-pos-power-rtr-verify_dossier.py                         source 37 (Report 67): Report67/qa/release-tool-review/verify_dossier.py
+code/37-pos-power-ed-exact_degree_check.py                      source 37 (Report 67): Report67/science/exact-degree/exact_degree_check.py
+code/37-pos-power-pb-check_reduction.py                         source 37 (Report 67): Report67/science/power-baseline/check_reduction.py
+code/37-pos-power-p12-static_algebra.py                         source 37 (Report 67): Report67/science/power-twelve/static_algebra.py
+code/37-pos-power-tools-build_report67.py                       source 37 (Report 67): Report67/tools/build_report67.py
+code/37-pos-power-tools-release67.py                            source 37 (Report 67): Report67/tools/release67.py
+code/37-pos-power-tools-selftest67.py                           source 37 (Report 67): Report67/tools/selftest67.py
+code/38-low-arity-audit-la-check_independent.py                 source 38 (Report 69): Report69/audits/low-arity-independent/check_independent.py
+code/38-low-arity-audit-la-check_provenance.py                  source 38 (Report 69): Report69/audits/low-arity-independent/check_provenance.py
+code/38-low-arity-audit-la-preserve.py                          source 38 (Report 69): Report69/audits/low-arity-independent/preserve.py
+code/38-low-arity-audit-la-seal.py                              source 38 (Report 69): Report69/audits/low-arity-independent/seal.py
+code/38-low-arity-qa-finalize_presentation69.py                 source 38 (Report 69): Report69/qa/finalize_presentation69.py
+code/38-low-arity-qa-freeze_inputs69.py                         source 38 (Report 69): Report69/qa/freeze_inputs69.py
+code/38-low-arity-qa-pred-tools-build_report68.py               source 38 (Report 69): Report69/qa/predecessor-tools/build_report68.py
+code/38-low-arity-qa-pred-tools-release68.py                    source 38 (Report 69): Report69/qa/predecessor-tools/release68.py
+code/38-low-arity-qa-pred-tools-selftest68.py                   source 38 (Report 69): Report69/qa/predecessor-tools/selftest68.py
+code/38-low-arity-qa-prepare_presentation69.py                  source 38 (Report 69): Report69/qa/prepare_presentation69.py
+code/38-low-arity-rtr-adversarial69.py                          source 38 (Report 69): Report69/qa/release-tool-review/adversarial69.py
+code/38-low-arity-rtr-adversarial69_v2.py                       source 38 (Report 69): Report69/qa/release-tool-review/adversarial69_v2.py
+code/38-low-arity-rtr-build_probes69.py                         source 38 (Report 69): Report69/qa/release-tool-review/build_probes69.py
+code/38-low-arity-rtr-check_reviewed_pins69.py                  source 38 (Report 69): Report69/qa/release-tool-review/check_reviewed_pins69.py
+code/38-low-arity-rtr-full_operations69.py                      source 38 (Report 69): Report69/qa/release-tool-review/full_operations69.py
+code/38-low-arity-rtr-package_dossier69.py                      source 38 (Report 69): Report69/qa/release-tool-review/package_dossier69.py
+code/38-low-arity-rtr-preservation69.py                         source 38 (Report 69): Report69/qa/release-tool-review/preservation69.py
+code/38-low-arity-qa-verify_evidence69.py                       source 38 (Report 69): Report69/qa/verify_evidence69.py
+code/38-low-arity-la-static_algebra.py                          source 38 (Report 69): Report69/science/low-arity/static_algebra.py
+code/38-low-arity-tools-build_report69.py                       source 38 (Report 69): Report69/tools/build_report69.py
+code/38-low-arity-tools-release69.py                            source 38 (Report 69): Report69/tools/release69.py
+code/38-low-arity-tools-selftest69.py                           source 38 (Report 69): Report69/tools/selftest69.py
 data/07-collision-geometry-checks.json                          source 07's recorded run: PASS, 34,560 assertions, test counts and ledgers
 data/07-collision-geometry-first_hit_quartic_union.json         the two-chamber first-hit quartic (all matrices and the selector formula)
 data/07-collision-geometry-simultaneous_two_sites.json          the simultaneous two-site certificate (Section 11.3)
@@ -665,10 +1155,1167 @@ data/23-canonical-fibers-frozen-before.json                     source 23's reco
 data/23-canonical-fibers-independent-canonical-height-audit.json  source 23's independent circuit-audit receipt
 data/23-canonical-fibers-native-CHECK-RECEIPT.json              source 23's native-fibre check receipt
 data/23-canonical-fibers-report22-qa.json                       source 23's manuscript QA record
+data/24-reversible-evidence-replay-safety-checks.json           source 24 (Report 49): Research_Report49/evidence/replay-safety-checks.json
+data/24-reversible-figures-clock-spacetime.csv                  source 24 (Report 49): Research_Report49/figures/clock-spacetime.csv
+data/24-reversible-figures-figure-receipt.json                  source 24 (Report 49): Research_Report49/figures/figure-receipt.json
+data/24-reversible-frozen-audit-corollary-results.json          source 24 (Report 49): Research_Report49/frozen/audit/corollary-results.json
+data/24-reversible-frozen-audit-critical-overlap-truth-tables.json  source 24 (Report 49): Research_Report49/frozen/audit/critical-overlap-truth-tables.json
+data/24-reversible-frozen-audit-independent-results.json        source 24 (Report 49): Research_Report49/frozen/audit/independent-results.json
+data/24-reversible-frozen-audit-periodic-results.json           source 24 (Report 49): Research_Report49/frozen/audit/periodic-results.json
+data/24-reversible-frozen-audit-source-provenance.json          source 24 (Report 49): Research_Report49/frozen/audit/source-provenance.json
+data/24-reversible-frozen-audit-verdict.json                    source 24 (Report 49): Research_Report49/frozen/audit/verdict.json
+data/24-reversible-frozen-candidate-checker-results.json        source 24 (Report 49): Research_Report49/frozen/candidate/checker-results.json
+data/24-reversible-frozen-manuscript-audit-manuscript-check-results.json  source 24 (Report 49): Research_Report49/frozen/manuscript-audit/manuscript-check-results.json
+data/24-reversible-frozen-manuscript-audit-verdict.json         source 24 (Report 49): Research_Report49/frozen/manuscript-audit/verdict.json
+data/25-uniform-evidence-archive-path-safety.json               source 25 (Report 51): Research_Report51/evidence/archive-path-safety.json
+data/25-uniform-evidence-arithmetic-replay.json                 source 25 (Report 51): Research_Report51/evidence/arithmetic-replay.json
+data/25-uniform-evidence-author-visual-review.json              source 25 (Report 51): Research_Report51/evidence/author-visual-review.json
+data/25-uniform-evidence-coordinating-review.json               source 25 (Report 51): Research_Report51/evidence/coordinating-review.json
+data/25-uniform-evidence-frozen-preservation.json               source 25 (Report 51): Research_Report51/evidence/frozen-preservation.json
+data/25-uniform-evidence-helper-path-safety.json                source 25 (Report 51): Research_Report51/evidence/helper-path-safety.json
+data/25-uniform-evidence-pdf-reproduction.json                  source 25 (Report 51): Research_Report51/evidence/pdf-reproduction.json
+data/25-uniform-evidence-release-readiness.json                 source 25 (Report 51): Research_Report51/evidence/release-readiness.json
+data/25-uniform-evidence-toolchain.json                         source 25 (Report 51): Research_Report51/evidence/toolchain.json
+data/25-uniform-frozen-audit-CHECK-RESULTS.json                 source 25 (Report 51): Research_Report51/frozen/audit/CHECK-RESULTS.json
+data/25-uniform-frozen-audit-MANIFEST.json                      source 25 (Report 51): Research_Report51/frozen/audit/MANIFEST.json
+data/25-uniform-frozen-frame-obstruction-check_result.json      source 25 (Report 51): Research_Report51/frozen/frame-obstruction/check_result.json
+data/25-uniform-frozen-frame-obstruction-source_pins.json       source 25 (Report 51): Research_Report51/frozen/frame-obstruction/source_pins.json
+data/25-uniform-frozen-manuscript-audit-corollary-CHECK-RESULTS.json  source 25 (Report 51): Research_Report51/frozen/manuscript-audit-corollary/CHECK-RESULTS.json
+data/25-uniform-frozen-manuscript-audit-corollary-FINAL-VERIFICATION.json  source 25 (Report 51): Research_Report51/frozen/manuscript-audit-corollary/FINAL-VERIFICATION.json
+data/25-uniform-frozen-manuscript-audit-CHECK-RESULTS.json      source 25 (Report 51): Research_Report51/frozen/manuscript-audit/CHECK-RESULTS.json
+data/25-uniform-frozen-manuscript-audit-FINAL-VERIFICATION.json  source 25 (Report 51): Research_Report51/frozen/manuscript-audit/FINAL-VERIFICATION.json
+data/25-uniform-frozen-report49-PROVENANCE.json                 source 25 (Report 51): Research_Report51/frozen/report49/PROVENANCE.json
+data/25-uniform-frozen-science-MANIFEST.json                    source 25 (Report 51): Research_Report51/frozen/science/MANIFEST.json
+data/25-uniform-frozen-science-arithmetic-check-results.json    source 25 (Report 51): Research_Report51/frozen/science/arithmetic-check-results.json
+data/26-periodic-audit_replay-executable-inspection.json        source 26 (Report 56): audit_replay/executable-inspection.json
+data/26-periodic-audit_replay-immutable-inputs.json             source 26 (Report 56): audit_replay/immutable-inputs.json
+data/26-periodic-audit_replay-provenance-copy-receipt.json      source 26 (Report 56): audit_replay/provenance-copy-receipt.json
+data/26-periodic-audit_replay-replay-receipt.json               source 26 (Report 56): audit_replay/replay-receipt.json
+data/26-periodic-audit_replay-tool-review.json                  source 26 (Report 56): audit_replay/tool-review.json
+data/26-periodic-audit_replay-tools-validation.json             source 26 (Report 56): audit_replay/tools-validation.json
+data/26-periodic-independent_audit-check-results.json           source 26 (Report 56): independent_audit/check-results.json
+data/26-periodic-independent_audit-emitted-artifact-audit-receipt.json  source 26 (Report 56): independent_audit/emitted-artifact-audit/receipt.json
+data/26-periodic-manuscript_review-arithmetic-receipt.json      source 26 (Report 56): manuscript_review/arithmetic-receipt.json
+data/26-periodic-manuscript_review-visual-binding-receipt.json  source 26 (Report 56): manuscript_review/visual-binding-receipt.json
+data/26-periodic-science-SCIENCE_HANDOFF.json                   source 26 (Report 56): science/SCIENCE_HANDOFF.json
+data/26-periodic-science-arithmetic_receipt.json                source 26 (Report 56): science/arithmetic_receipt.json
+data/26-periodic-science-exports-four_signal_quartic.json       source 26 (Report 56): science/exports/four_signal_quartic.json
+data/26-periodic-science-exports-quadratic_sign_quartic.json    source 26 (Report 56): science/exports/quadratic_sign_quartic.json
+data/26-periodic-science-exports-sign_compiler_receipt.json     source 26 (Report 56): science/exports/sign_compiler_receipt.json
+data/26-periodic-verification-deterministic-pdf.json            source 26 (Report 56): verification/deterministic-pdf.json
+data/26-periodic-verification-pdf-author-build.json             source 26 (Report 56): verification/pdf-author-build.json
+data/26-periodic-verification-pdf-layout-checks.json            source 26 (Report 56): verification/pdf-layout-checks.json
+data/26-periodic-verification-pdf-rebuild-a.json                source 26 (Report 56): verification/pdf-rebuild-a.json
+data/26-periodic-verification-provenance-preservation.json      source 26 (Report 56): verification/provenance-preservation.json
+data/26-periodic-verification-visual-review.json                source 26 (Report 56): verification/visual-review.json
+data/27-fivesignal-audit_replay-ADAPTER_TESTS.json              source 27 (Report 57): audit_replay/ADAPTER_TESTS.json
+data/27-fivesignal-audit_replay-EXPECTED_PORTABLE_REPLAY_RESULT.json  source 27 (Report 57): audit_replay/EXPECTED_PORTABLE_REPLAY_RESULT.json
+data/27-fivesignal-independent_audit-MANIFEST.json              source 27 (Report 57): independent_audit/MANIFEST.json
+data/27-fivesignal-independent_audit-all_138_local_rule_checks.tsv  source 27 (Report 57): independent_audit/all_138_local_rule_checks.tsv
+data/27-fivesignal-independent_audit-exact_algebra_receipt.json  source 27 (Report 57): independent_audit/exact_algebra_receipt.json
+data/27-fivesignal-independent_audit-exact_algebra_stdout.json  source 27 (Report 57): independent_audit/exact_algebra_stdout.json
+data/27-fivesignal-independent_audit-inert_rules_receipt.json   source 27 (Report 57): independent_audit/inert_rules_receipt.json
+data/27-fivesignal-independent_audit-inert_rules_stdout.json    source 27 (Report 57): independent_audit/inert_rules_stdout.json
+data/27-fivesignal-manuscript_review-REVIEWED_INPUTS.json       source 27 (Report 57): manuscript_review/REVIEWED_INPUTS.json
+data/27-fivesignal-manuscript_review-REVIEW_BUNDLE_MANIFEST.json  source 27 (Report 57): manuscript_review/REVIEW_BUNDLE_MANIFEST.json
+data/27-fivesignal-manuscript_review-VISUAL_REVIEW_RECEIPT.json  source 27 (Report 57): manuscript_review/VISUAL_REVIEW_RECEIPT.json
+data/27-fivesignal-manuscript_review-final-check-new_algebra_and_binding_receipt.json  source 27 (Report 57): manuscript_review/final-check/new_algebra_and_binding_receipt.json
+data/27-fivesignal-manuscript_review-final-check-new_all_138_local_orders.json  source 27 (Report 57): manuscript_review/final-check/new_all_138_local_orders.json
+data/27-fivesignal-science-companion-PACKET_MANIFEST.json       source 27 (Report 57): science/companion/PACKET_MANIFEST.json
+data/27-fivesignal-science-companion-SCIENCE_HANDOFF.json       source 27 (Report 57): science/companion/SCIENCE_HANDOFF.json
+data/27-fivesignal-science-companion-independent-algebra-result.json  source 27 (Report 57): science/companion/independent-algebra-result.json
+data/27-fivesignal-science-companion-rational-membership-result.json  source 27 (Report 57): science/companion/rational-membership-result.json
+data/27-fivesignal-science-construction-GUARDS.txt              source 27 (Report 57): science/construction/GUARDS.txt
+data/27-fivesignal-science-construction-RULES.json              source 27 (Report 57): science/construction/RULES.json
+data/27-fivesignal-tools-executable-inspection.json             source 27 (Report 57): tools/executable-inspection.json
+data/27-fivesignal-tools-tools-validation.json                  source 27 (Report 57): tools/tools-validation.json
+data/27-fivesignal-verification-author-visual-review.json       source 27 (Report 57): verification/author-visual-review.json
+data/27-fivesignal-verification-deterministic-pdf.json          source 27 (Report 57): verification/deterministic-pdf.json
+data/27-fivesignal-verification-final-review-confirmation.json  source 27 (Report 57): verification/final-review-confirmation.json
+data/27-fivesignal-verification-manuscript-replay-result.json   source 27 (Report 57): verification/manuscript-replay-result.json
+data/27-fivesignal-verification-pdf-build-b.json                source 27 (Report 57): verification/pdf-build-b.json
+data/27-fivesignal-verification-source-preservation-baseline.json  source 27 (Report 57): verification/source-preservation-baseline.json
+data/27-fivesignal-verification-source-preservation-result.json  source 27 (Report 57): verification/source-preservation-result.json
+data/28-diophantine-independent_audit-AUDIT_MANIFEST.json       source 28 (Report 58): independent_audit/AUDIT_MANIFEST.json
+data/28-diophantine-independent_audit-POWER_DAG_RECEIPT.json    source 28 (Report 58): independent_audit/POWER_DAG_RECEIPT.json
+data/28-diophantine-independent_audit-arithmetic-receipt.json   source 28 (Report 58): independent_audit/arithmetic-receipt.json
+data/28-diophantine-independent_audit-arithmetic-run.stdout.json  source 28 (Report 58): independent_audit/arithmetic-run.stdout.json
+data/28-diophantine-independent_audit-exact-source-receipt.json  source 28 (Report 58): independent_audit/exact-source-receipt.json
+data/28-diophantine-independent_audit-full-positive-witnesses.json  source 28 (Report 58): independent_audit/full-positive-witnesses.json
+data/28-diophantine-manuscript_review-ALGEBRA_AND_BINDING_RECEIPT.json  source 28 (Report 58): manuscript_review/ALGEBRA_AND_BINDING_RECEIPT.json
+data/28-diophantine-manuscript_review-FROZEN_TREE_IDENTITY.json  source 28 (Report 58): manuscript_review/FROZEN_TREE_IDENTITY.json
+data/28-diophantine-manuscript_review-REVIEW_CORE_MANIFEST.json  source 28 (Report 58): manuscript_review/REVIEW_CORE_MANIFEST.json
+data/28-diophantine-manuscript_review-REVISED_PAGE_COMPARISON.json  source 28 (Report 58): manuscript_review/REVISED_PAGE_COMPARISON.json
+data/28-diophantine-manuscript_review-SOURCE_PDF_BINDING_RECEIPT.json  source 28 (Report 58): manuscript_review/SOURCE_PDF_BINDING_RECEIPT.json
+data/28-diophantine-manuscript_review-algebra.stdout.json       source 28 (Report 58): manuscript_review/algebra.stdout.json
+data/28-diophantine-portable_replay-PORTABILITY_REVIEW_EVIDENCE.json  source 28 (Report 58): portable_replay/PORTABILITY_REVIEW_EVIDENCE.json
+data/28-diophantine-portable_replay-PORTABILITY_TEST_RECEIPT.json  source 28 (Report 58): portable_replay/PORTABILITY_TEST_RECEIPT.json
+data/28-diophantine-portable_replay-REPLAY_RELEASE_MANIFEST.json  source 28 (Report 58): portable_replay/REPLAY_RELEASE_MANIFEST.json
+data/28-diophantine-portable_replay-REPLAY_SOURCE_PINS.json     source 28 (Report 58): portable_replay/REPLAY_SOURCE_PINS.json
+data/28-diophantine-science-PACKET_MANIFEST.json                source 28 (Report 58): science/PACKET_MANIFEST.json
+data/28-diophantine-science-SCIENCE_HANDOFF.json                source 28 (Report 58): science/SCIENCE_HANDOFF.json
+data/28-diophantine-science-evidence-one-input-linear.dag.json  source 28 (Report 58): science/evidence/one-input-linear.dag.json
+data/28-diophantine-science-evidence-one-input-linear.receipt.json  source 28 (Report 58): science/evidence/one-input-linear.receipt.json
+data/28-diophantine-science-evidence-one-input-quartic.dag.json  source 28 (Report 58): science/evidence/one-input-quartic.dag.json
+data/28-diophantine-science-evidence-one-input-quartic.receipt.json  source 28 (Report 58): science/evidence/one-input-quartic.receipt.json
+data/28-diophantine-science-evidence-semantic-checks.json       source 28 (Report 58): science/evidence/semantic-checks.json
+data/28-diophantine-science-evidence-summary.json               source 28 (Report 58): science/evidence/summary.json
+data/28-diophantine-science-evidence-three-input-linear.dag.json  source 28 (Report 58): science/evidence/three-input-linear.dag.json
+data/28-diophantine-science-evidence-three-input-linear.receipt.json  source 28 (Report 58): science/evidence/three-input-linear.receipt.json
+data/28-diophantine-science-evidence-three-input-quartic.dag.json  source 28 (Report 58): science/evidence/three-input-quartic.dag.json
+data/28-diophantine-science-evidence-three-input-quartic.receipt.json  source 28 (Report 58): science/evidence/three-input-quartic.receipt.json
+data/28-diophantine-science-independent_audit-audit-receipt.json  source 28 (Report 58): science/independent_audit/audit-receipt.json
+data/28-diophantine-science-sources-SOURCE_PINS.json            source 28 (Report 58): science/sources/SOURCE_PINS.json
+data/28-diophantine-verification-BUILD_RECEIPT.json             source 28 (Report 58): verification/BUILD_RECEIPT.json
+data/28-diophantine-verification-EDITORIAL_CHANGE.json          source 28 (Report 58): verification/EDITORIAL_CHANGE.json
+data/28-diophantine-verification-PRESEAL_REPLAY_RECEIPT.json    source 28 (Report 58): verification/PRESEAL_REPLAY_RECEIPT.json
+data/28-diophantine-verification-PROVENANCE.json                source 28 (Report 58): verification/PROVENANCE.json
+data/28-diophantine-verification-RELEASE_TOOLS_REVIEW.json      source 28 (Report 58): verification/RELEASE_TOOLS_REVIEW.json
+data/28-diophantine-verification-RELEASE_TOOLS_TEST.json        source 28 (Report 58): verification/RELEASE_TOOLS_TEST.json
+data/28-diophantine-verification-RENDER_REVIEW.json             source 28 (Report 58): verification/RENDER_REVIEW.json
+data/28-diophantine-verification-REPLAY_RECEIPT.json            source 28 (Report 58): verification/REPLAY_RECEIPT.json
+data/28-diophantine-verification-REPRODUCIBILITY.json           source 28 (Report 58): verification/REPRODUCIBILITY.json
+data/29-rotations-independent-audit-AUDIT_RECEIPT.json          source 29 (Report 59): independent-audit/AUDIT_RECEIPT.json
+data/29-rotations-independent-audit-AUTHOR_PACKET_SNAPSHOT.json  source 29 (Report 59): independent-audit/AUTHOR_PACKET_SNAPSHOT.json
+data/29-rotations-independent-audit-DEPENDENCY_RECEIPT.json     source 29 (Report 59): independent-audit/DEPENDENCY_RECEIPT.json
+data/29-rotations-independent-audit-GEOMETRY_INDEPENDENT_RECEIPT.json  source 29 (Report 59): independent-audit/GEOMETRY_INDEPENDENT_RECEIPT.json
+data/29-rotations-independent-audit-STATIC_INDEPENDENT_RECEIPT.json  source 29 (Report 59): independent-audit/STATIC_INDEPENDENT_RECEIPT.json
+data/29-rotations-manuscript-review-ALGEBRA_RECEIPT.json        source 29 (Report 59): manuscript-review/ALGEBRA_RECEIPT.json
+data/29-rotations-manuscript-review-FINAL_REVIEW_RECEIPT.json   source 29 (Report 59): manuscript-review/FINAL_REVIEW_RECEIPT.json
+data/29-rotations-manuscript-review-PRESENTATION_DATA_RECEIPT.json  source 29 (Report 59): manuscript-review/PRESENTATION_DATA_RECEIPT.json
+data/29-rotations-manuscript-review-PRESERVATION_CHECK.txt      source 29 (Report 59): manuscript-review/PRESERVATION_CHECK.txt
+data/29-rotations-manuscript-review-RENDER_BINDING.json         source 29 (Report 59): manuscript-review/RENDER_BINDING.json
+data/29-rotations-manuscript-review-algebra-run.log             source 29 (Report 59): manuscript-review/algebra-run.log
+data/29-rotations-manuscript-MANUSCRIPT_PINS.json               source 29 (Report 59): manuscript/MANUSCRIPT_PINS.json
+data/29-rotations-qa-BUILD_RECEIPT.json                         source 29 (Report 59): qa/BUILD_RECEIPT.json
+data/29-rotations-qa-DEPENDENCY_COPIES.json                     source 29 (Report 59): qa/DEPENDENCY_COPIES.json
+data/29-rotations-qa-EDITORIAL_CHANGE.json                      source 29 (Report 59): qa/EDITORIAL_CHANGE.json
+data/29-rotations-qa-ORIGINAL_INPUT_SNAPSHOT.json               source 29 (Report 59): qa/ORIGINAL_INPUT_SNAPSHOT.json
+data/29-rotations-qa-PORTABLE_INTEGRATION.json                  source 29 (Report 59): qa/PORTABLE_INTEGRATION.json
+data/29-rotations-qa-PRESEAL_REPLAY_RECEIPT.json                source 29 (Report 59): qa/PRESEAL_REPLAY_RECEIPT.json
+data/29-rotations-qa-PRESENTATION_RECEIPT.json                  source 29 (Report 59): qa/PRESENTATION_RECEIPT.json
+data/29-rotations-qa-PRESERVATION_CHECK.json                    source 29 (Report 59): qa/PRESERVATION_CHECK.json
+data/29-rotations-qa-RELEASE_STATUS.json                        source 29 (Report 59): qa/RELEASE_STATUS.json
+data/29-rotations-qa-RENDER_REVIEW.json                         source 29 (Report 59): qa/RENDER_REVIEW.json
+data/29-rotations-real-input-audit-PRESERVATION_CHECK.txt       source 29 (Report 59): real-input-audit/PRESERVATION_CHECK.txt
+data/29-rotations-release-tool-review-RACE_RUN.log              source 29 (Report 59): release-tool-review/RACE_RUN.log
+data/29-rotations-release-tool-review-REGRESSION_RUN.log        source 29 (Report 59): release-tool-review/REGRESSION_RUN.log
+data/29-rotations-release-tool-review-RELEASE_RACE_PROBES.json  source 29 (Report 59): release-tool-review/RELEASE_RACE_PROBES.json
+data/29-rotations-release-tool-review-REVIEW_RECEIPT.json       source 29 (Report 59): release-tool-review/REVIEW_RECEIPT.json
+data/29-rotations-release-tool-review-RUN.log                   source 29 (Report 59): release-tool-review/RUN.log
+data/29-rotations-release-tool-review-SNAPSHOT_PROBES.json      source 29 (Report 59): release-tool-review/SNAPSHOT_PROBES.json
+data/29-rotations-release-tool-review-SOURCE_SNAPSHOT.json      source 29 (Report 59): release-tool-review/SOURCE_SNAPSHOT.json
+data/29-rotations-release-tool-review-SUMMARY.json              source 29 (Report 59): release-tool-review/SUMMARY.json
+data/29-rotations-release-tool-review-TEST_RESULTS.json         source 29 (Report 59): release-tool-review/TEST_RESULTS.json
+data/29-rotations-release-tool-review-baseline-manuscript-MANUSCRIPT_PINS.json  source 29 (Report 59): release-tool-review/baseline/manuscript/MANUSCRIPT_PINS.json
+data/29-rotations-release-tool-review-revised-REGRESSION_RESULTS.json  source 29 (Report 59): release-tool-review/revised/REGRESSION_RESULTS.json
+data/29-rotations-release-tool-review-revised-SOURCE_SNAPSHOT.json  source 29 (Report 59): release-tool-review/revised/SOURCE_SNAPSHOT.json
+data/29-rotations-release-tool-review-revised-SUMMARY.json      source 29 (Report 59): release-tool-review/revised/SUMMARY.json
+data/29-rotations-release-tool-review-revised-archive_1.log     source 29 (Report 59): release-tool-review/revised/archive_1.log
+data/29-rotations-release-tool-review-revised-archive_2.log     source 29 (Report 59): release-tool-review/revised/archive_2.log
+data/29-rotations-release-tool-review-revised-build-BUILD_RECEIPT.json  source 29 (Report 59): release-tool-review/revised/build/BUILD_RECEIPT.json
+data/29-rotations-release-tool-review-revised-manifest_clean.log  source 29 (Report 59): release-tool-review/revised/manifest_clean.log
+data/29-rotations-release-tool-review-revised-post_fix_build.log  source 29 (Report 59): release-tool-review/revised/post_fix_build.log
+data/29-rotations-release-tool-review-revised-verify_clean.log  source 29 (Report 59): release-tool-review/revised/verify_clean.log
+data/29-rotations-science-PACKET_MANIFEST.json                  source 29 (Report 59): science/PACKET_MANIFEST.json
+data/29-rotations-science-SOURCE_PINS.json                      source 29 (Report 59): science/SOURCE_PINS.json
+data/29-rotations-science-arithmetic_review-arithmetic_checks.json  source 29 (Report 59): science/arithmetic_review/arithmetic_checks.json
+data/29-rotations-science-arithmetic_review-symbolic_template_checks.json  source 29 (Report 59): science/arithmetic_review/symbolic_template_checks.json
+data/29-rotations-science-evidence-STATIC_RECEIPT.json          source 29 (Report 59): science/evidence/STATIC_RECEIPT.json
+data/29-rotations-science-evidence-a-119_b120_c169_scale1over1.json  source 29 (Report 59): science/evidence/a-119_b120_c169_scale1over1.json
+data/29-rotations-science-evidence-a-119_b120_c169_scale1over2.json  source 29 (Report 59): science/evidence/a-119_b120_c169_scale1over2.json
+data/29-rotations-science-evidence-a-119_b120_c169_scale2over1.json  source 29 (Report 59): science/evidence/a-119_b120_c169_scale2over1.json
+data/29-rotations-science-evidence-a-12_b5_c13_scale1over1.json  source 29 (Report 59): science/evidence/a-12_b5_c13_scale1over1.json
+data/29-rotations-science-evidence-a-12_b5_c13_scale1over2.json  source 29 (Report 59): science/evidence/a-12_b5_c13_scale1over2.json
+data/29-rotations-science-evidence-a-12_b5_c13_scale2over1.json  source 29 (Report 59): science/evidence/a-12_b5_c13_scale2over1.json
+data/29-rotations-science-evidence-a-3_b-4_c5_scale1over1.json  source 29 (Report 59): science/evidence/a-3_b-4_c5_scale1over1.json
+data/29-rotations-science-evidence-a-3_b-4_c5_scale1over2.json  source 29 (Report 59): science/evidence/a-3_b-4_c5_scale1over2.json
+data/29-rotations-science-evidence-a-3_b-4_c5_scale2over1.json  source 29 (Report 59): science/evidence/a-3_b-4_c5_scale2over1.json
+data/29-rotations-science-evidence-a-3_b4_c5_scale1over1.json   source 29 (Report 59): science/evidence/a-3_b4_c5_scale1over1.json
+data/29-rotations-science-evidence-a-3_b4_c5_scale1over2.json   source 29 (Report 59): science/evidence/a-3_b4_c5_scale1over2.json
+data/29-rotations-science-evidence-a-3_b4_c5_scale2over1.json   source 29 (Report 59): science/evidence/a-3_b4_c5_scale2over1.json
+data/29-rotations-science-evidence-a-4_b-3_c5_scale1over1.json  source 29 (Report 59): science/evidence/a-4_b-3_c5_scale1over1.json
+data/29-rotations-science-evidence-a-4_b-3_c5_scale1over2.json  source 29 (Report 59): science/evidence/a-4_b-3_c5_scale1over2.json
+data/29-rotations-science-evidence-a-4_b-3_c5_scale2over1.json  source 29 (Report 59): science/evidence/a-4_b-3_c5_scale2over1.json
+data/29-rotations-science-evidence-a-4_b3_c5_scale1over1.json   source 29 (Report 59): science/evidence/a-4_b3_c5_scale1over1.json
+data/29-rotations-science-evidence-a-4_b3_c5_scale1over2.json   source 29 (Report 59): science/evidence/a-4_b3_c5_scale1over2.json
+data/29-rotations-science-evidence-a-4_b3_c5_scale2over1.json   source 29 (Report 59): science/evidence/a-4_b3_c5_scale2over1.json
+data/29-rotations-science-evidence-a-5_b12_c13_scale1over1.json  source 29 (Report 59): science/evidence/a-5_b12_c13_scale1over1.json
+data/29-rotations-science-evidence-a-5_b12_c13_scale1over2.json  source 29 (Report 59): science/evidence/a-5_b12_c13_scale1over2.json
+data/29-rotations-science-evidence-a-5_b12_c13_scale2over1.json  source 29 (Report 59): science/evidence/a-5_b12_c13_scale2over1.json
+data/29-rotations-science-evidence-a119_b120_c169_scale1over1.json  source 29 (Report 59): science/evidence/a119_b120_c169_scale1over1.json
+data/29-rotations-science-evidence-a119_b120_c169_scale1over2.json  source 29 (Report 59): science/evidence/a119_b120_c169_scale1over2.json
+data/29-rotations-science-evidence-a119_b120_c169_scale2over1.json  source 29 (Report 59): science/evidence/a119_b120_c169_scale2over1.json
+data/29-rotations-science-evidence-a120_b-119_c169_scale1over1.json  source 29 (Report 59): science/evidence/a120_b-119_c169_scale1over1.json
+data/29-rotations-science-evidence-a120_b-119_c169_scale1over2.json  source 29 (Report 59): science/evidence/a120_b-119_c169_scale1over2.json
+data/29-rotations-science-evidence-a120_b-119_c169_scale2over1.json  source 29 (Report 59): science/evidence/a120_b-119_c169_scale2over1.json
+data/29-rotations-science-evidence-a12_b5_c13_scale1over1.json  source 29 (Report 59): science/evidence/a12_b5_c13_scale1over1.json
+data/29-rotations-science-evidence-a12_b5_c13_scale1over2.json  source 29 (Report 59): science/evidence/a12_b5_c13_scale1over2.json
+data/29-rotations-science-evidence-a12_b5_c13_scale2over1.json  source 29 (Report 59): science/evidence/a12_b5_c13_scale2over1.json
+data/29-rotations-science-evidence-a3_b-4_c5_scale1over1.json   source 29 (Report 59): science/evidence/a3_b-4_c5_scale1over1.json
+data/29-rotations-science-evidence-a3_b-4_c5_scale1over2.json   source 29 (Report 59): science/evidence/a3_b-4_c5_scale1over2.json
+data/29-rotations-science-evidence-a3_b-4_c5_scale2over1.json   source 29 (Report 59): science/evidence/a3_b-4_c5_scale2over1.json
+data/29-rotations-science-evidence-a3_b4_c5_scale1over1.json    source 29 (Report 59): science/evidence/a3_b4_c5_scale1over1.json
+data/29-rotations-science-evidence-a3_b4_c5_scale1over2.json    source 29 (Report 59): science/evidence/a3_b4_c5_scale1over2.json
+data/29-rotations-science-evidence-a3_b4_c5_scale2over1.json    source 29 (Report 59): science/evidence/a3_b4_c5_scale2over1.json
+data/29-rotations-science-evidence-a4_b-3_c5_scale1over1.json   source 29 (Report 59): science/evidence/a4_b-3_c5_scale1over1.json
+data/29-rotations-science-evidence-a4_b-3_c5_scale1over2.json   source 29 (Report 59): science/evidence/a4_b-3_c5_scale1over2.json
+data/29-rotations-science-evidence-a4_b-3_c5_scale2over1.json   source 29 (Report 59): science/evidence/a4_b-3_c5_scale2over1.json
+data/29-rotations-science-evidence-a4_b3_c5_scale1over1.json    source 29 (Report 59): science/evidence/a4_b3_c5_scale1over1.json
+data/29-rotations-science-evidence-a4_b3_c5_scale1over2.json    source 29 (Report 59): science/evidence/a4_b3_c5_scale1over2.json
+data/29-rotations-science-evidence-a4_b3_c5_scale2over1.json    source 29 (Report 59): science/evidence/a4_b3_c5_scale2over1.json
+data/29-rotations-science-evidence-a5_b12_c13_scale1over1.json  source 29 (Report 59): science/evidence/a5_b12_c13_scale1over1.json
+data/29-rotations-science-evidence-a5_b12_c13_scale1over2.json  source 29 (Report 59): science/evidence/a5_b12_c13_scale1over2.json
+data/29-rotations-science-evidence-a5_b12_c13_scale2over1.json  source 29 (Report 59): science/evidence/a5_b12_c13_scale2over1.json
+data/29-rotations-science-evidence-run-summary.txt              source 29 (Report 59): science/evidence/run-summary.txt
+data/29-rotations-tools-portable_tools-PORTABLE_TEST_RECEIPT.json  source 29 (Report 59): tools/portable_tools/PORTABLE_TEST_RECEIPT.json
+data/29-rotations-tools-portable_tools-PORTABLE_TOOLS_MANIFEST.json  source 29 (Report 59): tools/portable_tools/PORTABLE_TOOLS_MANIFEST.json
+data/29-rotations-tools-portable-adv-FINAL_REGRESSION.json      source 29 (Report 59): tools/portable_tools/adversarial-review/FINAL_REGRESSION.json
+data/29-rotations-tools-portable-adv-HARNESS_OVERLAP_REPRO.json  source 29 (Report 59): tools/portable_tools/adversarial-review/HARNESS_OVERLAP_REPRO.json
+data/29-rotations-tools-portable-adv-PATH_ALIAS_FULL_REPLAY.json  source 29 (Report 59): tools/portable_tools/adversarial-review/PATH_ALIAS_FULL_REPLAY.json
+data/29-rotations-tools-portable-adv-PATH_ALIAS_REPRO.json      source 29 (Report 59): tools/portable_tools/adversarial-review/PATH_ALIAS_REPRO.json
+data/29-rotations-tools-portable-adv-final-empty-path-tests-PORTABLE_TEST_RECEIPT.json  source 29 (Report 59): tools/portable_tools/adversarial-review/final-empty-path-tests/PORTABLE_TEST_RECEIPT.json
+data/29-rotations-tools-portable-adv-final-tests-PORTABLE_TEST_RECEIPT.json  source 29 (Report 59): tools/portable_tools/adversarial-review/final-tests/PORTABLE_TEST_RECEIPT.json
+data/29-rotations-tools-portable-adv-full-tests-PORTABLE_TEST_RECEIPT.json  source 29 (Report 59): tools/portable_tools/adversarial-review/full-tests/PORTABLE_TEST_RECEIPT.json
+data/35-clocked-INPUT_PINS.json                                 source 35 (Report 65): Report65/INPUT_PINS.json
+data/35-clocked-audits-clock-MANIFEST.audit.json                source 35 (Report 65): Report65/audits/clock/MANIFEST.audit.json
+data/35-clocked-audits-clock-checker_inspection.json            source 35 (Report 65): Report65/audits/clock/checker_inspection.json
+data/35-clocked-audits-clock-checks.json                        source 35 (Report 65): Report65/audits/clock/checks.json
+data/35-clocked-audits-clock-portable_replay.json               source 35 (Report 65): Report65/audits/clock/portable_replay.json
+data/35-clocked-audits-clock-preservation.json                  source 35 (Report 65): Report65/audits/clock/preservation.json
+data/35-clocked-audits-clock-replay.stdout.json                 source 35 (Report 65): Report65/audits/clock/replay.stdout.json
+data/35-clocked-audits-clock-source_after.json                  source 35 (Report 65): Report65/audits/clock/source_after.json
+data/35-clocked-audits-manuscript-MANIFEST.json                 source 35 (Report 65): Report65/audits/manuscript/MANIFEST.json
+data/35-clocked-audits-manuscript-inputs-INPUT_PINS.json        source 35 (Report 65): Report65/audits/manuscript/inputs/INPUT_PINS.json
+data/35-clocked-audits-manuscript-inputs-qa-BUILD_DRAFT.json    source 35 (Report 65): Report65/audits/manuscript/inputs/qa/BUILD_DRAFT.json
+data/35-clocked-audits-manuscript-inputs-tools-BUILD_DEPENDENCIES_LOCK.json  source 35 (Report 65): Report65/audits/manuscript/inputs/tools/BUILD_DEPENDENCIES_LOCK.json
+data/35-clocked-audits-manuscript-review-final_copy_preservation.json  source 35 (Report 65): Report65/audits/manuscript/review/final_copy_preservation.json
+data/35-clocked-audits-manuscript-review-preservation.json      source 35 (Report 65): Report65/audits/manuscript/review/preservation.json
+data/35-clocked-audits-manuscript-review-release_snapshot_after.json  source 35 (Report 65): Report65/audits/manuscript/review/release_snapshot_after.json
+data/35-clocked-audits-manuscript-review-release_snapshot_before.json  source 35 (Report 65): Report65/audits/manuscript/review/release_snapshot_before.json
+data/35-clocked-audits-manuscript-review-static-870025b5d7f6.json  source 35 (Report 65): Report65/audits/manuscript/review/static-870025b5d7f6.json
+data/35-clocked-audits-manuscript-review-static-bd2d25b0dc79.json  source 35 (Report 65): Report65/audits/manuscript/review/static-bd2d25b0dc79.json
+data/35-clocked-audits-manuscript-review-tool_versions.txt      source 35 (Report 65): Report65/audits/manuscript/review/tool_versions.txt
+data/35-clocked-audits-manuscript-review-visual_comparison.json  source 35 (Report 65): Report65/audits/manuscript/review/visual_comparison.json
+data/35-clocked-audits-native-gaps-AUDIT_MANIFEST.json          source 35 (Report 65): Report65/audits/native-gaps/AUDIT_MANIFEST.json
+data/35-clocked-audits-native-gaps-ORIGIN_COMPARISON.json       source 35 (Report 65): Report65/audits/native-gaps/ORIGIN_COMPARISON.json
+data/35-clocked-audits-native-gaps-PORTABILITY.json             source 35 (Report 65): Report65/audits/native-gaps/PORTABILITY.json
+data/35-clocked-audits-native-gaps-run-1-power-fixtures.json    source 35 (Report 65): Report65/audits/native-gaps/run-1/power-fixtures.json
+data/35-clocked-audits-native-gaps-run-1-receipt.json           source 35 (Report 65): Report65/audits/native-gaps/run-1/receipt.json
+data/35-clocked-audits-release-tools-EVIDENCE_HASHES.json       source 35 (Report 65): Report65/audits/release-tools/EVIDENCE_HASHES.json
+data/35-clocked-audits-release-tools-EXTRACTED_BUILD.json       source 35 (Report 65): Report65/audits/release-tools/EXTRACTED_BUILD.json
+data/35-clocked-audits-release-tools-FINAL_RESULTS.json         source 35 (Report 65): Report65/audits/release-tools/FINAL_RESULTS.json
+data/35-clocked-audits-release-tools-FINAL_TEST_STDOUT.txt      source 35 (Report 65): Report65/audits/release-tools/FINAL_TEST_STDOUT.txt
+data/35-clocked-audits-release-tools-INITIAL_RESULTS.json       source 35 (Report 65): Report65/audits/release-tools/INITIAL_RESULTS.json
+data/35-clocked-audits-release-tools-LOCAL_HEADER_RESULT.json   source 35 (Report 65): Report65/audits/release-tools/LOCAL_HEADER_RESULT.json
+data/35-clocked-audits-release-tools-SOURCE_PRESERVATION.json   source 35 (Report 65): Report65/audits/release-tools/SOURCE_PRESERVATION.json
+data/35-clocked-audits-release-tools-logs-archive-a.txt         source 35 (Report 65): Report65/audits/release-tools/logs/archive-a.txt
+data/35-clocked-audits-release-tools-logs-archive-rejects-changed-file.txt  source 35 (Report 65): Report65/audits/release-tools/logs/archive-rejects-changed-file.txt
+data/35-clocked-audits-release-tools-logs-archive-rejects-changed-manifest.txt  source 35 (Report 65): Report65/audits/release-tools/logs/archive-rejects-changed-manifest.txt
+data/35-clocked-audits-release-tools-logs-archive-rejects-changed-mode.txt  source 35 (Report 65): Report65/audits/release-tools/logs/archive-rejects-changed-mode.txt
+data/35-clocked-audits-release-tools-logs-archive-rejects-extra-empty-directory.txt  source 35 (Report 65): Report65/audits/release-tools/logs/archive-rejects-extra-empty-directory.txt
+data/35-clocked-audits-release-tools-logs-archive-rejects-extra-file.txt  source 35 (Report 65): Report65/audits/release-tools/logs/archive-rejects-extra-file.txt
+data/35-clocked-audits-release-tools-logs-archive-rejects-fifo-file.txt  source 35 (Report 65): Report65/audits/release-tools/logs/archive-rejects-fifo-file.txt
+data/35-clocked-audits-release-tools-logs-archive-rejects-symlink-directory.txt  source 35 (Report 65): Report65/audits/release-tools/logs/archive-rejects-symlink-directory.txt
+data/35-clocked-audits-release-tools-logs-bad-lock-digest-preflight.txt  source 35 (Report 65): Report65/audits/release-tools/logs/bad-lock-digest-preflight.txt
+data/35-clocked-audits-release-tools-logs-bad-manifest-preflight.txt  source 35 (Report 65): Report65/audits/release-tools/logs/bad-manifest-preflight.txt
+data/35-clocked-audits-release-tools-logs-build-refuses-overlap.txt  source 35 (Report 65): Report65/audits/release-tools/logs/build-refuses-overlap.txt
+data/35-clocked-audits-release-tools-logs-build-rejects-changed-file.txt  source 35 (Report 65): Report65/audits/release-tools/logs/build-rejects-changed-file.txt
+data/35-clocked-audits-release-tools-logs-build-rejects-extra-file.txt  source 35 (Report 65): Report65/audits/release-tools/logs/build-rejects-extra-file.txt
+data/35-clocked-audits-release-tools-logs-build-rejects-fifo-file.txt  source 35 (Report 65): Report65/audits/release-tools/logs/build-rejects-fifo-file.txt
+data/35-clocked-audits-release-tools-logs-build-rejects-symlink-directory.txt  source 35 (Report 65): Report65/audits/release-tools/logs/build-rejects-symlink-directory.txt
+data/35-clocked-audits-release-tools-logs-draft-refuses-sealed.txt  source 35 (Report 65): Report65/audits/release-tools/logs/draft-refuses-sealed.txt
+data/35-clocked-audits-release-tools-logs-executable-lock-preflight.txt  source 35 (Report 65): Report65/audits/release-tools/logs/executable-lock-preflight.txt
+data/35-clocked-audits-release-tools-logs-existing-build-output.txt  source 35 (Report 65): Report65/audits/release-tools/logs/existing-build-output.txt
+data/35-clocked-audits-release-tools-logs-extracted-locked-build.txt  source 35 (Report 65): Report65/audits/release-tools/logs/extracted-locked-build.txt
+data/35-clocked-audits-release-tools-logs-fixed-build-rejects-manifest-mode.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-build-rejects-manifest-mode.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-archive-comment.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-archive-comment.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-central-extra.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-central-extra.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-extra-directory.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-extra-directory.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-inconsistent-pdf.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-inconsistent-pdf.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-inconsistent-tex.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-inconsistent-tex.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-manifest-archive-mode.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-manifest-archive-mode.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-manifest-filesystem-mode.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-manifest-filesystem-mode.txt
+data/35-clocked-audits-release-tools-logs-fixed-rejects-unicode-central-only.txt  source 35 (Report 65): Report65/audits/release-tools/logs/fixed-rejects-unicode-central-only.txt
+data/35-clocked-audits-release-tools-logs-genuine-local-only-extra.txt  source 35 (Report 65): Report65/audits/release-tools/logs/genuine-local-only-extra.txt
+data/35-clocked-audits-release-tools-logs-input-lock-preflight.txt  source 35 (Report 65): Report65/audits/release-tools/logs/input-lock-preflight.txt
+data/35-clocked-audits-release-tools-logs-invalid-input-path-preflight.txt  source 35 (Report 65): Report65/audits/release-tools/logs/invalid-input-path-preflight.txt
+data/35-clocked-audits-release-tools-logs-metadata-extracted-rejection.txt  source 35 (Report 65): Report65/audits/release-tools/logs/metadata-extracted-rejection.txt
+data/35-clocked-audits-release-tools-logs-refuse-reseal.txt     source 35 (Report 65): Report65/audits/release-tools/logs/refuse-reseal.txt
+data/35-clocked-audits-release-tools-logs-seal-inconsistent-pdf.txt  source 35 (Report 65): Report65/audits/release-tools/logs/seal-inconsistent-pdf.txt
+data/35-clocked-audits-release-tools-logs-seal-inconsistent-tex.txt  source 35 (Report 65): Report65/audits/release-tools/logs/seal-inconsistent-tex.txt
+data/35-clocked-audits-release-tools-logs-seal-owned-copy.txt   source 35 (Report 65): Report65/audits/release-tools/logs/seal-owned-copy.txt
+data/35-clocked-audits-release-tools-logs-seal-rejects-bad-pinned-hash.txt  source 35 (Report 65): Report65/audits/release-tools/logs/seal-rejects-bad-pinned-hash.txt
+data/35-clocked-audits-release-tools-logs-seal-rejects-duplicate-pin-path.txt  source 35 (Report 65): Report65/audits/release-tools/logs/seal-rejects-duplicate-pin-path.txt
+data/35-clocked-audits-release-tools-logs-seal-rejects-empty-directory.txt  source 35 (Report 65): Report65/audits/release-tools/logs/seal-rejects-empty-directory.txt
+data/35-clocked-audits-release-tools-logs-verify-metadata-origins.txt  source 35 (Report 65): Report65/audits/release-tools/logs/verify-metadata-origins.txt
+data/35-clocked-audits-release-tools-logs-verify-refuses-symlink-root.txt  source 35 (Report 65): Report65/audits/release-tools/logs/verify-refuses-symlink-root.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-absolute-member.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-absolute-member.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-changed-archive-manifest.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-changed-archive-manifest.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-changed-content.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-changed-content.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-changed-mode.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-changed-mode.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-changed-timestamp.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-changed-timestamp.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-duplicate-member.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-duplicate-member.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-encrypted.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-encrypted.txt
+data/35-clocked-audits-release-tools-logs-zip-rejects-fifo-member.txt  source 35 (Report 65): Report65/audits/release-tools/logs/zip-rejects-fifo-member.txt
+data/35-clocked-qa-ASSEMBLY.json                                source 35 (Report 65): Report65/qa/ASSEMBLY.json
+data/35-clocked-qa-BUILD_DRAFT.json                             source 35 (Report 65): Report65/qa/BUILD_DRAFT.json
+data/35-clocked-qa-FINAL_INPUT_PRESERVATION.json                source 35 (Report 65): Report65/qa/FINAL_INPUT_PRESERVATION.json
+data/35-clocked-qa-FINAL_LAYOUT_CHANGES.json                    source 35 (Report 65): Report65/qa/FINAL_LAYOUT_CHANGES.json
+data/35-clocked-qa-INPUT_PRESERVATION.json                      source 35 (Report 65): Report65/qa/INPUT_PRESERVATION.json
+data/35-clocked-science-clock-MANIFEST.json                     source 35 (Report 65): Report65/science/clock/MANIFEST.json
+data/35-clocked-science-clock-evidence-checker.stdout.json      source 35 (Report 65): Report65/science/clock/evidence/checker.stdout.json
+data/35-clocked-science-native-gaps-MANIFEST.json               source 35 (Report 65): Report65/science/native-gaps/MANIFEST.json
+data/35-clocked-science-native-gaps-SOURCE_PINS.json            source 35 (Report 65): Report65/science/native-gaps/SOURCE_PINS.json
+data/35-clocked-science-native-gaps-evidence-static_checks.json  source 35 (Report 65): Report65/science/native-gaps/evidence/static_checks.json
+data/34-branching-INPUT_PINS.json                               source 34 (Report 64): Report64/INPUT_PINS.json
+data/34-branching-audits-arithmetic-MANIFEST.json               source 34 (Report 64): Report64/audits/arithmetic/MANIFEST.json
+data/34-branching-audits-arithmetic-execution.log               source 34 (Report 64): Report64/audits/arithmetic/execution.log
+data/34-branching-audits-arithmetic-independent_results.json    source 34 (Report 64): Report64/audits/arithmetic/independent_results.json
+data/34-branching-audits-arithmetic-replay_interface_checks.json  source 34 (Report 64): Report64/audits/arithmetic/replay_interface_checks.json
+data/34-branching-audits-arithmetic-source_preservation.json    source 34 (Report 64): Report64/audits/arithmetic/source_preservation.json
+data/34-branching-audits-arithmetic-source_snapshot_after.json  source 34 (Report 64): Report64/audits/arithmetic/source_snapshot_after.json
+data/34-branching-audits-physical-DOSSIER_MANIFEST.json         source 34 (Report 64): Report64/audits/physical/DOSSIER_MANIFEST.json
+data/34-branching-audits-physical-audit-results.json            source 34 (Report 64): Report64/audits/physical/audit-results.json
+data/34-branching-audits-physical-source-inventory-after.json   source 34 (Report 64): Report64/audits/physical/source-inventory-after.json
+data/34-branching-audits-physical-source-inventory-before.json  source 34 (Report 64): Report64/audits/physical/source-inventory-before.json
+data/34-branching-dependencies-proofs-PROVENANCE.json           source 34 (Report 64): Report64/dependencies/proofs/PROVENANCE.json
+data/34-branching-manuscript-review-DOSSIER_MANIFEST.json       source 34 (Report 64): Report64/manuscript-review/DOSSIER_MANIFEST.json
+data/34-branching-manuscript-review-FINAL_BINDING.json          source 34 (Report 64): Report64/manuscript-review/FINAL_BINDING.json
+data/34-branching-manuscript-review-REPLAY_BOUNDARY_CHECKS.json  source 34 (Report 64): Report64/manuscript-review/REPLAY_BOUNDARY_CHECKS.json
+data/34-branching-manuscript-review-SOURCE_BINDING.json         source 34 (Report 64): Report64/manuscript-review/SOURCE_BINDING.json
+data/34-branching-manuscript-review-frozen_sources_after.json   source 34 (Report 64): Report64/manuscript-review/frozen_sources_after.json
+data/34-branching-manuscript-review-poppler-version.txt         source 34 (Report 64): Report64/manuscript-review/poppler-version.txt
+data/34-branching-manuscript-review-render-tool-hashes.txt      source 34 (Report 64): Report64/manuscript-review/render-tool-hashes.txt
+data/34-branching-manuscript-review-static_execution.log        source 34 (Report 64): Report64/manuscript-review/static_execution.log
+data/34-branching-manuscript-review-static_results.json         source 34 (Report 64): Report64/manuscript-review/static_results.json
+data/34-branching-qa-FROZEN_ASSEMBLY_PRESERVATION.json          source 34 (Report 64): Report64/qa/FROZEN_ASSEMBLY_PRESERVATION.json
+data/34-branching-qa-REVIEW_ASSEMBLY_PRESERVATION.json          source 34 (Report 64): Report64/qa/REVIEW_ASSEMBLY_PRESERVATION.json
+data/34-branching-qa-final-locked-build-BUILD_RECEIPT.json      source 34 (Report 64): Report64/qa/final-locked-build/BUILD_RECEIPT.json
+data/34-branching-qa-final-locked-build-PREFLIGHT.json          source 34 (Report 64): Report64/qa/final-locked-build/PREFLIGHT.json
+data/34-branching-qa-final-locked-build-PRESERVATION_AFTER.json  source 34 (Report 64): Report64/qa/final-locked-build/PRESERVATION_AFTER.json
+data/34-branching-qa-independent-tools-ACCEPTED_BINDINGS.json   source 34 (Report 64): Report64/qa/independent-tools/ACCEPTED_BINDINGS.json
+data/34-branching-qa-independent-tools-ARCHIVE_AND_RELOCATION_RECEIPTS.json  source 34 (Report 64): Report64/qa/independent-tools/ARCHIVE_AND_RELOCATION_RECEIPTS.json
+data/34-branching-qa-independent-tools-DEPENDENCY_AUTHENTICATION.json  source 34 (Report 64): Report64/qa/independent-tools/DEPENDENCY_AUTHENTICATION.json
+data/34-branching-qa-independent-tools-DOSSIER_MANIFEST.json    source 34 (Report 64): Report64/qa/independent-tools/DOSSIER_MANIFEST.json
+data/34-branching-qa-independent-tools-FINAL_SOURCE_BINDING_CHECK.json  source 34 (Report 64): Report64/qa/independent-tools/FINAL_SOURCE_BINDING_CHECK.json
+data/34-branching-qa-independent-tools-INDEPENDENT_REVIEW.stdout  source 34 (Report 64): Report64/qa/independent-tools/INDEPENDENT_REVIEW.stdout
+data/34-branching-qa-independent-tools-INDEPENDENT_TEST_RECEIPT.json  source 34 (Report 64): Report64/qa/independent-tools/INDEPENDENT_TEST_RECEIPT.json
+data/34-branching-qa-independent-tools-OWNED_SELFTEST_RECEIPT.json  source 34 (Report 64): Report64/qa/independent-tools/OWNED_SELFTEST_RECEIPT.json
+data/34-branching-qa-independent-tools-PRESERVATION_COMPARISONS.json  source 34 (Report 64): Report64/qa/independent-tools/PRESERVATION_COMPARISONS.json
+data/34-branching-qa-independent-tools-PRESERVATION_SUMMARY.json  source 34 (Report 64): Report64/qa/independent-tools/PRESERVATION_SUMMARY.json
+data/34-branching-qa-independent-tools-SUPPLEMENTAL_BOUNDARIES_RECEIPT.json  source 34 (Report 64): Report64/qa/independent-tools/SUPPLEMENTAL_BOUNDARIES_RECEIPT.json
+data/34-branching-qa-visual-revision-RASTER_COMPARISON.json     source 34 (Report 64): Report64/qa/visual-revision/RASTER_COMPARISON.json
+data/34-branching-science-arithmetic-MANIFEST.json              source 34 (Report 64): Report64/science/arithmetic/MANIFEST.json
+data/34-branching-science-arithmetic-evidence-static_checks.json  source 34 (Report 64): Report64/science/arithmetic/evidence/static_checks.json
+data/34-branching-science-frozen-proof-MANIFEST.json            source 34 (Report 64): Report64/science/frozen-proof/MANIFEST.json
+data/34-branching-science-frozen-proof-evidence-static_checks.json  source 34 (Report 64): Report64/science/frozen-proof/evidence/static_checks.json
+data/34-branching-tools-BUILD_DEPENDENCIES_LOCK.json            source 34 (Report 64): Report64/tools/BUILD_DEPENDENCIES_LOCK.json
+data/33-homogeneous-INPUT_PINS.json                             source 33 (Report 63): Report63/INPUT_PINS.json
+data/33-homogeneous-audits-scientific-ARCHIVE_MODE_RUN.txt      source 33 (Report 63): Report63/audits/scientific/ARCHIVE_MODE_RUN.txt
+data/33-homogeneous-audits-scientific-CERTIFICATE_PARENT_RUN.txt  source 33 (Report 63): Report63/audits/scientific/CERTIFICATE_PARENT_RUN.txt
+data/33-homogeneous-audits-scientific-MANIFEST.json             source 33 (Report 63): Report63/audits/scientific/MANIFEST.json
+data/33-homogeneous-audits-scientific-RUN.txt                   source 33 (Report 63): Report63/audits/scientific/RUN.txt
+data/33-homogeneous-audits-scientific-archive-mode-replay-frozen_after.json  source 33 (Report 63): Report63/audits/scientific/archive-mode-replay/frozen_after.json
+data/33-homogeneous-audits-scientific-archive-mode-replay-generic_translation_rules26.json  source 33 (Report 63): Report63/audits/scientific/archive-mode-replay/generic_translation_rules26.json
+data/33-homogeneous-audits-scientific-archive-mode-replay-independent_checks.json  source 33 (Report 63): Report63/audits/scientific/archive-mode-replay/independent_checks.json
+data/33-homogeneous-audits-scientific-archive-mode-replay-independent_lp_vertices.json  source 33 (Report 63): Report63/audits/scientific/archive-mode-replay/independent_lp_vertices.json
+data/33-homogeneous-audits-scientific-archive-mode-replay-independent_translation_fixtures.json  source 33 (Report 63): Report63/audits/scientific/archive-mode-replay/independent_translation_fixtures.json
+data/33-homogeneous-audits-scientific-archive-mode-replay-original_bindings.json  source 33 (Report 63): Report63/audits/scientific/archive-mode-replay/original_bindings.json
+data/33-homogeneous-audits-scientific-certificate-parent-replay-REPORT.json  source 33 (Report 63): Report63/audits/scientific/certificate-parent-replay/REPORT.json
+data/33-homogeneous-audits-scientific-certificate_audit-final-run-REPORT.json  source 33 (Report 63): Report63/audits/scientific/certificate_audit/final-run/REPORT.json
+data/33-homogeneous-audits-scientific-certificate_audit-final-run-inside-source-rejection.txt  source 33 (Report 63): Report63/audits/scientific/certificate_audit/final-run/inside-source-rejection.txt
+data/33-homogeneous-audits-scientific-certificate_audit-initial-run-REPORT.json  source 33 (Report 63): Report63/audits/scientific/certificate_audit/initial-run/REPORT.json
+data/33-homogeneous-audits-scientific-evidence-independent_checks.json  source 33 (Report 63): Report63/audits/scientific/evidence/independent_checks.json
+data/33-homogeneous-audits-scientific-evidence-original_bindings.json  source 33 (Report 63): Report63/audits/scientific/evidence/original_bindings.json
+data/33-homogeneous-audits-scientific-initial-run-RUN.txt       source 33 (Report 63): Report63/audits/scientific/initial-run/RUN.txt
+data/33-homogeneous-audits-scientific-initial-run-evidence-independent_checks.json  source 33 (Report 63): Report63/audits/scientific/initial-run/evidence/independent_checks.json
+data/33-homogeneous-dependencies-proofs-PROVENANCE.json         source 33 (Report 63): Report63/dependencies/proofs/PROVENANCE.json
+data/33-homogeneous-manuscript-review-FINAL_SOURCE_CHECK.txt    source 33 (Report 63): Report63/manuscript-review/FINAL_SOURCE_CHECK.txt
+data/33-homogeneous-manuscript-review-PRESERVATION_AFTER.json   source 33 (Report 63): Report63/manuscript-review/PRESERVATION_AFTER.json
+data/33-homogeneous-manuscript-review-RUN.txt                   source 33 (Report 63): Report63/manuscript-review/RUN.txt
+data/33-homogeneous-manuscript-review-STATIC_REPORT.json        source 33 (Report 63): Report63/manuscript-review/STATIC_REPORT.json
+data/33-homogeneous-qa-FROZEN_ASSEMBLY_PRESERVATION.json        source 33 (Report 63): Report63/qa/FROZEN_ASSEMBLY_PRESERVATION.json
+data/33-homogeneous-qa-RELEASE_TOOLS_SELFTEST.json              source 33 (Report 63): Report63/qa/RELEASE_TOOLS_SELFTEST.json
+data/33-homogeneous-qa-final-locked-build-BUILD_RECEIPT.json    source 33 (Report 63): Report63/qa/final-locked-build/BUILD_RECEIPT.json
+data/33-homogeneous-qa-final-locked-build-PREFLIGHT.json        source 33 (Report 63): Report63/qa/final-locked-build/PREFLIGHT.json
+data/33-homogeneous-qa-final-locked-build-PRESERVATION_AFTER.json  source 33 (Report 63): Report63/qa/final-locked-build/PRESERVATION_AFTER.json
+data/33-homogeneous-qa-independent-tools-ACTUAL_DEPENDENCY_AUTHENTICATION.json  source 33 (Report 63): Report63/qa/independent-tools/ACTUAL_DEPENDENCY_AUTHENTICATION.json
+data/33-homogeneous-qa-independent-tools-ACTUAL_RELEASE_RECEIPT.json  source 33 (Report 63): Report63/qa/independent-tools/ACTUAL_RELEASE_RECEIPT.json
+data/33-homogeneous-qa-independent-tools-AUTHENTICATION.json    source 33 (Report 63): Report63/qa/independent-tools/AUTHENTICATION.json
+data/33-homogeneous-qa-independent-tools-DOSSIER_MANIFEST.json  source 33 (Report 63): Report63/qa/independent-tools/DOSSIER_MANIFEST.json
+data/33-homogeneous-qa-independent-tools-FINAL_MANUSCRIPT_BINDINGS.json  source 33 (Report 63): Report63/qa/independent-tools/FINAL_MANUSCRIPT_BINDINGS.json
+data/33-homogeneous-qa-independent-tools-INDEPENDENT_TEST_RECEIPT.json  source 33 (Report 63): Report63/qa/independent-tools/INDEPENDENT_TEST_RECEIPT.json
+data/33-homogeneous-qa-independent-tools-PRESERVATION_SUMMARY.json  source 33 (Report 63): Report63/qa/independent-tools/PRESERVATION_SUMMARY.json
+data/33-homogeneous-qa-independent-tools-SOURCE_BINDINGS.json   source 33 (Report 63): Report63/qa/independent-tools/SOURCE_BINDINGS.json
+data/33-homogeneous-qa-independent-tools-STATIC_REPLAY_RUNTIME.json  source 33 (Report 63): Report63/qa/independent-tools/STATIC_REPLAY_RUNTIME.json
+data/33-homogeneous-qa-independent-tools-actual-locked-build-BUILD_RECEIPT.json  source 33 (Report 63): Report63/qa/independent-tools/actual-locked-build/BUILD_RECEIPT.json
+data/33-homogeneous-qa-independent-tools-actual-locked-build-PRESERVATION_AFTER.json  source 33 (Report 63): Report63/qa/independent-tools/actual-locked-build/PRESERVATION_AFTER.json
+data/33-homogeneous-qa-independent-tools-actual-relocated-build-PRESERVATION_AFTER.json  source 33 (Report 63): Report63/qa/independent-tools/actual-relocated-build/PRESERVATION_AFTER.json
+data/33-homogeneous-qa-independent-tools-certificate-replay-REPORT.json  source 33 (Report 63): Report63/qa/independent-tools/certificate-replay/REPORT.json
+data/33-homogeneous-qa-independent-tools-independent-static-replay-frozen_after.json  source 33 (Report 63): Report63/qa/independent-tools/independent-static-replay/frozen_after.json
+data/33-homogeneous-qa-promoted-pdf-rebuild-PRESERVATION_AFTER.json  source 33 (Report 63): Report63/qa/promoted-pdf-rebuild/PRESERVATION_AFTER.json
+data/33-homogeneous-science-frozen-proof-CERTIFICATE_DAG_POSITIVE.json  source 33 (Report 63): Report63/science/frozen-proof/CERTIFICATE_DAG_POSITIVE.json
+data/33-homogeneous-science-frozen-proof-CERTIFICATE_DAG_SIGNED.json  source 33 (Report 63): Report63/science/frozen-proof/CERTIFICATE_DAG_SIGNED.json
+data/33-homogeneous-science-frozen-proof-MANIFEST.json          source 33 (Report 63): Report63/science/frozen-proof/MANIFEST.json
+data/33-homogeneous-science-frozen-proof-evidence-diophantine_fixtures.json  source 33 (Report 63): Report63/science/frozen-proof/evidence/diophantine_fixtures.json
+data/33-homogeneous-science-frozen-proof-evidence-exact_lp_fixtures.json  source 33 (Report 63): Report63/science/frozen-proof/evidence/exact_lp_fixtures.json
+data/33-homogeneous-science-frozen-proof-evidence-static_checks.json  source 33 (Report 63): Report63/science/frozen-proof/evidence/static_checks.json
+data/33-homogeneous-science-frozen-proof-evidence-translation_fixtures.json  source 33 (Report 63): Report63/science/frozen-proof/evidence/translation_fixtures.json
+data/33-homogeneous-tools-BUILD_DEPENDENCIES_LOCK.json          source 33 (Report 63): Report63/tools/BUILD_DEPENDENCIES_LOCK.json
+data/31-invertible-INPUT_PINS.json                              source 31 (Report 61): Report61/INPUT_PINS.json
+data/31-invertible-audits-manuscript-MANIFEST.json              source 31 (Report 61): Report61/audits/manuscript/MANIFEST.json
+data/31-invertible-audits-manuscript-REVIEW_RECEIPT.json        source 31 (Report 61): Report61/audits/manuscript/REVIEW_RECEIPT.json
+data/31-invertible-audits-manuscript-frozen_after.stat          source 31 (Report 61): Report61/audits/manuscript/frozen_after.stat
+data/31-invertible-audits-manuscript-static_execution.txt       source 31 (Report 61): Report61/audits/manuscript/static_execution.txt
+data/31-invertible-audits-manuscript-static_identity_receipt.json  source 31 (Report 61): Report61/audits/manuscript/static_identity_receipt.json
+data/31-invertible-audits-portable-replay-FROZEN_PRESERVATION.json  source 31 (Report 61): Report61/audits/portable-replay/FROZEN_PRESERVATION.json
+data/31-invertible-audits-portable-replay-PARENT_TEST_RESULTS.json  source 31 (Report 61): Report61/audits/portable-replay/PARENT_TEST_RESULTS.json
+data/31-invertible-audits-portable-replay-PROBE_RESULTS.json    source 31 (Report 61): Report61/audits/portable-replay/PROBE_RESULTS.json
+data/31-invertible-audits-portable-replay-REVIEW_RECEIPT.json   source 31 (Report 61): Report61/audits/portable-replay/REVIEW_RECEIPT.json
+data/31-invertible-audits-release-tools-CLI_TEST_RESULTS.json   source 31 (Report 61): Report61/audits/release-tools/CLI_TEST_RESULTS.json
+data/31-invertible-audits-release-tools-FROZEN_INPUT_AUTHENTICATION.json  source 31 (Report 61): Report61/audits/release-tools/FROZEN_INPUT_AUTHENTICATION.json
+data/31-invertible-audits-release-tools-INTEGRATION_TEST_RESULTS.json  source 31 (Report 61): Report61/audits/release-tools/INTEGRATION_TEST_RESULTS.json
+data/31-invertible-audits-release-tools-MANIFEST.json           source 31 (Report 61): Report61/audits/release-tools/MANIFEST.json
+data/31-invertible-audits-release-tools-PNG_TEST_RESULTS.json   source 31 (Report 61): Report61/audits/release-tools/PNG_TEST_RESULTS.json
+data/31-invertible-audits-release-tools-PRESERVATION.json       source 31 (Report 61): Report61/audits/release-tools/PRESERVATION.json
+data/31-invertible-audits-release-tools-SOURCE_PINS.json        source 31 (Report 61): Report61/audits/release-tools/SOURCE_PINS.json
+data/31-invertible-audits-release-tools-TEST_SUMMARY.json       source 31 (Report 61): Report61/audits/release-tools/TEST_SUMMARY.json
+data/31-invertible-audits-release-tools-frozen-after.json       source 31 (Report 61): Report61/audits/release-tools/frozen-after.json
+data/31-invertible-audits-scientific-MANIFEST.json              source 31 (Report 61): Report61/audits/scientific/MANIFEST.json
+data/31-invertible-audits-scientific-execution_receipt.txt      source 31 (Report 61): Report61/audits/scientific/execution_receipt.txt
+data/31-invertible-audits-scientific-frozen_after.json          source 31 (Report 61): Report61/audits/scientific/frozen_after.json
+data/31-invertible-audits-scientific-independent_affine_evidence.json  source 31 (Report 61): Report61/audits/scientific/independent_affine_evidence.json
+data/31-invertible-audits-scientific-preservation.json          source 31 (Report 61): Report61/audits/scientific/preservation.json
+data/31-invertible-qa-final-build-BUILD_RECEIPT.json            source 31 (Report 61): Report61/qa/final-build/BUILD_RECEIPT.json
+data/31-invertible-qa-final-build-LAYOUT_STATUS.json            source 31 (Report 61): Report61/qa/final-build/LAYOUT_STATUS.json
+data/31-invertible-qa-replay-execution_stdout.txt               source 31 (Report 61): Report61/qa/replay/execution_stdout.txt
+data/31-invertible-qa-replay-replay_receipt.json                source 31 (Report 61): Report61/qa/replay/replay_receipt.json
+data/31-invertible-science-frozen-proof-MANIFEST.json           source 31 (Report 61): Report61/science/frozen-proof/MANIFEST.json
+data/31-invertible-science-frozen-proof-RULES.json              source 31 (Report 61): Report61/science/frozen-proof/RULES.json
+data/31-invertible-science-frozen-proof-SECTION_AND_GUARDS.json  source 31 (Report 61): Report61/science/frozen-proof/SECTION_AND_GUARDS.json
+data/31-invertible-science-frozen-proof-evidence-static_checks.json  source 31 (Report 61): Report61/science/frozen-proof/evidence/static_checks.json
+data/31-invertible-tools-BUILD_DEPENDENCIES_LOCK.json           source 31 (Report 61): Report61/tools/BUILD_DEPENDENCIES_LOCK.json
+data/31-invertible-tools-portable-replay-FINAL_REPLAY_RECEIPT.json  source 31 (Report 61): Report61/tools/portable-replay/FINAL_REPLAY_RECEIPT.json
+data/31-invertible-tools-portable-replay-MANIFEST.json          source 31 (Report 61): Report61/tools/portable-replay/MANIFEST.json
+data/31-invertible-tools-portable-replay-PINNED_INPUTS.json     source 31 (Report 61): Report61/tools/portable-replay/PINNED_INPUTS.json
+data/31-invertible-tools-portable-replay-READONLY_REPLAY_RECEIPT.json  source 31 (Report 61): Report61/tools/portable-replay/READONLY_REPLAY_RECEIPT.json
+data/30-planar-INPUT_PINS.json                                  source 30 (Report 60): Report60/INPUT_PINS.json
+data/30-planar-audits-arithmetic-AUDIT_RUN.txt                  source 30 (Report 60): Report60/audits/arithmetic/AUDIT_RUN.txt
+data/30-planar-audits-arithmetic-ERRATA.json                    source 30 (Report 60): Report60/audits/arithmetic/ERRATA.json
+data/30-planar-audits-arithmetic-OBSERVED_SOURCES_AFTER.json    source 30 (Report 60): Report60/audits/arithmetic/OBSERVED_SOURCES_AFTER.json
+data/30-planar-audits-arithmetic-PACKET_MANIFEST.json           source 30 (Report 60): Report60/audits/arithmetic/PACKET_MANIFEST.json
+data/30-planar-audits-arithmetic-RECONSTRUCTED_SCHEMAS.json     source 30 (Report 60): Report60/audits/arithmetic/RECONSTRUCTED_SCHEMAS.json
+data/30-planar-audits-arithmetic-SOURCE_SNAPSHOT_AFTER.json     source 30 (Report 60): Report60/audits/arithmetic/SOURCE_SNAPSHOT_AFTER.json
+data/30-planar-audits-geometry-independent_results.json         source 30 (Report 60): Report60/audits/geometry/independent_results.json
+data/30-planar-audits-geometry-preservation.json                source 30 (Report 60): Report60/audits/geometry/preservation.json
+data/30-planar-audits-geometry-source_after.json                source 30 (Report 60): Report60/audits/geometry/source_after.json
+data/30-planar-audits-physical-REVIEW_MANIFEST.json             source 30 (Report 60): Report60/audits/physical/REVIEW_MANIFEST.json
+data/30-planar-audits-physical-frozen_inventory_after.json      source 30 (Report 60): Report60/audits/physical/frozen_inventory_after.json
+data/30-planar-audits-physical-independent_results.json         source 30 (Report 60): Report60/audits/physical/independent_results.json
+data/30-planar-audits-physical-run_optimized_stdout.json        source 30 (Report 60): Report60/audits/physical/run_optimized_stdout.json
+data/30-planar-audits-physical-summary_consistency.json         source 30 (Report 60): Report60/audits/physical/summary_consistency.json
+data/30-planar-audits-quadratic-preservation.json               source 30 (Report 60): Report60/audits/quadratic/preservation.json
+data/30-planar-audits-quadratic-source_after.json               source 30 (Report 60): Report60/audits/quadratic/source_after.json
+data/30-planar-manuscript-review-FINAL_EVIDENCE.json            source 30 (Report 60): Report60/manuscript-review/FINAL_EVIDENCE.json
+data/30-planar-manuscript-review-FINAL_REVISION.json            source 30 (Report 60): Report60/manuscript-review/FINAL_REVISION.json
+data/30-planar-manuscript-review-PRESERVATION.json              source 30 (Report 60): Report60/manuscript-review/PRESERVATION.json
+data/30-planar-manuscript-review-REVIEW_MANIFEST.json           source 30 (Report 60): Report60/manuscript-review/REVIEW_MANIFEST.json
+data/30-planar-manuscript-review-independent_algebra_results.json  source 30 (Report 60): Report60/manuscript-review/independent_algebra_results.json
+data/30-planar-manuscript-review-scientific-after.json          source 30 (Report 60): Report60/manuscript-review/scientific-after.json
+data/30-planar-qa-BUILD_RECEIPT.json                            source 30 (Report 60): Report60/qa/BUILD_RECEIPT.json
+data/30-planar-qa-COPY_EQUIVALENCE.json                         source 30 (Report 60): Report60/qa/COPY_EQUIVALENCE.json
+data/30-planar-qa-INTEGRATION.json                              source 30 (Report 60): Report60/qa/INTEGRATION.json
+data/30-planar-qa-release-tools-review-BUILD_COMPARISON.json    source 30 (Report 60): Report60/qa/release-tools-review/BUILD_COMPARISON.json
+data/30-planar-qa-release-tools-review-FROZEN_AFTER.json        source 30 (Report 60): Report60/qa/release-tools-review/FROZEN_AFTER.json
+data/30-planar-qa-release-tools-review-PRESERVATION.json        source 30 (Report 60): Report60/qa/release-tools-review/PRESERVATION.json
+data/30-planar-qa-release-tools-review-REVIEW_MANIFEST.json     source 30 (Report 60): Report60/qa/release-tools-review/REVIEW_MANIFEST.json
+data/30-planar-qa-release-tools-review-SOURCE_BINDING.json      source 30 (Report 60): Report60/qa/release-tools-review/SOURCE_BINDING.json
+data/30-planar-qa-release-tools-review-TOOL_TEST_RESULTS.json   source 30 (Report 60): Report60/qa/release-tools-review/TOOL_TEST_RESULTS.json
+data/30-planar-qa-release-tools-review-TOOL_TEST_SUMMARY.json   source 30 (Report 60): Report60/qa/release-tools-review/TOOL_TEST_SUMMARY.json
+data/30-planar-science-arithmetic-CHECKS.json                   source 30 (Report 60): Report60/science/arithmetic/CHECKS.json
+data/30-planar-science-arithmetic-CHECK_RUN.txt                 source 30 (Report 60): Report60/science/arithmetic/CHECK_RUN.txt
+data/30-planar-science-arithmetic-PACKET_MANIFEST.json          source 30 (Report 60): Report60/science/arithmetic/PACKET_MANIFEST.json
+data/30-planar-science-arithmetic-SOURCE_PINS.json              source 30 (Report 60): Report60/science/arithmetic/SOURCE_PINS.json
+data/30-planar-science-geometry-verification.json               source 30 (Report 60): Report60/science/geometry/verification.json
+data/30-planar-science-physical-PACKET_MANIFEST.json            source 30 (Report 60): Report60/science/physical/PACKET_MANIFEST.json
+data/30-planar-science-physical-evidence-det_three_halves_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/det_three_halves_lambda_1.json
+data/30-planar-science-physical-evidence-det_three_halves_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/det_three_halves_lambda_1_2.json
+data/30-planar-science-physical-evidence-det_three_halves_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/det_three_halves_lambda_2.json
+data/30-planar-science-physical-evidence-det_two_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/det_two_lambda_1.json
+data/30-planar-science-physical-evidence-det_two_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/det_two_lambda_1_2.json
+data/30-planar-science-physical-evidence-det_two_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/det_two_lambda_2.json
+data/30-planar-science-physical-evidence-diagonal_hyperbolic_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/diagonal_hyperbolic_lambda_1.json
+data/30-planar-science-physical-evidence-diagonal_hyperbolic_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/diagonal_hyperbolic_lambda_1_2.json
+data/30-planar-science-physical-evidence-diagonal_hyperbolic_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/diagonal_hyperbolic_lambda_2.json
+data/30-planar-science-physical-evidence-elliptic_conjugate_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/elliptic_conjugate_lambda_1.json
+data/30-planar-science-physical-evidence-elliptic_conjugate_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/elliptic_conjugate_lambda_1_2.json
+data/30-planar-science-physical-evidence-elliptic_conjugate_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/elliptic_conjugate_lambda_2.json
+data/30-planar-science-physical-evidence-identity_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/identity_lambda_1.json
+data/30-planar-science-physical-evidence-identity_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/identity_lambda_1_2.json
+data/30-planar-science-physical-evidence-identity_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/identity_lambda_2.json
+data/30-planar-science-physical-evidence-irrational_hyperbolic_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/irrational_hyperbolic_lambda_1.json
+data/30-planar-science-physical-evidence-irrational_hyperbolic_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/irrational_hyperbolic_lambda_1_2.json
+data/30-planar-science-physical-evidence-irrational_hyperbolic_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/irrational_hyperbolic_lambda_2.json
+data/30-planar-science-physical-evidence-lower_shear_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/lower_shear_lambda_1.json
+data/30-planar-science-physical-evidence-lower_shear_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/lower_shear_lambda_1_2.json
+data/30-planar-science-physical-evidence-lower_shear_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/lower_shear_lambda_2.json
+data/30-planar-science-physical-evidence-mixed_hyperbolic_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/mixed_hyperbolic_lambda_1.json
+data/30-planar-science-physical-evidence-mixed_hyperbolic_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/mixed_hyperbolic_lambda_1_2.json
+data/30-planar-science-physical-evidence-mixed_hyperbolic_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/mixed_hyperbolic_lambda_2.json
+data/30-planar-science-physical-evidence-negative_diagonal_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/negative_diagonal_lambda_1.json
+data/30-planar-science-physical-evidence-negative_diagonal_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_diagonal_lambda_1_2.json
+data/30-planar-science-physical-evidence-negative_diagonal_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_diagonal_lambda_2.json
+data/30-planar-science-physical-evidence-negative_identity_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/negative_identity_lambda_1.json
+data/30-planar-science-physical-evidence-negative_identity_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_identity_lambda_1_2.json
+data/30-planar-science-physical-evidence-negative_identity_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_identity_lambda_2.json
+data/30-planar-science-physical-evidence-negative_jordan_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/negative_jordan_lambda_1.json
+data/30-planar-science-physical-evidence-negative_jordan_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_jordan_lambda_1_2.json
+data/30-planar-science-physical-evidence-negative_jordan_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_jordan_lambda_2.json
+data/30-planar-science-physical-evidence-negative_unit_contracting_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/negative_unit_contracting_lambda_1.json
+data/30-planar-science-physical-evidence-negative_unit_contracting_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_unit_contracting_lambda_1_2.json
+data/30-planar-science-physical-evidence-negative_unit_contracting_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/negative_unit_contracting_lambda_2.json
+data/30-planar-science-physical-evidence-rotation_345_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/rotation_345_lambda_1.json
+data/30-planar-science-physical-evidence-rotation_345_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/rotation_345_lambda_1_2.json
+data/30-planar-science-physical-evidence-rotation_345_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/rotation_345_lambda_2.json
+data/30-planar-science-physical-evidence-scalar_half_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/scalar_half_lambda_1.json
+data/30-planar-science-physical-evidence-scalar_half_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/scalar_half_lambda_1_2.json
+data/30-planar-science-physical-evidence-scalar_half_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/scalar_half_lambda_2.json
+data/30-planar-science-physical-evidence-scalar_two_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/scalar_two_lambda_1.json
+data/30-planar-science-physical-evidence-scalar_two_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/scalar_two_lambda_1_2.json
+data/30-planar-science-physical-evidence-scalar_two_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/scalar_two_lambda_2.json
+data/30-planar-science-physical-evidence-stable_complex_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/stable_complex_lambda_1.json
+data/30-planar-science-physical-evidence-stable_complex_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/stable_complex_lambda_1_2.json
+data/30-planar-science-physical-evidence-stable_complex_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/stable_complex_lambda_2.json
+data/30-planar-science-physical-evidence-summary.json           source 30 (Report 60): Report60/science/physical/evidence/summary.json
+data/30-planar-science-physical-evidence-trace_minus_one_finite_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/trace_minus_one_finite_lambda_1.json
+data/30-planar-science-physical-evidence-trace_minus_one_finite_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/trace_minus_one_finite_lambda_1_2.json
+data/30-planar-science-physical-evidence-trace_minus_one_finite_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/trace_minus_one_finite_lambda_2.json
+data/30-planar-science-physical-evidence-trace_one_finite_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/trace_one_finite_lambda_1.json
+data/30-planar-science-physical-evidence-trace_one_finite_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/trace_one_finite_lambda_1_2.json
+data/30-planar-science-physical-evidence-trace_one_finite_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/trace_one_finite_lambda_2.json
+data/30-planar-science-physical-evidence-unit_contracting_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/unit_contracting_lambda_1.json
+data/30-planar-science-physical-evidence-unit_contracting_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/unit_contracting_lambda_1_2.json
+data/30-planar-science-physical-evidence-unit_contracting_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/unit_contracting_lambda_2.json
+data/30-planar-science-physical-evidence-unstable_complex_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/unstable_complex_lambda_1.json
+data/30-planar-science-physical-evidence-unstable_complex_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/unstable_complex_lambda_1_2.json
+data/30-planar-science-physical-evidence-unstable_complex_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/unstable_complex_lambda_2.json
+data/30-planar-science-physical-evidence-upper_nonunit_pivot_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/upper_nonunit_pivot_lambda_1.json
+data/30-planar-science-physical-evidence-upper_nonunit_pivot_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/upper_nonunit_pivot_lambda_1_2.json
+data/30-planar-science-physical-evidence-upper_nonunit_pivot_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/upper_nonunit_pivot_lambda_2.json
+data/30-planar-science-physical-evidence-upper_shear_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/upper_shear_lambda_1.json
+data/30-planar-science-physical-evidence-upper_shear_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/upper_shear_lambda_1_2.json
+data/30-planar-science-physical-evidence-upper_shear_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/upper_shear_lambda_2.json
+data/30-planar-science-physical-evidence-zero_a_pivot_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/zero_a_pivot_lambda_1.json
+data/30-planar-science-physical-evidence-zero_a_pivot_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/zero_a_pivot_lambda_1_2.json
+data/30-planar-science-physical-evidence-zero_a_pivot_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/zero_a_pivot_lambda_2.json
+data/30-planar-science-physical-evidence-zero_d_pivot_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/zero_d_pivot_lambda_1.json
+data/30-planar-science-physical-evidence-zero_d_pivot_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/zero_d_pivot_lambda_1_2.json
+data/30-planar-science-physical-evidence-zero_d_pivot_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/zero_d_pivot_lambda_2.json
+data/30-planar-science-physical-evidence-zero_diagonal_lambda_1.json  source 30 (Report 60): Report60/science/physical/evidence/zero_diagonal_lambda_1.json
+data/30-planar-science-physical-evidence-zero_diagonal_lambda_1_2.json  source 30 (Report 60): Report60/science/physical/evidence/zero_diagonal_lambda_1_2.json
+data/30-planar-science-physical-evidence-zero_diagonal_lambda_2.json  source 30 (Report 60): Report60/science/physical/evidence/zero_diagonal_lambda_2.json
+data/30-planar-science-quadratic-verification.json              source 30 (Report 60): Report60/science/quadratic/verification.json
+data/30-planar-tools-BUILD_DEPENDENCIES_LOCK.json               source 30 (Report 60): Report60/tools/BUILD_DEPENDENCIES_LOCK.json
+data/30-planar-tools-portable-replay-INPUT_PINS.json            source 30 (Report 60): Report60/tools/portable-replay/INPUT_PINS.json
+data/30-planar-tools-portable-replay-REPLAY_PACKAGE_MANIFEST.json  source 30 (Report 60): Report60/tools/portable-replay/REPLAY_PACKAGE_MANIFEST.json
+data/30-planar-tools-portable-replay-independent-review-EVIDENCE.json  source 30 (Report 60): Report60/tools/portable-replay/independent-review/EVIDENCE.json
+data/30-planar-tools-portable-replay-independent-review-GUARD_PROBES.json  source 30 (Report 60): Report60/tools/portable-replay/independent-review/GUARD_PROBES.json
+data/30-planar-tools-portable-replay-independent-review-MANIFEST.json  source 30 (Report 60): Report60/tools/portable-replay/independent-review/MANIFEST.json
+data/30-planar-tools-portable-replay-independent-review-REPLAY_RECEIPT.json  source 30 (Report 60): Report60/tools/portable-replay/independent-review/REPLAY_RECEIPT.json
+data/30-planar-tools-portable-replay-independent-review-SELFTEST_SUMMARY.json  source 30 (Report 60): Report60/tools/portable-replay/independent-review/SELFTEST_SUMMARY.json
+data/30-planar-tools-portable-replay-independent-review-SOURCE_BINDINGS.json  source 30 (Report 60): Report60/tools/portable-replay/independent-review/SOURCE_BINDINGS.json
+data/30-planar-tools-portable-replay-requirements.txt           source 30 (Report 60): Report60/tools/portable-replay/requirements.txt
+data/30-planar-tools-portable-replay-validation-ORIGINAL_RELEASE_AFTER.json  source 30 (Report 60): Report60/tools/portable-replay/validation/ORIGINAL_RELEASE_AFTER.json
+data/30-planar-tools-portable-replay-validation-ORIGINAL_SOURCE_PRESERVATION.json  source 30 (Report 60): Report60/tools/portable-replay/validation/ORIGINAL_SOURCE_PRESERVATION.json
+data/30-planar-tools-portable-replay-validation-SUMMARY.json    source 30 (Report 60): Report60/tools/portable-replay/validation/SUMMARY.json
+data/30-planar-tools-portable-replay-validation-VALIDATION_REPORT.json  source 30 (Report 60): Report60/tools/portable-replay/validation/VALIDATION_REPORT.json
+data/30-planar-tools-portable-replay-validation-logs-extra_source_file.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/extra_source_file.stderr
+data/30-planar-tools-portable-replay-validation-logs-hardlinked_source_file.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/hardlinked_source_file.stderr
+data/30-planar-tools-portable-replay-validation-logs-historical_read_fallback_blocked.stdout  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/historical_read_fallback_blocked.stdout
+data/30-planar-tools-portable-replay-validation-logs-missing_required_root.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/missing_required_root.stderr
+data/30-planar-tools-portable-replay-validation-logs-missing_source.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/missing_source.stderr
+data/30-planar-tools-portable-replay-validation-logs-noncanonical_input_alias.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/noncanonical_input_alias.stderr
+data/30-planar-tools-portable-replay-validation-logs-normal_replay.stdout  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/normal_replay.stdout
+data/30-planar-tools-portable-replay-validation-logs-output_inside_release.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/output_inside_release.stderr
+data/30-planar-tools-portable-replay-validation-logs-overlapping_input_roots.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/overlapping_input_roots.stderr
+data/30-planar-tools-portable-replay-validation-logs-protected_write_blocked.stdout  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/protected_write_blocked.stdout
+data/30-planar-tools-portable-replay-validation-logs-read_only_relocated_optimized_replay.stdout  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/read_only_relocated_optimized_replay.stdout
+data/30-planar-tools-portable-replay-validation-logs-relative_input_root.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/relative_input_root.stderr
+data/30-planar-tools-portable-replay-validation-logs-reuse_output.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/reuse_output.stderr
+data/30-planar-tools-portable-replay-validation-logs-role_outside_release.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/role_outside_release.stderr
+data/30-planar-tools-portable-replay-validation-logs-symlink_adapter_ancestor.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/symlink_adapter_ancestor.stderr
+data/30-planar-tools-portable-replay-validation-logs-symlink_source_file.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/symlink_source_file.stderr
+data/30-planar-tools-portable-replay-validation-logs-tampered_checker.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/tampered_checker.stderr
+data/30-planar-tools-portable-replay-validation-logs-tampered_expected.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/tampered_expected.stderr
+data/30-planar-tools-portable-replay-validation-logs-tampered_inert_quadratic_audit.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/tampered_inert_quadratic_audit.stderr
+data/30-planar-tools-portable-replay-validation-logs-tampered_inert_quadratic_science.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/tampered_inert_quadratic_science.stderr
+data/30-planar-tools-portable-replay-validation-logs-tampered_pins.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/tampered_pins.stderr
+data/30-planar-tools-portable-replay-validation-logs-tampered_source.stderr  source 30 (Report 60): Report60/tools/portable-replay/validation/logs/tampered_source.stderr
+data/30-planar-tools-portable-replay-validation-normal-FAMILY59_VIEW_AFTER.json  source 30 (Report 60): Report60/tools/portable-replay/validation/normal/FAMILY59_VIEW_AFTER.json
+data/30-planar-tools-portable-replay-validation-normal-INPUT_INVENTORY_AFTER.json  source 30 (Report 60): Report60/tools/portable-replay/validation/normal/INPUT_INVENTORY_AFTER.json
+data/30-planar-tools-portable-replay-validation-normal-OUTPUT_INVENTORY.json  source 30 (Report 60): Report60/tools/portable-replay/validation/normal/OUTPUT_INVENTORY.json
+data/30-planar-tools-portable-replay-validation-normal-REPLAY_RECEIPT.json  source 30 (Report 60): Report60/tools/portable-replay/validation/normal/REPLAY_RECEIPT.json
+data/30-planar-tools-portable-replay-validation-readonly-optimized-FAMILY59_VIEW_AFTER.json  source 30 (Report 60): Report60/tools/portable-replay/validation/readonly-optimized/FAMILY59_VIEW_AFTER.json
+data/30-planar-tools-portable-replay-validation-readonly-optimized-INPUT_INVENTORY_AFTER.json  source 30 (Report 60): Report60/tools/portable-replay/validation/readonly-optimized/INPUT_INVENTORY_AFTER.json
+data/30-planar-tools-portable-replay-validation-readonly-optimized-OUTPUT_INVENTORY.json  source 30 (Report 60): Report60/tools/portable-replay/validation/readonly-optimized/OUTPUT_INVENTORY.json
+data/30-planar-tools-portable-replay-validation-readonly-optimized-REPLAY_RECEIPT.json  source 30 (Report 60): Report60/tools/portable-replay/validation/readonly-optimized/REPLAY_RECEIPT.json
+data/32-projective-INPUT_PINS.json                              source 32 (Report 62): Report62/INPUT_PINS.json
+data/32-projective-audits-scientific-AUDIT_MANIFEST.json        source 32 (Report 62): Report62/audits/scientific/AUDIT_MANIFEST.json
+data/32-projective-audits-scientific-evidence-frozen_after.json  source 32 (Report 62): Report62/audits/scientific/evidence/frozen_after.json
+data/32-projective-audits-scientific-evidence-independent_checks.json  source 32 (Report 62): Report62/audits/scientific/evidence/independent_checks.json
+data/32-projective-audits-scientific-evidence-rule44_static_review.json  source 32 (Report 62): Report62/audits/scientific/evidence/rule44_static_review.json
+data/32-projective-audits-scientific-evidence-run_stdout.json   source 32 (Report 62): Report62/audits/scientific/evidence/run_stdout.json
+data/32-projective-dependencies-proofs-PROVENANCE.json          source 32 (Report 62): Report62/dependencies/proofs/PROVENANCE.json
+data/32-projective-manuscript-review-AUDIT_PRESERVATION.json    source 32 (Report 62): Report62/manuscript-review/AUDIT_PRESERVATION.json
+data/32-projective-manuscript-review-DOSSIER_MANIFEST.json      source 32 (Report 62): Report62/manuscript-review/DOSSIER_MANIFEST.json
+data/32-projective-manuscript-review-INDEPENDENT_RENDER_BINDING.json  source 32 (Report 62): Report62/manuscript-review/INDEPENDENT_RENDER_BINDING.json
+data/32-projective-manuscript-review-PAGE_REVIEW.json           source 32 (Report 62): Report62/manuscript-review/PAGE_REVIEW.json
+data/32-projective-manuscript-review-SOURCE_PRESERVATION.json   source 32 (Report 62): Report62/manuscript-review/SOURCE_PRESERVATION.json
+data/32-projective-manuscript-review-STATIC_REVIEW.json         source 32 (Report 62): Report62/manuscript-review/STATIC_REVIEW.json
+data/32-projective-qa-FROZEN_ASSEMBLY_PRESERVATION.json         source 32 (Report 62): Report62/qa/FROZEN_ASSEMBLY_PRESERVATION.json
+data/32-projective-qa-RELEASE_TOOLS_SELFTEST.json               source 32 (Report 62): Report62/qa/RELEASE_TOOLS_SELFTEST.json
+data/32-projective-qa-RELEASE_TOOLS_SELFTEST_INITIAL.json       source 32 (Report 62): Report62/qa/RELEASE_TOOLS_SELFTEST_INITIAL.json
+data/32-projective-qa-RELEASE_TOOLS_SELFTEST_TMPDIR_FIX.json    source 32 (Report 62): Report62/qa/RELEASE_TOOLS_SELFTEST_TMPDIR_FIX.json
+data/32-projective-qa-final-locked-build-BUILD_RECEIPT.json     source 32 (Report 62): Report62/qa/final-locked-build/BUILD_RECEIPT.json
+data/32-projective-qa-final-locked-build-PREFLIGHT.json         source 32 (Report 62): Report62/qa/final-locked-build/PREFLIGHT.json
+data/32-projective-qa-final-locked-build-PRESERVATION_AFTER.json  source 32 (Report 62): Report62/qa/final-locked-build/PRESERVATION_AFTER.json
+data/32-projective-qa-integrated-replay-replay_receipt.json     source 32 (Report 62): Report62/qa/integrated-replay/replay_receipt.json
+data/32-projective-qa-locked-build-BUILD_RECEIPT.json           source 32 (Report 62): Report62/qa/locked-build/BUILD_RECEIPT.json
+data/32-projective-qa-locked-build-PRESERVATION_AFTER.json      source 32 (Report 62): Report62/qa/locked-build/PRESERVATION_AFTER.json
+data/32-projective-qa-read-only-replay-evidence-frozen_after.json  source 32 (Report 62): Report62/qa/read-only-replay/evidence/frozen_after.json
+data/32-projective-qa-read-only-replay-replay_receipt.json      source 32 (Report 62): Report62/qa/read-only-replay/replay_receipt.json
+data/32-projective-qa-release-tools-review-ACTUAL_BUILD_RECEIPT.json  source 32 (Report 62): Report62/qa/release-tools-review/ACTUAL_BUILD_RECEIPT.json
+data/32-projective-qa-release-tools-review-BUILD_ROUNDTRIP_RESULTS.json  source 32 (Report 62): Report62/qa/release-tools-review/BUILD_ROUNDTRIP_RESULTS.json
+data/32-projective-qa-release-tools-review-FINAL_SOURCE_PINS.json  source 32 (Report 62): Report62/qa/release-tools-review/FINAL_SOURCE_PINS.json
+data/32-projective-qa-release-tools-review-FINDING_1_ORIGINAL_TMPDIR.stdout  source 32 (Report 62): Report62/qa/release-tools-review/FINDING_1_ORIGINAL_TMPDIR.stdout
+data/32-projective-qa-release-tools-review-FINDING_1_ORIGINAL_TMPDIR_RESULT.json  source 32 (Report 62): Report62/qa/release-tools-review/FINDING_1_ORIGINAL_TMPDIR_RESULT.json
+data/32-projective-qa-release-tools-review-ORIGINAL_INPUTS_AFTER.json  source 32 (Report 62): Report62/qa/release-tools-review/ORIGINAL_INPUTS_AFTER.json
+data/32-projective-qa-release-tools-review-RELOCATED_PRESERVATION_AFTER.json  source 32 (Report 62): Report62/qa/release-tools-review/RELOCATED_PRESERVATION_AFTER.json
+data/32-projective-qa-release-tools-review-REVIEW_MANIFEST.json  source 32 (Report 62): Report62/qa/release-tools-review/REVIEW_MANIFEST.json
+data/32-projective-qa-release-tools-review-REVIEW_RECEIPT.json  source 32 (Report 62): Report62/qa/release-tools-review/REVIEW_RECEIPT.json
+data/32-projective-qa-release-tools-review-SHELL_ESCAPE_RESULT.json  source 32 (Report 62): Report62/qa/release-tools-review/SHELL_ESCAPE_RESULT.json
+data/32-projective-qa-release-tools-review-START_PINS.json      source 32 (Report 62): Report62/qa/release-tools-review/START_PINS.json
+data/32-projective-qa-release-tools-review-SUPPLEMENTAL_RESULTS.json  source 32 (Report 62): Report62/qa/release-tools-review/SUPPLEMENTAL_RESULTS.json
+data/32-projective-qa-tmpdir-fixed-build-PRESERVATION_AFTER.json  source 32 (Report 62): Report62/qa/tmpdir-fixed-build/PRESERVATION_AFTER.json
+data/32-projective-science-frozen-proof-MANIFEST.json           source 32 (Report 62): Report62/science/frozen-proof/MANIFEST.json
+data/32-projective-science-frozen-proof-NATIVE_GAP_CERTIFICATES.json  source 32 (Report 62): Report62/science/frozen-proof/NATIVE_GAP_CERTIFICATES.json
+data/32-projective-science-frozen-proof-RULES44.json            source 32 (Report 62): Report62/science/frozen-proof/RULES44.json
+data/32-projective-science-frozen-proof-SECTION44_AND_GUARDS.json  source 32 (Report 62): Report62/science/frozen-proof/SECTION44_AND_GUARDS.json
+data/32-projective-science-frozen-proof-evidence-static_checks.json  source 32 (Report 62): Report62/science/frozen-proof/evidence/static_checks.json
+data/32-projective-tools-BUILD_DEPENDENCIES_LOCK.json           source 32 (Report 62): Report62/tools/BUILD_DEPENDENCIES_LOCK.json
+data/32-projective-tools-portable-replay-FINAL_REPLAY_RECEIPT.json  source 32 (Report 62): Report62/tools/portable-replay/FINAL_REPLAY_RECEIPT.json
+data/32-projective-tools-portable-replay-MANIFEST.json          source 32 (Report 62): Report62/tools/portable-replay/MANIFEST.json
+data/32-projective-tools-portable-replay-PINNED_INPUTS.json     source 32 (Report 62): Report62/tools/portable-replay/PINNED_INPUTS.json
+data/32-projective-tools-portable-replay-READONLY_REPLAY_RECEIPT.json  source 32 (Report 62): Report62/tools/portable-replay/READONLY_REPLAY_RECEIPT.json
+data/32-projective-tools-portable-replay-TEST_RESULTS.json      source 32 (Report 62): Report62/tools/portable-replay/TEST_RESULTS.json
+data/32-projective-tools-portable-replay-independent_review-REVIEW_MANIFEST.json  source 32 (Report 62): Report62/tools/portable-replay/independent_review/REVIEW_MANIFEST.json
+data/32-projective-tools-portable-replay-independent_review-assertion_bytecode_check.json  source 32 (Report 62): Report62/tools/portable-replay/independent_review/assertion_bytecode_check.json
+data/32-projective-tools-portable-replay-independent_review-facade_edge_result.json  source 32 (Report 62): Report62/tools/portable-replay/independent_review/facade_edge_result.json
+data/32-projective-tools-portable-replay-independent_review-original_inputs_after.json  source 32 (Report 62): Report62/tools/portable-replay/independent_review/original_inputs_after.json
+data/32-projective-tools-portable-replay-independent_review-supplemental_results.json  source 32 (Report 62): Report62/tools/portable-replay/independent_review/supplemental_results.json
+data/36-bounded-cert-INPUT_PINS.json                            source 36 (Report 66): Report66/INPUT_PINS.json
+data/36-bounded-cert-RELEASE_MANIFEST.json                      source 36 (Report 66): Report66/RELEASE_MANIFEST.json
+data/36-bounded-cert-audit-bc-MANIFEST.json                     source 36 (Report 66): Report66/audits/bounded-certificates/MANIFEST.json
+data/36-bounded-cert-audit-bc-example_gap.json                  source 36 (Report 66): Report66/audits/bounded-certificates/example_gap.json
+data/36-bounded-cert-audit-bc-example_gap_check.json            source 36 (Report 66): Report66/audits/bounded-certificates/example_gap_check.json
+data/36-bounded-cert-audit-bc-example_native.json               source 36 (Report 66): Report66/audits/bounded-certificates/example_native.json
+data/36-bounded-cert-audit-bc-example_native_check.json         source 36 (Report 66): Report66/audits/bounded-certificates/example_native_check.json
+data/36-bounded-cert-audit-bc-independent_results.json          source 36 (Report 66): Report66/audits/bounded-certificates/independent_results.json
+data/36-bounded-cert-audit-bc-source_after.json                 source 36 (Report 66): Report66/audits/bounded-certificates/source_after.json
+data/36-bounded-cert-audit-bc-source_preservation.json          source 36 (Report 66): Report66/audits/bounded-certificates/source_preservation.json
+data/36-bounded-cert-audit-bc-source_verification.json          source 36 (Report 66): Report66/audits/bounded-certificates/source_verification.json
+data/36-bounded-cert-audit-cnt-MANIFEST.json                    source 36 (Report 66): Report66/audits/counting/MANIFEST.json
+data/36-bounded-cert-audit-cnt-checks.json                      source 36 (Report 66): Report66/audits/counting/checks.json
+data/36-bounded-cert-audit-cnt-portable_replay.txt              source 36 (Report 66): Report66/audits/counting/portable_replay.txt
+data/36-bounded-cert-qa-BUILD_LOCKED.json                       source 36 (Report 66): Report66/qa/BUILD_LOCKED.json
+data/36-bounded-cert-qa-ORIGINAL_INPUTS_UNCHANGED.json          source 36 (Report 66): Report66/qa/ORIGINAL_INPUTS_UNCHANGED.json
+data/36-bounded-cert-qa-ORIGINAL_INPUT_METADATA.json            source 36 (Report 66): Report66/qa/ORIGINAL_INPUT_METADATA.json
+data/36-bounded-cert-qa-PAGE_INVENTORY.json                     source 36 (Report 66): Report66/qa/PAGE_INVENTORY.json
+data/36-bounded-cert-qa-RECORDER_INPUT_UNION.json               source 36 (Report 66): Report66/qa/RECORDER_INPUT_UNION.json
+data/36-bounded-cert-qa-RELEASE_PREPARATION.json                source 36 (Report 66): Report66/qa/RELEASE_PREPARATION.json
+data/36-bounded-cert-qa-SELFTEST_RECEIPT.json                   source 36 (Report 66): Report66/qa/SELFTEST_RECEIPT.json
+data/36-bounded-cert-msr-FINAL_ACCEPTANCE.json                  source 36 (Report 66): Report66/qa/manuscript-review/FINAL_ACCEPTANCE.json
+data/36-bounded-cert-msr-STATIC_SOURCE_CHECK.json               source 36 (Report 66): Report66/qa/manuscript-review/STATIC_SOURCE_CHECK.json
+data/36-bounded-cert-rtr-ARTICLE_AND_TOOL_PRESERVATION.json     source 36 (Report 66): Report66/qa/release-tool-review/ARTICLE_AND_TOOL_PRESERVATION.json
+data/36-bounded-cert-rtr-ARTICLE_CANDIDATE_MANIFEST.json        source 36 (Report 66): Report66/qa/release-tool-review/ARTICLE_CANDIDATE_MANIFEST.json
+data/36-bounded-cert-rtr-EVIDENCE_MANIFEST.json                 source 36 (Report 66): Report66/qa/release-tool-review/EVIDENCE_MANIFEST.json
+data/36-bounded-cert-rtr-INDEPENDENT_ADDITIONAL_RESULTS.json    source 36 (Report 66): Report66/qa/release-tool-review/INDEPENDENT_ADDITIONAL_RESULTS.json
+data/36-bounded-cert-rtr-INDEPENDENT_ARTICLE_RESULTS.json       source 36 (Report 66): Report66/qa/release-tool-review/INDEPENDENT_ARTICLE_RESULTS.json
+data/36-bounded-cert-rtr-INDEPENDENT_PAGE_CHECKS.json           source 36 (Report 66): Report66/qa/release-tool-review/INDEPENDENT_PAGE_CHECKS.json
+data/36-bounded-cert-rtr-INDEPENDENT_SYNTHETIC_RESULTS.json     source 36 (Report 66): Report66/qa/release-tool-review/INDEPENDENT_SYNTHETIC_RESULTS.json
+data/36-bounded-cert-rtr-ORIGINALS_AFTER.json                   source 36 (Report 66): Report66/qa/release-tool-review/ORIGINALS_AFTER.json
+data/36-bounded-cert-rtr-locked-replay-BUILD_RECEIPT.json       source 36 (Report 66): Report66/qa/release-tool-review/article-locked-replay/BUILD_RECEIPT.json
+data/36-bounded-cert-rtr-locked-replay-PREFLIGHT.json           source 36 (Report 66): Report66/qa/release-tool-review/article-locked-replay/PREFLIGHT.json
+data/36-bounded-cert-rtr-locked-replay-PRESERVATION_AFTER.json  source 36 (Report 66): Report66/qa/release-tool-review/article-locked-replay/PRESERVATION_AFTER.json
+data/36-bounded-cert-rtr-locked-replay-RECORDER_INPUT_UNION.json  source 36 (Report 66): Report66/qa/release-tool-review/article-locked-replay/RECORDER_INPUT_UNION.json
+data/36-bounded-cert-rtr-locked-replay-compile-1.fls            source 36 (Report 66): Report66/qa/release-tool-review/article-locked-replay/compile-1.fls
+data/36-bounded-cert-rtr-locked-replay-compile-2.fls            source 36 (Report 66): Report66/qa/release-tool-review/article-locked-replay/compile-2.fls
+data/36-bounded-cert-rtr-locked-replay-format.fls               source 36 (Report 66): Report66/qa/release-tool-review/article-locked-replay/format.fls
+data/36-bounded-cert-rtr-reloc-replay-PRESERVATION_AFTER.json   source 36 (Report 66): Report66/qa/release-tool-review/article-relocated-locked-replay/PRESERVATION_AFTER.json
+data/36-bounded-cert-rtr-reloc-replay-RECORDER_INPUT_UNION.json  source 36 (Report 66): Report66/qa/release-tool-review/article-relocated-locked-replay/RECORDER_INPUT_UNION.json
+data/36-bounded-cert-rtr-reloc-replay-compile-1.fls             source 36 (Report 66): Report66/qa/release-tool-review/article-relocated-locked-replay/compile-1.fls
+data/36-bounded-cert-rtr-reloc-replay-compile-2.fls             source 36 (Report 66): Report66/qa/release-tool-review/article-relocated-locked-replay/compile-2.fls
+data/36-bounded-cert-rtr-reloc-replay-format.fls                source 36 (Report 66): Report66/qa/release-tool-review/article-relocated-locked-replay/format.fls
+data/36-bounded-cert-rtr-independent_article_replay66.stdout    source 36 (Report 66): Report66/qa/release-tool-review/independent_article_replay66.stdout
+data/36-bounded-cert-rtr-independent_negative66.stdout          source 36 (Report 66): Report66/qa/release-tool-review/independent_negative66.stdout
+data/36-bounded-cert-rtr-independent_page_check66.stdout        source 36 (Report 66): Report66/qa/release-tool-review/independent_page_check66.stdout
+data/36-bounded-cert-rtr-independent_test66-v2.stdout           source 36 (Report 66): Report66/qa/release-tool-review/independent_test66-v2.stdout
+data/36-bounded-cert-bc-MANIFEST.json                           source 36 (Report 66): Report66/science/bounded-certificates/MANIFEST.json
+data/36-bounded-cert-bc-SOURCE_PINS.json                        source 36 (Report 66): Report66/science/bounded-certificates/SOURCE_PINS.json
+data/36-bounded-cert-bc-evidence-prior_sources_unchanged.json   source 36 (Report 66): Report66/science/bounded-certificates/evidence/prior_sources_unchanged.json
+data/36-bounded-cert-bc-evidence-static_results.json            source 36 (Report 66): Report66/science/bounded-certificates/evidence/static_results.json
+data/36-bounded-cert-bc-evidence-static_stdout.txt              source 36 (Report 66): Report66/science/bounded-certificates/evidence/static_stdout.txt
+data/36-bounded-cert-cnt-MANIFEST.json                          source 36 (Report 66): Report66/science/counting/MANIFEST.json
+data/36-bounded-cert-cnt-checks.json                            source 36 (Report 66): Report66/science/counting/checks.json
+data/36-bounded-cert-tools-BUILD_DEPENDENCIES_LOCK.json         source 36 (Report 66): Report66/tools/BUILD_DEPENDENCIES_LOCK.json
+data/37-pos-power-INPUT_PINS.json                               source 37 (Report 67): Report67/INPUT_PINS.json
+data/37-pos-power-RELEASE_MANIFEST.json                         source 37 (Report 67): Report67/RELEASE_MANIFEST.json
+data/37-pos-power-audit-ed-MANIFEST.json                        source 37 (Report 67): Report67/audits/exact-degree/MANIFEST.json
+data/37-pos-power-audit-ed-independent_results.json             source 37 (Report 67): Report67/audits/exact-degree/independent_results.json
+data/37-pos-power-audit-ed-independent_stdout.txt               source 37 (Report 67): Report67/audits/exact-degree/independent_stdout.txt
+data/37-pos-power-audit-ed-preservation_stdout.txt              source 37 (Report 67): Report67/audits/exact-degree/preservation_stdout.txt
+data/37-pos-power-audit-ed-reproduction_stdout.txt              source 37 (Report 67): Report67/audits/exact-degree/reproduction_stdout.txt
+data/37-pos-power-audit-ed-source_verification.json             source 37 (Report 67): Report67/audits/exact-degree/source_verification.json
+data/37-pos-power-audit-ed-source_verification_stdout.txt       source 37 (Report 67): Report67/audits/exact-degree/source_verification_stdout.txt
+data/37-pos-power-audit-ed-sources_after.json                   source 37 (Report 67): Report67/audits/exact-degree/sources_after.json
+data/37-pos-power-audit-pb-CANONICAL_MANIFEST.json              source 37 (Report 67): Report67/audits/power-baseline/CANONICAL_MANIFEST.json
+data/37-pos-power-audit-pb-PACKAGING_RECEIPT.json               source 37 (Report 67): Report67/audits/power-baseline/PACKAGING_RECEIPT.json
+data/37-pos-power-audit-pb-evidence-fixed_base_two.independent.json  source 37 (Report 67): Report67/audits/power-baseline/evidence/fixed_base_two.independent.json
+data/37-pos-power-audit-pb-evidence-results.json                source 37 (Report 67): Report67/audits/power-baseline/evidence/results.json
+data/37-pos-power-audit-pb-evidence-source_snapshot.json        source 37 (Report 67): Report67/audits/power-baseline/evidence/source_snapshot.json
+data/37-pos-power-audit-pb-evidence-variable_base_B_plus_one.independent.json  source 37 (Report 67): Report67/audits/power-baseline/evidence/variable_base_B_plus_one.independent.json
+data/37-pos-power-audit-pb-evidence-variant_13_fixed_base_two.independent.json  source 37 (Report 67): Report67/audits/power-baseline/evidence/variant_13_fixed_base_two.independent.json
+data/37-pos-power-audit-pb-evidence-variant_14_fixed_base_two.independent.json  source 37 (Report 67): Report67/audits/power-baseline/evidence/variant_14_fixed_base_two.independent.json
+data/37-pos-power-audit-pb-evidence-variant_14_variable_base.independent.json  source 37 (Report 67): Report67/audits/power-baseline/evidence/variant_14_variable_base.independent.json
+data/37-pos-power-audit-pb-evidence-variant_16_fixed_base_two.independent.json  source 37 (Report 67): Report67/audits/power-baseline/evidence/variant_16_fixed_base_two.independent.json
+data/37-pos-power-audit-pb-evidence-variant_16_variable_base.independent.json  source 37 (Report 67): Report67/audits/power-baseline/evidence/variant_16_variable_base.independent.json
+data/37-pos-power-audit-pb-run.log                              source 37 (Report 67): Report67/audits/power-baseline/run.log
+data/37-pos-power-audit-pb-source-stat.after.txt                source 37 (Report 67): Report67/audits/power-baseline/source-stat.after.txt
+data/37-pos-power-audit-p12-evidence-fixed_base_two.independent.json.gz  source 37 (Report 67): Report67/audits/power-twelve/evidence/fixed_base_two.independent.json.gz
+data/37-pos-power-audit-p12-evidence-fixtures.independent.json.gz  source 37 (Report 67): Report67/audits/power-twelve/evidence/fixtures.independent.json.gz
+data/37-pos-power-audit-p12-evidence-results.json               source 37 (Report 67): Report67/audits/power-twelve/evidence/results.json
+data/37-pos-power-audit-p12-evidence-source.after.json          source 37 (Report 67): Report67/audits/power-twelve/evidence/source.after.json
+data/37-pos-power-audit-p12-evidence-static-source-verification.log  source 37 (Report 67): Report67/audits/power-twelve/evidence/static-source-verification.log
+data/37-pos-power-audit-p12-evidence-variable_base_B_plus_one.independent.json.gz  source 37 (Report 67): Report67/audits/power-twelve/evidence/variable_base_B_plus_one.independent.json.gz
+data/37-pos-power-audit-p12-run.log                             source 37 (Report 67): Report67/audits/power-twelve/run.log
+data/37-pos-power-qa-AUTHOR_VISUAL_REVIEW.json                  source 37 (Report 67): Report67/qa/AUTHOR_VISUAL_REVIEW.json
+data/37-pos-power-qa-SOURCE_COPY_COMPARISON.json                source 37 (Report 67): Report67/qa/SOURCE_COPY_COMPARISON.json
+data/37-pos-power-qa-SOURCE_ORIGINS_FINAL.json                  source 37 (Report 67): Report67/qa/SOURCE_ORIGINS_FINAL.json
+data/37-pos-power-qa-TOOL_ADAPTATION.json                       source 37 (Report 67): Report67/qa/TOOL_ADAPTATION.json
+data/37-pos-power-qa-build-BUILD_RECEIPT.json                   source 37 (Report 67): Report67/qa/build/BUILD_RECEIPT.json
+data/37-pos-power-qa-build-PAGE_INVENTORY.json                  source 37 (Report 67): Report67/qa/build/PAGE_INVENTORY.json
+data/37-pos-power-qa-build-PREFLIGHT.json                       source 37 (Report 67): Report67/qa/build/PREFLIGHT.json
+data/37-pos-power-qa-build-PRESERVATION_AFTER.json              source 37 (Report 67): Report67/qa/build/PRESERVATION_AFTER.json
+data/37-pos-power-qa-build-RECORDER_INPUT_UNION.json            source 37 (Report 67): Report67/qa/build/RECORDER_INPUT_UNION.json
+data/37-pos-power-qa-build-Report67.log                         source 37 (Report 67): Report67/qa/build/Report67.log
+data/37-pos-power-qa-build-Report67.txt                         source 37 (Report 67): Report67/qa/build/Report67.txt
+data/37-pos-power-qa-build-compile-1.fls                        source 37 (Report 67): Report67/qa/build/compile-1.fls
+data/37-pos-power-qa-build-compile-1.stdout                     source 37 (Report 67): Report67/qa/build/compile-1.stdout
+data/37-pos-power-qa-build-compile-2.fls                        source 37 (Report 67): Report67/qa/build/compile-2.fls
+data/37-pos-power-qa-build-compile-2.stdout                     source 37 (Report 67): Report67/qa/build/compile-2.stdout
+data/37-pos-power-qa-build-format.fls                           source 37 (Report 67): Report67/qa/build/format.fls
+data/37-pos-power-qa-build-pdfinfo.stdout                       source 37 (Report 67): Report67/qa/build/pdfinfo.stdout
+data/37-pos-power-msr-BYTE_COMPARISON.txt                       source 37 (Report 67): Report67/qa/manuscript-review/BYTE_COMPARISON.txt
+data/37-pos-power-msr-RECEIPT.json                              source 37 (Report 67): Report67/qa/manuscript-review/RECEIPT.json
+data/37-pos-power-rtr-ARCHIVE_BOUNDARY_RECEIPT.json             source 37 (Report 67): Report67/qa/release-tool-review/ARCHIVE_BOUNDARY_RECEIPT.json
+data/37-pos-power-rtr-CANDIDATE_AUTHENTICATION.json             source 37 (Report 67): Report67/qa/release-tool-review/CANDIDATE_AUTHENTICATION.json
+data/37-pos-power-rtr-CANDIDATE_MANIFEST.json                   source 37 (Report 67): Report67/qa/release-tool-review/CANDIDATE_MANIFEST.json
+data/37-pos-power-rtr-DOSSIER_MANIFEST.json                     source 37 (Report 67): Report67/qa/release-tool-review/DOSSIER_MANIFEST.json
+data/37-pos-power-rtr-FINAL_CANDIDATE_AUTHENTICATION.json       source 37 (Report 67): Report67/qa/release-tool-review/FINAL_CANDIDATE_AUTHENTICATION.json
+data/37-pos-power-rtr-FINAL_CANDIDATE_MANIFEST.json             source 37 (Report 67): Report67/qa/release-tool-review/FINAL_CANDIDATE_MANIFEST.json
+data/37-pos-power-rtr-FINAL_REPLAY_RECEIPT.json                 source 37 (Report 67): Report67/qa/release-tool-review/FINAL_REPLAY_RECEIPT.json
+data/37-pos-power-rtr-HOSTILE_ARTICLE_BUILD_RECEIPT.json        source 37 (Report 67): Report67/qa/release-tool-review/HOSTILE_ARTICLE_BUILD_RECEIPT.json
+data/37-pos-power-rtr-INDEPENDENT_RECEIPT.json                  source 37 (Report 67): Report67/qa/release-tool-review/INDEPENDENT_RECEIPT.json
+data/37-pos-power-rtr-ORIGINALS_BEFORE.json                     source 37 (Report 67): Report67/qa/release-tool-review/ORIGINALS_BEFORE.json
+data/37-pos-power-rtr-builds-final-full-PRESERVATION_AFTER.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/PRESERVATION_AFTER.json
+data/37-pos-power-rtr-builds-final-full-RECORDER_INPUT_UNION.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/RECORDER_INPUT_UNION.json
+data/37-pos-power-rtr-builds-final-full-Report67.log            source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/Report67.log
+data/37-pos-power-rtr-builds-final-full-compile-1.fls           source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/compile-1.fls
+data/37-pos-power-rtr-builds-final-full-compile-1.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/compile-1.stdout
+data/37-pos-power-rtr-builds-final-full-compile-2.fls           source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/compile-2.fls
+data/37-pos-power-rtr-builds-final-full-compile-2.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/compile-2.stdout
+data/37-pos-power-rtr-builds-final-full-format.fls              source 37 (Report 67): Report67/qa/release-tool-review/builds/final-full-build/format.fls
+data/37-pos-power-rtr-builds-final-reloc-PRESERVATION_AFTER.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/PRESERVATION_AFTER.json
+data/37-pos-power-rtr-builds-final-reloc-RECORDER_INPUT_UNION.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/RECORDER_INPUT_UNION.json
+data/37-pos-power-rtr-builds-final-reloc-Report67.log           source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/Report67.log
+data/37-pos-power-rtr-builds-final-reloc-compile-1.fls          source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/compile-1.fls
+data/37-pos-power-rtr-builds-final-reloc-compile-1.stdout       source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/compile-1.stdout
+data/37-pos-power-rtr-builds-final-reloc-compile-2.fls          source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/compile-2.fls
+data/37-pos-power-rtr-builds-final-reloc-compile-2.stdout       source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/compile-2.stdout
+data/37-pos-power-rtr-builds-final-reloc-format.fls             source 37 (Report 67): Report67/qa/release-tool-review/builds/final-relocated-build/format.fls
+data/37-pos-power-rtr-builds-full-build-PAGE_INVENTORY.json     source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/PAGE_INVENTORY.json
+data/37-pos-power-rtr-builds-full-build-PRESERVATION_AFTER.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/PRESERVATION_AFTER.json
+data/37-pos-power-rtr-builds-full-build-RECORDER_INPUT_UNION.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/RECORDER_INPUT_UNION.json
+data/37-pos-power-rtr-builds-full-build-Report67.log            source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/Report67.log
+data/37-pos-power-rtr-builds-full-build-Report67.txt            source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/Report67.txt
+data/37-pos-power-rtr-builds-full-build-compile-1.fls           source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/compile-1.fls
+data/37-pos-power-rtr-builds-full-build-compile-1.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/compile-1.stdout
+data/37-pos-power-rtr-builds-full-build-compile-2.fls           source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/compile-2.fls
+data/37-pos-power-rtr-builds-full-build-compile-2.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/compile-2.stdout
+data/37-pos-power-rtr-builds-full-build-compile-3.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/compile-3.stdout
+data/37-pos-power-rtr-builds-full-build-format.fls              source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/format.fls
+data/37-pos-power-rtr-builds-full-build-pdfinfo.stdout          source 37 (Report 67): Report67/qa/release-tool-review/builds/full-build/pdfinfo.stdout
+data/37-pos-power-rtr-builds-reloc-full-PRESERVATION_AFTER.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/PRESERVATION_AFTER.json
+data/37-pos-power-rtr-builds-reloc-full-RECORDER_INPUT_UNION.json  source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/RECORDER_INPUT_UNION.json
+data/37-pos-power-rtr-builds-reloc-full-Report67.log            source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/Report67.log
+data/37-pos-power-rtr-builds-reloc-full-compile-1.fls           source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/compile-1.fls
+data/37-pos-power-rtr-builds-reloc-full-compile-1.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/compile-1.stdout
+data/37-pos-power-rtr-builds-reloc-full-compile-2.fls           source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/compile-2.fls
+data/37-pos-power-rtr-builds-reloc-full-compile-2.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/compile-2.stdout
+data/37-pos-power-rtr-builds-reloc-full-compile-3.stdout        source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/compile-3.stdout
+data/37-pos-power-rtr-builds-reloc-full-format.fls              source 37 (Report 67): Report67/qa/release-tool-review/builds/relocated-full-build/format.fls
+data/37-pos-power-rtr-firstpass-FIRSTPASS_RECEIPT.json          source 37 (Report 67): Report67/qa/release-tool-review/firstpass/FIRSTPASS_RECEIPT.json
+data/37-pos-power-rtr-firstpass-bootstrap-no-shell-escape.stdout  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap-no-shell-escape.stdout
+data/37-pos-power-rtr-firstpass-bootstrap-BUILD_RECEIPT.json    source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/BUILD_RECEIPT.json
+data/37-pos-power-rtr-firstpass-bootstrap-PREFLIGHT.json        source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/PREFLIGHT.json
+data/37-pos-power-rtr-firstpass-bootstrap-PRESERVATION_AFTER.json  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/PRESERVATION_AFTER.json
+data/37-pos-power-rtr-firstpass-bootstrap-RECORDER_INPUT_UNION.json  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/RECORDER_INPUT_UNION.json
+data/37-pos-power-rtr-firstpass-bootstrap-compile-1.fls         source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/compile-1.fls
+data/37-pos-power-rtr-firstpass-bootstrap-compile-1.stdout      source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/compile-1.stdout
+data/37-pos-power-rtr-firstpass-bootstrap-compile-2.fls         source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/compile-2.fls
+data/37-pos-power-rtr-firstpass-bootstrap-compile-2.stdout      source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/compile-2.stdout
+data/37-pos-power-rtr-firstpass-bootstrap-format.fls            source 37 (Report 67): Report67/qa/release-tool-review/firstpass/bootstrap/format.fls
+data/37-pos-power-rtr-firstpass-locked-no-shell-escape.stdout   source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked-no-shell-escape.stdout
+data/37-pos-power-rtr-firstpass-locked-BUILD_DEPENDENCIES.json  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/BUILD_DEPENDENCIES.json
+data/37-pos-power-rtr-firstpass-locked-BUILD_RECEIPT.json       source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/BUILD_RECEIPT.json
+data/37-pos-power-rtr-firstpass-locked-PAGE_INVENTORY.json      source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/PAGE_INVENTORY.json
+data/37-pos-power-rtr-firstpass-locked-PREFLIGHT.json           source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/PREFLIGHT.json
+data/37-pos-power-rtr-firstpass-locked-PRESERVATION_AFTER.json  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/PRESERVATION_AFTER.json
+data/37-pos-power-rtr-firstpass-locked-RECORDER_INPUT_UNION.json  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/RECORDER_INPUT_UNION.json
+data/37-pos-power-rtr-firstpass-locked-compile-1.fls            source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/compile-1.fls
+data/37-pos-power-rtr-firstpass-locked-compile-1.stdout         source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/compile-1.stdout
+data/37-pos-power-rtr-firstpass-locked-compile-2.fls            source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/compile-2.fls
+data/37-pos-power-rtr-firstpass-locked-compile-2.stdout         source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/compile-2.stdout
+data/37-pos-power-rtr-firstpass-locked-format.fls               source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/format.fls
+data/37-pos-power-rtr-firstpass-locked-pdfinfo.stdout           source 37 (Report 67): Report67/qa/release-tool-review/firstpass/locked/pdfinfo.stdout
+data/37-pos-power-rtr-firstpass-manuscript-Report67.tex         source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/Report67.tex
+data/37-pos-power-rtr-firstpass-manuscript-compiler.tex         source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/compiler.tex
+data/37-pos-power-rtr-firstpass-manuscript-composition.tex      source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/composition.tex
+data/37-pos-power-rtr-firstpass-manuscript-degree.tex           source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/degree.tex
+data/37-pos-power-rtr-firstpass-manuscript-elimination.tex      source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/elimination.tex
+data/37-pos-power-rtr-firstpass-manuscript-power.tex            source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/power.tex
+data/37-pos-power-rtr-firstpass-manuscript-scope.tex            source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/scope.tex
+data/37-pos-power-rtr-firstpass-manuscript-twelve.tex           source 37 (Report 67): Report67/qa/release-tool-review/firstpass/manuscript/twelve.tex
+data/37-pos-power-rtr-firstpass-omitted-BUILD_FAILURE.json      source 37 (Report 67): Report67/qa/release-tool-review/firstpass/omitted/BUILD_FAILURE.json
+data/37-pos-power-rtr-firstpass-omitted-PREFLIGHT.json          source 37 (Report 67): Report67/qa/release-tool-review/firstpass/omitted/PREFLIGHT.json
+data/37-pos-power-rtr-firstpass-omitted-PRESERVATION_BEFORE.json  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/omitted/PRESERVATION_BEFORE.json
+data/37-pos-power-rtr-firstpass-omitted-compile-1.fls           source 37 (Report 67): Report67/qa/release-tool-review/firstpass/omitted/compile-1.fls
+data/37-pos-power-rtr-firstpass-omitted-compile-1.stdout        source 37 (Report 67): Report67/qa/release-tool-review/firstpass/omitted/compile-1.stdout
+data/37-pos-power-rtr-firstpass-omitted-format.fls              source 37 (Report 67): Report67/qa/release-tool-review/firstpass/omitted/format.fls
+data/37-pos-power-rtr-firstpass-prepare.stdout                  source 37 (Report 67): Report67/qa/release-tool-review/firstpass/prepare.stdout
+data/37-pos-power-rtr-logs-archive-a.stdout                     source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-a.stdout
+data/37-pos-power-rtr-logs-archive-b.stdout                     source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-b.stdout
+data/37-pos-power-rtr-logs-archive-crc-reject.stdout            source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-crc-reject.stdout
+data/37-pos-power-rtr-logs-archive-malformed-reject.stdout      source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-malformed-reject.stdout
+data/37-pos-power-rtr-logs-archive-reject-bad-manifest.stdout   source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-reject-bad-manifest.stdout
+data/37-pos-power-rtr-logs-archive-reject-mode.stdout           source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-reject-mode.stdout
+data/37-pos-power-rtr-logs-archive-reject-symlink.stdout        source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-reject-symlink.stdout
+data/37-pos-power-rtr-logs-archive-reject-tampered.stdout       source 37 (Report 67): Report67/qa/release-tool-review/logs/archive-reject-tampered.stdout
+data/37-pos-power-rtr-logs-container-boundary-accept.stdout     source 37 (Report 67): Report67/qa/release-tool-review/logs/container-boundary-accept.stdout
+data/37-pos-power-rtr-logs-extract-preserve-exact-descendants.stdout  source 37 (Report 67): Report67/qa/release-tool-review/logs/extract-preserve-exact-descendants.stdout
+data/37-pos-power-rtr-logs-final-archive-a.stdout               source 37 (Report 67): Report67/qa/release-tool-review/logs/final-archive-a.stdout
+data/37-pos-power-rtr-logs-final-archive-b.stdout               source 37 (Report 67): Report67/qa/release-tool-review/logs/final-archive-b.stdout
+data/37-pos-power-rtr-logs-final-candidate-verify.stdout        source 37 (Report 67): Report67/qa/release-tool-review/logs/final-candidate-verify.stdout
+data/37-pos-power-rtr-logs-final-extraction.stdout              source 37 (Report 67): Report67/qa/release-tool-review/logs/final-extraction.stdout
+data/37-pos-power-rtr-logs-final-full-build.stdout              source 37 (Report 67): Report67/qa/release-tool-review/logs/final-full-build.stdout
+data/37-pos-power-rtr-logs-final-replay.stdout                  source 37 (Report 67): Report67/qa/release-tool-review/logs/final-replay.stdout
+data/37-pos-power-rtr-logs-firstpass-review.stdout              source 37 (Report 67): Report67/qa/release-tool-review/logs/firstpass-review.stdout
+data/37-pos-power-rtr-logs-frozen-pin-replacement-rejected.stdout  source 37 (Report 67): Report67/qa/release-tool-review/logs/frozen-pin-replacement-rejected.stdout
+data/37-pos-power-rtr-logs-full-build.stdout                    source 37 (Report 67): Report67/qa/release-tool-review/logs/full-build.stdout
+data/37-pos-power-rtr-logs-independent-review.stdout            source 37 (Report 67): Report67/qa/release-tool-review/logs/independent-review.stdout
+data/37-pos-power-rtr-logs-manifest-fifo.stdout                 source 37 (Report 67): Report67/qa/release-tool-review/logs/manifest-fifo.stdout
+data/37-pos-power-rtr-logs-manifest-hardlink.stdout             source 37 (Report 67): Report67/qa/release-tool-review/logs/manifest-hardlink.stdout
+data/37-pos-power-rtr-logs-manifest-symlink.stdout              source 37 (Report 67): Report67/qa/release-tool-review/logs/manifest-symlink.stdout
+data/37-pos-power-rtr-logs-owned-selftest.stdout                source 37 (Report 67): Report67/qa/release-tool-review/logs/owned-selftest.stdout
+data/37-pos-power-rtr-logs-path-reject-root-overlap.stdout      source 37 (Report 67): Report67/qa/release-tool-review/logs/path-reject-root-overlap.stdout
+data/37-pos-power-rtr-logs-path-reject-symlink-ancestor.stdout  source 37 (Report 67): Report67/qa/release-tool-review/logs/path-reject-symlink-ancestor.stdout
+data/37-pos-power-rtr-logs-postflight-reject-unused-lock-entry.stdout  source 37 (Report 67): Report67/qa/release-tool-review/logs/postflight-reject-unused-lock-entry.stdout
+data/37-pos-power-rtr-logs-relocated-authenticate.stdout        source 37 (Report 67): Report67/qa/release-tool-review/logs/relocated-authenticate.stdout
+data/37-pos-power-rtr-logs-stale-executable-preflight.stdout    source 37 (Report 67): Report67/qa/release-tool-review/logs/stale-executable-preflight.stdout
+data/37-pos-power-rtr-logs-stale-system-preflight.stdout        source 37 (Report 67): Report67/qa/release-tool-review/logs/stale-system-preflight.stdout
+data/37-pos-power-rtr-logs-standalone-flatten.stdout            source 37 (Report 67): Report67/qa/release-tool-review/logs/standalone-flatten.stdout
+data/37-pos-power-rtr-visual-FINAL_RASTER_DECODE_RECEIPT.json   source 37 (Report 67): Report67/qa/release-tool-review/visual/FINAL_RASTER_DECODE_RECEIPT.json
+data/37-pos-power-qa-selftest-SELFTEST_RECEIPT.json             source 37 (Report 67): Report67/qa/selftest/SELFTEST_RECEIPT.json
+data/37-pos-power-qa-selftest-deterministic-archive-a.stdout    source 37 (Report 67): Report67/qa/selftest/deterministic-archive-a.stdout
+data/37-pos-power-qa-selftest-deterministic-archive-b.stdout    source 37 (Report 67): Report67/qa/selftest/deterministic-archive-b.stdout
+data/37-pos-power-qa-selftest-deterministic-flatten.stdout      source 37 (Report 67): Report67/qa/selftest/deterministic-flatten.stdout
+data/37-pos-power-qa-selftest-fresh-format-bootstrap.stdout     source 37 (Report 67): Report67/qa/selftest/fresh-format-bootstrap.stdout
+data/37-pos-power-qa-selftest-input-authentication.stdout       source 37 (Report 67): Report67/qa/selftest/input-authentication.stdout
+data/37-pos-power-qa-selftest-locked-rebuild-pdf-equality.stdout  source 37 (Report 67): Report67/qa/selftest/locked-rebuild-pdf-equality.stdout
+data/37-pos-power-qa-selftest-manifest-generation.stdout        source 37 (Report 67): Report67/qa/selftest/manifest-generation.stdout
+data/37-pos-power-qa-selftest-manifest-verification.stdout      source 37 (Report 67): Report67/qa/selftest/manifest-verification.stdout
+data/37-pos-power-qa-selftest-metadata-preserving-extraction.stdout  source 37 (Report 67): Report67/qa/selftest/metadata-preserving-extraction.stdout
+data/37-pos-power-qa-selftest-reject-archive-path-traversal.stdout  source 37 (Report 67): Report67/qa/selftest/reject-archive-path-traversal.stdout
+data/37-pos-power-qa-selftest-reject-dotdot-alias.stdout        source 37 (Report 67): Report67/qa/selftest/reject-dotdot-alias.stdout
+data/37-pos-power-qa-selftest-reject-existing-output.stdout     source 37 (Report 67): Report67/qa/selftest/reject-existing-output.stdout
+data/37-pos-power-qa-selftest-reject-extra-empty-directory.stdout  source 37 (Report 67): Report67/qa/selftest/reject-extra-empty-directory.stdout
+data/37-pos-power-qa-selftest-reject-extra-frozen-file.stdout   source 37 (Report 67): Report67/qa/selftest/reject-extra-frozen-file.stdout
+data/37-pos-power-qa-selftest-reject-hardlinked-input.stdout    source 37 (Report 67): Report67/qa/selftest/reject-hardlinked-input.stdout
+data/37-pos-power-qa-selftest-reject-lock-pin.stdout            source 37 (Report 67): Report67/qa/selftest/reject-lock-pin.stdout
+data/37-pos-power-qa-selftest-reject-manifest-content-tamper.stdout  source 37 (Report 67): Report67/qa/selftest/reject-manifest-content-tamper.stdout
+data/37-pos-power-qa-selftest-reject-manuscript-pin.stdout      source 37 (Report 67): Report67/qa/selftest/reject-manuscript-pin.stdout
+data/37-pos-power-qa-selftest-reject-omitted-first-pass-dependency.stdout  source 37 (Report 67): Report67/qa/selftest/reject-omitted-first-pass-dependency.stdout
+data/37-pos-power-qa-selftest-reject-original-source-overlap.stdout  source 37 (Report 67): Report67/qa/selftest/reject-original-source-overlap.stdout
+data/37-pos-power-qa-selftest-reject-output-symlink-ancestor.stdout  source 37 (Report 67): Report67/qa/selftest/reject-output-symlink-ancestor.stdout
+data/37-pos-power-qa-selftest-reject-relative-output.stdout     source 37 (Report 67): Report67/qa/selftest/reject-relative-output.stdout
+data/37-pos-power-qa-selftest-reject-release-overlap.stdout     source 37 (Report 67): Report67/qa/selftest/reject-release-overlap.stdout
+data/37-pos-power-qa-selftest-reject-source-symlink-ancestor.stdout  source 37 (Report 67): Report67/qa/selftest/reject-source-symlink-ancestor.stdout
+data/37-pos-power-qa-selftest-reject-stale-system-preflight.stdout  source 37 (Report 67): Report67/qa/selftest/reject-stale-system-preflight.stdout
+data/37-pos-power-qa-selftest-reject-symlinked-input.stdout     source 37 (Report 67): Report67/qa/selftest/reject-symlinked-input.stdout
+data/37-pos-power-ed-MANIFEST.json                              source 37 (Report 67): Report67/science/exact-degree/MANIFEST.json
+data/37-pos-power-ed-SOURCE_PINS.json                           source 37 (Report 67): Report67/science/exact-degree/SOURCE_PINS.json
+data/37-pos-power-ed-evidence-exact_degree_results.json         source 37 (Report 67): Report67/science/exact-degree/evidence/exact_degree_results.json
+data/37-pos-power-ed-evidence-exact_degree_stdout.txt           source 37 (Report 67): Report67/science/exact-degree/evidence/exact_degree_stdout.txt
+data/37-pos-power-pb-MANIFEST.json                              source 37 (Report 67): Report67/science/power-baseline/MANIFEST.json
+data/37-pos-power-pb-SOURCE_PINS.json                           source 37 (Report 67): Report67/science/power-baseline/SOURCE_PINS.json
+data/37-pos-power-pb-evidence-fixed_base_two.polynomial.json    source 37 (Report 67): Report67/science/power-baseline/evidence/fixed_base_two.polynomial.json
+data/37-pos-power-pb-evidence-results.json                      source 37 (Report 67): Report67/science/power-baseline/evidence/results.json
+data/37-pos-power-pb-evidence-variable_base_B_plus_one.polynomial.json  source 37 (Report 67): Report67/science/power-baseline/evidence/variable_base_B_plus_one.polynomial.json
+data/37-pos-power-pb-evidence-variant_14_fixed_base_two.polynomial.json  source 37 (Report 67): Report67/science/power-baseline/evidence/variant_14_fixed_base_two.polynomial.json
+data/37-pos-power-pb-evidence-variant_16_fixed_base_two.polynomial.json  source 37 (Report 67): Report67/science/power-baseline/evidence/variant_16_fixed_base_two.polynomial.json
+data/37-pos-power-pb-evidence-variant_16_variable_base.polynomial.json  source 37 (Report 67): Report67/science/power-baseline/evidence/variant_16_variable_base.polynomial.json
+data/37-pos-power-p12-SOURCE_PINS.json                          source 37 (Report 67): Report67/science/power-twelve/SOURCE_PINS.json
+data/37-pos-power-p12-evidence-full_fixtures.json               source 37 (Report 67): Report67/science/power-twelve/evidence/full_fixtures.json
+data/37-pos-power-p12-evidence-results.json                     source 37 (Report 67): Report67/science/power-twelve/evidence/results.json
+data/37-pos-power-tools-BUILD_DEPENDENCIES_LOCK.json            source 37 (Report 67): Report67/tools/BUILD_DEPENDENCIES_LOCK.json
+data/38-low-arity-INPUT_PINS.json                               source 38 (Report 69): Report69/INPUT_PINS.json
+data/38-low-arity-RELEASE_MANIFEST.json                         source 38 (Report 69): Report69/RELEASE_MANIFEST.json
+data/38-low-arity-audit-la-SOURCE_BOUNDARY.json                 source 38 (Report 69): Report69/audits/low-arity-independent/SOURCE_BOUNDARY.json
+data/38-low-arity-audit-la-evidence-current_after.json          source 38 (Report 69): Report69/audits/low-arity-independent/evidence/current_after.json
+data/38-low-arity-audit-la-evidence-final.log                   source 38 (Report 69): Report69/audits/low-arity-independent/evidence/final.log
+data/38-low-arity-audit-la-evidence-final-expansions.json.gz    source 38 (Report 69): Report69/audits/low-arity-independent/evidence/final/expansions.json.gz
+data/38-low-arity-audit-la-evidence-final-results.json          source 38 (Report 69): Report69/audits/low-arity-independent/evidence/final/results.json
+data/38-low-arity-audit-la-evidence-provenance.json             source 38 (Report 69): Report69/audits/low-arity-independent/evidence/provenance.json
+data/38-low-arity-audit-la-evidence-relocated.log               source 38 (Report 69): Report69/audits/low-arity-independent/evidence/relocated.log
+data/38-low-arity-audit-la-evidence-relocated_results.json      source 38 (Report 69): Report69/audits/low-arity-independent/evidence/relocated_results.json
+data/38-low-arity-audit-la-evidence-relocation_receipt.json     source 38 (Report 69): Report69/audits/low-arity-independent/evidence/relocation_receipt.json
+data/38-low-arity-audit-la-evidence-run1.log                    source 38 (Report 69): Report69/audits/low-arity-independent/evidence/run1.log
+data/38-low-arity-audit-la-evidence-run1-results.json           source 38 (Report 69): Report69/audits/low-arity-independent/evidence/run1/results.json
+data/38-low-arity-qa-BOOTSTRAP_RECEIPT.json                     source 38 (Report 69): Report69/qa/BOOTSTRAP_RECEIPT.json
+data/38-low-arity-qa-EXACT_PACKAGED_BUILD_RECEIPT.json          source 38 (Report 69): Report69/qa/EXACT_PACKAGED_BUILD_RECEIPT.json
+data/38-low-arity-qa-EXACT_REPLAY_COMPARISON.json               source 38 (Report 69): Report69/qa/EXACT_REPLAY_COMPARISON.json
+data/38-low-arity-qa-INITIAL_LAYOUT_FAILURE.json                source 38 (Report 69): Report69/qa/INITIAL_LAYOUT_FAILURE.json
+data/38-low-arity-qa-INPUT_FREEZE_RECEIPT.json                  source 38 (Report 69): Report69/qa/INPUT_FREEZE_RECEIPT.json
+data/38-low-arity-qa-LOW_ARITY_AUDIT_RECEIPT.json               source 38 (Report 69): Report69/qa/LOW_ARITY_AUDIT_RECEIPT.json
+data/38-low-arity-qa-ORIGINAL_INPUTS_UNCHANGED.json             source 38 (Report 69): Report69/qa/ORIGINAL_INPUTS_UNCHANGED.json
+data/38-low-arity-qa-ORIGINAL_INPUT_METADATA.json               source 38 (Report 69): Report69/qa/ORIGINAL_INPUT_METADATA.json
+data/38-low-arity-qa-OWNER_VISUAL_REVIEW.json                   source 38 (Report 69): Report69/qa/OWNER_VISUAL_REVIEW.json
+data/38-low-arity-qa-PRESENTATION_ORIGINS.json                  source 38 (Report 69): Report69/qa/PRESENTATION_ORIGINS.json
+data/38-low-arity-qa-README_ACCEPTANCE_ONLY.diff                source 38 (Report 69): Report69/qa/README_ACCEPTANCE_ONLY.diff
+data/38-low-arity-qa-RELEASE_PREPARATION.json                   source 38 (Report 69): Report69/qa/RELEASE_PREPARATION.json
+data/38-low-arity-qa-REVIEW_ACCEPTANCE.json                     source 38 (Report 69): Report69/qa/REVIEW_ACCEPTANCE.json
+data/38-low-arity-qa-REVIEW_COPY_VERIFICATION.json              source 38 (Report 69): Report69/qa/REVIEW_COPY_VERIFICATION.json
+data/38-low-arity-qa-SELFTEST_RECEIPT.json                      source 38 (Report 69): Report69/qa/SELFTEST_RECEIPT.json
+data/38-low-arity-qa-SOURCE_MANIFEST_VERIFICATION.json          source 38 (Report 69): Report69/qa/SOURCE_MANIFEST_VERIFICATION.json
+data/38-low-arity-qa-locked-final-BUILD_RECEIPT.json            source 38 (Report 69): Report69/qa/locked-final-build/BUILD_RECEIPT.json
+data/38-low-arity-qa-locked-final-PAGE_INVENTORY.json           source 38 (Report 69): Report69/qa/locked-final-build/PAGE_INVENTORY.json
+data/38-low-arity-qa-locked-final-PREFLIGHT.json                source 38 (Report 69): Report69/qa/locked-final-build/PREFLIGHT.json
+data/38-low-arity-qa-locked-final-PRESERVATION_AFTER.json       source 38 (Report 69): Report69/qa/locked-final-build/PRESERVATION_AFTER.json
+data/38-low-arity-qa-locked-final-RECORDER_INPUT_UNION.json     source 38 (Report 69): Report69/qa/locked-final-build/RECORDER_INPUT_UNION.json
+data/38-low-arity-qa-locked-final-Report69.log                  source 38 (Report 69): Report69/qa/locked-final-build/Report69.log
+data/38-low-arity-qa-locked-final-Report69.txt                  source 38 (Report 69): Report69/qa/locked-final-build/Report69.txt
+data/38-low-arity-qa-locked-final-compile-1.fls                 source 38 (Report 69): Report69/qa/locked-final-build/compile-1.fls
+data/38-low-arity-qa-locked-final-compile-1.stdout              source 38 (Report 69): Report69/qa/locked-final-build/compile-1.stdout
+data/38-low-arity-qa-locked-final-compile-2.fls                 source 38 (Report 69): Report69/qa/locked-final-build/compile-2.fls
+data/38-low-arity-qa-locked-final-compile-2.stdout              source 38 (Report 69): Report69/qa/locked-final-build/compile-2.stdout
+data/38-low-arity-qa-locked-final-format.fls                    source 38 (Report 69): Report69/qa/locked-final-build/format.fls
+data/38-low-arity-msr-ACCEPTANCE.json                           source 38 (Report 69): Report69/qa/manuscript-review/ACCEPTANCE.json
+data/38-low-arity-msr-CANDIDATE_CHECK.txt                       source 38 (Report 69): Report69/qa/manuscript-review/CANDIDATE_CHECK.txt
+data/38-low-arity-msr-CANDIDATE_STAT_AFTER.txt                  source 38 (Report 69): Report69/qa/manuscript-review/CANDIDATE_STAT_AFTER.txt
+data/38-low-arity-msr-PAGE_REVIEW.tsv                           source 38 (Report 69): Report69/qa/manuscript-review/PAGE_REVIEW.tsv
+data/38-low-arity-msr-PDFINFO.txt                               source 38 (Report 69): Report69/qa/manuscript-review/PDFINFO.txt
+data/38-low-arity-msr-PRESERVATION_AFTER.txt                    source 38 (Report 69): Report69/qa/manuscript-review/PRESERVATION_AFTER.txt
+data/38-low-arity-msr-PRESERVATION_RESULT.txt                   source 38 (Report 69): Report69/qa/manuscript-review/PRESERVATION_RESULT.txt
+data/38-low-arity-msr-TRANSCRIPTION_CHECK.txt                   source 38 (Report 69): Report69/qa/manuscript-review/TRANSCRIPTION_CHECK.txt
+data/38-low-arity-rtr-ADVERSARIAL_RECEIPT.json                  source 38 (Report 69): Report69/qa/release-tool-review/ADVERSARIAL_RECEIPT.json
+data/38-low-arity-rtr-BUILD_PROBES_RECEIPT.json                 source 38 (Report 69): Report69/qa/release-tool-review/BUILD_PROBES_RECEIPT.json
+data/38-low-arity-rtr-DOSSIER_MANIFEST.json                     source 38 (Report 69): Report69/qa/release-tool-review/DOSSIER_MANIFEST.json
+data/38-low-arity-rtr-EXTERNAL_EVIDENCE_INDEX.json              source 38 (Report 69): Report69/qa/release-tool-review/EXTERNAL_EVIDENCE_INDEX.json
+data/38-low-arity-rtr-FULL_OPERATIONS_RECEIPT.json              source 38 (Report 69): Report69/qa/release-tool-review/FULL_OPERATIONS_RECEIPT.json
+data/38-low-arity-rtr-PRESERVATION_AFTER.json                   source 38 (Report 69): Report69/qa/release-tool-review/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-REVIEWED_PINS.json                        source 38 (Report 69): Report69/qa/release-tool-review/REVIEWED_PINS.json
+data/38-low-arity-rtr-adversarial-v2.stdout                     source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2.stdout
+data/38-low-arity-rtr-adv2-accept-valid-synthetic-extract.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/accept-valid-synthetic-extract.stdout
+data/38-low-arity-rtr-adv2-reject-archive-hardlink.stdout       source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/reject-archive-hardlink.stdout
+data/38-low-arity-rtr-adv2-reject-archive-symlink.stdout        source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/reject-archive-symlink.stdout
+data/38-low-arity-rtr-adv2-reject-nonisolated-interpreter.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/reject-nonisolated-interpreter.stdout
+data/38-low-arity-rtr-adv2-reject-sealed-directory-mode-change.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/reject-sealed-directory-mode-change.stdout
+data/38-low-arity-rtr-adv2-zip-duplicate-json-repinned.stdout   source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-duplicate-json-repinned.stdout
+data/38-low-arity-rtr-adv2-zip-manifest-traversal-repinned.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-manifest-traversal-repinned.stdout
+data/38-low-arity-rtr-adv2-zip-missing-manifest.stdout          source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-missing-manifest.stdout
+data/38-low-arity-rtr-adv2-zip-payload-hash-tamper.stdout       source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-payload-hash-tamper.stdout
+data/38-low-arity-rtr-adv2-zip-schema-empty-extra-directory.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-empty-extra-directory.stdout
+data/38-low-arity-rtr-adv2-zip-schema-extra-entry-field.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-extra-entry-field.stdout
+data/38-low-arity-rtr-adv2-zip-schema-extra-top-field.stdout    source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-extra-top-field.stdout
+data/38-low-arity-rtr-adv2-zip-schema-file-directory-overlap.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-file-directory-overlap.stdout
+data/38-low-arity-rtr-adv2-zip-schema-invalid-bytes--1.stdout   source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-invalid-bytes--1.stdout
+data/38-low-arity-rtr-adv2-zip-schema-invalid-mode--1.stdout    source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-invalid-mode--1.stdout
+data/38-low-arity-rtr-adv2-zip-schema-invalid-mtime_ns--1.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-invalid-mtime_ns--1.stdout
+data/38-low-arity-rtr-adv2-zip-schema-invalid-sha256-A64.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-invalid-sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA.stdout
+data/38-low-arity-rtr-adv2-zip-schema-manifest-self-file.stdout  source 38 (Report 69): Report69/qa/release-tool-review/adversarial-v2/zip-schema-manifest-self-file.stdout
+data/38-low-arity-rtr-adversarial.stdout                        source 38 (Report 69): Report69/qa/release-tool-review/adversarial.stdout
+data/38-low-arity-rtr-build-probes.stdout                       source 38 (Report 69): Report69/qa/release-tool-review/build-probes.stdout
+data/38-low-arity-rtr-bp-changed-helper-refused-before-import.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/changed-helper-refused-before-import.stdout
+data/38-low-arity-rtr-bp-fi-executable-postflight.stdout        source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight.stdout
+data/38-low-arity-rtr-bp-fi-executable-postflight-BUILD_FAILURE.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight/BUILD_FAILURE.json
+data/38-low-arity-rtr-bp-fi-executable-postflight-Report69.log  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight/Report69.log
+data/38-low-arity-rtr-bp-fi-executable-postflight-compile-1.fls  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight/compile-1.fls
+data/38-low-arity-rtr-bp-fi-executable-postflight-compile-1.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight/compile-1.stdout
+data/38-low-arity-rtr-bp-fi-executable-postflight-compile-2.fls  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight/compile-2.fls
+data/38-low-arity-rtr-bp-fi-executable-postflight-compile-2.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight/compile-2.stdout
+data/38-low-arity-rtr-bp-fi-executable-postflight-format.fls    source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-executable-postflight/format.fls
+data/38-low-arity-rtr-bp-fi-system-postflight.stdout            source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-system-postflight.stdout
+data/38-low-arity-rtr-bp-fi-system-postflight-BUILD_FAILURE.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-system-postflight/BUILD_FAILURE.json
+data/38-low-arity-rtr-bp-fi-system-postflight-compile-1.fls     source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-system-postflight/compile-1.fls
+data/38-low-arity-rtr-bp-fi-system-postflight-compile-1.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-system-postflight/compile-1.stdout
+data/38-low-arity-rtr-bp-fi-system-postflight-compile-2.fls     source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-system-postflight/compile-2.fls
+data/38-low-arity-rtr-bp-fi-system-postflight-compile-2.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-system-postflight/compile-2.stdout
+data/38-low-arity-rtr-bp-fi-system-postflight-format.fls        source 38 (Report 69): Report69/qa/release-tool-review/build-probes/fault-injected-system-postflight/format.fls
+data/38-low-arity-rtr-bp-independent-hostile-environment-bootstrap.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/independent-hostile-environment-bootstrap.stdout
+data/38-low-arity-rtr-bp-independent-omitted-first-pass-refusal.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/independent-omitted-first-pass-refusal.stdout
+data/38-low-arity-rtr-bp-independent-synthetic-locked-build.stdout  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/independent-synthetic-locked-build.stdout
+data/38-low-arity-rtr-bp-independent-synthetic-prepare.stdout   source 38 (Report 69): Report69/qa/release-tool-review/build-probes/independent-synthetic-prepare.stdout
+data/38-low-arity-rtr-bp-omitted-first-pass-BUILD_FAILURE.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/omitted-first-pass/BUILD_FAILURE.json
+data/38-low-arity-rtr-bp-omitted-first-pass-PREFLIGHT.json      source 38 (Report 69): Report69/qa/release-tool-review/build-probes/omitted-first-pass/PREFLIGHT.json
+data/38-low-arity-rtr-bp-omitted-first-pass-PRESERVATION_BEFORE.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/omitted-first-pass/PRESERVATION_BEFORE.json
+data/38-low-arity-rtr-bp-omitted-first-pass-compile-1.fls       source 38 (Report 69): Report69/qa/release-tool-review/build-probes/omitted-first-pass/compile-1.fls
+data/38-low-arity-rtr-bp-omitted-first-pass-compile-1.stdout    source 38 (Report 69): Report69/qa/release-tool-review/build-probes/omitted-first-pass/compile-1.stdout
+data/38-low-arity-rtr-bp-omitted-first-pass-format.fls          source 38 (Report 69): Report69/qa/release-tool-review/build-probes/omitted-first-pass/format.fls
+data/38-low-arity-rtr-bp-synthetic-bootstrap-BUILD_RECEIPT.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/BUILD_RECEIPT.json
+data/38-low-arity-rtr-bp-synthetic-bootstrap-PRESERVATION_AFTER.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-bp-synthetic-bootstrap-RECORDER_INPUT_UNION.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-bp-synthetic-bootstrap-Report69.log       source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/Report69.log
+data/38-low-arity-rtr-bp-synthetic-bootstrap-compile-1.fls      source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/compile-1.fls
+data/38-low-arity-rtr-bp-synthetic-bootstrap-compile-1.stdout   source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/compile-1.stdout
+data/38-low-arity-rtr-bp-synthetic-bootstrap-compile-2.fls      source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/compile-2.fls
+data/38-low-arity-rtr-bp-synthetic-bootstrap-compile-2.stdout   source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/compile-2.stdout
+data/38-low-arity-rtr-bp-synthetic-bootstrap-format.fls         source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-bootstrap/format.fls
+data/38-low-arity-rtr-bp-synthetic-locked-BUILD_DEPENDENCIES.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/BUILD_DEPENDENCIES.json
+data/38-low-arity-rtr-bp-synthetic-locked-BUILD_RECEIPT.json    source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/BUILD_RECEIPT.json
+data/38-low-arity-rtr-bp-synthetic-locked-PAGE_INVENTORY.json   source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/PAGE_INVENTORY.json
+data/38-low-arity-rtr-bp-synthetic-locked-PREFLIGHT.json        source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/PREFLIGHT.json
+data/38-low-arity-rtr-bp-synthetic-locked-PRESERVATION_AFTER.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-bp-synthetic-locked-RECORDER_INPUT_UNION.json  source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-bp-synthetic-locked-Report69.log          source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/Report69.log
+data/38-low-arity-rtr-bp-synthetic-locked-compile-1.fls         source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/compile-1.fls
+data/38-low-arity-rtr-bp-synthetic-locked-compile-1.stdout      source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/compile-1.stdout
+data/38-low-arity-rtr-bp-synthetic-locked-compile-2.fls         source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/compile-2.fls
+data/38-low-arity-rtr-bp-synthetic-locked-compile-2.stdout      source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/compile-2.stdout
+data/38-low-arity-rtr-bp-synthetic-locked-format.fls            source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/format.fls
+data/38-low-arity-rtr-bp-synthetic-locked-pdfinfo.stdout        source 38 (Report 69): Report69/qa/release-tool-review/build-probes/synthetic-locked/pdfinfo.stdout
+data/38-low-arity-rtr-candidate-build.stdout                    source 38 (Report 69): Report69/qa/release-tool-review/candidate-build.stdout
+data/38-low-arity-rtr-candidate-build-PRESERVATION_AFTER.json   source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-candidate-build-RECORDER_INPUT_UNION.json  source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-candidate-build-Report69.log              source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/Report69.log
+data/38-low-arity-rtr-candidate-build-compile-1.fls             source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/compile-1.fls
+data/38-low-arity-rtr-candidate-build-compile-1.stdout          source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/compile-1.stdout
+data/38-low-arity-rtr-candidate-build-compile-2.fls             source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/compile-2.fls
+data/38-low-arity-rtr-candidate-build-compile-2.stdout          source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/compile-2.stdout
+data/38-low-arity-rtr-candidate-build-format.fls                source 38 (Report 69): Report69/qa/release-tool-review/candidate-build/format.fls
+data/38-low-arity-rtr-candidate-check-inputs.stdout             source 38 (Report 69): Report69/qa/release-tool-review/candidate-check-inputs.stdout
+data/38-low-arity-rtr-full-candidate-archive-a.stdout           source 38 (Report 69): Report69/qa/release-tool-review/full-candidate-archive-a.stdout
+data/38-low-arity-rtr-full-candidate-archive-b.stdout           source 38 (Report 69): Report69/qa/release-tool-review/full-candidate-archive-b.stdout
+data/38-low-arity-rtr-full-candidate-extract.stdout             source 38 (Report 69): Report69/qa/release-tool-review/full-candidate-extract.stdout
+data/38-low-arity-rtr-full-candidate-manifest.json              source 38 (Report 69): Report69/qa/release-tool-review/full-candidate-manifest.json
+data/38-low-arity-rtr-full-candidate-manifest.stdout            source 38 (Report 69): Report69/qa/release-tool-review/full-candidate-manifest.stdout
+data/38-low-arity-rtr-full-candidate-verify.stdout              source 38 (Report 69): Report69/qa/release-tool-review/full-candidate-verify.stdout
+data/38-low-arity-rtr-owned-selftest.stdout                     source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest.stdout
+data/38-low-arity-rtr-st-bootstrap-BUILD_RECEIPT.json           source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/BUILD_RECEIPT.json
+data/38-low-arity-rtr-st-bootstrap-PRESERVATION_AFTER.json      source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-st-bootstrap-RECORDER_INPUT_UNION.json    source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-st-bootstrap-Report69.log                 source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/Report69.log
+data/38-low-arity-rtr-st-bootstrap-compile-1.fls                source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/compile-1.fls
+data/38-low-arity-rtr-st-bootstrap-compile-1.stdout             source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/compile-1.stdout
+data/38-low-arity-rtr-st-bootstrap-compile-2.fls                source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/compile-2.fls
+data/38-low-arity-rtr-st-bootstrap-compile-2.stdout             source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/compile-2.stdout
+data/38-low-arity-rtr-st-bootstrap-format.fls                   source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/bootstrap/format.fls
+data/38-low-arity-rtr-st-deterministic-archive-a.stdout         source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/deterministic-archive-a.stdout
+data/38-low-arity-rtr-st-deterministic-archive-b.stdout         source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/deterministic-archive-b.stdout
+data/38-low-arity-rtr-st-deterministic-flatten.stdout           source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/deterministic-flatten.stdout
+data/38-low-arity-rtr-st-fresh-format-bootstrap.stdout          source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/fresh-format-bootstrap.stdout
+data/38-low-arity-rtr-st-hostile-temp-build-RECORDER_INPUT_UNION.json  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-temp-build/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-st-hostile-temp-build-Report69.log        source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-temp-build/Report69.log
+data/38-low-arity-rtr-st-hostile-temp-build-compile-1.fls       source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-temp-build/compile-1.fls
+data/38-low-arity-rtr-st-hostile-temp-build-compile-1.stdout    source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-temp-build/compile-1.stdout
+data/38-low-arity-rtr-st-hostile-temp-build-compile-2.fls       source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-temp-build/compile-2.fls
+data/38-low-arity-rtr-st-hostile-temp-build-compile-2.stdout    source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-temp-build/compile-2.stdout
+data/38-low-arity-rtr-st-hostile-temp-build-format.fls          source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-temp-build/format.fls
+data/38-low-arity-rtr-st-hostile-tmp-build-RECORDER_INPUT_UNION.json  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmp-build/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-st-hostile-tmp-build-Report69.log         source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmp-build/Report69.log
+data/38-low-arity-rtr-st-hostile-tmp-build-compile-1.fls        source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmp-build/compile-1.fls
+data/38-low-arity-rtr-st-hostile-tmp-build-compile-1.stdout     source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmp-build/compile-1.stdout
+data/38-low-arity-rtr-st-hostile-tmp-build-compile-2.fls        source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmp-build/compile-2.fls
+data/38-low-arity-rtr-st-hostile-tmp-build-compile-2.stdout     source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmp-build/compile-2.stdout
+data/38-low-arity-rtr-st-hostile-tmp-build-format.fls           source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmp-build/format.fls
+data/38-low-arity-rtr-st-hostile-tmpdir-build-RECORDER_INPUT_UNION.json  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmpdir-build/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-st-hostile-tmpdir-build-Report69.log      source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmpdir-build/Report69.log
+data/38-low-arity-rtr-st-hostile-tmpdir-build-compile-1.fls     source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmpdir-build/compile-1.fls
+data/38-low-arity-rtr-st-hostile-tmpdir-build-compile-1.stdout  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmpdir-build/compile-1.stdout
+data/38-low-arity-rtr-st-hostile-tmpdir-build-compile-2.fls     source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmpdir-build/compile-2.fls
+data/38-low-arity-rtr-st-hostile-tmpdir-build-compile-2.stdout  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmpdir-build/compile-2.stdout
+data/38-low-arity-rtr-st-hostile-tmpdir-build-format.fls        source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/hostile-tmpdir-build/format.fls
+data/38-low-arity-rtr-st-locked-rebuild-pdf-equality.stdout     source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked-rebuild-pdf-equality.stdout
+data/38-low-arity-rtr-st-locked-BUILD_DEPENDENCIES.json         source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/BUILD_DEPENDENCIES.json
+data/38-low-arity-rtr-st-locked-BUILD_RECEIPT.json              source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/BUILD_RECEIPT.json
+data/38-low-arity-rtr-st-locked-PAGE_INVENTORY.json             source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/PAGE_INVENTORY.json
+data/38-low-arity-rtr-st-locked-PREFLIGHT.json                  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/PREFLIGHT.json
+data/38-low-arity-rtr-st-locked-PRESERVATION_AFTER.json         source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-st-locked-RECORDER_INPUT_UNION.json       source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-st-locked-Report69.log                    source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/Report69.log
+data/38-low-arity-rtr-st-locked-compile-1.fls                   source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/compile-1.fls
+data/38-low-arity-rtr-st-locked-compile-1.stdout                source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/compile-1.stdout
+data/38-low-arity-rtr-st-locked-compile-2.fls                   source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/compile-2.fls
+data/38-low-arity-rtr-st-locked-compile-2.stdout                source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/compile-2.stdout
+data/38-low-arity-rtr-st-locked-format.fls                      source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/format.fls
+data/38-low-arity-rtr-st-locked-pdfinfo.stdout                  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/locked/pdfinfo.stdout
+data/38-low-arity-rtr-st-manifest-generation.stdout             source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/manifest-generation.stdout
+data/38-low-arity-rtr-st-manifest-verification.stdout           source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/manifest-verification.stdout
+data/38-low-arity-rtr-st-metadata-preserving-extraction.stdout  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/metadata-preserving-extraction.stdout
+data/38-low-arity-rtr-st-omitted-first-pass-PRESERVATION_BEFORE.json  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/omitted-first-pass/PRESERVATION_BEFORE.json
+data/38-low-arity-rtr-st-omitted-first-pass-compile-1.fls       source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/omitted-first-pass/compile-1.fls
+data/38-low-arity-rtr-st-omitted-first-pass-compile-1.stdout    source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/omitted-first-pass/compile-1.stdout
+data/38-low-arity-rtr-st-omitted-first-pass-format.fls          source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/omitted-first-pass/format.fls
+data/38-low-arity-rtr-st-reject-hardlinked-input.stdout         source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/reject-hardlinked-input.stdout
+data/38-low-arity-rtr-st-reject-original-source-overlap.stdout  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/reject-original-source-overlap.stdout
+data/38-low-arity-rtr-st-reject-output-symlink-ancestor.stdout  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/reject-output-symlink-ancestor.stdout
+data/38-low-arity-rtr-st-reject-release-overlap.stdout          source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/reject-release-overlap.stdout
+data/38-low-arity-rtr-st-reject-source-symlink-ancestor.stdout  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/reject-source-symlink-ancestor.stdout
+data/38-low-arity-rtr-st-relocated-build-PRESERVATION_AFTER.json  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-st-relocated-build-RECORDER_INPUT_UNION.json  source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-st-relocated-build-Report69.log           source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/Report69.log
+data/38-low-arity-rtr-st-relocated-build-compile-1.fls          source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/compile-1.fls
+data/38-low-arity-rtr-st-relocated-build-compile-1.stdout       source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/compile-1.stdout
+data/38-low-arity-rtr-st-relocated-build-compile-2.fls          source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/compile-2.fls
+data/38-low-arity-rtr-st-relocated-build-compile-2.stdout       source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/compile-2.stdout
+data/38-low-arity-rtr-st-relocated-build-format.fls             source 38 (Report 69): Report69/qa/release-tool-review/owned-selftest/relocated-build/format.fls
+data/38-low-arity-rtr-preservation-after.stdout                 source 38 (Report 69): Report69/qa/release-tool-review/preservation-after.stdout
+data/38-low-arity-rtr-preservation-before.stdout                source 38 (Report 69): Report69/qa/release-tool-review/preservation-before.stdout
+data/38-low-arity-rtr-reloc-build-PRESERVATION_AFTER.json       source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/PRESERVATION_AFTER.json
+data/38-low-arity-rtr-reloc-build-RECORDER_INPUT_UNION.json     source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/RECORDER_INPUT_UNION.json
+data/38-low-arity-rtr-reloc-build-Report69.log                  source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/Report69.log
+data/38-low-arity-rtr-reloc-build-compile-1.fls                 source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/compile-1.fls
+data/38-low-arity-rtr-reloc-build-compile-1.stdout              source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/compile-1.stdout
+data/38-low-arity-rtr-reloc-build-compile-2.fls                 source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/compile-2.fls
+data/38-low-arity-rtr-reloc-build-compile-2.stdout              source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/compile-2.stdout
+data/38-low-arity-rtr-reloc-build-format.fls                    source 38 (Report 69): Report69/qa/release-tool-review/relocated-complete-build/format.fls
+data/38-low-arity-la-SOURCE_PINS.json                           source 38 (Report 69): Report69/science/low-arity/SOURCE_PINS.json
+data/38-low-arity-la-evidence-concurrent_source_changes.json    source 38 (Report 69): Report69/science/low-arity/evidence/concurrent_source_changes.json
+data/38-low-arity-la-evidence-expanded_polynomials.json.gz      source 38 (Report 69): Report69/science/low-arity/evidence/expanded_polynomials.json.gz
+data/38-low-arity-la-evidence-report68_postseal_after.json      source 38 (Report 69): Report69/science/low-arity/evidence/report68_postseal_after.json
+data/38-low-arity-la-evidence-report68_receipt_pin.json         source 38 (Report 69): Report69/science/low-arity/evidence/report68_receipt_pin.json
+data/38-low-arity-la-evidence-results.json                      source 38 (Report 69): Report69/science/low-arity/evidence/results.json
+data/38-low-arity-la-evidence-run.log                           source 38 (Report 69): Report69/science/low-arity/evidence/run.log
+data/38-low-arity-la-evidence-run_augmented_before_cost_assertions.log  source 38 (Report 69): Report69/science/low-arity/evidence/run_augmented_before_cost_assertions.log
+data/38-low-arity-la-evidence-run_initial_preservation_interrupt.log  source 38 (Report 69): Report69/science/low-arity/evidence/run_initial_preservation_interrupt.log
+data/38-low-arity-la-evidence-source_after.json                 source 38 (Report 69): Report69/science/low-arity/evidence/source_after.json
+data/38-low-arity-la-evidence-source_before.json                source 38 (Report 69): Report69/science/low-arity/evidence/source_before.json
+data/38-low-arity-tools-BUILD_DEPENDENCIES_LOCK.json            source 38 (Report 69): Report69/tools/BUILD_DEPENDENCIES_LOCK.json
 figures/17-four-mass-binary-four-particle-shuttle.pdf           source 17's article figure (vector PDF, printed as Figure 5)
 figures/20-orbit-geometry-visited-geometry.pdf                  source 20's figure (vector PDF, printed as Figure 7)
 figures/21-planar-shuttle-orbits.pdf                            source 21's orbit figure (vector PDF, printed as Figure 9)
 figures/21-planar-shuttle-rule.pdf                              source 21's rule figure (vector PDF, printed as Figure 8)
+figures/24-reversible-clock-spacetime.pdf                       source 24 (Report 49): Research_Report49/figures/clock-spacetime.pdf
 ```
 
 ### Delivered names
@@ -922,6 +2569,47 @@ Both editions of source 13 contain every file, including the excluded
 fixtures (byte-identical in the two); the corrected one matches the shipped
 programs.
 
+- Sources 24–38 (batch 91): every shipped name is the delivered path below
+  the archive's report directory (`Research_Report49/`, `Research_Report51/`,
+  the package root of Reports 56–59, `Report60/` to `Report69/`) with `/`
+  replaced by `-` and the prefix `NN-slug-` added; Python programs and
+  patches go to `code/`, Markdown to the report root, everything else to
+  `data/` (source 24's figure to `figures/`). The listing above gives the
+  delivered path of every one of the 1,568 files after its shipped name.
+  Long directory names of sources 36–38 were shortened in the shipped names:
+  `qa/release-tool[s]-review/` → `rtr-`, `qa/manuscript-review/` → `msr-`,
+  `audits/bounded-certificates|counting/` → `audit-bc-|audit-cnt-`,
+  `science/bounded-certificates|counting/` → `bc-|cnt-`,
+  `audits/power-baseline|power-twelve|exact-degree/` → `audit-pb-|audit-p12-|audit-ed-`,
+  `science/power-baseline|power-twelve|exact-degree/` → `pb-|p12-|ed-`,
+  `audits/low-arity-independent/` → `audit-la-`, `science/low-arity/` → `la-`,
+  `qa/predecessor-tools/` → `qa-pred-tools-`, `reviewed-readmes/` → `rreadmes-`,
+  `review-scripts/` → `rscripts-`, `inspected-candidate/` → `insp-cand-`,
+  `article-locked-replay/` → `locked-replay-`,
+  `article-relocated-locked-replay/` → `reloc-replay-`, and one 64-character
+  placeholder digest in a source-38 test-log name → `A64`.
+- Not shipped for sources 24–38 (all survive in the arrival archives,
+  `git show 0d7f51c44:docs/incoming/<archive>`): the fifteen manuscripts with
+  their modules, table and figure files and earlier editions; the PDFs and
+  delivery READMEs; checksum lists and release inventories that only list
+  hashes (all verified at placement); page renders, text dumps and TeX
+  transcripts; empty files; in-batch byte copies (each file is shipped once,
+  at the lowest source number; copies of sources 28, 30, 33, 34 and 35's
+  proofs carried by later archives map to `28-diophantine-science-PROOF.md`,
+  `30-planar-science-arithmetic-PROOF.md`, `33-homogeneous-science-frozen-proof-PROOF.md`,
+  `34-branching-science-{frozen-proof,arithmetic}-PROOF.md` and
+  `35-clocked-science-native-gaps-PROOF.md`); byte copies of repository files
+  (this article at blob `ec10c7a5`, carried by sources 24 and 25, and its
+  lines 5400–5774); source 28's copies of Report 55's builder, notes and Pell
+  dependency record, shipped with `group-theoretic-substrates` as
+  `code/09-chrono-matrix-science-build_certificate.py`,
+  `09-chrono-matrix-science-SOURCE_NOTES.md` and
+  `data/09-chrono-matrix-independent_audit-pell-dependency.json`; the
+  third-party mathlib file `PellMatiyasevic.lean` and its Apache 2.0 licence
+  (cited by mathlib4 commit `ac77769f` and SHA-256 `993760c7…`; not shipped
+  anywhere in the repository); and source 37's nine heavy evidence files
+  (next section).
+
 ### Reconstructing the excluded data
 
 Four regenerable files of sources 12 and 13 (6,842,592 bytes together) are
@@ -1036,6 +2724,44 @@ WSL, or in a copy whose `str(p.relative_to(root))` is replaced by
 `p.relative_to(root).as_posix()` (what the run here did; the delivered file
 is unchanged). Steps 1 and 2 ran unchanged.
 
+#### Batch 91 (sources 24–38)
+
+Only source 37 (Report 67) had heavy regenerable files excluded: nine
+evidence files over 1 MB, six distinct, 34,659,924 bytes together. (The
+placement message of `d750d98dd` also names Report 69's heavy evidence; source
+38 had none. The placement dossier's "5 distinct blobs" is wrong too: the
+cluster's ten heavy files are seven distinct blobs, source 37's six and one of
+Report 55, which belongs to `group-theoretic-substrates`.) Each is rebuilt by
+a program of source 37's packets in a scratch copy of the delivered layout
+(`git show 0d7f51c44:docs/incoming/Positive_POWER_reductions_and_exact_compiler_costs_source.zip`,
+13,709,917 bytes; its `dependencies/pell-source.lean`, whose SHA-256 the
+programs assert, is in the archive):
+
+| Excluded file (delivered path in `Report67/`) | Bytes | Rebuild, in a copy | Time here | Result |
+|---|---:|---|---|---|
+| `science/power-baseline/evidence/variant_13_fixed_base_two.polynomial.json` (and its copy under `audits/power-baseline/replay-input/positive-power22-reduction-20261004/evidence/`) | 1,116,257 | `py -I check_reduction.py` in `science/power-baseline` | 3 s | identical after CRLF→LF on Windows |
+| `science/power-baseline/evidence/variant_13_variable_base.polynomial.json` (and copy) | 6,373,682 | the same run | — | the same |
+| `science/power-baseline/evidence/variant_14_variable_base.polynomial.json` (and copy) | 1,714,525 | the same run | — | the same |
+| `science/power-twelve/evidence/fixed_base_two.polynomial.json` | 2,307,606 | `py -I static_algebra.py` in `science/power-twelve`, with its `ORIGINAL` constant repointed to a copy of `science/power-baseline` (and, on Windows, the snapshot sorted by POSIX path) | 13–25 s | written before the historical origin check; identical after CRLF→LF |
+| `science/power-twelve/evidence/variable_base_B_plus_one.polynomial.json` | 11,767,343 | the same run | — | the same |
+| `audits/power-baseline/evidence/variant_13_variable_base.independent.json` | 2,176,047 | `py -I -B check_independent.py --source <power-baseline copy> --out <new>` (on Windows with `str(p.relative_to(root))` → `.as_posix()` in a scratch copy) | 16 s | identical after CRLF→LF |
+
+The shipped manifests `data/37-pos-power-*MANIFEST*.json` record the SHA-256
+of each. Nothing else of batch 91 was excluded as heavy. Source 30's 75
+fixture JSONs (about 10 MB) are shipped as the record, although
+`science/physical/static_planar.py` regenerates all of them byte for byte in
+about a second in a copy of `Report60/` (`summary.json` equal up to CRLF);
+the two byte copies of this article that sources 24 and 25 carried
+(`inherited-article-source.tex`, 1,057,160 bytes) are
+`git cat-file -p ec10c7a579e04d3d27a92035d9a180dfcb695ff2`, and source 24's
+`mass-three-source-excerpt.tex` is its lines 5400–5774. The mathlib file is
+cited, not shipped: `PellMatiyasevic.lean` at mathlib4
+`ac77769fabe23cb237559e7f56578dbead91499f` (SHA-256
+`993760c797ad0ff66fa77064a616fce779550bc745cbf6c44e04f392fd0bed0a`), also
+present in the arrival archives. Report 68 was never delivered and cannot be
+reconstructed: its README (`38-low-arity-qa-pred-tools-README68.md`) names a
+`Report68.tex`, PDF and packets that exist nowhere in the repository.
+
 ## Labels and numbering
 
 Every label carries the prefix `smc:`. Source 07's 66 labels are `smc:cg:`
@@ -1135,6 +2861,32 @@ source 23's *n* + 149 (150–158); equations are numbered by section (the
 sources numbered theirs consecutively). Part VIII has no figure, captioned
 table or appendix, so no earlier number or letter changed; it is the last
 Part before the appendices.
+
+Batch 91 (cluster S: Parts IX–XIII) added 964 labels, 1,663 in all, and
+removed or renamed none (the `.aux` files of a build of the previous text and
+of the new build give the same number to every one of the 699 earlier labels
+and to the 72 earlier bibliography entries; the 40 new entries are 73–112):
+source 24's 27 labels as `smc:rt:` plus their delivered names, source 25's 53
+as `smc:ut:`, source 26's 50 as `smc:pm:`, source 27's 58 as `smc:fv:`,
+source 28's 47 as `smc:fd:`, source 29's 57 as `smc:rf:`, source 30's 64 as
+`smc:pl:`, source 31's 50 as `smc:iv:`, source 32's 66 as `smc:pj:`, source
+33's 57 as `smc:hl:`, source 34's 68 as `smc:br:`, source 35's 59 as
+`smc:ck:`, source 36's 77 as `smc:bc:`, source 37's 73 as `smc:pp:` and
+source 38's 55 as `smc:la:` (unlabelled numbered statements as
+`smc:<sub>:n<number>`); and 103 labels written in the merge: 26 `smc:ix:`,
+22 `smc:x:` (Part X's sections and questions and the five front subsections
+of Parts X–XIII), 38 `smc:xi:`, 7 `smc:xii:`, 5 `smc:xiii:` and the five
+Parts `smc:part:reversible`, `smc:part:periodic`, `smc:part:planar`,
+`smc:part:clocked` and `smc:part:nativegap`. The front subsections are
+Sections 1.27–1.36; Part IX is Sections 159–181, Part X 182–238, Part XI
+239–293, Part XII 294–317 and Part XIII 318–355, each source's own
+appendices printed as its last sections, so that the appendices keep their
+letters. Equations are numbered by section. The new captioned floats are Figures 10–25 and Tables 14–50, all after the earlier Figures 1–9 and Tables 1–13;
+the new front tables are uncaptioned and rewind the table counter with
+anchors of their own, so no earlier table or figure changed its number.
+Restated statements are numbered remarks that keep the duplicate's label (for
+example `smc:rt:cor:quartic`, `smc:ck:lem:trace`, `smc:la:prop:power`), and
+references to them say "Remark".
 
 ## Setting and notation
 
@@ -1267,6 +3019,26 @@ it; source 23's own renaming of a native integer `R` to `ρ` is its own. Their
 `\sha` hash display is set as a breakable path instead of loading
 `seqsplit`, and one file name in Section 142 is set as a breakable path for
 the line width. No other symbol was renamed and no normalization changed.
+
+**Parts IX–XIII (batch 91).** Each source keeps its letters and its
+numbering of statements; the sources' `\N` is `\NN` (`{0, 1, 2, …}`) and
+their positive integers `\Np`. Sections 1.28 and 1.33 list the letters
+that differ between the new Parts and against earlier ones, and each Part has
+its own table. Renamed symbols, all disclosed in the Part openings: in Part X
+source 26's gate count `J` → `Γ`, source 28's acceptance witness → `J_acc`,
+the Gaussian quotient (`α`, `η`, `η_j`) → `γ`, source 27's `(u, v)`, `K`, `R`
+→ `(w₁, w₂)`, `𝒦`, `R` in sans serif, the Pell modulus `M` → `Θ`, source 28's
+radix `b` → `β_rad`; in Part XI the reversal matrix `J` of sources 31 and 32 →
+sans-serif `J`; in Part XII source 34's branch tags `\ZZ`, `\NN` → `\brZ`,
+`\brN`; in Part XIII the `ℓ¹` norm `\norm` → `\lonenorm`. Clashing macros
+were renamed (`\norm` → `\enorm`, `\code` → `\Ccode`, `\Power` →
+`\POWER`), the colours of all sources got names of their own (source 30 had
+redefined `blue` and `red`), and no normalization changed. Tempting false
+readings printed beside the true ones: "Zeno iff spectral radius < 1" (false:
+source 26's spectator), "five signals admit no Diophantine certificate"
+(false: sources 28–30), "81/44 of source 28 = source 29 at `J = 1` is the
+same polynomial" (false), "twelve leaves = twelve gates" (false), and
+fixed-word invertibility read as global reversibility (false).
 
 ## Status: what is claimed, and what is not
 
@@ -1610,6 +3382,27 @@ The report does **not** claim:
   reviews';
 - any Lean or Rocq verification.
 
+**Parts IX–XIII (batch 91)** do not claim (the article collects every
+source's non-claims in Sections 1.30 and 1.35 and in each Part):
+- for source 24: universality, a minimal radius (90 is not claimed optimal),
+  a new lower-bound argument (inherited from source 16), real exactness of
+  the quartic, or that the finite overlap and period-64 checks are exhaustive;
+- for source 25: an unconditional theorem (it rests on sources 17 and 18), an
+  implemented rule-to-chart preprocessing, a witness count of two, or that
+  the timed relation is Presburger;
+- for Parts X–XIII: any semantics at or after an accumulation point (Part X
+  certifies pre-accumulation validity of *supplied* macros; no frontend is
+  implemented); a universality, minimum-population, minimal-speed or optimal
+  count result (five live signals for counters are Durand-Lose's, MCU 2004);
+  a fixed-arity polynomial for unbounded halting, a finite-fold or
+  single-fold representation, or an improvement of the 84-operation
+  universal construction (every certificate of Parts XII and XIII is
+  indexed by its horizon); global reversibility (source 31's maps are
+  fixed-word section maps), noise robustness, or a physical realization of
+  the arithmetic certificates beyond source 34's conditional interface; a
+  fresh verification of the mathlib Pell theorems; anything of Report 68;
+- any Lean or Rocq verification.
+
 ## Research questions
 
 Part I's nine research directions, Part II's five questions and Part IV's
@@ -1666,10 +3459,12 @@ notes (Section 1.21):
 - source 17's second and fourth questions (uniform untimed spatial
   definability; a stronger normal form for original-frame timed relations):
   **touched** for a fixed input by sources 18 and 20; the uniform versions
-  stay open;
+  stay open (4 October 2026: answered conditionally by source 25, Part IX);
 - source 17's sixth question (minimal radius of the binary timing example):
   **touched** by source 21 (exact radius six and 78 essential cells in the
-  plane, no minimality claimed); the one-dimensional question stays open;
+  plane, no minimality claimed); the one-dimensional question stays open
+  (source 24, Part IX, adds a reversible example of radius at most 90, not
+  claimed minimal);
 - source 17's first, third and fifth questions stay open (source 19 adds
   literature and an example showing that naive geometric bounds fail);
 - the numerical particle threshold: the lower bound five holds in every
@@ -1732,6 +3527,57 @@ A further note after Theorem 44.1 (`smc:sl:thm:two`) records that source 19
 extends decidability with one weight-one symbol to mass four in every
 dimension. Reports 14 and 15 are AI-assisted and unrefereed and are not
 printed in this report.
+
+**Batch 91.** Part IX answers source 17's second question and the uniform half
+of its fourth conditionally (`smc:fm:q:uniform`, `smc:fm:q:normalform`),
+touches source 20's first (`smc:og:q:binary`) and leaves source 17's sixth
+(`smc:fm:q:radius`) open with a reversible radius-90 example. Part X answers
+Part I's accumulation direction (`smc:cg:q:accumulation`) in part; Part XII
+touches Part I's robust-universality direction (`smc:cg:q:robust`) and Part
+II's `smc:sd:q:conservative`; Part XIII touches `smc:cg:q:circuits` and
+`smc:sd:q:compress`. Within the new Parts, later sources answer several
+questions of earlier ones (Section 1.36). Dated notes at every such question
+say so.
+
+Under Vladimir's standing rule of 4 October 2026 no unproved claim of a
+source, a review or the write was dropped; each new Part has a section of
+further questions (Sections 181, 238, 293.4, 317 and 355)
+that states such claims as open questions with source, sketch and what is
+missing. Parts IX and XII, drafted before the rule, were scanned against
+their manuscripts at the assembly. Moved or refuted:
+- source 25's frozen scope note: every fixed-input hit set is a finite union
+  of "quadratic arithmetic bands" (unproved there) — `smc:ix:q:bands`;
+- the intake's "certificate is not real-exact", sharpened and proved: no
+  certificate with `(x, t)` as its only external data is exact over the
+  nonnegative reals (Remark `smc:ix:rem:realtrace`); the witness-level
+  question stays open — `smc:ix:q:realtrace`;
+- a fixed-input Presburger criterion for the original frame, proposed at the
+  assembly — `smc:ix:q:framefixed`;
+- the intake's "no timing irregularity ⇒ universality inference is
+  available", restored, with the open universality of source 24's rule with
+  five or more particles — `smc:ix:q:universal`;
+- the spans the intake did not read — `smc:ix:q:review`;
+- **refuted:** source 34's "`25D/18 < T < 25D/9`" for the positive A test; the
+  upper bound is attained at `a = 1` (Remark `smc:xii:rem:atest`; nothing
+  downstream changes) — `smc:xii:q:atest`;
+- source 34's unproved lower chamber `x < y < 4x` — `smc:xii:q:lowchamber`;
+- source 34's "A final independent terminal audit precedes publication" (no
+  record in the archive) — `smc:xii:q:terminal`;
+- what no independent party has checked in sources 34 and 35 —
+  `smc:xii:q:verify`; the review's unpaid fixed-arity unbounded run —
+  `smc:xii:q:charged`;
+- Part X's nine questions (frontend, low-degree formulas beyond four
+  signals, variable offsets, higher-dimensional validity tests, unique or
+  finite-fold five-signal certificates, smaller certificates, shorter words,
+  finer real classification, the rest of Part I's accumulation direction) —
+  `smc:x:q:*`;
+- Part XI's two questions of the merge (merging source 30's two acceptance
+  gates; one word with both clock behaviours) — `smc:xi:q:gates`,
+  `smc:xi:q:bridge`;
+- Report 68's Gaussian-fluctuation claims (from its README only), physical
+  transport of Part XIII's certificates, and the paper-only Pell
+  specialization — `smc:xiii:q:gauss`, `smc:xiii:q:physical`,
+  `smc:xiii:q:pell`.
 
 ## Relation to neighbouring reports and to the formal project
 
@@ -1827,7 +3673,9 @@ treated signal machines before batch 78 apart from the programme's review.
   decision procedure `PresburgerArithmetic.Formula.presburgerArithmetic_decidable`);
   that formalizes the imported step only, not Part IV's statements. The
   project README (`Computability/HilbertTenthProblem/README.md`, line 16)
-  still states the 75- and 87-operation bounds; no Part bears on them.
+  still states the 75- and 87-operation bounds; no Part bears on them
+  (4 October 2026: the universal construction now stands at 84 operations,
+  `20aafb9a5`; Parts IX–XIII do not bear on it either).
 - **Parts V and VI (batch 80) and the neighbouring reports.**
   `quadratic-orthant-certificates` Part VI: the certificate gate of sources
   14 and 15 is its inactive-product gate (`qoc:rn:lem:gates`); source 14's
@@ -1897,6 +3745,35 @@ treated signal machines before batch 78 apart from the programme's review.
   declarations, and neither source uses `Diophantine.mrdp`. The project
   README's universal operation bounds are untouched (four fixed
   nonuniversal sources, raw payload input).
+
+**Batch 91 (Parts IX–XIII).**
+- Source 24's quartic is source 17's (printed once; Remark
+  `smc:rt:cor:quartic`), its prospective-isolation lemma is Report 26's
+  `fpa:pi:lem:parallel` in `five-particle-binary-automata`, and its
+  three-particle bound is the binary case of source 16's theorem; source 25's
+  obstruction is new in one dimension for a reversible binary rule (source 20
+  had planar nonsemilinear site sets under drift).
+- Source 26 re-proves the one-macro case of Part I's chamber theorem; Part I's
+  clock and Part II's shuttle are instances of its rational-limit theorem.
+- The fifteen-equation POWER module of sources 28–30 and 35 is the power macro
+  of `ptr:ai:lem:exp` in `periodic-turmite-first-revisits` and of Report 55
+  (Part VI of `group-theoretic-substrates`, whose files source 28 copied).
+- Source 38's zero-versus-one classification is restated with proof, and its
+  closed tables counted (`C_n = 1 + A196460(n)`, with asymptotics), in
+  `../../generating-functions-and-asymptotics/oeis-sequence-asymptotics/a196460-clipping-tables`
+  (batch 91O).
+- Reports 70 and 71 of the same pipeline (Part VII of
+  `five-particle-binary-automata`) give smaller radii for the binary
+  five-particle construction behind source 19's boundary (note after
+  Corollary `smc:zd:cor:boundary`), and Report 70's presentation tools adapt
+  Report 68's (Part XIII's note on Report 68).
+- Placement beside the Hilbert's-tenth Lean development confers no formal
+  status: nothing in Parts IX–XIII is formalized, the mathlib theorems
+  `Pell.matiyasevic` and `Pell.eq_pow_of_pell` are upstream results read as
+  text, not ProveIt declarations, and `Diophantine.mrdp` is used by no
+  source. The universal ordinary-input construction now stands at 84
+  operations (`20aafb9a5`); the batch-91 sources do not bear on it, and the
+  figures 75 and 87 elsewhere in this README are dated.
 
 ## Reviews and patches
 
@@ -2071,7 +3948,7 @@ except where a source itself shipped the patched program (source 12).
   four, checked at 88 successive configurations. It is a fixed-input
   example, not a compiler or a universal bound (the universal polynomial
   stays at 84 operations there).
-  Source 18 has no review (relocation only in `reviewed_report_archive_replay.md`).
+  Source 18 has no review (relocation only in `reviewed_report_archive_replay.md`). (Dated 4 October 2026: it has since had a scoped intake, `review_timed_four_mass_source18_intake.md`, commit `39f398985`: "PASS on the conditional chart/compiler argument".)
   The reviews of Reports 16 (`69730d3e8`) and 26–28 (`fb7e3cb47`) bear on
   source 19's corollary and are quoted after it. No patch exists for any
   batch-82 source; the delivered programs are shipped unpatched, including
@@ -2102,6 +3979,24 @@ except where a source itself shipped the patched program (source 12).
   in `review_three_mass_unbounded_interface.md` (`ad634b2d1`). No patch
   exists for either source; the delivered programs are shipped unpatched,
   including the Windows path defects listed under "Rerunning the programs".
+
+**Batch 91.** `review_new_signals_0d7f51c44.md` (commit `49b100cfd`, with
+its JSON manifest) is a bounded routing intake of the twelve signal and
+particle archives of the arrival, sources 24–35 among them: it read the
+delivery READMEs in full and selected spans of the proofs (listed at the end
+of each source in the article), ran no program, found "No specific
+contradictory theorem/interface statement requiring an author correction",
+and records the distinctions the article keeps (local versus invariant
+realization, fixed-word invertibility versus reversibility, real versus
+integer inputs, horizon-indexed arity, "≤2 evolution parameters is not ≤2
+total Diophantine witnesses"). `review_new_arithmetic_0d7f51c44.md` (commit
+`a9ab9a698`) is a scoped intake of sources 36–38 (and three other archives):
+no defect; "twelve leaves, not twelve gates"; "these are finite-horizon
+predicates". `review_timed_four_mass_source18_intake.md` (commit
+`39f398985`) is a scoped intake of source 18, made after the batch-82 write;
+the article now says so where it had said that source 18 was unreviewed. No
+patch exists for any batch-91 source; the delivered programs are shipped
+unpatched.
 
 ## Build
 
@@ -2213,6 +4108,13 @@ the report at 320 pages with the same clean log, the same four underfull
 bibliography lines and the same 699 labels. The concordance page (page 24),
 the front questions (page 38) and Part V's questions (page 157) were
 rendered and inspected.
+
+The batch-91 write (Parts IX–XIII, cluster S) gives 673 pages. The log has no
+errors, undefined references or citations, multiply defined labels, duplicate
+destinations or overfull boxes; its box messages are underfull lines in the
+bibliography and in narrow table cells. The title page, too full for one page
+at the standard margins, is set with 0.6-inch margins
+(`\newgeometry`…`\restoregeometry`) and stays a single unnumbered page.
 
 ## Rerunning the programs
 
@@ -2474,6 +4376,83 @@ one-line `as_posix` patch in a scratch copy. The emitters alone regenerate
 the excluded circuits ("Reconstructing the excluded data"); that chain was
 rerun at this write.
 
+**Sources 24–38 (batch 91).** Never in the repository. The release wrappers
+(`replay.py`, `verify_release.py`, `release6x.py`, `build_report6x.py`,
+`selftest6x.py`, portable replays) verify unshipped manifests, need POSIX
+absolute paths and file modes, and refuse Windows paths; use the arrival
+archive on a POSIX host for them. The mathematical checkers run on copies:
+extract the archive (`git show 0d7f51c44:docs/incoming/<archive>.zip > x.zip`,
+then unzip outside the repository) and run them in the delivered layout, or
+copy the shipped files under their delivered names. On Windows compare
+receipts up to CRLF and path separators. Commands tested at placement or at
+the drafting of the Parts (Python 3.14.4, SymPy 1.14.0 where needed):
+
+- Source 24 (`Research_Report49/`): `python3 -B frozen/candidate/check_reversible_clock.py --output checker-results.json`
+  (= `data/24-reversible-frozen-candidate-checker-results.json`);
+  `frozen/audit/independent_checker.py` then `check_corollaries.py` (about
+  10 min here; receipts differ in `elapsed_seconds` and, on Windows, in the
+  hash of the CRLF-written tables); `g++ -std=c++17 -O2 exhaustive_periodic.cpp`
+  and its stdout; `frozen/manuscript-audit/manuscript_checker.py`.
+- Source 25 (`Research_Report51/`): each of `frozen/science/check_arithmetic.py`,
+  `frozen/audit/check_adversarial.py` (SymPy), `frozen/manuscript-audit/check_manuscript_algebra.py`,
+  `frozen/frame-obstruction/independent_check.py` and
+  `frozen/manuscript-audit/corollary/check_frame_obstruction.py`, with
+  `python3 -I`, in its own directory (12–36 s each).
+- Source 26: `python -I -B science/check_arithmetic.py` (18 s),
+  `science/emit_sign_certificate.py --output-dir OUT` (1 s),
+  `independent_audit/check_exact_algebra.py` (159 s),
+  `independent_audit/emitted-artifact-audit/check_exported_quartics.py --source-dir <dir>` (2 s).
+- Source 27: `independent_audit/audit_exact_algebra.py`, `audit_inert_rules.py`
+  (< 1 s); the author emitters after replacing the hard-coded
+  `/workspace/shared/...` directories by an output directory in a copy.
+- Source 28: the three independent checkers after mapping their
+  `/workspace/shared/...` paths to copies (1–3 s); `science/emit_certificate.py`
+  (four DAGs byte-identical) and `science/check_semantics.py` (23 s).
+- Source 29: `python -I -B science/static_family.py` (0.9 s; regenerates the
+  45 fixtures byte for byte), `independent-audit/audit_geometry.py`,
+  `audit_static.py` (mapping `/workspace/shared/...` to `science/`),
+  `science/arithmetic_review/check_arithmetic.py`, `check_symbolic_template.py`,
+  `tools/derive_presentation.py --output-dir OUT`.
+- Source 30 (`Report60/`): `science/physical/static_planar.py` (1 s, all 75
+  fixtures), `science/geometry/verify_exact.py`, `science/quadratic/verify_exact.py`,
+  `science/arithmetic/check_certificate.py` (computes `CHECKS.json`, then
+  stops at a hard-coded `/workspace/...` path), `audits/arithmetic/audit_exact.py`
+  (SymPy, 79 s), `audits/geometry/independent_exact_checks.py` (110 s),
+  `audits/physical/independent_static_audit.py` (patch `SRC` to the copy),
+  `manuscript-review/independent_manuscript_algebra.py` (14 s).
+- Sources 31–33: `science/frozen-proof/static_algebra.py` (1–13 s; source 33's
+  with its `/workspace/...` dependency paths patched to the shipped copies),
+  `audits/scientific/independent_affine_checks.py` and
+  `audits/manuscript/review_static_identities.py` (source 31),
+  `audits/scientific/independent_static_audit.py` (sources 32 and 33, SymPy;
+  patch `SOURCE` to the copy for source 32, `--archived-source` for 33),
+  `audits/scientific/certificate_audit/check_certificate.py` (source 33).
+- Sources 34 and 35: `audits/clock/check_constant_clock.py --clock-root clock --core-root core --output out/checks.json`
+  (1.7 s; the clock and core packets copied under their delivered names);
+  source 34's two audits need Linux `O_NOATIME` (on Windows run a copy with
+  that requirement dropped); `audits/native-gaps/check_native_gap.py --source <science/native-gaps> --output <dir>`
+  needs the unshipped Pell source, so run it in the extracted archive (3.3 s).
+- Source 36: `science/bounded-certificates/static_algebra.py` (28–43 s);
+  `science/counting/check_counting.py` with the native-gap proof as a sibling
+  `native-gap-halting-continuation-20261004/PROOF.md` (9 s); the audits
+  `audits/counting/check_independent.py` and
+  `audits/bounded-certificates/check_external.py` (`verify-source`, `selftest`, `check`).
+- Source 37: `science/power-baseline/check_reduction.py` (3 s),
+  `science/power-twelve/static_algebra.py` (13–25 s, `ORIGINAL` repointed),
+  `science/exact-degree/exact_degree_check.py` (9 s), and the three
+  independent audits (16, 67 and 27 s; `as_posix` patch on Windows; the
+  twelve-leaf audit hash-pins an unshipped `MANIFEST.sha256`, present in the
+  archive).
+- Source 38: `science/low-arity/static_algebra.py` (123 s; all assertions
+  pass, then it stops at a historical `/workspace` preservation step) and
+  `audits/low-arity-independent/check_independent.py --source <copy> --out <new>`
+  (58 s; hash-pins an unshipped `MANIFEST.sha256`, present in the archive).
+
+Archive sizes: 24 850,652; 25 8,975,664; 26 9,354,296; 27 1,341,892; 28
+1,348,533; 29 6,297,072; 30 14,238,065; 31 5,192,637; 32 15,973,936; 33
+9,407,728; 34 10,727,697; 35 9,105,698; 36 824,821; 37 13,709,917; 38
+12,489,863 bytes.
+
 ## Discrepancies and disclosures
 
 - The shipped build scripts keep the delivered layout:
@@ -2672,3 +4651,37 @@ rerun at this write.
   although it was printed there as Part VI in `d2043bbd0` before that write;
   the M2 write corrected them, with no change to the conditional status of
   source 19's boundary.
+- Sources 24–38 (batch 91): delivered names in shipped texts. Every shipped
+  README, proof, audit, review, handoff and note of the fifteen sources, and
+  their manifests, pins and receipts, name the delivered layout (`science/…`,
+  `audits/…`, `qa/…`, `frozen/…`, `dependencies/…`), unshipped manifests and
+  checksum lists (`MANIFEST.sha256`, `SHA256SUMS`, `RELEASE_MANIFEST`,
+  `DELIVERY_HASHES.json`), the manuscripts and PDFs, and historical
+  `/workspace/shared/…` and `/tmp/…` origins of the AI pipeline (provenance,
+  not private data). The listing gives the delivered path of each shipped
+  file. None of the unshipped files they name is promised here; all survive
+  in `0d7f51c44`, except Report 68's article and packets, which
+  `38-low-arity-qa-pred-tools-README68.md` names and which exist nowhere in
+  the repository.
+- Source 35's NOTICE says that the Pell source and its licence travel with
+  the copy; in ProveIt they do not (cited by commit and hash). Source 34's
+  appendix says that a final independent terminal audit precedes
+  publication; the archive has no record of it (question
+  `smc:xii:q:terminal`).
+- Six binary files of batch 91 contain CR bytes (source 24's figure PDF and
+  five `.gz` files); `.gitattributes` treats them as binary. Every checker
+  writes CRLF receipts on Windows.
+- Corrections recorded at this write: the placement message of `d750d98dd`
+  says that Report 67's and 69's heavy evidence was excluded, but only
+  Report 67 (source 37) had heavy files excluded (nine files, six distinct,
+  34,659,924 bytes); the placement dossier's "5 distinct blobs" should read
+  seven for the cluster (six of source 37 and one of Report 55). The
+  batch-82 text said that source 18 had not been reviewed; it was reviewed
+  after that write (`39f398985`), and dated notes now say so. A draft
+  sentence of Part X said that Report 60's strict kernel has "one witness
+  and one equation more" than source 29's ledger; it has one more *per
+  contact*, `J` more in all (163 against 161 witnesses at `J = 2`), and the
+  printed text says so. Source 34's bound `25D/18 < T < 25D/9` is
+  attained at `a = 1` (Remark `smc:xii:rem:atest`).
+- Four source headings of Part XI's draft lacked a closing quotation mark
+  ("Research Report 60" to "63"); fixed at the assembly.
