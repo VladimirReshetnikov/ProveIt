@@ -88,6 +88,9 @@
 > The [hat-surplus Part II publication review](review_hat_publication_95527cf73.md) confirms integration at95527cf73, retains65 old plus55 prefixed manuscript labels and checks all250 references. Its821 read lines cover provenance, the sound finite pairing/syndrome optimum and the effective-cost interface. The construction uses block-size-dependent Boolean computations and requires a computable sublinearity modulus for its effective general schedule; it supplies no paid fixed-arity halting compiler. Infinite growth/category proofs, external attribution and packaged programs remain outside this review.
 >
 >
+> The [three surreal publication reviews](review_surreal_publication_5c32fda02.md) cover the Cantor-subfield integration at6f5f9954c, named-symmetry Part VIII at1404038df, and perfect-gap source04 at5c32fda02. All17 immutable blobs and nine raw diffs are authenticated;3779 precisely scoped diff lines were read. The label censuses are56→70,296→372 and236→313. Named operations remain distinct from a uniform evaluator, and the exact PA residue-image theorem uses nonstandard finite sums/overspill and one shared standard-system oracle. The inspected interfaces supply no paid ordinary-integer compiler. The perfect-gap proof and its imported Borel-standard-system theorem are not fully reviewed; PDF/build and historical finite-test claims remain outside the evidence.
+>
+>
 > The [batch90 placement review](review_batch90_placement_12076b2e8.md)
 > authenticates all32 added files against the53 pinned archive members at
 > **12076b2e8**. Only the new Cantor-subfields report receives its article and

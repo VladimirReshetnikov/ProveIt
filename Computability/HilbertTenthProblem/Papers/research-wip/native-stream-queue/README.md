@@ -79,6 +79,8 @@ The [new hat-query threshold review](review_hat_threshold_afd7ffabb.md) checks t
 
 The [hat-surplus Part II publication review](review_hat_publication_95527cf73.md) confirms integration at95527cf73, retains65 old plus55 prefixed manuscript labels and checks all250 references. Its821 read lines cover provenance, the sound finite pairing/syndrome optimum and the effective-cost interface. The construction uses block-size-dependent Boolean computations and requires a computable sublinearity modulus for its effective general schedule; it supplies no paid fixed-arity halting compiler. Infinite growth/category proofs, external attribution and packaged programs remain outside this review.
 
+The [three surreal publication reviews](review_surreal_publication_5c32fda02.md) cover the Cantor-subfield integration at6f5f9954c, named-symmetry Part VIII at1404038df, and perfect-gap source04 at5c32fda02. All17 immutable blobs and nine raw diffs are authenticated;3779 precisely scoped diff lines were read. The label censuses are56→70,296→372 and236→313. Named operations remain distinct from a uniform evaluator, and the exact PA residue-image theorem uses nonstandard finite sums/overspill and one shared standard-system oracle. The inspected interfaces supply no paid ordinary-integer compiler. The perfect-gap proof and its imported Borel-standard-system theorem are not fully reviewed; PDF/build and historical finite-test claims remain outside the evidence.
+
 The [batch90 placement review](review_batch90_placement_12076b2e8.md)
 authenticates all32 added files against the53 pinned archive members at
 **12076b2e8**. Only the new Cantor-subfields report receives its article and
@@ -5210,6 +5212,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Three surreal publications](review_surreal_publication_5c32fda02.md) |17 immutable blobs/nine diffs;3779 reviewed diff lines; Cantor integration, named-symmetry Part VIII and exact PA residue-image interface | Nonstandard/oracle and uniform-evaluator boundaries retained; perfect-gap/external proof scope limited; no paid integer compiler |
 | [U21 target fusion](residue_affine_sparse_target_fusion.md) and [review](review_residue_affine_sparse_target_fusion.md) | Complete465/464=170M+295/294A;67w; degree bounds5091/5160; exact own-parent full-polynomial identities with all929 rows live | General84 bound unchanged; no minimum claim or cross-interface positive-coordinate equivalence |
 | [Hat-surplus Part II publication](review_hat_publication_95527cf73.md) | Integration at95527cf73;65+55+6 labels,250 resolved references; finite syndrome optimum and effective interface checked in821 read lines | General schedules need an effective modulus; per-player computation grows with block size; infinite claims and external attribution unreviewed |
 | [Full91 strong-root obstruction](complete84_full_independent_root_absorption.md) and [review](review_complete84_full_independent_root_absorption.md) | Any fixed integer-polynomial f=G on all67+24 literal independent values has finite whole input projection; actual conic/resultant and rational88 fallback | No new circuit or global lower bound; retained witnesses positive, signed-T domain handled explicitly;84/187 unchanged |
