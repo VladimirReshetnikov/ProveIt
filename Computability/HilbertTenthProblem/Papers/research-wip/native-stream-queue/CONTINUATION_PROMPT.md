@@ -188,8 +188,9 @@
 > [independent review](review_first_norm_monomial_scaling_bound.md)
 > checks the quantified degree and factorization arguments and the actual84
 > source cut; normal/optimized replays pass. This excludes four-gate monomial
-> rescalings in that component, while joint computations, other paid registers
-> and nonmonomial positive multipliers remain available.
+> rescalings in that component. The polynomial extension above now also excludes
+> isolated nonmonomial scaling; joint computations and other paid registers
+> remain outside both component theorems.
 >
 > The [simultaneous shared-fork scout](complete84_shared_fork_scout.md)
 > finds no saving in a larger finite rewrite grammar: two producer outputs,
@@ -3589,7 +3590,20 @@ historical87/degree203 theorem, weakened86 and independent-gamma87.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
 >
-> The [one-program shared U21 compiler](residue_affine_sparse_shared477.md)
+> The [U21 control-pair successor](residue_affine_sparse_shared471.md)
+> reaches **451 certificate / 471=175M+296A polynomial operations**, with
+> seven comparisons, 67 positive witnesses, one fixed program parameter and
+> degree **at most 5091**. Five already paid control pairs replace additions
+> in prime-selector prefixes; the paid G3+G5 population prefix replaces the
+> separate 2*G5 scalar product. Together they save 1M+5A from the actual477
+> source, with no new register or changed supplied coordinate. The complete
+> polynomial and all 471 retained values agree identically with that parent.
+> The [independent review](review_residue_affine_sparse_shared471.md) checks the
+> simultaneous schedule, actual selector bindings, native rows, finalizer,
+> height h=E+x+eta and radix B=64h. Fresh normal/optimized checks pass; the
+> ordinary-input recipe E=3^e and the separate universal84 bound are unchanged.
+>
+> The preceding [one-program shared U21 compiler](residue_affine_sparse_shared477.md)
 > reaches **457 certificate / 477=176M+301A polynomial operations**, with
 > seven comparisons, 67 positive witnesses and degree **at most 5091**.
 > Its complete polynomial equals the actual 505 source on the same supplied

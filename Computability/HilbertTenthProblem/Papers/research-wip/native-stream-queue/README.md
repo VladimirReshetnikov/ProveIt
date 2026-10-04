@@ -180,8 +180,9 @@ unboundedly many operations of the other kind. The
 [independent review](review_first_norm_monomial_scaling_bound.md)
 checks the quantified degree and factorization arguments and the actual84
 source cut; normal/optimized replays pass. This excludes four-gate monomial
-rescalings in that component, while joint computations, other paid registers
-and nonmonomial positive multipliers remain available.
+rescalings in that component. The polynomial extension above now also excludes
+isolated nonmonomial scaling; joint computations and other paid registers
+remain outside both component theorems.
 
 The [simultaneous shared-fork scout](complete84_shared_fork_scout.md)
 finds no saving in a larger finite rewrite grammar: two producer outputs,
@@ -3407,7 +3408,20 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The [one-program shared U21 compiler](residue_affine_sparse_shared477.md)
+The [U21 control-pair successor](residue_affine_sparse_shared471.md)
+reaches **451 certificate / 471=175M+296A polynomial operations**, with
+seven comparisons, 67 positive witnesses, one fixed program parameter and
+degree **at most 5091**. Five already paid control pairs replace additions
+in prime-selector prefixes; the paid G3+G5 population prefix replaces the
+separate 2*G5 scalar product. Together they save 1M+5A from the actual477
+source, with no new register or changed supplied coordinate. The complete
+polynomial and all 471 retained values agree identically with that parent.
+The [independent review](review_residue_affine_sparse_shared471.md) checks the
+simultaneous schedule, actual selector bindings, native rows, finalizer,
+height h=E+x+eta and radix B=64h. Fresh normal/optimized checks pass; the
+ordinary-input recipe E=3^e and the separate universal84 bound are unchanged.
+
+The preceding [one-program shared U21 compiler](residue_affine_sparse_shared477.md)
 reaches **457 certificate / 477=176M+301A polynomial operations**, with
 seven comparisons, 67 positive witnesses and degree **at most 5091**.
 Its complete polynomial equals the actual 505 source on the same supplied
@@ -4984,6 +4998,7 @@ New research and the completed75-operation construction:
 | [Shifted U9 program offset](neary_woods_universal_offset258.md) | **257 certificate /258=133M+125A**,1eq43w,four positive program parameters,degree at most3861; mapped269/608/44w and266/1344/43w. | E'=E−1 changes valid program recipes; accepted ordinary inputs preserved, not an all-tuple positive bijection. Selected mapped family only. |
 | [U9 lower-history unit](neary_woods_universal_lower_unit259.md) | **258 certificate /259=133M+126A**,1eq43w,four positive program parameters,degree at most3861. | Same supplied coordinates and positive zeros on valid program/input slices; negative lower sign contradicts the actual sentinel suffix. |
 | [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
+| [One-program U21 control-pair sharing](residue_affine_sparse_shared471.md) | **451 certificate /471=175M+296A**,7 comparisons,67 positive witnesses,one fixed program parameter,degree at most5091. | Six exact simultaneous rewrites save1M+5A from477; every retained value, the full polynomial, and all supplied positive zeros are unchanged. |
 | [One-program shared U21 source](residue_affine_sparse_shared477.md) | **457 certificate /477=176M+301A**,7 comparisons,67 positive witnesses,one fixed program parameter,degree at most5091. | Complete polynomial identity to actual505; saves1M+27A while retaining h=E+x+eta and B=64h. |
 | [Shared U21 selector/payload source](residue_affine_sparse_shared476.md) | **456 certificate /476=176M+300A**,7 comparisons,67 positive witnesses,two fixed program parameters,degree at most5160. | Complete polynomial identity to the default504 coupled/shared product source; disjoint selector sums, shared range repunit and joint payload cancellation save1M+27A. |
 | [Fixed sparse program radix](residue_affine_sparse_program_radix504.md) | **484 certificate /504=177M+327A**,7eq67w, two fixed program parameters E,C plus raw x,uniform degree at most5160. | C dyadic>=64 and C>E=3^e permits h=x+eta, B=Ch. One C serves all inputs; direct soundness/completeness includes h=2. A parameter tradeoff, not an identical supplied-zero-set rewrite. |
