@@ -107,6 +107,21 @@ other report on A260700, Browning's conjecture or parabolic double cosets.
 The batch-77 dossier offered one two-Part report instead (Vladimir's call);
 the placement kept two reports that cite each other.
 
+**A second neighbour (batch 85B).** The collection report
+[`a261781-matrix-compositions`](../a261781-matrix-compositions/) (OEIS
+A261780, A261781, A261784; batch 85, manuscripts 06 and 01) uses the same
+uniform Fubini pole extraction and positive outer Stirling transform
+(Munarini–Poneti–Rinaldi's Proposition 29) on compact rays
+n/k ∈ K ⋐ (1,∞), followed by a saddle point, and adds a finite all-orders
+coefficient algorithm and a Lambert-W inversion with integer brackets. The
+theorems and scales differ (two growing parameters n, k there) and neither
+report uses the other's theorems; this report's question 3 (the further
+Fubini poles `ρ ± 2πi, …`) has an open counterpart there. That report cites
+this one as its method neighbour; a dated `[write]` note in Section 9 here
+(`pdc:sec:literature`, added 3 October 2026) records the reciprocal pointer
+and names the exact pole-lattice formula `q2:thm:fubini` of the transseries
+volume.
+
 ## Notation
 
 Symbols are printed as delivered. A table in the first `[write]` note
@@ -126,7 +141,10 @@ was added (64 labels in all). The writing step also added three dated
 table; end of Section 7.2: the instance note; Appendix B: the shipped
 layout), three bibliography entries (`pdc-fss`, `pdc-tai`, `pdc-cti`), and
 set the bibliography ragged-right. No statement, proof or number of the
-manuscript was changed.
+manuscript was changed. A batch-85B reciprocal note (3 October 2026) added
+a fourth dated `[write]` note (Section 9, before the research questions)
+and a fourth bibliography entry (`pdc-mxc`); it adds no label (still 64)
+and the PDF stays at 19 pages.
 
 ## Files
 

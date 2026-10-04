@@ -85,3 +85,28 @@ All polynomial coefficient arrays in the JSON certificate use **ascending
 powers**. The OEIS sequence is indexed from n = 1; the package explicitly extends
 it with a(0) = 0. The exponential-polynomial formula must **not** be applied to
 a(0), a(1), a(2), or a(3).
+
+## Related reports
+
+*Added 3 October 2026 (batch 85).* Other conjectures and questions of the
+Kauers–Koutschan (2023) paper whose Conjecture 20 this report proves are
+treated in the collection:
+
+- `SetTheory/Cardinals/docs/reports/enumerative-combinatorics/a195806-hexagonal-lattice`
+  (Conjecture 11) and Part IV of
+  `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a215561-fixed-composition-excursions`
+  (Conjecture 15).
+- `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a047874-long-increasing-subsequences`
+  (batch 85). The paper's Conjecture 17, the A269021 recurrence, was proved
+  by Kauers and Wang (arXiv:2609.02220, 2026); that report answers the
+  sector question their paper raises (D-finiteness of the LIS array in every
+  sector `N ≤ rk`) and gives five correction terms for A269021. Its
+  package's source audit names the present report as the reason A181280 was
+  not chosen as its target.
+- `SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a181199-shifted-rectangles`
+  (batch 85): the shifted rectangles A181198/A181199 of the paper's
+  Section 6.4. The A181199 leading asymptotic and all-order expansions are
+  proved there; the guessed recurrences are not.
+
+None of these reports uses this one's theorems. All are unrefereed and none
+is formalized.

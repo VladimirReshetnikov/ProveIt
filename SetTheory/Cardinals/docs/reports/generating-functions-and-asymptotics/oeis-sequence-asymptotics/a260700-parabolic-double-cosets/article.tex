@@ -703,6 +703,24 @@ The exact counting formula, weak-order framework and leading constant are from B
 
 The bounded search checked the sequence identifier, the paper title and correction-conjecture wording, later double-coset work, and Browning's current publication listing \cite{writings}. In particular, Schwob's later paper \cite{schwob} studies prescribed subgroup pairs and aggregates including A321652 and A178718; it does not identify equal double-coset subsets across all presentations in the way required for A260700. Diaconis and Simper \cite{diaconis} study distributions for specified subgroup pairs, including contingency tables with prescribed margins. Renteln \cite{renteln} studies Sylow subgroup double quotients. Munarini, Poneti and Rinaldi \cite{matrix} develop matrix compositions, including fixed-row regimes. These distinctions prevent transferring a neighboring asymptotic result to the present sequence without further work.
 
+\begin{writenote}[Added 3 October 2026, batch~85B (reciprocal note)]
+The matrix compositions of \cite{matrix} now have their own collection
+report \cite{pdc-mxc} (OEIS A261780, A261781, A261784). Its route on
+compact rays uses the same two devices as Sections~\ref{pdc:sec:poles}
+and~\ref{pdc:sec:outer} here: the Fubini pole at $\rho=\log2$ is
+extracted with an exponentially small relative error, and the result is
+passed through a Stirling transform with nonnegative summands
+(Munarini, Poneti and Rinaldi's Proposition~29), followed by a saddle
+point; that report also proves a finite all-orders coefficient algorithm
+and a Lambert-$W$ index inversion with integer brackets. The sequences,
+transforms and scales differ (two growing parameters $n,k$ there, with
+$n!/(2\rho^{n+1})$ and a saddle in $n/k$), and neither report uses the
+other's theorems. Question~3 below (exponentially small contributions of
+the poles $\rho\pm2\pi i,\ldots$) has an open counterpart there, and the
+exact pole-lattice formula for the Fubini numbers themselves is
+Theorem~\texttt{q2:thm:fubini} of \cite{pdc-tai}.
+\end{writenote}
+
 Several precise questions remain beyond the theorem proved here.
 \begin{enumerate}[leftmargin=*,itemsep=4pt]
 \item \textbf{Effective bounds.} Track explicit constants in the contour estimates, logarithmic cutoffs and Taylor remainders to obtain certified finite-$n$ bounds and computable integer-threshold brackets. This would turn the present asymptotic inverse result into a usable certified algorithm.
@@ -796,6 +814,10 @@ transseries-and-inversion volume (\texttt{p0:thm:lambert-core},
 inverses} (\texttt{t2:eq:unbalanced-core}, \texttt{t2:prop:scaled},
 \texttt{t2:thm:balanced-inverse}),
 \nolinkurl{Analysis/Transseries/docs/series-and-transseries/Combinatorial_Transseries_Inverses/Combinatorial_Transseries_Inverses.tex}.
+\bibitem{pdc-mxc} [write] ProveIt research-report collection, the
+A261781 report \emph{Matrix Compositions: Exact Spectra, Hankel Products,
+and Uniform Asymptotics} (batch~85, manuscripts~06 and~01),
+\nolinkurl{SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a261781-matrix-compositions}.
 \end{thebibliography}
 \endgroup
 \end{document}

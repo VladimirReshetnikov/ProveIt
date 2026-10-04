@@ -28,9 +28,9 @@ itself no formal status.
 
 ```
 article.tex                                    the report, standalone LaTeX with an internal bibliography (pdfLaTeX)
-article.pdf                                    the compiled report, 50 pages (title page; contents pages 2-4;
+article.pdf                                    the compiled report, 51 pages (title page; contents pages 2-4;
                                                Part I, Sections 1-14, pages 5-26; Part II, Sections 15-27,
-                                               pages 27-47; Appendices A-C pages 48-49; references pages 49-50)
+                                               pages 27-48; Appendices A-C pages 48-50; references pages 50-51)
 README.md                                      this guide
 SOURCE_AND_PROOF_AUDIT.md                      source 01's source and proof audit, as delivered
 02-nonholonomicity-SOURCE_AND_PROOF_AUDIT.md   source 02's source, novelty and claim-status audit, as delivered
@@ -113,6 +113,11 @@ start of Section 14.1; Part II's macros and `example` environment in the
 preamble; notes in the bibliography entries for Ho (journal DOI) and OEIS
 (source 02's consultation date); four new bibliography entries used only by
 Part II (Stanley; Garoufalidis 2009 and 2011; André).
+
+A batch-85 reciprocal note (3 October 2026) added one bracketed paragraph,
+marked "[Added 3 October 2026, batch 85]", after Corollary 19.6
+(`dsr:nh:cor:jumps`) in Part II; it adds no label (still 157) and moves no
+number.
 
 ## What is claimed
 
@@ -330,6 +335,17 @@ closest contrast is `a158415-growth-constant`, where a growth constant is
 proved to exist; here none exists and the periodic profile replaces it.
 The formal neighbour is `Combinatorics/Ramsey/Lean/` (above).
 
+`oeis-sequence-asymptotics/a182220-source-boundary` (batch 85) proves an
+elementary counterpart in the other direction to Part II's Corollary 19.6
+(`dsr:nh:cor:jumps`, upward exponential jumps are *necessary* for
+oscillation in an integer P-recursive sequence): its Lemma 8.1
+(`sbd:lem:jump`) shows that a jump after a plateau of every fixed length at
+a lower exponential rate is *sufficient* to exclude P-recursiveness, without
+integrality or an exponential bound. The source-boundary diagonals of
+A182162 satisfy it; theta(n) does not, and this report's Example 22.2
+(`dsr:nh:ex:parity`) shows why the plateau hypothesis is needed. Each report
+carries a dated note pointing to the other (here after Corollary 19.6).
+
 ## Building
 
 In a scratch directory holding `article.tex` and
@@ -337,7 +353,7 @@ In a scratch directory holding `article.tex` and
 
     latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
-The committed PDF was built this way with MiKTeX pdfLaTeX: 50 pages, 0
+The committed PDF was built this way with MiKTeX pdfLaTeX: 51 pages, 0
 errors, 0 warnings, 0 overfull or underfull boxes, no undefined or
 multiply-defined references and no duplicate destinations. Neither
 `code/build.sh` nor `code/02-nonholonomicity-build.sh` works from `code/`
