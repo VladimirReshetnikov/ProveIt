@@ -874,7 +874,9 @@ reciprocal note in that report belongs to a commit of its own.
 
 **[foundations](../foundations/)** supplies the conventions used throughout
 (`found:sub:gbconvention`, `found:prop:recursion`, `found:sub:km`,
-`found:rem:secondsort`, `found:prop:proper`, `found:prop:allcuts`).
+`found:rem:secondsort`, `found:prop:proper`, `found:prop:allcuts`). A dated
+"Related (batch 89)" note there, after `found:rem:conservativity`, records
+source 31's nonconservativity theorem and rank-model Replacement thresholds.
 
 **[birthday-cutoffs-and-hereditary-sets](../birthday-cutoffs-and-hereditary-sets/)**:
 the saturation of `No_{<κ}` at regular `κ` (`hset:rem:saturation`, through
@@ -886,7 +888,14 @@ to singular `κ` and `κ = ω`, by source 17's Theorem 29.4. Its batch-89 Part V
 (manuscript 03 of batch 89, written separately) shows that `V_{ω+ω}` fails
 Replacement for definable families; that is the definable special case, at a
 height of cofinality `ω`, of source 31's domain-size criterion for full-class
-Replacement (Lemma XV.9.2). Neither is claimed as the other's.
+Replacement (Lemma XV.9.2). Neither is claimed as the other's. The witness is
+its Proposition 30.1 (`hset:zr:prop:rankmodel`), and its Remark 24.7
+(`hset:zr:rem:swo`) records the inclusion; the provenance paragraph of Part XV
+cites both (added 4 October 2026). Its batch-89 Part VII calibrates set-level
+surreal universality over ZF by the first Kinna–Wagner principle
+(`hset:kw:thm:coding`, `hset:kw:thm:equivalences`); a dated note after Remark
+13.4 records that Hamkins's question whether universality implies global
+choice is not affected.
 
 **[naming-elementary-embeddings](../../../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/)**
 (research-report collection, batch-89 manuscript 05) studies Replacement,
@@ -901,7 +910,8 @@ equivalent to global choice over GB. Its question on the weaker class-choice
 principles (`rvs:w:q:foundations`) is unaffected; source 31 shows that the
 equivalence uses GB's class Replacement (in the rank models `(V_λ, 𝒫(V_λ))`
 set-like well-orders of the sign carrier exist at every limit height, an
-`Ord`-enumeration only when `2^{<κ} = κ` at a cardinal height).
+`Ord`-enumeration only when `2^{<κ} = κ` at a cardinal height); a second
+dated note there (batch 89) records this.
 
 **[surreal-fields-across-universes](../surreal-fields-across-universes/)**
 studies the saturation of `No_{<κ}` across universes; nothing here depends on

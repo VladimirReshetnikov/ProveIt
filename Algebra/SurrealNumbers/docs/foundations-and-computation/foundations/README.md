@@ -44,7 +44,7 @@ working tree](https://github.com/VladimirReshetnikov/Surreal/tree/251bd32/docs/f
 
 ## What this is
 
-`article.tex` / `article.pdf` — 95 pages, 26 numbered sections (21 main plus 5
+`article.tex` / `article.pdf` — 96 pages, 26 numbered sections (21 main plus 5
 appendices), 31 numbered theorem-environment results, 15 tables (11 longtables
 plus 4 inline), 9 Lean listings, 88 numbered non-claims, 58 bibliography
 entries. Standalone LaTeX: full preamble, internal `thebibliography`, no
@@ -286,7 +286,18 @@ result as a check of the pinned revision.
   unrestricted-cut obstruction (`found:prop:allcuts`). An unnumbered "Related
   (batch 80)" note after the localization paragraph following
   `found:prop:recursion` records this; the page count (95) and all label
-  numbers are unchanged.
+  numbers are unchanged. Since batch 89 its Part XV (source 31) shows, in
+  Zermelo set theory with Choice, that a selector choosing only from nonempty
+  countable sets is not conservative once Separation mentions it
+  (`swo:gcz:thm:main`, through an unreviewed interface to Glazer's
+  countermodels) and is conservative otherwise (`swo:gcz:prop:nosep`), and
+  that in the full-class rank models global choice holds at every limit height
+  while full class Replacement holds exactly at strongly inaccessible heights
+  (`swo:gcz:thm:replacement`). An unnumbered "Related (batch 89)" note after
+  `found:rem:conservativity` records this. The batch-80 note's "Research
+  question 27.3" is corrected to 113.3 (`swo:n16.3`), the number that question
+  has carried since that report's later parts were added. These batch-89
+  edits move the page count from 95 to 96; no label number changed.
 
 ---
 
@@ -303,7 +314,7 @@ Standard TeX Live or MiKTeX. Packages: `lmodern`, `geometry`, AMS, `mathrsfs`,
 `listings`, `xurl`, `needspace`, `hyperref`, `cleveref`. No external figures, no
 `.bib`, no bibliography processor, no shell escape.
 
-Final build status: **95 pages; 0 errors, 0 undefined references, 0 undefined
+Final build status: **96 pages; 0 errors, 0 undefined references, 0 undefined
 citations, 0 multiply-defined labels, 0 duplicate-destination warnings, 0
 overfull or underfull boxes, 0 warnings of any kind.**
 
@@ -317,7 +328,7 @@ never by their labels.
 
 ```
 article.tex   the maintained merged report
-article.pdf   95 pages
+article.pdf   96 pages
 code/         the five Lean files from M1 and M2, three since compiled  (verbatim)
 data/         the three build/audit records from M2 and M3                 (verbatim)
 ```

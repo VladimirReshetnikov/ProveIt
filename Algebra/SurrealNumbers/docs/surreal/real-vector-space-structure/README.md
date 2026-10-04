@@ -242,6 +242,19 @@ re-prove collection results and are printed as pointers with second routes
   itself; the weakest-principle question for class bases (Research question
   21.1) is unaffected. Recorded in a dated note, bracketed "[Added 2 October
   2026, batch 80: …]", after that question; no label or number changed.
+  Since batch 89 its Part XV (source 31) shows that this equivalence uses
+  GB's class Replacement: in the full-class rank models `(V_λ, P(V_λ))`,
+  which satisfy global choice, set-like well-orders of the sign carrier exist
+  at every limit height (`swo:gcz:prop:allwo`), an `Ord`-enumeration only at
+  a cardinal `κ` with `2^{<κ} = κ` (`swo:gcz:thm:bare`). A second dated note,
+  "[Added 4 October 2026, batch 89: …]", follows the first.
+- [`../../foundations-and-computation/polish-models-of-omnific-arithmetic/`](../../foundations-and-computation/polish-models-of-omnific-arithmetic/)
+  (batch 89, its Part X, source 16) proves the ordered rational, full-product
+  counterpart of Theorem 5.20 and Corollary 5.21 (`rvs:eu:thm:fullcodim`,
+  `rvs:eu:cor:continuum`: `Q^ω` modulo its finite-support vectors has
+  dimension `𝔠`) and of the product-versus-valuation
+  topology contrast (`pma:emb:thm:shear`, `pma:emb:thm:matrix`); a dated note,
+  "[Added 4 October 2026, batch 89: …]", after that corollary records it.
 
 Placement in `Algebra/SurrealNumbers`, beside its Lean development, confers
 no formal status, and `FORMALIZATION.md` maps no `rvs:` label. The Lean

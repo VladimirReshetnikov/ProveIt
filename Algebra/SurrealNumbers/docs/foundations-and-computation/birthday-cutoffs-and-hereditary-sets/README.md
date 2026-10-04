@@ -10,7 +10,7 @@ further manuscripts pinned to commit `2b7b388ba` and placed by commit
 
 ```
 article.tex      the report, standalone LaTeX with an internal bibliography
-article.pdf      the compiled report, 115 pages
+article.pdf      the compiled report, 116 pages
 README.md        this guide
 02-birthday-cutoffs-SOURCE_AUDIT.md                source 02's source and novelty audit, as delivered
 10-cuts-replacement-PROOF_STATUS.md                source 10's proof and provenance status note, as delivered
@@ -396,7 +396,10 @@ rank models `(V_λ, P(V_λ))`; there class Replacement and Collection hold
 exactly on domains of size below `cf λ`, which contains the failure of
 Proposition 30.1 at `λ = ω+ω` for one definable family (Remark 24.7). Source
 11's ZF bijection `No_{≤κ} ≈ P(κ)` (Proposition 42.3) sits beside that report's
-ZFC count `|No_{<κ}| = 2^{<κ}`.
+ZFC count `|No_{<κ}| = 2^{<κ}`. A dated note, "[Added 4 October 2026,
+batch 89: …]", after Proposition 30.1 gives that part's labels (Lemma XV.9.2,
+`swo:gcz:lem:domain`; Theorem XV.9.3, `swo:gcz:thm:replacement`; Section
+XV.11, `swo:gcz:sec:examples`).
 
 **[naming-elementary-embeddings](../../../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/)**
 (research-report collection, batch-89 manuscript 05, written in `aa9a7ec80`)
@@ -407,7 +410,11 @@ that the failing instance at a limit cardinal is `Δ0`, and decides Replacement,
 Collection and full reflection after naming canonical lifts of atom injections.
 Remark 24.6 records the overlap; Part VI prints source 10's own proofs, and
 neither is claimed first. Its dated note after its Corollary 7.6 compares the
-two proofs.
+two proofs. A dated note, "[Added 4 October 2026, batch 89: …]", at the end of
+Section 18.2 (transfer of Kunen's inconsistency) records that its lifts of atom
+injections are amenable elementary self-embeddings fixing every pure set
+(`nee:thm:lifts`, `nee:thm:initial`, `nee:thm:profile`), so they do not bear on
+Theorem 18.3.
 
 **[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**:
 source 11's double-monomial independence (Theorem 43.1) is the case `K = R`,
@@ -442,8 +449,9 @@ urelements or permutation models.
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):
-  115 pages (62 before batch 89; 61 before the batch-37 Remark 15.9; still 62
-  after the two batch-80 notes and the batch-81 note); no errors, undefined
+  116 pages (115 after the batch-89 write, before its two reciprocal notes;
+  62 before batch 89; 61 before the batch-37 Remark 15.9; still 62 after the
+  two batch-80 notes and the batch-81 note); no errors, undefined
   references or citations, multiply defined labels, duplicate destinations,
   LaTeX or package warnings, or overfull or underfull boxes. Cross-references
   are typed (lemma, proposition, ...) through alias counters.

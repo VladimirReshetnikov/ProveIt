@@ -279,7 +279,12 @@ Appendix A.3 records these.
   (`hset:`). It credits the Chen–Hamkins–Yang announcement (`hset:thm:chy`),
   proves the first new birthday (`hset:thm:firstbirthday`), and uses the
   `OrdSign` formula (`hset:prop:nondef`). Its cutoff inputs (erratum,
-  Bournez–Guilmant) are the ones Theorem 10.3 uses.
+  Bournez–Guilmant) are the ones Theorem 10.3 uses. Its batch-89 Part VII
+  proves the case `K = R`, `G = {0}` of Lemma 8.1 (`dsn:lem:cosets`) again
+  (`hset:kw:thm:double`, double monomials `ω^(ω^j(x))`) and calibrates
+  free-algebra universality of `No` and `Oz` over ZF by the first
+  Kinna–Wagner principle (`hset:kw:thm:equivalences`); an unnumbered note
+  after Lemma 8.1 (batch 89) records this.
 - [`omnific-diophantine-geometry`](../../surreal/omnific-diophantine-geometry/)
   (`odg:`). Full-class antecedents of Theorem 4.1 (`odg:thm:fractions`) and of
   Section 16; its reconstruction section enters Proposition 15.3; its

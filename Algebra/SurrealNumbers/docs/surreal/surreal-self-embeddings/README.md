@@ -41,7 +41,7 @@ development*). Independent proof review is pending.
 
 ```
 article.tex                                     the merged report, standalone LaTeX (pdfLaTeX), internal bibliography
-article.pdf                                     the compiled report, 167 pages (unnumbered title page, then pages 1-166)
+article.pdf                                     the compiled report, 168 pages (unnumbered title page, then pages 1-167)
 README.md                                       this guide
 02-paradox-free-PROOF_STATUS.md                 source 02's proof and verification status, as delivered
 03-hahn-lifts-SOURCE_AUDIT.md                   source 03's source audit, as delivered
@@ -315,6 +315,14 @@ formalization program and 18 questions.
   (`hset:lem:rigidity`), surcomplex lifts (`hset:thm:two-lifts`).
 - [surreal-well-orders](../../foundations-and-computation/surreal-well-orders/README.md):
   universality of `No` as a target, a different question.
+- [naming-elementary-embeddings](../../../../../SetTheory/Cardinals/docs/reports/ordinals-and-order-types/naming-elementary-embeddings/README.md)
+  (research-report collection, batch 89, `nee:`) cites this report as a
+  control example: in urelement kernel models every atom injection lifts to an
+  amenable elementary self-embedding fixing every pure set (`nee:thm:lifts`),
+  and naming such lifts can destroy Replacement (`nee:thm:profile`). Those act
+  on a universe with atoms, not on `No`. A dated `[write]` note after Remark
+  `sse:pf:rem:kunen` (4 October 2026, batch 89) records this; nothing in this
+  report changes.
 
 Reciprocal dated notes pointing here were added to
 omnific-preserving-automorphisms, independent-surreal-copies,
