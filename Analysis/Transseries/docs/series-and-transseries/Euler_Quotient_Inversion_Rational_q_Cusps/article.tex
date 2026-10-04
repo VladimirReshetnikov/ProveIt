@@ -1,0 +1,1745 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage[a4paper,margin=27mm,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor}
+\usepackage{fancyhdr,hyperref}
+\definecolor{ink}{HTML}{18374A}
+\definecolor{accent}{HTML}{236B80}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={Complex Transseries Reversion at q-Cusps},
+ pdfauthor={Research article prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Complex transseries reversion at $q$-cusps}
+\fancyhead[R]{\small October 2026}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.2em}
+\setlist{itemsep=4pt,topsep=5pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}\newcommand{\Q}{\mathbb Q}\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}\newcommand{\R}{\mathbb R}
+\newcommand{\ii}{\mathrm i}\newcommand{\e}{\mathrm e}
+\newcommand{\Log}{\operatorname{Log}}\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\ord}{\operatorname{ord}}\newcommand{\id}{\operatorname{id}}
+\newcommand{\dd}{\,\mathrm d}\newcommand{\eps}{\varepsilon}
+\newcommand{\Poch}{\mathcal P}\newcommand{\F}{\mathcal F}
+\newcommand{\calO}{\mathcal O}\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\vct}[1]{\boldsymbol{#1}}
+\newcommand{\repo}{\texttt{VladimirReshetnikov/ProveIt}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{13mm}
+{\color{accent}\large RESEARCH ARTICLE \hfill 4 OCTOBER 2026}\par
+\vspace{16mm}
+{\color{ink}\Huge\bfseries Complex Transseries\\[4pt] Reversion at $q$-Cusps}\par
+\vspace{8mm}
+{\Large Convergent normal forms, infinitely flat limits,\\[3pt]
+logarithmic--Puiseux inverses, and recovery from cusp data}\par
+\vspace{12mm}\hrule\vspace{7mm}
+{\large Prepared for Vladimir Reshetnikov}\par
+\vspace{9mm}
+\begin{abstract}
+We develop a branch-resolved inversion calculus for complex transseries and
+apply it to $q$-products at rational boundary points. The analytic core is a
+convergent, multivariable implicit-function construction for
+$Y=Ct^\beta\e^{-A/t}U(t,\e^{-B_1/t},\ldots,\e^{-B_d/t})$.
+It retains complete exponential sectors, gives explicit coefficient
+extraction and residual bounds, and converts ratios of actions into powers
+of the inverse variable. A second scaling handles power and regular cores
+whose exponentially small perturbations have large logarithmic derivatives.
+
+For every finite Euler-product quotient
+$\prod_{\delta\mid N}(q^\delta;q^\delta)_\infty^{r_\delta}$,
+we derive an exact analytic normal form at every root of unity. Three
+explicit linear invariants determine the inverse regime. When all three
+vanish, the quotient has a nonconstant but infinitely flat finite limit;
+its inverse is described by a convergent Puiseux series inside a logarithmic
+denominator. We prove a four-factor minimum at $q=1$ and realize every finite correction
+ramification degree with four factors. We compute two examples and recover every exponent $r_\delta$ from the leading
+exponential data at divisor cusps by a double M\"obius inversion. Additional
+results treat nonmodular shifted factorials, finite Gaussian multinomials,
+and the transport of sectorial jumps through inversion.
+
+All stated local theorems have conventional proofs. Classical modular,
+Lagrange, and resurgent-closure results are attributed; the proposed
+contribution is their explicit branch-aware synthesis and the accompanying
+classification and reconstruction formulas. Worldwide novelty is not
+established. The included computations are reproducible checks, not
+proof-assistant or interval certificates.
+\end{abstract}
+\vfill
+{\small\color{ink}Self-contained source and bibliography.\par Repository snapshot:\par
+\texttt{8e9cd6f00e0ac79c4425ff6abdfa64b497cf3f41}.}
+\end{titlepage}
+\hypersetup{pageanchor=true}\setcounter{page}{1}
+\begingroup\small\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup\newpage
+
+\section{Scope, source boundary, and the questions answered}
+\label{sec:scope}
+
+\subsection{What ``general complex transseries'' can responsibly mean}
+Series reversal means compositional inversion, not reversal of the order of
+coefficients. Over the complex plane, the choice of sector, logarithm,
+ramification, and analytic realization is part of the inversion problem.
+There cannot be a single branch-free inverse calculus even for
+$Y=\e^{-1/t}$: its inverses are
+$-1/(\Log Y+2\pi\ii k)$, $k\in\Z$.
+
+We distinguish three levels throughout. A \emph{formal} statement takes
+place in a specified complete filtered algebra. A \emph{sectorial}
+statement concerns actual holomorphic functions with uniform estimates on
+smaller sectors. A \emph{global continuation} statement requires transition
+maps and their domains. No implication from the first level to the third
+is assumed. In particular, attaching complex coefficients to a real
+transseries field does not by itself define all oscillatory compositions
+or all analytic sums.
+
+The generality proved here is a preparation principle: after a dominant
+phase is inverted and the remaining small quantities are promoted to
+independent parameters, a substantial class of complex transseries becomes
+a convergent analytic implicit-function problem. The formal version also
+works in other complete filtered algebras when its contraction hypotheses
+are verified. We do not assert that every conceivable Hahn support,
+accumulating action set, or divergent transseries admits such a preparation.
+
+\subsection{Relation to ProveIt and to existing literature}
+The inspected repository snapshot is the commit printed on the title page.
+The canonical transseries directory records a large inversion volume,
+a combinatorial companion, and separate research arrivals; it explicitly
+distinguishes human arguments from exact Lean counterparts
+\cite{repo}. The companion already contains phase-coordinate reversal,
+analytic exponential-tail inversion, and applications to $q$-products.
+Consequently, neither ``use Lagrange inversion'' nor ``invert an exponential
+tail'' is presented here as a new foundational discovery.
+
+The inspected \emph{Certified Inversion Through the $q\to1$ Transition}
+README describes signed remainders, Stieltjes--Pad\'e bounds, optimal
+truncation, and a cancellation window for Gaussian products
+\cite{repoq}. The \emph{Beyond Finite-Action Folds} README concerns
+countable-action critical models and Hahn inverses \cite{repohahn}.
+Those are different problems from classifying an Euler quotient's finite
+flat limit at every rational cusp. This is a targeted crosswalk based on
+the listed documentation, not a claim to have audited all pages of the
+canonical volume or every incoming article.
+
+Formal and analytic nonlinear operations on resurgent functions, including
+functional and implicit inversion, are established subjects. Sauzin proves
+precise closure and summability theorems in an appropriate resurgent
+setting \cite{sauzin}. We use those results as background, not as an open
+conjecture supposedly solved here. The modular transformation of Dedekind's
+eta function is classical \cite{dlmf}. All-order $q$-factorial asymptotics
+involving polylogarithms and Bernoulli polynomials occur in McIntosh's work
+\cite{mcintosh}, and root-of-unity asymptotics are central to the work of
+Garoufalidis and Zagier \cite{gz}.
+
+Two recent sources materially sharpen the source boundary. Fantini and
+Rella analyze resurgence and summability of $q$-Pochhammer symbols and
+weighted combinations \cite{fr}. Arabi Ardehali and Rosengren give a
+gamma-product representation and asymptotic applications, with a version
+of record published on 19 September 2026 \cite{ar}. We do not claim a new
+$q$-Pochhammer product formula or a solution of their general summability
+questions. Our exact results use the modular Euler-product subclass;
+Section~\ref{sec:shifted} separately treats an asymptotic, generally
+nonconvergent, shifted-factorial example.
+
+\subsection{A precise result ledger}
+The following concrete questions are answered in this article.
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=14mm]
+\item Can inversion preserve full exponential sectors rather than just
+algebraic coefficients? Theorem~\ref{thm:prepared} gives a convergent
+multivariable lift, sector-preserving truncation, and action transport.
+\item What replaces ordinary Puiseux inversion at a nonconstant finite
+limit invisible to every power of $t$? Theorem~\ref{thm:flat} gives all
+local sheets, their monodromy, and an explicit error law.
+\item Which finite Euler quotients have such a limit at a specified root
+of unity? Theorem~\ref{thm:classification} gives a necessary-and-sufficient
+three-invariant test and an inverse in each complementary regime.
+\item How few factors can produce flatness at $q=1$? Four distinct
+scales are necessary and sufficient, with an explicit kernel formula
+(Theorem~\ref{thm:four}).
+\item Can all rational cusps conceal the quotient's exponent vector?
+No: Theorem~\ref{thm:recover} gives exact recovery from divisor-cusp
+exponential data.
+\item Is finite correction ramification bounded by the number of product
+factors? No: four factors realize every positive degree, with an exact
+intrinsic-degree criterion (Theorem~\ref{thm:ramification}).
+\end{enumerate}
+These are explicitly posed local questions. Answering them is not a claim
+of resolving an independently documented major open problem. The proofs
+and formulations are research contributions of this draft; publication
+priority and independent validation remain separate matters.
+
+\section{Sectorial preparation and reliable inverse certificates}
+\label{sec:foundations}
+
+\subsection{Small actions and admissible sectors}
+A typical asymptotic sector is
+\[
+ S(\theta,\alpha,r)=\{0<|t|<r:\ |\arg t-\theta|<\alpha\},
+\]
+with its argument understood on a chosen logarithmic cover. Bounds are
+uniform on closed, strictly smaller subsectors. A quantity
+$\e^{-B/t}$ is small only where $\Re(B/t)>0$; it is uniformly exponentially
+small where $\Re(B/t)\ge c/|t|$ for some $c>0$.
+
+For finitely many actions $\lambda_j$, assume a sector of large $x$ on
+which $\Re(\lambda_jx)\ge c|x|$ for every $j$. Their additive semigroup is
+locally finite when measured by this positive real projection: only
+finitely many multi-indices have projection at most a given bound.
+This permits resonant actions to be collected without infinite
+coefficient multiplicities. It does not supply a total asymptotic ordering
+on every direction. In particular, a dominance wall is not automatically
+a Stokes jump.
+
+\begin{lemma}[Complete filtered contraction]\label{lem:formal}
+Let $\mathcal A$ be a complete separated $\C$-algebra with descending
+multiplicative ideals $I^n$, $n\ge0$. Suppose a map
+$T:I\to I$ is defined by admissible algebraic or Taylor operations and
+\[
+ u-v\in I^n\quad\Longrightarrow\quad T(u)-T(v)\in I^{n+1}.
+\]
+Then $u=T(u)$ has a unique solution in $I$. Its residue modulo $I^{n+1}$
+is obtained after $n$ Picard steps from $0$.
+\end{lemma}
+\begin{proof}
+Put $u_0=0$ and $u_{n+1}=T(u_n)$. Induction gives
+$u_{n+1}-u_n\in I^{n+1}$. Completeness gives a limit $u$; the displayed
+condition implies continuity and hence $u=T(u)$. For two fixed points,
+$u-v\in I$ improves successively to every $I^n$, so separatedness gives
+$u=v$. The same induction gives the residue assertion.
+\end{proof}
+
+The admissibility clause is essential. One must not differentiate,
+compose, or sum arbitrary Hahn families merely because the resulting
+expression is suggestive. For analytic parameter germs we use
+$\C[[v,Q_1,\ldots,Q_d]]$ and its maximal-ideal filtration; all operations
+below are then explicit and admissible.
+
+\subsection{A complex residual certificate with existence}
+\begin{lemma}[Derivative-close-to-one certificate]\label{lem:certificate}
+Let $K$ be holomorphic on a neighborhood of the closed disk
+$\overline D(z_*,r)$. Suppose
+\[
+ \sup_{\overline D(z_*,r)}|K'(z)-1|\le\kappa<1,
+ \qquad |K(z_*)|<(1-\kappa)r.
+\]
+Then $K$ has a unique zero $z$ in that disk and
+\begin{equation}\label{eq:certificate}
+ |z-z_*|\le \frac{|K(z_*)|}{1-\kappa}.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The map $T(w)=w-K(w)$ has Lipschitz constant at most $\kappa$ on the
+convex disk. Moreover,
+$|T(w)-z_*|\le\kappa|w-z_*|+|K(z_*)|<r$.
+The contraction theorem gives a unique fixed point. At that point,
+$|z-z_*|\le\kappa|z-z_*|+|K(z_*)|$, proving the bound.
+\end{proof}
+A lower bound on $|K'|$ alone is not a substitute for this argument in the
+complex plane: it does not prove injectivity on an arbitrary region.
+The lemma supplies both existence and the backward-to-forward error
+conversion needed by an inverse algorithm.
+
+\section{A convergent lift for prepared exponential transseries}
+\label{sec:prepared}
+
+\subsection{The exact normal form}
+Fix $A,C\ne0$, $\beta\in\C$, and actions $B_1,\ldots,B_d\in\C$.
+Let $U(t,\vct E)$ be holomorphic near $(0,\vct0)$ with $U(0,\vct0)=1$.
+Consider
+\begin{equation}\label{eq:prepared-map}
+ Y=Ct^\beta\e^{-A/t}
+ U(t,\e^{-B_1/t},\ldots,\e^{-B_d/t}).
+\end{equation}
+Choose all logarithms coherently so that, with $x=A/t$,
+$\Log t=\Log A-\Log x$. Put
+\begin{equation}\label{eq:core}
+ L=\Log\frac{CA^\beta}{Y},\qquad
+ x_0+\beta\Log x_0=L,\qquad
+ v=x_0^{-1},\quad \lambda_j=B_j/A,\quad Q_j=\e^{-\lambda_jx_0}.
+\end{equation}
+On a closed large-$L$ sector away from the logarithmic cut, the root with
+$x_0\sim L$ exists and is unique in an $O(\log|L|)$ disk around $L$.
+Indeed, $x\mapsto L-\beta\Log x$ maps such a disk to itself and has
+Lipschitz constant $O(|L|^{-1})$. Thus
+\begin{equation}\label{eq:x0-expansion}
+ x_0=L-\beta\Log L+O(\log|L|/|L|).
+\end{equation}
+When $\beta\ne0$, the identity
+$x_0=\beta W(\e^{L/\beta}/\beta)$ is available, but the branch is the one
+selected by \eqref{eq:core}; it need not be the principal $W$ branch.
+
+\begin{theorem}[Analytic parameter lift]\label{thm:prepared}
+There is a unique holomorphic germ $D(v,\vct Q)$ at the origin, with
+$D(0,\vct0)=0$, satisfying
+\begin{align}
+ D={}&-\beta\log(1+vD)\notag\\
+ &+\log U\left(\frac{Av}{1+vD},
+ Q_1\e^{-\lambda_1D},\ldots,Q_d\e^{-\lambda_dD}\right).
+ \label{eq:D}
+\end{align}
+In every sector in which $|x_0|\to\infty$ and
+$\Re(\lambda_jx_0)\ge c|x_0|$, the inverse of
+\eqref{eq:prepared-map} near $A/x_0$ is exactly
+\begin{equation}\label{eq:prepared-inverse}
+ t=\frac{A}{x_0+D(x_0^{-1},\e^{-\lambda_1x_0},\ldots,
+ \e^{-\lambda_dx_0})}.
+\end{equation}
+Its multivariable Taylor expansion is convergent, and no exponential
+action outside the additive semigroup generated by the $\lambda_j$
+is needed in the $x_0$ coordinate.
+\end{theorem}
+\begin{proof}
+Subtract the logarithm of \eqref{eq:prepared-map} from
+\eqref{eq:core} and write $x=x_0+D$. The resulting equation is
+\eqref{eq:D}. Its left side minus right side is holomorphic in
+$(D,v,\vct Q)$ near zero. Its derivative with respect to $D$ there is
+$1$: the logarithmic term has a factor $v$, the first argument of $U$
+has a factor $v$, and each other argument has a factor $Q_j$.
+The analytic implicit-function theorem gives the germ and uniqueness.
+The right side also has positive parameter order and raises the order of
+a difference in $D$, so Lemma~\ref{lem:formal} gives the same formal germ.
+
+Under the sector hypotheses the actual parameters tend to the origin.
+Substitution into the convergent germ solves the original equation with
+its chosen logarithms. The prepared equation has derivative close to one
+on a fixed small $D$ disk, giving local uniqueness by
+Lemma~\ref{lem:certificate}. Finally, a Taylor monomial
+$v^k\vct Q^{\vct n}$ evaluates to
+$x_0^{-k}\e^{-(\vct n\cdot\vct\lambda)x_0}$.
+Convergence and the positive projection condition justify grouping
+resonant actions. Analytic reciprocation in \eqref{eq:prepared-inverse}
+preserves the same action semigroup.
+\end{proof}
+
+\subsection{Coefficient extraction and sector-preserving truncation}
+Write the right side of \eqref{eq:D}, with $D$ replaced by $z$, as
+$\Phi(z;v,\vct Q)$. Classical Lagrange inversion with an auxiliary
+parameter gives
+\begin{equation}\label{eq:lagrange-D}
+ D=\sum_{n\ge1}\frac1{n!}
+ \left.\frac{\partial^{n-1}}{\partial z^{n-1}}
+ \Phi(z;v,\vct Q)^n\right|_{z=0}.
+\end{equation}
+This is a coefficientwise identity in the parameter filtration: every
+summand has order at least $n$. It is also an analytic identity for
+sufficiently small parameters. To see the latter directly, on a fixed
+small $z$ disk the whole $\Phi$ is uniformly small, so the auxiliary
+parameter can vary in a disk of radius larger than $1$.
+
+Suppose $D$ is bounded by $M$ on a closed polydisk of radius $R$, slightly
+inside its domain. If $D_{\le n}$ denotes total-parameter-degree
+truncation and
+$s=(|v|+\sum_j|Q_j|)/R<1$, Cauchy's estimate yields
+\begin{equation}\label{eq:total-tail}
+ |D-D_{\le n}|\le M\frac{s^{n+1}}{1-s}.
+\end{equation}
+The sum of monomials of degree $k$ is bounded by the $k$th power of the
+sum of their absolute variables; no missing multinomial factor is needed.
+
+For exponential accuracy, a different grouping is preferable:
+\begin{equation}\label{eq:action-block}
+ D(v,\vct Q)=\sum_{\vct n\in\N^d}D_{\vct n}(v)\vct Q^{\vct n}.
+\end{equation}
+Keep the coefficient functions $D_{\vct n}(v)$ intact. Uniformly for $v$
+in a smaller disk, the tail after $|\vct n|\le n$ is bounded by the
+analogue of \eqref{eq:total-tail} with
+$s=\sum_j|Q_j|/R$. Truncating every coefficient function to a fixed
+algebraic order instead leaves an error much larger than an exponential
+sector. Thus a finite algebraic approximation does not automatically
+certify a beyond-all-orders claim.
+
+For an approximate displacement $\widetilde D$, apply
+Lemma~\ref{lem:certificate} to the left side minus right side of
+\eqref{eq:D}. Once both displacements are in its disk,
+\begin{equation}\label{eq:t-residual}
+ |t-\widetilde t|
+ \le\frac{|A|\,|K(\widetilde D)|}
+ {(1-\kappa)|x_0+D|\,|x_0+\widetilde D|}.
+\end{equation}
+This is an explicit certificate, including a root-existence test.
+
+\subsection{Actions become inverse-variable exponents}
+The core identity gives the exact branch-dependent relation
+\begin{equation}\label{eq:action-transport}
+ Q_j=\e^{-\lambda_jL}x_0^{\beta\lambda_j}
+ =\left(\frac{Y}{CA^\beta}\right)^{\lambda_j}
+ x_0^{\beta\lambda_j}.
+\end{equation}
+Thus $B_j/A$, not $B_j$ alone, is the exponent visible in the inverse
+variable. Logarithmic dressing comes from the core $x_0$.
+All powers in this formula are defined through the same logarithm as $L$.
+
+\begin{proposition}[A sharp one-action ramification test]\label{prop:irrational}
+For $a,b>0$, let
+$Y=c\e^{-a/t}(1+\e^{-b/t})$, $c\ne0$, and set
+$\lambda=b/a$, $L=\Log(c/Y)$. Its inverse is
+$t=a/(L+D((Y/c)^\lambda))$, where $D$ is convergent near zero and
+\[
+ D(Q)=Q-(\lambda+\tfrac12)Q^2+O(Q^3).
+\]
+The correction to the inverse phase is a convergent Puiseux germ in $Y/c$
+after finite ramification if and only if $\lambda\in\Q$.
+\end{proposition}
+\begin{proof}
+The implicit equation is $D=\log(1+Q\e^{-\lambda D})$.
+It gives the displayed coefficients and $D'(0)=1$. Rational $\lambda$
+clearly suffices. Conversely, a nonzero convergent Puiseux germ has a
+rational first exponent. The first exponent here is exactly $\lambda$,
+so irrational $\lambda$ is impossible. The logarithm in $L$ is retained;
+the assertion concerns its analytic phase correction, not removal of
+logarithmic monodromy.
+\end{proof}
+
+\section{Flat perturbations of power and regular cores}
+\label{sec:power}
+When the leading essential action vanishes, Theorem~\ref{thm:prepared}
+is no longer the right coordinate chart. Consider instead
+\begin{equation}\label{eq:power-map}
+ Y=Ct^\beta\e^{Bt}H(\e^{-a/t}),\qquad a>0,\quad H(0)=1,
+\end{equation}
+with $H$ holomorphic near zero. Assume $(\beta,B)\ne(0,0)$.
+Let $\tau$ be a chosen small root of the \emph{exact core equation}
+\begin{equation}\label{eq:power-core}
+ Y=C\tau^\beta\e^{B\tau}.
+\end{equation}
+For $\beta\ne0$, choose a branch of
+$z=(Y/C)^{1/\beta}$; then
+$\tau=\beta W((B/\beta)z)/B$ near zero when $B\ne0$, and
+$\tau=z$ when $B=0$. For $\beta=0$, $B\ne0$,
+$\tau=B^{-1}\Log(Y/C)$.
+
+\begin{theorem}[Slope-adapted analytic lift]\label{thm:power}
+Put $\sigma=1$ if $\beta\ne0$, and $\sigma=2$ if
+$\beta=0$, $B\ne0$. There is a holomorphic germ $D(\tau,R)$ with
+$D(\tau,0)=0$ for which the exact local inverse is
+\begin{equation}\label{eq:power-inverse}
+ t=\tau+\tau^2D\left(\tau,\frac{\e^{-a/\tau}}{\tau^\sigma}\right).
+\end{equation}
+This is a convergent transseries on closed subsectors of
+$\Re(1/\tau)>0$. If $H(Q)=1+h_1Q+O(Q^2)$, its first displacement is
+\begin{equation}\label{eq:power-first}
+ t-\tau\sim
+ \begin{cases}
+ -\dfrac{h_1}{\beta}\tau\e^{-a/\tau},&\beta\ne0,\\[4pt]
+ -\dfrac{h_1}{B}\e^{-a/\tau},&\beta=0,\ B\ne0,
+ \end{cases}
+\end{equation}
+provided $h_1\ne0$.
+\end{theorem}
+\begin{proof}
+Write $t=\tau(1+\tau D)$. Then
+\[
+ \e^{-a/t}=\e^{-a/\tau}
+ \exp\left(\frac{aD}{1+\tau D}\right).
+\]
+Subtract the logarithm of the core equation. For $\beta\ne0$, divide
+by $\tau$ to obtain
+\begin{align*}
+ 0={}&\beta\frac{\log(1+\tau D)}{\tau}+B\tau D\\
+ &+\frac1\tau\log H\left(\tau R
+ \exp\left(\frac{aD}{1+\tau D}\right)\right).
+\end{align*}
+All apparent singularities at $\tau=0$ are removable. The derivative
+with respect to $D$ at $(D,\tau,R)=0$ is $\beta\ne0$.
+For $\beta=0$, divide instead by $\tau^2$:
+\[
+ 0=BD+\frac1{\tau^2}\log H\left(\tau^2R
+ \exp\left(\frac{aD}{1+\tau D}\right)\right).
+\]
+The derivative is now $B\ne0$. The analytic implicit-function theorem
+proves both cases; setting $R=0$ gives $D=0$. Exponential decay ensures
+$\e^{-a/\tau}/\tau^\sigma\to0$ in the stated subsectors. Linearization
+in $R$, followed by $\tau\to0$, gives \eqref{eq:power-first}.
+\end{proof}
+The division by $\tau$ or $\tau^2$ is not cosmetic. It absorbs the
+large logarithmic derivative of the exponential into the small parameter. Expanding
+only in $Q$ while pretending that all coefficients stay uniformly bounded
+at $\tau=0$ would miss this scaling.
+
+\section{Infinitely flat finite limits and logarithmic--Puiseux inversion}
+\label{sec:flat}
+
+\subsection{All sheets and a convergent denominator}
+Suppose
+\begin{equation}\label{eq:flat-map}
+ Y(t)=Y_*+c\e^{-ma/t}U(\e^{-a/t}),\qquad
+ a>0,\quad c\ne0,\quad m\in\N_{>0},\quad U(0)=1,
+\end{equation}
+where $U$ is holomorphic near zero. Let $s$ and $\log s$ be fixed on a
+simply connected punctured neighborhood by
+\[
+ s=\left(\frac{Y-Y_*}{c}\right)^{1/m},\qquad
+ \log s=\frac1m\Log\frac{Y-Y_*}{c}.
+\]
+
+\begin{theorem}[Logarithmic--Puiseux inverse atlas]\label{thm:flat}
+Let $\psi$ be the analytic inverse at zero of
+$f(Q)=Q\,U(Q)^{1/m}$, where $U^{1/m}(0)=1$, and let
+$V(z)=\log(\psi(z)/z)$ with $V(0)=0$. Then all solutions with
+$|\e^{-a/t}|$ sufficiently small are
+\begin{equation}\label{eq:flat-inverse}
+ t_\ell(Y)=-\frac{a}{\Lambda_\ell+V(s_\ell)},\qquad
+ s_\ell=\e^{2\pi\ii\ell/m}s,\quad
+ \Lambda_\ell=\log s+\frac{2\pi\ii\ell}{m},\quad \ell\in\Z.
+\end{equation}
+The coefficients are explicit:
+\begin{equation}\label{eq:psi-coeff}
+ \psi(z)=\sum_{n\ge1}\frac{z^n}{n}
+ [Q^{n-1}]\,U(Q)^{-n/m}.
+\end{equation}
+A positive circuit of $Y$ around $Y_*$ continues sheet $\ell$ to
+sheet $\ell+1$.
+\end{theorem}
+\begin{proof}
+The map $f$ is holomorphic, $f(0)=0$, and $f'(0)=1$. Hence it has a
+unique local analytic inverse $\psi$. With $E=\e^{-a/t}$,
+\eqref{eq:flat-map} becomes $f(E)^m=s^m$, so
+$E=\psi(\e^{2\pi\ii j/m}s)$ for one $j$ modulo $m$.
+The logarithms of this nonzero $E$ are
+\[
+ \log s+2\pi\ii j/m+V(\e^{2\pi\ii j/m}s)+2\pi\ii k,
+ \qquad k\in\Z.
+\]
+Writing $\ell=j+mk$ gives exactly \eqref{eq:flat-inverse}, with no
+independent or double-counted branch labels. Conversely, exponentiating
+that equation recovers $E$ and then $Y$. Formula~\eqref{eq:psi-coeff}
+is ordinary Lagrange inversion. Under a positive circuit of $Y-Y_*$,
+$s$ continues to $\e^{2\pi\ii/m}s$ and $\log s$ increases by
+$2\pi\ii/m$; substitution proves the monodromy assertion.
+\end{proof}
+
+Although the cusp lies on the boundary of the original $q$ disk, the
+inverse branches are actual holomorphic functions on slit target
+neighborhoods. For small $s$, $\Re(\Lambda_\ell+V(s_\ell))<0$;
+therefore $\Re t_\ell>0$. For each fixed $\ell$, $t_\ell\to0$ as
+$Y\to Y_*$. The exact formula also permits indices that grow, but claims
+about uniform sectorial asymptotics then require a separate bound on the
+argument of the denominator.
+
+\subsection{Remainder law and sensitivity}
+\begin{corollary}[Explicit inverse remainder]\label{cor:flat-tail}
+Suppose $V$ is holomorphic near the closed disk $|z|\le R$,
+$|V|\le M$ there with $M>0$, and $V_N$ is its Taylor polynomial through degree $N$.
+For $\rho=|s|/R\le1/2$ and $|\Lambda_\ell|\ge2M$,
+\begin{equation}\label{eq:flat-tail}
+ \left|t_\ell+\frac{a}{\Lambda_\ell+V_N(s_\ell)}\right|
+ \le \frac{4aM}{|\Lambda_\ell|^2}
+ \frac{\rho^{N+1}}{1-\rho}.
+\end{equation}
+For fixed sheet, this is
+$O(|Y-Y_*|^{(N+1)/m}/|\Log(Y-Y_*)|^2)$.
+\end{corollary}
+\begin{proof}
+Cauchy's bound gives
+$|V-V_N|\le M\rho^{N+1}/(1-\rho)$.
+Because $V(0)=0$, $|V_N|\le M\sum_{j=1}^N\rho^j\le M$;
+also $|V|\le M$. Both denominators have modulus at least
+$|\Lambda_\ell|/2$. Subtract the two reciprocals to get
+\eqref{eq:flat-tail}.
+\end{proof}
+
+Differentiating \eqref{eq:flat-map}, with $E=\e^{-a/t}$, gives
+\begin{equation}\label{eq:flat-sensitivity}
+ \frac{\dd t}{\dd Y}
+ =\frac{t^2}{ma(Y-Y_*)}\bigl(1+O(E)\bigr).
+\end{equation}
+Thus the inverse is badly conditioned with respect to \emph{absolute}
+errors in $Y$ near $Y_*$. In relative displacement units, however,
+$(Y-Y_*)t'(Y)/t$ is only of order $1/|\Log(Y-Y_*)|$ on a fixed sheet.
+An algorithm should therefore compute $Y-Y_*$ directly, or with enough
+precision to survive its cancellation, rather than subtracting two
+low-precision numbers close to $Y_*$.
+
+Every map in \eqref{eq:flat-map} has the same algebraic asymptotic
+expansion $Y_*+0t+0t^2+\cdots$, irrespective of $a,m,c,U$.
+Consequently, algebraic coefficients alone do not determine the inverse,
+its leading scale, or its branch structure. The full transseries data do.
+This is a failure of information loss under projection to a power series,
+not a failure of transseries inversion.
+
+\section{An exact normal form at every rational \texorpdfstring{$q$}{q}-cusp}
+\label{sec:cusps}
+
+\subsection{Euler quotients and cusp coordinates}
+Write
+\[
+ \Poch(q)=(q;q)_\infty=\prod_{n\ge1}(1-q^n),\qquad |q|<1.
+\]
+Let $N\ge1$ and let $r_\delta\in\Z$, $\delta\mid N$, not all vanish.
+Our main family is
+\begin{equation}\label{eq:euler-quotient}
+ \F_{\vct r}(q)=\prod_{\delta\mid N}\Poch(q^\delta)^{r_\delta}.
+\end{equation}
+Zero exponents may be suppressed. Each factor is nonzero in the unit
+ disk, so negative exponents cause no poles there. We call
+\eqref{eq:euler-quotient} an \emph{Euler quotient}: converting it to a
+literal eta quotient introduces a known elementary power of $q$.
+No modular-form congruences on $\vct r$ are imposed.
+
+Choose coprime integers $h,k$, $k>0$, and put
+\[
+ \zeta=\e^{2\pi\ii h/k},\qquad q=\zeta\e^{-t},\qquad \Re t>0.
+\]
+The cusp $q=1$ is represented by $(h,k)=(0,1)$. For each active scale set
+\begin{align}
+ g_\delta&=\gcd(k,\delta),& c_\delta&=k/g_\delta,&
+ a_\delta&=\delta h/g_\delta.\label{eq:cusp-integers}
+\end{align}
+Choose $d_\delta$ with $a_\delta d_\delta\equiv1\pmod{c_\delta}$;
+when $c_\delta=1$, take $d_\delta=0$. Define
+\begin{equation}\label{eq:dedekind}
+ s(d,c)=\sum_{n=1}^{c-1}
+ \left(\frac nc-\frac12\right)
+ \left(\frac{dn\bmod c}{c}-\frac12\right),\qquad s(d,1)=0.
+\end{equation}
+For $c>1$ the residues in this sum are nonzero because $d$ is coprime
+to $c$. Thus this is the usual Dedekind sum.
+
+The data needed for inversion are
+\begin{align}
+ R_0&=\sum_{\delta\mid N}r_\delta,&
+ R_1&=\sum_{\delta\mid N}\delta r_\delta,&
+ \beta&=-R_0/2,& B&=R_1/24,\label{eq:R-data}\\
+ A_k&=\frac{\pi^2}{6k^2}
+       \sum_{\delta\mid N}\frac{r_\delta g_\delta^2}{\delta},
+ & a&=\frac{4\pi^2}{k^2N},&
+ m_\delta&=\frac{Ng_\delta^2}{\delta},&
+ \rho_\delta&=\e^{-2\pi\ii d_\delta/c_\delta}.\label{eq:A-data}
+\end{align}
+Every $m_\delta$ is a positive integer. Finally put
+\begin{align}
+ C_{h,k}
+ &=(2\pi)^{R_0/2}
+ \prod_{\delta\mid N}(c_\delta\delta)^{-r_\delta/2}
+ \exp\left(-\pi\ii\sum_{\delta\mid N}
+                 r_\delta s(d_\delta,c_\delta)\right),
+ \label{eq:C-data}\\
+ H_{h,k}(Q)&=\prod_{\delta\mid N}
+                \Poch(\rho_\delta Q^{m_\delta})^{r_\delta}.
+ \label{eq:H-data}
+\end{align}
+The function $H_{h,k}$ is holomorphic and nonzero for $|Q|<1$, and
+$H_{h,k}(0)=1$. The number $A_k$ depends only on the cusp denominator;
+$C_{h,k}$ and the phases in $H_{h,k}$ also depend on the numerator.
+
+\begin{theorem}[Exact cusp preparation]\label{thm:cusp}
+For every $t$ with $\Re t>0$,
+\begin{equation}\label{eq:cusp-normal}
+ \boxed{\quad
+ \F_{\vct r}(\zeta\e^{-t})
+ =C_{h,k}\,t^\beta\exp(-A_k/t+Bt)
+           H_{h,k}(\e^{-a/t}).\quad}
+\end{equation}
+Here $t^\beta$ uses the logarithm on the right half-plane that is real
+on the positive axis. This is an identity of holomorphic functions, not
+merely an asymptotic expansion.
+\end{theorem}
+\begin{proof}
+We record the reduction to the classical eta transformation
+\cite[\S27.14]{dlmf} to fix all phases. For one scale omit the subscript
+$\delta$ on $a_\delta,c_\delta,d_\delta$, and choose an integer $b$ with
+$ad-bc=1$. Set
+\[
+ z=\frac ac+\frac{\ii\delta t}{2\pi},\qquad
+ w=\frac{dz-b}{-cz+a}=-\frac dc+\frac{2\pi\ii}{c^2\delta t}.
+\]
+Both $z,w$ lie in the upper half-plane. In a compatible square-root
+convention the eta law is
+\[
+ \eta\left(\frac{aw+b}{cw+d}\right)
+ =\exp\!\left(\pi\ii\left(\frac{a+d}{12c}-s(d,c)\right)\right)
+ [-\ii(cw+d)]^{1/2}\eta(w).
+\]
+Use $\Poch(\e^{2\pi\ii z})=\e^{-\pi\ii z/12}\eta(z)$ and
+$cw+d=2\pi\ii/(c\delta t)$. The result is
+\begin{align}
+ \Poch(\zeta^\delta\e^{-\delta t})
+ ={}&\e^{-\pi\ii s(d,c)}
+ \left(\frac{2\pi}{c\delta t}\right)^{1/2}
+ \exp\left(-\frac{\pi^2}{6c^2\delta t}+\frac{\delta t}{24}\right)
+ \notag\\
+ &\hspace{15mm}\cdot
+ \Poch\left(\e^{-2\pi\ii d/c}
+                   \e^{-4\pi^2/(c^2\delta t)}\right).
+ \label{eq:single-cusp}
+\end{align}
+In particular, the terms $(a+d)/(12c)$ cancel exactly; discarding them
+before transforming would give the wrong phase. The square root in
+\eqref{eq:single-cusp} is positive for positive $t$ before its displayed
+Dedekind multiplier. Multiplying the individual formulas to powers
+$r_\delta$ gives \eqref{eq:cusp-normal} and all its constants. The
+formula for $c=1$ includes integer translations of $z$ and has the same
+cancellation. No modular-form transformation property for the assembled
+quotient was needed.
+\end{proof}
+
+\subsection{Exact coefficients and termination of the first-action search}
+Let $\sigma_1(n)=\sum_{d\mid n}d$. Writing
+$\log H_{h,k}(Q)=\sum_{n\ge1}\ell_nQ^n$, direct expansion of
+$\log\Poch(z)$ gives
+\begin{equation}\label{eq:logH}
+ \ell_n=-\frac1n
+ \sum_{\substack{\delta\mid N\\m_\delta\mid n}}
+ r_\delta m_\delta\,
+ \sigma_1(n/m_\delta)\rho_\delta^{\,n/m_\delta}.
+\end{equation}
+If $H_{h,k}(Q)=\sum_{n\ge0}h_nQ^n$, then
+\begin{equation}\label{eq:H-rec}
+ h_0=1,\qquad
+ nh_n=\sum_{j=1}^n j\ell_jh_{n-j}\quad(n\ge1).
+\end{equation}
+Thus every coefficient is in an explicitly specified cyclotomic field.
+At $q=1$, all phases are $1$ and the coefficients are integers: this
+also follows directly from integer powers of the Euler factors.
+
+\begin{lemma}[The transformed tail is nonconstant]\label{lem:H-nonconstant}
+For a nonzero finite exponent vector $\vct r$, the function $H_{h,k}$
+is not identically $1$. Consequently the search for the first nonzero
+coefficient of $H_{h,k}-1$ terminates at every cusp.
+\end{lemma}
+\begin{proof}
+Suppose $H_{h,k}=1$. By analytic continuation in the unit disk it is
+identically $1$ throughout its domain. Formula~\eqref{eq:cusp-normal}
+then holds without a tail for every real $t>0$. As $t\to+\infty$,
+$\F_{\vct r}(\zeta\e^{-t})=1+O(\e^{-\delta_0t})$, where
+$\delta_0$ is the smallest active scale. Since $B,\beta,A_k$ are real,
+comparison with $C_{h,k}t^\beta\e^{-A_k/t+Bt}$ first gives
+$B=0$, then $\beta=0$ and $C_{h,k}=1$, and finally $A_k=0$ by
+comparison of the $1/t$ terms. It follows that $\F_{\vct r}=1$.
+But its Taylor coefficient at $q^{\delta_0}$ is $-r_{\delta_0}\ne0$;
+larger scales cannot contribute to that coefficient. This contradiction
+proves the claim.
+\end{proof}
+The proof is qualitative: it does not give a useful uniform bound for
+the first nonzero index at arbitrary cusps. At $q=1$ there is a simple
+bound and an exact answer. If $\delta_{\max}$ is the largest active
+scale, the smallest $m_\delta=N/\delta$ is unique, so
+\begin{equation}\label{eq:first-q1}
+ m=\ord_0(H_{0,1}-1)=N/\delta_{\max},\qquad h_m=-r_{\delta_{\max}}.
+\end{equation}
+Changing the auxiliary common multiple $N$ merely changes the coordinate
+$Q$; the physical first action $ma=4\pi^2/\delta_{\max}$ is unchanged.
+An apparent Puiseux order can contain redundant ramification if $H$ is
+a function of a proper power of $Q$. The complete sheet formula remains
+valid; a smaller primitive action coordinate removes that redundancy.
+
+\section{Classification of cusp inverses and a four-factor minimum}
+\label{sec:classification}
+
+\begin{theorem}[Four inverse regimes]\label{thm:classification}
+For a nontrivial Euler quotient \eqref{eq:euler-quotient} at a fixed cusp,
+exactly one of the following applies, with the data of
+Theorem~\ref{thm:cusp}.
+\begin{enumerate}[label=\textnormal{(\Roman*)},leftmargin=13mm]
+\item $A_k\ne0$. Along positive $t$, the quotient tends to $0$ when
+$A_k>0$ and has unbounded modulus when $A_k<0$. Its inverse has a
+logarithmic phase core and a convergent analytic lift as in
+Theorem~\ref{thm:prepared}.
+\item $A_k=0$ and $\beta\ne0$. The inverse has a power core, perturbed
+by a convergent slope-adapted exponential transseries as in
+Theorem~\ref{thm:power}.
+\item $A_k=\beta=0$ and $B\ne0$. The finite limit is $C_{h,k}$.
+The exact regular core is
+$\tau=B^{-1}\Log(Y/C_{h,k})$, and its flat perturbation is given by
+Theorem~\ref{thm:power} with $\sigma=2$.
+\item $A_k=\beta=B=0$. The finite limit is $C_{h,k}$ and is infinitely
+flat on closed right-half-plane subsectors. Put
+$m=\ord_0(H_{h,k}-1)$ and
+$c=C_{h,k}h_m$. Then all local inverse sheets are given by
+Theorem~\ref{thm:flat}, with
+\[
+ U(Q)=\frac{H_{h,k}(Q)-1}{h_mQ^m}.
+\]
+\end{enumerate}
+In particular, a nonconstant infinitely flat finite nonzero limit occurs
+if and only if the three linear conditions
+\begin{equation}\label{eq:three-conditions}
+ \sum_{\delta\mid N}\frac{r_\delta\gcd(k,\delta)^2}{\delta}=0,
+ \qquad \sum_{\delta\mid N}r_\delta=0,
+ \qquad \sum_{\delta\mid N}\delta r_\delta=0
+\end{equation}
+hold.
+\end{theorem}
+\begin{proof}
+The alternatives are exhaustive and disjoint by their definitions.
+For (I), put $\epsilon=\operatorname{sign}(A_k)$ and invert
+$Y=\F_{\vct r}^{\epsilon}$ instead of $\F_{\vct r}$ when necessary.
+The prepared data are $A=\epsilon A_k>0$, $C=C_{h,k}^{\epsilon}$,
+$\beta'=\epsilon\beta$ and
+$U(t,E)=\e^{\epsilon Bt}H_{h,k}(E)^{\epsilon}$, with single action
+$a>0$. The reciprocal target change is locally invertible and restores
+the original target at the end. Theorem~\ref{thm:prepared} applies.
+Alternatives (II) and (III) are exactly \eqref{eq:power-map}.
+For (IV), Lemma~\ref{lem:H-nonconstant} gives a finite $m$ and nonzero
+$h_m$; its displayed $U$ is a holomorphic unit. This proves applicability
+of Theorem~\ref{thm:flat}.
+
+For necessity of the final assertion, compare \eqref{eq:cusp-normal}
+along $t\downarrow0$. A finite nonzero limit forces $A_k=0$ and
+$\beta=0$, since both are real. The remaining algebraic factor is
+$\e^{Bt}$. Flatness forces its linear coefficient $B$ to vanish.
+Conversely, all three vanishing leaves a nonconstant exponentially small
+tail. This is flat uniformly wherever $\Re(1/t)\ge c/|t|$.
+\end{proof}
+
+The original inverse in the $q$ plane is simply
+$q(Y)=\zeta\exp(-t(Y))$. Analytic composition preserves the local sheet
+information and the proved error estimates, up to a bounded derivative
+factor on each sufficiently small chart. We give formulas in $t$ because
+it is the natural cusp coordinate and displays the transseries scales.
+
+\subsection{Minimum support and all four-scale solutions at \texorpdfstring{$q=1$}{q=1}}
+At $q=1$, the three conditions are
+\begin{equation}\label{eq:flat-q1}
+ \sum_j r_j/\delta_j=0,\qquad
+ \sum_jr_j=0,\qquad \sum_j\delta_jr_j=0.
+\end{equation}
+
+\begin{theorem}[Four-factor minimum]\label{thm:four}
+On $s$ distinct positive integer scales $\delta_1,\ldots,\delta_s$, the
+rational solution space of \eqref{eq:flat-q1} has dimension
+$\max(s-3,0)$. In particular, a nonzero integer solution requires at
+least four scales, and every set of four distinct scales admits one.
+For four scales all solutions are multiples of
+\begin{equation}\label{eq:kernel-four}
+ r_i=K\frac{\delta_i}
+              {\prod_{j\ne i}(\delta_i-\delta_j)},\qquad i=1,2,3,4.
+\end{equation}
+The scalar $K$ may be chosen to make all four exponents integers and
+then primitive by dividing their common divisor.
+\end{theorem}
+\begin{proof}
+Put $x_i=r_i/\delta_i$. The three rows become
+$\sum x_i\delta_i^j=0$ for $j=0,1,2$.
+The resulting $3\times s$ Vandermonde matrix has rank $\min(3,s)$:
+every square minor of size at most three on distinct scales is nonzero.
+This proves the dimension and the lower bound.
+For four scales, the leading-coefficient identity in Lagrange polynomial
+interpolation gives
+\[
+ \sum_{i=1}^4
+ \frac{\delta_i^j}{\prod_{l\ne i}(\delta_i-\delta_l)}=0,
+ \qquad j=0,1,2.
+\]
+It proves \eqref{eq:kernel-four}; the one-dimensional kernel proves
+exhaustiveness. The entries are nonzero rational numbers, so clearing
+denominators gives the claimed integer vector.
+\end{proof}
+This minimum concerns distinct Euler factors at $q=1$, not arbitrary
+special-function representations or every other cusp. At other cusp
+denominators the first row in \eqref{eq:three-conditions} changes and
+its rank must be checked afresh.
+
+
+\subsection{Intrinsic ramification and unbounded complexity with four factors}
+An arbitrarily chosen common multiple $N$ can make the number $m$ in
+Theorem~\ref{thm:flat} artificially large. The following criterion
+separates this coordinate effect from actual ramification of the
+\emph{denominator correction}.
+
+\begin{theorem}[Exact correction ramification]\label{thm:ramification}
+Let $H(Q)=1+h_mQ^m+\cdots$, $h_m\ne0$, be a nonconstant holomorphic
+germ, and put
+\[
+ g=\gcd\{n\ge1:[Q^n](H(Q)-1)\ne0\}.
+\]
+Then $g\mid m$. In the flat inverse with
+$u=(Y-C)/(Ch_m)$, the correction $V(u^{1/m})$ of
+Theorem~\ref{thm:flat} has minimal finite ramification degree $m/g$.
+The logarithmic term still has infinite monodromy and is not included
+in this finite-degree assertion.
+
+For a flat Euler quotient at $q=1$, take $N$ to be the least common
+multiple of its active scales. Then $g=1$ and this degree is exactly
+\begin{equation}\label{eq:intrinsic-degree}
+ \frac{N}{\delta_{\max}}.
+\end{equation}
+Every positive integer occurs as this degree for a flat quotient with
+exactly four distinct Euler factors. Four factors are minimal.
+\end{theorem}
+\begin{proof}
+For an $m$th root of unity $\omega$, the condition
+$V(\omega s)=V(s)$ is equivalent, by $V(0)=0$, to
+$\psi(\omega s)=\omega\psi(s)$. Since $\psi$ is the inverse of
+$f(Q)=Q((H(Q)-1)/(h_mQ^m))^{1/m}$, this is equivalent to
+$f(\omega Q)=\omega f(Q)$, and hence to $H(\omega Q)=H(Q)$.
+The last equivalence in the reverse direction uses the unique root
+with constant term $1$. The rotation stabilizer of $H$ inside the
+$m$th roots of unity is exactly the group of $g$th roots of unity:
+its coefficients require $\omega^n=1$ for every occupied exponent.
+Thus exactly $m/g$ circuits in $u$ are needed to restore the correction.
+Equivalently its series lies in $\C\{u^{g/m}\}$ and in no smaller
+finite ramification. This includes $V=0$, for which $H-1$ is a single
+monomial and $g=m$.
+
+For completeness, for any nontrivial finite Euler quotient
+$H(Q)=\prod_e\Poch(Q^e)^{r_e}$ the gcd of the support of $H-1$ equals
+the gcd of its active $e$. One divisibility is immediate by writing
+every factor as a series in $Q^{\gcd e}$. For the converse, let $d$
+divide the entire support of $H-1$. Then $\log H$ also has support in
+$d\N$. If some active $e$ is not divisible by $d$, choose the smallest
+such $e$. Every smaller active scale that divides $e$ would have to be
+divisible by $d$, which is impossible. The coefficient of $Q^e$ in
+$\log H$ is therefore $-r_e\ne0$, a contradiction.
+At $q=1$ the active scales of $H$ are $e=N/\delta$. Their gcd is $1$
+when $N$ is the least common multiple, and
+\eqref{eq:first-q1} gives \eqref{eq:intrinsic-degree}.
+
+For every integer $m\ge3$, choose the four scales
+$1,2,m,m+1$. They are distinct, their least common multiple is
+$m(m+1)$, and their maximum is $m+1$. Choose the nonzero integer kernel
+vector given by Theorem~\ref{thm:four}. It has all four entries nonzero,
+is flat, and has intrinsic correction degree $m$. Degree $1$ is realized
+by scales $1,2,3,6$, and degree $2$ by $2,3,4,6$, again with their
+nonzero kernel vectors. Minimality follows from Theorem~\ref{thm:four}.
+\end{proof}
+This yields unbounded branch complexity with a fixed number of product
+factors. It also shows precisely which notion of ramification is meant:
+finite ramification of the analytic phase correction, superimposed on
+an already infinitely sheeted logarithmic inverse.
+
+\subsection{Arithmetic action ratios in the essential regime}
+There is a complementary restriction when $A_k\ne0$. Set
+\[
+ M_k=\sum_{\delta\mid N}r_\delta(N/\delta)\gcd(k,\delta)^2\in\Z.
+\]
+Then $A_k=\pi^2M_k/(6k^2N)$. After replacing the target by its reciprocal
+when $M_k<0$, the ratio between the dual action and the dominant action is
+\begin{equation}\label{eq:rational-action}
+ \lambda=\frac{a}{|A_k|}=\frac{24}{|M_k|}\in\Q_{>0}.
+\end{equation}
+With $\epsilon=\operatorname{sign}(M_k)$,
+$\beta'=\epsilon\beta$, $C'=C_{h,k}^{\epsilon}$, and target
+$Y=\F_{\vct r}^{\epsilon}$, equation~\eqref{eq:action-transport} gives
+\begin{equation}\label{eq:algebraic-Q}
+ Q^{|M_k|}
+ =\left(\frac{Y}{C'|A_k|^{\beta'}}\right)^{24}
+        x_0^{24\beta'},\qquad 24\beta'=-12\epsilon R_0\in\Z.
+\end{equation}
+Thus the small dual parameter is algebraic over the pair $(Y,x_0)$;
+all its fractional powers can be handled on a finite algebraic cover.
+This does not eliminate the logarithmic core or assert that the full
+inverse is algebraic. It does rule out irrational action-ratio
+ramification for this finite integer Euler-product family, in contrast
+to Proposition~\ref{prop:irrational} for general prepared transseries.
+
+\section{Two explicit infinitely flat \texorpdfstring{$q$}{q}-analogs}
+\label{sec:examples}
+
+\subsection{A four-factor quotient with an unramified correction}
+Consider
+\begin{equation}\label{eq:example6}
+ F_6(q)=\frac{\Poch(q^2)^5\Poch(q^6)}{\Poch(q)\Poch(q^3)^5},
+ \qquad Y(t)=\frac89F_6(\e^{-t}).
+\end{equation}
+Its exponents on $1,2,3,6$ are $(-1,5,-5,1)$ and satisfy
+\eqref{eq:flat-q1}. The cusp constant is $C_{0,1}=9/8$. With
+\[
+ a=\frac{2\pi^2}{3},\qquad Q=\e^{-a/t},
+\]
+Theorem~\ref{thm:cusp} gives the exact identity
+\begin{equation}\label{eq:H6}
+ Y(t)=H(Q)=\frac{\Poch(Q)\Poch(Q^3)^5}
+                         {\Poch(Q^2)^5\Poch(Q^6)}.
+\end{equation}
+Equivalently,
+$F_6(\e^{-t})F_6(\e^{-a/t})=9/8$.
+This self-reciprocity is a consequence of the classical eta law, not a
+new modular transformation.
+
+The first terms, computed by \eqref{eq:logH}--\eqref{eq:H-rec}, are
+\begin{align}
+ H(Q)={}&1-Q+4Q^2-10Q^3+20Q^4-39Q^5\notag\\
+       &+76Q^6-140Q^7+244Q^8-415Q^9+O(Q^{10}).
+ \label{eq:H6-series}
+\end{align}
+Put $u=1-Y$. The inverse $Q=\psi(u)$ and its logarithmic unit are
+\begin{align}
+ \psi(u)={}&u+4u^2+22u^3+140u^4+965u^5+6992u^6\notag\\
+ &+52420u^7+402880u^8+3155410u^9+25083336u^{10}+O(u^{11}),
+ \label{eq:psi6}\\
+ V(u)={}&4u+14u^2+\frac{220}{3}u^3+451u^4
+        +\frac{15124}{5}u^5+\frac{64274}{3}u^6+O(u^7).
+ \label{eq:V6}
+\end{align}
+All these series converge near zero. The complete inverse family is
+\begin{equation}\label{eq:t6}
+ \boxed{\quad t_\ell(Y)=
+ -\frac{2\pi^2/3}{\Log(1-Y)+2\pi\ii\ell+V(1-Y)},
+ \qquad \ell\in\Z.\quad}
+\end{equation}
+The real small-positive-$t$ inverse uses $u>0$ and $\ell=0$.
+The numerator $2\pi^2/3$ and the full analytic denominator correction
+are invisible in the algebraic expansion $Y\sim1$.
+
+For the same quotient at the four divisor cusp denominators, the
+normalized actions are
+\begin{equation}\label{eq:example-actions}
+ \left(\frac{6k^2}{\pi^2}A_k\right)_{k=1,2,3,6}=(0,8,-12,0).
+\end{equation}
+Thus the cusps of denominators $1$ and $6$ are flat, the denominator-$2$
+cusp has $A_2=\pi^2/3>0$, and the denominator-$3$ cusp has
+$A_3=-2\pi^2/9<0$. At $\zeta_6=\e^{\pi\ii/3}$, the constant is
+$C_{1,6}=1$ and the first transformed coefficient gives
+\begin{equation}\label{eq:sixth-cusp}
+ F_6(\zeta_6\e^{-t})
+ =1+\e^{-\pi\ii/3}\exp\left(-\frac{\pi^2}{9t}\right)
+   +o\left(\exp\left(-\frac{\pi^2}{9t}\right)\right)
+\end{equation}
+along positive $t$. Here $a=\pi^2/54$ and the first nonzero index is
+$m=6$. In fact all transformed exponents are multiples of $6$, so the
+primitive coordinate is $\e^{-\pi^2/(9t)}$. This illustrates why an
+auxiliary Puiseux order must not automatically be called intrinsic.
+
+\subsection{A four-factor quotient with genuine square-root correction}
+Consider the distinct scales $2,3,4,6$ and exponents $(-1,4,-4,1)$:
+\begin{equation}\label{eq:example12}
+ F_{12}(q)=\frac{\Poch(q^3)^4\Poch(q^6)}
+                         {\Poch(q^2)\Poch(q^4)^4},
+ \qquad C=\frac{16\sqrt3}{27},\qquad
+ Y(t)=F_{12}(\e^{-t})/C.
+\end{equation}
+Here $N=12$, $a=\pi^2/3$, and
+\begin{equation}\label{eq:H12}
+ Y(t)=H(Q)=\frac{\Poch(Q^2)\Poch(Q^4)^4}
+                        {\Poch(Q^3)^4\Poch(Q^6)},\qquad Q=\e^{-a/t}.
+\end{equation}
+The smallest powers are $2$ and $3$, so the primitive action coordinate
+cannot remove their relative square-root correction. Specifically,
+\begin{align}
+ H(Q)={}&1-Q^2+4Q^3-5Q^4-4Q^5+19Q^6\notag\\
+        &-20Q^7-9Q^8+60Q^9-76Q^{10}+O(Q^{11}).
+ \label{eq:H12-series}
+\end{align}
+Put $u=1-Y$ and fix $s=\sqrt u$ coherently with
+$\log s=\tfrac12\Log u$. The analytic inverse of
+$s=Q\sqrt{(1-H(Q))/Q^2}$ is
+\begin{align}
+ \psi(s)={}&s+2s^2+\frac{15}{2}s^3+32s^4+\frac{1203}{8}s^5
+             +746s^6\notag\\
+ &+\frac{61467}{16}s^7+20320s^8+
+       \frac{14038275}{128}s^9+601374s^{10}+O(s^{11}),
+ \label{eq:psi12}\\
+ V(s)={}&2s+\frac{11}{2}s^2+\frac{59}{3}s^3+\frac{337}{4}s^4
+          +\frac{7843}{20}s^5+\frac{11567}{6}s^6+O(s^7).
+ \label{eq:V12}
+\end{align}
+All inverse sheets are
+\begin{equation}\label{eq:t12}
+ \boxed{\quad t_\ell(Y)=-\frac{\pi^2/3}
+ {\tfrac12\Log(1-Y)+\pi\ii\ell+
+                  V((-1)^\ell\sqrt{1-Y})},\qquad \ell\in\Z.\quad}
+\end{equation}
+One circuit of $Y$ around $1$ changes the sign of the square root and
+increments the sheet. Two circuits restore the square-root sign but add
+$2\pi\ii$ to the logarithm. Treating the square root and logarithm as
+independent principal branches would lose this compatibility.
+
+Both examples have leading real inverse
+$t\sim-2\pi^2/(3\Log(1-Y))$. Their leading logarithmic scale is therefore
+identical, but one denominator correction starts at $1-Y$ and the other
+at $\sqrt{1-Y}$. A leading-equivalent inverse does not determine the
+subdominant ramification.
+
+\section{Recovering the quotient from its cusp actions}
+\label{sec:recovery}
+An individual cusp may hide every algebraic coefficient, and some cusps
+may have zero essential action. Nevertheless, the actions at the
+\emph{divisor cusps together} determine the original finite exponent
+vector.
+
+For every $k\mid N$, set
+\begin{equation}\label{eq:normalized-actions}
+ a_k=\frac{6k^2}{\pi^2}A_k
+ =\sum_{\delta\mid N}\frac{r_\delta}{\delta}\gcd(k,\delta)^2.
+\end{equation}
+Let $\mu$ denote the M\"obius function and
+\[
+ J_2(d)=\sum_{e\mid d}\mu(d/e)e^2
+       =d^2\prod_{p\mid d}(1-p^{-2})>0
+\]
+be the second Jordan totient.
+
+\begin{theorem}[Double M\"obius recovery]\label{thm:recover}
+For every $\delta\mid N$,
+\begin{equation}\label{eq:recover}
+ \boxed{\quad
+ r_\delta=\delta
+ \sum_{\substack{m\mid N\\\delta\mid m}}
+ \frac{\mu(m/\delta)}{J_2(m)}
+       \sum_{e\mid m}\mu(m/e)a_e.\quad}
+\end{equation}
+The linear map from $(r_\delta)_{\delta\mid N}$ to $(a_k)_{k\mid N}$
+is invertible, with determinant
+\begin{equation}\label{eq:det}
+ \prod_{d\mid N}\frac{J_2(d)}{d}
+\end{equation}
+when rows and columns use the same increasing divisor order.
+Consequently a nontrivial Euler quotient cannot have zero essential
+action at every divisor cusp, and in particular cannot be infinitely
+flat at all of them.
+\end{theorem}
+\begin{proof}
+The divisor identity $n^2=\sum_{d\mid n}J_2(d)$ gives
+\begin{align*}
+ a_k
+ &=\sum_{d\mid k}J_2(d)
+       \sum_{\substack{\delta\mid N\\d\mid\delta}}
+                   \frac{r_\delta}{\delta}.
+\end{align*}
+M\"obius inversion on the divisors of $k$ therefore gives
+\[
+ b_d:=\frac1{J_2(d)}\sum_{e\mid d}\mu(d/e)a_e
+     =\sum_{\substack{\delta\mid N\\d\mid\delta}}
+                     \frac{r_\delta}{\delta}.
+\]
+Apply M\"obius inversion a second time, now to this upper-divisor sum:
+$r_\delta/\delta=\sum_{\delta\mid m\mid N}\mu(m/\delta)b_m$.
+This is \eqref{eq:recover}.
+
+For the determinant, let $E_{k,d}=1$ when $d\mid k$ and $0$ otherwise.
+With divisors increasing, $E$ is triangular with diagonal $1$. The
+matrix in \eqref{eq:normalized-actions} factors as
+\[
+ E\,\operatorname{diag}(J_2(d))\,E^{\mathsf T}
+          \operatorname{diag}(1/\delta).
+\]
+Taking determinants proves \eqref{eq:det}. If all $a_k$ vanish, recovery
+gives $\vct r=0$, proving the final statements.
+\end{proof}
+
+This theorem does not assume modular-form invariance of the quotient.
+It is a finite arithmetic consequence of the exact cusp actions. The
+underlying divisor-matrix factorization is elementary; the contribution
+here is its explicit use as an inverse-data reconstruction procedure,
+not a claim to have discovered M\"obius inversion or modular rigidity.
+
+The actions can themselves be read from leading radial inverse data.
+Indeed, on a continuously chosen logarithm along the radial image,
+\begin{equation}\label{eq:inverse-action-data}
+ \lim_{t\downarrow0} t\log\F_{\vct r}(\zeta\e^{-t})=-A_k.
+\end{equation}
+Equivalently, along the corresponding inverse branch,
+$t(Y)\log Y\to-A_k$. The real version
+$t\log|\F_{\vct r}(\zeta\e^{-t})|\to-A_k$ avoids the logarithmic
+phase convention. Even in the zero-action cases the limit exists and
+is zero. Exact action data at all $k\mid N$ therefore recover every
+exponent. No analogous recovery from a \emph{single} flat cusp's leading
+constant is asserted. For $F_6$, substituting \eqref{eq:example-actions}
+into \eqref{eq:recover} returns $(-1,5,-5,1)$.
+
+\section{A nonmodular application: fixed-parameter shifted factorials}
+\label{sec:shifted}
+The exact modular tail is an advantage of the Euler-product family, not
+an assumption that should silently be transferred to every $q$-analog.
+We now give an all-orders inverse in a case where the algebraic series
+need not converge. This makes the formal/analytic distinction concrete.
+
+Fix $z\in(0,1)$ and define
+\[
+ P_z(t)=(z;\e^{-t})_\infty=\prod_{n\ge0}(1-z\e^{-nt}),\qquad \Re t>0.
+\]
+The following constants are positive real when appropriate:
+\[
+ A=\Li_2(z)>0,\quad C=\sqrt{1-z}>0,\quad
+ b_j=\frac{B_{2j}}{(2j)!}\Li_{2-2j}(z).
+\]
+Here $B_n$ are the Bernoulli numbers with $B_2=1/6$, $B_4=-1/30$,
+and $\Li_s(z)=\sum_{n\ge1}z^n/n^s$ for $|z|<1$.
+
+\begin{proposition}[All-orders inverse of a shifted factorial]
+\label{prop:shifted}
+Uniformly for $z$ in a compact subinterval of $(0,1)$ and $t\to0$ in
+$|\arg t|\le\pi/2-\epsilon$, for every fixed $M\ge0$,
+\begin{equation}\label{eq:shifted-asymptotic}
+ \log P_z(t)=-\frac{A}{t}+\log C
+             -\sum_{j=1}^M b_jt^{2j-1}+O(t^{2M+1}).
+\end{equation}
+For $Y=P_z(t)$, choose $L=\Log(C/Y)$ on the corresponding logarithmic
+cover. The local inverse has the all-orders expansion
+\begin{equation}\label{eq:shifted-reversion}
+ t\sim\sum_{n\ge1}\frac{L^{-n}}{n}
+       [w^{n-1}]\left(A+\sum_{j\ge1}b_jw^{2j}\right)^n.
+\end{equation}
+Every coefficient involves only finitely many $b_j$, and only odd powers
+of $L^{-1}$ occur. In particular,
+\begin{align}
+ t={}&\frac{A}{L}+\frac{A^2\Li_0(z)}{12L^3}\notag\\
+ &+\frac1{L^5}\left(
+       \frac{A^3\Li_0(z)^2}{72}-\frac{A^4\Li_{-2}(z)}{720}\right)
+       +O(L^{-7}).\label{eq:shifted-first}
+\end{align}
+These are asymptotic assertions, not a claim of convergence of
+\eqref{eq:shifted-reversion} or of a specified Borel sum.
+\end{proposition}
+\begin{proof}
+The absolutely convergent logarithmic expansion gives
+\begin{equation}\label{eq:shifted-logsum}
+ \log P_z(t)=-\sum_{n\ge1}\frac{z^n}{n(1-\e^{-nt})}.
+\end{equation}
+On a fixed closed sector $|\arg w|\le\pi/2-\epsilon$, the kernel has
+\[
+ \frac1{1-\e^{-w}}
+ =\frac1w+\frac12+
+   \sum_{j=1}^M\frac{B_{2j}}{(2j)!}w^{2j-1}
+   +R_M(w),\qquad |R_M(w)|\le C_{M,\epsilon}|w|^{2M+1}.
+\]
+Near zero this follows from its convergent Taylor expansion after
+removing the pole. For $|w|\ge1$, the denominator is bounded away from
+zero because $\Re w\ge |w|\sin\epsilon$, and the same bound follows
+by bounding the finitely many subtracted terms. Inserting $w=nt$ into
+\eqref{eq:shifted-logsum} bounds the remainder by
+$C_{M,\epsilon}|t|^{2M+1}\sum_{n\ge1}z^nn^{2M}$, uniformly on the
+stated compact sets. Summing the individual terms proves
+\eqref{eq:shifted-asymptotic}.
+
+Formally, the logarithmic equation is
+$L=A/t+\sum_{j\ge1}b_jt^{2j-1}$, or
+\[
+ t=L^{-1}\left(A+\sum_{j\ge1}b_jt^{2j}\right).
+\]
+Lagrange inversion proves \eqref{eq:shifted-reversion} in the formal
+power-series ring. Parity of the parenthesis proves the odd-power claim.
+The first coefficients are $A$, $b_1A^2$, and
+$2b_1^2A^3+b_2A^4$, which give \eqref{eq:shifted-first}.
+
+To identify this formal inverse with an analytic asymptotic inverse,
+put $x=A/t$. The exact forward logarithmic phase is
+$x+O(x^{-1})$, with derivative $1+O(x^{-2})$ on smaller large-$x$
+sectors. The derivative estimate follows either by differentiating the
+normally convergent logarithmic sum on interior sectors or by Cauchy's
+estimate applied to the uniform remainder on a slightly larger sector.
+For large $L$, Lemma~\ref{lem:certificate} on a disk about $L$ of radius
+$K/|L|$, with $K$ sufficiently large, gives the unique root close to $L$.
+At every fixed order, substitution of the formal inverse cancels the
+corresponding terms of \eqref{eq:shifted-asymptotic}; the same certificate
+transports the remaining phase error into an inverse error. Taking
+arbitrarily large fixed $M$ proves the full asymptotic statement.
+\end{proof}
+
+The forward expansion is part of the classical polylogarithm--Bernoulli
+$q$-factorial calculus \cite{mcintosh}; we included its proof to make
+the inverse statement and its sectorial remainder independent of a
+formal citation. The recent gamma-product approach of Arabi Ardehali
+and Rosengren provides a broader route to nonmodular asymptotics
+\cite{ar}. At $z\to1$ our constants and remainder bounds are not uniform:
+$C\to0$ and the negative-index polylogarithms diverge. A simultaneous
+$z=\e^{-\alpha t}\to1$ limit requires a different, typically gamma-based,
+core. Substituting $z=1$ into \eqref{eq:shifted-first} is invalid.
+
+\section{Finite Gaussian multinomials: ordinary critical-point reversal}
+\label{sec:finite}
+For comparison with the infinitely flat boundary case, let
+$n_1,\ldots,n_s$ be nonnegative integers with sum $n$, and consider the
+Gaussian multinomial polynomial
+\begin{equation}\label{eq:qmultinomial}
+ P(q)=\begin{bmatrix}n\\n_1,\ldots,n_s\end{bmatrix}_q
+ =\frac{\prod_{j=1}^n(1-q^j)}
+        {\prod_{i=1}^s\prod_{j=1}^{n_i}(1-q^j)}.
+\end{equation}
+These are finite $q$-analogs; the standard $q$-binomial notation and
+product identities are recorded in DLMF \S17.2 \cite{dlmfq}.
+
+\begin{proposition}[Root-of-unity order and inverse sheets]
+\label{prop:finite}
+At a primitive $k$th root $\zeta$, the vanishing order of $P$ is exactly
+\begin{equation}\label{eq:finite-order}
+ \nu=\left\lfloor\frac nk\right\rfloor
+       -\sum_{i=1}^s\left\lfloor\frac{n_i}{k}\right\rfloor,
+ \qquad 0\le\nu\le s-1.
+\end{equation}
+If $\nu>0$, write
+$P(\zeta+w)=c w^\nu U(w)$ with $c\ne0$ and $U(0)=1$.
+There are $\nu$ ordinary Puiseux inverse sheets, obtained by evaluating
+\begin{equation}\label{eq:finite-inverse}
+ w(z)=\sum_{j\ge1}\frac{z^j}{j}[w^{j-1}]U(w)^{-j/\nu},
+ \qquad z=(Y/c)^{1/\nu},
+\end{equation}
+at the $\nu$ choices of the root. The series is convergent near zero.
+\end{proposition}
+\begin{proof}
+Each factor $1-q^j$ vanishes simply at $\zeta$ precisely when $k\mid j$.
+Counting numerator and denominator factors proves the order formula;
+all remaining local units have nonzero values, so no further cancellation
+can change it. Write $n_i=k a_i+b_i$ with $0\le b_i<k$; then
+$\nu=\lfloor\sum_i b_i/k\rfloor$, proving the bounds. For $\nu>0$,
+the analytic function $wU(w)^{1/\nu}$ has derivative $1$ at zero.
+Its inverse exists and Lagrange inversion gives \eqref{eq:finite-inverse}.
+\end{proof}
+If $\nu=0$, the polynomial has a nonzero value at the cusp, but its
+derivative need not be nonzero. To study its inverse at that value one
+must find the first nonzero derivative of $P(q)-P(\zeta)$; the floor
+formula alone does not determine that critical order.
+
+For example,
+\begin{equation}\label{eq:finite-example}
+ \begin{bmatrix}6\\2,2,2\end{bmatrix}_q
+   =\Phi_3(q)^2\Phi_4(q)\Phi_5(q)\Phi_6(q),
+\end{equation}
+where $\Phi_j$ is the $j$th cyclotomic polynomial. At
+$\zeta=\e^{2\pi\ii/3}$ this equals
+$6\zeta(q-\zeta)^2+O((q-\zeta)^3)$, and the inverse branches are
+\[
+ q=\zeta\ \pm\sqrt{Y/(6\zeta)}+O(Y).
+\]
+Here the critical point has a finite-order zero and ordinary Puiseux
+reversion suffices. In Section~\ref{sec:examples}, by contrast, the
+boundary limit has no first nonzero algebraic derivative in the cusp
+coordinate. Its logarithmic denominator is essential, not an optional
+re-expression of an ordinary Taylor inverse.
+
+\section{Sectorial transitions and exponentially small inverse jumps}
+\label{sec:jumps}
+Local formulas must be glued with care. Let $F_-$ and $F_+$ be
+holomorphic and univalent on chosen overlapping source charts, with
+local inverses $G_-$ and $G_+$. If a source transition $S$ satisfies
+$F_+=F_-\circ S$, then on the corresponding target overlap
+\begin{equation}\label{eq:source-transition}
+ G_+=S^{-1}\circ G_-.
+\end{equation}
+If instead the transition acts on the target, $F_+=T\circ F_-$, then
+\begin{equation}\label{eq:target-transition}
+ G_+=G_-\circ T^{-1}.
+\end{equation}
+These exact identities follow by composition and are not interchangeable.
+They apply to actual sectorial sums when the necessary summability and
+univalence hypotheses have been established. They do not themselves
+prove resurgence or construct a Stokes automorphism.
+
+\begin{proposition}[All-order perturbation transport]\label{prop:jumps}
+Let $F$ be univalent with inverse $G$, and let $\Delta$ be holomorphic
+on a source neighborhood. For sufficiently small $\epsilon$, the inverse
+of $F_\epsilon=F+\epsilon\Delta$ satisfies locally
+\begin{equation}\label{eq:jump-all}
+ G_\epsilon(y)=G(y)+\sum_{n\ge1}\frac{(-\epsilon)^n}{n!}
+ \left(\frac{\dd}{\dd y}\right)^{n-1}
+ \left[G'(y)\,\Delta(G(y))^n\right].
+\end{equation}
+The expansion converges on sufficiently small compact subcharts for
+small $\epsilon$. In particular,
+\begin{equation}\label{eq:jump-first}
+ \left.\frac{\partial G_\epsilon(y)}{\partial\epsilon}\right|_{0}
+       =-\frac{\Delta(G(y))}{F'(G(y))}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Put $u=F(z)$ and $d(u)=\Delta(G(u))$. Then
+$y=u+\epsilon d(u)$ and $z=G(u)$. Lagrange inversion with the observable
+$G$ gives \eqref{eq:jump-all}. The analytic implicit-function theorem
+and a sufficiently small $\epsilon$ disk justify convergence uniformly
+on compact subcharts. The $n=1$ term is \eqref{eq:jump-first}; it also
+follows by differentiating $F_\epsilon(G_\epsilon(y))=y$.
+\end{proof}
+Sauzin's nonlinear resurgent analysis supplies rigorous settings in
+which nonlinear substitutions and inversions preserve appropriate
+resurgent and summability classes \cite{sauzin}. Applying those results
+to a particular divergent transseries requires checking its precise
+continuability and growth hypotheses. In the exact modular examples,
+$H$ and its inverse germ already converge: no unspecified Borel sum is
+required to justify their local formulas. Analytic monodromy of their
+logarithms must still be kept distinct from changes between lateral sums
+of a divergent expansion.
+
+\subsection{An inverse action budget at a flat limit}
+The first-order jump law displays a useful threshold. Suppose, along a
+closed decay sector,
+\[
+ F(t)=Y_*+c\e^{-A_0/t}(1+O(\e^{-a/t})),\qquad
+ \Delta(t)=b\e^{-B_0/t},
+\]
+where $A_0,a,B_0>0$ and $b,c\ne0$. Then
+\begin{equation}\label{eq:jump-action-budget}
+ \left.\partial_\epsilon G_\epsilon(F(t))\right|_0
+ \sim-\frac{b\,t^2}{cA_0}\e^{-(B_0-A_0)/t}.
+\end{equation}
+This follows by differentiating the leading forward term and applying
+\eqref{eq:jump-first}. Forward action $B_0$ becomes inverse action
+$B_0-A_0$, dressed by $t^2$. It is therefore incorrect to transfer the
+forward error exponent unchanged through an infinitely flat inverse.
+
+When $B_0>A_0$, a bounded perturbation coefficient has an exponentially
+small ratio to the leading displacement; a small inverse-phase chart
+remains appropriate. When $B_0=A_0$, it changes the leading amplitude
+$c$ to $c+\epsilon b$ (unless that coefficient cancels, in which case a
+new leading action is needed). When $0<B_0<A_0$, any fixed nonzero
+$\epsilon b$ eventually changes the leading action itself. The
+linear-response formula is still a derivative at $\epsilon=0$, but is
+not a uniform approximation for fixed $\epsilon$ in that last regime.
+These distinctions specify an inverse error budget without conflating
+a small absolute forward error with a small relative error in the
+quantity that is being inverted.
+
+\section{Algorithms, verification, and reproducibility}
+\label{sec:verification}
+
+\subsection{A branch-aware workflow}
+The preceding proofs suggest a practical algorithm rather than only
+existence assertions. Given an Euler quotient, a cusp, a target, and a
+chosen continuation sheet, first compute the integer and cyclotomic data
+in \eqref{eq:cusp-integers}--\eqref{eq:H-data}. Evaluate the three
+invariants exactly and select the chart in
+Theorem~\ref{thm:classification}. Next generate the required coefficients
+using \eqref{eq:logH} and \eqref{eq:H-rec}. In the flat chart find the
+first action, remove any redundant primitive-coordinate factor, and
+compute the analytic inverse $\psi$ and $V$ with
+\eqref{eq:psi-coeff}. The logarithm and root are continued together, as
+in \eqref{eq:flat-inverse}; a principal logarithm is not a universal
+sheet-selection algorithm.
+
+Finally evaluate a truncated inverse and certify its chart whenever
+explicit analytic bounds are available. Corollary~\ref{cor:flat-tail}
+provides a closed tail estimate from $R,M$; in more general charts
+Lemma~\ref{lem:certificate} converts a computable residual and a
+local derivative bound into existence and error control. The existence
+of analytic radii in a theorem is not by itself a numerical interval
+certificate for an implementation. Deriving sharp effective radii is a
+separate, useful task.
+
+For exact coefficient computation, the following recurrence avoids
+symbolic differentiation. If $A(z)=\sum a_nz^n$, $a_0=1$, and
+$B(z)=A(z)^p=\sum b_nz^n$, then $b_0=1$ and
+\begin{equation}\label{eq:power-rec}
+ nb_n=\sum_{k=1}^n((p+1)k-n)a_kb_{n-k}.
+\end{equation}
+It follows by comparing coefficients in $AB'=pA'B$.
+Rational $p$ and rational input coefficients therefore remain exact.
+The supplied program uses rational arithmetic for this recurrence,
+Lagrange coefficients, compositions, and cusp recovery.
+
+\subsection{Numerical product tails}
+For $|q|=r<1$, truncating the logarithm of $\Poch(q)$ after factor $M$
+has the absolute tail bound
+\begin{equation}\label{eq:product-tail}
+ \left|\sum_{j>M}\log(1-q^j)\right|
+ \le\frac{r^{M+1}}{(1-r)(1-r^{M+1})}.
+\end{equation}
+Indeed, $|\log(1-q^j)|\le\sum_{l\ge1}r^{jl}/l
+\le r^j/(1-r^j)$, and summing the geometric bound proves the formula.
+For quotients, multiply the individual bounds by the absolute values of
+their integer exponents and add. The program chooses a cutoff using
+this type of bound but evaluates the finite sum in ordinary arbitrary
+precision, not with outward-rounded arithmetic. Its recorded numerical
+agreement is therefore a diagnostic, not a machine-certified enclosure.
+
+\subsection{Executed checks}
+The package contains \texttt{code/verify.py}, which has no network
+dependency and uses Python's rational arithmetic and \texttt{mpmath}.
+The recorded run checks exact reversion compositions for both examples,
+all three flatness moments, the four-node kernel formula, and recovery
+on every basis vector for levels $1,2,6,12,24,30,60$. It also checks the
+arbitrary-degree four-factor construction, the displayed shifted-factorial
+reversion coefficients on exact rational test inputs, and the finite
+Gaussian example. The recorded run passed 619 exact assertions; software versions and
+individual coefficient data are recorded in \texttt{data/verification.json}.
+
+Fifteen independent forward-versus-dual product tests use three exponent
+vectors, including one with nonzero weight and essential action, at
+cusps $(h,k)=(0,1),(1,2),(1,3),(2,5),(1,6)$. All use
+$t=0.37+0.09\ii$ at 115 decimal digits, and all relative discrepancies
+are below $10^{-90}$. This tests, in particular, the Dedekind phases in
+\eqref{eq:single-cusp}, not only the positive-real $q\to1$ case.
+
+Table~\ref{tab:inverse} evaluates the first example from its
+\emph{original} product at $q=\e^{-t}$ and reconstructs $t$ from the
+inverse polynomial $\psi_N(u)$, using
+$-a/(\log\psi_N(u)+2\pi\ii\ell)$. Here $N$ is the degree of $\psi_N$,
+not of $V_N$. Truncating $\psi$ at degree $N$ generally gives a
+logarithmic-unit error $O(u^N)$, so the indexing differs by one from
+Corollary~\ref{cor:flat-tail}.
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Reference $t$ & Sheet & $N=1$ error & $N=4$ error & $N=8$ error\\
+\midrule
+$0.5$ & $0$ & $2.93\cdot10^{-7}$ & $5.06\cdot10^{-22}$ & $2.28\cdot10^{-41}$\\
+$0.35$ & $0$ & $5.10\cdot10^{-10}$ & $3.95\cdot10^{-32}$ & $2.84\cdot10^{-61}$\\
+$0.25$ & $0$ & $1.41\cdot10^{-13}$ & $1.74\cdot10^{-45}$ & $1.08\cdot10^{-87}$\\
+$0.4+0.08\ii$ & $1$ & $1.37\cdot10^{-8}$ & $8.15\cdot10^{-27}$ & $8.90\cdot10^{-51}$\\
+\bottomrule
+\end{tabular}
+\caption{Absolute inverse errors from the executed non-interval checks.
+The sheet is selected to match the known reference point, not inferred
+from a principal-logarithm convention.}
+\label{tab:inverse}
+\end{table}
+The complex row specifically requires a nonprincipal logarithmic sheet.
+Using the principal logarithm would converge to a different inverse,
+not to the displayed reference point. The test computes the matching
+integer from the known reference phase. An actual inverse application
+must supply its sheet by initial data or continuation rather than use
+an unavailable reference solution.
+
+Two additional checks use $s=\pm10^{-5}$ in the second example. With
+$\psi$ through degree ten, the forward residuals in $1-H(\psi(s))-s^2$
+are below $7\cdot10^{-54}$. These test the two distinct square-root
+branches in the convergent dual germ. Neither these tests nor the exact
+finite computations constitute a proof of an untested infinite theorem;
+the conventional proofs above provide that part of the argument.
+
+\section{Further research questions and topics}
+\label{sec:research}
+The following program distinguishes extensions with concrete technical
+obstacles from claims already proved here.
+\begin{enumerate}[label=\textbf{R\arabic*.},leftmargin=14mm]
+\item \textbf{Countable actions and accumulation.}
+Find useful complete topological algebras in which the parameter-lift
+argument survives countably many actions with finite positive-projection
+budgets. Determine what replaces this budget when actions accumulate at
+a positive value or at zero. The formal contraction lemma is available,
+but admissibility of substitution and analytic realization are not
+automatic.
+
+\item \textbf{Divergent analytic units and summation-compatible inversion.}
+Replace the convergent unit $U$ in Theorem~\ref{thm:prepared} by a
+specified resurgent or multisummable unit. Prove an inverse theorem with
+explicit lateral-sum compatibility, and compute which singularities
+appear in the Borel plane after the dominant-phase change. Established
+closure theorems are starting points, not substitutes for their
+hypothesis checks in each $q$-family.
+
+\item \textbf{Confluence of essential and flat charts.}
+For continuously weighted products or shifted parameters, let the
+essential action tend to zero simultaneously with $t$. Construct a
+uniform chart that connects alternatives (I), (II), (III), and (IV) of
+Theorem~\ref{thm:classification}. A fixed nonzero-action inverse is
+singular in this transition, and merely setting $A_k=0$ in its Lambert
+core cannot be justified.
+
+\item \textbf{Effective first-action bounds at arbitrary cusps.}
+Lemma~\ref{lem:H-nonconstant} proves termination of a coefficient search,
+but not a sharp complexity bound. Bound the first nonzero index and the
+gcd of the occupied support in terms of $N,k$ and the active exponent
+vector, including cancellations among cyclotomic phases. Identify a
+closed form analogous to \eqref{eq:first-q1} when one exists.
+
+\item \textbf{Minimum support away from $q=1$.}
+Classify the rank drops of the three rows in
+\eqref{eq:three-conditions} at arbitrary $k$. Determine exactly which
+cusps admit two- or three-factor flat quotients, and classify their
+intrinsic correction ramification. The four-factor result here is
+specific to $q=1$.
+
+\item \textbf{Effective inverse radii and rigorous enclosures.}
+For concrete $H$, locate the nearest critical values of
+$Q((H(Q)-1)/(h_mQ^m))^{1/m}$ and derive numerical $R,M$ for
+Corollary~\ref{cor:flat-tail}. Build outward-rounded complex interval
+certificates for both sheet continuation and inverse truncation. The
+existing numerical code is a starting test suite, not such a certificate.
+
+\item \textbf{Optimal truncation with intact action blocks.}
+When algebraic blocks diverge but the action expansion converges, choose
+joint algebraic and action cutoffs that meet a prescribed inverse error.
+The action subtraction in \eqref{eq:jump-action-budget} shows why a
+forward optimal cutoff can be suboptimal or insufficient after inversion.
+A useful theorem should distinguish fixed-action accuracy from total
+absolute accuracy.
+
+\item \textbf{Moving shifted parameters and gamma cores.}
+Study $(z;q)_\infty$ with $z=\e^{-\alpha t}$, including exceptional
+$\alpha$ near poles and zeros of the limiting gamma factors. Combine the
+recent product representation \cite{ar} with a uniform inverse chart
+that remains valid as $z\to1$. Include root-of-unity analogues and
+coalescing gamma singularities.
+
+\item \textbf{Growing cusp denominator.}
+The results here keep $k,N$ fixed. Determine a useful joint limit in
+which $k\to\infty$ while $t\to0$ and the dual parameter
+$\exp(-4\pi^2/(k^2Nt))$ remains small. Uniform control must also track
+the phases, the first occupied dual index, and inverse critical values;
+density of rational cusps prevents a naive global patching argument.
+
+\item \textbf{Stable recovery from noisy cusp data.}
+Analyze the condition numbers of the divisor-action matrix in
+Theorem~\ref{thm:recover}. Exploit its prime-power tensor structure and
+integer exponent constraints to reconstruct quotients from approximate
+inverse measurements. Determine how many selected cusps suffice when
+the active support is sparse or only bounded a priori.
+
+\item \textbf{Ramification spectra with bounded exponent height.}
+Four factors suffice for every correction degree, but the integer
+exponents supplied by the Vandermonde kernel may be large. Determine
+sharp tradeoffs between ramification degree, maximum scale, coefficient
+height, and number of factors. Classify symmetries that force correction
+coefficients to vanish without changing the leading action.
+
+\item \textbf{Basic hypergeometric functions and multiple saddles.}
+Extend the cusp-to-inverse strategy beyond products to basic
+hypergeometric series and Nahm-type sums. Multiple competing saddles
+introduce interference and possible derivative cancellation; root-of-unity
+asymptotics such as those in \cite{gz} provide forward input, but inverse
+branch selection must be proved independently.
+
+\item \textbf{Global transition data.}
+Combine logarithmic monodromy, finite correction ramification, and
+sectorial Stokes maps in a single explicitly based system of source and
+target charts. Determine when the local transitions in
+\eqref{eq:source-transition} satisfy a global compatibility law. Do not
+identify a dominance wall with a Stokes discontinuity without specifying
+an analytic summation problem.
+
+\item \textbf{Formalization in stages.}
+A practical Lean program could first formalize the finite divisor-matrix
+recovery, Vandermonde kernel, and rational coefficient recurrences; then
+the complete filtered fixed-point lemma and finite power-series
+identities; and finally the analytic inverse chart, error certificate,
+and modular bridge. The repository's existing exact modules and their
+stated limitations should be respected. No Lean formalization of the
+new theorems is claimed in this package.
+\end{enumerate}
+
+\section{Conclusion}
+A complex transseries inverse is not only a list of coefficients. It
+comprises a dominant phase, an admissible analytic or formal algebra,
+a collection of small actions, and coherent continuation data. For
+prepared exponential maps these ingredients lead to a convergent
+multivariable inverse. When the dominant essential action vanishes,
+slope-adapted and logarithmic--Puiseux charts provide the missing
+alternatives.
+
+The $q$-product application makes this principle explicit. At every
+rational cusp, a finite Euler quotient has an exact elementary factor
+times a convergent dual product. Three computable invariants determine
+its inverse regime. In the infinitely flat regime, an ordinary analytic
+inverse in the dual variable becomes a convergent correction inside an
+infinitely sheeted logarithmic denominator. Four Euler factors are both
+necessary and sufficient at $q=1$, and already realize every finite
+correction ramification degree. Despite local flatness, divisor-cusp
+actions collectively recover the full exponent vector.
+
+These conclusions answer the scoped questions posed in
+Section~\ref{sec:scope}, with proofs and reproducible checks. They do
+not establish a universal inversion theory for all transseries, a new
+modular transformation law, or worldwide priority. The remaining program
+is to extend the same explicit separation of algebra, asymptotics,
+and analytic continuation to divergent blocks, moving parameters,
+and multi-saddle $q$-analogs.
+
+\clearpage
+\appendix
+\section{Proof dependencies and research-status ledger}
+\label{app:ledger}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.23\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}>{\raggedright\arraybackslash}p{0.37\textwidth}@{}}
+\toprule
+Result group & Main proof ingredients & Scope of the claim\\
+\midrule
+\endhead
+Prepared inverse & Analytic implicit-function theorem; filtered
+contraction; Lagrange inversion & Holomorphic parameter unit and finite
+admissible action set; no general divergent-unit assertion.\\[4pt]
+Flat inverse atlas & Ordinary analytic inversion in $Q$; logarithms on
+a cover & Exact local sheets and convergent correction with explicit
+Taylor-tail bound.\\[4pt]
+Cusp preparation & Classical eta transformation; finite products & Exact
+identity on $\Re t>0$ for integer Euler quotients; not a new modular law.\\[4pt]
+Four regimes & Exact normal form; leading-term comparison & Necessary
+and sufficient flatness test at each fixed cusp.\\[4pt]
+Four-factor and ramification results & Vandermonde kernel; rotational
+stabilizers; Euler-product coefficient uniqueness & Minimum factor count
+at $q=1$; exact correction degree; every degree attained with four factors.\\[4pt]
+Cusp-data recovery & Jordan divisor identity; two M\"obius inversions &
+Exact finite-dimensional recovery with specified $N$ and divisor-cusp
+measurements.\\[4pt]
+Shifted factorial & Kernel expansion; formal reversal; complex residual
+certificate & All finite asymptotic orders for fixed $z$ in compact
+subsets of $(0,1)$; no $z\to1$ uniformity claim.\\[4pt]
+Finite multinomial & Count simple roots; analytic Puiseux inversion &
+Finite-order zeros at roots of unity; nonzero-value criticality treated
+separately.\\[4pt]
+Sectorial jump transport & Composition; Lagrange inversion with an
+observable & Exact chart identities and perturbation series; resurgent
+summation compatibility requires additional hypotheses.\\
+\bottomrule
+\end{longtable}
+The article supplies conventional proofs for these scoped statements.
+The established tools are attributed in the bibliography. The new
+formulations and combined classifications are proposed research results
+of this draft, not independently refereed or proof-assistant-checked
+claims. The repository comparison is restricted to the cited inspected
+documentation. The program's exact finite checks and floating-point
+diagnostics have the distinct evidential roles explained in
+Section~\ref{sec:verification}.
+
+\clearpage
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov, \emph{ProveIt: Transseries documentation}, repository
+snapshot \texttt{8e9cd6f00e0ac79c4425ff6abdfa64b497cf3f41},
+inspected 4 October 2026. Targeted documentation:
+\path{Analysis/Transseries/README.md} and
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{repoq}
+ProveIt research package, \emph{Certified Inversion Through the
+$q\to1$ Transition: Signed remainders, optimal truncation, and a modular
+cancellation window}, README and editorial amendments, at the snapshot
+in \cite{repo}. Directory:
+\path{Analysis/Transseries/docs/series-and-transseries/Certified_Inversion_q_to_1_Transition/}.
+
+\bibitem{repohahn}
+ProveIt research package, \emph{Beyond Finite-Action Folds: Critical Hahn
+Transseries, Stable Sector Asymptotics, and Sharp Action Budgets}, README
+and editorial amendments, at the snapshot in \cite{repo}. Directory:
+\path{Analysis/Transseries/docs/series-and-transseries/Critical_Hahn_Transseries_Beyond_Finite_Action_Folds/}.
+
+\bibitem{sauzin}
+D. Sauzin, \emph{Nonlinear analysis with resurgent functions},
+Annales scientifiques de l'\'Ecole Normale Sup\'erieure (4)
+\textbf{48} (2015), no. 3, 667--702.
+\url{https://doi.org/10.24033/asens.2255}.
+Preprint: \url{https://arxiv.org/abs/1212.4477}.
+
+\bibitem{dlmf}
+NIST Digital Library of Mathematical Functions,
+\emph{\S27.14: Unrestricted Partitions}, especially the eta product and
+modular transformation formulas (27.14.12)--(27.14.14).
+\url{https://dlmf.nist.gov/27.14}. Accessed 4 October 2026.
+
+\bibitem{dlmfq}
+NIST Digital Library of Mathematical Functions,
+\emph{\S17.2: $q$-Calculus}.
+\url{https://dlmf.nist.gov/17.2}. Accessed 4 October 2026.
+
+\bibitem{mcintosh}
+R. J. McIntosh, \emph{Some asymptotic formulae for $q$-shifted factorials},
+The Ramanujan Journal \textbf{3} (1999), 205--214.
+\url{https://doi.org/10.1023/A:1006949508631}.
+
+\bibitem{gz}
+S. Garoufalidis and D. Zagier, with an appendix by S. Zwegers,
+\emph{Asymptotics of Nahm sums at roots of unity}, The Ramanujan Journal
+\textbf{55} (2021), 219--238.
+\url{https://doi.org/10.1007/s11139-020-00266-x}.
+Preprint: \url{https://arxiv.org/abs/1812.07690}.
+
+\bibitem{fr}
+V. Fantini and C. Rella, \emph{Modular resurgence, $q$-Pochhammer
+symbols, and quantum operators from mirror curves}, Letters in
+Mathematical Physics \textbf{116} (2026), no. 2, article 39.
+\url{https://doi.org/10.1007/s11005-026-02063-x}.
+Preprint: arXiv:2506.08265 (2025; revised 1 April 2026).
+\url{https://arxiv.org/abs/2506.08265}.
+
+\bibitem{ar}
+A. Arabi Ardehali and H. Rosengren, \emph{A New Product Formula for
+$(z;q)_\infty$, with Applications to Asymptotics}, Constructive
+Approximation (2026), version of record published 19 September 2026.
+\url{https://doi.org/10.1007/s00365-026-09783-2}.
+Preprint: \url{https://arxiv.org/abs/2602.11329}.
+\end{thebibliography}
+\end{document}

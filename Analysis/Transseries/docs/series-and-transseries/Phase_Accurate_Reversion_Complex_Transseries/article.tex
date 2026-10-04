@@ -1,0 +1,1284 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=26mm,headheight=15pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{bookmark}
+\usepackage{url}
+\hypersetup{pdftitle={Phase-Accurate Reversion of Complex Transseries},pdfauthor={Research article prepared for Vladimir Reshetnikov},pdfsubject={Minimal action jets, sharp Newton stopping, and sectorial transport}}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.25em}
+\setlist{itemsep=3pt,topsep=5pt}
+\emergencystretch=2em
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Phase-accurate complex reversion}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\id}{\operatorname{id}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\DF}{\mathcal D_F}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\nn}{\boldsymbol n}
+\newcommand{\one}{\boldsymbol 1}
+\newcommand{\rev}{^{\langle-1\rangle}}
+\newcommand{\sect}[1]{Section~\ref{#1}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\status}[1]{\par\smallskip\noindent\textbf{Status.} #1\par\smallskip}
+\numberwithin{equation}{section}
+
+\begin{document}
+\begin{titlepage}
+\vspace*{15mm}
+\noindent\textsc{Complex asymptotics and transseries}\par
+\vspace{8mm}
+\noindent{\huge\bfseries Phase-Accurate Reversion\par of Complex Transseries}\par
+\vspace{7mm}
+\noindent{\Large Minimal action jets, sharp Newton stopping,\par and sectorial transport}\par
+\vspace{12mm}
+\noindent Research article prepared for Vladimir Reshetnikov\par
+\noindent 4 October 2026\par
+\vspace{10mm}
+\begin{abstract}
+An inverse approximation can be excellent on an algebraic scale and wrong by an exponentially large factor when substituted into an exponential. We develop a phase-sensitive approach to this discrepancy. A disk theorem converts a forward residual into a certified bound for every transported holomorphic phase. For the core $F(z)=z+az^\beta$, $0<\beta<1$, we determine the complete finite positive-power phase jet of $\exp(-\lambda F\rev(w)^\sigma)$, including the indispensable constant term. We calculate the exact leading Newton error and obtain the sharp fixed-step condition
+\[
+ (2^{k+1}-1)(1-\beta)>\sigma
+\]
+for relative accuracy of the transported exponential. At equality, a nontrivial multiplicative normalization survives. A separate, stronger requirement governs numerical resolution of an exponentially small inverse correction: the required number of Newton steps grows as $\sigma\log_2 w-\log_2\log w+O(1)$. At the next exponential height, even a simple algebraic inverse produces an infinite large phase jet; we prove a moving truncation threshold and an explicit Lambert-$W$ sufficient cutoff.
+
+These results are connected to a general differential-algebraic Lagrange formula, a convergent mixed-sector inverse expansion, exact sectorial jump transport, curved decay boundaries, and obstructions for countably many actions. All substantive new claims are proved under explicit hypotheses. Classical inversion and resurgent-closure theorems, and the repository's pre-existing Newton depth and Stokes transport results, are credited rather than claimed as new. Exact symbolic checks and high-precision diagnostics accompany the article.
+\end{abstract}
+\vfill
+\noindent\begin{minipage}{\textwidth}\small
+\textbf{Scope and provenance.} This is a conventional mathematical research manuscript, not a Lean-verified development. It gives a general error mechanism and complete answers for specified classes, not an unrestricted compositional field or summability theorem for all complex transseries. The proposed refinements require independent assessment of publication priority. The repository review was bounded; its pinned reference and the exact overlap ledger appear in \sect{sec:provenance}.
+\end{minipage}
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{The question is not merely whether an inverse exists}\label{sec:intro}
+
+Let $F$ be an invertible dominant core, $G=F\rev$ a chosen branch, and let
+\begin{equation}\label{eq:corefull}
+ f=F+R,\qquad g=f\rev.
+\end{equation}
+A typical transseries calculation first approximates $G$, then transports an exponentially small term $R(z)=B(z)e^{-A(z)}$ to the target variable. The phase becomes $A(G(w))$. Replacing $G$ by an approximation $H$ introduces the exact factor
+\begin{equation}\label{eq:ratio-basic}
+ \frac{e^{-A(H(w))}}{e^{-A(G(w))}}
+ =\exp\bigl(-[A(H(w))-A(G(w))]\bigr).
+\end{equation}
+The small parameter governing this factor is generally $A'(G)(H-G)$, not $(H-G)/G$ and not even $H-G$ alone.
+
+For example, take $F(z)=z+\sqrt z$ near the positive real axis. Its inverse satisfies
+\[
+ G(w)=w-\sqrt w+\frac12-\frac1{8\sqrt w}+O(w^{-3/2}).
+\]
+The approximations $w$, $w-\sqrt w$, and $w-\sqrt w+1/2$ all have relative error tending to zero. Nevertheless, for $e^{-G(w)}$ the first omits the large factor $e^{\sqrt w}$, the second omits the constant factor $e^{-1/2}$, and only the third gives relative accuracy tending to one. For $e^{-G(w)^2}$, still more of the inverse is needed inside the phase.
+
+This article resolves the following concrete questions.
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=12mm]
+\item How does a computable residual bound certify the relative accuracy of transported exponentials for arbitrary holomorphic phases?
+\item For a nonlinear power core, exactly which phase terms are indispensable, and how many Newton iterations are sufficient and necessary?
+\item Why can phase accuracy coexist with a failure to resolve the exponentially small correction in the full inverse, and what is the sharp scale of the additional computational effort?
+\item Can finitely many inverse coefficients always determine a transported exponential at higher height? What replaces a fixed truncation when the answer is no?
+\end{enumerate}
+The answers are accompanied by a sectorial analytic realization for finite-action perturbations. Countable actions and higher-height phases are used to delineate genuine obstructions, not hidden inside unrestricted closure assertions.
+
+\subsection{What is established background, and what is developed here?}
+
+Lagrange inversion is classical; Gessel's survey records its formal and combinatorial forms~\cite{Gessel}. The closure of suitable real transseries fields under inversion is part of established transseries theory~\cite{vdHBook}. Complex transseries require additional choices concerning oscillation, dominance, and compatible composition~\cite{vdHComplex}. For appropriate resurgent classes, nonlinear inversion and implicit functions already belong to the theory, with corresponding Borel--Laplace results~\cite{SauzinNonlinear,SauzinIntro}. None of these broad closure results is a discovery of this article.
+
+The repository already proves the Newton depth $2^{k+1}-1$ for support-controlled power--logarithmic reversion~\cite{RepoSupport}; it also contains mixed exponential inverse transport and nonlinear Stokes transport~\cite{RepoStokes}. The present work uses those as context, while giving independent proofs of the ingredients needed below. In particular, the Newton \emph{depth} is not claimed as new. Our focal refinements are its exact leading constant for a nonlinear power core, the resulting sharp phase threshold and critical normalization, the minimal positive-power phase jet, and the distinction between fixed phase accuracy and moving sector-resolution precision.
+
+The higher-height example supplies a clean negative answer to a proposed universal finite-phase-jet principle. Its moving cutoff is proved explicitly. These are answers to questions formulated here, not claims to have settled a named, previously open community-wide conjecture.
+
+\subsection{A three-level error budget}
+
+There are three different goals:
+\begin{center}
+\begin{tabular}{@{}p{.22\textwidth}p{.32\textwidth}p{.38\textwidth}@{}}
+\toprule
+Goal & Representative condition & What it guarantees \\
+\midrule
+Core position & $|H-G|/|G|\to0$ & Leading approximation of the inverse core. \\
+Exponential phase & $|A(H)-A(G)|\to0$ & Relative accuracy of $e^{-A(G)}$. \\
+Sector resolution & $|H-G|=o(|R(G)/F'(G)|)$ & Core uncertainty does not obscure the first inverse exponential correction. \\
+\bottomrule
+\end{tabular}
+\end{center}
+The second is usually stronger than the first and vastly weaker than the third. A correct symbolic transseries may retain the exact core $G$ and thereby avoid the third difficulty. A numerical evaluation that subtracts approximate values cannot ignore it. This distinction is central throughout the article.
+
+\section{Branches, phases, and admissible meanings of reversal}\label{sec:framework}
+
+We work on sectors at infinity on the logarithmic covering of $\C^*$:
+\[
+ S(I,R)=\{z:|z|>R,\ \arg z\in I\},
+\]
+where $I$ is a bounded open interval and a continuous logarithm is fixed. A statement uniform on proper subsectors means uniform on closed angular intervals compactly contained in $I$, with the radius sufficiently large. Powers always mean $z^\alpha=\exp(\alpha\Log z)$ on that branch.
+
+A \emph{phase} is a holomorphic function $A$ occurring in an exponential $e^{-A}$. On a domain with $\Re A\to+\infty$, this exponential is small. The action may change its qualitative behavior after composition with a nonlinear inverse. Equal-magnitude curves such as $\Re A=0$ are not, by definition, Borel singular directions; conventions for the words ``Stokes'' and ``anti-Stokes'' vary. We use \emph{decay boundary} for these geometric curves.
+
+Four meanings of an inverse expansion must be kept distinct: a formal power series in an auxiliary perturbation parameter; a strongly summable Hahn family after specialization of that parameter; a convergent analytic expansion; and a divergent formal expansion equipped with a specified summation procedure. A proof in one category does not automatically prove a statement in the next. \sect{sec:formal} isolates the formal identity, and \sect{sec:analytic} supplies analytic convergence in a concrete setting.
+
+\begin{example}[A global inverse cannot be inferred from sectorial asymptotics]\label{ex:global}
+The entire function $f(z)=z+e^{-z}$ is asymptotic to the identity in every closed subsector of the right half-plane. However,
+\[
+ f'(2\pi i k)=0,\qquad f(2\pi i k)=1+2\pi i k\quad(k\in\mathbb Z).
+\]
+Thus its local inverse branches encounter critical values, and it has no globally single-valued inverse covering the whole complex plane. A theory of reversal ``on the complex plane'' must allow branch domains and transition maps.
+\end{example}
+
+\begin{definition}[Phase equivalence and its normalization]
+For a fixed phase $A$, an approximation $H$ is \emph{phase accurate} for $G$ when $A(H)-A(G)\to0$. It is \emph{exponentially relatively accurate} when the ratio in \eqref{eq:ratio-basic} tends to one.
+\end{definition}
+The first property implies the second. The converse has a $2\pi i\mathbb Z$ ambiguity. On a connected sector tail, a continuous phase difference whose exponential tends uniformly to one is close to one fixed $2\pi i k$. A restriction such as $|\Im(A(H)-A(G))|<\pi$, or a real positive-ray setting, removes this ambiguity. All necessary-and-sufficient threshold statements below are made on the positive real ray, so no hidden phase alias is present.
+
+\section{A phase-sensitive residual certificate}\label{sec:certificate}
+
+The following result applies to arbitrary holomorphic phases, including phases of higher exponential height. It is the general component of the theory.
+
+\begin{theorem}[Disk certificate for an inverse and its phases]\label{thm:disk}
+Let $F$ be holomorphic in a neighborhood of the closed disk $D=\overline{D(h,r)}$. Set
+\[
+ d=F'(h)\ne0,\qquad E=F(h)-w,
+\qquad \eta=\sup_{z\in D}\left|\frac{F'(z)}d-1\right|<1.
+\]
+Assume
+\begin{equation}\label{eq:rouchecondition}
+ |E|<(1-\eta)|d|r.
+\end{equation}
+Then $F(z)=w$ has exactly one root $G$ in $D$, the root is simple, and
+\begin{align}
+ |G-h|&\le \frac{|E|}{|d|(1-\eta)},\label{eq:rootbound}\\
+ \left|G-h+\frac Ed\right|
+ &\le\frac{\eta |E|}{|d|(1-\eta)}.\label{eq:newtonbound}
+\end{align}
+For every phase $A$ holomorphic near $D$, with $M_A=\sup_D|A'|$,
+\begin{align}
+ |A(G)-A(h)|&\le \epsilon_A,
+ &\epsilon_A&=\frac{M_A|E|}{|d|(1-\eta)},\label{eq:phasebound}\\
+ \left|\frac{e^{-A(h)}}{e^{-A(G)}}-1\right|
+ &\le e^{\epsilon_A}-1.\label{eq:expbound}
+\end{align}
+If $B$ is holomorphic and nowhere zero near $D$, and $L_B=\sup_D|B'/B|$, then
+\begin{equation}\label{eq:amplitudebound}
+ \left|\frac{B(h)e^{-A(h)}}{B(G)e^{-A(G)}}-1\right|
+ \le \exp\left(\frac{(M_A+L_B)|E|}{|d|(1-\eta)}\right)-1.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Write
+\[
+ F(z)-w=E+d(z-h)+K(z),\qquad |K(z)|\le\eta|d||z-h|,
+\]
+using the integral of $F'-d$ along the straight segment in $D$. On its boundary,
+\[
+ |E+K(z)|<|d|r.
+\]
+Rouch\'e's theorem compares $F(z)-w$ to $d(z-h)$, giving one zero counted with multiplicity. There is no boundary zero, so it is a simple interior zero. The root equation gives
+\[
+ |d||G-h|\le |E|+\eta|d||G-h|,
+\]
+which proves \eqref{eq:rootbound}; substituting it into $G-h+E/d=-K(G)/d$ gives \eqref{eq:newtonbound}.
+
+The straight-segment integral for $A(G)-A(h)$ proves \eqref{eq:phasebound}. For any complex $u$, $|e^u-1|\le e^{|u|}-1$, giving \eqref{eq:expbound}. A zero-free holomorphic function on a disk admits a holomorphic logarithm. Applying the same argument to $\Log B-A$ proves \eqref{eq:amplitudebound}.
+\end{proof}
+
+This is a Rouch\'e certificate with a phase-weighted error budget, not a new form of Rouch\'e's theorem. Its practical significance is that a requested relative tolerance $\tau$ is guaranteed by
+\begin{equation}\label{eq:stoppingcertificate}
+ \frac{(M_A+L_B)|E|}{|d|(1-\eta)}\le\log(1+\tau).
+\end{equation}
+Bounds for the suprema may be supplied by analytic estimates or rigorous interval arithmetic. A floating-point sample of a supremum is not such a bound.
+
+\begin{proposition}[Asymptotic residual sensitivity]\label{prop:residualsensitivity}
+Let $F(G(w))=w$ and suppose the segment from $G$ to $H$ remains in a holomorphic branch domain. Assume $F'(G)A'(G)\ne0$ and, uniformly on that segment,
+\[
+ F'(z)/F'(G)=1+o(1),\qquad A'(z)/A'(G)=1+o(1).
+\]
+Then, whenever $H\ne G$,
+\begin{equation}\label{eq:residualphase}
+ A(H)-A(G)=\frac{A'(G)}{F'(G)}\,[F(H)-w]\,(1+o(1)).
+\end{equation}
+Consequently a sufficient asymptotic phase stopping criterion is
+\[
+ \frac{|A'(G)|}{|F'(G)|}\,|F(H)-w|\longrightarrow0.
+\]
+\end{proposition}
+\begin{proof}
+Integrating the two normalized derivatives along the segment gives
+$F(H)-w=F'(G)(H-G)(1+o(1))$ and
+$A(H)-A(G)=A'(G)(H-G)(1+o(1))$. Division proves the assertion.
+\end{proof}
+
+For $A(z)=\lambda z^\sigma$ and $G\sim w$, the positional precision is $o(|w|^{1-\sigma})$. For $A(z)=e^z$, it is $o(e^{-\Re G})$ along a real positive branch. The latter requirement is exponentially smaller than any fixed inverse-power error. The theorem itself makes no finite-height restriction; the cost of meeting its hypotheses and tolerance may, however, be enormous.
+
+\section{The formal carrier identity and the specialization barrier}\label{sec:formal}
+
+A general formal identity can be stated without imposing a fixed monomial shift on differentiation. This is useful for complex and higher-height transseries, provided its limited scope is respected.
+
+\begin{theorem}[Auxiliary-parameter differential Lagrange formula]\label{thm:formalLB}
+Let $(\mathcal R,D)$ be a commutative differential $\Q$-algebra. For $H,Q\in\mathcal R$, use the notation
+\[
+ T_v(P)=\sum_{j\ge0}\frac{D^jP}{j!}v^j\in\mathcal R[[v]].
+\]
+There is a unique $u\in t\mathcal R[[t]]$ satisfying $u=-tT_u(H)$. It obeys
+\begin{equation}\label{eq:formalLB}
+ T_u(Q)=Q+\sum_{n\ge1}\frac{(-t)^n}{n!}
+ D^{n-1}\bigl((DQ)H^n\bigr).
+\end{equation}
+This identity is formal in $t$; it does not assert that the right side can be specialized to $t=1$ in an arbitrary Hahn field.
+\end{theorem}
+\begin{proof}
+The Leibniz rule implies that $T_v$ is an algebra homomorphism. Successive coefficient extraction in $u=-tT_u(H)$ determines $[t^n]u$ from earlier coefficients, proving existence and uniqueness in the $t$-adic topology. Formal Lagrange inversion applied to $\Phi(v)=-T_v(H)$ gives
+\[
+ [t^n]T_u(Q)=\frac1n[v^{n-1}]\frac{d}{dv}T_v(Q)\,\Phi(v)^n.
+\]
+The derivative is $T_v(DQ)$, and multiplicativity of $T_v$ changes the last expression to
+\[
+ \frac{(-1)^n}{n}[v^{n-1}]T_v((DQ)H^n)
+ =\frac{(-1)^n}{n!}D^{n-1}((DQ)H^n).
+\]
+This proves \eqref{eq:formalLB}. Each calculation uses only finitely many $t$-coefficients at a specified order.
+\end{proof}
+
+The theorem is a differential-algebra formulation of classical Lagrange inversion~\cite{Gessel}. Its usefulness here is organizational: the carrier $Q$ may itself be a large or high-height function, but admissibility of a subsequent specialization still has to be proved.
+
+\begin{example}[A small shift whose Taylor family is not Hahn-summable]\label{ex:hahn}
+Let $Q(w)=e^{w^2}$ and shift $u=-1/w$. Analytically,
+\[
+ Q(w+u)=e^{w^2-2+w^{-2}}=e^{-2}e^{w^2}e^{w^{-2}}.
+\]
+On the other hand, the $n$th Taylor term $u^nQ^{(n)}(w)/n!$ has leading monomial $e^{w^2}$ with coefficient $(-2)^n/n!$. Infinitely many summands therefore contribute to the same Hahn monomial. The family is not strongly summable in the usual coefficientwise, finite-fiber sense, although the numerical series of leading coefficients converges to $e^{-2}$.
+\end{example}
+
+The appropriate operation is to retain the constant phase shift $-2$ before expanding the remaining small exponential. This is an elementary manifestation of the general rule: smallness of an inverse displacement does not guarantee smallness of its effect inside every phase. Hahn summability, analytic convergence of scalar coefficients, and an enlarged resummation convention are genuinely different notions.
+
+\begin{remark}[Relation to the repository]
+The support-controlled and non-Archimedean reversion packages already justify Lagrange specialization using positive support and word-length estimates~\cite{RepoSupport,RepoNonArch}. The example above lies outside the scope of a naive extension of those justifications to every carrier. It does not contradict their theorems. Our later analytic theorem supplies a separate convergence argument rather than pretending that every $t$-adic identity is a Hahn identity.
+\end{remark}
+
+\section{Exact phase jets for a nonlinear power core}\label{sec:phasejets}
+
+Fix
+\begin{equation}\label{eq:powercore}
+ F(z)=z+az^\beta,\qquad 0<\beta<1,\quad a\in\C\setminus\{0\},
+ \qquad \delta=1-\beta.
+\end{equation}
+On a chosen large sector there is a unique near-identity inverse branch $G(w)\sim w$. The most economical local parameter is
+\begin{equation}\label{eq:Ydef}
+ t=aw^{-\delta},\qquad G(w)=wY(t),\qquad Y+tY^\beta=1,\quad Y(0)=1.
+\end{equation}
+The implicit function theorem gives a holomorphic germ $Y$ at $t=0$. All its powers below use the germ of $\Log Y$ vanishing there.
+
+\begin{theorem}[All coefficients of a transported power]\label{thm:powercoeff}
+For every real $\sigma>0$,
+\begin{equation}\label{eq:cn}
+ Y(t)^\sigma=\sum_{n\ge0}c_n(\beta,\sigma)t^n,
+ \qquad c_0=1,\qquad
+ c_n=\frac{(-1)^n\sigma}{n}
+ \binom{\sigma+\beta n-1}{n-1}\quad(n\ge1).
+\end{equation}
+The series converges near $t=0$. If $n\le\sigma/\delta$, then $c_n\ne0$ and $(-1)^nc_n>0$. If $m=\sigma/\delta$ is a positive integer, then
+\begin{equation}\label{eq:constantphasecoeff}
+ c_m=(-1)^m\delta.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Put $u=Y-1$. Then $u=-t(1+u)^\beta$. The coefficient form of Lagrange inversion gives
+\[
+ [t^n](1+u)^\sigma
+ =\frac{(-1)^n}{n}[v^{n-1}]\sigma(1+v)^{\sigma-1+\beta n},
+\]
+which is \eqref{eq:cn}. Convergence follows independently from the holomorphic implicit function theorem. If $n\delta\le\sigma$, then
+$\sigma+\beta n-1\ge n-1$; all factors in the binomial coefficient are positive. If equality holds, that binomial coefficient equals one, giving $\sigma/m=\delta$ and \eqref{eq:constantphasecoeff}.
+\end{proof}
+
+\begin{definition}[Positive-power phase jet]
+A positive-power phase jet is a finite sum $P(w)=\sum_{j=1}^s d_jw^{p_j}$, with distinct real exponents $p_j>0$. Its terms will be called \emph{phase tiers}. This counts terms inside one phase, not algebraically independent exponential generators.
+\end{definition}
+
+\begin{theorem}[Minimal finite phase normalization]\label{thm:finitejet}
+Let $G$ be given by \eqref{eq:Ydef}, $\lambda\ne0$, $\sigma>0$, and put
+\[
+ q_*=\frac{\sigma}{\delta},\qquad K=\lceil q_*\rceil.
+\]
+Define
+\begin{align}
+ P_\lambda(w)&=\lambda\sum_{0\le n<q_*}
+ c_n(\beta,\sigma)a^n w^{\sigma-n\delta},\label{eq:Pphase}\\
+ C_\lambda&=
+ \begin{cases}
+ \lambda(-1)^m\delta a^m,&q_*=m\in\N_{>0},\\
+ 0,&q_*\notin\N.
+ \end{cases}\label{eq:Cphase}
+\end{align}
+Then, uniformly on proper subsectors,
+\begin{equation}\label{eq:phasefactorization}
+ e^{-\lambda G(w)^\sigma}
+ =e^{-P_\lambda(w)}e^{-C_\lambda}U_\lambda(w),
+ \qquad U_\lambda(w)\longrightarrow1.
+\end{equation}
+There are exactly $K$ nonzero positive-power phase tiers. If $q_*$ is an integer, $U_\lambda$ is a convergent analytic germ in $w^{-\delta}$. Otherwise, with
+$\epsilon=K\delta-\sigma>0$, it is a convergent analytic germ in the two small quantities $w^{-\delta}$ and $w^{-\epsilon}$.
+
+Furthermore, $P_\lambda$ is the unique positive-power phase jet for which the quotient by its exponential has a nonzero leading power--logarithmic amplitude on an open sector. In particular, no one of its tiers can be discarded and absorbed into an amplitude of the form
+\begin{equation}\label{eq:plamplitude}
+ c w^\alpha(\Log w)^\nu(1+o(1)),\qquad c\ne0,\quad \alpha,\nu\in\C.
+\end{equation}
+The constant $C_\lambda$ must also be retained when the remaining amplitude is required to tend to one, up to the unavoidable $2\pi i\mathbb Z$ ambiguity of an exponential constant.
+\end{theorem}
+\begin{proof}
+Multiply \eqref{eq:cn} by $\lambda w^\sigma$ and substitute $t=aw^{-\delta}$. The terms with positive exponent are exactly those with $n<q_*$, and there is a constant term exactly when $q_*$ is an integer. Nonvanishing follows from Theorem~\ref{thm:powercoeff}. There are $K$ positive terms, including $n=0$.
+
+When $q_*=m\in\N$, the remaining phase is a convergent series beginning with a positive power of $w^{-\delta}$. When $q_*\notin\N$, the remainder has the form
+\[
+ \lambda a^K w^{-\epsilon}Q(aw^{-\delta})
+\]
+for a holomorphic germ $Q$. Exponentiating the negative of either remainder proves the asserted analytic representation of $U_\lambda$ and its limit.
+
+For uniqueness, suppose another positive-power jet $\widetilde P$ has the stated property. If $P_\lambda-\widetilde P\ne0$, let $dw^p$, $p>0$, be its largest-power term. There is a ray in the open sector with $\Re(de^{ip\theta})\ne0$. On that ray the logarithm of the modulus of $\exp(P_\lambda-\widetilde P)$ grows in magnitude like a nonzero multiple of $r^p$. The logarithm of the modulus of a quotient of two amplitudes of the form \eqref{eq:plamplitude} is only $O(\log r+\log\log r)$. This is impossible. The constant normalization follows directly from \eqref{eq:phasefactorization}.
+\end{proof}
+
+The last statement is deliberately about positive powers. Linear logarithmic phase terms may be absorbed into powers of $w$, and iterated logarithmic terms may be absorbed into logarithmic amplitudes. A general minimality theorem for arbitrary logarithmic--exponential phases needs to specify which of these changes of normalization are allowed.
+
+\subsection{Three exact examples}
+
+For $\beta=1/2$, the inverse is elementary:
+\begin{equation}\label{eq:sqrtcore}
+ G(w)=\left(\frac{\sqrt{a^2+4w}-a}{2}\right)^2
+ =w+\frac{a^2}2-\frac a2\sqrt{a^2+4w}.
+\end{equation}
+The branch of the square root is chosen to agree with $2\sqrt w$ at infinity. Its expansion is
+\begin{equation}\label{eq:Gsqrt}
+ G(w)=w-a\sqrt w+\frac{a^2}2
+ -\frac{a^3}{8\sqrt w}+\frac{a^5}{128w^{3/2}}+O(w^{-5/2}).
+\end{equation}
+Thus
+\begin{equation}\label{eq:firstphaseexample}
+ e^{-\lambda G(w)}
+ =e^{-\lambda w+\lambda a\sqrt w}e^{-\lambda a^2/2}
+ \left(1+\frac{\lambda a^3}{8\sqrt w}+O(w^{-1})\right).
+\end{equation}
+Already the sublinear correction to an otherwise near-identity core generates an essential new positive-power phase tier.
+
+For the quadratic phase, Theorem~\ref{thm:powercoeff} yields
+\begin{align}
+ G(w)^2={}&w^2-2aw^{3/2}+2a^2w-\frac54a^3w^{1/2}
+ +\frac12a^4\nonumber\\
+ &-\frac7{64}a^5w^{-1/2}+\frac3{512}a^7w^{-3/2}
+ +O(w^{-5/2}).\label{eq:Gsquare}
+\end{align}
+The four positive tiers and the constant all matter. Hence
+\begin{align}
+ e^{-\lambda G(w)^2}
+ ={}&\exp\left(-\lambda w^2+2\lambda aw^{3/2}
+ -2\lambda a^2w+\frac54\lambda a^3w^{1/2}\right)
+ \nonumber\\[-1mm]
+ &\quad\cdot e^{-\lambda a^4/2}
+ \left(1+\frac7{64}\lambda a^5w^{-1/2}+O(w^{-1})\right).
+ \label{eq:quadraticphaseexample}
+\end{align}
+For $\beta=2/3$ and $\sigma=1$ there are three positive tiers:
+\[
+ G(w)=w-aw^{2/3}+\frac23a^2w^{1/3}-\frac13a^3+O(w^{-1/3}).
+\]
+The limiting constant multiplier in $e^{-\lambda G}$ is $e^{\lambda a^3/3}$. These constants cannot be recovered by retaining only the growing terms of the phase.
+
+\section{Sharp Newton stopping for fixed-height power phases}\label{sec:newton}
+
+For the core \eqref{eq:powercore}, define the Newton iterates
+\begin{equation}\label{eq:newton}
+ N_0(w)=w,\qquad
+ N_{k+1}=N_k-\frac{N_k+aN_k^\beta-w}{1+a\beta N_k^{\beta-1}}.
+\end{equation}
+For fixed $k$ and large $w$, these use the same branch as $G$. Put
+\[
+ m_k=2^{k+1}-1,\qquad K_\beta=\frac{\beta(\beta-1)}{2},
+ \qquad C_k=K_\beta^{\,2^k-1}.
+\]
+In particular, $C_0=1$, and $C_k<0$ for $k\ge1$.
+
+\begin{theorem}[Exact first Newton error]\label{thm:newtonexact}
+For each fixed $k\ge0$, the dimensionless iterate $Y_k=N_k/w$ is holomorphic in $t=aw^{-\delta}$ near zero and
+\begin{align}
+ Y_k(t)-Y(t)&=C_k t^{m_k}+O(t^{m_k+1}),\label{eq:dimensionerror}\\
+ N_k(w)-G(w)&=C_k a^{m_k}w^{1-m_k\delta}
+ \left(1+O(w^{-\delta})\right).\label{eq:Newtonexact}
+\end{align}
+Consequently, for every fixed $\sigma>0$,
+\begin{equation}\label{eq:newtonphaseerror}
+ N_k(w)^\sigma-G(w)^\sigma
+ =\sigma C_k a^{m_k}w^{\sigma-m_k\delta}
+ \left(1+O(w^{-\delta})\right).
+\end{equation}
+These estimates are uniform on proper subsectors.
+\end{theorem}
+\begin{proof}
+Let $\Phi(y,t)=y+ty^\beta-1$. Its root is $Y(t)$ and its Newton iterates start at $Y_0=1$. All denominators are units at $t=0$, so each fixed iterate is holomorphic there. If $e=Y_k-Y$, Taylor's formula for the Newton map gives
+\[
+ Y_{k+1}-Y
+ =\frac{\Phi_{yy}(Y,t)}{2\Phi_y(Y,t)}e^2+O(te^3)
+ =\left(K_\beta t+O(t^2)\right)e^2+O(te^3).
+\]
+Since $Y=1-t+O(t^2)$, the initial error is $t+O(t^2)$. Induction gives the recursions
+\[
+ m_{k+1}=2m_k+1,\qquad C_{k+1}=K_\beta C_k^2,
+\]
+whose solutions are the displayed $m_k$ and $C_k$. Multiplying by $w$ proves \eqref{eq:Newtonexact}. Finally, $Y_k,Y\to1$, so
+$Y_k^\sigma-Y^\sigma=\sigma(Y_k-Y)(1+O(t))$.
+\end{proof}
+
+\status{The depth $m_k=2^{k+1}-1$ is already present in the repository's theorem \texttt{thm:newton}, equation \texttt{eq:newtonrate}, and its non-Archimedean reformulation~\cite{RepoSupport,RepoNonArch}. The explicit nonzero leading constant and the sharp phase consequences below are the refinements being developed here.}
+
+\begin{theorem}[Necessary and sufficient fixed-step phase threshold]\label{thm:sharpthreshold}
+Assume $a>0$, $\lambda>0$, $w\to+\infty$, and fix $\sigma>0$ and $k\ge0$. Then
+\begin{equation}\label{eq:iffthreshold}
+ \frac{e^{-\lambda N_k(w)^\sigma}}{e^{-\lambda G(w)^\sigma}}
+ \longrightarrow1
+ \quad\Longleftrightarrow\quad m_k\delta>\sigma.
+\end{equation}
+At the critical equality $m_k\delta=\sigma$, the limit is
+\begin{equation}\label{eq:criticalnormalization}
+ \exp(-\lambda\sigma C_k a^{m_k})\ne1.
+\end{equation}
+Below the threshold, the ratio tends to zero for $k=0$ and to $+\infty$ for $k\ge1$. The minimum admissible fixed iteration count is
+\begin{equation}\label{eq:kmin}
+ k_{\min}=\left\lfloor\log_2\left(1+\frac{\sigma}{1-\beta}\right)\right\rfloor.
+\end{equation}
+For complex $a,\lambda$ and sectorial $w$, the strict inequality remains sufficient; the equality limit is still \eqref{eq:criticalnormalization}, but may equal one at exceptional $2\pi i$ resonances.
+\end{theorem}
+\begin{proof}
+Insert \eqref{eq:newtonphaseerror} into \eqref{eq:ratio-basic}. If the power of $w$ is negative, the phase difference tends to zero. If it is zero, the nonzero real constant gives \eqref{eq:criticalnormalization}. If it is positive, the sign of $C_k$ yields the stated zero or infinite limit. The strict inequality is $2^{k+1}>1+\sigma/\delta$, whose smallest integer solution is \eqref{eq:kmin}. The complex statement follows from the same uniform asymptotic expansion.
+\end{proof}
+
+\begin{example}[A diverging first Newton phase and an accurate second one]\label{ex:newtonsquare}
+Let $\beta=1/2$, $a=1$, and $\sigma=2$. Then
+\[
+ N_1^2-G^2\sim-\frac14\sqrt w,
+ \qquad N_2^2-G^2\sim-\frac1{256}w^{-3/2}.
+\]
+One Newton step gives an exponentially incorrect value of $e^{-G^2}$ even though $N_1-G=O(w^{-1/2})$. Two steps give relative accuracy tending to one.
+\end{example}
+
+\begin{example}[A persistent critical multiplier]\label{ex:critical}
+For $\beta=1/2$, $\sigma=3/2$, and $k=1$,
+\[
+ N_1^{3/2}-G^{3/2}\longrightarrow-\frac3{16}a^3,
+ \qquad
+ \frac{e^{-\lambda N_1^{3/2}}}{e^{-\lambda G^{3/2}}}
+ \longrightarrow e^{3\lambda a^3/16}.
+\]
+Thus matching all growing phase terms is insufficient to determine a correctly normalized exponential amplitude.
+\end{example}
+
+For finitely many phases $\lambda_jz^{\sigma_j}$, the sufficient fixed-step criterion uses $\max_j\sigma_j$. The values of finitely many nonzero $\lambda_j$ change finite tolerances but not the asymptotic iteration threshold. This last statement will fail under a uniform relative-error demand over unbounded action multipliers; see \sect{sec:countable}.
+
+\section{Phase accuracy is not exponential-sector resolution}\label{sec:resolution}
+
+The fixed-$k$ expansion in Theorem~\ref{thm:newtonexact} must not be substituted blindly into a formula where $k$ grows with $w$. We first prove a separate uniform estimate.
+
+\begin{lemma}[Uniform real Newton error at every depth]\label{lem:uniformnewton}
+For $a>0$, $0<\beta<1$, and all sufficiently large positive $w$, the iterates \eqref{eq:newton} satisfy
+\[
+ N_1\le N_k<G<N_0=w\qquad(k\ge1),
+\]
+with $N_k$ increasing for $k\ge1$. No iterate equals $G$. There is a constant $C$, independent of $k$ and $w$, such that
+\begin{equation}\label{eq:uniformlogerror}
+ \left|\log|N_k-G|-\log w+m_k\delta\log w\right|
+ \le C m_k\qquad(k\ge0).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The function $F$ is strictly increasing and strictly concave on $(0,\infty)$. A tangent line lies above its graph. The first Newton tangent, from $w>G$, therefore meets the level $w$ below $G$. Each subsequent tangent from below $G$ meets that level strictly between its base point and $G$. This proves the order assertions. For large $w$, the entire interval $[N_1,w]$ lies between fixed positive multiples of $w$, and in fact every point in it is $w(1+o(1))$, uniformly in $k$.
+
+Taylor's theorem gives, with $E_k=|N_k-G|$ and a point $\xi_k$ between $N_k$ and $G$,
+\[
+ E_{k+1}=\frac{|F''(\xi_k)|}{2F'(N_k)}E_k^2.
+\]
+Here $|F''(\xi_k)|=a\beta\delta\,\xi_k^{\beta-2}$ and $F'(N_k)\to1$ uniformly. Thus constants $0<c_-<c_+$ give
+\[
+ c_-w^{\beta-2}E_k^2\le E_{k+1}\le c_+w^{\beta-2}E_k^2
+\]
+for every $k$. Set $x_k=E_k/w$. Since $x_0=aw^{-\delta}(1+o(1))$, we have
+\[
+ \log x_0=-\delta\log w+O(1),\qquad
+ \log x_{k+1}=2\log x_k-\delta\log w+O(1),
+\]
+where the constants in $O(1)$ are uniform in $k$. Iterating the two inequalities proves \eqref{eq:uniformlogerror}. Strict concavity and the error equation show that no nonzero error becomes zero.
+\end{proof}
+
+\begin{theorem}[Moving precision for a visible exponential sector]\label{thm:resolution}
+Let $a,b,\lambda>0$, $0<\beta<1$, $\sigma>0$, and $\gamma\in\R$. Put
+\[
+ R(z)=b z^\gamma e^{-\lambda z^\sigma},\qquad f=F+R,
+\]
+and choose the real inverse $g$ near $G$ for large positive $w$. Then
+\begin{equation}\label{eq:firstinversecorrection}
+ g(w)-G(w)=-\frac{R(G(w))}{F'(G(w))}(1+o(1)).
+\end{equation}
+For every fixed $k$, the core error $|N_k-G|$ dominates $|g-G|$ by an unbounded factor, even when Theorem~\ref{thm:sharpthreshold} certifies phase accuracy.
+
+For a possibly growing $k=k(w)$ and any fixed $\epsilon>0$, the following asymptotic tests hold:
+\begin{align}
+ m_k\delta\log w\ge(1+\epsilon)\lambda w^\sigma
+ &\ \Longrightarrow\ \frac{|N_k-G|}{|g-G|}\longrightarrow0,\label{eq:resolutionupper}\\
+ m_k\delta\log w\le(1-\epsilon)\lambda w^\sigma
+ &\ \Longrightarrow\ \frac{|N_k-G|}{|g-G|}\longrightarrow\infty.
+ \label{eq:resolutionlower}
+\end{align}
+For any fixed $0<\tau<1$, let $k_{\rm res}(w)$ be the smallest $k$ for which $|N_k-G|\le\tau|g-G|$. Then
+\begin{equation}\label{eq:movingk}
+ k_{\rm res}(w)=\sigma\log_2w-\log_2\log w+O(1).
+\end{equation}
+\end{theorem}
+\begin{proof}
+One may apply the convergent inverse expansion in Theorem~\ref{thm:analyticLB} below. Alternatively, solve the displacement equation at $G$; its linear term is $F'(G)(g-G)+R(G)$, and all additional terms are smaller by a factor tending to zero on a disk whose radius is a fixed multiple of $|R(G)|$. The derivatives of $F$ grow at most polynomially, while $R$ and its fixed-order derivatives are a polynomial factor times $e^{-\lambda G^\sigma}$. Rouch\'e's theorem on that disk gives existence and the first-order displacement \eqref{eq:firstinversecorrection}.
+
+For fixed $k$, Theorem~\ref{thm:newtonexact} has a nonzero algebraic leading error, whereas \eqref{eq:firstinversecorrection} is exponentially small. For growing $k$, Lemma~\ref{lem:uniformnewton} gives
+\begin{equation}\label{eq:resolutionlog}
+ \log\frac{|N_k-G|}{|g-G|}
+ =\lambda G^\sigma-m_k\delta\log w+O(m_k+\log w).
+\end{equation}
+Since $G^\sigma=w^\sigma(1+o(1))$, and $m_k=O(w^\sigma/\log w)$ near the transition, the error in \eqref{eq:resolutionlog} is $o(w^\sigma)$ there. The two inequalities follow. The upper inequality remains valid for larger $m_k$ because $O(m_k)$ is dominated by $m_k\delta\log w$.
+
+The errors decrease with $k\ge1$. The two tests bracket the minimal count between the integers for which $2^{k+1}$ is a fixed positive multiple of $w^\sigma/\log w$. Taking logarithms proves \eqref{eq:movingk}, with the fixed tolerance affecting only its bounded term.
+\end{proof}
+
+\begin{corollary}[Why a finite Newton core hides its own exponential correction]\label{cor:hidden}
+Under Theorem~\ref{thm:resolution}, define the evaluated one-sector approximation
+\[
+ T_k(w)=N_k(w)-\frac{R(N_k(w))}{F'(N_k(w))}.
+\]
+For each fixed $k$, $T_k-g\sim N_k-G$ on the positive real ray. Therefore evaluating one or several correct exponential corrections does not repair the remaining algebraic error of a finitely iterated core.
+\end{corollary}
+\begin{proof}
+Both $R(N_k)/F'(N_k)$ and $g-G$ are exponentially small since $N_k\sim G\sim w$. Their difference is negligible compared with the nonzero algebraic leading term of $N_k-G$.
+\end{proof}
+
+A symbolic representation using the exact $G$ does not suffer this obstruction. Numerically, the scaled displacement $(g-G)e^{\lambda G^\sigma}$ is often the stable quantity to solve for, rather than obtaining it by subtracting two almost equal floating-point numbers. The accompanying tests use precisely that strategy.
+
+\begin{theorem}[The matching higher-height Newton law]\label{thm:heightnewton}
+For the same real power core and a phase
+\[
+ A(z)=\exp(\lambda z^\sigma),\qquad \lambda,\sigma>0,
+\]
+no fixed Newton count gives relative accuracy for $e^{-A(G)}$. For any fixed relative tolerance $0<\tau<1$, the smallest Newton count $k_{\rm phase}(w)$ satisfying
+\[
+ \left|\frac{e^{-A(N_k(w))}}{e^{-A(G(w))}}-1\right|\le\tau
+\]
+obeys
+\begin{equation}\label{eq:heightnewton}
+ k_{\rm phase}(w)=\sigma\log_2w-\log_2\log w+O(1).
+\end{equation}
+The strict-margin tests \eqref{eq:resolutionupper}--\eqref{eq:resolutionlower} also distinguish success and failure of phase accuracy, with the same threshold $\lambda w^\sigma$.
+\end{theorem}
+\begin{proof}
+For $k\ge1$, $N_k<G$ and the logarithm of the exponential ratio is the positive quantity $A(G)-A(N_k)$. When the inner phase difference is small,
+\[
+ A(G)-A(N_k)
+ =e^{\lambda G^\sigma}\lambda\sigma G^{\sigma-1}|N_k-G|(1+o(1)).
+\]
+Its logarithm is $\lambda G^\sigma-m_k\delta\log w+O(m_k+\log w)$ by Lemma~\ref{lem:uniformnewton}. In the upper-margin regime this tends to $-\infty$, and the inner phase difference is indeed small. In the lower-margin regime, either the inner phase difference stays bounded away from zero along a subsequence, in which case $A(G)-A(N_k)$ is already exponentially large, or it tends to zero and the displayed estimate proves divergence. The same argument on subsequences covers the general case.
+
+For $k=0$, $N_0=w>G$ and the ratio tends to zero, hence its error tends to one. For every other fixed $k$ the lower-margin regime eventually applies. Monotonicity for $k\ge1$ and the same dyadic bracketing used in Theorem~\ref{thm:resolution} give \eqref{eq:heightnewton}.
+\end{proof}
+
+The two moving laws express a useful precision correspondence: resolving a sector $e^{-B}$ and evaluating the phase of a sector $e^{-e^B}$ demand the same leading exponential precision in the core, up to polynomial factors. This correspondence is an error statement, not an identification of the two transseries classes.
+
+\section{An infinite large phase jet and its moving cutoff}\label{sec:infinitejet}
+
+The finite-jet theorem for a power phase does not extend to every phase of finite exponential height.
+
+\begin{theorem}[A finite-height obstruction to finite phase truncation]\label{thm:infinitejet}
+Let
+\[
+ G(w)=w+w^{-1},\qquad
+ F(z)=\frac{z+\sqrt{z^2-4}}2,
+\]
+with the large branch, so that $F\circ G=\id$ near infinity. For the phase $A(z)=e^z$,
+\[
+ A(G(w))=e^w\sum_{j\ge0}\frac1{j!w^j}.
+\]
+For every fixed $N\ge0$, put
+\[
+ P_N(w)=e^w\sum_{j=0}^{N}\frac1{j!w^j},\qquad
+ T_N(w)=A(G(w))-P_N(w).
+\]
+Along $w\to+\infty$,
+\begin{equation}\label{eq:heighttailfixed}
+ T_N(w)\sim\frac{e^w}{(N+1)!w^{N+1}}\longrightarrow+\infty,
+ \qquad
+ \frac{e^{-A(G(w))}}{e^{-P_N(w)}}\longrightarrow0.
+\end{equation}
+Thus no fixed number of phase terms yields relative accuracy, even though the inverse core itself has only two terms.
+\end{theorem}
+\begin{proof}
+The identity $\sqrt{(w+w^{-1})^2-4}=w-w^{-1}$ holds on the chosen large branch, proving $F\circ G=\id$. The rest is the exponential series for $e^{1/w}$ and the asymptotic of its first omitted term.
+\end{proof}
+
+Every term $e^ww^{-j}/j!$ is large on the positive ray. An infinite purely large phase is therefore unavoidable in its expanded normal form. This does not mean that the phase lacks a compact representation: $e^{w+1/w}$ is already exact. The obstruction is to a \emph{fixed finite expanded phase jet}, not to the existence of a transseries or an exact composite expression.
+
+\begin{theorem}[Moving truncation and a Lambert sufficient cutoff]\label{thm:lambertcutoff}
+Write $n=N+1$. Uniformly for integers $n\ge1$ and large positive $w$,
+\begin{equation}\label{eq:logtail}
+ \log T_N(w)=w-\log(n!)-n\log w
+ +O\left(\frac1{w(n+1)}\right).
+\end{equation}
+If $n\sim c w/\log w$ for a fixed $c>0$, then
+\begin{equation}\label{eq:leadingcutoff}
+ \log T_N(w)=(1-2c)w+o(w).
+\end{equation}
+Hence $c>1/2$ gives relative accuracy and $c<1/2$ does not. An explicit sufficient choice, including the important next-order adjustment, is
+\begin{equation}\label{eq:lambertcutoff}
+ n=\left\lceil\frac{w}{W(w^2/e)}\right\rceil,
+ \qquad N=n-1,
+\end{equation}
+where $W$ is the positive Lambert branch. With this choice $T_N(w)=O(n^{-1/2})\to0$.
+\end{theorem}
+\begin{proof}
+Factor the first omitted term:
+\[
+ T_N=\frac{e^w}{n!w^n}
+ \left(1+\frac1{w(n+1)}+
+ \frac1{w^2(n+1)(n+2)}+\cdots\right).
+\]
+The parenthesis lies between $1$ and $(1-[w(n+1)]^{-1})^{-1}$, which proves \eqref{eq:logtail}. Stirling's formula and $n\sim c w/\log w$ give
+\[
+ \log(n!)+n\log w
+ =n(\log n+\log w-1)+O(\log n)=2cw+o(w),
+\]
+proving \eqref{eq:leadingcutoff}.
+
+Let $n_0=w/W(w^2/e)$. The defining equation $W(x)e^{W(x)}=x$ gives
+\[
+ n_0\log(n_0w/e)=w.
+\]
+For large $w$, the function $x\mapsto x\log(xw/e)$ is increasing at and above $n_0$. Thus $n=\lceil n_0\rceil$ satisfies $n\log(nw/e)\ge w$. Stirling's formula in \eqref{eq:logtail} then gives
+\[
+ \log T_N\le-\frac12\log(2\pi n)+O(n^{-1})
+ +O\left(\frac1{w(n+1)}\right),
+\]
+which proves the bound and relative accuracy.
+\end{proof}
+
+The leading constant $1/2$ is not a finite-$w$ certificate. For example, using $n\approx0.6w/\log w$ may still undershoot the needed cutoff at moderate radii. The Lambert formula incorporates the slowly varying correction. At the uncorrected boundary choice $n=\lceil w/(2\log w)\rceil$, substitution into \eqref{eq:logtail} shows a positive leading residual of order $w\log\log w/(2\log w)$; it does not give relative accuracy. No assertion of an exact least integer cutoff is needed for the sufficient theorem.
+
+\section{Convergent inverse sectors with an exact core}\label{sec:analytic}
+
+The phase theorems become useful in reversal once the inverse perturbation sectors have a precise meaning. We record a general analytic form with an explicit majorant. The coefficient identity is classical; related contour-based transport theorems already occur in the repository~\cite{RepoStokes}.
+
+\begin{theorem}[Analytic mixed-sector transport with a geometric tail]\label{thm:analyticLB}
+Let $G$ and $H_1,\ldots,H_r$ be holomorphic in a neighborhood of $\overline{D(w,\rho)}$. Define
+\[
+ M_j=\sup_{|v-w|\le\rho}|H_j(v)|,\quad M=\sum_{j=1}^r M_j,
+ \quad q=M/\rho<1,\quad B=\sup_{|v-w|\le\rho}|G'(v)|.
+\]
+The equation
+\begin{equation}\label{eq:targetinverse}
+ v+\sum_{j=1}^r H_j(v)=w
+\end{equation}
+has exactly one root $v$ in the disk, and
+\begin{equation}\label{eq:analyticmixed}
+ G(v)=G(w)+\sum_{\nn\in\N^r\setminus\{0\}}
+ \frac{(-1)^{|\nn|}}{\nn!}
+ \partial_w^{|\nn|-1}
+ \left(G'(w)\prod_{j=1}^r H_j(w)^{n_j}\right).
+\end{equation}
+Here $\nn!=\prod_j n_j!$, and the series is absolutely convergent. If $T_{\nn}$ denotes a displayed summand, then
+\begin{align}
+ \sum_{|\nn|=N}|T_{\nn}|&\le\frac{B\rho}{N}q^N\quad(N\ge1),\label{eq:degreebound}\\
+ \sum_{|\nn|>p}|T_{\nn}|&\le
+ \frac{B\rho q^{p+1}}{(p+1)(1-q)}\quad(p\ge0).
+ \label{eq:geometrictail}
+\end{align}
+When $M=0$, the sums vanish and the conclusion is immediate.
+\end{theorem}
+\begin{proof}
+On $|v-w|=\rho$ the perturbation in \eqref{eq:targetinverse} has modulus at most $M<\rho$. Rouch\'e's theorem gives one zero, counted with multiplicity, so it is simple. Introduce parameters $t_j$ in front of $H_j$. The same argument applies in the parameter domain $\sum_j|t_j|M_j<\rho$, and the unique simple root is holomorphic there. In particular, it has a convergent multivariate Taylor expansion around the origin, reaching a polydisk of radius greater than one in every parameter.
+
+Apply Theorem~\ref{thm:formalLB} to $H=\sum_j t_jH_j$ and the carrier $G$, or compare coefficients along each line in parameter space. The multinomial theorem yields \eqref{eq:analyticmixed}. Cauchy's derivative estimate gives, for $N=|\nn|$,
+\[
+ |T_{\nn}|\le
+ \frac{(N-1)!}{\nn!\rho^{N-1}}
+ B\prod_j M_j^{n_j}.
+\]
+Summing over $|\nn|=N$ and using
+$\sum_{|\nn|=N}\prod_jM_j^{n_j}/\nn!=M^N/N!$
+proves \eqref{eq:degreebound}. Summing $q^N/N$ for $N>p$ gives \eqref{eq:geometrictail} and absolute convergence at $\boldsymbol t=\one$.
+\end{proof}
+
+For inverse problems, take $H_j=R_j\circ G$ and assume $F\circ G=\id$. Then $f=F+\sum_jR_j$ satisfies $f(G(v))=v+\sum_jH_j(v)$, so $G(v)$ is the desired inverse branch. Writing the coefficients back in the source coordinate gives the exact formula
+\begin{equation}\label{eq:sourceoperator}
+ g(w)=G(w)+\sum_{\nn\ne0}\frac{(-1)^N}{\nn!}
+ \left[
+ \DF^{N-1}\left(\frac{\prod_jR_j(z)^{n_j}}{F'(z)}\right)
+ \right]_{z=G(w)},
+ \quad N=|\nn|,
+ \qquad \DF=\frac1{F'(z)}\frac{d}{dz}.
+\end{equation}
+The formula is not restricted to power cores or to exponential perturbations. It is an exact-core analytic realization of the carrier principle.
+
+\subsection{A finite-action sectorial theorem}
+
+\begin{theorem}[Power-core inversion with finitely many exponential actions]\label{thm:finiteactions}
+Let $F$ be \eqref{eq:powercore}. On a branch sector, consider
+\begin{equation}\label{eq:finiteactionmodel}
+ f(z)=F(z)+\sum_{j=1}^r R_j(z),\qquad
+ R_j(z)=b_j z^{\gamma_j}(\Log z)^{\ell_j}e^{-\lambda_j z^\sigma},
+\end{equation}
+where $r<\infty$, $b_j\ne0$, $\gamma_j\in\C$, $\ell_j\in\N$, $\sigma>0$. Assume that on a closed angular interval slightly larger than the one under consideration,
+\begin{equation}\label{eq:decaycone}
+ \Re(\lambda_j z^\sigma)\ge\kappa|z|^\sigma
+ \qquad(j=1,\ldots,r)
+\end{equation}
+for some $\kappa>0$. For sufficiently large $|w|$, the inverse branch $g\sim G$ is given by the normally convergent series \eqref{eq:sourceoperator}. Its total-degree remainder satisfies \eqref{eq:geometrictail} with a disk radius
+\begin{equation}\label{eq:phaseradius}
+ \rho(w)=c|w|^{1-\sigma}
+\end{equation}
+for a sufficiently small fixed $c>0$, and with $q(w)\to0$ exponentially fast up to a polynomial factor.
+
+For each fixed multiindex $\nn\ne0$, put
+\[
+ N=|\nn|,\quad \Lambda_{\nn}=\sum_jn_j\lambda_j,
+ \quad \Gamma_{\nn}=\sum_jn_j\gamma_j,
+ \quad L_{\nn}=\sum_jn_j\ell_j.
+\]
+Then its summand has the leading form
+\begin{equation}\label{eq:mixedleading}
+ T_{\nn}(w)=
+ -\frac{(\sigma\Lambda_{\nn})^{N-1}}{\nn!}
+ \left(\prod_j b_j^{n_j}\right)
+ w^{\Gamma_{\nn}+(\sigma-1)(N-1)}
+ (\Log w)^{L_{\nn}}
+ e^{-\Lambda_{\nn}G(w)^\sigma}(1+o(1)).
+\end{equation}
+Its exponential admits exactly the phase normalization of Theorem~\ref{thm:finitejet}, with $\lambda=\Lambda_{\nn}$. In particular, the positive phase tiers and the constant shift propagate additively under mixed-sector multiplication.
+\end{theorem}
+\begin{proof}
+The inverse $G=wY(aw^{-\delta})$ is holomorphic on a large sector, with $G\sim w$ and $G'\sim1$. The disks \eqref{eq:phaseradius} have relative radius $O(|w|^{-\sigma})$, so they lie in that sector for large $|w|$. On a disk of this size, the change in each $\lambda_jG(v)^\sigma$ is bounded, since its derivative is $O(|w|^{\sigma-1})$. The strict inequality \eqref{eq:decaycone} therefore implies
+\[
+ \sum_j\sup_{|v-w|\le\rho}|R_j(G(v))|
+ \le C|w|^A(\log|w|)^L e^{-\kappa'|w|^\sigma}
+\]
+for some fixed $A,L$ and $\kappa'>0$. Division by $\rho$ proves $q\to0$ and the hypotheses of Theorem~\ref{thm:analyticLB}. Its majorant gives convergence and the asserted tail. The same bounds, taken uniformly beyond a fixed radius, prove normal convergence on the closed subsector. Local inverse branches agree on overlaps because the root in the near-core chart is unique.
+
+In \eqref{eq:sourceoperator}, the product of the $R_j^{n_j}$ has exponential $e^{-\Lambda_{\nn}z^\sigma}$. Condition \eqref{eq:decaycone} gives
+$\Re(\Lambda_{\nn}z^\sigma)\ge N\kappa|z|^\sigma$, so $\Lambda_{\nn}\ne0$. In any fixed number of differentiations, differentiating the exponential contributes the leading factor $-\sigma\Lambda_{\nn}z^{\sigma-1}$; differentiating its algebraic--logarithmic amplitude is smaller by a factor tending to zero, since the relevant ratio is $O(z^{-\sigma})$, with harmless logarithmic factors. Differentiating $F'^{-1}$ is smaller as well. The $N-1$ derivatives thus give the leading factor $(-\sigma\Lambda_{\nn})^{N-1}$, with $F'^{-N}\sim1$. Substitution of $G\sim w$ in the nonexponential factors yields \eqref{eq:mixedleading}. Its sign is $(-1)^N(-1)^{N-1}=-1$.
+
+The final assertion follows from the linear dependence of \eqref{eq:Pphase}--\eqref{eq:Cphase} on $\lambda$. No exponential is replaced by its leading term before phase normalization.
+\end{proof}
+
+For finite actions in a strict common cone, resonances $\Lambda_{\nn}=\Lambda_{\boldsymbol m}$ cause no infinite coefficient ambiguity: bounded action projection bounds $N$, and only finitely many multiindices then occur. Their amplitudes are added. Equal phases may cancel after grouping; formula \eqref{eq:mixedleading} is a statement about a fixed ungrouped multiindex, not a noncancellation theorem for every resonant sum.
+
+\subsection{A worked inverse with a quadratic exponential}
+
+Consider
+\begin{equation}\label{eq:workedmodel}
+ f(z)=z+\sqrt z+e^{-z^2}.
+\end{equation}
+Choose a sector properly inside $|\arg z|<\pi/4$. Let $G$ be \eqref{eq:sqrtcore} with $a=1$, and put $d(z)=1+1/(2\sqrt z)$. The first two inverse sectors are
+\begin{align}
+ g(w)=G(w)
+ &-\frac{e^{-G(w)^2}}{d(G(w))}\nonumber\\
+ &+\left(-\frac{2G(w)}{d(G(w))^2}
+ +\frac1{8G(w)^{3/2}d(G(w))^3}\right)e^{-2G(w)^2}
+ +\cdots.\label{eq:workedsectors}
+\end{align}
+Every fixed sector has leading coefficient
+\begin{equation}\label{eq:workedleading}
+ T_n(w)\sim-\frac{(2n)^{n-1}}{n!}\,w^{n-1}e^{-nG(w)^2}.
+\end{equation}
+The powers $n^{n-1}$ arise from classical Lagrange differentiation, not a newly discovered tree enumeration. Their relatives are already recorded in the repository~\cite{RepoSupport,RepoStokes}.
+
+The first exponential must be normalized as
+\begin{align*}
+ e^{-G(w)^2}
+ ={}&\exp\left(-w^2+2w^{3/2}-2w+\frac54\sqrt w\right)e^{-1/2}\\
+ &\qquad\times\left(1+\frac7{64\sqrt w}+O(w^{-1})\right).
+\end{align*}
+Thus a fully expanded first sector has a very different phase from $e^{-w^2}$. Keeping $e^{-G^2}$ exactly is an equally valid and often safer representation. Theorem~\ref{thm:sharpthreshold} identifies when a numerical Newton replacement inside this exact phase is legitimate; Theorem~\ref{thm:resolution} separately identifies whether the core itself has enough precision to reveal the sector.
+
+\section{Sectorial transitions and curved decay boundaries}\label{sec:stokes}
+
+\subsection{Exact finite jump transport}
+
+Let $f_-$ and $f_+$ be two holomorphic realizations on an overlap, with inverse branches $g_-$ and $g_+$, and define their forward difference $J=f_+-f_-$. This includes a Stokes situation when the two realizations are lateral sums, but the following algebra does not require that interpretation.
+
+\begin{proposition}[Finite transition law]\label{prop:jump}
+On compatible branch domains, let $h=J\circ g_-$. Then
+\begin{equation}\label{eq:exactjump}
+ f_+=(\id+h)\circ f_-,\qquad
+ g_+=g_-\circ(\id+h)\rev.
+\end{equation}
+Whenever the disk hypotheses of Theorem~\ref{thm:analyticLB} hold for $h$ and the carrier $g_-$,
+\begin{equation}\label{eq:jumpseries}
+ g_+-g_-=
+ \sum_{n\ge1}\frac{(-1)^n}{n!}
+ \partial_w^{n-1}\bigl(g_-'(w)h(w)^n\bigr),
+\end{equation}
+with its geometric remainder bound. If the tail is smaller than the first term, then
+\begin{equation}\label{eq:firstjump}
+ g_+-g_-\sim-\frac{J(g_-(w))}{f_-'(g_-(w))}.
+\end{equation}
+\end{proposition}
+\begin{proof}
+The branch relation $g_-\circ f_-=\id$ gives
+$(\id+J\circ g_-)\circ f_-=f_-+J=f_+$. Inverting this equality gives \eqref{eq:exactjump}. Apply Theorem~\ref{thm:analyticLB} with one perturbation. Its first coefficient is $-g_-'h$, and $g_-'=1/(f_-'\circ g_-)$.
+\end{proof}
+
+This law is a restatement of the exact inverse-transport mechanism, with close precedents in the repository's nonlinear Stokes work~\cite{RepoStokes}. It is included to make the effect of phase errors on normalization explicit.
+
+\begin{corollary}[Critical phase error contaminates a recovered amplitude]\label{cor:stokesbias}
+Suppose an inverse jump has the leading form
+\[
+ \Delta g(w)\sim-S\frac{B(G(w))}{F'(G(w))}e^{-\lambda G(w)^\sigma},
+ \qquad S\ne0,
+\]
+where $G$ is the power-core inverse and $B(z)=z^\gamma(\Log z)^\ell$ is nonzero on the chosen positive branch. Infer its amplitude using $N_k$ in the normalization:
+\[
+ \widehat S_k(w)=
+ -\Delta g(w)\frac{F'(N_k(w))}{B(N_k(w))e^{-\lambda N_k(w)^\sigma}}.
+\]
+Under the real hypotheses of Theorem~\ref{thm:sharpthreshold}, at $m_k\delta=\sigma$ one obtains
+\begin{equation}\label{eq:amplitudebias}
+ \widehat S_k(w)\longrightarrow S\exp(\lambda\sigma C_k a^{m_k}).
+\end{equation}
+For $\beta=1/2$, $\sigma=3/2$, $k=1$, this factor is $e^{-3\lambda a^3/16}$.
+\end{corollary}
+\begin{proof}
+The power--logarithmic amplitude ratio and derivative ratio tend to one because $N_k/G\to1$. The remaining exponential factor is $\exp(\lambda[N_k^\sigma-G^\sigma])$. Use \eqref{eq:newtonphaseerror}.
+\end{proof}
+
+Thus a wrong phase constant can masquerade as a different Stokes constant. The corollary concerns recovery of an amplitude from an already specified jump. It does not prove that every arbitrary pair of exponentially close analytic germs arises as lateral sums of a particular resurgent object.
+
+\subsection{What may be concluded about summation}
+
+Suppose a formal class has a summation map $\mathcal S$ defined on a formal inverse pair $\widehat f,\widehat g$, and suppose it respects the relevant composition and identity. Then
+\[
+ \mathcal S(\widehat f)\circ\mathcal S(\widehat g)=\id,
+\]
+so local uniqueness identifies $\mathcal S(\widehat g)$ with the analytic inverse branch. This implication is elementary; the difficult hypotheses are existence of the sums, compositional compatibility, and control of branch domains. Established resurgent and Borel--Laplace theorems supply such hypotheses in specified classes~\cite{SauzinNonlinear,SauzinIntro}. This article does not infer them merely from formal invertibility or from a finite phase-jet formula.
+
+Likewise, for an actual differentiable family $f_\epsilon\circ g_\epsilon=\id$, ordinary differentiation gives
+\[
+ \left.\partial_\epsilon g_\epsilon\right|_{0}
+ =-\frac{(\left.\partial_\epsilon f_\epsilon\right|_{0})\circ g_0}
+ {f_0'\circ g_0}.
+\]
+Turning this into an alien-derivative formula requires the correct composition rules and normalization of the chosen alien operators; no unqualified alien chain rule is asserted here.
+
+\subsection{An exact boundary map and its angular expansion}
+
+\begin{theorem}[Bending a source decay boundary through a power core]\label{thm:boundary}
+For $F(z)=z+az^\beta$, fix a lifted angle $\phi$ such that
+$\Re(\lambda e^{i\sigma\phi})=0$. The source ray $z=s e^{i\phi}$ maps to an exact target decay boundary for the transported phase:
+\begin{equation}\label{eq:boundaryparam}
+ w(s)=s e^{i\phi}+a s^\beta e^{i\beta\phi},\qquad
+ \Re(\lambda G(w(s))^\sigma)=0.
+\end{equation}
+Put $b=ae^{-i\delta\phi}=u+iv$ and $r=|w(s)|$. For large $r$,
+\begin{equation}\label{eq:bentangle}
+ \arg w=\phi+v r^{-\delta}-\beta uv r^{-2\delta}
+ +O(r^{-3\delta}).
+\end{equation}
+The branch of the argument is the one approaching $\phi$.
+\end{theorem}
+\begin{proof}
+The near-identity inverse satisfies $G(F(z))=z$ along the sufficiently far source ray, proving \eqref{eq:boundaryparam}. Since
+\[
+ w=s e^{i\phi}(1+bs^{-\delta}),
+\]
+expansion of the argument gives
+\[
+ \arg w=\phi+v s^{-\delta}-uv s^{-2\delta}+O(s^{-3\delta}).
+\]
+Also $r=s(1+u s^{-\delta}+O(s^{-2\delta}))$, and $r$ is increasing for large $s$. Therefore
+\[
+ s^{-\delta}=r^{-\delta}+\delta u r^{-2\delta}+O(r^{-3\delta}).
+\]
+Substitution gives the second coefficient $(\delta-1)uv=-\beta uv$.
+\end{proof}
+
+For the quadratic phase in \eqref{eq:workedmodel}, one source boundary has $\phi=\pi/4$. Here $b=e^{-i\pi/8}$, so the leading target bending is $-\sin(\pi/8)r^{-1/2}$. These curves describe the phase of the exact core. They do not by themselves extend the full inverse-sector convergence theorem to a boundary where the perturbation is no longer exponentially small.
+
+\section{Countable actions: two distinct uniformity obstructions}\label{sec:countable}
+
+A finite family of phases can be handled by a maximum of finitely many sensitivities. Passing to countably many phases changes the problem even when every individual phase is elementary.
+
+\begin{proposition}[No nontrivial uniform relative control of all integer actions]\label{prop:uniformactions}
+For any $q\in\C\setminus\{1\}$,
+\begin{equation}\label{eq:qobstruction}
+ \sup_{j\ge1}|q^j-1|\ge1.
+\end{equation}
+Consequently, for actions $A_j=jA$ and a normalized, nonzero phase error $\Delta=A(H)-A(G)$ with $e^{-\Delta}\ne1$,
+\[
+ \sup_{j\ge1}
+ \left|\frac{e^{-jA(H)}}{e^{-jA(G)}}-1\right|\ge1.
+\]
+Thus $\Delta(w)\to0$ gives convergence for each fixed $j$, but never a uniform relative error tending to zero over all $j$ unless the exponential phase is exact at each sufficiently large $w$.
+\end{proposition}
+\begin{proof}
+If $|q|<1$, then $|q^j-1|\to1$. If $|q|>1$, the supremum is infinite. If $|q|=1$ and $q\ne1$, the geometric-average identity gives
+\[
+ \frac1n\sum_{j=1}^n |q^j-1|^2
+ =2-2\Re\left(\frac1n\sum_{j=1}^nq^j\right)\longrightarrow2.
+\]
+The supremum is then at least $\sqrt2$, which is stronger than required. Apply this result with $q=e^{-\Delta}$.
+\end{proof}
+
+This obstruction does not prevent approximation of a \emph{weighted sum} of sectors.
+
+\begin{proposition}[Weighted absolute transport error]\label{prop:weighted}
+Let $\lambda_j>0$, $b_j\in\C$, and set $A_G=A(G)$, $\Delta=A(H)-A_G$. Whenever the series on the right converges absolutely,
+\begin{equation}\label{eq:weighted}
+ \sum_j |b_j|e^{-\lambda_j\Re A_G}
+ |e^{-\lambda_j\Delta}-1|
+ \le |\Delta|\sum_j |b_j|\lambda_j
+ e^{-\lambda_j(\Re A_G-|\Delta|)}.
+\end{equation}
+In particular, if $\Re A_G-|\Delta|\ge s_0>0$ and
+$\sum_j|b_j|\lambda_je^{-s_0\lambda_j}<\infty$, the weighted absolute error is $O(|\Delta|)$.
+\end{proposition}
+\begin{proof}
+For real $\lambda>0$, the integral formula for $e^{-\lambda\Delta}-1$ gives
+$|e^{-\lambda\Delta}-1|\le\lambda|\Delta|e^{\lambda|\Delta|}$. Multiply by the stated weight and sum nonnegative terms.
+\end{proof}
+
+The choice of topology matters: coefficientwise relative accuracy, a supremum over actions, and a weighted absolute norm are inequivalent requirements. A usable countable-action theorem should specify which of them it proves.
+
+\begin{proposition}[Unbounded phase degree has no common fixed decay sector]\label{prop:nosector}
+There is no open angular interval $I$ of positive length on which every function $e^{-z^j}$, $j\ge1$, tends to zero along every ray as $|z|\to\infty$.
+\end{proposition}
+\begin{proof}
+Choose an integer $j$ with $j|I|>2\pi$. Then $jI$ contains an angle congruent to $\pi$ modulo $2\pi$. For the corresponding $\theta\in I$,
+$\Re((r e^{i\theta})^j)=-r^j$, so $|e^{-(r e^{i\theta})^j}|=e^{r^j}$ grows instead of decaying.
+\end{proof}
+
+All these terms are small on the positive real ray, but not simultaneously small on any fixed open sector. This does not rule out an analytically continued sum, cancellations, an oscillatory transseries treatment, or a realization on narrower nonsectorial domains. It rules out a specific unrestricted passage from real-ray smallness to common-sector smallness.
+
+\section{Executed verification and reproducibility}\label{sec:verification}
+
+The proofs above are the mathematical justification. The supplied program \texttt{verify.py} adds independent exact coefficient checks and high-precision numerical diagnostics. The recorded run used Python 3.13.5, SymPy 1.14.0, and mpmath 1.3.0. All \textbf{710 exact assertions passed}. Numerical calculations used \textbf{160 decimal digits}. These are not directed-rounding interval certificates and not proof-assistant verification.
+
+\subsection{What the exact checks test}
+
+The program implements truncated formal series over Python's exact rational numbers, independently of SymPy's series inversion. For $\beta\in\{1/3,1/2,2/3,3/4\}$ it verifies the equation $Y+tY^\beta=1$ through degree 16, the transported-power coefficient formula for six values of $\sigma$, the nonvanishing and critical constant claims in the finite phase jet, and the first four Newton depths $1,3,7,15$ with their exact leading constants.
+
+A separate differential-jet computation verifies the first four generic perturbative inverse coefficients. It constructs the operator coefficients in \eqref{eq:sourceoperator}, then substitutes them into an independent Taylor expansion of $F(z+u)+tR(z+u)-F(z)$ and checks that the coefficients through degree four vanish. The displayed coefficients of $G^2$ in \eqref{eq:Gsquare} are generated exactly as well.
+
+\subsection{The fixed Newton phase threshold in numbers}
+
+For $F(z)=z+\sqrt z$ and the phase $A(z)=z^2$, Table~\ref{tab:phase} records the relative phase-evaluation errors
+\[
+ \left|e^{-N_k(w)^2}/e^{-G(w)^2}-1\right|.
+\]
+The first Newton approximation becomes worse in this metric while the second improves, as predicted by Example~\ref{ex:newtonsquare}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$w$ & One Newton step, $k=1$ & Two Newton steps, $k=2$\\
+\midrule
+16 & $8.3776401\times10^{-1}$ & $3.7072252\times10^{-5}$\\
+64 & $3.7540834$ & $5.9428013\times10^{-6}$\\
+256 & $3.3151780\times10^{1}$ & $8.4163245\times10^{-7}$\\
+1024 & $1.8357515\times10^{3}$ & $1.1198706\times10^{-7}$\\
+\bottomrule
+\end{tabular}
+\caption{Relative errors of a transported exponential, not of the inverse position. Values are rounded from the recorded 160-digit run.}\label{tab:phase}
+\end{table}
+
+At the critical exponent $\sigma=3/2$, the one-step ratio at $w=10^{12}$ is approximately $1.20622991016904$, while its proved limit is
+$e^{3/16}\approx1.20623024942098$. The surviving multiplier is numerically visible even at such a large radius.
+
+\subsection{Stable evaluation of the inverse exponential sectors}
+
+For \eqref{eq:workedmodel}, write $E=e^{-G^2}$ and $g=G+Ev$. Instead of subtracting $g-G$, solve the rationalized scaled equation
+\begin{equation}\label{eq:stableeq}
+ v\left(1+\frac1{\sqrt{G+Ev}+\sqrt G}\right)
+ +\exp\bigl(-Ev(2G+Ev)\bigr)=0.
+\end{equation}
+This follows exactly from the inverse equation and avoids cancellation in the square-root difference. Table~\ref{tab:inverse} reports the errors in $v$ after one, two, and four exponential sectors. It tests the relative size of the displacement itself, not the accuracy of the large core.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}lccc@{}}
+\toprule
+$w$ & One sector & Two sectors & Four sectors\\
+\midrule
+$4$ & $7.3869642\times10^{-3}$ & $1.0376710\times10^{-4}$ & $3.0886463\times10^{-8}$\\
+$8$ & $1.3499178\times10^{-13}$ & $3.2920813\times10^{-26}$ & $3.0116199\times10^{-51}$\\
+$6+i$ & $1.1907728\times10^{-6}$ & $2.6272168\times10^{-12}$ & $1.9620386\times10^{-23}$\\
+$10+i$ & $1.6583406\times10^{-22}$ & $4.8704990\times10^{-44}$ & $6.4714026\times10^{-87}$\\
+\bottomrule
+\end{tabular}
+\caption{Absolute errors in the scaled inverse displacement $v=(g-G)e^{G^2}$. These are high-precision diagnostics, not interval-enclosed error bounds.}\label{tab:inverse}
+\end{table}
+
+\subsection{Moving precision diagnostics}
+
+For $\beta=1/2$, $a=1$, an exact cancellation-free error recurrence follows from rationalizing the square roots. If $e_k=N_k-G$, then
+\begin{equation}\label{eq:stableNewtonerror}
+ e_{k+1}=-\frac{e_k^2}
+ {(2\sqrt{G+e_k}+1)(\sqrt G+\sqrt{G+e_k})^2}.
+\end{equation}
+It can track a tiny error directly even when storing $N_k$ and $G$ separately would lose their difference. Table~\ref{tab:moving} records the first $k$ satisfying $|e_k|\le0.1e^{-G^\sigma}$. The normalization is the bare exponential sector, rather than the additional amplitude $1/F'(G)$ in the full inverse correction.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{@{}rcc@{}}
+\toprule
+$w$ & Resolution count for $e^{-G}$ & Resolution count for $e^{-G^2}$\\
+\midrule
+16 & 3 & 6\\
+64 & 4 & 10\\
+256 & 6 & 13\\
+1024 & 7 & 17\\
+4096 & 9 & 21\\
+\bottomrule
+\end{tabular}
+\caption{Growing Newton counts for a fixed relative core-error budget against an exponentially small reference sector. In contrast, phase evaluation alone needs only one fixed step for $e^{-G}$ and two for $e^{-G^2}$.}\label{tab:moving}
+\end{table}
+
+The supplementary diagnostics also check the exact boundary parametrization at four source radii, the two-term angular bending law, and the Lambert cutoff at $w=100,1000,10000$. For the latter, the sufficient degrees $N$ are respectively $15,95,678$, and the logarithms of the phase tails are approximately $-4.354$, $-8.524$, and $-6.502$. Integer rounding produces visible nonmonotonicity in these sample tail values without affecting their proved limiting bound.
+
+\subsection{How to reproduce}
+
+The archive contains the source, rendered article, verification program, recorded JSON output, a text report, dependency list, build script, and provenance notes. From its extracted directory:
+\begin{verbatim}
+python -m pip install -r requirements.txt
+python verify.py --out build/results
+sh build.sh
+\end{verbatim}
+The default verification destination is under \texttt{build/}; it does not overwrite the recorded \texttt{results/verification.json}. The PDF uses standard TeX Live packages and no external figures or font files. The build script runs three pdfLaTeX passes. No network access is required once the dependencies are installed.
+
+\section{Further research questions and concrete next targets}\label{sec:research}
+
+The following are proposed research projects. Some continue well-established themes; they are not all claims of previously unstudied global open problems. Their purpose is to isolate the next missing theorem or implementable object.
+
+\subsection{An effective minimal-phase algorithm beyond power cores}
+
+Theorem~\ref{thm:finitejet} is finite because the phase exponents cross zero after a controlled number of terms. Theorem~\ref{thm:infinitejet} shows that finite exponential height alone does not imply this property. A natural goal is an effective criterion, for explicitly represented logarithmic--exponential cores and phases, deciding whether a finite inverse jet determines the transported phase modulo $o(1)$. The normalization must specify which linear logarithms and iterated logarithms belong to amplitudes. A useful first class would allow finite sums of power--logarithmic phases and implicit cores with finitely generated positive support.
+
+\subsection{Uniform exact Newton constants at the moving threshold}
+
+Theorem~\ref{thm:newtonexact} gives exact fixed-depth coefficients, whereas Lemma~\ref{lem:uniformnewton} gives only $O(m_k)$ control uniformly in depth. Bridging them would sharpen the bounded uncertainty in \eqref{eq:movingk}. One should derive a uniform product representation for the Newton error and locate the transition within the dyadic rounding window. This would turn the leading asymptotic iteration law into a close-to-optimal stopping rule at finite radius, without treating a fixed-$k$ remainder as uniform in $k$.
+
+\subsection{Variable derivative shifts and non-Archimedean phase budgets}
+
+The repository's strong Hahn theory treats support-word depth beyond Archimedean exponent groups, with explicit restrictions on the derivation~\cite{RepoNonArch}. General logarithmic--exponential derivations change monomials by nonuniform shifts. The new task is to combine a phase-dependent filtration with these derivations: the output should certify which inverse error ideal is small enough for a prescribed finite set of phase compositions. A theorem about $t$-adic coefficients is not enough; specialization must be proved in the intended strong topology.
+
+\subsection{Critical ramification coupled to phase sensitivity}
+
+Near $F'=0$, the univalent disk certificate fails and ordinary inverse errors are amplified. Existing moving-fold analyses already handle square-root branching in the repository~\cite{RepoIndex}. A distinct next question is the interaction of that ramification with a rapidly varying outer phase, especially when a phase derivative grows while the core derivative vanishes. A uniform ramified certificate should distinguish branch separation, phase accuracy, and beyond-all-orders sector resolution in one scaled chart.
+
+\subsection{Weighted countable-action inversion}
+
+Proposition~\ref{prop:weighted} suggests exponential-moment norms rather than a supremum of relative sector errors. A useful theorem would combine those norms with inverse-transport derivatives, prove local analytic inversion in the resulting weighted space, and identify the exact moment loss. It should distinguish accumulation of action values, unbounded action multipliers, and unbounded phase degrees, since the elementary obstructions in \sect{sec:countable} concern different phenomena.
+
+\subsection{Realization on narrowing nonsectorial domains}
+
+For infinitely many phases $z^j$, no fixed open sector makes every exponential small. A tractable substitute may retain actions up to a radius-dependent cutoff $J(r)$ and work in horns whose angular width is controlled by $J(r)^{-1}$. The remaining action tail then needs a weighted estimate, not termwise smallness. Determining a sharp compatibility condition among horn width, amplitude decay, and action cutoff would turn the obstruction into a constructive realization theory.
+
+\subsection{Resurgent transport under nonlinear phase changes}
+
+The analytic transport formula proves convergence in perturbation amplitudes, but it does not locate Borel singularities of general transported coefficient blocks. A further project is to describe how nonlinear core changes act on resurgent singular data in a precisely specified class, including resonant phase sums. Existing closure results~\cite{SauzinNonlinear} should be used as a foundation. The desired addition is an explicit singularity and normalization calculus, not another unsupported assertion that every complex transseries is resurgent.
+
+\subsection{Certified symbolic--numerical reversal}
+
+The disk certificate, exact phase jets, and geometric amplitude tail can be assembled into a practical algorithm. The missing engineering result is an implementation that supplies interval-enclosed bounds for $F'$, $A'$, and $B'/B$, selects a valid branch disk, chooses a phase-safe core approximation, and reports separately the core uncertainty and sector remainder. This would prevent a common failure mode: a beautifully converged sector expansion attached to an inadequately evaluated core.
+
+\subsection{Formal verification of the algebraic and analytic interfaces}
+
+The finite rational coefficient identities and Newton recurrences are natural proof-assistant targets. A first formal module could prove \eqref{eq:cn}, \eqref{eq:constantphasecoeff}, and the leading-error recursion over a characteristic-zero coefficient field. A second would package the disk certificate and its exponential transport bound. The eventual interface should state explicitly whether a theorem is formal, Hahn-summable, or analytically realized. No Lean code or successful Lean build is claimed in the present package.
+
+\section{Conclusions}\label{sec:conclusion}
+
+Series reversal in the complex domain needs more than a formal inverse and a relative approximation to its leading term. A nonlinear core changes the exponential phase, and the required inverse precision depends on the derivative of that phase. The residual certificate makes this dependence quantitative for arbitrary holomorphic data. The nonlinear power core makes it exactly computable: the positive phase jet has $\lceil\sigma/(1-\beta)\rceil$ tiers, critical constants are explicit, and Newton phase accuracy has a strict, sharp threshold.
+
+Two separations are particularly important. First, phase accuracy does not imply that the exponentially small correction is numerically visible against the remaining core error. Second, finite exponential height does not imply a finite expanded phase jet. The moving Newton and moving truncation laws quantify these separations rather than treating them as qualitative warnings. Exact-core inverse transport then places the phase information inside convergent complex-sector expansions, while the countable-action examples show why a general theory must specify its domains and topology.
+
+The outcome is a rigorously proved extension of the precision side of transseries reversal, together with a clear boundary between established inversion machinery, the explicit refinements developed here, and the broader realization and resurgent questions that remain to be addressed.
+
+\appendix
+\section{Notation and logical dependency guide}\label{sec:notation}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.70\textwidth}@{}}
+\toprule
+Symbol & Meaning\\
+\midrule
+\endhead
+$F$, $G=F\rev$ & Dominant core and its chosen local inverse.\\
+$f=F+R$, $g=f\rev$ & Perturbed forward map and its local inverse.\\
+$A$, $B$ & Phase and amplitude in $B e^{-A}$.\\
+$H$ & An approximate core inverse; in the formal carrier theorem only, a target-coordinate perturbation.\\
+$N_k$ & Newton approximation to the core inverse after $k$ steps, with $N_0=w$.\\
+$\beta$, $\delta=1-\beta$ & Sublinear core exponent and positive power gap.\\
+$t=aw^{-\delta}$, $Y=G/w$ & Small core parameter and dimensionless inverse.\\
+$c_n(\beta,\sigma)$ & Exact coefficient of $t^n$ in $Y^\sigma$.\\
+$P_\lambda$, $C_\lambda$, $U_\lambda$ & Positive phase jet, constant phase, and normalized small amplitude.\\
+$m_k=2^{k+1}-1$ & Known Newton depth, refined here by its exact leading constant.\\
+$C_k=K_\beta^{2^k-1}$ & Leading Newton error coefficient, with $K_\beta=\beta(\beta-1)/2$.\\
+$\DF$ & Source-coordinate operator $F'^{-1}d/dz$.\\
+$\nn$, $\Lambda_{\nn}$ & Mixed-sector multiindex and its total action multiplier.\\
+$\rho$, $q$, $B$ in Theorem~\ref{thm:analyticLB} & Target disk radius, perturbation-to-radius ratio, and a bound on $|G'|$; the last $B$ is a scalar bound, not the earlier amplitude.\\
+\bottomrule
+\end{longtable}
+
+The disk certificate is independent of the power-core computations. The finite phase jet and fixed-step Newton threshold both use the local equation $Y+tY^\beta=1$, but have independent proofs. The moving-depth theorems use the separate uniform estimate in Lemma~\ref{lem:uniformnewton}. The analytic inverse expansion uses classical Lagrange coefficients plus a Cauchy majorant, and the finite-action theorem combines it with the phase-jet calculation. Stokes transport is an exact composition identity with analytic conditions supplied separately.
+
+\section{An end-to-end reversal protocol}\label{sec:protocol}
+
+For a forward map $f=F+\sum_j B_je^{-A_j}$ on a specified branch, the following protocol separates the logical tasks.
+\begin{enumerate}[leftmargin=8mm]
+\item \textbf{Specify the branch and the meaning of expansion.} Choose a source domain, a core inverse chart, and either a formal or an analytic coefficient algebra. Do not identify formal specialization with analytic summation.
+\item \textbf{Retain or certify the core.} Keep $G$ as an exact implicit or explicit object when possible. Otherwise, find a disk and certify the forward residual using Theorem~\ref{thm:disk}.
+\item \textbf{Normalize every requested phase.} Compute $A_j\circ G$ to additive error $o(1)$, retaining all positive phase tiers and constant multipliers. For the power core, use Theorem~\ref{thm:finitejet}; for a general phase, use a derivative-based certificate.
+\item \textbf{Choose the requested accuracy level.} A phase-safe core may still be inadequate for numerical sector resolution. Compare its positional error with the requested inverse correction, not merely with $G$.
+\item \textbf{Generate perturbation sectors.} Apply \eqref{eq:sourceoperator}, keeping phases exact until all nonlinear action combinations have been formed. Group resonant actions only after recording their amplitude contributions.
+\item \textbf{Certify the tail.} Establish a target disk and the inequality $q<1$, then use \eqref{eq:geometrictail}. For countable actions, first supply a norm and a summability theorem appropriate to the action set.
+\item \textbf{Evaluate stably.} Solve for scaled corrections when direct subtraction would destroy them. Report core uncertainty, phase error, and sector tail as separate quantities.
+\end{enumerate}
+
+For the power model, a symbolic phase request $(\beta,\sigma)$ has a particularly short exact preprocessing step:
+\begin{verbatim}
+delta = 1 - beta
+K = ceil(sigma / delta)
+for n = 0,...,K-1:
+    retain c_n(beta,sigma) * a^n * w^(sigma-n*delta)
+if sigma/delta is an integer m:
+    retain the constant (-1)^m * delta * a^m
+k_phase = floor(log2(1 + sigma/delta))
+\end{verbatim}
+Exact arithmetic is needed to test the integer boundary reliably. Near that boundary, a floating-point equality test may omit an essential constant phase term.
+
+\section{First generic inverse coefficients}\label{sec:genericcoeff}
+
+For one perturbation, expand $(F+tR)\rev(w)=G(w)+\sum_{n\ge1}t^nU_n(w)$. With every function on the right evaluated at $z=G(w)$ and $d=F'(z)$, formula \eqref{eq:sourceoperator} gives
+\begin{align}
+ U_1={}&-\frac Rd,\label{eq:U1}\\
+ U_2={}&\frac{RR'}{d^2}-\frac{F''R^2}{2d^3},\label{eq:U2}\\
+ U_3={}&-\frac{R(R')^2}{d^3}-\frac{R^2R''}{2d^3}
+ +\frac{3F''R^2R'}{2d^4}
+ +\frac{F'''R^3}{6d^4}
+ -\frac{(F'')^2R^3}{2d^5}.\label{eq:U3}
+\end{align}
+The fourth coefficient is stored in the exact verification output. These rational differential polynomials give convenient unit tests for a symbolic implementation. They are not additional claims of novelty: they are explicit expansions of the classical transport operator.
+
+For the model $F=z+\sqrt z$, $R=e^{-z^2}$, set $s=\sqrt z$. Then $\DF=(2s+1)^{-1}d/ds$. Writing $U_n=C_n(s)e^{-ns^4}$, the coefficients can be generated by
+\[
+ C_n(s)=\frac{(-1)^n}{n!}
+ \left(\frac{1}{2s+1}\left(\frac{d}{ds}-4ns^3\right)\right)^{n-1}
+ \frac{2s}{2s+1}.
+\]
+For example,
+\[
+ C_1(s)=-\frac{2s}{2s+1},\qquad
+ C_2(s)=\frac{1}{(2s+1)^3}-\frac{8s^4}{(2s+1)^2}.
+\]
+This rational-coefficient representation is the one used by the numerical sector tests.
+
+\section{Repository provenance and claim-status ledger}\label{sec:provenance}
+
+The repository tree initially returned during this investigation was
+\begin{center}\small\texttt{8e9cd6f00e0ac79c4425ff6abdfa64b497cf3f41}.\end{center}
+The source of the support-controlled reversion article was subsequently read explicitly at that pinned revision, including its Newton theorem and editorial comparison to the non-Archimedean article. The project README, collection README, and nonlinear Stokes package README were also read through the GitHub connector. Their default-branch responses were used as a bounded navigation and overlap audit, not as proof that every repository manuscript had been exhaustively compared.
+
+The principal collection is
+\begin{center}\small
+\path{Analysis/Transseries/docs/series-and-transseries/}.
+\end{center}
+The reviewed collection index describes a canonical inversion volume and many separately filed research packages. The present manuscript should be filed as a separate phase-precision continuation rather than silently merged into an older document. No repository files were changed in preparing this archive.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.66\textwidth}@{}}
+\toprule
+Claim or mechanism & Status in this article\\
+\midrule
+\endhead
+Lagrange--B\"urmann coefficients & Classical background, proved here in the carrier form needed for the argument; see Gessel and the repository.\\
+Newton depth $2^{k+1}-1$ & Explicitly pre-existing in the pinned support-controlled source, including its comparison with the non-Archimedean version.\\
+Exact $C_k$ and phase threshold & Proved here for $z+az^\beta$; proposed refinement, with no independently certified publication-priority claim.\\
+Finite positive phase jet and constants & Proved here for transported power phases, including minimality relative to power--logarithmic amplitudes.\\
+Moving sector-resolution law & Proved here using a uniform-in-depth error lemma, not an extrapolation of the fixed-depth expansion.\\
+Infinite phase jet and Lambert cutoff & Proved explicitly for $G=w+w^{-1}$ and $A=e^z$; a scoped obstruction to a universal finite-jet principle.\\
+Mixed analytic inverse and finite jumps & Established inversion mechanism; independent Cauchy-majorant proof supplied, with repository overlap credited.\\
+General resurgent closure & Established only in appropriate classes by external literature; no new unrestricted closure result claimed.\\
+Curved decay boundaries & Explicit exact-core parametrization and its two-term angular expansion proved here; not automatically a Borel-Stokes classification.\\
+Countable-action uniformity & Elementary obstructions and a weighted estimate proved here; not a complete countable-action resurgence theorem.\\
+Formal verification & No Lean verification. Exact algebraic checks and high-precision diagnostics were executed and recorded.\\
+\bottomrule
+\end{longtable}
+
+\begin{thebibliography}{10}
+\raggedright
+\bibitem{Gessel}
+Ira M. Gessel, \emph{Lagrange inversion}, Journal of Combinatorial Theory, Series A \textbf{144} (2016), 212--249.
+\href{https://doi.org/10.1016/j.jcta.2016.06.018}{doi:10.1016/j.jcta.2016.06.018}.
+Author preprint: \url{https://arxiv.org/abs/1609.05988}.
+
+\bibitem{vdHBook}
+Joris van der Hoeven, \emph{Transseries and Real Differential Algebra}, Lecture Notes in Mathematics 1888, Springer, 2006.
+\href{https://doi.org/10.1007/3-540-35590-1}{doi:10.1007/3-540-35590-1}.
+Author's description: \url{https://www.texmacs.org/joris/ln/ln-abs.html}.
+
+\bibitem{vdHComplex}
+Joris van der Hoeven, \emph{Complex transseries solutions to algebraic differential equations}, technical report 2001-34, Universit\'e Paris-Sud, 16 November 2001; corrected author-hosted version.
+\url{https://www.texmacs.org/joris/osc/osc.html}.
+
+\bibitem{SauzinNonlinear}
+David Sauzin, \emph{Nonlinear analysis with resurgent functions}, Annales scientifiques de l'\'Ecole Normale Sup\'erieure (4) \textbf{48}, no.~3 (2015), 667--702.
+\href{https://doi.org/10.24033/asens.2255}{doi:10.24033/asens.2255}.
+\url{https://numdam.org/articles/10.24033/asens.2255/}.
+
+\bibitem{SauzinIntro}
+David Sauzin, \emph{Introduction to 1-summability and resurgence}, 2014.
+\url{https://arxiv.org/abs/1405.0356}.
+
+\bibitem{RepoSupport}
+\repo\ repository, maintained by Vladimir Reshetnikov, package
+\emph{Support-Controlled Reversion and the Exact One-Exponential Substitution Group}, including editorial amendments of 29 September 2026.
+\path{Analysis/Transseries/docs/series-and-transseries/Support_Controlled_Reversion_One_Exponential/reversion_and_one_exponential.tex}.
+The source was read at revision \texttt{8e9cd6f00e0ac79c4425ff6abdfa64b497cf3f41}, especially source lines 380--600, theorem \texttt{thm:newton}, equation \texttt{eq:newtonrate}, and editorial note \texttt{ed:newton-depth}.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{RepoNonArch}
+\repo\ repository, \emph{Reversion Beyond Archimedean Valuations: strong Hahn convergence, sharp Newton depth, and minimal finite coefficient certificates}.
+Package \path{Reversion_Beyond_Archimedean_Valuations/} in the collection of reference~\cite{RepoIndex}. Its relationship to the Newton rate was checked through the collection index and the explicit editorial comparison in reference~\cite{RepoSupport}; the entire non-Archimedean source was not independently reread for this article.
+
+\bibitem{RepoStokes}
+\repo\ repository, \emph{Nonlinear Stokes Transport under Logarithmic Inversion}, package README and its editorial overlap notes, read 4 October 2026.
+\path{Analysis/Transseries/docs/series-and-transseries/Nonlinear_Stokes_Transport_Logarithmic_Inversion/README.md}.
+The fetched README blob was \texttt{3843e5292a24c9119c3901c3254af191fe40c418}.
+
+\bibitem{RepoIndex}
+\repo\ repository, transseries project and collection README files, read 4 October 2026:
+\path{Analysis/Transseries/README.md} and
+\path{Analysis/Transseries/docs/series-and-transseries/README.md}.
+The collection index identifies the canonical volume, nonlinear Stokes packages, moving-fold work, and amended research arrivals. This is a bounded repository audit, not an exhaustive priority search.
+\end{thebibliography}
+\end{document}
