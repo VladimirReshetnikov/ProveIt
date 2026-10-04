@@ -37,7 +37,7 @@ formalization ledger.
 
 ```
 article.tex   the report, standalone LaTeX with an internal bibliography
-article.pdf   the compiled report, 105 pages (title page, 3 contents pages, 101 numbered pages)
+article.pdf   the compiled report, 106 pages (title page, 3 contents pages, 102 numbered pages)
 README.md     this guide
 03-fresh-sign-gaps-PROOF_STATUS.md        source 03: proof and verification status
 09-cohen-amplification-PROOF_STATUS.md    source 09: attribution, imports, sensitive points, checks
@@ -490,7 +490,7 @@ formalized.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The build gives 105 pages with zero errors, zero LaTeX or package warnings, zero
+The build gives 106 pages with zero errors, zero LaTeX or package warnings, zero
 overfull or underfull boxes, zero undefined references or citations, zero
 multiply defined labels and zero duplicate PDF destinations. The log contains three
 TeX information lines, `ignored: Infinite glue shrinkage found in box being split`,
@@ -499,6 +499,10 @@ build of Parts I–VII alone had one; the delivered source 01 produces the same 
 The batch-32 cross-report notes (Section 1.7, after Remark 16.4, after Questions
 19.6 and 19.7) are unnumbered; they took the build from 50 to 51 pages. Part VIII
 took it from 51 to 105 pages; all 142 earlier labels keep their numbers.
+The four batch-93 notes on Part II and Part III of the definable-surreals
+report (after Proposition 3.1, Remark 10.5, Corollary 13.4 and Remark 28.11)
+took it from 105 to 106 pages; all 572 labels and 24 citation numbers keep
+their numbers.
 
 Source 01's Makefile runs the same `latexmk` command on `article.tex` in the
 current directory, so `make -f code/01-forcing-omitted-cuts-Makefile` from this

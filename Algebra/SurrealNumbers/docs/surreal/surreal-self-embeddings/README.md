@@ -348,6 +348,17 @@ formalization program and 18 questions.
   This report cites that paper only as background. A dated `[write]` note
   after Proposition 10.1 (4 October 2026, batch 92) records this; no question
   of this report is answered.
+- [definable-surreals-and-omnific-integers](../../foundations-and-computation/definable-surreals-and-omnific-integers/README.md)
+  (batch 93, Parts II–III, `dsn:rp:`, `dsn:op:`) answers the strong form of
+  Question 62.9 (`sse:sr:q:stabilizers`): the common fixed field of the strong
+  field automorphisms of `No` fixing `R ∪ On` pointwise, with or without
+  preservation of `Oz`, is the field of surreals supported in `span_Q(On)`
+  (its Theorem 26.5, `dsn:rp:thm:strong-fixed`). The nonstrong form stays open
+  there (Question 28.1, `dsn:rp:q:nonstrong`). Parts (1)–(2) of its Theorem
+  34.1 (`dsn:op:thm:all-reals-free-absoluteness`) are Lemma 24.1
+  (`sse:pf:lem:absolute`); its parts (3)–(5) add normal forms and sums without
+  the same-reals hypothesis of `lce:lem:absolute`. Dated `[write]` notes after
+  Question 62.9 and after Lemma 24.1 (4 October 2026, batch 93) record this.
 
 **Scope correction, 4 October 2026.** The batch-92 guide originally said
 "with a Cantor family of proper closed immediate self-copies in infinite

@@ -8,7 +8,7 @@ against repository revision `048b72c`, placed at `30dfb4f` and assembled at
 
 ```
 article.tex        the report, standalone LaTeX with an internal bibliography
-article.pdf        the compiled report, 39 pages (title, contents i-ii, pages 1-36)
+article.pdf        the compiled report, 40 pages (title, contents i-ii, pages 1-37)
 README.md          this guide
 source_audit.md    the manuscript's own repository and literature audit, as delivered
 code/              verify_examples.py            exact finite checks (standard library only)
@@ -237,7 +237,9 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 or `pdflatex` three times. The bibliography is internal (no BibTeX); no
 figures, fonts or shell escape. The build gives no errors, no undefined or
-multiply defined references, and no overfull or underfull boxes.
+multiply defined references, and no overfull or underfull boxes. The batch-93
+note after Theorem 3.2 took it from 39 to 40 pages and changed no label or
+citation number.
 
 ## Reproduce the finite checks
 

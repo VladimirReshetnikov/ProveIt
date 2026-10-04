@@ -15,7 +15,7 @@ additions and numbered 17, 18 and 19 here; and manuscript 01 of batch 34, placed
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 221 pages
+article.pdf                                 the compiled report, 222 pages
 README.md                                   this guide
 02-parameter-rigidity-source_audit.md       source 02's source and novelty audit, as delivered
 04-preserving-automorphisms-source_audit.md source 04's source and claim audit, as delivered
@@ -1898,7 +1898,13 @@ Appendix A.3 records these.
   sibling report written concurrently from the same batch.
 - [`definable-surreals-and-omnific-integers`](../../foundations-and-computation/definable-surreals-and-omnific-integers/)
   (`dsn:`). It uses `opa:thm:fixed` and `opa:thm:parameters`. Theorem 9.10
-  adds information on its `dsn:q:languages`.
+  adds information on its `dsn:q:languages`. Its Part II (batch 93) computes
+  the class analogue of Corollary 7.5 for `R ∪ On`: the common fixed field of
+  the strong automorphisms fixing every real and ordinal, with or without
+  `Oz`, is the field of series supported in `span_Q(On)`
+  (`dsn:rp:thm:strong-fixed`); without a predicate for `On`, its definability
+  consequences follow from Corollary 9.11 and Theorems 9.1 and 9.10. A dated
+  note after Corollary 9.11 records this.
 - [`holonomic-rigidity-for-entire-hahn-functions`](../../surcomplex/holonomic-rigidity-for-entire-hahn-functions/).
   Its order-unit boundary is a different condition from the Archimedean rank
   of Theorem 4.13. 10 does not address its question.
@@ -1977,7 +1983,11 @@ Appendix A.3 records these.
   strongness is proved (Theorem 23.2). Its question `pma:rk:q:integerpairs`
   asks, for left-finite Levi-Civita fields and their canonical integer part,
   the pair question that Theorem 3.3 answers for strong 1-automorphisms of
-  Hahn fields. A dated note after Theorem 5.1 records this.
+  Hahn fields. A dated note after Theorem 5.1 records this. Its Part XVII
+  (batch 93) proves the exponential–logarithm correspondence of Theorem 69.3
+  for the real left-finite fields `L^Γ_R` with the valuation gain in place of
+  the `s`-adic filtration (`pma:bsd:thm:explog`), by the same proof that the
+  logarithm is a derivation. A dated note after Remark 69.4 records this.
 
 ## What was run
 
@@ -2030,7 +2040,9 @@ build of the committed text). The batch-73 note after Theorem 5.1 leaves 221
 pages and changes no number (same comparison), and so does the batch-84 note
 after Theorem 29.6 (same comparison, citation numbers included), and so does
 the batch-92 note after Theorem 5.1 (same comparison: 1,458 `.aux` labels,
-citation numbers included).
+citation numbers included). The two batch-93 notes, after Corollary 9.11 and
+after Remark 69.4, took the build from 221 to 222 pages and changed no number
+(same comparison).
 
 Fourteen of the shipped scripts can write files (thirteen check scripts and 16's build
 script; 19's `build.sh` creates two empty directories before failing, and 17's and 20's

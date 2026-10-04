@@ -1117,7 +1117,8 @@ All labels exist at HEAD.
 - `Surreal.LaurentResidue.range_derivative_eq_ker_residue`,
   `exists_derivative_eq_iff`, `residue_derivative`, `residue_surjective` and
   `primitive` in `Algebra/SurrealNumbers/Surreal/Algebra/LaurentResidueChange.lean`,
-  **proved in Lean** over every field (mapped in `docs/FORMALIZATION.md` to
+  **proved in Lean** (the first two over every field of characteristic zero,
+  the last three over every field; mapped in `docs/FORMALIZATION.md` to
   `b:formalprimitive` of the surcomplex `analysis` report): the image clause of
   23's Corollary 231.3 for Γ = Z and D = d/dt (Remark 239.5). Nothing else of
   Part XVII is formalized.

@@ -1290,8 +1290,8 @@ Hilbert geometry of that report. Source~23's statement that no declaration of
 the repository verifies its theorems is true of its main theorem but
 incomplete for one consequence: the image clause of its rank-one corollary for
 $\Gamma=\Z$ and $d/dt$ is \texttt{range\_derivative\_eq\_ker\_residue} in
-\fn{Surreal/Algebra/LaurentResidueChange.lean}, proved over every field and
-mapped in \fn{docs/FORMALIZATION.md} to the surcomplex analysis report
+\fn{Surreal/Algebra/LaurentResidueChange.lean}, proved over every field of
+characteristic zero and mapped in \fn{docs/FORMALIZATION.md} to the surcomplex analysis report
 (\cref{pma:bsd:rem:lean}). Nothing else in Parts~XVI and~XVII is formalized,
 \fn{docs/FORMALIZATION.md} maps none of their labels, and placement beside these
 projects confers no formal status.
@@ -35813,7 +35813,8 @@ one-parameter family.
 
 \noindent\writetag{} (Batch~93.) For $\Gamma=\Z$ the field $\bsL{\Z}$ is the
 Laurent field $\R((t))$, and the image clause for $D=d/dt$ is formalized in
-Lean over every field (\cref{pma:bsd:rem:lean} \mergetag); the classification
+Lean over every field of characteristic zero (\cref{pma:bsd:rem:lean}
+\mergetag); the classification
 of Borel derivations is not.
 
 \subsection{The finite/infinite rational-rank threshold}\label{pma:bsd:sec:threshold}
@@ -36719,8 +36720,10 @@ $\ct(gt)$, the coefficient of $t^{-1}$ in $g$, vanishes. In the namespace
 \texttt{range\_derivative\_eq\_ker\_residue} (the range of the derivative is the
 kernel of the residue), \texttt{residue\_derivative},
 \texttt{residue\_surjective} and the termwise \texttt{primitive}, in
-\fn{Algebra/SurrealNumbers/Surreal/Algebra/LaurentResidueChange.lean}, proved over
-every field and instantiated at the surcomplex numbers; \fn{docs/FORMALIZATION.md}
+\fn{Algebra/SurrealNumbers/Surreal/Algebra/LaurentResidueChange.lean}, and
+instantiated at the surcomplex numbers. The first two are proved over every
+field of characteristic zero (the file's \texttt{CharZero} section); the
+last three over every field; \fn{docs/FORMALIZATION.md}
 maps them to \replabel{b:formalprimitive} of the surcomplex \fn{analysis}
 report. They formalize this algebraic clause for one derivation. Borelness, the
 classification of Borel derivations and the other values of $\Gamma$ are not
