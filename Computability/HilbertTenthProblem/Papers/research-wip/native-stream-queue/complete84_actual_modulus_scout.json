@@ -1,0 +1,673 @@
+{
+  "dependency_pins": {
+    "complete84_joint_root_cut.md": "79cfda9e870ad63a848fb454266d1bca98f2117393edc57f99108b4c1cce780c",
+    "complete84_scaled_strong_output.json": "8b2bc5d0b4db90c168107b7ded2cb4ca08df0098ed190851a3db4f1e49a9c0cf",
+    "complete84_scaled_strong_output.md": "01eb7df6688c08c6788a3c7a1cc272ca5ffc1a87734fd622dbec8a64ae974ade",
+    "complete84_scaled_strong_output.py": "8b4dd58c849ae79751f1be6638f1b9e3f9072a714c5479eadf1039f10d0c7737",
+    "complete86_affine_port_scout.md": "295dc976c0cffb71fe17be53c6bd541431fc7bb4d43a2f81e9f61c426b3cc558",
+    "complete87_discriminant_shear_scout.md": "9ef454b65cf75ace91c232d1b0ac643b8c0a00f39c43e16f0ead0666ba414765",
+    "complete87_joint_norm_scout.md": "681a06e6f280b9b17a723ab9046012f66ffcdeb963930e33d745b47ff044d1bf"
+  },
+  "full_cut_identities": 8,
+  "nondivisibility_diagnostics": [
+    {
+      "Delta": "9/16",
+      "H": "0",
+      "a": "-3/4",
+      "input": "1",
+      "main": "1",
+      "scope": "signed rational all-value nondivisibility diagnostic for Nm*Ni only, not a compiler zero",
+      "supplied": {
+        "Bm1": "31",
+        "F": "0",
+        "Jrep": "1/31",
+        "Kconstant": "7",
+        "MC": "2",
+        "MF": "19",
+        "Z": "0",
+        "alpha": "6",
+        "auxiliary_quotient": "1",
+        "delta": "0",
+        "eta": "0",
+        "f": "1",
+        "h": "1",
+        "i": "1",
+        "inner_bits": "5",
+        "rho": "0",
+        "s": "-3/64",
+        "sigma": "0",
+        "tau_root": "1",
+        "transport_quotient": "1",
+        "twice_cell_bits": "10",
+        "w": "1/2",
+        "x": "-1/2",
+        "y_aux": "1",
+        "zeta": "0"
+      }
+    },
+    {
+      "Delta": "0",
+      "H": "-1",
+      "a": "-1",
+      "input": "1",
+      "main": "1",
+      "scope": "signed rational all-value nondivisibility diagnostic for Nm*Ni only, not a compiler zero",
+      "supplied": {
+        "Bm1": "31",
+        "F": "0",
+        "Jrep": "1/31",
+        "Kconstant": "7",
+        "MC": "2",
+        "MF": "19",
+        "Z": "0",
+        "alpha": "6",
+        "auxiliary_quotient": "1",
+        "delta": "0",
+        "eta": "0",
+        "f": "1",
+        "h": "1",
+        "i": "1",
+        "inner_bits": "5",
+        "rho": "0",
+        "s": "-1/16",
+        "sigma": "0",
+        "tau_root": "1",
+        "transport_quotient": "1",
+        "twice_cell_bits": "10",
+        "w": "1/2",
+        "x": "-1/2",
+        "y_aux": "1",
+        "zeta": "0"
+      }
+    }
+  ],
+  "packet": {
+    "exact_degree": 187,
+    "fixed_numerals": [
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "free": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma",
+      "x",
+      "Bm1",
+      "Kconstant",
+      "twice_cell_bits",
+      "inner_bits",
+      "MC",
+      "MF"
+    ],
+    "ledger": {
+      "A": 38,
+      "M": 48,
+      "total": 86
+    },
+    "ordinary_input": "x",
+    "output": "polynomial",
+    "source": [
+      [
+        "tau_square",
+        "*",
+        "tau_root",
+        "tau_root"
+      ],
+      [
+        "repunit",
+        "*",
+        "Bm1",
+        "Jrep"
+      ],
+      [
+        "q",
+        "+",
+        "repunit",
+        1
+      ],
+      [
+        "Lbig",
+        "*",
+        "q",
+        "q"
+      ],
+      [
+        "n2",
+        "*",
+        "Lbig",
+        "q"
+      ],
+      [
+        "wn2",
+        "*",
+        "w",
+        "q"
+      ],
+      [
+        "sn2",
+        "*",
+        "s",
+        "n2"
+      ],
+      [
+        "UM",
+        "*",
+        "wn2",
+        "sn2"
+      ],
+      [
+        "R10b",
+        "+",
+        "eta",
+        "zeta"
+      ],
+      [
+        "ksn2",
+        "*",
+        "R10b",
+        "sn2"
+      ],
+      [
+        "first_root_base",
+        "*",
+        "UM",
+        "ksn2"
+      ],
+      [
+        "first_next",
+        "+",
+        "first_root_base",
+        "R10b"
+      ],
+      [
+        "first_product",
+        "*",
+        "first_root_base",
+        "first_next"
+      ],
+      [
+        "norm_first",
+        "-",
+        "tau_square",
+        "first_product"
+      ],
+      [
+        "R10a",
+        "+",
+        "ksn2",
+        "eta"
+      ],
+      [
+        "R12",
+        "+",
+        "UM",
+        "sn2"
+      ],
+      [
+        "a4",
+        "*",
+        4,
+        "R12"
+      ],
+      [
+        "a4m5",
+        "+",
+        "a4",
+        3
+      ],
+      [
+        "a_square",
+        "*",
+        "R12",
+        "R12"
+      ],
+      [
+        "A",
+        "+",
+        "a_square",
+        "a4m5"
+      ],
+      [
+        "c2",
+        "*",
+        "R10a",
+        "R10a"
+      ],
+      [
+        "Ac2",
+        "*",
+        "A",
+        "c2"
+      ],
+      [
+        "q_minus_F",
+        "-",
+        "q",
+        "F"
+      ],
+      [
+        "q_minus_FZ",
+        "-",
+        "q_minus_F",
+        "Z"
+      ],
+      [
+        "C_after_alpha",
+        "-",
+        "q_minus_FZ",
+        "alpha"
+      ],
+      [
+        "scaled_t",
+        "*",
+        "twice_cell_bits",
+        "x"
+      ],
+      [
+        "marked_rhs",
+        "-",
+        "C_after_alpha",
+        "scaled_t"
+      ],
+      [
+        "W",
+        "-",
+        "marked_rhs",
+        "Z"
+      ],
+      [
+        "odd_index",
+        "+",
+        "scaled_t",
+        "inner_bits"
+      ],
+      [
+        "index_product",
+        "*",
+        "delta",
+        "A"
+      ],
+      [
+        "index_rhs",
+        "+",
+        "odd_index",
+        "index_product"
+      ],
+      [
+        "kappa2",
+        "*",
+        "index_rhs",
+        "index_rhs"
+      ],
+      [
+        "scaled_kappa2",
+        "*",
+        "A",
+        "kappa2"
+      ],
+      [
+        "aux_y2",
+        "*",
+        "y_aux",
+        "y_aux"
+      ],
+      [
+        "hpm1",
+        "*",
+        "h",
+        "UM"
+      ],
+      [
+        "index_difference",
+        "-",
+        "R10b",
+        "hpm1"
+      ],
+      [
+        "gap_product",
+        "*",
+        "repunit",
+        "q_minus_F"
+      ],
+      [
+        "gap",
+        "+",
+        "gap_product",
+        "q_minus_FZ"
+      ],
+      [
+        "Lm1",
+        "-",
+        "Lbig",
+        1
+      ],
+      [
+        "rproduct",
+        "*",
+        "gap",
+        "Lm1"
+      ],
+      [
+        "qMF",
+        "*",
+        "q",
+        "MF"
+      ],
+      [
+        "mask_factor",
+        "+",
+        "MC",
+        "qMF"
+      ],
+      [
+        "mask",
+        "*",
+        "mask_factor",
+        "Jrep"
+      ],
+      [
+        "r_lhs",
+        "+",
+        "rproduct",
+        "mask"
+      ],
+      [
+        "norm_index",
+        "-",
+        "index_difference",
+        "r_lhs"
+      ],
+      [
+        "kinner",
+        "+",
+        "Kconstant",
+        "w"
+      ],
+      [
+        "innerC",
+        "*",
+        "kinner",
+        "marked_rhs"
+      ],
+      [
+        "transport_partial",
+        "+",
+        "innerC",
+        "q_minus_F"
+      ],
+      [
+        "local_rhs",
+        "*",
+        "transport_quotient",
+        "repunit"
+      ],
+      [
+        "norm_transport",
+        "-",
+        "transport_partial",
+        "local_rhs"
+      ],
+      [
+        "L16",
+        "*",
+        "f",
+        "f"
+      ],
+      [
+        "auxiliary_Tf",
+        "*",
+        "auxiliary_quotient",
+        "f"
+      ],
+      [
+        "auxiliary_Tf_minus_one",
+        "-",
+        "auxiliary_Tf",
+        1
+      ],
+      [
+        "auxiliary_c_Tf",
+        "*",
+        "R10a",
+        "auxiliary_Tf_minus_one"
+      ],
+      [
+        "auxiliary_R_f2",
+        "*",
+        "r_lhs",
+        "L16"
+      ],
+      [
+        "aux_u_rhs",
+        "-",
+        "auxiliary_c_Tf",
+        "auxiliary_R_f2"
+      ],
+      [
+        "H2",
+        "*",
+        "aux_u_rhs",
+        "aux_u_rhs"
+      ],
+      [
+        "aux_square_gap",
+        "-",
+        "H2",
+        "aux_y2"
+      ],
+      [
+        "aux_coefficient_root",
+        "*",
+        "i",
+        "Ac2"
+      ],
+      [
+        "R16",
+        "*",
+        "aux_coefficient_root",
+        "aux_coefficient_root"
+      ],
+      [
+        "scaled_f_square",
+        "*",
+        "A",
+        "L16"
+      ],
+      [
+        "norm_strong",
+        "-",
+        "scaled_f_square",
+        "R16"
+      ],
+      [
+        "L17",
+        "*",
+        "R16",
+        "aux_square_gap"
+      ],
+      [
+        "norm_aux",
+        "+",
+        "L17",
+        "aux_y2"
+      ],
+      [
+        "modulus_multiple",
+        "*",
+        "rho",
+        "a4m5"
+      ],
+      [
+        "sigma_four",
+        "*",
+        4,
+        "sigma"
+      ],
+      [
+        "shifted_main_center",
+        "+",
+        "R10a",
+        "sigma_four"
+      ],
+      [
+        "main_center_product",
+        "*",
+        "R12",
+        "shifted_main_center"
+      ],
+      [
+        "sigma_three",
+        "*",
+        3,
+        "sigma"
+      ],
+      [
+        "main_offset",
+        "+",
+        "wn2",
+        "sigma_three"
+      ],
+      [
+        "main_partial",
+        "+",
+        "main_center_product",
+        "main_offset"
+      ],
+      [
+        "R14",
+        "+",
+        "main_partial",
+        "modulus_multiple"
+      ],
+      [
+        "L15",
+        "*",
+        "R14",
+        "R14"
+      ],
+      [
+        "norm_main",
+        "-",
+        "L15",
+        "Ac2"
+      ],
+      [
+        "norm_pair",
+        "*",
+        "norm_first",
+        "norm_main"
+      ],
+      [
+        "difference_multiple",
+        "*",
+        "index_rhs",
+        "R12"
+      ],
+      [
+        "exponent_partial",
+        "+",
+        "W",
+        "difference_multiple"
+      ],
+      [
+        "exponent_rhs",
+        "+",
+        "exponent_partial",
+        "modulus_multiple"
+      ],
+      [
+        "mu2",
+        "*",
+        "exponent_rhs",
+        "exponent_rhs"
+      ],
+      [
+        "norm_input",
+        "-",
+        "mu2",
+        "scaled_kappa2"
+      ],
+      [
+        "norm_triple",
+        "*",
+        "norm_pair",
+        "norm_input"
+      ],
+      [
+        "norm_four",
+        "*",
+        "norm_triple",
+        "norm_aux"
+      ],
+      [
+        "norm_product",
+        "*",
+        "norm_four",
+        "norm_index"
+      ],
+      [
+        "all_units",
+        "*",
+        "norm_product",
+        "norm_transport"
+      ],
+      [
+        "seven_units",
+        "*",
+        "all_units",
+        "norm_strong"
+      ],
+      [
+        "polynomial",
+        "-",
+        "seven_units",
+        "A"
+      ]
+    ],
+    "witnesses": [
+      "Jrep",
+      "F",
+      "alpha",
+      "transport_quotient",
+      "f",
+      "h",
+      "i",
+      "auxiliary_quotient",
+      "s",
+      "w",
+      "tau_root",
+      "eta",
+      "zeta",
+      "y_aux",
+      "Z",
+      "delta",
+      "rho",
+      "sigma"
+    ]
+  },
+  "parent_json_sha256": "8b2bc5d0b4db90c168107b7ded2cb4ca08df0098ed190851a3db4f1e49a9c0cf",
+  "root_identity_coefficients": 6,
+  "scope": "One all-value 86-row alternative, and nondivisibility of Nm*Ni by H or Delta; not a global lower bound.",
+  "source_sha256": "e40ebeb0d14c6a9ababe977107f12afbe234f0297d40f3d6f488c6eae781e9af",
+  "status": "NO_SAVING_IN_DISPLAYED_H_SPECIFIC_SCHEDULE",
+  "whole_signed_rational_checks": 32
+}
