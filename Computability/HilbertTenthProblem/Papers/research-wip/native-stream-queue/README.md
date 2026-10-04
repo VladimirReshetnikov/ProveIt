@@ -15,6 +15,18 @@ bound remains **74**; the lower-degree **85/175** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [later publication review](review_report_publications_aa9a7ec80.md)
+now confirms the actual arithmetic PartsVI–VIII and ant PartsII–IV at
+85ea6145d/119a1325d. Their checked domains, candidate identities and cost
+conventions agree with the frozen evidence; one README table-description
+error is corrected. The six reciprocal-note text deltas preserve all
+1672/732/266 article labels. Batch89 still omits four advertised topology
+manuscript integrations at23adb85f9 andaa9a7ec80; the later naming write
+repairs its own replay documentation but references those absent Parts.
+Root rechecked all21 placed byte copies and six unchanged article/guide
+blobs. Exact read scopes and remaining proof dependencies are explicit.
+The universal84 bound and unresolved independent-gamma83 status remain.
+
 The [three-commit publication review](review_report_publications_83926d574.md)
 covers upstream through83926d574 with exact textual read scopes. All616
 new arithmetic/ant evidence files match prior archive members, but the
