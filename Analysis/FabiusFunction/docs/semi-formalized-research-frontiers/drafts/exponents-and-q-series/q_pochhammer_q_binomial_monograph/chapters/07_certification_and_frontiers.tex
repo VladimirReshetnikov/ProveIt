@@ -743,7 +743,17 @@ transform is
 \]
 the constant \(c_0\) is carried separately by Borel--Laplace summation.
 
-\begin{conjecture}[Cyclotomic resurgent inverse]
+For a direction \(\theta\), write
+\[
+ \mathcal S_\theta\FormalGevreySeriesSymbol{R}_a(t)
+  =\int_0^{\EulerE^{\ImaginaryUnit\theta}\infty}
+     \EulerE^{-\xi/t}\,
+     \mathscr B\FormalGevreySeriesSymbol{R}_a(\xi)\,\Differential\xi
+\]
+for the Borel sum in that direction of the expansion
+\(\FormalGevreySeriesSymbol{R}_a\) of the function \(R_a\) defined below.
+
+\begin{conjecture}[Cyclotomic resurgent inverse; corrected 4 October 2026]
 \label{conj:cyclotomic-resurgent-inverse}
 Let \(K\Subset\{a:\lvert a\rvert<1\}\) and
 \(0<\delta<\pi/2\).  Uniformly for \(a\in K\), as \(t\to0\) in
@@ -755,9 +765,24 @@ has a Gevrey-one asymptotic expansion.  Its Borel transform admits endless
 analytic continuation: for each \(a\in K\), there is a locally finite set
 \(\Sigma_{a,\zeta}\subset\ComplexNumbers\), with \(0\notin\Sigma_{a,\zeta}\), such that the
 germ at zero continues along every path in
-\(\ComplexNumbers\setminus\Sigma_{a,\zeta}\) issuing from zero.  In every direction whose
-open Borel ray avoids \(\Sigma_{a,\zeta}\) and for which the Laplace integral
-converges, its Borel sum equals the exact \(R_a(t)\).
+\(\ComplexNumbers\setminus\Sigma_{a,\zeta}\) issuing from zero.  The positive
+real Borel ray avoids \(\Sigma_{a,\zeta}\), and for every \(\Re t>0\) the Borel
+sum in that direction equals the exact function:
+\(\mathcal S_0\FormalGevreySeriesSymbol{R}_a(t)=R_a(t)\).  If
+\(0<\lvert\theta\rvert<\pi/2\) and the open ray of direction \(\theta\) avoids
+\(\Sigma_{a,\zeta}\), then for every \(t\) with \(\Re(1/t)>0\) and
+\(\Re(\EulerE^{\ImaginaryUnit\theta}/t)>0\) the Borel sum in direction
+\(\theta\) converges and differs from \(R_a(t)\) by the Stokes correction of the
+poles it crosses:
+\[
+ \mathcal S_\theta\FormalGevreySeriesSymbol{R}_a(t)
+  =R_a(t)-2\pi\ImaginaryUnit\,\Sign(\theta)
+   \sum_{\xi\in P_\theta}
+   \ResidueOperator_{\xi}\Bigl[\EulerE^{-\xi/t}\,
+     \mathscr B\FormalGevreySeriesSymbol{R}_a(\xi)\Bigr],
+\]
+where \(P_\theta\) is the set of points of \(\Sigma_{a,\zeta}\) whose argument
+lies strictly between \(0\) and \(\theta\), and the sum converges absolutely.
 
 Moreover, fix \(a_0\in\operatorname{int}K\), and let \(v(t)\to0\) be a
 resurgent germ on a non-Stokes sector.  Let \(a(t)\in K\), with
@@ -772,6 +797,25 @@ implicit inversion.  Exponentiating the displayed equation gives the
 corresponding statement for the chosen branch of the product inverse.
 \end{conjecture}
 
+\begin{historicalnote}[Original wording; corrected 4 October 2026]
+In the edition of 31 August 2026, the first paragraph of
+\cref{conj:cyclotomic-resurgent-inverse} ended, after the continuation
+sentence, with the following clause instead of the two sentences on the
+positive ray and on the direction \(\theta\):
+\begin{quote}
+In every direction whose open Borel ray avoids \(\Sigma_{a,\zeta}\) and for
+which the Laplace integral converges, its Borel sum equals the exact
+\(R_a(t)\).
+\end{quote}
+\emph{This clause is false.}  \Cref{rem:cyclotomic-direction-counterexample}
+gives two directions, both avoiding \(\Sigma_{a,\zeta}\) and both with convergent
+Laplace integrals, whose Borel sums differ by a nonzero exponentially small
+function.  The clause is kept here on record rather than deleted.  The
+corrected statement keeps it only for the positive real ray and replaces it in
+every other direction by an explicit residue (Stokes) correction.  The rest of
+the conjecture, including the whole second paragraph, is unchanged.
+\end{historicalnote}
+
 The exact Lambert-series identity for \(L_a\), its residue-class splitting,
 and the Bernoulli expansion of the \(m\)-divisible terms explain
 \(S_{-1}\), \(S_0\), and the observed Gevrey growth.  They do not prove
@@ -780,6 +824,194 @@ obligations are uniform factorial remainder bounds on \(K\), analytic
 continuation and growth estimates in the Borel plane, identification of the
 Stokes set, equality of Borel sums with the convergent product, and a
 quantitative implicit-function argument for the inverse clause.
+
+\paragraph{Status (4 October 2026).}
+The incoming manuscript \emph{Complex transseries reversion at modular
+cusps}~\cite{ModularCuspReversion2026} settles the first paragraph of
+\cref{conj:cyclotomic-resurgent-inverse}, except its last sentence, for every
+fixed order \(m\), primitive root \(\zeta\), and compact \(K\).  Its proofs are
+human-written and have not been formalized.  Write \(a=\EulerE^{-\lambda}\)
+when \(a\ne0\), and put \(\ell=-\log\rho\).
+\begin{itemize}
+\item \emph{Uniform Gevrey one.}  Its Theorem~4.3 bounds the remainder after
+  \(N-1\) terms by
+  \[
+   \frac{m\pi}{6\rho\sin\delta}
+   \Bigl(\frac{m}{2\pi\ell}\Bigr)^{N}(N-1)!\,\lvert t\rvert^N
+  \]
+  for every \(N\ge1\), uniformly for \(\lvert a\rvert\le\rho<1\) and all \(t\)
+  in the closed sector.  Every \(K\Subset\{\lvert a\rvert<1\}\) lies in such a disk.
+  The expansion has no constant term.
+\item \emph{Continuation.}  Its Theorem~4.1 gives the Borel transform in closed
+  form, as a meromorphic function on all of \(\ComplexNumbers\).  Its poles
+  \[
+   \Sigma_{a,\zeta}
+    =\SetOf{\tfrac{2\pi\ImaginaryUnit j}{m}
+            \bigl(\lambda+\tfrac{2\pi\ImaginaryUnit n}{m}\bigr):
+            j\in\IntegerNumbers\setminus\{0\},\ n\in\IntegerNumbers}
+  \]
+  are simple, nonzero, and locally finite, and \(\Sigma_{0,\zeta}\) is empty.  This
+  is stronger than endless continuation.
+\item \emph{Positive ray.}  Since \(\Im\xi=2\pi j\Re\lambda/m\ne0\) on
+  \(\Sigma_{a,\zeta}\), the positive real ray is pole-free.  The identity
+  \(\mathcal S_0\FormalGevreySeriesSymbol{R}_a(t)=R_a(t)\) for every
+  \(\Re t>0\) is equation~(4.16) of Theorem~4.3.
+\end{itemize}
+The residue formula in the last sentence of the first paragraph is proved
+there only for \(m=1\),
+\(a=\EulerE^{-1}\), and \(\theta=\pi/4\) (its Proposition~4.4, reproduced in
+\cref{rem:cyclotomic-direction-counterexample}).  Its equation~(4.18) records the
+general form under explicit contour hypotheses that are not verified in
+general, so that sentence remains conjectural.  The second paragraph, the
+inverse clause, remains open.  The manuscript's \S4.5 derives the exact relation
+\(H_-(a_+(t),t)=-E(a_+(t),t)\) between two sectorial inverse branches, which
+any such theorem must respect, but it proves no resurgence of \(a(t)\).  The
+statement therefore remains a conjecture, and its canonical status is
+unchanged.
+
+The hypothesis that \(a\) stays in a fixed compact subset of the open disk is
+essential to the corrected directional clause, which is not asserted as
+\(\lvert a\rvert\to1\).  Take \(m=1\) and the moving parameter
+\(a=q^\alpha=\EulerE^{-\alpha t}\), \(0<\alpha<1\), which leaves every such \(K\) as
+\(t\to0\).  Two further arrivals of 4 October 2026 (batch 95, being placed)
+treat this case~\cite{CriticalStokesQGamma2026,ExactQProductCompletion2026}.
+After the elementary and gamma terms are removed, the Borel poles lie only at
+\(\pm4\pi^2n\), \(n\in\PositiveIntegers\), and every pole-free direction in the
+open upper (lower) quadrant gives the same lateral sum.  The remaining exact
+function is that lateral sum plus the convergent dual product
+\(\log(\EulerE^{\mp2\pi\ImaginaryUnit\alpha}Q;Q)_\infty\),
+\(Q=\EulerE^{-4\pi^2/t}\) (\cite[Theorem~6.1]{CriticalStokesQGamma2026};
+\cite[Theorem~4.1]{ExactQProductCompletion2026}).  No residue sum supplies
+this term: at \(\alpha=\tfrac12\) the Stokes jump vanishes, while the dual
+product \(\log(-Q;Q)_\infty\) does not.
+
+\begin{remark}[A pole-free direction whose Borel sum is not \(R_a\)]
+\label{rem:cyclotomic-direction-counterexample}
+Take \(m=1\), so \(\zeta=1\), and \(a=\EulerE^{-1}\).  Both the positive real Borel ray
+and the ray of direction \(\pi/4\) avoid \(\Sigma_{a,1}\), and both Laplace
+integrals converge for every \(t>0\).  With \(Q=\EulerE^{-4\pi^2/t}\),
+\begin{equation}
+ \mathcal S_{\pi/4}\FormalGevreySeriesSymbol{R}_a(t)-R_a(t)
+  =\sum_{j=1}^{\infty}\sum_{n=1}^{\infty}
+     \frac1j\,\EulerE^{-j(4\pi^2n+2\pi\ImaginaryUnit)/t}
+  =-\sum_{n=1}^{\infty}
+     \PrincipalLogarithm\bigl(1-\EulerE^{-2\pi\ImaginaryUnit/t}Q^n\bigr).
+ \label{eq:cyclotomic-direction-jump}
+\end{equation}
+The right side is \(-\log(\EulerE^{-2\pi\ImaginaryUnit/t}Q;Q)_\infty\), a
+dual product at the modular nome \(Q\), with the logarithm given by its
+convergent series.  It is positive for
+\(t=1/N\), \(N\in\PositiveIntegers\), because every term is then positive.  As
+\(t\downarrow0\) it equals
+\(\EulerE^{-(4\pi^2+2\pi\ImaginaryUnit)/t}\bigl(1+O(\EulerE^{-4\pi^2/t})\bigr)\ne0\).
+So the refuted clause of the original wording fails for this \(a\).  At
+\(t=1\) the difference is
+\(7.157165835186041213\ldots\times10^{-18}\).  An independent mpmath check at
+45 digits integrated each pair of summands \(\pm j\), \(j\le4\), of the Borel
+transform along both rays for \(t=1,\tfrac12,0.7\) and
+\(t=0.9\,\EulerE^{0.3\ImaginaryUnit}\).  It reproduced
+\eqref{eq:cyclotomic-direction-jump} to within \(10^{-44}\).  The counterexample
+is Proposition~4.4 of~\cite{ModularCuspReversion2026}; the proof below is
+self-contained.
+\end{remark}
+
+\begin{proof}
+For \(m=1\), \(S_{-1}(a)=-\operatorname{Li}_2(a)\) and
+\(S_0(a)=\tfrac12\log(1-a)\).  Put \(\omega_j=2\pi\ImaginaryUnit j\).  The
+partial-fraction expansion of \(\tfrac12\coth(z/2)\) gives, for
+\(z\notin2\pi\ImaginaryUnit\IntegerNumbers\),
+\[
+ \frac1{1-\EulerE^{-z}}
+  =\frac1z+\frac12
+   -z\sum_{j\ne0}\frac1{\omega_j^2(1-z/\omega_j)},
+\]
+since \((z-\omega_j)^{-1}+\omega_j^{-1}=-z/(\omega_j^2(1-z/\omega_j))\).
+Substituting \(z=rt\), multiplying by \(-a^r/r\), and summing over \(r\ge1\)
+removes exactly \(S_{-1}(a)/t\) and \(S_0(a)\).  Hence
+\begin{equation}
+ R_a(t)=t\sum_{r\ge1}a^r\sum_{j\ne0}\frac1{\omega_j^2(1-rt/\omega_j)}
+ \qquad(\Re t>0).
+ \label{eq:cyclotomic-direction-kernel}
+\end{equation}
+Expanding \((1-rt/\omega_j)^{-1}\) gives
+\(c_n=\operatorname{Li}_{1-n}(a)\sum_{j\ne0}\omega_j^{-n-1}\) for \(n\ge1\).
+This is \(-B_{n+1}\operatorname{Li}_{1-n}(a)/(n+1)!\) for odd \(n\) and \(0\) for
+even \(n\); the constant term vanishes.  Borel transformation and summation of the geometric
+series in \(r\) give
+\[
+ \mathscr B\FormalGevreySeriesSymbol{R}_a(\xi)
+  =\sum_{j\ne0}\frac{F(\xi/\omega_j)}{\omega_j^2}
+  =-\frac1{4\pi^2}\sum_{j\ge1}\frac{F(\ImaginaryUnit u_j)+F(-\ImaginaryUnit u_j)}{j^2},
+ \qquad
+ F(w)=\frac{a\EulerE^{w}}{1-a\EulerE^{w}},\quad u_j=\frac{\xi}{2\pi j}.
+\]
+The series converges normally on compact sets avoiding the poles, because
+\(F(w)\to F(0)\) as \(w\to0\).  Since \(\lambda=1\), the poles are the points
+\(\xi=\omega_j(1+2\pi\ImaginaryUnit k)=2\pi\ImaginaryUnit j-4\pi^2jk\) with
+\(j\ne0\) and \(k\in\IntegerNumbers\).  Each is simple with residue
+\(-1/\omega_j=\ImaginaryUnit/(2\pi j)\).  Their imaginary parts \(2\pi j\) are
+nonzero.  A pole on the diagonal would need \(j\ge1\) and \(-4\pi^2jk=2\pi j\),
+that is, \(k=-1/(2\pi)\), which is impossible.  The poles in the open wedge
+\(0<\arg\xi<\pi/4\) are therefore exactly
+\(\xi_{j,n}=4\pi^2jn+2\pi\ImaginaryUnit j\) with \(j,n\ge1\).
+
+\emph{Positive ray.}  For real \(\xi\), \(\lvert a\EulerE^{r\xi/\omega_j}\rvert=a^r\).
+The double series \(\sum_r a^r\sum_j\omega_j^{-2}\EulerE^{r\xi/\omega_j}\) is
+therefore dominated by \(\sum_ra^r\sum_j\lvert\omega_j\rvert^{-2}<\infty\).
+Since \(\Re(1/t-r/\omega_j)=\Re(1/t)>0\), Fubini's theorem,
+\(\int_0^\infty\EulerE^{-\xi/t}\EulerE^{r\xi/\omega_j}\,\Differential\xi
+ =t/(1-rt/\omega_j)\), and \eqref{eq:cyclotomic-direction-kernel} give
+\(\mathcal S_0\FormalGevreySeriesSymbol{R}_a(t)=R_a(t)\) for \(\Re t>0\).
+
+\emph{Diagonal ray.}  For \(\xi=s\EulerE^{\ImaginaryUnit\pi/4}\), \(s\ge0\), the
+arguments \(\pm\ImaginaryUnit u_j\) run along the two fixed rays
+\(\EulerE^{3\pi\ImaginaryUnit/4}\RealNumbers_{\ge0}\) and
+\(\EulerE^{-\pi\ImaginaryUnit/4}\RealNumbers_{\ge0}\), whatever \(j\) is.
+The zeros \(1+2\pi\ImaginaryUnit k\) of \(1-a\EulerE^{w}\) have real part \(1\)
+and lie on neither ray.  Along the first ray \(F\to0\), and along the second
+\(F\to-1\).  Hence \(\lvert F\rvert\le C\) on both rays, and every pair of
+summands is bounded by \(C/(2\pi^2j^2)\) along the diagonal.  So the Laplace
+integral converges for \(t>0\), and it may be computed one pair of summands at
+a time.
+
+\emph{Rotation of one pair.}  Fix \(j\ge1\) and write \(\xi=2\pi ju\).  Close the
+wedge \(0\le\arg u\le\pi/4\) by the vertical segment
+\(\Re u=(2M+1)\pi\), \(0\le\Im u\le(2M+1)\pi\).  There
+\(a\EulerE^{\pm\ImaginaryUnit u}=-a\EulerE^{\mp\Im u}<0\), so
+\(\lvert F(\pm\ImaginaryUnit u)\rvert\le1\).  For \(t>0\) the kernel has modulus
+\(\EulerE^{-2\pi^2j(2M+1)/t}\) there, and the segment has length
+\(O(M)\).  The closing integral therefore tends to zero as \(M\to\infty\).
+The poles of this pair inside the wedge are the \(\xi_{j,n}\), \(n\ge1\), each
+with residue \(\ImaginaryUnit/(2\pi j)\).  The residue theorem, applied to the
+positively oriented boundary (out along the real axis, back along the
+diagonal), gives
+\[
+ \int_0^{\EulerE^{\ImaginaryUnit\pi/4}\infty}
+  -\int_0^{\infty}
+  \;=\;-2\pi\ImaginaryUnit\sum_{n\ge1}\frac{\ImaginaryUnit}{2\pi j}\,
+        \EulerE^{-\xi_{j,n}/t}
+  \;=\;\frac1j\sum_{n\ge1}\EulerE^{-j(4\pi^2n+2\pi\ImaginaryUnit)/t}
+\]
+where both integrands are \(\EulerE^{-\xi/t}\) times the pair of summands
+\(\pm j\).
+
+\emph{Summation.}  Summing over \(j\) is legitimate on both rays by the two
+domination bounds above.  The double residue series converges absolutely,
+since \(\lvert\EulerE^{-\xi_{j,n}/t}\rvert=\EulerE^{-4\pi^2jn/t}\).  This proves
+the first equality in \eqref{eq:cyclotomic-direction-jump}.  Summing first over
+\(j\) with \(\sum_{j\ge1}x^j/j=-\PrincipalLogarithm(1-x)\), for
+\(x=\EulerE^{-2\pi\ImaginaryUnit/t}Q^n\) of modulus \(Q^n<1\), proves the second.
+
+\emph{Nonvanishing.}  For \(t=1/N\), \(\EulerE^{-2\pi\ImaginaryUnit j/t}=1\), so
+every term is positive.  For small \(t\), the term \((j,n)=(1,1)\) is
+\(\EulerE^{-(4\pi^2+2\pi\ImaginaryUnit)/t}\).  All other terms have \(jn\ge2\),
+and their total modulus is \(O(\EulerE^{-8\pi^2/t})\).  Finally, each term
+\(j^{-1}\EulerE^{-\xi_{j,n}/t}\) equals \(-2\pi\ImaginaryUnit\,\Sign(\pi/4)\) times
+the residue of \(\EulerE^{-\xi/t}\mathscr B\FormalGevreySeriesSymbol{R}_a(\xi)\)
+at \(\xi_{j,n}\), and \(P_{\pi/4}=\SetOf{\xi_{j,n}:j,n\ge1}\).  So \eqref{eq:cyclotomic-direction-jump} is exactly the corrected
+directional formula of \cref{conj:cyclotomic-resurgent-inverse} for this \(a\)
+and this \(\theta\).
+\end{proof}
 
 \subsection{Editorial disposition of the remaining proposals}
 
