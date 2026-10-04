@@ -3394,7 +3394,21 @@ zero tests, with instruction/control chronology also paid. The raw
 484-operation/61-witness option has degree at most7024. This is another
 complete universal route, above260 and the separate75/87 bounds.
 
-The latest single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
+The [one-program shared U21 compiler](residue_affine_sparse_shared477.md)
+reaches **457 certificate / 477=176M+301A polynomial operations**, with
+seven comparisons, 67 positive witnesses and degree **at most 5091**.
+Its complete polynomial equals the actual 505 source on the same supplied
+coordinates. Reusing paid selector groups, sharing the range repunit and
+cancelling the population in the joint payload save 1M+27A. The original
+height h=E+x+eta and radix B=64h remain literally paid, retaining the sole
+fixed program parameter E=3^e and ordinary positive input x. The
+[independent review](review_residue_affine_sparse_shared477.md) checks every
+row, binds the exact local identities to actual upstream expressions, and
+recovers the inherited degree bound using the main-norm cancellation.
+Fresh normal and optimized checks pass. This improves the independent U21
+route; the separate 84-operation universal frontier remains unchanged.
+
+The preceding single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
 gives **485 certificate /505=177M+328A polynomial operations**,
 seven comparisons,67 positive witnesses and degree **at most5091**.
 Injective state codes reuse paid prime/action selector sums and two partial
@@ -4957,6 +4971,7 @@ New research and the completed75-operation construction:
 | [Shifted U9 program offset](neary_woods_universal_offset258.md) | **257 certificate /258=133M+125A**,1eq43w,four positive program parameters,degree at most3861; mapped269/608/44w and266/1344/43w. | E'=E−1 changes valid program recipes; accepted ordinary inputs preserved, not an all-tuple positive bijection. Selected mapped family only. |
 | [U9 lower-history unit](neary_woods_universal_lower_unit259.md) | **258 certificate /259=133M+126A**,1eq43w,four positive program parameters,degree at most3861. | Same supplied coordinates and positive zeros on valid program/input slices; negative lower sign contradicts the actual sentinel suffix. |
 | [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
+| [One-program shared U21 source](residue_affine_sparse_shared477.md) | **457 certificate /477=176M+301A**,7 comparisons,67 positive witnesses,one fixed program parameter,degree at most5091. | Complete polynomial identity to actual505; saves1M+27A while retaining h=E+x+eta and B=64h. |
 | [Shared U21 selector/payload source](residue_affine_sparse_shared476.md) | **456 certificate /476=176M+300A**,7 comparisons,67 positive witnesses,two fixed program parameters,degree at most5160. | Complete polynomial identity to the default504 coupled/shared product source; disjoint selector sums, shared range repunit and joint payload cancellation save1M+27A. |
 | [Fixed sparse program radix](residue_affine_sparse_program_radix504.md) | **484 certificate /504=177M+327A**,7eq67w, two fixed program parameters E,C plus raw x,uniform degree at most5160. | C dyadic>=64 and C>E=3^e permits h=x+eta, B=Ch. One C serves all inputs; direct soundness/completeness includes h=2. A parameter tradeoff, not an identical supplied-zero-set rewrite. |
 | [Paid sparse control codes](residue_affine_sparse_control_codes.md) | **485 certificate /505=177M+328A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Reuse paid selector sums and prefixes in injective current/target codes. Complete control cost106→74; identical positive zeros with537 after unchanged typing and exact chronology. |

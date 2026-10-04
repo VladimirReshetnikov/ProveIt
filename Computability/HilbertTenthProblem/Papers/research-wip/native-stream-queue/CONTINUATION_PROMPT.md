@@ -3576,7 +3576,21 @@ historical87/degree203 theorem, weakened86 and independent-gamma87.
 > Starting and target integers are direct ports. This is no Collatz
 > universality/convergence claim; that packet leaves input loading separate.
 >
-> The latest single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
+> The [one-program shared U21 compiler](residue_affine_sparse_shared477.md)
+> reaches **457 certificate / 477=176M+301A polynomial operations**, with
+> seven comparisons, 67 positive witnesses and degree **at most 5091**.
+> Its complete polynomial equals the actual 505 source on the same supplied
+> coordinates. Reusing paid selector groups, sharing the range repunit and
+> cancelling the population in the joint payload save 1M+27A. The original
+> height h=E+x+eta and radix B=64h remain literally paid, retaining the sole
+> fixed program parameter E=3^e and ordinary positive input x. The
+> [independent review](review_residue_affine_sparse_shared477.md) checks every
+> row, binds the exact local identities to actual upstream expressions, and
+> recovers the inherited degree bound using the main-norm cancellation.
+> Fresh normal and optimized checks pass. This improves the independent U21
+> route; the separate 84-operation universal frontier remains unchanged.
+>
+> The preceding single-program-parameter [coded sparse compiler](residue_affine_sparse_control_codes.md)
 > gives **485 certificate /505=177M+328A polynomial operations**,
 > seven comparisons,67 positive witnesses and degree **at most5091**.
 > Injective state codes reuse paid prime/action selector sums and two partial
