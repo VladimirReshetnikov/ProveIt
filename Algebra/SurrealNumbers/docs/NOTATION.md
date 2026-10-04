@@ -1950,3 +1950,22 @@ with the macro name of `𝓘`, and `𝔍` for class injections `Ord → No`, whi
 never the injective-words class `𝓘`. `𝒫_{<κ}(b)` is a support-cardinality layer
 of the core, not `𝒫_bd`. Its source 15's binary coding length `r_κ` of the
 minimal slice is printed `ρ_κ`, so that `r` stays `cf κ`.
+
+Added 3 October 2026 (batch 83): the same report's Parts X–XIV merge its
+sources 19–30 under a second dated addendum (`swo:b83:sub:notation83`,
+Section 1.3.2), which keeps the batch-81 conventions. At a *noncardinal*
+cutoff `θ` it writes `κ = |θ|` and `μ = |No_{<θ}| = 2^κ`, not `2^{<κ}`. The
+residual-layer weights and the weighted lower and upper coding lengths are
+`wt(λ)`, `wt⁺_κ(λ)`, `ϱ_lo`, `ϱ_up` (sources 19 and 29 wrote `r(λ)`,
+`u_κ(λ)`, `R`, `U`; `ϱ_lo` is an ordinal, never a relation, and `r` stays
+`cf κ`). The core keeps both codings, by source: normalized permutations
+`𝒫_bd(b)` and fixed-point-free support codes `𝒫_s(b)`. `𝐂_b` is source 25's
+two-sorted reduct of the core and the node cylinders (its script `𝒞_b`;
+sources 20, 24 and 26 write `𝒞_b` for the core itself). For `|X| = μ`,
+`𝓘_μ(X) = Inj(μ, X)` is the length-`μ` layer of `𝓘(X)` (the sources'
+`𝒫_μ(X)`, `𝓘_μ(X)`), `𝓘_{<μ}(X)` the short prefixes and `𝓘^b_μ` the
+forward-bounded injections. `𝒥_b` is source 28's bounded ideal (its `𝓑_μ`)
+and `𝒥` its admissible coordinate ideals, never the class injections `𝔍`.
+`Tab_n` is source 30's space of relation tables of type `ω + n` (its `𝒯_n`),
+since `𝒯` is all set-length words; `𝒯^inc_ε` and its companions are words
+compared with a formal end marker `ε` at a cut.
