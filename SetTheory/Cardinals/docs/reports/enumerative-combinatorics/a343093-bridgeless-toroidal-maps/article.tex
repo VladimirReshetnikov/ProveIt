@@ -1,0 +1,2894 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{graphicx,xcolor}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\definecolor{linkblue}{RGB}{31,67,101}
+\hypersetup{colorlinks=true,linkcolor=linkblue,citecolor=linkblue,urlcolor=linkblue,
+ pdftitle={Three advances on OEIS conjectures and asymptotics},
+ pdfauthor={Prepared with ChatGPT},
+ pdfsubject={A343093; A088714 and A088713; A301981 and A301982}}
+\setlength{\emergencystretch}{2em}
+\setlength{\headheight}{14pt}
+\setlist{topsep=4pt,itemsep=3pt,parsep=0pt}
+\allowdisplaybreaks[2]
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\,\mathrm d}
+\DeclareMathOperator{\Rea}{Re}
+\DeclareMathOperator{\Ima}{Im}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\Res}{Res}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Three advances on OEIS conjectures}
+\fancyhead[R]{\small Research article}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setcounter{tocdepth}{1}
+\title{\textbf{Three advances on OEIS conjectures\\and asymptotics}\\[7pt]
+ \large Bridgeless toroidal maps, golden-ratio moment laws,\\
+ and unitary-divisor partitions}
+\author{Prepared with ChatGPT\\[2pt]
+ \small Building on Vladimir Reshetnikov's ProveIt research repository}
+\date{4 October 2026 (UTC)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We prove the square-convolution generating function posted as a conjecture
+for the bridgeless toroidal maps of OEIS A343093, and derive positive
+coefficient formulas and a three-term asymptotic expansion. For the
+nonlinear reversion pair A088714 and A088713, building on the ProveIt
+moment-law construction, we prove absolute continuity, strictly positive
+real-analytic densities on the full positive half-line, and sharp density
+and derivative equivalents at the origin. An inverse Fibonacci-type
+iteration produces a nonzero real-analytic antiperiodic profile governing
+the first correction to the golden-ratio transform law, together with
+a convergent inverse-logarithmic expansion and controlled exponentially
+smaller errors. A general renewal
+theorem supplies all fixed-shift corrections in the comparison of the
+two coefficient sequences. Finally, we strengthen the existing refutation
+of the pure asymptotic models for A301981 and A301982: each coefficient-to-model
+ratio has lower limit zero and upper limit infinity, with two-sided
+logarithmic oscillations of at least order $n^{1/4}$ and corresponding
+inverse errors. We state the prior dependencies, give complete arguments
+for the advances, include reproducible exact and interval checks, and
+identify further research directions.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+% Included source: sections/introduction.tex
+\section{Results, provenance, and the proof boundary}
+\label{intro:results}
+
+This article develops three advances on concrete OEIS questions. The first
+proves a generating-function identity explicitly marked conjectural in
+A343093. The second answers three analytic and asymptotic questions about
+A088714 and A088713 in the ProveIt research corpus. The third strengthens
+an existing refutation of two partition asymptotics to quantitative
+oscillation in both directions. The subjects differ, but the proof strategy
+has a common feature: an exact structural identity is retained long enough
+to control information that a leading estimate loses.
+
+The repository snapshot used throughout is
+\begin{center}\small
+ \texttt{eaf08931cbfd0132dd36ab82a7743ccb02506dc7},
+ \quad 4 October 2026, 00:59:12 UTC.
+\end{center}
+The related OEIS entries and the cited primary literature were inspected
+on 4 October 2026 UTC. The manuscript supplies written proofs, independent
+internal mathematical reviews, exact finite checks, and an interval
+certificate. These are distinct forms of evidence: a finite computation
+does not establish an infinite asymptotic statement. External peer review
+and proof-assistant formalization remain future work.
+
+\subsection{A map identity, with all root multiplicities included}
+
+If $b_n$ counts rooted toroidal maps with $n$ edges and no bridges, then
+\begin{equation}\label{intro:maps}
+ \sum_{n\ge2}b_nz^n
+ =\left(\frac14\sum_{n\ge1}\binom{4n}{n}z^n\right)^2.
+\end{equation}
+This is Peter Bala's posted conjecture \cite{map:oeis343093}.
+The new derivation applies the bridge decomposition to the classical
+planar and toroidal generating functions of Bender--Canfield--Robinson.
+The genus carried by a branch changes the substituted argument, producing
+an essential derivative term. Keeping that term gives the exact square.
+The resulting coefficient formula also yields
+\[
+ b_n=\left(\frac{256}{27}\right)^n
+ \left\{\frac1{24}-\frac{7\sqrt6}{216\sqrt{\pi n}}
+              +O(n^{-3/2})\right\}.
+\]
+The article includes the next explicit correction, an algebraic equation,
+and an independent enumeration of rotation systems at small sizes.
+
+\subsection{Three answers for the golden-ratio moment pair}
+
+Let $A(z)=1+zA(z)^2A(zA(z))$ and $C(z)=(1-zA(z))^{-1}$.
+The existing moment-law construction \cite{goldenprior} associates
+probability measures $\mu,\nu$ with their coefficients. We prove that
+both measures have strictly positive real-analytic densities throughout
+$(0,\infty)$ and support exactly $[0,\infty)$. With
+$\beta=(\sqrt5-1)/2$ and $\alpha=1-\beta$, their densities satisfy
+\[
+ p(x)\sim\frac{\sin(\pi\alpha)}{\pi}x^{-\beta},\qquad
+ q(x)\sim\frac{\sin(\pi\beta)}{\pi}x^{-\alpha}.
+\]
+The proof uses a coupled inverse relation to rule out every hypothetical
+positive density zero. A complex inversion argument establishes the
+endpoint equivalents and their fixed derivatives.
+
+The second answer reveals information hidden by the leading equivalent
+$F(s)\sim s^{-\alpha}$ for
+$F(s)=\int(1+st)^{-1}\,d\mu(t)$. There is a nonzero real-analytic function
+$P$ with $P(t+1)=-P(t)$ such that
+\begin{equation}\label{intro:oscillation}
+ \log\bigl(s^\alpha F(s)\bigr)
+ =\frac{P(\log_\varphi\log s)}{\log s}
+       +O((\log s)^{-3}),\qquad \varphi=\frac{1+\sqrt5}{2}.
+\end{equation}
+An exact inverse-iteration construction defines the profile; an interval
+calculation proves that it is not zero. An explicit expansion to all
+inverse-logarithmic orders converges for sufficiently large $\log s$,
+with an exponentially smaller discrepancy that is separately bounded.
+The sign reversal is a theorem about the profile, rather than an
+interpretation of a numerical plot.
+
+The third answer concerns the coefficients directly. If
+$d_j=[z^j]C(z)^2$, then for every fixed $K$,
+\begin{equation}\label{intro:renewal}
+ c_n=\sum_{j=0}^{K}d_ja_{n-1-j}+O_K(a_{n-K-2}).
+\end{equation}
+In particular $c_n/a_{n-1}\to1$, with first relative correction
+$2\log n/n$. A general weighted-composition argument proves this without
+assuming a fine expansion of $a_n/a_{n-1}$.
+
+\subsection{Partition asymptotics with arbitrarily large errors of both signs}
+
+Let $a_n^-$ and $a_n^+$ be the coefficients of
+\[
+ \prod_{j\ge1}(1-z^j)^{-\sigma^*(j)},\qquad
+ \prod_{j\ge1}(1+z^j)^{\sigma^*(j)},
+\]
+respectively. Their pure OEIS models $m_n^\pm$ are defined precisely in
+Part III. The prior report \cite{unitaryprior} already proves that these
+models are not asymptotic equivalents. The new result is
+\begin{equation}\label{intro:partitions}
+ \liminf\frac{a_n^\pm}{m_n^\pm}=0,
+ \qquad \limsup\frac{a_n^\pm}{m_n^\pm}=\infty,
+ \qquad
+ \log(a_n^\pm/m_n^\pm)=\Omega_\pm(n^{1/4}).
+\end{equation}
+The notation $\Omega_\pm$ means that positive and negative multiples of
+the indicated scale occur along separate infinite subsequences.
+The proof gives sharper lower constants from one noncancelled Mellin pole.
+It requires neither the Riemann hypothesis nor simplicity of zeta zeros.
+The error of inverting either pure model likewise has both signs on a
+scale at least $(\log y)^{7/8}$.
+
+\subsection{What the novelty claim means}
+
+The map assertion is a proof of a currently posted conjectural identity;
+the underlying map formulas and bridge decomposition are credited
+classical ingredients. The moment-law existence theorem, leading
+golden-ratio equivalents, and coefficient ratio law are prior ProveIt
+results. The new statements resolve that report's Questions 23.1, 23.3,
+and 23.6. The two-sided partition theorem answers its predecessor's
+Section 11, question 3; it does not claim the earlier refutation as new.
+The general methods of analytic inversion, Lagrange inversion, and
+Landau positivity are also established methods.
+
+The search did not identify earlier proofs of these particular new
+conclusions. It does not establish exhaustive historical priority, and
+older map-enumeration transformations may encode equivalent identities.
+Each Part states its dependencies explicitly so that its correctness can
+be assessed independently of any claim about importance or novelty.
+
+
+\clearpage
+\part{Bridgeless toroidal maps}
+
+% Included source: sections/maps.tex
+\section{A square convolution for bridgeless toroidal maps}
+\label{map:section}
+
+Let $b_n$ be the number of rooted toroidal maps with $n$ edges and no
+isthmuses.  These are the numbers in OEIS A343093, with $b_0=b_1=0$.
+The entry attributes the following generating-function conjecture to Peter
+Bala, dated July 24, 2025 \cite{map:oeis343093}:
+\begin{equation}
+ \label{map:bala}
+ \sum_{n\geq 2}b_n t^n
+ =\left(\frac14\sum_{n\geq1}\binom{4n}{n}t^n\right)^2.
+\end{equation}
+We prove this identity from the classical generating functions for all
+planar and toroidal maps.  The proof also gives a positive finite formula,
+an algebraic equation, and an expansion beyond the leading asymptotic
+term.  The result is a resolution of the explicitly stated OEIS conjecture;
+the underlying enumeration of unrestricted toroidal maps and the
+decomposition along bridges are established ingredients.
+
+\subsection{Conventions and the classical inputs}
+\label{map:conventions}
+
+A map is a finite connected graph, with loops and parallel edges permitted,
+cellularly embedded in a closed oriented surface.  Cellular means that
+every component of the complement is an open disk.  Isomorphisms preserve
+the orientation.  A root is a distinguished directed edge, or dart.  The
+one-vertex edgeless planar map is included by convention and has one root
+corner.  An isthmus, also called a bridge, is an edge whose deletion
+disconnects the underlying graph.  A loop is consequently never a bridge.
+In particular, the restriction here is on edge connectivity: cut vertices
+and separating cycles are allowed.
+
+Write $m_{g,n}$ for the number of rooted maps of genus $g$ with $n$ edges,
+and put
+\[
+ M_g(z)=\sum_{n\geq0}m_{g,n}z^n,
+ \qquad M(z,u)=\sum_{g\geq0}u^gM_g(z).
+\]
+For a fixed $n$, only finitely many genera occur, so that these operations
+can be performed in formal power series without an analytic convergence
+assumption.  Let $B_g(t)$ count the nonempty bridgeless rooted maps of genus
+$g$, and let $B(t,u)=\sum_{g\geq0}u^gB_g(t)$.  In particular,
+$B_1(t)=\sum_{n\geq2}b_n t^n$.
+
+The two external enumerative inputs are
+\begin{equation}
+ \label{map:classical}
+ M_0(z)=\frac{4(2R+1)}{3(R+1)^2},\qquad
+ M_1(z)=\frac{(R-1)^2}{12R^2(R+2)},\qquad
+ R=\sqrt{1-12z},\quad R(0)=1.
+\end{equation}
+They are equations (4.20) and (4.22), respectively, on printed page 268
+of Bender, Canfield, and Robinson \cite{map:bcr1988}.  Their convention of
+distinguishing an edge, its direction, and its side up to arbitrary
+surface homeomorphism is equivalent, for orientable surfaces, to choosing
+an orientation and a dart up to orientation-preserving homeomorphism.
+Thus no factor of two is needed in \eqref{map:classical}.
+
+\subsection{Removing bridges, with the root accounted for}
+\label{map:bridges}
+
+\begin{proposition}[Bridge decomposition]
+ \label{map:decomposition}
+ With the preceding conventions,
+ \begin{equation}
+  \label{map:master}
+  M(z,u)=1+zM(z,u)^2+
+  B\!\left(\frac{z}{(1-zM(z,u))^2},u\right).
+ \end{equation}
+\end{proposition}
+
+\begin{proof}
+The edgeless map contributes $1$.  If the root edge is a bridge, cut its
+edge ribbon in a regular neighborhood of the embedded graph and cap the
+boundary circles of the resulting two ribbon submaps.  The components are rooted
+at the corners determined by the former root edge, and their order is
+determined by its direction.  A rooted corner in a nonempty oriented map
+is equivalent to a rooted dart.  Either component may be the edgeless
+planar map.  Conversely, any ordered pair of rooted maps can be joined
+at their root corners by a new directed bridge.  This is an inverse
+construction and contributes $zM^2$.
+
+Suppose instead that the root is not a bridge.  Remove all bridges and
+retain the connected component containing the root.  It is a nonempty
+bridgeless rooted core, say with $k$ edges, and it has exactly $2k$ corners.
+Every component discarded from the core is attached to it through a
+bridge, possibly with further bridges farther from the core.  At each
+corner, the cyclic order of darts at the incident vertex gives a linearly
+ordered sequence of branches.  A branch consists of its attaching bridge
+and the rooted map on its far side.  Its generating function is $zM$,
+so one corner contributes
+\[
+ 1+zM+(zM)^2+\cdots=\frac{1}{1-zM}.
+\]
+Every one of the $2k$ corners, including the corner adjoining the root,
+admits this construction.  The root remains a dart of the core; there is
+no further choice of a corner or a new root.  A core of size $k$ therefore
+has weight $z^k(1-zM)^{-2k}$.
+
+The decomposition and reconstruction are unique.  Indeed, graph bridges
+are intrinsic, the component containing the nonbridge root is intrinsic,
+and the rotations at core vertices recover both the relevant corners and
+the order of branches.  Conversely, grafting ordered branches into these
+corners creates precisely the bridges that are removed by the procedure.
+
+It remains to check the genus weight.  Joining two cellular maps of genera
+$g_1,g_2$ by a bridge produces a map with
+\[
+ V=V_1+V_2,\qquad E=E_1+E_2+1,\qquad F=F_1+F_2-1.
+\]
+Euler's formula gives $2-2g=2-2(g_1+g_2)$.  Thus genera add under every
+bridge attachment and also in the root-bridge case.  Multiplying the
+weights $u^{g_i}$ is correct.  Summing the core contribution proves
+\eqref{map:master}.
+\end{proof}
+
+This is the usual canonical decomposition into a bridgeless root component
+and branches.  Courtiel, Yeats, and Zeilberger give a closely related
+formulation in Proposition 23 \cite{map:cyz2019}.  Their auxiliary dangling
+root is included in the size, whereas our root is one of the ordinary
+edges.  The proof above fixes the normalization and explains the exponent
+$2k$ in \eqref{map:master} directly.
+
+There is also a useful inverse form.  If $P=1+B(t,u)$, then
+\begin{equation}
+ \label{map:inverse}
+ M=P(1+tP),\qquad z=\frac{t}{(1+tP)^2}.
+\end{equation}
+To see this, set $Q=1-zM$ in \eqref{map:master}.  It gives $P=MQ$ and
+$t=z/Q^2$, whence $Q=1/(1+tP)$.  These identities are formal: the relevant
+series have constant term $1$, and $t=z+O(z^2)$ is invertible for
+composition.
+
+\subsection{Extracting genus one}
+\label{map:extract}
+
+Introduce the auxiliary variable
+\begin{equation}
+ \label{map:parameter}
+ U=\frac{1-R}{3(1+R)},\qquad
+ z=\frac{U}{(1+3U)^2}.
+\end{equation}
+The planar and toroidal formulas \eqref{map:classical} become
+\begin{equation}
+ \label{map:inputs-u}
+ M_0=(1-U)(1+3U),\qquad
+ M_1=\frac{U^2(1+3U)}{(1+U)(1-3U)^2}.
+\end{equation}
+For the moment $U$ is viewed as a formal series in $z$.  At genus zero set
+\[
+ Q_0=1-zM_0=\frac{(1+U)^2}{1+3U},\qquad
+ t_0=\frac{z}{Q_0^2}=\frac{U}{(1+U)^4}.
+\]
+The genus-zero coefficient of \eqref{map:master} then gives
+\begin{equation}
+ \label{map:planar}
+ B_0(t_0)=M_0-1-zM_0^2=U-U^2-U^3.
+\end{equation}
+Since
+\[
+ \frac{d}{dU}(U-U^2-U^3)=(1+U)(1-3U),\qquad
+ \frac{dt_0}{dU}=\frac{1-3U}{(1+U)^5},
+\]
+we obtain the particularly simple identity
+\begin{equation}
+ \label{map:b0-derivative}
+ B_0'(t_0)=(1+U)^6.
+\end{equation}
+
+Now expand \eqref{map:master} to first order in $u$.  The coefficient of
+$u$ in its substituted argument is
+\[
+ [u]\frac{z}{(1-zM(z,u))^2}=\frac{2z^2M_1}{Q_0^3}.
+\]
+Consequently
+\begin{equation}
+ \label{map:linear-genus}
+ B_1(t_0)=M_1\left(1-2zM_0-
+          \frac{2z^2B_0'(t_0)}{Q_0^3}\right).
+\end{equation}
+There are no other genus-one terms: either the core has genus one and all
+branches are planar, or the core is planar and exactly one branch has
+genus one.  Substituting the explicit formulas into the parenthesis gives
+\[
+ 1-\frac{2U(1-U)}{1+3U}-\frac{2U^2}{1+3U}
+ =\frac{1+U}{1+3U}.
+\]
+Together with \eqref{map:inputs-u}, this proves the following theorem.
+
+\begin{theorem}[Exact toroidal generating function]
+ \label{map:gf-theorem}
+ Let $U(t)$ be the unique formal series with $U(0)=0$ satisfying
+ \begin{equation}
+  \label{map:quartic-tree}
+  U=t(1+U)^4.
+ \end{equation}
+ Then
+ \begin{equation}
+  \label{map:gf-rational}
+  B_1(t)=\frac{U(t)^2}{(1-3U(t))^2}.
+ \end{equation}
+ In particular, Bala's identity \eqref{map:bala} holds for every
+ coefficient.
+\end{theorem}
+
+\begin{proof}
+Equation \eqref{map:linear-genus} proves \eqref{map:gf-rational}, because
+$t_0=z+O(z^2)$ may be used as a formal variable.  For the claimed square,
+differentiate \eqref{map:quartic-tree} to obtain
+\[
+ \frac{U}{1-3U}=t\frac{d}{dt}\log(1+U).
+\]
+Lagrange inversion gives, for $n\geq1$,
+\[
+ [t^n]\log(1+U(t))
+ =\frac1n[u^{n-1}](1+u)^{4n-1}
+ =\frac{1}{4n}\binom{4n}{n}.
+\]
+It follows that $U/(1-3U)=\frac14\sum_{n\geq1}\binom{4n}{n}t^n$.
+Squaring establishes \eqref{map:bala}.
+\end{proof}
+
+\subsection{Exact coefficients and an algebraic certificate}
+\label{map:coefficients}
+
+\begin{corollary}
+ \label{map:finite-formulas}
+ For $n\geq2$,
+ \begin{align}
+  b_n&=\frac1{16}\sum_{k=1}^{n-1}
+        \binom{4k}{k}\binom{4(n-k)}{n-k},
+       \label{map:convolution}\\
+  b_n&=\frac1n\sum_{j=0}^{n-2}(j+1)(j+2)3^j
+        \binom{4n}{n-2-j}.
+       \label{map:single-sum}
+ \end{align}
+\end{corollary}
+
+\begin{proof}
+The first formula is the Cauchy product in \eqref{map:bala}.  For the
+second, apply Lagrange inversion to $U^2/(1-3U)^2$; its derivative with
+respect to $U$ is $2U/(1-3U)^3$.  Thus
+\[
+ b_n=\frac2n[u^{n-2}]\frac{(1+u)^{4n}}{(1-3u)^3}.
+\]
+Expanding the last denominator gives \eqref{map:single-sum}.
+\end{proof}
+
+The first ten values, starting at $n=2$, are
+\[
+ 1,\ 14,\ 159,\ 1680,\ 17147,\ 171612,\ 1696491,\
+ 16631840,\ 162090756,\ 1572801142.
+\]
+The first factor in the convolution is integral:
+$\frac14\binom{4k}{k}=\binom{4k-1}{k-1}$.
+Hence \eqref{map:convolution} also gives an elementary positive model for
+the numbers: ordered pairs of binary words of respective lengths
+$4k-1$ and $4(n-k)-1$, containing $k-1$ and $n-k-1$ ones.
+The enumeration proves this equinumerosity; constructing a direct
+geometric bijection is a further question.
+
+For an explicit algebraic certificate put $A=B_1(t)$ and
+$H=U/(1-3U)$.  Solving for $U$ yields
+\[
+ t(1+4H)^4=H(1+3H)^3,\qquad A=H^2.
+\]
+Separating even and odd powers of $H$ gives
+\begin{equation}
+ \label{map:algebraic}
+ \left[t+(96t-9)A+(256t-27)A^2\right]^2
+ -A\left[(16t-1)+(256t-27)A\right]^2=0.
+\end{equation}
+The intended solution is the one specified by \eqref{map:quartic-tree}
+and \eqref{map:gf-rational}.  Equation \eqref{map:algebraic} alone is an
+elimination relation and should not be used to choose a branch without
+these initial conditions.
+
+\subsection{Growth and its first corrections}
+\label{map:asymptotics}
+
+\begin{theorem}[Asymptotic expansion]
+ \label{map:asymptotic-theorem}
+ With $\rho=27/256$, as $n\to\infty$,
+ \begin{equation}
+  \label{map:asymptotic}
+  b_n=\rho^{-n}\left[
+    \frac1{24}
+    -\frac{7\sqrt6}{216\sqrt\pi}\,n^{-1/2}
+    +\frac{217\sqrt6}{93312\sqrt\pi}\,n^{-3/2}
+    +O(n^{-5/2})\right].
+ \end{equation}
+ A full expansion in the successive powers $n^{-1/2},n^{-3/2},\ldots$
+ follows by the coefficient procedure in the proof.  In particular,
+ $b_n\sim (256/27)^n/24$.
+\end{theorem}
+
+\begin{proof}
+The characteristic equation for $U=t(1+U)^4$ is $1=4t(1+U)^3$.
+It has the positive solution $U=1/3$, $t=\rho$.  Equivalently,
+$t=U/(1+U)^4$ has its only finite critical value away from $t=0$ at
+$\rho$.  The branch $U(0)=0$ is analytic at zero and admits analytic
+continuation to a disk slightly larger than $|t|<\rho$, slit along the
+positive real ray starting at $\rho$.  One can see this directly from
+the algebraic equation: multiple finite roots require $U=1/3$ and
+$t=\rho$, and the leading coefficient can vanish only at $t=0$,
+where this particular branch is already regular.  Thus the singularity
+at $\rho$ is the unique dominant one for this branch.
+
+For explicit calculations it is convenient to reuse
+$R=(1-3U)/(1+3U)$.  Then
+\[
+ \frac{t}{\rho}=
+ \frac{16(1-R)(1+R)^3}{(R+2)^4},\qquad
+ B_1(t)=\frac{(1-R)^2}{36R^2}.
+\]
+Set $w=\sqrt{1-t/\rho}$, positive for $0<t<\rho$.  The first relation
+has a convergent local inverse of the form
+\[
+ R=\frac{\sqrt6}{3}w+\frac19w^2
+       +\frac{19\sqrt6}{648}w^3-\frac{11}{972}w^4
+       +\frac{677\sqrt6}{93312}w^5+O(w^6).
+\]
+The existence of this inverse follows by writing
+$1-t/\rho=R^2(3/2+O(R))$ and applying the analytic inverse-function
+theorem to $R\sqrt{3/2+O(R)}$.
+Substitution gives
+\begin{equation}
+ \label{map:puiseux}
+ B_1(t)=\frac{1}{24w^2}-\frac{7\sqrt6}{216w}
+        +\frac{83}{2592}
+        +\frac{161\sqrt6}{46656}w
+        -\frac{1249}{279936}w^2+O(w^3).
+\end{equation}
+For nonintegral $\alpha$ the exact coefficient identity
+\[
+ [t^n](1-t/\rho)^\alpha
+ =\rho^{-n}\frac{\Gamma(n-\alpha)}{
+                    \Gamma(-\alpha)\Gamma(n+1)}
+\]
+and the gamma-ratio expansion convert the nonanalytic terms in
+\eqref{map:puiseux} into coefficient asymptotics.  Local analytic terms
+contribute no algebraic-order term from the dominant singularity.
+In particular,
+\begin{align*}
+ [t^n](1-t/\rho)^{-1/2}
+ &=\frac{\rho^{-n}}{\sqrt{\pi n}}
+       \left(1-\frac1{8n}+O(n^{-2})\right),\\
+ [t^n](1-t/\rho)^{1/2}
+ &=-\frac{\rho^{-n}}{2\sqrt\pi\,n^{3/2}}
+       \left(1+O(n^{-1})\right).
+\end{align*}
+The $w^{-2}$ term has coefficient exactly $\rho^{-n}/24$.
+The coefficient of $\rho^{-n}n^{-3/2}$ is
+\[
+ \frac{7\sqrt6}{1728\sqrt\pi}
+ -\frac{161\sqrt6}{93312\sqrt\pi}
+ =\frac{217\sqrt6}{93312\sqrt\pi}.
+\]
+This proves \eqref{map:asymptotic}.  Continuing the convergent Puiseux
+inversion, followed by the gamma-ratio expansion for each odd power of
+$w$, gives any prescribed number of terms, with a remainder of the
+corresponding order.  The slit-domain continuation supplies the usual
+coefficient-transfer justification.
+\end{proof}
+
+For comparison, all toroidal maps satisfy $m_{1,n}\sim12^n/24$, as follows
+from \eqref{map:classical}.  Hence the probability that a uniformly
+selected rooted toroidal map with $n$ edges has no bridges satisfies
+\begin{equation}
+ \label{map:probability}
+ \frac{b_n}{m_{1,n}}\sim\left(\frac{64}{81}\right)^n.
+\end{equation}
+This describes the exponential effect of the connectivity restriction.
+
+\subsection{Verification and further questions}
+\label{map:verification}
+
+The accompanying program \texttt{code/verify\_maps.py} checks the
+convolution and Lagrange formulas against all twenty terms printed in the
+inspected OEIS entry, and against each other for additional indices.
+It also contains an independent enumeration for small maps.  Fix the edge
+involution on $2n$ darts to be
+$(0\ 1)(2\ 3)\cdots(2n-2\ 2n-1)$ and enumerate every vertex permutation
+$\sigma$.  Connectivity is tested in the underlying multigraph; the
+cycles of $\sigma$ and $\sigma\alpha$ give vertices and faces.  Euler's
+formula determines the genus, and deleting each edge tests the bridge
+restriction.  Keeping dart $0$ as root, each isomorphism class is counted
+exactly $2^{n-1}(n-1)!$ times: these are precisely the relabelings
+commuting with the fixed involution and fixing the root.  Their action
+on connected rooted maps is free.  Thus division by this known factor
+gives a genuinely separate check of the normalization and the first
+coefficients.  These finite checks support the implementation; the
+all-index identity is established by Theorem~\ref{map:gf-theorem}.
+
+Several questions now have concrete starting points.
+
+\begin{enumerate}
+ \item Find a direct bijection underlying the square in
+ \eqref{map:bala}.  The product describes two independently chosen
+ objects of positive sizes, and a geometric interpretation should explain
+ how a toroidal bridgeless map yields that ordered pair.
+ \item Refine the square identity by vertices and faces, using the
+ two-variable map enumeration and OEIS A343092.  A valid refinement must
+ reduce to \eqref{map:bala} after summing the face parameter; an arbitrary
+ weighting of the two factors need not count maps.
+ \item Carry \eqref{map:master} to genus two and higher.  At each genus
+ the new $B_g$ enters linearly after all smaller genera are known, so the
+ transformation gives an effective route from unrestricted-map formulas
+ to bridgeless-map formulas.  Determining which genera admit comparably
+ simple positive factorizations is a separate question.
+ \item Mark bridges with a variable $q$.  The same decomposition gives
+ $M=1+qzM^2+B(z/(1-qzM)^2,u)$, with $M$ now recording the bridge count.
+ This supplies exact generating functions from which to study the
+ distribution of the number of bridges and of the core sizes.
+\end{enumerate}
+
+The bounded source audit found the conjecture still explicitly marked
+as such in the inspected OEIS entry and found no A343093 match in the
+inspected ProveIt snapshot.  It also identified the classical sources
+for both crucial inputs.  This supports the precise description
+``a proof of the posted OEIS identity''; it does not establish that every
+equivalent specialization is absent from the older map-enumeration
+literature.
+
+
+\clearpage
+\part{The nonlinear reversion pair A088714 and A088713}
+
+% Included source: sections/golden_setting.tex
+\section{The nonlinear reversion pair and the inherited foundations}
+\label{gold:setting}
+
+The ordinary generating functions in this Part are formal series
+\begin{equation}\label{gold:formal}
+ A(z)=\sum_{n\ge0}a_nz^n=1+zA(z)^2A(zA(z)),
+ \qquad C(z)=\sum_{n\ge0}c_nz^n=\frac1{1-zA(z)}.
+\end{equation}
+Here $a_n$ is A088714 and $c_n$ is A088713. Their initial values are
+\[
+ (a_0,\ldots,a_6)=(1,1,3,13,69,419,2809),\qquad
+ (c_0,\ldots,c_6)=(1,1,2,6,24,118,674).
+\]
+The definitions, reversion relation, and identity $A(z)=C(zA(z))$
+are recorded in the OEIS entries \cite{oeisA088714,oeisA088713}.
+The factor $z$ makes the first equation triangular in degree and gives
+a unique formal solution. The series have radius of convergence zero;
+analytic statements below concern their Stieltjes transforms, not evaluations
+of these divergent ordinary series at nonzero arguments.
+
+The ProveIt report \cite{goldenprior}, Parts I--III, is the starting point.
+Its Section 23 explicitly asks about regularity and support (Question 23.1),
+second-order golden-ratio asymptotics (Question 23.3), and the sharper
+companion comparison (Question 23.6). We resolve these questions below.
+They are questions formulated in that research report; the live OEIS entries
+themselves do not state all three as conjectures.
+
+\begin{proposition}[Foundation imported from the pinned report]
+\label{gold:foundation}
+There are unique probability measures $\mu,\nu$ on $[0,\infty)$ with
+\[
+ a_n=\int_0^\infty t^n\,d\mu(t),\qquad
+ c_n=\int_0^\infty t^n\,d\nu(t).
+\]
+They have every positive exponential moment, unbounded support, and no
+atom at zero. Define, for $s>0$,
+\begin{equation}\label{gold:stieltjes}
+ F(s)=\int\frac{d\mu(t)}{1+st},\qquad
+ G(s)=\int\frac{d\nu(t)}{1+st},\qquad U(s)=sF(s).
+\end{equation}
+Then
+\begin{equation}\label{gold:transform}
+ F(s)=1-sF(s)^2F(sF(s)),\qquad
+ G(s)=\frac1{1+U(s)},\qquad
+ U^{-1}(s)=s(1+U(s)).
+\end{equation}
+Here $U$ is an increasing homeomorphism of $(0,\infty)$ onto itself.
+With
+\[
+ \beta=\frac{\sqrt5-1}{2},\qquad
+ \alpha=1-\beta=\beta^2,\qquad \varphi=\beta^{-1},
+\]
+the endpoint equivalents are
+\begin{align}
+ F(s)&\sim s^{-\alpha},&G(s)&\sim s^{-\beta} \quad(s\to\infty),
+ \label{gold:leading}\\
+ \mu([0,t])&\sim\frac{\sin(\pi\alpha)}{\pi\alpha}t^\alpha,&
+ \nu([0,t])&\sim\frac{\sin(\pi\beta)}{\pi\beta}t^\beta
+ \quad(t\downarrow0).\label{gold:cdf}
+\end{align}
+The coefficients are log-convex, and
+\begin{equation}\label{gold:ratios}
+ r_n:=\frac{a_n}{a_{n-1}}\sim\frac n{\log n}.
+\end{equation}
+For every integer $N\ge0$, the finite expansion of $F(s)$ has the exact
+signed remainder
+\begin{equation}\label{gold:finite}
+ F(s)=\sum_{j=0}^{N}(-1)^ja_js^j
+ +(-1)^{N+1}s^{N+1}\int\frac{t^{N+1}}{1+st}\,d\mu(t).
+\end{equation}
+\end{proposition}
+
+\paragraph{Dependency and proof mechanism.}
+This proposition packages established statements of the pinned research
+report, rather than assigning them a new proof or a formal verification
+status here. Its construction iterates a moment-preserving map: a positive
+block operator gives $(1-zB(z))^{-1}$, and a positive full-Fock operator
+turns a moment series $R$ into the solution $M=R(zM)$. Their composition
+is $M=1+zM^2B(zM)$. Each iteration stabilizes one more coefficient.
+Tightness and uniform integrability give the two limiting measures.
+The proved coefficient growth makes their exponential generating functions
+entire and hence their moment problems determinate. Weak limits of compact
+approximants give \eqref{gold:transform} on the negative real axis.
+
+The leading constant in \eqref{gold:leading} is also part of the prior
+theorem. For orientation, put $g(x)=\log U(e^x)$ and
+$d(x)=g(x)-\beta x$. The inverse identity implies
+$d(x)=-\beta d(g(x))-\beta\varepsilon(x)$ with
+$\varepsilon(x)=-\log(1-F(e^x))\to0$. Iteration to a compact interval,
+followed by a contraction bound, proves $d(x)\to0$.
+The Stieltjes Tauberian argument then gives \eqref{gold:cdf}.
+Log-convexity and the coefficient logarithmic growth give
+\eqref{gold:ratios}. Formula \eqref{gold:finite} follows directly from
+the finite geometric identity and will make the new oscillation certificate
+independent of an infinite numerical-series approximation.
+
+The new proofs separate into three directions. Complex inversion improves
+the integrated endpoint laws to analytic densities and derivative
+asymptotics. Real inverse iteration identifies the missing oscillatory
+correction. A composition estimate sharpens the coefficient comparison
+without requiring the finer Bell-number conjecture.
+
+
+
+% Included source: sections/golden_regularity.tex
+\section{A088714: positive analytic densities on the full half-line}
+\label{reg:section}
+
+The moment representation in the repository leaves a concrete question:
+can either of its two canonical measures have a singular component,
+a positive atom, or a gap in its support?  We resolve all three issues.
+The proof combines a global inversion theorem with a descent argument
+specific to the coupled transforms.  A separate argument then determines
+the densities at the origin; it does not differentiate the previously
+known distribution-function equivalents.
+
+Throughout this section, $\mu$ and $\nu$ are the canonical probability
+measures on $[0,\infty)$ with moment series $A$ and
+$C=(1-zA)^{-1}$, respectively.  We use their inherited finite moments,
+absence of atoms at zero, and the negative-axis identity
+\begin{equation}\label{reg:eq:inheritedU}
+ s=U(s)\bigl(1+U(U(s))\bigr),\qquad
+ U(s)=s\int_{[0,\infty)}\frac{d\mu(t)}{1+st}.
+\end{equation}
+For the endpoint calculation we also use the inherited law
+\begin{equation}\label{reg:eq:inheritedCDF}
+ \nu([0,t])\sim\frac{\sin(\pi\beta)}{\pi\beta}t^\beta,
+ \qquad t\downarrow0,
+ \qquad
+ \beta=\frac{\sqrt5-1}{2},\quad
+ \alpha=1-\beta=\beta^2.
+\end{equation}
+No assertion about the existence of a density is included in these
+inputs.
+
+\begin{theorem}[Regularity, full support, and density at zero]
+\label{reg:thm:main}
+Both $\mu$ and $\nu$ are absolutely continuous with respect to Lebesgue
+measure.  Their densities $p$ and $q$ have strictly positive,
+real-analytic versions on $(0,\infty)$, and
+\begin{equation}\label{reg:eq:fullsupport}
+ \operatorname{supp}\mu=\operatorname{supp}\nu=[0,\infty).
+\end{equation}
+In particular, neither law has atoms, a singular continuous component,
+or a gap in its support.  Moreover,
+\begin{equation}\label{reg:eq:densitieszero}
+ p(x)\sim\frac{\sin(\pi\alpha)}{\pi}x^{-\beta},
+ \qquad
+ q(x)\sim\frac{\sin(\pi\beta)}{\pi}x^{-\alpha},
+ \qquad x\downarrow0.
+\end{equation}
+The constants in the two density equivalents are equal because
+$\alpha+\beta=1$.
+\end{theorem}
+
+\subsection{The analytic inverse selected by the moment laws}
+\label{reg:subsec:transforms}
+
+Write
+\[
+ \mathcal G_\mu(z)=\int\frac{d\mu(t)}{z-t},\qquad
+ \mathcal G_\nu(z)=\int\frac{d\nu(t)}{z-t},\qquad
+ K(z)=\frac1{\mathcal G_\mu(z)}.
+\]
+These functions are holomorphic on
+$\mathbb C\setminus[0,\infty)$.  Each Cauchy transform maps the upper
+half-plane into the lower half-plane, so $K$ maps the upper half-plane
+into itself.  A real argument $x<0$ gives $K(x)<0$.
+
+The renewal identity, initially justified on the negative axis, extends
+by the identity theorem to give
+\begin{equation}\label{reg:eq:renewalCauchy}
+ \mathcal G_\nu(z)
+   =\frac1{z\bigl(1-\mathcal G_\mu(z)\bigr)}.
+\end{equation}
+Define
+\begin{equation}\label{reg:eq:H}
+ H(w)=w^2\mathcal G_\nu(w)
+      =\frac{w}{1-\mathcal G_\mu(w)}.
+\end{equation}
+Since $\nu$ is a probability measure with finite second moment,
+polynomial division yields the integral representation
+\begin{equation}\label{reg:eq:Hintegral}
+ H(w)=w+m_1(\nu)+\int\frac{t^2}{w-t}\,d\nu(t).
+\end{equation}
+In the present normalization $m_1(\nu)=1$.
+
+\begin{lemma}[The exact inverse identity]\label{reg:lem:inverse}
+For every $z$ in the upper half-plane,
+\begin{equation}\label{reg:eq:inverse}
+ H(K(z))=z.
+\end{equation}
+\end{lemma}
+\begin{proof}
+For $s>0$ one has
+$\mathcal G_\mu(-1/s)=-U(s)$ and $K(-1/s)=-1/U(s)$.
+Consequently, \eqref{reg:eq:H} and \eqref{reg:eq:inheritedU} give
+\[
+ H(K(-1/s))
+ =-\frac1{U(s)\bigl(1+U(U(s))\bigr)}
+ =-\frac1s.
+\]
+The composition $H\circ K$ is holomorphic on
+$\mathbb C\setminus[0,\infty)$: $K$ maps each half-plane into itself
+and the negative real axis into itself.  The identity theorem now proves
+\eqref{reg:eq:inverse}.
+\end{proof}
+
+Thus the required inverse relation follows from identities of actual
+transforms.  It does not depend on evaluating the divergent series $A$
+at a positive argument.  In free-probability terminology,
+\eqref{reg:eq:Hintegral} identifies $\mu$ as the rate-one free compound
+Poisson law with jump distribution $\nu$.  The argument below uses the
+explicit analytic representation.
+
+\subsection{The global inversion input and its hypotheses}
+\label{reg:subsec:global}
+
+We use the following special form of the global inversion theorem of
+Huang and Wang \cite[Propositions 3.1--3.2]{HuangWang2022}.
+
+\begin{theorem}[Global inversion; imported result]
+\label{reg:thm:imported}
+Let $\tau$ be a nonzero finite positive measure on $\mathbb R$, let
+$b\in\mathbb R$, and put
+\[
+ H_\tau(w)=w+b+\int\frac{d\tau(t)}{w-t},\qquad
+ I_\tau(u,v)=\int\frac{d\tau(t)}{(u-t)^2+v^2}.
+\]
+Define
+\[
+ v_\tau(u)=\inf\{v>0:I_\tau(u,v)<1\},\qquad
+ \Omega_\tau=\{u+iv:v>v_\tau(u)\}.
+\]
+Then $v_\tau$ is finite and continuous, and
+$v_\tau(u)=0$ exactly when
+$\int (u-t)^{-2}\,d\tau(t)\le1$.
+The map $H_\tau:\Omega_\tau\to\mathbb C^+$ is a holomorphic bijection.
+It and its inverse extend continuously as mutually inverse maps between
+their closures.  The boundary is
+$\partial\Omega_\tau=\{u+iv_\tau(u):u\in\mathbb R\}$, and
+\[
+ h_\tau(u)=H_\tau(u+iv_\tau(u))
+\]
+is a strictly increasing homeomorphism of $\mathbb R$ onto itself.
+For $v_\tau(u)>0$ one has
+$I_\tau(u,v_\tau(u))=1$.
+\end{theorem}
+
+Here and below a boundary value of $H_\tau$ at a real point means its
+continuous extension from $\Omega_\tau$.  The theorem is a direct
+specialization of the cited Nevanlinna integral form: take
+$d\sigma(t)=(1+t^2)^{-1}d\tau(t)$ and replace the real constant by
+$b-\int t\,d\sigma(t)$.  All these integrals are finite because $\tau$
+is finite.
+
+For \eqref{reg:eq:Hintegral}, set
+\begin{equation}\label{reg:eq:tau}
+ d\tau(t)=t^2\,d\nu(t),\qquad b=m_1(\nu).
+\end{equation}
+The second moment of $\nu$ makes $\tau$ finite; its first moment is
+positive, so $\tau\ne0$.  Thus every hypothesis of
+Theorem~\ref{reg:thm:imported} holds.  Suppress the subscript $\tau$ and
+write $v$, $\Omega$, and $h$ for the resulting objects.
+
+For $z\in\mathbb C^+$, \eqref{reg:eq:inverse} implies
+$\operatorname{Im}H(K(z))>0$.  The integral formula gives
+\begin{equation}\label{reg:eq:imagH}
+ \operatorname{Im}H(u+iy)
+ =y\left(1-\int\frac{t^2}{(u-t)^2+y^2}\,d\nu(t)\right).
+\end{equation}
+It follows that $K(z)\in\Omega$.  Uniqueness of the inverse in
+Theorem~\ref{reg:thm:imported} therefore identifies $K$ with its global
+inverse.  In particular, $K$ has a continuous, injective extension to
+$\mathbb C^+\cup\mathbb R$, and
+\begin{equation}\label{reg:eq:boundaryinverse}
+ K(h(u))=u+iv(u),\qquad \operatorname{Re}K(x)=h^{-1}(x).
+\end{equation}
+
+The absence of an atom of $\nu$ at zero gives
+\[
+ \int\frac{t^2}{(0-t)^2}\,d\nu(t)=1.
+\]
+Hence $v(0)=0$, while \eqref{reg:eq:Hintegral} gives the boundary value
+$H(0)=m_1(\nu)-\int t\,d\nu(t)=0$.  The evaluation is absolutely
+convergent, and it also follows by dominated convergence along the
+positive imaginary axis.  Therefore
+\begin{equation}\label{reg:eq:Ksign}
+ h(0)=0,\qquad K(0)=0,\qquad
+ K(x)\ne0\ (x\ne0),\qquad
+ \operatorname{Re}K(x)>0\ (x>0).
+\end{equation}
+
+\subsection{Absolute continuity and the descent that excludes zeros}
+\label{reg:subsec:descent}
+
+On every compact interval in $(0,\infty)$, the reciprocal
+$\mathcal G_\mu=1/K$ has finite, continuous boundary values.  This already
+proves local absolute continuity.  Indeed, the Poisson integral of $\mu$
+is $-\pi^{-1}\operatorname{Im}\mathcal G_\mu(x+iy)$.  On such an interval
+it converges uniformly to a continuous function, whereas integration
+against a compactly supported continuous test function converges to
+integration against $\mu$.  The two limits identify the density as
+\begin{equation}\label{reg:eq:densityK}
+ p(x)=-\frac1\pi\operatorname{Im}\mathcal G_\mu(x)
+      =\frac{\operatorname{Im}K(x)}{\pi|K(x)|^2},\qquad x>0.
+\end{equation}
+The inherited absence of an atom at zero, together with support in
+$[0,\infty)$, proves that $\mu$ is globally absolutely continuous.
+At this point $p$ is nonnegative and continuous; positivity still needs
+proof.
+
+\begin{lemma}[Descent of a hypothetical density zero]
+\label{reg:lem:descent}
+Let $Z=\{x>0:p(x)=0\}$.  If $x\in Z$, then
+\begin{equation}\label{reg:eq:descent}
+ w=K(x)\in Z,\qquad 0<w<x,\qquad K(w)>1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+By \eqref{reg:eq:densityK}, $K(x)$ is real, and
+\eqref{reg:eq:Ksign} makes $w=K(x)>0$.
+Since $K(x)$ lies on $\partial\Omega$, one has $v(w)=0$.
+Thus the vertical path $w+iy$, $y>0$, lies in $\Omega$, and the global
+boundary inverse gives
+\begin{equation}\label{reg:eq:Hwfinite}
+ \lim_{y\downarrow0}H(w+iy)=H(w)=x.
+\end{equation}
+The value $\mathcal G_\mu(w)=1/K(w)$ is finite, since $w>0$ and
+$K$ vanishes only at zero.  If
+$1-\mathcal G_\mu(w)=0$, the quotient in \eqref{reg:eq:H} would have
+unbounded modulus along this vertical path, contradicting
+\eqref{reg:eq:Hwfinite}.  We may therefore pass to the boundary in that
+quotient and obtain
+\begin{equation}\label{reg:eq:zerotransfer}
+ \mathcal G_\mu(w)=1-\frac wx.
+\end{equation}
+This is real, so \eqref{reg:eq:densityK} shows that $w\in Z$.
+Applying \eqref{reg:eq:Ksign} at $w$ now gives
+$\mathcal G_\mu(w)=1/K(w)>0$.  Equation
+\eqref{reg:eq:zerotransfer} consequently gives $w<x$.
+It also gives $\mathcal G_\mu(w)<1$, because $w>0$ and $x>0$.
+Hence $K(w)>1$.
+\end{proof}
+
+\begin{proposition}[Every positive point has positive density]
+\label{reg:prop:positive}
+The set $Z$ is empty.
+\end{proposition}
+\begin{proof}
+Suppose $x_0\in Z$ and define $x_{j+1}=K(x_j)$ for $j\ge0$.
+Lemma~\ref{reg:lem:descent} makes this an infinite strictly decreasing
+sequence of positive elements of $Z$.  Equation
+\eqref{reg:eq:zerotransfer} gives
+\[
+ \frac1{x_{j+2}}=1-\frac{x_{j+1}}{x_j},\qquad
+ x_j-x_{j+1}=\frac{x_j}{x_{j+2}}>1.
+\]
+It follows that $x_j<x_0-j$ for every $j\ge1$, contradicting positivity
+once $j>x_0$.
+\end{proof}
+
+The feedback identity forces a decrease greater than one at every
+hypothetical zero.  Merely knowing that the measures have mass
+arbitrarily close to zero and unbounded support would not exclude
+intermediate gaps.
+
+\subsection{Analyticity and the second density}
+\label{reg:subsec:analyticity}
+
+For $x>0$, write $K(x)=u+iv$; the preceding proposition gives $v>0$.
+This point lies in the open upper half-plane and on $\partial\Omega$,
+so
+\[
+ \int\frac{t^2}{(u-t)^2+v^2}\,d\nu(t)=1.
+\]
+Differentiating \eqref{reg:eq:Hintegral} at this interior point and
+using this equality gives
+\begin{equation}\label{reg:eq:noncritical}
+ \operatorname{Re}H'(u+iv)
+ =2v^2\int\frac{t^2}{\bigl((u-t)^2+v^2\bigr)^2}\,d\nu(t)>0.
+\end{equation}
+Thus $H'(K(x))\ne0$.  The holomorphic inverse function theorem extends
+$K$ across a neighborhood of $x$.  Its reciprocal extends there as
+well, and \eqref{reg:eq:densityK} proves that $p$ is real analytic.
+
+In \eqref{reg:eq:renewalCauchy}, the boundary denominator cannot vanish
+at any $x>0$, because
+$\operatorname{Im}\mathcal G_\mu(x)=-\pi p(x)<0$.
+Consequently $\mathcal G_\nu$ has a finite holomorphic continuation
+through every positive point.  The same Poisson-inversion argument
+proves local absolute continuity of $\nu$ and the formula
+\begin{equation}\label{reg:eq:densitybridge}
+ q(x)=\frac{p(x)}{x\,|1-\mathcal G_\mu(x)|^2}>0,
+ \qquad x>0.
+\end{equation}
+It is real analytic.  The absence of an atom at zero completes global
+absolute continuity.  Strict positivity on every positive interval
+proves \eqref{reg:eq:fullsupport} for both laws.
+
+For completeness, the boundary parametrization gives exact simultaneous
+density formulas.  For $u>0$, the number $v(u)$ is positive and uniquely
+determined by
+\begin{equation}\label{reg:eq:boundaryequation}
+ \int\frac{t^2}{(u-t)^2+v(u)^2}\,d\nu(t)=1,
+ \qquad h(u)=H(u+iv(u)).
+\end{equation}
+Equations \eqref{reg:eq:densityK} and \eqref{reg:eq:densitybridge} become
+\begin{equation}\label{reg:eq:parametricdensities}
+ \begin{split}
+ p(h(u))&=\frac{v(u)}{\pi\bigl(u^2+v(u)^2\bigr)},\\
+ q(h(u))&=\frac{v(u)}{
+       \pi h(u)\bigl((u-1)^2+v(u)^2\bigr)}.
+ \end{split}
+\end{equation}
+These identities are exact.  They characterize the density using the
+same probability law $\nu$, so they are not by themselves a closed-form
+numerical solution.
+
+\subsection{A complex Abelian lemma at the origin}
+\label{reg:subsec:abelian}
+
+The transition from a distribution-function asymptotic to a density
+asymptotic requires more than differentiation.  We first obtain a
+uniform complex-transform limit away from the real support and then
+invert $H$ at an interior point of the upper half-plane.
+
+\begin{lemma}[Scaled Cauchy transforms]\label{reg:lem:abelian}
+Let $\sigma$ be a probability measure on $[0,\infty)$, and suppose
+\[
+ N(t)=\sigma([0,t])\sim c\,t^\gamma\quad(t\downarrow0),
+ \qquad c>0,\quad 0<\gamma<1.
+\]
+Then, locally uniformly for
+$\zeta\in\mathbb C\setminus[0,\infty)$,
+\begin{equation}\label{reg:eq:abelian}
+ r^{1-\gamma}\mathcal G_\sigma(r\zeta)
+ \longrightarrow
+ -\frac{c\pi\gamma}{\sin(\pi\gamma)}(-\zeta)^{\gamma-1}
+ \qquad(r\downarrow0).
+\end{equation}
+The power uses the branch of $\log(-\zeta)$ that is real for
+$\zeta<0$.
+\end{lemma}
+\begin{proof}
+The hypothesis implies $N(0)=0$ and a global bound
+$N(t)\le C_0t^\gamma$ for a finite constant $C_0$.
+Integration by parts, followed by $t=ry$, gives
+\[
+ \mathcal G_\sigma(z)
+ =-\int_0^\infty\frac{N(t)}{(z-t)^2}\,dt,
+ \qquad
+ r^{1-\gamma}\mathcal G_\sigma(r\zeta)
+ =-\int_0^\infty
+       \frac{N(ry)/r^\gamma}{(\zeta-y)^2}\,dy.
+\]
+On each compact subset of the slit plane, the absolute value of the
+integrand is bounded by a constant times
+$y^\gamma/(1+y)^2$, which is integrable.  Dominated convergence is
+therefore locally uniform and gives the limit
+$-c\int_0^\infty y^\gamma(\zeta-y)^{-2}\,dy$.
+For $\zeta=-a<0$, Euler's beta integral evaluates it as
+\[
+ -c\,a^{\gamma-1}
+    \Gamma(\gamma+1)\Gamma(1-\gamma)
+ =-\frac{c\pi\gamma}{\sin(\pi\gamma)}a^{\gamma-1}.
+\]
+Both expressions are holomorphic on the slit plane, so the identity
+theorem evaluates the limit everywhere in that plane.
+\end{proof}
+
+Apply this lemma to \eqref{reg:eq:inheritedCDF}.  Since
+$\alpha=1-\beta$, it gives, locally uniformly for $\zeta\in\mathbb C^+$,
+\begin{equation}\label{reg:eq:nscaled}
+ r^\alpha\mathcal G_\nu(r\zeta)
+ \longrightarrow-(-\zeta)^{-\alpha}
+ =e^{-i\pi\beta}\zeta^{-\alpha}.
+\end{equation}
+The last expression uses $0<\arg\zeta<\pi$.
+
+\subsection{Inversion at a nonreal point gives the density constants}
+\label{reg:subsec:endpoint}
+
+\begin{proposition}[Boundary Cauchy transforms at zero]
+\label{reg:prop:boundaryzero}
+The continuous boundary values on $(0,\infty)$ satisfy
+\begin{equation}\label{reg:eq:boundaryzero}
+ K(x)\sim e^{i\pi\alpha}x^\beta,\qquad
+ \mathcal G_\mu(x)\sim e^{-i\pi\alpha}x^{-\beta},\qquad
+ \mathcal G_\nu(x)\sim e^{-i\pi\beta}x^{-\alpha}
+ \qquad(x\downarrow0).
+\end{equation}
+Here a complex equivalent means that the quotient tends to $1$.
+\end{proposition}
+\begin{proof}
+Use $H(w)=w^2\mathcal G_\nu(w)$, take $r=x^\beta$ in
+\eqref{reg:eq:nscaled}, and note that
+$\beta(2-\alpha)=\beta(1+\beta)=1$.  Thus
+\begin{equation}\label{reg:eq:Hscaled}
+ \frac{H(x^\beta\zeta)}x
+ \longrightarrow e^{-i\pi\beta}\zeta^{1+\beta}
+\end{equation}
+locally uniformly in $\mathbb C^+$.
+The equation
+\[
+ e^{-i\pi\beta}\zeta^{1+\beta}=1
+\]
+has a simple root at
+$\zeta_0=e^{i\pi\alpha}$, because
+$\alpha(1+\beta)=\beta$.
+
+Choose an arbitrarily small closed disk about $\zeta_0$ contained
+strictly in the upper half-plane and containing no other zero of
+$e^{-i\pi\beta}\zeta^{1+\beta}-1$.
+Uniform convergence on its boundary and Rouch\'e's theorem show that,
+for all sufficiently small $x>0$, the equation
+$H(x^\beta\zeta)=x$ has a root in this disk.
+Let $w=x^\beta\zeta$ be that root.
+It lies in $\mathbb C^+$ and has $\operatorname{Im}H(w)=0$.
+By \eqref{reg:eq:imagH} and strict monotonicity of the integral there
+as a function of the positive imaginary part, $w$ lies on
+$\partial\Omega$.
+The boundary bijection in Theorem~\ref{reg:thm:imported} now forces
+$w=K(x)$.
+Since the disk can be arbitrarily small,
+$K(x)/x^\beta\to e^{i\pi\alpha}$.
+
+Taking reciprocals proves the second equivalent in
+\eqref{reg:eq:boundaryzero}.  Finally,
+\eqref{reg:eq:renewalCauchy} and
+$|\mathcal G_\mu(x)|\to\infty$ give
+\[
+ \mathcal G_\nu(x)
+ \sim-\frac1{x\mathcal G_\mu(x)}
+ \sim-e^{i\pi\alpha}x^{\beta-1}
+ =e^{-i\pi\beta}x^{-\alpha}.
+\]
+\end{proof}
+
+Taking negative imaginary parts of
+\eqref{reg:eq:boundaryzero} proves \eqref{reg:eq:densitieszero} and
+finishes Theorem~\ref{reg:thm:main}.  The proof uses a complex disk a
+fixed positive distance from the real axis after scaling.  It does not
+assert uniformity of an Abelian theorem up to the support, where such
+uniformity would require an additional argument.
+
+\begin{corollary}[Every fixed derivative at the origin]
+\label{reg:cor:derivatives}
+For each fixed integer $j\ge0$,
+\begin{equation}\label{reg:eq:derivatives}
+ \begin{split}
+ p^{(j)}(x)&\sim
+   \frac{\sin(\pi\alpha)}\pi
+   (-1)^j(\beta)_j\,x^{-\beta-j},\\
+ q^{(j)}(x)&\sim
+   \frac{\sin(\pi\beta)}\pi
+   (-1)^j(\alpha)_j\,x^{-\alpha-j},
+ \qquad x\downarrow0,
+ \end{split}
+\end{equation}
+where $(a)_0=1$ and $(a)_j=a(a+1)\cdots(a+j-1)$ for $j\ge1$.
+In particular, each density is strictly decreasing and strictly convex
+on a sufficiently short interval adjacent to zero.
+\end{corollary}
+\begin{proof}
+The same Rouch\'e argument may be made uniform when the right-hand side
+$1$ in the scaled equation is replaced by a complex variable $z$ in a
+small disk about $1$.
+Choose the disk small enough that
+$e^{i\pi\alpha}z^\beta$ stays in a fixed disk compactly contained in
+$\mathbb C^+$.  The limiting inverse is holomorphic with nonzero
+derivative.  Local uniform convergence of the scaled $H$ also gives
+local uniform convergence of its derivatives by Cauchy's formula, so
+the nearby roots remain noncritical and define holomorphic inverses by
+the implicit function theorem.  Uniqueness identifies these inverses with
+$x^{-\beta}K(xz)$ for $\operatorname{Im}z>0$, and then with their
+continuations through the positive axis.  They converge locally
+uniformly to $e^{i\pi\alpha}z^\beta$.
+Consequently
+\[
+ x^\beta\mathcal G_\mu(xz)
+   \longrightarrow e^{-i\pi\alpha}z^{-\beta},\qquad
+ x^\alpha\mathcal G_\nu(xz)
+   \longrightarrow e^{-i\pi\beta}z^{-\alpha}
+\]
+locally uniformly in that disk.  Cauchy's differentiation formula
+permits any fixed number of derivatives at $z=1$.
+Taking negative imaginary parts gives \eqref{reg:eq:derivatives}.
+The cases $j=1,2$ give the final assertion.
+\end{proof}
+
+\subsection{What this resolves and what remains}
+\label{reg:subsec:scope}
+
+Theorem~\ref{reg:thm:main} resolves the repository's question about
+regularity and support of both canonical laws.  The additional boundary
+argument provides the density equivalents that were expressly left
+unjustified by the earlier cumulative-mass estimates.  The general
+global inversion theorem is an imported tool; the exclusion of every
+positive density zero comes from the particular feedback identity
+$H(w)=w/(1-\mathcal G_\mu(w))$ and
+Lemma~\ref{reg:lem:descent}.
+
+These results leave substantive questions.  They do not give a
+multiplicative equivalent for the far tails or a complete large-$n$
+asymptotic for the moments.  Nor does local decrease near zero prove
+global monotonicity of either density.  Useful next problems are to
+determine whether $p$ or $q$ is globally decreasing, to obtain
+quantitative large-$x$ boundary estimates from \eqref{reg:eq:H}, and to
+turn \eqref{reg:eq:boundaryequation} into certified density enclosures
+with a proved convergence rate.  The derivative equivalents are
+statements for each fixed order $j$; they do not establish complete
+monotonicity on one common interval for all orders.
+
+
+
+% Included source: sections/golden_dynamics.tex
+\section{A complete oscillatory expansion for the golden-ratio laws}
+\label{dyn:sec:main}
+
+The repository asks whether the leading golden-ratio asymptotics for
+A088714 admit an explicit second-order expansion, and whether the
+correction oscillates along inverse orbits. This section answers both
+questions. The correction is of order $1/\log s$, has a nonzero
+real-analytic profile periodic in $\log\log s$, and admits a convergent
+expansion in inverse powers of $\log s$, with an error smaller than all
+those powers. The profile changes sign after one
+golden-ratio dilation of the logarithmic variable. An exact interval
+certificate proves that this oscillation is present in the particular
+OEIS solution, rather than merely permitted by the functional equation.
+
+\subsection{Inherited input and the main statement}
+\label{dyn:sub:input}
+
+We use the following results from Part~II of the repository manuscript
+\cite{goldenprior}: the theorems entitled \emph{Moment and analytic
+structure} and \emph{Golden-ratio endpoint laws}, together with its
+Stieltjes remainder formula. Its source labels are
+\texttt{gml:thm:mainmoment}, \texttt{gml:thm:mainendpoint}, and
+\texttt{gml:eq:remainder}. In the notation of that manuscript,
+\begin{equation}\label{dyn:eq:input}
+ F(s)=\int_{[0,\infty)}\frac{d\mu(t)}{1+st},\qquad
+ U(s)=sF(s),\qquad G(s)=\frac{1}{1+U(s)}.
+\end{equation}
+Here $\mu$ is the probability measure with moments A088714, $G$ is the
+Stieltjes transform for A088713, $U$ is an increasing homeomorphism of
+$(0,\infty)$ onto itself, and
+\begin{equation}\label{dyn:eq:inverse}
+ U^{-1}(t)=t(1+U(t)),\qquad
+ U(s)\sim s^\beta,
+ \qquad \beta=\frac{\sqrt5-1}{2}.
+\end{equation}
+We put
+\begin{equation}\label{dyn:eq:constants}
+ \varphi=\frac{1+\sqrt5}{2}=\frac1\beta,\qquad
+ \alpha=1-\beta=\beta^2,\qquad \lambda=\log\varphi,
+ \qquad \mathcal D=\lambda^{-1}\frac{d}{dt}.
+\end{equation}
+The letter $P$ below denotes an analytic function, not a polynomial. Its
+definition is constructive and canonical; it is not a freely chosen
+periodic multiplier.
+
+\begin{theorem}[Complete golden-ratio expansion]\label{dyn:thm:allorders}
+There is a nonzero real-valued real-analytic function $P$ on $\mathbb R$
+such that
+\begin{equation}\label{dyn:eq:anti}
+ P(t+1)=-P(t),\qquad P(t+2)=P(t).
+\end{equation}
+For every fixed integer $N\ge1$, as $s\to\infty$,
+\begin{align}
+ \log\bigl(s^\alpha F(s)\bigr)
+ &=\sum_{n=1}^{N}
+   \frac{Q_n(\log_\varphi\log s)}{(\log s)^{2n-1}}
+   +O\bigl((\log s)^{-2N-1}\bigr),\label{dyn:eq:Ffull}\\
+ \log\bigl(s^\beta G(s)\bigr)
+ &=-\sum_{n=1}^{N}
+   \frac{Q_n(\log_\varphi\log s)}{(\log s)^{2n-1}}
+   +O\bigl((\log s)^{-2N-1}\bigr),\label{dyn:eq:Gfull}
+\end{align}
+where an empty product is $1$ and
+\begin{equation}\label{dyn:eq:Qformula}
+ Q_n(t)=\frac{5^{(1-n)/2}}{n!}
+ \left[\prod_{j=n}^{2n-2}(\mathcal D-j)\right]P(t)^n.
+\end{equation}
+The remainders hold uniformly over the oscillation phase. Moreover, for
+all sufficiently large $x$, the series
+\begin{equation}\label{dyn:eq:Sconvergent}
+ S(x)=\sum_{n=1}^{\infty}\frac{Q_n(\log_\varphi x)}{x^{2n-1}}
+\end{equation}
+converges absolutely, uniformly over the phase, and
+\begin{align}
+ \log(s^\alpha F(s))&=S(\log s)+O(s^{-\beta}),
+       \label{dyn:eq:Fsector}\\
+ \log(s^\beta G(s))&=-S(\log s)+O(s^{-1}).
+       \label{dyn:eq:Gsector}
+\end{align}
+In particular a first correction beyond all inverse-logarithmic orders
+can be isolated explicitly:
+\begin{equation}\label{dyn:eq:beyond}
+ s^\alpha F(s)=\exp(S(\log s))-s^{-\beta}+O(s^{-1}).
+\end{equation}
+\end{theorem}
+
+For example,
+\begin{equation}\label{dyn:eq:Qfirst}
+ Q_1=P,\qquad
+ Q_2=\frac{P\mathcal DP-P^2}{\sqrt5},\qquad
+ Q_3=\frac1{30}(\mathcal D-3)(\mathcal D-4)P^3.
+\end{equation}
+In general $Q_n(t+1)=(-1)^nQ_n(t)$: the odd-indexed coefficient
+functions are antiperiodic and the even-indexed ones are $1$-periodic.
+Thus, writing $x=\log s$ and $p=P(\log_\varphi x)$,
+\begin{align}
+ s^\alpha F(s)
+ &=1+\frac{p}{x}+\frac{p^2}{2x^2}+O(x^{-3}),\label{dyn:eq:Ffirst}\\
+ s^\beta G(s)
+ &=1-\frac{p}{x}+\frac{p^2}{2x^2}+O(x^{-3}).\label{dyn:eq:Gfirst}
+\end{align}
+There is no constant coefficient of $1/\log s$: the leading correction
+is the nonconstant sign-changing function $P$ evaluated at
+$\log_\varphi\log s$.
+
+\subsection{The exact perturbed Fibonacci recurrence}
+\label{dyn:sub:recurrence}
+
+Set
+\begin{equation}\label{dyn:eq:gdef}
+ g(x)=\log U(e^x),\qquad h=g^{-1},\qquad
+ d(x)=g(x)-\beta x,\qquad r(y)=\log(1+e^{-y}).
+\end{equation}
+The inherited equivalent in \eqref{dyn:eq:inverse} gives $d(x)\to0$.
+The inverse identity becomes
+\begin{equation}\label{dyn:eq:h}
+ h(x)=x+\log(1+e^{g(x)})=x+g(x)+r(g(x)).
+\end{equation}
+Fix $x$ sufficiently large and write
+\begin{equation}\label{dyn:eq:orbit}
+ x_{-1}=g(x),\quad x_0=x,\quad x_n=h^n(x)\quad(n\ge0).
+\end{equation}
+Then, exactly,
+\begin{equation}\label{dyn:eq:fibonacci}
+ x_{n+1}=x_n+x_{n-1}+r(x_{n-1})\qquad(n\ge0).
+\end{equation}
+In particular the forcing is positive and becomes smaller than every
+geometrically decreasing sequence along a positive orbit. If $f_n$ are
+the Fibonacci numbers, $f_0=0$, $f_1=1$, induction gives
+\begin{equation}\label{dyn:eq:fiblower}
+ x_n\ge f_{n+1}x+f_ng(x)>0\qquad(n\ge0).
+\end{equation}
+On every compact interval of initial points with $g(x)>0$, the right
+side is bounded below by $c\varphi^n$ with some $c>0$.
+
+Define $d_n=x_{n-1}-\beta x_n=d(x_n)$. The characteristic roots of the
+homogeneous recurrence are $\varphi$ and $-\beta$, and direct
+substitution gives the stable-coordinate recurrence
+\begin{equation}\label{dyn:eq:stable}
+ d_{n+1}=-\beta d_n-\beta r(x_{n-1}).
+\end{equation}
+The negative sign is the exact source of the alternating correction.
+
+\begin{proposition}[Canonical growing and alternating coordinates]
+\label{dyn:prop:coordinates}
+On a sufficiently large ray, the following limits and series exist:
+\begin{align}
+ \Psi(x)
+ &=\lim_{n\to\infty}\beta^n h^n(x)
+  =x+\frac{d(x)}{\sqrt5}
+    +\frac1{\sqrt5}\sum_{j=0}^{\infty}
+      \beta^j r(x_{j-1}),\label{dyn:eq:Psi}\\
+ D(x)
+ &=\lim_{n\to\infty}(-\beta)^{-n}d(h^n(x))
+  =d(x)+\sum_{j=0}^{\infty}(-\varphi)^j r(x_{j-1}).
+  \label{dyn:eq:D}
+\end{align}
+Both series converge absolutely and locally uniformly. Moreover,
+\begin{equation}\label{dyn:eq:conjugacies}
+ \Psi(h(x))=\varphi\Psi(x),\qquad D(h(x))=-\beta D(x).
+\end{equation}
+The function $\Psi$ is positive, real analytic and strictly increasing, has
+$\Psi'(x)>0$, and maps any sufficiently large closed ray
+$[X,\infty)$ homeomorphically onto $[\Psi(X),\infty)$.
+\end{proposition}
+
+\begin{proof}
+Iteration of \eqref{dyn:eq:stable} proves the formula for $D$.
+Variation of constants in \eqref{dyn:eq:fibonacci} gives
+\[
+ x_n=f_{n+1}x+f_ng(x)
+       +\sum_{j=0}^{n-1}f_{n-j}r(x_{j-1}).
+\]
+Insert Binet's formula
+$f_n=(\varphi^n-(-\beta)^n)/\sqrt5$ and multiply by $\beta^n$.
+The bound \eqref{dyn:eq:fiblower}, together with $0<r(y)\le e^{-y}$ for
+$y>0$, justifies the limit and yields \eqref{dyn:eq:Psi}. Absolute and
+locally uniform convergence of both series follows from the same bound.
+Shifting the limits by one iterate proves
+\eqref{dyn:eq:conjugacies}. Positivity of $\Psi$ follows also from its
+equivalent formula with initial term
+$(\varphi x+g(x))/\sqrt5$ and positive summands.
+
+We prove analyticity rather than assuming regularity of the limiting
+coordinate. The Stieltjes representation extends $U$ holomorphically
+to a neighborhood of every positive real point. Since $U$ is positive
+there, $g$ is holomorphic in a neighborhood of every real point. On the
+real axis, differentiation under the integral, with
+$w_t(x)=e^x/(1+te^x)$, gives
+\begin{equation}\label{dyn:eq:gprime}
+ 0<g'(x)=
+ \frac{\int w_t(x)(1+te^x)^{-1}\,d\mu(t)}
+      {\int w_t(x)\,d\mu(t)}<1.
+\end{equation}
+The strict upper bound follows because $\mu$ is not supported at zero.
+In particular $h'>0$.
+
+Fix a real initial point far enough to the right that it and its
+$g$-image exceed $2$. On a sufficiently small complex disk around that
+point, both $\operatorname{Re}z$ and $\operatorname{Re}g(z)$ exceed $2$.
+Set $z_{-1}=g(z)$, $z_0=z$, and define the complex orbit by the recurrence
+\[
+ z_{n+1}=z_n+z_{n-1}+r(z_{n-1}).
+\]
+Here $r(w)=\log(1+e^{-w})$ is holomorphic throughout
+$\operatorname{Re}w>0$, by its convergent logarithm series. For
+$y=\operatorname{Re}w\ge2$ it satisfies
+\[
+ |r(w)|\le-\log(1-e^{-y})<\frac y2.
+\]
+Thus, inductively, all real parts stay above $2$ and
+\[
+ \operatorname{Re}z_{n+1}\ge
+ \operatorname{Re}z_n+\tfrac12\operatorname{Re}z_{n-1}.
+\]
+They grow at least like $c\kappa^n$, uniformly on the disk, where
+$\kappa=(1+\sqrt3)/2>1$. Consequently the complex versions of both
+invariant series converge locally uniformly and absolutely; even the
+larger summands are bounded by $C\varphi^j\exp(-c\kappa^j)$.
+They therefore define holomorphic functions agreeing with $\Psi,D$
+on the real interval. The complex recurrence supplies the extension:
+we do not require the principal expression for $g$ or $h$ to be defined
+at every later complex iterate. The same Binet formula makes
+$\beta^nz_n$ converge locally uniformly to $\Psi$, so its derivatives
+also converge locally uniformly.
+
+Strict positivity of $\Psi'$ requires an additional argument. Put
+$p_n=dx_n/dx>0$ and
+$c_n=(1+e^{-x_{n-1}})^{-1}$. Differentiating the recurrence gives
+$p_{n+1}=p_n+c_np_{n-1}$. For $q_n=p_n+\beta p_{n-1}$,
+\[
+ q_{n+1}=\varphi q_n-(1-c_n)p_{n-1}
+          \ge\varphi c_nq_n,
+\]
+because $p_{n-1}\le q_n/\beta$ and $\varphi\beta=1$. It follows that
+\[
+ (1+\beta^2)\Psi'(x)
+ =\lim_{n\to\infty}\beta^nq_n
+ \ge (1+\beta g'(x))\prod_{j=0}^{\infty}c_j>0.
+\]
+The infinite product is positive since
+$\sum_j(1-c_j)\le\sum_j e^{-x_{j-1}}<\infty$.
+Finally, the series for $\Psi$ and $d(x)\to0$ show that
+$\Psi(x)=x+o(1)$. Strict increase and this equivalent establish the
+claimed range and homeomorphism property.
+\end{proof}
+
+\subsection{Effective remainder bounds and the profile}
+\label{dyn:sub:profile}
+
+The series above also supply explicit error control. Suppose that
+$a=g(x)>\log\varphi$ and $x>a$. For $j\ge1$ the recurrence implies
+$x_{j-1}\ge x+(j-1)a$. Consequently
+\begin{align}
+ |D(x)-d(x)|
+ &\le e^{-a}+\frac{\varphi e^{-x}}{1-\varphi e^{-a}},
+ \label{dyn:eq:Derror}\\
+ \left|\Psi(x)-x-\frac{D(x)}{\sqrt5}\right|
+ &\le\frac{e^{-x}}{\sqrt5}
+  \left(\frac{\varphi}{1-\varphi e^{-a}}
+       +\frac{\beta}{1-\beta e^{-a}}\right).
+ \label{dyn:eq:Psisharp}
+\end{align}
+The second bound uses the cancellation of the $j=0$ terms in
+\eqref{dyn:eq:Psi} and \eqref{dyn:eq:D}. More explicitly, the expression
+inside the absolute value is
+\begin{equation}\label{dyn:eq:Eseries}
+ E(x)=\frac1{\sqrt5}\sum_{j=1}^{\infty}
+          \bigl(\beta^j-(-\varphi)^j\bigr)r(x_{j-1}).
+\end{equation}
+For truncation after the terms $j=0,\ldots,J-1$, $J\ge1$, the two
+series have respective tail bounds
+\begin{align}
+ \left|\sum_{j=J}^{\infty}(-\varphi)^jr(x_{j-1})\right|
+ &\le\frac{\varphi^J e^{-x_{J-1}}}
+               {1-\varphi e^{-x_{J-2}}},\label{dyn:eq:Dtail}\\
+ 0\le\frac1{\sqrt5}\sum_{j=J}^{\infty}\beta^jr(x_{j-1})
+ &\le\frac{\beta^J e^{-x_{J-1}}}
+       {\sqrt5\bigl(1-\beta e^{-x_{J-2}}\bigr)}.
+       \label{dyn:eq:Psitail}
+\end{align}
+The denominators are positive on the ray just specified. These bounds
+follow by using $x_{J-2}$ as a lower bound for each subsequent orbit
+increment. They require no estimate of an unspecified asymptotic
+constant.
+
+Define $P$ first on a sufficiently large ray in its argument by
+\begin{equation}\label{dyn:eq:Pdefine}
+ P(\log_\varphi\Psi(x))=\Psi(x)D(x).
+\end{equation}
+Proposition~\ref{dyn:prop:coordinates}, including $\Psi'>0$, makes this
+well-defined and real analytic by the holomorphic inverse-function
+theorem.
+The two conjugacy identities immediately give
+\[
+ P(\log_\varphi\Psi(x)+1)=-P(\log_\varphi\Psi(x)).
+\]
+This identity extends $P$ uniquely to a real-analytic function on all of
+$\mathbb R$ satisfying \eqref{dyn:eq:anti}. In particular $P$ and all
+its derivatives are bounded. The normalization
+$\Psi(x)/x\to1$ fixes the phase coordinate used here.
+
+Since $\Psi(x)\sim x$, boundedness of $P$ gives $D(x)=O(x^{-1})$.
+The inherited relation $g(x)=\beta x+o(1)$ and
+\eqref{dyn:eq:Derror} then yield
+\begin{equation}\label{dyn:eq:sharpcoords}
+ \begin{aligned}
+ d(x)&=\frac{P(\log_\varphi\Psi(x))}{\Psi(x)}+O(e^{-\beta x}),\\
+ \Psi(x)&=x+\frac{D(x)}{\sqrt5}+O(e^{-x})=x+O(x^{-1}).
+ \end{aligned}
+\end{equation}
+Thus an exact change of variable makes the leading profile accurate up
+to an exponentially small error in $x=\log s$. The preceding displayed
+bounds give explicit versions of both errors.
+
+The companion transform has a slightly stronger error in this same
+coordinate. Its defining identity gives
+\[
+ \log(e^{\beta x}G(e^x))=-d(x)-r(g(x)).
+\]
+The $j=0$ term in the series for $D-d$ cancels, so
+\begin{equation}\label{dyn:eq:Gcoord}
+ \left|\log(e^{\beta x}G(e^x))+D(x)\right|
+ \le\frac{\varphi e^{-x}}{1-\varphi e^{-g(x)}}.
+\end{equation}
+The coordinate error for the logarithm of the normalized $F$ is
+$O(s^{-\beta})$; for the logarithm of the normalized $G$ it is
+$O(s^{-1})$.
+
+\subsection{Proof of the expansion to every order}
+\label{dyn:sub:reversion}
+
+We now prove Theorem~\ref{dyn:thm:allorders}, except for nonvanishing,
+which is certified in the next subsection. Let $y=\Psi(x)$,
+$t=\log_\varphi x$, and $v=y/x-1$. Equations
+\eqref{dyn:eq:Pdefine} and \eqref{dyn:eq:Eseries} give
+\begin{equation}\label{dyn:eq:scaledimplicit}
+ v=\eta H_t(v)+\frac{E(x)}x,\qquad
+ \eta=\frac1{\sqrt5\,x^2},\qquad
+ H_t(v)=\frac{P(t+\log_\varphi(1+v))}{1+v}.
+\end{equation}
+Here $v=O(x^{-2})$ and $E(x)=O(e^{-x})$. Real analyticity and periodicity
+of $P$ give a holomorphic extension to some fixed strip around the real
+phase axis: local extensions glue by uniqueness, and compactness of a
+period provides a common positive width. The analytic implicit-function
+theorem therefore produces a unique small solution
+$v_0=v_0(\eta,t)$ of $v_0=\eta H_t(v_0)$, holomorphic in $\eta$ near
+zero with a convergence radius uniform for real $t\bmod2$. Since
+$|\eta\partial_vH_t(v)|\le1/2$ there, subtracting the two
+equations shows
+\begin{equation}\label{dyn:eq:vcompare}
+ v-v_0=O(e^{-x}/x).
+\end{equation}
+For every fixed $N$, Taylor's theorem in $\eta$, uniformly on the phase
+circle, gives the Lagrange expansion
+\begin{equation}\label{dyn:eq:lagrange}
+ v_0(\eta,t)=\sum_{n=1}^{N}\frac{\eta^n}{n!}
+ \left.\frac{d^{n-1}}{dv^{n-1}}H_t(v)^n\right|_{v=0}
+ +O(\eta^{N+1}).
+\end{equation}
+The coefficient identity can be established at the level of finite
+Taylor jets: substitution into $v_0=\eta H_t(v_0)$ determines the
+coefficients recursively and gives the displayed Lagrange coefficient.
+The analyticity just proved additionally makes the infinite Taylor
+series converge absolutely, uniformly for real phase and for $\eta$ in
+a sufficiently small closed disk.
+For an explicit majorant, choose a common circle $|v|=\rho$ in the
+domain of $H_t$, and let $|H_t(v)|\le M_H$ there for every real phase.
+Cauchy's coefficient bound gives
+\[
+ \bigl|[\eta^n]v_0(\eta,t)\bigr|
+ =\frac1n\bigl|[v^{n-1}]H_t(v)^n\bigr|
+ \le\frac{M_H^n}{n\rho^{n-1}}.
+\]
+In particular the increasing derivative order in
+\eqref{dyn:eq:Qformula} introduces no hidden factorial divergence.
+
+Writing $u=1+v$, each differentiation of
+$u^{-n}P(t+\log_\varphi u)^n$ replaces its current power $u^{-j}$ by
+$u^{-j-1}$ and applies $\mathcal D-j$ to the function of phase. Thus
+\begin{equation}\label{dyn:eq:jet}
+ \left.\frac{d^{n-1}}{dv^{n-1}}H_t(v)^n\right|_{v=0}
+ =\left[\prod_{j=n}^{2n-2}(\mathcal D-j)\right]P(t)^n.
+\end{equation}
+Finally,
+$d(x)=D(x)+O(e^{-\beta x})
+      =\sqrt5\,xv_0+O(e^{-\beta x})$.
+Multiply \eqref{dyn:eq:lagrange} by $\sqrt5x$ and use
+\eqref{dyn:eq:jet}. This gives \eqref{dyn:eq:Ffull} with the remainder
+$O(x\eta^{N+1})=O(x^{-2N-1})$ and the coefficients
+\eqref{dyn:eq:Qformula}. Formula \eqref{dyn:eq:Gcoord} gives
+\eqref{dyn:eq:Gfull}. Absolute convergence of the full Taylor series
+proves \eqref{dyn:eq:Sconvergent}. Equations
+\eqref{dyn:eq:vcompare} and \eqref{dyn:eq:Psisharp} give, more precisely,
+$D(x)=\sqrt5xv_0+O(e^{-x})=S(x)+O(e^{-x})$. Combine this with
+\eqref{dyn:eq:Derror} and \eqref{dyn:eq:Gcoord} to obtain
+\eqref{dyn:eq:Fsector}--\eqref{dyn:eq:Gsector}. Finally the exact
+identity
+\[
+ s^\alpha F(s)+s^{-\beta}=(s^\beta G(s))^{-1}
+\]
+and \eqref{dyn:eq:Gsector} prove \eqref{dyn:eq:beyond}, since $S(x)$
+is bounded and tends to zero. This proves every asserted expansion,
+without assuming differentiable asymptotics for $F$ or $G$ in advance.
+
+\subsection{A certified nonzero profile value}
+\label{dyn:sub:certificate}
+
+The nonvanishing assertion is a finite computation followed by a
+rigorous infinite-tail estimate. It can be reproduced from the source
+code in this package; no externally supplied decimal value of $F$ is
+needed.
+
+Generate the exact integers $a_n$ by the inherited triangular recurrence
+\begin{equation}\label{dyn:eq:momentrec}
+ \begin{aligned}
+ c_{0,k}&=1,\qquad c_{n,0}=0\quad(n\ge1),\qquad a_n=c_{n,1},\\
+ c_{n,k}&=c_{n,k-1}+\sum_{i=0}^{n-1}c_{i,k}c_{n-1-i,k+1}.
+ \end{aligned}
+\end{equation}
+With $s_0=1/100$, the exact Stieltjes remainder gives rational bounds
+\begin{equation}\label{dyn:eq:seed}
+ \sum_{j=0}^{31}a_j(-s_0)^j
+ \le F(s_0)\le
+ \sum_{j=0}^{30}a_j(-s_0)^j.
+\end{equation}
+Set $s_{-1}=s_0F(s_0)$ and
+$s_{k+1}=s_k(1+s_{k-1})$. The inverse identity proves inductively that
+$U(s_k)=s_{k-1}$. Hence the true, generally unknown seed in
+\eqref{dyn:eq:seed} defines an orbit of the actual transform. Put
+$x_*=\log s_{115}$, so $g(x_*)=\log s_{114}$.
+
+The included script \texttt{code/verify\_dynamics.py} uses rational
+arithmetic for \eqref{dyn:eq:momentrec} and \eqref{dyn:eq:seed}, then
+100-digit Decimal intervals for the orbit and invariant series. Basic
+arithmetic is rounded outwards. Each correctly rounded exponential,
+logarithm and square root is enlarged to the adjacent representable
+number on both sides, using the documented Decimal operations
+\cite{python-decimal}. The full endpoints are recorded in
+\texttt{data/dynamics\_certificate.json}. The following widened
+decimal enclosures are among the script's exact assertions:
+\begin{align}
+ 26.4807143957&<x_*<26.4807143959,\label{dyn:eq:certx}\\
+ 16.366&<g(x_*)<16.367,\label{dyn:eq:certg}\\
+ 0.00003580&<d(x_*)<0.00003582,\label{dyn:eq:certd}\\
+ |D(x_*)-d(x_*)|&<0.000000079.\label{dyn:eq:certtail}
+\end{align}
+The last inequality is the explicit bound
+\eqref{dyn:eq:Derror}. In particular $D(x_*)>0$, proving $P\not\equiv0$.
+For a stronger numerical enclosure, the script takes the first five
+terms of both invariant series and bounds the remaining terms by
+\eqref{dyn:eq:Dtail}--\eqref{dyn:eq:Psitail}. It proves
+\begin{equation}\label{dyn:eq:certP}
+ 0.00095032738531560
+ <P(\log_\varphi\Psi(x_*))
+ <0.00095032738531562.
+\end{equation}
+This interval encloses one value of $P$, not its global maximum.
+
+Every decimal statement just displayed concerns the same true orbit
+point admitted by the exact rational seed bounds. It does not claim an
+enclosure for all points in the small interval
+\eqref{dyn:eq:certx}. This distinction is essential when transporting a
+functional identity from an interval-valued seed.
+
+\begin{corollary}[Sharp rate and genuine alternation]
+\label{dyn:cor:sharp}
+Let $M=\max_{t\in[0,2]}|P(t)|$. Then $M>0.00095032738531560$ and
+\begin{align}
+ \limsup_{s\to\infty}(\log s)(s^\alpha F(s)-1)&=M,
+ &\liminf_{s\to\infty}(\log s)(s^\alpha F(s)-1)&=-M,\label{dyn:eq:limsupF}\\
+ \limsup_{s\to\infty}(\log s)(s^\beta G(s)-1)&=M,
+ &\liminf_{s\to\infty}(\log s)(s^\beta G(s)-1)&=-M.\label{dyn:eq:limsupG}
+\end{align}
+Thus the $O(1/\log s)$ relative error is optimal: neither error is
+$o(1/\log s)$, and neither is $O(s^{-\delta})$ for any $\delta>0$.
+Along the inverse orbit starting at $s_{115}$,
+\begin{equation}\label{dyn:eq:orbitlimit}
+ \lim_{n\to\infty}(-1)^n(\log s_{115+n})
+       \bigl(s_{115+n}^{\alpha}F(s_{115+n})-1\bigr)
+ =P(\log_\varphi\Psi(x_*))>0.
+\end{equation}
+Both normalized transforms cross their leading power laws infinitely
+often.
+\end{corollary}
+
+\begin{proof}
+Equations \eqref{dyn:eq:Ffirst}--\eqref{dyn:eq:Gfirst} show that the
+two scaled errors have limiting profiles $P$ and $-P$. Their arguments
+$\log_\varphi\log s$ pass through every phase infinitely often.
+Antiperiodicity makes the maximum and minimum opposite, giving the four
+limits. On the specified orbit,
+$\Psi(h^n(x_*))=\varphi^n\Psi(x_*)$ and
+$D(h^n(x_*))=(-\beta)^nD(x_*)$ exactly. Since
+$h^n(x_*)/\Psi(h^n(x_*))\to1$, the coordinate estimate
+\eqref{dyn:eq:sharpcoords} proves \eqref{dyn:eq:orbitlimit}.
+Eventual alternating signs on this orbit, followed by continuity, prove
+the crossing assertions. The other claims follow from $M>0$.
+\end{proof}
+
+\subsection{Scope and further questions}
+\label{dyn:sub:questions}
+
+This resolves the repository's second-order golden-ratio question,
+including its suggested orbit oscillation, and gives a convergent
+inverse-logarithmic expansion with smaller power corrections. It is a
+result about the real positive
+Stieltjes-transform axis. It does not by itself prove the unresolved
+fine Bell-number normalization of the coefficients, nor a second-order
+distribution-function or density asymptotic for the measures.
+
+Several concrete follow-up problems remain.
+\begin{enumerate}
+\item Determine the maximum $M$ with certified bounds over an entire
+phase interval, and count the zeros of $P$ in a period. The certificate
+above proves only one nonzero value and the existence of zeros forced
+by antiperiodicity.
+\item Locate the complex singularities of the analytic continuation of
+$P$, and obtain explicit widths for its holomorphic strip. This would
+make the convergence radius and constants in the inverse-logarithmic
+expansion effective.
+\item Develop certified Fourier bounds for $P$. Antiperiodicity permits
+only odd frequencies in a period-two Fourier representation, and
+analyticity gives exponential decay. Effective decay rates and bounds
+on the individual coefficients remain to be determined.
+\item Recover sharp second-order behavior of the representing measures
+near zero. A suitable Tauberian theorem must preserve the slowly
+varying oscillation and control its remainder; differentiation of the
+leading distribution-function equivalent alone is insufficient.
+\item Use the explicit invariant series to design efficient evaluation
+over all phases. The forward inverse recurrence is especially accurate
+once $g(x)>0$; obtaining uniformly efficient certified seeds across a
+fundamental phase interval is a separate numerical problem.
+\item Investigate analogous profiles for the family of nonlinear
+inverse relations $U^{-1}(t)=t(1+U(t))^q$. The stable characteristic
+root, its sign and its modulus should determine whether the leading
+correction alternates and which power of $\log s$ replaces
+$1/\log s$. Existence of the appropriate positive-measure solutions
+must be established before importing the present argument.
+\end{enumerate}
+
+
+
+% Included source: sections/renewal.tex
+\section{The companion sequence: an expansion to every fixed shift}
+\label{ren:section}
+
+The comparison of A088713 with A088714 is governed by a large component
+in a weighted composition. We prove a general statement because its
+hypotheses are exactly those already available for this pair.
+Throughout this section, $O_K$ constants may depend on a fixed nonnegative
+integer $K$ and on the sequence, but not on $n$.
+
+\begin{theorem}[Renewal expansion for rapidly growing log-convex weights]
+\label{ren:theorem}
+Suppose $a_0=1$, $a_n>0$, the sequence $(a_n)$ is log-convex, and
+$a_n/a_{n-1}\sim n/\log n$. Define the formal series
+$A(z)=\sum a_nz^n$, $C(z)=(1-zA(z))^{-1}=\sum c_nz^n$, and
+\begin{equation}\label{ren:d}
+ d_j=[z^j]C(z)^2.
+\end{equation}
+For every fixed $K\ge0$,
+\begin{equation}\label{ren:expansion}
+ c_n=\sum_{j=0}^{K}d_j a_{n-1-j}
+       +O_K(a_{n-K-2})\qquad(n\to\infty).
+\end{equation}
+The error is nonnegative when $n>2K$. This is an asymptotic expansion
+in consecutive shifts: $a_{n-j-1}/a_{n-j}\sim\log n/n$ for fixed $j$.
+No smooth expansion of the consecutive ratios is assumed.
+\end{theorem}
+
+\subsection{A convolution estimate}
+Set $w_n=a_{n-1}$ for $n\ge1$, and $q_n=w_{n+1}/w_n$ for $n\ge1$.
+Then $w_1=1$, $(q_n)$ is nondecreasing, and $q_n\sim n/\log n$.
+For $1\le j\le n-1$ put $T_{n,j}=w_jw_{n-j}$.
+
+\begin{lemma}\label{ren:convolution}
+For each fixed integer $J\ge1$,
+\begin{equation}\label{ren:tail}
+ \sum_{j=J}^{n-J}w_jw_{n-j}=O_J(w_{n-J}).
+\end{equation}
+There is $\eta>0$ such that
+\begin{equation}\label{ren:central}
+ \sum_{n/4\le j\le3n/4}w_jw_{n-j}
+       =O(e^{-\eta n}w_{n-1}).
+\end{equation}
+In particular
+\begin{equation}\label{ren:smallS}
+ S_n:=\frac1{w_n}\sum_{j=1}^{n-1}w_jw_{n-j}
+ =O(1/q_{n-1})\longrightarrow0.
+\end{equation}
+Integer endpoints in these sums are rounded inward.
+\end{lemma}
+\begin{proof}
+Let $L=\lfloor n/4\rfloor$. For $j\le L$,
+\[
+ \frac{T_{n,j+1}}{T_{n,j}}
+   =\frac{q_j}{q_{n-j-1}}
+   \le\frac{q_L}{q_{n-L-1}}\longrightarrow\frac13.
+\]
+Thus the ratio is at most $1/2$, uniformly on this range, for all
+sufficiently large $n$. From $L$ to the middle, log-convexity makes
+$T_{n,j}$ nonincreasing. The sum from $J$ to $L$ is at most
+$2T_{n,J}$; the remainder to the middle is at most
+$n2^{-(L-J)}T_{n,J}$. Reflecting across the middle proves
+\eqref{ren:tail}, since $w_J$ is fixed. Starting the same bound at $J=1$
+shows that the central sum is at most a constant times
+$n2^{-L}w_1w_{n-1}$, which implies \eqref{ren:central}.
+Taking $J=1$ in \eqref{ren:tail} proves \eqref{ren:smallS}.
+\end{proof}
+
+\subsection{Uniform comparison and the unique large part}
+The renewal recurrence and composition expansion are
+\begin{align}
+ c_n&=w_n+\sum_{j=1}^{n-1}w_jc_{n-j},\label{ren:recurrence}\\
+ c_n&=\sum_{k=1}^{n}\ \sum_{\substack{s_1+\cdots+s_k=n\\s_i\ge1}}
+                   \prod_{i=1}^{k}w_{s_i}.\label{ren:compositions}
+\end{align}
+Choose $N$ so that $S_n\le1/2$ for $n\ge N$, and choose $M\ge2$
+with $c_n\le Mw_n$ for $1\le n<N$. Induction using
+\eqref{ren:recurrence} gives
+\[
+ c_n\le w_n+MS_nw_n\le Mw_n\quad(n\ge N).
+\]
+Therefore $c_n=O(w_n)$ uniformly. Since
+$d_n=2c_n+\sum_{j=1}^{n-1}c_jc_{n-j}$ for $n\ge1$, the same estimate
+and \eqref{ren:smallS} give $d_n=O(w_n)$.
+
+A composition has at most one part larger than $n/2$. If that part has
+size $n-j$, the parts on its left and right are arbitrary weighted
+compositions of combined size $j$. Their generating function is $C(z)^2$.
+Consequently the exact contribution of all compositions with such a part is
+\begin{equation}\label{ren:giant}
+ \sum_{0\le j<n/2}w_{n-j}d_j.
+\end{equation}
+For $j\ge K+1$, its remaining contribution is bounded by a constant times
+\[
+ \sum_{j=K+1}^{\lfloor n/2\rfloor}w_jw_{n-j}
+       =O_K(w_{n-K-1}).
+\]
+
+For a composition with every part at most $n/2$, split it at its first
+partial sum at least $n/4$. The partial sum lies in $[n/4,3n/4)$.
+The split is uniquely specified by the composition, so the total weight
+of this class is at most
+\[
+ \sum_{n/4\le j\le3n/4}c_jc_{n-j}
+ \le M^2\sum_{n/4\le j\le3n/4}w_jw_{n-j}
+ =O(e^{-\eta n}w_{n-1}).
+\]
+For fixed $K$, the quotient $w_{n-1}/w_{n-K-1}$ grows at most
+polynomially, as follows from the ratio equivalent. This last contribution
+is therefore $o(w_{n-K-1})$. Combining the two classes proves
+\eqref{ren:expansion}, with $w_{n-K-1}=a_{n-K-2}$.
+Every omitted composition has nonnegative weight, which proves the
+sign assertion and completes the proof of Theorem~\ref{ren:theorem}.
+
+\subsection{Consequences for A088713}
+Applying Proposition~\ref{gold:foundation} gives a positive answer to
+the pinned report's Question 23.6, together with all its fixed-shift
+corrections. For this pair,
+\[
+ (d_0,\ldots,d_6)=(1,2,5,16,64,308,1716).
+\]
+For example,
+\begin{align}
+ c_n={}&a_{n-1}+2a_{n-2}+5a_{n-3}+16a_{n-4}
+           +O(a_{n-5}),\label{ren:four}\\
+ \frac{c_n}{a_{n-1}}
+   ={}&1+\frac2{r_{n-1}}
+       +\frac5{r_{n-1}r_{n-2}}
+       +O\!\left(\frac{(\log n)^3}{n^3}\right).\label{ren:ratio3}
+\end{align}
+In particular,
+\begin{equation}\label{ren:first}
+ \frac{c_n}{a_{n-1}}\longrightarrow1,
+ \qquad
+ \frac{c_n}{a_{n-1}}=1+\frac{2\log n}{n}
+                       +o\!\left(\frac{\log n}{n}\right).
+\end{equation}
+One must retain the actual ratios in \eqref{ren:ratio3} to interpret it
+as a second-order statement. Replacing all of them by $n/\log n$
+would require more information about their errors than is assumed here.
+
+\begin{corollary}[Additive comparison of shifted consecutive ratios]
+\label{ren:additive}
+For $r_n=a_n/a_{n-1}$,
+\[
+ \frac{c_{n+1}}{c_n}
+   =r_n+2\left(1-\frac{r_n}{r_{n-1}}\right)+O(1/r_n),
+ \qquad
+ \frac{c_{n+1}}{c_n}-\frac{a_n}{a_{n-1}}\longrightarrow0.
+\]
+\end{corollary}
+\begin{proof}
+Use \eqref{ren:expansion} with $K=1$ at $n$ and $n+1$, divide, and
+expand the denominator. Adjacent ratios are asymptotic, so the resulting
+quadratic relative errors contribute $O(1/r_n)$ after multiplication
+by $r_n$. Finally $r_n/r_{n-1}\to1$.
+\end{proof}
+
+The proof uses only ordinary weighted compositions and the leading ratio
+law. It does not prove the finer additive expansion of $r_n$ needed for
+the Bell-number normalization. The script \texttt{code/verify\_renewal.py}
+checks the exact composition identity independently, and records numerical
+diagnostics for the consecutive-shift expansion; finite diagnostics are
+not used in its proof.
+
+
+\clearpage
+\part{Two-sided fluctuations of unitary-divisor partitions}
+
+% Included source: sections/partitions.tex
+\section{Two-sided arithmetic oscillations in A301981 and A301982}
+\label{part:sec:unitary}
+
+\subsection{The question and the advance over the repository}
+
+Let
+\[
+ b_j=\sigma^*(j)=\sum_{\substack{d\mid j\\(d,j/d)=1}}d,
+ \qquad
+ F_-(z)=\prod_{j\ge1}(1-z^j)^{-b_j},\qquad
+ F_+(z)=\prod_{j\ge1}(1+z^j)^{b_j},
+\]
+and write $a_n^\pm=[z^n]F_\pm(z)$. These are A301981 and A301982,
+respectively; the weights form A034448 \cite{oeis301981,oeis301982,oeis034448}.
+For the minus sign each color can be repeated; for the plus sign each
+individual color can be used once. All coefficients are positive.
+
+Put $\mathcal G$ for the Glaisher--Kinkelin constant and define
+\begin{align}
+ A_-&=\frac{\pi^2}{6},&
+ A_+&=\frac{\pi^2}{8},&
+ c_\pm&=3(A_\pm/4)^{1/3},&
+ t_{0,\pm}(n)&=(2A_\pm/n)^{1/3},\label{part:eq:scales}\\
+ m_n^-&=
+ \frac{\mathcal G^6e^{c_-n^{2/3}-1/2}}
+ {2\,3^{5/6}\pi^{1/3}n^{5/6}},&
+ m_n^+&=
+ \frac{e^{c_+n^{2/3}}}
+ {2^{4/3}\sqrt3\,\pi^{1/6}n^{2/3}}.\label{part:eq:models}
+\end{align}
+The OEIS entries label $a_n^\pm\sim m_n^\pm$ as conjectural.
+The existing ProveIt report \cite{unitaryprior} already refutes both
+equivalents: neither ratio eventually lies in a compact subinterval of
+$(0,\infty)$. Its Section~11, question~3, explicitly leaves the direction
+of divergence and two-sided oscillation open. Its remark after
+Theorem~3.3 stresses that it does not prove both a zero lower limit and
+an infinite upper limit.
+
+The result here answers that question. For each sign,
+\begin{equation}
+ \liminf_{n\to\infty}\frac{a_n^\pm}{m_n^\pm}=0,
+ \qquad
+ \limsup_{n\to\infty}\frac{a_n^\pm}{m_n^\pm}=+\infty.
+ \label{part:eq:ratio-oscillation}
+\end{equation}
+More quantitatively, there are positive constants such that
+$\log(a_n^\pm/m_n^\pm)$ exceeds a positive multiple of $n^{1/4}$
+infinitely often and is below a negative multiple of $n^{1/4}$
+infinitely often. We give sharper constants depending on an uncancelled
+zeta zero and its multiplicity. No Riemann hypothesis, simple-zero
+assumption, or expansion over all zeros is used.
+
+The method is the classical positivity argument associated with Landau
+\cite{landau1905}; a related Mellin application is in
+Diamond--Pintz \cite{diamondpintz2009}. The contribution is its rigorous
+application to this explicit repository question, including the
+coefficient sampling step and the resulting inverse error. We make no
+claim to a new general oscillation principle or an exhaustive historical
+priority determination.
+
+\subsection{The prior coefficient bridge, with its analytic justification}
+
+In this subsection fix one sign, and omit it from $A,c,f,R,t_0$ when
+convenient. Set
+\begin{align}
+ f_\pm(t)&=\log F_\pm(e^{-t}),\qquad t>0,\nonumber\\
+ d_-&=\tfrac12,&
+ B_-&=6\log\mathcal G-\tfrac12-\tfrac12\log(2\pi),&
+ d_+&=0,& B_+&=-\tfrac12\log2,\nonumber\\
+ R_\pm(t)&=f_\pm(t)-A_\pm t^{-2}-d_\pm\log t-B_\pm.
+ \label{part:eq:remainder}
+\end{align}
+Thus $R_\pm$ is an exactly defined function, not an error symbol with an
+assumed sign or bound.
+
+\begin{proposition}[Prior coefficient bridge]\label{part:prop:bridge}
+For either sign, as $t\downarrow0$ and $n\to\infty$,
+\begin{align}
+ (-1)^rf_\pm^{(r)}(t)
+ &=A_\pm(r+1)!\,t^{-r-2}+o(t^{-r-1})
+ \quad\text{for every fixed }r\ge0,\label{part:eq:derivative}\\
+ \log\frac{a_n^\pm}{m_n^\pm}
+ &=R_\pm(t_{0,\pm}(n))+o(1).\label{part:eq:bridge}
+\end{align}
+In particular $h_\pm(x):=R_\pm(1/x)$ satisfies
+$h_\pm(x)=o(x)$ and $h_\pm'(x)=o(1)$.
+\end{proposition}
+
+These are Lemma~4.1 and Theorem~6.1 of \cite{unitaryprior}.
+The following argument records why the bridge is available without an
+assumption about zeta zeros inside the critical strip.
+
+\begin{proof}
+The elementary bounds
+\[
+ j\le b_j\le\sigma(j),\qquad
+ \sum_{j\le X}b_j\le
+ \sum_{d\le X}d\lfloor X/d\rfloor\le X^2
+\]
+give, by partial summation,
+$\sum_j b_jj^re^{-ju}=O_r(u^{-r-2})$ for $u>0$.
+Consequently the product logarithms and their derivatives converge
+locally uniformly on $\Re t>0$, and
+$|f^{(r)}(w)|=O_r(t^{-r-2})$ when $\Re w\ge t/2$.
+The classical Dirichlet series \cite[Section~4.9]{toth2017} gives
+\begin{align}
+ D(s)&=\sum_{j\ge1}b_jj^{-s}
+ =\frac{\zeta(s)\zeta(s-1)}{\zeta(2s-1)},\qquad \Re s>2,\nonumber\\
+ M_\pm(s)&=\int_0^\infty f_\pm(t)t^{s-1}\,dt
+ =\Gamma(s)\chi_\pm(s)
+   \frac{\zeta(s+1)\zeta(s)\zeta(s-1)}{\zeta(2s-1)},\label{part:eq:mellin}\\
+ \chi_-(s)&=1,\qquad \chi_+(s)=1-2^{-s}.\nonumber
+\end{align}
+For completeness, at $p^a$ the weight is $1+p^a$, so its Euler factor is
+$(1-p^{1-2s})/((1-p^{-s})(1-p^{1-s}))$.
+Termwise Mellin integration of
+$f_-(t)=\sum_{j,\ell\ge1}b_je^{-j\ell t}/\ell$ proves
+\eqref{part:eq:mellin}; $f_+(t)=f_-(t)-f_-(2t)$ proves the plus case.
+
+The kernel for $(-1)^rf^{(r)}(t)$ is obtained by replacing $\Gamma(s)$
+by $\Gamma(s+r)$ and $t^{-s}$ by $t^{-s-r}$.
+It has residue $A(r+1)!$ at $s=2$.
+At $s=1$ the quotient $\zeta(s)/\zeta(2s-1)$ tends to $2$,
+so that point is removable. The line $\Re(2s-1)=1$ is zero-free.
+The bound $1/\zeta(\sigma+iT)=O(\log(2+|T|))$ for $\sigma\ge1$
+and large $|T|$ follows, for example, from Trudgian
+\cite{trudgian2015}. Together with the gamma factor and the usual
+polynomial bounds for zeta on fixed strips, it permits shifting the
+Mellin contour to $\Re s=1$. The remaining integral is
+\[
+ t^{-r-1}\frac1{2\pi}
+ \int_{\mathbb R}K_r(1+iu)e^{iu\log(1/t)}\,du,
+ \qquad K_r(1+iu)\in L^1(\mathbb R).
+\]
+The Riemann--Lebesgue lemma proves \eqref{part:eq:derivative}.
+
+Here are the coefficient details needed below. Let
+$\kappa_r(t)=(-1)^rf^{(r)}(t)$, $V(t)=\kappa_2(t)$, and let $t_n$ be
+the unique solution of $\kappa_1(t_n)=n$. Existence and uniqueness follow
+by realizing each factor as a geometric, or Bernoulli, probability
+generating function: $\kappa_1$ is the total mean, $V>0$ is its variance,
+and $\kappa_1'=-V$. Equation~\eqref{part:eq:derivative} gives
+$t_n\sim t_0$ and $V(t)\sim6At^{-4}$.
+
+The centered characteristic function of this independent sum obeys
+\begin{equation}
+ |\phi_t(\theta)|
+ \le\exp\{-c_1\min(t^{-4}\theta^2,t^{-2})\},
+ \qquad |\theta|\le\pi,\label{part:eq:angular}
+\end{equation}
+with $c_1>0$. Indeed keep the factors with
+$N\le j\le2N$, $N=\lfloor1/t\rfloor$.
+Their individual logarithmic moduli are at most
+$-c_2\sin^2(j\theta/2)$, and $b_j\ge j$.
+For $|\theta|\le1/N$, the weighted sine-square sum is
+$\gg N^4\theta^2$.
+For $1/N\le|\theta|\le K/N$, its quotient by $N^2$ tends uniformly to
+the strictly positive integral
+$\int_1^2v\sin^2(vN|\theta|/2)\,dv$, for any fixed $K>1$.
+For $K/N\le|\theta|\le\pi$, choosing $K>4\pi$ and using
+$|\sum_{j=N}^{2N}e^{ij\theta}|\le\pi/|\theta|$ gives
+a lower bound $\gg N^2$. This proves \eqref{part:eq:angular}.
+
+On the local scale $z=\theta\sqrt V$, Taylor's theorem gives
+$\log\phi_t(z/\sqrt V)=-z^2/2+O(t|z|^3)$ on every fixed $z$ interval.
+The bound \eqref{part:eq:angular} supplies an integrable Gaussian
+majorant until $|z|\asymp t^{-1}$; beyond it the total integral is
+$O(t^{-2}e^{-c_3t^{-2}})$.
+Fourier inversion and dominated convergence therefore yield
+\begin{equation}
+ a_n=\frac{\exp(f(t_n)+nt_n)}{\sqrt{2\pi V(t_n)}}(1+o(1)).
+ \label{part:eq:saddle}
+\end{equation}
+Writing $\kappa_1(t)=2At^{-3}+o(t^{-2})$ and comparing the saddle
+equations shows $t_n-t_0=o(t_0^2)$.
+The phase $f(t)+nt$ is stationary at $t_n$ and its second derivative
+is $O(t_0^{-4})$ between $t_n$ and $t_0$.
+Its change on that interval is consequently $o(1)$.
+It follows from \eqref{part:eq:saddle} that
+\[
+ a_n=\frac{t_0^2}{\sqrt{12\pi A}}
+       e^{f(t_0)+nt_0}(1+o(1))
+     =m_n e^{R(t_0)}(1+o(1)).
+\]
+The last equality is exact before the factor $1+o(1)$, by
+\eqref{part:eq:models} and \eqref{part:eq:remainder}.
+Taking logarithms proves \eqref{part:eq:bridge}.
+Finally $R(t)=o(t^{-1})$ and $R'(t)=o(t^{-2})$ imply the assertions
+about $h$ by the chain rule.
+\end{proof}
+
+\subsection{A positivity lemma with the exact pole constant}
+
+The next two lemmas isolate the classical mechanism so that eventual
+one-sided bounds are not confused with absolute bounds.
+
+\begin{lemma}[Landau's positivity principle]\label{part:lem:landau}
+Let $q:[1,\infty)\to[0,\infty)$ be locally integrable and of at most
+polynomial growth. If the real abscissa of convergence $\alpha$ of
+$Q(s)=\int_1^\infty q(x)x^{-s-1}\,dx$ is finite, then $Q$ has a
+singularity at the real point $s=\alpha$.
+\end{lemma}
+
+\begin{proof}
+Suppose $Q$ were holomorphic near $\alpha$. Set $x=e^u$.
+For $s_1>\alpha$,
+\[
+ (-1)^jQ^{(j)}(s_1)
+ =\int_0^\infty u^j q(e^u)e^{-s_1u}\,du\ge0.
+\]
+Holomorphy in the right half-plane together with a disc about $\alpha$
+allows $s_1$ sufficiently close to $\alpha$ and $\delta>s_1-\alpha$
+such that the Taylor series at $s_1$ converges at $s_1-\delta$.
+For example, if the disc about $\alpha$ has radius $r$, take
+$s_1=\alpha+r/4$ and $r/4<\delta<r/2$.
+Tonelli's theorem then identifies the finite value of that Taylor series with
+\[
+ \sum_{j\ge0}\frac{\delta^j}{j!}
+ \int_0^\infty u^jq(e^u)e^{-s_1u}\,du
+ =\int_0^\infty q(e^u)e^{-(s_1-\delta)u}\,du.
+\]
+This contradicts the definition of $\alpha$.
+\end{proof}
+
+\begin{lemma}[A quantitative two-sided consequence]
+\label{part:lem:quantitative}
+Let $h:[1,\infty)\to\mathbb R$ be locally integrable and of at most
+polynomial growth. Suppose
+$H(s)=\int_1^\infty h(x)x^{-s-1}\,dx$, initially defined far to the
+right, continues meromorphically to $\Re s>0$ and is holomorphic near
+every positive real point. Suppose $s_*=\sigma_*+i\tau_*$, where
+$\sigma_*>0$ and $\tau_*\ne0$, is a pole of order $m\ge1$, with
+\[
+ C_*=\lim_{s\to s_*}(s-s_*)^mH(s)\ne0.
+\]
+Then
+\begin{align}
+ \limsup_{x\to\infty}
+ \frac{h(x)}{x^{\sigma_*}(\log x)^{m-1}}
+ &\ge\frac{|C_*|}{(m-1)!},\nonumber\\
+ \liminf_{x\to\infty}
+ \frac{h(x)}{x^{\sigma_*}(\log x)^{m-1}}
+ &\le-\frac{|C_*|}{(m-1)!}.
+ \label{part:eq:quantitative-landau}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+If the first inequality failed, choose
+$0<c<|C_*|/(m-1)!$ exceeding the alleged upper limit.
+Then $q(x)=cx^{\sigma_*}(\log x)^{m-1}-h(x)\ge0$ for $x\ge X$,
+with $X>1$. Set $q=0$ on $[1,X)$. Its Mellin transform has the
+meromorphic continuation
+\begin{equation}
+ Q(s)=\frac{c(m-1)!}{(s-\sigma_*)^m}-H(s)+E_X(s),
+ \label{part:eq:envelope-transform}
+\end{equation}
+where $E_X$ is entire, being the integral over a finite interval.
+This expression is holomorphic near every real $s>\sigma_*$.
+Lemma~\ref{part:lem:landau} shows that the abscissa of convergence of
+the nonnegative integral is at most $\sigma_*$; if that abscissa is
+$-\infty$, the conclusion is immediate.
+Hence for real $\sigma>\sigma_*$,
+$|Q(\sigma+i\tau_*)|\le Q(\sigma)$.
+The identity \eqref{part:eq:envelope-transform} holds throughout this
+half-plane by uniqueness of continuation.
+Multiply that inequality by $(\sigma-\sigma_*)^m$ and let
+$\sigma\downarrow\sigma_*$. The limits of its two sides are,
+respectively, $|C_*|$ and $c(m-1)!$:
+the artificial pole in \eqref{part:eq:envelope-transform} is regular
+at $s_*$, whereas $H$ is regular at the real point $\sigma_*$.
+The resulting inequality contradicts the choice of $c$.
+Apply the same argument to $-h$ to obtain the lower limit.
+\end{proof}
+
+No rightmost-pole hypothesis appears here. If a further pole lies to
+the right, the assumed one-sided envelope already contradicts the
+holomorphy of its nonnegative integral in that larger half-plane.
+The proof needs only a single nonreal pole whose leading Laurent
+coefficient is nonzero.
+
+\subsection{Noncancellation and the coefficient theorem}
+
+Choose a nontrivial zeta zero $\rho=\beta+i\gamma$ of least positive
+imaginary part, choosing its reflection about the critical line so
+that $\beta\ge1/2$. Such a least height exists because zeta zeros are
+isolated, bounded-height portions of the closed critical strip are
+compact away from the pole at $1$, and there are no real nontrivial
+zeros. Let its multiplicity be $m$ and put
+\begin{equation}
+ s_*=\frac{1+\rho}{2}=\sigma_*+i\tau_*,
+ \qquad \frac34\le\sigma_*<1.
+ \label{part:eq:selected-zero}
+\end{equation}
+Only the usual location, symmetry, and existence facts about zeta
+zeros are needed \cite{dlmfzeros}.
+
+\begin{lemma}[The surviving pole and its constant]\label{part:lem:pole}
+For each sign, $M_\pm$ in \eqref{part:eq:mellin} has a pole of order
+$m$ at $s_*$, and its leading Laurent coefficient is
+\begin{equation}
+ C_\pm=
+ \frac{m!\,\Gamma(s_*)\chi_\pm(s_*)
+       \zeta(s_*+1)\zeta(s_*)\zeta(s_*-1)}
+      {2^m\zeta^{(m)}(\rho)}
+ \ne0.
+ \label{part:eq:laurent}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The denominator has leading term
+$2^m\zeta^{(m)}(\rho)(s-s_*)^m/m!$.
+Gamma has neither a zero nor a pole at $s_*$, and
+$\zeta(s_*+1)\ne0$ because $\Re(s_*+1)>1$.
+If $\zeta(s_*)=0$, its positive imaginary part $\gamma/2$ would
+contradict the selection of $\gamma$.
+The point $s_*-1$ has real part in $[-1/4,0)$ and nonzero imaginary
+part, so it is neither a trivial nor a nontrivial zero of zeta.
+Finally $|2^{-s_*}|<1$, so $\chi_+(s_*)\ne0$.
+Division of the leading terms proves the formula.
+\end{proof}
+
+\begin{theorem}[Quantified two-sided oscillation]\label{part:thm:main}
+With \eqref{part:eq:selected-zero}--\eqref{part:eq:laurent}, define
+\[
+ K_\pm=
+ \frac{|C_\pm|}{(m-1)!}\,
+ (2A_\pm)^{-\sigma_*/3}\,3^{\,1-m}>0,
+ \qquad
+ W(n)=n^{\sigma_*/3}(\log n)^{m-1}.
+\]
+For each sign separately,
+\begin{align}
+ \limsup_{n\to\infty}
+ \frac{\log(a_n^\pm/m_n^\pm)}{W(n)}&\ge K_\pm,\nonumber\\
+ \liminf_{n\to\infty}
+ \frac{\log(a_n^\pm/m_n^\pm)}{W(n)}&\le-K_\pm.
+ \label{part:eq:main}
+\end{align}
+The same inequalities hold after replacing
+$\log(a_n^\pm/m_n^\pm)$ by $\log a_n^\pm-c_\pm n^{2/3}$.
+Consequently \eqref{part:eq:ratio-oscillation} holds, and both centered
+logarithms are $\Omega_\pm(n^{1/4})$.
+\end{theorem}
+
+\begin{proof}
+For $h_\pm(x)=R_\pm(1/x)$ and $\Re s>2$, splitting the Mellin integral
+at $1$ gives
+\begin{equation}
+ H_\pm(s)=M_\pm(s)-\frac{A_\pm}{s-2}
+               +\frac{d_\pm}{s^2}-\frac{B_\pm}{s}-T_\pm(s),
+ \quad
+ T_\pm(s)=\int_1^\infty f_\pm(t)t^{s-1}\,dt .
+ \label{part:eq:H}
+\end{equation}
+The function $T_\pm$ is entire because $f_\pm(t)$ decays
+exponentially at infinity. Formula~\eqref{part:eq:H} is therefore a
+meromorphic continuation to $\Re s>0$ and has the same pole and
+Laurent coefficient as $M_\pm$ at $s_*$.
+
+It is holomorphic near every positive real point.
+The pole at $2$ has been removed, the point $1$ is removable as
+already checked, and the rational terms have poles only at $0$.
+At every other positive real $s$, $\zeta(2s-1)$ has no zero:
+its argument is in $(-1,\infty)$, an interval without real zeta
+zeros. The pole of that denominator at $s=1$ is already covered.
+There are no other positive real singularities of the numerator.
+Proposition~\ref{part:prop:bridge} supplies the polynomial growth of
+$h_\pm$. Thus Lemma~\ref{part:lem:quantitative} applies.
+
+It remains to preserve both signs when sampling.
+Let $x_n=(n/(2A_\pm))^{1/3}$.
+Consecutive values differ by $O(x_n^{-2})$.
+For any large $x$, choose $n$ with $x_n\le x<x_{n+1}$.
+The derivative estimate $h_\pm'=o(1)$ gives
+$h_\pm(x)-h_\pm(x_n)=o(x_n^{-2})$.
+Also $x/x_n\to1$ and $\log x/\log x_n\to1$.
+The continuous upper and lower bounds therefore hold along these
+discrete samples. Since
+\[
+ x_n^{\sigma_*}(\log x_n)^{m-1}
+ =(2A_\pm)^{-\sigma_*/3}3^{\,1-m}
+ n^{\sigma_*/3}(\log n)^{m-1}(1+o(1)),
+\]
+\eqref{part:eq:bridge} proves \eqref{part:eq:main}.
+The difference between the two centered logarithms is $O(\log n)$,
+which is negligible on the displayed scale.
+Finally $\sigma_*/3\ge1/4$ and $m\ge1$; each of the positive and
+negative subsequences is unbounded in magnitude.
+Exponentiation proves \eqref{part:eq:ratio-oscillation}.
+\end{proof}
+
+The constants in \eqref{part:eq:main} are rigorous lower bounds on
+oscillation amplitudes, not exact amplitudes or estimates of the
+first index where a sign occurs. In particular the proof does not
+assert that a single zero dominates the full remainder.
+
+\subsection{A consequence for inversion}
+
+Extend either expression $m_n^\pm$ in \eqref{part:eq:models} to a
+positive function $m^\pm(x)$ for real $x>0$, and let $X_\pm(y)$ be
+its inverse on its eventually increasing tail.
+Let
+\[
+ N_\pm(y)=\min\{n\ge0:a_n^\pm\ge y\}.
+\]
+The earlier report proves that $a_n^\pm$ is eventually strictly
+increasing \cite[Theorem~8.2]{unitaryprior}. This is the only
+additional prior input in the following corollary.
+
+\begin{corollary}[Oscillating error of the pure inverse]
+\label{part:cor:inverse}
+Put
+\[
+ L_\pm=
+ \frac{2^{\,1-m}|C_\pm|}
+ {(m-1)!\,(3A_\pm)^{(\sigma_*+1)/2}}>0.
+\]
+Then
+\begin{align}
+ \limsup_{y\to\infty}
+ \frac{N_\pm(y)-X_\pm(y)}
+ {(\log y)^{(\sigma_*+1)/2}(\log\log y)^{m-1}}
+ &\ge L_\pm,\nonumber\\
+ \liminf_{y\to\infty}
+ \frac{N_\pm(y)-X_\pm(y)}
+ {(\log y)^{(\sigma_*+1)/2}(\log\log y)^{m-1}}
+ &\le-L_\pm.
+ \label{part:eq:inverse}
+\end{align}
+In particular this inverse error is
+$\Omega_\pm((\log y)^{7/8})$.
+\end{corollary}
+
+\begin{proof}
+It suffices to use $y_n=a_n^\pm$, for which $N_\pm(y_n)=n$ once
+the increasing tail exceeds the finite initial prefix.
+Write $g(x)=\log m^\pm(x)$ and $E_n=\log(a_n^\pm/m_n^\pm)$.
+The mean value theorem gives
+\[
+ X_\pm(y_n)-n=\frac{E_n}{g'(\xi_n)}.
+\]
+Here $\log a_n^\pm=c_\pm n^{2/3}+o(n^{1/3})$ by
+Proposition~\ref{part:prop:bridge}, so $X_\pm(y_n)/n\to1$,
+$\xi_n/n\to1$, and
+$g'(\xi_n)=(2A_\pm)^{1/3}n^{-1/3}(1+o(1))$.
+Apply Theorem~\ref{part:thm:main}, with the sign reversed.
+Since $n\sim(\log y_n/c_\pm)^{3/2}$, conversion of the scale yields
+the stated constant:
+\[
+ K_\pm(2A_\pm)^{-1/3}
+ c_\pm^{-(\sigma_*+1)/2}(3/2)^{m-1}
+ =L_\pm.
+\]
+\end{proof}
+
+Thus a leading logarithmic equivalent can support a correct relative
+inverse scale while its pure-model inverse has large errors of both
+signs. The exact-product inverse already constructed in
+\cite{unitaryprior} retains the arithmetic remainder and is unaffected
+by this obstruction.
+
+\subsection{Scope and further questions}
+
+The proven advance is the resolution of the repository's two-sided
+oscillation question, with the stronger $n^{1/4}$ lower scale and an
+inverse consequence. The existing refutation, Mellin kernel,
+least-height noncancellation argument, and coefficient bridge are
+credited prior inputs; the bridge and noncancellation have been
+rederived above to expose every analytic hypothesis.
+The accompanying \texttt{code/verify\_partitions.py} compares direct
+unitary-divisor enumeration with prime-power factorization, then
+compares binomial product expansion with the logarithmic-derivative
+recurrence. All comparisons pass through $n=160$, including the first
+21 displayed OEIS terms of each sequence. The recorded exact output is
+\texttt{data/partition\_verification.json}. These computations check
+definitions and finite data; they cannot certify either infinitely
+occurring sign.
+
+Several substantive questions remain.
+\begin{enumerate}
+\item Determine how often each sign occurs. The proof produces
+arbitrarily large indices of both signs; it supplies no natural or
+logarithmic density and no bound on gaps between sign changes.
+\item Obtain effective indices and certified positive lower bounds
+for $K_\pm$. This requires certified information on a selected zero
+and quantitative control of the positivity argument, beyond simply
+evaluating \eqref{part:eq:laurent} in floating arithmetic.
+\item Determine the sharp oscillation scale and amplitude.
+The bound uses one surviving pole, which need not be rightmost.
+Even under RH, a limiting distribution would require control of the
+combined zero contributions and possible relations between their
+imaginary parts.
+\item Construct a rigorously truncated zero-residue formula with an
+explicit remainder. Pole locations alone do not justify summing
+all residues, exchanging limits, or claiming a convergent
+oscillatory expansion.
+\item Study joint behavior of the two signs. Their exact relation
+$f_+(t)=f_-(t)-f_-(2t)$ links the remainders at different scales,
+but the separate $\liminf/\limsup$ assertions above imply no
+simultaneous sign pattern.
+\end{enumerate}
+
+
+\clearpage
+
+% Included source: sections/verification_and_agenda.tex
+\section{Verification, reproducibility, and interpretation}
+\label{verify:section}
+
+The accompanying archive contains the complete \LaTeX{} source, the PDF,
+four verification programs, their exact or interval output, and a short
+reproduction guide. The programs do not access the network. The stored
+OEIS prefixes and the repository pin make their finite reference data
+explicit. Standard-library integer and rational arithmetic suffice for
+the renewal and partition checks. The dynamics certificate additionally
+uses correctly rounded decimal elementary functions with outward
+enclosure. The map program uses SymPy for exact symbolic identities and
+mpmath only for numerical asymptotic diagnostics.
+
+\subsection{What was checked}
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.26\textwidth}X@{}}
+\toprule
+Program & Verification performed\\
+\midrule
+\texttt{verify\_maps.py}
+& Checks both positive coefficient formulas against all 20 displayed
+OEIS terms; compares the formulas through $n=100$; independently
+enumerates connected rotation systems through four edges; verifies the
+bridge substitutions, elimination relation, and Puiseux coefficients
+symbolically.\\[4pt]
+\texttt{verify\_dynamics.py}
+& Generates $a_0,\ldots,a_{31}$ exactly, encloses $F(1/100)$ by its
+finite Stieltjes remainders, propagates 115 inverse steps with outward
+rounding, and encloses both invariant-series tails.\\[4pt]
+\texttt{verify\_renewal.py}
+& Compares two independent formal coefficient constructions through
+degree 25; checks the stored OEIS prefixes; enumerates all 16,383
+compositions of sizes 1 through 14 and checks the large-part identity;
+computes diagnostics through $n=260$.\\[4pt]
+\texttt{verify\_partitions.py}
+& Computes unitary-divisor weights by divisor enumeration and by
+prime-power factorization; compares direct product expansion with
+the logarithmic-derivative recurrence through $n=160$, including all
+21 stored initial terms of each sequence.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+Separate mathematical reviews checked the root normalization and
+genus derivative in Part I; the global-inversion hypotheses, boundary
+limits, and zero descent in the density theorem; the invariant
+coordinates, analytic reversion, and interval enclosure in the
+golden-ratio expansion; the convolution bounds in the renewal theorem;
+and the noncancellation, positivity argument, saddle bridge, and
+inverse scaling in Part III. These reviews are internal checks of a
+new manuscript. They are not external refereeing or machine-checked
+formal proofs.
+
+\subsection{A certificate with a mathematical role}
+
+The interval calculation in the dynamics section has a stronger role
+than a plot or an agreement of finite prefixes. The proof reduces
+nonvanishing of the analytic profile to the strict inequality
+$d(x)>|D(x)-d(x)|$ at one actual point of the OEIS solution.
+The enclosure establishes
+\[
+ 0.00003580<d(x)<0.00003582,\qquad
+ |D(x)-d(x)|<7.9\cdot10^{-8}.
+\]
+It also encloses the corresponding profile value by
+\[
+ 0.00095032738531560
+ <P\!\left(\log_\varphi\Psi(x)\right)
+ <0.00095032738531562.
+\]
+Both endpoints are deliberately rounded outwards from the more precise
+enclosures in \path{data/dynamics_certificate.json}.
+The coefficient truncation error, elementary-function rounding, orbit
+propagation, and invariant-series tails are all included. The narrow
+interval stored for the explicit error \emph{bound} does not claim to
+enclose the actual absolute error.
+
+This proves $P\not\equiv0$. Antiperiodicity then proves the occurrence
+of both signs at arbitrarily large arguments. It does not locate the
+maximum of $P$, determine its least positive period, or establish
+how many zeros it has in a period.
+
+\subsection{Diagnostics that do not enter the proofs}
+
+The renewal expansion implies that, for fixed $K$,
+\[
+ E_{K,n}:=
+ \frac{c_n-\sum_{j=0}^{K}d_j a_{n-1-j}}{a_{n-K-2}}
+ \longrightarrow d_{K+1}.
+\]
+This follows by applying Theorem~\ref{ren:theorem} with $K+1$.
+The exact-integer calculations give the following rounded values.
+\begin{center}
+\small
+\begin{tabular}{@{}r r r r r r@{}}
+\toprule
+$n$ & $c_n/a_{n-1}$ & $E_{0,n}$ & $E_{1,n}$ & $E_{2,n}$ & $E_{3,n}$\\
+\midrule
+20  &1.235499&2.692517&7.716257&29.465201&142.036296\\
+50  &1.118554&2.315888&6.089803&20.729599&88.744437\\
+100 &1.069135&2.178820&5.594920&18.478299&76.410619\\
+200 &1.039769&2.101282&5.330955&17.352619&70.645714\\
+260 &1.032154&2.081579&5.265425&17.079934&69.282715\\
+\midrule
+Limit &1&2&5&16&64\\
+\bottomrule
+\end{tabular}
+\end{center}
+The slow approach explains why finite ratios alone would be a poor
+substitute for the large-part proof. The maps likewise have a visible
+$n^{-1/2}$ correction: $(27/256)^n b_n$ is approximately $0.03376725$,
+$0.03771030$, and $0.03968765$ at $n=32,128,512$, respectively, while its
+limit is $1/24\approx0.04166667$. The three-term approximation has the
+proved error $O(n^{-5/2})$; the numerical agreement is only a check of
+the implemented constants.
+
+There is deliberately no plot presented as evidence of the partition
+sign theorem. The argument is an infinite-subsequence result. A short
+coefficient prefix need not exhibit its full oscillation scale, and
+an uncertified finite sum over zeta zeros would add no proof of the
+claimed lower and upper limits.
+
+\section{A proposed research program}
+\label{future:section}
+
+The following directions are ordered by how directly they continue the
+proved structures. Each states a concrete objective and the obstacle
+that remains. The local questions at the end of Parts I and III supply
+additional variants.
+
+\subsection{Finish the finer Bell comparison}
+
+The leading coefficient ratio and the new fixed-shift renewal expansion
+leave the principal coefficient-normalization problem open. In the
+notation of the pinned report, let $\mathsf B_n$ be the Bell number and
+let $W(n)>0$ satisfy $W(n)e^{W(n)}=n$. The conjecture is that a finite
+constant $C>0$ exists with
+\begin{equation}\label{future:bell}
+ a_n\sim C\,\mathsf B_n
+          \exp\!\bigl(W(n)^2+3W(n)\bigr).
+\end{equation}
+A proved sufficient condition from \cite{goldenprior} is, for some
+fixed $p\ge0$,
+\begin{equation}\label{future:ratio}
+ \frac{a_n}{a_{n-1}}
+ =\frac n{W(n)}+2+\frac{W(n)}{2(1+W(n))^2}
+             +O\!\left(\frac{W(n)^p}{n}\right).
+\end{equation}
+After division by the leading ratio, the indicated error is summable;
+this is the precision needed to produce a nonzero multiplicative
+constant.
+
+The new endpoint analysis concerns the measures near zero. High
+moments instead probe their remote tails, so it does not directly
+imply \eqref{future:ratio}. A useful next target is uniform control of
+the moment ratios on windows $n-j$ with $j=O(W(n))$, together with
+the complementary part of the coefficient recurrence. Part III of
+the pinned report formulates an exact scalar defect whose bound
+$O(W(n)^q/n^2)$ would suffice. Its definition and precision should
+be retained when attempting this step. Proving only an $o(1)$ error
+in a formal local approximation will not settle
+\eqref{future:bell}.
+
+\subsection{Quantify the analytic oscillation profile}
+
+The construction supplies an analytic, canonical, nonzero function
+$P$, with a rigorous evaluator along inverse orbits. It leaves several
+well-posed numerical and analytic problems:
+\begin{enumerate}
+\item Produce a certified enclosure of $P$ and $P'$ on an entire
+period, and use it to determine the number and multiplicity of its
+zeros and extrema.
+\item Bound the width of a complex strip of analyticity explicitly.
+This would turn existence of exponentially decreasing Fourier
+coefficients into effective truncation bounds.
+\item Determine whether the first allowed Fourier harmonic dominates.
+Antiperiodicity allows only the frequencies
+$\exp(\pi i(2k+1)t)$; it does not by itself prove such dominance.
+\item Bound an explicit threshold for convergence of the inverse-log
+series and describe the exponentially smaller correction terms.
+The present series is convergent for sufficiently large $\log s$,
+but it is not an exact representation of the transform without its
+stated exponentially small remainder.
+\end{enumerate}
+These are refinements of a proved oscillation, not a renewed question
+about whether oscillation exists.
+
+\subsection{From positive analytic densities to effective tail laws}
+
+The density theorem removes possible gaps, atoms, and internal zeros,
+and gives precise behavior at the origin. The large-$x$ behavior of
+$p(x)$ and $q(x)$ remains the natural bridge to the finer moment
+asymptotics. One can ask for a tail equivalent with an error uniform
+under the exponential tilts that localize moments near their saddle.
+Such a result would supply information that positivity and real
+analyticity alone cannot provide.
+
+A more immediate computational objective is a certified solver for the
+boundary relation
+\[
+ \int\frac{t^2\,d\nu(t)}{(u-t)^2+v(u)^2}=1
+\]
+on compact positive intervals, coupled to the density formulas of
+Section~\ref{reg:subsec:analyticity}. Finite moments and transform
+identities should be used to bound the truncated tails. An algorithm
+with an explicit enclosure for the discarded measure would allow
+quantitative plots and tests of global monotonicity or global
+log-convexity. The derivative equivalents already give
+$(\log p)''(x)\sim\beta/x^2$ and
+$(\log q)''(x)\sim\alpha/x^2$ at zero, so both densities are strictly
+log-convex sufficiently near zero. The two global shape properties
+remain unresolved.
+
+\subsection{Find a direct map bijection and extend the genus calculation}
+
+The exact square has the integral factor
+$\frac14\binom{4n}{n}=\binom{4n-1}{n-1}$.
+This suggests a direct decomposition of a bridgeless rooted toroidal
+map into a pair of independently described objects of total size $n$.
+A bijection should explain the root and the positive convolution,
+rather than merely reproducing the same algebraic generating function.
+It would also clarify whether a face or vertex statistic has a natural
+refinement on the two factors.
+
+The multigenus bridge equation already contains a separate algebraic
+research program. Insert known unrestricted genus-$g$ map series,
+extract the coefficient of the genus marker, and retain every
+derivative caused by the substituted argument. Determine rational
+forms in the common planar parameter and systematic singular
+exponents for the bridgeless series. Higher-genus expressions are
+not obtained by a naive substitution into the unrestricted series;
+Part I displays the missing contribution already at genus one.
+
+\subsection{Make the partition oscillations effective}
+
+The two-sided theorem provides explicit symbolic lower constants
+from a genuine Mellin pole, but no first index at which either bound
+must occur. A useful next result would combine a certified zero
+enclosure, a residue enclosure, and a quantitative version of the
+positivity argument to produce a finite search interval containing
+an index of each sign.
+
+A different question concerns statistics rather than existence:
+do the normalized logarithmic errors have limiting distributions,
+and what are the densities or gaps of sign changes? Any answer must
+control the combined zero contributions and the remainder of a
+truncated explicit formula. The exact identity
+$f_+(t)=f_-(t)-f_-(2t)$ also makes joint sign patterns a distinct
+problem. Separate oscillation of the two sequences gives no theorem
+about their simultaneous behavior.
+
+\subsection{Broaden the two general mechanisms}
+
+Two proofs invite abstraction beyond these particular OEIS entries.
+First, the renewal theorem uses a uniform contraction of
+$q_j/q_{n-j-1}$ away from the endpoints. One can seek sharp hypotheses
+on positive log-convex weights, including ratio laws regularly varying
+with an arbitrary positive index, under which the same full
+fixed-shift expansion holds. One should also identify what replaces
+the exponential central bound at the boundary of that regime.
+
+Second, inverse functional equations can produce a recurrence with
+one expanding eigenvalue and one negative contracting eigenvalue.
+The present Fibonacci recurrence turns this spectral structure into
+an analytic antiperiodic correction. A general theorem should state
+which perturbations preserve analytic conjugacies, what the resonant
+corrections are when additional eigenvalues are present, and how to
+certify that a particular combinatorial solution has a nonzero
+stable coordinate.
+
+\subsection{Formalization and an independent submission path}
+
+The exact bridge decomposition, the positive coefficient formulas,
+and the renewal convolution estimates are comparatively self-contained
+targets for formalization. The interval certificate can be ported
+to a small formally checked rational-enclosure kernel. The density
+and Mellin arguments require a broader analytic foundation, making
+them later targets.
+
+For external mathematical review, the three Parts can be separated
+into articles with their dependencies preserved. An OEIS update for
+A343093 should cite the complete rooted-map proof and its normalization;
+updates for the partition entries should distinguish the earlier
+refutation from the new two-sided strengthening. No update or
+submission has been made as part of this work. A bibliographic
+comparison with the older map-enumeration literature and independent
+refereeing remain appropriate before asserting historical priority.
+
+
+\clearpage
+\begingroup
+\raggedright
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{99}
+
+% Included source: bibliography_items.tex
+\bibitem{map:oeis343093}
+The OEIS Foundation Inc., \emph{A343093: Number of rooted toroidal maps
+with $n$ edges and no isthmuses}, entry by Andrew Howroyd; conjectural
+generating function by Peter Bala, July 24, 2025.
+\url{https://oeis.org/A343093}. Accessed October 4, 2026 (UTC).
+
+\bibitem{map:bcr1988}
+E.~A. Bender, E.~R. Canfield, and R.~W. Robinson,
+\emph{The enumeration of maps on the torus and the projective plane},
+Canadian Mathematical Bulletin \textbf{31} (1988), 257--271.
+\url{https://doi.org/10.4153/CMB-1988-039-4}.
+Exact inputs: equations (4.20) and (4.22), p.~268.
+
+\bibitem{map:cyz2019}
+J. Courtiel, K. Yeats, and N. Zeilberger,
+\emph{Connected chord diagrams and bridgeless maps},
+Electronic Journal of Combinatorics \textbf{26}(4) (2019), Paper P4.37,
+56 pp. \url{https://doi.org/10.37236/7400};
+\url{https://arxiv.org/abs/1611.04611}.
+See Proposition~23, pp.~17--18, with the auxiliary dangling-root
+normalization explained in the present text.
+
+\bibitem{goldenprior}
+ProveIt research-report collection,
+\emph{Bell-Scale Growth of OEIS A088714}, merged article, Parts I--III,
+September 20--October 2, 2026. AI-assisted unrefereed research report.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/eaf08931cbfd0132dd36ab82a7743ccb02506dc7/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth/article.tex}{Pinned source in Vladimir Reshetnikov's ProveIt repository}.
+Snapshot \texttt{eaf08931cbfd0132dd36ab82a7743ccb02506dc7}.
+The analytic foundations and Questions 23.1, 23.3, 23.6 are in Part II;
+Part III identifies the remaining fine Bell-comparison estimates.
+
+\bibitem{oeisA088714}
+The OEIS Foundation Inc., \emph{A088714}.
+\url{https://oeis.org/A088714}. Accessed October 4, 2026 (UTC).
+
+\bibitem{oeisA088713}
+The OEIS Foundation Inc., \emph{A088713}.
+\url{https://oeis.org/A088713}. Accessed October 4, 2026 (UTC).
+
+\bibitem{HuangWang2022}
+H.-W. Huang and J.-C. Wang,
+\emph{Regularity results for free L\'evy processes},
+Advances in Mathematics \textbf{402} (2022), Article 108323.
+\url{https://doi.org/10.1016/j.aim.2022.108323};
+\url{https://arxiv.org/abs/2203.00421}.
+The global inversion and boundary results used here are
+Propositions 3.1--3.2.
+
+\bibitem{python-decimal}
+Python Software Foundation,
+\emph{Decimal fixed-point and floating-point arithmetic},
+Python 3 library documentation.
+\url{https://docs.python.org/3/library/decimal.html}.
+Correct rounding of \texttt{exp}, \texttt{ln}, and \texttt{sqrt}, together
+with adjacent representable values, is used for outward enclosure.
+Accessed October 4, 2026 (UTC).
+
+\bibitem{unitaryprior}
+ProveIt research-report collection,
+\emph{Unitary divisor sum colored partitions and their asymptotics},
+October 2, 2026. AI-assisted unrefereed research report.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/eaf08931cbfd0132dd36ab82a7743ccb02506dc7/SetTheory/Cardinals/docs/reports/generating-functions-and-asymptotics/oeis-sequence-asymptotics/a301981-unitary-divisor-partitions/article.tex}{Pinned source in Vladimir Reshetnikov's ProveIt repository}.
+Snapshot \texttt{eaf08931cbfd0132dd36ab82a7743ccb02506dc7}.
+
+\bibitem{oeis301981}
+The OEIS Foundation Inc.,
+\emph{A301981: Euler transform of A034448},
+entry by V. Kot\v{e}\v{s}ovec, March 30, 2018.
+\url{https://oeis.org/A301981}. Accessed October 4, 2026 (UTC).
+
+\bibitem{oeis301982}
+The OEIS Foundation Inc.,
+\emph{A301982: Expansion of
+$\prod_{k\ge1}(1+x^k)^{\mathrm{A034448}(k)}$},
+entry by V. Kot\v{e}\v{s}ovec, March 30, 2018.
+\url{https://oeis.org/A301982}. Accessed October 4, 2026 (UTC).
+
+\bibitem{oeis034448}
+The OEIS Foundation Inc.,
+\emph{A034448: Sum of unitary divisors}.
+\url{https://oeis.org/A034448}.
+
+\bibitem{landau1905}
+E. Landau, \"Uber einen Satz von Tschebyschef,
+\emph{Mathematische Annalen} \textbf{61} (1905), 527--550.
+\url{https://geodesic.mathdoc.fr/item/MAN_1905__61_158244/}.
+
+\bibitem{diamondpintz2009}
+H. G. Diamond and J. Pintz, Oscillation of Mertens' product formula,
+\emph{Journal de th\'eorie des nombres de Bordeaux}
+\textbf{21} (2009), no.~3, 523--533.
+\url{https://doi.org/10.5802/jtnb.687}.
+
+\bibitem{toth2017}
+L. T\'oth, Alternating sums concerning multiplicative arithmetic functions,
+\emph{Journal of Integer Sequences} \textbf{20} (2017), Article 17.2.1.
+Section~4.9, p.~28, records the ordinary unitary-divisor Dirichlet series.
+\url{https://cs.uwaterloo.ca/journals/JIS/VOL20/Toth/toth25.pdf}.
+
+\bibitem{trudgian2015}
+T. S. Trudgian, Explicit bounds on the logarithmic derivative and
+the reciprocal of the Riemann zeta-function,
+\emph{Functiones et Approximatio Commentarii Mathematici}
+\textbf{52} (2015), no.~2, 253--261.
+\url{https://doi.org/10.7169/facm/2015.52.2.5}.
+
+\bibitem{dlmfzeros}
+NIST Digital Library of Mathematical Functions,
+Section~25.10, \emph{Zeros of the Riemann zeta function}.
+\url{https://dlmf.nist.gov/25.10}.
+
+
+\end{thebibliography}
+\endgroup
+\end{document}
