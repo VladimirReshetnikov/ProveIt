@@ -1,0 +1,999 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm}
+\usepackage{newtxtext,newtxmath}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{microtype,mathtools,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\hypersetup{pdftitle={Countable Information, Uncountably Many Boxes},pdfauthor={Research note prepared for Vladimir Reshetnikov},pdfsubject={Measurable box games, decision trees, enumeration, and asymptotics}}
+\definecolor{ink}{HTML}{17344A}
+\definecolor{accent}{HTML}{28797B}
+\definecolor{paperblue}{HTML}{F2F6F8}
+\titleformat{\section}{\large\bfseries\color{ink}}{\thesection}{0.65em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{ink}}{\thesubsection}{0.65em}{}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape Countable Information, Uncountably Many Boxes}
+\fancyhead[R]{\small Research note}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.2em}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\setcounter{tocdepth}{1}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prb}{\mathbb P}
+\newcommand{\ind}{\mathbf 1}
+\newcommand{\Sig}{\Sigma}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\sg}{\sigma}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\restr}{\mathbin{\upharpoonright}}
+\newcommand{\qset}{\{0,\ldots,q-1\}}
+\newcommand{\repo}{\texttt{ProveIt}}
+\newcommand{\commit}{\nolinkurl{6fef5383b126be343cccc9baf47081ef37ab5afe}}
+\newtcolorbox{resultbox}{colback=paperblue,colframe=accent,boxrule=0.6pt,arc=1mm,left=9pt,right=9pt,top=7pt,bottom=7pt,breakable}
+\begin{document}
+\begin{titlepage}
+\setlength{\parindent}{0pt}
+\vspace*{0.15in}
+{\color{accent}\sffamily\bfseries RESEARCH AT THE INTERSECTION OF SET THEORY AND COMPUTATION\par}
+\vspace{0.20in}
+{\fontsize{29}{33}\selectfont\bfseries\color{ink} Countable Information,\\[4pt] Uncountably Many Boxes\par}
+\vspace{0.2in}
+{\Large Sharp measurable prediction bounds, exact decision-tree enumeration, and an all-orders asymptotic expansion\par}
+\vspace{0.25in}
+{\large Prepared for Vladimir Reshetnikov\par}
+{October 3, 2026\par}
+\vspace{0.20in}
+\begin{abstract}
+We study the distinction between choosing an unread coordinate and assigning a measurable event to a correct prediction. For a nonempty standard Borel set of boxes, a finite alphabet of size $q$, and $m$ deterministic players whose output maps are measurable for the cylinder $\sigma$-algebra, we prove that the optimal guaranteed number of correct guesses is exactly $\floor{m/q}$. The proof does not assume that success events are measurable. A simultaneous measure-extension construction supplies fair success probabilities for any countable collection of such players. Conversely, measurability of a blind player's success event forces its target range to be countable, pointwise or outside a cylinder-null set according to the chosen completion.
+
+The finite problem leads to a separate structural result. Blind binary output maps correspond to labeled perfect matchings of the hypercube, whereas executable maps correspond precisely to recursively sliceable matchings. We derive an exact inclusion--exclusion recurrence for the latter, prove that the two classes first differ at four boxes, and establish
+\[
+ F_n=\frac{e^{\gamma 2^n}}{n}\left(1-\frac{3}{2n}+\frac{17}{4n^2}
+ -\frac{12}{n^3}+O(n^{-4})\right),
+\]
+with a rational algorithm for every further asymptotic coefficient. We also prove an explicit doubly exponential upper bound on the fraction of blind maps that are executable. Finite checks, an oracle counterexample-extraction theorem, and a Busy Beaver obstruction connect the analysis to the certificate-oriented architecture of \repo.
+\end{abstract}
+\vfill
+\begin{resultbox}
+\textbf{Scope and status.} All stated theorems have proofs in this note. The finite computations were executed independently in Python. The infinite results have not been checked in Lean or Rocq, and historical priority is not established. The restricted measurable problem is settled here; Glazer's unrestricted question about what ZF proves is not settled here. Neither authorship nor endorsement by Elliot Glazer is implied.
+\end{resultbox}
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{Research question and contribution map}
+
+Glazer studies prediction games in which players inspect boxes and then guess an unopened value. In Section 5 of \cite{GlazerBox}, he asks whether ZF proves that three players with continuum many binary boxes can guarantee at least two correct guesses. His work on weak choice principles \cite{GlazerChoice} and the finite and infinite puzzles described in his research profile \cite{GlazerProfile} make regularity, executability, and explicit axiomatic boundaries natural questions to investigate.
+
+The relevant \repo\ materials are its Busy Beaver machine interface, finite-list coding in arithmetic, and explicit first-order set-theoretic developments \cite{ProveIt,BusyBeaver,ListCoding,Closure}. Rather than importing an unverified mathematical claim from those projects, we use their architecture: distinguish a semantic statement from an executable certificate, and distinguish both from the theorem that validates the certificate. The repository snapshot used throughout is \commit.
+
+The central issue is not a numerical estimate. On an uncountable product, the following statements are different:
+\begin{enumerate}[label=(\roman*)]
+\item the rule selecting a box and a guess is measurable;
+\item the event that the selected box contains the guess is measurable;
+\item the rule can actually be implemented without inspecting its final target.
+\end{enumerate}
+None of these distinctions can safely be suppressed. We obtain two complementary lines of results.
+
+\subsection{The continuum line}
+Theorem~\ref{thm:minimax} gives the exact measurable-output minimax value, including the three-player binary case. Theorem~\ref{thm:fresh} constructs a simultaneous fair extension of the product probability for countably many players. Theorem~\ref{thm:collapse} shows that measurable success is a much stronger restriction on the range of targets than measurable output. The diagonal example in Section~\ref{sec:diagonal} makes the difference explicit: its output rule is continuous, but its success event has inner measure zero and outer measure one. We classify every extension obtained by adjoining that event.
+
+\subsection{The finite line}
+Theorem~\ref{thm:slice} characterizes executable binary output maps by a recursive property of hypercube matchings. The sequence $F_n$ counting the underlying executable matchings begins
+\[
+1,\ 2,\ 9,\ 232,\ 206065,\ 212181312096,\ldots.
+\]
+It is \emph{not} the sequence of all perfect matchings, OEIS A005271 \cite{OEIS}; that sequence already differs at $n=4$. We prove an exact recurrence, a full asymptotic expansion, and an explicit rarity bound. These results are not asserted to be absent from the literature or the OEIS: exact-sequence searches did not yield a usable classification during this investigation.
+
+\subsection{What is, and is not, claimed as a contribution}
+The countable-support lemma, finite-coordinate averaging, Radon--Nikodym theorem, compactness of a finite-alphabet sequence space, and halting-time diagonalization are standard ingredients. The contribution developed here is their precise application to the output/success distinction, together with the decision-tree classification, enumeration, asymptotic calculation, and executable finite checks. The measure-extension classification is a special-case application of the classical theory represented by \L o\'s and Marczewski \cite{LosMarczewski}, not a claim to have invented measure extension.
+
+These statements constitute a research note with complete proofs and testable finite consequences. They are not presented as a verified historical breakthrough or as a resolution of an unrestricted choiceless-set-theory problem.
+
+\section{Configurations, blindness, and measurable output}
+\label{sec:model}
+
+Fix $q\ge2$, put $Q=\qset$, and let $I$ be a nonempty set. A \emph{configuration} is a function $x:I\to Q$. Write
+\[
+ X_I=Q^I,\qquad
+ \Sig_I=\sg\{x:x_i=a\mid i\in I,\ a\in Q\}.
+\]
+The probability measure $\mu_I$ on $\Sig_I$ is the product measure under which every fixed finite family of coordinates is independent and uniform on $Q$.
+
+\begin{remark}[Which $\sigma$-algebra?]
+The cylinder $\sigma$-algebra $\Sig_I$ is not, by definition, the full Borel $\sigma$-algebra of the uncountable product topology. Nor is it automatically its own completion. Every measurability assertion below names the relevant $\sigma$-algebra. This is essential, not a technical convention that can be changed without affecting the theorems.
+\end{remark}
+
+For $i\in I$ and $v\in Q$, let $x^{i\leftarrow v}$ denote the configuration obtained by replacing $x_i$ by $v$ and leaving all other coordinates unchanged.
+
+\begin{definition}[Blind output map]
+An output map is a total function
+\[
+ \tau=(b,a):X_I\longrightarrow I\times Q.
+\]
+It is \emph{blind} if, whenever $\tau(x)=(i,c)$,
+\begin{equation}
+ \tau(x^{i\leftarrow v})=(i,c)\quad\hbox{for every }v\in Q.
+ \label{eq:blind}
+\end{equation}
+Its success set is
+\[
+ E_\tau=\{x:x_{b(x)}=a(x)\}.
+\]
+For a team $\tau_1,\ldots,\tau_m$, the score is
+$S(x)=\sum_{p=1}^m\ind_{E_{\tau_p}}(x)$.
+\end{definition}
+
+Every total deterministic legal probing strategy induces a blind output map. Indeed, altering only the value of its ultimately unopened box changes none of the observations along the original run. Induction on the successive moves gives the same history and the same final output. This remains a necessary condition when a move reveals an entire set of boxes or histories are transfinite. We do not identify blindness with legal executability; Section~\ref{sec:finite} gives a finite counterexample to that identification.
+
+From now on, for the continuum theorems, $I$ carries a standard Borel structure. Measurability of $\tau$ means measurability from $(X_I,\Sig_I)$ to $I\times Q$ with its product Borel structure. In particular, singleton targets, equality of two target maps, and membership in any countable set of targets are measurable.
+
+\begin{definition}[Coordinate support]
+A set $A\subseteq X_I$ is \emph{supported by} $J\subseteq I$ if membership in $A$ is unchanged when coordinates outside $J$ change. A function is supported by $J$ if two configurations agreeing on $J$ have the same function value.
+\end{definition}
+
+\begin{lemma}[Countable-coordinate dependence]
+\label{lem:support}
+Every member of $\Sig_I$ has a countable support. Every $\Sig_I$-measurable map to a countably separated measurable space has a countable support. Consequently a finite or countable family of measurable maps to standard Borel spaces has a common countable support.
+\end{lemma}
+\begin{proof}
+The sets possessing a countable support form a $\sigma$-algebra: complements keep the same support, and a countable union is supported by the union of its chosen supports. This $\sigma$-algebra contains each coordinate cylinder, proving the first assertion.
+
+For a measurable function $f$, choose a countable family $(C_k)$ of measurable sets separating points in its codomain. Choose a countable support $J_k$ for $f^{-1}(C_k)$ and put $J=\bigcup_kJ_k$. If $x\restr J=y\restr J$, then $f(x)$ and $f(y)$ belong to exactly the same $C_k$, hence are equal. A further countable union gives the last assertion.
+
+The factorization is literal, not merely almost everywhere. Fix the symbol $0$ outside $J$ and let $s_J:Q^J\to Q^I$ be the corresponding section. Then $s_J$ is measurable, $f_J=f\circ s_J$ is measurable, and $f=f_J\circ\pi_J$.
+\end{proof}
+
+The lemma is proved here in the ordinary classical setting. The selection of countably many supports is among the steps that need a separate audit before attributing this proof to a weak choiceless base theory.
+
+\section{The sharp measurable-output bound}
+\label{sec:minimax}
+
+\begin{theorem}[Exact minimax value]
+\label{thm:minimax}
+Let $I$ be a nonempty standard Borel space and let $m\ge1$. For every team of $m$ blind cylinder-measurable output maps there is a configuration $x$ such that
+\begin{equation}
+ S(x)\le\floor{m/q}.
+ \label{eq:minimax}
+\end{equation}
+There is a legal team of constant output maps guaranteeing at least $\floor{m/q}$ correct guesses on every configuration. Thus the optimum worst-case score in the measurable-output class is exactly $\floor{m/q}$.
+\end{theorem}
+
+\begin{proof}
+Choose a common countable support $J$ for the outputs. On $Q^J$ write the factored outputs as $(b_p(u),a_p(u))$. We separate targets inside $J$ from targets outside $J$.
+
+For $i\in J$ and $c\in Q$, the measurable fiber
+\[
+ A_{p,i,c}=\{u:b_p(u)=i,\ a_p(u)=c\}
+\]
+is invariant under changing $u_i$, by blindness. A product integration in that one coordinate gives
+\begin{equation}
+ \mu_J(A_{p,i,c}\cap\{u:u_i=c\})=\frac1q\mu_J(A_{p,i,c}).
+ \label{eq:fiberfair}
+\end{equation}
+Therefore the internal score
+\[
+ S_{\rm in}(u)=\sum_{\substack{1\le p\le m\\ b_p(u)\in J}}
+                  \ind_{\{u_{b_p(u)}=a_p(u)\}}
+\]
+is measurable and satisfies
+\begin{equation}
+ \E S_{\rm in}=\frac1q\sum_{p=1}^m\mu_J(b_p\in J).
+ \label{eq:inside}
+\end{equation}
+
+For each fixed $u$, group the remaining players according to their common target outside $J$. If $C$ is one such group, let
+$n_{C,v}(u)=|\{p\in C:a_p(u)=v\}|$. Give the shared target the least symbol minimizing $n_{C,v}(u)$. Its contribution to the score is then
+\[
+ \min_{v\in Q}n_{C,v}(u)\le |C|/q.
+\]
+Define the integer-valued function
+\[
+ D(u)=S_{\rm in}(u)+\sum_C\min_{v\in Q}n_{C,v}(u).
+\]
+There are only finitely many players. The grouping is determined by finitely many measurable equality tests among their targets, so $D$ is measurable. From \eqref{eq:inside},
+\[
+ \E D\le\frac1q\sum_p\mu_J(b_p\in J)
+          +\frac1q\sum_p\mu_J(b_p\notin J)=\frac mq.
+\]
+An integer-valued function everywhere larger than $\floor{m/q}$ would have expectation strictly larger than $m/q$. Choose $u$ with $D(u)\le\floor{m/q}$. Complete $u$ using the selected minimizing symbols at the finitely many external targets and the default symbol elsewhere. Since all outputs depend only on $J$, their values are unchanged. The resulting score is exactly $D(u)$.
+
+For the reverse bound, fix a single box and divide the players' constant guesses as evenly as possible among the $q$ symbols. Every symbol receives at least $\floor{m/q}$ guesses. The players need not open any box, so this is a legal strategy.
+\end{proof}
+
+\begin{corollary}[The regular three-player continuum problem]
+Three binary players with continuum many boxes and blind cylinder-measurable output maps cannot guarantee two correct guesses. They can guarantee one.
+\end{corollary}
+
+This is a negative answer for a specified regularity class. It is not a statement that ZF disproves the existence of unrestricted winning strategies.
+
+\begin{corollary}[Lists of guesses]
+\label{cor:lists}
+Suppose every player supplies a set of exactly $r$ possible symbols, where $1\le r<q$, and success means that the target value belongs to the list. With the corresponding blindness condition on the entire output $(b,A)$, the exact optimum guaranteed score is
+\[
+ \floor{mr/q}.
+\]
+\end{corollary}
+\begin{proof}
+The internal fiber average in \eqref{eq:fiberfair} is $r/q$. For an external target with $t$ players, summing the number of containing lists over all symbols gives $tr$, so some symbol is in at most $tr/q$ lists. The previous proof applies.
+
+For sharpness, have all players choose the same box and let player $p$, indexed from zero, use
+\[
+ A_p=\{pr,pr+1,\ldots,pr+r-1\}\pmod q.
+\]
+Each list has $r$ distinct symbols, and the $mr$ consecutive residues distribute as evenly as possible among $Q$.
+\end{proof}
+
+\section{A simultaneous fair extension of probability}
+\label{sec:extension}
+
+The preceding proof carefully avoided integrating the possibly nonmeasurable score on $X_I$. There is also a constructive way to enlarge the measurable space so that every player in a countable team has the expected fair marginal.
+
+\begin{theorem}[Independent replacement at external targets]
+\label{thm:fresh}
+Let $(\tau_p)_{p\in\N}$ be a countable family of blind cylinder-measurable output maps on $Q^I$, with $I$ standard Borel. There is a countably additive probability measure $\nu$ on
+\[
+ \sg(\Sig_I,E_{\tau_0},E_{\tau_1},\ldots)
+\]
+such that $\nu\restr\Sig_I=\mu_I$ and
+\[
+ \nu(E_{\tau_p})=1/q\qquad(p\in\N).
+\]
+For a finite team the same conclusion holds with just its success events adjoined.
+\end{theorem}
+\begin{proof}
+Choose a common countable support $J$. Work on the auxiliary product space carrying an independent pair
+\[
+ Y\sim\mu_I,\qquad U=(U_0,U_1,\ldots)\sim\mu_\N.
+\]
+All output pairs $(b_p(Y),a_p(Y))$ depend only on $Y\restr J$.
+
+For each external target that occurs, use the first player selecting it as its representative. More precisely, when $b_p(Y)\notin J$, let
+\[
+ \rho_p(Y)=\min\{r\le p:b_r(Y)=b_p(Y)\}.
+\]
+Define a new configuration $T(Y,U)$ by leaving the coordinates of $J$ unchanged, assigning the value $U_{\rho_p(Y)}$ to each selected external target $b_p(Y)$, and leaving all other coordinates equal to those of $Y$. Repeated targets receive the same replacement value, so the definition is consistent.
+
+For each fixed coordinate $i$, $T_i$ is measurable. Indeed, whether $i$ is a selected target and which player is its first representative are countable combinations of measurable target-equality tests. The default case is also measurable. Hence $T$ is measurable into $(X_I,\Sig_I)$.
+
+We next check the fixed-coordinate law. Conditional on $Y\restr J$, any fixed finite collection of coordinates outside $J$ is transformed by replacing some of its entries with distinct independent uniform $U$ coordinates. The selection is determined by $Y\restr J$, not by those outside values. Untouched entries remain independent uniform values of $Y$, independent also of $U$. Thus every fixed finite coordinate law of $T$ is the original product law. Uniqueness of the probability measure on the generated cylinder $\sigma$-algebra gives
+\[
+ \Prb(T\in A)=\mu_I(A)\qquad(A\in\Sig_I).
+\]
+This argument can equivalently be written by partitioning $Q^J$ into the countably many possible representative patterns for the specified finite set, avoiding any disintegration on an uncountable product.
+
+All outputs are unchanged by $T$, since it fixes $J$. If player $p$ selects an external target, its pulled-back success event is
+\[
+ \{b_p(Y)\notin J,\ U_{\rho_p(Y)}=a_p(Y)\},
+\]
+which is measurable and has conditional probability $1/q$ on that case. If it selects an internal target, its success probability is the sum in \eqref{eq:fiberfair}. Altogether,
+\[
+ \Prb(T\in E_{\tau_p})=\frac1q\Prb(b_p\notin J)
+                       +\frac1q\Prb(b_p\in J)=\frac1q.
+\]
+Finally, the collection of all subsets $A\subseteq X_I$ for which $T^{-1}(A)$ is measurable is a $\sigma$-algebra containing both $\Sig_I$ and every success event. The formula $\nu(A)=\Prb(T\in A)$ defines a countably additive probability on this $\sigma$-algebra, and restriction gives the required extension.
+\end{proof}
+
+\begin{remark}
+The theorem establishes existence, not uniqueness. It does not assert that success events already belong to the original product $\sigma$-algebra, or that every extension must give probability $1/q$. Section~\ref{sec:diagonal} exhibits the strongest possible nonuniqueness for one player. It also does not assert that the successes of different players are independent.
+\end{remark}
+
+\section{Measurable success forces a countable target set}
+\label{sec:collapse}
+
+\begin{theorem}[Pointwise and completed target collapse]
+\label{thm:collapse}
+Let $I$ be any set and let $\tau=(b,a)$ be a blind output map on $Q^I$. No measurability of $\tau$ is assumed.
+\begin{enumerate}[label=(\alph*)]
+\item If $E_\tau\in\Sig_I$, there is a countable $J\subseteq I$ such that $b(x)\in J$ for every $x$.
+\item If $E_\tau$ belongs to the $\mu_I$-completion of $\Sig_I$, there are a countable $J\subseteq I$ and a set $N\in\Sig_I$ with $\mu_I(N)=0$ such that $b(x)\in J$ whenever $x\notin N$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For (a), let $J$ support $E_\tau$. Suppose $b(x)=i\notin J$ and $a(x)=c$. Choose $d\ne c$. Blindness gives the same output $(i,c)$ on $x^{i\leftarrow c}$ and $x^{i\leftarrow d}$. Exactly one of these configurations succeeds. But they agree on $J$, contradicting support of the success event.
+
+For (b), choose $E_0,N\in\Sig_I$ with $\mu_I(N)=0$ and $E_\tau\mathbin\triangle E_0\subseteq N$. Let $J$ support both $E_0$ and $N$. If $x\notin N$ and $b(x)=i\notin J$, the two replacements from the preceding argument also lie outside $N$. They have equal membership in $E_0$, hence in $E_\tau$, again a contradiction.
+\end{proof}
+
+\begin{remark}[Two nonconverses]
+A map supported by countably many input coordinates can have uncountable output range. Conversely, countable range of targets alone does not establish measurability of its target/guess fibers. To deduce fair probabilities by summing \eqref{eq:fiberfair}, the fibers must be measurable as well. The theorem should not be paraphrased as ``measurable success alone implies probability $1/q$.''
+\end{remark}
+
+\section{A continuous selector with maximally nonmeasurable success}
+\label{sec:diagonal}
+
+In this section take $q=2$. Let $C=2^\N$ be Cantor space and take the tagged disjoint union
+\[
+ I=\N\sqcup C.
+\]
+The distinction between the two tags is part of the definition. For a configuration $x$, read its natural-number coordinates and form $r=x\restr\N\in C$. Select the box on the \emph{other} side indexed by $r$, and guess zero:
+\begin{equation}
+ b(x)=r\in C,\qquad a(x)=0.
+ \label{eq:diagonal}
+\end{equation}
+This is a legal strategy when countably many boxes may be opened in one move. It is blind. Its output map is cylinder-measurable; with the product topology on the domain and the usual disjoint-union topology on $I$, it is even continuous.
+
+Its success set is
+\[
+ E=\{x:x_{x\restr\N}=0\},
+\]
+where the outer evaluation uses the $C$-tagged coordinate.
+
+\begin{theorem}[Inner measure zero, outer measure one]
+\label{thm:innerouter}
+For the diagonal strategy,
+\[
+ \mu_*(E)=0,\qquad\mu^*(E)=1.
+\]
+In particular, $E$ belongs neither to $\Sig_I$ nor to its completion.
+\end{theorem}
+\begin{proof}
+Let $A\in\Sig_I$ with $A\subseteq E$, and let $K$ be a countable support for $A$. For any $x\in A$, its selected label $r=x\restr\N$ must belong to $K\cap C$. Otherwise changing only the $r$-tagged coordinate from zero to one leaves $A$ unchanged but destroys success. Thus
+\[
+ A\subseteq\{x:x\restr\N\in K\cap C\}.
+\]
+A countable set of fair infinite binary sequences has probability zero, so $\mu_I(A)=0$. This proves the inner-measure assertion. Repeating the argument for a measurable subset of $E^c$, now changing the selected bit from one to zero, shows $\mu_*(E^c)=0$. The outer-measure assertion follows by complementation.
+\end{proof}
+
+\subsection{Every probability extension after adjoining success}
+
+Write $\Sig_I[E]=\sg(\Sig_I,E)$. Its members have the form
+\begin{equation}
+ (A\cap E)\cup(B\cap E^c),\qquad A,B\in\Sig_I.
+ \label{eq:adjoin}
+\end{equation}
+This is a $\sigma$-algebra directly: take complements and countable unions in the two components.
+
+\begin{theorem}[Classification by a measurable density]
+\label{thm:classification}
+For every measurable $h:X_I\to[0,1]$, the formula
+\begin{equation}
+ \nu_h\big((A\cap E)\cup(B\cap E^c)\big)
+   =\int_Ah\,d\mu_I+\int_B(1-h)\,d\mu_I
+ \label{eq:extensiondensity}
+\end{equation}
+defines a countably additive probability extending $\mu_I$. Every countably additive extension to $\Sig_I[E]$ is obtained this way, with $h$ unique up to $\mu_I$-almost-everywhere equality.
+\end{theorem}
+\begin{proof}
+Suppose two pairs $(A,B)$ and $(A',B')$ represent the same set. Then $A\mathbin\triangle A'$ is a measurable subset of $E^c$, and $B\mathbin\triangle B'$ is a measurable subset of $E$. Both are null by Theorem~\ref{thm:innerouter}, so the formula is well-defined.
+
+For a disjoint sequence of represented sets, the corresponding $A$ components are pairwise disjoint modulo null sets, as are the $B$ components. Integration of $h$ and $1-h$, or monotone convergence after removal of those countably many null overlaps, proves countable additivity. Taking $A=B=X_I$ gives total mass one. Taking $A=B=D$ shows $\nu_h(D)=\mu_I(D)$ for $D\in\Sig_I$.
+
+Conversely, let $\nu$ be an extension and define $\lambda(A)=\nu(A\cap E)$ on $\Sig_I$. This is a measure and $0\le\lambda\le\mu_I$. The Radon--Nikodym theorem yields a measurable density $0\le h\le1$ with $\lambda(A)=\int_Ah\,d\mu_I$. Since
+$\nu(B\cap E^c)=\mu_I(B)-\lambda(B)$, formula \eqref{eq:extensiondensity} follows. Uniqueness is the usual almost-everywhere uniqueness of that density.
+\end{proof}
+
+For constant $h=\theta$, the extension assigns $\nu_h(E)=\theta$ for any $\theta\in[0,1]$. Every fixed finite collection of boxes still consists of independent fair bits. Thus those fixed-coordinate laws alone do not determine the probability of a dynamically indexed success event. The fair extension of Theorem~\ref{thm:fresh} supplies one consistent answer; it does not turn that answer into a consequence of the original cylinder law alone.
+
+\section{Finite output maps and executable decision trees}
+\label{sec:finite}
+
+Now let $I=\{0,\ldots,n-1\}$ and first take $Q=\{0,1\}$. The cube graph $\mathcal Q_n$ has vertex set $Q^n$ and edges joining configurations differing in one coordinate. A perfect matching partitions its vertices into edges.
+
+\begin{proposition}[Blind maps are labeled matchings]
+\label{prop:matching}
+Blind binary output maps on $n$ boxes are in bijection with perfect matchings of $\mathcal Q_n$ whose edges each carry an arbitrary label in $\{0,1\}$. If $M_n$ is the number of perfect matchings, the number of blind output maps is
+\[
+ B_n=2^{2^{n-1}}M_n.
+\]
+Every such map succeeds at exactly $2^{n-1}$ configurations.
+\end{proposition}
+\begin{proof}
+If $\tau(x)=(i,a)$, blindness pairs $x$ with the configuration obtained by flipping its $i$th coordinate, giving both vertices the same target direction $i$ and guess label $a$. This pairing is an involution without fixed points, hence a perfect matching. Conversely, a matching and its labels specify a blind output map by using the edge direction as target and its label as guess. Each edge has exactly one endpoint whose target bit equals its label. There are $2^{n-1}$ edges.
+\end{proof}
+
+This is a statement about extensional output maps, not about descriptions of programs. Different decision trees can compute the same map.
+
+\begin{definition}[Recursively sliceable matching]
+The unique matching of a one-dimensional cube is \emph{sliceable}. For $n\ge2$, a matching is sliceable if there is a coordinate $k$ such that it has no edge in direction $k$ and the induced matchings in both faces $x_k=0$ and $x_k=1$ are sliceable. Coordinates retain their labels during restriction.
+\end{definition}
+
+\begin{theorem}[Exact executability criterion]
+\label{thm:slice}
+A blind binary output map on finitely many boxes is realizable by a deterministic decision tree that never queries its eventual target if and only if its underlying matching is sliceable. The choice of guess labels does not affect realizability.
+\end{theorem}
+\begin{proof}
+A sliceable matching supplies a decision tree recursively: query a slicing coordinate and continue in the observed face. At a final one-dimensional face, its unique coordinate is still unread; output that coordinate and the label of its edge. This works for every assignment of labels.
+
+Conversely, start with a legal decision tree. Repeated queries can be deleted. If a leaf is reached with more than one unread coordinate, its target is one of them. Refine that leaf by querying all the other unread coordinates and leave the target unread. Its prescribed output remains unchanged. The resulting tree ends at one-dimensional faces. Its first query $k$ can be no eventual target, so the matching has no edge in direction $k$. The two restricted trees realize the induced face matchings. Induction on dimension proves sliceability.
+
+A tree that initially makes no query is handled by the same refinement: its constant target is left unread while the other coordinates are queried. Thus the argument covers early stopping as well as full-depth trees.
+\end{proof}
+
+\begin{lemma}[Restriction lemma]
+\label{lem:restriction}
+If a sliceable matching has no edges in any of a specified set $K$ of coordinate directions, its restriction to every face obtained by fixing the coordinates of $K$ is sliceable, provided that face has positive dimension.
+\end{lemma}
+\begin{proof}
+Use its legal decision tree and substitute the fixed values for queries in $K$, deleting those query nodes. Since none of these coordinates is ever a target, the resulting restricted tree is still legal. Apply Theorem~\ref{thm:slice}.
+\end{proof}
+
+\subsection{The first failure of the blindness converse}
+
+For $n\le3$, every cube matching is sliceable. For $n=2,3$, the number of matching edges crossing each coordinate cut is even: each half contains $2^{n-1}$ vertices, and internal matching edges cover them in pairs. A matching of $\mathcal Q_2$ has two edges and one of $\mathcal Q_3$ has four. Consequently they cannot use every coordinate direction. Split along a missing direction and proceed inductively.
+
+At dimension four consider the matching below. Vertices are shown as integers; coordinate $i$ is bit $i$, with bit zero least significant.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Edge & $(0,1)$ & $(2,3)$ & $(4,6)$ & $(5,13)$ \\
+Direction & $0$ & $0$ & $1$ & $3$ \\
+\midrule
+Edge & $(7,15)$ & $(8,12)$ & $(9,11)$ & $(10,14)$ \\
+Direction & $3$ & $2$ & $1$ & $2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Every vertex occurs exactly once, and all four coordinate directions occur. Label every edge zero. The resulting map is blind but cannot be executed: whatever the first queried coordinate is, it is the final target on some configuration. Making no query cannot implement a map whose target varies. This proves a sharp four-box separation, independently of the enumeration below.
+
+\section{Exact enumeration of executable maps}
+\label{sec:enumeration}
+
+Let $F_n$ count sliceable matchings of the labeled cube $\mathcal Q_n$. Put $F_0=0$ as an auxiliary convention and $F_1=1$.
+
+\begin{theorem}[Inclusion--exclusion recurrence]
+\label{thm:recurrence}
+For every $n\ge2$,
+\begin{equation}
+ F_n=\sum_{k=1}^{n-1}(-1)^{k+1}\binom nk F_{n-k}^{\,2^k}.
+ \label{eq:recurrence}
+\end{equation}
+The number of distinct legal binary output maps is
+\begin{equation}
+ L_n=2^{2^{n-1}}F_n.
+ \label{eq:legalcount}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For each coordinate $i$, let $A_i$ be the class of matchings that can be sliced first in direction $i$. Then $F_n=|\bigcup_i A_i|$. For a set $K$ of $k<n$ possible first coordinates, the intersection $\bigcap_{i\in K}A_i$ consists exactly of independent choices of sliceable matchings on the $2^k$ faces obtained by fixing $K$.
+
+One direction follows from Lemma~\ref{lem:restriction}. In the other direction, given the matchings on those faces, one may first query any chosen coordinate of $K$, query the remaining coordinates of $K$, and then execute the supplied face tree. Thus
+\[
+ \left|\bigcap_{i\in K}A_i\right|=F_{n-k}^{2^k}.
+\]
+The intersection for all $n$ coordinates is empty because no matching edge direction could remain. Inclusion--exclusion proves \eqref{eq:recurrence}. Arbitrary edge labels are permitted by Theorem~\ref{thm:slice}, proving \eqref{eq:legalcount}.
+\end{proof}
+
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$n$ & $F_n$ & $M_n$ & Legal output maps $L_n$ & Blind output maps $B_n$\\
+\midrule
+1 & 1 & 1 & 2 & 2\\
+2 & 2 & 2 & 8 & 8\\
+3 & 9 & 9 & 144 & 144\\
+4 & 232 & 272 & 59\,392 & 69\,632\\
+5 & 206\,065 & 589\,185 & $2^{16}F_5$ & $2^{16}M_5$\\
+6 & 212\,181\,312\,096 & --- & $2^{32}F_6$ & ---\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The $M_n$ entries agree with A005271 \cite{OEIS} and were recomputed here by exact enumeration or a permanent dynamic program through $n=5$. The row $n=6$ intentionally does not import an unverified larger enumeration into the certificate calculation.
+
+For $n=4$, a matching is nonsliceable precisely when it uses all four directions, since every three-dimensional matching is sliceable. Inclusion--exclusion gives the number of such matchings as
+\[
+ 272-4\cdot9^2+6\cdot2^4-4\cdot1^8=40.
+\]
+Hence exactly $40\cdot2^8=10\,240$ blind four-box output maps are not executable.
+
+\subsection{The $q$-ary version}
+For a general alphabet $Q$, replace cube edges by full coordinate lines of length $q$. Blind output maps correspond to partitions of $Q^n$ into such lines with one guess label per line. The decision-tree proof is unchanged, with $q$ children at each query. If $F_n^{(q)}$ counts recursively sliceable line partitions, then
+\begin{equation}
+ F_1^{(q)}=1,\qquad
+ F_n^{(q)}=\sum_{k=1}^{n-1}(-1)^{k+1}\binom nk
+                     \left(F_{n-k}^{(q)}\right)^{q^k}.
+ \label{eq:qrecurrence}
+\end{equation}
+There are $q^{q^{n-1}}F_n^{(q)}$ legal output maps. In particular, the ternary values begin
+\[
+ 1,\quad2,\quad21,\quad33976,\quad188162675402345.
+\]
+This counts maps, not trees, so alternative query orders are not counted multiple times.
+
+\section{All-orders asymptotics for sliceable matchings}
+\label{sec:asymptotics}
+
+We now concentrate on the binary sequence $F_n$. Its doubly exponential scale is natural because an initial query creates two independent subproblems. The inclusion--exclusion terms encode overlaps between alternative initial queries.
+
+\begin{theorem}[Full inverse-power expansion]
+\label{thm:asymptotic}
+There is a positive constant
+\begin{equation}
+ \gamma=\lim_{n\to\infty}2^{-n}\log F_n
+        =\sum_{k=2}^\infty 2^{-k}\log r_k,
+ \qquad r_k=\frac{F_k}{F_{k-1}^2},
+ \label{eq:gamma}
+\end{equation}
+such that, for every integer $N\ge1$, there are rational coefficients $c_1,\ldots,c_N$ satisfying
+\begin{equation}
+ \log F_n=\gamma2^n-\log n+
+           \sum_{j=1}^N\frac{c_j}{n^j}+O(n^{-N-1}).
+ \label{eq:logasympt}
+\end{equation}
+The coefficients are recursively computable. The first terms are
+\begin{align}
+ \log F_n
+ &=\gamma2^n-\log n-\frac{3}{2n}
+        +\frac{25}{8n^2}-\frac{27}{4n^3}+O(n^{-4}),
+ \label{eq:logfirst}\\
+ F_n
+ &=\frac{e^{\gamma2^n}}{n}
+       \left(1-\frac{3}{2n}+\frac{17}{4n^2}
+                       -\frac{12}{n^3}+O(n^{-4})\right).
+ \label{eq:ffirst}
+\end{align}
+\end{theorem}
+
+\subsection{Ratio bounds and existence of the growth constant}
+By the union bound and the first two Bonferroni bounds for the sets $A_i$ in the proof of Theorem~\ref{thm:recurrence},
+\begin{equation}
+ nF_{n-1}^2-\binom n2F_{n-2}^4
+       \le F_n\le nF_{n-1}^2.
+ \label{eq:bonf2}
+\end{equation}
+Also $F_n\ge F_{n-1}^2$ by choosing one specified first coordinate. Thus $1\le r_n\le n$. In fact,
+\begin{equation}
+ \frac n2\le r_n\le n\quad(n\ge2),\qquad
+ \frac{r_n}{n}\ge1-\frac{2}{n-1}\quad(n\ge5).
+ \label{eq:rbound}
+\end{equation}
+The first inequality is checked directly at $n=2,3,4$. If it holds at $n-1$, then \eqref{eq:bonf2} gives
+\[
+ r_n\ge n\left(1-\frac{n-1}{2r_{n-1}^2}\right)
+      \ge n\left(1-\frac2{n-1}\right)\ge\frac n2
+\]
+for $n\ge5$, proving the induction and the second assertion.
+
+Since
+\[
+ 2^{-n}\log F_n-2^{-(n-1)}\log F_{n-1}=2^{-n}\log r_n,
+\]
+the scaled logarithms increase and are bounded by the convergent series $\sum_{n\ge2}2^{-n}\log n$. This proves \eqref{eq:gamma}; positivity follows already from $F_2=2$. It also gives the exact tail identity
+\begin{equation}
+ \gamma2^n-\log F_n=\sum_{j=1}^\infty2^{-j}\log r_{n+j}.
+ \label{eq:tail}
+\end{equation}
+
+\subsection{The first correction terms}
+The next Bonferroni term bounds the error in \eqref{eq:bonf2} by $\binom n3F_{n-3}^8$. Dividing by $nF_{n-1}^2$ and using \eqref{eq:rbound} yields
+\begin{equation}
+ \frac{r_n}{n}=1-\frac{n-1}{2r_{n-1}^2}+O(n^{-4}).
+ \label{eq:ratioapprox}
+\end{equation}
+For clarity, the normalized triple-intersection term is
+\[
+ \frac{\binom n3}{n\,r_{n-1}^2r_{n-2}^4}=O(n^{-4}).
+\]
+Starting with $r_n=n+O(1)$ from \eqref{eq:rbound}, repeated substitution into \eqref{eq:ratioapprox} improves the approximation one power at a time. It gives
+\begin{align}
+ r_n&=n-\frac12-\frac1n-\frac{23}{8n^2}+O(n^{-3}),
+ \label{eq:rfirst}\\
+ \log(r_n/n)&=-\frac1{2n}-\frac9{8n^2}-\frac{41}{12n^3}
+                     +O(n^{-4}).
+ \label{eq:logr}
+\end{align}
+For example, writing $r_{n-1}=n-\tfrac32-n^{-1}+O(n^{-2})$ gives
+\[
+ \frac{n-1}{2r_{n-1}^2}
+ =\frac1{2n}+\frac1{n^2}+\frac{23}{8n^3}+O(n^{-4}),
+\]
+which displays the coefficient that is most easily missed.
+
+Substitute \eqref{eq:logr} into \eqref{eq:tail}. The geometric moments
+\[
+ \sum_{j\ge1}\frac1{2^j}=1,\quad
+ \sum_{j\ge1}\frac j{2^j}=2,\quad
+ \sum_{j\ge1}\frac {j^2}{2^j}=6,\quad
+ \sum_{j\ge1}\frac {j^3}{2^j}=26
+\]
+give
+\[
+ \gamma2^n-\log F_n
+   =\log n+\frac{3}{2n}-\frac{25}{8n^2}
+                          +\frac{27}{4n^3}+O(n^{-4}).
+\]
+This proves \eqref{eq:logfirst}. Exponentiating gives \eqref{eq:ffirst}.
+
+\subsection{A coefficient algorithm and proof to every order}
+Put $z=1/n$. There is a unique formal power series
+$R(z)=1+\sum_{j\ge1}a_jz^j$ satisfying
+\begin{equation}
+ R(z)=\sum_{k\ge1}\frac{(-1)^{k+1}}{k!}\,
+ z^{\,2^k-k-1}
+ \frac{\displaystyle\prod_{h=0}^{k-1}(1-hz)}
+ {\displaystyle\prod_{j=1}^{k-1}
+   \left[(1-jz)R\left(\frac{z}{1-jz}\right)\right]^{2^j}}.
+ \label{eq:Rformal}
+\end{equation}
+The $k=1$ term is $1$. Every other term is divisible by $z$, and its coefficient of degree $d$ involves coefficients of $R$ of degree at most $d-1$. Also $2^k-k-1\to\infty$, so every coefficient receives contributions from only finitely many $k$. These observations prove existence, uniqueness, and rational computability coefficient by coefficient.
+
+To see that this is an asymptotic rather than merely a formal calculation, divide the exact recurrence by $nF_{n-1}^2$. For a fixed $k$, its normalized term is
+\begin{equation}
+ \frac{\binom nk}{n\prod_{j=1}^{k-1}r_{n-j}^{2^j}}
+                  =O\left(n^{\,k+1-2^k}\right).
+ \label{eq:termorder}
+\end{equation}
+The Bonferroni inequalities sandwich the exact answer between any two consecutive inclusion--exclusion truncations. Their difference is precisely the next intersection term, bounded by \eqref{eq:termorder}. Given any desired power of $1/n$, choose a fixed truncation long enough that this error is smaller. In the remaining finite expression, the dependence on an error in each shifted ratio is multiplied by at least one extra power of $1/n$. Starting with $r_n/n=1+O(n^{-1})$, induction therefore improves the error by one power at each step. This proves
+\[
+ r_n/n=R(1/n)+O(n^{-N-1})
+\]
+when $R$ is truncated at degree $N$.
+
+Finally define the formal series
+\begin{equation}
+ C(z)=-\sum_{j\ge1}2^{-j}
+      \left[\log(1+jz)+\log R\left(\frac z{1+jz}\right)\right].
+ \label{eq:Cformal}
+\end{equation}
+Each coefficient is a rational linear combination of geometric moments and is therefore well-defined and rational. Its coefficients are the $c_j$ in \eqref{eq:logasympt}. To justify termwise asymptotic expansion in \eqref{eq:tail}, split the sum at $j=n/2$. In the initial part, Taylor remainders are bounded by a constant times $(1+j)^{N+1}n^{-N-1}$ and are summable against $2^{-j}$. The remaining tail is exponentially small, using $r_{n+j}\le n+j$. This completes the all-orders proof.
+
+The exponents at which successive intersection sizes first enter are
+\[
+ 2^k-k-1=0,\ 1,\ 4,\ 11,\ 26,\ldots.
+\]
+Thus a high asymptotic order needs surprisingly few intersection types. This is an all-orders Poincar\'e expansion on a doubly exponential scale; no claim about beyond-all-orders terms is being made.
+
+\subsection{Effective bounds for the constant}
+For $N\ge4$, let $g_N=2^{-N}\log F_N$. From \eqref{eq:rbound}, \eqref{eq:tail}, and concavity of the logarithm,
+\begin{equation}
+\begin{split}
+ g_N+2^{-N}\left[\log(N+1)+\log\left(1-\frac2N\right)\right]
+ &\le\gamma\\
+ &\le g_N+2^{-N}\left[\log(N+1)+\frac1{N+1}\right].
+\end{split}
+\label{eq:gammabounds}
+\end{equation}
+For the upper bound, use
+$\log(N+j)\le\log(N+1)+(j-1)/(N+1)$ and sum. For the lower bound, use
+$r_{N+j}\ge(N+j)(1-2/(N+j-1))\ge(N+1)(1-2/N)$.
+
+The exact recurrence through $N=20$ gives rounded evaluations
+\[
+ 0.4381576906086384\ \lesssim\ \gamma\ \lesssim\ 0.4381578365013189.
+\]
+The proved statement is the symbolic enclosure \eqref{eq:gammabounds}; these displayed decimals are rounded evaluations, not an interval-arithmetic certificate. A rough corresponding base is $e^\gamma\approx1.54985$. The supplied checker records the exact recurrence data and the formulas used for the enclosure.
+
+\section{Executable blind maps are doubly exponentially rare}
+\label{sec:rarity}
+
+A small finite matching count already combines with the preceding analysis to give a uniform rarity theorem. Let $D_6$ count matchings of $\mathcal Q_6$ that omit at least one coordinate direction. A prescribed set of $k$ omitted directions separates the graph into $2^k$ independent copies of $\mathcal Q_{6-k}$, so
+\begin{align}
+ D_6
+ &=\sum_{k=1}^{5}(-1)^{k+1}\binom6k M_{6-k}^{2^k}\notag\\
+ &=2\,001\,589\,252\,896.
+ \label{eq:D6}
+\end{align}
+This calculation uses only $M_1,\ldots,M_5$, all recomputed by the accompanying exact program.
+
+\begin{theorem}[Explicit rarity bound]
+\label{thm:rarity}
+For $n\ge6$, the fraction of blind binary output maps that are executable satisfies
+\begin{equation}
+ \frac{L_n}{B_n}=\frac{F_n}{M_n}
+ <\frac2{n+1}
+ \left(\frac{10\,396\,884\,292\,704}
+            {12\,009\,535\,517\,376}\right)^{2^{n-6}}.
+ \label{eq:rarity}
+\end{equation}
+In particular, this fraction tends to zero doubly exponentially.
+\end{theorem}
+\begin{proof}
+Partition $\mathcal Q_n$ into $2^{n-6}$ six-dimensional faces and choose independently a matching counted by $D_6$ in each face. This gives
+$M_n\ge D_6^{2^{n-6}}$.
+
+From $r_{n+j}\ge(n+j)/2$ and \eqref{eq:tail},
+\[
+ F_n\le\frac2{n+1}e^{\gamma2^n}.
+\]
+Use the upper bound in \eqref{eq:gammabounds} at $N=6$ and the elementary strict inequality $e^{1/7}<7/6$ to obtain
+\[
+ e^{64\gamma}\le7F_6e^{1/7}<\frac{49F_6}{6}.
+\]
+Thus
+\[
+ \frac{F_n}{M_n}<\frac2{n+1}
+          \left(\frac{49F_6}{6D_6}\right)^{2^{n-6}}.
+\]
+The numerator and denominator in \eqref{eq:rarity} are exactly $49F_6$ and $6D_6$. Their strict order is an integer comparison, verified by the program. No numerical approximation to $\gamma$ is needed.
+\end{proof}
+
+This theorem concerns the uniform counting measure on extensional blind maps. It is not a claim about the frequency with which a particular programming language generates legal programs. It quantifies how weak the semantic blindness condition becomes as a substitute for actual executability.
+
+\section{How much does a coordinate budget reveal?}
+\label{sec:information}
+
+Return to arbitrary finite $q$, but now assume that $I$ is countable. This removes the variable-evaluation measurability obstruction. Let $\tau=(b,a)$ be blind and measurable, and regard $Q$ as the cyclic group $\mathbb Z/q\mathbb Z$. Define the residual
+\[
+ Z=x_{b(x)}-a(x)\pmod q.
+\]
+For $K\subseteq I$, let $X_K$ denote all values on $K$ and put $\rho_K=\mu_I(b\in K)$. Entropies use natural logarithms.
+
+\begin{theorem}[Sharp information-budget inequalities]
+\label{thm:information}
+The random variable $Z$ is uniform on $Q$. For every measurable estimator $g(X_K)$,
+\begin{align}
+ \Prb(g(X_K)=Z)&\le\frac1q+\left(1-\frac1q\right)\rho_K,
+ \label{eq:accuracy}\\
+ H(Z\mid X_K)&\ge(1-\rho_K)\log q,
+ \label{eq:entropy}\\
+ I(Z;X_K)&\le\rho_K\log q.
+ \label{eq:mutual}
+\end{align}
+For $q=2$ and every event $A$ determined by $X_K$,
+\begin{equation}
+ \mu_I(E_\tau\mathbin\triangle A)\ge\tfrac12\mu_I(b\notin K).
+ \label{eq:approximation}
+\end{equation}
+\end{theorem}
+\begin{proof}
+For a fixed $i\notin K$ and $c\in Q$, the fiber $\{b=i,a=c\}$ is measurable and independent of the value at $i$ in the pointwise invariance sense. Intersecting it with an event determined by $X_K$ preserves that invariance. Integration in coordinate $i$ therefore gives, for every $z\in Q$ and every such event $D$,
+\[
+ \Prb(D,b=i,a=c,Z=z)=\frac1q\Prb(D,b=i,a=c).
+\]
+Sum over $i\notin K$ and $c$. Conditional on $X_K$, the contribution of the external-target case is exactly a uniform subprobability of mass $1-p(X_K)$, where
+\[
+ p(X_K)=\Prb(b\in K\mid X_K).
+\]
+Consequently the conditional law of $Z$ has the form
+\[
+ (1-p(X_K))\,U_q+p(X_K)\,\eta_{X_K},
+\]
+where $\eta_{X_K}$ is some probability on $Q$ whenever $p>0$. Each point mass is at most $(1-p)/q+p$, proving \eqref{eq:accuracy}. Concavity and nonnegativity of finite entropy give conditional entropy at least $(1-p)\log q$, proving \eqref{eq:entropy} after integration.
+
+Taking $K=\varnothing$ proves that $Z$ is uniform, so $H(Z)=\log q$ and \eqref{eq:mutual} follows. When $q=2$, on the external-target case the conditional probability of either success or failure is $1/2$. Hence
+\[
+ \mu_I((E_\tau\mathbin\triangle A)\cap\{b\notin K\})
+       =\tfrac12\mu_I(b\notin K),
+\]
+which implies \eqref{eq:approximation}.
+\end{proof}
+
+\begin{example}[Sharpness]
+Take two data coordinates $i_{\rm in}\in K$ and $i_{\rm out}\notin K$, plus a control block inside $K$ disjoint from both. The player reads only the control block. On a control event of probability $\rho$, it chooses $i_{\rm in}$; otherwise it chooses $i_{\rm out}$. It always guesses zero. Conditional on $X_K$, the residual is known exactly on the first case and is uniform on the second. Thus all three bounds \eqref{eq:accuracy}--\eqref{eq:mutual} are attained. A countable fair control block permits any $\rho\in[0,1]$, by comparison of its base-$q$ real with a threshold; finite control blocks give the corresponding $q$-adic probabilities.
+\end{example}
+
+These inequalities quantify an observer's information about the outcome, not the player's information while running the strategy. In the example, the observer's set $K$ contains a coordinate that the player deliberately leaves unopened. For finite $K$, \eqref{eq:approximation} gives a direct lower bound on the error of any finite-coordinate approximation to the success event.
+
+\section{Effective finite certificates and the Busy Beaver barrier}
+\label{sec:computability}
+
+\subsection{Finite averaging without measure theory}
+For a blind map on $Q^n$, its fibers are unions of full lines in the selected coordinate, with one successful point per $q$-point line. Therefore
+\begin{equation}
+ \sum_{x\in Q^n}\ind_{E_\tau}(x)=q^{n-1}.
+ \label{eq:finiteaverage}
+\end{equation}
+For $m$ players, the total of all scores is $mq^{n-1}$. Some configuration has score at most $\floor{m/q}$. This is an integer identity amenable to a small exact checker.
+
+A finite output-table certificate consists of $q,n,m$, the output pair for each player on each configuration in lexicographic order, and optionally a proposed counterexample configuration. The checker verifies dimensions and ranges, condition \eqref{eq:blind} for every one-coordinate replacement, and the exact score. A theorem connecting accepted tables to actual programs is a separate obligation: blind tables alone need not be executable, as the four-box example demonstrates.
+
+\subsection{Total oracle strategies have finite certificates}
+
+\begin{theorem}[Uniform extraction under a totality promise]
+\label{thm:extract}
+Given programs for finitely many deterministic oracle strategies on $Q^\N$, promised to halt on every oracle and never to query their eventual targets, there is a uniform partial algorithm that halts on every such promised input and returns a finite prefix $\sigma$ whose every extension gives team score at most $\floor{m/q}$.
+\end{theorem}
+\begin{proof}
+First prove existence of a finite common horizon. Every individual halting run reads finitely many coordinates, has a finite running time, and outputs a finite target index. All oracles agreeing on its queried coordinates produce the same run and output. These finite-coordinate neighborhoods cover $Q^\N$. Compactness supplies a finite subcover, and hence finite common bounds on queried indices, target indices, and running time. Repeat for the finitely many players and take maxima.
+
+The bounds can be found effectively under the promise. Search over pairs $(L,T)$ of positive integers. For each of the $q^L$ prefixes, simulate every player for at most $T$ steps. Reject the candidate bounds if any simulation asks for a coordinate outside $\{0,\ldots,L-1\}$, fails to halt within $T$, or outputs a target at least $L$. A sufficiently large pair passes by the preceding argument.
+
+The accepted simulations produce finite output tables on $Q^L$. They are blind because the original programs are legal. By \eqref{eq:finiteaverage}, exhaustive search finds a prefix with score at most $\floor{m/q}$. Every extension produces the same runs and the same target values, since all targets lie within the prefix. Return that prefix.
+\end{proof}
+
+The promise is substantive. This theorem is not a decision procedure for whether arbitrary oracle programs are total or legal. It also makes no useful polynomial or elementary running-time claim.
+
+\begin{theorem}[No computable length bound for the horizon]
+\label{thm:bb}
+For any effective programming formalism supporting ordinary Turing simulation, no total computable function of program length bounds the necessary input horizon of every total legal oracle strategy. This remains true for strategies that make no oracle queries.
+\end{theorem}
+\begin{proof}
+Given a program $P$, compile a strategy $S_P$ that simulates $P$ on blank input, counts its steps, and, if $P$ halts after $t$ steps, outputs target $t+1$ and guess zero. The strategy makes no queries. Whenever $P$ halts, $S_P$ is total and legal, and a horizon including its target must be at least $t+2$.
+
+Suppose a total computable bound $f$ existed. The length of the compiled program $S_P$ is computable from $P$. If $P$ halts, it must do so before the computable bound $f(|S_P|)$. Simulate $P$ for that many steps: a failure to halt would establish that it never halts. This would decide the halting problem, a contradiction.
+\end{proof}
+
+For an encoding equipped with an additive-overhead simulation compiler, this argument can be expressed as
+\[
+ H(n+c)\ge\operatorname{BB}_{\rm time}(n)+2,
+\]
+where $H$ is the maximum horizon over total strategies of length at most its argument and $\operatorname{BB}_{\rm time}$ is a \emph{program-length running-time} Busy Beaver function. The compiler and encoding are hypotheses of this sharpened comparison. This is not the same numerical function as an $n$-state Rado printing-score Busy Beaver function. The distinction mirrors the explicit separation between machine semantics, maxima, and compiler assumptions in the inspected \repo\ core \cite{BusyBeaver}.
+
+\section{Executed checks and reproducibility}
+\label{sec:checks}
+
+The accompanying program \texttt{verify\_certificates.py} uses only the Python standard library. It validates the four-box nonrealizable matching, recomputes every cube matching through dimension four, checks sliceability independently against the recurrence, and recomputes $M_5$ by an exact permanent dynamic program.
+
+For the latter, bipartition the cube into even- and odd-parity vertices. Process even vertices in a fixed order, and use the bit mask of already matched odd vertices as a state. The recurrence sums over unused adjacent odd vertices. At dimension five there are only $2^{16}$ possible masks, rather than a search through all permutations. The result is $M_5=589185$.
+
+The program also enumerates all $4^4=256$ two-box output tables, finding exactly eight blind ones. For all ordered teams of one through four such tables it checks \eqref{eq:finiteaverage} and the sharp minimax bound. The resulting counts by minimum score are:
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+Players & Ordered teams & Minimum $0$ & Minimum $1$ & Minimum $2$\\
+\midrule
+1 & 8 & 8 & 0 & 0\\
+2 & 64 & 52 & 12 & 0\\
+3 & 512 & 236 & 276 & 0\\
+4 & 4096 & 988 & 2784 & 324\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+An additional explicit three-box team has player $p$ target coordinate $p$ and guess $1-x_{p+1\bmod3}$. Each player reads one other coordinate. Its score is zero on $000$ and $111$, and two on the other six configurations. Thus its probability of at least two successes is $3/4$, attaining the first-moment upper bound $(3/2)/2$. This average-case fact does not contradict its failure to guarantee two successes.
+
+The checker further validates 1,320 balanced-list constructions: $2\le q\le12$, $1\le r<q$, and $1\le m\le20$. It computes $F_n$ through $n=20$, verifies the exact integer comparison used in Theorem~\ref{thm:rarity}, and records rounded evaluations of \eqref{eq:gammabounds}. The separate script \texttt{formal\_series.py} verifies the formal fixed-point identity and computes the coefficients of \eqref{eq:Rformal} and \eqref{eq:Cformal} through degree ten, using exact rational arithmetic. It independently checks the displayed coefficients; the next multiplicative coefficient after those in \eqref{eq:ffirst} is $2677/48$.
+
+\begin{resultbox}
+\textbf{Verification boundary.} All these finite tests were executed successfully. They are exact arithmetic checks except for explicitly labeled decimal evaluations of logarithms. They are not a proof-assistant verification of the infinite theorems, nor do they replace the proofs of the recurrence and asymptotic remainder estimates.
+\end{resultbox}
+
+\section{Foundations and a concrete ProveIt integration plan}
+\label{sec:foundations}
+
+\subsection{Set-sized objects and explicit ambient axioms}
+All configuration spaces in this note are sets $Q^I$ for set-sized $I$. The index space $\N\sqcup2^\N$, the set of strategies, and the $\sigma$-algebras used in the proofs are sets. No class of all ordinals, all surreal numbers, or all sets is being treated as a measurable sample space.
+
+The measure-theoretic development is given in ordinary classical mathematics, with ZFC as a sufficient ambient theory. The uses of countable support, product probability, null-set completion, Radon--Nikodym, and compactness are stated explicitly. No equivalence with ZF, ZF plus dependent choice, or a subsystem of arithmetic has been proved here. In particular, the proof should not be transported into a choiceless model merely by reusing the same notation.
+
+The finite counting and certificate results do not use an uncountable probability space. Their proofs employ finite sets, induction, and integer arithmetic. The asymptotic theorem adds real analysis of an explicit integer recurrence. These layers can therefore be formalized separately, instead of requiring the entire continuum theory before checking a finite certificate.
+
+\subsection{Relevant inspected repository interfaces}
+The pinned Busy Beaver core explicitly separates a Rado-style machine representation and score maxima from the compiler interface used in domination arguments \cite{BusyBeaver}. This is the right model for Theorem~\ref{thm:bb}: first state which programming model and size measure are used, then prove or assume the appropriate compilation theorem.
+
+The finite-list-coding README documents validity guards, unique decoding, round-trip properties, and genuine first-order arithmetic predicates \cite{ListCoding}. These are suitable interfaces for encoding output tables and finite computation histories. A malformed table must not become a meaningful object just because a total decoder supplies a default value.
+
+The closure-axiomatization README distinguishes semantic directions from a deductive-equivalence layer built on a first-order calculus \cite{Closure}. That distinction is relevant to the eventual weak-foundation audit: a theorem proved in an ambient Lean type theory is not automatically a theorem that a specified first-order set theory proves internally. These are descriptions of inspected source interfaces, not a claim that the entire repository was rebuilt during this task.
+
+\subsection{Suggested modules and proof obligations}
+A practical implementation would start with four small mathematical modules rather than a monolithic formalization.
+
+\paragraph{Finite blind maps.}
+Define a table on functions $\mathrm{Fin}(n)\to\mathrm{Fin}(q)$, a coordinate-update operation, and predicate \eqref{eq:blind}. Prove the finite identity \eqref{eq:finiteaverage}, then its team bound. A Boolean checker needs a reflection theorem equating acceptance with the mathematical predicate.
+
+\paragraph{Decision trees and partitions.}
+Give queries and leaves an operational semantics with an explicit set of previously queried coordinates. Prove that legal executions induce blind maps. Formalize the matching or line-partition correspondence, the leaf-refinement argument, and the sliceability equivalence. The four-box example is a regression test against accidentally declaring the converse of blindness to be automatic.
+
+\paragraph{Enumeration and asymptotics.}
+Prove the intersection formula for first-query classes before deriving inclusion--exclusion. Treat $F_n$ as the cardinality of an explicit finite family, then prove the recurrence agrees with the numerical evaluator. The exact rarity bound can be checked before the all-orders asymptotic theorem, since it needs only ratio inequalities and finite constants.
+
+\paragraph{Countable support and probability.}
+State the measurable codomain assumptions explicitly, establish the countable-support factorization, and prove finite-coordinate integration lemmas. The fresh replacement construction then supplies a measurable-space extension with a pushforward measure. The diagonal counterexample should be formalized before any automatic rule for evaluating a process at a random index is trusted.
+
+No Lean source claiming these new theorems as already established is included. The supplied code is a working computational companion, while this section specifies the remaining proof-assistant work.
+
+\section{Further research questions and topics}
+\label{sec:questions}
+
+The first question below is a question from Glazer's paper. The others are precisely formulated directions suggested by this note; they are not all claimed to be previously recognized open problems.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=2.7em,itemsep=0.65em]
+\item \textbf{The unrestricted choiceless continuum problem.}
+Determine the ZF status of the three-player binary continuum game posed in \cite{GlazerBox}. A relevant next step is to compare any proposed strategy with the exact output-regularity obstruction here, without imposing measurability by assumption.
+
+\item \textbf{Larger measurable structures.}
+Which versions of Theorem~\ref{thm:minimax} remain true when cylinder measurability is replaced by full product-topology Borel measurability, the Baire property, or universal measurability? Each proposed replacement must specify the ambient measurable or topological structure on both configurations and target labels.
+
+\item \textbf{Weak foundational strength.}
+Determine the weakest explicit choice and comprehension principles sufficient for the countable-support minimax proof. Separate a theorem about coded measurable maps from a theorem quantifying over all members of an abstract generated $\sigma$-algebra.
+
+\item \textbf{Universal fair extensions.}
+Theorem~\ref{thm:fresh} handles countably many output maps at once. Is there a useful maximal class of uncountably many maps whose success events admit a simultaneous countably additive fair extension? Which extra conditional-independence requirements obstruct such an extension?
+
+\item \textbf{Joint extension classification.}
+For a finite team, characterize all extensions of the product measure to its success events, including their possible joint distributions. The single-event density classification in Theorem~\ref{thm:classification} suggests a finite-family theory with pointwise compatibility constraints.
+
+\item \textbf{$q$-ary decision-tree asymptotics.}
+Starting from \eqref{eq:qrecurrence}, derive a uniform-in-$q$ expansion, identify the appropriate polynomial prefactor, and compare different alphabets. The fixed-$q$ ratio method is a starting point, but uniformity in a growing alphabet is a separate problem.
+
+\item \textbf{Beyond inverse powers.}
+Investigate the remainder after optimal truncation of \eqref{eq:logasympt}, and whether the sparse intersection orders $2^k-k-1$ govern identifiable smaller asymptotic scales. The all-orders result here does not settle such questions.
+
+\item \textbf{Structural enumeration and database identification.}
+Identify the sliceable-matching sequence in the wider literature on decision-tree partitions, and determine whether an existing OEIS entry records it under another interpretation. Investigate symmetries, unlabeled versions, and counts refined by the set of permissible first queries.
+
+\item \textbf{Optimal average-case teamwork.}
+For fixed $(m,q,n)$, determine the largest probability of at least $t$ successes over legal decision trees. Compare it with the larger class of blind maps and locate the first parameter values where the optima differ. The exact $3/4$ binary example gives a small benchmark.
+
+\item \textbf{Complexity of realizability.}
+Given a succinct blind output map, what is the complexity of deciding whether it is executable? How does the answer change for an explicit truth table, a Boolean circuit, a matching list, or an oracle program with a supplied totality certificate?
+
+\item \textbf{Sharper information costs.}
+Refine Theorem~\ref{thm:information} when observation sets are adaptive, observation costs are nonuniform, or the box law has correlations. The product-law proof identifies precisely which missing-coordinate integration identity needs replacement.
+
+\item \textbf{Kernel-checked certificate compilation.}
+Implement the finite reflection theorem and the decision-tree-to-table compiler, then connect the oracle horizon theorem to a formally specified machine model. Track compiler size and time overhead rather than asserting an encoding-independent Busy Beaver comparison.
+\end{enumerate}
+
+\section{Conclusion}
+
+Two distinct mistakes are exposed by this analysis. On uncountable products, a measurable choice of target does not ensure a measurable success event. On finite products, invariance under changing the target does not ensure that the output rule can be executed without querying it.
+
+The first distinction leads to an exact measurable-output minimax theorem, a simultaneous fair extension, and a sharp countable-target obstruction. The second leads to a combinatorial classification, a closed recurrence for extensional legal rules, an all-orders asymptotic expansion, and a quantitative rarity theorem. These are complementary rather than competing explanations: regularity limits which infinite outcomes can be assigned probabilities, while executability limits which finite semantic maps are operationally meaningful.
+
+The next verification milestone is not another numerical experiment. It is a kernel-checked bridge from a legal decision tree to an accepted finite table, followed by the sliceability and inclusion--exclusion theorems. That would turn the strongest finite results of this note into reusable components in \repo, while leaving the genuinely set-theoretic questions visible and separate.
+
+\appendix
+\section{Assumption and claim ledger}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.27\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}>{\raggedright\arraybackslash}p{0.32\textwidth}}
+\toprule
+Result & Main hypotheses & Verification and scope\\
+\midrule
+\endhead
+Sharp minimax & Standard Borel targets; cylinder-measurable blind output maps; finite alphabet and team & Full proof; success-event measurability not assumed.\\[4pt]
+Fair extension & Same output regularity; countable team & Full construction; marginal fairness, not independence or uniqueness.\\[4pt]
+Target collapse & Blindness; cylinder-measurable success, or completed measurability & Full proof; output-map measurability not assumed.\\[4pt]
+Diagonal example & Tagged continuum of targets; cylinder product probability & Full proof of inner/outer measures and extension classification.\\[4pt]
+Sliceability & Finite deterministic query model; binary outputs & Full equivalence proof; finite counterexample checked.\\[4pt]
+Enumeration & Extensional output maps, not program descriptions & Recurrence proved; matching counts independently checked through dimension four.\\[4pt]
+All-orders expansion & Explicit recurrence; ordinary real analysis & Remainder argument supplied; rational coefficients computed separately.\\[4pt]
+Rarity & Exact counts $M_1,\ldots,M_5$ and ratio inequalities & Counts recomputed; final comparison is exact integer arithmetic.\\[4pt]
+Oracle extraction & Totality and legality on every oracle are promises & Existence and uniform partial algorithm proved; no practical complexity bound.\\[4pt]
+Busy Beaver comparison & Specified encoding and simulation interface & Uncomputable horizon theorem proved; additive-overhead inequality conditional on its stated compiler.\\
+\bottomrule
+\end{longtable}
+
+\section{Source and priority audit}
+The mathematical anchor is the full text of \cite{GlazerBox}, including its final continuum-box question, inspected also as a rendered PDF page. The original \L o\'s--Marczewski article was inspected as scanned pages; its general extension theory is credited, while the special density classification here is proved directly. The OEIS A005271 entry was inspected for the identity of the all-matching sequence, not as a substitute for the executed small counts.
+
+Repository files were read at the pinned commit, especially the initial machine and compiler description in the Busy Beaver core, the finite-list coding README, and the closure-axiomatization README. No repository-wide build was run, and no repository files were modified.
+
+The LinkedIn page was not fully accessible; research interests were instead anchored in authored papers and the author profile in \cite{GlazerProfile}. A complete dissertation-level priority comparison was not obtained, and exact-sequence searches did not establish whether the sliceable sequence already has a separate catalog entry. Consequently this note makes no claim of exhaustive literature coverage, no assertion that its formulations are historically first, and no assertion that the original unrestricted problem remains unresolved everywhere as of the preparation date.
+
+\begin{thebibliography}{10}
+\bibitem{GlazerBox}
+Elliot Glazer, \emph{A choiceless box game paradox}, arXiv:2211.10474, submitted 2022; inspected PDF dated January 9, 2023. \url{https://arxiv.org/abs/2211.10474}.
+
+\bibitem{GlazerChoice}
+Elliot Glazer, \emph{Global choice is not conservative over local choice for Zermelo set theory}, arXiv:2312.11902. \url{https://arxiv.org/abs/2312.11902}.
+
+\bibitem{GlazerProfile}
+Tamay Besiroglu, Elliot Glazer, and Caroline Falkman Olsson,
+\emph{FrontierMath competition: Setting benchmarks for AI evaluation}, January 16, 2025, updated March 18, 2025; author profile of Elliot Glazer.
+\url{https://samaritan-research.org/blog/frontiermath-competition-setting-benchmarks-for-ai-evaluation}.
+
+\bibitem{LosMarczewski}
+J. \L o\'s and E. Marczewski, \emph{Extensions of measure}, Fundamenta Mathematicae \textbf{36} (1949), 267--276.
+Catalog: \url{https://eudml.org/doc/213194}.
+Inspected scan: \url{https://scispace.com/pdf/extensions-of-measure-v0jwsbilmx.pdf}.
+
+\bibitem{OEIS}
+The OEIS Foundation, \emph{A005271: Number of perfect matchings in $n$-cube}. \url{https://oeis.org/A005271}. Accessed October 3, 2026.
+
+\bibitem{ProveIt}
+Vladimir Reshetnikov, \emph{ProveIt}, repository snapshot \commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{BusyBeaver}
+\repo\ contributors, \emph{BusyBeaver/Core.lean}, at the snapshot in \cite{ProveIt}, particularly its introductory machine/maximum/compiler interface and coordinate read/write lemmas.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6fef5383b126be343cccc9baf47081ef37ab5afe/Computability/BusyBeaver/Lean/BusyBeaver/Core.lean}.
+
+\bibitem{ListCoding}
+\repo\ contributors, \emph{Coding finite lists in Peano arithmetic}, project README at the snapshot in \cite{ProveIt}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6fef5383b126be343cccc9baf47081ef37ab5afe/Logic/PeanoArithmetic/ListCoding/README.md}.
+
+\bibitem{Closure}
+\repo\ contributors, \emph{Closure axiomatization of set theory}, project README at the snapshot in \cite{ProveIt}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/6fef5383b126be343cccc9baf47081ef37ab5afe/SetTheory/ClosureAxiomatization/README.md}.
+\end{thebibliography}
+\end{document}
