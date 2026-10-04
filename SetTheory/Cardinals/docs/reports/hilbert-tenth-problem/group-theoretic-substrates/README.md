@@ -1,16 +1,19 @@
 # Groups as Diophantine Substrates
 
-**Arithmetic van Kampen certificates, three commutative phases, pair order and affine matrix inputs: low-degree certificates through the integral Heisenberg group**
+**Arithmetic van Kampen certificates, three commutative phases, pair order, affine matrix inputs and a universal matrix semigroup: low-degree certificates through the integral Heisenberg group and free matrix groups**
 
-This is a research report dated 2 October 2026, built from four manuscripts
-of ProveIt's incoming reports: manuscripts 03 and 05 of batch 76 (Parts I
-and II) and manuscripts 09 and 13 of batch 78 (Parts III and IV). All four
-are AI-assisted research manuscripts "prepared for Vladimir Reshetnikov".
-They are called *source 03*, *source 05*, *source 06* and *source 07* after
-the file prefixes of their shipped programs and data. The batch-76 prefixes
-are those manuscripts' numbers; the batch-78 prefixes `06-` and `07-`
-continue this report's own sequence and are **not** batch-78 manuscript
-numbers.
+This is a research report dated 2–3 October 2026, built from five
+manuscripts of ProveIt's incoming reports: manuscripts 03 and 05 of batch 76
+(Parts I and II), manuscripts 09 and 13 of batch 78 (Parts III and IV) and
+manuscript 22 of batch 82 (Part V). All five are AI-assisted research
+manuscripts: the first four are "prepared for Vladimir Reshetnikov"; the
+fifth, "Research Report 32" of the pipeline that delivered batch 82, names
+no author ("Research construction and reproducibility report"). They are
+called *source 03*, *source 05*, *source 06*, *source 07* and *source 08*
+after the file prefixes of their shipped programs and data. The batch-76
+prefixes are those manuscripts' numbers; the prefixes `06-`, `07-` and `08-`
+continue this report's own sequence and are **not** batch-78 or batch-82
+manuscript numbers.
 
 | Source | Manuscript | Archive (arrival commit) | Pin | Placed | Printed as |
 |---|---|---|---|---|---|
@@ -18,38 +21,63 @@ numbers.
 | 05 | batch 76, manuscript 05 | `three_commutative_phases_research.zip` (`6914ccca6`); *Three Commutative Phases Are Diophantine-Universal: A fibre-preserving Heisenberg compiler and a proposed resolution of the three-subgroup problem*, main file `article.tex`, 22-page PDF | `433df1be3` | `2a04b60f2` | Part II (Sections 18–31) and Appendices D–F |
 | 06 | batch 78, manuscript 09 | `Order_Is_Not_a_Moment.zip` (`808b53ed8`); *Order Is Not a Moment: Exact Pair-Count Geometry and Diophantine Certificates for Heisenberg Computation*, main file `article.tex`, 26-page PDF | `4cccfa068` | `41e7f1189` | Part III (Sections 32–42) and Appendices H–I |
 | 07 | batch 78, manuscript 13 | `ProveIt_Affine_Matrix_Diophantine_Research.zip` (`48ee077c7`); *Affine Matrix Inputs and Diophantine Universality: Sharp rigidity, exact period bounds, and computation with existential witnesses*, main file `article.tex`, 25-page PDF | `4cccfa068` | `41e7f1189` | Part IV (Sections 43–60) |
+| 08 | batch 82, manuscript 22 ("Research Report 32") | `Universal_Matrix_Semigroup_and_Diophantine_Certificates_Package.zip` (`db37d18c8`); *A fixed universal matrix semigroup and bounded length Diophantine certificates*, main file `report32.tex`, 26-page PDF | none named | `2f58ab4e9` | Part V (Sections 61–75) and Appendices J–K |
 
 Full pins: `c58206ca101d4744a015a0f0104646109357d943` (03),
 `433df1be37188224dd00d0561bfb157949cd6320` (05),
 `4cccfa06866b6b81b2467e1cf7514ea85ed0216d` (06 and 07). All are ancestors of
-their placement commits. Appendix G of the article is the provenance.
+their placement commits. Source 08 names no ProveIt commit and cites no
+repository file; it identifies its numerical data by the SHA-256 of its
+coefficient file `core/data/semigroup.json` (shipped as
+`data/08-matrix-semigroup-core-data-semigroup.json`, byte for byte).
+Appendix G of the article is the provenance.
 
 Every result, proof, example, remark, limitation, research question and
-audit of the four manuscripts is printed. No two of them share a theorem,
-and none cites another. Source 03 treats a finitely presented group as a
-proof-producing substrate and uses the Heisenberg group as an *area
+audit of the five manuscripts is printed. No two of them share a theorem,
+except that the first half of source 08's Lemma 65.1 (the Sanov shears are
+free) is the injectivity half of Part I's Theorem 4.1 (Sanov), classical,
+printed in Part V as a second proof. None cites another. Source 03 treats
+a finitely presented group as a proof-producing substrate and uses the
+Heisenberg group as an *area
 detector*; source 05 treats an ordered product of three abelian subgroups
 of a Heisenberg power as the substrate and uses the Heisenberg group as the
 *ambient group*; source 06 treats a three-generator submonoid of a
 Heisenberg power and uses the group to *record order* (pair counts of
 words); source 07 asks how an ordinary integer input can be loaded into a
 fixed matrix subgroup, and uses the cyclic subgroup `⟨h(1,1,0)⟩` as its
-test. The shared setup — the integral Heisenberg group, its multiplication,
-inverse and power laws — is printed once, in Section 1.2, with two tables
-of the letters the Parts use differently (Tables 1 and 2).
+test; source 08 builds one fixed positive *semigroup* of 229 literal
+`SL_4(Z)` matrices whose membership problem simulates the Neary–Woods
+universal machine `U_{15,2}` on finite tapes, with a free-group *marker* in
+the lower block, and does not use the Heisenberg group. The shared setup —
+the integral Heisenberg group, its multiplication, inverse and power laws —
+is printed once, in Section 1.2, with three tables of the letters the Parts
+use differently (Tables 1–3).
 
 **Status: AI-assisted, unrefereed, not formalized.** Part II's main theorem
 is a **proposed resolution, unrefereed**, of a published open problem; its
 priority is not certified. Sources 06 and 07 state that their priority is
-not established either. Nothing in the report is formalized in Lean or
-Rocq.
+not established either; source 08 "makes no novelty or optimality claim".
+Part V's many-one r.e.-completeness is **conditional** on the cited
+Neary–Woods simulation chain (proved there only from finite `U_{15,2}`
+tapes onward). Nothing in the report is formalized in Lean or Rocq.
 
 ```
 article.tex                                          the report, standalone LaTeX with an internal bibliography
-article.pdf                                          the compiled report, 123 pages (unnumbered title page, then pages 1–122)
+article.pdf                                          the compiled report, 154 pages (unnumbered title page, then pages 1–153)
 README.md                                            this guide
 03-van-kampen-SOURCES.md                             source 03's dependency, provenance and novelty notes, as delivered
 07-affine-inputs-SOURCE_AUDIT.md                     source 07's source and claim audit, as delivered
+08-matrix-semigroup-SANITIZED_PROVENANCE.md          source 08's record of its documentation adaptations and omitted caches
+08-matrix-semigroup-core-PROOF.md                    core packet: proof of the fixed-semigroup reduction (rules, tiles, marker)
+08-matrix-semigroup-core-README.md                   core packet README (delivery names)
+08-matrix-semigroup-core-audit-REVIEW.md             core packet: independent mathematical review
+08-matrix-semigroup-core-loader-audit-U15_DEPENDENCY_AUDIT.md  the U15 finite-input and r.e.-completeness dependency audit (cites Reports 16 and 23)
+08-matrix-semigroup-fiber-PROOF.md                   fiber packet: proof of the exact fibre generating function
+08-matrix-semigroup-fiber-README.md                  fiber packet README (delivery names)
+08-matrix-semigroup-fiber-audit-REVIEW.md            fiber packet: independent review
+08-matrix-semigroup-paired-PROOF.md                  paired packet: proof of the bounded-length SOS family and its counts
+08-matrix-semigroup-paired-README.md                 paired packet README (delivery names)
+08-matrix-semigroup-paired-audit-REVIEW.md           paired packet: independent mathematical review
 code/03-van-kampen-van_kampen.py                     source 03's exact matrix routines, Sanov decoder and symbolic compilers (SymPy; patched by db3b377f0, see below)
 code/03-van-kampen-verify.py                         source 03's deterministic exact-arithmetic tests (imports van_kampen)
 code/05-three-phases-build.sh                        source 05's three-pass pdflatex script (delivered layout; see below)
@@ -59,6 +87,22 @@ code/06-pair-order-Makefile                          source 06's Makefile (deliv
 code/06-pair-order-pair_geometry.py                  source 06's gap constructions, corner decision, polynomial gadgets and quartic export (standard library)
 code/06-pair-order-verify.py                         source 06's finite checks; recomputes and compares with the bundled receipt (imports pair_geometry)
 code/07-affine-inputs-verify.py                      source 07's exact-arithmetic reference implementation and 91,142-case verification (standard library)
+code/08-matrix-semigroup-archive_release.py          source 08's release zipper/extractor (maintainer tool; needs the unshipped seals)
+code/08-matrix-semigroup-build_release_inventory.py  source 08's sealing tool (maintainer only; rewrites the seals and the verifier's self-pin)
+code/08-matrix-semigroup-build_report.sh             source 08's pdflatex script for report32.tex (not shipped; this report is the article)
+code/08-matrix-semigroup-core-audit-independent_check.py  JSON-only core audit (rules, tiles, 229 matrices, marker sample, witness)
+code/08-matrix-semigroup-core-compiler.py            the core compiler: builds semigroup.json, ledger.json, matrices.txt; target encoder
+code/08-matrix-semigroup-core-tests-check_all.py     the core authored test suite (writes the accepting witness)
+code/08-matrix-semigroup-fiber-audit-independent_check.py  JSON-only fibre audit (literal-tile graph coefficients)
+code/08-matrix-semigroup-fiber-check_fibers.py       the fibre checker (stutter witnesses, matrix/SOS samples; writes CHECKS.json)
+code/08-matrix-semigroup-paired-audit-independent_interface_check.py  independent paired interface, residual and invalid-input audit
+code/08-matrix-semigroup-paired-audit-source_literal_check.py  JSON-only paired literal-matrix audit
+code/08-matrix-semigroup-paired-paired_compiler.py   the bounded-length SOS compiler (ledger, export, certificate, verify)
+code/08-matrix-semigroup-paired-tests-check_all.py   the paired authored suite (rewrites the 94-tile certificate and ledger)
+code/08-matrix-semigroup-rebuild_release.sh          shortcut for verify_release.py --replay
+code/08-matrix-semigroup-tamper_regression.py        18-case tamper regression of the release gate (works in temporary copies)
+code/08-matrix-semigroup-verification-audit_literal_polynomials.py  release-level JSON-only reconstruction of all six r = 0, 1, 2 exports
+code/08-matrix-semigroup-verify_release.py           the release verifier: identity gate, then --verify-only or --replay
 data/03-van-kampen-commutator_budget_1.json          the one-budget compiler for [a,b]: 11 variables, 13 quadratic residuals
 data/03-van-kampen-grid_1_1.json                     the shared dyadic grid compiler for [a^2,b^2]: 12 variables, 16 residuals
 data/03-van-kampen-grid_1_1_witness.json             a satisfying assignment of the grid example (all values)
@@ -77,7 +121,43 @@ data/06-pair-order-canonical_c2_quartic.json         the canonical c = 2 quartic
 data/06-pair-order-verification_receipt.json         source 06's recorded test counts and the SHA-256 of pair_geometry.py
 data/06-pair-order-worked_example.json               captured output of `pair_geometry.py decide 3 2 2 1 4` (the unique 24-witness tuple)
 data/07-affine-inputs-verification.json              source 07's recorded run: PASS, 91,142 cases, seed 20261002
+data/08-matrix-semigroup-core-PROVENANCE.json        core packet provenance (construction, authored code, data dependencies)
+data/08-matrix-semigroup-core-audit-independent-results.json  receipt of the JSON-only core audit
+data/08-matrix-semigroup-core-data-ledger.json       the core build ledger (counts and census; also delivered as core/evidence/build-ledger.json)
+data/08-matrix-semigroup-core-data-matrices.txt      all 229 matrices as plain text
+data/08-matrix-semigroup-core-data-semigroup.json    THE literal data: 229 SL_4(Z) matrices, alphabet, tiles (117,288 bytes; also delivered as paired/ and fiber/ copies)
+data/08-matrix-semigroup-core-evidence-accepting-witness.json  the 14-step derivation, 94 tiles, 189 factors for [110A0] (also delivered as paired/ and fiber/ copies)
+data/08-matrix-semigroup-core-evidence-check-normal.log      core suite receipt, ordinary run (byte copy delivered also as core/evidence/tests.json)
+data/08-matrix-semigroup-core-evidence-check-optimized.log   core suite receipt, python -O (byte copy delivered also as tests-optimized.json)
+data/08-matrix-semigroup-fiber-CHECKS.json           fibre checker receipt (also delivered as fiber/normal-run.json and optimized-run.json)
+data/08-matrix-semigroup-fiber-MANIFEST.json         fiber packet manifest (inputs and their SHA-256)
+data/08-matrix-semigroup-fiber-audit-normal.json     receipt of the fibre audit (also delivered as fiber/audit/optimized.json)
+data/08-matrix-semigroup-paired-PROVENANCE.json      paired packet provenance and execution boundary
+data/08-matrix-semigroup-paired-audit-REVIEW_BINDING.json  identities of the files the paired review read
+data/08-matrix-semigroup-paired-audit-authored_tests_optimized.json  paired suite receipt, python -O (also delivered as paired/evidence/tests-optimized.json)
+data/08-matrix-semigroup-paired-audit-cli_accepting_94_check.json  CLI check of the 94-tile certificate (also delivered as paired/evidence/accepting-cli-check.json)
+data/08-matrix-semigroup-paired-audit-cli_r0_natural_check.json   CLI check of the r = 0 natural certificate
+data/08-matrix-semigroup-paired-audit-independent_interface_check.json  receipt of the paired interface audit
+data/08-matrix-semigroup-paired-audit-source_literal_check.json  receipt of the paired literal audit
+data/08-matrix-semigroup-paired-evidence-portable-smoke.json     stdout digests of portable CLI smoke commands
+data/08-matrix-semigroup-paired-evidence-tests.json  paired suite receipt, ordinary run
+data/08-matrix-semigroup-paired-examples-accepting-94-certificate.json  the complete r = 94 certificate (12,220 natural auxiliaries)
+data/08-matrix-semigroup-paired-examples-accepting-94-ledger.json  its arithmetic ledger
+data/08-matrix-semigroup-paired-examples-r0-natural-sos.json  literal SOS polynomial, r = 0, natural targets
+data/08-matrix-semigroup-paired-examples-r0-signed-sos.json   literal SOS polynomial, r = 0, signed targets
+data/08-matrix-semigroup-paired-examples-r1-natural-sos.json  literal SOS polynomial, r = 1, natural targets
+data/08-matrix-semigroup-paired-examples-r1-signed-sos.json   literal SOS polynomial, r = 1, signed targets
+data/08-matrix-semigroup-paired-examples-target-collision.json  the length-two collision (20,109)/(110,20)
+data/08-matrix-semigroup-verification-expected-receipts.json  the strictly typed replay expectations of verify_release.py
+data/08-matrix-semigroup-verification-literal-polynomials.json  receipt of the release-level polynomial reconstruction
+data/08-matrix-semigroup-verification-source-lineage.json  identities of the two source packets the release was built from
+data/08-matrix-semigroup-verification-source-manifests-core.json    core packet integrity manifest
+data/08-matrix-semigroup-verification-source-manifests-paired.json  paired packet integrity manifest
 ```
+
+The r = 2 exports `paired/examples/r2-signed-sos.json` and
+`r2-natural-sos.json` are not shipped (see "Reconstructing the excluded
+data").
 
 ### Delivered names
 
@@ -112,27 +192,130 @@ survive in the arrival archives. Delivered name → shipped name:
   `data/07-affine-inputs-verification.json`; `SOURCE_AUDIT.md` →
   `07-affine-inputs-SOURCE_AUDIT.md`; `article.tex` → Part IV of
   `article.tex`.
+- Source 08 (inner directory
+  `universal-matrix-report32-release-20261003/`): every path is flattened
+  by replacing `/` with `-` after the prefix `08-matrix-semigroup-`;
+  programs (`*.py`, `*.sh`) go to `code/`, JSON, `.txt` and `.log` files to
+  `data/`, and the Markdown proofs, reviews, packet READMEs, dependency audit
+  and `SANITIZED_PROVENANCE.md` to the report root. For example
+  `core/compiler.py` → `code/08-matrix-semigroup-core-compiler.py`,
+  `core/loader-audit/U15_DEPENDENCY_AUDIT.md` →
+  `08-matrix-semigroup-core-loader-audit-U15_DEPENDENCY_AUDIT.md`,
+  `paired/examples/r1-signed-sos.json` →
+  `data/08-matrix-semigroup-paired-examples-r1-signed-sos.json`.
+  `report32.tex` → Part V and Appendices J–K of `article.tex`.
 
-Not shipped: the manuscripts of sources 05, 06 and 07 (printed as Parts
-II–IV), all four PDFs, all four delivered READMEs (this text and
-`article.tex` replace them), source 03's checksum ledger `SHA256SUMS.txt`
-(13 of 13 files verified at placement) and source 06's `SHA256SUMS` (9 of 9
-verified at placement); sources 05 and 07 shipped none. They survive in the
-archives of the arrival commits:
+Not shipped: the manuscripts of sources 05, 06, 07 and 08 (printed as Parts
+II–V), all five PDFs, all five delivered READMEs (this text and
+`article.tex` replace them; source 08's is `RELEASE_README.md`), source
+03's checksum ledger `SHA256SUMS.txt` (13 of 13 files verified at
+placement), source 06's `SHA256SUMS` (9 of 9 verified at placement) and
+source 08's seals `MANIFEST.json`, `SHA256SUMS` and `fiber/SHA256SUMS`
+(its `verify_release.py --verify-only` passed on the archive at placement);
+sources 05 and 07 shipped none. Of source 08's 80 files, 59 are shipped; the
+other 21 are those six (manuscript, PDF, release README, three seals), the
+two r = 2 exports (next section), twelve byte copies inside the release
+(shipped once: the `paired/data/` and `fiber/data/` copies of
+`semigroup.json` and `accepting-witness.json`, `core/evidence/build-ledger.json`
+= `core/data/ledger.json`, `core/evidence/tests.json` and
+`tests-optimized.json` = `check-normal.log` and `check-optimized.log`,
+`fiber/normal-run.json` and `fiber/optimized-run.json` = `fiber/CHECKS.json`,
+`fiber/audit/optimized.json` = `fiber/audit/normal.json`,
+`paired/evidence/tests-optimized.json` =
+`paired/audit/authored_tests_optimized.json`,
+`paired/evidence/accepting-cli-check.json` =
+`paired/audit/cli_accepting_94_check.json`), and `core/data/u15_table.json`,
+which is byte-identical to
+[`quadratic-orthant-certificates`](../quadratic-orthant-certificates)'s
+`data/16-universal-membrane-tm_table.json` (the same 30-cell `U_{15,2}`
+table). They survive in the archives of the arrival commits:
 
 ```sh
 git show 6914ccca6:docs/incoming/arithmetic_van_kampen.zip > avk.zip
 git show 6914ccca6:docs/incoming/three_commutative_phases_research.zip > tcp.zip
 git show 808b53ed8:docs/incoming/Order_Is_Not_a_Moment.zip > oinm.zip
 git show 48ee077c7:docs/incoming/ProveIt_Affine_Matrix_Diophantine_Research.zip > amdr.zip
+git show db37d18c8:docs/incoming/Universal_Matrix_Semigroup_and_Diophantine_Certificates_Package.zip > umsdc.zip
 ```
 
 No file of sources 06 and 07 was excluded as a heavy regenerable artifact
-(the largest delivered file is source 07's 476,603-byte PDF).
+(the largest delivered file is source 07's 476,603-byte PDF). Source 08's
+two r = 2 exports (1.27 MB together, 42% of its release) were excluded as
+regenerable.
+
+## Reconstructing the excluded data
+
+Source 08's two literal r = 2 sum-of-squares exports are not shipped:
+
+- `paired/examples/r2-signed-sos.json`: 633,024 bytes, SHA-256
+  `3dbe307c63b14f10fc8cdde91fc1dde5aa35b302333086741782604b70ef0c97`;
+- `paired/examples/r2-natural-sos.json`: 636,038 bytes, SHA-256
+  `5f27d31b13af124296729db2ed2333e015dd34835560693855619e7f09a93e5c`.
+
+The shipped compiler writes them to standard output, byte for byte, in well
+under a second each (Python 3.10 or newer, standard library only). It reads
+the literal data from its packet's `data/semigroup.json`, so rebuild the
+delivered layout in a scratch directory first. From the repository root, in
+a POSIX shell (Git Bash works on Windows), with `W` a fresh directory
+outside the repository:
+
+```sh
+D=SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/group-theoretic-substrates
+Q=SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/quadratic-orthant-certificates
+W=$(mktemp -d)/r32; mkdir -p "$W"
+for f in "$D"/code/08-matrix-semigroup-* "$D"/data/08-matrix-semigroup-* "$D"/08-matrix-semigroup-*; do
+  b=${f##*/08-matrix-semigroup-}
+  case $b in
+    core-*|fiber-*|paired-*|verification-*)
+      d=$(printf '%s\n' "$b" | sed -E \
+        -e 's#^(core|fiber|paired|verification)-(audit|data|evidence|loader-audit|tests|examples|source-manifests)-#\1/\2/#' \
+        -e 't' -e 's#^(core|fiber|paired|verification)-#\1/#') ;;
+    *) d=$b ;;
+  esac
+  mkdir -p "$W/$(dirname "$d")"; cp "$f" "$W/$d"
+done
+# the byte copies shipped once, and the U15 table shipped by quadratic-orthant-certificates
+for p in paired fiber; do mkdir -p "$W/$p/data"
+  cp "$W/core/data/semigroup.json" "$W/$p/data/semigroup.json"
+  cp "$W/core/evidence/accepting-witness.json" "$W/$p/data/accepting-witness.json"; done
+cp "$W/core/data/ledger.json" "$W/core/evidence/build-ledger.json"
+cp "$W/core/evidence/check-normal.log" "$W/core/evidence/tests.json"
+cp "$W/core/evidence/check-optimized.log" "$W/core/evidence/tests-optimized.json"
+cp "$W/fiber/CHECKS.json" "$W/fiber/normal-run.json"
+cp "$W/fiber/CHECKS.json" "$W/fiber/optimized-run.json"
+cp "$W/fiber/audit/normal.json" "$W/fiber/audit/optimized.json"
+cp "$W/paired/audit/authored_tests_optimized.json" "$W/paired/evidence/tests-optimized.json"
+cp "$W/paired/audit/cli_accepting_94_check.json" "$W/paired/evidence/accepting-cli-check.json"
+cp "$Q/data/16-universal-membrane-tm_table.json" "$W/core/data/u15_table.json"
+# the two excluded exports
+(cd "$W/paired" &&
+ python3 -I -B paired_compiler.py export 2 --mode signed  > examples/r2-signed-sos.json &&
+ python3 -I -B paired_compiler.py export 2 --mode natural > examples/r2-natural-sos.json)
+sha256sum "$W"/paired/examples/r2-*-sos.json
+```
+
+The result is the delivered release minus six files (`report32.tex`,
+`report32.pdf`, `RELEASE_README.md`, `MANIFEST.json`, `SHA256SUMS`,
+`fiber/SHA256SUMS`): at this write all 74 reconstructed files were
+byte-identical to the delivered ones, and the two exports took under two
+seconds together (Windows 11, Python 3.14.4 through `py`). **On Windows the
+shell redirection writes CRLF line endings** (666,416 and 669,594 bytes);
+the files equal the delivered bytes, and the digests above, after CRLF → LF
+conversion, for example
+`py -c "import sys;p=sys.argv[1];b=open(p,'rb').read();open(p,'wb').write(b.replace(b'\r\n',b'\n'))" FILE`.
+The recipe writes nothing into this directory.
+
+The delivered bytes, together with the six files above, are in the arrival
+archive (`git show` line in the previous section; extract with `unzip`).
+The release's own verifier needs the complete delivered inventory: its
+identity gate rejects any missing or extra file, so `verify_release.py`
+runs only on an extraction of that archive, and
+`verification/audit_literal_polynomials.py` reads all six r = 0, 1, 2
+exports.
 
 ## Labels and numbering
 
-Every label carries the prefix `gts:`; the report has 324 labels.
+Every label carries the prefix `gts:`; the report has 388 labels.
 
 - Batch 76 (189 labels): source 03's 89 labels are `gts:vk:` plus their
   delivered names, and source 05's 64 are `gts:tp:` plus theirs; no source
@@ -154,26 +337,36 @@ Every label carries the prefix `gts:`; the report has 324 labels.
   `gts:po:sec:projection`, `gts:po:sec:software`, `gts:po:sec:questions`,
   `gts:po:app:names`, `gts:po:app:provenance`, `gts:ai:rem:subgroup` and
   `gts:ai:rem:binomial`.
+- Batch 82 (+64 labels; none of the 324 was renamed or removed): source
+  08's 61 labels are `gts:um:` plus their delivered names (its bibliography
+  keys carry `um-`). The write added three: `gts:part:um`,
+  `gts:um:tab:letters` and `gts:um:app:sequence`.
 
 Each Part keeps its source's numbering of statements, by section: source
 03's Section *n* is Section *n* + 1 here (Sections 2–17); source 05's
 Section *n* is Section *n* + 17 (Sections 18–31); source 06's Section *n* is
 Section *n* + 31 (Sections 32–42); source 07's Section *n* is Section *n* +
-42 (Sections 43–60). Theorem *n.m* moves with its section. The two
+42 (Sections 43–60); source 08's Section *n* is Section *n* + 60 (Sections
+61–75). Theorem *n.m* moves with its section. The two
 statements the batch-78 write added, Remarks 46.3 and 53.2, follow every
 source statement of their sections, so no source number changed. Source
 03's appendices A–C keep their letters; source 05's appendices A–C are
 Appendices D–F; Appendix G is the provenance; source 06's appendices A and
 B are Appendices H and I (placed after G so that A–G keep their letters);
-source 07 has none. Text written at the batch-76 merge is marked `[write]`,
-text written at the batch-78 write `[write 78]`; text without a marker is
+source 07 has none; source 08's appendices A and B are Appendices J and K.
+Source 08's equations are numbered (V.*n*), *n* its own equation number;
+its figure and its machine table are Figure 1 and Table 4 (the new letter
+table is Table 3, and no earlier number moved). Text written at the batch-76
+merge is marked `[write]`, text written at the batch-78 write `[write 78]`,
+text written at the batch-82 write `[write 82]`; text without a marker is
 the source's own.
 
 ## Setting and notation
 
-All four sources use the integral Heisenberg group with the same
-convention, `h(a,b,c)h(a',b',c') = h(a+a', b+b', c+c'+ab')`. Renamed
-symbols (no normalization changed anywhere):
+Sources 03–07 use the integral Heisenberg group with the same
+convention, `h(a,b,c)h(a',b',c') = h(a+a', b+b', c+c'+ab')`; source 08
+does not use it (its free pair `P, Q` is Part I's Sanov pair `A, B`).
+Renamed symbols (no normalization changed anywhere):
 
 - source 03's group `H = Z^3`, `(x,y,z) = h(x,y,z)` → `𝖧`, because Part I
   also uses `H` for a height bound;
@@ -181,10 +374,14 @@ symbols (no normalization changed anywhere):
 - source 07's interpolation coordinates `λ_i(t)` and vector `𝛌(t)` →
   `θ_i(t)` and `𝛉(t)`, because `λ` is Part II's coordinate `2c − ab`.
 
+Source 08 renames no symbol; only its macros `\mat` and `\norm` (the
+maximum absolute row sum) are printed with this report's `\smallmat` and a
+new `\umnorm`, with the same meaning.
+
 Source 07's `\cref` cross-references (33) are printed as "Lemma …",
 "Section …" and so on; one proof step of source 06 called "the second
-phase" is printed as "the second stage". Bibliography keys of sources 06
-and 07 carry `po-` and `ai-`, with entries unchanged. Tables 1 and 2
+phase" is printed as "the second stage". Bibliography keys of sources 06,
+07 and 08 carry `po-`, `ai-` and `um-`, with entries unchanged. Tables 1–3
 (Section 1.3) list the letters used differently, among them:
 
 - `A, B` — Part I: shear matrices (and `a⁻¹`, `b⁻¹` in software words);
@@ -200,6 +397,11 @@ and 07 carry `po-` and `ai-`, with entries unchanged. Tables 1 and 2
   (2α, 2β, λ)` and sign-split witnesses `λ_j^±`; Part IV: `θ_i` (source
   `λ_i`).
 - `L, U, D, K, P, N, E` and others — see Table 2.
+- Part V (Table 3): `A_i, B_i, C` are its 229 `4 × 4` generators and
+  `A, …, O` the machine states, never Part I's shears (Part V calls those
+  `P, Q`); `E_j = Q^{−j} P Q^j` and the target map `E(ℓ, ρ)`, not Part I's
+  chart equation `E`; `D` the upper block of `C`; `U = U_{15,2}` the
+  machine; `S` the semigroup; `r` the certificate length (number of tiles).
 
 Watch for these readings (Section 1.3):
 
@@ -224,6 +426,15 @@ Watch for these readings (Section 1.3):
   to be finite or periodic. Neither is a single-fold MRDP.
 - **Exactly periodic** (Part IV) means a union of residue classes on all
   of `Z`; `Spec_c` (Part III) is a set of pair counts.
+- **Universal** (Part V's title) means one fixed list of matrices whose
+  membership problem simulates a universal Turing machine — not a universal
+  polynomial, and with no arithmetic-operation count; its r.e.-completeness
+  is conditional on the Neary–Woods chain.
+- **Certificate length** `r` (Part V) is a number of tiles; `F_r` has
+  `130r` witnesses, so the family has no fixed arity.
+- **Fibre** (Part V) counts factorization words (equivalently tile
+  sequences, or canonical roots) of one target; finite at each `r`, infinite
+  over all `r`.
 
 ## Status: what is claimed, and what is not
 
@@ -289,6 +500,24 @@ The report claims conventional mathematical proofs, by its sources, for:
   every c.e. relation through a fixed free-abelian unipotent subgroup
   (Corollary 54.2); one quantified coordinate is decidable in the
   block-cyclic form (Proposition 56.1).
+- **Part V (source 08).** One literal list of 229 matrices in `SL_4(Z)`
+  (114 `A_i`, 114 `B_i`, one `C`; 1,831 nonzero entries, largest
+  63,038,000) such that `U_{15,2}` halts on a finite tape `(ℓ, ρ)` iff the
+  target `E(ℓ, ρ)` lies in the positive semigroup they generate (Theorem
+  61.1, proved: a 93-rule directed rewriting system, Lemma 63.1; 114
+  correspondence tiles with a fresh separator, Lemma 64.1; free conjugates
+  `E_j` of a Sanov shear, Lemma 65.1; a free-group marker forcing the word
+  form `A…A C B…B`, Lemma 66.1). With the cited Neary–Woods chain this makes
+  membership many-one r.e.-complete — **conditional**, not reproved or
+  implemented. For each length `r`, a literal sum of `17r + 4` squares in
+  four signed target entries and `130r` natural witnesses, degree 4 for
+  `r ≥ 1`, whose roots are in bijection with length-`r` tile sequences
+  (Theorem 61.2); exact ledgers; a length-two target with two tile
+  sequences (two such collisions among 12,996 sequences); the 94-tile,
+  189-factor accepting certificate of `[110A0]`; infinite fibres of every
+  accepted target (a stutter argument) and the exact rational generating
+  function of the fibre of an accepted live input (Theorem 73.1, first
+  terms 1, 0, 1, 0, 2, 1, 3, 2, 6, 5, 14, 7, 19 from `r = 94`).
 
 **Credit for the two-phase theorem (Remark 23.2).** For
 *integer* exponents, source 05's two-phase decidability is a special case of
@@ -314,32 +543,60 @@ the interval theorem concerns 2-binomial data. Source 07's curve `Q(n)` is
 the curve (12) of the research note `group_unipotent_input_loaders.md`,
 which source 07 does not cite.
 
+**Credit added at the batch-82 write** (none of it cited by source 08).
+Lemmas 63.1 and 64.1 re-derive, for the same machine, the rewriting and
+fresh-delimiter tile construction of the research notes
+`neary_woods_explicit_universal_tm.md` (commit `f2622a68c`, 1 October 2026:
+92 rules, 113 or 97 tiles, ending at `[halt]`) and
+`gpcp_complete_fixed_program.md` / `gpcp_fixed_program_input_bridge.md`;
+source 08 ends at a fresh letter `X` (93 rules, 114 tiles). No novelty is
+claimed for the two lemmas. Table 4 (the `U_{15,2}` table) and its
+`(u10,b)`/`(u10,c)` erratum are the collection's third printing, after
+`qoc:wf:tab:tm` and `qoc:um:tab:tm` of `quadratic-orthant-certificates`;
+all 30 cells were compared at this write. The first half of Lemma 65.1 is
+Sanov's theorem (Part I, Theorem 4.1).
+
 The report does **not** claim:
 
-- historical priority for any Part (all four sources say so); for Part
+- historical priority for any Part (all five sources say so); for Part
   II's main theorem, the placement check found no earlier resolution (the
   arXiv text of König–Lohrey–Zetzsche and the abstract of Roman'kov, which
   still states the three-subgroup case open), but that does not certify
   novelty, and Roman'kov's full paper was not read by source 05; source 07
   names the comparison with Leibman, Hu and Cahen–Chabert as its open
-  priority audit;
+  priority audit; source 08 makes no novelty claim, and the batch-82 write
+  did not survey the matrix-semigroup undecidability literature;
 - a finite-fold or single-fold Diophantine representation of c.e. sets or of
   group word problems; Part I's native fibres are generally infinite, Part
   II transfers fold bounds only conditionally (the four-square conversion can
   change multiplicities), Part III's canonical quartic is single-fold over a
-  complete profile but not over a projected matrix target, and Part IV's
-  added circuit coordinates are unique only given the source witnesses;
+  complete profile but not over a projected matrix target, Part IV's
+  added circuit coordinates are unique only given the source witnesses, and
+  Part V's roots are in bijection with tile sequences, not with targets, and
+  are infinitely many over all lengths on every accepted target;
 - a universal arithmetic-operation record, an improvement of the universal
-  degree-four bound or of the repository's 87-operation benchmark, an
-  optimized ambient dimension, an instantiated universal presentation,
-  Higman subgroup, Roman'kov monoid, polynomial or matrix table;
+  degree-four bound or of the repository's 87-operation benchmark (the
+  figure at the batch-78 write; the research programme's figure has since
+  fallen, to 84 operations at `20aafb9a5`), an optimized ambient dimension, an
+  instantiated universal presentation, Higman subgroup, Roman'kov monoid,
+  polynomial, or universal *subgroup* matrix table. Part V does instantiate
+  a universal matrix table, but for a positive *semigroup* (no inverses
+  adjoined), conditionally on the Neary–Woods chain, and its evaluator
+  charges (`11246r − 9036` multiplications and `3804r − 2700` additions for
+  `r ≥ 1`) belong to one unoptimized evaluator;
+- for Part V: an implemented loader from arbitrary programs to finite
+  `U_{15,2}` tapes (its encoder starts at a finite tape), inverse closure, a
+  minimal generator count (the research programme has since lowered it to
+  197 and then 193; see below), or a decision procedure (the fibre formulas
+  presuppose an accepted input);
 - that its counts are minimal: they are the literal counts of the stated
   compilers; Part I's lower bound is a lower bound in its stated proof
   calculus, and Part IV's dimension `6g + 2` and its gadget are not claimed
   optimal;
-- one fixed-arity polynomial: Part I's budget and circuit shape and Part
-  III's separator count `c` are external data, and MRDP's fixed-arity
-  polynomial preserves neither fibres nor the area ledger;
+- one fixed-arity polynomial: Part I's budget and circuit shape, Part
+  III's separator count `c` and Part V's certificate length `r` are external
+  data, and MRDP's fixed-arity polynomial preserves neither fibres nor the
+  area ledger;
 - that Part II answers the open question of the repository note
   `heisenberg_two_generator_membership.md` (do three generators of a
   Heisenberg *submonoid* suffice for undecidability?) — it does not; it
@@ -356,9 +613,11 @@ The report does **not** claim:
 
 ## Relation to neighbouring reports and to the formal project
 
-This is one of seven reports of the collection's `hilbert-tenth-problem`
-category at this write, which are organized by substrate family; finitely
-presented, nilpotent and matrix groups form this one.
+This is one of twelve report directories of the collection's
+`hilbert-tenth-problem` category at the batch-82 write (seven at the
+batch-78 write), which are organized by substrate family; finitely
+presented, nilpotent and matrix groups, and since batch 82 a matrix
+semigroup, form this one.
 
 - **[`probabilistic-quantum-and-continuous-computation`](../probabilistic-quantum-and-continuous-computation)**,
   Part VI (its sources 11 and 16; `pqc:dr:thm:main`): Mihailova's
@@ -380,6 +639,21 @@ presented, nilpotent and matrix groups form this one.
   remark on four-squares conversions is Part II's four-square caveat, also
   repeated by sources 06 and 07.
 - **[`liveness-beyond-halting`](../liveness-beyond-halting)**: no overlap.
+- **[`quadratic-orthant-certificates`](../quadratic-orthant-certificates)**
+  (Parts III and V): the same `U_{15,2}` table and erratum
+  (`qoc:wf:tab:tm`, `qoc:um:tab:tm`); Part V's Table 4 is the third
+  printing, and source 08's serialized table is that report's data file
+  `16-universal-membrane-tm_table.json`. No shared theorem.
+- **[`fixed-universal-polynomials`](../fixed-universal-polynomials)**,
+  Part I, and **[`five-particle-binary-automata`](../five-particle-binary-automata)**,
+  Part II (Reports 23 and 16 of the same pipeline, placed in the same
+  batch): source 08's dependency audit cites them for the finite `U_{15,2}`
+  input convention only (Report 16's loader and table, Report 23's
+  ordinary-input frame); Part V uses nothing else from them.
+- **[`stochastic-and-thermal-exactness`](../stochastic-and-thermal-exactness)**,
+  Part I (`ste:ee:thm:pcp`): Post correspondence to integer matrix
+  *mortality*, with the instance as input; Part V has one fixed semigroup
+  and the target as input. Same classical idea, no shared theorem.
 - **Within this report**: Part III's recording map is Part I's area detector
   applied to one pair of letters; Part III's logarithmic map carries Part
   II's `λ = 2c − ab` (the third derivation in the repository); Part II's
@@ -387,7 +661,15 @@ presented, nilpotent and matrix groups form this one.
   necessary, and answers the negative half of Part IV's question 9 for
   three-factor products (Remark 46.3); Part IV's cyclic test
   `⟨h(1,1,0)⟩` is Part II's binomial device in a different cyclic subgroup
-  (Remark 53.2).
+  (Remark 53.2). Part V's free pair is Part I's Sanov pair; Part V answers
+  Part IV's question 10 ("charge a complete universal matrix certificate")
+  **in part** — a numerically instantiated universal alphabet, but for a
+  positive semigroup and with bounded-length certificates, so the subgroup
+  alphabet and the fixed-arity unbounded checker remain open (dated
+  `[write 82]` note there) — and does **not** answer question 9 for
+  positive-word semigroups, since its target map is not an affine curve.
+  Its question 7 (a uniform unbounded polynomial) is what remains of
+  question 10.
 - **The Hilbert-tenth-problem research programme** (read-only for this
   report), `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`:
   `group_commutator_universal_substrate.md` (universal subgroup membership
@@ -401,9 +683,14 @@ presented, nilpotent and matrix groups form this one.
   Part IV's rigidity theorem; that note and two others restrict the
   degree-two conclusion to SL₂–SL₄ interfaces, which after Part IV applies
   to the single-coset shape only); `group_complete_matrix_compiler.md`
-  (does part of Part IV's question 10); the affine mortality notes (a
-  different interface); `group_projective_label_aligned_lanes.md` (source
-  03's own comparison).
+  (does part of Part IV's question 10; the programme's README calls its
+  numerical universal alphabet uninstantiated — Part V supplies one only for
+  a positive semigroup in the block form `diag(SL_2(Z), free group)`, not
+  for that compiler's inverse-closed `diag(L_r, L_r)` interface); the affine
+  mortality notes (a different interface);
+  `group_projective_label_aligned_lanes.md` (source 03's own comparison);
+  `neary_woods_explicit_universal_tm.md` and the `gpcp_*` notes (Part V's
+  Lemmas 63.1 and 64.1 re-derive their construction; credit above).
 - **Reviews of the batch-78 archives in that programme**, written before
   this placement: `incoming_substrate_review_808b53ed8.md` with
   `incoming_parallel_order_review_808b.md` (commit `126028588`, source 06)
@@ -416,10 +703,27 @@ presented, nilpotent and matrix groups form this one.
   each square gate of source 07's compiler can drop one 3-dimensional block
   and one coordinate (dimension `6g − 3s + 2`; the worked example 20 → 17).
   The shipped files are the unreduced delivered ones.
+- **The programme's review of the batch-82 archive**, written on the day it
+  arrived and before this write: `review_incoming_matrix_grill.md` (commit
+  `32da04296`), which read source 08's archive as data (no archived program
+  executed), reconstructed the 93 rules, 114 tiles and 229 matrices, the
+  coefficient census, the 189-factor accepting product and the six exported
+  polynomials with their evaluator charges, found no discrepancy, and
+  derived a **197-generator subset** (delete the copy tiles of the fifteen
+  states and `X`; valid inputs only); and its successor
+  `group_directed_semigroup193.md` (commit `0f7d618f4`), a **193-generator**
+  semigroup with terminal word `[J1]` (91 rules, 96 tiles; accepting example
+  83 tiles, 167 factors; largest entry 31 instead of 26 magnitude bits).
+  Neither claims minimality, inverse closure or a Diophantine gate bound;
+  both keep the Neary–Woods dependency. They are summarized in a dated
+  `[write 82]` note at Part V's question 4, not printed. The shipped files
+  are source 08's, unpatched. (Their helpers read the archive at its
+  retired `docs/incoming/` path; it survives in `db37d18c8`.)
 - **The formal project.** The report sits in the collection, not in
   `Computability/HilbertTenthProblem`, and **placement beside a Lean/Rocq
   development confers no formal status**. Parts I, II and IV import MRDP only
-  as a classical theorem (Part III does not use it); the project's formal
+  as a classical theorem (Parts III and V do not use it; Part V's
+  universality comes from the Neary–Woods machine); the project's formal
   endpoint is `Diophantine.mrdp`, `Diophantine.mrdp_iff` and
   `Diophantine.mrdp_dioph_iff`
   (`Computability/HilbertTenthProblem/Lean/Diophantine/MRDP.lean`, lines 33,
@@ -428,9 +732,9 @@ presented, nilpotent and matrix groups form this one.
   both files are unchanged from the sources' pins to the write. The project
   has formalized none of this report's statements: its Hilbert-tenth-problem
   Lean development has no free-group chart, Heisenberg-group, word
-  pair-count, Dehn-function, subgroup-product or affine-matrix-curve
-  module. The Lean module names in Part III's formalization route are
-  suggestions.
+  pair-count, Dehn-function, subgroup-product, affine-matrix-curve,
+  matrix-semigroup, correspondence-tile or `U_{15,2}` module. The Lean
+  module names in Part III's formalization route are suggestions.
 
 ## Build
 
@@ -440,7 +744,7 @@ latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 
 pdfLaTeX, in a scratch directory; standard packages (Latin Modern, AMS,
 microtype, booktabs, longtable, enumitem, fancyhdr, needspace, listings,
-TikZ, xurl, hyperref). The committed build has 123 pages: no undefined
+TikZ, xurl, hyperref). The committed build has 154 pages: no undefined
 references or citations, no multiply defined labels, no duplicate
 destinations, no overfull boxes. The log has three underfull lines: badness
 3118 in the `[write]` note on shipped file names at the start of Section 14
@@ -450,8 +754,8 @@ Ventura.
 
 ## Rerunning the programs
 
-All four verification programs depend on their delivered layout, and
-several write into it. **Never run them in place.** Copy `code/` and
+The verification programs of all five sources depend on their delivered
+layout, and several write into it. **Never run them in place.** Copy `code/` and
 `data/` to a scratch directory and recreate the delivered layout there
 (`py` is the Python launcher on this machine; the delivered texts say
 `python` or `python3`). Run without `-O`: sources 06 and 07 rely on
@@ -512,6 +816,51 @@ passed all 91,142 cases in about 5 s, and its output equals
 `data/07-affine-inputs-verification.json` as JSON. Source 07's program never
 compares with its receipt; compare the two files yourself, as above.
 
+### Source 08
+
+Source 08's release is sealed: `verify_release.py` first checks the exact
+delivered inventory against `MANIFEST.json` and `SHA256SUMS`, which are not
+shipped, and rejects any missing or extra file. Two routes:
+
+1. **The sealed verifier, on the arrival archive.** Extract the archive
+   (`git show` line under "Delivered names") into a scratch directory and,
+   inside `universal-matrix-report32-release-20261003/`, run
+   `python3 -I -B verify_release.py --verify-only` (identity gate only; at
+   this write it passed in about 2 s: 78 payload files, status PASS) and
+   `python3 -I -B tamper_regression.py > ../tamper.json` (18 cases; passed
+   at placement in 37 s). `python3 -I -B verify_release.py --replay`
+   (equivalently `sh rebuild_release.sh`) replays every component in
+   fresh temporary copies; **it is POSIX-only**: on Windows it stops after
+   about four seconds with "Core rebuild byte inequality: semigroup.json",
+   because the delivered programs write text with the platform newline
+   (below). The end-to-end replay was not rerun at placement or at this
+   write.
+2. **Single components, on the reconstructed layout** of "Reconstructing
+   the excluded data" (`$W`). For example, from `$W`:
+   `python3 -I -B core/compiler.py build > ../core-build.json` (stdout
+   equals `core/data/ledger.json`; **rewrites** `core/data/semigroup.json`,
+   `ledger.json` and `matrices.txt`), `python3 -I -B fiber/check_fibers.py >
+   ../fiber.json` (stdout equals `fiber/normal-run.json`; rewrites
+   `fiber/CHECKS.json`), `python3 -I -B core/audit/independent_check.py >
+   ../core-audit.json` (compare with `core/audit/independent-results.json`,
+   which it rewrites), `(cd paired && python3 -I -B paired_compiler.py
+   verify examples/accepting-94-certificate.json)` (output equals
+   `paired/audit/cli_accepting_94_check.json`: 1,602 residuals, all zero).
+   At this write these four runs on Windows (Python 3.14.4), in this order,
+   reproduced the receipts except for the one digest explained next, and
+   the
+   rebuilt `semigroup.json`, `ledger.json`, `matrices.txt` and `CHECKS.json`
+   equal the delivered bytes after CRLF → LF. On Windows, run the core
+   audit **before** the compiler build or on a fresh copy: after a Windows
+   build the rewritten CRLF `semigroup.json` changes the digest the audit
+   records (observed: `17452e8a…` instead of `506144b3…`). At placement all
+   twelve replay components were rerun this way with LF output forced
+   (ordinary mode; all but the export and certificate commands also under
+   `-O`): every receipt and rebuilt file matched.
+
+Run source 08's programs with `-I -B` as the release does; they rely on no
+assertions (the release gate rejects `assert` statements).
+
 ## Discrepancies and disclosures
 
 - The shipped `code/05-three-phases-build.sh` keeps the delivered layout: it
@@ -545,12 +894,13 @@ compares with its receipt; compare the two files yourself, as above.
   `07-affine-inputs-SOURCE_AUDIT.md` calls source 07's manuscript "the
   article"; it is Part IV here.
 - Source 03's `SOURCES.md`, `07-affine-inputs-SOURCE_AUDIT.md` and all
-  four sources' repository sections describe the repository at their pins
-  (`c58206ca1`, `433df1be3`, `4cccfa068`). Every repository file they cite
-  is unchanged from the pin to the write. None of them knew the related
-  repository material listed above, and sources 06 and 07 could not know
-  Parts I and II; the report adds it (Section 1.4 and the notes in the
-  Parts).
+  four batch-76 and batch-78 sources' repository sections describe the
+  repository at their pins (`c58206ca1`, `433df1be3`, `4cccfa068`). Every
+  repository file they cite is unchanged from the pin to the write. None of
+  them knew the related repository material listed above, and sources 06
+  and 07 could not know Parts I and II; the report adds it (Section 1.4 and
+  the notes in the Parts). Source 08 cites no repository file and knew none
+  of Parts I–IV.
 - The bounded-conjugator lemma of Part I is imported from
   Cornulier–Tessera (Lemma 2.D.2), not proved; it is needed only for the
   height bound and the bounded search. Part II's description of Roman'kov's
@@ -562,4 +912,68 @@ compares with its receipt; compare the two files yourself, as above.
 - The delivered title pages are replaced by one title page; each source's
   title, subtitle (where present), abstract and status statement open its
   Part verbatim. The author line "Research report/manuscript prepared for
-  Vladimir Reshetnikov" is kept, with "AI-assisted" added.
+  Vladimir Reshetnikov" is kept, with "AI-assisted" added. Source 08's
+  author line ("Research construction and reproducibility report") and date
+  are quoted in Part V's opening, and its table of contents is dropped.
+
+Source 08 (batch 82):
+
+- **Delivery names.** Part V's Sections 61, 72, 73 and 74, Appendix K and
+  its bibliography entries `um-Core`, `um-Paired`, `um-Fiber` name delivered
+  paths (`core/data/semigroup.json`, `core/evidence/accepting-witness.json`,
+  `paired/examples/…`, `paired/data/…`, `core/`, `paired/`, `fiber/`); the
+  `[write 82]` notes after Section 74 (the general rule, with examples) and
+  Appendix K give the shipped names, and the map under "Delivered names"
+  above covers every file. The
+  shipped Markdown files (`08-matrix-semigroup-*.md`), the receipts and
+  manifests in `data/` and every program use delivered paths and name
+  unshipped files: `report32.tex`/`report32.pdf` (`build_report.sh`),
+  `RELEASE_README.md`, `MANIFEST.json`, `SHA256SUMS`, `fiber/SHA256SUMS`
+  (`verify_release.py`, `build_release_inventory.py`,
+  `archive_release.py`, `tamper_regression.py`), the r = 2 exports and the
+  twelve in-release byte copies (`verify_release.py`'s inventory,
+  `verification/audit_literal_polynomials.py`) and `core/data/u15_table.json`
+  (`core/compiler.py`, `core/audit/independent_check.py`,
+  `verify_release.py`). Restore them as in "Reconstructing the excluded
+  data", or use the archive.
+- **Windows replay hazard (not patched).** `core/compiler.py` (lines 231
+  and 258), `core/audit/independent_check.py` (193),
+  `fiber/check_fibers.py` (226), `paired/tests/check_all.py` (215–216) and
+  `tamper_regression.py` write text with the platform newline. On Windows
+  the rebuilt files are CRLF (`semigroup.json` 125,774 bytes instead of
+  117,288), so `verify_release.py --replay` fails its byte comparison; after
+  CRLF → LF they equal the delivered bytes. Section 74's "portable replay"
+  and `RELEASE_README.md`'s instructions hold on POSIX systems. Several of
+  these programs also **overwrite recorded outputs** in their own tree
+  (`core/data/*`, `core/audit/independent-results.json`,
+  `fiber/CHECKS.json`, `paired/examples/accepting-94-certificate.json` and
+  `-ledger.json`); `verify_release.py` itself runs them only in temporary
+  copies.
+- **Overstatements in the delivered abstract**, kept verbatim with `[write
+  82]` notes in Part V's opening: it states many-one r.e.-completeness before
+  its qualifier (the completeness is conditional on the Neary–Woods chain;
+  the local equivalence is proved), and it credits the infinite fibres to
+  the generating function, whereas they follow from the stutter argument at
+  the start of Section 73 and Theorem 73.1 counts the fibre of an accepted
+  live input.
+- **Collisions.** Section 72 names one of the two excess length-two
+  collisions, `(20,109)`/`(110,20)`; the other is `(20,111)`/`(112,20)`
+  (`[write 82]` note there). Both were confirmed at this
+  write by enumerating all 12,996 length-two products from the shipped
+  `semigroup.json` (12,994 distinct targets).
+- **Re-derivations and re-printings, not cited by source 08**: Lemmas 63.1
+  and 64.1 (research-programme construction), Table 4 and its erratum
+  (`quadratic-orthant-certificates`), the first half of Lemma 65.1 (Sanov;
+  Part I). See "Credit added at the batch-82 write".
+- Section 74 counts "488,281 words of length at most eight" over five
+  letters; the count includes the empty word (`Σ_{k=0}^{8} 5^k`). Harmless.
+- `08-matrix-semigroup-core-loader-audit-U15_DEPENDENCY_AUDIT.md` refers to
+  Reports 16 and 23 by release-directory names; they are
+  `five-particle-binary-automata` Part II and `fixed-universal-polynomials`
+  Part I in this collection. The inert upstream bi-tag encoder it discusses
+  (`upstream_u15_builder.py.txt`) belongs to Report 23's release and is
+  shipped there as
+  `code/11-grill-poly-input-research-literal-upstream_u15_builder.py.txt`.
+- The Neary–Woods citation of source 08 (Fundamenta Informaticae 91(1)
+  (2009) 123–144, DOI 10.3233/FI-2009-0036; author PDF paginated 105–126) is
+  correct as delivered.

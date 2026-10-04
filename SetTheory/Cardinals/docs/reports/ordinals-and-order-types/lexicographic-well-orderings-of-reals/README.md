@@ -37,7 +37,7 @@ every numbered statement of the three sources.
 
 ```
 article.tex                                 the report, standalone LaTeX with an internal bibliography
-article.pdf                                 the compiled report, 54 pages
+article.pdf                                 the compiled report, 55 pages
 README.md                                   this guide
 02-strata-RESEARCH_STATUS.md                source 02's status and source provenance, as delivered
 06-spectra-research_audit.md                source 06's research and proof audit, as delivered
@@ -209,7 +209,19 @@ well-orderings of ℝ compared at the first unequal real entry:
   with no novelty claim. Two dated notes, bracketed "[Added 2 October 2026,
   batch 80: …]", record this after the question in Section 26.6 and at the
   end of Section 22; no label or number changed, and nothing in this report
-  uses that one.
+  uses that one. Since batch 81 (its sources 13–18) that report also proves,
+  for X = S_{<θ} and μ = 2^{<θ}, 𝒲_{μ·γ+n}(S_{<θ}) ≃ 𝔹_{ρ·γ} × n! for every
+  0 < γ < μ⁺ and n < ω, with ρ = μ except ρ = θ·θ at a singular strong limit
+  (its Theorem 31.2, `swo:cb:new:thm:block-types`), so the display of Section
+  26.6 holds for these strata except at a singular strong limit with γ not a
+  left multiple of θ^ω; the density and cellularity of every stratum of every
+  infinite linear alphabet and the incompleteness of every stratum (its
+  Theorems 27.2, 28.1); and, for minimal slices, a gap-spectrum transfer
+  theorem with exact multiplicities (its Theorems 30.10, 30.16). Three more
+  dated notes, "[Added 3 October 2026, batch 81: …]", after the question of
+  Section 26.6, after the commentary of Research question 26.8 and after
+  Research question 26.9, record this (one page more; no label or number
+  changed).
 - `Algebra/SurrealNumbers/Surreal/Foundations/SignSequenceSimplicity.lean`
   is cited by source 06 as context for bounded sign orders (Section 22). None
   of its declarations states a result of this report.
@@ -233,7 +245,7 @@ bibliography database.
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build (MiKTeX, pdfTeX) has 54 pages and no errors, undefined
+The recorded build (MiKTeX, pdfTeX) has 55 pages and no errors, undefined
 references or citations, multiply defined labels, duplicate destinations,
 LaTeX or package warnings, or overfull or underfull boxes. Source 02's
 delivered text builds equally cleanly to 24 pages.

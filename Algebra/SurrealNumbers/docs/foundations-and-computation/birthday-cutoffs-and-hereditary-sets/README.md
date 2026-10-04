@@ -260,7 +260,13 @@ Its Theorem 13.1 (`swo:cf:choice`) is a class-level counterpart of Theorem 13.2
 has a class well-order; its Remark 13.4 compares the two codings. Two dated
 notes, bracketed "[Added 2 October 2026, batch 80: …]", after Remark 12.4 and
 after Remark 13.4 (`hset:rem:answered-choice`) record this; they change no
-label or number, and the open problems of Remark 13.4 are not affected.
+label or number, and the open problems of Remark 13.4 are not affected. Since
+batch 81 its source 17 computes the gap pairs of `No_{<θ}` itself for every
+infinite cardinal θ, singular θ and θ = ω included (its Theorem 29.4,
+`swo:gs:thm:alphabet-gaps`), the case M = N of the lemma quoted in Remark 15.9
+(`hset:rem:cutoffgaps`) extended; a dated note, "[Added 3 October 2026,
+batch 81: …]", after Remark 15.9 records it (no label, number or page count
+changed).
 
 **[gonshor-product-birthdays](../../surreal/gonshor-product-birthdays/)**: see
 above; no argument here depends on it.

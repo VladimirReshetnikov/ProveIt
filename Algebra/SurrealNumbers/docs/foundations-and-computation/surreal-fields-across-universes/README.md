@@ -455,6 +455,13 @@ acquiring a new subset; this report keeps source 08's proof because 08 adds
 the gap pairs of the pure ordered cutoff fields `(No_{<θ})^M`, without a birthday
 symbol, including asymmetric boundary gaps that also occur internally.
 
+**[surreal-well-orders](../surreal-well-orders/)** (batch 81, its source 17)
+computes the gap pairs of `No_{<θ}` for every infinite cardinal θ, singular θ
+and θ = ω included (its Theorem 29.4, `swo:gs:thm:alphabet-gaps`); at regular
+uncountable θ this is the case M = N of Lemma 26.1 (`univ:gs:lem:boundary`). A
+dated note, "[Added 3 October 2026, batch 81: …]", after the paragraph following
+that lemma records it (no label, number or page count changed).
+
 **[computable-surreals](../computable-surreals/)**: its `prop:topology` is the
 universe-relative form of set-indexed convergence; the same-ordinal setting here
 needs no lower-universe smallness. **[genetic-gaps-and-primitives](../../surreal/genetic-gaps-and-primitives/)**
