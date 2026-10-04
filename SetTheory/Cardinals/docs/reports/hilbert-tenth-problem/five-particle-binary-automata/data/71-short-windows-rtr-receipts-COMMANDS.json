@@ -1,0 +1,486 @@
+[
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "check-inputs"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "input-authentication",
+    "status": "PASS",
+    "stdout_sha256": "b6a6fc97b6d2a38837d48115b9c4fc86f3d24ab1830722cc1e0bd4db1bf38b87"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "prepare",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/prepared"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "deterministic-flatten",
+    "status": "PASS",
+    "stdout_sha256": "e0582da1420c8ef00d7b50a40670f8548d15cc8b1db12ab7a53d9e82739a7feb"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/provenance71.py",
+      "--compare-originals",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/provenance"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "provenance-original-endpoints",
+    "status": "PASS",
+    "stdout_sha256": "e7dce78ef2724d15287fe8891c1f729ecc78a271b13bb30239e8cabf84cfc1c2"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/build_report71.py",
+      "--pins-sha",
+      "f0c4ebf30e03d9b1dbf09c5786649c07fda36c204f1f6480b78e19a4720d583b",
+      "--dependency-lock-sha",
+      "741c8b653fd8783c9afc29f8021a4a2c803140576cb0f6b1eb5ad39a9181e308",
+      "--require-packaged-match",
+      "--render-dpi",
+      "72",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/build"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "actual-locked-build",
+    "status": "PASS",
+    "stdout_sha256": "955f2bffd410f62a063ad6b922cfc8c2116345304db02d951d1475ee945f1594"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/selftest71.py",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/selftests"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "synthetic-hostile-selftests",
+    "status": "PASS",
+    "stdout_sha256": "109e25736eeac1ea72b274b38fcf7512503d0869f11b78b3ba5e50a527d43585"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/clone-manifest.json"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "test-manifest-generate",
+    "status": "PASS",
+    "stdout_sha256": "7fc8aa4a5f911e97abaa18d534599ae023b7bfac79852aef3ebdd154366559bb"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "verify",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "test-manifest-verify",
+    "status": "PASS",
+    "stdout_sha256": "b785868e3cc6d8422a1a7e464ab77725ce6b2c38b7c25ad6b0ca8e475c6928b7"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "archive",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--output",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/archive-a.zip"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "test-deterministic-archive-a",
+    "status": "PASS",
+    "stdout_sha256": "b578e956c63ec4f118663a69d97160391d2f6455e38afa24ae1467f3388aa661"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "archive",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--output",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/archive-b.zip"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "test-deterministic-archive-b",
+    "status": "PASS",
+    "stdout_sha256": "b62da5dc7c6a3ee90012e7f0891bae59012dbcf4f626135ef562b91605fe659c"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/archive-a.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/extracted"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "test-authenticated-extraction",
+    "status": "PASS",
+    "stdout_sha256": "bbe5a20f06f3812b1a12e2d0f0ed2f3d33b55ec40bde8322e6947f18b0725d20"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/extracted/tools/release71.py",
+      "verify",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "test-relocated-verification",
+    "status": "PASS",
+    "stdout_sha256": "b785868e3cc6d8422a1a7e464ab77725ce6b2c38b7c25ad6b0ca8e475c6928b7"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/extracted/tools/build_report71.py",
+      "--pins-sha",
+      "f0c4ebf30e03d9b1dbf09c5786649c07fda36c204f1f6480b78e19a4720d583b",
+      "--dependency-lock-sha",
+      "741c8b653fd8783c9afc29f8021a4a2c803140576cb0f6b1eb5ad39a9181e308",
+      "--require-packaged-match",
+      "--render-dpi",
+      "72",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/relocated-build"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "actual-relocated-locked-build",
+    "status": "PASS",
+    "stdout_sha256": "955f2bffd410f62a063ad6b922cfc8c2116345304db02d951d1475ee945f1594"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/extracted/tools/provenance71.py",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/relocated-provenance"
+    ],
+    "exit_status": 0,
+    "expected_success": true,
+    "name": "relocated-provenance",
+    "status": "PASS",
+    "stdout_sha256": "569c90c670e9b25c96b8b796d8f9dfef069b91d61da26f26e649400eb865d785"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-symlink-type.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-symlink-type"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-symlink-type",
+    "status": "PASS",
+    "stdout_sha256": "291d5e462026b6257a0da556d38cf5e5d182a297159b781f2c795aa37f097d62"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-directory-type.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-directory-type"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-directory-type",
+    "status": "PASS",
+    "stdout_sha256": "291d5e462026b6257a0da556d38cf5e5d182a297159b781f2c795aa37f097d62"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-fifo-type.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-fifo-type"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-fifo-type",
+    "status": "PASS",
+    "stdout_sha256": "291d5e462026b6257a0da556d38cf5e5d182a297159b781f2c795aa37f097d62"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-mode-mismatch.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-mode-mismatch"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-mode-mismatch",
+    "status": "PASS",
+    "stdout_sha256": "32e583d856e450e36e74c2f04f93ab4966d09e5a1f7ed071d7114541de06fcd2"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-foreign-platform.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-foreign-platform"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-foreign-platform",
+    "status": "PASS",
+    "stdout_sha256": "291d5e462026b6257a0da556d38cf5e5d182a297159b781f2c795aa37f097d62"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-payload-tamper.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-payload-tamper"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-payload-tamper",
+    "status": "PASS",
+    "stdout_sha256": "ebcb519f0945e11c2ef420a1d19c16d0852aa0b877e5f9291b2fdc01e0a586ee"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "1c0eff04a0f4dacce9bdb3dbf4be989b88d7d329a4e27547fb9af4719e1c7990",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-duplicate-entry.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-duplicate-entry"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-duplicate-entry",
+    "status": "PASS",
+    "stdout_sha256": "fd4460610116a686a5ec1aaa264715e25fecb0c17fd9fbb9f229f4aec102df29"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "0000000000000000000000000000000000000000000000000000000000000000",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-wrong-manifest-pin.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-wrong-manifest-pin"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-wrong-manifest-pin",
+    "status": "PASS",
+    "stdout_sha256": "97511e5df50338ea48716168af8a6d0028b997e7713d7521cf45ac703af386f3"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "extract",
+      "--manifest-sha256",
+      "7935e6eca6180da9e71f358d3d3baf02b6ec59cc27eac92d8540c40c6f7c815d",
+      "--archive",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/zip-duplicate-json-key.zip",
+      "--output-dir",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/refused-zip-duplicate-json-key"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "zip-duplicate-json-key",
+    "status": "PASS",
+    "stdout_sha256": "33a40e44eaceff4d3aa9ff67fafa36c4624669d876f9f98bbde10cfa2fc1f4cd"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-S",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "check-inputs"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "reject-no-isolation",
+    "status": "PASS",
+    "stdout_sha256": "1d38cf09968ecf814054faf31ec9d985faa71d8c94941ad3fd9d4e5d1becbf19"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-B",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "check-inputs"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "reject-site-enabled",
+    "status": "PASS",
+    "stdout_sha256": "1d38cf09968ecf814054faf31ec9d985faa71d8c94941ad3fd9d4e5d1becbf19"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "check-inputs"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "reject-bytecode-enabled",
+    "status": "PASS",
+    "stdout_sha256": "1d38cf09968ecf814054faf31ec9d985faa71d8c94941ad3fd9d4e5d1becbf19"
+  },
+  {
+    "argv": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "-O",
+      "/workspace/shared/report71-independent-release-tools-review-20261004/scratch/release-clone/tools/release71.py",
+      "check-inputs"
+    ],
+    "exit_status": 2,
+    "expected_success": false,
+    "name": "reject-optimization",
+    "status": "PASS",
+    "stdout_sha256": "1d38cf09968ecf814054faf31ec9d985faa71d8c94941ad3fd9d4e5d1becbf19"
+  }
+]

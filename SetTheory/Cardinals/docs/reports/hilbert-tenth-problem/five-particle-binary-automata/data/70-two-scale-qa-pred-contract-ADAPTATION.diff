@@ -1,0 +1,61 @@
+--- release68-renamed
++++ release70
+@@ -13,11 +13,11 @@
+ import zipfile
+ 
+ ROOT = Path(__file__).absolute().parent.parent
+-INPUT_PINS_SHA256 = '12705f524b493708684e95911b1eb96b1afbcc58668beb089d63730d85c28df5'
++INPUT_PINS_SHA256 = '5c3f393080392a5bdbd1fb1f8d12ce005f87d4f8a34715a20a07a652af0bcbee'
+ MANIFEST = 'RELEASE_MANIFEST.json'
+ FORMAT = 'Report70 release manifest v1'
+-MODULES = ('Report70.tex', 'arithmetic.tex', 'forward.tex', 'cutoffs.tex', 'inverse.tex', 'scope.tex')
+-PROTECTED = (Path('/workspace/shared/native-gap-counting-independent-review-20261004'), Path('/workspace/shared/native-gap-error-statistics-independent-audit-20261004'), Path('/workspace/shared/native-gap-error-statistics-independent-audit-20261004-v2'), Path('/workspace/shared/independent-inverse-statistics-audit-20261004'), Path('/workspace/shared/native-gap-counting-continuation-20261004'), Path('/workspace/shared/native-gap-error-statistics-20261004'), Path('/workspace/shared/native-gap-inverse-statistics-20261004'), Path('/workspace/shared/native-gap-halting-continuation-20261004'), Path('/workspace/shared/report66-bounded-certificates-counting-release-20261004'))
++MODULES = ('Report70.tex', 'lemma.tex', 'compiler.tex', 'preservation.tex', 'resources.tex', 'appendix.tex', 'scope.tex')
++PROTECTED = (Path('/workspace/shared/radius-frontier-20261004'), Path('/workspace/shared/report68-gap-statistics-release-20261004'), Path('/workspace/shared/report66-bounded-certificates-counting-release-20261004'))
+ 
+ 
+ def require(test, message):
+--- build_report68-renamed
++++ build_report70
+@@ -18,7 +18,7 @@
+ import zlib
+ 
+ ROOT = Path(__file__).absolute().parent.parent
+-HELPER_SHA256 = '398dc5dbf58289f3154ade1b4ef851eac56b99f7cddbf5ab779148ddae02791b'
++HELPER_SHA256 = '701d67bddd82ee531c9000981430729bfd47f595f1e980423bff10191583a589'
+ SYSTEM_ROOTS = ('/usr/share/texlive/', '/usr/share/texmf/', '/etc/texmf/', '/var/lib/texmf/')
+ SCOPE = 'Interpreter and executable bytes plus union of every format/TeX-pass recorder input and selected font maps; shared libraries, Python standard library and operating system are not inventoried'
+ EPOCH = '1791072000'
+--- selftest68-renamed
++++ selftest70
+@@ -86,7 +86,7 @@
+         hostile_env = os.environ.copy()
+         for key in ('TMPDIR', 'TEMP', 'TMP'):
+             hostile_env.pop(key, None)
+-        hostile_env[variable] = str(target / 'science/counting')
++        hostile_env[variable] = str(target / 'science/proof-packet')
+         command('preserve-input-with-hostile-' + variable.lower(), 'build_report70.py',
+                 [*common, '--require-packaged-match', '--output-dir', str(out / ('hostile-' + variable.lower() + '-build'))],
+                 root=target, env=hostile_env)
+@@ -105,17 +105,17 @@
+     command('reject-output-symlink-ancestor', 'release70.py', ['prepare', '--output-dir', str(out / 'output-link/child')], success=False)
+     (out / 'fixture-link').symlink_to(fixture, target_is_directory=True)
+     command('reject-source-symlink-ancestor', 'release70.py', ['check-inputs'], root=out / 'fixture-link', success=False)
+-    target = clone('extra-input'); (target / 'science/counting/unexpected.txt').write_text('unexpected')
++    target = clone('extra-input'); (target / 'science/proof-packet/unexpected.txt').write_text('unexpected')
+     command('reject-extra-frozen-file', 'release70.py', ['check-inputs'], root=target, success=False)
+-    target = clone('empty-input'); (target / 'science/counting/empty').mkdir()
++    target = clone('empty-input'); (target / 'science/proof-packet/empty').mkdir()
+     command('reject-extra-empty-directory', 'release70.py', ['check-inputs'], root=target, success=False)
+     target = clone('hardlink'); os.link(target / 'README.md', target / 'hardlink.md')
+     command('reject-hardlinked-input', 'release70.py', ['check-inputs'], root=target, success=False)
+     target = clone('symlink'); (target / 'extra-symlink').symlink_to(target / 'README.md')
+     command('reject-symlinked-input', 'release70.py', ['check-inputs'], root=target, success=False)
+-    target = clone('source-mode'); p = target / 'science/counting/PROOF.md'; p.chmod(p.stat().st_mode ^ 0o100)
++    target = clone('source-mode'); p = target / 'science/proof-packet/PROOF.md'; p.chmod(p.stat().st_mode ^ 0o100)
+     command('reject-source-mode-change', 'release70.py', ['check-inputs'], root=target, success=False)
+-    target = clone('source-mtime'); p = target / 'science/counting/PROOF.md'; os.utime(p, ns=(p.stat().st_mtime_ns + 1, p.stat().st_mtime_ns + 1))
++    target = clone('source-mtime'); p = target / 'science/proof-packet/PROOF.md'; os.utime(p, ns=(p.stat().st_mtime_ns + 1, p.stat().st_mtime_ns + 1))
+     command('reject-source-mtime-change', 'release70.py', ['check-inputs'], root=target, success=False)
+     target = clone('early-dependency'); changed = h.parse(lockdata); del changed['system_inputs'][early[0]]
+     data = h.encoded(changed); (target / 'tools/BUILD_DEPENDENCIES_LOCK.json').write_bytes(data)
