@@ -67,6 +67,17 @@ this candidate. The [independent review](review_complete83_independent_gamma_sco
 and fresh normal/optimized receipts check the full source and criterion.
 The established universal minimum remains **84 operations**.
 
+The [multiplicative-gamma83 chart](complete83_multiplicative_gamma_obstruction.md)
+transfers the historical quotient-divisibility obstruction to the current
+source: **83=47M+36A**,18 positive witnesses, exact degree188, but **no
+positive zero on any valid compiler slice**. Sharing rho*H by imposing
+gamma=rho*sigma forces an impossible divisibility between native Pell
+projection values. The [independent review](review_complete83_multiplicative_gamma_obstruction.md)
+checks all retained source rows, the sigma=1 boundary, the uniform degree
+and the monic remainder proof; installed normal/optimized receipts pass.
+This rejects that literal shortcut. The separate independent-gamma83
+language remains unresolved, and the universal bound remains84.
+
 The [squared-scale charts](complete83_squared_scale_collapse.md) emit two
 complete **83=46M+37A** sources, with18 positive witnesses and exact degrees
 **156 and174**. Both are **refuted on every positive input** of every
