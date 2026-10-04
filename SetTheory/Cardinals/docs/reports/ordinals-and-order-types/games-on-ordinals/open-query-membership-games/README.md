@@ -1111,6 +1111,14 @@ three interfaces batch-65 manuscript 05 proposes (finite words and diagonal
 avoidance, the closed-set operator lattice, Hausdorff derivatives and towers);
 none of these plans has been started.
 
+[Batch 87, 3 October 2026.] A different kind of query game, in which
+players open boxes and must guess an unopened one, is the subject of
+[`measurable-box-games`](../../measurable-box-games/); its legal decision
+trees are characterized by recursively sliceable cube matchings (its
+Theorem 7.3). Both reports work with adaptive query strategies and finite
+certificates, but nobody there asks open-set queries about a hidden point,
+and nobody here guesses an unread coordinate. No theorem is shared.
+
 ## Sources and attribution
 
 Lucas Chiozini, Tamás Csernák, Lajos Soukup, *Gamification of the
