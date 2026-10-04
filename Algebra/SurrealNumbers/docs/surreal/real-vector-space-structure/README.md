@@ -257,9 +257,16 @@ re-prove collection results and are printed as pointers with second routes
   "[Added 4 October 2026, batch 89: …]", after that corollary records it.
   Its Part XVII (batch 93) classifies the Borel derivations of the left-finite
   subfield `Lf_Γ = L^Γ_R` for countable `Γ`, on which `𝔇` is an Euler
-  derivation: `aE` in rational rank one, with image `{g : ct(g/a) = 0}`
+  derivation: `aE` in rational rank one, with image `{g : ct(g/a) = 0}` for
+  nonzero `a`
   (`pma:bsd:cor:integration`), and `Σ a_i E_i` in finite rational rank
   (`pma:bsd:thm:rank`); a dated note after Definition 13.1 records this.
+
+**Review Remark 1 (4 October 2026).** The preceding summary originally said
+“`aE` in rational rank one, with image `{g : ct(g/a) = 0}`” without restricting
+`a`. At `a = 0` the image is `{0}` and the displayed division is undefined.
+The guide now repeats the nonzero hypothesis already present in its article
+paragraph and in the cited Polish corollary; neither theorem changes.
 
 Placement in `Algebra/SurrealNumbers`, beside its Lean development, confers
 no formal status, and `FORMALIZATION.md` maps no `rvs:` label. The Lean
