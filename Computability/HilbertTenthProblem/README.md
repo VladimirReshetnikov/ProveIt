@@ -619,6 +619,20 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [cleanup-tail fusion](Papers/research-wip/native-stream-queue/matrix193_cleanup_tail_fusion.md) lowers the four
+complete matrix sources to **1,415 / 1,412 / 1,412 / 1,409 operations**.
+Two joint Horner evaluations absorb the X cleanup cubics into their paid
+state terms, saving two multiplications in every chart. The coefficient
+component is now550=302M+248A; selector242, native63 and grouped97 rows remain
+literal. Full polynomial identities preserve supplied positive zeros,
+witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105.
+The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_cleanup_tail_fusion.md) reconstructs
+all5,648 rows and checks every retained value by automatic normalization in
+the actual computed Q, all16 coefficient words and all four finalizers.
+Fresh author and review normal/optimized checks pass. The six new fixed
+numerals are explicit; earlier terminal/IDLE maps retain ordinary-input scope.
+The separate universal84 bound remains unchanged.
+
 The [selector/scaled-power composition](Papers/research-wip/native-stream-queue/matrix193_selector_scaled_composition.md)
 combines both arithmetic edits in four complete matrix sources:
 

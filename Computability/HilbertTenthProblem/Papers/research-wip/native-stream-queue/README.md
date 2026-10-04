@@ -597,6 +597,20 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) lowers the four
+complete matrix sources to **1,415 / 1,412 / 1,412 / 1,409 operations**.
+Two joint Horner evaluations absorb the X cleanup cubics into their paid
+state terms, saving two multiplications in every chart. The coefficient
+component is now550=302M+248A; selector242, native63 and grouped97 rows remain
+literal. Full polynomial identities preserve supplied positive zeros,
+witness counts141/140/140/139 and exact degrees35,587/53,345/53,347/71,105.
+The [independent review](review_matrix193_cleanup_tail_fusion.md) reconstructs
+all5,648 rows and checks every retained value by automatic normalization in
+the actual computed Q, all16 coefficient words and all four finalizers.
+Fresh author and review normal/optimized checks pass. The six new fixed
+numerals are explicit; earlier terminal/IDLE maps retain ordinary-input scope.
+The separate universal84 bound remains unchanged.
+
 The [selector/scaled-power composition](matrix193_selector_scaled_composition.md)
 combines both arithmetic edits in four complete matrix sources:
 
@@ -4975,6 +4989,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Matrix cleanup-tail fusion](matrix193_cleanup_tail_fusion.md) | **1,415/1,412/1,412/1,409** complete operations;141/140/140/139 witnesses; exact degrees35,587/53,345/53,347/71,105. | Joint Horner evaluation saves2M per complete source; identical full polynomials and supplied positive zeros,550 coefficient rows. |
 | [Recoded one-program U21](residue_affine_sparse_recoded468.md) | **448 certificate /468=171M+297A**,7 comparisons,67 witnesses,one fixed program,degree at most5091. | Bounded injective codes and paid selector bases save3 operations from471; same supplied positive zeros, explicit full-output correction. |
 | [Actual positive-complement86 collapse](complete75_positive_complement86_all_input_collapse.md) | The specific86-operation candidate accepts every positive input on every actual modified compiler slice. | Full19-positive-coordinate existence proof and exact rejecting-program corollary; Dirichlet/CRT/rotation plus complete normalized lift. No giant zero materialized;75/87 unchanged. |
 | [Two more paid U21 selector pairs](korec_packed_selector_sharing378.md) | **378=141M+237A**,50w,one program,degree at most21549; two-program377/40706. | Two exact1A prefix replacements retain complete integer polynomials, supplied coordinates and degree dictionaries. |
