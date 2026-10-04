@@ -114,6 +114,20 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [no-i-monomial-product condition](complete84_auxiliary_no_i_monomial_products.md)
+> strengthens the remaining direct-Q case: a possible 5M+4A circuit cannot
+> have any counted multiplication output that is a nonzero monomial containing i.
+> Specialization at i=0 deletes that product and a distinct chronological
+> product from the Q relation, contradicting the four-product bound for V,W;
+> an earlier product proportional to Q is excluded by deleting the redundant
+> Q addition. The [independent proof review](review_complete84_auxiliary_no_i_monomial_products.md)
+> checks both chronological orders and the scalar-span argument. This is a
+> proof-only necessary condition. Nonmonomial i-dependent products remain open;
+> no nine-gate impossibility or change to universal84 is claimed.
+> The remaining auxiliary target is direct-Q cancellation through nonmonomial
+> products; the sixteen proper pivots and i-containing monomial products are
+> already excluded in this exact paid-port model.
+>
 > The [proper-pivot exclusion](complete84_auxiliary_proper_pivot_exclusion.md)
 > reduces the seventeen necessary auxiliary cancellation forms to **one**:
 > a remaining5M+4A candidate must produce Q itself directly by cancellation.
