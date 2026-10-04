@@ -567,9 +567,21 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [cross-stage power/repunit reuse](matrix193_cross_stage_power_reuse.md)
+saves another30M+4A per complete matrix source. Eleven powers and two repunits
+reuse retained paid values across stages, with dependencies explicitly
+rescheduled. Complete totals are **1,534 /1,531 /1,531 /1,528**, with unchanged
+145 /144 /144 /143 witnesses and degrees35,587 /53,347 /53,347 /71,107.
+The [independent review](review_matrix193_cross_stage_power_reuse.md) verifies every retained pure-Q
+polynomial, the13 changed definitions and34 deletions, and traces all actual
+finalizer nodes through interleaved chart listings. Whole-polynomial identities,
+all16 coefficient words and fresh normal/optimized replays pass. Immediate-parent
+positive zeros agree exactly; the earlier IDLE inverse retains ordinary-input
+scope. Universal84 remains unchanged.
+
 The [grouped-population/power composition](matrix193_grouped_power_composition.md)
 combines25 saved additions and24 saved multiplications in each complete matrix
-source. Its current alternatives are:
+source. Its alternatives are:
 
 | Computed controller hats | Operations | Positive witnesses | Exact degree |
 |---|---:|---:|---:|
