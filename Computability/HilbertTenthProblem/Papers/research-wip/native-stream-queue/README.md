@@ -34,6 +34,20 @@ bound remains **74**; the lower-degree **85/155** and other reviewed choices
 remain available. Earlier entries retain their historical counts; the current
 minimum polynomial count is **84**, with no global optimality claim.
 
+The [four sandpile certificate reports](review_new_sandpiles_0d7f51c44.md)
+at **0d7f51c44** give fixed-arity certificates with unbounded witness values
+for binary stabilization, binary target firing, repeated target firing,
+and finite total global stabilization. Their supplied sources have
+**11469/14778/17275/14571 operations**, **2566/3308/3865/3262 witnesses**
+and **exact degree18**. Fresh checks of all58093 rows verify closure,
+liveness, the literal sum-of-squares suffixes and a full-source degree18
+specialization with coefficient48; root repeats normal/optimized receipts.
+All320 member hashes and30 exact text-read spans are authenticated.
+Raw physical-input decoding and an existential box/radix are paid, while
+the imported physical universality simulations and raw machine-input
+reduction remain separate dependencies. No complete residual-to-macro
+reconstruction or universal-operation improvement is claimed.
+
 The [eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md)
 at **0d7f51c44** have2622 authenticated entries and27 exact text-read records.
 Fresh independent checks, repeated by root on the literal source, confirm
@@ -5174,6 +5188,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Four sandpile certificate arrivals](review_new_sandpiles_0d7f51c44.md) |Fixed arity, unbounded witnesses;11469/14778/17275/14571 gates, exactdegree18; all58093 rows structurally checked | Imported physical universality and machine-input conversion remain separate; no full macro-semantic reconstruction or smaller universal bound |
 | [Eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md) |2622 entries authenticated; actual matrix184016 gates/41309w/exactdegree12 checked;27 text-read records | Finite-table arity and12-leaf POWER counts are separate resources; changed CA rules lack a transferred arithmetic evaluator |
 | [Twelve signal and particle arrivals](review_new_signals_0d7f51c44.md) |2035 member hashes,12 full READMEs and57 exact read spans; guarded five-signal counter/clock interface identified | Horizon-dependent arity still unbounded;344/367 rotation and48/57 local-realization counts concern decidable predicates; no universal reduction |
 | [Seven-report reciprocal notes](review_reciprocal_fc1ad4275.md) | Fourteen text diffs read;3359 unchanged labels;54 introduced references resolve atfc1ad4275 | Scoped transfer/hypothesis review; external theorem interfaces and PDF builds unreviewed; arithmetic bounds unchanged |

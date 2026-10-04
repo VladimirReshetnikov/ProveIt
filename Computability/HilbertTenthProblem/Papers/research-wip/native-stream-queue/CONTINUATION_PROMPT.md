@@ -38,6 +38,21 @@
 > remain available. Earlier entries retain their historical counts; the current
 > minimum polynomial count is **84**, with no global optimality claim.
 >
+> The [four sandpile certificate reports](review_new_sandpiles_0d7f51c44.md)
+> at **0d7f51c44** give fixed-arity certificates with unbounded witness values
+> for binary stabilization, binary target firing, repeated target firing,
+> and finite total global stabilization. Their supplied sources have
+> **11469/14778/17275/14571 operations**, **2566/3308/3865/3262 witnesses**
+> and **exact degree18**. Fresh checks of all58093 rows verify closure,
+> liveness, the literal sum-of-squares suffixes and a full-source degree18
+> specialization with coefficient48; root repeats normal/optimized receipts.
+> All320 member hashes and30 exact text-read spans are authenticated.
+> Raw physical-input decoding and an existential box/radix are paid, while
+> the imported physical universality simulations and raw machine-input
+> reduction remain separate dependencies. No complete residual-to-macro
+> reconstruction or universal-operation improvement is claimed.
+>
+>
 > The [eight arithmetic/compiler arrivals](review_new_arithmetic_0d7f51c44.md)
 > at **0d7f51c44** have2622 authenticated entries and27 exact text-read records.
 > Fresh independent checks, repeated by root on the literal source, confirm
