@@ -226,6 +226,9 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
+> The [full independent-boundary root theorem](complete84_full_independent_root_absorption.md) and [independent review](review_complete84_full_independent_root_absorption.md) extend the fixed-polynomial obstruction to **all91 existing f-independent values (67 computed,24 supplied)**, adding the actual quotient T, ordinate y and computed y² to the earlier88. Every fixed integer-polynomial replacement f=G has finite whole ordinary-positive-input projection on a valid fixed compiler slice. The proof excludes zero G before decoding and restores signs by changing both f and T. It specializes the actual auxiliary conic first: a nonzero resultant bounds T, while an identically zero resultant gives a rational88 expression whose nonsquare quadratic bounds i. Both branches have explicit cutoffs. Fresh author and independent source/algebra checks pass in normal and optimized modes; the84-operation source and its bound are unchanged. This is a fixed-substitution theorem, not a global arithmetic lower bound.
+>
+>
 > The [multiplier-dependent strong-root theorem](complete84_multiplier_dependent_root_absorption.md)
 > extends the polynomial substitution obstruction to all88 values independent
 > of f,T,y_aux, including i and its two computed products. For fixed G of degree

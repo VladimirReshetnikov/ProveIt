@@ -215,6 +215,8 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [full independent-boundary root theorem](complete84_full_independent_root_absorption.md) and [independent review](review_complete84_full_independent_root_absorption.md) extend the fixed-polynomial obstruction to **all91 existing f-independent values (67 computed,24 supplied)**, adding the actual quotient T, ordinate y and computed y² to the earlier88. Every fixed integer-polynomial replacement f=G has finite whole ordinary-positive-input projection on a valid fixed compiler slice. The proof excludes zero G before decoding and restores signs by changing both f and T. It specializes the actual auxiliary conic first: a nonzero resultant bounds T, while an identically zero resultant gives a rational88 expression whose nonsquare quadratic bounds i. Both branches have explicit cutoffs. Fresh author and independent source/algebra checks pass in normal and optimized modes; the84-operation source and its bound are unchanged. This is a fixed-substitution theorem, not a global arithmetic lower bound.
+
 The [multiplier-dependent strong-root theorem](complete84_multiplier_dependent_root_absorption.md)
 extends the polynomial substitution obstruction to all88 values independent
 of f,T,y_aux, including i and its two computed products. For fixed G of degree
@@ -5204,6 +5206,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Full91 strong-root obstruction](complete84_full_independent_root_absorption.md) and [review](review_complete84_full_independent_root_absorption.md) | Any fixed integer-polynomial f=G on all67+24 literal independent values has finite whole input projection; actual conic/resultant and rational88 fallback | No new circuit or global lower bound; retained witnesses positive, signed-T domain handled explicitly;84/187 unchanged |
 | [New hat-query threshold review](review_hat_threshold_afd7ffabb.md) | Main expected-cost threshold2 proof checked;1147 TeX lines and9-member manifest; deterministic/coin/count/distance scopes retained | No Turing-complete substrate or fixed-arity paid integer compiler in inspected sections; variable tree lookup and termination unpaid |
 | [Batch90 placement](review_batch90_placement_12076b2e8.md) and [five later arrivals](review_latest_five_9dc8db274.md) |32 exact file transfers; eight host article/guides unchanged; latest five README texts read and42 members pinned | Five manuscript integrations pending at12076b2e8; later bodies unreviewed; no new paid compiler |
 | [Four sandpile certificate arrivals](review_new_sandpiles_0d7f51c44.md) |Fixed arity, unbounded witnesses;11469/14778/17275/14571 gates, exactdegree18; all58093 rows structurally checked | Imported physical universality and machine-input conversion remain separate; no full macro-semantic reconstruction or smaller universal bound |
