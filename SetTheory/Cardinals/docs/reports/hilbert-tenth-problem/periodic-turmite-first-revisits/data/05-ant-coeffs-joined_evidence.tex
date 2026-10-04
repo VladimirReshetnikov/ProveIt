@@ -1,0 +1,16 @@
+\subsection{Both joined streams independently regenerated}
+Both complete joined sources were actually generated and hashed in streaming mode. A separately authored independent adapter repeats the binding, checks every gate and domain record, and obtains the same canonical hashes as the construction adapter:
+\begin{itemize}
+\item Two-input source, 31,388,831 gates:\par\smallskip
+{\small\code{b235ba1d2baf0cf089c9658b1995f9c19fbe3ff033dc6ae67c76ec8cd6522d03}}
+\item One-input source, 31,388,841 gates:\par\smallskip
+{\small\code{737866317089c07465253a0d489813bf1bab50aaba0dda6083acbf78ef45f276}}
+\end{itemize}
+In each arity, every one of the 1,152,598 coefficient labels is resolved and actually used. All positive-coordinate names and their ordering agree with Report 44. There are no surviving coefficient ports or free constant declarations. The regenerated original main hashes also agree with the authenticated targets:
+\begin{itemize}
+\item Two-input main:\par\smallskip
+{\small\code{c16901162e09b07d1e0c27b28e29dcc12a9b6137391fce85e3f150a3fed37eac}}
+\item One-input main:\par\smallskip
+{\small\code{85a161972769207e4f5d4212214630535208f69d6736bca2b46a8aff8276a22a}}
+\end{itemize}
+Arithmetic records are tab-separated identifier, opcode and two operands, terminated by a newline; domain, residual and equation records are compact JSON lines in their original order. The prefix precedes all main records. This complete canonical byte convention is reproduced by both adapters. The joined streams were traversed and hashed, but their large flat text files are not retained in the archive. Their exact generators and data are retained. The independent joined addendum supersedes only the earlier prefix audit's pending-join paragraph; it does not alter the prefix verdict or the inherited-theorem limitations.

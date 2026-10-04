@@ -1,0 +1,792 @@
+                              Exact Fusion of the Ant
+                             Background Polynomials
+                  A smaller literal arithmetic source for the same polynomial
+                                           Research Report 48
+
+
+                                    Mathematical research report
+
+                                            4 October 2026
+
+
+                                                 Abstract
+         We fuse the fixed-coefficient construction of Research Report 47 with the two dense spatial
+     Horner expressions in the initializer of Research Report 44. A three-band cyclic-index identity
+     factors the operation corrections into twelve short spatial factors and twenty-four rotated
+     occurrence factors. Exact repeated-block grouping compresses the remaining fixed spatial profiles,
+     with division-free, fully paid geometric weights. The resulting literal-1/3 sources have 14,658,934
+     arithmetic operations for two positive raw inputs and 14,658,944 for one. They compute exactly
+     the same complete integer polynomial, on every assignment of the same coordinates, as the
+     frozen predecessors. The positive witness counts remain 465 and 467, with one equation and
+     exact variable degree 2,304,000. We prove the new polynomial identities, audit the two precise
+     source replacements and every retained consumer, give the complete arithmetic ledger, and
+     distinguish algebraic proof, finite checks and source reconstruction. No quotient-ring identity,
+     nonzero assumption on the spatial variable, global optimality or operation-record claim is used.
+
+
+1    Result and comparison
+Reports 44 and 47 specify a fixed Diophantine polynomial source arising from a periodic-ant
+realization of the pinned U15 machine [1, 2]. Report 47 reduces the cost of constructing the fixed
+coefficients. The present refinement avoids first constructing all spatial coefficients separately and
+then evaluating two dense polynomials from them. Instead, it constructs those two polynomials
+directly from the same exact coefficient identities.
+   An arithmetic gate is a binary addition, subtraction or multiplication of already available
+expressions. We write M for multiplication count and A for the combined addition/subtraction
+count. The only constant leaves are 1 and 3. Fixed loop indices, mask bits and exponents are
+compilation data; they do not supply free integer leaves. Aliasing an available expression is free,
+while every emitted arithmetic operation, including operations on zero or one, is paid. Gates are
+expressions, not extra quantified witnesses.
+
+
+
+
+                                                     1
+Research Report 48                                                                 Exact spatial polynomial fusion
+
+
+Theorem 1.1 (Exact fused sources). There are explicit topological literal-1/3 arithmetic sources
+with the following counts.
+
+           Raw positive inputs            M                  A             Total   Positive witnesses
+           Two                   5,971,120         8,687,814       14,658,934                      465
+           One                   5,971,124         8,687,820       14,658,944                      467
+
+Each has one final equation and computes the same complete final integer polynomial as its cor-
+responding frozen Report 44 and Report 47 source, for every integer assignment of the declared
+coordinates. Its exact total variable degree is 2, 304, 000. All positive domains, names and witness
+order are unchanged.
+
+   The new totals improve Report 47’s 31, 388, 831 and 31, 388, 841 by exactly 16, 729, 897 operations
+each, or approximately 53.2989% for two inputs. Report 47 remains valid for its displayed grammar.
+The comparison is between these specified sources; it is neither a lower bound nor a priority or
+global operation-record claim.
+    The equality is stronger than equality of zero sets. It allows substitution into every old consumer
+without altering any residual polynomial or the final sum of squares. It is also independent of
+restrictions that particular solutions impose on the spatial coordinate W : the new identities hold as
+ordinary polynomial identities, including at W = 0, 1, −1.
+
+
+2    Inherited inputs and the scope of the new proof
+We use distinct symbols for the horizontal period and the physical macro height:
+          S = 576 000 = 600 · 960,                            K = 957,                R = 601 547 591,
+          L = 400(R + 2) = 240 619 037 200,                      u = 2L,              Z = 3400 ,
+          c = 288 650 = 600 · 481 + 50.
+The old arithmetic initializer calls S its V; the Report 47 profile construction calls L its V. These
+are different dimensions. All spatial Horner polynomials here have S coefficients, not L coefficients.
+    For each operation kind
+                       a ∈ {DUP, NAND, MOVE_LEFT, MOVE_RIGHT}
+and each pair index 0 ≤ s < K, Report 47 constructs
+                                                         X
+                                     Ta,s =                                Zr.
+                                                       0≤r<R
+                                              row r has kind a at pair s
+
+The signed 400-digit ternary profile Qa,d , 0 ≤ d < 1200, describes the operation’s exact correction
+to the two baseline DELAY slots. Its physical translation is 600(s + 1) + d. The unsigned profiles
+H[x], B[x], F [x], indexed modulo S, encode the owned header, bulk and footer slabs. In this notation
+F [x] is a footer coefficient, not the final Diophantine polynomial.
+   The masks define Hlow as digits 0 through 24 of H, Hhigh as the remaining digits shifted down
+by 25, and first[x] as digit 25. Thus
+                                     H[x] = Hlow [x] + 325 Hhigh [x].
+
+                                                        2
+Research Report 48                                                                  Exact spatial polynomial fusion
+
+
+Taking bits of the finite compile-time masks merely selects the prescribed digits; the arithmetic
+source does not divide an enormous coefficient or extract bits of a variable.
+   The inherited finite ownership theorem gives, with all x indices reduced modulo S,
+                               X
+          C[x] =                             Qa,d Ta,s ,                                                        (1)
+                           a,s,d
+                   x≡600(s+1)+d    (mod S)
+                   R−1
+                   X
+           GZ =          Zr,                                                       U [x] = GZ B[x] + C[x],      (2)
+                   r=0
+       Full[x] = H[x] + ZU [x] + 3L−400 F [x],                                                                  (3)
+       Cut[x] = Hhigh [x] + 3375 U [x] + 3L−425 F [x],                                                          (4)
+                               L−25                        u−25
+       Tile[x] = Cut[x] + 3           Full[x − S/2] + 3           Hlow [x].                                     (5)
+
+The three vertical portions in (5) have lengths L − 25, L, 25. Their total is u, their cut begins at
+physical ordinate 75, and the middle macro has the horizontal half-shift. Report 47 proves the exact
+finite colored unions, signed corrections and boundary ownership underlying these identities. In
+particular, they are true coefficient identities, not an assumption that arbitrary signed ternary digits
+never carry.
+   The old labels are
+
+          tile:j = Tile[(c − j) mod S],               first:j = first[(c − j) mod S],        0 ≤ j < S.         (6)
+
+This report takes that coefficient theorem and the occurrence-compiler theorem as inherited inputs.
+It proves the new spatial identities and literal-source substitution in full; it does not repeat the
+physical template or machine-simulation construction.
+
+
+Inherited recognition statement.               For a nearest-head-first binary word d = (d0 , . . . , dn−1 ), put
+                                                               n−1
+                                                               X
+                                         sent(d) = 2n +              dj 2n−1−j .
+                                                               j=0
+
+Every positive integer decodes uniquely, with 1 representing the empty word. Let H(x, y) mean
+that the pinned U15 machine starts in state A scanning 0, with those finite side words and blanks
+elsewhere, and reaches J1. Relative to the unchanged history, Pell, recoder, initializer, endpoint and
+literal-simulation theorems of Report 44,
+
+                                   H(x, y) ⇐⇒ ∃z ∈ Z465
+                                                    >0 P2 (x, y, z) = 0.
+
+The one-input source quantifies the two side codes and retains the paid pairing relation
+
+                                      2N = (x + y − 2)(x + y − 1) + 2y.
+
+It has 467 positive witnesses. This is the same raw-pair recognition statement, not a new assertion
+about empty-right machine inputs or stronger universality. The accepting ant observable represents
+halting; the ant itself continues moving.
+
+
+
+
+                                                           3
+Research Report 48                                                                        Exact spatial polynomial fusion
+
+
+3    The ordinary polynomial cyclic index identity
+For any fixed S-array A, any p ∈ {0, S/2} and an unrestricted indeterminate W , define
+                                                   S−1
+                                                   X
+                                  Ep (A; W ) =           A[(c − j − p) mod S]W j .                                    (7)
+                                                   j=0
+
+Permuting the fixed array indices gives the equivalent expression
+                                                      S−1
+                                                      X
+                                     Ep (A; W ) =            A[x]W (c−p−x) mod S .
+                                                      x=0
+
+The modulo operation chooses a fixed coefficient position. It does not reduce a polynomial modulo
+W S − 1, and it implies no relation W S = 1.
+    Partition the operation offsets into three bands
+
+                     I0 = {0, . . . , 50},     I1 = {51, . . . , 650},        I2 = {651, . . . , 1199}.
+
+Their lengths are 51, 600, 549; all three factors are padded to width 600 in the emitted grammar.
+For d ∈ Ib define
+
+                ℓb (d) = 50 + 600b − d,              kb,p (s) = (480 − b − s − p/600) mod 960.
+
+Both p/600 = 0, 480 are fixed integers.
+
+Lemma 3.1 (Exact exponent separation). For every 0 ≤ s < 957, d ∈ Ib and p ∈ {0, S/2},
+
+                           (c − p − 600(s + 1) − d) mod S = 600kb,p (s) + ℓb (d).                                     (8)
+
+Both sides are ordinary integers in {0, . . . , S − 1}.
+
+Proof. The three bands give respectively 0 ≤ ℓ0 ≤ 50, 0 ≤ ℓ1 ≤ 599, and 51 ≤ ℓ2 ≤ 599. Hence the
+right side is nonnegative and at most 600 · 959 + 599 = S − 1. Before reducing k, its value gives
+
+                 600(480 − b − s − p/600) + 50 + 600b − d = c − p − 600(s + 1) − d.
+
+Reducing k changes this by a multiple of 600 · 960 = S. The unique least nonnegative representative
+proves (8). This includes both band boundaries and all spatial wrap boundaries.
+
+    Define the short and rotated factors by
+                                                             X
+                                             Qa,b (W ) =            Qa,d W ℓb (d) ,                                   (9)
+                                                             d∈Ib
+                                                             956
+                                                             X
+                                             La,b,p (Y ) =         Ta,s Y kb,p (s) .                                (10)
+                                                             s=0
+
+The first has degree at most 599. The second has degree at most 959, and the map s 7→ kb,p (s)
+is injective, since two distinct s values differ by less than 960. Exactly three of its 960 coefficient
+positions therefore contain the paid zero expression.
+
+
+                                                              4
+Research Report 48                                                              Exact spatial polynomial fusion
+
+
+Theorem 3.2 (Three-band correction factorization). Treat every coefficient as an independent
+symbol. In the ordinary polynomial ring
+
+                                           Z[{Qa,d }, {Ta,s }][W ]
+
+we have
+                                               2
+                                              XX
+                              Ep (C; W ) =            Qa,b (W )La,b,p (W 600 ).                           (11)
+                                              a b=0
+
+Consequently the identity holds after substituting the actual inherited integer profiles and occurrence
+constants.
+
+Proof. Expand (1) in the second expression for (7). Each term Qa,d Ta,s has exponent (c − p −
+600(s + 1) − d) mod S. Apply Lemma 3.1, then use W 600k+ℓ = W ℓ (W 600 )k and finite distributivity
+separately on each band. This yields (11). If several terms contribute to the same coefficient, their
+sum is retained on both sides; no disjointness assumption on the correction supports is required.
+Every exponent already lies in the ordinary spatial range, so no reduction of a product polynomial
+is involved.
+
+
+Paid grammar. Construct Y = W 600 once by a binary chain of 12 multiplications. Evaluate
+twelve full length-600 Horner polynomials for (9), sharing them between phases. Evaluate twenty-
+four full length-960 Horner polynomials for (10). Multiply each by its short factor, and sum twelve
+terms per phase. Thus
+
+                             Mshort = Ashort = 12 · 599 = 7 188,
+                                         Mlong = 24 · 959 + 24 = 23 040,
+                                         Along = 24 · 959 + 2 · 11 = 23 038.
+
+Leading and internal zero coefficients remain in these dense Horner recurrences. The improvement
+comes from the proved factorization, not from retroactively deleting paid operations.
+
+
+4    Exact repeated block compression
+For each A ∈ {H, B, F, Hlow , Hhigh , first} and phase p, partition the S spatial coefficient positions
+into 960 consecutive blocks of width 600. Let
+
+                 ak,r = A[(c − 600k − r − p) mod S],         0 ≤ k < 960,         0 ≤ r < 600.
+
+Group k values only when their complete 600-tuples agree. Write Jg for one group of block positions
+and bg [r] for its common tuple. The groups must form a disjoint cover of {0, . . . , 959}.
+
+Proposition 4.1 (Exact block identity). With the grouping above,
+
+                                           599
+                                                             !                   
+                                         X X                       X
+                          Ep (A; W ) =               bg [r]W r         (W 600 )k  .                     (12)
+                                          g    r=0               k∈Jg
+
+The half-phase rotates each group’s block positions by 480 modulo 960 and leaves its tuple unchanged.
+
+
+                                                       5
+Research Report 48                                                                    Exact spatial polynomial fusion
+
+
+Proof. Write each j uniquely as 600k + r. Substitute ak,r = bg [r] for the unique group containing k,
+and distribute the finite sum. For the second assertion, the phase-S/2 tuple at k is the phase-zero
+tuple at (k + 480) mod 960. Thus a phase-zero group Jg becomes {(k − 480) mod 960 : k ∈ Jg }.
+This is an exact permutation of fixed coefficient positions, not a transformation assuming a value of
+W.
+
+   The distinct tuple counts, verified in both phases, are
+
+                          Profile              H     B       F   Hlow      Hhigh      first
+                          Distinct blocks        5   4       6       3            5      4
+
+Appendix A gives every phase-zero position group. The receipt records every position in both phases
+and a digest of each complete mask tuple. Verification compares actual entries, not merely digests
+or a few sample columns.
+
+
+4.1   Division free geometric weights
+
+For a maximal consecutive run {k, . . . , k + n − 1} ⊆ Jg , its weight is
+                                                                     n−1
+                                                                     X
+                                      Y k Gn (Y ),       Gn (Y ) =         Y i.
+                                                                     i=0
+
+Construct Pn (Y ) = Y n together with Gn by the following finite binary recursion:
+
+                          P1 = Y,                                       G1 = 1,
+                        P2n = Pn2 ,                                  G2n = Gn + Pn Gn ,                          (13)
+                      P2n+1 = P2n Y,                              G2n+1 = G2n + P2n .
+                                                                                      Pn−1
+Lemma 4.2 (Paid geometric pair). Recursion (13) computes (Y n ,                         i=0 Y
+                                                                                                i ) in Z[Y ] for every
+
+integer n ≥ 1.
+
+Proof. The statement holds at n = 1. Multiplication by Y n shifts the exponents of Gn from
+0, . . . , n − 1 to n, . . . , 2n − 1, proving the even sum and power. The odd step adds the next monomial
+Y 2n and multiplies the power by Y . Induction along the binary digits proves the claim.
+
+   Each even step costs 2M + 1A and each following odd extension 1M + 1A. The power output
+remains paid even when only the sum is consumed. Independent powers Y k use ordinary binary
+chains. At k = 0, the power aliases literal 1; at n = 1, the sum aliases literal 1. The source omits a
+run product only through the explicitly specified branches k = 0 or n = 1. It retains every group
+product in (12).
+   No expression divides by Y − 1, W or any other expression. Hence no special case or limiting
+argument is needed at W = 0, 1, −1. In particular, when W = 0, Y 0 = 1 and the finite polynomials
+evaluate normally; when W = ±1, Y = 1 and Gn (Y ) = n by its finite sum.
+
+
+
+
+                                                         6
+Research Report 48                                                                Exact spatial polynomial fusion
+
+
+4.2   Sharing and the closed block ledger
+
+One fusion object has a single fixed W and Y = W 600 . It shares identical coefficient-wire tuples as
+whole spatial Horner blocks; identical position tuples share their weight polynomial. Powers and
+geometric sums use explicit caches scoped to that same object. The eight actual profile requests, in
+source order, are
+            (H, S/2), (B, 0), (B, S/2), (F, 0), (F, S/2), (Hlow , 0), (Hhigh , 0), (first, 0).
+They use 37 groups in total, 26 distinct spatial coefficient-wire tuples and 18 distinct position tuples.
+The complete closed ledger is
+
+                     Fixed-block work                                            M          A
+                     26 full width-600 spatial Horner blocks                  15,574   15,574
+                     37 group products and 29 group-sum additions                 37       29
+                     Cached Y powers                                             119        0
+                     Cached geometric pairs                                      168      104
+                     13 run products and 7 run-sum additions                      13        7
+                     Total                                                    15,911   15,714
+
+The cached exponents are 0, 1, 2, 3, 39, 40, 479, 480, 481, 482, 483, 519, 520, 959; the cached geometric
+lengths are 1, 2, 36, 440, 477, 478, 479, 480, 919, 957. They are part of the deterministic grammar.
+Every requested small profile is already in the paid prefix cache, so no hidden profile construction is
+appended through a stale prefix object during fusion.
+
+
+5     Assembly of the two initializer polynomials
+Set
+                               Up = GZ Ep (B; W ) + Ep (C; W ),                                             (14)
+                             H1/2 = ES/2 (H; W ) + ZUS/2 + 3L−400 ES/2 (F ; W ),                            (15)
+                                                             375     L−425
+                               C0 = E0 (Hhigh ; W ) + 3      U0 + 3        E0 (F ; W ),                     (16)
+                                             L−25            u−25
+                         T (W ) = C0 + 3            H1/2 + 3      E0 (Hlow ; W ),                           (17)
+                         F(W ) = E0 (first; W ).                                                            (18)
+Proposition 5.1 (Exact dense outputs). The fused expressions satisfy
+                                  S−1
+                                  X                                     S−1
+                                                                        X
+                       T (W ) =          tile:j W j ,         F(W ) =         first:j W j
+                                   j=0                                  j=0
+
+as ordinary integer polynomials.
+
+Proof. The operator Ep is linear in its coefficient array. Apply it to (2)–(5), using Theorem 3.2 and
+Proposition 4.1 for the computed spatial expressions. The middle array x 7→ Full[x − S/2] becomes
+ES/2 (Full; W ) directly from (7). This gives (14)–(17). Equation (6) then identifies the old dense
+coefficients, and the first polynomial follows immediately from its definition.
+
+   After the profile and correction polynomials are available, the two bulk assemblies cost 2M + 2A
+together, the full and cut expressions each cost 2M + 2A, and the final tile assembly costs 2M + 2A.
+The total is 8M + 8A. The first polynomial needs no further gate beyond its fixed-block construction.
+
+                                                         7
+Research Report 48                                                         Exact spatial polynomial fusion
+
+
+6    The retained literal constant prefix
+Fusion removes the need for the 1,152,000 individual tile and first coefficient ports, but it does not
+introduce free fixed constants. The prefix still constructs every required occurrence, profile, shift,
+anchor and small numeral.
+
+Occurrence constants. The authenticated Report 47 compiler is retained unchanged. It lowers
+the fixed compressed description into signed run events without executing the ant or Boolean tape.
+A directional run of length n, beginning at time t and slot s0 in direction d ∈ {−1, 1}, contributes
+events Z t at s0 and −Z t+n at s0 + dn. Sweeping by v(s) = Zv(s − d) + E(s) gives the exact
+occurrence powers. Linearity combines the runs. The inherited finite lowering and its counts remain
+5, 469, 985M + 8, 186, 999A = 13, 656, 984 gates. This includes the paid zero 1 − 1, all event updates,
+cached powers, four sweeps and two kind-wise merges. The arbitrary row count R is encoded by the
+fixed description and its algebraic lowering, not by an executed physical schedule.
+
+Small profiles. A nonzero signed width-w mask is built by the complete ternary Horner chain
+from its w fixed digits. It costs (w − 1)M + (w − 1)A, including leading zeros. Disjoint plus and
+minus masks select digits from the existing −1, 0, 1 expressions. The zero mask aliases paid zero;
+identical masks of the same width share a chain. The entire original inventory is retained, even if a
+profile is not subsequently needed:
+
+                                736 · 399 + 21 · 24 + 81 · 374 = 324 462
+
+of each operation type. The two extra additions/subtractions construct −1 = (1 − 1) − 1 and
+2 = 1 + 1. The 838 nonzero cache keys have widths 400, 25 and 375 in counts 736, 21 and 81. The
+independent cache check proves that all subsequent profile requests are contained in this inventory.
+
+                                                                          PR−1         r by Lemma 4.2, with
+Geometric constant and shifts. The prefix constructs GZ =                      r=0 Z
+Y = Z, and the five fixed powers
+
+                              3375 ,   3L−425 ,   3L−400 ,   3L−25 ,   3u−25
+
+by paid binary chains. Together they cost 283M + 45A. An exponent is a finite chain specification,
+not an exponentiation gate.
+
+All anchors and remaining ports. All 584 anchor rows remain. Each is a signed 221-symbol
+ternary Horner expression and costs 220M + 220A, totaling 128, 480M + 128, 480A. Their later
+spatial Horner evaluation also remains in the old main source. The six named constants are
+
+            Cu = 3u ,                      Cx = 3u − 1,                          Cbase = 3u−219 ,
+          C198 = 3198 ,           EndpointK = 3481225262775 ,             EndpointD = 3u − 2.
+
+The four independent power chains cost 47, 50, 10, 55 multiplications. Together with 9 = 3 × 3, they
+give 163 multiplications. Constructing 4 = 2 + 2, 6 = 3 + 3, 8 = 4 + 4 and the two named subtractions
+costs five additions/subtractions. The eight ordinary numeral ports are 0, 1, 2, 3, 4, 6, 8, 9; zero and
+2 are already paid, and 1 and 3 are the only constant leaves. There is no main C:-1 port. Hence
+exactly
+                                         584 + 6 + 8 = 598
+
+                                                     8
+Research Report 48                                                          Exact spatial polynomial fusion
+
+
+old constant ports remain, each bound to a paid expression or a permitted literal. The complete
+input-independent prefix costs 14, 563, 366 gates.
+
+
+7     Every consumer and the complete source substitution
+The change is localized to two exact old-main gate intervals. Old gate identifiers are zero-based,
+and the intervals below are half-open:
+
+                     Dense expression         Start         End     Removed gates
+                     Tile Horner             1,264     1,153,262           1,151,998
+                     First Horner        1,153,262     2,305,260           1,151,998
+
+Each expression starts with coefficient S − 1 and performs
+
+                            a ← aW + kind:j,       j = S − 2, S − 3, . . . , 0,
+
+using two records per step. Every multiplication and addition in each interval is checked against
+this exact recurrence. The total removed is
+
+                                        4(S − 1) = 2 303 996.
+
+Only each interval’s final output is mapped to its fused replacement. Every other removed output is
+marked unavailable, and any reference to one from outside its interval causes rejection.
+
+
+7.1   Initializer consumers remain unchanged
+
+To make the scope explicit, let X, h, k, P denote the unchanged positive initializer geometry witnesses,
+and let A∗ , B∗ , T∗ denote its unchanged recoder outputs. Write Wp for the old coordinate named
+Wp, and let Q∗ be the old geometry coordinate named Q. The following old definitions and residual
+pairs remain, with their original source order and arithmetic:
+
+                     hx = X + 1,                               Wp − 1 = Cx hx ,
+                              S
+                       g=W ,                                     h − 1 = (g − 1)k,
+                     Q∗ = h2 ,                                       hy = k(h + 1),
+                       h = P (A∗ g),                      InitialHead = Cu h.
+
+The recoder’s internal source and residuals are unchanged. The only new operands are the two
+proved outputs in                                           
+                                bg = hy hx T (W ) + Wp F(W ) .                           (19)
+In particular Wp is its existing coordinate, not an inferred free power, and neither multiplier hx nor
+hy is dropped.
+
+
+
+
+                                                   9
+Research Report 48                                                     Exact spatial polynomial fusion
+
+
+   Let A(W ) = 583                    j
+                 P
+                    j=0 anchor:j W be the retained full anchor Horner polynomial. Every subse-
+quent initializer expression is retained:
+
+                                       anch = (W S−550 A∗ )A(W ),
+                                     middle = W 24000 T∗ + B∗ ,
+                                        tail = W 263945 (W 264000 + 1)middle,
+                                markerTail = W 23945 + tail,
+                                   removed = C198(W + 1)markerTail,
+                                          δ = Cbase P (anch − removed),
+                        InitialMemoryPlus = bg + δ + 1.
+
+These equations summarize the original arithmetic, whose exact parenthesization and individual
+gates remain unchanged. The five displayed spatial powers are still paid in the old main. The history
+module, endpoint module, optional one-input pairing module, residual metadata and finalizer are
+also retained.
+
+
+7.2   Topological binding and polynomial equality
+
+The input-independent prefix is generated first. The old main is then regenerated by the authenticated
+owned arithmetic generator, whose complete old canonical hash must match the frozen target for
+each arity. Its declarations are preserved. Fusion is inserted just before old gate 1264, after the
+referenced W coordinate is available.
+    Each retained old gate is mapped to a new gate with the same opcode. Its operands bind to an
+earlier retained gate, an unchanged declared coordinate, one of the 598 paid constant aliases, or
+one of the two proved fused outputs. There is no residual C: operand in the resulting source. The
+profile-cache closure described in Section 6 ensures the fused construction cannot silently append a
+late constant to the already copied prefix state.
+
+Proof of Theorem 1.1, equality and invariants. All prefix aliases have the prescribed old integer
+values by the inherited occurrence and profile identities and the explicit paid constant chains.
+Proposition 5.1 supplies exactly the old polynomial at each removed interval’s final output. Induct
+on retained old gates: if all mapped operands have the old polynomial values, applying the unchanged
+opcode gives the same polynomial. The mapping is topological by construction and no removed
+interior value is referenced. The same induction verifies (19), all later initializer consumers, all
+residual operands and every finalizer gate.
+    For m = 285 in the two-input version, or m = 286 in the one-input version, the retained finalizer
+computes each residual difference ri = ai − bi , squares it, and sums all squares. Thus it retains
+mM + (2m − 1)A, namely 285M + 569A or 286M + 571A. Residual pairs are metadata, not extra
+asserted equations. The single final equation has that sum on the left and paid gate 0 = 1 − 1 on the
+right. Coordinate declarations and positive domains are identical, so no new witness is introduced.
+   The old polynomial’s exact degree is 4S = 2, 304, 000: its only degree-2S residuals have leading
+homogeneous term −W 2S , giving leading final part 2W 4S , as established in Report 44. Equality of
+the complete polynomial preserves that exact degree. We do not infer it from syntactic intermediate
+degrees of the factored source, which can ignore cancellations. The operation counts completing the
+theorem are derived in Section 8.
+
+
+                                                 10
+Research Report 48                                                         Exact spatial polynomial fusion
+
+
+8     Complete arithmetic ledger
+Every stage count below is both a count of the specified grammar and a count reproduced by actual
+source generation. No giant coefficient integer is numerically instantiated.
+
+                Stage                                          M            A        Total
+                Occurrence constants                     5,469,985   8,186,999   13,656,984
+                Small profiles and basic literals          324,462     324,464      648,926
+                GZ and five fixed shifts                       283          45          328
+                All 584 anchor rows                        128,480     128,480      256,960
+                Remaining named constants                      163           5          168
+                Retained constant prefix                 5,923,373   8,639,993   14,563,366
+                  600
+                W                                              12           0           12
+                Twelve short correction factors             7,188       7,188       14,376
+                Twenty-four long factors and products      23,040      23,038       46,078
+                Fixed blocks and geometric weights         15,911      15,714       31,625
+                Fused tile assembly                             8           8           16
+                Fused spatial subtotal                     46,159      45,948       92,107
+                Retained old main for two inputs            1,588       1,873        3,461
+                Complete two-input source                5,971,120   8,687,814   14,658,934
+                Complete one-input source                5,971,124   8,687,820   14,658,944
+
+
+   The two-input old main had 2, 307, 457 gates. Removing precisely 2, 303, 996 leaves 3,461. The
+one-input pairing adds 3M + 4A and its added residual costs another 1M + 2A in the finalizer.
+Therefore the one-input remainder has 1, 592M + 1, 879A = 3, 471 gates, exactly ten more overall.
+    If the actually used outputs of the constant prefix are instead supplied as prescribed fixed
+coefficients, the remaining body has 92, 107 + 3, 461 = 95, 568 gates for two inputs and 95, 578
+for one. This is a separate free-coefficient model: its allowed constants include the profile and
+occurrence values needed by the fused body, not just the 598 surviving old named ports. The main
+theorem and headline totals pay for all of those constants from literal 1 and 3.
+    The old Report 47 prefix’s columnwise correction and tile-assembly stages cost respectively
+6, 454, 008 and 8, 064, 000. These disappear, as do the two old spatial Horner intervals. They are
+replaced by the 92, 107 fused gates, giving the independent subtraction check
+
+                        6 454 008 + 8 064 000 + 2 303 996 − 92 107 = 16 729 897.
+
+All other prefix and main work remains paid. This is a unit-cost arithmetic-source comparison. It is
+not a bit-complexity or numerical runtime estimate: integer values can remain enormous, and a
+short straight-line program is not an efficient fully expanded numerical representation.
+
+
+9     Independent evidence and reproducibility
+The evidence has four separate roles.
+    1. The generic proofs in Sections 3–5 establish ordinary polynomial identities for all coefficient
+       substitutions and all W .
+
+                                                    11
+Research Report 48                                                             Exact spatial polynomial fusion
+
+
+   2. Exact finite-data checks identify the concrete masks, block partitions and profile-cache closure
+      to which those identities apply.
+   3. Independent source reconstruction checks actual gates, topology, leaves, metadata, splice
+      bindings, counts and hashes.
+   4. Modular differential cases provide regression tests. They supplement, rather than replace, the
+      algebraic and exhaustive evidence.
+The independent audit [3] reports PASS. It verifies all 9,187,200 formal correction-term identities
+across four kinds, two phases, 957 pair positions and 1200 offsets, including zero columns. It checks
+all 6,912,000 fixed profile entries across the six arrays in both phases. Every block partition is
+disjoint and exhaustive, and the half-phase is verified as the exact 480-block rotation.
+    All 18 actual weight polynomials are evaluated as exact sparse polynomials in Z[W ] and compared
+coefficientwise to k∈J W 600k . All ten geometric pairs are checked exactly. The independent adapter
+                   P
+
+uses the two fixed intervals of Section 7, rather than the candidate’s interval recognizer, validates
+every removed Horner record, rejects removed-interior uses, and reproduces both complete source
+streams. It verifies all 598 surviving ports, witness names and order, the 285/286 residual metadata
+records, paid zero and the sole final equation. All 95 frozen Report 47 files were unchanged in the
+audit’s before/after hash inventory.
+     The author’s supplementary checker verifies 2,296,800 exponent identities without repeating
+identical arithmetic for each kind, and the same 6,912,000 array entries. Seven dense modu-
+lar comparisons use 3,828 independent synthetic occurrence values. The cases are (q, W ) =
+(1, 000, 003, 0), (1, 000, 003, 1), (1, 000, 003, −1), (1, 000, 003, 2), (1, 000, 033, 17), (2, 1), (3, 2). These
+are deliberately small finite-field evaluations, not full integer coefficient evaluations or a proof for all
+occurrence constants.
+
+
+Canonical complete-source identities. Arithmetic records use the canonical tab-separated
+format identifier/opcode/operand/operand with one newline per gate. Metadata is compact JSONL.
+The source generator streams and hashes the actual complete source, without retaining its roughly
+14.7 million records. An integer operand is an earlier gate identifier, never an extra integer literal.
+The two complete source hashes are
+
+
+Two inputs. 62cf59e79cd5d3baf61b19ed50ccc8965e8fb4814bbdc33a6d7fad417d379667
+
+
+One input.       722340689ce84f505af7d010db21d6b48178c5d6008b28966e9836aeca75b25b
+   Their final equations are respectively gate 14,658,933 = gate 0 and gate 14,658,943 = gate 0. The
+unchanged old-main target hashes and the input pins are included in the machine-readable receipts.
+A hash identifies the source bytes and supports reproducibility; it is not itself a mathematical proof.
+
+
+Execution boundary and limits. The packet executes only inspected, authenticated owned
+arithmetic/profile code and new finite symbolic checks. It does not run upstream ant, physical-
+program, color-recipe or saved upstream schedule code. The compressed physical-program JSON is
+treated as fixed compilation data, not executed as a tape computation, and its saved row schedule
+is not used. The huge old literal coefficient prefix is not regenerated. Its equality with the new
+construction rests on the inherited coefficient theorem and the new identities. The checks do not
+
+
+                                                       12
+Research Report 48                                                     Exact spatial polynomial fusion
+
+
+re-prove arbitrary-integer Pell/history results or literal machine/ant dynamics; those inherited
+assumptions are unchanged.
+
+Reproducible package. The accompanying ZIP contains the LaTeX source and PDF, exact frozen
+science, independent audit sources and receipts, a frozen Report 47 reference archive, provenance
+and release manifests, and isolated replay/build instructions. The release verifier authenticates the
+externally supplied manifest hash before running copied scientific code, uses fresh external output
+directories and disabled bytecode, and checks that original bytes, modes and modification times
+are preserved. PDF rebuilding disables shell escape and fixes the source epoch. The README
+supplies the exact offline commands and current release identities. Rebuilding the PDF requires a
+compatible local TeX Live installation; science replay requires Python 3. No package download or
+network execution is part of reproduction.
+
+
+10      Further questions suggested by this construction
+The result leaves concrete opportunities, none of which are included in the present count.
+    1. Fuse the occurrence compiler more deeply. The retained occurrence construction uses
+       13,656,984 gates, about 93% of the new complete source. A direct bivariate or block-valued run
+       construction might avoid materializing every Ta,s . It would need an exact ordinary-polynomial
+       invariant at the cyclic boundaries and a paid source ledger.
+    2. Share rotated factors algebraically. The twenty-four long Horner expressions are exact
+       and simple but do not exhaust possible sharing. Rotation formulas using prefixes and suffixes
+       might lower their cost; division by W and reduction modulo W S − 1 would not be valid
+       substitutes for an ordinary-polynomial proof.
+    3. Refine the paid profile and anchor grammar. This source deliberately retains the
+       complete old profile cache and all anchor rows. A narrower cache, shared addition chains or a
+       proved anchor factorization may help, provided every remaining consumer and constant port
+       is still paid and independently checked.
+    4. Evaluate alternative band widths and block decompositions. The present 600-column
+       split matches physical slots. Other exact decompositions may trade short-factor cost against
+       occurrence-factor length or cache reuse. Any improvement must include the new powers and
+       geometric weights rather than treating them as free.
+    5. Separate arithmetic size from execution cost. Source-generation memory, validation
+       time and bit complexity of numerical evaluation merit distinct analysis. A lower gate count
+       alone does not settle any of them or establish a lower bound on the best possible source.
+The stopping point of this report is the independently reproduced 14,658,934/14,658,944-gate
+construction and its exact polynomial identity. The frozen earlier reports remain available as
+independently valid constructions and as the provenance of the inherited mathematical assumptions.
+
+
+A      Exact block position groups
+Each row below lists the maximal runs of one distinct phase-zero 600-tuple. An interval a:b includes
+both endpoints; a singleton is written as one integer. Groups are shown in first-occurrence order,
+
+                                                 13
+Research Report 48                                                   Exact spatial polynomial fusion
+
+
+matching the deterministic compiler. The contents of each tuple are fixed by the authenticated
+masks, and their full digests and both phase partitions are recorded in fused-receipt.json. For
+phase S/2, rotate every listed position by −480 modulo 960; split a run at zero when necessary.
+The exact tuple comparison, rather than the interval notation alone, licenses grouping.
+
+            Profile   Group   Block positions
+            H         1       0
+            H         2       1:479, 483:959
+            H         3       480
+            H         4       481
+            H         5       482
+            B         1       0:479, 483:959
+            B         2       480
+            B         3       481
+            B         4       482
+            F         1       0:478, 483:518, 520:959
+            F         2       479
+            F         3       480
+            F         4       481
+            F         5       482
+            F         6       519
+            Hlow      1       0
+            Hlow      2       1:479, 482:959
+            Hlow      3       480:481
+            Hhigh     1       0
+            Hhigh     2       1:479, 483:959
+            Hhigh     3       480
+            Hhigh     4       481
+            Hhigh     5       482
+            first     1       0
+            first     2       1:479, 482:959
+            first     3       480
+            first     4       481
+
+
+
+B     Source provenance and release evidence
+The author packet was frozen before manuscript packaging. Its 27 pinned files were copied byte
+identically; the author confirmed that no scientific or code change followed the independent audit.
+The original README’s pending-audit language is retained as historical evidence. The later
+independent audit has a separate PASS verdict and manifest.
+
+
+Frozen source generator. science/fusion_source.py has SHA256
+5e433001dcdb4a26f7dcb0419a41f124fae983aeb76088d55d4b603802232f60
+    The complete science manifest has SHA256
+c2eb248a007d19b8efac47d385f7b9a820b31dd556b846396eefbaf40716d301
+
+
+                                                14
+Research Report 48                                                         Exact spatial polynomial fusion
+
+
+   The prefix-only arithmetic-stream SHA256 is
+4fc26b236689a78d8e2a1bc6f2eff6ef1e6bc62de337ce70b1f3c8041bc7020a
+    The science packet’s INPUT_PINS.json authenticates 18 local input files: the owned Report
+47 occurrence compiler; the owned Report 44 arithmetic generator and its history, recoder and
+endpoint data; the anchor patch; the fixed compressed program description; and the eleven profile
+manifest, dictionary, index and correction files. Absolute source paths in that historical pin file
+record provenance only. Reproduction uses authenticated local copies.
+
+Old canonical main sources. The owned Report 44 generator must regenerate the following
+targets before the adapter can accept its output:
+Two inputs c16901162e09b07d1e0c27b28e29dcc12a9b6137391fce85e3f150a3fed37eac
+One input 85a161972769207e4f5d4212214630535208f69d6736bca2b46a8aff8276a22a
+The complete fused-stream hashes in Section 9 cover the new arithmetic and preserved metadata
+together. Full ordered witness-name digests are recorded in the receipts.
+
+Independent audit and frozen predecessor.                The independent audit manifest has SHA256
+6ffaa0336e1fac214a76e9f46d4c652eaabd804c601f42cd6605a7484a0302bb
+    It pins the generic proof, audit report, independent source checker, cache/weight checker and
+their exact receipts. Its candidate snapshot used the same source generator and authenticated finite
+input bytes. The narrow relocation adapter supplied separately for this release changes directory
+and provenance resolution only; the independent checker bytes remain unchanged.
+   The included Report 47 release manifest is
+317ad533eadbc816f595cb8f5ec262c400ab5a694b7d70559bc50988d4131819
+   and its complete 1,344,412-byte ZIP has SHA256
+fa58914f5334f54a6c648bbaa68d6127bfe3e9de2bf9d711c95370b2310ab57f
+   This supplies the prior coefficient proof, finite data and authenticated Report 44 reference
+without relying on the original workspace paths.
+    The top-level Report 48 manifest inventories the final report, scientific packet, audit and
+reproduction helpers. Its own hash is delivered separately to avoid a circular self-hash. A manifest
+identifies the supplied evidence; trust in its origin must come from an external authenticated delivery.
+Reproduction and visual-review receipts describe the particular checks actually completed, including
+their preservation boundary.
+
+
+References
+[1] Research Report 44, recovered authenticated edition, 4 October 2026. Complete raw-pair arithmetic
+    source, inherited recognition theorem and exact degree. Frozen reference archive is included through
+    Report 47.
+[2] Research Report 47, Exact Structured Construction of the Fixed Ant Coefficients, 4 October 2026. Frozen
+    release and reproducibility archive included in references/.
+[3] Independent exact-fusion audit, 4 October 2026. AUDIT.md, GENERIC_PROOF.md, exact finite identities,
+    exact cache/weight checks and complete-source reconstruction, included in independent_audit/.
+
+
+                                                    15
+

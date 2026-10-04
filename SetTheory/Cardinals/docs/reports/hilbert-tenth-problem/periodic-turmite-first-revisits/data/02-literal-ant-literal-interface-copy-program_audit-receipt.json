@@ -1,0 +1,78 @@
+{
+  "status": "PASS_INDEPENDENT_EXACT_GRAMMAR_INDEX_AUDIT",
+  "inputs_sha256": {
+    "physical_program.py": "41eb8abb80fdd88703a5fb1d41ce59d495e0c420d66b0763fcf98cfbf36d6c4c",
+    "physical_program.json": "57c91ff7de16b1bd68c7a48e398f398af900f56a3151819cab4f3cd05e9efe1a",
+    "fixed_ca_cell.json": "77a3379dc89f19a5fecfa143648bac33576a31f49db0d54b8b8e5774e6849483"
+  },
+  "compressed_nodes": 958,
+  "program_rows": 601547591,
+  "physical_pair_rows": {
+    "MOVE_LEFT": 299589177,
+    "DUP": 1366258,
+    "NAND": 1365370,
+    "MOVE_RIGHT": 299226786
+  },
+  "prefix_entries": 959,
+  "prefix_strictly_increasing": true,
+  "row_at_intervals_checked": 958,
+  "gate_intervals_checked": 2586,
+  "copy_quotient_intervals_checked": 83783,
+  "swap_word_intervals_checked": 20112,
+  "word_affine_intervals_checked": 40220,
+  "distinct_copy_residual_widths": 282,
+  "maximum_copy_residual_width": 839,
+  "exact_global_pair_left_index_range": [
+    0,
+    919
+  ],
+  "exact_highest_touched_column": 920,
+  "active_columns": 958,
+  "highest_active_column": 957,
+  "exact_peak_live_compiler_word": 915,
+  "declared_safe_compiler_word_bound": 917,
+  "observer_row_index": 601515562,
+  "observer_column_index": 910,
+  "groups": {
+    "gather_input": {
+      "nodes": 23,
+      "rows": 10764,
+      "pair_min": 1,
+      "pair_max": 919
+    },
+    "GATE": {
+      "nodes": 862,
+      "rows": 592596546,
+      "pair_min": 0,
+      "pair_max": 889
+    },
+    "COPY": {
+      "nodes": 25,
+      "rows": 8908252,
+      "pair_min": 50,
+      "pair_max": 913
+    },
+    "halt_observer_copy": {
+      "nodes": 1,
+      "rows": 1,
+      "pair_min": 910,
+      "pair_max": 910
+    },
+    "gather_outputs": {
+      "nodes": 24,
+      "rows": 21264,
+      "pair_min": 0,
+      "pair_max": 908
+    },
+    "scatter_outputs": {
+      "nodes": 23,
+      "rows": 10764,
+      "pair_min": 1,
+      "pair_max": 919
+    }
+  },
+  "bugs_found": [],
+  "proof_scope": "Exact abstract pair-instruction grammar, decoder, Boolean word semantics, and active-column capacity. No literal-color geometry or collision certification; no dense row expansion or random sampling.",
+  "proof_file": "ANALYSIS.md",
+  "node_bounds_file": "node_bounds.json"
+}

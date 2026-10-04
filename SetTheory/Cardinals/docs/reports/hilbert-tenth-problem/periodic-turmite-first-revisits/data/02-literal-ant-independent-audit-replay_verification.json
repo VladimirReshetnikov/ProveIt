@@ -1,0 +1,84 @@
+{
+  "status": "PASS_INDEPENDENT_HARDENED_PACKET_AUDIT",
+  "commands": 28,
+  "exact_scientific_outputs": 39,
+  "guard_rejections": 27,
+  "unsupported_optimized_commands": [
+    "copy/translate_anchor.py",
+    "copy/program_audit/verify_program_index_bounds.py"
+  ],
+  "source_files_identical": 34,
+  "preservation": [
+    {
+      "release": "literal-turmite-interface-release-20261003-v2",
+      "original_tree_bytes_modes_mtimes_preserved": true,
+      "original_directories_modes_mtimes_preserved": true,
+      "external_zip_bytes_mode_mtime_preserved": true
+    },
+    {
+      "release": "literal-turmite-interface-release-20261003",
+      "original_tree_bytes_modes_mtimes_preserved": true,
+      "original_directories_modes_mtimes_preserved": true,
+      "external_zip_bytes_mode_mtime_preserved": true
+    }
+  ],
+  "extra_optimization_checks": [
+    {
+      "entry": "replay_all.py",
+      "mode": "-OO",
+      "returncode": 1
+    },
+    {
+      "entry": "replay_all.py",
+      "mode": "PYTHONOPTIMIZE=1",
+      "returncode": 1
+    },
+    {
+      "entry": "replay_all.py",
+      "mode": "PYTHONOPTIMIZE=2",
+      "returncode": 1
+    },
+    {
+      "entry": "atlas/compile_input.py",
+      "mode": "-OO",
+      "returncode": 1
+    },
+    {
+      "entry": "atlas/compile_input.py",
+      "mode": "PYTHONOPTIMIZE=1",
+      "returncode": 1
+    },
+    {
+      "entry": "atlas/compile_input.py",
+      "mode": "PYTHONOPTIMIZE=2",
+      "returncode": 1
+    }
+  ],
+  "regenerated_receipt_sha256": "5c5a91531cda7807fb237e95610ddcc6da5d1dfad124ebb43c65e8061baab065",
+  "independent_interface_summary": {
+    "status": "PASS_HARDENED_INTERFACE_AND_REPEATED_CALL_ISOLATION",
+    "valid_input_cases": 85,
+    "invalid_bit_calls_rejected": 18,
+    "unauthorized_parameter_calls_rejected": 4,
+    "endpoint_zero_word_lengths": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      7,
+      16,
+      31
+    ],
+    "all_maps_independently_reconstructed": true,
+    "periodicity_probe_points": 72,
+    "api_return_isolation": {
+      "status": "PASS_NO_MUTABLE_OUTPUT_OR_CALLER_ALIASES",
+      "mutable_containers_per_result": 2838,
+      "destructively_mutated_containers": 2838,
+      "later_result_exact_after_mutation": true,
+      "original_head_reproducer_fixed": true
+    }
+  },
+  "scope": "Canonical ZIP is authenticated and safely extracted. Original release trees including pre-existing excluded v2 caches, and external ZIPs, are preserved. Temporary regeneration metadata is deliberately mutable. No upstream code, saved arithmetic schedule, network, dense tile or full physical-row expansion executed."
+}

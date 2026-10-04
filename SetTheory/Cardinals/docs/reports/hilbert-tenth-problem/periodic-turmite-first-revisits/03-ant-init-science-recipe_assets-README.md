@@ -1,0 +1,5 @@
+# Fixed coefficient recipe assets
+
+The fixed row coefficients in PROOF.md are defined by the total color function Atlas.color in atlas/generator.py. That frozen file and its physical_program.py decoder are unchanged. physical_program.json and primitive_maps.json are unchanged data. Every large macro JSON is reduced to the exact root board array consumed by Atlas.__init__; the turn-route JSON retains exactly its consumed cells arrays. No coordinate or color has been changed. ASSET_MANIFEST.json records both original frozen hashes and compact projection hashes.
+
+These files specify the fixed coefficient recipe and are not replay entry points. Arithmetic replay only hashes them; it never imports, runs or expands the ant generator or its saved physical program. The unused physical_program.make_program/main paths are not needed by Atlas.color and are not an independently supported build of the original full interface packet. The complete original global simulation proof remains an explicitly pinned dependency.

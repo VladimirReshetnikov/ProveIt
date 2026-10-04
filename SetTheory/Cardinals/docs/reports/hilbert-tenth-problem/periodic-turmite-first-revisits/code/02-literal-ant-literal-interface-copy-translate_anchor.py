@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+"""Translate the certified local constant patch to the requested fixed initial head."""
+import hashlib,json,pathlib
+P=pathlib.Path(__file__).resolve().parent;araw=(P/'left_start_anchor.json').read_bytes();mraw=(P/'marker_left_start.json').read_bytes();a=json.loads(araw);m=json.loads(mraw);base={(x,y):c for x,y,c in m['board']};dx,dy=288600,-400
+patch=[[x+dx,y+dy,base[x,y],v]for x,y,v in a['changed_cells']]
+out={'status':'EXACT_TRANSLATION_OF_CERTIFIED_LOCAL_ANCHOR','local_anchor_sha256':hashlib.sha256(araw).hexdigest(),'marker_background_sha256':hashlib.sha256(mraw).hexdigest(),'translation':[dx,dy],'fixed_initial_head':[a['actual_start_state'][0]+dx,a['actual_start_state'][1]+dy,a['actual_start_state'][2]],'patch_row_format':['x','y','expected_literal_background_color','new_initial_color'],'patch':patch,'changed_cells':len(patch),'endpoint_not_processed_by_virtual_prefix':True,'virtual_source_INIT1_setup':[[x+dx,y+dy,v]for x,y,v in a['virtual_prefix_source_setup']],'virtual_setup_is_not_an_additional_actual_patch':'The two initial source state-cell changes cancel during the virtual COPY read. The actual patch is exactly the net patch list above, not that list plus the virtual setup.','background_contract':'At each patch coordinate, the complete literal-background evaluator must equal expected_literal_background_color. This file records those expected colors from the translated joint marker-common-INIT0 map; the global evaluator can check them directly.'}
+assert out['fixed_initial_head']==[288650,75,1]
+(P/'fixed_initial_anchor_patch.json').write_text(json.dumps(out,indent=2)+'\n');print(json.dumps({'head':out['fixed_initial_head'],'net_changes':len(patch)}))

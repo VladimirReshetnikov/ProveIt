@@ -1,0 +1,632 @@
+{
+  "status": "PASS",
+  "operations": 174,
+  "multiplications": 72,
+  "additions": 78,
+  "subtractions": 24,
+  "additions_subtractions": 102,
+  "equations": 48,
+  "positive_parameters": 5,
+  "positive_witnesses": 61,
+  "fixed_numerals": [
+    1,
+    3,
+    6,
+    8,
+    9
+  ],
+  "groups": {
+    "positive adapters": 16,
+    "extent geometry": 7,
+    "checkerboard geometry": 17,
+    "edge tests": 4,
+    "initial interface": 4,
+    "local and head sums": 14,
+    "spatial shifts": 4,
+    "head time wiring": 7,
+    "memory time wiring": 4,
+    "field bounds": 16,
+    "packing": 30,
+    "mask and Pell": 51
+  },
+  "maximum_actual_residual_degree": 104,
+  "maximum_actual_residual_indices": [
+    38
+  ],
+  "leading_homogeneous_certificate": [
+    {
+      "index": 38,
+      "terms": [
+        {
+          "coefficient": 531441,
+          "powers": {
+            "q": 96,
+            "k": 2,
+            "s": 4,
+            "w": 2
+          }
+        }
+      ]
+    }
+  ],
+  "sum_of_squares_degree": 208,
+  "residuals": [
+    {
+      "index": 0,
+      "label": "q extent",
+      "equality": [
+        "q",
+        "q_extent"
+      ],
+      "source": "-Q*uQ + q",
+      "actual": "-Q*uQ + q",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 1,
+      "label": "Q extent",
+      "equality": [
+        "Q",
+        "Q_extent"
+      ],
+      "source": "Q - W*uW",
+      "actual": "Q - W*uW",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 2,
+      "label": "time repunit",
+      "equality": [
+        "q_minus_one",
+        "time_sum"
+      ],
+      "source": "-Gt*Q + Gt + q - 1",
+      "actual": "-Gt*Q + Gt + q - 1",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 3,
+      "label": "row repunit",
+      "equality": [
+        "Q_minus_one",
+        "row_sum"
+      ],
+      "source": "-Gy*W + Gy + Q - 1",
+      "actual": "-Gy*W + Gy + Q - 1",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 4,
+      "label": "odd width",
+      "equality": [
+        "W",
+        "oddwidth_rhs"
+      ],
+      "source": "W - 8*WidthOdd - 3",
+      "actual": "W - 8*WidthOdd - 3",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 5,
+      "label": "even height",
+      "equality": [
+        "Gy",
+        "evenheight_rhs"
+      ],
+      "source": "Gy - HeightEven*W - HeightEven",
+      "actual": "Gy - HeightEven*W - HeightEven",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 6,
+      "label": "checkerboard mask",
+      "equality": [
+        "q_minus_one",
+        "K_eight"
+      ],
+      "source": "-8*K + q - 1",
+      "actual": "-8*K + q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 7,
+      "label": "last-column power",
+      "equality": [
+        "W",
+        "Wp_three"
+      ],
+      "source": "W - 3*Wp",
+      "actual": "W - 3*Wp",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 8,
+      "label": "initial word bound",
+      "equality": [
+        "initial_range",
+        "Q"
+      ],
+      "source": "BoundInitial + InitialMemoryPlus - Q - 1",
+      "actual": "BoundInitial + InitialMemoryPlus - Q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 9,
+      "label": "initial head bound",
+      "equality": [
+        "head_range",
+        "Q"
+      ],
+      "source": "BoundHead + InitialHead - Q",
+      "actual": "BoundHead + InitialHead - Q",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 10,
+      "label": "initial head power",
+      "equality": [
+        "q",
+        "head_divisor"
+      ],
+      "source": "-HeadQuot*InitialHead + q",
+      "actual": "-HeadQuot*InitialHead + q",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 11,
+      "label": "initial head parity",
+      "equality": [
+        "InitialHead",
+        "head_square"
+      ],
+      "source": "-HeadRoot**2 + InitialHead",
+      "actual": "-HeadRoot**2 + InitialHead",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 12,
+      "label": "active partition",
+      "equality": [
+        "C",
+        "DE"
+      ],
+      "source": "-DPlus - EPlus + GEPlus + GNPlus + GSPlus + GWPlus - 2",
+      "actual": "-DPlus - EPlus + GEPlus + GNPlus + GSPlus + GWPlus - 2",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 13,
+      "label": "memory toggle",
+      "equality": [
+        "AE",
+        "BD"
+      ],
+      "source": "APlus - BPlus - DPlus + EPlus",
+      "actual": "APlus - BPlus - DPlus + EPlus",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 14,
+      "label": "visited-color partition",
+      "equality": [
+        "D",
+        "FG"
+      ],
+      "source": "DPlus - FPlus - GPlus + 1",
+      "actual": "DPlus - FPlus - GPlus + 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 15,
+      "label": "heading toggle",
+      "equality": [
+        "ZG",
+        "ZprimeF"
+      ],
+      "source": "-FPlus - GNPlus + GPlus - GWPlus + ZPlus + 1",
+      "actual": "-FPlus - GNPlus + GPlus - GWPlus + ZPlus + 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 16,
+      "label": "west shift",
+      "equality": [
+        "SW_three",
+        "GW"
+      ],
+      "source": "-GWPlus + 3*SWPlus - 2",
+      "actual": "-GWPlus + 3*SWPlus - 2",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 17,
+      "label": "north shift",
+      "equality": [
+        "SN_W",
+        "GN"
+      ],
+      "source": "-GNPlus + SNPlus*W - W + 1",
+      "actual": "-GNPlus + SNPlus*W - W + 1",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 18,
+      "label": "head recurrence",
+      "equality": [
+        "head_time_left",
+        "head_time_right"
+      ],
+      "source": "FinalHead*q - 3*GEPlus*Q + GEPlus + GNPlus - GSPlus*Q*W + GSPlus + GWPlus - InitialHead - Q*SNPlus - Q*SWPlus + Q*W + 5*Q - 4",
+      "actual": "FinalHead*q - 3*GEPlus*Q + GEPlus + GNPlus - GSPlus*Q*W + GSPlus + GWPlus - InitialHead - Q*SNPlus - Q*SWPlus + Q*W + 5*Q - 4",
+      "degree": 3,
+      "correction": "0"
+    },
+    {
+      "index": 19,
+      "label": "sign recurrence",
+      "equality": [
+        "sign_time_left",
+        "Q_NextZ"
+      ],
+      "source": "FinalSignPlus*q - GSPlus*Q*W - Q*SWPlus + Q*W + Q + ZPlus - q - 1",
+      "actual": "FinalSignPlus*q - GSPlus*Q*W - Q*SWPlus + Q*W + Q + ZPlus - q - 1",
+      "degree": 3,
+      "correction": "0"
+    },
+    {
+      "index": 20,
+      "label": "memory recurrence",
+      "equality": [
+        "memory_time_left",
+        "memory_time_right"
+      ],
+      "source": "APlus - BPlus*Q + FinalMemoryPlus*q - InitialMemoryPlus + Q - q",
+      "actual": "APlus - BPlus*Q + FinalMemoryPlus*q - InitialMemoryPlus + Q - q",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 21,
+      "label": "A strict bound",
+      "equality": [
+        "bound_A",
+        "q"
+      ],
+      "source": "APlus + BoundA - q - 1",
+      "actual": "APlus + BoundA - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 22,
+      "label": "B strict bound",
+      "equality": [
+        "bound_B",
+        "q"
+      ],
+      "source": "BPlus + BoundB - q - 1",
+      "actual": "BPlus + BoundB - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 23,
+      "label": "C strict bound",
+      "equality": [
+        "bound_C",
+        "q"
+      ],
+      "source": "BoundC + GEPlus + GNPlus + GSPlus + GWPlus - q - 4",
+      "actual": "BoundC + GEPlus + GNPlus + GSPlus + GWPlus - q - 4",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 24,
+      "label": "D strict bound",
+      "equality": [
+        "bound_D",
+        "q"
+      ],
+      "source": "BoundD + DPlus - q - 1",
+      "actual": "BoundD + DPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 25,
+      "label": "E strict bound",
+      "equality": [
+        "bound_E",
+        "q"
+      ],
+      "source": "BoundE + EPlus - q - 1",
+      "actual": "BoundE + EPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 26,
+      "label": "F strict bound",
+      "equality": [
+        "bound_F",
+        "q"
+      ],
+      "source": "BoundF + FPlus - q - 1",
+      "actual": "BoundF + FPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 27,
+      "label": "G strict bound",
+      "equality": [
+        "bound_G",
+        "q"
+      ],
+      "source": "BoundG + GPlus - q - 1",
+      "actual": "BoundG + GPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 28,
+      "label": "GE strict bound",
+      "equality": [
+        "bound_GE",
+        "q"
+      ],
+      "source": "BoundGE + GEPlus - q - 1",
+      "actual": "BoundGE + GEPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 29,
+      "label": "GW strict bound",
+      "equality": [
+        "bound_GW",
+        "q"
+      ],
+      "source": "BoundGW + GWPlus - q - 1",
+      "actual": "BoundGW + GWPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 30,
+      "label": "GN strict bound",
+      "equality": [
+        "bound_GN",
+        "q"
+      ],
+      "source": "BoundGN + GNPlus - q - 1",
+      "actual": "BoundGN + GNPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 31,
+      "label": "GS strict bound",
+      "equality": [
+        "bound_GS",
+        "q"
+      ],
+      "source": "BoundGS + GSPlus - q - 1",
+      "actual": "BoundGS + GSPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 32,
+      "label": "TestE strict bound",
+      "equality": [
+        "bound_TestE",
+        "q"
+      ],
+      "source": "BoundTestE + GEPlus + Gt*HeightEven*Wp + 3*K - q - 1",
+      "actual": "BoundTestE + GEPlus + Gt*HeightEven*Wp + 3*K - q - 1",
+      "degree": 3,
+      "correction": "0"
+    },
+    {
+      "index": 33,
+      "label": "TestW strict bound",
+      "equality": [
+        "bound_TestW",
+        "q"
+      ],
+      "source": "BoundTestW + GWPlus + Gt*HeightEven + 3*K - q - 1",
+      "actual": "BoundTestW + GWPlus + Gt*HeightEven + 3*K - q - 1",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 34,
+      "label": "TestN strict bound",
+      "equality": [
+        "bound_TestN",
+        "q"
+      ],
+      "source": "BoundTestN + GNPlus + Gt*WidthOdd + K - q - 1",
+      "actual": "BoundTestN + GNPlus + Gt*WidthOdd + K - q - 1",
+      "degree": 2,
+      "correction": "0"
+    },
+    {
+      "index": 35,
+      "label": "TestS strict bound",
+      "equality": [
+        "bound_TestS",
+        "q"
+      ],
+      "source": "BoundTestS + GSPlus + 3*Gt*WidthOdd*uW + Gt*uW + K - q - 1",
+      "actual": "BoundTestS + GSPlus + 3*Gt*WidthOdd*uW + Gt*uW + K - q - 1",
+      "degree": 3,
+      "correction": "0"
+    },
+    {
+      "index": 36,
+      "label": "Z strict bound",
+      "equality": [
+        "bound_Z",
+        "q"
+      ],
+      "source": "BoundZ + ZPlus - q - 1",
+      "actual": "BoundZ + ZPlus - q - 1",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 37,
+      "label": "mask index",
+      "equality": [
+        "r",
+        "mask_r"
+      ],
+      "source": "3*APlus + 3*BPlus*q + 3*DPlus*q**15 + 3*DPlus*q**3 + 3*EPlus*q**4 + 3*FPlus*q**5 + 3*GEPlus*q**11 + 3*GEPlus*q**7 + 3*GEPlus*q**2 + 3*GNPlus*q**13 + 3*GNPlus*q**9 + 3*GNPlus*q**2 + 3*GPlus*q**6 + 3*GSPlus*q**14 + 3*GSPlus*q**10 + 3*GSPlus*q**2 + 3*GWPlus*q**12 + 3*GWPlus*q**8 + 3*GWPlus*q**2 + 3*Gt*HeightEven*Wp*q**11 + 3*Gt*HeightEven*q**12 + 9*Gt*WidthOdd*q**14*uW + 3*Gt*WidthOdd*q**13 + 3*Gt*q**14*uW + 3*K*q**14 + 3*K*q**13 + 9*K*q**12 + 9*K*q**11 - 9*q**16 - 3*q**15 - 3*q**14 - 3*q**13 - 3*q**12 - 3*q**11 - 3*q**10 - 3*q**9 - 3*q**8 - 3*q**7 - 3*q**6 - 3*q**5 - 3*q**4 - 3*q**3 - 12*q**2 - 3*q + r - 2",
+      "actual": "3*APlus + 3*BPlus*q + 3*DPlus*q**15 + 3*DPlus*q**3 + 3*EPlus*q**4 + 3*FPlus*q**5 + 3*GEPlus*q**11 + 3*GEPlus*q**7 + 3*GEPlus*q**2 + 3*GNPlus*q**13 + 3*GNPlus*q**9 + 3*GNPlus*q**2 + 3*GPlus*q**6 + 3*GSPlus*q**14 + 3*GSPlus*q**10 + 3*GSPlus*q**2 + 3*GWPlus*q**12 + 3*GWPlus*q**8 + 3*GWPlus*q**2 + 3*Gt*HeightEven*Wp*q**11 + 3*Gt*HeightEven*q**12 + 9*Gt*WidthOdd*q**14*uW + 3*Gt*WidthOdd*q**13 + 3*Gt*q**14*uW + 3*K*q**14 + 3*K*q**13 + 9*K*q**12 + 9*K*q**11 - 9*q**16 - 3*q**15 - 3*q**14 - 3*q**13 - 3*q**12 - 3*q**11 - 3*q**10 - 3*q**9 - 3*q**8 - 3*q**7 - 3*q**6 - 3*q**5 - 3*q**4 - 3*q**3 - 12*q**2 - 3*q + r - 2",
+      "degree": 17,
+      "correction": "0"
+    },
+    {
+      "index": 38,
+      "label": "first Pell norm",
+      "equality": [
+        "pell_first_left",
+        "pell_first_right"
+      ],
+      "source": "531441*k**2*q**96*s**4*w**2 + 729*k**2*q**48*s**2*w - tau**2 - tau",
+      "actual": "531441*k**2*q**96*s**4*w**2 + 729*k**2*q**48*s**2*w - tau**2 - tau",
+      "degree": 104,
+      "correction": "0"
+    },
+    {
+      "index": 39,
+      "label": "ratio lower slack",
+      "equality": [
+        "c",
+        "interval_c_rhs"
+      ],
+      "source": "c - eta - 9*k*q**16*s",
+      "actual": "c - eta - 9*k*q**16*s",
+      "degree": 18,
+      "correction": "0"
+    },
+    {
+      "index": 40,
+      "label": "ratio upper slack",
+      "equality": [
+        "k",
+        "interval_k_rhs"
+      ],
+      "source": "-eta + k - zeta",
+      "actual": "-eta + k - zeta",
+      "degree": 1,
+      "correction": "0"
+    },
+    {
+      "index": 41,
+      "label": "first Pell index",
+      "equality": [
+        "k",
+        "pell_k_rhs"
+      ],
+      "source": "-81*h*q**32*s*w + k - r - 1",
+      "actual": "-81*h*q**32*s*w + k - r - 1",
+      "degree": 35,
+      "correction": "0"
+    },
+    {
+      "index": 42,
+      "label": "Pell coefficient",
+      "equality": [
+        "a",
+        "pell_a_rhs"
+      ],
+      "source": "a - 81*q**32*s*w - 9*q**16*s",
+      "actual": "a - 81*q**32*s*w - 9*q**16*s",
+      "degree": 34,
+      "correction": "0"
+    },
+    {
+      "index": 43,
+      "label": "power-three congruence",
+      "equality": [
+        "d",
+        "pell_d_rhs"
+      ],
+      "source": "-a*c - 6*a*ga + d - 8*ga - 9*q**16*w",
+      "actual": "-a*c - 6*a*ga + d - 8*ga - 9*q**16*w",
+      "degree": 17,
+      "correction": "0"
+    },
+    {
+      "index": 44,
+      "label": "main Pell norm",
+      "equality": [
+        "pell_main_left",
+        "pell_main_right"
+      ],
+      "source": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "actual": "-a**2*c**2 - 6*a*c**2 - 8*c**2 + d**2 - 1",
+      "degree": 4,
+      "correction": "0"
+    },
+    {
+      "index": 45,
+      "label": "relaxed auxiliary norm",
+      "equality": [
+        "pell_R2",
+        "pell_relaxed_right"
+      ],
+      "source": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "actual": "-a**2*f**2 + a**2 - 6*a*f**2 + 6*a + c**4*i**2 - 8*f**2 + 8",
+      "degree": 6,
+      "correction": "0"
+    },
+    {
+      "index": 46,
+      "label": "half-parameter norm",
+      "equality": [
+        "pell_half_left",
+        "pell_half_right"
+      ],
+      "source": "a**2*c**2*f**2*j**2 - a**2*c**2*j**2 + 4*a**2*c*f**2*j*r + 2*a**2*c*f**2*j - 4*a**2*c*j*r - 2*a**2*c*j + 4*a**2*f**2*r**2 + 4*a**2*f**2*r - a**2*f**2*y_aux**2 + a**2*f**2 - 4*a**2*r**2 - 4*a**2*r + a**2*y_aux**2 - a**2 + 6*a*c**2*f**2*j**2 - 6*a*c**2*j**2 + 24*a*c*f**2*j*r + 12*a*c*f**2*j - 24*a*c*j*r - 12*a*c*j + 24*a*f**2*r**2 + 24*a*f**2*r - 6*a*f**2*y_aux**2 + 6*a*f**2 - 24*a*r**2 - 24*a*r + 6*a*y_aux**2 - 6*a + 8*c**2*f**2*j**2 - 8*c**2*j**2 + 32*c*f**2*j*r + 16*c*f**2*j - 32*c*j*r - 16*c*j + 32*f**2*r**2 + 32*f**2*r - 8*f**2*y_aux**2 + 8*f**2 - 32*r**2 - 32*r + 9*y_aux**2 - 9",
+      "actual": "c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 + y_aux**2 - 1",
+      "degree": 10,
+      "correction": "-a**2*c**2*f**2*j**2 + a**2*c**2*j**2 - 4*a**2*c*f**2*j*r - 2*a**2*c*f**2*j + 4*a**2*c*j*r + 2*a**2*c*j - 4*a**2*f**2*r**2 - 4*a**2*f**2*r + a**2*f**2*y_aux**2 - a**2*f**2 + 4*a**2*r**2 + 4*a**2*r - a**2*y_aux**2 + a**2 - 6*a*c**2*f**2*j**2 + 6*a*c**2*j**2 - 24*a*c*f**2*j*r - 12*a*c*f**2*j + 24*a*c*j*r + 12*a*c*j - 24*a*f**2*r**2 - 24*a*f**2*r + 6*a*f**2*y_aux**2 - 6*a*f**2 + 24*a*r**2 + 24*a*r - 6*a*y_aux**2 + 6*a + c**6*i**2*j**2 + 4*c**5*i**2*j*r + 2*c**5*i**2*j + 4*c**4*i**2*r**2 + 4*c**4*i**2*r - c**4*i**2*y_aux**2 + c**4*i**2 - 8*c**2*f**2*j**2 + 8*c**2*j**2 - 32*c*f**2*j*r - 16*c*f**2*j + 32*c*j*r + 16*c*j - 32*f**2*r**2 - 32*f**2*r + 8*f**2*y_aux**2 - 8*f**2 + 32*r**2 + 32*r - 8*y_aux**2 + 8"
+    },
+    {
+      "index": 47,
+      "label": "auxiliary congruence",
+      "equality": [
+        "pell_u",
+        "pell_u_rhs"
+      ],
+      "source": "c*j - c - f*o + 2*r + 1",
+      "actual": "c*j - c - f*o + 2*r + 1",
+      "degree": 2,
+      "correction": "0"
+    }
+  ],
+  "proof_scope": "Exact formal integer-polynomial identity, literal DAG acyclicity and counts. General positive-domain equivalence inherited from pinned theorem; no execution/import of upstream code or schedules."
+}

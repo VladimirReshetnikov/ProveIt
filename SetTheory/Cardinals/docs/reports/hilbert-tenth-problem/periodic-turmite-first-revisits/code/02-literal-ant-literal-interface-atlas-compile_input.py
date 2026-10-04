@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""The fixed U15 finite-word loader. The startup anchor is a fixed packaged constant.
+No caller-supplied hardware, anchor, program, or observer is accepted.
+"""
+if not __debug__:raise RuntimeError('Assertions required')
+import argparse,functools,hashlib,itertools,json,pathlib
+from generator import Atlas
+ROOT=pathlib.Path(__file__).resolve().parents[1]
+@functools.lru_cache(maxsize=1)
+def _fixed():
+ a=Atlas();raw=(ROOT/'copy/fixed_initial_anchor_patch.json').read_bytes();anchor=json.loads(raw)
+ assert anchor['fixed_initial_head']==[288650,75,1]and len(anchor['patch'])==2806
+ patch=[]
+ for x,y,old,new in anchor['patch']:
+  assert a.color(x,y)==old and old!=new;patch.append([x,y,new])
+ # Only immutable startup values are retained beside the private Atlas.
+ return a,tuple(anchor['fixed_initial_head']),tuple(tuple(row)for row in patch),hashlib.sha256(raw).hexdigest()
+def compile_input(left,right):
+ left=list(left);right=list(right)
+ if not all(type(b)is int and b in[0,1]for b in left+right):raise ValueError('Inputs must be finite lists of integer bits, nearest head first')
+ a,head,patch,pin=_fixed();changes=a.input_changes(left,right,patch)
+ assert len(changes)==2812+4*(sum(left)+sum(right))
+ return{'status':'LITERAL_FIXED_U15_INITIALIZATION','left_nearest_head_first':left,'right_nearest_head_first':right,
+  'primary_word_length':len(left)+len(right)+1,'period':[a.S,2*a.V],'fixed_initial_head':list(head),
+  'anchor_sha256':pin,'changed_cells':changes,'changed_cell_count':len(changes),
+  'pre_departure_acceptance':[{'x_residue':546702,'y_residue':240606225650,'heading':2},
+    {'x_residue':258702,'y_residue':481225262850,'heading':2}],
+  'stencil':[],'state_convention':'U15 starts in A scanning0; both finite words are nearest-head-first and all other tape cells are0'}
+def _mutable_objects(value):
+ """Collect the actual nested mutable containers, including private cache state."""
+ seen=set();out=[]
+ def visit(x):
+  if id(x)in seen:return
+  seen.add(id(x))
+  if isinstance(x,dict):
+   out.append(x)
+   for key,v in x.items():visit(key);visit(v)
+  elif isinstance(x,list):
+   out.append(x)
+   for v in x:visit(v)
+  elif isinstance(x,set):
+   out.append(x)
+   for v in x:visit(v)
+  elif isinstance(x,tuple):
+   for v in x:visit(v)
+  elif hasattr(x,'__dict__'):visit(vars(x))
+ visit(value);return out
+
+def mutation_regression():
+ cases=[]
+ for bits in[([],[]),([1,0,1],[0,1]),([0,0],[0,0,0])]:
+  left,right=map(list,bits);first=compile_input(left,right);second=compile_input(left,right)
+  expected=json.dumps(first,sort_keys=True)
+  one=_mutable_objects(first);two=_mutable_objects(second);cache=_mutable_objects(_fixed())
+  ids1={id(x)for x in one};ids2={id(x)for x in two};cached={id(x)for x in cache}
+  assert not(ids1&ids2)and not((ids1|ids2)&cached)
+  assert id(first['left_nearest_head_first'])!=id(left)and id(first['right_nearest_head_first'])!=id(right)
+  # Retain references first, then mutate every returned mutable container,
+  # including all individual changed-cell rows and observer dictionaries.
+  for x in reversed(one):x.clear()
+  assert left==bits[0]and right==bits[1]
+  assert json.dumps(second,sort_keys=True)==expected
+  assert json.dumps(compile_input(left,right),sort_keys=True)==expected
+  left.append(1);right.append(0)
+  assert json.dumps(second,sort_keys=True)==expected
+  assert json.dumps(compile_input(*bits),sort_keys=True)==expected
+  cases.append({'left':bits[0],'right':bits[1],'mutated_returned_containers':len(one),'distinct_from_other_results':True,'distinct_from_private_cache':True,'caller_words_preserved':True,'later_outputs_unchanged':True})
+ return cases
+
+def selfcheck():
+ words=[list(bits)for n in range(4)for bits in itertools.product([0,1],repeat=n)];n=0;zero=[]
+ for left,right in itertools.product(words,repeat=2):
+  p=compile_input(left,right);a,_,_,_=_fixed();m=p['primary_word_length'];rows=p['changed_cells']
+  assert len({(x,y)for x,y,c in rows})==len(rows)
+  assert min(x for x,y,c in rows)==288617 and max(x for x,y,c in rows)==576000*m+264705
+  assert(min(y for x,y,c in rows),max(y for x,y,c in rows))==(-144,76)
+  if not any(left+right):zero.append({'left_length':len(left),'right_length':len(right),'support':len(rows),'right_marker_x':576000*m+264704})
+  n+=1
+ empty=compile_input([],[]);(ROOT/'atlas/empty_input_example.json').write_text(json.dumps(empty,indent=2)+'\n')
+ mutation_cases=mutation_regression()
+ r={'status':'PASS_FIXED_LOADER_ALL_WORD_PAIRS_THROUGH_LENGTH3','word_pairs':n,'zero_only_length_cases':zero,
+  'fixed_start':empty['fixed_initial_head'],'fixed_anchor_cells':2806,'exact_support_formula':'2812+4*(popcount(left)+popcount(right))',
+  'anchor_not_caller_supplied':True,'cached_startup_values_immutable':True,'returned_nested_values_are_fresh':True,'mutation_regression':mutation_cases,'source_sha256':hashlib.sha256(pathlib.Path(__file__).read_bytes()).hexdigest()}
+ (ROOT/'atlas/input_loader_receipt.json').write_text(json.dumps(r,indent=2)+'\n');print(json.dumps({'status':r['status'],'word_pairs':n,'zero_only_cases':len(zero)}))
+if __name__=='__main__':
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--left',default='');p.add_argument('--right',default='');p.add_argument('--output',type=pathlib.Path);p.add_argument('--selfcheck',action='store_true');args=p.parse_args()
+ if args.selfcheck:selfcheck()
+ else:
+  if any(c not in'01'for c in args.left+args.right):p.error('Words use only0 and1; first character is nearest the head')
+  out=compile_input([int(c)for c in args.left],[int(c)for c in args.right]);text=json.dumps(out,indent=2)+'\n'
+  if args.output:args.output.write_text(text)
+  else:print(text,end='')
