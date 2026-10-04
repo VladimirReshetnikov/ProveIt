@@ -570,6 +570,17 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [positive controller charts](matrix193_positive_controller_charts.md)
+> remove the uniquely determined LOAD or SWITCH edge hat, or both, from the
+> composed1679 parent. Full sources use **1,674/1,676/1,671 operations** and
+> **145/145/144 positive witnesses**. Their exact degrees increase to
+> **53,347/53,347/71,107**. The [independent review](review_matrix193_positive_controller_charts.md)
+> checks all5,914 rows across six full arrays, exact polynomial pullbacks,
+> positive integer inverses and uniform degree leaders. Fresh normal/optimized
+> receipts pass. These preserve every common supplied coordinate and ordinary
+> input; they do not yet include entry sharing, and the universal84 bound stays
+> unchanged. The improvement in witness count has an explicit degree cost.
+>
 > The [entry-and-flow composition](matrix193_entry_flow_scout.md)
 > emits the complete **1,622=791M+831A** matrix polynomial, retaining146 positive
 > witnesses and exact degree35,587. The578-gate coefficient component and the
