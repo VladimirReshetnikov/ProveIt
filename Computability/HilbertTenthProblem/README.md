@@ -567,6 +567,18 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [combined matrix construction](Papers/research-wip/native-stream-queue/matrix193_composed_output_scout.md)
+uses **1,679=801M+878A operations**, **146 positive witnesses** and exact
+degree **35,587**. It combines direct edge-hat packing, structured coefficient
+evaluation and bounded high quotients, saving783 operations and four witnesses
+from the balanced parent. Five additional paid powers/repunit values are shared
+in the complete emitted source. The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_composed_output_scout.md)
+reconstructs every row, verifies all thirteen coefficient inputs and five
+shares, and proves full polynomial equality to the bounded-high parent.
+Normal/optimized replays and48 independent whole-source modular comparisons
+pass. Ordinary input and the fixed-program recipe are preserved; this remains
+an alternate matrix route above the established universal84 frontier.
+
 The [structured coefficient evaluator](Papers/research-wip/native-stream-queue/matrix193_structured_coefficient_scout.md)
 reduces the complete matrix construction to **1,756=795M+961A operations**,
 with150 positive witnesses and unchanged exact degree35,587. Factoring the
