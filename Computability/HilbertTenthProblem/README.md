@@ -589,6 +589,16 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [entry-and-flow composition](Papers/research-wip/native-stream-queue/matrix193_entry_flow_scout.md)
+emits the complete **1,622=791M+831A** matrix polynomial, retaining146 positive
+witnesses and exact degree35,587. The578-gate coefficient component and the
+two-addition controller saving coexist in one fully counted source. The
+[independent review](Papers/research-wip/native-stream-queue/review_matrix193_entry_flow_scout.md) checks the literal full-array edit,
+private removed cone, all retained expressions and unchanged native kernel;
+fresh normal/optimized receipts and full-source modular checks pass. The
+entire polynomial is unchanged on the same supplied coordinates. This remains
+an alternative route above the established universal84 bound.
+
 The [entry-shared coefficient evaluator](Papers/research-wip/native-stream-queue/matrix193_entry_shared_coefficient_scout.md)
 reduces the complete matrix polynomial to **1,624=791M+833A operations**,
 with146 positive witnesses and unchanged exact degree35,587. Pairing adjacent
