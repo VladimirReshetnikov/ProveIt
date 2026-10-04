@@ -154,6 +154,9 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [actual-compiler non-dyadic outer family](complete83_nondyadic_outer_family.md), with [independent proof and literal-source review](review_complete83_nondyadic_outer_family.md), keeps every fixed numeral of the original powers-of-five compiler and constructs infinitely many positive outer tuples with W=0. A residue split chooses q=Q(Q+1)/2 or q=Q(2Q-1), where Q=B^n and n=1 modulo4. Small source-bound C=Z and a constructed ordinary input satisfy the original slack, packed-index and exponent congruences; q(q-1) divides X, giving a positive literal transport quotient. A full18-witness completion follows conditionally from the single four-term congruence modulo2q^3, which remains unproved and untested for actual compiler members. Independent review checks65 literal rows and all83 rows' topology/liveness, plus135 explicitly synthetic arithmetic cases. No passing full zero, rejected input, prescribed-input construction or universal83 conclusion is asserted.
+>
+>
 > The [odd-prime cubed-scale boundary](complete83_odd_prime_boundary.md), with [independent mathematical and source review](review_complete83_odd_prime_boundary.md), gives an exact three-term test at every odd prime p dividing q, including the exceptional quadratic tie at p=3. Outside the two denominator ties, the central valuation and its denominator loss decide the local condition; at a tie, a simple residue root lifts uniquely to every precision. If p^a exactly divides q and the central valuation is below3a, the whole prime power p^a must divide Z-Dmask*J or Z-Dmask*J+2. The literal transport condition is (K+w)C=F modulo q-1. Fresh independent exact polynomial expansion authenticates the26 source rows behind these identities, and independent local arithmetic checks pass. Local lifts remain coupled to the actual exponent, packing, and transport; no full non-dyadic zero or universal83 result follows.
 >
 >
