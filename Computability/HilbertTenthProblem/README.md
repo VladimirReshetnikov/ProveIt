@@ -61,6 +61,14 @@ native valuation; fresh normal/optimized receipts pass. **Occurrence on
 a genuine compiler history remains unproved**, so gamma83 is unresolved
 and the established universal polynomial bound remains **84**.
 
+The [native ternary exclusion](Papers/research-wip/native-stream-queue/complete83_gamma_native_ternary_exclusion.md)
+gives an explicit digit class with **v3(m)=2 exactly**, so both gamma83
+power tests fail there for every number of squarings. The [independent review](Papers/research-wip/native-stream-queue/review_complete83_gamma_native_ternary_exclusion.md)
+checks the central-binomial recursion, native tail expansion and local-order
+argument; normal/optimized receipts pass. Its numerical example satisfies
+kernel range/population prerequisites but is not a compiled history.
+The 83-operation language remains unresolved.
+
 The [joint auxiliary/strong cut](Papers/research-wip/native-stream-queue/complete84_aux_strong_joint_cut.md)
 requires exactly five gates at its four independent computed ports. The
 proof covers scalar constants, reuse and cancellation; the [independent review](Papers/research-wip/native-stream-queue/review_complete84_aux_strong_joint_cut.md)
