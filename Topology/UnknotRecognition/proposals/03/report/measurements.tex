@@ -1,0 +1,99 @@
+% Generated from results/benchmarks.json by benchmarks/tables.py.
+\newcommand{\TrialCount}{252}
+\newcommand{\HardNewSeconds}{0.897}
+\newcommand{\HardLowerSpeedup}{66}
+\newcommand{\HardReferenceSeconds}{7.30}
+\newcommand{\ConwayRecognitionSpeedup}{26.9}
+\newcommand{\KTRecognitionSpeedup}{29.3}
+\newcommand{\ConwayThreeMilliseconds}{4.31}
+\newcommand{\ConwayThreeLowerSpeedup}{2319}
+\newcommand{\ConwayFiftySeconds}{0.163}
+\newcommand{\RawBenchmarkTable}{
+\begingroup\small
+\begin{longtable}{@{}lrrrrr@{}}
+\toprule
+Diagram & $n$ & $r_2$ & Original (s) & New (s) & Ratio\\
+\midrule\endhead
+Random 3-braid (20) & 20 & 75 & 0.105 & 0.025 & 4.24\\
+Random 3-braid (40) & 40 & 321 & 0.533 & 0.096 & 5.53\\
+Random 4-braid (15) & 15 & 5 & 0.008 & 0.006 & 1.27\\
+Random 4-braid (21) & 21 & 25 & 0.272 & 0.072 & 3.75\\
+Random 4-braid (31) & 31 & 45 & 0.307 & 0.056 & 5.51\\
+Random 4-braid (41) & 41 & 109 & 0.856 & 0.167 & 5.12\\
+Random 5-braid (24) & 24 & 13 & 0.034 & 0.016 & 2.17\\
+Random 5-braid (36) & 36 & 2949 & $>60$ & 0.897 & $>66.8$\\
+Random 6-braid (31) & 31 & 85 & 0.402 & 0.083 & 4.83\\
+Unknot chain (32) & 32 & 1 & 0.006 & 0.003 & 1.88\\
+Unknot chain (128) & 128 & 1 & 0.061 & 0.012 & 5.05\\
+Unknot chain (256) & 256 & 1 & 0.230 & 0.022 & 10.54\\
+$T(2,11)$ & 11 & 11 & 0.007 & 0.004 & 1.72\\
+$T(2,41)$ & 41 & 41 & 0.084 & 0.023 & 3.61\\
+$T(3,5)$ & 10 & 7 & 0.010 & 0.008 & 1.22\\
+$T(3,11)$ & 22 & 15 & 0.051 & 0.029 & 1.75\\
+Conway & 11 & 33 & 0.035 & 0.010 & 3.36\\
+Kinoshita--Terasaka & 11 & 33 & 0.036 & 0.011 & 3.18\\
+Hard unknot (8) & 8 & 1 & 0.002 & 0.002 & 1.15\\
+\bottomrule\end{longtable}
+\endgroup}
+\newcommand{\PipelineBenchmarkTable}{
+\begingroup\small
+\begin{longtable}{@{}lrrrl@{}}
+\toprule
+Diagram & Original (ms) & New (ms) & Ratio & New terminal stage\\
+\midrule\endhead
+Conway & 35.82 & 1.331 & 26.90 & Jones mod $p$\\
+Figure-eight & 0.214 & 0.200 & 1.07 & Alexander mod $p$\\
+Determinant-one grid & 0.815 & 0.354 & 2.30 & Alexander mod $p$\\
+Scrambled unknot grid & 0.459 & 0.387 & 1.18 & R1/R2\\
+Hard unknot (8) & 1.833 & 2.556 & 0.72 & Khovanov\\
+Kinoshita--Terasaka & 38.05 & 1.299 & 29.28 & Jones mod $p$\\
+Five-braid (36) & 8.731 & 2.280 & 3.83 & Alexander mod $p$\\
+Same knot, reduced (24) & 7.073 & 0.455 & 15.55 & Alexander mod $p$\\
+$T(3,5)$ & 0.722 & 0.467 & 1.54 & Alexander mod $p$\\
+Trefoil & 0.194 & 0.182 & 1.07 & Alexander mod $p$\\
+Crossing-free unknot & 0.045 & 0.053 & 0.86 & R1/R2\\
+Unknot braid (40) & 6.668 & 6.982 & 0.95 & R1/R2\\
+Three Conway summands & $>10000$ & 4.311 & $>2319.7$ & Jones mod $p$\\
+\bottomrule\end{longtable}
+\endgroup}
+\newcommand{\FactorBenchmarkTable}{
+\begingroup\small
+\begin{longtable}{@{}lrrrrr@{}}
+\toprule
+Family & $n$ & Reduced rank & Original (ms) & New (ms) & Ratio\\
+\midrule\endhead
+2 trefoil summands & 6 & $3^{2}$ & 2.376 & 1.348 & 1.76\\
+4 trefoil summands & 12 & $3^{4}$ & 15.02 & 1.553 & 9.67\\
+6 trefoil summands & 18 & $3^{6}$ & 136.82 & 2.384 & 57.39\\
+8 trefoil summands & 24 & $3^{8}$ & --- & 2.052 & ---\\
+10 trefoil summands & 30 & $3^{10}$ & --- & 2.447 & ---\\
+50 trefoil summands & 150 & $3^{50}$ & --- & 16.01 & ---\\
+2 conway summands & 22 & $33^{2}$ & 1318.69 & 11.73 & 112.38\\
+3 conway summands & 33 & $33^{3}$ & --- & 11.98 & ---\\
+10 conway summands & 110 & $33^{10}$ & --- & 18.34 & ---\\
+50 conway summands & 550 & $33^{50}$ & --- & 162.67 & ---\\
+\bottomrule\end{longtable}
+\endgroup}
+\newcommand{\AblationBenchmarkTable}{
+\begingroup\small
+\begin{longtable}{@{}lrr@{}}
+\toprule
+36-crossing raw backend & Seconds & Reduced rank\\
+\midrule\endhead
+Original algebra, original LIFO & $>60$ & ---\\
+Compiled algebra, LIFO & $>10$ & ---\\
+Original algebra, new scheduler & 7.301 & 2949\\
+Compiled algebra, new scheduler & 0.897 & 2949\\
+\bottomrule\end{longtable}
+\endgroup}
+\newcommand{\OrderingBenchmarkTable}{
+\begingroup\small
+\begin{longtable}{@{}rrrr@{}}
+\toprule
+Crossings & Original (ms) & New (ms) & Ratio\\
+\midrule\endhead
+128 & 57.05 & 4.387 & 13.00\\
+256 & 226.08 & 8.692 & 26.01\\
+512 & 862.79 & 17.06 & 50.58\\
+\bottomrule\end{longtable}
+\endgroup}
