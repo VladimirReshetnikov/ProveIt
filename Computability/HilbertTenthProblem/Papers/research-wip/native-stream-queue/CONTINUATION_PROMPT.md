@@ -485,6 +485,19 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [atomic matrix-context compiler](matrix193_atomic_context_packing.md)
+> reduces the matrix route from 176,586 to **4,155=1,529M+2,626A** operations,
+> with 460 positive witnesses and exact degree 34,045. Its 99-edge controller
+> uses whole matrix actions; 72 shared left-action classes reduce the physical
+> selection block to 340 lanes, with only four range lanes. The
+> [independent review](review_matrix193_atomic_context_packing.md)
+> checks the full source, grouping, ordinary-input bridge and exact degree.
+> Normal/optimized receipts pass. The actual 83-tile zero-input example's
+> 84-cell outer packing is materialized, including its 22,203,446-bit q,
+> joined AND and six comparisons; its native Pell extension remains proved.
+> This improves the matrix construction while the universal frontier stays 84.
+> The 227-operation diagnostic is an all-input example, not a universal one.
+>
 > The [uniform matrix-context compiler](matrix193_uniform_context_packing.md)
 > now emits the complete fixed-controller source: **176,586=58,770M+117,816A**,
 > 19,644 positive witnesses and exact degree2,360,653. Eight fixed coefficient
@@ -504,10 +517,10 @@
 > context-independent table has **19,613 edges and m=32,768**. The
 > [independent review](review_matrix193_unit_shear_controller.md) reconstructs
 > both numeric arrays and checks386 matrix factors and52,430 unit shears.
-> Normal/optimized receipts pass. The uniform compiler above pays the
-> initial-context row and matrix-switch arithmetic left open by this packet.
-> The295,647 contextual figure is a construction
-> bound, not an emitted universal DAG; the universal minimum remains84.
+> Normal/optimized receipts pass. The uniform compiler above supplies the
+> initial row and pays for the matrix switch left open by this packet.
+> The 295,647 contextual figure remains a construction bound.
+> The best established universal count is 84.
 >
 > The [marked-loader matrix packing](matrix193_marked_loader_packing.md)
 > gives a fixed-arity route for arbitrary-duration synchronized row histories.
