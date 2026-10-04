@@ -2347,7 +2347,7 @@ median form `G_a = P_a + L_0R̃_a + D_a^0` (`thm:completion`). This is the
 exact form of the q-Pochhammer monograph's asymptotic
 `thm:ip-qx-expansion` (`chapters/03_infinite_q_pochhammer.tex:620`),
 uncited. Its `cor:fr` is Fantini–Rella's Conjecture 5 and `cor:characters`
-their Conjecture 1. For any finite set of real shifts, the median
+their Conjecture 1. For any finite set of real shifts in `(0,1)`, the median
 reconstructs a weighted sum exactly when the weights are antisymmetric
 under `a ↦ 1 − a`, and the Stokes jump vanishes exactly when they are
 symmetric (`thm:reflection`); with `p` distinct phases, the first surviving
@@ -2388,6 +2388,14 @@ writes `R_a` for the body's `R̃_a`, Fantini–Rella is cited only as
 arXiv v2, though now published (Lett. Math. Phys. 116 (2026), art. 39),
 and its fold table converges slowly to the `t → 0` limit of its column.
 Not formalized; its numerics are not interval certificates.
+
+**Review Remark 1 (reflection-domain clarification, 4 October 2026).** The
+preceding entry originally said “For any finite set of real shifts,” relying
+on its earlier `0 < a < 1` qualification. Read without that qualification,
+the phrase includes `a = 0`, where the defining product has a zero factor
+and its logarithm is undefined. The summary now repeats `(0,1)`, exactly
+the domain of `thm:reflection`. This corrects the guide's local ambiguity;
+the article already states the restriction.
 
 The optimal-truncation articles (q-multinomial, Gaussian binomial,
 theta-resolved, certified inversion, gamma core, inverse harmonic and the
