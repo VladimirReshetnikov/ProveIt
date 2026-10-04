@@ -154,6 +154,9 @@
 > improvement. The universal84/187 and85/155 points remain unchanged.
 >
 >
+> The [odd-prime cubed-scale boundary](complete83_odd_prime_boundary.md), with [independent mathematical and source review](review_complete83_odd_prime_boundary.md), gives an exact three-term test at every odd prime p dividing q, including the exceptional quadratic tie at p=3. Outside the two denominator ties, the central valuation and its denominator loss decide the local condition; at a tie, a simple residue root lifts uniquely to every precision. If p^a exactly divides q and the central valuation is below3a, the whole prime power p^a must divide Z-Dmask*J or Z-Dmask*J+2. The literal transport condition is (K+w)C=F modulo q-1. Fresh independent exact polynomial expansion authenticates the26 source rows behind these identities, and independent local arithmetic checks pass. Local lifts remain coupled to the actual exponent, packing, and transport; no full non-dyadic zero or universal83 result follows.
+>
+>
 > The [exact 2-adic cubic stratification](complete83_two_adic_cubic_stratification.md), with [independent proof and exact-arithmetic review](review_complete83_two_adic_cubic_stratification.md), classifies the 2-primary cubed-scale condition for even non-dyadic q with t=v2(q)>=2. Away from two valuation ties the least term determines the answer; each tie has one liftable odd root class at every precision. If the central valuation is below 3t+1, a passing case must lie in the linear tie or in the explicit exceptional family r=2^(3t+1)-3, v2(X)=t. The actual compiler bound excludes that exception when 3t+1<=d. The threshold depends on v2(q), not log2(q); neither native mask typing nor a complete positive zero follows. Fresh author and reviewer checks passed before freezing, including independent exhaustive residue enumeration. Odd-prime conditions and source coupling remain; the established universal bound is84 operations.
 >
 >
