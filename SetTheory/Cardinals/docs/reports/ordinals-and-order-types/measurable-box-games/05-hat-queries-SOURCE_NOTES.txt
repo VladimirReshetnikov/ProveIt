@@ -1,0 +1,122 @@
+SOURCE SNAPSHOT AND CONTRIBUTION AUDIT
+October 4, 2026
+
+REPOSITORY SNAPSHOT
+
+Repository:
+https://github.com/VladimirReshetnikov/ProveIt
+
+Inspected commit:
+9fe62865dc30d71256183466b744b98ebf7e64d6
+
+The main starting question appears in:
+  docs/incoming/hat_guessing_research.zip
+  manuscript: hat_guessing_growth.tex
+  section: Information cost versus guaranteed growth
+
+That report asks how a prescribed inspection count changes attainable
+excess profiles, whether a uniform bound permits almost-sure divergent
+positive excess, and how query count differs from query distance.
+The present article answers these qualitative count questions, gives a
+count–distance separation, and derives an expected-cost threshold.
+
+Pinned archive:
+https://github.com/VladimirReshetnikov/ProveIt/blob/9fe62865dc30d71256183466b744b98ebf7e64d6/docs/incoming/hat_guessing_research.zip
+
+Other inspected context:
+  SetTheory/Cardinals/docs/reports/ordinals-and-order-types/
+    measurable-box-games/article.tex
+  Logic/PeanoArithmetic/ListCoding/README.md
+
+The box-games report supplies related finite-query context. The list
+coding project supplies a plausible finite representation interface for
+future formalization. Neither is treated as already proving the new
+measure-theoretic, Fourier, or asymptotic statements in this package.
+
+CONNECTION WITH ELLIOT GLAZER
+
+Primary mathematical sources:
+
+1. Elliot Glazer, A choiceless box game paradox.
+   arXiv:2211.10474, version 1, November 15, 2022.
+   https://arxiv.org/abs/2211.10474
+
+2. Elliot Glazer, Interactions Among Principles of Choice, Forcing,
+   and Measure Theory. Harvard Ph.D. dissertation, September 2023.
+   https://nrs.harvard.edu/URN-3:HUL.INSTREPOS:37378151
+
+3. Nathaniel Eldredge, A probabilistic look at the infinite hat-guessing
+   game. arXiv:2508.02828v2, submitted October 24, 2025.
+   https://arxiv.org/abs/2508.02828v2
+
+Eldredge explicitly credits a suggestion by Elliot Glazer and Charles
+Wang when introducing the excess-correct-guesses question preceding
+Proposition 6.6. This is a direct mathematical connection, beyond the
+broader overlap in choice principles, regularity, and prediction.
+The unrestricted foundational problem in Glazer's paper is a different
+problem and is not claimed to be solved by this report.
+
+ESTABLISHED INGREDIENTS
+
+Eldredge's Proposition 6.6 supplies the rare-loss paired block rule.
+The present article restates it and gives a partner-first early-stopping
+implementation. The block's existence is not claimed as a new invention.
+Eldredge's Remark 6.8 discusses rates; the earlier repository report also
+contains stronger unrestricted growth constructions.
+
+Boolean hypercontractivity and the standard one-sided sign bound are
+classical. The article provides an elementary proof of a weaker version
+and explicitly attributes the sharper bound to:
+
+  Ryan O'Donnell, Analysis of Boolean Functions, Theorems 9.21, 9.22,
+  and 9.24; author-hosted corrected edition.
+  https://www.cs.cmu.edu/~odonnell/papers/Analysis-of-Boolean-Functions-by-Ryan-ODonnell.pdf
+
+  Aline Bonami, Étude des coefficients de Fourier des fonctions de
+  L^p(G), Annales de l'Institut Fourier 20(2), 335–402 (1970).
+  https://doi.org/10.5802/aif.357
+
+Related coding context:
+
+  Todd Ebert, Wolfgang Merkle, and Heribert Vollmer,
+  On the autoreducibility of random sequences,
+  SIAM Journal on Computing 32(6), 1542–1569 (2003).
+  https://doi.org/10.1137/S0097539702415317
+  https://eccc.weizmann.ac.il/report/2002/056/
+
+RESULTS DEVELOPED AND PROVED IN THE ARTICLE
+
+* A finite-color obstruction that gives nullity for measurable rules and
+  meagerness for Baire-measurable rules, including infinite neighborhoods.
+* The uniform finite adaptive-query impossibility and conditional
+  finite-sign estimates.
+* Sparse Fourier-support label bounds and the exact one-query optimum.
+* A robustness bound in terms of aggregate high-degree Fourier mass.
+* The exact deterministic expected-query threshold 2.
+* The optimized block's exact cost law, geometric tails, and moments.
+* Exact asymptotic equivalents for the displayed block schedules.
+* The count-budget classification under eventual positivity, with sparse
+  placement and computability details.
+* Simultaneous count/radius sufficiency under h(i) -> infinity, together
+  with an explicit separation for a merely unbounded radius profile.
+* Correctness independence under acyclic directed visibility.
+* Private-randomness sufficiency for every expected cap C > 1.
+
+The statement "proved in the article" describes the proofs supplied in
+this report. It does not establish first publication, worldwide novelty,
+or recognition as a breakthrough. Literature comparison covered the
+directly relevant primary sources and repository manuscripts, not an
+exhaustive priority review.
+
+VERIFICATION BOUNDARY
+
+The two exact finite verifiers and their recorded outputs are included.
+Independent proof reviews were used to check the mathematical arguments.
+The delivered TeX was compiled and the rendered PDF was inspected.
+
+These checks do not constitute external peer review, proof-assistant
+certification, or endorsement by any cited researcher. The article's
+final section proposes explicit obligations for a later formalization.
+
+The archive contains this report and its own verification code and
+outputs. It does not redistribute the source papers or the repository.
