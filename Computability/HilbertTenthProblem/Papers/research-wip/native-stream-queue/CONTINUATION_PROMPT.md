@@ -3,6 +3,23 @@
 > **Current established universal bounds:74 certificate operations /84 polynomial operations.**
 > **Current minimum polynomial:84=47M+37A,18 positive witnesses,exact degree187.**
 >
+> The [local norm unit guard](complete92_norm_unit_guard.md) gives a complete
+> universal **92=52M+40A**, **17-positive-witness** polynomial of **uniform exact
+> degree 325**, with exactly the same positive zero tuples as the reviewed90/406
+> construction. It retains the same67 parent producers and pays25 new rows for
+> `F92=P5*(A_rat²-D*B_rat²+1)-1`. The even denominator `B_rat` makes the guarded
+> factor1 or2 modulo4; at an integer zero it must therefore be+1, forcing
+> `P5=1` and the local norm to vanish. The unique integral root `f=A_rat/B_rat`
+> is positive by the same accepted signed-domain theorem. The
+> [independent review](review_complete92_norm_unit_guard.md) reconstructs all92
+> rows and proves the whole-output identity
+> `F90=P5*F92+(P5-1)*(2*P5*A_rat-1)`, the exact degree325 leader and its uniformly
+> nonzero coefficient `32*Bm1^202`. Fresh root normal/optimized author and reviewer
+> receipts pass. The naive degree bound335 is not the exact degree. This adds a
+> lower-degree17-witness choice;90/406/17 and the established84/187/18 operation
+> frontier remain available, with no global optimality assertion.
+>
+>
 > The [quadratic root elimination](complete90_signed_root_elimination.md)
 > gives a complete universal polynomial with **90=52M+38A operations**,
 > **17 positive witnesses**, and **uniform exact degree 406**. It deletes the

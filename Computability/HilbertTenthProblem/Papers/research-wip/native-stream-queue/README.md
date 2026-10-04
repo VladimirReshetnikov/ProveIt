@@ -1,5 +1,21 @@
 # WIP: native queue streams and research continuation
 
+The [local norm unit guard](complete92_norm_unit_guard.md) gives a complete
+universal **92=52M+40A**, **17-positive-witness** polynomial of **uniform exact
+degree 325**, with exactly the same positive zero tuples as the reviewed90/406
+construction. It retains the same67 parent producers and pays25 new rows for
+`F92=P5*(A_rat²-D*B_rat²+1)-1`. The even denominator `B_rat` makes the guarded
+factor1 or2 modulo4; at an integer zero it must therefore be+1, forcing
+`P5=1` and the local norm to vanish. The unique integral root `f=A_rat/B_rat`
+is positive by the same accepted signed-domain theorem. The
+[independent review](review_complete92_norm_unit_guard.md) reconstructs all92
+rows and proves the whole-output identity
+`F90=P5*F92+(P5-1)*(2*P5*A_rat-1)`, the exact degree325 leader and its uniformly
+nonzero coefficient `32*Bm1^202`. Fresh root normal/optimized author and reviewer
+receipts pass. The naive degree bound335 is not the exact degree. This adds a
+lower-degree17-witness choice;90/406/17 and the established84/187/18 operation
+frontier remain available, with no global optimality assertion.
+
 The [quadratic root elimination](complete90_signed_root_elimination.md)
 gives a complete universal polynomial with **90=52M+38A operations**,
 **17 positive witnesses**, and **uniform exact degree 406**. It deletes the
@@ -5251,6 +5267,7 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Complete local norm unit guard](complete92_norm_unit_guard.md), [review](review_complete92_norm_unit_guard.md) | Universal **92=52M+40A**, **17 positive witnesses**, uniform exact degree **325**; same positive tuples as90/406; literal67+25 source and full modulo4 guard proof | Degree/operation tradeoff on the inherited valid recipe; depends on reviewed signed-domain theorem; no global minimum claim |
 | [Polish-report ancillary placement](review_polish_placement_e24ce2ce0.md) | All16 files uniquely match28 original members;3 retired archives authenticated;3 main host files unchanged | Parts XIII–XV not integrated at this revision; earlier guide-only mathematical scope retained; no new paid compiler |
 | [OEIS two-manuscript publication](review_oeis_publication_9f924ac47.md) | Both manuscripts integrated;65+61 original labels retained among135;242 references and286 listed files checked; full guide/article diff read; Git guidance corrected atf0c56034c | Fixed-table coefficients and exact-sector versus fixed-order scope remain; no new uniform paid compiler, build or complete analytic-proof certification |
 | [Hat/box ancillary placement](review_hat_placement_e38f368c2.md) | All13 added files/149407 bytes match23 original members;3 archives retired;host README/article/PDF unchanged | Parts III–IV not yet integrated at this revision; mathematical read scopes unchanged; no new compiler bound |
