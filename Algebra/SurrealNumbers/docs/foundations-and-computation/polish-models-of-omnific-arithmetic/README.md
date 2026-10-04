@@ -829,22 +829,23 @@ is exactly θ+1, a complete invariant of the ambient pair (Theorem 215.1,
 Corollary 215.2). Borel order embeddings are the bounded operators with
 strictly increasing positive pivots (Theorem 216.2), with Polish image exactly
 when bounded below (Corollary 216.8). An order on `R²` with Baire-property cone
-need not be Borel (Proposition 217.1); a real Polish vector space with zero
-dual, such as `L^p`, 0 < p < 1, carries no Borel order (Theorem 217.2,
-Corollary 217.3). The cones `M^{ℓ²}_θ = (H^{ℓ²}_θ ×→ Z)_{≥0}` are Polish models
+need not be Borel (Proposition 217.1); a nonzero real Polish vector space
+with zero dual, such as `L^p([0,1])`, 0 < p < 1, carries no Borel order
+(Theorem 217.2, Corollary 217.3). The cones `M^{ℓ²}_θ = (H^{ℓ²}_θ ×→ Z)_{≥0}` are Polish models
 of full Presburger arithmetic with continuous addition, Δ⁰₂ definable
 relations, elementary unit-preserving embeddings classified by θ, additive
-omnific realizations, and no compatible discretely ordered ring (Theorems
-218.1, 218.3, 218.4, 219.1, 220.2). Its Theorem 213.2 is Part III's Theorem
+omnific realizations, and, for θ > 0, no compatible discretely ordered ring
+(Theorems 218.1, 218.3, 218.4, 219.1, 220.2). Its Theorem 213.2 is Part III's Theorem
 33.1 for vector spaces, with the same proof; Theorem 218.1 is a case of 34.1;
 the algebraic half of 218.3 is Part X's 129.1; 220.2 is weaker than Part I's
 10.4; 219.1 is a variant of 40.1; each is flagged.
 
 **Section 224** (merge, written for the report). 22's flag is Part III's cone
-recursion and θ is the cone closure rank ρ (Proposition 224.1); no complete
-metrizable real vector space with zero dual, separable or not, carries a
-Baire-property order, and `L^p(μ)`, 0 < p < 1, has zero dual for every
-nonatomic μ (Proposition 224.2, proving 22's abstract); a total convex cone on
+recursion and θ is the cone closure rank ρ (Proposition 224.1); no nonzero
+complete metrizable real vector space with zero dual, separable or not,
+carries a Baire-property order. For every nonatomic μ with `L^p(μ) ≠ 0`,
+`L^p(μ)`, 0 < p < 1, has zero dual and satisfies this obstruction
+(Proposition 224.2, proving 22's abstract); a total convex cone on
 an infinite-dimensional Hilbert space need not be Borel (Remark 224.3, with
 choice); a family of topological automorphisms preserves some Borel order iff
 it preserves a complete flag acting positively on its quotients
@@ -864,7 +865,7 @@ additive group is not Polishable in its coefficient Borel structure
 (Proposition 229.1). Borel derivations correspond to additive δ : Γ → ℒ^Γ_R
 with a common lower valuation bound, kill R, and have gain inf v(δ(γ))
 (Theorem 230.2); in finite rational rank r they are `⊕ ℒ^Γ_R E_i`
-(Theorem 231.1); in rank one D = aE with kernel R and image
+(Theorem 231.1); in rank one D = aE, and for a ≠ 0 it has kernel R and image
 `{g : ct(g/a) = 0}` (Corollary 231.3); coefficient continuity is the
 finite-support and diagonal criterion (Theorem 232.1); derivations killing
 `R[Γ]` with D(F) = 1 for a lacunary F exist and are not Borel (Theorem 233.3,
@@ -1129,6 +1130,32 @@ All labels exist at HEAD.
   real-vector-space-structure restricts to 23's E. Notes in Part XVII.
 
 ## Corrections and stale statements
+
+**Review Remark R1 (4 October 2026, zero derivation).** The Part XVII guide
+originally said “in rank one D = aE with kernel R and image
+`{g : ct(g/a) = 0}`.” The condition `a ≠ 0` is necessary: at `a = 0`, D is
+zero, its kernel is the entire Laurent field, its image is `{0}`, and `g/a`
+is undefined. Corollary 231.3 already states the missing condition.
+
+**Review Remark R2 (zero ordinal).** The Part XVI guide originally concluded
+“additive omnific realizations, and no compatible discretely ordered ring.”
+At θ = 0 the cone is N, and ordinary multiplication is compatible. Theorem
+220.2 already assumes θ > 0; the guide now retains that hypothesis.
+
+**Review Remark R3 (zero spaces and the measure in `L^p`).** The guide said
+“a real Polish vector space with zero dual, such as `L^p`, 0 < p < 1, carries
+no Borel order” and “no complete metrizable real vector space with zero dual,
+separable or not, carries a Baire-property order.” Both require a nonzero
+space: the zero space has its unique total order with Borel empty strict
+cone. On a one-point probability space, `L^p` is R and has its usual Borel
+order, so the example also needs its measure specified. The guide now names
+Lebesgue `L^p([0,1])`; its generalization retains nonatomic μ and nonzero
+`L^p(μ)`. The earlier clause “`L^p(μ)`, 0 < p < 1, has zero dual for every
+nonatomic μ” is not false when `L^p(μ) = 0`, but that case does not imply the
+no-order conclusion. Theorem 217.2, Corollary 217.3 and Proposition 224.2
+already state the required hypotheses. These guide corrections do not
+change the article or certify its other proofs.
+
 
 - The placement record (`3d2177df4`) and the intake dossier said that 03's
   topology restricts on the real stratum to the topology of 04 and 05. It
