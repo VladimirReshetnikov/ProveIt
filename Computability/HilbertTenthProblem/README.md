@@ -133,6 +133,16 @@ maps and four complete degree expansions; normal/optimized receipts pass.
 This chart drops the main exponent congruence and is distinct from the
 unresolved independent-gamma83. The universal bound remains84.
 
+The [proper-pivot exclusion](Papers/research-wip/native-stream-queue/complete84_auxiliary_proper_pivot_exclusion.md)
+reduces the seventeen necessary auxiliary cancellation forms to **one**:
+a remaining5M+4A candidate must produce Q itself directly by cancellation.
+For every proper divisor pivot, specialization at i=0 deletes two distinct
+chronological products and contradicts the four-product bound for V,W. The
+[independent review](Papers/research-wip/native-stream-queue/review_complete84_auxiliary_proper_pivot_exclusion.md) checks the scalar-span,
+chronology and paid-interface arguments, the17-to-1 census and unchanged
+complete84 source; normal/optimized receipts pass. Direct cancellation to Q
+remains open. This does not exclude every nine-gate circuit or lower universal84.
+
 The [nine-gate auxiliary frontier](Papers/research-wip/native-stream-queue/complete84_auxiliary_nine_gate_frontier.md)
 shows that any nine-gate replacement in the stated independent paid-port
 model must use exactly5M+4A. It must contain one genuine cancellation that
