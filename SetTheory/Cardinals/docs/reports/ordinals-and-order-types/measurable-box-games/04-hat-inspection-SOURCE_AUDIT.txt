@@ -1,0 +1,309 @@
+SOURCE AND CLAIM AUDIT
+Hat-inspection research article
+Prepared 4 October 2026.
+
+PURPOSE AND STATUS
+
+This record distinguishes the existing results used by the manuscript, the
+repository question it addresses, and the scope of source inspection. The
+article gives written mathematical proofs. It does not add a kernel-checked
+Lean or Rocq development, and it does not claim established historical
+priority or endorsement by any cited researcher.
+
+1. REPOSITORY SNAPSHOT
+
+Repository:
+https://github.com/VladimirReshetnikov/ProveIt
+
+All substantive file reads in this audit were explicitly pinned to:
+9fe62865dc30d71256183466b744b98ebf7e64d6
+
+Revision author date:
+2026-10-04T16:56:26Z
+
+GitHub's code-search index returned an earlier revision,
+1afa38bf984377eb85a5569cf6376054994a17a5. Those results were used to locate
+files; the substantive contents below were fetched at the explicit pin.
+This is a scoped audit, not a claim to have reviewed every repository file.
+
+2. IMMEDIATE HAT-GUESSING PREDECESSOR
+
+Path:
+docs/incoming/hat_guessing_research.zip
+
+URL:
+https://github.com/VladimirReshetnikov/ProveIt/blob/9fe62865dc30d71256183466b744b98ebf7e64d6/docs/incoming/hat_guessing_research.zip
+
+Git blob:
+ea9919e06ae8aa1bf519d5035eadba32ef877c9c
+
+Archive size:
+550545 bytes
+
+Arrival commit:
+a162e4386fa8a1beaef58a565c2205ba5fb5c270
+
+Arrival date:
+2026-10-04T16:56:17Z
+
+Main member:
+hat_guessing_research/hat_guessing_growth.tex
+60488 bytes
+
+Title:
+No Universal Sublinear Bound for Measurable Hat Guessing:
+Finite coding, exact logarithmic excess, and arbitrarily prescribed growth
+
+Date:
+3 October 2026
+
+This source already constructs finite-information compulsory strategies
+with exact logarithmic excess and with excess dominating any prescribed
+positive sublinear scale. Its construction uses Hamming syndromes and
+repeated XOR rounds. Those results are not claimed as contributions of
+the present manuscript.
+
+Section 3, Theorem 3.2, label thm:transfer, gives the XOR-pairing
+transformation from partial predictions to compulsory guesses. That
+transformation is an existing result, whether or not it is used for
+comparison in the present article.
+
+Section 11.3, source lines 1119-1140, states that the straightforward
+individual implementation reads N-1 other hats in a block and costs
+O(Nr) elementary bit operations. It explicitly leaves economical
+visibility as a separate problem.
+
+Section 13, Research question 13.2, source lines 1278-1284, asks whether
+a uniform bound on the number of queried hats permits D_n -> +infinity
+almost surely. The present bounded-query obstruction addresses this
+exact question and strengthens the conclusion to probability zero.
+
+The inspected source contains no bounded-degree/hypercontractivity
+obstruction, no sharp expected-query threshold, and no geometric cost
+frontier. It is an AI-assisted unrefereed research report, not a
+formalized theorem library. Its own audit leaves historical priority
+unestablished.
+
+3. OLDER BOX-GAME REPORT
+
+Path:
+SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games/article.tex
+
+URL:
+https://github.com/VladimirReshetnikov/ProveIt/blob/9fe62865dc30d71256183466b744b98ebf7e64d6/SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games/article.tex
+
+Git blob:
+0749d641466c9f08bf1e7bc4d18a1080cca03437
+
+The article and its README were read. They cover cylinder-measurable box
+outputs, blind maps versus executable decision trees, recursively sliceable
+matchings, exact enumeration, asymptotics, and finite information bounds.
+
+Section 15 includes:
+Q9: optimal average-case finite teamwork;
+Q10: complexity of deciding realizability;
+Q11: sharper information costs for adaptive observations;
+Q12: a kernel-checked finite certificate compiler.
+
+The report does not contain the bounded-query no-divergence theorem or
+the geometric cost frontier. Its README explicitly states that it is
+AI-assisted, unrefereed, and not formalized; no Lean or Rocq declaration
+exists for its theorems.
+
+Inspected companion:
+SetTheory/Cardinals/docs/reports/ordinals-and-order-types/measurable-box-games/code/verify_certificates.py
+
+Git blob:
+ed035fe98d524d074631f0ed8d05e472a36597d5
+
+Functions actually read include blind_table, success_vector, sliceable,
+check_matching, check_external, and finite_checks. These are executable
+Python checks. They are not a proved reflection theorem or a verified
+decision-tree compiler.
+
+4. AUDITED FORMAL CODING INTERFACES
+
+The following three files were read in full at the pinned revision.
+
+Logic/PeanoArithmetic/ListCoding/README.md
+Git blob: 74164ac6f9e60a3e7f04685f611482a5b9394034
+
+Logic/PeanoArithmetic/ListCoding/Lean/PAListCoding/Basic.lean
+Git blob: b7e037f42c4b5d4d757e1e380a44d5816d66ee36
+
+Logic/PeanoArithmetic/ListCoding/Lean/PAListCoding/Predicates.lean
+Git blob: c9f8f650dfa7d6b2277f8861c5d8c020b3ab4b4c
+
+Basic.lean declares noncomputable encode and decode, with encode_valid,
+encode_length, encode_nth, encode_injective,
+valid_iff_existsUnique_encode, encode_decode, decode_encode,
+validFormula, and validFormula_spec.
+
+Predicates.lean defines validity-guarded HasLength, Entry, Concat,
+NoDuplicates, Occurrences, SumElements, ProductElements, and further
+relations. It constructs genuine arithmetic formulas with semantic
+specifications.
+
+These can support a future representation of finite query trees and
+transcripts. No hat-specific compiler correctness theorem is supplied by
+those files. Formula correctness in the standard natural model must not
+be described as an internal PA proof of all corresponding assertions.
+No Lean or Rocq toolchain was rebuilt as part of this source audit.
+
+5. DIRECT GLAZER CONNECTION AND EXTERNAL PRIOR ART
+
+Nathaniel Eldredge:
+A probabilistic look at the infinite hat-guessing game.
+arXiv:2508.02828v2, revised 24 October 2025.
+https://arxiv.org/html/2508.02828v2
+https://arxiv.org/abs/2508.02828
+
+The landing page lists v1 of 4 August 2025 and v2 of 24 October 2025.
+The relevant full-text discussion in Section 6 was inspected.
+
+The paragraph immediately before Proposition 6.6 explicitly credits
+Elliot Glazer and Charles Wang with suggesting the study of the number
+of excess correct guesses. This is direct evidence for the research
+intersection; no inference about Glazer's current employment, affiliations,
+or private interests is needed.
+
+Proposition 6.6 ALREADY supplies the all-black exceptional-block strategy,
+the singleton-white success mechanism, and the Borel-Cantelli argument
+for D_n -> +infinity almost surely. The present manuscript does not
+claim to invent this block rule.
+
+The query implementation used here observes that:
+- a D player always guesses opposite its mate, using exactly one query;
+- an S player queries its mate first, then scans other hats only if the
+  mate is black, stopping at the first white hat.
+
+For an even block size t >= 4, this gives:
+E Q_D = 1;
+E Q_S = 2 - 2^(-(t-2)) < 2;
+P(Q_S > k) <= 2^(-k), k >= 1.
+
+The query distribution approaches the positive geometric law as block
+sizes grow. The cost frontier is obtained from this efficient execution
+and from the new obstruction/lower-bound argument. The existence of an
+almost-surely divergent strategy itself is Eldredge's result.
+
+Remark 6.8 asks about logarithmic or faster excess. The ProveIt predecessor
+already addresses those growth questions. They are not newly resolved
+again by the current manuscript.
+
+Related original research:
+Elliot Glazer, A choiceless box game paradox.
+arXiv:2211.10474.
+https://arxiv.org/abs/2211.10474
+
+This supplies the broader research connection to prediction and choice,
+and is the anchor of the older ProveIt box-game report. Its unrestricted
+choiceless continuum question is not claimed solved here.
+
+Related Hamming-code/autoreducibility prior art:
+Todd Ebert, Wolfgang Merkle, and Heribert Vollmer,
+On the Autoreducibility of Random Sequences,
+SIAM Journal on Computing 32(6) (2003), 1542-1569.
+https://doi.org/10.1137/S0097539702415317
+https://eccc.weizmann.ac.il/report/2002/056/
+
+The predecessor explicitly credits this paper's Hamming-code and repeated
+XOR ideas. The complete paper was not independently re-audited as part
+of this repository-source subtask; no new theorem in this article is
+justified solely by the predecessor's account of that paper.
+
+Classical constant-weight linear-code classification:
+Arrigo Bonisoli,
+Every equidistant linear code is a sequence of dual Hamming codes,
+Ars Combinatoria 18 (1984), 181-186.
+Primary institutional record and abstract:
+https://iris.unimore.it/handle/11380/448444
+Publisher's volume contents:
+https://combinatorialpress.com/ars/vol18/
+
+Both primary records were opened in the final source-package audit.
+They agree on the author, title, year, volume, and page range. The
+institutional abstract states that equidistant linear codes have the
+repeated dual-Hamming form, up to coordinate permutation. That
+classification is classical and is expressly credited in the final
+article's introduction, finite affine-rigidity proof, and bibliography.
+
+The institutional page has no associated full-text file. This final
+audit therefore verifies the bibliographic record and stated theorem
+scope; it does not claim inspection of Bonisoli's original six-page
+proof. The article gives its own short binary Fourier-inversion proof
+of the precise constant-weight classification it uses.
+
+Classical analytic ingredients cited in the final article:
+Per Austrin and Johan Hastad,
+Randomly supported independence and resistance,
+STOC 2009, 483-492; SIAM Journal on Computing 40(1) (2011), 1-27.
+https://doi.org/10.1137/100783534
+https://per.austrin.se/papers/indep_stoc.pdf
+https://per.austrin.se/papers/indep_full.pdf
+
+The article attributes the sharper Boolean norm/sign estimates to
+these sources and supplies a self-contained sufficient fourth-moment
+proof. The final package audit checked the attribution against the
+assembled text and PROOF_STATUS.txt; it did not independently repeat
+the earlier full-text review of these papers.
+
+6. NEW-CLAIM BOUNDARY
+
+The manuscript's proposed contributions are the bounded-query obstruction
+at probability-zero strength, its conditional-cylinder formulation, the
+sharp deterministic adaptive-query cost frontier, and the finite
+consequences proved from these arguments.
+
+The final finite result goes beyond a parameter-family construction.
+For first-moment saturation at threshold s > n/2, it proves a minimum
+uniform inspection depth s-1, Fourier purity and uniform projections
+at that depth, and an adaptive leaf argument forcing the all-wrong set
+to be affine. Once affinity is established, its constant-weight dual
+is classified using the binary case of Bonisoli's classical result.
+The resulting necessary and sufficient parameters are
+n = m(2^r-1), s = m*2^(r-1), with integers r,m >= 1.
+A replicated trace construction realizes every permitted pair.
+
+The proposed refinement is the implication from adaptive inspection
+optimality to affine failure-set structure and its cost consequences.
+The underlying constant-weight linear-code classification is not
+claimed as new. The theorem classifies parameter pairs and failure
+sets at the sharp depth; it does not classify all prediction trees or
+all unconstrained probability-optimal strategies. At strict majority,
+the affine Hamming-code conclusion is restricted to odd team sizes;
+even sizes may have repeated parity-check columns.
+
+The sharp mean threshold is 2 as a supremum across players. Individual
+expected costs in the upper construction are strictly below 2, but their
+supremum is 2; these are different statements.
+
+The lower expected-cost inference uses deterministic query trees under
+independent fair hats. Uncharged external randomization must not be
+silently averaged into that theorem: unconditional expected cost under
+a random public seed need not bound the depth of each conditional tree.
+
+The finite computational companion checks finite instances and exact
+identities only. It does not replace the written infinite proofs and
+does not make the manuscript kernel-checked. Execution results belong
+to the companion verification record rather than this source-inspection
+record.
+
+7. PRIORITY AND SCOPE
+
+Scoped repository/full-text inspection and focused web searches did not
+locate the geometric query-cost threshold in the inspected sources.
+The limited review likewise did not locate the exact adaptive
+minimum-depth affine-rigidity statement; it did identify and credit
+Bonisoli's earlier linear-code classification.
+This does not establish global historical priority. The responsible
+description is a proved extension of the inspected literature and a
+resolution of the specified ProveIt question, with priority unverified.
+
+The final package audit compared this record with the assembled article,
+its finite-theorem section, attribution passages, bibliography, and
+PROOF_STATUS.txt. It did not repeat the completed proof reviews,
+rerun the finite tests, or inspect the compiled PDF's visual layout.
+
+No repository changes, external submissions, or messages to cited
+researchers were made by this source-inspection task.

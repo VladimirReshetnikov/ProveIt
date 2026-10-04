@@ -1,0 +1,1397 @@
+{
+  "status": "all_assertions_passed",
+  "python_dependencies": "standard library only",
+  "score_convention": "F = sum_i X_i f_i; D = F/2",
+  "exhaustive_one_query_games": [
+    {
+      "n": 1,
+      "rules_per_player": 2,
+      "strategy_profiles": 2,
+      "hat_assignments_per_profile": 2,
+      "profile_assignment_pairs": 4,
+      "minimum_nonpositive_probability": {
+        "numerator": 1,
+        "denominator": 2,
+        "exact": "1/2"
+      },
+      "attaining_profiles": 2,
+      "witness": [
+        {
+          "player": 1,
+          "kind": "constant",
+          "sign": 1
+        }
+      ],
+      "nonpositive_count_histogram": {
+        "1": 2
+      }
+    },
+    {
+      "n": 2,
+      "rules_per_player": 4,
+      "strategy_profiles": 16,
+      "hat_assignments_per_profile": 4,
+      "profile_assignment_pairs": 64,
+      "minimum_nonpositive_probability": {
+        "numerator": 1,
+        "denominator": 2,
+        "exact": "1/2"
+      },
+      "attaining_profiles": 2,
+      "witness": [
+        {
+          "player": 1,
+          "kind": "signed_other_hat",
+          "observed_player": 2,
+          "sign": 1
+        },
+        {
+          "player": 2,
+          "kind": "signed_other_hat",
+          "observed_player": 1,
+          "sign": 1
+        }
+      ],
+      "nonpositive_count_histogram": {
+        "2": 2,
+        "3": 12,
+        "4": 2
+      }
+    },
+    {
+      "n": 3,
+      "rules_per_player": 6,
+      "strategy_profiles": 216,
+      "hat_assignments_per_profile": 8,
+      "profile_assignment_pairs": 1728,
+      "minimum_nonpositive_probability": {
+        "numerator": 1,
+        "denominator": 4,
+        "exact": "1/4"
+      },
+      "attaining_profiles": 8,
+      "witness": [
+        {
+          "player": 1,
+          "kind": "signed_other_hat",
+          "observed_player": 2,
+          "sign": 1
+        },
+        {
+          "player": 2,
+          "kind": "signed_other_hat",
+          "observed_player": 3,
+          "sign": 1
+        },
+        {
+          "player": 3,
+          "kind": "signed_other_hat",
+          "observed_player": 1,
+          "sign": -1
+        }
+      ],
+      "nonpositive_count_histogram": {
+        "2": 8,
+        "4": 200,
+        "6": 8
+      }
+    },
+    {
+      "n": 4,
+      "rules_per_player": 8,
+      "strategy_profiles": 4096,
+      "hat_assignments_per_profile": 16,
+      "profile_assignment_pairs": 65536,
+      "minimum_nonpositive_probability": {
+        "numerator": 1,
+        "denominator": 2,
+        "exact": "1/2"
+      },
+      "attaining_profiles": 72,
+      "witness": [
+        {
+          "player": 1,
+          "kind": "signed_other_hat",
+          "observed_player": 2,
+          "sign": 1
+        },
+        {
+          "player": 2,
+          "kind": "signed_other_hat",
+          "observed_player": 1,
+          "sign": 1
+        },
+        {
+          "player": 3,
+          "kind": "signed_other_hat",
+          "observed_player": 4,
+          "sign": 1
+        },
+        {
+          "player": 4,
+          "kind": "signed_other_hat",
+          "observed_player": 3,
+          "sign": -1
+        }
+      ],
+      "nonpositive_count_histogram": {
+        "8": 72,
+        "10": 976,
+        "11": 2000,
+        "12": 988,
+        "14": 48,
+        "16": 12
+      }
+    },
+    {
+      "n": 5,
+      "rules_per_player": 10,
+      "strategy_profiles": 100000,
+      "hat_assignments_per_profile": 32,
+      "profile_assignment_pairs": 3200000,
+      "minimum_nonpositive_probability": {
+        "numerator": 1,
+        "denominator": 4,
+        "exact": "1/4"
+      },
+      "attaining_profiles": 160,
+      "witness": [
+        {
+          "player": 1,
+          "kind": "signed_other_hat",
+          "observed_player": 2,
+          "sign": 1
+        },
+        {
+          "player": 2,
+          "kind": "signed_other_hat",
+          "observed_player": 1,
+          "sign": -1
+        },
+        {
+          "player": 3,
+          "kind": "signed_other_hat",
+          "observed_player": 4,
+          "sign": 1
+        },
+        {
+          "player": 4,
+          "kind": "signed_other_hat",
+          "observed_player": 5,
+          "sign": 1
+        },
+        {
+          "player": 5,
+          "kind": "signed_other_hat",
+          "observed_player": 3,
+          "sign": -1
+        }
+      ],
+      "nonpositive_count_histogram": {
+        "8": 160,
+        "10": 384,
+        "12": 160,
+        "14": 7680,
+        "16": 83232,
+        "18": 7680,
+        "20": 160,
+        "22": 384,
+        "24": 160
+      }
+    }
+  ],
+  "total_strategy_profiles": 104330,
+  "total_profile_assignment_pairs": 3267332,
+  "sparse_support_representatives": [
+    {
+      "name": "nonadaptive_d2_cyclic_nand",
+      "players": 5,
+      "model": {
+        "kind": "fixed_visibility",
+        "visibility": 2
+      },
+      "owned_support_masses": [
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "theorem_mass_bound": 8,
+      "distinct_score_supports": 20,
+      "rules": [
+        {
+          "player": 1,
+          "visible_players": [
+            2,
+            3
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 2,
+          "visible_players": [
+            3,
+            4
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 3,
+          "visible_players": [
+            4,
+            5
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 4,
+          "visible_players": [
+            5,
+            1
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 5,
+          "visible_players": [
+            1,
+            2
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            -1
+          ]
+        }
+      ],
+      "label_certificate": {
+        "dimension": 4,
+        "group_size": 16,
+        "labels_in_player_order": [
+          5,
+          3,
+          4,
+          2,
+          1
+        ],
+        "peeling_order": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "peeling_degrees": [
+          8,
+          5,
+          4,
+          2,
+          1
+        ],
+        "all_nonempty_vertex_subsets_checked": 31,
+        "maximum_induced_support_density": "8",
+        "support_xors": [
+          {
+            "players": [
+              1
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              2
+            ],
+            "xor": 3
+          },
+          {
+            "players": [
+              3
+            ],
+            "xor": 4
+          },
+          {
+            "players": [
+              4
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              5
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              1,
+              2
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              1,
+              3
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              1,
+              4
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              1,
+              5
+            ],
+            "xor": 4
+          },
+          {
+            "players": [
+              2,
+              3
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              2,
+              4
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              2,
+              5
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              3,
+              4
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              3,
+              5
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              4,
+              5
+            ],
+            "xor": 3
+          },
+          {
+            "players": [
+              1,
+              2,
+              3
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              1,
+              2,
+              5
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              1,
+              4,
+              5
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              2,
+              3,
+              4
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              3,
+              4,
+              5
+            ],
+            "xor": 7
+          }
+        ]
+      },
+      "character_sums_checked": 20,
+      "configuration_orbit_sums_checked": 32,
+      "configuration_group_pairs_checked": 512,
+      "score_histogram": {
+        "-5": 2,
+        "-3": 5,
+        "-1": 5,
+        "1": 15,
+        "3": 5
+      },
+      "nonpositive_probability": {
+        "numerator": 3,
+        "denominator": 8,
+        "exact": "3/8"
+      },
+      "certified_lower_bound": {
+        "numerator": 1,
+        "denominator": 16,
+        "exact": "1/16"
+      }
+    },
+    {
+      "name": "nonadaptive_d3_cyclic_nand",
+      "players": 7,
+      "model": {
+        "kind": "fixed_visibility",
+        "visibility": 3
+      },
+      "owned_support_masses": [
+        20,
+        20,
+        20,
+        20,
+        20,
+        20,
+        20
+      ],
+      "theorem_mass_bound": 20,
+      "distinct_score_supports": 56,
+      "rules": [
+        {
+          "player": 1,
+          "visible_players": [
+            2,
+            3,
+            4
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 2,
+          "visible_players": [
+            3,
+            4,
+            5
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 3,
+          "visible_players": [
+            4,
+            5,
+            6
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 4,
+          "visible_players": [
+            5,
+            6,
+            7
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 5,
+          "visible_players": [
+            6,
+            7,
+            1
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 6,
+          "visible_players": [
+            7,
+            1,
+            2
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ]
+        },
+        {
+          "player": 7,
+          "visible_players": [
+            1,
+            2,
+            3
+          ],
+          "description": "Predict -1 exactly when all visible hats are +1.",
+          "truth_table_in_lexicographic_sign_order": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            -1
+          ]
+        }
+      ],
+      "label_certificate": {
+        "dimension": 5,
+        "group_size": 32,
+        "labels_in_player_order": [
+          9,
+          5,
+          3,
+          8,
+          4,
+          2,
+          1
+        ],
+        "peeling_order": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "peeling_degrees": [
+          20,
+          12,
+          9,
+          8,
+          4,
+          2,
+          1
+        ],
+        "all_nonempty_vertex_subsets_checked": 127,
+        "maximum_induced_support_density": "20",
+        "support_xors": [
+          {
+            "players": [
+              1
+            ],
+            "xor": 9
+          },
+          {
+            "players": [
+              2
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              3
+            ],
+            "xor": 3
+          },
+          {
+            "players": [
+              4
+            ],
+            "xor": 8
+          },
+          {
+            "players": [
+              5
+            ],
+            "xor": 4
+          },
+          {
+            "players": [
+              6
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              7
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              1,
+              2
+            ],
+            "xor": 12
+          },
+          {
+            "players": [
+              1,
+              3
+            ],
+            "xor": 10
+          },
+          {
+            "players": [
+              1,
+              4
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              1,
+              5
+            ],
+            "xor": 13
+          },
+          {
+            "players": [
+              1,
+              6
+            ],
+            "xor": 11
+          },
+          {
+            "players": [
+              1,
+              7
+            ],
+            "xor": 8
+          },
+          {
+            "players": [
+              2,
+              3
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              2,
+              4
+            ],
+            "xor": 13
+          },
+          {
+            "players": [
+              2,
+              5
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              2,
+              6
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              2,
+              7
+            ],
+            "xor": 4
+          },
+          {
+            "players": [
+              3,
+              4
+            ],
+            "xor": 11
+          },
+          {
+            "players": [
+              3,
+              5
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              3,
+              6
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              3,
+              7
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              4,
+              5
+            ],
+            "xor": 12
+          },
+          {
+            "players": [
+              4,
+              6
+            ],
+            "xor": 10
+          },
+          {
+            "players": [
+              4,
+              7
+            ],
+            "xor": 9
+          },
+          {
+            "players": [
+              5,
+              6
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              5,
+              7
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              6,
+              7
+            ],
+            "xor": 3
+          },
+          {
+            "players": [
+              1,
+              2,
+              3
+            ],
+            "xor": 15
+          },
+          {
+            "players": [
+              1,
+              2,
+              4
+            ],
+            "xor": 4
+          },
+          {
+            "players": [
+              1,
+              2,
+              6
+            ],
+            "xor": 14
+          },
+          {
+            "players": [
+              1,
+              2,
+              7
+            ],
+            "xor": 13
+          },
+          {
+            "players": [
+              1,
+              3,
+              4
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              1,
+              3,
+              7
+            ],
+            "xor": 11
+          },
+          {
+            "players": [
+              1,
+              5,
+              6
+            ],
+            "xor": 15
+          },
+          {
+            "players": [
+              1,
+              5,
+              7
+            ],
+            "xor": 12
+          },
+          {
+            "players": [
+              1,
+              6,
+              7
+            ],
+            "xor": 10
+          },
+          {
+            "players": [
+              2,
+              3,
+              4
+            ],
+            "xor": 14
+          },
+          {
+            "players": [
+              2,
+              3,
+              5
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              2,
+              3,
+              7
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              2,
+              4,
+              5
+            ],
+            "xor": 9
+          },
+          {
+            "players": [
+              2,
+              6,
+              7
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              3,
+              4,
+              5
+            ],
+            "xor": 15
+          },
+          {
+            "players": [
+              3,
+              4,
+              6
+            ],
+            "xor": 9
+          },
+          {
+            "players": [
+              3,
+              5,
+              6
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              4,
+              5,
+              6
+            ],
+            "xor": 14
+          },
+          {
+            "players": [
+              4,
+              5,
+              7
+            ],
+            "xor": 13
+          },
+          {
+            "players": [
+              4,
+              6,
+              7
+            ],
+            "xor": 11
+          },
+          {
+            "players": [
+              5,
+              6,
+              7
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              1,
+              2,
+              3,
+              4
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              1,
+              2,
+              3,
+              7
+            ],
+            "xor": 14
+          },
+          {
+            "players": [
+              1,
+              2,
+              6,
+              7
+            ],
+            "xor": 15
+          },
+          {
+            "players": [
+              1,
+              5,
+              6,
+              7
+            ],
+            "xor": 14
+          },
+          {
+            "players": [
+              2,
+              3,
+              4,
+              5
+            ],
+            "xor": 10
+          },
+          {
+            "players": [
+              3,
+              4,
+              5,
+              6
+            ],
+            "xor": 13
+          },
+          {
+            "players": [
+              4,
+              5,
+              6,
+              7
+            ],
+            "xor": 15
+          }
+        ]
+      },
+      "character_sums_checked": 56,
+      "configuration_orbit_sums_checked": 128,
+      "configuration_group_pairs_checked": 4096,
+      "score_histogram": {
+        "-7": 2,
+        "-5": 7,
+        "-3": 21,
+        "-1": 28,
+        "1": 42,
+        "3": 21,
+        "5": 7
+      },
+      "nonpositive_probability": {
+        "numerator": 29,
+        "denominator": 64,
+        "exact": "29/64"
+      },
+      "certified_lower_bound": {
+        "numerator": 1,
+        "denominator": 32,
+        "exact": "1/32"
+      }
+    },
+    {
+      "name": "adaptive_depth2_multiplexer",
+      "players": 5,
+      "model": {
+        "kind": "adaptive_decision_tree",
+        "depth": 2,
+        "potentially_queried_hats_per_player": 3
+      },
+      "owned_support_masses": [
+        10,
+        10,
+        10,
+        10,
+        10
+      ],
+      "theorem_mass_bound": 10,
+      "distinct_score_supports": 15,
+      "rules": [
+        {
+          "player": 1,
+          "visible_players": [
+            2,
+            3,
+            4
+          ],
+          "description": "Query the first listed hat. If it is +1, query and copy the second; otherwise query and copy the third.",
+          "truth_table_in_lexicographic_sign_order": [
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            1
+          ]
+        },
+        {
+          "player": 2,
+          "visible_players": [
+            3,
+            4,
+            5
+          ],
+          "description": "Query the first listed hat. If it is +1, query and copy the second; otherwise query and copy the third.",
+          "truth_table_in_lexicographic_sign_order": [
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            1
+          ]
+        },
+        {
+          "player": 3,
+          "visible_players": [
+            4,
+            5,
+            1
+          ],
+          "description": "Query the first listed hat. If it is +1, query and copy the second; otherwise query and copy the third.",
+          "truth_table_in_lexicographic_sign_order": [
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            1
+          ]
+        },
+        {
+          "player": 4,
+          "visible_players": [
+            5,
+            1,
+            2
+          ],
+          "description": "Query the first listed hat. If it is +1, query and copy the second; otherwise query and copy the third.",
+          "truth_table_in_lexicographic_sign_order": [
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            1
+          ]
+        },
+        {
+          "player": 5,
+          "visible_players": [
+            1,
+            2,
+            3
+          ],
+          "description": "Query the first listed hat. If it is +1, query and copy the second; otherwise query and copy the third.",
+          "truth_table_in_lexicographic_sign_order": [
+            -1,
+            1,
+            -1,
+            1,
+            -1,
+            -1,
+            1,
+            1
+          ]
+        }
+      ],
+      "label_certificate": {
+        "dimension": 4,
+        "group_size": 16,
+        "labels_in_player_order": [
+          4,
+          1,
+          2,
+          0,
+          0
+        ],
+        "peeling_order": [
+          1,
+          3,
+          4,
+          2,
+          5
+        ],
+        "peeling_degrees": [
+          8,
+          4,
+          2,
+          1,
+          0
+        ],
+        "all_nonempty_vertex_subsets_checked": 31,
+        "maximum_induced_support_density": "8",
+        "support_xors": [
+          {
+            "players": [
+              1,
+              3
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              1,
+              4
+            ],
+            "xor": 4
+          },
+          {
+            "players": [
+              2,
+              4
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              2,
+              5
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              3,
+              5
+            ],
+            "xor": 2
+          },
+          {
+            "players": [
+              1,
+              2,
+              3
+            ],
+            "xor": 7
+          },
+          {
+            "players": [
+              1,
+              2,
+              4
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              1,
+              2,
+              5
+            ],
+            "xor": 5
+          },
+          {
+            "players": [
+              1,
+              3,
+              4
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              1,
+              3,
+              5
+            ],
+            "xor": 6
+          },
+          {
+            "players": [
+              1,
+              4,
+              5
+            ],
+            "xor": 4
+          },
+          {
+            "players": [
+              2,
+              3,
+              4
+            ],
+            "xor": 3
+          },
+          {
+            "players": [
+              2,
+              3,
+              5
+            ],
+            "xor": 3
+          },
+          {
+            "players": [
+              2,
+              4,
+              5
+            ],
+            "xor": 1
+          },
+          {
+            "players": [
+              3,
+              4,
+              5
+            ],
+            "xor": 2
+          }
+        ]
+      },
+      "character_sums_checked": 15,
+      "configuration_orbit_sums_checked": 32,
+      "configuration_group_pairs_checked": 512,
+      "score_histogram": {
+        "-5": 5,
+        "-1": 10,
+        "1": 10,
+        "3": 5,
+        "5": 2
+      },
+      "nonpositive_probability": {
+        "numerator": 15,
+        "denominator": 32,
+        "exact": "15/32"
+      },
+      "certified_lower_bound": {
+        "numerator": 1,
+        "denominator": 16,
+        "exact": "1/16"
+      }
+    }
+  ],
+  "elapsed_seconds": 0.393909,
+  "scope": "Finite certificates only. The universal bounds, infinite-game conclusions, and expected-query threshold require the proofs in the article."
+}

@@ -1,0 +1,62 @@
+PROOF STATUS
+4 October 2026
+
+The article contains conventional mathematical proofs. It is not a
+Lean/Rocq formalization and is not a report of peer review.
+
+Independently reviewed conclusions:
+
+- Boolean degree bound for adaptive decision trees.
+- Self-contained fourth-moment hypercontractive estimate and the
+  resulting two-sided sign bound.
+- Conditional-cylinder argument giving probability zero for divergent
+  excess under uniformly bounded depth, without a visibility-fanout
+  or locality assumption.
+- Reachable-path stochastic domination and the simultaneous lower
+  frontier for every nonnegative nondecreasing query cost.
+- Eldredge block implementation, truncated geometric query law, and
+  simultaneous attainment of the complete cost frontier.
+- Stage schedule, all-prefix rates, finite almost-sure loss, central
+  limit theorem with nonconvergent moments, mean population query
+  cost, and maximum query cost.
+- Exact covariance/influence formula, sharp weighted variance bound,
+  mean-square and almost-sure density results, and spectral escape.
+- Finite saturation lower bounds, Fourier purity, uniform projections,
+  adaptive leaf parity constraints, affine rigidity, exact parameter
+  criterion, and replicated trace sufficiency.
+
+Review corrections incorporated:
+
+- The expected-query threshold concerns a uniform supremum equal to
+  two, not a common strict upper bound below two.
+- The all-black construction belongs to Eldredge; it is not presented
+  as newly invented here.
+- Affine Hamming perfect-code conclusions at strict majority are
+  restricted to odd team sizes; even sizes can have replicated columns.
+- The final constant-weight linear-code classification is credited to
+  Bonisoli and rederived in the binary case.
+- Eventual strict positivity is explicitly distinguished from
+  divergence to positive infinity.
+- External randomness and its cost convention are explicitly scoped.
+
+Finite verification:
+
+19 exhaustive cases; 59,546 hat assignments.
+838,498 own-hat flip comparisons.
+30,927 nonnegative pair increments and 30,927 pair prefixes.
+73,367 failure-boundary sensitivity checks.
+
+The included program is ordinary Python using exact integer arithmetic.
+Its code has been inspected and its run completed successfully.
+These checks do not prove the general or infinite statements.
+
+Primary literature and repository scope:
+
+The immediate prior question is Research question 13.2 in the
+hat_guessing_growth.tex member of docs/incoming/hat_guessing_research.zip
+at repository revision 9fe62865dc30d71256183466b744b98ebf7e64d6.
+Eldredge v2 (24 October 2025), Austrin--Hastad (2009/2011), and
+Bonisoli (1984) supply the expressly identified prior ingredients.
+A limited primary-source/repository search did not locate the exact
+cost classification or adaptive affine-rigidity statement.
+That absence does not establish global historical priority.
