@@ -63,8 +63,21 @@
 \newcommand{\e}[1]{\omega^{#1}}
 \newcommand{\basefield}{k}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},showstringspaces=false}
+% [write] Notes added when the manuscript joined ProveIt's surreal report
+% collection (batch 90, 4 October 2026). Everything else is the delivered text,
+% with every label prefixed csf: and cleveref type hints on the labels of
+% lemmas, corollaries, propositions and questions (which share the theorem
+% counter, so that cleveref otherwise names them all "theorem").
+\crefname{question}{question}{questions}
+\Crefname{question}{Question}{Questions}
+\newcommand{\repo}[1]{\nolinkurl{#1}}
+\newcommand{\lbl}[1]{\nolinkurl{#1}}
+\newenvironment{writenote}[1][]{\par\smallskip\begingroup\small\raggedright
+ \setlength{\parindent}{1.25em}\noindent\textbf{[write]}\if\relax\detokenize{#1}\relax\else~\textbf{#1.}\fi\ }%
+ {\par\endgroup\smallskip}
 
 \begin{document}
+\hypersetup{pageanchor=false}
 \begin{titlepage}
 \vspace*{12mm}
 {\color{MidnightBlue}\large\sffamily DESCRIPTIVE SET THEORY $\boldsymbol\cdot$ SURREAL FIELDS}\par
@@ -109,13 +122,17 @@ claimed.
 \noindent\small\textbf{Scope.} Ordinary ordered fields, not exponential or differential
 fields. All descriptive-set-theoretic spaces are sets. No measurable
 structure on the proper class $\No$ is used.
+
+\smallskip
+{\footnotesize\raggedright\noindent\textbf{[write]} Filed in ProveIt's surreal report collection as \repo{foundations-and-computation/cantor-families-of-surreal-subfields} (batch~90, manuscript~04; label prefix \texttt{csf:}). Provenance, formal status, the relation to neighbouring reports and a notation table are in Sections~\ref{csf:sec:provenance} and~\ref{csf:sec:notation}.\par}
 \end{titlepage}
+\hypersetup{pageanchor=true}
 
 \tableofcontents
 \newpage
 
 \section{Research intersection and the precise contribution}
-\label{sec:intersection}
+\label{csf:sec:intersection}
 
 \subsection{Why this topic connects the two research programs}
 
@@ -173,23 +190,23 @@ as $p_0,p_1,\ldots$, and put
 \begin{equation}
  B=\{1\}\cup\{\sqrt{p_n}:n\in\N\},\qquad I=\Q\times B,
  \qquad x_{q,b}=\omega^{b\omega^q}.
- \label{eq:ambient-generators}
+ \label{csf:eq:ambient-generators}
 \end{equation}
 The powers of $\omega$ in this article are Conway's omega-map. In particular,
-\eqref{eq:ambient-generators} makes no assumption about closure under
+\eqref{csf:eq:ambient-generators} makes no assumption about closure under
 Gonshor's exponential.
 
 For $A\subseteq I$, let
 \begin{equation}
  K_A=\rc_{\No}\bigl(k(x_{q,b}:(q,b)\in A)\bigr),
  \qquad \Kstar=K_I.
- \label{eq:ambient}
+ \label{csf:eq:ambient}
 \end{equation}
 Here $\rc_{\No}$ means relative real closure. Its set-sized construction is
-explained in \cref{sec:foundations}.
+explained in \cref{csf:sec:foundations}.
 
 \begin{theorem}[Fixed-ambient compact universality]
-\label{thm:main}
+\label{csf:thm:main}
 The field $\Kstar$ is countable and real closed. The map
 \[
  \Phi:2^I\longrightarrow 2^{\Kstar},\qquad A\longmapsto K_A
@@ -202,9 +219,9 @@ equivalence relation. Isomorphism is Borel complete for countable structures.
 \end{theorem}
 
 The proof separates into the finite-support theorem
-(\cref{thm:support,thm:cantor}), the uncolored classification
-(\cref{thm:rank-one-classification}), and the intrinsic quadratic-color coding
-(\cref{thm:colored-coding,thm:universality}).
+(\cref{csf:thm:support,csf:thm:cantor}), the uncolored classification
+(\cref{csf:thm:rank-one-classification}), and the intrinsic quadratic-color coding
+(\cref{csf:thm:colored-coding,csf:thm:universality}).
 
 For $S\subseteq\Q$, write
 \[
@@ -219,7 +236,7 @@ $\omega^*$. For a countable real closed field $P$, define
 \]
 
 \begin{theorem}[Fixed sources and generic behavior]
-\label{thm:main-source}
+\label{csf:thm:main-source}
 The following hold.
 \begin{enumerate}[label=\textnormal{(\roman*)}]
 \item $E^{(1)}_{\Kone_D}$ is analytic-complete; its complement is
@@ -244,8 +261,78 @@ All assertions are statements in ordinary ZFC. They concern actual unital
 field embeddings, not only embeddings that are required in advance to
 preserve chosen generators or monomials.
 
+\subsection{Provenance and place in ProveIt}
+\label{csf:sec:provenance}
+
+\begin{writenote}[Added 4 October 2026, batch~90]
+This report is a single manuscript, printed in full: manuscript~04 of batch~90 of ProveIt's incoming-reports intake, delivered as the archive \texttt{Surreal\_\allowbreak Subfield\_\allowbreak Cantor\_\allowbreak Research.zip} (544,930 bytes, nine members; inner directory \texttt{surreal\_\allowbreak subfield\_\allowbreak cantor/}, main file \texttt{article.tex}, 1843 lines, with a 27-page A4 PDF) in the arrival commit \texttt{a162e4386}, and placed in commit \texttt{12076b2e8} as \repo{Algebra/SurrealNumbers/docs/foundations-and-computation/cantor-families-of-surreal-subfields}. Its subject is real closed subfields of $\No$, so the family \texttt{surreal/} would also have fitted; it was filed under \texttt{foundations-and-computation/} because its results are descriptive set theory about subfields of $\No$, beside the complexity results of \repo{polish-models-of-omnific-arithmetic} and \repo{omnific-notations}. No report of the collection asks its questions. The author lines read ``Research article prepared for Vladimir Reshetnikov'' and ``AI-assisted mathematical draft''; the report is AI-assisted, unrefereed and not formalized, and its historical priority is not established. In the \textbf{[write]} notes, report paths are relative to \repo{Algebra/SurrealNumbers/docs/} and Lean paths to \repo{Algebra/SurrealNumbers/}, unless given in full.
+
+\emph{Pin.} The manuscript was written against ProveIt commit \texttt{7c0f2d9f92c3d51ec85703bed1022924a4b7359b} (3~October 2026, ``New research reports''), an ancestor of the placement, quoted in \cref{csf:sec:formalization} and in \cite{proveit}. Its statements about the repository are accurate at the pin and at the write: the three Lean files of the table in \cref{csf:sec:formalization} are byte-identical at both (blobs \texttt{a0d30d424}, \texttt{632c027e9}, \texttt{e9b72519e}); \texttt{signSequenceIsRealClosed} is an \texttt{instance} (line~36 of \repo{Surreal/Foundations/SignSequenceRealClosed.lean}); \repo{Surreal/HahnSeries/RealClosed.lean} proves real closedness of set-sized Hahn fields over a real closed coefficient field with divisible exponent group; and the surreal README and the self-embedding report's README separate formal declarations from unrefereed reports (the latter README has gained cross-references since the pin, without changing that). No repository statement is contradicted, and nothing needed retraction.
+
+\emph{Formal status.} No statement of this report is formalized. One finite algebraic input is available in Lean: \cref{csf:lem:radicals} is the instance $M=\Q$, $a_i=p_i$, square roots taken in $\R$, of \lbl{tail:lem:signs} of \repo{surreal/tail-spans-and-differential-transcendence}, which is proved as \texttt{Surreal.TailSigns.linearIndependent\_mono} (in \repo{Surreal/Algebra/MultiquadraticSigns.lean}, for any field with $2\ne0$ and roots in any extension field), with the hypothesis on the primes supplied by \texttt{Surreal.AlgebraicClosurePart.independentSquareClasses\_prime} (in \repo{Surreal/HahnSeries/AlgebraicCoefficientClosure.lean}); the specialization itself is not stated as a declaration. Nothing in the Lean tree states the double-monomial independence, the finite-support theorem, the value-group computation or any descriptive-set-theoretic result here. The formalization plan of \cref{csf:sec:formalization} is a proposal.
+
+\emph{Review in the Hilbert's-tenth research tree.} Another session inventoried the six batch-90 archives at their arrival commit (commit \texttt{bcc1a4438}, \repo{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_polish_partx_c9bc70d8f.md}, with its JSON receipt). For this archive it read the delivered README in full (lines 1--86) and hashed the other eight members without reading them. Its routing result is that the report concerns ``Analytic-complete embeddability inside a countable surreal field and finite-support topology; descriptive complexity is not finite arithmetic universality''. It executed no program, made no correctness finding and needed no scope correction; the Hilbert's-tenth programme's 84-operation universal polynomial is unaffected.
+
+\emph{The cited prior work.} The write checked \cite{cmms} at arXiv (version~2 of 13~January 2023; the arXiv record notes acceptance in \emph{Advances in Mathematics}). Its Section~7, ``ODAG and other o-minimal theories'', states on PDF pages 33--34 Theorem~7.1 (embeddability of countably colored linear orders is a complete analytic quasiorder, ``observed by Louveau'', citing Marcone--Rosendal, Theorem~3.2), Proposition~7.2 (a Borel reduction of colored-order embeddability to embeddability of ordered divisible abelian groups, through the finite-support reverse-lexicographic group with Archimedean component $H_{c(n)}$ at rank $n$, for pairwise non-embeddable divisible subgroups $H_n\subseteq\R$) and Corollary~7.3 (embeddability of countable real closed fields is a complete analytic quasiorder and bi-embeddability a complete analytic equivalence relation, proved on pages 34--35 through relative real closures of $k(t^g:g\in G)$ in Hahn fields); its Lemma~2.2 is Hion's lemma. The citations of \cref{csf:sec:intersection,csf:sec:colors} and of the bibliography match. \Cref{csf:thm:colored-coding,csf:thm:universality} thus compose the two steps of Proposition~7.2 and Corollary~7.3 inside one fixed field, with the explicit components $H_n=\Q(\sqrt{p_n})$ of \cref{csf:lem:colors} in place of an abstract family, as the manuscript itself says (\cref{csf:sec:intersection}, and after \cref{csf:thm:universality}); the unrestricted theorem stays credited to \cite{cmms}. Rast--Sahota, Miller's lecture notes, Marcone--Rosendal and Laver were not rechecked.
+
+\emph{Neighbouring reports.} Detailed notes follow the results concerned.
+\begin{itemize}[leftmargin=1.5em]
+\item \repo{foundations-and-computation/definable-surreals-and-omnific-integers} and Part~VII of \repo{foundations-and-computation/birthday-cutoffs-and-hereditary-sets}: \cref{csf:lem:independence} is a case of the former's Lemma~8.1 (\lbl{dsn:lem:cosets}), and an analogue of the latter's \lbl{hset:kw:thm:double}; see the note after \cref{csf:lem:independence}. Part~VII otherwise proves different theorems (choiceless coding and universality of $\No$ over ZF), and shares no other result with this report.
+\item \repo{surreal/surreal-self-embeddings}, cited as background \cite{sse}: \cref{csf:lem:valuation-functor} is the subfield form of its \lbl{sse:prop:valueaction} (note after the lemma). Its questions concern self-embeddings of $\No$, not countable subfields; none is answered here.
+\item \repo{surreal/independent-surreal-copies}: its \lbl{isc:thm:boolean} realizes a Boolean lattice of full Hahn fields, the analogue of \cref{csf:cor:lattice} (note after the corollary).
+\item \repo{foundations-and-computation/polish-models-of-omnific-arithmetic}, Part~II: its \lbl{pma:bor:lem:KB} contains \cref{csf:lem:kb} and the analytic-completeness assertion of \cref{csf:thm:fixed-hard} in complement form (note after \cref{csf:thm:fixed-hard}); its \lbl{pma:bor:thm:dichotomy} bears on \cref{csf:sec:questions}.
+\item \repo{foundations-and-computation/surreal-fields-across-universes}, Part~VIII: \lbl{univ:gs:thm:boolean} also indexes a family of real closed fields by subsets of a set, the class fields $\No^{M_A}$ of Cohen extensions, but there embeddability is exactly inclusion, $A\subseteq A'$; here it is embeddability of colored rank orders (\cref{csf:thm:colored-coding}). Different objects, no shared proof.
+\item \repo{foundations-and-computation/omnific-notations} (Part~IV: $\boldsymbol\Pi^1_1$-complete support validity) uses the same ill-founded-tree toolkit on different objects; \repo{foundations-and-computation/computable-surreals} constructs countable real closed subfields of $\No$ with effective presentations (its main theorem, label \texttt{thm:main} there), background for Question~\ref{csf:q:effective} but no shared theorem.
+\item Batch-90 siblings, written concurrently: manuscript~06 (source~04 of \repo{surreal/discrete-initial-subgroups-and-omnific-normalization}, labels \texttt{isg:ptg:}) also cites \cite{glazer}; manuscripts 01 and~03 became Parts~XI--XII of \repo{polish-models-of-omnific-arithmetic}, 05 Part~VIII of \repo{birthday-cutoffs-and-hereditary-sets}, and 02 Part~II of the research-report collection's \repo{ordinals-and-order-types/measurable-box-games}. None shares a theorem with this report.
+\end{itemize}
+
+\emph{The write.} Being a single source, the report needed no merge choices. The write prefixed all 56 delivered labels with \texttt{csf:} and updated every reference (63 \verb|\cref| keys and 15 \verb|\eqref|); added the labels \texttt{csf:sec:provenance}, \texttt{csf:sec:notation} and twelve question labels \texttt{csf:q:*} (the delivered questions had none); added these dated \textbf{[write]} notes, a title-page line and the \texttt{pageanchor} switch around the title page; and gave the labels of the 8 lemmas, 4 corollaries, 2 propositions and 12 questions cleveref type hints (such as \verb|\label[lemma]|), because these environments share the theorem counter and the delivered text's references named every one of them ``theorem''. No statement, proof, number or non-claim of the manuscript was changed, and no section, theorem, equation or question number moved.
+\end{writenote}
+
+\subsection{Notation}
+\label{csf:sec:notation}
+
+\begin{writenote}[Added 4 October 2026, batch~90]
+The manuscript's symbols, each with its meaning here and the reading to avoid. No symbol was renamed.
+{\footnotesize
+\begin{longtable}{P{0.2\textwidth}P{0.4\textwidth}P{0.3\textwidth}}
+\toprule
+Symbol & Meaning here & Not to be read as\\
+\midrule
+\endhead
+$\omega^x$, $\e{x}$ & Conway's omega-map (monomials) & Gonshor's $\exp$\\
+$k$ & the field of real algebraic numbers, fixed & a variable field\\
+$p_n$, $B$, $I$ & the $n$th prime; $\{1\}\cup\{\sqrt{p_n}\}$; $\Q\times B$ & \\
+$b$ & an element of $B$ (a real coefficient) & the birthday $b(a)$ of \cref{csf:sec:foundations}\\
+$x_{q,b}$, $t_q$ & $\omega^{b\omega^q}$; $t_q=x_{q,1}$ & \\
+$K_A$, $\Kstar$, $\Kone_S$, $\Kone$ & relative real closures (\cref{csf:eq:ambient}); $\Kone_S=K_{S\times\{1\}}$ & $K_A$ is not a Hahn field\\
+$\Cstar$, $\Cone$ & the families $\{K_A\}$, $\{\Kone_S\}$, subsets of $2^{\Kstar}$ & \\
+$\rc_{\No}$ & relative real closure inside $\No$ (a set) & a class construction\\
+$D(a)$ & finite generator support (\cref{csf:thm:support}) & normal-form support $\supp$\\
+$D$, $P_-$ & the order $\{-n\}$ of type $\omega^*$; $P_-=\Kone_D$ & $D(a)$, $D_A$\\
+$D_A$, $A_q$ & complete-column ranks $\{q:A_q=B\}$; the column $\{b:(q,b)\in A\}$ & \\
+$J_A$ & $\{q:H_A(q)\ne0\}$ (\cref{csf:thm:valuation}) $=\{q:A_q\ne\varnothing\}$ (\cref{csf:sec:generic-star}); the two definitions agree & \\
+$H_A(q)$, $\Gamma_A$ & component $\operatorname{span}_\Q\{b:(q,b)\in A\}$; value group (\cref{csf:eq:value-group}) & \\
+$H_n$, $H$ & $\Q(\sqrt{p_n})$ as an ordered group; $\operatorname{span}_\Q B$ & ordered additive groups; $H_n$ is also a field (used in \cref{csf:lem:colors}), $H$ is not\\
+$v$ & natural valuation, $v(x)=-(\text{leading exponent})$ & a Conway exponent\\
+$E^\star_P$, $E^{(1)}_P$ & fixed-source embedding loci, sets of parameters & a predicate or relation\\
+$\Sig$, $\PiC$ & boldface analytic, coanalytic & a $\sigma$-algebra\\
+analytic-complete & a set to which every analytic set reduces continuously & complete analytic \emph{quasiorder} (\cref{csf:sec:descriptive})\\
+$\KB$, $\IF$, $\WF$, $\mathsf{Tr}$ & Kleene--Brouwer order; ill-founded and well-founded trees; trees & \\
+$S_L$, $e_L$ & rational placement of an order $L$ on $\N$ & $S_T$ (tree code)\\
+$S_T$, $W$, $h$ & tree code (\cref{csf:eq:tree-code}) and its prefix; $h$ also names other order embeddings & \\
+$Z(L)$, $G$, $\psi$, $R_T$, $\mathcal N$ & integer-sum transform; $G=Z(\KB)$; $\mathcal N$ non-scattered suborders of $\Q$ & \\
+$M_L$, $A_L$ & colored-order code (\cref{csf:eq:color-code}) & \\
+$\mathcal G$, $\mathcal W_P$, $\tau_r$, $\mu$ & sets $S$ dense in $\Q$; witness relation; translation; coin-flip measure & a measure on $\No$\\
+$\beta$, $b(a)$ & a birthday cutoff and the birthday of $a$ & an optimal bound\\
+\bottomrule
+\end{longtable}
+\par}
+Across the collection: $K_A$ is not \repo{independent-surreal-copies}' $E_J$ (full Hahn fields), Part~VII's $T_X$ or $U_\kappa$ of \repo{birthday-cutoffs-and-hereditary-sets}, or \repo{surreal-fields-across-universes}' $\No^{M_A}$; the tree-coding embedding $h$ plays the role of $\mu_{\KB}$ in \repo{polish-models-of-omnific-arithmetic}; and $E^\star_P$ is unrelated to the enumeration predicate $E$ of Parts~VI and~VIII of \repo{birthday-cutoffs-and-hereditary-sets}.
+\end{writenote}
+
 \section{Foundations, conventions, and the proof boundary}
-\label{sec:foundations}
+\label{csf:sec:foundations}
 
 \subsection{Set-sized relative real closures}
 
@@ -273,7 +360,7 @@ $\Kstar$ has been constructed, every subsequent definition can be written
 entirely inside the set $\Kstar$:
 \begin{equation}
  K_A=\{a\in\Kstar:a\text{ is algebraic over }k(x_i:i\in A)\}.
- \label{eq:set-relative}
+ \label{csf:eq:set-relative}
 \end{equation}
 The two definitions agree. In particular, $\Cstar$ is a set of subsets of a
 countable set, not a collection requiring quantification over arbitrary
@@ -309,7 +396,7 @@ We use two standard consequences of real-closed-field theory. An ordered
 field has a real closure unique up to a unique ordered isomorphism over that
 field; and every embedding between real closed fields is elementary in the
 language of ordered rings, by quantifier elimination for $\RCF$
-\cite{marker}. Thus ``elementary'' in \cref{thm:main} introduces no additional
+\cite{marker}. Thus ``elementary'' in \cref{csf:thm:main} introduces no additional
 coding predicate or saturation assumption.
 
 \subsection{External inputs versus new proofs}
@@ -323,7 +410,7 @@ below. In particular, neither an unproved universality assertion about
 $\No$ nor a global extension of our embeddings to $\No$ is needed.
 
 \section{Monomial coordinates and their exact valuation invariants}
-\label{sec:coordinates}
+\label{csf:sec:coordinates}
 
 \subsection{Independent algebraic real coefficients}
 
@@ -347,8 +434,8 @@ while fixing the new square root, and the new square root has its own
 sign change. This proves the induction, beginning with $\Q$.
 
 \begin{lemma}
-\label{lem:radicals}
-The set $B$ in \eqref{eq:ambient-generators} is linearly independent over
+\label[lemma]{csf:lem:radicals}
+The set $B$ in \eqref{csf:eq:ambient-generators} is linearly independent over
 $\Q$. More generally, distinct squarefree radical monomials in finitely
 many primes are $\Q$-linearly independent.
 \end{lemma}
@@ -363,6 +450,10 @@ multiquadratic lemma is a standard finite algebraic input; the verification
 script includes an exact character-orthogonality check, but that finite
 check is not the proof for arbitrary $m$.
 
+\begin{writenote}[Added 4 October 2026, batch~90]
+For arbitrary $m$, and indeed for arbitrarily many primes, this lemma is formally proved in ProveIt's Lean development: it is the instance $M=\Q$, $a_i=p_i$, with square roots in $\R$, of \texttt{Surreal.TailSigns.linearIndependent\_mono} (\lbl{tail:lem:signs} of \repo{surreal/tail-spans-and-differential-transcendence}, proved by the same sign-change induction), whose square-class hypothesis for distinct primes is \texttt{Surreal.AlgebraicClosurePart.independentSquareClasses\_prime}. The specialization is not itself a declaration; see \cref{csf:sec:provenance}.
+\end{writenote}
+
 \subsection{The transcendence basis}
 
 A finite surreal normal form
@@ -375,7 +466,7 @@ $\omega^h/\omega^g=\omega^{h-g}$ exceeds every positive real number.
 Also $\omega^{g+h}=\omega^g\omega^h$.
 
 \begin{lemma}[Independent double monomials]
-\label{lem:independence}
+\label[lemma]{csf:lem:independence}
 The family $(x_{q,b})_{(q,b)\in I}$ is algebraically independent over $k$.
 \end{lemma}
 \begin{proof}
@@ -386,7 +477,7 @@ $\nu=(\nu_{q,b})$ has value
  =\omega^{g_\nu},\qquad
  g_\nu=\sum_q\left(\sum_b\nu_{q,b}b\right)\omega^q.
 \]
-If $\nu\ne\mu$, then $g_\nu\ne g_\mu$ by \cref{lem:radicals} and uniqueness
+If $\nu\ne\mu$, then $g_\nu\ne g_\mu$ by \cref{csf:lem:radicals} and uniqueness
 of the finite normal form. A nonzero polynomial in finitely many $x_{q,b}$
 therefore becomes a finite sum of distinct surreal monomials with nonzero
 coefficients in $k$. Its largest-exponent summand dominates all other
@@ -396,12 +487,16 @@ summands, so the sum is nonzero.
 Consequently
 \begin{equation}
  \trdeg_k K_A=|A|,
- \label{eq:trdeg}
+ \label{csf:eq:trdeg}
 \end{equation}
 where the right side is a finite cardinal or $\aleph_0$. The use of real
 algebraic $b$ does not make $x_{q,b}$ algebraic over $x_{q,1}$: an irrational
 multiple of the exponent is precisely what prevents an integral polynomial
 relation.
+
+\begin{writenote}[Added 4 October 2026, batch~90]
+\Cref{csf:lem:independence} is a case of Lemma~8.1 (\lbl{dsn:lem:cosets}, ``Disjoint support cosets'', that report's source~04) of \repo{foundations-and-computation/definable-surreals-and-omnific-integers}: take the subfield $k$, whose nonzero elements have normal-form support $\{0\}$, the subgroup $G=\{0\}$, and $g_{q,b}=b\omega^q$; a nonzero finitely supported integer combination of the $g_{q,b}$ is nonzero by \cref{csf:lem:radicals} and uniqueness of the finite normal form, so the monomials $\omega^{g_{q,b}}=x_{q,b}$ are algebraically independent over $k$. Part~VII of \repo{foundations-and-computation/birthday-cutoffs-and-hereditary-sets} proves the coefficient-one analogue over $\R$, the double monomials $\omega^{\omega^{j(x)}}$ (Theorem~43.1, \lbl{hset:kw:thm:double}), by the same leading-term argument, and its Remark \lbl{hset:kw:rem:other} records that it too is a case of \lbl{dsn:lem:cosets}. Both are credited; the proof above is printed as the manuscript's own and claims no novelty beyond the radical coefficients $b\in B$, which make several independent generators share one rank.
+\end{writenote}
 
 \subsection{Natural valuation}
 
@@ -420,14 +515,14 @@ For $A\subseteq I$, set
  H_A(q)=\operatorname{span}_{\Q}\{b:(q,b)\in A\}\subseteq\R,
  \qquad
  \Gamma_A=\bigoplus_{q\in\Q}H_A(q)\omega^q.
- \label{eq:value-group}
+ \label{csf:eq:value-group}
 \end{equation}
 The direct sum consists of finite-support vectors. It is ordered by the
 largest nonzero coordinate and its real coefficient. Empty components are
 omitted from its rank chain.
 
 \begin{theorem}[Exact value group and residue field]
-\label{thm:valuation}
+\label{csf:thm:valuation}
 For every $A\subseteq I$, the natural value group of $K_A$ is $\Gamma_A$,
 and its residue field is exactly $k$. If
 $J_A=\{q:H_A(q)\ne0\}$, then the Archimedean rank chain of $\Gamma_A$ is
@@ -473,7 +568,7 @@ $<q$ gives exactly $H_A(q)$.
 \subsection{Why arbitrary field embeddings preserve these invariants}
 
 \begin{lemma}[Intrinsic value-group functor]
-\label{lem:valuation-functor}
+\label[lemma]{csf:lem:valuation-functor}
 An embedding $f:F\emb G$ of ordered fields induces an ordered-group
 embedding $\bar f:v(F^\times)\emb v(G^\times)$. It also induces an order
 embedding of Archimedean rank chains and, at each source rank, an ordered
@@ -501,8 +596,12 @@ This lemma is essential. Restricting attention to generator-preserving
 embeddings would prove only a sufficient condition. The intrinsic
 valuation recovers a necessary condition for \emph{every} field embedding.
 
+\begin{writenote}[Added 4 October 2026, batch~90]
+The first assertion is the subfield form of \lbl{sse:prop:valueaction} of \repo{surreal/surreal-self-embeddings}, which proves by the same integer-comparison argument that every field self-embedding $j$ of $\No$ induces an ordered value-group embedding $\tau_j$; the component maps on convex quotients are the step used in the proof of Proposition~7.2 of \cite{cmms} (see \cref{csf:sec:provenance}).
+\end{writenote}
+
 \section{Finite supports and a compact Boolean family}
-\label{sec:support}
+\label{csf:sec:support}
 
 \subsection{A general algebraic lemma}
 
@@ -514,12 +613,12 @@ $M$ is algebraic over $F(t_i:i\in I)$. For $A\subseteq I$, define
 \]
 
 \begin{theorem}[Unique finite support]
-\label{thm:support}
+\label{csf:thm:support}
 For every $a\in M$ there exists a unique finite $D(a)\subseteq I$ such that
 \begin{equation}
  a\in M_A\quad\Longleftrightarrow\quad D(a)\subseteq A
  \qquad(A\subseteq I).
- \label{eq:support}
+ \label{csf:eq:support}
 \end{equation}
 Moreover $D(t_i)=\{i\}$, and $D(a)=\varnothing$ exactly when $a$ is algebraic
 over $F$.
@@ -547,7 +646,7 @@ This contradicts algebraic independence, because $i$ is absent from the
 index set. Consequently $D\subseteq C\subseteq A$.
 
 The converse follows by monotonicity of algebraicity. This proves
-\eqref{eq:support}; it also proves uniqueness. The final two assertions
+\eqref{csf:eq:support}; it also proves uniqueness. The final two assertions
 follow immediately from independence and the definition.
 \end{proof}
 
@@ -562,20 +661,20 @@ being made.
 
 \subsection{Topological consequences}
 
-Apply \cref{thm:support} to $F=k$, $t_i=x_i$, and $M=\Kstar$. Fix an
+Apply \cref{csf:thm:support} to $F=k$, $t_i=x_i$, and $M=\Kstar$. Fix an
 enumeration of the countably infinite set $I$ and an enumeration of
 $\Kstar$. The power sets $2^I$ and $2^{\Kstar}$ carry their ordinary product
 Cantor topologies.
 
 \begin{theorem}[Closed coordinate family]
-\label{thm:cantor}
+\label{csf:thm:cantor}
 The map $\Phi(A)=K_A$ is continuous and injective, hence a homeomorphism
 onto a closed subspace $\Cstar\subseteq2^{\Kstar}$ homeomorphic to Cantor
 space. Every coordinate test $a\in K_A$ is clopen as a condition on $A$.
 Every $K_A$ is an elementary real closed subfield of $\Kstar$.
 \end{theorem}
 \begin{proof}
-For a fixed $a\in\Kstar$, \cref{thm:support} gives
+For a fixed $a\in\Kstar$, \cref{csf:thm:support} gives
 \[
  \{A:a\in K_A\}=\bigcap_{i\in D(a)}\{A:i\in A\},
 \]
@@ -583,12 +682,12 @@ a finite intersection of clopen sets. Thus every membership coordinate of
 $\Phi$ is continuous. Since $x_i\in K_A$ exactly when $i\in A$, the map is
 injective. A continuous injection from compact $2^I$ into Hausdorff
 $2^{\Kstar}$ is a homeomorphism onto its compact, and hence closed, image.
-Real closedness was established in \cref{sec:foundations}; elementarity
+Real closedness was established in \cref{csf:sec:foundations}; elementarity
 follows from quantifier elimination.
 \end{proof}
 
 \begin{corollary}[Coordinate lattice]
-\label{cor:lattice}
+\label[corollary]{csf:cor:lattice}
 For arbitrary families $(A_j)_{j\in J}$,
 \[
  \bigcap_{j\in J}K_{A_j}=K_{\bigcap_j A_j},\qquad
@@ -603,7 +702,7 @@ Consequently $\Cstar$, with these relative meet and join operations, is a
 complete Boolean lattice isomorphic to $\mathcal P(I)$.
 \end{corollary}
 \begin{proof}
-The intersection assertion is \eqref{eq:support}. For the join, every
+The intersection assertion is \eqref{csf:eq:support}. For the join, every
 member on the left is algebraic over the field generated by coordinates
 in the union, while that field contains every required generator. Relative
 real closure gives equality. In the directed case, the finite support of
@@ -615,6 +714,10 @@ is $K_{I\setminus A}$; the lattice bottom is $k$.
 These joins are not literal unions of two fields. For instance,
 $x_i+x_j$ can lie in $K_{\{i,j\}}$ without belonging to either
 $K_{\{i\}}$ or $K_{\{j\}}$.
+
+\begin{writenote}[Added 4 October 2026, batch~90]
+\repo{surreal/independent-surreal-copies} proves a Boolean lattice of the same shape for \emph{full Hahn fields}: for an independent family of exponent groups $G_i$ over a core $H$, the fields $E_J$ on $G_J$ satisfy $E_J\cap E_T=E_{J\cap T}$, with full Hahn join $E_{J\cup T}$ (\lbl{isc:thm:boolean}). There the fields are set-sized or class-sized Hahn fields and the proof uses normal-form supports; here they are countable relative real closures and the proof uses algebraic exchange (\cref{csf:thm:support}). No result is shared.
+\end{writenote}
 
 \subsection{Uniform codes on the domain \texorpdfstring{$\N$}{N}}
 
@@ -634,32 +737,32 @@ all surreal algebraic numbers or their supports from an arbitrary external
 notation.
 
 \section{The rank-one family remembers exactly a countable order}
-\label{sec:rank-one}
+\label{csf:sec:rank-one}
 
 The rank-one field $\Kone_S$ is generated, up to real closure, by
 $t_q=x_{q,1}=\omega^{\omega^q}$ for $q\in S$. Its natural value group is
 \begin{equation}
  \Gamma^{(1)}_S=\bigoplus_{q\in S}\Q\omega^q.
- \label{eq:rank-one-values}
+ \label{csf:eq:rank-one-values}
 \end{equation}
 
 \begin{theorem}[Exact embedding and isomorphism classification]
-\label{thm:rank-one-classification}
+\label{csf:thm:rank-one-classification}
 For arbitrary $S,T\subseteq\Q$,
 \begin{align}
  \Kone_S\emb\Kone_T
  &\quad\Longleftrightarrow\quad (S,<)\emb(T,<),
- \label{eq:embedding-classification}\\
+ \label{csf:eq:embedding-classification}\\
  \Kone_S\cong\Kone_T
  &\quad\Longleftrightarrow\quad (S,<)\cong(T,<).
- \label{eq:iso-classification}
+ \label{csf:eq:iso-classification}
 \end{align}
 The assertions include finite and empty index sets.
 \end{theorem}
 \begin{proof}
 An embedding of fields induces an embedding of natural value groups by
-\cref{lem:valuation-functor}. The Archimedean rank chains of
-\eqref{eq:rank-one-values} are $S$ and $T$, respectively, so this induces
+\cref{csf:lem:valuation-functor}. The Archimedean rank chains of
+\eqref{csf:eq:rank-one-values} are $S$ and $T$, respectively, so this induces
 an order embedding $S\emb T$. An isomorphism induces an order isomorphism
 of ranks.
 
@@ -687,7 +790,7 @@ because neither of these two rank orders embeds into the other.
 \end{example}
 
 \begin{remark}[No classification of all individual maps]
-\cref{thm:rank-one-classification} classifies the \emph{existence} of an
+\cref{csf:thm:rank-one-classification} classifies the \emph{existence} of an
 embedding and the resulting isomorphism types. It does not say that every
 embedding sends each displayed monomial to a displayed monomial. An
 embedding can contain additional unit factors or other algebraic choices.
@@ -695,7 +798,7 @@ Only its induced rank map is used in the necessary direction.
 \end{remark}
 
 \section{Descriptive complexity in the rank-one family}
-\label{sec:descriptive}
+\label{csf:sec:descriptive}
 
 \subsection{Three different completeness notions}
 
@@ -738,13 +841,13 @@ is a Borel function of $L$, because $q\in S_L$ is a countable union of the
 Borel conditions $e_L(n)=q$.
 
 \begin{corollary}[Borel-complete isomorphism]
-\label{cor:isomorphism}
+\label[corollary]{csf:cor:isomorphism}
 Isomorphism on $\Cone$, and hence on $\Cstar$, is Borel complete for
 countable structures.
 \end{corollary}
 \begin{proof}
 The map $L\mapsto\Kone_{S_L}$ is a Borel reduction of countable-linear-order
-isomorphism by \cref{thm:rank-one-classification}. The latter isomorphism
+isomorphism by \cref{csf:thm:rank-one-classification}. The latter isomorphism
 relation is Borel complete \cite{friedman,rast}. The upper classification
 bound follows because our fields are countable structures in a countable
 language, with the uniform codes described above.
@@ -764,7 +867,7 @@ its initial segment, and otherwise the first unequal entries are compared
 in their usual order. Write it as $<_{\KB}$.
 
 \begin{lemma}
-\label{lem:kb}
+\label[lemma]{csf:lem:kb}
 A tree $T$ has a branch exactly when its Kleene--Brouwer order is not a
 well-order.
 \end{lemma}
@@ -788,13 +891,13 @@ It exists because this is a countable linear order. Denote the image of
 the first summand by $W$, and for $T\in\mathsf{Tr}$ put
 \begin{equation}
  S_T=W\cup\{h(s):s\in T\}.
- \label{eq:tree-code}
+ \label{csf:eq:tree-code}
 \end{equation}
 This map is continuous: membership at a fixed rational coordinate is
 constant, or is one membership bit of $T$.
 
 \begin{theorem}[One fixed field already has complete analytic existence]
-\label{thm:fixed-hard}
+\label{csf:thm:fixed-hard}
 Let $P_-=\Kone_D$, where $D$ has order type $\omega^*$. Then
 \[
  E^{(1)}_{P_-}=\{S:(S,<)\text{ is not a well-order}\}
@@ -807,20 +910,24 @@ where every field $\Kone_{S_T}$ has transcendence degree $\aleph_0$ over
 $k$, residue field $k$, and abstract value group $\Q^{(\N)}$.
 \end{theorem}
 \begin{proof}
-By \cref{thm:rank-one-classification}, $P_-\emb\Kone_S$ exactly when
+By \cref{csf:thm:rank-one-classification}, $P_-\emb\Kone_S$ exactly when
 $\omega^*$ embeds into $S$, that is, exactly when $S$ admits an infinite
 strictly decreasing sequence. For countable linear orders in ZFC, this is
 precisely failure of well-foundedness. The existence of such a sequence is
 analytic.
 
-In \eqref{eq:tree-code}, the added $\omega$ summand is a well-order and
+In \eqref{csf:eq:tree-code}, the added $\omega$ summand is a well-order and
 cannot create an infinite decreasing sequence. Therefore the target order
 is ill founded exactly when the Kleene--Brouwer order on $T$ is ill
-founded, which is equivalent to $T\in\IF$ by \cref{lem:kb}. The reduction is
+founded, which is equivalent to $T\in\IF$ by \cref{csf:lem:kb}. The reduction is
 continuous. The fixed infinite prefix $W$ ensures $|S_T|=\aleph_0$, even
 for empty or finite $T$. The algebraic invariants follow from
-\cref{thm:valuation} and \eqref{eq:trdeg}.
+\cref{csf:thm:valuation} and \eqref{csf:eq:trdeg}.
 \end{proof}
+
+\begin{writenote}[Added 4 October 2026, batch~90]
+Part~II of \repo{foundations-and-computation/polish-models-of-omnific-arithmetic} proves the same Kleene--Brouwer lemma inside its Lemma~\lbl{pma:bor:lem:KB}, with a fixed order embedding $\mu_{\KB}:\N^{<\N}\to\Q\cap(0,1)$ in the role of $h$, and concludes that $\mathrm{WO}(\Q)=\{S\in2^{\Q}:(S,<)\text{ is well-ordered}\}$ is $\PiC$-complete. By the first display of \cref{csf:thm:fixed-hard}, $E^{(1)}_{P_-}=2^{\Q}\setminus\mathrm{WO}(\Q)$, so the analytic-completeness of $E^{(1)}_{P_-}$ is the complement form of that lemma, transported by \cref{csf:thm:rank-one-classification}. Both arguments are the standard one and both are credited; the manuscript's reduction adds the fixed well-ordered prefix $W$, so that every target field has transcendence degree $\aleph_0$. That report's Theorem~18.4 (\lbl{pma:bor:thm:dichotomy}) also shows that $\mathrm{WO}(L)$ is Borel for scattered countable $L$ and $\PiC$-complete otherwise. Hence, as an observation of the write, if the rank-one parameters are restricted to subsets of a fixed countable $L\subseteq\Q$, the locus of $P_-$ is Borel exactly when $L$ is scattered; this bears on, but does not answer, Question~\ref{csf:q:fixedsource}.
+\end{writenote}
 
 \subsection{A second tree transform: copies of the rational order}
 
@@ -836,7 +943,7 @@ with the reverse-lexicographic order: a nonzero vector is positive when
 its coefficient at the largest nonzero rank is positive.
 
 \begin{lemma}[An integer-sum transform]
-\label{lem:integer-transform}
+\label[lemma]{csf:lem:integer-transform}
 The order $Z(L)$ contains a copy of $\Q$ if and only if $L$ is not a
 well-order.
 \end{lemma}
@@ -869,7 +976,7 @@ conjunction of membership bits of $T$. Therefore $T\mapsto R_T$ is
 continuous. The induced order on $R_T$ is exactly $Z((T,<_{\KB}))$.
 
 \begin{theorem}[A second analytic-complete fixed source]
-\label{thm:rational-source}
+\label{csf:thm:rational-source}
 The set
 \[
  \mathcal N=\{S\subseteq\Q:(\Q,<)\emb(S,<)\}
@@ -881,10 +988,10 @@ is analytic-complete. Indeed,
 \]
 \end{theorem}
 \begin{proof}
-The equivalence follows from \cref{lem:kb,lem:integer-transform}. The
+The equivalence follows from \cref{csf:lem:kb,csf:lem:integer-transform}. The
 reduction is continuous, and the target condition is analytic because an
 order embedding is a countable function satisfying countably many tests.
-The field equality follows from \cref{thm:rank-one-classification}.
+The field equality follows from \cref{csf:thm:rank-one-classification}.
 \end{proof}
 
 In standard terminology, $\mathcal N$ consists of the non-scattered
@@ -908,7 +1015,7 @@ relation for two varying fields is at least Borel, which suffices for the
 analytic upper bound on embeddability.
 
 \begin{corollary}[No total Borel solver]
-\label{cor:no-selector}
+\label[corollary]{csf:cor:no-selector}
 There is no total Borel function on $2^{\Q}$ that outputs a valid embedding
 $P_-\emb\Kone_S$ whenever one exists, with arbitrary outputs permitted
 when none exists. There is likewise no Borel decision procedure for
@@ -918,7 +1025,7 @@ membership in $E^{(1)}_{P_-}$.
 For a total Borel candidate $f$, testing
 $(S,f(S))\in\mathcal W_{P_-}$ is Borel. Under the asserted correctness
 condition this test holds exactly on $E^{(1)}_{P_-}$, contradicting
-\cref{thm:fixed-hard}. The decision assertion is immediate.
+\cref{csf:thm:fixed-hard}. The decision assertion is immediate.
 \end{proof}
 
 This statement is deliberately about \emph{total Borel} solvers. It neither
@@ -929,16 +1036,16 @@ with a non-Borel domain is impossible.
 
 Embeddability on $\Cone$ is Borel bireducible with embeddability of
 uncolored countable linear orders, allowing finite domains. In one
-direction use \cref{thm:rank-one-classification}; in the other use the
+direction use \cref{csf:thm:rank-one-classification}; in the other use the
 rational placement above. The known better-quasi-order behavior of
 countable linear orders prevents this from being a complete analytic
-quasiorder \cite{laver,cmms}. Thus \cref{thm:fixed-hard} is not a proof of
+quasiorder \cite{laver,cmms}. Thus \cref{csf:thm:fixed-hard} is not a proof of
 quasiorder universality. The larger family $\Cstar$ supplies countably
 many intrinsically distinguishable Archimedean components, which removes
 this obstruction.
 
 \section{Quadratic colors and complete analytic embeddability}
-\label{sec:colors}
+\label{csf:sec:colors}
 
 \subsection{An explicit antichain of ordered divisible groups}
 
@@ -950,7 +1057,7 @@ as an ordered additive group. These groups are countable, divisible, and
 Archimedean.
 
 \begin{lemma}[Scalar rigidity]
-\label{lem:hion}
+\label[lemma]{csf:lem:hion}
 If $H,H'\subseteq\R$ are additive subgroups with $1\in H$, and
 $f:H\emb H'$ is an ordered additive embedding, then
 $f(x)=\lambda x$ for every $x\in H$, where $\lambda=f(1)>0$.
@@ -968,12 +1075,12 @@ This is the special case of Hion's lemma needed here; compare
 \cite[Lemma 2.2]{cmms}.
 
 \begin{lemma}[Quadratic-color antichain]
-\label{lem:colors}
+\label[lemma]{csf:lem:colors}
 An ordered additive embedding $H_n\emb H_m$ exists if and only if $n=m$.
 \end{lemma}
 \begin{proof}
 Suppose $\lambda H_n\subseteq H_m$ is such an embedding by
-\cref{lem:hion}. Since $\lambda=\lambda\cdot1$ belongs to the field $H_m$
+\cref{csf:lem:hion}. Since $\lambda=\lambda\cdot1$ belongs to the field $H_m$
 and is nonzero, division by $\lambda$ gives $H_n\subseteq H_m$. Both
 fields have degree two over $\Q$, so they are equal. Distinct prime
 quadratic fields are unequal: writing
@@ -990,7 +1097,7 @@ order, and define
 \begin{equation}
  A_L=\{(e_L(i),1),(e_L(i),\sqrt{p_{c_L(i)}}):i\in\N\},
  \qquad M_L=K_{A_L}.
- \label{eq:color-code}
+ \label{csf:eq:color-code}
 \end{equation}
 At rank $e_L(i)$ the value group of $M_L$ has Archimedean component
 $H_{c_L(i)}$. In particular, all fields $M_L$ lie inside the same $\Kstar$;
@@ -998,10 +1105,10 @@ the ambient field is not reconstructed for each input.
 
 The map $L\mapsto A_L$ is Borel. For a given $(q,b)$, membership is a
 countable union of conditions involving $e_L(i)=q$ and one color value.
-Thus $L\mapsto M_L$ is Borel by \cref{thm:cantor}.
+Thus $L\mapsto M_L$ is Borel by \cref{csf:thm:cantor}.
 
 \begin{theorem}[Exact colored-order coding]
-\label{thm:colored-coding}
+\label{csf:thm:colored-coding}
 For countably colored countable linear orders $L,L'$,
 \begin{align*}
  M_L\emb M_{L'}
@@ -1016,11 +1123,11 @@ No color predicates are added to the field language.
 \begin{proof}
 Let $f:M_L\emb M_{L'}$. Its value-group map induces an order embedding
 of rank chains, and hence an order injection $h:L\emb L'$. At each rank,
-\cref{lem:valuation-functor} gives an ordered group embedding
+\cref{csf:lem:valuation-functor} gives an ordered group embedding
 \[
  H_{c_L(i)}\emb H_{c_{L'}(h(i))}.
 \]
-By \cref{lem:colors}, the colors are equal. An isomorphism of fields makes
+By \cref{csf:lem:colors}, the colors are equal. An isomorphism of fields makes
 the rank map an isomorphism.
 
 Conversely, for a color-preserving order injection $h$, map the two
@@ -1034,7 +1141,7 @@ required field embedding. A bijective $h$ gives an isomorphism.
 \end{proof}
 
 \begin{theorem}[Complete analytic quasiorder in a closed subfield family]
-\label{thm:universality}
+\label{csf:thm:universality}
 Embeddability on $\Cstar$ is a complete analytic quasiorder. Its associated
 bi-embeddability relation is a complete analytic equivalence relation.
 The hardness already holds on the Borel-coded fields $M_L$, all of which
@@ -1043,7 +1150,7 @@ have transcendence degree $\aleph_0$ and residue field $k$.
 \begin{proof}
 Embeddability is analytic by coding a map between countable fields and
 imposing the countable collection of field-table conditions. By
-\cref{thm:colored-coding}, the Borel map $L\mapsto M_L$ reduces colored-order
+\cref{csf:thm:colored-coding}, the Borel map $L\mapsto M_L$ reduces colored-order
 embeddability to it. Louveau's completeness theorem for the former
 quasiorder \cite{marcone,cmms} proves the desired universality.
 
@@ -1056,32 +1163,36 @@ Symmetry of $E$ then gives
 The converse follows from either embedding and the reduction property.
 Bi-embeddability is analytic, being the intersection of the two analytic
 embedding relations. Finally, each infinite-domain code
-\eqref{eq:color-code} has countably infinitely many independent
-coordinates, so \eqref{eq:trdeg} and \cref{thm:valuation} give the stated
+\eqref{csf:eq:color-code} has countably infinitely many independent
+coordinates, so \eqref{csf:eq:trdeg} and \cref{csf:thm:valuation} give the stated
 invariants.
 \end{proof}
 
-Together with \cref{cor:isomorphism,thm:cantor}, this proves
-\cref{thm:main}. The novelty claim is limited: the broad universality theorem
+Together with \cref{csf:cor:isomorphism,csf:thm:cantor}, this proves
+\cref{csf:thm:main}. The novelty claim is limited: the broad universality theorem
 was known; the present proof places an explicit universal coding in a
 compact coordinate family of actual elementary subfields of a single
 specified countable surreal field.
 
+\begin{writenote}[Added 4 October 2026, batch~90]
+The write checked the cited statements of \cite{cmms} (Lemma~2.2, Theorem~7.1, Proposition~7.2, Corollary~7.3; PDF pages 33--35 of version~2); they say what is attributed to them here. See \cref{csf:sec:provenance}.
+\end{writenote}
+
 \section{The finite-transcendence-degree threshold}
-\label{sec:threshold}
+\label{csf:sec:threshold}
 
 The finite-support argument imposes a sharp restriction on fixed-source
 existence questions even when the global embeddability quasiorder is
 maximally complicated.
 
 \begin{theorem}[Finite sources have finite-coordinate witnesses]
-\label{thm:finite-source}
+\label{csf:thm:finite-source}
 Let $P$ be a real closed field of finite transcendence degree over its
 canonical copy of $k$. Then
 \begin{equation}
  E^\star_P=\bigcup_{\substack{U\subseteq I\text{ finite}\\P\emb K_U}}
              \{A:U\subseteq A\}.
- \label{eq:open-locus}
+ \label{csf:eq:open-locus}
 \end{equation}
 In particular $E^\star_P$ is an open upward-closed subset of $2^I$.
 The same formula holds for the rank-one family with finite $U\subseteq\Q$.
@@ -1099,12 +1210,12 @@ ordered extension inside $\Kstar$. Therefore $f(P)\subseteq K_U$.
 
 Conversely, any embedding into $K_U$ composes with inclusion into $K_A$
 whenever $U\subseteq A$. Each upper cone on the right side of
-\eqref{eq:open-locus} is clopen, so the union is open. The rank-one argument
+\eqref{csf:eq:open-locus} is clopen, so the union is open. The rank-one argument
 is identical. When $d=0$, the source is $k$ and the witness is $U=\varnothing$.
 \end{proof}
 
 \begin{proposition}[Infinite sources have no interior]
-\label{prop:infinite-source}
+\label[proposition]{csf:prop:infinite-source}
 If $\trdeg_k P=\aleph_0$, both $E^\star_P$ and $E^{(1)}_P$ have empty
 interior. Thus, in either family, a nonempty fixed-source locus is open if
 and only if its source has finite transcendence degree.
@@ -1113,10 +1224,10 @@ and only if its source has finite transcendence degree.
 Finite subsets of the coordinate set are dense in its power set: every
 basic open cylinder only prescribes finitely many present and absent
 coordinates, and the required present coordinates alone give a finite
-member of the cylinder. By \eqref{eq:trdeg}, no field from a finite
+member of the cylinder. By \eqref{csf:eq:trdeg}, no field from a finite
 coordinate set can contain an embedded copy of $P$. Every nonempty open
 set therefore meets the complement of the locus. Combine this with
-\cref{thm:finite-source}.
+\cref{csf:thm:finite-source}.
 \end{proof}
 
 The nonempty qualification matters. A field not embeddable in the chosen
@@ -1135,7 +1246,7 @@ closed set of subsets of size at most $n-1$.
 \end{example}
 
 \begin{remark}[Open is not an effective claim]
-\eqref{eq:open-locus} does not furnish an algorithm deciding which finite
+\eqref{csf:eq:open-locus} does not furnish an algorithm deciding which finite
 $U$ admit an embedding of an arbitrarily specified $P$. It proves a
 boldface topological fact: every positive instance has some finite
 coordinate neighborhood consisting entirely of positive instances. No
@@ -1143,14 +1254,14 @@ uniform computability of the displayed union is claimed.
 \end{remark}
 
 \section{Generic collapse in the rank-one family}
-\label{sec:generic-one}
+\label{csf:sec:generic-one}
 
 Equip $2^{\Q}$ with the product probability measure in which each rational
 is included independently with probability $1/2$. This choice is a measure
 on generator parameters, not on the surreal field.
 
 \begin{theorem}[A comeager conull isomorphism type]
-\label{thm:generic-collapse}
+\label{csf:thm:generic-collapse}
 The set
 \[
  \mathcal G=\{S\subseteq\Q:S\cap(a,b)\ne\varnothing
@@ -1170,7 +1281,7 @@ their intersection is a dense $G_\delta$ of measure one.
 
 Every $S\in\mathcal G$ is a countable dense linear order without endpoints.
 Cantor's back-and-forth theorem gives $S\cong\Q$. Now apply
-\cref{thm:rank-one-classification}.
+\cref{csf:thm:rank-one-classification}.
 
 If $E^{(1)}_P$ is nonempty, then $P$ embeds into some $\Kone_T\subseteq\Kone$.
 For $S\in\mathcal G$, composing with an isomorphism
@@ -1184,19 +1295,19 @@ respecting its required coordinates, and yields another copy of the
 ambient field.
 
 \begin{corollary}[Hardness concentrated on an exceptional set]
-\label{cor:hard-generic}
+\label[corollary]{csf:cor:hard-generic}
 The analytic-complete set $E^{(1)}_{P_-}$ is comeager and conull. Its
 coanalytic-complete complement is meager and null. In particular, maximum
 analytic decision complexity can coexist with probability-one agreement
 on the answer.
 \end{corollary}
 
-There is no conflict with \cref{prop:infinite-source}: a comeager set may
+There is no conflict with \cref{csf:prop:infinite-source}: a comeager set may
 have empty interior. Indeed, every finite coordinate pattern can still be
 completed to a finite-rank field that does not admit $P_-$.
 
 \section{Two generic regimes in the universal family}
-\label{sec:generic-star}
+\label{csf:sec:generic-star}
 
 The larger family $\Cstar$ does not inherit the same generic collapse.
 Its additional coefficient coordinates can remove an entire Archimedean
@@ -1216,7 +1327,7 @@ exponent order. Thus each fixed-source locus $E^\star_P$ is invariant under
 all $\tau_r$.
 
 \begin{theorem}[Density and zero--one laws]
-\label{thm:zero-one}
+\label{csf:thm:zero-one}
 For every countable real closed $P$, $E^\star_P$ is analytic. If it is
 nonempty, it is dense. It is either meager or comeager, and its product
 measure is either zero or one. The same zero--one laws hold for every
@@ -1224,7 +1335,7 @@ translation-invariant analytic subset of $2^I$.
 \end{theorem}
 \begin{proof}
 Analyticity follows from the closed witness relation in
-\cref{sec:descriptive}. Suppose $P\emb\Kstar$, as holds whenever the locus
+\cref{csf:sec:descriptive}. Suppose $P\emb\Kstar$, as holds whenever the locus
 is nonempty. In a basic cylinder let $V\subset I$ be the finite set of
 forbidden coordinates, and set $A=I\setminus V$. All columns at ranks
 outside the finite projection of $V$ onto $\Q$ are complete. That cofinite
@@ -1267,7 +1378,7 @@ For $A\subset I$, let
 \]
 
 \begin{proposition}
-\label{prop:rank-one-in-star}
+\label[proposition]{csf:prop:rank-one-in-star}
 For $S\subseteq\Q$ and $A\subseteq I$,
 \[
  \Kone_S\emb K_A\quad\Longleftrightarrow\quad(S,<)\emb(J_A,<).
@@ -1296,7 +1407,7 @@ Put $H=\operatorname{span}_{\Q}B$. This is the Archimedean component of
 $\Gamma_I$ at every rank.
 
 \begin{lemma}[A complete component cannot fit into a partial column]
-\label{lem:full-component}
+\label[lemma]{csf:lem:full-component}
 For $C\subseteq B$, there is an ordered additive embedding
 \[
  H\emb\operatorname{span}_{\Q}C
@@ -1304,7 +1415,7 @@ For $C\subseteq B$, there is an ordered additive embedding
 if and only if $C=B$.
 \end{lemma}
 \begin{proof}
-Let $f$ be an embedding. By \cref{lem:hion}, $f(x)=\lambda x$
+Let $f$ be an embedding. By \cref{csf:lem:hion}, $f(x)=\lambda x$
 with $\lambda=f(1)>0$. Write
 \[
  \lambda=a_0+\sum_{i\in F}a_i\sqrt{p_i},\qquad a_i\in\Q,
@@ -1316,7 +1427,7 @@ with $F$ finite. Choose $j\notin F$. Since $\sqrt{p_j}\in H$,
  \in\operatorname{span}_{\Q}C\subseteq H.
 \]
 Distinct squarefree radical monomials are independent by
-\cref{lem:radicals}. In particular, no nonzero coefficient of
+\cref{csf:lem:radicals}. In particular, no nonzero coefficient of
 $\sqrt{p_ip_j}$ can occur in an element of $H$. Thus all $a_i$ for
 $i\in F$ vanish, and $\lambda=a_0$ is a nonzero rational.
 Now $\lambda\cdot1\in\operatorname{span}_{\Q}C$ forces $1\in C$;
@@ -1331,25 +1442,25 @@ Define the complete-column rank set
 \]
 
 \begin{theorem}[Exact whole-ambient locus]
-\label{thm:rare-ambient}
+\label{csf:thm:rare-ambient}
 For $A\subseteq I$,
 \begin{equation}
  \Kstar\emb K_A\quad\Longleftrightarrow\quad(\Q,<)\emb(D_A,<).
- \label{eq:whole-locus}
+ \label{csf:eq:whole-locus}
 \end{equation}
 The locus $E^\star_{\Kstar}$ is analytic-complete and dense, but meager
 and of measure zero. Its complement is coanalytic-complete.
 \end{theorem}
 \begin{proof}
 If $\Kstar\emb K_A$, the rank map sends each source component $H$ into
-the component at its image rank. By \cref{lem:full-component}, that target
+the component at its image rank. By \cref{csf:lem:full-component}, that target
 column must be complete. Thus the rank map embeds $\Q$ into $D_A$.
 Conversely, an order injection $h:\Q\emb D_A$ permits the relabeling
 $x_{q,b}\mapsto x_{h(q),b}$ for every $b\in B$. This extends to an embedding
-of real closures and proves \eqref{eq:whole-locus}.
+of real closures and proves \eqref{csf:eq:whole-locus}.
 
 The locus is nonempty because $\Kstar$ embeds into itself, and it is dense
-by \cref{thm:zero-one}. For each $q$, the set
+by \cref{csf:thm:zero-one}. For each $q$, the set
 $\{A:A_q=B\}$ is closed and nowhere dense: a finite cylinder can always
 be refined by omitting one as-yet unmentioned coordinate in that column.
 Its measure is zero, since the probability of including its first $m$
@@ -1358,14 +1469,14 @@ coordinates is $2^{-m}$. Therefore
  \{A:D_A\ne\varnothing\}
    =\bigcup_{q\in\Q}\{A:A_q=B\}
 \]
-is meager and null. The locus in \eqref{eq:whole-locus} is a subset of this
+is meager and null. The locus in \eqref{csf:eq:whole-locus} is a subset of this
 set, so it too is meager and null.
 
 Finally, the map $S\mapsto S\times B$ is continuous and has
-$D_{S\times B}=S$. By \eqref{eq:whole-locus} it reduces the
-analytic-complete set $\mathcal N$ of \cref{thm:rational-source} to
+$D_{S\times B}=S$. By \eqref{csf:eq:whole-locus} it reduces the
+analytic-complete set $\mathcal N$ of \cref{csf:thm:rational-source} to
 $E^\star_{\Kstar}$. Analyticity was already proved in
-\cref{thm:zero-one}. This establishes analytic-completeness and the
+\cref{csf:thm:zero-one}. This establishes analytic-completeness and the
 corresponding completeness of the complement.
 \end{proof}
 
@@ -1376,12 +1487,12 @@ the second is meager and null. Both are analytic-complete and both have
 empty interior.
 \end{corollary}
 
-This proves the remaining clauses of \cref{thm:main-source}. It also shows
+This proves the remaining clauses of \cref{csf:thm:main-source}. It also shows
 that the finite-versus-infinite threshold controls \emph{openness}, not
 probability. Infinite sources alone already exhibit both generic regimes.
 
 \section{Examples, diagnostic counterexamples, and interpretation}
-\label{sec:examples}
+\label{csf:sec:examples}
 
 \subsection{A two-scale calculation}
 
@@ -1434,7 +1545,7 @@ explicit computable coding of field presentations and of the reductions.
 The present paper supplies Borel and continuous codings, not a full
 computable presentation of the surreal ambient field.
 
-Conversely, the clopen membership tests in \cref{thm:cantor} show that the
+Conversely, the clopen membership tests in \cref{csf:thm:cantor} show that the
 coding map itself is not the source of the descriptive difficulty.
 Individual elements require finitely many coordinates. It is the
 existential quantification over an entire embedding, and the infinite
@@ -1442,7 +1553,7 @@ order structure that embedding must preserve, which creates the
 non-Borel locus.
 
 \section{Implications for mathematical evaluation and ProveIt}
-\label{sec:formalization}
+\label{csf:sec:formalization}
 
 \subsection{A sampling warning with a proof}
 
@@ -1457,7 +1568,7 @@ exceptional structural cases.
 In the full family, the reverse constant answer is almost surely correct
 for the source $\Kstar$: its embedding locus is null. Neither behavior is
 a satisfactory test of the exact equivalence in
-\cref{thm:rank-one-classification,thm:colored-coding,thm:rare-ambient}.
+\cref{csf:thm:rank-one-classification,csf:thm:colored-coding,csf:thm:rare-ambient}.
 A structure-sensitive evaluation would deliberately include well-founded
 versus ill-founded tree codes, incompatible quadratic components,
 finite-transcendence-degree obstructions, and embeddings with nontrivial
@@ -1495,9 +1606,13 @@ The declaration name \texttt{signSequenceIsRealClosed} occurs in the
 inspected foundation source. No claim is made that a build of the
 repository, or a kernel check of any new theorem here, was performed.
 
+\begin{writenote}[Added 4 October 2026, batch~90]
+At the write the three Lean files of the table are byte-identical to the pin, and the descriptions are accurate (\cref{csf:sec:provenance}). The table's paths are relative to \repo{Algebra/SurrealNumbers/}. Beyond them, the only formal statement bearing on this report is the multiquadratic independence behind \cref{csf:lem:radicals} (note after that lemma); everything else here is unformalized, and the plan below remains a proposal.
+\end{writenote}
+
 \subsection{A staged formalization plan}
 
-The most reusable theorem is \cref{thm:support}. It should be formalized
+The most reusable theorem is \cref{csf:thm:support}. It should be formalized
 first as a field-theoretic statement independent of surreal numbers.
 One needs an indexed algebraically independent family, a relative
 algebraicity predicate, finite character, and exchange. Its conclusion
@@ -1514,7 +1629,7 @@ complexity inputs.
 A third stage constructs the coordinate monomial field and its relative
 real closure in a set-sized ordered real closed ambient field. The exact
 value group, residue field, and generator-relabeling maps provide the
-bridge to \cref{thm:colored-coding}. The surreal normal-form interface is
+bridge to \cref{csf:thm:colored-coding}. The surreal normal-form interface is
 needed only to instantiate the independent ordered monomial family.
 
 Finally, implement the standard Borel spaces and the reductions. The
@@ -1541,13 +1656,13 @@ category and measure theorems. Those are supported by the mathematical
 proofs and the stated external inputs.
 
 \section{Further research questions}
-\label{sec:questions}
+\label{csf:sec:questions}
 
 The following questions are proposals for continued work. Their worldwide
 open status is not asserted. They are organized around gaps not settled
 by the present proofs, rather than restating the theorems already obtained.
 
-\begin{question}[Exact fixed-source complexity]
+\begin{question}[Exact fixed-source complexity]\label[question]{csf:q:fixedsource}
 For $P\emb\Kone$, classify the Borel or projective complexity of
 $E^{(1)}_P$. For sources of the form $\Kone_S$, this becomes the complexity
 of $\{T:S\emb T\}$. Determine which infinite source orders give Borel
@@ -1555,15 +1670,15 @@ loci and which give analytic-complete loci. The present finite/infinite
 threshold decides openness, not this finer classification.
 \end{question}
 
-\begin{question}[Generic isomorphism in the larger family]
+\begin{question}[Generic isomorphism in the larger family]\label[question]{csf:q:genericiso}
 Determine the generic behavior of isomorphism on $\Cstar$. The ambient
-isomorphism class is meager and null by \cref{thm:rare-ambient}, so the
+isomorphism class is meager and null by \cref{csf:thm:rare-ambient}, so the
 rank-one collapse does not identify the generic type here. Is every
 isomorphism class meager or null? Which invariants describe independent
 random component subspaces $H_A(q)$?
 \end{question}
 
-\begin{question}[Generic-presence criterion]
+\begin{question}[Generic-presence criterion]\label[question]{csf:q:presence}
 Give an intrinsic criterion on a countable source $P\emb\Kstar$ deciding
 whether $E^\star_P$ is comeager or meager. Is there a corresponding criterion
 in terms of the source's ordered value-group components and their finite
@@ -1571,7 +1686,7 @@ supports? Do the category and measure alternatives always agree for these
 particular fixed-source loci?
 \end{question}
 
-\begin{question}[Effective realization]
+\begin{question}[Effective realization]\label[question]{csf:q:effective}
 Construct a uniform computable presentation of the rational monomial
 fields and their ordered real closures for suitable computable rank orders.
 Then determine the lightface complexity of the fixed-source problem.
@@ -1579,7 +1694,7 @@ This requires controlling effective real-closure construction; the Borel
 proof alone is insufficient.
 \end{question}
 
-\begin{question}[Canonical support computation]
+\begin{question}[Canonical support computation]\label[question]{csf:q:support}
 For an algebraic element specified by an isolating polynomial over the
 coordinate rational-function field, develop an algorithm computing its
 minimal support $D(a)$. Which operations permit efficient support
@@ -1587,15 +1702,15 @@ cancellation tests? This is directly relevant to symbolic implementations
 and to a formal proof of the continuity theorem.
 \end{question}
 
-\begin{question}[Quantitative birthday bounds]
+\begin{question}[Quantitative birthday bounds]\label[question]{csf:q:birthday}
 Find an explicit ordinal $\beta$ containing the displayed $\Kstar$, ideally
 with a proof stable under real closure. Compare the birthday cost of this
 double-monomial realization with other realizations of the same ordered
-value groups. The existential set bound in \cref{sec:foundations} is not
+value groups. The existential set bound in \cref{csf:sec:foundations} is not
 an optimality result.
 \end{question}
 
-\begin{question}[How much compact localization is general?]
+\begin{question}[How much compact localization is general?]\label[question]{csf:q:localization}
 For other model-complete theories with an algebraic closure pregeometry,
 identify sufficient conditions for a closed coordinate family of elementary
 submodels to support complete analytic embeddability. The finite-support
@@ -1603,14 +1718,14 @@ lemma is general, but real closure and monomial order preservation supply
 additional structure that cannot simply be omitted.
 \end{question}
 
-\begin{question}[Individual embeddings and automorphism groups]
+\begin{question}[Individual embeddings and automorphism groups]\label[question]{csf:q:embeddings}
 For a fixed rank-one or colored field, classify all embeddings inducing a
 prescribed rank map. Determine the kernel of the map from its automorphism
 group to automorphisms of the ordered component data, with the
 pointwise-convergence topology on the countable domain.
 \end{question}
 
-\begin{question}[Additional named structure]
+\begin{question}[Additional named structure]\label[question]{csf:q:named}
 What survives after naming selected generators, a monomial section, an
 integer part, or an appropriate restricted exponential operation? Naming
 all generators trivializes many maps, while exponential closure can destroy
@@ -1618,14 +1733,14 @@ the independent-coordinate construction. A useful result would identify
 a nontrivial boundary between these extremes.
 \end{question}
 
-\begin{question}[Invariant universality versus completeness]
+\begin{question}[Invariant universality versus completeness]\label[question]{csf:q:invariant}
 Does the embeddability quasiorder restricted to a suitably chosen Borel
 subfamily satisfy a stronger invariant-universality property compatible
-with isomorphism? \cref{thm:universality} proves completeness only; the
+with isomorphism? \cref{csf:thm:universality} proves completeness only; the
 additional invariance requirements need a separate argument.
 \end{question}
 
-\begin{question}[Changing the sampling law]
+\begin{question}[Changing the sampling law]\label[question]{csf:q:sampling}
 Replace the fair coins by coordinate-dependent inclusion probabilities.
 Characterize when rank-one generic collapse persists, and when complete
 columns in the larger family appear with positive probability. Infinite
@@ -1633,13 +1748,17 @@ products and interval-coverage conditions suggest explicit thresholds,
 but a full source-dependent theorem remains to be developed.
 \end{question}
 
-\begin{question}[Proof-certified evaluation instances]
+\begin{question}[Proof-certified evaluation instances]\label[question]{csf:q:certified}
 Build a library of finite, checkable implications drawn from the source
 threshold, color incompatibility, and rank embeddings. Separate certificates
 for finite algebraic facts from assumptions about infinite trees, and
 measure whether a reasoning system respects that distinction. The goal is
 not to pretend that finite samples decide an analytic-complete set.
 \end{question}
+
+\begin{writenote}[Added 4 October 2026, batch~90]
+The write found no report of the collection that answers any of these twelve questions. Related material: for \cref{csf:q:fixedsource}, the note after \cref{csf:thm:fixed-hard} settles the source $P_-$ on parameter families restricted to subsets of a fixed countable order, by \lbl{pma:bor:thm:dichotomy}; for \cref{csf:q:effective}, \repo{foundations-and-computation/computable-surreals} gives effective countable real closed subfields of $\No$, but with value group $\Q$, not the families of ranks needed here; for \cref{csf:q:birthday}, the collection's birthday reports (\repo{foundations-and-computation/birthday-cutoffs-and-hereditary-sets}, \repo{surreal/gonshor-product-birthdays}, \repo{surreal/gonshor-laurent-birthdays}) are the places to look, but whether their bounds yield one for this~$\beta$ was not examined; for \cref{csf:q:embeddings}, \repo{surreal/surreal-self-embeddings} studies embeddings of all of $\No$, not of these countable fields. The labels \texttt{csf:q:*} were added at the write.
+\end{writenote}
 
 \section{Conclusion and claim status}
 
@@ -1666,7 +1785,7 @@ separate validation steps.
 
 \appendix
 \section{Proof-dependency ledger}
-\label{app:ledger}
+\label{csf:app:ledger}
 
 \begin{longtable}{P{0.25\textwidth}P{0.38\textwidth}P{0.28\textwidth}}
 \toprule
@@ -1678,38 +1797,38 @@ Result & Mathematical dependencies & Status in this package\\
 \midrule
 \endhead
 Double-monomial independence & Finite normal-form comparison; multiquadratic
-independence & Full proof, \cref{lem:independence}.\\[4pt]
+independence & Full proof, \cref{csf:lem:independence}.\\[4pt]
 Exact values and residues & Natural valuation; minimum-term cancellation;
-real closedness of $k$ & Full proof, \cref{thm:valuation}.\\[4pt]
+real closedness of $k$ & Full proof, \cref{csf:thm:valuation}.\\[4pt]
 Finite supports & Finite character and field exchange & Full proof,
-\cref{thm:support}; no surreal-specific hypothesis.\\[4pt]
+\cref{csf:thm:support}; no surreal-specific hypothesis.\\[4pt]
 Cantor localization & Finite supports; compact-to-Hausdorff argument & Full
-proof, \cref{thm:cantor}.\\[4pt]
+proof, \cref{csf:thm:cantor}.\\[4pt]
 Rank-one classification & Intrinsic value-group rank; real-closure extension
-& Full proof, \cref{thm:rank-one-classification}.\\[4pt]
+& Full proof, \cref{csf:thm:rank-one-classification}.\\[4pt]
 Fixed-source hardness & Rank classification; Kleene--Brouwer lemma;
 completeness of $\IF$ & New reduction proved in full; $\IF$ completeness
 credited.\\[4pt]
 Colored-order coding & Scalar rigidity; quadratic antichain; intrinsic
-components & Full proof, \cref{thm:colored-coding}.\\[4pt]
+components & Full proof, \cref{csf:thm:colored-coding}.\\[4pt]
 Complete analytic quasiorder & Colored-order coding; Louveau's theorem &
 Coding proved; external completeness input explicit.\\[4pt]
 Finite-source threshold & Finite supports; algebraicity of source over a
-finite basis & Full proof, \cref{thm:finite-source,prop:infinite-source}.\\[4pt]
+finite basis & Full proof, \cref{csf:thm:finite-source,csf:prop:infinite-source}.\\[4pt]
 Generic collapse & Rational interval coverage; countable dense-order
-back-and-forth & Full proof, \cref{thm:generic-collapse}.\\[4pt]
+back-and-forth & Full proof, \cref{csf:thm:generic-collapse}.\\[4pt]
 Zero--one laws & Translation symmetry; Baire property; finite-cylinder
-measure approximation & Full proof, \cref{thm:zero-one}.\\[4pt]
+measure approximation & Full proof, \cref{csf:thm:zero-one}.\\[4pt]
 Rare whole-ambient embeddings & Radical independence; component map;
 integer-sum tree transform; countable null union & Full proof,
-\cref{thm:rare-ambient}.\\[4pt]
+\cref{csf:thm:rare-ambient}.\\[4pt]
 Lean verification & Would require newly implemented statements and a
 kernel run & Not supplied or claimed.\\
 \bottomrule
 \end{longtable}
 
 \section{Finite checks and reproducibility}
-\label{app:checks}
+\label{csf:app:checks}
 
 The archive contains \texttt{article.tex}, \texttt{article.pdf}, a short
 README, a source-and-claim audit, and the following small reproducibility
@@ -1747,6 +1866,10 @@ than numerical approximations to square roots.
 The recorded checks are deliberately modest evidence. A passed finite test
 cannot certify the non-Borel conclusions, and no such interpretation of
 \texttt{finite\_checks.json} should be made.
+
+\begin{writenote}[Added 4 October 2026, batch~90]
+In ProveIt the package is laid out differently. The archive's \texttt{article.pdf}, README and \texttt{SHA256SUMS.txt} are not shipped (the checksums were verified at placement; the PDF is replaced by a build of this text, the README by a report README); the source audit is \texttt{SOURCE\_AND\_CLAIM\_AUDIT.md}; \texttt{build.sh} is shipped as \texttt{code/build.sh}, where its change to its own directory makes it look for \texttt{code/code/finite\_checks.py} and \texttt{code/article.tex}, so it must be run on a copy in the delivered layout. Run in place with \texttt{--output data/finite\_checks.json}, the checks would overwrite the recorded file; write to a scratch path instead. At the write a rerun on a copy (Python~3.14.4) passed all 25,378 checks and reproduced \texttt{data/finite\_checks.json} except for the \texttt{python\_version} line (the recorded run used 3.13.5); on Windows the output has CRLF line ends. The report README gives the commands, and the archive can be recovered with \texttt{git show a162e4386:docs/incoming/Surreal\_Subfield\_Cantor\_Research.zip}.
+\end{writenote}
 
 \begin{thebibliography}{99}
 \raggedright
