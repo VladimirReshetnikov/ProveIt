@@ -1,0 +1,1041 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{aliascnt}
+\usepackage{booktabs,tabularx,array,longtable}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\definecolor{ink}{RGB}{26,49,69}
+\definecolor{accent}{RGB}{35,90,112}
+\definecolor{lightgray}{gray}{0.94}
+\hypersetup{colorlinks=true,linkcolor=accent,citecolor=accent,urlcolor=accent,
+ pdftitle={Naming Elementary Embeddings: Atom Components, Replacement, and Reflection},
+ pdfauthor={Research manuscript prepared with ChatGPT},
+ pdfsubject={Exact criteria for expanded-language Replacement in cardinal-kernel models of set theory with urelements},
+ pdfkeywords={urelements, elementary embedding, Replacement, Collection, reflection, cofinality, ProveIt}}
+\urlstyle{same}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{Naming Elementary Embeddings}}
+\fancyhead[R]{\small Research manuscript}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.25em}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\setlist[enumerate]{itemsep=3pt,topsep=5pt,leftmargin=2em}
+\setlist[itemize]{itemsep=3pt,topsep=5pt,leftmargin=1.7em}
+\numberwithin{equation}{section}
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newaliascnt{lemma}{theorem}
+\newtheorem{lemma}[lemma]{Lemma}
+\aliascntresetthe{lemma}
+\newaliascnt{proposition}{theorem}
+\newtheorem{proposition}[proposition]{Proposition}
+\aliascntresetthe{proposition}
+\newaliascnt{corollary}{theorem}
+\newtheorem{corollary}[corollary]{Corollary}
+\aliascntresetthe{corollary}
+\theoremstyle{definition}
+\newaliascnt{definition}{theorem}
+\newtheorem{definition}[definition]{Definition}
+\aliascntresetthe{definition}
+\newaliascnt{example}{theorem}
+\newtheorem{example}[example]{Example}
+\aliascntresetthe{example}
+\newaliascnt{question}{theorem}
+\newtheorem{question}[question]{Question}
+\aliascntresetthe{question}
+\theoremstyle{remark}
+\newaliascnt{remark}{theorem}
+\newtheorem{remark}[remark]{Remark}
+\aliascntresetthe{remark}
+\newcommand{\At}{\mathsf{At}}
+\newcommand{\Set}{\mathsf{Set}}
+\newcommand{\M}{M_\kappa(A)}
+\newcommand{\N}{\mathcal N_{\kappa,\boldsymbol f}}
+\newcommand{\U}{U(A)}
+\newcommand{\ZFCUR}{\mathsf{ZFCU}_{\mathrm R}}
+\newcommand{\ZFU}{\mathsf{ZFU}_{\mathrm R}}
+\newcommand{\Rep}{\mathsf{Replacement}}
+\newcommand{\Coll}{\mathsf{Collection}}
+\newcommand{\RP}{\mathsf{RP}}
+\newcommand{\cf}{\operatorname{cf}}
+\newcommand{\kerat}{\operatorname{ker}}
+\newcommand{\TC}{\operatorname{TC}}
+\newcommand{\ran}{\operatorname{ran}}
+\newcommand{\dom}{\operatorname{dom}}
+\newcommand{\Fix}{\operatorname{Fix}}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Inj}{\operatorname{Inj}}
+\newcommand{\supp}{\operatorname{mov}}
+\newcommand{\clc}{\operatorname{cl}_{\boldsymbol f}}
+\newcommand{\cont}{\mathfrak c}
+\newcommand{\Lang}{\mathcal L_{\mathrm U}}
+\newcommand{\Langr}{\mathcal L_r}
+\newcommand{\types}{\mathcal T_r}
+\newcommand{\cod}{\mathcal C_r}
+\newcommand{\Dsmall}{D_\kappa(\boldsymbol f)}
+\newcommand{\Ireal}{I(\boldsymbol f)}
+\newcommand{\jbf}{\boldsymbol J}
+\newcommand{\repo}[1]{\texttt{\detokenize{#1}}}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\status}[1]{\par\noindent\colorbox{lightgray}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{#1}}\par}
+
+\begin{document}
+\begin{titlepage}
+\color{ink}
+\noindent\textsc{Set theory \;\textbar\; Model theory \;\textbar\; Formal foundations}
+\vspace{1.1in}
+\begin{flushleft}
+{\Huge\bfseries Naming Elementary\\[5pt] Embeddings}\par
+\vspace{0.25in}
+{\Large Atom Components, Replacement,\\[3pt] and Reflection}\par
+\vspace{0.32in}
+{\large Exact criteria and sharp cofinality thresholds}\par
+\end{flushleft}
+\vspace{0.35in}
+\noindent\rule{\linewidth}{0.7pt}
+\vspace{0.2in}
+\noindent Prepared for Vladimir Reshetnikov\\
+Research manuscript prepared with ChatGPT\\
+October 2026
+\vfill
+\status{\textbf{Research status.} Complete mathematical arguments are supplied for the stated results. The kernel-ideal construction is established prior work, explicitly credited below. The component-profile criterion and its finite-signature refinements are proposed contributions of this manuscript; independent review and literature-priority verification remain outstanding. No Lean verification is claimed. Elliot Glazer and Bokai Yao are cited researchers, not authors or endorsers of this manuscript.}
+\end{titlepage}
+
+\pagenumbering{roman}
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+Let $A$ be an external set of atoms, let $\kappa$ be an infinite cardinal with $|A|\geq\kappa$, and let $M_\kappa(A)$ consist of the objects whose transitive closures involve fewer than $\kappa$ atoms. This is a standard kernel-ideal model of replacement-based set theory with urelements and choice. Every injection $f:A\to A$ has a canonical, amenable elementary lift $j_f:M_\kappa(A)\to M_\kappa(A)$ fixing every pure set. Nevertheless, naming these lifts can invalidate Replacement.
+
+For a finite tuple $\boldsymbol f$ of atom injections, consider the connected components of its labeled functional graph. Write $B_t$ for the union of all components of isomorphism type $t$, and put
+\[
+D_\kappa(\boldsymbol f)=\bigcup\{B_t:|B_t|<\kappa\}.
+\]
+We prove that for $\kappa>\omega$, Replacement in the expanded language holds exactly when $|D_\kappa(\boldsymbol f)|<\kappa$. For $\kappa=\omega$, it holds exactly when this union is finite and all components are finite. The proof combines uniform internal coding of component types with a fresh-component automorphism argument.
+
+There are countably many one-injection component types, but continuum many types for two injections, already for two permutations. Consequently every one-symbol expansion preserves Replacement exactly when $\cf(\kappa)>\omega$, whereas every expansion by $r\geq2$ fixed, finitely many symbols preserves it exactly when $\cf(\kappa)>2^{\aleph_0}$. At the cutoff $\aleph_2$, the latter universal preservation property is equivalent, externally, to the continuum hypothesis. This is a characterization, not a resolution, of that hypothesis.
+
+We also classify the initial elementary self-embeddings, determine precisely which canonical lifts are parameter-definable, and prove that full Collection and full transitive reflection in an expanded model hold exactly when $\kappa$ is a successor cardinal and fewer than $\kappa$ component types are realized. At limit cutoffs, the exact domain-size threshold for Collection is $\cf(\kappa)$, with failure already in the unexpanded bounded formula fragment. The final sections identify concrete interfaces with ProveIt's first-order set theory and bounded-consistency developments and propose twelve further research directions.
+
+\vspace{0.15in}
+\noindent\textbf{Keywords.} Urelements; elementary self-embeddings; amenable classes; expanded-language Replacement; Collection; reflection; component types; continuum hypothesis; formalization.
+
+\clearpage
+\begingroup
+\fontsize{10}{11}\selectfont
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+
+\section{Motivation, scope, and the contribution boundary}\label{sec:intro}
+
+\subsection{Why this intersection is substantive}
+Glazer and Yao's \emph{Reflection Principles in ZFU} studies how Collection and several forms of reflection diverge when urelements are admitted, especially without choice \cite{GY2026}. Glazer's work on global choice over Zermelo set theory emphasizes another source of strength: adjoining a class function and allowing its symbol in an axiom scheme is not merely a change of notation \cite{G2024}. These two themes meet in a concrete question:
+\begin{quote}
+When an elementary self-embedding is named, which set-existence schemes continue to hold in the expanded language?
+\end{quote}
+
+ProveIt supplies a complementary perspective. Its first-order ZF development represents Separation and Replacement as constructions on formulas, while its bounded-consistency project explicitly distinguishes external families of formulas from single internally quantified assertions \cite{RepoZF,RepoBC}. A new symbol changes the formulas over which a scheme ranges. This manuscript studies that change semantically in models where the obstruction can be computed exactly.
+
+The repository also contains a substantial, explicitly unformalized report on surreal self-embeddings \cite{RepoSSE}. Here the embeddings are of a set-theoretic universe with atoms, not of the surreal ordered field. They fix the entire pure universe. Thus they provide a useful control example: nontrivial elementary self-embeddings need not move ordinals when atoms are present, but they do not produce nontrivial embeddings of the usual pure-set presentations of surreal numbers.
+
+\subsection{The mathematical question}
+An elementary map preserves every formula of a specified language. An amenable map has a set-sized restriction to each internal set. Neither statement says that \emph{every function definable using a name for the map has an internal range set}. That third assertion is expanded-language Replacement.
+
+The difference is not cosmetic. We will construct an automorphism $j$ for which every restriction $j\mathord{\upharpoonright}x$ belongs to the model, yet Replacement fails once $j$ is named. More sharply, at the cutoff $\aleph_1$ we construct two automorphisms such that each one-symbol expansion satisfies Replacement, Collection, and reflection, while their joint expansion fails Replacement.
+
+The main classification is local to a precisely specified family of models. It is not a classification of all models of set theory with urelements, all amenable classes, or all elementary embeddings of the universe.
+
+\subsection{What is known and what is proposed here}
+The construction using an ideal of atom kernels is not new. Yao's Definition~24 and Theorem~26 give it in substantially greater generality; his Theorem~27 contains relevant finite, countable, and larger kernel-bound examples \cite{Yao2023}. We reproduce the elementary symmetry argument needed for the later results, rather than treating that construction as an original discovery.
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}L{0.27\linewidth}Y@{}}
+\toprule
+Part of the manuscript & Status and role\\
+\midrule
+Kernel-ideal models & Established construction, credited to Yao; reviewed for self-containment.\\
+Canonical atom lifts & Explicit structural development using standard permutation symmetry; no claim that the underlying lifting idea is new.\\
+Component-profile criterion & Principal proposed contribution: an exact criterion for full expanded-language Replacement.\\
+One-name versus two-name thresholds & Derived proposed contribution, including an explicit coding construction and a CH characterization.\\
+Collection and reflection spectrum & A detailed calibration for the expanded family; the unexpanded cutoff phenomena build on the established kernel-ideal method.\\
+Formalization & A concrete design and dependency audit, not a completed Lean development.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+No assertion below is advertised as the solution of an open problem explicitly posed by Glazer. Instead, the paper formulates and completely answers the model-family classification questions above. The available literature search establishes the prior-art boundary just described; it does not establish publication priority for every refinement.
+
+\section{Ambient foundations and the kernel-cutoff model}\label{sec:model}
+
+\subsection{Two universes must not be confused}
+Work in an external, well-founded set universe satisfying choice, with a \emph{set} $A$ of atoms. The full cumulative universe of sets over $A$ is denoted by $U(A)$. This setup can be implemented in ordinary ZFC using tagged atoms and tagged sets; membership in the coded universe is then the interpreted membership relation. No inaccessible cardinal or external proper class of atoms is required. Whenever witnesses are chosen below, external Collection first bounds them inside a set; reservoir choices and component isomorphisms are also choices from sets. No global class-choice principle is assumed.
+
+An atom has no members and is distinguished from the empty set by a unary predicate $\At$. Put $\Set(x)\equiv\neg\At(x)$. Extensionality is restricted to sets. Define
+\[
+\kerat(x)=\{a\in A:a\in\TC(\{x\})\}.
+\]
+In particular, $\kerat(a)=\{a\}$ for an atom $a$. An object is \emph{pure} when its kernel is empty. The pure part is a copy of the full external pure-set universe.
+
+Fix throughout an infinite cardinal $\kappa$ and a set $A$ satisfying $|A|\geq\kappa$. Our model is the definable external class
+\begin{equation}\label{eq:model}
+M_\kappa(A)=\{x\in U(A):|\kerat(x)|<\kappa\}.
+\end{equation}
+All cardinal inequalities in the definition are evaluated externally. Every individual atom belongs to $M_\kappa(A)$, but $A$ itself is not a set of the model. This distinction is the engine of the examples.
+
+For any external $C\subseteq A$, let $V_\alpha(C)$ be the usual cumulative hierarchy over $C$:
+\[
+V_0(C)=C,\qquad V_{\alpha+1}(C)=\mathcal P(V_\alpha(C))\cup C,
+\qquad V_\lambda(C)=\bigcup_{\alpha<\lambda}V_\alpha(C).
+\]
+Every object whose kernel is contained in $C$ belongs to some $V_\alpha(C)$. Each $V_\alpha(C)$ is an external set, transitive in the urelement sense, and has kernel contained in $C$.
+
+\begin{remark}[Schemas, not a truth predicate]\label{rem:schema}
+For a fixed first-order formula $\varphi$, the assertion $M_\kappa(A)\models\varphi$ means its external relativization to the definable class \eqref{eq:model}. We use one such relativization at a time. We do not postulate a first-order predicate uniformly defining truth for all formulas of a proper-class structure. Claims of elementarity and reflection are corresponding metatheoretic schemes. Quantification over externally given class embeddings is likewise metatheoretic, not an internal set of all class maps.
+\end{remark}
+
+\subsection{The base axioms and internal cardinalities}
+Let $\ZFCUR$ denote set theory with atoms, Extensionality for sets, Foundation, Pairing, Union, Powerset, Infinity, Separation, Replacement, and the assertion that every set can be well-ordered. Collection is \emph{not} included as an axiom.
+
+\begin{lemma}[Kernel arithmetic]\label{lem:kernel}
+For sets and objects in $U(A)$, the following hold:
+\begin{enumerate}
+\item If $y\in x$, then $\kerat(y)\subseteq\kerat(x)$.
+\item $\kerat(\{x,y\})=\kerat(x)\cup\kerat(y)$.
+\item If $x$ is a set, then $\kerat(\bigcup x)\subseteq\kerat(x)$ and $\kerat(\mathcal P(x))\subseteq\kerat(x)$.
+\item If $Y$ is a set of objects, then $\kerat(Y)=\bigcup_{y\in Y}\kerat(y)$.
+\end{enumerate}
+Consequently $M_\kappa(A)$ is transitive, contains every pure set, and is closed under subsets of its sets and under the ordinary finite set operations.
+\end{lemma}
+\begin{proof}
+Membership chains witnessing occurrence of an atom concatenate through an element of a set. This proves the first, second, and fourth assertions. A membership chain through a subset of $x$ introduces no atom not already occurring through $x$, giving the powerset assertion; the union assertion is similar. A finite union of cardinals less than an infinite cardinal $\kappa$ is still less than $\kappa$, whether or not $\kappa$ is regular.
+\end{proof}
+
+Any permutation $\pi$ of $A$ extends recursively to $U(A)$ by
+\[
+\widehat\pi(a)=\pi(a),\qquad
+\widehat\pi(x)=\{\widehat\pi(y):y\in x\}\quad(\Set(x)).
+\]
+The extension is an automorphism of $M_\kappa(A)$, because it preserves kernel cardinalities. It fixes an object whenever it fixes all atoms in its kernel.
+
+\begin{lemma}[No new atoms in a unique base-language output]\label{lem:nonew}
+Suppose $x,p\in M_\kappa(A)$ and
+\[
+M_\kappa(A)\models\exists!y\,\varphi(x,y,p),
+\]
+where $\varphi$ belongs to $\Lang=\{\in,\At\}$. For its unique witness $y$,
+\[
+\kerat(y)\subseteq\kerat(x)\cup\kerat(p).
+\]
+\end{lemma}
+\begin{proof}
+Assume $b$ belongs to the left side but not the right. Since the union of the three kernels has cardinality less than $\kappa$, choose an atom $c$ outside that union. The transposition of $b$ and $c$ fixes $x,p$, preserves the model and its language, and changes the kernel of $y$. Its lift therefore supplies a different witness to the same formula, contradicting uniqueness.
+\end{proof}
+
+\begin{theorem}[Known kernel-ideal theorem, specialized]\label{thm:base}
+$M_\kappa(A)\models\ZFCUR$. Its class of atoms is internally proper. It has the same pure ordinals and pure cardinal arithmetic as the ambient pure universe. For each internal set $x$, its cardinality computed internally equals its external cardinality.
+\end{theorem}
+\begin{proof}
+The structural axioms and Separation follow from \cref{lem:kernel}. Given a functional formula on a set $w$, external Replacement produces its range $Y$. By \cref{lem:nonew},
+\[
+\kerat(Y)\subseteq\kerat(w)\cup\kerat(p),
+\]
+so $Y$ is internal. This proves every instance of base-language Replacement.
+
+An external well-order of $x$ is a subset of $x\times x$ with kernel contained in $\kerat(x)$, hence is internal. Its ordinal enumeration and any external bijection between $x$ and a pure ordinal have the same kernel bound. Thus internal and external cardinalities of $x$ agree, and choice holds internally. All pure objects and their relations are present, so pure cardinal calculations agree as well. Finally, a set containing all atoms would have kernel $A$, contradicting the cutoff.
+\end{proof}
+
+The theorem is a specialization of Yao's ideal construction \cite[Definition~24 and Theorem~26]{Yao2023}. Notice that the proof bounds the atoms in a uniquely specified output. It does \emph{not} choose witnesses for an arbitrary relation. The latter problem is Collection and behaves differently.
+
+\section{Canonical elementary lifts and definability}\label{sec:lifts}
+
+\subsection{Every atom injection gives an elementary map}
+For any external injection $f:A\to A$, define its canonical lift by well-founded recursion:
+\begin{equation}\label{eq:lift}
+j_f(a)=f(a)\quad(a\in A),\qquad
+j_f(x)=\{j_f(y):y\in x\}\quad(\Set(x)).
+\end{equation}
+This is an external definable class function with parameter $f$; the graph of $f$ need not belong to $M_\kappa(A)$.
+
+\begin{lemma}[Extending a small partial bijection]\label{lem:extend}
+If $P\subseteq A$, $|P|<\kappa$, and $h:P\to A$ is injective, then $h$ extends to a permutation of $A$.
+\end{lemma}
+\begin{proof}
+Both $A\setminus P$ and $A\setminus h[P]$ have cardinality $|A|$, since fewer than $\kappa\leq|A|$ points were removed. Choose a bijection between the complements and combine it with $h$.
+\end{proof}
+
+\begin{theorem}[Elementary and amenable lifts]\label{thm:lifts}
+The map $j_f$ restricts to an elementary embedding of $(M_\kappa(A),\in,\At)$ into itself. It preserves rank, fixes every pure set, and satisfies
+\begin{equation}\label{eq:kerlift}
+\kerat(j_f(x))=f[\kerat(x)].
+\end{equation}
+For every internal set $x$, the graph of $j_f\mathord{\upharpoonright}x$ is internal. Its range as a class is
+\[
+j_f[M_\kappa(A)]=\{x\in U(A):\kerat(x)\subseteq f[A],\ |\kerat(x)|<\kappa\}.
+\]
+\end{theorem}
+\begin{proof}
+External well-founded induction gives injectivity, preservation of membership and atomhood, rank preservation, and \eqref{eq:kerlift}. The kernel identity shows that the map preserves the cutoff. The same induction shows that it fixes pure objects.
+
+To prove elementarity, fix one formula and a finite tuple $\bar x$ of parameters. Let $P$ be the union of their kernels. By \cref{lem:extend}, $f\mathord{\upharpoonright}P$ extends to a permutation $\pi$ of $A$. The automorphism $\widehat\pi$ agrees with $j_f$ on $\bar x$. Thus the formula has the same truth value at $\bar x$ and at $j_f(\bar x)$. This is the required elementary-embedding scheme.
+
+External Replacement constructs the restriction graph on $x$, whose kernel is contained in $\kerat(x)\cup f[\kerat(x)]$, a set of size less than $\kappa$. This proves amenability. Finally, the inverse bijection $f[A]\to A$ lifts on objects supported on $f[A]$, giving the stated range.
+\end{proof}
+
+\begin{definition}
+An elementary self-embedding is \emph{initial} here when its range is transitive: if $z\in j(x)$, then $z$ belongs to the range of $j$.
+\end{definition}
+
+\begin{theorem}[Classification of initial embeddings]\label{thm:initial}
+Every initial elementary self-embedding of $(M_\kappa(A),\in,\At)$ is $j_f$ for a unique injection $f:A\to A$. Conversely every $j_f$ is initial. Composition corresponds to composition of atom injections.
+\end{theorem}
+\begin{proof}
+An elementary embedding restricts on atoms to an injection $f$. If $z\in j(x)$, initiality gives $z=j(y)$ for some $y$, and preservation and reflection of membership give $y\in x$. Hence, for every set $x$,
+\[
+j(x)=\{j(y):y\in x\}.
+\]
+External well-founded induction identifies $j$ with \eqref{eq:lift}. The range description in \cref{thm:lifts} proves the converse. Uniqueness and the composition law follow from the recursion.
+\end{proof}
+
+The initiality hypothesis is essential to the scope of this theorem. We do not classify elementary self-embeddings with nontransitive range.
+
+\begin{proposition}[Elementary subuniverses over smaller atom reservoirs]\label{prop:subuniverse}
+For an external $C\subseteq A$, put
+\[
+M_\kappa(C)=\{x\in U(A):\kerat(x)\subseteq C,\ |\kerat(x)|<\kappa\}.
+\]
+Then $M_\kappa(C)\preccurlyeq M_\kappa(A)$ exactly when $|C|\geq\kappa$.
+\end{proposition}
+\begin{proof}
+Suppose $|C|\geq\kappa$. For parameters supported on $P\subseteq C$ and an existential witness supported on $K$, move $K\setminus P$ into $C\setminus P$ by a permutation fixing $P$. The required partial bijection extends because all prescribed supports have size less than $\kappa$. The moved witness belongs to $M_\kappa(C)$ and satisfies the same formula. The Tarski--Vaught argument, applied one formula at a time, proves elementarity.
+
+If $|C|<\kappa$, the set $C$ itself is in the smaller model. The formula asserting an atom outside $C$ is true in $M_\kappa(A)$ and false in $M_\kappa(C)$.
+\end{proof}
+
+\subsection{Exactly which lifts are definable?}
+\begin{theorem}[Small movement is equivalent to parameter-definability]\label{thm:definable}
+Let $\supp(f)=\{a\in A:f(a)\neq a\}$. The canonical lift $j_f$ is definable in the base-language structure $M_\kappa(A)$ from an internal parameter if and only if
+\begin{equation}\label{eq:defcrit}
+|\supp(f)|<\kappa.
+\end{equation}
+If $p$ is a parameter defining $j_f$, then $\supp(f)\subseteq\kerat(p)$.
+\end{theorem}
+\begin{proof}
+Suppose $p$ defines $j_f$ and put $P=\kerat(p)$. Every atom permutation fixing $P$ pointwise preserves the definition, so $f$ commutes with every such permutation. For $a\notin P$, a permutation fixing $P\cup\{a\}$ can move any atom outside $P\cup\{a\}$. Therefore $f(a)\in P\cup\{a\}$. If $f(a)\in P$, interchange $a$ with a different $b\notin P$. Commutation gives $f(b)=f(a)$, contrary to injectivity. Thus $f(a)=a$ outside $P$.
+
+Conversely put $S=\supp(f)$ and assume $|S|<\kappa$. Injectivity implies $f[S]\subseteq S$: an image outside $S$ would collide with that outside atom's fixed image. The graph $g=f\mathord{\upharpoonright}S$ is an internal set. It defines $f$ on atoms, with identity elsewhere.
+
+There is a uniform first-order definition of the recursive lift from $g$. For clarity, on $D=\TC(\{x\})$ ask for a set function $h$ that uses the prescribed atom map and satisfies
+\[
+h(z)=\{h(u):u\in z\}\quad\text{for each set }z\in D.
+\]
+External well-founded recursion supplies the unique such function. Its graph and every value have kernels contained in $\kerat(x)\cup S$, hence are internal. The displayed recursion can be expressed by ordinary first-order quantification over the graph $h$. It therefore defines $j_f(x)$ internally from $g$, uniformly in $x$.
+\end{proof}
+
+\begin{corollary}\label{cor:defcases}
+The only parameter-free canonical self-embedding is the identity. At $\kappa=\omega$, every parameter-definable initial elementary self-embedding is an automorphism. At every $\kappa>\omega$, there is a parameter-definable proper initial elementary self-embedding. If $j_f$ is defined by $p$ and $j_f(p)=p$, then $j_f$ is an automorphism.
+\end{corollary}
+\begin{proof}
+A definition without parameters is invariant under all atom permutations, so the proof above has $P=\varnothing$. Finite movement makes an injection a finite permutation, giving the $\omega$ case. For $\kappa>\omega$, shift an internal countably infinite set of atoms forward by one and fix its complement; the moved set is countable and the map is not onto.
+
+For the last assertion, \eqref{eq:kerlift} gives $f[P]=P$ when $j_f(p)=p$. Since $f$ fixes $A\setminus P$ and maps $P$ onto itself, it is surjective.
+\end{proof}
+
+\begin{example}[An elementary map with exactly the pure fixed points]\label{ex:pureshift}
+Identify $A$ externally with $B\times\omega$ and let $f(b,n)=(b,n+1)$. A nonempty subset of $A$ cannot satisfy $f[S]=S$: in a nonempty fiber choose its least second coordinate. If $j_f(x)=x$, \eqref{eq:kerlift} forces the kernel to be empty. Thus
+\[
+\Fix(j_f)=V,
+\]
+where $V$ is the pure universe. Also $\bigcap_{n<\omega}j_f^n[M_\kappa(A)]=V$. Each range is elementary by \cref{prop:subuniverse}, whereas their intersection is not elementary because it has no atoms. Every ordinal is fixed; there is no critical ordinal and no large-cardinal conclusion.
+\end{example}
+
+\section{Expanded languages and countable component types}\label{sec:components}
+
+\subsection{What naming a map asserts---and what it does not}
+Fix a positive integer $r$ and external injections $\boldsymbol f=(f_1,\ldots,f_r)$ on $A$. Write
+\[
+\Langr=\{\in,\At,J_1,\ldots,J_r\},\qquad
+\mathcal N_{\kappa,\boldsymbol f}=(M_\kappa(A),\in,\At,j_{f_1},\ldots,j_{f_r}).
+\]
+Here $J_i$ is a unary function symbol. We write $\Rep(\boldsymbol J)$ and $\Coll(\boldsymbol J)$ for the schemes whose formulas may contain any of these symbols. The notation does not mean only the special instance asserting the existence of $J_i``x$.
+
+Every instance of expanded Separation holds: externally separate a subset of the given internal set, then use the kernel bound. All the other base axioms except potentially expanded Replacement remain true for the same reason or because they have no new schema instances. Every named map is amenable by \cref{thm:lifts}.
+
+If an atom permutation $\pi$ commutes with every $f_i$, its lift is an automorphism of $\mathcal N_{\kappa,\boldsymbol f}$. This follows first on atoms and then by recursion on sets. Such simultaneous symmetries, rather than arbitrary atom permutations, control expanded Replacement.
+
+\subsection{Functional graphs and their pure codes}
+View $(A;f_1,\ldots,f_r)$ as a labeled directed graph, with an edge labeled $i$ from $a$ to $f_i(a)$. A \emph{component} means a connected component after directions are forgotten. There are at most $2r$ neighbors at a vertex, since each $f_i$ is injective. Thus every component is finite or countably infinite.
+
+Let $\mathcal C_r$ be the pure set of codes for connected structures with $r$ total injections and domain either a nonzero natural number or $\omega$. Isomorphism respects every function label and direction. Let $\mathcal T_r$ be the quotient of $\mathcal C_r$ by isomorphism. An element of $\mathcal T_r$ is taken literally as a set of codes in $\mathcal C_r$; this avoids a choice of canonical representatives. All these objects are pure sets and therefore belong to $M_\kappa(A)$.
+
+For $t\in\mathcal T_r$, define externally
+\begin{equation}\label{eq:typeblocks}
+B_t=\{a\in A:\text{the component of }a\text{ has type }t\},\qquad
+I(\boldsymbol f)=\{t\in\mathcal T_r:B_t\neq\varnothing\}.
+\end{equation}
+The $B_t$ are pairwise disjoint. They need not be internal sets; $I(\boldsymbol f)$, being pure, always is.
+
+\begin{lemma}[Number of possible component types]\label{lem:typecount}
+For one injection, $\mathcal T_1$ is countably infinite. Its types are finite directed cycles, a one-sided ray, and a two-sided chain. For every finite $r\geq2$,
+\[
+|\mathcal T_r|=2^{\aleph_0}=\cont,
+\]
+and the lower bound is already realized using permutations.
+\end{lemma}
+\begin{proof}
+For one injection, each vertex has one outgoing edge and at most one incoming edge. A periodic component is precisely a finite cycle. A nonperiodic component either has a first vertex, giving a ray, or has a predecessor at every point, giving a two-sided chain. These are all the possibilities.
+
+There are at most continuum many finite or countable codes in any fixed finite language. For the lower bound, for each $S\subseteq\omega$ define two permutations of $\mathbb Z$. The first is $F(n)=n+1$. The second, $G_S$, swaps $0$ with $1$, swaps
+\begin{equation}\label{eq:marker}
+3(m+1)\quad\hbox{with}\quad3(m+1)+1\qquad(m\in S),
+\end{equation}
+and fixes all other integers. The transpositions are disjoint. An isomorphism respecting $F$ must be a translation of $\mathbb Z$. The least integer moved by $G_S$ is $0$ for every $S$, so that translation must fix $0$ and hence be the identity. It then respects $G_S,G_T$ exactly when $S=T$. This gives continuum many different types. For $r>2$, add identity permutations.
+\end{proof}
+
+\subsection{Definability without assuming the scheme being tested}
+\begin{lemma}[Finite paths exist internally]\label{lem:paths}
+Reachability by a specified finite word in the operations $f_i$ and their partial inverses is uniformly first-order definable in $\Langr$. Every successful finite path has an internal graph. These facts require no expanded Replacement.
+\end{lemma}
+\begin{proof}
+A forward letter $i$ requires $J_i(a)=b$; a backward letter requires $J_i(b)=a$. Injectivity makes each backward step unique when it exists. A finite sequence of vertices witnessing the word is coded as an ordinary set function on a finite ordinal. It uses only finitely many atoms and therefore belongs to $M_\kappa(A)$, even when $\kappa=\omega$. Quantification over such finite graphs gives one first-order formula with the word as a pure parameter. The natural numbers here are the well-founded external natural numbers, not a nonstandard model's pseudo-finite sequence lengths.
+\end{proof}
+
+\begin{lemma}[Uniform recognition of component types]\label{lem:recognize}
+If $\kappa>\omega$, there is a formula $\operatorname{Type}_r(t,a)$ in $\Langr$ such that, for every $t\in\mathcal T_r$ and atom $a$,
+\[
+\mathcal N_{\kappa,\boldsymbol f}\models\operatorname{Type}_r(t,a)
+\quad\Longleftrightarrow\quad a\in B_t.
+\]
+The same conclusion for finite component types holds for $\kappa=\omega$.
+\end{lemma}
+\begin{proof}
+Ask for a code $c\in t$ and a set function $h$ from its pure domain into the atoms, injective and with $a$ in its range. Require $h$ to preserve every labeled function. Require also that its range is closed under incoming edges: for each $i$,
+\[
+\forall b\bigl(\At(b)\land J_i(b)\in\ran(h)\ \longrightarrow\ b\in\ran(h)\bigr).
+\]
+Forward closure already follows from preservation of the code functions. The code is connected, so its image is connected; closure in both directions and inclusion of $a$ make that image exactly the component of $a$.
+
+Conversely, enumerate the actual component by a finite ordinal or by $\omega$. Its code is pure. Its enumeration graph has only countably many atoms and is therefore internal when $\kappa>\omega$; for a finite component it is internal at every cutoff. The required witnesses exist. All conditions are first-order assertions about the set code and the set graph $h$. No appeal has been made to expanded Replacement or to a satisfaction predicate for arbitrary formulas.
+\end{proof}
+
+\begin{definition}[The small-type part]\label{def:small}
+The small-type part of the atom graph is
+\begin{equation}\label{eq:small}
+D_\kappa(\boldsymbol f)=\bigcup\{B_t:t\in\mathcal T_r,\ |B_t|<\kappa\}.
+\end{equation}
+The adjective ``small'' applies to the \emph{whole block of all components of one type}, not to an individual component. Every component is countable, but its type block may be arbitrarily large.
+\end{definition}
+
+This distinction is decisive. Infinitely many copies of one finite cycle can form a large homogeneous block, while one copy of each of infinitely many different finite cycles forms a union of small, individually distinguishable blocks.
+
+\section{The exact Replacement criterion}\label{sec:replacement}
+
+\begin{theorem}[Component-profile criterion]\label{thm:profile}
+Let $r\geq1$ be finite and let $\boldsymbol f$ be an $r$-tuple of injections on $A$.
+\begin{enumerate}
+\item If $\kappa>\omega$, then
+\begin{equation}\label{eq:profileunc}
+\mathcal N_{\kappa,\boldsymbol f}\models\Rep(\boldsymbol J)
+\quad\Longleftrightarrow\quad
+|D_\kappa(\boldsymbol f)|<\kappa.
+\end{equation}
+\item If $\kappa=\omega$, then
+\begin{equation}\label{eq:profilefin}
+\mathcal N_{\omega,\boldsymbol f}\models\Rep(\boldsymbol J)
+\quad\Longleftrightarrow\quad
+\begin{cases}
+\text{every component of }(A;\boldsymbol f)\text{ is finite},\\
+D_\omega(\boldsymbol f)\text{ is finite}.
+\end{cases}
+\end{equation}
+\end{enumerate}
+\end{theorem}
+
+\subsection{Necessity: collecting uniquely definable type blocks}
+\begin{proof}[Proof of necessity for $\kappa>\omega$]
+Use the internal pure domain $\mathcal T_r$. In the expanded language define $F(t)$ as follows: if there is a set whose members are exactly the atoms satisfying $\operatorname{Type}_r(t,a)$, let $F(t)$ be that set; if there is no such set, let $F(t)=\varnothing$. Extensionality for sets makes this a total functional definition. By \cref{lem:recognize}, its external interpretation is
+\[
+F(t)=
+\begin{cases}
+B_t,&|B_t|<\kappa,\\
+\varnothing,&|B_t|\geq\kappa.
+\end{cases}
+\]
+Indeed, a set of atoms belongs to $M_\kappa(A)$ precisely when its cardinality is less than $\kappa$.
+
+Expanded Replacement yields an internal range set for $F$ on $\mathcal T_r$. Taking its union produces exactly $D_\kappa(\boldsymbol f)$. The kernel of a set of atoms is the set itself, so this union must have cardinality less than $\kappa$.
+\end{proof}
+
+\begin{proof}[Proof of necessity for $\kappa=\omega$]
+First let $a$ be an atom. The pure set of finite words in the $2r$ forward and backward letters is countable and belongs to the model. By \cref{lem:paths}, a word either has a unique endpoint starting at $a$, or has no endpoint because a backward step is unavailable. Define its value to be that endpoint when it exists and $a$ otherwise. This is a total functional definition in the expanded language. Its range is exactly the component of $a$.
+
+Expanded Replacement would therefore make every component an internal set of atoms, hence finite. Once this is known, repeat the preceding type-block argument over the pure set $\mathcal T_r^{\mathrm{fin}}$ of finite component types. The finite-type recognition formula is correct at the finite-kernel cutoff, and its union of small blocks is $D_\omega(\boldsymbol f)$. That union must be finite.
+\end{proof}
+
+The first argument uses formulas substantially more complicated than $y=J_i(x)$. Amenability alone says nothing about collecting all the type blocks selected by that formula.
+
+\subsection{Sufficiency: the fresh-component argument}
+For $P\subseteq A$, let $\operatorname{cl}_{\boldsymbol f}(P)$ be the union of all components meeting $P$. It is closed under all the $f_i$ and all their available inverse steps. If $\kappa>\omega$ and $|P|<\kappa$, then
+\begin{equation}\label{eq:closurebound}
+|\operatorname{cl}_{\boldsymbol f}(P)|\leq\max(\aleph_0,|P|)<\kappa.
+\end{equation}
+For $\kappa=\omega$ the corresponding closure is finite whenever $P$ is finite and all components are finite.
+
+\begin{lemma}[Fresh component swap]\label{lem:swap}
+Let $H\subseteq A$ be a union of components with $|H|<\kappa$. Let $y\in M_\kappa(A)$, and suppose $b\in\kerat(y)\setminus H$ belongs to a type block $B_t$ of cardinality at least $\kappa$. If $\kappa>\omega$, there is an atom permutation $\pi$ commuting with every $f_i$, fixing $H$ pointwise, and satisfying $\widehat\pi(y)\neq y$. The same holds for $\kappa=\omega$ when the components are finite.
+\end{lemma}
+\begin{proof}
+The component $C$ of $b$ is disjoint from $H$. For uncountable $\kappa$, $B_t$ contains at least $\kappa$ distinct components: fewer than $\kappa$ countable sets cannot have union of cardinality at least $\kappa$, since their sizes are uniformly bounded by $\aleph_0$. The set $H\cup\kerat(y)$ meets fewer than $\kappa$ components. Choose a component $C'$ of type $t$ disjoint from that set.
+
+Choose a labeled-graph isomorphism $u:C\to C'$. Define $\pi$ to be $u$ on $C$, $u^{-1}$ on $C'$, and the identity elsewhere. It commutes with each $f_i$ because components are invariant in both directions and $u$ respects the functions. It fixes $H$ and moves $b$ to an atom outside $\kerat(y)$, so it changes that kernel and hence changes $y$.
+
+At $\kappa=\omega$, a fixed finite type has a fixed finite component size. An infinite block of that type has infinitely many components, while $H\cup\kerat(y)$ meets only finitely many. The same construction applies.
+\end{proof}
+
+\begin{proof}[Proof of sufficiency in \cref{thm:profile}]
+Assume the right side of the appropriate criterion. Fix a formula $\varphi(x,y,p)$ of $\Langr$ that defines a unique output for every $x$ in an internal set $w$. Set
+\begin{equation}\label{eq:H}
+P=\kerat(w)\cup\kerat(p),\qquad
+H=D_\kappa(\boldsymbol f)\cup\operatorname{cl}_{\boldsymbol f}(P).
+\end{equation}
+By the hypothesis and \eqref{eq:closurebound}, $H$ has size less than $\kappa$. At the finite cutoff this follows instead from finiteness of both terms. It is a union of components.
+
+We claim that every uniquely defined output $y$ has kernel contained in $H$. Otherwise choose $b\in\kerat(y)\setminus H$. Its type block cannot be small, because every small block is included in $D_\kappa(\boldsymbol f)$. Apply \cref{lem:swap}. The resulting lifted automorphism preserves the \emph{expanded} structure, fixes $x$ and $p$, and changes $y$. It contradicts uniqueness.
+
+External Replacement now collects all these unique outputs into a set $Y$. Its kernel is contained in $H$, independently of the cardinality of the input set $w$. Thus $Y\in M_\kappa(A)$, as required. The argument works for every fixed expanded-language formula and every internal parameter.
+\end{proof}
+
+\begin{remark}[Why the external construction is legitimate]
+The ambient parameters $A,\kappa,\boldsymbol f$ are sets, the model is definable, and each $j_{f_i}$ has an external recursive definition. A fixed expanded formula therefore has an ordinary external first-order translation. External Separation and Replacement can be applied to it. The proof then checks whether the resulting set meets the internal kernel cutoff. It does not assume any expanded Replacement inside $\mathcal N_{\kappa,\boldsymbol f}$.
+\end{remark}
+
+\subsection{Boundary examples for one symbol}
+\begin{example}[A named automorphism can destroy Replacement]\label{ex:alephomega}
+Let $\kappa=\aleph_\omega$ and choose a subset of $A$ partitioned as $\coprod_{n<\omega}B_n$, with $|B_n|=\aleph_n$. On $B_n$, let $f$ consist of cycles of length $n+2$. Fix all remaining atoms. Every $B_n$ is an internal set and is precisely the block of atoms of that cycle length. Their union has cardinality $\aleph_\omega$. Thus $D_\kappa(f)$ is not small and $\Rep(J)$ fails, although $j_f$ is an amenable automorphism fixing every pure set.
+
+A direct failed instance is the unique definition sending $n$ to the set of all atoms of exact period $n+2$. An internal range set for this definition would contain, in its kernel, the whole union of the $B_n$.
+\end{example}
+
+\begin{example}[The two finite-cutoff obstructions are independent]\label{ex:finite}
+At $\kappa=\omega$, a shift on a two-sided infinite atom chain has no small nonempty type block, but Replacement fails by collecting the iterates of one atom. Conversely, take one finite cycle of each length $n+2$ on a countable subset of atoms and fix any remainder. Every component is finite, but the union of the finite cycle-type blocks is infinite, so Replacement fails by collecting those blocks. Both clauses in \eqref{eq:profilefin} are necessary.
+\end{example}
+
+\begin{example}[Infinitely many atoms need not cause a failure]
+An arbitrary number of copies of one finite cycle type, with an infinite total block, is harmless at the finite cutoff provided the union of all the other finite blocks is finite. The main theorem applies because a unique output cannot select a new component from the homogeneous infinite block. The issue is distinguishability, not simply the number of atoms moved.
+\end{example}
+
+\section{Sharp thresholds for one name and for two names}\label{sec:thresholds}
+
+Define $\mathsf{Rob}_r(\kappa,A)$ to mean:
+\begin{quote}
+For every external $r$-tuple of injections on $A$, its canonical expanded model satisfies full Replacement in the $r$-symbol language.
+\end{quote}
+This is an external property of a definable family of models. Its meaning is the same if ``injections'' is replaced by ``permutations'' in the equivalence below. The negative examples use permutations, and the positive arguments cover injections.
+
+\begin{theorem}[Finite-signature robustness thresholds]\label{thm:robust}
+For every infinite $\kappa$, every $|A|\geq\kappa$, and every fixed finite $r\geq1$,
+\begin{equation}\label{eq:robust}
+\mathsf{Rob}_r(\kappa,A)
+\quad\Longleftrightarrow\quad
+\begin{cases}
+\cf(\kappa)>\omega,&r=1,\\
+\cf(\kappa)>\cont,&r\geq2,
+\end{cases}
+\qquad \cont=2^{\aleph_0}.
+\end{equation}
+\end{theorem}
+
+\subsection{The positive bounds}
+\begin{proof}[Proof of the forward preservation bounds]
+If $\cf(\kappa)>\omega$, a countable union of sets of cardinality less than $\kappa$ still has cardinality less than $\kappa$. There are only countably many one-injection types. Thus $D_\kappa(f)$ is small for every $f$, and \cref{thm:profile} proves $\mathsf{Rob}_1$.
+
+More generally, for $r\geq2$ there are at most $\cont$ component types. If $\cf(\kappa)>\cont$, the union of all the small blocks has cardinality less than $\kappa$. Again apply \cref{thm:profile}. These hypotheses automatically put us at an uncountable cutoff.
+\end{proof}
+
+\subsection{Sharpness for one symbol}
+\begin{proof}[Failure when $\cf(\kappa)=\omega$]
+At $\kappa=\omega$, use a two-sided infinite shift on a countable subset of $A$, fixing the rest. Its infinite component violates \eqref{eq:profilefin}.
+
+For uncountable $\kappa$ of countable cofinality, choose infinite cardinals $\lambda_n<\kappa$ cofinal in $\kappa$. On disjoint atom blocks $B_n$ of sizes $\lambda_n$, use cycles of distinct lengths $n+2$, and fix the remaining atoms. The union of these small type blocks has size $\kappa$. The argument of \cref{ex:alephomega} applies without any special property of the aleph sequence. This proves the converse for $r=1$.
+\end{proof}
+
+\subsection{Sharpness for two symbols: a real-coded construction}
+\begin{lemma}[Cardinal decomposition]\label{lem:decomp}
+If $\kappa>\omega$ and $\delta=\cf(\kappa)$, there are infinite cardinals $\lambda_i<\kappa$ for $i<\delta$ with
+\[
+\sum_{i<\delta}\lambda_i=\kappa.
+\]
+\end{lemma}
+\begin{proof}
+For regular $\kappa$, take $\delta=\kappa$ and every $\lambda_i=\aleph_0$. For singular $\kappa$, take an increasing cofinal sequence of infinite cardinals below $\kappa$. Its cardinal sum is $\kappa$.
+\end{proof}
+
+Assume now $\kappa>\omega$ and $\delta=\cf(\kappa)\leq\cont$. Choose pairwise distinct pure real codes $S_i\subseteq\omega$, $i<\delta$, and cardinals as in \cref{lem:decomp}. On a subset $A_0$ of $A$ of cardinality $\kappa$, use the atom indexing
+\begin{equation}\label{eq:atomsreal}
+A_0=\{a_{i,\xi,n}:i<\delta,\ \xi<\lambda_i,\ n\in\mathbb Z\}.
+\end{equation}
+The subscripts are external labels, not internal atom coordinates. Define permutations $f,g$ by
+\[
+f(a_{i,\xi,n})=a_{i,\xi,n+1},\qquad
+g(a_{i,\xi,n})=a_{i,\xi,G_{S_i}(n)},
+\]
+where $G_S$ is the involution in \eqref{eq:marker}. On $A\setminus A_0$, let both maps be the identity.
+
+Each set $\{a_{i,\xi,n}:n\in\mathbb Z\}$ is one component. Different $i$ give nonisomorphic components by \cref{lem:typecount}. For each $i$, the entire type block
+\[
+B_i=\{a_{i,\xi,n}:\xi<\lambda_i,\ n\in\mathbb Z\}
+\]
+has cardinality $\lambda_i<\kappa$. Their union is $A_0$, of size $\kappa$. Hence $D_\kappa(f,g)$ is not small, and expanded Replacement fails.
+
+For completeness, the failure can be expressed directly without the general quotient of component codes. On any constructed component, an atom $a$ is the \emph{root} exactly when $g(a)\neq a$ and every point strictly before $a$ in the $f$-chain is fixed by $g$. This is uniformly first-order expressible using finite positive and negative iterates, as in \cref{lem:paths}. The root is its coordinate-$0$ atom. Its real label is recovered from
+\begin{equation}\label{eq:readcode}
+m\in S\quad\Longleftrightarrow\quad
+ g\bigl(f^{3(m+1)}(a)\bigr)\neq f^{3(m+1)}(a).
+\end{equation}
+Thus, with the pure parameter $q=\langle S_i:i<\delta\rangle$, there is a single formula defining $B_i$ as the set of atoms whose $f$-chain has a root with label $S_i$. Every $B_i$ exists internally and is unique. Replacement for $i\mapsto B_i$ on the pure set $\delta$ would collect all of $A_0$ into a kernel of size $\kappa$, which is impossible.
+
+At $\kappa=\omega$ a shift already defeats one symbol, and adding identity symbols cannot repair its failed instance. For $r>2$, pad the two-symbol construction with identities. This completes the converse of \cref{thm:robust}.
+
+\begin{corollary}[A continuum-hypothesis characterization]\label{cor:CH}
+For any external atom set $A$ of cardinality at least $\aleph_2$,
+\[
+\mathsf{CH}
+\quad\Longleftrightarrow\quad
+\mathsf{Rob}_2(\aleph_2,A).
+\]
+Equivalently, CH holds exactly when every pair of atom permutations has a joint canonical expansion of $M_{\aleph_2}(A)$ satisfying Replacement.
+\end{corollary}
+\begin{proof}
+By \cref{thm:robust}, the preservation property is equivalent to $\aleph_2>\cont$, since $\aleph_2$ is regular. By choice and Cantor's theorem, this is equivalent to $\cont=\aleph_1$.
+\end{proof}
+
+This statement neither proves nor refutes CH. It translates CH into a precise preservation property for a family of language expansions. In particular, changing the ambient continuum can change a universal expansion property even though every one-symbol expansion at the same successor cutoff is harmless.
+
+\begin{corollary}[Countably many named maps]\label{cor:countable}
+The universal preservation threshold for a countable sequence of atom injections, with one symbol for each lift and ordinary finitary first-order formulas, is also $\cf(\kappa)>\cont$.
+\end{corollary}
+\begin{proof}
+Each formula uses only finitely many symbols. Under the stated inequality its Replacement instance is valid by the finite-symbol theorem. Conversely the two-symbol counterexamples embed in a countable expansion by adding identities.
+\end{proof}
+
+\section{Collection, reflection, and their exact spectra}\label{sec:collection}
+
+\subsection{Collection on small domains}
+For an external cardinal $\mu$, let $\Coll_{\leq\mu}(\boldsymbol J)$ denote all Collection instances on internal sets of cardinality at most $\mu$, with arbitrary internal parameters. These cardinalities agree with their external values by \cref{thm:base}.
+
+\begin{lemma}[Automatic small-domain Collection]\label{lem:smallcoll}
+For every finite tuple $\boldsymbol f$, if $\mu<\cf(\kappa)$ then
+\[
+\mathcal N_{\kappa,\boldsymbol f}\models\Coll_{\leq\mu}(\boldsymbol J).
+\]
+This conclusion does not assume expanded Replacement.
+\end{lemma}
+\begin{proof}
+Fix a set $w$ of size at most $\mu$ and a total relation on it. In the ambient universe, first bound ranks of witnesses for this fixed formula and then choose a witness $y_x$ for each $x\in w$. Equivalently, use ambient Collection followed by ambient choice. The union of at most $\mu<\cf(\kappa)$ kernels, each of size less than $\kappa$, has size less than $\kappa$. Hence the external witness set $\{y_x:x\in w\}$ is internal and supplies Collection.
+\end{proof}
+
+\begin{lemma}[The limit-cutoff obstruction is already bounded]\label{lem:limitcoll}
+Suppose $\kappa$ is an infinite limit cardinal, including $\omega$. There is a Collection instance with a $\Delta_0$ matrix in the base language, on a pure domain of size $\cf(\kappa)$, that fails in $M_\kappa(A)$ and in every expansion under consideration.
+\end{lemma}
+\begin{proof}
+Choose a pure set $w$ of ordinals below $\kappa$, of size $\delta=\cf(\kappa)$, whose cardinalities are unbounded below $\kappa$. For $\kappa=\omega$, take $w=\omega$. For uncountable limit $\kappa$, use a cofinal family of cardinals below $\kappa$.
+
+Let $\operatorname{InjectAtoms}(\alpha,s)$ assert that $s$ is the graph of an injection with domain $\alpha$ and with atom values. It has a $\Delta_0$ definition in $\{\in,\At\}$; an explicit bounded formulation is given in \cref{app:bounded}. For each $\alpha\in w$, an external injection into $A$ has graph with $|\alpha|<\kappa$ atoms, hence exists internally.
+
+If a single internal set $v$ contained suitable graphs for all $\alpha\in w$, its kernel would have cardinality at least $|\alpha|$ for all those $\alpha$. This contradicts $|\kerat(v)|<\kappa$ and the unboundedness of their cardinalities.
+\end{proof}
+
+\begin{corollary}[Exact local spectrum at limit cutoffs]\label{cor:limitspectrum}
+For limit $\kappa$, every finite tuple $\boldsymbol f$, and every cardinal $\mu$,
+\[
+\mathcal N_{\kappa,\boldsymbol f}\models\Coll_{\leq\mu}(\boldsymbol J)
+\quad\Longleftrightarrow\quad \mu<\cf(\kappa).
+\]
+\end{corollary}
+\begin{proof}
+Combine the preceding two lemmas. Failure on one domain of cardinality $\cf(\kappa)$ implies failure for every larger domain bound.
+\end{proof}
+
+\subsection{A reservoir lemma at successor cutoffs}
+\begin{lemma}[Compression into a fixed component reservoir]\label{lem:reservoir}
+Let $\kappa=\nu^+$ with $\nu$ infinite, and suppose $|I(\boldsymbol f)|\leq\nu$. For every component-closed $P\subseteq A$ of cardinality at most $\nu$, there is a component-closed $H\supseteq P$, $|H|\leq\nu$, such that every object $y\in M_\kappa(A)$ can be carried to an object supported on $H$ by an expanded-structure automorphism fixing $P$ pointwise.
+\end{lemma}
+\begin{proof}
+First add all small type blocks to $P$. There are at most $\nu$ such blocks and each has size at most $\nu$, so their union is still of size at most $\nu$. Call the result $P^*$.
+
+Every remaining nonempty block has size at least $\nu^+$ and therefore has at least $\nu^+$ components. For each such type choose $\nu$ components disjoint from $P^*$. Let $H$ consist of $P^*$ and all these selected reservoirs. There are at most $\nu$ types and all components are countable, so $|H|\leq\nu$.
+
+The kernel of $y$ meets at most $\nu$ components of each type. Leave components in $P^*$ fixed. For each large type, map the components meeting that kernel outside $P^*$ injectively into the chosen $\nu$ reservoir components. This partial matching extends to a permutation of the components outside $P^*$: its domain and image have size at most $\nu$, whereas the whole component family has cardinality at least $\nu^+$. Choose compatible isomorphisms on matched components and arbitrary isomorphisms on the remainder. These component permutations together define an atom permutation commuting with all the $f_i$ and fixing $P^*$. Its lift has the required properties.
+\end{proof}
+
+\begin{theorem}[Full Collection criterion]\label{thm:collection}
+For any infinite $\kappa$ and finite nonempty tuple $\boldsymbol f$,
+\begin{equation}\label{eq:collcriterion}
+\mathcal N_{\kappa,\boldsymbol f}\models\Coll(\boldsymbol J)
+\quad\Longleftrightarrow\quad
+\kappa\text{ is an uncountable successor cardinal and }
+|I(\boldsymbol f)|<\kappa.
+\end{equation}
+\end{theorem}
+\begin{proof}
+At limit cutoffs, including $\omega$, \cref{lem:limitcoll} rules out Collection. Suppose $\kappa=\nu^+$. If $|I(\boldsymbol f)|\geq\kappa$, choose a pure subset $I_0\subseteq I(\boldsymbol f)$ of cardinality $\kappa$. By \cref{lem:recognize}, for every $t\in I_0$ there is an atom satisfying $\operatorname{Type}_r(t,a)$. A witness set for all these types must contain at least $\kappa$ atoms, since type blocks are disjoint. It cannot be internal. Thus Collection fails.
+
+Conversely assume $|I(\boldsymbol f)|<\nu^+$. Fix a total expanded relation $\varphi(x,y,p)$ on an internal set $w$. Close $\kerat(w)\cup\kerat(p)$ under components and apply \cref{lem:reservoir}. For each $x\in w$, any witness can be moved by an automorphism fixing $x,p$ to a witness with kernel contained in the same $H$. Externally choose such witnesses and bound their ranks, or use ambient Collection and choice. Their range set has kernel contained in $H$, hence is internal. This proves full expanded Collection.
+\end{proof}
+
+\begin{corollary}[All local Collection cases]\label{cor:alllocal}
+For a successor $\kappa$, if $|I(\boldsymbol f)|<\kappa$ then Collection holds on every internal domain. If $|I(\boldsymbol f)|\geq\kappa$, then
+\[
+\mathcal N_{\kappa,\boldsymbol f}\models\Coll_{\leq\mu}(\boldsymbol J)
+\quad\Longleftrightarrow\quad \mu<\kappa.
+\]
+Together with \cref{cor:limitspectrum}, this gives the exact domain-size spectrum in every case.
+\end{corollary}
+\begin{proof}
+The positive statement is \cref{thm:collection}. In the second case the preceding proof fails Collection on a domain of size $\kappa$, while \cref{lem:smallcoll} proves it below $\cf(\kappa)=\kappa$.
+\end{proof}
+
+\subsection{Full transitive reflection}
+In this section, full reflection in $\Langr$ has the following explicit meaning. For every finite set $\Phi$ of formulas and every internal set $w$, there is an internal transitive set $t$ with $w\subseteq t$, closed under the named functions, such that each formula of $\Phi$ is absolute between the full expanded model and its restriction to $t$, for all its parameter tuples from $t$. Call this scheme $\RP(\boldsymbol J)$.
+
+\begin{theorem}[Exact reflection criterion]\label{thm:reflection}
+In the present model family,
+\[
+\RP(\boldsymbol J)
+\quad\Longleftrightarrow\quad
+\Coll(\boldsymbol J)
+\quad\Longleftrightarrow\quad
+\bigl[\kappa\text{ is an uncountable successor and }|I(\boldsymbol f)|<\kappa\bigr].
+\]
+\end{theorem}
+\begin{proof}
+Full reflection implies Collection directly. Given a total relation on $w$, reflect a finite family containing its matrix and its totality assertion into a transitive set containing $w,p$. The restricted totality assertion supplies witnesses in that set, and absoluteness of the matrix makes them genuine witnesses in the full structure. Thus \cref{thm:collection} proves necessity.
+
+For sufficiency, write $\kappa=\nu^+$ and assume $|I(\boldsymbol f)|\leq\nu$. Enlarge the finite family $\Phi$ by subformulas, after expressing universal quantifiers through negation and existential quantifiers. We construct externally an increasing sequence
+\[
+X_n=V_{\alpha_n}(H_n),\qquad n<\omega,
+\]
+where $H_n$ is a component-closed atom set of size at most $\nu$, the ordinals $\alpha_n$ increase, $w\subseteq X_0$, and every true existential subformula with parameters in $X_n$ has a witness in $X_{n+1}$.
+
+Begin by closing the atoms of $w$ under components and choosing a sufficiently large $\alpha_0$. At stage $n$, apply \cref{lem:reservoir} to $H_n$. This gives a component-closed $H_{n+1}\supseteq H_n$, of size at most $\nu$, into which witnesses can be compressed while all parameters in $X_n$ are fixed. There are only set-many relevant parameter tuples and finitely many subformulas. External Collection yields a common rank bound for witnesses after compression. Choose $\alpha_{n+1}>\alpha_n$ large enough that all these witnesses lie in $V_{\alpha_{n+1}}(H_{n+1})$.
+
+Let $t=\bigcup_{n<\omega}X_n$. Its kernel is contained in $\bigcup_nH_n$, of size at most $\nu$, so $t$ is internal. It is transitive and closed under every $J_i$, since the $H_n$ contain whole components and canonical lifts preserve rank. A finite parameter tuple in $t$ lies in some $X_n$. The witness property and structural induction on the formulas now prove the required absoluteness. Atomic formulas agree because the restricted structure has the same membership, atom predicate, and function values; the Boolean steps are immediate; the existential step is exactly the witness property.
+\end{proof}
+
+\begin{remark}[Why one fixed atom reservoir is not a reflecting universe]
+A single $V_\alpha(H)$ can contain $H$ as an element and consequently regard the atoms it sees as exhausted by one set. The full model has no set of all atoms. The reflection construction therefore grows the atom reservoirs along with the rank bounds. It does not incorrectly identify a fixed-reservoir hierarchy with a reflecting substructure of the entire atom universe.
+\end{remark}
+
+For one named injection, at most countably many types are realized. Thus every one-symbol expansion at an uncountable successor cutoff satisfies full Collection and reflection. The unexpanded model is the special case $f=\operatorname{id}_A$, and its full Collection/reflection criterion reduces to the familiar successor-versus-limit kernel cutoff.
+
+\subsection{Two individually safe names need not be jointly safe}
+\begin{corollary}[Failure of compositional safety]\label{cor:jointunsafe}
+For $|A|\geq\aleph_1$, there are atom permutations $f,g$ such that each of
+\[
+(M_{\aleph_1}(A),j_f),\qquad (M_{\aleph_1}(A),j_g)
+\]
+satisfies expanded Replacement, Collection, and full transitive reflection, but $(M_{\aleph_1}(A),j_f,j_g)$ fails expanded Replacement.
+\end{corollary}
+\begin{proof}
+Use the construction \eqref{eq:atomsreal} with $\delta=\aleph_1$ and every $\lambda_i=\aleph_0$. It is available because $\aleph_1\leq\cont$. The joint expansion fails Replacement as proved in \cref{sec:thresholds}. Each individual expansion is a one-symbol expansion at a successor cutoff, so \cref{thm:collection,thm:reflection} apply; Replacement follows as well.
+\end{proof}
+
+\begin{example}[Joint Replacement can survive while joint Collection fails]\label{ex:jointcoll}
+Again put $\kappa=\aleph_1$ and use $\aleph_1$ distinct real labels. This time take $\aleph_1$ copies of the countable component for each label, on a subset of $A$ of size $\aleph_1$. Each realized nontrivial type block has size $\aleph_1$. Any additional fixed-atom block is either large or is one small block. Hence $D_\kappa(f,g)$ has size less than $\kappa$, and joint Replacement holds. But there are $\aleph_1$ realized types, so Collection and full reflection fail. Both individual one-symbol expansions still have Collection and reflection.
+\end{example}
+
+\begin{center}
+\begin{tabularx}{\linewidth}{@{}L{0.20\linewidth}L{0.25\linewidth}Y@{}}
+\toprule
+Property & Controlling quantity & Exact criterion\\
+\midrule
+Replacement, $\kappa>\omega$ & Union of small type blocks & $|D_\kappa(\boldsymbol f)|<\kappa$\\
+Replacement, $\kappa=\omega$ & Component sizes and small blocks & All components finite and $D_\omega(\boldsymbol f)$ finite\\
+Full Collection & Cutoff and realized type count & $\kappa$ successor and $|I(\boldsymbol f)|<\kappa$\\
+Full reflection & Same as full Collection & Same criterion, with named-function-closed transitive reflectors\\
+Universal one-name safety & Countably many possible types & $\cf(\kappa)>\omega$\\
+Universal finite multi-name safety & Continuum many possible types & $\cf(\kappa)>\cont$ for at least two names\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{Partial reflection and a quantifier-normalization trap}\label{sec:partial}
+
+Full reflection above requires agreement on a finite family for all parameters in the reflecting structure. A weaker question asks only that a single true assertion with its given parameters hold in some transitive set containing those parameters. In weak set theories it matters greatly which syntactic assertions are allowed.
+
+\begin{proposition}[Two superficially similar reflection schemes]\label{prop:partial}
+Over replacement-based set theory with atoms:
+\begin{enumerate}
+\item Every true assertion of the form $\exists y\,\delta(y,p)$, where $\delta$ is $\Delta_0$ in the base language, is true in some transitive set containing $p$.
+\item The scheme of partial transitive reflection for assertions
+\begin{equation}\label{eq:boundedforall}
+\forall x\in w\,\exists y\,\delta(x,y,p),
+\end{equation}
+with $\Delta_0$ matrices $\delta$, is equivalent to $\Delta_0$ Collection.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+For the first assertion, choose a witness $y$ and take a transitive closure containing $p,y$. Bounded formulas are absolute between transitive sets and the universe: their quantifiers inspect only elements of already present parameters. Atomhood is unchanged. Hence the witness still works in the transitive set.
+
+For the forward direction of the second assertion, reflect a true instance \eqref{eq:boundedforall} into a transitive set $t$ containing $w,p$. Every $x\in w$ belongs to $t$, and the reflected assertion supplies a witness $y\in t$. Bounded absoluteness makes that witness correct in the full universe. Thus $t$ is a collection set.
+
+Conversely, $\Delta_0$ Collection supplies a set $b$ of witnesses. A transitive closure containing $w,p,b$ contains suitable witnesses for every $x\in w$. Bounded absoluteness makes \eqref{eq:boundedforall} true in that closure.
+\end{proof}
+
+At a limit cutoff, the instance from \cref{lem:limitcoll} therefore has no such transitive reflector, even though each of its individual existential assertions does. This gives a precise warning about terminology. In the presence of Collection, bounded universal quantification in front of an existential assertion can often be converted into one existential quantifier over a set of witnesses. Without Collection, that conversion is precisely what is at issue.
+
+It is therefore unsafe to identify a strict existential--bounded normal form with every bounded-quantifier closure customarily placed at the same level of a hierarchy, unless the required normalization has been proved in the base theory. ProveIt's bounded-consistency documentation explicitly separates its actual quantifier-group measure from the Levy hierarchy \cite{RepoBC}; the present models give concrete semantic tests for such distinctions.
+
+\begin{remark}[No conflict with the Glazer--Yao separation results]
+The results of \cref{sec:collection} concern a particular well-founded family with ambient choice, an explicit cutoff, and finitely many canonical function symbols. They do not reproduce the choiceless separation diagram in \cite{GY2026}, and they do not assert that all reflection notions coincide over arbitrary urelement theories. Even within this paper, \cref{prop:partial} distinguishes two restricted partial-reflection schemes that must not be silently conflated.
+\end{remark}
+
+\section{A concrete ProveIt formalization route}\label{sec:formalization}
+
+\subsection{Inspected interfaces and the repository snapshot}
+The repository material used here is pinned to commit
+\begin{center}
+\texttt{2b7b388ba81a3355b19a7c2d2fe797e92f572355}.
+\end{center}
+In particular, the inspected beginning of
+\begin{center}
+\repo{SetTheory/ZF/Lean/ZF/Zf.lean}
+\end{center}
+contains the formula constructors \texttt{Sep\_form}, \texttt{Func\_form}, \texttt{Image\_form}, and \texttt{Repl\_form}, and the axiom sets \texttt{ZFax} and \texttt{ZFax\_s}. Its schema constructors act on the current formula type \texttt{Form}. Its introductory documentation describes the bridge from object-language axioms to semantic axioms and the internal finite-recursion development \cite{RepoZF}.
+
+The bounded-consistency README states a numeralwise endpoint, one derivation for each externally fixed complexity bound, rather than an object-language universal consistency claim. It also records the choice of partial satisfaction rather than a reflection-based implementation \cite{RepoBC}. We have inspected those interfaces and descriptions, not rebuilt or independently audited the repository's claimed formal results.
+
+The self-embedding report's README explicitly marks its contents as unrefereed and not formalized \cite{RepoSSE}. That status matters: adjacency to verified Lean code does not convert a mathematical report into a kernel-checked theorem. The same boundary applies to this manuscript.
+
+\subsection{First task: make the language parameter explicit}
+A port should not merely append an ``embedding axiom'' to the existing pure-membership theory. It needs a genuine expanded syntax. Two reasonable routes are available.
+
+The direct route introduces a language with a unary atom predicate and $r$ unary function symbols. Terms, renaming, substitution, satisfaction, and all formula-valued schema arguments must then be extended. This is mathematically transparent but requires term infrastructure if the selected existing syntax is purely relational.
+
+A relational route instead uses binary graph predicates $E_i(x,y)$, together with totality and functionality axioms. It can be closer to the repository's current relational syntax. Formulas containing function terms can be translated to graph formulas, but the translation may introduce quantifiers. Therefore an equivalence of theories is not automatically a bound-preserving equivalence of proof-complexity measures.
+
+For either route, there must be separate semantic assertions
+\[
+\operatorname{ModelsReplacement}(\Lang,M)
+\quad\text{and}\quad
+\operatorname{ModelsReplacement}(\Langr,M,\boldsymbol J).
+\]
+The second quantifies over a larger formula type. The counterexamples of \cref{sec:thresholds} should become regression tests against any interface that mistakenly identifies these assertions.
+
+\subsection{A proof dependency plan}
+A practical implementation can be divided into six layers.
+
+\paragraph{Layer 1: well-founded objects with atoms.}
+Implement a tagged cumulative model, or a well-founded extensional relation with distinguished atoms, and define its kernel. Prove kernel arithmetic, the hereditary cutoff property, and the existence of all pure codes used later. Keep the ambient cardinal assumptions visible.
+
+\paragraph{Layer 2: recursive lifts and semantic automorphisms.}
+Define the lift of an atom injection by well-founded recursion. Prove its kernel equation and functoriality. Prove the small-partial-bijection extension lemma, then base-language elementarity by local agreement with automorphisms. Do not derive this by assuming the lift is surjective.
+
+\paragraph{Layer 3: component combinatorics.}
+Define finite labeled paths, undirected reachability, and component closure. Prove the countable component bound from finite degree, and prove the component-swap lemma with an explicit isomorphism witness. This layer is independent of the set-theoretic Replacement scheme.
+
+\paragraph{Layer 4: internal recognition of types.}
+Define a set of pure graph codes and its isomorphism quotient. Prove the satisfaction specification for the type-recognition formula. The cardinal hypothesis $\omega<\kappa$ must be attached exactly where a countable enumeration graph is imported into the model. At the finite cutoff, use finite codes only after proving that expanded Replacement forces components to be finite.
+
+\paragraph{Layer 5: schemes and spectrum theorems.}
+Represent the type-block selector as one expanded formula and prove that Replacement for it imports the union of small blocks. Prove sufficiency using the kernel bound \eqref{eq:H}. Then formalize the marker construction, the cardinal decompositions, and the universal thresholds. Collection needs its own relation and reservoir arguments; it should not be inferred from Replacement.
+
+\paragraph{Layer 6: reflection and proof-theoretic interfaces.}
+Implement reflection only for an externally fixed finite set of formulas, using the growing-reservoir construction. Relate semantic instances to the chosen object theory through explicitly proved soundness or completeness bridges. No uniform truth predicate or internal assertion of full elementarity is needed.
+
+\subsection{Expected hard points and trust boundaries}
+The finite graph swap is elementary; the demanding work is likely to be the internal syntax and the exact specifications of set-coded component isomorphisms. There are four particularly important failure modes to test.
+
+First, a port must not use expanded Replacement to construct the finite paths or countable enumeration graphs later used to \emph{test} Replacement. Their membership in the cutoff model is proved externally from their kernels. Second, a cardinal-kernel bound is a bound on the atoms in a whole set of outputs, not on each output independently. Third, class elementarity must remain a scheme unless the metatheory explicitly supplies an appropriate satisfaction class. Fourth, the reflecting sets must be closed under every named function, not merely under membership.
+
+The supplementary Python program checks finite component swaps and the real-marker coding on finite test families. It does not prove any infinite-cardinal theorem, verify a first-order derivation, or replace the proposed Lean development. Its purpose is to catch combinatorial implementation mistakes before a formal port.
+
+\section{Further research questions}\label{sec:questions}
+
+The following are proposed projects arising from the present results. They are not all claimed to be previously published open problems. Their formulation records where the proved classification ends.
+
+\begin{question}[An intrinsic definable-closure theorem]\label{q:dcl}
+For a fixed finite tuple $\boldsymbol f$, determine the exact atom kernel of the definable closure of a parameter set in the expanded model. The proof of \cref{thm:profile} bounds it by component closure plus $D_\kappa(\boldsymbol f)$, but this bound can be larger than necessary. Which atoms or entire finite blocks are actually definable, rather than merely protected from a fresh-component swap?
+\end{question}
+
+\begin{question}[Noninitial elementary embeddings]
+Classify elementary self-embeddings of $M_\kappa(A)$ without requiring transitive range. Can one obtain a useful dichotomy separating canonical atom lifts from embeddings that alter the pure core or introduce noncanonical members into images of sets? Any such theorem must state its external class-existence assumptions explicitly.
+\end{question}
+
+\begin{question}[Fixed-parameter rigidity beyond canonical lifts]
+For canonical lifts, a proper parameter-definable map cannot fix a parameter defining it. Investigate analogous statements for noninitial maps, for embeddings between different cutoffs, and for richer predicates on atoms. The key issue is whether the stabilizer argument still forces the atom action to be small.
+\end{question}
+
+\begin{question}[Commuting named automorphisms]
+The continuum-sized type family used in the two-name lower bound is noncommutative. Determine the sharp threshold for a fixed number of \emph{commuting} atom permutations. Their components are transitive actions of a finitely generated abelian group, whose stabilizer structure is much more restricted. This suggests that commutation can lower the type-count threshold, but the uniform internal recognition and all boundary cases should be proved separately.
+\end{question}
+
+\begin{question}[Other bounded-degree signatures]
+Extend the component-profile criterion to relational structures on atoms of uniformly bounded or countable degree. Identify hypotheses ensuring that component types have pure set codes recognizable internally without the Replacement scheme under examination. The fresh-component sufficiency argument is flexible; necessity depends on the definability of the complete type blocks.
+\end{question}
+
+\begin{question}[Uncountably many names and infinitary syntax]
+With ordinary finitary formulas, even arbitrarily many names are tested one finite sublanguage at a time. What changes for a specified infinitary logic that admits countable conjunctions or longer formulas? Component sizes, available type codes, satisfaction specifications, and cofinality bounds should all be recalibrated together.
+\end{question}
+
+\begin{question}[General atom ideals]
+Replace $[A]^{<\kappa}$ by a downward-closed, finite-union-closed atom ideal. Find an exact analogue of \cref{thm:profile} in terms of ideal-small unions of isomorphism blocks and ideal-small component closures. Cardinal symmetry was used both to extend partial matchings and to find fresh components; those two requirements may separate for a general ideal.
+\end{question}
+
+\begin{question}[Removing ambient choice]
+Which parts of the criteria survive without ambient choice? Enumeration of countable components, extension of partial bijections, and the conversion from a bound on witnesses to an internal set each require separate analysis. This is the most direct route toward the choiceless reflection phenomena studied by Glazer and Yao, rather than merely staying in a choice-based special case.
+\end{question}
+
+\begin{question}[Minimal complexity of failed instances]
+Determine the least syntactic complexity of a formula witnessing failure of expanded Replacement in the real-coded two-name construction. The limit-cutoff Collection obstruction is already $\Delta_0$, but the component-block selector uses unbounded quantification. Can the two-name obstruction be lowered to a sharp prenex level without importing Collection through normalization?
+\end{question}
+
+\begin{question}[Forcing and preservation properties]
+The CH characterization suggests a systematic forcing analysis of $\mathsf{Rob}_r(\kappa,A)$. Track which cutoffs, atom reservoirs, and external class parameters are held fixed when the pure continuum changes. Distinguish preservation of one already given expanded structure from universal preservation over all tuples in a forcing extension.
+\end{question}
+
+\begin{question}[Bounded consistency with atoms and named maps]
+Can ProveIt's externally indexed partial-satisfaction construction be adapted to a replacement-based urelement theory without accidentally adding Collection? After that, determine exactly which enlarged-language schema instances are needed to formalize the component-profile proof. A theorem about an external family of bounded-consistency derivations must remain distinct from its universal closure in the object language.
+\end{question}
+
+\begin{question}[Machine-checked independence certificates]
+Develop a reusable Lean interface that packages a definable class model, its valid schemes, and one explicit failed instance of another scheme. Use the one-name singular-cutoff example and the two-name successor-cutoff example as test cases. A good interface should make it impossible to transfer Replacement across a language expansion without providing a proof of the corresponding new instances.
+\end{question}
+
+\section{Conclusion and proof-status summary}\label{sec:conclusion}
+The central invariant is not the number of atoms moved by an elementary map, nor the existence of all its set-sized restrictions. It is the union of the small, internally recognizable component-type blocks of the atom structure obtained after the maps are named.
+
+For uncountable cutoffs, that union is small exactly when full expanded Replacement holds. At the finite cutoff, finiteness of all components is an additional necessary and sufficient condition. Counting the available component types gives the sharp distinction between one name and two: the thresholds are $\omega$ and $2^{\aleph_0}$ in the cofinality comparison. Counting the \emph{realized} types, together with the successor/limit nature of the cutoff, gives the exact Collection and full-reflection criterion.
+
+These statements are proved for an explicitly constructed family over an external set of atoms. The foundational construction is known; the proposed new content is the expansion analysis and its sharp classifications. The article does not settle CH, does not contradict results about elementary embeddings of pure universes, and does not claim that an external semantic argument has already been turned into a Lean proof.
+
+The most concrete next mathematical tests are the commuting-automorphism case and the minimal complexity of the two-name failure. The most concrete implementation test is whether a formal library can distinguish base-language Replacement, amenability of named maps, and Replacement over the expanded formula type throughout the entire development.
+
+\appendix
+\section{An explicitly bounded injection-to-atoms formula}\label{app:bounded}
+
+Here is a formulation supporting the $\Delta_0$ claim in \cref{lem:limitcoll}. All bounded quantifiers below are ordinary abbreviations for quantification restricted by membership. No function symbols for pairing or union are required.
+
+Define the bounded predicates
+\begin{align*}
+\operatorname{Sing}(u,a)&\equiv
+\Set(u)\land a\in u\land\forall z\in u\,(z=a),\\
+\operatorname{Double}(v,a,b)&\equiv
+\Set(v)\land a\in v\land b\in v\land
+\forall z\in v\,(z=a\lor z=b),\\
+\operatorname{OP}(p,a,b)&\equiv
+\Set(p)\land\exists u\in p\,\exists v\in p\,
+\bigl(\operatorname{Sing}(u,a)\land\operatorname{Double}(v,a,b)\\
+&\hspace{40mm}\land\forall z\in p\,(z=u\lor z=v)\bigr).
+\end{align*}
+Thus $\operatorname{OP}(p,a,b)$ says that $p=\langle a,b\rangle$ in Kuratowski coding.
+
+The formula $\operatorname{InjectAtoms}(\alpha,s)$ is the conjunction of $\Set(s)$ and the following three bounded conditions.
+
+\paragraph{Every graph entry has the right shape.}
+\[
+\forall p\in s\ \exists i\in\alpha\ \exists q\in p\ \exists a\in q\,
+\bigl(\At(a)\land\operatorname{OP}(p,i,a)\bigr).
+\]
+\paragraph{Every domain element is represented.}
+\[
+\forall i\in\alpha\ \exists p\in s\ \exists q\in p\ \exists a\in q\,
+\bigl(\At(a)\land\operatorname{OP}(p,i,a)\bigr).
+\]
+\paragraph{Functionality and injectivity.}
+For all $p,p'\in s$, $q\in p$, $q'\in p'$, $a\in q$, $a'\in q'$, and $i,i'\in\alpha$, require
+\[
+\bigl(\operatorname{OP}(p,i,a)\land\operatorname{OP}(p',i',a')\bigr)
+\ \longrightarrow\ (i=i'\leftrightarrow a=a').
+\]
+Every displayed quantifier is bounded. The first clause excludes spurious graph entries; the second gives totality on $\alpha$; the last simultaneously imposes single-valuedness and injectivity. For $\alpha=0$, the clauses force $s=\varnothing$. Because the domain elements used in the application are pure ordinals, atom values cannot be confused with those indices.
+
+Transitive absoluteness of this formula is immediate from structural induction on bounded formulas. In particular, a transitive set containing an alleged injection graph sees its actual entries and their atom values, rather than some truncated graph with hidden range atoms.
+
+\section{A dependency audit of the principal proofs}\label{app:audit}
+
+\begin{longtable}{@{}L{0.26\linewidth}L{0.33\linewidth}L{0.33\linewidth}@{}}
+\toprule
+Result & Positive mechanism & Point that must not be assumed\\
+\midrule
+\endhead
+Base Replacement & Fresh atom transposition fixes inputs and moves a proposed new output atom. & Arbitrary witnesses need not be uniquely definable.\\[5pt]
+Elementary lift & On each finite parameter tuple, the atom injection agrees with an atom permutation. & The global injection need not extend to a global permutation agreeing everywhere.\\[5pt]
+Parameter-definability & Stabilizers of parameter kernels force identity off the kernel; internal graph codes give the converse. & External definability from the full atom map is not internal parameter-definability.\\[5pt]
+Type recognition & A countable component enumeration graph lies below an uncountable kernel cutoff. & Expanded Replacement is not used to construct that graph.\\[5pt]
+Necessity in the profile theorem & Replacement applied to one uniformly defined selector collects all small type blocks. & The blocks need not already form an internal family.\\[5pt]
+Sufficiency in the profile theorem & A fresh isomorphic component yields an automorphism commuting with every named map. & Separate commutation with only one of several names is insufficient.\\[5pt]
+Two-name lower bound & Marker roots and their real labels distinguish continuum many countable component types. & No continuum hypothesis is used to obtain $\aleph_1$ distinct reals.\\[5pt]
+Successor Collection & A common reservoir of at most $\nu$ components per type bounds all witness kernels. & A rank bound alone does not bound the atoms in the witnesses.\\[5pt]
+Full reflection & Grow both rank bounds and component reservoirs for a fixed finite subformula family. & One fixed atom reservoir need not reflect the absence of a set of all atoms.\\
+\bottomrule
+\end{longtable}
+
+\section{Reproducibility and supplementary finite checks}\label{app:checks}
+The source package is self-contained: \texttt{article.tex} contains its bibliography and compiles with pdfLaTeX. The build script runs three passes to settle the table of contents and cross-references. No external mathematical software or bibliography processor is needed for the manuscript.
+
+The supplementary \texttt{verify\_finite.py} uses only Python's standard library. It enumerates all permutations on at most seven points for the one-map swap checks, all ordered pairs of permutations on at most five points for the two-map checks, and all marker codes using six bits. It constructs component isomorphisms explicitly, verifies that the induced swaps commute with all named maps, and checks the finite-support marker involutions and their translation-rigidity property.
+
+These are exact finite regression tests of the combinatorial constructions, not statistical experiments and not a formal verification of the theorems. They cannot establish a claim about an infinite cutoff, Replacement, a proper-class elementary embedding, or CH. The accompanying JSON file records the executed checks; the source audit records the repository pin and the literature used.
+
+\begin{thebibliography}{9}
+\addcontentsline{toc}{section}{References}
+\raggedright
+
+\bibitem{GY2026}
+Elliot Glazer and Bokai Yao,
+\emph{Reflection Principles in ZFU},
+arXiv:2602.21970v1, 25 February 2026.
+\url{https://arxiv.org/abs/2602.21970}.
+
+\bibitem{G2024}
+Elliot Glazer,
+\emph{Global choice is not conservative over local choice for Zermelo set theory},
+arXiv:2312.11902v3, January 2024.
+\url{https://arxiv.org/abs/2312.11902}.
+
+\bibitem{Yao2023}
+Bokai Yao,
+\emph{Set Theory with Urelements},
+Ph.D. dissertation, University of Notre Dame, June 2023;
+arXiv:2303.14274v3.
+In particular, Definition~24, Lemma~25, Theorem~26, and the kernel-bound examples in Theorem~27.
+\url{https://arxiv.org/abs/2303.14274}.
+
+\bibitem{RepoZF}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: first-order ZF development},
+\repo{SetTheory/ZF/Lean/ZF/Zf.lean},
+repository snapshot \texttt{2b7b388ba81a3355b19a7c2d2fe797e92f572355}.
+Inspected declarations include \texttt{Sep\_form}, \texttt{Repl\_form}, \texttt{ZFax}, and \texttt{ZFax\_s}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/2b7b388ba81a3355b19a7c2d2fe797e92f572355/SetTheory/ZF/Lean/ZF/Zf.lean}.
+
+\bibitem{RepoBC}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: Bounded-complexity consistency for ZFC},
+\repo{SetTheory/BoundedConsistency/README.md},
+repository documentation consulted for the external-index and language-complexity distinctions.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/2b7b388ba81a3355b19a7c2d2fe797e92f572355/SetTheory/BoundedConsistency/README.md}.
+
+\bibitem{RepoSSE}
+Vladimir Reshetnikov and contributors,
+\emph{ProveIt: Self-Embeddings of the Surreal Numbers},
+research-report README, marked unrefereed and not formalized.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/2b7b388ba81a3355b19a7c2d2fe797e92f572355/Algebra/SurrealNumbers/docs/surreal/surreal-self-embeddings/README.md}.
+
+\end{thebibliography}
+\end{document}
