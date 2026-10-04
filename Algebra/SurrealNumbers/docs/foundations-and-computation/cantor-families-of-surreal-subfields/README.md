@@ -213,12 +213,16 @@ coding and free-algebra universality of `No` over ZF).
   Borel exactly when `L` is scattered; this bears on, but does not answer,
   Question 13.1 (note after Theorem 6.3).
   Part XV (batch 92): its `pma:rk:thm:scaling` uses the integer comparisons
-  of Lemma 3.4 for embeddings between left-finite Levi-Civita fields, where
-  the value-group map is multiplication by a real `λ > 0`, and
+  of Lemma 3.4 for embeddings between left-finite Levi-Civita fields over
+  the real algebraic numbers with nonzero rational-vector-space exponent
+  groups, where the value-group map is multiplication by a real `λ > 0`, and
   `pma:rk:thm:parameters` classifies those embeddings; the fields are
   complete and uncountable, so Question 13.8 is not answered, and its Cantor
-  family of self-copies (`pma:rk:thm:family`) is a different object from the
-  families here (note after Lemma 3.4).
+  family of self-copies for countable exponent groups (`pma:rk:thm:family`)
+  is a different object from the families here (note after Lemma 3.4).
+  Remark 3.5 (`csf:rem:levi-civita-hypothesis`) retains the original
+  unqualified subgroup wording and refutes its positive-character
+  classification with the Laurent-series automorphism `t ↦ -t`.
 - [`surreal-fields-across-universes`](../surreal-fields-across-universes/)
   (`univ:`), Part VIII: `univ:gs:thm:boolean` also indexes real closed fields
   by subsets of a set (the class fields `No^{M_A}` of Cohen extensions), but
@@ -369,10 +373,18 @@ B=$(mktemp -d); mkdir "$B/code"; cp article.tex code/build.sh "$B/"
 cp code/finite_checks.py "$B/code/"; cd "$B"; sh build.sh
 ```
 
-It was not run at the write. The committed PDF was built the first way with
-MiKTeX: 32 pages; no errors or warnings, no undefined references or
+It was not run at the write. At placement, the then-committed PDF was built
+the first way with MiKTeX: 32 pages; no errors or warnings, no undefined references or
 citations, no multiply defined labels, no duplicate PDF destinations, no
 overfull or underfull boxes.
+
+The scope correction and Remark 3.5 were rebuilt on 4 October 2026 with
+three direct `pdflatex -no-shell-escape` passes in a scratch output directory.
+The current PDF has32 pages,71 unique source labels,129 resolved local
+references and29 citations to13 bibliography keys. There are no warnings,
+undefined references/citations, or overfull/underfull boxes. PDF page13
+containing the new remark was visually checked. No delivered build script
+or finite-check program ran during this correction.
 
 ## Provenance
 
