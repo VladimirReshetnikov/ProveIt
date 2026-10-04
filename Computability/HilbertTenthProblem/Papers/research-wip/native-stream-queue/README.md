@@ -3404,6 +3404,22 @@ the original state chronology. The complete supplied positive zero set
 agrees with537, including arbitrary positive program/input parameters;
 the fixed recipe E=3^e retains universality on ordinary positive x.
 
+The [shared U21 residue-affine source](residue_affine_sparse_shared476.md)
+reaches **456 certificate / 476=176M+300A polynomial operations**, with
+seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
+It saves 25 additions by reusing a disjoint paid selector partition, two
+operations by sharing a range repunit, and one addition through a joint
+payload identity. The entire polynomial equals the default 504 parent on
+identical supplied coordinates. Two fixed program parameters E,C retain
+E=3^e and dyadic C>=64, C>E, independent of ordinary positive input x.
+The [independent review](review_residue_affine_sparse_shared476.md) reconstructs
+all 476 rows from untouched parent bytes, proves the complete output identity,
+and checks all 67 witnesses, 72 native rows and 20 finalizer rows. A parent-row
+aliasing error in the first author checker was corrected before publication;
+the revised source and independent normal/optimized replays pass. The emitted
+circuit and arithmetic saving were unaffected. Only the default coupled/shared
+product successor is emitted; no exact-degree or below84 claim is made.
+
 A separate [program-radix tradeoff](residue_affine_sparse_program_radix504.md)
 uses **two fixed program parameters** E,C and gives **484 certificate
 /504=177M+327A polynomial operations**, seven comparisons,67 witnesses
@@ -4941,6 +4957,7 @@ New research and the completed75-operation construction:
 | [Shifted U9 program offset](neary_woods_universal_offset258.md) | **257 certificate /258=133M+125A**,1eq43w,four positive program parameters,degree at most3861; mapped269/608/44w and266/1344/43w. | E'=E−1 changes valid program recipes; accepted ordinary inputs preserved, not an all-tuple positive bijection. Selected mapped family only. |
 | [U9 lower-history unit](neary_woods_universal_lower_unit259.md) | **258 certificate /259=133M+126A**,1eq43w,four positive program parameters,degree at most3861. | Same supplied coordinates and positive zeros on valid program/input slices; negative lower sign contradicts the actual sentinel suffix. |
 | [All-factor U9 history-unit partitions](neary_woods_universal_history_unit_partitions.md) | Older-E frontier259/3861/43w;266/1106,267/1060,268/738,270/608 with44w. Fixed43w reaches267/1344. | Exact finite32-base partition/anchor objective, including optional lower unit; no automatic transfer to the new E' interface or global arithmetic optimum. |
+| [Shared U21 selector/payload source](residue_affine_sparse_shared476.md) | **456 certificate /476=176M+300A**,7 comparisons,67 positive witnesses,two fixed program parameters,degree at most5160. | Complete polynomial identity to the default504 coupled/shared product source; disjoint selector sums, shared range repunit and joint payload cancellation save1M+27A. |
 | [Fixed sparse program radix](residue_affine_sparse_program_radix504.md) | **484 certificate /504=177M+327A**,7eq67w, two fixed program parameters E,C plus raw x,uniform degree at most5160. | C dyadic>=64 and C>E=3^e permits h=x+eta, B=Ch. One C serves all inputs; direct soundness/completeness includes h=2. A parameter tradeoff, not an identical supplied-zero-set rewrite. |
 | [Paid sparse control codes](residue_affine_sparse_control_codes.md) | **485 certificate /505=177M+328A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Reuse paid selector sums and prefixes in injective current/target codes. Complete control cost106→74; identical positive zeros with537 after unchanged typing and exact chronology. |
 | [Derived sparse terminal bound](residue_affine_sparse_terminal537.md) | **517 certificate /537=193M+344A**,7eq67w,one program E=3^e plus raw x,degree at most5091. | Initial-only height h=E+x+eta; typed payload transport derives F below the radix. Positive parent extension and direct soundness preserve the universal relation; inverse height gap may be nonpositive. |

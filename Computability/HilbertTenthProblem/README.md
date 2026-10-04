@@ -2782,6 +2782,22 @@ the original state chronology. The complete supplied positive zero set
 agrees with537, including arbitrary positive program/input parameters;
 the fixed recipe E=3^e retains universality on ordinary positive x.
 
+The [shared U21 residue-affine source](Papers/research-wip/native-stream-queue/residue_affine_sparse_shared476.md)
+reaches **456 certificate / 476=176M+300A polynomial operations**, with
+seven comparisons, 67 positive witnesses and uniform degree **at most 5160**.
+It saves 25 additions by reusing a disjoint paid selector partition, two
+operations by sharing a range repunit, and one addition through a joint
+payload identity. The entire polynomial equals the default 504 parent on
+identical supplied coordinates. Two fixed program parameters E,C retain
+E=3^e and dyadic C>=64, C>E, independent of ordinary positive input x.
+The [independent review](Papers/research-wip/native-stream-queue/review_residue_affine_sparse_shared476.md) reconstructs
+all 476 rows from untouched parent bytes, proves the complete output identity,
+and checks all 67 witnesses, 72 native rows and 20 finalizer rows. A parent-row
+aliasing error in the first author checker was corrected before publication;
+the revised source and independent normal/optimized replays pass. The emitted
+circuit and arithmetic saving were unaffected. Only the default coupled/shared
+product successor is emitted; no exact-degree or below84 claim is made.
+
 A separate [program-radix tradeoff](Papers/research-wip/native-stream-queue/residue_affine_sparse_program_radix504.md)
 uses **two fixed program parameters** E,C and gives **484 certificate
 /504=177M+327A polynomial operations**, seven comparisons,67 witnesses
