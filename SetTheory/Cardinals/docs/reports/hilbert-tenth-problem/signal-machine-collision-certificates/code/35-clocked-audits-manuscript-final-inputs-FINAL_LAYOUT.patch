@@ -1,0 +1,29 @@
+--- candidate/clock.tex
++++ final/clock.tex
+@@ -173,6 +173,7 @@
+ 
+ \section{Six instruction padding formulas}\label{sec:thirty}
+ Apply Lemma~\ref{lem:padding} with $C=30$. Write $LX(q)$ for an $LXL$ loop of duration $qx'$, and analogously $LY(q)$, $RX(q)$, $RY(q)$ for durations $qy'$, $q(D-x')$, $q(D-y')$. Each has speed magnitude $2/q$. Table~\ref{tab:padding} lists all nonzero target loops. Every row also includes the initial unit-speed full loop, both unit-speed transfers and the final full loop.
++
+ \begin{table}[htbp]\centering\small\renewcommand{\arraystretch}{1.35}
+ \begin{tabular}{@{}llllr@{}}\toprule
+ Branch & Left loops & Right loops & $k$ & Final speed $2/k$\\\midrule
+@@ -185,6 +186,7 @@
+ \end{tabular}
+ \caption{Six explicit padding words, with positive final coefficients. Coordinates are the frozen output of the core.}\label{tab:padding}
+ \end{table}
++
+ The four target-loop magnitudes are $39/196$, $18/25$, $9/25$, $63/655$ for coefficients $392/39$, $25/9$, $50/9$, $1310/63$ respectively. All six values of $k$ are positive, including $1/6$ for B positive. Thus the precise output-coordinate calculation proves $30D$ without relying only on the inherited bound $T_c<10D$.
+ 
+ \begin{table}[htbp]\centering\renewcommand{\arraystretch}{1.2}
+--- candidate/scope.tex
++++ final/scope.tex
+@@ -18,7 +18,7 @@
+ 
+ Finite counter traces and sum-of-squares conjunctions are elementary encodings. Dudenhefner provides a precise modern treatment of the relevant counter instruction model and emphasizes that computational claims depend on the instruction set \cite{Dud22}. Our source language and edge semantics have therefore been stated explicitly. The substantive number-theoretic dependency is the pinned constructive Pell pair \cite{Pell}. Its license and attribution travel with the copied source.
+ 
+-The literature check was targeted to these mechanisms and dependencies, not exhaustive. No firstness, priority or absence-of-equivalent-prior-construction claim is made. Nor are $30$, $54$, $39$, degree 12, witness count or residual count asserted to be optimal. The exact counts describe this displayed construction. There is no robustness, finite-precision hardware, minimum-population, gate-count, circuit-minimality or efficient-Pell-witness theorem.
++The literature check was targeted to these mechanisms and dependencies, not exhaustive. No firstness, priority or absence-of-equivalent-prior-construction claim is made. Nor are $30$, $54$, $39$, degree 12, witness count or residual count asserted to be optimal. The exact counts describe this construction. Robustness, finite precision, minimality and efficient Pell witnesses are not established.
+ 
+ \section{Questions opened by the construction}\label{sec:future}
+ The following are research questions, not established conclusions.

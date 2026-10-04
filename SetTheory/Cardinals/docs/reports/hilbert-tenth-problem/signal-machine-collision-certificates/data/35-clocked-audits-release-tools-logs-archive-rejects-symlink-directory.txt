@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 112, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 95, in main
+    m=verify(root,a.manifest_sha256,getattr(a,'metadata',False))
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 37, in verify
+    files,dirs=inventory(root);require(set(files)==set(m['files']),'File set differs');require(dirs==m['directories'],'Directory set differs')
+               ^^^^^^^^^^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 19, in inventory
+    require(not p.is_symlink(),'Symlink rejected: '+rel)
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 8, in require
+    if not v:raise ValueError(s)
+             ^^^^^^^^^^^^^^^^^^^
+ValueError: Symlink rejected: extra-link

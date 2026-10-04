@@ -1,0 +1,244 @@
+{
+  "adapter_sha256": "a5327ea281be120f99a1b31cb27a568f07a4dc498b96b701177f2ecee7786911",
+  "case_count": 33,
+  "cases": [
+    {
+      "case": "relocated-spaces",
+      "expected": "PASS",
+      "passed": true,
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "case": "output-reuse",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: output directory must be fresh and nonexistent"
+    },
+    {
+      "case": "readonly-relocated",
+      "expected": "PASS",
+      "passed": true,
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "case": "isolated-polluted-environment",
+      "expected": "PASS",
+      "passed": true,
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "case": "optimized-O",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: optimized Python is forbidden: assertions must remain enabled"
+    },
+    {
+      "case": "optimized-OO",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: optimized Python is forbidden: assertions must remain enabled"
+    },
+    {
+      "case": "missing-isolation",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: invoke with python3 -I -S -B to isolate imports and disable bytecode writes"
+    },
+    {
+      "case": "missing-no-site",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: invoke with python3 -I -S -B to isolate imports and disable bytecode writes"
+    },
+    {
+      "case": "missing-no-bytecode",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: invoke with python3 -I -S -B to isolate imports and disable bytecode writes"
+    },
+    {
+      "case": "relative-input",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: paths must be explicit canonical absolute paths"
+    },
+    {
+      "case": "missing-input",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: missing path component: /tmp/report58-portability-tests-avszacxu/does-not-exist"
+    },
+    {
+      "case": "dotdot-input",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: path must be canonical without dot components or trailing slash"
+    },
+    {
+      "case": "trailing-slash-input",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: path must be canonical without dot components or trailing slash"
+    },
+    {
+      "case": "double-leading-slash",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: paths must be explicit canonical absolute paths"
+    },
+    {
+      "case": "same-inputs",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: input trees must be disjoint"
+    },
+    {
+      "case": "nested-output",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: output must be external to both input trees"
+    },
+    {
+      "case": "relative-output",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: paths must be explicit canonical absolute paths"
+    },
+    {
+      "case": "missing-output-parent",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: missing path component: /tmp/report58-portability-tests-avszacxu/missing-parent"
+    },
+    {
+      "case": "output-file",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: directory required: /tmp/report58-portability-tests-avszacxu/existing-output-file"
+    },
+    {
+      "case": "input-root-symlink",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: symlink path component rejected: /tmp/report58-portability-tests-avszacxu/packet-link"
+    },
+    {
+      "case": "input-ancestor-symlink",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: symlink path component rejected: /tmp/report58-portability-tests-avszacxu/ancestor-link"
+    },
+    {
+      "case": "dangling-output-symlink",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: symlink path component rejected: /tmp/report58-portability-tests-avszacxu/output-link"
+    },
+    {
+      "case": "output-ancestor-symlink",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: symlink path component rejected: /tmp/report58-portability-tests-avszacxu/output-parent-link"
+    },
+    {
+      "case": "tampered-science",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: source authentication failed for packet: missing, extra, or altered file"
+    },
+    {
+      "case": "tampered-DAG",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: source authentication failed for packet: missing, extra, or altered file"
+    },
+    {
+      "case": "tampered-checker",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: source authentication failed for audit: missing, extra, or altered file"
+    },
+    {
+      "case": "tampered-reference-receipt",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: source authentication failed for audit: missing, extra, or altered file"
+    },
+    {
+      "case": "missing-pinned-file",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: source authentication failed for packet: missing, extra, or altered file"
+    },
+    {
+      "case": "extra-file",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: source authentication failed for packet: missing, extra, or altered file"
+    },
+    {
+      "case": "extra-empty-directory",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: source authentication failed for packet: unexpected directory inventory"
+    },
+    {
+      "case": "symlink-file",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: symlink in input tree: /tmp/report58-portability-tests-avszacxu/mutant-symlink-file/PROOF.md"
+    },
+    {
+      "case": "symlink-directory",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REPLAY REFUSED: symlink in input tree: /tmp/report58-portability-tests-avszacxu/mutant-symlink-directory/sources"
+    },
+    {
+      "case": "missing-required-arguments",
+      "expected": "REFUSE",
+      "passed": true,
+      "returncode": 2
+    }
+  ],
+  "exact_regenerated_receipts_verified": true,
+  "import_trap_executed": false,
+  "limits": "No hostile concurrent filesystem-writer test or OS/network sandbox claim. Isolated Python plus authenticated trusted checkers and read-only private copies.",
+  "original_frozen_inputs_preserved": true,
+  "relocated_readonly_inputs_preserved": true,
+  "status": "PASS",
+  "test_harness_sha256": "b47767c80845e7bbd8af140c5579e10c30b95efeab2a8dbe3da2109bcfede678",
+  "test_workspace": "/tmp/report58-portability-tests-avszacxu"
+}

@@ -1,0 +1,116 @@
+{
+  "status": "PASS",
+  "adapter_sha256": "7a537eeaf0e26d3c720527343f2a0cd1321d3d3486046ee947ef3b5d76b9b71e",
+  "no_author_scientific_program_executed": true,
+  "tests": [
+    {
+      "name": "canonical_root_accepted",
+      "passed": true
+    },
+    {
+      "name": "relative_root",
+      "passed": true,
+      "diagnostic": "Every input and output path must be explicit and absolute"
+    },
+    {
+      "name": "dot_alias",
+      "passed": true,
+      "diagnostic": "A root must be canonical: no symlink or normalized alias"
+    },
+    {
+      "name": "symlink_root",
+      "passed": true,
+      "diagnostic": "A root must be canonical: no symlink or normalized alias"
+    },
+    {
+      "name": "symlink_ancestor",
+      "passed": true,
+      "diagnostic": "A root must be canonical: no symlink or normalized alias"
+    },
+    {
+      "name": "file_as_root",
+      "passed": true,
+      "diagnostic": "Input root must be a directory: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input/sentinel"
+    },
+    {
+      "name": "hardlinked_inventory",
+      "passed": true,
+      "diagnostic": "Hardlinked file is forbidden: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input/sentinel"
+    },
+    {
+      "name": "symlink_inventory",
+      "passed": true,
+      "diagnostic": "Symlink entry is forbidden: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input/symlink"
+    },
+    {
+      "name": "nonregular_inventory",
+      "passed": true,
+      "diagnostic": "Nonregular entry is forbidden: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input/fifo"
+    },
+    {
+      "name": "changed_bytes",
+      "passed": true,
+      "diagnostic": "Authenticated tree mismatch: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input"
+    },
+    {
+      "name": "extra_file",
+      "passed": true,
+      "diagnostic": "Authenticated tree mismatch: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input"
+    },
+    {
+      "name": "comparison_difference",
+      "passed": true,
+      "diagnostic": "Byte-for-byte expected-output mismatch: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input/sentinel"
+    },
+    {
+      "name": "owned_assertion_retained_under_optimized_wrapper",
+      "passed": true,
+      "outer_optimization": 1
+    },
+    {
+      "name": "checker_digest",
+      "passed": true,
+      "diagnostic": "Owned checker changed before execution"
+    },
+    {
+      "name": "explicit_read_and_fresh_output_write_allowed",
+      "passed": true
+    },
+    {
+      "name": "live_guard_excluded_read",
+      "passed": true,
+      "diagnostic": "Checker read outside explicit roots denied: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/excluded-input/sentinel"
+    },
+    {
+      "name": "live_guard_protected_write",
+      "passed": true,
+      "diagnostic": "Checker write to protected input denied: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/synthetic-input/sentinel"
+    },
+    {
+      "name": "live_guard_external_write",
+      "passed": true,
+      "diagnostic": "Checker write outside fresh output denied: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/excluded-input/forbidden"
+    },
+    {
+      "name": "live_guard_relative_read",
+      "passed": true,
+      "diagnostic": "Checker relative filesystem access is forbidden"
+    },
+    {
+      "name": "live_guard_directory_read",
+      "passed": true,
+      "diagnostic": "Checker read outside explicit roots denied: /workspace/shared/report60-portable-replay-independent-review-20261004/guard-probes-v3/excluded-input"
+    },
+    {
+      "name": "live_guard_process",
+      "passed": true,
+      "diagnostic": "Checker process/network operations are forbidden"
+    },
+    {
+      "name": "live_guard_link",
+      "passed": true,
+      "diagnostic": "Checker rename/link operations are forbidden"
+    }
+  ],
+  "test_count": 22
+}

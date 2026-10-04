@@ -1,0 +1,179 @@
+{
+  "status": "PASS",
+  "source_report_sha256": "7bc3fe1cca0e9568e497b73981f62ffd804bb40b024bdded4647521ba9e97653",
+  "test_count": 25,
+  "tests": [
+    {
+      "name": "normal_replay",
+      "exit_code": 0,
+      "expected_success": true,
+      "required_diagnostic": null,
+      "passed": true
+    },
+    {
+      "name": "read_only_relocated_optimized_replay",
+      "exit_code": 0,
+      "expected_success": true,
+      "required_diagnostic": null,
+      "passed": true
+    },
+    {
+      "name": "reuse_output",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Output must be fresh",
+      "passed": true
+    },
+    {
+      "name": "output_inside_release",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Output must be external",
+      "passed": true
+    },
+    {
+      "name": "relative_input_root",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "explicit and absolute",
+      "passed": true
+    },
+    {
+      "name": "noncanonical_input_alias",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "canonical",
+      "passed": true
+    },
+    {
+      "name": "overlapping_input_roots",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Input roots must be disjoint",
+      "passed": true
+    },
+    {
+      "name": "missing_required_root",
+      "exit_code": 2,
+      "expected_success": false,
+      "required_diagnostic": "required",
+      "passed": true
+    },
+    {
+      "name": "symlink_output",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "canonical",
+      "passed": true
+    },
+    {
+      "name": "symlink_input_root",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "canonical",
+      "passed": true
+    },
+    {
+      "name": "symlink_adapter_ancestor",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Adapter source must be canonical",
+      "passed": true
+    },
+    {
+      "name": "role_outside_release",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "strict descendant",
+      "passed": true
+    },
+    {
+      "name": "missing_source",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Authenticated tree mismatch",
+      "passed": true
+    },
+    {
+      "name": "tampered_source",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Authenticated tree mismatch",
+      "passed": true
+    },
+    {
+      "name": "tampered_inert_quadratic_science",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Authenticated tree mismatch",
+      "passed": true
+    },
+    {
+      "name": "tampered_inert_quadratic_audit",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Authenticated tree mismatch",
+      "passed": true
+    },
+    {
+      "name": "tampered_checker",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Authenticated tree mismatch",
+      "passed": true
+    },
+    {
+      "name": "tampered_expected",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Authenticated tree mismatch",
+      "passed": true
+    },
+    {
+      "name": "extra_source_file",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Authenticated tree mismatch",
+      "passed": true
+    },
+    {
+      "name": "symlink_source_file",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Symlink entry",
+      "passed": true
+    },
+    {
+      "name": "hardlinked_source_file",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "Hardlinked file",
+      "passed": true
+    },
+    {
+      "name": "tampered_pins",
+      "exit_code": 1,
+      "expected_success": false,
+      "required_diagnostic": "input-pins digest mismatch",
+      "passed": true
+    },
+    {
+      "name": "historical_read_fallback_blocked",
+      "exit_code": 0,
+      "expected_success": true,
+      "required_diagnostic": null,
+      "passed": true
+    },
+    {
+      "name": "protected_write_blocked",
+      "exit_code": 0,
+      "expected_success": true,
+      "required_diagnostic": null,
+      "passed": true
+    },
+    {
+      "name": "byte_comparator_rejects_difference",
+      "passed": true
+    }
+  ]
+}

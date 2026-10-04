@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 112, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 88, in main
+    require(not (root/'MANIFEST.json').exists(),'Refusing to replace manifest');n=check_inputs(root)
+                                                                                  ^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 30, in check_inputs
+    require(sha(q.read_bytes())==row['sha256'] and q.stat().st_size==row['bytes'],'Pinned input mismatch '+rel)
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 8, in require
+    if not v:raise ValueError(s)
+             ^^^^^^^^^^^^^^^^^^^
+ValueError: Pinned input mismatch science/clock/MANIFEST.json

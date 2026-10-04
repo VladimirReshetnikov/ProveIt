@@ -1,0 +1,976 @@
+Report 69   Low-arity finite-clipping compilers                                                    4 October 2026
+
+
+                                            RESEARCH REPORT 69
+
+
+                                 Low-arity finite-clipping
+                                  Diophantine compilers
+                    Two witnesses at linear degree; one witness by disjoint cells
+
+                                                  4 October 2026
+
+                                                    Abstract
+          A predicate on positive integer pairs that depends only on clipping each coordinate at a fixed
+      threshold has a direct Diophantine representation with a unique positive witness pair. Cleared
+      tensor interpolation gives five residual squares and, at horizon T ≥ 1, exact degree max{2(T +
+      1), 4, 2 deg FS } ≤ 4T . One fixed two-zero-test program attains 4T for every by-horizon T ≥ 2 in this
+      presentation. A separate product of disjoint-cell sums of squares has one unique positive witness
+      and exact degree 2nI + 4T nE + 8T nC . We prove an exact zero-versus-one native auxiliary-variable
+      classification for every fixed finite clipping table, with no degree restriction: zero variables suffice
+      exactly when each accepted tail cell’s full coordinate-flat closure is accepted.
+          All domains, empty and full tables, horizon zero, coefficient heights, expanded support, storage,
+      factored gates and table preprocessing are paid explicitly. Composing with the accepted twelve-leaf
+      POWER module gives 28 positive witnesses and 17 squares, or 27 witnesses with a nonnegative
+      product block; replacing that block by its square gives 13 squares and doubles its compiler-degree
+      contribution. Native witnesses and decoded projections are unique, but the full composed fibers are
+      infinite. The results concern horizon-indexed families, not a fixed polynomial for unbounded halting,
+      and make no global minimality or priority claim.
+
+
+1    Finite tables, domains, and the main tradeoff
+
+Write N = {0, 1, 2, . . .} and Z>0 = {1, 2, . . .}. Fix T ∈ N, put K = T + 1, and define
+
+                  cK (x) = min(x, K),         US = {(A, B) ∈ Z2>0 : (cK (A), cK (B)) ∈ S},                       (1)
+
+where S ⊆ {1, . . . , K}2 is fixed coefficient data. The table is never a free input or an existentially
+selected table. Degrees below are joint total degrees in every actual input and witness, before imposing
+any equations. We set deg 0 = −∞; a nonzero constant has degree zero. A residual-square count refers
+to the literal displayed slots, even if some are zero or repeated.
+Theorem 1.1 (Native compilers, stated together). For every fixed table S there are explicit integer
+polynomials with the following properties.
+ 1. A sum PS (A, B; r, s) of five residual squares represents US with exactly two declared positive
+    witnesses, unique whenever they exist. For T ≥ 1,
+
+                                       deg PS = max{2K, 4, 2 deg FS } ≤ 4T,
+
+    where FS is the rejection interpolant in (5). A separate T = 0 definition has exact degree two.
+ 2. A globally nonnegative polynomial QS (A, B, w) represents US with one declared positive witness,
+    again unique whenever it exists. For T ≥ 1,
+
+                              deg QS = DS := 2nI + 4T nE + 8T nC ≤ 10T 2 + 8T,                                   (2)
+
+                                                         1
+Report 69   Low-arity finite-clipping compilers                                             4 October 2026
+
+
+      where nI , nE , nC count accepted cells with zero, one and two tail coordinates. The empty product
+      is 1, with DS = 0.
+ 3. With no degree restriction, the minimum number of positive existential auxiliary variables in a single
+    integer-polynomial equality defining US is zero or one. It is zero exactly when the coordinate-flat
+    closure condition of Theorem 4.1 holds.
+
+Each construction is given and proved below. In particular, the arity classification concerns a fixed
+finite table and unrestricted degree. It does not assert that the two-witness linear-degree formula is
+arity-minimal, or that any degree is minimal. The one-witness full-table product reaches its displayed
+worst-case degree even though the full predicate itself has the zero polynomial as a zero-witness
+representation.
+
+
+1.1    Why bounded counter programs give such tables
+
+Fix a finite deterministic two-counter program M , initial state q0 and halt state H. A nonhalt
+instruction either increments one counter and takes its specified successor, or tests a counter for zero,
+taking its zero successor when zero and otherwise decrementing it and taking its positive successor.
+The other counter is unchanged. Both counters are natural integers; arbitrary loops are allowed. Make
+H virtually absorbing with no counter change solely to describe a finite prefix.
+
+Lemma 1.2 (Clipping through the last tested entry). The runs from (a, b) and (min(a, T ), min(b, T ))
+have the same control states q0 , . . . , qT and the same branches in their first T transitions. Thus first
+arrival at H at or before T is preserved.
+
+Proof. Suppose the first t transitions agree, where t < T . A counter initially below T began identically
+and received identical changes. A counter clipped from at least T began at T , so its representative
+value at the next instruction entry is at least T − t > 0. The original equals that value plus its fixed
+nonnegative initial offset along the common branches. Consequently every tested counter has the same
+zero/nonzero status, and the next instruction agrees. Induction proves the claim, with the T = 0 case
+vacuous. A representative may become zero after transition T while the original remains positive;
+there is no next test in the specified prefix.
+
+Positive inputs A, B represent native counters A − 1, B − 1. The shift converts the native threshold T
+to K = T + 1. Define S by testing representatives (i − 1, j − 1) either for reaching H by T or for first
+reaching H exactly at T . Lemma 1.2 proves (1) for all positive input sizes in both cases. If q0 = H,
+the by-T table is always full, and the exact-T table is empty for T > 0. At T = 0 both predicates are
+full exactly when q0 = H.
+There are K 2 table bits. A direct finite construction examines the initial state and at most T transitions
+from each representative: at most K 2 T native transitions, with each representative counter at most
+2T . This is an effective finite preprocessing bound, not an executed interpreter in this report. It is
+not free advice and does not imply a faster bounded-halting algorithm. The horizon indexes different
+polynomials, with different products, factorials and table coefficients.
+
+
+
+
+                                                    2
+Report 69   Low-arity finite-clipping compilers                                                          4 October 2026
+
+
+2    A two-witness tensor compiler
+
+Assume T ≥ 1, so K ≥ 2, and put c = (K − 1)!. For 1 ≤ i ≤ K define
+                                                                   !
+                                                          K −1          Y
+                                   ℓi (z) = (−1)K−i                             (z − h).                            (3)
+                                                          i−1          1≤h≤K
+                                                                         h̸=i
+
+The difference product at i is (−1)K−i (i − 1)!(K − i)!. Hence
+                                                                              K
+                                                                              X
+                             ℓi (h) = c 1i=h       (1 ≤ h ≤ K),                     ℓi (z) = c.                     (4)
+                                                                              i=1
+
+The second identity follows because the two sides have degree at most K − 1 and agree at K distinct
+nodes. Every coefficient is integral. Define
+                                         X
+                          FS (x, y) =             ℓi (x)ℓj (y),        (i, j) ∈ {1, . . . , K}2 .                   (5)
+                                        (i,j)∈S
+                                             /
+
+It has degree at most K − 1 in each coordinate, at most 2K − 2 jointly, and at a grid node equals zero
+on S and c2 off S. In particular the full table gives FS = 0 and the empty table gives FS = c2 . The
+notation x, y defines this polynomial; it introduces no witnesses in the compiler.
+Set the expressions
+                                                                                          K
+                                                                                          Y
+                       u = A − r + 1,          v = B − s + 1,              RK (z) =           (z − i).              (6)
+                                                                                          i=1
+
+Use precisely the five residuals
+                              D1 = RK (u),                      D2 = RK (v),
+                              D3 = (r − 1)(u − K), D4 = (s − 1)(v − K),
+                                                                        5
+                                                                                                                    (7)
+                                                                        X
+                              D5 = FS (u, v),                   PS =          Di2 .
+                                                                        i=1
+
+Here A, B, r, s are ordinary positive integer variables. Before the equations hold, u, v are not assumed
+positive. There are no implicit range constraints and no input-dependent denominators.
+Proposition 2.1 (Both directions and the whole native fiber). For positive A, B, there exist positive
+r, s with PS = 0 exactly when (A, B) ∈ US . Every such zero has
+
+                               r = A − cK (A) + 1,                s = B − cK (B) + 1.                               (8)
+
+In particular the native witness fiber is a singleton or empty, and 1 ≤ r ≤ A, 1 ≤ s ≤ B.
+
+Proof. A sum of real squares vanishes only when every residual vanishes. The first two force u, v ∈
+{1, . . . , K}. From (6), A − u = r − 1 ≥ 0. If u < K, then D3 = 0 forces r = 1 and A = u. If u = K,
+positivity of r forces A ≥ K. These alternatives give exactly u = cK (A) and the first equality in
+(8); similarly v = cK (B). The fifth residual now asserts table membership, proving soundness and
+uniqueness.
+Conversely, if (A, B) ∈ US , the positive pair in (8) gives those clipped representatives. The range
+residuals vanish. Each classification product vanishes because either its slack is one or its representative
+is K. The fifth residual vanishes at the accepted node. Thus PS = 0.
+
+                                                            3
+Report 69   Low-arity finite-clipping compilers                                            4 October 2026
+
+
+Strict positivity is essential. If r = 0 were allowed, an input A = K −1 could produce u = A−r +1 = K;
+the classification product would vanish via u − K, selecting an incorrect tail class. Positivity is part of
+the theorem’s domain, not an inequality that the displayed polynomial supplies on its own.
+
+
+2.1   Horizon zero is a separate definition
+
+When T = 0, put ϵ = 0 for the full one-cell table and ϵ = 1 for the empty table. Use the five residual
+slots
+                    A − r, B − s, 0, 0, ϵ,        PS = (A − r)2 + (B − s)2 + ϵ.                    (9)
+This has exact degree two, six nonzero monomials if accepted and seven if rejected. Accepted inputs
+have the unique positive pair (r, s) = (A, B). Inserting K = 1 in the unchanged generic formula
+(7) would retain unnecessary quadratic classification residuals and degree-four squares. Equation (9)
+explicitly replaces that formula; it does not silently simplify its degree claim.
+
+
+2.2   Exact degree and a fixed sharpness example
+
+Lemma 2.2 (No cancellation at the highest square degree). For real polynomials h1 , . . . , hm , not all
+zero, deg h2i = 2 maxi deg hi .
+         P
+
+
+Proof. The top homogeneous component is the sum of squares of the top components of maximal
+degree. If it vanished identically, evaluation at every real point and nonnegativity would force each
+such component to vanish identically, a contradiction.
+
+The substitution x = A − r + 1, y = B − s + 1 preserves the degree of every nonzero polynomial f (x, y).
+Its top part becomes ftop (A − r, B − s), nonzero because setting r = s = 0 recovers ftop (A, B). The
+range residuals have exact degree K and the classification residuals exact degree two. Therefore
+
+                             deg PS = max{2K, 4, 2 deg FS } ≤ 4K − 4 = 4T.                            (10)
+
+Empty and full tables have degree 2K. At T = 1, every table has degree four.
+For a fixed program attaining the upper bound, use states QA , QB , L, H, initial state QA , and the
+instructions
+
+                            State           Zero branch     Positive branch
+                            QA : test a     go to QB        decrement a, go to L
+                            QB : test b     go to H         decrement b, go to L
+
+At L, increment a and return to L. The only accepted input is (a, b) = (0, 0), first reaching H on
+transition two. For every by-horizon T ≥ 2, the table is S = {(1, 1)}. Then
+
+                                          FS (x, y) = c2 − ℓ1 (x)ℓ1 (y),
+
+whose xK−1 y K−1 coefficient is −1. It has degree 2K − 2, and (10) is exactly 4T for this one fixed
+program at every such horizon.
+This is sharpness of the displayed construction, not a lower bound against other polynomials. For
+the same fixed program, first-exactly-T acceptance is empty when T > 2. At each individual exact
+horizon T ≥ 2, a chain of T − 2 increments on the successful path after the second test yields the same
+singleton table; that delayed program depends on T .
+
+                                                        4
+Report 69   Low-arity finite-clipping compilers                                                              4 October 2026
+
+
+3     One witness from disjoint clipped cells
+
+For K ≥ 2, define
+                                                                 T
+                                                                 Y
+                                                  pK (x) =            (x − h)2 .                                       (11)
+                                                                 h=1
+This is nonnegative on R. On positive integers it is zero exactly for x < K, and strictly positive
+exactly for x ≥ K. The second assertion uses the discrete domain: every positive integer smaller than
+K = T + 1 is one of its roots.
+
+                        B
+
+                     ..                                                    Clipping at K
+                      .
+                                                                           Each ray maps to an edge cell.
+                                (i, K)           (K, K)
+                                                                           The corner maps to (K, K).
+
+                    K                                                      One positive witness
+                                                                           Interior: w = 1
+               K −1                                                        Vertical tail: w = pK (B)
+                                                                           Horizontal tail: w = pK (A)
+                            fixed (i, j)          (K, j)                   Corner: w = pK (A)pK (B)
+                    1                                                    Zero-witness obstruction
+                                                           ···         A A zero tail ray forces the entire
+                            1        K −1 K                              coordinate line.
+
+Figure 1: The positive-integer partition, drawn schematically at K = 4. Shading indicates regions of
+lattice points, not additional real-domain acceptance. The cells are disjoint; the tail labels retain the
+fixed threshold K rather than the actual unbounded coordinate.
+
+For each table cell define a globally nonnegative factor:
+                                 fij = (A − i)2 + (B − j)2 + (w − 1)2 (i, j < K),
+                                fiK = (A − i)2 + (w − pK (B))2                        (i < K),
+                                                  2                         2
+                                                                                                                       (12)
+                                fKj = (B − j) + (w − pK (A))                          (j < K),
+                                fKK = (w − pK (A)pK (B))2 .
+Set                                                               Y
+                                           QS (A, B, w) =                  fij (A, B, w),                              (13)
+                                                                 (i,j)∈S
+
+with empty product 1. All coefficients are integers, and QS ≥ 0 on all of R3 .
+Proposition 3.1 (One witness, with no inactive freedom). For positive A, B, w, a cell factor in (12)
+vanishes exactly on its own clipped cell and at the following witness value:
+                                                
+                                                
+                                                
+                                                1,                        A, B < K,
+                                                
+                                                p (B),                    A < K ≤ B,
+                                                
+                                                  K
+                                           w=                                                                          (14)
+                                                
+                                                
+                                                pK (A),                   B < K ≤ A,
+                                                
+                                                 pK (A)pK (B),             A, B ≥ K.
+                                                
+                                                
+
+Consequently ∃w ∈ Z>0 : QS (A, B, w) = 0 is equivalent to (A, B) ∈ US , and its positive witness is
+unique.
+
+                                                                  5
+Report 69   Low-arity finite-clipping compilers                                              4 October 2026
+
+
+Proof. An interior factor is zero exactly when A = i, B = j and w = 1. An edge factor fiK is zero
+exactly when A = i and w = pK (B) > 0, which forces B ≥ K by (11); the other edge is symmetric.
+At the corner, w = pK (A)pK (B) > 0 forces both factors positive, since they are nonnegative, hence
+A, B ≥ K. The displayed choices prove every converse.
+A real product is zero exactly when some factor is zero. On positive integer inputs the clipped cells
+partition the domain, so at most one factor can vanish for a positive witness. Its cell is accepted if and
+only if it occurs in (13). Equation (14) then proves existence and uniqueness. Every listed value is a
+positive integer on its stated cell.
+
+Allowing w = 0 would break this proof: in an edge factor, pK (B) = 0 at a below-threshold positive
+integer could mimic the tail. No additional inequality is hidden in the equation; strict positivity is an
+explicit domain obligation.
+At K = 1, the separate one-witness definitions are (w − 1)2 for the full table and 1 for the empty table.
+Their degrees are two and zero. The accepted witness is w = 1; the rejected polynomial has no solution
+and its formally declared witness is unused.
+
+
+3.1    Exact degree and the distinction between a block and a square
+
+Each factor is nonzero. Their exact degrees, in the order of (12), are 2, 4T, 4T, 8T : pK has leading
+term x2T , and its squared corner product has leading term A4T B 4T . Total degree is additive under
+products of nonzero polynomials. Thus (2) is exact. The ceiling uses nI ≤ T 2 , nE ≤ 2T and nC ≤ 1,
+and is attained by the full-table displayed product. For nonempty S, the coefficient of w2|S| is one, so w
+genuinely occurs.
+Each interior factor has three residual-square slots, each edge has two, and the corner has one. Fully
+distributing their product gives precisely
+
+                                                  LS = 3nI 2nE                                         (15)
+
+literal square slots: pick one squared residual from each factor and square the product of those residuals.
+The empty-product convention gives the one square 12 . Coincident or zero terms need not be combined;
+this is a presentation count, never a minimum SOS length.
+The compact QS is a product of sums of squares and is not generally one residual square. Replacing it
+by Q2S preserves its zero set and witnesses, costs one additional multiplication, and changes its degree
+from DS to 2DS . Exponential distributed SOS length does not imply exponential collected monomial
+support; degree and the fixed number of variables give the polynomial bounds in Section 5.
+
+
+4     Exactly when zero native witnesses suffice
+
+For a clipped cell a = (a1 , a2 ) define its tail positions J(a) = {ℓ : aℓ = K}. Its coordinate-flat closure
+in the table consists of all cells obtained by replacing any or all coordinates in J(a) by arbitrary indices
+in {1, . . . , K}, while keeping the other coordinates fixed.
+
+
+
+
+                                                       6
+Report 69   Low-arity finite-clipping compilers                                               4 October 2026
+
+
+Theorem 4.1 (Exact zero-versus-one native classification). Fix K ≥ 1 and S ⊆ {1, . . . , K}2 . The
+following are equivalent:
+  1. An integer polynomial R(A, B), with no witnesses, vanishes on positive integer inputs exactly on
+     US .
+  2. Every accepted cell’s coordinate-flat closure is contained in S.
+  3. If (i, K) is accepted then every (i, j) is accepted; if (K, j) is accepted then every (i, j) is accepted;
+     an accepted (K, K) forces the full table.
+Within one polynomial equality, with fixed table-dependent coefficients and no degree bound, the minimum
+number of positive existential auxiliary variables is zero when these conditions hold and one otherwise.
+
+The quantified indices in the last condition range from 1 to K. Joint replacement at the corner is
+essential. This is not the usual coordinatewise order-ideal condition: fixed coordinates smaller than K
+need not be replaced.
+
+Necessity. Suppose R vanishes on all positive integer points of an accepted cell. Fix its non-tail
+coordinates at that cell’s exact values. The resulting polynomial in the tail coordinates vanishes on the
+entire Cartesian product {K, K + 1, . . .}|J(a)| .
+A polynomial zero on a product of infinite real sets is identically zero. For one variable this is the
+finite-root theorem. Inductively, view it as a polynomial in its last variable; fixing all earlier coordinates
+in their infinite sets forces every coefficient to vanish there, and the induction hypothesis makes those
+coefficient polynomials zero. Therefore the restriction of R to the entire coordinate flat is identically
+zero. In particular, each former tail coordinate may take any positive value below K as well. Exact
+representation requires the corresponding jointly replaced clipped cells to be accepted. This argument
+even allows real coefficients and makes no SOS assumption on R.
+
+Sufficiency and the minimum. Let X1 = A, X2 = B and define
+                                       X                               Y
+                           Za (X) =        (Xℓ − aℓ )2 ,    RS (X) =         Za (X).                     (16)
+                                      ℓ∈J(a)
+                                       /                               a∈S
+
+An empty sum is zero and an empty product is one. A factor vanishes exactly on its coordinate flat. If
+the closure condition holds, every positive point on that flat is accepted; conversely an accepted point
+makes its own cell’s factor zero. This proves exact representation. For the empty table, RS = 1. An
+accepted all-tail cell forces a full table and contributes the zero factor, yielding RS = 0, as required.
+If S is nonempty and has no all-tail cell, each factor is a nonzero degree-two polynomial, so the displayed
+RS has degree exactly 2|S|. That degree need not be minimal. Necessity rules out zero variables if
+closure fails, while Proposition 3.1 supplies one. These two observations establish the exact minimum
+in the stated class.
+
+At K = 1, both possible tables have minimum zero, represented by 0 and 1. Finite interior-only tables
+also satisfy closure. For example, a single interior point admits (A − i)2 + (B − j)2 = 0 with no witness.
+A single edge cell at K ≥ 2 fails closure: its tail ray cannot be cut off below K by a witness-free
+polynomial equality. These examples explain why a uniform one-witness construction is not minimal
+for every table.
+
+
+
+
+                                                       7
+Report 69   Low-arity finite-clipping compilers                                                    4 October 2026
+
+
+4.1   The fixed-dimensional extension
+
+Fix an integer d ≥ 1, K ≥ 2 and S ⊆ {1, . . . , K}d . Inputs X1 , . . . , Xd and witness w are all positive
+integers. For a cell a, put J(a) = {ℓ : aℓ = K}, t(a) = |J(a)|, and define
+                                                                                        2
+                                            X                              Y
+                          fa (X, w) =            (Xℓ − aℓ )2 + w −               pK (Xℓ ) ,
+                                        ℓ∈J(a)
+                                         /                               ℓ∈J(a)                              (17)
+                                        Y
+                         QS (X, w) =          fa (X, w).
+                                        a∈S
+
+The inner empty product is one. Positivity of w forces every tail factor pK (Xℓ ) to be positive; the
+fixed-coordinate squares force every other input coordinate. Thus each factor defines exactly its clipped
+cell, and disjointness proves the same equivalence and uniqueness. Its unique witness is the product
+over the actual tail coordinates, or one if there are none.
+A no-tail factor has degree two; a factor with t(a) ≥ 1 tails has degree 4T t(a). Degree additivity gives
+the exact sum of these cell degrees (zero for empty S). In the full table, there are T d no-tail cells and
+total tail-coordinate incidence dK d−1 , whence
+
+                                      deg QS ≤ 2T d + 4dT (T + 1)d−1 .                                       (18)
+
+For fixed d this is O(T d ) and the support has at most deg Qd+1
+                                                              S +d+1
+                                                                                  
+                                                                     monomials. The constants and
+exponents here may depend on d; no dimension-uniform polynomial bound is asserted. The fully
+distributed SOS presentation may still be exponential in |S|. At K = 1, again use (w − 1)2 or 1.
+The infinite-grid necessity proof and the zero-witness construction (16) hold verbatim in d coordinates.
+Consequently Theorem 4.1’s exact zero-versus-one classification holds for every fixed finite-dimensional
+clipping table, with the same single-equation, positive-integer and unrestricted-degree qualifications.
+
+
+5     Coefficient, support, storage and circuit costs
+
+All bounds in this section concern the displayed formulas, uniformly in the table at a fixed K ≥ 2. They
+are upper bounds, not instancewise comparisons or optimality statements. For an integer polynomial
+f , let ∥f ∥1 denote the sum of absolute values of its collected coefficients. This norm is subadditive and
+submultiplicative. Integer arithmetic operations are counted separately from bit complexity, and the
+finite-table preprocessing from Section 1 must be added.
+
+
+5.1   Tensor coefficients after every affine substitution
+
+Put
+               BK = (K + 1)!,         LK = 2K−1 BK ,                HK = L4K + 2BK
+                                                                                 2
+                                                                                   + 8(K + 1)2 .             (19)
+The affine factor u − i = A − r − (i − 1) has norm i + 1. Product and triangle bounds, with the binomial
+sum 2K−1 , therefore give
+
+                                            ∥RK (u)∥1 , ∥RK (v)∥1 ≤ BK ,
+                                      X                   X
+                                            ∥ℓi (u)∥1 ,        ∥ℓi (v)∥1 ≤ LK ,
+                                        i                  i
+                                                          ∥FS (u, v)∥1 ≤ L2K .
+
+
+                                                               8
+Report 69   Low-arity finite-clipping compilers                                          4 October 2026
+
+
+Each classification residual has norm at most 2(K + 1), so
+
+                                                  ∥PS ∥1 ≤ HK .                                     (20)
+
+Every coefficient magnitude thus needs at most ⌈log2 (HK + 1)⌉ = O(K log(K + 1)) bits, with an
+additional sign bit if desired. No substitution-dependent coefficient cost is omitted.
+The tensor square has degree at most 2K − 2 in the pair (A, r) and separately at most 2K − 2 in (B, s).
+                          2
+Its support is at most 2K
+                        2    . The other squares each use only one of those pairs, and have degree at
+most 2K. Only the two additional     degree layers can lie outside that tensor support envelope; they
+                      2K+2     2K 
+contribute at most 2[ 2 − 2 ] = 8K + 2. Hence a complete support ceiling is
+
+                                 NK = K 2 (2K − 1)2 + 8K + 2 = O(K 4 ).                             (21)
+
+For example, fixed-field records for coefficients and four exponents need at most
+
+                               NK [⌈log2 (HK + 1)⌉ + 1 + 4 ⌈log2 (2K + 1)⌉]                         (22)
+
+bits, apart from a format header. Thus the expanded storage ceiling is O(K 5 log(K + 1)). Cancellations
+may substantially reduce support.
+
+
+5.2   Tensor factored gates and coefficient generation
+
+Let m = K 2 − |S| be the rejected-cell count. Reuse the 2K factors u − i, v − i. Computing every
+one-dimensional basis by multiplying its K − 1 factors and its signed binomial coefficient uses at most
+2K(K − 1) multiplications. The two ranges cost 2(K − 1) more, the two classification products two
+more, the rejected tensor products m, and the five final squares five. Thus
+
+                                   multiplications ≤ 2K 2 + m + 5,                                  (23)
+                           additions/subtractions ≤ 2K + 10 + max(m − 1, 0),
+
+including u, v, factors, shifted slacks and the final sum. A uniform combined ceiling is 4K 2 + 2K + 14.
+There is no division. Signed binomial constants have O(K) bits each, nodes have O(log K) bits, the
+table has K 2 bits, and a straightforward gate-index encoding uses O(K 2 log(K + 1)) bits in all. These
+counts do not treat large integer operands as fixed-bit objects.
+For one explicit expanded-construction procedure, build the K univariate bases by successive linear
+multiplication in O(K 3 ) integer coefficient operations. Sum their outer products across the table
+in O(K 4 ), and square the bivariate polynomial by naive convolution in O(K 4 ). Precompute the
+powers of A − r + 1 and B − s + 1 through 2K − 2. Substitute one coordinate by a separable
+coefficient transform in O(K 4 ) operations, leaving O(K 3 ) entries, and then the other in O(K 5 ). The
+remaining four squares are smaller. This gives O(K 5 ) integer coefficient operations after the table is
+known. Triangle/product bounds, even with the coarse affine-expansion factor 34K , keep coefficient
+intermediates at O(K log(K + 1)) bits. Index handling is separate; no unit-cost bit-complexity or
+polynomial-in-log T assertion follows.
+
+
+5.3   One-witness heights and expanded storage
+
+Set
+                                PK = (K!)2 ,                MI = 2K 2 + 4,
+                                ME = K 2 + (1 + PK )2 , MC = (1 + PK
+                                                                   2 2
+                                                                     ) ,                            (24)
+                                 CS = MInI MEnE MCnC .
+
+                                                       9
+Report 69   Low-arity finite-clipping compilers                                           4 October 2026
+
+
+All roots of pK are positive with even multiplicity, so its coefficients alternate in sign and ∥pK ∥1 =
+QT           2
+  h=1 (1 + h) = PK . Equation (12) gives norms at most MI , ME , MC for the three cell types: for
+instance ∥(A − i)2 ∥1 = (i + 1)2 ≤ K 2 and ∥(w − pK (B))2 ∥1 ≤ (1 + PK )2 . Therefore
+
+                         ∥QS ∥1 ≤ CS ,       ⌈log2 (CS + 1)⌉ = O(K 2 log(K + 1)).                   (25)
+
+The last bound uses the actual cell counts: log CS ≤ T 2 log MI + 2T log ME + log MC . Applying the
+corner estimate to all cells would lose this sharper bound. Nonnegative polynomial values do not imply
+nonnegative coefficients.
+There are only three actual variables, and total degree DS . Thus the support is at most DS3+3 = O(K 6 ),
+                                                                                             
+
+and a fully expanded sparse record list uses at most
+                                     !
+                             DS + 3
+                                    [⌈log2 (CS + 1)⌉ + 1 + 3 ⌈log2 (DS + 1)⌉]                       (26)
+                               3
+
+bits apart from its header, with a constant-size convention for DS = 0. This is O(K 8 log(K + 1)). For
+Q2S , replace DS , CS by 2DS , CS2 ; the same asymptotic support and storage bounds hold. Horizon zero
+is constant size.
+
+
+5.4   One-witness gates and expansion work
+
+Form A − h, B − h and their squares for 1 ≤ h ≤ T , then multiply the T squares in each coordinate.
+This costs 2T subtractions and 4T − 2 multiplications. Preparing the four witness squares in (12) costs
+four subtractions and five multiplications. Interior factors add twice, edge factors once, and the corner
+is already prepared. For N = |S| ≥ 1,
+
+                                    multiplications ≤ 4T + 3 + max(N − 1, 0),                       (27)
+                            additions/subtractions ≤ 2T + 4 + 2nI + nE .
+
+The combined ceiling is 3T 2 + 10T + 7. If S is empty, return the constant one with no arithmetic.
+Squaring QS adds one multiplication. The table, constants and gate indices admit an O(K 2 log(K + 1))-
+bit factored description. Input-dependent values such as pK (A) require full precision, so these gates
+are not a bit-time claim.
+For an explicit conservative expansion bound, interior factors have at most seven monomials; edge
+factors at most 6T + 5; the corner at most 1 + (2T + 1)2 + (4T + 1)2 . This follows by expanding
+w2 − 2wp + p2 and the corner analogue. Their support bounds sum over S to O(K 2 ). Build pK
+in O(K 2 ) coefficient operations. Each intermediate partial product has at most DS3+3 = O(K 6 )
+monomials, so successive naive monomial convolutions and collection use O(K 8 ) coefficient operations,
+with O(K 2 log(K + 1))-bit coefficient intermediates. A further naive self-convolution for Q2S uses
+O(K 12 ) operations. These are deliberately conservative bounds, with indexing/bookkeeping separate.
+
+
+5.5   Comparison with the accepted three-witness construction
+
+The earlier class-code compiler uses three positive witnesses and six square slots. Its retained upper
+bounds are degree 4K 2 − 4, coefficient magnitude bits O(K 2 log(K + 1)), support at most 16K 2 − 5,
+and expanded storage O(K 4 log(K + 1)), for T ≥ 1. They remain correct upper bounds; Report 66 did
+not claim equality in every instance. The separately accepted parity refinement in Report 67 gives
+exact degree 4K 2 − 4 for even K and 4K 2 − 8 for odd K ≥ 3, independently of the acceptance table.
+
+
+                                                    10
+Report 69   Low-arity finite-clipping compilers                                                    4 October 2026
+
+
+
+      Resource, T ≥ 1          Two-witness PS               One-witness QS           Squared Q2S
+      Native witnesses         2                            1                        1
+      Exact degree             max(2K, 4, 2 deg FS )        DS                       2DS
+      Presentation             5 squares                    product of SOS factors   1 square
+      Distributed SOS slots    5                            3nI 2nE                  1
+      Coefficient bits         O(K log(K + 1))              O(K 2 log(K + 1))        same order
+      Support ceiling          O(K 4 )                      O(K 6 )                  O(K 6 )
+      Expanded bits            O(K 5 log(K + 1))            O(K 8 log(K + 1))        same order
+      Factored gates           ≤ 4K 2 + 2K + 14             ≤ 3T 2 + 10T + 7         one extra multiply
+      Factored bits            O(K 2 log(K + 1))            O(K 2 log(K + 1))        same order
+      Expansion operations     O(K 5 )                      O(K 8 )                  O(K 12 )
+      Table preprocessing      ≤ K 2 T transitions          ≤ K 2 T transitions      same table
+
+Table 1: All-variable native resource upper bounds, except where marked exact. DS = 2nI + 4T nE +
+8T nC and K = T + 1. Gate and expansion counts use ordinary integer arithmetic, not bit complexity.
+Both one-witness forms have unique positive witnesses; a shorter SOS presentation may cost higher
+degree.
+
+
+Its special horizon-zero degree is two. The full exact-degree proof and accepted audit are retained as
+comparison sources.
+The tensor construction reduces arity and the degree ceiling, and improves the coefficient-bit ceiling,
+but loses the predecessor’s narrow univariate class-code support. Its expanded support/storage upper
+bounds are worse. The one-witness product saves another variable while increasing the degree and
+expanded-storage ceilings further. None of these upper-bound comparisons proves that every instance
+of one construction is larger than every instance of another. Reports 66–68 and their original counts
+are unchanged.
+
+
+6     Paid composition with the accepted POWER module
+
+Only this section imports the accepted constructive number-theoretic dependency. The native finite-
+table results above do not use it. We repeat all base-two residuals and the domain recovery to specify
+the composed polynomial without an unexpanded POWER predicate.
+
+
+6.1   Twelve positive leaves, including the output
+
+For positive index C and output o, the module has six directly positive leaves
+
+                                             o, g, qb , qv , J, qα ,
+
+and six distinct positive adapter leaves for the natural aliases
+
+                                        dwb , dwC , dyC , qσ , qτ , qr .
+
+Each alias z means z + − 1, where z + ∈ Z>0 is its own actual leaf. Thus the count is twelve including o,
+or eleven auxiliary leaves beyond a supplied output. The index C is counted separately. In particular
+
+
+
+
+                                                       11
+Report 69   Low-arity finite-clipping compilers                                               4 October 2026
+
+
+qα is a directly positive integer, not a natural alias. Define only expressions
+
+                    ω = 2 + dwb ,         y = C + dyC ,                      β = 1 + 4yqb ,
+                           2
+                    v p = y qv ,          t = C + 4yqτ ,                    Mp = 2o + J,
+                                                                                                        (28)
+                    Z = 2o + J + 5, X = y(Z − 8) + 8o + 4Mp qr ,
+                    U = 4β − Z,          V = qα X + U q σ .
+
+The complete residuals are
+
+                                   H1 = X 2 − 16 − (Z 2 − 16)y 2 ,
+                                   H2 = U 2 − 16qα2 − (Z 2 − 16)qα2 vp2 ,
+                                   H3 = V 2 − 16qα2 − 16qα2 (β 2 − 1)t2 ,                               (29)
+                                   H4 = ω − C − dwC ,
+                                   H5 = Z 2 − 16 − 16((ω + 1)2 − 1)(ωg)2 .
+
+Every adapter and expression is substituted before treating the sum as a polynomial. No division
+appears in this formula.
+
+Proposition 6.1 (Imported POWER12 theorem). For positive integers C, o, the five equations (29)
+have eleven positive auxiliary leaves beyond o if and only if o = 2C−1 . The sum of their squares has
+exact joint degree twenty. Every accepted (C, o) has infinitely many full module tuples, including when
+C = 1.
+
+The accepted proof and its independent audit are retained in the source packet. Their all-exponent
+dependency is the constructive theorem pair Pell.matiyasevic and Pell.eq_pow_of_pell in math-
+lib4, at the exact source revision identified in Section 7.3. We import that theorem pair, not a claim of
+a new Lean execution. The following argument records the local recovery and explains precisely how
+this theorem is used.
+
+
+6.2   Recovered integrality, signs and the constructive boundary
+
+Positive leaves imply ω ≥ 2, y ≥ C ≥ 1, β ≥ 5, vp ≥ 1, t ≥ 1, Mp > 2o and qα ≥ 1. Put α = Z/4
+temporarily in Q. From H5 = 0,
+
+                                     α2 = 1 + ((ω + 1)2 − 1)(ωg)2 ∈ Z.
+
+A rational number with integer square is an integer: in a coprime fraction a/b, b2 | a2 forces b = 1.
+Therefore α is a positive integer, and the displayed norm gives α > ω ≥ 2.
+Next put up = U/(4qα ). Its denominator is nonzero, and H2 = 0 gives
+
+                                             u2p = 1 + (α2 − 1)vp2 .
+
+The rational-square lemma again gives an integer up , with |up | ≥ α > 0. The expression U gives
+β = α + qα up . If up < 0, then up ≤ −α, and the integer bound qα ≥ 1 would give β ≤ 0, a contradiction.
+Hence up > 0. This sign step would not be valid for arbitrary positive rational leaves.
+Define positive integers
+
+                               x = y(α − 2) + 2o + Mp qr ,        sp = x + up qσ .
+
+
+                                                       12
+Report 69   Low-arity finite-clipping compilers                                                      4 October 2026
+
+
+Then X = 4x, V = 4qα sp . Dividing H1 , H3 by the indicated nonzero square denominators gives their
+Pell norms. Together with the expression identities and H4 , H5 , we recover all fifteen old equations:
+
+                      x2 = 1 + (α2 − 1)y 2 ,                    u2p = 1 + (α2 − 1)vp2 ,
+                       s2p = 1 + (β 2 − 1)t2 ,                   β = 1 + 4yqb ,
+                       β = α + up qα ,                           vp = y 2 qv ,
+                       sp = x + up qσ ,                           t = C + 4yqτ ,
+                                                                                                               (30)
+                        y = C + dyC ,                            ω = 2 + dwb ,
+                       ω = C + dwC ,                            Mp = 2o + J,
+                        2                  2              2
+                      α = 1 + ((ω + 1) − 1)(ωg) ,
+                      4α = Mp + 5,                                x = y(α − 2) + 2o + Mp qr .
+
+All eliminated positive coordinates and natural adapters are restored; in particular α − 1 > 0, β − 1 > 0,
+x, up , sp > 0.
+The positive-index branch of Pell.matiyasevic, applied at parameter α and index C, identifies (x, y)
+with its Cth Pell pair. Its zero-index alternative is excluded by y ≥ C ≥ 1. The power characterization
+with base 2, exponent C, target 2o, modulus Mp and auxiliary (ω, α, g) then gives 2C = 2o. Its strict
+bound is supplied by J > 0, and its subtraction α − 2 agrees with ordinary subtraction because α > 2.
+A natural equality a − b = 1 is equivalent to a = b + 1, so the source’s natural-subtraction Pell equations
+match the displayed integer equations. Canceling two proves soundness.
+For completeness, the constructive theorem pair supplies an old tuple (30) whenever o = 2C−1 . Its
+congruence quotients are nonnegative. One useful residue lemma is: if z = r + Lq > 0, L > 0, 0 < r ≤ L
+and q ∈ Z, then q ≥ 0. Here vp = y 2 qv ≥ y and the first two norms give up ≥ α and up ≥ x; also
+1 ≤ C ≤ y < 4y. The lemma therefore applies to the β, sp , t congruences. For the last congruence put
+h = x − y(α − 2); then
+                               x2 − [y(α − 2)]2 = (4α − 5)y 2 + 1 > 0,
+so h > 0, and 0 < 2o < Mp proves qr ≥ 0. The auxiliary g cannot be zero since that would give α = 1;
+the constructive norms and congruences make the required other direct leaves positive. This includes
+C = 1.
+The old qα may initially be zero. To obtain the strict direct leaf required here, use the integer-polynomial
+Pell recurrence
+                      X0 (z) = 1,                                      Y0 (z) = 0,
+                                                 2
+                                                                                                               (31)
+                    Xn+1 (z) = zXn (z) + (z − 1)Yn (z), Yn+1 (z) = Xn (z) + zYn (z).
+
+It gives the Pell norm, positivity for z ≥ 2, n ≥ 1, and Xn (1) = 1, Yn (1) = n. Integer polynomials
+preserve congruences. Hold the old α, ω, Mp , g, x, y, up , vp fixed, and for every integer k ≥ 1 put
+
+             βk = β0 + 4yup k,                   qb,k = qb,0 + up k,                 qα,k = qα,0 + 4yk,        (32)
+             sk = XC (βk ),                          tk = YC (βk ).
+
+Congruence preservation gives sk ≡ x (mod up ) and tk ≡ C (mod 4y); the residue lemma makes the
+resulting qσ,k , qτ,k nonnegative. Every old equation is preserved, now with qα,k > 0. Removing the
+restored coordinates gives the new twelve-leaf solution. The retained qb,k is strictly increasing, proving
+infinitely many full module tuples for every accepted argument. This is existential equivalence; it is
+not a bijection with the old tuples having qα = 0.
+
+
+                                                           13
+Report 69   Low-arity finite-clipping compilers                                                         4 October 2026
+
+
+The residual degrees in (29) are 4, 10, 10, 1, 6. In H2 , the term −J 2 qα2 (d+   4 2
+                                                                              yC ) qv has coefficient −1. Its
+square contributes
+                                               J 4 qα4 (d+   8 4
+                                                         yC ) qv                                         (33)
+with coefficient one and degree twenty. No other residual uses qv ; within H22 the stated maximal powers
+have only this source. This proves the exact module degree after all positive shifts.
+
+
+6.3   Three external gaps and both compiler substitutions
+
+Let g1 , g2 , g3 be arbitrary positive integer inputs and let D = g1 + g2 + g3 be an expression. Introduce
+positive witnesses A, B and two independent twelve-leaf modules with (C, o) = (A, p) and (B, q). All
+their leaves are mutually distinct and distinct from the compiler witnesses. Set
+
+                         G1 = (20g1 − D)p − 2D,              G3 = (20g3 − D)q − 2D,                               (34)
+
+and define the common twelve-square decoding block
+                                                    5
+                                                    X                 5
+                                                                      X
+                                  E = G21 + G23 +         (HiA )2 +         (HiB )2 .                             (35)
+                                                    i=1               i=1
+
+Its paid witness count is 2 + 2 · 12 = 26, including p, q once each. The three final choices are
+
+         F2 = E + PS (A, B; r, s),        F1 = E + QS (A, B, w),                F1,□ = E + QS (A, B, w)2 .        (36)
+
+Theorem 6.2 (Complete composed equivalence and ledger). For each choice in (36), a positive witness
+exists exactly when the input is encoded by natural counters a, b satisfying
+                                 g1   1  1                   g3   1   1
+                                    =   + 2−a ,                 =   + 2−b ,                                       (37)
+                                 D    20 10                  D    20 10
+and (a + 1, b + 1) ∈ US . When S is a program’s table, this is the selected by-T or first-exactly-T
+predicate. The literal ledgers and exact degrees are
+
+                                                   F2                   F1                  F1,□
+                  External positive inputs         3                  3                      3
+                  Positive witnesses              28                 27                     27
+                  All variables                   31                 30                     30
+                  Final equations                  1                  1                      1
+                  Residual-square slots           17                 12                     13
+                  Additional block               none               QS                     none
+                  Exact degree               max(20, deg PS )    max(20, DS )           max(20, 2DS )
+
+The degree entries involving DS are for T ≥ 1; every composition has exact degree twenty at T = 0.
+For T ≥ 1, the fully distributed F1 has 12 + 3nI 2nE square slots. At T = 0, its native block is itself a
+square, so it has thirteen slots there too.
+
+Proof. Every summand in (36) is globally nonnegative. A zero therefore forces every decoding residual
+and the native block to vanish. Proposition 6.1 gives p = 2A−1 , q = 2B−1 . Equations (34), positive
+outputs and positive D force 20g1 − D > 0, 20g3 − D > 0 and, by division by positive quantities,
+exactly (37) with a = A − 1, b = B − 1. The native theorem gives acceptance. Conversely any encoded
+accepted triple supplies A, B, p, q, the constructive module witnesses and the unique native witnesses,
+
+                                                        14
+Report 69   Low-arity finite-clipping compilers                                                 4 October 2026
+
+
+so every required term vanishes. No promise that an arbitrary triple is encoded has been assumed;
+unencoded triples have no witnesses.
+The counts add the native leaves and slots to the paid 26-witness, twelve-square block. Outputs are
+already in the module counts. All slots and declared variables remain counted in degenerate cases.
+The block E has exact degree twenty, as the independent module monomial (33) is absent from the
+other module, the gap residuals and the native variables. The gap squares have degree four. Finally,
+a nonzero globally nonnegative polynomial has a nonnegative highest homogeneous part: scale the
+argument by a positive parameter and pass to the leading limit. Such highest parts cannot cancel in a
+sum of nonnegative polynomials. Apply this to E and each native block to obtain all stated degree
+equalities, including the product-block case.
+
+In particular the uniform degree ceilings at T ≥ 1 are
+
+                    max(20, 4T ),      max(20, 10T 2 + 8T ),        max(20, 20T 2 + 16T ),
+
+respectively. Calling F1 “thirteen squares” would incorrectly count a whole product-of-SOS block as
+one square. The thirteen-square presentation is F1,□ and pays the doubled native degree contribution.
+
+
+6.4    Unique projections, infinite full fibers, and fixed decoding costs
+
+If a zero exists, the gaps determine
+                                             2D                     2D
+                                     p=            ,        q=            .
+                                          20g1 − D               20g3 − D
+
+Injectivity of positive powers of two fixes A, B, and the native theorem fixes (r, s) or w. Thus
+(A, B, p, q, r, s) for F2 , or (A, B, p, q, w) for either one-witness form, is a unique projection. Nevertheless
+the full 28- or 27-witness fiber is infinite whenever nonempty: vary (32) in one module while holding
+its index/output, the other module, the inputs and native witnesses fixed. These composed formulas
+are neither single-fold nor finite-fold.
+Each decoding block has a fixed finite coefficient/support list independent of T , with a fixed factored
+circuit. Adding E increases support by only a T -independent constant and coefficient norm by a fixed
+additive amount. Therefore the native asymptotic expanded-storage, support and factored-description
+bounds of Section 5 persist under these compositions. The 30 or 31 total variables do not require
+a generic dense bound in that many variables. This is a size accounting statement, not a claim of
+bounded POWER witness height or constant bit-time evaluation.
+
+
+7     Context, evidence, and the exact boundary
+
+7.1    Elementary ingredients and literature context
+
+The scaled basis in (3) is ordinary Lagrange interpolation with a common factorial denominator cleared.
+NIST’s Digital Library of Mathematical Functions, Section 3.3(i), records the standard nodal formula
+and basis identities [1]. Tensoring those bases prescribes a Boolean-valued table on a rectangular grid.
+The underlying finite-grid vanishing principle is classical; Alon’s primary paper [2, Lemma 2.1] gives
+its familiar degree-bounded finite-set form and an induction proof. The infinite-grid implication used
+here follows from the same one-variable root argument, proved explicitly in Section 4.
+
+
+                                                       15
+Report 69   Low-arity finite-clipping compilers                                           4 October 2026
+
+
+Conjunction by a sum of real squares and disjunction by a product of nonnegative factors are
+elementary algebraic encodings. In the one-witness construction, uniqueness depends additionally on
+the disjointness of the clipped cells and the positive-integer domain. These contextual observations
+are not an attribution of the specific formulas or ledgers to the cited works. No exhaustive literature
+survey, novelty or priority conclusion is offered.
+
+
+7.2   What is and is not represented
+
+The native theorems quantify over all positive inputs and positive integer witnesses, not a finite
+sample box. Their proofs establish that domain-wide result. For bounded counter programs, clipping
+transports both by-horizon and exact-first-halt semantics, including loops and initially halted programs.
+The table itself remains fixed data obtained by finite preprocessing.
+In particular T is an index of the family. Writing “there exists a horizon T ” outside the family does
+not encode its varying acceptance table, factorials or products inside one fixed polynomial. This
+report supplies no unbounded-halting fixed polynomial or single-fold MRDP result. It gives no global
+witness minimum, minimum degree, minimum coefficient height, universal-polynomial record, efficient
+POWER witness-height bound, or new physical simulation theorem. The exact native zero-versus-one
+classification is the narrower theorem proved in Section 4; it does not classify the minimum arity of the
+gap compositions.
+Earlier Reports 66–68 retain their own constructions, resource bounds and scopes. The new formulas
+are replacements available for comparison, not retroactive recounts or corrections to those reports. No
+claim about arbitrary unencoded physical trajectories, collision horizons or physical resource costs is
+made here.
+
+
+7.3   Pinned arithmetic sources and retained evidence
+
+The full frozen source packet, including PROOF.md, ONE_WITNESS.md, dependencies and recorded
+exact-algebra evidence, is retained inertly with this article. Its source manifest SHA-256 is
+
+                                 b243e39e0fd9698f9d610f0f6d2b17485a98
+                                     df8e20a9412c1c38c65877a42c82.
+
+The original static review accepts the two-witness proof and composition but explicitly excludes the
+later one-witness appendix and its executed evidence. A separate full independent audit is included
+as the controlling review of the complete low-arity packet; its exact pins and completed evidence are
+recorded in the release README and acceptance record. These are distinct review scopes.
+For the imported POWER theorem, the retained source is mathlib4 revision
+
+                               ac77769fabe23cb237559e7f56578dbead91499f,
+
+file Mathlib/NumberTheory/PellMatiyasevic.lean. The declarations are Pell.matiyasevic and
+Pell.eq_pow_of_pell [3]. Its exact inert-file SHA-256 is
+
+                                  993760c797ad0ff66fa77064a616fce7795
+                                     50bc745cbf6c44e04f392fd0bed0a.
+
+The source, original copyright notice and Apache 2.0 license remain included. Its constructive theorem
+boundary is imported and textually checked; no new proof-assistant run is claimed.
+
+                                                   16
+Report 69   Low-arity finite-clipping compilers                                             4 October 2026
+
+
+The frozen author’s recorded results include 285 interpolation-node identities, 42 two-witness expansions,
+16,200 positive witness-box assignments and 18,432 canonical assignments over all K = 3 tables. The
+separate one-witness evidence includes 24 expansions, 4,348 assignments, all 530 tables through K = 3
+tested against the closure criterion, and 30 fixed-dimensional degree ledgers. Recorded complete
+POWER/gap expansions and fixtures corroborate the composed ledgers. These are prior stored results,
+not report-time executions, and do not replace the symbolic proofs, arbitrary-program table correctness
+or the imported all-exponent theorem.
+
+
+7.4   Preservation and reproducible presentation
+
+The source’s preservation record documents a genuine historical interruption: during its original baseline
+interval, a separate authorized Report68 release was still being sealed. Seventeen entries changed there,
+including README bytes, read-only modes and directory times. The original baseline, interrupted log
+and exact difference are retained; this interval is not described as static. Reports 66/67 and frozen
+arithmetic dependencies matched that baseline. A separate post-seal Report68 inventory then verified
+the final 299-file, 31-directory manifest and preserved all 332 later inventory entries. These are different
+time intervals and different claims.
+For Report69, the source packet and accepted audit are copied with bytes, modes and nanosecond
+modification times preserved. All scientific programs, stored expansions, theorem-prover source and
+prior evidence are inert. Report-owned presentation tools only authenticate, flatten LaTeX, typeset,
+render and package. They never execute a source scientific checker, author/upstream code, counter
+interpreter, physical simulator, saved schedule or Lean.
+A fresh isolated build uses a new local TeX format and font map, an allowlisted environment, disabled
+shell escape, three passes, and the union of the format and every pass’s recorder inputs. An externally
+pinned dependency lock and exact PDF comparison distinguish a locked replay from an authoring
+bootstrap. Every rendered page receives visual inspection in addition to structural PNG checks.
+Synthetic release-tool tests and accepted independent mathematical, manuscript and release-tool
+reviews accompany the release. A fresh post-seal terminal verification is recorded separately after the
+archive is sealed. All of these checks are distinct from mathematical proof. Reproducible typesetting
+authenticates the delivered presentation, not the truth of a theorem.
+
+
+References
+
+[1] NIST Digital Library of Mathematical Functions, Section 3.3(i), Lagrange interpolation, equations
+    3.3.1–3.3.3_2. https://dlmf.nist.gov/3.3#i. Consulted 4 October 2026.
+
+[2] N. Alon, Combinatorial Nullstellensatz, Combinatorics, Probability and Computing 8 (1999), 7–29,
+    especially Lemma 2.1. Author-hosted primary text: https://web.math.princeton.edu/~nalon/
+    PDFS/null2.pdf.
+
+[3] M. Carneiro and mathlib contributors, PellMatiyasevic, mathlib4, pinned revision
+    above, Apache License 2.0. https://github.com/leanprover-community/mathlib4/blob/
+    ac77769fabe23cb237559e7f56578dbead91499f/Mathlib/NumberTheory/PellMatiyasevic.
+    lean.
+
+
+
+
+                                                    17
+

@@ -1,0 +1,53 @@
+{
+  "artifacts": {
+    "FROZEN_PRESERVATION.json": "822d95e3976b04a1165a10da2b46160d11b0698b22f25915989342a41b7d6831",
+    "PARENT_TEST_RESULTS.json": "341c60b738bafba812c3273ec1cce0d5706fc7755c50db8723718f00ae06c962",
+    "PROBE_RESULTS.json": "941bfacf839e6fdea381f42e527b5c09094dfb1b24ecb1541df541ec2e070b86",
+    "REVIEW.md": "cfc370be66f6c90533ea1ad49095612018b2fd977b40a401ac8fda535a46ca94"
+  },
+  "checker_sha256": "173eb6d22f7b69dd8a96f444fc422c841e2045b07b3ac9dd74a90d3654e66b92",
+  "evidence_sha256": "3a6d31b564f70ccb5173c8997a9e69f2389ee9fc8867ccbcefb112457a1643cb",
+  "format": 1,
+  "independent_supplemental_checks": {
+    "adapter_negative_cases": 9,
+    "all_passed": true,
+    "frozen_science_and_audit_unchanged": true,
+    "harness_regression_cases": 2,
+    "new_output_created_by_rejected_invocations": false,
+    "scientific_payload_executed": false
+  },
+  "limits": [
+    "Trusted Python interpreter and standard library required",
+    "Quiescent filesystem required; no concurrent-mutation or adversarial mount guarantee",
+    "Python isolation is not an OS or network sandbox",
+    "Postexecution error branches inspected, not fault-injected",
+    "Finite arithmetic replay is not a machine-checked proof of the full theorem"
+  ],
+  "parent_release_suite": {
+    "case_count": 27,
+    "execution_attribution": "Executed by parent; final sources and receipt inspected independently",
+    "passed": true,
+    "receipt_sha256": "341c60b738bafba812c3273ec1cce0d5706fc7755c50db8723718f00ae06c962"
+  },
+  "remaining_blockers": [],
+  "resolved_findings": [
+    {
+      "description": "Harness work-parent alias could create a directory inside an input",
+      "id": "R1",
+      "status": "fixed_and_independently_regression_tested"
+    },
+    {
+      "description": "Optimized Python could disable assertion-based test verdicts",
+      "id": "R2",
+      "status": "fixed_and_independently_regression_tested"
+    }
+  ],
+  "review_date_utc": "2026-10-04",
+  "reviewed_final_files": {
+    "PINNED_INPUTS.json": "2833e4e52431a495f3923ab6852484c749c550b7e4bab89949ff8a5c1b4d515f",
+    "README.md": "d6a963fadeaba8f73ef0400da1b8b70a58fbf9f091525a5d83307b2088585c7d",
+    "replay.py": "55f9af05403c943440f5aeb4aef1c5fe7f0e4b4d4f61309cee2c78c1c7420f72",
+    "test_replay.py": "8f388b0943f5c69c98999a175bf3ca901ed182999b9d5f6cd939add8eea19749"
+  },
+  "verdict": "accepted_with_documented_trust_and_isolation_limits"
+}

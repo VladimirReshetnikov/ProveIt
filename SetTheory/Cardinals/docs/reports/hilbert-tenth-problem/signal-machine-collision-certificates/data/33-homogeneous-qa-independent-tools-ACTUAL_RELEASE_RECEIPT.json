@@ -1,0 +1,166 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-fixture/tools/build_report63.py",
+        "--pins-sha",
+        "8dbeb0e7bdcbf949ebba9a699ab262dbb84b0111d9bb60d85c4c2a69aa10cbf1",
+        "--dependency-lock-sha",
+        "c92b3fb240739cfbd8617e9e14407288c7e60c62fb41c433684c9e5f44541d74",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-locked-build"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_LOCKED_BUILD",
+      "source_preserved": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-fixture/tools/release63.py",
+        "manifest",
+        "--output",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/ACTUAL_TEST_MANIFEST.json"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_MANIFEST",
+      "source_preserved": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-fixture/tools/release63.py",
+        "verify",
+        "--manifest-sha256",
+        "1eefea4cba957f466aaf903439221af4e903b171a5593f3c8df5cd39acd3289a"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_VERIFY",
+      "source_preserved": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-fixture/tools/release63.py",
+        "archive",
+        "--manifest-sha256",
+        "1eefea4cba957f466aaf903439221af4e903b171a5593f3c8df5cd39acd3289a",
+        "--output",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-a.zip"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_ARCHIVE_A",
+      "source_preserved": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-fixture/tools/release63.py",
+        "archive",
+        "--manifest-sha256",
+        "1eefea4cba957f466aaf903439221af4e903b171a5593f3c8df5cd39acd3289a",
+        "--output",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-b.zip"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_ARCHIVE_B",
+      "source_preserved": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-fixture/tools/release63.py",
+        "extract",
+        "--archive",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-release-a.zip",
+        "--manifest-sha256",
+        "1eefea4cba957f466aaf903439221af4e903b171a5593f3c8df5cd39acd3289a",
+        "--output-dir",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-relocated"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_EXTRACT",
+      "source_preserved": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-relocated/tools/release63.py",
+        "verify",
+        "--manifest-sha256",
+        "1eefea4cba957f466aaf903439221af4e903b171a5593f3c8df5cd39acd3289a"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_RELOCATED_VERIFY",
+      "source_preserved": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "-S",
+        "-B",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-relocated/tools/build_report63.py",
+        "--pins-sha",
+        "8dbeb0e7bdcbf949ebba9a699ab262dbb84b0111d9bb60d85c4c2a69aa10cbf1",
+        "--dependency-lock-sha",
+        "c92b3fb240739cfbd8617e9e14407288c7e60c62fb41c433684c9e5f44541d74",
+        "--require-packaged-match",
+        "--output-dir",
+        "/workspace/shared/report63-tools-independent-audit-20261004T1128Z/actual-relocated-build"
+      ],
+      "exit_status": 0,
+      "name": "ACTUAL_RELOCATED_BUILD",
+      "source_preserved": true
+    }
+  ],
+  "dependency_lock_sha256": "c92b3fb240739cfbd8617e9e14407288c7e60c62fb41c433684c9e5f44541d74",
+  "deterministic_archives_identical": true,
+  "diagnostic_archive_sha256": "6b3c04c1091004820d14e48378251c0b5c779c0effdf6d27c14925eeb7708b3e",
+  "diagnostic_manifest_file_count": 126,
+  "diagnostic_manifest_sha256": "1eefea4cba957f466aaf903439221af4e903b171a5593f3c8df5cd39acd3289a",
+  "executable_records": 7,
+  "final_manuscript_pins_sha256": "8dbeb0e7bdcbf949ebba9a699ab262dbb84b0111d9bb60d85c4c2a69aa10cbf1",
+  "full_relocated_bytes_modes_mtimes_equal": true,
+  "hostile_all_temp_variables_safe": true,
+  "independent_all_pass_and_map_union": true,
+  "page_count": 18,
+  "pdf_sha256": "eb8d4d7c0cc0c98a7b706efe5e262d6b17699e21be7976957725f836420ad3ed",
+  "relocated_pdf_and_pngs_identical": true,
+  "scientific_code_executed": false,
+  "scope": "Actual final manuscript on diagnostic release copies. This diagnostic archive is not the final published archive; final integration must seal again.",
+  "source_bindings": {
+    "INPUT_PINS.json": "b078c2b3b0f3582461fb9a250795dab1ecaa69b4920f80187daa946337e377b3",
+    "manuscript/MANUSCRIPT_PINS.json": "b0b303d4152db4101ab833ddfa81dd831bbc44f78a40747e588acb863bb13717",
+    "tools/BUILD_DEPENDENCIES_LOCK.json": "c92b3fb240739cfbd8617e9e14407288c7e60c62fb41c433684c9e5f44541d74",
+    "tools/build_report63.py": "6e62162d625fa17df712ee704950c099ea5e95e0e278820a7985a6a847374bd9",
+    "tools/release63.py": "dda555a5681b2d33626e4cfb25c1b5990208f77c1e0e3f392040dc6df57f2675",
+    "tools/selftest63.py": "2d7572a9217b9eb301fb84ab0be87734b2446fc94ceebef8fc36e5d42037c804"
+  },
+  "status": "PASS",
+  "system_input_count": 274,
+  "temporary_workspace_removed": true
+}

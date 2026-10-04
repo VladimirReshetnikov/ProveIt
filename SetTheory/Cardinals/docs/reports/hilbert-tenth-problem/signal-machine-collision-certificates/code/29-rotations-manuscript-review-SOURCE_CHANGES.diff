@@ -1,0 +1,38 @@
+--- initial-941a0deb-report59.tex
++++ final-3473c1fe-report59.tex
+@@ -347,7 +347,7 @@
+ \]
+ is a homeomorphism from $(0,\infty)\times\mathcal D$ onto $G$. The closed critical disk lies in the closed initial-order triangle. Each of the three affine gap forms is positive at zero and can vanish on its circle only at its single perpendicular contact. Hence at most finitely many points of $S$ fail the positive-gap condition, and some nondegenerate closed arc $A$ lies wholly inside $\mathcal D$.
+ 
+-Normalization is continuous on $G$, so $V$ is $G_\delta$ relative to $G$. As $G$ is ambient open, it is also $G_\delta$ in $\R^3$. Equivalently, the exact strict guard description expresses $V$ as $G\cap\bigcap_{n\geq0}(M^n)^{-1}C$, where $C$ is the open homogeneous chamber. If $V$ were relatively $F_\sigma$, its preimage under the continuous fixed-scale embedding
++Normalization is continuous on $G$, so $V$ is $G_\delta$ relative to $G$. As $G$ is ambient open, it is also $G_\delta$ in $\R^3$. Equivalently, the exact strict guard description expresses $V$ as $G\cap\bigcap_{n\geq0}(M^n)^{-1}C$, where $C$ is the open homogeneous chamber in gap coordinates, obtained by pulling the supplied guard rows back through $Q$. If $V$ were relatively $F_\sigma$, its preimage under the continuous fixed-scale embedding
+ \[
+ \iota:A\longrightarrow G,\qquad
+ \iota(u,v)=(1/3+u,\ 1/3+v-u,\ 1/3-v)
+@@ -376,7 +376,7 @@
+ 
+ Each finite accepting-path domain is therefore semialgebraic; their countable union is $F_\sigma$. Intersecting with $G$ gives the same relative upper bound. Finitely many arbitrary real constants only change coefficients, not this argument. The proper class proved above rules out semidecision of $V$, and hence decision as well.
+ 
+-Invalidity has a direct rational semidecision. Maintain $q=g$. Evaluate every strict chamber row at $q$; halt when one is nonpositive; otherwise replace $q$ by $Mq$ and repeat. Exact chamber equivalence guarantees that an invalid input has a finite failed iterate, including an equality at an excluded boundary orbit. Valid inputs never halt. This procedure uses only finitely many fixed rational rows and the rational return matrix; it neither simulates physical collisions nor inspects an infinite-time limit. Alternatively, normalize, halt above the disk and enumerate inverse iterates of all contacts, halting at an exact match. To classify nonpositive inputs as invalid too, add their initial sign test.
++Invalidity has a direct rational semidecision. Maintain $q=g$. Evaluate every supplied $(D,X,Y)$ guard row at $Qq$; halt when one is nonpositive; otherwise replace $q$ by $Mq$ and repeat. Exact chamber equivalence guarantees that an invalid input has a finite failed iterate, including an equality at an excluded boundary orbit. Valid inputs never halt. This procedure uses only finitely many fixed rational rows and the rational return matrix; it neither simulates physical collisions nor inspects an infinite-time limit. Alternatively, normalize, halt above the disk and enumerate inverse iterates of all contacts, halting at an exact match. To classify nonpositive inputs as invalid too, add their initial sign test.
+ 
+ Thus validity is \emph{properly co-semidecidable} in this specified model. This is no Type-2 or oracle classification, BSS-degree completeness statement, physical hypercomputation claim, or Turing undecidability claim for encoded rationals. Encoded rational inputs supply numerator/denominator data that an arbitrary exact real register does not supply, and the $O(L^3)$ procedure below need not cover irrational inputs. Positive scaling cancels in normalization, so this real-input conclusion is independent of contraction and Zeno behavior.
+ 
+@@ -505,7 +505,7 @@
+ \]
+ The sign in (O13) is therefore $v+\epsilon S$. At $n=0$ one gets $P=1,C=1,S=0$, correctly excluding $\eta_j=1$ on the boundary.
+ 
+-Equation~\eqref{eq:radiuswitness} forces $\Delta\geq0$. For $\Delta>0$, every positive acceptance witness exists because the sum in (O13) is already positive. At $\Delta=0$, each (O13) is solvable exactly when its contact is not a forbidden match. Conjoining all contacts yields precisely \eqref{eq:K}. Conversely, choose gcds, B\'ezout coefficients, canonical $c$-power factors, true Gaussian coefficients, bounded slacks, congruence quotients and the POWER witnesses. Every valid input then supplies all witnesses, with $J_{\rm acc}$ equal to its nonzero displayed sum. This proves both directions without a boundary selector or a generic MRDP appeal.
++Equation~\eqref{eq:radiuswitness} forces $\Delta\geq0$. For $\Delta>0$, a positive acceptance witness exists for each contact because the sum in (O13) is already positive. At $\Delta=0$, each (O13) is solvable exactly when its contact is not a forbidden match. Conjoining all contacts yields precisely \eqref{eq:K}. Conversely, choose gcds, B\'ezout coefficients, canonical $c$-power factors, true Gaussian coefficients, bounded slacks, congruence quotients and the POWER witnesses. Every valid input then supplies all witnesses, with $J_{\rm acc}$ equal to its nonzero displayed sum. This proves both directions without a boundary selector or a generic MRDP appeal.
+ 
+ \subsection{All fifteen POWER equations}\label{sec:POWER}
+ For an integer base $B_0\geq2$ and a natural exponent $e$, introduce the thirteen directly positive quantities
+@@ -609,7 +609,7 @@
+ \]
+ with proportional duplicate rows. It has eight supplied rows, six nearest rows and four distinct contacts; three nearest rows represent $p$. The first three distinct contacts share one rotation orbit. The point $p$ lies on the initial face $y=x$.
+ 
+-The denominator-based test agrees with acceptance of $\rot^kp$ exactly for $k>2$ over 101 checked indices. The sole zero-gap point in that checked tail is $k=0$. This is a separate geometric diagnostic, not a polygon emitted by any of the 45 physical fixtures. The general proof of Section~\ref{sec:geometry} supplies the result beyond those finite tests.
++The denominator-based test agrees with acceptance of $\rot^kp$ exactly for $k>2$ over 101 checked indices. The sole zero-gap point in that checked index range is $k=0$. This is a separate geometric diagnostic, not a polygon emitted by any of the 45 physical fixtures. The general proof of Section~\ref{sec:geometry} supplies the result beyond those finite tests.
+ 
+ The additional arithmetic cases use 32 signed/coordinate-ordered triples over $c=5,13,65,169$ and exponents zero through twenty. Thus both a distinct-prime composite denominator and a prime-square denominator are covered. Finite checks support, rather than replace, the prime-divisor and bounded-radix proofs. General large Pell witnesses are not instantiated.
+ 

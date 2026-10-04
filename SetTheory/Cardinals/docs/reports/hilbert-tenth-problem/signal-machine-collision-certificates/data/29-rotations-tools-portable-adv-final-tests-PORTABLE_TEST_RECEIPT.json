@@ -1,0 +1,256 @@
+{
+  "status": "PASS",
+  "python": "3.12.14",
+  "sympy": "1.14.0",
+  "effective_uid": 1000,
+  "adapter_sha256": "bc4dffe2d5162ac79247edba73743489bc45aa35da140bae4884c6ac9baab077",
+  "test_tool_sha256": "de3ebba6ff6110b49a3a67e515f385506310bfd79a9476d1a26d30743b1f9d6b",
+  "positive_replays": 3,
+  "negative_controls": 35,
+  "byte_identical_replays": true,
+  "harness_preflight_controls": [
+    {
+      "test": "work-dir-inside-packet",
+      "status": "rejected before any write"
+    },
+    {
+      "test": "work-dir-inside-audit",
+      "status": "rejected before any write"
+    },
+    {
+      "test": "work-dir-inside-dependencies",
+      "status": "rejected before any write"
+    }
+  ],
+  "original_inputs_preserved": true,
+  "original_paths_not_used_for_replay": true,
+  "guard_scope": "Python audit hook blocks historical open events, input open-for-write events, and socket events; this is a test guard, not an OS security sandbox",
+  "results": [
+    {
+      "test": "relocated-readonly-1",
+      "status": "PASS",
+      "python_optimized": false,
+      "historical_reads_denied_by_hook": true,
+      "network_denied_by_hook": true,
+      "input_writes_denied_by_hook": true,
+      "all_input_files_mode": "0444",
+      "all_input_directories_mode": "0555",
+      "outputs": {
+        "AUTHOR_PACKET_SNAPSHOT.json": "51aa99253a8bd491ee7f6e067454396967b643721a6004adf728d22fc78e9e29",
+        "DEPENDENCY_RECEIPT.json": "c4c3faaeb2bcf663caac07e788821f5681ed999a9cdac2c6ca3c623fa6533880",
+        "GEOMETRY_INDEPENDENT_RECEIPT.json": "4795a4d5ef08ec8bb45c44ea21b3467621a9dec218e83a46b6836e24eb34d4fd",
+        "REPLAY_RECEIPT.json": "986730bd3c24b0fb3b57a7161321325fb8637fc9d77cf53ce51da2cb2365157a",
+        "STATIC_INDEPENDENT_RECEIPT.json": "b840678bc15a9c319f3b97540bbd93d55f6aa6f114adb06b5a3fe0980fffd010"
+      }
+    },
+    {
+      "test": "relocated-readonly-2",
+      "status": "PASS",
+      "python_optimized": false,
+      "historical_reads_denied_by_hook": true,
+      "network_denied_by_hook": true,
+      "input_writes_denied_by_hook": true,
+      "all_input_files_mode": "0444",
+      "all_input_directories_mode": "0555",
+      "outputs": {
+        "AUTHOR_PACKET_SNAPSHOT.json": "51aa99253a8bd491ee7f6e067454396967b643721a6004adf728d22fc78e9e29",
+        "DEPENDENCY_RECEIPT.json": "c4c3faaeb2bcf663caac07e788821f5681ed999a9cdac2c6ca3c623fa6533880",
+        "GEOMETRY_INDEPENDENT_RECEIPT.json": "4795a4d5ef08ec8bb45c44ea21b3467621a9dec218e83a46b6836e24eb34d4fd",
+        "REPLAY_RECEIPT.json": "986730bd3c24b0fb3b57a7161321325fb8637fc9d77cf53ce51da2cb2365157a",
+        "STATIC_INDEPENDENT_RECEIPT.json": "b840678bc15a9c319f3b97540bbd93d55f6aa6f114adb06b5a3fe0980fffd010"
+      }
+    },
+    {
+      "test": "relocated-readonly-3",
+      "status": "PASS",
+      "python_optimized": true,
+      "historical_reads_denied_by_hook": true,
+      "network_denied_by_hook": true,
+      "input_writes_denied_by_hook": true,
+      "all_input_files_mode": "0444",
+      "all_input_directories_mode": "0555",
+      "outputs": {
+        "AUTHOR_PACKET_SNAPSHOT.json": "51aa99253a8bd491ee7f6e067454396967b643721a6004adf728d22fc78e9e29",
+        "DEPENDENCY_RECEIPT.json": "c4c3faaeb2bcf663caac07e788821f5681ed999a9cdac2c6ca3c623fa6533880",
+        "GEOMETRY_INDEPENDENT_RECEIPT.json": "4795a4d5ef08ec8bb45c44ea21b3467621a9dec218e83a46b6836e24eb34d4fd",
+        "REPLAY_RECEIPT.json": "986730bd3c24b0fb3b57a7161321325fb8637fc9d77cf53ce51da2cb2365157a",
+        "STATIC_INDEPENDENT_RECEIPT.json": "b840678bc15a9c319f3b97540bbd93d55f6aa6f114adb06b5a3fe0980fffd010"
+      }
+    },
+    {
+      "test": "missing-flag-packet",
+      "status": "rejected",
+      "stderr": "usage: replay_family59.py [-h] --packet PACKET --audit AUDIT --dependencies\n                          DEPENDENCIES --output OUTPUT\nreplay_family59.py: error: the following arguments are required: --packet"
+    },
+    {
+      "test": "missing-flag-audit",
+      "status": "rejected",
+      "stderr": "usage: replay_family59.py [-h] --packet PACKET --audit AUDIT --dependencies\n                          DEPENDENCIES --output OUTPUT\nreplay_family59.py: error: the following arguments are required: --audit"
+    },
+    {
+      "test": "missing-flag-dependencies",
+      "status": "rejected",
+      "stderr": "usage: replay_family59.py [-h] --packet PACKET --audit AUDIT --dependencies\n                          DEPENDENCIES --output OUTPUT\nreplay_family59.py: error: the following arguments are required: --dependencies"
+    },
+    {
+      "test": "missing-flag-output",
+      "status": "rejected",
+      "stderr": "usage: replay_family59.py [-h] --packet PACKET --audit AUDIT --dependencies\n                          DEPENDENCIES --output OUTPUT\nreplay_family59.py: error: the following arguments are required: --output"
+    },
+    {
+      "test": "missing-packet-root",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: required input directory absent: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-missing-packet-root/absent"
+    },
+    {
+      "test": "missing-audit-root",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: required input directory absent: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-missing-audit-root/absent"
+    },
+    {
+      "test": "missing-dependency-root",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: required input directory absent: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-missing-dependency-root/absent"
+    },
+    {
+      "test": "overlapping-input-roots",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: input/output roots overlap: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-overlapping-input-roots/packet and /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-overlapping-input-roots/packet"
+    },
+    {
+      "test": "output-inside-packet",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: input/output roots overlap: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-output-inside-packet/packet and /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-output-inside-packet/packet/new-output"
+    },
+    {
+      "test": "output-inside-audit",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: input/output roots overlap: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-output-inside-audit/audit and /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-output-inside-audit/audit/new-output"
+    },
+    {
+      "test": "existing-output",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: output must be a new absent directory: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-existing-output/existing"
+    },
+    {
+      "test": "missing-packet-manifest",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: [Errno 2] No such file or directory: '/workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-missing-packet-manifest/packet/PACKET_MANIFEST.json'"
+    },
+    {
+      "test": "mutated-packet-manifest",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: packet manifest trust-anchor mismatch"
+    },
+    {
+      "test": "mutated-proof",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: file authentication failed: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-mutated-proof/packet/PROOF.md"
+    },
+    {
+      "test": "missing-fixture",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: complete inventory mismatch at /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-missing-fixture/packet"
+    },
+    {
+      "test": "extra-packet-file",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: complete inventory mismatch at /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-extra-packet-file/packet"
+    },
+    {
+      "test": "extra-packet-directory",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: complete inventory mismatch at /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-extra-packet-directory/packet"
+    },
+    {
+      "test": "modified-audit-receipt",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: audit receipt trust-anchor mismatch"
+    },
+    {
+      "test": "modified-owned-checker",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: file authentication failed: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-modified-owned-checker/audit/audit_static.py"
+    },
+    {
+      "test": "modified-geometry-checker",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: file authentication failed: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-modified-geometry-checker/audit/audit_geometry.py"
+    },
+    {
+      "test": "modified-expected-output",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: file authentication failed: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-modified-expected-output/audit/STATIC_INDEPENDENT_RECEIPT.json"
+    },
+    {
+      "test": "extra-audit-file",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: complete inventory mismatch at /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-extra-audit-file/audit"
+    },
+    {
+      "test": "missing-dependency",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: complete inventory mismatch at /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-missing-dependency/dependencies"
+    },
+    {
+      "test": "modified-dependency",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: file authentication failed: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-modified-dependency/dependencies/03-five-signal-obstruction-independent-audit-20261004-INDEPENDENT_AUDIT.md"
+    },
+    {
+      "test": "extra-dependency-file",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: complete inventory mismatch at /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-extra-dependency-file/dependencies"
+    },
+    {
+      "test": "symlink-input-root",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: symlink path component: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-symlink-input-root/packet-link"
+    },
+    {
+      "test": "symlink-science-file",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: symlink in input inventory: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-symlink-science-file/packet/PROOF.md"
+    },
+    {
+      "test": "symlink-audit-file",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: symlink in input inventory: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-symlink-audit-file/audit/audit_static.py"
+    },
+    {
+      "test": "symlink-dependency-file",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: symlink in input inventory: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-symlink-dependency-file/dependencies/03-five-signal-obstruction-independent-audit-20261004-INDEPENDENT_AUDIT.md"
+    },
+    {
+      "test": "symlink-output-parent",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: symlink path component: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-symlink-output-parent/output-link"
+    },
+    {
+      "test": "parent-traversal-input",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: parent traversal in explicit path: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-parent-traversal-input/packet/../packet"
+    },
+    {
+      "test": "parent-traversal-output",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: parent traversal in explicit path: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-parent-traversal-output/nonexistent/../new"
+    },
+    {
+      "test": "dangling-symlink-before-parent-traversal",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: parent traversal in explicit path: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-dangling-symlink-before-parent-traversal/dangling/../packet"
+    },
+    {
+      "test": "special-file-in-input",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: special file in input inventory: /workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/final-tests/negative-special-file-in-input/packet/unexpected-pipe"
+    },
+    {
+      "test": "self-consistent-forged-manifest",
+      "status": "rejected",
+      "stderr": "family59 replay FAILED: packet manifest trust-anchor mismatch"
+    }
+  ]
+}

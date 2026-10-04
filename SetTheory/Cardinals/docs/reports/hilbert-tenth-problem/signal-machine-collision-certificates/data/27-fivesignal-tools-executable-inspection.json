@@ -1,0 +1,71 @@
+{
+  "date": "2026-10-04",
+  "exclusions": [
+    "No frozen author or upstream Python execution",
+    "No saved-program execution",
+    "No physical simulation",
+    "No dynamic eval, exec, compile or imports from release files"
+  ],
+  "files": [
+    {
+      "bytes": 18525,
+      "file": "release.py",
+      "imports": [
+        "argparse",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "stat",
+        "subprocess",
+        "sys",
+        "zipfile"
+      ],
+      "sha256": "184e625540052c60340df60e9b0593dcd511e97810d287b5eeeb506ec8c823f7"
+    },
+    {
+      "bytes": 13267,
+      "file": "test_release.py",
+      "imports": [
+        "argparse",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "stat",
+        "subprocess",
+        "sys",
+        "zipfile"
+      ],
+      "sha256": "9da9211bcf96156613427643c7bf2e9d22a7b064a7ea3ae22dd20eaa18bcd789"
+    }
+  ],
+  "inspection": "Full source read before execution; focused reinspection after canonical-path and map-dependency corrections. Original code authored for Report57; Report56 read only for lessons.",
+  "limitations": [
+    "Trusted quiescent filesystem and reviewed TeX required; not an operating-system sandbox against hostile concurrent filesystem changes",
+    "TeX dependencies include recorder inputs, original font map inputs and executable bytes; not linked OS libraries"
+  ],
+  "output_review": [
+    "Exclusive directory/file creation",
+    "No cleanup or replacement of existing output",
+    "Canonical source/output disjoint paths",
+    "Nonsymlink ancestors and regular single-link release files",
+    "Exact sealed inventory/hash/mode verification",
+    "Fixed sorted stored ZIP metadata",
+    "Build/archive preservation snapshots"
+  ],
+  "real_manuscript_built_or_sealed": false,
+  "schema": "report57-release-tools-inspection-v1",
+  "status": "PASS",
+  "subprocess_review": {
+    "release.py": [
+      "Fixed installed /usr/bin/pdftex for an isolated format",
+      "Fixed installed /usr/bin/pdflatex for three PDF passes",
+      "Fixed installed /usr/bin/kpsewhich for five known font map paths"
+    ],
+    "test_release.py": [
+      "Current isolated Python interpreter running only the freshly authored release.py copied into disposable fixtures"
+    ]
+  },
+  "test_receipt": "tools-validation.json"
+}

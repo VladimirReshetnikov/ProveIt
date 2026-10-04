@@ -1,0 +1,1720 @@
+{
+  "frozen_hashes": {
+    "Report65.pdf": "729213d2a1b3cab8bd00912a0bbdc8a035ebd26c4e4af22da4aab5e5e2b89bf8",
+    "Report65.tex": "870025b5d7f633890db20ae3d166deeafcf83657f7fc4746ad221aa933719857",
+    "tools/BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+    "tools/build_report65.py": "2e7139e00744d75cd353f096387d868b930bf8c53b9868f9ae903e4ad41d4e0c",
+    "tools/release65.py": "1ac3a8066038014bb7cfc674fc00f483442279dd8e77662e475409879e4140ee"
+  },
+  "owned_manifest_sha256": "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+  "passed": 99,
+  "preservation_note": "bytes, mode, size, mtime_ns and ctime_ns checked; access time is outside the source pins and may be affected by ordinary reads",
+  "prohibited_execution": "No research/audit mathematical code, simulation, saved schedule, native interpreter or Lean was imported or executed.",
+  "tests": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release"
+      ],
+      "elapsed_seconds": 0.071,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "seal-owned-copy",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--metadata",
+        "--origins"
+      ],
+      "elapsed_seconds": 0.059,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "verify-metadata-origins",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release"
+      ],
+      "elapsed_seconds": 0.052,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "refuse-reseal",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/locked-build",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 20.92,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "locked-build",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/hostile-environment-build",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 20.842,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "hostile-environment-build",
+      "pass": true
+    },
+    {
+      "actual": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "729213d2a1b3cab8bd00912a0bbdc8a035ebd26c4e4af22da4aab5e5e2b89bf8",
+        "Report65.tex": "870025b5d7f633890db20ae3d166deeafcf83657f7fc4746ad221aa933719857"
+      },
+      "expected": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "729213d2a1b3cab8bd00912a0bbdc8a035ebd26c4e4af22da4aab5e5e2b89bf8",
+        "Report65.tex": "870025b5d7f633890db20ae3d166deeafcf83657f7fc4746ad221aa933719857"
+      },
+      "name": "locked-build-exact-artifact-hashes",
+      "pass": true
+    },
+    {
+      "actual": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "729213d2a1b3cab8bd00912a0bbdc8a035ebd26c4e4af22da4aab5e5e2b89bf8",
+        "Report65.tex": "870025b5d7f633890db20ae3d166deeafcf83657f7fc4746ad221aa933719857"
+      },
+      "expected": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "729213d2a1b3cab8bd00912a0bbdc8a035ebd26c4e4af22da4aab5e5e2b89bf8",
+        "Report65.tex": "870025b5d7f633890db20ae3d166deeafcf83657f7fc4746ad221aa933719857"
+      },
+      "name": "hostile-environment-build-exact-artifact-hashes",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/repeat-a.zip"
+      ],
+      "elapsed_seconds": 0.113,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "archive-a",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/repeat-b.zip"
+      ],
+      "elapsed_seconds": 0.121,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "archive-b",
+      "pass": true
+    },
+    {
+      "name": "repeat-zip-byte-identity",
+      "pass": true,
+      "sha256": "79062e2c31d18ff5f045fb37d3e7012203ef81f99a9cebc2c5c8d9539264d05e"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/repeat-a.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.043,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "archive-check-original",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/usr/bin/unzip",
+        "-q",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/repeat-a.zip",
+        "-d",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/extracted"
+      ],
+      "elapsed_seconds": 0.018,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "unzip-roundtrip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/extracted/Report65",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.051,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "verify-extracted",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/extracted/Report65",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--metadata"
+      ],
+      "elapsed_seconds": 0.054,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "metadata-extracted-rejection",
+      "note": "Expected: ZIP carries canonical seconds, not original nanosecond mtime.",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/extracted/Report65",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/extracted-locked-build",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 21.696,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "extracted-locked-build",
+      "pass": true
+    },
+    {
+      "name": "extracted-build-exact-hashes",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/bad-manifest-preflight",
+        "--manifest-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "bad-manifest-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/bad-manifest-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/bad-lock-digest-preflight",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "elapsed_seconds": 0.054,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "bad-lock-digest-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/bad-lock-digest-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/missing-lock-preflight",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.056,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "missing-lock-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/missing-lock-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/executable-lock-preflight",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/locks/executable-lock-preflight.json",
+        "--dependency-lock-sha256",
+        "77dafb9dc4f1522d3119f56866dd9bb70b1fda82bb3ebd934c2cc3bf4ed9e840"
+      ],
+      "elapsed_seconds": 0.055,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "executable-lock-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/executable-lock-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/input-lock-preflight",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/locks/input-lock-preflight.json",
+        "--dependency-lock-sha256",
+        "efa1d1bf454803ce39e54c233bc2695e7d8ec184b4126ce82a0d74af0274b45f"
+      ],
+      "elapsed_seconds": 0.053,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "input-lock-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/input-lock-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/invalid-input-path-preflight",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/locks/invalid-input-path-preflight.json",
+        "--dependency-lock-sha256",
+        "6b4dafcb510488646995971f93be7b408b92ce9f93c2f140e762650f76f1bf27"
+      ],
+      "elapsed_seconds": 0.058,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "invalid-input-path-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/invalid-input-path-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/existing-build-output",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "existing-build-output",
+      "pass": true
+    },
+    {
+      "name": "existing-build-output-preserved",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/draft-sealed",
+        "--draft"
+      ],
+      "elapsed_seconds": 0.057,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "draft-refuses-sealed",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/draft-sealed",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/forbidden-build",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-refuses-overlap",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/forbidden-build",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/linked-output-parent/forbidden-build",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.053,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-refuses-symlink-parent",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/forbidden-build",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/linked-root",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-refuses-symlink-root",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/extra-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-extra-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/extra-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/extra-file.zip"
+      ],
+      "elapsed_seconds": 0.059,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-extra-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/extra-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/extra-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-extra-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.064,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-extra-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-extra-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.061,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-changed-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/changed-file.zip"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-changed-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/changed-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-changed-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.053,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-changed-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-changed-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-mode",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-changed-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-mode",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/changed-mode.zip"
+      ],
+      "elapsed_seconds": 0.049,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-changed-mode",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/changed-mode.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-mode",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-changed-mode",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.051,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-changed-mode",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-changed-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/missing-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.044,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-missing-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/missing-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/missing-file.zip"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-missing-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/missing-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/missing-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-missing-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-missing-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-missing-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/symlink-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.049,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-symlink-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/symlink-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/symlink-file.zip"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-symlink-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/symlink-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/symlink-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-symlink-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-symlink-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-symlink-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/symlink-directory",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.05,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-symlink-directory",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/symlink-directory",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/symlink-directory.zip"
+      ],
+      "elapsed_seconds": 0.061,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-symlink-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/symlink-directory.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/symlink-directory",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-symlink-directory",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.051,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-symlink-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-symlink-directory",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/fifo-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.044,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-fifo-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/fifo-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fifo-file.zip"
+      ],
+      "elapsed_seconds": 0.061,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-fifo-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fifo-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/fifo-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-fifo-file",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-fifo-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-fifo-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/extra-empty-directory",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-extra-empty-directory",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/extra-empty-directory",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/extra-empty-directory.zip"
+      ],
+      "elapsed_seconds": 0.056,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-extra-empty-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/extra-empty-directory.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-manifest",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-changed-manifest",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-manifest",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/changed-manifest.zip"
+      ],
+      "elapsed_seconds": 0.044,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-changed-manifest",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/changed-manifest.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/changed-manifest",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-changed-manifest",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.045,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-changed-manifest",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/build-rejects-changed-manifest",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/unsafe-pin-path"
+      ],
+      "elapsed_seconds": 0.05,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-unsafe-pin-path",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/unsafe-pin-path/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/duplicate-pin-path"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-duplicate-pin-path",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/duplicate-pin-path/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/bad-pinned-hash"
+      ],
+      "elapsed_seconds": 0.035,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-bad-pinned-hash",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/bad-pinned-hash/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/empty-directory-seal"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-empty-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/empty-directory-seal/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/duplicate-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-duplicate-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/extra-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-extra-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/traversal-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.036,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-traversal-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/absolute-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-absolute-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/backslash-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.062,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-backslash-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/dot-component-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.044,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-dot-component-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/empty-component-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.044,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-empty-component-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/directory-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-directory-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/missing-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-missing-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/changed-content.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-content",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/changed-mode.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/symlink-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.056,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-symlink-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/fifo-member.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-fifo-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/changed-timestamp.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.036,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-timestamp",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/changed-archive-manifest.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-archive-manifest",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/encrypted.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.036,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-encrypted",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/manifest-mode.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-manifest-archive-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/extra-empty-directory",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fixed-rejects-extra-directory",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-extra-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fixed-rejects-extra-directory",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/manifest-root-mode",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-manifest-filesystem-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/manifest-root-mode",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fixed-build-rejects-manifest-mode",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.044,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-build-rejects-manifest-mode",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fixed-build-rejects-manifest-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/inconsistent-tex"
+      ],
+      "elapsed_seconds": 0.053,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "seal-inconsistent-tex",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/inconsistent-tex",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fixed-rejects-inconsistent-tex",
+        "--manifest-sha256",
+        "b7a6937576c4723a8dc9c99b734ba791e2dc9a5f6b272819caa1636e3c066b94",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.045,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-inconsistent-tex",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fixed-rejects-inconsistent-tex",
+      "pass": true
+    },
+    {
+      "name": "fixed-rejects-inconsistent-tex-no-success-artifacts",
+      "note": "PDF mismatch occurs after compilation; diagnostics are retained, but no success receipt or final PDF is promoted.",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/inconsistent-pdf"
+      ],
+      "elapsed_seconds": 0.053,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "seal-inconsistent-pdf",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/inconsistent-pdf",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/outputs/fixed-rejects-inconsistent-pdf",
+        "--manifest-sha256",
+        "8ea69683c578d88b1c12438c88111696fbc266ccb2d7ef12bb98e260ed070288",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 21.956,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-inconsistent-pdf",
+      "pass": true
+    },
+    {
+      "name": "fixed-rejects-inconsistent-pdf-no-success-artifacts",
+      "note": "PDF mismatch occurs after compilation; diagnostics are retained, but no success receipt or final PDF is promoted.",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/restrictive-umask"
+      ],
+      "elapsed_seconds": 0.06,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "seal-restrictive-umask",
+      "pass": true
+    },
+    {
+      "name": "seal-enforces-manifest-mode-under-umask",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/cases/restrictive-umask",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.049,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "verify-restrictive-umask-seal",
+      "pass": true
+    },
+    {
+      "name": "locked-build-sealed-equality-receipt",
+      "pass": true
+    },
+    {
+      "name": "hostile-environment-build-sealed-equality-receipt",
+      "pass": true
+    },
+    {
+      "name": "extracted-locked-build-sealed-equality-receipt",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/unicode-path-extra.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-unicode-path-extra",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/unicode-local-only.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-unicode-local-only",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/unicode-central-only.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-unicode-central-only",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/central-extra.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-central-extra",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/member-comment.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.038,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-member-comment",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-I",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/delta/mutant-archives/archive-comment.zip",
+        "--manifest-sha256",
+        "77f87162e24c2fdf3c859276d311edf9fd9cd80cc3b214e20d8fd46ce13d2320"
+      ],
+      "elapsed_seconds": 0.045,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "fixed-rejects-archive-comment",
+      "pass": true
+    },
+    {
+      "changes": {},
+      "name": "candidate-existing-files-preserved",
+      "pass": true
+    },
+    {
+      "name": "all-pinned-origins-preserved",
+      "pass": true
+    },
+    {
+      "name": "owned-base-preserved-after-seal",
+      "pass": true
+    }
+  ],
+  "total": 99
+}

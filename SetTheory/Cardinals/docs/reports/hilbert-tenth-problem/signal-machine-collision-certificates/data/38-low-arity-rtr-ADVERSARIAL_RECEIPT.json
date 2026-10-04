@@ -1,0 +1,596 @@
+{
+  "not_run_count": 1,
+  "pass_count": 117,
+  "scope": "Independent presentation-only synthetic/adversarial tests; no scientific executable",
+  "status": "PASS_WITH_ONE_ENVIRONMENT_LIMITATION",
+  "test_count": 118,
+  "tests": [
+    {
+      "status": "PASS",
+      "test": "valid-manifest-schema"
+    },
+    {
+      "rejection": "Path traversal or alias",
+      "status": "PASS",
+      "test": "reject-relative-path-'../x'"
+    },
+    {
+      "rejection": "Noncanonical relative path",
+      "status": "PASS",
+      "test": "reject-relative-path-'/x'"
+    },
+    {
+      "rejection": "Path traversal or alias",
+      "status": "PASS",
+      "test": "reject-relative-path-'a/../x'"
+    },
+    {
+      "rejection": "Noncanonical relative path",
+      "status": "PASS",
+      "test": "reject-relative-path-'./x'"
+    },
+    {
+      "rejection": "Noncanonical relative path",
+      "status": "PASS",
+      "test": "reject-relative-path-'a//x'"
+    },
+    {
+      "rejection": "Noncanonical relative path",
+      "status": "PASS",
+      "test": "reject-relative-path-'a/./x'"
+    },
+    {
+      "rejection": "Unsafe path character",
+      "status": "PASS",
+      "test": "reject-relative-path-'a\\\\x'"
+    },
+    {
+      "rejection": "Unsafe path character",
+      "status": "PASS",
+      "test": "reject-relative-path-'x\\nq'"
+    },
+    {
+      "rejection": "Unsafe path character",
+      "status": "PASS",
+      "test": "reject-relative-path-'x\\x00q'"
+    },
+    {
+      "rejection": "Noncanonical relative path",
+      "status": "PASS",
+      "test": "reject-relative-path-''"
+    },
+    {
+      "rejection": "Expected lowercase SHA-256 pin",
+      "status": "PASS",
+      "test": "reject-digest-'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'"
+    },
+    {
+      "rejection": "Expected lowercase SHA-256 pin",
+      "status": "PASS",
+      "test": "reject-digest-'000000000000000000000000000000000000000000000000000000000000000'"
+    },
+    {
+      "rejection": "Expected lowercase SHA-256 pin",
+      "status": "PASS",
+      "test": "reject-digest-'00000000000000000000000000000000000000000000000000000000000000000'"
+    },
+    {
+      "rejection": "Expected lowercase SHA-256 pin",
+      "status": "PASS",
+      "test": "reject-digest-0"
+    },
+    {
+      "rejection": "Expected lowercase SHA-256 pin",
+      "status": "PASS",
+      "test": "reject-digest-None"
+    },
+    {
+      "rejection": "Expected lowercase SHA-256 pin",
+      "status": "PASS",
+      "test": "reject-digest-'0000000000000000000000000000000000000000000000000000000000000000\\n'"
+    },
+    {
+      "rejection": "Duplicate JSON key: x",
+      "status": "PASS",
+      "test": "duplicate-json-key"
+    },
+    {
+      "rejection": "Duplicate JSON key: mode",
+      "status": "PASS",
+      "test": "nested-duplicate-json-key"
+    },
+    {
+      "rejection": "Self-referential manifest or manifest-directory collision",
+      "status": "PASS",
+      "test": "manifest-self-file"
+    },
+    {
+      "rejection": "Self-referential manifest or manifest-directory collision",
+      "status": "PASS",
+      "test": "manifest-self-directory"
+    },
+    {
+      "rejection": "File/directory overlap",
+      "status": "PASS",
+      "test": "file-directory-overlap"
+    },
+    {
+      "rejection": "Missing or extraneous manifest directory",
+      "status": "PASS",
+      "test": "empty-extra-directory"
+    },
+    {
+      "rejection": "Missing or extraneous manifest directory",
+      "status": "PASS",
+      "test": "missing-parent-directory"
+    },
+    {
+      "rejection": "Invalid manifest entry",
+      "status": "PASS",
+      "test": "extra-entry-field"
+    },
+    {
+      "rejection": "Invalid manifest schema",
+      "status": "PASS",
+      "test": "extra-top-field"
+    },
+    {
+      "rejection": "Unsafe mode",
+      "status": "PASS",
+      "test": "invalid-mode-True"
+    },
+    {
+      "rejection": "Unsafe mode",
+      "status": "PASS",
+      "test": "invalid-mode-2541"
+    },
+    {
+      "rejection": "Unsafe mode",
+      "status": "PASS",
+      "test": "invalid-mode--1"
+    },
+    {
+      "rejection": "Invalid mtime",
+      "status": "PASS",
+      "test": "invalid-mtime_ns-True"
+    },
+    {
+      "rejection": "Invalid mtime",
+      "status": "PASS",
+      "test": "invalid-mtime_ns--1"
+    },
+    {
+      "rejection": "Invalid size",
+      "status": "PASS",
+      "test": "invalid-bytes-True"
+    },
+    {
+      "rejection": "Invalid size",
+      "status": "PASS",
+      "test": "invalid-bytes--1"
+    },
+    {
+      "rejection": "Expected lowercase SHA-256 pin",
+      "status": "PASS",
+      "test": "invalid-sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    {
+      "rejection": "Canonical absolute output required",
+      "status": "PASS",
+      "test": "reject-output-alias-relative-output"
+    },
+    {
+      "rejection": "Canonical absolute output required",
+      "status": "PASS",
+      "test": "reject-output-alias-/workspace/shared/report69-independent-release-tool-review-20261004/adversarial-v2/./out"
+    },
+    {
+      "rejection": "Output path alias",
+      "status": "PASS",
+      "test": "reject-output-alias-/workspace/shared/report69-independent-release-tool-review-20261004/adversarial-v2/../out"
+    },
+    {
+      "rejection": "Canonical absolute output required",
+      "status": "PASS",
+      "test": "reject-output-alias-/workspace/shared/report69-independent-release-tool-review-20261004/adversarial-v2//out"
+    },
+    {
+      "rejection": "Canonical absolute output required",
+      "status": "PASS",
+      "test": "reject-output-alias-//workspace/shared/report69-independent-release-tool-review-20261004/adversarial-v2/out"
+    },
+    {
+      "rejection": "Output overlaps protected input: /workspace/shared/report69-tool-review-candidate-v5",
+      "status": "PASS",
+      "test": "reject-output-inside-candidate"
+    },
+    {
+      "rejection": "Output overlaps protected input: /workspace/shared/two-witness-tensor-compiler-20261004",
+      "status": "PASS",
+      "test": "reject-output-inside-original"
+    },
+    {
+      "rejection": "Symlink path component: /workspace/shared/report69-independent-release-tool-review-20261004/adversarial-v2/alias",
+      "status": "PASS",
+      "test": "reject-output-symlink-parent"
+    },
+    {
+      "rejection": "Output must be fresh",
+      "status": "PASS",
+      "test": "reject-existing-dangling-output"
+    },
+    {
+      "status": "PASS",
+      "test": "read-valid-single-link-file"
+    },
+    {
+      "rejection": "Expected single-link regular file: /workspace/shared/report69-independent-release-tool-review-20261004/adversarial-v2/fs-probes/plain",
+      "status": "PASS",
+      "test": "reject-external-hardlink"
+    },
+    {
+      "rejection": "Nonregular tree entry: symlink",
+      "status": "PASS",
+      "test": "reject-tree-symlink"
+    },
+    {
+      "rejection": "Unexpected empty directory",
+      "status": "PASS",
+      "test": "reject-empty-descendant"
+    },
+    {
+      "rejection": "Expected single-link regular file: /workspace/shared/report69-independent-release-tool-review-20261004/adversarial-v2/fs-probes/fifo",
+      "status": "PASS",
+      "test": "reject-fifo-read-without-open"
+    },
+    {
+      "rejection": "Nonregular tree entry: fifo",
+      "status": "PASS",
+      "test": "reject-tree-fifo"
+    },
+    {
+      "reason": "The original retained harness run established that this environment prohibits creating Unix sockets; no bypass attempted. FIFO and archived socket probes remain.",
+      "status": "NOT_RUN",
+      "test": "reject-tree-socket"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-nonisolated-interpreter"
+    },
+    {
+      "exit_status": 0,
+      "status": "PASS",
+      "test": "accept-valid-synthetic-extract"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-externally-wrong-manifest-pin"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-duplicate-manifest"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-duplicate-payload"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-missing-payload"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-missing-manifest"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-wrong-member-order"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-traversal-extra"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-absolute-extra"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-backslash-extra"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-explicit-directory"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-symlink-payload"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-fifo-payload"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-socket-payload"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-dos-payload"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-changed-payload-mode"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-setuid-payload-mode"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-symlink-manifest"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-payload-hash-tamper"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-duplicate-json-repinned"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-manifest-traversal-repinned"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-manifest-self-file"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-manifest-self-directory"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-file-directory-overlap"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-empty-extra-directory"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-missing-parent-directory"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-extra-entry-field"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-extra-top-field"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-mode-True"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-mode-2541"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-mode--1"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-mtime_ns-True"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-mtime_ns--1"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-bytes-True"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-bytes--1"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "zip-schema-invalid-sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-archive-symlink"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-archive-hardlink"
+    },
+    {
+      "status": "PASS",
+      "test": "valid-minimal-rgb-png"
+    },
+    {
+      "rejection": "Invalid PNG signature",
+      "status": "PASS",
+      "test": "png-bad-signature"
+    },
+    {
+      "rejection": "Truncated PNG chunk",
+      "status": "PASS",
+      "test": "png-truncation"
+    },
+    {
+      "rejection": "Invalid PNG IEND",
+      "status": "PASS",
+      "test": "png-trailing-data"
+    },
+    {
+      "rejection": "Invalid PNG raster format",
+      "status": "PASS",
+      "test": "png-zero-width"
+    },
+    {
+      "rejection": "Invalid PNG raster format",
+      "status": "PASS",
+      "test": "png-excess-width"
+    },
+    {
+      "rejection": "Invalid PNG raster format",
+      "status": "PASS",
+      "test": "png-zero-height"
+    },
+    {
+      "rejection": "Invalid PNG raster format",
+      "status": "PASS",
+      "test": "png-wrong-color"
+    },
+    {
+      "rejection": "Invalid PNG raster format",
+      "status": "PASS",
+      "test": "png-wrong-depth"
+    },
+    {
+      "rejection": "Invalid PNG raster format",
+      "status": "PASS",
+      "test": "png-interlace"
+    },
+    {
+      "rejection": "Unexpected PNG chunk",
+      "status": "PASS",
+      "test": "png-unknown-chunk"
+    },
+    {
+      "rejection": "Invalid PNG IHDR",
+      "status": "PASS",
+      "test": "png-duplicate-header"
+    },
+    {
+      "rejection": "Invalid PNG physical dimensions",
+      "status": "PASS",
+      "test": "png-physical-after-data"
+    },
+    {
+      "rejection": "Invalid PNG pixel density",
+      "status": "PASS",
+      "test": "png-zero-pixel-density"
+    },
+    {
+      "rejection": "Invalid PNG physical dimensions",
+      "status": "PASS",
+      "test": "png-duplicate-physical"
+    },
+    {
+      "rejection": "PNG raster size or compression failure",
+      "status": "PASS",
+      "test": "png-short-raster"
+    },
+    {
+      "rejection": "PNG raster size or compression failure",
+      "status": "PASS",
+      "test": "png-long-raster"
+    },
+    {
+      "rejection": "Invalid PNG row filter",
+      "status": "PASS",
+      "test": "png-invalid-row-filter"
+    },
+    {
+      "rejection": "PNG raster size or compression failure",
+      "status": "PASS",
+      "test": "png-compressed-trailer"
+    },
+    {
+      "rejection": "PNG raster size or compression failure",
+      "status": "PASS",
+      "test": "png-concatenated-zlib"
+    },
+    {
+      "rejection": "PNG raster size or compression failure",
+      "status": "PASS",
+      "test": "png-incomplete-zlib"
+    },
+    {
+      "rejection": "PNG CRC mismatch",
+      "status": "PASS",
+      "test": "png-bad-crc"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-replaced-frozen-pin-map"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-sealed-file-mode-change"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-sealed-one-nanosecond-change"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-same-size-same-mtime-content-change"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-sealed-directory-mode-change"
+    },
+    {
+      "exit_status": 2,
+      "status": "PASS",
+      "test": "reject-sealed-directory-one-nanosecond-change"
+    },
+    {
+      "exit_status": 0,
+      "status": "PASS",
+      "test": "accept-restored-complete-fixture"
+    }
+  ]
+}

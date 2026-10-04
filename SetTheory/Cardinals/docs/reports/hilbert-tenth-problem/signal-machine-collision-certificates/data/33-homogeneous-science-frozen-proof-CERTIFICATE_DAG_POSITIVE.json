@@ -1,0 +1,370 @@
+{
+  "purpose": "Integer polynomial arithmetic only; not a physical schedule",
+  "matrix_input_domain": "eighteen positive integers aij,cij",
+  "positive_witnesses": [
+    "g1",
+    "g2",
+    "g3",
+    "h1",
+    "h2",
+    "h3",
+    "b",
+    "d"
+  ],
+  "constants": [
+    1,
+    2,
+    3
+  ],
+  "operations": {
+    "sub": 20,
+    "mul": 26,
+    "add": 11
+  },
+  "total_operations": 57,
+  "nodes": [
+    {
+      "id": "k11",
+      "op": "sub",
+      "left": "a11",
+      "right": "c11"
+    },
+    {
+      "id": "k12",
+      "op": "sub",
+      "left": "a12",
+      "right": "c12"
+    },
+    {
+      "id": "k13",
+      "op": "sub",
+      "left": "a13",
+      "right": "c13"
+    },
+    {
+      "id": "k21",
+      "op": "sub",
+      "left": "a21",
+      "right": "c21"
+    },
+    {
+      "id": "k22",
+      "op": "sub",
+      "left": "a22",
+      "right": "c22"
+    },
+    {
+      "id": "k23",
+      "op": "sub",
+      "left": "a23",
+      "right": "c23"
+    },
+    {
+      "id": "k31",
+      "op": "sub",
+      "left": "a31",
+      "right": "c31"
+    },
+    {
+      "id": "k32",
+      "op": "sub",
+      "left": "a32",
+      "right": "c32"
+    },
+    {
+      "id": "k33",
+      "op": "sub",
+      "left": "a33",
+      "right": "c33"
+    },
+    {
+      "id": "v10",
+      "op": "mul",
+      "left": "k11",
+      "right": "g1"
+    },
+    {
+      "id": "v11",
+      "op": "mul",
+      "left": "k12",
+      "right": "g2"
+    },
+    {
+      "id": "v12",
+      "op": "mul",
+      "left": "k13",
+      "right": "g3"
+    },
+    {
+      "id": "v13",
+      "op": "add",
+      "left": "v10",
+      "right": "v11"
+    },
+    {
+      "id": "v14",
+      "op": "add",
+      "left": "v13",
+      "right": "v12"
+    },
+    {
+      "id": "v15",
+      "op": "sub",
+      "left": "v14",
+      "right": "h1"
+    },
+    {
+      "id": "v16",
+      "op": "mul",
+      "left": "k21",
+      "right": "g1"
+    },
+    {
+      "id": "v17",
+      "op": "mul",
+      "left": "k22",
+      "right": "g2"
+    },
+    {
+      "id": "v18",
+      "op": "mul",
+      "left": "k23",
+      "right": "g3"
+    },
+    {
+      "id": "v19",
+      "op": "add",
+      "left": "v16",
+      "right": "v17"
+    },
+    {
+      "id": "v20",
+      "op": "add",
+      "left": "v19",
+      "right": "v18"
+    },
+    {
+      "id": "v21",
+      "op": "sub",
+      "left": "v20",
+      "right": "h2"
+    },
+    {
+      "id": "v22",
+      "op": "mul",
+      "left": "k31",
+      "right": "g1"
+    },
+    {
+      "id": "v23",
+      "op": "mul",
+      "left": "k32",
+      "right": "g2"
+    },
+    {
+      "id": "v24",
+      "op": "mul",
+      "left": "k33",
+      "right": "g3"
+    },
+    {
+      "id": "v25",
+      "op": "add",
+      "left": "v22",
+      "right": "v23"
+    },
+    {
+      "id": "v26",
+      "op": "add",
+      "left": "v25",
+      "right": "v24"
+    },
+    {
+      "id": "v27",
+      "op": "sub",
+      "left": "v26",
+      "right": "h3"
+    },
+    {
+      "id": "v28",
+      "op": "mul",
+      "left": "k22",
+      "right": "k33"
+    },
+    {
+      "id": "v29",
+      "op": "mul",
+      "left": "k23",
+      "right": "k32"
+    },
+    {
+      "id": "v30",
+      "op": "sub",
+      "left": "v28",
+      "right": "v29"
+    },
+    {
+      "id": "v31",
+      "op": "mul",
+      "left": "k11",
+      "right": "v30"
+    },
+    {
+      "id": "v32",
+      "op": "mul",
+      "left": "k21",
+      "right": "k33"
+    },
+    {
+      "id": "v33",
+      "op": "mul",
+      "left": "k23",
+      "right": "k31"
+    },
+    {
+      "id": "v34",
+      "op": "sub",
+      "left": "v32",
+      "right": "v33"
+    },
+    {
+      "id": "v35",
+      "op": "mul",
+      "left": "k12",
+      "right": "v34"
+    },
+    {
+      "id": "v36",
+      "op": "mul",
+      "left": "k21",
+      "right": "k32"
+    },
+    {
+      "id": "v37",
+      "op": "mul",
+      "left": "k22",
+      "right": "k31"
+    },
+    {
+      "id": "v38",
+      "op": "sub",
+      "left": "v36",
+      "right": "v37"
+    },
+    {
+      "id": "v39",
+      "op": "mul",
+      "left": "k13",
+      "right": "v38"
+    },
+    {
+      "id": "v40",
+      "op": "sub",
+      "left": "v31",
+      "right": "v35"
+    },
+    {
+      "id": "v41",
+      "op": "add",
+      "left": "v40",
+      "right": "v39"
+    },
+    {
+      "id": "v42",
+      "op": "mul",
+      "left": 2,
+      "right": "b"
+    },
+    {
+      "id": "v43",
+      "op": "sub",
+      "left": "v42",
+      "right": 3
+    },
+    {
+      "id": "v44",
+      "op": "mul",
+      "left": "v43",
+      "right": "d"
+    },
+    {
+      "id": "v45",
+      "op": "sub",
+      "left": "v41",
+      "right": "v44"
+    },
+    {
+      "id": "v46",
+      "op": "sub",
+      "left": "b",
+      "right": 1
+    },
+    {
+      "id": "v47",
+      "op": "sub",
+      "left": "b",
+      "right": 2
+    },
+    {
+      "id": "v48",
+      "op": "mul",
+      "left": "v46",
+      "right": "v47"
+    },
+    {
+      "id": "v49",
+      "op": "mul",
+      "left": "v15",
+      "right": "v15"
+    },
+    {
+      "id": "v50",
+      "op": "mul",
+      "left": "v21",
+      "right": "v21"
+    },
+    {
+      "id": "v51",
+      "op": "mul",
+      "left": "v27",
+      "right": "v27"
+    },
+    {
+      "id": "v52",
+      "op": "mul",
+      "left": "v45",
+      "right": "v45"
+    },
+    {
+      "id": "v53",
+      "op": "mul",
+      "left": "v48",
+      "right": "v48"
+    },
+    {
+      "id": "v54",
+      "op": "add",
+      "left": "v49",
+      "right": "v50"
+    },
+    {
+      "id": "v55",
+      "op": "add",
+      "left": "v54",
+      "right": "v51"
+    },
+    {
+      "id": "v56",
+      "op": "add",
+      "left": "v55",
+      "right": "v52"
+    },
+    {
+      "id": "v57",
+      "op": "add",
+      "left": "v56",
+      "right": "v53"
+    }
+  ],
+  "output": "v57"
+}

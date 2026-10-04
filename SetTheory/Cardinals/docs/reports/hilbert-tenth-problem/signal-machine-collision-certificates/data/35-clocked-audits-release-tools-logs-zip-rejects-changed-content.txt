@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 112, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 85, in main
+    if a.command=='archive-check':print(json.dumps(archive_check(a.archive,a.manifest_sha256),indent=2));return
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 72, in archive_check
+    require(len(b)==row['bytes'] and sha(b)==row['sha256'],'Archive content mismatch')
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 8, in require
+    if not v:raise ValueError(s)
+             ^^^^^^^^^^^^^^^^^^^
+ValueError: Archive content mismatch

@@ -1,0 +1,217 @@
+[
+  {
+    "expected_returncode": 0,
+    "name": "clean_input_check",
+    "output_tail": "{\n  \"audit_files\": 9,\n  \"dependency_files\": 7,\n  \"manuscript_sources\": 3,\n  \"science_files\": 60,\n  \"scope\": \"Byte authentication only; no scientific executable\",\n  \"status\": \"PASS\",\n  \"topology_files\": 10\n}\n\n",
+    "pass": true,
+    "returncode": 0
+  },
+  {
+    "error": "[Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/revised/missing-frozen-directory/real-input'",
+    "name": "missing-frozen-directory",
+    "pass": true
+  },
+  {
+    "expected_returncode": 2,
+    "name": "missing-frozen-directory_cli",
+    "output_tail": "BUILD REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/revised/missing-frozen-directory/real-input'\n",
+    "pass": true,
+    "returncode": 2
+  },
+  {
+    "name": "missing-frozen-directory_no_output",
+    "pass": true
+  },
+  {
+    "error": "Expected real input directory: /workspace/shared/report59-release-tools-independent-review-20261004/revised/symlink-frozen-directory/real-input",
+    "name": "symlink-frozen-directory",
+    "pass": true
+  },
+  {
+    "expected_returncode": 2,
+    "name": "symlink-frozen-directory_cli",
+    "output_tail": "BUILD REFUSED: Expected real input directory: /workspace/shared/report59-release-tools-independent-review-20261004/revised/symlink-frozen-directory/real-input\n",
+    "pass": true,
+    "returncode": 2
+  },
+  {
+    "name": "symlink-frozen-directory_no_output",
+    "pass": true
+  },
+  {
+    "error": "Expected real input directory: /workspace/shared/report59-release-tools-independent-review-20261004/revised/symlink-manuscript-directory/manuscript",
+    "name": "symlink-manuscript-directory",
+    "pass": true
+  },
+  {
+    "expected_returncode": 2,
+    "name": "symlink-manuscript-directory_cli",
+    "output_tail": "BUILD REFUSED: Expected real input directory: /workspace/shared/report59-release-tools-independent-review-20261004/revised/symlink-manuscript-directory/manuscript\n",
+    "pass": true,
+    "returncode": 2
+  },
+  {
+    "name": "symlink-manuscript-directory_no_output",
+    "pass": true
+  },
+  {
+    "error": "Nonregular input forbidden: /workspace/shared/report59-release-tools-independent-review-20261004/revised/unexpected-fifo/real-input/UNEXPECTED_FIFO",
+    "name": "unexpected-fifo",
+    "pass": true
+  },
+  {
+    "expected_returncode": 2,
+    "name": "unexpected-fifo_cli",
+    "output_tail": "BUILD REFUSED: Nonregular input forbidden: /workspace/shared/report59-release-tools-independent-review-20261004/revised/unexpected-fifo/real-input/UNEXPECTED_FIFO\n",
+    "pass": true,
+    "returncode": 2
+  },
+  {
+    "name": "unexpected-fifo_no_output",
+    "pass": true
+  },
+  {
+    "expected_returncode": 2,
+    "name": "repinned_build_refused",
+    "output_tail": "BUILD REFUSED: Manuscript pins differ from reviewed source\n",
+    "pass": true,
+    "returncode": 2
+  },
+  {
+    "expected_returncode": 2,
+    "name": "repinned_release_refused",
+    "output_tail": "RELEASE REFUSED: Manuscript pins differ from reviewed source\n",
+    "pass": true,
+    "returncode": 2
+  },
+  {
+    "name": "repinned_no_output",
+    "pass": true
+  },
+  {
+    "expected_returncode": 0,
+    "name": "manifest_clean",
+    "output_tail": "{\n  \"files\": 122,\n  \"manifest_sha256\": \"542b1aebd8c988ae6da5a0fe6a2c0355781d5cec9a1afef7a9917846de757e5e\",\n  \"output\": \"/workspace/shared/report59-release-tools-independent-review-20261004/revised/manifest.json\",\n  \"status\": \"PASS\"\n}\n\n",
+    "pass": true,
+    "returncode": 0
+  },
+  {
+    "expected_returncode": 0,
+    "name": "verify_clean",
+    "output_tail": "{\n  \"files\": 123,\n  \"manifest_sha256\": \"542b1aebd8c988ae6da5a0fe6a2c0355781d5cec9a1afef7a9917846de757e5e\",\n  \"status\": \"PASS\"\n}\n\n",
+    "pass": true,
+    "returncode": 0
+  },
+  {
+    "error": "[Errno 17] File exists: '/workspace/shared/report59-release-tools-independent-review-20261004/revised/manifest-output-race.output'",
+    "name": "manifest-output-race_refused",
+    "pass": true
+  },
+  {
+    "name": "manifest-output-race_foreign_output_preserved",
+    "pass": true
+  },
+  {
+    "error": "[Errno 17] File exists: '/workspace/shared/report59-release-tools-independent-review-20261004/revised/archive-output-race.output'",
+    "name": "archive-output-race_refused",
+    "pass": true
+  },
+  {
+    "name": "archive-output-race_foreign_output_preserved",
+    "pass": true
+  },
+  {
+    "error": "Source changed after manifest verification",
+    "name": "archive-input-race_refused",
+    "pass": true
+  },
+  {
+    "name": "archive-input-race_no_output",
+    "pass": true
+  },
+  {
+    "error": "Injected failure after exclusive destination creation",
+    "name": "archive-write-failure_refused",
+    "pass": true
+  },
+  {
+    "name": "archive-write-failure_new_failed_output_retained",
+    "pass": true
+  },
+  {
+    "expected_returncode": 0,
+    "name": "archive_1",
+    "output_tail": "{\n  \"files\": 123,\n  \"inputs_preserved\": true,\n  \"manifest_sha256\": \"542b1aebd8c988ae6da5a0fe6a2c0355781d5cec9a1afef7a9917846de757e5e\",\n  \"output\": \"/workspace/shared/report59-release-tools-independent-review-20261004/revised/release-1.zip\",\n  \"status\": \"PASS\",\n  \"zip_sha256\": \"55775e4b64ba32c0a4e82e0cbc617c45e205f40ab038fd3eb0a5d4e37b4d182f\"\n}\n\n",
+    "pass": true,
+    "returncode": 0
+  },
+  {
+    "expected_returncode": 0,
+    "name": "archive_2",
+    "output_tail": "{\n  \"files\": 123,\n  \"inputs_preserved\": true,\n  \"manifest_sha256\": \"542b1aebd8c988ae6da5a0fe6a2c0355781d5cec9a1afef7a9917846de757e5e\",\n  \"output\": \"/workspace/shared/report59-release-tools-independent-review-20261004/revised/release-2.zip\",\n  \"status\": \"PASS\",\n  \"zip_sha256\": \"55775e4b64ba32c0a4e82e0cbc617c45e205f40ab038fd3eb0a5d4e37b4d182f\"\n}\n\n",
+    "pass": true,
+    "returncode": 0
+  },
+  {
+    "name": "deterministic_archives",
+    "pass": true
+  },
+  {
+    "files": 123,
+    "name": "exact_zip_inventory",
+    "pass": true
+  },
+  {
+    "name": "exact_zip_bytes",
+    "pass": true
+  },
+  {
+    "name": "zip_matches_embedded_manifest",
+    "pass": true
+  },
+  {
+    "name": "reference_build_same_pins",
+    "pass": true
+  },
+  {
+    "expected_returncode": 0,
+    "name": "post_fix_build",
+    "output_tail": "{\n  \"pdf_sha256\": \"a5fb0f18f1d60efb6d6ba2c884434a719ccae488b6dc89aebdbfbff5b4201fb0\",\n  \"render_pages\": 22,\n  \"status\": \"PASS\"\n}\n\n",
+    "pass": true,
+    "returncode": 0
+  },
+  {
+    "files": 24,
+    "name": "post_fix_pdf_text_all_pages_identical",
+    "pass": true,
+    "pdf_sha256": "a5fb0f18f1d60efb6d6ba2c884434a719ccae488b6dc89aebdbfbff5b4201fb0"
+  },
+  {
+    "name": "frozen_science_preserved",
+    "pass": true
+  },
+  {
+    "name": "frozen_independent-audit_preserved",
+    "pass": true
+  },
+  {
+    "name": "frozen_dependencies_preserved",
+    "pass": true
+  },
+  {
+    "name": "frozen_real-input_preserved",
+    "pass": true
+  },
+  {
+    "name": "frozen_real-input-audit_preserved",
+    "pass": true
+  },
+  {
+    "name": "frozen_real-input-dependencies_preserved",
+    "pass": true
+  },
+  {
+    "name": "no_bytecode_generated",
+    "pass": true
+  }
+]

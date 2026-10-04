@@ -1,0 +1,99 @@
+{
+  "adapter_negative_probe_count": 9,
+  "adapter_negative_probes": [
+    {
+      "name": "missing-directory",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: missing inventory entries: ['dependencies', 'dependencies/POSITIVE_COMPILER_PROOF.md']\n",
+      "stdout": ""
+    },
+    {
+      "name": "directory-as-file",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: unexpected directory: /workspace/shared/review-replay-invertibility61-20261004/probes-final/directory-as-file/science/README.md\n",
+      "stdout": ""
+    },
+    {
+      "name": "file-as-directory",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: unexpected file: /workspace/shared/review-replay-invertibility61-20261004/probes-final/file-as-directory/science/dependencies\n",
+      "stdout": ""
+    },
+    {
+      "name": "nested-directory-symlink",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link input rejected: /workspace/shared/review-replay-invertibility61-20261004/probes-final/nested-directory-symlink/science/dependencies\n",
+      "stdout": ""
+    },
+    {
+      "name": "pins-symlink",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link path rejected: /workspace/shared/review-replay-invertibility61-20261004/probes-final/pins-symlink.json\n",
+      "stdout": ""
+    },
+    {
+      "name": "pins-hardlink",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: hard-linked file rejected: /workspace/shared/review-replay-invertibility61-20261004/probes-final/pins-hardlink.json\n",
+      "stdout": ""
+    },
+    {
+      "name": "output-parent-is-file",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: non-directory path component: /workspace/shared/review-replay-invertibility61-20261004/probes-final/output-parent-is-file\n",
+      "stdout": ""
+    },
+    {
+      "name": "output-dangling-link",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link path rejected: /workspace/shared/review-replay-invertibility61-20261004/probes-final/output-dangling-link\n",
+      "stdout": ""
+    },
+    {
+      "name": "missing-output-parent",
+      "output_created": false,
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: missing input or output parent: /workspace/shared/review-replay-invertibility61-20261004/probes-final/absent-parent\n",
+      "stdout": ""
+    }
+  ],
+  "all_adapter_negative_probes_passed": true,
+  "frozen_science_and_audit_unchanged": true,
+  "harness_optimized_invocation_guard": {
+    "passed": true,
+    "returncode": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 228, in <module>\n    main()\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 52, in main\n    raise ValueError('optimized Python is forbidden for this assertion-based test harness')\nValueError: optimized Python is forbidden for this assertion-based test harness\n",
+    "work_directory_created": false
+  },
+  "harness_work_parent_alias_regression": {
+    "consequence": "The repaired test runner rejected before creating any work directory",
+    "passed": true,
+    "protected_copy_new_directory": "/workspace/shared/review-replay-invertibility61-20261004/probes-final/harness-work-parent-alias/science/new-work",
+    "returncode": 1,
+    "scientific_checker_executed": false,
+    "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 228, in <module>\n    main()\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 62, in main\n    work = canonical_directory(args.work_root,fresh=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 30, in canonical_directory\n    raise ValueError('linked or nondirectory path component: '+str(current))\nValueError: linked or nondirectory path component: /workspace/shared/review-replay-invertibility61-20261004/probes-final/harness-work-parent-alias/alias-to-science\n"
+  },
+  "inspected_source_hashes": {
+    "PINNED_INPUTS.json": "2833e4e52431a495f3923ab6852484c749c550b7e4bab89949ff8a5c1b4d515f",
+    "replay.py": "55f9af05403c943440f5aeb4aef1c5fe7f0e4b4d4f61309cee2c78c1c7420f72",
+    "test_replay.py": "8f388b0943f5c69c98999a175bf3ca901ed182999b9d5f6cd939add8eea19749"
+  },
+  "limits": "No science code or dependency code executed; no mount changes or concurrent mutations; source-tree metadata snapshots exclude atime"
+}

@@ -1,0 +1,110 @@
+--- reviewed-original/report51.tex
++++ reviewed-final/report51.tex
+@@ -26,7 +26,7 @@
+ \begin{document}
+ \maketitle
+ \begin{abstract}
+-Fix a one-dimensional finite-radius conservative cellular automaton with a unique zero-weight vacuum, positive integer nonvacuum weights, and at most one weight-one symbol. Conditional on the pinned source-17 scattering mechanism and source-18 fixed-input chart theorem, we construct one finite effective family of complete timed-orbit charts, uniform in all ordered initial coordinates at total mass at most four. On finitely many disjoint Presburger input cells, at most two natural evolution parameters suffice; stationary-frame positions are affine and time has joint total degree at most two. Literal affine domains require at most three additional, uniquely determined initial-gap quotients, giving at most five natural chart parameters. The decisive step is a fully guarded symbolic contraction up to the first bounded ordinary reset, after which only fixed templates are added. This proves uniform untimed stationary-frame Presburger reachability. A copied-input, selector-safe compilation gives a finite-arity quartic with empty or singleton natural witness fibers for the uniform complete timed relation. Its witness count includes copies, quotients, selectors and slacks, and is not two or five. We give the full arithmetic construction, endpoint ownership proof, conditional dependency ledger and independent adversarial checks. No general compiler implementation, formal verification, or literature-priority claim is asserted.
++Fix a one-dimensional finite-radius conservative cellular automaton with a unique zero-weight vacuum, positive integer nonvacuum weights, and at most one weight-one symbol. Conditional on the pinned source-17 scattering mechanism and source-18 fixed-input chart theorem, we construct one finite effective family of complete timed-orbit charts, uniform in all ordered initial coordinates at total mass at most four. On finitely many disjoint Presburger input cells, at most two natural evolution parameters suffice; stationary-frame positions are affine and time has joint total degree at most two. Literal affine domains require at most three additional, uniquely determined initial-gap quotients, giving at most five natural chart parameters. The decisive step is a fully guarded symbolic contraction up to the first bounded ordinary reset, after which only fixed templates are added. This proves uniform untimed stationary-frame Presburger reachability. A copied-input, selector-safe compilation gives a finite-arity quartic with empty or singleton natural witness fibers for the uniform complete timed relation. Its witness count includes copies, quotients, selectors and slacks, and is not two or five. A shifted version of Report 49's reversible clock shows that original-frame untimed reachability can fail to be Presburger even from one fixed four-particle input. We give the full arithmetic construction, endpoint ownership proof, conditional dependency ledger and independent adversarial checks. No general compiler implementation, formal verification, or literature-priority claim is asserted.
+ \end{abstract}
+ \noindent\textbf{Conventions.} $\N=\{0,1,2,\ldots\}$. Coordinates are integers. Translation $\tau_a$ moves a configuration to the right by $a$. A complete configuration lists every occupied site and its label; all unlisted sites are vacuum. ``Affine'' allows rational coefficients until positive denominators are cleared.
+ 
+@@ -63,7 +63,7 @@
+ Under the same assumptions, complete untimed reachability in the stationary frame is uniformly Presburger-definable in input and output coordinates. In the original frame, complete timed outputs have degree at most two. For each fixed input-label and output-label case, the uniform complete timed relation has an integer polynomial of degree at most four with exactly one natural witness tuple at a member and none otherwise, using canonical natural pairs for signed external coordinates.
+ \end{corollary}
+ 
+-The Presburger conclusion concerns \emph{untimed stationary-frame} outputs. Neither the timed relation nor untimed original-frame reachability is claimed Presburger by this argument. The single-fold statement concerns natural witnesses and keeps time external; it is not a generic rational- or real-witness theorem. No theorem here covers several weight-one types, signed weights, an active zero-weight background, infinite support, higher dimensions, or nonuniform rules.
++The Presburger conclusion concerns \emph{untimed stationary-frame} outputs. The timed relation is not claimed Presburger, and Proposition~\ref{prop:obstruction} shows that original-frame untimed reachability can genuinely fail to be Presburger. The single-fold statement concerns natural witnesses and keeps time external; it is not a generic rational- or real-witness theorem. No theorem here covers several weight-one types, signed weights, an active zero-weight background, infinite support, higher dimensions, or nonuniform rules.
+ 
+ \section{Imported finite dynamics and the dependency boundary}\label{sec:imports}
+ The inert, pinned combined article \cite{source16,source17,source18} is included in the release. Its source numbering is internal to that article: source 16 is \emph{Three mass units with a single unit symbol}; source 17 is \emph{Four mass units and exact reachability}; source 18 is \emph{Canonical quartic certificates for timed four mass orbits}. The article's repository blob and exact content hash are recorded in Appendix~\ref{app:provenance}. The following are the imported dynamical ingredients, not newly claimed classifications.
+@@ -342,6 +342,47 @@
+  Y_j=V_j+\delta T.
+ \end{equation}
+ They have total degree at most two. This is sufficient for the quartic compiler below, but is not an untimed original-frame Presburger deduction.
++
++\subsection{A genuine original frame obstruction}\label{sec:obstruction}
++The frame restriction is substantive. The following direct corollary uses the already audited reversible clock of Report 49~\cite{report49}; it does not depend on the conditional uniform-chart imports.
++
++\begin{proposition}[Non Presburger absolute untimed reachability]\label{prop:obstruction}
++There is a globally reversible conservative binary CA $F$, with $F$ and $F^{-1}$ of radius at most $91$, whose forward untimed set of complete outputs from the single fixed input $\{0,5,6,13\}$ is not Presburger-definable in its four sorted absolute occupied coordinates. Its stationary-singleton frame has a Presburger-definable untimed orbit from that input.
++\end{proposition}
++\begin{proof}
++Call the radius-at-most-$90$ clock in Report 49 $G$ (that report calls it $F$). For $D\ge13$, put $C_D=\{0,5,6,D\}$ and $L_D=2D-22$. The report's complete-orbit proposition gives
++\begin{equation}\label{eq:priorclock}
++ G^s(C_D)=
++ \begin{cases}
++ \{0,5+s,6+s,D\},&0\le s\le D-11,\\
++ \{0,2D-18-s,2D-14-s,D+1\},&D-10\le s\le2D-23,
++ \end{cases}
++\end{equation}
++and $G^{L_D}(C_D)=C_{D+1}$. The displayed coordinates are strictly increasing in each range and their minimum is always zero. An isolated singleton is fixed, since every literal rule endpoint requires at least two particles.
++
++Set $F=\tau_1\circ G$. Translation commutes with $G$, so $F^t=\tau_t\circ G^t$ and $F^{-1}=G^{-1}\circ\tau_{-1}$. Both maps have radius at most $91$, preserve particle number and are inverse on the full shift. The singleton drift of $F$ is $1$, so its stationary frame is precisely $G$.
++
++From $C_{13}$, cycle $k$ starts at $t_k=k^2+3k$ and has gap $D=13+k$. Let $\mathcal R_F\subseteq\Z^4$ be the complete forward untimed output set, in sorted coordinates. Its minimum coordinate at physical time $t$ is $t$. Intersect $\mathcal R_F$ with the affine slice
++\[
++ y_2-y_1=5,\qquad y_3-y_1=6.
++\]
++The right phase of \eqref{eq:priorclock} meets this slice exactly at $s=0$. The left phase has middle-pair separation four and cannot meet a slice requiring separation one. The full phase bounds and sorting exclude spectator substitutions, including at the smallest gap $D=13$. Thus the exact intersection is
++\begin{equation}\label{eq:obstructionslice}
++ \{(t_k,t_k+5,t_k+6,t_k+13+k):k\in\N\}.
++\end{equation}
++If $\mathcal R_F$ were Presburger, intersection with this slice and projection onto $y_1$ would make $\{k^2+3k:k\in\N\}$ Presburger. A unary Presburger subset of $\N$ is eventually periodic~\cite{ginsburg}. Here successive gaps $2k+4$ tend to infinity: an eventual period $P\ge1$ would put $t_k+P$ strictly between consecutive terms for sufficiently large $k$, a contradiction.
++
++By contrast the complete stationary-frame untimed orbit is explicitly
++\begin{align*}
++ \mathcal R_G={}&\{(0,p,p+1,D):D\ge13,\ 5\le p\le D-6\}\\
++ &\quad\cup\{(0,q,q+4,E):E\ge14,\ 5\le q\le E-9\}.
++\end{align*}
++These are precisely the two phase ranges with $D=13+k$, and their union is Presburger. This proves both claims.
++\end{proof}
++
++Report 49's inherited binary theorem also proves that complete original-frame timed evolution is Presburger for every fixed input of at most three particles. Projecting away time preserves Presburger definability. Thus four is the least particle count for failure of fixed-input original-frame untimed reachability in the binary conservative model, including its globally reversible subclass. This sharpness deduction uses that explicitly credited lower-bound theorem in addition to the clock orbit.
++
++The failure already holds for one fixed anchored input, so a uniform original-frame untimed relation cannot always be Presburger either: specializing its input coordinates would give $\mathcal R_F$. These statements concern forward time and absolute coordinates. Quotienting outputs by arbitrary translation removes this particular obstruction. The remaining classification question is which additional rules or drift conditions preserve original-frame untimed regularity.
+ 
+ \section{A selector safe uniform quartic}\label{sec:quartic}
+ We now give the complete algebraic construction. This is a uniform adaptation of source 18's fixed-input compiler, not the unmodified use of that compiler on external-variable coefficients.
+@@ -474,10 +515,12 @@
+ \item 703,125 natural witness tuples in finite boxes for the copied-input two-chart quartic, plus symbolic degrees four and six for the repaired and naive constructions
+ \item 10,374 denominator-inside-congruence comparisons and explicit rejection of incomplete endpoint, hull and modulus variants
+ \end{itemize}
++The independent manuscript review also checked the explicit signed-input copying, quotient and residual ledgers with separate algebra fixtures. A separate literal-row check of the Report 49 consequence compared 10,301 complete states through 100 cycles, ending at time 10,300, and found exactly the 101 predicted section hits. It imports no clock implementation; the all-time obstruction follows from the proof above.
++
+ The witness boxes test their finite ranges only; they do not prove all-natural-fiber uniqueness. The section words are abstract arithmetic fixtures, not a generated library of CA rules. Neither checker implements the general rule-to-chart construction. These limits are recorded in the frozen receipts and retained in the release.
+ 
+ \subsection{An isolated reproducibility packet}
+-The release contains the editable TeX, rendered PDF, byte-preserved frozen proof and audit packets, the pinned inherited article as inert text, and new release helpers. The replay helper verifies all frozen hashes, copies only the two inspected fresh arithmetic checkers into new scratch directories, runs them with Python assertions enabled, and compares their deterministic receipts exactly. It does not execute the inherited article, upstream programs, saved schedules, or any general CA compiler. All checker output is directed to the copied scratch files, leaving frozen evidence unchanged.
++The release contains the editable TeX, rendered PDF, byte-preserved frozen proof and audit packets, the pinned inherited article as inert text, and new release helpers. The replay helper verifies all frozen hashes, copies only the inspected fresh arithmetic checkers into new scratch directories, runs them with Python assertions enabled, and compares their deterministic receipts exactly. It does not execute the inherited article, upstream programs, saved schedules, or any general CA compiler. All checker output is directed to the copied scratch files, leaving frozen evidence unchanged.
+ 
+ The PDF helper copies only this manuscript into a new external build directory, uses installed TeX with shell escape disabled, and fixes the source date and PDF metadata for deterministic rebuilding. The archive helper uses a fixed member order, timestamps and permissions. The release manifest verifies content correspondence; hashes are not digital signatures or third-party certification. Exact commands, prerequisites and path-safety rules appear in the release README. Mathematical audit scope and release integrity are distinct checks.
+ 
+@@ -491,7 +534,7 @@
+ \item \textbf{Remove the conditional packaging.} Can the entire finite-library construction, source-18 template theorem and present uniform deduction be joined into one independently formalized result, with the live-tag convention and all intermediate-time ownership represented explicitly?
+ \item \textbf{Implement the effective construction.} A rule-to-chart implementation would need to enumerate actual seeds, produce validated period and contact data, track congruence pullbacks, emit guarded cycle charts and verify fixed templates. Arithmetic fixture checkers do not perform these tasks. What certificate interface makes such preprocessing independently checkable without trusting the generator?
+ \item \textbf{Optimize auxiliary variables and modulus size.} The at-most-three input quotient cost is transparent but not proved minimal. Can literal raw-coordinate affine domains use fewer total natural auxiliaries for this class? Which geometric or arithmetic restrictions allow a smaller common modulus or copied-input ledger?
+-\item \textbf{Understand original frame untimed reachability.} Adding $\delta t$ is degree-safe for the timed quartic, but may retain nonlinear effects after eliminating time. Which rules or phase drifts admit a stronger untimed Presburger description, and which give a genuine obstruction?
++\item \textbf{Characterize original frame regularity.} Proposition~\ref{prop:obstruction} settles the existence of a genuine non-Presburger obstruction, already for a reversible binary four-particle rule and one fixed input. Which additional conditions on the rule, phase drifts or observation encoding ensure original-frame untimed Presburger reachability?
+ \item \textbf{Separate natural from real exactness.} The generic compiler is exact over natural witnesses only. Which restricted chart families have enough integrality structure to force all nonnegative rational or real zeros to represent physical integer-time states, and what extra conditions are genuinely necessary?
+ \item \textbf{Quantify preprocessing.} Effectiveness gives no useful bound on chart count, phase periods, coefficients or the materialized prefixes of bounded templates. Explicit rule-dependent complexity bounds would clarify when the construction is practical. They must account for fixed but potentially enormous reset-template histories.
+ \end{enumerate}
+@@ -507,6 +550,8 @@
+ \item Source 17: model and hypotheses, lines 5979 onward; original connected-seed library and fixed $B,N,W$, lines 6083--6121; safe resolution and the tagged section convention, lines 6123--6164; all-current-$D>N$ additive section proof, lines 6166--6223; exhaustive dispatch and fixed-input normal forms through line 6340.
+ \item Source 18: complete fixed-input chart interface and half-open partition, lines 6660--6797; selector, constant lifting, pooled denominator and natural-fiber compiler proof, lines 6798--6910. Its input is fixed; uniformity is not imported from its theorem statement.
+ \end{itemize}
++For the separate frame obstruction, the exact Report 49 manuscript is also retained as inert text at \path{frozen/report49/report49.tex}; its source and content pins are in \path{PROVENANCE.json} in that directory. The new short deduction uses its complete-orbit formula and full-shift reversibility, not its executable checkers.
++
+ The new mathematical route is: affine first contact and initial dispatch; complete endpoint guard; exact piecewise-affine contracting count; joint quadratic clock; finite normalized first reset and additive fixed-template suffix; honest congruence lift; selector-safe private copies. The frozen independent audit checks this route and the sufficiency of the actual imported section mechanism.
+ 
+ The frozen science manifest hash is
+@@ -537,6 +582,9 @@
+ \bibitem{audit}
+ \emph{Adversarial audit: uniform four-mass timed charts}. 4 October 2026. Frozen companion \path{frozen/audit/AUDIT.md}, with independent arithmetic adversaries and deterministic \path{CHECK-RESULTS.json}. PASS for the residue-cell theorem and canonical-quotient lift, conditional on the stated source-17 and source-18 inputs.
+ 
++\bibitem{report49}
++\emph{A sharp reversible four particle timing threshold}. Report 49, 4 October 2026. Delivered and independently audited research report, Sections 2--6: the literal reversible rule, complete four-particle orbit and inherited lower-particle theorem. Exact inert source \path{frozen/report49/report49.tex}, with content pin and source provenance in \path{frozen/report49/PROVENANCE.json}. The radius-$91$ shifted consequence and exact affine-slice argument are stated and proved here; a separate check is retained in \path{frozen/frame-obstruction/}.
++
+ \bibitem{ginsburg}
+ Seymour Ginsburg and Edwin H. Spanier. Semigroups, Presburger formulas, and languages. \emph{Pacific Journal of Mathematics} \textbf{16}(2) (1966), 285--296.\newline
+ \url{https://doi.org/10.2140/pjm.1966.16.285}. Classical semilinearity equivalence; the definability deduction here uses closure of Presburger formulas under finite union and existential quantification directly.

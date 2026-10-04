@@ -1,0 +1,13 @@
+{
+  "test": "work-dir within packet",
+  "returncode": 1,
+  "packet_inventory_before": [],
+  "packet_inventory_after": [
+    "work",
+    "work/tools",
+    "work/tools/replay_family59.py",
+    "work/unrelated-cwd"
+  ],
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/five-signal-family59-portable-replay-20261004/portable_tools/test_replay_family59.py\", line 180, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/workspace/shared/five-signal-family59-portable-replay-20261004/portable_tools/test_replay_family59.py\", line 68, in main\n    pins=json.loads((inputs['packet']/'SOURCE_PINS.json').read_text())['read_only_dependencies']\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1027, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/shared/five-signal-family59-portable-replay-20261004/adversarial-review/synthetic-overlap/packet/SOURCE_PINS.json'\n",
+  "finding": "test harness creates files within explicit input before validating disjointness or content"
+}

@@ -1,0 +1,231 @@
+{
+  "adapter_sha256": "55f9af05403c943440f5aeb4aef1c5fe7f0e4b4d4f61309cee2c78c1c7420f72",
+  "case_count": 27,
+  "cases": [
+    {
+      "expected_rejection": null,
+      "name": "original-inputs",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-original-inputs",
+      "passed": true,
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "expected_rejection": null,
+      "name": "read-only-relocation",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-read-only-relocation",
+      "passed": true,
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "expected_rejection": null,
+      "name": "complete-portable-relocation",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-complete-portable-relocation",
+      "passed": true,
+      "returncode": 0,
+      "stderr": ""
+    },
+    {
+      "expected_rejection": "pins authentication failed",
+      "name": "invalid-pins",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-invalid-pins",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: pins authentication failed\n"
+    },
+    {
+      "expected_rejection": "content/hash mismatch",
+      "name": "science-corruption",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-science-corruption",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: input content/hash mismatch: /tmp/replay-invertibility61-tests-20261004-c/fixture-science-corruption/science/PROOF.md\n"
+    },
+    {
+      "expected_rejection": "content/hash mismatch",
+      "name": "checker-corruption",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-checker-corruption",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: input content/hash mismatch: /tmp/replay-invertibility61-tests-20261004-c/fixture-checker-corruption/audit/independent_affine_checks.py\n"
+    },
+    {
+      "expected_rejection": "content/hash mismatch",
+      "name": "expected-evidence-corruption",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-expected-evidence-corruption",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: input content/hash mismatch: /tmp/replay-invertibility61-tests-20261004-c/fixture-expected-evidence-corruption/audit/independent_affine_evidence.json\n"
+    },
+    {
+      "expected_rejection": "unexpected inventory entry",
+      "name": "extra-file",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-extra-file",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: unexpected inventory entry: /tmp/replay-invertibility61-tests-20261004-c/fixture-extra-file/science/UNEXPECTED.txt\n"
+    },
+    {
+      "expected_rejection": "unexpected inventory entry",
+      "name": "extra-directory",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-extra-directory",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: unexpected inventory entry: /tmp/replay-invertibility61-tests-20261004-c/fixture-extra-directory/audit/unexpected-empty-directory\n"
+    },
+    {
+      "expected_rejection": "missing inventory entries",
+      "name": "missing-file",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-missing-file",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: missing inventory entries: ['README.md']\n"
+    },
+    {
+      "expected_rejection": "symbolic-link input rejected",
+      "name": "symlink-file",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-symlink-file",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link input rejected: /tmp/replay-invertibility61-tests-20261004-c/fixture-symlink-file/science/README.md\n"
+    },
+    {
+      "expected_rejection": "hard-linked file rejected",
+      "name": "hardlink-file",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-hardlink-file",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: hard-linked file rejected: /tmp/replay-invertibility61-tests-20261004-c/fixture-hardlink-file/science/README.md\n"
+    },
+    {
+      "expected_rejection": "not a regular file",
+      "name": "special-file",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-special-file",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: not a regular file: /tmp/replay-invertibility61-tests-20261004-c/fixture-special-file/science/README.md\n"
+    },
+    {
+      "expected_rejection": "symbolic-link path rejected",
+      "name": "symlink-root",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-symlink-root",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link path rejected: /tmp/replay-invertibility61-tests-20261004-c/science-link\n"
+    },
+    {
+      "expected_rejection": "symbolic-link path rejected",
+      "name": "symlink-parent",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-symlink-parent",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link path rejected: /tmp/replay-invertibility61-tests-20261004-c/parent-link\n"
+    },
+    {
+      "expected_rejection": "overlap or alias",
+      "name": "same-root-alias",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-same-root-alias",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: science and audit roots overlap or alias\n"
+    },
+    {
+      "expected_rejection": "canonical spelling",
+      "name": "parent-components",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-parent-components",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: path must use canonical spelling without aliases: /workspace/shared/fixed-word-invertibility61-20261004/../fixed-word-invertibility61-20261004\n"
+    },
+    {
+      "expected_rejection": "canonical spelling",
+      "name": "dot-component",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-dot-component",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: path must use canonical spelling without aliases: /workspace/shared/fixed-word-invertibility61-20261004/.\n"
+    },
+    {
+      "expected_rejection": "canonical spelling",
+      "name": "double-leading-slash",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-double-leading-slash",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: path must use canonical spelling without aliases: //workspace/shared/fixed-word-invertibility61-20261004\n"
+    },
+    {
+      "expected_rejection": "path must be absolute",
+      "name": "relative-root",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/out-relative-root",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: path must be absolute: relative/science\n"
+    },
+    {
+      "expected_rejection": "output overlaps",
+      "name": "output-overlap",
+      "output_root": "/workspace/shared/fixed-word-invertibility61-20261004/forbidden-output",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: output overlaps protected science\n"
+    },
+    {
+      "expected_rejection": "output overlaps",
+      "name": "adapter-output-overlap",
+      "output_root": "/workspace/shared/replay-fixed-word-invertibility61-20261004/forbidden-output",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: output overlaps protected adapter directory\n"
+    },
+    {
+      "expected_rejection": "fresh and nonexistent",
+      "name": "existing-output",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/existing-output",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: output must be fresh and nonexistent: /tmp/replay-invertibility61-tests-20261004-c/existing-output\n"
+    },
+    {
+      "expected_rejection": "symbolic-link path rejected",
+      "name": "symlink-output",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/linked-output",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link path rejected: /tmp/replay-invertibility61-tests-20261004-c/linked-output\n"
+    },
+    {
+      "expected_rejection": "symbolic-link path rejected",
+      "name": "symlink-output-parent",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/output-parent-link/new-output",
+      "passed": true,
+      "returncode": 2,
+      "stderr": "REJECTED: symbolic-link path rejected: /tmp/replay-invertibility61-tests-20261004-c/output-parent-link\n"
+    },
+    {
+      "expected_rejection": "linked or nondirectory path component",
+      "name": "harness-parent-alias",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/harness-parent-link/forbidden-work",
+      "passed": true,
+      "returncode": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 228, in <module>\n    main()\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 62, in main\n    work = canonical_directory(args.work_root,fresh=True)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 30, in canonical_directory\n    raise ValueError('linked or nondirectory path component: '+str(current))\nValueError: linked or nondirectory path component: /tmp/replay-invertibility61-tests-20261004-c/harness-parent-link\n"
+    },
+    {
+      "expected_rejection": "optimized Python is forbidden",
+      "name": "harness-optimized",
+      "output_root": "/tmp/replay-invertibility61-tests-20261004-c/optimized-forbidden-work",
+      "passed": true,
+      "returncode": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 228, in <module>\n    main()\n  File \"/workspace/shared/replay-fixed-word-invertibility61-20261004/test_replay.py\", line 52, in main\n    raise ValueError('optimized Python is forbidden for this assertion-based test harness')\nValueError: optimized Python is forbidden for this assertion-based test harness\n"
+    }
+  ],
+  "limitations": "No adversarial concurrent-mutation, bind-mount manipulation, interpreter-compromise or network-sandbox test",
+  "original_science_and_audit_unchanged": true,
+  "passed": true,
+  "pins_sha256": "2833e4e52431a495f3923ab6852484c749c550b7e4bab89949ff8a5c1b4d515f",
+  "read_only_modes": "files 0444; directories 0555, including each relocated root",
+  "read_only_relocated_adapter_and_inputs_unchanged": true,
+  "read_only_relocated_inputs_unchanged": true,
+  "test_boundary": "Only fixture copies mutated; successful runs execute the pinned reviewer checker, never author code or dependency code",
+  "test_source_sha256": "8f388b0943f5c69c98999a175bf3ca901ed182999b9d5f6cd939add8eea19749"
+}

@@ -1,0 +1,8 @@
+# Bounded primary-source context
+
+Checked on 4 October 2026. No priority or exhaustive novelty survey is implied.
+
+- Pąk and Kaliszyk, ITP 2022, doi:10.4230/LIPIcs.ITP.2022.26. The primary PDF's pages 2–4 discuss Pell-based formalizations, including Carneiro's Lean development, and distinguish free parameters, explicit unknowns and implicit unknowns. The report uses only this limited contextual point, not any claimed variable-count record. Primary PDF: https://drops.dagstuhl.de/opus/volltexte/2022/16735/pdf/LIPIcs-ITP-2022-26.pdf
+- Dudenhefner, FSCD 2022, doi:10.4230/LIPIcs.FSCD.2022.16. The publisher's primary abstract states the increment and zero/positive-decrement model and stresses that undecidability properties depend on the instruction set. The report names its own semantics and cites this contextual point. https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.FSCD.2022.16
+- NIST DLMF §3.3(i), equations 3.3.1–3.3.2: unique degree-bounded Lagrange interpolation at distinct nodes and its product basis. The report proves its specialized integer clearing directly. https://dlmf.nist.gov/3.3#i
+- The exact mathlib theorem dependency was inspected locally as inert pinned source, including the recurrence, statements and constructive branches. The browser attempt to open the GitHub source page returned an error; no fresh remote Git authentication is claimed. The local file and licensed provenance are retained in the frozen inputs. Pinned source URL: https://github.com/leanprover-community/mathlib4/blob/ac77769fabe23cb237559e7f56578dbead91499f/Mathlib/NumberTheory/PellMatiyasevic.lean

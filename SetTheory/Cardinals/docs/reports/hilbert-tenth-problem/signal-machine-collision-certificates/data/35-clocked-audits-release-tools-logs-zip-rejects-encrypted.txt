@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 112, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 85, in main
+    if a.command=='archive-check':print(json.dumps(archive_check(a.archive,a.manifest_sha256),indent=2));return
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/shared/report65-release-tools-independent-review-20261004/delta/owned-release/tools/release65.py", line 56, in archive_check
+    data=z.read(PREFIX+'MANIFEST.json');require(sha(data)==pin,'Archive manifest digest mismatch');m=json.loads(data)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/zipfile/__init__.py", line 1585, in read
+    with self.open(name, "r", pwd) as fp:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/zipfile/__init__.py", line 1689, in open
+    raise RuntimeError("File %r is encrypted, password "
+RuntimeError: File 'Report65/MANIFEST.json' is encrypted, password required for extraction

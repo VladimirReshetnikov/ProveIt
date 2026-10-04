@@ -1,0 +1,1345 @@
+Report 67   Positive POWER reductions                                                             4 October 2026
+
+
+                                            RESEARCH REPORT 67
+
+
+                       Positive POWER reductions and
+                        exact bounded compiler costs
+                            Explicit domains and witness degree tradeoffs
+
+                                                4 October 2026
+
+                                                   Abstract
+
+          We give five explicit positive-integer POWER modules with 22, 16, 14, 13 and 12 leaves,
+      including the output. Their sums of squares have respectively 15, 9, 7, 6 and 5 residual slots and
+      fixed-base degrees 12, 12, 16, 16 and 20. For a variable base the last two degrees are 20 and 24. The
+      reductions distinguish sign normalization, bijective elimination, and restriction to a strict quotient
+      domain followed by rational integer recovery. Every restored variable is proved integral and positive.
+      All nonempty complete fibers remain infinite.
+          For the retained three-witness bounded counter compiler, we prove an exact degree law: degree
+      two at horizon zero, 4(T +1)2 −4 at positive odd horizons, and 4(T +1)2 −8 at positive even horizons.
+      We identify the complete top homogeneous term and sharpen the support ceiling. Composing
+      the 12-leaf module twice with native gap decoding and the bounded compiler gives 29 positive
+      witnesses, three external positive inputs, 18 residual slots and degree equal to the maximum of 20
+      and the compiler degree. The other variants give explicit alternative resource ledgers.
+          The all-exponent POWER theorem depends on a precisely pinned constructive Pell theorem pair.
+      The finite-horizon compiler is separately compiled for each horizon and pays for its finite acceptance
+      table. No new Lean verification, finite-fold representation, optimality, priority or fixed-polynomial
+      unbounded-halting claim is made.
+
+
+1    Conventions and principal results
+
+All existential variables in this report range over Z>0 . We write N = {0, 1, . . .}. A natural alias z is
+the expression z+ − 1 in its own distinct positive leaf z+ . Thus a zero alias is represented by leaf 1.
+Aliases are expanded substitutions, never additional variables or defining equations. A shifted Pell
+parameter is α = α+ + 1, so it is at least 2. Every final equation is literally a sum of the listed squared
+integer-polynomial residuals.
+Fix b ∈ Z, b ≥ 2, and C, o ∈ Z>0 . The intended POWER relation is o = bC−1 . Its Pell index is
+C, including when the semantic exponent is zero. A module leaf count includes o and excludes the
+supplied index C. A fixed base is a coefficient. If the base is variable, supply an additional positive
+input B and put b = B + 1; that external input is not concealed in a module count. Degree is joint in
+all independent inputs and positive leaves, after adapter expansion and before imposing equations. The
+results cover independent or affine base conventions as stated, not arbitrary nonlinear substitutions.
+
+Theorem 1.1 (Explicit POWER presentations). The five residual systems displayed below satisfy
+
+        o = bC−1      ⇐⇒      ∃ positive auxiliary leaves with Pℓ = 0,         ℓ ∈ {22, 16, 14, 13, 12}.
+
+Their exact literal resources are Table 1. Every accepted fixed (b, C, o) has infinitely many complete
+auxiliary tuples in each presentation. The theorem imports the constructive Pell statements identified
+in Section 3; the reductions and domain recovery are proved here.
+
+
+                                                        1
+Report 67   Positive POWER reductions                                                        4 October 2026
+
+
+
+       Presentation                    Leaves    Auxiliaries    Residuals   Degree fixed / variable
+       One-sided quotients                  22             21          15                    12 / 12
+       Polynomial elimination               16             15           9                    12 / 12
+       Substitute v, t                      14             13           7                    16 / 16
+       Recover α                            13             12           6                    16 / 20
+       Recover u on strict domain           12             11           5                    20 / 24
+
+Table 1: Output o is included in leaves and excluded from auxiliaries. The index and any base input
+are external. Each row defines one final polynomial equation.
+
+
+Theorem 1.2 (Exact bounded compiler and gap ledger). For a fixed deterministic two-counter
+program M and horizon T ≥ 0, let PM,T (A, B; j, r, s) be the six-square compiler in Section 9. Its three
+positive witnesses are unique when they exist. Writing K = T + 1, its exact joint degree is
+                                          
+                                          2
+                                          
+                                                           T = 0,
+                                   dT =    4(T + 1)2 − 4    T > 0 odd,                                   (1)
+                                          
+                                          4(T + 1)2 − 8
+                                          
+                                                            T > 0 even.
+
+Two independent base-two ℓ-leaf modules with rℓ residuals and degree Dℓ , composed with paid gap
+decoding, yield exactly 2ℓ + 5 positive witnesses, 2rℓ + 8 residual slots, three external positive gap
+inputs, and degree max(Dℓ , dT ). The zeros assert both that the inputs are encoded and that the decoded
+counters satisfy the selected bounded-halting predicate. Both by-horizon and first-halt-exactly-horizon
+versions have these counts. Every nonempty complete composed fiber is infinite.
+
+In particular the last row gives 29 witnesses, 32 total variables, 18 residual slots and degree max(20, dT ).
+These replace the modules in a new formula; they do not retroactively recount a frozen predecessor.
+Report 66’s accepted compiler, its 26-leaf POWER baseline, and the separately accepted reduction and
+exact-degree packets are preserved as provenance. Variable count, residual count, degree, coefficient
+height, expanded storage and arithmetic gates are distinct resources. No gate improvement or minimum
+among all formulas is claimed.
+
+
+
+
+                                                     2
+Report 67   Positive POWER reductions                               4 October 2026
+
+
+Contents
+
+1 Conventions and principal results                                             1
+
+2 The positive 22 leaf module                                                   4
+
+3 The precise constructive Pell dependency                                      5
+
+4 A genuine infinite family in each accepted fiber                              6
+
+5 Bijective polynomial elimination to sixteen and fourteen leaves               7
+
+6 Thirteen leaves by integral parameter recovery                                8
+
+7 Exact degrees of the first four presentations                                 9
+
+8 Twelve leaves on a strict quotient domain                                    10
+
+9 The retained three witness bounded compiler                                  13
+
+10 Exact interpolation degree at every horizon                                 15
+
+11 Support coefficients and the cost of finite preprocessing                   17
+
+12 Paid composition on three positive native gaps                              19
+
+13 The finite trace alternative and its exact paid counts                      21
+
+14 Physical interpretation and semantic boundaries                             22
+
+15 Dependencies evidence and reproducibility                                   22
+
+16 Context and questions left open                                             23
+
+
+
+
+                                            3
+Report 67   Positive POWER reductions                                                                4 October 2026
+
+
+2     The positive 22 leaf module
+
+Use thirteen directly positive leaves
+
+                                    o, w, M, g, x, y, u, v, s, t, qb , qv , J,
+
+two positive leaves α+ , β+ defining α = α+ + 1 and β = β+ + 1, and seven natural aliases
+
+                                         dwb , dwC , dyC , qα , qσ , qτ , qr .
+
+Each natural alias has its own positive adapter. There are 13 + 2 + 7 = 22 positive leaves. The
+complete residual list is
+
+              R1 = x2 − 1 − (α2 − 1)y 2 ,                                   R2 = u2 − 1 − (α2 − 1)v 2 ,
+              R3 = s2 − 1 − (β 2 − 1)t2 ,                                   R4 = β − 1 − 4yqb ,
+              R5 = β − α − uqα ,                                            R 6 = v − y 2 qv ,
+              R7 = s − x − uqσ ,                                            R8 = t − C − 4yqτ ,
+              R9 = y − C − dyC ,                                           R10 = w − b − dwb ,
+             R11 = w − C − dwC ,                                           R12 = M − bo − J,
+                     2                  2             2
+             R13 = α − 1 − (w + 1) − 1 (wg) ,
+             R14 = 2αb − M − (b2 + 1),
+             R15 = x − y(α − b) − bo − M qr .                                                                   (2)
+               P15    2
+Define P22 =     i=1 Ri after every shift.         For b = 2, the modulus residuals are M − 2o − J and
+4α − M − 5.
+
+
+2.1   Why four signed quotients are nonnegative
+
+The 26-leaf predecessor has the same equations except that slots 5, 7, 8 and 15 use the four paired-
+natural residuals
+
+                      β + uα1 − α − uα2 ,            s + uσ1 − x − uσ2 ,
+                      t + 4yτ1 − C − 4yτ2 ,           x + M r1 − y(α − b) − bo − M r2 .                         (3)
+
+All eight aliases in this display are natural. They initially allow signed differences. We prove their
+signs from the other equations, without assuming the conclusion.
+Lemma 2.1 (Positive residue). If L > 0, 0 < r ≤ L, z > 0 and z = r + Lq for an integer q, then
+q ≥ 0.
+
+Proof. If q ≤ −1, then z ≤ r − L ≤ 0, a contradiction. The endpoint r = L is allowed.
+
+We have y ≥ C ≥ 1 and v = y 2 qv ≥ y. The first two Pell equations give
+
+                u2 − α2 = (α2 − 1)(v 2 − 1) ≥ 0,               u2 − x2 = (α2 − 1)(v 2 − y 2 ) ≥ 0.
+
+Positivity yields 0 < α ≤ u and 0 < x ≤ u. Applying Lemma 2.1 to the first three congruences, with
+residues α, x, C and moduli u, u, 4y, proves
+                                        β−α         s−x          t−C
+                                            ,           ,            ∈ N.                                       (4)
+                                         u           u            4y
+
+                                                           4
+Report 67   Positive POWER reductions                                                         4 October 2026
+
+
+For the last congruence, w ≥ b ≥ 2, g ≥ 1 and R13 = 0 imply α2 > w2 , hence α > w ≥ b. Put
+h = x − y(α − b). The two quantities being compared are nonnegative and
+                             x2 − [y(α − b)]2 = (2αb − b2 − 1)y 2 + 1 > 0,
+so h > 0. Moreover 0 < bo < M by R12 = 0. The final paired congruence gives h = bo + M (r2 − r1 ).
+The same lemma proves
+                                    x − y(α − b) − bo
+                               qr =                   = r2 − r1 ∈ N.                           (5)
+                                           M
+Thus every old positive solution has the four required nonnegative quotients, not merely a special
+constructive solution.
+
+
+2.2   The exact normalization maps
+
+From an old tuple preserve all other leaves and define
+                    qα = α2 − α1 ,    qσ = σ2 − σ1 ,     qτ = τ2 − τ1 ,   qr = r2 − r1 .
+The new leaves are qα + 1, qσ + 1, qτ + 1, qr + 1. Their positivity follows from the preceding proof.
+Conversely set the first member of every old natural pair to zero and the second to its new quotient.
+The old positive leaves are therefore 1 and q + 1, never zero. These maps prove existential equivalence,
+and the reverse map is a section. They are not inverse on all old tuples: adding an arbitrary common
+natural shift to both members of each pair changes the old tuple without changing its quotient. The
+old ledger 13 + 2 + 11 = 26 becomes 13 + 2 + 3 + 4 = 22, retaining all fifteen residual slots.
+
+
+3     The precise constructive Pell dependency
+
+The substantive number-theoretic input is Mario Carneiro’s constructive pair Pell.matiyasevic and
+Pell.eq_pow_of_pell in mathlib4 [1]. The pinned commit is
+
+                             ac77769fabe23cb237559e7f56578dbead91499f
+
+and the retained file Mathlib/NumberTheory/PellMatiyasevic.lean has SHA-256
+                      993760c797ad0ff66fa77064a616fce779550bc745cbf6c44e04f392fd0bed0a.
+
+
+Its source header, Apache 2.0 license and notice are retained. We inspect these source statements and
+constructive branches as text; there is no new Lean execution or proof-assistant certification in this
+report.
+Define the integer Pell polynomials by
+               X0 (z) = 1,                                           Y0 (z) = 0,
+             Xn+1 (z) = zXn (z) + (z 2 − 1)Yn (z),                 Yn+1 (z) = Xn (z) + zYn (z).          (6)
+The first imported theorem says that (x, y) is the index-k Pell pair for α > 1 exactly when k ≤ y and
+either (x, y) = (1, 0) or there exist natural u, v, s, t, β satisfying
+                  x2 − (α2 − 1)y 2 = 1,    u2 − (α2 − 1)v 2 = 1,     s2 − (β 2 − 1)t2 = 1,
+                   β > 1,    β≡1     (mod 4y),       β≡α    (mod u),      v > 0,   y 2 | v,
+                                s≡x       (mod u),       t≡k     (mod 4y).                               (7)
+
+
+                                                     5
+Report 67   Positive POWER reductions                                                          4 October 2026
+
+
+The positive-base, positive-index branch of the second theorem characterizes nk = m by natural
+w, α, M, g, α > 1, and
+
+                                  Xk (α) ≡ Yk (α)(α − n) + m      (mod M ),
+                                        2
+                         2αn = M + n + 1,          m < M,         n ≤ w,      k ≤ w,
+                                      α2 − (w + 1)2 − 1 (wg)2 = 1.
+                                                          
+                                                                                                          (8)
+
+The source uses natural subtraction. For natural a, c, the statement a − c = 1 with truncated
+subtraction is equivalent to a = c + 1. The inner square-minus-one differences here are nonnegative,
+and the proof above establishes α > b. Thus the ordinary subtraction α − b agrees with its natural
+counterpart. No domain strengthening or rational-witness replacement is hidden in this translation.
+
+All-exponent equivalence for the 22-leaf module. Slots 1–9 in (2) imply (7) with k = C. The zero
+branch is impossible because y ≥ C ≥ 1. Hence (x, y) = (XC (α), YC (α)). Slots 10–15 supply (8) with
+n = b, k = C, m = bo. They imply bC = bo, and cancellation of b > 0 gives o = bC−1 .
+Conversely suppose o = bC−1 . The constructive power theorem supplies the auxiliaries for bC = bo,
+and the constructive positive-index Pell theorem supplies the inner norms and congruences. The
+auxiliary g cannot vanish because that would force α = 1. The Pell first coordinates x, u, s are positive.
+We have y ≥ C ≥ 1, v > 0 and y 2 | v, so qv > 0. Since β > 1 and β ≡ 1 (mod 4y), qb > 0. The
+congruence t ≡ C (mod 4y) and 1 ≤ C ≤ y < 4y exclude t = 0. Strict M > bo supplies J > 0. The
+other inequalities supply the three natural slacks. Represent signed congruence quotients by pairs of
+naturals, then apply the normalization maps just proved. Every positive adapter exists, including at
+C = 1.
+
+
+4    A genuine infinite family in each accepted fiber
+
+The recurrence (6) proves by induction
+
+                        Xn (z)2 − (z 2 − 1)Yn (z)2 = 1,   Xn (1) = 1,      Yn (1) = n.
+
+For the norm, substitution into one recurrence step multiplies the previous norm by z 2 − (z 2 − 1) = 1.
+For z ≥ 2, n ≥ 1, both coordinates are positive by the same recurrence. Integer polynomials preserve
+congruences of their arguments.
+Fix an accepted (b, C, o) and one 22-leaf solution. Hold α, w, M, g, x, y, u, v, qv , J, the three slacks and
+qr fixed. For every k ∈ N, put
+
+              βk = β0 + 4yuk,                  sk = XC (βk ),                      tk = YC (βk ),
+             qb,k = qb,0 + uk,               qα,k = qα,0 + 4yk,
+             qσ,k = (sk − x)/u,               qτ,k = (tk − C)/(4y).                                       (9)
+
+Here βk ≡ α (mod u) and βk ≡ 1 (mod 4y), so sk ≡ x (mod u) and tk ≡ C (mod 4y). Lemma 2.1,
+using 0 < x ≤ u and 1 ≤ C < 4y, makes the two quotients natural. All fifteen equations hold. The
+new pair at k = 0 need not equal the originally chosen (s, t); only the preserved data and congruences
+are required. The leaf qb,k is strictly increasing because u > 0, proving infinitely many distinct tuples.
+This is genuine parameter variation after the four common-shift redundancies have been removed.
+
+
+
+
+                                                     6
+Report 67   Positive POWER reductions                                                                         4 October 2026
+
+
+For an explicit boundary example use b = 2, C = o = 1 and
+
+                   w = 2, M = 63, g = 3, α = 17, x = 17, y = 1, u = 577, v = 34,
+                                qv = 34, J = 61, dwb = dyC = qr = 0, dwC = 1,
+                                 β = s = 17 + 2308k,               t = 1,     qb = 4 + 577k,
+                                                qα = qσ = 4k,               qτ = 0.                                     (10)
+
+All equations are identities in k ∈ N. Zero aliases use adapter 1. Later eliminations retain qb , so this
+infinitude cannot disappear by removing β+ .
+
+
+5     Bijective polynomial elimination to sixteen and fourteen leaves
+
+5.1    Sixteen leaves and nine residuals
+
+Retain the eight positive leaves o, g, u, v, t, qb , qv , J, the positive α+ , and the same seven natural
+adapters as before. Define expressions
+
+            α = α+ + 1,                                          w = b + dwb ,                     y = C + dyC ,
+                                                                                2
+            β = 1 + 4yqb ,                                   M = 2bα − b − 1,
+            x = y(α − b) + bo + M qr ,                           s = x + uqσ .                                          (11)
+
+The nine retained residuals, in their complete order, are
+
+              E1 = x2 − 1 − (α2 − 1)y 2 ,                                           E2 = u2 − 1 − (α2 − 1)v 2 ,
+              E3 = s2 − 1 − (β 2 − 1)t2 ,                                           E4 = β − α − uqα ,
+                            2
+              E5 = v − y qv ,                                                       E6 = t − C − 4yqτ ,
+              E7 = w − C − dwC ,                                                    E8 = M − bo − J,
+                      2                     2               2
+              E9 = α − 1 − (w + 1) − 1 (wg) .                                                                           (12)
+
+They are respectively old slots 1, 2, 3, 5, 6, 8, 11, 12, 13. The other six old residuals become identities
+under (11). Define P16 = 9i=1 Ei2 after these substitutions.
+                         P
+
+Projection of an old solution gives these sixteen leaves; its six defining equations force exactly the
+expressions (11). Conversely, a positive solution of (12) has w ≥ b ≥ 2 and y ≥ C ≥ 1. Equation E9 = 0
+gives α > w ≥ b. Equation E8 = 0 gives M = bo + J > 0; positivity of that unconstrained polynomial
+expression was not assumed in advance. It follows that x > 0 and s > 0. Also β − 1 = 4yqb > 0, giving
+the restored positive leaf β+ . Thus every removed domain is recovered. The two maps are inverse on
+complete solution tuples for fixed b, C, o.
+
+
+5.2    Fourteen leaves and seven residuals
+
+Additionally define
+                                            v = y 2 qv ,           t = C + 4yqτ .                                       (13)
+Remove leaves v, t and residuals E5 , E6 . The remaining leaves are the six positive o, g, u, qb , qv , J, α+ ,
+and the seven natural adapters, totaling fourteen. The full ordered residual list is
+
+                          E1 , E2 , E3 , E4 , E7 , E8 , E9        with (11) and (13) expanded.                          (14)
+
+                                                                  7
+Report 67    Positive POWER reductions                                                      4 October 2026
+
+
+Define P14 as the sum of these seven squares. The restored values in (13) are positive integers because
+y, qv , C ≥ 1 and qτ ≥ 0. Therefore restriction and reconstruction are again mutually inverse, with no
+lost positive-domain condition.
+
+
+6    Thirteen leaves by integral parameter recovery
+
+Retain the six directly positive o, g, u, qb , qv , J and the seven natural aliases; remove α+ . Define the
+following integer polynomial expressions:
+
+            w = b + dwb ,                                  y = C + dyC ,          β = 1 + 4yqb ,
+                  2
+            v = y qv ,                                     t = C + 4yqτ ,        M = bo + J,
+                                                                      2
+            d = 2b,                                    A∗ = M + b + 1,
+            X = y(A∗ − db) + dbo + dM qr ,             S∗ = X + duqσ .                                (15)
+
+The notation A∗ avoids collision with the outer compiler input A. It is an expression, not a leaf. The
+six residuals are
+
+                                 F1 = X 2 − d2 − (A2∗ − d2 )y 2 ,
+                                 F2 = d2 u2 − d2 − (A2∗ − d2 )v 2 ,
+                                 F3 = S∗2 − d2 − d2 (β 2 − 1)t2 ,
+                                 F4 = dβ − A∗ − duqα ,
+                                 F5 = w − C − dwC ,
+                                 F6 = A2∗ − d2 − d2 (w + 1)2 − 1 (wg)2 .
+                                                                      
+                                                                                                      (16)
+                P6      2
+Define P13 =      i=1 Fi . No division or rational coefficient occurs in this polynomial.
+
+Lemma 6.1 (Rational square recovery). If z ∈ Q and z 2 ∈ Z, then z ∈ Z.
+
+Proof. Write z = p/q in lowest terms with q > 0. Since q 2 divides p2 and p, q are coprime, q = 1.
+
+From a fourteen-leaf solution, its equations imply M = bo + J and A∗ = dα. Consequently X = dx
+and S∗ = ds. The six residuals above are respectively
+
+                                   d2 E1 , d2 E2 , d2 E3 , dE4 , E7 , d2 E9 ;
+
+the removed E8 becomes an identity. Restriction gives a thirteen-leaf solution.
+Conversely, from such a solution, set α = A∗ /d in Q for the proof only. Both numerator and
+denominator are positive, and F6 = 0 gives
+
+                                    α2 = 1 + (w + 1)2 − 1 (wg)2 ∈ Z.
+                                                               
+                                                                                                      (17)
+
+Lemma 6.1 makes α an integer. Because w ≥ b ≥ 2 and g ≥ 1, its square exceeds w2 , so α > w ≥ b and
+the restored α+ = α−1 is positive. The equation A∗ = dα recovers the old expression M = 2bα−b2 −1.
+Define
+                            x = y(α − b) + bo + M qr ,    s = x + uqσ .
+Both are positive integers, and X = dx, S∗ = ds. Dividing the zero residuals by d or d2 , which
+are nonzero, gives all surviving fourteen-leaf equations. Thus the maps are inverse and clearing
+denominators has introduced no spurious rational solution.
+
+                                                       8
+Report 67   Positive POWER reductions                                                                                   4 October 2026
+
+
+Here integrality also follows directly from F4 = 0, since α = β − uqα is an integer. The square-recovery
+proof is valid but redundant in this presentation. That shortcut disappears when u is removed next;
+this distinction matters in the twelve-leaf proof.
+At fixed base two the six residuals can be read with
+
+                d = 4,    A∗ = 2o + J + 5,           M = 2o + J,            w = 2 + dwb ,          y = C + dyC ,
+     X = y(A∗ − 8) + 8o + 4M qr ,           S∗ = X + 4uqσ ,              β = 1 + 4yqb ,        v = y 2 qv ,      t = C + 4yqτ .
+
+In particular they are exactly X 2 − 16 − (A2∗ − 16)y 2 , 16u2 − 16 − (A2∗ − 16)v 2 , S∗2 − 16 − 16(β 2 − 1)t2 ,
+4β − A∗ − 4uqα , w − C − dwC and A2∗ − 16 − 16((w + 1)2 − 1)(wg)2 .
+
+
+7    Exact degrees of the first four presentations
+
+The exact residual degrees after all shifts are as follows. Their orders are precisely (2), (12), (14) and
+(16).
+
+                 Leaves    Fixed base                                     Independent base or B + 1
+                    22     4, 4, 4, 2, 2, 3, 2, 2, 1, 1, 1, 1, 6, 1, 2    4, 4, 4, 2, 2, 3, 2, 2, 1, 1, 1, 2, 6, 2, 2
+                    16     4, 4, 6, 2, 3, 2, 1, 1, 6                      6, 4, 6, 2, 3, 2, 1, 2, 6
+                    14     4, 8, 8, 2, 1, 1, 6                            6, 8, 8, 2, 1, 2, 6
+                    13     4, 8, 8, 2, 1, 6                               8, 10, 10, 3, 1, 8
+
+These upper degrees follow by expanding the displayed definitions. For example, in the sixteen-leaf
+form y, w have degree one, β degree two, and M degree one at fixed base or two at variable base. Thus
+x, s have degree at most two or three respectively. After substituting v = y 2 qv , the term (α2 − 1)v 2
+has degree eight. In the thirteen-leaf variable-base form A∗ , M, β have degree two, d, w, y degree one,
+X, S∗ degree four, v degree three and t degree two.
+To prove exactness, the following monomials have coefficient one in the final sums of squares:
+
+                                                          P22 : w8 g 4 ,
+                                                          P16 : d8wb,+ g 4 ,
+                                                                 4 8
+                                                          P14 : α+ dyC,+ qv4 ,
+                                                  P13 fixed : J 4 d8yC,+ qv4 ,
+                                             P13 variable : B 8 d8yC,+ qv4 .                                                      (18)
+
+In the first two rows, only the auxiliary Pell residual contains g and its leading g term is −w4 g 2 or
+−d4wb,+ g 2 . In the last three rows, only the second Pell residual contains qv ; its indicated source term
+is respectively −α+   2 d4     2     2 4     2        4 4     2
+                         yC,+ qv , −J dyC,+ qv , or −B dyC,+ qv . To produce a displayed target monomial,
+neither factor in that residual square can contain another variable, leaving exactly this source. The
+coefficients are therefore one and cannot be cancelled by another square. These terms attain degrees
+12, 12, 16, 16, 20 as claimed. Fixed bases b ≥ 2 change none of these coefficient-one arguments.
+The 22-to-16-to-14-to-13 maps are bijections for fixed arguments. More concretely, they all retain the
+strictly increasing leaf qb,k in (9). Every accepted fiber in these four presentations is therefore infinite
+even though several explicit Pell coordinates have disappeared.
+
+
+
+                                                                9
+Report 67   Positive POWER reductions                                                                  4 October 2026
+
+
+8     Twelve leaves on a strict quotient domain
+
+The next step removes u but changes the domain of qα . It is not a bijection with the entire thirteen-leaf
+solution set.
+Retain six directly positive leaves
+                                                 o, g, qb , qv , J, qα
+and six natural aliases
+                                           dwb , dwC , dyC , qσ , qτ , qr .
+Each of the latter still uses one positive adapter. The new qα is itself positive, with no minus-one shift.
+Define w, y, β, v, t, M, d, A∗ , X as in (15), and now set
+
+                                    U = dβ − A∗ ,             S = qα X + U q σ .                                 (19)
+
+The full five residuals are
+
+                                 H1 = X 2 − d2 − (A2∗ − d2 )y 2 ,
+                                 H2 = U 2 − d2 qα2 − (A2∗ − d2 )qα2 v 2 ,
+                                 H3 = S 2 − d2 qα2 − d2 qα2 (β 2 − 1)t2 ,
+                                 H4 = w − C − dwC ,
+                                 H5 = A2∗ − d2 − d2 (w + 1)2 − 1 (wg)2 .
+                                                                              
+                                                                                                                 (20)
+
+Let P12 = 5i=1 Hi2 after every substitution and shift. The first residual deliberately has no extra qα2
+            P
+
+factor. There are no rational coefficients, hidden congruence residuals, or rational witnesses.
+For b = 2 the complete expressions are d = 4, M = 2o + J, A∗ = 2o + J + 5, w = 2 + dwb , y = C + dyC ,
+β = 1 + 4yqb , v = y 2 qv , t = C + 4yqτ , and
+
+                 X = y(A∗ − 8) + 8o + 4M qr ,             U = 4β − A∗ ,            S = qα X + U qσ .
+
+Thus the five residuals specialize explicitly to
+
+                          X 2 − 16 − (A2∗ − 16)y 2 ,
+                          U 2 − 16qα2 − (A2∗ − 16)qα2 (y 2 qv )2 ,
+                          S 2 − 16qα2 − 16qα2 (β 2 − 1)(C + 4yqτ )2 ,
+                                                 A2∗ − 16 − 16 (w + 1)2 − 1 (wg)2 .
+                                                                                   
+                          w − C − dwC ,
+
+
+8.1   Two rational recoveries and all restored domains
+
+Suppose all twelve leaves are positive integers and all Hi vanish. Directly from the definitions,
+
+         w ≥ b ≥ 2,    y ≥ C ≥ 1,       β ≥ 5,     v = y 2 qv ≥ y,       t ≥ C,     M = bo + J > bo > 0.
+
+Also d, A∗ , qα are positive. Define α = A∗ /d in Q only for the proof. Equation H5 = 0 gives (17);
+Lemma 6.1 makes α integral and the strict square bound gives α > w ≥ b. In particular α+ = α −1 > 0
+and M = 2bα − b2 − 1.
+Next define u = U/(dqα ) in Q. This division is legitimate because d, qα > 0. Equation H2 = 0 gives
+
+                                          u2 = 1 + (α2 − 1)v 2 ∈ Z.                                              (21)
+
+                                                         10
+Report 67   Positive POWER reductions                                                                    4 October 2026
+
+
+The rational-square lemma makes u an integer. Since v ≥ 1, we have |u| ≥ α > 0. The definition of U
+gives
+                                          β = α + uqα .                                         (22)
+If u < 0, integrality and the preceding bound give u ≤ −α, whence β ≤ α − αqα ≤ 0, contradicting
+β ≥ 5. Thus u > 0. The proof crucially uses the positive-integer inequality qα ≥ 1, not just
+nonvanishing of a rational quotient.
+Define the integers x = y(α − b) + bo + M qr and s = x + uqσ . They are positive because α > b, bo > 0
+and the aliases are natural. Now X = dx and S = dqα s. Dividing H1 = 0 by d2 and H3 = 0 by
+d2 qα2 recovers the first and third Pell equations. Equation (21) recovers the second. The remaining
+equations are H4 = 0, (17), (22) and the definitions. In full they are
+
+                  x2 = 1 + (α2 − 1)y 2 ,       u2 = 1 + (α2 − 1)v 2 ,           s2 = 1 + (β 2 − 1)t2 ,
+                        β = 1 + 4yqb ,      β = α + uqα ,        v = y 2 qv ,     s = x + uqσ ,
+                       t = C + 4yqτ ,       y = C + dyC ,         w = b + dwb = C + dwC ,
+                              M = bo + J,         α2 = 1 + ((w + 1)2 − 1)(wg)2 ,
+                           2αb = M + b2 + 1,               x = y(α − b) + bo + M qr .
+
+All restored w, M, x, y, u, v, s, t are positive. The restored β+ = β − 1 is positive, as is α+ . In the old
+domain the adapter for its natural quotient is now qα + 1; all other natural aliases retain their positive
+adapters. This is a genuine 22-leaf solution, so the pinned theorem proves o = bC−1 .
+
+
+8.2   Completeness and the exact image of the witness map
+                                                              +
+Let W13 (b, C, o) be the thirteen-leaf solution set, and let W13 be its subset with natural qα ≥ 1. For
+any old solution, reconstruct the 22-leaf data and use (9) with k ≥ 1. Then
+
+                                              qα,k = qα,0 + 4yk > 0.
+
+The family preserves all equations and all positive domains. Hence an old solution always gives a
+strict-domain old solution, including when the initial quotient was zero.
+From a strict solution, delete u and replace the old adapter qα,+ by the direct leaf qα = qα,+ − 1. On
+that solution U = duqα and S = dqα s, so the five residuals become
+
+                               d2 R1 ,     d2 qα2 R2 ,   d2 qα2 R3 ,   R11 ,     d2 R13 ,
+
+and vanish. The inverse keeps the other eleven leaves, restores qα,+ = qα + 1 and restores the unique
+u = U/(dqα ). Its integrality and positivity were proved above. We have exactly a bijection
+                                          +
+                                         W13 (b, C, o) ←→ W12 (b, C, o).                                           (23)
+
+The inverse image inside W13 is the subset β > α, equivalent to qα ≥ 1 because u > 0. This is not
+literal projection because an adapter is translated, and it is not a bijection with all W13 . For instance
+the old fixture at b = 2, C = o = 1, k = 0 in (10) has qα = 0 and is excluded. Passing an arbitrary old
+tuple through the family at k = 1 proves existential equivalence; it need not be injective or inverse
+to reconstruction. Together with the old completeness theorem, this proves Theorem 1.1 for twelve
+leaves.
+
+
+
+                                                          11
+Report 67    Positive POWER reductions                                                       4 October 2026
+
+
+The substitution identities can also be stated without division. Let Fi be (16), so F4 = U − duqα , and
+let its old S∗ = X + duqσ . As identities in polynomial indeterminates,
+
+                    H1 = F1 ,                                       H4 = F5 ,         H5 = F6 ,
+                   2
+            H2 − qα F2 = F4 (U + duqα ),
+            H3 − qα2 F3 = F4 qσ 2qα X + (U + duqα )qσ .
+                                                     
+                                                                                                        (24)
+
+The missing congruence equation is recovered through integral u, not silently ignored.
+
+
+8.3   Exact degree and infinite fibers
+
+At fixed base, the degrees of w, y, M, A∗ are one, those of β, X, U are two, those of v, S are three, and
+that of t is two. Thus the exact degrees of H1 , . . . , H5 are
+
+                                              4, 10, 10, 1, 6.
+
+Only H2 contains qv , and its term −J 2 qα2 d4yC,+ qv2 yields the coefficient-one monomial
+
+                                               J 4 qα4 d8yC,+ qv4                                       (25)
+
+in P12 . No other variable can occur in either factor producing that monomial. It has degree twenty,
+proving exactness for every fixed b ≥ 2.
+At b = B + 1, the degrees of d, w, y are one, those of M, A∗ , β, t are two, those of v, U are three, that
+of X is four and that of S is five. The exact residual degrees are
+
+                                              8, 12, 12, 1, 8.
+
+The B 2 term of A∗ supplies −B 4 qα2 d4yC,+ qv2 in H2 . Its square gives the coefficient-one monomial
+
+                                              B 8 qα4 d8yC,+ qv4                                        (26)
+
+of degree twenty-four. The independent-b convention is the same affine degree calculation.
+For every accepted argument, (9) with k ≥ 1 leaves infinitely many distinct qb,k in the new tuples.
+Restricting the starting endpoint does not remove infinitude. In the explicit zero-exponent family the
+retained data are
+
+                      g = 3, J = 61, qv = 34, dwb = dyC = qr = qτ = 0, dwC = 1,
+
+and qb = 4 + 577k, qα = qσ = 4k for k ≥ 1. Reconstruction gives α = 17, u = 577, β = s =
+17 + 2308k, t = 1. At k = 0 the polynomial identities still vanish but the new direct leaf is zero, outside
+the domain.
+The independent twelve-leaf audit supplies a sharper boundary check. At that excluded endpoint,
+change qv to 2. Every new residual still vanishes, because the terms carrying v are multiplied by
+qα2 = 0, but old reconstruction would require u2 = 1 + 288 · 4 = 1153, which lies strictly between
+332 and 342 . Allowing zero for the new direct quotient therefore breaks integer recovery. This is a
+counterexample to that enlarged-domain reconstruction argument, not a false-output example: it still
+has the accepted output o = 1.
+
+
+
+                                                      12
+Report 67   Positive POWER reductions                                                             4 October 2026
+
+
+                        normalize
+                   four quotient pairs
+                 W26                 W22            W16            W14              W13
+
+                                                                    recover u;        inclusion
+                                                                translate adapter    +
+                                                          W12                       W13
+
+Figure 1: Solution-set maps at fixed b, C, o. The top three double arrows are bijections. The first
+                                                                                           +
+arrow has a section but is not injective. Every nonempty W13 has a strict witness in W13     by the Pell
+progression. The last double arrow identifies W12 only with this strict subset. All displayed nonempty
+fibers are infinite.
+
+9     The retained three witness bounded compiler
+
+Fix a finite deterministic two-counter program M, initial state q0 and halt state H. Each instruction
+increments one counter with a specified successor, or tests it for zero with a specified zero successor and
+otherwise decrements it with a specified positive successor. The other counter is unchanged. States may
+repeat. After H use virtual absorbing steps only for native bookkeeping. These semantics are explicit;
+related standard instruction conventions and their importance are discussed by Dudenhefner [2].
+
+
+9.1   Exact clipping on all input sizes
+
+Lemma 9.1 (Clipping). Replacing native initial counters (a, b) by (min(a, T ), min(b, T )) preserves
+all control states through time T and all selected branches at entry times 0, . . . , T − 1. Therefore it
+preserves first halt by T and first halt exactly at T .
+
+Proof. At time zero states agree. Suppose branches agree for the first t < T transitions. Corresponding
+counters have received identical changes. If the original initial counter was below T , its representative
+is identical. Otherwise its representative began at T and is at least T − t > 0 at this entry time; the
+original is this value plus its nonnegative initial excess. Their zero-test outcomes agree. Increments
+and virtual halt steps agree as well. This proves the induction through transition T . At T = 0 there
+are no branches, and only the initial state matters.
+
+The strict bound is needed before the last transition, not after it. Final counters and their zero status
+need not agree. The uniform native threshold cannot be reduced for this argument: a loop which halts
+on zero and otherwise decrements first halts at step T from a = T − 1, and at step T + 1 from a = T .
+Clipping at T − 1 would merge different answers. This is a clipping-threshold fact, not a polynomial
+lower bound.
+For positive inputs A = a + 1, B = b + 1, put
+
+                  K = T + 1,        N = K 2,       u = min(A, K),         v = min(B, K).
+
+Index the finite representative pairs by i = (u − 1)K + v and define
+                              i−1   i
+                                      
+               ui = 1 +           =   ,         vi = 1 + ((i − 1) mod K) = i + K − Kui .                    (27)
+                               K    K
+Let S ⊆ {1, . . . , N } contain the indices whose representative inputs (ui − 1, vi − 1) satisfy the selected
+by-horizon or exact-horizon predicate. In principle the table can be constructed by checking the initial
+
+                                                     13
+Report 67   Positive POWER reductions                                                                          4 October 2026
+
+
+state and evaluating each of its N configurations for at most T transitions. This costs at most N T
+native transitions; the representative counters stay at most 2T . It invokes no unbounded decision. No
+such interpreter is run in this report. If q0 = H, the by-horizon table is full, while the exact table is
+empty when T > 0.
+
+
+9.2    Integer interpolation and every residual
+
+Let c = (N − 1)!, with 0! = 1, and define
+                                                !
+                                N −i    N −1         Y
+               ℓi (z) = (−1)                                 (z − h),
+                                        i−1         1≤h≤N
+                                                      h̸=i
+                         N
+                         X                                                                      N
+                                                                                                X
+              U0 (z) =         ui ℓi (z),                                            V0 (z) =         vi ℓi (z),
+                         i=1                                                                    i=1
+                         YN                                                                     Y
+               R(z) =      (z − i),                                                  HS (z) =         (z − i).           (28)
+                         i=1                                                                    i∈S
+
+Empty products equal one. Since h̸=i (i − h) = (−1)N −i (i − 1)!(N − i)!, the basis has ℓi (i) = c and
+                                            Q
+
+vanishes at the other nodes. Hence
+
+                                            U0 (i) = cui ,          V0 (i) = cvi .
+
+These are the usual Lagrange interpolants cleared by the fixed positive integer c; the elementary general
+interpolation formula is recorded in DLMF [3]. All final coefficients are integers. No denominator
+depends on an input or witness.
+Use exactly three positive witnesses j, r, s and the six residuals
+
+              R0 = R(j),
+              RA = (cA − U0 (j))(U0 (j) − cK),                             LA = cA − U0 (j) − c(r − 1),
+              RB = (cB − V0 (j))(V0 (j) − cK),                             LB = cB − V0 (j) − c(s − 1),
+              RH = HS (j).                                                                                               (29)
+
+The polynomial is
+                                    PM,T = R02 + RA
+                                                  2
+                                                    + L2A + RB
+                                                             2
+                                                               + L2B + RH
+                                                                        2
+                                                                          .                                              (30)
+Program and horizon determine its coefficients, not new polynomial inputs. Six is a literal residual-slot
+count, retaining zero and duplicate slots.
+Proposition 9.2 (Correctness and uniqueness). For every positive input pair (A, B), a positive triple
+(j, r, s) solving (30) exists exactly when the selected bounded-halting assertion holds. When it exists it
+is unique.
+
+Proof. A zero of the sum of squares forces R(j) = 0, so j ∈ {1, . . . , N }. Write u = uj , v = vj . Dividing
+only by c > 0, the two A residuals give
+
+                                  (A − u)(u − K) = 0,               A − u = r − 1 ≥ 0.
+
+If u < K, the product forces A = u; if u = K, the slack forces A ≥ K. These are precisely
+u = min(A, K). The same argument forces v = min(B, K). Hence the class index is uniquely
+
+                                                               14
+Report 67   Positive POWER reductions                                                      4 October 2026
+
+
+j = (u − 1)K + v. The last residual places it in S, and clipping proves the native assertion for arbitrary
+input sizes.
+Conversely take the actual clipped u, v for an accepted input and set
+
+                       j = (u − 1)K + v,       r = A − u + 1,        s = B − v + 1.                  (31)
+
+These are positive and make all six residuals vanish. Soundness fixed u, v, j and each linear residual
+fixes its slack, so the tuple is unique. In particular 1 ≤ j ≤ N , 1 ≤ r ≤ A and 1 ≤ s ≤ B.
+
+At T = 0 we have K = N = c = 1, U0 = V0 = 1. Both classification residuals vanish and
+
+                            P = (j − 1)2 + (A − r)2 + (B − s)2 + HS (j)2 ,                           (32)
+
+where HS = 1 or j − 1. Both possibilities have degree two and nine nonzero monomials. The accepted
+case has tuple (1, A, B); the rejected case has no tuple. Keeping three witnesses at this trivial horizon
+is only a uniform presentation convention.
+
+
+10     Exact interpolation degree at every horizon
+
+Let U = U0 /c and V = V0 /c be the rational interpolants in (28). For K ≥ 2 define
+                                               (
+                                                   K 2 − 1 K even,
+                                        δK =                                                         (33)
+                                                   K 2 − 2 K odd.
+
+Theorem 10.1 (Interpolation degree and leading coefficient). For every K ≥ 2, all four polynomials
+U, V, U0 , V0 have exact degree δK . The leading coefficient aK of U0 is
+                           
+                              K−1
+                                         !
+                             X K2 − 2
+                           −
+                           
+                           
+                                          ,                         K even,
+                                  hK − 1
+                           
+                      aK =    h=1                                                                    (34)
+                                    K−1
+                                                     !
+                                   X          K 2−3
+                               2
+                           (K − 1)    (−1)h+1                       K odd, K ≥ 3.
+                           
+                           
+                                                     ,
+                                                           hK − 1
+                           
+                                        h=1
+
+It is negative for even K, and has sign (−1)(K+1)/2 for odd K ≥ 3. The leading coefficient of V0 is
+−KaK . At K = 1, both cleared interpolants are the constant 1.
+
+
+10.1    Reflection and finite differences
+
+At each node uN +1−i = K + 1 − ui . By uniqueness of degree-at-most-N − 1 interpolation,
+
+                                    U (N + 1 − z) = K + 1 − U (z).
+
+Thus U ((N + 1)/2 + x) − (K + 1)/2 is odd in x. If K is odd and K ≥ 3, then N − 1 is a positive even
+integer and its coefficient vanishes, giving deg U ≤ N − 2. This qualification excludes K = 1, where
+U = 1; no negative degree bound is asserted there.
+For K ≥ 2, the degree-at-most-N − 1 polynomial z + K − KU (z) interpolates the vi . Consequently
+
+                      V (z) = z + K − KU (z),          V0 (z) = c(z + K) − KU0 (z).                  (35)
+
+
+                                                      15
+Report 67   Positive POWER reductions                                                                4 October 2026
+
+
+Once deg U ≥ 2 is established, this proves the claims for V . The identity is not asserted at K = 1.
+Let ∆fi = fi+1 − fi . Repeated expansion gives
+                                                       q                     !
+                                                q
+                                                       X
+                                                                     q−k   q
+                                            ∆ f1 =          (−1)             fk+1 .
+                                                       k=0
+                                                                           k
+
+For a polynomial of degree at most q, this is q! times its coefficient of z q : each difference reduces a
+leading term az q to qaz q−1 , and induction proves the statement. The step values are
+                                                                K−1
+                                                                X
+                                                    ui = 1 +          1i>hK .
+                                                                h=1
+
+For 1 ≤ b ≤ q, Pascal’s identity telescopes to
+                                      q                     !                          !
+                                      X                 q                         q−1
+                                          (−1)q−k               = (−1)q−b             .                        (36)
+                                      k=b
+                                                        k                         b−1
+
+Therefore, whenever all boundaries hK ≤ q and q ≥ 1,
+                                                     K−1
+                                                                                       !
+                                            q
+                                                     X
+                                                                  q−hK       q−1
+                                       ∆ u1 =              (−1)                    .                           (37)
+                                                     h=1
+                                                                            hK − 1
+
+For even K, take q = N − 1: it is odd and every hK is even. This is a strictly negative sum of positive
+integers, so deg U = N − 1 and, because c = (N − 1)!, it proves the first coefficient formula.
+For odd K ≥ 3 the symmetry bound allows q = N − 2. All boundaries fit since (K − 1)K ≤ N − 2.
+Now q, K are odd, so
+                                                                     K−1
+                                                                                               !
+                              N −2
+                                                                     X
+                                                                                 h+1   K2 − 3
+                          ∆          u1 = SK ,          SK =               (−1)               .                (38)
+                                                                     h=1
+                                                                                       hK − 1
+
+It remains to prove SK ̸= 0 with its claimed sign. Then deg U = N − 2 and aK = cSK /(N − 2)! =
+(N − 1)SK .
+
+
+10.2    The strict sign for every odd K
+
+Fix odd K ≥ 3 and put n = K 2 − 3. The K complex roots of rK = −1 satisfy, for every integer m,
+                                                              (
+                                      1 X m                     0                 K ∤ m,
+                                          r =
+                                      K K
+                                            r =−1
+                                                                (−1)m/K           K | m.
+
+This follows by expressing them as eiπ/K times the Kth roots of unity and summing a finite geometric
+progression. Expanding (1 + r)n gives
+                                          K−1
+                                                                                       !
+                          1 X             X           n
+                              r(1 + r)n =     (−1)h                                        = −SK .             (39)
+                          K K             h=1
+                                                    hK −1
+                              r =−1
+
+The bounds 0 ≤ hK − 1 ≤ n give precisely 1 ≤ h ≤ K − 1. The real root −1 contributes zero since
+n > 0. Pair the other roots as e±2iθl , where
+                                                (2l + 1)π                         K −3
+                                      θl =                ,          0≤l≤              .
+                                                   2K                               2
+
+                                                                16
+Report 67   Positive POWER reductions                                                               4 October 2026
+
+
+All these angles lie strictly between zero and π/2. Since 1 + e2iθ = 2 cos θ eiθ , the real part of r(1 + r)n
+is 2n cosn θl cos((n + 2)θl ). Here
+
+                                                 K(2l + 1)π
+                                                                    
+                     cos((n + 2)θl ) = cos                  − θl         = (−1)(K−1)/2+l sin θl .
+                                                     2
+
+The paired sum in (39) therefore yields
+                                                          (K−3)/2
+                                                   2n+1        X
+                            SK = (−1)(K+1)/2                         (−1)l sin θl cosn θl .                   (40)
+                                                    K          l=0
+
+To prove that the last sum is positive, put f (θ) = sin θ cosn θ. Its derivative is
+
+                                     f ′ (θ) = cosn−1 θ cos2 θ − n sin2 θ ,
+                                                                                
+
+                                            √
+so it is strictly decreasing once tan θ > 1/ n. For K ≥ 3,
+                                                         p
+                                                  1        3/2    3    π
+                             n ≥ 32 K 2 ,        √ ≤           <    <    = θ0 .
+                                                   n       K     2K   2K
+
+The middle inequality follows by squaring, and the last uses π > 3. Also tan θ > θ on (0, π/2) because
+the derivative of tan θ − θ is tan2 θ > 0. Thus f (θ0 ) > f (θ1 ) > · · · > 0. Pairing successive terms of its
+alternating sum gives positive differences, with a positive final term if unpaired. This includes the
+single term for K = 3. Hence (40) proves (−1)(K+1)/2 SK > 0. The interpolation theorem follows. Its
+smallest degree at K ≥ 2 is three, attained at K = 2, validating the leading-coefficient deduction from
+(35).
+
+
+10.3    The complete highest homogeneous term
+
+Let K ≥ 2, δ = δK and a = aK . The unique highest-degree terms of the two classification residuals are
+
+                                            −a2 j 2δ ,       −K 2 a2 j 2δ .
+
+Indeed the competing input terms AU0 and BV0 have degree δ + 1 < 2δ. Their squares therefore
+contribute the entire degree-4δ expression
+
+                                                 (1 + K 4 )a4K j 4δK .                                        (41)
+
+The other four squared residuals have degrees at most 2N, 2δ, 2δ, 2N . For even K ≥ 2, 4δ − 2N =
+2N − 4 > 0; for odd K ≥ 3, 4δ − 2N = 2N − 8 > 0. Hence none contributes at this top degree. Its
+coefficient is strictly positive for every acceptance subset, including empty and full tables. Together
+with (32), this proves the exact degree law (1). The earlier ceiling 4(T + 1)2 − 4 is attained at positive
+odd T and exceeds the true degree by exactly four at positive even T . No artificial degree-padding
+term is added.
+
+
+11     Support coefficients and the cost of finite preprocessing
+
+The small witness count does not give a small fixed polynomial for all horizons. Here are explicit costs
+of the retained compiler, sharpened only where the exact degree permits it.
+
+
+                                                          17
+Report 67   Positive POWER reductions                                                      4 October 2026
+
+
+11.1    Expanded support
+
+For K ≥ 2 put δ = δK . Write
+
+                  RA = AfA (j) + gA (j),     fA = c(U0 − cK),      gA = −U0 (U0 − cK).
+
+The two coefficient degrees are at most δ, 2δ. Its square has only a pure-j part of degree at most 4δ,
+an A part of j-degree at most 3δ, and an A2 part of j-degree at most 2δ. The B classification is
+analogous. Since LA = cA − cr + (c − U0 (j)), its square contributes only pure-j, A and r terms, plus
+A2 , r2 , Ar; its r coefficient has degree at most δ. The B, s counterpart is the same. The root-product
+squares have pure-j degree at most 2N < 4δ. Thus disjoint monomial types give
+
+                                   Type                          Ceiling
+                                   Pure j powers                  4δ + 1
+                                   A2 , B 2 times j powers     2(2δ + 1)
+                                   A, B times j powers         2(3δ + 1)
+                                   r, s times j powers          2(δ + 1)
+                                   r2 , s2 , Ar, Bs                    4
+                                   Total                       16δ + 11
+
+This is a ceiling, not an exact support count. It is 16N − 5 for even K and 16N − 21 for odd K ≥ 3.
+Cancellations only reduce it. At K = 1 the exact support is nine as already stated. No monomial
+mixes A with B, r with s, or another undeclared combination of nonselector variables.
+
+
+11.2    Coefficient height and storage
+
+Let ∥f ∥1 denote the sum of absolute coefficient values and set
+
+                                           Λ = K2N −1 (N + 1)!.
+
+The product of factors z − h has norm at most           (1 + h). Using (28), the binomial sum 2N −1 , and
+                                                    Q
+
+ui , vi ≤ K, we get
+
+                   ∥U0 ∥1 , ∥V0 ∥1 ≤ Λ,    ∥R∥1 , ∥HS ∥1 ≤ (N + 1)! ≤ Λ,    cK, c ≤ Λ.
+
+Subadditivity and submultiplicativity imply classification-residual norm at most 4Λ2 and slack-residual
+norm at most 4Λ. Therefore, also at horizon zero,
+
+                       ∥P ∥1 ≤ 2Λ2 + 2(4Λ2 )2 + 2(4Λ)2 = 32Λ4 + 34Λ2 ≤ 66Λ4 .                        (42)
+
+A nonzero coefficient needs at most 7 + 4⌈log2 Λ⌉ magnitude bits, plus a sign bit if needed. This is
+O(N log(N + 1)). Storing the O(N ) supported coefficients and all five exponents in binary gives an
+expanded-description ceiling
+
+                             O(N 2 log(N + 1)) = O((T + 1)4 log(T + 2)).
+
+Neither is an optimal storage or coefficient bound.
+
+
+
+
+                                                    18
+Report 67    Positive POWER reductions                                                     4 October 2026
+
+
+11.3       Effective construction and its limits
+
+The table has exactly N Boolean entries for the selected predicate. Constructing it in principle
+costs at most N T native transitions. A straightforward algebraic generator builds each basis product
+by repeated linear-factor multiplication using O(N 2 ) integer operations per product, hence O(N 3 )
+overall. Scaling, adding and ordinary convolution to form the six squares fit within another O(N 3 )
+integer operations. Product and triangle bounds as above keep intermediate magnitudes within
+O(N log(N + 1)) bits. These are arithmetic-operation bounds, not unit-cost bit-complexity assertions.
+The generator is uniform and effective in program and horizon, but each horizon selects different
+coefficients and a different degree. If T is supplied in binary, these costs need not be polynomial in its
+bit length. The construction does not give a faster single-instance bounded-halting decision procedure
+than ordinary simulation. Existentially saying that some horizon accepts does not internalize varying
+factorials, products and acceptance tables in a single fixed polynomial. No such uniform arithmetic
+encoding is supplied, and no unbounded single-fold consequence follows from unique bounded triples.
+
+
+12     Paid composition on three positive native gaps
+
+The external inputs are arbitrary g1 , g2 , g3 ∈ Z>0 and D = g1 + g2 + g3 is an expression. Call the
+triple encoded when there are natural counters a, b with
+                                 g1   1   1               g3   1  1
+                                    =   + 2−a ,              =   + 2−b .                              (43)
+                                 D    20 10               D    20 10
+The predicate explicitly includes this encoding. An arbitrary unencoded positive triple has no certificate,
+irrespective of any physical behavior from it.
+Choose one of the five module presentations, with ℓ leaves, rℓ residuals and fixed-base degree Dℓ .
+Introduce positive shifted counters A, B and two independent base-two copies with (C, o) = (A, p) and
+(B, q). Their outputs p, q are counted inside their modules, once each. Add
+
+                           G1 = (20g1 − D)p − 2D,         G3 = (20g3 − D)q − 2D.                      (44)
+     (A)        (B)
+If Qi and Qi          denote the fully substituted residuals from the selected display, define the entire
+polynomial
+                                        rℓ          rℓ
+                       (ℓ)    2    2
+                                       X     (A) 2 X     (B)
+                      FM,T = G1 + G3 +     (Qi ) +     (Qi )2 + PM,T (A, B; j, r, s).                 (45)
+                                       i=1         i=1
+
+Every leaf in one module is distinct from the other module, the three gaps and A, B, j, r, s. Equations
+(2), (12), (14), (16), or (20), together with (29) and (44), specify every term. No unexpanded power
+predicate remains.
+
+All-input correctness. A zero of (45) makes each residual vanish. The module theorem gives p = 2A−1
+and q = 2B−1 . Positivity of D, p, q forces 20g1 − D > 0 and 20g3 − D > 0 through the gap equations.
+Division by these positive quantities yields exactly (43), with a = A − 1, b = B − 1. Proposition 9.2
+gives the selected bounded-halting assertion on those counters.
+Conversely, an encoded triple and accepted counters supply A = a + 1, B = b + 1, p = 2a , q = 2b . Both
+gap residuals vanish. The all-exponent module theorem supplies both complete positive POWER tuples,
+and (31) supplies the compiler witnesses. Therefore all squares vanish. There is no encoded-input
+promise on the quantified domain: encoding is part of the proved predicate on all positive triples.
+
+
+                                                     19
+Report 67   Positive POWER reductions                                                           4 October 2026
+
+
+12.1    Exact ledgers and the degree tradeoff
+
+Decoding alone costs 2 + 2ℓ positive witnesses and 2 + 2rℓ residuals. Adding the three compiler
+witnesses and six residuals gives Table 2.
+
+              Module    Decoding    Decoding         Full         All         Full         Fixed
+               leaves   witnesses   residuals   witnesses   variables    residuals        degree
+                   22          46          32          49           52         38    max(12, dT )
+                   16          34          20          37           40         26    max(12, dT )
+                   14          30          16          33           36         22    max(16, dT )
+                   13          28          14          31           34         20    max(16, dT )
+                   12          26          12          29           32         18    max(20, dT )
+
+Table 2: Paid native-gap compositions. All rows have three external positive inputs and one final
+polynomial equation. All variables means witnesses plus inputs. Counts hold at every horizon for both
+acceptance conventions.
+
+For the degree, gap squares have degree four. The module sums have degree Dℓ , and their explicit
+coefficient-one monomials in (18) or (25) involve independent module variables absent from P . If
+dT > Dℓ , its top part (41) is unchanged; otherwise a module’s degree witness survives. At a tie both
+survive. Hence
+                                             (ℓ)
+                                       deg FM,T = max(Dℓ , dT )
+is exact, not just an upper bound. In particular, d0 = 2, d1 = 12, d2 = 28, d3 = 60. Thus the composed
+degrees at T = 0 and T = 1 are respectively 12, 12, 16, 16, 20 across the five rows, while for every T ≥ 2
+all five have the same exact compiler degree dT . The smaller module can save witnesses and residuals
+without raising the composed degree once the interpolation part dominates. This compares only these
+displayed constructions, not all possible certificates.
+The fixed base-two module and gap part has a constant coefficient norm and finite support independent
+of M, T . Adding it preserves the coefficient-bit and expanded-description asymptotic bounds of
+Section 11, with a fixed additive contribution. It does not imply small Pell witnesses or a smaller
+arithmetic circuit. The leaf reduction can substantially increase expanded module support and degree;
+no optimized DAG is supplied.
+
+
+12.2    Unique projection and infinite complete fibers
+
+For an accepted fixed gap input the equations force
+                                            2D                     2D
+                                    p=            ,        q=            .
+                                         20g1 − D               20g3 − D
+Injectivity of powers of two fixes A, B, and the compressed theorem fixes j, r, s. Thus the projection
+(A, B, p, q, j, r, s) is unique. Full tuples are infinite: vary (9) in one module while keeping its index and
+output, the other module and all outer witnesses fixed. For twelve leaves restrict to k ≥ 1 as required.
+Since qb increases, the full tuple changes. Unique decoding and a unique bounded triple therefore
+never give finite full fibers in these formulas.
+
+
+
+
+                                                      20
+Report 67   Positive POWER reductions                                                                  4 October 2026
+
+
+13     The finite trace alternative and its exact paid counts
+
+For completeness the growing trace alternative can use any same module. Give states distinct fixed
+integer codes, split each conditional into its zero and positive edges and add exactly one absorbing halt
+edge h. Let E be the number of edges and Z the number of zero edges. Each edge e has fixed source
+ue , target ve and counter changes de , fe ∈ {−1, 0, 1}. If there are I increment and C0 conditional
+instructions, then E = I + 2C0 + 1 and Z = C0 .
+For T ≥ 1 use positive wt,e for 0 ≤ t < T , 1 ≤ e ≤ E, and positive At , Bt for 1 ≤ t ≤ T . Put
+st,e = wt,e − 1, A0 = A, B0 = B. The complete trace residual list is
+               (wt,e − 1)(wt,e − 2)                                                     (T E slots),
+               X
+                    st,e − 1                                                            (T ),
+                e
+                                X                                    X
+               At+1 − At −               de st,e ,   Bt+1 − Bt −           fe st,e      (2T ),
+                                    e                                 e
+               st,e (At − 1) or st,e (Bt − 1) on zero edges                             (T Z),
+               X
+                    ue s0,e − q0                                                        (1),
+                e
+               X                X
+                    ve st,e −           ue st+1,e    (0 ≤ t < T − 1)                    (T − 1),
+                e               e
+               X
+                    ve sT −1,e − H                                                      (1).                     (46)
+                e
+
+Their squared sum has T (E + 2) witnesses and T (E + Z + 4) + 1 residual slots. At T = 0 use the
+single constant residual q0 − H and no witnesses, so the same ledger holds. This constant polynomial
+is not called quartic.
+The selector and one-hot equations choose exactly one edge at each time. Updates fix both next
+counters. A selected zero edge forces its tested shifted counter to be 1; a selected decrement from
+1 would force a nonpositive next counter, forbidden by the domain. The state equations therefore
+give exactly the genuine deterministic native path padded at H. Conversely that path supplies every
+positive selector and next counter. Induction fixes all witnesses uniquely, including inactive selectors
+equal to 1. This argument needs no acyclicity, and duplicate enabled edges are not inserted.
+For first halt exactly at T ≥ 1, add the single residual
+                                                             −1
+                                                            TX
+                                                                  st,h .
+                                                            t=0
+
+Its nonnegative terms exclude all early halt-loop uses, while the final equation still forces arrival. No
+new witness is added. At T = 0 exact and by-horizon predicates agree.
+                                                                                                    4 ,
+Every trace residual has degree at most two; for T ≥ 1 the selector square gives a coefficient-one wt,e
+proving trace degree four. Adding the paid decoding part yields exactly
+                                positive witnesses = T (E + 2) + 2 + 2ℓ,
+                                           residual slots = T (E + Z + 4) + 3 + 2rℓ ,
+                                                                                                                 (47)
+                                             all variables = T (E + 2) + 5 + 2ℓ,
+                                                     degree = Dℓ .
+The exact-halt version adds one residual for T ≥ 1. For twelve leaves this is T (E + 2) + 26 witnesses,
+T (E + Z + 4) + 13 residuals and degree twenty. The module degree witnesses survive, also at T = 0.
+
+                                                               21
+Report 67   Positive POWER reductions                                                      4 October 2026
+
+
+This is an alternative tradeoff: growing trace arity with constant module-dominated degree, versus
+constant witness arity with growing interpolation degree and finite table costs.
+
+
+14     Physical interpretation and semantic boundaries
+
+The arithmetic POWER and clipping arguments do not need a physical simulator. The separately
+retained five-live-signal compiler theorem uses stationary markers L = 0, X = g1 , Y = g1 + g2 , R = D
+and an instruction messenger. On precisely the encoded inputs (43), it identifies each native transition
+with one ordered instruction section, preserves D, and uses at most 32 binary collisions and duration
+strictly between D and 10D per nonhalting transition.
+Conditional on that retained theorem, the certificates here also express encoded-input bounded
+instruction-section reachability. If first halt occurs at k > 0, the physical prefix has elapsed time
+strictly between kD and 10kD and at most 32k collisions. At k = 0 it is already at the halt section.
+A collision-count horizon is not an instruction horizon. The arithmetic absorbing halt edge is padding
+only, not an assertion that the physical messenger keeps executing after halt.
+Neither the three-witness compiler nor these module replacements classify arbitrary unencoded physical
+executions. The present work does not re-audit the physical theorem, create a universal counter
+program, or establish a new five-signal universality result. Its finite-table coefficients depend on the
+fixed program and horizon; its physical interpretation remains limited to the explicitly inherited
+interface.
+
+
+15     Dependencies evidence and reproducibility
+
+The article synthesizes three separately preserved mathematical continuations: the 22-leaf normalization
+and 16/14/13 eliminations, the strict-domain twelve-leaf continuation, and the exact interpolation-
+degree continuation. The complete proofs are retained, together with the earlier bounded compiler and
+its native-gap, trace, POWER and physical dependencies. Earlier reports are not edited or renumbered.
+The new notation A∗ for a module expression does not change any polynomial.
+The reductions supply explicit algebra and domain recovery. Their all-exponent semantic conclusion
+still uses the pinned mathlib constructive Pell theorem pair. The bounded compiler and exact
+interpolation theorem need neither Pell theory nor the physical theorem. Physical transport alone uses
+the retained encoded-input physical compiler. These dependencies are deliberately separated: exact
+expansion of a polynomial verifies neither its all-input semantics nor a physical simulation theorem.
+The baseline independent audit reconstructs all eight fixed/variable-base expansions and verifies the
+maps, degrees, domains and infinite families. It records 31 elimination identities, 192 complete module
+evaluations, 96 reconstruction round trips and 28 composed examples. The exact-degree independent
+audit checks leading coefficients for K = 1, . . . , 101, all 385 node pairs for K ≤ 10, and 565 complete
+sum-of-squares expansions, including every acceptance subset at K = 1, 2, 3. It identifies the local
+odd-K qualification applied explicitly in Section 10. These finite checks support the written all-horizon
+proofs; they do not replace them.
+The independent twelve-leaf audit verifies five full module expansions, complete coefficient agreement
+in both retained conventions, 33 reconstruction fixtures, 675 rejected single-leaf perturbations and eight
+complete compositions with 777 clipping/interpolation fixtures. It separately checks the strict-domain
+image and the rational integrality and sign arguments; no mathematical correction was required. Its
+
+
+                                                   22
+Report 67   Positive POWER reductions                                                    4 October 2026
+
+
+domain challenges illustrate failure of the reconstruction after changing domains, not false-output
+solutions within the stated theorem.
+The supplied scientific source files and checker programs are inert evidence in this release. The article
+build imports or executes none of them. There is no native counter interpreter, physical simulator,
+saved schedule, upstream scientific execution or Lean build. Stored author evidence, independent
+mathematical evidence, manuscript review and presentation-tool checks are different evidence categories.
+The independent dossiers and the final release README state their exact scope and status without
+turning one category into another.
+The report-owned presentation tools adapt the completely inspected accepted Report 66 release
+contract. They flatten only the fixed manuscript modules, authenticate their reviewed pin map, build a
+fresh TeX format in an external directory with shell escape disabled, and retain the union of the format
+and all three compilation passes’ recorder inputs. A dependency lock pins the named executables,
+interpreter and recorded TeX/font files. A locked rebuild must reproduce the packaged PDF byte for
+byte. Every page is rendered and inspected; PNG raster/CRC validation is additional to visual review.
+The lock does not inventory the operating system, shared libraries or Python standard library.
+Exact manifests authenticate the release’s listed file and directory descendants, bytes, modes and
+nanosecond modification times. Frozen input copies preserve their dependency layout and are separately
+pinned. A metadata-preserving extraction operation restores the authenticated descendant metadata;
+ordinary ZIP extraction may not. The manifest’s own hash must be obtained outside the archive.
+Read-access times and transported filesystem creation/change times are not integrity claims. The
+README gives the exact commands, pin values and completed independent review receipts.
+
+
+16     Context and questions left open
+
+Pell-based Diophantine exponentiation is established prior mathematics. Pąk and Kaliszyk [4] describe
+formalizations and carefully distinguish free parameters, explicit unknowns and additional unknowns
+hidden in subrelations. That distinction is essential here: twelve module leaves include the output,
+exclude the supplied index, and cost eleven auxiliaries after the output is fixed. The native-gap
+composition must pay for both shifted counters, both complete modules and the compiler witnesses.
+The comparison in Table 1 is between specified presentations of one relation. It is not a comparison
+with arbitrary Diophantine equations, prime-representing polynomials or universal polynomials. No
+exhaustive literature search, novelty, priority, minimum degree, minimum witness count, arithmetic-
+gate improvement or small-height Pell-witness result is claimed. Every displayed full POWER and
+native-gap fiber is infinite; eliminating obvious common-shift freedom does not make these formulas
+finite-fold.
+Several bounded questions remain meaningful. Can another explicitly justified elimination improve a
+listed witness/degree pair? Can the coefficient and support ceilings be tightened without changing the
+literal formula? Can useful height bounds be proved for reconstructed positive Pell witnesses? Can
+finite-table construction exploit a particular program without treating acceptance as free data? Each
+would require a separately stated construction or proof. None is settled by the exact counts in this
+report, and none turns the horizon-indexed family into one fixed polynomial for unbounded halting.
+
+
+
+
+                                                   23
+Report 67   Positive POWER reductions                                              4 October 2026
+
+
+References
+
+[1] Mario Carneiro and mathlib contributors. PellMatiyasevic.lean,            mathlib4,   com-
+    mit ac77769fabe23cb237559e7f56578dbead91499f. Theorems Pell.matiyasevic and
+    Pell.eq_pow_of_pell; recurrence and constructive branches retained under Apache License 2.0.
+    Pinned primary source.
+
+[2] Andrej Dudenhefner. Certified Decision Procedures for Two-Counter Machines. FSCD 2022, LIPIcs
+    228, Article 16. doi:10.4230/LIPIcs.FSCD.2022.16.
+
+[3] NIST Digital Library of Mathematical Functions. Section 3.3(i), Lagrange interpolation. dlm-
+    f.nist.gov/3.3(i).
+
+[4] Karol Pąk and Cezary Kaliszyk. Formalizing a Diophantine Representation of the Set of Prime
+    Numbers. ITP 2022, LIPIcs 237, Article 26, pp. 26:1–26:8. doi:10.4230/LIPIcs.ITP.2022.26.
+
+
+
+
+                                               24
+

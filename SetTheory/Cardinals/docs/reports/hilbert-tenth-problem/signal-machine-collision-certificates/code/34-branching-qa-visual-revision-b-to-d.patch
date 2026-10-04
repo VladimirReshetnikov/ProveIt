@@ -1,0 +1,80 @@
+--- Report64-candidate-b.tex
++++ Report64-final-d.tex
+@@ -280,9 +280,9 @@
+  \draw[target,very thick] (.15,0)--(.15,.15)--(.1,.25)--(1/15,19/60)--(.6,7/12)--(.9,11/15)--(13/15,.8)--(13/15,5/3)--(13/15,38/15)--(.9,13/5)--(.6,11/4)--(1/15,181/60)--(.1,37/12)--(.15,191/60)--(.15,10/3);
+  \draw[messenger,thick] (0,0)--(.15,.15)--(0,.25)--(1/15,19/60)--(0,7/12)--(.6,11/15)--(13/15,.8)--(0,5/3)--(13/15,38/15)--(.6,13/5)--(0,11/4)--(1/15,181/60)--(0,37/12)--(.15,191/60)--(0,10/3);
+  \draw[dashed,quiet] (0,5/3)--(1,5/3);
+- \node[anchor=west,fill=white,inner sep=1pt] (.2,5/3){\scriptsize inverse entry};
++ \node[anchor=west,fill=white,inner sep=1pt] at (.2,5/3){\scriptsize inverse entry};
+  \fill (.9,11/15) circle (1.1pt);
+- \node[anchor=east,fill=white,inner sep=1pt] (.84,1.02){\scriptsize $X/Y$ first};
++ \node[anchor=east,fill=white,inner sep=1pt] at (.55,1.02){\scriptsize $X/Y$ first};
+  \node at (.5,3.66){\textbf{$\ZZ$: $x=3/20$, $y=9/10$}};
+  \node[below] (l1) at (0,0){$L$};\node[below] at (.15,0){$X$};
+  \node[below] at (.89,0){$Y$};\node[below] at (1.02,0){$R$};
+@@ -297,9 +297,9 @@
+  \draw[target,very thick] (.075,0)--(.075,.075)--(.05,.125)--(1/30,19/120)--(.3,7/24)--(.6,53/120)--(.6,25/24)--(.6,197/120)--(.3,43/24)--(1/30,77/40)--(.05,47/24)--(.075,241/120)--(.075,25/12);
+  \draw[messenger,thick] (0,0)--(.075,.075)--(0,.125)--(1/30,19/120)--(0,7/24)--(.6,53/120)--(0,25/24)--(.6,197/120)--(0,43/24)--(1/30,77/40)--(0,47/24)--(.075,241/120)--(0,25/12);
+  \draw[dashed,quiet] (0,25/24)--(1,25/24);
+- \node[anchor=west,fill=white,inner sep=1pt] (.16,25/24){\scriptsize inverse entry};
++ \node[anchor=west,fill=white,inner sep=1pt] at (.16,25/24){\scriptsize inverse entry};
+  \fill (.6,53/120) circle (1.1pt);
+- \node[anchor=west,fill=white,inner sep=1pt] (.1,.7){\scriptsize fast catch first};
++ \node[anchor=west,fill=white,inner sep=1pt] at (.02,.6){\scriptsize fast catch first};
+  \node at (.5,3.66){\textbf{$\NN$: $x=3/40$, $y=9/10$}};
+  \node[below] at (0,0){$L$};\node[below] at (.13,0){$X$};
+  \node[below] at (.89,0){$Y$};\node[below] at (1.02,0){$R$};
+@@ -597,7 +597,7 @@
+ 
+ \begin{table}[htbp]
+ \centering\renewcommand{\arraystretch}{1.2}
+-\begin{tabular}{@{}lcc@{}}\toprule
++\begin{tabular}{@{}l c @{\hspace{2em}} c@{}}\toprule
+ Residual group & Count & Degree before squaring\\\midrule
+ Selectors & $TE$ & 2\\
+ One-hot selection & $T$ & 1\\
+@@ -692,34 +692,22 @@
+ FSCD 2022, LIPIcs 228, Article 16. See \S2 and Theorem 6 for the precise instruction model and undecidability context.
+ \url{https://doi.org/10.4230/LIPIcs.FSCD.2022.16}.
+ \end{thebibliography}
+-\appendix
++\clearpage\appendix
+ \section{Evidence, preservation and verification boundary}\label{sec:evidence}
+-The main source is the frozen proof packet \texttt{five-signal-branching64-20261004}. Its proof SHA-256 is
+-\begin{center}\small\ttfamily
+-85f5de45c0a30f8bdf45b82a613ef9e5a8c7\\
+-66b5d8215d17a3ebbbd0f60b370f
+-\end{center}
+-The separate arithmetic companion is integrated into this report and retains its original development identifier:
+-\begin{center}\small\ttfamily bounded-horizon-diophantine65-20261004\end{center}
+-Its proof SHA-256 is
+-\begin{center}\small\ttfamily
+-5d9d7de3c9b6ca5551d7cd537b0e3570\\
+-c0272af6716ba814453d5ad2123aea6a
+-\end{center}
+-Both source packets are preserved byte-for-byte, including retained dependencies and arithmetic evidence. Each pair of printed digest lines concatenates to one full hash. Integrity hashes authenticate bytes relative to a trusted external pin; they are not digital signatures or mathematical proofs.
++\subsection{Two unchanged scientific packets}
++The physical source is the frozen five-signal branching packet. The bounded-horizon arithmetic companion retains its original development identifier (65), but is integrated into this single Report 64. Both original proofs, their retained dependencies, author checkers and recorded arithmetic evidence are preserved byte-for-byte. The release README supplies complete SHA-256 pins and exact paths. Hashes authenticate bytes relative to a trusted external pin; they are not digital signatures or mathematical proofs. Historical audit-pending wording in the originals remains unchanged; separate completed dossiers record later acceptance.
+ 
+ \subsection{Static arithmetic versus simulation}
+-The frozen author checker contains the two declared event tables as rational linear rows. Its retained evidence checks row displacement identities against prescribed velocities, expands every adjacent endpoint gap and duration in the positive chamber coordinates, checks the designated zero gap at each event, and verifies the affine endpoint maps and inverse-by-time-reflection identities. It also checks uniform encoding and update inequalities and the displayed duration formulas.
++The frozen physical checker declares rational event rows. Its retained evidence checks displacement identities against prescribed velocities, every adjacent endpoint gap and duration in positive chamber coordinates, designated zero gaps, endpoint maps, inverse identities and uniform update guards. These are finite algebraic certificates. The checker neither chooses a next collision nor evolves an arbitrary configuration. The complete chronology is proved in Section~\ref{sec:chronology}.
+ 
+-Those are finite algebraic identities and inequality certificates. The checker does not choose a next collision, evolve an arbitrary signal configuration, discover a collision schedule or simulate a counter program. The complete chronology follows from the proof in Section~\ref{sec:chronology}; arithmetic output is supporting evidence. During manuscript preparation no author scientific program, upstream constructor, physical simulator, saved physical collision schedule or proof-assistant program is executed.
++The physical independent audit accepted the frozen core without mathematical correction. Its 4,424 checks include 56 primitive local rules and a 118-rule/142-label example table, assembled and syntax-checked but never executed. The all-program conclusion remains the namespace and induction argument. The arithmetic audit independently verifies the residual schema, quartic coefficients, guards and finite-polynomial candidate words. Its finite checks support, but do not replace, the general proof of positive-witness correctness and uniqueness.
+ 
+-\subsection{Independent scientific audits}
+-The physical audit accepted the exact frozen core without a mathematical correction. Its 4,424 static checks cover complete rows, reverse rules, uniform guards, 56 primitive local rules and a 118-rule/142-label example table. That example is assembled and syntax-checked, never executed; the arbitrary-program result still rests on the finite-namespace and induction proof.
++No author scientific program, upstream constructor, native counter interpreter, physical simulator, saved physical collision schedule or proof-assistant program was executed during manuscript preparation. Scientific source files are inert preserved evidence. The diagram substitutes exact rational coordinates into the proved formulas; it is not generated by a collision scheduler.
+ 
+-The arithmetic audit independently checks the residual schema, exact quartic coefficients and positive-domain guards, with adversarial assignments and exhaustive finite-polynomial candidate-word checks. These finite checks support, but do not replace, the all-horizon proof of correctness and uniqueness. The original packets' historical statements that audit was pending remain unchanged; the completed dossiers record later acceptance.
++\subsection{Release and review records}
++The archive contains the editable LaTeX modules and their deterministic standalone flattening, final PDF, scientific sources, independent audit dossiers and release-only tools. Its README gives review outcomes and portable replay commands. Mathematical audit, manuscript transcription checks and integrity checks are distinct; their overlapping counts are not additive theorem counts.
+ 
+-\subsection{Manuscript and release evidence}
+-The source/evidence archive contains editable modular LaTeX and its deterministic standalone flattening, the final PDF, frozen scientific source and independent audit dossiers, and release-only integrity/typesetting tools. The release README identifies the exact proof pins, independent review outcomes and replay commands. It distinguishes arithmetic evidence from manuscript transcription checks and from integrity checks. These categories are not interchangeable and their check counts must not be added as independent theorem counts.
++The typesetting build uses a fresh TeX format with no shell escape and records the dependency union from every pass. A locked rebuild authenticates external manuscript and toolchain pins, checks packaged PDF equality, and renders and validates every page. The dependency lock covers executable bytes and recorded system inputs, not shared libraries, Python's standard library or the operating system. The deterministic archive and its extractor preserve manifest-bound file and directory metadata.
+ 
+-The release-only build uses a fresh TeX format and no shell escape, records the union of dependencies observed across all typesetting passes, and renders every page. A locked rebuild authenticates the external manuscript pin and toolchain dependency pin before checking the packaged PDF bytes. Deterministic archives preserve file and directory metadata through the provided extractor. Independent release-tool review and all-page manuscript review apply to the final pinned versions identified in the README. A final independent terminal audit precedes publication.
++Independent tool review and all-page manuscript review bind the exact final versions identified in the README and external handoff. All original scientific bytes, modes and nanosecond mtimes are preserved. A final independent terminal audit precedes publication.
+ \end{document}

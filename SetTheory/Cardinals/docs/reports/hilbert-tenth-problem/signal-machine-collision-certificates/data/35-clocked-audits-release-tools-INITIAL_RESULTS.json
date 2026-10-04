@@ -1,0 +1,1414 @@
+{
+  "frozen_hashes": {
+    "Report65.pdf": "2c1fe34d39e6635a98332e9a2c3e123c902f980861141234012716ab20b6069f",
+    "Report65.tex": "bd2d25b0dc791ceb05a06e4fa414319568fdbe36226891dec3ab0ee733a39dd9",
+    "tools/BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+    "tools/build_report65.py": "6621846e17f583ad555465b9ad03aececaed40c3573073c1c51c062495958cc1",
+    "tools/release65.py": "b87f8681a8977f99085f4d296d7436fa06d28e244e7f59d481463ae758c9fef8"
+  },
+  "owned_manifest_sha256": "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+  "passed": 82,
+  "preservation_note": "bytes, mode, size, mtime_ns and ctime_ns checked; access time is outside the source pins and may be affected by ordinary reads",
+  "prohibited_execution": "No research/audit mathematical code, simulation, saved schedule, native interpreter or Lean was imported or executed.",
+  "tests": [
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release"
+      ],
+      "elapsed_seconds": 0.067,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "seal-owned-copy",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--metadata",
+        "--origins"
+      ],
+      "elapsed_seconds": 0.074,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "verify-metadata-origins",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release"
+      ],
+      "elapsed_seconds": 0.056,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "refuse-reseal",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/locked-build",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 20.772,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "locked-build",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/hostile-environment-build",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 20.644,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "hostile-environment-build",
+      "pass": true
+    },
+    {
+      "actual": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "2c1fe34d39e6635a98332e9a2c3e123c902f980861141234012716ab20b6069f",
+        "Report65.tex": "bd2d25b0dc791ceb05a06e4fa414319568fdbe36226891dec3ab0ee733a39dd9"
+      },
+      "expected": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "2c1fe34d39e6635a98332e9a2c3e123c902f980861141234012716ab20b6069f",
+        "Report65.tex": "bd2d25b0dc791ceb05a06e4fa414319568fdbe36226891dec3ab0ee733a39dd9"
+      },
+      "name": "locked-build-exact-artifact-hashes",
+      "pass": true
+    },
+    {
+      "actual": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "2c1fe34d39e6635a98332e9a2c3e123c902f980861141234012716ab20b6069f",
+        "Report65.tex": "bd2d25b0dc791ceb05a06e4fa414319568fdbe36226891dec3ab0ee733a39dd9"
+      },
+      "expected": {
+        "BUILD_DEPENDENCIES_LOCK.json": "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2",
+        "Report65.pdf": "2c1fe34d39e6635a98332e9a2c3e123c902f980861141234012716ab20b6069f",
+        "Report65.tex": "bd2d25b0dc791ceb05a06e4fa414319568fdbe36226891dec3ab0ee733a39dd9"
+      },
+      "name": "hostile-environment-build-exact-artifact-hashes",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/repeat-a.zip"
+      ],
+      "elapsed_seconds": 0.112,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "archive-a",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/repeat-b.zip"
+      ],
+      "elapsed_seconds": 0.111,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "archive-b",
+      "pass": true
+    },
+    {
+      "name": "repeat-zip-byte-identity",
+      "pass": true,
+      "sha256": "fc101867b68f76b0fea90a0b7a5c891b2fe0e3aff0376e7f6cea12e815f79e95"
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/repeat-a.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.053,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "archive-check-original",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/usr/bin/unzip",
+        "-q",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/repeat-a.zip",
+        "-d",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/extracted"
+      ],
+      "elapsed_seconds": 0.016,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "unzip-roundtrip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/extracted/Report65",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "verify-extracted",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/extracted/Report65",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--metadata"
+      ],
+      "elapsed_seconds": 0.045,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "metadata-extracted-rejection",
+      "note": "Expected: ZIP carries canonical seconds, not original nanosecond mtime.",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/extracted/Report65",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/extracted-locked-build",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 20.145,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "extracted-locked-build",
+      "pass": true
+    },
+    {
+      "name": "extracted-build-exact-hashes",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/bad-manifest-preflight",
+        "--manifest-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.043,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "bad-manifest-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/bad-manifest-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/bad-lock-digest-preflight",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "bad-lock-digest-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/bad-lock-digest-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/missing-lock-preflight",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "missing-lock-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/missing-lock-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/executable-lock-preflight",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/locks/executable-lock-preflight.json",
+        "--dependency-lock-sha256",
+        "77dafb9dc4f1522d3119f56866dd9bb70b1fda82bb3ebd934c2cc3bf4ed9e840"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "executable-lock-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/executable-lock-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/input-lock-preflight",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/locks/input-lock-preflight.json",
+        "--dependency-lock-sha256",
+        "efa1d1bf454803ce39e54c233bc2695e7d8ec184b4126ce82a0d74af0274b45f"
+      ],
+      "elapsed_seconds": 0.045,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "input-lock-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/input-lock-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/invalid-input-path-preflight",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/locks/invalid-input-path-preflight.json",
+        "--dependency-lock-sha256",
+        "6b4dafcb510488646995971f93be7b408b92ce9f93c2f140e762650f76f1bf27"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "invalid-input-path-preflight",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/invalid-input-path-preflight",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/existing-build-output",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "existing-build-output",
+      "pass": true
+    },
+    {
+      "name": "existing-build-output-preserved",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/draft-sealed",
+        "--draft"
+      ],
+      "elapsed_seconds": 0.038,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "draft-refuses-sealed",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/draft-sealed",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/forbidden-build",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.049,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-refuses-overlap",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/forbidden-build",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/linked-output-parent/forbidden-build",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.039,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-refuses-symlink-parent",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/forbidden-build",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/linked-root",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-refuses-symlink-root",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/extra-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.046,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-extra-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/extra-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/extra-file.zip"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-extra-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/extra-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/extra-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-extra-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.049,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-extra-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-extra-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-changed-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/changed-file.zip"
+      ],
+      "elapsed_seconds": 0.05,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-changed-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/changed-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-changed-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.039,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-changed-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-changed-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-mode",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.039,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-changed-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-mode",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/changed-mode.zip"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-changed-mode",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/changed-mode.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-mode",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-changed-mode",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-changed-mode",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-changed-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/missing-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-missing-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/missing-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/missing-file.zip"
+      ],
+      "elapsed_seconds": 0.052,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-missing-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/missing-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/missing-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-missing-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-missing-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-missing-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/symlink-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.043,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-symlink-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/symlink-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/symlink-file.zip"
+      ],
+      "elapsed_seconds": 0.038,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-symlink-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/symlink-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/symlink-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-symlink-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.061,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-symlink-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-symlink-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/symlink-directory",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-symlink-directory",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/symlink-directory",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/symlink-directory.zip"
+      ],
+      "elapsed_seconds": 0.038,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-symlink-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/symlink-directory.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/symlink-directory",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-symlink-directory",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.043,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-symlink-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-symlink-directory",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/fifo-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.039,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-fifo-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/fifo-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/fifo-file.zip"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-fifo-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/fifo-file.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/fifo-file",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-fifo-file",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.038,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-fifo-file",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-fifo-file",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/extra-empty-directory",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.048,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-extra-empty-directory",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/extra-empty-directory",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/extra-empty-directory.zip"
+      ],
+      "elapsed_seconds": 0.05,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-extra-empty-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/extra-empty-directory.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "verify",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-manifest",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.035,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "verify-rejects-changed-manifest",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-manifest",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/changed-manifest.zip"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "archive-rejects-changed-manifest",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/changed-manifest.zip",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/changed-manifest",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-changed-manifest",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "build-rejects-changed-manifest",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/build-rejects-changed-manifest",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/unsafe-pin-path"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-unsafe-pin-path",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/cases/unsafe-pin-path/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/duplicate-pin-path"
+      ],
+      "elapsed_seconds": 0.038,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-duplicate-pin-path",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/cases/duplicate-pin-path/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/bad-pinned-hash"
+      ],
+      "elapsed_seconds": 0.036,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-bad-pinned-hash",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/cases/bad-pinned-hash/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/empty-directory-seal"
+      ],
+      "elapsed_seconds": 0.045,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "seal-rejects-empty-directory",
+      "output_absent": true,
+      "output_must_remain_absent": "/workspace/shared/report65-release-tools-independent-review-20261004/cases/empty-directory-seal/MANIFEST.json",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/duplicate-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-duplicate-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/extra-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.034,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-extra-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/traversal-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.036,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-traversal-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/absolute-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.043,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-absolute-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/backslash-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-backslash-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/dot-component-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.035,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-dot-component-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/empty-component-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.034,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-empty-component-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/directory-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.034,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-directory-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/missing-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-missing-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/changed-content.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.036,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-content",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/changed-mode.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.042,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-mode",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/symlink-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-symlink-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/fifo-member.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.035,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-fifo-member",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/changed-timestamp.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.037,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-timestamp",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/changed-archive-manifest.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.04,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-changed-archive-manifest",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/encrypted.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.041,
+      "exit_code": 1,
+      "expected": "rejection",
+      "name": "zip-rejects-encrypted",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "archive-check",
+        "--archive",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/mutant-archives/manifest-mode.zip",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784"
+      ],
+      "elapsed_seconds": 0.051,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "gap-manifest-mode-is-accepted",
+      "note": "Finding: archive-check skips permission comparison for MANIFEST.json, accepting 0777 in place of emitted 0644.",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/extra-empty-directory",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/gap-build-extra-directory-is-accepted",
+        "--manifest-sha256",
+        "131ae03a5ec71de9c28ee881fd373f29a67e5b524ea0f6018f6529dddf425784",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 20.868,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "gap-build-extra-directory-is-accepted",
+      "note": "Finding: builder verifies only file inventory, while release verify rejects the extra empty directory.",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/release65.py",
+        "seal",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/inconsistent-deliverables"
+      ],
+      "elapsed_seconds": 0.047,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "seal-inconsistent-artifacts",
+      "pass": true
+    },
+    {
+      "argv": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/build_report65.py",
+        "--root",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/cases/inconsistent-deliverables",
+        "--output",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/outputs/gap-build-inconsistent-artifacts-is-accepted",
+        "--manifest-sha256",
+        "cee56d7f81bd3c8174b9a05d6149868115d9308400167a30e8221e399823f5d3",
+        "--dependency-lock",
+        "/workspace/shared/report65-release-tools-independent-review-20261004/owned-release/tools/BUILD_DEPENDENCIES_LOCK.json",
+        "--dependency-lock-sha256",
+        "655822c2dee2f0f4d1a0a8d00208579e4a53d558ce8ca385557e1d88c5e614e2"
+      ],
+      "elapsed_seconds": 21.163,
+      "exit_code": 0,
+      "expected": "success",
+      "name": "gap-build-inconsistent-artifacts-is-accepted",
+      "note": "Finding: valid sealed hashes do not imply modular/flattened/PDF consistency; builder records outputs but does not compare them to sealed root deliverables.",
+      "pass": true
+    },
+    {
+      "name": "inconsistent-artifact-proof",
+      "note": "Expected inequality confirms the preceding success omits delivered artifact consistency.",
+      "pass": true
+    },
+    {
+      "changes": {},
+      "name": "candidate-existing-files-preserved",
+      "pass": true
+    },
+    {
+      "name": "all-pinned-origins-preserved",
+      "pass": true
+    },
+    {
+      "name": "owned-base-preserved-after-seal",
+      "pass": true
+    }
+  ],
+  "total": 82
+}

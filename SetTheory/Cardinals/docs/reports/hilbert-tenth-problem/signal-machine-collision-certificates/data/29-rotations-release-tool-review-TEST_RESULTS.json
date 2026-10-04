@@ -1,0 +1,2251 @@
+[
+  {
+    "name": "snapshot_source_preserved",
+    "pass": true
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 0,
+    "name": "release_check_inputs_clean",
+    "output_tail": "{\n  \"audit_files\": 9,\n  \"dependency_files\": 7,\n  \"manuscript_sources\": 3,\n  \"science_files\": 60,\n  \"scope\": \"Byte authentication only; no scientific executable\",\n  \"status\": \"PASS\",\n  \"topology_files\": 10\n}\n\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 0.068
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-build"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_ordinary",
+    "output_tail": "BUILD REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "-O",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-build"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_optimized",
+    "output_tail": "BUILD REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.176
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-build"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_no_site_missing",
+    "output_tail": "BUILD REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.047
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-build"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_bytecode_missing",
+    "output_tail": "BUILD REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.049
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-derive"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_ordinary",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 82, in <module>\n    require(sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode and not sys.flags.optimize,'Use python3 -I -S -B without optimization')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.037
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "-O",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-derive"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_optimized",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 82, in <module>\n    require(sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode and not sys.flags.optimize,'Use python3 -I -S -B without optimization')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.14
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-derive"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_no_site_missing",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 82, in <module>\n    require(sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode and not sys.flags.optimize,'Use python3 -I -S -B without optimization')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/flags-derive"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_bytecode_missing",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 82, in <module>\n    require(sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode and not sys.flags.optimize,'Use python3 -I -S -B without optimization')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.035
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_ordinary",
+    "output_tail": "RELEASE REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.031
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "-O",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_optimized",
+    "output_tail": "RELEASE REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.12
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_no_site_missing",
+    "output_tail": "RELEASE REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.03
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_bytecode_missing",
+    "output_tail": "RELEASE REFUSED: Use python3 -I -S -B without optimization\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.029
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "relative"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_relative",
+    "output_tail": "BUILD REFUSED: Canonical absolute output path required\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.042
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "//workspace/shared/report59-release-tools-independent-review-20261004/outputs/double"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_double-slash",
+    "output_tail": "BUILD REFUSED: Canonical absolute output path required\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/./dot"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_dot",
+    "output_tail": "BUILD REFUSED: Noncanonical output path\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/real-parent/../dotdot"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_dotdot",
+    "output_tail": "BUILD REFUSED: Noncanonical output path\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/trailing/"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_trailing",
+    "output_tail": "BUILD REFUSED: Noncanonical output path\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/new-output"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_inside",
+    "output_tail": "BUILD REFUSED: Output must be external to release\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.057
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_ancestor",
+    "output_tail": "BUILD REFUSED: Output must be new\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/absent/leaf"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_missing-parent",
+    "output_tail": "BUILD REFUSED: Output parent must already exist\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.042
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-file"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_existing-file",
+    "output_tail": "BUILD REFUSED: Output must be new\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.043
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-dir"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_existing-dir",
+    "output_tail": "BUILD REFUSED: Output must be new\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.059
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-output"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_symlink-leaf",
+    "output_tail": "BUILD REFUSED: Symlink output component\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.037
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-parent/new"
+    ],
+    "expected_returncode": 2,
+    "name": "build_report59_path_symlink-parent",
+    "output_tail": "BUILD REFUSED: Symlink output component\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.044
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "relative"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_relative",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 86, in <module>\n    require(raw.startswith('/') and not raw.startswith('//') and str(out)==raw and all(p not in ('.','..') for p in raw.split('/')),'Canonical absolute output required')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Canonical absolute output required\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "//workspace/shared/report59-release-tools-independent-review-20261004/outputs/double"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_double-slash",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 86, in <module>\n    require(raw.startswith('/') and not raw.startswith('//') and str(out)==raw and all(p not in ('.','..') for p in raw.split('/')),'Canonical absolute output required')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Canonical absolute output required\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/./dot"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_dot",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 86, in <module>\n    require(raw.startswith('/') and not raw.startswith('//') and str(out)==raw and all(p not in ('.','..') for p in raw.split('/')),'Canonical absolute output required')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Canonical absolute output required\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/real-parent/../dotdot"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_dotdot",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 86, in <module>\n    require(raw.startswith('/') and not raw.startswith('//') and str(out)==raw and all(p not in ('.','..') for p in raw.split('/')),'Canonical absolute output required')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Canonical absolute output required\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/trailing/"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_trailing",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 86, in <module>\n    require(raw.startswith('/') and not raw.startswith('//') and str(out)==raw and all(p not in ('.','..') for p in raw.split('/')),'Canonical absolute output required')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Canonical absolute output required\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/new-output"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_inside",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 89, in <module>\n    require(out!=root and root not in out.parents and out not in root.parents,'Output must be external')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Output must be external\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.037
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_ancestor",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 87, in <module>\n    require(not os.path.lexists(out) and out.parent.is_dir(),'Output must be new with an existing parent')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Output must be new with an existing parent\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/absent/leaf"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_missing-parent",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 87, in <module>\n    require(not os.path.lexists(out) and out.parent.is_dir(),'Output must be new with an existing parent')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Output must be new with an existing parent\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.048
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-file"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_existing-file",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 87, in <module>\n    require(not os.path.lexists(out) and out.parent.is_dir(),'Output must be new with an existing parent')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Output must be new with an existing parent\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-dir"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_existing-dir",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 87, in <module>\n    require(not os.path.lexists(out) and out.parent.is_dir(),'Output must be new with an existing parent')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Output must be new with an existing parent\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-output"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_symlink-leaf",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 87, in <module>\n    require(not os.path.lexists(out) and out.parent.is_dir(),'Output must be new with an existing parent')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Output must be new with an existing parent\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-parent/new"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_presentation_path_symlink-parent",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 88, in <module>\n    for p in [out.parent,*out.parent.parents]:require(not p.is_symlink(),'Symlink output ancestor')\n                                              ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Symlink output ancestor\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.037
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "relative"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_relative",
+    "output_tail": "RELEASE REFUSED: Canonical absolute destination required\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.057
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "//workspace/shared/report59-release-tools-independent-review-20261004/outputs/double"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_double-slash",
+    "output_tail": "RELEASE REFUSED: Canonical absolute destination required\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.051
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/./dot"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_dot",
+    "output_tail": "RELEASE REFUSED: Noncanonical destination\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.057
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/real-parent/../dotdot"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_dotdot",
+    "output_tail": "RELEASE REFUSED: Noncanonical destination\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/trailing/"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_trailing",
+    "output_tail": "RELEASE REFUSED: Noncanonical destination\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.048
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/new-output"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_inside",
+    "output_tail": "RELEASE REFUSED: Destination must be outside release\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_ancestor",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.044
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/absent/leaf"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_missing-parent",
+    "output_tail": "RELEASE REFUSED: Destination parent must exist\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-file"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_existing-file",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-dir"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_existing-dir",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.043
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-output"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_symlink-leaf",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.047
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-parent/new"
+    ],
+    "expected_returncode": 2,
+    "name": "release59_path_symlink-parent",
+    "output_tail": "RELEASE REFUSED: Symlink destination ancestor\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.044
+  },
+  {
+    "name": "existing_destinations_preserved",
+    "pass": true
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-extra/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_science_extra",
+    "output_tail": "RELEASE REFUSED: Science inventory or byte mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.046
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-missing/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_science_missing",
+    "output_tail": "RELEASE REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-missing/science/PACKET_MANIFEST.json'\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-tampered/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_science_tampered",
+    "output_tail": "RELEASE REFUSED: Frozen science manifest mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_science_symlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-symlink/science/PACKET_MANIFEST.json\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-hardlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_science_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-hardlink/science/PACKET_MANIFEST.json\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/science-directory-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_science_directory-symlink",
+    "output_tail": "RELEASE REFUSED: Expected real input directory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/independent-audit-extra/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_independent-audit_extra",
+    "output_tail": "RELEASE REFUSED: Audit inventory or byte mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/independent-audit-missing/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_independent-audit_missing",
+    "output_tail": "RELEASE REFUSED: Audit inventory or byte mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.052
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/independent-audit-tampered/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_independent-audit_tampered",
+    "output_tail": "RELEASE REFUSED: Audit inventory or byte mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/independent-audit-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_independent-audit_symlink",
+    "output_tail": "RELEASE REFUSED: Input symlink rejected\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/independent-audit-hardlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_independent-audit_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/independent-audit-hardlink/independent-audit/ARITHMETIC_AUDIT.md\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/independent-audit-directory-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_independent-audit_directory-symlink",
+    "output_tail": "RELEASE REFUSED: Expected real input directory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-extra/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_dependencies_extra",
+    "output_tail": "RELEASE REFUSED: Dependency inventory mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-missing/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_dependencies_missing",
+    "output_tail": "RELEASE REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-missing/dependencies/01-signal-map-obstruction-20261004-PROOF.md'\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.044
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-tampered/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_dependencies_tampered",
+    "output_tail": "RELEASE REFUSED: Dependency mismatch: 01-signal-map-obstruction-20261004-PROOF.md\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_dependencies_symlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-symlink/dependencies/01-signal-map-obstruction-20261004-PROOF.md\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.037
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-hardlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_dependencies_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-hardlink/dependencies/01-signal-map-obstruction-20261004-PROOF.md\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.047
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/dependencies-directory-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_dependencies_directory-symlink",
+    "output_tail": "RELEASE REFUSED: Expected real input directory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-extra/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input_extra",
+    "output_tail": "RELEASE REFUSED: Topology inventory mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.044
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-missing/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input_missing",
+    "output_tail": "RELEASE REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-missing/real-input/MANIFEST.sha256'\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.042
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-tampered/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input_tampered",
+    "output_tail": "RELEASE REFUSED: Topology manifest mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input_symlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-symlink/real-input/MANIFEST.sha256\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-hardlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-hardlink/real-input/MANIFEST.sha256\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-directory-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input_directory-symlink",
+    "output_tail": "RELEASE REFUSED: Expected real input directory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-extra/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-audit_extra",
+    "output_tail": "RELEASE REFUSED: Topology inventory mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-missing/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-audit_missing",
+    "output_tail": "RELEASE REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-missing/real-input-audit/AUDIT.md'\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.037
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-tampered/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-audit_tampered",
+    "output_tail": "RELEASE REFUSED: Topology byte mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.044
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-audit_symlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-symlink/real-input-audit/AUDIT.md\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-hardlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-audit_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-hardlink/real-input-audit/AUDIT.md\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.043
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-audit-directory-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-audit_directory-symlink",
+    "output_tail": "RELEASE REFUSED: Expected real input directory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-extra/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-dependencies_extra",
+    "output_tail": "RELEASE REFUSED: Topology guard dependency mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-missing/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-dependencies_missing",
+    "output_tail": "RELEASE REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-missing/real-input-dependencies/GUARDS.txt'\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-tampered/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-dependencies_tampered",
+    "output_tail": "RELEASE REFUSED: Topology guard dependency mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-dependencies_symlink",
+    "output_tail": "RELEASE REFUSED: Input symlink rejected\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-hardlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-dependencies_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-hardlink/real-input-dependencies/GUARDS.txt\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/real-input-dependencies-directory-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_real-input-dependencies_directory-symlink",
+    "output_tail": "RELEASE REFUSED: Expected real input directory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-extra/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_manuscript_extra",
+    "output_tail": "RELEASE REFUSED: Unexpected manuscript inventory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-missing/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_manuscript_missing",
+    "output_tail": "RELEASE REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-missing/manuscript/MANUSCRIPT_PINS.json'\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-tampered/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_manuscript_tampered",
+    "output_tail": "RELEASE REFUSED: Extra data: line 7 column 1 (char 274)\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.05
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_manuscript_symlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-symlink/manuscript/MANUSCRIPT_PINS.json\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-hardlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_manuscript_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-hardlink/manuscript/MANUSCRIPT_PINS.json\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.052
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manuscript-directory-symlink/tools/release59.py",
+      "check-inputs"
+    ],
+    "expected_returncode": 2,
+    "name": "release_manuscript_directory-symlink",
+    "output_tail": "RELEASE REFUSED: Expected real input directory\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-extra/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/build-bad-extra"
+    ],
+    "expected_returncode": 2,
+    "name": "build_manuscript_extra",
+    "output_tail": "BUILD REFUSED: Unexpected manuscript file\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-missing/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/build-bad-missing"
+    ],
+    "expected_returncode": 2,
+    "name": "build_manuscript_missing",
+    "output_tail": "BUILD REFUSED: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-missing/manuscript/report59.tex'\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.042
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-tampered/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/build-bad-tampered"
+    ],
+    "expected_returncode": 2,
+    "name": "build_manuscript_tampered",
+    "output_tail": "BUILD REFUSED: Manuscript pin mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.057
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-symlink/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/build-bad-symlink"
+    ],
+    "expected_returncode": 2,
+    "name": "build_manuscript_symlink",
+    "output_tail": "BUILD REFUSED: Symlink forbidden in inputs: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-symlink/manuscript/report59.tex\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-hardlink/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/build-bad-hardlink"
+    ],
+    "expected_returncode": 2,
+    "name": "build_manuscript_hardlink",
+    "output_tail": "BUILD REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/build-hardlink/manuscript/report59.tex\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-missing/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/derive-bad-missing"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_evidence_missing",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-missing/tools/derive_presentation.py\", line 93, in <module>\n    require(stat.S_ISREG(p.lstat().st_mode) and p.stat().st_nlink==1,'Regular single-link evidence required')\n                         ~~~~~~~^^\n  File \"/usr/lib/python3.13/pathlib/_abc.py\", line 437, in lstat\n    return self.stat(follow_symlinks=False)\n           ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.13/pathlib/_local.py\", line 517, in stat\n    return os.stat(self, follow_symlinks=follow_symlinks)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-missing/science/evidence/STATIC_RECEIPT.json'\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-tampered/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/derive-bad-tampered"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_evidence_tampered",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-tampered/tools/derive_presentation.py\", line 94, in <module>\n    require(hashlib.sha256(p.read_bytes()).hexdigest()==pin,'Evidence pin mismatch')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-tampered/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Evidence pin mismatch\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-symlink/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/derive-bad-symlink"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_evidence_symlink",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-symlink/tools/derive_presentation.py\", line 93, in <module>\n    require(stat.S_ISREG(p.lstat().st_mode) and p.stat().st_nlink==1,'Regular single-link evidence required')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-symlink/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Regular single-link evidence required\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.036
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-hardlink/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/derive-bad-hardlink"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_evidence_hardlink",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-hardlink/tools/derive_presentation.py\", line 93, in <module>\n    require(stat.S_ISREG(p.lstat().st_mode) and p.stat().st_nlink==1,'Regular single-link evidence required')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-hardlink/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Regular single-link evidence required\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.04
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-directory-symlink/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/derive-bad-directory-symlink"
+    ],
+    "expected_returncode": 1,
+    "name": "derive_evidence_directory-symlink",
+    "output_tail": "Traceback (most recent call last):\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-directory-symlink/tools/derive_presentation.py\", line 90, in <module>\n    for p in (root/'science',root/'science/evidence'):require(p.is_dir() and not p.is_symlink(),'Evidence directory symlink')\n                                                      ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/shared/report59-release-tools-independent-review-20261004/scratch/derive-directory-symlink/tools/derive_presentation.py\", line 81, in require\n    if not ok: raise ValueError(msg)\n               ^^^^^^^^^^^^^^^^^^^^^\nValueError: Evidence directory symlink\n",
+    "pass": true,
+    "returncode": 1,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/derive_presentation.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/derived"
+    ],
+    "expected_returncode": 0,
+    "name": "derive_clean",
+    "output_tail": "{\n  \"excluded_points_shown\": 14,\n  \"fixture_rows\": 15,\n  \"polygon_vertices\": [\n    [\n      \"-19/87\",\n      \"-6/29\"\n    ],\n    [\n      \"-13/75\",\n      \"-16/75\"\n    ],\n    [\n      \"-1/10\",\n      \"-1/5\"\n    ],\n    [\n      \"11/30\",\n      \"1/15\"\n    ],\n    [\n      \"1/6\",\n      \"1/3\"\n    ],\n    [\n      \"-1/10\",\n      \"2/15\"\n    ],\n    [\n      \"-1/6\",\n      \"0\"\n    ]\n  ],\n  \"scope\": \"Exact algebraic presentation only; no physical trajectory execution\"\n}\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 0.053
+  },
+  {
+    "name": "derived_sources_match_pinned_manuscript",
+    "pass": true
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/build-clean"
+    ],
+    "expected_returncode": 0,
+    "name": "build_clean",
+    "output_tail": "{\n  \"pdf_sha256\": \"0cb46f9a78c2dbb84890c794d90535aed46576d64f5834af3bc7cf631e7ee713\",\n  \"render_pages\": 22,\n  \"status\": \"PASS\"\n}\n\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 24.439
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/relocated release with spaces/tools/build_report59.py",
+      "--output-dir",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/build-hostile",
+      "--require-packaged-match"
+    ],
+    "expected_returncode": 0,
+    "name": "build_relocated_hostile",
+    "output_tail": "{\n  \"pdf_sha256\": \"0cb46f9a78c2dbb84890c794d90535aed46576d64f5834af3bc7cf631e7ee713\",\n  \"render_pages\": 22,\n  \"status\": \"PASS\"\n}\n\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 24.749
+  },
+  {
+    "files": [
+      "Report59.pdf"
+    ],
+    "name": "deterministic_pdf",
+    "pass": true
+  },
+  {
+    "files": [
+      "Report59.txt"
+    ],
+    "name": "deterministic_text",
+    "pass": true
+  },
+  {
+    "files": [
+      "pages/page-01.png",
+      "pages/page-02.png",
+      "pages/page-03.png",
+      "pages/page-04.png",
+      "pages/page-05.png",
+      "pages/page-06.png",
+      "pages/page-07.png",
+      "pages/page-08.png",
+      "pages/page-09.png",
+      "pages/page-10.png",
+      "pages/page-11.png",
+      "pages/page-12.png",
+      "pages/page-13.png",
+      "pages/page-14.png",
+      "pages/page-15.png",
+      "pages/page-16.png",
+      "pages/page-17.png",
+      "pages/page-18.png",
+      "pages/page-19.png",
+      "pages/page-20.png",
+      "pages/page-21.png",
+      "pages/page-22.png"
+    ],
+    "name": "deterministic_pages",
+    "pass": true
+  },
+  {
+    "name": "exact_pins_used",
+    "pass": true,
+    "pins": {
+      "fixture-table.tex": "d3ce355756c41d21966cac575c8f98afabac56e81c91c37512e4fe871e07bf2e",
+      "geometry-figure.tex": "3fdb9ee48c04fa0e5217cc775c8c8e10f68f9cb70252bd7b6877674f931ead59",
+      "report59.tex": "941a0deb94d7b59ba9ff4ee0f81793b63633aa2899b6bebaca9c0a5bf76344a3"
+    }
+  },
+  {
+    "name": "render_inventory_complete",
+    "pages": 22,
+    "pass": true
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "manifest",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/MANIFEST.json"
+    ],
+    "expected_returncode": 0,
+    "name": "manifest_clean",
+    "output_tail": "{\n  \"files\": 97,\n  \"manifest_sha256\": \"9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d\",\n  \"output\": \"/workspace/shared/report59-release-tools-independent-review-20261004/outputs/MANIFEST.json\",\n  \"status\": \"PASS\"\n}\n\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 0.05
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "verify",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d"
+    ],
+    "expected_returncode": 0,
+    "name": "verify_clean",
+    "output_tail": "{\n  \"files\": 98,\n  \"manifest_sha256\": \"9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d\",\n  \"status\": \"PASS\"\n}\n\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 0.043
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "verify",
+      "--manifest-sha256",
+      "0000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "expected_returncode": 2,
+    "name": "verify_wrong_pin",
+    "output_tail": "RELEASE REFUSED: Release manifest pin mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.032
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manifest-extra/tools/release59.py",
+      "verify",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d"
+    ],
+    "expected_returncode": 2,
+    "name": "verify_extra",
+    "output_tail": "RELEASE REFUSED: Release inventory or hash mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.041
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manifest-missing/tools/release59.py",
+      "verify",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d"
+    ],
+    "expected_returncode": 2,
+    "name": "verify_missing",
+    "output_tail": "RELEASE REFUSED: Release inventory or hash mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.038
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manifest-tampered/tools/release59.py",
+      "verify",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d"
+    ],
+    "expected_returncode": 2,
+    "name": "verify_tampered",
+    "output_tail": "RELEASE REFUSED: Release inventory or hash mismatch\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.039
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manifest-symlink/tools/release59.py",
+      "verify",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d"
+    ],
+    "expected_returncode": 2,
+    "name": "verify_symlink",
+    "output_tail": "RELEASE REFUSED: Input symlink rejected\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.034
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/manifest-hardlink/tools/release59.py",
+      "verify",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d"
+    ],
+    "expected_returncode": 2,
+    "name": "verify_hardlink",
+    "output_tail": "RELEASE REFUSED: Expected regular single-link file: /workspace/shared/report59-release-tools-independent-review-20261004/scratch/manifest-hardlink/qa/PRESENTATION_RECEIPT.json\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.034
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/release-1.zip"
+    ],
+    "expected_returncode": 0,
+    "name": "archive_1",
+    "output_tail": "{\n  \"files\": 98,\n  \"inputs_preserved\": true,\n  \"manifest_sha256\": \"9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d\",\n  \"output\": \"/workspace/shared/report59-release-tools-independent-review-20261004/outputs/release-1.zip\",\n  \"status\": \"PASS\",\n  \"zip_sha256\": \"46b65d0fa2bae9d201c35c4f2f1a28d18e5883eefac030413832d9068ee65e07\"\n}\n\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 0.214
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/release-2.zip"
+    ],
+    "expected_returncode": 0,
+    "name": "archive_2",
+    "output_tail": "{\n  \"files\": 98,\n  \"inputs_preserved\": true,\n  \"manifest_sha256\": \"9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d\",\n  \"output\": \"/workspace/shared/report59-release-tools-independent-review-20261004/outputs/release-2.zip\",\n  \"status\": \"PASS\",\n  \"zip_sha256\": \"46b65d0fa2bae9d201c35c4f2f1a28d18e5883eefac030413832d9068ee65e07\"\n}\n\n",
+    "pass": true,
+    "returncode": 0,
+    "seconds": 0.217
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "relative"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_relative",
+    "output_tail": "RELEASE REFUSED: Canonical absolute destination required\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.047
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "//workspace/shared/report59-release-tools-independent-review-20261004/outputs/double"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_double-slash",
+    "output_tail": "RELEASE REFUSED: Canonical absolute destination required\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.064
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/./dot"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_dot",
+    "output_tail": "RELEASE REFUSED: Noncanonical destination\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.047
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/real-parent/../dotdot"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_dotdot",
+    "output_tail": "RELEASE REFUSED: Noncanonical destination\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.044
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/trailing/"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_trailing",
+    "output_tail": "RELEASE REFUSED: Noncanonical destination\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.048
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/new-output"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_inside",
+    "output_tail": "RELEASE REFUSED: Destination must be outside release\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_ancestor",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.048
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/absent/leaf"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_missing-parent",
+    "output_tail": "RELEASE REFUSED: Destination parent must exist\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-file"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_existing-file",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.051
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/existing-dir"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_existing-dir",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.045
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-output"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_symlink-leaf",
+    "output_tail": "RELEASE REFUSED: Destination already exists\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.051
+  },
+  {
+    "argv": [
+      "/usr/bin/python3",
+      "-I",
+      "-S",
+      "-B",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/scratch/pristine/tools/release59.py",
+      "archive",
+      "--manifest-sha256",
+      "9f199722c4f6a0122de3855e2066c3183cba012c3b0a1dc5bd898e013788f09d",
+      "--output",
+      "/workspace/shared/report59-release-tools-independent-review-20261004/outputs/link-parent/new"
+    ],
+    "expected_returncode": 2,
+    "name": "archive_path_symlink-parent",
+    "output_tail": "RELEASE REFUSED: Symlink destination ancestor\n",
+    "pass": true,
+    "returncode": 2,
+    "seconds": 0.053
+  },
+  {
+    "name": "deterministic_zip",
+    "pass": true,
+    "sha256": "46b65d0fa2bae9d201c35c4f2f1a28d18e5883eefac030413832d9068ee65e07"
+  },
+  {
+    "files": 97,
+    "name": "manifest_exact_file_inventory",
+    "pass": true
+  },
+  {
+    "files": 98,
+    "name": "zip_exact_file_inventory",
+    "pass": true
+  },
+  {
+    "name": "zip_exact_bytes",
+    "pass": true
+  },
+  {
+    "name": "zip_safe_metadata",
+    "pass": true
+  },
+  {
+    "name": "frozen_scratch_preserved",
+    "pass": true
+  },
+  {
+    "name": "frozen_production_preserved",
+    "pass": true
+  },
+  {
+    "name": "no_bytecode_generated",
+    "pass": true
+  }
+]

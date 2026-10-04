@@ -1,0 +1,19 @@
+{
+  "description": "Inert data for the standalone seven-event orientation reversal; not a runnable schedule",
+  "labels_and_speeds": {
+    "L": "0", "X_0": "0", "Y": "0", "R": "0",
+    "X_pre": "-1/2", "X_fast": "2", "X_post": "-1/2",
+    "Q_plus": "1", "Q_setup": "-3/2", "Q_middle": "-1/4", "Q_cleanup": "-1"
+  },
+  "rules": [
+    {"id": 1, "incoming": ["Q_plus", "X_0"], "outgoing": ["Q_setup", "X_pre"]},
+    {"id": 2, "incoming": ["Q_setup", "L"], "outgoing": ["Q_plus", "L"]},
+    {"id": 3, "incoming": ["Q_plus", "X_pre"], "outgoing": ["Q_middle", "X_fast"]},
+    {"id": 4, "incoming": ["X_fast", "Y"], "outgoing": ["X_post", "Y"]},
+    {"id": 5, "incoming": ["Q_middle", "L"], "outgoing": ["Q_plus", "L"]},
+    {"id": 6, "incoming": ["Q_plus", "X_post"], "outgoing": ["Q_cleanup", "X_0"]},
+    {"id": 7, "incoming": ["Q_cleanup", "L"], "outgoing": ["Q_plus", "L"]}
+  ],
+  "completion": "Every other input set of at least two labels with pairwise distinct speeds has the same set as its identity output",
+  "note": "At rule 4 the messenger is unchanged; X_pre and X_post deliberately have equal speeds but distinct labels"
+}

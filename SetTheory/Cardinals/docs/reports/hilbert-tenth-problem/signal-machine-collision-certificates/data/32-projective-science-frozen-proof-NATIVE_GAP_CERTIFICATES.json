@@ -1,0 +1,33 @@
+{
+  "input_domain": "g1,g2,g3 are positive integers",
+  "coordinate_definition": {"x": "g1", "y": "g1+g2", "D": "g1+g2+g3"},
+  "machine_family": "RULES44.json, fixed rational v>1",
+  "abbreviation_not_a_variable": {"L": "2*g3-g1-g2"},
+  "infinite_validity": {
+    "polynomial": "(2*g3-g1-g2-w+1)^2",
+    "equation": "polynomial=0",
+    "witness_domain": "w is a positive integer",
+    "witness_variables": 1,
+    "total_degree": 2,
+    "criterion": "L>=0",
+    "unique_witness": "w=L+1"
+  },
+  "zeno_validity": {
+    "polynomial": "(2*g3-g1-g2)^2",
+    "equation": "polynomial=0",
+    "witness_variables": 0,
+    "total_degree": 2,
+    "criterion": "L=0",
+    "unique_witness": "the empty tuple"
+  },
+  "non_zeno_infinite_validity": {
+    "polynomial": "(2*g3-g1-g2-w)^2",
+    "equation": "polynomial=0",
+    "witness_domain": "w is a positive integer",
+    "witness_variables": 1,
+    "total_degree": 2,
+    "criterion": "L>0",
+    "unique_witness": "w=L"
+  },
+  "hidden_constraints_or_aliases": "none; positivity is the declared input/witness domain"
+}
