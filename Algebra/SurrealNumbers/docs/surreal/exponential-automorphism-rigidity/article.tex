@@ -958,6 +958,28 @@ approximation procedure for individual normal forms. Note also that
 \cref{thm:profile}, which compares one endomorphism with the identity,
 uses no surjectivity at all.
 
+\noindent[Added 3 October 2026, batch 84: surjectivity in
+\cref{cor:two-profiles} can be weakened to cofinality. The merged report
+\texttt{docs/surreal/surreal-self-embeddings} proves that if
+$\sigma_1,\sigma_2:F\to F$ are field embeddings of an ordered field,
+$\sigma_2(F)$ is cofinal and $\abs{\sigma_1(x)-\sigma_2(x)}\le B$ for one
+$B>0$ and all $x$, then $\sigma_1=\sigma_2$, by the product identity
+$d(ab)=\sigma_1(a)d(b)+\sigma_2(b)d(a)$ for $d=\sigma_1-\sigma_2$ (its
+\texttt{sse:lem:twomap}). In the setting of this section the profile
+hypothesis puts every difference $\sigma x-\tau x$ in the proper convex
+subgroup $H_w$, which is bounded by any positive element outside it, so
+\cref{cor:two-profiles} holds for a unital endomorphism $\sigma$ and a field
+embedding $\tau$ with cofinal image. That report states the consequences for
+$\No$ with $\nu=v\circ\exp$: profile equality alone, with one image cofinal
+(\texttt{sse:co:thm:two-profile}), and exponential field embeddings with the
+same value-group action, one of them cofinal (\texttt{sse:thm:expunique},
+proved independently by five of its six sources; source~06 proves only the
+automorphism case); \texttt{sse:at:thm:pair-rigidity} is the form for an
+abstract ordered exponential field. The Lean lemma \texttt{eq\_of\_profile\_eq}
+still takes $\tau : F\simeq F$; the cofinal form is not formalized. All six
+sources re-prove \cref{lem:amplify,cor:embedding,thm:no,thm:cofinal} with
+credit. No result here uses that report.]
+
 
 \section{Multiplicative motion and exponential commutation defects}
 \label{sec:defects}

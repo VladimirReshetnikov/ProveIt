@@ -29,7 +29,7 @@ in the article.
 
 ```
 article.tex                                        the report, standalone LaTeX with an internal bibliography
-article.pdf                                        the compiled report, 89 pages (title, contents i–iii, pages 1–85)
+article.pdf                                        the compiled report, 90 pages (title, contents i–iii, pages 1–86)
 README.md                                          this guide
 02-finite-symmetry-descent-SOURCE_AND_PROOF_AUDIT.md   source 02: source and proof audit, as delivered
 03-gaussian-real-forms-SOURCES.md                  source 03: source and claim audit, as delivered
@@ -721,6 +721,20 @@ answers none of the questions of Section 14. The trigonometry report's shifts
 `Sh_c` (`trigonometry:per:thm:shifts`) are the flows of `saut:thm:shiftflow`,
 and act freely on all global phases (`trigonometry:per:thm:free`).
 
+[surreal-self-embeddings](../../surreal/surreal-self-embeddings/) (`sse:`,
+batch 84) re-proves, for the real field No, the set discreteness, the derivative
+dichotomy (Theorem 8.1) and the zero-derivative dilations (Theorem 8.2), the
+monomial automorphisms, the Taylor coefficient flow, ordered homogeneity and
+exponential faithfulness. None of its six sources cited this report; the
+merged report credits each. It decides the derivative of every weighted monomial
+self-embedding of No (its Theorem 47.3, `sse:co:thm:derivative-criterion`),
+proves the dichotomy for self-embeddings (Proposition 46.4), and extends
+`Fix(Aut(No)) = Q^rc` of Proposition 9.4 to a set of parameters and to
+self-embeddings and their images, under GBC (Corollary 70.4,
+`sse:an:fnd:cor:unavoidable`). Two dated notes, after the discussion of
+Theorem 8.2 and after Proposition 9.4, record this; no label or number
+changed, and no result here uses that report.
+
 ## Stale statements corrected
 
 The source compared itself with the repository at `dcf8666` (Section 13, kept
@@ -797,7 +811,10 @@ they are not warnings, and the same longtable message appears with source 02's
 table of Section 16.1 when it starts at other page positions (tested). With
 source 02 the build had 68 pages; the text before source 02 gives 38 pages
 with this MiKTeX (the PDF committed then, 37 pages, was built with pdfTeX
-1.40.22). A clean compile proves nothing about the proofs. Source 01
+1.40.22). The two dated batch-84 notes (after the discussion of Theorem 8.2
+and after Proposition 9.4) take the build to 90 pages (pages 1–86), with the
+same clean log, its two informational longtable lines included, and no label
+or number changed. A clean compile proves nothing about the proofs. Source 01
 delivered no code or data.
 
 ## Rerun source 02's checks

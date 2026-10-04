@@ -736,6 +736,19 @@ and are new: 23 is the smallest dense case of 11, 24 is the image part of
 11, 26 and 27 continue 3 and 14, 29 is partly answered by Remark 37.6, 30
 continues 21, and 32 overlaps 10 and 22.
 
+[surreal-self-embeddings](../surreal-self-embeddings/) (`sse:`, batch 84)
+proves the weighted form of Proposition 4.4: the strongly R-linear field
+embeddings sending each monomial to a positive real multiple of a monomial are
+exactly `Σ r_g ω^g ↦ Σ r_g χ(g) ω^{h(g)}` with `h` an ordered additive
+embedding and `χ` a positive real character, with fixed field the full Hahn
+field on `{g : h(g) = g, χ(g) = 1}` (its Theorem 6.4, `sse:thm:weighted`). The
+case `χ = 1` is Proposition 4.4, and its field lift (Theorem 6.2,
+`sse:thm:fieldlift`) is Theorem 4.1. It also computes the iterated-image core
+`⋂_n Φ_h^n(No)`, the full Hahn field on `⋂_n h^n(No)` (its Proposition 8.4 and
+display `sse:eq:hcore`; Theorem 32.3 for double lifts). A dated note after
+Proposition 4.4 records this; no label or number changed, and no result here
+uses that report.
+
 ## Source 02: Beyond Composita of Surreal Copies
 
 | | |

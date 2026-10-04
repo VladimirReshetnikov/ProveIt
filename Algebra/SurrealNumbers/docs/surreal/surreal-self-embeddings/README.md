@@ -316,7 +316,11 @@ formalization program and 18 questions.
 - [surreal-well-orders](../../foundations-and-computation/surreal-well-orders/README.md):
   universality of `No` as a target, a different question.
 
-Reciprocal notes in those reports are not part of this write.
+Reciprocal dated notes pointing here were added to
+omnific-preserving-automorphisms, independent-surreal-copies,
+surcomplex-field-automorphisms, exponential-automorphism-rigidity and
+large-cardinal-embeddings-and-normal-forms in a separate commit (batch 84
+reciprocal notes).
 
 ## Relation to the Lean development
 
