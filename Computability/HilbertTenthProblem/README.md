@@ -82,6 +82,18 @@ transport factors are outside the construction; there is no full compiler
 counterexample or new universal bound. The [independent review](Papers/research-wip/native-stream-queue/review_free_coefficient83_native_alias.md)
 checks the index, congruence and mask arguments with fresh exact arithmetic.
 
+The [full arithmetic index mismatch](Papers/research-wip/native-stream-queue/free_coefficient83_full_arithmetic_alias.md)
+completes that native family with positive input, shared rho/sigma,
+packing and transport witnesses at diagnostic numerals. All seven intended
+factor values hold in the actual83 source, yet its main index p differs
+from its computed R. Exact finite CRT/packing arithmetic and a constructive
+Pell proof specify the full positive zero; the enormous tuple is not
+numerically materialized. The [independent review](Papers/research-wip/native-stream-queue/review_free_coefficient83_full_arithmetic_alias.md)
+checks all83 rows by a formal rational substitution and expands the complete
+726-term output. **The radix and width fail the fixed-program recipe**,
+so this remains an arithmetic obstruction, not a compiler counterexample.
+Fresh installed normal/optimized receipts pass; the universal bound stays84.
+
 The [complete Report30 first-hit fixture](Papers/research-wip/native-stream-queue/original_frame_first_hit30_fixture.md)
 reduces one explicit original-frame mass-four orbit certificate to
 **35=11M+24A operations, three natural witnesses and exact degree four**.
