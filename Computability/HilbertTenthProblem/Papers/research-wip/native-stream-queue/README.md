@@ -567,6 +567,24 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [combined entry/controller charts](matrix193_entry_controller_charts.md)
+incorporate the coefficient and flow savings into three fully emitted sources.
+Either single chart uses **1,619=790M+829A** with145 positive witnesses;
+the joint chart uses **1,616=789M+827A** with144. The
+[independent review](review_matrix193_entry_controller_charts.md) checks all4,854 new rows,
+complete polynomial pullbacks, positive integer inverses and exact degree
+transfer. Author and review normal/optimized receipts pass. The current
+matrix alternatives preserve ordinary input and have these explicit tradeoffs:
+
+| Controller hats computed from retained coordinates | Operations | Positive witnesses | Exact degree |
+|---|---:|---:|---:|
+| None: entry-and-flow parent | 1,622 | 146 | 35,587 |
+| LOAD or SWITCH | 1,619 | 145 | 53,347 |
+| LOAD and SWITCH | 1,616 | 144 | 71,107 |
+
+The joint chart retains the IDLE witness. No new diagnostic or giant native
+fixture is claimed; the established universal84 bound remains unchanged.
+
 The [positive controller charts](matrix193_positive_controller_charts.md)
 remove the uniquely determined LOAD or SWITCH edge hat, or both, from the
 composed1679 parent. Full sources use **1,674/1,676/1,671 operations** and
