@@ -345,9 +345,15 @@ team attains. Since batch 92, Part IV's source 04 settles the larger family
 `(m(2^r−1), 2, m(2^r−1))`, `t = m·2^(r−1)`, for every `m ≥ 1` (optimum
 `1 − 2^(−r)`, legal = blind; Theorems 65.4–65.5 and the note after them),
 which contains both Part II's family (even `m`) and the three-box benchmark.
-Still open: `q = 2` outside these families, every `q ≥ 3` with
-`⌊m/q⌋ < t ≤ m`, and the first parameters at which the legal and blind optima
-differ (in every settled case they coincide).
+An additional elementary family is settled for every `q ≥ 2` and `n ≥ 1`:
+if `t` divides `m` and `⌊m/q⌋ < t ≤ m`, both optima equal `m/(qt)`.
+Assign `t` players to each of `m/t` distinct colours at one shared target,
+with no queries; this attains the first-moment bound. In particular, `t = m`
+has optimum `1/q`. The batch-92 sentence calling every `q ≥ 3` case in this
+range open was false; Remark 15.2 retains it with this proof. The general
+optimization problem outside the cases established here, and the first
+parameters separating the legal and blind optima, remain unclassified by
+this report.
 
 ## Part III
 
@@ -770,13 +776,14 @@ geometric variable (and in source 06 a visibility graph), `Q_i` a query count
 
 Every label carries the prefix `mbg:`; Part II's carry `mbg:hat:`, Part
 III's `mbg:ext:`, Part IV's `mbg:qry:` (source 06) and `mbg:insp:` (source
-04). **334 labels** since batch 92 (126 before; none removed or renamed): the
+04). **335 labels** after the batch-92 review (126 before; none removed or renamed): the
 199 delivered labels of the three batch-92 manuscripts (62, 66 and 71),
-prefixed with every reference updated, and nine added by the write —
+prefixed with every reference updated, and ten added by the write and review —
 `mbg:ext:part`, `mbg:ext:sec:provenance`, `mbg:ext:sec:notation`,
 `mbg:qry:part`, `mbg:qry:sec:provenance`, `mbg:qry:sec:merge`,
 `mbg:qry:sec:notation`, `mbg:qry:sec:conclusions` (source 06's unlabelled
-Section 14) and `mbg:insp:rem:q9-open-claim` (Remark 15.1). All 126 earlier
+Section 14), `mbg:insp:rem:q9-open-claim` (Remark 15.1), and
+`mbg:insp:rem:q9-divisor-cases` (Remark 15.2). All 126 earlier
 labels and all 13 earlier bibliography numbers print as before (compared with
 a build of the committed text), and every one of the 199 delivered labels
 prints its source's number shifted by the stated offset (compared with
@@ -883,7 +890,7 @@ Part IV.
 ```text
 README.md                                         this guide (replaces Part I's delivered README.md, staged under this name)
 article.tex                                       the report: Parts I-IV (delivered article.tex, hat_guessing_growth.tex, adaptive_box_games.tex, hat_query_thresholds.tex with hat_inspection_frontier.tex), labels prefixed, [write] notes
-article.pdf                                       compiled report, 143 pages (unnumbered title page, then pages 1-142)
+article.pdf                                       compiled report, 144 pages (unnumbered title page, then pages 1-143)
 02-hat-surplus-source_audit.txt                   Part II: delivered source and claim audit (source_audit.txt)
 04-hat-inspection-PROOF_STATUS.txt                Part IV, source 04: delivered proof-status record (PROOF_STATUS.txt)
 04-hat-inspection-SOURCE_AUDIT.txt                Part IV, source 04: delivered source and claim audit (SOURCE_AUDIT.txt)
@@ -1140,6 +1147,15 @@ a framed box or note); the committed batch-90 text, built the same way (53
 pages), has one. The batch-87 text gives 26 pages with a clean log; its
 delivered source gave 24 pages and one duplicate-destination warning
 (`page.1`), removed as described under Labels.
+
+The arithmetic-research review corrected the later Q9 open-range claim with
+Remark 15.2 and repaired `\ind C` to `\indic{C}` in Theorem 65.3. A direct
+three-pass `pdflatex -no-shell-escape` rebuild of this edited source produced
+144 pages, with no undefined references/citations or bad boxes; the only
+warning reports the intentionally disabled shell escape. PDF pages 29 and
+131 were visually inspected for the new remark and repaired indicator. The
+immutable [publication review](../../../../../../Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_box_publication_721cf8196.md)
+retains both original findings and its exact proof-read limits.
 
 ## Provenance
 

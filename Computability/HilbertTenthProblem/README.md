@@ -141,17 +141,20 @@ The [three surreal publication reviews](Papers/research-wip/native-stream-queue/
 The [Parts XI–XII publication review](Papers/research-wip/native-stream-queue/review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
 
 The CA publication 4cabe3899, definable-operations archive de37a66d1,
-catalogue cd514f61b, matrix publication b93c4a0b5 and sandpile publication
-fb2287290 now have the bounded reviews linked below. All four catalogue
-corrections have been applied. The next publication review is 721cf8196,
-the new adaptive-box/expected-query Parts III–IV, followed by signal-machine
-publication 61c9e3eb2 (Parts IX–XIII). Only their commit summaries and diff
-statistics have been inspected in this round. The newer complex-
-transseries archives have guide-only intake, and the two batch 93 ancillary
-placements have byte-preservation reviews. Those scopes do not certify
-unintegrated or unread manuscript bodies. For arithmetic research, the
-new carry-free Hadamard layout leaves synchronized variable-width loaders
-as its explicit paid-graph bottleneck; the universal frontier is unchanged.
+catalogue cd514f61b, matrix publication b93c4a0b5, sandpile publication
+fb2287290 and box publication 721cf8196 now have the bounded reviews linked
+below. All four catalogue corrections and both box corrections have been
+applied. The signal-machine publication 61c9e3eb2 (Parts IX–XIII) has
+completed scoped mathematical and provenance reviews; two wording fixes and
+its edited PDF are being finalized. New upstream publications 8a7f289b8
+(commuting actions), 4af6f191d (Polish-model Parts XIII–XV), reciprocal
+notes 1fdcaf5a6 and archives 516049bf9 are queued after that checkpoint.
+Only their commit summaries and diff statistics have been inspected here.
+The complex-transseries archives retain guide-only intake, and the two
+batch 93 ancillary placements have byte-preservation reviews. Those scopes
+do not certify unread manuscript bodies. The universal frontier is unchanged.
+
+The [adaptive-box and expected-query publication review](Papers/research-wip/native-stream-queue/review_box_publication_721cf8196.md) reads the complete guide diff and 2,375 precisely scoped TeX lines at 721cf8196. It authenticates 23 archive members and 13 placements, checks 199 delivered labels and the selected adaptive-extension and deterministic expected-cost proofs, and preserves two findings. The current report refutes the newly overstated Q9 open range: for finite n>=1, q>=2 and t dividing m above floor(m/q), the legal and blind optima are m/(qt), attained by zero-query guesses at one shared box. Remark 15.2 retains the wrong sentence and its counterexample. The unbraced indicator in Theorem 65.3 is repaired. The edited article rebuilds in three direct no-shell-escape pdflatex passes to 144 pages, with 335 unique labels, resolved references/citations and no bad boxes; PDF pages 29 and 131 were visually checked. The only build warning reports disabled shell escape. Unread Fourier/limit proofs, external attribution and packaged execution remain outside the immutable review; no paid universal bound changes.
 
 The [finite-word skew Hadamard scout](Papers/research-wip/native-stream-queue/finite_word_hadamard_skew.md), with [independent exact-source review](Papers/research-wip/native-stream-queue/review_finite_word_hadamard_skew.md), proves a carry-free binary packing: exponents n*i+(n−1)*(n−1−j) are all distinct, and the band starting at (n−1)^2 contains exactly x AND y. For each externally fixed n≥2, all four loaders and bit guards are paid: 14n producer operations, 2n+4 positive witnesses, and a complete degree-four SOS costing 18n+14 with fixed numerals. A second emitted family pays to construct all derived numerals from 1 and 2. The ten arrays receive full independent polynomial/loader/guard/ledger checks (994 rows, 7,080 expanded terms), 2,856 positive zeros and 22,848 perturbation rejections. Root's fresh author/reviewer normal and optimized checks pass before commitment. The conditional eleven-operation extraction still assumes synchronized powers, variable spacing and reversal; concrete omitted-condition aliases and the necessary positive output domain are retained. Direct per-bit multiplication is a simpler fixed-width baseline. This is a candidate algebraic ingredient, not a fixed-arity unbounded compiler or a change to the universal frontier.
 
