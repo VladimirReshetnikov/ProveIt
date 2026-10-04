@@ -18,7 +18,7 @@
 \hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
  pdftitle={Discrete Initial Groups and Omnific Normalization},
  pdfauthor={AI-assisted research draft prepared for the Surreal project},
- pdfsubject={Sign-tree surgery, a proposed solution of an Ehrlich--Kaplan question, convex factors and profinite obstructions}}
+ pdfsubject={Sign-tree surgery, a proposed solution of an Ehrlich--Kaplan question, convex factors and profinite obstructions, the standard cut and bounded induction}}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[L]{\small\textsc{Discrete initial groups}}
@@ -91,6 +91,20 @@
 \newcommand{\Ext}{\operatorname{Ext}}
 \newcommand{\dv}{\mathrm{div}}
 \newcommand{\cmp}[1]{\flat_{#1}}
+% Notation of the third source (standard cut); see isg:sc:sec:conventions.
+\newcommand{\PowDy}{\mathsf{Pow}^{\mathrm{dy}}}
+\newcommand{\StdDy}{\mathsf{Std}^{\mathrm{dy}}}
+\newcommand{\Tdy}{\mathsf{T}^{\mathrm{dy}}}
+\newcommand{\Ind}{\mathsf{Ind}}
+\newcommand{\ED}{\mathsf{ED}}
+\newcommand{\TA}{\mathsf{TA}}
+\newcommand{\Hom}{\operatorname{Hom}}
+\newcommand{\Iopen}{\mathsf{IOpen}}
+\newcommand{\Idelta}{\mathsf{I}\Delta_0}
+\newcommand{\PAminus}{\mathsf{PA}^{-}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\rk}{\operatorname{qr}}
+\newcommand{\Asc}{\mathcal{A}}
 \newcommand{\source}[1]{\textup{\cite{#1}}}
 \newcommand{\replabel}[1]{\nolinkurl{#1}}
 \newcommand{\fn}[1]{\nolinkurl{#1}}
@@ -111,8 +125,8 @@ an Ehrlich--Kaplan question, and convex factors\par}
 \vspace{5mm}
 {\large AI-assisted research draft prepared for the Surreal project\par}
 \vspace{2mm}
-23 September 2026 \textperiodcentered{} two-source report of the
-collection
+23 September 2026; third source 3 October 2026 \textperiodcentered{}
+three-source report of the collection
 \vspace{4mm}
 \begin{abstract}
 We give an explicit construction proposed as an affirmative solution of
@@ -142,6 +156,14 @@ A second manuscript realizes every convex subquotient of an initially
 realizable group by sign-tree compression, and shows that a Presburger
 group is initially realizable exactly when its residues in
 $\widehat{\Z}$ are ordinary integers.
+A third manuscript shows that a bounded dyadic formula defines the
+standard natural numbers in discretely ordered rings with division by
+$2$ and $3$ and a normalized additive map to $\Z$, that the additive
+group of a nonstandard model of bounded arithmetic has no nonzero
+homomorphism to $\Z$, and that bounded truth in a computable such ring is
+as hard as true arithmetic. With the second manuscript's criterion, the
+additive group of every nonstandard model of $\mathsf{I}\Delta_0$ is not
+initially realizable, whereas open induction does not suffice.
 \end{abstract}
 \vspace{2mm}
 \begin{statusbox}
@@ -155,7 +177,8 @@ question and its motivating example, but did not establish exhaustive
 novelty. At placement in the collection every step was checked by hand
 and no gap was found (\cref{isg:sec:provenance}); that check is not a
 refereeing, and the literature search was targeted, not exhaustive.
-The second manuscript (\cref{isg:cf:sec:intro}) has the same status.
+The second manuscript (\cref{isg:cf:sec:intro}) and the third
+(\cref{isg:sc:sec:intro}) have the same status.
 \end{statusbox}
 \vfill
 {\small\textbf{Keywords:} surreal numbers; omnific integers; initial
@@ -310,15 +333,21 @@ the real coefficient at that minimum. No claim of multiplicativity is
 made, and none is needed for the published ordered-group question.
 
 \subsection{Conventions shared with the collection}\label{isg:sec:conventions}
-This report is built from two manuscripts: source~01, the normalization
+This report is built from three manuscripts: source~01, the normalization
 manuscript (\cref{isg:sec:intro,isg:sec:background,isg:sec:bottom,isg:sec:surgery,isg:sec:transport,isg:sec:normalization,isg:sec:classification,isg:sec:quotient,isg:sec:complex,isg:sec:examples}
-and Appendix~\ref{isg:app:compact}), and source~02, the convex-factor manuscript
+and Appendix~\ref{isg:app:compact}), source~02, the convex-factor manuscript
 (\cref{isg:cf:sec:intro}, \cref{isg:cf:sec:cuts,isg:cf:sec:compression,isg:cf:sec:factors,isg:cf:sec:presburger,isg:cf:sec:factorial,isg:cf:sec:modeltheory,isg:cf:sec:complex,isg:cf:sec:boundaries}
-and Appendix~\ref{isg:cf:app:core}). Their provenance, the placement reviews and
+and Appendix~\ref{isg:cf:app:core}), and source~03, the standard-cut
+manuscript (\cref{isg:sc:sec:intro} and
+\cref{isg:sc:sec:detector,isg:sc:sec:characters,isg:sc:sec:rings,isg:sc:sec:compiler}).
+Their provenance, the placement reviews and
 the relation to other reports are in \cref{isg:sec:provenance}. Statements
-added in the merge of the two sources, and proved here, are marked
-\textup{[merge]}. The following conventions are fixed here once; the
-notation of source~02 is fixed in \cref{isg:cf:sec:conventions}.
+added in the merge of the first two sources, and proved here, are marked
+\textup{[merge]}; statements added when source~03 was written in, and
+proved here, are marked \textup{[write]}. The following conventions are
+fixed here once; the notation of source~02 is fixed in
+\cref{isg:cf:sec:conventions}, and that of source~03 in
+\cref{isg:sc:sec:conventions}.
 \begin{enumerate}
 \item \emph{Initial} always means closed under proper sign-sequence
       prefixes, as in the definition of the definable-surreals report
@@ -458,6 +487,44 @@ set-model version of Ehrlich--Kaplan's optimality question (Question~1 of
 in \cref{isg:cf:sec:optimality}. A targeted review found no matching
 formulation of the main convex-factor theorem, but this is not an
 exhaustive priority search.
+
+\subsection{Standard integers and bounded arithmetic}\label{isg:sc:sec:intro}
+Source~02 shows that the ordered additive group of a nonstandard model of
+Peano arithmetic is not initially realizable (\cref{isg:cf:thm:PA}), and
+asks for the weakest arithmetic fragment with that property
+(\cref{isg:cf:q:fragment}). The third source of this report,
+\emph{Standard Integers in a Single Infinite Interval}, is weak
+arithmetic of discretely ordered rings $R$ with Euclidean division by
+ordinary integers and an additive map $\chi:R\to\Z$ with $\chi(1)=1$,
+not necessarily order-preserving; $\Oz$ with its constant term is one.
+Its main results are:
+\begin{itemize}[leftmargin=*,itemsep=2pt]
+\item a fixed bounded formula $\StdDy$, built from the divisor-theoretic
+      predicate ``no odd divisor at least $3$'', defines exactly the
+      standard natural numbers whenever division by $2$ and $3$ and such a
+      $\chi$ are available, and is inductive under division by $2$ alone
+      (\cref{isg:sc:thm:dyadic,isg:sc:lem:successor,isg:sc:thm:boundary});
+\item with division by every ordinary integer, the integer characters
+      are $0$ or $\Z\chi$ with $\chi$ a ring map, and the difference ring
+      of a nonstandard model of $\Idelta$ has none at all; so no such
+      model has a unit-preserving additive map into $\Oz$
+      (\cref{isg:sc:thm:characters,isg:sc:thm:nochar,isg:sc:cor:omnific});
+\item every arithmetic sentence compiles to a bounded formula with one
+      infinite bound and quadratic atoms, and bounded truth in the
+      computable ring $\Z+X\Q[X]$ is many-one equivalent to true
+      arithmetic (\cref{isg:sc:thm:compiler,isg:sc:thm:complexity});
+\item a counterexample to a uniqueness lemma of a recent preprint, with a
+      repair under division by $2$ (\cref{isg:sc:prop:correction,isg:sc:prop:repair}).
+\end{itemize}
+Combined with \cref{isg:cf:main:presburger}, the second item lowers the
+hypothesis of \cref{isg:cf:thm:PA} from Peano arithmetic to $\Idelta$, and
+indeed to a recursively axiomatized theory $\Tdy$ whose only induction is
+one bounded instance, while open induction does not suffice
+(\cref{isg:sc:cor:fragment,isg:sc:prop:iopen}, \textup{[write]}). Bounded
+definability of the standard cut in such rings, including $\Oz$, was
+already known \cite[Theorem~2.9]{ELV}, and so was the failure of
+induction beyond open induction in $\Oz$ \cite{JerabekMO}; what source~03
+adds is stated in \cref{isg:sc:sec:overview}.
 
 \section{Foundations and the imported initiality criterion}\label{isg:sec:background}
 
@@ -2755,6 +2822,11 @@ conclusion is stronger than merely observing that the usual
 omnific multiplication does not make the positive cone of $\Oz$ a
 nonstandard Peano model: it excludes \emph{any} such model having an
 initially realizable ordered additive group.
+\textup{[}Added at the write of source~03: by
+\cref{isg:sc:cor:fragment} the same conclusion holds for every
+nonstandard model of $\Idelta$, by a different residue argument, and by
+\cref{isg:sc:prop:iopen} it fails for open induction; see the note after
+\cref{isg:cf:q:fragment}.\textup{]}
 
 \begin{proof}[Proof of \cref{isg:cf:main:models}]
 The discrete family and rigidity are \cref{isg:cf:thm:continuum} and
@@ -2806,7 +2878,8 @@ group splits, and \cref{isg:cf:main:presburger} applies.
 
 In particular, the ordered additive completion of a nonstandard Peano
 model cannot even admit a unit-preserving additive embedding into
-$\Oz$, whether or not the image is initial. There is no contradiction
+$\Oz$, whether or not the image is initial. (Source~03 proves this for
+nonstandard models of $\Idelta$, \cref{isg:sc:cor:omnific}.) There is no contradiction
 with ordinary ordered-group embeddings that move the distinguished
 unit: the copy $(a,b)\mapsto a\omega^2+b\omega$ embeds each
 $G_\zeta$ into $\Oz$ but sends $e$ to $\omega$, not to $1$.
@@ -3020,6 +3093,1240 @@ Hahn product of its factors. Such an identification would reintroduce
 the unsupported completion assumption excluded in
 \cref{isg:cf:rem:membership}.
 
+\section{The standard cut in a single infinite interval}\label{isg:sc:sec:detector}
+
+\subsection{The third source}\label{isg:sc:sec:overview}
+\Cref{isg:sc:sec:detector,isg:sc:sec:characters,isg:sc:sec:rings,isg:sc:sec:compiler}
+are source~03, \emph{Standard Integers in a Single Infinite Interval:
+Residue Characters, Bounded Induction, and Omnific Arithmetic}
+(20 pages, 3~October 2026). Its subject is weak arithmetic of discretely
+ordered rings carrying an additive map to the ordinary integers. It
+does not mention initial subgroups or this report; it was placed here
+because, combined with \cref{isg:cf:main:presburger}, it answers part of
+\cref{isg:cf:q:fragment}. That combination is stated and proved at this
+write in \cref{isg:sc:sec:fragment}
+(\cref{isg:sc:cor:fragment,isg:sc:prop:iopen}). Everything else in these
+four sections is source~03's, with the symbols renamed as in
+\cref{isg:sc:sec:conventions}.
+
+\paragraph{Motivation, as source~03 gives it.} Elliot Glazer's
+\emph{A Topological Tennenbaum Theorem} \cite{Glazer} studies how much
+regularity a presentation of arithmetic can support. For uncountable
+Polish models of $\mathsf Q+\Idelta+\mathsf{Exp}$ with Borel operations,
+neither operation is continuous \cite[Theorem~2]{Glazer}, and
+\cite[Corollary~1]{Glazer} already excludes continuous addition with
+Borel multiplication for $\mathsf Q+\Iopen$. Source~03 investigates an
+algebraic obstruction that arises \emph{before} any choice of topology.
+Omnific constant extraction is an additive map to $\Z$ taking $1$ to $1$.
+Can the additive structure of a nonstandard model of bounded arithmetic
+map into such a ring while preserving the unit? The answer is no
+(\cref{isg:sc:thm:nochar,isg:sc:cor:omnific}). A related question asks
+whether syntactically bounded formulas must have low computational
+complexity in a computable nonstandard ordered ring. The answer is again
+no: one interval can contain the full difficulty of standard arithmetic
+truth (\cref{isg:sc:thm:compiler,isg:sc:thm:complexity}). The
+obstruction concerns the existence of maps, not their regularity, and is
+complementary to Glazer's theorem rather than a strengthening of it
+(\cref{isg:sc:rem:regularity}). Source~03 answers neither of Glazer's
+printed questions and does not discuss his speculation, printed after his
+Question~2, that an affirmative answer to his Question~1 would lead to a
+negative answer to Question~2. For Question~2 an affirmative construction
+is proposed in the collection's report
+\nolinkurl{docs/foundations-and-computation/polish-models-of-omnific-arithmetic},
+written from manuscripts of the same delivery (\cref{isg:sec:provenance}).
+
+\paragraph{What was already known.} Source~03 separates a new proof or
+application from an established phenomenon, and this report narrows its
+claims further (\cref{isg:sec:audit}, Novelty).
+Je\v r\'abek noted in 2011 that $\Oz$ satisfies open induction but fails
+stronger induction, even bounded-existential induction \cite{JerabekMO}.
+Enayat, \L e\l yk and Visser \cite[Sections~2.5, 4.2 and 5.2]{ELV} develop
+bounded definitions of the standard cut in related ordered rings,
+including Shepherdson's model, and use bounded interpretations in their
+study of restricted-complexity completions. In particular, their
+Theorem~2.9 states that the natural numbers are $\Delta_0$-definable in
+the nonnegative part of every \emph{ordered Dorroh ring}, by the
+parameter-free formula ``every $y\le x$ is a sum of four squares of
+elements $\le y$''. $\Oz$ is an ordered Dorroh ring, with witnessing ideal
+$\Pi$, and so is every ring considered below that carries a normalized
+integer character (\cref{isg:sc:rem:ELV}). Hence a bounded definition of
+$\N$ in $\Oz_{\ge0}$, and with it a failed bounded induction instance,
+were known before source~03; the repository itself has an
+\emph{existential} definition of $\Z$ in $\Oz$
+(\replabel{odg:thm:standarddef}) and failed existential induction instances
+(\replabel{odg:thm:induction}, \replabel{odg:rem:ringinduction}). Classical
+work of Phillips \cite{Phillips} places the additive structure of
+nonstandard arithmetic, and four-square obstructions to proposed ring
+constructions, in a much older line of research.
+
+Consequently neither ``the standard integers are definable'' nor
+``omnific integers fail induction'' is presented as a discovery. What
+source~03 contributes is: the explicit dyadic formula $\StdDy$ and its
+finite odd-factor certificate (\cref{isg:sc:thm:dyadic}); its
+inductiveness under division by $2$ alone, without any character
+(\cref{isg:sc:lem:successor}), with the single-instance boundary
+(\cref{isg:sc:thm:boundary}) and the sharpness examples
+(\cref{isg:sc:prop:sharp}); the classification and vanishing of integer
+characters and its consequences
+(\cref{isg:sc:thm:characters,isg:sc:prop:diagonal,isg:sc:thm:nochar,isg:sc:cor:noadd,isg:sc:cor:nonunital,isg:sc:cor:profiles,isg:sc:cor:omnific});
+the single-bound quadratic compiler and the exact truth complexity
+(\cref{isg:sc:thm:compiler,isg:sc:thm:complexity,isg:sc:cor:sigma}); and a
+correction, with a repair, of a uniqueness lemma in \cite{ELV}
+(\cref{isg:sc:prop:correction,isg:sc:prop:repair}). Priority for each exact
+formulation was not established by its literature search, and all novelty
+claims are proposed refinements subject to comparison with the wider
+literature.
+
+\paragraph{A map of the results.} The proofs have four largely
+independent layers. First, a finite odd-factor certificate rules out every
+nonstandard solution of a divisor-theoretic power-of-two predicate.
+Second, an elementary successor argument shows that the resulting
+standard-cut formula is inductive without using the constant-term map.
+Third, residue calculations turn arbitrary additive characters into
+normalized ones and explain why every nonstandard $\Idelta$ model is
+excluded. Finally, relativizing arithmetic to the standard cut yields the
+single-interval translation and exact computability statements.
+\begin{center}\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.58\textwidth}@{}}
+\toprule
+Result & Scope and limitation\\
+\midrule
+Dyadic detector, \cref{isg:sc:thm:dyadic} & Division by $2,3$ and a
+normalized additive integer character suffice; no normal-form theory is
+needed.\\
+Single induction boundary, \cref{isg:sc:thm:boundary} & One explicit
+bounded induction instance forces standardness in that class.\\
+Additive obstruction, \cref{isg:sc:thm:nochar,isg:sc:cor:noadd} & No
+nonzero integer character for a nonstandard $\Idelta$ difference ring; no
+unit-preserving additive map into a ring retracting to $\Z$.\\
+Initial realizability, \cref{isg:sc:cor:fragment,isg:sc:prop:iopen}
+\textup{[write]} & The additive completion of a nonstandard $\Idelta$
+model is not initially realizable; open induction does not suffice.\\
+Source correction, \cref{isg:sc:prop:correction,isg:sc:prop:repair} &
+Distinct ideals with quotient $\Z$ refute unrestricted uniqueness;
+division by $2$ repairs it.\\
+Single-bound compiler, \cref{isg:sc:thm:compiler} & Every arithmetic
+sentence is translated effectively; this is not one universal truth
+formula.\\
+Exact complexity, \cref{isg:sc:thm:complexity} & A quadratic-atomic,
+one-bound fragment in $\Asc_0=\Z+X\Q[X]$ is many-one equivalent to true
+arithmetic.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Conventions of the third source}\label{isg:sc:sec:conventions}
+Source~03 works in ordinary set mathematics unless it explicitly
+discusses the full surreal class (\cref{isg:sc:sec:classes}). Several of
+its symbols are renamed here, because the letters are in use elsewhere in
+this report or in the collection. The renaming changes no statement.
+\begin{center}\small
+\begin{tabular}{@{}p{0.27\textwidth}p{0.2\textwidth}p{0.45\textwidth}@{}}
+\toprule
+here & in source~03 & reason for the change\\
+\midrule
+$\chi$, $\chi_R$ (integer character) & $\rho$ & $\rho$ is root deletion
+ (\cref{isg:lem:rho})\\
+$\res_R$ & $\kappa_R$ & it is $\res_G$ of \cref{isg:cf:lem:residues} for
+ $G=(R,+)$, $e=1$; $\kappa_E$ is an order type in
+ \cref{isg:cf:sec:compression}\\
+$R^{\dv}=\ker\chi$ & $D$ & $\D$ is $\Z[1/2]$; $G^{\dv}$ as in
+ \cref{isg:cf:lem:divkernel}\\
+$\PowDy$, $\StdDy$ & $\mathsf P$, $\mathsf S$ & the Diophantine report's
+ $\operatorname{Std}$ is a different, existential formula
+ (\replabel{odg:thm:standarddef})\\
+$\Omega$ (positive infinite bound) & $H$ & $H$ is the image group in
+ \cref{isg:thm:A,isg:thm:B}\\
+$\Asc$, $\Asc_0$, $\Asc_{\mathrm{Sh}}$, $\Asc(k,\Gamma)$ & $A$, $A_0$,
+ $A_{\rm Sh}$, $A(k,\Gamma)$ & $A$ is the initial group of
+ \cref{isg:thm:A}\\
+$\chi_{\Asc}:\Asc\to\Z$ (retraction) & $\epsilon$ & $\varepsilon$ is the
+ least positive element in \cref{isg:thm:A}\\
+$\mathfrak j_c=(X-c)$ & $J_a$ & $J(B)$ is the suspension of
+ \cref{isg:thm:suspension}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Kept unchanged: $M$ for a model of arithmetic (as in \cref{isg:cf:thm:PA});
+$X$ for an indeterminate, always positive infinite (unrelated to the
+variable of the type $\tau_*(X)$ in \eqref{isg:cf:eq:type}); $\ct$ for the
+constant coefficient of $\Oz$ (\cref{isg:sec:conventions}); $q$ for a
+quotient in a division (unrelated to the sign sequences $q_\beta$). In
+$\Asc(k,\Gamma)$, $\Gamma$ is an ordered abelian group of Hahn exponents,
+not the exponent class $\Gamma(G)$ of \cref{isg:cf:sec:cuts}, and $k$ is a
+coefficient field. The shipped records of source~03 use its own letters:
+the compiler report \fn{data/03-standard-cut-compiler_report.json} writes
+the bound $\Omega$ as \texttt{H}. Statements added at this write, with
+complete proofs, are marked \textup{[write]}, as statements added in the
+merge of source~02 are marked \textup{[merge]}.
+
+A \emph{discretely ordered ring} is a commutative unital ordered ring $R$
+in which $1$ is the least positive element. Its order is total and
+compatible with addition and multiplication. Such a ring is a domain of
+characteristic zero, and its standard copy of $\Z$ is understood. Write
+$R_+=\{a\in R:a\ge0\}$. The word \emph{standard} always refers to the
+external copy of $\N$ or $\Z$; it is not an additional predicate in the
+language. An element $h\in R_+$ is \emph{positive infinite} if $h>n$ for
+every ordinary $n\in\N$. All displayed first-order formulas use the
+language $\{0,1,+,\cdot,<\}$ on $R_+$; numerals and $\le$ are
+abbreviations. A formula is $\Delta_0$ if every quantifier is bounded by a
+term not containing its quantified variable. Such a bound need not make
+the range externally finite. $\PAminus$ is the arithmetic of nonnegative
+cones of discretely ordered commutative rings, $\Iopen$ its extension by
+induction for quantifier-free formulas, and $\Idelta$ its extension by
+induction for all bounded formulas, with parameters.
+
+\subsection{Ordered rings, division, and external standardness}\label{isg:sc:sec:setup}
+
+\begin{lemma}[Finite intervals]\label{isg:sc:lem:finite}
+For each ordinary $n\in\N$, the interval $[0,n]$ in $R$ consists exactly of
+$0,1,\ldots,n$. Thus every nonstandard nonnegative element is positive
+infinite.
+\end{lemma}
+\begin{proof}
+Use external induction on $n$. If $0\le a\le n+1$, then either $a<1$, in
+which case $a=0$, or $1\le a$ and $0\le a-1\le n$. The induction
+hypothesis applies to $a-1$. If a nonnegative element is not above all
+standard integers, it lies in one such finite interval and is standard.
+\end{proof}
+This is the finite induction already used for $\Z$-groups in
+\cref{isg:cf:sec:presburger}.
+
+\begin{definition}[Standard division and integer characters]\label{isg:sc:def:division}
+For an ordinary integer $n\ge1$, the condition $\ED_n$ says that every
+$a\in R$ has a representation
+\[
+ a=nq+r,\qquad q\in R,\qquad r\in\{0,\ldots,n-1\}.
+\]
+$R$ has \emph{standard division} if it satisfies $\ED_n$ for every
+ordinary $n\ge1$. A \emph{normalized integer character} is an
+additive-group homomorphism $\chi:R\to\Z$ such that $\chi(1)=1$.
+\end{definition}
+
+The quotient and remainder in $\ED_n$ are unique. Indeed, two such
+representations would give $n(q-q')=r'-r$ with $|r'-r|<n$; discreteness
+excludes $q-q'\ne0$. For $a\ge0$, the quotient is nonnegative. If $a$ is
+positive infinite, its quotient by an ordinary positive integer is
+positive infinite. These observations also justify the bounds on
+witnesses below. With standard division, $(R,+)$ is a $\Z$-group with
+least positive element $e=1$ in the sense of \cref{isg:cf:sec:intro}:
+$a=nq+r$ shows that $R/\Z$ is divisible.
+
+A normalized character is \emph{not} assumed to preserve order. For
+example, evaluation at zero on $\Z+X\Q[X]$, ordered with $X$ positive
+infinite, takes the positive element $X-1$ to $-1$. Confusing an integer
+character with an order-preserving standard-part map would invalidate the
+argument.
+
+\begin{lemma}[Residues detected by a character]\label{isg:sc:lem:residue}
+Suppose $\chi$ is a normalized integer character and $\ED_n$ holds. If
+$a=nq+r$ is its division representation, then
+\[
+ \chi(a)=n\chi(q)+r,
+ \qquad n\mid a\text{ in }R\ \Longleftrightarrow\ n\mid\chi(a)\text{ in }\Z.
+\]
+\end{lemma}
+\begin{proof}
+Additivity and normalization give the displayed identity. Its residue
+modulo $n$ is $r$. If $n\mid\chi(a)$, then $r=0$ and $a=nq$. The reverse
+implication is immediate from additivity.
+\end{proof}
+
+\subsection{An elementary dyadic detector}\label{isg:sc:sec:dyadic}
+Define two parameter-free bounded formulas:
+\begin{align}
+ \PowDy(y)&:\Longleftrightarrow
+ 0<y\ \wedge\ (\forall u\le y)(\forall v\le y)
+                \bigl(y\ne(2u+3)v\bigr),\label{isg:sc:eq:power}\\
+ \StdDy(x)&:\Longleftrightarrow
+ x=0\ \vee\ (\exists y\le x)
+               \bigl(x<2y\ \wedge\ \PowDy(y)\bigr).\label{isg:sc:eq:standard}
+\end{align}
+The first formula says that $y$ has no positive odd divisor at least $3$.
+Source~03 calls it \emph{divisor-theoretic dyadicity}; there is no
+exponentiation symbol in the formula. The second asks for a dyadic element
+between $x/2$ and $x$, with zero handled separately.
+
+\begin{theorem}[Exact dyadic and standard-cut detection]\label{isg:sc:thm:dyadic}
+Let $R$ be a discretely ordered ring satisfying $\ED_2$ and $\ED_3$, and
+let $\chi:R\to\Z$ be a normalized integer character. Then
+\begin{align*}
+ \{y\in R_+:R_+\models\PowDy(y)\}&=\{2^k:k\in\N\},\\
+ \{x\in R_+:R_+\models\StdDy(x)\}&=\N.
+\end{align*}
+The powers and the sets on the right are external standard ones. Neither
+$\chi$ nor an infinity parameter occurs in the formulas.
+\end{theorem}
+\begin{proof}
+For a standard positive integer $y$, all the quantified variables in
+\eqref{isg:sc:eq:power} are standard by \cref{isg:sc:lem:finite}.
+Elementary integer factorization therefore gives $\PowDy(y)$ exactly when
+$y$ is an ordinary power of two. Zero fails the first conjunct.
+
+Now let $y$ be positive infinite and put $m=\chi(y)\in\Z$. If $m=0$,
+division by $3$ and \cref{isg:sc:lem:residue} give $y=3v$ with
+$0<v\le y$. Taking $u=0$ contradicts $\PowDy(y)$.
+
+Suppose instead that $m\ne0$. Let $k$ be the ordinary $2$-adic order of
+$|m|$: thus $m=2^km_0$, where $m_0$ is an odd, possibly negative,
+integer. Repeated division by $2$, exactly $k$ times, gives
+\[
+ y=2^kb,\qquad \chi(b)=m_0.
+\]
+At each step the character is even until the last, so the remainder is
+zero. The element $b$ is positive infinite. Because $\chi(b-3)=m_0-3$ is
+even, another application of division by $2$ gives
+\[
+ b=2u+3,\qquad u\in R_+.
+\]
+Consequently $y=(2u+3)v$ with $v=2^k$. Both witnesses meet the formula's
+bounds: $v\ge1$, $2u+3\ge3$, and their product is $y$, so each factor is
+at most $y$, and $u\le2u+3\le y$. Thus $\PowDy(y)$ fails.
+
+This proves the first equality. For each ordinary $x\ge1$, the greatest
+ordinary power $2^k\le x$ satisfies $x<2^{k+1}$, so it witnesses
+$\StdDy(x)$. Conversely, a witness to $\StdDy(x)$ is a standard power of
+two, hence $x<2y$ places $x$ in a standard finite interval. Zero
+satisfies $\StdDy$ by definition.
+\end{proof}
+
+\begin{remark}[What makes the proof small]\label{isg:sc:rem:small}
+The nonstandard case uses no prime distribution, four-square theorem,
+factorization of a nonstandard integer, or total exponentiation inside the
+structure. Only an ordinary integer $m$ is factored. The value $m$ may be
+zero or negative, and both possibilities are explicitly covered. The
+factorization certificate is finite even when the element being factored
+is surreal.
+\end{remark}
+
+\subsection{Dyadic bracketing is inductive without a character}\label{isg:sc:sec:inductive}
+
+\begin{lemma}[Doubling and successor]\label{isg:sc:lem:successor}
+In every discretely ordered ring satisfying $\ED_2$,
+\[
+ \PowDy(1),\qquad
+ (\forall y)(\PowDy(y)\to\PowDy(2y)),\qquad
+ \StdDy(0),\qquad
+ (\forall x)(\StdDy(x)\to\StdDy(x+1))
+\]
+hold in the positive cone.
+\end{lemma}
+\begin{proof}
+A positive product $(2u+3)v$ is at least $3$, proving $\PowDy(1)$.
+Suppose $\PowDy(y)$, but $2y=(2u+3)v$ for nonnegative bounded witnesses.
+Reduction modulo $2$ shows that $v$ is even: the standard remainder map
+$R\to\Z/2\Z$ is a ring homomorphism, and the odd factor has remainder $1$.
+Write $v=2w$. Cancellation gives $y=(2u+3)w$. Since $y>0$, one has
+$w\ge1$, and therefore $u\le y$ and $w\le y$. This contradicts
+$\PowDy(y)$.
+
+The assertion $\StdDy(0)$ is immediate, and $y=1$ witnesses $\StdDy(1)$.
+For $x>0$, let $y\le x<2y$ witness $\StdDy(x)$. Discreteness gives
+$x+1\le2y$. If $x+1<2y$, reuse $y$. If $x+1=2y$, use $2y$ as the new
+witness, invoking closure of $\PowDy$ under doubling. Its positivity gives
+$x+1=2y<4y$. In either case $\StdDy(x+1)$ follows.
+\end{proof}
+
+\begin{theorem}[A single induction sentence detects standardness]\label{isg:sc:thm:boundary}
+Under the hypotheses of \cref{isg:sc:thm:dyadic}, the following are
+equivalent:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item $R$ is its standard copy of $\Z$;
+\item $R_+\models\forall x\,\StdDy(x)$;
+\item $R_+$ satisfies the one sentence
+\begin{equation}\label{isg:sc:eq:oneind}
+\bigl(\StdDy(0)\wedge\forall x(\StdDy(x)\to\StdDy(x+1))\bigr)
+       \longrightarrow\forall x\,\StdDy(x);
+\end{equation}
+\item $R_+$ is a model of $\Idelta$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+By \cref{isg:sc:thm:dyadic}, (ii) says exactly that every nonnegative
+element is standard. Negating negative elements then gives (i). By
+\cref{isg:sc:lem:successor}, the antecedent in \eqref{isg:sc:eq:oneind}
+always holds, so (ii) and (iii) are equivalent. Since $\StdDy$ is bounded,
+(iv) implies (iii), while (i) implies (iv) because ordinary arithmetic
+satisfies induction.
+\end{proof}
+
+Write $\Ind(\StdDy)$ for the sentence \eqref{isg:sc:eq:oneind}. The
+formula $\StdDy$ has bounded existential--universal form after expanding
+its abbreviations: one bounded existential witness followed by two
+bounded universal witnesses. No minimality claim about this quantifier
+pattern is made. The result identifies an explicit boundary, rather than
+only invoking a known strict inclusion between induction fragments. Any
+parameter-free formula that defines exactly $\N$ in every ring of this
+class, such as the four-square formula of \cite[Theorem~2.9]{ELV}
+(\cref{isg:sc:rem:ELV}), gives the same equivalence within the class;
+what is particular to $\StdDy$ is that its antecedent holds by
+\cref{isg:sc:lem:successor} in \emph{every} ring with $\ED_2$, whether or
+not it has a character. \Cref{isg:sc:cor:profiles} uses exactly that.
+
+\subsection{Why both small divisors occur}\label{isg:sc:sec:sharp}
+The assumptions $\ED_2$ and $\ED_3$ cannot simply be omitted from
+\cref{isg:sc:thm:dyadic} while leaving the detector unchanged. For a prime
+$p$, set
+\[
+ R_{(p)}=\Z+X\Z[1/p][X],
+\]
+ordered by the sign of the leading coefficient with $X$ positive infinite.
+These are discretely ordered rings with the character $f\mapsto f(0)$, and
+they satisfy $\ED_p$.
+
+\begin{proposition}[Two sharpness examples]\label{isg:sc:prop:sharp}
+In $R_{(2)}$, the positive infinite element $X$ satisfies $\PowDy$. In
+$R_{(3)}$, the positive infinite element $X+1$ satisfies $\PowDy$. Thus
+division by $2$ alone, or by $3$ alone, does not suffice.
+\end{proposition}
+\begin{proof}
+Suppose first that $X=(2u+3)v$ in $R_{(2)}$ with $u,v\ge0$. Both factors
+are nonzero, so polynomial degrees show that one is constant. If $2u+3$ is
+constant, it is an ordinary odd integer $d\ge3$. Then $v=X/d$, impossible
+because $1/d\notin\Z[1/2]$. If $v$ is constant, it is a positive integer;
+comparing constant terms gives $0=(2u(0)+3)v$, impossible since the first
+factor is odd.
+
+Next suppose $X+1=(2u+3)v$ in $R_{(3)}$. If the odd factor is constant
+$d\ge3$, the constant term of $v$ would be $1/d$, not an integer. If $v$
+is constant, comparison of constant terms forces $v=1$ and $2u(0)+3=1$;
+comparison of the coefficient of $X$ then forces a coefficient $1/2$ in
+$u$, which is not in $\Z[1/3]$. These contradictions do not even need the
+additional bounds $u,v\le y$.
+\end{proof}
+
+These examples concern the specific dyadic detector, not the existence of
+some other standard-cut definition. That distinction matters in view of
+the more general definability methods in the literature. \textup{[}The
+write adds: both rings carry a unital ring retraction onto $\Z$, so the
+four-square formula of \cite[Theorem~2.9]{ELV} defines $\N$ in each of
+them (\cref{isg:sc:rem:ELV}).\textup{]}
+
+\section{Integer characters, bounded arithmetic and initial realizability}\label{isg:sc:sec:characters}
+
+\subsection{Classification of integer characters}
+\begin{theorem}[Classification of integer characters]\label{isg:sc:thm:characters}
+Let $R$ be a discretely ordered ring with standard division. Exactly one
+of the following holds:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item $\Hom_{\Z}(R_{\rm add},\Z)=0$;
+\item there is a unique normalized integer character $\chi$, it is a
+unital ring homomorphism, and
+\[
+ \Hom_{\Z}(R_{\rm add},\Z)=\{k\chi:k\in\Z\}.
+\]
+\end{enumerate}
+In the second case, with $R^{\dv}=\ker\chi$, one has
+\begin{equation}\label{isg:sc:eq:kernel}
+ R^{\dv}=\bigcap_{n\ge1}nR,\qquad R_{\rm add}=\Z\oplus R^{\dv},
+ \qquad R^{\dv}\text{ is a divisible additive group and an ideal}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Let $f:R_{\rm add}\to\Z$ be additive, and put $k=f(1)$. If $k=0$, then
+$a=nq+r$ implies $f(a)=nf(q)$ for every standard $n$. An ordinary integer
+divisible by every positive integer is zero, so $f=0$.
+
+If $k\ne0$, division by $|k|$ gives $f(a)=|k|f(q)+rk$, so every value of
+$f$ is divisible by $k$ in $\Z$. Hence $\chi(a)=f(a)/k$ is an
+integer-valued additive map and $\chi(1)=1$. For any normalized character,
+\cref{isg:sc:lem:residue} shows that $\chi(a)$ is congruent modulo each
+standard $n$ to the standard remainder of $a$. Two normalized characters
+must therefore agree at every $a$.
+
+For multiplication, let $a$ and $b$ have remainders $r$ and $s$ modulo
+$n$. The remainder of $ab$ is congruent to $rs$, so
+\[
+ \chi(ab)\equiv rs\equiv\chi(a)\chi(b)\pmod n.
+\]
+As this holds for every standard $n$, the two ordinary integers are equal.
+Thus $\chi$ is multiplicative. Uniqueness and the normalization argument
+now give the asserted description of all $f$.
+
+If $\chi(a)=0$, division by $n$ has remainder zero and gives $a=nq$.
+Moreover $0=n\chi(q)$, so $q\in R^{\dv}$. This proves that $R^{\dv}$ is
+divisible and contained in every $nR$. Conversely, membership in every
+$nR$ makes $\chi(a)$ divisible by every $n$, hence zero. Finally,
+$a=\chi(a)+(a-\chi(a))$ is the unique additive decomposition into a
+standard integer and an element of $R^{\dv}$. Multiplicativity makes
+$R^{\dv}$ an ideal.
+\end{proof}
+
+In fact, multiplicativity of a normalized character already follows from
+$\ED_2$: iterate division to obtain remainders modulo $2^j$, and use that
+an ordinary integer divisible by every $2^j$ is zero
+(\cref{isg:sc:prop:repair}). Standard division is retained in
+\cref{isg:sc:thm:characters} because it also normalizes an arbitrary
+nonzero character and gives the all-moduli formulation.
+
+For the $\Z$-group $(R,+)$, case (ii) is the split case of
+\cref{isg:cf:prop:residuesplit}: $\chi$ is the projection onto $\Z$ along
+the unique complement $R^{\dv}=G^{\dv}$, and \eqref{isg:sc:eq:kernel} is
+\cref{isg:cf:lem:divkernel} together with condition (iii) there. What the
+ring structure adds is that this projection is automatically a ring
+homomorphism and $R^{\dv}$ an ideal. \textup{[}This comparison is the
+write's; source~03 does not cite this report.\textup{]}
+
+\subsection{Profinite residues do not distinguish the rings by themselves}\label{isg:sc:sec:residues}
+Standard division and discreteness identify $R/nR$ with $\Z/n\Z$ for every
+ordinary $n\ge1$, compatibly when one modulus divides another. Thus there
+is a canonical unital ring map
+\[
+ \res_R:R\longrightarrow\Zhat=\varprojlim_{n\ge1}\Z/n\Z.
+\]
+Here the inverse system is indexed by divisibility. This is the
+ordinary-modulus completion; no topology on $R$ has been assumed. On the
+additive group it is the coherent residue $\res_G$ of
+\cref{isg:cf:lem:residues} for $G=(R,+)$ and $e=1$.
+
+\begin{proposition}[The diagonal-image criterion]\label{isg:sc:prop:diagonal}
+For a ring with standard division, a normalized integer character exists
+if and only if $\im\res_R$ is contained in the diagonal copy of $\Z$ in
+$\Zhat$. In that case $\im\res_R=\Z$ and $\res_R=\iota\circ\chi$, where
+$\iota:\Z\hookrightarrow\Zhat$.
+\end{proposition}
+\begin{proof}
+A character supplies exactly the standard remainders, proving one
+implication. Conversely, if $\res_R(a)=\iota(m)$ for some integer $m$,
+that integer is unique. Define $\chi(a)=m$. Because $\res_R$ and $\iota$
+preserve the ring operations and $\iota$ is injective, so does $\chi$. The
+image contains every standard integer, proving equality rather than just
+inclusion.
+\end{proof}
+For the additive group this is the equivalence (i)$\Leftrightarrow$(ii)
+of \cref{isg:cf:prop:residuesplit}, in its ring version.
+
+Every nonzero finite unital quotient of $R$ is also an ordinary cyclic
+ring: its finite characteristic is some $n\ge2$, and each element of $R$
+is congruent modulo $nR$ to a standard integer. It follows that the
+quotient is generated by its unit and is isomorphic to $\Z/n\Z$, where $n$
+is its characteristic. Therefore neither these finite quotient rings nor
+the abstract inverse limit alone separate omnific arithmetic from
+nonstandard bounded arithmetic. The canonical image in the inverse limit
+is the extra information that matters, as for $\Z$-groups after
+\cref{isg:cf:main:presburger}.
+
+\subsection{No unit-preserving additive map from bounded arithmetic}\label{isg:sc:sec:nogo}
+For a model $M$ of $\PAminus$, its \emph{difference ring} $R_M$ is the
+group completion under addition, equipped with the usual induced
+multiplication and order. Its nonnegative cone is naturally $M$, and its
+additive group is the ordered additive group completion $G(M)$ of
+\cref{isg:cf:thm:PA}.
+
+\begin{lemma}[Standard division in bounded arithmetic]\label{isg:sc:lem:idiv}
+If $M\models\Idelta$, its difference ring has standard division.
+\end{lemma}
+\begin{proof}
+Fix a standard $n\ge1$. In $M$, use bounded induction on $a$ for
+\[
+ (\exists q\le a)(\exists r<n)\ a=nq+r.
+\]
+The base case is $q=r=0$. For the successor, increment $r$ if $r+1<n$;
+otherwise $r=n-1$, so replace $(q,r)$ by $(q+1,0)$. The witnesses remain
+bounded by $a+1$. This proves division for nonnegative elements. If
+$b=nq+r\ge0$, then $-b=n(-q)+0$ when $r=0$, and $-b=n(-q-1)+(n-r)$ when
+$r>0$. Thus division holds in $R_M$.
+\end{proof}
+
+\begin{theorem}[Vanishing of integer characters]\label{isg:sc:thm:nochar}
+If $M$ is a nonstandard model of $\Idelta$, then
+\begin{equation}\label{isg:sc:eq:nochar}
+ \Hom_{\Z}((R_M)_{\rm add},\Z)=0.
+\end{equation}
+In particular, the inclusion of standard integers into $(R_M)_{\rm add}$
+does not split as an inclusion of abelian groups.
+\end{theorem}
+\begin{proof}
+By \cref{isg:sc:lem:idiv}, standard division holds. A nonzero character
+would give a normalized character by \cref{isg:sc:thm:characters}. The
+formula $\StdDy$ would then define exactly the standard natural numbers by
+\cref{isg:sc:thm:dyadic}. But \cref{isg:sc:lem:successor} makes that
+formula inductive, and $\Idelta$ contains its induction instance. It would
+follow that every element of $M$ is standard, a contradiction. A
+splitting would itself be a normalized integer character.
+\end{proof}
+
+\begin{remark}[A second route through the four-square formula; \textup{[write]}]\label{isg:sc:rem:ELV}
+A discretely ordered ring $R$ with a unital ring homomorphism
+$\chi:R\to\Z$ is an ordered Dorroh ring in the sense of
+\cite[Section~2.5]{ELV}, with witnessing ideal $\ker\chi$: the quotient is
+$\Z$, and a positive element of $\ker\chi$ is not a standard integer, so
+it is positive infinite by \cref{isg:sc:lem:finite}, as their ordered
+condition requires. By \cref{isg:sc:prop:repair} a normalized character of
+a ring with $\ED_2$ is such a homomorphism. Hence
+\cite[Theorem~2.9]{ELV} supplies, in every ring of
+\cref{isg:sc:thm:dyadic}, a second parameter-free $\Delta_0$ definition of
+$\N$ in $R_+$, and the proof of \cref{isg:sc:thm:nochar} goes through
+with it in place of $\StdDy$: a nonzero character is normalized and
+multiplicative by \cref{isg:sc:thm:characters}, the four-square formula
+then defines $\N$ in $M$, $\N$ is closed under $0$ and successor, and its
+$\Delta_0$ induction instance makes $M$ standard. The second route still
+needs \cref{isg:sc:thm:characters}; it replaces only the detector. It does
+not give \cref{isg:sc:cor:profiles}, which uses the inductiveness of
+$\StdDy$ in a ring \emph{without} a character. Source~03 credits
+\cite[Section~2.5]{ELV} in general terms; this comparison with its
+Theorem~2.9 is the write's, from the v2 text of \cite{ELV}.
+\end{remark}
+
+\begin{corollary}[The additive-map obstruction]\label{isg:sc:cor:noadd}
+Let $\Asc$ be a unital ring with a unital ring retraction
+$\chi_{\Asc}:\Asc\to\Z$, and let $M\models\Idelta$ be nonstandard. Every
+additive map $f:R_M\to\Asc$ satisfies
+\[
+ \im f\subseteq\ker\chi_{\Asc}.
+\]
+There is no additive map $f:M\to\Asc$ preserving $0$, addition, and $1$.
+Consequently there is no unital ring homomorphism $R_M\to\Asc$ and no
+unital semiring homomorphism $M\to\Asc$.
+\end{corollary}
+\begin{proof}
+The composite $\chi_{\Asc}f$ is an additive map to $\Z$, so it is zero by
+\cref{isg:sc:thm:nochar}. A unit-preserving additive map on $M$ extends
+to $R_M$ by $f(a-b)=f(a)-f(b)$; cancellation verifies that this is
+well-defined. Its composite with $\chi_{\Asc}$ would take $1$ to $1$,
+which is impossible. The multiplicative statements are special cases.
+\end{proof}
+
+\begin{corollary}[Even nonunital ring maps vanish]\label{isg:sc:cor:nonunital}
+If, additionally, $\Asc$ is a domain, then every ring homomorphism
+$R_M\to\Asc$, without a requirement to preserve $1$, is zero.
+\end{corollary}
+\begin{proof}
+The image of $1$ is an idempotent, hence $0$ or $1$ in the domain $\Asc$.
+The second option is excluded by \cref{isg:sc:cor:noadd}. In the first
+option, $f(a)=f(1a)=f(1)f(a)=0$ for every $a$.
+\end{proof}
+
+\begin{remark}[Existence, not regularity]\label{isg:sc:rem:regularity}
+None of these maps is assumed continuous, Borel, definable, computable,
+injective, or order-preserving. The obstruction concerns the existence of
+a map, not its regularity. It is therefore complementary to Glazer's
+result, not a strengthening of his topological theorem for arbitrary
+models.
+\end{remark}
+
+\subsection{A concrete residue consequence without exponentiation}
+
+\begin{corollary}[Non-diagonal residue profiles are forced]\label{isg:sc:cor:profiles}
+In every nonstandard $M\models\Idelta$, there is an $a\in M$ such that no
+ordinary integer has the same residues as $a$ modulo all ordinary positive
+integers. Equivalently, $\im\res_{R_M}\not\subseteq\Z$. One can take any
+positive infinite $y$ satisfying $\PowDy$.
+\end{corollary}
+\begin{proof}
+The first conclusion follows from
+\cref{isg:sc:prop:diagonal,isg:sc:thm:nochar}. For the explicit version,
+induction applied to \cref{isg:sc:lem:successor} yields $\forall
+x\,\StdDy(x)$ in $M$. Given a positive infinite $h$, choose a witness
+$y\le h<2y$. The witness $y$ is positive infinite and satisfies $\PowDy$.
+If its residues matched an integer $m=0$, division by $3$ would contradict
+$\PowDy$. If $m\ne0$, divide $y$ by $2^{v_2(|m|)}$; the quotient has odd
+remainder modulo $2$, and the same odd-factor construction as in
+\cref{isg:sc:thm:dyadic} gives a contradiction. This uses only the residue
+profile of this element, not a character defined on the entire ring.
+\end{proof}
+
+This is an existence theorem for genuinely non-diagonal compatible residue
+profiles, not a claim that every profinite integer occurs. Nor does it
+assert that exponentiation is total in $\Idelta$. In the language of
+\cref{isg:cf:sec:modeltheory}: the factorial type $\tau_*$ realized in a
+nonstandard Peano model by $F(h)$ (\cref{isg:cf:thm:PA}) is replaced here
+by elements singled out in the \emph{ring} language, by $\PowDy$; they
+witness that $\res_{G(M)}(G(M))\ne\Z$ without any recursion inside $M$.
+
+\subsection{Bounded arithmetic is not initially realizable}\label{isg:sc:sec:fragment}
+Source~03 never mentions initial realizability. Combined with source~02's
+criterion it gives the following, stated and proved at this write.
+
+\begin{definition}[The dyadic fragment; \textup{[write]}]\label{isg:sc:def:Tdy}
+Let $\Tdy$ be the theory, in the language $\{0,1,+,\cdot,<\}$, consisting
+of $\PAminus$, the sentences
+\[
+ \ED_n^+:\quad \forall a\ (\exists q\le a)\
+ \bigvee_{r=0}^{n-1}a=nq+\underline r\qquad(n=1,2,\ldots),
+\]
+with $\underline r$ the numeral $1+\cdots+1$, and the single sentence
+$\Ind(\StdDy)$ of \eqref{isg:sc:eq:oneind}.
+\end{definition}
+
+$\Tdy$ is recursively axiomatized, and $\Idelta\vdash\Tdy$: each
+$\ED_n^+$ is proved in the proof of \cref{isg:sc:lem:idiv}, and
+$\Ind(\StdDy)$ is an instance of bounded induction, since $\StdDy$ is
+$\Delta_0$ and has no parameters. Peano arithmetic therefore proves $\Tdy$
+as well. For a model $M$ of $\PAminus$, the sentences $\ED_n^+$ for all
+$n$ give standard division in $R_M$, by the last step of the proof of
+\cref{isg:sc:lem:idiv}.
+
+\begin{corollary}[Nonstandard bounded arithmetic has no initial additive realization; \textup{[write]}]\label{isg:sc:cor:fragment}
+Let $M$ be a nonstandard model of $\Tdy$, for instance a nonstandard model
+of $\Idelta$ or of Peano arithmetic, and let $G(M)$ be the ordered abelian
+group completion of its additive monoid. Then:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $G(M)$ is a set-sized $\Z$-group with least positive element $1$,
+      $\Hom_{\Z}(G(M),\Z)=0$, and $\res_{G(M)}(G(M))\ne\Z$;
+\item $G(M)$ is not initially realizable, and there is no additive
+      homomorphism $f:G(M)\to\Oz$ with $f(1)=1$, order-preserving or not.
+\end{enumerate}
+Consequently, in \cref{isg:cf:thm:PA} the hypothesis ``Peano arithmetic''
+can be replaced by $\Idelta$, and indeed by $\Tdy$.
+\end{corollary}
+\begin{proof}
+$G(M)$ is the additive group of the difference ring $R_M$, a set because
+$M$ is. It is discretely ordered with least positive element $1$, since
+$R_M$ is a discretely ordered ring. By the remark after
+\cref{isg:sc:def:Tdy}, $R_M$ has standard division, so $G(M)/\Z1$ is
+divisible: $a=nq+r$ gives $a+\Z1=n(q+\Z1)$. Thus $G(M)$ is a $\Z$-group.
+
+Suppose $f:G(M)\to\Z$ is a nonzero additive map. By
+\cref{isg:sc:thm:characters}, $R_M$ has a normalized integer character
+$\chi$. $R_M$ satisfies $\ED_2$ and $\ED_3$, so \cref{isg:sc:thm:dyadic}
+shows that $\StdDy$ defines exactly $\N$ in $M=(R_M)_+$. By
+\cref{isg:sc:lem:successor}, which needs only $\ED_2$, the antecedent of
+$\Ind(\StdDy)$ holds in $M$, and $M\models\Ind(\StdDy)$ because
+$M\models\Tdy$. Hence $M\models\forall x\,\StdDy(x)$, so every element of
+$M$ is standard, contradicting the nonstandardness of $M$. Therefore
+$\Hom_{\Z}(G(M),\Z)=0$. This is the proof of \cref{isg:sc:thm:nochar}
+with $\Idelta$ replaced by the axioms of $\Tdy$ that it uses.
+
+In particular $\Z1$ is not a direct summand of $G(M)$: a projection onto
+$\Z1\cong\Z$ would be a nonzero additive map to $\Z$. By
+\cref{isg:cf:prop:residuesplit}, $\res_{G(M)}(G(M))\ne\Z$, which proves
+(i). By \cref{isg:cf:main:presburger}, a set-sized $\Z$-group whose bottom
+cyclic group is not a direct summand is not initially realizable. By
+\cref{isg:cf:cor:unit}, it then has no additive homomorphism to $\Oz$
+sending $1$ to $1$; alternatively, composing such a map with $\ct$ would be
+a nonzero additive map to $\Z$, which is the argument of
+\cref{isg:sc:cor:omnific}. This proves (ii). The final sentence follows
+from $\mathsf{PA}\vdash\Idelta\vdash\Tdy$.
+\end{proof}
+
+At the lower end, open induction does not suffice, even with standard
+division.
+
+\begin{proposition}[Open induction is not enough; \textup{[write]}]\label{isg:sc:prop:iopen}
+The ring $\Asc_{\mathrm{Sh}}$ of \cref{isg:sc:sec:shepherdson} is countable
+and nonstandard, its nonnegative cone is a model of $\Iopen$ and of every
+$\ED_n^+$, and its additive group is an initially realizable $\Z$-group:
+\[
+ (\Asc_{\mathrm{Sh}},+)\ \cong\ V_{\mathrm{Sh}}\lex\Z,\qquad
+ V_{\mathrm{Sh}}=\Bigl\{\sum_{i=1}^d a_iX^{q_i}:a_i\in\R_{\rm alg},\
+ q_i\in\Q_{>0}\Bigr\}\ \text{divisible}.
+\]
+Consequently $\Iopen+\{\ED_n^+:n\ge1\}$ does not prove $\Ind(\StdDy)$,
+and the conclusion of \cref{isg:sc:cor:fragment} fails for nonstandard
+models of $\Iopen$.
+\end{proposition}
+\begin{proof}
+$\Asc_{\mathrm{Sh}}$ is countable because $\R_{\rm alg}$ and $\Q$ are, and
+it contains the positive infinite element $X$. Its cone satisfies $\Iopen$
+by the imported integer-part theorem recalled in
+\cref{isg:sc:sec:shepherdson}, and it has standard division with the
+constant term as a ring retraction, as shown there. Every element is
+uniquely $m+v$ with $m\in\Z$ and $v\in V_{\mathrm{Sh}}$; dividing the
+real algebraic coefficients by an ordinary integer shows that
+$V_{\mathrm{Sh}}$ is divisible. A nonzero $v$ has a leading term
+$aX^{q}$ with $q>0$, so $m+v$ has the sign of $a$ and $|v|$ exceeds every
+ordinary integer. The order is therefore lexicographic with
+$V_{\mathrm{Sh}}$ dominant, and $(\Asc_{\mathrm{Sh}},+)$ is a $\Z$-group in
+which $\Z1$ is a direct summand. \Cref{isg:cf:main:presburger} makes it
+initially realizable. If $\Iopen+\{\ED_n^+\}$ proved $\Ind(\StdDy)$, the
+cone of $\Asc_{\mathrm{Sh}}$ would be a nonstandard model of $\Tdy$, and
+\cref{isg:sc:cor:fragment} would forbid exactly this splitting.
+\end{proof}
+
+\begin{remark}[What this settles in \cref{isg:cf:q:fragment}, and what it does not; \textup{[write]}]\label{isg:sc:rem:fragment}
+\Cref{isg:cf:q:fragment} asks for the weakest arithmetic fragment whose
+nonstandard models have ordered additive group completions excluded by the
+factorial residue type, and for analogous computable residue types giving
+sharper bounds. For exclusion from $\IR$ by \emph{any} means,
+\cref{isg:sc:cor:fragment,isg:sc:prop:iopen} locate the threshold above
+open induction (even with standard division) and at or below
+$\Tdy\subseteq\Idelta$, well below the Peano arithmetic of
+\cref{isg:cf:thm:PA}. They do not determine the weakest such fragment;
+whether $\Tdy$ is strictly weaker than $\Idelta$ is not addressed
+(\cref{isg:sc:q:threshold}). The route is not the factorial type: the
+factorial function is not provably total in $\Idelta$, and whether every
+nonstandard model of $\Idelta$ (or of $\Tdy$) realizes $\tau_*$ in $G(M)$
+is not addressed here. In place of $\tau_*$, \cref{isg:sc:cor:profiles}
+supplies the elements satisfying $\PowDy$ above the standard cut, whose
+residue profiles are non-diagonal. They form an analogous computable
+residue obstruction, but one stated in the ring language, not a type in
+the ordered-group language of \eqref{isg:cf:eq:type}. The question is
+re-scoped accordingly after its statement.
+\end{remark}
+
+\section{A uniqueness correction and concrete rings}\label{isg:sc:sec:rings}
+
+\subsection{A correction to a uniqueness lemma}\label{isg:sc:sec:correction}
+There is a precise source-level correction relevant to the preceding
+character classification. In the terminology of
+\cite[Section~2.5]{ELV}, a commutative ring is a \emph{Dorroh ring} when
+some ideal has quotient isomorphic to $\Z$; that ideal is said to witness
+it. Lemma~2.7 of arXiv:2508.14758v2 asserts that the witnessing ideal is
+unique. The claim, as printed on pages~11--12 of that version, is false.
+
+\begin{proposition}[Distinct integer-quotient ideals]\label{isg:sc:prop:correction}
+For every $c\in\Z$, the ideal $\mathfrak j_c=(X-c)$ of $\Z[X]$ satisfies
+$\Z[X]/\mathfrak j_c\cong\Z$. These ideals are pairwise distinct. This
+remains a counterexample when $\Z[X]$ is ordered with $X$ positive infinite
+and the extra ordered-Dorroh condition of \cite{ELV} is imposed.
+\end{proposition}
+\begin{proof}
+Evaluation at $c$ is a surjective unital ring homomorphism
+$\operatorname{ev}_c:\Z[X]\to\Z$. Division by the monic polynomial $X-c$
+shows that its kernel is $(X-c)$, proving the quotient statement. If
+$c\ne c'$, then $X-c\in\mathfrak j_c$ but
+$\operatorname{ev}_{c'}(X-c)=c'-c\ne0$, so $X-c\notin\mathfrak j_{c'}$.
+
+In the leading-coefficient order with $X$ positive infinite, every positive
+nonconstant polynomial exceeds every ordinary integer. No $\mathfrak j_c$
+contains a nonzero constant, since evaluation fixes constants. Thus every
+positive element of each $\mathfrak j_c$ exceeds every integer, which is
+exactly the additional ordered condition in question. In particular,
+$\mathfrak j_0=(X)$ and $\mathfrak j_1=(X-1)$ already suffice as a
+counterexample.
+\end{proof}
+
+The error is a confusion between uniqueness of a decomposition \emph{for a
+fixed kernel} and independence of the integer coordinate from the kernel.
+For the element $X$, the two legitimate decompositions are
+\[
+ X=X+0\quad\text{relative to }(X),\qquad
+ X=(X-1)+1\quad\text{relative to }(X-1).
+\]
+Agreement of two retractions on the embedded integers does not make their
+values on $X$ agree. The following replacement supplies a sufficient
+hypothesis directly relevant to omnific arithmetic.
+
+\begin{proposition}[A valid uniqueness replacement]\label{isg:sc:prop:repair}
+Let $R$ be a discretely ordered ring satisfying $\ED_2$. There is at most
+one normalized additive map $R\to\Z$. Any such map is multiplicative.
+Consequently, there is at most one ideal $\mathfrak a$ with
+$R/\mathfrak a\cong\Z$.
+\end{proposition}
+\begin{proof}
+For each ordinary $j$, iterating division by $2$ writes $a=2^jq+r$ with
+$r\in\{0,\ldots,2^j-1\}$. Every normalized additive map sends $a$ to an
+integer congruent to $r$ modulo $2^j$. Therefore the difference of the
+values of two such maps is divisible by all powers of $2$, and is zero.
+The same argument applied to $\chi(ab)-\chi(a)\chi(b)$ proves
+multiplicativity.
+
+An isomorphism $R/\mathfrak a\cong\Z$ composed with the quotient map
+supplies a normalized ring map. It must preserve the identity: a
+surjective ring map takes the source identity to the target identity, even
+when this is not included in the definition of ring homomorphism. Thus any
+two such ideals are kernels of the same map and agree.
+\end{proof}
+
+The polynomial ring in \cref{isg:sc:prop:correction} does not satisfy
+$\ED_2$: $X=2q+r$ with $q\in\Z[X]$ and $r\in\{0,1\}$ would require a
+coefficient $1/2$ in $q$. The added hypothesis therefore excludes the
+counterexample for a substantive reason.
+
+This correction is local. The standard-cut argument in
+\cite[Theorem~2.9]{ELV} can be run using any \emph{chosen} witnessing
+ideal and its retraction; uniqueness is unnecessary for that argument. No
+assertion is made that the counterexample invalidates the paper's main
+completion theorems. A complete dependency audit of that paper is a
+separate task. The correction also does not establish that the error has
+not previously been noticed by its authors or by others.
+
+For $\Oz$ the uniqueness is already in the collection: the constant term
+is the unique unital ring homomorphism $\Oz\to\Z$
+(\replabel{odg:prop:canonicalct}), by the same $2$-adic argument, and this
+is the Lean theorem
+\fn{Surreal.Foundations.SignSequence.omnific_int_hom_eq_constant} in
+\fn{Algebra/SurrealNumbers/Surreal/Foundations/OmnificConstantRigidity.lean}.
+\Cref{isg:sc:prop:repair} extends it to normalized \emph{additive} maps and
+to every discretely ordered ring with $\ED_2$; that extension is not
+formalized. \textup{[}The comparison is the write's.\textup{]}
+
+\subsection{A minimal computable example}
+Let
+\begin{equation}\label{isg:sc:eq:A0}
+ \Asc_0=\Z+X\Q[X]
+ =\Bigl\{a_0+\sum_{i=1}^d a_iX^i:\ a_0\in\Z,\ a_i\in\Q\Bigr\},
+\end{equation}
+with the sign of a nonzero polynomial given by its leading coefficient.
+Thus $X$ is positive infinite. Every positive nonconstant polynomial
+exceeds all ordinary integers, while positive constants are positive
+integers. The ring is discretely ordered, and
+\[
+ \chi(f)=f(0),\qquad
+ f=n\,\frac{f-r}{n}+r,\quad r\equiv f(0)\pmod n,\quad 0\le r<n
+\]
+give a retraction and standard division. Rational coefficients have exact
+finite codes, so equality, order, addition, multiplication, and the
+nonnegative domain are computable. All the results above apply.
+
+For clarity, $\Asc_0$ is \emph{not} a model of open induction. Indeed,
+$x^2<X$ defines the standard cut on its positive cone, with parameter $X$:
+it holds for standard integers, whereas the square of a positive
+nonconstant polynomial has degree at least two and exceeds $X$. Its
+induction instance fails. The ring is useful here because it isolates the
+character and computability phenomena with almost no background theory,
+not because it is a particularly strong arithmetic model. The same failed
+instance, in the real-coefficient ring $\Z+t\R[t]$ with $t$ positive
+infinite, is proved independently by batch-86 manuscript~06, which is
+merged into the report
+\nolinkurl{docs/foundations-and-computation/polish-models-of-omnific-arithmetic}
+(\cref{isg:sec:provenance}).
+
+\begin{example}[Explicit certificates]\label{isg:sc:ex:certificates}
+For $y=X$, the forbidden factorization is $y=3(X/3)$. For $y=X+12$, one
+has
+\[
+ y=4\Bigl(2\,\frac{X}{8}+3\Bigr).
+\]
+For $y=X-12$, whose character is negative, the certificate is
+\[
+ y=4\Bigl(2\Bigl(\frac{X}{8}-3\Bigr)+3\Bigr).
+\]
+In each case the displayed witnesses are nonnegative and bounded by $y$,
+although some of their integer constant terms are negative. This
+illustrates why positivity must be checked in the ordered ring, not after
+applying $\chi$.
+\end{example}
+
+\subsection{A classical open-induction example}\label{isg:sc:sec:shepherdson}
+A more structured example is the finite Puiseux-polynomial ring
+\[
+ \Asc_{\mathrm{Sh}}=\Bigl\{a_0+\sum_{i=1}^d a_iX^{q_i}:\
+ a_0\in\Z,\ a_i\in\R_{\rm alg},\ q_i\in\Q_{>0}\Bigr\},
+\]
+where $\R_{\rm alg}$ denotes the real algebraic numbers and equal
+exponents are combined. Order it with $X$ positive infinite. This is the
+classical Shepherdson construction \cite{Shepherdson}; the integer-part
+characterization of open induction and the Puiseux description are
+recalled in \cite{Raffer}.
+
+Here is the structural reason. Put $t=X^{-1}$ and consider the real closed
+Puiseux field $K=\bigcup_{n\ge1}\R_{\rm alg}((t^{1/n}))$ with its natural
+order. Each series has only finitely many negative exponents. Remove its
+positive powers of $t$, retain its finite negative-exponent part, and take
+the ordinary integer floor of its algebraic constant. If the constant is an
+integer and the discarded infinitesimal tail is negative, subtract one.
+The resulting element of $\Asc_{\mathrm{Sh}}$ is an integer part of the
+series. The classical integer-part theorem therefore gives
+$(\Asc_{\mathrm{Sh}})_+\models\Iopen$. Its use here is an imported
+theorem, not a new proof of that characterization.
+
+Constant extraction and division by ordinary integers work exactly as in
+$\Asc_0$. Thus $\Asc_{\mathrm{Sh}}$ fails the single bounded induction
+instance \eqref{isg:sc:eq:oneind} while satisfying every quantifier-free
+induction instance. Real algebraic numbers admit effective exact
+representations, so this ring also has a computable presentation. It
+consequently supplies an open-induction example for the complexity theorem
+below, and, by \cref{isg:sc:prop:iopen}, an initially realizable one.
+
+\subsection{Principal parts of Hahn series}
+Let $k$ be an ordered field, $\Gamma$ a nontrivial ordered abelian group,
+and use the Hahn convention in which $t^\gamma$ is infinitesimal when
+$\gamma>0$. In $k((t^\Gamma))$, define
+\[
+ \Asc(k,\Gamma)=\Z+\Bigl\{\sum_{\gamma<0}a_\gamma t^\gamma:
+       \supp(a)\text{ is well ordered}\Bigr\}.
+\]
+Every displayed series is a Hahn series with set-sized support. The part
+supported on negative exponents is an ideal in this ring: sums of two
+negative exponents are negative. Constant extraction is a ring retraction
+onto $\Z$, and division of the coefficients by an ordinary integer, with
+the usual adjustment of the integer constant term, gives standard
+division. A positive nonconstant element has negative leading exponent and
+exceeds every ordinary integer. Thus the ring is discretely ordered and
+the results above apply.
+
+No claim that this is an integer part of the whole Hahn field is needed.
+For example, arbitrary non-Archimedean coefficient fields require
+additional care with constants. The discrete ring, its character, and its
+division properties are all that the present argument uses.
+
+\subsection{Actual omnific integers}
+In Conway normal form, an omnific integer is a surreal number whose
+exponents are nonnegative and whose coefficient at exponent zero is an
+ordinary integer; its other coefficients are real
+(\cref{isg:sec:conventions}). Schematically,
+\[
+ a=\sum_{i<\alpha}r_i\omega^{a_i},\qquad a_0>a_1>\cdots\ge0,
+\]
+where the final coefficient, when its exponent is zero, is integral. An
+absent zero exponent means zero constant term. The constant-term map
+$\ct:\Oz\to\Z$ is additive and multiplicative: with no negative exponents
+present, exponent zero in a product arises only from multiplying two
+exponent-zero terms.
+
+The positive finite omnific integers are precisely the ordinary positive
+integers, so the order is discrete. For an ordinary $n>0$, choose the
+ordinary remainder $r$ of $\ct(a)$ modulo $n$; then $(a-r)/n$ again has an
+integral constant term and is omnific. Hence $\Oz$ has standard division.
+These are the exact ingredients implemented in ProveIt's constant-term and
+ordinary-residue development \cite{Residues}
+(\cref{isg:sc:sec:relationLean}).
+
+\begin{corollary}[Omnific arithmetic obstruction]\label{isg:sc:cor:omnific}
+The formulas $\PowDy$ and $\StdDy$ define respectively the ordinary powers
+of two and the standard natural numbers in $\Oz_{\ge0}$. If
+$M\models\Idelta$ is nonstandard, there is no additive map $f:M\to\Oz$
+satisfying $f(1)=1$. In particular there is no unital semiring embedding
+of $M$ into $\Oz_{\ge0}$, and no unital ring embedding of its difference
+ring into $\Oz$.
+\end{corollary}
+\begin{proof}
+The detector applies by the preceding normal-form calculations. Any
+proposed additive map extends uniquely to $R_M$ by
+$\bar f(a-b)=f(a)-f(b)$. Composing with $\ct$ would be a normalized
+integer character, contrary to \cref{isg:sc:thm:nochar}.
+\end{proof}
+
+The finite-polynomial map $\Asc_0\hookrightarrow\Oz$ sending $X$ to
+$\omega$ is an injective ordered ring homomorphism: distinct polynomial
+normal forms remain distinct surreal normal forms. Thus the target contains
+natural computable arithmetic-like rings even though it excludes the
+additive unit-preserving images of nonstandard bounded arithmetic.
+Embedding an ordered field into $\No$ is a different question: its integer
+part need not land in $\Oz$. For set-sized $\Z$-groups,
+\cref{isg:cf:cor:unit} turns \cref{isg:sc:cor:omnific} into the statement
+of \cref{isg:sc:cor:fragment}(ii) about initial realizability.
+
+\subsection{Set-sized workspaces and class language}\label{isg:sc:sec:classes}
+All central theorems of source~03 are proved for \emph{set-sized} rings.
+Their full omnific applications can be formulated in a class theory such
+as NBG, as in \cref{isg:sec:background}, or as a scheme of statements
+about definable classes in ZFC. In the latter reading, a formula about
+$\Oz$ is an explicitly written first-order formula about set-coded surreal
+numbers; one does not postulate a set of all surreals or a truth predicate
+for all such formulas.
+
+For the no-map result, the source $M$ is a set. The image of a definable
+class map on this set is a set, and composing it with the definable
+constant-term operation gives an ordinary set function into $\Z$. The
+contradiction is therefore already set-theoretic. The detector's proof is
+pointwise and uses only finitely many divisions at each element. For the
+semantic and computability theorems that follow, the explicitly set-sized
+examples $\Asc_0$ and $\Asc_{\mathrm{Sh}}$ suffice. No class satisfaction
+construction is hidden in their statements.
+
+\section{Compiling arithmetic into one infinite interval}\label{isg:sc:sec:compiler}
+Assume throughout this section the hypotheses of \cref{isg:sc:thm:dyadic},
+and fix a positive infinite $\Omega\in R$. Although the interval
+$[0,\Omega]$ is bounded inside the structure, it contains all ordinary
+natural numbers. The standard-cut predicate tells us exactly which elements
+to keep.
+
+\subsection{Relativization and correctness}
+For an arithmetic formula $\varphi$, define $\varphi^{[\Omega]}$
+recursively. Leave atomic formulas unchanged, commute with Boolean
+connectives, and set
+\begin{align}
+ (\exists x\,\psi)^{[\Omega]}&=
+    \exists x\le\Omega\;(\StdDy(x)\wedge\psi^{[\Omega]}),\label{isg:sc:eq:etrans}\\
+ (\forall x\,\psi)^{[\Omega]}&=
+    \forall x\le\Omega\;(\StdDy(x)\to\psi^{[\Omega]}).\label{isg:sc:eq:utrans}
+\end{align}
+Bound variables in copies of $\StdDy$ are renamed to prevent capture. For
+a sentence, the only possibly free variable in the output is $\Omega$.
+
+\begin{lemma}[Truth-preserving relativization]\label{isg:sc:lem:translate}
+For every arithmetic formula $\varphi(\bar x)$ and every standard tuple
+$\bar a\in\N$, one has
+\[
+ \N\models\varphi(\bar a)
+ \quad\Longleftrightarrow\quad
+ R_+\models\varphi^{[\Omega]}(\bar a,\Omega).
+\]
+The translation is effective and its output is bounded.
+\end{lemma}
+\begin{proof}
+Induct on the construction of $\varphi$. Terms with standard inputs take
+the same standard values in $\N$ and $R_+$, proving the atomic cases. The
+Boolean steps follow immediately. For an existential quantifier, the
+elements $x\le\Omega$ satisfying $\StdDy$ are exactly all of $\N$, by
+\cref{isg:sc:thm:dyadic}; apply the induction hypothesis to each such
+value. For a universal quantifier the guard discards every nonstandard
+value, and the same induction hypothesis applies. Each new quantifier is
+bounded, and the fixed formula $\StdDy$ itself uses only bounded
+quantifiers. The recursive procedure on finite syntax is an algorithm.
+\end{proof}
+
+Before flattening atomic terms, the quantifier nesting depth of the output
+is at most $\rk(\varphi)+3$: $\StdDy$ contributes at most three nested
+bounded quantifiers, while each original quantifier contributes one. This
+estimate is about depth, not a fixed bound on alternations over \emph{all}
+input sentences.
+
+\subsection{Literally the same syntactic bound everywhere}
+In \eqref{isg:sc:eq:etrans}--\eqref{isg:sc:eq:utrans}, the bounds internal
+to $\StdDy$ are variables such as $x$ and $y$. To make every written bound
+literally $\Omega$, use
+\begin{align}
+ \PowDy_\Omega(y):\Longleftrightarrow{}&0<y\ \wedge\
+ \forall u\le\Omega\ \forall v\le\Omega\,
+ \bigl((u\le y\wedge v\le y)\to y\ne(2u+3)v\bigr),\label{isg:sc:eq:PH}\\
+ \StdDy_\Omega(x):\Longleftrightarrow{}&x=0\ \vee\
+ \exists y\le\Omega\,
+ \bigl(y\le x\wedge x<2y\wedge\PowDy_\Omega(y)\bigr).\label{isg:sc:eq:SH}
+\end{align}
+For $0\le x\le\Omega$, $\StdDy_\Omega(x)$ and $\StdDy(x)$ are equivalent:
+the guards reproduce the smaller original ranges exactly. Replacing
+$\StdDy$ by $\StdDy_\Omega$ in the translation therefore preserves the
+proof of \cref{isg:sc:lem:translate}.
+
+\subsection{Quadratic atomic normal form}
+High-degree input terms do not require high-degree output atoms. For each
+local term, introduce a fresh variable for every addition or
+multiplication gate. A gate is expressed by an equation such as
+\[
+ z=x+y\qquad\text{or}\qquad z=xy.
+\]
+An input atomic comparison is replaced by a bounded existential block
+asserting all its gate equations and the final comparison. Every gate
+variable is bounded by $\Omega$. For standard inputs, each intermediate
+gate value is standard and hence below $\Omega$; the equations also
+determine the gate values uniquely. This proves the local equivalence.
+
+The existential blocks must remain \emph{inside the atomic replacement}.
+For example, a negated atom becomes the negation of that whole
+replacement; one must not move its existential witnesses through negation
+without justification. Guards guarantee that the semantic comparison of
+source atoms is only required at standard source-variable assignments. The
+atoms already present in \eqref{isg:sc:eq:PH}--\eqref{isg:sc:eq:SH} have
+total polynomial degree at most two, so no further change is needed there.
+
+\begin{theorem}[Single-bound quadratic compiler]\label{isg:sc:thm:compiler}
+There is a computable map $\varphi\mapsto C\varphi(\Omega)$ from
+arithmetic sentences to formulas with the following properties:
+\begin{enumerate}[label=\textup{(\roman*)},nosep]
+\item every quantifier is bounded by exactly the variable $\Omega$;
+\item every atomic equality or inequality has total polynomial degree at
+most two in its variables;
+\item the only possibly free variable is $\Omega$;
+\item for every ring under consideration and every positive infinite
+$\Omega$,
+\[
+ R_+\models C\varphi(\Omega)\quad\Longleftrightarrow\quad\N\models\varphi.
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Apply \cref{isg:sc:lem:translate}, use the guarded equal-bound versions of
+the standard-cut formula, and flatten each source atom as described above.
+Fresh-variable generation makes every substitution capture-free. The local
+gate equivalences and structural induction prove correctness. Each
+operation on syntax is effective. Statements (i)--(iii) follow from the
+explicit construction.
+\end{proof}
+
+\begin{example}[Why the infinite bound is indispensable]\label{isg:sc:ex:bound}
+The true sentence $\forall x\exists y\,(y=x+1)$ translates to a formula in
+which both $x$ and $y$ are bounded by $\Omega$ but $x$ is guarded by
+$\StdDy_\Omega(x)$. For every retained $x$, its successor is still
+standard and below $\Omega$. The translation is therefore true. If
+$\Omega$ were an ordinary finite integer, the retained value $x=\Omega$
+would have no allowed successor. A finite-range test cannot substitute for
+the infinite-bound proof.
+\end{example}
+
+This theorem does not provide a single formula
+$\operatorname{Truth}(e,\Omega)$ that takes arbitrary syntax codes as
+inputs. Each sentence is compiled into a \emph{different} formula of
+potentially greater length and quantifier depth. Consequently it is not a
+definable universal truth predicate, and there is no conflict with
+Tarski's undefinability theorem.
+
+\subsection{Exact truth complexity in a computable ring}\label{isg:sc:sec:complexity}
+Write $\TA$ for the set of codes of first-order sentences true in
+$(\N;0,1,+,\cdot,<)$. For sets of natural-number codes, $B\le_mC$ means
+that a total computable function maps membership in $B$ exactly to
+membership in $C$. Invalid syntax codes are assigned a fixed false sentence
+whenever necessary.
+
+Let $T_{\rm one}(\Asc_0,X)$ consist of the true formulas in the fragment
+of \cref{isg:sc:thm:compiler}, interpreted in $(\Asc_0)_+$ with
+$\Omega=X$. Its atoms have degree at most two, and every quantifier has the
+same bound $X$. Let $T_{\Delta_0}(\Asc_0,X)$ denote the entire bounded
+truth set in the language with the named element $X$.
+
+\begin{theorem}[True-arithmetic completeness]\label{isg:sc:thm:complexity}
+For the computable presentation of $\Asc_0$ in \eqref{isg:sc:eq:A0},
+\[
+ T_{\rm one}(\Asc_0,X)\equiv_mT_{\Delta_0}(\Asc_0,X)\equiv_m\TA.
+\]
+More generally, the same conclusion holds for any computably presented
+nonstandard discretely ordered ring satisfying the detector hypotheses,
+with a specified computable name for a positive infinite element $\Omega$.
+It holds, in particular, for $\Asc_{\mathrm{Sh}}$.
+\end{theorem}
+\begin{proof}
+The compiler supplies $\TA\le_mT_{\rm one}$, and inclusion of the
+syntactic fragment gives $T_{\rm one}\le_mT_{\Delta_0}$.
+
+For the other direction, a computable presentation has a recursive set of
+element codes, recursive operation graphs, and a recursive order relation.
+Each of these relations has an effective arithmetical definition: a finite
+computation trace of its deciding program can be expressed in ordinary
+arithmetic. Replace the atomic relations of a formula by these definitions
+and relativize its quantifiers to the presentation's domain. Terms can
+first be flattened to operation graphs. Structural induction shows that
+the resulting arithmetic sentence is true exactly when the original
+sentence is true in the presentation. This is a computable translation of
+all first-order truth, hence also of bounded truth, into $\TA$. The
+specified name for $\Omega$ is a fixed ordinary code in this translation.
+No decision procedure for $\TA$ is used.
+\end{proof}
+
+\subsection{Even one outer unbounded quantifier suffices without parameters}
+The parameter $\Omega$ can be removed while keeping the matrix bounded.
+Let $\operatorname{Inf}(h):=\neg\StdDy(h)$, on the positive cone, and set
+\begin{align}
+ E_\varphi&:=\exists h\,
+        \bigl(\operatorname{Inf}(h)\wedge C\varphi(h)\bigr),\label{isg:sc:eq:Esentence}\\
+ U_\varphi&:=\forall h\,
+        \bigl(\operatorname{Inf}(h)\to C\varphi(h)\bigr).\label{isg:sc:eq:Usentence}
+\end{align}
+The first sentence is syntactically $\Sigma_1$ and the second
+syntactically $\Pi_1$ in the usual unbounded-quantifier hierarchy over
+bounded matrices.
+
+\begin{corollary}[Parameter-free low-level truth]\label{isg:sc:cor:sigma}
+For every computable ring in \cref{isg:sc:thm:complexity}, the truth sets
+of its parameter-free $\Sigma_1$ sentences and of its parameter-free
+$\Pi_1$ sentences are each many-one equivalent to $\TA$.
+\end{corollary}
+\begin{proof}
+There is at least one positive infinite $h$, and $\operatorname{Inf}$
+defines precisely those elements. By \cref{isg:sc:thm:compiler},
+$C\varphi(h)$ has the same truth value for every such $h$, namely the
+truth value of $\varphi$ in $\N$. Hence each of
+\eqref{isg:sc:eq:Esentence} and \eqref{isg:sc:eq:Usentence} is true
+precisely when $\varphi$ is true in $\N$. These give the lower reductions;
+the upper reductions are again the computable-presentation translation.
+\end{proof}
+
+Syntactic boundedness in a nonstandard computable structure does not mean
+that bounded truth is recursive, or even arithmetical as a set of codes.
+The interval below an infinite element is externally infinite, and bounded
+quantifier alternations over it retain the complexity of arbitrary
+arithmetic sentences. The corollary is not a collapse of the ordinary
+arithmetical hierarchy in $\N$: it concerns truth in a different
+structure.
+
+\subsection{Why Diophantine retractions do not contradict this}\label{isg:sc:sec:diophantine}
+For any unital ring retraction $\chi_{\Asc}:\Asc\to\Z$, a finite system of
+integer-coefficient polynomial equations has a solution in $\Asc$ if and
+only if it has a solution in $\Z$. Apply $\chi_{\Asc}$ to a solution for
+the forward direction, and use the constant inclusion for the reverse.
+This elementary observation underlies related claims in the repository; it
+is not new here. In this collection it is the existence transfer behind
+Hilbert's tenth problem over $\Oz$ (\replabel{odg:cor:H10}).
+
+The compiler uses inequalities, negations, and alternating bounded
+quantifiers. Retractions need not preserve order, as $X-1$ illustrates,
+and do not transport these quantifiers. Therefore the equality-only
+existential observation places no upper bound on the bounded truth sets
+just studied. In particular, it must not be confused with the stronger
+notion of Diophantine correctness for formulas allowing inequalities.
+
 \section{Verification, provenance, and a formalization route}\label{isg:sec:audit}
 
 Each subsection below first gives source~01's record, as delivered, and
@@ -3064,6 +4371,36 @@ factor theorem. The merge statements
 \cref{isg:cf:prop:cyclic,isg:cf:cor:limit,isg:cf:cor:periods} add
 source~01's \cref{isg:sec:surgery,isg:sec:quotient} and, for the last,
 statements of the trigonometry report cited by label.
+
+\emph{Source~03.} The detector (\cref{isg:sc:thm:dyadic}) uses only
+discreteness, ordinary division by $2$ and $3$, and a normalized additive
+map into the actual ordinary integers; its inductiveness
+(\cref{isg:sc:lem:successor}) uses only division by $2$. The character
+classification adds division by every ordinary integer; the no-map theorem
+adds bounded induction (\cref{isg:sc:lem:idiv}); the compiler adds an
+actually positive infinite bound; the complexity theorem adds an effective
+presentation and a specified code for that bound, but no effectiveness of
+the character. The open-induction example imports the classical
+integer-part theorem (\cref{isg:sc:sec:shepherdson}). The
+\textup{[write]} statements of \cref{isg:sc:sec:fragment} add source~02's
+\cref{isg:cf:main:presburger,isg:cf:prop:residuesplit,isg:cf:cor:unit}, and
+\cref{isg:sc:rem:ELV} adds \cite[Theorem~2.9]{ELV}.
+
+Source~03 lists hypotheses that must not be silently weakened. The
+detector needs a character with values in the \emph{ordinary} integers: a
+map into a nonstandard copy of arithmetic does not support the external
+$2$-adic case split used in the proof. Standard division means externally
+indexed division by every ordinary modulus; the detector itself needs only
+$2$ and $3$. A unit-preserving additive map is stronger than an arbitrary
+additive embedding, and no theorem here excludes every additive embedding
+without the unit condition. The character theorem uses standard division
+to normalize a nonzero character; the uniqueness replacement
+(\cref{isg:sc:prop:repair}), in contrast, needs only division by $2$. The
+truth compiler assumes an actually positive infinite bound. Its uniformity
+is over formulas, rings, and such bounds; no computable test for
+infinitude in arbitrary presentations is asserted. An effective
+presentation and a specified element code are needed for the upper
+many-one reduction.
 
 \subsection{Finite regression checks supplied with the article}
 The accompanying Python program \texttt{verify.py} (shipped in this
@@ -3154,6 +4491,65 @@ be rerun on a copy. At this write it was rerun on a copy with a scratch
 output file: it passed in about ten seconds, and the JSON content was
 identical to the shipped record.
 
+\emph{Source~03.} Its delivered files are shipped unchanged under these
+names:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+shipped here & delivered as\\
+\midrule
+\fn{code/03-standard-cut-verify.py} & \fn{code/verify.py}\\
+\fn{code/03-standard-cut-compile_interval.py} & \fn{code/compile_interval.py}\\
+\fn{code/03-standard-cut-build.sh} & \fn{build.sh}\\
+\fn{data/03-standard-cut-verification.json} & \fn{verification.json}\\
+\fn{data/03-standard-cut-compiler_report.json} & \fn{compiler_report.json}\\
+\fn{data/03-standard-cut-BUILD_AUDIT.json} & \fn{BUILD_AUDIT.json}\\
+\fn{03-standard-cut-SOURCE_AUDIT.md} & \fn{SOURCE_AUDIT.md}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two Python programs use only the standard library. The first performs
+exact rational-polynomial checks of standard division and of the explicit
+odd-factor certificates in $\Asc_0$, including zero and negative constant
+terms; it also checks the finite integer dyadic predicate and the two
+evaluation kernels of \cref{isg:sc:prop:correction}. The second implements
+a finite syntax tree and the single-bound compiler; its audit checks that
+every output quantifier has bound $\Omega$ (written \texttt{H}), that no
+free variable other than $\Omega$ remains for sentence inputs, and that
+every atom has total degree at most two. Local gate evaluations are checked
+on ordinary integer assignments. The recorded runs (seed 20261003) return
+\texttt{PASS}:
+\begin{center}\small
+\begin{tabular}{@{}p{0.72\textwidth}r@{}}
+\toprule
+Check family & Count\\
+\midrule
+Infinite-polynomial odd-factor certificates in $\Asc_0$ & 2,000\\
+Division certificates & 12,000\\
+Character identities & 4,000\\
+Finite cases of the dyadic predicate $\PowDy$ & 1,025\\
+Finite cases of the standard-cut predicate $\StdDy$ & 1,025\\
+Pairs of distinct evaluation kernels & 272\\
+Compiled sentence examples (with full outputs) & 5\\
+Local gate evaluations & 768\\
+\bottomrule
+\end{tabular}
+\end{center}
+Neither program evaluates all quantifiers in an infinite interval, checks
+all models, or constitutes a proof-assistant verification. The universal
+claims rest on the proofs; the code checks algebraic certificates and the
+concrete implementation of syntax transformations. The compiler takes
+formula trees through its constructors; it does not parse arbitrary
+strings or evaluate quantified formulas at infinite bounds. At this write
+both programs were rerun on a copy with scratch output files (Python
+3.14.4): they passed in about two seconds and under one second, and both
+JSON outputs were identical in content to the shipped records. The
+programs' default output files are \fn{verification.json} and
+\fn{compiler_report.json} in the current directory, so a rerun should be
+made on a copy or with an explicit \texttt{--output}. The shipped
+\fn{data/03-standard-cut-BUILD_AUDIT.json} records the delivered PDF (20
+pages, no overfull boxes or unresolved references), which is not shipped.
+
 \subsection{Relationship to the Surreal repository}
 The repository review examined the public README, the introductory
 coverage and dependency ledger, and targeted searches for overlap
@@ -3230,6 +4626,61 @@ formalized in ordinary abelian-group and ordered-group libraries
 independently of a full implementation of omnific integers. This is a
 dependency plan, not delivered formal code.
 
+\emph{Source~03.}\label{isg:sc:sec:relationLean} Its repository review was
+made at the ProveIt commit
+\begin{center}\small\ttfamily
+883e0b3b22263bd9d92fdbbf10376ca4b652b862,
+\end{center}
+an ancestor of its placement commit \texttt{0bd0e5527}. It consulted the
+root and surreal-number reader's guides and the Lean file
+\fn{Algebra/SurrealNumbers/Surreal/Foundations/OmnificResidues.lean}
+(blob \texttt{aacd3cac}, unchanged at this write), naming the
+declarations \fn{omnific_int_dvd_iff}, \fn{omnific_prime_pow_dvd_iff},
+\fn{omnific_dvd_all_pos_int_iff} and \fn{iInf_omnific_int_multiples}
+(namespace \fn{Surreal.Foundations.SignSequence}); all four exist. They
+formalize, for the actual omnific ring, that divisibility by a nonzero
+ordinary integer is read off the constant term and that the intersection
+of the ideals $n\Oz$ is the purely infinite ideal $\Pi$: the $\Oz$ case of
+standard division and of \eqref{isg:sc:eq:kernel}, which is
+\replabel{odg:thm:finitequotients} and \replabel{odg:eq:divkernel}. The
+constant term is the ring homomorphism \fn{omnificConstantCoeff} of
+\fn{OmnificIntegers.lean}, and its uniqueness among unital ring
+homomorphisms to $\Z$ is \fn{omnific_int_hom_eq_constant}
+(\cref{isg:sc:sec:correction}). Nothing else of source~03 is formalized.
+It makes no claim about the content of any report, except that the
+Diophantine-retraction observation of \cref{isg:sc:sec:diophantine}
+underlies related claims in the repository, which is true
+(\replabel{odg:cor:H10}). It was not a validation of every research claim
+in the repository.
+
+Source~03 proposes a Lean plan; the names are proposed work units, not
+declarations claimed to exist. The elementary layer can be formalized
+independently of surreal numbers: a linear ordered commutative ring with
+least positive element $1$, a predicate expressing $\ED_n$, and an
+additive homomorphism $\chi:R\to\Z$ carrying $1$ to $1$; then
+finite-interval rigidity, residue detection and the finite odd-factor
+certificate, with the semantic predicates $\PowDy$ and $\StdDy$ kept
+separate from their encoded first-order formulas, identifying their
+meanings by an explicit bridge theorem. The next layer proves successor
+closure and a semantic contradiction with the one bounded induction
+instance; a model-theoretic interface then supplies standard division from
+$\Idelta$ and forms the difference ring. Only after these reusable lemmas
+should the actual omnific constant-term map be supplied, where the
+declarations above already exist. For the compiler, one formalizes
+capture-avoiding fresh-variable generation, substitution, local gate
+uniqueness and structural truth preservation; a theorem merely stating
+correctness of an abstract translator is not enough, it should identify the
+executable translator and prove its bound and degree invariants. The
+package includes no Lean file and makes no claim that these theorems have
+been kernel-checked. In the repository's arithmetic syntax, a nonstandard
+model would be a \fn{SetTheory.PA.PreModel} satisfying the relevant axioms,
+not a \fn{SetTheory.PA.Model}, whose induction for every Lean predicate
+makes it standard
+(\fn{Logic/Interpretability/PAHF/Lean/PAHF/PASyntax.lean}); the Presburger
+development \fn{Logic/PresburgerArithmetic} decides additive arithmetic
+over the ordinary integers. Neither formalizes any statement of source~03.
+\textup{[}This paragraph's last three sentences are the write's.\textup{]}
+
 \subsection{Novelty and literature status}
 The new contributions claimed provisionally here are the explicit
 root-relocation map together with its exact predecessor identity, its
@@ -3262,10 +4713,38 @@ arithmetic only. A targeted source review did not find a prior
 formulation of the main convex-factor theorem; the search was not
 exhaustive.
 
+\emph{Source~03.} Its abstract claims ``the explicit dyadic refinement
+and its assembled consequences, not a certified solution of a previously
+open major conjecture''. Standard-cut definability and the failure of
+induction beyond open induction in $\Oz$ are credited to Je\v r\'abek
+\cite{JerabekMO} and to Enayat, \L e\l yk and Visser \cite{ELV}; Phillips
+\cite{Phillips} is cited for historical context only. This report narrows
+the claim further. Theorem~2.9 of \cite{ELV} already gives a
+parameter-free $\Delta_0$ definition of $\N$ in every ordered Dorroh ring,
+which covers $\Oz$ (witnessing ideal $\Pi$) and every ring of
+\cref{isg:sc:thm:dyadic} (\cref{isg:sc:rem:ELV}); a failed bounded
+induction instance in $\Oz$ follows from it at once. Bounded
+definability of the standard cut in $\Oz$, and with it a failed bounded
+induction instance there, are therefore not new. What remains proposed as
+new is: the dyadic formula $\StdDy$ itself and its finite odd-factor
+certificate; its inductiveness under $\ED_2$ alone, with the
+single-instance boundary and the sharpness examples; the character results
+(\cref{isg:sc:thm:characters,isg:sc:prop:diagonal,isg:sc:thm:nochar} and
+their corollaries, \cref{isg:sc:cor:noadd,isg:sc:cor:nonunital,isg:sc:cor:profiles,isg:sc:cor:omnific});
+the single-bound quadratic compiler with the complexity theorem and its
+corollary; and the correction of \cite[Lemma~2.7]{ELV} with its repair.
+\Cref{isg:sc:rem:ELV} shows that the no-character theorem can also be
+reached through the four-square formula once the character classification
+is available. Source~03's own literature search did not establish priority
+for any exact formulation, and the \textup{[write]} statements of
+\cref{isg:sc:sec:fragment} add no claim of priority.
+
 \subsection{Provenance, placement review, and place in the collection}
 \label{isg:sec:provenance}
 
-\paragraph{Two sources.} This report is built from two manuscripts.
+\paragraph{Three sources.} This report is built from three manuscripts;
+sources~01 and~02 were merged in batch~29, and source~03 was added in
+batch~86.
 
 \emph{Source~01} is \emph{Discrete Initial Groups and Omnific
 Normalization} (24 pages, 23~September 2026), manuscript~09 of the
@@ -3303,6 +4782,62 @@ except the statements marked \textup{[merge]}, Appendix~\ref{isg:cf:app:core},
 Questions \ref{isg:cf:q:intrinsic}--\ref{isg:cf:q:multiplicative},
 non-claims \textup{(N16)}--\textup{(N29)} and the corresponding rows of
 the checklist.
+
+\emph{Source~03} is \emph{Standard Integers in a Single Infinite
+Interval: Residue Characters, Bounded Induction, and Omnific Arithmetic}
+(20 pages, 3~October 2026), manuscript~10 of the collection's batch~86,
+delivered as the archive \fn{Glazer_ProveIt_Arithmetic_Research.zip} in
+the arrival commit \texttt{fb8414869} (inner directory
+\fn{standard_integers_in_infinite_interval/}). It was delivered with a
+README, a source audit, two programs, their two records, a build audit,
+a build script and a checksum manifest. It was placed in commit
+\texttt{0bd0e5527} as an addition, with the prefix \fn{03-standard-cut-},
+continuing this directory's local sequence after the unprefixed source~01
+and \fn{02-convex-factors-}; the seven staged files are listed, with their
+delivered names, in the source-03 paragraph of
+\cref{isg:sec:audit} (finite checks). Its LaTeX source, PDF and
+README are not shipped and survive in the arrival commit; its checksum
+manifest was verified (ten of ten files) and dropped, as repository policy
+requires. Its repository pin is \texttt{883e0b3b2}. It contributes
+\cref{isg:sc:sec:detector,isg:sc:sec:characters,isg:sc:sec:rings,isg:sc:sec:compiler}
+except the statements marked \textup{[write]} and the comparisons marked as
+the write's, the source-03 paragraphs of \cref{isg:sec:audit}, Questions
+\ref{isg:sc:q:detector}--\ref{isg:sc:q:milestone}, and non-claims
+\textup{(N30)}--\textup{(N41)}.
+
+\paragraph{How the merge was made (source~03).} Source~03 was placed as an
+addition because, with \cref{isg:cf:main:presburger}, it answers part of
+\cref{isg:cf:q:fragment}, a question this report names; it does not cite
+this report, so the combination is stated here, marked \textup{[write]}
+(\cref{isg:sc:def:Tdy,isg:sc:cor:fragment,isg:sc:prop:iopen},
+\cref{isg:sc:rem:fragment}), and the question is re-scoped in a dated note
+after its statement. The alternative considered at placement was a part of
+the report
+\nolinkurl{docs/foundations-and-computation/polish-models-of-omnific-arithmetic},
+which collects the Glazer-motivated manuscripts of the same delivery; it
+names no question that source~03 answers. Source~03's material is printed
+as it stands, in four new sections inserted after \cref{isg:cf:sec:boundaries};
+the former Sections~19--21 (verification, questions, conclusion) moved
+down by four, and no theorem-like number of Sections~1--18 or of the
+appendices changed. Its symbols are renamed as in
+\cref{isg:sc:sec:conventions}, notably $\mathsf P,\mathsf S$ to
+$\PowDy,\StdDy$, which keeps them apart from the Diophantine report's
+existential $\operatorname{Std}$ (\replabel{odg:thm:standarddef}). Its
+introduction is \cref{isg:sc:sec:intro,isg:sc:sec:overview}; its
+verification, Lean-plan and novelty material is in the source-03
+paragraphs of \cref{isg:sec:audit}, its questions follow source~02's in
+\cref{isg:sec:further}, its limitations are (N30)--(N41), and its
+conclusion is a paragraph of \cref{isg:sec:conclusion}. Added at this
+write, beyond the \textup{[write]} statements: \cref{isg:sc:rem:ELV}, the
+comparisons with \cref{isg:cf:prop:residuesplit} and with the Lean theorem
+\fn{omnific_int_hom_eq_constant}, the narrower novelty statement, the
+pointer to the batch-86 manuscript~06, and the repository paragraph's last
+three sentences; each says so. The checklist of
+Appendix~\ref{isg:app:checklist} gained six rows, five from source~03's
+hypotheses section and one for the \textup{[write]} corollary. Source~02's text received three bracketed
+pointers (after \cref{isg:cf:thm:PA}, after \cref{isg:cf:cor:unit} and in
+\textup{(N26)}). No mathematical statement, proof or example of sources~01
+or~02 changed, and no label was renamed or removed.
 
 \paragraph{How the merge was made (source~02).} Source~02 was placed as an
 addition because it answers two questions this report named,
@@ -3396,6 +4931,29 @@ steps on those trees; that computation is not shipped. This review is not
 a refereeing, and it does not extend to source~01's material beyond the
 consistency statements of \cref{isg:cf:sec:cyclic,isg:cf:sec:limit}.
 
+\paragraph{Placement review (source~03).} At this write, source~03's
+proofs were checked by hand and no error was found: both cases
+of the odd-factor certificate (character zero, and character $2^km_0$ with
+$m_0$ odd and possibly negative) with the witness bounds, the doubling and
+successor closure under $\ED_2$, the single-instance boundary, both
+sharpness rings, the character classification and the diagonal-image
+criterion, standard division in $\Idelta$, the vanishing theorem and its
+corollaries, the explicit non-diagonal profiles (including the passage from
+residues modulo $2^{k+j}$ to residues of $y/2^k$), the counterexample and
+the repair, the examples $\Asc_0$ (with the three certificates of
+\cref{isg:sc:ex:certificates} recomputed), $\Asc(k,\Gamma)$ and $\Oz$, the
+equal-bound guards, the compiler and the complexity reductions. The
+open-induction theorem for $\Asc_{\mathrm{Sh}}$ and the effective
+arithmetical definition of a computable presentation were checked as
+imported statements, not re-proved. Lemma~2.7 and Theorem~2.9 of
+\cite{ELV} were read at placement and again at this write in the v2 PDF
+(pages~11--12): Lemma~2.7 is printed as ``The witnessing ideal of a
+Dorroh ring is unique'', its proof makes the step that
+\cref{isg:sc:prop:correction} refutes, and Theorem~2.9 states that the
+natural numbers are $\Delta_0$-definable in the nonnegative part of every
+ordered Dorroh ring. The \textup{[write]} statements were proved at this
+write. This review is not a refereeing.
+
 \paragraph{Literature.} The placement review of source~01 ran targeted web
 searches (``discrete initial subgroup'', ``initial subgroup'' together
 with ``omnific integers'', and the title of \cite{EK}). They found only
@@ -3411,6 +4969,16 @@ Hoeven are the manuscript's and were not re-checked. Its account of
 Ehrlich and Kaplan's Section~8 was compared with the arXiv text and the
 authors' text of the journal version at this write
 (\cref{isg:cf:rem:formulations}).
+For source~03, the arXiv records of \cite{ELV} (versions of 20~August
+and 30~September 2025) and of \cite{Raffer} were checked at this write,
+and the cited pages of \cite{ELV} were read
+(\cref{isg:sec:provenance}, placement review); the citations of Glazer
+\cite{Glazer} were compared with the arXiv v1 text, whose Theorem~2,
+Corollary~1 and Questions~1--2 say what is attributed to them here.
+Je\v r\'abek's MathOverflow answer \cite{JerabekMO}, Phillips's article
+\cite{Phillips} and Shepherdson's paper \cite{Shepherdson} were not
+re-checked; source~03 itself consulted Phillips only through the
+publisher's extract and Shepherdson only through \cite{Raffer}.
 
 \paragraph{Place in the collection.} At the placement of source~01, no
 other report named Question~2 (Question~9.1) of Ehrlich and Kaplan, and
@@ -3465,6 +5033,37 @@ exponential sums with rational slopes and proves the result a definitional
 expansion of Presburger arithmetic, with $\Z$ an elementary substructure of
 $\Oz$ (\replabel{exr:thm:rational}). Nothing there concerns initiality, and
 no statement here concerns exponential predicates.
+
+Source~03 (batch 86) adds three neighbours. The Diophantine report
+defines $\Z$ in $\Oz$ by an \emph{existential} quartic formula
+(\replabel{odg:thm:standarddef}) and gives failed existential induction
+instances on $\Oz_{\ge0}$ (\replabel{odg:thm:induction},
+\replabel{odg:rem:ringinduction}); $\StdDy$ is bounded but not
+existential, so it bears on neither the Diophantine guard question
+(\replabel{odg:q:guard}) nor the Diophantine definitions there. The
+open-induction statements of the collection (the Shepherdson passage
+after \replabel{odg:thm:induction} for $\Oz$, and
+\replabel{dsn:cor:openinduction} for the definable integer part $I_A$ of
+the definable-surreals report, whose constant-term retraction and
+standard division are \replabel{dsn:prop:ct}) are consistent with
+\cref{isg:sc:thm:boundary}: these rings satisfy open induction, have
+standard division and a ring retraction onto $\Z$, and therefore fail the
+bounded instance $\Ind(\StdDy)$. The uniqueness of the constant term
+(\replabel{odg:prop:canonicalct}) is the $\Oz$ case of
+\cref{isg:sc:prop:repair}, and the existence transfer behind Hilbert's
+tenth problem over $\Oz$ (\replabel{odg:cor:H10}) is the Diophantine
+retraction of \cref{isg:sc:sec:diophantine}.
+Finally, the report
+\nolinkurl{docs/foundations-and-computation/polish-models-of-omnific-arithmetic},
+placed from the same delivery's manuscripts and being written at the same
+time, studies Polish topologies on models of Presburger arithmetic and
+related obstructions, motivated by the same paper of Glazer; its first
+part proposes an affirmative construction for Glazer's Question~2.
+Source~03 is not topological, and its obstruction precedes any topology
+(\cref{isg:sc:rem:regularity}). Batch-86 manuscript~06, merged there,
+proves the failed open-induction instance $x^2<t$ in $\Z+t\R[t]$, which
+is the instance given for $\Asc_0$ in \cref{isg:sc:sec:rings}. No
+\texttt{isg:sc:} statement has a Lean implementation.
 
 \section{Further questions and exact boundaries}\label{isg:sec:further}
 
@@ -3559,6 +5158,23 @@ What is the weakest arithmetic fragment whose nonstandard models have
 ordered additive group completions excluded by the factorial residue
 type? Which analogous computable residue types yield sharper bounds?
 \end{question}
+\emph{Note (3~October 2026, at the write of source~03): partly answered,
+re-scoped.} For exclusion from $\IR$ by any argument, the threshold is now
+located: the additive completion of every nonstandard model of $\Idelta$,
+indeed of the theory $\Tdy$ whose only induction axiom is the one bounded
+sentence $\Ind(\StdDy)$, is not initially realizable
+(\cref{isg:sc:cor:fragment}), while a countable nonstandard model of open
+induction with standard division has an initially realizable additive
+group (\cref{isg:sc:prop:iopen}). So the threshold lies strictly above
+$\Iopen$ and at or below $\Tdy\subseteq\Idelta$. Still open: the exact
+weakest fragment (whether $\Tdy$ is strictly weaker than $\Idelta$ is
+\cref{isg:sc:q:threshold}); and the question as literally posed, for
+exclusion \emph{by the factorial type} $\tau_*$, since whether nonstandard
+models of $\Idelta$ realize $\tau_*$ is not addressed. For the second
+sentence, \cref{isg:sc:cor:profiles} supplies an analogous computable
+residue obstruction, the elements satisfying $\PowDy$ above the standard
+cut, but it is stated in the ring language, not as a type of the
+ordered-group language (\cref{isg:sc:rem:fragment}).
 
 \begin{question}[Compression and multiplication]\label{isg:cf:q:multiplicative}
 Under what additional compatibility conditions does exponent-tree
@@ -3569,13 +5185,95 @@ such compatibility automatically.
 This is the counterpart for compression of \cref{isg:q:multiplicative},
 which asks the same for the normalization $\Rect$.
 
+The next eight questions are source~03's. They are proposed directions
+arising from its proofs, not all asserted to be previously unposed or
+established open problems; a focused literature check should precede any
+priority claim.
+
+\begin{question}[Minimal detector complexity]\label{isg:sc:q:detector}
+Under standard division and an integer retraction, can one choose a
+uniform standard-cut formula with fewer bounded variables or fewer
+alternations than $\StdDy$? Which additional algebraic assumptions permit
+bounded-existential definitions? Distinguish the exact displayed detector
+from the broader definability methods already available.
+\end{question}
+The four-square formula of \cite[Theorem~2.9]{ELV} is one such broader
+method (\cref{isg:sc:rem:ELV}); the existential definitions of the
+Diophantine report (\replabel{odg:thm:standarddef}) are unbounded.
+
+\begin{question}[The induction threshold for additive rigidity]\label{isg:sc:q:threshold}
+The one instance $\Ind(\StdDy)$, together with standard division, already
+excludes every nonzero integer character in a nonstandard ring. Determine
+which familiar weak induction theories prove enough of these assumptions,
+and compare their strengths over a precisely fixed base theory.
+\end{question}
+In the terms of \cref{isg:sc:def:Tdy}: $\Idelta\vdash\Tdy$, and
+$\Iopen+\{\ED_n^+\}\nvdash\Tdy$ (\cref{isg:sc:prop:iopen}); this question
+bears directly on \cref{isg:cf:q:fragment}.
+
+\begin{question}[Canonical residue images]\label{isg:sc:q:images}
+Which subrings of $\Zhat$ occur as $\im\res_{R_M}$ for nonstandard
+$M\models\Idelta$? \Cref{isg:sc:cor:profiles} proves only that this image
+contains more than the diagonal integers. Investigate how induction,
+saturation, and the chosen model constrain the extra residue profiles.
+\end{question}
+
+\begin{question}[Fixed syntactic resources]\label{isg:sc:q:resources}
+Classify truth complexity when the single-bound quadratic fragment has a
+fixed number of variables, a fixed alternation bound, or a fixed
+gate-depth bound. \Cref{isg:sc:thm:complexity} allows these quantities to
+grow with the input sentence and does not answer the fixed-resource
+versions.
+\end{question}
+
+\begin{question}[Weaker division hypotheses]\label{isg:sc:q:division}
+Division by $2$ suffices for uniqueness of a normalized character, whereas
+normalization of arbitrary characters used all standard moduli. Determine
+exact character groups when division is available only for selected prime
+powers, and identify the weakest assumptions supporting the no-additive-map
+conclusion.
+\end{question}
+
+\begin{question}[Integer parts inside surreal fields]\label{isg:sc:q:integerparts}
+When a nonstandard arithmetic field embeds in $\No$, characterize the
+integer parts that can be its arithmetic image. Such an image cannot lie
+in $\Oz$ under the hypotheses of \cref{isg:sc:cor:omnific}; which
+structural features distinguish the admissible integer parts from the
+canonical omnific one?
+\end{question}
+
+\begin{question}[Regularity of residue maps]\label{isg:sc:q:regularity}
+In presentations of weaker arithmetic on Polish spaces, how do continuity
+or Borel measurability of residue maps and integer characters constrain
+multiplication? A useful comparison with Glazer's work must state the
+induction and regularity hypotheses separately, rather than infer one from
+the other.
+\end{question}
+
+\begin{question}[A focused proof-assistant milestone]\label{isg:sc:q:milestone}
+Formalize the source-level counterexample, the $\ED_2$ uniqueness repair,
+and the dyadic certificate before attempting the full interpretation
+compiler. These are short, reusable targets with explicit assumptions and
+little dependence on heavy surreal or model-theoretic libraries.
+\end{question}
+For $\Oz$, the repair's ring-homomorphism case is already a Lean theorem
+(\fn{omnific_int_hom_eq_constant}, \cref{isg:sc:sec:correction}).
+Source~03 names as immediate priorities the last question and a targeted
+comparison of the exact additive-character statement with older work on
+nonstandard arithmetic. A separate dependency audit should identify every
+use of the incorrect unrestricted uniqueness lemma in \cite{ELV} and
+replace it either by a chosen witnessing ideal or by a valid additional
+hypothesis.
+
 \subsection{Non-claims, collected}\label{isg:sec:nonclaims}
 The limitations stated at their places in the text, in the shipped
 source audit and in the shipped provenance record of source~02 are
 collected here, so that none is lost. Each stays in force where it was
 stated. Items \textup{(N1)}--\textup{(N15)} are source~01's; in them
 ``the manuscript'' means source~01. Items \textup{(N16)}--\textup{(N29)}
-are source~02's.
+are source~02's. Items \textup{(N30)}--\textup{(N41)} are source~03's,
+with its shipped source audit, except \textup{(N41)}, which limits the
+\textup{[write]} statements.
 \begin{enumerate}[label=\textup{(N\arabic*)},leftmargin=*]
 \item \emph{Status.} The manuscript is unrefereed. It is a proposed
       solution with full proposed proofs, not an independently certified
@@ -3710,7 +5408,10 @@ are source~02's.
       The delivered build and rendering checks concern presentation, not
       correctness.
 \item \emph{Arithmetic fragment.} The fragment of arithmetic used for
-      \cref{isg:cf:thm:PA} is not optimized.
+      \cref{isg:cf:thm:PA} is not optimized. (This is a statement about
+      source~02. With source~03, \cref{isg:sc:cor:fragment} reaches
+      $\Idelta$ by a different argument; the fragment for the factorial
+      type itself is still not optimized.)
 \item \emph{Repository review of source~02.} Its review, at pin
       \texttt{9693b28}, was targeted: it was not a claim-by-claim audit
       of the repository, and no local Lean build was run.
@@ -3719,11 +5420,70 @@ are source~02's.
       (\cref{isg:sec:audit}) was supplied at this write.
 \item \emph{Finite solvability.} Solvability of every finite retraction
       system is not a global splitting (\cref{isg:cf:rem:finite}).
+\item \emph{Status of source~03.} It is an AI-assisted, unrefereed
+      research draft. Its proofs are human-readable arguments, not a Lean
+      or Rocq verification; no new Lean or Rocq proof is included or
+      claimed, and the hand check of \cref{isg:sec:provenance} is not a
+      refereeing.
+\item \emph{Known phenomena credited.} Standard-cut definability and the
+      failure of induction beyond open induction in $\Oz$ were already
+      known (Je\v r\'abek 2011, Enayat--\L e\l yk--Visser) and are credited;
+      bounded definability of $\N$ in $\Oz_{\ge0}$ is
+      \cite[Theorem~2.9]{ELV}. The claimed contribution is the explicit
+      dyadic refinement and its assembled consequences, not a certified
+      solution of a previously open major conjecture. Global priority is
+      not established for the exact formulations.
+\item \emph{The correction is local.} The counterexample to
+      \cite[Lemma~2.7]{ELV} does not claim that the paper's main theorems
+      fail; Theorem~2.9 there needs only a chosen witnessing ideal. No full
+      dependency audit of \cite{ELV} was performed, and it is not claimed
+      that the error was previously unnoticed by its authors or by others.
+\item \emph{Characters are not order-preserving.} A normalized integer
+      character is not assumed to preserve order, and confusing it with a
+      standard-part map would invalidate the arguments.
+\item \emph{Unit condition.} The no-map theorems exclude unit-preserving
+      additive maps; no theorem here excludes additive embeddings without
+      the unit condition, which may land in the kernel of the target's
+      character.
+\item \emph{No regularity claimed.} The obstruction concerns the existence
+      of maps, not their continuity, measurability, definability or
+      computability; it is complementary to Glazer's topological theorem,
+      not a strengthening of it, and answers neither of Glazer's questions.
+\item \emph{Sharpness is about this detector.} The examples of
+      \cref{isg:sc:prop:sharp} concern the dyadic formula only, not the
+      existence of other definitions of the standard cut. No minimality
+      of the quantifier pattern of $\StdDy$ is claimed.
+\item \emph{Not a truth predicate.} The compiler produces a different
+      formula for each input sentence; it is not a single uniform truth
+      predicate taking syntax codes, and there is no conflict with Tarski's
+      theorem. It needs an actually positive infinite bound; no computable
+      test for infinitude is asserted; effective presentations are needed
+      only for the upper reductions.
+\item \emph{Imported results.} The open-induction property of
+      $\Asc_{\mathrm{Sh}}$ is the classical integer-part theorem, consulted
+      through \cite{Raffer}; Phillips's article is used only for the
+      historical context of its publisher's extract, and no uninspected
+      theorem of it is used.
+\item \emph{Finite checks of source~03.} They are finite exact checks and
+      syntactic audits, not machine-checked proofs of the universal
+      theorems, and do not evaluate quantifiers at infinite bounds.
+\item \emph{Repository review of source~03.} It consulted the reader's
+      guides and \fn{OmnificResidues.lean} at its pin and is not a
+      validation of every research claim in the repository. Elliot Glazer
+      is not an author of source~03, and no review or endorsement by him is
+      implied.
+\item \emph{Scope of the \textup{[write]} statements.} They do not
+      determine the weakest fragment asked for in \cref{isg:cf:q:fragment},
+      do not show that $\Tdy$ is strictly weaker than $\Idelta$, and do not
+      address whether nonstandard models of $\Idelta$ realize the
+      factorial type $\tau_*$.
 \end{enumerate}
 The statements marked \textup{[merge]} add no claim of priority; they are
 proved from the two sources and, for \cref{isg:cf:cor:periods}, from
 statements of the trigonometry report cited by label, whose own
-non-claims remain in force there.
+non-claims remain in force there. The same holds for the statements marked
+\textup{[write]}, proved from sources~02 and~03 and, for
+\cref{isg:sc:rem:ELV}, from \cite[Theorem~2.9]{ELV}.
 
 \section{Conclusion}\label{isg:sec:conclusion}
 The obstruction in the Ehrlich--Kaplan question is not the numerical
@@ -3763,6 +5523,25 @@ distinction survives beyond discreteness and cannot be captured by
 first-order theory alone. None of this is a certified resolution of the
 full classification problem or of Ehrlich and Kaplan's optimality
 question.
+
+Source~03 shows that ordinary residue behaviour is not merely a benign
+shadow of omnific arithmetic. An integer-valued character forces every
+nonstandard element to have an explicit forbidden odd factor for the
+dyadic predicate, turning a small bounded formula into an exact
+standard-cut detector. Successor closure then converts that detector into
+an induction obstruction and, after normalization of characters, a
+prohibition on unit-preserving additive maps from nonstandard bounded
+arithmetic. The same detector has the opposite effect on interpretation
+power: inside any positive infinite interval it lets bounded formulas
+recover all standard arithmetic truth, so a computable ring can have
+true-arithmetic-complete bounded truth with a single common bound and
+quadratic atoms. These are semantic and computability statements, not
+claims of low-cost evaluation. Its polynomial counterexample separates
+having a retraction onto $\Z$ from having a unique one, and division by
+$2$ repairs the uniqueness. Read through source~02's criterion, the
+additive group of a nonstandard model of bounded arithmetic has no initial
+surreal realization, while open induction leaves room for one; the exact
+threshold between them is open.
 
 \appendix
 \section{A compact proof for independent checking}\label{isg:app:compact}
@@ -3889,7 +5668,30 @@ internally coded finite sum, not an external infinite sum in $G$.\\[4pt]
 Merge statements &
 \Cref{isg:cf:prop:cyclic,isg:cf:cor:limit,isg:cf:cor:periods}: the
 identification with $\rho\circ\tht$, the one-point layers of the
-iteration, and the order of $\mathcal I/\Z\cong\Pi_F$.\\
+iteration, and the order of $\mathcal I/\Z\cong\Pi_F$.\\[4pt]
+\multicolumn{2}{@{}l}{\emph{Source~03 (standard cut) and the write.}}\\[2pt]
+Ordinary-integer character &
+\Cref{isg:sc:thm:dyadic}: $\chi$ takes values in the ordinary $\Z$; the
+$2$-adic case split is external, and $m=\chi(y)$ may be zero or
+negative.\\[4pt]
+Positivity of witnesses &
+\Cref{isg:sc:thm:dyadic,isg:sc:ex:certificates}: $u,v\ge0$ and the bounds
+are checked in the ordered ring, not after applying $\chi$, which need not
+preserve order.\\[4pt]
+Unit condition &
+\Cref{isg:sc:cor:noadd,isg:sc:cor:omnific}: only unit-preserving additive
+maps are excluded.\\[4pt]
+Infinite bound &
+\Cref{isg:sc:thm:compiler,isg:sc:ex:bound}: the bound $\Omega$ must be
+positive infinite; existential gate blocks stay inside each atomic
+replacement.\\[4pt]
+Version of the corrected lemma &
+\Cref{isg:sc:prop:correction}: Lemma~2.7 of arXiv:2508.14758v2; the
+repair needs $\ED_2$, which $\Z[X]$ lacks.\\[4pt]
+The \textup{[write]} corollary &
+\Cref{isg:sc:cor:fragment}: $G(M)$ is a set-sized $\Z$-group, so
+\cref{isg:cf:main:presburger} applies; the argument uses no factorial
+type.\\
 \bottomrule
 \end{longtable}
 
@@ -4031,5 +5833,60 @@ A.~Enayat, J.~D.~Hamkins, and B.~Wcis\l o,
 Used by source~02 only for background on internal arithmetic and
 factorials; the residue obstruction of \cref{isg:cf:thm:PA} is proved
 here.
+
+\bibitem{Glazer}
+E.~Glazer, \emph{A Topological Tennenbaum Theorem},
+arXiv:2311.13699v1 (2023).
+\url{https://arxiv.org/abs/2311.13699}.
+Cited by source~03 (consulted 3~October 2026), in particular Theorem~2
+and Corollary~1; Questions~1 and~2 are on printed page~8 of v1.
+
+\bibitem{ELV}
+A.~Enayat, M.~\L e\l yk, and A.~Visser,
+\emph{Completions of Restricted Complexity I, Weak Arithmetical
+Theories}, arXiv:2508.14758v2, 30~September 2025 (v1 20~August 2025).
+\url{https://arxiv.org/abs/2508.14758v2}.
+The version matters: \cref{isg:sc:sec:correction} addresses Lemma~2.7 on
+printed pages~11--12 of v2; Theorem~2.9 is on page~12. Cited by
+source~03; Theorem~2.9 compared at this write.
+
+\bibitem{Phillips}
+R.~Phillips, \emph{Addition in nonstandard models of arithmetic},
+The Journal of Symbolic Logic \textbf{37} (1972), no.~3, 483--486.
+Cited by source~03 for historical context, from the publisher's issue
+page and article extract; no uninspected theorem of it is used.
+
+\bibitem{Raffer}
+S.~Raffer, \emph{Diophantine Correct Open Induction},
+arXiv:1010.3798 (2010). \url{https://arxiv.org/abs/1010.3798}.
+Cited by source~03 for the classical integer-part characterization of
+open induction and the Shepherdson--Puiseux construction.
+
+\bibitem{Shepherdson}
+J.~C.~Shepherdson, \emph{A non-standard model for a free variable
+fragment of number theory}, Bulletin de l'Acad\'emie Polonaise des
+Sciences, S\'erie des Sciences Math\'ematiques, Astronomiques et
+Physiques \textbf{12} (1964), 79--86.
+Classical source; source~03 consulted the construction through
+\cite{Raffer}.
+
+\bibitem{JerabekMO}
+E.~Je\v r\'abek, answer to ``Can we axiomatize omnific integers without
+the surreal number system?'', MathOverflow, 15~August 2011.
+\url{https://mathoverflow.net/questions/72691/}.
+Cited by source~03 as the historical source for the known induction
+distinction, not as a substitute for its proofs.
+
+\bibitem{ProveIt}
+V.~Reshetnikov, \emph{ProveIt}, repository,
+\url{https://github.com/VladimirReshetnikov/ProveIt}, at the commit
+\texttt{883e0b3b22263bd9d92fdbbf10376ca4b652b862}, the pin of source~03, which consulted the root and surreal-number
+reader's guides and the residue file of \cite{Residues}.
+
+\bibitem{Residues}
+ProveIt, \fn{Algebra/SurrealNumbers/Surreal/Foundations/OmnificResidues.lean},
+at the snapshot of \cite{ProveIt}, blob
+\texttt{aacd3cac89e9f55ef6b74710cdbffbfd0f2664eb} (unchanged at this
+write).
 \end{thebibliography}
 \end{document}
