@@ -1,15 +1,18 @@
 # Fixed Universal Polynomials
 
-**A literal Grill instance, exact degree laws, native witness fibers, positive-index restoration and an exact negative-index predicate**
+**A literal Grill instance, exact degree laws, native witness fibers, positive-index restoration, an exact negative-index predicate, nonredundant comparisons, first-index deletion and the 82- and 83-operation candidates**
 
-This is a research report dated 3 October 2026, built from six manuscripts:
+This is a research report dated 3 October 2026, built from eleven manuscripts:
 "Research Reports" 23 (revision 1), 24, 25, 33 and 34 of one AI-assisted
-research pipeline, all of batch 82 (cluster M3), and Report 37 of the same
-pipeline, manuscript 09 of batch 83 (cluster 83H2), added as Part V. Author
-lines: "Research report 23" ("Revision 1 with the exact degree theorem"),
-"Research report 24", "Research report 25", and "Mathematical research report"
-for Reports 33, 34 and 37. All six build on the Hilbert's-tenth programme's own
-research artifacts in this repository, at pinned commits.
+research pipeline, all of batch 82 (cluster M3); Report 37 of the same
+pipeline, manuscript 09 of batch 83 (cluster 83H2), added as Part V; and
+Reports 39, 41, 43, 45 and 46, manuscripts 01, 02, 05, 06 and 08 of batch 88
+(cluster 88T2), added as Parts VI–VIII. Author lines: "Research report 23"
+("Revision 1 with the exact degree theorem"), "Research report 24", "Research
+report 25", "Mathematical research report" for Reports 33, 34, 37, 39 and 41,
+and "Research Report 43", "45" and "46" for those three (dated 4 October 2026,
+UTC). All eleven build on the Hilbert's-tenth programme's own research
+artifacts in this repository, at pinned commits.
 
 | Source | Report | Batch, no. | Archive | Arrival | Pin | Placed | Printed as |
 |---|---|---|---|---|---|---|---|
@@ -19,21 +22,48 @@ research artifacts in this repository, at pinned commits.
 | 10 | 33 | 82, 10 | `Failure_of_Positive_Index_Restoration_Package.zip` (703,207 B; 17 pp.) | `db37d18c8` | `2dde7850f`; context `93ad43375` | `2f58ab4e9` | Part IV, Sections 33.1–33.10, 33.A, 33.B |
 | 05 | 34 | 82, 05 | `Counterexample_Height_Expansions_and_Rotation_Discrepancy_Package.zip` (591,664 B; 17 pp.) | `db37d18c8` | `2dde7850f`; transfer appendix `9fa99be93` | `2f58ab4e9` | Part IV, Sections 34.1–34.9, 34.A, 34.B |
 | 15 | 37 | 83, 09 | `Exact_Negative_Index_Obstruction_for_Positive_Diophantine_Interfaces_Package.zip` (501,623 B; 16 pp.) | `3051d1446` | `d5bd4a67b`; refinement `813c1cff4`; freshness check `0f7d618f4` | `a51a439cd` | Part V, Sections 37.1–37.9, 37.A |
+| 16 | 39 | 88, 01 | `Nonredundant_Main_Comparisons_in_Positive_Diophantine_Certificates_Package.zip` (622,252 B; 24 pp.) | `c5612efa1` | `d5bd4a67b` (Report 37's pin) | `992aaafb3` | Part VI, Sections 39.1–39.14, 39.A, 39.B |
+| 17 | 41 | 88, 02 | `Failure_of_First_Index_Deletion_Package.zip` (547,920 B; 16 pp.) | `c5612efa1` | `3f4a974a5`; scaled-obstruction context `93c34e817` | `992aaafb3` | Part VII, Sections 41.1–41.13, 41.A, 41.B |
+| 18 | 43 | 88, 05 | `Structural_Obstructions_for_the_Free_Coefficient_83_Candidate_Package.zip` (552,509 B; 18 pp.) | `c5612efa1` | `0d9d1e017`; precursor `53c34b012` | `992aaafb3` | Part VIII, Sections 43.1–43.9, 43.A–43.C |
+| 19 | 45 | 88, 06 | `Full_Positive_Collapse_of_the_Square_Product_82_Candidate_Package.zip` (539,173 B; 18 pp.) | `c5612efa1` | `6ce2dcaaf`; audit observation at HEAD `6bf7f30d0` | `992aaafb3` | Part VIII, Sections 45.1–45.12, 45.A–45.D |
+| 20 | 46 | 88, 08 | `Exact_Certificate_Height_and_an_Even_Rank_Obstruction_Package.zip` (1,825,258 B; 26 pp.) | `c5612efa1` | `6ce2dcaaf`, `0d9d1e017`, `8cf6239b6` | `992aaafb3` | Part VIII, Sections 46.1–46.14, 46.A, 46.B |
 | — | 23, original edition | 82, 12 | `Fixed_Universal_Grill_Polynomial_Package.zip` (15,390,453 B; 19 pp.) | `db37d18c8` | `2d887f0fa` | not staged | superseded by source 11 |
 
 Sources are named by their file-prefix numbers. Source 15's number continues
 this report's own sequence after its highest prefix, 14 (it is not the batch-83
 manuscript number, 09). Report 37's archive has SHA-256
 `018b960efd8069db99ec3eaa9b691cb2ca60edbc88932cc6e37cbf3562d169f9`.
+Sources 16–20 continue that sequence; their batch-88 manuscript numbers are
+01, 02, 05, 06 and 08. Their archives arrived in commit `c5612efa1`
+(3 October 2026, 21:05 PDT, "New research reports", ten archives) and were
+retired by the placement commit `992aaafb3` (the other five, Reports 40, 42,
+44, 47 and 48 on a periodic Langton ant, went to
+`../periodic-turmite-first-revisits`). SHA-256 of the five archives:
 
-Every result, proof, remark, question and limitation of the six manuscripts
+| Source | Archive SHA-256 |
+|---|---|
+| 16 | `e96fe735e21b562f11deb79665bf596007b7f096deac4ae408c38c4d7125618d` |
+| 17 | `1ace5ba39dd17fa53972420ba4db4171174def1244f1c377f31089f97921f2fd` |
+| 18 | `501af9d4cb0666caef0d70ccd165e0191572f24346653c81af123f275d6871c9` |
+| 19 | `d4c6ba43da5a0c852a517df5d2ec2360251bae5c882dd247a9ff9b0ce3e84942` |
+| 20 | `271d6b68aac256d9b6153146bb895295bdd1232a0c4a5d00c4ae11c9b667d3ea` |
+
+Report 46's archive contains Report 45's complete release (47 files,
+identical file for file to source 19's archive) and a selection of Report
+43's sources; Report 39's contains Report 37's manuscript. These copies are
+shipped once or not at all.
+
+Every result, proof, remark, question and limitation of the eleven manuscripts
 is printed. Text marked **[write]** in the article was written at the merge
-(batch 82) or when Part V was added (batch 83). The report is AI-assisted and
+(batch 82), when Part V was added (batch 83) or when Parts VI–VIII were added
+(batch 88). The report is AI-assisted and
 unrefereed. **It is not formalized.** The programme has reviewed every source,
 but certifies only parts of some (see below). The language theorem of
 Part I is conditional on pinned imports; Parts III and IV inherit pinned
 native-source theorems as they state; Part V inherits the compiler contract
-and the sign-free bootstrap as premises.
+and the sign-free bootstrap as premises, and so do Parts VI–VIII. Both
+candidates of Part VIII are refuted; no Part lowers the research tree's
+84-operation record.
 
 **Editions.** Archive 12 is the original edition of Report 23 and archive 11
 its revision 1. `11-grill-poly-REVISION.md` anchors the SHA-256 of archive 12
@@ -50,12 +80,13 @@ original's QA as `qa/v0-*`. Nothing of archive 12 is staged; its open question
 ```
 README.md     this guide (it replaces source 11's delivery README, which survives in the arrival archive)
 article.tex   the report: standalone LaTeX, one bibliography per source at the end of its Part
-article.pdf   the compiled report, 126 pages (unnumbered title page; contents pages 1-6; front
-              matter 7-15; Part I 16-39; Part II 40-55; Part III 56-73; Part IV 74-106;
-              Part V 107-125)
+article.pdf   the compiled report, 242 pages (unnumbered title page; contents pages 1-11; front
+              matter 12-24; Part I 25-48; Part II 49-64; Part III 65-82; Part IV 83-115;
+              Part V 116-134; Part VI 135-160; Part VII 161-177; Part VIII 178-241, with
+              Report 43 from 179, Report 45 from 198 and Report 46 from 217)
 ```
 
-The other 297 files are the six sources' audit and provenance notes (root),
+The other 532 files are the eleven sources' audit and provenance notes (root),
 code (`code/`) and recorded data (`data/`), byte-identical to the delivery,
 each name prefixed by its source:
 
@@ -386,6 +417,266 @@ data/15-neg-obstruction-verification-source-lineage.json
 data/15-neg-obstruction-verification-tooling-review.json
 ```
 
+Source 16 (Report 39): 8 audit, proof and provenance notes, 10 code files, 21 data files.
+
+```
+16-nonredundant-INTEGRITY.md
+16-nonredundant-evidence-ALL-BUT-MAIN-PROJECTION.md
+16-nonredundant-evidence-README.md
+16-nonredundant-evidence-independent-INDEPENDENT-REVIEW.md
+16-nonredundant-jacobi-INDEPENDENT-AUDIT.md
+16-nonredundant-jacobi-JACOBI-ADDENDUM.md
+16-nonredundant-jacobi-README.md
+16-nonredundant-jacobi-context-ROOT-LEMMA.md
+code/16-nonredundant-archive_regression.py
+code/16-nonredundant-archive_release.py
+code/16-nonredundant-build_pdf.py
+code/16-nonredundant-evidence-check_unwrapped_family.py
+code/16-nonredundant-evidence-independent-check_audit.py
+code/16-nonredundant-jacobi-check_jacobi_addendum.py
+code/16-nonredundant-output_guard_regression.py
+code/16-nonredundant-seal_release.py
+code/16-nonredundant-tamper_regression.py
+code/16-nonredundant-verify_release.py
+data/16-nonredundant-MANIFEST.json
+data/16-nonredundant-evidence-analytic_references.json
+data/16-nonredundant-evidence-expected_check_results.json
+data/16-nonredundant-evidence-final_source_check.json
+data/16-nonredundant-evidence-independent-expected_audit_receipt.json
+data/16-nonredundant-evidence-independent-historical_audit_receipt.json
+data/16-nonredundant-evidence-independent-release_checks.json
+data/16-nonredundant-evidence-release_replay_results.json
+data/16-nonredundant-evidence-requirements.txt
+data/16-nonredundant-evidence-source_manifest.json
+data/16-nonredundant-jacobi-context-ROOT-CHECK.json
+data/16-nonredundant-jacobi-expected_jacobi_receipt.json
+data/16-nonredundant-jacobi-release_checks.json
+data/16-nonredundant-jacobi-source_manifest.json
+data/16-nonredundant-verification-expected-receipts.json
+data/16-nonredundant-verification-jacobi-lineage.json
+data/16-nonredundant-verification-release-review.json
+data/16-nonredundant-verification-replay-plan.json
+data/16-nonredundant-verification-source-lineage.json
+data/16-nonredundant-verification-tooling-review.json
+data/16-nonredundant-verification-visual-review.json
+```
+
+Source 17 (Report 41): 15 audit, proof and provenance notes, 16 code files, 31 data files.
+
+```
+17-index-deletion-INTEGRITY.md
+17-index-deletion-evidence-FINAL_RELEASE_REVIEW.md
+17-index-deletion-evidence-FULL_COUNTERFAMILY.md
+17-index-deletion-evidence-PROOF.md
+17-index-deletion-evidence-README.md
+17-index-deletion-evidence-SCALED_FAMILY.md
+17-index-deletion-evidence-SOURCE_CORRESPONDENCE.md
+17-index-deletion-evidence-audit_bootstrap-AUDIT.md
+17-index-deletion-evidence-audit_bootstrap-FULL_COUNTERFAMILY_AUDIT.md
+17-index-deletion-evidence-audit_bootstrap-original_sources-FULL_COUNTERFAMILY.reviewed.md
+17-index-deletion-evidence-audit_bootstrap-original_sources-SCALED_FAMILY.reviewed.md
+17-index-deletion-smooth-README.md
+17-index-deletion-smooth-ROOT_REVIEW.md
+17-index-deletion-smooth-SMOOTH_RADIX.md
+17-index-deletion-smooth-SOURCE_ERRATUM.md
+code/17-index-deletion-archive_regression.py
+code/17-index-deletion-archive_release.py
+code/17-index-deletion-build_pdf.py
+code/17-index-deletion-evidence-audit_bootstrap-check_bootstrap.py
+code/17-index-deletion-evidence-audit_bootstrap-check_counterfamily.py
+code/17-index-deletion-evidence-audit_bootstrap-original_sources-check_bootstrap.py.txt
+code/17-index-deletion-evidence-audit_bootstrap-original_sources-check_counterfamily.py.txt
+code/17-index-deletion-evidence-check_full_counterfamily.py
+code/17-index-deletion-evidence-check_reduction.py
+code/17-index-deletion-evidence-search_scaled.py
+code/17-index-deletion-evidence-verify_manifest.py
+code/17-index-deletion-output_guard_regression.py
+code/17-index-deletion-seal_release.py
+code/17-index-deletion-smooth-check_smooth_radix.py
+code/17-index-deletion-tamper_regression.py
+code/17-index-deletion-verify_release.py
+data/17-index-deletion-MANIFEST.json
+data/17-index-deletion-evidence-AUDIT_CLI_CHANGES.json
+data/17-index-deletion-evidence-CHECKS.json
+data/17-index-deletion-evidence-CLI_QA.json
+data/17-index-deletion-evidence-FULL_CHECKS.json
+data/17-index-deletion-evidence-MANIFEST.json
+data/17-index-deletion-evidence-audit_bootstrap-bootstrap_release_replay.json
+data/17-index-deletion-evidence-audit_bootstrap-checks.json
+data/17-index-deletion-evidence-audit_bootstrap-counterfamily_checks.json
+data/17-index-deletion-evidence-audit_bootstrap-counterfamily_release_replay.json
+data/17-index-deletion-evidence-provenance-FETCHED.json
+data/17-index-deletion-evidence-search_even_63.json
+data/17-index-deletion-evidence-search_scaled_255.json
+data/17-index-deletion-smooth-CHECKS.json
+data/17-index-deletion-smooth-CLI_QA.json
+data/17-index-deletion-smooth-MANIFEST.json
+data/17-index-deletion-verification-expected-receipts.json
+data/17-index-deletion-verification-release-review.json
+data/17-index-deletion-verification-replay-plan.json
+data/17-index-deletion-verification-smooth-lineage.json
+data/17-index-deletion-verification-source-lineage.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-archive-check.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-archive-create.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-archive-create2.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-archive-regression.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-output-guards.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-replay-O.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-replay.json
+data/17-index-deletion-verification-tooling-qa-toolkit-preview2-tamper.json
+data/17-index-deletion-verification-tooling-review.json
+data/17-index-deletion-verification-visual-review.json
+```
+
+Source 18 (Report 43): 15 audit, proof and provenance notes, 4 code files, 19 data files.
+
+```
+18-free83-source-audits-auxiliary_square.md
+18-free83-source-audits-baseline84.md
+18-free83-source-audits-inner_family.md
+18-free83-source-audits-simple_family.md
+18-free83-source-audits-squarefree_addendum.md
+18-free83-source-inner-AUDIT_LINKS.md
+18-free83-source-inner-PROOF.md
+18-free83-source-inner-PROVENANCE.md
+18-free83-source-inner-SIMPLE_FAMILY_ADDENDUM.md
+18-free83-source-structure-README.md
+18-free83-source-structure-early_auxiliary_norm_lemma.md
+18-free83-source-structure-even_parameter_divisor_classification.md
+18-free83-source-structure-exceptional_negative_aux_exclusion.md
+18-free83-source-structure-squarefree_swapped_norm_obstructions.initial.md
+18-free83-source-structure-squarefree_swapped_norm_obstructions.md
+code/18-free83-archive_release.py
+code/18-free83-build_pdf.py
+code/18-free83-check_math.py
+code/18-free83-verify_release.py
+data/18-free83-MANIFEST.json
+data/18-free83-SOURCE_INVENTORY.json
+data/18-free83-checks-MATH.normal.json
+data/18-free83-checks-PDF_BUILD.json
+data/18-free83-checks-QA.json
+data/18-free83-checks-SOURCE_AUTH.json
+data/18-free83-source-immutable-FETCHED.json
+data/18-free83-source-immutable-native_alias_provenance.json
+data/18-free83-source-inner-CHECKS.json
+data/18-free83-source-inner-DEPENDENCY_PINS.json
+data/18-free83-source-inner-SIMPLE_CHECKS.json
+data/18-free83-source-receipts-auxiliary_checks.json
+data/18-free83-source-receipts-baseline84_checks.json
+data/18-free83-source-receipts-inner_checks.json
+data/18-free83-source-receipts-inner_replay.json
+data/18-free83-source-receipts-simple_checks.json
+data/18-free83-source-receipts-squarefree_checks.json
+data/18-free83-source-receipts-structural_replay.json
+data/18-free83-source-structure-CHECKS.json
+```
+
+Source 19 (Report 45): 4 audit, proof and provenance notes, 7 code files, 17 data files.
+
+```
+19-square-product82-audit-audit.md
+19-square-product82-audit-manuscript_review.md
+19-square-product82-counterfamily-COUNTERFAMILY.md
+19-square-product82-counterfamily-README.md
+code/19-square-product82-archive_release.py
+code/19-square-product82-audit-check_independent.py
+code/19-square-product82-build_pdf.py
+code/19-square-product82-counterfamily-check_counterfamily.py
+code/19-square-product82-counterfamily-check_tamper.py
+code/19-square-product82-replay.py
+code/19-square-product82-verify_release.py
+data/19-square-product82-MANIFEST.json
+data/19-square-product82-PACKET_INVENTORY.json
+data/19-square-product82-RECOVERY.json
+data/19-square-product82-audit-RECOVERY.json
+data/19-square-product82-audit-receipt.json
+data/19-square-product82-checks-pdf-build.json
+data/19-square-product82-checks-release-qa.json
+data/19-square-product82-checks-replay-normal.json
+data/19-square-product82-checks-toolchain.json
+data/19-square-product82-counterfamily-CHECKS.json
+data/19-square-product82-counterfamily-HISTORICAL_LOST_RELEASE.json
+data/19-square-product82-counterfamily-MANIFEST.json
+data/19-square-product82-counterfamily-TAMPER_CHECKS.json
+data/19-square-product82-counterfamily-normal.log
+data/19-square-product82-counterfamily-tamper-normal.log
+data/19-square-product82-source_pins.tex
+data/19-square-product82-source_rows.txt
+```
+
+Source 20 (Report 46): 16 audit, proof and provenance notes, 16 code files, 36 data files.
+
+```
+20-cert-height-allinverse-ms-audit-REVIEW.md
+20-cert-height-er-PROOF.md
+20-cert-height-er-SOURCE_NOTES.md
+20-cert-height-er-audit-AUDIT.md
+20-cert-height-er-ms-audit-AUDIT.md
+20-cert-height-er-ms-audit-history-initial-review-0154-AUDIT.md
+20-cert-height-expansion-LOG_HEIGHT.md
+20-cert-height-expansion-audit-AUDIT.md
+20-cert-height-independent-audit-AUDIT.md
+20-cert-height-inverse-INVERSE_ALL_ORDERS.md
+20-cert-height-inverse-audit-AUDIT.md
+20-cert-height-ms-audit-REVIEW.md
+20-cert-height-prime-audit-AUDIT.md
+20-cert-height-release-AUX_MINIMUM.md
+20-cert-height-release-HEIGHT.md
+20-cert-height-release-README.md
+code/20-cert-height-archive_release.py
+code/20-cert-height-build_pdf.py
+code/20-cert-height-check_report_math.py
+code/20-cert-height-er-check_independent.py
+code/20-cert-height-er-ms-audit-pin_reviewed_sections.py
+code/20-cert-height-expansion-audit-check_expansion.py
+code/20-cert-height-expansion-expansion_check.py
+code/20-cert-height-independent-audit-check_independent.py
+code/20-cert-height-inverse-audit-check_inverse.py
+code/20-cert-height-inverse-disk_check.py
+code/20-cert-height-prime-audit-check_independent.py
+code/20-cert-height-release-auxiliary_minimum_check.py
+code/20-cert-height-release-check_tamper.py
+code/20-cert-height-release-height_check.py
+code/20-cert-height-replay.py
+code/20-cert-height-verify_release.py
+data/20-cert-height-MANIFEST.json
+data/20-cert-height-allinverse-ms-audit-SOURCE_BINDINGS.json
+data/20-cert-height-allinverse-ms-audit-reviewed_allinverse_section.tex
+data/20-cert-height-checks-PDF_BUILD.json
+data/20-cert-height-checks-PDF_QA.json
+data/20-cert-height-checks-REPLAY.normal.json
+data/20-cert-height-checks-REPORT_MATH.normal.json
+data/20-cert-height-checks-SOURCE_PRESERVATION.json
+data/20-cert-height-checks-TOOLCHAIN.json
+data/20-cert-height-er-CHECKS.json
+data/20-cert-height-er-ms-audit-REVIEW_PINS.json
+data/20-cert-height-er-ms-audit-history-initial-review-0154-REVIEW_PINS.json
+data/20-cert-height-er-ms-audit-history-initial-review-0154-theorem-free83.tex
+data/20-cert-height-er-ms-audit-section2-outer-interface.tex
+data/20-cert-height-er-ms-audit-section7-dependencies.tex
+data/20-cert-height-er-ms-audit-sections8-10.tex
+data/20-cert-height-er-ms-audit-theorem-free83.tex
+data/20-cert-height-expansion-EXPANSION_CHECKS.json
+data/20-cert-height-expansion-MANIFEST.json
+data/20-cert-height-expansion-audit-SOURCE_BINDINGS.json
+data/20-cert-height-expansion-audit-receipt.normal.json
+data/20-cert-height-independent-audit-SOURCE_BINDINGS.json
+data/20-cert-height-independent-audit-receipt.normal.json
+data/20-cert-height-inverse-DISK_CHECKS.json
+data/20-cert-height-inverse-MANIFEST.json
+data/20-cert-height-inverse-audit-SOURCE_BINDINGS.json
+data/20-cert-height-inverse-audit-receipt.normal.json
+data/20-cert-height-ms-audit-SOURCE_BINDINGS.json
+data/20-cert-height-ms-audit-reviewed_expansion_section.tex
+data/20-cert-height-prime-audit-CHECKS.json
+data/20-cert-height-prime-audit-RETRIEVAL.json
+data/20-cert-height-prime-audit-SOURCE_PINS.json
+data/20-cert-height-release-AUX_CHECKS.json
+data/20-cert-height-release-HEIGHT_CHECKS.json
+data/20-cert-height-release-MANIFEST.json
+data/20-cert-height-release-TAMPER_CHECKS.json
+```
+
 ## Delivery names and shipped names
 
 Every shipped file is a delivered file with the delivery directory flattened
@@ -409,6 +700,25 @@ JSON, logs, `.bin` and `.txt` data to `data/`, markdown to the root):
 | 10 | `Research_Report33/`, `context/`, `repro/`, `repro/evidence/`, `supplements/`, `supplements/evidence/` | `10-index-restore-`, `-context-`, `-repro-`, `-repro-evidence-`, `-supplements-`, `-supplements-evidence-` |
 | 05 | `Research_Report34/`, `evidence/` | `05-signed19-heights-`, `05-signed19-heights-evidence-` |
 | 15 | `Research_Report37/`, `evidence/`, `evidence/independent/`, `verification/` | `15-neg-obstruction-`, `-evidence-`, `-evidence-independent-`, `-verification-` (`MANIFEST.json` and `evidence/source_manifest.json` record sizes, modes, URLs and blob ids besides hashes, so they are staged as data) |
+| 16 | `Research_Report39/`, `evidence/`, `evidence/independent/`, `jacobi/`, `jacobi/context/`, `verification/` | `16-nonredundant-`, `-evidence-`, `-evidence-independent-`, `-jacobi-`, `-jacobi-context-`, `-verification-` |
+| 17 | `Research_Report41/`, `evidence/`, `evidence/audit_bootstrap/`, `evidence/audit_bootstrap/original_sources/`, `evidence/provenance/`, `smooth/`, `verification/`, `verification/tooling-qa/` | `17-index-deletion-`, `-evidence-`, `-evidence-audit_bootstrap-`, `-evidence-audit_bootstrap-original_sources-`, `-evidence-provenance-`, `-smooth-`, `-verification-`, `-verification-tooling-qa-` (the two inert checker originals keep their `.py.txt` names, in `code/`) |
+| 18 | `free83-report43/`, `checks/`, `source/audits/`, `source/immutable/`, `source/inner/`, `source/receipts/`, `source/structure/` | `18-free83-`, `-checks-`, `-source-audits-`, `-source-immutable-`, `-source-inner-`, `-source-receipts-`, `-source-structure-` |
+| 19 | `square-product82-report45/`, `checks/` | `19-square-product82-`, `-checks-` (its two `\input` files `source_pins.tex` and `source_rows.txt` are `data/19-square-product82-source_pins.tex` and `-source_rows.txt`) |
+| 19 | `packets/square-product82-counterfamily-recovered-20261004/` | `19-square-product82-counterfamily-` (shortened) |
+| 19 | `packets/square-product82-independent-audit-recovered-20261004/` | `19-square-product82-audit-` (shortened) |
+| 20 | `Research_Report46/`, `checks/` | `20-cert-height-`, `-checks-` |
+| 20 | `packets/free83-even-rank-obstruction-20261004/` | `20-cert-height-er-` (shortened) |
+| 20 | `packets/free83-even-rank-independent-audit-20261004/` | `20-cert-height-er-audit-` |
+| 20 | `packets/free83-prime-collapse-independent-audit-20261004/` | `20-cert-height-prime-audit-` |
+| 20 | `packets/report46-even-rank-manuscript-audit-20261004/` and its `history/initial-review-0154/` | `20-cert-height-er-ms-audit-` and `-er-ms-audit-history-initial-review-0154-` |
+| 20 | `packets/square-product82-height-release-20261004/` | `20-cert-height-release-` |
+| 20 | `packets/square-product82-height-independent-audit-20261004/` | `20-cert-height-independent-audit-` |
+| 20 | `packets/square-product82-height-expansion-20261004/` | `20-cert-height-expansion-` |
+| 20 | `packets/square-product82-height-expansion-audit-20261004/` | `20-cert-height-expansion-audit-` |
+| 20 | `packets/square-product82-inverse-all-orders-20261004/` | `20-cert-height-inverse-` |
+| 20 | `packets/square-product82-inverse-all-orders-audit-20261004/` | `20-cert-height-inverse-audit-` |
+| 20 | `packets/square-product82-report46-manuscript-audit-20261004/` | `20-cert-height-ms-audit-` |
+| 20 | `packets/square-product82-report46-allinverse-manuscript-audit-20261004/` | `20-cert-height-allinverse-ms-audit-` |
 
 In source 11 the frozen original of a script and its portable executable
 version both appear in `code/`: the inert original keeps the delivered
@@ -436,10 +746,27 @@ the unshipped `Research_Report37.tex`/`.pdf`, `SHA256SUMS`,
 `evidence/independent/audit_results.json` and `log_window_results.json`, and the
 byte copies under `evidence/sources/` and `evidence/context/`.
 
+**Sources 16–20 (batch 88).** The packet directories of Reports 45 and 46 have
+long dated names (for example `square-product82-height-independent-audit-20261004`);
+the placement shortened them in the shipped names, as the table shows, and
+dropped the `packets/` level. Every delivered text of these five sources names
+the delivery layout: the `INTEGRITY.md`, `README.md`, `AUDIT.md` and `REVIEW.md`
+notes, the `MANIFEST.json`, `PACKET_INVENTORY.json`, `RECOVERY.json`,
+`SOURCE_*.json` and `REVIEW_PINS.json` records, `verification/replay-plan.json`
+and `expected-receipts.json`, and every release tool (`verify_release.py`,
+`replay.py`, `archive_*.py`, `seal_release.py`, `build_pdf.py`, the tamper and
+guard regressions). They also name unshipped files: the manuscripts and PDFs,
+the checksum ledgers (`SHA256SUMS`, `MANIFEST.sha256`, Report 46's
+`PACKET_INVENTORY.json` and two nested `MANIFEST.json`, Report 43's four freeze
+manifests), the duplicate receipts (`*.optimized.json`, `*_O.json`,
+`replay.*.log` and the like), the byte copies of research-tree files and of
+Report 37's manuscript, and Report 46's nested copies of Reports 43 and 45.
+
 ## Not shipped
 
 All of these survive in the arrival commit, `db37d18c8` for sources 11, 14,
-07, 10 and 05 and `3051d1446` for source 15, and can be extracted with
+07, 10 and 05, `3051d1446` for source 15 and `c5612efa1` for sources 16–20,
+and can be extracted with
 `git show "<arrival>:docs/incoming/<archive>" > x.zip` (the archives were
 retired from `docs/incoming/` by the placement commits).
 
@@ -451,6 +778,11 @@ retired from `docs/incoming/` by the placement commits).
 | 10 | 38 byte copies of research-tree files; 5 in-archive byte copies; 4 ledgers; manuscript, delivery README, PDF |
 | 05 | 6 byte copies of research-tree files; 2 byte copies of source 10's evidence (shipped once, under `10-index-restore-repro-evidence-`); `context/Research_Report25.tex` and `context/Research_Report33.tex` (byte-identical to the manuscripts printed as Parts III and IV); 2 ledgers; manuscript, delivery README, PDF |
 | 15 | 5 byte copies of research-tree files (`evidence/sources/`); 2 byte copies of source 10's evidence (`evidence/context/`, shipped once, under `10-index-restore-`); 3 in-archive duplicate receipts (`evidence/check_results.json`, `evidence/independent/audit_results.json` and `log_window_results.json`, byte-identical to the shipped `expected_*` receipts); 2 checksum ledgers (`SHA256SUMS`, `evidence/MANIFEST.sha256`); manuscript `Research_Report37.tex`, delivery README, PDF |
+| 16 | 3 byte copies of research-tree files (`evidence/context/`); `evidence/context/Report37.snapshot.tex`, a byte copy of Report 37's manuscript (printed as Part V); 3 duplicate receipts; 3 checksum ledgers (`SHA256SUMS`, `evidence/MANIFEST.sha256`, `jacobi/MANIFEST.sha256`); manuscript `Research_Report39.tex`, delivery README, PDF |
+| 17 | 11 byte copies of research-tree files; 6 duplicate receipts and the duplicate `smooth/verify_manifest.py`; 3 checksum ledgers (`SHA256SUMS` and the two reviewer snapshot ledgers `evidence/audit_bootstrap/reviewed_snapshot.sha256` and `counterfamily_reviewed_snapshot.sha256`); manuscript, delivery README, PDF |
+| 18 | 11 byte copies of research-tree files (`source/immutable/`); 2 duplicate receipts; 4 hash-only manifests (`source/structure/MANIFEST.json` and `source/receipts/{inner_freeze,structural_freeze,baseline84}_manifest.json`); manuscript `report43.tex`, delivery README, PDF |
+| 19 | 8 byte copies of research-tree files (`packets/…counterfamily…/source/`); 7 duplicate receipts and logs; 1 checksum ledger (`MANIFEST.sha256` of the audit packet); manuscript, delivery README, PDF |
+| 20 | 30 byte copies of research-tree files; the nested `square-product82-report45-release-20261004/` (47 files: 37 byte copies of source 19's files, its PDF, its ledger and 8 research-tree copies counted above); `report43-selected-sources/` (`report43.tex` and the PDF of source 18, `early_auxiliary_norm_lemma.md`, shipped once under `18-free83-`, and a research-tree JSON); `BASE_COUNTERFAMILY.md` (= source 19's `COUNTERFAMILY.md`); 13 duplicate receipts; 8 checksum ledgers (5 `MANIFEST.sha256`, `PACKET_INVENTORY.json` and 2 hash-only packet `MANIFEST.json`) besides the nested release's own; manuscript, delivery README, PDF |
 
 **Third-party papers.** Archive 11 contained copies of T. Neary and D. Woods,
 *Four small universal Turing machines*, Fundamenta Informaticae 91 (2009),
@@ -587,6 +919,119 @@ members that are byte copies of source 10's shipped evidence:
 | `evidence/context/RAW-POSITIVE-REDUCTION.md` | `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/fixed-universal-polynomials/10-index-restore-repro-evidence-RAW-POSITIVE-REDUCTION.md` (this directory) |
 | `evidence/context/PRIOR-INDEPENDENT-REVIEW.md` | `SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/fixed-universal-polynomials/10-index-restore-supplements-evidence-INDEPENDENT-REVIEW.md` (this directory) |
 
+Sources 16–20 (batch 88), 63 members, byte copies of 33 distinct files, all
+compared with the current files at the batch-88 write (byte-identical; none
+changed since its pin). Paths are relative to the package root directory
+(`Research_Report39/`, `Research_Report41/`, `free83-report43/`,
+`square-product82-report45/`, `Research_Report46/`):
+
+Source 16 (Report 39), 3 members:
+
+| Archive member | Repository file (under `Computability/HilbertTenthProblem/Papers/`) |
+|---|---|
+| `evidence/context/compiler.snapshot.md` | `research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `evidence/context/complete77.snapshot.py` | `verification/explore_fixed_raw_universal_77.py` |
+| `evidence/context/projection.snapshot.json` | `research-wip/native-stream-queue/complete74_nonlinear_index_projection_scout.json` |
+
+Source 17 (Report 41), 11 members:
+
+| Archive member | Repository file (under `Computability/HilbertTenthProblem/Papers/`) |
+|---|---|
+| `evidence/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md` | `1980/EXPLORATION_FIXED_MINUS_INDEX_PARITY.md` |
+| `evidence/complete85_auxiliary_bezout_projection.json` | `research-wip/native-stream-queue/complete85_auxiliary_bezout_projection.json` |
+| `evidence/complete86_ordinary_auxiliary_projection.json` | `research-wip/native-stream-queue/complete86_ordinary_auxiliary_projection.json` |
+| `evidence/complete86_ordinary_auxiliary_projection.md` | `research-wip/native-stream-queue/complete86_ordinary_auxiliary_projection.md` |
+| `evidence/first_index_quotient_deletion_scout.md` | `research-wip/native-stream-queue/first_index_quotient_deletion_scout.md` |
+| `evidence/provenance/FIXED_RAW_UNIVERSAL_76_PROOF.md` | `1980/FIXED_RAW_UNIVERSAL_76_PROOF.md` |
+| `evidence/provenance/complete75_coupled_index_linear88.md` | `research-wip/native-stream-queue/complete75_coupled_index_linear88.md` |
+| `evidence/provenance/complete75_half_binomial_compiler.md` | `research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `evidence/provenance/complete85_auxiliary_bezout_projection.md` | `research-wip/native-stream-queue/complete85_auxiliary_bezout_projection.md` |
+| `evidence/provenance/first_index_scaled_obstruction.md` | `research-wip/native-stream-queue/first_index_scaled_obstruction.md` |
+| `evidence/scout.json` | `research-wip/native-stream-queue/first_index_quotient_deletion_scout.json` |
+
+Source 18 (Report 43), 11 members:
+
+| Archive member | Repository file (under `Computability/HilbertTenthProblem/Papers/`) |
+|---|---|
+| `source/immutable/FIXED_RAW_UNIVERSAL_76_PROOF.md` | `1980/FIXED_RAW_UNIVERSAL_76_PROOF.md` |
+| `source/immutable/HALF_PARAMETER_PELL_92_PROOF.md` | `1980/HALF_PARAMETER_PELL_92_PROOF.md` |
+| `source/immutable/complete75_half_binomial_compiler.md` | `research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `source/immutable/complete83_free_coefficient_scout.json` | `research-wip/native-stream-queue/complete83_free_coefficient_scout.json` |
+| `source/immutable/complete83_free_coefficient_scout.md` | `research-wip/native-stream-queue/complete83_free_coefficient_scout.md` |
+| `source/immutable/complete84_scaled_strong_output.json` | `research-wip/native-stream-queue/complete84_scaled_strong_output.json` |
+| `source/immutable/complete84_scaled_strong_output.md` | `research-wip/native-stream-queue/complete84_scaled_strong_output.md` |
+| `source/immutable/complete85_auxiliary_bezout_projection.json` | `research-wip/native-stream-queue/complete85_auxiliary_bezout_projection.json` |
+| `source/immutable/complete85_auxiliary_bezout_projection.md` | `research-wip/native-stream-queue/complete85_auxiliary_bezout_projection.md` |
+| `source/immutable/free_coefficient83_native_alias.md` | `research-wip/native-stream-queue/free_coefficient83_native_alias.md` |
+| `source/immutable/review_complete85_auxiliary_bezout_math.md` | `research-wip/native-stream-queue/review_complete85_auxiliary_bezout_math.md` |
+
+Source 19 (Report 45), 8 members:
+
+| Archive member | Repository file (under `Computability/HilbertTenthProblem/Papers/`) |
+|---|---|
+| `packets/square-product82-counterfamily-recovered-20261004/source/FIXED_RAW_UNIVERSAL_76_PROOF.md` | `1980/FIXED_RAW_UNIVERSAL_76_PROOF.md` |
+| `packets/square-product82-counterfamily-recovered-20261004/source/HALF_PARAMETER_PELL_92_PROOF.md` | `1980/HALF_PARAMETER_PELL_92_PROOF.md` |
+| `packets/square-product82-counterfamily-recovered-20261004/source/complete75_half_binomial_compiler.md` | `research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `packets/square-product82-counterfamily-recovered-20261004/source/complete82_auxiliary_square_product_chart.json` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.json` |
+| `packets/square-product82-counterfamily-recovered-20261004/source/complete82_auxiliary_square_product_chart.md` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.md` |
+| `packets/square-product82-counterfamily-recovered-20261004/source/complete82_auxiliary_square_product_chart.py` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.py` |
+| `packets/square-product82-counterfamily-recovered-20261004/source/complete84_scaled_strong_output.md` | `research-wip/native-stream-queue/complete84_scaled_strong_output.md` |
+| `packets/square-product82-counterfamily-recovered-20261004/source/review_complete82_auxiliary_square_product_chart.md` | `research-wip/native-stream-queue/review_complete82_auxiliary_square_product_chart.md` |
+
+Source 20 (Report 46), 30 members:
+
+| Archive member | Repository file (under `Computability/HilbertTenthProblem/Papers/`) |
+|---|---|
+| `packets/free83-prime-collapse-independent-audit-20261004/source/HALF_PARAMETER_PELL_92_PROOF.md` | `1980/HALF_PARAMETER_PELL_92_PROOF.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete75_half_binomial_compiler.md` | `research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete75_weakened86_all_input_collapse.md` | `research-wip/native-stream-queue/complete75_weakened86_all_input_collapse.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete75_weakened86_auxiliary_sign_lift.md` | `research-wip/native-stream-queue/complete75_weakened86_auxiliary_sign_lift.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete75_weakened86_infinite_outer_family.md` | `research-wip/native-stream-queue/complete75_weakened86_infinite_outer_family.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete75_weakened86_rejecting_compiler.md` | `research-wip/native-stream-queue/complete75_weakened86_rejecting_compiler.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete83_free_coefficient_scout.json` | `research-wip/native-stream-queue/complete83_free_coefficient_scout.json` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete83_free_coefficient_scout.md` | `research-wip/native-stream-queue/complete83_free_coefficient_scout.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/complete83_free_coefficient_scout.py` | `research-wip/native-stream-queue/complete83_free_coefficient_scout.py` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/free_coefficient83_prime_outer_collapse.json` | `research-wip/native-stream-queue/free_coefficient83_prime_outer_collapse.json` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/free_coefficient83_prime_outer_collapse.md` | `research-wip/native-stream-queue/free_coefficient83_prime_outer_collapse.md` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/free_coefficient83_prime_outer_collapse.py` | `research-wip/native-stream-queue/free_coefficient83_prime_outer_collapse.py` |
+| `packets/free83-prime-collapse-independent-audit-20261004/source/review_free_coefficient83_prime_outer_collapse_math.md` | `research-wip/native-stream-queue/review_free_coefficient83_prime_outer_collapse_math.md` |
+| `packets/report43-selected-sources/complete83_free_coefficient_scout.json` | `research-wip/native-stream-queue/complete83_free_coefficient_scout.json` |
+| `packets/square-product82-height-release-20261004/source/FIXED_RAW_UNIVERSAL_76_PROOF.md` | `1980/FIXED_RAW_UNIVERSAL_76_PROOF.md` |
+| `packets/square-product82-height-release-20261004/source/HALF_PARAMETER_PELL_92_PROOF.md` | `1980/HALF_PARAMETER_PELL_92_PROOF.md` |
+| `packets/square-product82-height-release-20261004/source/complete75_half_binomial_compiler.md` | `research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `packets/square-product82-height-release-20261004/source/complete82_auxiliary_square_product_chart.json` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.json` |
+| `packets/square-product82-height-release-20261004/source/complete82_auxiliary_square_product_chart.md` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.md` |
+| `packets/square-product82-height-release-20261004/source/complete82_auxiliary_square_product_chart.py` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.py` |
+| `packets/square-product82-height-release-20261004/source/complete84_scaled_strong_output.md` | `research-wip/native-stream-queue/complete84_scaled_strong_output.md` |
+| `packets/square-product82-height-release-20261004/source/review_complete82_auxiliary_square_product_chart.md` | `research-wip/native-stream-queue/review_complete82_auxiliary_square_product_chart.md` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/FIXED_RAW_UNIVERSAL_76_PROOF.md` | `1980/FIXED_RAW_UNIVERSAL_76_PROOF.md` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/HALF_PARAMETER_PELL_92_PROOF.md` | `1980/HALF_PARAMETER_PELL_92_PROOF.md` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/complete75_half_binomial_compiler.md` | `research-wip/native-stream-queue/complete75_half_binomial_compiler.md` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/complete82_auxiliary_square_product_chart.json` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.json` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/complete82_auxiliary_square_product_chart.md` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.md` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/complete82_auxiliary_square_product_chart.py` | `research-wip/native-stream-queue/complete82_auxiliary_square_product_chart.py` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/complete84_scaled_strong_output.md` | `research-wip/native-stream-queue/complete84_scaled_strong_output.md` |
+| `packets/square-product82-report45-release-20261004/packets/square-product82-counterfamily-recovered-20261004/source/review_complete82_auxiliary_square_product_chart.md` | `research-wip/native-stream-queue/review_complete82_auxiliary_square_product_chart.md` |
+
+
+The programme's review counts "48 exact current-WIP byte matches" in these
+five archives; its count has a different scope, and no byte disagreement was
+found.
+
+**Hashes from two unshipped ledgers of source 17.** The reviewer snapshot
+ledgers of Report 41 record the SHA-256 of the files the independent reviewer
+read: `789e0d876393c4cd74076c41b9d030d3e192939346505217db13cfd599ed48a0`
+(`FULL_COUNTERFAMILY.md`, shipped as
+`17-index-deletion-evidence-audit_bootstrap-original_sources-FULL_COUNTERFAMILY.reviewed.md`),
+`6e65e87dc69692e7eea0a25ab687aa631dc5e305920f1a6e3ae6d48487ab4c67`
+(`SCALED_FAMILY.md`, shipped as `…-SCALED_FAMILY.reviewed.md`),
+`0004189e84fdc34e1ae7cbffa30a0e904ec6a0f15be18bcabebe242a303163f8`
+(`scout.json`, a research-tree copy) and
+`8d61c1eb4b367e3dffa14f6d79c0adbe6b25976e5ed31b772d0fc0058d2b5a87`, the
+reviewer's snapshot of the preliminary `PROOF.md`, which differs from the
+shipped `17-index-deletion-evidence-PROOF.md` and is not shipped; the ledgers
+name these files by `/workspace/shared/…` paths of the author's machine.
+
 Two near-copies are shipped because they differ from the research-tree file:
 `11-grill-poly-input-audit-sources-neary_woods_explicit_universal_tm.md`
 differs from `native-stream-queue/neary_woods_explicit_universal_tm.md` only in
@@ -596,6 +1041,8 @@ one path-sanitized command line (line 323), and
 
 ## Reconstructing the excluded data
 
+Nothing of sources 15–20 was excluded as heavy regenerable data: no delivered
+file of those archives exceeds 1 MB except the archive of source 20 itself.
 Two deterministic outputs of source 11's generators are not stored here:
 
 - `reproducibility/frozen/arithmetic/universal.dag`: the complete
@@ -663,7 +1110,7 @@ git show "<arrival>:docs/incoming/<archive>.zip" > x.zip && unzip x.zip -d <scra
 ```
 
 with `<arrival>` = `db37d18c8` for sources 11, 14, 07, 10 and 05 and
-`3051d1446` for source 15. Commands (from each delivery README) and the results
+`3051d1446` for source 15 (sources 16–20: subsection below). Commands (from each delivery README) and the results
 of the placements' reruns on such copies (Python 3.14.4, Windows 11):
 
 | Source | Command, in the extracted package root | Result at placement |
@@ -737,6 +1184,45 @@ python3 -I -B verify_release.py --verify-only && python3 -I -B verify_release.py
 Authenticate the ZIP first against the SHA-256 above, as the delivery README
 asks; a packaged verifier cannot establish its own authenticity.
 
+### Sources 16–20 (batch 88)
+
+The shipped names break the delivered layout that the release verifiers and
+replays check, and four portability defects stop most of them on Windows even
+in an extraction: (a) sources 16 and 17 require the POSIX file modes
+0644/0755 before checking anything ("payload mode mismatch: INTEGRITY.md");
+(b) sources 19 and 20 build inventory keys with `str(path.relative_to(root))`,
+which gives backslashes on Windows (reported as 35 missing and 35 extra files
+with the same names); (c) source 17's replay compares stdout bytes, which
+Windows writes with CRLF; (d) sources 19 and 20 write a receipt or an adapted
+checker copy in text mode, again CRLF. **Rerun them in an extraction of the
+arrival archive on a POSIX file system (Linux, macOS, or WSL with a Linux
+file system), never in this directory:**
+
+```sh
+git show "c5612efa1:docs/incoming/<archive>.zip" > x.zip   # check its SHA-256 (table above) first
+unzip x.zip -d <scratch>; cd <scratch>/<package root>
+```
+
+| Source | Commands, in the package root | Result at placement (Windows 11, CPython 3.14.4, on copies) |
+|---|---|---|
+| 16 | `python3 -I -B verify_release.py --verify-only`, then `--replay` (needs SymPy 1.14.0 for the independent checker) | native: FAIL on (a); `--self-test-types` PASS. With the modes presented as POSIX in a scratch copy: verify-only and full replay PASS in both Python modes (55 s / 53 s) |
+| 16 | `python3 -I -B evidence/check_unwrapped_family.py --expect evidence/expected_check_results.json`; `python3 -I -B evidence/independent/check_audit.py --expect evidence/independent/expected_audit_receipt.json` (SymPy 1.14.0); `jacobi/check_jacobi_addendum.py --expect jacobi/expected_jacobi_receipt.json` in the layout the verifier stages (a copy of `jacobi/` with `inherited-family/` = a copy of `evidence/`); each also with `-O` | all PASS, receipts byte-identical (1.0/0.5 s, 5.6/22.8 s, 1.2/1.3 s) |
+| 17 | `python3 -I -B verify_release.py --verify-only`, then `--replay` | native: FAIL on (a), and the replay on (c); `--self-test-types` PASS. With both bypassed: PASS (15 s / 13 s) |
+| 17 | `evidence/check_reduction.py`, `evidence/check_full_counterfamily.py`, `evidence/audit_bootstrap/check_bootstrap.py`, `evidence/audit_bootstrap/check_counterfamily.py`, `smooth/check_smooth_radix.py`, each `python3 -I -B [-O] <script> --expect <receipt>` as in `verification/replay-plan.json` | all PASS (0.4–3.1 s), receipts equal after CRLF→LF |
+| 18 | `python -I -B verify_release.py --manifest-sha256 <digest of MANIFEST.json> --verify-only`, then without `--verify-only`; the package directory must be the working directory's child, as delivered | **native PASS** in both Python modes, the only batch-88 verifier that runs on Windows as delivered. The package supplies no independent digest: authenticate the ZIP against its SHA-256 above; the placement measured `MANIFEST.json` at `6b185cc7f59cdd51af64cdfef151d371eb0d4550e36de1a6f61b778950e8e775` (equal to the shipped `data/18-free83-MANIFEST.json`) |
+| 18 | `python3 -I -B [-O] check_math.py` | PASS (2.8 / 1.7 s), receipt equal to `checks/MATH.normal.json` after CRLF→LF |
+| 19 | `python3 -B verify_release.py`; `python3 -B [-O] replay.py --output <new file outside the package>` | native: FAIL on (b) and (d). With both bypassed: verify PASS (46 files); replay PASS (46 s / 38 s), receipts byte-identical to `checks/replay-normal.json` and `replay-optimized.json` |
+| 19 | `packets/…counterfamily…/check_counterfamily.py --expect CHECKS.json`, `check_tamper.py --expect TAMPER_CHECKS.json`, `packets/…independent-audit…/check_independent.py` (keep the two packets as siblings: the audit checker finds the counterfamily by relative path) | all PASS (1.2–18 s), equal after CRLF→LF |
+| 20 | `python3 -B verify_release.py`; `python3 -B [-O] replay.py --output <new file outside the package>` (mpmath 1.3.0) | native: FAIL on (b); with (b) and (d) bypassed: verify PASS (164 files, 146 packet files, reviewed manuscript excerpts match), replay PASS (86 s / 67 s), receipts byte-identical to `checks/REPLAY.normal.json` |
+| 20 | the eleven checkers listed in `replay.py`, run directly (mpmath 1.3.0 for `check_expansion.py` and `check_inverse.py`) | all PASS in both modes (0.3–9.5 s), equal after CRLF→LF. `packets/square-product82-height-independent-audit-20261004/check_independent.py` hard-codes the author's `/workspace/shared/square-product82-report45-release-20261004`; run it through `replay.py`, which substitutes that one line in a temporary copy (an LF-written copy reproduces the recorded hash `ec3bcf0d…`) |
+
+The bypasses were in-process shims applied only to scratch copies; no
+delivered byte was changed. Do not run the `seal_release.py` tools (they
+reseal a release) or the archive and PDF builders inside an extraction you
+want to keep. Passing these programs supports the implementations and the
+finite fixtures, not the unbounded theorems. The programme's review executed
+none of them.
+
 ## Labels and numbering
 
 Every label carries the prefix `fup:`. The delivered labels are kept with
@@ -765,6 +1251,23 @@ lists every rename (for example E*_r is written 𝓔_A(r), Report 33's e_A(r);
 the log bounds L(p), U(p) are Λ₋(p), Λ₊(p); J_log is I_Bin), and no
 normalization changed. The front-matter notation table (Section 0.3) gained
 rows for t, e, d/d_cell, z/z_quot, U and L and Part V entries in the others.
+
+Parts VI–VIII (batch 88) added the labels of sources 16–20 under `fup:nr:`
+(Report 39, 98), `fup:fd:` (Report 41, 52), `fup:fc:` (Report 43, 59),
+`fup:sp:` (Report 45, 87) and `fup:eh:` (Report 46, 87), the Part labels
+`fup:part:nr`, `fup:part:fd` and `fup:part:cand`, the front-matter table
+`fup:fm:tab:candidates` and Part VIII's letters table `fup:cand:tab:letters`:
+388 new labels, 732 in total. No earlier label was renamed or removed. The
+numbering is unchanged in kind: Theorem 9.1 of Report 39 is Theorem 39.9.1,
+and Part VIII's three sources keep their own numbers (43.k, 45.k, 46.k). The
+sources' `\MF`, `\MFnative` and `\MFo` are `\MFsrcV` and `\MFnatV`, their `\ya`
+is `\yaux` and their `\Pos` is `\pos` (renderings unchanged); Report 46's
+`\Na` and `\Ns`, rendered N_a and N_s, are printed with Reports 43 and 45's
+renderings N_aux and N_strong (the same factors; the one rendering change).
+Report 45's `\input{source_pins.tex}` and `\VerbatimInput{source_rows.txt}`
+are printed in place (the files are shipped in `data/`). Unlike Part V, no
+mathematical symbol of Parts VI–VIII was renamed; their opening notes and
+Table 13 list the collisions.
 
 ## What is claimed and what is not
 
@@ -824,10 +1327,62 @@ rows for t, e, d/d_cell, z/z_quot, U and L and Part V entries in the others.
   count, universal bound, witness bound or global novelty. The 3,536-case
   relaxed scale grid and the auxiliary-only tuples are not compiler
   instances, counterexamples or an unbounded search certificate.
+- **Part VI (Report 39).** For every valid compiler and input, at
+  q = B^(2x+2), W = 2^u, Z = 1, C = W+1, s = t = 1: at least
+  δ₀N/(32L₀ log N) scales with N ≤ r < 2N satisfy every condition of Part V's
+  predicate except 2^p ≡ X (mod 4Y(X+1)+3) (Theorem 39.7.1); every odd-index
+  hit of that congruence needs the Jacobi symbol (w/(4q³+3)) = −1 (Lemma
+  39.8.1); on the thinned progressions r = h₀j or 4h₀j infinitely many scales
+  pass every other condition and miss the congruence (Theorem 39.9.1). So the
+  raw29 main projection and the positive21 main norm are nonredundant on
+  positive tuples, with residual sums r_main² and [r_main(2D − r_main)]². Also
+  ts < 3C on the unwrapped odd sector. Not claimed: a full negative zero, a
+  congruence hit, unrestricted logical independence, global positivity, a
+  complete parametrization, density bounded away from zero, uniformity in a
+  growing compiler or q, a feasible threshold, a materialized genuine tuple.
+  Part V's yes-or-no question and the symbol −1 sector are open. The
+  existence argument uses two analytic estimates from the literature and was
+  **not recertified** by the programme's review, which checked the Jacobi
+  filter.
+- **Part VII (Report 41).** Deleting the first-index quotient from the
+  tree's normalized85 and ordinary86 polynomials gives normalized81
+  (46M+35A, degree 168) and ordinary82 (45M+37A, degree 124), 17 witnesses;
+  for every genuine compiler instance and every input, both have full
+  positive zeros with all six retained factors +1 and nonintegral restored
+  h (remainder 25u−1) (Theorem 41.1.1), so with the empty-set compiler they
+  accept a rejected input; an optional smooth radix (singly exponential in x)
+  and the earlier reduction and scaled subsystem family. Not claimed: a
+  materialized tuple, a new universal bound, any count as a lower bound over
+  all circuits, anything about raw29/positive21 or the parents' validity.
+  Its "85-operation minimum" is now 84 (dated note). The tree has transferred
+  the family to an 80-operation deletion from the 84-operation polynomial
+  (refuted).
+- **Part VIII (Reports 43, 45, 46).** Report 43: on genuine slices every full
+  positive zero of the free-coefficient 83 candidate has N_aux = z² with
+  z² | Δ (Theorem 43.3.1); on squarefree Δ the main, input and auxiliary
+  factors are 1 (Theorem 43.4.4); a represented-norm classification for even
+  A; a weakened-rank auxiliary completion; power-of-17 and power-of-11 inner
+  families with p ≠ R and an exact interface equivalence. Not claimed: a
+  solution at a rejected input, a normalization of all factors, an 83-operation
+  representation. Its "open" language question is answered by the tree
+  (`8cf6239b6`, refuted by another family). Report 45: the square/product 82
+  candidate has infinitely many positive zeros at every input on every
+  inherited compiler (Theorem 45.1.1), a second construction of the tree's
+  `dc03992d9` theorem; not claimed: anything about a different compiler, a
+  bound, priority. Report 46: for each of Report 45's outer tuples the
+  displayed completion has height ψ_{Δc²}(R) with bit length
+  (R−1)(2p(p+y+1)−1)+1, an exact cubic in R (Theorem 46.1.1), and is the
+  unique height minimizer with the outer tuple fixed (Theorem 46.1.2); no
+  even-main-rank outer tuple extends to the free-coefficient interface
+  (Theorem 46.1.3); a convergent forward log-height series and analytic
+  inverse algorithms. Not claimed: a global certificate minimum, generic
+  soundness, double-exponential growth in the input's bit length, a canonical
+  inverse transseries, interval certification. The analytic Sections 46.7–46.8
+  were **not reviewed** by the programme.
 
 ## Relation to the research tree, its reviews and other reports
 
-The six sources import or cite files of
+The eleven sources import or cite files of
 `Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/`
 (and `Papers/1980/`) at their pins. Section 0.4 of the article records the
 overlaps: the norm cancellation behind the exact degrees is identity (4) of
@@ -912,6 +1467,36 @@ positive21 interfaces of Part V; within this report, Part V continues Section
 33.B (`fup:ir:app:raw`), whose closing open task now carries a dated [write]
 note: re-scoped to the predicate of Theorem 37.5.1, not closed.
 
+**Batch 88 (Parts VI–VIII).** The programme reviewed all five archives in
+`native-stream-queue/review_incoming_arithmetic_reports_39_46.md` (commit
+`5d8889017`, 21:43 PDT on 3 October 2026, with a `.json` receipt), within a
+stated scope: all 408 members authenticated, the five READMEs and eleven
+further notes read in full, no archived program executed, no test count
+reproduced; "not approval of every manuscript, analytic appendix or saved
+diagnostic". Not certified there: Report 39's analytic existence argument;
+Report 43's inner-family and other squarefree addenda; Report 45's archived
+receipts (not replayed); Report 46's analytic expansions. The article prints
+its findings in the notes opening each Part and source. In the same commit the
+tree transferred Report 41's family to its 84-operation polynomial,
+`complete80_first_index_deletion_collapse.md` (80 = 45M+35A, 17 witnesses,
+exact degree 180, refuted on every input; review
+`review_complete80_first_index_deletion_collapse.md` passes). Two further tree
+results bear on Part VIII and postdate the sources' pins:
+`free_coefficient83_prime_outer_collapse.md` (`8cf6239b6`) refutes the
+free-coefficient 83 candidate that Report 43 calls open, and
+`complete82_all_input_outer_collapse.md` (`dc03992d9`, 18:26 PDT) proves Report
+45's theorem by another construction; Report 45's audit observation is dated
+about forty minutes earlier, and neither text cites the other. The record is
+still 84 operations; Table 3 of the article lists eleven polynomials at or
+below it, because "82" and "83" each name several (the review's own table has
+six rows). The odd-quotient, projection and Pell-growth lemmas re-proved in
+Reports 39–46 are Report 33's Lemmas 33.3.2–33.3.3 and standard estimates;
+Report 39 restates Part V's predicate and reconstruction; the small-norm lemma
+is proved in both Reports 43 and 46. No other collection report treats these
+candidates; the five Langton-ant reports of the same arrival are in
+`../periodic-turmite-first-revisits`. Part V's open sector list (Section 37.9)
+carries a dated note re-scoping it by Part VI; the question stays open.
+
 ## Other discrepancies and hazards
 
 - **Stale upper-bound prose, kept byte for byte.** `11-grill-poly-arithmetic-README.md`
@@ -955,6 +1540,50 @@ note: re-scoped to the predicate of Theorem 37.5.1, not closed.
   `20aafb9a5` (above).
 - Source 15 has no licence file; the repository's MIT-0 applies to its
   authored files. It contains no third-party material.
+- **Stale statements of sources 16–20, kept byte for byte** (dated [write]
+  notes in the article): Report 41's abstract and
+  `17-index-deletion-evidence-README.md` (line 6) give the record as 85
+  operations, correct at its pin `3f4a974a5` (13:55 PDT) but 84 since
+  `20aafb9a5` (15:08 PDT); Report 43's abstract, its unshipped delivery README
+  and the shipped `data/18-free83-MANIFEST.json`,
+  `data/18-free83-checks-MATH.normal.json`, `data/18-free83-checks-QA.json`
+  and `data/18-free83-source-receipts-inner_replay.json` record the
+  ordinary-input language as "OPEN", superseded by `8cf6239b6`; Report 45
+  repeats that it is open (Section 45.1.2, question 3);
+  `16-nonredundant-evidence-README.md` (line 9) says no candidate has been
+  proved to satisfy or fail the omitted congruence, which was true of its
+  first stage only (Report 39's Jacobi addendum proves infinitely many
+  failures, as the manuscript itself says). Report 43's
+  `18-free83-source-structure-squarefree_swapped_norm_obstructions.initial.md`
+  leaves the f > 1 case "open here"; the final version beside it and Theorem
+  43.4.4 cover it. Report 46's author packets keep old "pending audit" wording,
+  which the completed audits supersede (as Report 46 says).
+- **A reconstructed proof.** Report 45's research proof and audit packet were
+  recovered after a workspace replacement; `data/19-square-product82-RECOVERY.json`
+  and `data/19-square-product82-counterfamily-HISTORICAL_LOST_RELEASE.json`
+  record fresh hashes beside lost-release pins that no longer match, by
+  design. The reconstruction is authenticated by those fresh hashes and the
+  fresh independent audit, not by the historical hashes.
+- **Limited review chains, as the sources state.** Report 41's smooth-radix
+  corollary and its final-release edits had only a coordinating review; Report
+  39's independent review could not re-fetch the complete77 source from the
+  network (a cache miss), so that file has one network authentication.
+- **Absolute author paths.** Report 46's
+  `data/20-cert-height-independent-audit-SOURCE_BINDINGS.json` and one checker,
+  and Report 41's unshipped reviewer ledgers, name `/workspace/shared/…` paths
+  of the author's machine; Report 46's `replay.py` handles the checker (see the
+  rerun table).
+- **Input files of Report 45.** `data/19-square-product82-source_pins.tex` and
+  `data/19-square-product82-source_rows.txt` are the files Report 45's
+  manuscript reads with `\input` and `\VerbatimInput`; the article prints their
+  contents in place.
+- Sources 16–20 have no licence file; the repository's MIT-0 applies to their
+  authored files. They contain no third-party material; the two analytic
+  estimates of Report 39 and DLMF 27.9 are cited, not copied.
+- No staged file of sources 16–20 contains a CR byte, and none exceeds 1 MB
+  (the largest is `data/18-free83-SOURCE_INVENTORY.json`, 30,386 bytes). The
+  longest shipped path, `code/17-index-deletion-evidence-audit_bootstrap-original_sources-check_counterfamily.py.txt`
+  under `C:\ProveIt\`, has 185 characters.
 
 ## Building the PDF
 
@@ -973,3 +1602,15 @@ in Section 25.12; no label, macro, package or bibliography entry) take it to
 126 pages with no errors, warnings or overfull boxes (its nine underfull
 lines are in the front matter's tables, which precede both notes); the note in Part I moves every later page by
 one, and its page (printed page 20) was rendered and inspected.
+
+At the batch-88 write (Parts VI–VIII; 3 October 2026) the build has no
+errors, no undefined references or citations, no multiply defined labels, no
+duplicate PDF destinations and no overfull boxes; it gives 242 pages (126
+before). It has 22 underfull lines (9 before): 18 in the front matter's
+source and notation tables and 4 in Report 46's bibliography (long file
+names), and one enumitem "negative labelwidth" warning from the `description` list of Report
+46's Appendix 46.B (`leftmargin=0pt`, as delivered). The title page, the
+candidates table (printed page 22), Part V's re-scoping note (132), the first
+pages of Parts VI and VIII (135, 178), Part VIII's letters table (179), the
+residual table of Part VI (153), Report 45's row list (212) and Report 46's
+second small-norm proof (233) were rendered and inspected.
