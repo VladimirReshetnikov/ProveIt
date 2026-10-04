@@ -215,6 +215,17 @@ Its generic compiler still assumes a bijective chart description; witness
 and square counts are not arithmetic operation counts. These scoped reviews
 do not certify an implemented rule-to-chart compiler or improve universality.
 
+The [five-register countdown compiler](Papers/research-wip/native-stream-queue/matrix193_countdown_rows.md)
+combines four synchronized row coordinates with one signed counter starting
+at ordinary x. Its 97 choices force exactly x loader steps before the tile
+history, with no phase register or external Pell-index condition. The
+complete fixture local source costs **2065 = 1115M + 950A**, degree 194;
+initialization costs zero gates and the endpoint costs seven. The
+[independent review](Papers/research-wip/native-stream-queue/review_matrix193_countdown_rows.md) checks the full source,
+all-length proof and generic-versus-fixture costs; normal/optimized replays
+pass. Unbounded fixed-arity packing remains unpaid, so the universal bound
+stays 84.
+
 The [counted-suffix lift](Papers/research-wip/native-stream-queue/matrix195_counted_suffix.md)
 gives an exact ordinary-input target for **195 integer matrices in dimension 7**.
 A three-coordinate control block forces exactly x suffix letters, eliminating
