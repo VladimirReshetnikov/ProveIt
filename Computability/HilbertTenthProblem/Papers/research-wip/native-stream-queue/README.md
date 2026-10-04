@@ -39,6 +39,15 @@ native valuation; fresh normal/optimized receipts pass. **Occurrence on
 a genuine compiler history remains unproved**, so gamma83 is unresolved
 and the established universal polynomial bound remains **84**.
 
+The [native prime-index reductions](complete83_gamma_native_prime_scaling.md)
+prove exact half-binomial residue identities for every odd prime, including
+paired-prime-factor removal and a specialization to the canonical compiler's
+five-power congruence. The [independent review](review_complete83_gamma_native_prime_scaling.md)
+checks the exceptional residue, actual compiler hypotheses and two precisely
+scoped valuation counterexamples; normal/optimized replays pass. These are
+native residue filters, with no prescribed-history realization or bound on
+the full order gcd. The 83-operation language remains unresolved.
+
 The [native ternary exclusion](complete83_gamma_native_ternary_exclusion.md)
 gives an explicit digit class with **v3(m)=2 exactly**, so both gamma83
 power tests fail there for every number of squarings. The [independent review](review_complete83_gamma_native_ternary_exclusion.md)
