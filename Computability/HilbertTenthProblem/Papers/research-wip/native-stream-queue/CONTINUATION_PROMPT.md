@@ -537,6 +537,16 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [edge-hat packing rewrite](matrix193_hat_packing_scout.md)
+> reduces the complete matrix source to **2,390=1,134M+1,256A operations**,
+> with150 positive witnesses and unchanged exact degree35,587. Shared fixed
+> cardinality polynomials replace97 individual edge shifts. The
+> [independent review](review_matrix193_hat_packing_scout.md) proves the full
+> all-ring identity, including every native input and all twenty residuals;
+> normal/optimized receipts and independent modular comparisons pass. This
+> saves72 operations on the matrix route and preserves every supplied coordinate.
+> It does not yet include the separate146-witness chart or change universal84.
+>
 > The [bounded-high-quotient chart](matrix193_bounded_high_output.md)
 > reduces the balanced matrix construction from150 to **146 positive witnesses**
 > at the same **2,462 operations** and exact degree35,587. Four signed high
