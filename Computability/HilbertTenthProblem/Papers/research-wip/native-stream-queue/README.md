@@ -72,6 +72,20 @@ checks all83 rows by a formal rational substitution and expands the complete
 so this remains an arithmetic obstruction, not a compiler counterexample.
 Fresh installed normal/optimized receipts pass; the universal bound stays84.
 
+The [uniform binary timed-orbit certificate](timed_binary_shuttle18_projection.md)
+reduces an explicit source18 polynomial from **39 operations and four natural
+witnesses to 31=8M+23A and two witnesses**, still at exact degree four.
+Spatial equations recover phase and cycle; nonnegative external time proves
+the restored cycle is natural. Shared clocks, a duplicate square and an
+integer-valued Boolean term provide the remaining savings. The
+[independent source review](review_timed_binary_shuttle18_projection.md) and
+[mathematical challenge](review_timed_binary_shuttle18_projection_math.md)
+verify the full maps, corrections and required domains. All six complete
+sources are saved. Normal/optimized installed replays pass. The result
+retains nonnegative-real witness exactness at integer external inputs;
+the final polynomial is not nonnegative on the whole real orthant.
+This is a decidable orbit component, so the universal bound stays **84**.
+
 The [publication integration review](review_reports_publication_20261003.md)
 finds no conflict in the checked sandpile and particle-report additions.
 All 24 selected Reports 35–38 archive members and 119 placed particle
