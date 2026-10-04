@@ -8,16 +8,19 @@ extended on 3 October 2026 (batch 89) by Parts VI and VII, which print two
 further manuscripts pinned to commit `2b7b388ba` and placed by commit
 `23adb85f9`; extended on 4 October 2026 (batch 90) by Part VIII, which prints
 one more manuscript pinned to commit `8dc2592e9` and placed by commit
-`12076b2e8`. Prepared for Vladimir Reshetnikov.
+`12076b2e8`; extended on 4 October 2026 (batch 95) by Part IX, which merges two
+more manuscripts, pinned to commits `722337445` and `bd1de458b` and placed by
+commit `350b9a954`. Prepared for Vladimir Reshetnikov.
 
 ```
 article.tex      the report, standalone LaTeX with an internal bibliography
-article.pdf      the compiled report, 143 pages
+article.pdf      the compiled report, 212 pages
 README.md        this guide
 02-birthday-cutoffs-SOURCE_AUDIT.md                source 02's source and novelty audit, as delivered
 10-cuts-replacement-PROOF_STATUS.md                source 10's proof and provenance status note, as delivered
 11-choiceless-universality-SOURCES_AND_STATUS.md   source 11's sources, scope and provenance note, as delivered
 12-named-symmetries-source_audit.md                source 12's source and proof audit, as delivered
+14-surreal-only-nbg-SOURCES_AND_STATUS.md          source 14's sources, provenance and proof-status audit, as delivered
 code/            02-birthday-cutoffs-verify_finite.py            (source 02)
                  05-birthdays-recover-sets-check_finite_models.py (source 05)
                  05-birthdays-recover-sets-build.sh              (source 05, see "Build")
@@ -30,6 +33,8 @@ code/            02-birthday-cutoffs-verify_finite.py            (source 02)
                  11-choiceless-universality-verify_finite.py     (source 11)
                  12-named-symmetries-verify_orbit_spectra.py     (source 12)
                  12-named-symmetries-Makefile                    (source 12, see "Build")
+                 14-surreal-only-nbg-verify_finite.py            (source 14)
+                 14-surreal-only-nbg-build.sh                    (source 14, see "Build")
 data/            02-birthday-cutoffs-verification.json, -verification_summary.tex, -build.json
                  05-birthdays-recover-sets-finite_checks.json, -repository_audit.json
                  06-hereditary-size-orientation-finite_checks.txt
@@ -38,9 +43,10 @@ data/            02-birthday-cutoffs-verification.json, -verification_summary.te
                  10-cuts-replacement-finite_checks.json, -build_validation.json
                  11-choiceless-universality-verification_results.json
                  12-named-symmetries-verification_results.json
+                 14-surreal-only-nbg-verification.json, -build_validation.json
 ```
 
-Every label in `article.tex` carries the prefix `hset:` (372 labels). Batch 37
+Every label in `article.tex` carries the prefix `hset:` (523 labels). Batch 37
 added `hset:rem:cutoffgaps` and changed no other number. Batch 89 added 140:
 65 `hset:zr:` labels in Part VI (source 10's 42 delivered labels with the
 prefix, its ten questions, and thirteen for the added numbered theorems,
@@ -49,7 +55,11 @@ convention, remarks and sections), 74 `hset:kw:` labels in Part VII (source
 `hset:q:axiomatics` on the existing Question 21.7. Batch 90 added 76, all
 `hset:ns:` labels in Part VIII: source 12's 51 delivered labels with the
 prefix, its twelve questions, and thirteen for the added part, sections,
-convention, remarks and subsections. No earlier label was
+convention, remarks and subsections. Batch 95 added 151, all `hset:sf:` labels in
+Part IX: its part, sections, results, equations, conventions, remarks and twenty
+questions, labelled at the write (a result proved by both sources carries one
+label, so the delivered labels, 76 and 70, are not kept one to one); the dated
+notes of batches 93 and 95 in earlier parts add none. No earlier label was
 renamed or removed and no earlier number changed. All 69
 labels of the delivered base text (source 09) survive with that prefix; three of
 them (`hset:prop:powerset`, `hset:sec:extensions`, `hset:app:verification`) now
@@ -199,6 +209,79 @@ Part III); its ambient universe `U` is `𝒰`; its centralizer `H = Aut_Γ(A)` i
 involutions `σ`, `τ` and its `c`, `C_n`, `B(q)`, `D_k`, `I`, `V` keep their
 letters, with the readings to avoid listed in the convention.
 
+## A ninth part (batch 95)
+
+| Source | Batch-95 manuscript | Archive (arrival `ec91f8c7c`) | Pin | Placement | Printed as |
+|---|---|---|---|---|---|
+| **13** (base) | 01, *Surreal and Omnific Foundations: Bi-Interpretations with Set Theory and the Boundary at Classes* ("Research study prepared for Vladimir Reshetnikov", 4 October 2026) | `surreal_omnific_foundations.zip` (566,548 bytes) | `722337445` | `350b9a954` | Part IX, Sections 67–80, the spine; labels `hset:sf:`; prefix `13-omnific-foundations-` reserved, no file shipped |
+| **14** | 02, *Surreal-Only Foundations and the Set–Class Boundary: Explicit axiomatizations, omnific quotient birthdays, bi-interpretations, and the obstruction at NBG* ("Prepared for Vladimir Reshetnikov", "developed with ChatGPT", 4 October 2026) | `Surreal_Only_Foundations_and_NBG.zip` (381,702 bytes) | `bd1de458b` (search excerpts at `fb2287290`) | `350b9a954` | Part IX, inserted by subject and marked "(source 14)"; files `14-surreal-only-nbg-` |
+
+Both archives were staged into the shared index while the batch-94A placement
+`ec91f8c7c` was being committed, so that commit added them although its message
+does not mention them. All three pins are ancestors of the placement, and at each
+this report's `article.tex` was the one of Parts I–VIII. The two manuscripts answer
+one assignment independently (shared 8-grams under 0.6 %, almost all
+bibliography). Not shipped (they survive in `ec91f8c7c`): source 13's manuscript
+(`surreal_omnific_foundations.tex`, 2,765 lines, 76 labels, 12 questions; a 34-page
+PDF) and `README.txt`; source 14's manuscript (`article.tex`, 1,836 lines, 70
+labels, 11 questions; a 27-page PDF), `README.md` and `SHA256SUMS` (8 of 8 entries
+verified at placement). Section 80 holds the non-claims and provenance.
+
+**Why here.** Both re-derive Theorem 18.1 (`hset:thm:chy`), whose status note
+says its proof "is not an audit" of the Chen–Hamkins–Yang axiomatization, and give
+it a theory-level form; both bear on Question 21.7 (`hset:q:axiomatics`) and on
+Question 21.2 ("Minimal signature"). The alternatives considered at placement were
+a part of definable-surreals-and-omnific-integers (whose Part III uses a different
+signature, without a map back), the foundations report, or a new report.
+
+**How the merge reads.** Source 13 is the base because its omnific theory uses the
+weaker language `{0,1,+,−,·,<,≺_b}`, where source 14 needs the quotient birthday
+`h(a,b) = b(a/b)`. Printed once, credited to both (Section 67 and the result
+headings name the duplicates): the graph interpretation (Theorem 71.1 = 14's
+Theorem 71.3), the round trip (Theorem 72.2 = Proposition 72.4), the round-trip
+axiom recipe (Theorem 73.1 = Lemma 73.2), the theories (Theorem 73.4 and Theorem
+73.6), fractions (Proposition 74.3), the `RCF` obstruction (Proposition 74.10), the
+NBG obstruction (Theorem 75.2, proved by 14's sharper reflection Lemma 75.1, with
+13's proof as second proof), the diagonal (Theorem 75.7) and the class lift
+(Theorem 76.5 = Theorem 76.6, with 14's arbitrary-class round trip). Only in 13:
+native omnific bit storage (Theorem 70.2), the tuple codec, definability transfer
+(Corollary 74.1), fraction birthdays from `≺_b` (Corollary 74.4), the automorphism
+obstruction for the pure ring (Proposition 74.12, Corollary 74.13), the GBC model
+with countably many sets and ℵ₁ classes and its no-go (Lemma 75.5, Theorem 75.6),
+the KM diagonal (Proposition 75.9). Only in 14: the quotient-birthday route and
+`OA_qb` (Section 74.3), finite-axiomatizability transfer (Lemma 75.4), packing
+(Lemma 76.1), inclusion preservation of class realizations, birthday-bounded ⇔ set
+(Theorem 77.1), cuts and branches, the inaccessible example, and the only
+program.
+
+**Added in this merge, with proofs.** Proposition 74.5: the quotient birthday is
+definable from unary birthday on `Oz` (from 13's Corollary 74.4), which answers
+14's main open question, Question 79.6, positively. Proposition 74.2: a structure
+on `No` or `Oz` with set-definable primitives is bi-interpretable with `V` by a
+comparison sending each number to codes of itself exactly when it defines `≺_b` and
+the ring operations. Proposition 74.14: 13's prose argument that the pure omnific
+ring has no bi-interpretation with `V` on the canonical numbers, made a numbered
+proposition with its three steps written out. Lemma 73.8 and Corollary 76.7: the
+`GBc`, KM and `ETR` class lifts that both sources sketched. Remark 74.8: 14's
+O1–O4 is an instance of the recipe, not an alternative to it. The Hamkins–Yao
+attribution (13's "Section 4") was checked against arXiv v2 and is correct.
+
+**Renamed in Part IX** (Convention 67.2, each with the tempting false reading). 13's
+birthday precedence `≺` is `≺_b` (this report's `≺` is elementary substructure);
+14's birthday `𝔟` is `b` and its structure `𝒮` is `B`; 13's domain `D` is `𝐃`;
+13's interpretations `I_D`, `K_D` are `𝓘_𝐃`, `𝓙_𝐃`; 13's comparison `C_D` is
+`Cmp_𝐃`, its predicate `B(a,b,c,d)` is `FB` (not `B`, `B_λ`, dsn's pairing `B(a,b)`
+or Part VIII's `B(q)`), its unary code class `C` and 14's packed codes `D` are `UC`,
+its block interval `I_β` is `W_β`, its map code `H_h` is `Y_h` (not `H_κ`), its base
+`K` is `ν_cd`, its shear `θ`, coefficient `c_δ` and ordinal `Ω` are `ϑ`, `co_δ`,
+`o_δ` (not the conjugation `c` or dsn's omega map `Ω`); 14's pairing `π` is source
+06's `ϖ`, its bound `Λ(δ) = (δ+δ)² + δ + 1` is `Λ_14` (not `Λ(θ) = θ² + θ`), its
+ordinal code `O(α)` is `c^ord_α` (not `OC`), its `Coll(c,a)` is `col(c) = a` (not
+the collector `Coll(C)`), its `Code`, `∼_*`, `ε_*` are `Valid`, `Eq`, `Mem`. Class
+theories follow the foundations report (Convention 68.1): `GB` no choice, `GBc`
+set Choice, `GBC` Global Choice; 13's "GB" is `GB`, 14's "GB" (printed GBc) is
+`GBc`.
+
 ## What the report claims
 
 Numbers refer to the built `article.pdf`. `B_λ = (No_{<λ}; 0,1,+,−,·,<,b)` with
@@ -317,11 +400,62 @@ Numbers refer to the built `article.pdf`. `B_λ = (No_{<λ}; 0,1,+,−,·,<,b)` 
     pure-surreal scheme implies `R_1` (Corollary 63.4). For finitely many named
     permutations Theorem 58.1 is not new in ProveIt: it is Theorem 5.1(2) of
     naming-elementary-embeddings (Remark 54.4).
+13. **Part IX: surreal-only foundations (sources 13 and 14).** In `B` and natively
+    in `(Oz; 0,1,+,−,·,<,≺_b)`: ordinals, birthdays, prefixes and signs are
+    definable (Lemmas 69.1–69.3; the `Oz` case uses initiality); every subset of an
+    ordinal α is stored in one omnific integer of birthday `ωα+ω`, one ω-block per
+    bit, gaps filled with minus (Theorem 70.2); pointed well-founded extensional
+    graph codes interpret `(V,∈)` (Theorem 71.1; over ZF the range is `HWO`,
+    Proposition 71.5), and a signwise comparison recovers every original number
+    (Theorem 72.2), so both structures are parameter-free bi-interpretable with
+    `V` (Corollary 72.3). A general recipe (Theorem 73.1) gives recursively
+    axiomatized theories `T_No`, `T_Oz` (13) and `SA_rt` (14), each
+    bi-interpretable with ZFC, not finitely axiomatizable (Theorems 73.4, 73.6);
+    every set-theoretic relation on `No` or `Oz` is `≺_b`-definable, formula by
+    formula (Corollary 74.1), in particular the fraction-birthday predicate
+    (Corollary 74.4) and hence 14's quotient birthday (Proposition 74.5); 14's
+    `OA_qb` in `{0,1,+,−,·,<,h}` is bi-interpretable with ZFC (Theorems 74.6,
+    74.7). The pure field interprets no Robinson arithmetic (Proposition 74.10);
+    the pure ordered ring `Oz` defines neither ordinals nor `≺_b`, even with
+    parameters (Corollary 74.13), and has no bi-interpretation with `V` on the
+    canonical numbers (Proposition 74.14). Assuming `Con(ZFC)`, no theory uniformly
+    interpretable in ZFC interprets NBG (Theorem 75.2, Corollary 75.3); assuming
+    `Con(GBC)`, no uniform bi-interpretation of GBC has a forward domain coded by
+    finitely many original sets (Theorem 75.6, via a GBC model with countably many
+    sets and ℵ₁ classes, Lemma 75.5); no elementary evaluator codes every class in
+    GB, and no formula does in KM (Theorem 75.7, Proposition 75.9). Retaining
+    classes of numbers, a two-sorted lift is bi-interpretable with GBC (Theorem
+    76.5), with `GBc`, with KM and with `GBC + ETR` (Corollary 76.7), and preserves
+    inclusion of class realizations; in GB a class of surreals is a set iff
+    birthday-bounded (Theorem 77.1). For `𝐃 = No` the structural theorems are
+    Theorem 18.1 again (Remark 67.3).
 
 ## What the report does not claim
 
 Section 20.6 lists every non-claim of sources 02–09, and Subsections 39.4,
-53.3 and 66.4 those of sources 10, 11 and 12; none was dropped.
+53.3, 66.4 and 80.6 those of sources 10, 11, 12, 13 and 14; none was dropped.
+
+- **Part IX.** Sources 13 and 14 are unrefereed, AI-assisted (14 with ChatGPT),
+  not Lean- or Rocq-checked, and claim no priority; the global theorem is
+  Chen–Hamkins–Yang's, and neither source verifies their intrinsic axioms, so
+  `T_No`, `T_Oz`, `SA_rt`, `OA_qb` are round-trip axiomatizations built from the
+  interpretation, not the announced theory, and are not complete, categorical or
+  finitely axiomatized. `HWO` is the limit of this decoder only; definability
+  transfer is per formula, with no truth predicate; the pure-`Oz` result excludes
+  only the canonical number side, not every interpretation of set theory; rigidity
+  is for the actual universe; the NBG obstruction needs "uniformly interpretable
+  in ZFC" and excludes neither external relabelling, added predicates nor a
+  larger universe; the reflection argument is classical (Hamkins–Yao, Section 4);
+  the class lift keeps a class sort; GB without set Choice is open; the shear
+  automorphisms answer none of Kaplan–Krapp–Serra's Questions 5.4, 5.6, 5.7; the
+  inaccessible example is not a same-universe solution or a consistency proof;
+  nothing independent of ZFC is decided. Every native `Oz` result, and
+  Proposition 74.5, depend on the omnific sign criterion and initiality, imported
+  from Ehrlich–Kaplan (arXiv v1, §2.2) and Gonshor (Theorem 8.1) and not re-proved;
+  Section 79.4 lists this and the other imported inputs (Hahn lifting after
+  Kaplan–Krapp–Serra, Williams's class-forcing and finite-axiomatizability facts,
+  Lévy reflection, Gödel, Jeřábek, the `(V_κ, P(V_κ))` model). No claim of either
+  source was found wrong. Source 14's finite checks validate finite encodings only.
 
 - **Part VIII.** Source 12 is an unrefereed draft prepared with ChatGPT, not
   Lean- or Rocq-checked; the finite-kernel model and its symmetry method are
@@ -427,6 +561,34 @@ in part, for finitely many named injections, by naming-elementary-embeddings
 (its Theorems 5.1(1), 6.1, 7.5 and 7.7), that Question 65.1 is Question 38.4
 and that report's Question 10.7 for named group actions, and that Question
 65.4 meets that report's Question 10.4. All twelve stay open.
+
+Since batch 93 (dated notes of 4 October 2026, applied with batch 95), Part II of
+naming-elementary-embeddings bears on Part VIII's questions: it answers Question
+65.2 ("actions of arbitrary pure groups at uncountable κ") for countable groups and
+full Replacement (its Proposition 19.2, Theorem 18.2), answers that report's
+Question 10.4 that meets Question 65.4 (its Theorem 15.3) and gives the prescribed
+finitely generated group case (graded hierarchy still open), answers Question 65.8
+in part (its Proposition 19.4, Theorem 19.3, Corollary 19.5), and asks Questions
+65.1, 65.6 and 65.12 again for its own actions (its Questions 23.9, 23.10, 23.12);
+all twelve stay open.
+
+Since batch 95, Part IX adds Questions 79.1–79.20 (`hset:sf:q:`), merging the
+twelve of source 13 and the eleven of source 14 (intrinsic axioms, pure `Oz`,
+selection of codes, native class axioms and proof cost were asked by both).
+Answered inside the report: 14's Question 79.6 (is the quotient birthday
+definable from unary birthday on `Oz`?) positively, by 13's Corollary 74.4
+through Proposition 74.5, with a long definition (a short one is Question 79.5);
+the set-recovery part of 14's Question 79.9 ("Removing Choice") by Theorem 13.2
+(`hset:thm:choice`), already at its pin. Answered in part: Question 79.4 (pure
+`Oz`) by Proposition 74.14 and the collection's arithmetic results (Remark 74.11).
+Re-scoped: Question 79.3 (reducts) by Proposition 74.2, which reduces the
+bi-interpretation form to a definability question. Under the standing rule,
+Section 79.4 lists the inputs imported without proof, and Question 79.13 is GB
+without set Choice. Dated notes record the bearing of Part IX on Question 21.2
+("Minimal signature", whose one-way form is not answered), on Question 21.7
+(`hset:q:axiomatics`, whose comparison with `Et` and `Pack` stays open, the theories
+of Part IX not being the finalized formulations it asks about) and on the status
+note after Theorem 18.1, which stands.
 
 ## Stale statements corrected (Section 1.5)
 
@@ -534,8 +696,46 @@ Example 5.5 (`nee:ex:finite`), with every `R_k` added; its Theorem 61.3 is a
 finite-cutoff, graded counterpart of that report's Corollary 7.9
 (`nee:cor:jointunsafe`, at ℵ₁). Neither is claimed first.
 
-**[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**:
-source 11's double-monomial independence (Theorem 43.1) is the case `K = R`,
+Part II of naming-elementary-embeddings (batch 93, labels `nee:ca:`, pinned to
+`a9ab9a698`, written later and independently) extends Part VIII's finite-cutoff
+group-action results to every kernel bound for countable groups (its Theorem
+18.2: for a finitely generated group named by generators every action keeps
+Replacement iff `cf κ > τ(G)`, the number of conjugacy classes of subgroups;
+Proposition 19.2 with a uniform evaluator), answers that report's Question 10.4
+(commuting permutations, Theorem 15.3), and gives a two-point-orbit witness of the
+separate-names/uniform-evaluator separation (Theorem 19.3). At κ = ω several of
+its results are results of Part VIII, which is prior in the repository: dated
+notes after Remark 54.4, Corollary 58.2 and Theorem 62.3, and after Questions
+65.1, 65.2, 65.4, 65.6, 65.8 and 65.12, record each correspondence.
+
+**[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**
+(Part III, batch 93, labels `dsn:op:`, its source 06): it interprets `(V,∈)`
+parameter-free in `(No; +, ·, <, Oz, Ω)`, a signature without birthday, by the same
+three validity clauses as Part IX but with supports of unit-coefficient series as
+vertex sets (its Theorem 37.1, `dsn:op:thm:V-interpretation`), proves
+`M ≡ N ⟺ 𝔖_Ω^M ≡ 𝔖_Ω^N` and a nested clause (its Theorem 40.4,
+`dsn:op:thm:theory-faithful`), and asks for the missing comparison map (its Question
+42.1, `dsn:op:q:biinterpretation`). A dated note after Theorem 16.5 (batch 93)
+records this. Part IX is the birthday-enriched comparison target that question
+names; it does not answer it, but its Proposition 74.2 shows that the specific form
+asked there is equivalent to the definability of `≺_b` in that signature (Remark
+67.5). Part IX also credits that report's ambient codes and hulls
+(`dsn:thm:bounded-code`, `dsn:thm:hull`) and its `dsn:op:prop:native-omnific`
+(the pure ring `Oz` is bi-interpretable with `(No, Oz)`).
+
+**[omnific-preserving-automorphisms](../../surreal/omnific-preserving-automorphisms/)**
+and **[omnific-diophantine-geometry](../../surreal/omnific-diophantine-geometry/)**:
+Part IX's shear automorphism (Proposition 74.12) is a weaker consequence of
+`opa:thm:parameters` and `opa:sc:thm:undef`, credited; its fraction fact
+(Proposition 74.3) is `odg:thm:fractions`, and `odg:def:cor:arithmetic`,
+`odg:def:thm:realrecovery` show that the pure ring `Oz` has arithmetic strength
+(Remark 74.11). The [foundations](../foundations/) report's GB convention
+(`found:sub:gbconvention`) is Part IX's, its `found:rem:conservativity` is
+Part IX's conservativity paragraph, and its `found:prop:allcuts` is the failure in
+Corollary 77.2.
+
+**[definable-surreals-and-omnific-integers](../definable-surreals-and-omnific-integers/)**
+(Part I): source 11's double-monomial independence (Theorem 43.1) is the case `K = R`,
 `G = {0}` of its Lemma 8.1 (`dsn:lem:cosets`, "Disjoint support cosets");
 Remark 40.4 records this. New beside it are the omnific-integer conclusion,
 the free-algebra calibration and the ZF framing.
@@ -586,10 +786,26 @@ and no urelement theory is formalized anywhere in ProveIt (the formula type
 `Form` of `Logic/FirstOrder/Lean/FirstOrder/Fol.lean` has `∈` and `=` only, no
 atom predicate).
 
+Part IX: only its fraction-field fact (Proposition 74.3) is formalized, as
+`omnific_monomial_clearing`, `surreal_eq_omnific_fraction` and
+`omnificSurrealIsFractionRing` in
+`Algebra/SurrealNumbers/Surreal/Foundations/OmnificSupportBounds.lean` (namespace
+`Surreal.Foundations.SignSequence`), mapped as proved in the formalization ledger;
+source 13 names them correctly and reports no fresh build, and none was made here.
+The finite PA/HF analogy both sources discuss is formalized in
+`Logic/Interpretability/PAHF/` (deductive bi-interpretation of PA with a
+finite-generation HF theory; `AckermannHFCore.lean`). Nothing else of Part IX is
+formalized; sources 13 and 14 propose staged developments (Section 78), none of
+which exists.
+
 ## What was run
 
 - `latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex` (MiKTeX):
-  143 pages (unchanged by the batch-90 reciprocal note after Remark 40.4,
+  212 pages (143 before the batch-95 Part IX and the batch-93 reciprocal notes
+  in Part VIII and after Theorem 16.5; the title page was set
+  `\enlargethispage` and two title-page spaces were shortened to keep its
+  provenance line on the page; 143 was
+  unchanged by the batch-90 reciprocal note after Remark 40.4,
   which changed no label number; 116 before the batch-90 Part VIII;
   115 after the batch-89 write, before its two reciprocal notes;
   62 before batch 89; 61 before the batch-37 Remark 15.9; still 62 after the
@@ -609,6 +825,14 @@ atom predicate).
   reproduced `data/12-named-symmetries-verification_results.json` exactly
   apart from line endings. Its checks cover finite centralizer and witness
   calculations only.
+- Source 14 (batch 95), with Python 3.14.4, on a copy outside the repository:
+  passed in about two seconds and reproduced
+  `data/14-surreal-only-nbg-verification.json` exactly apart from line endings
+  (16,129 prefix pairs, 642 sign bits, 6,400 finite and 4,096 Cantor-normal-form
+  ordinal pairs, 75 increasing DAG candidates, 207 valid rooted graphs, 42,849
+  equality and 42,849 membership comparisons, 961 packing round trips, 511 dyadic
+  sign-birthday and 1,225 fraction-invariance checks, 66,066 diagonal matrices).
+  Source 13 ships no program.
 - All five finite programs, with Python 3.14.4, on copies (commands below). Each
   passed and reproduced its delivered record exactly apart from line endings
   (CRLF on Windows): 02 (65,025 prefix comparisons, 1,538 bits, 173,880
@@ -695,6 +919,38 @@ in source 11's script and record means source 11's manuscript, printed here as
 Part VII. Source 11 shipped no build script; its
 manuscript is `git show 7c0f2d9f9:docs/incoming/Glazer_Surreal_Choice_Research.zip`.
 
+**Source 14 (batch 95): run its program on a copy, never in this directory.**
+`code/14-surreal-only-nbg-verify_finite.py` takes no arguments and writes
+`verification.json` next to itself (its docstring says "Output: verification.json
+next to this script" and calls itself checks "for article.tex", meaning source 14's
+manuscript, now Part IX). For example:
+
+```
+mkdir -p /tmp/s14
+cp code/14-surreal-only-nbg-verify_finite.py /tmp/s14/
+python /tmp/s14/14-surreal-only-nbg-verify_finite.py
+#   compare /tmp/s14/verification.json with data/14-surreal-only-nbg-verification.json
+```
+
+Use normal Python, not `python -O` (the checks are assertions). On Windows the
+regenerated file has CRLF line endings; `diff --strip-trailing-cr` ignores that.
+`code/14-surreal-only-nbg-build.sh` is source 14's delivered build script, kept
+byte-identical: it changes to its own directory and runs `python3 verify_finite.py`
+and three `pdflatex` passes of `article.tex`, then greps `article.log`, all delivery
+names; in the shipped layout it would find no `verify_finite.py` and would build
+this report, not source 14's manuscript; do not run it here. To rerun it as
+delivered, re-extract the archive on a POSIX host:
+`git show ec91f8c7c:docs/incoming/Surreal_Only_Foundations_and_NBG.zip > /tmp/s14.zip`.
+`data/14-surreal-only-nbg-build_validation.json` is source 14's record of its own
+27-page build (pdfTeX 1.40.26, Python 3.13.5), with SHA-256 hashes of its unshipped
+`article.pdf` and `article.tex`; it does not describe this report.
+`14-surreal-only-nbg-SOURCES_AND_STATUS.md` says that "a proof and provenance
+ledger appears in Appendix B" and that "full bibliographic entries ... appear in the
+PDF": both mean source 14's manuscript, whose ledger and bibliography are printed in
+Section 80.4 and in this report's bibliography. Source 13's manuscript is
+`git show ec91f8c7c:docs/incoming/surreal_omnific_foundations.zip`; it ships no
+program.
+
 All programs use the Python standard library only. `diff --strip-trailing-cr`
 ignores the line-ending difference on Windows. The delivered build files
 `code/05-birthdays-recover-sets-build.sh` and `code/09-bounded-arithmetic-Makefile`
@@ -744,3 +1000,21 @@ batch-90 archives in `bcc1a4438`
 for this archive it verified the ZIP hash and read only the delivery README
 (lines 1–71), ran nothing, made no correctness finding, and found finite
 centralizer diagnostics but no arithmetic compiler.
+
+Sources 13 and 14 inspected the repository read-only and modified nothing.
+Source 13 inspected `722337445` (this report, the foundations, definable-surreals
+and omnific-preserving-automorphisms reports, the formalization ledger and the Logic
+README) and records its targeted audit in Section 80.5; every statement in it is
+true at the pin and at the placement (dated note there). Source 14 fetched this
+report's README at `bd1de458b` and saw search excerpts of
+`02-birthday-cutoffs-SOURCE_AUDIT.md` and the definable-surreals article at
+`fb2287290`, as its `14-surreal-only-nbg-SOURCES_AND_STATUS.md` records; its
+statements (CHY credited, no Lean mapping for `hset:` labels) are true. Neither
+built or audited the whole report. The Hilbert's-tenth programme authenticated both
+archives at their arrival in `196e11d19`
+(`Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_new_foundations_f300069cf.md`;
+its "archive 1" is source 14, "archive 2" source 13): bounded reads, nothing run, no
+correction found; source 13's prefix and block arguments check out conditional on
+the imported omnific sign facts; it flagged the cross-source answer to 14's unary
+question as a lead (Proposition 74.5 now proves it) and found no arithmetic
+compiler or operation-count saving (Remark 67.7).
