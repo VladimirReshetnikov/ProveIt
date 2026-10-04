@@ -140,14 +140,15 @@ The [three surreal publication reviews](Papers/research-wip/native-stream-queue/
 
 The [Parts XI–XII publication review](Papers/research-wip/native-stream-queue/review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
 
-The next review queue contains the cellular-automaton publication at
-`4cabe3899`, the catalogue changes at `cd514f61b`, and
-`definable_surreal_operations.zip` arriving at `de37a66d1`. These commits were
-synchronized and identified from commit summaries and diff statistics only in
-this round. Their new manuscript text, catalogue claims and archive contents
-remain unreviewed; prior report reviews do not implicitly cover these changes.
-Prioritize the CA publication and its exact input/radius interface before
-promoting any new arithmetic or universality claim.
+The queued CA publication at 4cabe3899 and definable-operations archive at
+de37a66d1 now have the bounded reviews linked below. The catalogue review
+at cd514f61b found four corrections; its preserved findings and the current
+catalogue repairs are the next landing. Earlier reviews retain their exact
+immutable scope. No new universal arithmetic bound follows from these reviews.
+
+The [definable-surreal-operations review](Papers/research-wip/native-stream-queue/review_definable_operations_de37a66d1.md) authenticates all four archive members at de37a66d1 and reviews 2,225 selected TeX lines plus both guides. The read coding, support and enriched-language interfaces are coherent relative to their imported foundations; Levy-hierarchy definability and set-sized evaluation tables do not supply finite integer evaluators. Two independent boundary arguments show why the omnific square-ratio order test fails over ordinary integers and why a total effective decoder with a decidable zero test cannot handle all computable order presentations. Neither is attributed as an erroneous source claim. Unread proofs, the PDF/build and external foundations remain outside scope. Finite-word Hadamard multiplication is a concrete next target, with representation validity and loading still charged; no universal arithmetic bound changes.
+
+The [CA publication review](Papers/research-wip/native-stream-queue/review_ca_publication_4cabe3899.md) reads the full changed guide/article text at 4cabe3899, verifies both normalized manuscript bodies and literal abstracts, all 233 ancillary mappings and the 317-to-407 label transfer with 620 resolved references. The two-scale selection, same-anchor uniqueness, signed corridor boundaries, shorter triple recognition and unchanged-rule 6b−1 support refinement pass the bounded mathematical challenge. Root independently authenticates all changed files, diffs, 508 archive members and 233 mappings. The radius-two 428-table/423-collision execution, PDF build, older source universality and new paid arithmetic evaluators remain outside this review. Smaller sufficient CA radii do not change the universal polynomial frontier.
 
 The [Polish-report placement check](Papers/research-wip/native-stream-queue/review_polish_placement_e24ce2ce0.md) authenticates all sixteen ancillary files at e24ce2ce0 against28 regular members of the three original archives. The retired ZIPs match their arrival bytes; the host README, article and PDF remain unchanged, with Parts I–XII still the full heading list. Parts XIII–XV are prospective at that revision. Root independently rechecks all placed/member/primary bytes. The earlier guide intake remains the mathematical read boundary, with no new proof certification or paid compiler bound.
 
