@@ -3,10 +3,11 @@
 \usepackage{lmodern}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable}
+\usepackage{array}% Part II notation table
 \usepackage{microtype}
 \usepackage[hidelinks]{hyperref}
 \usepackage{enumitem}
-\hypersetup{pdftitle={Unitary divisor sum colored partitions and their asymptotics},pdfauthor={},pdfsubject={A301981 and A301982; corrected equivalents, exact saddles, and an RH criterion}}
+\hypersetup{pdftitle={Unitary divisor sum colored partitions and their asymptotics},pdfauthor={},pdfsubject={A301981 and A301982; corrected equivalents, exact saddles, and an RH criterion; Part II: two-sided oscillation, liminf 0 and limsup infinity}}
 \setlength{\emergencystretch}{2em}
 \setlist{nosep}
 \newtheorem{theorem}{Theorem}[section]
@@ -30,13 +31,17 @@
 \numberwithin{equation}{section}
 \title{Unitary divisor sum colored partitions\\and their asymptotics}
 \author{Research article and reproducibility companion}
-\date{2 October 2026}
+\date{2 October 2026\\[2pt]\small Part~II: 4 October 2026 (UTC)}
 \begin{document}
 \maketitle
 \begin{abstract}
 The products defining OEIS A301981 and A301982 have color multiplicities equal to the sum of the unitary divisors. Their recorded pure stretched-exponential equivalents are false: neither coefficient-to-model ratio is eventually bounded above and below by positive constants. A least-height-zero argument supplies the necessary noncancellation, and an Abelian implication transfers coefficient assumptions to Mellin holomorphy. For each sequence separately, a logarithmic error of order $O_\eps(n^{1/4+\eps})$ for every $\eps>0$ is equivalent to the Riemann hypothesis. Unconditionally the error is $o(n^{1/3})$ and cannot be $O(n^{1/4-\eps})$ for any $0<\eps<1/4$. We give a corrected multiplicative equivalent that evaluates the exact product at the explicit point $(2A/n)^{1/3}$, an all-fixed-order expansion using the exact saddle and cumulants, and shrinking inverse-threshold brackets. An off-center Hermite version gives the same fixed-order and inverse accuracy at an explicit evaluation point, without an inner saddle solve. The arguments apply established Mellin and saddle methods to these two specific products. They neither prove nor disprove the Riemann hypothesis, and they require no simplicity of zeta zeros or infinite zero-residue expansion.
+
+\emph{Part~II} (added 3 October 2026) answers the third further question of Part~I. For each sign, $\liminf a_n^\pm/m_n^\pm=0$ and $\limsup a_n^\pm/m_n^\pm=\infty$: the logarithm of the ratio exceeds a positive multiple of $n^{\sigma_*/3}(\log n)^{m-1}$, and falls below a negative one, infinitely often, where $s_*=\sigma_*+i\tau_*$ with $\sigma_*\ge3/4$ is the surviving Mellin pole of Part~I and $m$ its order. Hence both centered logarithms are $\Omega_\pm(n^{1/4})$, and the error of inverting either pure model is $\Omega_\pm((\log y)^{7/8})$. The lower constants are explicit in the leading Laurent coefficient at that pole. The method is Landau's positivity principle; no Riemann hypothesis, simplicity of zeros or sum over zeros is used.
 \end{abstract}
 \tableofcontents
+
+\part{Corrected equivalents, exact saddles, and an RH criterion}\label{udp:part:one}
 
 \section{The two products and the conclusions}\label{udp:sec:results}
 A positive divisor $d$ of $m$ is unitary if $\gcd(d,m/d)=1$. Write
@@ -189,6 +194,28 @@ $\phi_t$, $\phi$ & the characteristic function \eqref{udp:eq:char}; $\phi(v)=cv^
 \end{center}
 \end{writenote}
 
+\begin{writenote}[Added 3 October 2026, batch~86]
+Since 3 October 2026 this report has two Parts. Part~\ref{udp:part:one}
+(Sections~\ref{udp:sec:results}--\ref{udp:sec:questions}) is the batch-77
+manuscript described in the preceding note, printed as before: its
+sections, equations, theorems and labels keep their numbers, so
+``Section~11, question~3'', ``Theorem~3.3'', ``Lemma~4.1'', ``Theorem~6.1''
+and ``Theorem~8.2'' still mean what the manuscript of Part~II cites. The
+preceding note's ``single manuscript, printed in full'' and ``no pin'' now
+describe Part~\ref{udp:part:one}; its statement that no neighbouring report
+shares a result remains true. Part~\ref{udp:tw:part}
+(Sections~\ref{udp:tw:sec:unitary} and~\ref{udp:tw:sec:verify}) is the
+partition subject of manuscript~01 of batch~86, prepared with ChatGPT,
+unrefereed and not formalized, pinned at commit \texttt{eaf08931c}. It
+answers question~3 of Section~\ref{udp:sec:questions}: for each sign
+$\liminf a_n^\pm/m_n^\pm=0$ and $\limsup a_n^\pm/m_n^\pm=\infty$, with
+two-sided logarithmic oscillations of order at least $n^{1/4}$
+(Theorem~\ref{udp:tw:thm:main}). Part~II's symbols $m$, $W$, $s_*$,
+$\sigma_*$, $C_*$, $C_\pm$, $K_\pm$, $L_\pm$, $h$, $H$ and $T_\pm$ do not mean
+what the table above might suggest; in particular its $W(n)$ is not the
+Lambert $W$ function. A separate table at the start of Part~II fixes them.
+\end{writenote}
+
 \section{Arithmetic and Mellin preliminaries}\label{udp:sec:mellin}
 \subsection{Convergence and elementary estimates}
 The elementary bounds
@@ -308,6 +335,20 @@ This agrees with \eqref{udp:eq:M} on $\Rea s>2$ and hence by uniqueness of merom
 \begin{remark}
 The theorem does not determine which one-sided divergence occurs. In particular, it does not assert both $\liminf a_n/m_n=0$ and $\limsup a_n/m_n=\infty$. No two-sided oscillation theorem is being used.
 \end{remark}
+\begin{writenote}[Added 3 October 2026, batch~86]
+Part~\ref{udp:tw:part} settles the alternative that this remark leaves
+open: both occur. For each sign, $\liminf a_n^\pm/m_n^\pm=0$ and
+$\limsup a_n^\pm/m_n^\pm=\infty$ \eqref{udp:tw:eq:ratio-oscillation}; more
+precisely $\log(a_n^\pm/m_n^\pm)$ lies above $(K_\pm-\eps)W(n)$ and below
+$-(K_\pm-\eps)W(n)$ infinitely often, with $W(n)=n^{\sigma_*/3}(\log
+n)^{m-1}\ge n^{1/4}$ (Theorem~\ref{udp:tw:thm:main}). The proof uses the
+pole of Lemma~\ref{udp:lem:pole} together with its order $m$ and its
+leading Laurent coefficient (Lemma~\ref{udp:tw:lem:pole}), and Landau's
+positivity principle (Lemmas~\ref{udp:tw:lem:landau}
+and~\ref{udp:tw:lem:quantitative}); it assumes neither RH nor simple zeros.
+The remark remains true of Theorem~\ref{udp:thm:refutation} by itself.
+Part~II is unrefereed, prepared with AI assistance and not formalized.
+\end{writenote}
 
 \section{Unconditional contour estimates}\label{udp:sec:unconditional}
 An exact shift to the line $\Rea s=1$ sharpens what a shift merely to $\Rea s>1$ supplies.
@@ -520,6 +561,15 @@ For either sign and every $0<\eps<1/4$,
 \begin{proof}
 If this bound held, Lemma~\ref{udp:lem:abelianerror} with $\delta=1/4-\eps$ would give $f(t)-At^{-2}=O(t^{-3/4+3\eps})$. Splitting the Mellin integral at one then makes $M(s)-A/(s-2)$ holomorphic on $\Rea s>3/4-3\eps$. This contradicts the pole of Lemma~\ref{udp:lem:pole}, whose real part is at least $3/4$.
 \end{proof}
+\begin{writenote}[Added 3 October 2026, batch~86]
+Part~\ref{udp:tw:part} makes this obstruction two-sided: by
+Theorem~\ref{udp:tw:thm:main}, $\log a_n^\pm-c_\pm n^{2/3}$ is
+$\Omega_\pm(n^{1/4})$, that is, it exceeds a positive multiple of $n^{1/4}$
+and falls below a negative multiple infinitely often, which contains the
+present theorem. With Theorem~\ref{udp:thm:RH} below, under RH the error
+is both $\Omega_\pm(n^{1/4})$ and $O_\eps(n^{1/4+\eps})$ (the note after
+Theorem~\ref{udp:tw:thm:main}).
+\end{writenote}
 
 \subsection{A conditional reciprocal zeta bound}
 We provide the conditional growth estimate used in the contour argument rather than presupposing a sharp RH bound.
@@ -859,6 +909,833 @@ ProveIt answers any of these questions; in particular the repository
 supplies no zero-residue transseries for these products (item~4).
 \end{writenote}
 
+\begin{writenote}[Added 3 October 2026, batch~86]
+Question~3 is answered by Part~\ref{udp:tw:part} (unrefereed, prepared with
+AI assistance, not formalized). Both quantities oscillate two-sidedly: for
+each sign $\liminf a_n^\pm/m_n^\pm=0$, $\limsup a_n^\pm/m_n^\pm=\infty$, and
+$\log a_n^\pm-c_\pm n^{2/3}$ and $\log(a_n^\pm/m_n^\pm)$ are
+$\Omega_\pm(n^{1/4})$, with explicit lower constants $K_\pm$ from one
+uncancelled pole (Theorem~\ref{udp:tw:thm:main}); the error of inverting
+either pure model oscillates likewise on the scale $(\log y)^{7/8}$
+(Corollary~\ref{udp:tw:cor:inverse}). Finer forms of the question stay open
+and are Part~II's own questions (Section~\ref{udp:tw:sec:scope}): how often
+each sign occurs, effective indices and certified constants, the sharp
+scale and amplitude, and the joint behaviour of the two signs. Question~4
+is unchanged and is restated as Part~II's question~4. Questions~1, 2 and~5
+are unchanged. The preceding note, that no report answers any of these
+questions, was true on 2 October 2026 and remains true of questions~1, 2,
+4 and~5.
+\end{writenote}
+
+\clearpage
+\part{Two-sided fluctuations of unitary-divisor partitions}\label{udp:tw:part}
+
+\paragraph{Summary.}
+We strengthen the existing refutation
+of the pure asymptotic models for A301981 and A301982: each coefficient-to-model
+ratio has lower limit zero and upper limit infinity, with two-sided
+logarithmic oscillations of at least order $n^{1/4}$ and corresponding
+inverse errors.
+
+\paragraph{From the manuscript's introduction.}
+This Part strengthens
+an existing refutation of two partition asymptotics to quantitative
+oscillation in both directions. The proof strategy
+has a common feature with the manuscript's other advances: an exact structural identity is retained long enough
+to control information that a leading estimate loses.
+The repository snapshot used throughout is
+\begin{center}\small
+ \texttt{eaf08931cbfd0132dd36ab82a7743ccb02506dc7},
+ \quad 4 October 2026, 00:59:12 UTC.
+\end{center}
+The related OEIS entries and the cited primary literature were inspected
+on 4 October 2026 UTC. The manuscript supplies written proofs, independent
+internal mathematical reviews, exact finite checks, and an interval
+certificate. These are distinct forms of evidence: a finite computation
+does not establish an infinite asymptotic statement. External peer review
+and proof-assistant formalization remain future work.
+
+Let $a_n^-$ and $a_n^+$ be the coefficients of
+\[
+ \prod_{j\ge1}(1-z^j)^{-\sigma^*(j)},\qquad
+ \prod_{j\ge1}(1+z^j)^{\sigma^*(j)},
+\]
+respectively. Their pure OEIS models $m_n^\pm$ are defined precisely in
+Section~\ref{udp:tw:sec:unitary}. The prior report (Part~\ref{udp:part:one}) already proves that these
+models are not asymptotic equivalents. The new result is
+\[
+ \liminf\frac{a_n^\pm}{m_n^\pm}=0,
+ \qquad \limsup\frac{a_n^\pm}{m_n^\pm}=\infty,
+ \qquad
+ \log(a_n^\pm/m_n^\pm)=\Omega_\pm(n^{1/4}).
+\]
+The notation $\Omega_\pm$ means that positive and negative multiples of
+the indicated scale occur along separate infinite subsequences.
+The proof gives sharper lower constants from one noncancelled Mellin pole.
+It requires neither the Riemann hypothesis nor simplicity of zeta zeros.
+The error of inverting either pure model likewise has both signs on a
+scale at least $(\log y)^{7/8}$.
+
+The two-sided partition theorem answers its predecessor's
+Section~\ref{udp:sec:questions}, question~3; it does not claim the earlier refutation as new.
+The general methods of analytic inversion, Lagrange inversion, and
+Landau positivity are also established methods.
+The search did not identify earlier proofs of these particular new
+conclusions. It does not establish exhaustive historical priority.
+Each Part states its dependencies explicitly so that its correctness can
+be assessed independently of any claim about importance or novelty.
+
+\begin{writenote}[Added 3 October 2026, batch~86: provenance of Part~II]
+Part~II is one subject of a three-subject manuscript: manuscript~01 of
+batch~86 of ProveIt's incoming-reports intake, \emph{Three advances on OEIS
+conjectures and asymptotics. Bridgeless toroidal maps, golden-ratio moment
+laws, and unitary-divisor partitions}, dated 4 October 2026 (UTC), whose
+author line reads ``Prepared with ChatGPT'' and ``Building on Vladimir
+Reshetnikov's ProveIt research repository'' (a 2{,}894-line source and a
+40-page PDF). It arrived as the archive
+\texttt{oeis\_\allowbreak advances.zip} (wrapper directory
+\texttt{oeis\_\allowbreak advances/}, main file
+\texttt{oeis\_\allowbreak advances.tex}) in commit \texttt{ae9baa422} and
+was split by subject in placement commit \texttt{0f084afa9}. Its Part~III,
+the single Section~7, continues this report and is printed here in full as
+Section~\ref{udp:tw:sec:unitary}. The manuscript pins the repository at
+commit \texttt{eaf08931cbfd0132dd36ab82a7743ccb02506dc7} and cites this
+report's \texttt{article.tex} at that commit, which is the text printed as
+Part~\ref{udp:part:one}: the report did not change between the pin and the
+placement. The manuscript's other subjects are printed elsewhere in the
+collection: its Part~I (Section~2, the bridgeless toroidal maps of A343093)
+is the new report
+\texttt{enumerative-\allowbreak combinatorics/\allowbreak a343093-\allowbreak bridgeless-\allowbreak toroidal-\allowbreak maps},
+and its Part~II (Sections~3--6, A088714 and A088713) is Part~IV of
+\texttt{oeis-\allowbreak sequence-\allowbreak asymptotics/\allowbreak a088714-\allowbreak bell-\allowbreak scale-\allowbreak growth}.
+Of its shared material this Part prints the passages on the partition
+subject: from its abstract and Section~1 (above), from Sections~8 and~9
+(Section~\ref{udp:tw:sec:verify}), and the bibliography entries that
+Section~7 cites. Its program \texttt{verify\_\allowbreak partitions.py} and
+that program's recorded output are shipped as
+\texttt{code/\allowbreak 02-two-sided-\allowbreak verify\_\allowbreak partitions.py}
+and
+\texttt{data/\allowbreak 02-two-sided-\allowbreak partition\_\allowbreak verification.json}.
+The manuscript's \LaTeX\ source and its README were placed as the starting
+\texttt{article.tex} and \texttt{README.md} of the A343093 report; they, the
+delivered PDF and every other delivered file survive in the archive of
+commit \texttt{ae9baa422}. The manuscript is unrefereed and was prepared
+with AI assistance. The internal reviews it records
+(Section~\ref{udp:tw:sec:verify}) are not refereeing. Nothing in it is
+formalized in Lean or Rocq, and its place in this report confers no formal
+status.
+
+\emph{What it answers.} Part~II answers question~3 of
+Section~\ref{udp:sec:questions}: both $\liminf a_n^\pm/m_n^\pm=0$ and
+$\limsup a_n^\pm/m_n^\pm=\infty$ hold, and both centered logarithms are
+$\Omega_\pm(n^{1/4})$ (Theorem~\ref{udp:tw:thm:main}). It thereby settles
+the alternative that the remark after Theorem~\ref{udp:thm:refutation}
+leaves open, and makes the one-sided obstruction of
+Theorem~\ref{udp:thm:obstruction} two-sided. Dated notes at those three
+places of Part~\ref{udp:part:one} say so.
+
+\emph{Overlap with Part~\ref{udp:part:one}, printed and credited.}
+Proposition~\ref{udp:tw:prop:bridge} restates Lemma~\ref{udp:lem:boundary}
+(its \eqref{udp:tw:eq:derivative} is \eqref{udp:eq:boundary}) and
+Theorem~\ref{udp:thm:fixed} (its \eqref{udp:tw:eq:bridge} is
+\eqref{udp:eq:fixedequiv} in logarithmic form), as the manuscript says, and
+its proof re-derives both in outline. Within that proof
+\eqref{udp:tw:eq:mellin} is \eqref{udp:eq:D}--\eqref{udp:eq:M},
+\eqref{udp:tw:eq:angular} is Lemma~\ref{udp:lem:angular}, and
+\eqref{udp:tw:eq:saddle} is the case $M=0$ of
+Theorem~\ref{udp:thm:saddle}. The definitions \eqref{udp:tw:eq:scales},
+\eqref{udp:tw:eq:models} and \eqref{udp:tw:eq:remainder} are
+\eqref{udp:eq:constants}, \eqref{udp:eq:modelplus}--\eqref{udp:eq:modelminus}
+and \eqref{udp:eq:B}--\eqref{udp:eq:R}. The zero selected in
+\eqref{udp:tw:eq:selected-zero} is the zero chosen in the proof of
+Lemma~\ref{udp:lem:pole}, and $s_*$ is that lemma's $s_0$:
+Lemma~\ref{udp:tw:lem:pole} re-proves Lemma~\ref{udp:lem:pole} and adds what
+is new, the order $m$ of the pole and its leading Laurent coefficient
+$C_\pm$. Corollary~\ref{udp:tw:cor:inverse} uses the eventual increase of
+Theorem~\ref{udp:thm:inverse}. New to the repository are
+Lemma~\ref{udp:tw:lem:quantitative} (a written-out form of Landau's
+classical positivity method, for which no novelty is claimed),
+Theorem~\ref{udp:tw:thm:main}, Corollary~\ref{udp:tw:cor:inverse} and the
+constant \eqref{udp:tw:eq:laurent}.
+
+\emph{Editorial changes.} The manuscript's Section~7 is
+Section~\ref{udp:tw:sec:unitary} here; its theorem and equation numbers
+$7.k$ are printed as $12.k$. Every label carries the prefix
+\texttt{udp:tw:} in place of the manuscript's \texttt{part:}, and the
+closing subsection received the label \texttt{udp:tw:sec:scope}. Its
+citations of the pinned report (its key \texttt{unitaryprior}, whose pin
+and path this note records) now point to Part~\ref{udp:part:one}, and its
+cited section, theorem and lemma numbers (Section~11, Theorem~3.3,
+Lemma~4.1, Theorem~6.1, Theorem~8.2) are cross-references, which print the
+same numbers. Its OEIS, T\'oth, Trudgian and DLMF citations use
+Part~\ref{udp:part:one}'s bibliography entries (the manuscript inspected
+the OEIS entries again on 4 October 2026 UTC); Landau~1905 and
+Diamond--Pintz~2009 are added. In the passages taken from the abstract and
+Section~1 above, ``Finally, we strengthen'' became ``We strengthen'', ``The
+third strengthens'' became ``This Part strengthens'', ``The subjects
+differ, but the proof strategy has a common feature'' became ``The proof
+strategy has a common feature with the manuscript's other advances'',
+``Part~III'' became the section reference, the citation of the prior report
+became Part~\ref{udp:part:one}, a clause about older map-enumeration
+transformations was omitted, and the display $(1.3)$ is unnumbered. The
+interval certificate named there belongs to the A088714 subject (Part~IV of
+\texttt{a088714-\allowbreak bell-\allowbreak scale-\allowbreak growth});
+this Part uses none. The \textsf{[write]} notes are new. No statement, proof
+or number of the manuscript's Section~7 was altered.
+\end{writenote}
+
+\begin{writenote}[Added 3 October 2026, batch~86: notation of Part~II]
+Part~II keeps the manuscript's symbols. Most agree with
+Part~\ref{udp:part:one}'s: $A_\pm$, $c_\pm$, $d_\pm$, $B_\pm$, $R_\pm$,
+$f_\pm$, $m_n^\pm$, $M_\pm$, $\kappa_r$, $V$, $t_n$, $\phi_t$, $K_r(s)$, the
+angular constants $c_1,c_2,c_3$, and $\rho=\beta+i\gamma$ mean the same in
+both Parts; $t_{0,\pm}(n)$ is Part~\ref{udp:part:one}'s $t_0^\pm(n)$,
+$\chi_\pm$ its $\ch_\pm$, $\mathcal G$ its $\Gla$, $N_\pm(y)$ its $N(y)$,
+and $\Re$ its $\Rea$. The following do not, and each is printed as
+delivered; the right column gives the tempting false reading.
+\begin{center}\footnotesize
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.13\linewidth}>{\raggedright\arraybackslash}p{0.42\linewidth}>{\raggedright\arraybackslash}p{0.37\linewidth}@{}}
+\toprule
+symbol & meaning in Part~II & not to be confused with\\
+\midrule
+$j$, $b_j$ & part size, $b_j=\sigma^*(j)$ & Part~\ref{udp:part:one} writes $m$, $b_m$\\
+$m$ & order of the pole at $s_*$ (multiplicity of $\rho$) & a part size; the multiplicities $m_r$ of \eqref{udp:eq:Cj}\\
+$W(n)$ & $n^{\sigma_*/3}(\log n)^{m-1}$, the oscillation scale of Theorem~\ref{udp:tw:thm:main} & \emph{not} the Lambert $W$ function of the neighbouring report \texttt{a088714-\allowbreak bell-\allowbreak scale-\allowbreak growth}; not $W(t)=2At^{-3}-\kappa_1(t)$ in the proof of Theorem~\ref{udp:thm:offinverse}\\
+$s_*=\sigma_*+i\tau_*$ & $(1+\rho)/2$, the pole of Lemma~\ref{udp:tw:lem:pole} (Part~\ref{udp:part:one}'s $s_0$); a general nonreal pole in Lemma~\ref{udp:tw:lem:quantitative} & $\sigma_*$ (subscript) is not $\sigma^*$ (superscript, the unitary divisor sum), $\sigma(m)$ or the contour abscissa $\sigma$\\
+$C_*$, $C_\pm$ & leading Laurent coefficient of $H$ at $s_*$ (Lemma~\ref{udp:tw:lem:quantitative}); that of $M_\pm$ (\eqref{udp:tw:eq:laurent}) & the contour abscissa $c_*$; $C_j(t)$, $C_1,C_2$, $C_r$, $C_M$\\
+$K_\pm$, $L_\pm$ & lower constants of Theorem~\ref{udp:tw:thm:main} and Corollary~\ref{udp:tw:cor:inverse} & $K$ (four meanings), $L$, $L_M$\\
+$h$, $H$; $h_\pm$, $H_\pm$ & a function on $[1,\infty)$ and its Mellin transform (Lemma~\ref{udp:tw:lem:quantitative}); $h_\pm(x)=R_\pm(1/x)$ and \eqref{udp:tw:eq:H} & $H$ in \eqref{udp:eq:merom}; Hermite $H_d$\\
+$q$, $Q$, $\alpha$, $\delta$, $r$ & the nonnegative function, its transform, its abscissa of convergence, a shift and a disc radius in the proof of Lemma~\ref{udp:tw:lem:landau} & $q=e^{-mt}$; $Q_j$; the three $\delta$'s; the derivative order $r$\\
+$T_\pm(s)$, $E_X(s)$ & $\int_1^\infty f_\pm(t)t^{s-1}\dd t$; an entire correction & the tail bound $T_{r,L}(t)$; $E(u)$, $E_1$, $E_r$\\
+$E_n$, $g$, $\xi_n$ & $\log(a_n^\pm/m_n^\pm)$, $\log m^\pm(x)$, a mean-value point (proof of Corollary~\ref{udp:tw:cor:inverse}) & $E_r$; the Glaisher constant\\
+$x_n$, $X_\pm(y)$ & $(n/(2A_\pm))^{1/3}=1/t_{0,\pm}(n)$; the inverse of the \emph{pure} model $m^\pm(x)$ & $x_M(y)$, $\widehat x_M(y)$, inverses of the exact models $G_M$, $L_M$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{writenote}
+
+
+\section{Two-sided arithmetic oscillations in A301981 and A301982}
+\label{udp:tw:sec:unitary}
+
+\subsection{The question and the advance over the repository}
+
+Let
+\[
+ b_j=\sigma^*(j)=\sum_{\substack{d\mid j\\(d,j/d)=1}}d,
+ \qquad
+ F_-(z)=\prod_{j\ge1}(1-z^j)^{-b_j},\qquad
+ F_+(z)=\prod_{j\ge1}(1+z^j)^{b_j},
+\]
+and write $a_n^\pm=[z^n]F_\pm(z)$. These are A301981 and A301982,
+respectively; the weights form A034448 \cite{oeisminus,oeisplus,weightoeis}.
+For the minus sign each color can be repeated; for the plus sign each
+individual color can be used once. All coefficients are positive.
+
+Put $\mathcal G$ for the Glaisher--Kinkelin constant and define
+\begin{align}
+ A_-&=\frac{\pi^2}{6},&
+ A_+&=\frac{\pi^2}{8},&
+ c_\pm&=3(A_\pm/4)^{1/3},&
+ t_{0,\pm}(n)&=(2A_\pm/n)^{1/3},\label{udp:tw:eq:scales}\\
+ m_n^-&=
+ \frac{\mathcal G^6e^{c_-n^{2/3}-1/2}}
+ {2\,3^{5/6}\pi^{1/3}n^{5/6}},&
+ m_n^+&=
+ \frac{e^{c_+n^{2/3}}}
+ {2^{4/3}\sqrt3\,\pi^{1/6}n^{2/3}}.\label{udp:tw:eq:models}
+\end{align}
+The OEIS entries label $a_n^\pm\sim m_n^\pm$ as conjectural.
+The existing ProveIt report (Part~\ref{udp:part:one}) already refutes both
+equivalents: neither ratio eventually lies in a compact subinterval of
+$(0,\infty)$. Its Section~\ref{udp:sec:questions}, question~3, explicitly leaves the direction
+of divergence and two-sided oscillation open. Its remark after
+Theorem~\ref{udp:thm:refutation} stresses that it does not prove both a zero lower limit and
+an infinite upper limit.
+
+The result here answers that question. For each sign,
+\begin{equation}
+ \liminf_{n\to\infty}\frac{a_n^\pm}{m_n^\pm}=0,
+ \qquad
+ \limsup_{n\to\infty}\frac{a_n^\pm}{m_n^\pm}=+\infty.
+ \label{udp:tw:eq:ratio-oscillation}
+\end{equation}
+More quantitatively, there are positive constants such that
+$\log(a_n^\pm/m_n^\pm)$ exceeds a positive multiple of $n^{1/4}$
+infinitely often and is below a negative multiple of $n^{1/4}$
+infinitely often. We give sharper constants depending on an uncancelled
+zeta zero and its multiplicity. No Riemann hypothesis, simple-zero
+assumption, or expansion over all zeros is used.
+
+The method is the classical positivity argument associated with Landau
+\cite{landau1905}; a related Mellin application is in
+Diamond--Pintz \cite{diamondpintz2009}. The contribution is its rigorous
+application to this explicit repository question, including the
+coefficient sampling step and the resulting inverse error. We make no
+claim to a new general oscillation principle or an exhaustive historical
+priority determination.
+
+\subsection{The prior coefficient bridge, with its analytic justification}
+
+In this subsection fix one sign, and omit it from $A,c,f,R,t_0$ when
+convenient. Set
+\begin{align}
+ f_\pm(t)&=\log F_\pm(e^{-t}),\qquad t>0,\nonumber\\
+ d_-&=\tfrac12,&
+ B_-&=6\log\mathcal G-\tfrac12-\tfrac12\log(2\pi),&
+ d_+&=0,& B_+&=-\tfrac12\log2,\nonumber\\
+ R_\pm(t)&=f_\pm(t)-A_\pm t^{-2}-d_\pm\log t-B_\pm.
+ \label{udp:tw:eq:remainder}
+\end{align}
+Thus $R_\pm$ is an exactly defined function, not an error symbol with an
+assumed sign or bound.
+
+\begin{proposition}[Prior coefficient bridge]\label{udp:tw:prop:bridge}
+For either sign, as $t\downarrow0$ and $n\to\infty$,
+\begin{align}
+ (-1)^rf_\pm^{(r)}(t)
+ &=A_\pm(r+1)!\,t^{-r-2}+o(t^{-r-1})
+ \quad\text{for every fixed }r\ge0,\label{udp:tw:eq:derivative}\\
+ \log\frac{a_n^\pm}{m_n^\pm}
+ &=R_\pm(t_{0,\pm}(n))+o(1).\label{udp:tw:eq:bridge}
+\end{align}
+In particular $h_\pm(x):=R_\pm(1/x)$ satisfies
+$h_\pm(x)=o(x)$ and $h_\pm'(x)=o(1)$.
+\end{proposition}
+
+These are Lemma~\ref{udp:lem:boundary} and Theorem~\ref{udp:thm:fixed} of Part~\ref{udp:part:one}.
+The following argument records why the bridge is available without an
+assumption about zeta zeros inside the critical strip.
+
+\begin{proof}
+The elementary bounds
+\[
+ j\le b_j\le\sigma(j),\qquad
+ \sum_{j\le X}b_j\le
+ \sum_{d\le X}d\lfloor X/d\rfloor\le X^2
+\]
+give, by partial summation,
+$\sum_j b_jj^re^{-ju}=O_r(u^{-r-2})$ for $u>0$.
+Consequently the product logarithms and their derivatives converge
+locally uniformly on $\Re t>0$, and
+$|f^{(r)}(w)|=O_r(t^{-r-2})$ when $\Re w\ge t/2$.
+The classical Dirichlet series \cite[Section~4.9]{toth} gives
+\begin{align}
+ D(s)&=\sum_{j\ge1}b_jj^{-s}
+ =\frac{\zeta(s)\zeta(s-1)}{\zeta(2s-1)},\qquad \Re s>2,\nonumber\\
+ M_\pm(s)&=\int_0^\infty f_\pm(t)t^{s-1}\,dt
+ =\Gamma(s)\chi_\pm(s)
+   \frac{\zeta(s+1)\zeta(s)\zeta(s-1)}{\zeta(2s-1)},\label{udp:tw:eq:mellin}\\
+ \chi_-(s)&=1,\qquad \chi_+(s)=1-2^{-s}.\nonumber
+\end{align}
+For completeness, at $p^a$ the weight is $1+p^a$, so its Euler factor is
+$(1-p^{1-2s})/((1-p^{-s})(1-p^{1-s}))$.
+Termwise Mellin integration of
+$f_-(t)=\sum_{j,\ell\ge1}b_je^{-j\ell t}/\ell$ proves
+\eqref{udp:tw:eq:mellin}; $f_+(t)=f_-(t)-f_-(2t)$ proves the plus case.
+
+The kernel for $(-1)^rf^{(r)}(t)$ is obtained by replacing $\Gamma(s)$
+by $\Gamma(s+r)$ and $t^{-s}$ by $t^{-s-r}$.
+It has residue $A(r+1)!$ at $s=2$.
+At $s=1$ the quotient $\zeta(s)/\zeta(2s-1)$ tends to $2$,
+so that point is removable. The line $\Re(2s-1)=1$ is zero-free.
+The bound $1/\zeta(\sigma+iT)=O(\log(2+|T|))$ for $\sigma\ge1$
+and large $|T|$ follows, for example, from Trudgian
+\cite{trudgian}. Together with the gamma factor and the usual
+polynomial bounds for zeta on fixed strips, it permits shifting the
+Mellin contour to $\Re s=1$. The remaining integral is
+\[
+ t^{-r-1}\frac1{2\pi}
+ \int_{\mathbb R}K_r(1+iu)e^{iu\log(1/t)}\,du,
+ \qquad K_r(1+iu)\in L^1(\mathbb R).
+\]
+The Riemann--Lebesgue lemma proves \eqref{udp:tw:eq:derivative}.
+
+Here are the coefficient details needed below. Let
+$\kappa_r(t)=(-1)^rf^{(r)}(t)$, $V(t)=\kappa_2(t)$, and let $t_n$ be
+the unique solution of $\kappa_1(t_n)=n$. Existence and uniqueness follow
+by realizing each factor as a geometric, or Bernoulli, probability
+generating function: $\kappa_1$ is the total mean, $V>0$ is its variance,
+and $\kappa_1'=-V$. Equation~\eqref{udp:tw:eq:derivative} gives
+$t_n\sim t_0$ and $V(t)\sim6At^{-4}$.
+
+The centered characteristic function of this independent sum obeys
+\begin{equation}
+ |\phi_t(\theta)|
+ \le\exp\{-c_1\min(t^{-4}\theta^2,t^{-2})\},
+ \qquad |\theta|\le\pi,\label{udp:tw:eq:angular}
+\end{equation}
+with $c_1>0$. Indeed keep the factors with
+$N\le j\le2N$, $N=\lfloor1/t\rfloor$.
+Their individual logarithmic moduli are at most
+$-c_2\sin^2(j\theta/2)$, and $b_j\ge j$.
+For $|\theta|\le1/N$, the weighted sine-square sum is
+$\gg N^4\theta^2$.
+For $1/N\le|\theta|\le K/N$, its quotient by $N^2$ tends uniformly to
+the strictly positive integral
+$\int_1^2v\sin^2(vN|\theta|/2)\,dv$, for any fixed $K>1$.
+For $K/N\le|\theta|\le\pi$, choosing $K>4\pi$ and using
+$|\sum_{j=N}^{2N}e^{ij\theta}|\le\pi/|\theta|$ gives
+a lower bound $\gg N^2$. This proves \eqref{udp:tw:eq:angular}.
+
+On the local scale $z=\theta\sqrt V$, Taylor's theorem gives
+$\log\phi_t(z/\sqrt V)=-z^2/2+O(t|z|^3)$ on every fixed $z$ interval.
+The bound \eqref{udp:tw:eq:angular} supplies an integrable Gaussian
+majorant until $|z|\asymp t^{-1}$; beyond it the total integral is
+$O(t^{-2}e^{-c_3t^{-2}})$.
+Fourier inversion and dominated convergence therefore yield
+\begin{equation}
+ a_n=\frac{\exp(f(t_n)+nt_n)}{\sqrt{2\pi V(t_n)}}(1+o(1)).
+ \label{udp:tw:eq:saddle}
+\end{equation}
+Writing $\kappa_1(t)=2At^{-3}+o(t^{-2})$ and comparing the saddle
+equations shows $t_n-t_0=o(t_0^2)$.
+The phase $f(t)+nt$ is stationary at $t_n$ and its second derivative
+is $O(t_0^{-4})$ between $t_n$ and $t_0$.
+Its change on that interval is consequently $o(1)$.
+It follows from \eqref{udp:tw:eq:saddle} that
+\[
+ a_n=\frac{t_0^2}{\sqrt{12\pi A}}
+       e^{f(t_0)+nt_0}(1+o(1))
+     =m_n e^{R(t_0)}(1+o(1)).
+\]
+The last equality is exact before the factor $1+o(1)$, by
+\eqref{udp:tw:eq:models} and \eqref{udp:tw:eq:remainder}.
+Taking logarithms proves \eqref{udp:tw:eq:bridge}.
+Finally $R(t)=o(t^{-1})$ and $R'(t)=o(t^{-2})$ imply the assertions
+about $h$ by the chain rule.
+\end{proof}
+
+\subsection{A positivity lemma with the exact pole constant}
+
+The next two lemmas isolate the classical mechanism so that eventual
+one-sided bounds are not confused with absolute bounds.
+
+\begin{lemma}[Landau's positivity principle]\label{udp:tw:lem:landau}
+Let $q:[1,\infty)\to[0,\infty)$ be locally integrable and of at most
+polynomial growth. If the real abscissa of convergence $\alpha$ of
+$Q(s)=\int_1^\infty q(x)x^{-s-1}\,dx$ is finite, then $Q$ has a
+singularity at the real point $s=\alpha$.
+\end{lemma}
+
+\begin{proof}
+Suppose $Q$ were holomorphic near $\alpha$. Set $x=e^u$.
+For $s_1>\alpha$,
+\[
+ (-1)^jQ^{(j)}(s_1)
+ =\int_0^\infty u^j q(e^u)e^{-s_1u}\,du\ge0.
+\]
+Holomorphy in the right half-plane together with a disc about $\alpha$
+allows $s_1$ sufficiently close to $\alpha$ and $\delta>s_1-\alpha$
+such that the Taylor series at $s_1$ converges at $s_1-\delta$.
+For example, if the disc about $\alpha$ has radius $r$, take
+$s_1=\alpha+r/4$ and $r/4<\delta<r/2$.
+Tonelli's theorem then identifies the finite value of that Taylor series with
+\[
+ \sum_{j\ge0}\frac{\delta^j}{j!}
+ \int_0^\infty u^jq(e^u)e^{-s_1u}\,du
+ =\int_0^\infty q(e^u)e^{-(s_1-\delta)u}\,du.
+\]
+This contradicts the definition of $\alpha$.
+\end{proof}
+
+\begin{lemma}[A quantitative two-sided consequence]
+\label{udp:tw:lem:quantitative}
+Let $h:[1,\infty)\to\mathbb R$ be locally integrable and of at most
+polynomial growth. Suppose
+$H(s)=\int_1^\infty h(x)x^{-s-1}\,dx$, initially defined far to the
+right, continues meromorphically to $\Re s>0$ and is holomorphic near
+every positive real point. Suppose $s_*=\sigma_*+i\tau_*$, where
+$\sigma_*>0$ and $\tau_*\ne0$, is a pole of order $m\ge1$, with
+\[
+ C_*=\lim_{s\to s_*}(s-s_*)^mH(s)\ne0.
+\]
+Then
+\begin{align}
+ \limsup_{x\to\infty}
+ \frac{h(x)}{x^{\sigma_*}(\log x)^{m-1}}
+ &\ge\frac{|C_*|}{(m-1)!},\nonumber\\
+ \liminf_{x\to\infty}
+ \frac{h(x)}{x^{\sigma_*}(\log x)^{m-1}}
+ &\le-\frac{|C_*|}{(m-1)!}.
+ \label{udp:tw:eq:quantitative-landau}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+If the first inequality failed, choose
+$0<c<|C_*|/(m-1)!$ exceeding the alleged upper limit.
+Then $q(x)=cx^{\sigma_*}(\log x)^{m-1}-h(x)\ge0$ for $x\ge X$,
+with $X>1$. Set $q=0$ on $[1,X)$. Its Mellin transform has the
+meromorphic continuation
+\begin{equation}
+ Q(s)=\frac{c(m-1)!}{(s-\sigma_*)^m}-H(s)+E_X(s),
+ \label{udp:tw:eq:envelope-transform}
+\end{equation}
+where $E_X$ is entire, being the integral over a finite interval.
+This expression is holomorphic near every real $s>\sigma_*$.
+Lemma~\ref{udp:tw:lem:landau} shows that the abscissa of convergence of
+the nonnegative integral is at most $\sigma_*$; if that abscissa is
+$-\infty$, the conclusion is immediate.
+Hence for real $\sigma>\sigma_*$,
+$|Q(\sigma+i\tau_*)|\le Q(\sigma)$.
+The identity \eqref{udp:tw:eq:envelope-transform} holds throughout this
+half-plane by uniqueness of continuation.
+Multiply that inequality by $(\sigma-\sigma_*)^m$ and let
+$\sigma\downarrow\sigma_*$. The limits of its two sides are,
+respectively, $|C_*|$ and $c(m-1)!$:
+the artificial pole in \eqref{udp:tw:eq:envelope-transform} is regular
+at $s_*$, whereas $H$ is regular at the real point $\sigma_*$.
+The resulting inequality contradicts the choice of $c$.
+Apply the same argument to $-h$ to obtain the lower limit.
+\end{proof}
+
+No rightmost-pole hypothesis appears here. If a further pole lies to
+the right, the assumed one-sided envelope already contradicts the
+holomorphy of its nonnegative integral in that larger half-plane.
+The proof needs only a single nonreal pole whose leading Laurent
+coefficient is nonzero.
+
+\subsection{Noncancellation and the coefficient theorem}
+
+Choose a nontrivial zeta zero $\rho=\beta+i\gamma$ of least positive
+imaginary part, choosing its reflection about the critical line so
+that $\beta\ge1/2$. Such a least height exists because zeta zeros are
+isolated, bounded-height portions of the closed critical strip are
+compact away from the pole at $1$, and there are no real nontrivial
+zeros. Let its multiplicity be $m$ and put
+\begin{equation}
+ s_*=\frac{1+\rho}{2}=\sigma_*+i\tau_*,
+ \qquad \frac34\le\sigma_*<1.
+ \label{udp:tw:eq:selected-zero}
+\end{equation}
+Only the usual location, symmetry, and existence facts about zeta
+zeros are needed \cite{dlmf}.
+
+\begin{lemma}[The surviving pole and its constant]\label{udp:tw:lem:pole}
+For each sign, $M_\pm$ in \eqref{udp:tw:eq:mellin} has a pole of order
+$m$ at $s_*$, and its leading Laurent coefficient is
+\begin{equation}
+ C_\pm=
+ \frac{m!\,\Gamma(s_*)\chi_\pm(s_*)
+       \zeta(s_*+1)\zeta(s_*)\zeta(s_*-1)}
+      {2^m\zeta^{(m)}(\rho)}
+ \ne0.
+ \label{udp:tw:eq:laurent}
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The denominator has leading term
+$2^m\zeta^{(m)}(\rho)(s-s_*)^m/m!$.
+Gamma has neither a zero nor a pole at $s_*$, and
+$\zeta(s_*+1)\ne0$ because $\Re(s_*+1)>1$.
+If $\zeta(s_*)=0$, its positive imaginary part $\gamma/2$ would
+contradict the selection of $\gamma$.
+The point $s_*-1$ has real part in $[-1/4,0)$ and nonzero imaginary
+part, so it is neither a trivial nor a nontrivial zero of zeta.
+Finally $|2^{-s_*}|<1$, so $\chi_+(s_*)\ne0$.
+Division of the leading terms proves the formula.
+\end{proof}
+
+\begin{theorem}[Quantified two-sided oscillation]\label{udp:tw:thm:main}
+With \eqref{udp:tw:eq:selected-zero}--\eqref{udp:tw:eq:laurent}, define
+\[
+ K_\pm=
+ \frac{|C_\pm|}{(m-1)!}\,
+ (2A_\pm)^{-\sigma_*/3}\,3^{\,1-m}>0,
+ \qquad
+ W(n)=n^{\sigma_*/3}(\log n)^{m-1}.
+\]
+For each sign separately,
+\begin{align}
+ \limsup_{n\to\infty}
+ \frac{\log(a_n^\pm/m_n^\pm)}{W(n)}&\ge K_\pm,\nonumber\\
+ \liminf_{n\to\infty}
+ \frac{\log(a_n^\pm/m_n^\pm)}{W(n)}&\le-K_\pm.
+ \label{udp:tw:eq:main}
+\end{align}
+The same inequalities hold after replacing
+$\log(a_n^\pm/m_n^\pm)$ by $\log a_n^\pm-c_\pm n^{2/3}$.
+Consequently \eqref{udp:tw:eq:ratio-oscillation} holds, and both centered
+logarithms are $\Omega_\pm(n^{1/4})$.
+\end{theorem}
+
+\begin{proof}
+For $h_\pm(x)=R_\pm(1/x)$ and $\Re s>2$, splitting the Mellin integral
+at $1$ gives
+\begin{equation}
+ H_\pm(s)=M_\pm(s)-\frac{A_\pm}{s-2}
+               +\frac{d_\pm}{s^2}-\frac{B_\pm}{s}-T_\pm(s),
+ \quad
+ T_\pm(s)=\int_1^\infty f_\pm(t)t^{s-1}\,dt .
+ \label{udp:tw:eq:H}
+\end{equation}
+The function $T_\pm$ is entire because $f_\pm(t)$ decays
+exponentially at infinity. Formula~\eqref{udp:tw:eq:H} is therefore a
+meromorphic continuation to $\Re s>0$ and has the same pole and
+Laurent coefficient as $M_\pm$ at $s_*$.
+
+It is holomorphic near every positive real point.
+The pole at $2$ has been removed, the point $1$ is removable as
+already checked, and the rational terms have poles only at $0$.
+At every other positive real $s$, $\zeta(2s-1)$ has no zero:
+its argument is in $(-1,\infty)$, an interval without real zeta
+zeros. The pole of that denominator at $s=1$ is already covered.
+There are no other positive real singularities of the numerator.
+Proposition~\ref{udp:tw:prop:bridge} supplies the polynomial growth of
+$h_\pm$. Thus Lemma~\ref{udp:tw:lem:quantitative} applies.
+
+It remains to preserve both signs when sampling.
+Let $x_n=(n/(2A_\pm))^{1/3}$.
+Consecutive values differ by $O(x_n^{-2})$.
+For any large $x$, choose $n$ with $x_n\le x<x_{n+1}$.
+The derivative estimate $h_\pm'=o(1)$ gives
+$h_\pm(x)-h_\pm(x_n)=o(x_n^{-2})$.
+Also $x/x_n\to1$ and $\log x/\log x_n\to1$.
+The continuous upper and lower bounds therefore hold along these
+discrete samples. Since
+\[
+ x_n^{\sigma_*}(\log x_n)^{m-1}
+ =(2A_\pm)^{-\sigma_*/3}3^{\,1-m}
+ n^{\sigma_*/3}(\log n)^{m-1}(1+o(1)),
+\]
+\eqref{udp:tw:eq:bridge} proves \eqref{udp:tw:eq:main}.
+The difference between the two centered logarithms is $O(\log n)$,
+which is negligible on the displayed scale.
+Finally $\sigma_*/3\ge1/4$ and $m\ge1$; each of the positive and
+negative subsequences is unbounded in magnitude.
+Exponentiation proves \eqref{udp:tw:eq:ratio-oscillation}.
+\end{proof}
+
+The constants in \eqref{udp:tw:eq:main} are rigorous lower bounds on
+oscillation amplitudes, not exact amplitudes or estimates of the
+first index where a sign occurs. In particular the proof does not
+assert that a single zero dominates the full remainder.
+
+\begin{writenote}[Added 3 October 2026, batch~86: Theorem~\ref{udp:tw:thm:main} beside Part~\ref{udp:part:one}]
+Theorem~\ref{udp:tw:thm:main} and Theorems~\ref{udp:thm:obstruction}
+and~\ref{udp:thm:RH} bound the same centered logarithm
+$\log a_n^\pm-c_\pm n^{2/3}$ from the two sides. Unconditionally it is
+$o(n^{1/3})$ (Theorem~\ref{udp:thm:fixed}) and, by
+Theorem~\ref{udp:tw:thm:main}, exceeds $(K_\pm-\eps)W(n)$ and falls below
+$-(K_\pm-\eps)W(n)$ infinitely often, with $W(n)\ge n^{1/4}$; this contains
+Theorem~\ref{udp:thm:obstruction}. Under RH every zero has $\beta=1/2$, so
+$\sigma_*=3/4$ and $W(n)=n^{1/4}(\log n)^{m-1}$, while
+Theorem~\ref{udp:thm:RH} gives $O_\eps(n^{1/4+\eps})$: under RH the exponent
+$1/4$ is therefore exact. These combinations are immediate from the stated
+theorems; the manuscript itself uses no numerical information about zeta
+zeros, and neither does this note.
+\end{writenote}
+
+\subsection{A consequence for inversion}
+
+Extend either expression $m_n^\pm$ in \eqref{udp:tw:eq:models} to a
+positive function $m^\pm(x)$ for real $x>0$, and let $X_\pm(y)$ be
+its inverse on its eventually increasing tail.
+Let
+\[
+ N_\pm(y)=\min\{n\ge0:a_n^\pm\ge y\}.
+\]
+The earlier report proves that $a_n^\pm$ is eventually strictly
+increasing (Part~\ref{udp:part:one}, Theorem~\ref{udp:thm:inverse}). This is the only
+additional prior input in the following corollary.
+
+\begin{corollary}[Oscillating error of the pure inverse]
+\label{udp:tw:cor:inverse}
+Put
+\[
+ L_\pm=
+ \frac{2^{\,1-m}|C_\pm|}
+ {(m-1)!\,(3A_\pm)^{(\sigma_*+1)/2}}>0.
+\]
+Then
+\begin{align}
+ \limsup_{y\to\infty}
+ \frac{N_\pm(y)-X_\pm(y)}
+ {(\log y)^{(\sigma_*+1)/2}(\log\log y)^{m-1}}
+ &\ge L_\pm,\nonumber\\
+ \liminf_{y\to\infty}
+ \frac{N_\pm(y)-X_\pm(y)}
+ {(\log y)^{(\sigma_*+1)/2}(\log\log y)^{m-1}}
+ &\le-L_\pm.
+ \label{udp:tw:eq:inverse}
+\end{align}
+In particular this inverse error is
+$\Omega_\pm((\log y)^{7/8})$.
+\end{corollary}
+
+\begin{proof}
+It suffices to use $y_n=a_n^\pm$, for which $N_\pm(y_n)=n$ once
+the increasing tail exceeds the finite initial prefix.
+Write $g(x)=\log m^\pm(x)$ and $E_n=\log(a_n^\pm/m_n^\pm)$.
+The mean value theorem gives
+\[
+ X_\pm(y_n)-n=\frac{E_n}{g'(\xi_n)}.
+\]
+Here $\log a_n^\pm=c_\pm n^{2/3}+o(n^{1/3})$ by
+Proposition~\ref{udp:tw:prop:bridge}, so $X_\pm(y_n)/n\to1$,
+$\xi_n/n\to1$, and
+$g'(\xi_n)=(2A_\pm)^{1/3}n^{-1/3}(1+o(1))$.
+Apply Theorem~\ref{udp:tw:thm:main}, with the sign reversed.
+Since $n\sim(\log y_n/c_\pm)^{3/2}$, conversion of the scale yields
+the stated constant:
+\[
+ K_\pm(2A_\pm)^{-1/3}
+ c_\pm^{-(\sigma_*+1)/2}(3/2)^{m-1}
+ =L_\pm.
+\]
+\end{proof}
+
+Thus a leading logarithmic equivalent can support a correct relative
+inverse scale while its pure-model inverse has large errors of both
+signs. The exact-product inverse already constructed in
+Part~\ref{udp:part:one} retains the arithmetic remainder and is unaffected
+by this obstruction.
+
+\subsection{Scope and further questions}\label{udp:tw:sec:scope}
+
+The proven advance is the resolution of the repository's two-sided
+oscillation question, with the stronger $n^{1/4}$ lower scale and an
+inverse consequence. The existing refutation, Mellin kernel,
+least-height noncancellation argument, and coefficient bridge are
+credited prior inputs; the bridge and noncancellation have been
+rederived above to expose every analytic hypothesis.
+The accompanying \texttt{code/verify\_partitions.py} compares direct
+unitary-divisor enumeration with prime-power factorization, then
+compares binomial product expansion with the logarithmic-derivative
+recurrence. All comparisons pass through $n=160$, including the first
+21 displayed OEIS terms of each sequence. The recorded exact output is
+\texttt{data/partition\_verification.json}. These computations check
+definitions and finite data; they cannot certify either infinitely
+occurring sign.
+
+Several substantive questions remain.
+\begin{enumerate}
+\item Determine how often each sign occurs. The proof produces
+arbitrarily large indices of both signs; it supplies no natural or
+logarithmic density and no bound on gaps between sign changes.
+\item Obtain effective indices and certified positive lower bounds
+for $K_\pm$. This requires certified information on a selected zero
+and quantitative control of the positivity argument, beyond simply
+evaluating \eqref{udp:tw:eq:laurent} in floating arithmetic.
+\item Determine the sharp oscillation scale and amplitude.
+The bound uses one surviving pole, which need not be rightmost.
+Even under RH, a limiting distribution would require control of the
+combined zero contributions and possible relations between their
+imaginary parts.
+\item Construct a rigorously truncated zero-residue formula with an
+explicit remainder. Pole locations alone do not justify summing
+all residues, exchanging limits, or claiming a convergent
+oscillatory expansion.
+\item Study joint behavior of the two signs. Their exact relation
+$f_+(t)=f_-(t)-f_-(2t)$ links the remainders at different scales,
+but the separate $\liminf/\limsup$ assertions above imply no
+simultaneous sign pattern.
+\end{enumerate}
+
+\section{Verification, reproducibility, and further directions}\label{udp:tw:sec:verify}
+The manuscript's accompanying archive contains the complete \LaTeX{} source, the PDF,
+four verification programs, their exact or interval output, and a short
+reproduction guide. The programs do not access the network. The stored
+OEIS prefixes and the repository pin make their finite reference data
+explicit. Standard-library integer and rational arithmetic suffice for
+the partition checks. The partition program,
+\texttt{verify\_partitions.py},
+computes unitary-divisor weights by divisor enumeration and by
+prime-power factorization; compares direct product expansion with
+the logarithmic-derivative recurrence through $n=160$, including all
+21 stored initial terms of each sequence.
+
+Separate mathematical reviews checked
+the noncancellation, positivity argument, saddle bridge, and
+inverse scaling in this Part. These reviews are internal checks of a
+new manuscript. They are not external refereeing or machine-checked
+formal proofs.
+
+There is deliberately no plot presented as evidence of the partition
+sign theorem. The argument is an infinite-subsequence result. A short
+coefficient prefix need not exhibit its full oscillation scale, and
+an uncertified finite sum over zeta zeros would add no proof of the
+claimed lower and upper limits.
+
+\begin{writenote}[Added 3 October 2026, batch~86: the shipped files of Part~II]
+In ProveIt the program is
+\texttt{code/\allowbreak 02-two-sided-\allowbreak verify\_\allowbreak partitions.py}
+and its recorded output
+\texttt{data/\allowbreak 02-two-sided-\allowbreak partition\_\allowbreak verification.json},
+both byte-identical to the delivery; the manuscript's other three programs
+and their outputs belong to the other subjects and are shipped with the
+A343093 report and with Part~IV of the A088714 report. The program prints
+its report and writes a file only when given \texttt{--output}; the README
+gives a rerun on a copy. At placement (3 October 2026) a run on a copy
+reproduced the recorded output up to line endings, and at this write a
+second run on a copy did the same. Its 21 stored terms of each sequence
+agree with the first 21 of the 36 and 37 terms of
+Part~\ref{udp:part:one}'s \texttt{data/\allowbreak oeis-prefixes.json}, and
+an independent recomputation at this write by the recurrence
+\eqref{udp:eq:recurrence} gives the same $a_{160}^\pm$. These are checks of
+definitions and finite data only. The delivery has no checksum manifest.
+
+The finite ratios recorded in Part~\ref{udp:part:one}
+(\texttt{data/\allowbreak unitary\_\allowbreak diagnostics.json}) do not
+show the oscillation: for $20\le n\le1000$, $a_n^-/m_n^-$ rises from about
+$0.690$ to $0.838$ and $a_n^+/m_n^+$ falls from about $1.100$ to $1.067$.
+This does not contradict Theorem~\ref{udp:tw:thm:main}, which is a statement
+about infinite subsequences and gives no index at which either sign must
+appear (question~2 of Section~\ref{udp:tw:sec:scope}); it is the situation
+that the manuscript's paragraph on the absence of a plot describes.
+\end{writenote}
+
+\subsection{Make the partition oscillations effective}
+
+The two-sided theorem provides explicit symbolic lower constants
+from a genuine Mellin pole, but no first index at which either bound
+must occur. A useful next result would combine a certified zero
+enclosure, a residue enclosure, and a quantitative version of the
+positivity argument to produce a finite search interval containing
+an index of each sign.
+
+A different question concerns statistics rather than existence:
+do the normalized logarithmic errors have limiting distributions,
+and what are the densities or gaps of sign changes? Any answer must
+control the combined zero contributions and the remainder of a
+truncated explicit formula. The exact identity
+$f_+(t)=f_-(t)-f_-(2t)$ also makes joint sign patterns a distinct
+problem. Separate oscillation of the two sequences gives no theorem
+about their simultaneous behavior.
+
+\subsection{Formalization and an independent submission path}
+
+The density
+and Mellin arguments require a broader analytic foundation, making
+them later targets for formalization.
+For external mathematical review, the three Parts of the manuscript can be separated
+into articles with their dependencies preserved.
+Updates for the partition entries should distinguish the earlier
+refutation from the new two-sided strengthening. No update or
+submission has been made as part of this work.
+Independent refereeing remains appropriate before asserting historical priority.
+
+\begin{writenote}[Added 3 October 2026, batch~86]
+Section~\ref{udp:tw:sec:verify} prints the partition passages of the
+manuscript's Sections~8 and~9: the opening of Section~8 (its sentence on
+the arithmetic of the checks restricted to the partition program), the
+partition row of its table of checks as a sentence, the partition item of
+its list of internal reviews (``in Part~III'' became ``in this Part''), its
+paragraph on the absence of a plot, its Section~9.5 in full, and the
+sentences of its Section~9.7 that concern the partition subject, lightly
+recast where they listed several subjects (``targets'' became ``targets
+for formalization'', and the clause about the bibliographic comparison
+with the map literature was omitted). Its Section~9's other directions
+concern the other subjects. The questions of
+Section~\ref{udp:tw:sec:scope} and the two directions above are open; the
+manuscript supplies no zero-residue formula, so question~4 of
+Section~\ref{udp:sec:questions} also stays open. The delivery says
+that nothing was submitted to the OEIS, and nothing here implies a
+submission.
+\end{writenote}
+
 \begin{thebibliography}{99}\small\raggedright
 \bibitem{oeisminus} The OEIS Foundation Inc., \emph{A301981, Euler transform of A034448}, entry by V. Kot\v{e}\v{s}ovec, 30 March 2018, inspected 2 October 2026. \url{https://oeis.org/A301981}.
 \bibitem{oeisplus} The OEIS Foundation Inc., \emph{OEIS entry A301982}, entry by V. Kot\v{e}\v{s}ovec, 30 March 2018, inspected 2 October 2026. \url{https://oeis.org/A301982}.
@@ -874,5 +1751,14 @@ supplies no zero-residue transseries for these products (item~4).
 \bibitem{trudgian} T. S. Trudgian, Explicit bounds on the logarithmic derivative and the reciprocal of the Riemann zeta-function, \emph{Functiones et Approximatio Commentarii Mathematici} \textbf{52}(2) (2015), 253--261. \url{https://doi.org/10.7169/facm/2015.52.2.5}. Exact bound and range also recorded at \url{https://researchportalplus.anu.edu.au/en/publications/explicit-bounds-on-the-logarithmic-derivative-and-the-reciprocal-/}.
 \bibitem{dlmf} NIST Digital Library of Mathematical Functions, Section 25.10, \emph{Zeros of the Riemann zeta function}. \url{https://dlmf.nist.gov/25.10}.
 \bibitem{udp-tai} [write] ProveIt, \emph{Transseries: the polynomial-logarithmic calculus, series reversal at infinity, and inversion}, \texttt{Analysis/\allowbreak Transseries/\allowbreak docs/\allowbreak series-and-transseries/\allowbreak Transseries\_And\_Inversion/\allowbreak transseries\_and\_inversion.tex}; Theorems \texttt{p0:thm:lambert-core}, \texttt{p0:thm:lambert-centered}, \texttt{p0:thm:backward-error}, \texttt{p0:thm:staircase}.
+\bibitem{landau1905}
+E. Landau, \"Uber einen Satz von Tschebyschef,
+\emph{Mathematische Annalen} \textbf{61} (1905), 527--550.
+\url{https://geodesic.mathdoc.fr/item/MAN_1905__61_158244/}.
+\bibitem{diamondpintz2009}
+H. G. Diamond and J. Pintz, Oscillation of Mertens' product formula,
+\emph{Journal de th\'eorie des nombres de Bordeaux}
+\textbf{21} (2009), no.~3, 523--533.
+\url{https://doi.org/10.5802/jtnb.687}.
 \end{thebibliography}
 \end{document}

@@ -4,12 +4,15 @@
 \usepackage{lmodern}
 \usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}% added for Part II (batch 86A)
 \usepackage{booktabs,array,longtable}
+\usepackage{tabularx}% added for Part II (batch 86A)
 \usepackage{microtype}
 \usepackage[dvipsnames]{xcolor}
 \usepackage{xurl}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{listings}% added for Part II (batch 86A)
 \usepackage{hyperref}
 \hypersetup{colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,
  pdftitle={Proving Two Arithmetic Conjectures for OEIS A321941},
@@ -33,6 +36,13 @@
 \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
+% Added for Part II (batch 86A): its research questions and listings.
+\theoremstyle{definition}
+\newtheorem{question}[theorem]{Research question}
+\lstset{basicstyle=\ttfamily\scriptsize,columns=fullflexible,
+ keepspaces=true,showstringspaces=false,breaklines=true,
+ frame=single,rulecolor=\color{black!20},framesep=5pt,
+ aboveskip=10pt,belowskip=10pt}
 \newcommand{\Z}{\mathbb Z}
 \newcommand{\Q}{\mathbb Q}
 \newcommand{\R}{\mathbb R}
@@ -97,11 +107,19 @@ exhaustive. No repository files or OEIS entries have been modified.
 
 [Write note, batch 73O1: filed in ProveIt's research-report collection;
 provenance and status in Section~\ref{bgg:sec:collection}.]
+
+[Write note, batch 86A, 4 October 2026: the report now has two Parts.
+Part~II (Sections~13--21, Appendices~C--D), from a later manuscript,
+proves the negativity conjecture $r_k<0$ for every $k\ge3$ and the
+large-order law of $r_k$; see Section~\ref{bgg:sg:sec:collection}.]
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
 \tableofcontents
 \newpage
+
+\part{Integrality, congruences, and inversion}
+\label{bgg:part:arithmetic}
 
 \section{The problem and the results}
 \label{bgg:sec:introduction}
@@ -200,6 +218,13 @@ The separate assertion $r_k<0$ for all $k\ge3$ remains open in this work.
 No convergence, optimal truncation theorem, or exponentially small completion
 of \eqref{bgg:eq:known-asymptotics} is inferred from formal coefficient arithmetic.
 
+\emph{[Write note, batch 86A, 4 October 2026.]} The assertion $r_k<0$ for
+every $k\ge3$ is proved in Part~\ref{bgg:sg:part:sign}
+(Theorem~\ref{bgg:sg:thm:sign}), by a different, analytic method; the
+statements of this Part about it describe the work of 1 October 2026.
+Convergence, optimal truncation and exponentially small completions
+remain open.
+
 \subsection{Place in the ProveIt collection}
 \label{bgg:sec:collection}
 
@@ -258,6 +283,11 @@ formalized there, and this report gains no formal status from the module.
 and congruences of a formal fixed point) are arithmetic studies of other
 sequences; there is no overlap. The negativity assertion $r_k<0$ for
 $k\ge3$ remains open (question~1 of Section~\ref{bgg:sec:future}).
+
+\emph{[Write note, batch 86A, 4 October 2026.]} The previous sentence is
+superseded: Part~\ref{bgg:sg:part:sign} proves $r_k<0$ for every $k\ge3$,
+with the large-order law of $r_k$; its provenance, status and notation
+are in Section~\ref{bgg:sg:sec:collection}.
 
 \section{The recurrence and its quadratic product invariant}
 \label{bgg:sec:invariant}
@@ -663,6 +693,11 @@ interior coefficients need not have one sign. Formula
 parameter, not a replacement for the nonlinear integrality argument at
 $t=1$.
 
+\emph{[Write note, batch 86A, 4 October 2026.]} The negative edge
+$P_k(0)=-S_k$ is the leading asymptotic scale of $P_k(1)=r_k$:
+Theorem~\ref{bgg:sg:thm:largeorder} of Part~\ref{bgg:sg:part:sign} gives
+$r_k/P_k(0)=1-1/(3k)+O(k^{-2})$, with an expansion to every order.
+
 \subsection{Why this deformation is natural}
 
 Consider the recurrence $u_{n+1}=(2+\lambda/n)u_n-u_{n-1}$ over a field
@@ -1017,6 +1052,9 @@ invariant symbolically and composed the displayed inverse series directly.
 The check that $r_k<0$ for $3\le k\le256$ is explicitly logged as an
 \emph{observation}, not a proof. It does not extend the range already reported
 in the 2019 paper and is not presented as a computational record.
+\emph{[Write note, batch 86A: the infinite assertion is proved in
+Part~\ref{bgg:sg:part:sign}, Theorem~\ref{bgg:sg:thm:sign}; this finite
+check remains an observation of this Part.]}
 
 \subsection{Numerical asymptotic checks}
 
@@ -1117,6 +1155,17 @@ coefficientwise argument. A positive integral representation for $-r_k$, a
 sign-preserving reformulation, or an effective comparison with the constant
 edge would resolve the missing assertion in the published Remark~11.
 
+\emph{[Write note, batch 86A, 4 October 2026: answered.]} Part~\ref{bgg:sg:part:sign}
+proves $r_k<0$ for every $k\ge3$ (Theorem~\ref{bgg:sg:thm:sign}),
+not through the polynomials $P_k$ but through an exact radial-oscillator
+heat kernel: $r_k$ has the sign of a coefficient $h_k$ dominated by the
+single negative term $-\gamma_k$ of \eqref{bgg:sg:eq:hkdecomp} for
+$k\ge32$, and an exact rational
+certificate covers $3\le k\le31$. The dominating term is the constant
+edge, $64^k(\tfrac12)_k\gamma_k=-P_k(0)$, so the proof is an effective
+comparison with the constant edge in the sense suggested here.
+The answer is AI-assisted and unrefereed.
+
 \item \textbf{Determine all exact $2$-adic valuations.}
 Theorem~\ref{bgg:thm:denominators-summary} handles indices with at most four
 binary ones. Determine $v_2(r_k)$ at the remaining indices, including whether
@@ -1140,6 +1189,18 @@ transform. The exact edge \eqref{bgg:eq:constant-polynomial} suggests a useful
 comparison scale, but does not by itself prove the growth of $P_k(1)$.
 Such a result would guide optimal truncation and could help prove eventual
 negativity, leaving only finitely many indices.
+
+\emph{[Write note, batch 86A, 4 October 2026: answered in part.]}
+Part~\ref{bgg:sg:part:sign} proves the sharp growth law
+$r_k\sim-16^k(k!)^2/(\pi^{3/2}k^{3/2})$, with a complete expansion in
+inverse powers of $k$ relative to the edge $P_k(0)$
+(Theorem~\ref{bgg:sg:thm:largeorder}), and it was used to prove
+negativity outright. For the order-two Borel transform
+$\sum_kd_ks^k/(2k)!$ it proves radius~$16$ and a logarithmic singularity
+at $s=16$, as a radial boundary law (Theorem~\ref{bgg:sg:thm:borel}).
+The analytic continuation, the full singularity set and Stokes data
+stay open (Research question~\ref{bgg:sg:q:continuation}). The answer is
+AI-assisted and unrefereed.
 
 \item \textbf{Give effective analytic remainders and inverse certification.}
 Combine the arithmetic recurrences with explicit bounds for the product of
@@ -1229,6 +1290,11 @@ Not performed; a proposed route is described\\
 \bottomrule
 \end{longtable}
 
+\emph{[Write note, batch 86A, 4 October 2026.]} The ledger describes
+Part~\ref{bgg:part:arithmetic}. Negativity for $k\ge3$ is proved in
+Part~\ref{bgg:sg:part:sign} (Theorem~\ref{bgg:sg:thm:sign}); exponentially
+small sectors and Lean/Rocq certification remain as stated.
+
 \section{Source audit and reproducibility scope}
 \label{bgg:app:audit}
 
@@ -1252,6 +1318,1084 @@ build of this text, not the delivered one; the script's own directory is
 \texttt{code/}, so a run without \texttt{--out} would write its files
 there, beside the program, and leave the records in \texttt{data/}
 unchanged. The README gives a rerun on a copy.
+
+\clearpage
+\part{Signs, factorial divergence, and a Borel singularity}
+\label{bgg:sg:part:sign}
+
+% Part II continues the section numbers of Part I after its appendices.
+\setcounter{section}{12}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\theHsection}{sg.\arabic{section}}
+\makeatletter\gdef\Hy@chapapp{\Hy@chapterstring}\makeatother
+
+\section{The sign question and the large-order results}
+\label{bgg:sg:sec:scope}
+
+\emph{[Write note, batch 86A, 4 October 2026.]} This Part answers
+question~1 of Section~\ref{bgg:sec:future} (the negativity $r_k<0$ for
+every $k\ge3$) and the growth-law half of question~4 there. It is
+printed from a later manuscript by the same pipeline; its provenance,
+status and notation are in Section~\ref{bgg:sg:sec:collection}. Its
+first section reproduces the A321941 portions of that manuscript's
+opening section, which it shares with the manuscript's part on OEIS
+A088714.
+
+The manuscript's opening reads as follows. It develops two lines of
+research suggested by the \emph{ProveIt} repository. The first concerns
+the signs and large-order growth of the asymptotic coefficients
+underlying OEIS A321941. The second concerns the much finer growth of
+OEIS A088714, whose defining equation involves composition of its own
+generating series; that line is printed as Part~V of the report
+\path{a088714-bell-scale-growth}, not here. The organizing principle is
+to replace a difficult global coefficient problem by an exact positive
+representation, and then prove the uniform estimates that the
+representation requires.
+
+The repository was inspected at the fixed commit
+\begin{center}\small\ttfamily
+b7e4f25b6e79cc669fb245cba520017a0f4228b7.
+\end{center}
+The two reports used are Part~\ref{bgg:part:arithmetic} of the present
+report and the A088714 report; their paths and Git blob identifiers are
+recorded in Appendix~\ref{bgg:sg:app:sources}. Fixing the snapshot
+matters: some conjectures in the original publications have already
+been resolved in these reports, whereas others are explicitly left
+open.
+
+\subsection{Place in the ProveIt collection}
+\label{bgg:sg:sec:collection}
+
+\emph{[Write note, batch 86A, 4 October 2026.]}
+
+\emph{Provenance.} This Part is built from one manuscript: Part~I
+(Sections~2--7 and Appendix~A) of manuscript~02 of batch~86 of
+ProveIt's incoming-reports intake, \emph{Signs, Factorial Divergence,
+and Bell Normalization. New results for OEIS A321941, A088714, and
+A088713}, dated 4 October 2026, author line ``ChatGPT'', in the archive
+\texttt{oeis\_research\_bundle.zip}. The archive arrived in commit
+\texttt{ae9baa422} and was placed by commit \texttt{0f084afa9}; its pin is
+\texttt{b7e4f25b6}, at which this report's \texttt{article.tex} (blob
+\texttt{10873a84}) was the text now printed as Part~\ref{bgg:part:arithmetic}.
+The manuscript's Part~II (its Sections~8--12, the Bell normalization of
+A088714 and A088713) is printed as Part~V of
+\path{generating-functions-and-asymptotics/oeis-sequence-asymptotics/a088714-bell-scale-growth}.
+Its shared material is divided by subject. Here are printed the A321941
+portions of its Section~1 (Section~\ref{bgg:sg:sec:scope}), its
+Sections~2--7 (Sections~\ref{bgg:sg:sec:resolvent}--\ref{bgg:sg:sec:borel}),
+the A321941 rows and paragraphs of its Sections~13--14
+(Section~\ref{bgg:sg:sec:changes}), its research questions~15.6--15.9
+(Section~\ref{bgg:sg:sec:future}), its Appendix~A
+(Appendix~\ref{bgg:sg:app:certificate}) and the A321941 parts of its
+Appendix~B (Appendix~\ref{bgg:sg:app:sources}). Nothing was merged:
+no other manuscript treats A321941. The manuscript's theorem
+numbering is replaced by this report's: its Theorems~1.1, 1.2 and 7.1
+are Theorems~\ref{bgg:sg:thm:sign}, \ref{bgg:sg:thm:largeorder}
+and~\ref{bgg:sg:thm:borel}, and its Sections~2--7 are
+Sections~14--19.
+
+\emph{Edits.} The text is printed as delivered, except that every label
+carries the prefix \texttt{bgg:sg:}, the symbols listed in
+Table~\ref{bgg:sg:tab:notation} as renamed were renamed, references to
+the manuscript's other parts, to its source report (now
+Part~\ref{bgg:part:arithmetic}) and to its delivery files were
+re-pointed, and notes marked \emph{[Write note]} were added. A
+manuscript reference to the BGG article now cites the same
+bibliography entry as Part~\ref{bgg:part:arithmetic}; the manuscript
+accessed the OEIS entry A321941 on 4 October 2026.
+
+\emph{Status.} The manuscript is AI-assisted and unrefereed, and nothing
+in it is formalized in Lean, Rocq or any other proof assistant. Its
+source audit records internal reviews (``independent analytic
+normalization, cutoff32, all-orders and Borel reviews passed''), with
+\texttt{external\_peer\_review}, \texttt{proof\_assistant\_formalized} and
+\texttt{worldwide\_priority\_exhaustively\_verified} all false. Its
+delivery README states that the infinite sign assertions, asymptotic
+tails, convergence and error rates are proved in the manuscript and are
+not inferred from finite tests, that no exhaustive worldwide priority
+claim is made, and that the deliverable modifies neither the repository
+nor the OEIS entries. The intake reran the five A321941 programs on a
+copy; every recorded output was reproduced (up to Windows line
+endings). Independently of the manuscript's code, it compared the
+manuscript's heat coefficients with Part~\ref{bgg:part:arithmetic}'s own
+coefficient table, computed by a different program from the quadratic
+master equation: $d_k=(\tfrac12)_kh_k$ holds exactly for
+$0\le k\le128$. From that table it also recomputed the middle column
+and the last column of Table~\ref{bgg:sg:tab:signnumeric}, confirmed
+$64^k(\tfrac12)_k\gamma_k=S_k$ for $1\le k<60$, $r_k<0$ for
+$3\le k\le256$, and the exact margin $61/105$ of
+\eqref{bgg:sg:eq:finitemargin}, attained at $k=3$; and it checked the
+rational constants of Lemma~\ref{bgg:sg:lem:majorants} and of
+Section~\ref{bgg:sg:sec:signproof} by hand. It did not re-derive the
+special-function inputs of Sections~\ref{bgg:sg:sec:resolvent}
+and~\ref{bgg:sg:sec:heat}.
+
+\emph{Shipped layout.} The five programs of this Part are shipped as
+\path{code/02-sign-*.py} and their recorded outputs as
+\path{data/02-sign-*}, with the pinned SymPy requirement as
+\path{data/02-sign-requirements-symbolic.txt}. The manuscript's driver,
+which also runs the A088714 programs, its two run records and its
+source audit are shipped once, with Part~V of the A088714 report. The
+paths printed below are the delivered ones; the README gives reruns on
+copies. The manuscript's \LaTeX\ source and PDF are not shipped and
+survive in the arrival commit.
+
+\emph{Relation to Part~\ref{bgg:part:arithmetic}.} The sign proof does
+not use Part~\ref{bgg:part:arithmetic}'s integrality theorem. Its
+comparison scale $S_k$ is exactly $-P_k(0)$ of
+Theorem~\ref{bgg:thm:constant-edge}, the constant edge of the polynomial
+deformation, and Theorem~\ref{bgg:sg:thm:largeorder} shows that this
+edge is the leading asymptotic scale of $r_k=P_k(1)$:
+$P_k(1)/P_k(0)\to1$. The Borel transform of
+Section~\ref{bgg:sg:sec:borel} is radial information inside the disk of
+convergence; continuation and the full singularity set remain open
+(Section~\ref{bgg:sg:sec:future}), so question~4 of
+Section~\ref{bgg:sec:future} is answered in its growth-law part only.
+
+\emph{Notation.} Part~\ref{bgg:part:arithmetic} and this Part share
+$a_n$, $b_n$, $\rho_n$, $d_k$, $r_k$, $k$, $n$, and Kummer's functions $M$
+and $U$, with the same meanings. Every other symbol of this Part has
+the meaning of Table~\ref{bgg:sg:tab:notation}, whose last column gives
+the tempting false reading.
+
+\begin{table}[ht]
+\centering\small
+\caption{Symbols of Part~II that also occur in
+Part~\ref{bgg:part:arithmetic}. Renamed symbols are marked
+\emph{(ms.\ $\cdot$)} with the manuscript's letter.}
+\label{bgg:sg:tab:notation}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.17\textwidth}
+>{\raggedright\arraybackslash}p{0.39\textwidth}
+>{\raggedright\arraybackslash}p{0.36\textwidth}@{}}
+\toprule
+Symbol & Meaning in Part~II & \emph{Not}: meaning in Part~I\\
+\midrule
+$a_n$, $b_n$ & $[z^n]f_0$, $[z^n]f_1$ \emph{(ms.\ $\alpha_n$, $\eta_n$)} & --- (same objects)\\
+$t$ & heat-kernel time & the deformation parameter of $P_k(t)$, used here only through $P_k(0)$, $P_k(1)$\\
+$H(t)$, $h_k$ & the formal series \eqref{bgg:sg:eq:H} and its coefficients; $d_k=(\tfrac12)_kh_k$ & the operator $\Hop$; powers of the formal variable $h=1/n$ of \eqref{bgg:eq:D-definition}\\
+$\gamma_j$ & comparison weights \eqref{bgg:sg:eq:qAbeta} \emph{(ms.\ $\beta_j$)} & the inverse coefficients $\beta_k$ of Theorem~\ref{bgg:thm:inverse}\\
+$q(t)$ & $2\sinh(t/2)/t$ & $q_n=2+1/n$\\
+$S_k$ & the scale \eqref{bgg:sg:eq:Sk}, $=-P_k(0)$ & the series $S(w)$, $S(z)$ in the proofs of Theorems~\ref{bgg:thm:polynomial-integrality}--\ref{bgg:thm:constant-edge}\\
+$\mathcal M(t)$, $\mathcal M_\ell$ & coefficient majorant of Lemma~\ref{bgg:sg:lem:majorants} \emph{(ms.\ $M$)} & Kummer's $M(a,b,z)$, which keeps its letter\\
+$N$ & fixed order in Theorem~\ref{bgg:sg:thm:largeorder} and Proposition~\ref{bgg:sg:prop:allorders} \emph{(ms.\ $R$)} & the series $R(z)$ of \eqref{bgg:eq:R-definition}\\
+$\varepsilon_k$ & Borel remainder, proof of Theorem~\ref{bgg:sg:thm:borel} \emph{(ms.\ $e_k$)} & the weights $e_{j,\ell}$\\
+$G_n(r,s)$, $K(t;2,2)$ & Green kernel, heat kernel & $G=eE_1(1)$\\
+$F(n)$, $F_m(j)$ & $-2n^{3/2}\rho_n$; $[t^m]\mathcal A(t)q(t)^j$ & a generic series $F$; $F=R^{2/3}$\\
+$W_r$, $W_z$ & Wronskians of the continuous solutions & the discrete Wronskian $W_n$\\
+$\psi_m$, $\lambda_m$ & eigenfunctions, eigenvalues of $\mathscr L$ & $\psi(h)=D(h)^{-2/3}$; the parameter $\lambda$\\
+$u$, $x$, $J$ & $16/k$, $1/k$, the split index & a solution $u_n$, $x_n=na_n$, the polynomial $J(h)$\\
+$B$, $T$, $E$ (App.~\ref{bgg:sg:app:certificate}) & $q^{-1/2}$, $\tanh(t/4)$, $e^{-T}$ & $B(h)$, the array $T_n$, the operator $E(D)$\\
+$c_j$, $C_{\!B}$, $\mathscr B_2$ & large-order coefficients, Borel constant, Borel transform & ---\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The regular solution $u_n(r)$ of Section~\ref{bgg:sg:sec:resolvent} and the
+scalar $u=16/k$ of Section~\ref{bgg:sg:sec:signproof} share a letter in
+the manuscript; the subscript and argument distinguish them.
+
+\subsection{The A321941 question}
+
+Let
+\[
+ f_0(z)=\exp\!\left(\frac{z}{1-z}\right),\qquad
+ f_1(z)=\exp\!\left(\frac1{1-z}\right)
+                E_1\!\left(\frac1{1-z}\right),
+\]
+where \(E_1(x)=\int_x^\infty e^{-u}u^{-1}\,du\), and put
+\(a_n=[z^n]f_0(z)\), \(b_n=[z^n]f_1(z)\), and
+\(\rho_n=a_nb_n\).
+Brent, Glasser, and Guttmann \cite{BGG}, abbreviated BGG, proved the
+Poincare expansion
+\begin{equation}\label{bgg:sg:eq:rho}
+ \rho_n\sim-\frac1{2n^{3/2}}\sum_{k\ge0}d_kn^{-k},
+ \qquad d_0=1.
+\end{equation}
+Set \(r_k=64^kd_k\).  Strictly speaking, A321941 lists the
+\emph{numerators} of the rational numbers \(r_k\)
+\cite{oeis321941}.  The integrality theorem of Part~\ref{bgg:part:arithmetic}
+(Theorem~\ref{bgg:thm:main}) identifies
+these numerators with \(r_k\) itself.  The sign argument here does not
+require that integrality theorem: a rational number and its numerator
+have the same sign.
+
+BGG's Remark~11 reports negativity for \(3\le k\le1000\).
+The repository report (Part~\ref{bgg:part:arithmetic} here) proves
+integrality and congruences, but explicitly
+leaves negativity at every later index open.  We prove:
+
+\begin{theorem}[Complete sign pattern]\label{bgg:sg:thm:sign}
+The coefficients in \eqref{bgg:sg:eq:rho} satisfy
+\[
+ r_0=1,\qquad r_1=-14,\qquad r_2=86,\qquad
+ \boxed{r_k<0\quad\hbox{for every integer }k\ge3.}
+\]
+\end{theorem}
+
+The proof supplies more than eventual negativity.  It gives a uniform
+inequality for every \(k\ge32\), with the remaining \(29\) cases
+certified in exact rational arithmetic.  An exact spectral
+identification, proved below, establishes that the coefficients being
+bounded are precisely those of \eqref{bgg:sg:eq:rho}.
+
+Define the positive comparison scale
+\begin{equation}\label{bgg:sg:eq:Sk}
+ S_k=\binom{2k}{k}(2k-3)!!(2k+1)!!\qquad(k\ge1),
+\end{equation}
+with the convention \((-1)!!=1\).
+Our second result describes the expansion \emph{index} \(k\) tending
+to infinity, rather than the original variable \(n\).
+
+\begin{theorem}[Large-order expansion]\label{bgg:sg:thm:largeorder}
+There are effectively computable rational numbers \(c_j\), with
+\(c_0=1\), such that, for each fixed \(N\ge0\),
+\[
+ r_k=-S_k\left(\sum_{j=0}^{N}\frac{c_j}{k^j}
+                       +O_N(k^{-N-1})\right).
+\]
+The first terms are
+\begin{equation}\label{bgg:sg:eq:largeorder4}
+ \frac{r_k}{-S_k}
+ =1-\frac1{3k}-\frac{11}{18k^2}
+   -\frac{1279}{1620k^3}-\frac{5089}{9720k^4}
+   +O(k^{-5}).
+\end{equation}
+In particular,
+\[
+ r_k\sim-\frac{16^k(k!)^2}{\pi^{3/2}k^{3/2}},
+ \qquad
+ d_k\sim-\frac{(k!)^2}{\pi^{3/2}4^kk^{3/2}}.
+\]
+\end{theorem}
+
+These estimates determine the exact order of factorial divergence and
+the first positive singularity of an explicitly normalized Borel
+transform; see Theorem~\ref{bgg:sg:thm:borel}.
+
+\subsection{What the proofs and computations establish}
+\label{bgg:sg:sec:establish}
+
+The mathematical proofs are given in the manuscript.  The accompanying
+programs check exact finite identities, the finite sign certificate,
+and independently generated asymptotic coefficients.  Their role is
+specific: no finite experiment substitutes for a uniform estimate over
+an infinite tail.
+
+The conclusions are advances beyond the inspected reports and the
+primary literature cited here.  This statement concerns that source
+boundary; it is not an exhaustive claim of worldwide priority.
+The manuscript is a research proof with independent checks, rather
+than a proof-assistant formalization or a claim of external peer review.
+The repository's existing arithmetic theorems are credited as prior
+results throughout.
+
+\section{An exact radial-oscillator representation}\label{bgg:sg:sec:resolvent}
+
+The key step is an exact representation of the product in
+\eqref{bgg:sg:eq:rho}.  BGG's Lemmas~1--2 give, for \(n\ge1\),
+\begin{equation}\label{bgg:sg:eq:kummercoeff}
+ a_n=e^{-1}M(n+1,2,1),\qquad
+ b_n=-\Gamma(n)U(n,0,1),
+\end{equation}
+where \(M\) and \(U\) are Kummer functions \cite{BGG,dlmf-kummer}.
+
+Consider the Friedrichs realization on \(L^2((0,\infty),dr)\) of
+\begin{equation}\label{bgg:sg:eq:operator}
+ \mathscr L=-\frac{d^2}{dr^2}+\frac{r^2}{16}+\frac{3}{4r^2}.
+\end{equation}
+The regular solution at zero and recessive solution at infinity
+of \((\mathscr L+n)y=0\) are, respectively,
+\[
+ u_n(r)=r^{3/2}e^{-r^2/8}M(n+1,2,r^2/4),\qquad
+ v_n(r)=r^{3/2}e^{-r^2/8}U(n+1,2,r^2/4).
+\]
+These statements follow by substituting \(z=r^2/4\) in Kummer's
+equation.  The behaviors at the two endpoints also specify the
+Green kernel directly, if one prefers to start from the differential
+equation.
+
+The Wronskian identity and transformation
+\[
+ W_z\{M(n+1,2,z),U(n+1,2,z)\}
+       =-\frac{e^zz^{-2}}{\Gamma(n+1)},\qquad
+ U(n,0,z)=zU(n+1,2,z)
+\]
+are DLMF~13.2.34 and 13.2.40 \cite{dlmf-kummer}.  The first
+formula uses ordinary \(M\); the regularized convention in DLMF agrees
+here because \(\Gamma(2)=1\).
+Multiplication by the gauge factor squared and \(dz/dr=r/2\)
+gives
+\[
+ W_r\{u_n,v_n\}=-\frac8{\Gamma(n+1)}.
+\]
+Consequently the kernel of \((\mathscr L+n)^{-1}\) is
+\[
+ G_n(r,s)=\frac{\Gamma(n+1)}8u_n(\min(r,s))v_n(\max(r,s)).
+\]
+At \(r=s=2\), this becomes
+\begin{equation}\label{bgg:sg:eq:greenrho}
+ G_n(2,2)=e^{-1}\Gamma(n+1)M(n+1,2,1)U(n,0,1)
+         =-n\rho_n.
+\end{equation}
+Thus the exact normalization needed for \eqref{bgg:sg:eq:rho} is
+\begin{equation}\label{bgg:sg:eq:Fgreen}
+ F(n):=-2n^{3/2}\rho_n=2\sqrt n\,G_n(2,2).
+\end{equation}
+In particular, every constant in the coefficient identification is
+fixed before any asymptotic expansion is made.
+
+\section{The heat kernel and its formal coefficients}\label{bgg:sg:sec:heat}
+
+\subsection{Summing the spectral kernel}
+
+The normalized eigenfunctions and eigenvalues of \(\mathscr L\) are
+\[
+ \psi_m(r)=\frac{r^{3/2}e^{-r^2/8}}{\sqrt{8(m+1)}}
+                     L_m^{(1)}(r^2/4),\qquad \lambda_m=m+1.
+\]
+The Laguerre equation verifies the eigenvalue.  Their normalization
+follows from
+\[
+ \int_0^\infty r^3e^{-r^2/4}L_m^{(1)}(r^2/4)^2\,dr
+ =8\int_0^\infty xe^{-x}L_m^{(1)}(x)^2\,dx=8(m+1).
+\]
+Laguerre completeness gives a basis \cite{dlmf-laguerre}.  Hence
+\[
+ K(t;2,2)
+ =e^{-1}\sum_{m\ge0}\frac{L_m^{(1)}(1)^2}{m+1}e^{-(m+1)t}.
+\]
+For \(0<z<1\), the Hille--Hardy identity is
+\[
+ \sum_{m\ge0}\frac{L_m^{(1)}(1)^2}{m+1}z^m
+ =\frac{z^{-1/2}}{1-z}\exp\!\left(-\frac{2z}{1-z}\right)
+        I_1\!\left(\frac{2\sqrt z}{1-z}\right);
+\]
+this is DLMF~18.18.27 with both arguments equal to one
+\cite{dlmf-laguerre}.  Substitution of \(z=e^{-t}\) yields the exact
+formula
+\begin{equation}\label{bgg:sg:eq:exactheat}
+ \boxed{
+ K(t;2,2)=
+ \frac{\exp[-\coth(t/2)]}{2\sinh(t/2)}
+            I_1(\operatorname{csch}(t/2)),\qquad t>0.}
+\end{equation}
+The nonnegative spectral summands allow Tonelli's theorem to give
+\begin{equation}\label{bgg:sg:eq:laplace}
+ G_n(2,2)=\int_0^\infty e^{-nt}K(t;2,2)\,dt.
+\end{equation}
+The heat kernel is \(O(t^{-1/2})\) near zero and decays exponentially
+at infinity, so this integral is finite for \(n>0\).
+
+\subsection{A coefficient formula with a negative leading contribution}
+
+Introduce
+\begin{equation}\label{bgg:sg:eq:qAbeta}
+ q(t)=\frac{2\sinh(t/2)}t,\qquad
+ \mathcal A(t)=q(t)^{-1/2}e^{-\tanh(t/4)},\qquad
+ \gamma_j=\frac{(2j-3)!!(2j+1)!!}{16^j j!}\quad(j\ge1).
+\end{equation}
+The calligraphic symbol \(\mathcal A\) belongs only to this Part; it is
+different from the A088714 series \(A\) of the manuscript's other part.
+The large-positive-argument expansion of \(I_1\) is
+\[
+ I_1(x)\sim\frac{e^x}{\sqrt{2\pi x}}
+ \left(1-\sum_{j\ge1}
+       \frac{(2j-3)!!(2j+1)!!}{8^jj!\,x^j}\right)
+ \quad\cite{dlmf-bessel}.
+\]
+Every displayed correction is negative.
+Using
+\(\coth(t/2)-\operatorname{csch}(t/2)=\tanh(t/4)\),
+define the formal series
+\begin{equation}\label{bgg:sg:eq:H}
+ H(t)=\mathcal A(t)
+       \left(1-\sum_{j\ge1}\gamma_jt^jq(t)^j\right)
+      =\sum_{k\ge0}h_kt^k.
+\end{equation}
+For each finite order the Bessel expansion in \eqref{bgg:sg:eq:exactheat}
+proves
+\[
+ K(t;2,2)\sim(4\pi t)^{-1/2}\sum_{k\ge0}h_kt^k
+ \qquad(t\downarrow0).
+\]
+Equation \eqref{bgg:sg:eq:H} is a \emph{formal} identity.  It does not assert
+convergence of the infinite Bessel expansion or of \(H\).
+
+Integrating a finite truncation in \eqref{bgg:sg:eq:laplace} and bounding its
+remainder gives Watson's lemma \cite{dlmf-watson}.  In combination
+with \eqref{bgg:sg:eq:Fgreen}, it proves
+\[
+ F(n)\sim\sum_{k\ge0}\frac{\Gamma(k+\tfrac12)}{\sqrt\pi}h_kn^{-k}.
+\]
+Uniqueness of Poincare coefficients now gives the exact relation
+\begin{equation}\label{bgg:sg:eq:dh}
+ \boxed{d_k=(\tfrac12)_k h_k.}
+\end{equation}
+In particular, the sign of \(r_k\) is the sign of \(h_k\).
+The first values, directly from \eqref{bgg:sg:eq:H}, are
+\begin{equation}\label{bgg:sg:eq:hinitial}
+ h_0=1,\qquad h_1=-\frac7{16},\qquad
+ h_2=\frac{43}{1536},\qquad h_3=-\frac{61}{8192}.
+\end{equation}
+
+\section{Coefficient majorants}\label{bgg:sg:sec:majorants}
+
+For a formal series \(P\), write \(|P|\) for the series of absolute
+values of its coefficients.  We write \(P\preccurlyeq Q\) when
+coefficientwise domination holds and \(Q\) has nonnegative coefficients.
+
+\begin{lemma}\label{bgg:sg:lem:majorants}
+The following coefficient inequalities hold:
+\[
+ q(t)\preccurlyeq e^{t^2/24},\qquad
+ |\mathcal A(t)|\preccurlyeq
+ \mathcal M(t):=(2-q(t))^{-1/2}e^{\tan(t/4)}.
+\]
+The series \(\mathcal M\) has nonnegative coefficients, \(\mathcal M(0)=1\), and
+\begin{equation}\label{bgg:sg:eq:Mone}
+ \mathcal M(1)<\frac32.
+\end{equation}
+Moreover \(q(1)\le24/23\).
+\end{lemma}
+
+\begin{proof}
+The coefficient of \(t^{2m}\) in \(q\) is
+\(1/(4^m(2m+1)!)\).  Thus the first assertion is equivalent to
+\(6^mm!\le(2m+1)!\), which follows by induction.
+
+Write \(u=q-1\), so \(u\) has nonnegative coefficients.  The absolute
+binomial coefficients of \((1+u)^{-1/2}\) are the coefficients of
+\((1-u)^{-1/2}\).  Similarly, the absolute coefficients of
+\(\tanh(t/4)\) are those of \(\tan(t/4)\).  Positivity of the
+latter coefficients also follows recursively from
+\(T'=(1+T^2)/4\), \(T(0)=0\), for \(T(t)=\tan(t/4)\).
+Multiplication and exponentiation preserve coefficient majorants,
+giving the asserted bound by \(M\).
+
+Here are rational bounds for \eqref{bgg:sg:eq:Mone}.  The first nonconstant
+term in \(q(1)\) is \(1/24\), and the ratio of successive terms
+thereafter is at most \(1/80\).  Therefore
+\[
+ q(1)\le1+\frac{1/24}{1-1/80}=\frac{247}{237}<\frac{21}{20}.
+\]
+It follows that \((2-q(1))^{-1/2}<\sqrt{20/19}<11/10\).
+The elementary estimates
+\(\sin(1/4)\le1/4\) and \(\cos(1/4)\ge31/32\) give
+\(\tan(1/4)\le8/31\).  Since \(e^x\le(1-x)^{-1}\)
+for \(0\le x<1\),
+\[
+ \mathcal M(1)<\frac{11}{10}\frac{31}{23}=\frac{341}{230}<\frac32.
+\]
+Finally \(q(1)\le e^{1/24}\le24/23\).
+\end{proof}
+
+\begin{lemma}\label{bgg:sg:lem:beta}
+The positive numbers \(\gamma_j\) satisfy
+\begin{equation}\label{bgg:sg:eq:betaratio}
+ \frac{\gamma_j}{\gamma_{j-1}}
+  =\frac{(2j-3)(2j+1)}{16j}\ge\frac j8
+  \qquad(j\ge3).
+\end{equation}
+They decrease through \(\gamma_5\) and increase thereafter.
+For every \(J\ge15\), \(\gamma_J=\max_{1\le j\le J}\gamma_j\), and
+\[
+ \gamma_{16}=
+ \frac{61394155884765868567528125}
+      {604462909807314587353088}>100.
+\]
+\end{lemma}
+
+\begin{proof}
+The ratio follows from \eqref{bgg:sg:eq:qAbeta}; its lower bound is equivalent
+to \(2j^2-4j-3\ge0\) for \(j\ge3\).  The same ratio proves the
+monotonicity assertions.  The displayed rational evaluation gives
+\(\gamma_{16}>100\), while
+\(\gamma_{16}/\gamma_{15}=957/256<4\).  Hence
+\(\gamma_{15}>25>\gamma_1=3/16\), which settles the maximum assertion.
+\end{proof}
+
+\section{Negativity at every index}\label{bgg:sg:sec:signproof}
+
+\subsection{A uniform bound beyond index 31}
+
+Extracting the coefficient of \(t^k\) in \eqref{bgg:sg:eq:H} gives
+\begin{equation}\label{bgg:sg:eq:hkdecomp}
+ h_k=-\gamma_k+\mathcal A_k
+       -\sum_{j=1}^{k-1}\gamma_j[t^{k-j}]\mathcal A(t)q(t)^j,
+ \qquad \mathcal A_k=[t^k]\mathcal A(t).
+\end{equation}
+We show that the absolute value of all terms other than
+\(-\gamma_k\) is less than \(9\gamma_k/10\).
+
+Fix \(k\ge32\), set \(u=16/k\le1/2\), and split the sum at
+\(J=\lceil k/2\rceil-1\).
+For the near indices \(j\ge\lceil k/2\rceil\), put \(m=k-j\).
+The ratio bound \eqref{bgg:sg:eq:betaratio} gives
+\(\gamma_{k-m}/\gamma_k\le u^m\).
+Also
+\[
+ |\mathcal A q^j|\preccurlyeq \mathcal M(t)e^{kt^2/24}.
+\]
+Consequently their total normalized absolute contribution is at most
+\begin{equation}\label{bgg:sg:eq:nearerror}
+ \mathcal M(u)e^{ku^2/24}-1.
+\end{equation}
+Since \(M\) has nonnegative coefficients and \(u^\ell\le u\) for
+\(\ell\ge1\),
+\[
+ \mathcal M(u)\le1+u(\mathcal M(1)-1)<1+\frac u2=1+\frac8k.
+\]
+Using \(ku^2/24=32/(3k)<1\) and \(e^x\le(1-x)^{-1}\),
+\begin{equation}\label{bgg:sg:eq:nearbound}
+ \mathcal M(u)e^{ku^2/24}-1
+ <\frac{1+8/k}{1-32/(3k)}-1
+ =\frac{56}{3k-32}\le\frac78.
+\end{equation}
+
+For the far indices \(1\le j\le J\), Lemma~\ref{bgg:sg:lem:beta} applies
+because \(J\ge15\).  It gives
+\[
+ \frac{\gamma_j}{\gamma_k}\le
+ \frac{\gamma_J}{\gamma_k}\le(16/k)^{k/2}.
+\]
+Evaluation of the nonnegative majorant at one gives
+\[
+ |[t^{k-j}]\mathcal A q^j|
+ \le \mathcal M(1)q(1)^j\le\frac32(24/23)^{k/2}.
+\]
+There are fewer than \(k/2\) far indices, so their combined
+normalized contribution is bounded by
+\begin{equation}\label{bgg:sg:eq:farbound}
+ \frac{3k}{4}\left(\frac{384}{23k}\right)^{k/2}
+ <\frac1{100}\qquad(k\ge32).
+\end{equation}
+For completeness, the expression on the left decreases at successive
+integers: its ratio is at most
+\((33/32)\sqrt{12/23}<1\).  At \(k=32\) it equals
+\(24(12/23)^{16}<1/100\), an exact rational inequality.
+
+Finally
+\[
+ \frac{|\mathcal A_k|}{\gamma_k}<\frac{3}{200},
+\]
+by \eqref{bgg:sg:eq:Mone} and \(\gamma_k\ge\gamma_{16}>100\).
+Combining the three contributions proves
+\begin{equation}\label{bgg:sg:eq:strongsign}
+ \left|\frac{h_k}{\gamma_k}+1\right|
+ <\frac78+\frac1{100}+\frac3{200}=\frac9{10}
+ \qquad(k\ge32).
+\end{equation}
+In particular
+\[
+ -\frac{19}{10}\gamma_k<h_k<-\frac1{10}\gamma_k<0.
+\]
+
+\subsection{The finite certificate}
+
+All \(h_k\) in \eqref{bgg:sg:eq:H} are rational.  Appendix~\ref{bgg:sg:app:certificate}
+gives a short executable certificate for \(3\le k\le31\),
+using only integer and rational arithmetic.  The supplied full verifier
+checks \(3\le k\le128\); a separately implemented recurrence from
+BGG agrees with the heat construction through degree \(64\).
+The exact minimum in the required finite range is
+\begin{equation}\label{bgg:sg:eq:finitemargin}
+ \min_{3\le k\le31}\frac{-h_k}{\gamma_k}=\frac{61}{105}>0.
+\end{equation}
+Thus every finite case is decided by an exact comparison.
+Together with \eqref{bgg:sg:eq:strongsign}, \eqref{bgg:sg:eq:dh}, and
+\eqref{bgg:sg:eq:hinitial}, this proves Theorem~\ref{bgg:sg:thm:sign}.
+
+The initial scaled values provide a useful normalization check:
+\[
+\begin{split}
+ r_0,\ldots,r_6={}&1,\ -14,\ 86,\ -3660,\ -1042202,\\
+ &-247948260,\ -108448540420.
+\end{split}
+\]
+They agree with the defining OEIS entry \cite{oeis321941}.
+
+\section{The complete expansion as \texorpdfstring{\(k\)}{k} grows}\label{bgg:sg:sec:largeorderproof}
+
+\subsection{A finite formula at each asymptotic order}
+
+For fixed \(m\ge0\), define
+\[
+ F_m(j)=[t^m]\mathcal A(t)q(t)^j.
+\]
+Because \(\log q(t)\) starts at degree two, \(F_m(j)\) is a
+polynomial in \(j\) of degree at most \(\lfloor m/2\rfloor\).
+For fixed \(m\) and \(k>m\),
+\begin{equation}\label{bgg:sg:eq:fixedmratio}
+ \frac{\gamma_{k-m}}{\gamma_k}
+ =\prod_{r=0}^{m-1}
+       \frac{16(k-r)}{(2(k-r)-3)(2(k-r)+1)}.
+\end{equation}
+Its order is \(k^{-m}\).  Thus the product
+\((\gamma_{k-m}/\gamma_k)F_m(k-m)\) starts at order
+\(k^{-\lceil m/2\rceil}\).
+
+\begin{proposition}\label{bgg:sg:prop:allorders}
+For every fixed integer \(N\ge0\),
+\begin{equation}\label{bgg:sg:eq:allordersfinite}
+ \frac{h_k}{-\gamma_k}
+ =\sum_{m=0}^{2N}
+       \frac{\gamma_{k-m}}{\gamma_k}F_m(k-m)
+       +O_N(k^{-N-1}).
+\end{equation}
+For \(m=0\), the summand is understood to be one.
+\end{proposition}
+
+\begin{proof}
+Use the same far/near split as in
+Section~\ref{bgg:sg:sec:signproof}.  The far bound
+\eqref{bgg:sg:eq:farbound} is smaller than every power of \(k^{-1}\).
+The pure analytic contribution also has that property: from
+\eqref{bgg:sg:eq:betaratio},
+\[
+ \gamma_k\ge\frac{\gamma_2}{2}\,8^{2-k}k!,
+ \qquad |\mathcal A_k|<\frac32.
+\]
+
+For the remaining near terms with \(m\ge2N+1\), expand
+\(\mathcal M(t)=\sum_{\ell\ge0}\mathcal M_\ell t^\ell\).  Their majorant is
+\[
+ \sum_{\ell+2v\ge2N+1}
+ \mathcal M_\ell u^\ell\frac{(ku^2/24)^v}{v!},
+ \qquad u=\frac{16}{k}.
+\]
+In terms of \(x=1/k\), this is the nonnegative analytic series
+\begin{equation}\label{bgg:sg:eq:constrainedmajorant}
+ \sum_{\ell+2v\ge2N+1}
+ \mathcal M_\ell16^\ell\left(\frac{32}{3}\right)^v
+                  \frac{x^{\ell+v}}{v!}.
+\end{equation}
+Every exponent satisfies \(\ell+v\ge N+1\).
+The unconstrained series is
+\(\mathcal M(16x)e^{32x/3}\), analytic near zero.
+Therefore \eqref{bgg:sg:eq:constrainedmajorant} is \(O_N(x^{N+1})\).
+Keeping the finitely many remaining terms proves
+\eqref{bgg:sg:eq:allordersfinite}.
+\end{proof}
+
+Expanding the rational functions in \eqref{bgg:sg:eq:fixedmratio}, and the
+finite polynomials \(F_m\), gives an algorithm for every coefficient
+in Theorem~\ref{bgg:sg:thm:largeorder}.  No divergent series is summed in
+this calculation.  Through \(m=8\), it gives
+\[
+ \frac{h_k}{-\gamma_k}
+ =1-\frac1{3k}-\frac{11}{18k^2}
+  -\frac{1279}{1620k^3}-\frac{5089}{9720k^4}+O(k^{-5}).
+\]
+Two independent exact implementations reproduce these coefficients.
+The primary generator additionally records
+\[
+ c_5=\frac{124787}{81648},\qquad
+ c_6=\frac{368256067}{36741600},\qquad
+ c_7=\frac{8769001777}{220449600},\qquad
+ c_8=\frac{173295857159}{1322697600}.
+\]
+
+\subsection{Factorial scale and numerical diagnostics}
+
+The exact identity
+\begin{equation}\label{bgg:sg:eq:scalegamma}
+ 64^k(\tfrac12)_k\gamma_k
+ =S_k
+ =\frac{16^k}{\pi^{3/2}}
+   \frac{\Gamma(k-\tfrac12)\Gamma(k+\tfrac12)
+         \Gamma(k+\tfrac32)}{\Gamma(k+1)}
+\end{equation}
+converts Proposition~\ref{bgg:sg:prop:allorders} into
+Theorem~\ref{bgg:sg:thm:largeorder}.  Stirling's formula gives
+\[
+ S_k\sim\frac{16^k(k!)^2}{\pi^{3/2}k^{3/2}},
+ \qquad \frac{r_{k+1}}{r_k}\sim16k^2.
+\]
+Thus both ordinary formal series \(\sum d_kz^k\) and
+\(\sum r_kz^k\) have radius zero and exact Gevrey order two:
+their coefficients grow at the scale of a fixed exponential times
+\((k!)^2\), and no lower factorial order can bound them.
+
+Table~\ref{bgg:sg:tab:signnumeric} illustrates the proved expansion.  Each
+entry in its middle column is rounded only after exact rational
+evaluation.  The last column subtracts the displayed four-correction
+approximation \eqref{bgg:sg:eq:largeorder4}.  These values check the scale
+and normalization; the uniform remainder was proved above.
+
+\begin{table}[htbp]
+\centering
+\caption{Large-order diagnostics for A321941.}\label{bgg:sg:tab:signnumeric}
+\begin{tabular}{rrr}
+\toprule
+\(k\)&\(r_k/(-S_k)\)&Difference from \eqref{bgg:sg:eq:largeorder4}\\
+\midrule
+3   &0.580952380952&\(-2.0433\,10^{-1}\)\\
+4   &1.050342151675&\( 1.8625\,10^{-1}\)\\
+8   &0.947282773338&\( 1.6788\,10^{-4}\)\\
+16  &0.976581013320&\( 2.2388\,10^{-6}\)\\
+32  &0.988962008187&\( 5.6170\,10^{-8}\)\\
+64  &0.994639428263&\( 1.5788\,10^{-9}\)\\
+128 &0.997358155702&\( 4.6832\,10^{-11}\)\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{An order-two Borel singularity}\label{bgg:sg:sec:borel}
+
+We fix the factorial convention explicitly:
+\begin{equation}\label{bgg:sg:eq:BorelDef}
+ \mathscr B_2(s)=\sum_{k\ge0}\frac{d_k}{(2k)!}s^k.
+\end{equation}
+
+\begin{theorem}\label{bgg:sg:thm:borel}
+The power series \eqref{bgg:sg:eq:BorelDef} has radius of convergence exactly
+\(16\).  There is a finite real constant \(C_{\!B}\) such that
+\begin{equation}\label{bgg:sg:eq:borelboundary}
+ \mathscr B_2(16x)
+ =\frac1\pi\log(1-x)+C_{\!B}
+    +O\bigl((1-x)|\log(1-x)|\bigr)
+ \qquad(x\uparrow1).
+\end{equation}
+In particular the positive boundary point \(s=16\) is singular.
+\end{theorem}
+
+\begin{proof}
+The gamma duplication formula and \eqref{bgg:sg:eq:scalegamma} give
+\[
+ \frac{(\tfrac12)_k\gamma_k}{(2k)!}
+ =\frac{\Gamma(k-\tfrac12)\Gamma(k+\tfrac32)}
+       {\pi16^k\Gamma(k+1)^2}.
+\]
+Theorem~\ref{bgg:sg:thm:largeorder} therefore yields
+\[
+ \frac{16^kd_k}{(2k)!}=-\frac1{\pi k}+O(k^{-2}).
+\]
+The root test proves the asserted radius.  Let
+\[
+ \varepsilon_k=\frac{16^kd_k}{(2k)!}+\frac1{\pi k},\qquad
+ C_{\!B}=1+\sum_{k\ge1}\varepsilon_k.
+\]
+The constant is well defined because \(\sum|\varepsilon_k|<\infty\).
+For \(0<x<1\), use
+\(-\sum_{k\ge1}x^k/k=\log(1-x)\).  The remaining boundary error
+is bounded by a constant times
+\[
+ \sum_{k\ge1}\frac{1-x^k}{k^2}
+ =O\bigl((1-x)|\log(1-x)|\bigr).
+\]
+To verify the last estimate directly, split at
+\(k=\lfloor(1-x)^{-1}\rfloor\) and use
+\(1-x^k\le\min\{k(1-x),1\}\).
+\end{proof}
+
+This is a radial boundary statement proved inside the convergence
+disk.  It makes no claim of analytic continuation or Borel
+summability.  With the same divisor \((2k)!\), the transform of
+\(r_k=64^kd_k\) has radius \(1/4\), rather than \(16\).
+The change of radius is entirely due to the normalization.
+
+\section{What has changed, and what the programs check}
+\label{bgg:sg:sec:changes}
+
+\emph{[Write note, batch 86A.]} This section prints the A321941
+portions of the manuscript's Sections~13 and~14, which are shared with
+its A088714 part. The three A088714 and A088713 rows of its table, its
+paragraph on A088714, its A088714 check items and its normalization
+diagnostics are printed in Part~V of the A088714 report.
+
+\subsection{What has changed mathematically}
+
+The source boundary and the new conclusions for A321941 are summarized
+in Table~\ref{bgg:sg:tab:boundary}.  The strongest improvements concern
+infinite signs and multiplicative normalization.  In the first problem,
+integrality alone gives little control over sign.  In the second,
+an \(n\)-th-root asymptotic leaves room for multiplicative factors
+whose logarithms diverge.  The new proofs supply exactly the missing
+global control in each case.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Earlier results and the conclusions established here (A321941
+rows of the manuscript's table).}
+\label{bgg:sg:tab:boundary}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{23mm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+Topic&Inspected earlier boundary&This article\\
+\midrule
+A321941 signs&
+BGG observed negativity through \(1000\); the repository leaves the
+infinite assertion open.&
+Every \(r_k<0\) for \(k\ge3\), with an explicit bound for all \(k\ge32\).\\[3pt]
+A321941 growth&
+The repository gives an exact constant-edge expression for its
+polynomial deformation.&
+That expression is the leading asymptotic scale, with a complete
+inverse-\(k\) expansion and an order-two Borel boundary law.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+For A321941 the spectral representation turns the sign question into
+domination by a single explicit coefficient.  Near offsets determine
+the entire large-order expansion, while far offsets are negligible
+beyond every algebraic order.  The formal-series viewpoint is essential:
+the divergent series is used coefficient by coefficient, after the
+exact resolvent and heat kernel have already been established.
+
+\subsection{What is checked exactly}
+
+The primary verification programs use the Python standard library.
+A separate optional symbolic cross-check uses SymPy.
+The A321941 routines use \texttt{fractions.Fraction}; their sign
+decisions never involve floating-point arithmetic.  The included
+A321941 checks cover:
+\begin{enumerate}
+\item The required finite sign range \(3\le k\le31\), with an
+extended check through \(128\).
+\item Agreement with BGG's published coefficient recurrence through
+degree \(64\), and agreement with all \(13\) initial terms displayed
+in the inspected OEIS entry.
+\item The rational constants in the cutoff-\(32\) proof, including
+\(24(12/23)^{16}<1/100\) and the combined error \(9/10<1\).
+\item Independent constructions of the large-order coefficients
+through \(c_8\).
+\end{enumerate}
+
+The tests are finite certificates and checks of algebraic
+identifications.  They do not establish the infinite asymptotic
+remainder bounds; those were proved in
+Sections~\ref{bgg:sg:sec:resolvent}--\ref{bgg:sg:sec:borel} (and, for
+A088714, in Part~V of that report).
+The independent A321941 implementation starts from BGG's polynomial
+coefficient recurrence and reconstructs the heat coefficients by a
+different route.  This checks more than agreement of two instances
+of the same series-expansion code.
+
+\subsection{Rebuilding the deliverable}
+
+The archive contains a self-contained \texttt{oeis\_research.tex},
+its compiled PDF, the verification code, exact coefficient data,
+recorded outputs, and a source audit.  The TeX source has no
+external figures or bibliography file.
+Compile it with a standard TeX Live installation:
+\begin{lstlisting}[language=bash]
+latexmk -pdf -interaction=nonstopmode -halt-on-error oeis_research.tex
+\end{lstlisting}
+The file \texttt{README.txt} gives the individual verification commands.
+Python~3.11 or later supports the Decimal methods used by the optional
+normalization diagnostics.  The exact rational sign checks and
+integer endpoint checks need no third-party numerical package.
+
+\emph{[Write note, batch 86A.]} The delivered \texttt{oeis\_research.tex},
+its PDF and its \texttt{README.txt} are not shipped; they survive in the
+arrival commit \texttt{ae9baa422}. In the collection the A321941
+programs are \path{code/02-sign-finite_certificate.py},
+\path{02-sign-verify_sign.py}, \path{02-sign-independent_check.py},
+\path{02-sign-large_order.py} and \path{02-sign-asymptotic_check.py},
+and their recorded outputs are in \path{data/} under the same prefix.
+Two of them find a sibling by its delivered name
+(\path{large_order.py} imports \path{verify_sign},
+\path{asymptotic_check.py} loads \path{independent_check.py}), four
+write their output beside themselves, and the manuscript's driver
+\path{run_checks.py}, shipped with Part~V of the A088714 report,
+expects the delivered layout and rewrites its own run records. The
+README of this report therefore gives reruns on copies with the
+delivered names. The PDF of this report is a build of this text.
+
+\section{Further research questions for Part~II}
+\label{bgg:sg:sec:future}
+
+\emph{[Write note, batch 86A.]} These are the manuscript's research
+questions~15.6--15.9; its questions~15.1--15.5 concern A088714 and are
+printed in Part~V of the A088714 report. Question~\ref{bgg:sg:q:region}
+continues question~6 of Section~\ref{bgg:sec:future},
+question~\ref{bgg:sg:q:continuation} is the part of question~4 there
+that this Part leaves open, and question~\ref{bgg:sg:q:arithmetic}
+bears on questions~2 and~3 there.
+
+The following questions are deliberately more precise than a request
+for additional numerical terms.  Each identifies a mathematical
+target that is not established by the present proofs.
+
+\begin{question}[The entire parameter-dependent sign region]
+\label{bgg:sg:q:region}
+For the radial oscillator evaluated at a general positive point,
+or for the polynomial deformation in Part~\ref{bgg:part:arithmetic}, which
+parameters give a complete sign pattern analogous to A321941?
+\end{question}
+The method of Sections~\ref{bgg:sg:sec:heat}--\ref{bgg:sg:sec:signproof}
+suggests uniform coefficient majorants on
+compact parameter sets.  The interesting targets are an explicit
+parameter-dependent cutoff, the location of the exceptional
+small indices, and a sharp boundary between sign regimes.
+A separate algebraic problem is to relate that boundary to the
+integer polynomial family already constructed in the repository.
+
+\begin{question}[Complex continuation and exponentially small terms]
+\label{bgg:sg:q:continuation}
+What is the analytic continuation of \(\mathscr B_2(s)\) beyond
+its disk of convergence, and how do its singularities determine
+the exponentially small terms associated with \eqref{bgg:sg:eq:rho}?
+\end{question}
+Theorem~\ref{bgg:sg:thm:borel} proves a logarithmic singularity at
+\(s=16\) from inside the disk.  It does not determine the full
+singularity set, lateral continuations, or Stokes constants.
+The exact heat integral is a natural starting point for such an
+analysis.  Care is needed with the order-two factorial convention
+and with the distinction between large-order coefficients and a
+remainder theorem for an optimally truncated \(n\)-expansion.
+
+\begin{question}[Arithmetic beyond the known congruence]
+\label{bgg:sg:q:arithmetic}
+Can the complete sign and large-order theorems be combined with
+the repository's arithmetic recurrences to determine further
+exact valuations and congruences of \(r_k\)?
+\end{question}
+The earlier report already proves integrality, the modulo-\(32\)
+congruence, and sharp denominator conclusions in specified cases
+(Part~\ref{bgg:part:arithmetic}).  Those are not new claims here.
+The analytic scale can organize searches for additional arithmetic
+patterns, but real asymptotics cannot by themselves determine a
+2-adic valuation.  A proof would need a strengthened exact
+recurrence or an appropriate congruence invariant.
+
+\begin{question}[A formal proof with a small trusted certificate]
+\label{bgg:sg:q:formal}
+Which portions can be formalized first while keeping the
+analytic dependency chain explicit?
+\end{question}
+The finite rational certificate, coefficientwise majorants, and
+positive-kernel summation identity are good initial targets.
+The exact spectral bridge requires a larger special-function and
+operator-analysis library.  A useful staged formalization would
+state the analytic inputs as explicit theorems, verify every
+finite truncation algebraically, and then discharge the limiting
+estimates.  This would also make the distinction between formal
+series identities and convergent analytic identities mechanically
+visible.
+
+\emph{[Write note, batch 86A.]} The positive-kernel summation identity
+named in the last question belongs to the manuscript's A088714 proof
+(Part~V of that report); for A321941 the targets are the certificate of
+Appendix~\ref{bgg:sg:app:certificate} and the majorants of
+Section~\ref{bgg:sg:sec:majorants}.
+
+% Part II's appendices continue Part I's letters.
+\setcounter{section}{2}
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\theHsection}{sg.app.\Alph{section}}
+\makeatletter\gdef\Hy@chapapp{\Hy@appendixstring}\makeatother
+
+\section{A short exact certificate for the finite sign range}
+\label{bgg:sg:app:certificate}
+
+The following complete Python program proves the finite comparisons
+used in Section~\ref{bgg:sg:sec:signproof}.  It constructs
+\(B=q^{-1/2}\) from \(2qB'+q'B=0\), constructs
+\(T=\tanh(t/4)\) from \(T'=(1-T^2)/4\), and constructs
+\(E=e^{-T}\) from \(E'=-T'E\).
+Truncated multiplication then implements \eqref{bgg:sg:eq:H}.
+Every operation is exact.
+
+\begin{lstlisting}[language=Python]
+from fractions import Fraction as F
+from math import factorial
+N = 31
+
+def mul(a, b):
+    c = [F(0)] * (N + 1)
+    for i, x in enumerate(a):
+        for j, y in enumerate(b[:N + 1 - i]):
+            c[i + j] += x * y
+    return c
+
+q = [F(0)] * (N + 1)
+for j in range(N // 2 + 1):
+    q[2*j] = F(1, 4**j * factorial(2*j + 1))
+B = [F(1)]
+for k in range(1, N + 1):
+    B.append(-sum((F(k)-F(i, 2))*q[i]*B[k-i]
+                  for i in range(1, k+1)) / k)
+T = [F(0), F(1, 4)] + [F(0)] * (N - 1)
+for k in range(2, N + 1):
+    T[k] = -sum(T[i]*T[k-1-i] for i in range(k)) / (4*k)
+E = [F(1)]
+for k in range(1, N + 1):
+    E.append(-sum(i*T[i]*E[k-i] for i in range(1, k+1))/k)
+A = mul(B, E)
+v = [F(0)] + q[:N]
+power = [F(1)] + [F(0)] * N
+S = power.copy()
+b = F(3, 16)
+for j in range(1, N + 1):
+    if j > 1:
+        b *= F((2*j-3)*(2*j+1), 16*j)
+    power = mul(power, v)
+    for k in range(j, N + 1):
+        S[k] -= b * power[k]
+h = mul(A, S)
+assert h[:4] == [1, F(-7, 16), F(43, 1536), F(-61, 8192)]
+assert all(h[k] < 0 for k in range(3, N + 1))
+print("Exact certificate: h_k < 0 for 3 <= k <= 31.")
+\end{lstlisting}
+
+\emph{[Write note, batch 86A.]} This program is shipped as
+\texttt{code/02-sign-finite\_certificate.py}, byte for byte the listing
+above. It writes nothing; it prints one line.
+
+\section{Source and dependency audit (Part~II)}\label{bgg:sg:app:sources}
+
+The research reports were retrieved from the public repository at
+commit
+\begin{center}\small\ttfamily
+b7e4f25b6e79cc669fb245cba520017a0f4228b7,
+\end{center}
+inspected on 4 October 2026.
+The main published source is the final 2019 BGG article
+\cite{BGG}; numbering in this manuscript refers to that final
+version.
+
+\subsection*{A321941 source}
+
+The report \emph{Proving Two Arithmetic Conjectures for OEIS A321941}
+is at
+\begin{quote}\small
+\nolinkurl{SetTheory/Cardinals/docs/reports/congruences-and-valuations/a321941-asymptotic-coefficient-integrality/article.tex}.
+\end{quote}
+Its Git blob identifier is
+\begin{center}\small\ttfamily
+10873a84fcf7a5f725ad74f90e2bd71ab7e7dd32.
+\end{center}
+Its proved integrality and congruence results are prior inputs to
+the source comparison, but are not needed by the sign proof.
+Its polynomial constant term equals \(-S_k\).
+The contribution here is to prove the complete sign assertion,
+identify that expression as the large-order scale, and derive
+the all-orders and Borel conclusions.
+
+\emph{[Write note, batch 86A.]} That report is
+Part~\ref{bgg:part:arithmetic} of the present one; the blob is its
+\texttt{article.tex} as it stood before this Part was added. The
+manuscript's second source subsection, on the A088714 report, is printed
+in Part~V of that report.
+
+\subsection*{Verification boundaries}
+
+The analytic and combinatorial arguments received separate
+independent checks, including normalization constants, index
+partitions, all-orders truncations, and the two infinite sums in
+the convergence argument.  The executable checks and their
+recorded outputs are included in the archive.
+This internal review does not constitute external refereeing or
+a proof-assistant certificate.  No OEIS entry or repository
+commit is changed by this deliverable.
+
+\emph{[Write note, batch 86A.]} ``Internal'' and ``independent'' refer to
+reviews within the manuscript's own pipeline, recorded in its source
+audit (shipped as
+\path{data/05-bell-norm-SOURCE_AUDIT.json} of the A088714 report). The
+two infinite sums of the convergence argument belong to its A088714
+part.
 
 \begin{thebibliography}{9}
 
@@ -1290,6 +2434,36 @@ V. Reshetnikov and contributors, \emph{ProveIt},
 same commit as \cite{proveit-volume}.
 \href{https://github.com/VladimirReshetnikov/ProveIt/blob/0a6d798c5f39775b2fb4d85fef643fef996c87cf/Analysis/FabiusFunction/Lean/FabiusFunction/QuadraticCoreCatalan.lean}{Pinned source module}.
 Source inspected; no new formal build performed for this article.
+
+% Added for Part II (batch 86A); accessed by its manuscript on 4 October 2026.
+\bibitem{dlmf-kummer}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 13.2: Definitions and Basic Properties},
+especially 13.2.34 and 13.2.40.
+\url{https://dlmf.nist.gov/13.2}.
+Accessed 4 October 2026.
+
+\bibitem{dlmf-laguerre}
+NIST Digital Library of Mathematical Functions,
+\emph{Sections 18.3 and 18.18}, Laguerre orthogonality, completeness,
+and the Hille--Hardy formula 18.18.27.
+\url{https://dlmf.nist.gov/18.3};
+\url{https://dlmf.nist.gov/18.18.E27}.
+Accessed 4 October 2026.
+
+\bibitem{dlmf-bessel}
+NIST Digital Library of Mathematical Functions,
+\emph{Sections 10.17 and 10.40}, asymptotic coefficients and
+large-argument expansions of modified Bessel functions.
+\url{https://dlmf.nist.gov/10.17.E1};
+\url{https://dlmf.nist.gov/10.40.E1}.
+Accessed 4 October 2026.
+
+\bibitem{dlmf-watson}
+NIST Digital Library of Mathematical Functions,
+\emph{Section 2.3(ii): Watson's Lemma}.
+\url{https://dlmf.nist.gov/2.3.ii}.
+Accessed 4 October 2026.
 
 \end{thebibliography}
 \end{document}

@@ -1,0 +1,88 @@
+{
+  "status": "PASS",
+  "scope": "Syntactic invariants and finite local gate checks; not infinite-bound evaluation.",
+  "compiled_sentence_examples": 5,
+  "local_gate_checks": 768,
+  "examples": [
+    {
+      "name": "successor",
+      "audit": {
+        "formula_nodes": 40,
+        "quantifiers": 9,
+        "atomic_relations": 16,
+        "max_atomic_degree": 2,
+        "quantifier_depth": 5,
+        "free_variables": [
+          "H"
+        ],
+        "all_quantifiers_bounded_by_H": true
+      },
+      "input": "(forall x: (exists y: (y = (x + 1))))",
+      "output": "(forall x <= H: (((x = 0) or (exists dy0 <= H: ((dy0 <= x) and (x < (2 * dy0)) and ((0 < dy0) and (forall od1 <= H: (forall co2 <= H: (((od1 <= dy0) and (co2 <= dy0)) implies (not (dy0 = (((2 * od1) + 3) * co2)))))))))) implies (exists y <= H: (((y = 0) or (exists dy3 <= H: ((dy3 <= y) and (y < (2 * dy3)) and ((0 < dy3) and (forall od4 <= H: (forall co5 <= H: (((od4 <= dy3) and (co5 <= dy3)) implies (not (dy3 = (((2 * od4) + 3) * co5)))))))))) and (exists gate6 <= H: ((gate6 = (x + 1)) and (y = gate6)))))))"
+    },
+    {
+      "name": "no_square_root_two",
+      "audit": {
+        "formula_nodes": 23,
+        "quantifiers": 5,
+        "atomic_relations": 9,
+        "max_atomic_degree": 2,
+        "quantifier_depth": 4,
+        "free_variables": [
+          "H"
+        ],
+        "all_quantifiers_bounded_by_H": true
+      },
+      "input": "(not (exists x: ((x * x) = 2)))",
+      "output": "(not (exists x <= H: (((x = 0) or (exists dy0 <= H: ((dy0 <= x) and (x < (2 * dy0)) and ((0 < dy0) and (forall od1 <= H: (forall co2 <= H: (((od1 <= dy0) and (co2 <= dy0)) implies (not (dy0 = (((2 * od1) + 3) * co2)))))))))) and (exists gate3 <= H: ((gate3 = (x * x)) and (gate3 = 2))))))"
+    },
+    {
+      "name": "cubic_equation",
+      "audit": {
+        "formula_nodes": 77,
+        "quantifiers": 19,
+        "atomic_relations": 32,
+        "max_atomic_degree": 2,
+        "quantifier_depth": 10,
+        "free_variables": [
+          "H"
+        ],
+        "all_quantifiers_bounded_by_H": true
+      },
+      "input": "(exists x: (exists y: (exists z: ((0 < x) and (0 < y) and (0 < z) and ((((x * x) * x) + ((y * y) * y)) = ((z * z) * z))))))",
+      "output": "(exists x <= H: (((x = 0) or (exists dy0 <= H: ((dy0 <= x) and (x < (2 * dy0)) and ((0 < dy0) and (forall od1 <= H: (forall co2 <= H: (((od1 <= dy0) and (co2 <= dy0)) implies (not (dy0 = (((2 * od1) + 3) * co2)))))))))) and (exists y <= H: (((y = 0) or (exists dy3 <= H: ((dy3 <= y) and (y < (2 * dy3)) and ((0 < dy3) and (forall od4 <= H: (forall co5 <= H: (((od4 <= dy3) and (co5 <= dy3)) implies (not (dy3 = (((2 * od4) + 3) * co5)))))))))) and (exists z <= H: (((z = 0) or (exists dy6 <= H: ((dy6 <= z) and (z < (2 * dy6)) and ((0 < dy6) and (forall od7 <= H: (forall co8 <= H: (((od7 <= dy6) and (co8 <= dy6)) implies (not (dy6 = (((2 * od7) + 3) * co8)))))))))) and (((0 < x)) and ((0 < y)) and ((0 < z)) and (exists gate9 <= H: (exists gate10 <= H: (exists gate11 <= H: (exists gate12 <= H: (exists gate13 <= H: (exists gate14 <= H: (exists gate15 <= H: ((gate9 = (x * x)) and (gate10 = (gate9 * x)) and (gate11 = (y * y)) and (gate12 = (gate11 * y)) and (gate13 = (gate10 + gate12)) and (gate14 = (z * z)) and (gate15 = (gate14 * z)) and (gate13 = gate15))))))))))))))))"
+    },
+    {
+      "name": "distributivity",
+      "audit": {
+        "formula_nodes": 66,
+        "quantifiers": 17,
+        "atomic_relations": 27,
+        "max_atomic_degree": 2,
+        "quantifier_depth": 8,
+        "free_variables": [
+          "H"
+        ],
+        "all_quantifiers_bounded_by_H": true
+      },
+      "input": "(forall x: (forall y: (forall z: ((x * (y + z)) = ((x * y) + (x * z))))))",
+      "output": "(forall x <= H: (((x = 0) or (exists dy0 <= H: ((dy0 <= x) and (x < (2 * dy0)) and ((0 < dy0) and (forall od1 <= H: (forall co2 <= H: (((od1 <= dy0) and (co2 <= dy0)) implies (not (dy0 = (((2 * od1) + 3) * co2)))))))))) implies (forall y <= H: (((y = 0) or (exists dy3 <= H: ((dy3 <= y) and (y < (2 * dy3)) and ((0 < dy3) and (forall od4 <= H: (forall co5 <= H: (((od4 <= dy3) and (co5 <= dy3)) implies (not (dy3 = (((2 * od4) + 3) * co5)))))))))) implies (forall z <= H: (((z = 0) or (exists dy6 <= H: ((dy6 <= z) and (z < (2 * dy6)) and ((0 < dy6) and (forall od7 <= H: (forall co8 <= H: (((od7 <= dy6) and (co8 <= dy6)) implies (not (dy6 = (((2 * od7) + 3) * co8)))))))))) implies (exists gate9 <= H: (exists gate10 <= H: (exists gate11 <= H: (exists gate12 <= H: (exists gate13 <= H: ((gate9 = (y + z)) and (gate10 = (x * gate9)) and (gate11 = (x * y)) and (gate12 = (x * z)) and (gate13 = (gate11 + gate12)) and (gate10 = gate13)))))))))))))"
+    },
+    {
+      "name": "shadowing_and_freshness",
+      "audit": {
+        "formula_nodes": 41,
+        "quantifiers": 8,
+        "atomic_relations": 16,
+        "max_atomic_degree": 2,
+        "quantifier_depth": 5,
+        "free_variables": [
+          "H"
+        ],
+        "all_quantifiers_bounded_by_H": true
+      },
+      "input": "(forall gate0: ((gate0 = gate0) and (exists gate0: (gate0 = 0))))",
+      "output": "(forall gate0 <= H: (((gate0 = 0) or (exists dy0 <= H: ((dy0 <= gate0) and (gate0 < (2 * dy0)) and ((0 < dy0) and (forall od1 <= H: (forall co2 <= H: (((od1 <= dy0) and (co2 <= dy0)) implies (not (dy0 = (((2 * od1) + 3) * co2)))))))))) implies (((gate0 = gate0)) and (exists gate0 <= H: (((gate0 = 0) or (exists dy3 <= H: ((dy3 <= gate0) and (gate0 < (2 * dy3)) and ((0 < dy3) and (forall od4 <= H: (forall co5 <= H: (((od4 <= dy3) and (co5 <= dy3)) implies (not (dy3 = (((2 * od4) + 3) * co5)))))))))) and ((gate0 = 0)))))))"
+    }
+  ]
+}
