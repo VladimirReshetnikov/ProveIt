@@ -2254,12 +2254,14 @@ component but do not improve the established84-operation bound.
 
 The [ant coefficient/fusion intake](Papers/research-wip/native-stream-queue/review_ant47_48_intake.md) reviews the
 later complete source grammars separately from their inherited simulation
-proofs. Two checked refinements share [the endpoint power](Papers/research-wip/native-stream-queue/periodic_ant_endpoint_reuse48.md)
-and [six rotated occurrence polynomials](Papers/research-wip/native-stream-queue/ant48_rotated_occurrence_sharing.md),
-saving **38,155 operations** together. The [independent joint review](Papers/research-wip/native-stream-queue/review_periodic_ant_sharing48.md)
-checks both all-value identities and their disjoint composition. The emitted
-33-row endpoint and7,886-row rotation component pass normal/optimized replay.
-Derived strict-literal complete counts become **14,620,779 /14,620,789** for
+proofs. The checked [endpoint reuse](Papers/research-wip/native-stream-queue/periodic_ant_endpoint_reuse48.md),
+[six-block rotation sharing](Papers/research-wip/native-stream-queue/ant48_rotated_occurrence_sharing.md) and
+[zero/CSE cleanup](Papers/research-wip/native-stream-queue/ant48_rotated_occurrence_cleanup.md) save **38,223
+operations** together. The [joint source review](Papers/research-wip/native-stream-queue/review_periodic_ant_sharing48.md)
+and [cleanup review](Papers/research-wip/native-stream-queue/review_ant48_rotated_occurrence_cleanup.md) prove the
+all-value identities and disjoint composition. The33-row endpoint and
+7,818-row rotation component pass installed normal/optimized replay.
+Derived strict-literal complete counts are **14,620,711 /14,620,721** for
 two/one positive inputs, with inherited465/467 witnesses and degree2,304,000.
 The full multimillion-row successor stream was not regenerated or rehashed;
 its unchanged prefix and simulation theorem remain inherited. The established
