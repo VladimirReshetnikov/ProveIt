@@ -225,6 +225,15 @@ checks the unrestricted transfer, all entries and the accepted product;
 normal/optimized replays pass. Correct Pell indexing and an unbounded
 product certificate remain unpaid; the universal polynomial bound stays **84**.
 
+The [integral-basis target floor](Papers/research-wip/native-stream-queue/matrix193_integral_target_floor.md)
+proves that no change of integral unimodular basis lowers those three
+generic target gates while retaining first-row injectivity on the entire
+inherited group. Every one- or two-gate frame has a lower-unipotent
+collision. The [independent review](Papers/research-wip/native-stream-queue/review_matrix193_integral_target_floor.md)
+checks the unrestricted residue/Pell classification and gate argument.
+This leaves projections justified only on smaller product sets open and
+is not a universal Diophantine lower bound.
+
 The [Gamma1(5) recoding](Papers/research-wip/native-stream-queue/matrix193_gamma1_recode.md)
 preserves all 193 generators and twenty letters with **Pell parameter 391**.
 Two explicit graphs prove faithfulness and first-row injectivity, giving
