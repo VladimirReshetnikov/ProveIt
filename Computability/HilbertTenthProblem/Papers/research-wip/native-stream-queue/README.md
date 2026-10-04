@@ -1,5 +1,21 @@
 # WIP: native queue streams and research continuation
 
+The [local norm unit guard](complete92_norm_unit_guard.md) gives a complete
+universal **92=52M+40A**, **17-positive-witness** polynomial of **uniform exact
+degree 325**, with exactly the same positive zero tuples as the reviewed90/406
+construction. It retains the same67 parent producers and pays25 new rows for
+`F92=P5*(A_rat²-D*B_rat²+1)-1`. The even denominator `B_rat` makes the guarded
+factor1 or2 modulo4; at an integer zero it must therefore be+1, forcing
+`P5=1` and the local norm to vanish. The unique integral root `f=A_rat/B_rat`
+is positive by the same accepted signed-domain theorem. The
+[independent review](review_complete92_norm_unit_guard.md) reconstructs all92
+rows and proves the whole-output identity
+`F90=P5*F92+(P5-1)*(2*P5*A_rat-1)`, the exact degree325 leader and its uniformly
+nonzero coefficient `32*Bm1^202`. Fresh root normal/optimized author and reviewer
+receipts pass. The naive degree bound335 is not the exact degree. This adds a
+lower-degree17-witness choice;90/406/17 and the established84/187/18 operation
+frontier remain available, with no global optimality assertion.
+
 The [quadratic root elimination](complete90_signed_root_elimination.md)
 gives a complete universal polynomial with **90=52M+38A operations**,
 **17 positive witnesses**, and **uniform exact degree 406**. It deletes the
@@ -101,6 +117,19 @@ The [hat-surplus Part II publication review](review_hat_publication_95527cf73.md
 The [three surreal publication reviews](review_surreal_publication_5c32fda02.md) cover the Cantor-subfield integration at6f5f9954c, named-symmetry Part VIII at1404038df, and perfect-gap source04 at5c32fda02. All17 immutable blobs and nine raw diffs are authenticated;3779 precisely scoped diff lines were read. The label censuses are56→70,296→372 and236→313. Named operations remain distinct from a uniform evaluator, and the exact PA residue-image theorem uses nonstandard finite sums/overspill and one shared standard-system oracle. The inspected interfaces supply no paid ordinary-integer compiler. The perfect-gap proof and its imported Borel-standard-system theorem are not fully reviewed; PDF/build and historical finite-test claims remain outside the evidence.
 
 The [Parts XI–XII publication review](review_polish_publication_4f03443e0.md) separates merge4f03443e0 from the actual Polish-report write dd26f917c. It retains all784 old labels among923, checks2500 references, maps101 delivered labels and authenticates six placed support files. The full README diff,2013 selected TeX lines and two status notes were read. The fixed beta decoder still carries an internal universal recurrence, and its ordinary-exponentiation recoder is open; the group-completion criterion gives topology, not a finite integer certificate. Main fusion/class-manifold proofs and external ATR₀/HMS dependencies are outside certification. Root independently checks immutable blobs,14 archive members, all16 read spans and placement/label mappings. No paid compiler bound changes.
+
+The next review queue contains the cellular-automaton publication at
+`4cabe3899`, the catalogue changes at `cd514f61b`, and
+`definable_surreal_operations.zip` arriving at `de37a66d1`. These commits were
+synchronized and identified from commit summaries and diff statistics only in
+this round. Their new manuscript text, catalogue claims and archive contents
+remain unreviewed; prior report reviews do not implicitly cover these changes.
+Prioritize the CA publication and its exact input/radius interface before
+promoting any new arithmetic or universality claim.
+
+The [Polish-report placement check](review_polish_placement_e24ce2ce0.md) authenticates all sixteen ancillary files at e24ce2ce0 against28 regular members of the three original archives. The retired ZIPs match their arrival bytes; the host README, article and PDF remain unchanged, with Parts I–XII still the full heading list. Parts XIII–XV are prospective at that revision. Root independently rechecks all placed/member/primary bytes. The earlier guide intake remains the mathematical read boundary, with no new proof certification or paid compiler bound.
+
+The [OEIS publication review](review_oeis_publication_9f924ac47.md) confirms that9f924ac47 integrates both main manuscripts, resolving the earlier placement gap. All65+61 original labels survive among135 unique labels;242 internal references,285 delivery-map rows and286 listed paths check. The full928-line guide and2169-line article diff were read. Exact finite-sector bounds remain distinct from fixed-order logarithmic/inverse expansions, and the clipping-table polynomial still depends on its entire fixed table. Root rechecks immutable bytes,101 read spans, label maps, unchanged ancillary files and embedded predecessor copies. One Git-ignore guidance error was corrected separately atf0c56034c; the immutable review retains the original finding. Analytic proofs, builds and external attribution are not newly certified.
 
 The [hat/box placement check](review_hat_placement_e38f368c2.md) authenticates all thirteen added files and149407 bytes at e38f368c2 against23 original archive members. The host README, article and PDF remain unchanged: the proposed Parts III–IV have ancillary placement only at this checkpoint. Earlier threshold-proof and guide-intake scopes remain distinct. No supplied program ran, no new mathematical claim is certified by byte matching, and no paid compiler bound changes.
 
@@ -5247,6 +5276,9 @@ New research and the completed75-operation construction:
 
 | Artifact | Established result | Remaining boundary |
 |---|---|---|
+| [Complete local norm unit guard](complete92_norm_unit_guard.md), [review](review_complete92_norm_unit_guard.md) | Universal **92=52M+40A**, **17 positive witnesses**, uniform exact degree **325**; same positive tuples as90/406; literal67+25 source and full modulo4 guard proof | Degree/operation tradeoff on the inherited valid recipe; depends on reviewed signed-domain theorem; no global minimum claim |
+| [Polish-report ancillary placement](review_polish_placement_e24ce2ce0.md) | All16 files uniquely match28 original members;3 retired archives authenticated;3 main host files unchanged | Parts XIII–XV not integrated at this revision; earlier guide-only mathematical scope retained; no new paid compiler |
+| [OEIS two-manuscript publication](review_oeis_publication_9f924ac47.md) | Both manuscripts integrated;65+61 original labels retained among135;242 references and286 listed files checked; full guide/article diff read; Git guidance corrected atf0c56034c | Fixed-table coefficients and exact-sector versus fixed-order scope remain; no new uniform paid compiler, build or complete analytic-proof certification |
 | [Hat/box ancillary placement](review_hat_placement_e38f368c2.md) | All13 added files/149407 bytes match23 original members;3 archives retired;host README/article/PDF unchanged | Parts III–IV not yet integrated at this revision; mathematical read scopes unchanged; no new compiler bound |
 | [Five-guide intake at2faa3b37a](review_five_arrivals_2faa3b37a.md) | Five archives/38 regular members authenticated;468 primary-guide lines read; analytic, ordinal and uniform-evaluator boundaries recorded | Manuscript bodies and proofs unreviewed; historical tests/builds and external claims unverified; no paid integer compiler extracted |
 | [Batch90 reciprocal notes](review_batch90_reciprocal_e50dde15b.md) | All 23 text diffs read;33 immutable file pairs and128 read spans authenticated;5223 unchanged labels,46 resolved cited labels and11 relative links | Selected hypotheses checked; external premises, PDFs/builds and unread proofs unverified; no new paid Diophantine compiler |
