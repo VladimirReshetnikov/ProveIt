@@ -114,51 +114,32 @@
 > This chart drops the main exponent congruence and is distinct from the
 > unresolved independent-gamma83. The universal bound remains84.
 >
-> The [no-i-monomial-product condition](complete84_auxiliary_no_i_monomial_products.md)
-> strengthens the remaining direct-Q case: a possible 5M+4A circuit cannot
-> have any counted multiplication output that is a nonzero monomial containing i.
-> Specialization at i=0 deletes that product and a distinct chronological
-> product from the Q relation, contradicting the four-product bound for V,W;
-> an earlier product proportional to Q is excluded by deleting the redundant
-> Q addition. The [independent proof review](review_complete84_auxiliary_no_i_monomial_products.md)
-> checks both chronological orders and the scalar-span argument. This is a
-> proof-only necessary condition. Nonmonomial i-dependent products remain open;
-> no nine-gate impossibility or change to universal84 is claimed.
-> The remaining auxiliary target is direct-Q cancellation through nonmonomial
-> products; the sixteen proper pivots and i-containing monomial products are
-> already excluded in this exact paid-port model.
+> The [unprotected auxiliary ten-gate theorem](complete84_auxiliary_direct_q_exclusion.md)
+> closes the remaining direct-Q cancellation case. Simultaneous production of
+> V=cTf-c-Rf², Q=Delta²*i²*c⁴ and S=Delta*f²-Q needs **exactly ten gates**
+> from independent Delta,c,i,f,T,R and the two additional paid ports c²,Delta*c².
+> The existing7M+3A schedule attains this bound without protecting any Q producer
+> or final S subtraction. The [independent proof review](review_complete84_auxiliary_direct_q_exclusion.md)
+> checks all three-addition placements with temporarily free monomials, restores
+> the original interface before product-count arguments, and checks both the
+> factor-origin obstruction and the first quadratic-i-degree contradiction.
+> Root independently challenged the complete proof. This is a local arithmetic
+> theorem; the full universal bound remains84=47M+37A,18 witnesses,degree187.
 >
-> The [proper-pivot exclusion](complete84_auxiliary_proper_pivot_exclusion.md)
-> reduces the seventeen necessary auxiliary cancellation forms to **one**:
-> a remaining5M+4A candidate must produce Q itself directly by cancellation.
-> For every proper divisor pivot, specialization at i=0 deletes two distinct
-> chronological products and contradicts the four-product bound for V,W. The
-> [independent review](review_complete84_auxiliary_proper_pivot_exclusion.md) checks the scalar-span,
-> chronology and paid-interface arguments, the17-to-1 census and unchanged
-> complete84 source; normal/optimized receipts pass. Direct cancellation to Q
-> remains open. This does not exclude every nine-gate circuit or lower universal84.
+> The earlier [nine-gate frontier](complete84_auxiliary_nine_gate_frontier.md),
+> [proper-pivot exclusion](complete84_auxiliary_proper_pivot_exclusion.md),
+> [no-i-monomial-product condition](complete84_auxiliary_no_i_monomial_products.md)
+> and [mixed-cut bound](complete84_auxiliary_mixed_cut.md) are authenticated
+> intermediate steps. Their formerly open direct-Q case is now excluded at this
+> same paid interface. The new proof does not assert global84 optimality,
+> a lower bound for changed interfaces, or an obstruction to positive-zero
+> replacements and coordinate charts. No new circuit or numerical search is
+> used to establish the theorem.
 >
-> The [nine-gate auxiliary frontier](complete84_auxiliary_nine_gate_frontier.md)
-> shows that any nine-gate replacement in the stated independent paid-port
-> model must use exactly5M+4A. It must contain one genuine cancellation that
-> produces one of seventeen specified monomials. A pure-product quotient cone
-> and every three-addition circuit exceed the budget. The
-> [independent review](review_complete84_auxiliary_nine_gate_frontier.md) and a second mathematical
-> challenge checked the unrestricted addition placements and specialization
-> arguments; fresh normal/optimized source receipts pass. These are necessary
-> conditions: existence of a nine-gate circuit remains open, and the complete
-> attaining source remains84 operations,18 witnesses and degree187.
->
-> The [mixed auxiliary-cut bound](complete84_auxiliary_mixed_cut.md)
-> proves that joint V and Delta*f² production needs at least seven gates with
-> arbitrary mixed arithmetic. Retaining the two actual quotient-coefficient
-> rows and final strong subtraction makes the ten-gate cut sharp. Unrestricted
-> joint V,Q,S production also needs at least three additions. The
-> [independent review](review_complete84_auxiliary_mixed_cut.md) and separate
-> mathematical challenge check the symbolic proofs and complete equivalent84
-> source; normal/optimized replays and64 fresh whole-source comparisons pass.
-> Fully changed coefficient/strong circuits remain open; this is no global84
-> lower bound.
+> Do not continue searching for a nine-gate V,Q,S replacement at this exact
+> independent paid interface. A further saving must change the paid interface,
+> output boundary, zero-set representation or another part of the full source;
+> charge and verify any such change in the complete polynomial.
 >
 > The [joint auxiliary rescaling bound](complete84_auxiliary_monomial_scaling.md)
 > charges f^2, the full quotient, auxiliary coefficient and strong factor
