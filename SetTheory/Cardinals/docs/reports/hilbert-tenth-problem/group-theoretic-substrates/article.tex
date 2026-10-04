@@ -6,13 +6,13 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{microtype,booktabs,longtable,array,enumitem}
 \usepackage[dvipsnames]{xcolor}
-\usepackage{fancyhdr,needspace}
+\usepackage{fancyhdr,needspace,seqsplit}
 \usepackage{listings}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning}
 \usepackage{xurl}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
-\hypersetup{pdftitle={Groups as Diophantine Substrates},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={Arithmetic van Kampen certificates, three commutative phases, pair order, affine matrix inputs and a fixed universal matrix semigroup: low-degree Diophantine certificates through the integral Heisenberg group and free matrix groups}}
+\hypersetup{pdftitle={Groups as Diophantine Substrates},pdfauthor={AI-assisted research report prepared for Vladimir Reshetnikov},pdfsubject={Arithmetic van Kampen certificates, three commutative phases, pair order, affine matrix inputs, a fixed universal matrix semigroup and chronological matrix certificates: low-degree Diophantine certificates through the integral Heisenberg group and free matrix groups}}
 \urlstyle{same}
 \pagestyle{fancy}
 \fancyhf{}
@@ -94,10 +94,21 @@
 \newcommand{\hto}{\mathrel{\longrightarrow}}
 \newcommand{\st}{\mathrel{\longrightarrow^{*}}}
 \newcounter{umsaveeq}
+% Source 09 (Part VI) macros; its \sha is \cmsha, its selector streams E_i are \Lambda_i
+\newcommand{\Pos}{\Z_{>0}}
+\newcommand{\Pow}{\operatorname{POWER}}
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\LOAD}{\mathsf{LOAD}}
+\newcommand{\TILE}{\mathsf{TILE}}
+\newcommand{\END}{\mathsf{END}}
+\newcommand{\COUNT}{\mathsf{COUNT}}
+\newcommand{\cmsha}[1]{\par\noindent{\footnotesize\ttfamily\seqsplit{#1}}\par}
+\newcounter{cmsaveeq}
 % Merge
 \newcommand{\wtag}{\textup{[write]}}
 \newcommand{\wtagb}{\textup{[write 78]}}
 \newcommand{\wtagc}{\textup{[write 82]}}
+\newcommand{\wtagd}{\textup{[write 91]}}
 \lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,keepspaces=true,showstringspaces=false,frame=single,rulecolor=\color{black!20},xleftmargin=0.3em,xrightmargin=0.3em}
 \setcounter{tocdepth}{2}
 
@@ -106,16 +117,16 @@
 \begin{titlepage}
 \vspace*{0in}
 \noindent{\color{MidnightBlue}\large PROVEIT RESEARCH REPORT}\par
-\vspace{0.25in}
-\noindent{\Huge\bfseries Groups as Diophantine\\[0.12em] Substrates}\par
 \vspace{0.15in}
-\noindent{\LARGE Arithmetic van Kampen certificates, three\\[0.15em] commutative phases, pair order, affine\\[0.15em] matrix inputs and a universal matrix semigroup}\par
+\noindent{\Huge\bfseries Groups as Diophantine Substrates}\par
+\vspace{0.15in}
+\noindent{\LARGE Arithmetic van Kampen certificates, three commutative\\[0.15em] phases, pair order, affine matrix inputs, a universal\\[0.15em] matrix semigroup and chronological matrix certificates}\par
 \vspace{0.12in}
-\noindent{\large Quartic certificates through the integral Heisenberg group and free matrix groups}\par
-\vspace{0.18in}
-\noindent AI-assisted research report prepared for Vladimir Reshetnikov from five manuscripts\par
-\noindent(batches~76, 78 and~82 of ProveIt's incoming reports), October 2--3, 2026\par
+\noindent{\large Low-degree certificates through the integral Heisenberg group and free matrix groups}\par
 \vspace{0.1in}
+\noindent AI-assisted research report prepared for Vladimir Reshetnikov from six manuscripts\par
+\noindent(batches~76, 78, 82 and~91 of ProveIt's incoming reports), October 2--4, 2026\par
+\vspace{0.04in}
 \begin{abstract}\small
 Part~I (source~03) treats a fixed two-generator finite presentation as a proof-producing substrate. Through Sanov's arithmetic chart of a free subgroup of $\SL_2(\Z)$, it builds explicit integer polynomials of degree at most four whose solvability is equivalent to filling a word with at most $m$ conjugates of relators, with exactly $(2s+13)m-4$ witnesses for $s$ relators, so that the compiler's minimal allocated arity recovers filling area and the Dehn function exactly. Shared proof DAGs compile without expanding relator occurrences: for $[a^{2^k},b^{2^\ell}]$ in $\langle a,b\mid[a,b]\rangle$ the area is $2^{k+\ell}$ but exactly $k+\ell$ product gates suffice and are necessary, and the quartic has $8(k+\ell)-4$ witnesses.
 
@@ -124,6 +135,8 @@ Part~II (source~05) compiles every finite system of integral quadratic equations
 Part~III (source~06) proves that the pair counts of three-letter words leave no holes, and compiles exact quadratic and canonical quartic certificates of word realizability in three-generator Heisenberg submonoids. Part~IV (source~07) proves that an affine unimodular input curve meets every fixed subgroup of $\SL_d(\Z)$ in a finite or exactly periodic set, so that input degree two is sharp in every dimension, and compiles polynomial circuits into a fixed free-abelian unipotent subgroup when affine coordinates are existentially quantified.
 
 Part~V (source~08) gives 229 literal matrices in $\SL_4(\Z)$ whose positive semigroup has the finite-tape halting problem of the Neary--Woods universal machine as its membership problem (r.e.-complete conditionally on the cited Neary--Woods chain), quartic certificates with $130r$ witnesses for each length~$r$, and an exact generating function for the fibre of an accepted input.
+
+Part~VI (source~09) gives one fixed-arity polynomial of exact degree twelve (41,309 positive witnesses, 184,016 gates) recognizing, for histories of every length, the inputs accepted by a fixed-context matrix countdown of the research programme, whose semigroup descends from Part~V's.
 
 The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or Rocq, and priority is not certified for any Part.
 \end{abstract}
@@ -137,11 +150,11 @@ The report is AI-assisted and unrefereed; nothing in it is formalized in Lean or
 
 \section{Scope, common setup and conventions}\label{gts:sec:front}
 
-\wtag\ This section was written when the two manuscripts were merged. Part~\ref{gts:part:vk} and Part~\ref{gts:part:tp} print the two sources; text there without a \wtag\ marker is the source's own. \wtagb\ Parts~\ref{gts:part:po} and~\ref{gts:part:ai} were added on 2~October 2026 from two manuscripts of batch~78. Text written then is marked \wtagb; the sentences of this section that the new Parts made incomplete were extended in place, and Appendix~\ref{gts:app:provenance} lists them. \wtagc\ Part~\ref{gts:part:um} was added on 3~October 2026 from one manuscript of batch~82; text written then is marked \wtagc, and the sentences of this section that it made incomplete were extended in place.
+\wtag\ This section was written when the two manuscripts were merged. Part~\ref{gts:part:vk} and Part~\ref{gts:part:tp} print the two sources; text there without a \wtag\ marker is the source's own. \wtagb\ Parts~\ref{gts:part:po} and~\ref{gts:part:ai} were added on 2~October 2026 from two manuscripts of batch~78. Text written then is marked \wtagb; the sentences of this section that the new Parts made incomplete were extended in place, and Appendix~\ref{gts:app:provenance} lists them. \wtagc\ Part~\ref{gts:part:um} was added on 3~October 2026 from one manuscript of batch~82; text written then is marked \wtagc, and the sentences of this section that it made incomplete were extended in place. \wtagd\ Part~\ref{gts:part:cm} was added on 4~October 2026 from one manuscript of batch~91; text written then is marked \wtagd, and the sentences of this section that it made incomplete were extended in place.
 
 \subsection{The Parts}\label{gts:sec:parts}
 
-This report is built from five AI-assisted research manuscripts (Appendix~\ref{gts:app:provenance} gives the full provenance). Two were delivered together as batch~76 of ProveIt's incoming reports (manuscripts~03 and~05) and are printed as Parts~I and~II. They are called \emph{source~03} and \emph{source~05} after the file prefixes of their shipped programs and data. Neither cites the other; they were written from different snapshots of the repository on the same day, and they share no theorem. \wtagb\ Two more, batch-78 manuscripts~09 and~13, are printed as Parts~III and~IV. They are called \emph{source~06} and \emph{source~07}, again after their file prefixes, which continue this report's own sequence and are not batch-78 manuscript numbers. Both were written on 2~October 2026 from one later snapshot of the repository, before Parts~I and~II were written into this report; neither cites the other or an earlier source, and no two of the four share a theorem. All four are complementary work on one subject: \emph{groups as Diophantine substrates}, with low-degree arithmetic certificates; the first three work through the integral Heisenberg group, and the fourth through unipotent matrix groups that contain it. \wtagc\ A fifth, batch-82 manuscript~22 (``Research Report~32'' of the pipeline that delivered it), is printed as Part~V and called \emph{source~08}, again after its file prefix. It was written on 3~October 2026, cites no earlier source and no repository file, and works through free subgroups of $\SL_2(\Z)$ placed in the two diagonal blocks of $\SL_4(\Z)$. It shares no theorem with Parts~I--IV, except that the first half of one lemma is the injectivity half of Part~I's Sanov theorem, proved differently.
+This report is built from six AI-assisted research manuscripts (Appendix~\ref{gts:app:provenance} gives the full provenance). Two were delivered together as batch~76 of ProveIt's incoming reports (manuscripts~03 and~05) and are printed as Parts~I and~II. They are called \emph{source~03} and \emph{source~05} after the file prefixes of their shipped programs and data. Neither cites the other; they were written from different snapshots of the repository on the same day, and they share no theorem. \wtagb\ Two more, batch-78 manuscripts~09 and~13, are printed as Parts~III and~IV. They are called \emph{source~06} and \emph{source~07}, again after their file prefixes, which continue this report's own sequence and are not batch-78 manuscript numbers. Both were written on 2~October 2026 from one later snapshot of the repository, before Parts~I and~II were written into this report; neither cites the other or an earlier source, and no two of the four share a theorem. All four are complementary work on one subject: \emph{groups as Diophantine substrates}, with low-degree arithmetic certificates; the first three work through the integral Heisenberg group, and the fourth through unipotent matrix groups that contain it. \wtagc\ A fifth, batch-82 manuscript~22 (``Research Report~32'' of the pipeline that delivered it), is printed as Part~V and called \emph{source~08}, again after its file prefix. It was written on 3~October 2026, cites no earlier source and no repository file, and works through free subgroups of $\SL_2(\Z)$ placed in the two diagonal blocks of $\SL_4(\Z)$. It shares no theorem with Parts~I--IV, except that the first half of one lemma is the injectivity half of Part~I's Sanov theorem, proved differently. \wtagd\ A sixth, batch-91 manuscript~07 (``Research Report~55'' of the same pipeline), is printed as Part~VI and called \emph{source~09}. It was written on 4~October 2026 against two research-programme commits of the previous evening, cites no earlier source, and works with a successor of Part~V's semigroup, a fixed semigroup of 195 singular integer $7\times7$ matrices; its subject is the Diophantine side, one polynomial of fixed arity for computations of every length. It shares no theorem with Parts~I--V; its power module re-derives a lemma of another report of this category (Section~\ref{gts:sec:relation}).
 
 \begin{itemize}
 \item \textbf{Part~\ref{gts:part:vk} (source~03), \emph{Arithmetic van Kampen certificates}.} The substrate is a finitely presented two-generator group; a word is an instance, and a product of conjugates of relators is an accepting proof. Sanov's arithmetic chart of a free subgroup of $\SL_2(\Z)$ turns each conjugator into four integers on one quadric, and the compilers are sums of squares of quadratic residuals (degree at most four) whose allocated arity records the filling area exactly (Theorems~\ref{gts:vk:thm:itinerary}, \ref{gts:vk:thm:budget} and~\ref{gts:vk:thm:arity}). Shared proof DAGs compress the area exponentially, sharply for dyadic rectangular commutators (Theorem~\ref{gts:vk:thm:grid}). Here the Heisenberg group is an \emph{area detector}: a homomorphism from the free group whose central coordinate counts relator occurrences with sign (Section~\ref{gts:vk:sec:grid}).
@@ -149,9 +162,10 @@ This report is built from five AI-assisted research manuscripts (Appendix~\ref{g
 \item \wtagb\ \textbf{Part~\ref{gts:part:po} (source~06), \emph{Order is not a moment}.} The substrate is a submonoid of $\HH^r$ generated by three labelled elements, so a certificate must show that proposed letter and pair counts come from one common word. For three letters, fixing the multiplicities and two of the three scattered pair counts leaves a gapless interval of the third (Theorem~\ref{gts:po:thm:interval}). This gives a six-equation quadratic certificate with $2c+4$ natural witnesses (Theorem~\ref{gts:po:thm:gapcompiler}), a four-corner formula for $c=2$ (Theorem~\ref{gts:po:thm:fourcorners}) and a canonical 24-witness quartic with exactly one witness tuple per accepted profile (Theorem~\ref{gts:po:thm:canonical}). Four letters can leave arbitrarily large holes (Theorem~\ref{gts:po:thm:fourletter}). The profile certificates lift to three generators of $\HH^r$ (Theorem~\ref{gts:po:thm:lift}), and membership is decidable when the multiplicity of one generator is supplied (Theorem~\ref{gts:po:thm:decidable}). Here the Heisenberg group \emph{records order}: its central coordinates are pair counts.
 \item \wtagb\ \textbf{Part~\ref{gts:part:ai} (source~07), \emph{Affine matrix inputs}.} The substrate is membership of a matrix in a fixed subgroup of $\SL_d(\Z)$, and the question is how an ordinary integer input may be loaded. An entrywise affine unimodular curve meets every subgroup in a finite or exactly periodic set of inputs, in every dimension (Theorem~\ref{gts:ai:thm:rigidity}), with an exact free basis (Theorem~\ref{gts:ai:thm:freebasis}) and a sharp period (Theorem~\ref{gts:ai:thm:period}); with the repository's quadratic loader (Theorem~\ref{gts:ai:thm:quadratic}) this makes input degree two sharp in every dimension (Corollary~\ref{gts:ai:cor:degree}). With existentially quantified affine coordinates the obstruction disappears: a $6\times6$ multiplication gadget (Theorem~\ref{gts:ai:thm:mul}) compiles every polynomial circuit into membership in a fixed free-abelian unipotent subgroup (Theorem~\ref{gts:ai:thm:compiler}). Here the Heisenberg group appears as the cyclic test subgroup $\langle h(1,1,0)\rangle$ (Section~\ref{gts:sec:heis}).
 \item \wtagc\ \textbf{Part~\ref{gts:part:um} (source~08), \emph{A fixed universal matrix semigroup}.} The substrate is one fixed list of 229 literal matrices in $\SL_4(\Z)$ and the positive semigroup $S$ they generate. A finite tape of the Neary--Woods machine $U_{15,2}$ is compiled into a target matrix, and the machine halts exactly when the target lies in $S$ (Theorem~\ref{gts:um:thm:semigroup}); with the cited Neary--Woods chain this makes the membership problem of $S$ many-one r.e.-complete. The proof passes through a directed rewriting system with 93 rules (Lemma~\ref{gts:um:lem:rewrite}), 114 correspondence tiles with a fresh separator (Lemma~\ref{gts:um:lem:tiles}), a faithful encoding by conjugates of a Sanov shear (Lemma~\ref{gts:um:lem:free}) and a free-group marker in the lower block that forces every positive word with the right lower block into paired form (Lemma~\ref{gts:um:lem:marker}). For each certificate length $r$ a quartic sum of $17r+4$ squares with $130r$ natural witnesses has roots in bijection with tile sequences (Theorem~\ref{gts:um:thm:sos}), and the factorization fibre of an accepted input has an exact rational generating function (Theorem~\ref{gts:um:thm:GF}). Here the matrices form a \emph{semigroup}, not a group, and the free group is a \emph{marker}.
+\item \wtagd\ \textbf{Part~\ref{gts:part:cm} (source~09), \emph{Chronological Diophantine matrix certificates}.} The substrate is the research programme's five-register matrix countdown: two signed row vectors and a counter started at an ordinary positive input~$x$, driven by one loader matrix and 96 pairs of tile matrices, whose acceptance is, under inherited interfaces, membership of a target $T(x)$ in a fixed semigroup of 195 singular integer $7\times7$ matrices. All time steps are packed in one radix, with one common selector per step, paid whole-digit slices, exact shift equalities for the joins and a fixed coefficient bound that makes the signed updates carry-free; every power and every binary-containment mask is expanded through a fifteen-equation constructive Pell module. The result is one polynomial of exact degree twelve in $x$ and 41,309 positive witnesses, with 184,016 gates, that has a positive zero exactly at the accepted inputs, whatever the length of the accepting history (Theorem~\ref{gts:cm:thm:main}). Here the matrices are a \emph{fixture} with two fixed context words, not a universal alphabet, and the group-theoretic part is inherited.
 \end{itemize}
 
-Both sources use MRDP only as an imported classical theorem, at the last step, and both state explicitly that their constructions do not give finite-fold or single-fold Diophantine representations. \wtagb\ So does source~07 (Corollary~\ref{gts:ai:cor:abuniversality}); source~06 does not use MRDP. Both new sources state single-fold certificates only for restricted relations: source~06 over complete pair profiles, not over projected targets, and source~07 for languages already forced to be finite or periodic. Each Part keeps its own definitions, letters and numbering of statements; only the Heisenberg group itself is set up once, in Section~\ref{gts:sec:heis}. \wtagc\ Source~08 does not use MRDP: its universality comes from the Neary--Woods universal machine, and its Diophantine certificates form a family of polynomials, one for each certificate length, whose union over all lengths recovers membership. It states no fixed-arity, finite-fold or single-fold representation, and it proves that the family has infinitely many roots, over all lengths, on every accepted target.
+Both sources use MRDP only as an imported classical theorem, at the last step, and both state explicitly that their constructions do not give finite-fold or single-fold Diophantine representations. \wtagb\ So does source~07 (Corollary~\ref{gts:ai:cor:abuniversality}); source~06 does not use MRDP. Both new sources state single-fold certificates only for restricted relations: source~06 over complete pair profiles, not over projected targets, and source~07 for languages already forced to be finite or periodic. Each Part keeps its own definitions, letters and numbering of statements; only the Heisenberg group itself is set up once, in Section~\ref{gts:sec:heis}. \wtagc\ Source~08 does not use MRDP: its universality comes from the Neary--Woods universal machine, and its Diophantine certificates form a family of polynomials, one for each certificate length, whose union over all lengths recovers membership. It states no fixed-arity, finite-fold or single-fold representation, and it proves that the family has infinitely many roots, over all lengths, on every accepted target. \wtagd\ Source~09 does not use MRDP either: it expands every exponential relation through mathlib's constructive Pell theorems, and its polynomial is the only explicitly expanded one in this report with a fixed number of variables for computations of every length. It states no finite-fold, single-fold or real-witness representation (Section~\ref{gts:cm:sec:equivalence}).
 
 \subsection{The integral Heisenberg group}\label{gts:sec:heis}
 
@@ -181,11 +195,11 @@ so every commutator is central, and the centre of $\HH$ is $\{h(0,0,c):c\in\Z\}$
 
 \wtagb\ Parts~\ref{gts:part:po} and~\ref{gts:part:ai} use the same group with the same convention. Source~06 writes the matrix $h(\alpha,\beta,\gamma)$ as $H(\alpha,\beta,\gamma)$ and the group as $\mathbb H$; this report writes $h(\alpha,\beta,\gamma)$ and $\HH$ (Section~\ref{gts:sec:notation}). Source~07 works in $\SL_d(\Z)$ and does not name the group, but its pencil $T(t,s)=I+tJ+sJ^2$ with $J=E_{12}+E_{23}$ is $h(t,t,s)$ and its generator $P=I+J$ is $h(1,1,0)$; by~\eqref{gts:tp:eq:Hpower}, $P^m=h(m,m,\bn(m))$, which is its equation~\eqref{gts:ai:eq:Ppowers}. Part~\ref{gts:part:tp}'s third phase uses the same binomial device in another cyclic subgroup: $h(-r,-r,\bn(r))=h(-1,-1,0)^r$ in each coordinate of~\eqref{gts:tp:eq:T}, whereas $h(1,1,0)^{-1}=h(-1,-1,1)$, so $\langle h(1,1,0)\rangle\neq\langle h(-1,-1,0)\rangle$ (Remark~\ref{gts:ai:rem:binomial}).
 
-The two Parts use the group differently. Part~\ref{gts:part:vk} uses only the homomorphism $a\mapsto h(1,0,0)$, $b\mapsto h(0,1,0)$ from the free group and reads off the central coordinate (equation~\eqref{gts:vk:eq:heisenberg}). Part~\ref{gts:part:tp} uses the whole group: the three phase homomorphisms \eqref{gts:tp:eq:A}--\eqref{gts:tp:eq:T}, and, for the two-phase theorem, the integral logarithmic coordinate $\lambda(h(a,b,c))=2c-ab$ of Section~\ref{gts:tp:sec:two}. \wtagb\ Part~\ref{gts:part:po} uses three labelled elements of $\HH^r$ and their words; its recording map~\eqref{gts:po:eq:recording} is Part~I's homomorphism applied to one pair of letters at a time, and its logarithmic map~\eqref{gts:po:eq:logcoords} has Part~II's coordinate $\lambda$ as its third entry. Part~\ref{gts:part:ai} uses only the cyclic subgroup $\langle h(1,1,0)\rangle$ of $\SL_3(\Z)$. \wtagc\ Part~\ref{gts:part:um} does not use $\HH$; its free pair $P,Q$ is Part~I's Sanov pair $A,B$ of~\eqref{gts:vk:eq:shears}.
+The two Parts use the group differently. Part~\ref{gts:part:vk} uses only the homomorphism $a\mapsto h(1,0,0)$, $b\mapsto h(0,1,0)$ from the free group and reads off the central coordinate (equation~\eqref{gts:vk:eq:heisenberg}). Part~\ref{gts:part:tp} uses the whole group: the three phase homomorphisms \eqref{gts:tp:eq:A}--\eqref{gts:tp:eq:T}, and, for the two-phase theorem, the integral logarithmic coordinate $\lambda(h(a,b,c))=2c-ab$ of Section~\ref{gts:tp:sec:two}. \wtagb\ Part~\ref{gts:part:po} uses three labelled elements of $\HH^r$ and their words; its recording map~\eqref{gts:po:eq:recording} is Part~I's homomorphism applied to one pair of letters at a time, and its logarithmic map~\eqref{gts:po:eq:logcoords} has Part~II's coordinate $\lambda$ as its third entry. Part~\ref{gts:part:ai} uses only the cyclic subgroup $\langle h(1,1,0)\rangle$ of $\SL_3(\Z)$. \wtagc\ Part~\ref{gts:part:um} does not use $\HH$; its free pair $P,Q$ is Part~I's Sanov pair $A,B$ of~\eqref{gts:vk:eq:shears}. \wtagd\ Part~\ref{gts:part:cm} does not use $\HH$ either; its lower marker $P_0$ and the matrix $Q$ of Section~\ref{gts:cm:sec:matrix} are Part~V's $P,Q$.
 
 \subsection{Notions and letters}\label{gts:sec:notation}
 
-Each Part keeps its source's letters. Many letters carry different meanings in the two Parts; Table~\ref{gts:tab:notation} lists every letter used in both, so that a statement of one Part is never read with the other Part's meaning. Inside a Part, the meaning is always the one in that Part's column. In Parts~I and~II the only renamed symbol is source~03's $H$ (the Heisenberg group), written $\HH$; no normalization was changed. \wtagb\ Table~\ref{gts:tab:letters78} does the same for Parts~III and~IV, against each other and against Parts~I and~II. Two symbols of those sources are renamed, with no change of normalization: source~06's Heisenberg element $H(\alpha,\beta,\gamma)$ and group $\mathbb H$ are written $h(\alpha,\beta,\gamma)$ and $\HH$, because $H$ is a height bound in Parts~I and~II; and source~07's interpolation coordinates $\lambda_i(t)$ and vector $\boldsymbol\lambda(t)$ are written $\theta_i(t)$ and $\vv(t)$, because $\lambda$ is Part~II's logarithmic coordinate $2c-ab$. \wtagc\ Table~\ref{gts:um:tab:letters} does the same for Part~V. No symbol of source~08 is renamed and no normalization changed; only its matrix shorthand $\mathrm{mat}$ and its norm are printed with this report's macros $\smallmat{\cdot}{\cdot}{\cdot}{\cdot}$ and $\umnorm{\cdot}$, the latter still the maximum absolute row sum.
+Each Part keeps its source's letters. Many letters carry different meanings in the two Parts; Table~\ref{gts:tab:notation} lists every letter used in both, so that a statement of one Part is never read with the other Part's meaning. Inside a Part, the meaning is always the one in that Part's column. In Parts~I and~II the only renamed symbol is source~03's $H$ (the Heisenberg group), written $\HH$; no normalization was changed. \wtagb\ Table~\ref{gts:tab:letters78} does the same for Parts~III and~IV, against each other and against Parts~I and~II. Two symbols of those sources are renamed, with no change of normalization: source~06's Heisenberg element $H(\alpha,\beta,\gamma)$ and group $\mathbb H$ are written $h(\alpha,\beta,\gamma)$ and $\HH$, because $H$ is a height bound in Parts~I and~II; and source~07's interpolation coordinates $\lambda_i(t)$ and vector $\boldsymbol\lambda(t)$ are written $\theta_i(t)$ and $\vv(t)$, because $\lambda$ is Part~II's logarithmic coordinate $2c-ab$. \wtagc\ Table~\ref{gts:um:tab:letters} does the same for Part~V. No symbol of source~08 is renamed and no normalization changed; only its matrix shorthand $\mathrm{mat}$ and its norm are printed with this report's macros $\smallmat{\cdot}{\cdot}{\cdot}{\cdot}$ and $\umnorm{\cdot}$, the latter still the maximum absolute row sum. \wtagd\ Table~\ref{gts:cm:tab:letters}, at the start of Part~VI so that no earlier table number moves, does the same for Part~VI. Two symbols of source~09 are printed differently, with no change of normalization: its selector streams $E_i$ are written $\Lambda_i$, because it also writes $E_i$ for the lower-marker matrices and $E_0$ for the marker itself, and its digest macro is \verb|\cmsha|. The source reuses some letters inside its own text, each within a stretch of sections: $R$ is $\Psi(U)^{-1}$ in Section~\ref{gts:cm:sec:matrix} and the repetition stream from Section~\ref{gts:cm:sec:radix} on; $b$ is the base of a power in Sections~\ref{gts:cm:sec:power} and~\ref{gts:cm:sec:sub} and the packing radix from Section~\ref{gts:cm:sec:radix} on; $a$ is a Pell parameter in Section~\ref{gts:cm:sec:power}, a summation index in Section~\ref{gts:cm:sec:sub} and the initial row column in Section~\ref{gts:cm:sec:radix}; $H$ is the common offset, $H_i$ a tile matrix and $H(s)$ a product. These are kept, as is the source's own separation of $C_0$ from $C_*$ and of $D$ from $D_c$.
 
 \begin{center}
 \small
@@ -305,6 +319,12 @@ Five words need the same care.
 \item \wtagc\ \textbf{Certificate length} $r$ (Part~V) is the number of tiles; the polynomial $F_r$ has $130r$ witnesses, so the family has no fixed arity.
 \item \wtagc\ \textbf{Fibre} (Part~V) counts factorization words, equivalently tile sequences or canonical roots, of one fixed target, not distinct matrices; it is finite at each $r$ and infinite over all $r$.
 \end{itemize}
+\wtagd\ Part~VI adds three more.
+\begin{itemize}
+\item \wtagd\ \textbf{Chronological} (Part~VI's title) means that the certificate stores the states of one history in time order, with every join between consecutive steps enforced, not a multiset of locally valid steps.
+\item \wtagd\ \textbf{Fixed arity} (Part~VI) means one polynomial with a fixed list of 41,309 witnesses for histories of every length, whereas Part~V's number of witnesses grows with the certificate length~$r$. It does not mean a universal polynomial: the polynomial is for one fixture.
+\item \wtagd\ \textbf{Gates} (Part~VI) are binary additions, subtractions and multiplications, with fixed numerals free; this is the convention of the research programme's ``operations'', so Part~VI's 184,016 gates and the programme's 84-operation bound are counted the same way.
+\end{itemize}
 
 \subsection{Relation to the repository and to the literature}\label{gts:sec:relation}
 
@@ -347,7 +367,17 @@ Neither source cites the related material below, which was identified at placeme
 \item \wtag\ Added 3~October 2026 (batch~83, reciprocal note). \textbf{Report \emph{canonical-diophantine-certificates}}, Part~XX: the same fixed machine $U_{15,2}$ (Neary--Woods, Table~16), with the same imported program-to-tape encoder, drives a literal periodic sandpile loader there (its manuscript~22, the pipeline's Report~35, Theorem \texttt{cdc:lp:thm:loader}); its delivered provenance record (\path{data/22-literal-sandpiles-evidence-loader-PROVENANCE.json} of that report) says the pinned transition data are ``supplied from the prior matrix-semigroup construction''. Neither report implements the encoder, and no theorem is shared.
 \end{itemize}
 
-No result of the three neighbouring reports of this category (\emph{canonical-diophantine-certificates}, \emph{probabilistic-quantum-and-continuous-computation}, \emph{liveness-beyond-halting}) is re-proved in this report, so no proof was replaced by a pointer. \wtagb\ This remains true of Parts~III and~IV with one exception: Step~3 of Theorem~\ref{gts:ai:thm:quadratic} re-proves the finite generation of Mihailova's fibre product, which is \texttt{pqc:dr:prop:mihailova} of~\cite{pqc}; it is printed as a marked second route with that pointer. \wtagc\ Part~V re-proves no result of a neighbouring report. Its machine table is the third printing of a table of \emph{quadratic-orthant-certificates}, and its rewriting and tile lemmas re-derive research-programme constructions; both are credited where they occur.
+\wtagd\ Part~VI relates to the following material; source~09 cites the research-programme notes of its pins and nothing else of the repository.
+\begin{itemize}
+\item \textbf{Part~V and its successors.} Part~VI's semigroup descends from Part~V's through the research programme's 197- and 193-generator reductions~\cite{repo-revmg,repo-ds193} (note at Part~V's question~4), the faithful recoding in $\Gamma_1(5)$~\cite{cm-gamma}, the absorption of two fixed contexts~\cite{cm-context}, the five-register countdown~\cite{cm-countdown} and the counted suffix~\cite{cm-counted}. Part~VI answers Part~V's question~7 in part, and supplies for one fixture the fixed-arity unbounded checker that Part~IV's question~10 asks for (notes at both questions).
+\item \textbf{The research programme's uniform matrix compilers}~\cite{repo-fusion}, written on the night between the source's pins and the archive's arrival: the same ordinary-input histories, paid uniformly over valid program recipes, from 176,586 operations down to 1,393 operations at exact degree 71,105 (1,399 at degree 35,587). Neither they nor source~09 cite the other; the note in Section~\ref{gts:cm:sec:scope} compares them.
+\item \textbf{The programme's review of the archive}~\cite{repo-revcm} (commit \texttt{a9ab9a698}), written on the day it arrived and before this write: it confirms the DAG's 184,016 gates, 41,309 witnesses, 23,618 squared residuals and exact degree~12 independently, reports no defect, finds no lower paid unbounded compiler in the archives it read, and leaves the 84-operation universal bound unchanged (note in Section~\ref{gts:cm:sec:audit}).
+\item \textbf{Report \emph{periodic-turmite-first-revisits}}~\cite{ptr}: the POWER module of Section~\ref{gts:cm:sec:power} is its Lemma \texttt{ptr:ai:lem:exp}, printed here as a marked second route (note there).
+\item \textbf{Report \emph{signal-machine-collision-certificates}}, Part~X~\cite{smc} (the pipeline's Report~58, batch~91, written at the same time as this Part). Its five-signal certificate uses this Part's POWER module, and its delivered package bundles byte copies of three files shipped here: \path{code/09-chrono-matrix-science-build_certificate.py}, \path{09-chrono-matrix-science-SOURCE_NOTES.md} and \path{data/09-chrono-matrix-independent_audit-pell-dependency.json} (there \path{science/sources/prior-build_certificate.py.txt}, \path{POWER_SOURCE_NOTES.md} and \path{pell-dependency.json}). The collection ships them only here.
+\item \textbf{Report \emph{canonical-diophantine-certificates}}, Part~XXI (the pipeline's Reports~50 and~52--54, batch~91, written at the same time): fixed-arity packed certificates for sandpile stabilization and target firing, with the same expanded binary-containment masks (note after Lemma~\ref{gts:cm:lem:sub}). No theorem is shared.
+\end{itemize}
+
+No result of the three neighbouring reports of this category (\emph{canonical-diophantine-certificates}, \emph{probabilistic-quantum-and-continuous-computation}, \emph{liveness-beyond-halting}) is re-proved in this report, so no proof was replaced by a pointer. \wtagb\ This remains true of Parts~III and~IV with one exception: Step~3 of Theorem~\ref{gts:ai:thm:quadratic} re-proves the finite generation of Mihailova's fibre product, which is \texttt{pqc:dr:prop:mihailova} of~\cite{pqc}; it is printed as a marked second route with that pointer. \wtagc\ Part~V re-proves no result of a neighbouring report. Its machine table is the third printing of a table of \emph{quadratic-orthant-certificates}, and its rewriting and tile lemmas re-derive research-programme constructions; both are credited where they occur. \wtagd\ Part~VI re-proves one result of a neighbouring report: its POWER module (Section~\ref{gts:cm:sec:power}) is Lemma \texttt{ptr:ai:lem:exp} of \emph{periodic-turmite-first-revisits}, printed as a marked second route with that pointer. Its other re-proofs are of research-programme notes that it cites (note after Lemma~\ref{gts:cm:lem:control}).
 
 \textbf{Literature credit for the two-phase theorem.} For \emph{integer} exponents, Theorem~\ref{gts:tp:thm:two} is a special case of known results: a product of two subgroups of a polycyclic group is closed in the profinite topology and therefore has decidable membership~\cite[Remark~6.7]{KLZ}, and Roman'kov proves that the product of two subgroups membership problem is decidable in every finitely generated nilpotent group of class two~\cite{Romankov}. The group $\HH^d\times\Z^e$ is both. Source~05 does not cite these results for its two-phase theorem; the credit and a precise statement of what source~05 adds are in Remark~\ref{gts:tp:rem:credit} after the theorem. The three-subgroup statement, Theorem~\ref{gts:tp:thm:main}, is different: both sources~\cite{KLZ,Romankov} state that case as open, and no earlier resolution was found at placement (a check of the arXiv text of~\cite{KLZ} and of the abstract of~\cite{Romankov}); its priority is not certified.
 
@@ -381,6 +411,14 @@ The report is AI-assisted and unrefereed, and \textbf{nothing in it is formalize
 \item an arithmetic-operation bound: the evaluator charges of Section~\ref{gts:um:sec:resources} belong to one unoptimized evaluator;
 \item a decision procedure: its fibre formulas presuppose an accepted input.
 \end{itemize}
+\wtagd\ Part~\ref{gts:part:cm} has the same status: proofs and finite exact checks, AI-assisted, unrefereed, not formalized. Its audits and reviews were written by the pipeline that delivered it; the research programme's review~\cite{repo-revcm}, the one check from outside, certifies the arithmetic of its DAG, not the inherited theorems. Its numerical theorem is relative to two pinned mathlib theorems, and its matrix reading to research-programme theorems that it summarizes and does not re-prove. Every limitation of source~09 is kept in its Part; collected here, it does not claim
+\begin{itemize}
+\item a universal polynomial or an arbitrary-program compiler: the contexts \texttt{[110} and \texttt{A0]} are one fixture, not claimed universal, and program-dependent matrices would need a newly computed radix factor;
+\item an improvement of the repository's 84-operation universal bound, a shortest circuit, or optimality of any count;
+\item a finite-fold or unique-witness representation, a real-witness equivalence (the positive-integer domain is part of the theorem), a bound on witness size, or a computable bound on the packing offset from the input;
+\item a mortality theorem, inverse-closed group membership, or a result about the 193-generator Pell391 loader;
+\item a materialized zero: no complete numerical nested-Pell witness was generated, and neither Lean nor the upstream programs were run.
+\end{itemize}
 
 \subsection{Research questions}\label{gts:sec:questions}
 
@@ -388,7 +426,9 @@ Both agendas are printed in full: the twelve questions of Part~I (Section~\ref{g
 
 \wtagb\ Part~III adds twelve research questions (Section~\ref{gts:po:sec:questions}) and Part~IV ten (Section~\ref{gts:ai:sec:questions}). Two of Part~IV's are partly answered elsewhere in the repository: Part~II answers the negative half of question~9 (subgroups replaced by rational subsets) for products of three subgroups or of three free commutative submonoids (Remark~\ref{gts:ai:rem:subgroup}), and question~10 (a fully charged universal matrix certificate) is partly done by the research note~\cite{repo-cmc}; both are re-scoped at the questions. Part~III's question~11 (higher-step nilpotent groups) belongs with Question~\ref{gts:vk:q:detectors} and Section~\ref{gts:tp:q:nilpotent}, and its question~9 (three generators without a supplied multiplicity) is what remains open of the research note's question (Section~\ref{gts:sec:relation}). The placement survey found no other question of Parts~III and~IV answered in the repository.
 
-\wtagc\ Part~V adds seven questions (Section~\ref{gts:um:sec:future}). Its question~4 (generator and dimension counts) is answered in part by the research programme, which lowered the count from 229 to 197 and then to 193 on the day the archive arrived; the note there re-scopes it. Its question~7 (a uniform unbounded polynomial) is what remains open of Part~IV's question~10, which Part~V answers only in part: it instantiates a universal alphabet, but for a positive semigroup and with bounded-length certificates (note at that question). It does not answer Part~IV's question~9 for positive-word semigroups, because its target map is not an affine curve. Its question~6 (formalization) belongs with Question~\ref{gts:vk:q:chart} and Section~\ref{gts:tp:q:formal}. No other question of Part~V is answered in the repository.
+\wtagc\ Part~V adds seven questions (Section~\ref{gts:um:sec:future}). Its question~4 (generator and dimension counts) is answered in part by the research programme, which lowered the count from 229 to 197 and then to 193 on the day the archive arrived; the note there re-scopes it. Its question~7 (a uniform unbounded polynomial) is what remains open of Part~IV's question~10, which Part~V answers only in part: it instantiates a universal alphabet, but for a positive semigroup and with bounded-length certificates (note at that question). It does not answer Part~IV's question~9 for positive-word semigroups, because its target map is not an affine curve. Its question~6 (formalization) belongs with Question~\ref{gts:vk:q:chart} and Section~\ref{gts:tp:q:formal}. No other question of Part~V is answered in the repository. \wtagd\ (4~October 2026.) Part~VI answers Part~V's question~7 in part, for a successor semigroup and one fixture (note at that question).
+
+\wtagd\ Part~VI adds six questions (Section~\ref{gts:cm:sec:future}). Questions~1, 2, 4 and~6 (selection cost, shared range structure, an explicit program-family compiler, honest comparison of ledgers) bear on the research programme's uniform compilers of the same night, which pay the program family in 1,393 operations but at exact degree at least 35,587. Question~3 (a smaller coefficient bound) is answered in part by the source's own packing review, and question~5 (formalizing the interface chain) belongs with Question~\ref{gts:vk:q:chart} and Section~\ref{gts:tp:q:formal}. The note after the questions says how far each is answered. Together with the programme's compilers, Part~VI also supplies the fixed-arity unbounded checker of Part~IV's question~10, for a semigroup rather than a subgroup (note there).
 
 \part{Arithmetic van Kampen certificates (source 03)}\label{gts:part:vk}
 
@@ -4253,6 +4293,7 @@ The rigidity proof uses inverses in the step from $L(n)$ to $L(n_0)^{-1}L(n)$ an
 Instantiate a concrete finite presentation and its fixed matrix generators from the quadratic construction, then give a fully charged unbounded Diophantine word checker. Only after these steps is a numerical comparison with the repository's fixed universal-polynomial benchmark meaningful. The present lower bound can guide loader choice, but it does not pay the cost of certifying an arbitrarily long product.
 \wtagb\ Part of this is done in the repository: the research note~\cite{repo-cmc} gives a fully charged positive Diophantine certificate, with literal operation counts, for membership of $\diag(L_r,L_r)$ in a fixed subgroup of $\SL_2(\Z)\times\SL_2(\Z)$ given by a supplied finite macro table. What remains is the numerically instantiated universal alphabet.
 \wtagc\ (3~October 2026.) Answered in part, for a different membership problem, by Part~\ref{gts:part:um}: it instantiates a universal alphabet numerically, 229 literal matrices of $\SL_4(\Z)$ generating a positive semigroup whose membership is many-one r.e.-complete, conditionally on the Neary--Woods simulation chain (Theorem~\ref{gts:um:thm:semigroup}); the research programme has reduced it to 193 generators (Section~\ref{gts:um:sec:future}). Two parts of the question remain open. The semigroup is positive, so neither the subgroup of Theorem~\ref{gts:ai:thm:quadratic} nor the interface of~\cite{repo-cmc} is instantiated; and its Diophantine certificates (Theorem~\ref{gts:um:thm:sos}) are bounded-length certificates bought with $130r$ witnesses for length $r$, not a fully charged unbounded word checker of fixed arity. The numerical comparison with the repository's fixed universal-polynomial benchmark is therefore still not meaningful.
+\wtagd\ (4~October 2026.) The fixed-arity unbounded checker now exists in part, for the semigroup that succeeds Part~V's. Part~\ref{gts:part:cm} gives one fully expanded polynomial of fixed arity, with 41,309 positive witnesses, exact degree~12 and 184,016 gates, that has a positive zero at an ordinary input $x$ exactly when the target $T(x)$ is a product of the 195 fixed singular $7\times7$ generators, under inherited interfaces and for one pair of fixed contexts (Theorem~\ref{gts:cm:thm:main}). The research programme's uniform compilers of the same night pay the same histories for every valid program recipe, in 1,393 operations at exact degree 71,105 (note in Section~\ref{gts:cm:sec:scope}). Both certify a semigroup, not the subgroup of Theorem~\ref{gts:ai:thm:quadratic} or the interface of~\cite{repo-cmc}, so the subgroup half of the question remains open. For the programme's uniform compilers the comparison the question asks for can now be made, and it is 1,393 operations against the 84-operation bound; Part~VI's polynomial, for one fixture, is not a universal construction and gives no such comparison.
 \end{enumerate}
 
 \section{Conclusion}
@@ -5050,6 +5091,7 @@ The following questions are substantive next steps, not conclusions already obta
 \wtagc\ The repository has no Lean or Rocq module for any statement of this Part.
 \item \textbf{Investigate a uniform unbounded polynomial.} Any encoding of all lengths into one fixed-arity equation must explicitly pay for sequences, arithmetic, and canonicality. The present family is not such a construction. The explicit stuttering theorem proves that this family has infinite unbounded fibers for every accepted encoded target. A different uniform representation would need a separate multiplicity analysis.
 \wtagc\ This is the part of Part~IV's question~10 (Section~\ref{gts:ai:sec:questions}) that this Part leaves open; the note there records what Part~V supplies.
+\wtagd\ (4~October 2026.) Answered in part by Part~\ref{gts:part:cm}, for a successor of this Part's semigroup and one pair of fixed contexts. Its Theorem~\ref{gts:cm:thm:main} is one positive-integer polynomial of fixed arity, with 41,309 witnesses and exact degree~12, whose zeros at an ordinary input encode accepting histories of every length, with sequences and arithmetic paid explicitly. It does not pay for canonicality: offsets and congruence quotients vary, it states no finite-fold or unique-witness representation (Section~\ref{gts:cm:sec:equivalence}), and it gives no multiplicity analysis. Its semigroup is the research programme's 195-generator singular $7\times7$ successor, reached through the 193-generator semigroup of question~4, not the 229 matrices of this Part. The programme's uniform compilers of the same night do the same uniformly over program recipes, at much lower cost and much higher degree (note in Section~\ref{gts:cm:sec:scope}).
 \end{enumerate}
 
 \section{Conclusion}
@@ -5059,6 +5101,712 @@ At every numerical inner length, the companion polynomial gives a fully charged 
 
 \setcounter{equation}{\value{umsaveeq}}%
 \let\theequation\umoldtheequation\let\theHequation\umoldtheHequation
+
+\part{Chronological Diophantine matrix certificates (source 09)}\label{gts:part:cm}
+\setcounter{cmsaveeq}{\value{equation}}\setcounter{equation}{0}%
+\let\cmoldtheequation\theequation\let\cmoldtheHequation\theHequation
+\renewcommand{\theequation}{VI.\arabic{equation}}\renewcommand{\theHequation}{cm.\arabic{equation}}%
+
+\noindent\wtagd\ Part~VI prints batch-91 manuscript~07, ``Research Report~55'' of the pipeline that delivered it, \emph{Chronological Diophantine Matrix Certificates}, subtitled \emph{Fixed arity with an ordinary positive input}, dated 4~October 2026. Its author line reads ``Report55''; it names no author and is AI-assisted. It is called \emph{source~09} after the file prefix of its shipped programs and data, which continues this report's own sequence and is not a batch-91 manuscript number. Its labels carry the prefix \texttt{gts:cm:}. Its Section~$n$ is Section~$n+76$ here and its Theorem~$n.m$ is Theorem~$(n+76).m$; its Appendices~A and~B are Appendices~\ref{gts:cm:app:checklist} and~\ref{gts:cm:app:pins}, placed after all existing appendices. Its equations are numbered (VI.$n$), where $n$ is the source's own equation number. Two symbols are printed differently: its digest macro \verb|\sha| is \verb|\cmsha| here, because \verb|\sha| is source~03's snapshot macro, and its selector streams $E_i$ are written $\Lambda_i$ (note in Section~\ref{gts:cm:sec:slices}), because the source also writes $E_i$ for the inherited lower-marker matrices of Section~\ref{gts:cm:sec:matrix}, where $E_0$ is the marker itself. Its bibliography keys carry the prefix \texttt{cm-}, with the entries unchanged, and its two appendix titles begin with ``Part~VI''; nothing else in its text was changed, apart from the \wtagd\ notes. Its title page and table of contents are replaced by this opening, and its reading guide below counts its own Sections~1--14. It names two research-programme commits of the evening of 3~October 2026 as its pins, \texttt{750aeb4f7} (the countdown receipt and five matrix notes) and \texttt{d31e29030} (the counted-suffix proof), and cites no other report and none of Parts~I--V. Its abstract and reading guide follow.
+
+\begin{quote}\small
+\textbf{Abstract (source 09).} We give a fully expanded integer polynomial that recognizes finite accepting paths of the actual pinned five-register matrix countdown, with its ordinary positive input $x$ unchanged. A single common offset encodes signed row coordinates; explicitly paid binary-containment clauses select one of 97 synchronized branches at every time; exact shift equalities enforce the initial frame, every internal join, and the last frame. A fixed coefficient bound makes the signed affine updates carry-free. The counter forces exactly $x$ initial loader steps followed by a tile suffix.
+
+The polynomial has $41\,309$ strictly positive integer witnesses, $23\,618$ equality residuals, $184\,016$ binary arithmetic gates, and exact total degree $12$. Every POWER and containment call is expanded into polynomial equations. Conditional on the explicitly inherited constructive Pell and matrix-interface theorems, its positive zeros are equivalent to membership of the direct-input target $T(x)$ in the associated directed semigroup generated by 195 fixed singular integer $7\times7$ matrices. An independent exact-source audit reconstructs every residual, macro argument, port, matrix map, and gate count; a separate interface audit reconstructs all 195 matrices and checks the proof boundaries.
+
+The concrete contexts are \texttt{[110} and \texttt{A0]}. No arbitrary-program compiler is implemented, no universality of those particular contexts is inferred, and no improvement to the repository's prior 84-operation benchmark is claimed.
+
+\medskip
+\textbf{Reading guide.} Sections 1--3 state the exact language and dependencies. Sections 4--10 prove the positive-integer equivalence. Sections 11--14 give the literal ledger, independent evidence, reproducibility contract, and remaining questions. The appendix supplies notation and a complete outer-clause checklist.
+\end{quote}
+
+\wtagd\ \textbf{What is proved, and what is conditional.} Theorem~\ref{gts:cm:thm:main} has three layers, which the source keeps apart (Section~\ref{gts:cm:sec:scope}). The numerical theorem, that the literal polynomial recognizes the accepted inputs~$\mathcal A$ of the pinned countdown, is proved here relative to the two pinned mathlib theorems \texttt{Pell.matiyasevic} and \texttt{Pell.eq\_pow\_of\_pell}, which it specializes and does not re-prove. Its equivalence with membership of $T(x)$ in the 195-generator semigroup rests in addition on the research programme's faithful-group, lower-marker, context-transfer and synchronized-row theorems, which Section~\ref{gts:cm:sec:matrix} summarizes and does not re-prove. The program-family reading needs further the Neary--Woods simulation premise and an arbitrary-program compiler, which is not implemented. The polynomial is for one fixture, the contexts \texttt{[110} and \texttt{A0]}; it is not a universal polynomial.
+
+\wtagd\ \textbf{Relation to Part~V.} The semigroup of this Part succeeds Part~V's. The research programme reduced Part~V's 229 generators to 193 (note at Part~V's question~4); this Part uses that 193-generator directed semigroup recoded faithfully in $\Gamma_1(5)$, with the two contexts absorbed into the matrices and a counted suffix that makes the input ordinary, which gives 195 singular integer $7\times7$ matrices (Section~\ref{gts:cm:sec:matrix}). Part~V certifies bounded lengths, one polynomial for each length; this Part gives one polynomial of fixed arity for histories of every length, and so answers Part~V's question~7 in part (note there). Section~\ref{gts:sec:relation} lists its other relations, and Table~\ref{gts:cm:tab:letters}, below, the letters that mean something else in Parts~I--V; it is printed here rather than in Section~\ref{gts:sec:notation} so that no earlier table number moves.
+
+\begin{center}
+\small
+\begin{longtable}{@{}L{.15\textwidth}L{.45\textwidth}L{.32\textwidth}@{}}
+\caption{\wtagd\ Letters of Part~VI that are used differently elsewhere in the report.}\label{gts:cm:tab:letters}\\
+\toprule
+Letter & Part~VI (source 09) & Parts~I--V\\
+\midrule
+\endfirsthead
+\toprule
+Letter & Part~VI (source 09) & Parts~I--V\\
+\midrule
+\endhead
+$x$, $\mathcal A$ & the ordinary positive input; the set $\mathcal A$ of accepted inputs & II: the phase image $\calA$; II and V: $x$ a vector of unknowns\\
+$T(x)$, $T$ & the direct-input $7\times7$ target~\eqref{gts:cm:eq:target}; $T$ also a generator of $\Gamma_1(5)$ & II: the third phase; IV: the pencil; V: a target upper block\\
+$B$ & the fixed $2\times2$ loader matrix~\eqref{gts:cm:eq:B} & I: a Sanov shear; V: the generators $B_i$\\
+$\mathsf A_i$, $\mathsf B_i$, $\mathsf C$ & the 193 context-transferred generators~\eqref{gts:cm:eq:old} & V: the 229 generators $A_i$, $B_i$, $C$\\
+$E_i$, $E_{ij}$, $\Lambda_i$ & lower-marker matrices $E_i=Q^{-i}P_0Q^i$ (Part~V's $E_j$); $3\times3$ matrix units $E_{ij}$; selector streams $\Lambda_i$ (source: $E_i$) & I: the chart equation $E$; IV: the shear $E(t)$, matrix units $E_{ij}$; V: $E_j$ as here, and the target map $E(\ell,\rho)$\\
+$P_0$, $Q$, $t$ & the lower marker (Part~V's $P$) and $Q$; $t=E_0=P_0$ & III: the quartic $P$; IV: $P=h(1,1,0)$\\
+$K_i$, $G_i$, $H_i$, $H$ & tile matrices; $H$ the common offset $2^\ell$; $H(s)$, $G(s)$ products & I, II: height bounds $H$; V: machine moves $H$, prefix products $H_r,G_r$\\
+$C_0$, $C_*$, $D$, $D_c$ & the central matrix; the radix factor $2^{104}$; the digit limit $D=2H$; the count-control matrix & I: a relator matrix $C$, a DAG $D$; V: the generator $C$ and its block $D$\\
+$U$, $V$, $U_s$, $V_r$ & the context words \texttt{[110}, \texttt{A0]}; pre-row expressions and post streams; $U_0,V_0$ generators of $\Gamma_1(5)$ & I: the chart matrix $U$; V: the machine $U$, upper blocks $U_i,V_i$\\
+$R$, $W$, $h$, $b$ & the repetition stream, the top power $W=b^h$, the duration, the packing radix & I: $h$ conjugation nodes; II, III: $h$ Heisenberg elements; V: $r$ the certificate length\\
+$\Psi$, $H'$ & the inherited faithful twenty-letter encoding and its image subgroup & V: the word encoding $\Phi$\\
+$\Pow$, $\Sub$ & the expanded power and binary-containment modules & ---\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+\section{The exact represented language}
+\label{gts:cm:sec:language}
+We write $\N=\{0,1,2,\ldots\}$ and $\Pos=\{1,2,3,\ldots\}$. The supplied input is $x\in\Pos$. It is neither a shifted code $x-1$ nor a freely supplied Pell index. A countdown state has two signed row vectors and one signed counter,
+\[
+ (X,Y,n)\in\Z^2\times\Z^2\times\Z.
+\]
+Its fixed initial state is
+\begin{equation}\label{gts:cm:eq:initial}
+ X=(35\,426\,321,-19\,628\,667),\qquad Y=(1,0),\qquad n=x.
+\end{equation}
+The fixed matrix used by the loader is
+\begin{equation}\label{gts:cm:eq:B}
+ B=\begin{pmatrix}-52109&29036\\-94920&52891\end{pmatrix},\qquad
+ B^{-1}=\begin{pmatrix}52891&-29036\\94920&-52109\end{pmatrix}.
+\end{equation}
+There are exactly 97 branch choices:
+\begin{align}
+ \LOAD &: X'=X,\quad Y'=YB^{-1},\quad n'=n-1,\label{gts:cm:eq:load}\\
+ \TILE_i &: X'=XK_i,\quad Y'=YG_i,\quad n=n'=0.
+ \label{gts:cm:eq:tile}
+\end{align}
+The matrices $(K_i,G_i)$ are the actual 96 pairs in the pinned countdown receipt \cite{cm-countdown}. Row-vector multiplication is on the right. The accepting endpoint is
+\begin{equation}\label{gts:cm:eq:endpoint}
+ X=Y,\qquad n=0.
+\end{equation}
+No independent choice is permitted for the two row lanes. The common $i$ is essential to the matrix equivalence.
+
+\begin{definition}
+Let $\mathcal A\subseteq\Pos$ contain precisely those inputs for which the state \eqref{gts:cm:eq:initial} has a finite chronological path under \eqref{gts:cm:eq:load}--\eqref{gts:cm:eq:tile} reaching \eqref{gts:cm:eq:endpoint}. A path is a sequence of states with consecutive endpoints identified, not merely a multiset of locally valid edges.
+\end{definition}
+
+The retained original tile identifiers are
+\[
+ \{1,2,18,19\}\ \cup\ \{21,\ldots,107\}\ \cup\ \{109,110,111,112,114\}.
+\]
+The source numbers branch zero as $\LOAD$ and its other 96 branches according to the receipt's retained tile order. The complete numerical arrays, not small substitutes, are included in the release. They are data for a fixed polynomial; neither the input nor a witness selects a previously unpaid coefficient table.
+
+\begin{theorem}[Literal fixed-arity certificate]\label{gts:cm:thm:main}
+There is the explicitly supplied polynomial
+\[
+ \mathcal P(x,w_1,\ldots,w_{41309})\in\Z[x,w_1,\ldots,w_{41309}]
+\]
+with exact total degree $12$ such that, for every $x\in\Pos$,
+\begin{equation}\label{gts:cm:eq:main}
+ x\in\mathcal A\quad\Longleftrightarrow\quad
+ \exists(w_1,\ldots,w_{41309})\in\Pos^{41309}\quad\mathcal P(x,w)=0.
+\end{equation}
+The declared literal implementation has $184\,016$ binary gates: $72\,093$ multiplications, $64\,111$ additions, and $47\,812$ subtractions. Fixed integer literals are free, while nontrivial fixed-coefficient multiplications occurring in the arithmetic are charged. The output is exactly the unweighted sum of the squares of $23\,618$ residuals.
+
+The arithmetic semantics use the pinned constructive Pell theorems stated in Section~\ref{gts:cm:sec:power}. Under the inherited faithful-group, lower-marker, and synchronized-row interfaces in Section~\ref{gts:cm:sec:matrix}, \eqref{gts:cm:eq:main} is equivalent to membership of $T(x)$ in the associated fixed 195-generator singular $7\times7$ directed semigroup.
+\end{theorem}
+
+This is an implementation theorem. It asserts neither a shortest arithmetic circuit nor a bound on the bit size of witnesses. Its positive-integer domain is part of the theorem. In particular, degree twelve alone supplies no corresponding real-witness equivalence.
+
+\section{What is fixed and what was previously unpaid}
+\label{gts:cm:sec:scope}
+The fixed contexts in this exact numerical instance are
+\[
+ U=\texttt{[110},\qquad V=\texttt{A0]}.
+\]
+They determine the context-transferred matrix array. The finite word that motivates the ordinary-input family is $U(W_0^2)^xV$, with $W_0=\texttt{01010111}$. This is an actual fixed-context family; it is not an implemented compiler from arbitrary programs.
+
+The predecessor countdown source has a complete local transition polynomial of exact degree 194 and 2,065 gates, together with a seven-gate endpoint polynomial \cite{cm-countdown}. For fixed duration $h$, copying that local schedule gives a $2066h+7$ gate upper bound with $5h$ signed trajectory witnesses. These are valid length-dependent ledgers, but existentially naming $h$ does not turn $5h$ coordinates into a fixed list of variables.
+
+Report55 supplies the missing arbitrary-duration packing. It does not insert the degree-194 polynomial as one free gate. Instead it certifies every selected affine branch through paid digit slices and four packed signed row updates. This different representation has a larger fixed circuit and a lower exact degree. The two resource comparisons must not be confused.
+
+\wtagd\ (4~October 2026.) The two preceding paragraphs describe the research programme at the source's pin, commit \texttt{750aeb4f7} of 3~October 2026 (21:11; times are those of the commits, UTC$-7$), whose account of the countdown~\cite{cm-countdown} ends: ``Unbounded fixed-arity packing remains unpaid.'' The packing was missing then. The programme supplied it by another route before this archive arrived: a marked-loader packing (\texttt{b388dc588}, 02:34 on 4~October), a fully emitted uniform grammar of 176,586 operations at exact degree 2,360,653 (\texttt{bbb73e0c7}, 03:10), an atomic packing of 4,155 operations at exact degree 34,045 (\texttt{7f7b87500}, 03:30) and a chain of reductions ending in the shared-action fusion~\cite{repo-fusion} (\texttt{a32e1b139}, 10:12), whose four variants cost 1,399, 1,396, 1,396 and 1,393 operations, with 141, 140, 140 and 139 positive witnesses and exact degrees 35,587, 53,345, 53,347 and 71,105. The archive arrived four minutes later (\texttt{0d7f51c44}, 10:16). Those sources are uniform over valid program recipes: the program contexts enter as eight fixed coefficient ports and a paid matrix switch, where this Part fixes the contexts \texttt{[110} and \texttt{A0]} and absorbs them into the matrices. Both have the ordinary input~$x$, and both count every binary multiplication, addition and subtraction with fixed numerals free, so the figures compare directly. This Part is the low-degree end of the trade-off: 184,016 operations and 41,309 witnesses at degree~12, against 1,393 operations and 139 witnesses at degree 71,105, or 1,399 at degree 35,587. The programme's review of the archive~\cite{repo-revcm} calls it ``a useful paid low-degree reference, with much larger cost and witness count than the current work''. Neither construction is below the repository's 84-operation universal bound (commit \texttt{20aafb9a5}). The local figures quoted from the countdown source (2,065 gates, $2066h+7$ for duration~$h$) were also lowered after the pin: the programme's integer selector~\path{matrix193_centered_crt_selector.md} (\texttt{47b11748c}, 01:43) pays the whole countdown step in 133 operations at exact degree~10 over the integers, and $165h+7$ operations with $31h+1$ positive witnesses for a fixed duration~$h$.
+
+\subsection{Three separate levels of assertion}
+\begin{enumerate}
+\item \textbf{Exact numerical theorem.} The literal graph and matrix arrays in this release give Theorem~\ref{gts:cm:thm:main} for this fixed fixture.
+\item \textbf{Matrix-interface equivalence.} The synchronized-row and counted-suffix arguments identify the same acceptance set with the specified 195-generator target predicate. Their group and lower-marker premises remain explicit inherited mathematical dependencies.
+\item \textbf{Program-family interpretation.} The inherited effective initialization theorem supplies program-dependent contexts for any chosen c.e. language, conditional on its published simulation premise \cite{cm-unary,cm-nearywoods}. Applying this architecture then requires those actual matrices and a newly computed sufficient fixed radix factor. That recipe has not been implemented or audited here as an arbitrary-program compiler.
+\end{enumerate}
+The present exact numerical gate ledger belongs to the first level. Coefficient simplifications and shared schedules for one fixture cannot silently be claimed for every program-dependent array. The current result does not improve the repository's prior 84-operation benchmark \cite{cm-gamma}, and is not a 193-generator externally supplied Pell391-loader result, a mortality theorem, or an inverse-closed group-membership theorem.
+
+\section{The inherited matrix interfaces and their exact use}
+\label{gts:cm:sec:matrix}
+We distinguish the central $2\times2$ matrix $C_0$ below from the scalar radix factor $C_*$ used later. Put
+\[
+ P_0=\begin{pmatrix}1&2\\0&1\end{pmatrix},\qquad e_1=(1,0).
+\]
+The context-transferred 193-generator array consists of
+\begin{equation}\label{gts:cm:eq:old}
+ \mathsf A_i=\diag(H_i,E_i),\quad
+ \mathsf B_i=\diag(G_i^{-1},P_0^{-1}E_i^{-1}P_0),\quad
+ \mathsf C=\diag(C_0,P_0),
+\end{equation}
+where
+\[
+ E_i=\begin{pmatrix}4i+1&2\\-8i^2&1-4i\end{pmatrix},\qquad
+ K_i=C_0^{-1}H_iC_0.
+\]
+All relevant $2\times2$ matrices are integral with determinant one. The independently reconstructed initial row is $e_1C_0=(35\,426\,321,-19\,628\,667)$.
+
+\subsection{Faithful alphabet and first-row injectivity}
+The inherited faithful twenty-letter encoding $\Psi$ has image in the subgroup $H'$ of $\Gamma_1(5)$ described in \cite{cm-gamma}. That source supplies an explicit finite-graph basis proof, rather than an inference from short-word testing. Its ambient generators are
+\[
+ T=\begin{pmatrix}1&1\\0&1\end{pmatrix},\quad
+ U_0=\begin{pmatrix}1&0\\5&1\end{pmatrix},\quad
+ V_0=\begin{pmatrix}-9&5\\-20&11\end{pmatrix}.
+\]
+An immersed rank-twenty graph, based at a vertex with no $U_0$ edge in either direction, gives
+\begin{equation}\label{gts:cm:eq:intersection}
+ H'\cap\langle U_0\rangle=\{I_2\}.
+\end{equation}
+The actual tape-letter choices and eighteen remaining letters are the inherited faithful basis changes in that source. The earlier kernel-row construction \cite{cm-kernel} explains the same structural issue in a different subgroup; it is not a replacement coefficient array for this report.
+
+The implication we use is elementary once \eqref{gts:cm:eq:intersection} and membership in $\Gamma_1(5)$ are supplied. If $M,N\in H'$ have equal first rows, then $NM^{-1}$ has first row $(1,0)$ and determinant one, so it is a lower unipotent. Its lower-left entry is divisible by five, making it a power of $U_0$. Equation~\eqref{gts:cm:eq:intersection} forces that power to be the identity. Therefore
+\begin{equation}\label{gts:cm:eq:rowinjective}
+ M,N\in H',\quad e_1M=e_1N\quad\Longrightarrow\quad M=N.
+\end{equation}
+This is not a claim that one row determines an arbitrary determinant-one matrix. Every matrix to which we apply it lies in $H'$ inductively from the actual generators and initial matrices.
+
+\subsection{Context transfer and the lower marker}
+For fixed words $U,V$, the context construction sets
+\[
+ L=\Psi(V\#)^{-1},\qquad R=\Psi(U)^{-1}.
+\]
+It replaces the old upper tile blocks by the conjugates $L^{-1}\Psi(h_i)L$ and $R\Psi(g_i)^{-1}R^{-1}$, and the central block by $L^{-1}\Psi(\texttt{[J1]\#})^{-1}R^{-1}$. The unchanged lower blocks force exactly the word shape
+\begin{equation}\label{gts:cm:eq:shape}
+ \mathsf A_{i_1}\cdots\mathsf A_{i_d}\mathsf C
+ \mathsf B_{i_d}\cdots\mathsf B_{i_1},\qquad d\ge0.
+\end{equation}
+On these words the conjugations telescope; applying $L^{-1}$ and $R^{-1}$ to arbitrary unshaped products is not a homomorphism claim \cite{cm-context}.
+
+For clarity, the inherited lower-marker proof \cite{cm-directed} uses the free conjugate letters $E_i=Q^{-i}P_0Q^i$ in the free group generated by $P_0$ and $Q=\left(\begin{smallmatrix}1&0\\2&1\end{smallmatrix}\right)$. In the free family consisting of the marker $t=E_0=P_0$ and the retained $E_i$, the marker exponent homomorphism sends $t$ to one and each $E_i$ to zero. It therefore forces exactly one central factor; this is not the ambient $P_0$ exponent in $\langle P_0,Q\rangle$. In its kernel basis $y_{i,j}=t^jE_it^{-j}$ indexed by marker height $j$, a $\mathsf B$ before that factor has an uncancellable negative height-$-1$ letter, and an $\mathsf A$ after it has an uncancellable positive height-$1$ letter. At height zero the remaining letters cancel precisely in reversed order. This yields \eqref{gts:cm:eq:shape} for every positive product with lower block $P_0$, including $d=0$.
+
+\wtagd\ The free conjugates $E_i=Q^{-i}P_0Q^i$ of this paragraph are Part~V's $E_j=Q^{-j}PQ^j$ of~\eqref{gts:um:eq:Ej}, with $P_0=P$ and the same $Q$, and expanding the product gives the matrices $E_i$ of~\eqref{gts:cm:eq:old}; the two uses of $E_i$ in this section are one family. The inherited lower-marker theorem~\cite{cm-directed} is the research programme's 193-generator successor~\cite{repo-ds193} of Part~V's semigroup, whose marker argument is Lemma~\ref{gts:um:lem:marker}; the successor is summarized at Part~V's question~4 (Section~\ref{gts:um:sec:future}). The selector streams of Sections~\ref{gts:cm:sec:slices}--\ref{gts:cm:sec:equivalence}, which the source also writes $E_i$, are written $\Lambda_i$ here.
+
+This summary states the precise use of the inherited theorem. The release checks the actual fixed blocks and their interfaces; it does not rerun the upstream machine programs or claim a new proof-assistant formalization of the free-group foundations.
+
+\subsection{Synchronized rows recover the old product}
+For a tile suffix $s=(i_1,\ldots,i_d)$, write $H(s)=H_{i_1}\cdots H_{i_d}$ and $G(s)=G_{i_1}\cdots G_{i_d}$. If the counter has first performed $x$ loads, the two rows begin the suffix at $e_1C_0$ and $e_1B^{-x}$. Right multiplication gives
+\[
+ X_d=e_1H(s)C_0,\qquad Y_d=e_1B^{-x}G(s).
+\]
+By \eqref{gts:cm:eq:rowinjective}, their equality is equivalent to
+\begin{equation}\label{gts:cm:eq:sync}
+ H(s)C_0G(s)^{-1}=B^{-x}.
+\end{equation}
+The upper block of \eqref{gts:cm:eq:shape} is exactly the left side. The reverse order of the $\mathsf B$ factors is indispensable. The lower-marker theorem gives the converse, so the row relation omits no accepting old product. The empty suffix $d=0$ corresponds to the single old central factor $\mathsf C$, not an empty old word \cite{cm-synchronized,cm-countdown}.
+
+\subsection{The counted suffix and the direct input target}
+Let $E_{ij}$ be $3\times3$ matrix units with indices $0,1,2$. Define
+\[
+ O=E_{00},\qquad F=E_{01},\qquad
+ D_c=\begin{pmatrix}0&0&0\\0&1&1\\0&0&1\end{pmatrix}.
+\]
+Lift each old generator $M_j$ to $L_j=\diag(M_j,O)$, and add
+\[
+ \END=\diag(I_4,F),\qquad
+ \COUNT=\diag(B,I_2,D_c).
+\]
+The target is
+\begin{equation}\label{gts:cm:eq:target}
+ T(x)=\diag(I_2,P_0,F+xE_{02})
+ =\begin{pmatrix}
+ 1&0&0&0&0&0&0\\
+ 0&1&0&0&0&0&0\\
+ 0&0&1&2&0&0&0\\
+ 0&0&0&1&0&0&0\\
+ 0&0&0&0&0&1&x\\
+ 0&0&0&0&0&0&0\\
+ 0&0&0&0&0&0&0
+ \end{pmatrix}.
+\end{equation}
+Its only varying entry is a direct copy of $x$. That zero-gate target-assembly observation is not the ledger of the full polynomial.
+
+\begin{lemma}[Control language]\label{gts:cm:lem:control}
+A word in $O,F,D_c$ has entry $(0,1)$ equal to one if and only if it has spelling $O^nFD_c^k$ for $n,k\ge0$. Its product then equals $F+kE_{02}$.
+\end{lemma}
+\begin{proof}
+$O$ is idempotent on coordinate zero, whereas $D_c$ is supported on coordinates one and two. Their mixed products vanish. The only link from zero to the latter coordinates is $F$. A $D_c$ before $F$, an $O$ after $F$, or a second $F$ kills the relevant product. Words with no $F$ have zero in entry $(0,1)$. Finally the lower-right block of $D_c^k$ is $\left(\begin{smallmatrix}1&k\\0&1\end{smallmatrix}\right)$, which gives the stated entire product. The empty word is $I_3$ and fails the entry test.
+\end{proof}
+Thus a matching $7\times7$ product must be
+\[
+ L_{j_1}\cdots L_{j_n}\END\COUNT^x.
+\]
+The old prefix is nonempty: otherwise the lower physical block is $I_2$, whereas the target requires $P_0$. Its physical block is the old product multiplied on the right by $\diag(B^x,I_2)$. Since $B$ is invertible, matching \eqref{gts:cm:eq:target} is equivalent to the old product being $\diag(B^{-x},P_0)$ \cite{cm-counted}. This proves the desired equivalence in both directions.
+
+The old lifts have rank five, $\END$ has rank five, and $\COUNT$ has rank six. All are singular integral $7\times7$ matrices. Malformed words may have zero control, which cannot match the target's nonzero control entry. That argument would not prove a mortality statement with zero target.
+
+\wtagd\ Lemma~\ref{gts:cm:lem:control} and the argument after it re-prove the research programme's counted-suffix note~\cite{cm-counted}, and the row implication~\eqref{gts:cm:eq:rowinjective} re-proves the first-row injectivity of~\cite{cm-gamma}; the source cites both, and both are printed as its own route. The context transfer, the synchronized rows and the lower-marker shape are summarized, not re-proved, as the source says.
+
+\section{The explicit constructive exponentiation module}
+\label{gts:cm:sec:power}
+The certificate contains no exponentiation primitive. We use $\Pow(b,e)$ only as a name for the following fixed list of polynomial equations. Its semantic contract is $b\ge2$, $e\in\N$, and output $o=b^e$. A separate fresh copy of its witnesses is used in every call.
+
+The external number-theoretic source is \texttt{Mathlib/NumberTheory/PellMatiyasevic.lean} at mathlib4 commit \texttt{ac77769fabe23cb237559e7f56578dbead91499f}, specifically \texttt{matiyasevic} and \texttt{eq\_pow\_of\_pell} \cite{cm-pell}. The exact file is bundled as inert source. No Lean process or dependency rebuild is part of this report.
+
+\subsection{Positive leaves and complete equations}
+Every independent leaf is strictly positive. A mathematical natural $q$ is represented by a private positive leaf $q^+$ through $q=q^+-1$; this subtraction is emitted and charged. The variables $a,\beta\ge2$ are positive leaves plus one. The positive variables are
+\[
+ o,w,M,g,\xi,\eta,u,v,s,t,q_b,q_v,S,
+\]
+and the eleven natural auxiliaries are
+\[
+ d_{wb},d_{wk},d_{\eta k},\alpha_1,\alpha_2,\sigma_1,\sigma_2,
+ \tau_1,\tau_2,\rho_1,\rho_2.
+\]
+Together with the two shifted leaves for $a,\beta$, there are $13+11+2=26$ positive leaves. Put $k=e+1$ and $m=bo$. The complete fifteen equalities are
+\begin{align}
+ \xi^2&=1+(a^2-1)\eta^2,\label{gts:cm:eq:p1}\\
+ u^2&=1+(a^2-1)v^2,\label{gts:cm:eq:p2}\\
+ s^2&=1+(\beta^2-1)t^2,\label{gts:cm:eq:p3}\\
+ \beta&=1+4\eta q_b,\label{gts:cm:eq:p4}\\
+ \beta+u\alpha_1&=a+u\alpha_2,\label{gts:cm:eq:p5}\\
+ v&=\eta^2q_v,\label{gts:cm:eq:p6}\\
+ s+u\sigma_1&=\xi+u\sigma_2,\label{gts:cm:eq:p7}\\
+ t+4\eta\tau_1&=k+4\eta\tau_2,\label{gts:cm:eq:p8}\\
+ \eta&=k+d_{\eta k},\label{gts:cm:eq:p9}\\
+ w&=b+d_{wb},\label{gts:cm:eq:p10}\\
+ w&=k+d_{wk},\label{gts:cm:eq:p11}\\
+ M&=m+S,\label{gts:cm:eq:p12}\\
+ a^2&=1+((w+1)^2-1)(wg)^2,\label{gts:cm:eq:p13}\\
+ 2ab&=M+(b^2+1),\label{gts:cm:eq:p14}\\
+ \xi+M\rho_1&=\eta(a-b)+m+M\rho_2.\label{gts:cm:eq:p15}
+\end{align}
+Paired natural quotients encode a congruence with either sign. Replacing such a pair by one nonnegative quotient would in general lose valid witnesses. The strict slack $S$ is likewise substantive: the theorem requires $m<M$.
+
+\subsection{Why these clauses select the correct Pell index}
+For $a>1$, let $(X_a(j),Y_a(j))$ be the Pell sequence in the pinned source. The positive-index branch of \texttt{matiyasevic} says that the first nine conditions above characterize
+\[
+ (\xi,\eta)=(X_a(k),Y_a(k)).
+\]
+The first three equations imply the ordinary natural-subtraction Pell forms in the theorem. The other clauses impose $\beta\equiv1\pmod{4\eta}$, $\beta\equiv a\pmod u$, $v>0$, $\eta^2\mid v$, $s\equiv\xi\pmod u$, $t\equiv k\pmod{4\eta}$, and $k\le\eta$. Since $k=e+1>0$, the zero-index alternative is excluded. This step cannot be replaced by one unconstrained Pell norm.
+
+Equations \eqref{gts:cm:eq:p10}--\eqref{gts:cm:eq:p15} are the positive-base, positive-index case of \texttt{eq\_pow\_of\_pell}. In particular $w\ge b,k$, $M>m$, and the auxiliary Pell equation holds. Its use of natural subtraction $a-b$ agrees with the displayed integer polynomial: $w\ge b\ge2$ and $g>0$ in \eqref{gts:cm:eq:p13} imply
+\[
+ a^2\ge1+((w+1)^2-1)w^2\ge(w+1)^2,
+\]
+so $a\ge w+1>b$. The theorem therefore gives $b^k=m=bo$. Cancellation of the positive factor $b$ yields $o=b^e$, including $e=0$.
+
+\subsection{Completeness with strictly positive leaves}
+Conversely, start with $o=b^e$ and $k=e+1>0$. The constructive direction of \texttt{eq\_pow\_of\_pell} chooses $w\ge b,k$, an auxiliary positive-index Pell solution $a$, a modulus $M>m$, and a quotient $g$. In that construction $w\ge2$ and the auxiliary Pell ordinate is positive, so $g>0$. The constructive direction of \texttt{matiyasevic} supplies positive Pell coordinates and $v>0$. Since $\beta>1$ and $\beta=1\pmod{4\eta}$, the quotient $q_b$ is positive; since $v>0$ and $\eta>0$, the quotient $q_v$ is positive. All nonnegative differences in \eqref{gts:cm:eq:p9}--\eqref{gts:cm:eq:p11} are admissible natural auxiliaries. Every signed congruence quotient is a difference of two naturals.
+
+Thus the positive-leaf adapters impose no extra exclusion. Their semantics are both sound and complete, relative to the explicit constructive theorem source. The implementation does not introduce a general MRDP representation oracle or silently appeal to an unexpanded exponential relation.
+
+\wtagd\ \textbf{Second route.} This module is the polynomial power macro of the report \emph{periodic-turmite-first-revisits}~\cite{ptr}, Lemma \texttt{ptr:ai:lem:exp} (its Report~42): the same fifteen equations specializing the same two pinned theorems, up to the names of variables (that report's $x,y,p,q,\Theta$ are $\xi,\eta,u,v,M$ here). That report counts 25 positive internal witnesses, leaving out the output, where this section counts 26 leaves including~$o$; it charges the module 70 operations, 31 multiplications and 39 additions or subtractions. Source~09 does not cite it. The section is printed as source~09's own route to that lemma, with no novelty claimed for it. The builder and source notes of this Part are in turn the origin of the power module of Part~X of \emph{signal-machine-collision-certificates}~\cite{smc} (the pipeline's Report~58, batch~91), which bundles byte copies of them (Section~\ref{gts:sec:relation}).
+
+\section{Binary containment with complete extraction bounds}
+\label{gts:cm:sec:sub}
+For $M,V\in\N$, write $V\preceq M$ when every binary one-bit of $V$ is a one-bit of $M$. The symbol $\Sub(M,V)$ abbreviates three expanded POWER calls giving
+\begin{equation}\label{gts:cm:eq:subpowers}
+ R_s=2^{M+1},\qquad Y_s=R_s^V,\qquad Z_s=(R_s+1)^M,
+\end{equation}
+and three more equations
+\begin{align}
+ Z_s&=(qR_s+2j+1)Y_s+r,\label{gts:cm:eq:subextract}\\
+ 2j+1+g_c&=R_s,\label{gts:cm:eq:subdigit}\\
+ r+g_r&=Y_s.\label{gts:cm:eq:subremainder}
+\end{align}
+Here $q,j,r$ are naturals, and $g_c,g_r$ are positive. Thus the additional cost is five positive leaves and three residuals beyond the three POWER modules.
+
+\begin{lemma}[Exact containment]\label{gts:cm:lem:sub}
+For natural $M,V$, these equations have positive auxiliary witnesses if and only if $V\preceq M$.
+\end{lemma}
+\begin{proof}
+Every binomial coefficient in $(1+z)^M$ is at most $2^M<R_s$. Consequently
+\[
+ (R_s+1)^M=\sum_{a=0}^M\binom MaR_s^a
+\]
+is its canonical radix-$R_s$ expansion. Equations \eqref{gts:cm:eq:subdigit} and \eqref{gts:cm:eq:subremainder} give $0<2j+1<R_s$ and $0\le r<Y_s$. Equation~\eqref{gts:cm:eq:subextract} therefore says that the digit at position $V$ is odd. Over $\mathbb F_2$, if $M=\sum_a\epsilon_a2^a$, then
+\[
+ (1+z)^M=\prod_{a:\epsilon_a=1}(1+z^{2^a}).
+\]
+The coefficient of $z^V$ is one precisely when the binary digits of $V$ select a subset of those positions. This proves soundness.
+
+If the coefficient is odd, choose its half-minus-one parameter $j$, the Euclidean high quotient $q$, and low remainder $r$. The strict gaps are positive; completeness of the three POWER calls supplies all their leaves. This proves the converse.
+\end{proof}
+The boundary $M=V=0$ has digit one and succeeds. When $V>M$, the relevant binomial digit is zero and cannot satisfy the positive odd-digit clause. No hidden inequality $V\le M$ is needed. The proof also covers $V=0$ for every $M$.
+
+This extraction is a mathematical explanation of polynomial clauses. No bitwise instruction, radix-digit lookup, comparison, or binomial-coefficient primitive survives in the graph.
+
+\wtagd\ The parity fact behind Lemma~\ref{gts:cm:lem:sub}, that $\binom MV$ is odd exactly when $V\preceq M$, is Lucas's theorem modulo~2; it is the classical masking relation of the register-machine proof of exponential Diophantine representation (J.~P. Jones and Yu.~V. Matiyasevich, J. Symbolic Logic \textbf{49} (1984), 818--829). Source~09 proves it without naming it. The same expanded containment masks are used, for sandpile certificates, in Part~XXI of \emph{canonical-diophantine-certificates} (the pipeline's Reports~50 and~52--54, batch~91, written at the same time as this Part); this Part's packing review (\path{09-chrono-matrix-science-review-PACKING_REVIEW.md}) records reading, as inert data, the source notes of a packet named \path{sandpile-repeated-target-20261004}, by that name Report~53's.
+
+\section{The signed radix and well-founded macro domains}
+\label{gts:cm:sec:radix}
+Store the four row coordinates in a column
+\[
+ z=(X_0,X_1,Y_0,Y_1)^T,\qquad
+ a=(35\,426\,321,-19\,628\,667,1,0)^T.
+\]
+For each branch $i\in\{0,\ldots,96\}$ define its fixed column map
+\[
+ A_i=\diag(K_i^T,G_i^T),\qquad
+ c_{ir}=1-\sum_{s=0}^3 A_i[r,s],
+\]
+with $A_0=\diag(I_2,(B^{-1})^T)$ for the loader. The transposes are forced by the row-right-action convention; reversing them would change the language.
+
+Choose the fixed scalar
+\begin{equation}\label{gts:cm:eq:C}
+ C_*=2^{104}=20\,282\,409\,603\,651\,670\,423\,947\,251\,286\,016.
+\end{equation}
+For the actual 97 maps, exact reconstruction gives
+\begin{equation}\label{gts:cm:eq:threshold}
+ \max\left(128,\max_{i,r}\left(2+\sum_s|A_i[r,s]|+|c_{ir}|\right)\right)
+ =18\,510\,406\,623\,962\,009\,412\,894\,903\,228\,521<C_*.
+\end{equation}
+The large numeral is a coefficient bound chosen once for this fixed array. Its size is not a witness or a hidden function of the input.
+
+Introduce positive $\ell,h$, two positive gaps $g_H,g_x$, and expanded powers
+\begin{equation}\label{gts:cm:eq:radices}
+ H=2^\ell,\qquad D=2H,\qquad b=C_*D,\qquad W=b^h.
+\end{equation}
+The two bound clauses are
+\begin{equation}\label{gts:cm:eq:bounds}
+ H=35\,426\,321+g_H,\qquad x+g_x=D.
+\end{equation}
+Thus $H>\max_r|a_r|$, $0<x<D$, and $D,b$ are powers of two with $D<b$ and $b>97$. A signed coordinate is represented by an offset digit
+\begin{equation}\label{gts:cm:eq:offset}
+ q=z+H,\qquad 0\le q<D.
+\end{equation}
+The same $H$ is used for all rows and all times. Zero therefore has one common representation, and comparing final offset digits compares the actual signed values.
+
+A natural $R$ satisfies
+\begin{equation}\label{gts:cm:eq:repeat}
+ (b-1)R+1=W.
+\end{equation}
+Since $W=b^h$ and $h>0$, this determines
+\[
+ R=1+b+\cdots+b^{h-1}.
+\]
+The repetition stream is produced by a polynomial equality and an expanded power, not by an unbounded sum in the source.
+
+\subsection{No circular type reasoning}
+The arithmetic modules are applied in a fixed logical order. The initial call has constant base two and positive exponent $\ell$. The bound clauses then give $H,D,b>0$. The second direct POWER call has $b\ge2$ and positive $h$. Natural adapters make $R$, selectors, slices, post streams, the pre-counter, and final digits nonnegative before any mask theorem is used. The equation for $R$ identifies the nonnegative geometric sum.
+
+Every containment mask below is a product of quantities already known to be nonnegative: $R$, $D-1$, and natural selectors. Inside each Sub module, the first power has base two and natural exponent $M+1$; the next two have bases at least two and natural exponents $V,M$. Hence every invocation meets its contract without presuming the transitions it will later certify. The carry bound is established only after mask semantics have bounded the digits, and before the update equations are read digitwise.
+
+\section{One common selector and paid whole-digit slices}
+\label{gts:cm:sec:slices}
+For every branch introduce a natural selector stream $\Lambda_i$ and impose
+\begin{equation}\label{gts:cm:eq:selectors}
+ \Sub(R,\Lambda_i)\quad(0\le i\le96),\qquad \sum_{i=0}^{96}\Lambda_i=R.
+\end{equation}
+Because $b$ is a power of two, $R$ has one binary low bit at each of the $h$ time positions, so each $\Lambda_i$ has radix-$b$ digits in $\{0,1\}$ at those positions and zero elsewhere. The digit sum across all 97 branches is at most 97, strictly below $b$. Thus the selector sum has no carries, and its equality to $R$ forces exactly one branch at each time.
+
+\wtagd\ The source writes these selector streams $E_i$ (and the loader's $E_0$); they are $\Lambda_i$ and $\Lambda_0$ throughout this Part, because $E_i$ is the lower-marker matrix of Section~\ref{gts:cm:sec:matrix} and $E_0=P_0$ is the marker itself. No normalization changed. The shipped notes and review (\path{09-chrono-matrix-science-ARCHITECTURE.md}, \path{09-chrono-matrix-science-review-PACKING_REVIEW.md} and the others) keep the source's $E_i$.
+
+For each branch $i$ and row coordinate $s$, introduce a natural slice $Q_{is}$ and impose
+\begin{equation}\label{gts:cm:eq:slicemask}
+ \Sub((D-1)\Lambda_i,Q_{is}),\qquad
+ U_s=\sum_{i=0}^{96}Q_{is}.
+\end{equation}
+The latter equality is a definition by emitted additions, not an extra equality residual. There are $97\cdot4=388$ containment calls in \eqref{gts:cm:eq:slicemask}.
+
+\begin{lemma}[Paid slice partition]\label{gts:cm:lem:slices}
+For each $s$, the stream $U_s$ has exactly the allowed $h$ digit positions, every digit lies in $[0,D)$, and $Q_{is}$ is precisely the whole-digit portion of $U_s$ at positions selected by $\Lambda_i$. Conversely every bounded stream $U_s$ and one-hot selector partition has such slices.
+\end{lemma}
+\begin{proof}
+Since $D$ is a power of two, $D-1$ is a block of low binary ones. Multiplying by a selector with digits zero or one places disjoint copies of that block at selected time positions. There is no overlap because $D<b$. Binary containment permits any digit in $[0,D)$ inside a selected block and forces zero outside. At a given position exactly one selector is active, so the sum of the $Q_{is}$ contains at most one nonzero digit there. It has neither digit overflow nor carrying. The selected slice therefore equals the entire $U_s$ digit, not a fragment or an independently chosen row value.
+
+Conversely, assign each given digit to its unique selected branch, setting all other slices there to zero. Every containment relation holds, and the sums recover the original streams.
+\end{proof}
+
+The same selectors serve all four coordinates. Four independent selector families would allow incompatible row transitions. The present partition avoids generic AND modules: once one-hotness is proved, containment by disjoint masks suffices. It does not make variable selection free; all 388 masks, their POWER expansions, and their assembly arithmetic are counted.
+
+\section{Chronology with all three boundaries}
+\label{gts:cm:sec:chronology}
+Introduce five natural post streams $V_0,V_1,V_2,V_3,V_n$. They satisfy
+\begin{equation}\label{gts:cm:eq:postmask}
+ \Sub((D-1)R,V_r)\ (0\le r\le3),\qquad
+ \Sub((D-1)R,V_n).
+\end{equation}
+A natural counter pre-stream $N$ has the stronger loader-only mask
+\begin{equation}\label{gts:cm:eq:countermask}
+ \Sub((D-1)\Lambda_0,N).
+\end{equation}
+It therefore vanishes at all tile positions, while every stream digit remains in $[0,D)$.
+
+For each row introduce a natural final digit $f_r$ and a positive gap $g_r$ with
+\begin{equation}\label{gts:cm:eq:finalbound}
+ f_r+g_r=D.
+\end{equation}
+The chronology clauses are the exact integer equalities
+\begin{align}
+ bV_r+(H+a_r)&=U_r+Wf_r\qquad(0\le r\le3),\label{gts:cm:eq:rowchron}\\
+ bV_n+x&=N.\label{gts:cm:eq:counterchron}
+\end{align}
+
+\begin{lemma}[Complete chronological joins]\label{gts:cm:lem:chronology}
+The row clauses are equivalent to an initial digit $U_r[0]=H+a_r$, all joins $U_r[t+1]=V_r[t]$ for $0\le t<h-1$, and final digit $V_r[h-1]=f_r$. The counter clause gives $N[0]=x$, all joins $N[t+1]=V_n[t]$, and last post digit $V_n[h-1]=0$.
+\end{lemma}
+\begin{proof}
+Write brackets for radix-$b$ digits. Every stream has no positions outside $0,\ldots,h-1$ and digits below $D<b$. The initial digit $H+a_r$ lies strictly between zero and $D$; the final digit $f_r$ lies in $[0,D)$. Multiplication by $b$ shifts the post stream by one, leaving its bottom position free. Multiplication by $W=b^h$ places $f_r$ in position $h$, above every pre-stream digit. Thus both sides of \eqref{gts:cm:eq:rowchron} are already canonical expansions. Matching positions zero, $1,\ldots,h-1$, and $h$ gives exactly the three asserted conditions.
+
+In \eqref{gts:cm:eq:counterchron}, $x<D<b$ fills the free bottom position and the right side has no digit at position $h$. Matching that position forces the terminal post-counter to be zero. Every lower position gives the initial value or an internal join. There is no reduction modulo $W$ and no discarded top coefficient.
+\end{proof}
+
+Consequently the certificate stores actual chronological pre- and post-states. It does not admit a permutation of independently valid edges, a cyclic tableau without initialization, disconnected row histories, or a final frame hidden beyond the packing boundary. The horizon $h$ is shared by every stream through the same $R,W$.
+
+\section{Signed affine updates and a noncircular carry proof}
+\label{gts:cm:sec:carry}
+For each output row $r$, the source splits its fixed signed coefficients once and imposes the following equality with nonnegative sides:
+\begin{align}
+ V_r&+\sum_{\substack{i,s\\ A_i[r,s]<0}}(-A_i[r,s])Q_{is}
+       +H\sum_{\substack{i\\c_{ir}<0}}(-c_{ir})\Lambda_i \notag\\
+ &=\sum_{\substack{i,s\\ A_i[r,s]>0}}A_i[r,s]Q_{is}
+       +H\sum_{\substack{i\\c_{ir}>0}}c_{ir}\Lambda_i.
+ \label{gts:cm:eq:affine}
+\end{align}
+These are four equalities, one per coordinate. Every nontrivial coefficient multiplication and offset product in this fixed schedule is an ordinary paid multiplication gate. Comparing a \emph{fixed} coefficient with zero when emitting the source is compile-time organization, not an input-dependent comparison primitive.
+
+\begin{lemma}[Both sides are carry-free]\label{gts:cm:lem:carry}
+The already established masks and selector partition imply that every radix-$b$ coefficient on either side of \eqref{gts:cm:eq:affine} is nonnegative and strictly less than $b$, before using the transition equality itself.
+\end{lemma}
+\begin{proof}
+At a time position only one branch $i$ contributes. Put
+\[
+ J_{ir}=\sum_s|A_i[r,s]|+|c_{ir}|.
+\]
+All selected row digits and post digits are at most $D-1$. Also $H\le D-1$, since $D=2H$ and $H\ge1$. Therefore each side's raw coefficient is at most
+\[
+ (1+J_{ir})(D-1)<(2+J_{ir})D\le C_*D=b.
+\]
+Every summand on a given side is nonnegative. The finite source indices do not create shifts, and the mask supports are confined to the same $h$ positions. This proves the claimed bound without assuming that any proposed output is a correct matrix image.
+\end{proof}
+
+Uniqueness of radix expansion now reads \eqref{gts:cm:eq:affine} digitwise. If branch $i$ is selected at time $t$, the result is
+\begin{equation}\label{gts:cm:eq:digitupdate}
+ q_r(t+1)=\sum_s A_i[r,s]q_s(t)+c_{ir}H.
+\end{equation}
+Substitution of $q_s(t)=z_s(t)+H$ and $c_{ir}=1-\sum_sA_i[r,s]$ yields
+\[
+ z_r(t+1)=\sum_sA_i[r,s]z_s(t).
+\]
+Every coordinate has the same selected $i$, so this is the actual synchronized row update. The representation uses a single common offset instead of an independently chosen sign decomposition. It introduces neither a sign oracle nor a variable inverse.
+
+The fixed numeral $C_*$ is intentionally conservative. Its correctness is checked against the actual 97 maps, including all large positive and negative entries. Replacing those maps by a small toy alphabet would not validate the present carry theorem or its source ledger.
+
+\section{Counter guards and the equivalence in both directions}
+\label{gts:cm:sec:equivalence}
+The remaining counter update is
+\begin{equation}\label{gts:cm:eq:counterupdate}
+ N=V_n+\Lambda_0.
+\end{equation}
+Its right-side digits are at most $D$, which is strictly below $b$, so the equality is digitwise. At a load position it says $n'=n-1$ and natural post digits force $n\ge1$. At a tile position, the loader-only mask \eqref{gts:cm:eq:countermask} first gives $n=0$; equation~\eqref{gts:cm:eq:counterupdate} then gives $n'=0$. Both tile guards are paid.
+
+\begin{lemma}[Exact phase and input count]\label{gts:cm:lem:counter}
+A packed accepting branch word is exactly $\LOAD^x\TILE^*$, with $x$ initial loads and any finite tile suffix. Restricting packed counters to naturals loses no accepting path of the original signed-counter system.
+\end{lemma}
+\begin{proof}
+Chronology starts the counter at $x$ and ends it at zero. Each load decrements it by one and every tile keeps it zero, so telescoping counts exactly $x$ loads. Before zero is reached a tile is disallowed; at zero a later load is impossible in the packed natural representation. This proves the stated shape.
+
+For the original signed system, the same telescoping identity already counts exactly $x$ loads in any accepting path. The first tile can occur only after $x$ loads, because its pre-counter must be zero. Any later load would make the total exceed $x$, and there is no increasing transition to repair it. Thus every original accepting counter lies in $[0,x]$ and has the same shape. Locally legal signed loads below zero never belong to an accepting path.
+\end{proof}
+Finally impose the two row endpoint equalities
+\begin{equation}\label{gts:cm:eq:finalequal}
+ f_0=f_2,\qquad f_1=f_3.
+\end{equation}
+Because the offset is common, these give $X=Y$. The final counter zero is already enforced by \eqref{gts:cm:eq:counterchron}; it does not need an omitted extra residual.
+
+\subsection{Soundness of the positive polynomial zero}
+Let $x$ and all independent witness leaves be positive and suppose $\mathcal P(x,w)=0$. The output is a sum of squares of integer residuals, so every residual vanishes. Apply the POWER and Sub semantics in the well-founded order of Section~\ref{gts:cm:sec:radix}. Equations \eqref{gts:cm:eq:selectors} give a unique branch at every one of $h$ positions. The paid slice lemma provides one bounded pre-state in all four row coordinates. The post masks and chronology lemma identify their consecutive states, the specified initial row, and the final row.
+
+The carry lemma turns the four packed affine identities into the actual selected matrix transitions. The loader-only mask and counter update supply both tile guards and exact decrementing loads. The counter chronology supplies its input $x$ and terminal zero. Finally \eqref{gts:cm:eq:finalequal} supplies $X=Y$. We have reconstructed a genuine finite accepting chronological path. Section~\ref{gts:cm:sec:matrix} then gives the exact 195-generator target membership under the named inherited interfaces.
+
+\subsection{Completeness from a genuine accepting path}
+Conversely, take a finite accepting signed path on $x>0$. Lemma~\ref{gts:cm:lem:counter} gives $h\ge x\ge1$ and natural counters in $[0,x]$. Its finitely many signed row values have a finite maximum absolute value. Choose a power of two $H=2^\ell$ strictly larger than that maximum and $35\,426\,321$, with $x<2H$. Such an $\ell>0$ exists. Then every row offset and every counter fits its stated digit range.
+
+Set $D=2H$, $b=C_*D$, $W=b^h$, and $R=\sum_{t<h}b^t$. Pack the genuine pre-states, post-states, endpoints, and selectors. Put each pre-row digit into the slice of its selected branch. All masks hold by binary containment; all bound gaps are strictly positive. The actual chronological sequence gives the shift equalities, and its true local updates give \eqref{gts:cm:eq:affine} and \eqref{gts:cm:eq:counterupdate}. The true endpoint gives \eqref{gts:cm:eq:finalequal}. The completeness parts of POWER and Sub supply every remaining strictly positive leaf. Therefore every residual, and hence $\mathcal P$, is zero.
+
+\subsection{Boundary cases and nonclaims}
+A zero-length tile suffix is allowed throughout. Under the row theorem it corresponds to the one-factor old word $\mathsf C$; the counted-suffix word still has $\END$ and $x$ copies of $\COUNT$. Positive input forces positive total path duration, so demanding $h>0$ loses no case in the theorem. No unimplemented zero-duration disjunction for $x=0$ is used.
+
+The converse chooses a sufficiently large offset after seeing a finite accepting path. It does not promise a computable bound on that offset from the input alone. Likewise, no finite-fold or unique-witness statement follows: offsets and auxiliary congruence quotients may vary. The proof is existential over positive integers and does not justify the same semantics for arbitrary real leaves.
+
+\section{The fully expanded source and exact resource ledger}
+\label{gts:cm:sec:ledger}
+The authoritative graph is the inert JSON file \texttt{science/evidence/polynomial-dag.json}. Its SHA256 is
+\cmsha{95e2563fcfcaecfdc5918ffd6dd7421896350df8969a38f08cbb5f5060d80034}
+Its only leaf classes are the one literal input \texttt{input:x}, the named independent positive witnesses, and fixed integer literals. Every gate is a binary addition, subtraction, or multiplication whose operands are earlier gates or leaves. Macro records and 506 named ports describe already emitted expressions; they are not additional primitive operations.
+
+\wtagd\ This file, 11,069,996 bytes, is not shipped in this report. Its builder, shipped as \path{code/09-chrono-matrix-science-build_certificate.py}, regenerates it byte for byte, with the digest above, in a few seconds from the research programme's countdown receipt (README, ``Reconstructing the excluded data''). The other files named in this Part are shipped under the prefix \path{09-chrono-matrix-}, or are repository files; the README maps every name.
+
+The source has fixed shape. All source-generating loops run over fixed lists: 97 branches, four rows, five post streams, fifteen POWER equations, or the final fixed residual list. No input $x$, horizon $h$, offset $H$, radix, or numerical witness value changes the number of variables or source instructions.
+
+\subsection{Arithmetic gates}
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Region & Multiplication & Addition & Subtraction & Total\\
+\midrule
+Body & 48,475 & 40,494 & 24,194 & 113,163\\
+Residuals and squares and sum & 23,618 & 23,617 & 23,618 & 70,853\\
+\midrule
+Full polynomial & 72,093 & 64,111 & 47,812 & 184,016\\
+\bottomrule
+\end{tabular}
+\end{center}
+The tail forms each residual by one subtraction, squares it by one multiplication, and sums all $23\,618$ squares by $23\,617$ additions. Thus it costs $3\cdot23\,618-1=70\,853$ gates. The combined addition/subtraction convention gives
+\[
+ 72\,093\,M+111\,923\,A=184\,016.
+\]
+Fixed numerals themselves are free. Multiplications by nontrivial coefficients in the emitted arithmetic are charged. Omitting zero summands or multiplication by one is ordinary fixed-source simplification, not a free selected matrix operation.
+
+\subsection{Module and witness ledger}
+There are exactly
+\[
+ 97+388+5+1=491
+\]
+Sub calls: selector masks, row slices, post masks, and the loader-only counter mask. Each contains three POWER calls; the two direct powers for $H$ and $W$ give
+\[
+ 3\cdot491+2=1\,475
+\]
+POWER calls in all. There is no AND or SPREAD call.
+
+The witness ledger is
+\begin{equation}\label{gts:cm:eq:witnessledger}
+ 1\,475\cdot26+491\cdot5+504=41\,309.
+\end{equation}
+The 504 outer leaves are tabulated here; a natural variable always means a positive leaf minus one.
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Outer witness class & Count\\
+\midrule
+Positive $h,\ell$ & 2\\
+Positive initial-offset and input gaps & 2\\
+Natural repetition $R$ & 1\\
+Natural selectors $\Lambda_i$ & 97\\
+Natural slices $Q_{is}$ & 388\\
+Natural row and counter post streams & 5\\
+Natural counter pre-stream $N$ & 1\\
+Natural final row digits $f_r$ & 4\\
+Positive final row gaps & 4\\
+\midrule
+Total & 504\\
+\bottomrule
+\end{tabular}
+\end{center}
+The power output leaves for $H$ and $W$ are already counted inside their modules; they are not repeated in this outer total.
+
+\subsection{Residual ledger}
+The equality count is
+\begin{equation}\label{gts:cm:eq:residuallocated}
+ 1\,475\cdot15+491\cdot3+20=23\,618.
+\end{equation}
+The twenty outer clauses are two initial/input bounds, repetition, selector partition, four final bounds, four row chronology equations, counter chronology, two row endpoint equalities, four affine row updates, and the counter update. The tile guards arise jointly from the paid counter mask and update. The terminal counter zero arises from chronology. Counting them again as absent explicit equalities would misread how the certificate enforces them.
+
+\subsection{Exact total degree twelve}
+Sparse independent normalization gives the following residual-degree distribution:
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+Degree & 1 & 2 & 3 & 4 & 6\\
+Residual count & 4,825 & 10,927 & 1,966 & 4,425 & 1,475\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every residual has degree at most six, so the sum of their squares has degree at most twelve. This is the degree in $x$ and all independent positive leaves. Fresh module outputs remain independent leaves linked by equations; one must not substitute their semantic exponential meanings to compute polynomial degree.
+
+The thirteenth POWER residual is
+\[
+ a^2-1-((w+1)^2-1)(wg)^2.
+\]
+Its degree-six homogeneous term is $-w^4g^2$, using that call's private positive leaves $w,g$. The sum of all squared highest homogeneous parts is a sum of real polynomial squares and cannot vanish identically if one summand is nonzero. More specifically, the independent source checker extracts the coefficient of
+\[
+ \texttt{bounds.offset.w}^{\,8}\,
+ \texttt{bounds.offset.g}^{\,4}
+\]
+from the squares of \emph{all} residual leading parts and obtains exactly one. Thus degree twelve is attained in the literal polynomial. This argument uses formal polynomial identities, not relations valid only on the zero set.
+
+\wtagd\ The research programme's review~\cite{repo-revcm} checked the degree independently: restricting the thirteenth residual of the first POWER call (\texttt{bounds.offset.eq13}) to its leaves $w,g$, all other leaves zero, gives $-w^4g^2-2w^3g^2$, whose degree-six part is the $-w^4g^2$ printed above.
+
+\section{Independent verification and limits of the evidence}
+\label{gts:cm:sec:audit}
+The independent audit \cite{cm-audit} reports PASS for the stated positive-integer theorem and exact source, conditional on the named inherited Pell and matrix-interface theorems. It did not import or execute the submitted builder, submitted semantic checker, predecessor programs, saved accepting schedules, or Lean. It read fixed matrices, text, JSON, and the literal polynomial graph. Its newly written standard-library checkers are separate from the scientific emitter.
+
+\subsection{Complete symbolic reconstruction}
+The exact-source checker normalizes every one of the $113\,163$ body gates as a sparse polynomial over $\Z$. It independently specifies the intended clauses from named positive leaves and matrices. In particular, it reconstructs the four transition equations directly in signed affine form rather than copying the emitter's sign-split gate order. It checks:
+\begin{itemize}
+\item All $23\,618$ residuals, with no missing or extra clauses, and all arguments and expanded equations of $1\,475$ POWER and 491 Sub calls
+\item The exact set of $41\,309$ distinct positive leaves, all adapters, and all 506 exposed ports
+\item The literal unshifted input, all topological references, and the allowed binary gate vocabulary
+\item Every one of the $70\,853$ finalizer gates, including all residual squares and their unweighted sum
+\item All 97 actual matrix maps and offset corrections, the exact coefficient bound, full liveness, and every declared resource count
+\item The exact degree distribution and the attaining degree-twelve monomial coefficient
+\end{itemize}
+A gate-by-gate proof of this finite source does not materialize enormous numerical values of nested powers. Its output is an exact symbolic certificate audit, not a large-witness numerical evaluation.
+
+\subsection{Matrix and provenance reconstruction}
+The independent interface checker obtains $L,R$ and the central block from actual fixed letter products. It reconstructs $B=\Psi((\texttt{01010111})^2)$ and its inverse. For each retained tile it reconstructs the complete context-transferred $\mathsf A_i,\mathsf B_i$, both lower marker blocks, $H_i$, $K_i=C_0^{-1}H_iC_0$, and $G_i$ with the correct inverse convention. It then reconstructs all 195 lifted matrices, checking all $9\,555$ entries and ranks, and the literal target template.
+
+Seven local Git blob pins are recomputed from exact bytes. The original audit also records independent read-only GitHub confirmations of the specified proof commits, receipt blobs, and the current-main blobs for the two requested matrix notes. Current-main equality is a statement about that recorded retrieval, not a promise that upstream files will never change.
+
+The author source and graph were frozen before exact audit. Explanatory and supplemental evidence were completed during it and then frozen separately. The final eighteen-file author manifest was verified in full. The release preserves all of those bytes, including historical prose and programs as inert provenance.
+
+\subsection{Fresh finite challenges}
+The interface audit's generated probes are:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Check family & Cases\\
+\midrule
+Control words of length at most nine & 29,524\\
+Fresh signed-counter candidates & 14,322\\
+Arbitrary bounded chronology tableaux & 4,352\\
+Exact binomial and containment parity cases & 1,280\\
+Actual-matrix affine carry-bound corners & 37,248\\
+Four-coordinate slice partitions & 112\\
+\bottomrule
+\end{tabular}
+\end{center}
+Exactly 80 of the chronology candidates pass, all with the correct initial, internal, and final joins. The counter probes include negative initial values and empty paths. The binomial checks include zero masks, zero indices, and out-of-range indices. Carry tests cover all 97 actual maps; slice cases range across the branch family. These are fresh finite checks, not executions of saved accepting traces.
+
+The scientific author's separate semantic receipt records its own earlier probes, including fresh chronological prefixes with row magnitudes up to 147 bits. That receipt is preserved as historical evidence, not rerun by this release. Neither it nor the independent audit constructs a full gigantic Pell witness for an accepting positive input. The unrestricted mathematical proofs, not finite enumerations, establish the equivalence.
+
+\wtagd\ \textbf{The research programme's review.} The audits above were produced by the pipeline that wrote the manuscript. The one check from outside it is the research programme's intake review~\cite{repo-revcm} (commit \texttt{a9ab9a698}, 4~October 2026, 10:45, half an hour after the archive arrived), which read the delivered README, \path{ARCHITECTURE.md} and \path{SOURCE_NOTES.md} completely and parsed the entire DAG as inert data. It confirms 184,016 gates (72,093 multiplications, 64,111 additions, 47,812 subtractions; 111,923 additions and subtractions together), all gate operands and the topological order, complete backward liveness of all gates, of the 41,309 witnesses and of the input~$x$, the 113,163-gate body and the 70,853-gate finalizer that squares and sums all 23,618 residuals, the witness and residual ledgers \eqref{gts:cm:eq:witnessledger} and~\eqref{gts:cm:eq:residuallocated}, and exact degree~12 (note in Section~\ref{gts:cm:sec:ledger}). It reports no defect. It executed no archived program, and it did not recertify the inherited Pell and group semantics or the chronological proof; its finding is about the arithmetic of the DAG. At placement (on an extraction of the archive) and at this write (from the shipped files), the two independent checkers of Section~\ref{gts:cm:sec:audit} were rerun from the shipped files on a reconstructed science tree; both receipts equal the shipped ones after CRLF$\to$LF (README, ``Rerunning the programs'').
+
+\section{Reproducibility and the immutable release}
+\label{gts:cm:sec:repro}
+The archive separates mathematical inputs, inherited dependencies, independent audit evidence, and release tooling. Its principal entries are:
+\begin{itemize}
+\item \texttt{article/Report55.tex} and \texttt{article/Report55.pdf}: this editable article and its rendered version
+\item \texttt{science/}: byte-preserved scientific proof, source graph, fixed arrays, source notes, original code, and frozen manifest
+\item \texttt{independent\_audit/}: unchanged independent checkers, report, pins, and original receipts
+\item \texttt{dependencies/}: the pinned Pell theorem source and license, and the deeper inherited matrix proof notes
+\item \texttt{audit\_replay/}: the separate portable adapter for isolated replay of only the inspected independent checkers
+\item \texttt{verification/}: release-time preservation, build, layout, and review evidence
+\end{itemize}
+Historical commands and absolute paths inside preserved source packets are provenance, not the supported release entry points. Do not run the submitted scientific builder or checker, historical upstream programs, saved schedules, or Lean to reproduce this release.
+
+The portable replay takes explicit science and independent-audit directory paths and a fresh output directory outside both inputs. It stages unchanged independent checker bytes into that output, supplies the bundled science path explicitly, and checks regenerated receipts against their pins. Its own documentation gives the exact supported invocation and safety guards. Normal and optimized Python replays are separately checkable; optimization must not disable scientific assertions.
+
+The release utility verifies the exact manifest inventory and file hashes, builds the PDF in a fresh external directory with writable TeX caches there, and emits a deterministic ZIP. No-shell-escape pdfLaTeX runs three passes with fixed timestamp inputs. Sealed PDF reproduction verifies byte equality with the packaged PDF in the same installed TeX/font environment; cross-version binary PDF identity is not promised. The ZIP uses sorted entries, fixed timestamps, fixed POSIX metadata, and uncompressed stored members.
+
+The manifest excludes itself and must be authenticated by a trusted accompanying SHA256. Archive and final manifest hashes remain outside the archive to avoid self-reference. Verification, replay, PDF building, and ZIP creation preserve release input bytes and metadata. The README contains the short commands and distinguishes author-time preparation from sealed reproduction.
+
+\subsection{What a successful replay establishes}
+A successful exact replay establishes that the supplied literal graph still reconstructs to the stated clauses, matrices, ledger, and degree, and that the finite challenges still produce the frozen receipts. Manifest verification establishes that the inspected files are the delivered files. Rebuilding the PDF checks document reproducibility, not a new mathematical theorem. These are complementary checks; none is a substitute for the stated inherited mathematical premises.
+
+\wtagd\ \textbf{Shipped names and the Windows replay.} In this report the release is flattened under the prefix \path{09-chrono-matrix-}: programs in \path{code/}, receipts, manifests and logs in \path{data/}, and the Markdown notes, reviews and audits at the report root, with \path{dependencies/} shortened to \path{deps-}; for example \path{science/build_certificate.py} is \path{code/09-chrono-matrix-science-build_certificate.py} and \path{independent_audit/AUDIT.md} is \path{09-chrono-matrix-independent_audit-AUDIT.md}. Not shipped: \path{article/Report55.tex} and \path{Report55.pdf} (this Part is the article), the delivery README, the DAG (regenerable; note in Section~\ref{gts:cm:sec:ledger}), the mathlib Pell source and its licence (third-party; cited by commit and digest in Appendix~\ref{gts:cm:app:pins}), eleven byte copies of research-programme files in \path{science/sources/} and \path{dependencies/} (cited by path), one checksum list and six byte copies of other files of the release. The release tool's \texttt{verify} step needs the complete delivered inventory with its POSIX file modes and refuses to run on NTFS, and the replay adapter needs the complete frozen science and audit trees; on Windows the adapter's byte gate also fails, because the checkers write their receipts with CRLF line endings. The README gives two routes: the delivered tools on an extraction of the arrival archive on a POSIX system, and a direct run of the builder and both independent checkers on a reconstruction in a scratch directory.
+
+\section{Future questions and present boundaries}
+\label{gts:cm:sec:future}
+The construction leaves several focused research questions.
+\begin{enumerate}
+\item \textbf{Reduce the paid selection cost.} The 388 row-slice predicates dominate the module count. Can a smaller polynomial system preserve common branch choice and arbitrary signed row digits without introducing an uncharged selected-table primitive? Any proposed reduction needs both a digit-level proof and a literal new ledger.
+\item \textbf{Share range structure safely.} Every Sub currently expands three independent POWER modules. Sharing may reduce operations, but one must specify exactly which outputs and witnesses can be reused without changing existence or invalidating a module's domain. A semantic identity alone does not identify source gates.
+\item \textbf{Tighten the coefficient bound.} The current $C_*$ is deliberately conservative. A smaller fixed numeral would reduce digit and witness sizes, but would not necessarily change gate count or total degree. It must bound both nonnegative sides on arbitrary masked candidate digits, not merely on valid trajectories.
+\item \textbf{Make the program-family compiler explicit.} The inherited initialization theorem supplies mathematical recipes for program-dependent contexts. A separate artifact could implement that path, freeze its actual matrices, and recompute the coefficient bound. The present fixed fixture cannot serve as evidence that this work is already done.
+\item \textbf{Formalize the interface chain.} The Pell source is a pinned formal theorem, while the exact adapter arguments, signed packing, lower-marker use, and faithful-group interface are written proofs with exact finite audits. A single end-to-end mechanization would be valuable, but is not claimed by this release.
+\item \textbf{Compare alternative ledgers honestly.} Replacing the countdown by a direct seven-dimensional product history might trade selector count for matrix dimension. The direct-input target has zero assembly gates, but any comparison must include arbitrary-duration history, positivity, bounds, chronology, and endpoint arithmetic.
+\end{enumerate}
+No practical numerical witness-size bound, uniqueness, finite-fold representation, real-witness characterization, or arithmetic optimality follows here. The repository's prior 84-operation benchmark \cite{cm-gamma} is unchanged. The established result is narrower and fully explicit: fixed-arity positive-integer recognition of the actual ordinary-input chronological countdown and its pinned directed-semigroup target.
+
+\wtagd\ (4~October 2026.) Questions~1, 2, 4 and~6 bear on the research programme's construction of the same night (note in Section~\ref{gts:cm:sec:scope}). It makes the program-family compiler explicit for valid program recipes, with the program contexts as fixed coefficient ports and a paid matrix switch instead of absorbed contexts (question~4, in part: the coefficient recipe is not an implemented compiler from arbitrary programs). Its sharing of paid powers, selector groups and packing sums reaches 1,393 operations (questions~1 and~2), but at exact degree at least 35,587, so it trades degree for operations rather than reducing this Part's selection cost at degree~12; the two ledgers are the comparison that question~6 asks for. Question~3 is answered in part by the source's own packing review (\path{09-chrono-matrix-science-review-PACKING_REVIEW.md}, Section~3): any fixed power of two $C\geq\max(128,\max_{i,r}M_{ir})$, with $M_{ir}=\max(P,1+N)$, where $P$ and $N$ are the sums of the positive coefficients and of the absolute values of the negative ones in row~$r$ of the matrix $A_i$, already suffices, which for the actual maps is $2^{103}$; the article keeps $C_*=2^{104}$. On question~5: the repository has no Lean or Rocq module for any statement of this Part. Its Lean development uses mathlib's \texttt{Pell.matiyasevic} (\path{Computability/HilbertTenthProblem/Lean/Diophantine/Paper1976/Cor26.lean}), but for a different four-equation system, not this Part's fifteen-equation module.
+
+\wtagd\ \textbf{Claims of this Part that remain open here.} Three statements of source~09 are used, not proved, in this report; each is kept where the source states it, and is listed here as open with what is missing. (a)~\emph{The matrix-interface equivalence} of Theorem~\ref{gts:cm:thm:main}: positive zeros $\Leftrightarrow$ $T(x)$ lies in the 195-generator semigroup. Source~09's argument (Section~\ref{gts:cm:sec:matrix}) combines the faithful twenty-letter encoding with $H'\cap\langle U_0\rangle=\{I_2\}$~\eqref{gts:cm:eq:intersection}, the lower-marker shape~\eqref{gts:cm:eq:shape}, context transfer and the synchronized rows; it proves the row implication~\eqref{gts:cm:eq:rowinjective} and the control-language lemma, but takes the finite-graph basis proof of~\eqref{gts:cm:eq:intersection}, the free-group marker argument and the context telescoping from the research programme's notes~\cite{cm-gamma,cm-directed,cm-context,cm-synchronized}. Missing: a proof of those inputs in this report, or a formal one (question~5); the programme's notes give conventional proofs, which source~09 and this write did not re-check. (b)~\emph{The program-family interpretation} (level~3 of Section~\ref{gts:cm:sec:scope}): that the same architecture recognizes every c.e.\ language once program-dependent contexts are supplied. Source~09's sketch is the inherited effective initialization~\cite{cm-unary} composed with this Part's packing and a recomputed radix factor. Missing: the Neary--Woods simulation premise~\cite{cm-nearywoods}, which is cited and not re-proved, and an implemented and audited compiler with its per-program coefficient bound (question~4). (c)~\emph{The arithmetic semantics of the POWER module} rests on the two pinned mathlib theorems, which are formal in mathlib but were not re-run here (Lean was not executed); this is a stated dependency rather than a gap, and is listed for completeness. No statement of source~09 was found false, and none was dropped.
+
+\setcounter{equation}{\value{cmsaveeq}}%
+\let\theequation\cmoldtheequation\let\theHequation\cmoldtheHequation
 
 
 \appendix
@@ -5211,30 +5959,38 @@ scope of the search, not an assertion that none exists.
 
 \section{Provenance of this report}\label{gts:app:provenance}
 
-\wtag\ The report was built from two manuscripts that arrived together in the archives of commit \texttt{6914ccca6} and were placed by commit \texttt{2a04b60f2}, which staged their programs and data byte-identical to the delivery. \wtagb\ Two of those programs, \path{code/03-van-kampen-van_kampen.py} and \path{code/05-three-phases-heisenberg_compiler.py}, were then patched in place by commit \texttt{db3b377f0} (input-guard repairs reviewed in the research programme), before Parts~I and~II were written; the README records this. Parts~III and~IV were added from two manuscripts of batch~78 that arrived in the archives of commits \texttt{808b53ed8} (manuscript~09) and \texttt{48ee077c7} (manuscript~13) and were placed by commit \texttt{41e7f1189}, which staged their programs, data and source audit byte-identical to the delivery. \wtagc\ Part~V was added from batch-82 manuscript~22, which arrived in the archive of commit \texttt{db37d18c8} (3~October 2026) and was placed by commit \texttt{2f58ab4e9}, which staged 59 of its 80 files byte-identical to the delivery: 16 programs, 32 data files and receipts, and 11 proofs, reviews, packet READMEs and provenance texts.
+\wtag\ The report was built from two manuscripts that arrived together in the archives of commit \texttt{6914ccca6} and were placed by commit \texttt{2a04b60f2}, which staged their programs and data byte-identical to the delivery. \wtagb\ Two of those programs, \path{code/03-van-kampen-van_kampen.py} and \path{code/05-three-phases-heisenberg_compiler.py}, were then patched in place by commit \texttt{db3b377f0} (input-guard repairs reviewed in the research programme), before Parts~I and~II were written; the README records this. Parts~III and~IV were added from two manuscripts of batch~78 that arrived in the archives of commits \texttt{808b53ed8} (manuscript~09) and \texttt{48ee077c7} (manuscript~13) and were placed by commit \texttt{41e7f1189}, which staged their programs, data and source audit byte-identical to the delivery. \wtagc\ Part~V was added from batch-82 manuscript~22, which arrived in the archive of commit \texttt{db37d18c8} (3~October 2026) and was placed by commit \texttt{2f58ab4e9}, which staged 59 of its 80 files byte-identical to the delivery: 16 programs, 32 data files and receipts, and 11 proofs, reviews, packet READMEs and provenance texts. \wtagd\ Part~VI was added from batch-91 manuscript~07, which arrived in the archive of commit \texttt{0d7f51c44} (4~October 2026) and was placed by commit \texttt{22a8ca89e}, which staged 44 of its 68 files byte-identical to the delivery: 11 programs, 25 data files, receipts, manifests and logs, and 8 notes, reviews and audits.
 
 \begin{center}
 \small
-\begin{tabular}{@{}L{0.07\textwidth}L{0.24\textwidth}L{0.2\textwidth}L{0.2\textwidth}L{0.17\textwidth}@{}}
+\begin{longtable}{@{}L{0.07\textwidth}L{0.24\textwidth}L{0.2\textwidth}L{0.2\textwidth}L{0.17\textwidth}@{}}
 \toprule
 Source & Archive & Pin & Contributed & Printed as\\
 \midrule
+\endfirsthead
+\toprule
+Source & Archive & Pin & Contributed & Printed as\\
+\midrule
+\endhead
 03 (base) & \path{arithmetic_van_kampen.zip}, batch~76 manuscript~03; main file \path{arithmetic_van_kampen.tex}, 29-page PDF & \texttt{c58206ca1} & the area and proof-DAG compilers, the dyadic optimum, the addition-chain sandwich, 12 research questions, its audits & Part~I with Appendices~\ref{gts:vk:app:scalar}--\ref{gts:vk:app:audit}\\
 05 & \path{three_commutative_phases_research.zip}, batch~76 manuscript~05; main file \path{article.tex}, 22-page PDF & \texttt{433df1be3} & the three-phase compiler, the three-subgroup theorem, two-phase decidability, the monoid and quartic versions, the nonclosed product, 9 research directions, its audits & Part~II with Appendices~\ref{gts:tp:app:capsule}--\ref{gts:tp:app:sources}\\
 06 & \path{Order_Is_Not_a_Moment.zip}, batch~78 manuscript~09 (arrival \texttt{808b53ed8}); main file \path{article.tex}, 26-page PDF & \texttt{4cccfa068} & ternary pair-count intervals, the gap and canonical quartic certificates, four-letter holes, the Heisenberg lift, supplied-multiplicity decidability, 12 research questions, its provenance audit & Part~III with Appendices~\ref{gts:po:app:names}--\ref{gts:po:app:provenance}\\
 07 & \path{ProveIt_Affine_Matrix_Diophantine_Research.zip}, batch~78 manuscript~13 (arrival \texttt{48ee077c7}); main file \path{article.tex}, 25-page PDF & \texttt{4cccfa068} & affine rigidity in every dimension, the free basis and sharp period, the reconstructed quadratic loader and degree threshold, the multiplication gadget and affine abelian compiler, 10 research questions, its source audit & Part~IV\\
 08 & \path{Universal_Matrix_Semigroup_and_Diophantine_Certificates_Package.zip}, batch~82 manuscript~22 (``Research Report~32''; arrival \texttt{db37d18c8}); main file \path{report32.tex}, 26-page PDF & none named & the fixed 229-matrix semigroup and its marker lemma, the bounded-length quartic family with exact ledgers, the collision and the 94-tile certificate, the exact fibre generating function, 7 research questions, its proofs, reviews and audits & Part~V with Appendices~\ref{gts:um:app:literal}--\ref{gts:um:app:sequence}\\
+09 & \path{Chronological_Diophantine_Matrix_Certificates_Package.zip}, batch~91 manuscript~07 (``Research Report~55''; arrival \texttt{0d7f51c44}); main file \path{article/Report55.tex}, 21-page PDF & \texttt{750aeb4f7} and \texttt{d31e29030} & the fixed-arity degree-12 countdown certificate with its 184,016-gate ledger, the expanded POWER and containment modules, the chronological packing lemmas, 6 research questions, its audits and reviews & Part~VI with Appendices~\ref{gts:cm:app:checklist}--\ref{gts:cm:app:pins}\\
 \bottomrule
-\end{tabular}
+\end{longtable}
 \end{center}
 
 The full pins are
 \begin{center}\small
 \texttt{c58206ca101d4744a015a0f0104646109357d943} (source~03),\\
 \texttt{433df1be37188224dd00d0561bfb157949cd6320} (source~05),\\
-\texttt{4cccfa06866b6b81b2467e1cf7514ea85ed0216d} (sources~06 and~07).
+\texttt{4cccfa06866b6b81b2467e1cf7514ea85ed0216d} (sources~06 and~07),\\
+\texttt{750aeb4f7834332deb2bec5f32fb470ff8254431} (source~09, countdown receipt and notes),\\
+\texttt{d31e29030214c35083b0c2e052c8a3a5d0409eb0} (source~09, counted suffix).
 \end{center}
-Each pin is the commit that its source names as its repository snapshot: source~03 on its title page and in its bibliography, source~05 in Section~\ref{gts:tp:sec:implementation} and its bibliography. Both are ancestors of the placement commit. The repository files the sources cite (\path{Computability/HilbertTenthProblem/Lean/MRDP.md}, \path{Lean/Diophantine/Common/MRDPCore.lean} and the note \path{group_projective_label_aligned_lanes.md}) are unchanged from the pins to the write, so the sources' descriptions of them remain accurate. \wtagb\ Sources~06 and~07 name commit \texttt{4cccfa068} as their snapshot: source~06 in its provenance appendix (Appendix~\ref{gts:po:app:provenance}) and bibliography, source~07 in Section~\ref{gts:ai:sec:scope}, its bibliography and its source audit. It is an ancestor of the placement commit. The repository files they cite (the research notes \path{heisenberg_two_generator_membership.md}, \path{group_affine_input_obstruction.md}, \path{group_commutator_universal_substrate.md} and \path{imported_substrate_review_20261002.md}, and \path{Lean/Diophantine/Common/MRDPCore.lean}) have the same blobs at the pin and at this write. \wtagc\ Source~08 names no repository commit and cites no repository file. It identifies its numerical data by the digest of its literal coefficient file, printed in Section~\ref{gts:um:sec:reproduce}; the shipped \path{data/08-matrix-semigroup-core-data-semigroup.json} is that file, byte for byte.
+Each pin is the commit that its source names as its repository snapshot: source~03 on its title page and in its bibliography, source~05 in Section~\ref{gts:tp:sec:implementation} and its bibliography. Both are ancestors of the placement commit. The repository files the sources cite (\path{Computability/HilbertTenthProblem/Lean/MRDP.md}, \path{Lean/Diophantine/Common/MRDPCore.lean} and the note \path{group_projective_label_aligned_lanes.md}) are unchanged from the pins to the write, so the sources' descriptions of them remain accurate. \wtagb\ Sources~06 and~07 name commit \texttt{4cccfa068} as their snapshot: source~06 in its provenance appendix (Appendix~\ref{gts:po:app:provenance}) and bibliography, source~07 in Section~\ref{gts:ai:sec:scope}, its bibliography and its source audit. It is an ancestor of the placement commit. The repository files they cite (the research notes \path{heisenberg_two_generator_membership.md}, \path{group_affine_input_obstruction.md}, \path{group_commutator_universal_substrate.md} and \path{imported_substrate_review_20261002.md}, and \path{Lean/Diophantine/Common/MRDPCore.lean}) have the same blobs at the pin and at this write. \wtagc\ Source~08 names no repository commit and cites no repository file. It identifies its numerical data by the digest of its literal coefficient file, printed in Section~\ref{gts:um:sec:reproduce}; the shipped \path{data/08-matrix-semigroup-core-data-semigroup.json} is that file, byte for byte. \wtagd\ Source~09 names the research-programme commits \texttt{750aeb4f7} (its countdown receipt and five matrix notes) and \texttt{d31e29030} (its counted-suffix proof) as pins, in Appendix~\ref{gts:cm:app:pins} and in its bibliography. Both are ancestors of the placement commit, and every repository file it pins or copies has the same blob at the pins and at this write (note at the end of Appendix~\ref{gts:cm:app:pins}).
 
 \paragraph{Where the merge had to choose.}
 \begin{itemize}
@@ -5248,9 +6004,10 @@ Each pin is the commit that its source names as its repository snapshot: source~
 \item \wtagb\ \emph{Duplicates.} The Heisenberg multiplication law is printed both in Section~\ref{gts:sec:heis} and, in Greek coordinates, in Part~III~\eqref{gts:po:eq:heisenberg}, which the Part refers to. Theorem~\ref{gts:ai:thm:quadratic} is an attributed reconstruction of the research note~\cite{repo-comm}; its Step~3 is printed as a second route to \texttt{pqc:dr:prop:mihailova} of~\cite{pqc}. No theorem of Parts~I and~II is re-proved in Parts~III and~IV.
 \item \wtagb\ \emph{Added text.} Section~\ref{gts:sec:front} was extended (Sections~\ref{gts:sec:parts}--\ref{gts:sec:questions}, Table~\ref{gts:tab:letters78}); one note in Part~II (end of the section on the three-subgroup question); the two Part openings; in Part~III, notes on Parikh matrices, the review's finalizer, the multiplication law, the recording map, the logarithmic map, the research note's open point, the shipped files, two questions and Appendix~\ref{gts:po:app:provenance}; in Part~IV, notes on the repository material, Remarks~\ref{gts:ai:rem:subgroup} and~\ref{gts:ai:rem:binomial}, the Mihailova pointer, the reconstruction, the curve $Q(n)$, the review's square-gate reduction, the shipped files and questions~9 and~10; this appendix and the bibliography entries \cite{mssy,repo-cmc,repo-rev808,repo-revaffine}. New labels: \path{gts:part:po}, \path{gts:part:ai}, \path{gts:tab:letters78}, \path{gts:po:sec:literature}, \path{gts:po:sec:projection}, \path{gts:po:sec:software}, \path{gts:po:sec:questions}, \path{gts:po:app:names}, \path{gts:po:app:provenance}, \path{gts:ai:rem:subgroup} and \path{gts:ai:rem:binomial}.
 \item \wtagc\ \emph{Part~V (batch~82).} Source~08 follows Part~IV as an addition rather than a new report: fixed matrix groups and semigroups as Diophantine substrates are this report's subject, and Part~IV's question~10 asks for the universal alphabet that source~08 supplies in part. Its file prefix \path{08-} continues the report's sequence. Every result, proof, example, remark, question and limitation of source~08 is printed, in its order and with its numbering; its title page is replaced by a Part opening that quotes its abstract and scope statement, and its two appendices are Appendices~\ref{gts:um:app:literal} and~\ref{gts:um:app:sequence}, after all existing ones. Its 61 labels carry the prefix \texttt{gts:um:} and its bibliography keys \texttt{um-}, with the entries unchanged. Its machine table is kept although it is the collection's third printing, because its rewriting rules and Appendix~\ref{gts:um:app:literal} are defined from it; the note after it points to the earlier printings and to the repository's other records of the erratum. Its rewriting and tile lemmas re-derive research-programme constructions and are kept as its own route with a credit note; the first half of Lemma~\ref{gts:um:lem:free} is kept as a second proof of part of Part~I's Sanov theorem. The research programme's 197- and 193-generator reductions are summarized, not printed. Added text: Section~\ref{gts:sec:front} was extended (Sections~\ref{gts:sec:parts}--\ref{gts:sec:questions}, Table~\ref{gts:um:tab:letters}); the title page and abstract; notes at Part~IV's questions~9 and~10; the Part opening and notes after Table~\ref{gts:um:tab:machine}, Lemmas~\ref{gts:um:lem:tiles} and~\ref{gts:um:lem:free}, Section~\ref{gts:um:sec:reduction}, the collision, Section~\ref{gts:um:sec:reproduce}, questions~4, 6 and~7 and Appendix~\ref{gts:um:app:sequence}; this appendix; and the bibliography entries \cite{qoc,repo-nw15,repo-gpcp,repo-revmg,repo-ds193}. New labels besides the 61: \path{gts:part:um}, \path{gts:um:tab:letters} and \path{gts:um:app:sequence}.
+\item \wtagd\ \emph{Part~VI (batch~91).} Source~09 follows Part~V as an addition rather than a new report: its semigroup is the research programme's successor of Part~V's, and it answers in part Part~V's question~7 and the fixed-arity half of Part~IV's question~10. Its file prefix \path{09-} continues the report's sequence. Every result, proof, remark, question and limitation of source~09 is printed, in its order and with its numbering; its title page is replaced by a Part opening that quotes its abstract and reading guide, and its two appendices are Appendices~\ref{gts:cm:app:checklist} and~\ref{gts:cm:app:pins}, after all existing ones. Its 73 labels carry the prefix \texttt{gts:cm:} and its bibliography keys \texttt{cm-}, with the entries unchanged. Its selector streams $E_i$ are written $\Lambda_i$, and its macro \verb|\sha| is \verb|\cmsha|. Its POWER module re-derives Lemma \texttt{ptr:ai:lem:exp} of \emph{periodic-turmite-first-revisits} and is kept as a marked second route; its control-language lemma and its row implication re-prove research-programme notes that it cites and are kept as its own route. The programme's later uniform compilers and its review of the archive are summarized in dated notes, not printed. Added text: Section~\ref{gts:sec:front} was extended (Sections~\ref{gts:sec:parts}--\ref{gts:sec:questions}, Table~\ref{gts:cm:tab:letters}); the title page and abstract; notes at Part~IV's question~10 and Part~V's question~7; the Part opening and notes in Sections~\ref{gts:cm:sec:scope}, \ref{gts:cm:sec:matrix}, \ref{gts:cm:sec:power}, \ref{gts:cm:sec:sub}, \ref{gts:cm:sec:slices}, \ref{gts:cm:sec:ledger}, \ref{gts:cm:sec:audit}, \ref{gts:cm:sec:repro} and~\ref{gts:cm:sec:future} and at the end of Appendix~\ref{gts:cm:app:pins}; this appendix; and the bibliography entries \cite{repo-revcm,repo-fusion,ptr,smc}. New labels besides the 73: \path{gts:part:cm} and \path{gts:cm:tab:letters}.
 \end{itemize}
 
-\paragraph{Files.} The report directory holds this text (\path{article.tex}, \texttt{article.pdf}), a README, source~03's \path{SOURCES.md} (as \path{03-van-kampen-SOURCES.md}), and the two sources' programs in \path{code/} and recorded outputs in \path{data/}, under the prefixes \path{03-van-kampen-} and \path{05-three-phases-}. The README maps each delivered name to its shipped name and gives rerun instructions that do not overwrite the shipped files. The manuscripts, their PDFs, the delivered READMEs and source~03's checksum ledger (verified, 13 of 13 files, at placement) are not shipped; they survive in the archives of commit \texttt{6914ccca6}. \wtagb\ Parts~III and~IV add source~07's \path{SOURCE_AUDIT.md} (as \path{07-affine-inputs-SOURCE_AUDIT.md}) and the two sources' programs and data under the prefixes \path{06-pair-order-} and \path{07-affine-inputs-}; source~06's \path{Makefile} is shipped as \path{code/06-pair-order-Makefile}. Not shipped: both manuscripts and PDFs, both delivered READMEs, and source~06's checksum ledger \path{SHA256SUMS} (verified, 9 of 9 files, at placement); source~07 shipped none. They survive in the archives of commits \texttt{808b53ed8} and \texttt{48ee077c7}. \wtagc\ Part~V adds source~08's programs and data under the prefix \path{08-matrix-semigroup-} and its proofs, reviews, packet READMEs, dependency audit and sanitized provenance at the root. Not shipped: its manuscript, PDF and release README, its seals (\path{MANIFEST.json}, \path{SHA256SUMS}, \path{fiber/SHA256SUMS}, verified at placement), the two $r=2$ polynomial exports (regenerable; the README gives the command), twelve byte copies inside the release, and its copy of the $U_{15,2}$ table, a byte copy of a data file of \emph{quadratic-orthant-certificates}. They survive in the archive of commit \texttt{db37d18c8}.
+\paragraph{Files.} The report directory holds this text (\path{article.tex}, \texttt{article.pdf}), a README, source~03's \path{SOURCES.md} (as \path{03-van-kampen-SOURCES.md}), and the two sources' programs in \path{code/} and recorded outputs in \path{data/}, under the prefixes \path{03-van-kampen-} and \path{05-three-phases-}. The README maps each delivered name to its shipped name and gives rerun instructions that do not overwrite the shipped files. The manuscripts, their PDFs, the delivered READMEs and source~03's checksum ledger (verified, 13 of 13 files, at placement) are not shipped; they survive in the archives of commit \texttt{6914ccca6}. \wtagb\ Parts~III and~IV add source~07's \path{SOURCE_AUDIT.md} (as \path{07-affine-inputs-SOURCE_AUDIT.md}) and the two sources' programs and data under the prefixes \path{06-pair-order-} and \path{07-affine-inputs-}; source~06's \path{Makefile} is shipped as \path{code/06-pair-order-Makefile}. Not shipped: both manuscripts and PDFs, both delivered READMEs, and source~06's checksum ledger \path{SHA256SUMS} (verified, 9 of 9 files, at placement); source~07 shipped none. They survive in the archives of commits \texttt{808b53ed8} and \texttt{48ee077c7}. \wtagc\ Part~V adds source~08's programs and data under the prefix \path{08-matrix-semigroup-} and its proofs, reviews, packet READMEs, dependency audit and sanitized provenance at the root. Not shipped: its manuscript, PDF and release README, its seals (\path{MANIFEST.json}, \path{SHA256SUMS}, \path{fiber/SHA256SUMS}, verified at placement), the two $r=2$ polynomial exports (regenerable; the README gives the command), twelve byte copies inside the release, and its copy of the $U_{15,2}$ table, a byte copy of a data file of \emph{quadratic-orthant-certificates}. They survive in the archive of commit \texttt{db37d18c8}. \wtagd\ Part~VI adds source~09's programs and data under the prefix \path{09-chrono-matrix-} and its notes, reviews and audits at the root. Not shipped: its manuscript and PDF, its delivery README, the polynomial DAG (11.1~MB, regenerable; the README gives the command), the mathlib Pell source and its licence, eleven byte copies of research-programme files, one checksum list (verified at placement) and six byte copies inside the release. They survive in the archive of commit \texttt{0d7f51c44}.
 
 \section{Part III: Canonical witness names and a complete sample}\label{gts:po:app:names}
 The machine-readable export uses the following witness names. Their order fixes the literal residual ordering and makes the polynomial reproducible.
@@ -5359,6 +6116,63 @@ The sequence below is the entire inner witness in order. The full generator word
 The exact rule/position trace and all intermediate configuration words are stored in \code{core/evidence/accepting-witness.json}; the copy in \code{paired/data/accepting-witness.json} is byte-identical. Positions in that JSON are zero-based, while rule and tile identifiers are one-based. The certificate compiler uses the same one-based tile identifiers and zero-based $2\times2$ row and column indices.
 
 \wtagc\ In this report these two files are one shipped file, \path{data/08-matrix-semigroup-core-evidence-accepting-witness.json}; the copies in \path{paired/data/} and \path{fiber/data/} are not shipped.
+
+\section{Part VI: Notation and a complete outer-clause checklist}
+\label{gts:cm:app:checklist}
+The main symbols separate matrix and packing roles as follows.
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning\\
+\midrule
+$B$ & Fixed $2\times2$ input-block matrix\\
+$P_0$ & Fixed $2\times2$ lower marker\\
+$C_0$ & Fixed central upper matrix\\
+$D_c$ & Fixed $3\times3$ count-control matrix\\
+$A_i$ & Fixed $4\times4$ column-action branch map\\
+$C_*$ & Fixed scalar coefficient bound $2^{104}$\\
+$H,D,b$ & Common offset, digit limit, packing radix\\
+$h,W,R$ & Duration, top-position power, repetition stream\\
+$\Lambda_i,Q_{is}$ & Selector and selected pre-row slice\\
+$U_r,V_r$ & Pre-row expression and post-row stream\\
+$N,V_n$ & Pre-counter and post-counter streams\\
+$f_r$ & Final offset row digit\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here is the complete outer system, with definitions separated from equality residuals.
+\begin{enumerate}
+\item Two direct expanded POWER calls: $H=\Pow(2,\ell)$ and $W=\Pow(b,h)$; source expressions $D=2H$, $b=C_*D$
+\item Two bound equalities: $H=35\,426\,321+g_H$ and $x+g_x=D$
+\item One repetition equality: $(b-1)R+1=W$
+\item Ninety-seven selector masks $\Sub(R,\Lambda_i)$ and one partition equality $\sum_i\Lambda_i=R$
+\item Three hundred eighty-eight slice masks $\Sub((D-1)\Lambda_i,Q_{is})$; source expressions $U_s=\sum_iQ_{is}$
+\item Five post masks $\Sub((D-1)R,V)$ and one loader-only mask $\Sub((D-1)\Lambda_0,N)$
+\item Four final bound equalities $f_r+g_r=D$
+\item Four row chronology equalities $bV_r+H+a_r=U_r+Wf_r$
+\item One counter chronology equality $bV_n+x=N$
+\item Two final row equalities $f_0=f_2$, $f_1=f_3$
+\item Four sign-split affine equalities \eqref{gts:cm:eq:affine}
+\item One counter update equality $N=V_n+\Lambda_0$
+\end{enumerate}
+The outer equality counts in this order are $2+1+1+4+4+1+2+4+1=20$. Module expansions account for everything else. This checklist can be compared directly with the named residuals and ports in the graph.
+
+\section{Part VI: Principal source pins and dependency roles}
+\label{gts:cm:app:pins}
+The following pins distinguish the authoritative finite objects.
+\paragraph{Countdown receipt.} The actual fixed transition array is from ProveIt commit\par\noindent\texttt{750aeb4f7834332deb2bec5f32fb470ff8254431}.\par\noindent Its Git blob is \texttt{d8cdf1509237575bfce3b9c96faf3c883c998412}. Its SHA256 is
+\cmsha{f365eb9b62242b395b33766d00a246f0ebcd1a28d867cbcf1173037552b916e0}
+\paragraph{Counted-suffix proof.} The requested proof is pinned at commit\par\noindent\texttt{d31e29030214c35083b0c2e052c8a3a5d0409eb0}.\par\noindent Its Git blob is \texttt{5b0af4b4c3a6c61f5eee75beed2c1d586b86c519}. The complete 195-matrix receipt has SHA256
+\cmsha{3c803a9a219eebf299a40dcece8958e905b3c59f8ba8b5cb1e60d9c52812c5bd}
+\paragraph{Context-transferred array.} Its SHA256 is
+\cmsha{73f8cae212c6c1917e73cc76c7bf3c43b8c587748bbf4327eddf4c82e726a436}
+\paragraph{Constructive Pell source.} The pinned file at the mathlib commit in Section~\ref{gts:cm:sec:power} has SHA256
+\cmsha{993760c797ad0ff66fa77064a616fce779550bc745cbf6c44e04f392fd0bed0a}
+The source carries its original Apache 2.0 license notice, preserved with the license text. Its import graph is not rebuilt here.
+
+The separately included deeper matrix notes are exact inert copies at the countdown proof commit and match the hashes already recorded in the context proof. They explain faithful alphabet construction, first-row injectivity, lower-marker shape, and effective initialization. Their inclusion makes the dependency chain inspectable; it does not upgrade inherited results into newly executed compiler or theorem-prover checks.
+
+\wtagd\ At this write every repository file that source~09 pins or copies, the eleven notes and receipts under \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/}, has the same blob at \texttt{750aeb4f7} (and, for the counted suffix, at \texttt{d31e29030}) as at this write, and the three SHA-256 digests above match those files. The copies that the bibliography places in \path{science/sources/} and \path{dependencies/} are not shipped here; the repository files are the same bytes. The mathlib file is not shipped either; it is cited by commit and digest.
 
 \clearpage
 \addcontentsline{toc}{section}{References}
@@ -5486,6 +6300,18 @@ October 2, 2026.
 \bibitem{repo-ds193}
 \wtagc\ ProveIt research programme, \emph{A fixed directed semigroup with 193 literal SL4(Z) generators}, research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/group_directed_semigroup193.md}, with its helper and receipt; commit \texttt{0f7d618f4}, 3~October 2026.
 
+\bibitem{repo-revcm}
+\wtagd\ ProveIt research programme, \emph{Scoped arithmetic/compiler intake at 0d7f51c44}, review \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/review_new_arithmetic_0d7f51c44.md}, with its manifest \path{review_new_arithmetic_0d7f51c44.manifest.json}; commit \texttt{a9ab9a698}, 4~October 2026. It reviews the delivered archive of source~09 (and seven other archives), not this report.
+
+\bibitem{repo-fusion}
+\wtagd\ ProveIt research programme, \emph{Shared matrix action reduces the complete matrix source to 1393 operations}, research note \path{Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix193_shared_action_fusion.md}, with its review; commit \texttt{a32e1b139}, 4~October 2026. Its predecessors in the same directory include \path{matrix193_marked_loader_packing.md} (\texttt{b388dc588}), \path{matrix193_uniform_context_packing.md} (\texttt{bbb73e0c7}) and \path{matrix193_atomic_context_packing.md} (\texttt{7f7b87500}).
+
+\bibitem{ptr}
+\wtagd\ ProveIt research report \emph{Periodic turmite first revisits}, collection \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/periodic-turmite-first-revisits/}; Lemma \texttt{ptr:ai:lem:exp} (the polynomial power macro). Cited by label names, not by page.
+
+\bibitem{smc}
+\wtagd\ ProveIt research report \emph{Signal-machine collision certificates}, collection \path{SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/signal-machine-collision-certificates/}; Part~X (the pipeline's Report~58, batch~91). Cited by Part, not by label or page.
+
 % Source 06 (Part III) bibliography, keys prefixed po-
 \bibitem{po-repo}
 Vladimir Reshetnikov, \emph{ProveIt repository}, working note
@@ -5579,5 +6405,43 @@ Released here under \code{paired/}; exact common coefficient source as in \cite{
 Authored focused proof and independent literal-data audits, 3 October 2026.
 Released here under \code{fiber/}; both matrix and polynomial constructions are unchanged.
 
+
+% Source 09 (Part VI) bibliography, keys prefixed cm-; ragged right, as in the source
+\raggedright
+\bibitem{cm-science}
+\emph{Fixed-arity chronological certificate for the ordinary-input countdown}. Scientific source packet, 4 October 2026. Bundled proof \texttt{science/ARCHITECTURE.md}, complete source notes \texttt{science/SOURCE\_NOTES.md}, and authoritative inert graph \texttt{science/evidence/polynomial-dag.json}.
+
+\bibitem{cm-audit}
+\emph{Independent audit of the chronological ordinary-input matrix certificate}. 4 October 2026. Bundled \texttt{independent\_audit/AUDIT.md}, with separate exact-source and matrix-interface checkers and receipts. PASS relative to the explicit inherited arithmetic and matrix-interface theorems.
+
+\bibitem{cm-pell}
+Mario Carneiro and the mathlib contributors. \emph{Pell and Matiyasevic exponentiation theorems}. \texttt{Mathlib/NumberTheory/PellMatiyasevic.lean}, theorems \texttt{matiyasevic} and \texttt{eq\_pow\_of\_pell}, commit \texttt{ac77769fabe23cb237559e7f56578dbead91499f}. \href{https://github.com/leanprover-community/mathlib4/blob/ac77769fabe23cb237559e7f56578dbead91499f/Mathlib/NumberTheory/PellMatiyasevic.lean}{Pinned source on GitHub}. Exact inert copy and Apache 2.0 license included in \texttt{dependencies/}.
+
+\bibitem{cm-countdown}
+Vladimir Reshetnikov, ProveIt research sources. \emph{Five countdown registers remove the external Pell-input interface}. \texttt{matrix193\_countdown\_rows.md} and its JSON receipt, commit \texttt{750aeb4f7834332deb2bec5f32fb470ff8254431}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/750aeb4f7834332deb2bec5f32fb470ff8254431/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix193_countdown_rows.md}{Pinned countdown proof}. Copies in \texttt{science/sources/}.
+
+\bibitem{cm-synchronized}
+ProveIt research sources. \emph{The directed193 product relation as a synchronized four-coordinate orbit}. \texttt{matrix193\_synchronized\_rows.md}, same pinned commit as \cite{cm-countdown}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/750aeb4f7834332deb2bec5f32fb470ff8254431/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix193_synchronized_rows.md}{Pinned synchronized-row proof}. Copy in \texttt{science/sources/}.
+
+\bibitem{cm-context}
+ProveIt research sources. \emph{Absorbing fixed contexts into the directed193 generator phases}. \texttt{matrix193\_context\_absorption.md} and receipt, same pinned commit as \cite{cm-countdown}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/750aeb4f7834332deb2bec5f32fb470ff8254431/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix193_context_absorption.md}{Pinned context-transfer proof}. Copies in \texttt{science/sources/}.
+
+\bibitem{cm-counted}
+ProveIt research sources. \emph{A counted suffix gives an exact ordinary-input matrix target}. \texttt{matrix195\_counted\_suffix.md}, commit \texttt{d31e29030214c35083b0c2e052c8a3a5d0409eb0}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/d31e29030214c35083b0c2e052c8a3a5d0409eb0/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix195_counted_suffix.md}{Pinned counted-suffix proof}. Proof and actual 195-matrix receipt in \texttt{science/sources/}.
+
+\bibitem{cm-gamma}
+ProveIt research sources. \emph{A faithful 193-generator recoding with Pell parameter 391}. \texttt{matrix193\_gamma1\_recode.md}, same pinned commit as \cite{cm-countdown}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/750aeb4f7834332deb2bec5f32fb470ff8254431/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix193_gamma1_recode.md}{Pinned faithful-group and first-row proof}. Exact inert copy in \texttt{dependencies/}; its modular-group and graph foundations remain inherited.
+
+\bibitem{cm-directed}
+ProveIt research sources. \emph{A fixed directed semigroup with 193 literal SL4(Z) generators}. \texttt{group\_directed\_semigroup193.md}, same pinned commit as \cite{cm-countdown}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/750aeb4f7834332deb2bec5f32fb470ff8254431/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/group_directed_semigroup193.md}{Pinned lower-marker and finite-input proof}. Exact inert copy in \texttt{dependencies/}.
+
+\bibitem{cm-kernel}
+ProveIt research sources. \emph{Two target coordinates for a complete 193-generator recoding}. \texttt{matrix193\_kernel\_row\_projection.md}, same pinned commit as \cite{cm-countdown}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/750aeb4f7834332deb2bec5f32fb470ff8254431/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/matrix193_kernel_row_projection.md}{Pinned earlier first-row argument}. Exact inert copy in \texttt{dependencies/}; a different coefficient frame from this report.
+
+\bibitem{cm-unary}
+ProveIt research sources. \emph{U15 has a universal repeated input block, but the block is hyperbolic}. \texttt{u15\_unary\_block\_interface.md}, same pinned commit as \cite{cm-countdown}. \href{https://github.com/VladimirReshetnikov/ProveIt/blob/750aeb4f7834332deb2bec5f32fb470ff8254431/Computability/HilbertTenthProblem/Papers/research-wip/native-stream-queue/u15_unary_block_interface.md}{Pinned effective initialization argument}. Exact inert copy in \texttt{dependencies/}; arbitrary-program compilation was not implemented here.
+
+\bibitem{cm-nearywoods}
+Turlough Neary and Damien Woods. \emph{Four Small Universal Turing Machines}. Fundamenta Informaticae 91(1), 2009, pp.\ 123--144. \href{https://doi.org/10.3233/FI-2009-0036}{doi:10.3233/FI-2009-0036}. The effective finite-input simulation is the inherited premise used by \cite{cm-unary}; the primary simulation and arbitrary-program compiler are not re-audited in this release.
 \end{thebibliography}
 \end{document}

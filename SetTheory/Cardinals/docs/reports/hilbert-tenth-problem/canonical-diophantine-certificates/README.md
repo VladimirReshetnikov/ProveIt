@@ -1,9 +1,9 @@
 # Canonical Diophantine certificates
 
-**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories, compressed queue traces, eager Tree Calculus and literal periodic sandpiles**
+**Witness-faithful polynomial representations of bounded discrete computation: resource algebra, trace classes, accelerators, polynomial trajectories, memory logs, queues, rewriting, heaps, self-assembly, priority pumping, reaction networks, routing networks, interaction combinators, abelian sandpiles, exponential trajectories, compressed queue traces, eager Tree Calculus, literal periodic sandpiles and fixed-arity sandpile certificates**
 
 This is a research report dated 30 September 2026, with Parts XV–XIX dated 2 October
-2026 and Part XX dated 3 October 2026, merged from twenty-three manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
+2026, Part XX dated 3 October 2026 and Part XXI dated 4 October 2026, merged from twenty-seven manuscripts: six of batch 60 (its manuscripts 01–06), the only manuscript
 of batch 61, which is numbered 07 here, four of batch 62 (its
 manuscripts 01, 02, 04 and 05), numbered 08–11 here and added as Parts X–XIII
 after the report had been written, and one of batch 63 (its manuscript 02),
@@ -18,12 +18,15 @@ is printed inside Part XVI as a marked second route, and 20 is added as Part
 XVIII, and one more of batch 79 (its manuscript 17, cluster J2), numbered
 21 here and added as Part XIX, and two of batch 83 (its manuscripts 07 and 08, cluster H1; the research
 pipeline's Reports 35 and 36), numbered 22 and 23 here and merged into
-Part XX. The base is manuscript 05, *Canonical
+Part XX, and four of batch 91 (its manuscripts 02, 04, 05 and 06, cluster
+A; the pipeline's Reports 50, 52, 53 and 54), numbered 24–27 here and merged
+into Part XXI. The base is manuscript 05, *Canonical
 Trace Polytopes*; its `article.tex` was staged unprefixed and has been
-replaced in place by the merged text. All twenty-three manuscripts prove the same
+replaced in place by the merged text. Manuscripts 01–23 prove the same
 kind of theorem: an explicit integer polynomial whose natural zeros are in
 bijection with the bounded executions (or trace classes of executions) of a
-discrete substrate, with exactly one witness each; in 12 the execution is a
+discrete substrate, with exactly one witness each; manuscripts 24–27 give up
+the single witness for fixed arity (below); in 12 the execution is a
 terminating chip-routing run, represented by its outcome (firing counts and
 sink outputs) rather than its history. In 13–15 the executions are
 scheduled reductions of Lafont's interaction combinators, with exact port
@@ -45,7 +48,13 @@ sandpile on `ℤ³` with a binary odometer in a fixed rectangular prism,
 represented by its odometer, endpoint and canonical burning ranks; 22 also
 makes the input loader of a universal periodic sandpile literal, for the
 Neary–Woods machine `U₁₅`. In 23 the same certificate becomes exact over
-the nonnegative reals. They continue the Lean
+the nonnegative reals. In 24–27 one ordinary positive integer codes a
+stable periodic tile and a finite patch on `ℤ³`, and one polynomial of fixed
+arity and degree 18 has a positive integer zero exactly when that sandpile
+stabilizes globally with a binary odometer (24), fires a given target in a
+prefix where every site fires at most once (25), fires it in some finite
+legal sequence (26), or stabilizes globally after finitely many topplings
+(27); every successful input has infinitely many witnesses. They continue the Lean
 project `Computability/HilbertTenthProblem`, whose trace interfaces assert
 only that such representations exist. Author lines: "Research report
 prepared for the ProveIt project" (01), "Research manuscript for the ProveIt
@@ -72,9 +81,11 @@ its PDF metadata reads "Research prepared for Vladimir Reshetnikov with
 ChatGPT") and "Prepared for Vladimir Reshetnikov" (21; its PDF metadata
 reads "Research report prepared for Vladimir Reshetnikov") and "Mathematical
 research report" (22 and 23; their PDF metadata has an empty author
-field). The article prints the batch-62, batch-78
+field), "Mathematical construction and reproducibility report" (24 and 25;
+PDF metadata "Research report"), none (26; PDF metadata "Research report")
+and "Report54" (27, also its PDF metadata). The article prints the batch-62, batch-78
 and batch-79 author lines in neutral form and records these assistant names only in its
-provenance appendix; the author lines of 12, 16, 21, 22 and 23 name no assistant.
+provenance appendix; the author lines of 12, 16 and 21–27 name no assistant.
 
 | Report no. | Batch, manuscript | Archive | Title | Pin | Arrived | Placed | Printed in |
 |---|---|---|---|---|---|---|---|
@@ -101,6 +112,10 @@ provenance appendix; the author lines of 12, 16, 21, 22 and 23 name no assistant
 | 21 | batch 79, manuscript 17 | `Eager_Tree_Calculus_Research_Package`, inner directory `eager-tree-certificates` (30-page PDF) | *Eager Tree Calculus: Exact quartic proof-DAG certificates, operational universality, and binary sharing compression* | none (Jay's upstream `baa877d91`) | `aebfa386e`; corrected code edition `4e270aa46` (batch 80, manuscript 01) | `a7ae02511`; corrected code `8a4e64732` | Section 3.21 (title-page box and status lines, abstract, §1); Part XIX (§§2–12, Appendices A–B) |
 | 22 | batch 83, manuscript 07 | `Literal_Periodic_Sandpiles_and_Diophantine_Certificates_Package`, inner directory `Research_Report35` (23-page PDF) | *A Literal Periodic Sandpile Loader and Finite Prism Certificates: Ordinary three dimensional sandpiles from finite binary tapes* (Research Report 35) | `83befe707` | `3051d1446` | `216bd81e1` | Section 3.22 (abstract, §1; its Figure 1 at the opening of Part XX); Part XX (§§2–13) |
 | 23 | batch 83, manuscript 08 | `Real_Exactness_of_Binary_Sandpile_Certificates_Package`, inner directory `Research_Report36` (13-page PDF) | *Real Orthant Exactness for the Binary Sandpile Cubic: A strengthening with unchanged variables degree summands and support* (Research Report 36) | `83befe707` (and `0055e1c4d` for *quadratic-orthant-certificates*) | `3051d1446` | `216bd81e1` | Section 3.23 (abstract, §1); Part XX (§§2–9, §4 as a pointer) |
+| 24 (base of XXI) | batch 91, manuscript 02 | `A_Fixed_Arity_Integer_Certificate_for_Binary_Sandpile_Stabilization_Package`, inner directory `Research_Report50` (20-page PDF) | *A horizon free fixed arity integer certificate for binary sandpile stabilization* (Research Report 50) | `216bd81e1` | `0d7f51c44` | `b0a536b63` | Section 3.24 (abstract, §1); Part XXI (§§2–14, Appendices A–B) |
+| 25 | batch 91, manuscript 04 | `Finite_Legal_Binary_Target_Firing_in_Periodic_Sandpiles_Package` (24-page PDF) | *Finite legal binary target firing in periodic three dimensional sandpiles* (Research Report 52) | none; inherits 24's `216bd81e1` through its bundled copy of 24 | `0d7f51c44` | `b0a536b63` | Section 3.25 (abstract, §1); Part XXI (§§2–5 as pointers to 24's §§3–6, §§6–17, Appendices A–B) |
+| 26 | batch 91, manuscript 05 | `Repeated_Legal_Target_Firing_in_Periodic_Sandpiles_Package` (17-page PDF) | *Ordinary repeated target firing: A fixed positive integer polynomial for raw sandpile inputs* (Report 53) | none (pins 25's files by hash) | `0d7f51c44` | `b0a536b63` | Section 3.26 (abstract, §1); Part XXI (§§2–12) |
+| 27 | batch 91, manuscript 06 | `Unrestricted_Finite_Global_Sandpile_Stabilization_Package`, manuscript at `article/Report54.tex` (20-page PDF) | *Unrestricted Finite Global Sandpile Stabilization: An explicit fixed arity positive integer polynomial* (Report 54) | none (pins 22's loader and composition proofs, 24's and 26's notes by hash) | `0d7f51c44` | `b0a536b63` | Section 3.27 (abstract, scope paragraph, §1); Part XXI (§§2–14, Appendices A–B) |
 
 Section numbers in the last column are those of each manuscript. Manuscripts
 01–07 also contribute to the Introduction and to the back matter
@@ -124,7 +139,11 @@ Part XIX in its own order, closing with its reproducibility record, six
 questions, closing remarks and appendices. Manuscripts 22 and 23 form Part XX: 22's Sections 2–13 in its own
 order, then 23's Sections 2–9 (its Section 4, a further proof of 22's
 certificate theorem, printed as a pointer), the research programme's review
-and nine research questions. The Parts are: I Exact commutation and resource algebra;
+and nine research questions. Manuscripts 24–27 form Part XXI: 24's
+Sections 2–14 and appendices, 25's Sections 2–5 as pointers to 24 and its
+Sections 6–17 and appendices, 26's Sections 2–12, 27's Sections 2–14 and
+appendices, then the research programme's review, a section on six printed
+passages of Cairns's paper, and 21 research questions. The Parts are: I Exact commutation and resource algebra;
 II Canonical trace classes; III Compressed repetition and accelerators; IV
 Polynomial trajectories; V Memory logs, RAM and graph evaluation; VI Queues:
 tag systems and FIFO networks; VII FRACTRAN, SKI and term rewriting; VIII
@@ -143,7 +162,8 @@ Compressed queue traces: grammar-size quartics, exact macro repetition and
 infinite-loop certificates; XIX Eager Tree Calculus: exact quartic proof-DAG
 certificates and a literal universal tree; XX Literal periodic sandpiles: an
 explicit `U₁₅` loader, binary prism certificates and real-orthant
-exactness.
+exactness; XXI Fixed-arity packed sandpile certificates: binary and
+unrestricted global stabilization and target firing.
 
 The full pins are `e8bb0931d67f80d9fce87a8cddb0f661ff19f956` (01–06),
 `725d2ebb6909fe11a13a92354c0f47367a3cbbf5` (07),
@@ -157,7 +177,10 @@ live branch) and `e18718e837d43e162252f9a314e8cb797fbd1a1f` (12), and `439c0a2d9
 and pins only Barry Jay's Tree Calculus repository at
 `baa877d916eb640280ed2df7ef4385ecd5957d19`. 22 and 23 pin `83befe707f2840c2b53e0606701d8a2b28598e47`; 23 also names
 `0055e1c4d5bd890878edf75a11fb412b9d15f6cc` as its observed revision of
-the neighbouring report *quadratic-orthant-certificates*. The pin of 07 is the commit
+the neighbouring report *quadratic-orthant-certificates*. 24 pins
+`216bd81e116297214f443afddc2fc6252a7767a6` (the placement of 22 and 23);
+25 states no ProveIt commit and inherits that pin through its bundled copy
+of 24; 26 and 27 state none. The pin of 07 is the commit
 in which 01–03 arrived; 07 was written after 04 and 06, names them by title
 as its companion manuscripts, and arrived after this report was placed but
 before it was written. The batch-60 placement commit `7498484af` also placed
@@ -266,6 +289,24 @@ file of this report changed between the pin and the placement. The
 research programme reviewed both archives at 15:19 (`c120b34df`), before
 the placement (see Disclosures). Both name "Research Report 35"/"36" and
 call each other by those numbers: "Report 35" in 23's text is 22.
+
+Manuscripts 24–27 are dated 4 October 2026, arrived together with twenty
+other archives of batch 91 in `0d7f51c44` (10:16 Pacific time), were
+reviewed by the research programme at 10:46 (`bc6e1a62c`, see Disclosures)
+and were placed by `b0a536b63` (11:25; batch 91, cluster A), when Parts
+I–XX had been written. They read no file of this report's article. 24 read
+three of Part XX's shipped proofs at `216bd81e1`
+(`22-literal-sandpiles-evidence-composition-PROOF.md`,
+`22-literal-sandpiles-evidence-loader-LOADER-PROOF.md`,
+`23-real-sandpiles-evidence-real-PROOF.md`, blobs `0f595718`, `a7f1a89b`,
+`4eec3822`) and the research programme's Part XX review (blob `7a0c927b`);
+25 bundles 24 whole; 26 pins five of 25's files; 27 pins two of those Part XX
+proofs, 24's `PROOF.md` and 26's `ARCHITECTURE.md`. No file they pin changed
+between their reading and this write. They call themselves and each other
+"Report 50", "52", "53" and "54" (27 writes "Report50", "Report54"), and
+Part XX's manuscripts "Report 35" and "36"; Research Report 51 (four-mass
+timed charts) is a different subject, placed in *signal-machine-collision-certificates*
+(`d750d98dd`).
 
 What each manuscript contributes:
 
@@ -528,6 +569,50 @@ What each manuscript contributes:
   of 16's unrestricted compact certificate even with all pair penalties
   (so the binary hypothesis is essential); and a comparison variant with
   the same zeros and a larger height.
+- **24** for one positive input `I` that decodes by seven Cantor pairings
+  into `(p,q,r,T,d,e,f,D)` (a radix-32 tile with digits 0–5, periodic on
+  `ℤ³`, and a radix-32 patch with digits 0–15 at the nonnegative box): an
+  explicit `P ∈ ℤ[I, w₁, …, w₂₅₆₆]`, the sum of squares of 1,491 residuals,
+  exact degree 18, 11,469 binary gates (4,518 ×, 3,933 +, 3,018 −; integer
+  literals free), with a positive integer zero exactly when the input is
+  valid and the sandpile has a finite legal global stabilization with a
+  binary odometer; least action for a finite supersolution (a second route
+  to Parts XVI and XX); the fifteen-equation Pell macro `POWER` (the macro of
+  *periodic-turmite-first-revisits*, credited), binary containment by
+  binomial parity (Jones–Matiyasevich masking, credited with its Lean
+  formalization), a three-subset AND, stable digit planes, block spreading,
+  a padded period-aligned prism with an unknown size, a zero shell for exact
+  neighbours and a stable exterior, one carry-free balance; the exact
+  leading part `48(pqrdef·t_{x0}t_{y0}t_{z0})²`; an overfiring example (the
+  stream may be a supersolution, not the odometer).
+- **25** the same input with three zigzag-coded target coordinates: a
+  polynomial with 3,308 positive witnesses, 1,923 residuals, degree 18 and
+  14,778 gates whose zeros exist exactly when a finite legal prefix in which
+  every site fires at most once fires the target; time frames, one
+  cumulative recurrence forcing an empty start and disjoint layers, exact
+  neighbours in every frame, paid legality at new firings, the signed target;
+  separators (mutual support, `[12,4]`, uniform five plus one chip with an
+  extremal proof of non-stabilization). Its §§2–5 repeat 24's §§3–6.
+- **26** the same eleven-field input, repeated firings allowed: 3,865
+  witnesses, 2,251 residuals, degree 18, 17,275 gates; an existential radix
+  `b = 32^L` with two paid conversions of the raw codes, a noncircular count
+  recurrence (with a second, gcd uniqueness proof), legality with a
+  half-radix slack guard against false carries (with the `[0,7]`
+  counterexample to the relaxed guard), the target as an event, so even
+  final counts are accepted; the exact residual degree histogram; and a
+  conditional corollary: through Cairns's vertex/alarm simulation, with two
+  readings of its initialization, the positive zero set is r.e.-complete,
+  also on one fixed-tile slice.
+- **27** the eight-field input, any finite odometer: 3,262 witnesses, 1,897
+  residuals, degree 18, 14,571 gates for finite global stabilization (the
+  empty sequence allowed); least action for general counts, precision
+  `b = 32^L` with `16h = b` and count capacity `b/16−1`, two carry bounds;
+  a non-power-of-two counterexample to spreading; four separators (a height-12
+  singleton accepted here and rejected by 24, `[12,4]`, adjacent fives as a
+  nonleast witness, uniform five plus one chip by a conservation identity);
+  and a conditional corollary: through Part XX's loader and the Neary–Woods
+  universality, finite global stabilization is r.e.-complete already for one
+  fixed tile and binary patches, with four readings of Cairns's Sections 5–6.
 **Status.** The report is AI-assisted and unrefereed. None of its theorems
 is formalized in Lean or Rocq, and no manuscript ships Lean or Rocq files.
 The Python programs are finite exact checks of the implementations and
@@ -557,12 +642,17 @@ The same tree reviewed the archives of 22 and 23 before placement
 (`review_sandpile35_36_intake.md`, commit `c120b34df`): no defect and no
 change requested, within a stated scope; it adds a shared-arithmetic
 schedule and a real-algebraic limit of its own (see Disclosures).
+It reviewed the archives of 24–27 before placement as well
+(`review_new_sandpiles_0d7f51c44.md`, commit `bc6e1a62c`): a bounded text
+and inert-source review that found no concrete defect and confirmed the
+four DAGs' counts and exact degree 18 (see Disclosures and the article's
+`cdc:sec:b91-review`).
 
 ## Files
 
 ```
 article.tex                              the report, standalone LaTeX with an internal bibliography
-article.pdf                              the compiled report, 652 pages
+article.pdf                              the compiled report, 742 pages
 README.md                                this guide
 
 01-causal-traces-RESEARCH_STATUS.md      manuscript 01's research and verification status, as delivered
@@ -602,6 +692,45 @@ README.md                                this guide
 23-real-sandpiles-evidence-real-PUBLIC_PRIOR_ART.md  23's pins, the lines and labels it read, and its claim boundary
 23-real-sandpiles-evidence-real-README.md  guide to 23's real-exactness packet
 23-real-sandpiles-evidence-real-independent_math_review.md  independent review of 23's real-zero argument, support and ledger (pass)
+24-fixed-arity-audit_replay-README.md    guide to 24's portable replay of its independent audit (delivery names)
+24-fixed-arity-independent_audit-AUDIT.md  24's independent audit: exact reconstruction of every residual, interface and witness; PASS relative to the Pell theorems
+24-fixed-arity-science-PROOF.md          24's construction proof (frozen; says the audit is "in progress")
+24-fixed-arity-science-README.md         guide to 24's science packet (frozen; says the audit is "in progress")
+24-fixed-arity-science-SCOPE.md          24's research scope and non-claims
+24-fixed-arity-science-periodic-input-periodic_packing_lemma.md  periodic input, padding and exact six-neighbour packing; cites the programme's Part XX review by blob
+24-fixed-arity-science-stream-products-AND_SPREAD_PROOF.md  the paid AND and block-spreading proofs
+24-fixed-arity-science-stream-products-MASK_SUBSET_PROOF.md  the paid binary-containment (Sub) proof
+24-fixed-arity-verification-MANUSCRIPT_REVIEW.md  independent review of 24's manuscript
+25-binary-target-audit_replay-README.md  guide to 25's portable audit replay (delivery names)
+25-binary-target-independent_audit-AUDIT.md  25's independent audit (PASS relative to the Pell theorems)
+25-binary-target-independent_audit-SEMANTICS.md  25's independent semantic review of the binary tableau
+25-binary-target-science-ARCHITECTURE.md  25's construction proof (frozen; says it is "not yet independently audited")
+25-binary-target-science-SOURCE_NOTES.md  25's literal source and evidence notes (frozen; "independent review is pending")
+25-binary-target-verification-manuscript_review-MANUSCRIPT_REVIEW.md  independent review of 25's manuscript
+26-repeated-target-audit_replay-PORTABILITY_REPORT.md  26's replay portability record
+26-repeated-target-audit_replay-README.md  guide to 26's portable audit replay (delivery names)
+26-repeated-target-dependencies-NOTICE.md  the pinned mathlib source and its licence (files not shipped)
+26-repeated-target-independent_audit-AUDIT.md  26's independent adversarial audit, with the corollary boundary
+26-repeated-target-independent_audit-semantic-challenge-report.md  independent semantic challenge of the repeated-firing tableau
+26-repeated-target-science-ARCHITECTURE.md  26's construction proof
+26-repeated-target-science-SOURCE_NOTES.md  26's literal source, ledger and evidence notes
+26-repeated-target-science-recurrence-review-REVIEW.md  independent recurrence and legality review
+26-repeated-target-science-source-review-REVIEW.md  independent exact-source review
+26-repeated-target-universality-PRIMARY_SOURCE.md  locators and two short quotations of Cairns's paper
+26-repeated-target-universality-REVIEW.md  the raw-interface hardness review behind 26's corollary
+26-repeated-target-verification-manuscript_audit-AUDIT.md  independent audit of 26's manuscript
+27-unrestricted-stab-audit_replay-PORTABILITY_REPORT.md  27's replay portability record
+27-unrestricted-stab-audit_replay-README.md  guide to 27's portable audit replay (delivery names)
+27-unrestricted-stab-hardness-interface-CORRECTIONS.md  27's four readings of Cairns's Sections 5–6 (checked in the article's cdc:sec:b91-cairns)
+27-unrestricted-stab-hardness-interface-POTENTIAL_COROLLARY.md  statement of the conditional corollary
+27-unrestricted-stab-hardness-interface-PRIMARY_LOCATORS.md  locators in Cairns's paper and verification record
+27-unrestricted-stab-hardness-interface-REVIEW.md  the exact physical-interface hardness review
+27-unrestricted-stab-independent_audit-AUDIT.md  27's root-assigned adversarial audit (PASS relative to the Pell theorems)
+27-unrestricted-stab-science-PROOF.md    27's construction proof
+27-unrestricted-stab-science-README.md   guide to 27's science packet
+27-unrestricted-stab-science-math-audit-AUDIT.md  independent mathematical audit
+27-unrestricted-stab-science-source-audit-SOURCE_AUDIT.md  independent exact source audit
+27-unrestricted-stab-verification-manuscript-review-AUDIT.md  independent review of 27's manuscript
 
 code/01-causal-traces-causal_diophantine.py   exact semantics and the four compiler entry points
 code/01-causal-traces-demo.py            the 11-witness large-count example (prints; writes no file)
@@ -742,6 +871,56 @@ code/23-real-sandpiles-evidence-real-real_certificate.py  the real-exact compile
 code/23-real-sandpiles-seal_release.py   23's maintainer seal tool (do not run)
 code/23-real-sandpiles-tamper_regression.py  23's tamper regression (release tool; POSIX modes)
 code/23-real-sandpiles-verify_release.py  23's release verifier and replay wrapper (needs the delivered tree and POSIX modes)
+code/24-fixed-arity-archive_release.py   24's deterministic ZIP builder (release tool; needs the delivered tree)
+code/24-fixed-arity-audit_replay-replay_independent_audit.py  path-only replay adapter for 24's frozen independent checker (delivered layout)
+code/24-fixed-arity-audit_replay-test_replay_runner.py  16 safety and relocation tests of that adapter
+code/24-fixed-arity-build_pdf.py         24's PDF rebuild of the unshipped Research_Report50.tex (do not run here)
+code/24-fixed-arity-independent_audit-independent_check.py  24's independent exact-polynomial checker (reads the DAG as data)
+code/24-fixed-arity-science-build_certificate.py  24's fixed-shape DAG builder; writes evidence/polynomial-dag.json and its receipt
+code/24-fixed-arity-science-check_exact_degree.py  univariate specialization proving the degree lower bound 18
+code/24-fixed-arity-science-check_source.py  24's own read-only checks of the emitted source
+code/24-fixed-arity-science-periodic-input-check_periodic_packing.py  finite checks of the periodic-packing lemma
+code/24-fixed-arity-science-stream-products-verify_and_spread.py  finite AND and spreading checks
+code/24-fixed-arity-science-stream-products-verify_mask_subset.py  finite Sub checks
+code/24-fixed-arity-verify_release.py    24's release verifier and replay wrapper (needs the delivered tree and POSIX modes)
+code/25-binary-target-archive_release.py  25's deterministic ZIP builder (release tool)
+code/25-binary-target-audit_replay-replay_audits.py  path-only replay of 25's two frozen checkers (delivered layout)
+code/25-binary-target-audit_replay-test_replay_adapter.py  relocation and refusal tests of that adapter
+code/25-binary-target-build_pdf.py       25's PDF rebuild of the unshipped Research_Report52.tex (do not run here)
+code/25-binary-target-independent_audit-independent_check.py  25's independent symbolic and finite checker
+code/25-binary-target-independent_audit-semantics_check.py  25's independent semantic probes
+code/25-binary-target-science-build_target_certificate.py  25's fixed-shape DAG builder
+code/25-binary-target-science-check_target_certificate.py  25's own checks of the DAG
+code/25-binary-target-test_release_tools.py  tests of 25's release tools (POSIX modes)
+code/25-binary-target-verification-manuscript_review-check_manuscript.py  manuscript and source consistency checks
+code/25-binary-target-verify_release.py  25's release verifier (needs the delivered tree and POSIX modes)
+code/26-repeated-target-audit_replay-replay_audit.py  path-only replay of 26's three frozen auditors (POSIX paths; see Rerunning)
+code/26-repeated-target-independent_audit-audit_arithmetic.py  independent arithmetic checks
+code/26-repeated-target-independent_audit-audit_source.py  independent exact source auditor
+code/26-repeated-target-independent_audit-freeze_audit.py  the audit's freeze tool
+code/26-repeated-target-independent_audit-semantic-challenge-independent_checks.py  independent semantic challenge checks
+code/26-repeated-target-release.py       26's release tool: integrity, PDF build, ZIP (delivered tree)
+code/26-repeated-target-science-build_repeated_certificate.py  26's DAG builder; regenerates the unshipped polynomial-dag.json byte for byte
+code/26-repeated-target-science-check_repeated_semantics.py  26's finite semantic probes
+code/26-repeated-target-science-finalize_manifest.py  26's packet manifest tool
+code/26-repeated-target-science-recurrence-review-check_recurrence.py  independent recurrence probes
+code/26-repeated-target-science-source-review-check_source.py  independent exact source review (hard-coded /workspace/shared paths; does not run as shipped)
+code/26-repeated-target-verification-check_layout.py  PDF layout checks (Poppler)
+code/26-repeated-target-verification-check_release_tools.py  tests of the release tool
+code/26-repeated-target-verification-manuscript_audit-check_literal_dag.py  independent DAG recount and degree check
+code/27-unrestricted-stab-audit_replay-replay_audit.py  path-only replay of 27's three frozen auditors (POSIX paths; see Rerunning)
+code/27-unrestricted-stab-independent_audit-challenge_checker.py  mutation challenges of the audit's checker
+code/27-unrestricted-stab-independent_audit-check_exact.py  independent exact source checker
+code/27-unrestricted-stab-independent_audit-check_semantics_fresh.py  independent semantic challenges
+code/27-unrestricted-stab-release.py     27's release utility (delivered tree, POSIX modes)
+code/27-unrestricted-stab-science-build_stabilization.py  27's DAG builder
+code/27-unrestricted-stab-science-check_semantics.py  27's finite semantic regressions
+code/27-unrestricted-stab-science-finalize_manifest.py  27's packet manifest tool
+code/27-unrestricted-stab-science-math-audit-check_math.py  finite checks of the mathematical audit
+code/27-unrestricted-stab-science-source-audit-audit_source.py  independent source-to-equations audit
+code/27-unrestricted-stab-science-source-audit-run_replay_checks.py  replay and mutation runner of the source audit
+code/27-unrestricted-stab-verification-check_release_guards.py  negative tests of the release utility
+code/27-unrestricted-stab-verification-manuscript-review-check_manuscript_evidence.py  manuscript ledger, degree and pin checks
 
 data/01-causal-traces-build_validation.json   build and rendering record of the delivered 29-page PDF
 data/01-causal-traces-canonical_history.json  32-witness, 48-residual causal-history polynomial and certificate
@@ -949,15 +1128,112 @@ data/23-real-sandpiles-verification-release-review.json  23's release review, in
 data/23-real-sandpiles-verification-replay-plan.json  23's two producers
 data/23-real-sandpiles-verification-source-lineage.json  original-to-packaged identity of 18 evidence files (delivery paths)
 data/23-real-sandpiles-verification-tooling-tests.json  23's tooling test record
+data/24-fixed-arity-MANIFEST.json        24's release manifest: path, SHA-256, size and mode of every other release file (delivery paths)
+data/24-fixed-arity-audit_replay-evidence-replay-runner-receipt.json  receipt of the replay adapter
+data/24-fixed-arity-audit_replay-evidence-replay-scientific-receipt.json  receipt of the independent checker (= the audit's own receipt and log, not shipped again)
+data/24-fixed-arity-audit_replay-evidence-test-results.json  receipt of test_replay_runner.py
+data/24-fixed-arity-audit_replay-replay-pin-manifest.json  pins of the replay packet
+data/24-fixed-arity-independent_audit-audit-manifest.json  the audit's file manifest
+data/24-fixed-arity-science-evidence-build-receipt.json  receipt of build_certificate.py
+data/24-fixed-arity-science-evidence-exact-degree-receipt.json  receipt of check_exact_degree.py
+data/24-fixed-arity-science-evidence-polynomial-dag.json  24's polynomial as a literal DAG (661,089 bytes; SHA-256 2e240309…)
+data/24-fixed-arity-science-evidence-source-check-receipt.json  receipt of check_source.py
+data/24-fixed-arity-science-periodic-input-verification_receipt.json  receipt of check_periodic_packing.py
+data/24-fixed-arity-science-sources-source-pins.json  pins of the four unshipped source texts (mathlib Pell, three Part XX proofs)
+data/24-fixed-arity-science-stream-products-and-spread-check-receipt.json  receipt of verify_and_spread.py
+data/24-fixed-arity-science-stream-products-mask-check-receipt.json  receipt of verify_mask_subset.py
+data/24-fixed-arity-verification-coordinating-review.json  coordinating review record, with the title-only amendment
+data/24-fixed-arity-verification-final-latex.log  LaTeX log of the delivered PDF build
+data/24-fixed-arity-verification-helper-path-guards.json  path-guard tests of the release helpers
+data/24-fixed-arity-verification-manuscript-review-receipt.json  receipt of the manuscript review
+data/24-fixed-arity-verification-pdf-reproduction.json  PDF rebuild record
+data/24-fixed-arity-verification-reference-check.json  bibliography reference check
+data/24-fixed-arity-verification-release-readiness.json  release readiness record
+data/24-fixed-arity-verification-science-freeze.json  freeze record of the science and audit packets (delivery paths)
+data/24-fixed-arity-verification-science-preservation.json  preservation hashes of the science files
+data/24-fixed-arity-verification-toolchain.json  toolchain record
+data/24-fixed-arity-verification-visual-review.json  all-page visual review record
+data/25-binary-target-MANIFEST.json      25's release manifest (delivery paths, including baseline_report50/)
+data/25-binary-target-audit_replay-evidence-audit-receipt.json  receipt of the independent checker (= the audit's own receipt and logs, not shipped again)
+data/25-binary-target-audit_replay-evidence-replay-receipt.json  receipt of the replay adapter
+data/25-binary-target-audit_replay-evidence-semantics-receipt.json  receipt of the semantic checker
+data/25-binary-target-audit_replay-evidence-test-results.json  receipt of test_replay_adapter.py
+data/25-binary-target-audit_replay-replay-pin-manifest.json  pins of the replay packet
+data/25-binary-target-independent_audit-audit-manifest.json  the audit's file manifest and verdict
+data/25-binary-target-science-evidence-build-receipt.json  receipt of build_target_certificate.py
+data/25-binary-target-science-evidence-check-receipt.json  receipt of check_target_certificate.py
+data/25-binary-target-science-evidence-polynomial-dag.json  25's polynomial as a literal DAG (886,543 bytes; SHA-256 352b6dd9…)
+data/25-binary-target-verification-manuscript_review-review-summary.json  manuscript review summary
+data/25-binary-target-verification-manuscript_review-text-check-receipt.json  receipt of check_manuscript.py
+data/25-binary-target-verification-manuscript_review-visual-review-receipt.json  visual review receipt
+data/25-binary-target-verification-pdf-build.json  PDF build record
+data/25-binary-target-verification-pdf-layout-checks.json  PDF layout checks
+data/25-binary-target-verification-release-tool-tests.json  receipt of test_release_tools.py
+data/25-binary-target-verification-source-preservation.json  preservation hashes of the packets
+data/26-repeated-target-MANIFEST.json    26's release manifest (delivery paths)
+data/26-repeated-target-audit_replay-independent-review-verification.json  replay verification record
+data/26-repeated-target-audit_replay-portability-receipt.json  portability receipt
+data/26-repeated-target-audit_replay-replay-package-manifest.json  replay packet manifest
+data/26-repeated-target-independent_audit-arithmetic-audit-receipt.json  receipt of audit_arithmetic.py (= its run log, not shipped again)
+data/26-repeated-target-independent_audit-audit-manifest.json  the audit's manifest, counts and corollary scope
+data/26-repeated-target-independent_audit-freeze-audit-run.log  run log of freeze_audit.py
+data/26-repeated-target-independent_audit-semantic-challenge-independent-check-results.json  receipt of the semantic challenge checks
+data/26-repeated-target-independent_audit-semantic-challenge-replay.log  replay log of the semantic challenge
+data/26-repeated-target-independent_audit-source-audit-receipt.json  receipt of audit_source.py (= its run log, not shipped again)
+data/26-repeated-target-science-evidence-build-receipt.json  receipt of build_repeated_certificate.py
+data/26-repeated-target-science-evidence-manifest.json  26's packet manifest; pins 25's files under historical directory names
+data/26-repeated-target-science-evidence-semantics-receipt.json  receipt of check_repeated_semantics.py
+data/26-repeated-target-science-recurrence-review-receipt.json  receipt of check_recurrence.py
+data/26-repeated-target-science-source-review-manifest.json  manifest of the source review
+data/26-repeated-target-science-source-review-receipt.json  receipt of check_source.py
+data/26-repeated-target-universality-SOURCE_PINS.json  pins of Cairns's paper and the local sources
+data/26-repeated-target-verification-final-latex.log  LaTeX log of the delivered PDF build
+data/26-repeated-target-verification-manuscript_audit-audit-manifest.json  manuscript audit manifest
+data/26-repeated-target-verification-manuscript_audit-literal-dag-check.json  receipt of check_literal_dag.py
+data/26-repeated-target-verification-manuscript_audit-visual-check.json  visual check of the 17 rendered pages (their SHA-256s; renders not shipped)
+data/26-repeated-target-verification-pdf-layout-checks.json  receipt of check_layout.py
+data/26-repeated-target-verification-pdf-rebuild-a.json  PDF rebuild record (= pdf-rebuild-b, not shipped again)
+data/26-repeated-target-verification-primary-source-accounting.json  quotation-length accounting for Cairns's paper
+data/26-repeated-target-verification-release-tool-tests.json  receipt of check_release_tools.py
+data/26-repeated-target-verification-scientific-replay.json  scientific replay record
+data/26-repeated-target-verification-source-preservation.json  preservation hashes of the packets
+data/26-repeated-target-verification-visual-review.json  all-page visual review record
+data/27-unrestricted-stab-MANIFEST.json  27's release manifest (delivery paths)
+data/27-unrestricted-stab-audit_replay-portability-receipt.json  portability receipt
+data/27-unrestricted-stab-hardness-interface-SOURCE_PINS.json  pins of Cairns's paper and the Part XX proofs
+data/27-unrestricted-stab-independent_audit-exact-normal.log  run log of check_exact.py (= its receipt and optimized log, not shipped again)
+data/27-unrestricted-stab-independent_audit-fresh-semantics-receipt.json  receipt of check_semantics_fresh.py (= its two logs, not shipped again)
+data/27-unrestricted-stab-independent_audit-mutation-receipt.json  receipt of challenge_checker.py (20 expected rejections)
+data/27-unrestricted-stab-independent_audit-provenance-receipt.json  provenance receipt of the audit
+data/27-unrestricted-stab-science-evidence-build-receipt.json  receipt of build_stabilization.py
+data/27-unrestricted-stab-science-evidence-manifest.json  27's packet manifest (dependencies by hash)
+data/27-unrestricted-stab-science-evidence-polynomial-dag.json  27's polynomial as a literal DAG (926,983 bytes; SHA-256 8622585b…)
+data/27-unrestricted-stab-science-evidence-semantics-optimized-run.log  run log of check_semantics.py (= its receipt and normal log, not shipped again)
+data/27-unrestricted-stab-science-math-audit-finite-check-receipt.json  receipt of check_math.py
+data/27-unrestricted-stab-science-source-audit-audit-receipt.json  receipt of audit_source.py
+data/27-unrestricted-stab-science-source-audit-replay-and-mutation-receipt.json  receipt of run_replay_checks.py
+data/27-unrestricted-stab-verification-author-isolated-replay-receipt.json  author's isolated replay receipt
+data/27-unrestricted-stab-verification-author-visual-qa.json  author's visual QA record
+data/27-unrestricted-stab-verification-build-environment.json  build environment record
+data/27-unrestricted-stab-verification-dependency-pins.json  dependency pins (Pell, Part XX proofs)
+data/27-unrestricted-stab-verification-manuscript-review-COPY_PROVENANCE.json  provenance of the review's copies
+data/27-unrestricted-stab-verification-manuscript-review-exact-ledger-optimized-receipt.json  receipt of check_manuscript_evidence.py (= its twins, not shipped again)
+data/27-unrestricted-stab-verification-manuscript-review-pdf-fonts.txt  pdffonts output of the delivered PDF
+data/27-unrestricted-stab-verification-manuscript-review-pdf-info.txt  pdfinfo output of the delivered PDF
+data/27-unrestricted-stab-verification-manuscript-review-visual-review-receipt.json  visual review receipt
+data/27-unrestricted-stab-verification-pdf-rebuild-receipt.json  PDF rebuild receipt
+data/27-unrestricted-stab-verification-provenance-preservation.json  preservation hashes of the packets
+data/27-unrestricted-stab-verification-release-negative-guards.json  receipt of check_release_guards.py
 ```
 
-The directory holds 385 files: 40 at the root (the article, its PDF, this
-README and thirty-seven provenance, audit, proof and correction files), 139 in `code/` and 206 in
+The directory holds 570 files: 79 at the root (the article, its PDF, this
+README and seventy-six provenance, audit, proof, review and correction files), 189 in `code/` and 302 in
 `data/`. Per manuscript: 01 has 12 files, 02 10, 03 17, 04 10, 05 16
 besides the replaced `article.tex` and `README.md`, 06 15, 07 14, 08 8, 09
 9, 10 14, 11 9, 12 9, 13 9, 14 12, 15 10, 16 19 (1 at the root, 7 in
 `code/`, 11 in `data/`), 17 13 (1, 6, 6), 18 16 (1, 5, 10), 19 11 (1, 3, 7),
-20 9 (1, 4, 4), 21 53 (2, 22, 29), 22 61 (10, 22, 29) and 23 26 (5, 10, 11). Every file of manuscripts 01–23
+20 9 (1, 4, 4), 21 53 (2, 22, 29), 22 61 (10, 22, 29), 23 26 (5, 10, 11),
+24 46 (9, 12, 25), 25 34 (6, 11, 17), 26 54 (12, 14, 28) and 27 51 (12, 13, 26). Every file of manuscripts 01–27
 except `article.tex`, `article.pdf` and `README.md` is byte-identical to the
 delivery; for 21 the delivery is, since batch 80, the corrected code edition
 (`Eager_Tree_Calculus_Research_Package_corrected.zip`, arrival `4e270aa46`,
@@ -999,6 +1275,10 @@ manuscripts take a sub-prefix:
 | 21 | `cdc:et:` | `cdc:et:thm:certificate` |
 | 22 | `cdc:lp:` | `cdc:lp:thm:loader` |
 | 23 | `cdc:ro:` | `cdc:ro:thm:main` |
+| 24 | `cdc:fx:` | `cdc:fx:thm:main` |
+| 25 | `cdc:bt:` | `cdc:bt:thm:main` |
+| 26 | `cdc:rp:` | `cdc:rp:thm:main` |
+| 27 | `cdc:us:` | `cdc:us:thm:main` |
 
 Labels written in the merge use `cdc:conv:` (the Conventions section),
 `cdc:bd:` (merged statements of Part IX, such as the universal-halting
@@ -1169,6 +1449,36 @@ existing label was renamed, removed or renumbered (see Build). Section
 3.22's and 3.23's equations are numbered within the subsections; Part XX
 is Sections 238–260, after every existing numbered section, and 22's three
 diagrams are Figures 3–5, after every existing figure.
+
+The batch-91 cluster-A write (Part XXI) raised the count from 1672 to
+1940 (+268), none renamed or removed. It adds 234 labels of manuscripts
+24–27 with the sub-prefixes `cdc:fx:` (24, 63), `cdc:bt:` (25, 49),
+`cdc:rp:` (26, 38) and `cdc:us:` (27, 84). Manuscript 25's other 35 labels
+(its equations, `lem:subset` and `lem:spread` inside its Sections 2–5,
+which repeat 24's Sections 3–6 and are printed as pointers) are not
+printed; its four section labels there stay on the pointer sections, and
+its three references into them point to 24's labels. Written labels (34):
+`cdc:sec:ms24`–`cdc:sec:ms27` (Sections 3.24–3.27),
+`cdc:part:packedsandpile`, `cdc:conv:b91-XXI`, `cdc:sec:b91-review`,
+`cdc:sec:b91-cairns` and `cdc:sec:b91-questions`; in the sub-prefixes,
+`cdc:fx:app:inventory` and `cdc:fx:app:pins` on 24's unlabelled appendices,
+`cdc:rp:sec:research` on 26's unlabelled closing section, the remark
+`cdc:us:rem:cairns`, and 21 question labels (`cdc:fx:q:target`, `…:loader`,
+`…:cost`, `…:nonbinary`, `…:formal`; `cdc:bt:q:unrestricted`, `…:loader`,
+`…:compiler`, `…:optimization`, `…:formal`, `…:fibre`;
+`cdc:rp:q:compiler`, `…:optimization`, `…:formal`; `cdc:us:q:capacity`,
+`…:conversions`, `…:degree`, `…:least`, `…:compiler`, `…:formal`,
+`…:cairns`). Part XXI is Sections 261–323: 261 its conventions, 262–276
+manuscript 24 (its Section `N` is `260+N`; Appendices A–B are 275–276),
+277–294 manuscript 25 (`275+N`; 277–280 the pointer sections;
+appendices 293–294), 295–305 manuscript 26 (`293+N`), 306–320 manuscript 27
+(`304+N`; appendices 319–320), 321 the research programme's review, 322
+the Cairns passages and 323 the questions. Theorem numbers follow: 24's
+Lemma 2.1 is 262.1, 26's Corollary 10.1 is 303.1, 27's Corollary 12.1 is
+316.1. In Section 3, 24's Theorem 1.1 is Theorem 3.7, 25's Theorem 1.1 is
+3.8, 26's Theorem 1.1 is 3.9, and 27's Definition 1.1 and Theorem 1.2 are
+3.10 and 3.11; Sections 3.24–3.27 number their equations within the
+subsections.
 
 Text written during the merge is marked `[write]` in the article.
 
@@ -1760,6 +2070,213 @@ number.
 
 Nested delivered paths are flattened with `-` after the prefix (`evidence/loader/ca/lazy_u15.py` is `code/22-literal-sandpiles-evidence-loader-ca-lazy_u15.py`); the recipe in "Rerunning the checks" reverses this. Part XX is Sections 238–260 of the article: 238 its conventions, 239–250 manuscript 22's Sections 2–13 (its Section `N` is Section `237+N`), 251–258 manuscript 23's Sections 2–9 (its Section `N` is Section `249+N`), 259 the research programme's review and 260 the questions; their Sections 1 are Sections 3.22.1 and 3.23.1. Theorem numbers `N.k` become `(237+N).k` and `(249+N).k`: 22's Lemma 9.1 and Theorem 9.2 (the certificate) are 246.1 and 246.2, its Proposition 7.1 (the prism) 244.1, its Remark 9.3 246.3 and its Corollary 10.1 247.1; 23's Lemmas 3.1–3.3 are 252.1–252.3, its Proposition 5.1 254.1 and its Corollary 7.1 256.1. In Section 3, 22's Definition 1.1 and Theorems 1.2–1.3 are Definition 3.3 and Theorems 3.4–3.5, and 23's Theorem 1.1 is Theorem 3.6. Their delivered texts cite no theorem by number; the shipped proofs and audits use their own numbering.
 
+**Manuscript 24** (package root `Research_Report50/`)
+
+| Delivered | Shipped |
+|---|---|
+| `archive_release.py` | `code/24-fixed-arity-archive_release.py` |
+| `audit_replay/evidence/replay-runner-receipt.json` | `data/24-fixed-arity-audit_replay-evidence-replay-runner-receipt.json` |
+| `audit_replay/evidence/replay-scientific-receipt.json` | `data/24-fixed-arity-audit_replay-evidence-replay-scientific-receipt.json` |
+| `audit_replay/evidence/test-results.json` | `data/24-fixed-arity-audit_replay-evidence-test-results.json` |
+| `audit_replay/README.md` | `24-fixed-arity-audit_replay-README.md` |
+| `audit_replay/replay-pin-manifest.json` | `data/24-fixed-arity-audit_replay-replay-pin-manifest.json` |
+| `audit_replay/replay_independent_audit.py` | `code/24-fixed-arity-audit_replay-replay_independent_audit.py` |
+| `audit_replay/test_replay_runner.py` | `code/24-fixed-arity-audit_replay-test_replay_runner.py` |
+| `build_pdf.py` | `code/24-fixed-arity-build_pdf.py` |
+| `independent_audit/audit-manifest.json` | `data/24-fixed-arity-independent_audit-audit-manifest.json` |
+| `independent_audit/AUDIT.md` | `24-fixed-arity-independent_audit-AUDIT.md` |
+| `independent_audit/independent_check.py` | `code/24-fixed-arity-independent_audit-independent_check.py` |
+| `MANIFEST.json` | `data/24-fixed-arity-MANIFEST.json` |
+| `science/build_certificate.py` | `code/24-fixed-arity-science-build_certificate.py` |
+| `science/check_exact_degree.py` | `code/24-fixed-arity-science-check_exact_degree.py` |
+| `science/check_source.py` | `code/24-fixed-arity-science-check_source.py` |
+| `science/evidence/build-receipt.json` | `data/24-fixed-arity-science-evidence-build-receipt.json` |
+| `science/evidence/exact-degree-receipt.json` | `data/24-fixed-arity-science-evidence-exact-degree-receipt.json` |
+| `science/evidence/polynomial-dag.json` | `data/24-fixed-arity-science-evidence-polynomial-dag.json` |
+| `science/evidence/source-check-receipt.json` | `data/24-fixed-arity-science-evidence-source-check-receipt.json` |
+| `science/periodic-input/check_periodic_packing.py` | `code/24-fixed-arity-science-periodic-input-check_periodic_packing.py` |
+| `science/periodic-input/periodic_packing_lemma.md` | `24-fixed-arity-science-periodic-input-periodic_packing_lemma.md` |
+| `science/periodic-input/verification_receipt.json` | `data/24-fixed-arity-science-periodic-input-verification_receipt.json` |
+| `science/PROOF.md` | `24-fixed-arity-science-PROOF.md` |
+| `science/README.md` | `24-fixed-arity-science-README.md` |
+| `science/SCOPE.md` | `24-fixed-arity-science-SCOPE.md` |
+| `science/sources/source-pins.json` | `data/24-fixed-arity-science-sources-source-pins.json` |
+| `science/stream-products/and-spread-check-receipt.json` | `data/24-fixed-arity-science-stream-products-and-spread-check-receipt.json` |
+| `science/stream-products/AND_SPREAD_PROOF.md` | `24-fixed-arity-science-stream-products-AND_SPREAD_PROOF.md` |
+| `science/stream-products/mask-check-receipt.json` | `data/24-fixed-arity-science-stream-products-mask-check-receipt.json` |
+| `science/stream-products/MASK_SUBSET_PROOF.md` | `24-fixed-arity-science-stream-products-MASK_SUBSET_PROOF.md` |
+| `science/stream-products/verify_and_spread.py` | `code/24-fixed-arity-science-stream-products-verify_and_spread.py` |
+| `science/stream-products/verify_mask_subset.py` | `code/24-fixed-arity-science-stream-products-verify_mask_subset.py` |
+| `verification/coordinating-review.json` | `data/24-fixed-arity-verification-coordinating-review.json` |
+| `verification/final-latex.log` | `data/24-fixed-arity-verification-final-latex.log` |
+| `verification/helper-path-guards.json` | `data/24-fixed-arity-verification-helper-path-guards.json` |
+| `verification/manuscript-review-receipt.json` | `data/24-fixed-arity-verification-manuscript-review-receipt.json` |
+| `verification/MANUSCRIPT_REVIEW.md` | `24-fixed-arity-verification-MANUSCRIPT_REVIEW.md` |
+| `verification/pdf-reproduction.json` | `data/24-fixed-arity-verification-pdf-reproduction.json` |
+| `verification/reference-check.json` | `data/24-fixed-arity-verification-reference-check.json` |
+| `verification/release-readiness.json` | `data/24-fixed-arity-verification-release-readiness.json` |
+| `verification/science-freeze.json` | `data/24-fixed-arity-verification-science-freeze.json` |
+| `verification/science-preservation.json` | `data/24-fixed-arity-verification-science-preservation.json` |
+| `verification/toolchain.json` | `data/24-fixed-arity-verification-toolchain.json` |
+| `verification/visual-review.json` | `data/24-fixed-arity-verification-visual-review.json` |
+| `verify_release.py` | `code/24-fixed-arity-verify_release.py` |
+
+**Manuscript 25** (package root: the archive root)
+
+| Delivered | Shipped |
+|---|---|
+| `archive_release.py` | `code/25-binary-target-archive_release.py` |
+| `audit_replay/evidence/audit-receipt.json` | `data/25-binary-target-audit_replay-evidence-audit-receipt.json` |
+| `audit_replay/evidence/replay-receipt.json` | `data/25-binary-target-audit_replay-evidence-replay-receipt.json` |
+| `audit_replay/evidence/semantics-receipt.json` | `data/25-binary-target-audit_replay-evidence-semantics-receipt.json` |
+| `audit_replay/evidence/test-results.json` | `data/25-binary-target-audit_replay-evidence-test-results.json` |
+| `audit_replay/README.md` | `25-binary-target-audit_replay-README.md` |
+| `audit_replay/replay-pin-manifest.json` | `data/25-binary-target-audit_replay-replay-pin-manifest.json` |
+| `audit_replay/replay_audits.py` | `code/25-binary-target-audit_replay-replay_audits.py` |
+| `audit_replay/test_replay_adapter.py` | `code/25-binary-target-audit_replay-test_replay_adapter.py` |
+| `build_pdf.py` | `code/25-binary-target-build_pdf.py` |
+| `independent_audit/audit-manifest.json` | `data/25-binary-target-independent_audit-audit-manifest.json` |
+| `independent_audit/AUDIT.md` | `25-binary-target-independent_audit-AUDIT.md` |
+| `independent_audit/independent_check.py` | `code/25-binary-target-independent_audit-independent_check.py` |
+| `independent_audit/SEMANTICS.md` | `25-binary-target-independent_audit-SEMANTICS.md` |
+| `independent_audit/semantics_check.py` | `code/25-binary-target-independent_audit-semantics_check.py` |
+| `MANIFEST.json` | `data/25-binary-target-MANIFEST.json` |
+| `science/ARCHITECTURE.md` | `25-binary-target-science-ARCHITECTURE.md` |
+| `science/build_target_certificate.py` | `code/25-binary-target-science-build_target_certificate.py` |
+| `science/check_target_certificate.py` | `code/25-binary-target-science-check_target_certificate.py` |
+| `science/evidence/build-receipt.json` | `data/25-binary-target-science-evidence-build-receipt.json` |
+| `science/evidence/check-receipt.json` | `data/25-binary-target-science-evidence-check-receipt.json` |
+| `science/evidence/polynomial-dag.json` | `data/25-binary-target-science-evidence-polynomial-dag.json` |
+| `science/SOURCE_NOTES.md` | `25-binary-target-science-SOURCE_NOTES.md` |
+| `test_release_tools.py` | `code/25-binary-target-test_release_tools.py` |
+| `verification/manuscript_review/check_manuscript.py` | `code/25-binary-target-verification-manuscript_review-check_manuscript.py` |
+| `verification/manuscript_review/MANUSCRIPT_REVIEW.md` | `25-binary-target-verification-manuscript_review-MANUSCRIPT_REVIEW.md` |
+| `verification/manuscript_review/review-summary.json` | `data/25-binary-target-verification-manuscript_review-review-summary.json` |
+| `verification/manuscript_review/text-check-receipt.json` | `data/25-binary-target-verification-manuscript_review-text-check-receipt.json` |
+| `verification/manuscript_review/visual-review-receipt.json` | `data/25-binary-target-verification-manuscript_review-visual-review-receipt.json` |
+| `verification/pdf-build.json` | `data/25-binary-target-verification-pdf-build.json` |
+| `verification/pdf-layout-checks.json` | `data/25-binary-target-verification-pdf-layout-checks.json` |
+| `verification/release-tool-tests.json` | `data/25-binary-target-verification-release-tool-tests.json` |
+| `verification/source-preservation.json` | `data/25-binary-target-verification-source-preservation.json` |
+| `verify_release.py` | `code/25-binary-target-verify_release.py` |
+
+**Manuscript 26** (package root: the archive root)
+
+| Delivered | Shipped |
+|---|---|
+| `audit_replay/independent-review-verification.json` | `data/26-repeated-target-audit_replay-independent-review-verification.json` |
+| `audit_replay/portability-receipt.json` | `data/26-repeated-target-audit_replay-portability-receipt.json` |
+| `audit_replay/PORTABILITY_REPORT.md` | `26-repeated-target-audit_replay-PORTABILITY_REPORT.md` |
+| `audit_replay/README.md` | `26-repeated-target-audit_replay-README.md` |
+| `audit_replay/replay-package-manifest.json` | `data/26-repeated-target-audit_replay-replay-package-manifest.json` |
+| `audit_replay/replay_audit.py` | `code/26-repeated-target-audit_replay-replay_audit.py` |
+| `dependencies/NOTICE.md` | `26-repeated-target-dependencies-NOTICE.md` |
+| `independent_audit/arithmetic-audit-receipt.json` | `data/26-repeated-target-independent_audit-arithmetic-audit-receipt.json` |
+| `independent_audit/audit-manifest.json` | `data/26-repeated-target-independent_audit-audit-manifest.json` |
+| `independent_audit/AUDIT.md` | `26-repeated-target-independent_audit-AUDIT.md` |
+| `independent_audit/audit_arithmetic.py` | `code/26-repeated-target-independent_audit-audit_arithmetic.py` |
+| `independent_audit/audit_source.py` | `code/26-repeated-target-independent_audit-audit_source.py` |
+| `independent_audit/freeze-audit-run.log` | `data/26-repeated-target-independent_audit-freeze-audit-run.log` |
+| `independent_audit/freeze_audit.py` | `code/26-repeated-target-independent_audit-freeze_audit.py` |
+| `independent_audit/semantic-challenge/independent-check-results.json` | `data/26-repeated-target-independent_audit-semantic-challenge-independent-check-results.json` |
+| `independent_audit/semantic-challenge/independent_checks.py` | `code/26-repeated-target-independent_audit-semantic-challenge-independent_checks.py` |
+| `independent_audit/semantic-challenge/replay.log` | `data/26-repeated-target-independent_audit-semantic-challenge-replay.log` |
+| `independent_audit/semantic-challenge/report.md` | `26-repeated-target-independent_audit-semantic-challenge-report.md` |
+| `independent_audit/source-audit-receipt.json` | `data/26-repeated-target-independent_audit-source-audit-receipt.json` |
+| `MANIFEST.json` | `data/26-repeated-target-MANIFEST.json` |
+| `release.py` | `code/26-repeated-target-release.py` |
+| `science/ARCHITECTURE.md` | `26-repeated-target-science-ARCHITECTURE.md` |
+| `science/build_repeated_certificate.py` | `code/26-repeated-target-science-build_repeated_certificate.py` |
+| `science/check_repeated_semantics.py` | `code/26-repeated-target-science-check_repeated_semantics.py` |
+| `science/evidence/build-receipt.json` | `data/26-repeated-target-science-evidence-build-receipt.json` |
+| `science/evidence/manifest.json` | `data/26-repeated-target-science-evidence-manifest.json` |
+| `science/evidence/semantics-receipt.json` | `data/26-repeated-target-science-evidence-semantics-receipt.json` |
+| `science/finalize_manifest.py` | `code/26-repeated-target-science-finalize_manifest.py` |
+| `science/recurrence-review/check_recurrence.py` | `code/26-repeated-target-science-recurrence-review-check_recurrence.py` |
+| `science/recurrence-review/receipt.json` | `data/26-repeated-target-science-recurrence-review-receipt.json` |
+| `science/recurrence-review/REVIEW.md` | `26-repeated-target-science-recurrence-review-REVIEW.md` |
+| `science/source-review/check_source.py` | `code/26-repeated-target-science-source-review-check_source.py` |
+| `science/source-review/manifest.json` | `data/26-repeated-target-science-source-review-manifest.json` |
+| `science/source-review/receipt.json` | `data/26-repeated-target-science-source-review-receipt.json` |
+| `science/source-review/REVIEW.md` | `26-repeated-target-science-source-review-REVIEW.md` |
+| `science/SOURCE_NOTES.md` | `26-repeated-target-science-SOURCE_NOTES.md` |
+| `universality/PRIMARY_SOURCE.md` | `26-repeated-target-universality-PRIMARY_SOURCE.md` |
+| `universality/REVIEW.md` | `26-repeated-target-universality-REVIEW.md` |
+| `universality/SOURCE_PINS.json` | `data/26-repeated-target-universality-SOURCE_PINS.json` |
+| `verification/check_layout.py` | `code/26-repeated-target-verification-check_layout.py` |
+| `verification/check_release_tools.py` | `code/26-repeated-target-verification-check_release_tools.py` |
+| `verification/final-latex.log` | `data/26-repeated-target-verification-final-latex.log` |
+| `verification/manuscript_audit/audit-manifest.json` | `data/26-repeated-target-verification-manuscript_audit-audit-manifest.json` |
+| `verification/manuscript_audit/AUDIT.md` | `26-repeated-target-verification-manuscript_audit-AUDIT.md` |
+| `verification/manuscript_audit/check_literal_dag.py` | `code/26-repeated-target-verification-manuscript_audit-check_literal_dag.py` |
+| `verification/manuscript_audit/literal-dag-check.json` | `data/26-repeated-target-verification-manuscript_audit-literal-dag-check.json` |
+| `verification/manuscript_audit/visual-check.json` | `data/26-repeated-target-verification-manuscript_audit-visual-check.json` |
+| `verification/pdf-layout-checks.json` | `data/26-repeated-target-verification-pdf-layout-checks.json` |
+| `verification/pdf-rebuild-a.json` | `data/26-repeated-target-verification-pdf-rebuild-a.json` |
+| `verification/primary-source-accounting.json` | `data/26-repeated-target-verification-primary-source-accounting.json` |
+| `verification/release-tool-tests.json` | `data/26-repeated-target-verification-release-tool-tests.json` |
+| `verification/scientific-replay.json` | `data/26-repeated-target-verification-scientific-replay.json` |
+| `verification/source-preservation.json` | `data/26-repeated-target-verification-source-preservation.json` |
+| `verification/visual-review.json` | `data/26-repeated-target-verification-visual-review.json` |
+
+**Manuscript 27** (package root: the archive root)
+
+| Delivered | Shipped |
+|---|---|
+| `audit_replay/portability-receipt.json` | `data/27-unrestricted-stab-audit_replay-portability-receipt.json` |
+| `audit_replay/PORTABILITY_REPORT.md` | `27-unrestricted-stab-audit_replay-PORTABILITY_REPORT.md` |
+| `audit_replay/README.md` | `27-unrestricted-stab-audit_replay-README.md` |
+| `audit_replay/replay_audit.py` | `code/27-unrestricted-stab-audit_replay-replay_audit.py` |
+| `hardness-interface/CORRECTIONS.md` | `27-unrestricted-stab-hardness-interface-CORRECTIONS.md` |
+| `hardness-interface/POTENTIAL_COROLLARY.md` | `27-unrestricted-stab-hardness-interface-POTENTIAL_COROLLARY.md` |
+| `hardness-interface/PRIMARY_LOCATORS.md` | `27-unrestricted-stab-hardness-interface-PRIMARY_LOCATORS.md` |
+| `hardness-interface/REVIEW.md` | `27-unrestricted-stab-hardness-interface-REVIEW.md` |
+| `hardness-interface/SOURCE_PINS.json` | `data/27-unrestricted-stab-hardness-interface-SOURCE_PINS.json` |
+| `independent_audit/AUDIT.md` | `27-unrestricted-stab-independent_audit-AUDIT.md` |
+| `independent_audit/challenge_checker.py` | `code/27-unrestricted-stab-independent_audit-challenge_checker.py` |
+| `independent_audit/check_exact.py` | `code/27-unrestricted-stab-independent_audit-check_exact.py` |
+| `independent_audit/check_semantics_fresh.py` | `code/27-unrestricted-stab-independent_audit-check_semantics_fresh.py` |
+| `independent_audit/exact-normal.log` | `data/27-unrestricted-stab-independent_audit-exact-normal.log` |
+| `independent_audit/fresh-semantics-receipt.json` | `data/27-unrestricted-stab-independent_audit-fresh-semantics-receipt.json` |
+| `independent_audit/mutation-receipt.json` | `data/27-unrestricted-stab-independent_audit-mutation-receipt.json` |
+| `independent_audit/provenance-receipt.json` | `data/27-unrestricted-stab-independent_audit-provenance-receipt.json` |
+| `MANIFEST.json` | `data/27-unrestricted-stab-MANIFEST.json` |
+| `release.py` | `code/27-unrestricted-stab-release.py` |
+| `science/build_stabilization.py` | `code/27-unrestricted-stab-science-build_stabilization.py` |
+| `science/check_semantics.py` | `code/27-unrestricted-stab-science-check_semantics.py` |
+| `science/evidence/build-receipt.json` | `data/27-unrestricted-stab-science-evidence-build-receipt.json` |
+| `science/evidence/manifest.json` | `data/27-unrestricted-stab-science-evidence-manifest.json` |
+| `science/evidence/polynomial-dag.json` | `data/27-unrestricted-stab-science-evidence-polynomial-dag.json` |
+| `science/evidence/semantics-optimized-run.log` | `data/27-unrestricted-stab-science-evidence-semantics-optimized-run.log` |
+| `science/finalize_manifest.py` | `code/27-unrestricted-stab-science-finalize_manifest.py` |
+| `science/math-audit/AUDIT.md` | `27-unrestricted-stab-science-math-audit-AUDIT.md` |
+| `science/math-audit/check_math.py` | `code/27-unrestricted-stab-science-math-audit-check_math.py` |
+| `science/math-audit/finite-check-receipt.json` | `data/27-unrestricted-stab-science-math-audit-finite-check-receipt.json` |
+| `science/PROOF.md` | `27-unrestricted-stab-science-PROOF.md` |
+| `science/README.md` | `27-unrestricted-stab-science-README.md` |
+| `science/source-audit/audit-receipt.json` | `data/27-unrestricted-stab-science-source-audit-audit-receipt.json` |
+| `science/source-audit/audit_source.py` | `code/27-unrestricted-stab-science-source-audit-audit_source.py` |
+| `science/source-audit/replay-and-mutation-receipt.json` | `data/27-unrestricted-stab-science-source-audit-replay-and-mutation-receipt.json` |
+| `science/source-audit/run_replay_checks.py` | `code/27-unrestricted-stab-science-source-audit-run_replay_checks.py` |
+| `science/source-audit/SOURCE_AUDIT.md` | `27-unrestricted-stab-science-source-audit-SOURCE_AUDIT.md` |
+| `verification/author-isolated-replay-receipt.json` | `data/27-unrestricted-stab-verification-author-isolated-replay-receipt.json` |
+| `verification/author-visual-qa.json` | `data/27-unrestricted-stab-verification-author-visual-qa.json` |
+| `verification/build-environment.json` | `data/27-unrestricted-stab-verification-build-environment.json` |
+| `verification/check_release_guards.py` | `code/27-unrestricted-stab-verification-check_release_guards.py` |
+| `verification/dependency-pins.json` | `data/27-unrestricted-stab-verification-dependency-pins.json` |
+| `verification/manuscript-review/AUDIT.md` | `27-unrestricted-stab-verification-manuscript-review-AUDIT.md` |
+| `verification/manuscript-review/check_manuscript_evidence.py` | `code/27-unrestricted-stab-verification-manuscript-review-check_manuscript_evidence.py` |
+| `verification/manuscript-review/COPY_PROVENANCE.json` | `data/27-unrestricted-stab-verification-manuscript-review-COPY_PROVENANCE.json` |
+| `verification/manuscript-review/exact-ledger-optimized-receipt.json` | `data/27-unrestricted-stab-verification-manuscript-review-exact-ledger-optimized-receipt.json` |
+| `verification/manuscript-review/pdf-fonts.txt` | `data/27-unrestricted-stab-verification-manuscript-review-pdf-fonts.txt` |
+| `verification/manuscript-review/pdf-info.txt` | `data/27-unrestricted-stab-verification-manuscript-review-pdf-info.txt` |
+| `verification/manuscript-review/visual-review-receipt.json` | `data/27-unrestricted-stab-verification-manuscript-review-visual-review-receipt.json` |
+| `verification/pdf-rebuild-receipt.json` | `data/27-unrestricted-stab-verification-pdf-rebuild-receipt.json` |
+| `verification/provenance-preservation.json` | `data/27-unrestricted-stab-verification-provenance-preservation.json` |
+| `verification/release-negative-guards.json` | `data/27-unrestricted-stab-verification-release-negative-guards.json` |
+
+The same flattening applies to 24–27 (`science/stream-products/verify_and_spread.py` is `code/24-fixed-arity-science-stream-products-verify_and_spread.py`); `.py` files are in `code/`, `.md` files at the root and every other file in `data/`. Manuscript 25's bundled `baseline_report50/` is manuscript 24's delivery byte for byte and has no shipped names of its own; read `baseline_report50/<path>` as manuscript 24's `<path>`. In-package twins that are not shipped are listed under "Not shipped" below with the shipped file they equal. Part XXI is Sections 261–323 (see Labels for the section and theorem numbers).
+
 **Not shipped.** The manuscripts (`article.tex`) and delivery READMEs of
 members 01, 02, 03, 04, 06 and 07: they survive in their arrival commits
 (`725d2ebb6` for 01–03, `c1f56f842` for 04 and 06, `b998f70c6` for 07), as
@@ -1877,6 +2394,114 @@ stream differs from the manifest's `canonical_integer_rules_jsonl_sha256`
 until carriage returns are removed; after that the 9,711,068-byte stream
 equals the delivered one (checked at placement). `.gitattributes` treats
 `*.gz` as binary, so the blob is the delivered bytes.
+For the batch-91 additions 24–27: their manuscripts
+(`Research_Report50.tex`, `Research_Report52.tex`, `Research_Report53.tex`,
+`article/Report54.tex`), delivery `README.md` files and PDFs (20, 24, 17 and
+20 pages) survive in the arrival commit `0d7f51c44`, as members of
+`A_Fixed_Arity_Integer_Certificate_for_Binary_Sandpile_Stabilization_Package.zip`
+(593,467 bytes, SHA-256 `298dc832…2508`),
+`Finite_Legal_Binary_Target_Firing_in_Periodic_Sandpiles_Package.zip`
+(3,038,694 bytes, `2d9da85e…0803`),
+`Repeated_Legal_Target_Firing_in_Periodic_Sandpiles_Package.zip`
+(5,890,324 bytes, `f45cabb3…5f47`) and
+`Unrestricted_Finite_Global_Sandpile_Stabilization_Package.zip`
+(3,717,605 bytes, `c8dd5b47…f545`)
+(`git show 0d7f51c44:docs/incoming/<archive>.zip`). Of their 320 regular
+members, 185 are shipped (byte-identical, verified at placement
+`b0a536b63`) and 135 are not:
+
+- *Release manifests and the checksum file.* The four root `MANIFEST.json`
+  files (path, SHA-256, size and mode of every other member; verified 58/58,
+  101/101, 83/83 and 74/74, with 25's nested `baseline_report50/MANIFEST.json`
+  58/58) carry content besides hashes and are shipped as
+  `data/2N-…-MANIFEST.json`; they list delivery paths, including files not
+  shipped. 27's `independent_audit/SHA256SUMS` (12/12) is a checksum ledger,
+  verified and not shipped.
+- *Manuscript 25's `baseline_report50/`* (59 files): manuscript 24's
+  delivery byte for byte, shipped once as 24's files.
+- *Byte-identical twins inside a package* (34; each equals a shipped file):
+  24's `independent_audit/audit-receipt.json`, `independent_audit/audit-run.log`,
+  `verification/independent-replay-audit-receipt.json` and
+  `…-audit-run.log` (= `data/24-fixed-arity-audit_replay-evidence-replay-scientific-receipt.json`)
+  and `verification/independent-replay-replay-receipt.json`
+  (= `…-replay-runner-receipt.json`); 25's `audit_replay/evidence/audit-run.log`,
+  `independent_audit/audit-receipt.json` and `…/audit-run.log`
+  (= `data/25-binary-target-audit_replay-evidence-audit-receipt.json`),
+  `audit_replay/evidence/semantics-run.log` and
+  `independent_audit/semantics-receipt.json` (= `…-semantics-receipt.json`)
+  and `verification/scientific-replay.json` (= `…-replay-receipt.json`);
+  26's `independent_audit/arithmetic-audit-run.log` and `source-audit-run.log`
+  (= the two receipts), `science/evidence/semantics-replay.log`
+  (= `…-evidence-semantics-receipt.json`), `science/source-review/replay.log`
+  and `run.log` (= `…-source-review-receipt.json`) and
+  `verification/pdf-rebuild-b.json` (= `…-pdf-rebuild-a.json`); 27's
+  `independent_audit/exact-optimized.log` and `exact-receipt.json`
+  (= `…-exact-normal.log`), `semantics-normal.log` and
+  `semantics-optimized.log` (= `…-fresh-semantics-receipt.json`),
+  `science/evidence/semantics-receipt.json` and `semantics-run.log`
+  (= `…-semantics-optimized-run.log`), the eight files of
+  `science/source-audit/replay-normal*` and `replay-optimized*` (two
+  926,983-byte copies of the DAG, two build receipts, two stdout receipts and
+  two audit receipts, equal to the shipped DAG, build receipt and
+  `…-source-audit-audit-receipt.json`) and
+  `verification/manuscript-review/exact-ledger-receipt.json`,
+  `exact-normal.log` and `exact-optimized.log`
+  (= `…-exact-ledger-optimized-receipt.json`).
+- *Third-party mathlib files* (6 outside the baseline): `pell-source.lean`
+  (24, 26, 27), `pell-pinned-fetch.json` (24's audit, 26) and 26's
+  `LICENSE.mathlib-Apache-2.0.txt`: mathlib4 commit
+  `ac77769fabe23cb237559e7f56578dbead91499f`,
+  `Mathlib/NumberTheory/PellMatiyasevic.lean`, SHA-256
+  `993760c797ad0ff66fa77064a616fce779550bc745cbf6c44e04f392fd0bed0a`, Git
+  blob `6ede8ed67569fc1ddf2b4c09f0feb30ca42fca7e`, Apache-2.0. Not
+  redistributed here; `26-repeated-target-dependencies-NOTICE.md`,
+  `data/24-fixed-arity-science-sources-source-pins.json` and
+  `data/27-unrestricted-stab-verification-dependency-pins.json` record the
+  pin, and the file is at the URL in the article's bibliography
+  (`mathlib-pell`).
+- *Copies of this report's files* (5 outside the baseline): 24's
+  `science/sources/report35-composition.md`, `report35-loader.md` and
+  `report36-real.md`, and 27's `dependencies/report35-composition.md` and
+  `report35-loader.md`, byte-identical to
+  `22-literal-sandpiles-evidence-composition-PROOF.md`,
+  `22-literal-sandpiles-evidence-loader-LOADER-PROOF.md` and
+  `23-real-sandpiles-evidence-real-PROOF.md`.
+- *Regenerable files of 26* (18): its polynomial DAG and its 17 page renders;
+  see "Reconstructing the excluded data".
+
+**Reconstructing the excluded data (26).** Both reconstructions were run
+for this write on Windows (Python 3.14.4, MiKTeX's Poppler 24.04.0) and
+reproduce the delivered bytes.
+
+- `science/evidence/polynomial-dag.json` (1,064,332 bytes, SHA-256
+  `7bbc522a7e8ff8af23dd9f4b01b8fa783515b1e1de6941dc9a11e85c92f81ea6`),
+  the authoritative object of 26's Theorem 1.1, pinned by its replay and
+  auditors. In an empty directory outside the repository:
+
+  ```sh
+  cp "$REPO"/SetTheory/Cardinals/docs/reports/hilbert-tenth-problem/canonical-diophantine-certificates/code/26-repeated-target-science-build_repeated_certificate.py .
+  py 26-repeated-target-science-build_repeated_certificate.py
+  ```
+
+  It writes `evidence/polynomial-dag.json` (byte-identical; under a second)
+  and `evidence/build-receipt.json`, equal to the shipped
+  `data/26-repeated-target-science-evidence-build-receipt.json` after removing
+  carriage returns (Windows writes CRLF). Alternatively
+  `git show 0d7f51c44:docs/incoming/Repeated_Legal_Target_Firing_in_Periodic_Sandpiles_Package.zip`
+  and extract `science/evidence/polynomial-dag.json`.
+- `verification/manuscript_audit/render/page-01.png` … `page-17.png`
+  (3,958,546 bytes in all), renders of the unshipped PDF whose SHA-256 values
+  are in the shipped `data/26-repeated-target-verification-manuscript_audit-visual-check.json`:
+
+  ```sh
+  git -C "$REPO" show 0d7f51c44:docs/incoming/Repeated_Legal_Target_Firing_in_Periodic_Sandpiles_Package.zip > r53.zip
+  unzip r53.zip Research_Report53.pdf
+  pdftoppm -r 110 -png Research_Report53.pdf page
+  ```
+
+  This writes `page-01.png` … `page-17.png` in about 6 s; all 17 match the
+  recorded hashes with Poppler 24.04.0 (another Poppler version may render
+  different bytes).
 
 ## What is claimed and what is not
 
@@ -1950,7 +2575,16 @@ real-exactness theorem with its three lemmas, the support and height
 invariance, its ledger, the loader corollary and its counterexamples. The
 moment identity, the shared schedules and the real-algebraic limit of
 Part XX's review section are the research programme's results, cited
-there, not claims of the manuscripts. It does not claim the following. Each item is stated by at least the
+there, not claims of the manuscripts. For Part XXI: the four main theorems
+(24–27) with their macro lemmas, geometry, recurrences, legality lemmas,
+balance and carry bounds, the exact ledgers and the exact degree 18, the
+separating examples, and the two conditional r.e.-completeness corollaries
+(26, 27) under their stated imported hypotheses. Written in the merge, and
+not claims of the manuscripts: the counterexamples to six printed passages
+of Cairns's paper (`cdc:us:rem:cairns`, the manuscripts' arguments made
+explicit and checked against arXiv:1508.00161v2), and the observation that
+by `cdc:ro:rem:qelimit` none of the four accepted sets has a fixed-arity
+representation with real/natural agreement. It does not claim the following. Each item is stated by at least the
 manuscripts named; the article keeps every one of them.
 
 - **No priority.** No manuscript establishes historical or literature-wide
@@ -2278,6 +2912,54 @@ manuscripts named; the article keeps every one of them.
   to `p ≥ 1`, not to all `p > 0`. A fixed-arity universal compression
   cannot keep its real/natural existence equivalence (the programme's
   remark `cdc:ro:rem:qelimit`).
+- **24–27, scope (all four).** Fixed arity means a fixed number of
+  witnesses and gates for every input, box and duration, with witness
+  values unbounded; the witness sets are infinite (padding, precision,
+  empty layers, Pell quotients), so nothing is single-fold, finite-fold or
+  unique, and no fixed-arity universal polynomial in the research
+  programme's sense is given. Witnesses are strictly positive integers; the
+  integer domain is essential, and nothing is claimed over the reals ("the
+  same polynomial over unrestricted reals is not asserted to encode this
+  relation"). The only external mathematical dependency is the pinned
+  mathlib Pell characterization; Lean was not run and nothing is
+  formalized. No count is optimal or minimal, gate ledgers count integer
+  literals as free (a convention not comparable with Part XX's or the
+  programme's), no literature-wide priority is claimed, finite tests
+  corroborate and do not prove, and no full Pell/sandpile witness was
+  materialized. No new universal loader, no paid raw-program-to-physical-code
+  compiler; Report 35's loader, geometry and encoder stay inherited; not a
+  bounded-time decision procedure; no effect on the 84-operation record.
+  This is not Part XX's "fixed-arity universal polynomial" either: the
+  article's sentence "Nothing here is a fixed-arity universal polynomial"
+  in Part XX's setting is scoped to Part XX by a dated note.
+- **24, scope.** The supplied stream may be a strictly larger supersolution
+  than the odometer, so the certificate does not certify target firing;
+  inputs that need repeated topplings (a height-12 singleton) are outside;
+  the optional batched AND is not in the ledger; Cairns is cited for
+  context, not as an audit of this graph. Its frozen
+  `24-fixed-arity-science-PROOF.md` and `…-science-README.md` still say the
+  audit is "in progress" (historical; the completed audit is
+  `24-fixed-arity-independent_audit-AUDIT.md`).
+- **25, scope.** Strictly narrower than unrestricted target firing (the
+  `[12,4]` example); the endpoint need not be stable; the final stream is
+  the odometer of an actual legal prefix, not maximal or stabilizing;
+  applications to a loader need an all-site-one-shot proof and a target
+  interpretation, which no loader in this report provides; Report 36's
+  real exactness does not transfer. Its frozen architecture and source notes
+  say review is "pending" (historical).
+- **26, scope.** No novelty assertion; uniqueness of the count stream for
+  fixed events is not uniqueness of witnesses; the corollary is an external
+  computable composition, not among the 17,275 gates; its two corrections
+  of Cairns are its readings ("not an author-issued erratum"; checked in the
+  article); the fixed tile is not identified and is not Report 35's loader;
+  Cairns's routing separations are not re-audited; the two-site tableaux of
+  its tests use `b = 1024` at macro level, not full raw witnesses.
+- **27, scope.** Finite global stabilization only (not target firing, not an
+  infinite locally finite stabilization); `U` is not claimed least; no
+  manageable witness sizes; the corollary is conditional on Report 35's
+  loader and the inherited `U₁₅` universality; its Cairns corrections are
+  "this review's mathematical readings" (checked in the article); no dense
+  tile enumeration was performed.
 - **17, scope.** Bases are fixed positive integers (or rationals after a
   fixed scaling, where minimizing `Kq^n f(n)` is not minimizing `f(n)`);
   positive algebraic irrational bases are outside the encoding. Repetition
@@ -2918,6 +3600,34 @@ square/product 82 candidates (Part VIII); a dated note in Part XX's
 paragraph "No effect on the universal bound" points there. Neither note
 adds a label, macro, package or bibliography entry.
 
+**Formal status and relations (batch 91, cluster A).** Manuscripts 24–27
+rely on one external formal statement, mathlib's constructive Pell
+characterization (`Pell.matiyasevic`, `Pell.eq_pow_of_pell` at mathlib4
+`ac77769f`, file `Mathlib/NumberTheory/PellMatiyasevic.lean`, SHA-256
+`993760c7…`, blob `6ede8ed6…`), whose Lean proof they did not run; this
+repository's Lean development uses the first theorem in
+`Computability/HilbertTenthProblem/Lean/Diophantine/Paper1976/Cor26.lean`.
+Their binary containment `Sub` is the Jones–Matiyasevich masking, which the
+project formalizes as `JM1984.mask_iff_choose_odd`
+(`Lean/Diophantine/Paper1984/Masking.lean`) and `JM1984.Exp.SFU.mask`
+(`Lean/Diophantine/Paper1984/ExpPrim.lean`); the manuscripts' own equation
+system for it, their 15-equation `POWER` specialization and every theorem of
+Part XXI are not formalized. Placing the Part beside the formal project
+confers no formal status on it. The research tree reviewed the four
+archives before placement (`review_new_sandpiles_0d7f51c44.md`,
+`bc6e1a62c`); its least universal polynomial stays at 84 operations.
+Relations: Part XXI answers Part XX's `cdc:ro:q:packing` (24, extended by
+27), touches `cdc:lp:q:encoder`, `cdc:q:compression` and manuscript 16's
+question on fixed-arity compression (fixed arity without multiplicity
+control), and re-proves least action (`cdc:sp:lem:leastaction`,
+`cdc:nb:lem:least`, `cdc:lp:lem:leastaction`) as marked second routes; dated
+notes after those questions and in Part XX's setting paragraph say so. Its
+`POWER` macro is Lemma `ptr:ai:lem:exp` of
+[periodic-turmite-first-revisits](../periodic-turmite-first-revisits/)
+(Part III, Report 42), credited in a note; a reciprocal note there is
+proposed for a separate commit. No neighbouring report was edited in this
+write.
+
 ## Build
 
 pdfLaTeX, with the packages loaded in `article.tex` (base 05's preamble
@@ -2935,10 +3645,10 @@ lands in the collection:
 latexmk -pdf -interaction=nonstopmode -halt-on-error article.tex
 ```
 
-The recorded build has 652 pages (196 before batch 62, 306 before batch 63,
+The recorded build has 742 pages (196 before batch 62, 306 before batch 63,
 338 before batch 78, 419 after Part XV, 449 after Part XVI,
 451 after the reciprocal notes, 452 after restoring the XVI organization row,
-509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX, still 652 after the batch-82 reciprocal note and after the batch-83 reciprocal note),
+509 after Part XVII, 571 after manuscripts 19 and 20, 605 after Part XIX, 607 after the batch-79 reciprocal notes, 608 after the batch-80 correction notes, still 608 after the batch-80 reciprocal note, 652 after Part XX, still 652 after the batch-82 reciprocal note and after the batch-83 reciprocal note, 742 after Part XXI),
 with no errors, warnings, undefined references or citations, multiply
 defined labels, duplicate destinations or overfull boxes; the one underfull
 line (in manuscript 01's introduction, Section 3.2) is the same as in the batch-62 build. Batch 63 adds
@@ -3095,6 +3805,32 @@ the item moves Part XX's material from printed page 588 to 621 by one page,
 which the end of Part XX absorbs (40 labels change page). Its pages (printed
 pages 587–588) and that of the second note (620) were rendered and
 inspected.
+
+Part XXI (batch 91, cluster A) adds nine macros (`\POWER`, `\Sub`,
+`\BitAnd`, `\Spread`, `\Geom`, `\Pos`, `\Input`, `\Prestr`, `\Avail`; the
+manuscripts' `\Pow`, `\AND` and `\Pre` would clash with this report's) and
+no package (27's `seqsplit` and `needspace` are not needed: hashes print
+with `\path`, and its one `\Needspace` is dropped; 24's and 25's `xurl`,
+`enumitem` and `longtable` are already loaded). Built in a scratch
+directory with `latexmk -pdf -interaction=nonstopmode -halt-on-error
+article.tex` (MiKTeX, pdfTeX): 742 pages, no errors, warnings, undefined
+references or citations, multiply defined labels, duplicate destinations or
+overfull boxes, and the same single underfull line; there are 22 "Infinite
+glue shrinkage" messages, five more than in a rebuild of the committed
+text, from Part XXI's longtables. Compared with that rebuild (3,008
+`\newlabel` and 107 `\bibcite` entries), every earlier label keeps its
+number and type and every earlier bibliography number is unchanged; one
+entry is retitled (`cdc:sec:manuscripts`, now "The twenty-seven
+manuscripts"), and the hyperlink anchors of the two unnumbered paragraphs
+`cdc:pt:subsec:repo` and `cdc:conv:b62q` moved, because the conventions
+gained the paragraph "Part XXI". The thirteen new bibliography entries are
+items 108–120. Two `\code{…/PellMatiyasevic.lean}` paths of 26 and 27 print
+as breakable `\path` (layout only). Rendered and inspected: the title page
+and page 2, Sections 3.23–3.24 (printed pages 75–78), the end of Part XX
+with the dated note after `cdc:ro:q:packing` (634–635), the opening of Part
+XXI with its table (636–637), the pointer sections of manuscript 25 (657),
+24's questions and Appendix A with its table (655), the review section with
+its table and the Cairns section (704–705).
 
 ## Rerunning the checks
 
@@ -3328,6 +4064,75 @@ unshipped `Research_Report35.tex`/`Research_Report36.tex`), the
 `archive_*.py` and `seal_release.py` tools, or `tamper_regression.py`
 here. `lazy_u15.py --rules-jsonl` regenerates the rule stream, not
 byte for byte (see Files).
+
+**Part XXI (24–27).** The four packages read and write by their delivered
+paths, and their release verifiers (`code/24-fixed-arity-verify_release.py`,
+`code/25-binary-target-verify_release.py`, `code/26-repeated-target-release.py`,
+`code/27-unrestricted-stab-release.py`) check the release manifests,
+including POSIX file modes, so none of them can run in this repository. Run
+them on a fresh extraction of the arrival archives, outside the repository
+(the preferred route, on a POSIX host, follows the delivered READMEs:
+`python3 -I -B verify_release.py --manifest-sha256 "$PIN" --verify-only`
+and `--output <new dir>` for 24, `python3 -I verify_release.py
+--manifest-sha256 <pin>` and `audit_replay/replay_audits.py` for 25,
+`python3 -I release.py verify --manifest-sha256 <pin>` and
+`audit_replay/replay_audit.py --output <new dir>` for 26 and 27, with the
+trusted manifest digest taken from the archive itself, since this report
+ships the manifests but no separate digest). The direct route below was run
+for this write on Windows (Python 3.14.4) on fresh extractions:
+
+```sh
+# in an empty scratch directory outside the repository
+for a in A_Fixed_Arity_Integer_Certificate_for_Binary_Sandpile_Stabilization_Package \
+         Finite_Legal_Binary_Target_Firing_in_Periodic_Sandpiles_Package \
+         Repeated_Legal_Target_Firing_in_Periodic_Sandpiles_Package \
+         Unrestricted_Finite_Global_Sandpile_Stabilization_Package; do
+  git -C "$REPO" show 0d7f51c44:docs/incoming/$a.zip > $a.zip && unzip -q $a.zip -d $a
+done
+# 24 (its files are under Research_Report50/)
+(cd A_Fixed_*/Research_Report50 && py -I -X utf8 science/build_certificate.py --output science/evidence \
+  && py -I -X utf8 science/check_source.py && py -I -X utf8 science/check_exact_degree.py \
+  && py -I -X utf8 science/periodic-input/check_periodic_packing.py \
+  && py -I -X utf8 science/stream-products/verify_and_spread.py \
+  && py -I -X utf8 science/stream-products/verify_mask_subset.py \
+  && py -I -X utf8 audit_replay/replay_independent_audit.py --source-root science \
+       --audit-root independent_audit --output "$PWD/../../out24")
+# 25
+(cd Finite_* && py -I -X utf8 science/build_target_certificate.py && py -I -X utf8 science/check_target_certificate.py \
+  && py -I -X utf8 audit_replay/replay_audits.py --source-root science --audit-root independent_audit --output "$PWD/../out25")
+# 26 (the semantic probes take about 16 s)
+(cd Repeated_* && py -I -X utf8 science/build_repeated_certificate.py && py -I -X utf8 science/check_repeated_semantics.py \
+  && py -I -X utf8 science/recurrence-review/check_recurrence.py)
+# 27
+(cd Unrestricted_* && py -I -X utf8 science/build_stabilization.py && py -I -X utf8 science/check_semantics.py \
+  && py -I -X utf8 science/math-audit/check_math.py)
+```
+
+Results: every builder rewrites its polynomial DAG byte for byte (24, 25,
+26 and 27; 26's is the one this report does not ship), and every program
+passes; each rewritten receipt equals the shipped one after removing
+carriage returns, which the Windows text-mode writers add. The two audit
+replays (24's `replay_independent_audit.py`, 25's `replay_audits.py`)
+regenerate their receipts and logs equal, up to CRLF, to
+`data/24-fixed-arity-audit_replay-evidence-replay-scientific-receipt.json`
+and to `data/25-binary-target-audit_replay-evidence-audit-receipt.json` and
+`…-semantics-receipt.json`; on Windows they then stop with "receipt differs
+from the frozen receipt" or "Main scientific receipt changed", because they
+compare bytes, and 25's refuses to run without `python -I`. 26's and 27's
+`audit_replay/replay_audit.py` match their historical POSIX paths by
+string and stop on Windows ("Unapproved checker read"); the placement
+session ran them through a path-normalizing shim (not shipped) and got all
+three receipts of each byte for byte, and on a POSIX host they run as
+delivered. Not run: the release verifiers and archive and PDF tools (POSIX
+modes, TeX Live byte identity), the replay safety harnesses
+(`code/24-fixed-arity-audit_replay-test_replay_runner.py`, whose isolated
+children hit Python's cp1252 default on Windows, and 25's
+`test_replay_adapter.py`), and
+`code/26-repeated-target-science-source-review-check_source.py`, which reads
+hard-coded `/workspace/shared/…` paths. **Hazards:** every builder and
+checker overwrites its receipt in place, so run them only in an
+extraction, never in this directory; `-X utf8` avoids the cp1252 failures
+of child processes on Windows.
 
 The recipes for 08–12 use `py`, which resolves on this machine; the
 delivered texts write `python` (12's Makefile `python3`).
@@ -4001,6 +4806,84 @@ there `verify_manifest.py` checks 57 entries.
   producer directly (normal Python) on a copy restored from the shipped
   files by the recipe below: all pass, with receipts equal up to CRLF; see
   "Rerunning the checks".
+- **Batch 91, cluster A (manuscripts 24–27): shipped text that uses
+  delivery names, names unshipped files or is stale.** Every shipped guide,
+  proof, audit and review names files by delivered paths relative to its
+  package (`science/…`, `independent_audit/…`, `audit_replay/…`,
+  `verification/…`, `hardness-interface/…`, `universality/…`,
+  `dependencies/…`); the four `data/2N-…-MANIFEST.json` files, the freeze,
+  preservation and replay records list delivered paths, including the
+  unshipped manuscripts, PDFs, READMEs, twins, mathlib copies, Part XX
+  copies, 26's DAG and renders, 27's `SHA256SUMS` and 25's whole
+  `baseline_report50/`. 25's notes and receipts name `baseline_report50/…`,
+  which is 24's delivery. 26's `data/26-repeated-target-science-evidence-manifest.json`
+  and `code/26-repeated-target-science-source-review-check_source.py`, and
+  several audits of 24–27, name historical working directories
+  (`/workspace/shared/sandpile-…-20261004/…`, `sandpile-target-firing-20261004/…`),
+  the authors' historical working directories; the hashes in 26's manifest
+  resolve to 25's shipped files (checked at placement), and the programs
+  that read such paths do not run as shipped. Stale status: 24's
+  `24-fixed-arity-science-PROOF.md` and `…-science-README.md` say the
+  independent audit is "in progress", and 25's
+  `25-binary-target-science-ARCHITECTURE.md` and `…-SOURCE_NOTES.md` say
+  review is "pending"; they are frozen construction-stage notes, the
+  completed audits are shipped, and 25's own manuscript says so.
+  `data/24-fixed-arity-verification-coordinating-review.json` records a
+  title-only amendment after review (one bibliography title), so its
+  reviewed TeX and PDF hashes are of an earlier edition. 26 states no ProveIt
+  pin of its own. The article prints shipped names where a manuscript
+  names its files and a note where it names an unshipped one.
+- **Batch 91, cluster A: corrections, renamings and notes in the printed
+  text.** Renamed macros: `\Pow` → `\POWER` (this report's `\Pow` is
+  manuscripts 17–18's power graph), 24's and 25's `\AND` → `\BitAnd` (this
+  report's `\AND` is 22's lattice primitive), 26's `\Pre` → `\Prestr`; the
+  spreading operator printed `Spread` in 24 and 25 and the geometric-sum
+  operator printed `G` in 27 are printed `SPREAD` and `Geom`; unused
+  `\Pack`, `\NatVar` and `\eqdef` dropped; `\file` and `\sha` print as
+  `\code` and `\path`. A conventions table resolves the clashes with Parts
+  XVI and XX and between the four manuscripts (`I`, `b`, `L`, `R`, `E`,
+  `V`, `T`, `Q`, `J`, `h`, `τ`, `ℓ`, `P`, `π`, the gate convention). Notes
+  credit `POWER` to `ptr:ai:lem:exp` and `Sub` to Jones–Matiyasevich and
+  `JM1984.Exp.SFU.mask`, mark the least-action lemmas and the macro
+  presentations of 26 and 27 as second routes, map "Report 35/36/50/52/53"
+  to their places here, and print 25's Sections 2–5 as pointers quoting the
+  three passages in which they differ from 24's Sections 3–6.
+- **Batch 91, cluster A: Cairns's paper.** 26 and 27 call six printed
+  passages of Cairns's arXiv:1508.00161v2 misprints (26: Sections 3.2.4 and
+  3.2.5; 27: the pattern test and the halting definition of Section 5.1,
+  the cutoff and front placement of Section 6.2.5 and Figure 12, and the
+  shutdown delay of Section 6.2.6). At placement three printed forms were
+  checked against the arXiv HTML; for this write all six were checked
+  against the text of the version-2 PDF (the operator of the sixth is lost
+  in the extraction), and the article's `cdc:sec:b91-cairns` gives an
+  explicit failure of each printed form, the manuscripts' arguments made
+  explicit (for example: the printed one-chip initializer of Section 3.2.5
+  sets the cube `c(x+x₁,t)` both to blank and directly, so it malfunctions
+  for every tape). These are readings of a third-party paper, not an
+  erratum issued by its author; whether the corrected constructions prove
+  Cairns's Theorems 2 and 3 is left open as `cdc:us:q:cairns`. Two short
+  quotations (14 words) of the paper are in the shipped
+  `26-repeated-target-universality-PRIMARY_SOURCE.md`.
+- **Batch 91, cluster A: the research programme's review.**
+  `review_new_sandpiles_0d7f51c44.md` (`bc6e1a62c`, 4 October 2026, before
+  placement) authenticates the four archives (320 members, 30 read spans),
+  executes no archived code, finds no concrete defect in the text it read,
+  and confirms with a fresh checker (normal and `-O` receipts identical) the
+  totals 11,469/14,778/17,275/14,571 gates, 2,566/3,308/3,865/3,262
+  witnesses, closure, liveness, the residual-square suffixes and exact
+  degree 18 (coefficient 48 on one univariate line). It does not reconstruct
+  residuals against the macro specifications, did not reread the mathlib
+  proof, treats the Cairns corrections as disclosed dependencies, and finds
+  no effect on the 84-operation polynomial. All of it is printed in the
+  article's `cdc:sec:b91-review`; it supplies no patch, and nothing shipped
+  was changed.
+- **Batch 91, cluster A: reruns.** See "Rerunning the checks": on Windows
+  the builders and checkers reproduce every DAG byte for byte and every
+  receipt up to CRLF; 24's and 25's audit replays reproduce their receipts
+  up to CRLF but report failure because they compare bytes; 26's and 27's
+  replays need a POSIX host; the release verifiers need POSIX modes. 26's
+  DAG and page renders are excluded and reconstructed byte for byte (see
+  "Reconstructing the excluded data").
 - **Byte-identical duplicates within a manuscript** (checked with `cmp`):
   03's `test_results.json` and `test_run.txt`, `linear_test_results.json`
   and `linear_test_run.txt`, and `example-events.json` and
@@ -4571,6 +5454,45 @@ same decisions.
   (`neary-woods-fi`, `repo-cdc83`, `repo-qoc83`, `lp-loaderpacket`,
   `lp-certpacket`, `ro-report35`, `repo-b83rev`, `repo-b83arith`);
   `cairns` and `basu` extended. Neither manuscript names an AI assistant.
+- **Batch 91, cluster A (Part XXI).** 24–27 are four events over one
+  construction, 24 answers Part XX's last question and 27 extends it, so
+  they form one addition: Part XXI after Part XX and before the appendices,
+  in the order 24, 25, 26, 27, each in its own order, with abstracts and
+  Sections 1 as Sections 3.24–3.27; no existing section, theorem, equation,
+  table or figure number moved (the `.aux` comparison in Build). Not four
+  Parts (one spine, shared macros and geometry), not a new report (24
+  continues Part XX by name and answers its question), not inside Part XX
+  (Parts are appended). Base: 24, the common construction. Printed once:
+  25's Sections 2–5, near-verbatim copies of 24's Sections 3–6, as four
+  pointer sections quoting the three differing passages. Printed in full as
+  marked second routes: 26's and 27's own presentations of the macros
+  (independently worded, adding positivity details and a counterexample),
+  and 24's and 27's least-action lemmas against Parts XVI and XX. The shared
+  separating examples are printed in each manuscript's place. Credited
+  without a novelty claim: `POWER` (= `ptr:ai:lem:exp`) and `Sub`
+  (Jones–Matiyasevich, formalized as `JM1984.Exp.SFU.mask`). Written: the
+  Part's opening (sources, a table of the four theorems, relations, the
+  review, setting), a conventions table, notes at the re-proofs and at every
+  unshipped file, the review section `cdc:sec:b91-review`, the Cairns
+  section `cdc:sec:b91-cairns` with the remark `cdc:us:rem:cairns` (six
+  counterexamples) and the open question `cdc:us:q:cairns`, 21 labelled
+  questions `cdc:sec:b91-questions` restating the manuscripts' closing lists
+  (with lines on which are answered inside the Part), and dated notes after
+  `cdc:ro:q:packing`, `cdc:lp:q:encoder`, `cdc:q:compression` and manuscript
+  16's question on fixed-arity compression, and in Part XX's setting
+  paragraph, whose "Nothing here is a fixed-arity universal polynomial" is
+  scoped to Part XX (not retracted: Part XXI's polynomials are not universal
+  in the programme's sense). Claims of the sources that are unproved here
+  are kept as open questions with their sketches and what is missing
+  (`cdc:us:q:cairns`: the corrected Cairns constructions, 26's bounded-seed
+  normalization and fixed tile, the partial-gate accounting of 27's
+  corrections); the six printed Cairns passages the manuscripts call wrong
+  are refuted as printed in `cdc:us:rem:cairns`. The provenance appendix and
+  the bibliography's note now say twenty-seven manuscripts. Bibliography:
+  thirteen new entries (`mathlib-pell`, `r35-composition`, `r35-loader`,
+  `r36-real`, `bt-report50`, `bt-audit`, `rp-packet`, `rp-audit`,
+  `rp-interface`, `us-science`, `us-audit`, `us-interface`, `repo-b91rev`);
+  `cairns` extended. No manuscript names an AI assistant.
 - **Macros.** One `\code` (01's `\texttt{\detokenize{#1}}`); 02's `\_`
   escapes inside `\code` removed; the pin macros `\repoSHA` (01 and 07,
   different commits), `\repoCommit` (02) and `\reposha` (04) printed as
