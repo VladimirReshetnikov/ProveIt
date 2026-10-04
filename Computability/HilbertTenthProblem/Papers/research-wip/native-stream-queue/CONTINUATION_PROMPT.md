@@ -594,10 +594,21 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [grouped population reuse](matrix193_grouped_population_reuse.md)
+> saves25 additions in each complete matrix array. The total edge population
+> reuses24 additions already needed for disjoint selector groups; one duplicate
+> packing sum is also removed. Complete sources now cost **1,592 / 1,589 / 1,589 /
+> 1,586**, with145 /144 /144 /143 positive witnesses and unchanged exact degrees
+> 35,587 /53,347 /53,347 /71,107. The [independent review](review_matrix193_grouped_population_reuse.md)
+> reconstructs all6,356 rows, verifies the98-hat identity and all coefficient
+> words, and checks whole-polynomial identities on identical supplied coordinates.
+> Fresh author and independent normal/optimized checks pass. The universal84
+> bound remains unchanged.
+>
 > The [combined IDLE/affine construction](matrix193_idle_affine_reuse.md)
 > incorporates the577-row coefficient component into all four IDLE-free sources.
 > Every complete polynomial is identical to its immediate IDLE-free parent,
-> and the current matrix alternatives are:
+> and its matrix alternatives are:
 >
 > | Computed controller hats | Operations | Positive witnesses | Exact degree |
 > |---|---:|---:|---:|
@@ -763,7 +774,8 @@
 > preserves only ordinary input through fresh histories/native witnesses.
 > The LOAD/SWITCH charts and IDLE savings must not be counted again. The
 > paid affine coefficient reuse is also included in the four-source composition
-> above; its current smallest array is1,611 operations with143 witnesses.
+> above; grouped population reuse further lowers the smallest array to1,586
+> operations with143 witnesses. Those25 additions are already removed.
 >
 > The [packed selected-output construction](matrix193_packed_output_scout.md)
 > lowers the matrix route to **3,162=1,467M+1,695A** operations and **152 positive
