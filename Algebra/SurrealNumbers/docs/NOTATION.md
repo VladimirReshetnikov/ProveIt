@@ -1936,3 +1936,17 @@ baseline enumeration has two codings with the same evaluations, `𝒫_bd(e₀)`
 (normalized permutations) and `𝒫_s(b)` (fixed-point-free support codes).
 `𝓘` is the class of injective set-length words with proper prefixes first
 (source 09 wrote `𝒯`), and `𝒯` the class of all set-length words.
+
+Added 3 October 2026 (batch 81): the same report's Parts VI–IX merge its
+sources 13–18 under a dated addendum (`swo:sub:notation81`). There `κ` is a
+birthday cutoff, `μ = 2^{<κ}`, `r = cf κ` and `q = cf μ`; a general alphabet `X`
+has size `μ`. Density, cellularity and weight are `d`, `cell` and `w` (never
+`c` for cellularity), and the gap characters of an order `L` are `GapChar(L)`,
+as in the reals report; its sources' `Σ(L)` and `GapSpec(L)` are renamed (the
+[universes report](foundations-and-computation/surreal-fields-across-universes/article.tex)
+keeps `GapSpec`). `𝒯^inc` is the class of numerically increasing set-length
+words, beside `𝒯` (all) and `𝓘` (injective); its source 16 wrote `𝒯` for all words
+with the macro name of `𝓘`, and `𝔍` for class injections `Ord → No`, which are
+never the injective-words class `𝓘`. `𝒫_{<κ}(b)` is a support-cardinality layer
+of the core, not `𝒫_bd`. Its source 15's binary coding length `r_κ` of the
+minimal slice is printed `ρ_κ`, so that `r` stays `cf κ`.
