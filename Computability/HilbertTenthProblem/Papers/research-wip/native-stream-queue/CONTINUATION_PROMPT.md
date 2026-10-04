@@ -151,6 +151,14 @@
 > records all 25 archive members and three complete README reads from the
 > new Presburger/omnific bundles, with no manuscript or program validation.
 >
+> The [new Glazer/Polish intake](recent_incoming_substrate_triage_20261003.md)
+> pins five further archives and 33 members. Its scoped source read identifies
+> a quadratic-atom compiler over one infinite ring interval. Universal
+> quantifiers, negation and varying formula size remain, so it supplies no
+> fixed existential natural-witness equation or paid operation saving. The
+> other bundles remain topology/presentation leads. The archive and read-source
+> hashes were independently checked; no archived code was executed.
+>
 > The [Reports21–22 publication review](review_reports21_22_publication_20261003.md)
 > finds no scope conflict in the new signal-machine Part VIII. Both arrival
 > archives, all61 placed files and21 inherited byte comparisons match the
@@ -172,6 +180,16 @@
 > and square counts are not arithmetic operation counts. These scoped reviews
 > do not certify an implemented rule-to-chart compiler or improve universality.
 >
+> The [Gamma1(5) recoding](matrix193_gamma1_recode.md)
+> preserves all 193 generators and twenty letters with **Pell parameter 391**.
+> Two explicit graphs prove faithfulness and first-row injectivity, giving
+> the same **6=4M+2A** conditional target assembly as the kernel recoding.
+> Its largest coefficient uses 30 magnitude bits, versus 29 for the kernel
+> alternative; total coefficient bits also increase. The [independent review](review_matrix193_gamma1_recode.md)
+> checks the graph argument, complete array and accepted product, and fresh
+> normal/optimized receipts pass. The exact Pell index and unbounded product
+> certificate remain unpaid; the universal polynomial bound stays **84**.
+>
 > The [kernel first-row recoding](matrix193_kernel_row_projection.md)
 > keeps all 193 generators while reducing the varying target to two integers.
 > A kernel subgroup makes each block uniquely determined by its first row;
@@ -191,6 +209,16 @@
 > Some coefficients grow (maximum31→33 bits). The conditional12-operation
 > target assembly still leaves its exact index and unbounded membership
 > relations unpaid, so the universal polynomial bound remains84.
+>
+> The [positive-monoid obstruction](u15_positive_monoid_parabolic_obstruction.md)
+> extends the parabolic-block exclusion to **every faithful positive-word
+> encoding into GL2(Z)**. It handles all determinant signs and closes the
+> weaker-faithfulness route for W=(ab)^3 b². The [integral-case challenge](review_u15_positive_monoid_parabolic_obstruction.md)
+> and [geometric integration review](review_u15_positive_monoid_geometric_scope.md)
+> check the complete trace classification and the published semigroup premise,
+> including its proper-interval convention. Ten formal identities and seven
+> nonfaithful fixtures pass normal/optimized replay. This excludes the stated
+> affine-loader shortcut; the universal polynomial bound remains **84**.
 >
 > The [faithful parabolic obstruction](u15_faithful_parabolic_obstruction.md)
 > shows that the universal U15 block W=(01)^3 11 stays hyperbolic under
